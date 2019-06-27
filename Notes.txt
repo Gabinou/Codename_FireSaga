@@ -1,0 +1,4 @@
+Make sure to have compatibility with FEBuilderGBA.
+
+Tileset programs: Tilet/Mappy.
+Tileset:
