@@ -7,6 +7,7 @@ using namespace std;
 std::vector<std::string> unit_stats = {"HP", "Str", "Mag", "Skill", "Speed", "Luck", "Def", "Res", "Con"};
 std::vector<std::string> weapon_stats = {"dmg", "hit", "crit", "weight"};
 std::vector<std::string> wpn_types = {"swd", "lance", "axe","bow", "mgc_wind", "mgc_dark", "mgc_fire", "mgc_thunder", "staff"};
+std::vector<std::string> weapons = {"Iron Sword", "Iron Bow"};
 std::vector<std::string> statuses = {"healthy", "sleep", "poison", "stone", "berserk"};
 std::vector<std::string> unit_classes = {"Lord", "Prince", "Princess", "Knight", "Cavalier"};
 int equipment_slots = 7;
@@ -15,10 +16,10 @@ class character {
     public:
         std::vector<int> stats, stat_bonus, wpn_lvls, equipment, position;
         bool mounted, flying;
-        int wpn, id, unit_class;
+        int equipped, id, unit_class;
         std::string name;
         
-        character(int test) {
+        character(int test=0) {
             std::vector<int> stats = std::vector<int>(unit_stats.size());
             std::vector<int> stat_bonus = std::vector<int>(unit_stats.size());
             std::vector<int> wpn_lvls = std::vector<int>(wpn_types.size());
@@ -29,7 +30,7 @@ class character {
         };        
         int combat_damage(void){
             int damage;
-            cout << stats[0] << "\n";
+            cout << stats[0] + weapons[equipped] << "\n";
             return damage;
         }
         // int combat_avoid();
@@ -61,7 +62,7 @@ class map {
 
 main() {
     std::cout << "TESTING THIS BITCH\n";
-    character Marth(1);
+    character Marth;
     Marth.stats = {18, 2};
     for (std::string x : unit_stats)
         std::cout << x << " ";    
