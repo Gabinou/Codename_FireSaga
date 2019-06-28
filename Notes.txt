@@ -5,3 +5,4 @@ Tileset:
 
 
 Idea to adde mechanics: layer of Air tiles on top of the ground tiles that add status effects like fog of war, poison, damage over time, wind to limit flyer movement, weather, etc.
+Design notes: add a 3rd dimension for flying and making some mountains impassable even for flying units except high altitude flyers. Maybe for promoted flyers? Maybe have special status effects?
