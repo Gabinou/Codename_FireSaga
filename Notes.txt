@@ -2,3 +2,6 @@ Make sure to have compatibility with FEBuilderGBA.
 
 Tileset programs: Tilet/Mappy.
 Tileset:
+
+
+Idea to adde mechanics: layer of Air tiles on top of the ground tiles that add status effects like fog of war, poison, damage over time, wind to limit flyer movement, weather, etc.
