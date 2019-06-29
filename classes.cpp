@@ -59,15 +59,3 @@ class map {
         
 
 };
-
-main() {
-    std::cout << "TESTING THIS BITCH\n";
-    character Marth;
-    Marth.stats = {18, 2};
-    for (std::string x : unit_stats)
-        std::cout << x << " ";    
-    std::cout << "Marth's " << unit_stats[0] << ":" << Marth.stats[0] << "\n";
-    std::cout << "Marth's damage:" << Marth.combat_damage() << "\n";
-    std::cout << "TA MERE\n";
-    // printf("Marth's HUGE FACTOR:  (%d)\n", sizeof(Marth));
-}
