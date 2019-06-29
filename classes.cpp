@@ -13,7 +13,7 @@ std::vector<std::string> statuses = {"healthy", "sleep", "poison", "stone", "ber
 std::vector<std::string> unit_classes = {"Lord", "Prince", "Princess", "Knight", "Cavalier", "Pegasus Knight", "Wyvern knight"};
 int equipment_slots = 7;
 
-character::character(std::vector<int> in_stats = {1,1},
+character::character(std::vector<int> in_stats = std::vector<int>(1),
                     std::vector<int> in_stat_bonus = std::vector<int>(1),
                     std::vector<int> in_wpn_exp = std::vector<int>(1),
                     std::vector<int> in_equipment = std::vector<int>(1),
@@ -34,7 +34,7 @@ int character::combat_damage(){
 main() {
     std::cout << "TESTING THIS BITCH\n";
     character Marth;
-    Marth.stats = {18,}
+    Marth.stats = {18,1,1};
             std::vector<int> stat_bonus = std::vector<int>(unit_stats.size());
             std::vector<int> wpn_exp = std::vector<int>(wpn_types.size());
             std::vector<int> equipment = std::vector<int>(equipment_slots);
