@@ -7,6 +7,7 @@ class character {
         bool mounted, flying, promoted;
         int equipped, id, unit_class, level, current_hp;
         std::vector<std::string> weapons;
+        std::string name;
         int combat_damage(void); 
         character(std::vector<int> in_stats,
                   std::vector<int> in_stat_bonus,
@@ -18,11 +19,15 @@ class character {
 
 class weapon {
     public:
-        std::vector<int> stats;
-        std::vector<int> stat_bonus;
-        std::string name;
-        std::vector<std::string> effective;
+        std::vector<int> stats, stat_bonus;
+        std::string name = "";
+        std::vector<std::string> effective = {""};
         int id;
+        weapon(std::string in_name,
+               std::vector<int> in_stats,
+               std::vector<int> in_stat_bonus,
+               std::vector<std::string> in_effective);
+        weapon();
 };
 
 class tile {
@@ -30,7 +35,6 @@ class tile {
         int id;
         int type;
         std::vector<int> stats;
-    
 };
 
 class map {

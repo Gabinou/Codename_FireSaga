@@ -49,7 +49,7 @@ class weapon {
         std::vector<int> stat_bonus = std::vector<int>(unit_stats.size());
         std::string name;
         std::vector<std::string> effective;
-        int id;
+        int id, wpn_exp;
 };
 
 class map {
