@@ -1,11 +1,18 @@
 #pragma once
 #define classes_H
 
-class character {
+class generic {
     public:
+        static int objectcount;
+    generic();
+};
+
+class character: public generic {
+    public:
+        static int id;
         std::vector<int> stats, stat_bonus, wpn_exp, equipment, position;
         bool mounted, flying, promoted;
-        int equipped, id, unit_class, level, current_hp;
+        int equipped, unit_class, level, current_hp;
         std::vector<std::string> weapons;
         std::string name;
         int combat_damage(void); 
@@ -17,12 +24,12 @@ class character {
         character();
 };
 
-class weapon {
+class weapon: public generic  {
     public:
+        static int id;
         std::vector<int> stats, stat_bonus;
         std::string name = "";
         std::vector<std::string> effective = {""};
-        int id;
         weapon(std::string in_name,
                std::vector<int> in_stats,
                std::vector<int> in_stat_bonus,
