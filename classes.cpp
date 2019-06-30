@@ -6,7 +6,7 @@
 using namespace std;
 
 std::vector<std::string> unit_stats = {"HP", "Str", "Mag", "Skill", "Speed", "Luck", "Def", "Res", "Con", "Mov"};
-std::vector<std::string> wpn_stats = {"dmg", "hit", "crit", "weight"};
+std::vector<std::string> wpn_stats = {"dmg", "hit", "crit", "weight", "uses", "rank", "worth", "wexp"};
 std::vector<std::string> wpn_types = {"swd", "lance", "axe", "bow", "mgc_wind", "mgc_dark", "mgc_fire", "mgc_thunder", "staff"};
 std::vector<std::string> weapons = {"Iron Sword", "Iron Bow", "Rapier",};
 std::vector<std::string> items = {"Vulnerary"};
@@ -72,15 +72,19 @@ main() {
 
     std::cout << "TESTING THIS BITCH\n";
     std::cout << "Initializaing a character\n";
-    weapon Rapier("Rapier", {5, 90, 10, 7}, std::vector<int>(unit_stats.size(), 0), {"Knight", "Cavalier"});
-    weapon Iron_swd("Iron Sword", {5, 80, 0, 8}, std::vector<int>(unit_stats.size(), 0), {""});
+    weapon Rapier("Rapier", {5, 90, 10, 7, 30, 2, 600, 2}, std::vector<int>(unit_stats.size(), 0), {"Knight", "Cavalier"});
+    weapon Iron_swd("Iron Sword", {5, 80, 0, 8, 45, 0, 450, 1}, std::vector<int>(unit_stats.size(), 0), {""});
+    weapon Steel_swd("Steel Sword", {8, 70, 0, 10, 35, 1, 500, 1}, std::vector<int>(unit_stats.size(), 0), {""});
+    weapon Damascus_swd("Damascus Sword", {12, 65, 0, 9, 25, 3, 1000, 1}, std::vector<int>(unit_stats.size(), 0), {""});
     weapon *rapier = &Rapier;
     weapon *iron_swd = &Iron_swd;
+    weapon *steel_swd = &Steel_swd;
+    weapon *damascus_swd = &Damascus_swd;
     character Marth;
     character *marth = &Marth;
     std::vector<character *> all_characters;
     std::vector<weapon *> all_wpns;
-    all_wpns = {rapier, iron_swd};
+    all_wpns = {rapier, iron_swd, steel_swd, damascus_swd};
     all_characters = {marth};
     Marth.name = "Marth";
     Marth.stats = {18,8,2,10,11,7,5,2,5,5};

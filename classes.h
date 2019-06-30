@@ -30,7 +30,7 @@ class weapon: public generic  {
     public:
         static int wpn_count;
         int id;
-        std::vector<int> stats, stat_bonus;
+        std::vector<int> stats, stat_bonus, range;
         std::vector<std::string> effective;
         weapon(std::string in_name,
                std::vector<int> in_stats,
