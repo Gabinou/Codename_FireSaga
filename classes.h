@@ -3,13 +3,15 @@
 
 class generic {
     public:
-        static int objectcount;
+        static int object_count;
+        std::string name;
     generic();
 };
 
 class character: public generic {
     public:
-        static int id;
+        static int character_count;
+        int id;
         std::vector<int> stats, stat_bonus, wpn_exp, equipment, position;
         bool mounted, flying, promoted;
         int equipped, unit_class, level, current_hp;
@@ -26,10 +28,10 @@ class character: public generic {
 
 class weapon: public generic  {
     public:
-        static int id;
+        static int wpn_count;
+        int id;
         std::vector<int> stats, stat_bonus;
-        std::string name = "";
-        std::vector<std::string> effective = {""};
+        std::vector<std::string> effective;
         weapon(std::string in_name,
                std::vector<int> in_stats,
                std::vector<int> in_stat_bonus,
