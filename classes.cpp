@@ -73,10 +73,12 @@ main() {
     std::cout << "TESTING THIS BITCH\n";
     std::cout << "Initializaing a character\n";
     weapon Rapier("Rapier", {5, 90, 10, 7, 30, 2, 600, 2}, std::vector<int>(unit_stats.size(), 0), {"Knight", "Cavalier"});
-    weapon Iron_swd("Iron Sword", {5, 80, 0, 8, 45, 0, 450, 1}, std::vector<int>(unit_stats.size(), 0), {""});
-    weapon Steel_swd("Steel Sword", {8, 70, 0, 10, 35, 1, 500, 1}, std::vector<int>(unit_stats.size(), 0), {""});
-    weapon Damascus_swd("Damascus Sword", {12, 65, 0, 9, 25, 3, 1000, 1}, std::vector<int>(unit_stats.size(), 0), {""});
+    weapon Bronze_swd("Bronze Sword", {3, 80, 0, 5, 45, 0, 450, 1}, std::vector<int>(unit_stats.size(), 0), {""});
+    weapon Iron_swd("Iron Sword", {5, 80, 0, 7, 45, 0, 450, 1}, std::vector<int>(unit_stats.size(), 0), {""});
+    weapon Steel_swd("Steel Sword", {8, 70, 0, 9, 35, 1, 500, 1}, std::vector<int>(unit_stats.size(), 0), {""});
+    weapon Damascus_swd("Damascus Sword", {12, 65, 0, 8, 25, 3, 1000, 1}, std::vector<int>(unit_stats.size(), 0), {""});
     weapon *rapier = &Rapier;
+    weapon *bronze_swd = &Bronze_swd;
     weapon *iron_swd = &Iron_swd;
     weapon *steel_swd = &Steel_swd;
     weapon *damascus_swd = &Damascus_swd;
