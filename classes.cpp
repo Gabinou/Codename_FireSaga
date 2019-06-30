@@ -5,27 +5,38 @@
 #include "classes.h"
 using namespace std;
 
-std::vector<std::string> unit_stats = {"HP", "Str", "Mag", "Skill", "Speed", "Luck", "Def", "Res", "Con"};
+std::vector<std::string> unit_stats = {"HP", "Str", "Mag", "Skill", "Speed", "Luck", "Def", "Res", "Con", "Mov"};
 std::vector<std::string> weapon_stats = {"dmg", "hit", "crit", "weight"};
-std::vector<std::string> wpn_types = {"swd", "lance", "axe","bow", "mgc_wind", "mgc_dark", "mgc_fire", "mgc_thunder", "staff"};
-std::vector<std::string> weapons = {"Iron Sword", "Iron Bow"};
+std::vector<std::string> wpn_types = {"swd", "lance", "axe", "bow", "mgc_wind", "mgc_dark", "mgc_fire", "mgc_thunder", "staff"};
+std::vector<std::string> weapons = {"Iron Sword", "Iron Bow", "Rapier",};
+std::vector<std::string> items = {"Vulnerary"};
 std::vector<std::string> statuses = {"healthy", "sleep", "poison", "stone", "berserk"};
 std::vector<std::string> unit_classes = {"Lord", "Prince", "Princess", "Knight", "Cavalier", "Pegasus Knight", "Wyvern knight"};
 int equipment_slots = 7;
 
-character::character(std::vector<int> in_stats = std::vector<int>(1),
-                    std::vector<int> in_stat_bonus = std::vector<int>(1),
-                    std::vector<int> in_wpn_exp = std::vector<int>(1),
-                    std::vector<int> in_equipment = std::vector<int>(1),
-                    std::vector<int> in_position = std::vector<int>(1))
+character::character(std::vector<int> in_stats,
+                    std::vector<int> in_stat_bonus,
+                    std::vector<int> in_wpn_exp,
+                    std::vector<int> in_equipment,
+                    std::vector<int> in_position)                    
 {
     stats = in_stats;
     stat_bonus = in_stat_bonus;
     wpn_exp = in_wpn_exp;
     equipment = in_equipment;
     position = in_position;
+    current_hp = in_stats[0];
 }
-   
+
+character::character()              
+{
+    stats = std::vector<int>{0,0,0,0,0,0,0,0,0,0};
+    stat_bonus = std::vector<int>{0,0,0,0,0,0,0,0,0,0};
+    wpn_exp = std::vector<int>(1);
+    equipment = std::vector<int>(1);
+    position = std::vector<int>(1);
+    current_hp = stats[0];
+}
 int character::combat_damage(){
     int damage = stats[1];
     // cout << weapons[equipped] << "\n";
@@ -33,15 +44,19 @@ int character::combat_damage(){
 }
 main() {
     std::cout << "TESTING THIS BITCH\n";
+    std::cout << "Initializaing a character\n";
     character Marth;
-    Marth.stats = {18,1,1};
-            std::vector<int> stat_bonus = std::vector<int>(unit_stats.size());
-            std::vector<int> wpn_exp = std::vector<int>(wpn_types.size());
+    character Marthb;
+    Marth.stats = {18,8,2,10,11,7,5,2,5,5};
+    Marth.wpn_exp = std::vector<int>(wpn_types.size(), 0);
             std::vector<int> equipment = std::vector<int>(equipment_slots);
             std::vector<int> position = std::vector<int>(3);
             std::string name;
-    // Marth.stats = {18, 2};
     std::cout << Marth.stats[0] << "\n";
+    // std::cout << Marthb.stats[0] << "\n";
+    std::cout << Marth.stat_bonus[0] << "\n";
+    std::cout << Marth.wpn_exp[0] << "\n";
+    std::cout << Marth.current_hp << "\n";
     // std::cout << Marth.stat_bonus[0] << "\n";
     return 0;
 }

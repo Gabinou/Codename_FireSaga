@@ -4,15 +4,16 @@
 class character {
     public:
         std::vector<int> stats, stat_bonus, wpn_exp, equipment, position;
-        bool mounted, flying;
-        int equipped, id, unit_class, level, promotion ;
+        bool mounted, flying, promoted;
+        int equipped, id, unit_class, level, current_hp;
         std::vector<std::string> weapons;
         int combat_damage(void); 
         character(std::vector<int> in_stats,
-                    std::vector<int> in_stat_bonus,
-                    std::vector<int> in_wpn_exp,
-                    std::vector<int> in_equipment,
-                    std::vector<int> in_position);
+                  std::vector<int> in_stat_bonus,
+                  std::vector<int> in_wpn_exp,
+                  std::vector<int> in_equipment,
+                  std::vector<int> in_position);
+        character();
 };
 
 class weapon {
