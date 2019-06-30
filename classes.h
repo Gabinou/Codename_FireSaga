@@ -13,7 +13,7 @@ class character: public generic {
         static int character_count;
         int id;
         std::vector<int> stats, stat_bonus, wpn_exp, equipment, position;
-        bool mounted, flying, promoted;
+        bool mounted, flying, armored, promoted;
         int equipped, unit_class, level, current_hp;
         std::vector<std::string> weapons;
         std::string name;
@@ -36,6 +36,7 @@ class weapon: public generic  {
                std::vector<int> in_stats,
                std::vector<int> in_stat_bonus,
                std::vector<std::string> in_effective);
+               // Can either be a unit class, type or any other characteritic. Make a functions that recognizes the correct characteristic.
         weapon();
 };
 

@@ -72,8 +72,8 @@ main() {
 
     std::cout << "TESTING THIS BITCH\n";
     std::cout << "Initializaing a character\n";
-    weapon Rapier("Rapier", {5, 90, 10, 7}, std::vector<int>(unit_stats.size(), 0), std::vector<std::string>(unit_classes.size(), ""));
-    weapon Iron_swd("Iron Sword", {5, 80, 0, 8}, std::vector<int>(unit_stats.size(), 0), std::vector<std::string>(unit_classes.size(), ""));
+    weapon Rapier("Rapier", {5, 90, 10, 7}, std::vector<int>(unit_stats.size(), 0), {"Knight", "Cavalier"});
+    weapon Iron_swd("Iron Sword", {5, 80, 0, 8}, std::vector<int>(unit_stats.size(), 0), {""});
     weapon *rapier = &Rapier;
     weapon *iron_swd = &Iron_swd;
     character Marth;
