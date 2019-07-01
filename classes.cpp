@@ -7,7 +7,7 @@ using namespace std;
 
 std::vector<std::string> unit_stats = {"HP", "Str", "Mag", "Skill", "Speed", "Luck", "Def", "Res", "Con", "Mov"};
 std::vector<std::string> wpn_stats = {"dmg", "hit", "crit", "weight", "uses", "rank", "worth", "wexp"};
-std::vector<std::string> wpn_types = {"swd", "lance", "axe", "bow", "mgc_wind", "mgc_dark", "mgc_fire", "mgc_thunder", "staff", "other"};
+std::vector<std::string> wpn_types = {"swd", "lance", "axe", "bow", "mgc_wind", "mgc_dark", "mgc_fire", "mgc_thunder", "staff"};
 std::vector<std::string> weapons_names = {"Iron Sword", "Iron Bow", "Rapier",};
 std::vector<std::string> items = {"Vulnerary"};
 std::vector<std::string> statuses = {"healthy", "sleep", "poison", "stone", "berserk"};
@@ -50,7 +50,7 @@ weapon::weapon() {
     id = wpn_count;
 }
 
-weapon::weapon(int int_wpn_type,
+weapon::weapon(int in_wpn_type,
                std::string in_name,
                std::vector<int> in_stats,
                std::vector<int> in_stat_bonus,
@@ -99,16 +99,14 @@ main() {
     weapon Rapier(0, "Rapier", {5, 90, 10, 7, 30, 2, 600, 2}, std::vector<int>(unit_stats.size(), 0), {"Knight", "Cavalier"});
     weapon Bronze_swd(0, "Bronze Sword", {3, 80, 0, 5, 45, 0, 450, 1}, std::vector<int>(unit_stats.size(), 0), {""});
     weapon Iron_swd(0, "Iron Sword", {5, 80, 0, 7, 45, 0, 450, 1}, std::vector<int>(unit_stats.size(), 0), {""});
-    weapon Iron_swd(1, "Iron Lance", {5, 80, 0, 7, 45, 0, 450, 1}, std::vector<int>(unit_stats.size(), 0), {""});
+    weapon Iron_lnc(1, "Iron Lance", {6, 80, 0, 8, 40, 0, 500, 1}, std::vector<int>(unit_stats.size(), 0), {""});
     weapon Steel_swd(0, "Steel Sword", {8, 70, 0, 9, 35, 1, 500, 1}, std::vector<int>(unit_stats.size(), 0), {""});
     weapon Damascus_swd(0, "Damascus Sword", {12, 65, 0, 8, 25, 3, 1000, 1}, std::vector<int>(unit_stats.size(), 0), {""});
 
     character Marth;
     character Sheeda;
     character *marth = &Marth;
-    character *sheeda = &sheeda;
-    
-    
+    character *sheeda = &Sheeda;
     
     std::vector<character *> all_characters;
     std::vector<weapon *> all_wpns;
@@ -122,10 +120,13 @@ main() {
     all_wpns = {rapier, iron_swd, steel_swd, damascus_swd};
     
     
-    all_characters = {marth};
+    all_characters = {marth, sheeda};
     Marth.name = "Marth";
-    Marth.stats = {18, 8, 2, 10, 11, 7, 5, 2, 5, 5};
+    Sheeda.name = "Sheeda";
+    Marth.stats = {18, 8, 2, 10, 11, 7, 5, 2, 6, 5};
+    Sheeda.stats = {17, 6, 2, 9, 14, 9, 6, 4, 5, 7};
     Marth.equipment.push_back(Rapier.id);
+    Sheeda.equipment.push_back(Iron_lnc.id);
             // std::vector<int> equipment = std::vector<int>(equipment_slots);
             // std::vector<int> position = std::vector<int>(3);
             // std::string name;

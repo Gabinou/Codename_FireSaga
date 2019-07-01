@@ -27,9 +27,10 @@ class character: public generic {
 };
 
 class item: public generic {
-    int type;
-    
-}
+    public:
+        int type;
+        int id;
+};
 
 class weapon: public generic  {
     public:
