@@ -36,7 +36,7 @@ character::character() {
     current_hp = stats[0];
 }
 int character::combat_damage(){
-    int damage = stats[1];
+    int damage = stats[1] + stat_bonus[1];
     // cout << weapons[equipped] << "\n";
     return damage;
 }
@@ -65,11 +65,32 @@ generic::generic() {
     object_count++;
 }
 
+weapon get_wpn_from_id(int wpn_id, std::vector<weapon *> all_wpns){
+    weapon found_wpn;
+    for (std::vector<weapon *>::size_type i = 0; i != all_wpns.size(); i++) {      
+        weapon current_wpn = *all_wpns[i];
+        if (wpn_id == current_wpn.id)  {
+            found_wpn = current_wpn;
+        } 
+    }   
+    return(found_wpn);
+};
+
+character get_character_from_id(int character_id, std::vector<character *> all_characters){
+    character found_wpn;
+    for (std::vector<character *>::size_type i = 0; i != all_characters.size(); i++) {      
+        character current_wpn = *all_characters[i];
+        if (character_id == current_wpn.id)  {
+            found_wpn = current_wpn;
+        } 
+    }   
+    return(found_wpn);
+};
+
 int weapon::wpn_count = 0;
 int character::character_count = 0;
 int generic::object_count = 0;
 main() {
-
     std::cout << "TESTING THIS BITCH\n";
     std::cout << "Initializaing a character\n";
     weapon Rapier("Rapier", {5, 90, 10, 7, 30, 2, 600, 2}, std::vector<int>(unit_stats.size(), 0), {"Knight", "Cavalier"});
@@ -95,16 +116,15 @@ main() {
             // std::vector<int> equipment = std::vector<int>(equipment_slots);
             // std::vector<int> position = std::vector<int>(3);
             // std::string name;
-    for (std::vector<weapon *>::size_type i = 0; i != all_wpns.size(); i++) {      
-        weapon current_wpn = *all_wpns[i] ;
-        if (Marth.equipment[0] == current_wpn.id)  {
-            std::cout << "Marth is carrying a " << current_wpn.name << std::endl;
-          // std::cout << i << "\n";
-        } 
-    }
+
     std::cout << Marth.stats[0] << "\n";
-    std::cout << Rapier.id << "\n";
+    std::cout << "Rapier id: " << Rapier.id << "\n";
+    // std::cout << "Rapier id: " << Stick.id << "\n";
     std::cout << Marth.stat_bonus[0] << "\n";
+   
+    
+    std::cout << "Marth is carrying a " << get_wpn_from_id(Marth.equipment[0], all_wpns).name << std::endl;
+    std::cout << "Marth's combat damage: " << Marth.combat_damage() << "\n";
     
     
     std::cout << Marth.equipment[0] << "\n";
