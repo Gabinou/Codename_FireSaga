@@ -26,13 +26,20 @@ class character: public generic {
         character();
 };
 
+class item: public generic {
+    int type;
+    
+}
+
 class weapon: public generic  {
     public:
         static int wpn_count;
         int id;
+        int wpn_type;
         std::vector<int> stats, stat_bonus, range;
         std::vector<std::string> effective;
-        weapon(std::string in_name,
+        weapon(int in_wpn_type,
+               std::string in_name,
                std::vector<int> in_stats,
                std::vector<int> in_stat_bonus,
                std::vector<std::string> in_effective);
