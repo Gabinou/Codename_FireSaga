@@ -30,6 +30,9 @@ class item: public generic {
     public:
         int type;
         int id;
+        item();
+        std::vector<int> stat_bonus;
+        on_use();
 };
 
 class weapon: public generic  {
@@ -37,7 +40,7 @@ class weapon: public generic  {
         static int wpn_count;
         int id;
         int wpn_type;
-        std::vector<int> stats, stat_bonus, range;
+        std::vector<int> stats, stat_bonus, growths, range;
         std::vector<std::string> effective;
         weapon(int in_wpn_type,
                std::string in_name,
