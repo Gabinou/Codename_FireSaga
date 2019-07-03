@@ -9,11 +9,15 @@ char statuses[][14] = {"healthy", "sleep", "poison", "stone", "berserk"};
 char unit_classes[][24] = {"Lord", "Prince", "Princess", "Knight", "Cavalier", "Pegasus Knight", "Wyvern knight"};
 int equipment_slots = 7;
 
-int length(char array) {
+int len_char(char *array) {
     size_t n = sizeof(array)/sizeof(array[0]);
-    return(n)
+    return(n);
 }
 
+int len_int(int *array) {
+    size_t n = sizeof(array)/sizeof(array[0]);
+    return(n);
+}
 
 int main() {
     int Marth[][14] = {{1}, {18, 8, 2, 10, 11, 7, 5, 2, 6, 5}, {1,2}};
@@ -25,7 +29,9 @@ int main() {
 
     // printf("This statt %i \n", equipment_slots);
     printf("This statt %s \n", unit_stats[1]);
-    printf("Length of unit stats array %i \n", length(unit_stats));
+    printf("Length of unit stats array %i \n", len_char(*unit_stats));
+    size_t n = sizeof(Marth[2])/sizeof(Marth[2]);
+    printf("Length of unit stats array %i \n", n);
     
     return(0);
 }
