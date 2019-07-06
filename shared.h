@@ -21,4 +21,7 @@ struct unit {
     char equipment[7];
     char equipped;
     char skills[3];
+    char lovers[5][14];
+    char love_pts[5];
+    char love_growths[5];
 };

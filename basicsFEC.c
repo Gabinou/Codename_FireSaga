@@ -4,7 +4,7 @@
 #include "shared.h"
 
 // use char for everything cause it reduces memory, and I like the design: small numbers for damage, armor, etc.
-char unit_stats[][14] = {"HP", "Str", "Mag", "Skill", "Speed", "Luck", "Def", "Res", "Con"};
+char unit_stats[][14] = {"HP", "Str", "Mag", "Skill", "Speed", "Luck", "Def", "Res", "Con", "Move"};
 char weapon_stats[][14] = {"dmg", "hit", "crit", "weight"};
 char wpn_types[][14]  = {"swd", "lance", "axe","bow", "mgc_wind", "mgc_dark", "mgc_fire", "mgc_thunder", "staff"};
 char weapons[][14]  = {"Iron Sword", "Iron Bow"};
@@ -37,25 +37,7 @@ char attack(char unit[][14]){
     // return(0);
 }
 
-
-
-// Everything is arrays.
-    // Character array structures:
-    // Marth[0] = id
-    // Marth[1] = stats
-    // Marth[2] = stat_bonus
-    // Marth[3] = growths
-    // Marth[4] = EXP
-    // Marth[5] = position
-    // Marth[6] = equipment
-    // Marth[7] = equipped
-    // Marth[8] = skills
-    // status
-    // supports
-//Weapon array structures: 
-    // Rapier[0] = id
-    // Rapier[1] = stats
-    // Rapier[2] = stat_bonus
+// I think equipped should be the index of the weaon in unit.equipped, not the weapon id.
 int main() {
     printf("TESTING THIS BITCH\n");
     char Marth[][14] = {{id++}, {17, 6, 4, 7, 12, 8, 5, 4, 5, 7},
@@ -65,17 +47,22 @@ int main() {
    char Sheeda[][14] = {{id++}, {17, 6, 4, 7, 12, 8, 5, 4, 5, 7},
                        {0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
                        {40, 50, 5, 80, 60, 50, 30, 20, 0, 0},
-                       {0},  {1,1,1}, {0, 0, 0, 0, 0, 0, 0}, {1}};  
+                       {0},  {1,1,1}, {0, 0, 0, 0, 0, 0, 0}, {1}};          
     struct unit ooMarth = {id++,
-                           18, 08, 02, 09, 10, 07, 05, 02, 06, 05,
-                           00, 00, 00, 00, 00, 00, 00, 00, 00, 00,
-                           40, 50, 05, 80, 60, 50, 30, 20, 00, 00,
-                           00,
-                           001, 001, 001,
-                           00, 00, 00, 00, 00, 00, 00,
-                           01,
-                           01, 02, 03};
-    // ooMarth.id = id++;
+                        // HP  Str Mag Skl Spd Lck Def Res Con Mov
+        /*Stats*/          18,  8,  2,  9, 10,  7,  5,  2,  6,  5,
+        /*Stat bonuses*/    0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
+        /*Growths*/        40, 50, 05, 80, 60, 50, 30, 20,  0,  0,
+        /*total exp*/       0,
+        /*Position*/        1,  1,  1,
+        /*Equipment*/       0,  0,  0,  0,  0,  0,  0,
+        /*Equipped*/        1,
+        /*Skills*/          1,  2,  3,
+        /*Lovers*/          "Sheeda", "", "", "", "",
+        /*Love Points*/     25,  0,  0,  0,  0,
+        /*Love growths*/    3,  0,  0,  0,  0};
+    ooMarth.id = id++;
+    ooMarth.id = id++;
     printf("id of Marth %d\n", Marth[0][0]);
     printf("id of ooMarth %d\n", ooMarth.id); 
     printf("id of ooMarth %d\n", ooMarth.stats[0]); 
@@ -84,11 +71,7 @@ int main() {
     printf("id of ooMarth %d\n", ooMarth.growths[8]); 
     printf("id of ooMarth %d\n", ooMarth.exp); 
     printf("id of ooMarth %d\n", ooMarth.position[1]); 
-    printf("id of ooMarth %d\n", ooMarth.skills[2]); 
-    char Sheeda[][14] = {{id++}, {17, 6, 4, 7, 12, 8, 5, 4, 5, 7},
-                       {0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-                       {40, 50, 5, 80, 60, 50, 30, 20, 0, 0},
-                       {0},  {1,1,1}, {0, 0, 0, 0, 0, 0, 0}, {1}};    
+    printf("id of ooMarth %d\n", ooMarth.skills[2]);  
   
     printf("Size of Array Marth %d\n", sizeof(Sheeda));
     printf("Size of struct Marth %d\n", sizeof(ooMarth) );
