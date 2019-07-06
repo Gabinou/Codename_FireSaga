@@ -12,11 +12,13 @@ extern char *all_wpns;
 extern char id; 
 
 struct unit {
+    char name;
     char id;
     char stats[10];
     char stat_bonus[10];
     char growths[10];
     short exp;
+    char wpn_exp[9];
     char position[3];
     char equipment[7];
     char equipped;
@@ -24,4 +26,11 @@ struct unit {
     char lovers[5][14];
     char love_pts[5];
     char love_growths[5];
+};
+
+struct weapon {
+    char name;
+    char id;
+    char stats[10];
+    char stat_bonus[10];
 };
