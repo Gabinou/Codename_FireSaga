@@ -11,6 +11,8 @@ char weapons[][14]  = {"Iron Sword", "Iron Bow"};
 char statuses[][14] = {"healthy", "sleep", "poison", "stone", "berserk"};
 char unit_classes[][24] = {"Lord", "Prince", "Princess", "Knight", "Cavalier", "Pegasus Knight", "Wyvern knight"};
 char equipment_slots = 7;
+// char *all_characters;
+// char *all_weapons;
 char id = 0;
 
 char len_char(char *array) {
@@ -25,14 +27,26 @@ char attack(char unit[][14]){
     // return(0);
 }
 
+char get_object(char id) {
+    all_weapons[0][1];
+    return(0);
+};
+
+
+
 
 int main() {
     char Marth[][14] = {{id++}, {18, 8, 2, 10, 11, 7, 5, 2, 6, 5},
                        {0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
                        {40, 50, 5, 80, 60, 50, 30, 20, 0, 0},
                        {0},  {1,1,1}, {0, 0, 0, 0, 0, 0, 0}, {}};
+    
+    char *all_characters[] = {*Marth};
+    
     char Rapier[][14] = {{id++}, {5, 90, 10, 6, 45, 45},
                         {0, 0, 0, 0, 0, 0, 0, 0, 0, 1}};
+    char *all_weapons[] = {*Rapier};                  
+                        
     // Everything is arrays.
         // Character array structures:
         // Marth[0] = id

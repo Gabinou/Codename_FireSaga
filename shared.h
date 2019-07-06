@@ -7,4 +7,6 @@ extern char weapons[][14];
 extern char statuses[][14];
 extern char unit_classes[][24];
 extern char equipment_slots;
+extern char *all_characters[];
+extern char *all_weapons[];
 extern char id; 
