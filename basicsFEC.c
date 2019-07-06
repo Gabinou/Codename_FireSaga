@@ -44,23 +44,23 @@ int main() {
                        {0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
                        {40, 50, 5, 80, 60, 50, 30, 20, 0, 0},
                        {0},  {1,1,1}, {0, 0, 0, 0, 0, 0, 0}, {1}};  
-   char Sheeda[][14] = {{id++}, {17, 6, 4, 7, 12, 8, 5, 4, 5, 7},
+    char Sheeda[][14] = {{id++}, {17, 6, 4, 7, 12, 8, 5, 4, 5, 7},
                        {0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
                        {40, 50, 5, 80, 60, 50, 30, 20, 0, 0},
                        {0},  {1,1,1}, {0, 0, 0, 0, 0, 0, 0}, {1}};          
-    struct unit ooMarth = {id++,
-                        // HP  Str Mag Skl Spd Lck Def Res Con Mov
-        /*Stats*/          18,  8,  2,  9, 10,  7,  5,  2,  6,  5,
-        /*Stat bonuses*/    0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
-        /*Growths*/        40, 50, 05, 80, 60, 50, 30, 20,  0,  0,
-        /*total exp*/       0,
-        /*Position*/        1,  1,  1,
-        /*Equipment*/       0,  0,  0,  0,  0,  0,  0,
-        /*Equipped*/        1,
-        /*Skills*/          1,  2,  3,
-        /*Lovers*/          "Sheeda", "", "", "", "",
-        /*Love Points*/     25,  0,  0,  0,  0,
-        /*Love growths*/    3,  0,  0,  0,  0};
+    struct unit Marth = {id++,
+                      // HP  Str Mag Skl Spd Lck Def Res Con Mov
+      /*Stats*/          18,  8,  2,  9, 10,  7,  5,  2,  6,  5,
+      /*Stat bonuses*/    0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
+      /*Growths*/        40, 50, 05, 80, 60, 50, 30, 20,  0,  0,
+      /*Total exp*/       0,
+      /*Position*/        1,  1,  1,
+      /*Equipment*/       0,  0,  0,  0,  0,  0,  0,
+      /*Equipped*/        1,
+      /*Skills*/          1,  2,  3,
+      /*Lovers*/          "Sheeda", "", "", "", "",
+      /*Love Points*/     25,  0,  0,  0,  0,
+      /*Love growths*/    3,  0,  0,  0,  0};
     ooMarth.id = id++;
     ooMarth.id = id++;
     printf("id of Marth %d\n", Marth[0][0]);
