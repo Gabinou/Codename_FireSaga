@@ -6,5 +6,5 @@ extern char wpn_types[][14];
 extern char weapons[][14];
 extern char statuses[][14];
 extern char unit_classes[][24];
-extern int equipment_slots;
-
+extern char equipment_slots;
+extern char id; 
