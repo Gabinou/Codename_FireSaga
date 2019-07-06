@@ -6,7 +6,8 @@
 // use char for everything cause it reduces memory, and I like the design: small numbers for damage, armor, etc.
 char unit_stats[][14] = {"HP", "Str", "Mag", "Skill", "Speed", "Luck", "Def", "Res", "Con", "Move"};
 char weapon_stats[][14] = {"dmg", "hit", "crit", "weight", "cost", "wpn_exp"};
-char wpn_types[][14]  = {"swd", "lance", "axe","bow", "mgc_wind", "mgc_dark", "mgc_fire", "mgc_thunder", "staff"};
+char wpn_types[][14]  = {"swd", "lance", "axe", "bow", "mgc_wind", "mgc_dark", "mgc_fire", "mgc_thunder", "staff"};
+unsigned char wpn_exp_lvls[][14] = {25, 60, 100, 150};
 char weapons[][14]  = {"Iron Sword", "Iron Bow"};
 char statuses[][14] = {"healthy", "sleep", "poison", "stone", "berserk"};
 char unit_classes[][24] = {"Lord", "Prince", "Princess", "Knight", "Cavalier", "Pegasus Knight", "Wyvern knight"};
@@ -15,7 +16,7 @@ char *all_wpns;
 char *all_units;
 // char *all_characters;
 // char *all_weapons;
-char id = 0;
+unsigned char id = 0;
 
 char len_char(char *array) {
     size_t length = sizeof(array)/sizeof(array[0]);

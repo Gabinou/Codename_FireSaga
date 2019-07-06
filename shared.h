@@ -9,23 +9,23 @@ extern char unit_classes[][24];
 extern char equipment_slots;
 extern char *all_units;
 extern char *all_wpns;
-extern char id; 
+extern unsigned char id; 
 
 struct unit {
     char name[14];
-    char id;
-    char stats[10];
+    unsigned char id;
+    unsigned char stats[10];
     char stat_bonus[10];
-    char growths[10];
-    short exp;
-    char wpn_exp[9];
-    char position[3];
-    char equipment[7];
-    char equipped;
-    char skills[3];
-    char lovers[5][14];
-    char love_pts[5];
-    char love_growths[5];
+    unsigned char growths[10];
+    unsigned short exp;
+    unsigned char wpn_exp[9];
+    unsigned char position[3];
+    unsigned char equipment[7];
+    unsigned char equipped;
+    unsigned char skills[3];
+    unsigned char lovers[5][14];
+    unsigned char love_pts[5];
+    unsigned char love_growths[5];
 };
 
 struct weapon {
