@@ -12,7 +12,7 @@ extern char *all_wpns;
 extern char id; 
 
 struct unit {
-    char name;
+    char name[14];
     char id;
     char stats[10];
     char stat_bonus[10];
@@ -29,7 +29,7 @@ struct unit {
 };
 
 struct weapon {
-    char name;
+    char name[14];
     char id;
     char stats[10];
     char stat_bonus[10];
