@@ -11,7 +11,7 @@ char wpn_types[][14]  = {"swd", "lance", "axe", "bow", "mgc_wind", "mgc_fire", "
 unsigned char wpn_exp_lvls[][14] = {25, 60, 100, 150};
 char weapons[][14]  = {"Iron Sword", "Iron Bow"};
 char statuses[][14] = {"healthy", "sleep", "poison", "stone", "berserk"};
-char unit_classes[][24] = {"Lord", "Prince", "Princess", "Knight", "Cavalier", "Pegasus Knight", "Wyvern knight"};
+char unit_classes[][24] = {"Lord", "Prince", "Princess", "Armor Knight", "Cavalier", "Pegasus Knight", "Wyvern Knight", "Axe Rider", "Lance Rider", "Sword Rider", "Mercernary", "Myrmidon", "Soldier", "Archer", "Mage", "Priest", "Priestess", "King", "Paladin", "Sniper", "General", "Bishop", "Hero", "Pirate", "Fighter", "Thief", "Troubadour", "Cleric", "Monk", "Shaman", "Dragon", "Dancer"};
 char equipment_slots = 7;
 char *all_wpns;
 char *all_units;
