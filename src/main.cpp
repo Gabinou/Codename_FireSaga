@@ -5,14 +5,16 @@
 #include "classes.h"
 using namespace std;
 
-std::vector<std::string> unit_stats = {"HP", "Str", "Mag", "Skill", "Speed", "Luck", "Def", "Res", "Con", "Mov"};
-std::vector<std::string> wpn_stats = {"dmg", "hit", "crit", "weight", "uses", "rank", "worth", "wexp"};
-std::vector<std::string> wpn_types = {"swd", "lance", "axe", "bow", "mgc_wind", "mgc_dark", "mgc_fire", "mgc_thunder", "staff"};
-std::vector<std::string> weapons_names = {"Iron Sword", "Iron Bow", "Rapier",};
-std::vector<std::string> items = {"Vulnerary"};
-std::vector<std::string> statuses = {"healthy", "sleep", "poison", "stone", "berserk"};
-std::vector<std::string> unit_classes = {"Lord", "Prince", "Princess", "Knight", "Cavalier", "Pegasus Knight", "Wyvern knight"};
-int equipment_slots = 7;
+char unit_stats[][14] = {"HP", "Str", "Mag", "Skill", "Speed", "Luck", "Def", "Res", "Con", "Move"};
+char weapon_stats[][14] = {"dmg", "hit", "crit", "weight", "cost", "wpn_exp", "uses"};
+char wpn_types[][14]  = {"swd", "lance", "axe", "bow", "mgc_wind", "mgc_fire", "mgc_thunder",  "mgc_dark",  "mgc_light", "staff"};
+unsigned char wpn_exp_lvls[][14] = {25, 60, 100, 150};
+char weapons[][14]  = {"Iron Sword", "Iron Bow"};
+char statuses[][14] = {"healthy", "sleep", "poison", "stone", "berserk"};
+char unit_classes[][24] = {"Lord", "Prince", "Princess", "Knight", "Cavalier", "Pegasus Knight", "Wyvern knight"};
+char equipment_slots = 7;
+char *all_wpns;
+char *all_units;
 
 character::character(std::vector<int> in_stats,
                     std::vector<int> in_stat_bonus,
@@ -103,64 +105,4 @@ main() {
     weapon Steel_swd(0, "Steel Sword", {8, 70, 0, 9, 35, 1, 500, 1}, std::vector<int>(unit_stats.size(), 0), {""});
     weapon Damascus_swd(0, "Damascus Sword", {12, 65, 0, 8, 25, 3, 1000, 1}, std::vector<int>(unit_stats.size(), 0), {""});
 
-    character Marth;
-    character Sheeda;
-    character *marth = &Marth;
-    character *sheeda = &Sheeda;
-    
-    std::vector<character *> all_characters;
-    std::vector<weapon *> all_wpns;
-    
-    
-    weapon *rapier = &Rapier;
-    weapon *bronze_swd = &Bronze_swd;
-    weapon *iron_swd = &Iron_swd;
-    weapon *steel_swd = &Steel_swd;
-    weapon *damascus_swd = &Damascus_swd;
-    all_wpns = {rapier, iron_swd, steel_swd, damascus_swd};
-    
-    
-    all_characters = {marth, sheeda};
-    Marth.name = "Marth";
-    Sheeda.name = "Sheeda";
-    Marth.stats = {18, 8, 2, 10, 11, 7, 5, 2, 6, 5};
-    Sheeda.stats = {17, 6, 2, 9, 14, 9, 6, 4, 5, 7};
-    Marth.equipment.push_back(Rapier.id);
-    Sheeda.equipment.push_back(Iron_lnc.id);
-            // std::vector<int> equipment = std::vector<int>(equipment_slots);
-            // std::vector<int> position = std::vector<int>(3);
-            // std::string name;
-
-    std::cout << Marth.stats[0] << "\n";
-    std::cout << "Rapier id: " << Rapier.id << "\n";
-    // std::cout << "Rapier id: " << Stick.id << "\n";
-    std::cout << Marth.stat_bonus[0] << "\n";
-   
-    
-    std::cout << "Marth is carrying a " << get_wpn_from_id(Marth.equipment[0], all_wpns).name << std::endl;
-    std::cout << "Marth's combat damage: " << Marth.combat_damage() << "\n";
-    
-    
-    std::cout << Marth.equipment[0] << "\n";
-    std::cout << Marth.wpn_exp[0] << "\n";
-    std::cout << Marth.current_hp << "\n";
-    // std::cout << Marth.stat_bonus[0] << "\n";
-    return 0;
 }
-
-// class weapon {
-    // public:
-        // std::vector<int> stats = std::vector<int>(equipment_slots);
-        // std::vector<int> stat_bonus = std::vector<int>(unit_stats.size());
-        // std::string name;
-        // std::vector<std::string> effective;
-        // int id;
-// };
-
-// class map {
-    // public:
-        // std::vector<int> map_size = {256, 256};
-        // // std::vector<int> tiles(map_size[0], map_size[1]);
-        
-
-// };
