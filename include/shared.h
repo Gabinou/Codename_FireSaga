@@ -15,7 +15,8 @@ extern unsigned char id;
 
 class unit {
     public:
-        std::string name;
+        char name[14];
+
         char classs[24];
         // all unsigned variables cannot be negative.
         unsigned char id; 

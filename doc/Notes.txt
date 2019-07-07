@@ -5,7 +5,11 @@ Tileset:
 
 
 Turns out that OOP and c++ might be the way to go to: create object instance dynamically using factory pattern. 
-<
+
+NOTES on char array(C-strings) vs. std::strings. In general, C-strings are less convenient but lighter and faster than std::strings.
+std:strings have more modern and intuitive interface, and more string manipulation capabilities. I think for FEmaker, C-strings are better. 
+reasons: Memory and fastness is key. Also names can be changes using 2 lines of code:      char temp[14] = "Marth1"; strncpy(Marth.name, temp, sizeof(temp));
+
 For some reason, in C the struct is ligther than the multidimensional array. Also enables multiple datatypoes. Input is a little bit less clear, but with a little bit of formatting it can look okay.
 
 Idea to adde mechanics: layer of Air tiles on top of the ground tiles that add status effects like fog of war, poison, damage over time, wind to limit flyer movement, weather, etc.

@@ -38,7 +38,7 @@ char *all_units;
       // /*Promoted*/        0
       // };   
 unit::unit(std::string in_name) {
-    name = in_name;
+    strncpy(name, in_name.c_str(), sizeof(in_name));
 }
 
 // character::character(std::vector<int> in_stats,
@@ -67,7 +67,13 @@ main() {
     // weapon Iron_lnc(1, "Iron Lance", {6, 80, 0, 8, 40, 0, 500, 1}, std::vector<int>(unit_stats.size(), 0), {""});
     // weapon Steel_swd(0, "Steel Sword", {8, 70, 0, 9, 35, 1, 500, 1}, std::vector<int>(unit_stats.size(), 0), {""});
     // weapon Damascus_swd(0, "Damascus Sword", {12, 65, 0, 8, 25, 3, 1000, 1}, std::vector<int>(unit_stats.size(), 0), {""});
-    unit Marth("Marth");
+    unit Marth("Marth2");
+
+    std:string stringg = "Marth+Sheeda+Marth+Marth+Marth+Marth+Marth";
+    char charr[64] = "MarthMarth+Sheeda+Marth+Marth+Marth+Marth+Marth";
     std::cout << "Marth2" << endl;
+    std::cout << Marth.name << endl;
+    std::cout << sizeof(stringg) << endl;
+    std::cout << sizeof(charr) << endl;
     std::cout << Marth.name << endl;
 }
