@@ -15,7 +15,7 @@ extern unsigned char id;
 
 struct unit {
     char name[14];
-    char classs[14];
+    char classs[24];
     // all unsigned variables cannot be negative.
     unsigned char id; 
     unsigned char stats[10];
@@ -39,12 +39,12 @@ struct unit {
     bool promoted;
 };
 
-struct weapon {
+typedef struct Weapons{
     char name[14];
     unsigned char id;
     unsigned char stats[7];
     char stat_bonus[10];
     char effective[][14];
-};
+} Weapon;
 
 #endif /* SHARED_H */

@@ -3,6 +3,9 @@ Make sure to have compatibility with FEBuilderGBA.
 Tileset programs: Tilet/Mappy.
 Tileset:
 
+
+Turns out that OOP and c++ might be the way to go to: create object instance dynamically using factory pattern. 
+<
 For some reason, in C the struct is ligther than the multidimensional array. Also enables multiple datatypoes. Input is a little bit less clear, but with a little bit of formatting it can look okay.
 
 Idea to adde mechanics: layer of Air tiles on top of the ground tiles that add status effects like fog of war, poison, damage over time, wind to limit flyer movement, weather, etc.
