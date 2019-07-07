@@ -1,7 +1,9 @@
-#include <stdio.h>
+// Flame Ensign maker, abbreviated as FEmaker
+// Code créé par Gabriel Taillon en Juin 2019.
+#include <stdio.h> //Include note: <> means search in pre-designated compiler source dirs for standard libs
 #include <stdarg.h>
-#include<windows.h>
-#include "shared.h"
+#include <windows.h>
+#include "shared.h" //Include note: "" means search in current folder, then in pre-designated source dirs
 
 // use char for everything cause it reduces memory, and I like the design: small numbers for damage, armor, etc.
 char unit_stats[][14] = {"HP", "Str", "Mag", "Skill", "Speed", "Luck", "Def", "Res", "Con", "Move"};
@@ -64,7 +66,7 @@ int main() {
       // /*Love Points*/    50,  0,  0,  0,  0,
       // /*Love growths*/    2,  0,  0,  0,  0};   
       
-    struct unit Marth = {"Marth", id++, 
+    struct unit Marth = {"Marth", "Prince", id++, 
                       // HP  Str Mag Skl Spd Lck Def Res Con Mov
       /*Stats*/          18,  8,  2,  9, 10,  7,  5,  2,  6,  5,
       /*Stat bonuses*/    0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
@@ -82,8 +84,13 @@ int main() {
       /*Love Points*/    25,  0,  0,  0,  0,
       /*Love growths*/    3,  0,  0,  0,  0,
       /*Mounted*/         0,
-      /*Flying*/          0};     
-    
+      /*Armored*/         0,     
+      /*Flying*/          0,
+      /*Promoted*/        0
+      };     
+    if (Marth.promoted) {
+        printf("He is promoted.\n");
+    };
     printf("id of Marth %d\n", Marth.id); 
     printf("id of Marth %d\n", Marth.stats[0]); 
     printf("id of Marth %d\n", Marth.stats[8]); 
@@ -121,3 +128,4 @@ int main() {
     
     return(0);
 }
+

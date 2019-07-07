@@ -1,4 +1,6 @@
-#include <stdio.h>
+#ifndef SHARED_H
+#define SHARED_H
+
 extern char unit_stats[][14];
 extern char unit_stats[][14];
 extern char weapon_stats[][14];
@@ -44,3 +46,5 @@ struct weapon {
     char stat_bonus[10];
     char effective[][14];
 };
+
+#endif /* SHARED_H */
