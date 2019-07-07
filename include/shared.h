@@ -15,7 +15,7 @@ extern unsigned char id;
 
 class unit {
     public:
-        char name[14];
+        std::string name;
         char classs[24];
         // all unsigned variables cannot be negative.
         unsigned char id; 
@@ -38,6 +38,8 @@ class unit {
         bool flying;
         bool armored;
         bool promoted;
+        unit(std::string);
+        unit();
 };
 
 class weapon{
