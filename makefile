@@ -1,8 +1,9 @@
 
-CXX	= g++
+
+CXX	= c++
 LINK = link
 SRC = src
 BLD = build
 INCLUDE = -I include/ 
-main.exe:$(SRC)/main.c
-    $(CXX) $(SRC)/main.c  -o $(BLD)/main.exe $(INCLUDE)
+main.exe:$(SRC)/main.cpp
+    $(CXX) $(SRC)/main.cpp  -o $(BLD)/main.exe $(INCLUDE)
