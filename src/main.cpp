@@ -43,17 +43,27 @@ unit::unit(std::string in_name, std::string in_classs, char in_id,
            std::vector<unsigned int> in_weapons, std::vector<unsigned int> in_items,
            std::vector<unsigned int> in_equipped, std::vector<unsigned int> in_skills,
            std::vector<unsigned int> in_love_pts, std::vector<unsigned int> in_love_growths,
-           std::vector<unsigned int> in_weapon_exp, std::vector<unsigned int> in_position,
+           std::vector<unsigned int> in_wpn_exp, std::vector<unsigned int> in_position,
            unsigned short in_exp, std::vector<std::string> in_lovers,
            bool in_mounted, bool in_flying, bool in_armored, bool in_promoted) {
-    
+    mounted = in_mounted;
+    flying = in_flying;
+    armored = in_armored;
+    promoted = in_promoted;
     strncpy(name, in_name.c_str(), sizeof(in_name));
     strncpy(classs, in_classs.c_str(), sizeof(in_classs));
     for (int i = 0; i < in_stats.size(); i++) {
         stats[i] = (unsigned int) in_stats[i];
+        growths[i] = (unsigned int) in_growths[i];
+        wpn_exp[i] = (unsigned int) in_wpn_exp[i];
         stat_bonus[i] = 0;
         // For some reason, stats cannot be printed unless (int) Marth.stats[0]. + 0 also works.
-    }      
+    } 
+    for (int i = 0; i < in_lovers.size(); i++) {
+        strncpy(lovers[i], in_lovers[i].c_str(), sizeof(in_lovers));
+        love_growths[i] = (unsigned int) in_love_growths[i];
+        wpn_exp[i] = (unsigned int) in_wpn_exp[i];
+    }    
     id = in_id;
 }
 
