@@ -15,6 +15,7 @@ char unit_classes[][24] = {"Lord", "Prince", "Princess", "Armor Knight", "Cavali
 char equipment_slots = 7;
 char *all_wpns;
 char *all_units;
+unsigned char id = 0;
     // struct unit Marth = {"Marth", "Prince", id++, 
                       // // HP  Str Mag Skl Spd Lck Def Res Con Mov
       // /*Stats*/          18,  8,  2,  9, 10,  7,  5,  2,  6,  5,
@@ -37,9 +38,24 @@ char *all_units;
       // /*Flying*/          0,
       // /*Promoted*/        0
       // };   
-unit::unit(std::string in_name) {
+unit::unit(std::string in_name, std::string in_classs, char in_id, std::vector<unsigned int> in_stats) {
     strncpy(name, in_name.c_str(), sizeof(in_name));
+    strncpy(classs, in_classs.c_str(), sizeof(in_classs));
+    for (int i = 0; i < in_stats.size(); i++) {
+        stats[i] = (unsigned int) in_stats[i];
+        stat_bonus[i] = 0;
+        // For some reason, stats cannot be printed unless (int) Marth.stats[0]. + 0 also works.
+    }      
+    id = in_id;
 }
+
+unit_vec::unit_vec(std::string in_name, std::string in_classs, char in_id, std::vector<unsigned int> in_stats) {
+    name = in_name;
+    id = in_id;
+    classs = in_classs;
+    stats = in_stats;
+}
+
 
 // character::character(std::vector<int> in_stats,
                     // std::vector<int> in_stat_bonus,
@@ -67,7 +83,8 @@ main() {
     // weapon Iron_lnc(1, "Iron Lance", {6, 80, 0, 8, 40, 0, 500, 1}, std::vector<int>(unit_stats.size(), 0), {""});
     // weapon Steel_swd(0, "Steel Sword", {8, 70, 0, 9, 35, 1, 500, 1}, std::vector<int>(unit_stats.size(), 0), {""});
     // weapon Damascus_swd(0, "Damascus Sword", {12, 65, 0, 8, 25, 3, 1000, 1}, std::vector<int>(unit_stats.size(), 0), {""});
-    unit Marth("Marth2");
+    unit Marth("Marth2", "Prince", id++, {18,  8,  2,  9, 10,  7,  5,  2,  6,  5});
+    unit_vec Marth_vec("Marth2", "Prince", id++, {18,  8,  2,  9, 10,  7,  5,  2,  6,  5});
 
     std:string stringg = "Marth+Sheeda+Marth+Marth+Marth+Marth+Marth";
     char charr[64] = "MarthMarth+Sheeda+Marth+Marth+Marth+Marth+Marth";
@@ -76,4 +93,9 @@ main() {
     std::cout << sizeof(stringg) << endl;
     std::cout << sizeof(charr) << endl;
     std::cout << Marth.name << endl;
+    // std::cout << (int) Marth.stats << endl;
+    std::cout << Marth.stats[0] + 0 << endl;
+    std::cout << Marth.stats[3] + 2 << endl;
+    std::cout << sizeof(Marth) << endl;
+    std::cout << sizeof(Marth_vec) << endl;
 }
