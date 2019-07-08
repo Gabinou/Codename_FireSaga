@@ -39,7 +39,7 @@ unsigned char id = 0;
       // /*Flying*/          0,
       // /*Promoted*/        0
       // };   
-unit::unit(std::string in_name, std::string in_classs, char in_id,
+unit::unit(std::string in_name, std::string in_unit_class, char in_id,
            std::vector<unsigned int> in_stats, std::vector<unsigned int> in_growths, std::vector<unsigned int> in_equipment,
            std::vector<unsigned int> in_weapons, std::vector<unsigned int> in_items,
            std::vector<unsigned int> in_equipped, std::vector<unsigned int> in_skills,
@@ -52,7 +52,7 @@ unit::unit(std::string in_name, std::string in_classs, char in_id,
     armored = in_armored;
     promoted = in_promoted;
     strncpy(name, in_name.c_str(), sizeof(in_name));
-    strncpy(classs, in_classs.c_str(), sizeof(in_classs));
+    strncpy(unit_class, in_unit_class.c_str(), sizeof(in_unit_class));
     for (int i = 0; i < in_stats.size(); i++) {
         stats[i] = (unsigned int) in_stats[i];
         growths[i] = (unsigned int) in_growths[i];
@@ -85,12 +85,39 @@ unit::unit(){
 unit::~unit(void) {
    cout << "Object is being deleted" << endl;
 }
-// unit_vec::unit_vec(std::string in_name, std::string in_classs, char in_id, std::vector<unsigned int> in_stats) {
-    // name = in_name;
-    // id = in_id;
-    // classs = in_classs;
-    // stats = in_stats;
-// }
+unit_vec::unit_vec(std::string in_name, std::string in_unit_class, char in_id,
+           std::vector<unsigned char> in_stats, std::vector<unsigned char> in_growths, std::vector<unsigned char> in_equipment,
+           std::vector<unsigned char> in_weapons, std::vector<unsigned char> in_items,
+           std::vector<unsigned char> in_equipped, std::vector<unsigned char> in_skills,
+           std::vector<unsigned char> in_love_pts, std::vector<unsigned char> in_love_growths,
+           std::vector<unsigned char> in_wpn_exp, std::vector<unsigned char> in_position,
+           unsigned short in_exp, std::vector<std::string> in_lovers,
+           bool in_mounted, bool in_flying, bool in_armored, bool in_promoted) {
+    name = in_name; 
+    unit_class = in_unit_class; 
+    id = in_id; 
+    stats = in_stats; 
+    growths = in_growths; 
+    equipment = in_equipment; 
+    weapons = in_weapons; 
+    items = in_items; 
+    equipped = in_equipped; 
+    skills = in_skills; 
+    love_pts = in_love_pts; 
+    love_growths = in_love_growths; 
+    wpn_exp = in_wpn_exp; 
+    position = in_position; 
+    exp = in_exp; 
+    // for (int i = 0; i < in_lovers.size(); i++) {
+        // strncpy(lovers[i], in_lovers[i].c_str(), sizeof(in_lovers));
+    // }
+    lovers = in_lovers;
+    flying = in_flying; 
+    mounted = in_mounted; 
+    armored = in_armored; 
+    promoted = in_promoted; 
+     
+};
 
 
 // character::character(std::vector<int> in_stats,
@@ -111,7 +138,7 @@ unit::~unit(void) {
     // return damage;
 // }
 main() {
-      auto start = steady_clock::now(); 
+
     std::cout << "TESTING THIS BITCH\n";
     std::cout << "Initializaing a character\n";
     // weapon Rapier(0, "Rapier", {5, 90, 10, 7, 30, 2, 600, 2}, std::vector<int>(unit_stats.size(), 0), {"Knight", "Cavalier"});
@@ -122,6 +149,7 @@ main() {
     // weapon Damascus_swd(0, "Damascus Sword", {12, 65, 0, 8, 25, 3, 1000, 1}, std::vector<int>(unit_stats.size(), 0), {""});
 
     // unit Marth();
+    auto start = steady_clock::now(); 
     unit Marth("Marth2", "Prince", id++, 
     {18,  8,  2,  9, 10,  7,  5,  2,  6,  5},
     {18,  8,  2,  9, 10,  7,  5,  2,  6,  5},
@@ -138,11 +166,32 @@ main() {
     {"Sheeda", "" ,"","",""},
     0, 0, 0, 0
     );
+
     auto stop = steady_clock::now(); 
     auto duration = duration_cast<std::chrono::microseconds>(stop - start);
     cout << duration.count() << "us" << endl; 
     cout << sizeof(Marth) << "bytes" << endl; 
-    cout << Marth.current_hp + 8 << endl; 
+    auto start1 = steady_clock::now(); 
+    unit_vec Marth_vec("Marth2", "Prince", id++, 
+    {18,  8,  2,  9, 10,  7,  5,  2,  6,  5},
+    {18,  8,  2,  9, 10,  7,  5,  2,  6,  5},
+    {18,  8,  2,  9, 10,  7,  5,},
+    {18,  8,  2,  9,},
+    {18,  8,  2,  9,},
+    {18},
+    {18,1,1},
+    {18,1,1 ,1,1},
+    {18,1,1 ,1,1},
+    {18,  8,  2,  9, 10,  7,  5,  2,  6,  5},
+    {18,  8,  2},
+    0, 
+    {"Sheeda", "" ,"","",""},
+    0, 0, 0, 0
+    );
+    auto stop1 = steady_clock::now(); 
+    auto duration1 = duration_cast<std::chrono::microseconds>(stop - start);
+    cout << duration1.count() << "us" << endl; 
+    cout << sizeof(Marth_vec) << "bytes" << endl; 
     // unit_vec Marth_vec("Marth2", "Prince", id++, {18,  8,  2,  9, 10,  7,  5,  2,  6,  5});
 
     // std:string stringg = "Marth+Sheeda+Marth+Marth+Marth+Marth+Marth";

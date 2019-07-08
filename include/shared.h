@@ -24,7 +24,7 @@ class unit {
     // Lightweight implementation.
 public:
     // all unsigned variables cannot be negative.
-    char name[14], classs[24], stat_bonus[10];
+    char name[14], unit_class[24], stat_bonus[10];
     // Bonuses can be negative -> maluses
     unsigned char id, current_hp, stats[10], growths[10], wpn_exp[10], position[3],
         equipment[7], weapons[4], items[4], equipped[1], skills[3],
@@ -46,18 +46,31 @@ public:
     unit();
 };
 
+//Unit implementation notes:
+    // Equal init time.
+    // unit_vec size \= 2 * unit size
+    // unit_vec size \= 2 * unit size
+
 class unit_vec {
     // Flexible implementation.
 public:
     public:
-        static int character_count;
-        std::string name;
-        int id;
-        std::vector<int> stats, stat_bonus, wpn_exp, equipment, position;
-        int equipped, classs, level, current_hp;
-        std::vector<std::string> weapons;
+        std::string name, unit_class;
+        std::vector<std::string> lovers;
+        unsigned char id, current_hp;
+        unsigned short exp;
+        std::vector<unsigned char> stats, growths, wpn_exp, position,
+                                   equipment, weapons, items, equipped, skills,
+                                   love_pts, love_growths; 
         bool mounted, flying, armored, promoted;
-    // unit_vec(std::string, std::string, char, std::vector<unsigned int>);
+    unit_vec(std::string, std::string, char,
+         std::vector<unsigned char>, std::vector<unsigned char>,
+         std::vector<unsigned char>, std::vector<unsigned char>,
+         std::vector<unsigned char>, std::vector<unsigned char>,
+         std::vector<unsigned char>, std::vector<unsigned char>,
+         std::vector<unsigned char>, std::vector<unsigned char>,
+         std::vector<unsigned char>, unsigned short, std::vector<std::string>,
+         bool, bool, bool, bool);
     // ~unit_vec();
 };
 
