@@ -38,7 +38,15 @@ unsigned char id = 0;
       // /*Flying*/          0,
       // /*Promoted*/        0
       // };   
-unit::unit(std::string in_name, std::string in_classs, char in_id, std::vector<unsigned int> in_stats) {
+unit::unit(std::string in_name, std::string in_classs, char in_id,
+           std::vector<unsigned int> in_stats, std::vector<unsigned int> in_growths, std::vector<unsigned int> in_equipment,
+           std::vector<unsigned int> in_weapons, std::vector<unsigned int> in_items,
+           std::vector<unsigned int> in_equipped, std::vector<unsigned int> in_skills,
+           std::vector<unsigned int> in_love_pts, std::vector<unsigned int> in_love_growths,
+           std::vector<unsigned int> in_weapon_exp, std::vector<unsigned int> in_position,
+           unsigned short in_exp, std::vector<std::string> in_lovers,
+           bool in_mounted, bool in_flying, bool in_armored, bool in_promoted) {
+    
     strncpy(name, in_name.c_str(), sizeof(in_name));
     strncpy(classs, in_classs.c_str(), sizeof(in_classs));
     for (int i = 0; i < in_stats.size(); i++) {
@@ -83,19 +91,19 @@ main() {
     // weapon Iron_lnc(1, "Iron Lance", {6, 80, 0, 8, 40, 0, 500, 1}, std::vector<int>(unit_stats.size(), 0), {""});
     // weapon Steel_swd(0, "Steel Sword", {8, 70, 0, 9, 35, 1, 500, 1}, std::vector<int>(unit_stats.size(), 0), {""});
     // weapon Damascus_swd(0, "Damascus Sword", {12, 65, 0, 8, 25, 3, 1000, 1}, std::vector<int>(unit_stats.size(), 0), {""});
-    unit Marth("Marth2", "Prince", id++, {18,  8,  2,  9, 10,  7,  5,  2,  6,  5});
-    unit_vec Marth_vec("Marth2", "Prince", id++, {18,  8,  2,  9, 10,  7,  5,  2,  6,  5});
+    // unit Marth("Marth2", "Prince", id++, {18,  8,  2,  9, 10,  7,  5,  2,  6,  5});
+    // unit_vec Marth_vec("Marth2", "Prince", id++, {18,  8,  2,  9, 10,  7,  5,  2,  6,  5});
 
-    std:string stringg = "Marth+Sheeda+Marth+Marth+Marth+Marth+Marth";
-    char charr[64] = "MarthMarth+Sheeda+Marth+Marth+Marth+Marth+Marth";
-    std::cout << "Marth2" << endl;
-    std::cout << Marth.name << endl;
-    std::cout << sizeof(stringg) << endl;
-    std::cout << sizeof(charr) << endl;
-    std::cout << Marth.name << endl;
-    // std::cout << (int) Marth.stats << endl;
-    std::cout << Marth.stats[0] + 0 << endl;
-    std::cout << Marth.stats[3] + 2 << endl;
-    std::cout << sizeof(Marth) << endl;
-    std::cout << sizeof(Marth_vec) << endl;
+    // std:string stringg = "Marth+Sheeda+Marth+Marth+Marth+Marth+Marth";
+    // char charr[64] = "MarthMarth+Sheeda+Marth+Marth+Marth+Marth+Marth";
+    // std::cout << "Marth2" << endl;
+    // std::cout << Marth.name << endl;
+    // std::cout << sizeof(stringg) << endl;
+    // std::cout << sizeof(charr) << endl;
+    // std::cout << Marth.name << endl;
+    // // std::cout << (int) Marth.stats << endl;
+    // std::cout << Marth.stats[0] + 0 << endl;
+    // std::cout << Marth.stats[3] + 2 << endl;
+    // std::cout << sizeof(Marth) << endl;
+    // std::cout << sizeof(Marth_vec) << endl;
 }

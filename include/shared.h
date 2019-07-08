@@ -40,9 +40,9 @@ public:
         std::vector<unsigned int>, std::vector<unsigned int>,
         std::vector<unsigned int>, std::vector<unsigned int>,
         std::vector<unsigned int>, std::vector<unsigned int>,
-        std::vector<unsigned int>, unsigned short, std::vector<string>,
+        std::vector<unsigned int>, unsigned short, std::vector<std::string>,
         bool, bool, bool, bool);
-    unit();
+    ~unit();
 };
 
 class unit_vec {
@@ -72,7 +72,7 @@ public:
     bool armored;
     bool promoted;
     unit_vec(std::string, std::string, char, std::vector<unsigned int>);
-    unit_vec();
+    ~unit_vec();
 };
 
 class weapon {
