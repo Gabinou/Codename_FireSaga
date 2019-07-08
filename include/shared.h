@@ -26,7 +26,7 @@ public:
     // all unsigned variables cannot be negative.
     char name[14], classs[24], stat_bonus[10];
     // Bonuses can be negative -> maluses
-    unsigned char id, stats[10], growths[10], wpn_exp[10], position[3],
+    unsigned char id, current_hp, stats[10], growths[10], wpn_exp[10], position[3],
         equipment[7], weapons[4], items[4], equipped[1], skills[3],
         love_pts[5], love_growths[5];
     unsigned short exp;
@@ -35,44 +35,30 @@ public:
     char lovers[5][14]; // names of possible lovers.
     bool mounted, flying, armored, promoted;
     unit(std::string, std::string, char,
-        std::vector<unsigned int>, std::vector<unsigned int>,
-        std::vector<unsigned int>, std::vector<unsigned int>,
-        std::vector<unsigned int>, std::vector<unsigned int>,
-        std::vector<unsigned int>, std::vector<unsigned int>,
-        std::vector<unsigned int>, std::vector<unsigned int>,
-        std::vector<unsigned int>, unsigned short, std::vector<std::string>,
-        bool, bool, bool, bool);
+         std::vector<unsigned int>, std::vector<unsigned int>,
+         std::vector<unsigned int>, std::vector<unsigned int>,
+         std::vector<unsigned int>, std::vector<unsigned int>,
+         std::vector<unsigned int>, std::vector<unsigned int>,
+         std::vector<unsigned int>, std::vector<unsigned int>,
+         std::vector<unsigned int>, unsigned short, std::vector<std::string>,
+         bool, bool, bool, bool);
     ~unit();
+    unit();
 };
 
 class unit_vec {
     // Flexible implementation.
 public:
-    std::string name;
-    std::string classs;
-    unsigned char id;
-    std::vector<unsigned int> stats;
-    char stat_bonus[10]; // Bonuses can be negative -> maluses
-    unsigned char growths[10];
-    unsigned short exp;
-    unsigned char wpn_exp[10];
-    unsigned char position[3];
-    unsigned char equipment[7]; // If equipment is not empty, weapons and items
-        // are not used.
-    unsigned char weapons[4]; // If weapons or items are not empty, equipment is not used.
-    unsigned char items[4];
-    // Equipped is the index of the weapon in unit.equipment.
-    unsigned char equipped;
-    unsigned char skills[3]; // skills id.
-    char lovers[5][14]; // names of possible lovers.
-    unsigned char love_pts[5];
-    unsigned char love_growths[5];
-    bool mounted;
-    bool flying;
-    bool armored;
-    bool promoted;
-    unit_vec(std::string, std::string, char, std::vector<unsigned int>);
-    ~unit_vec();
+    public:
+        static int character_count;
+        std::string name;
+        int id;
+        std::vector<int> stats, stat_bonus, wpn_exp, equipment, position;
+        int equipped, classs, level, current_hp;
+        std::vector<std::string> weapons;
+        bool mounted, flying, armored, promoted;
+    // unit_vec(std::string, std::string, char, std::vector<unsigned int>);
+    // ~unit_vec();
 };
 
 class weapon {

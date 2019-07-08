@@ -4,6 +4,7 @@
 #include <bits/stdc++.h> 
 #include "shared.h"
 using namespace std;
+using namespace std::chrono; 
 
 char unit_stats[][14] = {"HP", "Str", "Mag", "Skill", "Speed", "Luck", "Def", "Res", "Con", "Move"};
 char weapon_stats[][14] = {"dmg", "hit", "crit", "weight", "cost", "wpn_exp", "uses"};
@@ -58,7 +59,19 @@ unit::unit(std::string in_name, std::string in_classs, char in_id,
         wpn_exp[i] = (unsigned int) in_wpn_exp[i];
         stat_bonus[i] = 0;
         // For some reason, stats cannot be printed unless (int) Marth.stats[0]. + 0 also works.
-    } 
+    }
+    current_hp = (unsigned int) stats[0];
+    for (int i = 0; i < in_weapons.size(); i++) {
+        weapons[i] = (unsigned int) in_weapons[i];
+        items[i] = (unsigned int) in_items[i];
+    }  
+    for (int i = 0; i < in_skills.size(); i++) {
+        skills[i] = (unsigned int) in_skills[i];
+        position[i] = (unsigned int) position[i];
+    }  
+    for (int i = 0; i < in_equipment.size(); i++) {
+        equipment[i] = (unsigned int) in_equipment[i];
+    }      
     for (int i = 0; i < in_lovers.size(); i++) {
         strncpy(lovers[i], in_lovers[i].c_str(), sizeof(in_lovers));
         love_growths[i] = (unsigned int) in_love_growths[i];
@@ -66,13 +79,18 @@ unit::unit(std::string in_name, std::string in_classs, char in_id,
     }    
     id = in_id;
 }
-
-unit_vec::unit_vec(std::string in_name, std::string in_classs, char in_id, std::vector<unsigned int> in_stats) {
-    name = in_name;
-    id = in_id;
-    classs = in_classs;
-    stats = in_stats;
+unit::unit(){
+        // name = "test";
 }
+unit::~unit(void) {
+   cout << "Object is being deleted" << endl;
+}
+// unit_vec::unit_vec(std::string in_name, std::string in_classs, char in_id, std::vector<unsigned int> in_stats) {
+    // name = in_name;
+    // id = in_id;
+    // classs = in_classs;
+    // stats = in_stats;
+// }
 
 
 // character::character(std::vector<int> in_stats,
@@ -93,6 +111,7 @@ unit_vec::unit_vec(std::string in_name, std::string in_classs, char in_id, std::
     // return damage;
 // }
 main() {
+      auto start = steady_clock::now(); 
     std::cout << "TESTING THIS BITCH\n";
     std::cout << "Initializaing a character\n";
     // weapon Rapier(0, "Rapier", {5, 90, 10, 7, 30, 2, 600, 2}, std::vector<int>(unit_stats.size(), 0), {"Knight", "Cavalier"});
@@ -101,7 +120,29 @@ main() {
     // weapon Iron_lnc(1, "Iron Lance", {6, 80, 0, 8, 40, 0, 500, 1}, std::vector<int>(unit_stats.size(), 0), {""});
     // weapon Steel_swd(0, "Steel Sword", {8, 70, 0, 9, 35, 1, 500, 1}, std::vector<int>(unit_stats.size(), 0), {""});
     // weapon Damascus_swd(0, "Damascus Sword", {12, 65, 0, 8, 25, 3, 1000, 1}, std::vector<int>(unit_stats.size(), 0), {""});
-    // unit Marth("Marth2", "Prince", id++, {18,  8,  2,  9, 10,  7,  5,  2,  6,  5});
+
+    // unit Marth();
+    unit Marth("Marth2", "Prince", id++, 
+    {18,  8,  2,  9, 10,  7,  5,  2,  6,  5},
+    {18,  8,  2,  9, 10,  7,  5,  2,  6,  5},
+    {18,  8,  2,  9, 10,  7,  5,},
+    {18,  8,  2,  9,},
+    {18,  8,  2,  9,},
+    {18},
+    {18,1,1},
+    {18,1,1 ,1,1},
+    {18,1,1 ,1,1},
+    {18,  8,  2,  9, 10,  7,  5,  2,  6,  5},
+    {18,  8,  2},
+    0, 
+    {"Sheeda", "" ,"","",""},
+    0, 0, 0, 0
+    );
+    auto stop = steady_clock::now(); 
+    auto duration = duration_cast<std::chrono::microseconds>(stop - start);
+    cout << duration.count() << "us" << endl; 
+    cout << sizeof(Marth) << "bytes" << endl; 
+    cout << Marth.current_hp + 8 << endl; 
     // unit_vec Marth_vec("Marth2", "Prince", id++, {18,  8,  2,  9, 10,  7,  5,  2,  6,  5});
 
     // std:string stringg = "Marth+Sheeda+Marth+Marth+Marth+Marth+Marth";
