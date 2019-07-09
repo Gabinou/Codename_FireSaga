@@ -36,7 +36,7 @@ unit::unit(std::string in_name, std::string in_unit_class, char in_id,
     armored = in_armored;
     promoted = in_promoted;
     strncpy(name, in_name.c_str(), sizeof(in_name));
-    strncpy(unit_class, in_unit_class.c_str(), sizeof(in_unit_class));
+    strncpy(type, in_unit_class.c_str(), sizeof(in_unit_class));
     for (int i = 0; i < in_stats.size(); i++) {
         stats[i] = (unsigned int) in_stats[i];
         growths[i] = (unsigned int) in_growths[i];
@@ -101,7 +101,7 @@ unit_vec::unit_vec(std::string in_name, std::string in_unit_class, char in_id,
     armored = in_armored; 
     promoted = in_promoted; 
      
-};
+}
 unit_vec::unit_vec(){
         // name = "test";
 }
@@ -110,7 +110,7 @@ unit_vec::~unit_vec(void) {
 }
 
 weapon::weapon(){
-    
+    // a
     
 }
 
@@ -127,21 +127,46 @@ main() {
 
     // unit Marth();
     auto start = steady_clock::now(); 
+
+      // /*Stats*/          18,  8,  2,  9, 10,  7,  5,  2,  6,  5,
+      // /*Stat bonuses*/    0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
+      // /*Growths*/        40, 50,  5, 80, 60, 50, 30, 20,  0,  0,
+      // /*Total exp*/       0,
+                      // // swd lnc axe bow wnd tnd fir drk lgt stf
+      // /*Weapon exp*/      0,  0,  0,  0,  0,  0,  0,  0,  0,  0, 
+      // /*Position*/        1,  1,  1,
+      // /*Equipment*/       0,  0,  0,  0,  0,  0,  0,
+      // /*Weapons*/         0,  0,  0,  0,
+      // /*Items*/           0,  0,  0,  0,
+      // /*Equipped*/        1,
+      // /*Skills*/          1,  2,  3,
+      // /*Lovers*/         "Sheeda", "", "", "", "",
+      // /*Love Points*/    25,  0,  0,  0,  0,
+      // /*Love growths*/    2,  0,  0,  0,  0,
+      // /*Mounted*/         0,
+      // /*Armored*/         0,     
+      // /*Flying*/          0,
+      // /*Promoted*/        0
+      // };   
     unit Marth("Marth2", "Prince", id++, 
-    {18,  8,  2,  9, 10,  7,  5,  2,  6,  5},
-    {18,  8,  2,  9, 10,  7,  5,  2,  6,  5},
-    {18,  8,  2,  9, 10,  7,  5,},
-    {18,  8,  2,  9,},
-    {18,  8,  2,  9,},
-    {18},
-    {18,1,1},
-    {18,1,1 ,1,1},
-    {18,1,1 ,1,1},
-    {18,  8,  2,  9, 10,  7,  5,  2,  6,  5},
-    {18,  8,  2},
-    0, 
-    {"Sheeda", "" ,"","",""},
-    0, 0, 0, 0
+//HP  Str Mag Skl Spd Lck Def Res Con Mov
+/*Stats*/    {18,  8,  2,  9, 10,  7,  5,  2,  6,  5},
+/*Growths*/     {18,  8,  2,  9, 10,  7,  5,  2,  6,  5},
+/*Equipment*/    {18,  8,  2,  9, 10,  7,  5,},
+/*Weapons*/    {18,  8,  2,  9,},
+/*Items*/     {18,  8,  2,  9,},
+/*Equipped*/    {18},
+/*Position*/    {18,1,1},
+/*Love_pts*/     {18,1,1 ,1,1},
+/*Love_growths*/    {18,1,1 ,1,1},
+/*Weapon_exp*/   {18,  8,  2,  9, 10,  7,  5,  2,  6,  5},
+/*Skills*/     {18,  8,  2},
+/*Exp*/    0, 
+/*Lovers*/    {"Sheeda", "" ,"","",""},
+/*Mounted*/    0,
+/*Flying*/        0,
+/*Armored*/        0,
+/*MPromoted*/        0
     );
 
     auto stop = steady_clock::now(); 

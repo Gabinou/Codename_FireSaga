@@ -84,7 +84,7 @@ public:
     char reserved[5][14];
     // char reserved2[][14];
     weapon();
-    weapon(std::string, std::string, char,);
+    // weapon(std::string, std::string, char);
 };
 
 // class weapon_vec : public generic {
