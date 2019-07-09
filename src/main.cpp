@@ -1,3 +1,6 @@
+// Code créé par Gabriel Taillon
+// Note on standards. Fuck all that complicated bullcrap. I'm writing for c++11. More convenient and the rest seems like bullshit.
+
 #include <stdio.h>
 #include <iostream>
 #include <vector>
@@ -5,6 +8,8 @@
 #include "shared.h"
 using namespace std;
 using namespace std::chrono; 
+
+
 
 char unit_stats[][14] = {"HP", "Str", "Mag", "Skill", "Speed", "Luck", "Def", "Res", "Con", "Move"};
 char weapon_stats[][14] = {"dmg", "hit", "crit", "weight", "cost", "wpn_exp", "uses"};
@@ -83,7 +88,7 @@ unit::unit(){
         // name = "test";
 }
 unit::~unit(void) {
-   cout << "Object is being deleted" << endl;
+   cout << "Unit is being deleted" << endl;
 }
 unit_vec::unit_vec(std::string in_name, std::string in_unit_class, char in_id,
            std::vector<unsigned char> in_stats, std::vector<unsigned char> in_growths, std::vector<unsigned char> in_equipment,
@@ -118,7 +123,12 @@ unit_vec::unit_vec(std::string in_name, std::string in_unit_class, char in_id,
     promoted = in_promoted; 
      
 };
-
+unit_vec::unit_vec(){
+        // name = "test";
+}
+unit_vec::~unit_vec(void) {
+   cout << "Unit_vec is being deleted" << endl;
+}
 
 // character::character(std::vector<int> in_stats,
                     // std::vector<int> in_stat_bonus,

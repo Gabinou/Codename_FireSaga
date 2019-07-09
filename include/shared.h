@@ -13,18 +13,17 @@ extern char* all_units;
 extern char* all_wpns;
 extern unsigned char id;
 
-// class generic {
-// public:
-// static int object_count;
-// std::string name;
-// generic();
-// };
+class generic {
+public:
+    char name[14];
+    // generic();
+};
 
-class unit {
+class unit: public generic {
     // Lightweight implementation.
 public:
     // all unsigned variables cannot be negative.
-    char name[14], unit_class[24], stat_bonus[10];
+    char unit_class[24], stat_bonus[10];
     // Bonuses can be negative -> maluses
     unsigned char id, current_hp, stats[10], growths[10], wpn_exp[10], position[3],
         equipment[7], weapons[4], items[4], equipped[1], skills[3],
@@ -71,7 +70,8 @@ public:
          std::vector<unsigned char>, std::vector<unsigned char>,
          std::vector<unsigned char>, unsigned short, std::vector<std::string>,
          bool, bool, bool, bool);
-    // ~unit_vec();
+    unit_vec();
+    ~unit_vec();
 };
 
 class weapon {
