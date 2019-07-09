@@ -33,13 +33,13 @@ public:
     // Equipped is the index of the weapon in unit.equipment.
     char lovers[5][14]; // names of possible lovers.
     bool mounted, flying, armored, promoted;
-    unit(std::string, std::string, char,
+    unit(char, char, char,
          std::vector<unsigned int>, std::vector<unsigned int>,
          std::vector<unsigned int>, std::vector<unsigned int>,
          std::vector<unsigned int>, std::vector<unsigned int>,
          std::vector<unsigned int>, std::vector<unsigned int>,
          std::vector<unsigned int>, std::vector<unsigned int>,
-         std::vector<unsigned int>, unsigned short, std::vector<std::string>,
+         std::vector<unsigned int>, unsigned short, std::vector<char>,
          bool, bool, bool, bool);
     ~unit();
     unit();
@@ -53,21 +53,21 @@ public:
 class unit_vec {
     // Flexible implementation.
 public:
-    std::string name, unit_class;
-    std::vector<std::string> lovers;
+    char name, unit_class;
+    std::vector<char> lovers;
     unsigned char id, current_hp;
     unsigned short exp;
     std::vector<unsigned char> stats, growths, wpn_exp, position,
                                equipment, weapons, items, equipped, skills,
                                love_pts, love_growths; 
     bool mounted, flying, armored, promoted;
-    unit_vec(std::string, std::string, char,
+    unit_vec(char, char, char,
      std::vector<unsigned char>, std::vector<unsigned char>,
      std::vector<unsigned char>, std::vector<unsigned char>,
      std::vector<unsigned char>, std::vector<unsigned char>,
      std::vector<unsigned char>, std::vector<unsigned char>,
      std::vector<unsigned char>, std::vector<unsigned char>,
-     std::vector<unsigned char>, unsigned short, std::vector<std::string>,
+     std::vector<unsigned char>, unsigned short, std::vector<char>,
      bool, bool, bool, bool);
     ~unit_vec();
     unit_vec();
@@ -88,12 +88,12 @@ public:
 // int id;
 // int wpn_type;
 // std::vector<int> stats, stat_bonus, growths, range;
-// std::vector<std::string> effective;
+// std::vector<char> effective;
 // weapon_vec(int in_wpn_type,
-// std::string in_name,
+// char in_name,
 // std::vector<int> in_stats,
 // std::vector<int> in_stat_bonus,
-// std::vector<std::string> in_effective);
+// std::vector<char> in_effective);
 // // Can either be a unit class, type or any other characteritic. Make a
 // // functions that recognizes the correct characteristic.
 // weapon_vec();

@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <iostream>
 #include <vector>
+#include <string>
 #include <bits/stdc++.h> 
 #include "shared.h"
 using namespace std;
@@ -39,20 +40,20 @@ unsigned char id = 0;
       // /*Flying*/          0,
       // /*Promoted*/        0
       // };   
-unit::unit(std::string in_name, std::string in_unit_class, char in_id,
+unit::unit(char in_name, char in_unit_class, char in_id,
            std::vector<unsigned int> in_stats, std::vector<unsigned int> in_growths, std::vector<unsigned int> in_equipment,
            std::vector<unsigned int> in_weapons, std::vector<unsigned int> in_items,
            std::vector<unsigned int> in_equipped, std::vector<unsigned int> in_skills,
            std::vector<unsigned int> in_love_pts, std::vector<unsigned int> in_love_growths,
            std::vector<unsigned int> in_wpn_exp, std::vector<unsigned int> in_position,
-           unsigned short in_exp, std::vector<std::string> in_lovers,
+           unsigned short in_exp, std::vector<char> in_lovers,
            bool in_mounted, bool in_flying, bool in_armored, bool in_promoted) {
     mounted = in_mounted;
     flying = in_flying;
     armored = in_armored;
     promoted = in_promoted;
-    strncpy(name, in_name.c_str(), sizeof(in_name));
-    strncpy(unit_class, in_unit_class.c_str(), sizeof(in_unit_class));
+    strncpy(name, in_name, sizeof(in_name));
+    strncpy(unit_class, in_unit_class, sizeof(in_unit_class));
     for (int i = 0; i < in_stats.size(); i++) {
         stats[i] = (unsigned int) in_stats[i];
         growths[i] = (unsigned int) in_growths[i];
@@ -73,7 +74,7 @@ unit::unit(std::string in_name, std::string in_unit_class, char in_id,
         equipment[i] = (unsigned int) in_equipment[i];
     }      
     for (int i = 0; i < in_lovers.size(); i++) {
-        strncpy(lovers[i], in_lovers[i].c_str(), sizeof(in_lovers));
+        strncpy(lovers[i], in_lovers[i], sizeof(in_lovers));
         love_growths[i] = (unsigned int) in_love_growths[i];
         wpn_exp[i] = (unsigned int) in_wpn_exp[i];
     }    
@@ -85,13 +86,13 @@ unit::unit(){
 unit::~unit(void) {
    cout << "Unit is being deleted" << endl;
 }
-unit_vec::unit_vec(std::string in_name, std::string in_unit_class, char in_id,
+unit_vec::unit_vec(char in_name, char in_unit_class, char in_id,
            std::vector<unsigned char> in_stats, std::vector<unsigned char> in_growths, std::vector<unsigned char> in_equipment,
            std::vector<unsigned char> in_weapons, std::vector<unsigned char> in_items,
            std::vector<unsigned char> in_equipped, std::vector<unsigned char> in_skills,
            std::vector<unsigned char> in_love_pts, std::vector<unsigned char> in_love_growths,
            std::vector<unsigned char> in_wpn_exp, std::vector<unsigned char> in_position,
-           unsigned short in_exp, std::vector<std::string> in_lovers,
+           unsigned short in_exp, std::vector<char> in_lovers,
            bool in_mounted, bool in_flying, bool in_armored, bool in_promoted) {
     name = in_name; 
     unit_class = in_unit_class; 
@@ -109,7 +110,7 @@ unit_vec::unit_vec(std::string in_name, std::string in_unit_class, char in_id,
     position = in_position; 
     exp = in_exp; 
     // for (int i = 0; i < in_lovers.size(); i++) {
-        // strncpy(lovers[i], in_lovers[i].c_str(), sizeof(in_lovers));
+        // strncpy(lovers[i], in_lovers[i], sizeof(in_lovers));
     // }
     lovers = in_lovers;
     flying = in_flying; 
@@ -150,11 +151,30 @@ main() {
     // weapon Iron_lnc(1, "Iron Lance", {6, 80, 0, 8, 40, 0, 500, 1}, std::vector<int>(unit_stats.size(), 0), {""});
     // weapon Steel_swd(0, "Steel Sword", {8, 70, 0, 9, 35, 1, 500, 1}, std::vector<int>(unit_stats.size(), 0), {""});
     // weapon Damascus_swd(0, "Damascus Sword", {12, 65, 0, 8, 25, 3, 1000, 1}, std::vector<int>(unit_stats.size(), 0), {""});
-    unsigned char temp[10] = {18,  8,  2,  9, 10,  7,  5,  2,  6,  5};
-    vector<unsigned char> temp_vec (temp, temp + sizeof(temp) / sizeof(temp[0]) );
-    // unit Marth("Marth2", "Prince", id++, temp);
+    unsigned int temp_stats[10] = {18,  8,  2,  9, 10,  7,  5,  2,  6,  5};
+    unsigned int temp_stat_bonus[10] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
+    unsigned int temp_growths[10] = {18,  8,  2,  9, 10,  7,  5,  2,  6,  5};
+    unsigned int temp_wpn_exp[10] = {18,  8,  2,  9, 10,  7,  5,  2,  6,  5};
+    unsigned int temp_equipment[7] = {9, 10,  7,  5,  2,  6,  5};
+    unsigned int temp_weapons[4] = {9, 10,  7,  5};
+    unsigned int temp_items[4] = {9, 10,  7,  5};
+    unsigned int temp_equipped[1] = {5};
+    unsigned int temp_position[3] = {5, 3, 4};
+    unsigned int temp_skills[3] = {5, 3, 4};
+    char temp_lovers[5][14] = {"Sheeda", "", "", "", ""};
+    unsigned int temp_love_pts[5] = {5, 3, 4,1,2};
+    unsigned int temp_love_growths[5] = {5, 3, 4,1,2};
+    unsigned short temp_exp = 0;
+    bool temp_flying = 0, temp_armored = 0, temp_mounted = 0, temp_promoted =0;
+    char temp_name[14] = "Marth";
+    char temp_class[14] = "Prince";
+    vector<unsigned char> temp_stats_vec (temp_stats, temp_stats + sizeof(temp_stats) / sizeof(temp_stats[0]) );
+    unit Marth(temp_name, temp_class, id++, temp_stats, temp_growths, temp_equipment,
+           temp_weapons, temp_items, temp_equipped, temp_skills,
+           temp_love_pts, temp_love_growths, temp_wpn_exp, temp_position,
+           temp_exp, temp_lovers, temp_mounted, temp_flying, temp_armored, temp_promoted);
     unit_vec Marth_vec;
-    Marth_vec.stats = temp_vec;
+    Marth_vec.stats = temp_stats_vec;
     // Marth.stats = temp;
     // auto start = steady_clock::now(); 
     // unit Marth("Marth2", "Prince", id++, 
