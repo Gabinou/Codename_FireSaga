@@ -16,6 +16,7 @@ extern unsigned char id;
 class generic {
 public:
     char name[14];
+    unsigned char id;
     // generic();
 };
 
@@ -25,7 +26,7 @@ public:
     // all unsigned variables cannot be negative.
     char unit_class[24], stat_bonus[10];
     // Bonuses can be negative -> maluses
-    unsigned char id, current_hp, stats[10], growths[10], wpn_exp[10], position[3],
+    unsigned char current_hp, stats[10], growths[10], wpn_exp[10], position[3],
         equipment[7], weapons[4], items[4], equipped[1], skills[3],
         love_pts[5], love_growths[5];
     unsigned short exp;
@@ -74,10 +75,8 @@ public:
     ~unit_vec();
 };
 
-class weapon {
+class weapon: public generic {
 public:
-    char name[14];
-    unsigned char id;
     unsigned char stats[7];
     char stat_bonus[10];
     char effective[][14];
