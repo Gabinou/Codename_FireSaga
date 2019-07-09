@@ -13,14 +13,13 @@ extern char* all_units;
 extern char* all_wpns;
 extern unsigned char id;
 
-// class generic {
-// public:
-// static int object_count;
-// std::string name;
-// generic();
-// };
+class generic {
+public:
+    char name[14];
+    // generic();
+};
 
-class unit {
+class unit: public generic {
     // Lightweight implementation.
 public:
     // all unsigned variables cannot be negative.
@@ -54,24 +53,24 @@ public:
 class unit_vec {
     // Flexible implementation.
 public:
-    public:
-        std::string name, unit_class;
-        std::vector<std::string> lovers;
-        unsigned char id, current_hp;
-        unsigned short exp;
-        std::vector<unsigned char> stats, growths, wpn_exp, position,
-                                   equipment, weapons, items, equipped, skills,
-                                   love_pts, love_growths; 
-        bool mounted, flying, armored, promoted;
+    std::string name, unit_class;
+    std::vector<std::string> lovers;
+    unsigned char id, current_hp;
+    unsigned short exp;
+    std::vector<unsigned char> stats, growths, wpn_exp, position,
+                               equipment, weapons, items, equipped, skills,
+                               love_pts, love_growths; 
+    bool mounted, flying, armored, promoted;
     unit_vec(std::string, std::string, char,
-         std::vector<unsigned char>, std::vector<unsigned char>,
-         std::vector<unsigned char>, std::vector<unsigned char>,
-         std::vector<unsigned char>, std::vector<unsigned char>,
-         std::vector<unsigned char>, std::vector<unsigned char>,
-         std::vector<unsigned char>, std::vector<unsigned char>,
-         std::vector<unsigned char>, unsigned short, std::vector<std::string>,
-         bool, bool, bool, bool);
-    // ~unit_vec();
+     std::vector<unsigned char>, std::vector<unsigned char>,
+     std::vector<unsigned char>, std::vector<unsigned char>,
+     std::vector<unsigned char>, std::vector<unsigned char>,
+     std::vector<unsigned char>, std::vector<unsigned char>,
+     std::vector<unsigned char>, std::vector<unsigned char>,
+     std::vector<unsigned char>, unsigned short, std::vector<std::string>,
+     bool, bool, bool, bool);
+    ~unit_vec();
+    unit_vec();
 };
 
 class weapon {
@@ -80,7 +79,7 @@ public:
     unsigned char id;
     unsigned char stats[7];
     char stat_bonus[10];
-    char effective[][14];
+    char effective[2][14];
 };
 
 // class weapon_vec : public generic {

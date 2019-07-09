@@ -4,7 +4,7 @@
 #include <bits/stdc++.h> 
 #include "shared.h"
 using namespace std;
-using namespace std::chrono; 
+// using namespace std::chrono; // no chrono for -ansi /c++=89
 
 char unit_stats[][14] = {"HP", "Str", "Mag", "Skill", "Speed", "Luck", "Def", "Res", "Con", "Move"};
 char weapon_stats[][14] = {"dmg", "hit", "crit", "weight", "cost", "wpn_exp", "uses"};
@@ -83,7 +83,7 @@ unit::unit(){
         // name = "test";
 }
 unit::~unit(void) {
-   cout << "Object is being deleted" << endl;
+   cout << "Unit is being deleted" << endl;
 }
 unit_vec::unit_vec(std::string in_name, std::string in_unit_class, char in_id,
            std::vector<unsigned char> in_stats, std::vector<unsigned char> in_growths, std::vector<unsigned char> in_equipment,
@@ -115,11 +115,14 @@ unit_vec::unit_vec(std::string in_name, std::string in_unit_class, char in_id,
     flying = in_flying; 
     mounted = in_mounted; 
     armored = in_armored; 
-    promoted = in_promoted; 
-     
-};
-
-
+    promoted = in_promoted;    
+}
+unit_vec::unit_vec(){
+        // name = "test";
+}
+unit_vec::~unit_vec(void) {
+   cout << "Unit_vec is being deleted" << endl;
+}
 // character::character(std::vector<int> in_stats,
                     // std::vector<int> in_stat_bonus,
                     // std::vector<int> in_wpn_exp,
@@ -147,51 +150,55 @@ main() {
     // weapon Iron_lnc(1, "Iron Lance", {6, 80, 0, 8, 40, 0, 500, 1}, std::vector<int>(unit_stats.size(), 0), {""});
     // weapon Steel_swd(0, "Steel Sword", {8, 70, 0, 9, 35, 1, 500, 1}, std::vector<int>(unit_stats.size(), 0), {""});
     // weapon Damascus_swd(0, "Damascus Sword", {12, 65, 0, 8, 25, 3, 1000, 1}, std::vector<int>(unit_stats.size(), 0), {""});
+    unsigned char temp[10] = {18,  8,  2,  9, 10,  7,  5,  2,  6,  5};
+    vector<unsigned char> temp_vec (temp, temp + sizeof(temp) / sizeof(temp[0]) );
+    // unit Marth("Marth2", "Prince", id++, temp);
+    unit_vec Marth_vec;
+    Marth_vec.stats = temp_vec;
+    // Marth.stats = temp;
+    // auto start = steady_clock::now(); 
+    // unit Marth("Marth2", "Prince", id++, 
+    // {18,  8,  2,  9, 10,  7,  5,  2,  6,  5},
+    // {18,  8,  2,  9, 10,  7,  5,  2,  6,  5},
+    // {18,  8,  2,  9, 10,  7,  5,},
+    // {18,  8,  2,  9,},
+    // {18,  8,  2,  9,},
+    // {18},
+    // {18,1,1},
+    // {18,1,1 ,1,1},
+    // {18,1,1 ,1,1},
+    // {18,  8,  2,  9, 10,  7,  5,  2,  6,  5},
+    // {18,  8,  2},
+    // 0, 
+    // {"Sheeda", "" ,"","",""},
+    // 0, 0, 0, 0
+    // );
 
-    // unit Marth();
-    auto start = steady_clock::now(); 
-    unit Marth("Marth2", "Prince", id++, 
-    {18,  8,  2,  9, 10,  7,  5,  2,  6,  5},
-    {18,  8,  2,  9, 10,  7,  5,  2,  6,  5},
-    {18,  8,  2,  9, 10,  7,  5,},
-    {18,  8,  2,  9,},
-    {18,  8,  2,  9,},
-    {18},
-    {18,1,1},
-    {18,1,1 ,1,1},
-    {18,1,1 ,1,1},
-    {18,  8,  2,  9, 10,  7,  5,  2,  6,  5},
-    {18,  8,  2},
-    0, 
-    {"Sheeda", "" ,"","",""},
-    0, 0, 0, 0
-    );
-
-    auto stop = steady_clock::now(); 
-    auto duration = duration_cast<std::chrono::microseconds>(stop - start);
-    cout << duration.count() << "us" << endl; 
-    cout << sizeof(Marth) << "bytes" << endl; 
-    auto start1 = steady_clock::now(); 
-    unit_vec Marth_vec("Marth2", "Prince", id++, 
-    {18,  8,  2,  9, 10,  7,  5,  2,  6,  5},
-    {18,  8,  2,  9, 10,  7,  5,  2,  6,  5},
-    {18,  8,  2,  9, 10,  7,  5,},
-    {18,  8,  2,  9,},
-    {18,  8,  2,  9,},
-    {18},
-    {18,1,1},
-    {18,1,1 ,1,1},
-    {18,1,1 ,1,1},
-    {18,  8,  2,  9, 10,  7,  5,  2,  6,  5},
-    {18,  8,  2},
-    0, 
-    {"Sheeda", "" ,"","",""},
-    0, 0, 0, 0
-    );
-    auto stop1 = steady_clock::now(); 
-    auto duration1 = duration_cast<std::chrono::microseconds>(stop - start);
-    cout << duration1.count() << "us" << endl; 
-    cout << sizeof(Marth_vec) << "bytes" << endl; 
+    // auto stop = steady_clock::now(); 
+    // auto duration = duration_cast<std::chrono::microseconds>(stop - start);
+    // cout << duration.count() << "us" << endl; 
+    // cout << sizeof(Marth) << "bytes" << endl; 
+    // auto start1 = steady_clock::now(); 
+    // unit_vec Marth_vec("Marth2", "Prince", id++, 
+    // {18,  8,  2,  9, 10,  7,  5,  2,  6,  5},
+    // {18,  8,  2,  9, 10,  7,  5,  2,  6,  5},
+    // {18,  8,  2,  9, 10,  7,  5,},
+    // {18,  8,  2,  9,},
+    // {18,  8,  2,  9,},
+    // {18},
+    // {18,1,1},
+    // {18,1,1 ,1,1},
+    // {18,1,1 ,1,1},
+    // {18,  8,  2,  9, 10,  7,  5,  2,  6,  5},
+    // {18,  8,  2},
+    // 0, 
+    // {"Sheeda", "" ,"","",""},
+    // 0, 0, 0, 0
+    // );
+    // auto stop1 = steady_clock::now(); 
+    // auto duration1 = duration_cast<std::chrono::microseconds>(stop - start);
+    // cout << duration1.count() << "us" << endl; 
+    // cout << sizeof(Marth_vec) << "bytes" << endl; 
     // unit_vec Marth_vec("Marth2", "Prince", id++, {18,  8,  2,  9, 10,  7,  5,  2,  6,  5});
 
     // std:string stringg = "Marth+Sheeda+Marth+Marth+Marth+Marth+Marth";
