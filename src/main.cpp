@@ -22,28 +22,7 @@ char equipment_slots = 7;
 char *all_wpns;
 char *all_units;
 unsigned char id = 0;
-    // struct unit Marth = {"Marth", "Prince", id++, 
-                      // // HP  Str Mag Skl Spd Lck Def Res Con Mov
-      // /*Stats*/          18,  8,  2,  9, 10,  7,  5,  2,  6,  5,
-      // /*Stat bonuses*/    0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
-      // /*Growths*/        40, 50,  5, 80, 60, 50, 30, 20,  0,  0,
-      // /*Total exp*/       0,
-                      // // swd lnc axe bow wnd tnd fir drk lgt stf
-      // /*Weapon exp*/      0,  0,  0,  0,  0,  0,  0,  0,  0,  0, 
-      // /*Position*/        1,  1,  1,
-      // /*Equipment*/       0,  0,  0,  0,  0,  0,  0,
-      // /*Weapons*/         0,  0,  0,  0,
-      // /*Items*/           0,  0,  0,  0,
-      // /*Equipped*/        1,
-      // /*Skills*/          1,  2,  3,
-      // /*Lovers*/         "Sheeda", "", "", "", "",
-      // /*Love Points*/    25,  0,  0,  0,  0,
-      // /*Love growths*/    2,  0,  0,  0,  0,
-      // /*Mounted*/         0,
-      // /*Armored*/         0,     
-      // /*Flying*/          0,
-      // /*Promoted*/        0
-      // };   
+
 unit::unit(std::string in_name, std::string in_unit_class, char in_id,
            std::vector<unsigned int> in_stats, std::vector<unsigned int> in_growths, std::vector<unsigned int> in_equipment,
            std::vector<unsigned int> in_weapons, std::vector<unsigned int> in_items,
@@ -85,7 +64,7 @@ unit::unit(std::string in_name, std::string in_unit_class, char in_id,
     id = in_id;
 }
 unit::unit(){
-        // name = "test";
+
 }
 unit::~unit(void) {
    cout << "Unit is being deleted" << endl;
@@ -130,23 +109,11 @@ unit_vec::~unit_vec(void) {
    cout << "Unit_vec is being deleted" << endl;
 }
 
-// character::character(std::vector<int> in_stats,
-                    // std::vector<int> in_stat_bonus,
-                    // std::vector<int> in_wpn_exp,
-                    // std::vector<int> in_equipment,
-                    // std::vector<int> in_position) {
-    // stats = in_stats;
-    // stat_bonus = in_stat_bonus;
-    // wpn_exp = in_wpn_exp;
-    // equipment = in_equipment;
-    // position = in_position;
-    // current_hp = in_stats[0];
-// }
-// int character::combat_damage(){
-    // int damage = stats[1] + stat_bonus[1];
-    // // cout << weapons[equipped] << "\n";
-    // return damage;
-// }
+weapon::weapon(){
+    
+    
+}
+
 main() {
 
     std::cout << "TESTING THIS BITCH\n";

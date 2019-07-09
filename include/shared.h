@@ -17,6 +17,7 @@ class generic {
 public:
     char name[14];
     unsigned char id;
+    char type[24]; //for units, contains class string. for weapons, contains weapon type string.
     // generic();
 };
 
@@ -24,7 +25,7 @@ class unit: public generic {
     // Lightweight implementation.
 public:
     // all unsigned variables cannot be negative.
-    char unit_class[24], stat_bonus[10];
+    char  stat_bonus[10];
     // Bonuses can be negative -> maluses
     unsigned char current_hp, stats[10], growths[10], wpn_exp[10], position[3],
         equipment[7], weapons[4], items[4], equipped[1], skills[3],
@@ -79,7 +80,11 @@ class weapon: public generic {
 public:
     unsigned char stats[7];
     char stat_bonus[10];
-    char effective[][14];
+    char effective[2][14];
+    char reserved[5][14];
+    // char reserved2[][14];
+    weapon();
+    weapon(std::string, std::string, char,);
 };
 
 // class weapon_vec : public generic {
