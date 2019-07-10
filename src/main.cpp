@@ -147,7 +147,7 @@ main() {
                   {3, 80,  0,  5, 45,  0,  1},
                   std::vector<char>(LEN(unit_stats), 0), {}, {});
     weapon Iron_swd("Iron Sword", "swd", id++, 450,
-                  {5, 80,  0,  7, 45,  0,  1},
+                  {5, 80,  0,  7, 45,  0,  1}, 
                   std::vector<char>(LEN(unit_stats), 0), {}, {});
     weapon Iron_lnc("Iron Lance", "lance", id++, 450,
                   {6, 80,  0,  8, 40,  0,  1},
@@ -158,6 +158,8 @@ main() {
     weapon Damascus_swd("Damascus Sword", "swd", id++, 1000,
                   {12, 65,  0,  8, 25,  3,  1},
                   std::vector<char>(LEN(unit_stats), 0), {}, {});
+// idea for lightness and foregoing cloning weapons: In equipment, just make a list {"weapon_name", uses_left}. Then refer to weapons by name for dealing with combat and stuff. No need for cloning weapons, juste refer to the eternal and unchanging weapons. Use the constant weapon stat_bonus and add to the character stat_bonus, which does change. So essentially make items immutable. What about characters?
+
 
     // unit Marth();
     auto start = steady_clock::now(); 
