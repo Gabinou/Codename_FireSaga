@@ -115,13 +115,11 @@ weapon::weapon(){
 weapon::~weapon(void) {
    cout << "Weapon is being deleted" << endl;
 }
-weapon::weapon(std::string in_name, std::string in_type, char in_id, unsigned short in_cost,
+weapon::weapon(std::string in_name, std::string in_type, char in_id, unsigned short int in_cost,
        std::vector<int> in_stats, std::vector<char> in_stat_bonus,
        std::vector<std::string> in_owner, std::vector<std::string> in_effective) {
     strncpy(name, in_name.c_str(), sizeof(in_name));
     strncpy(type, in_type.c_str(), sizeof(in_type));
-    cost = in_cost;
-    std::cout << cost << endl;
     for (int i = 0; i < in_effective.size(); i++) {
         strncpy(effective[i], in_effective[i].c_str(), sizeof(in_effective));
     }
@@ -134,17 +132,18 @@ weapon::weapon(std::string in_name, std::string in_type, char in_id, unsigned sh
     for (int i = 0; i < in_stats.size(); i++) {
         stats[i] = in_stats[i];
     }
-    // std::cout << stats[0] << endl;
-    printf("%d \n", stats[0]);
-    std::cout << in_stats[0] << endl;
+    cost = in_cost;
 }
 
 main() {
     std::cout << "TESTING THIS BITCH\n";
     std::cout << "Initializaing a character\n";
-    weapon Rapier("Rapier", "swd", id++, 600, {5, 90, 10, 7, 30, 2, 2}, std::vector<char>(10, 0), {"Marth", "a", "a", "a", "a"}, {"Knight", "Cavalier"});
-    std::cout << Rapier.cost << endl;
-    std::cout << Rapier.stats[0] << endl;
+    weapon Rapier("Rapier", "swd", id++, 600, {5, 90, 10, 7, 30, 2, 2}, std::vector<char>(10, 2), {"Marth", "Marth", "Marth", "Marth", "Marth"}, {"Knight", "Cavalier"});
+    printf("cost %d\n", Rapier.cost);
+    printf("cost %d\n", Rapier.stats[0]);
+    printf("cost %d\n", Rapier.stat_bonus[1]);
+    printf("cost %s\n", Rapier.owner[0]);
+    printf("cost %s\n", Rapier.effective[0]);
     return(0);
     // std::cout << Rapier.owner << endl;
     // weapon Bronze_swd(0, "Bronze Sword", {3, 80, 0, 5, 45, 0, 450, 1}, std::vector<int>(unit_stats.size(), 0), {""});
