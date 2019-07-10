@@ -4,7 +4,7 @@
 extern char unit_stats[][14];
 extern char unit_stats[][14];
 extern char weapon_stats[][14];
-extern char wpn_types[][14];
+extern char wpn_types[][12];
 extern char weapons[][14];
 extern char statuses[][14];
 extern char unit_classes[][24];
@@ -36,13 +36,14 @@ public:
     char lovers[5][14]; // names of possible lovers.
     bool mounted, flying, armored, promoted;
     unit(std::string, std::string, char,
-         std::vector<unsigned int>, std::vector<unsigned int>,
-         std::vector<unsigned int>, std::vector<unsigned int>,
-         std::vector<unsigned int>, std::vector<unsigned int>,
-         std::vector<unsigned int>, std::vector<unsigned int>,
-         std::vector<unsigned int>, std::vector<unsigned int>,
-         std::vector<unsigned int>, unsigned short, std::vector<std::string>,
-         bool, bool, bool, bool);
+        std::vector<unsigned int>, std::vector<unsigned int>,
+        std::vector<unsigned int>, std::vector<unsigned int>,
+        std::vector<unsigned int>, std::vector<unsigned int>,
+        std::vector<unsigned int>, std::vector<unsigned int>,
+        std::vector<unsigned int>, std::vector<unsigned int>,
+        std::vector<unsigned int>, unsigned short, std::vector<std::string>,
+        bool, bool, bool, bool
+        );
     ~unit();
     unit();
 };
@@ -65,13 +66,14 @@ public:
                                    love_pts, love_growths; 
         bool mounted, flying, armored, promoted;
     unit_vec(std::string, std::string, char,
-         std::vector<unsigned char>, std::vector<unsigned char>,
-         std::vector<unsigned char>, std::vector<unsigned char>,
-         std::vector<unsigned char>, std::vector<unsigned char>,
-         std::vector<unsigned char>, std::vector<unsigned char>,
-         std::vector<unsigned char>, std::vector<unsigned char>,
-         std::vector<unsigned char>, unsigned short, std::vector<std::string>,
-         bool, bool, bool, bool);
+            std::vector<unsigned char>, std::vector<unsigned char>,
+            std::vector<unsigned char>, std::vector<unsigned char>,
+            std::vector<unsigned char>, std::vector<unsigned char>,
+            std::vector<unsigned char>, std::vector<unsigned char>,
+            std::vector<unsigned char>, std::vector<unsigned char>,
+            std::vector<unsigned char>, unsigned short, std::vector<std::string>,
+            bool, bool, bool, bool
+            );
     unit_vec();
     ~unit_vec();
 };
@@ -79,12 +81,14 @@ public:
 class weapon: public generic {
 public:
     unsigned char stats[7];
-    char stat_bonus[10];
-    char effective[2][14];
-    char reserved[5][14];
-    // char reserved2[][14];
+    char stat_bonus[10], effective[2][14], reserved[5][14];
+
+    ~weapon();
+    weapon(std::string, std::string, char,
+        std::vector<unsigned char>,  std::vector<char>,
+        std::vector<std::string>, std::vector<std::string>
+        );
     weapon();
-    // weapon(std::string, std::string, char);
 };
 
 // class weapon_vec : public generic {

@@ -13,7 +13,7 @@ using namespace std::chrono;
 
 char unit_stats[][14] = {"HP", "Str", "Mag", "Skill", "Speed", "Luck", "Def", "Res", "Con", "Move"};
 char weapon_stats[][14] = {"dmg", "hit", "crit", "weight", "cost", "wpn_exp", "uses"};
-char wpn_types[][14]  = {"swd", "lance", "axe", "bow", "mgc_wind", "mgc_fire", "mgc_thunder",  "mgc_dark",  "mgc_light", "staff"};
+char wpn_types[][12]  = {"swd", "lance", "axe", "bow", "mgc_wind", "mgc_fire", "mgc_thunder",  "mgc_dark",  "mgc_light", "staff"};
 unsigned char wpn_exp_lvls[][14] = {25, 60, 100, 150};
 char weapons[][14]  = {"Iron Sword", "Iron Bow"};
 char statuses[][14] = {"healthy", "sleep", "poison", "stone", "berserk"};
@@ -111,14 +111,33 @@ unit_vec::~unit_vec(void) {
 
 weapon::weapon(){
     // a
-    
+}
+weapon::~weapon(void) {
+   cout << "Weapon is being deleted" << endl;
+}
+weapon::weapon(std::string in_name, std::string in_type, char in_id,
+       std::vector<unsigned char> in_stats, std::vector<char> in_stat_bonus,
+       std::vector<std::string> in_reserved, std::vector<std::string> in_effective) {
+    strncpy(name, in_name.c_str(), sizeof(in_name));
+    strncpy(type, in_type.c_str(), sizeof(in_type));
+    for (int i = 0; i < in_reserved.size(); i++) {
+        strncpy(reserved[i], in_reserved[i].c_str(), sizeof(in_reserved));
+    }
+    for (int i = 0; i < in_effective.size(); i++) {
+        strncpy(effective[i], in_effective[i].c_str(), sizeof(in_effective));
+    }
+    for (int i = 0; i < in_stat_bonus.size(); i++) {
+        stat_bonus[i] = (int) in_stat_bonus[i];
+    }
+    for (int i = 0; i < in_stats.size(); i++) {
+        stats[i] = (int) in_stats[i];
+    }
 }
 
 main() {
-
     std::cout << "TESTING THIS BITCH\n";
     std::cout << "Initializaing a character\n";
-    // weapon Rapier(0, "Rapier", {5, 90, 10, 7, 30, 2, 600, 2}, std::vector<int>(unit_stats.size(), 0), {"Knight", "Cavalier"});
+    weapon Rapier("Rapier", "swd", id++, {5, 90, 10, 7, 30, 2, 600, 2}, std::vector<int>(10, 0), {"Marth"}, {"Knight", "Cavalier"});
     // weapon Bronze_swd(0, "Bronze Sword", {3, 80, 0, 5, 45, 0, 450, 1}, std::vector<int>(unit_stats.size(), 0), {""});
     // weapon Iron_swd(0, "Iron Sword", {5, 80, 0, 7, 45, 0, 450, 1}, std::vector<int>(unit_stats.size(), 0), {""});
     // weapon Iron_lnc(1, "Iron Lance", {6, 80, 0, 8, 40, 0, 500, 1}, std::vector<int>(unit_stats.size(), 0), {""});
@@ -148,25 +167,25 @@ main() {
       // /*Flying*/          0,
       // /*Promoted*/        0
       // };   
-    unit Marth("Marth2", "Prince", id++, 
-//HP  Str Mag Skl Spd Lck Def Res Con Mov
-/*Stats*/    {18,  8,  2,  9, 10,  7,  5,  2,  6,  5},
-/*Growths*/     {18,  8,  2,  9, 10,  7,  5,  2,  6,  5},
-/*Equipment*/    {18,  8,  2,  9, 10,  7,  5,},
-/*Weapons*/    {18,  8,  2,  9,},
-/*Items*/     {18,  8,  2,  9,},
-/*Equipped*/    {18},
-/*Position*/    {18,1,1},
-/*Love_pts*/     {18,1,1 ,1,1},
-/*Love_growths*/    {18,1,1 ,1,1},
-/*Weapon_exp*/   {18,  8,  2,  9, 10,  7,  5,  2,  6,  5},
-/*Skills*/     {18,  8,  2},
-/*Exp*/    0, 
-/*Lovers*/    {"Sheeda", "" ,"","",""},
-/*Mounted*/    0,
-/*Flying*/        0,
-/*Armored*/        0,
-/*MPromoted*/        0
+    unit Marth("Marth", "Prince", id++, 
+        //HP  Str Mag Skl Spd Lck Def Res Con Mov
+        /*Stats*/           {18,  8,  2,  9, 10,  7,  5,  2,  6,  5},
+        /*Growths*/         {18,  8,  2,  9, 10,  7,  5,  2,  6,  5},
+        /*Equipment*/       {18,  8,  2,  9, 10,  7,  5,},
+        /*Weapons*/         {18,  8,  2,  9,},
+        /*Items*/           {18,  8,  2,  9,},
+        /*Equipped*/        {18},
+        /*Position*/        {18,1,1},
+        /*Love_pts*/        {18,1,1 ,1,1},
+        /*Love_growths*/    {18,1,1 ,1,1},
+        /*Weapon_exp*/      {18,  8,  2,  9, 10,  7,  5,  2,  6,  5},
+        /*Skills*/          {18,  8,  2},
+        /*Exp*/             0, 
+        /*Lovers*/          {"Sheeda", "" ,"","",""},
+        /*Mounted*/         0,
+        /*Flying*/          0,
+        /*Armored*/         0,
+        /*MPromoted*/       0
     );
 
     auto stop = steady_clock::now(); 
