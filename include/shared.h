@@ -80,11 +80,11 @@ public:
 
 class weapon: public generic {
 public:
-    unsigned char stats[7];
-    char stat_bonus[10], effective[2][14], reserved[5][14];
-
+    unsigned char stats[6];
+    char stat_bonus[10], effective[2][14], owner[5][14];
+    unsigned short cost;
     ~weapon();
-    weapon(std::string, std::string, char,
+    weapon(std::string, std::string, char, unsigned short,
         std::vector<unsigned char>,  std::vector<char>,
         std::vector<std::string>, std::vector<std::string>
         );

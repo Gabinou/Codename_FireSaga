@@ -115,16 +115,20 @@ weapon::weapon(){
 weapon::~weapon(void) {
    cout << "Weapon is being deleted" << endl;
 }
-weapon::weapon(std::string in_name, std::string in_type, char in_id,
+weapon::weapon(std::string in_name, std::string in_type, char in_id, unsigned short in_cost,
        std::vector<unsigned char> in_stats, std::vector<char> in_stat_bonus,
-       std::vector<std::string> in_reserved, std::vector<std::string> in_effective) {
+       std::vector<std::string> in_owner, std::vector<std::string> in_effective) {
     strncpy(name, in_name.c_str(), sizeof(in_name));
     strncpy(type, in_type.c_str(), sizeof(in_type));
-    for (int i = 0; i < in_reserved.size(); i++) {
-        strncpy(reserved[i], in_reserved[i].c_str(), sizeof(in_reserved));
-    }
+    cost = in_cost;
+    // for (int i = 0; i < in_owner.size(); i++) {
+        // strncpy(owner[i], in_owner[i].c_str(), sizeof(in_owner));
+    // }
     for (int i = 0; i < in_effective.size(); i++) {
         strncpy(effective[i], in_effective[i].c_str(), sizeof(in_effective));
+    }
+    for (int i = 0; i < in_owner.size(); i++) {
+        strncpy(owner[i], in_owner[i].c_str(), sizeof(in_owner));
     }
     for (int i = 0; i < in_stat_bonus.size(); i++) {
         stat_bonus[i] = (int) in_stat_bonus[i];
@@ -137,7 +141,7 @@ weapon::weapon(std::string in_name, std::string in_type, char in_id,
 main() {
     std::cout << "TESTING THIS BITCH\n";
     std::cout << "Initializaing a character\n";
-    weapon Rapier("Rapier", "swd", id++, {5, 90, 10, 7, 30, 2, 600, 2}, std::vector<int>(10, 0), {"Marth"}, {"Knight", "Cavalier"});
+    weapon Rapier("Rapier", "swd", id++, 600, {5, 90, 10, 7, 30, 2, 2}, std::vector<char>(10, 0), {"Marth", "a", "a", "a", "a"}, {"Knight", "Cavalier"});
     // weapon Bronze_swd(0, "Bronze Sword", {3, 80, 0, 5, 45, 0, 450, 1}, std::vector<int>(unit_stats.size(), 0), {""});
     // weapon Iron_swd(0, "Iron Sword", {5, 80, 0, 7, 45, 0, 450, 1}, std::vector<int>(unit_stats.size(), 0), {""});
     // weapon Iron_lnc(1, "Iron Lance", {6, 80, 0, 8, 40, 0, 500, 1}, std::vector<int>(unit_stats.size(), 0), {""});
