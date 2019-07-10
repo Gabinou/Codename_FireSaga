@@ -85,7 +85,7 @@ public:
     unsigned short cost;
     ~weapon();
     weapon(std::string, std::string, char, unsigned short,
-        std::vector<unsigned char>,  std::vector<char>,
+        std::vector<int>,  std::vector<char>,
         std::vector<std::string>, std::vector<std::string>
         );
     weapon();
