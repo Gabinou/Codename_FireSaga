@@ -10,6 +10,8 @@ using namespace std;
 using namespace std::chrono; 
 
 
+#define LEN(arr) ((int) (sizeof (arr) / sizeof (arr)[0])) // that is a macro. What is a macro?
+
 
 char unit_stats[][14] = {"HP", "Str", "Mag", "Skill", "Speed", "Luck", "Def", "Res", "Con", "Move"};
 char weapon_stats[][14] = {"dmg", "hit", "crit", "weight", "cost", "wpn_exp", "uses"};
@@ -137,12 +139,25 @@ weapon::weapon(std::string in_name, std::string in_type, char in_id, unsigned sh
 main() {
     printf("TESTING THIS BITCH\n");
     printf("Initializaing a character\n");
-    weapon Rapier("Rapier", "swd", id++, 600, {5, 90, 10, 7, 30, 2, 2}, std::vector<char>(10, 2), {"Marth"}, {"Knight", "Cavalier"});
-    // weapon Bronze_swd(0, "Bronze Sword", {3, 80, 0, 5, 45, 0, 450, 1}, std::vector<int>(unit_stats.size(), 0), {""});
-    // weapon Iron_swd(0, "Iron Sword", {5, 80, 0, 7, 45, 0, 450, 1}, std::vector<int>(unit_stats.size(), 0), {""});
-    // weapon Iron_lnc(1, "Iron Lance", {6, 80, 0, 8, 40, 0, 500, 1}, std::vector<int>(unit_stats.size(), 0), {""});
-    // weapon Steel_swd(0, "Steel Sword", {8, 70, 0, 9, 35, 1, 500, 1}, std::vector<int>(unit_stats.size(), 0), {""});
-    // weapon Damascus_swd(0, "Damascus Sword", {12, 65, 0, 8, 25, 3, 1000, 1}, std::vector<int>(unit_stats.size(), 0), {""});
+
+    weapon Rapier("Rapier", "swd", id++, 600,
+                  { 5, 90, 10,  7, 30,  2,  2},
+                  std::vector<char>(LEN(unit_stats), 0), {"Marth"}, {"Knight", "Cavalier"});
+    weapon Bronze_swd("Bronze Sword", "swd", id++, 450,
+                  {3, 80,  0,  5, 45,  0,  1},
+                  std::vector<char>(LEN(unit_stats), 0), {}, {});
+    weapon Iron_swd("Iron Sword", "swd", id++, 450,
+                  {5, 80,  0,  7, 45,  0,  1},
+                  std::vector<char>(LEN(unit_stats), 0), {}, {});
+    weapon Iron_lnc("Iron Lance", "lance", id++, 450,
+                  {6, 80,  0,  8, 40,  0,  1},
+                  std::vector<char>(LEN(unit_stats), 0), {}, {});
+    weapon Steel_swd("Steel Sword", "swd", id++, 500,
+                  {8, 70,  0,  9,  35, 1,  1}, 
+                  std::vector<char>(LEN(unit_stats), 0), {}, {});
+    weapon Damascus_swd("Damascus Sword", "swd", id++, 1000,
+                  {12, 65,  0,  8, 25,  3,  1},
+                  std::vector<char>(LEN(unit_stats), 0), {}, {});
 
     // unit Marth();
     auto start = steady_clock::now(); 
