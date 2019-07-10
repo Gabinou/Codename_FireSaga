@@ -66,9 +66,6 @@ unit::unit(std::string in_name, std::string in_unit_class, char in_id,
 unit::unit(){
 
 }
-unit::~unit(void) {
-   cout << "Unit is being deleted" << endl;
-}
 unit_vec::unit_vec(std::string in_name, std::string in_unit_class, char in_id,
            std::vector<unsigned char> in_stats, std::vector<unsigned char> in_growths, std::vector<unsigned char> in_equipment,
            std::vector<unsigned char> in_weapons, std::vector<unsigned char> in_items,
@@ -106,14 +103,16 @@ unit_vec::unit_vec(){
         // name = "test";
 }
 unit_vec::~unit_vec(void) {
-   cout << "Unit_vec is being deleted" << endl;
+    printf("Unit_vec %s is being deleted.\n", name.c_str());
 }
-
+unit::~unit(void) {
+   printf("Unit %s is being deleted.\n", name);
+}
 weapon::weapon(){
     // a
 }
 weapon::~weapon(void) {
-   cout << "Weapon is being deleted" << endl;
+    printf("Weapon %s is being deleted.\n" , name);
 }
 weapon::weapon(std::string in_name, std::string in_type, char in_id, unsigned short int in_cost,
        std::vector<int> in_stats, std::vector<char> in_stat_bonus,
@@ -136,16 +135,9 @@ weapon::weapon(std::string in_name, std::string in_type, char in_id, unsigned sh
 }
 
 main() {
-    std::cout << "TESTING THIS BITCH\n";
-    std::cout << "Initializaing a character\n";
-    weapon Rapier("Rapier", "swd", id++, 600, {5, 90, 10, 7, 30, 2, 2}, std::vector<char>(10, 2), {"Marth", "Marth", "Marth", "Marth", "Marth"}, {"Knight", "Cavalier"});
-    printf("cost %d\n", Rapier.cost);
-    printf("cost %d\n", Rapier.stats[0]);
-    printf("cost %d\n", Rapier.stat_bonus[1]);
-    printf("cost %s\n", Rapier.owner[0]);
-    printf("cost %s\n", Rapier.effective[0]);
-    return(0);
-    // std::cout << Rapier.owner << endl;
+    printf("TESTING THIS BITCH\n");
+    printf("Initializaing a character\n");
+    weapon Rapier("Rapier", "swd", id++, 600, {5, 90, 10, 7, 30, 2, 2}, std::vector<char>(10, 2), {"Marth"}, {"Knight", "Cavalier"});
     // weapon Bronze_swd(0, "Bronze Sword", {3, 80, 0, 5, 45, 0, 450, 1}, std::vector<int>(unit_stats.size(), 0), {""});
     // weapon Iron_swd(0, "Iron Sword", {5, 80, 0, 7, 45, 0, 450, 1}, std::vector<int>(unit_stats.size(), 0), {""});
     // weapon Iron_lnc(1, "Iron Lance", {6, 80, 0, 8, 40, 0, 500, 1}, std::vector<int>(unit_stats.size(), 0), {""});
