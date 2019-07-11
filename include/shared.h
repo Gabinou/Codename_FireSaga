@@ -53,8 +53,6 @@ public:
 };
 
 //Unit implementation notes:
-    // Equal init time.
-    // unit_vec size \= 2 * unit size
     // unit_vec size \= 2 * unit size
 
 class unit_vec {
