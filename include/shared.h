@@ -27,7 +27,7 @@ public:
     // all unsigned variables cannot be negative.
     char  stats_bonus[10];
     // Bonuses can be negative -> maluses
-    unsigned char current_hp, stats_base[10], stats_grown, growths[10], wpn_exp[10], position[3],
+    unsigned char current_hp, stats_base[10], stats_grown[10], growths[10], wpn_exp[10], position[3],
         equipment[7], weapons[4], items[4], equipped[1], skills[3],
         love_pts[5], love_growths[5];
     unsigned short exp;
@@ -45,6 +45,7 @@ public:
         unsigned short, std::vector<std::string>,
         bool, bool, bool, bool
         );
+    char attack(char, unsigned char, unsigned char);
     ~unit();
     unit();
 };

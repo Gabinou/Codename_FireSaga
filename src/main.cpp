@@ -1,9 +1,9 @@
 // Code créé par Gabriel Taillon
 // Note on standards. Fuck all that complicated bullcrap. I'm writing for c++11. More convenient and the rest seems like bullshit.
-
 #include <stdio.h>
 #include <iostream>
 #include <vector>
+#include <time.h>
 #include <bits/stdc++.h> 
 #include "shared.h"
 using namespace std;
@@ -161,22 +161,20 @@ main() {
     weapon Damascus_swd("Damascus Sword", "swd", id++, 1000,
                   {12, 65,  0,  8, 25,  3,  1},
                   std::vector<char>(LEN(unit_stats), 0), {}, {});
-/* CLONING: 
-*   WEAPONS:
-* idea for lightness and foregoing cloning weapons: In equipment,
-* just make a list {"weapon_name", uses_left}. Then refer to weapons
-* by name for dealing with combat and stuff. No need for cloning weapons,
-* just refer to the eternal and unchanging weapons. Use the constant
-* weapon stats_bonus and add to the character stats_bonus, which does change.
-* So essentially make items immutable. 
-*    CHARACTERS
-What about characters? I think characters need one object per filesave. then modify this object as the game evolves.
+    /* CLONING: 
+    *   WEAPONS:
+    * idea for lightness and foregoing cloning weapons: In equipment,
+    * just make a list {"weapon_name", uses_left}. Then refer to weapons
+    * by name for dealing with combat and stuff. No need for cloning weapons,
+    * just refer to the eternal and unchanging weapons. Use the constant
+    * weapon stats_bonus and add to the character stats_bonus, which does change.
+    * So essentially make items immutable. 
+    *    CHARACTERS
+    What about characters? I think characters need one object per filesave. then modify this object as the game evolves.
 
 
-*/
+    */
 
-    // unit Marth();
-    auto start = steady_clock::now(); 
 
       // /*stats_base*/          18,  8,  2,  9, 10,  7,  5,  2,  6,  5,
       // /*Stat bonuses*/    0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
@@ -198,6 +196,8 @@ What about characters? I think characters need one object per filesave. then mod
       // /*Flying*/          0,
       // /*Promoted*/        0
       // };   
+      double time_spent = 0.0;
+      clock_t begin = clock();
     unit Marth("Marth", "Prince", id++, 
         //HP  Str Mag Skl Spd Lck Def Res Con Mov
         /*stats_base*/           {18,  8,  2,  9, 10,  7,  5,  2,  6,  5},
@@ -222,12 +222,14 @@ What about characters? I think characters need one object per filesave. then mod
     // std::cout << Marth.lovers[0] << endl;
     // std::cout << Marth.stats_base[0] << endl;
     // std::cout << Marth.growths[0] << endl;
- 
-    auto stop = steady_clock::now(); 
-    auto duration = duration_cast<std::chrono::microseconds>(stop - start);
-    cout << duration.count() << "us" << endl; 
+     // auto start1 = high_resolution_clock::now(); s
+    // auto stop = high_resolution_clock::now(); 
+    // std::chrono::duration<double> elapsed = duration_cast<std::chrono::milliseconds>(stop - start);
+    // cout << elapsed.count() << "ms" << endl; 
+    
+   
+    printf("Elapsed time %f\n", time_spent)    ;  
     cout << sizeof(Marth) << "bytes" << endl; 
-    auto start1 = steady_clock::now(); 
     unit_vec Marth_vec("Marth2", "Prince", id++, 
     {18,  8,  2,  9, 10,  7,  5,  2,  6,  5},
     {18,  8,  2,  9, 10,  7,  5,  2,  6,  5},
@@ -244,9 +246,7 @@ What about characters? I think characters need one object per filesave. then mod
     {"Sheeda", "" ,"","",""},
     0, 0, 0, 0
     );
-    auto stop1 = steady_clock::now(); 
-    auto duration1 = duration_cast<std::chrono::microseconds>(stop - start);
-    cout << duration1.count() << "us" << endl; 
+
     cout << sizeof(Marth_vec) << "bytes" << endl; 
     // unit_vec Marth_vec("Marth2", "Prince", id++, {18,  8,  2,  9, 10,  7,  5,  2,  6,  5});
 
@@ -262,4 +262,6 @@ What about characters? I think characters need one object per filesave. then mod
     // std::cout << Marth.stats_base[3] + 2 << endl;
     // std::cout << sizeof(Marth) << endl;
     // std::cout << sizeof(Marth_vec) << endl;
+        clock_t end = clock();
+    time_spent += (double)(end - begin)/ CLOCKS_PER_SEC;   
 }
