@@ -26,7 +26,7 @@ char *all_units;
 unsigned char id = 0;
 
 unit::unit(std::string in_name, std::string in_unit_class, char in_id,
-           std::vector<unsigned int> in_stats, std::vector<unsigned int> in_growths, std::vector<unsigned int> in_equipment,
+           std::vector<unsigned int> in_stats_base, std::vector<unsigned int> in_growths, std::vector<unsigned int> in_equipment,
            std::vector<unsigned int> in_weapons, std::vector<unsigned int> in_items,
            std::vector<unsigned int> in_equipped, std::vector<unsigned int> in_skills,
            std::vector<unsigned int> in_love_pts, std::vector<unsigned int> in_love_growths,
@@ -39,14 +39,14 @@ unit::unit(std::string in_name, std::string in_unit_class, char in_id,
     promoted = in_promoted;
     strncpy(name, in_name.c_str(), sizeof(in_name));
     strncpy(type, in_unit_class.c_str(), sizeof(in_unit_class));
-    for (int i = 0; i < in_stats.size(); i++) {
-        stats[i] = (unsigned int) in_stats[i];
+    for (int i = 0; i < in_stats_base.size(); i++) {
+        stats_base[i] = (unsigned int) in_stats_base[i];
         growths[i] = (unsigned int) in_growths[i];
         wpn_exp[i] = (unsigned int) in_wpn_exp[i];
-        stat_bonus[i] = 0;
-        // For some reason, stats cannot be printed unless (int) Marth.stats[0]. + 0 also works.
+        stats_bonus[i] = 0;
+        // For some reason, stats_base cannot be printed unless (int) Marth.stats_base[0]. + 0 also works.
     }
-    current_hp = (unsigned int) stats[0];
+    current_hp = (unsigned int) stats_base[0];
     for (int i = 0; i < in_weapons.size(); i++) {
         weapons[i] = (unsigned int) in_weapons[i];
         items[i] = (unsigned int) in_items[i];
@@ -69,7 +69,8 @@ unit::unit(){
 
 }
 unit_vec::unit_vec(std::string in_name, std::string in_unit_class, char in_id,
-           std::vector<unsigned char> in_stats, std::vector<unsigned char> in_growths, std::vector<unsigned char> in_equipment,
+           std::vector<unsigned char> in_stats_base, std::vector<unsigned char> in_growths, 
+           std::vector<unsigned char> in_equipment,
            std::vector<unsigned char> in_weapons, std::vector<unsigned char> in_items,
            std::vector<unsigned char> in_equipped, std::vector<unsigned char> in_skills,
            std::vector<unsigned char> in_love_pts, std::vector<unsigned char> in_love_growths,
@@ -79,7 +80,9 @@ unit_vec::unit_vec(std::string in_name, std::string in_unit_class, char in_id,
     name = in_name; 
     unit_class = in_unit_class; 
     id = in_id; 
-    stats = in_stats; 
+    stats_base = in_stats_base; 
+    stats_grown = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
+    stats_bonus = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
     growths = in_growths; 
     equipment = in_equipment; 
     weapons = in_weapons; 
@@ -117,7 +120,7 @@ weapon::~weapon(void) {
     printf("Weapon %s is being deleted.\n" , name);
 }
 weapon::weapon(std::string in_name, std::string in_type, char in_id, unsigned short int in_cost,
-       std::vector<int> in_stats, std::vector<char> in_stat_bonus,
+       std::vector<int> in_stats_base, std::vector<char> in_stats_bonus,
        std::vector<std::string> in_owner, std::vector<std::string> in_effective) {
     strncpy(name, in_name.c_str(), sizeof(in_name));
     strncpy(type, in_type.c_str(), sizeof(in_type));
@@ -127,11 +130,11 @@ weapon::weapon(std::string in_name, std::string in_type, char in_id, unsigned sh
     for (int i = 0; i < in_owner.size(); i++) {
         strncpy(owner[i], in_owner[i].c_str(), sizeof(in_owner[i]));
     }
-    for (int i = 0; i < in_stat_bonus.size(); i++) {
-        stat_bonus[i] = (int) in_stat_bonus[i];
+    for (int i = 0; i < in_stats_bonus.size(); i++) {
+        stats_bonus[i] = (int) in_stats_bonus[i];
     }
-    for (int i = 0; i < in_stats.size(); i++) {
-        stats[i] = in_stats[i];
+    for (int i = 0; i < in_stats_base.size(); i++) {
+        stats_base[i] = in_stats_base[i];
     }
     cost = in_cost;
 }
@@ -164,7 +167,7 @@ main() {
 * just make a list {"weapon_name", uses_left}. Then refer to weapons
 * by name for dealing with combat and stuff. No need for cloning weapons,
 * just refer to the eternal and unchanging weapons. Use the constant
-* weapon stat_bonus and add to the character stat_bonus, which does change.
+* weapon stats_bonus and add to the character stats_bonus, which does change.
 * So essentially make items immutable. 
 *    CHARACTERS
 What about characters? I think characters need one object per filesave. then modify this object as the game evolves.
@@ -175,7 +178,7 @@ What about characters? I think characters need one object per filesave. then mod
     // unit Marth();
     auto start = steady_clock::now(); 
 
-      // /*Stats*/          18,  8,  2,  9, 10,  7,  5,  2,  6,  5,
+      // /*stats_base*/          18,  8,  2,  9, 10,  7,  5,  2,  6,  5,
       // /*Stat bonuses*/    0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
       // /*Growths*/        40, 50,  5, 80, 60, 50, 30, 20,  0,  0,
       // /*Total exp*/       0,
@@ -197,7 +200,7 @@ What about characters? I think characters need one object per filesave. then mod
       // };   
     unit Marth("Marth", "Prince", id++, 
         //HP  Str Mag Skl Spd Lck Def Res Con Mov
-        /*Stats*/           {18,  8,  2,  9, 10,  7,  5,  2,  6,  5},
+        /*stats_base*/           {18,  8,  2,  9, 10,  7,  5,  2,  6,  5},
         /*Growths*/         {90,  8,  2,  9, 10,  7,  5,  2,  6,  5},
         /*Equipment*/       {18,  8,  2,  9, 10,  7,  5,},
         /*Weapons*/         {18,  8,  2,  9,},
@@ -217,7 +220,7 @@ What about characters? I think characters need one object per filesave. then mod
     );
     // std::cout << Marth.name << endl;
     // std::cout << Marth.lovers[0] << endl;
-    // std::cout << Marth.stats[0] << endl;
+    // std::cout << Marth.stats_base[0] << endl;
     // std::cout << Marth.growths[0] << endl;
  
     auto stop = steady_clock::now(); 
@@ -254,9 +257,9 @@ What about characters? I think characters need one object per filesave. then mod
     // std::cout << sizeof(stringg) << endl;
     // std::cout << sizeof(charr) << endl;
     // std::cout << Marth.name << endl;
-    // // std::cout << (int) Marth.stats << endl;
-    // std::cout << Marth.stats[0] + 0 << endl;
-    // std::cout << Marth.stats[3] + 2 << endl;
+    // // std::cout << (int) Marth.stats_base << endl;
+    // std::cout << Marth.stats_base[0] + 0 << endl;
+    // std::cout << Marth.stats_base[3] + 2 << endl;
     // std::cout << sizeof(Marth) << endl;
     // std::cout << sizeof(Marth_vec) << endl;
 }
