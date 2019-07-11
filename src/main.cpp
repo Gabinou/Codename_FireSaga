@@ -142,7 +142,7 @@ weapon::weapon(std::string in_name, std::string in_type, char in_id, unsigned sh
 main() {
     printf("TESTING THIS BITCH\n");
     printf("Initializaing a character\n");
-
+    
     weapon Rapier("Rapier", "swd", id++, 600,
                   { 5, 90, 10,  7, 30,  2,  2},
                   std::vector<char>(LEN(unit_stats), 0), {"Marth"}, {"Knight", "Cavalier"});
@@ -175,29 +175,6 @@ main() {
 
     */
 
-
-      // /*stats_base*/          18,  8,  2,  9, 10,  7,  5,  2,  6,  5,
-      // /*Stat bonuses*/    0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
-      // /*Growths*/        40, 50,  5, 80, 60, 50, 30, 20,  0,  0,
-      // /*Total exp*/       0,
-                      // // swd lnc axe bow wnd tnd fir drk lgt stf
-      // /*Weapon exp*/      0,  0,  0,  0,  0,  0,  0,  0,  0,  0, 
-      // /*Position*/        1,  1,  1,
-      // /*Equipment*/       0,  0,  0,  0,  0,  0,  0,
-      // /*Weapons*/         0,  0,  0,  0,
-      // /*Items*/           0,  0,  0,  0,
-      // /*Equipped*/        1,
-      // /*Skills*/          1,  2,  3,
-      // /*Lovers*/         "Sheeda", "", "", "", "",
-      // /*Love Points*/    25,  0,  0,  0,  0,
-      // /*Love growths*/    2,  0,  0,  0,  0,
-      // /*Mounted*/         0,
-      // /*Armored*/         0,     
-      // /*Flying*/          0,
-      // /*Promoted*/        0
-      // };   
-      double time_spent = 0.0;
-      clock_t begin = clock();
     unit Marth("Marth", "Prince", id++, 
         //HP  Str Mag Skl Spd Lck Def Res Con Mov
         /*stats_base*/           {18,  8,  2,  9, 10,  7,  5,  2,  6,  5},
@@ -218,17 +195,12 @@ main() {
         /*Armored*/         0,
         /*MPromoted*/       0
     );
-    // std::cout << Marth.name << endl;
-    // std::cout << Marth.lovers[0] << endl;
-    // std::cout << Marth.stats_base[0] << endl;
-    // std::cout << Marth.growths[0] << endl;
-     // auto start1 = high_resolution_clock::now(); s
-    // auto stop = high_resolution_clock::now(); 
-    // std::chrono::duration<double> elapsed = duration_cast<std::chrono::milliseconds>(stop - start);
-    // cout << elapsed.count() << "ms" << endl; 
     
-   
-    printf("Elapsed time %f\n", time_spent)    ;  
+    unit Marths[10];
+    std::vector<unit> Marths_vec;
+    printf(" Size of arrays of Marths %d\n", sizeof(Marths));
+    printf(" Size of arrays of Marths_vec %d\n", sizeof(Marths_vec));
+    return(0);
     cout << sizeof(Marth) << "bytes" << endl; 
     unit_vec Marth_vec("Marth2", "Prince", id++, 
     {18,  8,  2,  9, 10,  7,  5,  2,  6,  5},
@@ -248,20 +220,5 @@ main() {
     );
 
     cout << sizeof(Marth_vec) << "bytes" << endl; 
-    // unit_vec Marth_vec("Marth2", "Prince", id++, {18,  8,  2,  9, 10,  7,  5,  2,  6,  5});
 
-    // std:string stringg = "Marth+Sheeda+Marth+Marth+Marth+Marth+Marth";
-    // char charr[64] = "MarthMarth+Sheeda+Marth+Marth+Marth+Marth+Marth";
-    // std::cout << "Marth2" << endl;
-    // std::cout << Marth.name << endl;
-    // std::cout << sizeof(stringg) << endl;
-    // std::cout << sizeof(charr) << endl;
-    // std::cout << Marth.name << endl;
-    // // std::cout << (int) Marth.stats_base << endl;
-    // std::cout << Marth.stats_base[0] + 0 << endl;
-    // std::cout << Marth.stats_base[3] + 2 << endl;
-    // std::cout << sizeof(Marth) << endl;
-    // std::cout << sizeof(Marth_vec) << endl;
-        clock_t end = clock();
-    time_spent += (double)(end - begin)/ CLOCKS_PER_SEC;   
 }
