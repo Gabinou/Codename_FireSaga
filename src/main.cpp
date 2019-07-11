@@ -23,6 +23,21 @@ char *all_wpns;
 char *all_units;
 unsigned char id = 0;
 
+
+generic::~generic(void) {
+    printf("Generic object is being deleted\n");
+}
+
+generic::generic() {
+
+}
+
+// generic::generic(const generic &obj) {
+   // printf("Copy constructor allocating ptr.\n");
+   // ptr = new int;
+   // *ptr = *obj.ptr; // copy the value
+// }
+
 unit::unit(std::string in_name, std::string in_unit_class, char in_id,
            std::vector<unsigned int> in_stats_base, std::vector<unsigned int> in_growths, std::vector<unsigned int> in_equipment,
            std::vector<unsigned int> in_weapons, std::vector<unsigned int> in_items,
@@ -161,6 +176,8 @@ main() {
     all_weapons["Rapier"] = weapon("Rapier", "swd", id++, 600,
                   { 5, 90, 10,  7, 30,  2,  2},
                   std::vector<char>(LEN(unit_stats), 0), {"Marth"}, {"Knight", "Cavalier"}); 
+                  
+    // weapon RapierCopy = all_weapons["Rapier"];
     all_weapons["Bronze Sword"] = weapon("Bronze Sword", "swd", id++, 450,
                   {3, 80,  0,  5, 45,  0,  1},
                   std::vector<char>(LEN(unit_stats), 0), {}, {});

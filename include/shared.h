@@ -18,7 +18,9 @@ public:
     char name[14];
     unsigned char id;
     char type[24]; //for units, contains class string. for weapons, contains weapon type string.
-    // generic();
+    ~generic();
+    generic();
+    generic(const generic &obj);
 };
 
 class unit: public generic {
