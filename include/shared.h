@@ -83,7 +83,7 @@ public:
 
 class weapon: public generic {
 public:
-    unsigned char stats_base[6];
+    unsigned char stats[6];
     char stats_bonus[10], effective[2][14], owner[5][14];
     unsigned short int cost;
     ~weapon();

@@ -3,11 +3,9 @@
 #include <stdio.h>
 #include <iostream>
 #include <vector>
-#include <time.h>
 #include <bits/stdc++.h> 
 #include "shared.h"
 using namespace std;
-using namespace std::chrono; 
 
 
 #define LEN(arr) ((int) (sizeof (arr) / sizeof (arr)[0])) // that is a macro. What is a macro?
@@ -120,7 +118,7 @@ weapon::~weapon(void) {
     printf("Weapon %s is being deleted.\n" , name);
 }
 weapon::weapon(std::string in_name, std::string in_type, char in_id, unsigned short int in_cost,
-       std::vector<int> in_stats_base, std::vector<char> in_stats_bonus,
+       std::vector<int> in_stats, std::vector<char> in_stats_bonus,
        std::vector<std::string> in_owner, std::vector<std::string> in_effective) {
     strncpy(name, in_name.c_str(), sizeof(in_name));
     strncpy(type, in_type.c_str(), sizeof(in_type));
@@ -133,8 +131,8 @@ weapon::weapon(std::string in_name, std::string in_type, char in_id, unsigned sh
     for (int i = 0; i < in_stats_bonus.size(); i++) {
         stats_bonus[i] = (int) in_stats_bonus[i];
     }
-    for (int i = 0; i < in_stats_base.size(); i++) {
-        stats_base[i] = in_stats_base[i];
+    for (int i = 0; i < in_stats.size(); i++) {
+        stats[i] = in_stats[i];
     }
     cost = in_cost;
 }
@@ -143,9 +141,18 @@ main() {
     printf("TESTING THIS BITCH\n");
     printf("Initializaing a character\n");
     
-    weapon Rapier("Rapier", "swd", id++, 600,
+    unordered_map<string, weapon> all_weapons;
+    
+    
+    // weapon Rapier("Rapier", "swd", id++, 600,
+                  // { 5, 90, 10,  7, 30,  2,  2},
+                  // std::vector<char>(LEN(unit_stats), 0), {"Marth"}, {"Knight", "Cavalier"});
+    all_weapons["Rapier"] = weapon("Rapier", "swd", id++, 600,
                   { 5, 90, 10,  7, 30,  2,  2},
                   std::vector<char>(LEN(unit_stats), 0), {"Marth"}, {"Knight", "Cavalier"});
+    printf("Does unordered_map allocation work? %s\n", all_weapons["Rapier"].name);
+    printf("Does unordered_map allocation work? %d\n", all_weapons["Rapier"].stats[0]);
+    return(0);    
     weapon Bronze_swd("Bronze Sword", "swd", id++, 450,
                   {3, 80,  0,  5, 45,  0,  1},
                   std::vector<char>(LEN(unit_stats), 0), {}, {});
