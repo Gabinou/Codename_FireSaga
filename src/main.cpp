@@ -142,32 +142,8 @@ main() {
     printf("Initializaing a character\n");
     
     unordered_map<string, weapon> all_weapons;
+    unordered_map<string, unit> all_units;
     
-    
-    // weapon Rapier("Rapier", "swd", id++, 600,
-                  // { 5, 90, 10,  7, 30,  2,  2},
-                  // std::vector<char>(LEN(unit_stats), 0), {"Marth"}, {"Knight", "Cavalier"});
-    all_weapons["Rapier"] = weapon("Rapier", "swd", id++, 600,
-                  { 5, 90, 10,  7, 30,  2,  2},
-                  std::vector<char>(LEN(unit_stats), 0), {"Marth"}, {"Knight", "Cavalier"});
-    printf("Does unordered_map allocation work? %s\n", all_weapons["Rapier"].name);
-    printf("Does unordered_map allocation work? %d\n", all_weapons["Rapier"].stats[0]);
-    return(0);    
-    weapon Bronze_swd("Bronze Sword", "swd", id++, 450,
-                  {3, 80,  0,  5, 45,  0,  1},
-                  std::vector<char>(LEN(unit_stats), 0), {}, {});
-    weapon Iron_swd("Iron Sword", "swd", id++, 450,
-                  {5, 80,  0,  7, 45,  0,  1}, 
-                  std::vector<char>(LEN(unit_stats), 0), {}, {});
-    weapon Iron_lnc("Iron Lance", "lance", id++, 450,
-                  {6, 80,  0,  8, 40,  0,  1},
-                  std::vector<char>(LEN(unit_stats), 0), {}, {});
-    weapon Steel_swd("Steel Sword", "swd", id++, 500,
-                  {8, 70,  0,  9,  35, 1,  1}, 
-                  std::vector<char>(LEN(unit_stats), 0), {}, {});
-    weapon Damascus_swd("Damascus Sword", "swd", id++, 1000,
-                  {12, 65,  0,  8, 25,  3,  1},
-                  std::vector<char>(LEN(unit_stats), 0), {}, {});
     /* CLONING: 
     *   WEAPONS:
     * idea for lightness and foregoing cloning weapons: In equipment,
@@ -176,11 +152,32 @@ main() {
     * just refer to the eternal and unchanging weapons. Use the constant
     * weapon stats_bonus and add to the character stats_bonus, which does change.
     * So essentially make items immutable. 
+    *  Maybe call this variable: weapons_reference.
     *    CHARACTERS
     What about characters? I think characters need one object per filesave. then modify this object as the game evolves.
 
 
     */
+    all_weapons["Rapier"] = weapon("Rapier", "swd", id++, 600,
+                  { 5, 90, 10,  7, 30,  2,  2},
+                  std::vector<char>(LEN(unit_stats), 0), {"Marth"}, {"Knight", "Cavalier"}); 
+    all_weapons["Bronze Sword"] = weapon("Bronze Sword", "swd", id++, 450,
+                  {3, 80,  0,  5, 45,  0,  1},
+                  std::vector<char>(LEN(unit_stats), 0), {}, {});
+    all_weapons["Iron Sword"] =  weapon("Iron Sword", "swd", id++, 450,
+                  {5, 80,  0,  7, 45,  0,  1}, 
+                  std::vector<char>(LEN(unit_stats), 0), {}, {});
+    all_weapons["Iron Lance"] = weapon("Iron Lance", "lance", id++, 450,
+                  {6, 80,  0,  8, 40,  0,  1},
+                  std::vector<char>(LEN(unit_stats), 0), {}, {});
+    all_weapons["Steel Sword"] = weapon("Steel Sword", "swd", id++, 500,
+                  {8, 70,  0,  9,  35, 1,  1}, 
+                  std::vector<char>(LEN(unit_stats), 0), {}, {});
+    all_weapons["Lame de Damas"] = weapon("Lame de Damas", "swd", id++, 1000,
+                  {12, 65,  0,  8, 25,  3,  1},
+                  std::vector<char>(LEN(unit_stats), 0), {}, {});
+    // Other names: Acier de Damas. Damas Sword. Damascus Sword. Damas Sword. Damas steel sword.
+
 
     unit Marth("Marth", "Prince", id++, 
         //HP  Str Mag Skl Spd Lck Def Res Con Mov
