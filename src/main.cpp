@@ -18,11 +18,7 @@ unsigned char wpn_exp_lvls[][14] = {25, 60, 100, 150};
 char weapons[][14]  = {"Iron Sword", "Iron Bow"};
 char statuses[][14] = {"healthy", "sleep", "poison", "stone", "berserk"};
 char unit_classes[][24] = {"Lord", "Prince", "Princess", "Armor Knight", "Cavalier", "Pegasus Knight", "Wyvern Knight", "Axe Rider", "Lance Rider", "Sword Rider", "Mercernary", "Myrmidon", "Soldier", "Archer", "Mage", "Priest", "Priestess", "King", "Paladin", "Sniper", "General", "Bishop", "Hero", "Pirate", "Fighter", "Thief", "Troubadour", "Cleric", "Monk", "Shaman", "Dragon", "Dancer"};
-char all_weapon_names[][14] = {"Bronze Sword", "Iron Sword", "Steel Sword", "Rapier"
-
-
-
-};
+char all_weapon_names[][14] = {"Bronze Sword", "Iron Sword", "Steel Sword", "Rapier"};
 // Other names: Acier de Damas. Damas Sword. Damascus Sword. Damas Sword. Damas steel sword.
     
 char equipment_slots = 7;
@@ -164,6 +160,8 @@ inventory_item::inventory_item() {
 
 inventory_item::inventory_item(std::string in_name, char in_used){
     name = in_name;
+    printf("%s\n", in_name);
+    printf("%s\n", name);
     used = in_used;
 }
 
@@ -173,6 +171,7 @@ inventory_item::~inventory_item(void) {
 }
 inventory_item::inventory_item(const inventory_item& source) {
     name = source.name;
+    printf("%s\n", name);
     used = source.used;
 }
 
@@ -225,11 +224,13 @@ main() {
 
     
     // inventory_items["Rapier"] =  inventory_item();
-    for (int i = 0; i < sizeof all_weapon_names / sizeof all_weapon_names[0]; i++) {
-        printf("Current name %s\n", all_weapon_names[i]); 
-        inventory_items[all_weapon_names[i]] =  inventory_item(all_weapon_names[i], 10);
-    }
-    printf("TAGUEULE CONNASSE %s\n", inventory_items["Iron Sword"].name);
+    // for (int i = 0; i < sizeof all_weapon_names / sizeof all_weapon_names[0]; i++) {
+        // printf("Current name %s\n", all_weapon_names[i]); 
+        // inventory_items[all_weapon_names[i]] =  inventory_item("a", 10);
+    // }
+    // printf("TAGUEULE CONNASSE %s\n", inventory_items["Iron Sword"].name);
+    std::string s = "Iron Sword";
+    inventory_items["Iron Sword"] =  inventory_item(s, 10);
     printf("TAGUEULE CONNASSE %s\n", inventory_items["Iron Sword"].name);
     printf("TAGUEULE CONNASSE %d\n", inventory_items["Iron Sword"].used); 
     // std::cout << inventory_items["Iron Sword"] << endl; 
