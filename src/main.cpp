@@ -150,6 +150,17 @@ weapon::weapon(std::string in_name, std::string in_type, char in_id, unsigned sh
     }
     cost = in_cost;
 }
+inventory_item::inventory_item() {
+
+}
+inventory_item::~inventory_item(void) {
+    // printf("Weapon %s is being deleted.\n" , name);
+}
+inventory_item::inventory_item(const inventory_item& source) {
+    name = source.name;
+    used = source.used;
+    wpn = source.wpn;
+}
 
 main() {
     printf("TESTING THIS BITCH\n");
@@ -198,12 +209,9 @@ main() {
                   {12,  65,  0,   8,  25,   1},
                   std::vector<char>(LEN(unit_stats), 0), {}, {});
     // Other names: Acier de Damas. Damas Sword. Damascus Sword. Damas Sword. Damas steel sword.
-
-    struct inventory_item Rapier_inventory = {.name = "Rapier", .wpn = &all_weapons["Rapier"], .used = 0};
-    // strncpy(Rapier_inventory.name, "Rapier");
-    // inventory_items["Rapier"] =  Rapier_inventory;
-    inventory_items["Rapier"] =  {"Rapier", &all_weapons["Rapier"], 0} ;
-    printf("size of struct %d\n", sizeof(Rapier_inventory));
+    
+    // inventory_items["Rapier"] =  {"Rapier", &all_weapons["Rapier"], 0} ;
+    // printf("size of struct %d\n", sizeof(inventory_items["Rapier"]));
     // unit Marth("Marth", "Prince", id++, 
                             // //HP Str Mag Skl Spd Lck Def Res Con Mov
         // /*stats_base*/      {18,  8,  2,  9, 10,  7,  5,  2,  6,  5},

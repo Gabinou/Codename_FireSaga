@@ -44,6 +44,9 @@ struct inventory_item {
     std::string name;
     weapon *wpn;
     char used;
+    inventory_item(const inventory_item&); 
+    inventory_item(); 
+    ~inventory_item(); 
 };
 
 class unit: public generic {
@@ -97,7 +100,7 @@ public:
             std::vector<unsigned char>, std::vector<unsigned char>,
             std::vector<unsigned char>, std::vector<unsigned char>,
             std::vector<unsigned char>, std::vector<unsigned char>,
-            std::vector<inventory_item>,
+            std::vector<struct inventory_item>,
             unsigned short, std::vector<std::string>,
             bool, bool, bool, bool
             );
