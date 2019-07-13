@@ -201,7 +201,8 @@ main() {
 
     struct inventory_item Rapier_inventory = {.name = "Rapier", .wpn = &all_weapons["Rapier"], .used = 0};
     // strncpy(Rapier_inventory.name, "Rapier");
-    inventory_items["Rapier"] =  Rapier_inventory;
+    // inventory_items["Rapier"] =  Rapier_inventory;
+    inventory_items["Rapier"] =  {"Rapier", &all_weapons["Rapier"], 0} ;
     printf("size of struct %d\n", sizeof(Rapier_inventory));
     // unit Marth("Marth", "Prince", id++, 
                             // //HP Str Mag Skl Spd Lck Def Res Con Mov
