@@ -42,9 +42,9 @@ public:
 
 struct inventory_item {
     std::string name;
-    weapon *wpn;
     char used;
     inventory_item(const inventory_item&); 
+    inventory_item(std::string, char); 
     inventory_item(); 
     ~inventory_item(); 
 };

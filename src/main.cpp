@@ -12,12 +12,19 @@ using namespace std;
 
 
 char unit_stats[][14] = {"HP", "Str", "Mag", "Skill", "Speed", "Luck", "Def", "Res", "Con", "Move"};
-char weapon_stats[][14] = {"dmg", "hit", "crit", "weight", "wpn_exp", "uses"};
+char weapon_stats[][14] = {"dmg", "hit", "crit", "weight", "wpn_exp", "uses", "range"};
 char wpn_types[][12]  = {"swd", "lance", "axe", "bow", "mgc_wind", "mgc_fire", "mgc_thunder",  "mgc_dark",  "mgc_light", "staff"};
 unsigned char wpn_exp_lvls[][14] = {25, 60, 100, 150};
 char weapons[][14]  = {"Iron Sword", "Iron Bow"};
 char statuses[][14] = {"healthy", "sleep", "poison", "stone", "berserk"};
 char unit_classes[][24] = {"Lord", "Prince", "Princess", "Armor Knight", "Cavalier", "Pegasus Knight", "Wyvern Knight", "Axe Rider", "Lance Rider", "Sword Rider", "Mercernary", "Myrmidon", "Soldier", "Archer", "Mage", "Priest", "Priestess", "King", "Paladin", "Sniper", "General", "Bishop", "Hero", "Pirate", "Fighter", "Thief", "Troubadour", "Cleric", "Monk", "Shaman", "Dragon", "Dancer"};
+char all_weapon_names = {"Bronze Sword", "Iron Sword", "Steel Sword", "Rapier"
+
+
+
+}
+// Other names: Acier de Damas. Damas Sword. Damascus Sword. Damas Sword. Damas steel sword.
+    
 char equipment_slots = 7;
 char *all_wpns;
 char *all_units;
@@ -150,16 +157,23 @@ weapon::weapon(std::string in_name, std::string in_type, char in_id, unsigned sh
     }
     cost = in_cost;
 }
+
 inventory_item::inventory_item() {
 
 }
+
+inventory_item::inventory_item(std::string in_name, char in_used){
+    name = in_name;
+    used = in_used;
+}
+
+
 inventory_item::~inventory_item(void) {
     // printf("Weapon %s is being deleted.\n" , name);
 }
 inventory_item::inventory_item(const inventory_item& source) {
     name = source.name;
     used = source.used;
-    wpn = source.wpn;
 }
 
 main() {
@@ -208,10 +222,10 @@ main() {
                 // dmg hit  crt wght uses  exp
                   {12,  65,  0,   8,  25,   1},
                   std::vector<char>(LEN(unit_stats), 0), {}, {});
-    // Other names: Acier de Damas. Damas Sword. Damascus Sword. Damas Sword. Damas steel sword.
+
     
-    // inventory_items["Rapier"] =  {"Rapier", &all_weapons["Rapier"], 0} ;
-    // printf("size of struct %d\n", sizeof(inventory_items["Rapier"]));
+    // inventory_items["Rapier"] =  inventory_item();
+    inventory_items["Rapier"] =  inventory_item("Rapier", 0) ;
     // unit Marth("Marth", "Prince", id++, 
                             // //HP Str Mag Skl Spd Lck Def Res Con Mov
         // /*stats_base*/      {18,  8,  2,  9, 10,  7,  5,  2,  6,  5},
