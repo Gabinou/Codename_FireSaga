@@ -199,9 +199,10 @@ main() {
                   std::vector<char>(LEN(unit_stats), 0), {}, {});
     // Other names: Acier de Damas. Damas Sword. Damascus Sword. Damas Sword. Damas steel sword.
 
-    struct inventory_item Rapier_inventory = {.wpn = &all_weapons["Rapier"], .used = 0};
-    strncpy(Rapier_inventory.name, "Rapier", sizeof("Rapier"));
+    struct inventory_item Rapier_inventory = {.name = "Rapier", .wpn = &all_weapons["Rapier"], .used = 0};
+    // strncpy(Rapier_inventory.name, "Rapier");
     inventory_items["Rapier"] =  Rapier_inventory;
+    printf("size of struct %d\n", sizeof(Rapier_inventory));
     // unit Marth("Marth", "Prince", id++, 
                             // //HP Str Mag Skl Spd Lck Def Res Con Mov
         // /*stats_base*/      {18,  8,  2,  9, 10,  7,  5,  2,  6,  5},

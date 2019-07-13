@@ -41,7 +41,7 @@ public:
 };
 
 struct inventory_item {
-    char name[14];
+    std::string name;
     weapon *wpn;
     char used;
 };
