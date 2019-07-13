@@ -23,63 +23,9 @@ public:
     generic(const generic &obj);
 };
 
-class unit: public generic {
-    // Lightweight implementation.
-public:
-    // all unsigned variables cannot be negative.
-    char  stats_bonus[10];
-    // Bonuses can be negative -> maluses
-    unsigned char current_hp, stats_base[10], stats_grown[10], growths[10], wpn_exp[10], position[3],
-        equipment[7], weapons[4], items[4], equipped[1], skills[3],
-        love_pts[5], love_growths[5];
-    unsigned short exp;
-    // If equipment is not empty, weapons and items are not used. and vice versa.
-    // Equipped is the index of the weapon in unit.equipment.
-    char lovers[5][14]; // names of possible lovers.
-    bool mounted, flying, armored, promoted;
-    unit(std::string, std::string, char,
-        std::vector<unsigned int>, std::vector<unsigned int>,
-        std::vector<unsigned int>, std::vector<unsigned int>,
-        std::vector<unsigned int>, std::vector<unsigned int>,
-        std::vector<unsigned int>, std::vector<unsigned int>,
-        std::vector<unsigned int>, std::vector<unsigned int>,
-        std::vector<unsigned int>,
-        unsigned short, std::vector<std::string>,
-        bool, bool, bool, bool
-        );
-    char attack(char, unsigned char, unsigned char);
-    ~unit();
-    unit();
-};
-
 //Unit implementation notes:
     // unit_vec size \= 2 * unit size
 
-class unit_vec {
-    // Flexible implementation.
-public:
-    public:
-        std::string name, unit_class;
-        std::vector<std::string> lovers;
-        unsigned char id, current_hp;
-        unsigned short exp;
-        std::vector<unsigned char> stats_base, stats_grown, stats_bonus, growths, wpn_exp, position,
-                                   equipment, weapons, items, equipped, skills,
-                                   love_pts, love_growths; 
-        bool mounted, flying, armored, promoted;
-    unit_vec(std::string, std::string, char,
-            std::vector<unsigned char>, std::vector<unsigned char>,
-            std::vector<unsigned char>, std::vector<unsigned char>,
-            std::vector<unsigned char>, std::vector<unsigned char>,
-            std::vector<unsigned char>, std::vector<unsigned char>,
-            std::vector<unsigned char>, std::vector<unsigned char>,
-            std::vector<unsigned char>,
-            unsigned short, std::vector<std::string>,
-            bool, bool, bool, bool
-            );
-    unit_vec();
-    ~unit_vec();
-};
 
 class weapon: public generic {
 public:
@@ -93,6 +39,73 @@ public:
         );
     weapon();
 };
+
+struct inventory_item {
+    char name[14];
+    weapon *wpn;
+    char used;
+};
+
+class unit: public generic {
+    // Lightweight implementation.
+public:
+    // all unsigned variables cannot be negative.
+    char  stats_bonus[10];
+    // Bonuses can be negative -> maluses
+    unsigned char current_hp, stats_base[10], stats_grown[10],
+    growths[10], wpn_exp[10], position[3],
+     weapons[4], items[4], equipped[1], skills[3],
+    love_pts[5], love_growths[5];
+    struct inventory_item equipment[7];
+    
+    unsigned short exp;
+    // If equipment is not empty, weapons and items are not used. and vice versa.
+    // Equipped is the index of the weapon in unit.equipment.
+    char lovers[5][14]; // names of possible lovers.
+    bool mounted, flying, armored, promoted;
+    unit(std::string, std::string, char,
+        std::vector<unsigned int>, std::vector<unsigned int>,
+        std::vector<unsigned int>, std::vector<unsigned int>,
+        std::vector<unsigned int>, std::vector<unsigned int>,
+        std::vector<unsigned int>, std::vector<unsigned int>,
+        std::vector<unsigned int>, std::vector<unsigned int>,
+        std::vector<inventory_item>,
+        unsigned short, std::vector<std::string>,
+        bool, bool, bool, bool
+        );
+    char attack(char, unsigned char, unsigned char);
+    ~unit();
+    unit();
+};
+
+class unit_vec {
+    // Flexible implementation.
+public:
+    public:
+        std::string name, unit_class;
+        std::vector<std::string> lovers;
+        unsigned char id, current_hp;
+        unsigned short exp;
+         std::vector<struct inventory_item> equipment;
+        std::vector<unsigned char> stats_base, stats_grown, stats_bonus, growths, wpn_exp, position,
+                                   weapons, items, equipped, skills,
+                                   love_pts, love_growths; 
+        bool mounted, flying, armored, promoted;
+    unit_vec(std::string, std::string, char,
+            std::vector<unsigned char>, std::vector<unsigned char>,
+            std::vector<unsigned char>, std::vector<unsigned char>,
+            std::vector<unsigned char>, std::vector<unsigned char>,
+            std::vector<unsigned char>, std::vector<unsigned char>,
+            std::vector<unsigned char>, std::vector<unsigned char>,
+            std::vector<inventory_item>,
+            unsigned short, std::vector<std::string>,
+            bool, bool, bool, bool
+            );
+    unit_vec();
+    ~unit_vec();
+};
+
+
 
 // class weapon_vec : public generic {
 // public:
