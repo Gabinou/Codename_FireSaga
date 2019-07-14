@@ -135,49 +135,8 @@ unit::unit(std::string in_name, std::string in_unit_class, char in_id,
 unit::unit(){
 
 }
-unit_vec::unit_vec(std::string in_name, std::string in_unit_class, char in_id,
-           std::vector<unsigned char> in_stats_base, std::vector<unsigned char> in_growths, 
-           std::vector<unsigned char> in_weapons, std::vector<unsigned char> in_items,
-           std::vector<unsigned char> in_equipped, std::vector<unsigned char> in_skills,
-           std::vector<unsigned char> in_love_pts, std::vector<unsigned char> in_love_growths,
-           std::vector<unsigned char> in_wpn_exp, std::vector<unsigned char> in_position,
-           std::vector<inventory_item> in_equipment,
-           unsigned short in_exp, std::vector<std::string> in_lovers,
-           bool in_mounted, bool in_flying, bool in_armored, bool in_promoted) {
-    name = in_name; 
-    unit_class = in_unit_class; 
-    id = in_id; 
-    stats_base = in_stats_base; 
-    stats_grown = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
-    stats_bonus = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
-    growths = in_growths; 
-    equipment = in_equipment; 
-    weapons = in_weapons; 
-    items = in_items; 
-    equipped = in_equipped; 
-    skills = in_skills; 
-    love_pts = in_love_pts; 
-    love_growths = in_love_growths; 
-    wpn_exp = in_wpn_exp; 
-    position = in_position; 
-    exp = in_exp; 
-    // for (int i = 0; i < in_lovers.size(); i++) {
-        // strncpy(lovers[i], in_lovers[i].c_str(), sizeof(in_lovers));
-    // }
-    lovers = in_lovers;
-    flying = in_flying; 
-    mounted = in_mounted; 
-    armored = in_armored; 
-    promoted = in_promoted; 
-}
 generic::~generic(void) {
     // printf("Generic object is being deleted\n");
-}
-unit_vec::unit_vec(){
-        // name = "test";
-}
-unit_vec::~unit_vec(void) {
-    // printf("Unit_vec %s is being deleted.\n", name.c_str());
 }
 unit::~unit(void) {
    // printf("Unit %s is being deleted.\n", name.c_str());
@@ -309,22 +268,6 @@ main() {
     // printf(" Size of arrays of Marths_vec %d\n", sizeof(Marths_vec));
     // return(0);
     // cout << sizeof(Marth) << "bytes" << endl; 
-    // unit_vec Marth_vec("Marth2", "Prince", id++, 
-    // {18,  8,  2,  9, 10,  7,  5,  2,  6,  5},
-    // {18,  8,  2,  9, 10,  7,  5,  2,  6,  5},
-    // {18,  8,  2,  9, 10,  7,  5,},
-    // {18,  8,  2,  9,},
-    // {18,  8,  2,  9,},
-    // {18},
-    // {18,1,1},
-    // {18,1,1 ,1,1},
-    // {18,1,1 ,1,1},
-    // {18,  8,  2,  9, 10,  7,  5,  2,  6,  5},
-    // {18,  8,  2},
-    // 0, 
-    // {"Sheeda", "" ,"","",""},
-    // 0, 0, 0, 0
-    // );
 
     // cout << sizeof(Marth_vec) << "bytes" << endl; 
 
