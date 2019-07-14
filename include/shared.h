@@ -37,6 +37,7 @@ public:
     unsigned char stats[6];
     char stats_bonus[10], effective[2][14], owner[5][14];
     unsigned short int cost;
+    bool dmg_typ;
     ~weapon();
     weapon(std::string, std::string, char, unsigned short int,
         std::vector<int>,  std::vector<char>,
