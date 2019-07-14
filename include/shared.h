@@ -4,15 +4,26 @@
 * \brief Shared data.
 */
 extern char unit_stats[][14];
-extern char unit_stats[][14];
+/// \var extern char unit_stats
+/// \brief Global declaration of unit_stats.
 extern char weapon_stats[][14];
+/// \var extern char weapon_stats
+/// \brief Global declaration of weapon_stats.
 extern char wpn_types[][12];
+/// \var extern char wpn_types
+/// \brief Global declaration of wpn_types.
 extern char weapons[][14];
+/// \var extern char weapons
+/// \brief Global declaration of weapons.
 extern char statuses[][14];
+/// \var extern char statuses
+/// \brief Global declaration of statuses.
 extern char unit_classes[][24];
+/// \var extern char unit_classes
+/// \brief Global declaration of unit_classes.
 extern char equipment_slots;
-extern char* all_units;
-extern char* all_wpns;
+/// \var extern char equipment_slots
+/// \brief Global declaration of equipment_slots.
 extern unsigned char id;
 
 
@@ -26,10 +37,14 @@ public:
     unsigned char id;
     /// \var unsigned char id
     /// \brief All objects get ids.
-    char type[24]; //for units, contains class string. for weapons, contains weapon type string.
+    char type[24]; 
+    /// \var type
+    /// \brief For units, contains class string. For weapons, contains weapon type string.
     ~generic();
     generic();
     generic(const generic &obj);
+    /// \fn generic(const generic &obj)
+    /// \brief Copy constructor for generic object. Useless?
 };
 
 /// \class weapon
@@ -70,7 +85,7 @@ public:
     weapon();
 };
 
-/// \var inventory_item
+/// \struct inventory_item
 /// \brief Representation of items in unit inventory to reduce memory.
 struct inventory_item {
     char name[14];
@@ -92,8 +107,11 @@ public:
     unsigned char current_hp, stats_base[10],
     growths[10], wpn_exp[10], position[3], skills[3],
     love_pts[5], love_growths[5];
+    /// \var unsigned char love_growths
+    /// \brief Number of points units that have love potential get for *DESIGN QUESTION*.
     std::vector<std::vector<unsigned char>> stats_grown;
-    
+    /// \var stats_grown
+    /// \brief All stats grown for level ups. Stack of 10-length rows.
     /// \var current_hp
     /// \brief Current hit points.
     /// \var stats_base
@@ -101,11 +119,19 @@ public:
     /// stats_grown
     struct inventory_item equipment[7], equipped[1], weapons[4], items[4];
     /// \var equipment
-    /// If equipment is not empty, weapons and items are not used. And vice versa.
+    /// \brief If equipment is not empty, weapons and items are not used. And vice versa.
+    /// \var items
+    /// \brief Only used if equipment is not. Slots only for items/not weapons.
+    /// \var weapons
+    /// \brief Only used if equipment is not. Slots only for weapons.
     /// The contents of the equipment array are inventory_item structs.
     /// \var equipped
     /// \brief Equipped weapon inventory_item struct.
-    unsigned short exp;
+    unsigned short int exp;
+    /*! \var unsigend short int exp
+    * \brief Total Unit Experience points.
+    * Not unit level in data. The experience points left most digits are the level. Example: 423exp means unit level 5 with 23 exp.
+    */
 
     char lovers[5][14]; 
     /// \var char lovers
