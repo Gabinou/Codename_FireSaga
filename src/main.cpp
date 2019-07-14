@@ -12,7 +12,7 @@ using namespace std;
 
 
 char unit_stats[][14] = {"HP", "Str", "Mag", "Skill", "Speed", "Luck", "Def", "Res", "Con", "Move"};
-char weapon_stats[][14] = {"dmg", "hit", "crit", "weight", "wpn_exp", "uses", "range"};
+char weapon_stats[][14] = {"dmg", "hit", "crit", "weight", "wpn_exp", "uses", "range", "lvl"};
 char wpn_types[][12]  = {"swd", "lance", "axe", "bow", "mgc_wind", "mgc_fire", "mgc_thunder",  "mgc_dark",  "mgc_light", "staff"};
 unsigned char wpn_exp_lvls[][14] = {25, 60, 100, 150};
 char weapons[][14]  = {"Iron Sword", "Iron Bow"};
@@ -159,8 +159,6 @@ inventory_item::inventory_item() {
 
 inventory_item::inventory_item(std::string in_name, char in_used){
     strncpy(name, in_name.c_str(), sizeof(in_name));
-    printf("%s\n", in_name);
-    printf("%s\n", name);
     used = in_used;
 }
 
@@ -170,7 +168,6 @@ inventory_item::~inventory_item(void) {
 }
 inventory_item::inventory_item(const inventory_item& source) {
     strcpy(name, source.name);
-    printf("%s\n", name);
     used = source.used;
 }
 
@@ -181,6 +178,9 @@ main() {
     unordered_map<string, weapon> all_weapons;
     unordered_map<string, struct inventory_item> inventory_items;
     unordered_map<string, unit> all_units;
+    
+    // Unordered map convention: "name" is the immutable original object.
+    // Copies have "name_id"
     
     /* CLONING: 
     *   WEAPONS:
@@ -197,39 +197,33 @@ main() {
 
     */
     all_weapons["Rapier"] = weapon("Rapier", "swd", id++, 600,
-                // dmg  hit  crt wght uses  exp
-                  { 5,  90,  10,   7,  30,   2},
+                // dmg  hit  crt wght uses  exp range
+                  {5,  90,  10,   7,  30,   2,  1},
                   std::vector<char>(LEN(unit_stats), 0), {"Marth"}, {"Knight", "Cavalier"}); 
     all_weapons["Bronze Sword"] = weapon("Bronze Sword", "swd", id++, 450,
-               // dmg  hit  crt wght uses  exp
-                  {3,  80,  0,   5,  45,   1},
+               // dmg  hit  crt wght uses  exp range
+                  {3,  80,   0,   5,  45,   1,   1},
                   std::vector<char>(LEN(unit_stats), 0), {}, {});
     all_weapons["Iron Sword"] =  weapon("Iron Sword", "swd", id++, 450,
-               // dmg hit  crt wght uses  exp
-                  {5, 80,   0,   7,  45,   1}, 
+               // dmg hit  crt wght uses  exp range
+                  {5,  80,    0,   7,  45,   1,   1}, 
                   std::vector<char>(LEN(unit_stats), 0), {}, {});
     all_weapons["Iron Lance"] = weapon("Iron Lance", "lance", id++, 450,
-               // dmg hit  crt wght uses  exp
-                  {6, 80,  0,   8,   40,  1},
+               // dmg hit  crt wght uses  exp range
+                  {6,  80,   0,   8,   40,  1,   1},
                   std::vector<char>(LEN(unit_stats), 0), {}, {});
     all_weapons["Steel Sword"] = weapon("Steel Sword", "swd", id++, 500,
-               // dmg hit  crt wght uses  exp
-                  {8, 70,   0,   9,   35,  1}, 
+               // dmg hit  crt wght uses  exp range
+                  {8,  70,   0,   9,   35,  1,  1}, 
                   std::vector<char>(LEN(unit_stats), 0), {}, {});
     all_weapons["Lame de Damas"] = weapon("Lame de Damas", "swd", id++, 1000,
-                // dmg hit  crt wght uses  exp
-                  {12,  65,  0,   8,  25,   1},
+                // dmg hit  crt wght uses  exp range
+                  {12,  65,  0,   8,  25,   1,  1},
                   std::vector<char>(LEN(unit_stats), 0), {}, {});
 
-    
-    // inventory_items["Rapier"] =  inventory_item();
-    // for (int i = 0; i < sizeof all_weapon_names / sizeof all_weapon_names[0]; i++) {
-        // printf("Current name %s\n", all_weapon_names[i]); 
-        // inventory_items[all_weapon_names[i]] =  inventory_item("a", 10);
-    // }
-    // printf("TAGUEULE CONNASSE %s\n", inventory_items["Iron Sword"].name);
-    std::string s = "Iron Sword";
-    inventory_items["Iron Sword"] =  inventory_item(s, 10);
+    for (int i = 0; i < sizeof all_weapon_names / sizeof all_weapon_names[0]; i++) {
+        inventory_items[all_weapon_names[i]] =  inventory_item(all_weapon_names[i], 10);
+    }
     printf("TAGUEULE CONNASSE %s\n", inventory_items["Iron Sword"].name);
     printf("TAGUEULE CONNASSE %d\n", inventory_items["Iron Sword"].used); 
     // std::cout << inventory_items["Iron Sword"] << endl; 
