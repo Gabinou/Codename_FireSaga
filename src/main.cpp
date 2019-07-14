@@ -15,15 +15,22 @@ using namespace std;
 
 
 char unit_stats[][14] = {"HP", "Str", "Mag", "Skill", "Speed", "Luck", "Def", "Res", "Con", "Move"};
-/*! \var char weapon_stats
+/*! \var char unit_stats
 * \bried Unit Stats description: <br>
-*  - HP: Hit Points. Unit health. Unit dies (forever) if it goes down to zero.  <br>
-*  - Str: Strength. +1 Str -> +1 Attack.  <br>
-*  - Mag: Magic. +1 Mag -> +1 Attack.  <br>
+*  - HP: Hit Points. Unit health. Unit dies (forever) if it goes down to zero. <br>
+*  - Str: Strength. +1 Str -> +1 Attack. Refer to ... <br>
+*  - Mag: Magic. +1 Mag -> +1 Attack. Refer to ... <br>
+*  - Skill: Higher skill means higher Hit rate and Avoid Rate. Refer to ...  <br>
+*  - Speed: Higher speeds lead to double strikes. Refer to ...  <br>
+*  - Luck: Increases hit, avoid, decreases enemy crit chance, etc. <br>
+*  - Def: Defens.: +1 Def -> -1 Received Damage from physical attacks <br>
+*  - Res: Magic Resistance. +1 Red -> -1 Received Damage from magic attacks. <br>
+*  - Con: Constitution. Only a unit with a higher constitution can rescue another. Refer to... <br>
+*  - Move: Distance, in squares, taht a unit can move on the grid map. Refer to ... <br>
 */
 char weapon_stats[][14] = {"dmg", "hit", "crit", "weight", "wpn_exp", "uses", "range", "lvl"}; 
 /*! \var char weapon_stats
-* \bried Weapon Stats description: <br>
+* \brief Weapon Stats description: <br>
 *  - dmg: Damage. +1 dmg -> +1 Attack. Refer to... <br>
 *  - hit: Hit chance. % probability value to hit. Refer to ... <br>
 *  - crit: Crit chance. % probability value to crit. Refer to...  <br>
@@ -32,19 +39,47 @@ char weapon_stats[][14] = {"dmg", "hit", "crit", "weight", "wpn_exp", "uses", "r
 *  - range: distance in squares to which a unit can attack with weapon.  <br>
 *  - lvl: Weapon level. Integer representing the weapon experience/level necessary to use the weapon. Refer to ...  <br>
 */
-
 char wpn_types[][12]  = {"swd", "lance", "axe", "bow", "mgc_wind", "mgc_fire", "mgc_thunder",  "mgc_dark",  "mgc_light", "staff"};
+/// \var char wpn_types
+/// \brief Weapon types.
 unsigned char wpn_exp_lvls[][14] = {25, 60, 100, 150};
-char weapons[][14]  = {"Iron Sword", "Iron Bow"};
+/*! \var char wpn_exp_lvls
+* \brief Weapon Experience levels <br>
+*  Weapon Experience necessary to go up a weapon level. <br>
+*/
 char statuses[][14] = {"healthy", "sleep", "poison", "stone", "berserk"};
+/*! \var char statuses
+*   \brief Statuses. Affects units for 5 turns each, except for stone, which is forever.
+*  - Healthy. <br>
+*  - Sleep: Unit cannot move, attack, or retaliate. Unit wakes up after being attacked. Refer to ... <br>
+*  - Poison: Loses HP every turn. (How much?) <br>
+*  - Stone: Unit cannot move, attack or retaliate. Can only be cured by the ... staff. <br>
+*  - Berserk. Unit attacks the weakest unit in range. Friend or foe. DESIGN! <br>
+*/
+
 char unit_classes[][24] = {"Lord", "Prince", "Princess", "Armor Knight", "Cavalier", "Pegasus Knight", "Wyvern Knight", "Axe Rider", "Lance Rider", "Sword Rider", "Mercernary", "Myrmidon", "Soldier", "Archer", "Mage", "Priest", "Priestess", "King", "Paladin", "Sniper", "General", "Bishop", "Hero", "Pirate", "Fighter", "Thief", "Troubadour", "Cleric", "Monk", "Shaman", "Dragon", "Dancer"};
+/// \var char unit_classes
+/// \brief Unit classes.
 char all_weapon_names[][14] = {"Bronze Sword", "Iron Sword", "Steel Sword", "Rapier"};
+/// \var char all_weapon_names
+/// \brief All Weapon Names.
+char all_unit_names[][14] = {"Marth", "Sheeda"};
+/// \var char all_unit_names
+/// \brief All Unit Names.
 // Other names: Acier de Damas. Damas Sword. Damascus Sword. Damas Sword. Damas steel sword.
     
 char equipment_slots = 7;
-char *all_wpns;
-char *all_units;
+/// \var char equipment_slots
+/// \brief Total number of equipment slots. Only used for an inventory that mixes weapons and items.
+char item_slots = 7;
+/// \var char item_slots
+/// \brief Number of item slots. Separate from weapon slots.
+char weapon_slots = 7;
+/// \var weapon_slots 
+/// \brief Number of weapon slots. Separate from weapon slots.
+
 unsigned char id = 0;
+/// Item slots. Separate from weapon slots.
 
 generic::generic() {
 
