@@ -24,6 +24,8 @@ public:
     /// \var char name
     /// \brief Name of generic object.
     unsigned char id;
+    /// \var unsigned char id
+    /// \brief All objects get ids.
     char type[24]; //for units, contains class string. for weapons, contains weapon type string.
     ~generic();
     generic();
@@ -77,11 +79,17 @@ public:
     char  stats_bonus[10];
     /// \var stats_bonus
     /// \brief Bonuses can be negative -> maluses
-    unsigned char current_hp, stats_base[10], stats_grown[10],
-    growths[10], wpn_exp[10], position[3],
-     weapons[4], items[4], skills[3],
+    unsigned char current_hp, stats_base[10],
+    growths[10], wpn_exp[10], position[3], skills[3],
     love_pts[5], love_growths[5];
-    struct inventory_item equipment[7], equipped[1],;
+    std::vector<std::vector<unsigned char>> stats_grown;
+    
+    /// \var current_hp
+    /// \brief Current hit points.
+    /// \var stats_base
+    /// \brief Base statistics. Separated from growths to be able to plot growth over time.
+    /// stats_grown
+    struct inventory_item equipment[7], equipped[1], weapons[4], items[4];
     /// \var equipment
     /// If equipment is not empty, weapons and items are not used. And vice versa.
     /// The contents of the equipment array are inventory_item structs.
@@ -93,12 +101,20 @@ public:
     /// \var char lovers
     /// \brief Names of possible lovers.
     bool mounted, flying, armored, promoted;
+    /// \var bool mounted
+    /// \brief. 1/0 mounted. For effective weapons
+    /// \var bool flying
+    /// \brief. 1/0 flying. For effective weapons and movement    
+    /// \var bool armored
+    /// \brief. 1/0 unit amored. For effective weapons
+    /// \var bool promoted
+    /// \brief. 1/0 unit promoted. For exp on enemy kill.
     unit(std::string, std::string, char,
         std::vector<unsigned int>, std::vector<unsigned int>,
         std::vector<unsigned int>, std::vector<unsigned int>,
         std::vector<unsigned int>, std::vector<unsigned int>,
         std::vector<unsigned int>, std::vector<unsigned int>,
-        std::vector<unsigned int>, std::vector<unsigned int>,
+        std::vector<inventory_item>, std::vector<inventory_item>,
         std::vector<inventory_item>,
         unsigned short, std::vector<std::string>,
         bool, bool, bool, bool

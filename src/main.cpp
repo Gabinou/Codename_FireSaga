@@ -93,11 +93,11 @@ generic::generic() {
 
 unit::unit(std::string in_name, std::string in_unit_class, char in_id,
            std::vector<unsigned int> in_stats_base, std::vector<unsigned int> in_growths,
-           std::vector<unsigned int> in_weapons, std::vector<unsigned int> in_items,
            std::vector<unsigned int> in_equipped, std::vector<unsigned int> in_skills,
            std::vector<unsigned int> in_love_pts, std::vector<unsigned int> in_love_growths,
            std::vector<unsigned int> in_wpn_exp, std::vector<unsigned int> in_position,
            std::vector<inventory_item> in_equipment,
+           std::vector<inventory_item> in_weapons, std::vector<inventory_item> in_items,
            unsigned short in_exp, std::vector<std::string> in_lovers,
            bool in_mounted, bool in_flying, bool in_armored, bool in_promoted) {
     mounted = in_mounted;
@@ -115,8 +115,8 @@ unit::unit(std::string in_name, std::string in_unit_class, char in_id,
     }
     current_hp = (unsigned int) stats_base[0];
     for (int i = 0; i < in_weapons.size(); i++) {
-        weapons[i] = (unsigned int) in_weapons[i];
-        items[i] = (unsigned int) in_items[i];
+        weapons[i] = in_weapons[i];
+        items[i] = in_items[i];
     }  
     for (int i = 0; i < in_skills.size(); i++) {
         skills[i] = (unsigned int) in_skills[i];
