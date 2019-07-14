@@ -114,7 +114,6 @@ unit_vec::unit_vec(std::string in_name, std::string in_unit_class, char in_id,
     mounted = in_mounted; 
     armored = in_armored; 
     promoted = in_promoted; 
-     
 }
 generic::~generic(void) {
     // printf("Generic object is being deleted\n");
@@ -159,7 +158,7 @@ inventory_item::inventory_item() {
 }
 
 inventory_item::inventory_item(std::string in_name, char in_used){
-    name = in_name;
+    strncpy(name, in_name.c_str(), sizeof(in_name));
     printf("%s\n", in_name);
     printf("%s\n", name);
     used = in_used;
@@ -170,7 +169,7 @@ inventory_item::~inventory_item(void) {
     // printf("Weapon %s is being deleted.\n" , name);
 }
 inventory_item::inventory_item(const inventory_item& source) {
-    name = source.name;
+    strcpy(name, source.name);
     printf("%s\n", name);
     used = source.used;
 }

@@ -41,7 +41,7 @@ public:
 };
 
 struct inventory_item {
-    std::string name;
+    char name[14];
     char used;
     inventory_item(const inventory_item&); 
     inventory_item(std::string, char); 
