@@ -11,12 +11,14 @@
 #include <bits/stdc++.h> 
 #include "shared.h"
 using namespace std;
-#define LEN(arr) ((int) (sizeof (arr) / sizeof (arr)[0])) // that is a macro. What is a macro?
+#define LEN(arr) ((int) (sizeof (arr) / sizeof (arr)[0])) 
+/// \fn LEN(arr)
+/// \brief That is a macro. What is a macro? Anyway it computes lenght of arrays.
 
 
 char unit_stats[][14] = {"HP", "Str", "Mag", "Skill", "Speed", "Luck", "Def", "Res", "Con", "Move"};
 /*! \var char unit_stats
-* \bried Unit Stats description: <br>
+* \brief Unit Stats description: <br>
 *  - HP: Hit Points. Unit health. Unit dies (forever) if it goes down to zero. <br>
 *  - Str: Strength. +1 Str -> +1 Attack. Refer to ... <br>
 *  - Mag: Magic. +1 Mag -> +1 Attack. Refer to ... <br>
@@ -184,7 +186,8 @@ inventory_item::inventory_item(const inventory_item& source) {
     strcpy(name, source.name);
     used = source.used;
 }
-
+/// \fn main 
+/// \brief Main FEmaker algorithm.
 main() {
     printf("TESTING THIS BITCH\n");
     printf("Initializaing a character\n");

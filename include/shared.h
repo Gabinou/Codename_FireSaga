@@ -25,7 +25,8 @@ extern char equipment_slots;
 /// \var extern char equipment_slots
 /// \brief Global declaration of equipment_slots.
 extern unsigned char id;
-
+/// \var extern char id
+/// \brief Global declaration of id.
 
 /// \class generic
 /// \brief Class from which the most objects inherit from.
@@ -78,6 +79,9 @@ public:
     /// \var bool dmg_type
     /// \brief dmg_type: Damage type. 0 for physical, 1 for magical.
     ~weapon();
+    
+    /// \fn weapon(std::string, std::string, char, unsigned short int, std::vector<int>,  std::vector<char>, std::vector<std::string>, std::vector<std::string>)
+    /// \brief constructor for weapon.
     weapon(std::string, std::string, char, unsigned short int,
         std::vector<int>,  std::vector<char>,
         std::vector<std::string>, std::vector<std::string>
@@ -89,8 +93,16 @@ public:
 /// \brief Representation of items in unit inventory to reduce memory.
 struct inventory_item {
     char name[14];
+    /// \var char name
+    /// \brief name of weapon in inventory.
     char used;
+    /// \var char used
+    /// \brief number of times item was used.
+    /// \fn inventory_item(const inventory_item&) 
+    /// \brief copy constructor for inventory_item.
     inventory_item(const inventory_item&); 
+    /// \fn inventory_item(std::string, char) 
+    /// \brief constructor of inventory_item.
     inventory_item(std::string, char); 
     inventory_item(); 
     ~inventory_item(); 
@@ -109,6 +121,16 @@ public:
     love_pts[5], love_growths[5];
     /// \var unsigned char love_growths
     /// \brief Number of points units that have love potential get for *DESIGN QUESTION*.
+    /// \var unsigned char growths
+    /// \brief Unit stats growth: percent probability that upon level up, unit stats grows by one. Growth>100% are interpreted as meaning a unit can grow +1 or +2.
+    /// \var unsigned char position
+    /// \brief Position on the map. 3D because of the possibility of fliers to fly higher. And underground paths.
+    /// \var unsigned char skills
+    /// \brief Skill names that unit possesses.    
+    /// \var unsigned char wpn_exp
+    /// \brief Wpn experience possessed by the unit. If a wpn_exp is equal to 0, unit cannot equip associated weapon type.    
+    /// \var unsigned char love_pts
+    /// \brief current love points. Refer to ...
     std::vector<std::vector<unsigned char>> stats_grown;
     /// \var stats_grown
     /// \brief All stats grown for level ups. Stack of 10-length rows.
@@ -145,6 +167,8 @@ public:
     /// \brief. 1/0 unit amored. For effective weapons
     /// \var bool promoted
     /// \brief. 1/0 unit promoted. For exp on enemy kill.
+    /// \fn w  unit(std::string, std::string, char,         std::vector<unsigned int>, std::vector<unsigned int>,       std::vector<unsigned int>, std::vector<unsigned int>, std::vector<unsigned int>, std::vector<unsigned int>,      std::vector<unsigned int>, std::vector<unsigned int>, std::vector<inventory_item>, std::vector<inventory_item>, std::vector<inventory_item>, unsigned short, std::vector<std::string>, bool, bool, bool, bool)
+    /// \brief constructor for unit.
     unit(std::string, std::string, char,
         std::vector<unsigned int>, std::vector<unsigned int>,
         std::vector<unsigned int>, std::vector<unsigned int>,
@@ -155,6 +179,8 @@ public:
         unsigned short, std::vector<std::string>,
         bool, bool, bool, bool
         );
+    /// \fn attack
+    /// \brief Attack damage performed by a unit on another unit.
     char attack(char, unsigned char, unsigned char);
     ~unit();
     unit();
