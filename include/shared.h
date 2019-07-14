@@ -13,6 +13,9 @@ extern char* all_units;
 extern char* all_wpns;
 extern unsigned char id;
 
+
+/// \class generic.
+/// \brief Class from which the most objects inherit from.
 class generic {
 public:
     char name[14];

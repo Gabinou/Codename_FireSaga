@@ -1,11 +1,18 @@
 // Code créé par Gabriel Taillon
 // Note on standards. Fuck all that complicated bullcrap. I'm writing for c++11. More convenient and the rest seems like bullshit.
+/*! \page handle main.cpp
+* \file main.cpp 
+* \brief 
+*/
+
 #include <stdio.h>
 #include <iostream>
 #include <vector>
 #include <bits/stdc++.h> 
 #include "shared.h"
 using namespace std;
+
+
 
 
 #define LEN(arr) ((int) (sizeof (arr) / sizeof (arr)[0])) // that is a macro. What is a macro?
