@@ -2,8 +2,12 @@
 *.dll
 *.txt
 # Ignore the build and lib dirs
-build
+build/*
 lib/*
+
+# Ignore any executables
+html/*
+latex/*
 
 # Ignore any executables
 bin/*
