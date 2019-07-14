@@ -1,6 +1,7 @@
 *.exe
 *.dll
 *.txt
+*.xml
 Doxyfile
 # Ignore the build and lib dirs
 build/*

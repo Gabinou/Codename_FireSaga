@@ -1,6 +1,8 @@
 #ifndef SHARED_H
 #define SHARED_H
-
+/*! \file shared.h
+* \brief Shared data.
+*/
 extern char unit_stats[][14];
 extern char unit_stats[][14];
 extern char weapon_stats[][14];
