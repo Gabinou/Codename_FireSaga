@@ -32,13 +32,23 @@ public:
     generic(const generic &obj);
 };
 
-//Unit implementation notes:
-    // unit_vec size \= 2 * unit size
-
 /// \class weapon
+/// \brief Unit class. Implemented to be as light as possible.
+/// All unsigned variables cannot be negative.
 class weapon: public generic {
 public:
-    unsigned char stats[6];
+    unsigned char stats[8];
+    /*! \var unsigned char stats.
+    * \brief Weapon statistics.
+    * Weapon stats descriptions: <br>
+    *  - dmg: Damage. +1 dmg -> +1 Attack. Refer to... <br>
+    *  - hit: Hit chance. % probability value to hit. Refer to ... <br>
+    *  - crit: Crit chance. % probability value to crit. Refer to...  <br>
+    *  - wpn_exp: Weapon experience. Base weapon experience for using the weapon. Refer to...  <br>
+    *  - uses: Number of uses a weapon has before breaking.  <br>
+    *  - range: distance in squares to which a unit can attack with weapon.  <br>
+    *  - lvl: Weapon level. Integer representing the weapon experience/level necessary to use the weapon. Refer to ...  <br>
+    */
     char stats_bonus[10], effective[2][14], owner[5][14];
     /// \var char effective
     /// \brief List of unit types or unit classes the weapon is effective against.
