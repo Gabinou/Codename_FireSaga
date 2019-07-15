@@ -92,7 +92,7 @@ public:
 /// \struct inventory_item
 /// \brief Representation of items in unit inventory to reduce memory.
 struct inventory_item {
-    char name[14];
+    char name[20];
     /// \var char name
     /// \brief name of weapon in inventory.
     char used;

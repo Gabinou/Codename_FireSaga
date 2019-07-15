@@ -18,7 +18,7 @@ using namespace std;
 
 char unit_stats[][14] = {"HP", "Str", "Mag", "Skill", "Speed", "Luck", "Def", "Res", "Con", "Move"};
 /*! \var char unit_stats
-* \brief Unit Stats description: <br>
+* \brief Unit Stats dmake escription: <br>
 *  - HP: Hit Points. Unit health. Unit dies (forever) if it goes down to zero. <br>
 *  - Str: Strength. +1 Str -> +1 Attack. Refer to ... <br>
 *  - Mag: Magic. +1 Mag -> +1 Attack. Refer to ... <br>
@@ -62,7 +62,7 @@ char statuses[][14] = {"healthy", "sleep", "poison", "stone", "berserk"};
 char unit_classes[][24] = {"Lord", "Prince", "Princess", "Armor Knight", "Cavalier", "Pegasus Knight", "Wyvern Knight", "Axe Rider", "Lance Rider", "Sword Rider", "Mercernary", "Myrmidon", "Soldier", "Archer", "Mage", "Priest", "Priestess", "King", "Paladin", "Sniper", "General", "Bishop", "Hero", "Pirate", "Fighter", "Thief", "Troubadour", "Cleric", "Monk", "Shaman", "Dragon", "Dancer"};
 /// \var char unit_classes
 /// \brief Unit classes.
-char all_weapon_names[][14] = {"Bronze Sword", "Iron Sword", "Steel Sword", "Rapier"};
+char all_weapon_names[][20] = {"Bronze Sword", "Iron Sword", "Steel Sword", "Rapier"};
 /// \var char all_weapon_names
 /// \brief All Weapon Names.
 char all_unit_names[][14] = {"Marth", "Sheeda"};
@@ -97,9 +97,10 @@ unit::unit(std::string in_name, std::string in_unit_class, char in_id,
            std::vector<unsigned int> in_stats_base, std::vector<unsigned int> in_growths, std::vector<unsigned int> in_skills,
            std::vector<unsigned int> in_love_pts, std::vector<unsigned int> in_love_growths,
            std::vector<unsigned int> in_wpn_exp, std::vector<unsigned int> in_position,
-            std::vector<inventory_item> in_equipped, 
+           std::vector<inventory_item> in_equipped, 
            std::vector<inventory_item> in_equipment,
-           std::vector<inventory_item> in_weapons, std::vector<inventory_item> in_items,
+           std::vector<inventory_item> in_weapons, 
+           std::vector<inventory_item> in_items,
            unsigned short in_exp, std::vector<std::string> in_lovers,
            bool in_mounted, bool in_flying, bool in_armored, bool in_promoted) {
     mounted = in_mounted;
@@ -138,8 +139,8 @@ unit::unit(){
 
 }
 unsigned char unit::attack(const unit& enemy) {
-    
-    return(enemy.stats[6]);
+    return(0);
+    // return(enemy.stats[6]);
 }
 generic::~generic(void) {
     // printf("Generic object is being deleted\n");
@@ -178,7 +179,7 @@ inventory_item::inventory_item() {
 }
 
 inventory_item::inventory_item(std::string in_name, char in_used){
-    strncpy(name, in_name.c_str(), sizeof(in_name));
+    strcpy(name, in_name.c_str());
     used = in_used;
 }
 
@@ -243,10 +244,21 @@ main() {
                   std::vector<char>(LEN(unit_stats), 0), {}, {});
 
     for (int i = 0; i < sizeof all_weapon_names / sizeof all_weapon_names[0]; i++) {
+        printf(" %s\n", all_weapon_names[i]);
         inventory_items[all_weapon_names[i]] =  inventory_item(all_weapon_names[i], 10);
+        printf(" %s\n", inventory_items[all_weapon_names[i]].name);
     }
+    inventory_items["Empty"] = inventory_item("Empty", 0);
+    
+    printf("TAGUEULE CONNASSE %s\n", all_weapon_names[0]);
+    printf("TAGUEULE CONNASSE %s\n", inventory_items["Empty"].name);
+    printf("TAGUEULE CONNASSE %s\n", inventory_items["Bronze Sword"].name);
     printf("TAGUEULE CONNASSE %s\n", inventory_items["Iron Sword"].name);
+    printf("TAGUEULE CONNASSE %s\n", inventory_items["Steel Sword"].name);
     printf("TAGUEULE CONNASSE %d\n", inventory_items["Iron Sword"].used); 
+    // inventory_items["Rapier"] = inventory_items["Rapier"];
+    // inventory_items["Rapier1"] = inventory_items["Rapier"];
+    
     // std::cout << inventory_items["Iron Sword"] << endl; 
     unit Marth("Marth", "Prince", id++, 
                             //HP Str Mag Skl Spd Lck Def Res Con Mov
@@ -257,10 +269,10 @@ main() {
         /*Love_growths*/    {18,1,1 ,1,1},
         /*Weapon_exp*/      {18,  8,  2,  9, 10,  7,  5,  2,  6,  5},
         /*Position*/        {18,1,1},
-        /*Equipped*/        {18},
-        /*Equipment*/       {inventory_items["Rapier"]},
-        /*Weapons*/         {18,  8,  2,  9,},
-        /*Items*/           {18,  8,  2,  9,},
+        /*Equipped*/        {inventory_items["Rapier1"]},
+        /*Equipment*/       {inventory_items["Rapier1"]},
+        /*Weapons*/         {inventory_items["Empty"]},
+        /*Items*/           {inventory_items["Empty"]},
         /*Exp*/             0, 
         /*Lovers*/          {"Sheeda", "" ,"","",""},
         /*Mounted*/         0,
