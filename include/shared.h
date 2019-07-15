@@ -1,8 +1,10 @@
 #ifndef SHARED_H
 #define SHARED_H
+using namespace std;
 /*! \file shared.h
 * \brief Shared data.
 */
+
 extern char unit_stats[][14];
 /// \var extern char unit_stats
 /// \brief Global declaration of unit_stats.
@@ -96,10 +98,14 @@ struct inventory_item {
     /// \var char name
     /// \brief name of weapon in inventory.
     char used;
+    // char baka;
     /// \var char used
     /// \brief number of times item was used.
     /// \fn inventory_item(const inventory_item&) 
     /// \brief copy constructor for inventory_item.
+    // weapon *wpn_pnt; 
+    /// \var wpn_pnt
+    /// \brief Pointer to weapon.
     inventory_item(const inventory_item&); 
     /// \fn inventory_item(std::string, char) 
     /// \brief constructor of inventory_item.
@@ -113,12 +119,16 @@ struct inventory_item {
 class unit: public generic {
     // Lightweight implementation.
 public:
-    char  stats_bonus[10];
+    char stats_bonus[10];
     /// \var stats_bonus
     /// \brief Bonuses can be negative -> maluses
-    unsigned char current_hp, stats_base[10],
+    /// \var stats
+    /// \brief current stats. Computed every level up using stats_grown.
+    // for seom reason, stats array of len<19 cause cygwin_exception
+    unsigned char stats[19], stats_base[10],
     growths[10], wpn_exp[10], position[3], skills[3],
-    love_pts[5], love_growths[5], equipped[1]; 
+    love_pts[5], love_growths[5], equipped[1], current_hp;
+    // std::vector<char> stats[10];
     /// \var unsigned char love_growths
     /// \brief Number of points units that have love potential get for *DESIGN QUESTION*.
     /// \var unsigned char growths
@@ -185,5 +195,10 @@ public:
     ~unit();
     unit();
 };
+
+
+extern std::unordered_map<string, weapon> all_weapons;
+extern std::unordered_map<string, struct inventory_item> inventory_items;
+extern std::unordered_map<string, unit> all_units;
 
 #endif /* SHARED_H */

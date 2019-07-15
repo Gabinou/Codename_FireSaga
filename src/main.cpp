@@ -10,8 +10,8 @@
 #include <vector>
 #include <bits/stdc++.h> 
 #include "shared.h"
-using namespace std;
 #define LEN(arr) ((int) (sizeof (arr) / sizeof (arr)[0])) 
+
 /// \fn LEN(arr)
 /// \brief That is a macro. What is a macro? Anyway it computes lenght of arrays.
 
@@ -111,6 +111,7 @@ unit::unit(std::string in_name, std::string in_unit_class, char in_id,
     strncpy(type, in_unit_class.c_str(), sizeof(in_unit_class));
     for (int i = 0; i < in_stats_base.size(); i++) {
         stats_base[i] = (unsigned int) in_stats_base[i];
+        stats[i] = (unsigned int) in_stats_base[i];
         growths[i] = (unsigned int) in_growths[i];
         wpn_exp[i] = (unsigned int) in_wpn_exp[i];
         stats_bonus[i] = 0;
@@ -118,11 +119,8 @@ unit::unit(std::string in_name, std::string in_unit_class, char in_id,
     }
     
     current_hp = (unsigned int) stats_base[0];
-    printf("%d\n",in_equipped[0] );
     if (in_equipped.size() != 0) {
-        printf("%d\n",in_equipped[0] ); 
-        equipped[0] = (unsigned int) in_equipped[0];
-        printf("%d\n",equipped[0] );      
+        equipped[0] = (unsigned int) in_equipped[0]; 
     };
     for (int i = 0; i < in_weapons.size(); i++) {
         if (in_weapons.size() != 0) {
@@ -150,6 +148,13 @@ unit::unit(){
 
 }
 unsigned char unit::attack(const unit& enemy) {
+    // enemy.name;
+    // printf("%s\n",  enemy.name);
+   
+    // printf("%s\n", all_weapons[equipment[equipped[0]].name].stats[0]);
+    printf("%d\n", equipped[0]);
+    // printf("%d\n",   unit.equipment[unit.equipped].stats[0]);
+    printf("%d\n", enemy.stats[1]);
     return(0);
     // return(enemy.stats[6]);
 }
@@ -194,7 +199,6 @@ inventory_item::inventory_item(std::string in_name, char in_used){
     used = in_used;
 }
 
-
 inventory_item::~inventory_item(void) {
     // printf("Weapon %s is being deleted.\n" , name);
 }
@@ -208,9 +212,9 @@ main() {
     printf("TESTING THIS BITCH\n");
     printf("Initializaing a character\n");
     
-    unordered_map<string, weapon> all_weapons;
-    unordered_map<string, struct inventory_item> inventory_items;
-    unordered_map<string, unit> all_units;
+    std::unordered_map<string, weapon> all_weapons;
+    std::unordered_map<string, struct inventory_item> inventory_items;
+    std::unordered_map<string, unit> all_units;
     
     // Unordered map convention: "name" is the immutable original object.
     // Copies have "name_id"
@@ -256,11 +260,12 @@ main() {
         inventory_items[all_weapon_names[i]] =  inventory_item(all_weapon_names[i], 10);
     }
     inventory_items["Empty"] = inventory_item("Empty", 0);
+    inventory_items["Rapier1"] = inventory_items["Rapier"];
     
     printf("TAGUEULE CONNASSE %s\n", all_weapon_names[0]);
     printf("TAGUEULE CONNASSE %s\n", inventory_items["Empty"].name);
     printf("TAGUEULE CONNASSE %s\n", inventory_items["Bronze Sword"].name);
-    printf("TAGUEULE CONNASSE %s\n", inventory_items["Iron Sword"].name);
+    printf("TAGUEULE CONNASSE %s\n", inventory_items["Rapier1"].name);
     printf("TAGUEULE CONNASSE %s\n", inventory_items["Steel Sword"].name);
     printf("TAGUEULE CONNASSE %d\n", inventory_items["Iron Sword"].used); 
     // inventory_items["Rapier"] = inventory_items["Rapier"];
@@ -276,7 +281,7 @@ main() {
         /*Love_growths*/    {18,1,1 ,1,1},
         /*Weapon_exp*/      {18,  8,  2,  9, 10,  7,  5,  2,  6,  5},
         /*Position*/        {18,1,1},
-        /*Equipped*/        {1},
+        /*Equipped*/        {0},
         /*Equipment*/       {inventory_items["Rapier1"]},
         /*Weapons*/         {},
         /*Items*/           {},
@@ -288,6 +293,7 @@ main() {
         /*Promoted*/        0
     );
     printf("TAGUEULE CONNASSE %d\n", Marth.equipped[0]);
+    printf("%d\n", Marth.attack(Marth));
     // unit Marths[10];
     // std::vector<unit> Marths_vec;
     // printf(" Size of arrays of Marths %d\n", sizeof(Marths));
