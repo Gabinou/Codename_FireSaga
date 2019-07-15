@@ -97,7 +97,7 @@ unit::unit(std::string in_name, std::string in_unit_class, char in_id,
            std::vector<unsigned int> in_stats_base, std::vector<unsigned int> in_growths, std::vector<unsigned int> in_skills,
            std::vector<unsigned int> in_love_pts, std::vector<unsigned int> in_love_growths,
            std::vector<unsigned int> in_wpn_exp, std::vector<unsigned int> in_position,
-           std::vector<inventory_item> in_equipped, 
+           std::vector<unsigned int> in_equipped, 
            std::vector<inventory_item> in_equipment,
            std::vector<inventory_item> in_weapons, 
            std::vector<inventory_item> in_items,
@@ -118,6 +118,12 @@ unit::unit(std::string in_name, std::string in_unit_class, char in_id,
     }
     
     current_hp = (unsigned int) stats_base[0];
+    printf("%d\n",in_equipped[0] );
+    if (in_equipped.size() != 0) {
+        printf("%d\n",in_equipped[0] ); 
+        equipped[0] = (unsigned int) in_equipped[0];
+        printf("%d\n",equipped[0] );      
+    };
     for (int i = 0; i < in_weapons.size(); i++) {
         if (in_weapons.size() != 0) {
             weapons[i] = in_weapons[i];
@@ -220,8 +226,6 @@ main() {
     *  Maybe call this variable: weapons_reference.
     *    CHARACTERS
     What about characters? I think characters need one object per filesave. then modify this object as the game evolves.
-
-
     */
     all_weapons["Rapier"] = weapon("Rapier", "swd", id++, 600,
                 // dmg  hit  crt wght uses  exp range
@@ -272,7 +276,7 @@ main() {
         /*Love_growths*/    {18,1,1 ,1,1},
         /*Weapon_exp*/      {18,  8,  2,  9, 10,  7,  5,  2,  6,  5},
         /*Position*/        {18,1,1},
-        /*Equipped*/        {inventory_items["Rapier1"]},
+        /*Equipped*/        {1},
         /*Equipment*/       {inventory_items["Rapier1"]},
         /*Weapons*/         {},
         /*Items*/           {},
@@ -283,7 +287,7 @@ main() {
         /*Armored*/         0,
         /*Promoted*/        0
     );
-    
+    printf("TAGUEULE CONNASSE %d\n", Marth.equipped[0]);
     // unit Marths[10];
     // std::vector<unit> Marths_vec;
     // printf(" Size of arrays of Marths %d\n", sizeof(Marths));

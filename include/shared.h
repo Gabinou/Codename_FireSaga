@@ -118,7 +118,7 @@ public:
     /// \brief Bonuses can be negative -> maluses
     unsigned char current_hp, stats_base[10],
     growths[10], wpn_exp[10], position[3], skills[3],
-    love_pts[5], love_growths[5];
+    love_pts[5], love_growths[5], equipped[1]; 
     /// \var unsigned char love_growths
     /// \brief Number of points units that have love potential get for *DESIGN QUESTION*.
     /// \var unsigned char growths
@@ -131,6 +131,8 @@ public:
     /// \brief Wpn experience possessed by the unit. If a wpn_exp is equal to 0, unit cannot equip associated weapon type.    
     /// \var unsigned char love_pts
     /// \brief current love points. Refer to ...
+    /// \var equipped
+    /// \brief Equipped weapon. Index of of weapon in equipment vector or weapon vector. Is a vector in case not only weapon can be equipped. In such case equipped[0] would be the weapon, and equipped[1] an item, etc.
     std::vector<std::vector<unsigned char>> stats_grown;
     /// \var stats_grown
     /// \brief All stats grown for level ups. Stack of 10-length rows.
@@ -139,7 +141,7 @@ public:
     /// \var stats_base
     /// \brief Base statistics. Separated from growths to be able to plot growth over time.
     /// stats_grown
-    struct inventory_item equipment[7], equipped[1], weapons[4], items[4];
+    struct inventory_item equipment[7], weapons[4], items[4];
     /// \var equipment
     /// \brief If equipment is not empty, weapons and items are not used. And vice versa.
     /// \var items
@@ -147,8 +149,6 @@ public:
     /// \var weapons
     /// \brief Only used if equipment is not. Slots only for weapons.
     /// The contents of the equipment array are inventory_item structs.
-    /// \var equipped
-    /// \brief Equipped weapon inventory_item struct.
     unsigned short int exp;
     /*! \var unsigend short int exp
     * \brief Total Unit Experience points.
@@ -173,8 +173,8 @@ public:
         std::vector<unsigned int>, std::vector<unsigned int>,
         std::vector<unsigned int>, std::vector<unsigned int>,
         std::vector<unsigned int>, std::vector<unsigned int>,
-        std::vector<unsigned int>,
-        std::vector<inventory_item>, std::vector<inventory_item>,
+        std::vector<unsigned int>, std::vector<unsigned int>,
+        std::vector<inventory_item>,
         std::vector<inventory_item>, std::vector<inventory_item>, 
         unsigned short, std::vector<std::string>,
         bool, bool, bool, bool
