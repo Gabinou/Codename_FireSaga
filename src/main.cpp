@@ -116,10 +116,15 @@ unit::unit(std::string in_name, std::string in_unit_class, char in_id,
         stats_bonus[i] = 0;
         // For some reason, stats_base cannot be printed unless (int) Marth.stats_base[0]. + 0 also works.
     }
+    
     current_hp = (unsigned int) stats_base[0];
     for (int i = 0; i < in_weapons.size(); i++) {
-        weapons[i] = in_weapons[i];
-        items[i] = in_items[i];
+        if (in_weapons.size() != 0) {
+            weapons[i] = in_weapons[i];
+        };
+        if (in_items.size() != 0) {
+            items[i] = in_items[i];
+        };
     }  
     for (int i = 0; i < in_skills.size(); i++) {
         skills[i] = (unsigned int) in_skills[i];
@@ -244,9 +249,7 @@ main() {
                   std::vector<char>(LEN(unit_stats), 0), {}, {});
 
     for (int i = 0; i < sizeof all_weapon_names / sizeof all_weapon_names[0]; i++) {
-        printf(" %s\n", all_weapon_names[i]);
         inventory_items[all_weapon_names[i]] =  inventory_item(all_weapon_names[i], 10);
-        printf(" %s\n", inventory_items[all_weapon_names[i]].name);
     }
     inventory_items["Empty"] = inventory_item("Empty", 0);
     
@@ -271,8 +274,8 @@ main() {
         /*Position*/        {18,1,1},
         /*Equipped*/        {inventory_items["Rapier1"]},
         /*Equipment*/       {inventory_items["Rapier1"]},
-        /*Weapons*/         {inventory_items["Empty"]},
-        /*Items*/           {inventory_items["Empty"]},
+        /*Weapons*/         {},
+        /*Items*/           {},
         /*Exp*/             0, 
         /*Lovers*/          {"Sheeda", "" ,"","",""},
         /*Mounted*/         0,
