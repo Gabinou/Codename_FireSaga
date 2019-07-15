@@ -51,12 +51,12 @@ unsigned char wpn_exp_lvls[][14] = {25, 60, 100, 150};
 */
 char statuses[][14] = {"healthy", "sleep", "poison", "stone", "berserk"};
 /*! \var char statuses
-*   \brief Statuses. Affects units for 5 turns each, except for stone, which is forever.
+*   \brief Statuses. Affects units for 5 turns each, except for stone, which is forever. *DESIGN QUESTION*
 *  - Healthy. <br>
 *  - Sleep: Unit cannot move, attack, or retaliate. Unit wakes up after being attacked. Refer to ... <br>
 *  - Poison: Loses HP every turn. (How much?) <br>
 *  - Stone: Unit cannot move, attack or retaliate. Can only be cured by the ... staff. <br>
-*  - Berserk. Unit attacks the weakest unit in range. Friend or foe. DESIGN! <br>
+*  - Berserk. Unit attacks the weakest unit in range. Friend or foe. *DESIGN QUESTION* <br>
 */
 
 char unit_classes[][24] = {"Lord", "Prince", "Princess", "Armor Knight", "Cavalier", "Pegasus Knight", "Wyvern Knight", "Axe Rider", "Lance Rider", "Sword Rider", "Mercernary", "Myrmidon", "Soldier", "Archer", "Mage", "Priest", "Priestess", "King", "Paladin", "Sniper", "General", "Bishop", "Hero", "Pirate", "Fighter", "Thief", "Troubadour", "Cleric", "Monk", "Shaman", "Dragon", "Dancer"};
@@ -94,10 +94,10 @@ generic::generic() {
 // }
 
 unit::unit(std::string in_name, std::string in_unit_class, char in_id,
-           std::vector<unsigned int> in_stats_base, std::vector<unsigned int> in_growths,
-           std::vector<unsigned int> in_equipped, std::vector<unsigned int> in_skills,
+           std::vector<unsigned int> in_stats_base, std::vector<unsigned int> in_growths, std::vector<unsigned int> in_skills,
            std::vector<unsigned int> in_love_pts, std::vector<unsigned int> in_love_growths,
            std::vector<unsigned int> in_wpn_exp, std::vector<unsigned int> in_position,
+            std::vector<inventory_item> in_equipped, 
            std::vector<inventory_item> in_equipment,
            std::vector<inventory_item> in_weapons, std::vector<inventory_item> in_items,
            unsigned short in_exp, std::vector<std::string> in_lovers,
@@ -136,6 +136,10 @@ unit::unit(std::string in_name, std::string in_unit_class, char in_id,
 }
 unit::unit(){
 
+}
+unsigned char unit::attack(const unit& enemy) {
+    
+    return(enemy.stats[6]);
 }
 generic::~generic(void) {
     // printf("Generic object is being deleted\n");
@@ -244,26 +248,26 @@ main() {
     printf("TAGUEULE CONNASSE %s\n", inventory_items["Iron Sword"].name);
     printf("TAGUEULE CONNASSE %d\n", inventory_items["Iron Sword"].used); 
     // std::cout << inventory_items["Iron Sword"] << endl; 
-    // unit Marth("Marth", "Prince", id++, 
-                            // //HP Str Mag Skl Spd Lck Def Res Con Mov
-        // /*stats_base*/      {18,  8,  2,  9, 10,  7,  5,  2,  6,  5},
-        // /*Growths*/         {90,  8,  2,  9, 10,  7,  5,  2,  6,  5},
-        // /*Equipment*/       {a, 1},
-        // /*Weapons*/         {18,  8,  2,  9,},
-        // /*Items*/           {18,  8,  2,  9,},
-        // /*Equipped*/        {18},
-        // /*Position*/        {18,1,1},
-        // /*Love_pts*/        {18,1,1 ,1,1},
-        // /*Love_growths*/    {18,1,1 ,1,1},
-        // /*Weapon_exp*/      {18,  8,  2,  9, 10,  7,  5,  2,  6,  5},
-        // /*Skills*/          {18,  8,  2},
-        // /*Exp*/             0, 
-        // /*Lovers*/          {"Sheeda", "" ,"","",""},
-        // /*Mounted*/         0,
-        // /*Flying*/          0,
-        // /*Armored*/         0,
-        // /*Promoted*/        0
-    // );
+    unit Marth("Marth", "Prince", id++, 
+                            //HP Str Mag Skl Spd Lck Def Res Con Mov
+        /*stats_base*/      {18,  8,  2,  9, 10,  7,  5,  2,  6,  5},
+        /*Growths*/         {90,  8,  2,  9, 10,  7,  5,  2,  6,  5},
+        /*Skills*/          {18,  8,  2},
+        /*Love_pts*/        {18,1,1 ,1,1},
+        /*Love_growths*/    {18,1,1 ,1,1},
+        /*Weapon_exp*/      {18,  8,  2,  9, 10,  7,  5,  2,  6,  5},
+        /*Position*/        {18,1,1},
+        /*Equipped*/        {18},
+        /*Equipment*/       {inventory_items["Rapier"]},
+        /*Weapons*/         {18,  8,  2,  9,},
+        /*Items*/           {18,  8,  2,  9,},
+        /*Exp*/             0, 
+        /*Lovers*/          {"Sheeda", "" ,"","",""},
+        /*Mounted*/         0,
+        /*Flying*/          0,
+        /*Armored*/         0,
+        /*Promoted*/        0
+    );
     
     // unit Marths[10];
     // std::vector<unit> Marths_vec;

@@ -173,15 +173,15 @@ public:
         std::vector<unsigned int>, std::vector<unsigned int>,
         std::vector<unsigned int>, std::vector<unsigned int>,
         std::vector<unsigned int>, std::vector<unsigned int>,
-        std::vector<unsigned int>, std::vector<unsigned int>,
+        std::vector<unsigned int>,
         std::vector<inventory_item>, std::vector<inventory_item>,
-        std::vector<inventory_item>,
+        std::vector<inventory_item>, std::vector<inventory_item>, 
         unsigned short, std::vector<std::string>,
         bool, bool, bool, bool
         );
-    /// \fn attack
+    /// \fn attack(&unit)
     /// \brief Attack damage performed by a unit on another unit.
-    char attack(char, unsigned char, unsigned char);
+    unsigned char attack(const unit&);
     ~unit();
     unit();
 };
