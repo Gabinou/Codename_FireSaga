@@ -86,7 +86,7 @@ public:
     /// \brief constructor for weapon.
     weapon(std::string, std::string, char, unsigned short int,
         std::vector<int>,  std::vector<char>,
-        std::vector<std::string>, std::vector<std::string>
+        std::vector<std::string>, std::vector<std::string>, bool
         );
     weapon();
 };

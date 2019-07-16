@@ -148,13 +148,21 @@ unit::unit(){
 
 }
 unsigned char unit::attack(const unit& enemy) {
-    // enemy.name;
-    // printf("%s\n",  enemy.name);
-    int wpn_dmg = all_weapons[equipment[equipped[0]].name].stats[0];
-    int unit_str = stats[1];
-    int enemy_def = stats[6];
-    int attack = wpn_dmg + unit_str - enemy_def;
-
+    char terrain_def = 0;
+    char enemy_def = 0 ;
+    char unit_power = 0;
+    char wpn_dmg = all_weapons[equipment[equipped[0]].name].stats[0];
+    if (all_weapons[equipment[equipped[0]].name].dmg_type == 0) {
+        // Physical attack.
+        unit_power = stats[1];
+        enemy_def = stats[6];
+    } else {
+        // Magical attack.
+        unit_power = stats[2];
+        enemy_def = stats[7];
+    };
+    int attack = wpn_dmg + unit_power - enemy_def;
+    if (attack <= 0) {attack = 0;};
     return(attack);
 }
 generic::~generic(void) {
@@ -171,9 +179,10 @@ weapon::~weapon(void) {
 }
 weapon::weapon(std::string in_name, std::string in_type, char in_id, unsigned short int in_cost,
        std::vector<int> in_stats, std::vector<char> in_stats_bonus,
-       std::vector<std::string> in_owner, std::vector<std::string> in_effective) {
+       std::vector<std::string> in_owner, std::vector<std::string> in_effective, bool in_dmg_type) {
     strncpy(name, in_name.c_str(), 30); // for some reason in_name is always of size 8. Whatever.
     strncpy(type, in_type.c_str(), 30);
+    dmg_type = in_dmg_type;
     for (int i = 0; i < in_effective.size(); i++) {
         strncpy(effective[i], in_effective[i].c_str(), sizeof(in_effective));
     }
@@ -219,27 +228,27 @@ main() {
     all_weapons["Rapier"] = weapon("Rapier", "swd", id++, 600,
             // dmg  hit  crt wght uses  exp range
               {5,  90,  10,   7,  30,   2,  1},
-              std::vector<char>(LEN(unit_stats), 0), {"Marth"}, {"Knight", "Cavalier"}); 
+              std::vector<char>(LEN(unit_stats), 0), {"Marth"}, {"Knight", "Cavalier"}, 0); 
     all_weapons["Bronze Sword"] = weapon("Bronze Sword", "swd", id++, 450,
            // dmg  hit  crt wght uses  exp range
               {3,  80,   0,   5,  45,   1,   1},
-              std::vector<char>(LEN(unit_stats), 0), {}, {});
+              std::vector<char>(LEN(unit_stats), 0), {}, {}, 0);
     all_weapons["Iron Sword"] =  weapon("Iron Sword", "swd", id++, 450,
            // dmg hit  crt wght uses  exp range
               {5,  80,    0,   7,  45,   1,   1}, 
-              std::vector<char>(LEN(unit_stats), 0), {}, {});
+              std::vector<char>(LEN(unit_stats), 0), {}, {}, 0);
     all_weapons["Iron Lance"] = weapon("Iron Lance", "lance", id++, 450,
            // dmg hit  crt wght uses  exp range
               {6,  80,   0,   8,   40,  1,   1},
-              std::vector<char>(LEN(unit_stats), 0), {}, {});
+              std::vector<char>(LEN(unit_stats), 0), {}, {}, 0);
     all_weapons["Steel Sword"] = weapon("Steel Sword", "swd", id++, 500,
            // dmg hit  crt wght uses  exp range
               {8,  70,   0,   9,   35,  1,  1}, 
-              std::vector<char>(LEN(unit_stats), 0), {}, {});
+              std::vector<char>(LEN(unit_stats), 0), {}, {}, 0);
     all_weapons["Lame de Damas"] = weapon("Lame de Damas", "swd", id++, 1000,
             // dmg hit  crt wght uses  exp range
-              {12,  65,  0,   8,  25,   1,  1},
-              std::vector<char>(LEN(unit_stats), 0), {}, {});
+              {1,  65,  0,   8,  25,   1,  1},
+              std::vector<char>(LEN(unit_stats), 0), {}, {}, 0);
    
     // Unordered map convention: "name" is the immutable original object.
     // Copies have "name_id"
@@ -272,7 +281,7 @@ main() {
 
     unit Marth("Marth", "Prince", id++, 
                             //HP Str Mag Skl Spd Lck Def Res Con Mov
-        /*stats_base*/      {18,  8,  2,  9, 10,  7,  5,  2,  6,  5},
+        /*stats_base*/      {18,  1,  2,  9, 10,  7,  5,  2,  6,  5},
         /*Growths*/         {90,  8,  2,  9, 10,  7,  5,  2,  6,  5},
         /*Skills*/          {18,  8,  2},
         /*Love_pts*/        {18,1,1 ,1,1},
