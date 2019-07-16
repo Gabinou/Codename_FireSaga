@@ -90,7 +90,6 @@ unsigned char equipped[1];
 
 unsigned char* unit::get_equipped() {
     // For some reason passing the pointer works as I intended.
-    printf("%d\n", equipped[0]);
     return(equipped);
 }
 
@@ -98,7 +97,10 @@ void unit::equip_weapon(std::vector<unsigned int> in_equipped) {
     if (in_equipped.size() != 0) {
         equipped[0] = (unsigned int) in_equipped[0]; 
     };
-    // combat_stats = {accuracy(), avoid(), critical(), favor()};
+    combat_stats[0] = accuracy();
+    combat_stats[1] = critical();
+    combat_stats[2] = accuracy();
+    combat_stats[3] = favor();
 }
 unit::unit(std::string in_name, std::string in_unit_class, char in_id,
            std::vector<unsigned int> in_stats_base, std::vector<unsigned int> in_growths, std::vector<unsigned int> in_skills,
