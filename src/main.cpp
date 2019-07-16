@@ -172,8 +172,8 @@ weapon::~weapon(void) {
 weapon::weapon(std::string in_name, std::string in_type, char in_id, unsigned short int in_cost,
        std::vector<int> in_stats, std::vector<char> in_stats_bonus,
        std::vector<std::string> in_owner, std::vector<std::string> in_effective) {
-    strncpy(name, in_name.c_str(), sizeof(in_name));
-    strncpy(type, in_type.c_str(), sizeof(in_type));
+    strncpy(name, in_name.c_str(), 30); // for some reason in_name is always of size 8. Whatever.
+    strncpy(type, in_type.c_str(), 30);
     for (int i = 0; i < in_effective.size(); i++) {
         strncpy(effective[i], in_effective[i].c_str(), sizeof(in_effective));
     }
@@ -267,7 +267,8 @@ main() {
     
     
     printf("TAGUEULE CONNASSE %s\n", inventory_items["Lame de Damas_0001"].name);
-    printf("TAGUEULE CONNASSE %s\n", all_weapons["Lame de Damas"].name);
+    printf("TAGUEULE CONNASSE %s \n", all_weapons["Lame de Damas"].name);
+    printf("TAGUEULE CONNASSE %s \n", all_weapons["Steel Sword"].name);
 
     unit Marth("Marth", "Prince", id++, 
                             //HP Str Mag Skl Spd Lck Def Res Con Mov

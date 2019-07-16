@@ -34,7 +34,7 @@ extern unsigned char id;
 /// \brief Class from which the most objects inherit from.
 class generic {
 public:
-    char name[100];
+    char name[120];
     /// \var char name
     /// \brief Name of generic object.
     unsigned char id;
@@ -95,7 +95,7 @@ public:
 /// \brief Representation of items in unit inventory to reduce memory.
 struct inventory_item {
     // char *name2;
-    char name[100];
+    char name[30];
     /// \var char name
     /// \brief name of weapon in inventory.
     char used;
