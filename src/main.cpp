@@ -62,7 +62,7 @@ char statuses[][14] = {"healthy", "sleep", "poison", "stone", "berserk"};
 char unit_classes[][24] = {"Lord", "Prince", "Princess", "Armor Knight", "Cavalier", "Pegasus Knight", "Wyvern Knight", "Axe Rider", "Lance Rider", "Sword Rider", "Mercernary", "Myrmidon", "Soldier", "Archer", "Mage", "Priest", "Priestess", "King", "Paladin", "Sniper", "General", "Bishop", "Hero", "Pirate", "Fighter", "Thief", "Troubadour", "Cleric", "Monk", "Shaman", "Dragon", "Dancer"};
 /// \var char unit_classes
 /// \brief Unit classes.
-char all_weapon_names[][20] = {"Bronze Sword", "Iron Sword", "Steel Sword", "Rapier"};
+// char all_weapon_names[][20];
 /// \var char all_weapon_names
 /// \brief All Weapon Names.
 char all_unit_names[][14] = {"Marth", "Sheeda"};
@@ -150,14 +150,12 @@ unit::unit(){
 unsigned char unit::attack(const unit& enemy) {
     // enemy.name;
     // printf("%s\n",  enemy.name);
-   
-    // printf("%s\n", all_weapons[equipment[equipped[0]].name].stats[0]);
-    printf("%s\n", equipment[equipped[0]]);
-    printf("%d\n", equipped[0]);
-    // printf("%d\n",   unit.equipment[unit.equipped].stats[0]);
-    printf("%d\n", enemy.stats[1]);
-    return(0);
-    // return(enemy.stats[6]);
+    int wpn_dmg = all_weapons[equipment[equipped[0]].name].stats[0];
+    int unit_str = stats[1];
+    int enemy_def = stats[6];
+    int attack = wpn_dmg + unit_str - enemy_def;
+
+    return(attack);
 }
 generic::~generic(void) {
     // printf("Generic object is being deleted\n");
@@ -209,14 +207,40 @@ inventory_item::inventory_item(const inventory_item& source) {
 }
 /// \fn main 
 /// \brief Main FEmaker algorithm.
+std::unordered_map<string, weapon> all_weapons;
+std::unordered_map<string, struct inventory_item> inventory_items;
+std::unordered_map<string, unit> all_units;
+
 main() {
     printf("TESTING THIS BITCH\n");
     printf("Initializaing a character\n");
     
-    std::unordered_map<string, weapon> all_weapons;
-    std::unordered_map<string, struct inventory_item> inventory_items;
-    std::unordered_map<string, unit> all_units;
-    
+
+    all_weapons["Rapier"] = weapon("Rapier", "swd", id++, 600,
+            // dmg  hit  crt wght uses  exp range
+              {5,  90,  10,   7,  30,   2,  1},
+              std::vector<char>(LEN(unit_stats), 0), {"Marth"}, {"Knight", "Cavalier"}); 
+    all_weapons["Bronze Sword"] = weapon("Bronze Sword", "swd", id++, 450,
+           // dmg  hit  crt wght uses  exp range
+              {3,  80,   0,   5,  45,   1,   1},
+              std::vector<char>(LEN(unit_stats), 0), {}, {});
+    all_weapons["Iron Sword"] =  weapon("Iron Sword", "swd", id++, 450,
+           // dmg hit  crt wght uses  exp range
+              {5,  80,    0,   7,  45,   1,   1}, 
+              std::vector<char>(LEN(unit_stats), 0), {}, {});
+    all_weapons["Iron Lance"] = weapon("Iron Lance", "lance", id++, 450,
+           // dmg hit  crt wght uses  exp range
+              {6,  80,   0,   8,   40,  1,   1},
+              std::vector<char>(LEN(unit_stats), 0), {}, {});
+    all_weapons["Steel Sword"] = weapon("Steel Sword", "swd", id++, 500,
+           // dmg hit  crt wght uses  exp range
+              {8,  70,   0,   9,   35,  1,  1}, 
+              std::vector<char>(LEN(unit_stats), 0), {}, {});
+    all_weapons["Lame de Damas"] = weapon("Lame de Damas", "swd", id++, 1000,
+            // dmg hit  crt wght uses  exp range
+              {12,  65,  0,   8,  25,   1,  1},
+              std::vector<char>(LEN(unit_stats), 0), {}, {});
+   
     // Unordered map convention: "name" is the immutable original object.
     // Copies have "name_id"
     
@@ -232,37 +256,18 @@ main() {
     *    CHARACTERS
     What about characters? I think characters need one object per filesave. then modify this object as the game evolves.
     */
-    all_weapons["Rapier"] = weapon("Rapier", "swd", id++, 600,
-                // dmg  hit  crt wght uses  exp range
-                  {5,  90,  10,   7,  30,   2,  1},
-                  std::vector<char>(LEN(unit_stats), 0), {"Marth"}, {"Knight", "Cavalier"}); 
-    all_weapons["Bronze Sword"] = weapon("Bronze Sword", "swd", id++, 450,
-               // dmg  hit  crt wght uses  exp range
-                  {3,  80,   0,   5,  45,   1,   1},
-                  std::vector<char>(LEN(unit_stats), 0), {}, {});
-    all_weapons["Iron Sword"] =  weapon("Iron Sword", "swd", id++, 450,
-               // dmg hit  crt wght uses  exp range
-                  {5,  80,    0,   7,  45,   1,   1}, 
-                  std::vector<char>(LEN(unit_stats), 0), {}, {});
-    all_weapons["Iron Lance"] = weapon("Iron Lance", "lance", id++, 450,
-               // dmg hit  crt wght uses  exp range
-                  {6,  80,   0,   8,   40,  1,   1},
-                  std::vector<char>(LEN(unit_stats), 0), {}, {});
-    all_weapons["Steel Sword"] = weapon("Steel Sword", "swd", id++, 500,
-               // dmg hit  crt wght uses  exp range
-                  {8,  70,   0,   9,   35,  1,  1}, 
-                  std::vector<char>(LEN(unit_stats), 0), {}, {});
-    all_weapons["Lame de Damas"] = weapon("Lame de Damas", "swd", id++, 1000,
-                // dmg hit  crt wght uses  exp range
-                  {12,  65,  0,   8,  25,   1,  1},
-                  std::vector<char>(LEN(unit_stats), 0), {}, {});
-
-    for (int i = 0; i < sizeof all_weapon_names / sizeof all_weapon_names[0]; i++) {
-        inventory_items[strcat(all_weapon_names[i],"_0001")] =  inventory_item(all_weapon_names[i], 10);
+    
+    std::unordered_map<std::string, weapon>::iterator it = all_weapons.begin();
+    while(it != all_weapons.end()) {
+        char key[(it->first).size() + 1];
+        strcpy(key, (it->first).c_str());
+        inventory_items[strcat(key,"_0001")] =  inventory_item(key, 10);
+        it++;
     }
     
     
-    printf("TAGUEULE CONNASSE %s\n", inventory_items["Rapier_0001"].name);
+    printf("TAGUEULE CONNASSE %s\n", inventory_items["Lame de Damas_0001"].name);
+    printf("TAGUEULE CONNASSE %s\n", all_weapons["Lame de Damas"].name);
 
     unit Marth("Marth", "Prince", id++, 
                             //HP Str Mag Skl Spd Lck Def Res Con Mov
@@ -274,7 +279,7 @@ main() {
         /*Weapon_exp*/      {18,  8,  2,  9, 10,  7,  5,  2,  6,  5},
         /*Position*/        {18,1,1},
         /*Equipped*/        {0},
-        /*Equipment*/       {inventory_items["Rapier_0001"]},
+        /*Equipment*/       {inventory_items["Lame de Damas_0001"]},
         /*Weapons*/         {},
         /*Items*/           {},
         /*Exp*/             0, 
@@ -284,7 +289,7 @@ main() {
         /*Armored*/         0,
         /*Promoted*/        0
     );
-    printf("Marth's weapon. %d\n", Marth.equipped[0]);
+    
     printf("Marth's weapon. %s\n", Marth.equipment[Marth.equipped[0]]);
     printf("Marth's attack value. %d\n", Marth.attack(Marth));
     // unit Marths[10];
