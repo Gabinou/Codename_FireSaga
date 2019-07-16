@@ -194,6 +194,24 @@ public:
     /// \fn attack_damage(&unit)
     /// \brief attack_damage damage performed by a unit on another unit.
     unsigned char attack_damage(const unit&);
+    /// \fn accuracy(&unit)
+    /// \brief Percent accuracy. This minus enemy avoid gives percent chance to hit.
+    unsigned char accuracy();
+    /// \fn combat_accuracy(&unit)
+    /// \brief Percent accuracy in combat. Takes into account the enemy weapon.
+    unsigned char combat_accuracy(const unit&);
+    /// \fn avoid(&unit)
+    /// \brief Percent avoid. Enemy avoid minus avoid gives percent chance to get hit.
+    unsigned char avoid(const unit&);
+     /// \fn combat_avoid(&unit)
+    /// \brief Percent avoid. Enemy avoid minus avoid gives percent chance to get hit.  Takes into account the enemy weapon.
+    unsigned char combat_avoid(const unit&);
+    /// \fn crit(&unit)
+    /// \brief Percent crit chance. This minus crit avoid gives change to hit a crit.
+    unsigned char crit(const unit&);
+     /// \fn favor(&unit)
+    /// \brief Percent crit evade chance. Enemy crit chance minus favor gives chance to get hit by a crit.   
+    unsigned char favor(const unit&);
     ~unit();
     unit();
 };

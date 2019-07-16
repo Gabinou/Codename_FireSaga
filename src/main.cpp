@@ -165,6 +165,15 @@ unsigned char unit::attack_damage(const unit& enemy) {
     if (attack_damage <= 0) {attack_damage = 0;};
     return(attack_damage);
 }
+
+
+unsigned char unit::accuracy(){
+    char supports = 0;
+    unsigned char wpn_hit = all_weapons[equipment[equipped[0]].name].stats[1];
+    unsigned char unit_acc = stats[3]*2 + stats[5];
+    unsigned char accuracy = wpn_hit + unit_acc + supports ;
+    return(accuracy);
+}
 generic::~generic(void) {
     // printf("Generic object is being deleted\n");
 }
