@@ -102,7 +102,7 @@ void unit::equip_weapon(std::vector<unsigned int> in_equipped) {
     combat_stats[2] = accuracy();
     combat_stats[3] = favor();
 }
-unit::unit(std::string in_name, std::string in_unit_class, char in_id,
+unit::unit(std::string in_name, std::string in_unit_class, char in_id, 
            std::vector<unsigned int> in_stats_base, std::vector<unsigned int> in_growths, std::vector<unsigned int> in_skills,
            std::vector<unsigned int> in_love_pts, std::vector<unsigned int> in_love_growths,
            std::vector<unsigned int> in_wpn_exp, std::vector<unsigned int> in_position,
