@@ -143,11 +143,27 @@ unit::unit(std::string in_name, std::string in_unit_class, char in_id,
         wpn_exp[i] = (unsigned int) in_wpn_exp[i];
     }    
     id = in_id;
+    combat_stats = {accuracy(), avoid(), crit(), favor()};
 }
 unit::unit(){
 
 }
-unsigned char unit::attack_damage(const unit& enemy) {
+
+unsigned char unit::attack_damage() {
+    char unit_power = 0;
+    char wpn_dmg = all_weapons[equipment[equipped[0]].name].stats[0];
+    if (all_weapons[equipment[equipped[0]].name].dmg_type == 0) {
+        // Physical attack_damage.
+        unit_power = stats[1];
+    } else {
+        // Magical attack_damage.
+        unit_power = stats[2];
+    };
+    int attack_damage = wpn_dmg + unit_power;
+    return(attack_damage);
+}
+
+unsigned char unit::combat_damage(const unit& enemy) {
     char terrain_def = 0;
     char enemy_def = 0 ;
     char unit_power = 0;
@@ -165,9 +181,35 @@ unsigned char unit::attack_damage(const unit& enemy) {
     if (attack_damage <= 0) {attack_damage = 0;};
     return(attack_damage);
 }
-
-
+unsigned char unit::avoid(){
+    char supports = 0;
+    char terrain_avoid = 0;
+    unsigned char unit_avoid = stats[4]*2 + stats[5];
+    unsigned char avoid = terrain_avoid + unit_avoid + supports ;
+    return(avoid);
+}
+unsigned char unit::critical(){
+    char supports = 0 ;
+    char unit_skill = 0;
+    unsigned char wpn_crit = all_weapons[equipment[equipped[0]].name].stats[2];
+    unsigned char critical = wpn_crit + unit_skill + supports;
+    return(critical);
+}
+unsigned char unit::favor(){
+    char supports = 0 ;
+    char unit_favor = (ceil(stats[5]/2.)); // By default, integer division floors
+    // For design simplicity, I think it is good to have percent values only change by increments of 1. Simple.
+    unsigned char favor = unit_favor + supports;
+    return(favor);
+}
 unsigned char unit::accuracy(){
+    char supports = 0;
+    unsigned char wpn_hit = all_weapons[equipment[equipped[0]].name].stats[1];
+    unsigned char unit_acc = stats[3]*2 + stats[5];
+    unsigned char accuracy = wpn_hit + unit_acc + supports;
+    return(accuracy);
+}
+unsigned char unit::combat_accuracy(const unit& enemy){
     char supports = 0;
     unsigned char wpn_hit = all_weapons[equipment[equipped[0]].name].stats[1];
     unsigned char unit_acc = stats[3]*2 + stats[5];
@@ -293,7 +335,7 @@ main() {
         /*Weapon_exp*/      {18,  8,  2,  9, 10,  7,  5,  2,  6,  5},
         /*Position*/        {18,1,1},
         /*Equipped*/        {0},
-        /*Equipment*/       {inventory_items["Lame de Damas_0001"]},
+        /*Equipment*/       {inventory_items["Rapier_0001"]},
         /*Weapons*/         {},
         /*Items*/           {},
         /*Exp*/             0, 
@@ -305,7 +347,12 @@ main() {
     );
     
     printf("Marth's weapon. %s\n", Marth.equipment[Marth.equipped[0]]);
-    printf("Marth's attack_damage value. %d\n", Marth.attack_damage(Marth));
+    printf("Marth's attack_damage value. %d\n", Marth.attack_damage());
+    printf("Marth's combat_damage value against himself. %d\n", Marth.combat_damage(Marth));
+    printf("Marth's accuracy. %d\n", Marth.accuracy());
+    printf("Marth's avoid. %d\n", Marth.avoid());
+    printf("Marth's crit. %d\n", Marth.critical());
+    printf("Marth's favor. %d\n", Marth.favor());
     // unit Marths[10];
     // std::vector<unit> Marths_vec;
     // printf(" Size of arrays of Marths %d\n", sizeof(Marths));

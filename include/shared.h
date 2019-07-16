@@ -61,7 +61,7 @@ public:
     * Weapon stats descriptions: <br>
     *  - dmg: Damage. +1 dmg -> +1 attack_damage. Refer to... <br>
     *  - hit: Hit chance. % probability value to hit. Refer to ... <br>
-    *  - crit: Crit chance. % probability value to crit. Refer to...  <br>
+    *  - critical hit: critical hit chance. % probability value to critical hit. Refer to...  <br>
     *  - wpn_exp: Weapon experience. Base weapon experience for using the weapon. Refer to...  <br>
     *  - uses: Number of uses a weapon has before breaking.  <br>
     *  - range: distance in squares to which a unit can attack_damage with weapon.  <br>
@@ -129,7 +129,7 @@ public:
     // for seom reason, stats array of len<19 cause cygwin_exception
     unsigned char stats[19], stats_base[10],
     growths[10], wpn_exp[10], position[3], skills[3],
-    love_pts[5], love_growths[5], equipped[1], current_hp;
+    love_pts[5], love_growths[5], equipped[1], current_hp, combat_stats[4];
     // std::vector<char> stats[10];
     /// \var unsigned char love_growths
     /// \brief Number of points units that have love potential get for *DESIGN QUESTION*.
@@ -166,7 +166,6 @@ public:
     * \brief Total Unit Experience points.
     * Not unit level in data. The experience points left most digits are the level. Example: 423exp means unit level 5 with 23 exp.
     */
-
     char lovers[5][14]; 
     /// \var char lovers
     /// \brief Names of possible lovers.
@@ -191,9 +190,12 @@ public:
         unsigned short, std::vector<std::string>,
         bool, bool, bool, bool
         );
+    /// \fn combat_damage(&unit)
+    /// \brief combat_damage performed by a unit on another unit.
+    unsigned char combat_damage(const unit&);
     /// \fn attack_damage(&unit)
-    /// \brief attack_damage damage performed by a unit on another unit.
-    unsigned char attack_damage(const unit&);
+    /// \brief Maximal possible combat damage.
+    unsigned char attack_damage();
     /// \fn accuracy(&unit)
     /// \brief Percent accuracy. This minus enemy avoid gives percent chance to hit.
     unsigned char accuracy();
@@ -202,16 +204,22 @@ public:
     unsigned char combat_accuracy(const unit&);
     /// \fn avoid(&unit)
     /// \brief Percent avoid. Enemy avoid minus avoid gives percent chance to get hit.
-    unsigned char avoid(const unit&);
+    unsigned char avoid();
      /// \fn combat_avoid(&unit)
     /// \brief Percent avoid. Enemy avoid minus avoid gives percent chance to get hit.  Takes into account the enemy weapon.
     unsigned char combat_avoid(const unit&);
-    /// \fn crit(&unit)
-    /// \brief Percent crit chance. This minus crit avoid gives change to hit a crit.
-    unsigned char crit(const unit&);
-     /// \fn favor(&unit)
-    /// \brief Percent crit evade chance. Enemy crit chance minus favor gives chance to get hit by a crit.   
-    unsigned char favor(const unit&);
+    /// \fn critical hit(&unit)
+    /// \brief Percent critical hit chance. This minus critical hit avoid gives change to hit a critical hit.
+    unsigned char critical();
+    /// \fn combat_crit(&unit)
+    /// \brief Percent critical hit chance. This minus critical hit avoid gives change to hit a critical hit.
+    unsigned char combat_critical(const unit&);
+    /// \fn favor(&unit)
+    /// \brief Percent critical hit evade chance. Enemy critical hit chance minus favor gives chance to get hit by a critical hit.   
+    unsigned char favor();
+    /// \fn combat_favor(&unit)
+    /// \brief Percent critical hit evade chance. Enemy critical hit chance minus favor gives chance to get hit by a critical hit. 
+    unsigned char combat_favor(const unit&);
     ~unit();
     unit();
 };
