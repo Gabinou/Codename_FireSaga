@@ -20,8 +20,8 @@ char unit_stats[][14] = {"HP", "Str", "Mag", "Skill", "Speed", "Luck", "Def", "R
 /*! \var char unit_stats
 * \brief Unit Stats dmake escription: <br>
 *  - HP: Hit Points. Unit health. Unit dies (forever) if it goes down to zero. <br>
-*  - Str: Strength. +1 Str -> +1 Attack. Refer to ... <br>
-*  - Mag: Magic. +1 Mag -> +1 Attack. Refer to ... <br>
+*  - Str: Strength. +1 Str -> +1 attack_damage. Refer to ... <br>
+*  - Mag: Magic. +1 Mag -> +1 attack_damage. Refer to ... <br>
 *  - Skill: Higher skill means higher Hit rate and Avoid Rate. Refer to ...  <br>
 *  - Speed: Higher speeds lead to double strikes. Refer to ...  <br>
 *  - Luck: Increases hit, avoid, decreases enemy crit chance, etc. <br>
@@ -33,12 +33,12 @@ char unit_stats[][14] = {"HP", "Str", "Mag", "Skill", "Speed", "Luck", "Def", "R
 char weapon_stats[][14] = {"dmg", "hit", "crit", "weight", "wpn_exp", "uses", "range", "lvl"}; 
 /*! \var char weapon_stats
 * \brief Weapon Stats description: <br>
-*  - dmg: Damage. +1 dmg -> +1 Attack. Refer to... <br>
+*  - dmg: Damage. +1 dmg -> +1 attack_damage. Refer to... <br>
 *  - hit: Hit chance. % probability value to hit. Refer to ... <br>
 *  - crit: Crit chance. % probability value to crit. Refer to...  <br>
 *  - wpn_exp: Weapon experience. Base weapon experience for using the weapon. Refer to...  <br>
 *  - uses: Number of uses a weapon has before breaking.  <br>
-*  - range: distance in squares to which a unit can attack with weapon.  <br>
+*  - range: distance in squares to which a unit can attack_damage with weapon.  <br>
 *  - lvl: Weapon level. Integer representing the weapon experience/level necessary to use the weapon. Refer to ...  <br>
 */
 char wpn_types[][12]  = {"swd", "lance", "axe", "bow", "mgc_wind", "mgc_fire", "mgc_thunder",  "mgc_dark",  "mgc_light", "staff"};
@@ -53,9 +53,9 @@ char statuses[][14] = {"healthy", "sleep", "poison", "stone", "berserk"};
 /*! \var char statuses
 *   \brief Statuses. Affects units for 5 turns each, except for stone, which is forever. *DESIGN QUESTION*
 *  - Healthy. <br>
-*  - Sleep: Unit cannot move, attack, or retaliate. Unit wakes up after being attacked. Refer to ... <br>
+*  - Sleep: Unit cannot move, attack_damage, or retaliate. Unit wakes up after being attacked. Refer to ... <br>
 *  - Poison: Loses HP every turn. (How much?) <br>
-*  - Stone: Unit cannot move, attack or retaliate. Can only be cured by the ... staff. <br>
+*  - Stone: Unit cannot move, attack_damage or retaliate. Can only be cured by the ... staff. <br>
 *  - Berserk. Unit attacks the weakest unit in range. Friend or foe. *DESIGN QUESTION* <br>
 */
 
@@ -147,23 +147,23 @@ unit::unit(std::string in_name, std::string in_unit_class, char in_id,
 unit::unit(){
 
 }
-unsigned char unit::attack(const unit& enemy) {
+unsigned char unit::attack_damage(const unit& enemy) {
     char terrain_def = 0;
     char enemy_def = 0 ;
     char unit_power = 0;
     char wpn_dmg = all_weapons[equipment[equipped[0]].name].stats[0];
     if (all_weapons[equipment[equipped[0]].name].dmg_type == 0) {
-        // Physical attack.
+        // Physical attack_damage.
         unit_power = stats[1];
         enemy_def = stats[6];
     } else {
-        // Magical attack.
+        // Magical attack_damage.
         unit_power = stats[2];
         enemy_def = stats[7];
     };
-    int attack = wpn_dmg + unit_power - enemy_def;
-    if (attack <= 0) {attack = 0;};
-    return(attack);
+    int attack_damage = wpn_dmg + unit_power - enemy_def - terrain_def;
+    if (attack_damage <= 0) {attack_damage = 0;};
+    return(attack_damage);
 }
 generic::~generic(void) {
     // printf("Generic object is being deleted\n");
@@ -247,7 +247,7 @@ main() {
               std::vector<char>(LEN(unit_stats), 0), {}, {}, 0);
     all_weapons["Lame de Damas"] = weapon("Lame de Damas", "swd", id++, 1000,
             // dmg hit  crt wght uses  exp range
-              {1,  65,  0,   8,  25,   1,  1},
+              {15,  65,  0,   8,  25,   1,  1},
               std::vector<char>(LEN(unit_stats), 0), {}, {}, 0);
    
     // Unordered map convention: "name" is the immutable original object.
@@ -274,11 +274,6 @@ main() {
         it++;
     }
     
-    
-    printf("TAGUEULE CONNASSE %s\n", inventory_items["Lame de Damas_0001"].name);
-    printf("TAGUEULE CONNASSE %s \n", all_weapons["Lame de Damas"].name);
-    printf("TAGUEULE CONNASSE %s \n", all_weapons["Steel Sword"].name);
-
     unit Marth("Marth", "Prince", id++, 
                             //HP Str Mag Skl Spd Lck Def Res Con Mov
         /*stats_base*/      {18,  1,  2,  9, 10,  7,  5,  2,  6,  5},
@@ -301,7 +296,7 @@ main() {
     );
     
     printf("Marth's weapon. %s\n", Marth.equipment[Marth.equipped[0]]);
-    printf("Marth's attack value. %d\n", Marth.attack(Marth));
+    printf("Marth's attack_damage value. %d\n", Marth.attack_damage(Marth));
     // unit Marths[10];
     // std::vector<unit> Marths_vec;
     // printf(" Size of arrays of Marths %d\n", sizeof(Marths));

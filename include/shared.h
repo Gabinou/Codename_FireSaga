@@ -59,12 +59,12 @@ public:
     /*! \var unsigned char stats.
     * \brief Weapon statistics.
     * Weapon stats descriptions: <br>
-    *  - dmg: Damage. +1 dmg -> +1 Attack. Refer to... <br>
+    *  - dmg: Damage. +1 dmg -> +1 attack_damage. Refer to... <br>
     *  - hit: Hit chance. % probability value to hit. Refer to ... <br>
     *  - crit: Crit chance. % probability value to crit. Refer to...  <br>
     *  - wpn_exp: Weapon experience. Base weapon experience for using the weapon. Refer to...  <br>
     *  - uses: Number of uses a weapon has before breaking.  <br>
-    *  - range: distance in squares to which a unit can attack with weapon.  <br>
+    *  - range: distance in squares to which a unit can attack_damage with weapon.  <br>
     *  - lvl: Weapon level. Integer representing the weapon experience/level necessary to use the weapon. Refer to ...  <br>
     */
     char stats_bonus[10], effective[2][14], owner[5][14];
@@ -191,9 +191,9 @@ public:
         unsigned short, std::vector<std::string>,
         bool, bool, bool, bool
         );
-    /// \fn attack(&unit)
-    /// \brief Attack damage performed by a unit on another unit.
-    unsigned char attack(const unit&);
+    /// \fn attack_damage(&unit)
+    /// \brief attack_damage damage performed by a unit on another unit.
+    unsigned char attack_damage(const unit&);
     ~unit();
     unit();
 };
