@@ -94,16 +94,17 @@ public:
 /// \struct inventory_item
 /// \brief Representation of items in unit inventory to reduce memory.
 struct inventory_item {
+    // char *name2;
     char name[20];
     /// \var char name
     /// \brief name of weapon in inventory.
     char used;
-    // char baka;
+    // weapon &wpn_ptr;
     /// \var char used
     /// \brief number of times item was used.
     /// \fn inventory_item(const inventory_item&) 
     /// \brief copy constructor for inventory_item.
-    // weapon *wpn_pnt; 
+    // int &wpn_pnt; 
     /// \var wpn_pnt
     /// \brief Pointer to weapon.
     inventory_item(const inventory_item&); 
@@ -112,6 +113,7 @@ struct inventory_item {
     inventory_item(std::string, char); 
     inventory_item(); 
     ~inventory_item(); 
+
 };
 /// \class unit
 /// \brief Unit class. Implemented to be as light as possible.

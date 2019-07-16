@@ -152,6 +152,7 @@ unsigned char unit::attack(const unit& enemy) {
     // printf("%s\n",  enemy.name);
    
     // printf("%s\n", all_weapons[equipment[equipped[0]].name].stats[0]);
+    printf("%s\n", equipment[equipped[0]]);
     printf("%d\n", equipped[0]);
     // printf("%d\n",   unit.equipment[unit.equipped].stats[0]);
     printf("%d\n", enemy.stats[1]);
@@ -257,21 +258,12 @@ main() {
                   std::vector<char>(LEN(unit_stats), 0), {}, {});
 
     for (int i = 0; i < sizeof all_weapon_names / sizeof all_weapon_names[0]; i++) {
-        inventory_items[all_weapon_names[i]] =  inventory_item(all_weapon_names[i], 10);
+        inventory_items[strcat(all_weapon_names[i],"_0001")] =  inventory_item(all_weapon_names[i], 10);
     }
-    inventory_items["Empty"] = inventory_item("Empty", 0);
-    inventory_items["Rapier1"] = inventory_items["Rapier"];
     
-    printf("TAGUEULE CONNASSE %s\n", all_weapon_names[0]);
-    printf("TAGUEULE CONNASSE %s\n", inventory_items["Empty"].name);
-    printf("TAGUEULE CONNASSE %s\n", inventory_items["Bronze Sword"].name);
-    printf("TAGUEULE CONNASSE %s\n", inventory_items["Rapier1"].name);
-    printf("TAGUEULE CONNASSE %s\n", inventory_items["Steel Sword"].name);
-    printf("TAGUEULE CONNASSE %d\n", inventory_items["Iron Sword"].used); 
-    // inventory_items["Rapier"] = inventory_items["Rapier"];
-    // inventory_items["Rapier1"] = inventory_items["Rapier"];
     
-    // std::cout << inventory_items["Iron Sword"] << endl; 
+    printf("TAGUEULE CONNASSE %s\n", inventory_items["Rapier_0001"].name);
+
     unit Marth("Marth", "Prince", id++, 
                             //HP Str Mag Skl Spd Lck Def Res Con Mov
         /*stats_base*/      {18,  8,  2,  9, 10,  7,  5,  2,  6,  5},
@@ -282,7 +274,7 @@ main() {
         /*Weapon_exp*/      {18,  8,  2,  9, 10,  7,  5,  2,  6,  5},
         /*Position*/        {18,1,1},
         /*Equipped*/        {0},
-        /*Equipment*/       {inventory_items["Rapier1"]},
+        /*Equipment*/       {inventory_items["Rapier_0001"]},
         /*Weapons*/         {},
         /*Items*/           {},
         /*Exp*/             0, 
@@ -292,8 +284,9 @@ main() {
         /*Armored*/         0,
         /*Promoted*/        0
     );
-    printf("TAGUEULE CONNASSE %d\n", Marth.equipped[0]);
-    printf("%d\n", Marth.attack(Marth));
+    printf("Marth's weapon. %d\n", Marth.equipped[0]);
+    printf("Marth's weapon. %s\n", Marth.equipment[Marth.equipped[0]]);
+    printf("Marth's attack value. %d\n", Marth.attack(Marth));
     // unit Marths[10];
     // std::vector<unit> Marths_vec;
     // printf(" Size of arrays of Marths %d\n", sizeof(Marths));
