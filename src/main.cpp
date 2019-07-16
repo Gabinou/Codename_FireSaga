@@ -86,13 +86,20 @@ unsigned char id = 0;
 generic::generic() {
 
 }
+unsigned char equipped[1];
 
-// generic::generic(const generic &obj) {
-   // printf("Copy constructor allocating ptr.\n");
-   // ptr = new int;
-   // *ptr = *obj.ptr; // copy the value
-// }
+unsigned char* unit::get_equipped() {
+    // For some reason passing the pointer works as I intended.
+    printf("%d\n", equipped[0]);
+    return(equipped);
+}
 
+void unit::equip_weapon(std::vector<unsigned int> in_equipped) {
+    if (in_equipped.size() != 0) {
+        equipped[0] = (unsigned int) in_equipped[0]; 
+    };
+    // combat_stats = {accuracy(), avoid(), critical(), favor()};
+}
 unit::unit(std::string in_name, std::string in_unit_class, char in_id,
            std::vector<unsigned int> in_stats_base, std::vector<unsigned int> in_growths, std::vector<unsigned int> in_skills,
            std::vector<unsigned int> in_love_pts, std::vector<unsigned int> in_love_growths,
@@ -119,9 +126,8 @@ unit::unit(std::string in_name, std::string in_unit_class, char in_id,
     }
     
     current_hp = (unsigned int) stats_base[0];
-    if (in_equipped.size() != 0) {
-        equipped[0] = (unsigned int) in_equipped[0]; 
-    };
+    equip_weapon(in_equipped);
+    // printf("Did I equip the weapon successfully %d \n", get_equipped()[0]);
     for (int i = 0; i < in_weapons.size(); i++) {
         if (in_weapons.size() != 0) {
             weapons[i] = in_weapons[i];
@@ -143,7 +149,7 @@ unit::unit(std::string in_name, std::string in_unit_class, char in_id,
         wpn_exp[i] = (unsigned int) in_wpn_exp[i];
     }    
     id = in_id;
-    combat_stats = {accuracy(), avoid(), crit(), favor()};
+
 }
 unit::unit(){
 
@@ -346,7 +352,7 @@ main() {
         /*Promoted*/        0
     );
     
-    printf("Marth's weapon. %s\n", Marth.equipment[Marth.equipped[0]]);
+    printf("Marth's weapon. %s\n", Marth.equipment[Marth.get_equipped()[0]]);
     printf("Marth's attack_damage value. %d\n", Marth.attack_damage());
     printf("Marth's combat_damage value against himself. %d\n", Marth.combat_damage(Marth));
     printf("Marth's accuracy. %d\n", Marth.accuracy());

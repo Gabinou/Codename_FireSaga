@@ -120,6 +120,8 @@ struct inventory_item {
 /// All unsigned variables cannot be negative.
 class unit: public generic {
     // Lightweight implementation.
+private: 
+    unsigned char equipped[1];
 public:
     char stats_bonus[10];
     /// \var stats_bonus
@@ -129,7 +131,7 @@ public:
     // for seom reason, stats array of len<19 cause cygwin_exception
     unsigned char stats[19], stats_base[10],
     growths[10], wpn_exp[10], position[3], skills[3],
-    love_pts[5], love_growths[5], equipped[1], current_hp, combat_stats[4];
+    love_pts[5], love_growths[5], current_hp, combat_stats[4];
     // std::vector<char> stats[10];
     /// \var unsigned char love_growths
     /// \brief Number of points units that have love potential get for *DESIGN QUESTION*.
@@ -220,6 +222,10 @@ public:
     /// \fn combat_favor(&unit)
     /// \brief Percent critical hit evade chance. Enemy critical hit chance minus favor gives chance to get hit by a critical hit. 
     unsigned char combat_favor(const unit&);
+    /// \fn equip_weapon(std::vector<unsigned int>)
+    /// \brief equipped is private so that it doesn't get changed withtout calling equip_weapon.
+    void equip_weapon(std::vector<unsigned int>);
+    unsigned char* get_equipped();
     ~unit();
     unit();
 };
