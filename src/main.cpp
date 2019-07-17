@@ -8,12 +8,23 @@
 #include <stdio.h>
 #include <iostream>
 #include <vector>
+#include <random>
 #include <bits/stdc++.h> 
 #include "shared.h"
 #define LEN(arr) ((int) (sizeof (arr) / sizeof (arr)[0])) 
+#define getrand() dist(mt) 
+
 
 /// \fn LEN(arr)
 /// \brief That is a macro. What is a macro? Anyway it computes lenght of arrays.
+
+// Random number generation: modulo wrecks the average and makes the distribution non uniform if the base interval is not divisible.
+// How to get uniform distribution from uniform arbitrary range.
+
+std::mt19937 mt(1899); //Deterministic seed. Do like other fire Emblems. Always Same RNG, but it is the player actions that change it.
+std::uniform_int_distribution<char> dist(0, 100); //Deterministic seed. Do like other fire Emblems. Always Same RNG, it is the player actions that change it.
+
+
 
 
 char unit_stats[][14] = {"HP", "Str", "Mag", "Skill", "Speed", "Luck", "Def", "Res", "Con", "Move"};
@@ -283,6 +294,10 @@ main() {
     printf("TESTING THIS BITCH\n");
     printf("Initializaing a character\n");
     
+    for (int i=0;i<16; ++i) {
+        printf("am I random. %d\n", getrand()); // to get the next random number.
+    }
+    return(0);
 
     all_weapons["Rapier"] = weapon("Rapier", "swd", id++, 600,
             // dmg  hit  crt wght uses  exp range
