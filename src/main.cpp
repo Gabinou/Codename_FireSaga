@@ -306,7 +306,8 @@ std::unordered_map<string, unit> all_units;
 main() {
     printf("TESTING THIS BITCH\n");
     printf("Initializaing a character\n");
-    printf("Does my attack hit %i\n", double_roll(53));
+    printf("Does my attack hit %i\n", single_roll(15)); 
+    return(0);
 
     all_weapons["Rapier"] = weapon("Rapier", "swd", id++, 600,
             // dmg  hit  crt wght uses  exp range
