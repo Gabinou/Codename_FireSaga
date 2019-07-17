@@ -380,26 +380,26 @@ main() {
         it++;
     }
     
-    // unit Marth("Marth", "Prince", id++, 
-                            // //HP Str Mag Skl Spd Lck Def Res Con Mov
-        // /*stats_base*/      {18,  1,  2,  9, 10,  7,  5,  2,  6,  5},
-        // /*Growths*/         {90,  8,  2,  9, 10,  7,  5,  2,  6,  5},
-        // /*Skills*/          {18,  8,  2},
-        // /*Love_pts*/        {18,1,1 ,1,1},
-        // /*Love_growths*/    {18,1,1 ,1,1},
-        // /*Weapon_exp*/      {18,  8,  2,  9, 10,  7,  5,  2,  6,  5},
-        // /*Position*/        {18,1,1},
-        // /*Equipped*/        {0},
-        // /*Equipment*/       {inventory_items["Rapier_0001"]},
-        // /*Weapons*/         {},
-        // /*Items*/           {},
-        // /*Exp*/             0, 
-        // /*Lovers*/          {"Sheeda", "" ,"","",""},
-        // /*Mounted*/         0,
-        // /*Flying*/          0,
-        // /*Armored*/         0,
-        // /*Promoted*/        0
-    // );    
+    unit Marth("Marth", "Prince", id++, 
+                            //HP Str Mag Skl Spd Lck Def Res Con Mov
+        /*stats_base*/      {18,  1,  2,  9, 10,  7,  5,  2,  6,  5},
+        /*Growths*/         {90,  8,  2,  9, 10,  7,  5,  2,  6,  5},
+        /*Skills*/          {18,  8,  2},
+        /*Love_pts*/        {18,1,1 ,1,1},
+        /*Love_growths*/    {18,1,1 ,1,1},
+        /*Weapon_exp*/      {18,  8,  2,  9, 10,  7,  5,  2,  6,  5},
+        /*Position*/        {18,1,1},
+        /*Equipped*/        {0},
+        /*Equipment*/       {inventory_items["Rapier_0001"]},
+        /*Weapons*/         {},
+        /*Items*/           {},
+        /*Exp*/             0, 
+        /*Lovers*/          {"Sheeda", "" ,"","",""},
+        /*Mounted*/         0,
+        /*Flying*/          0,
+        /*Armored*/         0,
+        /*Promoted*/        0
+    );    
     
     all_units["Marth"] = unit("Marth", "Prince", id++, 
                             /*HP Str Mag Skl Spd Lck Def Res Con Mov
@@ -442,7 +442,9 @@ main() {
     // /*Promoted*/        0
     // );
     
-    printf("Marth's weapon. %s\n", all_units["Marth"].equipment[all_units["Marth"].get_equipped()[0]]);
+    printf("Marth's weapon. %s\n", inventory_items["Rapier_0001"].name);
+    printf("Marth's weapon. %s\n", Marth.equipment[0].name);
+    printf("Marth's weapon. %s\n", all_units["Marth"].equipment[0].name);
     printf("Marth's attack_damage value. %d\n", all_units["Marth"].attack_damage());
     printf("Marth's combat_damage value against himself. %d\n", all_units["Marth"].combat_damage(all_units["Marth"]));
     printf("Marth's accuracy. %d\n", all_units["Marth"].accuracy());
