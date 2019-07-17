@@ -167,15 +167,13 @@ unit::unit(std::string in_name, std::string in_unit_class, char in_id,
         skills[i] = (unsigned int) in_skills[i];
         position[i] = (unsigned int) position[i];
     }  
-    for (int i = 0; i < in_equipment.size(); i++) {
-        equipment[i] = in_equipment[i];
-    }      
     for (int i = 0; i < in_lovers.size(); i++) {
-        strncpy(lovers[i], in_lovers[i].c_str(), sizeof(in_lovers));
+        strncpy(lovers[i], in_lovers[i].c_str(), sizeof(in_lovers[i])); // This line is the problem
         love_growths[i] = (unsigned int) in_love_growths[i];
         wpn_exp[i] = (unsigned int) in_wpn_exp[i];
     }    
     id = in_id;
+    
 
 }
 unit::unit(){
@@ -382,30 +380,30 @@ main() {
         it++;
     }
     
-    unit Marth("Marth", "Prince", id++, 
-                            //HP Str Mag Skl Spd Lck Def Res Con Mov
-        /*stats_base*/      {18,  1,  2,  9, 10,  7,  5,  2,  6,  5},
-        /*Growths*/         {90,  8,  2,  9, 10,  7,  5,  2,  6,  5},
-        /*Skills*/          {18,  8,  2},
-        /*Love_pts*/        {18,1,1 ,1,1},
-        /*Love_growths*/    {18,1,1 ,1,1},
-        /*Weapon_exp*/      {18,  8,  2,  9, 10,  7,  5,  2,  6,  5},
-        /*Position*/        {18,1,1},
-        /*Equipped*/        {0},
-        /*Equipment*/       {inventory_items["Rapier_0001"]},
-        /*Weapons*/         {},
-        /*Items*/           {},
-        /*Exp*/             0, 
-        /*Lovers*/          {"Sheeda", "" ,"","",""},
-        /*Mounted*/         0,
-        /*Flying*/          0,
-        /*Armored*/         0,
-        /*Promoted*/        0
-    );    
+    // unit Marth("Marth", "Prince", id++, 
+                            // //HP Str Mag Skl Spd Lck Def Res Con Mov
+        // /*stats_base*/      {18,  1,  2,  9, 10,  7,  5,  2,  6,  5},
+        // /*Growths*/         {90,  8,  2,  9, 10,  7,  5,  2,  6,  5},
+        // /*Skills*/          {18,  8,  2},
+        // /*Love_pts*/        {18,1,1 ,1,1},
+        // /*Love_growths*/    {18,1,1 ,1,1},
+        // /*Weapon_exp*/      {18,  8,  2,  9, 10,  7,  5,  2,  6,  5},
+        // /*Position*/        {18,1,1},
+        // /*Equipped*/        {0},
+        // /*Equipment*/       {inventory_items["Rapier_0001"]},
+        // /*Weapons*/         {},
+        // /*Items*/           {},
+        // /*Exp*/             0, 
+        // /*Lovers*/          {"Sheeda", "" ,"","",""},
+        // /*Mounted*/         0,
+        // /*Flying*/          0,
+        // /*Armored*/         0,
+        // /*Promoted*/        0
+    // );    
     
     all_units["Marth"] = unit("Marth", "Prince", id++, 
                             /*HP Str Mag Skl Spd Lck Def Res Con Mov
-        stats_base*/      {18,  1,  2,  9, 10,  7,  5,  2,  6,  5},
+        stats_base*/        {18,  1,  2,  9, 10,  7,  5,  2,  6,  5},
         /*Growths*/         {90,  8,  2,  9, 10,  7,  5,  2,  6,  5},
         /*Skills*/          {18,  8,  2},
         /*Love_pts*/        {18,1,1 ,1,1},
@@ -444,14 +442,14 @@ main() {
     // /*Promoted*/        0
     // );
     
-    // printf("Marth's weapon. %s\n", all_units["Marth"].equipment[all_units["Marth"].get_equipped()[0]]);
-    // printf("Marth's attack_damage value. %d\n", all_units["Marth"].attack_damage());
-    // printf("Marth's combat_damage value against himself. %d\n", all_units["Marth"].combat_damage(all_units["Marth"]));
-    // printf("Marth's accuracy. %d\n", all_units["Marth"].accuracy());
-    // printf("Marth's avoid. %d\n", all_units["Marth"].avoid());
-    // printf("Marth's crit. %d\n", all_units["Marth"].critical());
-    // printf("Marth's favor. %d\n", all_units["Marth"].favor());
-    // all_units["Marth"].enemy_select(all_units["Marth"]);
+    printf("Marth's weapon. %s\n", all_units["Marth"].equipment[all_units["Marth"].get_equipped()[0]]);
+    printf("Marth's attack_damage value. %d\n", all_units["Marth"].attack_damage());
+    printf("Marth's combat_damage value against himself. %d\n", all_units["Marth"].combat_damage(all_units["Marth"]));
+    printf("Marth's accuracy. %d\n", all_units["Marth"].accuracy());
+    printf("Marth's avoid. %d\n", all_units["Marth"].avoid());
+    printf("Marth's crit. %d\n", all_units["Marth"].critical());
+    printf("Marth's favor. %d\n", all_units["Marth"].favor());
+    all_units["Marth"].enemy_select(all_units["Marth"]);
     int i;
     std::cout << "Please enter an integer value: ";
     std::cin >> i;
