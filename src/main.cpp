@@ -21,9 +21,22 @@
 // Random number generation: modulo wrecks the average and makes the distribution non uniform if the base interval is not divisible.
 // How to get uniform distribution from uniform arbitrary range.
 
-std::mt19937 mt(1899); //Deterministic seed. Do like other fire Emblems. Always Same RNG, but it is the player actions that change it.
-std::uniform_int_distribution<char> dist(0, 100); //Deterministic seed. Do like other fire Emblems. Always Same RNG, it is the player actions that change it.
+std::mt19937 mt(1899); //Deterministic seed. Do like other fire Emblems. Always Same RNG,it is the player actions that change it.
+std::uniform_int_distribution<char> dist(0, 100); //*DESIGN QUESTION* What should be the minimum and maximum probabilities?
 
+
+bool single_roll(int in_prob) {
+    bool out = (getrand() < in_prob);
+    return(out);
+}
+
+bool double_roll(int in_prob) {
+    int rng1 = getrand();
+    int rng2 = getrand(); 
+    printf("%i %i %i\n", rng1, rng2, in_prob);
+    bool out = ((rng1 + rng2) < (2 * in_prob));
+    return(out);
+}
 
 
 
@@ -293,11 +306,7 @@ std::unordered_map<string, unit> all_units;
 main() {
     printf("TESTING THIS BITCH\n");
     printf("Initializaing a character\n");
-    
-    for (int i=0;i<16; ++i) {
-        printf("am I random. %d\n", getrand()); // to get the next random number.
-    }
-    return(0);
+    printf("Does my attack hit %i\n", double_roll(53));
 
     all_weapons["Rapier"] = weapon("Rapier", "swd", id++, 600,
             // dmg  hit  crt wght uses  exp range
