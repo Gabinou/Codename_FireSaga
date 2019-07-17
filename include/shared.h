@@ -131,7 +131,8 @@ public:
     // for seom reason, stats array of len<19 cause cygwin_exception
     unsigned char stats[19], stats_base[10],
     growths[10], wpn_exp[10], position[3], skills[3],
-    love_pts[5], love_growths[5], current_hp, combat_stats[4];
+    love_pts[5], love_growths[5], current_hp, 
+    attack_probs[4], combat_probs[4];
     // std::vector<char> stats[10];
     /// \var unsigned char love_growths
     /// \brief Number of points units that have love potential get for *DESIGN QUESTION*.
@@ -225,6 +226,14 @@ public:
     /// \fn equip_weapon(std::vector<unsigned int>)
     /// \brief equipped is private so that it doesn't get changed withtout calling equip_weapon.
     void equip_weapon(std::vector<unsigned int>);
+    /// \fn bool double_attack
+    /// \brief Bool that returns if unit double attacks.
+    bool double_attack(const unit&);
+    /// \fn void enemy_select
+    /// \brief On enemy selection, compute combat probabilities, values, statistics, etc.
+    void enemy_select(const unit&);
+    /// \fn void get_equipped
+    /// \brief Getter for private equipped.
     unsigned char* get_equipped();
     ~unit();
     unit();

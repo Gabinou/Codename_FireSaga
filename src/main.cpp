@@ -121,11 +121,12 @@ void unit::equip_weapon(std::vector<unsigned int> in_equipped) {
     if (in_equipped.size() != 0) {
         equipped[0] = (unsigned int) in_equipped[0]; 
     };
-    combat_stats[0] = accuracy();
-    combat_stats[1] = critical();
-    combat_stats[2] = accuracy();
-    combat_stats[3] = favor();
+    attack_probs[0] = accuracy();
+    attack_probs[1] = critical();
+    attack_probs[2] = accuracy();
+    attack_probs[3] = favor();
 }
+
 unit::unit(std::string in_name, std::string in_unit_class, char in_id, 
            std::vector<unsigned int> in_stats_base, std::vector<unsigned int> in_growths, std::vector<unsigned int> in_skills,
            std::vector<unsigned int> in_love_pts, std::vector<unsigned int> in_love_growths,
@@ -148,7 +149,7 @@ unit::unit(std::string in_name, std::string in_unit_class, char in_id,
         growths[i] = (unsigned int) in_growths[i];
         wpn_exp[i] = (unsigned int) in_wpn_exp[i];
         stats_bonus[i] = 0;
-        // For some reason, stats_base cannot be printed unless (int) Marth.stats_base[0]. + 0 also works.
+        // For some reason, stats_base cannot be printed unless (int) all_units["Marth"].stats_base[0]. + 0 also works.
     }
     
     current_hp = (unsigned int) stats_base[0];
@@ -227,6 +228,14 @@ unsigned char unit::critical(){
     unsigned char critical = wpn_crit + unit_skill + supports;
     return(critical);
 }
+unsigned char unit::combat_critical(const unit& enemy){
+    //*DESIGN QUESTION* Should this function exists? Can enemies influence your crit? should they? In general, for FEmaker it should exist.
+    char supports = 0 ;
+    char unit_skill = 0;
+    unsigned char wpn_crit = all_weapons[equipment[equipped[0]].name].stats[2];
+    unsigned char critical = wpn_crit + unit_skill + supports;
+    return(critical);
+}
 unsigned char unit::favor(){
     char supports = 0 ;
     char unit_favor = (ceil(stats[5]/2.)); // By default, integer division floors
@@ -234,6 +243,15 @@ unsigned char unit::favor(){
     unsigned char favor = unit_favor + supports;
     return(favor);
 }
+unsigned char unit::combat_favor(const unit& enemy){
+    //*DESIGN QUESTION* Should this function exists? Can enemies influence your favor? Should they? In general, for FEmaker it should exist.
+    char supports = 0 ;
+    char unit_favor = (ceil(stats[5]/2.)); // By default, integer division floors
+    // For design simplicity, I think it is good to have percent values only change by increments of 1. Simple.
+    unsigned char favor = unit_favor + supports;
+    return(favor);
+}
+
 unsigned char unit::accuracy(){
     char supports = 0;
     unsigned char wpn_hit = all_weapons[equipment[equipped[0]].name].stats[1];
@@ -247,6 +265,13 @@ unsigned char unit::combat_accuracy(const unit& enemy){
     unsigned char unit_acc = stats[3]*2 + stats[5];
     unsigned char accuracy = wpn_hit + unit_acc + supports ;
     return(accuracy);
+}
+
+void unit::enemy_select(const unit& enemy) {
+    combat_probs[0] = combat_accuracy(enemy);
+    combat_probs[1] = combat_critical(enemy);
+    combat_probs[2] = combat_accuracy(enemy);
+    combat_probs[3] = combat_favor(enemy);
 }
 generic::~generic(void) {
     // printf("Generic object is being deleted\n");
@@ -306,8 +331,6 @@ std::unordered_map<string, unit> all_units;
 main() {
     printf("TESTING THIS BITCH\n");
     printf("Initializaing a character\n");
-    printf("Does my attack hit %i\n", single_roll(15)); 
-    return(0);
 
     all_weapons["Rapier"] = weapon("Rapier", "swd", id++, 600,
             // dmg  hit  crt wght uses  exp range
@@ -358,34 +381,56 @@ main() {
         it++;
     }
     
-    unit Marth("Marth", "Prince", id++, 
-                            //HP Str Mag Skl Spd Lck Def Res Con Mov
-        /*stats_base*/      {18,  1,  2,  9, 10,  7,  5,  2,  6,  5},
-        /*Growths*/         {90,  8,  2,  9, 10,  7,  5,  2,  6,  5},
-        /*Skills*/          {18,  8,  2},
-        /*Love_pts*/        {18,1,1 ,1,1},
-        /*Love_growths*/    {18,1,1 ,1,1},
-        /*Weapon_exp*/      {18,  8,  2,  9, 10,  7,  5,  2,  6,  5},
-        /*Position*/        {18,1,1},
-        /*Equipped*/        {0},
-        /*Equipment*/       {inventory_items["Rapier_0001"]},
-        /*Weapons*/         {},
-        /*Items*/           {},
-        /*Exp*/             0, 
-        /*Lovers*/          {"Sheeda", "" ,"","",""},
-        /*Mounted*/         0,
-        /*Flying*/          0,
-        /*Armored*/         0,
-        /*Promoted*/        0
-    );
+    // all_units["Marth"] = unit("Marth", "Prince", id++, 
+                            // //HP Str Mag Skl Spd Lck Def Res Con Mov
+        // /*stats_base*/      {18,  1,  2,  9, 10,  7,  5,  2,  6,  5},
+        // /*Growths*/         {90,  8,  2,  9, 10,  7,  5,  2,  6,  5},
+        // /*Skills*/          {18,  8,  2},
+        // /*Love_pts*/        {18,1,1 ,1,1},
+        // /*Love_growths*/    {18,1,1 ,1,1},
+        // /*Weapon_exp*/      {18,  8,  2,  9, 10,  7,  5,  2,  6,  5},
+        // /*Position*/        {18,1,1},
+        // /*Equipped*/        {0},
+        // /*Equipment*/       {inventory_items["Rapier_0001"]},
+        // /*Weapons*/         {},
+        // /*Items*/           {},
+        // /*Exp*/             0, 
+        // /*Lovers*/          {"Sheeda", "" ,"","",""},
+        // /*Mounted*/         0,
+        // /*Flying*/          0,
+        // /*Armored*/         0,
+        // /*Promoted*/        0
+    // );
     
-    printf("Marth's weapon. %s\n", Marth.equipment[Marth.get_equipped()[0]]);
-    printf("Marth's attack_damage value. %d\n", Marth.attack_damage());
-    printf("Marth's combat_damage value against himself. %d\n", Marth.combat_damage(Marth));
-    printf("Marth's accuracy. %d\n", Marth.accuracy());
-    printf("Marth's avoid. %d\n", Marth.avoid());
-    printf("Marth's crit. %d\n", Marth.critical());
-    printf("Marth's favor. %d\n", Marth.favor());
+    // unit Sheeda("Sheeda", "Prince", id++, 
+                        // //HP Str Mag Skl Spd Lck Def Res Con Mov
+    // /*stats_base*/      {18,  1,  2,  9, 10,  7,  5,  2,  6,  5},
+    // /*Growths*/         {90,  8,  2,  9, 10,  7,  5,  2,  6,  5},
+    // /*Skills*/          {18,  8,  2},
+    // /*Love_pts*/        {18,1,1 ,1,1},
+    // /*Love_growths*/    {18,1,1 ,1,1},
+    // /*Weapon_exp*/      {18,  8,  2,  9, 10,  7,  5,  2,  6,  5},
+    // /*Position*/        {18,1,1},
+    // /*Equipped*/        {0},
+    // /*Equipment*/       {inventory_items["Rapier_0001"]},
+    // /*Weapons*/         {},
+    // /*Items*/           {},
+    // /*Exp*/             0, 
+    // /*Lovers*/          {"Sheeda", "" ,"","",""},
+    // /*Mounted*/         0,
+    // /*Flying*/          0,
+    // /*Armored*/         0,
+    // /*Promoted*/        0
+    // );
+    
+    // printf("Marth's weapon. %s\n", all_units["Marth"].equipment[all_units["Marth"].get_equipped()[0]]);
+    // printf("Marth's attack_damage value. %d\n", all_units["Marth"].attack_damage());
+    // printf("Marth's combat_damage value against himself. %d\n", all_units["Marth"].combat_damage(all_units["Marth"]));
+    // printf("Marth's accuracy. %d\n", all_units["Marth"].accuracy());
+    // printf("Marth's avoid. %d\n", all_units["Marth"].avoid());
+    // printf("Marth's crit. %d\n", all_units["Marth"].critical());
+    // printf("Marth's favor. %d\n", all_units["Marth"].favor());
+    // all_units["Marth"].enemy_select(all_units["Marth"]);
     // unit Marths[10];
     // std::vector<unit> Marths_vec;
     // printf(" Size of arrays of Marths %d\n", sizeof(Marths));
