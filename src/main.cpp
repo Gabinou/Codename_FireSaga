@@ -194,6 +194,8 @@ unsigned char unit::attack_damage() {
         unit_power = stats[2];
     };
     int attack_damage = wpn_dmg + unit_power;
+    printf("wpn_dmg %d\n", wpn_dmg);
+    printf("unit_power %d\n", unit_power);
     return(attack_damage);
 }
 
@@ -291,7 +293,7 @@ weapon::weapon(std::string in_name, std::string in_type, char in_id, unsigned sh
        std::vector<std::string> in_owner, std::vector<std::string> in_effective, bool in_dmg_type) {
     strncpy(name, in_name.c_str(), 30); // for some reason in_name is always of size 8. Whatever.
     strncpy(type, in_type.c_str(), 30);
-    dmg_type = in_dmg_type;
+    dmg_type = (bool) in_dmg_type;
     for (int i = 0; i < in_effective.size(); i++) {
         strncpy(effective[i], in_effective[i].c_str(), sizeof(in_effective));
     }
@@ -383,30 +385,30 @@ main() {
         it++;
     }
     
-    unit Marth("Marth", "Prince", id++, 
-                            //HP Str Mag Skl Spd Lck Def Res Con Mov
-        /*stats_base*/      {18,  1,  2,  9, 10,  7,  5,  2,  6,  5},
-        /*Growths*/         {90,  8,  2,  9, 10,  7,  5,  2,  6,  5},
-        /*Skills*/          {18,  8,  2},
-        /*Love_pts*/        {18,1,1 ,1,1},
-        /*Love_growths*/    {18,1,1 ,1,1},
-        /*Weapon_exp*/      {18,  8,  2,  9, 10,  7,  5,  2,  6,  5},
-        /*Position*/        {18,1,1},
-        /*Equipped*/        {0},
-        /*Equipment*/       {inventory_items["Rapier_0001"]},
-        /*Weapons*/         {},
-        /*Items*/           {},
-        /*Exp*/             0, 
-        /*Lovers*/          {"Sheeda", "" ,"","",""},
-        /*Mounted*/         0,
-        /*Flying*/          0,
-        /*Armored*/         0,
-        /*Promoted*/        0
-    );    
+    // unit Marth("Marth", "Prince", id++, 
+                            // //HP Str Mag Skl Spd Lck Def Res Con Mov
+        // /*stats_base*/      {18,  1,  2,  9, 10,  7,  5,  2,  6,  5},
+        // /*Growths*/         {90,  8,  2,  9, 10,  7,  5,  2,  6,  5},
+        // /*Skills*/          {18,  8,  2},
+        // /*Love_pts*/        {18,1,1 ,1,1},
+        // /*Love_growths*/    {18,1,1 ,1,1},
+        // /*Weapon_exp*/      {18,  8,  2,  9, 10,  7,  5,  2,  6,  5},
+        // /*Position*/        {18,1,1},
+        // /*Equipped*/        {0},
+        // /*Equipment*/       {inventory_items["Rapier_0001"]},
+        // /*Weapons*/         {},
+        // /*Items*/           {},
+        // /*Exp*/             0, 
+        // /*Lovers*/          {"Sheeda", "" ,"","",""},
+        // /*Mounted*/         0,
+        // /*Flying*/          0,
+        // /*Armored*/         0,
+        // /*Promoted*/        0
+    // );    
     
     all_units["Marth"] = unit("Marth", "Prince", id++, 
                             /*HP Str Mag Skl Spd Lck Def Res Con Mov
-        stats_base*/        {18,  1,  2,  9, 10,  7,  5,  2,  6,  5},
+        stats_base*/        {18,  8,  2,  9, 10,  7,  5,  2,  6,  5},
         /*Growths*/         {90,  8,  2,  9, 10,  7,  5,  2,  6,  5},
         /*Skills*/          {18,  8,  2},
         /*Love_pts*/        {18,1,1 ,1,1},
@@ -423,31 +425,32 @@ main() {
         /*Flying*/          0,
         /*Armored*/         0,
         /*Promoted*/        0);
-    
-    // unit Sheeda("Sheeda", "Prince", id++, 
-                        // //HP Str Mag Skl Spd Lck Def Res Con Mov
-    // /*stats_base*/      {18,  1,  2,  9, 10,  7,  5,  2,  6,  5},
-    // /*Growths*/         {90,  8,  2,  9, 10,  7,  5,  2,  6,  5},
-    // /*Skills*/          {18,  8,  2},
-    // /*Love_pts*/        {18,1,1 ,1,1},
-    // /*Love_growths*/    {18,1,1 ,1,1},
-    // /*Weapon_exp*/      {18,  8,  2,  9, 10,  7,  5,  2,  6,  5},
-    // /*Position*/        {18,1,1},
-    // /*Equipped*/        {0},
-    // /*Equipment*/       {inventory_items["Rapier_0001"]},
-    // /*Weapons*/         {},
-    // /*Items*/           {},
-    // /*Exp*/             0, 
-    // /*Lovers*/          {"Sheeda", "" ,"","",""},
-    // /*Mounted*/         0,
-    // /*Flying*/          0,
-    // /*Armored*/         0,
-    // /*Promoted*/        0
-    // );
+
+
+    // all_units["Sheeda"] = unit("Sheeda", "Prince", id++, 
+                            // /*HP Str Mag Skl Spd Lck Def Res Con Mov
+        // stats_base*/        {18,  1,  2,  9, 10,  7,  5,  2,  6,  5},
+        // /*Growths*/         {90,  8,  2,  9, 10,  7,  5,  2,  6,  5},
+        // /*Skills*/          {18,  8,  2},
+        // /*Love_pts*/        {18,1,1 ,1,1},
+        // /*Love_growths*/    {18,1,1 ,1,1},
+        // /*Weapon_exp*/      {18,  8,  2,  9, 10,  7,  5,  2,  6,  5},
+        // /*Position*/        {18,1,1},
+        // /*Equipped*/        {0},
+        // /*Equipment*/       {inventory_items["Rapier_0001"]},
+        // /*Weapons*/         {},
+        // /*Items*/           {},
+        // /*Exp*/             0, 
+        // /*Lovers*/          {"Marth", "" ,"","",""},
+        // /*Mounted*/         0,
+        // /*Flying*/          0,
+        // /*Armored*/         0,
+        // /*Promoted*/        0);
+           
     
     printf("Marth's weapon. %s\n", inventory_items["Rapier_0001"].name);
-    printf("Marth's weapon. %s\n", Marth.equipment[0].name);
     printf("Marth's weapon. %s\n", all_units["Marth"].equipment[0].name);
+    printf("Marth's dmg_type. %d\n", all_weapons[all_units["Marth"].equipment[0].name].dmg_type);
     printf("Marth's attack_damage value. %d\n", all_units["Marth"].attack_damage());
     printf("Marth's combat_damage value against himself. %d\n", all_units["Marth"].combat_damage(all_units["Marth"]));
     printf("Marth's accuracy. %d\n", all_units["Marth"].accuracy());
@@ -456,7 +459,7 @@ main() {
     printf("Marth's favor. %d\n", all_units["Marth"].favor());
     all_units["Marth"].enemy_select(all_units["Marth"]);
     int i;
-    std::cout << "Please enter an integer value: ";
-    std::cin >> i;
-    return(0);
+    // std::cout << "Please enter an integer value: ";
+    // std::cin >> i;
+    // return(0);
 }
