@@ -141,6 +141,9 @@ unit::unit(std::string in_name, std::string in_unit_class, char in_id,
     flying = in_flying;
     armored = in_armored;
     promoted = in_promoted;
+    for (int i = 0; i < in_equipment.size(); i++) {
+        equipment[i] = in_equipment[i];
+    }
     strncpy(name, in_name.c_str(), sizeof(in_name));
     strncpy(type, in_unit_class.c_str(), sizeof(in_unit_class));
     for (int i = 0; i < in_stats_base.size(); i++) {
