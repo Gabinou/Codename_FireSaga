@@ -207,12 +207,14 @@ unsigned char unit::combat_damage(const unit& enemy) {
     if (all_weapons[equipment[equipped[0]].name].dmg_type == 0) {
         // Physical attack_damage.
         unit_power = stats[1];
-        enemy_def = stats[6];
+        enemy_def = enemy.stats[6];
     } else {
         // Magical attack_damage.
         unit_power = stats[2];
-        enemy_def = stats[7];
+        enemy_def = enemy.stats[7];
     };
+    printf("unit_power %d\n", unit_power);
+    printf("enemy_def  %d\n", enemy_def );
     int attack_damage = wpn_dmg + unit_power - enemy_def - terrain_def;
     if (attack_damage <= 0) {attack_damage = 0;};
     return(attack_damage);
@@ -452,7 +454,7 @@ main() {
     printf("Marth's weapon. %s\n", all_units["Marth"].equipment[0].name);
     printf("Marth's dmg_type. %d\n", all_weapons[all_units["Marth"].equipment[0].name].dmg_type);
     printf("Marth's attack_damage value. %d\n", all_units["Marth"].attack_damage());
-    printf("Marth's combat_damage value against himself. %d\n", all_units["Marth"].combat_damage(all_units["Marth"]));
+    printf("Marth's combat_damage value against Sheeda. %d\n", all_units["Marth"].combat_damage(all_units["Sheeda"]));
     printf("Marth's accuracy. %d\n", all_units["Marth"].accuracy());
     printf("Marth's avoid. %d\n", all_units["Marth"].avoid());
     printf("Marth's crit. %d\n", all_units["Marth"].critical());
