@@ -132,7 +132,7 @@ public:
     unsigned char stats[19], stats_base[10],
     growths[10], wpn_exp[10], position[3], skills[3],
     love_pts[5], love_growths[5], current_hp, 
-    attack_probs[4], combat_probs[4];
+    attack_probs[4], combat_probs[2];
     // std::vector<char> stats[10];
     /// \var unsigned char love_growths
     /// \brief Number of points units that have love potential get for *DESIGN QUESTION*.
@@ -204,15 +204,12 @@ public:
     unsigned char accuracy();
     /// \fn combat_accuracy(&unit)
     /// \brief Percent accuracy in combat. Takes into account the enemy weapon.
-    unsigned char combat_accuracy(const unit&);
+    unsigned char combat_hit(const unit&);
     /// \fn avoid(&unit)
     /// \brief Percent avoid. Enemy avoid minus avoid gives percent chance to get hit.
     unsigned char avoid();
      /// \fn combat_avoid(&unit)
     /// \brief Percent avoid. Enemy avoid minus avoid gives percent chance to get hit.  Takes into account the enemy weapon.
-    unsigned char combat_avoid(const unit&);
-    /// \fn critical hit(&unit)
-    /// \brief Percent critical hit chance. This minus critical hit avoid gives change to hit a critical hit.
     unsigned char critical();
     /// \fn combat_crit(&unit)
     /// \brief Percent critical hit chance. This minus critical hit avoid gives change to hit a critical hit.
@@ -222,9 +219,6 @@ public:
     unsigned char favor();
     /// \fn combat_favor(&unit)
     /// \brief Percent critical hit evade chance. Enemy critical hit chance minus favor gives chance to get hit by a critical hit. 
-    unsigned char combat_favor(const unit&);
-    /// \fn equip_weapon(std::vector<unsigned int>)
-    /// \brief equipped is private so that it doesn't get changed withtout calling equip_weapon.
     void equip_weapon(std::vector<unsigned int>);
     /// \fn bool double_attack
     /// \brief Bool that returns if unit double attacks.

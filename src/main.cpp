@@ -122,8 +122,8 @@ void unit::equip_weapon(std::vector<unsigned int> in_equipped) {
         equipped[0] = (unsigned int) in_equipped[0]; 
     };
     attack_probs[0] = accuracy();
-    attack_probs[1] = critical();
-    attack_probs[2] = accuracy();
+    attack_probs[1] = avoid();
+    attack_probs[2] = critical();
     attack_probs[3] = favor();
 }
 
@@ -156,7 +156,7 @@ unit::unit(std::string in_name, std::string in_unit_class, char in_id,
     }
     
     current_hp = (unsigned int) stats_base[0];
-    equip_weapon(in_equipped);
+
     // printf("Did I equip the weapon successfully %d \n", get_equipped()[0]);
     for (int i = 0; i < in_weapons.size(); i++) {
         if (in_weapons.size() != 0) {
@@ -176,8 +176,7 @@ unit::unit(std::string in_name, std::string in_unit_class, char in_id,
         wpn_exp[i] = (unsigned int) in_wpn_exp[i];
     }    
     id = in_id;
-    
-
+    equip_weapon(in_equipped);
 }
 unit::unit(){
 
@@ -238,7 +237,7 @@ unsigned char unit::combat_critical(const unit& enemy){
     char supports = 0 ;
     char unit_skill = 0;
     unsigned char wpn_crit = all_weapons[equipment[equipped[0]].name].stats[2];
-    unsigned char critical = wpn_crit + unit_skill + supports;
+    unsigned char critical = wpn_crit + unit_skill + supports - enemy.attack_probs[3];
     return(critical);
 }
 unsigned char unit::favor(){
@@ -248,15 +247,6 @@ unsigned char unit::favor(){
     unsigned char favor = unit_favor + supports;
     return(favor);
 }
-unsigned char unit::combat_favor(const unit& enemy){
-    //*DESIGN QUESTION* Should this function exists? Can enemies influence your favor? Should they? In general, for FEmaker it should exist.
-    char supports = 0 ;
-    char unit_favor = (ceil(stats[5]/2.)); // By default, integer division floors
-    // For design simplicity, I think it is good to have percent values only change by increments of 1. Simple.
-    unsigned char favor = unit_favor + supports;
-    return(favor);
-}
-
 unsigned char unit::accuracy(){
     char supports = 0;
     unsigned char wpn_hit = all_weapons[equipment[equipped[0]].name].stats[1];
@@ -264,19 +254,17 @@ unsigned char unit::accuracy(){
     unsigned char accuracy = wpn_hit + unit_acc + supports;
     return(accuracy);
 }
-unsigned char unit::combat_accuracy(const unit& enemy){
+unsigned char unit::combat_hit(const unit& enemy){
     char supports = 0;
     unsigned char wpn_hit = all_weapons[equipment[equipped[0]].name].stats[1];
     unsigned char unit_acc = stats[3]*2 + stats[5];
-    unsigned char accuracy = wpn_hit + unit_acc + supports ;
+    unsigned char accuracy = wpn_hit + unit_acc + supports - enemy.attack_probs[1];
     return(accuracy);
 }
 
 void unit::enemy_select(const unit& enemy) {
-    combat_probs[0] = combat_accuracy(enemy);
+    combat_probs[0] = combat_hit(enemy);
     combat_probs[1] = combat_critical(enemy);
-    combat_probs[2] = combat_accuracy(enemy);
-    combat_probs[3] = combat_favor(enemy);
 }
 generic::~generic(void) {
     // printf("Generic object is being deleted\n");
@@ -455,10 +443,16 @@ main() {
     printf("Marth's dmg_type. %d\n", all_weapons[all_units["Marth"].equipment[0].name].dmg_type);
     printf("Marth's attack_damage value. %d\n", all_units["Marth"].attack_damage());
     printf("Marth's combat_damage value against Sheeda. %d\n", all_units["Marth"].combat_damage(all_units["Sheeda"]));
+    printf("Marth's combat_hit probability against Sheeda. %d\n", all_units["Marth"].combat_hit(all_units["Sheeda"]));
+    printf("Marth's combat_critical probability against Sheeda. %d\n", all_units["Marth"].combat_critical(all_units["Sheeda"]));
     printf("Marth's accuracy. %d\n", all_units["Marth"].accuracy());
     printf("Marth's avoid. %d\n", all_units["Marth"].avoid());
     printf("Marth's crit. %d\n", all_units["Marth"].critical());
     printf("Marth's favor. %d\n", all_units["Marth"].favor());
+    printf("Sheeda's accuracy. %d\n", all_units["Sheeda"].accuracy());
+    printf("Sheeda's avoid. %d\n", all_units["Sheeda"].avoid());
+    printf("Sheeda's crit. %d\n", all_units["Sheeda"].critical());
+    printf("Sheeda's favor. %d\n", all_units["Sheeda"].favor());
     all_units["Marth"].enemy_select(all_units["Marth"]);
     int i;
     // std::cout << "Please enter an integer value: ";
