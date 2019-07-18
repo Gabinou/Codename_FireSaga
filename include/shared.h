@@ -229,6 +229,12 @@ public:
     /// \fn void get_equipped
     /// \brief Getter for private equipped.
     unsigned char* get_equipped();
+    /// \fn bool combat_double
+    /// \brief Does unit double when fighting enemy? yes/no.   
+    bool unit::combat_double(const unit& enemy);
+    /// \fn unsigned char wpn_weighed_down
+    /// \brief By how much is unit weighed down by its weapon. Gets substracted to speed for combat_double.     
+    unsigned char unit::wpn_weighed_down();
     ~unit();
     unit();
 };

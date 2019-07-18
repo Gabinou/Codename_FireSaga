@@ -232,8 +232,21 @@ unsigned char unit::critical(){
     unsigned char critical = wpn_crit + unit_skill + supports;
     return(critical);
 }
+bool unit::combat_double(const unit& enemy){
+    unsigned char unit_speed = unit.stats[4]
+    unsigned char enemy_speed = enemy.stats[4]
+    bool out = ((unit_speed - weighed_down() - enemy_speed)>4);
+    return(out);
+}
+
+unsigned char unit::wpn_weighed_down(){
+    //*DESIGN QUESTION* What should be the influence of weapons?
+    unsigned char wpn_wght = all_weapons[equipment[equipped[0]].name].stats[3];
+    unsigned char unit_con = unit.stats[8]
+    return(std::max(wpn_wgth - unit_con, 0));
+}
+
 unsigned char unit::combat_critical(const unit& enemy){
-    //*DESIGN QUESTION* Should this function exists? Can enemies influence your crit? should they? In general, for FEmaker it should exist.
     char supports = 0 ;
     char unit_skill = 0;
     unsigned char wpn_crit = all_weapons[equipment[equipped[0]].name].stats[2];
