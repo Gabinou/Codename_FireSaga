@@ -235,7 +235,12 @@ unsigned char unit::critical(){
 bool unit::combat_double(const unit& enemy){
     unsigned char unit_speed = stats[4];
     unsigned char enemy_speed = enemy.stats[4];
-    bool out = ((unit_speed - wpn_weighed_down() - enemy_speed)>4);
+    bool out = ((unit_speed - wpn_weighed_down() - enemy_speed) > 4);
+    printf("%d\n", wpn_weighed_down());
+    printf("%d\n", unit_speed);
+    printf("%d\n", enemy_speed);
+    printf("%d\n", (unit_speed - wpn_weighed_down() - enemy_speed));
+    printf("%d\n", out);
     return(out);
 }
 
@@ -432,7 +437,7 @@ main() {
 
     all_units["Sheeda"] = unit("Sheeda", "Prince", id++, 
                             /*HP Str Mag Skl Spd Lck Def Res Con Mov
-        stats_base*/        {18,  7,  2,  7, 12,  8,  4,  4,  5,  7},
+        stats_base*/        {18,  7,  2,  7, 18,  8,  4,  4,  5,  7},
         /*Growths*/         {40, 25, 20, 40, 70, 80, 20, 20,  0,  0},
         /*Skills*/          {18,  8,  2},
         /*Love_pts*/        { 0,  0,  0,  0,  0},
@@ -466,6 +471,8 @@ main() {
     printf("Sheeda's avoid. %d\n", all_units["Sheeda"].avoid());
     printf("Sheeda's crit. %d\n", all_units["Sheeda"].critical());
     printf("Sheeda's favor. %d\n", all_units["Sheeda"].favor());
+    printf("Does Sheeda double Marth?. %d\n", all_units["Sheeda"].combat_double( all_units["Marth"]));
+    printf("Does Marth double Sheeda?. %d\n", all_units["Marth"].combat_double( all_units["Sheeda"]));
     all_units["Marth"].enemy_select(all_units["Marth"]);
     int i;
     // std::cout << "Please enter an integer value: ";
