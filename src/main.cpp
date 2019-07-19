@@ -169,7 +169,7 @@ unit::unit(std::string in_name, std::string in_unit_class, char in_id,
     }  
     for (int i = 0; i < in_skills.size(); i++) {
         skills[i] = (unsigned int) in_skills[i];
-        position[i] = (unsigned int) position[i];
+        position[i] = (unsigned int) in_position[i];
     }  
     for (int i = 0; i < in_lovers.size(); i++) {
         strncpy(lovers[i], in_lovers[i].c_str(), sizeof(in_lovers[i])); // This line is the problem
@@ -234,13 +234,14 @@ unsigned char unit::critical(){
     return(critical);
 }
 bool unit::combat_retaliation(const unit& enemy){
-    printf("%d \n", enemy.get_equipped()[0]);
-    printf("%s \n", enemy.equipment[enemy.get_equipped()[0]].name);
-    printf("%d \n", all_weapons[enemy.equipment[enemy.get_equipped()[0]].name].stats[6]);
-    char enemy_range = all_weapons[enemy.equipment[enemy.get_equipped()[0]].name].stats[6];
-    unsigned char distance = pow(pow(enemy.position[0] - position[0], 2) + pow(enemy.position[1] - position[1], 2), 0.5);
-    printf("%d \n", distance);
+    unsigned char distance = abs(enemy.position[0] - position[0]) + abs(enemy.position[1] - position[1]);
+    printf("Distance %d \n", distance);
     bool out = 0;
+    for (int i = 0; i < 3; i++) {
+        if (distance == all_weapons[enemy.equipment[enemy.get_equipped()[0]].name].range[i]){
+            out = 1;
+        }
+    }
     return(out);
 }
 
@@ -304,7 +305,7 @@ weapon::~weapon(void) {
     // printf("Weapon %s is being deleted.\n" , name);
 }
 weapon::weapon(std::string in_name, std::string in_type, char in_id, unsigned short int in_cost,
-       std::vector<int> in_stats, std::vector<char> in_stats_bonus,
+       std::vector<int> in_stats, std::vector<int> in_range, std::vector<char> in_stats_bonus,
        std::vector<std::string> in_owner, std::vector<std::string> in_effective, bool in_dmg_type) {
     strncpy(name, in_name.c_str(), 30); // for some reason in_name is always of size 8. Whatever.
     strncpy(type, in_type.c_str(), 30);
@@ -320,6 +321,9 @@ weapon::weapon(std::string in_name, std::string in_type, char in_id, unsigned sh
     }
     for (int i = 0; i < in_stats.size(); i++) {
         stats[i] = in_stats[i];
+    }
+    for (int i = 0; i < in_range.size(); i++) {
+        range[i] = in_range[i];      
     }
     cost = in_cost;
 }
@@ -352,28 +356,34 @@ main() {
     printf("Initializaing a character\n");
 
     all_weapons["Rapier"] = weapon("Rapier", "swd", id++, 600,
-            // dmg  hit  crt wght uses  exp range
-              {5,  90,  10,   7,  30,   2,  1},
+            // dmg  hit  crt wght uses  exp
+              {5,  90,  10,   7,  30,   2},
+              {1}, // range
               std::vector<char>(LEN(unit_stats), 0), {"Marth"}, {"Knight", "Cavalier"}, 0); 
     all_weapons["Bronze Sword"] = weapon("Bronze Sword", "swd", id++, 450,
-           // dmg  hit  crt wght uses  exp range
-              {3,  80,   0,   5,  45,   1,   1},
+           // dmg  hit  crt wght uses  exp
+              {3,  80,   0,   5,  45,   1},
+              {1}, // range
               std::vector<char>(LEN(unit_stats), 0), {}, {}, 0);
     all_weapons["Iron Sword"] =  weapon("Iron Sword", "swd", id++, 450,
-           // dmg hit  crt wght uses  exp range
-              {5,  80,    0,   7,  45,   1,   1}, 
+           // dmg hit  crt wght uses  exp
+              {5,  80,    0,   7,  45,  1},
+              {1}, // range              
               std::vector<char>(LEN(unit_stats), 0), {}, {}, 0);
     all_weapons["Iron Lance"] = weapon("Iron Lance", "lance", id++, 450,
-           // dmg hit  crt wght uses  exp range
-              {6,  80,   0,   8,   40,  1,   1},
+           // dmg hit  crt wght uses  exp
+              {6,  80,   0,   8,   40,  1},
+              {1}, // range
               std::vector<char>(LEN(unit_stats), 0), {}, {}, 0);
     all_weapons["Steel Sword"] = weapon("Steel Sword", "swd", id++, 500,
-           // dmg hit  crt wght uses  exp range
-              {8,  70,   0,   9,   35,  1,  1}, 
+           // dmg hit  crt wght uses  exp
+              {8,  70,   0,   9,   35,  1},
+              {1}, // range              
               std::vector<char>(LEN(unit_stats), 0), {}, {}, 0);
     all_weapons["Lame de Damas"] = weapon("Lame de Damas", "swd", id++, 1000,
-            // dmg hit  crt wght uses  exp range
-              {15,  65,  0,   8,  25,   1,  1},
+            // dmg hit  crt wght uses  exp
+              {15,  65,  0,   8,  25,   1},
+              {1}, // range
               std::vector<char>(LEN(unit_stats), 0), {}, {}, 0);
    
     // Unordered map convention: "name" is the immutable original object.
