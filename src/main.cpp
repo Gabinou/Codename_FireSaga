@@ -8,6 +8,7 @@
 #include <stdio.h>
 #include <iostream>
 #include <vector>
+#include <math.h> 
 #include <random>
 #include <bits/stdc++.h> 
 #include "shared.h"
@@ -112,7 +113,7 @@ generic::generic() {
 }
 unsigned char equipped[1];
 
-unsigned char* unit::get_equipped() {
+const unsigned char* unit::get_equipped() const{
     // For some reason passing the pointer works as I intended.
     return(equipped);
 }
@@ -232,15 +233,21 @@ unsigned char unit::critical(){
     unsigned char critical = wpn_crit + unit_skill + supports;
     return(critical);
 }
+bool unit::combat_retaliation(const unit& enemy){
+    printf("%d \n", enemy.get_equipped()[0]);
+    printf("%s \n", enemy.equipment[enemy.get_equipped()[0]].name);
+    printf("%d \n", all_weapons[enemy.equipment[enemy.get_equipped()[0]].name].stats[6]);
+    char enemy_range = all_weapons[enemy.equipment[enemy.get_equipped()[0]].name].stats[6];
+    unsigned char distance = pow(pow(enemy.position[0] - position[0], 2) + pow(enemy.position[1] - position[1], 2), 0.5);
+    printf("%d \n", distance);
+    bool out = 0;
+    return(out);
+}
+
 bool unit::combat_double(const unit& enemy){
     unsigned char unit_speed = stats[4];
     unsigned char enemy_speed = enemy.stats[4];
     bool out = ((unit_speed - wpn_weighed_down() - enemy_speed) > 4);
-    printf("%d\n", wpn_weighed_down());
-    printf("%d\n", unit_speed);
-    printf("%d\n", enemy_speed);
-    printf("%d\n", (unit_speed - wpn_weighed_down() - enemy_speed));
-    printf("%d\n", out);
     return(out);
 }
 
@@ -457,7 +464,9 @@ main() {
            
     
     printf("Marth's weapon. %s\n", inventory_items["Rapier_0001"].name);
-    printf("Marth's weapon. %s\n", all_units["Marth"].equipment[0].name);
+    printf("Marth's weapon. %s\n", all_units["Marth"].equipment[all_units["Marth"].get_equipped()[0]].name);
+    // return(0);
+    // printf("Marth's weapon. %s\n", all_units["Marth"].get_equipped[0].name);
     printf("Marth's dmg_type. %d\n", all_weapons[all_units["Marth"].equipment[0].name].dmg_type);
     printf("Marth's attack_damage value. %d\n", all_units["Marth"].attack_damage());
     printf("Marth's combat_damage value against Sheeda. %d\n", all_units["Marth"].combat_damage(all_units["Sheeda"]));
@@ -471,8 +480,10 @@ main() {
     printf("Sheeda's avoid. %d\n", all_units["Sheeda"].avoid());
     printf("Sheeda's crit. %d\n", all_units["Sheeda"].critical());
     printf("Sheeda's favor. %d\n", all_units["Sheeda"].favor());
-    printf("Does Sheeda double Marth?. %d\n", all_units["Sheeda"].combat_double( all_units["Marth"]));
-    printf("Does Marth double Sheeda?. %d\n", all_units["Marth"].combat_double( all_units["Sheeda"]));
+    printf("Does Sheeda double Marth?. %d\n", all_units["Sheeda"].combat_double(all_units["Marth"]));
+    printf("Does Marth double Sheeda?. %d\n", all_units["Marth"].combat_double(all_units["Sheeda"]));
+    printf("Does Marth retaliate?. %d\n", all_units["Sheeda"].combat_retaliation(all_units["Marth"]));
+    printf("Does Sheeda retaliate?. %d\n", all_units["Marth"].combat_retaliation(all_units["Sheeda"]));
     all_units["Marth"].enemy_select(all_units["Marth"]);
     int i;
     // std::cout << "Please enter an integer value: ";

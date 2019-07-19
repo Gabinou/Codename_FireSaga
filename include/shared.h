@@ -228,10 +228,16 @@ public:
     void enemy_select(const unit&);
     /// \fn void get_equipped
     /// \brief Getter for private equipped.
-    unsigned char* get_equipped();
+    const unsigned char* get_equipped() const;
+    /// \fn bool combat_retaliation
+    /// \brief Does enemy retaliate during combat phase? yes/no.   
+    bool combat_retaliation(const unit& enemy);
     /// \fn bool combat_double
     /// \brief Does unit double when fighting enemy? yes/no.   
     bool combat_double(const unit& enemy);
+    /// \fn void combat_
+    /// \brief makes the combat phases. Does one retaliate? Does one double?
+    void combat(const unit& enemy);
     /// \fn unsigned char wpn_weighed_down
     /// \brief By how much is unit weighed down by its weapon. Gets substracted to speed for combat_double.     
     unsigned char wpn_weighed_down();
