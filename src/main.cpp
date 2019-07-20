@@ -199,7 +199,7 @@ unsigned char unit::attack_damage() {
     return(attack_damage);
 }
 
-unsigned char unit::combat_damage(const unit& enemy) {
+unsigned char unit::combat_damage(const unit& enemy, bool critical) {
     char terrain_def = 0;
     char enemy_def = 0 ;
     char unit_power = 0;
@@ -215,6 +215,8 @@ unsigned char unit::combat_damage(const unit& enemy) {
     };
     printf("unit_power %d\n", unit_power);
     printf("enemy_def  %d\n", enemy_def );
+    unsigned char crit_factor = 1;
+    if (critical) {crit_factor=2;};
     int attack_damage = wpn_dmg + unit_power - enemy_def - terrain_def;
     if (attack_damage <= 0) {attack_damage = 0;};
     return(attack_damage);
@@ -233,7 +235,7 @@ unsigned char unit::critical(){
     unsigned char critical = wpn_crit + unit_skill + supports;
     return(critical);
 }
-bool unit::combat_retaliation(const unit& enemy){
+bool unit::retaliation(const unit& enemy) const{
     unsigned char distance = abs(enemy.position[0] - position[0]) + abs(enemy.position[1] - position[1]);
     printf("Distance %d \n", distance);
     bool out = 0;
@@ -245,14 +247,14 @@ bool unit::combat_retaliation(const unit& enemy){
     return(out);
 }
 
-bool unit::combat_double(const unit& enemy){
+bool unit::combat_double(const unit& enemy) const{
     unsigned char unit_speed = stats[4];
     unsigned char enemy_speed = enemy.stats[4];
     bool out = ((unit_speed - wpn_weighed_down() - enemy_speed) > 4);
     return(out);
 }
 
-unsigned char unit::wpn_weighed_down(){
+unsigned char unit::wpn_weighed_down() const{
     //*DESIGN QUESTION* What should be the influence of weapons?
     unsigned char wpn_wght = all_weapons[equipment[equipped[0]].name].stats[3];
     unsigned char unit_con = stats[8];
@@ -286,6 +288,41 @@ unsigned char unit::combat_hit(const unit& enemy){
     unsigned char unit_acc = stats[3]*2 + stats[5];
     unsigned char accuracy = wpn_hit + unit_acc + supports - enemy.attack_probs[1];
     return(accuracy);
+}
+void unit::attack(const unit& enemy){
+    combat_damage(enemy);
+    combat_critical(enemy);
+    bool unit_hits() = (getrand < combat_hit(enemy));
+    bool unit_crits() = (getrand < combat_critical(enemy));
+    /* *DESIGN QUESTION* Should a random number always be rolled for crits, even if the hit doesn't connect?
+    * I think so. Always same number of rand rolled. 
+    * But what about crit animations? Should crit animations be shown to miss? Fire Emblem thinks not.
+    */
+    
+}
+
+void unit::combat(const unit& enemy){
+    bool unit_doubles = combat_double(enemy);
+    // enemy.combat_double(unit);
+    // const unit &temp_unit = static_cast<const unit&>(*this);
+    bool enemy_retaliates = enemy.retaliation(static_cast<const unit&>(*this));
+    bool enemy_doubles = 0;
+    
+    // unit.attack()
+    
+    if (enemy_retaliates) {
+        // enemy.attack()
+        enemy_doubles = enemy.combat_double(static_cast<const unit&>(*this));
+    }
+    // if (unit_doubles) {unit.attack()}
+    // if (enemy_doubles) {enemy.attack()}
+    printf("unit name %s\n", name);
+    printf("enemy name %s\n", enemy.name);
+    printf("unit double %d\n", unit_doubles);
+    printf("enemy retaliates %d\n", enemy_retaliates);
+    printf("enemy double %d\n", enemy_doubles);
+    // retaliation();
+
 }
 
 void unit::enemy_select(const unit& enemy) {
@@ -492,9 +529,10 @@ main() {
     printf("Sheeda's favor. %d\n", all_units["Sheeda"].favor());
     printf("Does Sheeda double Marth?. %d\n", all_units["Sheeda"].combat_double(all_units["Marth"]));
     printf("Does Marth double Sheeda?. %d\n", all_units["Marth"].combat_double(all_units["Sheeda"]));
-    printf("Does Marth retaliate?. %d\n", all_units["Sheeda"].combat_retaliation(all_units["Marth"]));
-    printf("Does Sheeda retaliate?. %d\n", all_units["Marth"].combat_retaliation(all_units["Sheeda"]));
+    printf("Does Marth retaliate?. %d\n", all_units["Sheeda"].retaliation(all_units["Marth"]));
+    printf("Does Sheeda retaliate?. %d\n", all_units["Marth"].retaliation(all_units["Sheeda"]));
     all_units["Marth"].enemy_select(all_units["Marth"]);
+    all_units["Marth"].combat(all_units["Sheeda"]);
     int i;
     // std::cout << "Please enter an integer value: ";
     // std::cin >> i;

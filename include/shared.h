@@ -199,7 +199,7 @@ public:
         );
     /// \fn combat_damage(&unit)
     /// \brief combat_damage performed by a unit on another unit.
-    unsigned char combat_damage(const unit&);
+    unsigned char combat_damage(const unit&, bool critical);
     /// \fn attack_damage(&unit)
     /// \brief Maximal possible combat damage.
     unsigned char attack_damage();
@@ -235,16 +235,20 @@ public:
     const unsigned char* get_equipped() const;
     /// \fn bool combat_retaliation
     /// \brief Does enemy retaliate during combat phase? yes/no.   
-    bool combat_retaliation(const unit& enemy);
+    bool retaliation(const unit& enemy) const;
     /// \fn bool combat_double
     /// \brief Does unit double when fighting enemy? yes/no.   
-    bool combat_double(const unit& enemy);
+    bool combat_double(const unit& enemy) const;
+    bool combat_double(unit* enemy) const;
     /// \fn void combat_
-    /// \brief makes the combat phases. Does one retaliate? Does one double?
+    /// \brief makes the combat phases. Does one retaliate? Does one double? then the attack order is established.
     void combat(const unit& enemy);
+    /// \fn void attack
+    /// \brief Makes a single attack in the combat phase. Also checks for brave effect/vantage skill and doubles if it exists
+    void attack(const unit& enemy);
     /// \fn unsigned char wpn_weighed_down
     /// \brief By how much is unit weighed down by its weapon. Gets substracted to speed for combat_double.     
-    unsigned char wpn_weighed_down();
+    unsigned char wpn_weighed_down() const;
     ~unit();
     unit();
 };
