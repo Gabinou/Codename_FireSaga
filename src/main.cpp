@@ -217,7 +217,7 @@ unsigned char unit::combat_damage(const unit& enemy, bool critical) {
     printf("enemy_def  %d\n", enemy_def );
     unsigned char crit_factor = 1;
     if (critical) {crit_factor=3;};
-    int attack_damage = crit_factor*(wpn_dmg + unit_power - enemy_def - terrain_def); // Modern FE style. for crit_factor = 3
+    int attack_damage = crit_factor*(std::max(wpn_dmg + unit_power - enemy_def - terrain_def, 0)); // Modern FE style. for crit_factor = 3
     // int attack_damage = crit_factor*(wpn_dmg + unit_power) - enemy_def - terrain_def);  // FE4-FE5 style. for crit_factor = 2
     if (attack_damage <= 0) {attack_damage = 0;};
     return(attack_damage);
@@ -290,15 +290,17 @@ unsigned char unit::combat_hit(const unit& enemy){
     unsigned char accuracy = wpn_hit + unit_acc + supports - enemy.attack_probs[1];
     return(accuracy);
 }
-void unit::attack(const unit& enemy){
+unsigned char unit::attack(const unit& enemy){
 
     bool unit_hits = (getrand() < combat_hit(enemy));
     bool unit_crits = (getrand() < combat_critical(enemy));
-    combat_damage(enemy, unit_crits);
     /* *DESIGN QUESTION* Should a random number always be rolled for crits, even if the hit doesn't connect?
     * I think so. Always same number of rand rolled. 
     * But what about crit animations? Should crit animations be shown to miss? Fire Emblem thinks not.
     */
+    // unit.current_hp -= combat_damage(enemy, unit_crits);
+    current_hp -= combat_damage(enemy, unit_crits);
+    return(combat_damage(enemy, unit_crits));
 }
 
 void unit::combat(const unit& enemy){

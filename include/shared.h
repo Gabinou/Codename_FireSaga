@@ -245,7 +245,7 @@ public:
     void combat(const unit& enemy);
     /// \fn void attack
     /// \brief Makes a single attack in the combat phase. Also checks for brave effect/vantage skill and doubles if it exists
-    void attack(const unit& enemy);
+    unsigned char attack(const unit& enemy);
     /// \fn unsigned char wpn_weighed_down
     /// \brief By how much is unit weighed down by its weapon. Gets substracted to speed for combat_double.     
     unsigned char wpn_weighed_down() const;
