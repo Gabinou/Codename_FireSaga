@@ -19,6 +19,8 @@
 /// \fn LEN(arr)
 /// \brief That is a macro. What is a macro? Anyway it computes lenght of arrays.
 
+// Skill idea: divine shield! Bubble!
+
 // Random number generation: modulo wrecks the average and makes the distribution non uniform if the base interval is not divisible.
 // How to get uniform distribution from uniform arbitrary range.
 
@@ -213,8 +215,8 @@ unsigned char unit::combat_damage(const unit& enemy, bool critical) {
         unit_power = stats[2];
         enemy_def = enemy.stats[7];
     };
-    printf("unit_power %d\n", unit_power);
-    printf("enemy_def  %d\n", enemy_def );
+    // printf("unit_power %d\n", unit_power);
+    // printf("enemy_def  %d\n", enemy_def );
     unsigned char crit_factor = 1;
     if (critical) {crit_factor=3;};
     int attack_damage = crit_factor*(std::max(wpn_dmg + unit_power - enemy_def - terrain_def, 0)); // Modern FE style. for crit_factor = 3
@@ -290,7 +292,7 @@ unsigned char unit::combat_hit(const unit& enemy){
     unsigned char accuracy = wpn_hit + unit_acc + supports - enemy.attack_probs[1];
     return(accuracy);
 }
-unsigned char unit::attack(const unit& enemy){
+unsigned char unit::attack(unit& enemy){
 
     bool unit_hits = (getrand() < combat_hit(enemy));
     bool unit_crits = (getrand() < combat_critical(enemy));
@@ -299,11 +301,11 @@ unsigned char unit::attack(const unit& enemy){
     * But what about crit animations? Should crit animations be shown to miss? Fire Emblem thinks not.
     */
     // unit.current_hp -= combat_damage(enemy, unit_crits);
-    current_hp -= combat_damage(enemy, unit_crits);
+    enemy.current_hp -= combat_damage(enemy, unit_crits);
     return(combat_damage(enemy, unit_crits));
 }
 
-void unit::combat(const unit& enemy){
+void unit::combat(unit& enemy){
     bool unit_doubles = combat_double(enemy);
     // enemy.combat_double(unit);
     // const unit &temp_unit = static_cast<const unit&>(*this);
@@ -535,6 +537,8 @@ main() {
     printf("Does Marth retaliate?. %d\n", all_units["Sheeda"].retaliation(all_units["Marth"]));
     printf("Does Sheeda retaliate?. %d\n", all_units["Marth"].retaliation(all_units["Sheeda"]));
     all_units["Marth"].enemy_select(all_units["Marth"]);
+    all_units["Marth"].attack(all_units["Sheeda"]);
+    printf("Sheeda took damage?. %d\n", all_units["Sheeda"].current_hp);
     all_units["Marth"].combat(all_units["Sheeda"]);
     int i;
     // std::cout << "Please enter an integer value: ";

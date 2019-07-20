@@ -242,10 +242,10 @@ public:
     bool combat_double(unit* enemy) const;
     /// \fn void combat_
     /// \brief makes the combat phases. Does one retaliate? Does one double? then the attack order is established.
-    void combat(const unit& enemy);
+    void combat(unit& enemy);
     /// \fn void attack
     /// \brief Makes a single attack in the combat phase. Also checks for brave effect/vantage skill and doubles if it exists
-    unsigned char attack(const unit& enemy);
+    unsigned char attack(unit& enemy);
     /// \fn unsigned char wpn_weighed_down
     /// \brief By how much is unit weighed down by its weapon. Gets substracted to speed for combat_double.     
     unsigned char wpn_weighed_down() const;
