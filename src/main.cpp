@@ -194,8 +194,8 @@ unsigned char unit::attack_damage() {
         unit_power = stats[2];
     };
     int attack_damage = wpn_dmg + unit_power;
-    printf("wpn_dmg %d\n", wpn_dmg);
-    printf("unit_power %d\n", unit_power);
+    // printf("wpn_dmg %d\n", wpn_dmg);
+    // printf("unit_power %d\n", unit_power);
     return(attack_damage);
 }
 
@@ -216,8 +216,9 @@ unsigned char unit::combat_damage(const unit& enemy, bool critical) {
     printf("unit_power %d\n", unit_power);
     printf("enemy_def  %d\n", enemy_def );
     unsigned char crit_factor = 1;
-    if (critical) {crit_factor=2;};
-    int attack_damage = wpn_dmg + unit_power - enemy_def - terrain_def;
+    if (critical) {crit_factor=3;};
+    int attack_damage = crit_factor*(wpn_dmg + unit_power - enemy_def - terrain_def); // Modern FE style. for crit_factor = 3
+    // int attack_damage = crit_factor*(wpn_dmg + unit_power) - enemy_def - terrain_def);  // FE4-FE5 style. for crit_factor = 2
     if (attack_damage <= 0) {attack_damage = 0;};
     return(attack_damage);
 }
@@ -290,15 +291,14 @@ unsigned char unit::combat_hit(const unit& enemy){
     return(accuracy);
 }
 void unit::attack(const unit& enemy){
-    combat_damage(enemy);
-    combat_critical(enemy);
-    bool unit_hits() = (getrand < combat_hit(enemy));
-    bool unit_crits() = (getrand < combat_critical(enemy));
+
+    bool unit_hits = (getrand() < combat_hit(enemy));
+    bool unit_crits = (getrand() < combat_critical(enemy));
+    combat_damage(enemy, unit_crits);
     /* *DESIGN QUESTION* Should a random number always be rolled for crits, even if the hit doesn't connect?
     * I think so. Always same number of rand rolled. 
     * But what about crit animations? Should crit animations be shown to miss? Fire Emblem thinks not.
     */
-    
 }
 
 void unit::combat(const unit& enemy){
@@ -516,7 +516,8 @@ main() {
     // printf("Marth's weapon. %s\n", all_units["Marth"].get_equipped[0].name);
     printf("Marth's dmg_type. %d\n", all_weapons[all_units["Marth"].equipment[0].name].dmg_type);
     printf("Marth's attack_damage value. %d\n", all_units["Marth"].attack_damage());
-    printf("Marth's combat_damage value against Sheeda. %d\n", all_units["Marth"].combat_damage(all_units["Sheeda"]));
+    printf("Marth's combat_damage value against Sheeda. %d\n", all_units["Marth"].combat_damage(all_units["Sheeda"],0));
+    printf("Marth's combat_damage (crit) value against Sheeda. %d\n", all_units["Marth"].combat_damage(all_units["Sheeda"],1));
     printf("Marth's combat_hit probability against Sheeda. %d\n", all_units["Marth"].combat_hit(all_units["Sheeda"]));
     printf("Marth's combat_critical probability against Sheeda. %d\n", all_units["Marth"].combat_critical(all_units["Sheeda"]));
     printf("Marth's accuracy. %d\n", all_units["Marth"].accuracy());
