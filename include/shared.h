@@ -226,10 +226,13 @@ public:
     /// \fn combat_favor(&unit)
     /// \brief Percent critical hit evade chance. Enemy critical hit chance minus favor gives chance to get hit by a critical hit. 
     
-    /// \fn set_hp(unsigned char)
+    /// \fn take_damage(unsigned char)
     /// \brief set current_hp value. Also check for death.   
-    void set_hp(unsigned char);
+    void take_damage(unsigned char);
     /// \fn get_hp()
+    /// \brief getter for current_hp   
+    void heal(unsigned char);
+    /// \fn get_hp()    
     /// \brief getter for current_hp   
     unsigned char get_hp() const;
     /// \fn bool double_attack

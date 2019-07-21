@@ -126,12 +126,14 @@ void unit::equip_weapon(std::vector<unsigned int> in_equipped) {
     attack_probs[3] = favor();
 }
 
-void unit::set_hp(unsigned char in_hp) {
-    if (in_hp <= 0) {
+void unit::take_damage(unsigned char damage) {
+    printf("%s takes %d damage \n", name, damage); 
+    char res = current_hp - damage;
+    if (res <= 0) {
         current_hp = 0;
         death();
     } else {
-        current_hp = in_hp;
+        current_hp = res;
     }
 }
 unsigned char unit::get_hp() const {
@@ -169,7 +171,7 @@ unit::unit(std::string in_name, std::string in_unit_class, char in_id,
         stats_bonus[i] = 0;
         // For some reason, stats_base cannot be printed unless (int) all_units["Marth"].stats_base[0]. + 0 also works.
     }
-    set_hp((unsigned int) stats_base[0]);
+    current_hp = stats_base[0];
 
     // printf("Did I equip the weapon successfully %d \n", get_equipped()[0]);
     for (int i = 0; i < in_weapons.size(); i++) {
@@ -251,7 +253,7 @@ unsigned char unit::critical(){
 }
 bool unit::retaliation(const unit& enemy) const{
     unsigned char distance = abs(enemy.position[0] - position[0]) + abs(enemy.position[1] - position[1]);
-    printf("Distance %d \n", distance);
+    // printf("Distance %d \n", distance);
     bool out = 0;
     for (int i = 0; i < 3; i++) {
         if (distance == all_weapons[enemy.equipment[enemy.get_equipped()[0]].name].range[i]){
@@ -279,7 +281,7 @@ unsigned char unit::combat_critical(const unit& enemy){
     char supports = 0;
     char unit_skill = 0;
     unsigned char wpn_crit = all_weapons[equipment[equipped[0]].name].stats[2];
-    unsigned char critical = wpn_crit + unit_skill + supports - enemy.attack_probs[3];
+    unsigned char critical = std::max(0, wpn_crit + unit_skill + supports - enemy.attack_probs[3]);
     return(critical);
 }
 unsigned char unit::favor(){
@@ -304,38 +306,38 @@ unsigned char unit::combat_hit(const unit& enemy){
     return(accuracy);
 }
 unsigned char unit::attack(unit& enemy){
-
-    bool unit_hits = (getrand() < combat_hit(enemy));
+    printf("%s attacks %s\n", name, enemy.name);
+    bool unit_hits = (getrand() < combat_hit(enemy));    
     bool unit_crits = (getrand() < combat_critical(enemy));
+    // printf("%s crits %d \n", name, unit_crits);
+    // printf("%d crit chance \n", combat_critical(enemy));
     /* *DESIGN QUESTION* Should a random number always be rolled for crits, even if the hit doesn't connect?
     * I think so. Always same number of rand rolled. 
     * But what about crit animations? Should crit animations be shown to miss? Fire Emblem thinks not.
     */
-    // unit.set_hp( -= combat_damage(enemy, unit_crits);
-    enemy.set_hp(enemy.get_hp() - combat_damage(enemy, unit_crits));
+    // unit.take_damage( -= combat_damage(enemy, unit_crits);
+    enemy.take_damage(combat_damage(enemy, unit_crits));
     return(combat_damage(enemy, unit_crits));
 }
 
 void unit::combat(unit& enemy){
+    printf("%s fights %s\n", name, enemy.name);
     bool unit_doubles = combat_double(enemy);
-    // enemy.combat_double(unit);
-    // const unit &temp_unit = static_cast<const unit&>(*this);
     bool enemy_retaliates = enemy.retaliation(static_cast<const unit&>(*this));
     bool enemy_doubles = 0;
-    
-    // unit.attack()
-    
+
+    printf("%s doubles %d\n", name, unit_doubles);
+    // printf("enemy retaliates %d\n", enemy_retaliates);
+    attack(enemy);
     if (enemy_retaliates) {
-        // enemy.attack()
+        enemy.attack(static_cast<unit&>(*this));
         enemy_doubles = enemy.combat_double(static_cast<const unit&>(*this));
-    }
-    // if (unit_doubles) {unit.attack()}
-    // if (enemy_doubles) {enemy.attack()}
-    printf("unit name %s\n", name);
-    printf("enemy name %s\n", enemy.name);
-    printf("unit double %d\n", unit_doubles);
-    printf("enemy retaliates %d\n", enemy_retaliates);
-    printf("enemy double %d\n", enemy_doubles);
+        printf("%s doubles %d\n", enemy.name ,enemy_doubles);
+    };
+
+    if (unit_doubles) {attack(enemy);};
+    if (enemy_doubles) {enemy.attack(static_cast<unit&>(*this));};
+
     // retaliation();
 
 }
@@ -548,11 +550,18 @@ main() {
     printf("Does Marth retaliate?. %d\n", all_units["Sheeda"].retaliation(all_units["Marth"]));
     printf("Does Sheeda retaliate?. %d\n", all_units["Marth"].retaliation(all_units["Sheeda"]));
     all_units["Marth"].enemy_select(all_units["Marth"]);
-    all_units["Marth"].attack(all_units["Sheeda"]);
-    printf("Sheeda took damage?. %d\n", all_units["Sheeda"].get_hp());
-    all_units["Marth"].attack(all_units["Sheeda"]);
-    printf("Sheeda took damage?. %d\n", all_units["Sheeda"].get_hp());
     all_units["Marth"].combat(all_units["Sheeda"]);
+    printf("Current Sheeda HP %d\n", all_units["Sheeda"].get_hp());
+    printf("Current Marth HP %d\n", all_units["Marth"].get_hp());
+    // all_units["Marth"].combat(all_units["Sheeda"]);
+    // printf("Current Marth HP %d\n", all_units["Marth"].get_hp());
+    // all_units["Marth"].combat(all_units["Sheeda"]);
+    // printf("Current Marth HP %d\n", all_units["Marth"].get_hp());
+
+    // printf("Sheeda took damage?. %d\n", all_units["Sheeda"].get_hp());
+    // all_units["Marth"].attack(all_units["Sheeda"]);
+    // printf("Sheeda took damage?. %d\n", all_units["Sheeda"].get_hp());
+    // all_units["Marth"].combat(all_units["Sheeda"]);
     int i;
     // std::cout << "Please enter an integer value: ";
     // std::cin >> i;
