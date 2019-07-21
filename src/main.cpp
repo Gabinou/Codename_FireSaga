@@ -128,12 +128,11 @@ void unit::equip_weapon(std::vector<unsigned int> in_equipped) {
 
 void unit::take_damage(unsigned char damage) {
     printf("%s takes %d damage \n", name, damage); 
-    char res = current_hp - damage;
-    if (res <= 0) {
+    if ((current_hp - damage) <= 0) {
         current_hp = 0;
         death();
     } else {
-        current_hp = res;
+        current_hp -= damage;
     }
 }
 unsigned char unit::get_hp() const {
@@ -302,7 +301,7 @@ unsigned char unit::combat_hit(const unit& enemy){
     char supports = 0;
     unsigned char wpn_hit = all_weapons[equipment[equipped[0]].name].stats[1];
     unsigned char unit_acc = stats[3]*2 + stats[5];
-    unsigned char accuracy = wpn_hit + unit_acc + supports - enemy.attack_probs[1];
+    unsigned char accuracy = std::max(0, wpn_hit + unit_acc + supports - enemy.attack_probs[1]);
     return(accuracy);
 }
 unsigned char unit::attack(unit& enemy){
