@@ -128,21 +128,13 @@ void unit::equip_weapon(std::vector<unsigned int> in_equipped) {
 
 void unit::take_damage(unsigned char damage) {
     printf("%s takes %d damage \n", name, damage); 
-    
     current_hp = std::max(0, current_hp - damage);
-    if (current_hp== 0) {death();};
+    if (current_hp == 0) {death();};
 
 }
 void unit::heal(unsigned char healing) {
     printf("%s gets healed for %d\n", name, healing); 
-    
-    // current_hp = std::min(current_hp + healing, stats[0]);
-    
-    // if ((current_hp + healing) >= stats[0]) {
-        // current_hp = stats[0];
-    // } else {
-        // current_hp += healing;
-    // }
+    current_hp = std::min(current_hp + healing, (int) stats[0]);
 }
 
 unsigned char unit::get_hp() const {
