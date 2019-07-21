@@ -118,7 +118,7 @@ const unsigned char* unit::get_equipped() const{
 
 void unit::equip_weapon(std::vector<unsigned int> in_equipped) {
     // printf(" \n", in_equipped)
-    printf("%s\n", all_weapons[equipment[in_equipped[0]].name].type);
+    // printf("%s\n", all_weapons[equipment[in_equipped[0]].name].type);
     char current_type[20];
     int current_type_ind;
     strncpy(current_type, all_weapons[equipment[in_equipped[0]].name].type, 20);
@@ -131,7 +131,7 @@ void unit::equip_weapon(std::vector<unsigned int> in_equipped) {
             current_type_ind = i;
         };
     }
-    printf("Current type %s\n", current_type);
+    // printf("Current type %s\n", current_type);
     // printf("Current type index %s\n", current_type_ind);
     if (in_equipped.size() != 0) {
         if (wpn_exp[current_type_ind] > 0) {
@@ -518,7 +518,7 @@ main() {
         /*Weapon_exp*/      { 1,  0,  0,  0,  0,  0,  0,  0,  0,  0},
         /*Position*/        { 1,  1,  1},
         /*Equipped*/        {0},
-        /*Equipment*/       {inventory_items["Iron Lance_0001"]},
+        /*Equipment*/       {inventory_items["Rapier_0001"]},
         /*Weapons*/         {},
         /*Items*/           {},
         /*Exp*/             0, 
@@ -551,36 +551,36 @@ main() {
         /*Promoted*/        0);
            
     
-    // printf("Marth's weapon. %s\n", inventory_items["Rapier_0001"].name);
-    // printf("Marth's weapon. %s\n", all_units["Marth"].equipment[all_units["Marth"].get_equipped()[0]].name);
-    // // return(0);
-    // // printf("Marth's weapon. %s\n", all_units["Marth"].get_equipped[0].name);
-    // printf("Marth's dmg_type. %d\n", all_weapons[all_units["Marth"].equipment[0].name].dmg_type);
-    // printf("Marth's attack_damage value. %d\n", all_units["Marth"].attack_damage());
-    // printf("Marth's combat_damage value against Sheeda. %d\n", all_units["Marth"].combat_damage(all_units["Sheeda"],0));
-    // printf("Marth's combat_damage (crit) value against Sheeda. %d\n", all_units["Marth"].combat_damage(all_units["Sheeda"],1));
-    // printf("Marth's combat_hit probability against Sheeda. %d\n", all_units["Marth"].combat_hit(all_units["Sheeda"]));
-    // printf("Marth's combat_critical probability against Sheeda. %d\n", all_units["Marth"].combat_critical(all_units["Sheeda"]));
-    // printf("Marth's accuracy. %d\n", all_units["Marth"].accuracy());
-    // printf("Marth's avoid. %d\n", all_units["Marth"].avoid());
-    // printf("Marth's crit. %d\n", all_units["Marth"].critical());
-    // printf("Marth's favor. %d\n", all_units["Marth"].favor());
-    // printf("Sheeda's accuracy. %d\n", all_units["Sheeda"].accuracy());
-    // printf("Sheeda's avoid. %d\n", all_units["Sheeda"].avoid());
-    // printf("Sheeda's crit. %d\n", all_units["Sheeda"].critical());
-    // printf("Sheeda's favor. %d\n", all_units["Sheeda"].favor());
-    // printf("Does Sheeda double Marth?. %d\n", all_units["Sheeda"].combat_double(all_units["Marth"]));
-    // printf("Does Marth double Sheeda?. %d\n", all_units["Marth"].combat_double(all_units["Sheeda"]));
-    // printf("Does Marth retaliate?. %d\n", all_units["Sheeda"].retaliation(all_units["Marth"]));
-    // printf("Does Sheeda retaliate?. %d\n", all_units["Marth"].retaliation(all_units["Sheeda"]));
-    // all_units["Marth"].enemy_select(all_units["Marth"]);
-    // all_units["Marth"].combat(all_units["Sheeda"]);
-    // printf("Current Sheeda HP %d\n", all_units["Sheeda"].get_hp());
-    // printf("Current Marth HP %d\n", all_units["Marth"].get_hp());
-    // all_units["Marth"].combat(all_units["Sheeda"]);
-    // printf("Current Marth HP %d\n", all_units["Marth"].get_hp());
-    // all_units["Marth"].combat(all_units["Sheeda"]);
-    // printf("Current Marth HP %d\n", all_units["Marth"].get_hp());
+    printf("Marth's weapon. %s\n", inventory_items["Rapier_0001"].name);
+    printf("Marth's weapon. %s\n", all_units["Marth"].equipment[all_units["Marth"].get_equipped()[0]].name);
+    // return(0);
+    // printf("Marth's weapon. %s\n", all_units["Marth"].get_equipped[0].name);
+    printf("Marth's dmg_type. %d\n", all_weapons[all_units["Marth"].equipment[0].name].dmg_type);
+    printf("Marth's attack_damage value. %d\n", all_units["Marth"].attack_damage());
+    printf("Marth's combat_damage value against Sheeda. %d\n", all_units["Marth"].combat_damage(all_units["Sheeda"],0));
+    printf("Marth's combat_damage (crit) value against Sheeda. %d\n", all_units["Marth"].combat_damage(all_units["Sheeda"],1));
+    printf("Marth's combat_hit probability against Sheeda. %d\n", all_units["Marth"].combat_hit(all_units["Sheeda"]));
+    printf("Marth's combat_critical probability against Sheeda. %d\n", all_units["Marth"].combat_critical(all_units["Sheeda"]));
+    printf("Marth's accuracy. %d\n", all_units["Marth"].accuracy());
+    printf("Marth's avoid. %d\n", all_units["Marth"].avoid());
+    printf("Marth's crit. %d\n", all_units["Marth"].critical());
+    printf("Marth's favor. %d\n", all_units["Marth"].favor());
+    printf("Sheeda's accuracy. %d\n", all_units["Sheeda"].accuracy());
+    printf("Sheeda's avoid. %d\n", all_units["Sheeda"].avoid());
+    printf("Sheeda's crit. %d\n", all_units["Sheeda"].critical());
+    printf("Sheeda's favor. %d\n", all_units["Sheeda"].favor());
+    printf("Does Sheeda double Marth?. %d\n", all_units["Sheeda"].combat_double(all_units["Marth"]));
+    printf("Does Marth double Sheeda?. %d\n", all_units["Marth"].combat_double(all_units["Sheeda"]));
+    printf("Does Marth retaliate?. %d\n", all_units["Sheeda"].retaliation(all_units["Marth"]));
+    printf("Does Sheeda retaliate?. %d\n", all_units["Marth"].retaliation(all_units["Sheeda"]));
+    all_units["Marth"].enemy_select(all_units["Marth"]);
+    all_units["Marth"].combat(all_units["Sheeda"]);
+    printf("Current Sheeda HP %d\n", all_units["Sheeda"].get_hp());
+    printf("Current Marth HP %d\n", all_units["Marth"].get_hp());
+    all_units["Marth"].combat(all_units["Sheeda"]);
+    printf("Current Marth HP %d\n", all_units["Marth"].get_hp());
+    all_units["Marth"].combat(all_units["Sheeda"]);
+    printf("Current Marth HP %d\n", all_units["Marth"].get_hp());
 
     // printf("Sheeda took damage?. %d\n", all_units["Sheeda"].get_hp());
     // all_units["Marth"].attack(all_units["Sheeda"]);
