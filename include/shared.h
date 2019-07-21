@@ -125,7 +125,9 @@ struct inventory_item {
 class unit: public generic {
     // Lightweight implementation.
 private: 
-    unsigned char equipped[1];
+    unsigned char equipped[1]; //needs setters for stats update.
+    char current_hp; //needs setters for death check on update
+    
 public:
     char stats_bonus[10];
     /// \var stats_bonus
@@ -135,7 +137,7 @@ public:
     // for seom reason, stats array of len<19 cause cygwin_exception
     unsigned char stats[19], stats_base[10],
     growths[10], wpn_exp[10], position[3], skills[3],
-    love_pts[5], love_growths[5], current_hp, 
+    love_pts[5], love_growths[5],
     attack_probs[4], combat_probs[2];
     // std::vector<char> stats[10];
     /// \var unsigned char love_growths
@@ -223,6 +225,15 @@ public:
     unsigned char favor();
     /// \fn combat_favor(&unit)
     /// \brief Percent critical hit evade chance. Enemy critical hit chance minus favor gives chance to get hit by a critical hit. 
+    
+    /// \fn set_hp(unsigned char)
+    /// \brief set current_hp value. Also check for death.   
+    void set_hp(unsigned char);
+    /// \fn get_hp()
+    /// \brief getter for current_hp   
+    unsigned char get_hp() const;
+    /// \fn bool double_attack
+    /// \brief Bool that returns if unit double attacks.
     void equip_weapon(std::vector<unsigned int>);
     /// \fn bool double_attack
     /// \brief Bool that returns if unit double attacks.
@@ -239,7 +250,6 @@ public:
     /// \fn bool combat_double
     /// \brief Does unit double when fighting enemy? yes/no.   
     bool combat_double(const unit& enemy) const;
-    bool combat_double(unit* enemy) const;
     /// \fn void combat_
     /// \brief makes the combat phases. Does one retaliate? Does one double? then the attack order is established.
     void combat(unit& enemy);
@@ -249,6 +259,7 @@ public:
     /// \fn unsigned char wpn_weighed_down
     /// \brief By how much is unit weighed down by its weapon. Gets substracted to speed for combat_double.     
     unsigned char wpn_weighed_down() const;
+    void death();
     ~unit();
     unit();
 };

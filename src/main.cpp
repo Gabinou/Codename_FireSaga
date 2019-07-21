@@ -15,7 +15,6 @@
 #define LEN(arr) ((int) (sizeof (arr) / sizeof (arr)[0])) 
 #define getrand() dist(mt) 
 
-
 /// \fn LEN(arr)
 /// \brief That is a macro. What is a macro? Anyway it computes lenght of arrays.
 
@@ -26,7 +25,6 @@
 
 std::mt19937 mt(1899); //Deterministic seed. Do like other fire Emblems. Always Same RNG,it is the player actions that change it.
 std::uniform_int_distribution<char> dist(0, 100); //*DESIGN QUESTION* What should be the minimum and maximum probabilities?
-
 
 bool single_roll(int in_prob) {
     bool out = (getrand() < in_prob);
@@ -40,8 +38,6 @@ bool double_roll(int in_prob) {
     bool out = ((rng1 + rng2) < (2 * in_prob));
     return(out);
 }
-
-
 
 char unit_stats[][14] = {"HP", "Str", "Mag", "Skill", "Speed", "Luck", "Def", "Res", "Con", "Move"};
 /*! \var char unit_stats
@@ -130,6 +126,22 @@ void unit::equip_weapon(std::vector<unsigned int> in_equipped) {
     attack_probs[3] = favor();
 }
 
+void unit::set_hp(unsigned char in_hp) {
+    if (in_hp <= 0) {
+        current_hp = 0;
+        death();
+    } else {
+        current_hp = in_hp;
+    }
+}
+unsigned char unit::get_hp() const {
+  return(current_hp);
+}
+
+void unit::death() {
+    printf("%s is dead.\n", name);
+}
+
 unit::unit(std::string in_name, std::string in_unit_class, char in_id, 
            std::vector<unsigned int> in_stats_base, std::vector<unsigned int> in_growths, std::vector<unsigned int> in_skills,
            std::vector<unsigned int> in_love_pts, std::vector<unsigned int> in_love_growths,
@@ -157,8 +169,7 @@ unit::unit(std::string in_name, std::string in_unit_class, char in_id,
         stats_bonus[i] = 0;
         // For some reason, stats_base cannot be printed unless (int) all_units["Marth"].stats_base[0]. + 0 also works.
     }
-    
-    current_hp = (unsigned int) stats_base[0];
+    set_hp((unsigned int) stats_base[0]);
 
     // printf("Did I equip the weapon successfully %d \n", get_equipped()[0]);
     for (int i = 0; i < in_weapons.size(); i++) {
@@ -174,7 +185,7 @@ unit::unit(std::string in_name, std::string in_unit_class, char in_id,
         position[i] = (unsigned int) in_position[i];
     }  
     for (int i = 0; i < in_lovers.size(); i++) {
-        strncpy(lovers[i], in_lovers[i].c_str(), sizeof(in_lovers[i])); // This line is the problem
+        strncpy(lovers[i], in_lovers[i].c_str(), sizeof(in_lovers[i]));
         love_growths[i] = (unsigned int) in_love_growths[i];
         wpn_exp[i] = (unsigned int) in_wpn_exp[i];
     }    
@@ -300,8 +311,8 @@ unsigned char unit::attack(unit& enemy){
     * I think so. Always same number of rand rolled. 
     * But what about crit animations? Should crit animations be shown to miss? Fire Emblem thinks not.
     */
-    // unit.current_hp -= combat_damage(enemy, unit_crits);
-    enemy.current_hp -= combat_damage(enemy, unit_crits);
+    // unit.set_hp( -= combat_damage(enemy, unit_crits);
+    enemy.set_hp(enemy.get_hp() - combat_damage(enemy, unit_crits));
     return(combat_damage(enemy, unit_crits));
 }
 
@@ -538,7 +549,9 @@ main() {
     printf("Does Sheeda retaliate?. %d\n", all_units["Marth"].retaliation(all_units["Sheeda"]));
     all_units["Marth"].enemy_select(all_units["Marth"]);
     all_units["Marth"].attack(all_units["Sheeda"]);
-    printf("Sheeda took damage?. %d\n", all_units["Sheeda"].current_hp);
+    printf("Sheeda took damage?. %d\n", all_units["Sheeda"].get_hp());
+    all_units["Marth"].attack(all_units["Sheeda"]);
+    printf("Sheeda took damage?. %d\n", all_units["Sheeda"].get_hp());
     all_units["Marth"].combat(all_units["Sheeda"]);
     int i;
     // std::cout << "Please enter an integer value: ";
