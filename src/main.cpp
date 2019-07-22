@@ -106,6 +106,7 @@ char weapon_slots = 7;
 unsigned char id = 0;
 /// Item slots. Separate from weapon slots.
 
+
 generic::generic() {
 
 }
@@ -327,6 +328,10 @@ unsigned char unit::combat_hit(const unit& enemy){
     unsigned char accuracy = std::max(0, wpn_hit + unit_acc + supports - enemy.attack_probs[1]);
     return(accuracy);
 }
+
+
+    
+
 unsigned char unit::attack(unit& enemy){
     printf("%s attacks %s\n", name, enemy.name);
     bool unit_hits = (getrand() < combat_hit(enemy));    
@@ -550,6 +555,10 @@ main() {
         /*Armored*/         0,
         /*Promoted*/        0);
            
+    std::ofstream out("units.txt");
+    
+    out << all_units["Sheeda"];
+    out.close();
     
     printf("Marth's weapon. %s\n", inventory_items["Rapier_0001"].name);
     printf("Marth's weapon. %s\n", all_units["Marth"].equipment[all_units["Marth"].get_equipped()[0]].name);

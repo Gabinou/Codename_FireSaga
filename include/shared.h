@@ -262,6 +262,33 @@ public:
     /// \fn unsigned char wpn_weighed_down
     /// \brief By how much is unit weighed down by its weapon. Gets substracted to speed for combat_double.     
     unsigned char wpn_weighed_down() const;
+    
+    
+    friend std::ostream & operator << (std::ostream &out, const unit &in_unit) {
+        out 
+        << in_unit.name << "\n" 
+        << in_unit.stats_base  << "\n"
+        << in_unit.growths << "\n"
+        << in_unit.love_pts << "\n"
+        << in_unit.love_growths << "\n"
+        << in_unit.wpn_exp << "\n"
+        << in_unit.position << "\n"
+        << in_unit.equipped << "\n"
+        << in_unit.equipment << "\n"
+        << in_unit.weapons << "\n"
+        << in_unit.items << "\n"
+        << in_unit.exp << "\n"
+        << in_unit.lovers << "\n"
+        << in_unit.mounted << "\n"
+        << in_unit.flying << "\n"
+        << in_unit.armored << "\n"
+        << in_unit.promoted << "\n"
+        << std::endl;
+        return(out);
+    }
+     
+    /// \fn void death
+    /// \brief Death function. For now only says that people died. Other functions come later. 
     void death();
     ~unit();
     unit();
