@@ -266,22 +266,73 @@ public:
     
     friend std::ostream & operator << (std::ostream &out, const unit &in_unit) {
         out 
-        << in_unit.name << "\n" 
-        << in_unit.stats_base  << "\n"
-        << in_unit.growths << "\n"
-        << in_unit.love_pts << "\n"
-        << in_unit.love_growths << "\n"
-        << in_unit.wpn_exp << "\n"
-        << in_unit.position << "\n"
-        << in_unit.equipped << "\n"
-        << in_unit.equipment << "\n"
-        << in_unit.weapons << "\n"
-        << in_unit.items << "\n"
+        << in_unit.name << "\n"
+        << "Stats: \t\t"
+        << (int) in_unit.stats[0] << ", " << (int) in_unit.stats[1] << ", " 
+        << (int) in_unit.stats[2] << ", " << (int) in_unit.stats[3] << ", " 
+        << (int) in_unit.stats[4] << ", " << (int) in_unit.stats[5] << ", " 
+        << (int) in_unit.stats[6] << ", " << (int) in_unit.stats[5] << ", " 
+        << (int) in_unit.stats[8] << ", " << (int) in_unit.stats[9]
+        << "\n"
+        << "Bases: \t\t"
+        << (int) in_unit.stats_base[0] << ", " << (int) in_unit.stats_base[1] << ", " 
+        << (int) in_unit.stats_base[2] << ", " << (int) in_unit.stats_base[3] << ", " 
+        << (int) in_unit.stats_base[4] << ", " << (int) in_unit.stats_base[5] << ", " 
+        << (int) in_unit.stats_base[6] << ", " << (int) in_unit.stats_base[5] << ", " 
+        << (int) in_unit.stats_base[8] << ", " << (int) in_unit.stats_base[9]
+        << "\n"
+        << "Growths: \t"
+        << (int) in_unit.growths[0] << ", "  << (int) in_unit.growths[1] << ", " 
+        << (int) in_unit.growths[2] << ", "  << (int) in_unit.growths[3] << ", " 
+        << (int) in_unit.growths[4] << ", "  << (int) in_unit.growths[5] << ", " 
+        << (int) in_unit.growths[6] << ", "  << (int) in_unit.growths[5] << ", " 
+        << (int) in_unit.growths[8] << ", "  << (int) in_unit.growths[9]
+        << "\n"
+        << "love_pts: \t"
+        << (int) in_unit.love_pts[0] << ", "  << (int) in_unit.love_pts[1] << ", " 
+        << (int) in_unit.love_pts[2] << ", "  << (int) in_unit.love_pts[3] << ", " 
+        << (int) in_unit.love_pts[4]
+        << "\n"
+        << "love_grt: \t"
+        << (int) in_unit.love_growths[0] << ", "  << (int) in_unit.love_growths[1] << ", " 
+        << (int) in_unit.love_growths[2] << ", "  << (int) in_unit.love_growths[3] << ", " 
+        << (int) in_unit.love_growths[4] << ", " 
+        << "\n"
+        << "wpn_exp: \t"
+        << (int) in_unit.wpn_exp[0] << ", "  << (int) in_unit.wpn_exp[1] << ", " 
+        << (int) in_unit.wpn_exp[2] << ", "  << (int) in_unit.wpn_exp[3] << ", " 
+        << (int) in_unit.wpn_exp[4] << ", "  << (int) in_unit.wpn_exp[5] << ", " 
+        << (int) in_unit.wpn_exp[6] << ", "  << (int) in_unit.wpn_exp[7] << ", " 
+        << (int) in_unit.wpn_exp[8] << ", "  << (int) in_unit.wpn_exp[9] << ", " 
+        << "\n"
+        << "Equipped: \t"
+        << (int) in_unit.equipped[0] << "\n"
+        // // EQUIPMENT IS A STRUCT. FUCK.
+        // << (int) in_unit.equipment[0] << (int) in_unit.equipment[1]
+        // << (int) in_unit.equipment[2] << (int) in_unit.equipment[3]
+        // << (int) in_unit.equipment[4] << (int) in_unit.equipment[5]
+        // << (int) in_unit.equipment[6]
+        // << "\n"
+        // << (int) in_unit.weapons[0] << (int) in_unit.weapons[1]
+        // << (int) in_unit.weapons[2] << (int) in_unit.weapons[3]
+        // << "\n"
+        // << (int) in_unit.items[0] << (int) in_unit.items[1]
+        // << (int) in_unit.items[2] << (int) in_unit.items[3]
+        // << "\n"
+        << "Exp: \t\t"
         << in_unit.exp << "\n"
-        << in_unit.lovers << "\n"
+        << "Lovers: \t"
+        << in_unit.lovers[0] << ", "  << in_unit.lovers[1] << ", " 
+        << in_unit.lovers[2] << ", "  << in_unit.lovers[3] << ", " 
+        << in_unit.lovers[4] 
+        << "\n"
+        << "Mounted: \t"
         << in_unit.mounted << "\n"
+        << "Flying: \t"
         << in_unit.flying << "\n"
+        << "Armored: \t"
         << in_unit.armored << "\n"
+        << "Promoted: \t"
         << in_unit.promoted << "\n"
         << std::endl;
         return(out);

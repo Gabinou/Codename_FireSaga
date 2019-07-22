@@ -557,6 +557,7 @@ main() {
            
     std::ofstream out("units.txt");
     
+    out << all_units["Marth"];
     out << all_units["Sheeda"];
     out.close();
     
