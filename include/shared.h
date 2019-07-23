@@ -125,7 +125,8 @@ struct inventory_item {
 class unit: public generic {
     // Lightweight implementation.
 private: 
-    unsigned char equipped[1]; //needs setters for stats update.
+    unsigned char equipped[1]; //needs setters for stats update. 
+    // DOUBLE DUTY: is also the number of the last element in equipment. Maybe in weapons alsl.
     char current_hp; //needs setters for death check on update
     
 public:
@@ -292,11 +293,17 @@ public:
         for (int i = 0; i < sizeof(in_unit.equipment)/sizeof(in_unit.equipment[0]); i++) {
             // printf("%d\n", (in_unit.equipment[i] == 0));
             // printf("%d\n", sizeof(in_unit.equipment[i].name));
-            printf("%s\n", in_unit.equipment[i].name);
-            printf("%d\n", in_unit.equipment[i].name[0]=="");
+            // printf("%s\n", in_unit.equipment[i].name);
+            printf("%d\n", in_unit.equipment[i].used);
+            // printf("%d\n", in_unit.equipment[i].name[0]=="");
             // printf("%d\n", in_unit.equipment[i].name[0]);
             // printf("%s\n", in_unit.equipment[i].name[0]);
-            out << in_unit.equipment[i].name << ", ";
+            if (i < in_unit.get_equipped()[0] + 1) {
+                out << in_unit.equipment[i].name << ", ";
+            } else {
+                out << ", ";
+            }
+            
         };
         out
         << "\n"
