@@ -267,6 +267,13 @@ public:
     friend std::ostream & operator << (std::ostream &out, const unit &in_unit) {
         out 
         << in_unit.name << "\n"
+        << "Bases: \t\t"
+        << (int) in_unit.stats_base[0] << ", " << (int) in_unit.stats_base[1] << ", " 
+        << (int) in_unit.stats_base[2] << ", " << (int) in_unit.stats_base[3] << ", " 
+        << (int) in_unit.stats_base[4] << ", " << (int) in_unit.stats_base[5] << ", " 
+        << (int) in_unit.stats_base[6] << ", " << (int) in_unit.stats_base[5] << ", " 
+        << (int) in_unit.stats_base[8] << ", " << (int) in_unit.stats_base[9]
+        << "\n"
         << "Stats: \t\t"
         << (int) in_unit.stats[0] << ", " << (int) in_unit.stats[1] << ", " 
         << (int) in_unit.stats[2] << ", " << (int) in_unit.stats[3] << ", " 
@@ -274,12 +281,24 @@ public:
         << (int) in_unit.stats[6] << ", " << (int) in_unit.stats[5] << ", " 
         << (int) in_unit.stats[8] << ", " << (int) in_unit.stats[9]
         << "\n"
-        << "Bases: \t\t"
-        << (int) in_unit.stats_base[0] << ", " << (int) in_unit.stats_base[1] << ", " 
-        << (int) in_unit.stats_base[2] << ", " << (int) in_unit.stats_base[3] << ", " 
-        << (int) in_unit.stats_base[4] << ", " << (int) in_unit.stats_base[5] << ", " 
-        << (int) in_unit.stats_base[6] << ", " << (int) in_unit.stats_base[5] << ", " 
-        << (int) in_unit.stats_base[8] << ", " << (int) in_unit.stats_base[9]
+        // << "Grown: \t"; // Maybe grown should be the sum of stats_grown? Unecessary with bases and stats.
+        // for (int i = 0; i < in_unit.stats_grown.size(); i++) {
+             // out << (int) in_unit.stats_grown[i][0] << ",";
+        // };
+        // out
+        // << "\n"
+        << "Equipped: \t" << in_unit.equipment[in_unit.get_equipped()[0]].name << "\n"
+        << "Equipment: \t"; // Maybe grown should be the sum of stats_grown? Unecessary with bases and stats.
+        for (int i = 0; i < sizeof(in_unit.equipment)/sizeof(in_unit.equipment[0]); i++) {
+            // printf("%d\n", (in_unit.equipment[i] == 0));
+            // printf("%d\n", sizeof(in_unit.equipment[i].name));
+            printf("%s\n", in_unit.equipment[i].name);
+            printf("%d\n", in_unit.equipment[i].name[0]=="");
+            // printf("%d\n", in_unit.equipment[i].name[0]);
+            // printf("%s\n", in_unit.equipment[i].name[0]);
+            out << in_unit.equipment[i].name << ", ";
+        };
+        out
         << "\n"
         << "Growths: \t"
         << (int) in_unit.growths[0] << ", "  << (int) in_unit.growths[1] << ", " 
