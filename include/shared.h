@@ -274,8 +274,7 @@ public:
     }; 
     
     friend std::ostream & operator << (std::ostream &out, const unit &in_unit) {
-        out 
-        << in_unit.name << "\n"
+        out << in_unit.name << "\n"
         << "Class: \t\t" << in_unit.type << "\n"
         << "Bases: \t\t";
         for (int i = 0; i < sizeof(in_unit.stats_base)/sizeof(in_unit.stats_base[0]); i++) {
@@ -348,16 +347,11 @@ public:
                 out << (int) in_unit.wpn_exp[i] << ", ";
             }
         };
-        out << "Exp: \t\t"
-        << in_unit.exp << "\n"
-        << "Mounted: \t"
-        << in_unit.mounted << "\n"
-        << "Flying: \t"
-        << in_unit.flying << "\n"
-        << "Armored: \t"
-        << in_unit.armored << "\n"
-        << "Promoted: \t"
-        << in_unit.promoted << "\n"
+        out << "Exp: \t\t" << in_unit.exp << "\n"
+        << "Mounted: \t" << in_unit.mounted << "\n"
+        << "Flying: \t"  << in_unit.flying << "\n"
+        << "Armored: \t" << in_unit.armored << "\n"
+        << "Promoted: \t" << in_unit.promoted << "\n"
         << std::endl;
         return(out);
     }
