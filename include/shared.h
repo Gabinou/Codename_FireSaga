@@ -267,8 +267,8 @@ public:
     /// \brief write the object to file. Keeps the exact same formatting as the friend << function.
     void write(const char *filename) {
         FILE *f = fopen(filename, "a");
-        fprintf(f, "a");
         fprintf(f, "%s \n", name);
+        fprintf(f, "Class: \t\t %s \n", type);
         fprintf(f, "Class: \t\t %s \n", type);
         fclose(f);
     }; 
@@ -278,13 +278,16 @@ public:
         out 
         << in_unit.name << "\n"
         << "Class: \t\t" << in_unit.type << "\n"
-        << "Bases: \t\t"
-        << (int) in_unit.stats_base[0] << ", " << (int) in_unit.stats_base[1] << ", " 
-        << (int) in_unit.stats_base[2] << ", " << (int) in_unit.stats_base[3] << ", " 
-        << (int) in_unit.stats_base[4] << ", " << (int) in_unit.stats_base[5] << ", " 
-        << (int) in_unit.stats_base[6] << ", " << (int) in_unit.stats_base[5] << ", " 
-        << (int) in_unit.stats_base[8] << ", " << (int) in_unit.stats_base[9]
-        << "\n"
+        << "Bases: \t\t";
+        for (int i = 0; i < sizeof(in_unit.stats_base)/sizeof(in_unit.stats_base[0]); i++) {
+            if (i == (sizeof(in_unit.stats_base)/sizeof(in_unit.stats_base[0])) - 1) {
+                out << (int) in_unit.stats_base[i] << "\n";
+            } else {
+                out << (int) in_unit.stats_base[i] << ", ";
+            }
+            
+        };
+        out
         << "Stats: \t\t"
         << (int) in_unit.stats[0] << ", " << (int) in_unit.stats[1] << ", " 
         << (int) in_unit.stats[2] << ", " << (int) in_unit.stats[3] << ", " 

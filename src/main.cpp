@@ -587,7 +587,7 @@ main() {
     // remove("units.txt");
     // all_units["Marth"].write("units.txt");
     
-    write_all_units("units.txt", "c");
+    write_all_units("units.txt", "cpp");
 
     // printf("Marth's weapon. %s\n", inventory_items["Rapier_0001"].name);
     // printf("Marth's weapon. %s\n", all_units["Marth"].equipment[all_units["Marth"].get_equipped()[0]].name);
