@@ -263,9 +263,18 @@ public:
     /// \fn unsigned char wpn_weighed_down
     /// \brief By how much is unit weighed down by its weapon. Gets substracted to speed for combat_double.     
     unsigned char wpn_weighed_down() const;
-    
+    /// \fn void write
+    /// \brief write the object to file. Keeps the exact same formatting as the friend << function.
+    void write(const char *filename) {
+        FILE *f = fopen(filename, "a");
+        fprintf(f, "a");
+        fprintf(f, "%s \n", name);
+        fprintf(f, "Class: \t\t %s \n", type);
+        fclose(f);
+    }; 
     
     friend std::ostream & operator << (std::ostream &out, const unit &in_unit) {
+        printf("allo");
         out 
         << in_unit.name << "\n"
         << "Class: \t\t" << in_unit.type << "\n"
