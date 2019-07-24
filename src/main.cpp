@@ -181,8 +181,12 @@ unit::unit(std::string in_name, std::string in_unit_class, char in_id,
     flying = in_flying;
     armored = in_armored;
     promoted = in_promoted;
-    for (int i = 0; i < in_equipment.size(); i++) {
-        equipment[i] = in_equipment[i];
+    for (int i = 0; i < 7 ; i++) {
+        if (i < in_equipment.size()) {
+            equipment[i] = in_equipment[i];
+        } else {
+            equipment[i] = inventory_item("", -1); // Empty equipment item. -1 Makes no sense can can be used to check for errors later.
+        }
     }
     strncpy(name, in_name.c_str(), sizeof(in_name));
     strncpy(type, in_unit_class.c_str(), sizeof(in_unit_class));
@@ -197,12 +201,18 @@ unit::unit(std::string in_name, std::string in_unit_class, char in_id,
     current_hp = stats_base[0];
 
     // printf("Did I equip the weapon successfully %d \n", get_equipped()[0]);
-    for (int i = 0; i < in_weapons.size(); i++) {
-        if (in_weapons.size() != 0) {
+    printf("Weapon size: %d\n", in_weapons.size());
+    for (int i = 0; i < 4; i++) {
+
+        if (i < in_weapons.size()) {
             weapons[i] = in_weapons[i];
+        } else {
+            weapons[i] = inventory_item("", -1) // Empty equipment item. -1 Makes no sense can can be used to check for errors later.
         };
-        if (in_items.size() != 0) {
+        if (i < in_items.size()) {
             items[i] = in_items[i];
+        } else {
+            items[i] = inventory_item("", -1) // Empty equipment item. -1 Makes no sense can can be used to check for errors later.
         };
     }  
     for (int i = 0; i < in_skills.size(); i++) {

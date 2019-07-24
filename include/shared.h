@@ -291,15 +291,19 @@ public:
         << "Equipped: \t" << in_unit.equipment[in_unit.get_equipped()[0]].name << "\n"
         << "Equipment: \t"; // Maybe grown should be the sum of stats_grown? Unecessary with bases and stats.
         for (int i = 0; i < sizeof(in_unit.equipment)/sizeof(in_unit.equipment[0]); i++) {
-            // printf("%d\n", (in_unit.equipment[i] == 0));
-            // printf("%d\n", sizeof(in_unit.equipment[i].name));
-            // printf("%s\n", in_unit.equipment[i].name);
-            printf("%d\n", in_unit.equipment[i].used);
-            // printf("%d\n", in_unit.equipment[i].name[0]=="");
-            // printf("%d\n", in_unit.equipment[i].name[0]);
-            // printf("%s\n", in_unit.equipment[i].name[0]);
             if (i < in_unit.get_equipped()[0] + 1) {
                 out << in_unit.equipment[i].name << ", ";
+            } else {
+                out << ", ";
+            }
+            
+        };
+        out
+        << "\n"
+        << "Weapons: \t"; // Maybe grown should be the sum of stats_grown? Unecessary with bases and stats.
+        for (int i = 0; i < sizeof(in_unit.weapons)/sizeof(in_unit.weapons[0]); i++) {
+            if (i < in_unit.get_equipped()[0] + 1) {
+                out << in_unit.weapons[i].name << ", ";
             } else {
                 out << ", ";
             }
