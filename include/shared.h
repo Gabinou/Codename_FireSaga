@@ -303,15 +303,11 @@ public:
         for (int i = 0; i < sizeof(in_unit.equipment)/sizeof(in_unit.equipment[0]); i++) {
             out << in_unit.equipment[i].name << ", ";
         };
-        out
-        << "\n"
-        << "Weapons: \t";
+        out << "\n" << "Weapons: \t";
         for (int i = 0; i < sizeof(in_unit.weapons)/sizeof(in_unit.weapons[0]); i++) {
             out << in_unit.weapons[i].name << ", ";
         };
-        out
-        << "\n"
-        << "Items: \t\t"; 
+        out << "\n" << "Items: \t\t"; 
         for (int i = 0; i < sizeof(in_unit.items)/sizeof(in_unit.items[0]); i++) {
             out << in_unit.items[i].name << ", ";
         };
