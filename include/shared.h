@@ -274,7 +274,6 @@ public:
     }; 
     
     friend std::ostream & operator << (std::ostream &out, const unit &in_unit) {
-        printf("allo");
         out 
         << in_unit.name << "\n"
         << "Class: \t\t" << in_unit.type << "\n"
@@ -285,24 +284,23 @@ public:
             } else {
                 out << (int) in_unit.stats_base[i] << ", ";
             }
-            
         };
-        out
-        << "Stats: \t\t"
+        out << "Stats: \t\t" // must stay like this cause of busted stats variable that needs more space to not crash.
         << (int) in_unit.stats[0] << ", " << (int) in_unit.stats[1] << ", " 
         << (int) in_unit.stats[2] << ", " << (int) in_unit.stats[3] << ", " 
         << (int) in_unit.stats[4] << ", " << (int) in_unit.stats[5] << ", " 
         << (int) in_unit.stats[6] << ", " << (int) in_unit.stats[5] << ", " 
-        << (int) in_unit.stats[8] << ", " << (int) in_unit.stats[9]
-        << "\n"
-        // << "Grown: \t"; // Maybe grown should be the sum of stats_grown? Unecessary with bases and stats.
-        // for (int i = 0; i < in_unit.stats_grown.size(); i++) {
-             // out << (int) in_unit.stats_grown[i][0] << ",";
-        // };
-        // out
-        // << "\n"
-        << "Equipped: \t" << in_unit.equipment[in_unit.get_equipped()[0]].name << "\n"
-        << "Equipment: \t"; // Maybe grown should be the sum of stats_grown? Unecessary with bases and stats.
+        << (int) in_unit.stats[8] << ", " << (int) in_unit.stats[9] << "\n"
+        << "Growths: \t";
+        for (int i = 0; i < sizeof(in_unit.growths)/sizeof(in_unit.growths[0]); i++) {
+            if (i == (sizeof(in_unit.growths)/sizeof(in_unit.growths[0])) - 1) {
+                out << (int) in_unit.growths[i] << "\n";
+            } else {
+                out << (int) in_unit.growths[i] << ", ";
+            }
+        };
+        out << "Equipped: \t" << in_unit.equipment[in_unit.get_equipped()[0]].name << "\n"
+        << "Equipment: \t";
         for (int i = 0; i < sizeof(in_unit.equipment)/sizeof(in_unit.equipment[0]); i++) {
             out << in_unit.equipment[i].name << ", ";
         };
@@ -318,39 +316,40 @@ public:
         for (int i = 0; i < sizeof(in_unit.items)/sizeof(in_unit.items[0]); i++) {
             out << in_unit.items[i].name << ", ";
         };
-        out
-        << "\n"
-        << "Growths: \t"
-        << (int) in_unit.growths[0] << ", "  << (int) in_unit.growths[1] << ", " 
-        << (int) in_unit.growths[2] << ", "  << (int) in_unit.growths[3] << ", " 
-        << (int) in_unit.growths[4] << ", "  << (int) in_unit.growths[5] << ", " 
-        << (int) in_unit.growths[6] << ", "  << (int) in_unit.growths[5] << ", " 
-        << (int) in_unit.growths[8] << ", "  << (int) in_unit.growths[9]
-        << "\n"
-        << "love_pts: \t"
-        << (int) in_unit.love_pts[0] << ", "  << (int) in_unit.love_pts[1] << ", " 
-        << (int) in_unit.love_pts[2] << ", "  << (int) in_unit.love_pts[3] << ", " 
-        << (int) in_unit.love_pts[4]
-        << "\n"
-        << "love_grt: \t"
-        << (int) in_unit.love_growths[0] << ", "  << (int) in_unit.love_growths[1] << ", " 
-        << (int) in_unit.love_growths[2] << ", "  << (int) in_unit.love_growths[3] << ", " 
-        << (int) in_unit.love_growths[4] << ", " 
-        << "\n"
-        << "wpn_exp: \t"
-        << (int) in_unit.wpn_exp[0] << ", "  << (int) in_unit.wpn_exp[1] << ", " 
-        << (int) in_unit.wpn_exp[2] << ", "  << (int) in_unit.wpn_exp[3] << ", " 
-        << (int) in_unit.wpn_exp[4] << ", "  << (int) in_unit.wpn_exp[5] << ", " 
-        << (int) in_unit.wpn_exp[6] << ", "  << (int) in_unit.wpn_exp[7] << ", " 
-        << (int) in_unit.wpn_exp[8] << ", "  << (int) in_unit.wpn_exp[9] << ", " 
-        << "\n"
-        << "Exp: \t\t"
+        out << "\n" << "Lovers: \t";
+        for (int i = 0; i < sizeof(in_unit.lovers)/sizeof(in_unit.lovers[0]); i++) {
+            if (i == (sizeof(in_unit.lovers)/sizeof(in_unit.lovers[0])) - 1) {
+                out << in_unit.lovers[i] << "\n";
+            } else {
+                out << in_unit.lovers[i] << ", ";
+            }
+        };
+        out << "love_pts: \t";
+        for (int i = 0; i < sizeof(in_unit.love_pts)/sizeof(in_unit.love_pts[0]); i++) {
+            if (i == (sizeof(in_unit.love_pts)/sizeof(in_unit.love_pts[0])) - 1) {
+                out << (int) in_unit.love_pts[i] << "\n";
+            } else {
+                out << (int) in_unit.love_pts[i] << ", ";
+            }
+        };
+        out << "love_grt: \t";
+        for (int i = 0; i < sizeof(in_unit.love_growths)/sizeof(in_unit.love_growths[0]); i++) {
+            if (i == (sizeof(in_unit.love_growths)/sizeof(in_unit.love_growths[0])) - 1) {
+                out << (int) in_unit.love_growths[i] << "\n";
+            } else {
+                out << (int) in_unit.love_growths[i] << ", ";
+            }
+        };
+        out << "wpn_exp: \t";
+        for (int i = 0; i < sizeof(in_unit.wpn_exp)/sizeof(in_unit.wpn_exp[0]); i++) {
+            if (i == (sizeof(in_unit.wpn_exp)/sizeof(in_unit.wpn_exp[0])) - 1) {
+                out << (int) in_unit.wpn_exp[i] << "\n";
+            } else {
+                out << (int) in_unit.wpn_exp[i] << ", ";
+            }
+        };
+        out << "Exp: \t\t"
         << in_unit.exp << "\n"
-        << "Lovers: \t"
-        << in_unit.lovers[0] << ", "  << in_unit.lovers[1] << ", " 
-        << in_unit.lovers[2] << ", "  << in_unit.lovers[3] << ", " 
-        << in_unit.lovers[4] 
-        << "\n"
         << "Mounted: \t"
         << in_unit.mounted << "\n"
         << "Flying: \t"

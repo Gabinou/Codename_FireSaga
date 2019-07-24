@@ -222,6 +222,7 @@ unit::unit(std::string in_name, std::string in_unit_class, char in_id,
     for (int i = 0; i < in_lovers.size(); i++) {
         strncpy(lovers[i], in_lovers[i].c_str(), sizeof(in_lovers[i]));
         love_growths[i] = (unsigned int) in_love_growths[i];
+        love_pts[i] = (unsigned int) in_love_pts[i];
         wpn_exp[i] = (unsigned int) in_wpn_exp[i];
     }    
     id = in_id;
