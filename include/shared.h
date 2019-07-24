@@ -268,6 +268,7 @@ public:
     friend std::ostream & operator << (std::ostream &out, const unit &in_unit) {
         out 
         << in_unit.name << "\n"
+        << "Class: \t\t" << in_unit.type << "\n"
         << "Bases: \t\t"
         << (int) in_unit.stats_base[0] << ", " << (int) in_unit.stats_base[1] << ", " 
         << (int) in_unit.stats_base[2] << ", " << (int) in_unit.stats_base[3] << ", " 
@@ -291,23 +292,19 @@ public:
         << "Equipped: \t" << in_unit.equipment[in_unit.get_equipped()[0]].name << "\n"
         << "Equipment: \t"; // Maybe grown should be the sum of stats_grown? Unecessary with bases and stats.
         for (int i = 0; i < sizeof(in_unit.equipment)/sizeof(in_unit.equipment[0]); i++) {
-            if (i < in_unit.get_equipped()[0] + 1) {
-                out << in_unit.equipment[i].name << ", ";
-            } else {
-                out << ", ";
-            }
-            
+            out << in_unit.equipment[i].name << ", ";
         };
         out
         << "\n"
-        << "Weapons: \t"; // Maybe grown should be the sum of stats_grown? Unecessary with bases and stats.
+        << "Weapons: \t";
         for (int i = 0; i < sizeof(in_unit.weapons)/sizeof(in_unit.weapons[0]); i++) {
-            if (i < in_unit.get_equipped()[0] + 1) {
-                out << in_unit.weapons[i].name << ", ";
-            } else {
-                out << ", ";
-            }
-            
+            out << in_unit.weapons[i].name << ", ";
+        };
+        out
+        << "\n"
+        << "Items: \t\t"; 
+        for (int i = 0; i < sizeof(in_unit.items)/sizeof(in_unit.items[0]); i++) {
+            out << in_unit.items[i].name << ", ";
         };
         out
         << "\n"
@@ -335,20 +332,6 @@ public:
         << (int) in_unit.wpn_exp[6] << ", "  << (int) in_unit.wpn_exp[7] << ", " 
         << (int) in_unit.wpn_exp[8] << ", "  << (int) in_unit.wpn_exp[9] << ", " 
         << "\n"
-        << "Equipped: \t"
-        << (int) in_unit.equipped[0] << "\n"
-        // // EQUIPMENT IS A STRUCT. FUCK.
-        // << (int) in_unit.equipment[0] << (int) in_unit.equipment[1]
-        // << (int) in_unit.equipment[2] << (int) in_unit.equipment[3]
-        // << (int) in_unit.equipment[4] << (int) in_unit.equipment[5]
-        // << (int) in_unit.equipment[6]
-        // << "\n"
-        // << (int) in_unit.weapons[0] << (int) in_unit.weapons[1]
-        // << (int) in_unit.weapons[2] << (int) in_unit.weapons[3]
-        // << "\n"
-        // << (int) in_unit.items[0] << (int) in_unit.items[1]
-        // << (int) in_unit.items[2] << (int) in_unit.items[3]
-        // << "\n"
         << "Exp: \t\t"
         << in_unit.exp << "\n"
         << "Lovers: \t"

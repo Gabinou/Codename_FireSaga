@@ -207,12 +207,12 @@ unit::unit(std::string in_name, std::string in_unit_class, char in_id,
         if (i < in_weapons.size()) {
             weapons[i] = in_weapons[i];
         } else {
-            weapons[i] = inventory_item("", -1) // Empty equipment item. -1 Makes no sense can can be used to check for errors later.
+            weapons[i] = inventory_item("", -1); // Empty equipment item. -1 Makes no sense can can be used to check for errors later.
         };
         if (i < in_items.size()) {
             items[i] = in_items[i];
         } else {
-            items[i] = inventory_item("", -1) // Empty equipment item. -1 Makes no sense can can be used to check for errors later.
+            items[i] = inventory_item("", -1); // Empty equipment item. -1 Makes no sense can can be used to check for errors later.
         };
     }  
     for (int i = 0; i < in_skills.size(); i++) {
