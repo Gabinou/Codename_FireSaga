@@ -12,20 +12,12 @@
 #include <random>
 #include <bits/stdc++.h> 
 #include "shared.h"
-// #define LEN(arr) ((int) (sizeof (arr) / sizeof (arr)[0])) 
-// #define getrand() dist(mt) 
-
-/// \fn LEN(arr)
-/// \brief That is a macro. What is a macro? Anyway it computes lenght of arrays.
 
 // Skill idea: divine shield! Bubble!
-
+std::mt19937 mt(1899); //Deterministic seed. Do like other fire Emblems. Always Same RNG,it is the player actions that change it.
+std::uniform_int_distribution<char> dist(0, 100); //*DESIGN QUESTION* What should be the minimum and maximum probabilities?
 // Random number generation: modulo wrecks the average and makes the distribution non uniform if the base interval is not divisible.
 // How to get uniform distribution from uniform arbitrary range.
-
-// std::mt19937 mt(1899); //Deterministic seed. Do like other fire Emblems. Always Same RNG,it is the player actions that change it.
-// std::uniform_int_distribution<char> dist(0, 100); //*DESIGN QUESTION* What should be the minimum and maximum probabilities?
-
 bool single_roll(int in_prob) {
     bool out = (getrand() < in_prob);
     return(out);
