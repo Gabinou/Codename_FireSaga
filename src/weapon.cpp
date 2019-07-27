@@ -4,6 +4,17 @@
 * \brief weapon class implementation.
 */
 
+#include <stdio.h>
+#include <iostream>
+#include <vector>
+#include <math.h> 
+#include <random>
+#include <bits/stdc++.h> 
+#include "shared.h"
+using namespace std;
+// #define LEN(arr) ((int) (sizeof (arr) / sizeof (arr)[0])) 
+// #define getrand() dist(mt) 
+
 weapon::weapon(){
     // a
 }

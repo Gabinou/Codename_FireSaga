@@ -2,6 +2,13 @@
 #define SHARED_H
 
 using namespace std;
+#define LEN(arr) ((int) (sizeof (arr) / sizeof (arr)[0])) 
+#define getrand() dist(mt) 
+
+std::mt19937 mt(1899); //Deterministic seed. Do like other fire Emblems. Always Same RNG,it is the player actions that change it.
+std::uniform_int_distribution<char> dist(0, 100); //*DESIGN QUESTION* What should be the minimum and maximum probabilities?
+
+
 /*! \file shared.h
 * \brief Shared data.
 */

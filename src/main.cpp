@@ -12,8 +12,8 @@
 #include <random>
 #include <bits/stdc++.h> 
 #include "shared.h"
-#define LEN(arr) ((int) (sizeof (arr) / sizeof (arr)[0])) 
-#define getrand() dist(mt) 
+// #define LEN(arr) ((int) (sizeof (arr) / sizeof (arr)[0])) 
+// #define getrand() dist(mt) 
 
 /// \fn LEN(arr)
 /// \brief That is a macro. What is a macro? Anyway it computes lenght of arrays.
@@ -23,8 +23,8 @@
 // Random number generation: modulo wrecks the average and makes the distribution non uniform if the base interval is not divisible.
 // How to get uniform distribution from uniform arbitrary range.
 
-std::mt19937 mt(1899); //Deterministic seed. Do like other fire Emblems. Always Same RNG,it is the player actions that change it.
-std::uniform_int_distribution<char> dist(0, 100); //*DESIGN QUESTION* What should be the minimum and maximum probabilities?
+// std::mt19937 mt(1899); //Deterministic seed. Do like other fire Emblems. Always Same RNG,it is the player actions that change it.
+// std::uniform_int_distribution<char> dist(0, 100); //*DESIGN QUESTION* What should be the minimum and maximum probabilities?
 
 bool single_roll(int in_prob) {
     bool out = (getrand() < in_prob);
@@ -64,7 +64,7 @@ char weapon_stats[][14] = {"dmg", "hit", "crit", "weight", "wpn_exp", "uses", "r
 *  - range: distance in squares to which a unit can attack_damage with weapon.  <br>
 *  - lvl: Weapon level. Integer representing the weapon experience/level necessary to use the weapon. Refer to ...  <br>
 */
-char wpn_types[][12]  = {"swd", "lance", "axe", "bow", "mgc_wind", "mgc_fire", "mgc_thunder",  "mgc_dark",  "mgc_light", "staff"};
+// char wpn_types[][12]  = {"swd", "lance", "axe", "bow", "mgc_wind", "mgc_fire", "mgc_thunder",  "mgc_dark",  "mgc_light", "staff"};
 /// \var char wpn_types
 /// \brief Weapon types.
 unsigned char wpn_exp_lvls[][14] = {25, 60, 100, 150};
@@ -114,9 +114,6 @@ unsigned char equipped[1];
 
 generic::~generic(void) {
     // printf("Generic object is being deleted\n");
-}
-unit::~unit(void) {
-   // printf("Unit %s is being deleted.\n", name.c_str());
 }
 
 inventory_item::inventory_item() {

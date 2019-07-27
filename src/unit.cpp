@@ -12,12 +12,8 @@
 #include <bits/stdc++.h> 
 #include "shared.h"
 using namespace std;
-#define LEN(arr) ((int) (sizeof (arr) / sizeof (arr)[0])) 
-#define getrand() dist(mt) 
 
-std::mt19937 mt(1899); //Deterministic seed. Do like other fire Emblems. Always Same RNG,it is the player actions that change it.
-std::uniform_int_distribution<char> dist(0, 100); //*DESIGN QUESTION* What should be the minimum and maximum probabilities?
-
+char wpn_types[][12]  = {"swd", "lance", "axe", "bow", "mgc_wind", "mgc_fire", "mgc_thunder",  "mgc_dark",  "mgc_light", "staff"};
 
 const unsigned char* unit::get_equipped() const{
     // For some reason passing the pointer works as I intended.
