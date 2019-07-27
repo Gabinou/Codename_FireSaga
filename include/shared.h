@@ -1,5 +1,6 @@
 #ifndef SHARED_H
 #define SHARED_H
+
 using namespace std;
 /*! \file shared.h
 * \brief Shared data.
