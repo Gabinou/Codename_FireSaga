@@ -370,7 +370,6 @@ public:
     unit();
 };
 
-
 extern std::unordered_map<string, weapon> all_weapons;
 extern std::unordered_map<string, struct inventory_item> inventory_items;
 extern std::unordered_map<string, unit> all_units;
