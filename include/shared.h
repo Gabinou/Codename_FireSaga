@@ -62,7 +62,7 @@ public:
 };
 
 /// \class weapon
-/// \brief Unit class. Implemented to be as light as possible.
+/// \brief Weapon class. Implemented to be as light as possible.
 /// All unsigned variables cannot be negative.
 class weapon: public generic {
 public:

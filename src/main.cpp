@@ -16,15 +16,20 @@
 std::mt19937 mt(1899); //Deterministic seed. Do like other fire Emblems. Always Same RNG,it is the player actions that change it.
 std::uniform_int_distribution<char> dist(0, 100); //*DESIGN QUESTION* What should be the minimum and maximum probabilities?
 
+/// \fn int get_rand
+/// \brief gets the next random number, using pre-defined Mersenne-Twister object applied to pre-defined uniform distribution.
 int get_rand() { 
     return(dist(mt));
 }
 
+/// \fn bool single_roll
+/// \brief Check if event occurs using single RNG roll: if rand<prob, event occurs. True to probabilities, but humans think it is weird.
 bool single_roll(int in_prob) {
     bool out = (get_rand() < in_prob);
     return(out);
 }
-
+/// \fn bool double_roll
+/// \brief Check if event occurs using double RNG roll: if mean of 2 random numbers is lwer than probability of event, it occurs. Skews probabilities, but fits with humans biases.
 bool double_roll(int in_prob) {
     int rng1 = get_rand();
     int rng2 = get_rand(); 
@@ -85,26 +90,20 @@ char unit_classes[][24] = {"Lord", "Prince", "Princess", "Armor Knight", "Cavali
 char all_unit_names[][14] = {"Marth", "Sheeda"};
 /// \var char all_unit_names
 /// \brief All Unit Names.
-// Other names: Acier de Damas. Damas Sword. Damascus Sword. Damas Sword. Damas steel sword.
     
 char equipment_slots = 7;
 /// \var char equipment_slots
 /// \brief Total number of equipment slots. Only used for an inventory that mixes weapons and items.
-char item_slots = 7;
+char item_slots = 4;
 /// \var char item_slots
 /// \brief Number of item slots. Separate from weapon slots.
-char weapon_slots = 7;
+char weapon_slots = 4;
 /// \var weapon_slots 
 /// \brief Number of weapon slots. Separate from weapon slots.
-
-unsigned char id = 0;
-/// Item slots. Separate from weapon slots.
-
 
 generic::generic() {
 
 }
-unsigned char equipped[1];
 
 generic::~generic(void) {
     // printf("Generic object is being deleted\n");
@@ -132,6 +131,11 @@ inventory_item::inventory_item(const inventory_item& source) {
 std::unordered_map<string, weapon> all_weapons;
 std::unordered_map<string, struct inventory_item> inventory_items;
 std::unordered_map<string, unit> all_units;
+
+
+
+/// \fn void write_all_units
+/// \brief Write all_units stats to file.
 void write_all_units(const char *filename, char const *savestyle = "cpp" ) {
     if (savestyle == "cpp") {
         std::ofstream out(filename);
@@ -178,26 +182,13 @@ main() {
               {1}, // range              
               std::vector<char>(LEN(unit_stats), 0), {}, {}, 0);
     all_weapons["Lame de Damas"] = weapon("Lame de Damas", "swd", id++, 1000,
+            // Other names: Acier de Damas. Damas Sword. Damascus Sword. Damas Sword. Damas steel sword.
             // dmg hit  crt wght uses  exp
               {15,  65,  0,   8,  25,   1},
               {1}, // range
               std::vector<char>(LEN(unit_stats), 0), {}, {}, 0);
-   
     // Unordered map convention: "name" is the immutable original object.
     // Copies have "name_id"
-    
-    /* CLONING: 
-    *   WEAPONS:
-    * idea for lightness and foregoing cloning weapons: In equipment,
-    * just make a list {"weapon_name", uses_left}. Then refer to weapons
-    * by name for dealing with combat and stuff. No need for cloning weapons,
-    * just refer to the eternal and unchanging weapons. Use the constant
-    * weapon stats_bonus and add to the character stats_bonus, which does change.
-    * So essentially make items immutable. 
-    *  Maybe call this variable: weapons_reference.
-    *    CHARACTERS
-    What about characters? I think characters need one object per filesave. then modify this object as the game evolves.
-    */
     
     std::unordered_map<std::string, weapon>::iterator it = all_weapons.begin();
     while(it != all_weapons.end()) {
