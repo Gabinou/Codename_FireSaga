@@ -6,11 +6,14 @@
 */
 #include <stdio.h>
 #include <iostream>
+#include <string>
+#include <ostream>
 #include <vector>
 #include <math.h> 
 #include <random>
 #include <bits/stdc++.h> 
 #include "shared.h"
+using namespace std;
 
 // Skill idea: divine shield! Bubble!
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
@@ -85,6 +88,7 @@ char unit_classes[][24] = {"Lord", "Prince", "Princess", "Armor Knight", "Cavali
 /// \var char unit_classes
 /// \brief Unit classes.
 char all_unit_names[][14] = {"Marth", "Sheeda"};
+char all_weapon_names[][14] = {"Rapier", "Iron Sword", "Steel Sword", "Iron Lance", "Lame de Damas"};
 /// \var char all_unit_names
 /// \brief All Unit Names.
     
@@ -153,7 +157,11 @@ void read_all_units(const char *filename) {
 
 
 void write_all_weapons(const char *filename) {
-      
+    std::ofstream out(filename);
+    for (int i=0; i < sizeof(all_weapon_names)/sizeof(all_weapon_names[0]); i++){
+        out << all_weapons[all_weapon_names[i]];
+    }
+    out.close();
 }
 
 void read_all_weapons(const char *filename) {
@@ -287,9 +295,10 @@ main() {
     // all_units["Marth"].write("units.txt");
     
     write_all_units("units.txt", "cpp");
-    std::ofstream out("weapons.txt");
-    out << all_weapons["Rapier"];
-    out.close();
+    write_all_weapons("weapons.txt", "cpp");
+    // std::ofstream out("weapons.txt");
+    // out << all_weapons["Rapier"];
+    // out.close();
     // printf("Marth's weapon. %s\n", inventory_items["Rapier_0001"].name);
     // printf("Marth's weapon. %s\n", all_units["Marth"].equipment[all_units["Marth"].get_equipped()[0]].name);
     // // return(0);

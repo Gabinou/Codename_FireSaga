@@ -1,6 +1,14 @@
 #ifndef SHARED_H
 #define SHARED_H
 using namespace std;
+#include <stdio.h>
+#include <iostream>
+#include <string>
+#include <ostream>
+#include <vector>
+#include <math.h> 
+#include <random>
+#include <bits/stdc++.h> 
 /*! \file shared.h
 * \brief Shared data.
 */
