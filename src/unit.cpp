@@ -175,10 +175,7 @@ unsigned char unit::combat_damage(const unit& enemy, bool critical) {
     if (attack_damage <= 0) {attack_damage = 0;};
     return(attack_damage);
 }
-/*! \fn unsigned char avoid()
-*  \brief "Probability" of standalone unit to avoid incoming attack.
-*  Becomes a real probablity when substracted to enemy accuracy.
-*/
+
 unsigned char unit::avoid(){
     char supports = 0;
     char terrain_avoid = 0;

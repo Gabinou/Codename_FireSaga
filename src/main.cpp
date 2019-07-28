@@ -14,30 +14,25 @@
 
 // Skill idea: divine shield! Bubble!
 
-/*! \var mt
+/*! \fn mt(1899)
 *   \brief  32-bit Mersenne twister with a statte size of 19937 bits.
 *   Deterministic seed. Always Same RNG, it is the player actions that change it. It has a period of 2^19937-1, effectively infinite.
 */
-/*! \var dist
+/*! \fn dist
 *   \brief Uniform dsitribution. The 32-bit numbers outputted by mt (Mersenne Twisrer) are convereted to integers in the 0-100 range with it.
 */
 std::mt19937 mt(1899);
 std::uniform_int_distribution<char> dist(0, 100); //*DESIGN QUESTION* What should be the minimum and maximum probabilities?
 
-/// \fn get_rand
-/// \brief gets the next random number, using pre-defined Mersenne-Twister object applied to pre-defined uniform distribution.
 int get_rand() { 
     return(dist(mt));
 }
 
-/// \fn bool single_roll
-/// \brief Check if event occurs using single RNG roll: if rand<prob, event occurs. True to probabilities, but humans think it is weird.
 bool single_roll(int in_prob) {
     bool out = (get_rand() < in_prob);
     return(out);
 }
-/// \fn bool double_roll
-/// \brief Check if event occurs using double RNG roll: if mean of 2 random numbers is lwer than probability of event, it occurs. Skews probabilities, but fits with humans biases.
+
 bool double_roll(int in_prob) {
     int rng1 = get_rand();
     int rng2 = get_rand(); 

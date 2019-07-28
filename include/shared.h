@@ -4,16 +4,23 @@ using namespace std;
 /*! \file shared.h
 * \brief Shared data.
 */
-
+/// \def LEN(arr)
+/// \brief Measure length of array. I don't know why this is a macro.
 #define LEN(arr) ((int) (sizeof (arr) / sizeof (arr)[0])) 
 // extern std::mt19937 mt(1899); //Deterministic seed. Do like other fire Emblems. Always Same RNG,it is the player actions that change it.
 extern std::mt19937 mt; //Deterministic seed. *DESIGN QUESTION*: What about the RNG? My answer: do like other fire Emblems. Always Same RNG, it is the player actions that change it. Makes debugging repeatable. Nice and convenient.
 extern std::uniform_int_distribution<char> dist; //*DESIGN QUESTION* What should be the minimum and maximum probabilities?
 
+/// \fn get_rand
+/// \brief gets the next random number, using pre-defined Mersenne-Twister object applied to pre-defined uniform distribution.
 extern int get_rand();
 
+/// \fn single_roll(int)
+/// \brief Check if event occurs using single RNG roll: if rand<prob, event occurs. True to probabilities, but humans think it is weird.
 extern bool single_roll(int);
 
+/// \fn double_roll(int)
+/// \brief Check if event occurs using double RNG roll: if mean of 2 random numbers is lwer than probability of event, it occurs. Skews probabilities, but fits with humans biases.
 extern bool double_roll(int);
 
 extern char unit_stats[][14];
@@ -109,22 +116,18 @@ public:
 /// \struct inventory_item
 /// \brief Representation of items in unit inventory to reduce memory.
 struct inventory_item {
-    // char *name2;
-    char name[30];
     /// \var char name
     /// \brief name of weapon in inventory.
-    char used;
-    // weapon &wpn_ptr;
+    char name[30];   
     /// \var char used
     /// \brief number of times item was used.
     /// \fn inventory_item(const inventory_item&) 
-    /// \brief copy constructor for inventory_item.
-    // int &wpn_pnt; 
-    /// \var wpn_pnt
-    /// \brief Pointer to weapon.
-    inventory_item(const inventory_item&); 
+    char used;
+
     /// \fn inventory_item(std::string, char) 
     /// \brief constructor of inventory_item.
+    inventory_item(const inventory_item&); 
+
     inventory_item(std::string, char); 
     inventory_item(); 
     ~inventory_item(); 
@@ -222,28 +225,29 @@ public:
     /// \fn accuracy(&unit)
     /// \brief Percent accuracy. This minus enemy avoid gives percent chance to hit.
     unsigned char accuracy();
-    /*! \fn unsigned char accuracy()
-    *  \brief "Probability" of unit to hit without enemy unit.
-    *  It is not a true probability, it becomes a probability after being substracted by the enemy avoid.
+    /*! \fn combat_hit()
+    *  \brief Percent probability of unit to hit enemy in combat.
     */
     unsigned char combat_hit(const unit&);
-    /*! \fn unsigned char combat_hit(unit enemy)
-    *  \brief Probability percentage of hitting enemy in combat.
+    /*! \fn unsigned char avoid()
+    *  \brief Percent "probability" of standalone unit to avoid incoming attack.
+    *  Becomes a real probablity when substracted to enemy accuracy.
     */
     unsigned char avoid();
-     /// \fn combat_avoid(&unit)
-    /// \brief Percent avoid. Enemy avoid minus avoid gives percent chance to get hit.  Takes into account the enemy weapon.
+    /*! \fn unsigned char criticald()
+    *  \brief Percent "probability" of standalone unit to perform critical hit on enemies.
+    *  Becomes a real probablity when substracted to enemy avoid.
+    */
     unsigned char critical();
     /*! \fn unsigned char combat_critical(const unit& enemy)
-    *  \brief Probability to perform a critical hit on your enemy in combat.
+    *  \brief Percent probability to perform a critical hit on your enemy in combat.
     */
     unsigned char combat_critical(const unit&);
     /*! \fn unsigned char favor()
-    *  \brief "Probability" by which attacking enemy unit's critical chance get reduced. Essentially: crit avoid.
+    *  \brief Percent "probability" by which attacking enemy unit's critical chance get reduced. Essentially: crit avoid.
     *   I struggled to name this one. Alternatives include: blessings, blessed, divine, etc. All names though point to RNJesus: reducing the likelihood of getting *   your face critted off is divine after all. So yeah, I think of this value as RNJesus's divine favor.
     */
     unsigned char favor();
-
     /*! \fn take_damage()
     *  \brief Unit takes damage, decreases current_hp. Decided to keep take_damage and heal functions separate. Why? Dunno.
     *   Also checks for death.
@@ -386,9 +390,28 @@ public:
     ~unit();
     unit();
 };
-
+/*! \var all_weapons
+* \brief Contains all instances of weapons.
+*  Uses the weapon's name as std::unordered_map's key.
+*  Are immutable. Should never be changed in game.
+*  Instead, the inventory_item instances conatains the
+*  number of times the item was used. If it is equal to 
+*  the item's use, the item is destroyed.
+*/
 extern std::unordered_map<string, weapon> all_weapons;
+/*! \var inventory_items
+* \brief Contains all instances of inventory_items
+*  inventory items are the represntation of the weapon
+*  in the equipment of units. Made to be lighter than 
+*  actually copying the weapon. 
+*/
+// I think a unordered map inventory_items should exist for every save.
 extern std::unordered_map<string, struct inventory_item> inventory_items;
+/*! \var all_units
+* \brief Contains all instances of units.
+*  Uses the unit's name as std::unordered_map's key.
+*/
+// I think a unordered map all_units should exist for every save.
 extern std::unordered_map<string, unit> all_units;
 
 #endif /* SHARED_H */
