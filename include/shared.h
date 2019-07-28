@@ -1,20 +1,20 @@
 #ifndef SHARED_H
 #define SHARED_H
-
 using namespace std;
-
-#define LEN(arr) ((int) (sizeof (arr) / sizeof (arr)[0])) 
-// extern std::mt19937 mt(1899); //Deterministic seed. Do like other fire Emblems. Always Same RNG,it is the player actions that change it.
-extern std::mt19937 mt; //Deterministic seed. Do like other fire Emblems. Always Same RNG,it is the player actions that change it.
-extern std::uniform_int_distribution<char> dist; //*DESIGN QUESTION* What should be the minimum and maximum probabilities?
-// extern std::uniform_int_distribution<char> dist(0, 100); //*DESIGN QUESTION* What should be the minimum and maximum probabilities?
-// #define getrand() dist(mt) 
-inline int getrand() { 
-    return(dist(mt));
-}
 /*! \file shared.h
 * \brief Shared data.
 */
+
+#define LEN(arr) ((int) (sizeof (arr) / sizeof (arr)[0])) 
+// extern std::mt19937 mt(1899); //Deterministic seed. Do like other fire Emblems. Always Same RNG,it is the player actions that change it.
+extern std::mt19937 mt; //Deterministic seed. *DESIGN QUESTION*: What about the RNG? My answer: do like other fire Emblems. Always Same RNG, it is the player actions that change it. Makes debugging repeatable. Nice and convenient.
+extern std::uniform_int_distribution<char> dist; //*DESIGN QUESTION* What should be the minimum and maximum probabilities?
+
+extern int get_rand();
+
+extern bool single_roll(int);
+
+extern bool double_roll(int);
 
 extern char unit_stats[][14];
 /// \var extern char unit_stats
