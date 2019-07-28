@@ -50,22 +50,31 @@ void unit::equip_weapon(std::vector<unsigned int> in_equipped) {
     attack_probs[2] = critical();
     attack_probs[3] = favor();
 }
-
+/*! \fn void take_damage()
+*  \brief Unit takes damage, decreases current_hp. Decided to keep take_damage and heal functions separate. Why? Dunno.
+*/
 void unit::take_damage(unsigned char damage) {
     printf("%s takes %d damage \n", name, damage); 
     current_hp = std::max(0, current_hp - damage);
     if (current_hp == 0) {death();};
 
 }
+/*! \fn void heal()
+*  \brief Heal unit, increases current_hp. Decided to keep take_damage and heal functions separate. Why? Dunno.
+*/
 void unit::heal(unsigned char healing) {
     printf("%s gets healed for %d\n", name, healing); 
     current_hp = std::min(current_hp + healing, (int) stats[0]);
 }
-
+/*! \fn unsigned char get_hp()
+*  \brief Getter function for private current_hp.
+*/
 unsigned char unit::get_hp() const {
   return(current_hp);
 }
-
+/*! \fn void death()
+*  \brief What happens when character dies.
+*/
 void unit::death() {
     printf("%s is dead.\n", name);
 }
@@ -131,10 +140,13 @@ unit::unit(std::string in_name, std::string in_unit_class, char in_id,
     id = in_id;
     equip_weapon(in_equipped);
 }
+
 unit::unit(){
 
 }
-
+/*! \fn unsigned char attack_damage()
+*  \brief Standalone unit's theoretical max damage for a single attack. Essentially, Str/Mag + weapon damage.
+*/
 unsigned char unit::attack_damage() {
     char unit_power = 0;
     char wpn_dmg = all_weapons[equipment[equipped[0]].name].stats[0];
@@ -150,7 +162,9 @@ unsigned char unit::attack_damage() {
     // printf("unit_power %d\n", unit_power);
     return(attack_damage);
 }
-
+/*! \fn unsigned char combat_damage(onst unit& enemy, bool critical)
+*  \brief Computes unit's damage during combat for a single attack, taking the critical into account.
+*/
 unsigned char unit::combat_damage(const unit& enemy, bool critical) {
     char terrain_def = 0;
     char enemy_def = 0 ;
@@ -174,6 +188,10 @@ unsigned char unit::combat_damage(const unit& enemy, bool critical) {
     if (attack_damage <= 0) {attack_damage = 0;};
     return(attack_damage);
 }
+/*! \fn unsigned char avoid()
+*  \brief "Probability" of standalone unit to avoid incoming attack.
+*  Becomes a real probablity when substracted to enemy accuracy.
+*/
 unsigned char unit::avoid(){
     char supports = 0;
     char terrain_avoid = 0;
@@ -181,6 +199,10 @@ unsigned char unit::avoid(){
     unsigned char avoid = terrain_avoid + unit_avoid + supports ;
     return(avoid);
 }
+/*! \fn unsigned char critical()
+*  \brief "Probability" of standalone unit to perform critical hits on enemy.
+*  It is not a true probability, it becomes a probability after being substracted by the enemy favor.
+*/
 unsigned char unit::critical(){
     char supports = 0 ;
     char unit_skill = 0;
@@ -188,6 +210,9 @@ unsigned char unit::critical(){
     unsigned char critical = wpn_crit + unit_skill + supports;
     return(critical);
 }
+/*! \fn bool combat_double(const unit& enemy)
+*  \brief When unit gets attacked in combat, does he attacks back? 1/0. Mainly a check for range.
+*/
 bool unit::retaliation(const unit& enemy) const{
     unsigned char distance = abs(enemy.position[0] - position[0]) + abs(enemy.position[1] - position[1]);
     // printf("Distance %d \n", distance);
@@ -199,21 +224,28 @@ bool unit::retaliation(const unit& enemy) const{
     }
     return(out);
 }
-
+/*! \fn bool combat_double(const unit& enemy)
+*  \brief Does unit perform a double hit on enemy? 1/0. Normally called in combat.
+*/
 bool unit::combat_double(const unit& enemy) const{
     unsigned char unit_speed = stats[4];
     unsigned char enemy_speed = enemy.stats[4];
     bool out = ((unit_speed - wpn_weighed_down() - enemy_speed) > 4);
     return(out);
 }
-
+/*! \fn unsigned char wpn_weighed_down()
+*  \brief Amount substracted to speed in combat because of weapon weight.
+*/
+// I think this should be shown in the UI. It should show the max value and current value as a function of equipped weapon, with something saying 'WEIGHED DOWN' or something.
 unsigned char unit::wpn_weighed_down() const{
     //*DESIGN QUESTION* What should be the influence of weapons?
     unsigned char wpn_wght = all_weapons[equipment[equipped[0]].name].stats[3];
     unsigned char unit_con = stats[8];
     return(std::max(wpn_wght - unit_con, 0));
 }
-
+/*! \fn unsigned char combat_critical(const unit& enemy)
+*  \brief Probability to perform a critical hit on your enemy in combat.
+*/
 unsigned char unit::combat_critical(const unit& enemy){
     char supports = 0;
     char unit_skill = 0;
@@ -221,6 +253,10 @@ unsigned char unit::combat_critical(const unit& enemy){
     unsigned char critical = std::max(0, wpn_crit + unit_skill + supports - enemy.attack_probs[3]);
     return(critical);
 }
+/*! \fn unsigned char favor()
+*  \brief "Probability" by which attacking enemy unit's critical chance get reduced. Essentially: crit avoid.
+*   I struggled to name this one. Alternatives include: blessings, blessed, divine, etc. All names though point to RNJesus: reducing the likelihood of getting *   your face critted off is divine after all. So yeah, I think of this value as RNJesus's divine favor.
+*/
 unsigned char unit::favor(){
     char supports = 0 ;
     char unit_favor = (ceil(stats[5]/2.)); // By default, integer division floors
@@ -228,6 +264,10 @@ unsigned char unit::favor(){
     unsigned char favor = unit_favor + supports;
     return(favor);
 }
+/*! \fn unsigned char accuracy()
+*  \brief "Probability" of unit to hit without enemy unit.
+*  It is not a true probability, it becomes a probability after being substracted by the enemy avoid.
+*/
 unsigned char unit::accuracy(){
     char supports = 0;
     unsigned char wpn_hit = all_weapons[equipment[equipped[0]].name].stats[1];
@@ -235,6 +275,9 @@ unsigned char unit::accuracy(){
     unsigned char accuracy = wpn_hit + unit_acc + supports;
     return(accuracy);
 }
+/*! \fn unsigned char combat_hit(unit enemy)
+*  \brief Probability percentage of hitting enemy in combat.
+*/
 unsigned char unit::combat_hit(const unit& enemy){
     char supports = 0;
     unsigned char wpn_hit = all_weapons[equipment[equipped[0]].name].stats[1];
@@ -242,7 +285,11 @@ unsigned char unit::combat_hit(const unit& enemy){
     unsigned char accuracy = std::max(0, wpn_hit + unit_acc + supports - enemy.attack_probs[1]);
     return(accuracy);
 }
-
+/*! \fn attack(unit enemy)
+*  \brief Perform a single attack on the enemy.
+*   An attack checks if hit connects, if it crits and then computes the damage, for a single attack.
+*   Doubling, brave effects and other skills detemine the number of attacks in function combat.
+*/
 unsigned char unit::attack(unit& enemy){
     printf("%s attacks %s\n", name, enemy.name);
     bool unit_hits = (get_rand() < combat_hit(enemy));    
