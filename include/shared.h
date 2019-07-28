@@ -7,8 +7,13 @@ using namespace std;
 /// \def LEN(arr)
 /// \brief Measure length of array. I don't know why this is a macro.
 #define LEN(arr) ((int) (sizeof (arr) / sizeof (arr)[0])) 
-// extern std::mt19937 mt(1899); //Deterministic seed. Do like other fire Emblems. Always Same RNG,it is the player actions that change it.
-extern std::mt19937 mt; //Deterministic seed. *DESIGN QUESTION*: What about the RNG? My answer: do like other fire Emblems. Always Same RNG, it is the player actions that change it. Makes debugging repeatable. Nice and convenient.
+// extern std::mt19937 mt(1899); 
+//Deterministic seed. *DESIGN QUESTION*: What about the RNG? My answer: do like other fire Emblems. Always Same RNG, it is the player actions that change it. Makes debugging repeatable. Nice and convenient.
+/// \fn mt
+/// \brief gets the next random number, using pre-defined Mersenne-Twister object applied to pre-defined uniform distribution.
+extern std::mt19937 mt; 
+/// \fn dist
+/// \brief gets the next random number, using pre-defined Mersenne-Twister object applied to pre-defined uniform distribution.
 extern std::uniform_int_distribution<char> dist; //*DESIGN QUESTION* What should be the minimum and maximum probabilities?
 
 /// \fn get_rand
@@ -104,7 +109,7 @@ public:
     /// \brief dmg_type: Damage type. 0 for physical, 1 for magical.
     ~weapon();
     
-    /// \fn weapon(std::string, std::string, char, unsigned short int, std::vector<int>,  std::vector<char>, std::vector<std::string>, std::vector<std::string>)
+    /// \fn weapon(std::string, std::string, char, unsigned short int, std::vector<int>, std::vector<int>, std::vector<char>, std::vector<std::string>, std::vector<std::string>, bool)
     /// \brief constructor for weapon.
     weapon(std::string, std::string, char, unsigned short int,
         std::vector<int>, std::vector<int>, std::vector<char>,
@@ -119,16 +124,17 @@ struct inventory_item {
     /// \var char name
     /// \brief name of weapon in inventory.
     char name[30];   
-    /// \var char used
+    /// \var used
     /// \brief number of times item was used.
-    /// \fn inventory_item(const inventory_item&) 
     char used;
-
-    /// \fn inventory_item(std::string, char) 
+    /// \fn inventory_item(const inventory_item&) 
     /// \brief constructor of inventory_item.
     inventory_item(const inventory_item&); 
-
+    /// \fn inventory_item(std::string, char) 
+    /// \brief constructor of inventory_item.
     inventory_item(std::string, char); 
+    /// \fn inventory_item() 
+    /// \brief constructor of inventory_item.
     inventory_item(); 
     ~inventory_item(); 
 
@@ -154,7 +160,12 @@ public:
     growths[10], wpn_exp[10], position[3], skills[3],
     love_pts[5], love_growths[5],
     attack_probs[4], combat_probs[2];
-    // std::vector<char> stats[10];
+    /// \var unsigned char attack_probs[4]
+    /// \brief Probabilities associated with attacking, computed when alone.
+    /// Accuracy, Avoid, Crit and Favor.
+    /// \var unsigned char combat_probs[4]
+    /// \brief probabilities associated with combat with an enemy unit.
+    /// Accuracy, Avoid, Crit and Favor.
     /// \var unsigned char love_growths
     /// \brief Number of points units that have love potential get for *DESIGN QUESTION*.
     /// \var unsigned char growths
@@ -222,28 +233,30 @@ public:
     *  \brief Standalone unit's theoretical max damage for a single attack. Essentially, Str/Mag + weapon damage.
     */
     unsigned char attack_damage();
-    /// \fn accuracy(&unit)
-    /// \brief Percent accuracy. This minus enemy avoid gives percent chance to hit.
+    /*! \fn accuracy()
+    *  \brief Percent "probability" of standalone unit to hit enemy unit.
+    *  Becomes a real probablity when substracted to enemy avoid.
+    */
     unsigned char accuracy();
     /*! \fn combat_hit()
     *  \brief Percent probability of unit to hit enemy in combat.
     */
     unsigned char combat_hit(const unit&);
-    /*! \fn unsigned char avoid()
+    /*! \fn avoid()
     *  \brief Percent "probability" of standalone unit to avoid incoming attack.
     *  Becomes a real probablity when substracted to enemy accuracy.
     */
     unsigned char avoid();
-    /*! \fn unsigned char criticald()
+    /*! \fn critical()
     *  \brief Percent "probability" of standalone unit to perform critical hit on enemies.
     *  Becomes a real probablity when substracted to enemy avoid.
     */
     unsigned char critical();
-    /*! \fn unsigned char combat_critical(const unit& enemy)
+    /*! \fn combat_critical(const unit& enemy)
     *  \brief Percent probability to perform a critical hit on your enemy in combat.
     */
     unsigned char combat_critical(const unit&);
-    /*! \fn unsigned char favor()
+    /*! \fn char favor()
     *  \brief Percent "probability" by which attacking enemy unit's critical chance get reduced. Essentially: crit avoid.
     *   I struggled to name this one. Alternatives include: blessings, blessed, divine, etc. All names though point to RNJesus: reducing the likelihood of getting *   your face critted off is divine after all. So yeah, I think of this value as RNJesus's divine favor.
     */
@@ -260,8 +273,8 @@ public:
     /// \fn get_hp()    
     /// \brief getter for current_hp   
     unsigned char get_hp() const;
-    /// \fn double_attack
-    /// \brief Bool that returns if unit double attacks.
+    /// \fn equip_weapon(std::vector<unsigned int>)
+    /// \brief Setter for private equipped.
     void equip_weapon(std::vector<unsigned int>);
     /// \fn double_attack
     /// \brief Bool that returns if unit double attacks.
@@ -280,8 +293,8 @@ public:
     *  \brief Does unit perform a double hit on enemy? 1/0. Normally called in combat.
     */
     bool combat_double(const unit& enemy) const;
-    /// \fn combat_double
-    /// \brief makes the combat phases. Does one retaliate? Does one double? then the attack order is established.
+    /// \fn combat(unit& enemy)
+    /// \brief Makes a single combat phase. Does the enemy retaliate? Does unit or enemy double? Makes all checks, then perform all attacks in order.
     void combat(unit& enemy);
     /*! \fn attack(unit enemy)
     *  \brief Perform a single attack on the enemy.
@@ -304,6 +317,7 @@ public:
         fclose(f);
     }; 
     
+    /// \brief friend << (it overloads it) to write the unit to text file.
     friend std::ostream & operator << (std::ostream &out, const unit &in_unit) {
         out << in_unit.name << "\n"
         << "Class: \t\t" << in_unit.type << "\n"

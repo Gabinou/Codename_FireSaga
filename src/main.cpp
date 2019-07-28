@@ -13,16 +13,10 @@
 #include "shared.h"
 
 // Skill idea: divine shield! Bubble!
-
-/*! \fn mt(1899)
-*   \brief  32-bit Mersenne twister with a statte size of 19937 bits.
-*   Deterministic seed. Always Same RNG, it is the player actions that change it. It has a period of 2^19937-1, effectively infinite.
-*/
-/*! \fn dist
-*   \brief Uniform dsitribution. The 32-bit numbers outputted by mt (Mersenne Twisrer) are convereted to integers in the 0-100 range with it.
-*/
+#ifndef DOXYGEN_SHOULD_SKIP_THIS
 std::mt19937 mt(1899);
 std::uniform_int_distribution<char> dist(0, 100); //*DESIGN QUESTION* What should be the minimum and maximum probabilities?
+#endif /* DOXYGEN_SHOULD_SKIP_THIS */
 
 int get_rand() { 
     return(dist(mt));
@@ -87,9 +81,6 @@ char statuses[][14] = {"healthy", "sleep", "poison", "stone", "berserk"};
 char unit_classes[][24] = {"Lord", "Prince", "Princess", "Armor Knight", "Cavalier", "Pegasus Knight", "Wyvern Knight", "Axe Rider", "Lance Rider", "Sword Rider", "Mercernary", "Myrmidon", "Soldier", "Archer", "Mage", "Priest", "Priestess", "King", "Paladin", "Sniper", "General", "Bishop", "Hero", "Pirate", "Fighter", "Thief", "Troubadour", "Cleric", "Monk", "Shaman", "Dragon", "Dancer"};
 /// \var char unit_classes
 /// \brief Unit classes.
-// char all_weapon_names[][20];
-/// \var char all_weapon_names
-/// \brief All Weapon Names.
 char all_unit_names[][14] = {"Marth", "Sheeda"};
 /// \var char all_unit_names
 /// \brief All Unit Names.
@@ -137,7 +128,7 @@ std::unordered_map<string, unit> all_units;
 
 
 
-/// \fn void write_all_units
+/// \fn void write_all_units(const char *filename, char const *savestyle)
 /// \brief Write all_units stats to file.
 void write_all_units(const char *filename, char const *savestyle = "cpp" ) {
     if (savestyle == "cpp") {
