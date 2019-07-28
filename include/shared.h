@@ -137,9 +137,8 @@ public:
             out << (int) in_weapon.range[0] << ", " << (int) in_weapon.range[1] << "\n";
         }
         out << "Effective: \t";
-        for (int i = 0; i < sizeof(in_weapon.effective)/sizeof(in_weapon.effective[0]); i++) {
-            out << in_weapon.effective[i] << ", ";
-        };
+        out << in_weapon.effective[0] << ", " << in_weapon.effective[1] << "\n";
+        out << "\n";
         return(out);
     }
     /// \fn weapon(std::string, std::string, char, unsigned short int, std::vector<int>, std::vector<int>, std::vector<char>, std::vector<std::string>, std::vector<std::string>, bool)
