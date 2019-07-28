@@ -211,68 +211,84 @@ public:
         unsigned short, std::vector<std::string>,
         bool, bool, bool, bool
         );
-    /// \fn combat_damage(&unit)
-    /// \brief combat_damage performed by a unit on another unit.
+    /*! \fn unsigned char combat_damage(onst unit& enemy, bool critical)
+    *  \brief Computes unit's damage during combat for a single attack, taking the critical into account.
+    */
     unsigned char combat_damage(const unit&, bool critical);
-    /// \fn attack_damage(&unit)
-    /// \brief Maximal possible combat damage.
+    /*! \fn attack_damage()
+    *  \brief Standalone unit's theoretical max damage for a single attack. Essentially, Str/Mag + weapon damage.
+    */
     unsigned char attack_damage();
     /// \fn accuracy(&unit)
     /// \brief Percent accuracy. This minus enemy avoid gives percent chance to hit.
     unsigned char accuracy();
-    /// \fn combat_accuracy(&unit)
-    /// \brief Percent accuracy in combat. Takes into account the enemy weapon.
+    /*! \fn unsigned char accuracy()
+    *  \brief "Probability" of unit to hit without enemy unit.
+    *  It is not a true probability, it becomes a probability after being substracted by the enemy avoid.
+    */
     unsigned char combat_hit(const unit&);
-    /// \fn avoid(&unit)
-    /// \brief Percent avoid. Enemy avoid minus avoid gives percent chance to get hit.
+    /*! \fn unsigned char combat_hit(unit enemy)
+    *  \brief Probability percentage of hitting enemy in combat.
+    */
     unsigned char avoid();
      /// \fn combat_avoid(&unit)
     /// \brief Percent avoid. Enemy avoid minus avoid gives percent chance to get hit.  Takes into account the enemy weapon.
     unsigned char critical();
-    /// \fn combat_crit(&unit)
-    /// \brief Percent critical hit chance. This minus critical hit avoid gives change to hit a critical hit.
+    /*! \fn unsigned char combat_critical(const unit& enemy)
+    *  \brief Probability to perform a critical hit on your enemy in combat.
+    */
     unsigned char combat_critical(const unit&);
-    /// \fn favor(&unit)
-    /// \brief Percent critical hit evade chance. Enemy critical hit chance minus favor gives chance to get hit by a critical hit.   
+    /*! \fn unsigned char favor()
+    *  \brief "Probability" by which attacking enemy unit's critical chance get reduced. Essentially: crit avoid.
+    *   I struggled to name this one. Alternatives include: blessings, blessed, divine, etc. All names though point to RNJesus: reducing the likelihood of getting *   your face critted off is divine after all. So yeah, I think of this value as RNJesus's divine favor.
+    */
     unsigned char favor();
-    /// \fn combat_favor(&unit)
-    /// \brief Percent critical hit evade chance. Enemy critical hit chance minus favor gives chance to get hit by a critical hit. 
-    
-    /// \fn take_damage(unsigned char)
-    /// \brief set current_hp value. Also check for death.   
+
+    /*! \fn take_damage()
+    *  \brief Unit takes damage, decreases current_hp. Decided to keep take_damage and heal functions separate. Why? Dunno.
+    *   Also checks for death.
+    */  
     void take_damage(unsigned char);
-    /// \fn get_hp()
-    /// \brief getter for current_hp   
+    /*! \fn heal()
+    *  \brief Heal unit, increases current_hp. Decided to keep take_damage and heal functions separate. Why? Dunno. Does not check for death.
+    */
     void heal(unsigned char);
     /// \fn get_hp()    
     /// \brief getter for current_hp   
     unsigned char get_hp() const;
-    /// \fn bool double_attack
+    /// \fn double_attack
     /// \brief Bool that returns if unit double attacks.
     void equip_weapon(std::vector<unsigned int>);
-    /// \fn bool double_attack
+    /// \fn double_attack
     /// \brief Bool that returns if unit double attacks.
     bool double_attack(const unit&);
-    /// \fn void enemy_select
+    /// \fn enemy_select
     /// \brief On enemy selection, compute combat probabilities, values, statistics, etc.
     void enemy_select(const unit&);
-    /// \fn void get_equipped
+    /// \fn get_equipped
     /// \brief Getter for private equipped.
     const unsigned char* get_equipped() const;
-    /// \fn bool combat_retaliation
-    /// \brief Does enemy retaliate during combat phase? yes/no.   
+    /*! \fn retaliation(const unit& enemy)
+    *  \brief When unit gets attacked in combat, does he attacks back? 1/0. Mainly a check for range.
+    */  
     bool retaliation(const unit& enemy) const;
-    /// \fn bool combat_double
-    /// \brief Does unit double when fighting enemy? yes/no.   
+    /*! \fn bool combat_double(const unit& enemy)
+    *  \brief Does unit perform a double hit on enemy? 1/0. Normally called in combat.
+    */
     bool combat_double(const unit& enemy) const;
-    /// \fn void combat_
+    /// \fn combat_double
     /// \brief makes the combat phases. Does one retaliate? Does one double? then the attack order is established.
     void combat(unit& enemy);
-    /// \fn void attack
-    /// \brief Makes a single attack in the combat phase. Also checks for brave effect/vantage skill and doubles if it exists
+    /*! \fn attack(unit enemy)
+    *  \brief Perform a single attack on the enemy.
+    *   An attack checks if hit connects, if it crits and then computes the damage, for a single attack.
+    *   Doubling, brave effects and other skills detemine the number of attacks in function combat.
+    */
     unsigned char attack(unit& enemy);
-    /// \fn unsigned char wpn_weighed_down
-    /// \brief By how much is unit weighed down by its weapon. Gets substracted to speed for combat_double.     
+    /*! \fn unsigned char wpn_weighed_down()
+    *  \brief Amount substracted to speed in combat because of weapon weight.
+    */
+    // I think this should be shown in the UI. It should show the max value and current value as a function of equipped weapon, with something saying 'WEIGHED DOWN' or something.
     unsigned char wpn_weighed_down() const;
     /// \fn void write
     /// \brief write the object to file. Keeps the exact same formatting as the friend << function.
@@ -363,8 +379,9 @@ public:
         return(out);
     }
      
-    /// \fn void death
-    /// \brief Death function. For now only says that people died. Other functions come later. 
+    /*! \fn death()
+    *  \brief What happens when character dies.
+    */
     void death();
     ~unit();
     unit();

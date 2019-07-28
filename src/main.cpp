@@ -13,10 +13,18 @@
 #include "shared.h"
 
 // Skill idea: divine shield! Bubble!
-std::mt19937 mt(1899); //Deterministic seed. Do like other fire Emblems. Always Same RNG,it is the player actions that change it.
+
+/*! \var mt
+*   \brief  32-bit Mersenne twister with a statte size of 19937 bits.
+*   Deterministic seed. Always Same RNG, it is the player actions that change it. It has a period of 2^19937-1, effectively infinite.
+*/
+/*! \var dist
+*   \brief Uniform dsitribution. The 32-bit numbers outputted by mt (Mersenne Twisrer) are convereted to integers in the 0-100 range with it.
+*/
+std::mt19937 mt(1899);
 std::uniform_int_distribution<char> dist(0, 100); //*DESIGN QUESTION* What should be the minimum and maximum probabilities?
 
-/// \fn int get_rand
+/// \fn get_rand
 /// \brief gets the next random number, using pre-defined Mersenne-Twister object applied to pre-defined uniform distribution.
 int get_rand() { 
     return(dist(mt));
