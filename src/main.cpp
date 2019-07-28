@@ -37,17 +37,18 @@ bool double_roll(int in_prob) {
 
 char unit_stats[][14] = {"HP", "Str", "Mag", "Skill", "Speed", "Luck", "Def", "Res", "Con", "Move"};
 /*! \var char unit_stats
-* \brief Unit Stats dmake escription: <br>
-*  - HP: Hit Points. Unit health. Unit dies (forever) if it goes down to zero. <br>
+* \brief Unit Statistics. <br> 
+*   List, in order: <br>
+*  - HP: Hit Points. Unit health. Unit dies (forever) if unit.current_hp goes down to zero. <br>
 *  - Str: Strength. +1 Str -> +1 attack_damage. Refer to ... <br>
 *  - Mag: Magic. +1 Mag -> +1 attack_damage. Refer to ... <br>
-*  - Skill: Higher skill means higher Hit rate and Avoid Rate. Refer to ...  <br>
+*  - Skill: Higher skill means higher accuracy and avoid. Refer to ...  <br>
 *  - Speed: Higher speeds lead to double strikes. Refer to ...  <br>
 *  - Luck: Increases hit, avoid, decreases enemy crit chance, etc. <br>
-*  - Def: Defens.: +1 Def -> -1 Received Damage from physical attacks <br>
+*  - Def: Defense: +1 Def -> -1 Received Damage from physical attacks <br>
 *  - Res: Magic Resistance. +1 Red -> -1 Received Damage from magic attacks. <br>
-*  - Con: Constitution. Only a unit with a higher constitution can rescue another. Refer to... <br>
-*  - Move: Distance, in squares, taht a unit can move on the grid map. Refer to ... <br>
+*  - Con: Constitution. Only a unit with a higher constitution can rescue another. Also weapons with weight higher than unit constitution weighs the unit down. Refer to... <br>
+*  - Move: Distance, in squares, that a unit can move on the grid map. Refer to ... <br>
 */
 char weapon_stats[][14] = {"dmg", "hit", "crit", "weight", "wpn_exp", "uses", "range", "lvl"}; 
 /*! \var char weapon_stats
