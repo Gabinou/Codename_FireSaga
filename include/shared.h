@@ -92,15 +92,13 @@ public:
     */
     /// \var unsigned char range
     /// \brief Range of weapon.
-    unsigned char range[3];
+    unsigned char range[2]; // 2- maximum,minimuum range.
   
-    char stats_bonus[10], effective[2][14], owner[5][14];
+    char stats_bonus[10], effective[2][14];
     /// \var char effective
     /// \brief List of unit types or unit classes the weapon is effective against.
     /// \var char stats_bonus
     /// \brief Bonuses can be negative -> maluses
-    /// \var char owner
-    /// \brief Array of character names that can equip/use weapon.
     unsigned short int cost;
     /// \var unsigned short int cost
     /// \brief Cost of weapon in Gold.
@@ -108,12 +106,39 @@ public:
     /// \var bool dmg_type
     /// \brief dmg_type: Damage type. 0 for physical, 1 for magical.
     ~weapon();
-    
+    friend std::ostream & operator << (std::ostream &out, const weapon &in_weapon) {
+        out << in_weapon.name << "\n";
+        // out << "Stats: \t\t" // must stay like this cause of busted stats variable that needs more space to not crash.
+        // << (int) in_weapon.stats[0] << ", " << (int) in_weapon.stats[1] << ", " 
+        // << (int) in_weapon.stats[2] << ", " << (int) in_weapon.stats[3] << ", " 
+        // << (int) in_weapon.stats[4] << ", " << (int) in_weapon.stats[5] << "\n";
+        out << "Stats: \t\t";
+        for (int i = 0; i < sizeof(in_weapon.stats)/sizeof(in_weapon.stats[0]); i++) {
+            out << (int) in_weapon.stats[i] << ", ";
+        };
+        out << "\n" << "Bonus: \t\t";
+        for (int i = 0; i < sizeof(in_weapon.stats_bonus)/sizeof(in_weapon.stats_bonus[0]); i++) {
+            out << (int) in_weapon.stats_bonus[i] << ", ";
+        };
+        out << "\n" << "Cost: \t\t" << in_weapon.cost << "\n";
+        out << "Dmg_type: \t" << in_weapon.dmg_type << "\n";
+        out << "Range: \t\t";
+        if (in_weapon.range[0] == in_weapon.range[1]) {
+            out << (int) in_weapon.range[0] << "\n";
+        } else {
+            out << (int) in_weapon.range[0] << ", " << (int) in_weapon.range[1] << "\n";
+        }
+        out << "Effective: \t";
+        for (int i = 0; i < sizeof(in_weapon.effective)/sizeof(in_weapon.effective[0]); i++) {
+            out << in_weapon.effective[i] << ", ";
+        };
+        return(out);
+    }
     /// \fn weapon(std::string, std::string, char, unsigned short int, std::vector<int>, std::vector<int>, std::vector<char>, std::vector<std::string>, std::vector<std::string>, bool)
     /// \brief constructor for weapon.
     weapon(std::string, std::string, char, unsigned short int,
         std::vector<int>, std::vector<int>, std::vector<char>,
-        std::vector<std::string>, std::vector<std::string>, bool
+        std::vector<std::string>, bool
         );
     weapon();
 };
@@ -317,7 +342,7 @@ public:
         fclose(f);
     }; 
     
-    /// \brief friend << (it overloads it) to write the unit to text file.
+    /// \brief friend << (it overloads it) for unit to write the unit to text file.
     friend std::ostream & operator << (std::ostream &out, const unit &in_unit) {
         out << in_unit.name << "\n"
         << "Class: \t\t" << in_unit.type << "\n"
@@ -333,7 +358,7 @@ public:
         << (int) in_unit.stats[0] << ", " << (int) in_unit.stats[1] << ", " 
         << (int) in_unit.stats[2] << ", " << (int) in_unit.stats[3] << ", " 
         << (int) in_unit.stats[4] << ", " << (int) in_unit.stats[5] << ", " 
-        << (int) in_unit.stats[6] << ", " << (int) in_unit.stats[5] << ", " 
+        << (int) in_unit.stats[6] << ", " << (int) in_unit.stats[7] << ", " 
         << (int) in_unit.stats[8] << ", " << (int) in_unit.stats[9] << "\n"
         << "Growths: \t";
         for (int i = 0; i < sizeof(in_unit.growths)/sizeof(in_unit.growths[0]); i++) {

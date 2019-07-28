@@ -35,6 +35,8 @@ bool double_roll(int in_prob) {
     return(out);
 }
 
+unsigned char id = 0; //Number of objects. I think this is unecessary.
+
 char unit_stats[][14] = {"HP", "Str", "Mag", "Skill", "Speed", "Luck", "Def", "Res", "Con", "Move"};
 /*! \var char unit_stats
 * \brief Unit Statistics. <br> 
@@ -127,10 +129,9 @@ std::unordered_map<string, weapon> all_weapons;
 std::unordered_map<string, struct inventory_item> inventory_items;
 std::unordered_map<string, unit> all_units;
 
-
-
 /// \fn void write_all_units(const char *filename, char const *savestyle)
 /// \brief Write all_units stats to file.
+// write_all_units must be implemented here.
 void write_all_units(const char *filename, char const *savestyle = "cpp" ) {
     if (savestyle == "cpp") {
         std::ofstream out(filename);
@@ -146,42 +147,63 @@ void write_all_units(const char *filename, char const *savestyle = "cpp" ) {
     }
 }
 
+void read_all_units(const char *filename) {
+      
+}
+
+
+void write_all_weapons(const char *filename) {
+      
+}
+
+void read_all_weapons(const char *filename) {
+      
+}
+
+void write_all_maps(const char *filename) {
+      
+}
+void read_all_maps(const char *filename) {
+      
+}
+
+
 main() {
-    printf("TESTING THIS BITCH\n");
     printf("TESTING THIS BITCH\n");
     printf("Initializaing a character\n");
 
     all_weapons["Rapier"] = weapon("Rapier", "swd", id++, 600,
             // dmg  hit  crt wght uses  exp
               {5,  90,  10,   7,  30,   2},
-              {1}, // range
-              std::vector<char>(LEN(unit_stats), 0), {"Marth"}, {"Knight", "Cavalier"}, 0); 
+              {1, 1}, // range
+              std::vector<char>(LEN(unit_stats), 0), {"Knight", "Cavalier"}, 0); 
     all_weapons["Bronze Sword"] = weapon("Bronze Sword", "swd", id++, 450,
            // dmg  hit  crt wght uses  exp
               {3,  80,   0,   5,  45,   1},
-              {1}, // range
-              std::vector<char>(LEN(unit_stats), 0), {}, {}, 0);
+              {1, 1}, // range
+              std::vector<char>(LEN(unit_stats), 0), {}, 0);
     all_weapons["Iron Sword"] =  weapon("Iron Sword", "swd", id++, 450,
            // dmg hit  crt wght uses  exp
               {5,  80,    0,   7,  45,  1},
-              {1}, // range              
-              std::vector<char>(LEN(unit_stats), 0), {}, {}, 0);
+              {1, 1}, // range              
+              std::vector<char>(LEN(unit_stats), 0), {}, 0);
     all_weapons["Iron Lance"] = weapon("Iron Lance", "lance", id++, 450,
            // dmg hit  crt wght uses  exp
+           // dmg hit  crt wght uses  exp
               {6,  80,   0,   8,   40,  1},
-              {1}, // range
-              std::vector<char>(LEN(unit_stats), 0), {}, {}, 0);
+              {1, 1}, // range
+              std::vector<char>(LEN(unit_stats), 0), {}, 0);
     all_weapons["Steel Sword"] = weapon("Steel Sword", "swd", id++, 500,
            // dmg hit  crt wght uses  exp
               {8,  70,   0,   9,   35,  1},
-              {1}, // range              
-              std::vector<char>(LEN(unit_stats), 0), {}, {}, 0);
+              {1, 1}, // range              
+              std::vector<char>(LEN(unit_stats), 0), {}, 0);
     all_weapons["Lame de Damas"] = weapon("Lame de Damas", "swd", id++, 1000,
             // Other names: Acier de Damas. Damas Sword. Damascus Sword. Damas Sword. Damas steel sword.
             // dmg hit  crt wght uses  exp
               {15,  65,  0,   8,  25,   1},
-              {1}, // range
-              std::vector<char>(LEN(unit_stats), 0), {}, {}, 0);
+              {1, 1}, // range
+              std::vector<char>(LEN(unit_stats), 0), {}, 0);
     // Unordered map convention: "name" is the immutable original object.
     // Copies have "name_id"
     
@@ -265,7 +287,9 @@ main() {
     // all_units["Marth"].write("units.txt");
     
     write_all_units("units.txt", "cpp");
-
+    std::ofstream out("weapons.txt");
+    out << all_weapons["Rapier"];
+    out.close();
     // printf("Marth's weapon. %s\n", inventory_items["Rapier_0001"].name);
     // printf("Marth's weapon. %s\n", all_units["Marth"].equipment[all_units["Marth"].get_equipped()[0]].name);
     // // return(0);

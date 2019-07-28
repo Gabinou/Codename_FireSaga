@@ -17,5 +17,5 @@ $(BLD)/unit.o: $(SRC)/unit.cpp
 $(BLD)/weapon.o: $(SRC)/weapon.cpp
 	$(CXX) -c $**  -o $@ $(INCLUDE)
     
-$(BLD)/main.exe: $(BLD)/main.o $(BLD)/unit.o $(BLD)/weapon.o
+$(BLD)/main.exe: $(BLD)/main.o $(BLD)/unit.o $(BLD)/weapon.o include/shared.h
 	$(CXX) $** -o $@ $(INCLUDE)
