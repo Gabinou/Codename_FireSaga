@@ -297,14 +297,20 @@ main() {
     // remove("units.txt");
     // all_units["Marth"].write("units.txt");
     
-    write_all_units("units.txt", "cpp");
-    write_all_weapons("weapons.txt");
+    // write_all_units("units.txt", "cpp");
+    // write_all_weapons("weapons.txt");
     std::ifstream in("weapons.txt");
     all_weapons["test"] = weapon();
     in >> all_weapons["test"];
     in.close();
     printf(" test reader name %s \n", all_weapons["test"].name);
-    printf(" test reader name %d \n", all_weapons["test"].cost);
+    printf(" test reader cost %d \n", all_weapons["test"].cost);
+    printf(" test reader stat[0] %d \n", all_weapons["test"].stats[0]);
+    printf(" test reader stat[1] %d \n", all_weapons["test"].stats[1]);
+    printf(" test reader stat[2] %d \n", all_weapons["test"].stats[2]);
+    printf(" test reader stat[3] %d \n", all_weapons["test"].stats[3]);
+    printf(" test reader stat[4] %d \n", all_weapons["test"].stats[4]);
+    printf(" test reader stat[5] %d \n", all_weapons["test"].stats[5]);
     // std::ofstream out("weapons.txt");
     // out << all_weapons["Rapier"];
     // out.close();

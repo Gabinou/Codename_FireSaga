@@ -82,6 +82,35 @@ public:
     /// \brief Copy constructor for generic object. Useless?
 };
 
+std::vector<int> extractIntegerWords(string str) 
+{ 
+    stringstream ss;     
+  
+    /* Storing the whole string into string stream */
+    ss << str; 
+  
+    /* Running loop till the end of the stream */
+    string temp; 
+    int found; 
+    std::vector<int> founds; 
+    while (!ss.eof()) { 
+  
+        /* extracting word by word from stream */
+        ss >> temp; 
+  
+        /* Checking the given word is integer or not */
+        if (stringstream(temp) >> found) 
+            cout << found << " "; 
+            founds.push_back(found);
+  
+        /* To save from space at the end of string */
+        temp = ""; 
+    } 
+    return(founds);
+} 
+ 
+
+
 /// \class weapon
 /// \brief Weapon class. Implemented to be as light as possible.
 /// All unsigned variables cannot be negative.
@@ -121,11 +150,17 @@ public:
         // strncpy(out_weapon.name, in.getline(), sizeof(in.getline(&s[0], 10, 40)));
         std::string buf;
         in >> buf;
-        weapon temp_weapon;
         // out_weapon.cost = 90;
         // strncpy(out_weapon.name, buf.c_str(), sizeof(buf));
-        strncpy(out_weapon.name, "test", sizeof("test"));
-        out_weapon.cost = 90;
+        // strncpy(out_weapon.name, "test", sizeof("test"));
+        strncpy(out_weapon.name,  buf.c_str(), sizeof(buf));
+        in >> buf;
+        
+        std::vector<int> temp = extractIntegerWords(buf);
+        // out_weapon.stats[0] = (unsigned int) 9;        
+        for (int i = 0; i < temp.size(); i++) {
+            out_weapon.stats[i] = (unsigned int) temp[i];
+        }
         // strcpy(temp_weapon.name, "test", sizeof("test"));
         // // temp_weapon.name = buf;
         // printf("allo \n");
