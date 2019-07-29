@@ -128,12 +128,15 @@ public:
         // strncpy(out_weapon.name, "test", sizeof("test"));
         strncpy(out_weapon.name,  buf.c_str(), sizeof(buf));
         in >> buf;
-        std::cout << buf;
         std::vector<int> temp = extractIntegerWords(buf);
         // out_weapon.stats[0] = (unsigned int) 9;        
         for (int i = 0; i < temp.size(); i++) {
-            out_weapon.stats[i] = (unsigned int) temp[i];
+            // out_weapon.stats[i] = (unsigned int) temp[i];
+            out_weapon.stats[i] = 10;
         }
+        out_weapon.stats[0] = temp.size();
+        out_weapon.stats[1] = 4;
+        // out_weapon.stats[2] = temp[0];
         // strcpy(temp_weapon.name, "test", sizeof("test"));
         // // temp_weapon.name = buf;
         // printf("allo \n");
