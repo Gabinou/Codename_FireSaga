@@ -127,7 +127,7 @@ public:
         // strncpy(out_weapon.name, buf.c_str(), sizeof(buf));
         // strncpy(out_weapon.name, "test", sizeof("test"));
         strncpy(out_weapon.name,  buf.c_str(), sizeof(buf));
-        // in >> buf;
+        in >> buf;
         // in >> buf;
         
         std::getline(in, buf);
