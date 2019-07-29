@@ -156,12 +156,15 @@ void read_all_units(const char *filename) {
 }
 
 
-void write_all_weapons(const char *filename) {
-    std::ofstream out(filename);
-    for (int i=0; i < sizeof(all_weapon_names)/sizeof(all_weapon_names[0]); i++){
-        out << all_weapons[all_weapon_names[i]];
+void write_all_weapons(const char *filename, char const *savestyle = "cpp" ) {
+    if (savestyle == "cpp") {
+        std::ofstream out(filename);
+        for (int i=0; i < sizeof(all_weapon_names)/sizeof(all_weapon_names[0]); i++){
+            out << all_weapons[all_weapon_names[i]];
+        }
+        out.close();
     }
-    out.close();
+
 }
 
 void read_all_weapons(const char *filename) {
@@ -296,6 +299,12 @@ main() {
     
     write_all_units("units.txt", "cpp");
     write_all_weapons("weapons.txt");
+    std::ifstream in("weapons.txt");
+    all_weapons["test"] = weapon();
+    in >> all_weapons["test"];
+    in.close();
+    printf(" test reader name %s \n", all_weapons["test"].name);
+    printf(" test reader name %d \n", all_weapons["test"].cost);
     // std::ofstream out("weapons.txt");
     // out << all_weapons["Rapier"];
     // out.close();

@@ -5,6 +5,7 @@ using namespace std;
 #include <iostream>
 #include <string>
 #include <ostream>
+#include <istream>
 #include <vector>
 #include <math.h> 
 #include <random>
@@ -114,6 +115,25 @@ public:
     /// \var bool dmg_type
     /// \brief dmg_type: Damage type. 0 for physical, 1 for magical.
     ~weapon();
+    
+    friend std::istream & operator >> (std::istream &in, weapon &out_weapon) {
+        // string& s[];
+        // strncpy(out_weapon.name, in.getline(), sizeof(in.getline(&s[0], 10, 40)));
+        std::string buf;
+        in >> buf;
+        weapon temp_weapon;
+        // out_weapon.cost = 90;
+        // strncpy(out_weapon.name, buf.c_str(), sizeof(buf));
+        strncpy(out_weapon.name, "test", sizeof("test"));
+        out_weapon.cost = 90;
+        // strcpy(temp_weapon.name, "test", sizeof("test"));
+        // // temp_weapon.name = buf;
+        // printf("allo \n");
+        // printf("%s \n", in);
+        // return(0);
+        return(in);
+    }
+    
     friend std::ostream & operator << (std::ostream &out, const weapon &in_weapon) {
         out << in_weapon.name << "\n";
         // out << "Stats: \t\t" // must stay like this cause of busted stats variable that needs more space to not crash.
