@@ -21,6 +21,38 @@ std::mt19937 mt(1899);
 std::uniform_int_distribution<char> dist(0, 100); //*DESIGN QUESTION* What should be the minimum and maximum probabilities?
 #endif /* DOXYGEN_SHOULD_SKIP_THIS */
 
+std::vector<int> extractIntegerWords(string str) 
+{ 
+    stringstream ss;     
+  
+    /* Storing the whole string into string stream */
+    ss << str; 
+    printf("STRING: %s \n", str);
+    /* Running loop till the end of the stream */
+    string temp; 
+    int found; 
+    std::vector<int> founds; 
+    while (!ss.eof()) { 
+  
+        /* extracting word by word from stream */
+        ss >> temp; 
+  
+        /* Checking the given word is integer or not */
+        if (stringstream(temp) >> found) 
+            // cout << found << " "; 
+
+            // printf("FOUND %d \n", found);
+            founds.push_back(found);
+  
+        /* To save from space at the end of string */
+        temp = ""; 
+    } 
+    return(founds);
+} 
+ 
+
+
+
 int get_rand() { 
     return(dist(mt));
 }
@@ -299,18 +331,30 @@ main() {
     
     // write_all_units("units.txt", "cpp");
     // write_all_weapons("weapons.txt");
-    std::ifstream in("weapons.txt");
-    all_weapons["test"] = weapon();
-    in >> all_weapons["test"];
-    in.close();
-    printf(" test reader name %s \n", all_weapons["test"].name);
-    printf(" test reader cost %d \n", all_weapons["test"].cost);
-    printf(" test reader stat[0] %d \n", all_weapons["test"].stats[0]);
-    printf(" test reader stat[1] %d \n", all_weapons["test"].stats[1]);
-    printf(" test reader stat[2] %d \n", all_weapons["test"].stats[2]);
-    printf(" test reader stat[3] %d \n", all_weapons["test"].stats[3]);
-    printf(" test reader stat[4] %d \n", all_weapons["test"].stats[4]);
-    printf(" test reader stat[5] %d \n", all_weapons["test"].stats[5]);
+    
+    
+    std::vector<int> tempo = extractIntegerWords("Stats: 10, 20, 30, 40 "); 
+    cout << tempo[0];
+    cout << tempo[1];
+    cout << tempo[2];
+    cout << tempo[3];
+    // std::ifstream in("weapons.txt");
+    // all_weapons["test"] = weapon();
+    // in >> all_weapons["test"];
+    // in.close();
+    // printf(" test reader name %s \n", all_weapons["test"].name);
+    // printf(" test reader cost %d \n", all_weapons["test"].cost);
+    // printf(" test reader stat[0] %d \n", all_weapons["test"].stats[0]);
+    // printf(" test reader stat[1] %d \n", all_weapons["test"].stats[1]);
+    // printf(" test reader stat[2] %d \n", all_weapons["test"].stats[2]);
+    // printf(" test reader stat[3] %d \n", all_weapons["test"].stats[3]);
+    // printf(" test reader stat[4] %d \n", all_weapons["test"].stats[4]);
+    // printf(" test reader stat[5] %d \n", all_weapons["test"].stats[5]);
+    
+    
+    
+    
+    
     // std::ofstream out("weapons.txt");
     // out << all_weapons["Rapier"];
     // out.close();
