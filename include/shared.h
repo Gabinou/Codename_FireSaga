@@ -221,37 +221,88 @@ public:
             range[i] = temp[i];
         }
         // fgets(line, sizeof(line), f);
-        // fseek(f, 10, SEEK_CUR);
+        fseek(f, 10, SEEK_CUR);
         fgets(line, sizeof(line), f);
-        // fscanf(f, "%s", line);
-        char word1[500];
-        char word2[500];
-        // char word3[500];
-        // fscanf(f, "%[^:,],", word);
-        sscanf(line, "%s %s %s", word1, word1, word2);
-        word1[strlen(word1)-1] = 0;
-        printf("%s\n", word1);
-        printf("%s\n", word2);
-        for (int i = 0; i < 4; i++) {
-            if (strcmp(word1, unit_attributes[i]) == 0) {
-                strcpy(effective[0], word1);
+        char * pch;
+        std:;string pch2;
+        int eff = 0;
+        int val = 0 ;
+        char ind;
+        for (int i = 0; i < sizeof(effective)/sizeof(effective[0]); i++) {
+            if (i == 0) {
+                pch = strtok(line, ":,");
+            } else {
+                pch = strtok(NULL, ":,");       
+            }
+            printf ("%s\n", pch);              
+            for (int j = 0; j < 33; j++) {
+                printf ("%d\n", strstr(pch, unit_classes[j]));  
+                printf ("%s %s\n", pch, unit_classes[j]);  
+                if (strstr(pch, unit_classes[j]) != 0) {
+                    strcpy(effective[eff], unit_classes[j]);
+                    eff++;
+                    
+                }
+            }
+            for (int j = 0; j < 4; j++) {
+                printf ("%d\n", strstr(pch, unit_attributes[j]));  
+                printf ("%s %s\n", pch, unit_attributes[j]); 
+                if (strstr(pch, unit_attributes[j])
+                val = strstr(pch, unit_attributes[j];
+                
+                if () != 0) {
+                    strcpy(effective[eff], unit_attributes[j]);
+                    eff++;
+                }
             }
         }
-        for (int i = 0; i < 33; i++) {
-            if (strcmp(word1, unit_classes[i]) == 0) {
-                strcpy(effective[0], word1);
-            }
-        }
-        for (int i = 0; i < 4; i++) {
-            if (strcmp(word2, unit_attributes[i]) == 0) {
-                strcpy(effective[1], word2);
-            }
-        }
-        for (int i = 0; i < 33; i++) {
-            if (strcmp(word2, unit_classes[i]) == 0) {
-                strcpy(effective[1], word2);
-            }
-        }
+        printf ("%d\n", eff); 
+        
+
+        
+          // while (pch != NULL)
+          // {
+            // printf ("%s\n", pch);
+            // pch = strtok (NULL, ":,");
+            // strstr(pch, unit_attributes[0]);
+            // // for (int i = 0; i < 4; i++) {
+                // // if (strstr(pch, unit_attributes[i]) == 0) {
+                    // // strcpy(effective[eff], unit_attributes[i]);
+                    // // eff++;
+                // // }
+            // // }
+            // // for (int i = 0; i < 4; i++) {
+                // // if (strstr(pch, unit_classes[i]) == 0) {
+                    // // strcpy(effective[eff], unit_classes[i]);
+                    // // eff++;
+                // // }
+            // // }
+          // }
+        // sscanf(line, "%s %500", word1, word2, word3, word4);
+        // // word1[strlen(word1)-1] = 0;
+        // printf("%s\n", line);
+        // printf("%s\n", word1);
+        // printf("%s\n", word2);
+        // for (int i = 0; i < 4; i++) {
+            // if (strstr(word1, unit_attributes[i]) == 0) {
+                // strcpy(effective[0], unit_attributes[i]);
+            // }
+        // }
+        // for (int i = 0; i < 33; i++) {
+            // if (strstr(word1, unit_classes[i]) == 0) {
+                // strcpy(effective[0], unit_classes[i]);
+            // }
+        // }
+        // for (int i = 0; i < 4; i++) {
+            // if (strstr(word2, unit_attributes[i]) == 0) {
+                // strcpy(effective[1], unit_attributes[i]);
+            // }
+        // }
+        // for (int i = 0; i < 33; i++) {
+            // if (strstr(word2, unit_classes[i]) == 0) {
+                // strcpy(effective[1], unit_classes[i]);
+            // }
+        // }
         // fscanf(f, " %[^, \n],", word);
         // printf("%s\n", word);
         printf("THIS\n");
