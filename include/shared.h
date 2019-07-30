@@ -233,28 +233,30 @@ public:
                 pch = strtok(line, ":,");
             } else {
                 pch = strtok(NULL, ":,");       
-            }
-            printf ("%s\n", pch);              
+            }      
             for (int j = 0; j < 33; j++) {
                 printf ("%d\n", strstr(pch, unit_classes[j]));  
                 printf ("%s %s\n", pch, unit_classes[j]);  
                 if (strstr(pch, unit_classes[j]) != 0) {
                     strcpy(effective[eff], unit_classes[j]);
                     eff++;
-                    
                 }
             }
+            // if (ind != -1) {
+                // effective[eff] = unit_classes[ind]
+            // }
+            ind = -1;
             for (int j = 0; j < 4; j++) {
                 printf ("%d\n", strstr(pch, unit_attributes[j]));  
                 printf ("%s %s\n", pch, unit_attributes[j]); 
-                if (strstr(pch, unit_attributes[j])
-                val = strstr(pch, unit_attributes[j];
-                
-                if () != 0) {
+                if (strstr(pch, unit_attributes[j]) != 0) {
                     strcpy(effective[eff], unit_attributes[j]);
                     eff++;
                 }
             }
+            // if (ind != -1) {
+                // strcpy(effective[eff], unit_attributes[ind]);
+            // }
         }
         printf ("%d\n", eff); 
         
