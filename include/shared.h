@@ -105,7 +105,7 @@ public:
     /// \brief Range of weapon.
     unsigned char range[2]; // 2- maximum,minimuum range.
   
-    char stats_bonus[10], effective[2][14];
+    char stats_bonus[10], effective[2][20];
     /// \var char effective
     /// \brief List of unit types or unit classes the weapon is effective against.
     /// \var char stats_bonus
@@ -120,29 +120,44 @@ public:
     
     friend std::istream & operator >> (std::istream &in, weapon &out_weapon) {
         std::string buf;
-        in >> buf;
+        
+        
+        
+        
+        // in >> buf;
+        std::getline(in >> std::ws, buf);
         strncpy(out_weapon.name,  buf.c_str(), sizeof(buf));
         in >> buf;
         std::getline(in, buf);
-
-        // std::vector<int> temp = extractIntegerWords("stats: 10, 20, 30, 4");
         std::vector<int> temp = extractIntegerWords(buf);
-        // out_weapon.stats[0] = (unsigned int) 9;        
         for (int i = 0; i < temp.size(); i++) {
-            // out_weapon.stats[i] = (unsigned int) temp[i];
             out_weapon.stats[i] = temp[i];
         }
         in >> buf;  
-        strncpy(out_weapon.name,  buf.c_str(), sizeof(buf));   
-        // out_weapon.stats[0] = temp[1];
-        // out_weapon.stats[1] = 4;
-        // out_weapon.stats[1] = 4;
-        // out_weapon.stats[2] = temp[0];
-        // strcpy(temp_weapon.name, "test", sizeof("test"));
-        // // temp_weapon.name = buf;
-        // printf("allo \n");
-        // printf("%s \n", in);
-        // return(0);
+        std::getline(in, buf);
+        temp = extractIntegerWords(buf);
+        for (int i = 0; i < temp.size(); i++) {
+            out_weapon.stats_bonus[i] = temp[i];
+        }
+        in >> buf;
+        std::getline(in, buf);
+        temp = extractIntegerWords(buf);
+        out_weapon.cost = temp[0];
+        in >> buf;
+        std::getline(in, buf);
+        temp = extractIntegerWords(buf);
+        out_weapon.dmg_type = temp[0];
+        in >> buf;
+        std::getline(in, buf);
+        temp = extractIntegerWords(buf);
+        for (int i = 0; i < temp.size(); i++) {
+            out_weapon.range[i] = temp[i];
+        }
+        in >> buf;
+        in >> buf;
+        strncpy(out_weapon.effective[0],  buf.c_str(), sizeof(buf)); 
+        in >> buf;
+        strncpy(out_weapon.effective[1],  buf.c_str(), sizeof(buf)); 
         return(in);
     }
     

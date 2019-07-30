@@ -23,8 +23,7 @@ std::uniform_int_distribution<char> dist(0, 100); //*DESIGN QUESTION* What shoul
 
 std::vector<int> extractIntegerWords(string str) 
 { 
-    stringstream ss;     
-  
+    stringstream ss;
     /* Storing the whole string into string stream */
     ss << str; 
     /* Running loop till the end of the stream */
@@ -32,26 +31,18 @@ std::vector<int> extractIntegerWords(string str)
     int found; 
     std::vector<int> founds; 
     while (!ss.eof()) { 
-  
         /* extracting word by word from stream */
         ss >> temp; 
-  
         /* Checking the given word is integer or not */
         if (stringstream(temp) >> found) 
-            cout << found << " "; 
-
-            printf("FOUND %d \n", found);
+            // cout << found << " "; 
             founds.push_back(found);
-  
         /* To save from space at the end of string */
         temp = ""; 
     } 
     return(founds);
 } 
  
-
-
-
 int get_rand() { 
     return(dist(mt));
 }
@@ -249,13 +240,13 @@ main() {
     // Unordered map convention: "name" is the immutable original object.
     // Copies have "name_id"
     
-    std::unordered_map<std::string, weapon>::iterator it = all_weapons.begin();
-    while(it != all_weapons.end()) {
-        char key[(it->first).size() + 1];
-        strcpy(key, (it->first).c_str());
-        inventory_items[strcat(key,"_0001")] =  inventory_item(key, 10);
-        it++;
-    }
+    // std::unordered_map<std::string, weapon>::iterator it = all_weapons.begin();
+    // while(it != all_weapons.end()) {
+        // char key[(it->first).size() + 1];
+        // strcpy(key, (it->first).c_str());
+        // inventory_items[strcat(key,"_0001")] =  inventory_item(key, 10);
+        // it++;
+    // }
     
     // unit Marth("Marth", "Prince", id++, 
                             // //HP Str Mag Skl Spd Lck Def Res Con Mov
@@ -335,16 +326,39 @@ main() {
     std::ifstream in("weapons.txt");
     all_weapons["test"] = weapon();
     in >> all_weapons["test"];
+    in >> all_weapons["test2"];
+    in >> all_weapons["test3"];
     in.close();
-    printf(" test reader name %s \n", all_weapons["test"].name);
-    printf(" test reader cost %d \n", all_weapons["test"].cost);
-    printf(" test reader stat[0] %d \n", all_weapons["test"].stats[0]);
-    printf(" test reader stat[1] %d \n", all_weapons["test"].stats[1]);
-    printf(" test reader stat[2] %d \n", all_weapons["test"].stats[2]);
-    printf(" test reader stat[3] %d \n", all_weapons["test"].stats[3]);
-    printf(" test reader stat[4] %d \n", all_weapons["test"].stats[4]);
-    printf(" test reader stat[5] %d \n", all_weapons["test"].stats[5]);
-    
+    printf("test reader name %s \n", all_weapons["test"].name);
+    // printf("test reader name %s \n", all_weapons["test"].name);
+    printf("test reader name %s \n", all_weapons["test2"].name);
+    printf("test reader name %s \n", all_weapons["test3"].name);
+    printf("test reader cost %d \n", all_weapons["test"].cost);
+    printf("test reader stat[0] %d \n", all_weapons["test"].stats[0]);
+    printf("test reader stat[1] %d \n", all_weapons["test"].stats[1]);
+    printf("test reader stat[2] %d \n", all_weapons["test"].stats[2]);
+    printf("test reader stat[3] %d \n", all_weapons["test"].stats[3]);
+    printf("test reader stat[4] %d \n", all_weapons["test"].stats[4]);
+    printf("test reader stat[5] %d \n", all_weapons["test"].stats[5]);
+    printf("test reader stat_bonus[0] %d \n", all_weapons["test"].stats_bonus[0]);
+    printf("test reader stat_bonus[0] %d \n", all_weapons["test"].stats_bonus[1]);
+    printf("test reader stat_bonus[0] %d \n", all_weapons["test"].stats_bonus[2]);
+    printf("test reader stat_bonus[0] %d \n", all_weapons["test"].stats_bonus[3]);
+    printf("test reader stat_bonus[0] %d \n", all_weapons["test"].stats_bonus[4]);
+    printf("test reader stat_bonus[0] %d \n", all_weapons["test"].stats_bonus[5]);
+    printf("test reader stat_bonus[0] %d \n", all_weapons["test"].stats_bonus[6]);
+    printf("test reader stat_bonus[0] %d \n", all_weapons["test"].stats_bonus[7]);
+    printf("test reader stat_bonus[0] %d \n", all_weapons["test"].stats_bonus[8]);
+    printf("test reader stat_bonus[0] %d \n", all_weapons["test"].stats_bonus[9]);
+    printf("test reader cost %d \n", all_weapons["test"].cost);
+    printf("test reader dmg_type %d \n", all_weapons["test"].dmg_type);
+    printf("test reader range %d \n", all_weapons["test"].range[0]);
+    printf("test reader effective %s \n", all_weapons["test"].effective[0]);
+    printf("test reader effective %s \n", all_weapons["test"].effective[1]);
+    printf("test reader effective %s \n", all_weapons["test2"].effective[0]);
+    printf("test reader effective %s \n", all_weapons["test2"].effective[1]);
+
+
     
     
     
