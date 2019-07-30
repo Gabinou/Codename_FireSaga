@@ -217,11 +217,18 @@ public:
         for (int i = 0; i < temp.size(); i++) {
             range[i] = temp[i];
         }
+        // fgets(line, sizeof(line), f);
+        fseek(f, 10, SEEK_CUR);
+        // fgets(line, sizeof(line), f);
         fscanf(f, "%s", line);
-        fscanf(f, "%s", line);
-        line[strlen(line)-1] = 0;    
-        strcpy(effective[0], line);
-        fscanf(f, "%s", effective[1]);
+        printf("%s\n", line);
+        printf("%d\n", (line==","));
+        printf("THIS\n");
+        // fscanf(f, "%s", line);
+        // fscanf(f, "%s", line);
+        // line[strlen(line)-1] = 0;    
+        // strcpy(effective[0], line);
+        // fscanf(f, "%s", effective[1]);
         fclose(f);
     }; 
     friend std::ostream & operator << (std::ostream &out, const weapon &in_weapon) {
