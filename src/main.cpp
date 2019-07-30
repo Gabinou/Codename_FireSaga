@@ -325,8 +325,8 @@ main() {
     
     std::ifstream in("weapons.txt");
     all_weapons["test"] = weapon();
-    all_weapons["test"].read("weapons.txt", 0);
-    // all_weapons["test"].read("weapons.txt", 8);
+    // all_weapons["test"].read("weapons.txt", 0);
+    all_weapons["test"].read("weapons.txt", 16);
     
     // in >> all_weapons["test"];
     // in >> all_weapons["test2"];
