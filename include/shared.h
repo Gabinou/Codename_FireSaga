@@ -120,47 +120,94 @@ public:
     
     friend std::istream & operator >> (std::istream &in, weapon &out_weapon) {
         std::string buf;
-        
-        
-        
-        
-        // in >> buf;
-        std::getline(in >> std::ws, buf);
+        in >> std::skipws;
+        // std::getline(in, buf);
+        in >> buf;
+        // std::getline(in, buf);
+        // std::getline(in, buf[2]);
+        // std::getline(in, buf[3]);
+        // std::getline(in, buf[4]);
+        // std::getline(in, buf[5]);
+        // std::getline(in, buf[6]);
+        // std::getline(in, buf[7]);
+
         strncpy(out_weapon.name,  buf.c_str(), sizeof(buf));
         in >> buf;
-        std::getline(in, buf);
-        std::vector<int> temp = extractIntegerWords(buf);
-        for (int i = 0; i < temp.size(); i++) {
-            out_weapon.stats[i] = temp[i];
-        }
-        in >> buf;  
-        std::getline(in, buf);
-        temp = extractIntegerWords(buf);
-        for (int i = 0; i < temp.size(); i++) {
-            out_weapon.stats_bonus[i] = temp[i];
-        }
-        in >> buf;
-        std::getline(in, buf);
-        temp = extractIntegerWords(buf);
-        out_weapon.cost = temp[0];
-        in >> buf;
-        std::getline(in, buf);
-        temp = extractIntegerWords(buf);
-        out_weapon.dmg_type = temp[0];
-        in >> buf;
-        std::getline(in, buf);
-        temp = extractIntegerWords(buf);
-        for (int i = 0; i < temp.size(); i++) {
-            out_weapon.range[i] = temp[i];
-        }
         in >> buf;
         in >> buf;
-        strncpy(out_weapon.effective[0],  buf.c_str(), sizeof(buf)); 
         in >> buf;
-        strncpy(out_weapon.effective[1],  buf.c_str(), sizeof(buf)); 
+        in >> buf;
+        in >> buf;
+        in >> buf;
+        in >> buf;
+        in >> buf;
+        in >> buf;
+        in >> buf;
+        in >> buf;
+        in >> buf;
+        in >> buf;
+        in >> buf;
+        in >> buf;
+        in >> buf;
+        in >> buf;
+        in >> buf;
+        in >> buf;
+        in >> buf;
+        in >> buf;
+        in >> buf;
+        in >> buf;
+        // in >> buf;
+        // std::getline(in, buf);
+        // std::vector<int> temp = extractIntegerWords(buf);
+        // for (int i = 0; i < temp.size(); i++) {
+            // out_weapon.stats[i] = temp[i];
+        // }
+        // in >> buf;  
+        // std::getline(in, buf);
+        // temp = extractIntegerWords(buf);
+        // for (int i = 0; i < temp.size(); i++) {
+            // out_weapon.stats_bonus[i] = temp[i];
+        // }
+        // in >> buf;
+        // std::getline(in, buf);
+        // temp = extractIntegerWords(buf);
+        // out_weapon.cost = temp[0];
+        // in >> buf;
+        // std::getline(in, buf);
+        // temp = extractIntegerWords(buf);
+        // out_weapon.dmg_type = temp[0];
+        // in >> buf;
+        // std::getline(in, buf);
+        // temp = extractIntegerWords(buf);
+        // for (int i = 0; i < temp.size(); i++) {
+            // out_weapon.range[i] = temp[i];
+        // }
+        // in >> buf;
+        // in >> buf;
+        // strncpy(out_weapon.effective[0],  buf.c_str(), sizeof(buf)); 
+        // in >> buf;
+        // strncpy(out_weapon.effective[1],  buf.c_str(), sizeof(buf)); 
         return(in);
     }
-    
+    void read(const char *filename, char skip) {
+        // 2019/07/30: skip should be a multiple of *number of lines written to weapon.txt* which is 8.
+        FILE *f = fopen(filename, "r");
+        char line[500];
+        for (int i = 0; i < skip; i++) {
+            fgets(line, sizeof(line), f); // skips n lines.
+            printf("%s", line); 
+        }
+        fgets(line, sizeof(line), f);
+        printf("%s", line); 
+        strncpy(name, line, sizeof(name));
+        fgets(line, sizeof(line), f);
+        printf("%s", line); 
+        std::vector<int> temp = extractIntegerWords(line);
+        for (int i = 0; i < temp.size(); i++) {
+            stats[i] = temp[i];
+        }
+        fclose(f);
+    }; 
     friend std::ostream & operator << (std::ostream &out, const weapon &in_weapon) {
         out << in_weapon.name << "\n";
         // out << "Stats: \t\t" // must stay like this cause of busted stats variable that needs more space to not crash.
