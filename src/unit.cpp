@@ -31,6 +31,7 @@ void unit::equip_weapon(std::vector<unsigned int> in_equipped) {
             // printf("weapon types %d\n", strcmp(current_type, wpn_types[i]) == 0);
             // bool cond  = (strcmp(current_type, wpn_types[i]) == 0);
             bool cond = strcmp(current_type, wpn_types[i]) == 0;
+        printf("current_type: %s\n", current_type);
         if (strcmp(current_type, wpn_types[i]) == 0){
             current_type_ind = i;
         };
@@ -38,6 +39,8 @@ void unit::equip_weapon(std::vector<unsigned int> in_equipped) {
     // printf("Current type %s\n", current_type);
     // printf("Current type index %s\n", current_type_ind);
     if (in_equipped.size() != 0) {
+        printf("current_type_ind %d\n", current_type_ind);
+        printf("wpn_exp %d\n", wpn_exp[current_type_ind]);
         if (wpn_exp[current_type_ind] > 0) {
             equipped[0] = (unsigned int) in_equipped[0]; 
         } else {

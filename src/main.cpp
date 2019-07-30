@@ -289,70 +289,35 @@ main() {
         // /*Promoted*/        0
     // );    
     
-    all_units["Marth"] = unit("Marth", "Prince", id++, 
-                            /*HP Str Mag Skl Spd Lck Def Res Con Mov
-        stats_base*/        {18,  8,  2,  9, 10,  7,  5,  2,  6,  5},
-        /*Growths*/         {60, 50, 20, 70, 60, 40, 30, 20,  0,  0},
-        /*Skills*/          {18,  8,  2},
-        /*Love_pts*/        { 0,  0,  0,  0,  0},
-        /*Love_growths*/    { 0,  0,  0,  0,  0},
-                           //swd lnc axe bow wnd firetnd drk lgt staff
-        /*Weapon_exp*/      { 1,  0,  0,  0,  0,  0,  0,  0,  0,  0},
-        /*Position*/        { 1,  1,  1},
-        /*Equipped*/        {0},
-        /*Equipment*/       {inventory_items["Rapier_0001"]},
-        /*Weapons*/         {},
-        /*Items*/           {},
-        /*Exp*/             0, 
-        /*Lovers*/          {"Sheeda", "", "", "", ""},
-        /*Mounted*/         0,
-        /*Flying*/          0,
-        /*Armored*/         0,
-        /*Promoted*/        0);
+    // all_units["Marth"] = unit("Marth", "Prince", id++, 
+                            // /*HP Str Mag Skl Spd Lck Def Res Con Mov
+        // stats_base*/        {18,  8,  2,  9, 10,  7,  5,  2,  6,  5},
+        // /*Growths*/         {60, 50, 20, 70, 60, 40, 30, 20,  0,  0},
+        // /*Skills*/          {18,  8,  2},
+        // /*Love_pts*/        { 0,  0,  0,  0,  0},
+        // /*Love_growths*/    { 0,  0,  0,  0,  0},
+                           // //swd lnc axe bow wnd firetnd drk lgt staff
+        // /*Weapon_exp*/      { 1,  0,  0,  0,  0,  0,  0,  0,  0,  0},
+        // /*Position*/        { 1,  1,  1},
+        // /*Equipped*/        {0},
+        // /*Equipment*/       {inventory_items["Rapier_0001"]},
+        // /*Weapons*/         {},
+        // /*Items*/           {},
+        // /*Exp*/             0, 
+        // /*Lovers*/          {"Sheeda", "", "", "", ""},
+        // /*Mounted*/         0,
+        // /*Flying*/          0,
+        // /*Armored*/         0,
+        // /*Promoted*/        0);
 
-
-    all_units["Sheeda"] = unit("Sheeda", "Pegasus Knight", id++, 
-                            /*HP Str Mag Skl Spd Lck Def Res Con Mov
-        stats_base*/        {18,  7,  2,  7, 18,  8,  4,  4,  5,  7},
-        /*Growths*/         {40, 25, 20, 40, 70, 80, 20, 20,  0,  0},
-        /*Skills*/          {18,  8,  2},
-        /*Love_pts*/        { 0,  0,  0,  0,  0},
-        /*Love_growths*/    { 0,  0,  0,  0,  0},
-                           //swd lnc axe bow wnd fir tnd drk lgt staff
-        /*Weapon_exp*/      { 0,  1,  0,  0,  0,  0,  0,  0,  0,  0},
-        /*Position*/        { 1,  2,  1},
-        /*Equipped*/        {0},
-        /*Equipment*/       {inventory_items["Iron Lance_0001"]},
-        /*Weapons*/         {},
-        /*Items*/           {},
-        /*Exp*/             0, 
-        /*Lovers*/          {"Marth", "", "", "", ""},
-        /*Mounted*/         1,
-        /*Flying*/          1,
-        /*Armored*/         0,
-        /*Promoted*/        0);
-           
-    // std::ofstream out("units.txt");
-    // out << all_units["Marth"]; // This is the c++ way of printing an object to file.
-    // out << all_units["Sheeda"];
-    // out.close();
-    // remove("units.txt");
-    // all_units["Marth"].write("units.txt");
-    
-    // write_all_units("units.txt", "cpp");
-    // write_all_weapons("weapons.txt");
     
     std::string line = read_line("weapons.txt", 0);
     line = read_line("weapons.txt", 10);
-    printf("%s\n", line);
     try {
         line = read_line("weapons.txt", 100);
     } catch(const char* msg) {
         printf(msg);
     }
-    printf("%s\n", line);
-    // printf("%d\n", line==NULL));
-    // printf("%d\n", feof(line));
     return(0);
     std::ifstream in("weapons.txt");
     printf("%s\n", line.c_str());
@@ -392,6 +357,40 @@ main() {
     printf("test reader effective %s \n", all_weapons[line].effective[1]);
     // printf("test reader effective %s \n", all_weapons["test2"].effective[0]);
     // printf("test reader effective %s \n", all_weapons["test2"].effective[1]);
+
+
+
+    // all_units["Sheeda"] = unit("Sheeda", "Pegasus Knight", id++, 
+                            // /*HP Str Mag Skl Spd Lck Def Res Con Mov
+        // stats_base*/        {18,  7,  2,  7, 18,  8,  4,  4,  5,  7},
+        // /*Growths*/         {40, 25, 20, 40, 70, 80, 20, 20,  0,  0},
+        // /*Skills*/          {18,  8,  2},
+        // /*Love_pts*/        { 0,  0,  0,  0,  0},
+        // /*Love_growths*/    { 0,  0,  0,  0,  0},
+                           // //swd lnc axe bow wnd fir tnd drk lgt staff
+        // /*Weapon_exp*/      { 0,  1,  0,  0,  0,  0,  0,  0,  0,  0},
+        // /*Position*/        { 1,  2,  1},
+        // /*Equipped*/        {0},
+        // /*Equipment*/       {inventory_items["Iron Lance_0001"]},
+        // /*Weapons*/         {},
+        // /*Items*/           {},
+        // /*Exp*/             0, 
+        // /*Lovers*/          {"Marth", "", "", "", ""},
+        // /*Mounted*/         1,
+        // /*Flying*/          1,
+        // /*Armored*/         0,
+        // /*Promoted*/        0);
+           
+    // std::ofstream out("units.txt");
+    // out << all_units["Marth"]; // This is the c++ way of printing an object to file.
+    // out << all_units["Sheeda"];
+    // out.close();
+    // remove("units.txt");
+    // all_units["Marth"].write("units.txt");
+    
+    // write_all_units("units.txt", "cpp");
+    // write_all_weapons("weapons.txt");
+    
 
 
     
