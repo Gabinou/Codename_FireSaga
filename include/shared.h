@@ -119,19 +119,12 @@ public:
     ~weapon();
     
     friend std::istream & operator >> (std::istream &in, weapon &out_weapon) {
-        // string& s[];
-        // strncpy(out_weapon.name, in.getline(), sizeof(in.getline(&s[0], 10, 40)));
         std::string buf;
         in >> buf;
-        // out_weapon.cost = 90;
-        // strncpy(out_weapon.name, buf.c_str(), sizeof(buf));
-        // strncpy(out_weapon.name, "test", sizeof("test"));
         strncpy(out_weapon.name,  buf.c_str(), sizeof(buf));
         in >> buf;
-        // in >> buf;
-        
         std::getline(in, buf);
-        strncpy(out_weapon.name,  buf.c_str(), sizeof(buf));
+
         // std::vector<int> temp = extractIntegerWords("stats: 10, 20, 30, 4");
         std::vector<int> temp = extractIntegerWords(buf);
         // out_weapon.stats[0] = (unsigned int) 9;        
@@ -139,6 +132,8 @@ public:
             // out_weapon.stats[i] = (unsigned int) temp[i];
             out_weapon.stats[i] = temp[i];
         }
+        in >> buf;  
+        strncpy(out_weapon.name,  buf.c_str(), sizeof(buf));   
         // out_weapon.stats[0] = temp[1];
         // out_weapon.stats[1] = 4;
         // out_weapon.stats[1] = 4;
