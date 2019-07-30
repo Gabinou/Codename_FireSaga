@@ -206,6 +206,32 @@ public:
         for (int i = 0; i < temp.size(); i++) {
             stats[i] = temp[i];
         }
+        fgets(line, sizeof(line), f);
+        printf("%s", line); 
+        temp = extractIntegerWords(line);
+        for (int i = 0; i < temp.size(); i++) {
+            stats_bonus[i] = temp[i];
+        }
+        fgets(line, sizeof(line), f);
+        printf("%s", line); 
+        cost = extractIntegerWords(line)[0];        
+        fgets(line, sizeof(line), f);
+        printf("%s", line); 
+        dmg_type = extractIntegerWords(line)[0];
+        fgets(line, sizeof(line), f);
+        printf("%s", line); 
+        temp = extractIntegerWords(line);
+        for (int i = 0; i < temp.size(); i++) {
+            range[i] = temp[i];
+        }
+        fscanf(f, "%s", line);
+        fscanf(f, "%s", line);
+        line[strlen(line)-1] = 0;    
+        printf("%s", line);
+        strcpy(effective[0], line);
+        fscanf(f, "%s", effective[1]);
+
+       
         fclose(f);
     }; 
     friend std::ostream & operator << (std::ostream &out, const weapon &in_weapon) {
