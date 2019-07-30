@@ -209,12 +209,8 @@ string read_line(const char *filename, char skip){
     FILE *f = fopen(filename, "r");
     char line[500];
     for (int i = 0; i < skip; i++) {
-        // printf("%d\n", feof(f));
         if (fgets(line, sizeof(line), f)==NULL) {
-            // printf("%d\n", feof(f));
-            printf("OUT.\n");
-            throw "eof Reached";
-            
+            throw "eof Reached\n";
         } 
     }
     fgets(line, sizeof(line), f);
@@ -349,7 +345,11 @@ main() {
     std::string line = read_line("weapons.txt", 0);
     line = read_line("weapons.txt", 10);
     printf("%s\n", line);
-    line = read_line("weapons.txt", 100);
+    try {
+        line = read_line("weapons.txt", 100);
+    } catch(const char* msg) {
+        printf(msg);
+    }
     printf("%s\n", line);
     // printf("%d\n", line==NULL));
     // printf("%d\n", feof(line));
