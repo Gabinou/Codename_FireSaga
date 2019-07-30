@@ -194,7 +194,12 @@ void write_all_weapons(const char *filename, char const *savestyle = "cpp" ) {
 }
 
 void read_all_weapons(const char *filename) {
-      
+    for (int i = 0 ; i <1000, i+=8)
+    try {
+        line = read_line("weapons.txt", i);
+    } catch(const char* msg) {
+        printf(msg);
+    }
 }
 
 void write_all_maps(const char *filename) {
