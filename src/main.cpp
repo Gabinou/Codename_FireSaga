@@ -204,6 +204,18 @@ void read_all_maps(const char *filename) {
       
 }
 
+string read_line_n(const char *filename, char skip){
+    // 2019/07/30: skip should be a multiple of *number of lines written to weapon.txt* which is 8.
+    FILE *f = fopen(filename, "r");
+    char line[500];
+    for (int i = 0; i < skip; i++) {
+        fgets(line, sizeof(line), f); // skips n lines.
+    }
+    fgets(line, sizeof(line), f);
+    std::string out(line);
+    return(out);
+}
+
 
 main() {
     printf("TESTING THIS BITCH\n");

@@ -248,60 +248,6 @@ public:
             }
             i++;
         }
-        
-
-        
-          // while (pch != NULL)
-          // {
-            // printf ("%s\n", pch);
-            // pch = strtok (NULL, ":,");
-            // strstr(pch, unit_attributes[0]);
-            // // for (int i = 0; i < 4; i++) {
-                // // if (strstr(pch, unit_attributes[i]) == 0) {
-                    // // strcpy(effective[eff], unit_attributes[i]);
-                    // // eff++;
-                // // }
-            // // }
-            // // for (int i = 0; i < 4; i++) {
-                // // if (strstr(pch, unit_classes[i]) == 0) {
-                    // // strcpy(effective[eff], unit_classes[i]);
-                    // // eff++;
-                // // }
-            // // }
-          // }
-        // sscanf(line, "%s %500", word1, word2, word3, word4);
-        // // word1[strlen(word1)-1] = 0;
-        // printf("%s\n", line);
-        // printf("%s\n", word1);
-        // printf("%s\n", word2);
-        // for (int i = 0; i < 4; i++) {
-            // if (strstr(word1, unit_attributes[i]) == 0) {
-                // strcpy(effective[0], unit_attributes[i]);
-            // }
-        // }
-        // for (int i = 0; i < 33; i++) {
-            // if (strstr(word1, unit_classes[i]) == 0) {
-                // strcpy(effective[0], unit_classes[i]);
-            // }
-        // }
-        // for (int i = 0; i < 4; i++) {
-            // if (strstr(word2, unit_attributes[i]) == 0) {
-                // strcpy(effective[1], unit_attributes[i]);
-            // }
-        // }
-        // for (int i = 0; i < 33; i++) {
-            // if (strstr(word2, unit_classes[i]) == 0) {
-                // strcpy(effective[1], unit_classes[i]);
-            // }
-        // }
-        // fscanf(f, " %[^, \n],", word);
-        // printf("%s\n", word);
-        printf("THIS\n");
-        // fscanf(f, "%s", line);
-        // fscanf(f, "%s", line);
-        //     
-        // strcpy(effective[0], line);
-        // fscanf(f, "%s", effective[1]);
         fclose(f);
     }; 
     friend std::ostream & operator << (std::ostream &out, const weapon &in_weapon) {
