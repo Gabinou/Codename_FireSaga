@@ -209,10 +209,11 @@ string read_line(const char *filename, char skip){
     FILE *f = fopen(filename, "r");
     char line[500];
     for (int i = 0; i < skip; i++) {
-        fgets(line, sizeof(line), f); // skips n lines.
+        fgets(line, sizeof(line), f); // skips skip lines.
     }
     fgets(line, sizeof(line), f);
     std::string out(line);
+    out.pop_back(); // fgets include the \n character at the end of the line. This removes it.
     fclose(f);
     return(out);
 }
@@ -340,7 +341,7 @@ main() {
     // write_all_weapons("weapons.txt");
     
     std::string line = read_line("weapons.txt", 0);
-    line.pop_back();
+
     std::ifstream in("weapons.txt");
     printf("%s\n", line.c_str());
     std::cout << line << endl;
@@ -355,29 +356,26 @@ main() {
     in.close();
     printf("test reader name %s \n", all_weapons[line].name);
     printf("test reader name %s \n", all_weapons["Rapier"].name);
-    // printf("test reader name %s \n", all_weapons["test"].name);
-    // printf("test reader name %s \n", all_weapons["test2"].name);
-    // printf("test reader name %s \n", all_weapons["test3"].name);
-    // printf("test reader cost %d \n", all_weapons["test"].cost);
-    // printf("test reader stat[0] %d \n", all_weapons["test"].stats[0]);
-    // printf("test reader stat[1] %d \n", all_weapons["test"].stats[1]);
-    // printf("test reader stat[2] %d \n", all_weapons["test"].stats[2]);
-    // printf("test reader stat[3] %d \n", all_weapons["test"].stats[3]);
-    // printf("test reader stat[4] %d \n", all_weapons["test"].stats[4]);
-    // printf("test reader stat[5] %d \n", all_weapons["test"].stats[5]);
-    // printf("test reader stat_bonus[0] %d \n", all_weapons["test"].stats_bonus[0]);
-    // printf("test reader stat_bonus[0] %d \n", all_weapons["test"].stats_bonus[1]);
-    // printf("test reader stat_bonus[0] %d \n", all_weapons["test"].stats_bonus[2]);
-    // printf("test reader stat_bonus[0] %d \n", all_weapons["test"].stats_bonus[3]);
-    // printf("test reader stat_bonus[0] %d \n", all_weapons["test"].stats_bonus[4]);
-    // printf("test reader stat_bonus[0] %d \n", all_weapons["test"].stats_bonus[5]);
-    // printf("test reader stat_bonus[0] %d \n", all_weapons["test"].stats_bonus[6]);
-    // printf("test reader stat_bonus[0] %d \n", all_weapons["test"].stats_bonus[7]);
-    // printf("test reader stat_bonus[0] %d \n", all_weapons["test"].stats_bonus[8]);
-    // printf("test reader stat_bonus[0] %d \n", all_weapons["test"].stats_bonus[9]);
-    // printf("test reader cost %d \n", all_weapons["test"].cost);
-    // printf("test reader dmg_type %d \n", all_weapons["test"].dmg_type);
-    // printf("test reader range %d \n", all_weapons["test"].range[0]);
+    printf("test reader cost %d \n", all_weapons["Rapier"].cost);
+    printf("test reader stat[0] %d \n", all_weapons["Rapier"].stats[0]);
+    printf("test reader stat[1] %d \n", all_weapons["Rapier"].stats[1]);
+    printf("test reader stat[2] %d \n", all_weapons["Rapier"].stats[2]);
+    printf("test reader stat[3] %d \n", all_weapons["Rapier"].stats[3]);
+    printf("test reader stat[4] %d \n", all_weapons["Rapier"].stats[4]);
+    printf("test reader stat[5] %d \n", all_weapons["Rapier"].stats[5]);
+    printf("test reader stat_bonus[0] %d \n", all_weapons["Rapier"].stats_bonus[0]);
+    printf("test reader stat_bonus[0] %d \n", all_weapons["Rapier"].stats_bonus[1]);
+    printf("test reader stat_bonus[0] %d \n", all_weapons["Rapier"].stats_bonus[2]);
+    printf("test reader stat_bonus[0] %d \n", all_weapons["Rapier"].stats_bonus[3]);
+    printf("test reader stat_bonus[0] %d \n", all_weapons["Rapier"].stats_bonus[4]);
+    printf("test reader stat_bonus[0] %d \n", all_weapons["Rapier"].stats_bonus[5]);
+    printf("test reader stat_bonus[0] %d \n", all_weapons["Rapier"].stats_bonus[6]);
+    printf("test reader stat_bonus[0] %d \n", all_weapons["Rapier"].stats_bonus[7]);
+    printf("test reader stat_bonus[0] %d \n", all_weapons["Rapier"].stats_bonus[8]);
+    printf("test reader stat_bonus[0] %d \n", all_weapons["Rapier"].stats_bonus[9]);
+    printf("test reader cost %d \n", all_weapons["Rapier"].cost);
+    printf("test reader dmg_type %d \n", all_weapons["Rapier"].dmg_type);
+    printf("test reader range %d \n", all_weapons["Rapier"].range[0]);
     printf("test reader effective %s \n", all_weapons[line].effective[0]);
     printf("test reader effective %s \n", all_weapons[line].effective[1]);
     // printf("test reader effective %s \n", all_weapons["test2"].effective[0]);

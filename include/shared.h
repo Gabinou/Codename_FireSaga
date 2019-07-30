@@ -197,9 +197,10 @@ public:
         FILE *f = fopen(filename, "r");
         char line[500];
         for (int i = 0; i < skip; i++) {
-            fgets(line, sizeof(line), f); // skips n lines.
+            fgets(line, sizeof(line), f); // skips skip lines.
         }
         fgets(line, sizeof(line), f);
+        line[strlen(line)-1] = 0;  //fgets also includes the \n in the line. This removes it.
         strncpy(name, line, sizeof(name));
         fgets(line, sizeof(line), f);
         std::vector<int> temp = extractIntegerWords(line);
