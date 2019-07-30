@@ -221,28 +221,43 @@ public:
             range[i] = temp[i];
         }
         // fgets(line, sizeof(line), f);
-        fseek(f, 10, SEEK_CUR);
-        // fgets(line, sizeof(line), f);
+        // fseek(f, 10, SEEK_CUR);
+        fgets(line, sizeof(line), f);
         // fscanf(f, "%s", line);
-        char word[500];
-        fscanf(f, "%[^,\n],", word);
-        printf("%s\n", word);
-        printf("are the strings the same %d\n", strspn(word, " "));
-        
+        char word1[500];
+        char word2[500];
+        // char word3[500];
+        // fscanf(f, "%[^:,],", word);
+        sscanf(line, "%s %s %s", word1, word1, word2);
+        word1[strlen(word1)-1] = 0;
+        printf("%s\n", word1);
+        printf("%s\n", word2);
         for (int i = 0; i < 4; i++) {
-            printf("SHIT");
-            std::string attrib(unit_attributes[i]);
-            // strncpy(attrib, unit_attributes[i], 100);
-            // tolower(attrib);
-            printf("%s \n", attrib);
+            if (strcmp(word1, unit_attributes[i]) == 0) {
+                strcpy(effective[0], word1);
+            }
         }
-        // strstr
-        fscanf(f, " %[^,\n],", word);
-        printf("%s\n", word);
+        for (int i = 0; i < 33; i++) {
+            if (strcmp(word1, unit_classes[i]) == 0) {
+                strcpy(effective[0], word1);
+            }
+        }
+        for (int i = 0; i < 4; i++) {
+            if (strcmp(word2, unit_attributes[i]) == 0) {
+                strcpy(effective[1], word2);
+            }
+        }
+        for (int i = 0; i < 33; i++) {
+            if (strcmp(word2, unit_classes[i]) == 0) {
+                strcpy(effective[1], word2);
+            }
+        }
+        // fscanf(f, " %[^, \n],", word);
+        // printf("%s\n", word);
         printf("THIS\n");
         // fscanf(f, "%s", line);
         // fscanf(f, "%s", line);
-        // line[strlen(line)-1] = 0;    
+        //     
         // strcpy(effective[0], line);
         // fscanf(f, "%s", effective[1]);
         fclose(f);

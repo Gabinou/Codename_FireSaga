@@ -106,7 +106,7 @@ char statuses[][14] = {"healthy", "sleep", "poison", "stone", "berserk"};
 *  - Berserk. Unit attacks the weakest unit in range. Friend or foe. *DESIGN QUESTION* <br>
 */
 
-char unit_classes[][24] = {"Lord", "Prince", "Princess", "Armor Knight", "Cavalier", "Pegasus Knight", "Wyvern Knight", "Axe Rider", "Lance Rider", "Sword Rider", "Mercernary", "Myrmidon", "Soldier", "Archer", "Mage", "Priest", "Priestess", "King", "Paladin", "Sniper", "General", "Bishop", "Hero", "Pirate", "Fighter", "Thief", "Troubadour", "Cleric", "Monk", "Shaman", "Dragon", "Dancer"};
+char unit_classes[][24] = {"Lord", "Prince", "Princess", "Armor Knight", "Cavalier", "Pegasus Knight", "Wyvern Knight", "Axe Rider", "Lance Rider", "Sword Rider", "Mercernary", "Myrmidon", "Soldier", "Archer", "Mage", "Priest", "Priestess", "King", "Paladin", "Sniper", "General", "Bishop", "Hero", "Pirate", "Fighter", "Thief", "Troubadour", "Cleric", "Monk", "Shaman", "Dragon", "Dancer", "Knight"};
 /// \var char unit_classes
 /// \brief Unit classes.
 char unit_attributes[][24] = {"Flying", "Promoted", "Armored", "Mounted"};
@@ -328,7 +328,7 @@ main() {
     std::ifstream in("weapons.txt");
     all_weapons["test"] = weapon();
     // all_weapons["test"].read("weapons.txt", 0);
-    all_weapons["test"].read("weapons.txt", 8);
+    all_weapons["test"].read("weapons.txt", 0);
     
     // in >> all_weapons["test"];
     // in >> all_weapons["test2"];
