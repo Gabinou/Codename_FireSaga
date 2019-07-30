@@ -224,41 +224,30 @@ public:
         fseek(f, 10, SEEK_CUR);
         fgets(line, sizeof(line), f);
         char * pch;
-        std:;string pch2;
-        int eff = 0;
-        int val = 0 ;
-        char ind;
-        for (int i = 0; i < sizeof(effective)/sizeof(effective[0]); i++) {
+        char eff = 0, i = 0;
+        while (pch != NULL) {
             if (i == 0) {
                 pch = strtok(line, ":,");
             } else {
                 pch = strtok(NULL, ":,");       
             }      
-            for (int j = 0; j < 33; j++) {
-                printf ("%d\n", strstr(pch, unit_classes[j]));  
-                printf ("%s %s\n", pch, unit_classes[j]);  
-                if (strstr(pch, unit_classes[j]) != 0) {
-                    strcpy(effective[eff], unit_classes[j]);
-                    eff++;
+            if (pch!=NULL) {
+                for (int j = 0; j < 33; j++) {
+                    strstr(pch, unit_classes[j]);
+                    if (strstr(pch, unit_classes[j]) != 0) {
+                        strcpy(effective[eff], unit_classes[j]);
+                        eff++;
+                    }
+                }
+                for (int j = 0; j < 4; j++) {
+                    if (strstr(pch, unit_attributes[j]) != 0) {
+                        strcpy(effective[eff], unit_attributes[j]);
+                        eff++;
+                    }
                 }
             }
-            // if (ind != -1) {
-                // effective[eff] = unit_classes[ind]
-            // }
-            ind = -1;
-            for (int j = 0; j < 4; j++) {
-                printf ("%d\n", strstr(pch, unit_attributes[j]));  
-                printf ("%s %s\n", pch, unit_attributes[j]); 
-                if (strstr(pch, unit_attributes[j]) != 0) {
-                    strcpy(effective[eff], unit_attributes[j]);
-                    eff++;
-                }
-            }
-            // if (ind != -1) {
-                // strcpy(effective[eff], unit_attributes[ind]);
-            // }
+            i++;
         }
-        printf ("%d\n", eff); 
         
 
         
