@@ -204,7 +204,7 @@ void read_all_maps(const char *filename) {
       
 }
 
-string read_line_n(const char *filename, char skip){
+string read_line(const char *filename, char skip){
     // 2019/07/30: skip should be a multiple of *number of lines written to weapon.txt* which is 8.
     FILE *f = fopen(filename, "r");
     char line[500];
@@ -213,6 +213,7 @@ string read_line_n(const char *filename, char skip){
     }
     fgets(line, sizeof(line), f);
     std::string out(line);
+    fclose(f);
     return(out);
 }
 
@@ -221,38 +222,38 @@ main() {
     printf("TESTING THIS BITCH\n");
     printf("Initializaing a character\n");
 
-    all_weapons["Rapier"] = weapon("Rapier", "swd", id++, 600,
-            // dmg  hit  crt wght uses  exp
-              {5,  90,  10,   7,  30,   2},
-              {1, 1}, // range
-              std::vector<char>(LEN(unit_stats), 0), {"Knight", "Cavalier"}, 0); 
-    all_weapons["Bronze Sword"] = weapon("Bronze Sword", "swd", id++, 450,
-           // dmg  hit  crt wght uses  exp
-              {3,  80,   0,   5,  45,   1},
-              {1, 1}, // range
-              std::vector<char>(LEN(unit_stats), 0), {"", ""}, 0);
-    all_weapons["Iron Sword"] =  weapon("Iron Sword", "swd", id++, 450,
-           // dmg hit  crt wght uses  exp
-              {5,  80,    0,   7,  45,  1},
-              {1, 1}, // range              
-              std::vector<char>(LEN(unit_stats), 0), {"", ""}, 0);
-    all_weapons["Iron Lance"] = weapon("Iron Lance", "lance", id++, 450,
-           // dmg hit  crt wght uses  exp
-           // dmg hit  crt wght uses  exp
-              {6,  80,   0,   8,   40,  1},
-              {1, 1}, // range
-              std::vector<char>(LEN(unit_stats), 0), {"", ""}, 0);
-    all_weapons["Steel Sword"] = weapon("Steel Sword", "swd", id++, 500,
-           // dmg hit  crt wght uses  exp
-              {8,  70,   0,   9,   35,  1},
-              {1, 1}, // range              
-              std::vector<char>(LEN(unit_stats), 0), {"", ""}, 0);
-    all_weapons["Lame de Damas"] = weapon("Lame de Damas", "swd", id++, 1000,
-            // Other names: Acier de Damas. Damas Sword. Damascus Sword. Damas Sword. Damas steel sword.
-            // dmg hit  crt wght uses  exp
-              {15,  65,  0,   8,  25,   1},
-              {1, 1}, // range
-              std::vector<char>(LEN(unit_stats), 0), {"", ""}, 0);
+    // all_weapons["Rapier"] = weapon("Rapier", "swd", id++, 600,
+            // // dmg  hit  crt wght uses  exp
+              // {5,  90,  10,   7,  30,   2},
+              // {1, 1}, // range
+              // std::vector<char>(LEN(unit_stats), 0), {"Knight", "Cavalier"}, 0); 
+    // all_weapons["Bronze Sword"] = weapon("Bronze Sword", "swd", id++, 450,
+           // // dmg  hit  crt wght uses  exp
+              // {3,  80,   0,   5,  45,   1},
+              // {1, 1}, // range
+              // std::vector<char>(LEN(unit_stats), 0), {"", ""}, 0);
+    // all_weapons["Iron Sword"] =  weapon("Iron Sword", "swd", id++, 450,
+           // // dmg hit  crt wght uses  exp
+              // {5,  80,    0,   7,  45,  1},
+              // {1, 1}, // range              
+              // std::vector<char>(LEN(unit_stats), 0), {"", ""}, 0);
+    // all_weapons["Iron Lance"] = weapon("Iron Lance", "lance", id++, 450,
+           // // dmg hit  crt wght uses  exp
+           // // dmg hit  crt wght uses  exp
+              // {6,  80,   0,   8,   40,  1},
+              // {1, 1}, // range
+              // std::vector<char>(LEN(unit_stats), 0), {"", ""}, 0);
+    // all_weapons["Steel Sword"] = weapon("Steel Sword", "swd", id++, 500,
+           // // dmg hit  crt wght uses  exp
+              // {8,  70,   0,   9,   35,  1},
+              // {1, 1}, // range              
+              // std::vector<char>(LEN(unit_stats), 0), {"", ""}, 0);
+    // all_weapons["Lame de Damas"] = weapon("Lame de Damas", "swd", id++, 1000,
+            // // Other names: Acier de Damas. Damas Sword. Damascus Sword. Damas Sword. Damas steel sword.
+            // // dmg hit  crt wght uses  exp
+              // {15,  65,  0,   8,  25,   1},
+              // {1, 1}, // range
+              // std::vector<char>(LEN(unit_stats), 0), {"", ""}, 0);
     // Unordered map convention: "name" is the immutable original object.
     // Copies have "name_id"
     
@@ -338,17 +339,22 @@ main() {
     // write_all_units("units.txt", "cpp");
     // write_all_weapons("weapons.txt");
     
-    
+    std::string line = read_line("weapons.txt", 0);
+    line.pop_back();
     std::ifstream in("weapons.txt");
-    all_weapons["test"] = weapon();
+    printf("%s\n", line.c_str());
+    std::cout << line << endl;
+    printf("THIS\n");
+    all_weapons[line.c_str()] = weapon();
     // all_weapons["test"].read("weapons.txt", 0);
-    all_weapons["test"].read("weapons.txt", 8);
+    all_weapons[line.c_str()].read("weapons.txt", 0);
     
     // in >> all_weapons["test"];
     // in >> all_weapons["test2"];
     // in >> all_weapons["test3"];
     in.close();
-    printf("test reader name %s \n", all_weapons["test"].name);
+    printf("test reader name %s \n", all_weapons[line].name);
+    printf("test reader name %s \n", all_weapons["Rapier"].name);
     // printf("test reader name %s \n", all_weapons["test"].name);
     // printf("test reader name %s \n", all_weapons["test2"].name);
     // printf("test reader name %s \n", all_weapons["test3"].name);
@@ -372,8 +378,8 @@ main() {
     // printf("test reader cost %d \n", all_weapons["test"].cost);
     // printf("test reader dmg_type %d \n", all_weapons["test"].dmg_type);
     // printf("test reader range %d \n", all_weapons["test"].range[0]);
-    printf("test reader effective %s \n", all_weapons["test"].effective[0]);
-    printf("test reader effective %s \n", all_weapons["test"].effective[1]);
+    printf("test reader effective %s \n", all_weapons[line].effective[0]);
+    printf("test reader effective %s \n", all_weapons[line].effective[1]);
     // printf("test reader effective %s \n", all_weapons["test2"].effective[0]);
     // printf("test reader effective %s \n", all_weapons["test2"].effective[1]);
 

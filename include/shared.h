@@ -220,7 +220,6 @@ public:
         for (int i = 0; i < temp.size(); i++) {
             range[i] = temp[i];
         }
-        // fgets(line, sizeof(line), f);
         fseek(f, 10, SEEK_CUR);
         fgets(line, sizeof(line), f);
         char * pch;
