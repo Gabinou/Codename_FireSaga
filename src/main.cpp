@@ -109,6 +109,8 @@ char statuses[][14] = {"healthy", "sleep", "poison", "stone", "berserk"};
 char unit_classes[][24] = {"Lord", "Prince", "Princess", "Armor Knight", "Cavalier", "Pegasus Knight", "Wyvern Knight", "Axe Rider", "Lance Rider", "Sword Rider", "Mercernary", "Myrmidon", "Soldier", "Archer", "Mage", "Priest", "Priestess", "King", "Paladin", "Sniper", "General", "Bishop", "Hero", "Pirate", "Fighter", "Thief", "Troubadour", "Cleric", "Monk", "Shaman", "Dragon", "Dancer"};
 /// \var char unit_classes
 /// \brief Unit classes.
+char unit_attributes[][24] = {"Flying", "Promoted", "Armored", "Mounted"};
+
 char all_unit_names[][14] = {"Marth", "Sheeda"};
 char all_weapon_names[][14] = {"Rapier", "Iron Sword", "Steel Sword", "Iron Lance", "Lame de Damas"};
 /// \var char all_unit_names
@@ -326,7 +328,7 @@ main() {
     std::ifstream in("weapons.txt");
     all_weapons["test"] = weapon();
     // all_weapons["test"].read("weapons.txt", 0);
-    all_weapons["test"].read("weapons.txt", 16);
+    all_weapons["test"].read("weapons.txt", 8);
     
     // in >> all_weapons["test"];
     // in >> all_weapons["test2"];

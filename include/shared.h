@@ -6,6 +6,7 @@ using namespace std;
 #include <string>
 #include <ostream>
 #include <istream>
+#include <ctype.h>
 #include <vector>
 #include <math.h> 
 #include <random>
@@ -36,6 +37,8 @@ extern bool single_roll(int);
 /// \fn double_roll(int)
 /// \brief Check if event occurs using double RNG roll: if mean of 2 random numbers is lwer than probability of event, it occurs. Skews probabilities, but fits with humans biases.
 extern bool double_roll(int);
+
+extern char unit_attributes[][24];
 
 extern char unit_stats[][14];
 /// \var extern char unit_stats
@@ -220,9 +223,22 @@ public:
         // fgets(line, sizeof(line), f);
         fseek(f, 10, SEEK_CUR);
         // fgets(line, sizeof(line), f);
-        fscanf(f, "%s", line);
-        printf("%s\n", line);
-        printf("%d\n", (line==","));
+        // fscanf(f, "%s", line);
+        char word[500];
+        fscanf(f, "%[^,\n],", word);
+        printf("%s\n", word);
+        printf("are the strings the same %d\n", strspn(word, " "));
+        
+        for (int i = 0; i < 4; i++) {
+            printf("SHIT");
+            std::string attrib(unit_attributes[i]);
+            // strncpy(attrib, unit_attributes[i], 100);
+            // tolower(attrib);
+            printf("%s \n", attrib);
+        }
+        // strstr
+        fscanf(f, " %[^,\n],", word);
+        printf("%s\n", word);
         printf("THIS\n");
         // fscanf(f, "%s", line);
         // fscanf(f, "%s", line);
