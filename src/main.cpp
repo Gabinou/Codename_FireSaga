@@ -245,34 +245,34 @@ main() {
             // dmg  hit  crt wght uses  exp
               {5,  90,  10,   7,  30,   2},
               {1, 1}, // range
-              std::vector<char>(LEN(unit_stats), 0), {"Knight", "Cavalier"}, 0); 
+              std::vector<char>(LEN(unit_stats), 0), {"Knight", "Cavalier"}, 0, 1); 
     all_weapons["Bronze Sword"] = weapon("Bronze Sword", "swd", id++, 450,
            // dmg  hit  crt wght uses  exp
               {3,  80,   0,   5,  45,   1},
               {1, 1}, // range
-              std::vector<char>(LEN(unit_stats), 0), {"", ""}, 0);
+              std::vector<char>(LEN(unit_stats), 0), {"", ""}, 0, 1);
     all_weapons["Iron Sword"] =  weapon("Iron Sword", "swd", id++, 450,
            // dmg hit  crt wght uses  exp
               {5,  80,    0,   7,  45,  1},
               {1, 1}, // range              
-              std::vector<char>(LEN(unit_stats), 0), {"", ""}, 0);
+              std::vector<char>(LEN(unit_stats), 0), {"", ""}, 0, 1);
     all_weapons["Iron Lance"] = weapon("Iron Lance", "lance", id++, 450,
            // dmg hit  crt wght uses  exp
            // dmg hit  crt wght uses  exp
               {6,  80,   0,   8,   40,  1},
               {1, 1}, // range
-              std::vector<char>(LEN(unit_stats), 0), {"", ""}, 0);
+              std::vector<char>(LEN(unit_stats), 0), {"", ""}, 0, 1);
     all_weapons["Steel Sword"] = weapon("Steel Sword", "swd", id++, 500,
            // dmg hit  crt wght uses  exp
               {8,  70,   0,   9,   35,  1},
               {1, 1}, // range              
-              std::vector<char>(LEN(unit_stats), 0), {"", ""}, 0);
+              std::vector<char>(LEN(unit_stats), 0), {"", ""}, 0, 1);
     all_weapons["Lame de Damas"] = weapon("Lame de Damas", "swd", id++, 1000,
             // Other names: Acier de Damas. Damas Sword. Damascus Sword. Damas Sword. Damas steel sword.
             // dmg hit  crt wght uses  exp
               {15,  65,  0,   8,  25,   1},
               {1, 1}, // range
-              std::vector<char>(LEN(unit_stats), 0), {"", ""}, 0);
+              std::vector<char>(LEN(unit_stats), 0), {"", ""}, 0, 1);
     // Unordered map convention: "name" is the immutable original object.
     // Copies have "name_id"
     

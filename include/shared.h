@@ -108,7 +108,7 @@ public:
     /// \brief Range of weapon.
     unsigned char range[2]; // 2- maximum,minimuum range.
   
-    char stats_bonus[10], effective[2][20], wpn_exp[10];
+    char stats_bonus[10], effective[2][20], exp;
     /// \var char effective
     /// \brief List of unit types or unit classes the weapon is effective against.
     /// \var char stats_bonus
@@ -216,7 +216,7 @@ public:
     /// \brief constructor for weapon.
     weapon(std::string, std::string, char, unsigned short int,
         std::vector<int>, std::vector<int>, std::vector<char>,
-        std::vector<std::string>, bool
+        std::vector<std::string>, bool, char
         );
     weapon();
 };
