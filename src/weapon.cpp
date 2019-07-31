@@ -20,11 +20,12 @@ weapon::~weapon(void) {
 }
 weapon::weapon(std::string in_name, std::string in_type, char in_id, unsigned short int in_cost,
        std::vector<int> in_stats, std::vector<int> in_range, std::vector<char> in_stats_bonus, 
-       std::vector<std::string> in_effective, bool in_dmg_type, char in_exp) {
+       std::vector<std::string> in_effective, bool in_dmg_type, int in_exp) {
     strncpy(name, in_name.c_str(), 30); // for some reason in_name is always of size 8. Whatever.
     strncpy(type, in_type.c_str(), 30);
     dmg_type = (bool) in_dmg_type;
-    exp = (bool) in_exp;
+    exp = in_exp;
+    printf("exp after init: %d \n", exp);
     for (int i = 0; i < in_effective.size(); i++) {
         strncpy(effective[i], in_effective[i].c_str(), sizeof(in_effective));
     }

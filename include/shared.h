@@ -108,7 +108,8 @@ public:
     /// \brief Range of weapon.
     unsigned char range[2]; // 2- maximum,minimuum range.
   
-    char stats_bonus[10], effective[2][20], exp;
+    char stats_bonus[10], effective[2][20];
+    int exp;
     /// \var char effective
     /// \brief List of unit types or unit classes the weapon is effective against.
     /// \var char stats_bonus
@@ -191,6 +192,9 @@ public:
         // << (int) in_weapon.stats[4] << ", " << (int) in_weapon.stats[5] << "\n";
         out << "Type: \t\t";
         out << in_weapon.type << "\n";
+        out << "Wpn_Exp: \t";
+        printf("%d,\n", in_weapon.exp);
+        out << in_weapon.exp << "\n";
         out << "Stats: \t\t";
         for (int i = 0; i < sizeof(in_weapon.stats)/sizeof(in_weapon.stats[0]); i++) {
             out << (int) in_weapon.stats[i] << ", ";
@@ -216,7 +220,7 @@ public:
     /// \brief constructor for weapon.
     weapon(std::string, std::string, char, unsigned short int,
         std::vector<int>, std::vector<int>, std::vector<char>,
-        std::vector<std::string>, bool, char
+        std::vector<std::string>, bool, int
         );
     weapon();
 };

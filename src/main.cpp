@@ -272,7 +272,9 @@ main() {
             // dmg hit  crt wght uses  exp
               {15,  65,  0,   8,  25,   1},
               {1, 1}, // range
-              std::vector<char>(LEN(unit_stats), 0), {"", ""}, 0, 1);
+              std::vector<char>(LEN(unit_stats), 0), {"", ""}, 0, 3);
+    all_weapons["Lame de Damas"].exp = 9;
+    printf("lame de damas exp %d, \n", all_weapons["Lame de Damas"].exp);
     // Unordered map convention: "name" is the immutable original object.
     // Copies have "name_id"
     
