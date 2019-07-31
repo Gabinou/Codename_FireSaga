@@ -241,38 +241,38 @@ main() {
     printf("TESTING THIS BITCH\n");
     printf("Initializaing a character\n");
 
-    // all_weapons["Rapier"] = weapon("Rapier", "swd", id++, 600,
-            // // dmg  hit  crt wght uses  exp
-              // {5,  90,  10,   7,  30,   2},
-              // {1, 1}, // range
-              // std::vector<char>(LEN(unit_stats), 0), {"Knight", "Cavalier"}, 0); 
-    // all_weapons["Bronze Sword"] = weapon("Bronze Sword", "swd", id++, 450,
-           // // dmg  hit  crt wght uses  exp
-              // {3,  80,   0,   5,  45,   1},
-              // {1, 1}, // range
-              // std::vector<char>(LEN(unit_stats), 0), {"", ""}, 0);
-    // all_weapons["Iron Sword"] =  weapon("Iron Sword", "swd", id++, 450,
-           // // dmg hit  crt wght uses  exp
-              // {5,  80,    0,   7,  45,  1},
-              // {1, 1}, // range              
-              // std::vector<char>(LEN(unit_stats), 0), {"", ""}, 0);
-    // all_weapons["Iron Lance"] = weapon("Iron Lance", "lance", id++, 450,
-           // // dmg hit  crt wght uses  exp
-           // // dmg hit  crt wght uses  exp
-              // {6,  80,   0,   8,   40,  1},
-              // {1, 1}, // range
-              // std::vector<char>(LEN(unit_stats), 0), {"", ""}, 0);
-    // all_weapons["Steel Sword"] = weapon("Steel Sword", "swd", id++, 500,
-           // // dmg hit  crt wght uses  exp
-              // {8,  70,   0,   9,   35,  1},
-              // {1, 1}, // range              
-              // std::vector<char>(LEN(unit_stats), 0), {"", ""}, 0);
-    // all_weapons["Lame de Damas"] = weapon("Lame de Damas", "swd", id++, 1000,
-            // // Other names: Acier de Damas. Damas Sword. Damascus Sword. Damas Sword. Damas steel sword.
-            // // dmg hit  crt wght uses  exp
-              // {15,  65,  0,   8,  25,   1},
-              // {1, 1}, // range
-              // std::vector<char>(LEN(unit_stats), 0), {"", ""}, 0);
+    all_weapons["Rapier"] = weapon("Rapier", "swd", id++, 600,
+            // dmg  hit  crt wght uses  exp
+              {5,  90,  10,   7,  30,   2},
+              {1, 1}, // range
+              std::vector<char>(LEN(unit_stats), 0), {"Knight", "Cavalier"}, 0); 
+    all_weapons["Bronze Sword"] = weapon("Bronze Sword", "swd", id++, 450,
+           // dmg  hit  crt wght uses  exp
+              {3,  80,   0,   5,  45,   1},
+              {1, 1}, // range
+              std::vector<char>(LEN(unit_stats), 0), {"", ""}, 0);
+    all_weapons["Iron Sword"] =  weapon("Iron Sword", "swd", id++, 450,
+           // dmg hit  crt wght uses  exp
+              {5,  80,    0,   7,  45,  1},
+              {1, 1}, // range              
+              std::vector<char>(LEN(unit_stats), 0), {"", ""}, 0);
+    all_weapons["Iron Lance"] = weapon("Iron Lance", "lance", id++, 450,
+           // dmg hit  crt wght uses  exp
+           // dmg hit  crt wght uses  exp
+              {6,  80,   0,   8,   40,  1},
+              {1, 1}, // range
+              std::vector<char>(LEN(unit_stats), 0), {"", ""}, 0);
+    all_weapons["Steel Sword"] = weapon("Steel Sword", "swd", id++, 500,
+           // dmg hit  crt wght uses  exp
+              {8,  70,   0,   9,   35,  1},
+              {1, 1}, // range              
+              std::vector<char>(LEN(unit_stats), 0), {"", ""}, 0);
+    all_weapons["Lame de Damas"] = weapon("Lame de Damas", "swd", id++, 1000,
+            // Other names: Acier de Damas. Damas Sword. Damascus Sword. Damas Sword. Damas steel sword.
+            // dmg hit  crt wght uses  exp
+              {15,  65,  0,   8,  25,   1},
+              {1, 1}, // range
+              std::vector<char>(LEN(unit_stats), 0), {"", ""}, 0);
     // Unordered map convention: "name" is the immutable original object.
     // Copies have "name_id"
     
@@ -326,37 +326,6 @@ main() {
         // /*Armored*/         0,
         // /*Promoted*/        0);
 
-    
-    // std::string line = read_line("weapons.txt", 0);
-    // all_weapons[line.c_str()] = weapon();
-    // all_weapons[line.c_str()].read("weapons.txt", 0);
-    // printf("test reader name %s \n", all_weapons[line].name);
-    // printf("test reader name %s \n", all_weapons["Rapier"].name);
-    // printf("test reader cost %d \n", all_weapons["Rapier"].cost);
-    // printf("test reader stat[0] %d \n", all_weapons["Rapier"].stats[0]);
-    // printf("test reader stat[1] %d \n", all_weapons["Rapier"].stats[1]);
-    // printf("test reader stat[2] %d \n", all_weapons["Rapier"].stats[2]);
-    // printf("test reader stat[3] %d \n", all_weapons["Rapier"].stats[3]);
-    // printf("test reader stat[4] %d \n", all_weapons["Rapier"].stats[4]);
-    // printf("test reader stat[5] %d \n", all_weapons["Rapier"].stats[5]);
-    // printf("test reader stat_bonus[0] %d \n", all_weapons["Rapier"].stats_bonus[0]);
-    // printf("test reader stat_bonus[0] %d \n", all_weapons["Rapier"].stats_bonus[1]);
-    // printf("test reader stat_bonus[0] %d \n", all_weapons["Rapier"].stats_bonus[2]);
-    // printf("test reader stat_bonus[0] %d \n", all_weapons["Rapier"].stats_bonus[3]);
-    // printf("test reader stat_bonus[0] %d \n", all_weapons["Rapier"].stats_bonus[4]);
-    // printf("test reader stat_bonus[0] %d \n", all_weapons["Rapier"].stats_bonus[5]);
-    // printf("test reader stat_bonus[0] %d \n", all_weapons["Rapier"].stats_bonus[6]);
-    // printf("test reader stat_bonus[0] %d \n", all_weapons["Rapier"].stats_bonus[7]);
-    // printf("test reader stat_bonus[0] %d \n", all_weapons["Rapier"].stats_bonus[8]);
-    // printf("test reader stat_bonus[0] %d \n", all_weapons["Rapier"].stats_bonus[9]);
-    // printf("test reader cost %d \n", all_weapons["Rapier"].cost);
-    // printf("test reader dmg_type %d \n", all_weapons["Rapier"].dmg_type);
-    // printf("test reader range %d \n", all_weapons["Rapier"].range[0]);
-    // printf("test reader range %d \n", all_weapons["Rapier"].range[1]);
-    // printf("test reader effective %s \n", all_weapons[line].effective[0]);
-    // printf("test reader effective %s \n", all_weapons[line].effective[1]);
-
-
 
 
     // all_units["Sheeda"] = unit("Sheeda", "Pegasus Knight", id++, 
@@ -388,54 +357,7 @@ main() {
     // all_units["Marth"].write("units.txt");
     
     // write_all_units("units.txt", "cpp");
-    read_all_weapons("weapons.txt");
-    write_all_weapons("weapons2.txt");
+    // read_all_weapons("weapons.txt");
+    write_all_weapons("weapons.txt");
     
-
-
-    
-    
-    
-    
-    // std::ofstream out("weapons.txt");
-    // out << all_weapons["Rapier"];
-    // out.close();
-    // printf("Marth's weapon. %s\n", inventory_items["Rapier_0001"].name);
-    // printf("Marth's weapon. %s\n", all_units["Marth"].equipment[all_units["Marth"].get_equipped()[0]].name);
-    // // return(0);
-    // // printf("Marth's weapon. %s\n", all_units["Marth"].get_equipped[0].name);
-    // // printf("Marth's dmg_type. %d\n", all_weapons[all_units["Marth"].equipment[0].name].dmg_type);
-    // printf("Marth's attack_damage value. %d\n", all_units["Marth"].attack_damage());
-    // printf("Marth's combat_damage value against Sheeda. %d\n", all_units["Marth"].combat_damage(all_units["Sheeda"],0));
-    // printf("Marth's combat_damage (crit) value against Sheeda. %d\n", all_units["Marth"].combat_damage(all_units["Sheeda"],1));
-    // printf("Marth's combat_hit probability against Sheeda. %d\n", all_units["Marth"].combat_hit(all_units["Sheeda"]));
-    // printf("Marth's combat_critical probability against Sheeda. %d\n", all_units["Marth"].combat_critical(all_units["Sheeda"]));
-    // printf("Marth's accuracy. %d\n", all_units["Marth"].accuracy());
-    // printf("Marth's avoid. %d\n", all_units["Marth"].avoid());
-    // printf("Marth's crit. %d\n", all_units["Marth"].critical());
-    // printf("Marth's favor. %d\n", all_units["Marth"].favor());
-    // printf("Sheeda's accuracy. %d\n", all_units["Sheeda"].accuracy());
-    // printf("Sheeda's avoid. %d\n", all_units["Sheeda"].avoid());
-    // printf("Sheeda's crit. %d\n", all_units["Sheeda"].critical());
-    // printf("Sheeda's favor. %d\n", all_units["Sheeda"].favor());
-    // printf("Does Sheeda double Marth?. %d\n", all_units["Sheeda"].combat_double(all_units["Marth"]));
-    // printf("Does Marth double Sheeda?. %d\n", all_units["Marth"].combat_double(all_units["Sheeda"]));
-    // printf("Does Marth retaliate?. %d\n", all_units["Sheeda"].retaliation(all_units["Marth"]));
-    // printf("Does Sheeda retaliate?. %d\n", all_units["Marth"].retaliation(all_units["Sheeda"]));
-    // all_units["Marth"].enemy_select(all_units["Marth"]);
-    // all_units["Marth"].combat(all_units["Sheeda"]);
-    // printf("Current Sheeda HP %d\n", all_units["Sheeda"].get_hp());
-    // printf("Current Marth HP %d\n", all_units["Marth"].get_hp());
-    // all_units["Marth"].combat(all_units["Sheeda"]);
-    // printf("Current Marth HP %d\n", all_units["Marth"].get_hp());
-    // all_units["Marth"].combat(all_units["Sheeda"]);
-    // printf("Current Marth HP %d\n", all_units["Marth"].get_hp());
-
-    // printf("Sheeda took damage?. %d\n", all_units["Sheeda"].get_hp());
-    // all_units["Marth"].attack(all_units["Sheeda"]);
-    // printf("Sheeda took damage?. %d\n", all_units["Sheeda"].get_hp());
-    // all_units["Marth"].combat(all_units["Sheeda"]);
-    // std::cout << "Please enter an integer value: ";
-    // std::cin >> i;
-    // return(0);
 }
