@@ -23,6 +23,7 @@ std::uniform_int_distribution<char> dist(0, 100); //*DESIGN QUESTION* What shoul
 
 std::vector<int> extractIntegerWords(string str) 
 { 
+    // cannot read integers if not separated by at least one space and other chars.
     stringstream ss;
     /* Storing the whole string into string stream */
     ss << str; 
@@ -225,15 +226,11 @@ void read_all_weapons(const char *filename) {
             line = read_line("weapons.txt", i);
 
         } catch (const char* msg) {
-            printf(msg);
             break;
         }
         if (!line.empty() && line != "") {
             all_weapons[line.c_str()] = weapon();
             all_weapons[line.c_str()].read("weapons.txt", i);
-            printf("%s\n", line.c_str());
-            printf("%d\n", i);
-            printf("%d\n", line.empty());
         }
 
 
@@ -331,10 +328,8 @@ main() {
 
     
     // std::string line = read_line("weapons.txt", 0);
-    line = read_line("weapons.txt", 0);
-            all_weapons[line.c_str()] = weapon();
-            all_weapons[line.c_str()].read("weapons.txt", i);
-    // in.close();
+    // all_weapons[line.c_str()] = weapon();
+    // all_weapons[line.c_str()].read("weapons.txt", 0);
     // printf("test reader name %s \n", all_weapons[line].name);
     // printf("test reader name %s \n", all_weapons["Rapier"].name);
     // printf("test reader cost %d \n", all_weapons["Rapier"].cost);
@@ -357,10 +352,10 @@ main() {
     // printf("test reader cost %d \n", all_weapons["Rapier"].cost);
     // printf("test reader dmg_type %d \n", all_weapons["Rapier"].dmg_type);
     // printf("test reader range %d \n", all_weapons["Rapier"].range[0]);
+    // printf("test reader range %d \n", all_weapons["Rapier"].range[1]);
     // printf("test reader effective %s \n", all_weapons[line].effective[0]);
     // printf("test reader effective %s \n", all_weapons[line].effective[1]);
-    // printf("test reader effective %s \n", all_weapons["test2"].effective[0]);
-    // printf("test reader effective %s \n", all_weapons["test2"].effective[1]);
+
 
 
 
@@ -393,8 +388,8 @@ main() {
     // all_units["Marth"].write("units.txt");
     
     // write_all_units("units.txt", "cpp");
-    // write_all_weapons("weapons.txt");
-    // write_all_weapons("weapons2.txt");
+    read_all_weapons("weapons.txt");
+    write_all_weapons("weapons2.txt");
     
 
 

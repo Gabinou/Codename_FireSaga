@@ -218,9 +218,8 @@ public:
         dmg_type = extractIntegerWords(line)[0];
         fgets(line, sizeof(line), f);
         temp = extractIntegerWords(line);
-        for (int i = 0; i < temp.size(); i++) {
-            range[i] = temp[i];
-        }
+        range[0] = temp[0];
+        range[1] = temp[1];
         fseek(f, 10, SEEK_CUR);
         fgets(line, sizeof(line), f);
         char * pch;
@@ -230,23 +229,28 @@ public:
                 pch = strtok(line, ":,");
             } else {
                 pch = strtok(NULL, ":,");       
-            }      
+            }
+            // printf("%s \n", pch);
+            // printf("%d \n", strstr(pch.c_str(), "Knight"));
             if (pch!=NULL) {
                 for (int j = 0; j < 33; j++) {
-                    strstr(pch, unit_classes[j]);
+                    // printf("%s %s \n", pch, unit_classes[j]);
                     if (strstr(pch, unit_classes[j]) != 0) {
                         strcpy(effective[eff], unit_classes[j]);
+                        printf("%s \n", effective[eff]);
                         eff++;
                     }
                 }
                 for (int j = 0; j < 4; j++) {
                     if (strstr(pch, unit_attributes[j]) != 0) {
                         strcpy(effective[eff], unit_attributes[j]);
+                        printf("%s \n", effective[eff]);
                         eff++;
                     }
                 }
             }
             i++;
+            
         }
         fclose(f);
     }; 
@@ -267,7 +271,7 @@ public:
         out << "\n" << "Cost: \t\t" << in_weapon.cost << "\n";
         out << "Dmg_type: \t" << in_weapon.dmg_type << "\n";
         out << "Range: \t\t";
-        if (in_weapon.range[0] == in_weapon.range[1]) {
+        if (in_weapon.range[1] == 0) {
             out << (int) in_weapon.range[0] << "\n";
         } else {
             out << (int) in_weapon.range[0] << ", " << (int) in_weapon.range[1] << "\n";
