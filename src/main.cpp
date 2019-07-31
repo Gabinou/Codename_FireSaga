@@ -193,14 +193,6 @@ void write_all_weapons(const char *filename, char const *savestyle = "cpp" ) {
 
 }
 
-void read_all_weapons(const char *filename) {
-    for (int i = 0 ; i <1000, i+=8)
-    try {
-        line = read_line("weapons.txt", i);
-    } catch(const char* msg) {
-        printf(msg);
-    }
-}
 
 void write_all_maps(const char *filename) {
       
@@ -225,6 +217,28 @@ string read_line(const char *filename, char skip){
     return(out);
 }
 
+void read_all_weapons(const char *filename) {
+    std::string line;
+    for (int i = 0 ; i <900; i+=8) {
+        line = "";
+        try {
+            line = read_line("weapons.txt", i);
+
+        } catch (const char* msg) {
+            printf(msg);
+            break;
+        }
+        if (!line.empty() && line != "") {
+            all_weapons[line.c_str()] = weapon();
+            all_weapons[line.c_str()].read("weapons.txt", i);
+            printf("%s\n", line.c_str());
+            printf("%d\n", i);
+            printf("%d\n", line.empty());
+        }
+
+
+    }
+}
 
 main() {
     printf("TESTING THIS BITCH\n");
@@ -316,50 +330,35 @@ main() {
         // /*Promoted*/        0);
 
     
-    std::string line = read_line("weapons.txt", 0);
-    line = read_line("weapons.txt", 10);
-    try {
-        line = read_line("weapons.txt", 100);
-    } catch(const char* msg) {
-        printf(msg);
-    }
-    return(0);
-    std::ifstream in("weapons.txt");
-    printf("%s\n", line.c_str());
-    std::cout << line << endl;
-    printf("THIS\n");
-    all_weapons[line.c_str()] = weapon();
-    // all_weapons["test"].read("weapons.txt", 0);
-    all_weapons[line.c_str()].read("weapons.txt", 0);
-    
-    // in >> all_weapons["test"];
-    // in >> all_weapons["test2"];
-    // in >> all_weapons["test3"];
-    in.close();
-    printf("test reader name %s \n", all_weapons[line].name);
-    printf("test reader name %s \n", all_weapons["Rapier"].name);
-    printf("test reader cost %d \n", all_weapons["Rapier"].cost);
-    printf("test reader stat[0] %d \n", all_weapons["Rapier"].stats[0]);
-    printf("test reader stat[1] %d \n", all_weapons["Rapier"].stats[1]);
-    printf("test reader stat[2] %d \n", all_weapons["Rapier"].stats[2]);
-    printf("test reader stat[3] %d \n", all_weapons["Rapier"].stats[3]);
-    printf("test reader stat[4] %d \n", all_weapons["Rapier"].stats[4]);
-    printf("test reader stat[5] %d \n", all_weapons["Rapier"].stats[5]);
-    printf("test reader stat_bonus[0] %d \n", all_weapons["Rapier"].stats_bonus[0]);
-    printf("test reader stat_bonus[0] %d \n", all_weapons["Rapier"].stats_bonus[1]);
-    printf("test reader stat_bonus[0] %d \n", all_weapons["Rapier"].stats_bonus[2]);
-    printf("test reader stat_bonus[0] %d \n", all_weapons["Rapier"].stats_bonus[3]);
-    printf("test reader stat_bonus[0] %d \n", all_weapons["Rapier"].stats_bonus[4]);
-    printf("test reader stat_bonus[0] %d \n", all_weapons["Rapier"].stats_bonus[5]);
-    printf("test reader stat_bonus[0] %d \n", all_weapons["Rapier"].stats_bonus[6]);
-    printf("test reader stat_bonus[0] %d \n", all_weapons["Rapier"].stats_bonus[7]);
-    printf("test reader stat_bonus[0] %d \n", all_weapons["Rapier"].stats_bonus[8]);
-    printf("test reader stat_bonus[0] %d \n", all_weapons["Rapier"].stats_bonus[9]);
-    printf("test reader cost %d \n", all_weapons["Rapier"].cost);
-    printf("test reader dmg_type %d \n", all_weapons["Rapier"].dmg_type);
-    printf("test reader range %d \n", all_weapons["Rapier"].range[0]);
-    printf("test reader effective %s \n", all_weapons[line].effective[0]);
-    printf("test reader effective %s \n", all_weapons[line].effective[1]);
+    // std::string line = read_line("weapons.txt", 0);
+    line = read_line("weapons.txt", 0);
+            all_weapons[line.c_str()] = weapon();
+            all_weapons[line.c_str()].read("weapons.txt", i);
+    // in.close();
+    // printf("test reader name %s \n", all_weapons[line].name);
+    // printf("test reader name %s \n", all_weapons["Rapier"].name);
+    // printf("test reader cost %d \n", all_weapons["Rapier"].cost);
+    // printf("test reader stat[0] %d \n", all_weapons["Rapier"].stats[0]);
+    // printf("test reader stat[1] %d \n", all_weapons["Rapier"].stats[1]);
+    // printf("test reader stat[2] %d \n", all_weapons["Rapier"].stats[2]);
+    // printf("test reader stat[3] %d \n", all_weapons["Rapier"].stats[3]);
+    // printf("test reader stat[4] %d \n", all_weapons["Rapier"].stats[4]);
+    // printf("test reader stat[5] %d \n", all_weapons["Rapier"].stats[5]);
+    // printf("test reader stat_bonus[0] %d \n", all_weapons["Rapier"].stats_bonus[0]);
+    // printf("test reader stat_bonus[0] %d \n", all_weapons["Rapier"].stats_bonus[1]);
+    // printf("test reader stat_bonus[0] %d \n", all_weapons["Rapier"].stats_bonus[2]);
+    // printf("test reader stat_bonus[0] %d \n", all_weapons["Rapier"].stats_bonus[3]);
+    // printf("test reader stat_bonus[0] %d \n", all_weapons["Rapier"].stats_bonus[4]);
+    // printf("test reader stat_bonus[0] %d \n", all_weapons["Rapier"].stats_bonus[5]);
+    // printf("test reader stat_bonus[0] %d \n", all_weapons["Rapier"].stats_bonus[6]);
+    // printf("test reader stat_bonus[0] %d \n", all_weapons["Rapier"].stats_bonus[7]);
+    // printf("test reader stat_bonus[0] %d \n", all_weapons["Rapier"].stats_bonus[8]);
+    // printf("test reader stat_bonus[0] %d \n", all_weapons["Rapier"].stats_bonus[9]);
+    // printf("test reader cost %d \n", all_weapons["Rapier"].cost);
+    // printf("test reader dmg_type %d \n", all_weapons["Rapier"].dmg_type);
+    // printf("test reader range %d \n", all_weapons["Rapier"].range[0]);
+    // printf("test reader effective %s \n", all_weapons[line].effective[0]);
+    // printf("test reader effective %s \n", all_weapons[line].effective[1]);
     // printf("test reader effective %s \n", all_weapons["test2"].effective[0]);
     // printf("test reader effective %s \n", all_weapons["test2"].effective[1]);
 
@@ -395,6 +394,7 @@ main() {
     
     // write_all_units("units.txt", "cpp");
     // write_all_weapons("weapons.txt");
+    // write_all_weapons("weapons2.txt");
     
 
 
