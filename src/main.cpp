@@ -162,14 +162,14 @@ std::unordered_map<string, unit> all_units;
 void write_all_units(const char *filename, char const *savestyle = "cpp" ) {
     if (savestyle == "cpp") {
         std::ofstream out(filename);
-        for (int i=0; i < sizeof(all_unit_names)/sizeof(all_unit_names[0]); i++){
-            out << all_units[all_unit_names[i]];
+        for (auto& it: all_units) {
+            out << it.second;
         }
         out.close();
     } else if (savestyle == "c") {
         remove(filename);
-        for (int i=0; i < sizeof(all_unit_names)/sizeof(all_unit_names[0]); i++){
-            all_units[all_unit_names[i]].write(filename);
+        for (auto& it: all_units) {
+            it.second.write(filename);
         }
     }
 }
