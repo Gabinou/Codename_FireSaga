@@ -81,30 +81,26 @@ public:
         range[1] = temp[1];
         fseek(f, 10, SEEK_CUR);
         fgets(line, sizeof(line), f);
-        printf("%s \n", line);
         char * pch;
         char eff = 0, i = 0;
+        strncpy(effective[0], "", sizeof(""));    
+        strncpy(effective[1], "", sizeof(""));    
         while (pch != NULL) {
             if (i == 0) {
                 pch = strtok(line, ":,");
             } else {
                 pch = strtok(NULL, ":,");       
             }
-            printf("%s \n", pch);
-            // printf("%d \n", strstr(pch.c_str(), "Knight"));
             if (pch!=NULL) {
                 for (int j = 0; j < 33; j++) {
-                    // printf("%s %s \n", pch, unit_classes[j]);
                     if (strstr(pch, ::unit_classes[j]) != 0) {
                         strcpy(effective[eff], unit_classes[j]);
-                        // printf("%s \n", effective[eff]);
                         eff++;
                     }
                 }
                 for (int j = 0; j < 4; j++) {
                     if (strstr(pch, ::unit_attributes[j]) != 0) {
                         strcpy(effective[eff], unit_attributes[j]);
-                        // printf("%s \n", effective[eff]);
                         eff++;
                     }
                 }
@@ -115,14 +111,9 @@ public:
     }; 
     friend std::ostream & operator << (std::ostream &out, const weapon &in_weapon) {
         out << in_weapon.name << "\n";
-        // out << "Stats: \t\t" // must stay like this cause of busted stats variable that needs more space to not crash.
-        // << (int) in_weapon.stats[0] << ", " << (int) in_weapon.stats[1] << ", " 
-        // << (int) in_weapon.stats[2] << ", " << (int) in_weapon.stats[3] << ", " 
-        // << (int) in_weapon.stats[4] << ", " << (int) in_weapon.stats[5] << "\n";
         out << "Type: \t\t";
         out << in_weapon.type << "\n";
         out << "Wpn_Exp: \t";
-        printf("%d,\n", in_weapon.exp);
         out << in_weapon.exp << "\n";
         out << "Stats: \t\t";
         for (int i = 0; i < sizeof(in_weapon.stats)/sizeof(in_weapon.stats[0]); i++) {
@@ -145,8 +136,6 @@ public:
         out << "\n";
         return(out);
     }
-    /// \fn weapon(std::string, std::string, char, unsigned short int, std::vector<int>, std::vector<int>, std::vector<char>, std::vector<std::string>, std::vector<std::string>, bool)
-    /// \brief constructor for weapon.
     weapon(std::string, std::string, char, unsigned short int,
         std::vector<int>, std::vector<int>, std::vector<char>,
         std::vector<std::string>, bool, int

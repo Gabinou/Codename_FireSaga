@@ -51,7 +51,7 @@ bool single_roll(int in_prob) {
 bool double_roll(int in_prob) {
     int rng1 = get_rand();
     int rng2 = get_rand(); 
-    printf("%i %i %i\n", rng1, rng2, in_prob);
+    // printf("%i %i %i\n", rng1, rng2, in_prob);
     bool out = ((rng1 + rng2) < (2 * in_prob));
     return(out);
 }
@@ -234,38 +234,38 @@ main() {
     printf("TESTING THIS BITCH\n");
     printf("Initializaing a character\n");
 
-    all_weapons["Rapier"] = weapon("Rapier", "swd", id++, 600,
-            // dmg  hit  crt wght uses  exp
-              {5,  90,  10,   7,  30,   2},
-              {1, 1}, // range
-              std::vector<char>(LEN(unit_stats), 0), {"Knight", "Cavalier"}, 0, 1); 
-    all_weapons["Bronze Sword"] = weapon("Bronze Sword", "swd", id++, 450,
-           // dmg  hit  crt wght uses  exp
-              {3,  80,   0,   5,  45,   1},
-              {1, 1}, // range
-              std::vector<char>(LEN(unit_stats), 0), {"", ""}, 0, 1);
-    all_weapons["Iron Sword"] =  weapon("Iron Sword", "swd", id++, 450,
-           // dmg hit  crt wght uses  exp
-              {5,  80,    0,   7,  45,  1},
-              {1, 1}, // range              
-              std::vector<char>(LEN(unit_stats), 0), {"", ""}, 0, 1);
-    all_weapons["Iron Lance"] = weapon("Iron Lance", "lance", id++, 450,
-           // dmg hit  crt wght uses  exp
-           // dmg hit  crt wght uses  exp
-              {6,  80,   0,   8,   40,  1},
-              {1, 1}, // range
-              std::vector<char>(LEN(unit_stats), 0), {"", ""}, 0, 1);
-    all_weapons["Steel Sword"] = weapon("Steel Sword", "swd", id++, 500,
-           // dmg hit  crt wght uses  exp
-              {8,  70,   0,   9,   35,  1},
-              {1, 1}, // range              
-              std::vector<char>(LEN(unit_stats), 0), {"", ""}, 0, 1);
-    all_weapons["Lame de Damas"] = weapon("Lame de Damas", "swd", id++, 1000,
-            // Other names: Acier de Damas. Damas Sword. Damascus Sword. Damas Sword. Damas steel sword.
-            // dmg hit  crt wght uses  exp
-              {15,  65,  0,   8,  25,   1},
-              {1, 1}, // range
-              std::vector<char>(LEN(unit_stats), 0), {"", ""}, 0, 3);
+    // all_weapons["Rapier"] = weapon("Rapier", "swd", id++, 600,
+            // // dmg  hit  crt wght uses  exp
+              // {5,  90,  10,   7,  30,   2},
+              // {1, 1}, // range
+              // std::vector<char>(LEN(unit_stats), 0), {"Knight", "Cavalier"}, 0, 1); 
+    // all_weapons["Bronze Sword"] = weapon("Bronze Sword", "swd", id++, 450,
+           // // dmg  hit  crt wght uses  exp
+              // {3,  80,   0,   5,  45,   1},
+              // {1, 1}, // range
+              // std::vector<char>(LEN(unit_stats), 0), {"", ""}, 0, 1);
+    // all_weapons["Iron Sword"] =  weapon("Iron Sword", "swd", id++, 450,
+           // // dmg hit  crt wght uses  exp
+              // {5,  80,    0,   7,  45,  1},
+              // {1, 1}, // range              
+              // std::vector<char>(LEN(unit_stats), 0), {"", ""}, 0, 1);
+    // all_weapons["Iron Lance"] = weapon("Iron Lance", "lance", id++, 450,
+           // // dmg hit  crt wght uses  exp
+           // // dmg hit  crt wght uses  exp
+              // {6,  80,   0,   8,   40,  1},
+              // {1, 1}, // range
+              // std::vector<char>(LEN(unit_stats), 0), {"", ""}, 0, 1);
+    // all_weapons["Steel Sword"] = weapon("Steel Sword", "swd", id++, 500,
+           // // dmg hit  crt wght uses  exp
+              // {8,  70,   0,   9,   35,  1},
+              // {1, 1}, // range              
+              // std::vector<char>(LEN(unit_stats), 0), {"", ""}, 0, 1);
+    // all_weapons["Lame de Damas"] = weapon("Lame de Damas", "swd", id++, 1000,
+            // // Other names: Acier de Damas. Damas Sword. Damascus Sword. Damas Sword. Damas steel sword.
+            // // dmg hit  crt wght uses  exp
+              // {15,  65,  0,   8,  25,   1},
+              // {1, 1}, // range
+              // std::vector<char>(LEN(unit_stats), 0), {"", ""}, 0, 3);
     // Unordered map convention: "name" is the immutable original object.
     // Copies have "name_id"
     
@@ -353,6 +353,8 @@ main() {
     read_all_weapons("weapons.txt");
     printf("%s \n", all_weapons["Rapier"].effective[0]);
     printf("%s \n", all_weapons["Rapier"].effective[1]);
+    printf("%s \n", all_weapons["Iron Sword"].effective[0]);
+    printf("%s \n", all_weapons["Iron Sword"].effective[1]);
     write_all_weapons("weapons6.txt");
     
 }

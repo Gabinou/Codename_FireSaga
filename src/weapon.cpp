@@ -8,9 +8,24 @@ using namespace std;
 #include "generic.hpp"
 #include "shared.hpp"
 
-
 weapon::weapon(){
-    // printf("Weapon %s is being created.\n" , name);
+    strncpy(name, "", 30); // for some reason in_name is always of size 8. Whatever.
+    strncpy(type, "", 30);
+    dmg_type = 0;
+    for (int i = 0; i < 2; i++) {
+        strncpy(effective[i], "", sizeof(""));
+    }
+    for (int i = 0; i < 10; i++) {
+        stats_bonus[i] = 0;
+    }
+    for (int i = 0; i < 10; i++) {
+        stats[i] = 0;
+    }
+    for (int i = 0; i < 2; i++) {
+        range[i] = 0;      
+    }
+    cost = 0;
+    exp = 0;
 }
 weapon::~weapon(void) {
     // printf("Weapon %s is being deleted.\n" , name);
