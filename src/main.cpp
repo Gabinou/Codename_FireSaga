@@ -351,6 +351,8 @@ main() {
     
     // write_all_units("units.txt", "cpp");
     read_all_weapons("weapons.txt");
+    printf("%s \n", all_weapons["Rapier"].effective[0]);
+    printf("%s \n", all_weapons["Rapier"].effective[1]);
     write_all_weapons("weapons6.txt");
     
 }

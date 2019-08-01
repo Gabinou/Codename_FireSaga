@@ -50,7 +50,6 @@ public:
         // 2019/07/30: skip should be a multiple of *number of lines written to weapon.txt* which is 8.
         FILE *f = fopen(filename, "r");
         char line[500];
-        char line2[500];
         for (int i = 0; i < skip; i++) {
             fgets(line, sizeof(line), f); // skips skip lines.
         }
@@ -82,6 +81,7 @@ public:
         range[1] = temp[1];
         fseek(f, 10, SEEK_CUR);
         fgets(line, sizeof(line), f);
+        printf("%s \n", line);
         char * pch;
         char eff = 0, i = 0;
         while (pch != NULL) {
@@ -90,27 +90,26 @@ public:
             } else {
                 pch = strtok(NULL, ":,");       
             }
-            // printf("%s \n", pch);
+            printf("%s \n", pch);
             // printf("%d \n", strstr(pch.c_str(), "Knight"));
             if (pch!=NULL) {
                 for (int j = 0; j < 33; j++) {
                     // printf("%s %s \n", pch, unit_classes[j]);
                     if (strstr(pch, ::unit_classes[j]) != 0) {
-                        strcpy(effective[eff], ::unit_classes[j]);
-                        printf("%s \n", effective[eff]);
+                        strcpy(effective[eff], unit_classes[j]);
+                        // printf("%s \n", effective[eff]);
                         eff++;
                     }
                 }
                 for (int j = 0; j < 4; j++) {
                     if (strstr(pch, ::unit_attributes[j]) != 0) {
-                        strcpy(effective[eff], ::unit_attributes[j]);
-                        printf("%s \n", effective[eff]);
+                        strcpy(effective[eff], unit_attributes[j]);
+                        // printf("%s \n", effective[eff]);
                         eff++;
                     }
                 }
             }
             i++;
-            
         }
         fclose(f);
     }; 
