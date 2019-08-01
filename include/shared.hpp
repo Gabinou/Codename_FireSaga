@@ -67,26 +67,6 @@ extern unsigned char id;
 /// \var extern char id
 /// \brief Global declaration of id.
 
-/// \class generic
-/// \brief Class from which the most objects inherit from.
-class generic {
-public:
-    char name[120];
-    /// \var char name
-    /// \brief Name of generic object.
-    unsigned char id;
-    /// \var unsigned char id
-    /// \brief All objects get ids.
-    char type[24]; 
-    /// \var type
-    /// \brief For units, contains class string. For weapons, contains weapon type string.
-    ~generic();
-    generic();
-    generic(const generic &obj);
-    /// \fn generic(const generic &obj)
-    /// \brief Copy constructor for generic object. Useless?
-};
-
 extern std::vector<int> extractIntegerWords(string);
 /// \struct inventory_item
 /// \brief Representation of items in unit inventory to reduce memory.
