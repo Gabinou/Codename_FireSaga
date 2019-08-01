@@ -6,6 +6,7 @@
 */
 using namespace std;
 #include "shared.hpp"
+#include "generic.hpp"
 #include "weapon.hpp"
 #include "unit.hpp"
 
@@ -215,17 +216,20 @@ string read_line(const char *filename, char skip){
 
 void read_all_weapons(const char *filename) {
     std::string line;
-    for (int i = 0 ; i < 80; i+=10) {
+    for (int i = 0 ; i < 160; i+=10) {
         line = "";
+        printf("%d \n", i);
         try {
             line = read_line("weapons.txt", i);
-
         } catch (const char* msg) {
             break;
         }
         if (!line.empty() && line != "") {
+            printf("%d \n", i);
+            printf("%s \n", line.c_str());
             all_weapons[line.c_str()] = weapon();
             all_weapons[line.c_str()].read("weapons.txt", i);
+            // printf("%s\n", all_weapons[line.c_str()].name);
         }
     }
 }
@@ -351,10 +355,8 @@ main() {
     
     // write_all_units("units.txt", "cpp");
     read_all_weapons("weapons.txt");
-    printf("%s \n", all_weapons["Rapier"].effective[0]);
-    printf("%s \n", all_weapons["Rapier"].effective[1]);
-    printf("%s \n", all_weapons["Iron Sword"].effective[0]);
-    printf("%s \n", all_weapons["Iron Sword"].effective[1]);
-    write_all_weapons("weapons6.txt");
+    // printf("%s\n", all_weapons["Rapier"]);
+    printf("%s\n", all_weapons["Throwing knife"].name);
+    write_all_weapons("weapons2.txt");
     
 }

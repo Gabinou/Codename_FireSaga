@@ -54,6 +54,7 @@ public:
             fgets(line, sizeof(line), f); // skips skip lines.
         }
         fgets(line, sizeof(line), f);
+        printf("%s \n", line);
         line[strlen(line)-1] = 0;  //fgets also includes the \n in the line. This removes it.
         strncpy(name, line, sizeof(name));        
         fscanf(f, "%*s %s", type);
