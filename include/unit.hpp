@@ -1,16 +1,6 @@
 #ifndef UNIT_HPP
 #define UNIT_HPP
 using namespace std;
-#include <stdio.h>
-#include <iostream>
-#include <string>
-#include <ostream>
-#include <istream>
-#include <ctype.h>
-#include <vector>
-#include <math.h> 
-#include <random>
-#include <bits/stdc++.h> 
 #include "shared.hpp"
 #include "generic.hpp"
 #include "inventory_item.hpp"

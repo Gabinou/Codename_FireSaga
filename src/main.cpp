@@ -4,18 +4,11 @@
 * \file main.cpp 
 * \brief Main game algorithm page.
 */
-#include <stdio.h>
-#include <iostream>
-#include <string>
-#include <ostream>
-#include <vector>
-#include <math.h> 
-#include <random>
-#include <bits/stdc++.h> 
+using namespace std;
 #include "shared.hpp"
 #include "weapon.hpp"
 #include "unit.hpp"
-using namespace std;
+
 
 // Skill idea: divine shield! Bubble!
 #ifndef DOXYGEN_SHOULD_SKIP_THIS

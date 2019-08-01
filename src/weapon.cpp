@@ -3,13 +3,11 @@
 * \file weapon.cpp 
 * \brief weapon class implementation.
 */
-#include <stdio.h>
-#include <iostream>
-#include <vector>
+using namespace std;
 #include "weapon.hpp"
 #include "generic.hpp"
 #include "shared.hpp"
-using namespace std;
+
 
 weapon::weapon(){
     printf("Weapon %s is being created.\n" , name);

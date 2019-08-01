@@ -1,15 +1,8 @@
 #ifndef SHARED_HPP
 #define SHARED_HPP
 using namespace std;
-#include <stdio.h>
+// #include <stdio.h>
 #include <iostream>
-#include <string>
-#include <ostream>
-#include <istream>
-#include <ctype.h>
-#include <vector>
-#include <math.h> 
-#include <random>
 #include <bits/stdc++.h> 
 /*! \file shared.hpp
 * \brief Shared data.

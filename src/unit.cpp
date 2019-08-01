@@ -4,12 +4,6 @@
 * \file unit.cpp 
 * \brief unit class.
 */
-#include <stdio.h>
-#include <iostream>
-#include <vector>
-#include <math.h> 
-#include <random>
-#include <bits/stdc++.h> 
 #include "shared.hpp"
 #include "unit.hpp"
 #include "weapon.hpp"
