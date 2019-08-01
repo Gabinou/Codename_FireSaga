@@ -182,8 +182,9 @@ void read_all_units(const char *filename) {
 void write_all_weapons(const char *filename, char const *savestyle = "cpp" ) {
     if (savestyle == "cpp") {
         std::ofstream out(filename);
-        for (int i=0; i < sizeof(all_weapon_names)/sizeof(all_weapon_names[0]); i++){
-            out << all_weapons[all_weapon_names[i]];
+        for (auto& it: all_weapons) { // Iterate over unordered_map
+            out << it.second;
+            // printf("%s \n", it.second.name);
         }
         out.close();
     }
