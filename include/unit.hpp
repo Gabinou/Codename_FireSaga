@@ -12,7 +12,8 @@ using namespace std;
 #include <random>
 #include <bits/stdc++.h> 
 #include "shared.hpp"
-#include "weapon.hpp"
+#include "generic.hpp"
+#include "inventory_item.hpp"
 /*! \file unit.hpp
 * \brief Unit class: For everything from allies to neutrals to enemies.
 */
@@ -63,7 +64,7 @@ public:
     /// \var stats_base
     /// \brief Base statistics. Separated from growths to be able to plot growth over time.
     /// stats_grown
-    struct inventory_item equipment[7], weapons[4], items[4];
+    struct ::inventory_item equipment[7], weapons[4], items[4];
     /// \var equipment
     /// \brief If equipment is not empty, weapons and items are not used. And vice versa.
     /// \var items

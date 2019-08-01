@@ -8,6 +8,7 @@
 #include <vector>
 #include "weapon.hpp"
 #include "generic.hpp"
+#include "shared.hpp"
 using namespace std;
 
 weapon::weapon(){

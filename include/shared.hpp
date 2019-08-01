@@ -11,8 +11,6 @@ using namespace std;
 #include <math.h> 
 #include <random>
 #include <bits/stdc++.h> 
-#include "unit.hpp"
-#include "weapon.hpp"
 /*! \file shared.hpp
 * \brief Shared data.
 */

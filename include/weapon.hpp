@@ -64,7 +64,7 @@ public:
         line[strlen(line)-1] = 0;  //fgets also includes the \n in the line. This removes it.
         strncpy(name, line, sizeof(name));
         fgets(line, sizeof(line), f);
-        std::vector<int> temp = extractIntegerWords(line);
+        std::vector<int> temp = ::extractIntegerWords(line);
         for (int i = 0; i < temp.size(); i++) {
             stats[i] = temp[i];
         }
@@ -74,11 +74,11 @@ public:
             stats_bonus[i] = temp[i];
         }
         fgets(line, sizeof(line), f);
-        cost = extractIntegerWords(line)[0];        
+        cost = ::extractIntegerWords(line)[0];        
         fgets(line, sizeof(line), f);
-        dmg_type = extractIntegerWords(line)[0];
+        dmg_type = ::extractIntegerWords(line)[0];
         fgets(line, sizeof(line), f);
-        temp = extractIntegerWords(line);
+        temp = ::extractIntegerWords(line);
         range[0] = temp[0];
         range[1] = temp[1];
         fseek(f, 10, SEEK_CUR);
