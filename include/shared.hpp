@@ -68,42 +68,6 @@ extern unsigned char id;
 /// \brief Global declaration of id.
 
 extern std::vector<int> extractIntegerWords(string);
-/// \struct inventory_item
-/// \brief Representation of items in unit inventory to reduce memory.
-struct inventory_item {
-    /// \var char name
-    /// \brief name of weapon in inventory.
-    char name[30];   
-    /// \var used
-    /// \brief number of times item was used.
-    char used;
-    /// \fn inventory_item(const inventory_item&) 
-    /// \brief constructor of inventory_item.
-    inventory_item(const inventory_item&); 
-    /// \fn inventory_item(std::string, char) 
-    /// \brief constructor of inventory_item.
-    inventory_item(std::string, char); 
-    /// \fn inventory_item() 
-    /// \brief constructor of inventory_item.
-    inventory_item(); 
-    ~inventory_item(); 
 
-};
-
-
-/*! \var inventory_items
-* \brief Contains all instances of inventory_items
-*  inventory items are the represntation of the weapon
-*  in the equipment of units. Made to be lighter than 
-*  actually copying the weapon. 
-*/
-// I think a unordered map inventory_items should exist for every save.
-extern std::unordered_map<string, struct inventory_item> inventory_items;
-/*! \var all_units
-* \brief Contains all instances of units.
-*  Uses the unit's name as std::unordered_map's key.
-*/
-// I think a unordered map all_units should exist for every save.
-extern std::unordered_map<string, unit> all_units;
 
 #endif /* SHARED_HPP */

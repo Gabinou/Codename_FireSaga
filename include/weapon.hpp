@@ -12,6 +12,7 @@ using namespace std;
 #include <random>
 #include <bits/stdc++.h> 
 #include "generic.hpp"
+#include "inventory_item.hpp"
 #include "shared.hpp"
 
 /*! \file weapon.hpp

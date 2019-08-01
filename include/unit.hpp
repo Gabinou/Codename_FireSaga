@@ -279,4 +279,12 @@ public:
     ~unit();
     unit();
 };
+
+/*! \var all_units
+* \brief Contains all instances of units.
+*  Uses the unit's name as std::unordered_map's key.
+*/
+// I think a unordered map all_units should exist for every save.
+extern std::unordered_map<string, unit> all_units;
+
 #endif /* UNIT_HPP */
