@@ -90,15 +90,7 @@ struct inventory_item {
 
 };
 
-/*! \var all_weapons
-* \brief Contains all instances of weapons.
-*  Uses the weapon's name as std::unordered_map's key.
-*  Are immutable. Should never be changed in game.
-*  Instead, the inventory_item instances conatains the
-*  number of times the item was used. If it is equal to 
-*  the item's use, the item is destroyed.
-*/
-extern std::unordered_map<string, weapon> all_weapons;
+
 /*! \var inventory_items
 * \brief Contains all instances of inventory_items
 *  inventory items are the represntation of the weapon

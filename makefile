@@ -5,8 +5,11 @@ SRC = src
 BLD = build
 INCLUDE = -I include/ 
     
-all: clean create_dirs $(BLD)/generic.o $(BLD)/weapon.o $(BLD)/main.o $(BLD)/unit.o $(BLD)/main.exe
+all: clean create_dirs $(BLD)/generic.o $(BLD)/inventory_item.o $(BLD)/weapon.o $(BLD)/main.o $(BLD)/unit.o $(BLD)/main.exe
 noclean: $(BLD)/weapon.o $(BLD)/main.o $(BLD)/unit.o $(BLD)/main.exe
+
+$(BLD)/inventory_item.o: $(SRC)/inventory_item.cpp
+	$(CXX) -c $** -o $@ $(INCLUDE)
 
 $(BLD)/generic.o: $(SRC)/generic.cpp
 	$(CXX) -c $** -o $@ $(INCLUDE)

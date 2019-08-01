@@ -6,10 +6,8 @@
 #include <stdio.h>
 #include <iostream>
 #include <vector>
-#include <math.h> 
-#include <random>
-#include <bits/stdc++.h> 
 #include "weapon.hpp"
+#include "generic.hpp"
 using namespace std;
 
 weapon::weapon(){
