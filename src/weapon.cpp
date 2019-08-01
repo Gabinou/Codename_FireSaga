@@ -10,10 +10,10 @@ using namespace std;
 
 
 weapon::weapon(){
-    printf("Weapon %s is being created.\n" , name);
+    // printf("Weapon %s is being created.\n" , name);
 }
 weapon::~weapon(void) {
-    printf("Weapon %s is being deleted.\n" , name);
+    // printf("Weapon %s is being deleted.\n" , name);
 }
 weapon::weapon(std::string in_name, std::string in_type, char in_id, unsigned short int in_cost,
        std::vector<int> in_stats, std::vector<int> in_range, std::vector<char> in_stats_bonus, 

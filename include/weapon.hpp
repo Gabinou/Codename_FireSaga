@@ -1,6 +1,8 @@
 #ifndef WEAPON_HPP
 #define WEAPON_HPP
 using namespace std;
+#include <istream> 
+#include <ostream> 
 #include <bits/stdc++.h> 
 #include "generic.hpp"
 #include "inventory_item.hpp"
@@ -48,14 +50,20 @@ public:
         // 2019/07/30: skip should be a multiple of *number of lines written to weapon.txt* which is 8.
         FILE *f = fopen(filename, "r");
         char line[500];
+        char line2[500];
         for (int i = 0; i < skip; i++) {
             fgets(line, sizeof(line), f); // skips skip lines.
         }
         fgets(line, sizeof(line), f);
         line[strlen(line)-1] = 0;  //fgets also includes the \n in the line. This removes it.
-        strncpy(name, line, sizeof(name));
+        strncpy(name, line, sizeof(name));        
+        fscanf(f, "%*s %s", type);
         fgets(line, sizeof(line), f);
-        std::vector<int> temp = ::extractIntegerWords(line);
+        fgets(line, sizeof(line), f);
+        std::vector<int> temp = extractIntegerWords(line);
+        fgets(line, sizeof(line), f);
+        exp = temp[0];
+        temp = extractIntegerWords(line);
         for (int i = 0; i < temp.size(); i++) {
             stats[i] = temp[i];
         }
@@ -63,13 +71,13 @@ public:
         temp = extractIntegerWords(line);
         for (int i = 0; i < temp.size(); i++) {
             stats_bonus[i] = temp[i];
-        }
+        }     
+        fgets(line, sizeof(line), f);      
+        cost = extractIntegerWords(line)[0];          
         fgets(line, sizeof(line), f);
-        cost = ::extractIntegerWords(line)[0];        
+        dmg_type = extractIntegerWords(line)[0];
         fgets(line, sizeof(line), f);
-        dmg_type = ::extractIntegerWords(line)[0];
-        fgets(line, sizeof(line), f);
-        temp = ::extractIntegerWords(line);
+        temp = extractIntegerWords(line);
         range[0] = temp[0];
         range[1] = temp[1];
         fseek(f, 10, SEEK_CUR);

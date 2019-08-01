@@ -215,7 +215,7 @@ string read_line(const char *filename, char skip){
 
 void read_all_weapons(const char *filename) {
     std::string line;
-    for (int i = 0 ; i <900; i+=8) {
+    for (int i = 0 ; i < 80; i+=10) {
         line = "";
         try {
             line = read_line("weapons.txt", i);
@@ -350,7 +350,7 @@ main() {
     // all_units["Marth"].write("units.txt");
     
     // write_all_units("units.txt", "cpp");
-    // read_all_weapons("weapons.txt");
-    write_all_weapons("weapons.txt");
+    read_all_weapons("weapons.txt");
+    write_all_weapons("weapons6.txt");
     
 }
