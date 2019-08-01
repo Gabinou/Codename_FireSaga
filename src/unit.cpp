@@ -10,7 +10,9 @@
 #include <math.h> 
 #include <random>
 #include <bits/stdc++.h> 
-#include "shared.h"
+#include "unit.hpp"
+#include "weapon.hpp"
+#include "shared.hpp"
 using namespace std;
 
 char wpn_types[][12]  = {"swd", "lance", "axe", "bow", "mgc_wind", "mgc_fire", "mgc_thunder",  "mgc_dark",  "mgc_light", "staff"};
