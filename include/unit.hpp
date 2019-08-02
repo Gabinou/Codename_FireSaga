@@ -7,7 +7,6 @@ using namespace std;
 /*! \file unit.hpp
 * \brief Unit class: For everything from allies to neutrals to enemies.
 */
-
 class unit: public generic {
     // Lightweight implementation.
 private: 

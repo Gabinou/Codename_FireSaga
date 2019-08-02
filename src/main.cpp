@@ -127,7 +127,7 @@ char weapon_slots = 4;
 
 /// \fn main 
 /// \brief Main FEmaker algorithm.
-// std::unordered_map<string, char> weapon_num;
+std::unordered_map<string, char> weapon_num;
 std::unordered_map<string, weapon> all_weapons;
 std::unordered_map<string, struct inventory_item> inventory_items;
 std::unordered_map<string, unit> all_units;
@@ -190,21 +190,21 @@ string read_line(const char *filename, char skip){
     return(out);
 }
 
-void read_all_weapons(const char *filename) {
+void read_all_weapons(const char *filename="weapons.txt") {
     std::string line;
-    std::ifstream inFile("weapons.txt"); 
+    std::ifstream inFile(filename); 
     short int line_num = std::count(std::istreambuf_iterator<char>(inFile), 
              std::istreambuf_iterator<char>(), '\n') + 1;
     for (int i = 0 ; i < line_num; i+=10) {
         line = "";
         try {
-            line = read_line("weapons.txt", i);
+            line = read_line(filename, i);
         } catch (const char* msg) {
             break;
         }
         if (!line.empty() && line != "") {
             all_weapons[line.c_str()] = weapon();
-            all_weapons[line.c_str()].read("weapons.txt", i);
+            all_weapons[line.c_str()].read(filename, i);
         }
     }
     
@@ -264,26 +264,26 @@ main() {
     // Unordered map convention: "name" is the immutable original object.
     // Copies have "name_id"
     
-    // unit Marth("Marth", "Prince", id++, 
-                            // //HP Str Mag Skl Spd Lck Def Res Con Mov
-        // /*stats_base*/      {18,  1,  2,  9, 10,  7,  5,  2,  6,  5},
-        // /*Growths*/         {90,  8,  2,  9, 10,  7,  5,  2,  6,  5},
-        // /*Skills*/          {18,  8,  2},
-        // /*Love_pts*/        {18,1,1 ,1,1},
-        // /*Love_growths*/    {18,1,1 ,1,1},
-        // /*Weapon_exp*/      {18,  8,  2,  9, 10,  7,  5,  2,  6,  5},
-        // /*Position*/        {18,1,1},
-        // /*Equipped*/        {0},
-        // /*Equipment*/       {inventory_items["Rapier_0001"]},
-        // /*Weapons*/         {},
-        // /*Items*/           {},
-        // /*Exp*/             0, 
-        // /*Lovers*/          {"Sheeda", "" ,"","",""},
-        // /*Mounted*/         0,
-        // /*Flying*/          0,
-        // /*Armored*/         0,
-        // /*Promoted*/        0
-    // );    
+    unit Marth("Marth", "Prince", id++, 
+                            //HP Str Mag Skl Spd Lck Def Res Con Mov
+        /*stats_base*/      {18,  1,  2,  9, 10,  7,  5,  2,  6,  5},
+        /*Growths*/         {90,  8,  2,  9, 10,  7,  5,  2,  6,  5},
+        /*Skills*/          {18,  8,  2},
+        /*Love_pts*/        {18,1,1 ,1,1},
+        /*Love_growths*/    {18,1,1 ,1,1},
+        /*Weapon_exp*/      {18,  8,  2,  9, 10,  7,  5,  2,  6,  5},
+        /*Position*/        {18,1,1},
+        /*Equipped*/        {0},
+        /*Equipment*/       {},
+        /*Weapons*/         {},
+        /*Items*/           {},
+        /*Exp*/             0, 
+        /*Lovers*/          {"Sheeda", "" ,"","",""},
+        /*Mounted*/         0,
+        /*Flying*/          0,
+        /*Armored*/         0,
+        /*Promoted*/        0
+    );    
     
     // all_units["Marth"] = unit("Marth", "Prince", id++, 
                             // /*HP Str Mag Skl Spd Lck Def Res Con Mov

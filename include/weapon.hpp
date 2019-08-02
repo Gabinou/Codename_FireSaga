@@ -12,7 +12,7 @@ using namespace std;
 * \brief Weapon class. Not the one in the inventory, just the immutable weapon data.
 */
 
-// extern std::unordered_map<string, char> weapon_num;
+extern std::unordered_map<string, char> weapon_num;
 
 /// \class weapon
 /// \brief Weapon class. Implemented to be as light as possible.
@@ -49,70 +49,8 @@ public:
     /// \brief dmg_type: Damage type. 0 for physical, 1 for magical.
     ~weapon();
     
-    void read(const char *filename, char skip) {
-        // 2019/07/30: skip should be a multiple of *number of lines written to weapon.txt* which is 8.
-        FILE *f = fopen(filename, "r");
-        char line[500];
-        for (int i = 0; i < skip; i++) {
-            fgets(line, sizeof(line), f); // skips skip lines.
-        }
-        fgets(line, sizeof(line), f);
-        line[strlen(line)-1] = 0;  //fgets also includes the \n in the line. This removes it.
-        strncpy(name, line, sizeof(name));        
-        // weapon_num[name] = 0;
-        fscanf(f, "%*s %s", type);
-        fgets(line, sizeof(line), f);
-        fgets(line, sizeof(line), f);
-        std::vector<int> temp = extractIntegerWords(line);
-        fgets(line, sizeof(line), f);
-        exp = temp[0];
-        temp = extractIntegerWords(line);
-        for (int i = 0; i < temp.size(); i++) {
-            stats[i] = temp[i];
-        }
-        fgets(line, sizeof(line), f);
-        temp = extractIntegerWords(line);
-        for (int i = 0; i < temp.size(); i++) {
-            stats_bonus[i] = temp[i];
-        }     
-        fgets(line, sizeof(line), f);      
-        cost = extractIntegerWords(line)[0];          
-        fgets(line, sizeof(line), f);
-        dmg_type = extractIntegerWords(line)[0];
-        fgets(line, sizeof(line), f);
-        temp = extractIntegerWords(line);
-        range[0] = temp[0];
-        range[1] = temp[1];
-        fseek(f, 10, SEEK_CUR);
-        fgets(line, sizeof(line), f);
-        char * pch;
-        char eff = 0, i = 0;
-        strncpy(effective[0], "", sizeof(""));    
-        strncpy(effective[1], "", sizeof(""));    
-        while (pch != NULL) {
-            if (i == 0) {
-                pch = strtok(line, ":,");
-            } else {
-                pch = strtok(NULL, ":,");       
-            }
-            if (pch!=NULL) {
-                for (int j = 0; j < 33; j++) {
-                    if (strstr(pch, ::unit_classes[j]) != 0) {
-                        strcpy(effective[eff], unit_classes[j]);
-                        eff++;
-                    }
-                }
-                for (int j = 0; j < 4; j++) {
-                    if (strstr(pch, ::unit_attributes[j]) != 0) {
-                        strcpy(effective[eff], unit_attributes[j]);
-                        eff++;
-                    }
-                }
-            }
-            i++;
-        }
-        fclose(f);
-    }; 
+    void read(const char*, char);
+    
     friend std::ostream & operator << (std::ostream &out, const weapon &in_weapon) {
         out << in_weapon.name << "\n";
         out << "Type: \t\t";
