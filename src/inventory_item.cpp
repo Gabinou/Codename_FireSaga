@@ -13,17 +13,12 @@ inventory_item::inventory_item() {
 
 inventory_item::inventory_item(std::string in_name, char in_used){
     std::stringstream nums;
-    // string a = printf("%04d\n", weapon_num[name]);
-    // string a = weapon_num.ToString().PadLeft(4, '0');
     nums  << std::setfill('0') << std::setw(5) << weapon_num[name];
     std::string num = nums.str();
-    // printf("%s \n", num.c_str());
     std::string new_name;
-    // newname = strcat(in_name, strcat("_", s.c_str()));
     new_name += in_name;
     new_name += "_";
     new_name += num;
-    // printf("%s \n", new_name.c_str());
     strncpy(name, new_name.c_str(), sizeof(new_name));
     used = in_used;
     weapon_num[in_name]++;
