@@ -11,6 +11,9 @@ using namespace std;
 /*! \file weapon.hpp
 * \brief Weapon class. Not the one in the inventory, just the immutable weapon data.
 */
+
+// extern std::unordered_map<string, char> weapon_num;
+
 /// \class weapon
 /// \brief Weapon class. Implemented to be as light as possible.
 /// All unsigned variables cannot be negative.
@@ -54,9 +57,9 @@ public:
             fgets(line, sizeof(line), f); // skips skip lines.
         }
         fgets(line, sizeof(line), f);
-        printf("%s \n", line);
         line[strlen(line)-1] = 0;  //fgets also includes the \n in the line. This removes it.
         strncpy(name, line, sizeof(name));        
+        // weapon_num[name] = 0;
         fscanf(f, "%*s %s", type);
         fgets(line, sizeof(line), f);
         fgets(line, sizeof(line), f);

@@ -125,33 +125,9 @@ char weapon_slots = 4;
 /// \var weapon_slots 
 /// \brief Number of weapon slots. Separate from weapon slots.
 
-generic::generic() {
-
-}
-
-generic::~generic(void) {
-    // printf("Generic object is being deleted\n");
-}
-
-inventory_item::inventory_item() {
-
-}
-
-inventory_item::inventory_item(std::string in_name, char in_used){
-    strcpy(name, in_name.c_str());
-    used = in_used;
-}
-
-inventory_item::~inventory_item(void) {
-    // printf("Weapon %s is being deleted.\n" , name);
-}
-inventory_item::inventory_item(const inventory_item& source) {
-    strcpy(name, source.name);
-    used = source.used;
-}
-
 /// \fn main 
 /// \brief Main FEmaker algorithm.
+// std::unordered_map<string, char> weapon_num;
 std::unordered_map<string, weapon> all_weapons;
 std::unordered_map<string, struct inventory_item> inventory_items;
 std::unordered_map<string, unit> all_units;
@@ -191,7 +167,6 @@ void write_all_weapons(const char *filename, char const *savestyle = "cpp" ) {
 
 }
 
-
 void write_all_maps(const char *filename) {
       
 }
@@ -222,25 +197,37 @@ void read_all_weapons(const char *filename) {
              std::istreambuf_iterator<char>(), '\n') + 1;
     for (int i = 0 ; i < line_num; i+=10) {
         line = "";
-        printf("%d \n", i);
         try {
             line = read_line("weapons.txt", i);
         } catch (const char* msg) {
             break;
         }
         if (!line.empty() && line != "") {
-            printf("%d \n", i);
-            printf("%s \n", line.c_str());
             all_weapons[line.c_str()] = weapon();
             all_weapons[line.c_str()].read("weapons.txt", i);
-            // printf("%s\n", all_weapons[line.c_str()].name);
         }
     }
+    
+    // This part oif read_all_weapons creates an inventory_item for every weapon in all_weapons.
+    // Have to run this anyway, better to put it here.
+    // std::unordered_map<std::string, weapon>::iterator it = all_weapons.begin();
+    // while(it != all_weapons.end()) {
+        // char key[(it->first).size() + 1];
+        // strcpy(key, (it->first).c_str());
+        // inventory_items[strcat(key,"_0001")] = inventory_item(key, 10);
+        // it++;
+    // }
+    
 }
 
 main() {
     printf("TESTING THIS BITCH\n");
     printf("Initializaing a character\n");
+
+    read_all_weapons("weapons.txt");
+
+    // write_all_weapons("weapons2.txt");
+
 
     // all_weapons["Rapier"] = weapon("Rapier", "swd", id++, 600,
             // // dmg  hit  crt wght uses  exp
@@ -276,14 +263,6 @@ main() {
               // std::vector<char>(LEN(unit_stats), 0), {"", ""}, 0, 3);
     // Unordered map convention: "name" is the immutable original object.
     // Copies have "name_id"
-    
-    // std::unordered_map<std::string, weapon>::iterator it = all_weapons.begin();
-    // while(it != all_weapons.end()) {
-        // char key[(it->first).size() + 1];
-        // strcpy(key, (it->first).c_str());
-        // inventory_items[strcat(key,"_0001")] =  inventory_item(key, 10);
-        // it++;
-    // }
     
     // unit Marth("Marth", "Prince", id++, 
                             // //HP Str Mag Skl Spd Lck Def Res Con Mov
@@ -360,11 +339,6 @@ main() {
     // write_all_units("units.txt", "cpp");
     
 
-    
-    // printf("%d\n", line);
-    read_all_weapons("weapons.txt");
-    // printf("%s\n", all_weapons["Rapier"]);
-    printf("%s\n", all_weapons["Throwing knife"].name);
-    write_all_weapons("weapons2.txt");
+
     
 }

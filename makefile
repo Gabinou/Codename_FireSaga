@@ -23,7 +23,7 @@ $(BLD)/unit.o: $(SRC)/unit.cpp
 $(BLD)/weapon.o: $(SRC)/weapon.cpp
 	$(CXX) -c $**  -o $@ $(INCLUDE)
     
-$(BLD)/main.exe: $(BLD)/main.o $(BLD)/unit.o $(BLD)/weapon.o include/shared.hpp
+$(BLD)/main.exe: $(BLD)/main.o $(BLD)/unit.o $(BLD)/weapon.o $(BLD)/generic.o $(BLD)/inventory_item.o  include/shared.hpp
 	$(CXX) $** -o $@ $(INCLUDE)
     
 clean:
