@@ -11,9 +11,6 @@ using namespace std;
 /*! \file weapon.hpp
 * \brief Weapon class. Not the one in the inventory, just the immutable weapon data.
 */
-
-extern std::unordered_map<string, char> weapon_num;
-
 /// \class weapon
 /// \brief Weapon class. Implemented to be as light as possible.
 /// All unsigned variables cannot be negative.

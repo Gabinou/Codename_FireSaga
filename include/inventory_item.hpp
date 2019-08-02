@@ -1,7 +1,10 @@
 #ifndef INVENTORY_ITEM_HPP
 #define INVENTORY_ITEM_HPP
 using namespace std;
-#include <bits/stdc++.h> 
+#include <bits/stdc++.h>
+#include <sstream>
+#include <iomanip>
+#include "shared.hpp" 
 
 /*! \file inventory_item.hpp
 * \brief Representation of items in unit inventories.

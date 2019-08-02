@@ -222,10 +222,12 @@ void read_all_weapons(const char *filename="weapons.txt") {
 
 main() {
     printf("TESTING THIS BITCH\n");
-    printf("Initializaing a character\n");
+    printf("Initializaing weapons.\n");
 
     read_all_weapons("weapons.txt");
-
+    printf("%d \f", weapon_num["Rapier"]);
+    inventory_items["Rapier_0001"] = inventory_item("Rapier", 10);
+    // printf("%d \f", weapon_num["Rapier"]);
     // write_all_weapons("weapons2.txt");
 
 
@@ -264,26 +266,26 @@ main() {
     // Unordered map convention: "name" is the immutable original object.
     // Copies have "name_id"
     
-    unit Marth("Marth", "Prince", id++, 
-                            //HP Str Mag Skl Spd Lck Def Res Con Mov
-        /*stats_base*/      {18,  1,  2,  9, 10,  7,  5,  2,  6,  5},
-        /*Growths*/         {90,  8,  2,  9, 10,  7,  5,  2,  6,  5},
-        /*Skills*/          {18,  8,  2},
-        /*Love_pts*/        {18,1,1 ,1,1},
-        /*Love_growths*/    {18,1,1 ,1,1},
-        /*Weapon_exp*/      {18,  8,  2,  9, 10,  7,  5,  2,  6,  5},
-        /*Position*/        {18,1,1},
-        /*Equipped*/        {0},
-        /*Equipment*/       {},
-        /*Weapons*/         {},
-        /*Items*/           {},
-        /*Exp*/             0, 
-        /*Lovers*/          {"Sheeda", "" ,"","",""},
-        /*Mounted*/         0,
-        /*Flying*/          0,
-        /*Armored*/         0,
-        /*Promoted*/        0
-    );    
+    // unit Marth("Marth", "Prince", id++, 
+                            // //HP Str Mag Skl Spd Lck Def Res Con Mov
+        // /*stats_base*/      {18,  1,  2,  9, 10,  7,  5,  2,  6,  5},
+        // /*Growths*/         {90,  8,  2,  9, 10,  7,  5,  2,  6,  5},
+        // /*Skills*/          {18,  8,  2},
+        // /*Love_pts*/        {18,1,1 ,1,1},
+        // /*Love_growths*/    {18,1,1 ,1,1},
+        // /*Weapon_exp*/      {18,  8,  2,  9, 10,  7,  5,  2,  6,  5},
+        // /*Position*/        {18,1,1},
+        // /*Equipped*/        {0},
+        // /*Equipment*/       {},
+        // /*Weapons*/         {},
+        // /*Items*/           {},
+        // /*Exp*/             0, 
+        // /*Lovers*/          {"Sheeda", "" ,"","",""},
+        // /*Mounted*/         0,
+        // /*Flying*/          0,
+        // /*Armored*/         0,
+        // /*Promoted*/        0
+    // );    
     
     // all_units["Marth"] = unit("Marth", "Prince", id++, 
                             // /*HP Str Mag Skl Spd Lck Def Res Con Mov
