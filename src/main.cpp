@@ -226,8 +226,9 @@ main() {
 
     read_all_weapons("weapons.txt");
     printf("%d \f", weapon_num["Rapier"]);
-    inventory_items["Rapier_0001"] = inventory_item("Rapier", 10);
-    // printf("%d \f", weapon_num["Rapier"]);
+    inventory_item("Rapier", 10);
+    printf("%d \f", weapon_num["Rapier"]);
+    printf("%d \f", inventory_items["Rapier_0000"]);
     // write_all_weapons("weapons2.txt");
 
 

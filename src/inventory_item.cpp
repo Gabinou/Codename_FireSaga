@@ -12,25 +12,21 @@ inventory_item::inventory_item() {
 }
 
 inventory_item::inventory_item(std::string in_name, char in_used){
-    weapon_num[name]++;
-    weapon_num[name]++;
-    weapon_num[name]++;
-    std::stringstream ss;
+    std::stringstream nums;
     // string a = printf("%04d\n", weapon_num[name]);
     // string a = weapon_num.ToString().PadLeft(4, '0');
-    ss  << std::setfill('0') << std::setw(5) << 25;
-    std::string s = ss.str();
-    printf("%s \n", s.c_str());
-    std::string new_name[100];
+    nums  << std::setfill('0') << std::setw(5) << weapon_num[name];
+    std::string num = nums.str();
+    // printf("%s \n", num.c_str());
+    std::string new_name;
     // newname = strcat(in_name, strcat("_", s.c_str()));
-    printf("%s \n", new_name + "hello");
-    // ss << std::hex <<  std::setw(4) << std::setfill('0') << (int) weapon_num[name];
-
-    // strcpy(name, s.c_str());
-    // printf("%s \n", name);
-    // printf("%s \n", s);
+    new_name += in_name;
+    new_name += "_";
+    new_name += num;
+    // printf("%s \n", new_name.c_str());
+    strncpy(name, new_name.c_str(), sizeof(new_name));
     used = in_used;
-    weapon_num[name]++;
+    weapon_num[in_name]++;
 }
 
 inventory_item::~inventory_item(void) {
