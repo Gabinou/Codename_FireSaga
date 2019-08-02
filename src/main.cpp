@@ -228,7 +228,7 @@ main() {
     printf("%d \f", weapon_num["Rapier"]);
     inventory_item("Rapier", 10);
     printf("%d \f", weapon_num["Rapier"]);
-    printf("%d \f", inventory_items["Rapier_0000"]);
+    // printf("%d \f", inventory_items["Rapier_0000"]);
     // write_all_weapons("weapons2.txt");
 
 
@@ -267,26 +267,26 @@ main() {
     // Unordered map convention: "name" is the immutable original object.
     // Copies have "name_id"
     
-    // unit Marth("Marth", "Prince", id++, 
-                            // //HP Str Mag Skl Spd Lck Def Res Con Mov
-        // /*stats_base*/      {18,  1,  2,  9, 10,  7,  5,  2,  6,  5},
-        // /*Growths*/         {90,  8,  2,  9, 10,  7,  5,  2,  6,  5},
-        // /*Skills*/          {18,  8,  2},
-        // /*Love_pts*/        {18,1,1 ,1,1},
-        // /*Love_growths*/    {18,1,1 ,1,1},
-        // /*Weapon_exp*/      {18,  8,  2,  9, 10,  7,  5,  2,  6,  5},
-        // /*Position*/        {18,1,1},
-        // /*Equipped*/        {0},
-        // /*Equipment*/       {},
-        // /*Weapons*/         {},
-        // /*Items*/           {},
-        // /*Exp*/             0, 
-        // /*Lovers*/          {"Sheeda", "" ,"","",""},
-        // /*Mounted*/         0,
-        // /*Flying*/          0,
-        // /*Armored*/         0,
-        // /*Promoted*/        0
-    // );    
+    unit Marth("Marth", "Prince", id++, 
+                            //HP Str Mag Skl Spd Lck Def Res Con Mov
+        /*stats_base*/      {18,  1,  2,  9, 10,  7,  5,  2,  6,  5},
+        /*Growths*/         {90,  8,  2,  9, 10,  7,  5,  2,  6,  5},
+        /*Skills*/          {18,  8,  2},
+        /*Love_pts*/        {18,1,1 ,1,1},
+        /*Love_growths*/    {18,1,1 ,1,1},
+        /*Weapon_exp*/      {18,  8,  2,  9, 10,  7,  5,  2,  6,  5},
+        /*Position*/        {18,1,1},
+        /*Equipped*/        {0},
+        /*Equipment*/       {inventory_item("Rapier", 10)},
+        /*Weapons*/         {},
+        /*Items*/           {},
+        /*Exp*/             0, 
+        /*Lovers*/          {"Sheeda", "" ,"","",""},
+        /*Mounted*/         0,
+        /*Flying*/          0,
+        /*Armored*/         0,
+        /*Promoted*/        0
+    );    
     
     // all_units["Marth"] = unit("Marth", "Prince", id++, 
                             // /*HP Str Mag Skl Spd Lck Def Res Con Mov
