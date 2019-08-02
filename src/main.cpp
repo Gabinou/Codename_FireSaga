@@ -217,7 +217,10 @@ string read_line(const char *filename, char skip){
 
 void read_all_weapons(const char *filename) {
     std::string line;
-    for (int i = 0 ; i < 160; i+=10) {
+    std::ifstream inFile("weapons.txt"); 
+    short int line_num = std::count(std::istreambuf_iterator<char>(inFile), 
+             std::istreambuf_iterator<char>(), '\n') + 1;
+    for (int i = 0 ; i < line_num; i+=10) {
         line = "";
         printf("%d \n", i);
         try {
@@ -355,6 +358,10 @@ main() {
     // all_units["Marth"].write("units.txt");
     
     // write_all_units("units.txt", "cpp");
+    
+
+    
+    // printf("%d\n", line);
     read_all_weapons("weapons.txt");
     // printf("%s\n", all_weapons["Rapier"]);
     printf("%s\n", all_weapons["Throwing knife"].name);
