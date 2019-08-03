@@ -129,7 +129,7 @@ char weapon_slots = 4;
 /// \brief Main FEmaker algorithm.
 std::unordered_map<string, char> weapon_num;
 std::unordered_map<string, weapon> all_weapons;
-std::unordered_map<string, struct inventory_item> inventory_items;
+// std::unordered_map<string, struct inventory_item> inventory_items;
 std::unordered_map<string, unit> all_units;
 
 /// \fn void write_all_units(const char *filename, char const *savestyle)
@@ -223,7 +223,7 @@ void read_all_weapons(const char *filename="weapons.txt") {
 main() {
     printf("TESTING THIS BITCH\n");
     printf("Initializaing weapons.\n");
-
+    weapon_num["Rapier"]++;
     read_all_weapons("weapons.txt");
     printf("%d \f", weapon_num["Rapier"]);
     inventory_item("Rapier", 10);
@@ -277,7 +277,7 @@ main() {
         /*Weapon_exp*/      {18,  8,  2,  9, 10,  7,  5,  2,  6,  5},
         /*Position*/        {18,1,1},
         /*Equipped*/        {0},
-        /*Equipment*/       {inventory_item("Rapier", 10)},
+        /*Equipment*/       {inventory_item("Rapier", 10), inventory_item("Rapier", 10)},
         /*Weapons*/         {},
         /*Items*/           {},
         /*Exp*/             0, 
@@ -287,7 +287,9 @@ main() {
         /*Armored*/         0,
         /*Promoted*/        0
     );    
-    
+    printf("%d \f", weapon_num["Rapier"]);
+    printf("%s \n", Marth.equipment[0].name);
+    printf("%s \n", Marth.equipment[1].name);
     // all_units["Marth"] = unit("Marth", "Prince", id++, 
                             // /*HP Str Mag Skl Spd Lck Def Res Con Mov
         // stats_base*/        {18,  8,  2,  9, 10,  7,  5,  2,  6,  5},
@@ -308,8 +310,6 @@ main() {
         // /*Flying*/          0,
         // /*Armored*/         0,
         // /*Promoted*/        0);
-
-
 
     // all_units["Sheeda"] = unit("Sheeda", "Pegasus Knight", id++, 
                             // /*HP Str Mag Skl Spd Lck Def Res Con Mov

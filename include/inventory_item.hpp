@@ -27,7 +27,6 @@ struct inventory_item {
     /// \brief constructor of inventory_item.
     inventory_item(); 
     ~inventory_item(); 
-
 };
 
 /*! \var inventory_items
