@@ -127,7 +127,6 @@ char weapon_slots = 4;
 
 /// \fn main 
 /// \brief Main FEmaker algorithm.
-std::unordered_map<string, char> weapon_num;
 std::unordered_map<string, weapon> all_weapons;
 // std::unordered_map<string, struct inventory_item> inventory_items;
 std::unordered_map<string, unit> all_units;
@@ -222,12 +221,8 @@ void read_all_weapons(const char *filename="weapons.txt") {
 
 main() {
     printf("TESTING THIS BITCH\n");
-    printf("Initializaing weapons.\n");
-    weapon_num["Rapier"]++;
     read_all_weapons("weapons.txt");
-    printf("%d \f", weapon_num["Rapier"]);
     inventory_item("Rapier", 10);
-    printf("%d \f", weapon_num["Rapier"]);
     // printf("%d \f", inventory_items["Rapier_0000"]);
     // write_all_weapons("weapons2.txt");
 
@@ -287,7 +282,6 @@ main() {
         /*Armored*/         0,
         /*Promoted*/        0
     );    
-    printf("%d \f", weapon_num["Rapier"]);
     printf("%s \n", Marth.equipment[0].name);
     printf("%s \n", Marth.equipment[1].name);
     // all_units["Marth"] = unit("Marth", "Prince", id++, 

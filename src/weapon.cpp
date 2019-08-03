@@ -40,7 +40,6 @@ void weapon::read(const char *filename, char skip) {
     fgets(line, sizeof(line), f);
     line[strlen(line)-1] = 0;  //fgets also includes the \n in the line. This removes it.
     strncpy(name, line, sizeof(name));        
-    weapon_num[name] = 0;
     fscanf(f, "%*s %s", type);
     fgets(line, sizeof(line), f);
     fgets(line, sizeof(line), f);
@@ -99,7 +98,6 @@ weapon::weapon(std::string in_name, std::string in_type, char in_id, unsigned sh
        std::vector<int> in_stats, std::vector<int> in_range, std::vector<char> in_stats_bonus, 
        std::vector<std::string> in_effective, bool in_dmg_type, int in_exp) {
     strncpy(name, in_name.c_str(), 30); // for some reason in_name is always of size 8. Whatever.
-    weapon_num[name] = 0;
     strncpy(type, in_type.c_str(), 30);
     dmg_type = (bool) in_dmg_type;
     for (int i = 0; i < in_effective.size(); i++) {

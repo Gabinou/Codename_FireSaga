@@ -68,7 +68,4 @@ extern unsigned char id;
 extern std::vector<int> extractIntegerWords(string);
 
 
-extern std::unordered_map<string, char> weapon_num;
-
-
 #endif /* SHARED_HPP */
