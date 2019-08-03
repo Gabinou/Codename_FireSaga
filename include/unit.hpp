@@ -184,9 +184,9 @@ public:
     
     /// \brief friend << (it overloads it) for unit to write the unit to text file.
     friend std::ostream & operator << (std::ostream &out, const unit &in_unit) {
-        out << in_unit.name << "\n"
-        << "Class: \t\t" << in_unit.type << "\n"
-        << "Bases: \t\t";
+        out << in_unit.name << "\n";
+        out << "Class: \t\t" << in_unit.type << "\n";
+        out << "Bases: \t\t";
         for (int i = 0; i < sizeof(in_unit.stats_base)/sizeof(in_unit.stats_base[0]); i++) {
             if (i == (sizeof(in_unit.stats_base)/sizeof(in_unit.stats_base[0])) - 1) {
                 out << (int) in_unit.stats_base[i] << "\n";
@@ -253,12 +253,12 @@ public:
                 out << (int) in_unit.wpn_exp[i] << ", ";
             }
         };
-        out << "Exp: \t\t" << in_unit.exp << "\n"
-        << "Mounted: \t" << in_unit.mounted << "\n"
-        << "Flying: \t"  << in_unit.flying << "\n"
-        << "Armored: \t" << in_unit.armored << "\n"
-        << "Promoted: \t" << in_unit.promoted << "\n"
-        << std::endl;
+        out << "Exp: \t\t" << (int) in_unit.exp << "\n";
+        out << "Mounted: \t" << in_unit.mounted << "\n";
+        out << "Flying: \t"  << in_unit.flying << "\n";
+        out << "Armored: \t" << in_unit.armored << "\n";
+        out << "Promoted: \t" << in_unit.promoted << "\n";
+        out << std::endl;
         return(out);
     }
      

@@ -138,12 +138,14 @@ void write_all_units(const char *filename, char const *savestyle = "cpp" ) {
     if (savestyle == "cpp") {
         std::ofstream out(filename);
         for (auto& it: all_units) {
+            printf("%s \n", it.second.name);
             out << it.second;
         }
         out.close();
     } else if (savestyle == "c") {
         remove(filename);
         for (auto& it: all_units) {
+
             it.second.write(filename);
         }
     }
@@ -205,6 +207,7 @@ void read_all_weapons(const char *filename="weapons.txt") {
             all_weapons[line.c_str()] = weapon();
             all_weapons[line.c_str()].read(filename, i);
         }
+    inFile.close();
     }
     
     // This part oif read_all_weapons creates an inventory_item for every weapon in all_weapons.
@@ -222,7 +225,7 @@ void read_all_weapons(const char *filename="weapons.txt") {
 main() {
     printf("TESTING THIS BITCH\n");
     read_all_weapons("weapons.txt");
-    inventory_item("Rapier", 10);
+    // inventory_item("Rapier", 10);
     // printf("%d \f", inventory_items["Rapier_0000"]);
     // write_all_weapons("weapons2.txt");
 
@@ -261,29 +264,7 @@ main() {
               // std::vector<char>(LEN(unit_stats), 0), {"", ""}, 0, 3);
     // Unordered map convention: "name" is the immutable original object.
     // Copies have "name_id"
-    
-    unit Marth("Marth", "Prince", id++, 
-                            //HP Str Mag Skl Spd Lck Def Res Con Mov
-        /*stats_base*/      {18,  1,  2,  9, 10,  7,  5,  2,  6,  5},
-        /*Growths*/         {90,  8,  2,  9, 10,  7,  5,  2,  6,  5},
-        /*Skills*/          {18,  8,  2},
-        /*Love_pts*/        {18,1,1 ,1,1},
-        /*Love_growths*/    {18,1,1 ,1,1},
-        /*Weapon_exp*/      {18,  8,  2,  9, 10,  7,  5,  2,  6,  5},
-        /*Position*/        {18,1,1},
-        /*Equipped*/        {0},
-        /*Equipment*/       {inventory_item("Rapier", 10), inventory_item("Rapier", 10)},
-        /*Weapons*/         {},
-        /*Items*/           {},
-        /*Exp*/             0, 
-        /*Lovers*/          {"Sheeda", "" ,"","",""},
-        /*Mounted*/         0,
-        /*Flying*/          0,
-        /*Armored*/         0,
-        /*Promoted*/        0
-    );    
-    printf("%s \n", Marth.equipment[0].name);
-    printf("%s \n", Marth.equipment[1].name);
+   
     // all_units["Marth"] = unit("Marth", "Prince", id++, 
                             // /*HP Str Mag Skl Spd Lck Def Res Con Mov
         // stats_base*/        {18,  8,  2,  9, 10,  7,  5,  2,  6,  5},
@@ -295,7 +276,7 @@ main() {
         // /*Weapon_exp*/      { 1,  0,  0,  0,  0,  0,  0,  0,  0,  0},
         // /*Position*/        { 1,  1,  1},
         // /*Equipped*/        {0},
-        // /*Equipment*/       {inventory_items["Rapier_0001"]},
+        // /*Equipment*/       {inventory_items("Rapier", 0)},
         // /*Weapons*/         {},
         // /*Items*/           {},
         // /*Exp*/             0, 
@@ -305,26 +286,49 @@ main() {
         // /*Armored*/         0,
         // /*Promoted*/        0);
 
-    // all_units["Sheeda"] = unit("Sheeda", "Pegasus Knight", id++, 
-                            // /*HP Str Mag Skl Spd Lck Def Res Con Mov
-        // stats_base*/        {18,  7,  2,  7, 18,  8,  4,  4,  5,  7},
-        // /*Growths*/         {40, 25, 20, 40, 70, 80, 20, 20,  0,  0},
-        // /*Skills*/          {18,  8,  2},
-        // /*Love_pts*/        { 0,  0,  0,  0,  0},
-        // /*Love_growths*/    { 0,  0,  0,  0,  0},
-                           // //swd lnc axe bow wnd fir tnd drk lgt staff
-        // /*Weapon_exp*/      { 0,  1,  0,  0,  0,  0,  0,  0,  0,  0},
-        // /*Position*/        { 1,  2,  1},
-        // /*Equipped*/        {0},
-        // /*Equipment*/       {inventory_items["Iron Lance_0001"]},
-        // /*Weapons*/         {},
-        // /*Items*/           {},
-        // /*Exp*/             0, 
-        // /*Lovers*/          {"Marth", "", "", "", ""},
-        // /*Mounted*/         1,
-        // /*Flying*/          1,
-        // /*Armored*/         0,
-        // /*Promoted*/        0);
+    all_units["Sheeda"] = unit("Sheeda", "Pegasus Knight", id++, 
+                            /*HP Str Mag Skl Spd Lck Def Res Con Mov
+        stats_base*/        {18,  7,  2,  7, 18,  8,  4,  4,  5,  7},
+        /*Growths*/         {40, 25, 20, 40, 70, 80, 20, 20,  0,  0},
+        /*Skills*/          {18,  8,  2},
+        /*Love_pts*/        { 0,  0,  0,  0,  0},
+        /*Love_growths*/    { 0,  0,  0,  0,  0},
+                           //swd lnc axe bow wnd fir tnd drk lgt staff
+        /*Weapon_exp*/      { 0,  1,  0,  0,  0,  0,  0,  0,  0,  0},
+        /*Position*/        { 1,  2,  1},
+        /*Equipped*/        {0},
+        /*Equipment*/       {inventory_item("Iron Lance", 10), inventory_item("Iron Sword", 10)},
+        /*Weapons*/         {},
+        /*Items*/           {},
+        /*Exp*/             0, 
+        /*Lovers*/          {"Marth", "", "", "", ""},
+        /*Mounted*/         1,
+        /*Flying*/          1,
+        /*Armored*/         0,
+        /*Promoted*/        0);
+           
+        all_units["Sheeda2"] = unit("Sheeda2", "Pegasus Knight", id++, 
+                            /*HP Str Mag Skl Spd Lck Def Res Con Mov
+        stats_base*/        {18,  7,  2,  7, 18,  8,  4,  4,  5,  7},
+        /*Growths*/         {40, 25, 20, 40, 70, 80, 20, 20,  0,  0},
+        /*Skills*/          {18,  8,  2},
+        /*Love_pts*/        { 0,  0,  0,  0,  0},
+        /*Love_growths*/    { 0,  0,  0,  0,  0},
+                           //swd lnc axe bow wnd fir tnd drk lgt staff
+        /*Weapon_exp*/      { 0,  1,  0,  0,  0,  0,  0,  0,  0,  0},
+        /*Position*/        { 1,  2,  1},
+        /*Equipped*/        {0},
+        /*Equipment*/       {inventory_item("Iron Lance", 10), inventory_item("Iron Sword", 10)},
+        /*Weapons*/         {},
+        /*Items*/           {},
+        /*Exp*/             0, 
+        /*Lovers*/          {"Marth", "", "", "", ""},
+        /*Mounted*/         1,
+        /*Flying*/          1,
+        /*Armored*/         0,
+        /*Promoted*/        0);
+                
+           
            
     // std::ofstream out("units.txt");
     // out << all_units["Marth"]; // This is the c++ way of printing an object to file.
@@ -333,7 +337,9 @@ main() {
     // remove("units.txt");
     // all_units["Marth"].write("units.txt");
     
-    // write_all_units("units.txt", "cpp");
+    printf("%d \n", all_units["Sheeda2"].exp);
+    printf("%d \n", all_units["Sheeda"].exp);
+    write_all_units("units.txt", "cpp");
     
 
 
