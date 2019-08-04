@@ -45,8 +45,8 @@ void unit::equip_weapon(std::vector<unsigned int> in_equipped) {
         }
         
     };
-    printf("in_equipped %d\n", in_equipped[0]);
-    printf("equip_weapon %d\n", equipped[0]);
+    // printf("in_equipped %d\n", in_equipped[0]);
+    // printf("equip_weapon %d\n", equipped[0]);
     attack_probs[0] = accuracy();
     attack_probs[1] = avoid();
     attack_probs[2] = critical();
@@ -86,6 +86,7 @@ unit::unit(std::string in_name, std::string in_unit_class, char in_id,
     flying = in_flying;
     armored = in_armored;
     promoted = in_promoted;
+    exp = in_exp;
     for (int i = 0; i < 7 ; i++) {
         if (i < in_equipment.size()) {
             equipment[i] = in_equipment[i];
