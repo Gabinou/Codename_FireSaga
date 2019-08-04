@@ -296,8 +296,8 @@ main() {
                            //swd lnc axe bow wnd fir tnd drk lgt staff
         /*Weapon_exp*/      { 0,  1,  0,  0,  0,  0,  0,  0,  0,  0},
         /*Position*/        { 1,  2,  1},
-        /*Equipped*/        {0},
-        /*Equipment*/       {inventory_item("Iron Lance", 10), inventory_item("Iron Sword", 10)},
+        /*Equipped*/        {1},
+        /*Equipment*/       {inventory_item("Iron Lance", 10), inventory_item("Iron Lance", 10)},
         /*Weapons*/         {},
         /*Items*/           {},
         /*Exp*/             0, 
@@ -315,9 +315,9 @@ main() {
         /*Love_pts*/        { 0,  0,  0,  0,  0},
         /*Love_growths*/    { 0,  0,  0,  0,  0},
                            //swd lnc axe bow wnd fir tnd drk lgt staff
-        /*Weapon_exp*/      { 0,  1,  0,  0,  0,  0,  0,  0,  0,  0},
+        /*Weapon_exp*/      { 1,  0,  0,  0,  0,  0,  0,  0,  0,  0},
         /*Position*/        { 1,  2,  1},
-        /*Equipped*/        {0},
+        /*Equipped*/        {1},
         /*Equipment*/       {inventory_item("Iron Lance", 10), inventory_item("Iron Sword", 10)},
         /*Weapons*/         {},
         /*Items*/           {},
@@ -339,6 +339,8 @@ main() {
     
     printf("%d \n", all_units["Sheeda2"].exp);
     printf("%d \n", all_units["Sheeda"].exp);
+    printf("%d \n", all_units["Sheeda"].get_equipped());
+    printf("%s \n", all_units["Sheeda"].get_equipped());
     write_all_units("units.txt", "cpp");
     
 

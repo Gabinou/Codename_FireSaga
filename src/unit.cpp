@@ -45,6 +45,8 @@ void unit::equip_weapon(std::vector<unsigned int> in_equipped) {
         }
         
     };
+    printf("in_equipped %d\n", in_equipped[0]);
+    printf("equip_weapon %d\n", equipped[0]);
     attack_probs[0] = accuracy();
     attack_probs[1] = avoid();
     attack_probs[2] = critical();
