@@ -82,10 +82,7 @@ unit::unit(std::string in_name, std::string in_unit_class, char in_id,
            std::vector<inventory_item> in_items,
            unsigned short in_exp, std::vector<std::string> in_lovers,
            bool in_mounted, bool in_flying, bool in_armored, bool in_promoted) {
-    mounted = in_mounted;
-    flying = in_flying;
-    armored = in_armored;
-    promoted = in_promoted;
+
     exp = in_exp;
     for (int i = 0; i < 7 ; i++) {
         if (i < in_equipment.size()) {
@@ -133,6 +130,12 @@ unit::unit(std::string in_name, std::string in_unit_class, char in_id,
     }    
     id = in_id;
     equip_weapon(in_equipped);
+    mounted = in_mounted;
+    flying = in_flying;
+    armored = in_armored;
+    promoted = in_promoted;
+    printf("flying %d \n", flying);
+    printf("in_flying %d \n", in_flying);
 }
 
 unit::unit(){
