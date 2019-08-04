@@ -150,6 +150,7 @@ public:
     /// \fn get_equipped
     /// \brief Getter for private equipped.
     const unsigned char* get_equipped() const;
+    void read(const char*, char);
     /*! \fn retaliation(const unit& enemy)
     *  \brief When unit gets attacked in combat, does he attacks back? 1/0. Mainly a check for range.
     */  

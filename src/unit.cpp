@@ -72,6 +72,18 @@ void unit::death() {
     printf("%s is dead.\n", name);
 }
 
+void unit::read(const char *filename, char skip) {
+    // 2019/07/30: skip should be a multiple of *number of lines written to weapon.txt* which is 8.
+    FILE *f = fopen(filename, "r");
+    char line[500];
+    for (int i = 0; i < skip; i++) {
+        fgets(line, sizeof(line), f); // skips skip lines.
+    }
+    fgets(line, sizeof(line), f);
+    line[strlen(line)-1] = 0;  //fgets also includes the \n in the line. This removes it.
+    strncpy(name, line, sizeof(name));   
+}
+
 unit::unit(std::string in_name, std::string in_unit_class, char in_id, 
            std::vector<unsigned int> in_stats_base, std::vector<unsigned int> in_growths, std::vector<unsigned int> in_skills,
            std::vector<unsigned int> in_love_pts, std::vector<unsigned int> in_love_growths,
@@ -134,8 +146,6 @@ unit::unit(std::string in_name, std::string in_unit_class, char in_id,
     flying = in_flying;
     armored = in_armored;
     promoted = in_promoted;
-    printf("flying %d \n", flying);
-    printf("in_flying %d \n", in_flying);
 }
 
 unit::unit(){
