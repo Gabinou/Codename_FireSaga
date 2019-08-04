@@ -10,8 +10,9 @@ using namespace std;
 class unit: public generic {
     // Lightweight implementation.
 private: 
-    unsigned char equipped[1]; //needs setters for stats update. 
-    // DOUBLE DUTY: is also the number of the last element in equipment. Maybe in weapons alsl.
+    char equipped[1]; //needs setters for stats update. 
+    // DOUBLE DUTY: equals -1 if nothing is equipped.
+    // DOUBLE DUTY: is also the number of the last element in equipment. Maybe in weapons also.
     char current_hp; //needs setters for death check on update
     
 public:
@@ -149,7 +150,9 @@ public:
     void enemy_select(const unit&);
     /// \fn get_equipped
     /// \brief Getter for private equipped.
-    const unsigned char* get_equipped() const;
+    const char* get_equipped() const;
+    /// \fn read
+    /// \brief read txt file, with format of write function.
     void read(const char*, char);
     /*! \fn retaliation(const unit& enemy)
     *  \brief When unit gets attacked in combat, does he attacks back? 1/0. Mainly a check for range.

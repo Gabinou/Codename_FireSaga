@@ -12,7 +12,7 @@ using namespace std;
 
 char wpn_types[][12]  = {"swd", "lance", "axe", "bow", "mgc_wind", "mgc_fire", "mgc_thunder",  "mgc_dark",  "mgc_light", "staff"};
 
-const unsigned char* unit::get_equipped() const{
+const char* unit::get_equipped() const{
     // For some reason passing the pointer works as I intended.
     return(equipped); // This is an array. Normally size one. Can be made larger for equipping multiple things,
 }
@@ -41,12 +41,15 @@ void unit::equip_weapon(std::vector<unsigned int> in_equipped) {
         if (wpn_exp[current_type_ind] > 0) {
             equipped[0] = (unsigned int) in_equipped[0]; 
         } else {
-            printf("%s cannot equip %s \n", name, equipment[in_equipped[0]].name);
+            string msg;
+            msg += name;
+            msg += " cannot equip ";
+            msg += equipment[in_equipped[0]].name;
+            msg += " \n";
+            throw msg;
         }
         
     };
-    // printf("in_equipped %d\n", in_equipped[0]);
-    // printf("equip_weapon %d\n", equipped[0]);
     attack_probs[0] = accuracy();
     attack_probs[1] = avoid();
     attack_probs[2] = critical();

@@ -343,7 +343,8 @@ main() {
     // write_all_units("units.txt", "cpp");
     // write_all_units("units.txt", "cpp");
     
-
+    all_units["Sheeda_test"].read("units.txt", 0);
+    printf("%s \n", all_units["Sheeda_test"].name);
 
     
 }
