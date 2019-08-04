@@ -144,7 +144,11 @@ unit::unit(std::string in_name, std::string in_unit_class, char in_id,
         wpn_exp[i] = (unsigned int) in_wpn_exp[i];
     }    
     id = in_id;
-    equip_weapon(in_equipped);
+    try {
+        equip_weapon(in_equipped);
+    } catch (std::string msg) { 
+        equipped[0] = -1;
+    }
     mounted = in_mounted;
     flying = in_flying;
     armored = in_armored;

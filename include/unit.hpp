@@ -261,7 +261,6 @@ public:
         out << "Mounted: \t" << in_unit.mounted << "\n";
         out << "Flying: \t"  << in_unit.flying << "\n";
         out << "Armored: \t" << in_unit.armored << "\n";
-        std::cout << "is it flying?" << in_unit.flying << endl;
         out << "Promoted: \t" << in_unit.promoted << "\n";
         out << std::endl;
         return(out);

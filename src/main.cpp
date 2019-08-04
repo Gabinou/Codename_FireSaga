@@ -317,7 +317,7 @@ main() {
                            //swd lnc axe bow wnd fir tnd drk lgt staff
         /*Weapon_exp*/      { 1,  0,  0,  0,  0,  0,  0,  0,  0,  0},
         /*Position*/        { 1,  2,  1},
-        /*Equipped*/        {1},
+        /*Equipped*/        {0},
         /*Equipment*/       {inventory_item("Iron Lance", 10), inventory_item("Iron Sword", 10)},
         /*Weapons*/         {},
         /*Items*/           {},
@@ -339,8 +339,8 @@ main() {
     
     // printf("where is the mistake %d \n", all_units["Sheeda"].flying);
     // printf("where is the mistake %d \n", all_units["Sheeda2"].flying);
-    printf("%d \n", all_units["Sheeda"].get_equipped()[0]);
-    // write_all_units("units.txt", "cpp");
+    // printf("%d \n", all_units["Sheeda"].get_equipped()[0]);
+    write_all_units("units.txt", "cpp");
     // write_all_units("units.txt", "cpp");
     
     all_units["Sheeda_test"].read("units.txt", 0);
