@@ -14,7 +14,7 @@ char wpn_types[][12]  = {"swd", "lance", "axe", "bow", "mgc_wind", "mgc_fire", "
 
 const unsigned char* unit::get_equipped() const{
     // For some reason passing the pointer works as I intended.
-    return(equipped);
+    return(equipped); // This is an array. Normally size one. Can be made larger for equipping multiple things,
 }
 
 void unit::equip_weapon(std::vector<unsigned int> in_equipped) {

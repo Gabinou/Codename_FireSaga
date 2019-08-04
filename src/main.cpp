@@ -339,8 +339,7 @@ main() {
     
     printf("%d \n", all_units["Sheeda2"].exp);
     printf("%d \n", all_units["Sheeda"].exp);
-    printf("%d \n", all_units["Sheeda"].get_equipped());
-    printf("%s \n", all_units["Sheeda"].get_equipped());
+    printf("%d \n", all_units["Sheeda"].get_equipped()[0]);
     write_all_units("units.txt", "cpp");
     
 
