@@ -17,39 +17,45 @@ const char* unit::get_equipped() const{
     return(equipped); // This is an array. Normally size one. Can be made larger for equipping multiple things,
 }
 
-void unit::equip_weapon(std::vector<unsigned int> in_equipped) {
+void unit::equip_weapon(std::vector<int> in_equipped) {
     // printf(" \n", in_equipped)
     // printf("%s\n", all_weapons[equipment[in_equipped[0]].name].type);
     char current_type[20];
     int current_type_ind;
-    strncpy(current_type, all_weapons[equipment[in_equipped[0]].name].type, 20);
-    for (int i = 0; i < sizeof(wpn_types)/sizeof(wpn_types[0]); i++) {
-            // printf("weapon types %s %s\n", wpn_types[i], current_type);
-            // printf("weapon types %d\n", strcmp(current_type, wpn_types[i]) == 0);
-            // bool cond  = (strcmp(current_type, wpn_types[i]) == 0);
-            bool cond = strcmp(current_type, wpn_types[i]) == 0;
-        // printf("current_type: %s\n", current_type);
-        if (strcmp(current_type, wpn_types[i]) == 0){
-            current_type_ind = i;
+    printf("in_equiupped[0] %d \n", in_equipped[0]);
+    if (in_equipped[0] == -1) {
+        
+        equipped[0] = -1;
+    } else {
+        strncpy(current_type, all_weapons[equipment[in_equipped[0]].name].type, 20);
+        for (int i = 0; i < sizeof(wpn_types)/sizeof(wpn_types[0]); i++) {
+                // printf("weapon types %s %s\n", wpn_types[i], current_type);
+                // printf("weapon types %d\n", strcmp(current_type, wpn_types[i]) == 0);
+                // bool cond  = (strcmp(current_type, wpn_types[i]) == 0);
+                bool cond = strcmp(current_type, wpn_types[i]) == 0;
+            // printf("current_type: %s\n", current_type);
+            if (strcmp(current_type, wpn_types[i]) == 0){
+                current_type_ind = i;
+            };
+        }
+        // printf("Current type %s\n", current_type);
+        // printf("Current type index %s\n", current_type_ind);
+        if (in_equipped.size() != 0) {
+            // printf("current_type_ind %d\n", current_type_ind);
+            // printf("wpn_exp %d\n", wpn_exp[current_type_ind]);
+            if (wpn_exp[current_type_ind] > 0) {
+                equipped[0] = (int) in_equipped[0]; 
+            } else {
+                string msg;
+                msg += name;
+                msg += " cannot equip ";
+                msg += equipment[in_equipped[0]].name;
+                msg += " \n";
+                throw msg;
+            }
+            
         };
     }
-    // printf("Current type %s\n", current_type);
-    // printf("Current type index %s\n", current_type_ind);
-    if (in_equipped.size() != 0) {
-        // printf("current_type_ind %d\n", current_type_ind);
-        // printf("wpn_exp %d\n", wpn_exp[current_type_ind]);
-        if (wpn_exp[current_type_ind] > 0) {
-            equipped[0] = (unsigned int) in_equipped[0]; 
-        } else {
-            string msg;
-            msg += name;
-            msg += " cannot equip ";
-            msg += equipment[in_equipped[0]].name;
-            msg += " \n";
-            throw msg;
-        }
-        
-    };
     attack_probs[0] = accuracy();
     attack_probs[1] = avoid();
     attack_probs[2] = critical();
@@ -84,14 +90,45 @@ void unit::read(const char *filename, char skip) {
     }
     fgets(line, sizeof(line), f);
     line[strlen(line)-1] = 0;  //fgets also includes the \n in the line. This removes it.
-    strncpy(name, line, sizeof(name));   
+    strncpy(name, line, sizeof(name));
+    fseek(f, 9, SEEK_CUR);
+    fgets(line, sizeof(line), f);
+    line[strlen(line)-1] = 0; 
+    strncpy(type, line, sizeof(type));
+    // fgets(line, sizeof(line), f);
+    // exp = temp[0];
+    // temp = extractIntegerWords(line);
+    // fscanf(f, "%*s %s", type);
+    fgets(line, sizeof(line), f);
+    std::vector<int> temp = extractIntegerWords(line);
+    for (int i = 0; i < temp.size(); i++) {
+        stats_base[i] = temp[i];
+    }    
+    fseek(f, 9, SEEK_CUR);
+    fgets(line, sizeof(line), f);
+    temp = extractIntegerWords(line);
+    for (int i = 0; i < temp.size(); i++) {
+        stats[i] = temp[i];
+    }    
+    fseek(f, 9, SEEK_CUR);
+    fgets(line, sizeof(line), f);
+    temp = extractIntegerWords(line);
+    for (int i = 0; i < temp.size(); i++) {
+        growths[i] = temp[i];
+    }
+    fgets(line, sizeof(line), f);
+    equip_weapon(extractIntegerWords(line));   
+    // fscanf(f, "%*s %d", intt[0]);
+    // printf("intt %d \n", intt[0]);
+    // printf("%s \n", line);
+    // equip_weapon(intt);
 }
 
 unit::unit(std::string in_name, std::string in_unit_class, char in_id, 
            std::vector<unsigned int> in_stats_base, std::vector<unsigned int> in_growths, std::vector<unsigned int> in_skills,
            std::vector<unsigned int> in_love_pts, std::vector<unsigned int> in_love_growths,
            std::vector<unsigned int> in_wpn_exp, std::vector<unsigned int> in_position,
-           std::vector<unsigned int> in_equipped, 
+           std::vector<int> in_equipped, 
            std::vector<inventory_item> in_equipment,
            std::vector<inventory_item> in_weapons, 
            std::vector<inventory_item> in_items,

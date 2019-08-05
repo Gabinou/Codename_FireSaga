@@ -85,7 +85,7 @@ public:
         std::vector<unsigned int>, std::vector<unsigned int>,
         std::vector<unsigned int>, std::vector<unsigned int>,
         std::vector<unsigned int>, std::vector<unsigned int>,
-        std::vector<unsigned int>, std::vector<unsigned int>,
+        std::vector<unsigned int>, std::vector<int>,
         std::vector<inventory_item>,
         std::vector<inventory_item>, std::vector<inventory_item>, 
         unsigned short, std::vector<std::string>,
@@ -141,7 +141,7 @@ public:
     unsigned char get_hp() const;
     /// \fn equip_weapon(std::vector<unsigned int>)
     /// \brief Setter for private equipped.
-    void equip_weapon(std::vector<unsigned int>);
+    void equip_weapon(std::vector<int>);
     /// \fn double_attack
     /// \brief Bool that returns if unit double attacks.
     bool double_attack(const unit&);
