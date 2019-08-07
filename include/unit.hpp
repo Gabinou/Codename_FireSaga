@@ -217,7 +217,7 @@ public:
         for (int i = 0; i < sizeof(in_unit.equipment)/sizeof(in_unit.equipment[0]); i++) {
             out << in_unit.equipment[i].name << ", ";
         };
-        out << "\n" << "Used: \t\t";
+        out << "\n" << "Used(eq): \t";
         for (int i = 0; i < sizeof(in_unit.equipment)/sizeof(in_unit.equipment[0]); i++) {
             out << (int) in_unit.equipment[i].used << ", ";
         };

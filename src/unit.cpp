@@ -169,23 +169,31 @@ void unit::read(const char *filename, char skip) {
     equip_weapon(extractIntegerWords(line)); 
     fseek(f, 10, SEEK_CUR);
     fgets(line, sizeof(line), f);
-    // printf("%s \n", line);
-    // printf("%s \n", css_from_line(line)[0]);
     std::vector<std::string> names = css_from_line(line);
     fgets(line, sizeof(line), f);
     temp = extractIntegerWords(line);
     for (int i = 0; i < temp.size(); i++) {
-       // strncpy(equipment[i], names[i].c_str(), sizeof(equipment[i]));
        equipment[i] = inventory_item(names[i].c_str(), temp[i]);
     }
-    printf("%d \n", temp[0]);
-    printf("%s \n", equipment[0].name);
-    printf("%d \n", equipment[0].used);
-    // fscanf(f, "%*s %s,%s,%s,%s,%s,%s")
-    // fscanf(f, "%*s %d", intt[0]);
-    // printf("intt %d \n", intt[0]);
-    // printf("%s \n", line);
-    // equip_weapon(intt);
+    fseek(f, 10, SEEK_CUR);
+    fgets(line, sizeof(line), f);
+    names = css_from_line(line);
+    for (int i = 0; i < names.size(); i++) {
+       weapons[i] = inventory_item(names[i].c_str(), 0);
+    }
+    fseek(f, 10, SEEK_CUR);
+    fgets(line, sizeof(line), f);
+    names = css_from_line(line);
+    for (int i = 0; i < names.size(); i++) {
+       items[i] = inventory_item(names[i].c_str(), 0);
+    }
+    fseek(f, 10, SEEK_CUR);
+    fgets(line, sizeof(line), f);
+    names = css_from_line(line);
+    for (int i = 0; i < names.size(); i++) {
+       strncpy(lovers[i], names[i].c_str(), sizeof(lovers[i]));
+    }
+
 }
 
 unit::unit(std::string in_name, std::string in_unit_class, char in_id, 
