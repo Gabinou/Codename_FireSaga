@@ -22,7 +22,7 @@ void unit::equip_weapon(std::vector<int> in_equipped) {
     // printf("%s\n", all_weapons[equipment[in_equipped[0]].name].type);
     char current_type[20];
     int current_type_ind;
-    printf("in_equiupped[0] %d \n", in_equipped[0]);
+    // printf("in_equiupped[0] %d \n", in_equipped[0]);
     if (in_equipped[0] == -1) {
         
         equipped[0] = -1;
@@ -103,61 +103,69 @@ std::vector<std::string> getNextLineAndSplitIntoTokens(std::istream& str)
     return result;
 }
 
-std::vector<std::string> css_from_line(std::string line) {
+char * css_from_line(char *line) {
     // comma separated strings from line.
-    // char * pch;
-    // char eff = 0, i = 0;
-    // std::vector<std::string> out;
-    // char *token = std::strtok(input, " ");
-    // while (token != NULL) {
-        // std::cout << token << '\n';
-        // token = std::strtok(NULL, " ");
-    // return(out);
+    char * pch;
+    // std::vector<std::string> token;
+    char eff = 0, i = 0;
+    // char *token = std::strtok(line, " ,");
+    // char token = "a";
+    printf("%s \n", line);
+    // printf("%s \n", std::strtok(line, ","));
+    printf("allo \n");
+    pch = strtok(line, ",");
+    while (pch != NULL){
+        printf ("%s\n",pch);
+        pch = strtok (NULL, ",");
+    }
+    return(line);
 }
 
 
 void unit::read(const char *filename, char skip) {
     // 2019/07/30: skip should be a multiple of *number of lines written to weapon.txt* which is 8.
     FILE *f = fopen(filename, "r");
-    std::string line[500];
-    
-    
+    char line[500];
     for (int i = 0; i < skip; i++) {
         fgets(line, sizeof(line), f); // skips skip lines.
     }
     fgets(line, sizeof(line), f);
-    // line[strlen(line)-1] = 0;  //fgets also includes the \n in the line. This removes it.
-    // strncpy(name, line, sizeof(name));
-    // fseek(f, 9, SEEK_CUR);
-    // fgets(line, sizeof(line), f);
-    // line[strlen(line)-1] = 0; 
-    // strncpy(type, line, sizeof(type));
-    // // fgets(line, sizeof(line), f);
-    // // exp = temp[0];
-    // // temp = extractIntegerWords(line);
-    // // fscanf(f, "%*s %s", type);
-    // fgets(line, sizeof(line), f);
-    // std::vector<int> temp = extractIntegerWords(line);
-    // for (int i = 0; i < temp.size(); i++) {
-        // stats_base[i] = temp[i];
-    // }    
-    // fseek(f, 9, SEEK_CUR);
+    line[strlen(line)-1] = 0;  //fgets also includes the \n in the line. This removes it.
+    strncpy(name, line, sizeof(name));
+    fseek(f, 9, SEEK_CUR);
+    fgets(line, sizeof(line), f);
+    line[strlen(line)-1] = 0; 
+    strncpy(type, line, sizeof(type));
     // fgets(line, sizeof(line), f);
     // temp = extractIntegerWords(line);
-    // for (int i = 0; i < temp.size(); i++) {
-        // stats[i] = temp[i];
-    // }    
-    // fseek(f, 9, SEEK_CUR);
-    // fgets(line, sizeof(line), f);
-    // temp = extractIntegerWords(line);
-    // for (int i = 0; i < temp.size(); i++) {
-        // growths[i] = temp[i];
-    // }
-    // fgets(line, sizeof(line), f);
-    // equip_weapon(extractIntegerWords(line)); 
-    // fseek(f, 9, SEEK_CUR);
-    // fgets(line, sizeof(line), f);    
-    css_from_line(line);  
+    // exp = temp[0];
+
+    // fscanf(f, "%*s %s", type);
+    fgets(line, sizeof(line), f);
+    std::vector<int> temp = extractIntegerWords(line);
+    for (int i = 0; i < temp.size(); i++) {
+        stats_base[i] = temp[i];
+    }    
+    fseek(f, 9, SEEK_CUR);
+    fgets(line, sizeof(line), f);
+    temp = extractIntegerWords(line);
+    for (int i = 0; i < temp.size(); i++) {
+        stats[i] = temp[i];
+    }    
+    fseek(f, 9, SEEK_CUR);
+    fgets(line, sizeof(line), f);
+    temp = extractIntegerWords(line);
+    for (int i = 0; i < temp.size(); i++) {
+        growths[i] = temp[i];
+    }
+    fgets(line, sizeof(line), f);
+    equip_weapon(extractIntegerWords(line)); 
+    fseek(f, 9, SEEK_CUR);
+    fgets(line, sizeof(line), f);
+    // printf("%s \n", line);
+    // printf("%s \n", css_from_line(line)[0]);
+    css_from_line(line);
+    
     // fscanf(f, "%*s %s,%s,%s,%s,%s,%s")
     // fscanf(f, "%*s %d", intt[0]);
     // printf("intt %d \n", intt[0]);
