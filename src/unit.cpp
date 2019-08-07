@@ -103,13 +103,14 @@ std::vector<std::string> getNextLineAndSplitIntoTokens(std::istream& str)
     return result;
 }
 
-char css_from_line(char *line) {
+std::vector<std::string> css_from_line(char *line) {
     // comma separated strings from line.
     char * pch;
     char * pch2;
-    char out[20][20];
-    string word;
-    string name;
+    // char out[20][20];
+    std::string word;
+    std::string name;
+    std::vector<std::string> names;
     char word_num;
     char out_num = 0;
     // std::vector<std::string> token;
@@ -136,16 +137,16 @@ char css_from_line(char *line) {
             // name += word;
         }
         // name+= "\n";
-        strncpy(out[out_num], name.c_str(), sizeof(out[out_num]));
-
+        // strncpy(out[out_num], name.c_str(), sizeof(name.c_str()));
+        names.push_back(name);
         // printf ("%s\n", name.c_str());
-        out_num++;
+        // out_num++;
         pch = strtok (NULL, ",");
     }
-    printf ("%s\n", out[0]);
-    printf ("%s\n", out[1]);
-    printf ("%s\n", out[2]);
-    return(out[0]);
+    printf ("%s \n", names[0].c_str());
+    printf ("%s \n", names[1].c_str());
+    printf ("%s \n", names[2].c_str());
+    return(names);
 }
 
 
