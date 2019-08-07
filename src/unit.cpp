@@ -102,50 +102,29 @@ std::vector<std::string> getNextLineAndSplitIntoTokens(std::istream& str)
     }
     return result;
 }
-
+/*! \fn css_from_line()
+*  \brief Get comma separated strings (css) from a line. Lines are gotten from fgets. outputs vector of string for simplicity. Fucking chars man. Sucks ballz.
+*/
 std::vector<std::string> css_from_line(char *line) {
-    // comma separated strings from line.
     char * pch;
-    char * pch2;
-    // char out[20][20];
     std::string word;
     std::string name;
     std::vector<std::string> names;
     char word_num;
-    char out_num = 0;
-    // std::vector<std::string> token;
-    // char *token = std::strtok(line, " ,");
-    // char token = "a";
-    printf("%s \n", line);
-    // printf("%s \n", std::strtok(line, ","));
-    // printf("allo \n");
     pch = strtok(line, ",");
     while (pch != NULL){
         name = "";
-        // printf ("%s\n", pch);
         std::string temp(pch);
         stringstream iss(temp);
         word_num = 0;
         while (iss >> word) {
-            // word.erase(std::remove_if(word.begin(), word.end(), ::isspace), word.end());
             if (word_num > 0) {name+= " ";};
-            // printf ("%s\n", word.c_str());
-            // printf ("is this a space %s\n", word[0]);
-            // printf ("%s\n", strtok(word, ""));
             name += word;
             word_num++;
-            // name += word;
         }
-        // name+= "\n";
-        // strncpy(out[out_num], name.c_str(), sizeof(name.c_str()));
         names.push_back(name);
-        // printf ("%s\n", name.c_str());
-        // out_num++;
         pch = strtok (NULL, ",");
     }
-    printf ("%s \n", names[0].c_str());
-    printf ("%s \n", names[1].c_str());
-    printf ("%s \n", names[2].c_str());
     return(names);
 }
 
@@ -192,8 +171,12 @@ void unit::read(const char *filename, char skip) {
     fgets(line, sizeof(line), f);
     // printf("%s \n", line);
     // printf("%s \n", css_from_line(line)[0]);
-    css_from_line(line);
-    
+    std::vector<std::string> names = css_from_line(line);
+    for (int i = 0; i < names.size(); i++) {
+       // strncpy(equipment[i], names[i].c_str(), sizeof(equipment[i]));
+       equipment[i] = inventory_item(names[i].c_str(), 0);
+    }
+    printf("%s \n", equipment[0].name);
     // fscanf(f, "%*s %s,%s,%s,%s,%s,%s")
     // fscanf(f, "%*s %d", intt[0]);
     // printf("intt %d \n", intt[0]);

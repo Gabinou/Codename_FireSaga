@@ -212,10 +212,14 @@ public:
                 out << (int) in_unit.growths[i] << ", ";
             }
         };
-        out << "Equipped: \t" << (int) in_unit.get_equipped()[0] << "\n"
-        << "Equipment: \t";
+        out << "Equipped: \t" << (int) in_unit.get_equipped()[0] << "\n";
+        out << "Equipment: \t";
         for (int i = 0; i < sizeof(in_unit.equipment)/sizeof(in_unit.equipment[0]); i++) {
             out << in_unit.equipment[i].name << ", ";
+        };
+        out << "\n" << "Used: \t\t";
+        for (int i = 0; i < sizeof(in_unit.equipment)/sizeof(in_unit.equipment[0]); i++) {
+            out << (int) in_unit.equipment[i].used << ", ";
         };
         out << "\n" << "Weapons: \t";
         for (int i = 0; i < sizeof(in_unit.weapons)/sizeof(in_unit.weapons[0]); i++) {
