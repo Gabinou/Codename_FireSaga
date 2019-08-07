@@ -340,7 +340,7 @@ main() {
     // printf("where is the mistake %d \n", all_units["Sheeda"].flying);
     // printf("where is the mistake %d \n", all_units["Sheeda2"].flying);
     // printf("%d \n", all_units["Sheeda"].get_equipped()[0]);
-    write_all_units("units.txt", "cpp");
+    // write_all_units("units.txt", "cpp");
     // write_all_units("units.txt", "cpp");
     
     all_units["Sheeda_test"].read("units.txt", 0);

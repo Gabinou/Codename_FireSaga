@@ -27,6 +27,7 @@ weapon::weapon(){
     cost = 0;
     exp = 0;
 }
+
 weapon::~weapon(void) {
     // printf("Weapon %s is being deleted.\n" , name);
 }

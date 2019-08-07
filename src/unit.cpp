@@ -81,43 +81,84 @@ void unit::death() {
     printf("%s is dead.\n", name);
 }
 
+std::vector<std::string> getNextLineAndSplitIntoTokens(std::istream& str)
+{
+    std::vector<std::string>   result;
+    std::string                line;
+    std::getline(str,line);
+
+    std::stringstream          lineStream(line);
+    std::string                cell;
+
+    while(std::getline(lineStream,cell, ','))
+    {
+        result.push_back(cell);
+    }
+    // This checks for a trailing comma with no data after it.
+    if (!lineStream && cell.empty())
+    {
+        // If there was a trailing comma then add an empty element.
+        result.push_back("");
+    }
+    return result;
+}
+
+std::vector<std::string> css_from_line(std::string line) {
+    // comma separated strings from line.
+    // char * pch;
+    // char eff = 0, i = 0;
+    // std::vector<std::string> out;
+    // char *token = std::strtok(input, " ");
+    // while (token != NULL) {
+        // std::cout << token << '\n';
+        // token = std::strtok(NULL, " ");
+    // return(out);
+}
+
+
 void unit::read(const char *filename, char skip) {
     // 2019/07/30: skip should be a multiple of *number of lines written to weapon.txt* which is 8.
     FILE *f = fopen(filename, "r");
-    char line[500];
+    std::string line[500];
+    
+    
     for (int i = 0; i < skip; i++) {
         fgets(line, sizeof(line), f); // skips skip lines.
     }
     fgets(line, sizeof(line), f);
-    line[strlen(line)-1] = 0;  //fgets also includes the \n in the line. This removes it.
-    strncpy(name, line, sizeof(name));
-    fseek(f, 9, SEEK_CUR);
-    fgets(line, sizeof(line), f);
-    line[strlen(line)-1] = 0; 
-    strncpy(type, line, sizeof(type));
+    // line[strlen(line)-1] = 0;  //fgets also includes the \n in the line. This removes it.
+    // strncpy(name, line, sizeof(name));
+    // fseek(f, 9, SEEK_CUR);
     // fgets(line, sizeof(line), f);
-    // exp = temp[0];
+    // line[strlen(line)-1] = 0; 
+    // strncpy(type, line, sizeof(type));
+    // // fgets(line, sizeof(line), f);
+    // // exp = temp[0];
+    // // temp = extractIntegerWords(line);
+    // // fscanf(f, "%*s %s", type);
+    // fgets(line, sizeof(line), f);
+    // std::vector<int> temp = extractIntegerWords(line);
+    // for (int i = 0; i < temp.size(); i++) {
+        // stats_base[i] = temp[i];
+    // }    
+    // fseek(f, 9, SEEK_CUR);
+    // fgets(line, sizeof(line), f);
     // temp = extractIntegerWords(line);
-    // fscanf(f, "%*s %s", type);
-    fgets(line, sizeof(line), f);
-    std::vector<int> temp = extractIntegerWords(line);
-    for (int i = 0; i < temp.size(); i++) {
-        stats_base[i] = temp[i];
-    }    
-    fseek(f, 9, SEEK_CUR);
-    fgets(line, sizeof(line), f);
-    temp = extractIntegerWords(line);
-    for (int i = 0; i < temp.size(); i++) {
-        stats[i] = temp[i];
-    }    
-    fseek(f, 9, SEEK_CUR);
-    fgets(line, sizeof(line), f);
-    temp = extractIntegerWords(line);
-    for (int i = 0; i < temp.size(); i++) {
-        growths[i] = temp[i];
-    }
-    fgets(line, sizeof(line), f);
-    equip_weapon(extractIntegerWords(line));   
+    // for (int i = 0; i < temp.size(); i++) {
+        // stats[i] = temp[i];
+    // }    
+    // fseek(f, 9, SEEK_CUR);
+    // fgets(line, sizeof(line), f);
+    // temp = extractIntegerWords(line);
+    // for (int i = 0; i < temp.size(); i++) {
+        // growths[i] = temp[i];
+    // }
+    // fgets(line, sizeof(line), f);
+    // equip_weapon(extractIntegerWords(line)); 
+    // fseek(f, 9, SEEK_CUR);
+    // fgets(line, sizeof(line), f);    
+    css_from_line(line);  
+    // fscanf(f, "%*s %s,%s,%s,%s,%s,%s")
     // fscanf(f, "%*s %d", intt[0]);
     // printf("intt %d \n", intt[0]);
     // printf("%s \n", line);
