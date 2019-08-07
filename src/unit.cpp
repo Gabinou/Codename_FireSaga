@@ -103,22 +103,49 @@ std::vector<std::string> getNextLineAndSplitIntoTokens(std::istream& str)
     return result;
 }
 
-char * css_from_line(char *line) {
+char css_from_line(char *line) {
     // comma separated strings from line.
     char * pch;
+    char * pch2;
+    char out[20][20];
+    string word;
+    string name;
+    char word_num;
+    char out_num = 0;
     // std::vector<std::string> token;
-    char eff = 0, i = 0;
     // char *token = std::strtok(line, " ,");
     // char token = "a";
     printf("%s \n", line);
     // printf("%s \n", std::strtok(line, ","));
-    printf("allo \n");
+    // printf("allo \n");
     pch = strtok(line, ",");
     while (pch != NULL){
-        printf ("%s\n",pch);
+        name = "";
+        // printf ("%s\n", pch);
+        std::string temp(pch);
+        stringstream iss(temp);
+        word_num = 0;
+        while (iss >> word) {
+            // word.erase(std::remove_if(word.begin(), word.end(), ::isspace), word.end());
+            if (word_num > 0) {name+= " ";};
+            // printf ("%s\n", word.c_str());
+            // printf ("is this a space %s\n", word[0]);
+            // printf ("%s\n", strtok(word, ""));
+            name += word;
+            word_num++;
+            // name += word;
+        }
+        // name+= "\n";
+        strncpy(out[out_num], name.c_str(), sizeof(out[out_num]));
+
+        // printf ("%s\n", name.c_str());
+        out_num++;
         pch = strtok (NULL, ",");
     }
-    return(line);
+    printf ("%s\n", out[0]);
+    printf ("%s\n", out[1]);
+    printf ("%s\n", out[2]);
+    return(out[0]);
 }
 
 
@@ -160,7 +187,7 @@ void unit::read(const char *filename, char skip) {
     }
     fgets(line, sizeof(line), f);
     equip_weapon(extractIntegerWords(line)); 
-    fseek(f, 9, SEEK_CUR);
+    fseek(f, 10, SEEK_CUR);
     fgets(line, sizeof(line), f);
     // printf("%s \n", line);
     // printf("%s \n", css_from_line(line)[0]);
