@@ -172,11 +172,15 @@ void unit::read(const char *filename, char skip) {
     // printf("%s \n", line);
     // printf("%s \n", css_from_line(line)[0]);
     std::vector<std::string> names = css_from_line(line);
-    for (int i = 0; i < names.size(); i++) {
+    fgets(line, sizeof(line), f);
+    temp = extractIntegerWords(line);
+    for (int i = 0; i < temp.size(); i++) {
        // strncpy(equipment[i], names[i].c_str(), sizeof(equipment[i]));
-       equipment[i] = inventory_item(names[i].c_str(), 0);
+       equipment[i] = inventory_item(names[i].c_str(), temp[i]);
     }
+    printf("%d \n", temp[0]);
     printf("%s \n", equipment[0].name);
+    printf("%d \n", equipment[0].used);
     // fscanf(f, "%*s %s,%s,%s,%s,%s,%s")
     // fscanf(f, "%*s %d", intt[0]);
     // printf("intt %d \n", intt[0]);
