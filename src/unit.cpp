@@ -187,13 +187,44 @@ void unit::read(const char *filename, char skip) {
     for (int i = 0; i < names.size(); i++) {
        items[i] = inventory_item(names[i].c_str(), 0);
     }
-    fseek(f, 10, SEEK_CUR);
+    fseek(f, 9, SEEK_CUR);
     fgets(line, sizeof(line), f);
     names = css_from_line(line);
     for (int i = 0; i < names.size(); i++) {
        strncpy(lovers[i], names[i].c_str(), sizeof(lovers[i]));
     }
+    fgets(line, sizeof(line), f);
+    temp = extractIntegerWords(line);
+    for (int i = 0; i < temp.size(); i++) {
+        love_pts[i] = temp[i];
+    } 
+    fgets(line, sizeof(line), f);
+    temp = extractIntegerWords(line);
+    for (int i = 0; i < temp.size(); i++) {
+        love_growths[i] = temp[i];
+    }
+    fgets(line, sizeof(line), f);
+    temp = extractIntegerWords(line);
+    for (int i = 0; i < temp.size(); i++) {
+        wpn_exp[i] = temp[i];
+    }
+    fgets(line, sizeof(line), f);
+    temp = extractIntegerWords(line);
 
+    exp = temp[0];
+    fgets(line, sizeof(line), f);
+    temp = extractIntegerWords(line);
+
+    mounted = temp[0];    
+    fgets(line, sizeof(line), f);
+    temp = extractIntegerWords(line);
+    flying = temp[0];
+    fgets(line, sizeof(line), f);
+    temp = extractIntegerWords(line);
+    armored = temp[0];
+    fgets(line, sizeof(line), f);
+    temp = extractIntegerWords(line);
+    promoted = temp[0];
 }
 
 unit::unit(std::string in_name, std::string in_unit_class, char in_id, 
