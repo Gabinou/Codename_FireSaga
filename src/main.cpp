@@ -210,6 +210,7 @@ string read_line(const char *filename, char skip){
     fgets(line, sizeof(line), f);
     std::string out(line);
     out.pop_back(); // fgets include the \n character at the end of the line. This removes it.
+    out = out.substr(0, out.size()-1);
     fclose(f);
     return(out);
 }
@@ -229,7 +230,9 @@ void read_all_weapons(const char *filename="weapons.txt") {
         if (!line.empty() && line != "") {
             all_weapons[line.c_str()] = weapon();
             all_weapons[line.c_str()].read(filename, i);
-        }
+            // printf("%s \n", line.c_str());
+            // printf("%s \n", all_weapons[line.c_str()].name);
+        }   
     inFile.close();
     }
     
@@ -247,44 +250,44 @@ void read_all_weapons(const char *filename="weapons.txt") {
 
 main() {
     printf("TESTING THIS BITCH\n");
-    // read_all_weapons("weapons.txt");
+    read_all_weapons("weapons.txt");
     // inventory_item("Rapier", 10);
     // printf("%d \f", inventory_items["Rapier_0000"]);
     // write_all_weapons("weapons2.txt");
 
 
-    all_weapons["Rapier"] = weapon("Rapier", "swd", id++, 600,
-            // dmg  hit  crt wght uses  exp
-              {5,  90,  10,   7,  30,   2},
-              {1, 1}, // range
-              std::vector<char>(LEN(unit_stats), 0), {"Knight", "Cavalier"}, 0, 1); 
-    all_weapons["Bronze Sword"] = weapon("Bronze Sword", "swd", id++, 450,
-           // dmg  hit  crt wght uses  exp
-              {3,  80,   0,   5,  45,   1},
-              {1, 1}, // range
-              std::vector<char>(LEN(unit_stats), 0), {"", ""}, 0, 1);
-    all_weapons["Iron Sword"] =  weapon("Iron Sword", "swd", id++, 450,
-           // dmg hit  crt wght uses  exp
-              {5,  80,    0,   7,  45,  1},
-              {1, 1}, // range              
-              std::vector<char>(LEN(unit_stats), 0), {"", ""}, 0, 1);
-    all_weapons["Iron Lance"] = weapon("Iron Lance", "lance", id++, 450,
-           // dmg hit  crt wght uses  exp
-           // dmg hit  crt wght uses  exp
-              {6,  80,   0,   8,   40,  1},
-              {1, 1}, // range
-              std::vector<char>(LEN(unit_stats), 0), {"", ""}, 0, 1);
-    all_weapons["Steel Sword"] = weapon("Steel Sword", "swd", id++, 500,
-           // dmg hit  crt wght uses  exp
-              {8,  70,   0,   9,   35,  1},
-              {1, 1}, // range              
-              std::vector<char>(LEN(unit_stats), 0), {"", ""}, 0, 1);
-    all_weapons["Lame de Damas"] = weapon("Lame de Damas", "swd", id++, 1000,
-            // Other names: Acier de Damas. Damas Sword. Damascus Sword. Damas Sword. Damas steel sword.
-            // dmg hit  crt wght uses  exp
-              {15,  65,  0,   8,  25,   1},
-              {1, 1}, // range
-              std::vector<char>(LEN(unit_stats), 0), {"", ""}, 0, 3);
+    // all_weapons["Rapier"] = weapon("Rapier", "swd", id++, 600,
+            // // dmg  hit  crt wght uses  exp
+              // {5,  90,  10,   7,  30,   2},
+              // {1, 1}, // range
+              // std::vector<char>(LEN(unit_stats), 0), {"Knight", "Cavalier"}, 0, 1); 
+    // all_weapons["Bronze Sword"] = weapon("Bronze Sword", "swd", id++, 450,
+           // // dmg  hit  crt wght uses  exp
+              // {3,  80,   0,   5,  45,   1},
+              // {1, 1}, // range
+              // std::vector<char>(LEN(unit_stats), 0), {"", ""}, 0, 1);
+    // all_weapons["Iron Sword"] =  weapon("Iron Sword", "swd", id++, 450,
+           // // dmg hit  crt wght uses  exp
+              // {5,  80,    0,   7,  45,  1},
+              // {1, 1}, // range              
+              // std::vector<char>(LEN(unit_stats), 0), {"", ""}, 0, 1);
+    // all_weapons["Iron Lance"] = weapon("Iron Lance", "lance", id++, 450,
+           // // dmg hit  crt wght uses  exp
+           // // dmg hit  crt wght uses  exp
+              // {6,  80,   0,   8,   40,  1},
+              // {1, 1}, // range
+              // std::vector<char>(LEN(unit_stats), 0), {"", ""}, 0, 1);
+    // all_weapons["Steel Sword"] = weapon("Steel Sword", "swd", id++, 500,
+           // // dmg hit  crt wght uses  exp
+              // {8,  70,   0,   9,   35,  1},
+              // {1, 1}, // range              
+              // std::vector<char>(LEN(unit_stats), 0), {"", ""}, 0, 1);
+    // all_weapons["Lame de Damas"] = weapon("Lame de Damas", "swd", id++, 1000,
+            // // Other names: Acier de Damas. Damas Sword. Damascus Sword. Damas Sword. Damas steel sword.
+            // // dmg hit  crt wght uses  exp
+              // {15,  65,  0,   8,  25,   1},
+              // {1, 1}, // range
+              // std::vector<char>(LEN(unit_stats), 0), {"", ""}, 0, 3);
     // Unordered map convention: "name" is the immutable original object.
     // Copies have "name_id"
    
