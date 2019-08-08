@@ -32,6 +32,8 @@ weapon::~weapon(void) {
     // printf("Weapon %s is being deleted.\n" , name);
 }
 void weapon::write(const char *filename) {
+        // This is c++-style.
+        // Compare with c-style write.
         std::ofstream out(filename);
         out << name << "\n";
         out << "Type: \t\t";
@@ -61,7 +63,8 @@ void weapon::write(const char *filename) {
 }
 
 void weapon::read(const char *filename, char skip) {
-    // 2019/07/30: skip should be a multiple of *number of lines written to weapon.txt* which is 8.
+    // 2019/07/30: skip should be a multiple of *number of lines written to weapon.txt* which is 10.
+    // This is c-style.
     FILE *f = fopen(filename, "r");
     char line[500];
     for (int i = 0; i < skip; i++) {
