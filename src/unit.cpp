@@ -81,29 +81,6 @@ void unit::death() {
     printf("%s is dead.\n", name);
 }
 
-std::vector<std::string> getNextLineAndSplitIntoTokens(std::istream& str)
-{
-    std::vector<std::string>   result;
-    std::string                line;
-    std::getline(str,line);
-
-    std::stringstream          lineStream(line);
-    std::string                cell;
-
-    while(std::getline(lineStream,cell, ','))
-    {
-        result.push_back(cell);
-    }
-    // This checks for a trailing comma with no data after it.
-    if (!lineStream && cell.empty())
-    {
-        // If there was a trailing comma then add an empty element.
-        result.push_back("");
-    }
-    return result;
-}
-
-
 void unit::read(const char *filename, char skip) {
     // 2019/07/30: skip should be a multiple of *number of lines written to weapon.txt* which is 8.
     FILE *f = fopen(filename, "r");
@@ -118,11 +95,6 @@ void unit::read(const char *filename, char skip) {
     fgets(line, sizeof(line), f);
     line[strlen(line)-1] = 0; 
     strncpy(type, line, sizeof(type));
-    // fgets(line, sizeof(line), f);
-    // temp = extractIntegerWords(line);
-    // exp = temp[0];
-
-    // fscanf(f, "%*s %s", type);
     fgets(line, sizeof(line), f);
     std::vector<int> temp = extractIntegerWords(line);
     for (int i = 0; i < temp.size(); i++) {
@@ -136,12 +108,13 @@ void unit::read(const char *filename, char skip) {
     }    
     fseek(f, 9, SEEK_CUR);
     fgets(line, sizeof(line), f);
-    temp = extractIntegerWords(line);
+
     for (int i = 0; i < temp.size(); i++) {
         growths[i] = temp[i];
     }
     fgets(line, sizeof(line), f);
-    equip_weapon(extractIntegerWords(line)); 
+    temp = extractIntegerWords(line);
+    // equip_weapon(temp); 
     fseek(f, 10, SEEK_CUR);
     fgets(line, sizeof(line), f);
     std::vector<std::string> names = css_from_line(line);
@@ -185,11 +158,9 @@ void unit::read(const char *filename, char skip) {
     }
     fgets(line, sizeof(line), f);
     temp = extractIntegerWords(line);
-
     exp = temp[0];
     fgets(line, sizeof(line), f);
     temp = extractIntegerWords(line);
-
     mounted = temp[0];    
     fgets(line, sizeof(line), f);
     temp = extractIntegerWords(line);
