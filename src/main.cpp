@@ -376,7 +376,7 @@ main() {
     // all_units["Sheeda"].write("unitrite.txt");
     // write_all_weapons("weaponrite.txt");
     
-    all_units["Sheeda_test"].read("units.txt", 19);
+    all_units["Sheeda_test"].read("units.txt", 0);
     // all_weapons["Sheeda_test"].read("weapons.txt", 20);
     // printf("%s \n", all_units["Sheeda_test"].name);
     // printf("%s \n", all_units["Sheeda_test"].type);
