@@ -12,7 +12,7 @@ inventory_item::inventory_item() {
 }
 
 inventory_item::inventory_item(std::string in_name, char in_used){
-    strncpy(name, in_name.c_str(), sizeof(in_name));
+    strncpy(name, in_name.c_str(), sizeof(name));
     used = in_used;
 }
 

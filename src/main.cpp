@@ -374,8 +374,9 @@ main() {
     printf("%d \n", all_units["Sheeda_test"].growths[0]);
     printf("%d \n", all_units["Sheeda_test"].stats[0]);
     printf("%d \n", all_units["Sheeda_test"].get_equipped()[0]);
-    printf("%s \n", all_units["Sheeda_test"].equipment[0]);
-    printf("%s \n", all_units["Sheeda_test"].equipment[1]);
+    printf("%s \n", all_units["Sheeda_test"].equipment[0].name);
+    cout << all_units["Sheeda_test"].equipment[0].name << endl;
+    printf("%s \n", all_units["Sheeda_test"].equipment[1].name);
     printf("%s \n", all_units["Sheeda_test"].lovers[0]);
 
     

@@ -45,21 +45,21 @@ void unit::equip_weapon(std::vector<int> in_equipped) {
             // printf("wpn_exp %d\n", wpn_exp[current_type_ind]);
             if (wpn_exp[current_type_ind] > 0) {
                 equipped[0] = (int) in_equipped[0]; 
+                attack_probs[0] = accuracy();
+                attack_probs[1] = avoid();
+                attack_probs[2] = critical();
+                attack_probs[3] = favor();
             } else {
                 string msg;
                 msg += name;
                 msg += " cannot equip ";
                 msg += equipment[in_equipped[0]].name;
                 msg += " \n";
-                throw msg;
+                // throw msg; // THIS LINE breaks the code on Gabinours-PC
             }
             
         };
     }
-    attack_probs[0] = accuracy();
-    attack_probs[1] = avoid();
-    attack_probs[2] = critical();
-    attack_probs[3] = favor();
 }
 
 void unit::take_damage(unsigned char damage) {
@@ -113,15 +113,16 @@ void unit::read(const char *filename, char skip) {
         growths[i] = temp[i];
     }
     fgets(line, sizeof(line), f);
-    temp = extractIntegerWords(line);
-    // equip_weapon(temp); 
+    equip_weapon(extractIntegerWords(line)); 
     fseek(f, 10, SEEK_CUR);
     fgets(line, sizeof(line), f);
     std::vector<std::string> names = css_from_line(line);
     fgets(line, sizeof(line), f);
     temp = extractIntegerWords(line);
     for (int i = 0; i < temp.size(); i++) {
-       equipment[i] = inventory_item(names[i].c_str(), temp[i]);
+        printf("names %s \n", names[i].c_str());
+        equipment[i] = inventory_item(names[i], temp[i]);
+        printf("names %s \n", equipment[i].name);
     }
     fseek(f, 10, SEEK_CUR);
     fgets(line, sizeof(line), f);
