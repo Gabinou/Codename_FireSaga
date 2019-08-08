@@ -48,7 +48,7 @@ public:
     
     void read(const char*, char);
     
-    void write(const char*);
+    void write(string);
     
     friend std::ostream & operator << (std::ostream &out, const weapon &in_weapon) {
         out << in_weapon.name << "\n";

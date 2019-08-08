@@ -210,7 +210,7 @@ string read_line(const char *filename, char skip){
     fgets(line, sizeof(line), f);
     std::string out(line);
     out.pop_back(); // fgets include the \n character at the end of the line. This removes it.
-    out = out.substr(0, out.size()-1);
+    // out = out.substr(0, out.size()-1);
     fclose(f);
     return(out);
 }
@@ -230,8 +230,8 @@ void read_all_weapons(const char *filename="weapons.txt") {
         if (!line.empty() && line != "") {
             all_weapons[line.c_str()] = weapon();
             all_weapons[line.c_str()].read(filename, i);
-            // printf("%s \n", line.c_str());
-            // printf("%s \n", all_weapons[line.c_str()].name);
+            printf("%s \n", line.c_str());
+            printf("%s \n", all_weapons[line.c_str()].name);
         }   
     inFile.close();
     }
@@ -369,6 +369,7 @@ main() {
     // write_all_units("units.txt", "cpp");
     
     printf("%s \n", all_weapons["Iron Sword"].name);
+    printf("%s \n", all_weapons["Rapier"].name);
     all_weapons["Iron Sword"].write("weaponrite.txt");
     
     // all_units["Sheeda_test"].read("units.txt", 0);

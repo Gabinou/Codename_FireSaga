@@ -31,7 +31,7 @@ weapon::weapon(){
 weapon::~weapon(void) {
     // printf("Weapon %s is being deleted.\n" , name);
 }
-void weapon::write(const char *filename) {
+void weapon::write(string filename) {
         // This is c++-style.
         // Compare with c-style write.
         std::ofstream out(filename);
