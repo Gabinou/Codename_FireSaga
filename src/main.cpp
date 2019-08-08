@@ -365,19 +365,22 @@ main() {
     // printf("%d \n", all_units["Sheeda"].get_equipped()[0]);
     // write_all_units("units.txt", "cpp");
     
-    all_units["Sheeda_test"].read("units.txt", 0);
-    printf("%s \n", all_units["Sheeda_test"].name);
-    printf("%s \n", all_units["Sheeda_test"].type);
-    printf("%d \n", all_units["Sheeda_test"].stats_base[0]);
-    printf("%d \n", all_units["Sheeda_test"].stats_base[1]);
-    printf("%d \n", all_units["Sheeda_test"].stats_base[2]);
-    printf("%d \n", all_units["Sheeda_test"].growths[0]);
-    printf("%d \n", all_units["Sheeda_test"].stats[0]);
-    printf("%d \n", all_units["Sheeda_test"].get_equipped()[0]);
-    printf("%s \n", all_units["Sheeda_test"].equipment[0].name);
-    cout << all_units["Sheeda_test"].equipment[0].name << endl;
-    printf("%s \n", all_units["Sheeda_test"].equipment[1].name);
-    printf("%s \n", all_units["Sheeda_test"].lovers[0]);
+    printf("%s \n", all_weapons["Iron Sword"].name);
+    all_weapons["Iron Sword"].write("weaponrite.txt");
+    
+    // all_units["Sheeda_test"].read("units.txt", 0);
+    // printf("%s \n", all_units["Sheeda_test"].name);
+    // printf("%s \n", all_units["Sheeda_test"].type);
+    // printf("%d \n", all_units["Sheeda_test"].stats_base[0]);
+    // printf("%d \n", all_units["Sheeda_test"].stats_base[1]);
+    // printf("%d \n", all_units["Sheeda_test"].stats_base[2]);
+    // printf("%d \n", all_units["Sheeda_test"].growths[0]);
+    // printf("%d \n", all_units["Sheeda_test"].stats[0]);
+    // printf("%d \n", all_units["Sheeda_test"].get_equipped()[0]);
+    // printf("%s \n", all_units["Sheeda_test"].equipment[0].name);
+    // cout << all_units["Sheeda_test"].equipment[0].name << endl;
+    // printf("%s \n", all_units["Sheeda_test"].equipment[1].name);
+    // printf("%s \n", all_units["Sheeda_test"].lovers[0]);
 
     
 }

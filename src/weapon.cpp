@@ -31,6 +31,35 @@ weapon::weapon(){
 weapon::~weapon(void) {
     // printf("Weapon %s is being deleted.\n" , name);
 }
+void weapon::write(const char *filename) {
+        std::ofstream out(filename);
+        out << name << "\n";
+        out << "Type: \t\t";
+        out << type << "\n";
+        out << "Wpn_Exp: \t";
+        out << exp << "\n";
+        out << "Stats: \t\t";
+        for (int i = 0; i < sizeof(stats)/sizeof(stats[0]); i++) {
+            out << (int) stats[i] << ", ";
+        };
+        out << "\n" << "Bonus: \t\t";
+        for (int i = 0; i < sizeof(stats_bonus)/sizeof(stats_bonus[0]); i++) {
+            out << (int) stats_bonus[i] << ", ";
+        };
+        out << "\n" << "Cost: \t\t" << cost << "\n";
+        out << "Dmg_type: \t" << dmg_type << "\n";
+        out << "Range: \t\t";
+        if (range[1] == 0) {
+            out << (int) range[0] << "\n";
+        } else {
+            out << (int) range[0] << ", " << (int) range[1] << "\n";
+        }
+        out << "Effective: \t";
+        out << effective[0] << ", " << effective[1] << "\n";
+        out << "\n";
+        out.close();
+}
+
 void weapon::read(const char *filename, char skip) {
     // 2019/07/30: skip should be a multiple of *number of lines written to weapon.txt* which is 8.
     FILE *f = fopen(filename, "r");
