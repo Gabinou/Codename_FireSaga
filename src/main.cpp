@@ -39,6 +39,29 @@ std::vector<int> extractIntegerWords(string str)
     } 
     return(founds);
 } 
+
+std::vector<std::string> css_from_line(char *line) {
+    char * pch;
+    std::string word;
+    std::string name;
+    std::vector<std::string> names;
+    char word_num;
+    pch = strtok(line, ",");
+    while (pch != NULL){
+        name = "";
+        std::string temp(pch);
+        stringstream iss(temp);
+        word_num = 0;
+        while (iss >> word) {
+            if (word_num > 0) {name+= " ";};
+            name += word;
+            word_num++;
+        }
+        names.push_back(name);
+        pch = strtok (NULL, ",");
+    }
+    return(names);
+}
  
 int get_rand() { 
     return(dist(mt));

@@ -102,31 +102,6 @@ std::vector<std::string> getNextLineAndSplitIntoTokens(std::istream& str)
     }
     return result;
 }
-/*! \fn css_from_line()
-*  \brief Get comma separated strings (css) from a line. Lines are gotten from fgets. outputs vector of string for simplicity. Fucking chars man. Sucks ballz.
-*/
-std::vector<std::string> css_from_line(char *line) {
-    char * pch;
-    std::string word;
-    std::string name;
-    std::vector<std::string> names;
-    char word_num;
-    pch = strtok(line, ",");
-    while (pch != NULL){
-        name = "";
-        std::string temp(pch);
-        stringstream iss(temp);
-        word_num = 0;
-        while (iss >> word) {
-            if (word_num > 0) {name+= " ";};
-            name += word;
-            word_num++;
-        }
-        names.push_back(name);
-        pch = strtok (NULL, ",");
-    }
-    return(names);
-}
 
 
 void unit::read(const char *filename, char skip) {
