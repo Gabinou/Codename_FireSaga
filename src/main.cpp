@@ -180,13 +180,15 @@ void read_all_units(const char *filename) {
 
 
 void write_all_weapons(const char *filename, char const *savestyle = "cpp" ) {
+    std::remove(filename);
     if (savestyle == "cpp") {
-        std::ofstream out(filename);
+        // std::ofstream out(filename);
         for (auto& it: all_weapons) { // Iterate over unordered_map
-            out << it.second;
+            // out << it.second;
+            it.second.write(filename);
             // printf("%s \n", it.second.name);
         }
-        out.close();
+        // out.close();
     }
 
 }
@@ -370,7 +372,8 @@ main() {
     
     printf("%s \n", all_weapons["Iron Sword"].name);
     printf("%s \n", all_weapons["Rapier"].name);
-    all_weapons["Iron Sword"].write("weaponrite.bin");
+    // all_weapons["Iron Sword"].write("weaponrite.txt");
+    write_all_weapons("weaponrite.txt");
     
     // all_units["Sheeda_test"].read("units.txt", 0);
     // printf("%s \n", all_units["Sheeda_test"].name);

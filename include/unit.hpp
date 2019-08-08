@@ -178,14 +178,9 @@ public:
     unsigned char wpn_weighed_down() const;
     /// \fn void write
     /// \brief write the object to file. Keeps the exact same formatting as the friend << function.
-    void write(const char *filename) {
-        FILE *f = fopen(filename, "a");
-        fprintf(f, "%s \n", name);
-        fprintf(f, "Class: \t\t %s \n", type);
-        fprintf(f, "Class: \t\t %s \n", type);
-        fclose(f);
-    }; 
-    
+
+    void write(string);
+        
     /// \brief friend << (it overloads it) for unit to write the unit to text file.
     friend std::ostream & operator << (std::ostream &out, const unit &in_unit) {
         out << in_unit.name << "\n";

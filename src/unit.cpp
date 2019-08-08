@@ -81,6 +81,90 @@ void unit::death() {
     printf("%s is dead.\n", name);
 }
 
+void unit::write(std::string filename) { 
+    std::ofstream out(filename, std::ios_base::app);
+    out << name << "\n";
+    out << "Class: \t\t" << type << "\n";
+    out << "Bases: \t\t";
+    for (int i = 0; i < sizeof(stats_base)/sizeof(stats_base[0]); i++) {
+        if (i == (sizeof(stats_base)/sizeof(stats_base[0])) - 1) {
+            out << (int) stats_base[i] << "\n";
+        } else {
+            out << (int) stats_base[i] << ", ";
+        }
+    };
+    out << "Stats: \t\t" // must stay like this cause of busted stats variable that needs more space to not crash.
+    << (int) stats[0] << ", " << (int) stats[1] << ", " 
+    << (int) stats[2] << ", " << (int) stats[3] << ", " 
+    << (int) stats[4] << ", " << (int) stats[5] << ", " 
+    << (int) stats[6] << ", " << (int) stats[7] << ", " 
+    << (int) stats[8] << ", " << (int) stats[9] << "\n"
+    << "Growths: \t";
+    for (int i = 0; i < sizeof(growths)/sizeof(growths[0]); i++) {
+        if (i == (sizeof(growths)/sizeof(growths[0])) - 1) {
+            out << (int) growths[i] << "\n";
+        } else {
+            out << (int) growths[i] << ", ";
+        }
+    };
+    out << "Equipped: \t" << (int) get_equipped()[0] << "\n";
+    out << "Equipment: \t";
+    for (int i = 0; i < sizeof(equipment)/sizeof(equipment[0]); i++) {
+        out << equipment[i].name << ", ";
+    };
+    out << "\n" << "Used(eq): \t";
+    for (int i = 0; i < sizeof(equipment)/sizeof(equipment[0]); i++) {
+        out << (int) equipment[i].used << ", ";
+    };
+    out << "\n" << "Weapons: \t";
+    for (int i = 0; i < sizeof(weapons)/sizeof(weapons[0]); i++) {
+        out << weapons[i].name << ", ";
+    };
+    out << "\n" << "Items: \t\t"; 
+    for (int i = 0; i < sizeof(items)/sizeof(items[0]); i++) {
+        out << items[i].name << ", ";
+    };
+    out << "\n" << "Lovers: \t";
+    for (int i = 0; i < sizeof(lovers)/sizeof(lovers[0]); i++) {
+        if (i == (sizeof(lovers)/sizeof(lovers[0])) - 1) {
+            out << lovers[i] << "\n";
+        } else {
+            out << lovers[i] << ", ";
+        }
+    };
+    out << "love_pts: \t";
+    for (int i = 0; i < sizeof(love_pts)/sizeof(love_pts[0]); i++) {
+        if (i == (sizeof(love_pts)/sizeof(love_pts[0])) - 1) {
+            out << (int) love_pts[i] << "\n";
+        } else {
+            out << (int) love_pts[i] << ", ";
+        }
+    };
+    out << "love_grt: \t";
+    for (int i = 0; i < sizeof(love_growths)/sizeof(love_growths[0]); i++) {
+        if (i == (sizeof(love_growths)/sizeof(love_growths[0])) - 1) {
+            out << (int) love_growths[i] << "\n";
+        } else {
+            out << (int) love_growths[i] << ", ";
+        }
+    };
+    out << "wpn_exp: \t";
+    for (int i = 0; i < sizeof(wpn_exp)/sizeof(wpn_exp[0]); i++) {
+        if (i == (sizeof(wpn_exp)/sizeof(wpn_exp[0])) - 1) {
+            out << (int) wpn_exp[i] << "\n";
+        } else {
+            out << (int) wpn_exp[i] << ", ";
+        }
+    };
+    out << "Exp: \t\t" << (int) exp << "\n";
+    out << "Mounted: \t" << mounted << "\n";
+    out << "Flying: \t"  << flying << "\n";
+    out << "Armored: \t" << armored << "\n";
+    out << "Promoted: \t" << promoted << "\n";
+    out << std::endl;
+}
+
+
 void unit::read(const char *filename, char skip) {
     // 2019/07/30: skip should be a multiple of *number of lines written to weapon.txt* which is 8.
     FILE *f = fopen(filename, "r");
