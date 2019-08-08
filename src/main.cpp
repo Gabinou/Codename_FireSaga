@@ -252,7 +252,7 @@ void read_all_weapons(const char *filename="weapons.txt") {
 
 main() {
     printf("TESTING THIS BITCH\n");
-    read_all_weapons("weapons.txt");
+    // read_all_weapons("weapons.txt");
     // inventory_item("Rapier", 10);
     // printf("%d \f", inventory_items["Rapier_0000"]);
     // write_all_weapons("weapons2.txt");
@@ -370,12 +370,14 @@ main() {
     // printf("%d \n", all_units["Sheeda"].get_equipped()[0]);
     // write_all_units("units.txt", "cpp");
     
-    printf("%s \n", all_weapons["Iron Sword"].name);
-    printf("%s \n", all_weapons["Rapier"].name);
+    // printf("%s \n", all_weapons["Iron Sword"].name);
+    // printf("%s \n", all_weapons["Rapier"].name);
     // all_weapons["Iron Sword"].write("weaponrite.txt");
-    write_all_weapons("weaponrite.txt");
+    // all_units["Sheeda"].write("unitrite.txt");
+    // write_all_weapons("weaponrite.txt");
     
-    // all_units["Sheeda_test"].read("units.txt", 0);
+    all_units["Sheeda_test"].read("units.txt", 19);
+    // all_weapons["Sheeda_test"].read("weapons.txt", 20);
     // printf("%s \n", all_units["Sheeda_test"].name);
     // printf("%s \n", all_units["Sheeda_test"].type);
     // printf("%d \n", all_units["Sheeda_test"].stats_base[0]);

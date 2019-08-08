@@ -169,91 +169,100 @@ void unit::read(const char *filename, char skip) {
     // 2019/07/30: skip should be a multiple of *number of lines written to weapon.txt* which is 8.
     FILE *f = fopen(filename, "r");
     char line[500];
-    for (int i = 0; i < skip; i++) {
+    for (int i = 0; i < skip+1; i++) {
         fgets(line, sizeof(line), f); // skips skip lines.
+        // printf("%s \n", line);
     }
     fgets(line, sizeof(line), f);
+    printf("%s \n", line);
     line[strlen(line)-1] = 0;  //fgets also includes the \n in the line. This removes it.
     strncpy(name, line, sizeof(name));
     fseek(f, 9, SEEK_CUR);
     fgets(line, sizeof(line), f);
+    printf("%s \n", line);
     line[strlen(line)-1] = 0; 
     strncpy(type, line, sizeof(type));
     fgets(line, sizeof(line), f);
+    printf("%s \n", line);
     std::vector<int> temp = extractIntegerWords(line);
     for (int i = 0; i < temp.size(); i++) {
         stats_base[i] = temp[i];
     }    
     fseek(f, 9, SEEK_CUR);
     fgets(line, sizeof(line), f);
+    printf("%s \n", line);
     temp = extractIntegerWords(line);
     for (int i = 0; i < temp.size(); i++) {
         stats[i] = temp[i];
     }    
     fseek(f, 9, SEEK_CUR);
     fgets(line, sizeof(line), f);
-
+    printf("%s \n", line);
     for (int i = 0; i < temp.size(); i++) {
         growths[i] = temp[i];
     }
+    printf("%s \n", line);
     fgets(line, sizeof(line), f);
-    equip_weapon(extractIntegerWords(line)); 
-    fseek(f, 10, SEEK_CUR);
-    fgets(line, sizeof(line), f);
-    std::vector<std::string> names = css_from_line(line);
-    fgets(line, sizeof(line), f);
-    temp = extractIntegerWords(line);
-    for (int i = 0; i < temp.size(); i++) {
-        equipment[i] = inventory_item(names[i], temp[i]);
-    }
-    fseek(f, 10, SEEK_CUR);
-    fgets(line, sizeof(line), f);
-    names = css_from_line(line);
-    for (int i = 0; i < names.size(); i++) {
-       weapons[i] = inventory_item(names[i].c_str(), 0);
-    }
-    fseek(f, 10, SEEK_CUR);
-    fgets(line, sizeof(line), f);
-    names = css_from_line(line);
-    for (int i = 0; i < names.size(); i++) {
-       items[i] = inventory_item(names[i].c_str(), 0);
-    }
-    fseek(f, 9, SEEK_CUR);
-    fgets(line, sizeof(line), f);
-    names = css_from_line(line);
-    for (int i = 0; i < names.size(); i++) {
-       strncpy(lovers[i], names[i].c_str(), sizeof(lovers[i]));
-    }
-    fgets(line, sizeof(line), f);
-    temp = extractIntegerWords(line);
-    for (int i = 0; i < temp.size(); i++) {
-        love_pts[i] = temp[i];
-    } 
-    fgets(line, sizeof(line), f);
-    temp = extractIntegerWords(line);
-    for (int i = 0; i < temp.size(); i++) {
-        love_growths[i] = temp[i];
-    }
-    fgets(line, sizeof(line), f);
-    temp = extractIntegerWords(line);
-    for (int i = 0; i < temp.size(); i++) {
-        wpn_exp[i] = temp[i];
-    }
-    fgets(line, sizeof(line), f);
-    temp = extractIntegerWords(line);
-    exp = temp[0];
-    fgets(line, sizeof(line), f);
-    temp = extractIntegerWords(line);
-    mounted = temp[0];    
-    fgets(line, sizeof(line), f);
-    temp = extractIntegerWords(line);
-    flying = temp[0];
-    fgets(line, sizeof(line), f);
-    temp = extractIntegerWords(line);
-    armored = temp[0];
-    fgets(line, sizeof(line), f);
-    temp = extractIntegerWords(line);
-    promoted = temp[0];
+    printf("%s \n", line);
+    printf("%s \n", line);
+    printf("%s \n", line);
+    // equip_weapon(extractIntegerWords(line)); 
+    // fseek(f, 10, SEEK_CUR);
+    // fgets(line, sizeof(line), f);
+    // std::vector<std::string> names = css_from_line(line);
+    // fgets(line, sizeof(line), f);
+    // temp = extractIntegerWords(line);
+    // for (int i = 0; i < temp.size(); i++) {
+        // equipment[i] = inventory_item(names[i], temp[i]);
+    // }
+    // fseek(f, 10, SEEK_CUR);
+    // fgets(line, sizeof(line), f);
+    // names = css_from_line(line);
+    // for (int i = 0; i < names.size(); i++) {
+       // weapons[i] = inventory_item(names[i].c_str(), 0);
+    // }
+    // fseek(f, 10, SEEK_CUR);
+    // fgets(line, sizeof(line), f);
+    // names = css_from_line(line);
+    // for (int i = 0; i < names.size(); i++) {
+       // items[i] = inventory_item(names[i].c_str(), 0);
+    // }
+    // fseek(f, 9, SEEK_CUR);
+    // fgets(line, sizeof(line), f);
+    // names = css_from_line(line);
+    // for (int i = 0; i < names.size(); i++) {
+       // strncpy(lovers[i], names[i].c_str(), sizeof(lovers[i]));
+    // }
+    // fgets(line, sizeof(line), f);
+    // temp = extractIntegerWords(line);
+    // for (int i = 0; i < temp.size(); i++) {
+        // love_pts[i] = temp[i];
+    // } 
+    // fgets(line, sizeof(line), f);
+    // temp = extractIntegerWords(line);
+    // for (int i = 0; i < temp.size(); i++) {
+        // love_growths[i] = temp[i];
+    // }
+    // fgets(line, sizeof(line), f);
+    // temp = extractIntegerWords(line);
+    // for (int i = 0; i < temp.size(); i++) {
+        // wpn_exp[i] = temp[i];
+    // }
+    // fgets(line, sizeof(line), f);
+    // temp = extractIntegerWords(line);
+    // exp = temp[0];
+    // fgets(line, sizeof(line), f);
+    // temp = extractIntegerWords(line);
+    // mounted = temp[0];    
+    // fgets(line, sizeof(line), f);
+    // temp = extractIntegerWords(line);
+    // flying = temp[0];
+    // fgets(line, sizeof(line), f);
+    // temp = extractIntegerWords(line);
+    // armored = temp[0];
+    // fgets(line, sizeof(line), f);
+    // temp = extractIntegerWords(line);
+    // promoted = temp[0];
 }
 
 unit::unit(std::string in_name, std::string in_unit_class, char in_id, 
