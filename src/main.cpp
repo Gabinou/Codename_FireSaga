@@ -230,8 +230,8 @@ void read_all_weapons(const char *filename="weapons.txt") {
         if (!line.empty() && line != "") {
             all_weapons[line.c_str()] = weapon();
             all_weapons[line.c_str()].read(filename, i);
-            printf("%s \n", line.c_str());
-            printf("%s \n", all_weapons[line.c_str()].name);
+            // printf("%s \n", line.c_str());
+            // printf("%s \n", all_weapons[line.c_str()].name);
         }   
     inFile.close();
     }
@@ -370,7 +370,7 @@ main() {
     
     printf("%s \n", all_weapons["Iron Sword"].name);
     printf("%s \n", all_weapons["Rapier"].name);
-    all_weapons["Iron Sword"].write("weaponrite.txt");
+    all_weapons["Iron Sword"].write("weaponrite.bin");
     
     // all_units["Sheeda_test"].read("units.txt", 0);
     // printf("%s \n", all_units["Sheeda_test"].name);

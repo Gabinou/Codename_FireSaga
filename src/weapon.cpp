@@ -31,35 +31,67 @@ weapon::weapon(){
 weapon::~weapon(void) {
     // printf("Weapon %s is being deleted.\n" , name);
 }
+
+string extension(string filename) {
+    return(filename.substr(filename.find("."), filename.size())); 
+}
+
 void weapon::write(string filename) {
-        // This is c++-style.
-        // Compare with c-style write.
-        std::ofstream out(filename);
-        out << name << "\n";
-        out << "Type: \t\t";
-        out << type << "\n";
-        out << "Wpn_Exp: \t";
-        out << exp << "\n";
-        out << "Stats: \t\t";
+    // This is c++-style.
+    // Compare with c-style write.
+    std::ofstream myfile;
+    if (extension(filename) == ".bin") {
+        printf("this is a bin\n");
+        myfile.open(filename, ios::out | ios::binary);
+        // myfile <<name << "\n";
+        myfile.write(name, sizeof(name));
+        // myfile <<type << "\n";
+        // myfile <<exp << "\n";
+        // for (int i = 0; i < sizeof(stats)/sizeof(stats[0]); i++) {
+            // myfile <<(int) stats[i];
+        // };
+        // myfile <<"\n";
+        // for (int i = 0; i < sizeof(stats_bonus)/sizeof(stats_bonus[0]); i++) {
+            // myfile <<(int) stats_bonus[i] << ", ";
+        // };
+        // myfile <<cost << "\n";
+        // myfile <<dmg_type << "\n";
+        // if (range[1] == 0) {
+            // myfile <<(int) range[0] << "\n";
+        // } else {
+            // myfile <<(int) range[0] << (int) range[1] << "\n";
+        // }
+        // myfile <<effective[0] << effective[1] << "\n";
+        // myfile <<"\n";
+    } 
+    else if (extension(filename) == ".txt") {
+        myfile.open(filename);
+        myfile <<name << "\n";
+        myfile <<"Type: \t\t";
+        myfile <<type << "\n";
+        myfile <<"Wpn_Exp: \t";
+        myfile <<exp << "\n";
+        myfile <<"Stats: \t\t";
         for (int i = 0; i < sizeof(stats)/sizeof(stats[0]); i++) {
-            out << (int) stats[i] << ", ";
+            myfile <<(int) stats[i] << ", ";
         };
-        out << "\n" << "Bonus: \t\t";
+        myfile <<"\n" << "Bonus: \t\t";
         for (int i = 0; i < sizeof(stats_bonus)/sizeof(stats_bonus[0]); i++) {
-            out << (int) stats_bonus[i] << ", ";
+            myfile <<(int) stats_bonus[i] << ", ";
         };
-        out << "\n" << "Cost: \t\t" << cost << "\n";
-        out << "Dmg_type: \t" << dmg_type << "\n";
-        out << "Range: \t\t";
+        myfile <<"\n" << "Cost: \t\t" << cost << "\n";
+        myfile <<"Dmg_type: \t" << dmg_type << "\n";
+        myfile <<"Range: \t\t";
         if (range[1] == 0) {
-            out << (int) range[0] << "\n";
+            myfile <<(int) range[0] << "\n";
         } else {
-            out << (int) range[0] << ", " << (int) range[1] << "\n";
+            myfile <<(int) range[0] << ", " << (int) range[1] << "\n";
         }
-        out << "Effective: \t";
-        out << effective[0] << ", " << effective[1] << "\n";
-        out << "\n";
-        out.close();
+        myfile <<"Effective: \t";
+        myfile <<effective[0] << ", " << effective[1] << "\n";
+        myfile <<"\n";
+    }
+    myfile.close();
 }
 
 void weapon::read(const char *filename, char skip) {
