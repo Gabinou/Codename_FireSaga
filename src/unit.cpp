@@ -120,9 +120,7 @@ void unit::read(const char *filename, char skip) {
     fgets(line, sizeof(line), f);
     temp = extractIntegerWords(line);
     for (int i = 0; i < temp.size(); i++) {
-        printf("names %s \n", names[i].c_str());
         equipment[i] = inventory_item(names[i], temp[i]);
-        printf("names %s \n", equipment[i].name);
     }
     fseek(f, 10, SEEK_CUR);
     fgets(line, sizeof(line), f);
