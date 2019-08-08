@@ -42,9 +42,10 @@ void weapon::write(string filename) {
     std::ofstream myfile;
     if (extension(filename) == ".bin") {
         printf("this is a bin\n");
-        myfile.open(filename, ios::out | ios::binary);
+        myfile.open(filename, std::ios::binary);
         // myfile <<name << "\n";
-        myfile.write(name, sizeof(name));
+        int testint = 7;
+        myfile.write(reinterpret_cast<const char*>(&testint), sizeof(testint));
         // myfile <<type << "\n";
         // myfile <<exp << "\n";
         // for (int i = 0; i < sizeof(stats)/sizeof(stats[0]); i++) {
