@@ -71,5 +71,6 @@ extern std::vector<int> extractIntegerWords(string);
 *  \brief Get comma separated strings (css) from a line. Lines are gotten from fgets. outputs vector of string for simplicity. Fucking chars man. Sucks ballz.
 */
 extern std::vector<std::string> css_from_line(char*); 
+extern std::vector<std::string> css_from_line(string); 
 
 #endif /* SHARED_HPP */

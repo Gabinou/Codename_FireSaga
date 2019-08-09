@@ -166,8 +166,27 @@ void unit::write(std::string filename) {
 
 
 void unit::read(const char *filename, char skip) {
-    // 2019/07/30: skip should be a multiple of *number of lines written to weapon.txt* which is 8.
-    
+    // 2019/07/30: skip should be a multiple of *number of lines written to units.txt* which is 20.
+    std::ifstream infile(filename);
+    std::string line;
+    // printf("BBBBBBBBBB");
+    int i = skip;
+    while (i < skip + 20) {
+        std::getline(infile, line);
+        if (i>=skip) {
+            std::istringstream iss(line);
+            // std::cout << line << endl;
+            strncpy(name, line.c_str(), sizeof(line));
+            std::getline(infile, line);
+            std::cout << line << endl;
+            strncpy(type, line.substr(9, line.size()).c_str(), sizeof(line));
+            std::getline(infile, line);
+            std::cout << line << endl;
+            css_from_line(line);
+            i+=20;
+        }
+        i++;
+    }
 }
 
 unit::unit(std::string in_name, std::string in_unit_class, char in_id, 

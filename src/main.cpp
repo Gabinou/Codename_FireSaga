@@ -40,6 +40,29 @@ std::vector<int> extractIntegerWords(string str)
     return(founds);
 } 
 
+std::vector<std::string> css_from_line(string line) {
+    // char * pch;
+    // std::string word;
+    // std::string name;
+    std::vector<std::string> names;
+    // char word_num;
+    // pch = strtok(line, ",");
+    // while (pch != NULL){
+        // name = "";
+        // std::string temp(pch);
+        // stringstream iss(temp);
+        // word_num = 0;
+        // while (iss >> word) {
+            // if (word_num > 0) {name+= " ";};
+            // name += word;
+            // word_num++;
+        // }
+        // names.push_back(name);
+        // pch = strtok (NULL, ",");
+    // }
+    return(names);
+}
+
 std::vector<std::string> css_from_line(char *line) {
     char * pch;
     std::string word;
@@ -376,7 +399,7 @@ main() {
     // all_units["Sheeda"].write("unitrite.txt");
     // write_all_weapons("weaponrite.txt");
     
-    all_units["Sheeda_test"].read("units.txt", 0);
+    all_units["Sheeda_test"].read("units.txt", 20);
     // all_weapons["Sheeda_test"].read("weapons.txt", 20);
     printf("%s \n", all_units["Sheeda_test"].name);
     printf("%s \n", all_units["Sheeda_test"].type);
