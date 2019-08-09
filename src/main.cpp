@@ -40,10 +40,10 @@ std::vector<int> extractIntegerWords(string str)
     return(founds);
 } 
 
-std::vector<std::string> css_from_line(string line) {
+std::vector<std::string> css_from_line(string line, string delimiter) {
     std::vector<std::string> names;
     std::size_t found;
-    string delimiter = ",";
+    // string delimiter = ",";
     while ((found = line.find(delimiter)) != string::npos) {
         names.push_back(line.substr(0, found));
         std::cout << line.substr(0, found) << endl;
