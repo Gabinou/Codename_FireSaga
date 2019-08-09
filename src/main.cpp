@@ -41,25 +41,15 @@ std::vector<int> extractIntegerWords(string str)
 } 
 
 std::vector<std::string> css_from_line(string line) {
-    // char * pch;
-    // std::string word;
-    // std::string name;
     std::vector<std::string> names;
-    // char word_num;
-    // pch = strtok(line, ",");
-    // while (pch != NULL){
-        // name = "";
-        // std::string temp(pch);
-        // stringstream iss(temp);
-        // word_num = 0;
-        // while (iss >> word) {
-            // if (word_num > 0) {name+= " ";};
-            // name += word;
-            // word_num++;
-        // }
-        // names.push_back(name);
-        // pch = strtok (NULL, ",");
-    // }
+    std::size_t found;
+    string delimiter = ",";
+    while ((found = line.find(delimiter)) != string::npos) {
+        names.push_back(line.substr(0, found));
+        std::cout << line.substr(0, found) << endl;
+        line.erase(0, found + delimiter.length());
+    }
+    names.push_back(line);
     return(names);
 }
 

@@ -182,7 +182,7 @@ void unit::read(const char *filename, char skip) {
             strncpy(type, line.substr(9, line.size()).c_str(), sizeof(line));
             std::getline(infile, line);
             std::cout << line << endl;
-            css_from_line(line);
+            css_from_line(line.substr(8, line.size()));
             i+=20;
         }
         i++;
