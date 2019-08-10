@@ -39,15 +39,36 @@ std::vector<int> extractIntegerWords(string str)
     } 
     return(founds);
 } 
+std::string words2str(std::vector<std::string > words) {
+    std::string new_str;
+    for (int i=0; i < words.size(); i++) {
+        new_str += words[i];
+        if (i != words.size()) {
+            new_str += " ";
+        }        
+    }
+    return(new_str);
+}
+
+std::vector<std::string> get_words(std::string line) {
+    std::vector<std::string> words;
+    std::string word;
+    std::stringstream iss(line); 
+    while (iss >> word) 
+        // cout << word << endl;
+        words.push_back(word);
+    return(words);
+}
 
 std::vector<int> csv_from_line(string line, string delimiter) {
     std::vector<int> names;
     std::size_t found;
     while ((found = line.find(delimiter)) != string::npos) {
-        names.push_back(std::stoi(line.substr(0, found).c_str()));
         // std::cout << line.substr(0, found) << endl;
+        names.push_back(std::stoi(line.substr(0, found).c_str()));
         line.erase(0, found + delimiter.length());
     }
+    // std::cout << line << endl;
     names.push_back(std::stoi(line.c_str()));
     return(names);
 }
@@ -56,11 +77,11 @@ std::vector<std::string> css_from_line(string line, string delimiter) {
     std::vector<std::string> names;
     std::size_t found;
     while ((found = line.find(delimiter)) != string::npos) {
-        names.push_back(line.substr(0, found));
+        names.push_back(words2str(get_words(line.substr(0, found))));
         // std::cout << line.substr(0, found) << endl;
         line.erase(0, found + delimiter.length());
     }
-    names.push_back(line);
+    names.push_back(words2str(get_words(line)));
     return(names);
 }
 

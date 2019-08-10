@@ -169,6 +169,9 @@ void unit::read(const char *filename, char skip) {
     // 2019/07/30: skip should be a multiple of *number of lines written to units.txt* which is 20.
     std::ifstream infile(filename);
     std::string line;
+    std::vector<int> temp;
+    std::string new_name;
+    std::vector<std::string> tempstr;
     // printf("BBBBBBBBBB");
     int j = skip;
     while (j < skip + 20) {
@@ -181,7 +184,7 @@ void unit::read(const char *filename, char skip) {
             std::cout << line << endl;
             strncpy(type, line.substr(9, line.size()).c_str(), sizeof(line));
             std::getline(infile, line);
-            std::vector<int> temp = csv_from_line(line.substr(8, line.size()));
+            temp = csv_from_line(line.substr(8, line.size()));
             for (int i = 0; i < temp.size(); i++) {
                 stats_base[i] = temp[i];
             }
@@ -197,10 +200,28 @@ void unit::read(const char *filename, char skip) {
             }
             std::getline(infile, line);
             temp = csv_from_line(line.substr(9, line.size()));
-            equipped[0] = temp[0];
+            for (int i = 0; i < temp.size(); i++) {
+                equipped[i] = temp[i];
+            }
+            std::getline(infile, line);
+            tempstr = css_from_line(line.substr(10, line.size()));
+            std::getline(infile, line);
+            std::cout << line.substr(10, line.size()) << endl;
+            temp = csv_from_line(line.substr(10, line.size()));
+            for (int i = 0; i < temp.size(); i++) {
+                // new_name = words2str(get_words(tempstr[i]));
+                equipment[i] = inventory_item(tempstr[i], temp[i]);
+            }
+            std::getline(infile, line); //weapon line
+            std::getline(infile, line); //items line
             // std::cout << "THIS" << temp[0] << endl;
             // std::cout << get_equipped()[0] << endl;
             // std::cout << get_equipped()[1] << endl;
+            std::getline(infile, line);
+            tempstr = css_from_line(line.substr(9, line.size()));
+            for (int i = 0; i < tempstr.size(); i++) {
+                strncpy(lovers[i], tempstr[i].c_str(), sizeof(lovers[i]));
+            }
             j+=20;
         }
         j++;
