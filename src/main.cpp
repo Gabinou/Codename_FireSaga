@@ -219,11 +219,6 @@ void write_all_units(const char *filename, char const *savestyle = "cpp" ) {
     }
 }
 
-void read_all_units(const char *filename) {
-      
-}
-
-
 void write_all_weapons(const char *filename, char const *savestyle = "cpp" ) {
     std::remove(filename);
     if (savestyle == "cpp") {
@@ -295,12 +290,37 @@ void read_all_weapons(const char *filename="weapons.txt") {
     
 }
 
+void read_all_units(const char *filename) {
+    std::string line;
+    std::ifstream inFile(filename); 
+    short int line_num = std::count(std::istreambuf_iterator<char>(inFile), 
+             std::istreambuf_iterator<char>(), '\n') + 1;
+    for (int i = 0 ; i < line_num; i+=20) {
+        line = "";
+        try {
+            line = read_line(filename, i);
+        } catch (const char* msg) {
+            break;
+        }
+        if (!line.empty() && line != "") {
+            // std::cout << line.c_str() << endl;
+            // std::cout << i << endl;
+            all_units[line.c_str()] = unit();
+            all_units[line.c_str()].read(filename, i);
+        }   
+    inFile.close();
+    // all_units["Sheeda_test"].read("units.txt", 20);
+    }
+}
+
+
 main() {
     printf("TESTING THIS BITCH\n");
-    // read_all_weapons("weapons.txt");
+    read_all_weapons("weapons.txt");
+    read_all_units("units.txt");
     // inventory_item("Rapier", 10);
     // printf("%d \f", inventory_items["Rapier_0000"]);
-    // write_all_weapons("weapons2.txt");
+    write_all_weapons("weapons2.txt");
 
 
     // all_weapons["Rapier"] = weapon("Rapier", "swd", id++, 600,
@@ -359,47 +379,47 @@ main() {
         // /*Armored*/         0,
         // /*Promoted*/        0);
 
-    all_units["Sheeda"] = unit("Sheeda", "Pegasus Knight", id++, 
-                            /*HP Str Mag Skl Spd Lck Def Res Con Mov
-        stats_base*/        {18,  7,  2,  7, 18,  8,  4,  4,  5,  7},
-        /*Growths*/         {40, 25, 20, 40, 70, 80, 20, 20,  0,  0},
-        /*Skills*/          {18,  8,  2},
-        /*Love_pts*/        { 0,  0,  0,  0,  0},
-        /*Love_growths*/    { 0,  0,  0,  0,  0},
-                           //swd lnc axe bow wnd fir tnd drk lgt staff
-        /*Weapon_exp*/      { 0,  1,  0,  0,  0,  0,  0,  0,  0,  0},
-        /*Position*/        { 1,  2,  1},
-        /*Equipped*/        {1},
-        /*Equipment*/       {inventory_item("Iron Lance", 10), inventory_item("Iron Lance", 10)},
-        /*Weapons*/         {},
-        /*Items*/           {},
-        /*Exp*/             0, 
-        /*Lovers*/          {"Marth", "", "", "", ""},
-        /*Mounted*/         1,
-        /*Flying*/          1,
-        /*Armored*/         0,
-        /*Promoted*/        0);
+    // all_units["Sheeda"] = unit("Sheeda", "Pegasus Knight", id++, 
+                            // /*HP Str Mag Skl Spd Lck Def Res Con Mov
+        // stats_base*/        {18,  7,  2,  7, 18,  8,  4,  4,  5,  7},
+        // /*Growths*/         {40, 25, 20, 40, 70, 80, 20, 20,  0,  0},
+        // /*Skills*/          {18,  8,  2},
+        // /*Love_pts*/        { 0,  0,  0,  0,  0},
+        // /*Love_growths*/    { 0,  0,  0,  0,  0},
+                           // //swd lnc axe bow wnd fir tnd drk lgt staff
+        // /*Weapon_exp*/      { 0,  1,  0,  0,  0,  0,  0,  0,  0,  0},
+        // /*Position*/        { 1,  2,  1},
+        // /*Equipped*/        {1},
+        // /*Equipment*/       {inventory_item("Iron Lance", 10), inventory_item("Iron Lance", 10)},
+        // /*Weapons*/         {},
+        // /*Items*/           {},
+        // /*Exp*/             0, 
+        // /*Lovers*/          {"Marth", "", "", "", ""},
+        // /*Mounted*/         1,
+        // /*Flying*/          1,
+        // /*Armored*/         0,
+        // /*Promoted*/        0);
            
-        all_units["Sheeda2"] = unit("Sheeda2", "Pegasus Knight", id++, 
-                            /*HP Str Mag Skl Spd Lck Def Res Con Mov
-        stats_base*/        {18,  7,  2,  7, 18,  8,  4,  4,  5,  7},
-        /*Growths*/         {40, 25, 20, 40, 70, 80, 20, 20,  0,  0},
-        /*Skills*/          {18,  8,  2},
-        /*Love_pts*/        { 0,  0,  0,  0,  0},
-        /*Love_growths*/    { 0,  0,  0,  0,  0},
-                           //swd lnc axe bow wnd fir tnd drk lgt staff
-        /*Weapon_exp*/      { 1,  0,  0,  0,  0,  0,  0,  0,  0,  0},
-        /*Position*/        { 1,  2,  1},
-        /*Equipped*/        {0},
-        /*Equipment*/       {inventory_item("Iron Lance", 10), inventory_item("Iron Sword", 10)},
-        /*Weapons*/         {},
-        /*Items*/           {},
-        /*Exp*/             0, 
-        /*Lovers*/          {"Marth", "", "", "", ""},
-        /*Mounted*/         1,
-        /*Flying*/          1,
-        /*Armored*/         0,
-        /*Promoted*/        0);
+        // all_units["Sheeda2"] = unit("Sheeda2", "Pegasus Knight", id++, 
+                            // /*HP Str Mag Skl Spd Lck Def Res Con Mov
+        // stats_base*/        {18,  7,  2,  7, 18,  8,  4,  4,  5,  7},
+        // /*Growths*/         {40, 25, 20, 40, 70, 80, 20, 20,  0,  0},
+        // /*Skills*/          {18,  8,  2},
+        // /*Love_pts*/        { 0,  0,  0,  0,  0},
+        // /*Love_growths*/    { 0,  0,  0,  0,  0},
+                           // //swd lnc axe bow wnd fir tnd drk lgt staff
+        // /*Weapon_exp*/      { 1,  0,  0,  0,  0,  0,  0,  0,  0,  0},
+        // /*Position*/        { 1,  2,  1},
+        // /*Equipped*/        {0},
+        // /*Equipment*/       {inventory_item("Iron Lance", 10), inventory_item("Iron Sword", 10)},
+        // /*Weapons*/         {},
+        // /*Items*/           {},
+        // /*Exp*/             0, 
+        // /*Lovers*/          {"Marth", "", "", "", ""},
+        // /*Mounted*/         1,
+        // /*Flying*/          1,
+        // /*Armored*/         0,
+        // /*Promoted*/        0);
                 
            
            
@@ -421,25 +441,26 @@ main() {
     // all_units["Sheeda"].write("unitrite.txt");
     // write_all_weapons("weaponrite.txt");
     
-    all_units["Sheeda_test"].read("units.txt", 20);
+    // all_units["Sheeda_test"].read("units.txt", 20);
     // all_weapons["Sheeda_test"].read("weapons.txt", 20);
-    printf("%s \n", all_units["Sheeda_test"].name);
-    printf("%s \n", all_units["Sheeda_test"].type);
-    printf("%d \n", all_units["Sheeda_test"].stats_base[0]);
-    printf("%d \n", all_units["Sheeda_test"].stats_base[1]);
-    printf("%d \n", all_units["Sheeda_test"].stats_base[2]);
-    printf("%d \n", all_units["Sheeda_test"].growths[0]);
-    printf("%d \n", all_units["Sheeda_test"].stats[0]);
-    printf("this is get_equipped %d \n", all_units["Sheeda_test"].get_equipped()[0]);
-    printf("%s \n", all_units["Sheeda_test"].equipment[0].name);
-    cout << all_units["Sheeda_test"].equipment[0].name << endl;
-    printf("%s \n", all_units["Sheeda_test"].equipment[1].name);
-    printf("%s \n", all_units["Sheeda_test"].lovers[0]);
-    printf("%d \n", all_units["Sheeda_test"].exp);
-    printf("%d \n", all_units["Sheeda_test"].mounted);
-    printf("%d \n", all_units["Sheeda_test"].flying);
-    printf("%d \n", all_units["Sheeda_test"].armored);
-    printf("%d \n", all_units["Sheeda_test"].promoted);
+    printf("%s \n", all_units["Sheeda"].name);
+    printf("%s \n", all_units["Marth"].name);
+    // printf("%s \n", all_units["Sheeda"].type);
+    // printf("%d \n", all_units["Sheeda"].stats_base[0]);
+    // printf("%d \n", all_units["Sheeda"].stats_base[1]);
+    // printf("%d \n", all_units["Sheeda"].stats_base[2]);
+    // printf("%d \n", all_units["Sheeda"].growths[0]);
+    // printf("%d \n", all_units["Sheeda"].stats[0]);
+    // printf("this is get_equipped %d \n", all_units["Sheeda"].get_equipped()[0]);
+    // printf("%s \n", all_units["Sheeda"].equipment[0].name);
+    // cout << all_units["Sheeda"].equipment[0].name << endl;
+    // printf("%s \n", all_units["Sheeda"].equipment[1].name);
+    // printf("%s \n", all_units["Sheeda"].lovers[0]);
+    // printf("%d \n", all_units["Sheeda"].exp);
+    // printf("%d \n", all_units["Sheeda"].mounted);
+    // printf("%d \n", all_units["Sheeda"].flying);
+    // printf("%d \n", all_units["Sheeda"].armored);
+    // printf("%d \n", all_units["Sheeda"].promoted);
 
     
 }

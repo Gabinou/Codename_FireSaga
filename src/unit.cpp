@@ -173,15 +173,16 @@ void unit::read(const char *filename, char skip) {
     std::string new_name;
     std::vector<std::string> tempstr;
     // printf("BBBBBBBBBB");
-    int j = skip;
+    int j = 0;
     while (j < skip + 20) {
         std::getline(infile, line);
+        // std::cout << line << endl;
         if (j>=skip) {
             std::istringstream iss(line);
             // std::cout << line << endl;
             strncpy(name, line.c_str(), sizeof(line));
             std::getline(infile, line);
-            std::cout << line << endl;
+            // std::cout << line << endl;
             strncpy(type, line.substr(9, line.size()).c_str(), sizeof(line));
             std::getline(infile, line);
             temp = csv_from_line(line.substr(8, line.size()));
@@ -206,7 +207,7 @@ void unit::read(const char *filename, char skip) {
             std::getline(infile, line);
             tempstr = css_from_line(line.substr(10, line.size()));
             std::getline(infile, line);
-            std::cout << line.substr(10, line.size()) << endl;
+            // std::cout << line.substr(10, line.size()) << endl;
             temp = csv_from_line(line.substr(10, line.size()));
             for (int i = 0; i < temp.size(); i++) {
                 equipment[i] = inventory_item(tempstr[i], temp[i]);
