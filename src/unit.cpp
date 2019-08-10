@@ -197,7 +197,10 @@ void unit::read(const char *filename, char skip) {
             }
             std::getline(infile, line);
             temp = csv_from_line(line.substr(9, line.size()));
-            equip_weapon(temp);
+            equipped[0] = temp[0];
+            // std::cout << "THIS" << temp[0] << endl;
+            // std::cout << get_equipped()[0] << endl;
+            // std::cout << get_equipped()[1] << endl;
             j+=20;
         }
         j++;
