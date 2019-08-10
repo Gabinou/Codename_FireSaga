@@ -72,5 +72,6 @@ extern std::vector<int> extractIntegerWords(string);
 */
 extern std::vector<std::string> css_from_line(char*); 
 extern std::vector<std::string> css_from_line(string, string delimiter = ","); 
+extern std::vector<int> csv_from_line(string, string delimiter = ","); 
 
 #endif /* SHARED_HPP */

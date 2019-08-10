@@ -170,10 +170,10 @@ void unit::read(const char *filename, char skip) {
     std::ifstream infile(filename);
     std::string line;
     // printf("BBBBBBBBBB");
-    int i = skip;
-    while (i < skip + 20) {
+    int j = skip;
+    while (j < skip + 20) {
         std::getline(infile, line);
-        if (i>=skip) {
+        if (j>=skip) {
             std::istringstream iss(line);
             // std::cout << line << endl;
             strncpy(name, line.c_str(), sizeof(line));
@@ -181,11 +181,26 @@ void unit::read(const char *filename, char skip) {
             std::cout << line << endl;
             strncpy(type, line.substr(9, line.size()).c_str(), sizeof(line));
             std::getline(infile, line);
-            std::cout << line << endl;
-            css_from_line(line.substr(8, line.size()));
-            i+=20;
+            std::vector<int> temp = csv_from_line(line.substr(8, line.size()));
+            for (int i = 0; i < temp.size(); i++) {
+                stats_base[i] = temp[i];
+            }
+            std::getline(infile, line);
+            temp = csv_from_line(line.substr(9, line.size()));
+            for (int i = 0; i < temp.size(); i++) {
+                stats[i] = temp[i];
+            }
+            std::getline(infile, line);
+            temp = csv_from_line(line.substr(9, line.size()));
+            for (int i = 0; i < temp.size(); i++) {
+                growths[i] = temp[i];
+            }
+            std::getline(infile, line);
+            temp = csv_from_line(line.substr(9, line.size()));
+            equip_weapon(temp);
+            j+=20;
         }
-        i++;
+        j++;
     }
 }
 

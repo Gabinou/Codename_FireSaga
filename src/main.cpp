@@ -40,13 +40,24 @@ std::vector<int> extractIntegerWords(string str)
     return(founds);
 } 
 
+std::vector<int> csv_from_line(string line, string delimiter) {
+    std::vector<int> names;
+    std::size_t found;
+    while ((found = line.find(delimiter)) != string::npos) {
+        names.push_back(std::stoi(line.substr(0, found).c_str()));
+        // std::cout << line.substr(0, found) << endl;
+        line.erase(0, found + delimiter.length());
+    }
+    names.push_back(std::stoi(line.c_str()));
+    return(names);
+}
+
 std::vector<std::string> css_from_line(string line, string delimiter) {
     std::vector<std::string> names;
     std::size_t found;
-    // string delimiter = ",";
     while ((found = line.find(delimiter)) != string::npos) {
         names.push_back(line.substr(0, found));
-        std::cout << line.substr(0, found) << endl;
+        // std::cout << line.substr(0, found) << endl;
         line.erase(0, found + delimiter.length());
     }
     names.push_back(line);
