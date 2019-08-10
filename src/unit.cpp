@@ -209,7 +209,6 @@ void unit::read(const char *filename, char skip) {
             std::cout << line.substr(10, line.size()) << endl;
             temp = csv_from_line(line.substr(10, line.size()));
             for (int i = 0; i < temp.size(); i++) {
-                // new_name = words2str(get_words(tempstr[i]));
                 equipment[i] = inventory_item(tempstr[i], temp[i]);
             }
             std::getline(infile, line); //weapon line
@@ -222,6 +221,31 @@ void unit::read(const char *filename, char skip) {
             for (int i = 0; i < tempstr.size(); i++) {
                 strncpy(lovers[i], tempstr[i].c_str(), sizeof(lovers[i]));
             }
+            std::getline(infile, line);
+            temp = csv_from_line(line.substr(10, line.size()));
+            for (int i = 0; i < temp.size(); i++) {
+                love_pts[i] = temp[i];
+            }
+            std::getline(infile, line);
+            temp = csv_from_line(line.substr(10, line.size()));
+            for (int i = 0; i < temp.size(); i++) {
+                love_pts[i] = temp[i];
+            }
+            std::getline(infile, line);
+            temp = csv_from_line(line.substr(10, line.size()));
+            for (int i = 0; i < temp.size(); i++) {
+                wpn_exp[i] = temp[i];
+            }
+            std::getline(infile, line);
+            exp = csv_from_line(line.substr(7, line.size()))[0];
+            std::getline(infile, line);
+            mounted = csv_from_line(line.substr(9, line.size()))[0];            
+            std::getline(infile, line);
+            flying = csv_from_line(line.substr(9, line.size()))[0];            
+            std::getline(infile, line);
+            armored = csv_from_line(line.substr(9, line.size()))[0];            
+            std::getline(infile, line);
+            promoted = csv_from_line(line.substr(9, line.size()))[0];
             j+=20;
         }
         j++;

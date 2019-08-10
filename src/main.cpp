@@ -435,6 +435,11 @@ main() {
     cout << all_units["Sheeda_test"].equipment[0].name << endl;
     printf("%s \n", all_units["Sheeda_test"].equipment[1].name);
     printf("%s \n", all_units["Sheeda_test"].lovers[0]);
+    printf("%d \n", all_units["Sheeda_test"].exp);
+    printf("%d \n", all_units["Sheeda_test"].mounted);
+    printf("%d \n", all_units["Sheeda_test"].flying);
+    printf("%d \n", all_units["Sheeda_test"].armored);
+    printf("%d \n", all_units["Sheeda_test"].promoted);
 
     
 }
