@@ -5,6 +5,7 @@
 * \brief Main game algorithm page.
 */
 
+#include "shared.hpp"
 #include "inventory_item.hpp"
 
 inventory_item::inventory_item() {
@@ -23,4 +24,3 @@ inventory_item::inventory_item(const inventory_item& source) {
     strcpy(name, source.name);
     used = source.used;
 }
-

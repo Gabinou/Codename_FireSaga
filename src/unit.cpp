@@ -10,7 +10,7 @@
 
 using namespace std;
 
-char wpn_types[][12]  = {"swd", "lance", "axe", "bow", "mgc_wind", "mgc_fire", "mgc_thunder",  "mgc_dark",  "mgc_light", "staff"};
+char wpn_types[][12]  = {"swd", "lance", "axe", "bow", "mgc_wind", "mgc_fire", "mgc_thunder",  "mgc_dark",  "mgc_light", "staff"}; // I don't understand. This line does not seem to work anywhere else. why?
 
 const char* unit::get_equipped() const{
     // For some reason passing the pointer works as I intended.

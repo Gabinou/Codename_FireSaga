@@ -4,6 +4,8 @@
 * \file main.cpp 
 * \brief Main game algorithm page.
 */
+
+#include "shared.hpp"
 #include "generic.hpp"
 
 generic::generic() {

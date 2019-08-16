@@ -17,6 +17,11 @@ private:
     
 public:
     char stats_bonus[10];
+    
+    /// \var stats_bonus
+    /// \brief Bonuses can be negative -> maluses
+    std::unordered_map<char, char[10]> supports; // idea for supports and support bonuses: use name as key to stats bonus. Check how heavy this is, compare with separate.
+    
     /// \var stats_bonus
     /// \brief Bonuses can be negative -> maluses
     /// \var stats
@@ -71,6 +76,7 @@ public:
     /// \var char lovers
     /// \brief Names of possible lovers.
     bool mounted, flying, armored, promoted;
+    
     /// \var bool mounted
     /// \brief. 1/0 mounted. For effective weapons
     /// \var bool flying

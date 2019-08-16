@@ -9,6 +9,8 @@ using namespace std;
 #include "generic.hpp"
 #include "weapon.hpp"
 #include "unit.hpp"
+#include "inventory_item.hpp"
+
 
 
 // Skill idea: divine shield! Bubble!
@@ -236,6 +238,8 @@ void write_all_weapons(const char *filename, char const *savestyle = "cpp" ) {
 void write_all_maps(const char *filename) {
       
 }
+
+
 void read_all_maps(const char *filename) {
       
 }

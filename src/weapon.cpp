@@ -4,9 +4,10 @@
 * \brief weapon class implementation.
 */
 using namespace std;
+#include "shared.hpp"
 #include "weapon.hpp"
 #include "generic.hpp"
-#include "shared.hpp"
+
 
 weapon::weapon(){
     strncpy(name, "", 30); // for some reason in_name is always of size 8. Whatever.
