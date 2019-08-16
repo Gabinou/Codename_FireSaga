@@ -124,28 +124,28 @@ void unit::write(std::string filename) {
     for (int i = 0; i < sizeof(items)/sizeof(items[0]); i++) {
         out << items[i].name << ", ";
     };
-    out << "\n" << "Lovers: \t";
-    for (int i = 0; i < sizeof(lovers)/sizeof(lovers[0]); i++) {
-        if (i == (sizeof(lovers)/sizeof(lovers[0])) - 1) {
-            out << lovers[i] << "\n";
+    out << "\n" << "supports: \t";
+    for (int i = 0; i < sizeof(supports)/sizeof(supports[0]); i++) {
+        if (i == (sizeof(supports)/sizeof(supports[0])) - 1) {
+            out << supports[i] << "\n";
         } else {
-            out << lovers[i] << ", ";
+            out << supports[i] << ", ";
         }
     };
-    out << "love_pts: \t";
-    for (int i = 0; i < sizeof(love_pts)/sizeof(love_pts[0]); i++) {
-        if (i == (sizeof(love_pts)/sizeof(love_pts[0])) - 1) {
-            out << (int) love_pts[i] << "\n";
+    out << "support_pts: \t";
+    for (int i = 0; i < sizeof(support_pts)/sizeof(support_pts[0]); i++) {
+        if (i == (sizeof(support_pts)/sizeof(support_pts[0])) - 1) {
+            out << (int) support_pts[i] << "\n";
         } else {
-            out << (int) love_pts[i] << ", ";
+            out << (int) support_pts[i] << ", ";
         }
     };
     out << "love_grt: \t";
-    for (int i = 0; i < sizeof(love_growths)/sizeof(love_growths[0]); i++) {
-        if (i == (sizeof(love_growths)/sizeof(love_growths[0])) - 1) {
-            out << (int) love_growths[i] << "\n";
+    for (int i = 0; i < sizeof(support_growths)/sizeof(support_growths[0]); i++) {
+        if (i == (sizeof(support_growths)/sizeof(support_growths[0])) - 1) {
+            out << (int) support_growths[i] << "\n";
         } else {
-            out << (int) love_growths[i] << ", ";
+            out << (int) support_growths[i] << ", ";
         }
     };
     out << "wpn_exp: \t";
@@ -220,17 +220,17 @@ void unit::read(const char *filename, char skip) {
             std::getline(infile, line);
             tempstr = css_from_line(line.substr(9, line.size()));
             for (int i = 0; i < tempstr.size(); i++) {
-                strncpy(lovers[i], tempstr[i].c_str(), sizeof(lovers[i]));
+                strncpy(supports[i], tempstr[i].c_str(), sizeof(supports[i]));
             }
             std::getline(infile, line);
             temp = csv_from_line(line.substr(10, line.size()));
             for (int i = 0; i < temp.size(); i++) {
-                love_pts[i] = temp[i];
+                support_pts[i] = temp[i];
             }
             std::getline(infile, line);
             temp = csv_from_line(line.substr(10, line.size()));
             for (int i = 0; i < temp.size(); i++) {
-                love_pts[i] = temp[i];
+                support_pts[i] = temp[i];
             }
             std::getline(infile, line);
             temp = csv_from_line(line.substr(10, line.size()));
@@ -255,13 +255,13 @@ void unit::read(const char *filename, char skip) {
 
 unit::unit(std::string in_name, std::string in_unit_class, char in_id, 
            std::vector<unsigned int> in_stats_base, std::vector<unsigned int> in_growths, std::vector<unsigned int> in_skills,
-           std::vector<unsigned int> in_love_pts, std::vector<unsigned int> in_love_growths,
+           std::vector<unsigned int> in_support_pts, std::vector<unsigned int> in_support_growths,
            std::vector<unsigned int> in_wpn_exp, std::vector<unsigned int> in_position,
            std::vector<int> in_equipped, 
            std::vector<inventory_item> in_equipment,
            std::vector<inventory_item> in_weapons, 
            std::vector<inventory_item> in_items,
-           unsigned short in_exp, std::vector<std::string> in_lovers,
+           unsigned short in_exp, std::vector<std::string> in_supports,
            bool in_mounted, bool in_flying, bool in_armored, bool in_promoted) {
 
     exp = in_exp;
@@ -303,10 +303,10 @@ unit::unit(std::string in_name, std::string in_unit_class, char in_id,
         skills[i] = (unsigned int) in_skills[i];
         position[i] = (unsigned int) in_position[i];
     }  
-    for (int i = 0; i < in_lovers.size(); i++) {
-        strncpy(lovers[i], in_lovers[i].c_str(), sizeof(in_lovers[i]));
-        love_growths[i] = (unsigned int) in_love_growths[i];
-        love_pts[i] = (unsigned int) in_love_pts[i];
+    for (int i = 0; i < in_supports.size(); i++) {
+        strncpy(supports[i], in_supports[i].c_str(), sizeof(in_supports[i]));
+        support_growths[i] = (unsigned int) in_support_growths[i];
+        support_pts[i] = (unsigned int) in_support_pts[i];
         wpn_exp[i] = (unsigned int) in_wpn_exp[i];
     }    
     id = in_id;

@@ -17,11 +17,7 @@ private:
     
 public:
     char stats_bonus[10];
-    
-    /// \var stats_bonus
-    /// \brief Bonuses can be negative -> maluses
-    std::unordered_map<char, char[10]> supports; // idea for supports and support bonuses: use name as key to stats bonus. Check how heavy this is, compare with separate.
-    
+
     /// \var stats_bonus
     /// \brief Bonuses can be negative -> maluses
     /// \var stats
@@ -29,7 +25,7 @@ public:
     // for seom reason, stats array of len<19 cause cygwin_exception
     unsigned char stats[19], stats_base[10],
     growths[10], wpn_exp[10], position[3], skills[3],
-    love_pts[5], love_growths[5],
+    support_pts[5], support_growths[5],
     attack_probs[4], combat_probs[2];
     /// \var unsigned char attack_probs[4]
     /// \brief Probabilities associated with attacking, computed when alone.
@@ -37,7 +33,7 @@ public:
     /// \var unsigned char combat_probs[4]
     /// \brief probabilities associated with combat with an enemy unit.
     /// Accuracy, Avoid, Crit and Favor.
-    /// \var unsigned char love_growths
+    /// \var unsigned char support_growths
     /// \brief Number of points units that have love potential get for *DESIGN QUESTION*.
     /// \var unsigned char growths
     /// \brief Unit stats growth: percent probability that upon level up, unit stats grows by one. Growth>100% are interpreted as meaning a unit can grow +1 or +2.
@@ -47,7 +43,7 @@ public:
     /// \brief Skill names that unit possesses.    
     /// \var unsigned char wpn_exp
     /// \brief Wpn experience possessed by the unit. If a wpn_exp is equal to 0, unit cannot equip associated weapon type.    
-    /// \var unsigned char love_pts
+    /// \var unsigned char support_pts
     /// \brief current love points. Refer to ...
     /// \var equipped
     /// \brief Equipped weapon. Index of of weapon in equipment vector or weapon vector. Is a vector in case not only weapon can be equipped. In such case equipped[0] would be the weapon, and equipped[1] an item, etc.
@@ -72,9 +68,13 @@ public:
     * \brief Total Unit Experience points.
     * Not unit level in data. The experience points left most digits are the level. Example: 423exp means unit level 5 with 23 exp.
     */
-    char lovers[5][14]; 
-    /// \var char lovers
-    /// \brief Names of possible lovers.
+    char supports[5][14]; 
+    /// \var char supports
+    /// \brief Names of possible supports.
+    
+    // idea for supports and support bonuses: use name as key to stats bonus. Check how heavy this is, compare with separate. Rejected. This is too heavy. Also, for design purposes, I think the FE solution for supports seems good: have a table of elements supports and refer to this table to provide supports. To be as light as possible, make everything as basic and separate as possible.
+    
+    
     bool mounted, flying, armored, promoted;
     
     /// \var bool mounted
@@ -95,8 +95,7 @@ public:
         std::vector<inventory_item>,
         std::vector<inventory_item>, std::vector<inventory_item>, 
         unsigned short, std::vector<std::string>,
-        bool, bool, bool, bool
-        );
+        bool, bool, bool, bool);
     /*! \fn unsigned char combat_damage(onst unit& enemy, bool critical)
     *  \brief Computes unit's damage during combat for a single attack, taking the critical into account.
     */
@@ -230,28 +229,28 @@ public:
         for (int i = 0; i < sizeof(in_unit.items)/sizeof(in_unit.items[0]); i++) {
             out << in_unit.items[i].name << ", ";
         };
-        out << "\n" << "Lovers: \t";
-        for (int i = 0; i < sizeof(in_unit.lovers)/sizeof(in_unit.lovers[0]); i++) {
-            if (i == (sizeof(in_unit.lovers)/sizeof(in_unit.lovers[0])) - 1) {
-                out << in_unit.lovers[i] << "\n";
+        out << "\n" << "supports: \t";
+        for (int i = 0; i < sizeof(in_unit.supports)/sizeof(in_unit.supports[0]); i++) {
+            if (i == (sizeof(in_unit.supports)/sizeof(in_unit.supports[0])) - 1) {
+                out << in_unit.supports[i] << "\n";
             } else {
-                out << in_unit.lovers[i] << ", ";
+                out << in_unit.supports[i] << ", ";
             }
         };
-        out << "love_pts: \t";
-        for (int i = 0; i < sizeof(in_unit.love_pts)/sizeof(in_unit.love_pts[0]); i++) {
-            if (i == (sizeof(in_unit.love_pts)/sizeof(in_unit.love_pts[0])) - 1) {
-                out << (int) in_unit.love_pts[i] << "\n";
+        out << "support_pts: \t";
+        for (int i = 0; i < sizeof(in_unit.support_pts)/sizeof(in_unit.support_pts[0]); i++) {
+            if (i == (sizeof(in_unit.support_pts)/sizeof(in_unit.support_pts[0])) - 1) {
+                out << (int) in_unit.support_pts[i] << "\n";
             } else {
-                out << (int) in_unit.love_pts[i] << ", ";
+                out << (int) in_unit.support_pts[i] << ", ";
             }
         };
         out << "love_grt: \t";
-        for (int i = 0; i < sizeof(in_unit.love_growths)/sizeof(in_unit.love_growths[0]); i++) {
-            if (i == (sizeof(in_unit.love_growths)/sizeof(in_unit.love_growths[0])) - 1) {
-                out << (int) in_unit.love_growths[i] << "\n";
+        for (int i = 0; i < sizeof(in_unit.support_growths)/sizeof(in_unit.support_growths[0]); i++) {
+            if (i == (sizeof(in_unit.support_growths)/sizeof(in_unit.support_growths[0])) - 1) {
+                out << (int) in_unit.support_growths[i] << "\n";
             } else {
-                out << (int) in_unit.love_growths[i] << ", ";
+                out << (int) in_unit.support_growths[i] << ", ";
             }
         };
         out << "wpn_exp: \t";

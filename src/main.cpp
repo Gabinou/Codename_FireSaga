@@ -321,12 +321,21 @@ void read_all_units(const char *filename) {
 main() {
     printf("TESTING THIS BITCH\n");
     read_all_weapons("weapons.txt");
-    read_all_units("units.txt");
+    // read_all_units("units.txt");
     // inventory_item("Rapier", 10);
     // printf("%d \f", inventory_items["Rapier_0000"]);
-    write_all_weapons("weapons2.txt");
-
-
+    // write_all_weapons("weapons2.txt");
+    
+    std::unordered_map<string, std::vector<char>> testsupport({ {"Marth", {1,1,1,1,1,1,1,1,1,1,1}} });
+    string a = "Marth";
+    std::vector<char> b = {1,1,1,1,1,1,1,1,1,1,1};
+    char c[11] = {1,1,1,1,1,1,1,1,1,1,1};
+    char d[14] = "Marth";
+    printf("%d \n", sizeof(a));
+    printf("%d \n", sizeof(b));
+    printf("%d \n", sizeof(c));
+    printf("%d \n", sizeof(d));
+    printf("%d \n", sizeof(testsupport));
     // all_weapons["Rapier"] = weapon("Rapier", "swd", id++, 600,
             // // dmg  hit  crt wght uses  exp
               // {5,  90,  10,   7,  30,   2},
@@ -447,8 +456,13 @@ main() {
     
     // all_units["Sheeda_test"].read("units.txt", 20);
     // all_weapons["Sheeda_test"].read("weapons.txt", 20);
-    printf("%s \n", all_units["Sheeda"].name);
-    printf("%s \n", all_units["Marth"].name);
+    // printf("%s \n", all_units["Sheeda"].name);
+    
+    
+    
+    
+    // printf("%s \n", all_units["Sheeda"].supports["Marth"]);
+    // printf("%s \n", all_units["Marth"].name);
     // printf("%s \n", all_units["Sheeda"].type);
     // printf("%d \n", all_units["Sheeda"].stats_base[0]);
     // printf("%d \n", all_units["Sheeda"].stats_base[1]);
