@@ -16,15 +16,15 @@ private:
     char current_hp; //needs setters for death check on update
     
 public:
-    char stats_bonus[10];
+    char stats_bonus[11];
 
     /// \var stats_bonus
     /// \brief Bonuses can be negative -> maluses
     /// \var stats
     /// \brief current stats. Computed every level up using stats_grown.
     // for seom reason, stats array of len<19 cause cygwin_exception
-    unsigned char stats[19], stats_base[10],
-    growths[10], wpn_exp[10], position[3], skills[3],
+    unsigned char stats[19], stats_base[11],
+    growths[11], wpn_exp[10], position[3], skills[3],
     support_pts[5], support_growths[5],
     attack_probs[4], combat_probs[2];
     /// \var unsigned char attack_probs[4]

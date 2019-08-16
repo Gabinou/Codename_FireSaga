@@ -129,7 +129,7 @@ bool double_roll(int in_prob) {
 
 unsigned char id = 0; //Number of objects. I think this is unecessary.
 
-char unit_stats[][14] = {"HP", "Str", "Mag", "Skill", "Speed", "Luck", "Def", "Res", "Con", "Move"};
+char unit_stats[][14] = {"HP", "Str", "Mag", "Skill", "Speed", "Luck", "Def", "Res", "Con", "Move", "WpnLvl"};
 /*! \var char unit_stats
 * \brief Unit Statistics. <br> 
 *   List, in order: <br>
@@ -142,6 +142,7 @@ char unit_stats[][14] = {"HP", "Str", "Mag", "Skill", "Speed", "Luck", "Def", "R
 *  - Def: Defense: +1 Def -> -1 Received Damage from physical attacks <br>
 *  - Res: Magic Resistance. +1 Red -> -1 Received Damage from magic attacks. <br>
 *  - Con: Constitution. Only a unit with a higher constitution can rescue another. Also weapons with weight higher than unit constitution weighs the unit down. Refer to... <br>
+*  - WpnLvl: Weapon level. Some games use this stat to check if characters can use weapons. <br>
 *  - Move: Distance, in squares, that a unit can move on the grid map. Refer to ... <br>
 */
 char weapon_stats[][14] = {"dmg", "hit", "crit", "weight", "wpn_exp", "uses", "range", "lvl"}; 

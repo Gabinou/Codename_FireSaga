@@ -377,8 +377,7 @@ Mounted: 	1
 Flying: 	0
 Armored: 	0
 Promoted: 	0
-{"HP", "Str", "Mag", "Skill", "Speed", "Luck", "Def", "Res", "Con", "Move", "WpnLvl"};
-{"swd", "lance", "axe", "bow", "mgc_wind", "mgc_fire", "mgc_thunder",  "mgc_dark",  "mgc_light", "staff"};
+
 Hardin
 Class: 		Cavalier
 Bases: 		20, 9, 0, 7, 8, 3, 8, 0, 0, 9, 9
@@ -400,52 +399,53 @@ Armored: 	0
 Promoted: 	0
 
 Wolf
-Class: 		Cavalier
-Bases: 		20, 7, 10, 10, 8, 1, 9, 0, 10
-Stats: 		20, 7, 10, 10, 8, 1, 9, 0, 10
+Class: 		Horsemen
+Bases: 		18, 5, 0, 5, 9, 5, 4, 0, 0, 9, 6
+Stats: 		18, 5, 0, 5, 9, 5, 4, 0, 0, 9, 6
 Growths: 	40, 25, 20, 40, 70, 80, 20, 20, 0, 0
-Equipped: 	-1
-Equipment: 	Iron Lance, Javelin, , , , , , 
-Used(eq): 	10, 10, -1, -1, -1, -1, -1, -1
+Equipped: 	0
+Equipment: 	Steel Bow, , , , , , , 
+Used(eq): 	0, -1, -1, -1, -1, -1, -1, -1
 Weapons: 	, , , , 
 Items: 		, , , , 
-Lovers: 	Marth, , , , 
+Lovers: 	, , , , 
 love_pts: 	0, 0, 0, 0, 0
 love_grt: 	0, 0, 0, 0, 0
-wpn_exp: 	0, 1, 0, 0, 0, 0, 0, 0, 0, 0
-Exp: 		0
+wpn_exp: 	0, 0, 0, 1, 0, 0, 0, 0, 0, 0
+Exp: 		200
 Mounted: 	1
 Flying: 	0
 Armored: 	0
-Promoted: 	1
+Promoted: 	0
 
 Zagaro
-Class: 		Cavalier
-Bases: 		20, 7, 10, 10, 8, 1, 9, 0, 10
-Stats: 		20, 7, 10, 10, 8, 1, 9, 0, 10
+Class: 		Horsemen
+Bases: 		16, 4, 0, 3, 7, 2, 4, 0, 0, 9, 3
+Stats: 		16, 4, 0, 3, 7, 2, 4, 0, 0, 9, 3
 Growths: 	40, 25, 20, 40, 70, 80, 20, 20, 0, 0
-Equipped: 	-1
-Equipment: 	Iron Lance, Javelin, , , , , , 
-Used(eq): 	10, 10, -1, -1, -1, -1, -1, -1
+Equipped: 	0
+Equipment: 	Steel Bow, , , , , , , 
+Used(eq): 	0, -1, -1, -1, -1, -1, -1, -1
 Weapons: 	, , , , 
 Items: 		, , , , 
-Lovers: 	Marth, , , , 
+Lovers: 	, , , , 
 love_pts: 	0, 0, 0, 0, 0
 love_grt: 	0, 0, 0, 0, 0
-wpn_exp: 	0, 1, 0, 0, 0, 0, 0, 0, 0, 0
+wpn_exp: 	0, 0, 0, 1, 0, 0, 0, 0, 0, 0
 Exp: 		0
 Mounted: 	1
 Flying: 	0
 Armored: 	0
-Promoted: 	1
-
+Promoted: 	0
+{"HP", "Str", "Mag", "Skill", "Speed", "Luck", "Def", "Res", "Con", "Move", "WpnLvl"};
+{"swd", "lance", "axe", "bow", "mgc_wind", "mgc_fire", "mgc_thunder",  "mgc_dark",  "mgc_light", "staff"};
 Roshe
 Class: 		Cavalier
 Bases: 		20, 7, 10, 10, 8, 1, 9, 0, 10
 Stats: 		20, 7, 10, 10, 8, 1, 9, 0, 10
 Growths: 	40, 25, 20, 40, 70, 80, 20, 20, 0, 0
 Equipped: 	-1
-Equipment: 	Iron Lance, Javelin, , , , , , 
+Equipment: 	Iron Lance, Iron Sword, , , , , , 
 Used(eq): 	10, 10, -1, -1, -1, -1, -1, -1
 Weapons: 	, , , , 
 Items: 		, , , , 
