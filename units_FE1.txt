@@ -1,0 +1,1039 @@
+Marth
+Class: 		Lord
+Bases: 		19, 8, 0, 9, 10, 5, 5, 3, 6, 5
+Stats: 		19, 8, 0, 9, 10, 5, 5, 3, 6, 5
+Growths: 	40, 25, 20, 40, 70, 80, 20, 20, 0, 0
+Equipped: 	1
+Equipment: 	Rapier, Iron Sword, , , , , , 
+Used(eq): 	0, 0, -1, -1, -1, -1, -1, -1
+Weapons: 	, , , , 
+Items: 		, , , , 
+Lovers: 	Sheeda, , , , 
+love_pts: 	0, 0, 0, 0, 0
+love_grt: 	0, 0, 0, 0, 0
+wpn_exp: 	1, 0, 0, 0, 0, 0, 0, 0, 0, 0
+Exp: 		0
+Mounted: 	1
+Flying: 	1
+Armored: 	0
+Promoted: 	0
+
+Sheeda
+Class: 		Pegasus Knight
+Bases: 		18, 7, 2, 7, 12, 8, 4, 5, 5, 7
+Stats: 		18, 7, 2, 7, 12, 8, 4, 5, 5, 7
+Growths: 	40, 25, 20, 40, 70, 80, 20, 20, 0, 0
+Equipped: 	-1
+Equipment: 	Iron Lance, Javelin, , , , , , 
+Used(eq): 	10, 10, -1, -1, -1, -1, -1, -1
+Weapons: 	, , , , 
+Items: 		, , , , 
+Lovers: 	Marth, , , , 
+love_pts: 	0, 0, 0, 0, 0
+love_grt: 	0, 0, 0, 0, 0
+wpn_exp: 	0, 1, 0, 0, 0, 0, 0, 0, 0, 0
+Exp: 		0
+Mounted: 	1
+Flying: 	1
+Armored: 	0
+Promoted: 	0
+
+Jeigan
+Class: 		Paladin
+Bases: 		20, 7, 10, 10, 8, 1, 9, 0, 10
+Stats: 		20, 7, 10, 10, 8, 1, 9, 0, 10
+Growths: 	40, 25, 20, 40, 70, 80, 20, 20, 0, 0
+Equipped: 	-1
+Equipment: 	Iron Lance, Javelin, , , , , , 
+Used(eq): 	10, 10, -1, -1, -1, -1, -1, -1
+Weapons: 	, , , , 
+Items: 		, , , , 
+Lovers: 	Marth, , , , 
+love_pts: 	0, 0, 0, 0, 0
+love_grt: 	0, 0, 0, 0, 0
+wpn_exp: 	0, 1, 0, 0, 0, 0, 0, 0, 0, 0
+Exp: 		0
+Mounted: 	1
+Flying: 	0
+Armored: 	0
+Promoted: 	1
+
+Kain
+Class: 		Cavalier
+Bases: 		20, 7, 10, 10, 8, 1, 9, 0, 10
+Stats: 		20, 7, 10, 10, 8, 1, 9, 0, 10
+Growths: 	40, 25, 20, 40, 70, 80, 20, 20, 0, 0
+Equipped: 	-1
+Equipment: 	Iron Lance, Javelin, , , , , , 
+Used(eq): 	10, 10, -1, -1, -1, -1, -1, -1
+Weapons: 	, , , , 
+Items: 		, , , , 
+Lovers: 	Marth, , , , 
+love_pts: 	0, 0, 0, 0, 0
+love_grt: 	0, 0, 0, 0, 0
+wpn_exp: 	0, 1, 0, 0, 0, 0, 0, 0, 0, 0
+Exp: 		0
+Mounted: 	1
+Flying: 	0
+Armored: 	0
+Promoted: 	1
+
+Abel
+Class: 		Cavalier
+Bases: 		20, 7, 10, 10, 8, 1, 9, 0, 10
+Stats: 		20, 7, 10, 10, 8, 1, 9, 0, 10
+Growths: 	40, 25, 20, 40, 70, 80, 20, 20, 0, 0
+Equipped: 	-1
+Equipment: 	Iron Lance, Javelin, , , , , , 
+Used(eq): 	10, 10, -1, -1, -1, -1, -1, -1
+Weapons: 	, , , , 
+Items: 		, , , , 
+Lovers: 	Marth, , , , 
+love_pts: 	0, 0, 0, 0, 0
+love_grt: 	0, 0, 0, 0, 0
+wpn_exp: 	0, 1, 0, 0, 0, 0, 0, 0, 0, 0
+Exp: 		0
+Mounted: 	1
+Flying: 	0
+Armored: 	0
+Promoted: 	1
+
+Doga
+Class: 		Knight
+Bases: 		20, 7, 10, 10, 8, 1, 9, 0, 10
+Stats: 		20, 7, 10, 10, 8, 1, 9, 0, 10
+Growths: 	40, 25, 20, 40, 70, 80, 20, 20, 0, 0
+Equipped: 	-1
+Equipment: 	Iron Lance, Javelin, , , , , , 
+Used(eq): 	10, 10, -1, -1, -1, -1, -1, -1
+Weapons: 	, , , , 
+Items: 		, , , , 
+Lovers: 	Marth, , , , 
+love_pts: 	0, 0, 0, 0, 0
+love_grt: 	0, 0, 0, 0, 0
+wpn_exp: 	0, 1, 0, 0, 0, 0, 0, 0, 0, 0
+Exp: 		0
+Mounted: 	1
+Flying: 	0
+Armored: 	0
+Promoted: 	1
+
+Gordon
+Class: 		Archer
+Bases: 		20, 7, 10, 10, 8, 1, 9, 0, 10
+Stats: 		20, 7, 10, 10, 8, 1, 9, 0, 10
+Growths: 	40, 25, 20, 40, 70, 80, 20, 20, 0, 0
+Equipped: 	-1
+Equipment: 	Iron Lance, Javelin, , , , , , 
+Used(eq): 	10, 10, -1, -1, -1, -1, -1, -1
+Weapons: 	, , , , 
+Items: 		, , , , 
+Lovers: 	Marth, , , , 
+love_pts: 	0, 0, 0, 0, 0
+love_grt: 	0, 0, 0, 0, 0
+wpn_exp: 	0, 1, 0, 0, 0, 0, 0, 0, 0, 0
+Exp: 		0
+Mounted: 	1
+Flying: 	0
+Armored: 	0
+Promoted: 	1
+
+Riff
+Class: 		Priest
+Bases: 		20, 7, 10, 10, 8, 1, 9, 0, 10
+Stats: 		20, 7, 10, 10, 8, 1, 9, 0, 10
+Growths: 	40, 25, 20, 40, 70, 80, 20, 20, 0, 0
+Equipped: 	-1
+Equipment: 	Iron Lance, Javelin, , , , , , 
+Used(eq): 	10, 10, -1, -1, -1, -1, -1, -1
+Weapons: 	, , , , 
+Items: 		, , , , 
+Lovers: 	Marth, , , , 
+love_pts: 	0, 0, 0, 0, 0
+love_grt: 	0, 0, 0, 0, 0
+wpn_exp: 	0, 1, 0, 0, 0, 0, 0, 0, 0, 0
+Exp: 		0
+Mounted: 	1
+Flying: 	0
+Armored: 	0
+Promoted: 	1
+
+Oguma
+Class: 		Mercenary
+Bases: 		20, 7, 10, 10, 8, 1, 9, 0, 10
+Stats: 		20, 7, 10, 10, 8, 1, 9, 0, 10
+Growths: 	40, 25, 20, 40, 70, 80, 20, 20, 0, 0
+Equipped: 	-1
+Equipment: 	Iron Lance, Javelin, , , , , , 
+Used(eq): 	10, 10, -1, -1, -1, -1, -1, -1
+Weapons: 	, , , , 
+Items: 		, , , , 
+Lovers: 	Marth, , , , 
+love_pts: 	0, 0, 0, 0, 0
+love_grt: 	0, 0, 0, 0, 0
+wpn_exp: 	0, 1, 0, 0, 0, 0, 0, 0, 0, 0
+Exp: 		0
+Mounted: 	1
+Flying: 	0
+Armored: 	0
+Promoted: 	1
+
+Barts
+Class: 		Mercenary
+Bases: 		20, 7, 10, 10, 8, 1, 9, 0, 10
+Stats: 		20, 7, 10, 10, 8, 1, 9, 0, 10
+Growths: 	40, 25, 20, 40, 70, 80, 20, 20, 0, 0
+Equipped: 	-1
+Equipment: 	Iron Lance, Javelin, , , , , , 
+Used(eq): 	10, 10, -1, -1, -1, -1, -1, -1
+Weapons: 	, , , , 
+Items: 		, , , , 
+Lovers: 	Marth, , , , 
+love_pts: 	0, 0, 0, 0, 0
+love_grt: 	0, 0, 0, 0, 0
+wpn_exp: 	0, 1, 0, 0, 0, 0, 0, 0, 0, 0
+Exp: 		0
+Mounted: 	1
+Flying: 	0
+Armored: 	0
+Promoted: 	1
+
+Saji
+Class: 		Fighter
+Bases: 		20, 7, 10, 10, 8, 1, 9, 0, 10
+Stats: 		20, 7, 10, 10, 8, 1, 9, 0, 10
+Growths: 	40, 25, 20, 40, 70, 80, 20, 20, 0, 0
+Equipped: 	-1
+Equipment: 	Iron Lance, Javelin, , , , , , 
+Used(eq): 	10, 10, -1, -1, -1, -1, -1, -1
+Weapons: 	, , , , 
+Items: 		, , , , 
+Lovers: 	Marth, , , , 
+love_pts: 	0, 0, 0, 0, 0
+love_grt: 	0, 0, 0, 0, 0
+wpn_exp: 	0, 1, 0, 0, 0, 0, 0, 0, 0, 0
+Exp: 		0
+Mounted: 	1
+Flying: 	0
+Armored: 	0
+Promoted: 	1
+
+Maji
+Class: 		Fighter
+Bases: 		20, 7, 10, 10, 8, 1, 9, 0, 10
+Stats: 		20, 7, 10, 10, 8, 1, 9, 0, 10
+Growths: 	40, 25, 20, 40, 70, 80, 20, 20, 0, 0
+Equipped: 	-1
+Equipment: 	Iron Lance, Javelin, , , , , , 
+Used(eq): 	10, 10, -1, -1, -1, -1, -1, -1
+Weapons: 	, , , , 
+Items: 		, , , , 
+Lovers: 	Marth, , , , 
+love_pts: 	0, 0, 0, 0, 0
+love_grt: 	0, 0, 0, 0, 0
+wpn_exp: 	0, 1, 0, 0, 0, 0, 0, 0, 0, 0
+Exp: 		0
+Mounted: 	1
+Flying: 	0
+Armored: 	0
+Promoted: 	1
+
+Kashim
+Class: 		Hunter
+Bases: 		20, 7, 10, 10, 8, 1, 9, 0, 10
+Stats: 		20, 7, 10, 10, 8, 1, 9, 0, 10
+Growths: 	40, 25, 20, 40, 70, 80, 20, 20, 0, 0
+Equipped: 	-1
+Equipment: 	Iron Lance, Javelin, , , , , , 
+Used(eq): 	10, 10, -1, -1, -1, -1, -1, -1
+Weapons: 	, , , , 
+Items: 		, , , , 
+Lovers: 	Marth, , , , 
+love_pts: 	0, 0, 0, 0, 0
+love_grt: 	0, 0, 0, 0, 0
+wpn_exp: 	0, 1, 0, 0, 0, 0, 0, 0, 0, 0
+Exp: 		0
+Mounted: 	1
+Flying: 	0
+Armored: 	0
+Promoted: 	1
+
+Daros
+Class: 		Pirate
+Bases: 		20, 7, 10, 10, 8, 1, 9, 0, 10
+Stats: 		20, 7, 10, 10, 8, 1, 9, 0, 10
+Growths: 	40, 25, 20, 40, 70, 80, 20, 20, 0, 0
+Equipped: 	-1
+Equipment: 	Iron Lance, Javelin, , , , , , 
+Used(eq): 	10, 10, -1, -1, -1, -1, -1, -1
+Weapons: 	, , , , 
+Items: 		, , , , 
+Lovers: 	Marth, , , , 
+love_pts: 	0, 0, 0, 0, 0
+love_grt: 	0, 0, 0, 0, 0
+wpn_exp: 	0, 1, 0, 0, 0, 0, 0, 0, 0, 0
+Exp: 		0
+Mounted: 	1
+Flying: 	0
+Armored: 	0
+Promoted: 	1
+
+Julian
+Class: 		Pirate
+Bases: 		20, 7, 10, 10, 8, 1, 9, 0, 10
+Stats: 		20, 7, 10, 10, 8, 1, 9, 0, 10
+Growths: 	40, 25, 20, 40, 70, 80, 20, 20, 0, 0
+Equipped: 	-1
+Equipment: 	Iron Lance, Javelin, , , , , , 
+Used(eq): 	10, 10, -1, -1, -1, -1, -1, -1
+Weapons: 	, , , , 
+Items: 		, , , , 
+Lovers: 	Marth, , , , 
+love_pts: 	0, 0, 0, 0, 0
+love_grt: 	0, 0, 0, 0, 0
+wpn_exp: 	0, 1, 0, 0, 0, 0, 0, 0, 0, 0
+Exp: 		0
+Mounted: 	1
+Flying: 	0
+Armored: 	0
+Promoted: 	1
+
+Rena
+Class: 		Priest
+Bases: 		20, 7, 10, 10, 8, 1, 9, 0, 10
+Stats: 		20, 7, 10, 10, 8, 1, 9, 0, 10
+Growths: 	40, 25, 20, 40, 70, 80, 20, 20, 0, 0
+Equipped: 	-1
+Equipment: 	Iron Lance, Javelin, , , , , , 
+Used(eq): 	10, 10, -1, -1, -1, -1, -1, -1
+Weapons: 	, , , , 
+Items: 		, , , , 
+Lovers: 	Marth, , , , 
+love_pts: 	0, 0, 0, 0, 0
+love_grt: 	0, 0, 0, 0, 0
+wpn_exp: 	0, 1, 0, 0, 0, 0, 0, 0, 0, 0
+Exp: 		0
+Mounted: 	1
+Flying: 	0
+Armored: 	0
+Promoted: 	1
+
+Navarre
+Class: 		Mercenary
+Bases: 		20, 7, 10, 10, 8, 1, 9, 0, 10
+Stats: 		20, 7, 10, 10, 8, 1, 9, 0, 10
+Growths: 	40, 25, 20, 40, 70, 80, 20, 20, 0, 0
+Equipped: 	-1
+Equipment: 	Iron Lance, Javelin, , , , , , 
+Used(eq): 	10, 10, -1, -1, -1, -1, -1, -1
+Weapons: 	, , , , 
+Items: 		, , , , 
+Lovers: 	Marth, , , , 
+love_pts: 	0, 0, 0, 0, 0
+love_grt: 	0, 0, 0, 0, 0
+wpn_exp: 	0, 1, 0, 0, 0, 0, 0, 0, 0, 0
+Exp: 		0
+Mounted: 	1
+Flying: 	0
+Armored: 	0
+Promoted: 	1
+
+Julian
+Class: 		Pirate
+Bases: 		20, 7, 10, 10, 8, 1, 9, 0, 10
+Stats: 		20, 7, 10, 10, 8, 1, 9, 0, 10
+Growths: 	40, 25, 20, 40, 70, 80, 20, 20, 0, 0
+Equipped: 	-1
+Equipment: 	Iron Lance, Javelin, , , , , , 
+Used(eq): 	10, 10, -1, -1, -1, -1, -1, -1
+Weapons: 	, , , , 
+Items: 		, , , , 
+Lovers: 	Marth, , , , 
+love_pts: 	0, 0, 0, 0, 0
+love_grt: 	0, 0, 0, 0, 0
+wpn_exp: 	0, 1, 0, 0, 0, 0, 0, 0, 0, 0
+Exp: 		0
+Mounted: 	1
+Flying: 	0
+Armored: 	0
+Promoted: 	1
+
+Machis
+Class: 		Cavalier
+Bases: 		20, 7, 10, 10, 8, 1, 9, 0, 10
+Stats: 		20, 7, 10, 10, 8, 1, 9, 0, 10
+Growths: 	40, 25, 20, 40, 70, 80, 20, 20, 0, 0
+Equipped: 	-1
+Equipment: 	Iron Lance, Javelin, , , , , , 
+Used(eq): 	10, 10, -1, -1, -1, -1, -1, -1
+Weapons: 	, , , , 
+Items: 		, , , , 
+Lovers: 	Marth, , , , 
+love_pts: 	0, 0, 0, 0, 0
+love_grt: 	0, 0, 0, 0, 0
+wpn_exp: 	0, 1, 0, 0, 0, 0, 0, 0, 0, 0
+Exp: 		0
+Mounted: 	1
+Flying: 	0
+Armored: 	0
+Promoted: 	1
+
+Hardin
+Class: 		Cavalier
+Bases: 		20, 7, 10, 10, 8, 1, 9, 0, 10
+Stats: 		20, 7, 10, 10, 8, 1, 9, 0, 10
+Growths: 	40, 25, 20, 40, 70, 80, 20, 20, 0, 0
+Equipped: 	-1
+Equipment: 	Iron Lance, Javelin, , , , , , 
+Used(eq): 	10, 10, -1, -1, -1, -1, -1, -1
+Weapons: 	, , , , 
+Items: 		, , , , 
+Lovers: 	Marth, , , , 
+love_pts: 	0, 0, 0, 0, 0
+love_grt: 	0, 0, 0, 0, 0
+wpn_exp: 	0, 1, 0, 0, 0, 0, 0, 0, 0, 0
+Exp: 		0
+Mounted: 	1
+Flying: 	0
+Armored: 	0
+Promoted: 	1
+
+Wolf
+Class: 		Cavalier
+Bases: 		20, 7, 10, 10, 8, 1, 9, 0, 10
+Stats: 		20, 7, 10, 10, 8, 1, 9, 0, 10
+Growths: 	40, 25, 20, 40, 70, 80, 20, 20, 0, 0
+Equipped: 	-1
+Equipment: 	Iron Lance, Javelin, , , , , , 
+Used(eq): 	10, 10, -1, -1, -1, -1, -1, -1
+Weapons: 	, , , , 
+Items: 		, , , , 
+Lovers: 	Marth, , , , 
+love_pts: 	0, 0, 0, 0, 0
+love_grt: 	0, 0, 0, 0, 0
+wpn_exp: 	0, 1, 0, 0, 0, 0, 0, 0, 0, 0
+Exp: 		0
+Mounted: 	1
+Flying: 	0
+Armored: 	0
+Promoted: 	1
+
+Zagaro
+Class: 		Cavalier
+Bases: 		20, 7, 10, 10, 8, 1, 9, 0, 10
+Stats: 		20, 7, 10, 10, 8, 1, 9, 0, 10
+Growths: 	40, 25, 20, 40, 70, 80, 20, 20, 0, 0
+Equipped: 	-1
+Equipment: 	Iron Lance, Javelin, , , , , , 
+Used(eq): 	10, 10, -1, -1, -1, -1, -1, -1
+Weapons: 	, , , , 
+Items: 		, , , , 
+Lovers: 	Marth, , , , 
+love_pts: 	0, 0, 0, 0, 0
+love_grt: 	0, 0, 0, 0, 0
+wpn_exp: 	0, 1, 0, 0, 0, 0, 0, 0, 0, 0
+Exp: 		0
+Mounted: 	1
+Flying: 	0
+Armored: 	0
+Promoted: 	1
+
+Roshe
+Class: 		Cavalier
+Bases: 		20, 7, 10, 10, 8, 1, 9, 0, 10
+Stats: 		20, 7, 10, 10, 8, 1, 9, 0, 10
+Growths: 	40, 25, 20, 40, 70, 80, 20, 20, 0, 0
+Equipped: 	-1
+Equipment: 	Iron Lance, Javelin, , , , , , 
+Used(eq): 	10, 10, -1, -1, -1, -1, -1, -1
+Weapons: 	, , , , 
+Items: 		, , , , 
+Lovers: 	Marth, , , , 
+love_pts: 	0, 0, 0, 0, 0
+love_grt: 	0, 0, 0, 0, 0
+wpn_exp: 	0, 1, 0, 0, 0, 0, 0, 0, 0, 0
+Exp: 		0
+Mounted: 	1
+Flying: 	0
+Armored: 	0
+Promoted: 	1
+
+Biraku
+Class: 		Cavalier
+Bases: 		20, 7, 10, 10, 8, 1, 9, 0, 10
+Stats: 		20, 7, 10, 10, 8, 1, 9, 0, 10
+Growths: 	40, 25, 20, 40, 70, 80, 20, 20, 0, 0
+Equipped: 	-1
+Equipment: 	Iron Lance, Javelin, , , , , , 
+Used(eq): 	10, 10, -1, -1, -1, -1, -1, -1
+Weapons: 	, , , , 
+Items: 		, , , , 
+Lovers: 	Marth, , , , 
+love_pts: 	0, 0, 0, 0, 0
+love_grt: 	0, 0, 0, 0, 0
+wpn_exp: 	0, 1, 0, 0, 0, 0, 0, 0, 0, 0
+Exp: 		0
+Mounted: 	1
+Flying: 	0
+Armored: 	0
+Promoted: 	1
+
+Wendel
+Class: 		Cavalier
+Bases: 		20, 7, 10, 10, 8, 1, 9, 0, 10
+Stats: 		20, 7, 10, 10, 8, 1, 9, 0, 10
+Growths: 	40, 25, 20, 40, 70, 80, 20, 20, 0, 0
+Equipped: 	-1
+Equipment: 	Iron Lance, Javelin, , , , , , 
+Used(eq): 	10, 10, -1, -1, -1, -1, -1, -1
+Weapons: 	, , , , 
+Items: 		, , , , 
+Lovers: 	Marth, , , , 
+love_pts: 	0, 0, 0, 0, 0
+love_grt: 	0, 0, 0, 0, 0
+wpn_exp: 	0, 1, 0, 0, 0, 0, 0, 0, 0, 0
+Exp: 		0
+Mounted: 	1
+Flying: 	0
+Armored: 	0
+Promoted: 	1
+
+Ricardo
+Class: 		Cavalier
+Bases: 		20, 7, 10, 10, 8, 1, 9, 0, 10
+Stats: 		20, 7, 10, 10, 8, 1, 9, 0, 10
+Growths: 	40, 25, 20, 40, 70, 80, 20, 20, 0, 0
+Equipped: 	-1
+Equipment: 	Iron Lance, Javelin, , , , , , 
+Used(eq): 	10, 10, -1, -1, -1, -1, -1, -1
+Weapons: 	, , , , 
+Items: 		, , , , 
+Lovers: 	Marth, , , , 
+love_pts: 	0, 0, 0, 0, 0
+love_grt: 	0, 0, 0, 0, 0
+wpn_exp: 	0, 1, 0, 0, 0, 0, 0, 0, 0, 0
+Exp: 		0
+Mounted: 	1
+Flying: 	0
+Armored: 	0
+Promoted: 	1
+
+Bantu
+Class: 		Cavalier
+Bases: 		20, 7, 10, 10, 8, 1, 9, 0, 10
+Stats: 		20, 7, 10, 10, 8, 1, 9, 0, 10
+Growths: 	40, 25, 20, 40, 70, 80, 20, 20, 0, 0
+Equipped: 	-1
+Equipment: 	Iron Lance, Javelin, , , , , , 
+Used(eq): 	10, 10, -1, -1, -1, -1, -1, -1
+Weapons: 	, , , , 
+Items: 		, , , , 
+Lovers: 	Marth, , , , 
+love_pts: 	0, 0, 0, 0, 0
+love_grt: 	0, 0, 0, 0, 0
+wpn_exp: 	0, 1, 0, 0, 0, 0, 0, 0, 0, 0
+Exp: 		0
+Mounted: 	1
+Flying: 	0
+Armored: 	0
+Promoted: 	1
+
+Caesar
+Class: 		Cavalier
+Bases: 		20, 7, 10, 10, 8, 1, 9, 0, 10
+Stats: 		20, 7, 10, 10, 8, 1, 9, 0, 10
+Growths: 	40, 25, 20, 40, 70, 80, 20, 20, 0, 0
+Equipped: 	-1
+Equipment: 	Iron Lance, Javelin, , , , , , 
+Used(eq): 	10, 10, -1, -1, -1, -1, -1, -1
+Weapons: 	, , , , 
+Items: 		, , , , 
+Lovers: 	Marth, , , , 
+love_pts: 	0, 0, 0, 0, 0
+love_grt: 	0, 0, 0, 0, 0
+wpn_exp: 	0, 1, 0, 0, 0, 0, 0, 0, 0, 0
+Exp: 		0
+Mounted: 	1
+Flying: 	0
+Armored: 	0
+Promoted: 	1
+
+Raddy
+Class: 		Cavalier
+Bases: 		20, 7, 10, 10, 8, 1, 9, 0, 10
+Stats: 		20, 7, 10, 10, 8, 1, 9, 0, 10
+Growths: 	40, 25, 20, 40, 70, 80, 20, 20, 0, 0
+Equipped: 	-1
+Equipment: 	Iron Lance, Javelin, , , , , , 
+Used(eq): 	10, 10, -1, -1, -1, -1, -1, -1
+Weapons: 	, , , , 
+Items: 		, , , , 
+Lovers: 	Marth, , , , 
+love_pts: 	0, 0, 0, 0, 0
+love_grt: 	0, 0, 0, 0, 0
+wpn_exp: 	0, 1, 0, 0, 0, 0, 0, 0, 0, 0
+Exp: 		0
+Mounted: 	1
+Flying: 	0
+Armored: 	0
+Promoted: 	1
+
+Roger
+Class: 		Cavalier
+Bases: 		20, 7, 10, 10, 8, 1, 9, 0, 10
+Stats: 		20, 7, 10, 10, 8, 1, 9, 0, 10
+Growths: 	40, 25, 20, 40, 70, 80, 20, 20, 0, 0
+Equipped: 	-1
+Equipment: 	Iron Lance, Javelin, , , , , , 
+Used(eq): 	10, 10, -1, -1, -1, -1, -1, -1
+Weapons: 	, , , , 
+Items: 		, , , , 
+Lovers: 	Marth, , , , 
+love_pts: 	0, 0, 0, 0, 0
+love_grt: 	0, 0, 0, 0, 0
+wpn_exp: 	0, 1, 0, 0, 0, 0, 0, 0, 0, 0
+Exp: 		0
+Mounted: 	1
+Flying: 	0
+Armored: 	0
+Promoted: 	1
+
+George
+Class: 		Cavalier
+Bases: 		20, 7, 10, 10, 8, 1, 9, 0, 10
+Stats: 		20, 7, 10, 10, 8, 1, 9, 0, 10
+Growths: 	40, 25, 20, 40, 70, 80, 20, 20, 0, 0
+Equipped: 	-1
+Equipment: 	Iron Lance, Javelin, , , , , , 
+Used(eq): 	10, 10, -1, -1, -1, -1, -1, -1
+Weapons: 	, , , , 
+Items: 		, , , , 
+Lovers: 	Marth, , , , 
+love_pts: 	0, 0, 0, 0, 0
+love_grt: 	0, 0, 0, 0, 0
+wpn_exp: 	0, 1, 0, 0, 0, 0, 0, 0, 0, 0
+Exp: 		0
+Mounted: 	1
+Flying: 	0
+Armored: 	0
+Promoted: 	1
+
+Maria
+Class: 		Cavalier
+Bases: 		20, 7, 10, 10, 8, 1, 9, 0, 10
+Stats: 		20, 7, 10, 10, 8, 1, 9, 0, 10
+Growths: 	40, 25, 20, 40, 70, 80, 20, 20, 0, 0
+Equipped: 	-1
+Equipment: 	Iron Lance, Javelin, , , , , , 
+Used(eq): 	10, 10, -1, -1, -1, -1, -1, -1
+Weapons: 	, , , , 
+Items: 		, , , , 
+Lovers: 	Marth, , , , 
+love_pts: 	0, 0, 0, 0, 0
+love_grt: 	0, 0, 0, 0, 0
+wpn_exp: 	0, 1, 0, 0, 0, 0, 0, 0, 0, 0
+Exp: 		0
+Mounted: 	1
+Flying: 	0
+Armored: 	0
+Promoted: 	1
+
+Minerva
+Class: 		Cavalier
+Bases: 		20, 7, 10, 10, 8, 1, 9, 0, 10
+Stats: 		20, 7, 10, 10, 8, 1, 9, 0, 10
+Growths: 	40, 25, 20, 40, 70, 80, 20, 20, 0, 0
+Equipped: 	-1
+Equipment: 	Iron Lance, Javelin, , , , , , 
+Used(eq): 	10, 10, -1, -1, -1, -1, -1, -1
+Weapons: 	, , , , 
+Items: 		, , , , 
+Lovers: 	Marth, , , , 
+love_pts: 	0, 0, 0, 0, 0
+love_grt: 	0, 0, 0, 0, 0
+wpn_exp: 	0, 1, 0, 0, 0, 0, 0, 0, 0, 0
+Exp: 		0
+Mounted: 	1
+Flying: 	0
+Armored: 	0
+Promoted: 	1
+
+Linda
+Class: 		Cavalier
+Bases: 		20, 7, 10, 10, 8, 1, 9, 0, 10
+Stats: 		20, 7, 10, 10, 8, 1, 9, 0, 10
+Growths: 	40, 25, 20, 40, 70, 80, 20, 20, 0, 0
+Equipped: 	-1
+Equipment: 	Iron Lance, Javelin, , , , , , 
+Used(eq): 	10, 10, -1, -1, -1, -1, -1, -1
+Weapons: 	, , , , 
+Items: 		, , , , 
+Lovers: 	Marth, , , , 
+love_pts: 	0, 0, 0, 0, 0
+love_grt: 	0, 0, 0, 0, 0
+wpn_exp: 	0, 1, 0, 0, 0, 0, 0, 0, 0, 0
+Exp: 		0
+Mounted: 	1
+Flying: 	0
+Armored: 	0
+Promoted: 	1
+
+Jake
+Class: 		Cavalier
+Bases: 		20, 7, 10, 10, 8, 1, 9, 0, 10
+Stats: 		20, 7, 10, 10, 8, 1, 9, 0, 10
+Growths: 	40, 25, 20, 40, 70, 80, 20, 20, 0, 0
+Equipped: 	-1
+Equipment: 	Iron Lance, Javelin, , , , , , 
+Used(eq): 	10, 10, -1, -1, -1, -1, -1, -1
+Weapons: 	, , , , 
+Items: 		, , , , 
+Lovers: 	Marth, , , , 
+love_pts: 	0, 0, 0, 0, 0
+love_grt: 	0, 0, 0, 0, 0
+wpn_exp: 	0, 1, 0, 0, 0, 0, 0, 0, 0, 0
+Exp: 		0
+Mounted: 	1
+Flying: 	0
+Armored: 	0
+Promoted: 	1
+
+Midia
+Class: 		Cavalier
+Bases: 		20, 7, 10, 10, 8, 1, 9, 0, 10
+Stats: 		20, 7, 10, 10, 8, 1, 9, 0, 10
+Growths: 	40, 25, 20, 40, 70, 80, 20, 20, 0, 0
+Equipped: 	-1
+Equipment: 	Iron Lance, Javelin, , , , , , 
+Used(eq): 	10, 10, -1, -1, -1, -1, -1, -1
+Weapons: 	, , , , 
+Items: 		, , , , 
+Lovers: 	Marth, , , , 
+love_pts: 	0, 0, 0, 0, 0
+love_grt: 	0, 0, 0, 0, 0
+wpn_exp: 	0, 1, 0, 0, 0, 0, 0, 0, 0, 0
+Exp: 		0
+Mounted: 	1
+Flying: 	0
+Armored: 	0
+Promoted: 	1
+
+Tomth
+Class: 		Cavalier
+Bases: 		20, 7, 10, 10, 8, 1, 9, 0, 10
+Stats: 		20, 7, 10, 10, 8, 1, 9, 0, 10
+Growths: 	40, 25, 20, 40, 70, 80, 20, 20, 0, 0
+Equipped: 	-1
+Equipment: 	Iron Lance, Javelin, , , , , , 
+Used(eq): 	10, 10, -1, -1, -1, -1, -1, -1
+Weapons: 	, , , , 
+Items: 		, , , , 
+Lovers: 	Marth, , , , 
+love_pts: 	0, 0, 0, 0, 0
+love_grt: 	0, 0, 0, 0, 0
+wpn_exp: 	0, 1, 0, 0, 0, 0, 0, 0, 0, 0
+Exp: 		0
+Mounted: 	1
+Flying: 	0
+Armored: 	0
+Promoted: 	1
+
+Mishelan
+Class: 		Cavalier
+Bases: 		20, 7, 10, 10, 8, 1, 9, 0, 10
+Stats: 		20, 7, 10, 10, 8, 1, 9, 0, 10
+Growths: 	40, 25, 20, 40, 70, 80, 20, 20, 0, 0
+Equipped: 	-1
+Equipment: 	Iron Lance, Javelin, , , , , , 
+Used(eq): 	10, 10, -1, -1, -1, -1, -1, -1
+Weapons: 	, , , , 
+Items: 		, , , , 
+Lovers: 	Marth, , , , 
+love_pts: 	0, 0, 0, 0, 0
+love_grt: 	0, 0, 0, 0, 0
+wpn_exp: 	0, 1, 0, 0, 0, 0, 0, 0, 0, 0
+Exp: 		0
+Mounted: 	1
+Flying: 	0
+Armored: 	0
+Promoted: 	1
+
+Thomas
+Class: 		Cavalier
+Bases: 		20, 7, 10, 10, 8, 1, 9, 0, 10
+Stats: 		20, 7, 10, 10, 8, 1, 9, 0, 10
+Growths: 	40, 25, 20, 40, 70, 80, 20, 20, 0, 0
+Equipped: 	-1
+Equipment: 	Iron Lance, Javelin, , , , , , 
+Used(eq): 	10, 10, -1, -1, -1, -1, -1, -1
+Weapons: 	, , , , 
+Items: 		, , , , 
+Lovers: 	Marth, , , , 
+love_pts: 	0, 0, 0, 0, 0
+love_grt: 	0, 0, 0, 0, 0
+wpn_exp: 	0, 1, 0, 0, 0, 0, 0, 0, 0, 0
+Exp: 		0
+Mounted: 	1
+Flying: 	0
+Armored: 	0
+Promoted: 	1
+
+Boa
+Class: 		Cavalier
+Bases: 		20, 7, 10, 10, 8, 1, 9, 0, 10
+Stats: 		20, 7, 10, 10, 8, 1, 9, 0, 10
+Growths: 	40, 25, 20, 40, 70, 80, 20, 20, 0, 0
+Equipped: 	-1
+Equipment: 	Iron Lance, Javelin, , , , , , 
+Used(eq): 	10, 10, -1, -1, -1, -1, -1, -1
+Weapons: 	, , , , 
+Items: 		, , , , 
+Lovers: 	Marth, , , , 
+love_pts: 	0, 0, 0, 0, 0
+love_grt: 	0, 0, 0, 0, 0
+wpn_exp: 	0, 1, 0, 0, 0, 0, 0, 0, 0, 0
+Exp: 		0
+Mounted: 	1
+Flying: 	0
+Armored: 	0
+Promoted: 	1
+
+Beck
+Class: 		Cavalier
+Bases: 		20, 7, 10, 10, 8, 1, 9, 0, 10
+Stats: 		20, 7, 10, 10, 8, 1, 9, 0, 10
+Growths: 	40, 25, 20, 40, 70, 80, 20, 20, 0, 0
+Equipped: 	-1
+Equipment: 	Iron Lance, Javelin, , , , , , 
+Used(eq): 	10, 10, -1, -1, -1, -1, -1, -1
+Weapons: 	, , , , 
+Items: 		, , , , 
+Lovers: 	Marth, , , , 
+love_pts: 	0, 0, 0, 0, 0
+love_grt: 	0, 0, 0, 0, 0
+wpn_exp: 	0, 1, 0, 0, 0, 0, 0, 0, 0, 0
+Exp: 		0
+Mounted: 	1
+Flying: 	0
+Armored: 	0
+Promoted: 	1
+
+Astria
+Class: 		Cavalier
+Bases: 		20, 7, 10, 10, 8, 1, 9, 0, 10
+Stats: 		20, 7, 10, 10, 8, 1, 9, 0, 10
+Growths: 	40, 25, 20, 40, 70, 80, 20, 20, 0, 0
+Equipped: 	-1
+Equipment: 	Iron Lance, Javelin, , , , , , 
+Used(eq): 	10, 10, -1, -1, -1, -1, -1, -1
+Weapons: 	, , , , 
+Items: 		, , , , 
+Lovers: 	Marth, , , , 
+love_pts: 	0, 0, 0, 0, 0
+love_grt: 	0, 0, 0, 0, 0
+wpn_exp: 	0, 1, 0, 0, 0, 0, 0, 0, 0, 0
+Exp: 		0
+Mounted: 	1
+Flying: 	0
+Armored: 	0
+Promoted: 	1
+
+Paola
+Class: 		Cavalier
+Bases: 		20, 7, 10, 10, 8, 1, 9, 0, 10
+Stats: 		20, 7, 10, 10, 8, 1, 9, 0, 10
+Growths: 	40, 25, 20, 40, 70, 80, 20, 20, 0, 0
+Equipped: 	-1
+Equipment: 	Iron Lance, Javelin, , , , , , 
+Used(eq): 	10, 10, -1, -1, -1, -1, -1, -1
+Weapons: 	, , , , 
+Items: 		, , , , 
+Lovers: 	Marth, , , , 
+love_pts: 	0, 0, 0, 0, 0
+love_grt: 	0, 0, 0, 0, 0
+wpn_exp: 	0, 1, 0, 0, 0, 0, 0, 0, 0, 0
+Exp: 		0
+Mounted: 	1
+Flying: 	0
+Armored: 	0
+Promoted: 	1
+
+Katua
+Class: 		Cavalier
+Bases: 		20, 7, 10, 10, 8, 1, 9, 0, 10
+Stats: 		20, 7, 10, 10, 8, 1, 9, 0, 10
+Growths: 	40, 25, 20, 40, 70, 80, 20, 20, 0, 0
+Equipped: 	-1
+Equipment: 	Iron Lance, Javelin, , , , , , 
+Used(eq): 	10, 10, -1, -1, -1, -1, -1, -1
+Weapons: 	, , , , 
+Items: 		, , , , 
+Lovers: 	Marth, , , , 
+love_pts: 	0, 0, 0, 0, 0
+love_grt: 	0, 0, 0, 0, 0
+wpn_exp: 	0, 1, 0, 0, 0, 0, 0, 0, 0, 0
+Exp: 		0
+Mounted: 	1
+Flying: 	0
+Armored: 	0
+Promoted: 	1
+
+Alan
+Class: 		Cavalier
+Bases: 		20, 7, 10, 10, 8, 1, 9, 0, 10
+Stats: 		20, 7, 10, 10, 8, 1, 9, 0, 10
+Growths: 	40, 25, 20, 40, 70, 80, 20, 20, 0, 0
+Equipped: 	-1
+Equipment: 	Iron Lance, Javelin, , , , , , 
+Used(eq): 	10, 10, -1, -1, -1, -1, -1, -1
+Weapons: 	, , , , 
+Items: 		, , , , 
+Lovers: 	Marth, , , , 
+love_pts: 	0, 0, 0, 0, 0
+love_grt: 	0, 0, 0, 0, 0
+wpn_exp: 	0, 1, 0, 0, 0, 0, 0, 0, 0, 0
+Exp: 		0
+Mounted: 	1
+Flying: 	0
+Armored: 	0
+Promoted: 	1
+
+Samson
+Class: 		Cavalier
+Bases: 		20, 7, 10, 10, 8, 1, 9, 0, 10
+Stats: 		20, 7, 10, 10, 8, 1, 9, 0, 10
+Growths: 	40, 25, 20, 40, 70, 80, 20, 20, 0, 0
+Equipped: 	-1
+Equipment: 	Iron Lance, Javelin, , , , , , 
+Used(eq): 	10, 10, -1, -1, -1, -1, -1, -1
+Weapons: 	, , , , 
+Items: 		, , , , 
+Lovers: 	Marth, , , , 
+love_pts: 	0, 0, 0, 0, 0
+love_grt: 	0, 0, 0, 0, 0
+wpn_exp: 	0, 1, 0, 0, 0, 0, 0, 0, 0, 0
+Exp: 		0
+Mounted: 	1
+Flying: 	0
+Armored: 	0
+Promoted: 	1
+
+Chainy
+Class: 		Cavalier
+Bases: 		20, 7, 10, 10, 8, 1, 9, 0, 10
+Stats: 		20, 7, 10, 10, 8, 1, 9, 0, 10
+Growths: 	40, 25, 20, 40, 70, 80, 20, 20, 0, 0
+Equipped: 	-1
+Equipment: 	Iron Lance, Javelin, , , , , , 
+Used(eq): 	10, 10, -1, -1, -1, -1, -1, -1
+Weapons: 	, , , , 
+Items: 		, , , , 
+Lovers: 	Marth, , , , 
+love_pts: 	0, 0, 0, 0, 0
+love_grt: 	0, 0, 0, 0, 0
+wpn_exp: 	0, 1, 0, 0, 0, 0, 0, 0, 0, 0
+Exp: 		0
+Mounted: 	1
+Flying: 	0
+Armored: 	0
+Promoted: 	1
+
+Est
+Class: 		Cavalier
+Bases: 		20, 7, 10, 10, 8, 1, 9, 0, 10
+Stats: 		20, 7, 10, 10, 8, 1, 9, 0, 10
+Growths: 	40, 25, 20, 40, 70, 80, 20, 20, 0, 0
+Equipped: 	-1
+Equipment: 	Iron Lance, Javelin, , , , , , 
+Used(eq): 	10, 10, -1, -1, -1, -1, -1, -1
+Weapons: 	, , , , 
+Items: 		, , , , 
+Lovers: 	Marth, , , , 
+love_pts: 	0, 0, 0, 0, 0
+love_grt: 	0, 0, 0, 0, 0
+wpn_exp: 	0, 1, 0, 0, 0, 0, 0, 0, 0, 0
+Exp: 		0
+Mounted: 	1
+Flying: 	0
+Armored: 	0
+Promoted: 	1
+
+Tiki
+Class: 		Mamkute
+Bases: 		20, 7, 10, 10, 8, 1, 9, 0, 10
+Stats: 		20, 7, 10, 10, 8, 1, 9, 0, 10
+Growths: 	40, 25, 20, 40, 70, 80, 20, 20, 0, 0
+Equipped: 	-1
+Equipment: 	Iron Lance, Javelin, , , , , , 
+Used(eq): 	10, 10, -1, -1, -1, -1, -1, -1
+Weapons: 	, , , , 
+Items: 		, , , , 
+Lovers: 	Marth, , , , 
+love_pts: 	0, 0, 0, 0, 0
+love_grt: 	0, 0, 0, 0, 0
+wpn_exp: 	0, 1, 0, 0, 0, 0, 0, 0, 0, 0
+Exp: 		0
+Mounted: 	1
+Flying: 	0
+Armored: 	0
+Promoted: 	1
+
+Lawrence
+Class: 		Cavalier
+Bases: 		20, 7, 10, 10, 8, 1, 9, 0, 10
+Stats: 		20, 7, 10, 10, 8, 1, 9, 0, 10
+Growths: 	40, 25, 20, 40, 70, 80, 20, 20, 0, 0
+Equipped: 	-1
+Equipment: 	Iron Lance, Javelin, , , , , , 
+Used(eq): 	10, 10, -1, -1, -1, -1, -1, -1
+Weapons: 	, , , , 
+Items: 		, , , , 
+Lovers: 	Marth, , , , 
+love_pts: 	0, 0, 0, 0, 0
+love_grt: 	0, 0, 0, 0, 0
+wpn_exp: 	0, 1, 0, 0, 0, 0, 0, 0, 0, 0
+Exp: 		0
+Mounted: 	1
+Flying: 	0
+Armored: 	0
+Promoted: 	1
+
+Ellis
+Class: 		Cavalier
+Bases: 		20, 7, 10, 10, 8, 1, 9, 0, 10
+Stats: 		20, 7, 10, 10, 8, 1, 9, 0, 10
+Growths: 	40, 25, 20, 40, 70, 80, 20, 20, 0, 0
+Equipped: 	-1
+Equipment: 	Iron Lance, Javelin, , , , , , 
+Used(eq): 	10, 10, -1, -1, -1, -1, -1, -1
+Weapons: 	, , , , 
+Items: 		, , , , 
+Lovers: 	Marth, , , , 
+love_pts: 	0, 0, 0, 0, 0
+love_grt: 	0, 0, 0, 0, 0
+wpn_exp: 	0, 1, 0, 0, 0, 0, 0, 0, 0, 0
+Exp: 		0
+Mounted: 	1
+Flying: 	0
+Armored: 	0
+Promoted: 	1
+
+Gato
+Class: 		Cavalier
+Bases: 		20, 7, 10, 10, 8, 1, 9, 0, 10
+Stats: 		20, 7, 10, 10, 8, 1, 9, 0, 10
+Growths: 	40, 25, 20, 40, 70, 80, 20, 20, 0, 0
+Equipped: 	-1
+Equipment: 	Iron Lance, Javelin, , , , , , 
+Used(eq): 	10, 10, -1, -1, -1, -1, -1, -1
+Weapons: 	, , , , 
+Items: 		, , , , 
+Lovers: 	Marth, , , , 
+love_pts: 	0, 0, 0, 0, 0
+love_grt: 	0, 0, 0, 0, 0
+wpn_exp: 	0, 1, 0, 0, 0, 0, 0, 0, 0, 0
+Exp: 		0
+Mounted: 	1
+Flying: 	0
+Armored: 	0
+Promoted: 	1
