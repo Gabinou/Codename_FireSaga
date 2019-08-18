@@ -1,3 +1,5 @@
+{"HP", "Str", "Mag", "Skill", "Speed", "Luck", "Def", "Res", "Con", "Move", "WpnLvl"};
+{"swd", "lance", "axe", "bow", "mgc_wind", "mgc_fire", "mgc_thunder",  "mgc_dark",  "mgc_light", "staff"};
 Marth
 Class: 		Lord
 Bases: 		18, 5, 0, 3, 7, 7, 7, 0, 0, 7, 5
@@ -917,111 +919,110 @@ Mounted: 	0
 Flying: 	0
 Armored: 	0
 Promoted: 	1
-{"HP", "Str", "Mag", "Skill", "Speed", "Luck", "Def", "Res", "Con", "Move", "WpnLvl"};
-{"swd", "lance", "axe", "bow", "mgc_wind", "mgc_fire", "mgc_thunder",  "mgc_dark",  "mgc_light", "staff"};
+
 Chainy
-Class: 		Commandoi
-Bases: 		24, 10, 0, 14, 15, 7, 9, 0, 0, 7, 10
-Stats: 		20, 7, 10, 10, 8, 1, 9, 0, 10
+Class: 		Commando
+Bases: 		16, 1, 0, 1, 10, 0, 4, 0, 0, 6, 2
+Stats: 		16, 1, 0, 1, 10, 0, 4, 0, 0, 6, 2
 Growths: 	40, 25, 20, 40, 70, 80, 20, 20, 0, 0
-Equipped: 	-1
-Equipment: 	Iron Lance, Javelin, , , , , , 
-Used(eq): 	10, 10, -1, -1, -1, -1, -1, -1
+Equipped: 	0
+Equipment: 	Iron Sword, 0, , , , , , 
+Used(eq): 	10, 0, -1, -1, -1, -1, -1, -1
 Weapons: 	, , , , 
 Items: 		, , , , 
-Lovers: 	Marth, , , , 
+Lovers: 	, , , , 
 love_pts: 	0, 0, 0, 0, 0
 love_grt: 	0, 0, 0, 0, 0
-wpn_exp: 	0, 1, 0, 0, 0, 0, 0, 0, 0, 0
+wpn_exp: 	1, 0, 0, 0, 0, 0, 0, 0, 0, 0
 Exp: 		0
-Mounted: 	1
+Mounted: 	0
 Flying: 	0
 Armored: 	0
 Promoted: 	1
 
 Est
-Class: 		Cavalier
-Bases: 		20, 7, 10, 10, 8, 1, 9, 0, 10
-Stats: 		20, 7, 10, 10, 8, 1, 9, 0, 10
+Class: 		Pegasus Knight
+Bases: 		22, 6, 0, 7, 11, 0, 8, 0, 0, 8, 11
+Stats: 		22, 6, 0, 7, 11, 0, 8, 0, 0, 8, 11
 Growths: 	40, 25, 20, 40, 70, 80, 20, 20, 0, 0
-Equipped: 	-1
-Equipment: 	Iron Lance, Javelin, , , , , , 
-Used(eq): 	10, 10, -1, -1, -1, -1, -1, -1
+Equipped: 	0
+Equipment: 	Armorslayer, Miracle, , , , , , 
+Used(eq): 	0, 0, -1, -1, -1, -1, -1, -1
 Weapons: 	, , , , 
 Items: 		, , , , 
-Lovers: 	Marth, , , , 
+Lovers: 	, , , , 
 love_pts: 	0, 0, 0, 0, 0
 love_grt: 	0, 0, 0, 0, 0
 wpn_exp: 	0, 1, 0, 0, 0, 0, 0, 0, 0, 0
-Exp: 		0
+Exp: 		400
 Mounted: 	1
-Flying: 	0
+Flying: 	1
 Armored: 	0
 Promoted: 	1
 
 Tiki
 Class: 		Mamkute
-Bases: 		20, 7, 10, 10, 8, 1, 9, 0, 10
-Stats: 		20, 7, 10, 10, 8, 1, 9, 0, 10
+Bases: 		24, 3, 0, 3, 3, 0, 5, 0, 0, 6, 9
+Stats: 		24, 3, 0, 3, 3, 0, 5, 0, 0, 6, 9
 Growths: 	40, 25, 20, 40, 70, 80, 20, 20, 0, 0
 Equipped: 	-1
-Equipment: 	Iron Lance, Javelin, , , , , , 
-Used(eq): 	10, 10, -1, -1, -1, -1, -1, -1
+Equipment: 	Dragonstone, , , , , , , 
+Used(eq): 	0, -1, -1, -1, -1, -1, -1, -1
 Weapons: 	, , , , 
 Items: 		, , , , 
 Lovers: 	Marth, , , , 
 love_pts: 	0, 0, 0, 0, 0
 love_grt: 	0, 0, 0, 0, 0
-wpn_exp: 	0, 1, 0, 0, 0, 0, 0, 0, 0, 0
-Exp: 		0
-Mounted: 	1
+wpn_exp: 	0, 0, 0, 0, 0, 0, 0, 0, 0, 0
+Exp: 		400
+Mounted: 	0
 Flying: 	0
 Armored: 	0
-Promoted: 	1
+Promoted: 	0
 
 Lawrence
-Class: 		Cavalier
-Bases: 		20, 7, 10, 10, 8, 1, 9, 0, 10
-Stats: 		20, 7, 10, 10, 8, 1, 9, 0, 10
+Class: 		General
+Bases: 		34, 11, 0, 3, 6, 0, 16, 0, 0, 5, 15
+Stats: 		34, 11, 0, 3, 6, 0, 16, 0, 0, 5, 15
 Growths: 	40, 25, 20, 40, 70, 80, 20, 20, 0, 0
 Equipped: 	-1
-Equipment: 	Iron Lance, Javelin, , , , , , 
-Used(eq): 	10, 10, -1, -1, -1, -1, -1, -1
+Equipment: 	Silver Sword, , , , , , , 
+Used(eq): 	0, -1, -1, -1, -1, -1, -1, -1
 Weapons: 	, , , , 
 Items: 		, , , , 
-Lovers: 	Marth, , , , 
+Lovers: 	, , , , 
 love_pts: 	0, 0, 0, 0, 0
 love_grt: 	0, 0, 0, 0, 0
-wpn_exp: 	0, 1, 0, 0, 0, 0, 0, 0, 0, 0
-Exp: 		0
-Mounted: 	1
+wpn_exp: 	1, 1, 1, 0, 0, 0, 0, 0, 0, 0
+Exp: 		400
+Mounted: 	0
 Flying: 	0
-Armored: 	0
+Armored: 	1
 Promoted: 	1
 
 Ellis
-Class: 		Cavalier
-Bases: 		20, 7, 10, 10, 8, 1, 9, 0, 10
-Stats: 		20, 7, 10, 10, 8, 1, 9, 0, 10
+Class: 		Priest
+Bases: 		16, 1, 0, 5, 7, 1, 3, 0, 0, 5, 7
+Stats: 		16, 1, 0, 5, 7, 1, 3, 0, 0, 5, 7
 Growths: 	40, 25, 20, 40, 70, 80, 20, 20, 0, 0
 Equipped: 	-1
-Equipment: 	Iron Lance, Javelin, , , , , , 
-Used(eq): 	10, 10, -1, -1, -1, -1, -1, -1
+Equipment: 	Ohm, , , , , , , 
+Used(eq): 	0, -1, -1, -1, -1, -1, -1, -1
 Weapons: 	, , , , 
 Items: 		, , , , 
-Lovers: 	Marth, , , , 
+Lovers: 	, , , , 
 love_pts: 	0, 0, 0, 0, 0
 love_grt: 	0, 0, 0, 0, 0
-wpn_exp: 	0, 1, 0, 0, 0, 0, 0, 0, 0, 0
-Exp: 		0
-Mounted: 	1
+wpn_exp: 	0, 0, 0, 0, 0, 0, 0, 0, 0, 1
+Exp: 		300
+Mounted: 	0
 Flying: 	0
 Armored: 	0
-Promoted: 	1
+Promoted: 	0
 
 Gato
-Class: 		Cavalier
-Bases: 		20, 7, 10, 10, 8, 1, 9, 0, 10
+Class: 		Bishop
+Bases: 		38, 10, 0, 20, 20, 16, 15, 7, 0, 6, 20
 Stats: 		20, 7, 10, 10, 8, 1, 9, 0, 10
 Growths: 	40, 25, 20, 40, 70, 80, 20, 20, 0, 0
 Equipped: 	-1
@@ -1029,12 +1030,12 @@ Equipment: 	Iron Lance, Javelin, , , , , ,
 Used(eq): 	10, 10, -1, -1, -1, -1, -1, -1
 Weapons: 	, , , , 
 Items: 		, , , , 
-Lovers: 	Marth, , , , 
+Lovers: 	, , , , 
 love_pts: 	0, 0, 0, 0, 0
 love_grt: 	0, 0, 0, 0, 0
-wpn_exp: 	0, 1, 0, 0, 0, 0, 0, 0, 0, 0
-Exp: 		0
-Mounted: 	1
+wpn_exp: 	0, 0, 0, 0, 0, 0, 0, 0, 0, 1
+Exp: 		1700
+Mounted: 	0
 Flying: 	0
 Armored: 	0
 Promoted: 	1
