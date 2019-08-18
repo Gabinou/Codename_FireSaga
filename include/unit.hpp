@@ -75,7 +75,7 @@ public:
     // idea for supports and support bonuses: use name as key to stats bonus. Check how heavy this is, compare with separate. Rejected. This is too heavy. Also, for design purposes, I think the FE solution for supports seems good: have a table of elements supports and refer to this table to provide supports. To be as light as possible, make everything as basic and separate as possible.
     
     
-    bool mounted, flying, armored, promoted;
+    bool mounted, flying, armored, promoted, dragon;
     
     /// \var bool mounted
     /// \brief. 1/0 mounted. For effective weapons
@@ -85,6 +85,8 @@ public:
     /// \brief. 1/0 unit amored. For effective weapons
     /// \var bool promoted
     /// \brief. 1/0 unit promoted. For exp on enemy kill.
+    /// \var bool promoted
+    /// \brief. 1/0 unit is a dragon (or is mounted on one). For effective weapons.
     /// \fn w  unit(std::string, std::string, char,         std::vector<unsigned int>, std::vector<unsigned int>,       std::vector<unsigned int>, std::vector<unsigned int>, std::vector<unsigned int>, std::vector<unsigned int>,      std::vector<unsigned int>, std::vector<unsigned int>, std::vector<inventory_item>, std::vector<inventory_item>, std::vector<inventory_item>, unsigned short, std::vector<std::string>, bool, bool, bool, bool)
     /// \brief constructor for unit.
     unit(std::string, std::string, char,

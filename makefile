@@ -17,6 +17,9 @@ $(BLD)/generic.o: $(SRC)/generic.cpp
 $(BLD)/main.o: $(SRC)/main.cpp
 	$(CXX) -c $** -o $@ $(INCLUDE)
 
+$(BLD)/unit_class.o: $(SRC)/unit_class.cpp
+	$(CXX) -c $**  -o $@ $(INCLUDE)
+
 $(BLD)/unit.o: $(SRC)/unit.cpp
 	$(CXX) -c $**  -o $@ $(INCLUDE)
 

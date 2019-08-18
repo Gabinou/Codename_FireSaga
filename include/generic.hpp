@@ -16,7 +16,7 @@ public:
     /// \brief All objects get ids.
     char type[24]; 
     /// \var type
-    /// \brief For units, contains class string. For weapons, contains weapon type string.
+    /// \brief For units, contains unit_class name. For weapons, contains weapon type string. I think this is useless?
     ~generic();
     generic();
     generic(const generic &obj);
