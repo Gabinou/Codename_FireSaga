@@ -25,7 +25,14 @@ void unit_class::write(std::string filename) {
     out << "Mounted: \t" << mounted << "\n";
     out << "Flying: \t"  << flying << "\n";
     out << "Armored: \t" << armored << "\n";
-    out << "Promoted: \t" << promoted << "\n";
+    out << "Promotion: \t";
+    for (int i = 0; i < promotion.size(); i++) {
+        if (i == promotion.size() - 1) {
+            out << promotion[i] << "\n";
+        } else {
+            out << promotion[i] << ", ";
+        }
+    };
     out << "Dragon: \t" << dragon << "\n";
     out << "Caps: \t\t";
     for (int i = 0; i < sizeof(stats_caps)/sizeof(stats_caps[0]); i++) {
@@ -42,12 +49,14 @@ void unit_class::read(const char *filename, char skip) {
 
 }
 
-unit_class::unit_class(std::string in_name, bool in_mounted, bool in_flying, bool in_armored, bool in_promoted, bool in_dragon, std::vector<unsigned int> in_stats_caps) { 
+unit_class::unit_class(std::string in_name, bool in_mounted, bool in_flying, bool in_armored, bool in_dragon, std::vector<unsigned int> in_stats_caps, std::vector<std::string> in_promotion) { 
     strncpy(name, in_name.c_str(), sizeof(in_name));
     mounted = in_mounted;
     flying = in_flying;
     armored = in_armored;
-    promoted = in_promoted;
+    for (int i = 0; i < in_promotion.size(); i++) {
+        promotion.push_back(in_promotion[i]);
+    };
     dragon = in_dragon;
     for (int i = 0; i < in_stats_caps.size(); i++) {
         stats_caps[i] = (unsigned int) in_stats_caps[i]; 

@@ -328,7 +328,7 @@ main() {
     // printf("%d \f", inventory_items["Rapier_0000"]);
     // write_all_weapons("weapons2.txt");
     
-    all_unit_classes["Lord"] = unit_class("Lord", 0,0,0,0,0, {40, 25, 20, 40, 70, 80, 20, 20,  0,  0});
+    all_unit_classes["Lord"] = unit_class("Lord", 0, 0, 0, 0, {40, 25, 20, 40, 70, 80, 20, 20,  0,  0}, {""});
     // all_unit_classes["Lord"] = unit_class();
     // unit_class();
     all_unit_classes["Lord"].write("classes.txt");
