@@ -28,7 +28,9 @@ public:
     // Pros: Human readable.
     // Cons: Slower, heavier.
     
-    unit_class(std::string, bool, bool, bool, bool, bool);
+    unsigned char stats_max[11];
+    
+    unit_class(std::string, bool, bool, bool, bool, bool, std::vector<unsigned int>);
     ~unit_class();
     unit_class();
     void read(const char*, char);
