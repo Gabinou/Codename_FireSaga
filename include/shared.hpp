@@ -78,4 +78,8 @@ extern std::vector<int> csv_from_line(std::string, std::string delimiter = ",");
 extern std::unordered_map<string, int> wpn_indexes;
 
 //swd lnc axe bow wnd fir tnd drk lgt staff
+
+extern string read_line(const char *filename, char skip);
+
+
 #endif /* SHARED_HPP */

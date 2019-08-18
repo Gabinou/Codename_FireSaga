@@ -126,6 +126,23 @@ bool double_roll(int in_prob) {
     return(out);
 }
 
+string read_line(const char *filename, char skip){
+    // 2019/07/30: skip should be a multiple of *number of lines written to weapon.txt* which is 8.
+    FILE *f = fopen(filename, "r");
+    char line[500];
+    for (int i = 0; i < skip; i++) {
+        if (fgets(line, sizeof(line), f)==NULL) {
+            throw "eof Reached\n";
+        } 
+    }
+    fgets(line, sizeof(line), f);
+    std::string out(line);
+    out.pop_back(); // fgets include the \n character at the end of the line. This removes it.
+    // out = out.substr(0, out.size()-1);
+    fclose(f);
+    return(out);
+}
+
 unsigned char id = 0; //Number of objects. I think this is unecessary.
 
 char unit_stats[][14] = {"HP", "Str", "Mag", "Skill", "Speed", "Luck", "Def", "Res", "Con", "Move", "WpnLvl"};
@@ -204,7 +221,6 @@ std::unordered_map<string, unit> all_units;
 std::unordered_map<string, unit_class> all_unit_classes;
 std::unordered_map<string, int> wpn_indexes;
 
-
 /// \fn void write_all_units(const char *filename, char const *savestyle)
 /// \brief Write all_units stats to file.
 // write_all_units must be implemented here.
@@ -222,6 +238,28 @@ void write_all_units(const char *filename, char const *savestyle = "cpp" ) {
 
             it.second.write(filename);
         }
+    }
+}
+
+void read_all_unit_classes(const char *filename="classes_FE1.txt") {
+    std::string line;
+    std::ifstream inFile(filename); 
+    short int line_num = std::count(std::istreambuf_iterator<char>(inFile), 
+             std::istreambuf_iterator<char>(), '\n') + 1;
+    for (int i = 0 ; i < line_num; i+=9) {
+        line = "";
+        try {
+            line = read_line(filename, i);
+        } catch (const char* msg) {
+            break;
+        }
+        if (!line.empty() && line != "") {
+            all_unit_classes[line.substr(9, line.size()).c_str()] = unit_class();
+            all_unit_classes[line.substr(9, line.size()).c_str()].read(filename, i);
+            // printf("%s \n", line.c_str());
+            // printf("%s \n", all_weapons[line.c_str()].name);
+        }   
+    inFile.close();
     }
 }
 
@@ -254,23 +292,6 @@ void write_all_maps(const char *filename) {
 
 void read_all_maps(const char *filename) {
       
-}
-
-string read_line(const char *filename, char skip){
-    // 2019/07/30: skip should be a multiple of *number of lines written to weapon.txt* which is 8.
-    FILE *f = fopen(filename, "r");
-    char line[500];
-    for (int i = 0; i < skip; i++) {
-        if (fgets(line, sizeof(line), f)==NULL) {
-            throw "eof Reached\n";
-        } 
-    }
-    fgets(line, sizeof(line), f);
-    std::string out(line);
-    out.pop_back(); // fgets include the \n character at the end of the line. This removes it.
-    // out = out.substr(0, out.size()-1);
-    fclose(f);
-    return(out);
 }
 
 void read_all_weapons(const char *filename="weapons.txt") {
@@ -394,15 +415,15 @@ main() {
     // printf("%d \f", inventory_items["Rapier_0000"]);
     // write_all_weapons("weapons2.txt");
     
-    all_unit_classes["Lord"] = unit_class("Lord", 0, 0, 0, 0, {40, 25, 20, 40, 70, 80, 20, 20,  0,  0, 0}, {""}, {"Sword"});
-    // all_unit_classes["Mercenary"] = unit_class("Mercenary", 0, 0, 0, 0, {40, 25, 20, 40, 70, 80, 20, 20,  0,  0}, {"Hero"});
-    all_unit_classes["Mercenary"] = unit_class();
-    all_unit_classes["Mercenary"].read("classes_FE1.txt", 0);
-    // all_unit_classes["Lord"] = unit_class();
-    // unit_class();
-    // all_unit_classes["Lord"].write("classes.txt");
+    // all_unit_classes["Lord"] = unit_class("Lord", 0, 0, 0, 0, {40, 25, 20, 40, 70, 80, 20, 20,  0,  0, 0}, {""}, {"Sword"});
+    // // all_unit_classes["Mercenary"] = unit_class("Mercenary", 0, 0, 0, 0, {40, 25, 20, 40, 70, 80, 20, 20,  0,  0}, {"Hero"});
+    // all_unit_classes["Mercenary"] = unit_class();
+    // all_unit_classes["Mercenary"].read("classes_FE1.txt", 0);
+    // // all_unit_classes["Lord"] = unit_class();
+    // // unit_class();
+    // // all_unit_classes["Lord"].write("classes.txt");
+    read_all_unit_classes("classes_FE1.txt");
     write_all_unit_classes("classes.txt");
-    
     
     //// TEST FOR SIZE OF DATA.
     // std::unordered_map<string, std::vector<char>> testsupport({ {"Marth", {1,1,1,1,1,1,1,1,1,1,1}} });

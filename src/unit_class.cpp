@@ -64,13 +64,13 @@ void unit_class::read(const char *filename, char skip) {
     std::string new_name;
     std::vector<std::string> tempstr;
     int j = 0;
-    while (j < skip + 8) {
+    while (j < skip + 9) {
         std::getline(infile, line);
         // // std::cout << line << endl;
         if (j>=skip) {
             std::istringstream iss(line);
             strncpy(name, line.substr(9, line.size()).c_str(), sizeof(line));
-            std::cout << name << endl;
+            // std::cout << name << endl;
             std::getline(infile, line);
             temp = csv_from_line(line.substr(8, line.size()));
             mounted = temp[0];
@@ -100,7 +100,7 @@ void unit_class::read(const char *filename, char skip) {
                 stats_caps[i] = (int) temp[i];
                // std::cout << (int) temp[i] << endl; 
             }
-            j+=8;
+            j+=9;
         }
         j++;
     }
