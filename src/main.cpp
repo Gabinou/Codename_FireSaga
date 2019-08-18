@@ -331,7 +331,7 @@ main() {
     all_unit_classes["Lord"] = unit_class("Lord", 0,0,0,0,0, {40, 25, 20, 40, 70, 80, 20, 20,  0,  0});
     // all_unit_classes["Lord"] = unit_class();
     // unit_class();
-    
+    all_unit_classes["Lord"].write("classes.txt");
     
     //// TEST FOR SIZE OF DATA.
     // std::unordered_map<string, std::vector<char>> testsupport({ {"Marth", {1,1,1,1,1,1,1,1,1,1,1}} });

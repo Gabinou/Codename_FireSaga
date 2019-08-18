@@ -8,10 +8,9 @@ using namespace std;
 * \brief Unit_class class: For all unit classes.
 */
 class unit_class: public generic {
-    // Lightweight implementation.
+    // Lightweight implementation. Unit should not inherit from this class. I think it should cont the name of the unit_class instead, as a human-readable pointer of sorts to the class.
 public:
     bool mounted, flying, armored, promoted, dragon, usable_wpn[10];
-    
     /// \var bool mounted
     /// \brief 1/0 mounted. For effective weapons
     /// \var bool flying

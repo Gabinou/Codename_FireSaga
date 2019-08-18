@@ -20,7 +20,22 @@ unit_class::unit_class(void) {
 }
 
 void unit_class::write(std::string filename) {  
-
+    std::ofstream out(filename, std::ios_base::app);
+    out << "Class: \t\t" << name << "\n";
+    out << "Mounted: \t" << mounted << "\n";
+    out << "Flying: \t"  << flying << "\n";
+    out << "Armored: \t" << armored << "\n";
+    out << "Promoted: \t" << promoted << "\n";
+    out << "Dragon: \t" << dragon << "\n";
+    out << "Caps: \t\t";
+    for (int i = 0; i < sizeof(stats_caps)/sizeof(stats_caps[0]); i++) {
+        if (i == (sizeof(stats_caps)/sizeof(stats_caps[0])) - 1) {
+            out << (int) stats_caps[i] << "\n";
+        } else {
+            out << (int) stats_caps[i] << ", ";
+        }
+    };
+    out << std::endl;
 }
 
 void unit_class::read(const char *filename, char skip) { 

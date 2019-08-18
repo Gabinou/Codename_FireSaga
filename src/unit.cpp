@@ -99,6 +99,7 @@ void unit::write(std::string filename) {
     << (int) stats[4] << ", " << (int) stats[5] << ", " 
     << (int) stats[6] << ", " << (int) stats[7] << ", " 
     << (int) stats[8] << ", " << (int) stats[9] << "\n"
+    << (int) stats[10] << "\n"
     << "Growths: \t";
     for (int i = 0; i < sizeof(growths)/sizeof(growths[0]); i++) {
         if (i == (sizeof(growths)/sizeof(growths[0])) - 1) {
