@@ -79,7 +79,6 @@ std::vector<std::string> css_from_line(string line, string delimiter) {
     std::size_t found;
     while ((found = line.find(delimiter)) != string::npos) {
         names.push_back(words2str(get_words(line.substr(0, found))));
-        // std::cout << line.substr(0, found) << endl;
         line.erase(0, found + delimiter.length());
     }
     names.push_back(words2str(get_words(line)));
@@ -121,7 +120,6 @@ bool single_roll(int in_prob) {
 bool double_roll(int in_prob) {
     int rng1 = get_rand();
     int rng2 = get_rand(); 
-    // printf("%i %i %i\n", rng1, rng2, in_prob);
     bool out = ((rng1 + rng2) < (2 * in_prob));
     return(out);
 }
@@ -138,7 +136,6 @@ string read_line(const char *filename, int skip){
     fgets(line, sizeof(line), f);
     std::string out(line);
     out.pop_back(); // fgets include the \n character at the end of the line. This removes it.
-    // out = out.substr(0, out.size()-1);
     fclose(f);
     return(out);
 }
@@ -256,8 +253,6 @@ void read_all_unit_classes(const char *filename="classes_FE1.txt") {
         if (!line.empty() && line != "") {
             all_unit_classes[line.substr(9, line.size()).c_str()] = unit_class();
             all_unit_classes[line.substr(9, line.size()).c_str()].read(filename, i);
-            // printf("%s \n", line.c_str());
-            // printf("%s \n", all_weapons[line.c_str()].name);
         }   
     inFile.close();
     }
@@ -266,7 +261,6 @@ void read_all_unit_classes(const char *filename="classes_FE1.txt") {
 void write_all_unit_classes(const char *filename) {
     std::remove(filename);
     for (auto& it: all_unit_classes) { // Iterate over unordered_map
-        // out << it.second;
         it.second.write(filename);
     }
 }
@@ -275,13 +269,9 @@ void write_all_unit_classes(const char *filename) {
 void write_all_weapons(const char *filename, char const *savestyle = "cpp" ) {
     std::remove(filename);
     if (savestyle == "cpp") {
-        // std::ofstream out(filename);
         for (auto& it: all_weapons) { // Iterate over unordered_map
-            // out << it.second;
             it.second.write(filename);
-            // printf("%s \n", it.second.name);
         }
-        // out.close();
     }
 }
 
@@ -309,8 +299,6 @@ void read_all_weapons(const char *filename="weapons.txt") {
         if (!line.empty() && line != "") {
             all_weapons[line.c_str()] = weapon();
             all_weapons[line.c_str()].read(filename, i);
-            // printf("%s \n", line.c_str());
-            // printf("%s \n", all_weapons[line.c_str()].name);
         }   
     inFile.close();
     }
@@ -332,12 +320,10 @@ void read_all_units(const char *filename) {
     std::ifstream inFile(filename); 
     short int line_num = std::count(std::istreambuf_iterator<char>(inFile), 
              std::istreambuf_iterator<char>(), '\n') + 1;
-    // std::cout << line_num << endl;
     for (int i = 0 ; i < line_num; i+=16) {
         line = "";
         try {
             line = read_line(filename, i);
-            // std::cout << i << line << endl;
         } catch (const char* msg) {
             break;
         }
@@ -346,7 +332,6 @@ void read_all_units(const char *filename) {
             all_units[line.c_str()].read(filename, i);
         }   
     inFile.close();
-    // all_units["Sheeda_test"].read("units.txt", 20);
     }
 }
 

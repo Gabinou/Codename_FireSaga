@@ -66,11 +66,9 @@ void unit_class::read(const char *filename, short int skip) {
     int j = 0;
     while (j < skip + 9) {
         std::getline(infile, line);
-        // // std::cout << line << endl;
         if (j>=skip) {
             std::istringstream iss(line);
             strncpy(name, line.substr(9, line.size()).c_str(), sizeof(line));
-            // std::cout << name << endl;
             std::getline(infile, line);
             temp = csv_from_line(line.substr(8, line.size()));
             mounted = temp[0];
@@ -94,11 +92,9 @@ void unit_class::read(const char *filename, short int skip) {
                 usable_wpn.push_back(tempstr[i]);
             }
             std::getline(infile, line);
-            // std::cout << line.substr(8, line.size()) << endl;
             temp = csv_from_line(line.substr(8, line.size()));
             for (int i = 0; i < temp.size(); i++) {
                 stats_caps[i] = (int) temp[i];
-               // std::cout << (int) temp[i] << endl; 
             }
             j+=9;
         }

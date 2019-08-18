@@ -167,23 +167,19 @@ void unit::write(std::string filename) {
 
 
 void unit::read(const char *filename, short int skip) {
-    // 2019/07/30: skip should be a multiple of *number of lines written to units.txt* which is 20.
+    // 2019/08/19: skip should be a multiple of *number of lines written to units.txt* which is 16. How to make that automatic?
     std::ifstream infile(filename);
     std::string line;
     std::vector<int> temp;
     std::string new_name;
     std::vector<std::string> tempstr;
-    // printf("%d \n", skip);
     int j = 0;
     while (j < skip + 16) {
         std::getline(infile, line);
         if (j>=skip) {
-            // std::cout << j << line << endl;
             std::istringstream iss(line);
-            // std::cout << line << endl;
             strncpy(name, line.c_str(), sizeof(line));
             std::getline(infile, line);
-            // std::cout << line << endl;
             strncpy(type, line.substr(9, line.size()).c_str(), sizeof(line));
             std::getline(infile, line);
             temp = csv_from_line(line.substr(8, line.size()));
@@ -208,7 +204,6 @@ void unit::read(const char *filename, short int skip) {
             std::getline(infile, line);
             tempstr = css_from_line(line.substr(10, line.size()));
             std::getline(infile, line);
-            // std::cout << line.substr(10, line.size()) << endl;
             temp = csv_from_line(line.substr(10, line.size()));
             for (int i = 0; i < temp.size(); i++) {
                 equipment[i] = inventory_item(tempstr[i], temp[i]);
@@ -216,9 +211,6 @@ void unit::read(const char *filename, short int skip) {
             }
             std::getline(infile, line); //weapon line
             std::getline(infile, line); //items line
-            // std::cout << "THIS" << temp[0] << endl;
-            // std::cout << get_equipped()[0] << endl;
-            // std::cout << get_equipped()[1] << endl;
             std::getline(infile, line);
             tempstr = css_from_line(line.substr(9, line.size()));
             for (int i = 0; i < tempstr.size(); i++) {
@@ -325,8 +317,6 @@ unsigned char unit::attack_damage() {
         unit_power = stats[2];
     };
     int attack_damage = wpn_dmg + unit_power;
-    // printf("wpn_dmg %d\n", wpn_dmg);
-    // printf("unit_power %d\n", unit_power);
     return(attack_damage);
 }
 
@@ -344,8 +334,6 @@ unsigned char unit::combat_damage(const unit& enemy, bool critical) {
         unit_power = stats[2];
         enemy_def = enemy.stats[7];
     };
-    // printf("unit_power %d\n", unit_power);
-    // printf("enemy_def  %d\n", enemy_def );
     unsigned char crit_factor = 1;
     if (critical) {crit_factor=3;};
     int attack_damage = crit_factor*(std::max(wpn_dmg + unit_power - enemy_def - terrain_def, 0)); // Modern FE style. for crit_factor = 3
