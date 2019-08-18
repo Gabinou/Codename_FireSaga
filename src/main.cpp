@@ -126,7 +126,7 @@ bool double_roll(int in_prob) {
     return(out);
 }
 
-string read_line(const char *filename, char skip){
+string read_line(const char *filename, int skip){
     // 2019/07/30: skip should be a multiple of *number of lines written to weapon.txt* which is 8.
     FILE *f = fopen(filename, "r");
     char line[500];
@@ -235,7 +235,7 @@ void write_all_units(const char *filename, char const *savestyle = "cpp" ) {
     } else if (savestyle == "c") {
         remove(filename);
         for (auto& it: all_units) {
-
+            // std::cout << it.second.name << endl;
             it.second.write(filename);
         }
     }
@@ -332,7 +332,7 @@ void read_all_units(const char *filename) {
     std::ifstream inFile(filename); 
     short int line_num = std::count(std::istreambuf_iterator<char>(inFile), 
              std::istreambuf_iterator<char>(), '\n') + 1;
-    std::cout << line_num << endl;
+    // std::cout << line_num << endl;
     for (int i = 0 ; i < line_num; i+=16) {
         line = "";
         try {
@@ -342,9 +342,6 @@ void read_all_units(const char *filename) {
             break;
         }
         if (!line.empty() && line != "") {
-            // std::cout << i << line.c_str() << endl;
-
-            // std::cout << i << endl;
             all_units[line.c_str()] = unit();
             all_units[line.c_str()].read(filename, i);
         }   
@@ -415,6 +412,7 @@ main() {
     read_all_weapons("weapons.txt");
     read_all_units("units_FE1.txt");
     write_all_units("units_test.txt");
+    
     // inventory_item("Rapier", 10);
     // printf("%d \f", inventory_items["Rapier_0000"]);
     // write_all_weapons("weapons2.txt");

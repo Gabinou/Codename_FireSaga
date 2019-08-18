@@ -173,12 +173,12 @@ void unit::read(const char *filename, short int skip) {
     std::vector<int> temp;
     std::string new_name;
     std::vector<std::string> tempstr;
-    printf("%d \n", skip);
+    // printf("%d \n", skip);
     int j = 0;
     while (j < skip + 16) {
         std::getline(infile, line);
         if (j>=skip) {
-            std::cout << j << line << endl;
+            // std::cout << j << line << endl;
             std::istringstream iss(line);
             // std::cout << line << endl;
             strncpy(name, line.c_str(), sizeof(line));
