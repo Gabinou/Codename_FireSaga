@@ -25,7 +25,9 @@ void unit_class::write(std::string filename) {
     out << "Mounted: \t" << mounted << "\n";
     out << "Flying: \t"  << flying << "\n";
     out << "Armored: \t" << armored << "\n";
+    out << "Dragon: \t" << dragon << "\n";
     out << "Promotion: \t";
+
     for (int i = 0; i < promotion.size(); i++) {
         if (i == promotion.size() - 1) {
             out << promotion[i] << "\n";
@@ -33,7 +35,7 @@ void unit_class::write(std::string filename) {
             out << promotion[i] << ", ";
         }
     };
-    out << "Dragon: \t" << dragon << "\n";
+
     out << "Caps: \t\t";
     for (int i = 0; i < sizeof(stats_caps)/sizeof(stats_caps[0]); i++) {
         if (i == (sizeof(stats_caps)/sizeof(stats_caps[0])) - 1) {
@@ -46,7 +48,48 @@ void unit_class::write(std::string filename) {
 }
 
 void unit_class::read(const char *filename, char skip) { 
-
+    // 2019/07/30: skip should be a multiple of *number of lines written to units.txt* which is 20.
+    std::ifstream infile(filename);
+    std::string line;
+    std::vector<int> temp;
+    std::string new_name;
+    std::vector<std::string> tempstr;
+    int j = 0;
+    while (j < skip + 8) {
+        std::getline(infile, line);
+        // // std::cout << line << endl;
+        if (j>=skip) {
+            std::istringstream iss(line);
+            strncpy(name, line.substr(9, line.size()).c_str(), sizeof(line));
+            std::cout << name << endl;
+            std::getline(infile, line);
+            temp = csv_from_line(line.substr(8, line.size()));
+            mounted = temp[0];
+            std::getline(infile, line);
+            temp = csv_from_line(line.substr(8, line.size()));
+            flying = temp[0];
+            std::getline(infile, line);
+            temp = csv_from_line(line.substr(8, line.size()));
+            armored = temp[0];
+            std::getline(infile, line);
+            temp = csv_from_line(line.substr(8, line.size()));
+            dragon = temp[0];
+            std::getline(infile, line);
+            tempstr = css_from_line(line.substr(10, line.size()));
+            for (int i = 0; i < temp.size(); i++) {
+                promotion.push_back(tempstr[i]);
+            }
+            std::getline(infile, line);
+            std::cout << line.substr(8, line.size()) << endl;
+            temp = csv_from_line(line.substr(8, line.size()));
+            for (int i = 0; i < temp.size(); i++) {
+                stats_caps[i] = (int) temp[i];
+               std::cout << (int) temp[i] << endl; 
+            }
+            j+=8;
+        }
+        j++;
+    }
 }
 
 unit_class::unit_class(std::string in_name, bool in_mounted, bool in_flying, bool in_armored, bool in_dragon, std::vector<unsigned int> in_stats_caps, std::vector<std::string> in_promotion) { 

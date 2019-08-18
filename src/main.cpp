@@ -223,6 +223,15 @@ void write_all_units(const char *filename, char const *savestyle = "cpp" ) {
     }
 }
 
+void write_all_unit_classes(const char *filename) {
+    std::remove(filename);
+    for (auto& it: all_unit_classes) { // Iterate over unordered_map
+        // out << it.second;
+        it.second.write(filename);
+    }
+}
+
+
 void write_all_weapons(const char *filename, char const *savestyle = "cpp" ) {
     std::remove(filename);
     if (savestyle == "cpp") {
@@ -234,7 +243,6 @@ void write_all_weapons(const char *filename, char const *savestyle = "cpp" ) {
         }
         // out.close();
     }
-
 }
 
 void write_all_maps(const char *filename) {
@@ -328,10 +336,16 @@ main() {
     // printf("%d \f", inventory_items["Rapier_0000"]);
     // write_all_weapons("weapons2.txt");
     
-    all_unit_classes["Lord"] = unit_class("Lord", 0, 0, 0, 0, {40, 25, 20, 40, 70, 80, 20, 20,  0,  0}, {""});
+    all_unit_classes["Lord"] = unit_class("Lord", 0, 0, 0, 0, {40, 25, 20, 40, 70, 80, 20, 20,  0,  0, 0}, {""});
+    // all_unit_classes["Mercenary"] = unit_class("Mercenary", 0, 0, 0, 0, {40, 25, 20, 40, 70, 80, 20, 20,  0,  0}, {"Hero"});
+    all_unit_classes["Mercenary"] = unit_class();
+    all_unit_classes["Mercenary"].read("classes_FE1.txt", 0);
+    std::cout << all_unit_classes["Mercenary"].name << endl;
     // all_unit_classes["Lord"] = unit_class();
     // unit_class();
-    all_unit_classes["Lord"].write("classes.txt");
+    // all_unit_classes["Lord"].write("classes.txt");
+    write_all_unit_classes("classes.txt");
+    
     
     //// TEST FOR SIZE OF DATA.
     // std::unordered_map<string, std::vector<char>> testsupport({ {"Marth", {1,1,1,1,1,1,1,1,1,1,1}} });
