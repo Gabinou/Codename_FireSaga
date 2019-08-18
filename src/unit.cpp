@@ -212,6 +212,7 @@ void unit::read(const char *filename, short int skip) {
             temp = csv_from_line(line.substr(10, line.size()));
             for (int i = 0; i < temp.size(); i++) {
                 equipment[i] = inventory_item(tempstr[i], temp[i]);
+                std::cout << tempstr[i] << endl;
             }
             std::getline(infile, line); //weapon line
             std::getline(infile, line); //items line

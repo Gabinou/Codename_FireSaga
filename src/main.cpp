@@ -44,7 +44,7 @@ std::string words2str(std::vector<std::string > words) {
     std::string new_str;
     for (int i=0; i < words.size(); i++) {
         new_str += words[i];
-        if (i != words.size()) {
+        if (i != (words.size() - 1)) {
             new_str += " ";
         }        
     }
