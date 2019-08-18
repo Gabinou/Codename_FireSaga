@@ -1,0 +1,206 @@
+Class: 		Lord
+Mounted: 	0
+Flying: 	0
+Armored: 	0
+Dragon: 	0
+Promotion: 	
+Weapon: 	Sword
+Caps: 		80, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20
+
+Class: 		Mercenary
+Mounted: 	0
+Flying: 	0
+Armored: 	0
+Dragon: 	0
+Promotion: 	Hero 
+Weapon: 	Sword
+Caps: 		80, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20
+
+Class: 		Hero
+Mounted: 	0
+Flying: 	0
+Armored: 	0
+Dragon: 	0
+Promotion: 	
+Weapon: 	Sword, Axe
+Caps: 		80, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20
+
+Class: 		Thief
+Mounted: 	0
+Flying: 	0
+Armored: 	0
+Dragon: 	0
+Promotion: 	
+Weapon: 	Sword
+Caps: 		80, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20
+
+Class: 		Commando
+Mounted: 	0
+Flying: 	0
+Armored: 	0
+Dragon: 	0
+Promotion: 
+Weapon: 	Sword
+Caps: 		80, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20
+
+Class: 		Fighter
+Mounted: 	0
+Flying: 	0
+Armored: 	0
+Dragon: 	0
+Promotion: 	
+Weapon: 	Axe
+Caps: 		80, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20
+
+Class: 		Pirate
+Mounted: 	0
+Flying: 	0
+Armored: 	0
+Dragon: 	0
+Promotion: 	 
+Weapon: 	Axe
+Caps: 		80, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20
+
+Class: 		Archer
+Mounted: 	0
+Flying: 	0
+Armored: 	0
+Dragon: 	0
+Promotion: 	Sniper
+Weapon: 	Bow
+Caps: 		80, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20
+
+Class: 		Sniper
+Mounted: 	0
+Flying: 	0
+Armored: 	0
+Dragon: 	0
+Promotion: 	
+Weapon: 	Bow
+Caps: 		80, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20
+
+Class: 		Hunter
+Mounted: 	0
+Flying: 	0
+Armored: 	0
+Dragon: 	0
+Promotion: 	
+Weapon: 	Bow
+Caps: 		80, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20
+
+Class: 		Horsemen
+Mounted: 	1
+Flying: 	0
+Armored: 	0
+Dragon: 	0
+Promotion: 	
+Weapon: 	Bow
+Caps: 		80, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20
+
+Class: 		Cavalier
+Mounted: 	1
+Flying: 	0
+Armored: 	0
+Dragon: 	0
+Promotion: 	Paladin
+Weapon: 	Sword, Lance
+Caps: 		80, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20
+
+Class: 		Knight
+Mounted: 	0
+Flying: 	0
+Armored: 	1
+Dragon: 	0
+Promotion: 	
+Weapon: 	Sword, Lance
+Caps: 		80, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20
+
+Class: 		General
+Mounted: 	0
+Flying: 	0
+Armored: 	1
+Dragon: 	0
+Promotion: 	
+Weapon: 	Sword
+Caps: 		80, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20
+
+Class: 		Pegasus Knight
+Mounted: 	1
+Flying: 	1
+Armored: 	0
+Dragon: 	0
+Promotion: 	Wyvern Knight
+Weapon: 	Sword, Lance
+Caps: 		80, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20
+
+Class: 		Wyvern Knight
+Mounted: 	1
+Flying: 	1
+Armored: 	0
+Dragon: 	1
+Promotion: 	
+Weapon: 	Bow
+Caps: 		80, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20
+
+Class: 		Shooter
+Mounted: 	0
+Flying: 	0
+Armored: 	1
+Dragon: 	0
+Promotion: 	
+Weapon: 	Firearm
+Caps: 		80, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20
+
+Class: 		Mage
+Mounted: 	0
+Flying: 	0
+Armored: 	0
+Dragon: 	0
+Promotion: 	Bishop
+Weapon: 	Magic
+Caps: 		80, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20
+
+Class: 		Priest
+Mounted: 	0
+Flying: 	0
+Armored: 	0
+Dragon: 	0
+Promotion: 	Bishop
+Weapon: 	Magic
+Caps: 		80, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20
+
+Class: 		Mamkut
+Mounted: 	0
+Flying: 	0
+Armored: 	0
+Dragon: 	1
+Promotion: 	
+Weapon: 	Dragonstone
+Caps: 		80, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20
+
+Class: 		Dragon
+Mounted: 	0
+Flying: 	1
+Armored: 	0
+Dragon: 	1
+Promotion: 	
+Weapon: 	Breath
+Caps: 		80, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20
+
+Class: 		Bishop
+Mounted: 	0
+Flying: 	0
+Armored: 	0
+Dragon: 	0
+Promotion: 	
+Weapon: 	Magic, Staff
+Caps: 		80, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20
+
+Class: 		Pirate
+Mounted: 	0
+Flying: 	0
+Armored: 	0
+Dragon: 	0
+Promotion: 	 
+Weapon: 	Axe
+Caps: 		80, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20
