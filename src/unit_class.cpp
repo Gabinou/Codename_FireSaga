@@ -27,7 +27,6 @@ void unit_class::write(std::string filename) {
     out << "Armored: \t" << armored << "\n";
     out << "Dragon: \t" << dragon << "\n";
     out << "Promotion: \t";
-
     for (int i = 0; i < promotion.size(); i++) {
         if (i == promotion.size() - 1) {
             out << promotion[i] << "\n";
@@ -35,7 +34,17 @@ void unit_class::write(std::string filename) {
             out << promotion[i] << ", ";
         }
     };
-
+    out << "Weapon: \t";
+    if (usable_wpn.size() == 0) {
+        out << "\n";
+    }
+    for (int i = 0; i < usable_wpn.size(); i++) {
+        if (i == usable_wpn.size() - 1) {
+            out << usable_wpn[i] << "\n";
+        } else {
+            out << usable_wpn[i] << ", ";
+        }
+    };
     out << "Caps: \t\t";
     for (int i = 0; i < sizeof(stats_caps)/sizeof(stats_caps[0]); i++) {
         if (i == (sizeof(stats_caps)/sizeof(stats_caps[0])) - 1) {
@@ -80,11 +89,16 @@ void unit_class::read(const char *filename, char skip) {
                 promotion.push_back(tempstr[i]);
             }
             std::getline(infile, line);
-            std::cout << line.substr(8, line.size()) << endl;
+            tempstr = css_from_line(line.substr(9, line.size()));
+            for (int i = 0; i < temp.size(); i++) {
+                usable_wpn.push_back(tempstr[i]);
+            }
+            std::getline(infile, line);
+            // std::cout << line.substr(8, line.size()) << endl;
             temp = csv_from_line(line.substr(8, line.size()));
             for (int i = 0; i < temp.size(); i++) {
                 stats_caps[i] = (int) temp[i];
-               std::cout << (int) temp[i] << endl; 
+               // std::cout << (int) temp[i] << endl; 
             }
             j+=8;
         }
@@ -92,13 +106,16 @@ void unit_class::read(const char *filename, char skip) {
     }
 }
 
-unit_class::unit_class(std::string in_name, bool in_mounted, bool in_flying, bool in_armored, bool in_dragon, std::vector<unsigned int> in_stats_caps, std::vector<std::string> in_promotion) { 
+unit_class::unit_class(std::string in_name, bool in_mounted, bool in_flying, bool in_armored, bool in_dragon, std::vector<unsigned int> in_stats_caps, std::vector<std::string> in_promotion, std::vector<std::string> in_usable_wpn) { 
     strncpy(name, in_name.c_str(), sizeof(in_name));
     mounted = in_mounted;
     flying = in_flying;
     armored = in_armored;
     for (int i = 0; i < in_promotion.size(); i++) {
         promotion.push_back(in_promotion[i]);
+    };
+    for (int i = 0; i < in_usable_wpn.size(); i++) {
+        usable_wpn.push_back(in_usable_wpn[i]);
     };
     dragon = in_dragon;
     for (int i = 0; i < in_stats_caps.size(); i++) {

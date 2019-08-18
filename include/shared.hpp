@@ -75,5 +75,7 @@ extern std::vector<std::string> css_from_line(std::string, string delimiter = ",
 extern std::vector<std::string> get_words(string); 
 extern std::string words2str(std::vector<std::string>); 
 extern std::vector<int> csv_from_line(std::string, std::string delimiter = ","); 
+extern std::unordered_map<string, int> wpn_indexes;
 
+//swd lnc axe bow wnd fir tnd drk lgt staff
 #endif /* SHARED_HPP */

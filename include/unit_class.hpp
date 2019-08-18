@@ -9,9 +9,11 @@ using namespace std;
 */
 class unit_class: public generic {
     // Lightweight implementation. Unit should not inherit from this class. I think it should cont the name of the unit_class instead, as a human-readable pointer of sorts to the class.
+    // How to represent usable weapons?
+    
 public:
-    bool mounted, flying, armored, dragon, usable_wpn[10];
-    std::vector<std::string> promotion;
+    bool mounted, flying, armored, dragon;
+    std::vector<std::string> promotion, usable_wpn;
     /// \var bool mounted
     /// \brief 1/0 mounted. For effective weapons
     /// \var bool flying
@@ -31,7 +33,7 @@ public:
     
     unsigned char stats_caps[11];
     
-    unit_class(std::string, bool, bool, bool, bool, std::vector<unsigned int>, std::vector<std::string>);
+    unit_class(std::string, bool, bool, bool, bool, std::vector<unsigned int>, std::vector<std::string>, std::vector<std::string>);
     ~unit_class();
     unit_class();
     void read(const char*, char);
