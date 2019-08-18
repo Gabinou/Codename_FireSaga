@@ -46,7 +46,7 @@ public:
     /// \brief dmg_type: Damage type. 0 for physical, 1 for magical.
     ~weapon();
     
-    void read(const char*, char);
+    void read(const char*, short int);
     
     void write(string);
     

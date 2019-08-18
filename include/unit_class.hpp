@@ -36,7 +36,7 @@ public:
     unit_class(std::string, bool, bool, bool, bool, std::vector<unsigned int>, std::vector<std::string>, std::vector<std::string>);
     ~unit_class();
     unit_class();
-    void read(const char*, char);
+    void read(const char*, short int);
     /// \fn read
     /// \brief read txt file, with format of write function.
     void write(string);

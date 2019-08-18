@@ -56,7 +56,7 @@ void unit_class::write(std::string filename) {
     out << std::endl;
 }
 
-void unit_class::read(const char *filename, char skip) { 
+void unit_class::read(const char *filename, short int skip) { 
     // 2019/07/30: skip should be a multiple of *number of lines written to units.txt* which is 20.
     std::ifstream infile(filename);
     std::string line;

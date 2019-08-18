@@ -1,5 +1,3 @@
-{"HP", "Str", "Mag", "Skill", "Speed", "Luck", "Def", "Res", "Con", "Move", "WpnLvl"};
-{"swd", "lance", "axe", "bow", "mgc_wind", "mgc_fire", "mgc_thunder",  "mgc_dark",  "mgc_light", "staff"};
 Marth
 Class: 		Lord
 Bases: 		18, 5, 0, 3, 7, 7, 7, 0, 0, 7, 5
@@ -15,10 +13,6 @@ love_pts: 	0, 0, 0, 0, 0
 love_grt: 	0, 0, 0, 0, 0
 wpn_exp: 	1, 0, 0, 0, 0, 0, 0, 0, 0, 0
 Exp: 		0
-Mounted: 	0
-Flying: 	0
-Armored: 	0
-Promoted: 	0
 
 Sheeda
 Class: 		Pegasus Knight
@@ -35,10 +29,6 @@ love_pts: 	0, 0, 0, 0, 0
 love_grt: 	0, 0, 0, 0, 0
 wpn_exp: 	1, 1, 0, 0, 0, 0, 0, 0, 0, 0
 Exp: 		0
-Mounted: 	1
-Flying: 	1
-Armored: 	0
-Promoted: 	0
 
 Jeigan
 Class: 		Paladin
@@ -55,10 +45,6 @@ love_pts: 	0, 0, 0, 0, 0
 love_grt: 	0, 0, 0, 0, 0
 wpn_exp: 	1, 1, 0, 0, 0, 0, 0, 0, 0, 0
 Exp: 		0
-Mounted: 	1
-Flying: 	0
-Armored: 	0
-Promoted: 	1
 
 Kain
 Class: 		Cavalier
@@ -75,10 +61,6 @@ love_pts: 	0, 0, 0, 0, 0
 love_grt: 	0, 0, 0, 0, 0
 wpn_exp: 	1, 1, 0, 0, 0, 0, 0, 0, 0, 0
 Exp: 		0
-Mounted: 	1
-Flying: 	0
-Armored: 	0
-Promoted: 	0
 
 Abel
 Class: 		Cavalier
@@ -95,10 +77,6 @@ love_pts: 	0, 0, 0, 0, 0
 love_grt: 	0, 0, 0, 0, 0
 wpn_exp: 	1, 1, 0, 0, 0, 0, 0, 0, 0, 0
 Exp: 		0
-Mounted: 	1
-Flying: 	0
-Armored: 	0
-Promoted: 	0
 
 Doga
 Class: 		Knight
@@ -115,10 +93,6 @@ love_pts: 	0, 0, 0, 0, 0
 love_grt: 	0, 0, 0, 0, 0
 wpn_exp: 	0, 1, 0, 0, 0, 0, 0, 0, 0, 0
 Exp: 		0
-Mounted: 	0
-Flying: 	0
-Armored: 	1
-Promoted: 	0
 
 Gordon
 Class: 		Archer
@@ -135,10 +109,6 @@ love_pts: 	0, 0, 0, 0, 0
 love_grt: 	0, 0, 0, 0, 0
 wpn_exp: 	0, 0, 0, 1, 0, 0, 0, 0, 0, 0
 Exp: 		0
-Mounted: 	0
-Flying: 	0
-Armored: 	0
-Promoted: 	0
 
 Riff
 Class: 		Priest
@@ -155,10 +125,6 @@ love_pts: 	0, 0, 0, 0, 0
 love_grt: 	0, 0, 0, 0, 0
 wpn_exp: 	0, 0, 0, 0, 0, 0, 0, 0, 0, 1
 Exp: 		0
-Mounted: 	0
-Flying: 	0
-Armored: 	0
-Promoted: 	0
 
 Oguma
 Class: 		Mercenary
@@ -175,10 +141,6 @@ love_pts: 	0, 0, 0, 0, 0
 love_grt: 	0, 0, 0, 0, 0
 wpn_exp: 	1, 0, 0, 0, 0, 0, 0, 0, 0, 0
 Exp: 		100
-Mounted: 	0
-Flying: 	0
-Armored: 	0
-Promoted: 	0
 
 Barts
 Class: 		Mercenary
@@ -195,10 +157,6 @@ love_pts: 	0, 0, 0, 0, 0
 love_grt: 	0, 0, 0, 0, 0
 wpn_exp: 	1, 0, 1, 0, 0, 0, 0, 0, 0, 0
 Exp: 		400
-Mounted: 	0
-Flying: 	0
-Armored: 	0
-Promoted: 	0
 
 Saji
 Class: 		Fighter
@@ -215,10 +173,6 @@ love_pts: 	0, 0, 0, 0, 0
 love_grt: 	0, 0, 0, 0, 0
 wpn_exp: 	0, 0, 1, 0, 0, 0, 0, 0, 0, 0
 Exp: 		200
-Mounted: 	0
-Flying: 	0
-Armored: 	0
-Promoted: 	0
 
 Maji
 Class: 		Fighter
@@ -235,10 +189,6 @@ love_pts: 	0, 0, 0, 0, 0
 love_grt: 	0, 0, 0, 0, 0
 wpn_exp: 	0, 0, 1, 0, 0, 0, 0, 0, 0, 0
 Exp: 		200
-Mounted: 	0
-Flying: 	0
-Armored: 	0
-Promoted: 	0
 
 Kashim
 Class: 		Hunter
@@ -255,10 +205,6 @@ love_pts: 	0, 0, 0, 0, 0
 love_grt: 	0, 0, 0, 0, 0
 wpn_exp: 	0, 0, 0, 1, 0, 0, 0, 0, 0, 0
 Exp: 		200
-Mounted: 	0
-Flying: 	0
-Armored: 	0
-Promoted: 	0
 
 Daros
 Class: 		Pirate
@@ -275,10 +221,6 @@ love_pts: 	0, 0, 0, 0, 0
 love_grt: 	0, 0, 0, 0, 0
 wpn_exp: 	0, 0, 1, 0, 0, 0, 0, 0, 0, 0
 Exp: 		200
-Mounted: 	0
-Flying: 	0
-Armored: 	0
-Promoted: 	0
 
 Julian
 Class: 		Thief
@@ -295,10 +237,6 @@ love_pts: 	0, 0, 0, 0, 0
 love_grt: 	0, 0, 0, 0, 0
 wpn_exp: 	1, 0, 0, 0, 0, 0, 0, 0, 0, 0
 Exp: 		200
-Mounted: 	0
-Flying: 	0
-Armored: 	0
-Promoted: 	0
 
 Rena
 Class: 		Priest
@@ -315,10 +253,6 @@ love_pts: 	0, 0, 0, 0, 0
 love_grt: 	0, 0, 0, 0, 0
 wpn_exp: 	0, 0, 0, 0, 0, 0, 0, 0, 0, 1
 Exp: 		200
-Mounted: 	0
-Flying: 	0
-Armored: 	0
-Promoted: 	0
 
 Navarre
 Class: 		Mercenary
@@ -335,10 +269,6 @@ love_pts: 	0, 0, 0, 0, 0
 love_grt: 	0, 0, 0, 0, 0
 wpn_exp: 	1, 0, 0, 0, 0, 0, 0, 0, 0, 0
 Exp: 		200
-Mounted: 	0
-Flying: 	0
-Armored: 	0
-Promoted: 	0
 
 Marich
 Class: 		Mage
@@ -355,10 +285,6 @@ love_pts: 	0, 0, 0, 0, 0
 love_grt: 	0, 0, 0, 0, 0
 wpn_exp: 	0, 0, 0, 0, 1, 0, 0, 0, 0, 0
 Exp: 		0
-Mounted: 	0
-Flying: 	0
-Armored: 	0
-Promoted: 	0
 
 Machis
 Class: 		Cavalier
@@ -375,10 +301,6 @@ love_pts: 	0, 0, 0, 0, 0
 love_grt: 	0, 0, 0, 0, 0
 wpn_exp: 	1, 1, 0, 0, 0, 0, 0, 0, 0, 0
 Exp: 		100
-Mounted: 	1
-Flying: 	0
-Armored: 	0
-Promoted: 	0
 
 Hardin
 Class: 		Cavalier
@@ -395,10 +317,6 @@ love_pts: 	0, 0, 0, 0, 0
 love_grt: 	0, 0, 0, 0, 0
 wpn_exp: 	1, 1, 0, 0, 0, 0, 0, 0, 0, 0
 Exp: 		500
-Mounted: 	1
-Flying: 	0
-Armored: 	0
-Promoted: 	0
 
 Wolf
 Class: 		Horsemen
@@ -415,10 +333,6 @@ love_pts: 	0, 0, 0, 0, 0
 love_grt: 	0, 0, 0, 0, 0
 wpn_exp: 	0, 0, 0, 1, 0, 0, 0, 0, 0, 0
 Exp: 		200
-Mounted: 	1
-Flying: 	0
-Armored: 	0
-Promoted: 	0
 
 Zagaro
 Class: 		Horsemen
@@ -435,10 +349,6 @@ love_pts: 	0, 0, 0, 0, 0
 love_grt: 	0, 0, 0, 0, 0
 wpn_exp: 	0, 0, 0, 1, 0, 0, 0, 0, 0, 0
 Exp: 		0
-Mounted: 	1
-Flying: 	0
-Armored: 	0
-Promoted: 	0
 
 Roshe
 Class: 		Cavalier
@@ -455,10 +365,6 @@ love_pts: 	0, 0, 0, 0, 0
 love_grt: 	0, 0, 0, 0, 0
 wpn_exp: 	1, 1, 0, 0, 0, 0, 0, 0, 0, 0
 Exp: 		200
-Mounted: 	1
-Flying: 	0
-Armored: 	0
-Promoted: 	0
 
 Biraku
 Class: 		Cavalier
@@ -475,10 +381,6 @@ love_pts: 	0, 0, 0, 0, 0
 love_grt: 	0, 0, 0, 0, 0
 wpn_exp: 	1, 1, 0, 0, 0, 0, 0, 0, 0, 0
 Exp: 		0
-Mounted: 	1
-Flying: 	0
-Armored: 	0
-Promoted: 	0
 
 Wendel
 Class: 		Bishop
@@ -495,10 +397,6 @@ love_pts: 	0, 0, 0, 0, 0
 love_grt: 	0, 0, 0, 0, 0
 wpn_exp: 	0, 0, 0, 0, 0, 0, 0, 0, 0, 1
 Exp: 		0
-Mounted: 	0
-Flying: 	0
-Armored: 	0
-Promoted: 	1
 
 Ricardo
 Class: 		Thief
@@ -515,10 +413,6 @@ love_pts: 	0, 0, 0, 0, 0
 love_grt: 	0, 0, 0, 0, 0
 wpn_exp: 	1, 0, 0, 0, 0, 0, 0, 0, 0, 0
 Exp: 		0
-Mounted: 	0
-Flying: 	0
-Armored: 	0
-Promoted: 	0
 
 Bantu
 Class: 		Mamkeet
@@ -535,10 +429,6 @@ love_pts: 	0, 0, 0, 0, 0
 love_grt: 	0, 0, 0, 0, 0
 wpn_exp: 	0, 0, 0, 0, 0, 0, 0, 0, 0, 0
 Exp: 		0
-Mounted: 	0
-Flying: 	0
-Armored: 	0
-Promoted: 	0
 
 Caesar
 Class: 		Mercenary
@@ -555,10 +445,6 @@ love_pts: 	0, 0, 0, 0, 0
 love_grt: 	0, 0, 0, 0, 0
 wpn_exp: 	1, 0, 0, 0, 0, 0, 0, 0, 0, 0
 Exp: 		200
-Mounted: 	0
-Flying: 	0
-Armored: 	0
-Promoted: 	0
 
 Raddy
 Class: 		Mercenary
@@ -575,10 +461,6 @@ love_pts: 	0, 0, 0, 0, 0
 love_grt: 	0, 0, 0, 0, 0
 wpn_exp: 	1, 0, 0, 0, 0, 0, 0, 0, 0, 0
 Exp: 		0
-Mounted: 	0
-Flying: 	0
-Armored: 	0
-Promoted: 	0
 
 Roger
 Class: 		Knight
@@ -595,10 +477,6 @@ love_pts: 	0, 0, 0, 0, 0
 love_grt: 	0, 0, 0, 0, 0
 wpn_exp: 	0, 1, 0, 0, 0, 0, 0, 0, 0, 0
 Exp: 		400
-Mounted: 	0
-Flying: 	0
-Armored: 	1
-Promoted: 	0
 
 George
 Class: 		Sniper
@@ -615,10 +493,6 @@ love_pts: 	0, 0, 0, 0, 0
 love_grt: 	0, 0, 0, 0, 0
 wpn_exp: 	0, 0, 0, 1, 0, 0, 0, 0, 0, 0
 Exp: 		0
-Mounted: 	0
-Flying: 	0
-Armored: 	0
-Promoted: 	1
 
 Maria
 Class: 		Priest
@@ -635,10 +509,6 @@ love_pts: 	0, 0, 0, 0, 0
 love_grt: 	0, 0, 0, 0, 0
 wpn_exp: 	0, 0, 0, 0, 0, 0, 0, 0, 0, 1
 Exp: 		200
-Mounted: 	0
-Flying: 	0
-Armored: 	0
-Promoted: 	0
 
 Minerva
 Class: 		Dragon Knight
@@ -655,10 +525,6 @@ love_pts: 	0, 0, 0, 0, 0
 love_grt: 	0, 0, 0, 0, 0
 wpn_exp: 	1, 1, 0, 0, 0, 0, 0, 0, 0, 0
 Exp: 		0
-Mounted: 	1
-Flying: 	1
-Armored: 	0
-Promoted: 	1
 
 Linda
 Class: 		Mage
@@ -675,10 +541,6 @@ love_pts: 	0, 0, 0, 0, 0
 love_grt: 	0, 0, 0, 0, 0
 wpn_exp: 	0, 0, 0, 0, 0, 0, 0, 0, 1, 0
 Exp: 		0
-Mounted: 	0
-Flying: 	0
-Armored: 	0
-Promoted: 	0
 
 Jake
 Class: 		Shooter
@@ -695,10 +557,6 @@ love_pts: 	0, 0, 0, 0, 0
 love_grt: 	0, 0, 0, 0, 0
 wpn_exp: 	0, 0, 0, 1, 0, 0, 0, 0, 0, 0
 Exp: 		0
-Mounted: 	0
-Flying: 	0
-Armored: 	1
-Promoted: 	0
 
 Midia
 Class: 		Paladin
@@ -715,10 +573,6 @@ love_pts: 	0, 0, 0, 0, 0
 love_grt: 	0, 0, 0, 0, 0
 wpn_exp: 	1, 1, 0, 0, 0, 0, 0, 0, 0, 0
 Exp: 		0
-Mounted: 	0
-Flying: 	0
-Armored: 	0
-Promoted: 	1
 
 Tomth
 Class: 		Knight
@@ -735,10 +589,6 @@ love_pts: 	0, 0, 0, 0, 0
 love_grt: 	0, 0, 0, 0, 0
 wpn_exp: 	0, 1, 0, 0, 0, 0, 0, 0, 0, 0
 Exp: 		300
-Mounted: 	0
-Flying: 	0
-Armored: 	1
-Promoted: 	0
 
 Mishelan
 Class: 		Armor Knight
@@ -755,10 +605,6 @@ love_pts: 	0, 0, 0, 0, 0
 love_grt: 	0, 0, 0, 0, 0
 wpn_exp: 	0, 1, 0, 0, 0, 0, 0, 0, 0, 0
 Exp: 		200
-Mounted: 	0
-Flying: 	0
-Armored: 	1
-Promoted: 	0
 
 Thomas
 Class: 		Archer
@@ -775,10 +621,6 @@ love_pts: 	0, 0, 0, 0, 0
 love_grt: 	0, 0, 0, 0, 0
 wpn_exp: 	0, 0, 0, 1, 0, 0, 0, 0, 0, 0
 Exp: 		700
-Mounted: 	0
-Flying: 	0
-Armored: 	0
-Promoted: 	0
 
 Boa
 Class: 		Bishop
@@ -795,10 +637,6 @@ love_pts: 	0, 0, 0, 0, 0
 love_grt: 	0, 0, 0, 0, 0
 wpn_exp: 	0, 0, 0, 0, 0, 0, 0, 0, 0, 1
 Exp: 		0
-Mounted: 	0
-Flying: 	0
-Armored: 	0
-Promoted: 	1
 
 Beck
 Class: 		Shooter
@@ -815,10 +653,6 @@ love_pts: 	0, 0, 0, 0, 0
 love_grt: 	0, 0, 0, 0, 0
 wpn_exp: 	0, 0, 0, 1, 0, 0, 0, 0, 0, 0
 Exp: 		0
-Mounted: 	0
-Flying: 	0
-Armored: 	1
-Promoted: 	0
 
 Astria
 Class: 		Hero
@@ -835,10 +669,6 @@ love_pts: 	0, 0, 0, 0, 0
 love_grt: 	0, 0, 0, 0, 0
 wpn_exp: 	1, 0, 1, 0, 0, 0, 0, 0, 0, 0
 Exp: 		0
-Mounted: 	0
-Flying: 	0
-Armored: 	0
-Promoted: 	1
 
 Paola
 Class: 		Pegasus Knight
@@ -855,10 +685,6 @@ love_pts: 	0, 0, 0, 0, 0
 love_grt: 	0, 0, 0, 0, 0
 wpn_exp: 	0, 1, 0, 0, 0, 0, 0, 0, 0, 0
 Exp: 		700
-Mounted: 	1
-Flying: 	1
-Armored: 	0
-Promoted: 	0
 
 Katua
 Class: 		Pegasus Knight
@@ -875,10 +701,6 @@ love_pts: 	0, 0, 0, 0, 0
 love_grt: 	0, 0, 0, 0, 0
 wpn_exp: 	1, 1, 0, 0, 0, 0, 0, 0, 0, 0
 Exp: 		200
-Mounted: 	1
-Flying: 	1
-Armored: 	0
-Promoted: 	0
 
 Alan
 Class: 		Paladin
@@ -895,10 +717,6 @@ love_pts: 	0, 0, 0, 0, 0
 love_grt: 	0, 0, 0, 0, 0
 wpn_exp: 	1, 1, 0, 0, 0, 0, 0, 0, 0, 0
 Exp: 		0
-Mounted: 	1
-Flying: 	0
-Armored: 	0
-Promoted: 	1
 
 Samson
 Class: 		Hero
@@ -915,10 +733,6 @@ love_pts: 	0, 0, 0, 0, 0
 love_grt: 	0, 0, 0, 0, 0
 wpn_exp: 	1, 0, 1, 0, 0, 0, 0, 0, 0, 0
 Exp: 		0
-Mounted: 	0
-Flying: 	0
-Armored: 	0
-Promoted: 	1
 
 Chainy
 Class: 		Commando
@@ -935,10 +749,6 @@ love_pts: 	0, 0, 0, 0, 0
 love_grt: 	0, 0, 0, 0, 0
 wpn_exp: 	1, 0, 0, 0, 0, 0, 0, 0, 0, 0
 Exp: 		0
-Mounted: 	0
-Flying: 	0
-Armored: 	0
-Promoted: 	1
 
 Est
 Class: 		Pegasus Knight
@@ -955,10 +765,6 @@ love_pts: 	0, 0, 0, 0, 0
 love_grt: 	0, 0, 0, 0, 0
 wpn_exp: 	0, 1, 0, 0, 0, 0, 0, 0, 0, 0
 Exp: 		400
-Mounted: 	1
-Flying: 	1
-Armored: 	0
-Promoted: 	1
 
 Tiki
 Class: 		Mamkute
@@ -975,10 +781,6 @@ love_pts: 	0, 0, 0, 0, 0
 love_grt: 	0, 0, 0, 0, 0
 wpn_exp: 	0, 0, 0, 0, 0, 0, 0, 0, 0, 0
 Exp: 		400
-Mounted: 	0
-Flying: 	0
-Armored: 	0
-Promoted: 	0
 
 Lawrence
 Class: 		General
@@ -995,10 +797,6 @@ love_pts: 	0, 0, 0, 0, 0
 love_grt: 	0, 0, 0, 0, 0
 wpn_exp: 	1, 1, 1, 0, 0, 0, 0, 0, 0, 0
 Exp: 		400
-Mounted: 	0
-Flying: 	0
-Armored: 	1
-Promoted: 	1
 
 Ellis
 Class: 		Priest
@@ -1015,10 +813,6 @@ love_pts: 	0, 0, 0, 0, 0
 love_grt: 	0, 0, 0, 0, 0
 wpn_exp: 	0, 0, 0, 0, 0, 0, 0, 0, 0, 1
 Exp: 		300
-Mounted: 	0
-Flying: 	0
-Armored: 	0
-Promoted: 	0
 
 Gato
 Class: 		Bishop
@@ -1035,7 +829,3 @@ love_pts: 	0, 0, 0, 0, 0
 love_grt: 	0, 0, 0, 0, 0
 wpn_exp: 	0, 0, 0, 0, 0, 0, 0, 0, 0, 1
 Exp: 		1700
-Mounted: 	0
-Flying: 	0
-Armored: 	0
-Promoted: 	1

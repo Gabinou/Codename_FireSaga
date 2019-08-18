@@ -133,12 +133,12 @@ void unit::write(std::string filename) {
             out << supports[i] << ", ";
         }
     };
-    out << "support_pts: \t";
-    for (int i = 0; i < sizeof(support_pts)/sizeof(support_pts[0]); i++) {
-        if (i == (sizeof(support_pts)/sizeof(support_pts[0])) - 1) {
-            out << (int) support_pts[i] << "\n";
+    out << "supp_pts: \t";
+    for (int i = 0; i < sizeof(supp_pts)/sizeof(supp_pts[0]); i++) {
+        if (i == (sizeof(supp_pts)/sizeof(supp_pts[0])) - 1) {
+            out << (int) supp_pts[i] << "\n";
         } else {
-            out << (int) support_pts[i] << ", ";
+            out << (int) supp_pts[i] << ", ";
         }
     };
     out << "love_grt: \t";
@@ -158,27 +158,27 @@ void unit::write(std::string filename) {
         }
     };
     out << "Exp: \t\t" << (int) exp << "\n";
-    out << "Mounted: \t" << mounted << "\n";
-    out << "Flying: \t"  << flying << "\n";
-    out << "Armored: \t" << armored << "\n";
-    out << "Promoted: \t" << promoted << "\n";
+    // out << "Mounted: \t" << mounted << "\n";
+    // out << "Flying: \t"  << flying << "\n";
+    // out << "Armored: \t" << armored << "\n";
+    // out << "Promoted: \t" << promoted << "\n";
     out << std::endl;
 }
 
 
-void unit::read(const char *filename, char skip) {
+void unit::read(const char *filename, short int skip) {
     // 2019/07/30: skip should be a multiple of *number of lines written to units.txt* which is 20.
     std::ifstream infile(filename);
     std::string line;
     std::vector<int> temp;
     std::string new_name;
     std::vector<std::string> tempstr;
-    // printf("BBBBBBBBBB");
+    printf("%d \n", skip);
     int j = 0;
-    while (j < skip + 20) {
+    while (j < skip + 16) {
         std::getline(infile, line);
-        // std::cout << line << endl;
         if (j>=skip) {
+            std::cout << j << line << endl;
             std::istringstream iss(line);
             // std::cout << line << endl;
             strncpy(name, line.c_str(), sizeof(line));
@@ -226,12 +226,12 @@ void unit::read(const char *filename, char skip) {
             std::getline(infile, line);
             temp = csv_from_line(line.substr(10, line.size()));
             for (int i = 0; i < temp.size(); i++) {
-                support_pts[i] = temp[i];
+                supp_pts[i] = temp[i];
             }
             std::getline(infile, line);
             temp = csv_from_line(line.substr(10, line.size()));
             for (int i = 0; i < temp.size(); i++) {
-                support_pts[i] = temp[i];
+                supp_pts[i] = temp[i];
             }
             std::getline(infile, line);
             temp = csv_from_line(line.substr(10, line.size()));
@@ -240,15 +240,7 @@ void unit::read(const char *filename, char skip) {
             }
             std::getline(infile, line);
             exp = csv_from_line(line.substr(7, line.size()))[0];
-            std::getline(infile, line);
-            mounted = csv_from_line(line.substr(9, line.size()))[0];            
-            std::getline(infile, line);
-            flying = csv_from_line(line.substr(9, line.size()))[0];            
-            std::getline(infile, line);
-            armored = csv_from_line(line.substr(9, line.size()))[0];            
-            std::getline(infile, line);
-            promoted = csv_from_line(line.substr(9, line.size()))[0];
-            j+=20;
+            j+=16;
         }
         j++;
     }
@@ -256,14 +248,13 @@ void unit::read(const char *filename, char skip) {
 
 unit::unit(std::string in_name, std::string in_unit_class, char in_id, 
            std::vector<unsigned int> in_stats_base, std::vector<unsigned int> in_growths, std::vector<unsigned int> in_skills,
-           std::vector<unsigned int> in_support_pts, std::vector<unsigned int> in_support_growths,
+           std::vector<unsigned int> in_supp_pts, std::vector<unsigned int> in_support_growths,
            std::vector<unsigned int> in_wpn_exp, std::vector<unsigned int> in_position,
            std::vector<int> in_equipped, 
            std::vector<inventory_item> in_equipment,
            std::vector<inventory_item> in_weapons, 
            std::vector<inventory_item> in_items,
-           unsigned short in_exp, std::vector<std::string> in_supports,
-           bool in_mounted, bool in_flying, bool in_armored, bool in_promoted) {
+           unsigned short in_exp, std::vector<std::string> in_supports) {
 
     exp = in_exp;
     for (int i = 0; i < 7 ; i++) {
@@ -307,7 +298,7 @@ unit::unit(std::string in_name, std::string in_unit_class, char in_id,
     for (int i = 0; i < in_supports.size(); i++) {
         strncpy(supports[i], in_supports[i].c_str(), sizeof(in_supports[i]));
         support_growths[i] = (unsigned int) in_support_growths[i];
-        support_pts[i] = (unsigned int) in_support_pts[i];
+        supp_pts[i] = (unsigned int) in_supp_pts[i];
         wpn_exp[i] = (unsigned int) in_wpn_exp[i];
     }    
     id = in_id;
@@ -316,10 +307,6 @@ unit::unit(std::string in_name, std::string in_unit_class, char in_id,
     } catch (std::string msg) { 
         equipped[0] = -1;
     }
-    mounted = in_mounted;
-    flying = in_flying;
-    armored = in_armored;
-    promoted = in_promoted;
 }
 
 unit::unit(){

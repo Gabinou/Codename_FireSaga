@@ -69,7 +69,7 @@ void weapon::write(std::string filename) {
     out.close();
 }
 
-void weapon::read(const char *filename, char skip) {
+void weapon::read(const char *filename, short int skip) {
     // 2019/07/30: skip should be a multiple of *number of lines written to weapon.txt* which is 10.
     // This is c-style.
     FILE *f = fopen(filename, "r");

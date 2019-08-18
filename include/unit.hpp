@@ -25,7 +25,7 @@ public:
     // for seom reason, stats array of len<19 cause cygwin_exception
     unsigned char stats[19], stats_base[11],
     growths[11], wpn_exp[10], position[3], skills[3],
-    support_pts[5], support_growths[5],
+    supp_pts[5], support_growths[5],
     attack_probs[4], combat_probs[2];
     /// \var unsigned char attack_probs[4]
     /// \brief Probabilities associated with attacking, computed when alone.
@@ -43,7 +43,7 @@ public:
     /// \brief Skill names that unit possesses.    
     /// \var unsigned char wpn_exp
     /// \brief Wpn experience possessed by the unit. If a wpn_exp is equal to 0, unit cannot equip associated weapon type.    
-    /// \var unsigned char support_pts
+    /// \var unsigned char supp_pts
     /// \brief current love points. Refer to ...
     /// \var equipped
     /// \brief Equipped weapon. Index of of weapon in equipment vector or weapon vector. Is a vector in case not only weapon can be equipped. In such case equipped[0] would be the weapon, and equipped[1] an item, etc.
@@ -74,19 +74,6 @@ public:
     
     // idea for supports and support bonuses: use name as key to stats bonus. Check how heavy this is, compare with separate. Rejected. This is too heavy. Also, for design purposes, I think the FE solution for supports seems good: have a table of elements supports and refer to this table to provide supports. To be as light as possible, make everything as basic and separate as possible.
     
-    
-    bool mounted, flying, armored, promoted, dragon;
-    
-    /// \var bool mounted
-    /// \brief. 1/0 mounted. For effective weapons
-    /// \var bool flying
-    /// \brief. 1/0 flying. For effective weapons and movement    
-    /// \var bool armored
-    /// \brief. 1/0 unit amored. For effective weapons
-    /// \var bool promoted
-    /// \brief. 1/0 unit promoted. For exp on enemy kill.
-    /// \var bool promoted
-    /// \brief. 1/0 unit is a dragon (or is mounted on one). For effective weapons.
     /// \fn w  unit(std::string, std::string, char,         std::vector<unsigned int>, std::vector<unsigned int>,       std::vector<unsigned int>, std::vector<unsigned int>, std::vector<unsigned int>, std::vector<unsigned int>,      std::vector<unsigned int>, std::vector<unsigned int>, std::vector<inventory_item>, std::vector<inventory_item>, std::vector<inventory_item>, unsigned short, std::vector<std::string>, bool, bool, bool, bool)
     /// \brief constructor for unit.
     unit(std::string, std::string, char,
@@ -96,8 +83,7 @@ public:
         std::vector<unsigned int>, std::vector<int>,
         std::vector<inventory_item>,
         std::vector<inventory_item>, std::vector<inventory_item>, 
-        unsigned short, std::vector<std::string>,
-        bool, bool, bool, bool);
+        unsigned short, std::vector<std::string>);
     /*! \fn unsigned char combat_damage(onst unit& enemy, bool critical)
     *  \brief Computes unit's damage during combat for a single attack, taking the critical into account.
     */
@@ -160,7 +146,7 @@ public:
     const char* get_equipped() const;
     /// \fn read
     /// \brief read txt file, with format of write function.
-    void read(const char*, char);
+    void read(const char*, short int);
     /*! \fn retaliation(const unit& enemy)
     *  \brief When unit gets attacked in combat, does he attacks back? 1/0. Mainly a check for range.
     */  
@@ -239,12 +225,12 @@ public:
                 out << in_unit.supports[i] << ", ";
             }
         };
-        out << "support_pts: \t";
-        for (int i = 0; i < sizeof(in_unit.support_pts)/sizeof(in_unit.support_pts[0]); i++) {
-            if (i == (sizeof(in_unit.support_pts)/sizeof(in_unit.support_pts[0])) - 1) {
-                out << (int) in_unit.support_pts[i] << "\n";
+        out << "supp_pts: \t";
+        for (int i = 0; i < sizeof(in_unit.supp_pts)/sizeof(in_unit.supp_pts[0]); i++) {
+            if (i == (sizeof(in_unit.supp_pts)/sizeof(in_unit.supp_pts[0])) - 1) {
+                out << (int) in_unit.supp_pts[i] << "\n";
             } else {
-                out << (int) in_unit.support_pts[i] << ", ";
+                out << (int) in_unit.supp_pts[i] << ", ";
             }
         };
         out << "love_grt: \t";
@@ -264,10 +250,6 @@ public:
             }
         };
         out << "Exp: \t\t" << (int) in_unit.exp << "\n";
-        out << "Mounted: \t" << in_unit.mounted << "\n";
-        out << "Flying: \t"  << in_unit.flying << "\n";
-        out << "Armored: \t" << in_unit.armored << "\n";
-        out << "Promoted: \t" << in_unit.promoted << "\n";
         out << std::endl;
         return(out);
     }

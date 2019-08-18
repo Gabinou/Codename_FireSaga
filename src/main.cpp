@@ -332,15 +332,18 @@ void read_all_units(const char *filename) {
     std::ifstream inFile(filename); 
     short int line_num = std::count(std::istreambuf_iterator<char>(inFile), 
              std::istreambuf_iterator<char>(), '\n') + 1;
-    for (int i = 0 ; i < line_num; i+=20) {
+    std::cout << line_num << endl;
+    for (int i = 0 ; i < line_num; i+=16) {
         line = "";
         try {
             line = read_line(filename, i);
+            // std::cout << i << line << endl;
         } catch (const char* msg) {
             break;
         }
         if (!line.empty() && line != "") {
-            // std::cout << line.c_str() << endl;
+            // std::cout << i << line.c_str() << endl;
+
             // std::cout << i << endl;
             all_units[line.c_str()] = unit();
             all_units[line.c_str()].read(filename, i);
@@ -410,7 +413,8 @@ main() {
     wpn_indexes["STF"] = 9;
     wpn_indexes["Stf"] = 9;
     read_all_weapons("weapons.txt");
-    // read_all_units("units.txt");
+    read_all_units("units_FE1.txt");
+    write_all_units("units_test.txt");
     // inventory_item("Rapier", 10);
     // printf("%d \f", inventory_items["Rapier_0000"]);
     // write_all_weapons("weapons2.txt");
@@ -422,8 +426,10 @@ main() {
     // // all_unit_classes["Lord"] = unit_class();
     // // unit_class();
     // // all_unit_classes["Lord"].write("classes.txt");
-    read_all_unit_classes("classes_FE1.txt");
-    write_all_unit_classes("classes.txt");
+    
+    
+    // read_all_unit_classes("classes_FE1.txt");
+    // write_all_unit_classes("classes.txt");
     
     //// TEST FOR SIZE OF DATA.
     // std::unordered_map<string, std::vector<char>> testsupport({ {"Marth", {1,1,1,1,1,1,1,1,1,1,1}} });
