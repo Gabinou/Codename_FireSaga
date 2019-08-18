@@ -28,13 +28,13 @@ public:
     // Pros: Human readable.
     // Cons: Slower, heavier.
     
-    unit_class(bool, bool, bool, bool, bool);
+    unit_class(std::string, bool, bool, bool, bool, bool);
     ~unit_class();
     unit_class();
     void read(const char*, char);
     /// \fn read
     /// \brief read txt file, with format of write function.
-    void read(const char*, char);
+    void write(string);
 };
 
 /*! \var all_unit_classes

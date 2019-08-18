@@ -9,9 +9,8 @@ using namespace std;
 #include "generic.hpp"
 #include "weapon.hpp"
 #include "unit.hpp"
+#include "unit_class.hpp"
 #include "inventory_item.hpp"
-
-
 
 // Skill idea: divine shield! Bubble!
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
@@ -202,6 +201,8 @@ std::unordered_map<string, weapon> all_weapons;
 // std::unordered_map<string, struct inventory_item> inventory_items;
 std::unordered_map<string, unit> all_units;
 
+std::unordered_map<string, unit_class> all_unit_classes;
+
 /// \fn void write_all_units(const char *filename, char const *savestyle)
 /// \brief Write all_units stats to file.
 // write_all_units must be implemented here.
@@ -327,16 +328,25 @@ main() {
     // printf("%d \f", inventory_items["Rapier_0000"]);
     // write_all_weapons("weapons2.txt");
     
-    std::unordered_map<string, std::vector<char>> testsupport({ {"Marth", {1,1,1,1,1,1,1,1,1,1,1}} });
-    string a = "Marth";
-    std::vector<char> b = {1,1,1,1,1,1,1,1,1,1,1};
-    char c[11] = {1,1,1,1,1,1,1,1,1,1,1};
-    char d[14] = "Marth";
-    printf("%d \n", sizeof(a));
-    printf("%d \n", sizeof(b));
-    printf("%d \n", sizeof(c));
-    printf("%d \n", sizeof(d));
-    printf("%d \n", sizeof(testsupport));
+    all_unit_classes["Lord"] = unit_class("Lord", 0,0,0,0,0);
+    // all_unit_classes["Lord"] = unit_class();
+    // unit_class();
+    
+    
+    //// TEST FOR SIZE OF DATA.
+    // std::unordered_map<string, std::vector<char>> testsupport({ {"Marth", {1,1,1,1,1,1,1,1,1,1,1}} });
+    // string a = "Marth";
+    // std::vector<char> b = {1,1,1,1,1,1,1,1,1,1,1};
+    // char c[11] = {1,1,1,1,1,1,1,1,1,1,1};
+    // char d[14] = "Marth";
+    // printf("%d \n", sizeof(a));
+    // printf("%d \n", sizeof(b));
+    // printf("%d \n", sizeof(c));
+    // printf("%d \n", sizeof(d));
+    // printf("%d \n", sizeof(testsupport));
+    
+    
+    
     // all_weapons["Rapier"] = weapon("Rapier", "swd", id++, 600,
             // // dmg  hit  crt wght uses  exp
               // {5,  90,  10,   7,  30,   2},

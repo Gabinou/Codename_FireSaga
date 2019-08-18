@@ -5,7 +5,7 @@ SRC = src
 BLD = build
 INCLUDE = -I include/ 
     
-all: clean create_dirs $(BLD)/generic.o $(BLD)/inventory_item.o $(BLD)/weapon.o $(BLD)/unit.o $(BLD)/main.o $(BLD)/main.exe
+all: clean create_dirs $(BLD)/generic.o $(BLD)/inventory_item.o $(BLD)/weapon.o $(BLD)/unit_class.o $(BLD)/unit.o $(BLD)/main.o $(BLD)/main.exe
 noclean: $(BLD)/weapon.o $(BLD)/main.o $(BLD)/unit.o $(BLD)/main.exe
 
 $(BLD)/inventory_item.o: $(SRC)/inventory_item.cpp
@@ -26,7 +26,7 @@ $(BLD)/unit.o: $(SRC)/unit.cpp
 $(BLD)/weapon.o: $(SRC)/weapon.cpp
 	$(CXX) -c $**  -o $@ $(INCLUDE)
     
-$(BLD)/main.exe: $(BLD)/main.o $(BLD)/unit.o $(BLD)/weapon.o $(BLD)/generic.o $(BLD)/inventory_item.o  include/shared.hpp
+$(BLD)/main.exe: $(BLD)/main.o $(BLD)/unit.o $(BLD)/weapon.o $(BLD)/generic.o $(BLD)/inventory_item.o  $(BLD)/unit_class.o  include/shared.hpp
 	$(CXX) $** -o $@ $(INCLUDE)
     
 clean:
