@@ -28,7 +28,7 @@ public:
     // Pros: Human readable.
     // Cons: Slower, heavier.
     
-    unsigned char stats_max[11];
+    unsigned char stats_caps[11];
     
     unit_class(std::string, bool, bool, bool, bool, bool, std::vector<unsigned int>);
     ~unit_class();

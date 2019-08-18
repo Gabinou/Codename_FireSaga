@@ -27,15 +27,15 @@ void unit_class::read(const char *filename, char skip) {
 
 }
 
-unit_class::unit_class(std::string in_name, bool in_mounted, bool in_flying, bool in_armored, bool in_promoted, bool in_dragon, std::vector<unsigned int> in_stats_max) { 
+unit_class::unit_class(std::string in_name, bool in_mounted, bool in_flying, bool in_armored, bool in_promoted, bool in_dragon, std::vector<unsigned int> in_stats_caps) { 
     strncpy(name, in_name.c_str(), sizeof(in_name));
     mounted = in_mounted;
     flying = in_flying;
     armored = in_armored;
     promoted = in_promoted;
     dragon = in_dragon;
-    for (int i = 0; i < in_stats_max.size(); i++) {
-        stats_max[i] = (unsigned int) in_stats_max[i]; 
+    for (int i = 0; i < in_stats_caps.size(); i++) {
+        stats_caps[i] = (unsigned int) in_stats_caps[i]; 
     }
 }
 
