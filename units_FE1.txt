@@ -852,47 +852,46 @@ Lovers: 	, , , ,
 love_pts: 	0, 0, 0, 0, 0
 love_grt: 	0, 0, 0, 0, 0
 wpn_exp: 	0, 1, 0, 0, 0, 0, 0, 0, 0, 0
-Exp: 		0
+Exp: 		700
 Mounted: 	1
 Flying: 	1
 Armored: 	0
 Promoted: 	0
-{"HP", "Str", "Mag", "Skill", "Speed", "Luck", "Def", "Res", "Con", "Move", "WpnLvl"};
-{"swd", "lance", "axe", "bow", "mgc_wind", "mgc_fire", "mgc_thunder",  "mgc_dark",  "mgc_light", "staff"};
+
 Katua
 Class: 		Pegasus Knight
-Bases: 		25, 7, 0, 8, 14, 0, 9, 0, 0, 8, 12
-Stats: 		20, 7, 10, 10, 8, 1, 9, 0, 10
+Bases: 		19, 5, 0, 6, 12, 0, 7, 0, 0, 8, 10
+Stats: 		19, 5, 0, 6, 12, 0, 7, 0, 0, 8, 10
 Growths: 	40, 25, 20, 40, 70, 80, 20, 20, 0, 0
 Equipped: 	-1
-Equipment: 	Iron Lance, Javelin, , , , , , 
-Used(eq): 	10, 10, -1, -1, -1, -1, -1, -1
+Equipment: 	Killing Edge, 0, , , , , , 
+Used(eq): 	10, -1, -1, -1, -1, -1, -1, -1
 Weapons: 	, , , , 
 Items: 		, , , , 
-Lovers: 	Marth, , , , 
+Lovers: 	, , , , 
 love_pts: 	0, 0, 0, 0, 0
 love_grt: 	0, 0, 0, 0, 0
-wpn_exp: 	0, 1, 0, 0, 0, 0, 0, 0, 0, 0
-Exp: 		0
+wpn_exp: 	1, 1, 0, 0, 0, 0, 0, 0, 0, 0
+Exp: 		200
 Mounted: 	1
-Flying: 	0
+Flying: 	1
 Armored: 	0
-Promoted: 	1
+Promoted: 	0
 
 Alan
-Class: 		Cavalier
-Bases: 		20, 7, 10, 10, 8, 1, 9, 0, 10
-Stats: 		20, 7, 10, 10, 8, 1, 9, 0, 10
+Class: 		Paladin
+Bases: 		24, 8, 0, 8, 11, 4, 10, 0, 0, 10, 10
+Stats: 		24, 8, 0, 8, 11, 4, 10, 0, 0, 10, 10
 Growths: 	40, 25, 20, 40, 70, 80, 20, 20, 0, 0
-Equipped: 	-1
-Equipment: 	Iron Lance, Javelin, , , , , , 
-Used(eq): 	10, 10, -1, -1, -1, -1, -1, -1
+Equipped: 	0
+Equipment: 	Knight Killer, Silver Sword, , , , , , 
+Used(eq): 	0, 0, -1, -1, -1, -1, -1, -1
 Weapons: 	, , , , 
 Items: 		, , , , 
-Lovers: 	Marth, , , , 
+Lovers: 	, , , , 
 love_pts: 	0, 0, 0, 0, 0
 love_grt: 	0, 0, 0, 0, 0
-wpn_exp: 	0, 1, 0, 0, 0, 0, 0, 0, 0, 0
+wpn_exp: 	1, 1, 0, 0, 0, 0, 0, 0, 0, 0
 Exp: 		0
 Mounted: 	1
 Flying: 	0
@@ -900,28 +899,29 @@ Armored: 	0
 Promoted: 	1
 
 Samson
-Class: 		Cavalier
-Bases: 		20, 7, 10, 10, 8, 1, 9, 0, 10
-Stats: 		20, 7, 10, 10, 8, 1, 9, 0, 10
+Class: 		Hero
+Bases: 		24, 10, 0, 14, 15, 7, 9, 0, 0, 7, 10
+Stats: 		24, 10, 0, 14, 15, 7, 9, 0, 0, 7, 10
 Growths: 	40, 25, 20, 40, 70, 80, 20, 20, 0, 0
-Equipped: 	-1
-Equipment: 	Iron Lance, Javelin, , , , , , 
-Used(eq): 	10, 10, -1, -1, -1, -1, -1, -1
+Equipped: 	0
+Equipment: 	Silver Sword, Vulnerary, , , , , , 
+Used(eq): 	0, 0, -1, -1, -1, -1, -1, -1
 Weapons: 	, , , , 
 Items: 		, , , , 
-Lovers: 	Marth, , , , 
+Lovers: 	, , , , 
 love_pts: 	0, 0, 0, 0, 0
 love_grt: 	0, 0, 0, 0, 0
-wpn_exp: 	0, 1, 0, 0, 0, 0, 0, 0, 0, 0
+wpn_exp: 	1, 0, 1, 0, 0, 0, 0, 0, 0, 0
 Exp: 		0
-Mounted: 	1
+Mounted: 	0
 Flying: 	0
 Armored: 	0
 Promoted: 	1
-
+{"HP", "Str", "Mag", "Skill", "Speed", "Luck", "Def", "Res", "Con", "Move", "WpnLvl"};
+{"swd", "lance", "axe", "bow", "mgc_wind", "mgc_fire", "mgc_thunder",  "mgc_dark",  "mgc_light", "staff"};
 Chainy
-Class: 		Cavalier
-Bases: 		20, 7, 10, 10, 8, 1, 9, 0, 10
+Class: 		Commandoi
+Bases: 		24, 10, 0, 14, 15, 7, 9, 0, 0, 7, 10
 Stats: 		20, 7, 10, 10, 8, 1, 9, 0, 10
 Growths: 	40, 25, 20, 40, 70, 80, 20, 20, 0, 0
 Equipped: 	-1
