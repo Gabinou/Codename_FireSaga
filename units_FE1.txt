@@ -817,7 +817,7 @@ Exp: 		300
 Gato
 Class: 		Bishop
 Bases: 		38, 10, 0, 20, 20, 16, 15, 7, 0, 6, 20
-Stats: 		20, 7, 10, 10, 8, 1, 9, 0, 10
+Stats: 		38, 10, 0, 20, 20, 16, 15, 7, 0, 6, 20
 Growths: 	40, 25, 20, 40, 70, 80, 20, 20, 0, 0
 Equipped: 	-1
 Equipment: 	Iron Lance, Javelin, , , , , , 
