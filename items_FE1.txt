@@ -3,141 +3,165 @@ Uses:		1
 Cost:		500
 Effect:		Unlock
 Object:		Door
+Value:		0
 
 Bridge Key
 Uses:		1
 Cost:		900
 Effect:		Unlock
 Object:		Bridge
+Value:		0
 
 Lockpick
 Uses:		16
 Cost:		2550
 Effect:		Unlock
 Object:		Bridge, Door
+Value:		0
 
 Vulnerary
 Uses:		5
 Cost:		600
 Effect:		Heal
 Object:		This
+Value:		10
 
 Pure Water
 Uses:		5
 Cost:		1450
 Effect:		TemporaryRes
 Object:		This
+Value:		7
 
 Silver Card
 Uses:		0
 Cost:		0
-Effect:		HalfPrice
+Effect:		PriceReduce
 Object:		This
+Value:		0.5
 
 Member Card
 Uses:		0
 Cost:		0
 Effect:		SecretShop
 Object:		This
+Value:		0
 
 Earth Orb
 Uses:		3
 Cost:		0
-Effect:		DamageAll
+Effect:		Damage
 Object:		AllEnemies
+Value:		10
 
 Star Orb
 Uses:		0
 Cost:		0
 Effect:		WpnNoBreak
 Object:		This
+Value:		0
 
 Light Orb
 Uses:		0
 Cost:		0
 Effect:		NoTerrainBonus
 Object:		Enemy
+Value:		0
 
 Dragon Whip
 Uses:		1
 Cost:		2000
 Effect:		Promote
 Object:		Pegasus Knight
+Value:		0
 
 Orion Bolt
 Uses:		1
 Cost:		2000
 Effect:		Promote
 Object:		Archer
+Value:		0
 
 Bishop Ring
 Uses:		1
 Cost:		2000
 Effect:		Promote
 Object:		Mage, Priest
+Value:		0
 
 Hero Proof
 Uses:		1
 Cost:		2000
 Effect:		Promote
 Object:		Mercenary
+Value:		0
 
 Knight Crest
 Uses:		1
 Cost:		2000
 Effect:		Promote
 Object:		Cavalier
+Value:		0
 
 Power Ring
 Uses:		1
 Cost:		2250
-Bonus:		4 
-Stat:		Str
+Effect:		StrengthPlus
+Object:		This
+Value:		4
 
 Secret Book
 Uses:		1
 Cost:		2250
-Bonus:		5 
-Stat:		Skill
+Effect:		SkillPlus
+Object:		This
+Value:		5
 
 Speed Ring
 Uses:		1
 Cost:		2250
-Bonus:		6 
-Stat:		Speed
+Effect:		SpeedPlus
+Object:		This
+Value:		6
 
 Goddess Icon
 Uses:		1
 Cost:		2250
-Bonus:		7 
-Stat:		Luck
+Effect:		LuckPlus
+Object:		This
+Value:		7
 
 Dragonshield
 Uses:		1
-Cost:		2250
-Bonus:		3 
-Stat:		Def
+Cost:		2250 
+Effect:		DefencePlus
+Object:		This
+Value:		3
 
 Talisman
 Uses:		1
 Cost:		2250
-Bonus:		7 
-Stat:		Res
+Effect:		ResistancePlus
+Object:		This
+Value:		7
 
 Angelic Robe
 Uses:		1
 Cost:		2250
-Bonus:		9 
-Stat:		HP
+Effect:		HPPlus
+Object:		This
+Value:		9
 
 Manual
 Uses:		1
 Cost:		0
-Bonus:		5
-Stat:		WpnLvl
+Effect:		WpnLvlPlus
+Object:		This
+Value:		5
 
 Boots
 Uses:		1
 Cost:		2250
-Bonus:		4
-Stat:		Movement
+Effect:		MovementPlus
+Object:		This
+Value:		4
