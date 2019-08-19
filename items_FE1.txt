@@ -1,0 +1,143 @@
+Door Key
+Uses:		1
+Cost:		500
+Effect:		Unlock
+Object:		Door
+
+Bridge Key
+Uses:		1
+Cost:		900
+Effect:		Unlock
+Object:		Bridge
+
+Lockpick
+Uses:		16
+Cost:		2550
+Effect:		Unlock
+Object:		Bridge, Door
+
+Vulnerary
+Uses:		5
+Cost:		600
+Effect:		Heal
+Object:		This
+
+Pure Water
+Uses:		5
+Cost:		1450
+Effect:		TemporaryRes
+Object:		This
+
+Silver Card
+Uses:		0
+Cost:		0
+Effect:		HalfPrice
+Object:		This
+
+Member Card
+Uses:		0
+Cost:		0
+Effect:		SecretShop
+Object:		This
+
+Earth Orb
+Uses:		3
+Cost:		0
+Effect:		DamageAll
+Object:		AllEnemies
+
+Star Orb
+Uses:		0
+Cost:		0
+Effect:		WpnNoBreak
+Object:		This
+
+Light Orb
+Uses:		0
+Cost:		0
+Effect:		NoTerrainBonus
+Object:		Enemy
+
+Dragon Whip
+Uses:		1
+Cost:		2000
+Effect:		Promote
+Object:		Pegasus Knight
+
+Orion Bolt
+Uses:		1
+Cost:		2000
+Effect:		Promote
+Object:		Archer
+
+Bishop Ring
+Uses:		1
+Cost:		2000
+Effect:		Promote
+Object:		Mage, Priest
+
+Hero Proof
+Uses:		1
+Cost:		2000
+Effect:		Promote
+Object:		Mercenary
+
+Knight Crest
+Uses:		1
+Cost:		2000
+Effect:		Promote
+Object:		Cavalier
+
+Power Ring
+Uses:		1
+Cost:		2250
+Bonus:		4 
+Stat:		Str
+
+Secret Book
+Uses:		1
+Cost:		2250
+Bonus:		5 
+Stat:		Skill
+
+Speed Ring
+Uses:		1
+Cost:		2250
+Bonus:		6 
+Stat:		Speed
+
+Goddess Icon
+Uses:		1
+Cost:		2250
+Bonus:		7 
+Stat:		Luck
+
+Dragonshield
+Uses:		1
+Cost:		2250
+Bonus:		3 
+Stat:		Def
+
+Talisman
+Uses:		1
+Cost:		2250
+Bonus:		7 
+Stat:		Res
+
+Angelic Robe
+Uses:		1
+Cost:		2250
+Bonus:		9 
+Stat:		HP
+
+Manual
+Uses:		1
+Cost:		0
+Bonus:		5
+Stat:		WpnLvl
+
+Boots
+Uses:		1
+Cost:		2250
+Bonus:		4
+Stat:		Movement
