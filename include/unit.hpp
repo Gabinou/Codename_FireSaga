@@ -186,13 +186,15 @@ public:
                 out << (int) in_unit.stats_base[i] << ", ";
             }
         };
-        out << "Stats: \t\t" // must stay like this cause of busted stats variable that needs more space to not crash.
-        << (int) in_unit.stats[0] << ", " << (int) in_unit.stats[1] << ", " 
-        << (int) in_unit.stats[2] << ", " << (int) in_unit.stats[3] << ", " 
-        << (int) in_unit.stats[4] << ", " << (int) in_unit.stats[5] << ", " 
-        << (int) in_unit.stats[6] << ", " << (int) in_unit.stats[7] << ", " 
-        << (int) in_unit.stats[8] << ", " << (int) in_unit.stats[9] << "\n"
-        << "Growths: \t";
+        out << "Stats: \t\t";
+        for (int i = 0; i < sizeof(in_unit.stats_base)/sizeof(in_unit.stats_base[0]); i++) {
+            if (i == (sizeof(in_unit.stats_base)/sizeof(in_unit.stats_base[0])) - 1) {
+                out << (int) in_unit.stats[i] << "\n";
+            } else {
+                out << (int) in_unit.stats[i] << ", ";
+            }
+        };
+        out << "Growths: \t";
         for (int i = 0; i < sizeof(in_unit.growths)/sizeof(in_unit.growths[0]); i++) {
             if (i == (sizeof(in_unit.growths)/sizeof(in_unit.growths[0])) - 1) {
                 out << (int) in_unit.growths[i] << "\n";

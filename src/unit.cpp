@@ -95,14 +95,15 @@ void unit::write(std::string filename) {
             out << (int) stats_base[i] << ", ";
         }
     };
-    out << "Stats: \t\t" // must stay like this cause of busted stats variable that needs more space to not crash.
-    << (int) stats[0] << ", " << (int) stats[1] << ", " 
-    << (int) stats[2] << ", " << (int) stats[3] << ", " 
-    << (int) stats[4] << ", " << (int) stats[5] << ", " 
-    << (int) stats[6] << ", " << (int) stats[7] << ", " 
-    << (int) stats[8] << ", " << (int) stats[9] << "\n"
-    << (int) stats[10] << "\n"
-    << "Growths: \t";
+    out << "Stats: \t\t";
+    for (int i = 0; i < sizeof(stats_base)/sizeof(stats_base[0]); i++) {
+        if (i == (sizeof(stats_base)/sizeof(stats_base[0])) - 1) {
+            out << (int) stats[i] << "\n";
+        } else {
+            out << (int) stats[i] << ", ";
+        }
+    };
+    out << "Growths: \t";
     for (int i = 0; i < sizeof(growths)/sizeof(growths[0]); i++) {
         if (i == (sizeof(growths)/sizeof(growths[0])) - 1) {
             out << (int) growths[i] << "\n";
@@ -191,7 +192,8 @@ void unit::read(const char *filename, short int skip) {
             std::getline(infile, line);
             temp = csv_from_line(line.substr(9, line.size()));
             for (int i = 0; i < temp.size(); i++) {
-                stats[i] = temp[i];
+                stats[i] = (char) temp[i];
+                std::cout << temp[i] << "," <<  (int) stats[i] << endl;
             }
             std::getline(infile, line);
             temp = csv_from_line(line.substr(9, line.size()));
