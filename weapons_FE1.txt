@@ -565,14 +565,107 @@ Exclude:
 Live
 Type: 		Staff
 Wpn_Exp: 	0
-Stats: 		13, 100, 0, 5, 12, 9
+Stats: 		10, 100, 0, 0, 20, 1
 Bonus: 		0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
-Cost: 	    0
+Cost: 	    780
 Dmg_type: 	0
-Range: 		1, 2
+Range: 		1
 Effective: 	
 Owners:		
 Exclude:	
 
-{"dmg", "hit", "crit", "weight", "uses", "lvl"};
-{"HP", "Str", "Mag", "Skill", "Speed", "Luck", "Def", "Res", "Con", "Move", "WpnLvl"};
+Relive
+Type: 		Staff
+Wpn_Exp: 	0
+Stats: 		20, 100, 0, 0, 16, 2
+Bonus: 		0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
+Cost: 	    1200
+Dmg_type: 	0
+Range: 		1
+Effective: 	
+Owners:		
+Exclude:	
+
+Recover
+Type: 		Staff
+Wpn_Exp: 	0
+Stats: 		100, 100, 0, 0, 13, 3
+Bonus: 		0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
+Cost: 	    1550
+Dmg_type: 	0
+Range: 		0
+Effective: 	
+Owners:		
+Exclude:	
+
+Reblow
+Type: 		Staff
+Wpn_Exp: 	0
+Stats: 		10, 100, 0, 0, 10, 7
+Bonus: 		0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
+Cost: 	    2450
+Dmg_type: 	0
+Range: 		0
+Effective: 	
+Owners:		
+Exclude:	
+
+Reserve
+Type: 		Staff
+Wpn_Exp: 	0
+Stats: 		10, 100, 0, 0, 12, 8
+Bonus: 		0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
+Cost: 	    0
+Dmg_type: 	0
+Range: 		0
+Effective: 	
+Owners:		
+Exclude:	
+
+Warp
+Type: 		Staff
+Wpn_Exp: 	0
+Stats: 		0, 0, 0, 0, 7, 6
+Bonus: 		0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
+Cost: 	    0
+Dmg_type: 	0
+Range: 		1
+Effective: 	
+Owners:		
+Exclude:	
+
+Magic Shield
+Type: 		Staff
+Wpn_Exp: 	0
+Stats: 		7, 0, 0, 0, 18, 8
+Bonus: 		0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
+Cost: 	    2500
+Dmg_type: 	0
+Range: 		1
+Effective: 	
+Owners:		
+Exclude:	
+
+Hammerne
+Type: 		Staff
+Wpn_Exp: 	0
+Stats: 		0, 0, 0, 0, 12, 6
+Bonus: 		0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
+Cost: 	    0
+Dmg_type: 	0
+Range: 		1
+Effective: 	
+Owners:		
+Exclude:	
+
+Ohm
+Type: 		Staff
+Wpn_Exp: 	0
+Stats: 		0, 0, 0, 0, 1, 1
+Bonus: 		0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
+Cost: 	    0
+Dmg_type: 	0
+Range: 		1
+Effective: 	
+Owners:		Ellis
+Exclude:	
