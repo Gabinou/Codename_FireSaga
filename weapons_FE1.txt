@@ -429,5 +429,150 @@ Range: 		1
 Effective: 	
 Owners:		
 Exclude:	
+
+Fire
+Type: 		Magic
+Wpn_Exp: 	0
+Stats: 		5, 100, 0, 0, 25, 1
+Bonus: 		0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
+Cost: 		300
+Dmg_type: 	0
+Range: 		1, 2
+Effective: 	
+Owners:		
+Exclude:	
+
+Thunder
+Type: 		Magic
+Wpn_Exp: 	0
+Stats: 		6, 90, 0, 1, 21, 2
+Bonus: 		0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
+Cost: 		460
+Dmg_type: 	0
+Range: 		1, 2
+Effective: 	
+Owners:		
+Exclude:	
+
+Blizzard
+Type: 		Magic
+Wpn_Exp: 	0
+Stats: 		7, 80, 5, 2, 23, 3
+Bonus: 		0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
+Cost: 		700
+Dmg_type: 	0
+Range: 		1, 2
+Effective: 	
+Owners:		
+Exclude:	
+
+Elfire
+Type: 		Magic
+Wpn_Exp: 	0
+Stats: 		9, 80, 0, 5, 18, 4
+Bonus: 		0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
+Cost: 	    1250
+Dmg_type: 	0
+Range: 		1, 2
+Effective: 	
+Owners:		
+Exclude:	
+
+Bolganone
+Type: 		Magic
+Wpn_Exp: 	0
+Stats: 		12, 70, 0, 6, 13, 5
+Bonus: 		0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
+Cost: 	    1600
+Dmg_type: 	0
+Range: 		1, 2
+Effective: 	
+Owners:		
+Exclude:	
+
+Thoron
+Type: 		Magic
+Wpn_Exp: 	0
+Stats: 		13, 100, 10, 3, 21, 6
+Bonus: 		0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
+Cost: 	    1950
+Dmg_type: 	0
+Range: 		1, 2
+Effective: 	
+Owners:		
+Exclude:	
+
+Worm
+Type: 		Magic
+Wpn_Exp: 	0
+Stats: 		16, 70, 0, 9, 25, 7
+Bonus: 		0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
+Cost: 	    2280
+Dmg_type: 	0
+Range: 		1, 2
+Effective: 	
+Owners:		
+Exclude:	
+
+Aura
+Type: 		Magic
+Wpn_Exp: 	0
+Stats: 		20, 90, 0, 7, 25, 0
+Bonus: 		0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
+Cost: 	    0
+Dmg_type: 	0
+Range: 		1, 2
+Effective: 	
+Owners:		Linda
+Exclude:	
+
+Excalibur
+Type: 		Magic
+Wpn_Exp: 	0
+Stats: 		13, 100, 20, 3, 33, 0
+Bonus: 		0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
+Cost: 	    0
+Dmg_type: 	0
+Range: 		1, 2
+Effective: 	
+Owners:		Marich
+Exclude:	
+
+Maph
+Type: 		Magic
+Wpn_Exp: 	0
+Stats: 		14, 70, 0, 9, 18, 0
+Bonus: 		0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
+Cost: 	    0
+Dmg_type: 	0
+Range: 		1, 2
+Effective: 	
+Owners:		Garnef
+Exclude:	
+
+Starlight
+Type: 		Magic
+Wpn_Exp: 	0
+Stats: 		13, 100, 0, 5, 12, 9
+Bonus: 		0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
+Cost: 	    0
+Dmg_type: 	0
+Range: 		1, 2
+Effective: 	
+Owners:		
+Exclude:	
+
+Live
+Type: 		Staff
+Wpn_Exp: 	0
+Stats: 		13, 100, 0, 5, 12, 9
+Bonus: 		0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
+Cost: 	    0
+Dmg_type: 	0
+Range: 		1, 2
+Effective: 	
+Owners:		
+Exclude:	
+
 {"dmg", "hit", "crit", "weight", "uses", "lvl"};
 {"HP", "Str", "Mag", "Skill", "Speed", "Luck", "Def", "Res", "Con", "Move", "WpnLvl"};
