@@ -7,8 +7,8 @@ Cost: 		320
 Dmg_type: 	0
 Range: 		1
 Effective: 	
-Owners:     
-Exclude:    
+Owners:		
+Exclude:	
 
 Steel Sword
 Type: 		Sword
@@ -19,8 +19,8 @@ Cost: 		500
 Dmg_type: 	0
 Range: 		1
 Effective: 	
-Owners:     
-Exclude:    
+Owners:		
+Exclude:	
 
 Silver Sword
 Type: 		Sword
@@ -31,8 +31,8 @@ Cost: 		2000
 Dmg_type: 	0
 Range: 		1
 Effective: 	
-Owners:     
-Exclude:    
+Owners:		
+Exclude:	
 
 Kill Sword
 Type: 		Sword
@@ -43,8 +43,8 @@ Cost: 		1250
 Dmg_type: 	0
 Range: 		1
 Effective: 	
-Owners:     
-Exclude:    
+Owners:		
+Exclude:	
 
 Thunder Sword
 Type: 		Sword
@@ -55,8 +55,8 @@ Cost: 		1600
 Dmg_type: 	0
 Range: 		1, 2
 Effective: 	
-Owners:     
-Exclude:    General
+Owners:		
+Exclude:	General
 
 Devil Sword
 Type: 		Sword
@@ -67,8 +67,8 @@ Cost: 		0
 Dmg_type: 	0
 Range: 		1
 Effective: 	
-Owners:     
-Exclude:   
+Owners:		
+Exclude:	
  
 Dragon Killer
 Type: 		Sword
@@ -79,8 +79,8 @@ Cost: 		0
 Dmg_type: 	0
 Range: 		1
 Effective: 	Dragon
-Owners:     
-Exclude:    
+Owners:		
+Exclude:	
 
 Armor Killer
 Type: 		Sword
@@ -91,8 +91,8 @@ Cost: 		760
 Dmg_type: 	0
 Range: 		1
 Effective: 	Armored
-Owners:     
-Exclude:    
+Owners:		
+Exclude:	
 
 Rapier
 Type: 		Sword
@@ -103,8 +103,8 @@ Cost: 		900
 Dmg_type: 	0
 Range: 		1
 Effective: 	Armored, Mounted
-Owners:     Marth
-Exclude:    
+Owners:		Marth
+Exclude:	
 
 Miracle
 Type: 		Sword
@@ -115,8 +115,8 @@ Cost: 		0
 Dmg_type: 	0
 Range: 		1
 Effective: 	
-Owners:     Marth
-Exclude:    
+Owners:		Marth
+Exclude:	
 
 Falchion
 Type: 		Sword
@@ -127,8 +127,8 @@ Cost: 		0
 Dmg_type: 	0
 Range: 		1
 Effective: 	Mediuth
-Owners:     Marth
-Exclude:    
+Owners:		Marth
+Exclude:	
 
 Iron Lance
 Type: 		Lance
@@ -139,8 +139,8 @@ Cost: 		450
 Dmg_type: 	0
 Range: 		1
 Effective: 	
-Owners:     
-Exclude:    
+Owners:		
+Exclude:	
 
 Silver Lance
 Type: 		Lance
@@ -151,8 +151,8 @@ Cost: 		1880
 Dmg_type: 	0
 Range: 		1
 Effective: 	Mounted
-Owners:     
-Exclude:    
+Owners:		
+Exclude:	
 
 Silver Lance
 Type: 		Lance
@@ -163,8 +163,8 @@ Cost: 		1880
 Dmg_type: 	0
 Range: 		1
 Effective: 	
-Owners:     
-Exclude:    
+Owners:		
+Exclude:	
 
 Knight Killer
 Type: 		Lance
@@ -175,8 +175,8 @@ Cost: 		820
 Dmg_type: 	0
 Range: 		1
 Effective: 	Mounted
-Owners:     
-Exclude:    
+Owners:		
+Exclude:	
 
 Javelin
 Type: 		Lance
@@ -187,8 +187,8 @@ Cost: 		820
 Dmg_type: 	0
 Range: 		1, 2
 Effective: 	
-Owners:     
-Exclude:    
+Owners:		
+Exclude:	
 
 Gradius
 Type: 		Lance
@@ -199,6 +199,126 @@ Cost: 		0
 Dmg_type: 	0
 Range: 		1
 Effective: 	
-Owners:     
-Exclude:    
+Owners:		
+Exclude:	
+
+Iron Axe
+Type: 		Axe
+Wpn_Exp: 	0
+Stats: 		7, 80, 0, 7, 43, 1
+Bonus: 		0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
+Cost: 		360
+Dmg_type: 	0
+Range: 		1
+Effective: 	
+Owners:		
+Exclude:	
+
+Steel Axe
+Type: 		Axe
+Wpn_Exp: 	0
+Stats: 		9, 70, 0, 9, 31, 2
+Bonus: 		0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
+Cost: 		550
+Dmg_type: 	0
+Range: 		1
+Effective: 	
+Owners:		
+Exclude:	
+
+Hammer
+Type: 		Axe
+Wpn_Exp: 	0
+Stats: 		6, 70, 0, 6, 40, 2
+Bonus: 		0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
+Cost: 		300
+Dmg_type: 	0
+Range: 		1
+Effective: 	Armored
+Owners:		
+Exclude:	
+
+Devil Axe
+Type: 		Axe
+Wpn_Exp: 	0
+Stats: 		20, 70, 0, 14, 9, 4
+Bonus: 		0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
+Cost: 		300
+Dmg_type: 	0
+Range: 		1
+Effective: 	
+Owners:		
+Exclude:	
+
+Hand Axe
+Type: 		Axe
+Wpn_Exp: 	0
+Stats: 		5, 60, 0, 9, 13, 3
+Bonus: 		0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
+Cost: 		450
+Dmg_type: 	0
+Range: 		1, 2
+Effective: 	
+Owners:		
+Exclude:	
+
+Iron Bow
+Type: 		Bow
+Wpn_Exp: 	0
+Stats: 		4, 90, 0, 1, 33, 1
+Bonus: 		0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
+Cost: 		400
+Dmg_type: 	0
+Range: 		2
+Effective: 	
+Owners:		
+Exclude:	
+
+Steel Bow
+Type: 		Bow
+Wpn_Exp: 	0
+Stats: 		7, 80, 0, 3, 28, 3
+Bonus: 		0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
+Cost: 		560
+Dmg_type: 	0
+Range: 		2
+Effective: 	
+Owners:		
+Exclude:
+	
+Silver Bow
+Type: 		Bow
+Wpn_Exp: 	0
+Stats: 		11, 80, 0, 6, 24, 7
+Bonus: 		0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
+Cost: 		2200
+Dmg_type: 	0
+Range: 		2
+Effective: 	
+Owners:		
+Exclude:
+
+Bowgun
+Type: 		Bow
+Wpn_Exp: 	0
+Stats: 		5, 100, 20, 2, 37, 2
+Bonus: 		0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
+Cost: 		950
+Dmg_type: 	0
+Range: 		2
+Effective: 	
+Owners:		
+Exclude:	
+
+Partia
+Type: 		Bow
+Wpn_Exp: 	0
+Stats: 		17, 100, 0, 3, 17, 13
+Bonus: 		0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
+Cost: 		0
+Dmg_type: 	0
+Range: 		2
+Effective: 	
+Owners:		
+Exclude:	
 {"dmg", "hit", "crit", "weight", "uses", "lvl"}; 
