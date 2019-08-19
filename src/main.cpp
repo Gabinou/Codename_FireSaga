@@ -158,7 +158,7 @@ char unit_stats[][14] = {"HP", "Str", "Mag", "Skill", "Speed", "Luck", "Def", "R
 *  - WpnLvl: Weapon level. Some games use this stat to check if characters can use weapons. <br>
 *  - Move: Distance, in squares, that a unit can move on the grid map. Refer to ... <br>
 */
-char weapon_stats[][14] = {"dmg", "hit", "crit", "weight", "wpn_exp", "uses", "range", "lvl"}; 
+char weapon_stats[][14] = {"dmg", "hit", "crit", "weight", "uses", "lvl"}; 
 /*! \var char weapon_stats
 * \brief Weapon Stats description: <br>
 *  - dmg: Damage. +1 dmg -> +1 attack_damage. Refer to... <br>
