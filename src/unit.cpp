@@ -84,6 +84,8 @@ void unit::death() {
 void unit::write(std::string filename) { 
     std::ofstream out(filename, std::ios_base::app);
     out << name << "\n";
+    // std::cout << name << endl;
+    // printf("%s \n", name);
     out << "Class: \t\t" << type << "\n";
     out << "Bases: \t\t";
     for (int i = 0; i < sizeof(stats_base)/sizeof(stats_base[0]); i++) {
@@ -178,9 +180,9 @@ void unit::read(const char *filename, short int skip) {
         std::getline(infile, line);
         if (j>=skip) {
             std::istringstream iss(line);
-            strncpy(name, line.c_str(), sizeof(line));
+            strncpy(name, line.c_str(), sizeof(name));
             std::getline(infile, line);
-            strncpy(type, line.substr(9, line.size()).c_str(), sizeof(line));
+            strncpy(type, line.substr(9, line.size()).c_str(), sizeof(type));
             std::getline(infile, line);
             temp = csv_from_line(line.substr(8, line.size()));
             for (int i = 0; i < temp.size(); i++) {
@@ -207,7 +209,7 @@ void unit::read(const char *filename, short int skip) {
             temp = csv_from_line(line.substr(10, line.size()));
             for (int i = 0; i < temp.size(); i++) {
                 equipment[i] = inventory_item(tempstr[i], temp[i]);
-                std::cout << tempstr[i] << endl;
+                // std::cout << tempstr[i] << endl;
             }
             std::getline(infile, line); //weapon line
             std::getline(infile, line); //items line

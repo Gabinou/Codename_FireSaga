@@ -225,7 +225,6 @@ void write_all_units(const char *filename, char const *savestyle = "cpp" ) {
     if (savestyle == "cpp") {
         std::ofstream out(filename);
         for (auto& it: all_units) {
-            printf("%s \n", it.second.name);
             out << it.second;
         }
         out.close();
