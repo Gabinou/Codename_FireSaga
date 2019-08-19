@@ -193,7 +193,7 @@ void unit::read(const char *filename, short int skip) {
             temp = csv_from_line(line.substr(9, line.size()));
             for (int i = 0; i < temp.size(); i++) {
                 stats[i] = (char) temp[i];
-                std::cout << temp[i] << "," <<  (int) stats[i] << endl;
+                // std::cout << temp[i] << "," <<  (int) stats[i] << endl;
             }
             std::getline(infile, line);
             temp = csv_from_line(line.substr(9, line.size()));
@@ -214,7 +214,15 @@ void unit::read(const char *filename, short int skip) {
                 // std::cout << tempstr[i] << endl;
             }
             std::getline(infile, line); //weapon line
+            tempstr = css_from_line(line.substr(9, line.size()));
+            for (int i = 0; i < tempstr.size(); i++) {
+                weapons[i] = inventory_item(tempstr[i], temp[i]);
+            }
             std::getline(infile, line); //items line
+            tempstr = css_from_line(line.substr(9, line.size()));
+            for (int i = 0; i < tempstr.size(); i++) {
+                items[i] = inventory_item(tempstr[i], temp[i]);
+            }
             std::getline(infile, line);
             tempstr = css_from_line(line.substr(9, line.size()));
             for (int i = 0; i < tempstr.size(); i++) {
