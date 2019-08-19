@@ -1,0 +1,132 @@
+Iron Sword
+Type: 		swd
+Wpn_Exp: 	0
+Stats: 		5, 100, 0, 2, 42, 2
+Bonus: 		0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
+Cost: 		320
+Dmg_type: 	0
+Range: 		1
+Effective: 	
+Owners:     
+Exclude:    
+
+Steel Sword
+Type: 		swd
+Wpn_Exp: 	0
+Stats: 		8, 80, 0, 4, 38, 2
+Bonus: 		0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
+Cost: 		500
+Dmg_type: 	0
+Range: 		1
+Effective: 	
+Owners:     
+Exclude:    
+
+Silver Sword
+Type: 		swd
+Wpn_Exp: 	0
+Stats: 		12, 100, 0, 3, 17, 9
+Bonus: 		0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
+Cost: 		2000
+Dmg_type: 	0
+Range: 		1
+Effective: 	
+Owners:     
+Exclude:    
+
+Kill Sword
+Type: 		swd
+Wpn_Exp: 	0
+Stats: 		8, 100, 20, 2, 22, 7
+Bonus: 		0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
+Cost: 		1250
+Dmg_type: 	0
+Range: 		1
+Effective: 	
+Owners:     
+Exclude:    
+
+Thunder Sword
+Type: 		swd
+Wpn_Exp: 	0
+Stats: 		7, 90, 0, 2, 20, 8
+Bonus: 		0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
+Cost: 		1600
+Dmg_type: 	0
+Range: 		1, 2
+Effective: 	
+Owners:     
+Exclude:    General
+
+Devil Sword
+Type: 		swd
+Wpn_Exp: 	0
+Stats: 		17, 100, 0, 5, 19, 1
+Bonus: 		0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
+Cost: 		0
+Dmg_type: 	0
+Range: 		1
+Effective: 	
+Owners:     
+Exclude:   
+ 
+Dragon Killer
+Type: 		swd
+Wpn_Exp: 	0
+Stats: 		6, 80, 0, 2, 16, 7
+Bonus: 		0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
+Cost: 		0
+Dmg_type: 	0
+Range: 		1
+Effective: 	Dragon
+Owners:     
+Exclude:    
+
+Armor Killer
+Type: 		swd
+Wpn_Exp: 	0
+Stats: 		5, 80, 0, 2, 22, 3
+Bonus: 		0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
+Cost: 		760
+Dmg_type: 	0
+Range: 		1
+Effective: 	Armored
+Owners:     
+Exclude:    
+
+Rapier
+Type: 		swd
+Wpn_Exp: 	0
+Stats: 		5, 100, 10, 1, 28, 0
+Bonus: 		0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
+Cost: 		900
+Dmg_type: 	0
+Range: 		1
+Effective: 	Armored, Mounted
+Owners:     Marth
+Exclude:    
+
+Miracle
+Type: 		swd
+Wpn_Exp: 	0
+Stats: 		18, 100, 10, 1, 24, 0
+Bonus: 		0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
+Cost: 		0
+Dmg_type: 	0
+Range: 		1
+Effective: 	
+Owners:     Marth
+Exclude:    
+
+Falchion
+Type: 		swd
+Wpn_Exp: 	0
+Stats: 		18, 100, 10, 1, 24, 0
+Bonus: 		0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
+Cost: 		0
+Dmg_type: 	0
+Range: 		1
+Effective: 	
+Owners:     Marth
+Exclude:    
+{"dmg", "hit", "crit", "weight", "uses", "lvl"}; 

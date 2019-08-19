@@ -39,6 +39,12 @@ public:
     /// \var char stats_bonus
     /// \brief Bonuses can be negative -> maluses
     unsigned short int cost;
+    std::vector<std::string> owners, exclude;
+    /// \var string owners
+    /// \brief Only people in owners list can use the weapon, unless empty. 
+    /// \var string exclude
+    /// \brief classes or units that cannot use the weapon.
+    
     /// \var unsigned short int cost
     /// \brief Cost of weapon in Gold.
     bool dmg_type; 
