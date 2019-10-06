@@ -80,6 +80,8 @@ extern std::unordered_map<string, int> wpn_indexes;
 //swd lnc axe bow wnd fir tnd drk lgt staff
 
 extern string read_line(const char *filename, char skip);
-
+extern void read_all_weapons(const char *filename);
+extern void read_all_units(const char *filename);
+extern void write_all_units(const char *filename, char const *savestyle = "cpp" );
 
 #endif /* SHARED_HPP */
