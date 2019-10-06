@@ -21,10 +21,11 @@ using namespace std;
 //Deterministic seed. *DESIGN QUESTION*: What about the RNG? My answer: do like other fire Emblems. Always Same RNG, it is the player actions that change it. Makes debugging repeatable. Nice and convenient.
 /// \fn mt
 /// \brief gets the next random number, using pre-defined Mersenne-Twister object applied to pre-defined uniform distribution.
-extern std::mt19937 mt; 
+extern std::mt19937 mt;
+
 /// \fn dist
 /// \brief gets the next random number, using pre-defined Mersenne-Twister object applied to pre-defined uniform distribution.
-extern std::uniform_int_distribution<char> dist; //*DESIGN QUESTION* What should be the minimum and maximum probabilities?
+extern std::uniform_int_distribution<char> dist; //*DESIGN ***DESIGN QUESTION*** What should be the minimum and maximum probabilities?
 
 /// \fn get_rand
 /// \brief gets the next random number, using pre-defined Mersenne-Twister object applied to pre-defined uniform distribution.
@@ -35,7 +36,7 @@ extern int get_rand();
 extern bool single_roll(int);
 
 /// \fn double_roll(int)
-/// \brief Check if event occurs using double RNG roll: if mean of 2 random numbers is lwer than probability of event, it occurs. Skews probabilities, but fits with humans biases.
+/// \brief Check if event occurs using double RNG roll: if mean of 2 random numbers is lower than probability of event, it occurs. Skews probabilities, but largely fits with humans biases.
 extern bool double_roll(int);
 
 extern char unit_attributes[][24];
@@ -81,7 +82,10 @@ extern std::unordered_map<string, int> wpn_indexes;
 
 extern string read_line(const char *filename, char skip);
 extern void read_all_weapons(const char *filename);
+extern void write_all_weapons(const char *filename, char const *savestyle = "cpp" );
 extern void read_all_units(const char *filename);
 extern void write_all_units(const char *filename, char const *savestyle = "cpp" );
+extern void write_all_unit_classes(const char *filename);
+extern void read_all_unit_classes(const char *filename="classes_FE1.txt");
 
 #endif /* SHARED_HPP */

@@ -149,7 +149,7 @@ void write_all_units(const char *filename, char const *savestyle) {
     }
 }
 
-void read_all_unit_classes(const char *filename="classes_FE1.txt") {
+void read_all_unit_classes(const char *filename) {
     std::string line;
     std::ifstream inFile(filename); 
     short int line_num = std::count(std::istreambuf_iterator<char>(inFile), 
@@ -177,7 +177,7 @@ void write_all_unit_classes(const char *filename) {
 }
 
 
-void write_all_weapons(const char *filename, char const *savestyle = "cpp" ) {
+void write_all_weapons(const char *filename, char const *savestyle) {
     std::remove(filename);
     if (savestyle == "cpp") {
         for (auto& it: all_weapons) { // Iterate over unordered_map
@@ -245,3 +245,86 @@ void read_all_units(const char *filename) {
     inFile.close();
     }
 }
+
+#ifndef DOXYGEN_SHOULD_SKIP_THIS
+std::mt19937 mt(1899);
+std::uniform_int_distribution<char> dist(0, 100); //*DESIGN QUESTION* What should be the minimum and maximum probabilities?
+#endif /* DOXYGEN_SHOULD_SKIP_THIS */
+
+unsigned char id = 0; //Number of objects. I think this is unecessary.
+
+char unit_stats[][14] = {"HP", "Str", "Mag", "Skill", "Speed", "Luck", "Def", "Res", "Con", "Move", "WpnLvl"};
+/*! \var char unit_stats
+* \brief Unit Statistics. <br> 
+*   List, in order: <br>
+*  - HP: Hit Points. Unit health. Unit dies (forever) if unit.current_hp goes down to zero. <br>
+*  - Str: Strength. +1 Str -> +1 attack_damage. Refer to ... <br>
+*  - Mag: Magic. +1 Mag -> +1 attack_damage. Refer to ... <br>
+*  - Skill: Higher skill means higher accuracy and avoid. Refer to ...  <br>
+*  - Speed: Higher speeds lead to double strikes. Refer to ...  <br>
+*  - Luck: Increases hit, avoid, decreases enemy crit chance, etc. <br>
+*  - Def: Defense: +1 Def -> -1 Received Damage from physical attacks <br>
+*  - Res: Magic Resistance. +1 Red -> -1 Received Damage from magic attacks. <br>
+*  - Con: Constitution. Only a unit with a higher constitution can rescue another. Also weapons with weight higher than unit constitution weighs the unit down. Refer to... <br>
+*  - WpnLvl: Weapon level. Some games use this stat to check if characters can use weapons. <br>
+*  - Move: Distance, in squares, that a unit can move on the grid map. Refer to ... <br>
+*/
+char weapon_stats[][14] = {"dmg", "hit", "crit", "weight", "uses", "lvl"}; 
+/*! \var char weapon_stats
+* \brief Weapon Stats description: <br>
+*  - dmg: Damage. +1 dmg -> +1 attack_damage. Refer to... <br>
+*  - hit: Hit chance. % probability value to hit. Refer to ... <br>
+*  - crit: Crit chance. % probability value to crit. Refer to...  <br>
+*  - wpn_exp: Weapon experience. Base weapon experience for using the weapon. Refer to...  <br>
+*  - uses: Number of uses a weapon has before breaking.  <br>
+*  - range: distance in squares to which a unit can attack_damage with weapon.  <br>
+*  - lvl: Weapon level. Integer representing the weapon experience/level necessary to use the weapon. Refer to ...  <br>
+*/
+// char wpn_types[][12]  = {"swd", "lance", "axe", "bow", "mgc_wind", "mgc_fire", "mgc_thunder",  "mgc_dark",  "mgc_light", "staff"};
+/// \var char wpn_types
+/// \brief Weapon types.
+unsigned char wpn_exp_lvls[][14] = {25, 60, 100, 150};
+/*! \var char wpn_exp_lvls
+* \brief Weapon Experience levels <br>
+*  Weapon Experience necessary to go up a weapon level. <br>
+*/
+char statuses[][14] = {"healthy", "sleep", "poison", "stone", "berserk"};
+/*! \var char statuses
+*   \brief Statuses. Affects units for 5 turns each, except for stone, which is forever. *DESIGN QUESTION*
+*  - Healthy. <br>
+*  - Sleep: Unit cannot move, attack_damage, or retaliate. Unit wakes up after being attacked. Refer to ... <br>
+*  - Poison: Loses HP every turn. (How much?) <br>
+*  - Stone: Unit cannot move, attack_damage or retaliate. Can only be cured by the ... staff. <br>
+*  - Berserk. Unit attacks the weakest unit in range. Friend or foe. *DESIGN QUESTION* <br>
+*/
+
+char unit_classes[][24] = {"Lord", "Prince", "Princess", "Armor Knight", "Cavalier", "Pegasus Knight", "Wyvern Knight", "Axe Rider", "Lance Rider", "Sword Rider", "Mercernary", "Myrmidon", "Soldier", "Archer", "Mage", "Priest", "Priestess", "King", "Paladin", "Sniper", "General", "Bishop", "Hero", "Pirate", "Fighter", "Thief", "Troubadour", "Cleric", "Monk", "Shaman", "Dragon", "Dancer"};
+
+/// \var char unit_classes
+/// \brief Unit classes.
+/// Unit classes should not use smaller words that are included in other classes names.
+char unit_attributes[][24] = {"Flying", "Promoted", "Armored", "Mounted"};
+
+char all_unit_names[][14] = {"Marth", "Sheeda"};
+char all_weapon_names[][14] = {"Rapier", "Iron Sword", "Steel Sword", "Iron Lance", "Lame de Damas"};
+/// \var char all_unit_names
+/// \brief All Unit Names.
+    
+char equipment_slots = 7;
+/// \var char equipment_slots
+/// \brief Total number of equipment slots. Only used for an inventory that mixes weapons and items.
+char item_slots = 4;
+/// \var char item_slots
+/// \brief Number of item slots. Separate from weapon slots.
+char weapon_slots = 4;
+/// \var weapon_slots 
+/// \brief Number of weapon slots. Separate from weapon slots.
+
+/// \fn main 
+/// \brief Main FEmaker algorithm.
+std::unordered_map<string, weapon> all_weapons;
+// std::unordered_map<string, struct inventory_item> inventory_items;
+std::unordered_map<string, unit> all_units;
+
+std::unordered_map<string, unit_class> all_unit_classes;
+std::unordered_map<string, int> wpn_indexes;
