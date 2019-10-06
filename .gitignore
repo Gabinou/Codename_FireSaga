@@ -1,9 +1,17 @@
 *.exe
 *.dll
 *.txt
+*.xml
+Doxyfile
 # Ignore the build and lib dirs
-build
+build/*
 lib/*
+
+CMakeFiles/*
+
+# Ignore any executables
+html/*
+latex/*
 
 # Ignore any executables
 bin/*
