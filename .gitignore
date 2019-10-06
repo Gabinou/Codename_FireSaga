@@ -7,6 +7,8 @@ Doxyfile
 build/*
 lib/*
 
+CMakeFiles/*
+
 # Ignore any executables
 html/*
 latex/*

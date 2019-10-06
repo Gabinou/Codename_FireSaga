@@ -32,11 +32,11 @@ class tile: public generic {
         /// \var char penalty
         /// \brief movement penalty.
         // I think the movement pnelaty is a tile thing. But also, the total penalty depends if the unit is mounted or not. In general, mounted units should get more penalty, which depends on tile type/name.
-        char penalty
+        char penalty;
         tile(std::string, std::vector<int>);
         tile();
         ~tile();
-    
-}
+  
+};
 
 #endif /* TILE_HPP */
