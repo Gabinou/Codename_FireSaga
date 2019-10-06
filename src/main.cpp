@@ -18,7 +18,7 @@ std::mt19937 mt(1899);
 std::uniform_int_distribution<char> dist(0, 100); //*DESIGN QUESTION* What should be the minimum and maximum probabilities?
 #endif /* DOXYGEN_SHOULD_SKIP_THIS */
 
-std::vector<int> extractIntegerWords(string str) 
+std::vector<int> extract_int_string(string str) 
 { 
     // cannot read integers if not separated by at least one space and other chars.
     stringstream ss;

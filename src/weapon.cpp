@@ -83,24 +83,24 @@ void weapon::read(const char *filename, short int skip) {
     fscanf(f, "%*s %s", type);
     fgets(line, sizeof(line), f);
     fgets(line, sizeof(line), f);
-    std::vector<int> temp = extractIntegerWords(line);
+    std::vector<int> temp = extract_int_string(line);
     fgets(line, sizeof(line), f);
     exp = temp[0];
-    temp = extractIntegerWords(line);
+    temp = extract_int_string(line);
     for (int i = 0; i < temp.size(); i++) {
         stats[i] = temp[i];
     }
     fgets(line, sizeof(line), f);
-    temp = extractIntegerWords(line);
+    temp = extract_int_string(line);
     for (int i = 0; i < temp.size(); i++) {
         stats_bonus[i] = temp[i];
     }     
     fgets(line, sizeof(line), f);      
-    cost = extractIntegerWords(line)[0];          
+    cost = extract_int_string(line)[0];          
     fgets(line, sizeof(line), f);
-    dmg_type = extractIntegerWords(line)[0];
+    dmg_type = extract_int_string(line)[0];
     fgets(line, sizeof(line), f);
-    temp = extractIntegerWords(line);
+    temp = extract_int_string(line);
     range[0] = temp[0];
     range[1] = temp[1];
     fseek(f, 10, SEEK_CUR);

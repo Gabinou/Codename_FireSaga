@@ -65,7 +65,7 @@ extern unsigned char id;
 /// \var extern char id
 /// \brief Global declaration of id.
 
-extern std::vector<int> extractIntegerWords(string);
+extern std::vector<int> extract_int_string(string);
 
 /*! \fn css_from_line()
 *  \brief Get comma separated strings (css) from a line. Lines are gotten from fgets. outputs vector of string for simplicity. Fucking chars man. Sucks ballz.
