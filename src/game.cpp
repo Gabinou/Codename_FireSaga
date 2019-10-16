@@ -31,7 +31,10 @@ void game::init(const char* title, int xpos, int ypos, int width, int height, bo
     }
 };
 
-void game::update() {}
+void game::update() {
+    count++;
+    printf("%d \n", count);
+}
 
 void game::handleEvents() {
     SDL_Event event;
@@ -54,6 +57,7 @@ void game::clean() {
     SDL_DestroyRenderer(renderer);
     SDL_Quit();
     printf("Game cleanded.");
+    SDL_Delay(5000);
 }
 bool game::running() {
     return(isRunning);

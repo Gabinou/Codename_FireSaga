@@ -40,24 +40,20 @@ int main(int argc, char * argv[]) {
     wpn_indexes["staff"] = 9;
     wpn_indexes["stf"] = 9;
     read_all_weapons("..\\weapons.txt");
-    printf("a\n");
     read_all_units("..\\units_FE1.txt");
-    printf("b\n");
     write_all_units("..\\units_test.txt"); // OKAY
-    printf("c\n");
     
     
-    // firesaga = new game();
-    // printf("made game.\n");
-    // firesaga->init("FireSaga", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 800, 600, false);
+    firesaga = new game();
+    printf("made game.\n");
+    firesaga->init("FireSaga", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 800, 600, false);
     
-    // while(firesaga->running()){
-        // printf("hello.\n");
-        // firesaga->handleEvents();
-        // firesaga->update();
-        // firesaga->render();
-    // }
-    // firesaga->clean();
+    while(firesaga->running()){
+        firesaga->handleEvents();
+        firesaga->update();
+        firesaga->render();
+    }
+    firesaga->clean();
     
     return(0);
     

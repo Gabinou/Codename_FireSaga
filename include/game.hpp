@@ -20,6 +20,7 @@ class game {
         bool running();
     private:
         bool isRunning;
+        int count;
         SDL_Window *window;
         SDL_Renderer *renderer;
 };
