@@ -6,75 +6,60 @@
 */
 using namespace std;
 #include "shared.hpp"
+#include <SDL2/SDL.h>
+#include <SDL.h>
 #include "generic.hpp"
 #include "weapon.hpp"
 #include "unit.hpp"
+#include "game.hpp"
 #include "unit_class.hpp"
 #include "inventory_item.hpp"
 
-// Skill idea: divine shield! Bubble!
+game *firesaga = nullptr;
 
-main() {
+int main(int argc, char * argv[]) {
     printf("TESTING THIS BITCH\n");
-    wpn_indexes["SWORD"] = 0;
-    wpn_indexes["Sword"] = 0;
     wpn_indexes["sword"] = 0;
     wpn_indexes["swd"] = 0;
-    wpn_indexes["SWD"] = 0;
-    wpn_indexes["LANCE"] = 1;
-    wpn_indexes["Lance"] = 1;
     wpn_indexes["lance"] = 1;
     wpn_indexes["lnc"] = 1;
-    wpn_indexes["LNC"] = 1;
-    wpn_indexes["AXE"] = 2;
-    wpn_indexes["Axe"] = 2;
     wpn_indexes["axe"] = 2;
-    wpn_indexes["Ax"] = 2;
-    wpn_indexes["AX"] = 2;
     wpn_indexes["ax"] = 2;
     wpn_indexes["bow"] = 3;
-    wpn_indexes["Bow"] = 3;
-    wpn_indexes["BOW"] = 3;
-    wpn_indexes["WIND"] = 4;
-    wpn_indexes["Wind"] = 4;
     wpn_indexes["wind"] = 4;
     wpn_indexes["wnd"] = 4;
-    wpn_indexes["WND"] = 4;
-    wpn_indexes["Fire"] = 5;
-    wpn_indexes["FIRE"] = 5;
     wpn_indexes["fire"] = 5;
     wpn_indexes["fir"] = 5;
-    wpn_indexes["FIRE"] = 5;
-    wpn_indexes["Thunder"] = 6;
-    wpn_indexes["THUNDER"] = 6;
     wpn_indexes["thunder"] = 6;
     wpn_indexes["tnd"] = 6;
-    wpn_indexes["TND"] = 6;
-    wpn_indexes["Tnd"] = 6;
-    wpn_indexes["Thnd"] = 6;
     wpn_indexes["thnd"] = 6;
-    wpn_indexes["THND"] = 6;
-    wpn_indexes["Dark"] = 7;
     wpn_indexes["dark"] = 7;
-    wpn_indexes["DARK"] = 7;
     wpn_indexes["drk"] = 7;
-    wpn_indexes["DRK"] = 7;
-    wpn_indexes["Drk"] = 7;
-    wpn_indexes["Light"] = 8;
     wpn_indexes["light"] = 8;
-    wpn_indexes["LIGHT"] = 8;
     wpn_indexes["lgt"] = 8;
-    wpn_indexes["LGT"] = 8;
-    wpn_indexes["Lgt"] = 8;
     wpn_indexes["staff"] = 9;
-    wpn_indexes["Staff"] = 9;
-    wpn_indexes["STAFF"] = 9;
     wpn_indexes["stf"] = 9;
-    wpn_indexes["STF"] = 9;
-    wpn_indexes["Stf"] = 9;
-    read_all_weapons("weapons.txt");
-    read_all_units("units_FE1.txt");
-    write_all_units("units_test.txt");
+    read_all_weapons("..\\weapons.txt");
+    printf("a\n");
+    read_all_units("..\\units_FE1.txt");
+    printf("b\n");
+    write_all_units("..\\units_test.txt"); // OKAY
+    printf("c\n");
+    
+    
+    // firesaga = new game();
+    // printf("made game.\n");
+    // firesaga->init("FireSaga", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 800, 600, false);
+    
+    // while(firesaga->running()){
+        // printf("hello.\n");
+        // firesaga->handleEvents();
+        // firesaga->update();
+        // firesaga->render();
+    // }
+    // firesaga->clean();
+    
+    return(0);
     
     // inventory_item("Rapier", 10);
     // printf("%d \f", inventory_items["Rapier_0000"]);

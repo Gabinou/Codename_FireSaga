@@ -195,7 +195,7 @@ void read_all_maps(const char *filename) {
       
 }
 
-void read_all_weapons(const char *filename="weapons.txt") {
+void read_all_weapons(const char *filename) {
     std::string line;
     std::ifstream inFile(filename); 
     short int line_num = std::count(std::istreambuf_iterator<char>(inFile), 
