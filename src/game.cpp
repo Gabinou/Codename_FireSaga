@@ -1,6 +1,10 @@
 #include "game.hpp"
 #include <stdio.h>
 
+SDL_Texture* playerTex;
+SDL_Rect* srcR, destR;
+
+
 game::game() {}
 game::~game() {}
 
@@ -23,16 +27,25 @@ void game::init(const char* title, int xpos, int ypos, int width, int height, bo
         renderer = SDL_CreateRenderer(window, -1, 0);
         if(renderer){
             SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
-            printf("Renderer created.");
+            printf("Renderer created.\n");
         }        
         isRunning = true;
     } else {
         isRunning = false;
     }
+    SDL_Surface* tempSurface = IMG_Load("..//assets//horse.png");
+    playerTex = SDL_CreateTextureFromSurface(renderer, tempSurface);
+    SDL_FreeSurface(tempSurface);
+    
 };
 
 void game::update() {
     count++;
+    
+    destR.h = 32;
+    destR.w = 32;
+    destR.x = count;
+    
     printf("%d \n", count);
 }
 
@@ -49,7 +62,9 @@ void game::handleEvents() {
 }
 void game::render() {
     SDL_RenderClear(renderer);
-    // Add stuff to render.
+    // Add stuff to render. Paint the background First.
+    SDL_RenderCopy(renderer, playerTex, NULL, &destR);
+    
     SDL_RenderPresent(renderer);
 }
 void game::clean() {
