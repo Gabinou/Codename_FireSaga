@@ -2,10 +2,14 @@
 *.dll
 *.txt
 *.xml
+*.aseprite
+*.png
+
 Doxyfile
 # Ignore the build and lib dirs
 build/*
 lib/*
+assets/*
 
 CMakeFiles/*
 
