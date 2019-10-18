@@ -1,0 +1,3 @@
+C:/Users/HPinours/Sync/Programming/Cpp/TxtParser/build/CMakeFiles/Txt_Parser.dir
+C:/Users/HPinours/Sync/Programming/Cpp/TxtParser/build/CMakeFiles/edit_cache.dir
+C:/Users/HPinours/Sync/Programming/Cpp/TxtParser/build/CMakeFiles/rebuild_cache.dir

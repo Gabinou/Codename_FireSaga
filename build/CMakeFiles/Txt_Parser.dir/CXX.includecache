@@ -1,0 +1,36 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+../include/parser.hpp
+stdio.h
+-
+iostream
+-
+string
+-
+ostream
+-
+istream
+-
+ctype.h
+-
+vector
+-
+math.h
+-
+random
+-
+bits/stdc++.h
+-
+
+C:/Users/HPinours/Sync/Programming/Cpp/TxtParser/src/main.cpp
+parser.hpp
+-
+stdio.h
+-
+

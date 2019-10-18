@@ -1,0 +1,33 @@
+@unit{Marth,
+Class={Lord},
+Bases={18, 5, 0, 3, 7, 7, 7, 0, 0, 7, 5},
+Stats={18, 5, 0, 3, 7, 7, 7, 0, 0, 7, 5},
+Growths={40, 25, 20, 40, 70, 80, 20, 20, 0, 0},
+Equipped={0},
+Equipment={Rapier, , , , , , ,},
+Used(eq)={0, -1, -1, -1, -1, -1, -1, -1},
+Weapons={},
+Items={},
+Lovers={Sheeda, , , ,},
+love_pts={0, 0, 0, 0, 0},
+love_grt={0, 0, 0, 0, 0},
+wpn_exp={1, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+Exp={0}}
+
+
+@unit{Sheeda,
+Class={Pegasus Knight}
+Bases={16, 3, 0, 6, 12, 9, 7, 0, 0, 8, 7},
+Stats={16, 3, 0, 6, 12, 9, 7, 0, 0, 8, 7},
+Growths={ 40, 25, 20, 40, 70, 80, 20, 20, 0, 0},
+Equipped={0},
+Equipment={Iron Sword, , , , , , ,},
+Used(eq)={ 10, -1, -1, -1, -1, -1, -1, -1},
+Weapons={ , , , ,},
+Items={ , , , ,},
+Lovers={ Marth, , , ,},
+love_pts={ 0, 0, 0, 0, 0},
+love_grt={ 0, 0, 0, 0, 0},
+wpn_exp={ 1, 1, 0, 0, 0, 0, 0, 0, 0, 0},
+Exp={0},
+}

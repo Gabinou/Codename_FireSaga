@@ -1,0 +1,831 @@
+Marth
+Class: 		Lord
+Bases: 		18, 5, 0, 3, 7, 7, 7, 0, 0, 7, 5
+Stats: 		18, 5, 0, 3, 7, 7, 7, 0, 0, 7, 5
+Growths: 	40, 25, 20, 40, 70, 80, 20, 20, 0, 0
+Equipped: 	0
+Equipment: 	Rapier, , , , , , , 
+Used(eq): 	0, -1, -1, -1, -1, -1, -1, -1
+Weapons: 	, , , , 
+Items: 		, , , , 
+Lovers: 	Sheeda, , , , 
+love_pts: 	0, 0, 0, 0, 0
+love_grt: 	0, 0, 0, 0, 0
+wpn_exp: 	1, 0, 0, 0, 0, 0, 0, 0, 0, 0
+Exp: 		0
+
+Sheeda
+Class: 		Pegasus Knight
+Bases: 		16, 3, 0, 6, 12, 9, 7, 0, 0, 8, 7
+Stats: 		16, 3, 0, 6, 12, 9, 7, 0, 0, 8, 7
+Growths: 	40, 25, 20, 40, 70, 80, 20, 20, 0, 0
+Equipped: 	0
+Equipment: 	Iron Sword, , , , , , , 
+Used(eq): 	10, -1, -1, -1, -1, -1, -1, -1
+Weapons: 	, , , , 
+Items: 		, , , , 
+Lovers: 	Marth, , , , 
+love_pts: 	0, 0, 0, 0, 0
+love_grt: 	0, 0, 0, 0, 0
+wpn_exp: 	1, 1, 0, 0, 0, 0, 0, 0, 0, 0
+Exp: 		0
+
+Jeigan
+Class: 		Paladin
+Bases: 		20, 7, 0, 10, 8, 1, 9, 0, 0, 10, 10
+Stats: 		20, 7, 0, 10, 8, 1, 9, 0, 0, 10, 10
+Growths: 	40, 25, 20, 40, 70, 80, 20, 20, 0, 0
+Equipped: 	0
+Equipment: 	Iron Sword, Silver Lance, , , , , , 
+Used(eq): 	0, 0, -1, -1, -1, -1, -1, -1
+Weapons: 	, , , , 
+Items: 		, , , , 
+Lovers: 	, , , , 
+love_pts: 	0, 0, 0, 0, 0
+love_grt: 	0, 0, 0, 0, 0
+wpn_exp: 	1, 1, 0, 0, 0, 0, 0, 0, 0, 0
+Exp: 		0
+
+Kain
+Class: 		Cavalier
+Bases: 		18, 7, 0, 5, 6, 3, 7, 0, 0, 9, 5
+Stats: 		18, 7, 0, 5, 6, 3, 7, 0, 0, 9, 5
+Growths: 	40, 25, 20, 40, 70, 80, 20, 20, 0, 0
+Equipped: 	0
+Equipment: 	Iron Lance, Iron Sword, , , , , , 
+Used(eq): 	0, 0, -1, -1, -1, -1, -1, -1
+Weapons: 	, , , , 
+Items: 		, , , , 
+Lovers: 	, , , , 
+love_pts: 	0, 0, 0, 0, 0
+love_grt: 	0, 0, 0, 0, 0
+wpn_exp: 	1, 1, 0, 0, 0, 0, 0, 0, 0, 0
+Exp: 		0
+
+Abel
+Class: 		Cavalier
+Bases: 		18, 6, 0, 7, 7, 2, 7, 0, 0, 9, 6
+Stats: 		18, 6, 0, 7, 7, 2, 7, 0, 0, 9, 6
+Growths: 	40, 25, 20, 40, 70, 80, 20, 20, 0, 0
+Equipped: 	0
+Equipment: 	Iron Sword, Javelin, , , , , , 
+Used(eq): 	10, 10, -1, -1, -1, -1, -1, -1
+Weapons: 	, , , , 
+Items: 		, , , , 
+Lovers: 	, , , , 
+love_pts: 	0, 0, 0, 0, 0
+love_grt: 	0, 0, 0, 0, 0
+wpn_exp: 	1, 1, 0, 0, 0, 0, 0, 0, 0, 0
+Exp: 		0
+
+Doga
+Class: 		Knight
+Bases: 		18, 7, 0, 3, 3, 1, 11, 0, 0, 5, 4
+Stats: 		18, 7, 0, 3, 3, 1, 11, 0, 0, 5, 4
+Growths: 	40, 25, 20, 40, 70, 80, 20, 20, 0, 0
+Equipped: 	0
+Equipment: 	Iron Lance, Javelin, , , , , , 
+Used(eq): 	10, 10, -1, -1, -1, -1, -1, -1
+Weapons: 	, , , , 
+Items: 		, , , , 
+Lovers: 	Marth, , , , 
+love_pts: 	0, 0, 0, 0, 0
+love_grt: 	0, 0, 0, 0, 0
+wpn_exp: 	0, 1, 0, 0, 0, 0, 0, 0, 0, 0
+Exp: 		0
+
+Gordon
+Class: 		Archer
+Bases: 		16, 5, 0, 1, 4, 4, 6, 0, 0, 5, 5
+Stats: 		16, 5, 0, 1, 4, 4, 6, 0, 0, 5, 5
+Growths: 	40, 25, 20, 40, 70, 80, 20, 20, 0, 0
+Equipped: 	0
+Equipment: 	Bowgun, Steel Bow, , , , , , 
+Used(eq): 	0, 0, -1, -1, -1, -1, -1, -1
+Weapons: 	, , , , 
+Items: 		, , , , 
+Lovers: 	, , , , 
+love_pts: 	0, 0, 0, 0, 0
+love_grt: 	0, 0, 0, 0, 0
+wpn_exp: 	0, 0, 0, 1, 0, 0, 0, 0, 0, 0
+Exp: 		0
+
+Riff
+Class: 		Priest
+Bases: 		16, 1, 0, 5, 7, 1, 3, 0, 0, 5, 3
+Stats: 		16, 1, 0, 5, 7, 1, 3, 0, 0, 5, 3
+Growths: 	40, 25, 20, 40, 70, 80, 20, 20, 0, 0
+Equipped: 	0
+Equipment: 	Heal, , , , , , , 
+Used(eq): 	10, -1, -1, -1, -1, -1, -1, -1
+Weapons: 	, , , , 
+Items: 		, , , , 
+Lovers: 	, , , , 
+love_pts: 	0, 0, 0, 0, 0
+love_grt: 	0, 0, 0, 0, 0
+wpn_exp: 	0, 0, 0, 0, 0, 0, 0, 0, 0, 1
+Exp: 		0
+
+Oguma
+Class: 		Mercenary
+Bases: 		20, 6, 0, 11, 12, 3, 6, 0, 0, 7, 6
+Stats: 		20, 6, 0, 11, 12, 3, 6, 0, 0, 7, 6
+Growths: 	40, 25, 20, 40, 70, 80, 20, 20, 0, 0
+Equipped: 	0
+Equipment: 	Iron Sword, , , , , , , 
+Used(eq): 	10, -1, -1, -1, -1, -1, -1, -1
+Weapons: 	, , , , 
+Items: 		, , , , 
+Lovers: 	, , , , 
+love_pts: 	0, 0, 0, 0, 0
+love_grt: 	0, 0, 0, 0, 0
+wpn_exp: 	1, 0, 0, 0, 0, 0, 0, 0, 0, 0
+Exp: 		100
+
+Barts
+Class: 		Mercenary
+Bases: 		24, 10, 0, 6, 9, 5, 6, 0, 0, 6, 6
+Stats: 		24, 10, 0, 6, 9, 5, 6, 0, 0, 6, 6
+Growths: 	40, 25, 20, 40, 70, 80, 20, 20, 0, 0
+Equipped: 	0
+Equipment: 	Steel Axe, Hand Axe, , , , , , 
+Used(eq): 	0, 0, -1, -1, -1, -1, -1, -1
+Weapons: 	, , , , 
+Items: 		, , , , 
+Lovers: 	, , , , 
+love_pts: 	0, 0, 0, 0, 0
+love_grt: 	0, 0, 0, 0, 0
+wpn_exp: 	1, 0, 1, 0, 0, 0, 0, 0, 0, 0
+Exp: 		400
+
+Saji
+Class: 		Fighter
+Bases: 		20, 8, 0, 4, 7, 1, 5, 0, 0, 6, 5
+Stats: 		20, 8, 0, 4, 7, 1, 5, 0, 0, 6, 5
+Growths: 	40, 25, 20, 40, 70, 80, 20, 20, 0, 0
+Equipped: 	0
+Equipment: 	Iron Axe, Hammer, , , , , , 
+Used(eq): 	0, 0, -1, -1, -1, -1, -1, -1
+Weapons: 	, , , , 
+Items: 		, , , , 
+Lovers: 	, , , , 
+love_pts: 	0, 0, 0, 0, 0
+love_grt: 	0, 0, 0, 0, 0
+wpn_exp: 	0, 0, 1, 0, 0, 0, 0, 0, 0, 0
+Exp: 		200
+
+Maji
+Class: 		Fighter
+Bases: 		20, 7, 0, 5, 9, 5, 5, 0, 0, 6, 3
+Stats: 		20, 7, 0, 5, 9, 5, 5, 0, 0, 6, 3
+Growths: 	40, 25, 20, 40, 70, 80, 20, 20, 0, 0
+Equipped: 	0
+Equipment: 	Iron Axe, , , , , , , 
+Used(eq): 	0, -1, -1, -1, -1, -1, -1, -1
+Weapons: 	, , , , 
+Items: 		, , , , 
+Lovers: 	Marth, , , , 
+love_pts: 	0, 0, 0, 0, 0
+love_grt: 	0, 0, 0, 0, 0
+wpn_exp: 	0, 0, 1, 0, 0, 0, 0, 0, 0, 0
+Exp: 		200
+
+Kashim
+Class: 		Hunter
+Bases: 		21, 7, 0, 2, 6, 0, 4, 0, 0, 6, 6
+Stats: 		21, 7, 0, 2, 6, 0, 4, 0, 0, 6, 6
+Growths: 	40, 25, 20, 40, 70, 80, 20, 20, 0, 0
+Equipped: 	0
+Equipment: 	Iron Bow, , , , , , , 
+Used(eq): 	0, -1, -1, -1, -1, -1, -1, -1
+Weapons: 	, , , , 
+Items: 		, , , , 
+Lovers: 	, , , , 
+love_pts: 	0, 0, 0, 0, 0
+love_grt: 	0, 0, 0, 0, 0
+wpn_exp: 	0, 0, 0, 1, 0, 0, 0, 0, 0, 0
+Exp: 		200
+
+Daros
+Class: 		Pirate
+Bases: 		21, 6, 0, 2, 7, 0, 5, 0, 0, 6, 6
+Stats: 		21, 6, 0, 2, 7, 0, 5, 0, 0, 6, 6
+Growths: 	40, 25, 20, 40, 70, 80, 20, 20, 0, 0
+Equipped: 	0
+Equipment: 	Steel Axe, , , , , , , 
+Used(eq): 	0, -1, -1, -1, -1, -1, -1, -1
+Weapons: 	, , , , 
+Items: 		, , , , 
+Lovers: 	, , , , 
+love_pts: 	0, 0, 0, 0, 0
+love_grt: 	0, 0, 0, 0, 0
+wpn_exp: 	0, 0, 1, 0, 0, 0, 0, 0, 0, 0
+Exp: 		200
+
+Julian
+Class: 		Thief
+Bases: 		17, 4, 0, 6, 12, 7, 4, 0, 0, 7, 2
+Stats: 		17, 4, 0, 6, 12, 7, 4, 0, 0, 7, 2
+Growths: 	40, 25, 20, 40, 70, 80, 20, 20, 0, 0
+Equipped: 	0
+Equipment: 	Iron Sword, LockPick, , , , , , 
+Used(eq): 	0, 0, -1, -1, -1, -1, -1, -1
+Weapons: 	, , , , 
+Items: 		, , , , 
+Lovers: 	, , , , 
+love_pts: 	0, 0, 0, 0, 0
+love_grt: 	0, 0, 0, 0, 0
+wpn_exp: 	1, 0, 0, 0, 0, 0, 0, 0, 0, 0
+Exp: 		200
+
+Rena
+Class: 		Priest
+Bases: 		16, 1, 0, 7, 8, 8, 3, 0, 0, 5, 7
+Stats: 		16, 1, 0, 7, 8, 8, 3, 0, 0, 5, 7
+Growths: 	40, 25, 20, 40, 70, 80, 20, 20, 0, 0
+Equipped: 	0
+Equipment: 	Warp, , , , , , , 
+Used(eq): 	0, -1, -1, -1, -1, -1, -1, -1
+Weapons: 	, , , , 
+Items: 		, , , , 
+Lovers: 	, , , , 
+love_pts: 	0, 0, 0, 0, 0
+love_grt: 	0, 0, 0, 0, 0
+wpn_exp: 	0, 0, 0, 0, 0, 0, 0, 0, 0, 1
+Exp: 		200
+
+Navarre
+Class: 		Mercenary
+Bases: 		19, 5, 0, 9, 11, 0, 6, 0, 0, 7, 9
+Stats: 		19, 5, 0, 9, 11, 0, 6, 0, 0, 7, 9
+Growths: 	40, 25, 20, 40, 70, 80, 20, 20, 0, 0
+Equipped: 	0
+Equipment: 	Killing edge, , , , , , , 
+Used(eq): 	0, -1, -1, -1, -1, -1, -1, -1
+Weapons: 	, , , , 
+Items: 		, , , , 
+Lovers: 	, , , , 
+love_pts: 	0, 0, 0, 0, 0
+love_grt: 	0, 0, 0, 0, 0
+wpn_exp: 	1, 0, 0, 0, 0, 0, 0, 0, 0, 0
+Exp: 		200
+
+Marich
+Class: 		Mage
+Bases: 		20, 0, 1, 3, 6, 3, 4, 0, 0, 6, 5
+Stats: 		20, 0, 1, 3, 6, 3, 4, 0, 0, 6, 5
+Growths: 	40, 25, 20, 40, 70, 80, 20, 20, 0, 0
+Equipped: 	0
+Equipment: 	Excalibur, Blizzard, , , , , , 
+Used(eq): 	0, 0, -1, -1, -1, -1, -1, -1
+Weapons: 	, , , , 
+Items: 		, , , , 
+Lovers: 	, , , , 
+love_pts: 	0, 0, 0, 0, 0
+love_grt: 	0, 0, 0, 0, 0
+wpn_exp: 	0, 0, 0, 0, 1, 0, 0, 0, 0, 0
+Exp: 		0
+
+Machis
+Class: 		Cavalier
+Bases: 		16, 5, 0, 2, 6, 0, 7, 0, 0, 9, 8
+Stats: 		16, 5, 0, 2, 6, 0, 7, 0, 0, 9, 8
+Growths: 	40, 25, 20, 40, 70, 80, 20, 20, 0, 0
+Equipped: 	0
+Equipment: 	Iron Lance, , , , , , , 
+Used(eq): 	10, -1, -1, -1, -1, -1, -1, -1
+Weapons: 	, , , , 
+Items: 		, , , , 
+Lovers: 	, , , , 
+love_pts: 	0, 0, 0, 0, 0
+love_grt: 	0, 0, 0, 0, 0
+wpn_exp: 	1, 1, 0, 0, 0, 0, 0, 0, 0, 0
+Exp: 		100
+
+Hardin
+Class: 		Cavalier
+Bases: 		20, 9, 0, 7, 8, 3, 8, 0, 0, 9, 9
+Stats: 		20, 9, 0, 7, 8, 3, 8, 0, 0, 9, 9
+Growths: 	40, 25, 20, 40, 70, 80, 20, 20, 0, 0
+Equipped: 	0
+Equipment: 	Steel Sword, , , , , , , 
+Used(eq): 	10, -1, -1, -1, -1, -1, -1, -1
+Weapons: 	, , , , 
+Items: 		, , , , 
+Lovers: 	, , , , 
+love_pts: 	0, 0, 0, 0, 0
+love_grt: 	0, 0, 0, 0, 0
+wpn_exp: 	1, 1, 0, 0, 0, 0, 0, 0, 0, 0
+Exp: 		500
+
+Wolf
+Class: 		Horsemen
+Bases: 		18, 5, 0, 5, 9, 5, 4, 0, 0, 9, 6
+Stats: 		18, 5, 0, 5, 9, 5, 4, 0, 0, 9, 6
+Growths: 	40, 25, 20, 40, 70, 80, 20, 20, 0, 0
+Equipped: 	0
+Equipment: 	Steel Bow, , , , , , , 
+Used(eq): 	0, -1, -1, -1, -1, -1, -1, -1
+Weapons: 	, , , , 
+Items: 		, , , , 
+Lovers: 	, , , , 
+love_pts: 	0, 0, 0, 0, 0
+love_grt: 	0, 0, 0, 0, 0
+wpn_exp: 	0, 0, 0, 1, 0, 0, 0, 0, 0, 0
+Exp: 		200
+
+Zagaro
+Class: 		Horsemen
+Bases: 		16, 4, 0, 3, 7, 2, 4, 0, 0, 9, 3
+Stats: 		16, 4, 0, 3, 7, 2, 4, 0, 0, 9, 3
+Growths: 	40, 25, 20, 40, 70, 80, 20, 20, 0, 0
+Equipped: 	0
+Equipment: 	Steel Bow, , , , , , , 
+Used(eq): 	0, -1, -1, -1, -1, -1, -1, -1
+Weapons: 	, , , , 
+Items: 		, , , , 
+Lovers: 	, , , , 
+love_pts: 	0, 0, 0, 0, 0
+love_grt: 	0, 0, 0, 0, 0
+wpn_exp: 	0, 0, 0, 1, 0, 0, 0, 0, 0, 0
+Exp: 		0
+
+Roshe
+Class: 		Cavalier
+Bases: 		18, 6, 0, 5, 7, 4, 7, 0, 0, 8, 7
+Stats: 		18, 6, 0, 5, 7, 4, 7, 0, 0, 8, 7
+Growths: 	40, 25, 20, 40, 70, 80, 20, 20, 0, 0
+Equipped: 	0
+Equipment: 	Iron Lance, Iron Sword, , , , , , 
+Used(eq): 	0, 0, -1, -1, -1, -1, -1, -1
+Weapons: 	, , , , 
+Items: 		, , , , 
+Lovers: 	, , , , 
+love_pts: 	0, 0, 0, 0, 0
+love_grt: 	0, 0, 0, 0, 0
+wpn_exp: 	1, 1, 0, 0, 0, 0, 0, 0, 0, 0
+Exp: 		200
+
+Biraku
+Class: 		Cavalier
+Bases: 		16, 5, 0, 3, 6, 2, 7, 0, 0, 9, 4
+Stats: 		16, 5, 0, 3, 6, 2, 7, 0, 0, 9, 4
+Growths: 	40, 25, 20, 40, 70, 80, 20, 20, 0, 0
+Equipped: 	0
+Equipment: 	Iron Lance, Iron Sword, , , , , , 
+Used(eq): 	0, 0, -1, -1, -1, -1, -1, -1
+Weapons: 	, , , , 
+Items: 		, , , , 
+Lovers: 	, , , , 
+love_pts: 	0, 0, 0, 0, 0
+love_grt: 	0, 0, 0, 0, 0
+wpn_exp: 	1, 1, 0, 0, 0, 0, 0, 0, 0, 0
+Exp: 		0
+
+Wendel
+Class: 		Bishop
+Bases: 		22, 3, 0, 1, 14, 0, 8, 0, 0, 6, 10
+Stats: 		22, 3, 0, 1, 14, 0, 8, 0, 0, 6, 10
+Growths: 	40, 25, 20, 40, 70, 80, 20, 20, 0, 0
+Equipped: 	0
+Equipment: 	M Shield, Thunder, , , , , , 
+Used(eq): 	0, 0, -1, -1, -1, -1, -1, -1
+Weapons: 	, , , , 
+Items: 		, , , , 
+Lovers: 	, , , , 
+love_pts: 	0, 0, 0, 0, 0
+love_grt: 	0, 0, 0, 0, 0
+wpn_exp: 	0, 0, 0, 0, 0, 0, 0, 0, 0, 1
+Exp: 		0
+
+Ricardo
+Class: 		Thief
+Bases: 		16, 3, 0, 1, 9, 0, 2, 0, 0, 7, 2
+Stats: 		16, 3, 0, 1, 9, 0, 2, 0, 0, 7, 2
+Growths: 	40, 25, 20, 40, 70, 80, 20, 20, 0, 0
+Equipped: 	0
+Equipment: 	Iron Sword, , , , , , , 
+Used(eq): 	0, -1, -1, -1, -1, -1, -1, -1
+Weapons: 	, , , , 
+Items: 		, , , , 
+Lovers: 	, , , , 
+love_pts: 	0, 0, 0, 0, 0
+love_grt: 	0, 0, 0, 0, 0
+wpn_exp: 	1, 0, 0, 0, 0, 0, 0, 0, 0, 0
+Exp: 		0
+
+Bantu
+Class: 		Mamkeet
+Bases: 		18, 2, 0, 3, 4, 1, 3, 0, 0, 6, 2
+Stats: 		18, 2, 0, 3, 4, 1, 3, 0, 0, 6, 2
+Growths: 	40, 25, 20, 40, 70, 80, 20, 20, 0, 0
+Equipped: 	-1
+Equipment: 	, , , , , , , 
+Used(eq): 	-1, -1, -1, -1, -1, -1, -1, -1
+Weapons: 	, , , , 
+Items: 		, , , , 
+Lovers: 	, , , , 
+love_pts: 	0, 0, 0, 0, 0
+love_grt: 	0, 0, 0, 0, 0
+wpn_exp: 	0, 0, 0, 0, 0, 0, 0, 0, 0, 0
+Exp: 		0
+
+Caesar
+Class: 		Mercenary
+Bases: 		17, 5, 0, 8, 12, 6, 7, 0, 0, 7, 6
+Stats: 		17, 5, 0, 8, 12, 6, 7, 0, 0, 7, 6
+Growths: 	40, 25, 20, 40, 70, 80, 20, 20, 0, 0
+Equipped: 	0
+Equipment: 	Steel Sword, , , , , , , 
+Used(eq): 	0, -1, -1, -1, -1, -1, -1, -1
+Weapons: 	, , , , 
+Items: 		, , , , 
+Lovers: 	, , , , 
+love_pts: 	0, 0, 0, 0, 0
+love_grt: 	0, 0, 0, 0, 0
+wpn_exp: 	1, 0, 0, 0, 0, 0, 0, 0, 0, 0
+Exp: 		200
+
+Raddy
+Class: 		Mercenary
+Bases: 		16, 4, 0, 8, 10, 1, 6, 0, 0, 7, 6
+Stats: 		16, 4, 0, 8, 10, 1, 6, 0, 0, 7, 6
+Growths: 	40, 25, 20, 40, 70, 80, 20, 20, 0, 0
+Equipped: 	0
+Equipment: 	Iron Sword, , , , , , , 
+Used(eq): 	0, -1, -1, -1, -1, -1, -1, -1
+Weapons: 	, , , , 
+Items: 		, , , , 
+Lovers: 	, , , , 
+love_pts: 	0, 0, 0, 0, 0
+love_grt: 	0, 0, 0, 0, 0
+wpn_exp: 	1, 0, 0, 0, 0, 0, 0, 0, 0, 0
+Exp: 		0
+
+Roger
+Class: 		Knight
+Bases: 		22, 7, 0, 3, 5, 0, 13, 0, 0, 5, 9
+Stats: 		22, 7, 0, 3, 5, 0, 13, 0, 0, 5, 9
+Growths: 	40, 25, 20, 40, 70, 80, 20, 20, 0, 0
+Equipped: 	0
+Equipment: 	Iron Lance, , , , , , , 
+Used(eq): 	0, -1, -1, -1, -1, -1, -1, -1
+Weapons: 	, , , , 
+Items: 		, , , , 
+Lovers: 	, , , , 
+love_pts: 	0, 0, 0, 0, 0
+love_grt: 	0, 0, 0, 0, 0
+wpn_exp: 	0, 1, 0, 0, 0, 0, 0, 0, 0, 0
+Exp: 		400
+
+George
+Class: 		Sniper
+Bases: 		24, 7, 0, 10, 12, 4, 8, 0, 0, 7, 10
+Stats: 		24, 7, 0, 10, 12, 4, 8, 0, 0, 7, 10
+Growths: 	40, 25, 20, 40, 70, 80, 20, 20, 0, 0
+Equipped: 	0
+Equipment: 	Silver Bow, Steel Bow, , , , , , 
+Used(eq): 	0, 0, -1, -1, -1, -1, -1, -1
+Weapons: 	, , , , 
+Items: 		, , , , 
+Lovers: 	, , , , 
+love_pts: 	0, 0, 0, 0, 0
+love_grt: 	0, 0, 0, 0, 0
+wpn_exp: 	0, 0, 0, 1, 0, 0, 0, 0, 0, 0
+Exp: 		0
+
+Maria
+Class: 		Priest
+Bases: 		19, 2, 0, 2, 2, 0, 4, 0, 0, 5, 8
+Stats: 		19, 2, 0, 2, 2, 0, 4, 0, 0, 5, 8
+Growths: 	40, 25, 20, 40, 70, 80, 20, 20, 0, 0
+Equipped: 	0
+Equipment: 	Heal, , , , , , , 
+Used(eq): 	10, -1, -1, -1, -1, -1, -1, -1
+Weapons: 	, , , , 
+Items: 		, , , , 
+Lovers: 	, , , , 
+love_pts: 	0, 0, 0, 0, 0
+love_grt: 	0, 0, 0, 0, 0
+wpn_exp: 	0, 0, 0, 0, 0, 0, 0, 0, 0, 1
+Exp: 		200
+
+Minerva
+Class: 		Dragon Knight
+Bases: 		22, 9, 0, 3, 6, 0, 14, 0, 0, 10, 10
+Stats: 		22, 9, 0, 3, 6, 0, 14, 0, 0, 10, 10
+Growths: 	40, 25, 20, 40, 70, 80, 20, 20, 0, 0
+Equipped: 	0
+Equipment: 	Javelin, Thunder Sword, , , , , , 
+Used(eq): 	0, 0, -1, -1, -1, -1, -1, -1
+Weapons: 	, , , , 
+Items: 		, , , , 
+Lovers: 	, , , , 
+love_pts: 	0, 0, 0, 0, 0
+love_grt: 	0, 0, 0, 0, 0
+wpn_exp: 	1, 1, 0, 0, 0, 0, 0, 0, 0, 0
+Exp: 		0
+
+Linda
+Class: 		Mage
+Bases: 		20, 1, 0, 4, 7, 7, 3, 0, 0, 6, 7
+Stats: 		20, 1, 0, 4, 7, 7, 3, 0, 0, 6, 7
+Growths: 	40, 25, 20, 40, 70, 80, 20, 20, 0, 0
+Equipped: 	0
+Equipment: 	Aura, , , , , , , 
+Used(eq): 	0, -1, -1, -1, -1, -1, -1, -1
+Weapons: 	, , , , 
+Items: 		, , , , 
+Lovers: 	, , , , 
+love_pts: 	0, 0, 0, 0, 0
+love_grt: 	0, 0, 0, 0, 0
+wpn_exp: 	0, 0, 0, 0, 0, 0, 0, 0, 1, 0
+Exp: 		0
+
+Jake
+Class: 		Shooter
+Bases: 		20, 5, 0, 1, 3, 0, 14, 0, 0, 4, 8
+Stats: 		20, 5, 0, 1, 3, 0, 14, 0, 0, 4, 8
+Growths: 	40, 25, 20, 40, 70, 80, 20, 20, 0, 0
+Equipped: 	0
+Equipment: 	Quickrain, , , , , , , 
+Used(eq): 	0, -1, -1, -1, -1, -1, -1, -1
+Weapons: 	, , , , 
+Items: 		, , , , 
+Lovers: 	, , , , 
+love_pts: 	0, 0, 0, 0, 0
+love_grt: 	0, 0, 0, 0, 0
+wpn_exp: 	0, 0, 0, 1, 0, 0, 0, 0, 0, 0
+Exp: 		0
+
+Midia
+Class: 		Paladin
+Bases: 		20, 7, 0, 11, 9, 7, 9, 0, 0, 10, 10
+Stats: 		20, 7, 0, 11, 9, 7, 9, 0, 0, 10, 10
+Growths: 	40, 25, 20, 40, 70, 80, 20, 20, 0, 0
+Equipped: 	-1
+Equipment:  , , , , , , , 
+Used(eq): 	-1, -1, -1, -1, -1, -1, -1, -1
+Weapons: 	, , , , 
+Items: 		, , , , 
+Lovers:     , , , , 
+love_pts: 	0, 0, 0, 0, 0
+love_grt: 	0, 0, 0, 0, 0
+wpn_exp: 	1, 1, 0, 0, 0, 0, 0, 0, 0, 0
+Exp: 		0
+
+Tomth
+Class: 		Knight
+Bases: 		20, 8, 0, 6, 5, 3, 12, 0, 0, 5, 7
+Stats: 		20, 8, 0, 6, 5, 3, 12, 0, 0, 5, 7
+Growths: 	40, 25, 20, 40, 70, 80, 20, 20, 0, 0
+Equipped: 	-1
+Equipment: 	, , , , , , , 
+Used(eq): 	-1, -1, -1, -1, -1, -1, -1, -1
+Weapons: 	, , , , 
+Items: 		, , , , 
+Lovers: 	, , , , 
+love_pts: 	0, 0, 0, 0, 0
+love_grt: 	0, 0, 0, 0, 0
+wpn_exp: 	0, 1, 0, 0, 0, 0, 0, 0, 0, 0
+Exp: 		300
+
+Mishelan
+Class: 		Armor Knight
+Bases: 		18, 8, 0, 5, 3, 4, 11, 0, 0, 5, 5
+Stats: 		18, 8, 0, 5, 3, 4, 11, 0, 0, 5, 5
+Growths: 	40, 25, 20, 40, 70, 80, 20, 20, 0, 0
+Equipped: 	-1
+Equipment: 	, , , , , , , 
+Used(eq): 	-1, -1, -1, -1, -1, -1, -1, -1
+Weapons: 	, , , , 
+Items: 		, , , , 
+Lovers: 	, , , , 
+love_pts: 	0, 0, 0, 0, 0
+love_grt: 	0, 0, 0, 0, 0
+wpn_exp: 	0, 1, 0, 0, 0, 0, 0, 0, 0, 0
+Exp: 		200
+
+Thomas
+Class: 		Archer
+Bases: 		20, 7, 0, 6, 5, 4, 6, 0, 0, 5, 9
+Stats: 		20, 7, 0, 6, 5, 4, 6, 0, 0, 5, 9
+Growths: 	40, 25, 20, 40, 70, 80, 20, 20, 0, 0
+Equipped: 	-1
+Equipment: 	, , , , , , , 
+Used(eq): 	-1, -1, -1, -1, -1, -1, -1, -1
+Weapons: 	, , , , 
+Items: 		, , , , 
+Lovers: 	, , , , 
+love_pts: 	0, 0, 0, 0, 0
+love_grt: 	0, 0, 0, 0, 0
+wpn_exp: 	0, 0, 0, 1, 0, 0, 0, 0, 0, 0
+Exp: 		700
+
+Boa
+Class: 		Bishop
+Bases: 		22, 4, 0, 7, 15, 4, 6, 0, 0, 6, 10
+Stats: 		22, 4, 0, 7, 15, 4, 6, 0, 0, 6, 10
+Growths: 	40, 25, 20, 40, 70, 80, 20, 20, 0, 0
+Equipped: 	-1
+Equipment: 	, , , , , , , 
+Used(eq): 	-1, -1, -1, -1, -1, -1, -1, -1
+Weapons: 	, , , , 
+Items: 		, , , , 
+Lovers: 	, , , , 
+love_pts: 	0, 0, 0, 0, 0
+love_grt: 	0, 0, 0, 0, 0
+wpn_exp: 	0, 0, 0, 0, 0, 0, 0, 0, 0, 1
+Exp: 		0
+
+Beck
+Class: 		Shooter
+Bases: 		20, 6, 0, 4, 3, 5, 14, 0, 0, 4, 8
+Stats: 		20, 6, 0, 4, 3, 5, 14, 0, 0, 4, 8
+Growths: 	40, 25, 20, 40, 70, 80, 20, 20, 0, 0
+Equipped: 	0
+Equipment: 	Thunderbolt, , , , , , , 
+Used(eq): 	0, -1, -1, -1, -1, -1, -1, -1
+Weapons: 	, , , , 
+Items: 		, , , , 
+Lovers: 	, , , , 
+love_pts: 	0, 0, 0, 0, 0
+love_grt: 	0, 0, 0, 0, 0
+wpn_exp: 	0, 0, 0, 1, 0, 0, 0, 0, 0, 0
+Exp: 		0
+
+Astria
+Class: 		Hero
+Bases: 		24, 8, 0, 14, 14, 3, 8, 0, 0, 7, 10
+Stats: 		24, 8, 0, 14, 14, 3, 8, 0, 0, 7, 10
+Growths: 	40, 25, 20, 40, 70, 80, 20, 20, 0, 0
+Equipped: 	0
+Equipment: 	Silver Sword, Dragon Killer, , , , , , 
+Used(eq): 	0, 0, -1, -1, -1, -1, -1, -1
+Weapons: 	, , , , 
+Items: 		, , , , 
+Lovers: 	, , , , 
+love_pts: 	0, 0, 0, 0, 0
+love_grt: 	0, 0, 0, 0, 0
+wpn_exp: 	1, 0, 1, 0, 0, 0, 0, 0, 0, 0
+Exp: 		0
+
+Paola
+Class: 		Pegasus Knight
+Bases: 		25, 7, 0, 8, 14, 0, 9, 0, 0, 8, 12
+Stats: 		25, 7, 0, 8, 14, 0, 9, 0, 0, 8, 12
+Growths: 	40, 25, 20, 40, 70, 80, 20, 20, 0, 0
+Equipped: 	0
+Equipment: 	Silver Lance, Dragon Killer, , , , , , 
+Used(eq): 	0, 0, -1, -1, -1, -1, -1, -1
+Weapons: 	, , , , 
+Items: 		, , , , 
+Lovers: 	, , , , 
+love_pts: 	0, 0, 0, 0, 0
+love_grt: 	0, 0, 0, 0, 0
+wpn_exp: 	0, 1, 0, 0, 0, 0, 0, 0, 0, 0
+Exp: 		700
+
+Katua
+Class: 		Pegasus Knight
+Bases: 		19, 5, 0, 6, 12, 0, 7, 0, 0, 8, 10
+Stats: 		19, 5, 0, 6, 12, 0, 7, 0, 0, 8, 10
+Growths: 	40, 25, 20, 40, 70, 80, 20, 20, 0, 0
+Equipped: 	-1
+Equipment: 	Killing Edge, 0, , , , , , 
+Used(eq): 	10, -1, -1, -1, -1, -1, -1, -1
+Weapons: 	, , , , 
+Items: 		, , , , 
+Lovers: 	, , , , 
+love_pts: 	0, 0, 0, 0, 0
+love_grt: 	0, 0, 0, 0, 0
+wpn_exp: 	1, 1, 0, 0, 0, 0, 0, 0, 0, 0
+Exp: 		200
+
+Alan
+Class: 		Paladin
+Bases: 		24, 8, 0, 8, 11, 4, 10, 0, 0, 10, 10
+Stats: 		24, 8, 0, 8, 11, 4, 10, 0, 0, 10, 10
+Growths: 	40, 25, 20, 40, 70, 80, 20, 20, 0, 0
+Equipped: 	0
+Equipment: 	Knight Killer, Silver Sword, , , , , , 
+Used(eq): 	0, 0, -1, -1, -1, -1, -1, -1
+Weapons: 	, , , , 
+Items: 		, , , , 
+Lovers: 	, , , , 
+love_pts: 	0, 0, 0, 0, 0
+love_grt: 	0, 0, 0, 0, 0
+wpn_exp: 	1, 1, 0, 0, 0, 0, 0, 0, 0, 0
+Exp: 		0
+
+Samson
+Class: 		Hero
+Bases: 		24, 10, 0, 14, 15, 7, 9, 0, 0, 7, 10
+Stats: 		24, 10, 0, 14, 15, 7, 9, 0, 0, 7, 10
+Growths: 	40, 25, 20, 40, 70, 80, 20, 20, 0, 0
+Equipped: 	0
+Equipment: 	Silver Sword, Vulnerary, , , , , , 
+Used(eq): 	0, 0, -1, -1, -1, -1, -1, -1
+Weapons: 	, , , , 
+Items: 		, , , , 
+Lovers: 	, , , , 
+love_pts: 	0, 0, 0, 0, 0
+love_grt: 	0, 0, 0, 0, 0
+wpn_exp: 	1, 0, 1, 0, 0, 0, 0, 0, 0, 0
+Exp: 		0
+
+Chainy
+Class: 		Commando
+Bases: 		16, 1, 0, 1, 10, 0, 4, 0, 0, 6, 2
+Stats: 		16, 1, 0, 1, 10, 0, 4, 0, 0, 6, 2
+Growths: 	40, 25, 20, 40, 70, 80, 20, 20, 0, 0
+Equipped: 	0
+Equipment: 	Iron Sword, 0, , , , , , 
+Used(eq): 	10, 0, -1, -1, -1, -1, -1, -1
+Weapons: 	, , , , 
+Items: 		, , , , 
+Lovers: 	, , , , 
+love_pts: 	0, 0, 0, 0, 0
+love_grt: 	0, 0, 0, 0, 0
+wpn_exp: 	1, 0, 0, 0, 0, 0, 0, 0, 0, 0
+Exp: 		0
+
+Est
+Class: 		Pegasus Knight
+Bases: 		22, 6, 0, 7, 11, 0, 8, 0, 0, 8, 11
+Stats: 		22, 6, 0, 7, 11, 0, 8, 0, 0, 8, 11
+Growths: 	40, 25, 20, 40, 70, 80, 20, 20, 0, 0
+Equipped: 	0
+Equipment: 	Armorslayer, Miracle, , , , , , 
+Used(eq): 	0, 0, -1, -1, -1, -1, -1, -1
+Weapons: 	, , , , 
+Items: 		, , , , 
+Lovers: 	, , , , 
+love_pts: 	0, 0, 0, 0, 0
+love_grt: 	0, 0, 0, 0, 0
+wpn_exp: 	0, 1, 0, 0, 0, 0, 0, 0, 0, 0
+Exp: 		400
+
+Tiki
+Class: 		Mamkute
+Bases: 		24, 3, 0, 3, 3, 0, 5, 0, 0, 6, 9
+Stats: 		24, 3, 0, 3, 3, 0, 5, 0, 0, 6, 9
+Growths: 	40, 25, 20, 40, 70, 80, 20, 20, 0, 0
+Equipped: 	-1
+Equipment: 	Dragonstone, , , , , , , 
+Used(eq): 	0, -1, -1, -1, -1, -1, -1, -1
+Weapons: 	, , , , 
+Items: 		, , , , 
+Lovers: 	Marth, , , , 
+love_pts: 	0, 0, 0, 0, 0
+love_grt: 	0, 0, 0, 0, 0
+wpn_exp: 	0, 0, 0, 0, 0, 0, 0, 0, 0, 0
+Exp: 		400
+
+Lawrence
+Class: 		General
+Bases: 		34, 11, 0, 3, 6, 0, 16, 0, 0, 5, 15
+Stats: 		34, 11, 0, 3, 6, 0, 16, 0, 0, 5, 15
+Growths: 	40, 25, 20, 40, 70, 80, 20, 20, 0, 0
+Equipped: 	-1
+Equipment: 	Silver Sword, , , , , , , 
+Used(eq): 	0, -1, -1, -1, -1, -1, -1, -1
+Weapons: 	, , , , 
+Items: 		, , , , 
+Lovers: 	, , , , 
+love_pts: 	0, 0, 0, 0, 0
+love_grt: 	0, 0, 0, 0, 0
+wpn_exp: 	1, 1, 1, 0, 0, 0, 0, 0, 0, 0
+Exp: 		400
+
+Ellis
+Class: 		Priest
+Bases: 		16, 1, 0, 5, 7, 1, 3, 0, 0, 5, 7
+Stats: 		16, 1, 0, 5, 7, 1, 3, 0, 0, 5, 7
+Growths: 	40, 25, 20, 40, 70, 80, 20, 20, 0, 0
+Equipped: 	-1
+Equipment: 	Ohm, , , , , , , 
+Used(eq): 	0, -1, -1, -1, -1, -1, -1, -1
+Weapons: 	, , , , 
+Items: 		, , , , 
+Lovers: 	, , , , 
+love_pts: 	0, 0, 0, 0, 0
+love_grt: 	0, 0, 0, 0, 0
+wpn_exp: 	0, 0, 0, 0, 0, 0, 0, 0, 0, 1
+Exp: 		300
+
+Gato
+Class: 		Bishop
+Bases: 		38, 10, 0, 20, 20, 16, 15, 7, 0, 6, 20
+Stats: 		38, 10, 0, 20, 20, 16, 15, 7, 0, 6, 20
+Growths: 	40, 25, 20, 40, 70, 80, 20, 20, 0, 0
+Equipped: 	-1
+Equipment: 	Iron Lance, Javelin, , , , , , 
+Used(eq): 	10, 10, -1, -1, -1, -1, -1, -1
+Weapons: 	, , , , 
+Items: 		, , , , 
+Lovers: 	, , , , 
+love_pts: 	0, 0, 0, 0, 0
+love_grt: 	0, 0, 0, 0, 0
+wpn_exp: 	0, 0, 0, 0, 0, 0, 0, 0, 0, 1
+Exp: 		1700
