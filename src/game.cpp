@@ -1,5 +1,8 @@
 #include "game.hpp"
+#include "texturemanager.hpp"
 #include <stdio.h>
+#include "SDL2/SDL.h"
+#include "SDL2/SDL_image.h"
 
 SDL_Texture* playerTex;
 SDL_Rect* srcR, destR;
@@ -33,6 +36,8 @@ void game::init(const char* title, int xpos, int ypos, int width, int height, bo
     } else {
         isRunning = false;
     }
+    
+    // playerTex = texturemanager::loadtexture("..//assets//horse.png", renderer);
     SDL_Surface* tempSurface = IMG_Load("..//assets//horse.png");
     playerTex = SDL_CreateTextureFromSurface(renderer, tempSurface);
     SDL_FreeSurface(tempSurface);
