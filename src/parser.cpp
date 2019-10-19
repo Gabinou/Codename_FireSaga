@@ -26,34 +26,30 @@ int between(FILE * fp, const char *open, const char *close, const char *interrup
     int open_pos;
     int close_num = 0;
     int close_pos;
-    if (filelength == "long") {
-        fpos_t pos;
-    } else {
-        long int pos;
-    }
+    int current_pos;
+    current_pos = ftell(fp);
+    fpos_t fopen_pos;
+    fpos_t fclose_pos;
+    
+    
     
     while((!feof(fp)) && (single != * interrupt) && ((open_num!=close_num)) || (open_num == 0)) {
+        // printf("%d,%d\n", open_num, close_num);
         single = fgetc(fp);
         if (single == * open) {
-            if (open_num == 0) {open_pos = ftell(fp);}
+            if (open_num == 0) {
+                open_pos = ftell(fp);
+                fgetpos(fp, &fopen_pos);
+                }
             open_num++;
         }
         if (single == * close) {close_num++;}
         printf("%c", single);
     }
-    // single = fseek(fp, ftell(fp), SEEK_SET);
     close_pos = ftell(fp);
-    rewind(fp);
-    printf("\n%d\n", open_pos);
-    printf("%d\n", close_pos);
-    fseek(fp, open_pos-1, 0);
-    single  = fgetc(fp);
-    printf("%c\n", single);    
-    fseek(fp, close_pos-1, 0);
-    single = fgetc(fp);
-    printf("%c\n", single);
-    printf("exit\n");
-    return(-1);
+    fgetpos(fp, &fclose_pos);
+    // printf("\n %d %d %d\n", current_pos, open_pos, close_pos);
+    return(fopen_pos, fclose_pos);
 }
 
 void read(const char *filename) {
