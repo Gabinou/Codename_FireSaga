@@ -6,6 +6,7 @@
 */
 using namespace std;
 #include "shared.hpp"
+#include "texturemanager.hpp"
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
 #include "generic.hpp"
