@@ -19,44 +19,41 @@ int findinchar(const char * string, const char * search) {
 /// \brief Find start and end position between first 'open' and last 'close'.
 /// Intended to find start and end position between a bunch of nested bracket pairs. 
 /// I.E. Should find these ->{ foo{ bar}}<-. Or these: ->{ }<- foo{ bar}}. 
-int between(FILE * fp, const char *open, const char *close, const char *interrupt = "@", const char * filelength = "short") {
-    
-    char single;
+int between(FILE * fp, const char *open, const char *close, const char *interrupt = "@") {
+    char single_char;
     int open_num = 0;
-    int open_pos;
     int close_num = 0;
-    int close_pos;
-    int current_pos;
     current_pos = ftell(fp);
     fpos_t fopen_pos;
     fpos_t fclose_pos;
-    
-    
-    
-    while((!feof(fp)) && (single != * interrupt) && ((open_num!=close_num)) || (open_num == 0)) {
+    while((!feof(fp)) && (single_char != * interrupt) && ((open_num!=close_num)) || (open_num == 0)) {
         // printf("%d,%d\n", open_num, close_num);
-        single = fgetc(fp);
-        if (single == * open) {
+        single_char = fgetc(fp);
+        if (single_char == * open) {
             if (open_num == 0) {
                 open_pos = ftell(fp);
                 fgetpos(fp, &fopen_pos);
                 }
             open_num++;
         }
-        if (single == * close) {close_num++;}
-        printf("%c", single);
+        if (single_char == * close) {close_num++;}
+        printf("%c", single_char);
     }
     close_pos = ftell(fp);
     fgetpos(fp, &fclose_pos);
-    // printf("\n %d %d %d\n", current_pos, open_pos, close_pos);
     return(fopen_pos, fclose_pos);
 }
+
+char fgetsuntil(FILE * fp, const char *open, const char *close, const char *interrupt = "@", const char * filelength = "short"){
+    
+}
+
 
 void read(const char *filename) {
     
     FILE *fp;
     char line_c[100];
-    char single;
+    char single_char;
     const char* elem = "@";
     const char* open = "{";
     const char* close = "}";
@@ -69,9 +66,9 @@ void read(const char *filename) {
         perror("Error opening file");
     } else {
         while(!feof(fp)) {
-            single = fgetc(fp);
-            if (single == * elem) {
-                printf("%c\n", single);
+            single_char = fgetc(fp);
+            if (single_char == * elem) {
+                printf("%c\n", single_char);
                 between(fp, open, close);
                 break;
                 // printf("%d \n", findinchar(line_c, elem));
@@ -80,7 +77,7 @@ void read(const char *filename) {
                 // if(findinchar(line_c, elem) != -1) {
                    
             } else {
-                // puts(single);
+                // puts(single_char);
             }
                 
             std::string line_str(line_c);
