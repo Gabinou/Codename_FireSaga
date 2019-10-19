@@ -12,9 +12,7 @@ Lovers={Sheeda, , , ,},
 love_pts={0, 0, 0, 0, 0},
 love_grt={0, 0, 0, 0, 0},
 wpn_exp={1, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-Exp={0}}a
-
-
+Exp={0}}
 @unit{Sheeda,
 Class={Pegasus Knight}
 Bases={16, 3, 0, 6, 12, 9, 7, 0, 0, 8, 7},
