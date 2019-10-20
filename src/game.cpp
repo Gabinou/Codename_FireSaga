@@ -1,12 +1,12 @@
 #include "texturemanager.hpp"
 #include "game.hpp"
 #include <stdio.h>
-
 #include "SDL2/SDL.h"
 #include "SDL2/SDL_image.h"
+#include "gameobject.hpp"
 
-SDL_Texture* playerTex;
-SDL_Rect srcR, destR;
+gameobject* player;
+
 
 game::game() {}
 game::~game() {}
@@ -37,20 +37,14 @@ void game::init(const char* title, int xpos, int ypos, int width, int height, bo
         isRunning = false;
     }
     
-    playerTex = texturemanager::loadtexture("..//assets//horse.png", renderer);
-    // SDL_Surface* tempSurface = IMG_Load("..//assets//horse.png");
-    // playerTex = SDL_CreateTextureFromSurface(renderer, tempSurface);
-    // SDL_FreeSurface(tempSurface);
+    // playerTex = texturemanager::loadtexture("..//assets//horse.png", renderer);
+    player =  new gameobject("..//assets//horse.png", renderer);
     
 };
 
 void game::update() {
-    count++;
-    
-    destR.h = 32;
-    destR.w = 32;
-    destR.x = count;
-    
+
+    player->update();
     printf("%d \n", count);
 }
 
@@ -68,7 +62,8 @@ void game::handleEvents() {
 void game::render() {
     SDL_RenderClear(renderer);
     // Add stuff to render. Paint the background First.
-    SDL_RenderCopy(renderer, playerTex, NULL, &destR);
+    // SDL_RenderCopy(renderer, playerTex, NULL, &destR);
+    player->render();
     
     SDL_RenderPresent(renderer);
 }
