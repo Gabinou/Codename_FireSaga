@@ -38,7 +38,7 @@ void game::init(const char* title, int xpos, int ypos, int width, int height, bo
     }
     
     // playerTex = texturemanager::loadtexture("..//assets//horse.png", renderer);
-    player =  new gameobject("..//assets//horse.png", renderer);
+    player =  new gameobject("..//assets//horse.png", renderer, 0, 0);
     
 };
 
