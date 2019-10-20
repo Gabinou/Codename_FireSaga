@@ -1,6 +1,76 @@
-// Code créé par Gabriel Taillon
-// Note on standards. Fuck all that complicated bullcrap. I'm writing for c++11. More convenient and the rest seems like bullshit.
-/*! \page handle map.cpp
-* \file map.cpp 
-* \brief Map object.
-*/
+#include "texturemanager.hpp"
+#include "map.hpp"
+
+
+
+int lvl1[20][25] = {
+    { 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0 },
+    { 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0 },
+    { 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0 },
+    { 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0 },
+    { 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0 },
+    { 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0 },
+    { 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0 },
+    { 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0 },
+    { 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0 },
+    { 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0 },
+    { 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0 },
+    { 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0 },
+    { 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0 },
+    { 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0 },
+    { 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0 },
+    { 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0 },
+    { 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0 },
+    { 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0 },
+    { 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0 },
+    { 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0 }
+    
+};
+
+
+map::map() {
+    dirt = Texturemanager::loadtexture("..//assets//dirt.png")
+    grass = Texturemanager::loadtexture("..//assets//grass.png")
+    water = Texturemanager::loadtexture("..//assets//water.png")
+
+    loadmap(lvl1);
+    src.x = src.y = 0;
+    dest.x = dest.y = 0;
+    src.w = dest.w = 32; 
+    src.h = dest.h = 32;
+}
+
+void map::loadmap(int arr[20][25];) {
+    for(int row = 0; row < 20; row++) {
+        for(int col = 0; col < 25; col++){
+            map[row][col] = arr[row][col];
+        }
+    }
+}
+void map::drawmap() {
+    int type = 0;
+    for(int row = 0; row < 20; row++) {
+        for(int col = 0; col < 25; col++){
+            type = map[row][col];
+            
+            dest.x = col * 32;
+            dest.y = row * 32;
+            
+            
+            switch (type){
+            case 0:
+                texturemanager::draw(water, src, dest);
+                break;
+            case 1:
+                texturemanager::draw(grass, src, dest);
+                break;
+            case 2:
+                texturemanager::draw(dirt, src, dest);
+                break;
+            default:
+                break;
+                
+            }
+        }
+    }
+}

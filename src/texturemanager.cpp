@@ -2,9 +2,16 @@
 #include "SDL2/SDL.h"
 #include "SDL2/SDL_image.h"
 
-SDL_Texture* texturemanager::loadtexture(const char * texture, SDL_Renderer * ren) {
+SDL_Texture* texturemanager::loadtexture(const char * texture) {
     SDL_Surface* tempsurface = IMG_Load(texture);
-    SDL_Texture* tex = SDL_CreateTextureFromSurface(ren, tempsurface);
+    SDL_Texture* tex = SDL_CreateTextureFromSurface(game::renderer, tempsurface);
     SDL_FreeSurface(tempsurface);
     return(tex);
 }
+
+svoid texture::managerdraw(SDL_Texture* tex, SDL_Rect src, SDL_Rect dest){
+    
+    SDL_RenderCopy(game::renderer, tex, &src, &dest)
+    
+}
+    
