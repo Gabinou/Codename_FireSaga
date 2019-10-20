@@ -66,6 +66,19 @@ char until(FILE * fp, const char * until = ",",  const char * interrupt = "@"){
 }
 
 
+void readcsv(const char *filename) {
+    FILE *fp;
+    char line_c[255];    
+    fp = fopen(filename, "r");
+    if (fp == NULL) {
+        perror("Error opening file");
+    }
+    while(!feof(fp)) {
+        fgets(line_c, sizeof(line_c), fp);
+        printf("%s\n", line_c);
+    }
+}
+
 void read(const char *filename) {
     
     FILE *fp;

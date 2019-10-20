@@ -13,7 +13,8 @@ using namespace std;
 
 int main(){
     puts("TESTING THIS BITCH.");
-    read("..\\units_FE1_bibstyle.txt");
+    // read("..\\units_FE1_bibstyle.txt");
+    readcsv("..\\testarr.txt");
     
     return 0;
 }

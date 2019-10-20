@@ -13,5 +13,6 @@
 #include <bits/stdc++.h> 
 
 extern void read(const char *filename);
+extern void readcsv(const char *filename);
 
 #endif /* PARSER_HPP */
