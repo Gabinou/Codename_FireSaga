@@ -2,19 +2,20 @@
 #define MAP_HPP
 
 #include "game.hpp"
+#include "SDL2/SDL.h"
 
-class map {
+class Map {
     
     public:
-        map();
-        ~map();
+        Map();
+        ~Map();
     
-        void loadmap();
-        void drawmap();
+        void loadMap(int arr[20][25]);
+        void drawMap();
     
     private:
     
-        SDL_rect src, dest;
+        SDL_Rect src, dest;
         
         SDL_Texture* dirt;    
         SDL_Texture* grass;    
@@ -23,7 +24,7 @@ class map {
         int map[20][25];
 
 
-}
+};
 
 
 #endif /* MAP_HPP */

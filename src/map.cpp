@@ -1,8 +1,5 @@
 #include "texturemanager.hpp"
 #include "map.hpp"
-
-
-
 int lvl1[20][25] = {
     { 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0 },
     { 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0 },
@@ -28,26 +25,26 @@ int lvl1[20][25] = {
 };
 
 
-map::map() {
-    dirt = Texturemanager::loadtexture("..//assets//dirt.png")
-    grass = Texturemanager::loadtexture("..//assets//grass.png")
-    water = Texturemanager::loadtexture("..//assets//water.png")
+Map::Map() {
+    dirt = texturemanager::loadtexture("..//assets//dirt.png");
+    grass = texturemanager::loadtexture("..//assets//grass.png");
+    water = texturemanager::loadtexture("..//assets//water.png");
 
-    loadmap(lvl1);
+    loadMap(lvl1);
     src.x = src.y = 0;
     dest.x = dest.y = 0;
     src.w = dest.w = 32; 
     src.h = dest.h = 32;
 }
 
-void map::loadmap(int arr[20][25];) {
+void Map::loadMap(int arr[20][25]) {
     for(int row = 0; row < 20; row++) {
         for(int col = 0; col < 25; col++){
             map[row][col] = arr[row][col];
         }
     }
 }
-void map::drawmap() {
+void Map::drawMap() {
     int type = 0;
     for(int row = 0; row < 20; row++) {
         for(int col = 0; col < 25; col++){
