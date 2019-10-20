@@ -14,7 +14,7 @@ using namespace std;
 int main(){
     puts("TESTING THIS BITCH.");
     // read("..\\units_FE1_bibstyle.txt");
-    readcsv("..\\testarr.txt");
+    readcsv("..\\testarr.txt", 2);
     
     return 0;
 }

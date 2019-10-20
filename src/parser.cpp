@@ -1,13 +1,12 @@
 #include <parser.hpp>
-
 #include <string>
 #include <stdio.h>
 #include <tuple>
+#include <vector>
 
 int findinchar(const char * string, const char * search) {
     puts(string);
     for(int n=0;string[n] != '\0';n++) {
-        printf("%d\n", n);
         if(string[n] == * search) {
             
             return(n);
@@ -65,17 +64,31 @@ char until(FILE * fp, const char * until = ",",  const char * interrupt = "@"){
     return(single_char);
 }
 
-
-void readcsv(const char *filename) {
+// How to determine datatype from string? Simple criteria: if there are '.' on the first line.
+void readcsv(const char *filename, const int header, const char * delim) {
+    
     FILE *fp;
-    char line_c[255];    
+    char line_c[255];
+    char * pch;
+    long int current_line = 0;
     fp = fopen(filename, "r");
     if (fp == NULL) {
         perror("Error opening file");
     }
     while(!feof(fp)) {
-        fgets(line_c, sizeof(line_c), fp);
+        while (current_line < header) {
+            fgets(line_c, sizeof(line_c), fp);
+            current_line++;
+        }
+            fgets(line_c, sizeof(line_c), fp);
         printf("%s\n", line_c);
+        printf("%d\n", findinchar(line_c, "."));
+        pch = strtok (line_c, delim);
+        while (pch != NULL) {
+            printf ("%s\n", pch);
+            pch = strtok (NULL, delim);
+        }
+        break;
     }
 }
 
