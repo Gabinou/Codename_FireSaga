@@ -65,8 +65,7 @@ char until(FILE * fp, const char * until = ",",  const char * interrupt = "@"){
 }
 
 // How to determine datatype from string? Simple criteria: if there are '.' on the first line.
-void readcsv(const char *filename, const int header, const char * delim) {
-    
+void readcsv(const char *filename, const int header, const char * delim){
     FILE *fp;
     char line_c[255];
     char * pch;
@@ -82,6 +81,12 @@ void readcsv(const char *filename, const int header, const char * delim) {
         }
             fgets(line_c, sizeof(line_c), fp);
         printf("%s\n", line_c);
+        
+        if ((findinchar(line_c, ".") >= -1) && (current_line==header)){
+            std::vector<std::vector<int>> out;
+        } else {
+            std::vector<std::vector<float>> out;
+        }
         printf("%d\n", findinchar(line_c, "."));
         pch = strtok (line_c, delim);
         while (pch != NULL) {
