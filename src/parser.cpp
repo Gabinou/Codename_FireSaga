@@ -5,10 +5,8 @@
 #include <vector>
 
 int findinchar(const char * string, const char * search) {
-    puts(string);
     for(int n=0;string[n] != '\0';n++) {
         if(string[n] == * search) {
-            
             return(n);
         }
     }
@@ -71,6 +69,7 @@ void readcsv(const char *filename, const int header, const char * delim){
     char * pch;
     long int current_line = 0;
     fp = fopen(filename, "r");
+    std::string::size_type sz;
     if (fp == NULL) {
         perror("Error opening file");
     }
@@ -80,25 +79,38 @@ void readcsv(const char *filename, const int header, const char * delim){
             current_line++;
         }
             fgets(line_c, sizeof(line_c), fp);
-        printf("%s\n", line_c);
+        // printf("%s\n", line_c);
         
         if ((findinchar(line_c, ".") >= -1) && (current_line==header)){
             std::vector<std::vector<int>> out;
         } else {
             std::vector<std::vector<float>> out;
         }
-        printf("%d\n", findinchar(line_c, "."));
+        if (findinchar(line_c, ".") >= -1) {
+            std::vector<int> row;
+        } else {
+            std::vector<float> row;
+        }
+
+        // printf("%d\n", findinchar(line_c, "."));
         pch = strtok (line_c, delim);
         while (pch != NULL) {
             printf ("%s\n", pch);
+            printf ("a");
             pch = strtok (NULL, delim);
+            if (findinchar(line_c, ".") >= -1) {
+                // printf("%d\n", atoi(pch));
+                row.push_back(atoi(pch));
+            } else {
+                // printf("%f\n", atof(pch));
+                // row.push_back(atof(pch));
+            }
         }
         break;
     }
 }
 
 void read(const char *filename) {
-    
     FILE *fp;
     char line_c[100];
     char single_char;
