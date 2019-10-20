@@ -68,6 +68,8 @@ void readcsv(const char *filename, const int header, const char * delim){
     char line_c[255];
     char * pch;
     long int current_line = 0;
+    std::vector<int> rowi;
+    std::vector<float> rowf;
     fp = fopen(filename, "r");
     std::string::size_type sz;
     if (fp == NULL) {
@@ -86,11 +88,7 @@ void readcsv(const char *filename, const int header, const char * delim){
         } else {
             std::vector<std::vector<float>> out;
         }
-        if (findinchar(line_c, ".") >= -1) {
-            std::vector<int> row;
-        } else {
-            std::vector<float> row;
-        }
+
 
         // printf("%d\n", findinchar(line_c, "."));
         pch = strtok (line_c, delim);
@@ -99,15 +97,21 @@ void readcsv(const char *filename, const int header, const char * delim){
             printf ("a");
             pch = strtok (NULL, delim);
             if (findinchar(line_c, ".") >= -1) {
-                // printf("%d\n", atoi(pch));
-                row.push_back(atoi(pch));
+                rowi.push_back(atoi(pch));
             } else {
-                // printf("%f\n", atof(pch));
-                // row.push_back(atof(pch));
+                rowf.push_back(atof(pch));
             }
         }
+        if (findinchar(line_c, ".") >= -1){
+            out.push_back(rowi);
+        } else {
+            out.push_back(rowf);
+        }
+        rowi.clear();
+        rowf.clear();
         break;
     }
+    return(out);
 }
 
 void read(const char *filename) {
