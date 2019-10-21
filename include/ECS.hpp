@@ -21,25 +21,25 @@ inline ComponentID getComponentTypeID() {
 }
 
 template <typename T> inline ComponentID getComponentTypeID() noexcept {
-    static ComponentID typeID = getComponentTypeID*(;
-    return(typeID());
+    static ComponentID typeID = getComponentTypeID();
+    return(typeID);
 }
 
 constexpr std::size_t maxComponents = 32;
 
 using ComponentBitSet = std::bitset<maxComponents>;
-using ComponentArray = std::array<Component* maxComponents>;
+using ComponentArray = std::array<Component*, maxComponents>;
 
 class Component {
     public:
         Entity* entity;
         
-        virtual init() {};
-        virtual update() {};
-        virtual draw() {};
+        virtual void init() {}
+        virtual void update() {}
+        virtual void draw() {}
 
-        virtual ~Component();
-}
+        virtual ~Component() {}
+};
 
 class Entity{
     private: 
@@ -47,7 +47,7 @@ class Entity{
         std::vector<std::unique_ptr<Component>> components;
         
         ComponentArray componentArray;
-        ComponentBitSet componentBitSet
+        ComponentBitSet componentBitSet;
     public:
         void update(){
             for(auto& c : components) {
@@ -60,12 +60,12 @@ class Entity{
         void destroy() {active = false;}
         
         template <typename T> bool hasComponent() const {
-            return componentBitSet[getComponentID<T>];
+            return componentBitSet[getComponentTypeID<T>];
         }
         
         template <typename T, typename... TArgs>
         T& addComponent(TArgs&&... mArgs) {
-            T* c(new T(std::forwad<TArgs>(mArgs)...));
+            T* c(new T(std::forward<TArgs>(mArgs)...));
         
             componentArray[getComponentTypeID<T>()] = c;
             componentBitSet[getComponentTypeID<T>()] = true;
@@ -87,12 +87,12 @@ class Manager {
 
     public:
         void update(){
-            for (auto* e : entities){
+            for (auto& e : entities){
                 e->update();
             }
         }
         void draw(){
-            for (auto* e : entities) {
+            for (auto& e : entities) {
                 e->draw();
             }
         }
@@ -104,14 +104,14 @@ class Manager {
         }
         
         Entity& addEntity(){
-            Entity* e = new Wntity();
+            Entity* e = new Entity();
             std::unique_ptr<Entity> uPtr{e};
             entities.emplace_back(std::move(uPtr));
             return *e;
         }
         
         
-}
+};
 
 
 

@@ -5,11 +5,16 @@
 #include "SDL2/SDL_image.h"
 #include "gameobject.hpp"
 #include "map.hpp"
+#include "ECS.hpp"
+#include "components.hpp"
 
 gameobject* player;
 Map* mapp;
 
 SDL_Renderer* game::renderer = nullptr;
+
+Manager manager;
+auto& newPlayer(manager.addEntity());
 
 game::game() {}
 game::~game() {}
@@ -43,15 +48,16 @@ void game::init(const char* title, int xpos, int ypos, int width, int height, bo
     // playerTex = texturemanager::loadtexture("..//assets//horse.png", renderer);
     player =  new gameobject("..//assets//horse.png", 0, 0);
     mapp =  new Map();
-    
+    newPlayer.addComponent<PositionComponent>();
 };
 
 void game::update() {
 
     player->update();
     // Map->loadMap();
-    printf("%d \n", count);
-    
+
+    manager.update();
+    // printf("%d, %d \n", newPlayer.getComponent<PositionComponent>().x(), newPlayer.getComponent<PositionComponent>().y());
 }
 
 void game::handleEvents() {

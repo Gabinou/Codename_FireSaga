@@ -21,12 +21,12 @@ class PositionComponent : public Component {
             ypos = 0;
         }
         
-        void update override {
+        void update() override {
             xpos++;
             ypos++;
         }
     
-} 
+};
 
 
 #endif /* COMPONENTS_HPP */
