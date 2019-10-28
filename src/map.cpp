@@ -1,4 +1,4 @@
-#include "texturemanager.hpp"
+#include "TextureManager.hpp"
 #include "map.hpp"
 int lvl1[20][25] = {
     { 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0 },
@@ -26,9 +26,9 @@ int lvl1[20][25] = {
 
 
 Map::Map() {
-    dirt = texturemanager::loadtexture("..//assets//dirt.png");
-    grass = texturemanager::loadtexture("..//assets//grass.png");
-    water = texturemanager::loadtexture("..//assets//water.png");
+    dirt = TextureManager::LoadTexture("..//assets//dirt.png");
+    grass = TextureManager::LoadTexture("..//assets//grass.png");
+    water = TextureManager::LoadTexture("..//assets//water.png");
 
     loadMap(lvl1);
     src.x = src.y = 0;
@@ -56,13 +56,13 @@ void Map::drawMap() {
             
             switch (type){
             case 0:
-                texturemanager::draw(water, src, dest);
+                TextureManager::Draw(water, src, dest);
                 break;
             case 1:
-                texturemanager::draw(grass, src, dest);
+                TextureManager::Draw(grass, src, dest);
                 break;
             case 2:
-                texturemanager::draw(dirt, src, dest);
+                TextureManager::Draw(dirt, src, dest);
                 break;
             default:
                 break;
