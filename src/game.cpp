@@ -5,6 +5,7 @@
 #include "SDL2/SDL_image.h"
 #include "map.hpp"
 #include "components.hpp"
+#include "spritecomponent.hpp"
 
 Map* mapp;
 
@@ -43,9 +44,13 @@ void game::init(const char* title, int xpos, int ypos, int width, int height, bo
     }
     
     // playerTex = texturemanager::loadtexture("..//assets//horse.png", renderer);
+    printf("Creating map \n");
     mapp =  new Map();
+    printf("Creating player\n");
     player.addComponent<PositionComponent>();
+    printf("Creating position\n");
     player.addComponent<SpriteComponent>("..//assets//horse.png");
+    printf("Done\n");
     // newPlayer.addComponent<PositionComponent>();
 };
 

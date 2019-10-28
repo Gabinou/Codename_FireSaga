@@ -19,9 +19,7 @@ class PositionComponent : public Component {
             xpos = x;
             ypos = y;
         }
-        int x(){return(xpos);};
-        int y(){return(ypos);};
-        
+
         void setPos(int x, int y) {
             xpos = x;
             ypos = y;
@@ -36,7 +34,10 @@ class PositionComponent : public Component {
             xpos++;
             ypos++;
         }
-    
+        int x() {return(xpos);}
+        void x(int x) {xpos = x;}
+        void y(int y) {ypos = y;}
+        int y() {return(ypos);}
 };
 
 

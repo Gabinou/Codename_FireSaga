@@ -17,22 +17,29 @@ class SpriteComponent : public Component {
         SpriteComponent() = default;
         
         SpriteComponent(const char* path){
+            printf("Loading texture\n");
             texture = TextureManager::LoadTexture(path);
+            printf("Loaded texture\n");
         }
         
         void init() override {
+            printf("Init sprite\n");
             position = &entity->getComponent<PositionComponent>();
+            printf("Inited sprite\n");
             srcRect.x = srcRect.y = 0;
             srcRect.w = srcRect.h = 32;
             destRect.w = destRect.h = 64;
+
         }
         
-        void update() override{
-            destRect.x = position->x();
-            destRect.y = position->y();
+        void update() override {
+            printf("Update sprite\n");
+            // destRect.x = position->x();
+            // destRect.y = position->y();
         }
         
         void draw() override {
+            printf("Drawing texture\n");
             TextureManager::Draw(texture, srcRect, destRect);
         }
 };
