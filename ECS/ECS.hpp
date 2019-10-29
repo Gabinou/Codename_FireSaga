@@ -16,15 +16,12 @@ class Entity;
 using ComponentID = std::size_t;
 
 inline ComponentID getComponentTypeID() {
-
     static ComponentID lastID = 0;
     return(lastID++);
 }
 
 template <typename T> inline ComponentID getComponentTypeID() noexcept {
-    printf("Getting ComponentID\n");
     static ComponentID typeID = getComponentTypeID();
-    printf("Got ComponentID\n");
     return typeID;
 }
 
@@ -80,9 +77,7 @@ class Entity{
         }    
 
         template<typename T> T& getComponent() const{
-            printf("Getting component\n");
             auto ptr(componentArray[getComponentTypeID<T>()]);
-            printf("Got component\n");
             return(*static_cast<T*>(ptr));
         }
       
