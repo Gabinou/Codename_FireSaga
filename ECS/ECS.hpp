@@ -16,13 +16,16 @@ class Entity;
 using ComponentID = std::size_t;
 
 inline ComponentID getComponentTypeID() {
+
     static ComponentID lastID = 0;
     return(lastID++);
 }
 
 template <typename T> inline ComponentID getComponentTypeID() noexcept {
+    printf("Getting ComponentID\n");
     static ComponentID typeID = getComponentTypeID();
-    return(typeID);
+    printf("Got ComponentID\n");
+    return typeID;
 }
 
 constexpr std::size_t maxComponents = 32;
@@ -50,12 +53,12 @@ class Entity{
         ComponentBitSet componentBitSet;
     public:
         void update(){
-            for(auto& c : components) {c->update();} 
+            for(auto& c : components) c->update();
         }
         void draw() {
-            for(auto& c : components) {c->draw();} 
+            for(auto& c : components) c->draw();
         }
-        bool isActive() const{return active;}
+        bool isActive() const{return(active);}
         void destroy() {active = false;}
         
         template <typename T> bool hasComponent() const {
@@ -65,6 +68,9 @@ class Entity{
         template <typename T, typename... TArgs>
         T& addComponent(TArgs&&... mArgs) {
             T* c(new T(std::forward<TArgs>(mArgs)...));
+            c->entity = this;
+            std::unique_ptr<Component> uPtr{c};
+            components.emplace_back(std::move(uPtr));
         
             componentArray[getComponentTypeID<T>()] = c;
             componentBitSet[getComponentTypeID<T>()] = true;
@@ -74,7 +80,9 @@ class Entity{
         }    
 
         template<typename T> T& getComponent() const{
+            printf("Getting component\n");
             auto ptr(componentArray[getComponentTypeID<T>()]);
+            printf("Got component\n");
             return(*static_cast<T*>(ptr));
         }
       

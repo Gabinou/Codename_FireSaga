@@ -3,6 +3,7 @@
 
 #include "ECS.hpp"
 #include "components.hpp"
+#include "positioncomponent.hpp"
 #include "texturemanager.hpp"
 #include "SDL2/SDL.h"
 
@@ -24,18 +25,19 @@ class SpriteComponent : public Component {
         
         void init() override {
             printf("Init sprite\n");
+            
             position = &entity->getComponent<PositionComponent>();
             printf("Inited sprite\n");
             srcRect.x = srcRect.y = 0;
             srcRect.w = srcRect.h = 32;
-            destRect.w = destRect.h = 64;
+            destRect.w = destRect.h = 32;
 
         }
         
         void update() override {
             printf("Update sprite\n");
-            // destRect.x = position->x();
-            // destRect.y = position->y();
+            destRect.x = position->x();
+            destRect.y = position->y();
         }
         
         void draw() override {

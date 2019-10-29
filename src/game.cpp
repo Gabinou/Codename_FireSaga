@@ -6,6 +6,7 @@
 #include "map.hpp"
 #include "components.hpp"
 #include "spritecomponent.hpp"
+#include "positioncomponent.hpp"
 
 Map* mapp;
 
