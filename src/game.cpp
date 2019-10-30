@@ -61,7 +61,7 @@ void game::update() {
     // Map->loadMap();
 
     manager.refresh();
-    manager.update();
+    manager.update(); 
     // printf("%d, %d \n", newPlayer.getComponent<PositionComponent>().x(), newPlayer.getComponent<PositionComponent>().y());
 }
 
