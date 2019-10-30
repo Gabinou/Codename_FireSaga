@@ -1,6 +1,8 @@
 #ifndef VECTOR2D_HPP
 #define VECTOR2D_HPP
 
+#include <stdio.h>
+
 class Vector2D {
     public:
         short int x;
@@ -10,7 +12,7 @@ class Vector2D {
         Vector2D(short int x, short int y);
         
         Vector2D& Add(const Vector2D& vec);
-        Vector2D& Substract(const Vector2D& vec);
+        Vector2D& Subtract(const Vector2D& vec);
         Vector2D& Multiply(const Vector2D& vec);
         Vector2D& Divide(const Vector2D& vec);
         
@@ -24,7 +26,7 @@ class Vector2D {
         Vector2D& operator*=(const Vector2D& vec);
         Vector2D& operator/=(const Vector2D& vec);
         
-    
-}
+        void print();
+};
 
 #endif /* VECTOR2D_HPP */
