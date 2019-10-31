@@ -1,24 +1,4 @@
-*.exe
-*.dll
-*.txt
-*.xml
-*.aseprite
-*.png
-
-Doxyfile
-# Ignore the build and lib dirs
-build/*
-lib/*
-assets/*
-
-CMakeFiles/*
-
-# Ignore any executables
-html/*
-latex/*
-
-# Ignore any executables
-bin/*
-
-# Ignore Mac specific files
-.DS_Store
+* 
+!*.cpp
+!*.hpp
+!.gitignore
