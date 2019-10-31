@@ -12,9 +12,11 @@
 Map* mapp;
 
 SDL_Renderer* game::renderer = nullptr;
+SDL_Event game::event;
 
 Manager manager;
 auto& player(manager.addEntity());
+auto& cursor(manager.addEntity());
 
 game::game() {}
 game::~game() {}
@@ -48,11 +50,10 @@ void game::init(const char* title, int xpos, int ypos, int width, int height, bo
     // playerTex = texturemanager::loadtexture("..//assets//horse.png", renderer);
     printf("Creating map \n");
     mapp =  new Map();
-    printf("Creating player\n");
     player.addComponent<PositionComponent>();
-    printf("Creating position\n");
+    cursor.addComponent<PositionComponent>(10,10);
     player.addComponent<SpriteComponent>("..//assets//horse.png");
-    printf("Done\n");
+    cursor.addComponent<SpriteComponent>("..//assets//cursor.png");
     // newPlayer.addComponent<PositionComponent>();
 };
 
@@ -68,7 +69,7 @@ void game::update() {
 }
 
 void game::handleEvents() {
-    SDL_Event event;
+
     SDL_PollEvent(&event);
     switch(event.type) {
         case SDL_QUIT:
