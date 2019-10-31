@@ -1,4 +1,9 @@
-* 
+*.*
 !*.cpp
 !*.hpp
 !.gitignore
+!CmakeLists.txt
+
+latex/*
+build/*
+makefile
