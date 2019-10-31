@@ -3,41 +3,29 @@
 
 #include "ECS.hpp"
 #include "components.hpp"
+#include "vector2D.hpp"
 
 class PositionComponent : public Component {
-    private:
-        int xpos;
-        int ypos;
     public:
+        Vector2D position;
         
         PositionComponent(){
-            xpos = 0;
-            ypos = 0;
+            position.x = 0;
+            position.y = 0;
         }
         
-        PositionComponent(int x, int y){
-            xpos = x;
-            ypos = y;
+        PositionComponent(short unsigned int x, short unsigned int y){
+            position.x = x;
+            position.y = y;
         }
 
-        void setPos(int x, int y) {
-            xpos = x;
-            ypos = y;
-        }
-        
-        void init() override {
-            xpos = 0;
-            ypos = 0;
+        void setPos(short unsigned int x, short unsigned int y) {
+            position.x = x;
+            position.y = y;
         }
         
         void update() override {
-            xpos++;
-            ypos++;
         }
-        int x() {return(xpos);}
-        void x(int x) {xpos = x;}
-        void y(int y) {ypos = y;}
-        int y() {return(ypos);}
 };
 
 

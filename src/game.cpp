@@ -7,6 +7,7 @@
 #include "components.hpp"
 #include "spritecomponent.hpp"
 #include "positioncomponent.hpp"
+#include "vector2D.hpp"
 
 Map* mapp;
 
@@ -62,6 +63,7 @@ void game::update() {
 
     manager.refresh();
     manager.update(); 
+    player.getComponent<PositionComponent>().position.Add(Vector2D(1,2));
     // printf("%d, %d \n", newPlayer.getComponent<PositionComponent>().x(), newPlayer.getComponent<PositionComponent>().y());
 }
 

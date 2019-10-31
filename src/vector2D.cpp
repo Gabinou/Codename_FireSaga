@@ -6,7 +6,7 @@ Vector2D::Vector2D() {
     y = 0;
 }
 
-Vector2D::Vector2D(short int x, short int y) {
+Vector2D::Vector2D( short unsigned int x,  short unsigned int y) {
     this->x = x;
     this->y = y;
 }
