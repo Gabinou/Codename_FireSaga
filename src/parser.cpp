@@ -74,35 +74,28 @@ char * slice_char(const char * in, int start, int end){
 
 /// \var int until
 /// \brief Find position in file of next 'until' character.
-char * until_line(char * line, const char * until = ",",  const char * interrupt = "@", const int out_size=255){
+int * parse_line(char * line, const char * until = ",",  const char * interrupt = "@", const int out_size=255){
     char single_char;
-    char* out;
+    int* out;
     char* end;
     int start = 0;
     char* current;
-    out = (char*)malloc((out_size)*sizeof(char*));
-    // out[0] = *"a";
-    // out[1] = *"\0";
-    // printf("%s", out);
-    // int i = 0;
-    // int ind = strchr(line, until);
+    out = (int*)malloc((out_size)*sizeof(int*));
+    int i = 0;
     end = strchr(line, *until);
     while (end!=NULL)
     {
-        printf ("found at %d %d\n", start, end+1-line);
         current = slice_char(line, start, (int)(end-line));
-        printf ("found %s\n", current);
-        printf ("found %s\n", line);
-        // printf("%d %d", start, end-line+1);
+        current = slice_char(line, start, (int)(end-line));
         start = end + 1 - line;
         end = strchr(end+1, *until);
-       
+        out[i] = atoi(current);
+        printf("%d \n", out[i]);
+        i++;
     }
-    getchar();
+    // out[i] = *"\0";
+    return(out);
 }
-
-
-
 
 // Proxy (https://stackoverflow.com/questions/2717513/c-choose-function-by-return-type) 
 // int x=f();
@@ -121,11 +114,13 @@ char * until_line(char * line, const char * until = ",",  const char * interrupt
 // }
 
 // How to determine datatype from string? Simple criteria: if there are '.' on the first line.
-void readcsv(const char *filename, const int header, const char * delim){
+void readcsv(const char *filename, const int header, const char * delim, const int out_size){
     FILE *fp;
     char line_c[255];
     char * pch;
     long int current_line = 0;
+    int* readline;
+    readline = (int*)malloc((out_size)*sizeof(int*));
     std::vector<int> rowi;
     std::vector<float> rowf;
     fp = fopen(filename, "r");
@@ -143,7 +138,11 @@ void readcsv(const char *filename, const int header, const char * delim){
         // printf("%d", current_line);
         // const char * until = ",";
         // strchr(line_c, *until);
-        until_line(line_c);
+        readline = parse_line(line_c);
+        for (int i = 0; i<sizeof(readline)/sizeof(readline[0]); i++) {
+            printf("%d \n", readline[i]);
+        }
+        printf("a \n");
         // printf(line_c);
         getchar();
         // current_line++;
