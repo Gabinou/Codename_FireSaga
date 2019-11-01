@@ -64,16 +64,18 @@ char until(FILE * fp, const char * until = ",",  const char * interrupt = "@"){
 
 char * slice_char(const char * in, int start, int end){
     char* out;
-    out = (char*)malloc((end-start)*sizeof(char*));
     if (end <= start){ 
         printf("a\n");
         end = (int)strcspn(in, "\n");
         printf("b\n");
     }
+    out = (char*)malloc((end-start)*sizeof(char*));
     printf("%d %d \n", start, end);
-    for (int i = start; i<=end; i++) {
+    for (int i = start; i<end; i++) {
+        printf("c\n");
+        printf("%d\n", i);
         out[i-start] = in[i];
-        printf("inloop: %d\n", in[i]);
+        printf("d\n");
     }
     // getchar();
     out[end-start] = *"\0";
@@ -82,12 +84,12 @@ char * slice_char(const char * in, int start, int end){
 
 int * parse_line(char * line, const char * until = ",", const int out_size=255){
     int* out;
-    char* end;
     int start = 0;
-    char* current;
-    out = (int*)malloc((out_size)*sizeof(int*));
     int i = 0;
+    char* end;
+    char* current;
     end = strchr(line, *until);
+    out = (int*)malloc((out_size)*sizeof(int*));
     while (end!=NULL)
     {
         current = slice_char(line, start, (int)(end-line));
@@ -101,13 +103,14 @@ int * parse_line(char * line, const char * until = ",", const int out_size=255){
         // printf("c\n");
         i++;
     }
-    current = slice_char(line, start, (int)(end));
+    // current = slice_char(line, start, (int)(end));
     // end = strchr(end+1, *"\n");
     // end = strchr(start, *"\n");
     // current = slice_char(line, start, (int)(end-line));
     // out[i] = atoi(current);
     // current = strchr(start+line, *"\n");
     // printf("%s\n", current);
+    printf("%d\n", out[i-1]);
     printf("%d\n", out[i]);
 
     // printf("b");
