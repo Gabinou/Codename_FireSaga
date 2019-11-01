@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 *.*
 !*.cpp
 !*.hpp
@@ -7,3 +8,29 @@
 latex/*
 build/*
 makefile
+=======
+*.exe
+*.dll
+*.txt
+*.xml
+*.aseprite
+*.png
+
+Doxyfile
+# Ignore the build and lib dirs
+build/*
+lib/*
+assets/*
+
+CMakeFiles/*
+
+# Ignore any executables
+html/*
+latex/*
+
+# Ignore any executables
+bin/*
+
+# Ignore Mac specific files
+.DS_Store
+>>>>>>> b0caa96963f5f8e3e2058208325cd148f08f80f2
