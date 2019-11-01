@@ -13,7 +13,10 @@
 int main(){
     puts("TESTING THIS BITCH.");
     // read("..\\units_FE1_bibstyle.txt");
-    readcsv_vec("..\\testarr.txt", 2);
+    std::vector<std::vector<int>> map;
+    map = readcsv_vec("..\\testarr.txt", 2);
+    print2D_vec(map);
+
     getchar();
     return 0;
 }

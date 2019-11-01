@@ -144,19 +144,9 @@ int count(char * line, const char * counted = ","){
 // {
   // return Proxy();
 // }
-template <typename T>
-void print2D_vec(std::vector<std::vector<T>> in_mat){
-    for (int row = 0; row<in_mat.size(); row++) {
-        for (int col = 0; col<in_mat[row].size(); col++) {
-            printf("%d,",in_mat[row][col]);
-            // printf("%d,%d",row, col);
-        }
-        printf("\n");
-    }
-}
 
-// How to determine datatype from string? Simple criteria: if there are '.' on the first line.
-void readcsv_vec(const char *filename, const int header, const char * delim, const int out_size){
+// How to use read_csv_vec for different datatypes?
+std::vector<std::vector<int>> readcsv_vec(const char *filename, const int header, const char * delim, const int out_size){
     FILE *fp;
     char line_c[255];
     long int current_line = 0;
@@ -177,8 +167,7 @@ void readcsv_vec(const char *filename, const int header, const char * delim, con
         col = parse_line_vec(line_c);
         matrix.push_back(col);
     }
-    print2D_vec(matrix);
-    getchar();
+    return(matrix);
 }
 
 void read(const char *filename) {
