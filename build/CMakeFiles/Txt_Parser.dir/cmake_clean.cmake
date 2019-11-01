@@ -1,9 +1,9 @@
 file(REMOVE_RECURSE
   "CMakeFiles/Txt_Parser.dir/src/main.cpp.obj"
   "CMakeFiles/Txt_Parser.dir/src/parser.cpp.obj"
+  "Txt_Parser.pdb"
   "Txt_Parser.exe"
   "Txt_Parser.exe.manifest"
-  "Txt_Parser.pdb"
   "libTxt_Parser.dll.a"
 )
 

@@ -1,7 +1,6 @@
 #include <parser.hpp>
 #include <stdio.h>
 
-using namespace std;
 
 
 
@@ -15,6 +14,6 @@ int main(){
     puts("TESTING THIS BITCH.");
     // read("..\\units_FE1_bibstyle.txt");
     readcsv("..\\testarr.txt", 2);
-    
+    getchar();
     return 0;
 }

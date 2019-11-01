@@ -57,10 +57,68 @@ char until(FILE * fp, const char * until = ",",  const char * interrupt = "@"){
         i++;
     }
     buffer[i] = '\0';
-    printf("buffer");
-    printf("%s\n", buffer);                
+    // printf("buffer");
+    // printf("%s\n", buffer);                
     return(single_char);
 }
+
+char * slice_char(const char * in, int start, int end){
+    char* out;
+    out = (char*)malloc((end-start)*sizeof(char*));
+    for (int i = start; i<end; i++) {
+        out[i-start] = in[i];
+    }
+    out[end-start] = *"\0";
+    return(out);
+}
+
+/// \var int until
+/// \brief Find position in file of next 'until' character.
+char * until_line(char * line, const char * until = ",",  const char * interrupt = "@", const int out_size=255){
+    char single_char;
+    char* out;
+    char* end;
+    int start = 0;
+    char* current;
+    out = (char*)malloc((out_size)*sizeof(char*));
+    // out[0] = *"a";
+    // out[1] = *"\0";
+    // printf("%s", out);
+    // int i = 0;
+    // int ind = strchr(line, until);
+    end = strchr(line, *until);
+    while (end!=NULL)
+    {
+        printf ("found at %d %d\n", start, end+1-line);
+        current = slice_char(line, start, (int)(end-line));
+        printf ("found %s\n", current);
+        printf ("found %s\n", line);
+        // printf("%d %d", start, end-line+1);
+        start = end + 1 - line;
+        end = strchr(end+1, *until);
+       
+    }
+    getchar();
+}
+
+
+
+
+// Proxy (https://stackoverflow.com/questions/2717513/c-choose-function-by-return-type) 
+// int x=f();
+// double x=f(); // different behaviour from above
+// by making f() return a proxy with an overloaded cast operator.
+
+// struct Proxy
+// {
+  // operator double() const { return 1.1; }
+  // operator int() const { return 2; }
+// };
+
+// Proxy f()
+// {
+  // return Proxy();
+// }
 
 // How to determine datatype from string? Simple criteria: if there are '.' on the first line.
 void readcsv(const char *filename, const int header, const char * delim){
@@ -78,40 +136,49 @@ void readcsv(const char *filename, const int header, const char * delim){
     while(!feof(fp)) {
         while (current_line < header) {
             fgets(line_c, sizeof(line_c), fp);
+            printf(line_c);
             current_line++;
         }
-            fgets(line_c, sizeof(line_c), fp);
-        // printf("%s\n", line_c);
-        
-        if ((findinchar(line_c, ".") >= -1) && (current_line==header)){
-            std::vector<std::vector<int>> out;
-        } else {
-            std::vector<std::vector<float>> out;
-        }
-
-
-        // printf("%d\n", findinchar(line_c, "."));
-        pch = strtok (line_c, delim);
-        while (pch != NULL) {
-            printf ("%s\n", pch);
-            printf ("a");
-            pch = strtok (NULL, delim);
-            if (findinchar(line_c, ".") >= -1) {
-                rowi.push_back(atoi(pch));
-            } else {
-                rowf.push_back(atof(pch));
-            }
-        }
-        if (findinchar(line_c, ".") >= -1){
-            out.push_back(rowi);
-        } else {
-            out.push_back(rowf);
-        }
-        rowi.clear();
-        rowf.clear();
-        break;
+        fgets(line_c, sizeof(line_c), fp);
+        // printf("%d", current_line);
+        // const char * until = ",";
+        // strchr(line_c, *until);
+        until_line(line_c);
+        // printf(line_c);
+        getchar();
+        // current_line++;
     }
-    return(out);
+            // fgets(line_c, sizeof(line_c), fp);
+        // // printf("%s\n", line_c);
+        
+        // if ((findinchar(line_c, ".") >= -1) && (current_line==header)){
+            // std::vector<std::vector<int>> out;
+        // } else {
+            // std::vector<std::vector<float>> out;
+        // }
+
+        // // printf("%d\n", findinchar(line_c, "."));
+        // pch = strtok (line_c, delim);
+        // while (pch != NULL) {
+            // printf ("%s\n", pch);
+            // printf ("a");
+            // pch = strtok (NULL, delim);
+            // if (findinchar(line_c, ".") >= -1) {
+                // rowi.push_back(atoi(pch));
+            // } else {
+                // rowf.push_back(atof(pch));
+            // }
+        // }
+        // if (findinchar(line_c, ".") >= -1){
+            // out.push_back(rowi);
+        // } else {
+            // out.push_back(rowf);
+        // }
+        // rowi.clear();
+        // rowf.clear();
+        // break;
+    // }
+    // return(out);
 }
 
 void read(const char *filename) {
