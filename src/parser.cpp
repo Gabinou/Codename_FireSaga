@@ -65,19 +65,12 @@ char until(FILE * fp, const char * until = ",",  const char * interrupt = "@"){
 char * slice_char(const char * in, int start, int end){
     char* out;
     if (end <= start){ 
-        printf("a\n");
         end = (int)strcspn(in, "\n");
-        printf("b\n");
     }
     out = (char*)malloc((end-start)*sizeof(char*));
-    printf("%d %d \n", start, end);
     for (int i = start; i<end; i++) {
-        printf("c\n");
-        printf("%d\n", i);
         out[i-start] = in[i];
-        printf("d\n");
     }
-    // getchar();
     out[end-start] = *"\0";
     return(out);
 }
@@ -96,28 +89,31 @@ int * parse_line(char * line, const char * until = ",", const int out_size=255){
         start = end + 1 - line;
         end = strchr(end+1, *until);
         out[i] = atoi(current);
-        // printf("%s\n", current);
-        printf("%s\n", end);
-        // printf("%d\n", (int)(end-line));
-        // printf("%d\n", out[i]);
-        // printf("c\n");
         i++;
     }
-    // current = slice_char(line, start, (int)(end));
-    // end = strchr(end+1, *"\n");
-    // end = strchr(start, *"\n");
-    // current = slice_char(line, start, (int)(end-line));
-    // out[i] = atoi(current);
-    // current = strchr(start+line, *"\n");
-    // printf("%s\n", current);
-    printf("%d\n", out[i-1]);
-    printf("%d\n", out[i]);
-
-    // printf("b");
-    // out[i+1] = *"\0";
-    getchar();
+    current = slice_char(line, start, (int)(end));
+    out[i] = atoi(current);
     return(out);
 }
+
+std::vector<int> parse_line_vec(char * line, const char * until = ",", const int out_size=255){
+    std::vector<int> out;
+    int start = 0;
+    char* end;
+    char* current;
+    end = strchr(line, *until);
+    while (end!=NULL)
+    {
+        current = slice_char(line, start, (int)(end-line));
+        start = end + 1 - line;
+        end = strchr(end+1, *until);
+        out.push_back(atoi(current));
+    }
+    current = slice_char(line, start, (int)(end));
+    out.push_back(atoi(current));
+    return(out);
+}
+
 
 int count(char * line, const char * counted = ","){
     int out = 0;
@@ -149,6 +145,16 @@ int count(char * line, const char * counted = ","){
   // return Proxy();
 // }
 
+void print2Dvec(std::vector<std::vector<int>> in_mat){
+    for (int row = 0; row<in_mat.size(); row++) {
+        for (int col = 0; col<in_mat[row].size(); col++) {
+            printf("%d,",in_mat[row][col]);
+            // printf("%d,%d",row, col);
+        }
+        printf("\n");
+    }
+}
+
 // How to determine datatype from string? Simple criteria: if there are '.' on the first line.
 void readcsv(const char *filename, const int header, const char * delim, const int out_size){
     FILE *fp;
@@ -156,6 +162,9 @@ void readcsv(const char *filename, const int header, const char * delim, const i
     char * pch;
     long int current_line = 0;
     int* readline;
+    std::vector<int> col;
+    std::vector<std::vector<int>> matrix;
+    // std::vector<std::vector<int>> matrix;
     readline = (int*)malloc((out_size)*sizeof(int*));
     std::vector<int> rowi;
     std::vector<float> rowf;
@@ -164,12 +173,12 @@ void readcsv(const char *filename, const int header, const char * delim, const i
     if (fp == NULL) {
         perror("Error opening file");
     }
+    while (current_line < header) {
+        fgets(line_c, sizeof(line_c), fp);
+        printf(line_c);
+        current_line++;
+    }
     while(!feof(fp)) {
-        while (current_line < header) {
-            fgets(line_c, sizeof(line_c), fp);
-            printf(line_c);
-            current_line++;
-        }
         fgets(line_c, sizeof(line_c), fp);
         printf("%s \n", line_c);
         // const char * until = ",";
@@ -177,14 +186,20 @@ void readcsv(const char *filename, const int header, const char * delim, const i
         int line_length = count(line_c);
         printf("Line length %d \n", line_length);
         readline = parse_line(line_c);
+        col = parse_line_vec(line_c);
+        matrix.push_back(col);
         // for (int i = 0; i<line_length; i++) {
             // printf("%d \n", readline[i]);
         // }
+        
+        // matrix.push_back(col);
         printf("a \n");
         // printf(line_c);
-        getchar();
+        
         // current_line++;
     }
+    print2Dvec(matrix);
+    getchar();
             // fgets(line_c, sizeof(line_c), fp);
         // // printf("%s\n", line_c);
         

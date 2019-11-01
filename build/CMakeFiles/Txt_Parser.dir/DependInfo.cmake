@@ -4,8 +4,8 @@ set(CMAKE_DEPENDS_LANGUAGES
   )
 # The set of files for implicit dependencies of each language:
 set(CMAKE_DEPENDS_CHECK_CXX
-  "C:/Users/Gabinours-PC/Sync/Programming/Cpp/TxtParser/src/main.cpp" "C:/Users/Gabinours-PC/Sync/Programming/Cpp/TxtParser/build/CMakeFiles/Txt_Parser.dir/src/main.cpp.obj"
-  "C:/Users/Gabinours-PC/Sync/Programming/Cpp/TxtParser/src/parser.cpp" "C:/Users/Gabinours-PC/Sync/Programming/Cpp/TxtParser/build/CMakeFiles/Txt_Parser.dir/src/parser.cpp.obj"
+  "C:/Users/HPinours/Sync/Programming/Cpp/TxtParser/src/main.cpp" "C:/Users/HPinours/Sync/Programming/Cpp/TxtParser/build/CMakeFiles/Txt_Parser.dir/src/main.cpp.obj"
+  "C:/Users/HPinours/Sync/Programming/Cpp/TxtParser/src/parser.cpp" "C:/Users/HPinours/Sync/Programming/Cpp/TxtParser/build/CMakeFiles/Txt_Parser.dir/src/parser.cpp.obj"
   )
 set(CMAKE_CXX_COMPILER_ID "GNU")
 
