@@ -56,7 +56,7 @@ char until(FILE * fp, const char * until = ",",  const char * interrupt = "@"){
         buffer[i] = single_char;
         i++;
     }
-    buffer[i] = '\0';
+    buffer[i] = *"\0";
     // printf("buffer");
     // printf("%s\n", buffer);                
     return(single_char);
@@ -65,24 +65,28 @@ char until(FILE * fp, const char * until = ",",  const char * interrupt = "@"){
 char * slice_char(const char * in, int start, int end){
     char* out;
     out = (char*)malloc((end-start)*sizeof(char*));
-    if (end <= start){ // we assume ,1\n at endline.
+    if (end <= start){ 
+        printf("a\n");
         end = (int)strcspn(in, "\n");
+        printf("b\n");
     }
-    for (int i = start; i<end; i++) {
+    printf("%d %d \n", start, end);
+    for (int i = start; i<=end; i++) {
         out[i-start] = in[i];
+        printf("inloop: %d\n", in[i]);
     }
+    // getchar();
     out[end-start] = *"\0";
     return(out);
 }
 
 int * parse_line(char * line, const char * until = ",", const int out_size=255){
     int* out;
-    int i = 0;
-    int start = 0;
     char* end;
+    int start = 0;
     char* current;
-    
     out = (int*)malloc((out_size)*sizeof(int*));
+    int i = 0;
     end = strchr(line, *until);
     while (end!=NULL)
     {
@@ -91,7 +95,7 @@ int * parse_line(char * line, const char * until = ",", const int out_size=255){
         end = strchr(end+1, *until);
         out[i] = atoi(current);
         // printf("%s\n", current);
-        // printf("%s\n", end);
+        printf("%s\n", end);
         // printf("%d\n", (int)(end-line));
         // printf("%d\n", out[i]);
         // printf("c\n");
@@ -101,13 +105,14 @@ int * parse_line(char * line, const char * until = ",", const int out_size=255){
     // end = strchr(end+1, *"\n");
     // end = strchr(start, *"\n");
     // current = slice_char(line, start, (int)(end-line));
-    out[i] = atoi(current);
+    // out[i] = atoi(current);
     // current = strchr(start+line, *"\n");
     // printf("%s\n", current);
+    printf("%d\n", out[i]);
 
     // printf("b");
-    out[i+1] = *"\0";
-    // getchar();
+    // out[i+1] = *"\0";
+    getchar();
     return(out);
 }
 
@@ -169,9 +174,9 @@ void readcsv(const char *filename, const int header, const char * delim, const i
         int line_length = count(line_c);
         printf("Line length %d \n", line_length);
         readline = parse_line(line_c);
-        for (int i = 0; i<line_length; i++) {
-            printf("%d \n", readline[i]);
-        }
+        // for (int i = 0; i<line_length; i++) {
+            // printf("%d \n", readline[i]);
+        // }
         printf("a \n");
         // printf(line_c);
         getchar();
