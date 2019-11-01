@@ -65,6 +65,9 @@ char until(FILE * fp, const char * until = ",",  const char * interrupt = "@"){
 char * slice_char(const char * in, int start, int end){
     char* out;
     out = (char*)malloc((end-start)*sizeof(char*));
+    if (end <= start){ // we assume ,1\n at endline.
+        end = (int)strcspn(in, "\n");
+    }
     for (int i = start; i<end; i++) {
         out[i-start] = in[i];
     }
@@ -72,30 +75,55 @@ char * slice_char(const char * in, int start, int end){
     return(out);
 }
 
-/// \var int until
-/// \brief Find position in file of next 'until' character.
-int * parse_line(char * line, const char * until = ",",  const char * interrupt = "@", const int out_size=255){
-    char single_char;
+int * parse_line(char * line, const char * until = ",", const int out_size=255){
     int* out;
-    char* end;
-    int start = 0;
-    char* current;
-    out = (int*)malloc((out_size)*sizeof(int*));
     int i = 0;
+    int start = 0;
+    char* end;
+    char* current;
+    
+    out = (int*)malloc((out_size)*sizeof(int*));
     end = strchr(line, *until);
     while (end!=NULL)
     {
         current = slice_char(line, start, (int)(end-line));
-        current = slice_char(line, start, (int)(end-line));
         start = end + 1 - line;
         end = strchr(end+1, *until);
         out[i] = atoi(current);
-        printf("%d \n", out[i]);
+        // printf("%s\n", current);
+        // printf("%s\n", end);
+        // printf("%d\n", (int)(end-line));
+        // printf("%d\n", out[i]);
+        // printf("c\n");
         i++;
     }
-    // out[i] = *"\0";
+    current = slice_char(line, start, (int)(end));
+    // end = strchr(end+1, *"\n");
+    // end = strchr(start, *"\n");
+    // current = slice_char(line, start, (int)(end-line));
+    out[i] = atoi(current);
+    // current = strchr(start+line, *"\n");
+    // printf("%s\n", current);
+
+    // printf("b");
+    out[i+1] = *"\0";
+    // getchar();
     return(out);
 }
+
+int count(char * line, const char * counted = ","){
+    int out = 0;
+    char* pch;
+    pch = strchr(line, *counted);
+    while (pch!=NULL)
+    {
+        pch = strchr(pch+1, *counted);
+        out++;
+    }
+    out++;
+    return(out);
+}
+
 
 // Proxy (https://stackoverflow.com/questions/2717513/c-choose-function-by-return-type) 
 // int x=f();
@@ -135,11 +163,13 @@ void readcsv(const char *filename, const int header, const char * delim, const i
             current_line++;
         }
         fgets(line_c, sizeof(line_c), fp);
-        // printf("%d", current_line);
+        printf("%s \n", line_c);
         // const char * until = ",";
         // strchr(line_c, *until);
+        int line_length = count(line_c);
+        printf("Line length %d \n", line_length);
         readline = parse_line(line_c);
-        for (int i = 0; i<sizeof(readline)/sizeof(readline[0]); i++) {
+        for (int i = 0; i<line_length; i++) {
             printf("%d \n", readline[i]);
         }
         printf("a \n");
