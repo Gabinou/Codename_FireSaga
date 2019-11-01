@@ -83,7 +83,7 @@ void game::render() {
     SDL_RenderClear(renderer);
     // Add stuff to render. Paint the background First.
     // SDL_RenderCopy(renderer, playerTex, NULL, &destR);
-    mapp->drawMap();
+    mapp->drawMapVec();
     manager.draw();
     SDL_RenderPresent(renderer);
 }

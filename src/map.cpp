@@ -1,5 +1,7 @@
 #include "TextureManager.hpp"
 #include "map.hpp"
+#include "parser.hpp"
+
 int lvl1[20][25] = {
     { 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0 },
     { 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0 },
@@ -31,6 +33,7 @@ Map::Map() {
     water = TextureManager::LoadTexture("..//assets//water.png");
 
     loadMap(lvl1);
+    loadMapVec(readcsv_vec("..//testmap.txt", 1));
     src.x = src.y = 0;
     dest.x = dest.y = 0;
     src.w = dest.w = 32; 
@@ -44,6 +47,40 @@ void Map::loadMap(int arr[20][25]) {
         }
     }
 }
+
+void Map::loadMapVec(std::vector<std::vector<int>> arr) {
+    map_vec = arr;
+}
+
+void Map::drawMapVec() {
+    int type = 0;
+    for (int row = 0; row<map_vec.size(); row++) {
+        for (int col = 0; col<map_vec[row].size(); col++) {
+            type = map_vec[row][col];
+            
+            dest.x = col * tile_size[0];
+            dest.y = row * tile_size[1];
+            
+            
+            switch (type){
+            case 0:
+                TextureManager::Draw(water, src, dest);
+                break;
+            case 1:
+                TextureManager::Draw(grass, src, dest);
+                break;
+            case 2:
+                TextureManager::Draw(dirt, src, dest);
+                break;
+            default:
+                break;
+                
+            }
+        }
+    }
+}
+
+
 void Map::drawMap() {
     int type = 0;
     for(int row = 0; row < 20; row++) {
