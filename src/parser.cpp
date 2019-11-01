@@ -159,30 +159,21 @@ void print2D_vec(std::vector<std::vector<T>> in_mat){
 void readcsv_vec(const char *filename, const int header, const char * delim, const int out_size){
     FILE *fp;
     char line_c[255];
-    char * pch;
     long int current_line = 0;
-    int* readline;
     static int line_length;
     std::vector<int> col;
     std::vector<std::vector<int>> matrix;
-    // std::vector<std::vector<int>> matrix;
-    readline = (int*)malloc((out_size)*sizeof(int*));
-    std::vector<int> rowi;
-    std::vector<float> rowf;
     fp = fopen(filename, "r");
-    std::string::size_type sz;
     if (fp == NULL) {
         perror("Error opening file");
     }
     while (current_line < header) {
         fgets(line_c, sizeof(line_c), fp);
-        printf(line_c);
         current_line++;
     }
     while(!feof(fp)) {
         fgets(line_c, sizeof(line_c), fp);
         line_length = count(line_c);
-        readline = parse_line(line_c);
         col = parse_line_vec(line_c);
         matrix.push_back(col);
     }
