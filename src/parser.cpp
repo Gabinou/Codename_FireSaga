@@ -144,8 +144,8 @@ int count(char * line, const char * counted = ","){
 // {
   // return Proxy();
 // }
-
-void print2Dvec(std::vector<std::vector<int>> in_mat){
+template <typename T>
+void print2D_vec(std::vector<std::vector<T>> in_mat){
     for (int row = 0; row<in_mat.size(); row++) {
         for (int col = 0; col<in_mat[row].size(); col++) {
             printf("%d,",in_mat[row][col]);
@@ -156,12 +156,13 @@ void print2Dvec(std::vector<std::vector<int>> in_mat){
 }
 
 // How to determine datatype from string? Simple criteria: if there are '.' on the first line.
-void readcsv(const char *filename, const int header, const char * delim, const int out_size){
+void readcsv_vec(const char *filename, const int header, const char * delim, const int out_size){
     FILE *fp;
     char line_c[255];
     char * pch;
     long int current_line = 0;
     int* readline;
+    static int line_length;
     std::vector<int> col;
     std::vector<std::vector<int>> matrix;
     // std::vector<std::vector<int>> matrix;
@@ -180,57 +181,13 @@ void readcsv(const char *filename, const int header, const char * delim, const i
     }
     while(!feof(fp)) {
         fgets(line_c, sizeof(line_c), fp);
-        printf("%s \n", line_c);
-        // const char * until = ",";
-        // strchr(line_c, *until);
-        int line_length = count(line_c);
-        printf("Line length %d \n", line_length);
+        line_length = count(line_c);
         readline = parse_line(line_c);
         col = parse_line_vec(line_c);
         matrix.push_back(col);
-        // for (int i = 0; i<line_length; i++) {
-            // printf("%d \n", readline[i]);
-        // }
-        
-        // matrix.push_back(col);
-        printf("a \n");
-        // printf(line_c);
-        
-        // current_line++;
     }
-    print2Dvec(matrix);
+    print2D_vec(matrix);
     getchar();
-            // fgets(line_c, sizeof(line_c), fp);
-        // // printf("%s\n", line_c);
-        
-        // if ((findinchar(line_c, ".") >= -1) && (current_line==header)){
-            // std::vector<std::vector<int>> out;
-        // } else {
-            // std::vector<std::vector<float>> out;
-        // }
-
-        // // printf("%d\n", findinchar(line_c, "."));
-        // pch = strtok (line_c, delim);
-        // while (pch != NULL) {
-            // printf ("%s\n", pch);
-            // printf ("a");
-            // pch = strtok (NULL, delim);
-            // if (findinchar(line_c, ".") >= -1) {
-                // rowi.push_back(atoi(pch));
-            // } else {
-                // rowf.push_back(atof(pch));
-            // }
-        // }
-        // if (findinchar(line_c, ".") >= -1){
-            // out.push_back(rowi);
-        // } else {
-            // out.push_back(rowf);
-        // }
-        // rowi.clear();
-        // rowf.clear();
-        // break;
-    // }
-    // return(out);
 }
 
 void read(const char *filename) {

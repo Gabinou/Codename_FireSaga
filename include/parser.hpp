@@ -14,5 +14,6 @@
 
 extern void read(const char *filename);
 extern void readcsv(const char *filename, const int header = 0, const char* delim = ",", const int out_size=255);
+extern void readcsv_vec(const char *filename, const int header = 0, const char* delim = ",", const int out_size=255);
 
 #endif /* PARSER_HPP */
