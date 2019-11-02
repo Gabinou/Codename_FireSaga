@@ -35,7 +35,7 @@ void Map::TileSize(const short unsigned int width, const short unsigned int heig
     tilesize[1] = height;
 }
 
-void Map::loadMap(std::vector<std::vector<int>> arr) {
+void Map::loadMap(const std::vector<std::vector<int>> arr) {
     map = arr;
     
     // printf("loadedmap");
