@@ -8,22 +8,13 @@ class Map {
     
     public:
         void loadTiles();
-<<<<<<< HEAD
-        void initMembers();
-=======
         void initVars();
         Map(const short int width, const short int height);
->>>>>>> maptest
         Map();
         Map(const short unsigned int width, const short unsigned int height);
         ~Map();
-<<<<<<< HEAD
-        void TileSize(const short unsigned int width, const short unsigned int height);
-        void loadMap(const std::vector<std::vector<int>> arr);
-=======
         void TileSize(const short int width, const short int height);
         void loadMap(std::string filename);
->>>>>>> maptest
         void drawMap();
     
     private:
