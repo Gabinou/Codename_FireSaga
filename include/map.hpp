@@ -7,10 +7,13 @@
 class Map {
     
     public:
+        void loadTiles();
+        void initMembers();
         Map();
+        Map(const short unsigned int width, const short unsigned int height);
         ~Map();
-    
-        void loadMap(std::vector<std::vector<int>> arr);
+        void TileSize(const short unsigned int width, const short unsigned int height);
+        void loadMap(const std::string filename);
         void drawMap();
     
     private:
@@ -21,7 +24,8 @@ class Map {
         SDL_Texture* grass;    
         SDL_Texture* water;    
 
-        int tile_size[2] = {32, 32};
+        int tilesize[2] = {32, 32};
+        
         std::vector<std::vector<int>> map;
 
 
