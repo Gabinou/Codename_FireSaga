@@ -7,6 +7,8 @@
 class Map {
     
     public:
+        void loadTiles();
+        void initVars();
         Map();
         ~Map();
     

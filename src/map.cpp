@@ -2,10 +2,14 @@
 #include "map.hpp"
 #include "parser.hpp"
 
-Map::Map() {
+void Map::loadTiles() {
     dirt = TextureManager::LoadTexture("..//assets//dirt.png");
     grass = TextureManager::LoadTexture("..//assets//grass.png");
     water = TextureManager::LoadTexture("..//assets//water.png");
+}
+
+Map::Map() {
+    loadTiles();
     loadMap(readcsv_vec("..//testmap.txt", 1));
     src.x = src.y = 0;
     dest.x = dest.y = 0;
