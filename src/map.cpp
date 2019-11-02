@@ -15,12 +15,13 @@ void Map::initVars() {
     src.h = dest.h = 32;
     tilesize[0] = 32;
     tilesize[1] = 32;
-    printf("inited members");
 }
 
-void Map::TileSize(const short int width, const short int height) {
+void Map::TileSize(const short int unsigned width, const short int unsigned height) {
     tilesize[0] = width;
     tilesize[1] = height;
+    src.w = dest.w = width;
+    src.h = dest.h = height;
 }
 
 Map::Map() {
@@ -46,16 +47,11 @@ void Map::drawMap() {
         for (int col = 0; col<map[row].size(); col++) {
             type = map[row][col];
             
-            dest.x = col * 32;
-            dest.y = row * 32;
-            // printf("%d %d\n", tilesize[0], tilesize[1]);
-            // if (type!=0) {
-                // printf("%d %d %d\n",col, row, type);
-            // }
+            dest.x = col * tilesize[0];
+            dest.y = row * tilesize[1];
             
             switch (type){
             case 0:
-                printf("drawing\n");
                 TextureManager::Draw(water, src, dest);
                 break;
             case 1:

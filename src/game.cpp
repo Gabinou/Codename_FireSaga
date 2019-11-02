@@ -49,7 +49,7 @@ void game::init(const char* title, int xpos, int ypos, int width, int height, bo
     
     // playerTex = texturemanager::loadtexture("..//assets//horse.png", renderer);
     printf("Creating map \n");
-    mapp =  new Map(32,32);
+    mapp =  new Map(64,64);
 
     player.addComponent<PositionComponent>(0, 0);
     cursor.addComponent<PositionComponent>(0, 0);
