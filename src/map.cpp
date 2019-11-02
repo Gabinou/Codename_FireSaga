@@ -27,7 +27,7 @@ Map::Map(const short unsigned int width, const short unsigned int height){
     initMembers();
     tilesize[0] = width;
     tilesize[1] = height;
-    loadMap("a");
+    loadMap(readcsv_vec("..//testmap.txt", 1));
 }
 
 void Map::TileSize(const short unsigned int width, const short unsigned int height){
@@ -35,10 +35,10 @@ void Map::TileSize(const short unsigned int width, const short unsigned int heig
     tilesize[1] = height;
 }
 
-void Map::loadMap(const std::string filename) {
-    map = readcsv_vec("..//testmap.txt", 1);
+void Map::loadMap(std::vector<std::vector<int>> arr) {
+    map = arr;
     
-    printf("loadedmap");
+    // printf("loadedmap");
     // int type = 0;
     // for (int row = 0; row<map.size(); row++) {
         // for (int col = 0; col<map[row].size(); col++) {
