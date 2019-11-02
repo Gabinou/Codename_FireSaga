@@ -11,6 +11,8 @@ void Map::loadTiles() {
 void Map::initVars() {
     src.x = src.y = 0;
     dest.x = dest.y = 0;
+    src.w = dest.w = 32;
+    src.h = dest.h = 32;
     tilesize[0] = 32;
     tilesize[1] = 32;
     printf("inited members");
