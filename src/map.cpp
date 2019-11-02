@@ -27,18 +27,16 @@ void Map::TileSize(const short int unsigned width, const short int unsigned heig
 Map::Map() {
     loadTiles();
     initVars();
-    loadMap("a");
 }
 
 Map::Map(const short unsigned int width, const short unsigned int height) {
     loadTiles();
     initVars();
     TileSize(width, height);
-    loadMap("a");
 }
 
 void Map::loadMap(std::string filename) {
-    map = readcsv_vec("..//testmap.txt", 1);
+    map = readcsv_vec(filename.c_str(), 1);
 }
 
 void Map::drawMap() {
