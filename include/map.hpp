@@ -10,10 +10,8 @@ class Map {
         Map();
         ~Map();
     
-        void loadMap(int arr[20][25]);
-        void loadMapVec(std::vector<std::vector<int>> arr);
+        void loadMap(std::vector<std::vector<int>> arr);
         void drawMap();
-        void drawMapVec();
     
     private:
     
@@ -23,9 +21,8 @@ class Map {
         SDL_Texture* grass;    
         SDL_Texture* water;    
 
-        int map[20][25];
         int tile_size[2] = {32, 32};
-        std::vector<std::vector<int>> map_vec;
+        std::vector<std::vector<int>> map;
 
 
 };
