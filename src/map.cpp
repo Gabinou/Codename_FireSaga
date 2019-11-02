@@ -23,18 +23,18 @@ void Map::TileSize(const short int width, const short int height) {
 Map::Map() {
     loadTiles();
     initVars();
-    loadMap(readcsv_vec("..//testmap.txt", 1));
+    loadMap("a");
 }
 
 Map::Map(const short int width, const short int height) {
     loadTiles();
     initVars();
     TileSize(width, height);
-    loadMap(readcsv_vec("..//testmap.txt", 1));
+    loadMap("a");
 }
 
-void Map::loadMap(std::vector<std::vector<int>> arr) {
-    map = arr;
+void Map::loadMap(std::string filename) {
+    map = readcsv_vec("..//testmap.txt", 1);
 }
 
 void Map::drawMap() {

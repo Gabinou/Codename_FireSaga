@@ -13,7 +13,7 @@ class Map {
         Map();
         ~Map();
         void TileSize(const short int width, const short int height);
-        void loadMap(std::vector<std::vector<int>> arr);
+        void loadMap(std::string filename);
         void drawMap();
     
     private:
