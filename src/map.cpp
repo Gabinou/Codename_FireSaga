@@ -27,7 +27,7 @@ Map::Map() {
     loadMap("a");
 }
 
-Map::Map(const short int width, const short int height) {
+Map::Map(const short unsigned int width, const short unsigned int height) {
     loadTiles();
     initVars();
     TileSize(width, height);

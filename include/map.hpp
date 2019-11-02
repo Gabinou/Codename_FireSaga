@@ -9,7 +9,6 @@ class Map {
     public:
         void loadTiles();
         void initVars();
-        Map(const short int width, const short int height);
         Map();
         Map(const short unsigned int width, const short unsigned int height);
         ~Map();
