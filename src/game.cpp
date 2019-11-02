@@ -50,12 +50,7 @@ void game::init(const char* title, int xpos, int ypos, int width, int height, bo
     // playerTex = texturemanager::loadtexture("..//assets//horse.png", renderer);
     printf("Creating map \n");
     mapp =  new Map(32,32);
-<<<<<<< HEAD
-    // mapp->loadMap("a");
-    player.addComponent<PositionComponent>(0, 0);
-=======
     player.addComponent<PositionComponent>();
->>>>>>> maptest
     cursor.addComponent<PositionComponent>(0, 0);
     player.addComponent<SpriteComponent>("..//assets//horse.png");
     cursor.addComponent<SpriteComponent>("..//assets//cursor.png");
