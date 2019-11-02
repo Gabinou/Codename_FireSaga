@@ -13,6 +13,7 @@ void Map::initMembers() {
     src.x = src.y = 0;
     dest.x = dest.y = 0;
     tilesize[0] = tilesize[1] = 32;
+    printf("inited members");
 }
 
 Map::Map() {
@@ -21,10 +22,12 @@ Map::Map() {
 }
 
 Map::Map(const short unsigned int width, const short unsigned int height){
+    printf("map with tileseize");
     loadTiles();
     initMembers();
     tilesize[0] = width;
     tilesize[1] = height;
+    loadMap("a");
 }
 
 void Map::TileSize(const short unsigned int width, const short unsigned int height){
@@ -34,6 +37,8 @@ void Map::TileSize(const short unsigned int width, const short unsigned int heig
 
 void Map::loadMap(const std::string filename) {
     map = readcsv_vec("..//testmap.txt", 1);
+    
+    printf("loadedmap");
     // int type = 0;
     // for (int row = 0; row<map.size(); row++) {
         // for (int col = 0; col<map[row].size(); col++) {
@@ -49,12 +54,16 @@ void Map::drawMap() {
         for (int col = 0; col<map[row].size(); col++) {
             type = map[row][col];
             
-            dest.x = col * tilesize[0];
-            dest.y = row * tilesize[1];
-            // printf("%d %d\n", col, row);
+            dest.x = col * 32;
+            dest.y = row * 32;
+            // printf("%d %d\n", tilesize[0], tilesize[1]);
+            // if (type!=0) {
+                // printf("%d %d %d\n",col, row, type);
+            // }
             
             switch (type){
             case 0:
+                printf("drawing\n");
                 TextureManager::Draw(water, src, dest);
                 break;
             case 1:

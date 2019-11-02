@@ -49,8 +49,8 @@ void game::init(const char* title, int xpos, int ypos, int width, int height, bo
     
     // playerTex = texturemanager::loadtexture("..//assets//horse.png", renderer);
     printf("Creating map \n");
-    mapp =  new Map();
-    mapp->loadMap("a");
+    mapp =  new Map(32,32);
+    // mapp->loadMap("a");
     player.addComponent<PositionComponent>(0, 0);
     cursor.addComponent<PositionComponent>(0, 0);
     player.addComponent<SpriteComponent>("..//assets//horse.png");
@@ -62,7 +62,7 @@ void game::update() {
 
     // player->update();
     // Map->loadMap();
-
+    // mapp->loadMap("a");
     manager.refresh();
     manager.update(); 
     // player.getComponent<PositionComponent>().position.Add(Vector2D(1,2));
