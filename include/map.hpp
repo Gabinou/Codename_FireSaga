@@ -9,9 +9,10 @@ class Map {
     public:
         void loadTiles();
         void initVars();
+        Map(const short int width, const short int height);
         Map();
         ~Map();
-    
+        void TileSize(const short int width, const short int height);
         void loadMap(std::vector<std::vector<int>> arr);
         void drawMap();
     

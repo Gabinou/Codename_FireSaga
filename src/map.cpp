@@ -15,9 +15,21 @@ void Map::initVars() {
     src.h = dest.h = 32;
 }
 
+void Map::TileSize(const short int width, const short int height) {
+    tile_size[0] = width;
+    tile_size[1] = height;
+}
+
 Map::Map() {
     loadTiles();
     initVars();
+    loadMap(readcsv_vec("..//testmap.txt", 1));
+}
+
+Map::Map(const short int width, const short int height) {
+    loadTiles();
+    initVars();
+    TileSize(width, height);
     loadMap(readcsv_vec("..//testmap.txt", 1));
 }
 
