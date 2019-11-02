@@ -8,13 +8,17 @@ void Map::loadTiles() {
     water = TextureManager::LoadTexture("..//assets//water.png");
 }
 
-Map::Map() {
-    loadTiles();
-    loadMap(readcsv_vec("..//testmap.txt", 1));
+void Map::initVars() {
     src.x = src.y = 0;
     dest.x = dest.y = 0;
     src.w = dest.w = 32;
     src.h = dest.h = 32;
+}
+
+Map::Map() {
+    loadTiles();
+    initVars();
+    loadMap(readcsv_vec("..//testmap.txt", 1));
 }
 
 void Map::loadMap(std::vector<std::vector<int>> arr) {
