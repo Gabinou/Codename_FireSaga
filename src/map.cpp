@@ -6,10 +6,9 @@ void Map::loadTiles() {
     dirt = TextureManager::LoadTexture("..//assets//dirt.png");
     grass = TextureManager::LoadTexture("..//assets//grass.png");
     water = TextureManager::LoadTexture("..//assets//water.png");
-    printf("loaded tiles");
 }
 
-void Map::initMembers() {
+void Map::initVars() {
     src.x = src.y = 0;
     dest.x = dest.y = 0;
     tilesize[0] = tilesize[1] = 32;
@@ -21,31 +20,26 @@ Map::Map() {
     initMembers();
 }
 
-Map::Map(const short unsigned int width, const short unsigned int height){
-    printf("map with tileseize");
+void Map::TileSize(const short int width, const short int height) {
+    tile_size[0] = width;
+    tile_size[1] = height;
+}
+
+Map::Map() {
     loadTiles();
-    initMembers();
-    tilesize[0] = width;
-    tilesize[1] = height;
-    loadMap(readcsv_vec("..//testmap.txt", 1));
+    initVars();
+    loadMap("a");
 }
 
-void Map::TileSize(const short unsigned int width, const short unsigned int height){
-    tilesize[0] = width;
-    tilesize[1] = height;
+Map::Map(const short int width, const short int height) {
+    loadTiles();
+    initVars();
+    TileSize(width, height);
+    loadMap("a");
 }
 
-void Map::loadMap(const std::vector<std::vector<int>> arr) {
-    map = arr;
-    
-    // printf("loadedmap");
-    // int type = 0;
-    // for (int row = 0; row<map.size(); row++) {
-        // for (int col = 0; col<map[row].size(); col++) {
-            // type = map[row][col];
-            // printf("%d\n", type);
-        // }
-    // }
+void Map::loadMap(std::string filename) {
+    map = readcsv_vec("..//testmap.txt", 1);
 }
 
 void Map::drawMap() {
