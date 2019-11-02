@@ -11,18 +11,14 @@ void Map::loadTiles() {
 void Map::initVars() {
     src.x = src.y = 0;
     dest.x = dest.y = 0;
-    tilesize[0] = tilesize[1] = 32;
+    tilesize[0] = 32;
+    tilesize[1] = 32;
     printf("inited members");
 }
 
-Map::Map() {
-    loadTiles();
-    initMembers();
-}
-
 void Map::TileSize(const short int width, const short int height) {
-    tile_size[0] = width;
-    tile_size[1] = height;
+    tilesize[0] = width;
+    tilesize[1] = height;
 }
 
 Map::Map() {
