@@ -3,25 +3,25 @@
 #include "parser.hpp"
 
 void Map::loadTiles() {
-    dirt = TextureManager::LoadTexture("..//assets//dirt.png");
-    grass = TextureManager::LoadTexture("..//assets//grass.png");
-    water = TextureManager::LoadTexture("..//assets//water.png");
+    dirt = TextureManager::loadTexture("..//assets//dirt.png");
+    grass = TextureManager::loadTexture("..//assets//grass.png");
+    water = TextureManager::loadTexture("..//assets//water.png");
 }
 
 void Map::initVars() {
-    src.x = src.y = 0;
-    dest.x = dest.y = 0;
-    src.w = dest.w = 32;
-    src.h = dest.h = 32;
+    srcrect.x = srcrect.y = 0;
+    destrect.x = destrect.y = 0;
+    srcrect.w = destrect.w = 32;
+    srcrect.h = destrect.h = 32;
     tilesize[0] = 32;
     tilesize[1] = 32;
 }
 
-void Map::TileSize(const short int unsigned width, const short int unsigned height) {
+void Map::setTilesize(const short int unsigned width, const short int unsigned height) {
     tilesize[0] = width;
     tilesize[1] = height;
-    src.w = dest.w = width;
-    src.h = dest.h = height;
+    srcrect.w = destrect.w = width;
+    srcrect.h = destrect.h = height;
 }
 
 Map::Map() {
@@ -32,7 +32,7 @@ Map::Map() {
 Map::Map(const short unsigned int width, const short unsigned int height) {
     loadTiles();
     initVars();
-    TileSize(width, height);
+    setTilesize(width, height);
 }
 
 void Map::loadMap(std::string filename) {
@@ -45,18 +45,18 @@ void Map::drawMap() {
         for (int col = 0; col<map[row].size(); col++) {
             type = map[row][col];
             
-            dest.x = col * tilesize[0];
-            dest.y = row * tilesize[1];
+            destrect.x = col * tilesize[0];
+            destrect.y = row * tilesize[1];
             
             switch (type){
             case 0:
-                TextureManager::Draw(water, src, dest);
+                TextureManager::draw(water, srcrect, destrect);
                 break;
             case 1:
-                TextureManager::Draw(grass, src, dest);
+                TextureManager::draw(grass, srcrect, destrect);
                 break;
             case 2:
-                TextureManager::Draw(dirt, src, dest);
+                TextureManager::draw(dirt, srcrect, destrect);
                 break;
             default:
                 break;

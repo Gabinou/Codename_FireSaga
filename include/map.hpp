@@ -12,13 +12,13 @@ class Map {
         Map();
         Map(const short unsigned int width, const short unsigned int height);
         ~Map();
-        void TileSize(const short unsigned int width, const short unsigned int height);
+        void setTilesize(const short unsigned int width, const short unsigned int height);
         void loadMap(std::string filename);
         void drawMap();
     
     private:
     
-        SDL_Rect src, dest;
+        SDL_Rect srcrect, destrect;
         
         SDL_Texture* dirt;    
         SDL_Texture* grass;    
