@@ -2,9 +2,10 @@
 #define MAP_HPP
 
 #include "game.hpp"
+#include "tilesize.hpp"
 #include "SDL2/SDL.h"
 
-class Map {
+class Map: public Tilesize {
     
     public:
         void loadTiles();
@@ -12,7 +13,6 @@ class Map {
         Map();
         Map(const short unsigned int width, const short unsigned int height);
         ~Map();
-        void setTilesize(const short unsigned int width, const short unsigned int height);
         void loadMap(std::string filename);
         void drawMap();
     
@@ -23,8 +23,6 @@ class Map {
         SDL_Texture* dirt;    
         SDL_Texture* grass;    
         SDL_Texture* water;    
-
-        int tilesize[2] = {32, 32};
         
         std::vector<std::vector<int>> map;
 
