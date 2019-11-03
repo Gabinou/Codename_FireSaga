@@ -6,9 +6,6 @@
 #include "game.hpp"
 
 class KeyboardInputMapping {
-    
-        
-    
     public:
         std::vector<SDL_Keycode> moveright{SDLK_d, SDLK_RIGHT} ;
         std::vector<SDL_Keycode> moveup{SDLK_w, SDLK_UP} ;
