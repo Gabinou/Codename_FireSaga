@@ -8,10 +8,8 @@
 #include <array>
 #include <memory>
 
-
 class Component;
 class Entity;
-
 
 using ComponentID = std::size_t;
 
@@ -25,10 +23,10 @@ template <typename T> inline ComponentID getComponentTypeID() noexcept {
     return typeID;
 }
 
-constexpr std::size_t maxComponents = 32;
+constexpr std::size_t maxcomponents = 32;
 
-using ComponentBitSet = std::bitset<maxComponents>;
-using ComponentArray = std::array<Component*, maxComponents>;
+using ComponentBitSet = std::bitset<maxcomponents>;
+using ComponentArray = std::array<Component*, maxcomponents>;
 
 class Component {
     public:
@@ -46,8 +44,8 @@ class Entity{
         bool active = true;
         std::vector<std::unique_ptr<Component>> components;
         
-        ComponentArray componentArray;
-        ComponentBitSet componentBitSet;
+        ComponentArray componentarray;
+        ComponentBitSet componentbitset;
     public:
         void update(){
             for(auto& c : components) c->update();
@@ -59,7 +57,7 @@ class Entity{
         void destroy() {active = false;}
         
         template <typename T> bool hasComponent() const {
-            return componentBitSet[getComponentTypeID<T>];
+            return componentbitset[getComponentTypeID<T>];
         }
         
         template <typename T, typename... TArgs>
@@ -69,15 +67,15 @@ class Entity{
             std::unique_ptr<Component> uPtr{c};
             components.emplace_back(std::move(uPtr));
         
-            componentArray[getComponentTypeID<T>()] = c;
-            componentBitSet[getComponentTypeID<T>()] = true;
+            componentarray[getComponentTypeID<T>()] = c;
+            componentbitset[getComponentTypeID<T>()] = true;
             
             c->init();
             return *c;
         }    
 
         template<typename T> T& getComponent() const{
-            auto ptr(componentArray[getComponentTypeID<T>()]);
+            auto ptr(componentarray[getComponentTypeID<T>()]);
             return(*static_cast<T*>(ptr));
         }
       
@@ -110,14 +108,8 @@ class Manager {
             std::unique_ptr<Entity> uPtr{e};
             entities.emplace_back(std::move(uPtr));
             return *e;
-        }
-        
-        
+        }        
 };
-
-
-
-
 
 
 

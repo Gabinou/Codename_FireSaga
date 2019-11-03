@@ -24,6 +24,10 @@ class PositionComponent : public Component {
             position.y = y;
         }
         
+        Vector2D getPos() {
+            return(position);
+        }
+        
         void update() override {
         }
 };
