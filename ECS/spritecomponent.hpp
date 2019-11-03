@@ -13,7 +13,7 @@ class SpriteComponent : public Component {
         PositionComponent *positioncomponent;
         SDL_Texture *texture;
         
-        SDL_Rect srcRect, destRect;
+        SDL_Rect srcrect, destrect;
     public:
         SpriteComponent() = default;
         
@@ -27,19 +27,19 @@ class SpriteComponent : public Component {
         
         void init() override {
             positioncomponent = &entity->getComponent<PositionComponent>();
-            srcRect.x = srcRect.y = 0;
-            srcRect.w = srcRect.h = 32;
-            destRect.w = destRect.h = 32;
+            srcrect.x = srcrect.y = 0;
+            srcrect.w = srcrect.h = 32;
+            destrect.w = destrect.h = 32;
 
         }
         
         void update() override {
-            destRect.x = (int)positioncomponent->position.x;
-            destRect.y = (int)positioncomponent->position.y;
+            destrect.x = (int)positioncomponent->position.x;
+            destrect.y = (int)positioncomponent->position.y;
         }
         
         void draw() override {
-            TextureManager::Draw(texture, srcRect, destRect);
+            TextureManager::Draw(texture, srcrect, destrect);
         }
 };
 
