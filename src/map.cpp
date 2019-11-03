@@ -36,14 +36,14 @@ void Map::loadMap(std::string filename) {
 void Map::drawMap() {
     int type = 0;
     int * currenttilesize = (getTilesize());
-    // int currenttilesize2 = currenttilesize;
+
     for (int row = 0; row<map.size(); row++) {
         for (int col = 0; col<map[row].size(); col++) {
             type = map[row][col];
             
             destrect.x = col * currenttilesize[0];
             destrect.y = row * currenttilesize[1];
-            printf("%d %d \n", currenttilesize[0], currenttilesize[1]);
+
             switch (type){
             case 0:
                 TextureManager::draw(water, srcrect, destrect);

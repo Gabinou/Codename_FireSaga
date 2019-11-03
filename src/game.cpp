@@ -53,7 +53,7 @@ void Game::init(const char* title, int xpos, int ypos, int width, int height, bo
     mapp =  new Map(32,32);
     mapp->loadMap("..//testmap.txt");
     player.addComponent<PositionComponent>(0, 0);
-    player.addComponent<KeyboardController>();
+    cursor.addComponent<KeyboardController>();
     cursor.addComponent<PositionComponent>(0, 0);
     player.addComponent<SpriteComponent>("..//assets//horse.png");
     cursor.addComponent<SpriteComponent>("..//assets//cursor.png");
