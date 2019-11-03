@@ -35,7 +35,7 @@ void Map::loadMap(std::string filename) {
 
 void Map::drawMap() {
     int type = 0;
-    int * currenttilesize = (getTilesize());
+    static int * currenttilesize = (getTilesize());
 
     for (int row = 0; row<map.size(); row++) {
         for (int col = 0; col<map[row].size(); col++) {

@@ -26,16 +26,17 @@ class KeyboardController : public Component, Tilesize, KeyboardInputMapping {
     }
     
     void update() override {
-        if (Game::event.type == SDL_KEYDOWN){
-            
+        if (Game::event.type == SDL_KEYUP){
+            static int * currenttilesize = (getTilesize());
             if (std::find(this->moveright.begin(), this->moveright.end(), Game::event.key.keysym.sym) != this->moveright.end()){
-                positioncomponent->position.add(Vector2D(1,0));
+                
+                positioncomponent->position.add(Vector2D(currenttilesize[0],0));
             } else if (std::find(this->moveleft.begin(), this->moveleft.end(), Game::event.key.keysym.sym) != this->moveleft.end()){
-                positioncomponent->position.add(Vector2D(-1,0));
+                positioncomponent->position.add(Vector2D(-currenttilesize[0],0));
             } else if (std::find(this->movedown.begin(), this->movedown.end(), Game::event.key.keysym.sym) != this->movedown.end()){
-                positioncomponent->position.add(Vector2D(0,1));
+                positioncomponent->position.add(Vector2D(0,currenttilesize[1]));
             } else if (std::find(this->moveup.begin(), this->moveup.end(), Game::event.key.keysym.sym) != this->moveup.end()){
-                positioncomponent->position.add(Vector2D(0,-1));
+                positioncomponent->position.add(Vector2D(0,-currenttilesize[1]));
             }
                  
         }
