@@ -29,8 +29,9 @@ class KeyboardController : public Component, Tilesize, KeyboardInputMapping {
     }
 
     void update() override {
+        std::string currentcombination;
         if (Game::event.type == SDL_KEYDOWN){
-            std::string currentcombination;
+            currentcombination = "";
             static int * currenttilesize = (getTilesize());
             if (std::find(this->moveright.begin(), this->moveright.end(), Game::event.key.keysym.sym) != this->moveright.end()){
                 // positioncomponent->position.add(Vector2D(currenttilesize[0],0));
@@ -48,7 +49,7 @@ class KeyboardController : public Component, Tilesize, KeyboardInputMapping {
                 // positioncomponent->position.add(Vector2D(0,-currenttilesize[1]));
                 currentcombination += "up";
             }
-            if (currentcombination.compare(this->lastpressed.combination) == 0) {
+            if (currentcombination.compare(lastpressed.combination) == 0) {
                 lastpressed.activeframes++;
             } else {
                 lastpressed.combination = currentcombination;
@@ -56,6 +57,9 @@ class KeyboardController : public Component, Tilesize, KeyboardInputMapping {
             }
             if ((lastpressed.combination.compare("right") == 0) && (lastpressed.activeframes == 0)) {
                 positioncomponent->position.add(Vector2D(currenttilesize[0],0));
+            }
+            if ((lastpressed.combination.compare("rightup") == 0) && (lastpressed.activeframes == 0)) {
+                positioncomponent->position.add(Vector2D(currenttilesize[0],-currenttilesize[1]));
             }
             if ((lastpressed.combination.compare("left") == 0) && (lastpressed.activeframes == 0)) {
                 positioncomponent->position.add(Vector2D(-currenttilesize[0],0));
@@ -68,8 +72,24 @@ class KeyboardController : public Component, Tilesize, KeyboardInputMapping {
             }
         }
         if (Game::event.type == SDL_KEYUP){ 
-            lastpressed.combination = "";
-            lastpressed.activeframes = 0;
+            currentcombination = "";
+            if (std::find(this->moveright.begin(), this->moveright.end(), Game::event.key.keysym.sym) != this->moveright.end()){
+                currentcombination += "right";
+            }
+            if (std::find(this->moveleft.begin(), this->moveleft.end(), Game::event.key.keysym.sym) != this->moveleft.end()){
+                currentcombination += "left";
+            }
+            if (std::find(this->movedown.begin(), this->movedown.end(), Game::event.key.keysym.sym) != this->movedown.end()){
+                currentcombination += "down";
+            } 
+            if (std::find(this->moveup.begin(), this->moveup.end(), Game::event.key.keysym.sym) != this->moveup.end()){
+                currentcombination += "up";
+            }
+            
+            if ((lastpressed.combination.compare(currentcombination) == 0)) {
+                lastpressed.activeframes = 0;
+            }
+            
         }
     }
     
