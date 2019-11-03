@@ -16,7 +16,7 @@ using namespace std;
 #include "unit_class.hpp"
 #include "inventory_item.hpp"
 
-game *firesaga = nullptr;
+Game *firesaga = nullptr;
 
 int main(int argc, char * argv[]) {
     printf("TESTING THIS BITCH\n");
@@ -50,7 +50,7 @@ int main(int argc, char * argv[]) {
     Uint32 frame_start;
     int frame_time;
     
-    firesaga = new game();
+    firesaga = new Game();
     printf("made game.\n");
     firesaga->init("FireSaga", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 800, 600, false);
     
