@@ -5,11 +5,11 @@
 #include "SDL2/SDL_image.h"
 #include <stdio.h>
 
-class game {
+class Game {
     
     public:
-        game();
-        ~game();
+        Game();
+        ~Game();
         
         void init(const char* title, int xpos, int ypos, int width, int height, bool fullscreen);
         

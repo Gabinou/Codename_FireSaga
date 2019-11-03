@@ -18,12 +18,18 @@ class SpriteComponent : public Component {
         SpriteComponent() = default;
         
         SpriteComponent(const char* path){
-            setTex(path);
+            setTexture(path);
         }
         
-        void setTex(const char * path) {
+        SDL_Texture * getTexture() { 
+            return(texture);
+        }
+        
+        void setTexture(const char * path) {
             texture = TextureManager::LoadTexture(path);
         }
+        
+        
         
         void init() override {
             positioncomponent = &entity->getComponent<PositionComponent>();

@@ -11,6 +11,8 @@
 class Component;
 class Entity;
 
+constexpr std::size_t maxcomponents = 32;
+
 using ComponentID = std::size_t;
 using ComponentBitSet = std::bitset<maxcomponents>;
 using ComponentArray = std::array<Component*, maxcomponents>;
@@ -24,8 +26,6 @@ template <typename T> inline ComponentID getComponentTypeID() noexcept {
     static ComponentID typeID = getComponentTypeID();
     return typeID;
 }
-
-constexpr std::size_t maxcomponents = 32;
 
 class Component {
     public:

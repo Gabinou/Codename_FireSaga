@@ -11,17 +11,17 @@
 
 Map* mapp;
 
-SDL_Renderer* game::renderer = nullptr;
-SDL_Event game::event;
+SDL_Renderer* Game::renderer = nullptr;
+SDL_Event Game::event;
 
 Manager manager;
 auto& player(manager.addEntity());
 auto& cursor(manager.addEntity());
 
-game::game() {}
-game::~game() {}
+Game::Game() {}
+Game::~Game() {}
 
-void game::init(const char* title, int xpos, int ypos, int width, int height, bool fullscreen) {
+void Game::init(const char* title, int xpos, int ypos, int width, int height, bool fullscreen) {
     
     int flags = 0;
     
@@ -58,7 +58,7 @@ void game::init(const char* title, int xpos, int ypos, int width, int height, bo
     // newPlayer.addComponent<PositionComponent>();
 };
 
-void game::update() {
+void Game::update() {
 
     // player->update();
     // Map->loadMap();
@@ -69,7 +69,7 @@ void game::update() {
     // printf("%d, %d \n", newPlayer.getComponent<PositionComponent>().x(), newPlayer.getComponent<PositionComponent>().y());
 }
 
-void game::handleEvents() {
+void Game::handleEvents() {
 
     SDL_PollEvent(&event);
     switch(event.type) {
@@ -80,7 +80,7 @@ void game::handleEvents() {
             break;
     }
 }
-void game::render() {
+void Game::render() {
     SDL_RenderClear(renderer);
     // Add stuff to render. Paint the background First.
     // SDL_RenderCopy(renderer, playerTex, NULL, &destR);
@@ -88,13 +88,13 @@ void game::render() {
     manager.draw();
     SDL_RenderPresent(renderer);
 }
-void game::clean() {
+void Game::clean() {
     SDL_DestroyWindow(window);
     SDL_DestroyRenderer(renderer);
     SDL_Quit();
     printf("Game cleanded.");
     SDL_Delay(5000);
 }
-bool game::running() {
+bool Game::running() {
     return(isRunning);
 }
