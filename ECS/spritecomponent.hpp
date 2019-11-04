@@ -7,7 +7,7 @@
 #include "texturemanager.hpp"
 #include "SDL2/SDL.h"
 
-class SpriteComponent : public Component {
+class SpriteComponent : public Component, Tilesize{
     
     private:
         PositionComponent *positioncomponent;
@@ -38,8 +38,9 @@ class SpriteComponent : public Component {
         }
         
         void update() override {
-            destrect.x = (int)positioncomponent->position.x;
-            destrect.y = (int)positioncomponent->position.y;
+            static int * currenttilesize = (getTilesize());
+            destrect.x = (int)positioncomponent->position.x * currenttilesize[0];
+            destrect.y = (int)positioncomponent->position.y * currenttilesize[1];
         }
         
         void draw() override {

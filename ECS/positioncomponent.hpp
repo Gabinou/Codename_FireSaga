@@ -7,7 +7,7 @@
 #include "game.hpp"
 #include "tilesize.hpp"
 
-class PositionComponent : public Component, Tilesize {
+class PositionComponent : public Component {
     private:
         Vector2D pixelposition;
         Vector2D tileposition;
@@ -20,16 +20,13 @@ class PositionComponent : public Component, Tilesize {
         }
         
         PositionComponent(short unsigned int x, short unsigned int y){
-            static int * currenttilesize = (getTilesize());
-            printf("currenttilesize: %d \n", currenttilesize[0]);
-            position.x = x * currenttilesize[0];
-            position.y = y * currenttilesize[1];
+            position.x = x;
+            position.y = y;
         }
 
         void setPos(short unsigned int x, short unsigned int y) {
-            static int * currenttilesize = (getTilesize());
-            position.x = x * currenttilesize[0];
-            position.y = y * currenttilesize[1];
+            position.x = x;
+            position.y = y;
         }
         
         Vector2D getPos() {
