@@ -8,7 +8,7 @@ public:
     ~Tilesize();
     Tilesize(const short int unsigned width, const short int unsigned height);
     void setTilesize(const short int unsigned width, const short int unsigned height);
-    int * getTilesize();
+    int * getTilesize() const;
     
 private:
     int tilesize[2];

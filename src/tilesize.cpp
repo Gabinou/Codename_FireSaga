@@ -19,6 +19,6 @@ void Tilesize::setTilesize(const short int unsigned width, const short int unsig
     tilesize[1] = height;
 }
 
-int * Tilesize::getTilesize() {
-    return(tilesize);
+int * Tilesize::getTilesize() const {
+    return((int*)tilesize);
 }
