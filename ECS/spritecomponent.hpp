@@ -43,19 +43,20 @@ class SpriteComponent : public Component{
 
         void init() override {
             positioncomponent = &entity->getComponent<PositionComponent>();
-            slidepos.x = (int)positioncomponent->position.x * currenttilesize[0];
-            slidepos.y = (int)positioncomponent->position.y * currenttilesize[1];
+            slidepos.x = (int)positioncomponent->getPos().x * currenttilesize[0];
+            slidepos.y = (int)positioncomponent->getPos().y * currenttilesize[1];
             srcrect.x = srcrect.y = 0;
             srcrect.w = srcrect.h = 32;
             destrect.w = destrect.h = 32;
         }
         
         void update() override {
-            objectivepos.x = (int)positioncomponent->position.x * currenttilesize[0];
-            objectivepos.y = (int)positioncomponent->position.y * currenttilesize[1];
+            objectivepos.x = (int)positioncomponent->getPos().x * currenttilesize[0];
+            objectivepos.y = (int)positioncomponent->getPos().y * currenttilesize[1];
+            
+            destrect.x = (int)positioncomponent->getPos().x * currenttilesize[0];
+            destrect.y = (int)positioncomponent->getPos().y * currenttilesize[1];
             positioncomponent->setUpdatable(false);
-            destrect.x = (int)positioncomponent->position.x * currenttilesize[0];
-            destrect.y = (int)positioncomponent->position.y * currenttilesize[1];
         }
         
         void draw() override {

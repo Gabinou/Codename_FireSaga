@@ -12,8 +12,9 @@ class PositionComponent : public Component {
         Vector2D pixelposition;
         Vector2D tileposition;
         bool updatable = true;
-    public:
         Vector2D position;
+    public:
+
         
         PositionComponent(){
             position.x = 0;
@@ -30,10 +31,15 @@ class PositionComponent : public Component {
         }
 
         void setPos(short unsigned int x, short unsigned int y) {
-            printf("%d\n", updatable);
             if (updatable) {
                 position.x = x;
                 position.y = y;
+            }
+        }
+        
+        void addPos(Vector2D move) {
+            if (updatable) {
+                position.add(move);
             }
         }
         
