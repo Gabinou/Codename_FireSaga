@@ -4,6 +4,7 @@
 #include "ECS.hpp"
 #include "components.hpp"
 #include "map.hpp"
+#include "vector2D.hpp"
 #include "positioncomponent.hpp"
 #include "texturemanager.hpp"
 #include "SDL2/SDL.h"
@@ -16,6 +17,8 @@ class SpriteComponent : public Component{
         SDL_Rect srcrect, destrect;
         Map * currentmap;
         int * currenttilesize;
+        Vector2D objectivepos;
+        Vector2D slidepos;
         
     public:
         SpriteComponent() = default;
@@ -40,12 +43,17 @@ class SpriteComponent : public Component{
 
         void init() override {
             positioncomponent = &entity->getComponent<PositionComponent>();
+            slidepos.x = (int)positioncomponent->position.x * currenttilesize[0];
+            slidepos.y = (int)positioncomponent->position.y * currenttilesize[1];
             srcrect.x = srcrect.y = 0;
             srcrect.w = srcrect.h = 32;
             destrect.w = destrect.h = 32;
         }
         
         void update() override {
+            objectivepos.x = (int)positioncomponent->position.x * currenttilesize[0];
+            objectivepos.y = (int)positioncomponent->position.y * currenttilesize[1];
+            positioncomponent->setUpdatable(false);
             destrect.x = (int)positioncomponent->position.x * currenttilesize[0];
             destrect.y = (int)positioncomponent->position.y * currenttilesize[1];
         }
