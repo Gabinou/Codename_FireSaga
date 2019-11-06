@@ -54,10 +54,16 @@ class SpriteComponent : public Component{
             objectivepos.x = (int)positioncomponent->getPos().x * currenttilesize[0];
             objectivepos.y = (int)positioncomponent->getPos().y * currenttilesize[1];
             printf("ObjectivePos: %d, %d\n", objectivepos.x, objectivepos.y);
-            if (objectivepos.x != slidepos.x){
+            printf("SlidePos    : %d, %d\n", slidepos.x, slidepos.y);
+            if (objectivepos.x > slidepos.x){
                 slidepos.x += (objectivepos.x - slidepos.x)/2 + 1;
-            if (objectivepos.y != slidepos.y){
+            } else if  (objectivepos.x < slidepos.x){
+                slidepos.x += (objectivepos.x - slidepos.x)/2 - 1;
+            }
+            if (objectivepos.y > slidepos.y){
                 slidepos.y += (objectivepos.y - slidepos.y)/2 + 1;
+            } else if  (objectivepos.y < slidepos.x){
+                slidepos.y += (objectivepos.y - slidepos.y)/2 - 1;
             }
             if ((objectivepos.x == slidepos.x) && (objectivepos.y == slidepos.y)) {
                 positioncomponent->setUpdatable(true);
