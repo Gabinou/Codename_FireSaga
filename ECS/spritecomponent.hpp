@@ -19,7 +19,7 @@ class SpriteComponent : public Component{
         int * currenttilesize;
         Vector2D objectivepos;
         Vector2D slidepos;
-        
+        int cursormove[4] = {};
     public:
         SpriteComponent() = default;
         
@@ -53,10 +53,17 @@ class SpriteComponent : public Component{
         void update() override {
             objectivepos.x = (int)positioncomponent->getPos().x * currenttilesize[0];
             objectivepos.y = (int)positioncomponent->getPos().y * currenttilesize[1];
-            
-            destrect.x = (int)positioncomponent->getPos().x * currenttilesize[0];
-            destrect.y = (int)positioncomponent->getPos().y * currenttilesize[1];
-            positioncomponent->setUpdatable(false);
+            if (objectivepos.x != slidepos.x){
+                slidepos.x += 
+                i++
+            } else {
+                positioncomponent->setUpdatable(true);
+                i = 0;
+            }
+            destrect.x = slidepos.x;
+            destrect.y = slidepos.y;
+           
+            if 
         }
         
         void draw() override {

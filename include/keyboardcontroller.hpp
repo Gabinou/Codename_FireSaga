@@ -49,6 +49,7 @@ class KeyboardController : public Component, Tilesize, KeyboardInputMapping {
                 // positioncomponent->position.add(Vector2D(1,0));
                 positioncomponent->addPos(Vector2D(1, 0));
             }
+            positioncomponent->setUpdatable(false);
         }
     }
     
