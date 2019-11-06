@@ -8,20 +8,21 @@
 #include "texturemanager.hpp"
 #include "SDL2/SDL.h"
 
-class SpriteComponent : public Component, Tilesize{
+class SpriteComponent : public Component{
     
     private:
         PositionComponent *positioncomponent;
         SDL_Texture *texture;
         SDL_Rect srcrect, destrect;
-        // const Map * currentmap;
+        Map * currentmap;
         int * currenttilesize;
         
     public:
         SpriteComponent() = default;
         
-        SpriteComponent(const char* path){
+        SpriteComponent(Map * inmap, const char* path){
             setTexture(path);
+            setMap(inmap);
         }
         
         SDL_Texture * getTexture() { 
@@ -32,10 +33,9 @@ class SpriteComponent : public Component, Tilesize{
             texture = TextureManager::loadTexture(path);
         }
         
-        void setMap(Map const & inmap) {
-            currenttilesize = (inmap.getTilesize());
-            printf("%d", currenttilesize[0]);
-            printf("%d", currenttilesize[1]);
+        void setMap(Map * inmap) {
+            currentmap = inmap;
+            currenttilesize = currentmap->getTilesize();
         }
 
         void init() override {
@@ -46,12 +46,8 @@ class SpriteComponent : public Component, Tilesize{
         }
         
         void update() override {
-            // currentmap->getTilesize()[0];
-            // printf("%d \n", currentmap->getTilesize()[0]);
-            // printf("%d \n", a[0]);
-            // static int * currenttilesize = (getTilesize());
-            destrect.x = positioncomponent->position.x * currenttilesize[0];
-            // destrect.y = (int)positioncomponent->position.y * currenttilesize[1];
+            destrect.x = (int)positioncomponent->position.x * currenttilesize[0];
+            destrect.y = (int)positioncomponent->position.y * currenttilesize[1];
         }
         
         void draw() override {
