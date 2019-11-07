@@ -68,6 +68,13 @@ extern unsigned char id;
 
 extern std::vector<int> extract_int_string(string);
 
+
+extern int geometricslide(int distance, int geo_factor = 2);
+
+template <typename T> int sgn(T val) {
+    return (T(0) < val) - (val < T(0));
+}
+
 /*! \fn css_from_line()
 *  \brief Get comma separated strings (css) from a line. Lines are gotten from fgets. outputs vector of string for simplicity. Fucking chars man. Sucks ballz.
 */

@@ -7,6 +7,18 @@ using namespace std;
 #include "unit_class.hpp"
 #include "inventory_item.hpp"
 
+int geometricslide(int distance, int geo_factor){
+    // geometric slide cause the series is geometric:
+    // 1/2 + 1/4 + 1/16....
+    // intended for cursor to slide to next position.
+    int sign = sgn(distance);
+    int out = sign*std::max(sign*distance/geo_factor, 1);
+    return(out);
+    // std::abs() possible instead of sign*distance
+    // This is more elegant.
+}
+
+
 std::vector<int> extract_int_string(string str) 
 { 
     // cannot read integers if not separated by at least one space and other chars.

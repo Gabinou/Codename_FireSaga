@@ -5,13 +5,10 @@
 #include "components.hpp"
 #include "map.hpp"
 #include "vector2D.hpp"
+#include "shared.hpp"
 #include "positioncomponent.hpp"
 #include "texturemanager.hpp"
 #include "SDL2/SDL.h"
-
-template <typename T> int sgn(T val) {
-    return (T(0) < val) - (val < T(0));
-}
 
 class SpriteComponent : public Component{
     
@@ -56,20 +53,12 @@ class SpriteComponent : public Component{
         
         void update() override {
             objectivepos.x = (int)positioncomponent->getPos().x * currenttilesize[0];
-            objectivepos.y = (int)positioncomponent->getPos().y * currenttilesize[1];
+            objectivepos.y = (int)positioncomponent->getPos().y * currenttilesize[1];            
             if (objectivepos.x != slidepos.x) {
-                int dist = objectivepos.x - slidepos.x;
-                int sign = sgn(dist);
-                slidepos.x += sign*std::max(sign*dist/2, 1);
-                // std::abs() possible instead of sign*distx.
-                // This is more elgant.
+                slidepos.x += geometricslide((objectivepos.x - slidepos.x));
             }
             if (objectivepos.y != slidepos.y) {
-                int dist = objectivepos.y - slidepos.y;
-                int sign = sgn(dist);
-                slidepos.y += sign*std::max(sign*dist/2, 1);
-                // std::abs() possible instead of sign*distx.
-                // This is more elgant.
+                slidepos.y += geometricslide((objectivepos.y - slidepos.y));
             }
             if ((objectivepos.x == slidepos.x) && (objectivepos.y == slidepos.y)) {
                 positioncomponent->setUpdatable(true);
