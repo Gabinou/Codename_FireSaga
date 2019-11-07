@@ -57,25 +57,19 @@ class SpriteComponent : public Component{
         void update() override {
             objectivepos.x = (int)positioncomponent->getPos().x * currenttilesize[0];
             objectivepos.y = (int)positioncomponent->getPos().y * currenttilesize[1];
-            // printf("ObjectivePos: %d, %d\n", objectivepos.x, objectivepos.y);
-            // printf("SlidePos    : %d, %d\n", slidepos.x, slidepos.y);
-            // if (objectivepos.x > slidepos.x){
-                // slidepos.x += std::max((objectivepos.x - slidepos.x)/2, 1);
-            // } else if  (objectivepos.x < slidepos.x){
-                // slidepos.x += std::min((objectivepos.x - slidepos.x)/2, - 1);
-            // }
-            
             if (objectivepos.x != slidepos.x) {
-                int sign = sgn(objectivepos.x - slidepos.x);
-                int distx = objectivepos.x - slidepos.x;
-                slidepos.x += sign*std::max(sign*distx/2, 1);
-                // Could Use absolute value here instead of sign*distx, But I like the elegance of calling upon only one extra function
+                int dist = objectivepos.x - slidepos.x;
+                int sign = sgn(dist);
+                slidepos.x += sign*std::max(sign*dist/2, 1);
+                // std::abs() possible instead of sign*distx.
+                // This is more elgant.
             }
-            
-            if (objectivepos.y > slidepos.y){
-                slidepos.y += std::max((objectivepos.y - slidepos.y)/2, 1);
-            } else if  (objectivepos.y < slidepos.y){
-                slidepos.y += std::min((objectivepos.y - slidepos.y)/2, - 1);
+            if (objectivepos.y != slidepos.y) {
+                int dist = objectivepos.y - slidepos.y;
+                int sign = sgn(dist);
+                slidepos.y += sign*std::max(sign*dist/2, 1);
+                // std::abs() possible instead of sign*distx.
+                // This is more elgant.
             }
             if ((objectivepos.x == slidepos.x) && (objectivepos.y == slidepos.y)) {
                 positioncomponent->setUpdatable(true);
