@@ -53,8 +53,8 @@ class SpriteComponent : public Component{
         void update() override {
             objectivepos.x = (int)positioncomponent->getPos().x * currenttilesize[0];
             objectivepos.y = (int)positioncomponent->getPos().y * currenttilesize[1];
-            // printf("ObjectivePos: %d, %d\n", objectivepos.x, objectivepos.y);
-            // printf("SlidePos    : %d, %d\n", slidepos.x, slidepos.y);
+            printf("ObjectivePos: %d, %d\n", objectivepos.x, objectivepos.y);
+            printf("SlidePos    : %d, %d\n", slidepos.x, slidepos.y);
             if (objectivepos.x > slidepos.x){
                 slidepos.x += std::max((objectivepos.x - slidepos.x)/2, 1);
             } else if  (objectivepos.x < slidepos.x){
@@ -62,7 +62,7 @@ class SpriteComponent : public Component{
             }
             if (objectivepos.y > slidepos.y){
                 slidepos.y += std::max((objectivepos.y - slidepos.y)/2, 1);
-            } else if  (objectivepos.y < slidepos.x){
+            } else if  (objectivepos.y < slidepos.y){
                 slidepos.y += std::min((objectivepos.y - slidepos.y)/2, - 1);
             }
             if ((objectivepos.x == slidepos.x) && (objectivepos.y == slidepos.y)) {
