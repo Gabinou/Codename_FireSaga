@@ -58,7 +58,7 @@ void Game::init(const char* title, int xpos, int ypos, int width, int height, bo
 
     cursor.addComponent<KeyboardController>();
     
-    // player.addComponent<SpriteComponent>(mapp, "..//assets//horse.png");
+    player.addComponent<SpriteComponent>(mapp, "..//assets//horse.png");
     cursor.addComponent<SpriteComponent>(mapp, "..//assets//cursor.png");
     // newPlayer.addComponent<PositionComponent>();
 };

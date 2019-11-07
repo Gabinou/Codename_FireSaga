@@ -40,9 +40,9 @@ int main(int argc, char * argv[]) {
     wpn_indexes["lgt"] = 8;
     wpn_indexes["staff"] = 9;
     wpn_indexes["stf"] = 9;
-    read_all_weapons("..\\weapons.txt");
-    read_all_units("..\\units_FE1.txt");
-    write_all_units("..\\units_test.txt"); // OKAY
+    // read_all_weapons("..\\weapons.txt");
+    // read_all_units("..\\units_FE1.txt");
+    // write_all_units("..\\units_test.txt"); // OKAY
     
     const int FPS = 60;
     const int frame_delay = 1000 / FPS;
