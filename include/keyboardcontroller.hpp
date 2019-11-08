@@ -35,15 +35,14 @@ class KeyboardController : public Component, Tilesize, KeyboardInputMapping {
     void update() override {
         const Uint8 *keyboard_state_array = SDL_GetKeyboardState(NULL);
         if(Game::event.type == SDL_KEYDOWN || Game::event.type == SDL_KEYUP){
-            printf("Is space pressed: %d\n", is_pressed(keyboard_state_array, accept));
-            if (keyboard_state_array[SDL_SCANCODE_UP] && !(keyboard_state_array[SDL_SCANCODE_DOWN])){
+            if (is_pressed(keyboard_state_array, moveup) && !is_pressed(keyboard_state_array, movedown)){
                 positioncomponent->addPos(Vector2D(0, -1));
-            } else if  (!keyboard_state_array[SDL_SCANCODE_UP] && keyboard_state_array[SDL_SCANCODE_DOWN]){
+            } else if  (!is_pressed(keyboard_state_array, moveup) && is_pressed(keyboard_state_array, movedown)){
                 positioncomponent->addPos(Vector2D(0, 1));
             }
-            if (!keyboard_state_array[SDL_SCANCODE_RIGHT] && keyboard_state_array[SDL_SCANCODE_LEFT]){
+            if (!is_pressed(keyboard_state_array, moveright) && is_pressed(keyboard_state_array, moveleft)){
                 positioncomponent->addPos(Vector2D(-1, 0));
-            } else if (keyboard_state_array[SDL_SCANCODE_RIGHT] && !keyboard_state_array[SDL_SCANCODE_LEFT]){
+            } else if (is_pressed(keyboard_state_array, moveright) && is_pressed(keyboard_state_array, moveleft)){
                 positioncomponent->addPos(Vector2D(1, 0));
             }
             positioncomponent->setUpdatable(false);
