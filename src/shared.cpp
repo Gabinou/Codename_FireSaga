@@ -6,6 +6,7 @@ using namespace std;
 #include "unit.hpp"
 #include "unit_class.hpp"
 #include "inventory_item.hpp"
+#include "SDL2/SDL.h"
 
 int geometricslide(int distance, int geo_factor){
     // geometric slide cause the series is geometric:
@@ -16,6 +17,16 @@ int geometricslide(int distance, int geo_factor){
     return(out);
     // std::abs() possible instead of sign*distance
     // This is more elegant.
+}
+
+
+bool is_pressed(const Uint8 *state_array, std::vector<SDL_Scancode> to_find){
+    for (auto it = std::begin(to_find); it != std::end(to_find); ++it) { 
+        if(state_array[*it]){
+            return(true);
+        } 
+    }
+    return(false);    
 }
 
 

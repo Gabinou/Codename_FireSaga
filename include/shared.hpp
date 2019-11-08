@@ -10,7 +10,15 @@ using namespace std;
 #include <vector>
 #include <math.h> 
 #include <random>
+#include <algorithm>
+#include <bitset>
+#include <array>
+#include <memory>
 #include <bits/stdc++.h> 
+#include <stdint.h>
+#include "SDL2/SDL.h"
+#include "SDL2/SDL_image.h"
+
 /*! \file shared.hpp
 * \brief Shared data.
 */
@@ -70,6 +78,8 @@ extern std::vector<int> extract_int_string(string);
 
 
 extern int geometricslide(int distance, int geo_factor = 2);
+extern bool is_pressed(const Uint8 *state_array, std::vector<SDL_Scancode> to_find);
+
 
 template <typename T> int sgn(T val) {
     return (T(0) < val) - (val < T(0));
