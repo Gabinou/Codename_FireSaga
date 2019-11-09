@@ -13,9 +13,11 @@
 
 class SpriteComponent : public Component{
     
-    private:
-        PositionComponent *positioncomponent;
+    private:    
         SDL_Texture *texture;
+        
+    protected:
+        PositionComponent *positioncomponent;
         SDL_Rect srcrect, destrect;
         Map * currentmap;
         int * currenttilesize;
