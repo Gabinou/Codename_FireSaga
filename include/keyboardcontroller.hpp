@@ -42,15 +42,15 @@ class KeyboardController : public Component, Tilesize, KeyboardInputMapping {
             } else if  (!is_pressed(keyboard_state_array, moveup) && is_pressed(keyboard_state_array, movedown)){
                 positioncomponent->addPos(Vector2D(0, 1));
                 check_pressed(movedown);
-            } else {
-                lastpressed.activeframes=0;
-            }
+            } 
             if (!is_pressed(keyboard_state_array, moveright) && is_pressed(keyboard_state_array, moveleft)){
                 positioncomponent->addPos(Vector2D(-1, 0));
                 check_pressed(moveleft);
             } else if (is_pressed(keyboard_state_array, moveright) && !is_pressed(keyboard_state_array, moveleft)){
                 positioncomponent->addPos(Vector2D(1, 0));
                 check_pressed(moveright);
+            } else {
+                lastpressed.activeframes=0;
             }
             positioncomponent->setUpdatable(false);
         }
