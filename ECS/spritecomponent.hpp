@@ -7,6 +7,7 @@
 #include "vector2D.hpp"
 #include "shared.hpp"
 #include "positioncomponent.hpp"
+#include "keyboardcontroller.hpp"
 #include "texturemanager.hpp"
 #include "SDL2/SDL.h"
 
@@ -14,6 +15,7 @@ class SpriteComponent : public Component{
     
     private:
         PositionComponent *positioncomponent;
+        KeyboardController *keyboardcontroller;
         SDL_Texture *texture;
         SDL_Rect srcrect, destrect;
         Map * currentmap;
@@ -44,6 +46,7 @@ class SpriteComponent : public Component{
 
         void init() override {
             positioncomponent = &entity->getComponent<PositionComponent>();
+            keyboardcontroller = &entity->getComponent<KeyboardController>();
             slidepos.x = (int)positioncomponent->getPos().x * currenttilesize[0];
             slidepos.y = (int)positioncomponent->getPos().y * currenttilesize[1];
             srcrect.x = srcrect.y = 0;
@@ -53,7 +56,8 @@ class SpriteComponent : public Component{
         
         void update() override {
             objectivepos.x = (int)positioncomponent->getPos().x * currenttilesize[0];
-            objectivepos.y = (int)positioncomponent->getPos().y * currenttilesize[1];            
+            objectivepos.y = (int)positioncomponent->getPos().y * currenttilesize[1]; 
+            keyboardcontroller->getLastPressed();      
             if (objectivepos.x != slidepos.x) {
                 slidepos.x += geometricslide((objectivepos.x - slidepos.x));
             }

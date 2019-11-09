@@ -23,6 +23,10 @@ class KeyboardController : public Component, Tilesize, KeyboardInputMapping {
             positioncomponent = &entity->getComponent<PositionComponent>();
         }
         
+        LastPressed getLastPressed(){
+            return(lastpressed);
+        }
+        
         void check_pressed(std::vector<std::vector<SDL_Scancode>>pressed){
             // printf("is empty: %d\n", pressed.empty());
             if ((lastpressed.keys == pressed) && (!pressed.empty())) {
