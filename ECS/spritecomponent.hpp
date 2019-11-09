@@ -7,7 +7,6 @@
 #include "vector2D.hpp"
 #include "shared.hpp"
 #include "positioncomponent.hpp"
-#include "keyboardcontroller.hpp"
 #include "texturemanager.hpp"
 #include "SDL2/SDL.h"
 
@@ -57,7 +56,6 @@ class SpriteComponent : public Component{
         virtual void update() override {
             objectivepos.x = (int)positioncomponent->getPos().x * currenttilesize[0];
             objectivepos.y = (int)positioncomponent->getPos().y * currenttilesize[1]; 
-
         }
         
         void draw() override {

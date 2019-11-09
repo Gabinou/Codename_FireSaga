@@ -1,14 +1,9 @@
 #ifndef CURSORCOMPONENT_HPP
 #define CURSORCOMPONENT_HPP
 
-#include "ECS.hpp"
-#include "components.hpp"
-#include "map.hpp"
-#include "vector2D.hpp"
 #include "shared.hpp"
 #include "spritecomponent.hpp"
 #include "keyboardcontroller.hpp"
-#include "texturemanager.hpp"
 #include "SDL2/SDL.h"
 
 class CursorComponent : public SpriteComponent{
@@ -17,8 +12,6 @@ class CursorComponent : public SpriteComponent{
         KeyboardController *keyboardcontroller;
 
     public:
-        // CursorComponent() = default;
-        
         using SpriteComponent::SpriteComponent;
         
         
@@ -29,20 +22,25 @@ class CursorComponent : public SpriteComponent{
         
         void update() override {
             SpriteComponent::update();
-            // objectivepos.x = (int)positioncomponent->getPos().x * currenttilesize[0];
-            // objectivepos.y = (int)positioncomponent->getPos().y * currenttilesize[1]; 
-            keyboardcontroller->getLastPressed();      
+            LastPressed lastpressed = keyboardcontroller->getLastPressed();
+            float slidefactor = 2;
+            if (lastpressed.pressed_frames>30){
+                // printf("Up active frames: %d\n", lastpressed.pressed_frames);
+                printf("Going fast\n");
+                slidefactor = 1.05;
+            }
             if (objectivepos.x != slidepos.x) {
-                slidepos.x += geometricslide((objectivepos.x - slidepos.x));
+                // printf("geo_factor: %d", geo_factor);
+                slidepos.x += geometricslide((objectivepos.x - slidepos.x), slidefactor);
             }
             if (objectivepos.y != slidepos.y) {
-                slidepos.y += geometricslide((objectivepos.y - SpriteComponent::slidepos.y));
+                slidepos.y += geometricslide((objectivepos.y - slidepos.y), slidefactor);
             }
             if ((objectivepos.x == slidepos.x) && (objectivepos.y == slidepos.y)) {
                 positioncomponent->setUpdatable(true);
             }
-            destrect.x = SpriteComponent::slidepos.x;
-            destrect.y = SpriteComponent::slidepos.y;
+            destrect.x = slidepos.x;
+            destrect.y = slidepos.y;
         }
         
 };

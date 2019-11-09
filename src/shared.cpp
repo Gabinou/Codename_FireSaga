@@ -8,12 +8,13 @@ using namespace std;
 #include "inventory_item.hpp"
 #include "SDL2/SDL.h"
 
-int geometricslide(int distance, int geo_factor){
+int geometricslide(int distance, float geo_factor){
     // geometric slide cause the series is geometric:
     // 1/2 + 1/4 + 1/16....
     // intended for cursor to slide to next position.
     int sign = sgn(distance);
-    int out = sign*std::max(sign*distance/geo_factor, 1);
+
+    int out = sign*std::max(sign*(int)(distance/geo_factor), 1);
     return(out);
     // std::abs() possible instead of sign*distance
     // This is more elegant.
