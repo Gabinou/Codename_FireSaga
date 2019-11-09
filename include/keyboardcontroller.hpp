@@ -1,7 +1,7 @@
 #ifndef KEYBOARDCONTROL_HPP
 #define KEYBOARDCONTROL_HPP
 
-#include "ecs.hpp"
+#include "ECS.hpp"
 #include "components.hpp"
 #include "game.hpp"
 #include "keyboardinputmapping.hpp"

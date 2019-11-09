@@ -15,7 +15,6 @@ class SpriteComponent : public Component{
     
     private:
         PositionComponent *positioncomponent;
-        KeyboardController *keyboardcontroller;
         SDL_Texture *texture;
         SDL_Rect srcrect, destrect;
         Map * currentmap;
@@ -44,9 +43,8 @@ class SpriteComponent : public Component{
             currenttilesize = currentmap->getTilesize();
         }
 
-        void init() override {
+        virtual void init() override {
             positioncomponent = &entity->getComponent<PositionComponent>();
-            keyboardcontroller = &entity->getComponent<KeyboardController>();
             slidepos.x = (int)positioncomponent->getPos().x * currenttilesize[0];
             slidepos.y = (int)positioncomponent->getPos().y * currenttilesize[1];
             srcrect.x = srcrect.y = 0;
@@ -54,21 +52,10 @@ class SpriteComponent : public Component{
             destrect.w = destrect.h = 32;
         }
         
-        void update() override {
+        virtual void update() override {
             objectivepos.x = (int)positioncomponent->getPos().x * currenttilesize[0];
             objectivepos.y = (int)positioncomponent->getPos().y * currenttilesize[1]; 
-            keyboardcontroller->getLastPressed();      
-            if (objectivepos.x != slidepos.x) {
-                slidepos.x += geometricslide((objectivepos.x - slidepos.x));
-            }
-            if (objectivepos.y != slidepos.y) {
-                slidepos.y += geometricslide((objectivepos.y - slidepos.y));
-            }
-            if ((objectivepos.x == slidepos.x) && (objectivepos.y == slidepos.y)) {
-                positioncomponent->setUpdatable(true);
-            }
-            destrect.x = slidepos.x;
-            destrect.y = slidepos.y;
+
         }
         
         void draw() override {

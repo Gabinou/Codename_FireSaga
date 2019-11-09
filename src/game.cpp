@@ -7,6 +7,7 @@
 #include "components.hpp"
 #include "spritecomponent.hpp"
 #include "positioncomponent.hpp"
+#include "cursorcomponent.hpp"
 #include "keyboardcontroller.hpp"
 #include "vector2D.hpp"
 
@@ -57,9 +58,11 @@ void Game::init(const char* title, int xpos, int ypos, int width, int height, bo
     cursor.addComponent<PositionComponent>(1, 1);
 
     cursor.addComponent<KeyboardController>();
+    cursor.addComponent<KeyboardController>();
     
     player.addComponent<SpriteComponent>(mapp, "..//assets//horse.png");
-    cursor.addComponent<SpriteComponent>(mapp, "..//assets//cursor.png");
+    cursor.addComponent<CursorComponent>(mapp, "..//assets//cursor.png");
+    // cursor.addComponent<CursorComponent>();
     // newPlayer.addComponent<PositionComponent>();
 };
 

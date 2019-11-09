@@ -3,6 +3,7 @@
 #include "ECS.hpp"
 #include "positioncomponent.hpp"
 #include "spritecomponent.hpp"
+#include "cursorcomponent.hpp"
 
 
 
