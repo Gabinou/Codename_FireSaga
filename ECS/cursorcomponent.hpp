@@ -32,15 +32,15 @@ class CursorComponent : public SpriteComponent{
             // objectivepos.x = (int)positioncomponent->getPos().x * currenttilesize[0];
             // objectivepos.y = (int)positioncomponent->getPos().y * currenttilesize[1]; 
             keyboardcontroller->getLastPressed();      
-            if (objectivepos.x != SpriteComponent::slidepos.x) {
-                SpriteComponent::slidepos.x += geometricslide((objectivepos.x - SpriteComponent::slidepos.x));
+            if (objectivepos.x != slidepos.x) {
+                slidepos.x += geometricslide((objectivepos.x - slidepos.x));
             }
-            // if (objectivepos.y != slidepos.y) {
-                // slidepos.y += geometricslide((objectivepos.y - SpriteComponent::slidepos.y));
-            // }
-            // if ((objectivepos.x == slidepos.x) && (objectivepos.y == slidepos.y)) {
-                // positioncomponent->setUpdatable(true);
-            // }
+            if (objectivepos.y != slidepos.y) {
+                slidepos.y += geometricslide((objectivepos.y - SpriteComponent::slidepos.y));
+            }
+            if ((objectivepos.x == slidepos.x) && (objectivepos.y == slidepos.y)) {
+                positioncomponent->setUpdatable(true);
+            }
             destrect.x = SpriteComponent::slidepos.x;
             destrect.y = SpriteComponent::slidepos.y;
         }

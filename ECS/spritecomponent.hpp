@@ -15,7 +15,7 @@ class SpriteComponent : public Component{
     
     private:    
         SDL_Texture *texture;
-        
+
     protected:
         PositionComponent *positioncomponent;
         SDL_Rect srcrect, destrect;
