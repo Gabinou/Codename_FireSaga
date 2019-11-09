@@ -55,7 +55,6 @@ class KeyboardController : public Component, Tilesize, KeyboardInputMapping {
                     positioncomponent->addPos(Vector2D(1, 0));
                     current_pressed.push_back(moveright);
                 }
-                // printf("is empty: %d\n", current_pressed.empty());
                 check_pressed(current_pressed);
                 positioncomponent->setUpdatable(false);
             }
