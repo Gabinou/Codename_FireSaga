@@ -73,22 +73,20 @@ void Game::init(const char* title, int xpos, int ypos, int width, int height, bo
     } else {
         isRunning = false;
     }
-    
-    // playerTex = texturemanager::loadtexture("..//assets//horse.png", renderer);
+   
     printf("Creating map \n");
     mapp =  new Map(32,32);
     mapp->loadMap("..//testmap.txt");
+    
     cursor.addComponent<PositionComponent>(2, 2);
     player.addComponent<PositionComponent>(2, 2);
     textbox.addComponent<PositionComponent>(10, 10);
     SDL_Color black = {255,255,255};
-    // textbox.addComponent<TextComponent>();
-    textbox.addComponent<TextComponent>("The quick brown fox jumped over the lazy dog.", black); //this does not work
-    // SDL_Surface* textsurface = TTF_RenderText_Solid(Game::font, "allo", black);
     cursor.addComponent<KeyboardController>();
     
     player.addComponent<SpriteComponent>(mapp, "..//assets//horse.png");
     cursor.addComponent<CursorComponent>(mapp, "..//assets//cursor.png");
+    textbox.addComponent<TextComponent>("The quick brown fox jumped over the lazy dog.", black); //order is important.
 
 };
 

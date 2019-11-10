@@ -20,7 +20,9 @@ class TextComponent : public Component{
         SDL_Rect srcrect, destrect;
 
     public:
-        TextComponent() = default;
+        TextComponent(){
+            printf("initted without init\n");
+        };
         
         TextComponent(std::string text, SDL_Color textColor){
             setTexture(text, textColor);
@@ -33,15 +35,15 @@ class TextComponent : public Component{
         void setTexture(std::string text, SDL_Color textColor) {
             texture = TextureManager::loadFromRenderedText(text, textColor);
         }
-        
 
         virtual void init() override {
             positioncomponent = &entity->getComponent<PositionComponent>();
-            srcrect.x = srcrect.y = 40;
-            srcrect.w = 320;
-            srcrect.h = 320;
-            destrect.w = 320;
-            destrect.h = 320;
+            printf("initted\n");
+            srcrect.x = srcrect.y = 0;
+            srcrect.w = 160;
+            srcrect.h = 160;
+            destrect.w = 160;
+            destrect.h = 160;
         }
         
         virtual void update() override {
