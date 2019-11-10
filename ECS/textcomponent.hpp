@@ -18,7 +18,6 @@ class TextComponent : public Component{
     protected:
         PositionComponent *positioncomponent;
         SDL_Rect srcrect, destrect;
-        Map * currentmap;
 
     public:
         TextComponent() = default;
@@ -35,18 +34,14 @@ class TextComponent : public Component{
             texture = TextureManager::loadFromRenderedText(text, textColor);
         }
         
-        void setMap(Map * inmap) {
-            currentmap = inmap;
-            srcrect.w = destrect.w = 32;
-            srcrect.h = destrect.h = 32;
-        }
 
         virtual void init() override {
             positioncomponent = &entity->getComponent<PositionComponent>();
-            srcrect.x = srcrect.y = 0;
-            srcrect.w = srcrect.h = 32;
-            destrect.w = 32;
-            destrect.h = 32;
+            srcrect.x = srcrect.y = 40;
+            srcrect.w = 320;
+            srcrect.h = 320;
+            destrect.w = 320;
+            destrect.h = 320;
         }
         
         virtual void update() override {
