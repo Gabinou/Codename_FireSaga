@@ -10,7 +10,7 @@
 #include "texturemanager.hpp"
 #include "SDL2/SDL.h"
 
-class SpriteComponent : public Component{
+class TextComponent : public Component{
     
     private:    
         SDL_Texture *texture;
@@ -20,14 +20,12 @@ class SpriteComponent : public Component{
         SDL_Rect srcrect, destrect;
         Map * currentmap;
         int * currenttilesize;
-        Vector2D objectivepos;
-        Vector2D slidepos;
 
     public:
         SpriteComponent() = default;
         
-        SpriteComponent(Map * inmap, const char* path){
-            setTexture(path);
+        TextComponent(Map * inmap, std::string text, SDL_Color textColor){
+            setTexture(text);
             setMap(inmap);
         }
         
@@ -35,8 +33,8 @@ class SpriteComponent : public Component{
             return(texture);
         }
         
-        void setTexture(const char * path) {
-            texture = TextureManager::loadTexture(path);
+        void setTexture(std::string text, SDL_Color textColor) {
+            texture = TextureManager::loadFromRenderedText(text, textColor);
         }
         
         void setMap(Map * inmap) {
@@ -46,16 +44,12 @@ class SpriteComponent : public Component{
 
         virtual void init() override {
             positioncomponent = &entity->getComponent<PositionComponent>();
-            slidepos.x = (int)positioncomponent->getPos().x * currenttilesize[0];
-            slidepos.y = (int)positioncomponent->getPos().y * currenttilesize[1];
             srcrect.x = srcrect.y = 0;
-            srcrect.w = srcrect.h = 64;
-            destrect.w = destrect.h = 64;
+            srcrect.w = srcrect.h = 32;
+            destrect.w = destrect.h = 32;
         }
         
         virtual void update() override {
-            objectivepos.x = (int)positioncomponent->getPos().x * currenttilesize[0];
-            objectivepos.y = (int)positioncomponent->getPos().y * currenttilesize[1]; 
         }
         
         void draw() override {
