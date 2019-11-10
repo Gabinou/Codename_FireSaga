@@ -28,7 +28,6 @@ class KeyboardController : public Component, Tilesize, KeyboardInputMapping {
         }
         
         void check_pressed(std::vector<std::vector<SDL_Scancode>>pressed){
-            // printf("is empty: %d\n", pressed.empty());
             if ((lastpressed.keys == pressed) && (!pressed.empty())) {
                 lastpressed.pressed_frames++;
             } else {
@@ -40,11 +39,7 @@ class KeyboardController : public Component, Tilesize, KeyboardInputMapping {
         void update() override {
             const Uint8 *keyboard_state_array = SDL_GetKeyboardState(NULL);
             std::vector<std::vector<SDL_Scancode>> current_pressed{}; 
-            printf("Is pressed? %d\n", is_pressed(keyboard_state_array, movedown));
-            // printf("repeats? %d\n", Game::event.key.repeat);
-            // printf("updates %d %d\n", (Game::event.type == SDL_KEYDOWN), (Game::event.type == SDL_KEYUP));
             // if(Game::event.type == SDL_KEYDOWN || Game::event.type == SDL_KEYUP){
-                // // printf("Ispressed: %d %d \n", is_pressed(keyboard_state_array, moveright), is_pressed(keyboard_state_array, moveleft));
                 if (is_pressed(keyboard_state_array, moveup) && !is_pressed(keyboard_state_array, movedown)){
                     positioncomponent->addPos(Vector2D(0, -1));
                     current_pressed.push_back(moveup);
@@ -58,7 +53,6 @@ class KeyboardController : public Component, Tilesize, KeyboardInputMapping {
                 } else if (is_pressed(keyboard_state_array, moveright) && !is_pressed(keyboard_state_array, moveleft)){
                     positioncomponent->addPos(Vector2D(1, 0));
                     current_pressed.push_back(moveright);
-                    // printf("Right is pressed %d \n", lastpressed.pressed_frames);
                 }
                 check_pressed(current_pressed);
                 positioncomponent->setUpdatable(false);
