@@ -40,10 +40,10 @@ class TextComponent : public Component{
             positioncomponent = &entity->getComponent<PositionComponent>();
             printf("initted\n");
             srcrect.x = srcrect.y = 0;
-            srcrect.w = 160;
-            srcrect.h = 160;
-            destrect.w = 160;
-            destrect.h = 160;
+            srcrect.w = 640;
+            srcrect.h = 32;
+            destrect.w = 320;
+            destrect.h = 32;
         }
         
         virtual void update() override {
