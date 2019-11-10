@@ -23,9 +23,8 @@ class TextComponent : public Component{
     public:
         TextComponent() = default;
         
-        TextComponent(Map * inmap, std::string text, SDL_Color textColor){
+        TextComponent(std::string text, SDL_Color textColor){
             setTexture(text, textColor);
-            setMap(inmap);
         }
         
         SDL_Texture * getTexture() { 
@@ -38,17 +37,16 @@ class TextComponent : public Component{
         
         void setMap(Map * inmap) {
             currentmap = inmap;
-            int * currenttilesize = currentmap->getTilesize();
-            srcrect.w = destrect.w = currenttilesize[0];
-            srcrect.h = destrect.h = currenttilesize[1];
+            srcrect.w = destrect.w = 32;
+            srcrect.h = destrect.h = 32;
         }
 
         virtual void init() override {
             positioncomponent = &entity->getComponent<PositionComponent>();
             srcrect.x = srcrect.y = 0;
             srcrect.w = srcrect.h = 32;
-            destrect.w = (int)positioncomponent->getPos().x * destrect.w;
-            destrect.h = (int)positioncomponent->getPos().y * destrect.h;
+            destrect.w = 32;
+            destrect.h = 32;
         }
         
         virtual void update() override {

@@ -78,8 +78,8 @@ void Game::init(const char* title, int xpos, int ypos, int width, int height, bo
     player.addComponent<PositionComponent>(2, 2);
     textbox.addComponent<PositionComponent>(10, 10);
     SDL_Color black = {0,0,0};
-    textbox.addComponent<TextComponent>();
-    // textbox.addComponent<TextComponent>("The quick brown fox jumped over the lazy dog.", black);
+    // textbox.addComponent<TextComponent>();
+    textbox.addComponent<TextComponent>("The quick brown fox jumped over the lazy dog.", black);
 
     cursor.addComponent<KeyboardController>();
     
