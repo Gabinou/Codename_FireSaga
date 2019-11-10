@@ -50,13 +50,15 @@ class SpriteComponent : public Component{
             srcrect.x = srcrect.y = 0;
             srcrect.w = srcrect.h = 32;
             destrect.w = destrect.h = 32;
-            slidepos.x = (int)positioncomponent->getPos().x * srcrect.w;
-            slidepos.y = (int)positioncomponent->getPos().y * srcrect.h;
+            slidepos.x = (int)positioncomponent->getPos().x * destrect.w;
+            slidepos.y = (int)positioncomponent->getPos().y * destrect.h;
         }
         
         virtual void update() override {
             objectivepos.x = (int)positioncomponent->getPos().x * destrect.w;
             objectivepos.y = (int)positioncomponent->getPos().y * destrect.h; 
+            destrect.x = slidepos.x;
+            destrect.y = slidepos.y;
         }
         
         void draw() override {

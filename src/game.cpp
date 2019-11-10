@@ -73,16 +73,15 @@ void Game::init(const char* title, int xpos, int ypos, int width, int height, bo
     printf("Creating map \n");
     mapp =  new Map(32,32);
     mapp->loadMap("..//testmap.txt");
-    player.addComponent<PositionComponent>(0, 0);
-    cursor.addComponent<PositionComponent>(1, 1);
-    cursor.addComponent<PositionComponent>(1, 1);
+    // cursor.addComponent<PositionComponent>(2, 2);
+    player.addComponent<PositionComponent>(2, 2);
     textbox.addComponent<PositionComponent>(10, 10);
 
-    cursor.addComponent<KeyboardController>();
-    cursor.addComponent<KeyboardController>();
+    // cursor.addComponent<KeyboardController>();
+    player.addComponent<KeyboardController>();
     
     player.addComponent<SpriteComponent>(mapp, "..//assets//horse.png");
-    cursor.addComponent<CursorComponent>(mapp, "..//assets//cursor.png");
+    // cursor.addComponent<CursorComponent>(mapp, "..//assets//cursor.png");
     // cursor.addComponent<CursorComponent>();
     // newPlayer.addComponent<PositionComponent>();
 };
