@@ -17,7 +17,6 @@ Map* mapp;
 SDL_Renderer* Game::renderer = nullptr;
 SDL_Event Game::event;
 TTF_Font* Game::font = NULL;
-static LTexture textTexture;
         
 Manager manager;
 auto& player(manager.addEntity());
