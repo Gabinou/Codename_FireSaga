@@ -19,7 +19,6 @@ class SpriteComponent : public Component{
         PositionComponent *positioncomponent;
         SDL_Rect srcrect, destrect;
         Map * currentmap;
-        int * currenttilesize;
         Vector2D objectivepos;
         Vector2D slidepos;
 
@@ -41,21 +40,23 @@ class SpriteComponent : public Component{
         
         void setMap(Map * inmap) {
             currentmap = inmap;
-            currenttilesize = currentmap->getTilesize();
+            int * currenttilesize = currentmap->getTilesize();
+            srcrect.w = destrect.w = currenttilesize[0];
+            srcrect.h = destrect.h = currenttilesize[1];
         }
 
         virtual void init() override {
             positioncomponent = &entity->getComponent<PositionComponent>();
-            slidepos.x = (int)positioncomponent->getPos().x * currenttilesize[0];
-            slidepos.y = (int)positioncomponent->getPos().y * currenttilesize[1];
             srcrect.x = srcrect.y = 0;
-            srcrect.w = srcrect.h = 64;
-            destrect.w = destrect.h = 64;
+            srcrect.w = srcrect.h = 32;
+            destrect.w = destrect.h = 32;
+            slidepos.x = (int)positioncomponent->getPos().x * srcrect.w;
+            slidepos.y = (int)positioncomponent->getPos().y * srcrect.h;
         }
         
         virtual void update() override {
-            objectivepos.x = (int)positioncomponent->getPos().x * currenttilesize[0];
-            objectivepos.y = (int)positioncomponent->getPos().y * currenttilesize[1]; 
+            objectivepos.x = (int)positioncomponent->getPos().x * destrect.w;
+            objectivepos.y = (int)positioncomponent->getPos().y * destrect.h; 
         }
         
         void draw() override {
