@@ -3,6 +3,7 @@
 #include <stdio.h>
 #include "SDL2/SDL.h"
 #include "SDL2/SDL_image.h"
+#include "SDL2/SDL_ttf.h"
 #include "map.hpp"
 #include "components.hpp"
 #include "spritecomponent.hpp"
@@ -15,14 +16,12 @@ Map* mapp;
 
 SDL_Renderer* Game::renderer = nullptr;
 SDL_Event Game::event;
-
+TTF_Font* Game::font = NULL;
+static LTexture textTexture;
+        
 Manager manager;
 auto& player(manager.addEntity());
 auto& cursor(manager.addEntity());
-
-//Globally used font
-TTF_Font *gFont = NULL;
-
 
 Game::Game() {}
 Game::~Game() {}
@@ -34,7 +33,20 @@ void Game::init(const char* title, int xpos, int ypos, int width, int height, bo
     if(fullscreen){
         flags = SDL_WINDOW_FULLSCREEN;
     }
-    
+    Game::font = TTF_OpenFont( "16_true_type_fonts/lazy.ttf", 28 );
+    if( Game::font == NULL )
+    {
+        printf( "Failed to load lazy font! SDL_ttf Error: %s\n", TTF_GetError() );
+    }
+    else
+    {
+        //Render text
+        SDL_Color textColor = { 0, 0, 0 };
+        if( !textTexture.loadFromRenderedText("The quick brown fox jumps over the lazy dog", textColor) )
+        {
+            printf("Failed to render text texture!\n");
+        }
+    }
     if(SDL_Init(SDL_INIT_EVERYTHING) == 0){
         printf("SDL subsystems initialized.\n");
         
@@ -42,7 +54,11 @@ void Game::init(const char* title, int xpos, int ypos, int width, int height, bo
         if(window){
             printf("Window created.\n");
         }
-            
+        
+        if(TTF_Init() == -1) {
+            printf("SDL_ttf could not initialize! SDL_ttf Error: %s\n", TTF_GetError());
+        }
+
         renderer = SDL_CreateRenderer(window, -1, 0);
         if(renderer){
             SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);

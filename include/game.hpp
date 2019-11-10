@@ -3,6 +3,8 @@
 
 #include "SDL2/SDL.h"
 #include "SDL2/SDL_image.h"
+#include "SDL2/SDL_ttf.h"
+#include "ltexture.hpp"
 #include <stdio.h>
 
 class Game {
@@ -22,6 +24,8 @@ class Game {
         
         static SDL_Renderer *renderer;
         static SDL_Event event;
+        static TTF_Font* font;
+
         
     private:
         bool isRunning;
