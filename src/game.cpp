@@ -79,8 +79,8 @@ void Game::init(const char* title, int xpos, int ypos, int width, int height, bo
     textbox.addComponent<PositionComponent>(10, 10);
     SDL_Color black = {0,0,0};
     // textbox.addComponent<TextComponent>();
-    textbox.addComponent<TextComponent>("The quick brown fox jumped over the lazy dog.", black);
-
+    textbox.addComponent<TextComponent>("The quick brown fox jumped over the lazy dog.", black); //this does not work
+    SDL_Surface* textsurface = TTF_RenderText_Solid(Game::font, "allo", black);
     cursor.addComponent<KeyboardController>();
     
     player.addComponent<SpriteComponent>(mapp, "..//assets//horse.png");
