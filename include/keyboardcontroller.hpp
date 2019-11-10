@@ -40,6 +40,7 @@ class KeyboardController : public Component, Tilesize, KeyboardInputMapping {
         void update() override {
             const Uint8 *keyboard_state_array = SDL_GetKeyboardState(NULL);
             std::vector<std::vector<SDL_Scancode>> current_pressed{}; 
+            printf("updates");
             if(Game::event.type == SDL_KEYDOWN || Game::event.type == SDL_KEYUP){
                 if (is_pressed(keyboard_state_array, moveup) && !is_pressed(keyboard_state_array, movedown)){
                     positioncomponent->addPos(Vector2D(0, -1));
@@ -54,6 +55,7 @@ class KeyboardController : public Component, Tilesize, KeyboardInputMapping {
                 } else if (is_pressed(keyboard_state_array, moveright) && !is_pressed(keyboard_state_array, moveleft)){
                     positioncomponent->addPos(Vector2D(1, 0));
                     current_pressed.push_back(moveright);
+                    printf("Right is pressed %d \n", lastpressed.pressed_frames);
                 }
                 check_pressed(current_pressed);
                 positioncomponent->setUpdatable(false);

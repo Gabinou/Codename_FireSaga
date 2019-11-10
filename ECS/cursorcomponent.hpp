@@ -25,12 +25,9 @@ class CursorComponent : public SpriteComponent{
             LastPressed lastpressed = keyboardcontroller->getLastPressed();
             float slidefactor = 2;
             if (lastpressed.pressed_frames>25){
-                // printf("Up active frames: %d\n", lastpressed.pressed_frames);
-                printf("Going fast\n");
                 slidefactor = 1.025;
             }
             if (objectivepos.x != slidepos.x) {
-                // printf("geo_factor: %d", geo_factor);
                 slidepos.x += geometricslide((objectivepos.x - slidepos.x), slidefactor);
             }
             if (objectivepos.y != slidepos.y) {
