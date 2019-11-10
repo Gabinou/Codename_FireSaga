@@ -20,6 +20,10 @@ Manager manager;
 auto& player(manager.addEntity());
 auto& cursor(manager.addEntity());
 
+//Globally used font
+TTF_Font *gFont = NULL;
+
+
 Game::Game() {}
 Game::~Game() {}
 
