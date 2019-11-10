@@ -32,7 +32,7 @@ class TextComponent : public Component{
         }
         
         void setTexture(std::string text, SDL_Color textColor) {
-            // texture = TextureManager::loadFromRenderedText(text, textColor);
+            texture = TextureManager::loadFromRenderedText(text, textColor);
         }
         
         void setMap(Map * inmap) {

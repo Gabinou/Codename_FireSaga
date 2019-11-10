@@ -34,7 +34,11 @@ void Game::init(const char* title, int xpos, int ypos, int width, int height, bo
     if(fullscreen){
         flags = SDL_WINDOW_FULLSCREEN;
     }
-    Game::font = TTF_OpenFont( "16_true_type_fonts/lazy.ttf", 28 );
+    if(TTF_Init()==-1) {
+        printf("TTF_Init: %s\n", TTF_GetError());
+        exit(2);
+    }
+    Game::font = TTF_OpenFont( "../fonts/lazy.ttf", 28);
     if( Game::font == NULL )
     {
         printf( "Failed to load lazy font! SDL_ttf Error: %s\n", TTF_GetError() );
@@ -80,7 +84,7 @@ void Game::init(const char* title, int xpos, int ypos, int width, int height, bo
     SDL_Color black = {0,0,0};
     // textbox.addComponent<TextComponent>();
     textbox.addComponent<TextComponent>("The quick brown fox jumped over the lazy dog.", black); //this does not work
-    SDL_Surface* textsurface = TTF_RenderText_Solid(Game::font, "allo", black);
+    // SDL_Surface* textsurface = TTF_RenderText_Solid(Game::font, "allo", black);
     cursor.addComponent<KeyboardController>();
     
     player.addComponent<SpriteComponent>(mapp, "..//assets//horse.png");
