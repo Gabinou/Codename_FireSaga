@@ -40,13 +40,16 @@ class TextComponent : public Component{
         void setMap(Map * inmap) {
             currentmap = inmap;
             currenttilesize = currentmap->getTilesize();
+            srcrect.w = destrect.w = currenttilesize[0];
+            srcrect.h = destrect.h = currenttilesize[1];
         }
 
         virtual void init() override {
             positioncomponent = &entity->getComponent<PositionComponent>();
             srcrect.x = srcrect.y = 0;
             srcrect.w = srcrect.h = 32;
-            destrect.w = destrect.h = 32;
+            destrect.w = (int)positioncomponent->getPos().x * destrect.w;
+            destrect.h = (int)positioncomponent->getPos().y * destrect.h;
         }
         
         virtual void update() override {
