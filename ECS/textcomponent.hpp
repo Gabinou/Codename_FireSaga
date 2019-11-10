@@ -1,5 +1,5 @@
-#ifndef SPRITECOMPONENT_HPP
-#define SPRITECOMPONENT_HPP
+#ifndef TEXTCOMPONENT_HPP
+#define TEXTCOMPONENT_HPP
 
 #include "ECS.hpp"
 #include "components.hpp"
@@ -19,13 +19,12 @@ class TextComponent : public Component{
         PositionComponent *positioncomponent;
         SDL_Rect srcrect, destrect;
         Map * currentmap;
-        int * currenttilesize;
 
     public:
-        SpriteComponent() = default;
+        TextComponent() = default;
         
         TextComponent(Map * inmap, std::string text, SDL_Color textColor){
-            setTexture(text);
+            setTexture(text, textColor);
             setMap(inmap);
         }
         
@@ -39,7 +38,7 @@ class TextComponent : public Component{
         
         void setMap(Map * inmap) {
             currentmap = inmap;
-            currenttilesize = currentmap->getTilesize();
+            int * currenttilesize = currentmap->getTilesize();
             srcrect.w = destrect.w = currenttilesize[0];
             srcrect.h = destrect.h = currenttilesize[1];
         }
@@ -60,4 +59,4 @@ class TextComponent : public Component{
         }
 };
 
-#endif /* SPRITECOMPONENT_HPP */
+#endif /* TEXTCOMPONENT_HPP */

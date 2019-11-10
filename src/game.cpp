@@ -9,6 +9,7 @@
 #include "spritecomponent.hpp"
 #include "positioncomponent.hpp"
 #include "cursorcomponent.hpp"
+#include "textcomponent.hpp"
 #include "keyboardcontroller.hpp"
 #include "vector2D.hpp"
 
@@ -76,6 +77,9 @@ void Game::init(const char* title, int xpos, int ypos, int width, int height, bo
     cursor.addComponent<PositionComponent>(2, 2);
     player.addComponent<PositionComponent>(2, 2);
     textbox.addComponent<PositionComponent>(10, 10);
+    SDL_Color black = {0,0,0};
+    textbox.addComponent<TextComponent>();
+    // textbox.addComponent<TextComponent>("The quick brown fox jumped over the lazy dog.", black);
 
     cursor.addComponent<KeyboardController>();
     
