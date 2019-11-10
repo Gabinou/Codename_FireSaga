@@ -22,6 +22,7 @@ static LTexture textTexture;
 Manager manager;
 auto& player(manager.addEntity());
 auto& cursor(manager.addEntity());
+auto& textbox(manager.addEntity());
 
 Game::Game() {}
 Game::~Game() {}
@@ -38,15 +39,15 @@ void Game::init(const char* title, int xpos, int ypos, int width, int height, bo
     {
         printf( "Failed to load lazy font! SDL_ttf Error: %s\n", TTF_GetError() );
     }
-    else
-    {
-        //Render text
-        SDL_Color textColor = { 0, 0, 0 };
-        if( !textTexture.loadFromRenderedText("The quick brown fox jumps over the lazy dog", textColor) )
-        {
-            printf("Failed to render text texture!\n");
-        }
-    }
+    // else
+    // {
+        // //Render text
+        // SDL_Color textColor = { 0, 0, 0 };
+        // if( !textTexture.loadFromRenderedText("The quick brown fox jumps over the lazy dog", textColor) )
+        // {
+            // printf("Failed to render text texture!\n");
+        // }
+    // }
     if(SDL_Init(SDL_INIT_EVERYTHING) == 0){
         printf("SDL subsystems initialized.\n");
         
@@ -76,6 +77,7 @@ void Game::init(const char* title, int xpos, int ypos, int width, int height, bo
     player.addComponent<PositionComponent>(0, 0);
     cursor.addComponent<PositionComponent>(1, 1);
     cursor.addComponent<PositionComponent>(1, 1);
+    textbox.addComponent<PositionComponent>(10, 10);
 
     cursor.addComponent<KeyboardController>();
     cursor.addComponent<KeyboardController>();
