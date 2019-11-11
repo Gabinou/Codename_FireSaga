@@ -10,20 +10,24 @@ class CursorComponent : public SpriteComponent{
     
     private:
         KeyboardController *keyboardcontroller;
-
+        SDL_Rect spriteclips[9];
+        
     public:
         using SpriteComponent::SpriteComponent;
         
+        // CursorComponent
         
-        void init() {
+        void init() override {
             SpriteComponent::init();
             keyboardcontroller = &entity->getComponent<KeyboardController>();
+            SpriteComponent::setSrcrect(64, 64);
         }
         
         void update() override {
             SpriteComponent::update();
             LastPressed lastpressed = keyboardcontroller->getLastPressed();
             float slidefactor = 2;
+
             if (lastpressed.pressed_frames>25){
                 slidefactor = 1.025;
             }
@@ -37,7 +41,11 @@ class CursorComponent : public SpriteComponent{
                 positioncomponent->setUpdatable(true);
             }
             destrect.x = slidepos.x;
-            destrect.y = slidepos.y;
+            destrect.y = slidepos.y;            
+            destrect.x -= srcrect.w/4;
+            destrect.y -= srcrect.w/4;           
+            destrect.w = srcrect.w;
+            destrect.h = srcrect.h;
         }
         
 };

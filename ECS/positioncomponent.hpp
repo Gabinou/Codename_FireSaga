@@ -9,8 +9,6 @@
 
 class PositionComponent : public Component {
     private:
-        Vector2D pixelposition;
-        Vector2D tileposition;
         bool updatable = true;
         Vector2D position;
     public:

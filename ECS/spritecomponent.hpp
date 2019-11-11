@@ -21,6 +21,10 @@ class SpriteComponent : public Component{
         Map * currentmap;
         Vector2D objectivepos;
         Vector2D slidepos;
+        int * tilesize;
+        bool animated = false;
+        int frames = 0;
+        int speed = 100;
 
     public:
         SpriteComponent() = default;
@@ -28,6 +32,14 @@ class SpriteComponent : public Component{
         SpriteComponent(Map * inmap, const char* path){
             setTexture(path);
             setMap(inmap);
+        }
+        
+        SpriteComponent(Map * inmap, const char* path, int nFrames, int mSpeed){
+            setTexture(path);
+            setMap(inmap);
+            animated = true;
+            frames = nFrames;
+            speed = mSpeed;
         }
         
         SDL_Texture * getTexture() { 
@@ -40,9 +52,12 @@ class SpriteComponent : public Component{
         
         void setMap(Map * inmap) {
             currentmap = inmap;
-            int * currenttilesize = currentmap->getTilesize();
-            srcrect.w = destrect.w = currenttilesize[0];
-            srcrect.h = destrect.h = currenttilesize[1];
+            int * tilesize = currentmap->getTilesize();
+        }
+        
+        void setSrcrect(int width, int height){
+            srcrect.w = width;  
+            srcrect.h = height;
         }
 
         virtual void init() override {
@@ -57,6 +72,9 @@ class SpriteComponent : public Component{
         virtual void update() override {
             objectivepos.x = (int)positioncomponent->getPos().x * destrect.w;
             objectivepos.y = (int)positioncomponent->getPos().y * destrect.h; 
+            if (animated) {
+                srcrect.x = srcrect.w * static_cast<int>((SDL_GetTicks()/speed) % frames);
+            }
             destrect.x = slidepos.x;
             destrect.y = slidepos.y;
         }

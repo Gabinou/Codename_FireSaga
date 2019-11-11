@@ -85,7 +85,7 @@ void Game::init(const char* title, int xpos, int ypos, int width, int height, bo
     cursor.addComponent<KeyboardController>();
     
     player.addComponent<SpriteComponent>(mapp, "..//assets//horse.png");
-    cursor.addComponent<CursorComponent>(mapp, "..//assets//cursor.png");
+    cursor.addComponent<CursorComponent>(mapp, "..//assets//cursors.png", 10, 50);
     textbox.addComponent<TextComponent>("The quick brown fox jumped over the lazy dog.", black); //order is important.
 
 };
