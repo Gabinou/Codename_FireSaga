@@ -39,23 +39,23 @@ class KeyboardController : public Component, Tilesize, KeyboardInputMapping {
         void update() override {
             const Uint8 *keyboard_state_array = SDL_GetKeyboardState(NULL);
             std::vector<std::vector<SDL_Scancode>> current_pressed{};
-                if (is_pressed(keyboard_state_array, moveup) && !is_pressed(keyboard_state_array, movedown)){
-                    positioncomponent->addPos(Vector2D(0, -1));
-                    current_pressed.push_back(moveup);
-                } else if  (!is_pressed(keyboard_state_array, moveup) && is_pressed(keyboard_state_array, movedown)){
-                    positioncomponent->addPos(Vector2D(0, 1));
-                    current_pressed.push_back(movedown);
-                } 
-                if (!is_pressed(keyboard_state_array, moveright) && is_pressed(keyboard_state_array, moveleft)){
-                    positioncomponent->addPos(Vector2D(-1, 0));
-                    current_pressed.push_back(moveleft);
-                } else if (is_pressed(keyboard_state_array, moveright) && !is_pressed(keyboard_state_array, moveleft)){
-                    positioncomponent->addPos(Vector2D(1, 0));
-                    current_pressed.push_back(moveright);
-                }
-                check_pressed(current_pressed);
-                positioncomponent->setUpdatable(false);
-            // }
+            if (is_pressed(keyboard_state_array, moveup) && !is_pressed(keyboard_state_array, movedown)){
+                positioncomponent->addPos(Vector2D(0, -1));
+                current_pressed.push_back(moveup);
+            } else if  (!is_pressed(keyboard_state_array, moveup) && is_pressed(keyboard_state_array, movedown)){
+                positioncomponent->addPos(Vector2D(0, 1));
+                current_pressed.push_back(movedown);
+            } 
+            if (!is_pressed(keyboard_state_array, moveright) && is_pressed(keyboard_state_array, moveleft)){
+                positioncomponent->addPos(Vector2D(-1, 0));
+                current_pressed.push_back(moveleft);
+            } else if (is_pressed(keyboard_state_array, moveright) && !is_pressed(keyboard_state_array, moveleft)){
+                positioncomponent->addPos(Vector2D(1, 0));
+                current_pressed.push_back(moveright);
+            }
+            check_pressed(current_pressed);
+            printf("pressed_frames: %d\n", lastpressed.pressed_frames);
+            positioncomponent->setUpdatable(false);
         }
     
 };
