@@ -43,7 +43,7 @@ class CursorComponent : public SpriteComponent{
             destrect.x = slidepos.x;
             destrect.y = slidepos.y;            
             destrect.x -= srcrect.w/4;
-            destrect.y -= srcrect.w/4;           
+            destrect.y -= srcrect.h/4;           
             destrect.w = srcrect.w;
             destrect.h = srcrect.h;
         }

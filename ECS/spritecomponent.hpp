@@ -52,7 +52,7 @@ class SpriteComponent : public Component{
         
         void setMap(Map * inmap) {
             currentmap = inmap;
-            int * tilesize = currentmap->getTilesize();
+            tilesize = currentmap->getTilesize();
         }
         
         void setSrcrect(int width, int height){
@@ -65,13 +65,13 @@ class SpriteComponent : public Component{
             srcrect.x = srcrect.y = 0;
             srcrect.w = srcrect.h = 32;
             destrect.w = destrect.h = 32;
-            slidepos.x = (int)positioncomponent->getPos().x * destrect.w;
-            slidepos.y = (int)positioncomponent->getPos().y * destrect.h;
+            slidepos.x = (int)positioncomponent->getPos().x * tilesize[0];
+            slidepos.y = (int)positioncomponent->getPos().y * tilesize[1];
         }
         
         virtual void update() override {
-            objectivepos.x = (int)positioncomponent->getPos().x * destrect.w;
-            objectivepos.y = (int)positioncomponent->getPos().y * destrect.h; 
+            objectivepos.x = (int)positioncomponent->getPos().x * tilesize[0];
+            objectivepos.y = (int)positioncomponent->getPos().y * tilesize[1]; 
             if (animated) {
                 srcrect.x = srcrect.w * static_cast<int>((SDL_GetTicks()/speed) % frames);
             }
