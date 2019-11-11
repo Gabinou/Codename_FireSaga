@@ -54,7 +54,6 @@ class KeyboardController : public Component, Tilesize, KeyboardInputMapping {
                 current_pressed.push_back(moveright);
             }
             check_pressed(current_pressed);
-            printf("pressed_frames: %d\n", lastpressed.pressed_frames);
             positioncomponent->setUpdatable(false);
         }
     
