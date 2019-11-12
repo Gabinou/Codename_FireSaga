@@ -78,7 +78,7 @@ class SpriteComponent : public Component{
                 // srcrect.x = srcrect.w * static_cast<int>((SDL_GetTicks()/speed) % frames); 
                 // iterate ping-pongly through spritesheet
                 srcrect.x = srcrect.w * pingpong(static_cast<int>(SDL_GetTicks()/speed), frames, 0); 
-                printf("%d %d \n ",srcrect.w, pingpong(static_cast<int>(SDL_GetTicks()/speed), frames, 0));
+                printf("%d %d \n ",srcrect.w, pingpong(static_cast<int>(SDL_GetTicks()/speed), frames, 4));
                 
             }
             destrect.x = slidepos.x;
