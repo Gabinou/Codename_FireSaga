@@ -76,8 +76,8 @@ class SpriteComponent : public Component{
                 // iterate linearly through spritesheet
                 // srcrect.x = srcrect.w * static_cast<int>((SDL_GetTicks()/speed) % frames); 
                 // iterate ping-pongly through spritesheet
-                srcrect.x = srcrect.w * std::min((2*frames) - static_cast<int>((SDL_GetTicks()/speed) % (2*frames)), static_cast<int>((SDL_GetTicks()/speed) % (2*frames))); 
-                printf("%d \n ", std::min((2*frames) - static_cast<int>((SDL_GetTicks()/speed) % (2*frames)), static_cast<int>((SDL_GetTicks()/speed) % (2*frames))));
+                srcrect.x = srcrect.w * std::min((2*frames - 1) - static_cast<int>((SDL_GetTicks()/speed) % (2*frames - 1)), static_cast<int>((SDL_GetTicks()/speed) % (2*frames - 1))); 
+                printf("%d %d \n ",srcrect.w, std::min((2*frames - 1) - static_cast<int>((SDL_GetTicks()/speed) % (2*frames - 1)), static_cast<int>((SDL_GetTicks()/speed) % (2*frames - 1))));
             }
             destrect.x = slidepos.x;
             destrect.y = slidepos.y;
