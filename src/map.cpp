@@ -41,8 +41,8 @@ void Map::drawMap() {
         for (int col = 0; col<map[row].size(); col++) {
             type = map[row][col];
             
-            destrect.x = col * currenttilesize[0];
-            destrect.y = row * currenttilesize[1];
+            destrect.x = (col+1) * currenttilesize[0];
+            destrect.y = (row+1) * currenttilesize[1];
 
             switch (type){
             case 0:
