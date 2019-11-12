@@ -24,9 +24,10 @@ class SpriteComponent : public Component{
         Vector2D slidepos;
         int * tilesize;
         bool animated = false;
-        int frames = 0;
-        int speed = 100;
-
+        int frames = 10;
+        int speed = 50;
+        std::string ss_looping = "pingpong"; //ss: spritesheet
+    
     public:
         SpriteComponent() = default;
         
@@ -35,12 +36,14 @@ class SpriteComponent : public Component{
             setMap(inmap);
         }
         
-        SpriteComponent(Map * inmap, const char* path, int nFrames, int mSpeed){
-            setTexture(path);
-            setMap(inmap);
+        SpriteComponent(Map * inmap, const char* path, int inFrames, int inSpeed) : SpriteComponent(inmap, path){
             animated = true;
-            frames = nFrames;
-            speed = mSpeed;
+            frames = inFrames;
+            speed = inSpeed;
+        }
+
+        SpriteComponent(Map * inmap, const char* path, int inFrames, int inSpeed, std::string in_looping) : SpriteComponent(inmap, path, inFrames, inSpeed){
+            ss_looping = in_looping;
         }
         
         SDL_Texture * getTexture() { 
@@ -74,11 +77,13 @@ class SpriteComponent : public Component{
             objectivepos.x = (int)positioncomponent->getPos().x * tilesize[0];
             objectivepos.y = (int)positioncomponent->getPos().y * tilesize[1]; 
             if (animated) {
-                // iterate linearly through spritesheet
-                // srcrect.x = srcrect.w * static_cast<int>((SDL_GetTicks()/speed) % frames); 
-                // iterate ping-pongly through spritesheet
-                srcrect.x = srcrect.w * pingpong(static_cast<int>(SDL_GetTicks()/speed), frames, 0); 
-                printf("%d %d \n ",srcrect.w, pingpong(static_cast<int>(SDL_GetTicks()/speed), frames, 4));
+                if (ss_looping == "pingpong"){
+                    srcrect.x = srcrect.w * pingpong(static_cast<int>(SDL_GetTicks()/speed), frames, 0); 
+                } else if ((ss_looping == "linear") || (ss_looping == "direct")){
+                    srcrect.x = srcrect.w * static_cast<int>((SDL_GetTicks()/speed) % frames); 
+                } else if (ss_looping == "reverse"){
+                    srcrect.x = srcrect.w * (frames - static_cast<int>((SDL_GetTicks()/speed) % frames)); 
+                }
                 
             }
             destrect.x = slidepos.x;
