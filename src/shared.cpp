@@ -1,5 +1,4 @@
 // Code créé par Gabriel Taillon
-using namespace std;
 #include "shared.hpp"
 #include "generic.hpp"
 #include "weapon.hpp"

@@ -73,7 +73,11 @@ class SpriteComponent : public Component{
             objectivepos.x = (int)positioncomponent->getPos().x * tilesize[0];
             objectivepos.y = (int)positioncomponent->getPos().y * tilesize[1]; 
             if (animated) {
-                srcrect.x = srcrect.w * static_cast<int>((SDL_GetTicks()/speed) % frames);
+                // iterate linearly through spritesheet
+                // srcrect.x = srcrect.w * static_cast<int>((SDL_GetTicks()/speed) % frames); 
+                // iterate ping-pongly through spritesheet
+                srcrect.x = srcrect.w * std::min((2*frames) - static_cast<int>((SDL_GetTicks()/speed) % (2*frames)), static_cast<int>((SDL_GetTicks()/speed) % (2*frames))); 
+                printf("%d \n ", std::min((2*frames) - static_cast<int>((SDL_GetTicks()/speed) % (2*frames)), static_cast<int>((SDL_GetTicks()/speed) % (2*frames))));
             }
             destrect.x = slidepos.x;
             destrect.y = slidepos.y;
