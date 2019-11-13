@@ -5,12 +5,12 @@
 #include "SDL2/SDL.h"
 #include "SDL2/SDL_image.h"
 
-class TextureManager{
-    
-public:
-    static SDL_Texture* loadTexture(const char * filename);
-    static SDL_Texture* loadFromRenderedText(std::string textureText, SDL_Color textColor);
-    static void draw(SDL_Texture* texture, SDL_Rect srcrect, SDL_Rect destrect);    
+class TextureManager {
+
+    public:
+        static SDL_Texture * loadTexture(const char * filename);
+        static SDL_Texture * loadFromRenderedText(std::string textureText, SDL_Color textColor);
+        static void draw(SDL_Texture * texture, SDL_Rect srcrect, SDL_Rect destrect);
 };
 
 #endif /* TEXTUREMANAGER_HPP */

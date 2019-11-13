@@ -37,26 +37,27 @@ void Map::drawMap() {
     int type = 0;
     static int * currenttilesize = (getTilesize());
 
-    for (int row = 0; row<map.size(); row++) {
-        for (int col = 0; col<map[row].size(); col++) {
+    for (int row = 0; row < map.size(); row++) {
+        for (int col = 0; col < map[row].size(); col++) {
             type = map[row][col];
-            
-            destrect.x = (col+1) * currenttilesize[0];
-            destrect.y = (row+1) * currenttilesize[1];
+            destrect.x = (col + 1) * currenttilesize[0];
+            destrect.y = (row + 1) * currenttilesize[1];
 
-            switch (type){
+            switch (type) {
             case 0:
                 TextureManager::draw(water, srcrect, destrect);
                 break;
+
             case 1:
                 TextureManager::draw(grass, srcrect, destrect);
                 break;
+
             case 2:
                 TextureManager::draw(dirt, srcrect, destrect);
                 break;
+
             default:
                 break;
-                
             }
         }
     }

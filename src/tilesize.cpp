@@ -6,19 +6,18 @@ Tilesize::Tilesize() {
 }
 
 Tilesize::~Tilesize() {
-
 }
 
 Tilesize::Tilesize(const short int unsigned width, const short int unsigned height) {
     tilesize[0] = width;
     tilesize[1] = height;
 }
-    
+
 void Tilesize::setTilesize(const short int unsigned width, const short int unsigned height) {
     tilesize[0] = width;
     tilesize[1] = height;
 }
 
 int * Tilesize::getTilesize() const {
-    return((int*)tilesize);
+    return ((int *)tilesize);
 }

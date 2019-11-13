@@ -7,21 +7,21 @@
 /// \class generic
 /// \brief Class from which the most objects inherit from.
 class generic {
-public:
-    char name[120];
-    /// \var char name
-    /// \brief Name of generic object.
-    unsigned char id;
-    /// \var unsigned char id
-    /// \brief All objects get ids.
-    char type[24]; 
-    /// \var type
-    /// \brief For units, contains unit_class name. For weapons, contains weapon type string. I think this is useless?
-    ~generic();
-    generic();
-    generic(const generic &obj);
-    /// \fn generic(const generic &obj)
-    /// \brief Copy constructor for generic object. Useless?
+    public:
+        char name[120];
+        /// \var char name
+        /// \brief Name of generic object.
+        unsigned char id;
+        /// \var unsigned char id
+        /// \brief All objects get ids.
+        char type[24];
+        /// \var type
+        /// \brief For units, contains unit_class name. For weapons, contains weapon type string. I think this is useless?
+        ~generic();
+        generic();
+        generic(const generic & obj);
+        /// \fn generic(const generic &obj)
+        /// \brief Copy constructor for generic object. Useless?
 };
 
 

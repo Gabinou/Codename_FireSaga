@@ -13,13 +13,13 @@ class tile: public generic {
         char def;
         char avoid;
         /// \var char healordmg
-        /// \brief if Negative, damages for the value each turn. If positive, heals for the value each turn. 
+        /// \brief if Negative, damages for the value each turn. If positive, heals for the value each turn.
         // DOUBLE DUTY: I think values above 87 and below -87 should be considered percents. Mapped values: 87 to 0%, 88 to , -88 to 99%... -87 to 100%
         char healordmg;
         /// \var string effect;
         /// \brief other effects applied by the tile, like poison, or teleport, or whatever.
         string effect;
-        
+
         /// \var char frequency
         /// \brief At what frequency does the effect/healing/dmg occurs. NOTE: in reality its kind of the inverse of a frequency. if 2, occurs every 2 turns, if 3 occurs every 3 turns etc.
         char frequency;
@@ -36,7 +36,7 @@ class tile: public generic {
         tile(std::string, std::vector<int>);
         tile();
         ~tile();
-  
+
 };
 
 #endif /* TILE_HPP */

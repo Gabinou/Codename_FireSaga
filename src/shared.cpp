@@ -7,276 +7,310 @@
 #include "inventory_item.hpp"
 #include "SDL2/SDL.h"
 
-int pingpong(int current, int upper, int lower){
-    // returns pingpong index. 
+int pingpong(int current, int upper, int lower) {
+    // returns pingpong index.
     // modulo: x % 2 = 0,1,2,0,1,2,0...for x++
     // pingpong(x, 2) = 0,1,2,1,0,1,2... for x++
-    int mod_factor = (2*(upper-lower) - 2);
+    int mod_factor = (2 * (upper - lower) - 2);
     int term1 = mod_factor - (current % mod_factor);
     int term2 = current % mod_factor;
-    return(std::min(term1, term2) + lower);
+    return (std::min(term1, term2) + lower);
 }
 
 
-int geometricslide(int distance, float geo_factor){
+int geometricslide(int distance, float geo_factor) {
     // geometric slide cause the series is geometric:
     // distance/2 + distance/4 + distance/16....
     // animates slides
     int sign = sgn(distance);
-
-    int out = sign*std::max(sign*(int)(distance/geo_factor), 1);
-    return(out);
+    int out = sign * std::max(sign * (int)(distance / geo_factor), 1);
+    return (out);
     // std::abs() possible instead of sign*distance
     // This is more elegant.
 }
 
 
-bool is_pressed(const Uint8 *state_array, std::vector<SDL_Scancode> to_find){
+bool is_pressed(const Uint8 * state_array, std::vector<SDL_Scancode> to_find) {
     for (auto it = std::begin(to_find); it != std::end(to_find); ++it) {
-        if(state_array[*it]){
-            return(true);
-        } 
+        if (state_array[*it]) {
+            return (true);
+        }
     }
-    return(false);    
+
+    return (false);
 }
 
 
-std::vector<int> extract_int_string(string str) 
-{ 
+std::vector<int> extract_int_string(string str) {
     // cannot read integers if not separated by at least one space and other chars.
     stringstream ss;
     /* Storing the whole string into string stream */
-    ss << str; 
+    ss << str;
     /* Running loop till the end of the stream */
-    string temp; 
-    int found; 
-    std::vector<int> founds; 
-    while (!ss.eof()) { 
+    string temp;
+    int found;
+    std::vector<int> founds;
+
+    while (!ss.eof()) {
         /* extracting word by word from stream */
-        ss >> temp; 
+        ss >> temp;
+
         /* Checking the given word is integer or not */
-        if (stringstream(temp) >> found) 
-            // cout << found << " "; 
-            founds.push_back(found);
+        if (stringstream(temp) >> found)
+            // cout << found << " ";
+        { founds.push_back(found); }
+
         /* To save from space at the end of string */
-        temp = ""; 
-    } 
-    return(founds);
-} 
+        temp = "";
+    }
+
+    return (founds);
+}
 
 std::string words2str(std::vector<std::string > words) {
     std::string new_str;
-    for (int i=0; i < words.size(); i++) {
+
+    for (int i = 0; i < words.size(); i++) {
         new_str += words[i];
+
         if (i != (words.size() - 1)) {
             new_str += " ";
-        }        
+        }
     }
-    return(new_str);
+
+    return (new_str);
 }
 
 std::vector<std::string> get_words(std::string line) {
     std::vector<std::string> words;
     std::string word;
-    std::stringstream iss(line); 
-    while (iss >> word) 
+    std::stringstream iss(line);
+
+    while (iss >> word)
         // cout << word << endl;
-        words.push_back(word);
-    return(words);
+    { words.push_back(word); }
+
+    return (words);
 }
 
 std::vector<int> csv_from_line(string line, string delimiter) {
     std::vector<int> names;
     std::size_t found;
+
     while ((found = line.find(delimiter)) != string::npos) {
         // std::cout << line.substr(0, found) << endl;
         names.push_back(std::stoi(line.substr(0, found).c_str()));
         line.erase(0, found + delimiter.length());
     }
+
     // std::cout << line << endl;
     names.push_back(std::stoi(line.c_str()));
-    return(names);
+    return (names);
 }
 
 std::vector<std::string> css_from_line(string line, string delimiter) {
     std::vector<std::string> names;
     std::size_t found;
+
     while ((found = line.find(delimiter)) != string::npos) {
         names.push_back(words2str(get_words(line.substr(0, found))));
         line.erase(0, found + delimiter.length());
     }
+
     names.push_back(words2str(get_words(line)));
-    return(names);
+    return (names);
 }
 
-std::vector<std::string> css_from_line(char *line) {
+std::vector<std::string> css_from_line(char * line) {
     char * pch;
     std::string word;
     std::string name;
     std::vector<std::string> names;
     char word_num;
     pch = strtok(line, ",");
-    while (pch != NULL){
+
+    while (pch != NULL) {
         name = "";
         std::string temp(pch);
         stringstream iss(temp);
         word_num = 0;
+
         while (iss >> word) {
-            if (word_num > 0) {name+= " ";};
+            if (word_num > 0) {name += " ";};
+
             name += word;
+
             word_num++;
         }
+
         names.push_back(name);
-        pch = strtok (NULL, ",");
+        pch = strtok(NULL, ",");
     }
-    return(names);
+
+    return (names);
 }
- 
-int get_rand() { 
-    return(dist(mt));
+
+int get_rand() {
+    return (dist(mt));
 }
 
 bool single_roll(int in_prob) {
     bool out = (get_rand() < in_prob);
-    return(out);
+    return (out);
 }
 
 bool double_roll(int in_prob) {
     int rng1 = get_rand();
-    int rng2 = get_rand(); 
+    int rng2 = get_rand();
     bool out = ((rng1 + rng2) < (2 * in_prob));
-    return(out);
+    return (out);
 }
 
-string read_line(const char *filename, int skip){
+string read_line(const char * filename, int skip) {
     // 2019/07/30: skip should be a multiple of *number of lines written to weapon.txt* which is 8.
-    FILE *f = fopen(filename, "r");
+    FILE * f = fopen(filename, "r");
     char line[500];
+
     for (int i = 0; i < skip; i++) {
-        if (fgets(line, sizeof(line), f)==NULL) {
+        if (fgets(line, sizeof(line), f) == NULL) {
             throw "eof Reached\n";
-        } 
+        }
     }
+
     fgets(line, sizeof(line), f);
     std::string out(line);
     out.pop_back(); // fgets include the \n character at the end of the line. This removes it.
     fclose(f);
-    return(out);
+    return (out);
 }
 
 /// \fn void write_all_units(const char *filename, char const *savestyle)
 /// \brief Write all_units stats to file.
 // write_all_units must be implemented here.
-void write_all_units(const char *filename, char const *savestyle) {
+void write_all_units(const char * filename, char const * savestyle) {
     if (savestyle == "cpp") {
         std::ofstream out(filename);
-        for (auto& it: all_units) {
+
+        for (auto & it : all_units) {
             out << it.second;
         }
+
         out.close();
     } else if (savestyle == "c") {
         remove(filename);
-        for (auto& it: all_units) {
+
+        for (auto & it : all_units) {
             // std::cout << it.second.name << endl;
             it.second.write(filename);
         }
     }
 }
 
-void read_all_unit_classes(const char *filename) {
+void read_all_unit_classes(const char * filename) {
     std::string line;
-    std::ifstream inFile(filename); 
-    short int line_num = std::count(std::istreambuf_iterator<char>(inFile), 
-             std::istreambuf_iterator<char>(), '\n') + 1;
-    for (int i = 0 ; i < line_num; i+=9) {
+    std::ifstream inFile(filename);
+    short int line_num = std::count(std::istreambuf_iterator<char>(inFile),
+                                    std::istreambuf_iterator<char>(), '\n') + 1;
+
+    for (int i = 0 ; i < line_num; i += 9) {
         line = "";
+
         try {
             line = read_line(filename, i);
-        } catch (const char* msg) {
+        } catch (const char * msg) {
             break;
         }
+
         if (!line.empty() && line != "") {
             all_unit_classes[line.substr(9, line.size()).c_str()] = unit_class();
             all_unit_classes[line.substr(9, line.size()).c_str()].read(filename, i);
-        }   
-    inFile.close();
+        }
+
+        inFile.close();
     }
 }
 
-void write_all_unit_classes(const char *filename) {
+void write_all_unit_classes(const char * filename) {
     std::remove(filename);
-    for (auto& it: all_unit_classes) { // Iterate over unordered_map
+
+    for (auto & it : all_unit_classes) { // Iterate over unordered_map
         it.second.write(filename);
     }
 }
 
 
-void write_all_weapons(const char *filename, char const *savestyle) {
+void write_all_weapons(const char * filename, char const * savestyle) {
     std::remove(filename);
+
     if (savestyle == "cpp") {
-        for (auto& it: all_weapons) { // Iterate over unordered_map
+        for (auto & it : all_weapons) { // Iterate over unordered_map
             it.second.write(filename);
         }
     }
 }
 
-void write_all_maps(const char *filename) {
-      
+void write_all_maps(const char * filename) {
 }
 
 
-void read_all_maps(const char *filename) {
-      
+void read_all_maps(const char * filename) {
 }
 
-void read_all_weapons(const char *filename) {
+void read_all_weapons(const char * filename) {
     std::string line;
-    std::ifstream inFile(filename); 
-    short int line_num = std::count(std::istreambuf_iterator<char>(inFile), 
-             std::istreambuf_iterator<char>(), '\n') + 1;
-    for (int i = 0 ; i < line_num; i+=10) {
+    std::ifstream inFile(filename);
+    short int line_num = std::count(std::istreambuf_iterator<char>(inFile),
+                                    std::istreambuf_iterator<char>(), '\n') + 1;
+
+    for (int i = 0 ; i < line_num; i += 10) {
         line = "";
+
         try {
             line = read_line(filename, i);
-        } catch (const char* msg) {
+        } catch (const char * msg) {
             break;
         }
+
         if (!line.empty() && line != "") {
             all_weapons[line.c_str()] = weapon();
             all_weapons[line.c_str()].read(filename, i);
-        }   
-    inFile.close();
+        }
+
+        inFile.close();
     }
-    
+
     // This part oif read_all_weapons creates an inventory_item for every weapon in all_weapons.
     // Have to run this anyway, better to put it here.
     // std::unordered_map<std::string, weapon>::iterator it = all_weapons.begin();
     // while(it != all_weapons.end()) {
-        // char key[(it->first).size() + 1];
-        // strcpy(key, (it->first).c_str());
-        // inventory_items[strcat(key,"_0001")] = inventory_item(key, 10);
-        // it++;
+    // char key[(it->first).size() + 1];
+    // strcpy(key, (it->first).c_str());
+    // inventory_items[strcat(key,"_0001")] = inventory_item(key, 10);
+    // it++;
     // }
-    
 }
 
-void read_all_units(const char *filename) {
+void read_all_units(const char * filename) {
     std::string line;
-    std::ifstream inFile(filename); 
-    short int line_num = std::count(std::istreambuf_iterator<char>(inFile), 
-             std::istreambuf_iterator<char>(), '\n') + 1;
-    for (int i = 0 ; i < line_num; i+=16) {
+    std::ifstream inFile(filename);
+    short int line_num = std::count(std::istreambuf_iterator<char>(inFile),
+                                    std::istreambuf_iterator<char>(), '\n') + 1;
+
+    for (int i = 0 ; i < line_num; i += 16) {
         line = "";
+
         try {
             line = read_line(filename, i);
-        } catch (const char* msg) {
+        } catch (const char * msg) {
             break;
         }
+
         if (!line.empty() && line != "") {
             all_units[line.c_str()] = unit();
             all_units[line.c_str()].read(filename, i);
-        }   
-    inFile.close();
+        }
+
+        inFile.close();
     }
 }
 
@@ -289,7 +323,7 @@ unsigned char id = 0; //Number of objects. I think this is unecessary.
 
 char unit_stats[][14] = {"HP", "Str", "Mag", "Skill", "Speed", "Luck", "Def", "Res", "Con", "Move", "WpnLvl"};
 /*! \var char unit_stats
-* \brief Unit Statistics. <br> 
+* \brief Unit Statistics. <br>
 *   List, in order: <br>
 *  - HP: Hit Points. Unit health. Unit dies (forever) if unit.current_hp goes down to zero. <br>
 *  - Str: Strength. +1 Str -> +1 attack_damage. Refer to ... <br>
@@ -303,7 +337,7 @@ char unit_stats[][14] = {"HP", "Str", "Mag", "Skill", "Speed", "Luck", "Def", "R
 *  - WpnLvl: Weapon level. Some games use this stat to check if characters can use weapons. <br>
 *  - Move: Distance, in squares, that a unit can move on the grid map. Refer to ... <br>
 */
-char weapon_stats[][14] = {"dmg", "hit", "crit", "weight", "uses", "lvl"}; 
+char weapon_stats[][14] = {"dmg", "hit", "crit", "weight", "uses", "lvl"};
 /*! \var char weapon_stats
 * \brief Weapon Stats description: <br>
 *  - dmg: Damage. +1 dmg -> +1 attack_damage. Refer to... <br>
@@ -343,7 +377,7 @@ char all_unit_names[][14] = {"Marth", "Sheeda"};
 char all_weapon_names[][14] = {"Rapier", "Iron Sword", "Steel Sword", "Iron Lance", "Lame de Damas"};
 /// \var char all_unit_names
 /// \brief All Unit Names.
-    
+
 char equipment_slots = 7;
 /// \var char equipment_slots
 /// \brief Total number of equipment slots. Only used for an inventory that mixes weapons and items.
@@ -351,10 +385,10 @@ char item_slots = 4;
 /// \var char item_slots
 /// \brief Number of item slots. Separate from weapon slots.
 char weapon_slots = 4;
-/// \var weapon_slots 
+/// \var weapon_slots
 /// \brief Number of weapon slots. Separate from weapon slots.
 
-/// \fn main 
+/// \fn main
 /// \brief Main FEmaker algorithm.
 std::unordered_map<string, weapon> all_weapons;
 // std::unordered_map<string, struct inventory_item> inventory_items;

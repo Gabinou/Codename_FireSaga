@@ -11,13 +11,13 @@
 #include "SDL2/SDL.h"
 
 
-class SpriteComponent : public Component{
-    
-    private:    
-        SDL_Texture *texture;
+class SpriteComponent : public Component {
+
+    private:
+        SDL_Texture * texture;
 
     protected:
-        PositionComponent *positioncomponent;
+        PositionComponent * positioncomponent;
         SDL_Rect srcrect, destrect;
         Map * currentmap;
         Vector2D objectivepos;
@@ -27,40 +27,40 @@ class SpriteComponent : public Component{
         int frames = 10;
         int speed = 50;
         std::string ss_looping = "pingpong"; //ss: spritesheet
-    
+
     public:
         SpriteComponent() = default;
-        
-        SpriteComponent(Map * inmap, const char* path){
+
+        SpriteComponent(Map * inmap, const char * path) {
             setTexture(path);
             setMap(inmap);
         }
-        
-        SpriteComponent(Map * inmap, const char* path, int inFrames, int inSpeed) : SpriteComponent(inmap, path){
+
+        SpriteComponent(Map * inmap, const char * path, int inFrames, int inSpeed) : SpriteComponent(inmap, path) {
             animated = true;
             frames = inFrames;
             speed = inSpeed;
         }
 
-        SpriteComponent(Map * inmap, const char* path, int inFrames, int inSpeed, std::string in_looping) : SpriteComponent(inmap, path, inFrames, inSpeed){
+        SpriteComponent(Map * inmap, const char * path, int inFrames, int inSpeed, std::string in_looping) : SpriteComponent(inmap, path, inFrames, inSpeed) {
             ss_looping = in_looping;
         }
-        
-        SDL_Texture * getTexture() { 
-            return(texture);
+
+        SDL_Texture * getTexture() {
+            return (texture);
         }
-        
+
         void setTexture(const char * path) {
             texture = TextureManager::loadTexture(path);
         }
-        
+
         void setMap(Map * inmap) {
             currentmap = inmap;
             tilesize = currentmap->getTilesize();
         }
-        
-        void setSrcrect(int width, int height){
-            srcrect.w = width;  
+
+        void setSrcrect(int width, int height) {
+            srcrect.w = width;
             srcrect.h = height;
         }
 
@@ -72,23 +72,25 @@ class SpriteComponent : public Component{
             slidepos.x = (int)positioncomponent->getPos().x * tilesize[0];
             slidepos.y = (int)positioncomponent->getPos().y * tilesize[1];
         }
-        
+
         virtual void update() override {
             objectivepos.x = (int)positioncomponent->getPos().x * tilesize[0];
-            objectivepos.y = (int)positioncomponent->getPos().y * tilesize[1]; 
+            objectivepos.y = (int)positioncomponent->getPos().y * tilesize[1];
+
             if (animated) {
-                if (ss_looping == "pingpong"){
-                    srcrect.x = srcrect.w * pingpong(static_cast<int>(SDL_GetTicks()/speed), frames, 0); 
-                } else if ((ss_looping == "linear") || (ss_looping == "direct")){
-                    srcrect.x = srcrect.w * static_cast<int>((SDL_GetTicks()/speed) % frames); 
-                } else if (ss_looping == "reverse"){
-                    srcrect.x = srcrect.w * (frames - static_cast<int>((SDL_GetTicks()/speed) % frames)); 
+                if (ss_looping == "pingpong") {
+                    srcrect.x = srcrect.w * pingpong(static_cast<int>(SDL_GetTicks() / speed), frames, 0);
+                } else if ((ss_looping == "linear") || (ss_looping == "direct")) {
+                    srcrect.x = srcrect.w * static_cast<int>((SDL_GetTicks() / speed) % frames);
+                } else if (ss_looping == "reverse") {
+                    srcrect.x = srcrect.w * (frames - static_cast<int>((SDL_GetTicks() / speed) % frames));
                 }
             }
+
             destrect.x = slidepos.x;
             destrect.y = slidepos.y;
         }
-        
+
         void draw() override {
             TextureManager::draw(texture, srcrect, destrect);
         }

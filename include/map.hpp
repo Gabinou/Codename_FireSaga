@@ -6,7 +6,7 @@
 #include "SDL2/SDL.h"
 
 class Map: public Tilesize {
-    
+
     public:
         void loadTiles();
         void initVars();
@@ -15,15 +15,15 @@ class Map: public Tilesize {
         ~Map();
         void loadMap(std::string filename);
         void drawMap();
-    
+
     private:
-    
+
         SDL_Rect srcrect, destrect;
-        
-        SDL_Texture* dirt;    
-        SDL_Texture* grass;    
-        SDL_Texture* water;    
-        
+
+        SDL_Texture * dirt;
+        SDL_Texture * grass;
+        SDL_Texture * water;
+
         std::vector<std::vector<int>> map;
 
 

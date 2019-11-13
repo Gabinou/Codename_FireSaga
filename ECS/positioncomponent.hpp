@@ -13,17 +13,17 @@ class PositionComponent : public Component {
         Vector2D position;
     public:
 
-        
-        PositionComponent(){
+
+        PositionComponent() {
             position.x = 0;
             position.y = 0;
         }
-        
-        void setUpdatable(bool up_in){
+
+        void setUpdatable(bool up_in) {
             updatable = up_in;
         }
-        
-        PositionComponent(short unsigned int x, short unsigned int y){
+
+        PositionComponent(short unsigned int x, short unsigned int y) {
             position.x = x;
             position.y = y;
         }
@@ -34,17 +34,17 @@ class PositionComponent : public Component {
                 position.y = y;
             }
         }
-        
+
         void addPos(Vector2D move) {
             if (updatable) {
                 position.add(move);
             }
         }
-        
+
         Vector2D getPos() {
-            return(position);
+            return (position);
         }
-        
+
         void update() override {
         }
 };
