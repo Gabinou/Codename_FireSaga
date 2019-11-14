@@ -6,6 +6,9 @@
 #include <vector>
 
 
+// NOTE: Maybe this component should focus only on printing lines of text. Then, the background can be added manually using another component, instead of including it here.
+// So maybe this should become a text LINES components or something.
+
 class TextBoxComponent : public Component {
 
     private:
@@ -20,18 +23,18 @@ class TextBoxComponent : public Component {
         TextBoxComponent() = default;
 
         TextBoxComponent(Map * inmap, const char * path) {
-            backgroundsprite = SpriteComponent(inmap, path);
+            // backgroundsprite = SpriteComponent(inmap, path);
         }
 
-        setFont(TTF_Font * in_font) {
+        void setFont(TTF_Font * in_font) {
             font = in_font;
         }
 
-        TTF_Font getFont() {
+        TTF_Font * getFont() {
             return (font);
         }
 
-        setTextlines(std::vector<std::string> in_lines) {
+        void setTextlines(std::vector<std::string> in_lines) {
             textlines = in_lines;
         }
 
@@ -39,22 +42,16 @@ class TextBoxComponent : public Component {
             return (textlines);
         }
 
-        virtual void init() override {
-            positioncomponent = &entity->getComponent<PositionComponent>();
-            srcrect.x = srcrect.y = 0;
-            destrect.x = destrect.y = 60;
-            srcrect.w = 1000;
-            srcrect.h = 56;
-            destrect.w = 200;
-            destrect.h = 56;
-        }
+        // virtual void init() override {
+        // positioncomponent = &entity->getComponent<PositionComponent>();
+        // }
 
-        virtual void update() override {
-        }
+        // virtual void update() override {
+        // }
 
-        void draw() override {
-            TextureManager::draw(texture, srcrect, destrect);
-        }
+        // void draw() override {
+        // TextureManager::draw(texture, srcrect, destrect);
+        // }
 
 
 };

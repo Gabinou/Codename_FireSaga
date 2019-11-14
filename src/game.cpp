@@ -23,6 +23,7 @@ Manager manager;
 auto & player(manager.addEntity());
 auto & cursor(manager.addEntity());
 auto & textbox(manager.addEntity());
+auto & textbox2(manager.addEntity());
 
 Game::Game() {}
 Game::~Game() {}
@@ -88,8 +89,11 @@ void Game::init(const char * title, int xpos, int ypos, int width, int height, b
     cursor.addComponent<KeyboardController>();
     player.addComponent<SpriteComponent>(mapp, "..//assets//horse.png");
     cursor.addComponent<CursorComponent>(mapp, "..//assets//cursors.png", 10, 50);
-    // textbox.addComponent<SpriteComponent>("..//assets//cursors.png");
     textbox.addComponent<TextComponent>("Attack \n Wait", black); //order is important.
+    textbox2.addComponent<PositionComponent>(50, 50);
+    textbox2.addComponent<SpriteComponent>(mapp, "..//assets//horse.png");
+    textbox2.addComponent<TextBoxComponent>();
+    textbox2.getComponent<TextBoxComponent>().setTextlines(std::vector<std::string> {"ta mere", "est une", "bonne suceuse"});
 };
 
 void Game::update() {
