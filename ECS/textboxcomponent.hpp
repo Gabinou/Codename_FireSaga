@@ -12,10 +12,12 @@
 class TextBoxComponent : public Component {
 
     private:
-        std::vector<TextComponent> textcomponents;
+        std::vector<SDL_Texture *> textures;
+        std::vector<TextComponent *> textcomponents;
         TTF_Font * font;
         SpriteComponent backgroundsprite;
         std::vector<std::string> textlines;
+        PositionComponent * positioncomponent;
 
     protected:
 
@@ -42,16 +44,16 @@ class TextBoxComponent : public Component {
             return (textlines);
         }
 
-        // virtual void init() override {
-        // positioncomponent = &entity->getComponent<PositionComponent>();
-        // }
+        virtual void init() override {
+            positioncomponent = &entity->getComponent<PositionComponent>();
+        }
 
-        // virtual void update() override {
-        // }
+        virtual void update() override {
+        }
 
-        // void draw() override {
-        // TextureManager::draw(texture, srcrect, destrect);
-        // }
+        void draw() override {
+            // TextureManager::draw(texture, srcrect, destrect);
+        }
 
 
 };
