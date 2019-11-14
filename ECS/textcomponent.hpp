@@ -35,8 +35,14 @@ class TextComponent : public Component {
             texture = TextureManager::loadFromRenderedText(text, textColor);
         }
 
+        void setPosition(short unsigned int x, short unsigned int y) {
+            positioncomponent = &entity->getComponent<PositionComponent>();
+            positioncomponent->setPos(x, y);
+        }
+
         virtual void init() override {
             positioncomponent = &entity->getComponent<PositionComponent>();
+            printf("init text boc");
             srcrect.x = srcrect.y = 0;
             destrect.x = destrect.y = 60;
             srcrect.w = 1000;

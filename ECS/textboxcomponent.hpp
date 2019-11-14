@@ -26,9 +26,9 @@ class TextBoxComponent : public Component {
         setFont(TTF_Font * in_font) {
             font = in_font;
         }
-        
+
         TTF_Font getFont() {
-            return(font);
+            return (font);
         }
 
         setTextlines(std::vector<std::string> in_lines) {
@@ -38,6 +38,24 @@ class TextBoxComponent : public Component {
         std::vector<std::string> getTextlines() {
             return (textlines);
         }
+
+        virtual void init() override {
+            positioncomponent = &entity->getComponent<PositionComponent>();
+            srcrect.x = srcrect.y = 0;
+            destrect.x = destrect.y = 60;
+            srcrect.w = 1000;
+            srcrect.h = 56;
+            destrect.w = 200;
+            destrect.h = 56;
+        }
+
+        virtual void update() override {
+        }
+
+        void draw() override {
+            TextureManager::draw(texture, srcrect, destrect);
+        }
+
 
 };
 
