@@ -29,7 +29,6 @@ int geometricslide(int distance, float geo_factor) {
     // This is more elegant.
 }
 
-
 bool is_pressed(const Uint8 * state_array, std::vector<SDL_Scancode> to_find) {
     for (auto it = std::begin(to_find); it != std::end(to_find); ++it) {
         if (state_array[*it]) {
@@ -39,7 +38,6 @@ bool is_pressed(const Uint8 * state_array, std::vector<SDL_Scancode> to_find) {
 
     return (false);
 }
-
 
 std::vector<int> extract_int_string(string str) {
     // cannot read integers if not separated by at least one space and other chars.

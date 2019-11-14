@@ -39,7 +39,7 @@ void Game::init(const char * title, int xpos, int ypos, int width, int height, b
         exit(2);
     }
 
-    Game::font = TTF_OpenFont("../fonts/lazy.ttf", 28);
+    Game::font = TTF_OpenFont("../fonts/arial.ttf", 28); // Size translates to pixel size?
 
     if (Game::font == NULL) {
         printf("Failed to load lazy font! SDL_ttf Error: %s\n", TTF_GetError());
@@ -84,10 +84,12 @@ void Game::init(const char * title, int xpos, int ypos, int width, int height, b
     cursor.addComponent<PositionComponent>(2, 2);
     player.addComponent<PositionComponent>(0, 0);
     textbox.addComponent<PositionComponent>(10, 10);
+
     SDL_Color black = {0, 0, 0};
     cursor.addComponent<KeyboardController>();
     player.addComponent<SpriteComponent>(mapp, "..//assets//horse.png");
     cursor.addComponent<CursorComponent>(mapp, "..//assets//cursors.png", 10, 50);
+    textbox.addComponent<SpriteComponent>("..//assets//cursors.png");
     textbox.addComponent<TextComponent>("Attack", black); //order is important.
 };
 
