@@ -10,8 +10,8 @@ SDL_Texture * TextureManager::loadTexture(const char * filename) {
     return (texture);
 }
 
-SDL_Texture * TextureManager::loadFromRenderedText(std::string textureText, SDL_Color textColor) {
-    SDL_Surface * textsurface = TTF_RenderText_Solid(Game::font, textureText.c_str(), textColor);
+SDL_Texture * TextureManager::loadFromRenderedText(std::string textureText, SDL_Color textColor, TTF_Font * in_font) {
+    SDL_Surface * textsurface = TTF_RenderText_Solid(in_font, textureText.c_str(), textColor);
     SDL_Texture * texture;
 
     if (textsurface == NULL) {

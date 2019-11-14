@@ -40,9 +40,9 @@ class TextComponent : public Component {
             srcrect.x = srcrect.y = 0;
             destrect.x = destrect.y = 60;
             srcrect.w = 1000;
-            srcrect.h = 28;
+            srcrect.h = 56;
             destrect.w = 200;
-            destrect.h = 28;
+            destrect.h = 56;
         }
 
         virtual void update() override {

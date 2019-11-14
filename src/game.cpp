@@ -84,13 +84,12 @@ void Game::init(const char * title, int xpos, int ypos, int width, int height, b
     cursor.addComponent<PositionComponent>(2, 2);
     player.addComponent<PositionComponent>(0, 0);
     textbox.addComponent<PositionComponent>(10, 10);
-
-    SDL_Color black = {0, 0, 0};
+    SDL_Color black = {255, 255, 255};
     cursor.addComponent<KeyboardController>();
     player.addComponent<SpriteComponent>(mapp, "..//assets//horse.png");
     cursor.addComponent<CursorComponent>(mapp, "..//assets//cursors.png", 10, 50);
-    textbox.addComponent<SpriteComponent>("..//assets//cursors.png");
-    textbox.addComponent<TextComponent>("Attack", black); //order is important.
+    // textbox.addComponent<SpriteComponent>("..//assets//cursors.png");
+    textbox.addComponent<TextComponent>("Attack \n Wait", black); //order is important.
 };
 
 void Game::update() {
