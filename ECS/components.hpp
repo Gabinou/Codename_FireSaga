@@ -5,8 +5,6 @@
 #include "spritecomponent.hpp"
 #include "cursorcomponent.hpp"
 #include "textcomponent.hpp"
-#include "textboxcomponent.hpp"
-
 
 
 #endif /* COMPONENTS_HPP */

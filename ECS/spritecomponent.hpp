@@ -51,7 +51,7 @@ class SpriteComponent : public Component {
         }
 
         void setTexture(const char * path) {
-            texture = TextureManager::loadTexture(path);
+            texture = TextureManager::loadFromFile(path);
         }
 
         void setMap(Map * inmap) {

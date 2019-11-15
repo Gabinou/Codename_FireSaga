@@ -3,9 +3,9 @@
 #include "parser.hpp"
 
 void Map::loadTiles() {
-    dirt = TextureManager::loadTexture("..//assets//dirt.png");
-    grass = TextureManager::loadTexture("..//assets//grass.png");
-    water = TextureManager::loadTexture("..//assets//water.png");
+    dirt = TextureManager::loadFromFile("..//assets//dirt.png");
+    grass = TextureManager::loadFromFile("..//assets//grass.png");
+    water = TextureManager::loadFromFile("..//assets//water.png");
 }
 
 void Map::initVars() {
