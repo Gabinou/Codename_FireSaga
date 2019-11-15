@@ -33,7 +33,7 @@ class TextComponent : public Component {
         };
 
         TextComponent(std::vector<std::string> in_text, std::vector<SDL_Color> in_textColor) {
-            for (int i = in_text.begin(); i < in_text.end(); i++) {
+            for (int i = 0; i < in_text.size(); i++) {
                 if (in_textColor.size() == 1) {
                     addTextTexture(in_text[i], in_textColor[0]);
                 } else {
@@ -43,7 +43,7 @@ class TextComponent : public Component {
         }
 
         TextComponent(std::vector<std::string> in_text, SDL_Color in_textColor) {
-            for (int i = in_text.begin(); i < in_text.end(); i++) {
+            for (int i = 0; i < in_text.size(); i++) {
                 addTextTexture(in_text[i], in_textColor);
             }
         }
@@ -60,8 +60,8 @@ class TextComponent : public Component {
             textures.push_back(TextureManager::loadFromRenderedText(in_text, in_textColor));
         }
 
-        void addBackgroundTexture(std::string filename) {
-            textures.insert(texture.begin(), TextureManager::loadFromFile(filename));
+        void addBackgroundTexture(const char * filename) {
+            textures.insert(textures.begin(), TextureManager::loadFromFile(filename));
         }
 
         void removeTexture(unsigned int index = -1) {
@@ -80,19 +80,19 @@ class TextComponent : public Component {
         virtual void init() override {
             positioncomponent = &entity->getComponent<PositionComponent>();
             printf("init text boc");
-            srcrect[0].x = srcrect[0].y = 0;
-            destrect[0].x = destrect[0].y = 60;
-            srcrect[0].w = 1000;
-            srcrect[0].h = 56;
-            destrect[0].w = 200;
-            destrect[0].h = 56;
+            srcrects[0].x = srcrects[0].y = 0;
+            destrects[0].x = destrects[0].y = 60;
+            srcrects[0].w = 1000;
+            srcrects[0].h = 56;
+            destrects[0].w = 200;
+            destrects[0].h = 56;
         }
 
         virtual void update() override {
         }
 
         void draw() override {
-            for (int i = textures.begin(); i < textures.end(); i++) {
+            for (int i = 0; i < textures.size(); i++) {
                 TextureManager::draw(textures[i], srcrects[i], destrects[i]);
             }
         }

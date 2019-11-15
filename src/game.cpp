@@ -88,7 +88,7 @@ void Game::init(const char * title, int xpos, int ypos, int width, int height, b
     cursor.addComponent<KeyboardController>();
     player.addComponent<SpriteComponent>(mapp, "..//assets//horse.png");
     cursor.addComponent<CursorComponent>(mapp, "..//assets//cursors.png", 10, 50);
-    textbox.addComponent<TextComponent>("Attack \n Wait", black); //order is important.
+    // textbox.addComponent<TextComponent>("Attack \n Wait", black); //order is important.
 };
 
 void Game::update() {
