@@ -27,6 +27,10 @@ auto & textbox(manager.addEntity());
 Game::Game() {}
 Game::~Game() {}
 
+void Game::setFontsize(int in_fontsize) {
+    fontsize = in_fontsize;
+}
+
 void Game::init(const char * title, int xpos, int ypos, int width, int height, bool fullscreen) {
     int flags = 0;
 
@@ -38,8 +42,9 @@ void Game::init(const char * title, int xpos, int ypos, int width, int height, b
         printf("TTF_Init: %s\n", TTF_GetError());
         exit(2);
     }
-
-    Game::font = TTF_OpenFont("../fonts/arial.ttf", 28); // Size translates to pixel size?
+    
+    Game::font = TTF_OpenFont("../fonts/arial.ttf", Game::fontsize); // Size translates to pixel size? 
+    //The srcrect does not change size with font pointsize.
 
     if (Game::font == NULL) {
         printf("Failed to load lazy font! SDL_ttf Error: %s\n", TTF_GetError());
@@ -88,7 +93,7 @@ void Game::init(const char * title, int xpos, int ypos, int width, int height, b
     cursor.addComponent<KeyboardController>();
     player.addComponent<SpriteComponent>(mapp, "..//assets//horse.png");
     cursor.addComponent<CursorComponent>(mapp, "..//assets//cursors.png", 10, 50);
-    // textbox.addComponent<TextComponent>("Attack \n Wait", black); //order is important.
+    textbox.addComponent<TextComponent>(std::vector<std::string> {"Attack", "Wait"}, black); //order is important.
 };
 
 void Game::update() {

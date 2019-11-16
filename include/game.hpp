@@ -18,12 +18,13 @@ class Game {
         void update();
         void render();
         void clean();
-
+        void setFontsize(int in_fontsize);
         bool running();
 
         static SDL_Renderer * renderer;
         static SDL_Event event;
         static TTF_Font * font;
+        int fontsize;
 
 
     private:

@@ -49,7 +49,9 @@ int main(int argc, char * argv[]) {
     int frame_time;
     firesaga = new Game();
     printf("made game.\n");
+    firesaga->setFontsize(28);
     firesaga->init("FireSaga", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 800, 600, false);
+
 
     while (firesaga->running()) {
         frame_start = SDL_GetTicks();

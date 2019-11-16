@@ -21,12 +21,11 @@ class TextComponent : public Component {
         std::vector<SDL_Texture *> textures; // background always first
         std::vector<std::string> text_lines;
         std::vector<SDL_Color> text_colors;
-
-    protected:
-        PositionComponent * positioncomponent;
-        SDL_Rect srcrect, destrect;
+        PositionComponent * positioncomponent; // Sets baground
         std::vector<SDL_Rect> srcrects;
         std::vector<SDL_Rect> destrects;
+        int linespacing = 10;
+        int padding[4] = {10, 10, 10, 10};
 
     public:
         TextComponent() {
@@ -56,12 +55,21 @@ class TextComponent : public Component {
             return (textures);
         }
 
+        void setDestrect() {
+
+        }
+
+
         void addTextTexture(std::string in_text, SDL_Color in_textColor) {
             textures.push_back(TextureManager::loadFromRenderedText(in_text, in_textColor));
+            srcrects.push_back(SDL_Rect{});
+            destrects.push_back(SDL_Rect{});
         }
 
         void addBackgroundTexture(const char * filename) {
             textures.insert(textures.begin(), TextureManager::loadFromFile(filename));
+            srcrects.insert(srcrects.begin(), SDL_Rect{});
+            destrects.insert(destrects.begin(), SDL_Rect{});
         }
 
         void removeTexture(unsigned int index = -1) {
@@ -71,27 +79,26 @@ class TextComponent : public Component {
                 textures.erase(textures.begin() + index);
             }
         }
-
-        void setPosition(short unsigned int x, short unsigned int y) {
-            positioncomponent = &entity->getComponent<PositionComponent>();
-            positioncomponent->setPos(x, y);
+        void wraptext() {
+            // Should wrap text inside the baground texture and pâdding.
         }
 
         virtual void init() override {
             positioncomponent = &entity->getComponent<PositionComponent>();
-            printf("init text boc");
             srcrects[0].x = srcrects[0].y = 0;
-            destrects[0].x = destrects[0].y = 60;
+            destrects[0].x = (int)positioncomponent->getPos().x;
+            destrects[0].y = (int)positioncomponent->getPos().y;
             srcrects[0].w = 1000;
-            srcrects[0].h = 56;
+            srcrects[0].h = 64;
             destrects[0].w = 200;
-            destrects[0].h = 56;
+            destrects[0].h = 64;
         }
 
         virtual void update() override {
         }
 
         void draw() override {
+
             for (int i = 0; i < textures.size(); i++) {
                 TextureManager::draw(textures[i], srcrects[i], destrects[i]);
             }
