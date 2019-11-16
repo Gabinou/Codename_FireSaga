@@ -32,9 +32,12 @@ class TextComponent : public Component {
         TextComponent() {
         };
 
-        TextComponent(int in_fontsize, std::vector<std::string> in_text, std::vector<SDL_Color> in_textColor) {
+        void setFontsize(int in_fontsize) {
             fontsize = in_fontsize;
+            srcrects[0].h = fontsize;
+        }
 
+        TextComponent(int in_fontsize, std::vector<std::string> in_text, std::vector<SDL_Color> in_textColor) {
             for (int i = 0; i < in_text.size(); i++) {
                 if (in_textColor.size() == 1) {
                     addTextTexture(in_text[i], in_textColor[0]);
@@ -42,19 +45,23 @@ class TextComponent : public Component {
                     addTextTexture(in_text[i], in_textColor[i]);
                 }
             }
+
+            setFontsize(in_fontsize);
         }
 
         TextComponent(int in_fontsize, std::vector<std::string> in_text, SDL_Color in_textColor) {
-            fontsize = in_fontsize;
+            printf("before");
 
             for (int i = 0; i < in_text.size(); i++) {
                 addTextTexture(in_text[i], in_textColor);
             }
+
+            setFontsize(in_fontsize);
         }
 
         TextComponent(int in_fontsize, std::string text, SDL_Color textColor) {
-            fontsize = in_fontsize;
             addTextTexture(text, textColor);
+            setFontsize(in_fontsize);
         }
 
         std::vector<SDL_Texture *> getTextures() {
@@ -90,11 +97,12 @@ class TextComponent : public Component {
 
         virtual void init() override {
             positioncomponent = &entity->getComponent<PositionComponent>();
+            printf("after");
             srcrects[0].x = srcrects[0].y = 0;
             destrects[0].x = (int)positioncomponent->getPos().x;
             destrects[0].y = (int)positioncomponent->getPos().y;
             srcrects[0].w = 1000;
-            srcrects[0].h = 64;
+
             destrects[0].w = 200;
             destrects[0].h = 64;
         }
