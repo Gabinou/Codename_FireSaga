@@ -25,6 +25,7 @@ class TextComponent : public Component {
         std::vector<SDL_Rect> srcrects; // background always first?
         std::vector<SDL_Rect> destrects; // background always first?
         int linespacing = 10;
+        float spacingfactor = 1.1;
         int padding[4] = {10, 10, 10, 10}; //html style: up right down left
         int fontsize;
 
@@ -34,7 +35,17 @@ class TextComponent : public Component {
 
         void setFontsize(int in_fontsize) {
             fontsize = in_fontsize;
+            linespacing = (int)(fontsize * spacingfactor);
         }
+
+        void setSpacingfactor(float in_factor) {
+            spacingfactor = in_factor;
+        }
+
+        void setLinespacing(int in_spacing) {
+            linespacing = in_spacing;
+        }
+
 
         TextComponent(int in_fontsize, std::vector<std::string> in_text, std::vector<SDL_Color> in_textColor) {
             text_lines = in_text;
