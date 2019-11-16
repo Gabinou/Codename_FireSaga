@@ -37,48 +37,31 @@ class TextComponent : public Component {
         }
 
         TextComponent(int in_fontsize, std::vector<std::string> in_text, std::vector<SDL_Color> in_textColor) {
+            text_lines = in_text;
             for (int i = 0; i < in_text.size(); i++) {
                 if (in_textColor.size() == 1) {
                     addTextTexture(in_text[i], in_textColor[0]);
                 } else {
                     addTextTexture(in_text[i], in_textColor[i]);
                 }
-
-                srcrects[i].h = in_fontsize;
-                srcrects[i].w = in_text[i].length() * in_fontsize;
-                destrects[i].h = in_fontsize;
-                destrects[i].w = in_text[i].length() * in_fontsize;
-                destrects[i].x = destrects[0].x;
-                destrects[i].y = destrects[0].y + linespacing * i;
-
             }
 
             setFontsize(in_fontsize);
         }
 
         TextComponent(int in_fontsize, std::vector<std::string> in_text, SDL_Color in_textColor) {
-            printf("before");
-
+            text_lines = in_text;
             for (int i = 0; i < in_text.size(); i++) {
                 addTextTexture(in_text[i], in_textColor);
-                srcrects[i].h = in_fontsize;
-                srcrects[i].w = in_text[i].length() * in_fontsize;
-                destrects[i].h = in_fontsize;
-                destrects[i].w = in_text[i].length() * in_fontsize;
-                destrects[i].x = destrects[0].x;
-                destrects[i].y = destrects[0].y + linespacing * i;
             }
 
             setFontsize(in_fontsize);
         }
 
         TextComponent(int in_fontsize, std::string in_text, SDL_Color textColor) {
+            text_lines.push_back(in_text);
             addTextTexture(in_text, textColor);
             setFontsize(in_fontsize);
-            srcrects[0].h = in_fontsize;
-            srcrects[0].w = in_text.length() * in_fontsize;
-            destrects[0].h = in_fontsize;
-            destrects[0].w = in_text.length() * in_fontsize;
         }
 
         std::vector<SDL_Texture *> getTextures() {
@@ -111,13 +94,22 @@ class TextComponent : public Component {
         void wraptext() {
             // Should wrap text inside the baground texture and pâdding.
         }
-
-        virtual void init() override {
-            positioncomponent = &entity->getComponent<PositionComponent>();
-            printf("after");
+        void setRects(){
             srcrects[0].x = srcrects[0].y = 0;
             destrects[0].x = (int)positioncomponent->getPos().x + padding[3];
             destrects[0].y = (int)positioncomponent->getPos().y + padding[0];
+            for (int i = 0; i < text_lines.size(); i++) {
+                srcrects[i].h = in_fontsize;
+                srcrects[i].w = text_lines[i].length() * fontsize;
+                destrects[i].h = fontsize;
+                destrects[i].w = text_lines[i].length() * fontsize;
+                destrects[i].x = destrects[0].x;
+                destrects[i].y = destrects[0].y + linespacing * i;
+        }
+
+        virtual void init() override {
+            positioncomponent = &entity->getComponent<PositionComponent>();
+
         }
 
         virtual void update() override {
