@@ -26,12 +26,15 @@ class TextComponent : public Component {
         std::vector<SDL_Rect> destrects;
         int linespacing = 10;
         int padding[4] = {10, 10, 10, 10};
+        int fontsize;
 
     public:
         TextComponent() {
         };
 
-        TextComponent(std::vector<std::string> in_text, std::vector<SDL_Color> in_textColor) {
+        TextComponent(int in_fontsize, std::vector<std::string> in_text, std::vector<SDL_Color> in_textColor) {
+            fontsize = in_fontsize;
+
             for (int i = 0; i < in_text.size(); i++) {
                 if (in_textColor.size() == 1) {
                     addTextTexture(in_text[i], in_textColor[0]);
@@ -41,13 +44,16 @@ class TextComponent : public Component {
             }
         }
 
-        TextComponent(std::vector<std::string> in_text, SDL_Color in_textColor) {
+        TextComponent(int in_fontsize, std::vector<std::string> in_text, SDL_Color in_textColor) {
+            fontsize = in_fontsize;
+
             for (int i = 0; i < in_text.size(); i++) {
                 addTextTexture(in_text[i], in_textColor);
             }
         }
 
-        TextComponent(std::string text, SDL_Color textColor) {
+        TextComponent(int in_fontsize, std::string text, SDL_Color textColor) {
+            fontsize = in_fontsize;
             addTextTexture(text, textColor);
         }
 
@@ -58,7 +64,6 @@ class TextComponent : public Component {
         void setDestrect() {
 
         }
-
 
         void addTextTexture(std::string in_text, SDL_Color in_textColor) {
             textures.push_back(TextureManager::loadFromRenderedText(in_text, in_textColor));
