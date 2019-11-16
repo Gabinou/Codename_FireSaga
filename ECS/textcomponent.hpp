@@ -22,10 +22,10 @@ class TextComponent : public Component {
         std::vector<std::string> text_lines;
         std::vector<SDL_Color> text_colors;
         PositionComponent * positioncomponent; // Sets baground
-        std::vector<SDL_Rect> srcrects;
-        std::vector<SDL_Rect> destrects;
+        std::vector<SDL_Rect> srcrects; // background always first?
+        std::vector<SDL_Rect> destrects; // background always first?
         int linespacing = 10;
-        int padding[4] = {10, 10, 10, 10};
+        int padding[4] = {10, 10, 10, 10}; //html style: up right down left
         int fontsize;
 
     public:
@@ -34,7 +34,6 @@ class TextComponent : public Component {
 
         void setFontsize(int in_fontsize) {
             fontsize = in_fontsize;
-            srcrects[0].h = fontsize;
         }
 
         TextComponent(int in_fontsize, std::vector<std::string> in_text, std::vector<SDL_Color> in_textColor) {
@@ -44,6 +43,14 @@ class TextComponent : public Component {
                 } else {
                     addTextTexture(in_text[i], in_textColor[i]);
                 }
+
+                srcrects[i].h = in_fontsize;
+                srcrects[i].w = in_text[i].length() * in_fontsize;
+                destrects[i].h = in_fontsize;
+                destrects[i].w = in_text[i].length() * in_fontsize;
+                destrects[0].x = (int)positioncomponent->getPos().x + padding[3];
+                destrects[0].y = (int)positioncomponent->getPos().y + padding[0];
+
             }
 
             setFontsize(in_fontsize);
@@ -54,14 +61,22 @@ class TextComponent : public Component {
 
             for (int i = 0; i < in_text.size(); i++) {
                 addTextTexture(in_text[i], in_textColor);
+                srcrects[i].h = in_fontsize;
+                srcrects[i].w = in_text[i].length() * in_fontsize;
+                destrects[i].h = in_fontsize;
+                destrects[i].w = in_text[i].length() * in_fontsize;
             }
 
             setFontsize(in_fontsize);
         }
 
-        TextComponent(int in_fontsize, std::string text, SDL_Color textColor) {
-            addTextTexture(text, textColor);
+        TextComponent(int in_fontsize, std::string in_text, SDL_Color textColor) {
+            addTextTexture(in_text, textColor);
             setFontsize(in_fontsize);
+            srcrects[0].h = in_fontsize;
+            srcrects[0].w = in_text.length() * in_fontsize;
+            destrects[0].h = in_fontsize;
+            destrects[0].w = in_text.length() * in_fontsize;
         }
 
         std::vector<SDL_Texture *> getTextures() {
@@ -99,12 +114,8 @@ class TextComponent : public Component {
             positioncomponent = &entity->getComponent<PositionComponent>();
             printf("after");
             srcrects[0].x = srcrects[0].y = 0;
-            destrects[0].x = (int)positioncomponent->getPos().x;
-            destrects[0].y = (int)positioncomponent->getPos().y;
-            srcrects[0].w = 1000;
-
-            destrects[0].w = 200;
-            destrects[0].h = 64;
+            destrects[0].x = (int)positioncomponent->getPos().x + padding[3];
+            destrects[0].y = (int)positioncomponent->getPos().y + padding[0];
         }
 
         virtual void update() override {

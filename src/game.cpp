@@ -88,7 +88,7 @@ void Game::init(const char * title, int xpos, int ypos, int width, int height, b
     mapp->loadMap("..//testmap.txt");
     cursor.addComponent<PositionComponent>(2, 2);
     player.addComponent<PositionComponent>(0, 0);
-    textbox.addComponent<PositionComponent>(10, 10);
+    textbox.addComponent<PositionComponent>(200, 200);
     SDL_Color black = {255, 255, 255};
     cursor.addComponent<KeyboardController>();
     player.addComponent<SpriteComponent>(mapp, "..//assets//horse.png");
