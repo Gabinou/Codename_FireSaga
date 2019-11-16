@@ -48,8 +48,8 @@ class TextComponent : public Component {
                 srcrects[i].w = in_text[i].length() * in_fontsize;
                 destrects[i].h = in_fontsize;
                 destrects[i].w = in_text[i].length() * in_fontsize;
-                destrects[0].x = (int)positioncomponent->getPos().x + padding[3];
-                destrects[0].y = (int)positioncomponent->getPos().y + padding[0];
+                destrects[i].x = destrects[0].x;
+                destrects[i].y = destrects[0].y + linespacing * i;
 
             }
 
@@ -65,6 +65,8 @@ class TextComponent : public Component {
                 srcrects[i].w = in_text[i].length() * in_fontsize;
                 destrects[i].h = in_fontsize;
                 destrects[i].w = in_text[i].length() * in_fontsize;
+                destrects[i].x = destrects[0].x;
+                destrects[i].y = destrects[0].y + linespacing * i;
             }
 
             setFontsize(in_fontsize);
