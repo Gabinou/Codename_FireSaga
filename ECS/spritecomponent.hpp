@@ -13,10 +13,8 @@
 
 class SpriteComponent : public Component {
 
-    private:
-        SDL_Texture * texture;
-
     protected:
+        SDL_Texture * texture;
         PositionComponent * positioncomponent;
         SDL_Rect srcrect = {0, 0, 32, 32}; // x,y,w,h
         SDL_Rect destrect = {0, 0, 32, 32};
@@ -62,6 +60,8 @@ class SpriteComponent : public Component {
         }
 
         void setTexture(const char * in_path) {
+            printf("set textures.\n");
+            printf("%s", in_path);
             texture = TextureManager::loadFromFile(in_path);
         }
 
@@ -114,7 +114,7 @@ class SpriteComponent : public Component {
             destrect.y = slidepos.y;
         }
 
-        void draw() override {
+        virtual void draw() override {
             TextureManager::draw(texture, srcrect, destrect);
         }
 };

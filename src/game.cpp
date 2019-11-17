@@ -146,9 +146,11 @@ void Game::render() {
     mapp->drawMap();
     // manager.draw();
     for (auto& u : units) {
+        // printf("unit\n");
         u->draw();
     }
     for (auto& u : uxs) {
+        // printf("ux\n");
         u->draw();
     }
     SDL_RenderPresent(renderer);

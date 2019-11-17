@@ -14,7 +14,8 @@ class CursorComponent : public SpriteComponent {
         int slide_int = 0;
 
     public:
-        using SpriteComponent::SpriteComponent;
+        using SpriteComponent::SpriteComponent; //inherits all constructors
+
 
         void init() override {
             SpriteComponent::init();
@@ -47,8 +48,13 @@ class CursorComponent : public SpriteComponent {
                 slide_int = 0;
             }
 
+            printf("%d %d", slidepos.x, slidepos.y);
             destrect.x = slidepos.x;
             destrect.y = slidepos.y;
+        }
+
+        void draw() override {
+            TextureManager::draw(texture, srcrect, destrect);
         }
 
 };
