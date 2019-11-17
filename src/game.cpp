@@ -93,8 +93,9 @@ void Game::init(const char * title, int xpos, int ypos, int width, int height, b
     cursor.addComponent<KeyboardController>();
     player.addComponent<SpriteComponent>(mapp, "..//assets//horse.png");
     cursor.addComponent<CursorComponent>(mapp, "..//assets//cursors.png", 10, 50);
-    textbox.addComponent<TextComponent>(Game::fontsize, std::vector<std::string> {"Attack", "Wait"}, black);
-    textbox.getComponent<TextComponent>().addBackgroundTexture("..//assets//textbox.png");
+    textbox.addComponent<SpriteComponent>(mapp, "..//assets//textbox.png");
+    // textbox.addComponent<TextComponent>(Game::fontsize, std::vector<std::string> {"Attack", "Wait"}, black);
+
 };
 
 void Game::update() {

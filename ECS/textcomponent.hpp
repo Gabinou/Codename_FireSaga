@@ -18,10 +18,10 @@
 class TextComponent : public Component {
 
     private:
-        std::vector<SDL_Texture *> textures; // background always first
+        std::vector<SDL_Texture *> textures;
         std::vector<std::string> text_lines;
         std::vector<SDL_Color> text_colors;
-        PositionComponent * positioncomponent; // Sets baground
+        PositionComponent * positioncomponent;
         std::vector<SDL_Rect> srcrects; // background always first?
         std::vector<SDL_Rect> destrects; // background always first?
         int linespacing = 10;
@@ -29,7 +29,6 @@ class TextComponent : public Component {
         float sizefactor[2] = {0.75, 0.5}; // height, width
         int padding[4] = {10, 10, 10, 10}; //html style: up right down left
         int fontsize;
-        int box_size[2];
 
     public:
         TextComponent() {
@@ -87,20 +86,6 @@ class TextComponent : public Component {
             textures.push_back(TextureManager::loadFromRenderedText(in_text, in_textColor));
             srcrects.push_back(SDL_Rect{});
             destrects.push_back(SDL_Rect{});
-        }
-
-        void addBackgroundTexture(const char * filename, int in_boxsize) {
-            printf("Added BG.");
-            textures.insert(textures.begin(), TextureManager::loadFromFile(filename));
-            srcrects.insert(srcrects.begin(), SDL_Rect{});
-            destrects.insert(destrects.begin(), SDL_Rect{});
-            destrects[0].x = (int)positioncomponent->getPos().x;
-            destrects[0].y = (int)positioncomponent->getPos().y;
-            destrects[0].h = in_boxsize[1];
-            destrects[0].w = in_boxsize[0];
-            srcrects[0].x = srcrects[0].y = 0;
-            srcrects[0].h = in_boxsize[1];
-            srcrects[0].w = in_boxsize[0];
         }
 
         void removeTexture(unsigned int index = -1) {
