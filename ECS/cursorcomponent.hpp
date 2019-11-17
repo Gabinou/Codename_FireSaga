@@ -12,10 +12,17 @@ class CursorComponent : public SpriteComponent {
         KeyboardController * keyboardcontroller;
         float slidefactors[2] = {2, 1.025};
         int slide_int = 0;
+        int bounds[4] = {0, 255, 0, 255}; //xmin,xmax,ymin,ymax
 
     public:
         using SpriteComponent::SpriteComponent; //inherits all constructors
-
+        
+        void setBounds(unsigned int xmin, unsigned int xmax,unsigned int xmin, unsigned int xmax){
+            bounds[0] = xmin;
+            bounds[1] = xmax;
+            bounds[2] = ymin;
+            bounds[3] = ymax;
+        }
 
         void init() override {
             printf("init\n");
