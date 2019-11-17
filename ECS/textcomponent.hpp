@@ -26,6 +26,7 @@ class TextComponent : public Component {
         std::vector<SDL_Rect> destrects; // background always first?
         int linespacing = 10;
         float spacingfactor = 1.1;
+        float sizefactor[2] = {0.75, 0.5}; // height, width
         int padding[4] = {10, 10, 10, 10}; //html style: up right down left
         int fontsize;
 
@@ -35,7 +36,7 @@ class TextComponent : public Component {
 
         void setFontsize(int in_fontsize) {
             fontsize = in_fontsize;
-            linespacing = (int)(fontsize * spacingfactor);
+            linespacing = (int)(fontsize * sizefactor[0] * spacingfactor);
         }
 
         void setSpacingfactor(float in_factor) {
@@ -101,7 +102,7 @@ class TextComponent : public Component {
             }
         }
         void wraptext() {
-            // Should wrap text inside the baground texture and pâdding.
+            // Should wrap text inside the background texture and pâdding.
         }
         void initRects() {
             srcrects[0].x = srcrects[0].y = 0;
@@ -111,8 +112,8 @@ class TextComponent : public Component {
             for (int i = 0; i < text_lines.size(); i++) {
                 srcrects[i].h = fontsize;
                 srcrects[i].w = text_lines[i].length() * fontsize;
-                destrects[i].h = fontsize;
-                destrects[i].w = text_lines[i].length() * fontsize;
+                destrects[i].h = (int)fontsize * sizefactor[0];
+                destrects[i].w = (int)text_lines[i].length() * fontsize * sizefactor[1];
                 destrects[i].x = destrects[0].x;
                 destrects[i].y = destrects[0].y + linespacing * i;
             }
