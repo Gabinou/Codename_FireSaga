@@ -21,29 +21,18 @@ class CursorComponent : public SpriteComponent {
             printf("init\n");
             SpriteComponent::init();
             keyboardcontroller = &entity->getComponent<KeyboardController>();
-            SpriteComponent::setSrcrect(64, 64);
+            SpriteComponent::setSrcrect(64, 64); //Manually entered from cursor png size.
             SpriteComponent::setDestrect(tilesize[0] * 2, tilesize[1] * 2);
 
-            // printf("%d %d\n", srcrect.w, srcrect.h);
-            // printf("%d %d\n", (int)positioncomponent->getPos().x, (int)positioncomponent->getPos().y);
-            slidepos.x = objectivepos.x = (int)positioncomponent->getPos().x * tilesize[0];
-            slidepos.y = objectivepos.y = (int)positioncomponent->getPos().y * tilesize[1];
-            objectivepos.x;
-            objectivepos.y -= srcrect.h / 4;
-            // printf("%d %d\n", objectivepos.x, objectivepos.y);
-            // printf("%d %d\n", slidepos.x, slidepos.y);
-
-
-            // getchar();
+            slidepos.x = objectivepos.x = (int)positioncomponent->getPos().x * tilesize[0] - destrect.w / 4;
+            slidepos.y = objectivepos.y = (int)positioncomponent->getPos().y * tilesize[1] - destrect.h / 4;
         }
 
         void update() override {
             SpriteComponent::update();
             LastPressed lastpressed = keyboardcontroller->getLastPressed();
-            printf("%d\n", lastpressed.pressed_frames);
-            printf("before: %d %d\n", (int)positioncomponent->getPos().x, (int)positioncomponent->getPos().y);
-            objectivepos.x = (int)positioncomponent->getPos().x * (tilesize[0] - tilesize[0] / 4);
-            objectivepos.y = (int)positioncomponent->getPos().y * (tilesize[1] - tilesize[1] / 4);
+            objectivepos.x = (int)positioncomponent->getPos().x * (tilesize[0]) - destrect.w / 4;
+            objectivepos.y = (int)positioncomponent->getPos().y * (tilesize[1]) - destrect.h / 4;
             // printf("before: %d %d\n", slidepos.x, slidepos.y);
 
 
