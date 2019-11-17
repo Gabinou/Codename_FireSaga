@@ -28,11 +28,11 @@ class CursorComponent : public SpriteComponent {
             // printf("%d %d\n", (int)positioncomponent->getPos().x, (int)positioncomponent->getPos().y);
             slidepos.x = objectivepos.x = (int)positioncomponent->getPos().x * tilesize[0];
             slidepos.y = objectivepos.y = (int)positioncomponent->getPos().y * tilesize[1];
-
+            objectivepos.x;
+            objectivepos.y -= srcrect.h / 4;
             // printf("%d %d\n", objectivepos.x, objectivepos.y);
             // printf("%d %d\n", slidepos.x, slidepos.y);
-            objectivepos.x -= srcrect.w / 2;
-            objectivepos.y -= srcrect.h / 2;
+
 
             // getchar();
         }
@@ -40,8 +40,11 @@ class CursorComponent : public SpriteComponent {
         void update() override {
             SpriteComponent::update();
             LastPressed lastpressed = keyboardcontroller->getLastPressed();
-            // printf("%d %d\n", objectivepos.x, objectivepos.y);
-            // printf("%d %d\n", slidepos.x, slidepos.y);
+            printf("%d\n", lastpressed.pressed_frames);
+            printf("before: %d %d\n", (int)positioncomponent->getPos().x, (int)positioncomponent->getPos().y);
+            objectivepos.x = (int)positioncomponent->getPos().x * (tilesize[0] - tilesize[0] / 4);
+            objectivepos.y = (int)positioncomponent->getPos().y * (tilesize[1] - tilesize[1] / 4);
+            // printf("before: %d %d\n", slidepos.x, slidepos.y);
 
 
             if (lastpressed.pressed_frames > 25) {
@@ -61,8 +64,8 @@ class CursorComponent : public SpriteComponent {
                 slide_int = 0;
             }
 
-            // printf("%d %d\n", objectivepos.x, objectivepos.y);
-            // printf("%d %d\n", slidepos.x, slidepos.y);
+            // printf("after: %d %d\n", objectivepos.x, objectivepos.y);
+            // printf("after: %d %d\n", slidepos.x, slidepos.y);
             destrect.x = slidepos.x;
             destrect.y = slidepos.y;
 

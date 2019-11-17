@@ -24,6 +24,7 @@ int geometricslide(int distance, float geo_factor) {
     // animates slides
     int sign = sgn(distance);
     int out = sign * std::max(sign * (int)(distance / geo_factor), 1);
+    printf("geo: %d\n", out);
     return (out);
     // std::abs() possible instead of sign*distance
     // This is more elegant.

@@ -95,14 +95,14 @@ class SpriteComponent : public Component {
         }
 
         virtual void update() override {
-            if (map == NULL) {
-                slidepos.x = (int)positioncomponent->getPos().x;
-                slidepos.y = (int)positioncomponent->getPos().y;
-            } else {
-                // printf("not null?\n");
-                slidepos.x = (int)positioncomponent->getPos().x * tilesize[0];
-                slidepos.y = (int)positioncomponent->getPos().y * tilesize[1];
-            }
+            // if (map == NULL) {
+            // slidepos.x = (int)positioncomponent->getPos().x;
+            // slidepos.y = (int)positioncomponent->getPos().y;
+            // } else {
+            // // printf("not null?\n");
+            // slidepos.x = (int)positioncomponent->getPos().x * tilesize[0];
+            // slidepos.y = (int)positioncomponent->getPos().y * tilesize[1];
+            // }
 
             if (animated) {
                 if (ss_looping == "pingpong") {
