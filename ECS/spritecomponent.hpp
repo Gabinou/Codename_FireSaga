@@ -18,11 +18,12 @@ class SpriteComponent : public Component {
 
     protected:
         PositionComponent * positioncomponent;
-        SDL_Rect srcrect, destrect;
-        Map * currentmap;
+        SDL_Rect srcrect = {0, 0, 32, 32}; // x,y,w,h
+        SDL_Rect destrect = {0, 0, 32, 32};
+        Map * map = NULL; // no map-> position is not on a grid.
         Vector2D objectivepos;
         Vector2D slidepos;
-        int * tilesize;
+        int * tilesize; // if no map, just use the pixel position as usual.
         bool animated = false;
         int frames = 10;
         int speed = 50;
@@ -31,18 +32,28 @@ class SpriteComponent : public Component {
     public:
         SpriteComponent() = default;
 
-        SpriteComponent(Map * inmap, const char * path) {
-            setTexture(path);
+        SpriteComponent(const char * in_path) {
+            setTexture(in_path);
+        }
+
+        SpriteComponent(const char * in_path, int in_picsize[2]) : SpriteComponent(in_path)  {
+            srcrect.w = in_picsize[0];
+            srcrect.h = in_picsize[1];
+            destrect.w = in_picsize[0];
+            destrect.h = in_picsize[1];
+        }
+
+        SpriteComponent(Map * inmap, const char * in_path) : SpriteComponent(in_path) {
             setMap(inmap);
         }
 
-        SpriteComponent(Map * inmap, const char * path, int inFrames, int inSpeed) : SpriteComponent(inmap, path) {
+        SpriteComponent(Map * inmap, const char * in_path, int inFrames, int inSpeed) : SpriteComponent(inmap, in_path) {
             animated = true;
             frames = inFrames;
             speed = inSpeed;
         }
 
-        SpriteComponent(Map * inmap, const char * path, int inFrames, int inSpeed, std::string in_looping) : SpriteComponent(inmap, path, inFrames, inSpeed) {
+        SpriteComponent(Map * inmap, const char * in_path, int inFrames, int inSpeed, std::string in_looping) : SpriteComponent(inmap, in_path, inFrames, inSpeed) {
             ss_looping = in_looping;
         }
 
@@ -50,13 +61,17 @@ class SpriteComponent : public Component {
             return (texture);
         }
 
-        void setTexture(const char * path) {
-            texture = TextureManager::loadFromFile(path);
+        void setTexture(const char * in_path) {
+            texture = TextureManager::loadFromFile(in_path);
         }
 
         void setMap(Map * inmap) {
-            currentmap = inmap;
-            tilesize = currentmap->getTilesize();
+            map = inmap;
+            tilesize = map->getTilesize();
+            srcrect.w = tilesize[0];
+            srcrect.h = tilesize[1];
+            destrect.w = tilesize[0];
+            destrect.h = tilesize[1];
         }
 
         void setSrcrect(int width, int height) {
@@ -66,16 +81,24 @@ class SpriteComponent : public Component {
 
         virtual void init() override {
             positioncomponent = &entity->getComponent<PositionComponent>();
-            srcrect.x = srcrect.y = 0;
-            srcrect.w = srcrect.h = 32;
-            destrect.w = destrect.h = 32;
-            slidepos.x = (int)positioncomponent->getPos().x * tilesize[0];
-            slidepos.y = (int)positioncomponent->getPos().y * tilesize[1];
+
+            if (map == NULL) {
+                slidepos.x = (int)positioncomponent->getPos().x;
+                slidepos.y = (int)positioncomponent->getPos().y;
+            } else {
+                slidepos.x = (int)positioncomponent->getPos().x * tilesize[0];
+                slidepos.y = (int)positioncomponent->getPos().y * tilesize[1];
+            }
         }
 
         virtual void update() override {
-            objectivepos.x = (int)positioncomponent->getPos().x * tilesize[0];
-            objectivepos.y = (int)positioncomponent->getPos().y * tilesize[1];
+            if (map == NULL) {
+                slidepos.x = (int)positioncomponent->getPos().x;
+                slidepos.y = (int)positioncomponent->getPos().y;
+            } else {
+                slidepos.x = (int)positioncomponent->getPos().x * tilesize[0];
+                slidepos.y = (int)positioncomponent->getPos().y * tilesize[1];
+            }
 
             if (animated) {
                 if (ss_looping == "pingpong") {
