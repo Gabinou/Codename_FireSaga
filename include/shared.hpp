@@ -76,7 +76,6 @@ extern unsigned char id;
 
 extern std::vector<int> extract_int_string(string);
 
-
 extern int geometricslide(int distance, float geo_factor = 2);
 extern bool is_pressed(const Uint8 * state_array, std::vector<SDL_Scancode> to_find);
 
