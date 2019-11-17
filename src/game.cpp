@@ -93,17 +93,21 @@ void Game::init(const char * title, int xpos, int ypos, int width, int height, b
     mapp =  new Map(32, 32);
     mapp->loadMap("..//testmap.txt");
     cursor.addComponent<PositionComponent>(2, 2);
-    cursor.addGroup(groupUI);
+
     player.addComponent<PositionComponent>(0, 0);
-    player.addGroup(groupUnits);
+
     textbox.addComponent<PositionComponent>(200, 200);
-    textbox.addGroup(groupUI);
+
     SDL_Color black = {255,255,255};
     cursor.addComponent<KeyboardController>();
     player.addComponent<SpriteComponent>(mapp, "..//assets//horse.png");
     cursor.addComponent<CursorComponent>(mapp, "..//assets//cursors.png", 10, 50);
     textbox.addComponent<SpriteComponent>("..//assets//textbox.png", (int []){128, 128});
     textbox.addComponent<TextComponent>(Game::fontsize, std::vector<std::string> {"Attack", "Wait"}, black);
+    
+    player.addGroup(groupUnits);
+    cursor.addGroup(groupUI);
+    textbox.addGroup(groupUI);
     
 };
 
@@ -138,7 +142,7 @@ void Game::render() {
     SDL_RenderClear(renderer);
     // Add stuff to render. Paint the background First.
     // SDL_RenderCopy(renderer, playerTex, NULL, &destR);
-    textbox.destroy();
+    // textbox.destroy();
     mapp->drawMap();
     // manager.draw();
     for (auto& u : units) {
