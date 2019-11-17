@@ -107,6 +107,7 @@ class TextComponent : public Component {
             srcrects[0].x = srcrects[0].y = 0;
             destrects[0].x = (int)positioncomponent->getPos().x + padding[3];
             destrects[0].y = (int)positioncomponent->getPos().y + padding[0];
+
             for (int i = 0; i < text_lines.size(); i++) {
                 srcrects[i].h = fontsize;
                 srcrects[i].w = text_lines[i].length() * fontsize;
