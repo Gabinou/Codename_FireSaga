@@ -29,6 +29,7 @@ class TextComponent : public Component {
         float sizefactor[2] = {0.75, 0.5}; // height, width
         int padding[4] = {10, 10, 10, 10}; //html style: up right down left
         int fontsize;
+        int box_size[2];
 
     public:
         TextComponent() {
@@ -88,10 +89,18 @@ class TextComponent : public Component {
             destrects.push_back(SDL_Rect{});
         }
 
-        void addBackgroundTexture(const char * filename) {
+        void addBackgroundTexture(const char * filename, int in_boxsize) {
+            printf("Added BG.");
             textures.insert(textures.begin(), TextureManager::loadFromFile(filename));
             srcrects.insert(srcrects.begin(), SDL_Rect{});
             destrects.insert(destrects.begin(), SDL_Rect{});
+            destrects[0].x = (int)positioncomponent->getPos().x;
+            destrects[0].y = (int)positioncomponent->getPos().y;
+            destrects[0].h = in_boxsize[1];
+            destrects[0].w = in_boxsize[0];
+            srcrects[0].x = srcrects[0].y = 0;
+            srcrects[0].h = in_boxsize[1];
+            srcrects[0].w = in_boxsize[0];
         }
 
         void removeTexture(unsigned int index = -1) {
@@ -105,11 +114,12 @@ class TextComponent : public Component {
             // Should wrap text inside the background texture and pâdding.
         }
         void initRects() {
+            printf("initted Rect");
             srcrects[0].x = srcrects[0].y = 0;
             destrects[0].x = (int)positioncomponent->getPos().x + padding[3];
             destrects[0].y = (int)positioncomponent->getPos().y + padding[0];
 
-            for (int i = 0; i < text_lines.size(); i++) {
+            for (int i = 0; i < textures.size(); i++) {
                 srcrects[i].h = fontsize;
                 srcrects[i].w = text_lines[i].length() * fontsize;
                 destrects[i].h = (int)fontsize * sizefactor[0];
@@ -128,6 +138,7 @@ class TextComponent : public Component {
         }
 
         void draw() override {
+            // Find a way to draw text letter by letter, word by word, etc. for future script.
             for (int i = 0; i < textures.size(); i++) {
                 TextureManager::draw(textures[i], srcrects[i], destrects[i]);
             }
