@@ -18,18 +18,31 @@ class CursorComponent : public SpriteComponent {
 
 
         void init() override {
+            printf("init\n");
             SpriteComponent::init();
             keyboardcontroller = &entity->getComponent<KeyboardController>();
             SpriteComponent::setSrcrect(64, 64);
-            destrect.w = srcrect.w;
-            destrect.h = srcrect.h;
+            SpriteComponent::setDestrect(tilesize[0] * 2, tilesize[1] * 2);
+
+            // printf("%d %d\n", srcrect.w, srcrect.h);
+            // printf("%d %d\n", (int)positioncomponent->getPos().x, (int)positioncomponent->getPos().y);
+            slidepos.x = objectivepos.x = (int)positioncomponent->getPos().x * tilesize[0];
+            slidepos.y = objectivepos.y = (int)positioncomponent->getPos().y * tilesize[1];
+
+            // printf("%d %d\n", objectivepos.x, objectivepos.y);
+            // printf("%d %d\n", slidepos.x, slidepos.y);
+            objectivepos.x -= srcrect.w / 2;
+            objectivepos.y -= srcrect.h / 2;
+
+            // getchar();
         }
 
         void update() override {
             SpriteComponent::update();
             LastPressed lastpressed = keyboardcontroller->getLastPressed();
-            objectivepos.x -= srcrect.w / 4;
-            objectivepos.y -= srcrect.h / 4;
+            // printf("%d %d\n", objectivepos.x, objectivepos.y);
+            // printf("%d %d\n", slidepos.x, slidepos.y);
+
 
             if (lastpressed.pressed_frames > 25) {
                 slide_int = 1;
@@ -48,13 +61,12 @@ class CursorComponent : public SpriteComponent {
                 slide_int = 0;
             }
 
-            printf("%d %d", slidepos.x, slidepos.y);
+            // printf("%d %d\n", objectivepos.x, objectivepos.y);
+            // printf("%d %d\n", slidepos.x, slidepos.y);
             destrect.x = slidepos.x;
             destrect.y = slidepos.y;
-        }
 
-        void draw() override {
-            TextureManager::draw(texture, srcrect, destrect);
+            // getchar();
         }
 
 };

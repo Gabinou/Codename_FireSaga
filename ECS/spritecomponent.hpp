@@ -60,8 +60,6 @@ class SpriteComponent : public Component {
         }
 
         void setTexture(const char * in_path) {
-            printf("set textures.\n");
-            printf("%s", in_path);
             texture = TextureManager::loadFromFile(in_path);
         }
 
@@ -77,6 +75,11 @@ class SpriteComponent : public Component {
         void setSrcrect(int width, int height) {
             srcrect.w = width;
             srcrect.h = height;
+        }
+
+        void setDestrect(int width, int height) {
+            destrect.w = width;
+            destrect.h = height;
         }
 
         virtual void init() override {
@@ -96,6 +99,7 @@ class SpriteComponent : public Component {
                 slidepos.x = (int)positioncomponent->getPos().x;
                 slidepos.y = (int)positioncomponent->getPos().y;
             } else {
+                // printf("not null?\n");
                 slidepos.x = (int)positioncomponent->getPos().x * tilesize[0];
                 slidepos.y = (int)positioncomponent->getPos().y * tilesize[1];
             }

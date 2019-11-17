@@ -99,7 +99,7 @@ class TextComponent : public Component {
             // Should wrap text inside the background texture and pâdding.
         }
         void initRects() {
-            printf("initted Rect");
+            // printf("initted Rect");
             srcrects[0].x = srcrects[0].y = 0;
             destrects[0].x = (int)positioncomponent->getPos().x + padding[3];
             destrects[0].y = (int)positioncomponent->getPos().y + padding[0];
