@@ -27,8 +27,8 @@ auto & textbox(manager.addEntity());
 enum groupLabels : std::size_t{
     groupMap,
     groupUnits,
-    groupUI,
-}
+    groupUI
+};
 
 Game::Game() {}
 Game::~Game() {}
@@ -142,10 +142,10 @@ void Game::render() {
     mapp->drawMap();
     // manager.draw();
     for (auto& u : units) {
-        u->draw()
+        u->draw();
     }
     for (auto& u : uxs) {
-        u->draw()
+        u->draw();
     }
     SDL_RenderPresent(renderer);
 }
