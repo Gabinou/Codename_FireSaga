@@ -20,9 +20,9 @@ SDL_Event Game::event;
 TTF_Font * Game::font = NULL;
 
 Manager manager;
-auto & player(manager.addEntity());
-auto & cursor(manager.addEntity());
-// auto & textbox(manager.addEntity());
+
+Entity & player = manager.addEntity();
+Entity & cursor = manager.addEntity();
 Entity & textbox = manager.addEntity();
 
 enum groupLabels : std::size_t{
@@ -30,12 +30,6 @@ enum groupLabels : std::size_t{
     groupUnits,
     groupUI
 };
-
- Entity &  Game::createEntity(){
-    // Entity & created = gmanager->addEntity();
-    Entity & created = gmanager->addEntity();
-    return(created);
-}
 
 Game::Game() {}
 Game::~Game() {}

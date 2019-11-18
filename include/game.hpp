@@ -11,8 +11,6 @@ class Game {
 
     public:
         Game();
-        Entity & createEntity();
-        void destroyEntity(Entity);
         ~Game();
 
         void init(const char * title, int xpos, int ypos, int width, int height, bool fullscreen);
