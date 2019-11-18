@@ -31,10 +31,11 @@ enum groupLabels : std::size_t{
     groupUI
 };
 
-// Entity Game::createEntity(){
-    // auto & created = gmanager->addEntity();
-    // return(created);
-// }
+ Entity &  Game::createEntity(){
+    // Entity & created = gmanager->addEntity();
+    Entity & created = gmanager->addEntity();
+    return(created);
+}
 
 Game::Game() {}
 Game::~Game() {}

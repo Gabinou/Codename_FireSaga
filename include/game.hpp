@@ -11,7 +11,7 @@ class Game {
 
     public:
         Game();
-        Entity createEntity();
+        Entity & createEntity();
         void destroyEntity(Entity);
         ~Game();
 
