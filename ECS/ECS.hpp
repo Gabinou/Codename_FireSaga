@@ -64,6 +64,10 @@ class Entity {
         bool isActive() const {return (active);}
         void destroy() {active = false;}
 
+        Manager & getManager() {
+            return (manager);
+        }
+
         template <typename T> bool hasComponent() const {
             return componentbitset[getComponentTypeID<T>];
         }

@@ -57,6 +57,8 @@ class KeyboardController : public Component, Tilesize, KeyboardInputMapping {
             }
 
             if (is_pressed(keyboard_state_array, accept)) {
+                Manager & current_manager = entity->getManager();
+                Entity & created = current_manager.addEntity();
                 // auto & textbox(manager.addEntity());
                 // textbox.addComponent<PositionComponent>(200, 200);
                 // SDL_Color black = {255, 255, 255};
