@@ -39,6 +39,8 @@ void Game::setFontsize(int in_fontsize) {
 
 void Game::init(const char * title, int xpos, int ypos, int width, int height, bool fullscreen) {
     int flags = 0;
+    
+    gmanager = &manager;
 
     if (fullscreen) {
         flags = SDL_WINDOW_FULLSCREEN;
@@ -56,15 +58,6 @@ void Game::init(const char * title, int xpos, int ypos, int width, int height, b
         printf("Failed to load lazy font! SDL_ttf Error: %s\n", TTF_GetError());
     }
 
-    // else
-    // {
-    // //Render text
-    // SDL_Color textColor = { 0, 0, 0 };
-    // if( !textTexture.loadFromRenderedText("The quick brown fox jumps over the lazy dog", textColor) )
-    // {
-    // printf("Failed to render text texture!\n");
-    // }
-    // }
     if (SDL_Init(SDL_INIT_EVERYTHING) == 0) {
         printf("SDL subsystems initialized.\n");
         window = SDL_CreateWindow(title, xpos, ypos, width, height, flags);

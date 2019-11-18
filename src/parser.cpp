@@ -14,7 +14,6 @@ int findinchar(const char * string, const char * search) {
     return (-1);
 }
 
-
 char until(FILE * fp, const char * until = ",",  const char * interrupt = "@") {
     char single_char;
     char buffer[255];

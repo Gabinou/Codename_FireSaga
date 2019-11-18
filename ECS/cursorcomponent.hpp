@@ -16,8 +16,8 @@ class CursorComponent : public SpriteComponent {
 
     public:
         using SpriteComponent::SpriteComponent; //inherits all constructors
-        
-        void setBounds(unsigned int xmin, unsigned int xmax,unsigned int xmin, unsigned int xmax){
+
+        void setBounds(unsigned int xmin, unsigned int xmax, unsigned int ymin, unsigned int ymax) {
             bounds[0] = xmin;
             bounds[1] = xmax;
             bounds[2] = ymin;

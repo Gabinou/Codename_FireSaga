@@ -21,8 +21,6 @@ using ComponentBitSet = std::bitset<maxcomponents>;
 using GroupBitSet = std::bitset<maxgroups>;
 using ComponentArray = std::array<Component *, maxcomponents>;
 
-
-
 inline ComponentID getNewComponentTypeID() {
     static ComponentID lastID = 0u;
     return (lastID++);

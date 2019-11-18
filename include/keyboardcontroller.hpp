@@ -56,6 +56,18 @@ class KeyboardController : public Component, Tilesize, KeyboardInputMapping {
                 current_pressed.push_back(moveright);
             }
 
+            if (is_pressed(keyboard_state_array, accept)) {
+                // auto & textbox(manager.addEntity());
+                // textbox.addComponent<PositionComponent>(200, 200);
+                // SDL_Color black = {255, 255, 255};
+                // textbox.addComponent<SpriteComponent>("..//assets//textbox.png", (int []) {128, 128});
+                // textbox.addComponent<TextComponent>(Game::fontsize, std::vector<std::string> {"Attack", "Wait"}, black);
+
+                // textbox.addGroup(groupUI);
+
+            }
+
+            check_pressed(current_pressed);
             check_pressed(current_pressed);
             positioncomponent->setUpdatable(false);
         }

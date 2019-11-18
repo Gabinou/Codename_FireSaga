@@ -35,7 +35,6 @@ bool is_pressed(const Uint8 * state_array, std::vector<SDL_Scancode> to_find) {
             return (true);
         }
     }
-
     return (false);
 }
 
