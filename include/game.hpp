@@ -5,7 +5,6 @@
 #include "SDL2/SDL_image.h"
 #include "SDL2/SDL_ttf.h"
 #include <stdio.h>
-#include "ECS.hpp"
 
 class Game {
 
@@ -26,7 +25,6 @@ class Game {
         static SDL_Event event;
         static TTF_Font * font;
         int fontsize;
-        Manager * gmanager;
 
     private:
         bool isRunning;

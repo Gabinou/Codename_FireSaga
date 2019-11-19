@@ -21,6 +21,7 @@ TTF_Font * Game::font = NULL;
 
 Manager manager;
 
+
 Entity & player = manager.addEntity();
 Entity & cursor = manager.addEntity();
 Entity & textbox = manager.addEntity();
@@ -34,8 +35,6 @@ void Game::setFontsize(int in_fontsize) {
 
 void Game::init(const char * title, int xpos, int ypos, int width, int height, bool fullscreen) {
     int flags = 0;
-    
-    gmanager = &manager;
 
     if (fullscreen) {
         flags = SDL_WINDOW_FULLSCREEN;
@@ -45,6 +44,8 @@ void Game::init(const char * title, int xpos, int ypos, int width, int height, b
         printf("TTF_Init: %s\n", TTF_GetError());
         exit(2);
     }
+    
+    manager.setGame(this);
     
     Game::font = TTF_OpenFont("../fonts/arial.ttf", Game::fontsize); // Size translates to pixel size? 
     //The srcrect does not change size with font pointsize.

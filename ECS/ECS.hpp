@@ -7,6 +7,7 @@
 #include <bitset>
 #include <array>
 #include <memory>
+#include "game.hpp"
 
 class Component;
 class Entity;
@@ -106,8 +107,16 @@ class Manager {
     private:
         std::vector<std::unique_ptr<Entity>> entities;
         std::array<std::vector<Entity *>, maxgroups> groupedEntities;
-
+        Game * game;
     public:
+
+        void setGame(Game * in_game) {
+            game = in_game;
+        }
+        Game * getGame() {
+            return (game);
+        }
+
         enum groupLabels : std::size_t {
             groupMap,
             groupUnits,

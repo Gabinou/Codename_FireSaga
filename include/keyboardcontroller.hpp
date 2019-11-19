@@ -3,6 +3,7 @@
 
 #include "ECS.hpp"
 #include "components.hpp"
+#include "textcomponent.hpp"
 #include "game.hpp"
 #include "keyboardinputmapping.hpp"
 
@@ -15,7 +16,8 @@ class KeyboardController : public Component, Tilesize, KeyboardInputMapping {
 
     private:
         LastPressed lastpressed;
-
+        bool textbox_shown = false;
+        Entity * textbox;
     public:
         PositionComponent * positioncomponent;
 
@@ -57,15 +59,21 @@ class KeyboardController : public Component, Tilesize, KeyboardInputMapping {
             }
 
             if (is_pressed(keyboard_state_array, accept)) {
-                Manager & current_manager = entity->getManager();
-                Entity & created = current_manager.addEntity();
-                // auto & textbox(manager.addEntity());
-                // textbox.addComponent<PositionComponent>(200, 200);
-                // SDL_Color black = {255, 255, 255};
-                // textbox.addComponent<SpriteComponent>("..//assets//textbox.png", (int []) {128, 128});
-                // textbox.addComponent<TextComponent>(Game::fontsize, std::vector<std::string> {"Attack", "Wait"}, black);
+                if (textbox_shown == false) {
+                    Manager & current_manager = entity->getManager();
+                    Entity & textbox = current_manager.addEntity();
+                    textbox.addComponent<PositionComponent>((int)positioncomponent->getPos().x, (int)positioncomponent->getPos().y);
+                    SDL_Color black = {255, 255, 255};
+                    textbox.addComponent<SpriteComponent>("..//assets//textbox.png", (int []) {128, 128});
+                    textbox.addComponent<TextComponent>(current_manager.getGame()->fontsize, std::vector<std::string> {"Attack", "Wait"}, black);
+                    textbox.addGroup(current_manager.groupUI);
+                    textbox_shown = !textbox_shown;
+                }
 
-                // textbox.addGroup(groupUI);
+                // if {
+                // textbox->destroy();
+                // }
+
 
             }
 
