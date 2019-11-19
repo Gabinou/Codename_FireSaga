@@ -73,7 +73,7 @@ class KeyboardController : public Component, Tilesize, KeyboardInputMapping {
                         (int)positioncomponent->getPos().x * tilesize[0],
                         (int)positioncomponent->getPos().y * tilesize[1]);
                     SDL_Color black = {255, 255, 255};
-                    textbox.addComponent<SpriteComponent>("..//assets//textbox.png", (int []) {128, 128});
+                    textbox.addComponent<SpriteComponent>("..//assets//textbox.png", (int []) {128, 128}); // because there is no map. Position component should
                     textbox.addComponent<TextComponent>(current_manager.getGame()->fontsize, std::vector<std::string> {"Attack", "Wait"}, black);
                     textbox.addGroup(current_manager.groupUI);
                     textboxptr = &textbox;

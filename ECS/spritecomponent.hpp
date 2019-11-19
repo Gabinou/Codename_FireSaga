@@ -96,6 +96,9 @@ class SpriteComponent : public Component {
                 slidepos.x = (int)positioncomponent->getPos().x * tilesize[0];
                 slidepos.y = (int)positioncomponent->getPos().y * tilesize[1];
             }
+
+            destrect.x = slidepos.x;
+            destrect.y = slidepos.y;
         }
 
         virtual void update() override {
