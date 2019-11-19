@@ -123,8 +123,8 @@ void Game::handleEvents() {
 }
 
 // auto& tiles(manager.getGroup(groupMap))
-auto& units(manager.getGroup(manager.groupUnits));
-auto& uxs(manager.getGroup(manager.groupUI));
+std::vector<Entity *> & units = manager.getGroup(manager.groupUnits);
+std::vector<Entity *> & uxs = manager.getGroup(manager.groupUI);
 
 void Game::render() {
     SDL_RenderClear(renderer);
