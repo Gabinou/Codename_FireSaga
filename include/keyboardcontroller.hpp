@@ -17,7 +17,7 @@ class KeyboardController : public Component, Tilesize, KeyboardInputMapping {
     private:
         LastPressed lastpressed;
         bool textbox_shown = false;
-        Entity * textbox;
+        Entity * textboxptr;
     public:
         PositionComponent * positioncomponent;
 
@@ -67,14 +67,16 @@ class KeyboardController : public Component, Tilesize, KeyboardInputMapping {
                     textbox.addComponent<SpriteComponent>("..//assets//textbox.png", (int []) {128, 128});
                     textbox.addComponent<TextComponent>(current_manager.getGame()->fontsize, std::vector<std::string> {"Attack", "Wait"}, black);
                     textbox.addGroup(current_manager.groupUI);
+                    textboxptr = &textbox;
                     textbox_shown = !textbox_shown;
                 }
+            }
 
-                // if {
-                // textbox->destroy();
-                // }
-
-
+            if (is_pressed(keyboard_state_array, cancel)) {
+                if (textbox_shown == true) {
+                    textboxptr->destroy();
+                    textbox_shown = !textbox_shown;
+                }
             }
 
             check_pressed(current_pressed);
