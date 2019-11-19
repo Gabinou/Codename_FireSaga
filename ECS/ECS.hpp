@@ -108,7 +108,11 @@ class Manager {
         std::array<std::vector<Entity *>, maxgroups> groupedEntities;
 
     public:
-
+        enum groupLabels : std::size_t {
+            groupMap,
+            groupUnits,
+            groupUI
+        };
         void update() {
             for (auto & e : entities) {
                 e->update();
@@ -134,6 +138,7 @@ class Manager {
             }),
             std::end(entities));
         }
+
         void addtogroup(Entity * in_Entity, Group in_Group) {
             groupedEntities[in_Group].emplace_back(in_Entity);
         }

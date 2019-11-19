@@ -25,12 +25,6 @@ Entity & player = manager.addEntity();
 Entity & cursor = manager.addEntity();
 Entity & textbox = manager.addEntity();
 
-enum groupLabels : std::size_t{
-    groupMap,
-    groupUnits,
-    groupUI
-};
-
 Game::Game() {}
 Game::~Game() {}
 
@@ -99,9 +93,9 @@ void Game::init(const char * title, int xpos, int ypos, int width, int height, b
     textbox.addComponent<SpriteComponent>("..//assets//textbox.png", (int []){128, 128});
     textbox.addComponent<TextComponent>(Game::fontsize, std::vector<std::string> {"Attack", "Wait"}, black);
     
-    player.addGroup(groupUnits);
-    cursor.addGroup(groupUI);
-    textbox.addGroup(groupUI);
+    player.addGroup(manager.groupUnits);
+    cursor.addGroup(manager.groupUI);
+    // textbox.addGroup(groupUI);
     
 };
 
@@ -129,8 +123,8 @@ void Game::handleEvents() {
 }
 
 // auto& tiles(manager.getGroup(groupMap))
-auto& units(manager.getGroup(groupUnits));
-auto& uxs(manager.getGroup(groupUI));
+auto& units(manager.getGroup(manager.groupUnits));
+auto& uxs(manager.getGroup(manager.groupUI));
 
 void Game::render() {
     SDL_RenderClear(renderer);
