@@ -34,6 +34,10 @@ class SpriteComponent : public Component {
             setTexture(in_path);
         }
 
+        int * getTilesize() {
+            return (tilesize);
+        }
+
         SpriteComponent(const char * in_path, int in_picsize[2]) : SpriteComponent(in_path)  {
             srcrect.w = in_picsize[0];
             srcrect.h = in_picsize[1];

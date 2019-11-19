@@ -4,6 +4,7 @@
 #include "ECS.hpp"
 #include "components.hpp"
 #include "textcomponent.hpp"
+#include "cursorcomponent.hpp"
 #include "game.hpp"
 #include "keyboardinputmapping.hpp"
 
@@ -18,8 +19,13 @@ class KeyboardController : public Component, Tilesize, KeyboardInputMapping {
         LastPressed lastpressed;
         bool textbox_shown = false;
         Entity * textboxptr;
-    public:
         PositionComponent * positioncomponent;
+        int * tilesize;
+    public:
+
+        void setTilesize(int * in_tilesize) {
+            tilesize = in_tilesize;
+        }
 
         void init() override {
             positioncomponent = &entity->getComponent<PositionComponent>();
@@ -62,7 +68,10 @@ class KeyboardController : public Component, Tilesize, KeyboardInputMapping {
                 if (textbox_shown == false) {
                     Manager & current_manager = entity->getManager();
                     Entity & textbox = current_manager.addEntity();
-                    textbox.addComponent<PositionComponent>((int)positioncomponent->getPos().x, (int)positioncomponent->getPos().y);
+
+                    textbox.addComponent<PositionComponent>(
+                        (int)positioncomponent->getPos().x * tilesize[0],
+                        (int)positioncomponent->getPos().y * tilesize[1]);
                     SDL_Color black = {255, 255, 255};
                     textbox.addComponent<SpriteComponent>("..//assets//textbox.png", (int []) {128, 128});
                     textbox.addComponent<TextComponent>(current_manager.getGame()->fontsize, std::vector<std::string> {"Attack", "Wait"}, black);

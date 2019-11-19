@@ -28,6 +28,7 @@ class CursorComponent : public SpriteComponent {
             printf("init\n");
             SpriteComponent::init();
             keyboardcontroller = &entity->getComponent<KeyboardController>();
+            keyboardcontroller->setTilesize(tilesize);
             SpriteComponent::setSrcrect(64, 64); //Manually entered from cursor png size.
             SpriteComponent::setDestrect(tilesize[0] * 2, tilesize[1] * 2);
 
