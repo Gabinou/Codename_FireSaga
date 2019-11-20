@@ -47,7 +47,6 @@ class TextComponent : public Component {
             linespacing = in_spacing;
         }
 
-
         TextComponent(int in_fontsize, std::vector<std::string> in_text, std::vector<SDL_Color> in_textColor) {
             text_lines = in_text;
 

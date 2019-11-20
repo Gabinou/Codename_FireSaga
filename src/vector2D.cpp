@@ -6,7 +6,7 @@ Vector2D::Vector2D() {
     y = 0;
 }
 
-Vector2D::Vector2D(short unsigned int x,  short unsigned int y) {
+Vector2D::Vector2D(int x, int y) {
     this->x = x;
     this->y = y;
 }
@@ -57,6 +57,7 @@ Vector2D & Vector2D::operator+=(const Vector2D & vec) {
 
 Vector2D & Vector2D::operator-=(const Vector2D & vec) {
     return (this->subtract(vec));
+    
 }
 
 Vector2D & Vector2D::operator*=(const Vector2D & vec) {

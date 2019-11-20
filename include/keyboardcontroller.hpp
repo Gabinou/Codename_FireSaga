@@ -58,9 +58,13 @@ class KeyboardController : public Component, Tilesize, KeyboardInputMapping {
 
             if (!is_pressed(keyboard_state_array, moveright) && is_pressed(keyboard_state_array, moveleft)) {
                 positioncomponent->addPos(Vector2D(-1, 0));
+                printf("Left\n");
+                printf("%d\n", positioncomponent->getPos().x);
                 current_pressed.push_back(moveleft);
             } else if (is_pressed(keyboard_state_array, moveright) && !is_pressed(keyboard_state_array, moveleft)) {
                 positioncomponent->addPos(Vector2D(1, 0));
+                printf("Right\n");
+                printf("%d\n", positioncomponent->getPos().x);
                 current_pressed.push_back(moveright);
             }
 
