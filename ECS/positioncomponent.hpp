@@ -36,8 +36,7 @@ class PositionComponent : public Component {
         }
 
         PositionComponent() {
-            position.x = 0;
-            position.y = 0;
+            setPos(0, 0);
         }
 
         void setUpdatable(bool in_updatable) {
@@ -45,8 +44,7 @@ class PositionComponent : public Component {
         }
 
         PositionComponent(unsigned int in_x, unsigned int in_y) {
-            position.x = in_x;
-            position.y = in_y;
+            setPos(in_x, in_y);
         }
 
         PositionComponent(unsigned int in_x, unsigned int in_y,
@@ -70,8 +68,12 @@ class PositionComponent : public Component {
 
         void setPos(unsigned int in_x, unsigned int in_y) {
             if (updatable) {
-                position.x = in_x;
-                position.y = in_y;
+                if ((in_x >= bounds[0]) && (in_x <= bounds[1])) {
+                    position.x = in_x;
+                }
+                if ((in_y >= bounds[2]) && (in_y <= bounds[3])) {
+                    position.y = in_y;
+                }
             }
         }
 
@@ -85,8 +87,6 @@ class PositionComponent : public Component {
             return (position);
         }
 
-        void update() override {
-        }
 };
 
 
