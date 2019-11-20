@@ -71,6 +71,7 @@ class PositionComponent : public Component {
                 if ((in_x >= bounds[0]) && (in_x <= bounds[1])) {
                     position.x = in_x;
                 }
+
                 if ((in_y >= bounds[2]) && (in_y <= bounds[3])) {
                     position.y = in_y;
                 }
@@ -78,9 +79,7 @@ class PositionComponent : public Component {
         }
 
         void addPos(Vector2D move) {
-            if (updatable) {
-                position.add(move);
-            }
+            setPos(move.x + position.x, move.y + position.y);
         }
 
         Vector2D getPos() {

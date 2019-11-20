@@ -89,7 +89,6 @@ class KeyboardController : public Component, Tilesize, KeyboardInputMapping {
             }
 
             check_pressed(current_pressed);
-            check_pressed(current_pressed);
             positioncomponent->setUpdatable(false);
         }
 
