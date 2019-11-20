@@ -12,7 +12,7 @@ class CursorComponent : public SpriteComponent {
         KeyboardController * keyboardcontroller;
         float slidefactors[2] = {2, 1.025};
         int slide_int = 0;
-        int bounds[4] = {0, 255, 0, 255}; //xmin,xmax,ymin,ymax
+        unsigned int bounds[4] = {0, 255, 0, 255}; //xmin,xmax,ymin,ymax
 
     public:
         using SpriteComponent::SpriteComponent; //inherits all constructors
@@ -22,6 +22,20 @@ class CursorComponent : public SpriteComponent {
             bounds[1] = xmax;
             bounds[2] = ymin;
             bounds[3] = ymax;
+        }
+
+        void setBounds(unsigned int in_bounds[4]) {
+            bounds[0] = in_bounds[0];
+            bounds[1] = in_bounds[1];
+            bounds[2] = in_bounds[2];
+            bounds[3] = in_bounds[3];
+        }
+
+        void setBounds(std::vector<unsigned int> in_bounds) {
+            bounds[0] = in_bounds[0];
+            bounds[1] = in_bounds[1];
+            bounds[2] = in_bounds[2];
+            bounds[3] = in_bounds[3];
         }
 
         void init() override {
