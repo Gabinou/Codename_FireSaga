@@ -4,14 +4,13 @@
 #include "ECS.hpp"
 #include "game.hpp"
 #include "textcomponent.hpp"
-#include "keyboardinputmapping.hpp"
 
 struct LastPressed {
     std::vector<std::vector<SDL_Scancode>> keys;
     unsigned int pressed_frames = 0;
 };
 
-class KeyboardController : public Component, Tilesize, KeyboardInputMapping {
+class KeyboardController : public Component, Tilesize {
 
     private:
         LastPressed lastpressed;
