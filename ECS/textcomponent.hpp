@@ -2,7 +2,6 @@
 #define TEXTCOMPONENT_HPP
 
 #include "ECS.hpp"
-#include "components.hpp"
 #include "map.hpp"
 #include "vector2D.hpp"
 #include <vector>

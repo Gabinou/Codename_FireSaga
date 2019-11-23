@@ -2,7 +2,6 @@
 #define POSITIONCOMPONENT_HPP
 
 #include "ECS.hpp"
-// #include "components.hpp"
 #include "vector2D.hpp"
 #include "game.hpp"
 #include "tilesize.hpp"
