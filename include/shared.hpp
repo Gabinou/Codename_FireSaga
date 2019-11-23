@@ -17,6 +17,8 @@
 #include <stdint.h>
 #include "SDL2/SDL.h"
 #include "SDL2/SDL_image.h"
+#include "SDL2/SDL_ttf.h"
+#include "game.hpp"
 
 /*! \file shared.hpp
 * \brief Shared data.
@@ -103,5 +105,10 @@ extern void read_all_units(const char * filename);
 extern void write_all_units(const char * filename, char const * savestyle = "cpp");
 extern void write_all_unit_classes(const char * filename);
 extern void read_all_unit_classes(const char * filename = "classes_FE1.txt");
+
+// Texture stuff.
+
+extern SDL_Texture * loadTexture(const char * filename);
+extern SDL_Texture * textToTexture(std::string textureText, SDL_Color textColor, TTF_Font * in_font = Game::font);
 
 #endif /* SHARED_HPP */

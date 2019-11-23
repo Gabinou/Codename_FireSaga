@@ -1,6 +1,5 @@
 #ifndef KEYBOARDCONTROL_HPP
 #define KEYBOARDCONTROL_HPP
-
 #include "ECS.hpp"
 #include "components.hpp"
 #include "textcomponent.hpp"

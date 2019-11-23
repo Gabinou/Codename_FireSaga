@@ -9,6 +9,7 @@
 #include "positioncomponent.hpp"
 #include "texturemanager.hpp"
 #include "game.hpp"
+#include "shared.hpp"
 #include "SDL2/SDL.h"
 
 
@@ -65,7 +66,8 @@ class SpriteComponent : public Component {
         }
 
         void setTexture(const char * in_path) {
-            texture = TextureManager::loadFromFile(in_path);
+            texture = loadTexture(in_path);
+            // texture = TextureManager::loadFromFile(in_path);
         }
 
         void setMap(Map * inmap) {
