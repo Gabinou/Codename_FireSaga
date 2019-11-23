@@ -71,7 +71,6 @@ class PositionComponent : public Component {
 
         void setPos(int in_x, int in_y) {
             if (updatable) {
-                // printf("new %d\n", in_x);
 
                 if ((in_x >= bounds[0]) && (in_x <= bounds[1])) {
                     position.x = in_x;

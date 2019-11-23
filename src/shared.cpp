@@ -1,5 +1,6 @@
 // Code créé par Gabriel Taillon
 #include "shared.hpp"
+#include "game.hpp"
 
 
 SDL_Texture * loadTexture(const char * filename) {

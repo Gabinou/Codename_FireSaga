@@ -1,4 +1,3 @@
-
 #include <ECS.hpp>
 
 void Entity::addGroup(Group in_Group) {

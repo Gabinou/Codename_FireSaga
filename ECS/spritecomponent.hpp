@@ -65,7 +65,6 @@ class SpriteComponent : public Component {
 
         void setTexture(const char * in_path) {
             texture = loadTexture(in_path);
-            // texture = TextureManager::loadFromFile(in_path);
         }
 
         void setMap(Map * inmap) {
@@ -119,7 +118,6 @@ class SpriteComponent : public Component {
         }
 
         virtual void draw() override {
-            // TextureManager::draw(texture, srcrect, destrect);
             SDL_RenderCopy(Game::renderer, texture, &srcrect, &destrect);
         }
 };

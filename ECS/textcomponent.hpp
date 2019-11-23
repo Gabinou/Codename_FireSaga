@@ -1,15 +1,13 @@
 #ifndef TEXTCOMPONENT_HPP
 #define TEXTCOMPONENT_HPP
 
+#include <vector>
 #include "ECS.hpp"
 #include "map.hpp"
 #include "vector2D.hpp"
-#include <vector>
 #include "shared.hpp"
 #include "positioncomponent.hpp"
-#include "texturemanager.hpp"
 #include "SDL2/SDL.h"
-
 
 // This component should: use the position component to set its position.
 // How will it interact with textBoxComponent if there is no position component?
@@ -81,7 +79,7 @@ class TextComponent : public Component {
         }
 
         void addTextTexture(std::string in_text, SDL_Color in_textColor) {
-            textures.push_back(TextureManager::loadFromRenderedText(in_text, in_textColor));
+            textures.push_back(textToTexture(in_text, in_textColor, Game::font));
             srcrects.push_back(SDL_Rect{});
             destrects.push_back(SDL_Rect{});
         }
@@ -123,7 +121,7 @@ class TextComponent : public Component {
         void draw() override {
             // Find a way to draw text letter by letter, word by word, etc. for future script.
             for (int i = 0; i < textures.size(); i++) {
-                TextureManager::draw(textures[i], srcrects[i], destrects[i]);
+                SDL_RenderCopy(Game::renderer, textures[i], &srcrects[i], &destrects[i]);
             }
         }
 };

@@ -1,8 +1,9 @@
 #ifndef KEYBOARDCONTROL_HPP
 #define KEYBOARDCONTROL_HPP
+
 #include "ECS.hpp"
-#include "textcomponent.hpp"
 #include "game.hpp"
+#include "textcomponent.hpp"
 #include "keyboardinputmapping.hpp"
 
 struct LastPressed {

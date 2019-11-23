@@ -1,17 +1,16 @@
+#include <stdio.h>
 #include "game.hpp"
 #include "shared.hpp"
-#include <stdio.h>
 #include "SDL2/SDL.h"
 #include "SDL2/SDL_image.h"
 #include "SDL2/SDL_ttf.h"
 #include "map.hpp"
-#include "components.hpp"
 #include "spritecomponent.hpp"
 #include "positioncomponent.hpp"
 #include "cursorcomponent.hpp"
 #include "textcomponent.hpp"
 #include "keyboardcontroller.hpp"
-#include "vector2D.hpp"
+
 
 Map * mapp;
 
