@@ -1,11 +1,5 @@
 // Code créé par Gabriel Taillon
 #include "shared.hpp"
-#include "generic.hpp"
-#include "weapon.hpp"
-#include "unit.hpp"
-#include "unit_class.hpp"
-#include "inventory_item.hpp"
-// #include "SDL2/SDL.h"
 
 
 SDL_Texture * loadTexture(const char * filename) {

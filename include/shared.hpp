@@ -19,6 +19,12 @@
 #include "SDL2/SDL_image.h"
 #include "SDL2/SDL_ttf.h"
 #include "game.hpp"
+#include "generic.hpp"
+#include "weapon.hpp"
+#include "unit.hpp"
+#include "unit_class.hpp"
+#include "inventory_item.hpp"
+
 
 /*! \file shared.hpp
 * \brief Shared data.

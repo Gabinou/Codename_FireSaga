@@ -6,15 +6,9 @@
 */
 using namespace std;
 #include "shared.hpp"
-#include "texturemanager.hpp"
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
-#include "generic.hpp"
-#include "weapon.hpp"
-#include "unit.hpp"
 #include "game.hpp"
-#include "unit_class.hpp"
-#include "inventory_item.hpp"
 
 Game * firesaga = nullptr;
 

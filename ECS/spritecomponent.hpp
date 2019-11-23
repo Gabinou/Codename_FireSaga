@@ -7,7 +7,6 @@
 #include "vector2D.hpp"
 #include "shared.hpp"
 #include "positioncomponent.hpp"
-#include "texturemanager.hpp"
 #include "game.hpp"
 #include "shared.hpp"
 #include "SDL2/SDL.h"
