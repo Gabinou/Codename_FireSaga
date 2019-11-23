@@ -84,7 +84,7 @@ class PositionComponent : public Component {
         }
 
         void addPos(Vector2D move) {
-            printf("new %d %d\n", move.x, position.x);
+            // printf("new %d %d\n", move.x, position.x);
             setPos((move.x + position.x), (move.y + position.y));
         }
 
