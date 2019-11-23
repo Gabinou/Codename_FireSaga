@@ -4,7 +4,6 @@
 * \file main.cpp
 * \brief Main game algorithm page.
 */
-using namespace std;
 #include "shared.hpp"
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
