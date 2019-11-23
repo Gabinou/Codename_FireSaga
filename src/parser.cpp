@@ -1,8 +1,5 @@
 #include <parser.hpp>
-#include <string>
-#include <stdio.h>
-#include <tuple>
-#include <vector>
+
 
 int findinchar(const char * string, const char * search) {
     for (int n = 0; string[n] != '\0'; n++) {

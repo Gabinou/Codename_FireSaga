@@ -28,7 +28,6 @@ class Map: public Tilesize {
 
         std::vector<std::vector<int>> map;
 
-
 };
 
 

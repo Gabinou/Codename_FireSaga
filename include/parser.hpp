@@ -11,6 +11,8 @@
 #include <math.h>
 #include <random>
 #include <bits/stdc++.h>
+#include <stdio.h>
+#include <tuple>
 
 template <typename T>
 extern void print2D_vec(std::vector<std::vector<T>> in_mat) {

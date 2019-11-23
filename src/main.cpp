@@ -4,9 +4,9 @@
 * \file main.cpp
 * \brief Main game algorithm page.
 */
-#include "shared.hpp"
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
+#include "shared.hpp"
 #include "game.hpp"
 
 Game * firesaga = nullptr;
