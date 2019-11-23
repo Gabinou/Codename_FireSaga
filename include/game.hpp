@@ -21,17 +21,20 @@ class Game {
         void render();
         void clean();
         void setFontsize(int in_fontsize);
+        int getFontsize();
         bool running();
 
         static SDL_Renderer * renderer;
         static SDL_Event event;
         static TTF_Font * font;
-        int fontsize;
 
     private:
+        int fontsize;
         bool isRunning;
         int count;
         SDL_Window * window;
+        std::string context;
+
         // SDL_Renderer *renderer;
 };
 

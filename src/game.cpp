@@ -32,6 +32,11 @@ void Game::setFontsize(int in_fontsize) {
     fontsize = in_fontsize;
 }
 
+Game::getFontsize() {
+    return(fontsize);
+}
+
+
 void Game::init(const char * title, int xpos, int ypos, int width, int height, bool fullscreen) {
     int flags = 0;
 

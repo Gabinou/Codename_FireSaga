@@ -56,13 +56,9 @@ class KeyboardController : public Component, Tilesize, KeyboardInputMapping {
 
             if (!is_pressed(keyboard_state_array, moveright) && is_pressed(keyboard_state_array, moveleft)) {
                 positioncomponent->addPos(Vector2D(-1, 0));
-                // printf("Left\n");
-                // printf("%d\n", positioncomponent->getPos().x);
                 current_pressed.push_back(moveleft);
             } else if (is_pressed(keyboard_state_array, moveright) && !is_pressed(keyboard_state_array, moveleft)) {
                 positioncomponent->addPos(Vector2D(1, 0));
-                // printf("Right\n");
-                // printf("%d\n", positioncomponent->getPos().x);
                 current_pressed.push_back(moveright);
             }
 
@@ -70,17 +66,14 @@ class KeyboardController : public Component, Tilesize, KeyboardInputMapping {
                 if (textbox_shown == false) {
                     Manager & current_manager = entity->getManager();
                     Entity & textbox = current_manager.addEntity();
-                    printf("%d %d\n", (int)positioncomponent->getPos().x, (int)positioncomponent->getPos().y);
-                    printf("%d %d\n", tilesize[0]*positioncomponent->getPos().x, tilesize[1]*positioncomponent->getPos().y);
                     textbox.addComponent<PositionComponent>();
                     textbox.getComponent<PositionComponent>().setBounds(0, 2000, 0, 2000);
                     textbox.getComponent<PositionComponent>().setPos(
                         (int)(positioncomponent->getPos().x * tilesize[0]),
                         (int)(positioncomponent->getPos().y * tilesize[1]));
-
                     SDL_Color black = {255, 255, 255};
                     textbox.addComponent<SpriteComponent>("..//assets//textbox.png", (int []) {128, 128}); // because there is no map. Position component should
-                    textbox.addComponent<TextComponent>(current_manager.getGame()->fontsize, std::vector<std::string> {"Attack", "Wait"}, black);
+                    textbox.addComponent<TextComponent>(current_manager.getGame()->getFontsize(), std::vector<std::string> {"Attack", "Wait"}, black);
                     textbox.addGroup(current_manager.groupUI);
                     textboxptr = &textbox;
                     textbox_shown = !textbox_shown;
