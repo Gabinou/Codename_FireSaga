@@ -1,6 +1,5 @@
 #ifndef INVENTORY_ITEM_HPP
 #define INVENTORY_ITEM_HPP
-using namespace std;
 #include <bits/stdc++.h>
 #include <sstream>
 #include <iomanip>

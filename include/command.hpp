@@ -1,7 +1,7 @@
 #ifndef COMMAND_HPP
 #define COMMAND_HPP
 
-#include "components.hpp"
+#include "ECS.hpp"
 
 class Command {
 
