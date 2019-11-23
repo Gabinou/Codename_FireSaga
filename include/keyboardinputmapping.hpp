@@ -1,7 +1,5 @@
 #ifndef KEYBOARDINPUTMAPPING_HPP
 #define KEYBOARDINPUTMAPPING_HPP
-#include "ECS.hpp"
-#include "game.hpp"
 
 class KeyboardInputMapping {
     public:

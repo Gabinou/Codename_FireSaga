@@ -43,29 +43,30 @@ class KeyboardController : public Component, Tilesize, KeyboardInputMapping {
         }
 
         void update() override {
-            const Uint8 * keyboard_state_array = SDL_GetKeyboardState(NULL);
-            std::vector<std::vector<SDL_Scancode>> current_pressed{};
+            const Uint8 * kb_state = SDL_GetKeyboardState(NULL);
+            std::vector<std::vector<SDL_Scancode>> pressed{};
+            Manager & manager = entity->getManager();
+            InputMap inputMap = manager.getGame()->getInputMap();
 
-            if (is_pressed(keyboard_state_array, moveup) && !is_pressed(keyboard_state_array, movedown)) {
+            if (is_pressed(kb_state, inputMap.moveup) && !is_pressed(kb_state, inputMap.movedown)) {
                 positioncomponent->addPos(Vector2D(0, -1));
-                current_pressed.push_back(moveup);
-            } else if (!is_pressed(keyboard_state_array, moveup) && is_pressed(keyboard_state_array, movedown)) {
+                pressed.push_back(inputMap.moveup);
+            } else if (!is_pressed(kb_state, inputMap.moveup) && is_pressed(kb_state, inputMap.movedown)) {
                 positioncomponent->addPos(Vector2D(0, 1));
-                current_pressed.push_back(movedown);
+                pressed.push_back(inputMap.movedown);
             }
 
-            if (!is_pressed(keyboard_state_array, moveright) && is_pressed(keyboard_state_array, moveleft)) {
+            if (!is_pressed(kb_state, inputMap.moveright) && is_pressed(kb_state, inputMap.moveleft)) {
                 positioncomponent->addPos(Vector2D(-1, 0));
-                current_pressed.push_back(moveleft);
-            } else if (is_pressed(keyboard_state_array, moveright) && !is_pressed(keyboard_state_array, moveleft)) {
+                pressed.push_back(inputMap.moveleft);
+            } else if (is_pressed(kb_state, inputMap.moveright) && !is_pressed(kb_state, inputMap.moveleft)) {
                 positioncomponent->addPos(Vector2D(1, 0));
-                current_pressed.push_back(moveright);
+                pressed.push_back(inputMap.moveright);
             }
 
-            if (is_pressed(keyboard_state_array, accept)) {
+            if (is_pressed(kb_state, inputMap.accept)) {
                 if (textbox_shown == false) {
-                    Manager & current_manager = entity->getManager();
-                    Entity & textbox = current_manager.addEntity();
+                    Entity & textbox = manager.addEntity();
                     textbox.addComponent<PositionComponent>();
                     textbox.getComponent<PositionComponent>().setBounds(0, 2000, 0, 2000);
                     textbox.getComponent<PositionComponent>().setPos(
@@ -73,21 +74,21 @@ class KeyboardController : public Component, Tilesize, KeyboardInputMapping {
                         (int)(positioncomponent->getPos().y * tilesize[1]));
                     SDL_Color black = {255, 255, 255};
                     textbox.addComponent<SpriteComponent>("..//assets//textbox.png", (int []) {128, 128}); // because there is no map. Position component should
-                    textbox.addComponent<TextComponent>(current_manager.getGame()->getFontsize(), std::vector<std::string> {"Attack", "Wait"}, black);
-                    textbox.addGroup(current_manager.groupUI);
+                    textbox.addComponent<TextComponent>(manager.getGame()->getFontsize(), std::vector<std::string> {"Attack", "Wait"}, black);
+                    textbox.addGroup(manager.groupUI);
                     textboxptr = &textbox;
                     textbox_shown = !textbox_shown;
                 }
             }
 
-            if (is_pressed(keyboard_state_array, cancel)) {
+            if (is_pressed(kb_state, inputMap.cancel)) {
                 if (textbox_shown == true) {
                     textboxptr->destroy();
                     textbox_shown = !textbox_shown;
                 }
             }
 
-            check_pressed(current_pressed);
+            check_pressed(pressed);
             positioncomponent->setUpdatable(false);
         }
 

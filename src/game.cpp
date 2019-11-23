@@ -113,6 +113,10 @@ void Game::update() {
     // player.getComponent<PositionComponent>().position.Add(Vector2D(1,2));
     // printf("%d, %d \n", newPlayer.getComponent<PositionComponent>().x(), newPlayer.getComponent<PositionComponent>().y());
 }
+ 
+InputMap Game::getInputMap(){
+    return(inputMap);
+}
 
 void Game::handleEvents() {
     SDL_PollEvent(&event);
