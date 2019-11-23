@@ -1,11 +1,9 @@
-#include "TextureManager.hpp"
 #include "map.hpp"
-#include "parser.hpp"
 
 void Map::loadTiles() {
-    dirt = TextureManager::loadFromFile("..//assets//dirt.png");
-    grass = TextureManager::loadFromFile("..//assets//grass.png");
-    water = TextureManager::loadFromFile("..//assets//water.png");
+    dirt = loadTexture("..//assets//dirt.png");
+    grass = loadTexture("..//assets//grass.png");
+    water = loadTexture("..//assets//water.png");
 }
 
 void Map::initVars() {
@@ -45,15 +43,15 @@ void Map::drawMap() {
 
             switch (type) {
             case 0:
-                TextureManager::draw(water, srcrect, destrect);
+                SDL_RenderCopy(Game::renderer, water, &srcrect, &destrect);
                 break;
 
             case 1:
-                TextureManager::draw(grass, srcrect, destrect);
+                SDL_RenderCopy(Game::renderer, grass, &srcrect, &destrect);
                 break;
 
             case 2:
-                TextureManager::draw(dirt, srcrect, destrect);
+                SDL_RenderCopy(Game::renderer, dirt, &srcrect, &destrect);
                 break;
 
             default:

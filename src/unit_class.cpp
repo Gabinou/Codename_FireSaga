@@ -8,7 +8,6 @@
 #include "unit.hpp"
 #include "weapon.hpp"
 #include "unit_class.hpp"
-using namespace std;
 
 
 unit_class::~unit_class(void) {

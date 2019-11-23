@@ -4,6 +4,8 @@
 #include "game.hpp"
 #include "tilesize.hpp"
 #include "SDL2/SDL.h"
+#include "shared.hpp"
+#include "parser.hpp"
 
 class Map: public Tilesize {
 

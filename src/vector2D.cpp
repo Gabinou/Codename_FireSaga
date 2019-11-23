@@ -1,6 +1,8 @@
 #include "vector2D.hpp"
 #include <stdio.h>
 
+// I think this class may also be useless. THink about it a bit more for now... 2019/11/23
+
 Vector2D::Vector2D() {
     x = 0;
     y = 0;
