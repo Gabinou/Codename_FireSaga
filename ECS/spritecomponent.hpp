@@ -8,6 +8,7 @@
 #include "shared.hpp"
 #include "positioncomponent.hpp"
 #include "texturemanager.hpp"
+#include "game.hpp"
 #include "SDL2/SDL.h"
 
 
@@ -118,7 +119,8 @@ class SpriteComponent : public Component {
         }
 
         virtual void draw() override {
-            TextureManager::draw(texture, srcrect, destrect);
+            // TextureManager::draw(texture, srcrect, destrect);
+            SDL_RenderCopy(Game::renderer, texture, &srcrect, &destrect);
         }
 };
 

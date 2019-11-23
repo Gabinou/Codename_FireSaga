@@ -33,6 +33,7 @@ SDL_Texture * TextureManager::loadFromRenderedText(std::string textureText, SDL_
 
 
 void TextureManager::draw(SDL_Texture * texture, SDL_Rect srcrect, SDL_Rect destrect) {
+    // This function is useless.
     SDL_RenderCopy(Game::renderer, texture, &srcrect, &destrect);
 }
 

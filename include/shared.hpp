@@ -1,6 +1,5 @@
 #ifndef SHARED_HPP
 #define SHARED_HPP
-using namespace std;
 #include <stdio.h>
 #include <iostream>
 #include <string>
@@ -74,7 +73,7 @@ extern unsigned char id;
 /// \var extern char id
 /// \brief Global declaration of id.
 
-extern std::vector<int> extract_int_string(string);
+extern std::vector<int> extract_int_string(std::string);
 
 extern int geometricslide(int distance, float geo_factor = 2);
 extern bool is_pressed(const Uint8 * state_array, std::vector<SDL_Scancode> to_find);
@@ -89,15 +88,15 @@ template <typename T> int sgn(T val) {
 *  \brief Get comma separated strings (css) from a line. Lines are gotten from fgets. outputs vector of string for simplicity. Fucking chars man. Sucks ballz.
 */
 extern std::vector<std::string> css_from_line(char *);
-extern std::vector<std::string> css_from_line(std::string, string delimiter = ",");
-extern std::vector<std::string> get_words(string);
+extern std::vector<std::string> css_from_line(std::string, std::string delimiter = ",");
+extern std::vector<std::string> get_words(std::string);
 extern std::string words2str(std::vector<std::string>);
 extern std::vector<int> csv_from_line(std::string, std::string delimiter = ",");
-extern std::unordered_map<string, int> wpn_indexes;
+extern std::unordered_map<std::string, int> wpn_indexes;
 
 //swd lnc axe bow wnd fir tnd drk lgt staff
 
-extern string read_line(const char * filename, char skip);
+extern std::string read_line(const char * filename, char skip);
 extern void read_all_weapons(const char * filename = "weapons.txt");
 extern void write_all_weapons(const char * filename, char const * savestyle = "cpp");
 extern void read_all_units(const char * filename);
