@@ -20,10 +20,11 @@ TTF_Font * Game::font = NULL;
 
 Manager manager;
 
+std::unordered_map<std::string, Entity *> entities = {};
 
 Entity & player = manager.addEntity();
 Entity & cursor = manager.addEntity();
-Entity & textbox = manager.addEntity();
+// Entity & textbox = manager.addEntity();
 
 Game::Game() {}
 Game::~Game() {}
@@ -97,18 +98,21 @@ void Game::init(const char * title, int xpos, int ypos, int width, int height, b
     printf("Creating map \n");
     mapp =  new Map(32, 32);
     mapp->loadMap("..//testmap.txt");
+    entities["horse"] = &player;
+    entities["cursor"] = &cursor;
+    
     cursor.addComponent<PositionComponent>(2, 2);
-
+    
     player.addComponent<PositionComponent>(0, 0);
 
-    textbox.addComponent<PositionComponent>(200, 200);
+    // textbox.addComponent<PositionComponent>(200, 200);
 
     SDL_Color black = {255,255,255};
     cursor.addComponent<KeyboardController>();
     player.addComponent<SpriteComponent>(mapp, "..//assets//horse.png");
     cursor.addComponent<SlideComponent>(mapp, "..//assets//cursors.png", 10, 50);
-    textbox.addComponent<SpriteComponent>("..//assets//textbox.png", (int []){128, 128});
-    textbox.addComponent<TextComponent>(Game::fontsize, std::vector<std::string> {"Attack", "Wait"}, black);
+    // textbox.addComponent<SpriteComponent>("..//assets//textbox.png", (int []){128, 128});
+    // textbox.addComponent<TextComponent>(Game::fontsize, std::vector<std::string> {"Attack", "Wait"}, black);
     
     player.addGroup(manager.groupUnits);
     cursor.addGroup(manager.groupUI);
