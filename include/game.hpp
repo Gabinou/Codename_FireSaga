@@ -16,9 +16,9 @@ struct InputMap {
     std::vector<SDL_Scancode> accept{SDL_SCANCODE_SPACE};
     std::vector<SDL_Scancode> cancel{SDL_SCANCODE_BACKSPACE};
     std::vector<SDL_Scancode> stats{};
-    std::vector<SDL_Scancode> menu_right{};
-    std::vector<SDL_Scancode> menu_left{};
-    std::vector<SDL_Scancode> minimap{};
+    std::vector<SDL_Scancode> menu_right{}; // Switches between units of same affilition, when in 'map' states.
+    std::vector<SDL_Scancode> menu_left{}; // Switches between units of same affilition, when in 'map' states.
+    std::vector<SDL_Scancode> minimap{}; // Same controls as when in map state.
     std::vector<SDL_Scancode> faster{}; // Toggle or Hold?
     std::vector<SDL_Scancode> pause{SDL_SCANCODE_RETURN};
 };
@@ -62,7 +62,38 @@ class Game {
         bool isRunning;
         int count;
         SDL_Window * window;
-        std::string state;
+        std::string state; 
+        /* Possible states (make all letters lowercase when checking):
+        *       worldmap: Story exposition, small animations of units moving around,
+        *           maybe even player control sometimes?
+        *       map: Cursor traveling on the map. Main button configuration. Units fight.
+        *       unitmove: Unit found on map after checking accept. 
+        *           Draws the unit move overlay, draws arrows on map, pathfinds,
+        *           Goes to unit menu if accept or back to map if cancel.
+        *       unitmenu: After moving unit, decide what to do.
+        *       options: Clicking accept on map. Then  goes into options submenues.
+        *       pause: Clicking pause. Reduces sounds. Makes the screen black.
+        *       minimap: Makes minimap appear on screen. Map control still enabled. 
+        *           Goes to map if accept or cancel, or to other menus.
+        *       stats: Shows unit statistics screen. changes some buttons around.
+        *       introvideo: When start menu is idle too long.
+        *       startmenu: s/t. Submenus:
+        *           saves: where you can delete or load files, start new games, etc.
+        *           soundroom: play songs from the game.
+        *           options: s/t. Should also be accessible from the map.
+        *       conversation: s/t
+        *       battle: s/t
+        *       cutscene: for scripted events/battles.
+        *       gameover: s/t
+        *       preparation: s/t. Submenus:
+        *           placement: goes to the map and places units.            
+        *           chooseunits: s/t
+        *           equipment: s/t
+        *           forge: s/t
+        *           storage: s/t
+        *           bonusexp: s/t
+        *       shop: s/t
+        */ 
 };
 
 
