@@ -7,6 +7,7 @@
 #include <stdio.h>
 #include "vector2D.hpp"
 #include "shared.hpp"
+#include "ECS.hpp"
 
 struct InputMap {
     std::vector<SDL_Scancode> moveright{SDL_SCANCODE_RIGHT, SDL_SCANCODE_D, SDL_SCANCODE_L};
@@ -55,8 +56,8 @@ class Game {
         static TTF_Font * font;
 
     private:
-
         InputMap inputMap;
+        Manager & manager;
         int fontsize;
         bool isRunning;
         int count;

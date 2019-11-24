@@ -91,7 +91,7 @@ class KeyboardController : public Component, Tilesize {
                 if (manager.getGame()->getState() == "unitmenu") {
                     textboxptr->destroy();
                     manager.getGame()->setState("map");
-                    entity->getComponent<SpriteComponent>().show();
+                    // entity->getComponent<SpriteComponent>().show();
                     printf("%s \n", manager.getGame()->getState().c_str());
                 }
             }
