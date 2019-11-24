@@ -1,6 +1,7 @@
 #ifndef KEYBOARDCONTROL_HPP
 #define KEYBOARDCONTROL_HPP
 
+#include <string>
 #include "ECS.hpp"
 #include "game.hpp"
 #include "textcomponent.hpp"
@@ -77,6 +78,8 @@ class KeyboardController : public Component, Tilesize {
                     textbox.addGroup(manager.groupUI);
                     textboxptr = &textbox;
                     textbox_shown = !textbox_shown;
+                    manager.getGame()->setContext("Map_UnitMenu");
+
                 }
             }
 

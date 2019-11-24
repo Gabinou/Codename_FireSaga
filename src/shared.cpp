@@ -49,8 +49,8 @@ int geometricslide(int distance, float geo_factor) {
     int sign = sgn(distance);
     int out = sign * std::max(sign * (int)(distance / geo_factor), 1);
     return (out);
-    // std::abs() possible instead of sign*distance
-    // This is more elegant.
+    // std::abs() possible instead of sign*distance,
+    // but this is more elegant.
 }
 
 bool is_pressed(const Uint8 * state_array, std::vector<SDL_Scancode> to_find) {

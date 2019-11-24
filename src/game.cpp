@@ -7,7 +7,7 @@
 #include "map.hpp"
 #include "spritecomponent.hpp"
 #include "positioncomponent.hpp"
-#include "cursorcomponent.hpp"
+#include "slidecomponent.hpp"
 #include "textcomponent.hpp"
 #include "keyboardcontroller.hpp"
 
@@ -36,6 +36,18 @@ Game::getFontsize() {
     return(fontsize);
 }
 
+void Game::setContext(std::string in_context) {
+    context = in_context;
+}
+
+void Game::setContext(const char * in_context) {
+    context = std::string(in_context);
+}
+
+
+std::string Game::getContext() {
+    return(context);
+}
 
 void Game::init(const char * title, int xpos, int ypos, int width, int height, bool fullscreen) {
     int flags = 0;
@@ -94,7 +106,7 @@ void Game::init(const char * title, int xpos, int ypos, int width, int height, b
     SDL_Color black = {255,255,255};
     cursor.addComponent<KeyboardController>();
     player.addComponent<SpriteComponent>(mapp, "..//assets//horse.png");
-    cursor.addComponent<CursorComponent>(mapp, "..//assets//cursors.png", 10, 50);
+    cursor.addComponent<SlideComponent>(mapp, "..//assets//cursors.png", 10, 50);
     textbox.addComponent<SpriteComponent>("..//assets//textbox.png", (int []){128, 128});
     textbox.addComponent<TextComponent>(Game::fontsize, std::vector<std::string> {"Attack", "Wait"}, black);
     
