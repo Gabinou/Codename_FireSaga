@@ -113,7 +113,7 @@ void Game::init(const char * title, int xpos, int ypos, int width, int height, b
     player.addGroup(manager.groupUnits);
     cursor.addGroup(manager.groupUI);
 
-    this->setState("Map");
+    this->setState("map");
     
 };
 

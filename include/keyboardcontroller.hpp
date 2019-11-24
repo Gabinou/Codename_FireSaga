@@ -14,7 +14,6 @@ class KeyboardController : public Component, Tilesize {
 
     private:
         LastPressed lastpressed;
-        bool textbox_shown = false;
         Entity * textboxptr;
         PositionComponent * positioncomponent;
         int * tilesize;
@@ -67,10 +66,10 @@ class KeyboardController : public Component, Tilesize {
                 pressed.push_back(inputMap.moveright);
             }
 
-            printf("%s \n", manager.getGame()->getState().c_str());
+
 
             if (is_pressed(kb_state, inputMap.accept)) {
-                if (textbox_shown == false) {
+                if (manager.getGame()->getState() == "map") {
                     Entity & textbox = manager.addEntity();
                     textbox.addComponent<PositionComponent>();
                     textbox.getComponent<PositionComponent>().setBounds(0, 2000, 0, 2000);
@@ -82,17 +81,17 @@ class KeyboardController : public Component, Tilesize {
                     textbox.addComponent<TextComponent>(manager.getGame()->getFontsize(), std::vector<std::string> {"Attack", "Wait"}, black);
                     textbox.addGroup(manager.groupUI);
                     textboxptr = &textbox;
-                    textbox_shown = !textbox_shown;
-                    manager.getGame()->setState("UnitMenu");
+                    manager.getGame()->setState("unitmenu");
+                    printf("%s \n", manager.getGame()->getState().c_str());
                     entity->getComponent<SpriteComponent>().hide();
                 }
             }
 
             if (is_pressed(kb_state, inputMap.cancel)) {
-                if (textbox_shown == true) {
+                if (manager.getGame()->getState() == "unitmenu") {
                     textboxptr->destroy();
-                    textbox_shown = !textbox_shown;
-                    manager.getGame()->setState("Map");
+                    manager.getGame()->setState("map");
+                    printf("%s \n", manager.getGame()->getState().c_str());
                 }
             }
 

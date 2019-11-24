@@ -48,7 +48,6 @@ class Game {
 
         std::string getState();
 
-
         bool running();
 
         static SDL_Renderer * renderer;
@@ -62,18 +61,18 @@ class Game {
         bool isRunning;
         int count;
         SDL_Window * window;
-        std::string state; 
+        std::string state;
         /* Possible states (make all letters lowercase when checking):
         *       worldmap: Story exposition, small animations of units moving around,
         *           maybe even player control sometimes?
         *       map: Cursor traveling on the map. Main button configuration. Units fight.
-        *       unitmove: Unit found on map after checking accept. 
+        *       unitmove: Unit found on map after checking accept.
         *           Draws the unit move overlay, draws arrows on map, pathfinds,
         *           Goes to unit menu if accept or back to map if cancel.
         *       unitmenu: After moving unit, decide what to do.
         *       options: Clicking accept on map. Then  goes into options submenues.
         *       pause: Clicking pause. Reduces sounds. Makes the screen black.
-        *       minimap: Makes minimap appear on screen. Map control still enabled. 
+        *       minimap: Makes minimap appear on screen. Map control still enabled.
         *           Goes to map if accept or cancel, or to other menus.
         *       stats: Shows unit statistics screen. changes some buttons around.
         *       introvideo: When start menu is idle too long.
@@ -86,14 +85,14 @@ class Game {
         *       cutscene: for scripted events/battles.
         *       gameover: s/t
         *       preparation: s/t. Submenus:
-        *           placement: goes to the map and places units.            
+        *           placement: goes to the map and places units.
         *           chooseunits: s/t
         *           equipment: s/t
         *           forge: s/t
         *           storage: s/t
         *           bonusexp: s/t
         *       shop: s/t
-        */ 
+        */
 };
 
 
