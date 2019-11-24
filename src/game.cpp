@@ -36,17 +36,17 @@ Game::getFontsize() {
     return(fontsize);
 }
 
-void Game::setContext(std::string in_context) {
-    context = in_context;
+void Game::setState(std::string in_state) {
+    state = in_state;
 }
 
-void Game::setContext(const char * in_context) {
-    context = std::string(in_context);
+void Game::setState(const char * in_state) {
+    state = std::string(in_state);
 }
 
 
-std::string Game::getContext() {
-    return(context);
+std::string Game::getState() {
+    return(state);
 }
 
 void Game::init(const char * title, int xpos, int ypos, int width, int height, bool fullscreen) {
@@ -113,7 +113,7 @@ void Game::init(const char * title, int xpos, int ypos, int width, int height, b
     player.addGroup(manager.groupUnits);
     cursor.addGroup(manager.groupUI);
 
-    this->setContext("Map");
+    this->setState("Map");
     
 };
 

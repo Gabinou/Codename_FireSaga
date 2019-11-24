@@ -43,10 +43,10 @@ class Game {
 
         InputMap getInputMap();
 
-        void setContext(std::string in_context);
-        void setContext(const char * in_context);
+        void setState(std::string in_state);
+        void setState(const char * in_state);
 
-        std::string getContext();
+        std::string getState();
 
 
         bool running();
@@ -62,7 +62,7 @@ class Game {
         bool isRunning;
         int count;
         SDL_Window * window;
-        std::string context;
+        std::string state;
 };
 
 

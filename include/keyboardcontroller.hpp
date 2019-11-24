@@ -31,9 +31,9 @@ class KeyboardController : public Component, Tilesize {
         LastPressed getLastPressed() {
             return (lastpressed);
         }
-        
-        void switchCursor(){
-            
+
+        void switchCursor() {
+
         }
 
         void check_pressed(std::vector<std::vector<SDL_Scancode>>pressed) {
@@ -67,7 +67,7 @@ class KeyboardController : public Component, Tilesize {
                 pressed.push_back(inputMap.moveright);
             }
 
-            printf("%s \n", manager.getGame()->getContext().c_str());
+            printf("%s \n", manager.getGame()->getState().c_str());
 
             if (is_pressed(kb_state, inputMap.accept)) {
                 if (textbox_shown == false) {
@@ -83,7 +83,7 @@ class KeyboardController : public Component, Tilesize {
                     textbox.addGroup(manager.groupUI);
                     textboxptr = &textbox;
                     textbox_shown = !textbox_shown;
-                    manager.getGame()->setContext("Map_UnitMenu");
+                    manager.getGame()->setState("UnitMenu");
                     entity->getComponent<SpriteComponent>().hide();
                 }
             }
@@ -92,12 +92,12 @@ class KeyboardController : public Component, Tilesize {
                 if (textbox_shown == true) {
                     textboxptr->destroy();
                     textbox_shown = !textbox_shown;
-                    manager.getGame()->setContext("Map");
+                    manager.getGame()->setState("Map");
                 }
             }
+
             check_pressed(pressed);
             positioncomponent->setUpdatable(false);
-            switchCursor();
         }
 
 };
