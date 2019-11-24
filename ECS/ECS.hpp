@@ -83,7 +83,6 @@ class Entity {
             groupbitset[in_Group] = false;
         }
 
-
         template <typename T, typename... TArgs>
         T & addComponent(TArgs && ... mArgs) {
             T * c(new T(std::forward<TArgs>(mArgs)...));

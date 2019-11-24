@@ -1,7 +1,6 @@
 #ifndef KEYBOARDCONTROL_HPP
 #define KEYBOARDCONTROL_HPP
 
-#include <string>
 #include "ECS.hpp"
 #include "game.hpp"
 #include "textcomponent.hpp"
@@ -31,6 +30,10 @@ class KeyboardController : public Component, Tilesize {
 
         LastPressed getLastPressed() {
             return (lastpressed);
+        }
+        
+        void switchCursor(){
+            
         }
 
         void check_pressed(std::vector<std::vector<SDL_Scancode>>pressed) {
@@ -64,6 +67,8 @@ class KeyboardController : public Component, Tilesize {
                 pressed.push_back(inputMap.moveright);
             }
 
+            printf("%s \n", manager.getGame()->getContext().c_str());
+
             if (is_pressed(kb_state, inputMap.accept)) {
                 if (textbox_shown == false) {
                     Entity & textbox = manager.addEntity();
@@ -79,7 +84,7 @@ class KeyboardController : public Component, Tilesize {
                     textboxptr = &textbox;
                     textbox_shown = !textbox_shown;
                     manager.getGame()->setContext("Map_UnitMenu");
-
+                    entity->getComponent<SpriteComponent>().hide();
                 }
             }
 
@@ -87,11 +92,12 @@ class KeyboardController : public Component, Tilesize {
                 if (textbox_shown == true) {
                     textboxptr->destroy();
                     textbox_shown = !textbox_shown;
+                    manager.getGame()->setContext("Map");
                 }
             }
-
             check_pressed(pressed);
             positioncomponent->setUpdatable(false);
+            switchCursor();
         }
 
 };

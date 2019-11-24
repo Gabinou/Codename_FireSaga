@@ -112,7 +112,8 @@ void Game::init(const char * title, int xpos, int ypos, int width, int height, b
     
     player.addGroup(manager.groupUnits);
     cursor.addGroup(manager.groupUI);
-    // textbox.addGroup(groupUI);
+
+    this->setContext("Map");
     
 };
 

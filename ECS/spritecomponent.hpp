@@ -22,10 +22,12 @@ class SpriteComponent : public Component {
         Vector2D objectivepos;
         Vector2D slidepos;
         int * tilesize; // if no map, just use the pixel position as usual.
-        bool animated = false;
         int frames = 10;
         int speed = 50;
+        bool visible = true;
+        bool animated = false;
         std::string ss_looping = "pingpong"; //ss: spritesheet
+
 
     public:
         SpriteComponent() = default;
@@ -36,6 +38,14 @@ class SpriteComponent : public Component {
 
         int * getTilesize() {
             return (tilesize);
+        }
+
+        void hide() {
+            visible = false;
+        }
+
+        void show() {
+            visible = true;
         }
 
         SpriteComponent(const char * in_path, int in_picsize[2]) : SpriteComponent(in_path)  {
@@ -118,7 +128,9 @@ class SpriteComponent : public Component {
         }
 
         virtual void draw() override {
-            SDL_RenderCopy(Game::renderer, texture, &srcrect, &destrect);
+            if (visible) {
+                SDL_RenderCopy(Game::renderer, texture, &srcrect, &destrect);
+            }
         }
 };
 
