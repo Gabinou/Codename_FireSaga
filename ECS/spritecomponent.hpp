@@ -24,7 +24,7 @@ class SpriteComponent : public Component {
         int * tilesize; // if no map, just use the pixel position as usual.
         int frames = 10;
         int speed = 50;
-        bool visible = true;
+        bool visible;
         bool animated = false;
         std::string ss_looping = "pingpong"; //ss: spritesheet
 
@@ -33,6 +33,7 @@ class SpriteComponent : public Component {
         SpriteComponent() = default;
 
         SpriteComponent(const char * in_path) {
+            visible = true;
             setTexture(in_path);
         }
 
@@ -41,6 +42,7 @@ class SpriteComponent : public Component {
         }
 
         void hide() {
+            printf("hiding");
             visible = false;
         }
 
@@ -128,6 +130,8 @@ class SpriteComponent : public Component {
         }
 
         virtual void draw() override {
+            printf("Is visible? %d\n", visible);
+
             if (visible) {
                 SDL_RenderCopy(Game::renderer, texture, &srcrect, &destrect);
             }
