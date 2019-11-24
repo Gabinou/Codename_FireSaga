@@ -66,8 +66,6 @@ class KeyboardController : public Component, Tilesize {
                 pressed.push_back(inputMap.moveright);
             }
 
-
-
             if (is_pressed(kb_state, inputMap.accept)) {
                 if (manager.getGame()->getState() == "map") {
                     Entity & textbox = manager.addEntity();
