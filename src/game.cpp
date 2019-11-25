@@ -38,10 +38,59 @@ void Game::setState(std::string in_state) {
     state = in_state;
 }
 void Game::setState(Entity & in_entity, std::string in_state) {
+
+    if ((this->state == "map") && (in_state == "unitmenu")) {
+        printf("Making textbox");
+        Manager & manager = in_entity.getManager();
+        int current_size = manager.getEntities().size();
+        manager.addEntity();
+        manager.getEntities()[current_size]->addComponent<PositionComponent>();
+        manager.getEntities()[current_size]->getComponent<PositionComponent>().setBounds(0, 2000, 0, 2000);
+        
+        manager.getEntities()[current_size]->getComponent<PositionComponent>().setPos(
+        (int)(in_entity.getComponent<PositionComponent>().getPos().x * tilesize[0]),
+        (int)(in_entity.getComponent<PositionComponent>().getPos().y * tilesize[1]));
+        SDL_Color black = {255, 255, 255};
+        manager.getEntities()[current_size]->addComponent<SpriteComponent>("..//assets//textbox.png", (int []) {128, 128}); 
+        manager.getEntities()[current_size]->addComponent<TextComponent>(fontsize, std::vector<std::string> {"Attack", "Wait"}, black);
+        manager.getEntities()[2]->addGroup(manager.groupUI);
+        
+    }
+    if ((this->state == "unitmenu") && (in_state == "map")) { 
+        Manager & manager = in_entity.getManager();
+        printf("Trying to destroy textbox number %d \n", manager.getEntities().size());
+        // int current_size = manager.getEntities().size();
+        // manager.getEntities()[current_size]->destroy();
+    }
     state = in_state;
+    
 }
 
 void Game::setState(Entity & in_entity, const char * in_state) {
+
+    if ((this->state == "map") && (in_state == "unitmenu")) {
+        printf("Making textbox const char\n");
+        Manager & manager = in_entity.getManager();
+        int current_size = manager.getEntities().size();
+        manager.addEntity();
+        manager.getEntities()[current_size]->addComponent<PositionComponent>();
+        manager.getEntities()[current_size]->getComponent<PositionComponent>().setBounds(0, 2000, 0, 2000);
+        
+        manager.getEntities()[current_size]->getComponent<PositionComponent>().setPos(
+        (int)(in_entity.getComponent<PositionComponent>().getPos().x * tilesize[0]),
+        (int)(in_entity.getComponent<PositionComponent>().getPos().y * tilesize[1]));
+        SDL_Color black = {255, 255, 255};
+        manager.getEntities()[current_size]->addComponent<SpriteComponent>("..//assets//textbox.png", (int []) {128, 128}); 
+        manager.getEntities()[current_size]->addComponent<TextComponent>(fontsize, std::vector<std::string> {"Attack", "Wait"}, black);
+        manager.getEntities()[2]->addGroup(manager.groupUI);
+    }
+    
+    if ((this->state == "unitmenu") && (in_state == "map")) { 
+        Manager & manager = in_entity.getManager();
+        printf("Trying to destroy textbox number %d \n", manager.getEntities().size());
+        int current_size = manager.getEntities().size();
+        manager.getEntities()[current_size-1]->destroy();
+    }
     state = std::string(in_state);
 }
 
@@ -100,7 +149,9 @@ void Game::init(const char * title, int xpos, int ypos, int width, int height, b
     }
 
     printf("Creating map \n");
-    mapp =  new Map(32, 32);
+    tilesize[0] = 32;
+    tilesize[1] = 32;
+    mapp =  new Map(tilesize[0], tilesize[1]);
     mapp->loadMap("..//testmap.txt");
     // allEntities["horse"] = &player;
     // allEntities["cursor"] = &cursor;
@@ -112,7 +163,7 @@ void Game::init(const char * title, int xpos, int ypos, int width, int height, b
     // textbox.addComponent<PositionComponent>(200, 200);
 
     SDL_Color black = {255,255,255};
-    cursor.addComponent<KeyboardController>(this);
+    cursor.addComponent<KeyboardController>(this );
     player.addComponent<SpriteComponent>(mapp, "..//assets//horse.png");
     cursor.addComponent<SlideComponent>(mapp, "..//assets//cursors.png", 10, 50);
     // textbox.addComponent<SpriteComponent>("..//assets//textbox.png", (int []){128, 128});

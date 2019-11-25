@@ -31,6 +31,10 @@ class KeyboardController : public Component, Tilesize {
             tilesize = in_tilesize;
         }
 
+        int * getTilesize() {
+            return (tilesize);
+        }
+
         void init() override {
             positioncomponent = &entity->getComponent<PositionComponent>();
         }

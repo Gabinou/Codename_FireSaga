@@ -1,11 +1,11 @@
 #ifndef MAP_HPP
 #define MAP_HPP
 
-#include "game.hpp"
 #include "tilesize.hpp"
 #include "SDL2/SDL.h"
 #include "shared.hpp"
 #include "parser.hpp"
+#include "game.hpp"
 
 class Map: public Tilesize {
 

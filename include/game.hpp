@@ -8,6 +8,7 @@
 #include "vector2D.hpp"
 #include "shared.hpp"
 #include "ECS.hpp"
+#include "map.hpp"
 
 struct InputMap {
     std::vector<SDL_Scancode> moveright{SDL_SCANCODE_RIGHT, SDL_SCANCODE_D, SDL_SCANCODE_L};
@@ -44,6 +45,8 @@ class Game {
 
         InputMap getInputMap();
 
+        void setTilesize(int width, int height);
+
         void setState(Entity & in_entity, std::string in_state);
         void setState(std::string in_state);
         void setState(Entity & in_entity, const char * in_state);
@@ -63,6 +66,7 @@ class Game {
         int fontsize;
         bool isRunning;
         int count;
+        int tilesize[2];
         SDL_Window * window;
         std::string state;
         /* Possible states (make all letters lowercase when checking):
