@@ -7,7 +7,7 @@
 #include <stdio.h>
 #include "vector2D.hpp"
 #include "shared.hpp"
-// #include "ECS.hpp"
+#include "ECS.hpp"
 
 struct InputMap {
     std::vector<SDL_Scancode> moveright{SDL_SCANCODE_RIGHT, SDL_SCANCODE_D, SDL_SCANCODE_L};
@@ -44,7 +44,9 @@ class Game {
 
         InputMap getInputMap();
 
+        void setState(Entity & in_entity, std::string in_state);
         void setState(std::string in_state);
+        void setState(Entity & in_entity, const char * in_state);
         void setState(const char * in_state);
 
         std::string getState();

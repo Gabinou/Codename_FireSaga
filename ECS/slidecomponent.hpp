@@ -18,7 +18,6 @@ class SlideComponent : public SpriteComponent {
 
     public:
         using SpriteComponent::SpriteComponent; //inherits all constructors
-        using SpriteComponent::SpriteComponent; //inherits all constructors
 
         void setSlideType(std::string in_slidetype) {
             slidetype = in_slidetype;

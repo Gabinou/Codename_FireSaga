@@ -11,7 +11,6 @@
 #include "textcomponent.hpp"
 #include "keyboardcontroller.hpp"
 
-
 Map * mapp;
 
 SDL_Renderer * Game::renderer = nullptr;
@@ -19,8 +18,6 @@ SDL_Event Game::event;
 TTF_Font * Game::font = NULL;
 
 Manager manager;
-
-std::unordered_map<std::string, Entity *> entities = {};
 
 Entity & player = manager.addEntity();
 Entity & cursor = manager.addEntity();
@@ -39,6 +36,13 @@ Game::getFontsize() {
 
 void Game::setState(std::string in_state) {
     state = in_state;
+}
+void Game::setState(Entity & in_entity, std::string in_state) {
+    state = in_state;
+}
+
+void Game::setState(Entity & in_entity, const char * in_state) {
+    state = std::string(in_state);
 }
 
 void Game::setState(const char * in_state) {
@@ -62,7 +66,7 @@ void Game::init(const char * title, int xpos, int ypos, int width, int height, b
         exit(2);
     }
     
-    manager.setGame(this);
+    // manager.setGame(this);
     
     Game::font = TTF_OpenFont("../fonts/arial.ttf", Game::fontsize); // Size translates to pixel size? 
     //The srcrect does not change size with font pointsize.
@@ -98,8 +102,8 @@ void Game::init(const char * title, int xpos, int ypos, int width, int height, b
     printf("Creating map \n");
     mapp =  new Map(32, 32);
     mapp->loadMap("..//testmap.txt");
-    entities["horse"] = &player;
-    entities["cursor"] = &cursor;
+    // allEntities["horse"] = &player;
+    // allEntities["cursor"] = &cursor;
     
     cursor.addComponent<PositionComponent>(2, 2);
     
@@ -108,7 +112,7 @@ void Game::init(const char * title, int xpos, int ypos, int width, int height, b
     // textbox.addComponent<PositionComponent>(200, 200);
 
     SDL_Color black = {255,255,255};
-    cursor.addComponent<KeyboardController>();
+    cursor.addComponent<KeyboardController>(this);
     player.addComponent<SpriteComponent>(mapp, "..//assets//horse.png");
     cursor.addComponent<SlideComponent>(mapp, "..//assets//cursors.png", 10, 50);
     // textbox.addComponent<SpriteComponent>("..//assets//textbox.png", (int []){128, 128});

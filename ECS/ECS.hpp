@@ -7,7 +7,7 @@
 #include <bitset>
 #include <array>
 #include <memory>
-#include "game.hpp"
+// #include "game.hpp"
 
 class Component;
 class Entity;
@@ -15,6 +15,9 @@ class Manager;
 
 constexpr std::size_t maxcomponents = 32;
 constexpr std::size_t maxgroups = 32;
+
+// std::unordered_map<std::string, Entity *> allEntities;
+
 
 using ComponentID = std::size_t;
 using Group = std::size_t;
@@ -106,14 +109,18 @@ class Manager {
     private:
         std::vector<std::unique_ptr<Entity>> entities;
         std::array<std::vector<Entity *>, maxgroups> groupedEntities;
-        Game * game;
+        // Game * game;
     public:
 
-        void setGame(Game * in_game) {
-            game = in_game;
-        }
-        Game * getGame() {
-            return (game);
+        // void setGame(Game * in_game) {
+        // game = in_game;
+        // }
+        // Game * getGame() {
+        // return (game);
+        // }
+
+        std::vector<std::unique_ptr<Entity>> const & getEntities() const {
+            return (entities);
         }
 
         enum groupLabels : std::size_t {

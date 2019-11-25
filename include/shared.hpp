@@ -24,7 +24,6 @@
 #include "unit_class.hpp"
 #include "inventory_item.hpp"
 
-
 /*! \file shared.hpp
 * \brief Shared data.
 */
