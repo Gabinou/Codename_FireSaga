@@ -80,32 +80,13 @@ class KeyboardController : public Component, Tilesize {
 
             if (is_pressed(kb_state, inputMap.accept)) {
                 if (game->getState() == "map") {
-                    // idea: The entity calling the game change state should pass itself to the game. Then, the game would make the changes according to which entity passed the change state command. Implementing it.
-                    printf("%d \n", manager.getEntities().size());
-                    // Entity & textbox = manager.addEntity();
-
-                    // manager.getEntities()[2]->addComponent<PositionComponent>();
-                    // manager.getEntities()[2]->getComponent<PositionComponent>().setBounds(0, 2000, 0, 2000);
-                    // manager.getEntities()[2]->getComponent<PositionComponent>().setPos(
-                    // (int)(positioncomponent->getPos().x * tilesize[0]),
-                    // (int)(positioncomponent->getPos().y * tilesize[1]));
-                    // SDL_Color black = {255, 255, 255};
-                    // manager.getEntities()[2]->addComponent<SpriteComponent>("..//assets//textbox.png", (int []) {128, 128}); // because there is no map. Position component should
-                    // manager.getEntities()[2]->addComponent<TextComponent>(manager.getGame()->getFontsize(), std::vector<std::string> {"Attack", "Wait"}, black);
-                    // manager.getEntities()[2]->addGroup(manager.groupUI);
-                    // textboxptr = &textbox;
                     game->setState(*entity, "unitmenu");
-                    // printf("%s \n", manager.getGame()->getState().c_str());
-                    // entity->getComponent<SpriteComponent>().hide();
                 }
             }
 
             if (is_pressed(kb_state, inputMap.cancel)) {
                 if (game->getState() == "unitmenu") {
-                    // textboxptr->destroy();
                     game->setState(*entity, "map");
-                    // // entity->getComponent<SpriteComponent>().show();
-                    // printf("%s \n", manager.getGame()->getState().c_str());
                 }
             }
 

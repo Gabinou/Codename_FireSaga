@@ -17,6 +17,11 @@ SDL_Renderer * Game::renderer = nullptr;
 SDL_Event Game::event;
 TTF_Font * Game::font = NULL;
 
+struct StateVector {
+    std::vector<std::string> 
+}
+
+
 Manager manager;
 
 Entity & player = manager.addEntity();
@@ -53,7 +58,7 @@ void Game::setState(Entity & in_entity, std::string in_state) {
         SDL_Color black = {255, 255, 255};
         manager.getEntities()[current_size]->addComponent<SpriteComponent>("..//assets//textbox.png", (int []) {128, 128}); 
         manager.getEntities()[current_size]->addComponent<TextComponent>(fontsize, std::vector<std::string> {"Attack", "Wait"}, black);
-        manager.getEntities()[2]->addGroup(manager.groupUI);
+        manager.getEntities()[current_size]->addGroup(manager.groupUI);
         
     }
     if ((this->state == "unitmenu") && (in_state == "map")) { 
@@ -82,7 +87,7 @@ void Game::setState(Entity & in_entity, const char * in_state) {
         SDL_Color black = {255, 255, 255};
         manager.getEntities()[current_size]->addComponent<SpriteComponent>("..//assets//textbox.png", (int []) {128, 128}); 
         manager.getEntities()[current_size]->addComponent<TextComponent>(fontsize, std::vector<std::string> {"Attack", "Wait"}, black);
-        manager.getEntities()[2]->addGroup(manager.groupUI);
+        manager.getEntities()[current_size]->addGroup(manager.groupUI);
     }
     
     if ((this->state == "unitmenu") && (in_state == "map")) { 
