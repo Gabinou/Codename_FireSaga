@@ -98,18 +98,32 @@ void Game::setState(Entity & setting_entity, const char * new_state) {
         if (new_state == "options") {
             
         }
+        if (new_state == "cutscene") {
+            
+        }
     }
     
     if (this->state == "options") {
         if (new_state == "map") {
   
         }
-        if (new_state == "map") {
+        if (new_state == "startmenu") {
   
         }
     }
     
-    if (this->state == "prepatation") {
+    if (this->state == "startmenu") {
+        if (new_state == "introvideo") {
+        }
+        if (new_state == "saves") {
+        }
+        if (new_state == "soundroom") {
+        }
+        if (new_state == "options") {
+        }
+    }
+    
+    if (this->state == "preparation") {
         if (new_state == "placement") {
         }
         if (new_state == "chooseunits") {
