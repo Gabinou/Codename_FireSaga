@@ -38,7 +38,7 @@ void Game::createUnitmenu(Entity & setting_entity) {
     Manager & manager = setting_entity.getManager();
     int entity_num = manager.getEntities().size();
     if (unitmenuIndex == -1) {
-        printf("Making textbox const char\n");
+        // printf("Making textbox const char\n");
         manager.addEntity();
         manager.getEntities()[entity_num]->addComponent<PositionComponent>();
         manager.getEntities()[entity_num]->getComponent<PositionComponent>().setBounds(0, 2000, 0, 2000);
@@ -58,7 +58,7 @@ void Game::destroyUnitmenu(Entity & setting_entity) {
     Manager & manager = setting_entity.getManager();
     int entity_num = manager.getEntities().size();
     if (unitmenuIndex < entity_num) {
-        printf("Trying to destroy textbox number %d \n", manager.getEntities().size());
+        // printf("Trying to destroy textbox number %d \n", manager.getEntities().size());
         manager.getEntities()[unitmenuIndex]->destroy();
         unitmenuIndex = -1;
     }  else {
@@ -66,20 +66,34 @@ void Game::destroyUnitmenu(Entity & setting_entity) {
     }
 }
 
-void Game::setState(Entity & setting_entity, const char * in_state) {
+void Game::setState(Entity & setting_entity, const char * new_state) {
 
-    if ((this->state == "map") && (in_state == "unitmenu")) {
-        createUnitmenu(setting_entity);
+    if (this->state == "map") {
+        if (new_state == "unitmenu") {
+            createUnitmenu(setting_entity);
+        }
     }
     
-    if ((this->state == "unitmenu") && (in_state == "map")) { 
-        destroyUnitmenu(setting_entity);
+    if (this->state == "unitmenu") {
+        if (new_state == "map") { 
+            destroyUnitmenu(setting_entity);
+        }
+        if (new_state == "attack") { 
+        
+        }
+        if (new_state == "trade") { 
+        
+        }
+        if (new_state == "item") { 
+        
+        }
     }
-    state = std::string(in_state);
+    
+    state = std::string(new_state);
 }
 
-void Game::setState(const char * in_state) {
-    state = std::string(in_state);
+void Game::setState(const char * new_state) {
+    state = std::string(new_state);
 }
 
 std::string Game::getState() {

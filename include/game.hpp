@@ -46,8 +46,8 @@ class Game {
 
         void setTilesize(int width, int height);
 
-        void setState(Entity & in_entity, const char * in_state);
-        void setState(const char * in_state);
+        void setState(Entity & in_entity, const char * new_state);
+        void setState(const char * new_state);
 
         std::string getState();
 
@@ -78,6 +78,9 @@ class Game {
         *           Draws the unit move overlay, draws arrows on map, pathfinds,
         *           Goes to unit menu if accept or back to map if cancel.
         *       unitmenu: After moving unit, decide what to do.
+        *       items: s/t
+        *       attack: s/t
+        *       trade: s/t
         *       options: Clicking accept on map. Then  goes into options submenues.
         *       pause: Clicking pause. Reduces sounds. Makes the screen black.
         *       minimap: Makes minimap appear on screen. Map control still enabled.
