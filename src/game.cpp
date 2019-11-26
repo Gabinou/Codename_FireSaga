@@ -74,9 +74,23 @@ void Game::setState(Entity & setting_entity, const char * new_state) {
     if (this->state == "pause") {
          
     }
+    if (this->state == "stats") {
+        
+    }
+    if (this->state == "minimap") {
+         
+    }
+    
+    
     if (this->state == "map") {
         if (new_state == "unitmenu") {
             createUnitmenu(setting_entity);
+        }
+        if (new_state == "stats") {
+            
+        }
+        if (new_state == "minimap") {
+            
         }
         if (new_state == "unitmove") {
             
@@ -94,6 +108,35 @@ void Game::setState(Entity & setting_entity, const char * new_state) {
   
         }
     }
+    
+    if (this->state == "prepatation") {
+        if (new_state == "placement") {
+        }
+        if (new_state == "chooseunits") {
+        }
+        if (new_state == "equipment") {
+        }
+        if (new_state == "forge") {
+        }        
+        if (new_state == "storage") {
+        }        
+        if (new_state == "bonusexp") {
+        }        
+    }
+    if ((this->state == "placement") ||
+     (this->state == "chooseunits") ||
+     (this->state == "equipment") ||
+     (this->state == "forge") ||
+     (this->state == "storage") ||
+     (this->state == "bonusexp")){
+        if (new_state == "preparation") {
+        }
+        if (new_state == "map") {
+        }     
+    }
+    
+    
+    
     if (this->state == "unitmove") {
         if (new_state == "unitmenu") {
         }
@@ -110,6 +153,22 @@ void Game::setState(Entity & setting_entity, const char * new_state) {
         
         }
         if (new_state == "items") { 
+        
+        }
+        if (new_state == "conversation") { 
+        
+        }
+        
+    }
+
+    if (this->state == "conversation") {
+        if (new_state == "map") { 
+        
+        }
+    }
+    
+    if (this->state == "attack") {
+        if (new_state == "battle") { 
         
         }
     }
