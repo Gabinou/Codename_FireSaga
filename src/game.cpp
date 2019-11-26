@@ -34,7 +34,7 @@ Game::getFontsize() {
     return(fontsize);
 }
 
-void Game::unitmenu(Entity & setting_entity) {
+void Game::createUnitmenu(Entity & setting_entity) {
     Manager & manager = setting_entity.getManager();
     int entity_num = manager.getEntities().size();
     if (unitmenuIndex == -1) {
@@ -50,23 +50,30 @@ void Game::unitmenu(Entity & setting_entity) {
         manager.getEntities()[entity_num]->addComponent<TextComponent>(fontsize, std::vector<std::string> {"Attack", "Wait"}, black);
         manager.getEntities()[entity_num]->addGroup(manager.groupUI);
         unitmenuIndex = entity_num;
-    } else if (unitmenuIndex < entity_num) {
+    } else {
+        printf("Could not create unit menu.");
+    }
+}        
+void Game::destroyUnitmenu(Entity & setting_entity) {
+    Manager & manager = setting_entity.getManager();
+    int entity_num = manager.getEntities().size();
+    if (unitmenuIndex < entity_num) {
         printf("Trying to destroy textbox number %d \n", manager.getEntities().size());
         manager.getEntities()[unitmenuIndex]->destroy();
         unitmenuIndex = -1;
-    } else {
-        printf("Unit Menu creation/destruction error.");
+    }  else {
+        printf("Could not destroy unit menu.");
     }
 }
 
 void Game::setState(Entity & setting_entity, const char * in_state) {
 
     if ((this->state == "map") && (in_state == "unitmenu")) {
-        unitmenu(setting_entity);
+        createUnitmenu(setting_entity);
     }
     
     if ((this->state == "unitmenu") && (in_state == "map")) { 
-        unitmenu(setting_entity);
+        destroyUnitmenu(setting_entity);
     }
     state = std::string(in_state);
 }
