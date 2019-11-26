@@ -68,11 +68,36 @@ void Game::destroyUnitmenu(Entity & setting_entity) {
 
 void Game::setState(Entity & setting_entity, const char * new_state) {
 
+    if (new_state == "pause"){
+        
+    }
+    if (this->state == "pause") {
+         
+    }
     if (this->state == "map") {
         if (new_state == "unitmenu") {
             createUnitmenu(setting_entity);
         }
+        if (new_state == "unitmove") {
+            
+        }
+        if (new_state == "options") {
+            
+        }
     }
+    
+    if (this->state == "options") {
+        if (new_state == "map") {
+  
+        }
+        if (new_state == "map") {
+  
+        }
+    }
+    if (this->state == "unitmove") {
+        if (new_state == "unitmenu") {
+        }
+    }        
     
     if (this->state == "unitmenu") {
         if (new_state == "map") { 
@@ -84,7 +109,7 @@ void Game::setState(Entity & setting_entity, const char * new_state) {
         if (new_state == "trade") { 
         
         }
-        if (new_state == "item") { 
+        if (new_state == "items") { 
         
         }
     }
