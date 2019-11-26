@@ -21,7 +21,6 @@ Manager manager;
 
 Entity & player = manager.addEntity();
 Entity & cursor = manager.addEntity();
-// Entity & textbox = manager.addEntity();
 
 Game::Game() {}
 Game::~Game() {}
@@ -35,7 +34,6 @@ Game::getFontsize() {
 }
 
 void Game::createUnitmenu(Entity & setting_entity) {
-    Manager & manager = setting_entity.getManager();
     int entity_num = manager.getEntities().size();
     if (unitmenuIndex == -1) {
         // printf("Making textbox const char\n");
@@ -55,7 +53,6 @@ void Game::createUnitmenu(Entity & setting_entity) {
     }
 }        
 void Game::destroyUnitmenu(Entity & setting_entity) {
-    Manager & manager = setting_entity.getManager();
     int entity_num = manager.getEntities().size();
     if (unitmenuIndex < entity_num) {
         // printf("Trying to destroy textbox number %d \n", manager.getEntities().size());
