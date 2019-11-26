@@ -25,7 +25,6 @@ struct InputMap {
     std::vector<SDL_Scancode> pause{SDL_SCANCODE_RETURN};
 };
 
-
 class Game {
 
     public:
@@ -47,8 +46,6 @@ class Game {
 
         void setTilesize(int width, int height);
 
-        void setState(Entity & in_entity, std::string in_state);
-        void setState(std::string in_state);
         void setState(Entity & in_entity, const char * in_state);
         void setState(const char * in_state);
 
@@ -61,7 +58,10 @@ class Game {
         static TTF_Font * font;
 
     private:
+        void unitmenu(Entity & in_entity);
         InputMap inputMap;
+
+        int unitmenuIndex = -1;
         // Manager & manager;
         int fontsize;
         bool isRunning;
