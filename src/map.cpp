@@ -19,9 +19,7 @@ Map::Map() {
     initVars();
 }
 
-Map::Map(const short unsigned int width, const short unsigned int height) {
-    loadTiles();
-    initVars();
+Map::Map(const short unsigned int width, const short unsigned int height) : Map() {
     setTilesize(width, height);
     srcrect.w = destrect.w = width;
     srcrect.h = destrect.h = height;

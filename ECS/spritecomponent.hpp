@@ -10,7 +10,6 @@
 #include "shared.hpp"
 #include "SDL2/SDL.h"
 
-
 class SpriteComponent : public Component {
 
     protected:

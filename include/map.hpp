@@ -2,6 +2,7 @@
 #define MAP_HPP
 
 #include "tilesize.hpp"
+#include "tilecomponent.hpp"
 #include "SDL2/SDL.h"
 #include "shared.hpp"
 #include "parser.hpp"
@@ -14,9 +15,11 @@ class Map: public Tilesize {
         void initVars();
         Map();
         Map(const short unsigned int width, const short unsigned int height);
-        ~Map();
+        // ~Map();
         void loadMap(std::string filename);
         void drawMap();
+        TileComponent * tiles;
+
 
     private:
 
