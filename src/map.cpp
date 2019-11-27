@@ -4,6 +4,7 @@ void Map::loadTiles() {
     dirt = loadTexture("..//assets//dirt.png");
     grass = loadTexture("..//assets//grass.png");
     water = loadTexture("..//assets//water.png");
+    // Make this into an array of types, and breaks the switch into an array index. Also put the assets into a single  string vector.
 }
 
 void Map::initVars() {
