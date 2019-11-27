@@ -17,7 +17,6 @@ void Map::initVars() {
 Map::Map() {
     loadTiles();
     initVars();
-
 }
 
 Map::Map(const short unsigned int width, const short unsigned int height) : Map() {
@@ -28,19 +27,20 @@ Map::Map(const short unsigned int width, const short unsigned int height) : Map(
 
 void Map::loadMap(std::string filename) {
     map = readcsv_vec(filename.c_str(), 1);
-    tiles = new TileComponent**[map.size()];
+    tiles = new Entity**[map.size()];
     for (int row = 0; row<map.size(); row++){
-        tiles[row] = new TileComponent*[map[row].size()];
+        tiles[row] = new Entity*[map[row].size()];
     }
 }
 
 void Map::drawMap() {
     int type = 0;
     static int * currenttilesize = (getTilesize());
-
+    // This is cache friendly.
     for (int row = 0; row < map.size(); row++) {
         for (int col = 0; col < map[row].size(); col++) {
-            type = map[row][col];
+            type =  map[row][col];
+            tiles[row][col] = nullptr;
             destrect.x = (col + 1) * currenttilesize[0];
             destrect.y = (row + 1) * currenttilesize[1];
 

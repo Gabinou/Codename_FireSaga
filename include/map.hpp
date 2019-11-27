@@ -2,7 +2,7 @@
 #define MAP_HPP
 
 #include "tilesize.hpp"
-#include "tilecomponent.hpp"
+#include "ECS.hpp"
 #include "SDL2/SDL.h"
 #include "shared.hpp"
 #include "parser.hpp"
@@ -18,7 +18,7 @@ class Map: public Tilesize {
         // ~Map();
         void loadMap(std::string filename);
         void drawMap();
-        TileComponent *** tiles;
+        Entity *** tiles;
 
 
     private:

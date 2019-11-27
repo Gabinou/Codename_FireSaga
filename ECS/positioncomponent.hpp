@@ -4,6 +4,7 @@
 #include "ECS.hpp"
 #include "vector2D.hpp"
 #include "game.hpp"
+#include "map.hpp"
 #include "tilesize.hpp"
 
 class PositionComponent : public Component {
@@ -11,6 +12,7 @@ class PositionComponent : public Component {
         bool updatable = true;
         Vector2D position;
         int bounds[4] = {0, 255, 0, 255}; //xmin, xmax, ymin, ymax
+        Map * map = nullptr;
 
     public:
         void setBounds(int xmin, int xmax, int ymin, int ymax) {
@@ -50,6 +52,11 @@ class PositionComponent : public Component {
             setPos(in_x, in_y);
         }
 
+        PositionComponent(int in_x, int in_y, Map * in_map) : PositionComponent(in_x, in_y) {
+            map = in_map;
+            map->tiles[in_x][in_y] = entity;
+        }
+
         PositionComponent(int in_x, int in_y,
                           int xmin, int xmax,
                           int ymin, int ymax)
@@ -71,6 +78,10 @@ class PositionComponent : public Component {
 
         void setPos(int in_x, int in_y) {
             if (updatable) {
+                if (map != nullptr) {
+                    map->tiles[in_x][in_y] = entity;
+                    printf("set\n");
+                }
 
                 if ((in_x >= bounds[0]) && (in_x <= bounds[1])) {
                     position.x = in_x;
