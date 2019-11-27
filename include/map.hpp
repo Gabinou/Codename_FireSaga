@@ -18,7 +18,7 @@ class Map: public Tilesize {
         // ~Map();
         void loadMap(std::string filename);
         void drawMap();
-        TileComponent * tiles;
+        TileComponent *** tiles;
 
 
     private:

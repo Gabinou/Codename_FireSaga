@@ -17,6 +17,7 @@ void Map::initVars() {
 Map::Map() {
     loadTiles();
     initVars();
+
 }
 
 Map::Map(const short unsigned int width, const short unsigned int height) : Map() {
@@ -27,6 +28,10 @@ Map::Map(const short unsigned int width, const short unsigned int height) : Map(
 
 void Map::loadMap(std::string filename) {
     map = readcsv_vec(filename.c_str(), 1);
+    tiles = new TileComponent**[map.size()];
+    for (int row = 0; row<map.size(); row++){
+        tiles[row] = new TileComponent*[map[row].size()];
+    }
 }
 
 void Map::drawMap() {
