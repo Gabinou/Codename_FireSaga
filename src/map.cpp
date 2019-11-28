@@ -32,6 +32,12 @@ void Map::loadMap(std::string filename) {
     for (int row = 0; row<map.size(); row++){
         tiles[row] = new Entity*[map[row].size()];
     }
+    for (int row = 0; row < map.size(); row++) {
+        for (int col = 0; col < map[row].size(); col++) {
+            tiles[row][col] = NULL;
+        }
+    }
+  
 }
 
 void Map::drawMap() {
@@ -41,7 +47,6 @@ void Map::drawMap() {
     for (int row = 0; row < map.size(); row++) {
         for (int col = 0; col < map[row].size(); col++) {
             type =  map[row][col];
-            tiles[row][col] = nullptr;
             destrect.x = (col + 1) * currenttilesize[0];
             destrect.y = (row + 1) * currenttilesize[1];
 

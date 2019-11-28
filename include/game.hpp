@@ -103,6 +103,17 @@ class Game {
         *           storage: s/t
         *           bonusexp: s/t
         *       shop: s/t
+        *     State hierarchy:
+        *       map
+                    unitmove
+                    unitmenu
+                options
+                preparation:
+                    chooseunits
+                    equipment
+                    forge
+                    storage
+                    bonusexp
         */
 };
 

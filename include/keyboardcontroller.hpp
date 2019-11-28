@@ -3,6 +3,7 @@
 
 #include "ECS.hpp"
 #include "game.hpp"
+#include "map.hpp"
 #include "textcomponent.hpp"
 
 struct LastPressed {
@@ -80,6 +81,14 @@ class KeyboardController : public Component, Tilesize {
 
             if (is_pressed(kb_state, inputMap.accept)) {
                 if (game->getState() == "map") {
+                    printf("cursor Position, %d %d \n", positioncomponent->getPos().x, positioncomponent->getPos().y);
+                    // printf("An entity is here?, %d \n", (entity->getComponent<SpriteComponent>().getMap()->tile s[positioncomponent->getPos().x][positioncomponent->getPos().y] == nullptr));
+                    Map * current_map = entity->getComponent<SpriteComponent>().getMap();
+                    current_map->onTile(0, 0);
+                    // current_map->getTile(positioncomponent->getPos().x, positioncomponent->getPos().y);
+                    // printf("Does this work? %d \n", (current_map->getTiles)));
+                    // current_map->getTiles();
+                    // Entity * tile = entity->getComponent<SpriteComponent>().getMap()->tiles[positioncomponent->getPos().x][positioncomponent->getPos().y];
                     game->setState(*entity, "unitmenu");
                 }
             }

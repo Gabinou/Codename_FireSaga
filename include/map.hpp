@@ -18,7 +18,19 @@ class Map: public Tilesize {
         // ~Map();
         void loadMap(std::string filename);
         void drawMap();
-        Entity *** tiles;
+        Entity * getTile(int x, int y) {
+            return (tiles[x][y]);
+        }
+        bool onTile(int x, int y) {
+            printf("ontile");
+            bool a = !(tiles[x][y]); // Doesn't work, but ONLY FOR KEYBOARD CONTROLLER!
+            return (true);
+        }
+        void setTile(int x, int y, Entity * ptr) {
+            tiles[x][y] = ptr;
+            getTile(0, 0);
+            printf("settile");
+        }
 
 
     private:
@@ -30,6 +42,8 @@ class Map: public Tilesize {
         SDL_Texture * water;
 
         std::vector<std::vector<int>> map;
+
+        Entity *** tiles;
 
 };
 

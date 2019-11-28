@@ -86,6 +86,11 @@ class SpriteComponent : public Component {
             srcrect.h = tilesize[1];
             destrect.w = tilesize[0];
             destrect.h = tilesize[1];
+            map->onTile(0, 0);
+        }
+
+        Map * getMap() {
+            return (map);
         }
 
         void setSrcrect(int width, int height) {
