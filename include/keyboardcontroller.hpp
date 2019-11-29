@@ -11,7 +11,7 @@ struct LastPressed {
     unsigned int pressed_frames = 0;
 };
 
-class KeyboardController : public Component, Tilesize {
+class KeyboardController : public Component {
 
     private:
         LastPressed lastpressed;

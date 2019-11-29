@@ -5,7 +5,6 @@
 #include "vector2D.hpp"
 #include "game.hpp"
 #include "map.hpp"
-#include "tilesize.hpp"
 
 class PositionComponent : public Component {
     private:

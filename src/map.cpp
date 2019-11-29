@@ -1,5 +1,14 @@
 #include "map.hpp"
 
+void Map::setTilesize(const short int unsigned width, const short int unsigned height) {
+    tilesize[0] = width;
+    tilesize[1] = height;
+}
+
+int * Map::getTilesize() const {
+    return ((int *)tilesize);
+}
+
 void Map::loadTiles() {
     dirt = loadTexture("..//assets//dirt.png");
     grass = loadTexture("..//assets//grass.png");
@@ -28,17 +37,7 @@ Map::Map(const short unsigned int width, const short unsigned int height) : Map(
 
 void Map::loadMap(std::string filename) {
     map = readcsv_vec(filename.c_str(), 1);
-    name(width, std::vector<Entity*>(height));
-    // tiles = new Entity**[map.size()];
-    // for (int row = 0; row<map.size(); row++){
-        // tiles[row] = new Entity*[map[row].size()];
-    // }
-    // for (int row = 0; row < map.size(); row++) {
-        // for (int col = 0; col < map[row].size(); col++) {
-            // tiles[row][col] = NULL;
-        // }
-    // }
-  
+    // tiles(tilesize[0], std::vector<Entity*>(tilesize[1]));
 }
 
 void Map::drawMap() {

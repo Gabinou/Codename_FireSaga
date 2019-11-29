@@ -44,8 +44,6 @@ class Game {
 
         InputMap getInputMap();
 
-        void setTilesize(int width, int height);
-
         void setState(Entity & in_entity, const char * new_state);
         void setState(const char * new_state);
 

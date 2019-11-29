@@ -1,7 +1,5 @@
 #ifndef MAP_HPP
 #define MAP_HPP
-
-#include "tilesize.hpp"
 #include "ECS.hpp"
 #include "SDL2/SDL.h"
 #include "shared.hpp"
@@ -10,7 +8,7 @@
 
 using Entity_ptr_matrix = std::vector<std::vector<Entity *>>;
 
-class Map: public Tilesize {
+class Map {
 
     public:
         void loadTiles();
@@ -21,8 +19,11 @@ class Map: public Tilesize {
         void loadMap(std::string filename);
         void drawMap();
 
+        void setTilesize(const short int unsigned width, const short int unsigned height);
+        int * getTilesize() const;
 
     private:
+        int tilesize[2];
 
         SDL_Rect srcrect, destrect;
 
