@@ -9,6 +9,14 @@ int * Map::getTilesize() const {
     return ((int *)tilesize);
 }
 
+void Map::setTile(int x, int y, Entity * in_entity) {
+    tiles[x][y] = in_entity;
+}
+
+Entity * Map::getTile(int x, int y) {
+    return(tiles[x][y]);
+}
+
 void Map::loadTiles() {
     dirt = loadTexture("..//assets//dirt.png");
     grass = loadTexture("..//assets//grass.png");

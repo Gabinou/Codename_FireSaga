@@ -57,8 +57,7 @@ class PositionComponent : public Component {
 
         PositionComponent(int in_x, int in_y, Map * in_map) : PositionComponent(in_x, in_y) {
             map = in_map;
-            // map->setTile(in_x, in_y, entity);
-            printf("set\n");
+            map->setTile(in_x, in_y, entity);
         }
 
         PositionComponent(int in_x, int in_y,
