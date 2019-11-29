@@ -37,18 +37,18 @@ Map::Map(const short unsigned int width, const short unsigned int height) : Map(
 
 void Map::loadMap(std::string filename) {
     map = readcsv_vec(filename.c_str(), 1);
-    // tiles(tilesize[0], std::vector<Entity*>(tilesize[1]));
+    Entity_ptr_matrix temp(tilesize[0], std::vector<Entity*>(tilesize[1]));
+    tiles = temp;
 }
 
 void Map::drawMap() {
     int type = 0;
-    static int * currenttilesize = (getTilesize());
     // This is cache friendly.
     for (int row = 0; row < map.size(); row++) {
         for (int col = 0; col < map[row].size(); col++) {
             type =  map[row][col];
-            destrect.x = (col + 1) * currenttilesize[0];
-            destrect.y = (row + 1) * currenttilesize[1];
+            destrect.x = (col + 1) * tilesize[0];
+            destrect.y = (row + 1) * tilesize[1];
 
             switch (type) {
             case 0:
