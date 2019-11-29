@@ -19,12 +19,17 @@ class KeyboardController : public Component {
         PositionComponent * positioncomponent;
         int * tilesize;
         Game * game;
+        Map * map;
     public:
         KeyboardController() = default;
 
         KeyboardController(Game * in_game) {
-            game = in_game;
+            setGame(in_game);
         }
+        KeyboardController(Game * in_game, Map * in_map) : KeyboardController(in_game) {
+            map = in_map;
+        }
+
         void setGame(Game * in_game) {
             game = in_game;
         }
@@ -88,7 +93,7 @@ class KeyboardController : public Component {
                     int current_x = positioncomponent->getPos().x;
                     int current_y = positioncomponent->getPos().y;
                     // current_map->setTile(0, 0, *entity);
-                    entity->getComponent<SpriteComponent>().getMap()->getTile(0, 0);
+                    map->getTile(0, 0);
                     // current_map->getTile(0, 0); // All member functions fail....
                     game->setState(*entity, "unitmenu");
                 }
