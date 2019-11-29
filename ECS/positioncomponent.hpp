@@ -58,7 +58,7 @@ class PositionComponent : public Component {
 
         PositionComponent(int in_x, int in_y, Map * in_map) : PositionComponent(in_x, in_y) {
             map = in_map;
-            map->setTile(in_x, in_y, entity);
+            // map->setTile(in_x, in_y, entity);
             printf("set\n");
         }
 
@@ -84,7 +84,7 @@ class PositionComponent : public Component {
         void setPos(int in_x, int in_y) {
             if (updatable) {
                 if (map != nullptr) {
-                    map->setTile(in_x, in_y, entity);
+                    // map->setTile(in_x, in_y, entity);
                 }
 
                 if ((in_x >= bounds[0]) && (in_x <= bounds[1])) {

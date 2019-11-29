@@ -84,7 +84,7 @@ class KeyboardController : public Component, Tilesize {
                     printf("cursor Position, %d %d \n", positioncomponent->getPos().x, positioncomponent->getPos().y);
                     // printf("An entity is here?, %d \n", (entity->getComponent<SpriteComponent>().getMap()->tile s[positioncomponent->getPos().x][positioncomponent->getPos().y] == nullptr));
                     Map * current_map = entity->getComponent<SpriteComponent>().getMap();
-                    current_map->onTile(0, 0);
+                    // current_map->onTile(0, 0);
                     // current_map->getTile(positioncomponent->getPos().x, positioncomponent->getPos().y);
                     // printf("Does this work? %d \n", (current_map->getTiles)));
                     // current_map->getTiles();

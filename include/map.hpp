@@ -8,6 +8,8 @@
 #include "parser.hpp"
 #include "game.hpp"
 
+using Entity_ptr_matrix = std::vector<std::vector<Entity *>>;
+
 class Map: public Tilesize {
 
     public:
@@ -18,19 +20,6 @@ class Map: public Tilesize {
         // ~Map();
         void loadMap(std::string filename);
         void drawMap();
-        Entity * getTile(int x, int y) {
-            return (tiles[x][y]);
-        }
-        bool onTile(int x, int y) {
-            printf("ontile");
-            bool a = !(tiles[x][y]); // Doesn't work, but ONLY FOR KEYBOARD CONTROLLER!
-            return (true);
-        }
-        void setTile(int x, int y, Entity * ptr) {
-            tiles[x][y] = ptr;
-            getTile(0, 0);
-            printf("settile");
-        }
 
 
     private:
@@ -43,7 +32,7 @@ class Map: public Tilesize {
 
         std::vector<std::vector<int>> map;
 
-        Entity *** tiles;
+        Entity_ptr_matrix tiles;
 
 };
 
