@@ -243,7 +243,7 @@ void Game::init(const char * title, int xpos, int ypos, int width, int height, b
     printf("Creating map \n");
     tilesize[0] = 32;
     tilesize[1] = 32;
-    mapp =  new Map(tilesize[0], tilesize[1]);
+    mapp =  new Map(tilesize[0], tilesize[1]); // mapp is a pointer
     mapp->loadMap("..//testmap.txt");
     // allEntities["horse"] = &player;
     // allEntities["cursor"] = &cursor;

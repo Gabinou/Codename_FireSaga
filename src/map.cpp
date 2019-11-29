@@ -13,8 +13,10 @@ void Map::setTile(int x, int y, Entity * in_entity) {
     tiles[x][y] = in_entity;
 }
 
-Entity * Map::getTile(int x, int y) {
-    return(tiles[x][y]);
+void Map::getTile(int x, int y) {
+    printf("did I get it?\n");
+    tiles[0][0];
+    // return(tiles[x][y]);
 }
 
 void Map::loadTiles() {
@@ -30,6 +32,8 @@ void Map::initVars() {
     srcrect.w = destrect.w = 32;
     srcrect.h = destrect.h = 32;
     setTilesize(32, 32);
+    Entity_ptr_matrix temp(255, std::vector<Entity*>(255));
+    tiles = temp;
 }
 
 Map::Map() {
@@ -45,8 +49,16 @@ Map::Map(const short unsigned int width, const short unsigned int height) : Map(
 
 void Map::loadMap(std::string filename) {
     map = readcsv_vec(filename.c_str(), 1);
-    Entity_ptr_matrix temp(tilesize[0], std::vector<Entity*>(tilesize[1]));
+    printf("loadedmap\n\n");
+    Entity_ptr_matrix temp(map.size(), std::vector<Entity*>(map[0].size()));
+
     tiles = temp;
+    printf("Tiles size %d %d \n", tiles.size(), tiles[0].size());
+    for (int row = 0; row < tiles.size(); row++) {
+        for (int col = 0; col < tiles[row].size(); col++) {
+            tiles[row][col] =  static_cast<Entity*>(nullptr);
+        }
+    }
 }
 
 void Map::drawMap() {

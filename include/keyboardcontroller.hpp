@@ -83,12 +83,13 @@ class KeyboardController : public Component {
                 if (game->getState() == "map") {
                     printf("cursor Position, %d %d \n", positioncomponent->getPos().x, positioncomponent->getPos().y);
                     // printf("An entity is here?, %d \n", (entity->getComponent<SpriteComponent>().getMap()->tile s[positioncomponent->getPos().x][positioncomponent->getPos().y] == nullptr));
-                    Map * current_map = entity->getComponent<SpriteComponent>().getMap();
-                    bool a = (current_map->getTile(positioncomponent->getPos().x, positioncomponent->getPos().y) == nullptr);
-                    // current_map->getTile(positioncomponent->getPos().x, positioncomponent->getPos().y);
-                    // printf("Does this work? %d \n", (current_map->getTiles)));
-                    // current_map->getTiles();
-                    // Entity * tile = entity->getComponent<SpriteComponent>().getMap()->tiles[positioncomponent->getPos().x][positioncomponent->getPos().y];
+                    // Map * current_map = entity->getComponent<SpriteComponent>().getMap();
+
+                    int current_x = positioncomponent->getPos().x;
+                    int current_y = positioncomponent->getPos().y;
+                    // current_map->setTile(0, 0, *entity);
+                    entity->getComponent<SpriteComponent>().getMap()->getTile(0, 0);
+                    // current_map->getTile(0, 0); // All member functions fail....
                     game->setState(*entity, "unitmenu");
                 }
             }

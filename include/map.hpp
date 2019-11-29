@@ -1,5 +1,6 @@
 #ifndef MAP_HPP
 #define MAP_HPP
+
 #include "ECS.hpp"
 #include "SDL2/SDL.h"
 #include "shared.hpp"
@@ -22,18 +23,19 @@ class Map {
         void setTilesize(const short int unsigned width, const short int unsigned height);
         int * getTilesize() const;
         void setTile(int x, int y, Entity * in_entity);
-        Entity * getTile(int x, int y);
+        // Entity * getTile(int x, int y);
+        void getTile(int x, int y);
 
     private:
         int tilesize[2];
+
+        std::vector<std::vector<int>> map;
 
         SDL_Rect srcrect, destrect;
 
         SDL_Texture * dirt;
         SDL_Texture * grass;
         SDL_Texture * water;
-
-        std::vector<std::vector<int>> map;
 
         Entity_ptr_matrix tiles;
 
