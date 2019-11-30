@@ -59,8 +59,6 @@ class Game {
         void destroyUnitmenu(Entity & setting_entity);
         void createUnitmenu(Entity & in_entity);
         InputMap inputMap;
-
-        int unitmenuIndex = -1;
         // Manager & manager;
         int fontsize;
         bool isRunning;
@@ -68,6 +66,10 @@ class Game {
         int tilesize[2];
         SDL_Window * window;
         std::string state;
+        // I think these should be used as stacks: the last created entity should be the first destroyed:
+        stack <int> menu_entities;
+        stack <int> unit_entities;
+
         /* Possible states (make all letters lowercase when checking):
         *       worldmap: Story exposition, small animations of units moving around,
         *           maybe even player control sometimes?

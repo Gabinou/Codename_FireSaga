@@ -87,10 +87,7 @@ class KeyboardController : public Component {
             if (is_pressed(kb_state, inputMap.accept)) {
                 if (game->getState() == "map") {
                     printf("cursor Position, %d %d \n", positioncomponent->getPos().x, positioncomponent->getPos().y);
-
-                    int current_x = positioncomponent->getPos().x;
-                    int current_y = positioncomponent->getPos().y;
-                    Entity * ontile = map->getTile(current_x, current_y);
+                    Entity * ontile = map->getTile(positioncomponent->getPos().x, positioncomponent->getPos().y);
 
                     if (ontile) {
                         game->setState(*entity, "unitmenu");

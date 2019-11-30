@@ -34,30 +34,23 @@ Game::getFontsize() {
 }
 
 void Game::createUnitmenu(Entity & setting_entity) {
-    int entity_num = manager.getEntities().size();
-    if (unitmenuIndex == -1) {
-        // printf("Making textbox const char\n");
+    menu_entities.push(manager.getEntities().size());
         manager.addEntity();
-        manager.getEntities()[entity_num]->addComponent<PositionComponent>();
-        manager.getEntities()[entity_num]->getComponent<PositionComponent>().setBounds(0, 2000, 0, 2000);
-        manager.getEntities()[entity_num]->getComponent<PositionComponent>().setPos(
+        manager.getEntities()[menu_entities.top()]->addComponent<PositionComponent>();
+        manager.getEntities()[menu_entities.top()]->getComponent<PositionComponent>().setBounds(0, 2000, 0, 2000);
+        manager.getEntities()[menu_entities.top()]->getComponent<PositionComponent>().setPos(
         (int)(setting_entity.getComponent<PositionComponent>().getPos().x * tilesize[0]),
         (int)(setting_entity.getComponent<PositionComponent>().getPos().y * tilesize[1]));
         SDL_Color black = {255, 255, 255};
-        manager.getEntities()[entity_num]->addComponent<SpriteComponent>("..//assets//textbox.png", (int []) {128, 128}); 
-        manager.getEntities()[entity_num]->addComponent<TextComponent>(fontsize, std::vector<std::string> {"Attack", "Wait"}, black);
-        manager.getEntities()[entity_num]->addGroup(manager.groupUI);
-        unitmenuIndex = entity_num;
-    } else {
-        printf("Could not create unit menu.");
-    }
+        manager.getEntities()[menu_entities.top()]->addComponent<SpriteComponent>("..//assets//textbox.png", (int []) {128, 128}); 
+        manager.getEntities()[menu_entities.top()]->addComponent<TextComponent>(fontsize, std::vector<std::string> {"Attack", "Wait"}, black);
+        manager.getEntities()[menu_entities.top()]->addGroup(manager.groupUI);
 }        
 void Game::destroyUnitmenu(Entity & setting_entity) {
-    int entity_num = manager.getEntities().size();
-    if (unitmenuIndex < entity_num) {
+    if (!menu_entities.empty()) {
         // printf("Trying to destroy textbox number %d \n", manager.getEntities().size());
-        manager.getEntities()[unitmenuIndex]->destroy();
-        unitmenuIndex = -1;
+        manager.getEntities()[menu_entities.top()]->destroy();
+        menu_entities.pop();
     }  else {
         printf("Could not destroy unit menu.");
     }
