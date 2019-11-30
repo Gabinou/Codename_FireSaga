@@ -93,7 +93,7 @@ class KeyboardController : public Component {
                     int current_x = positioncomponent->getPos().x;
                     int current_y = positioncomponent->getPos().y;
                     // current_map->setTile(0, 0, *entity);
-                    map->getTile(0, 0);
+                    printf("on tile? %d \n", (map->getTile(current_x, current_y)));
                     // current_map->getTile(0, 0); // All member functions fail....
                     game->setState(*entity, "unitmenu");
                 }

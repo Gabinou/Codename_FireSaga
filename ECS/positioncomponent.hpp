@@ -5,6 +5,8 @@
 #include "vector2D.hpp"
 #include "game.hpp"
 #include "map.hpp"
+#include "shared.hpp"
+#include "SDL2/SDL.h"
 
 class PositionComponent : public Component {
     private:
@@ -12,7 +14,7 @@ class PositionComponent : public Component {
         Vector2D position;
         int bounds[4] = {0, 255, 0, 255}; //xmin, xmax, ymin, ymax
         Map * map = nullptr;
-
+        // It seems that on first init of the component, entity is still a nullptr. Tryeing something.
     public:
         void setBounds(int xmin, int xmax, int ymin, int ymax) {
             bounds[0] = xmin;
@@ -43,6 +45,11 @@ class PositionComponent : public Component {
             return (map);
         }
 
+        void setMap(Map * in_map) {
+            map = in_map;
+            map->setTile(position.x, position.y, entity);
+        }
+
         PositionComponent() {
             setPos(0, 0);
         }
@@ -53,11 +60,6 @@ class PositionComponent : public Component {
 
         PositionComponent(int in_x, int in_y) {
             setPos(in_x, in_y);
-        }
-
-        PositionComponent(int in_x, int in_y, Map * in_map) : PositionComponent(in_x, in_y) {
-            map = in_map;
-            map->setTile(in_x, in_y, entity);
         }
 
         PositionComponent(int in_x, int in_y,
@@ -97,7 +99,6 @@ class PositionComponent : public Component {
         }
 
         void addPos(Vector2D move) {
-            // printf("new %d %d\n", move.x, position.x);
             setPos((move.x + position.x), (move.y + position.y));
         }
 

@@ -13,10 +13,8 @@ void Map::setTile(int x, int y, Entity * in_entity) {
     tiles[x][y] = in_entity;
 }
 
-void Map::getTile(int x, int y) {
-    printf("did I get it?\n");
-    tiles[0][0];
-    // return(tiles[x][y]);
+Entity * Map::getTile(int x, int y) {
+    return(tiles[x][x]);
 }
 
 void Map::loadTiles() {

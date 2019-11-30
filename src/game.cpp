@@ -250,7 +250,9 @@ void Game::init(const char * title, int xpos, int ypos, int width, int height, b
     
     cursor.addComponent<PositionComponent>(2, 2);
     
-    player.addComponent<PositionComponent>(2, 2, mapp);
+    player.addComponent<PositionComponent>(2, 2);
+    player.getComponent<PositionComponent>().setMap(mapp);
+
 
     // textbox.addComponent<PositionComponent>(200, 200);
 
