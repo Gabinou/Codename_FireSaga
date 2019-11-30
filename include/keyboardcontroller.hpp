@@ -87,20 +87,26 @@ class KeyboardController : public Component {
             if (is_pressed(kb_state, inputMap.accept)) {
                 if (game->getState() == "map") {
                     printf("cursor Position, %d %d \n", positioncomponent->getPos().x, positioncomponent->getPos().y);
-                    // printf("An entity is here?, %d \n", (entity->getComponent<SpriteComponent>().getMap()->tile s[positioncomponent->getPos().x][positioncomponent->getPos().y] == nullptr));
-                    // Map * current_map = entity->getComponent<SpriteComponent>().getMap();
 
                     int current_x = positioncomponent->getPos().x;
                     int current_y = positioncomponent->getPos().y;
-                    // current_map->setTile(0, 0, *entity);
-                    printf("on tile? %d \n", (map->getTile(current_x, current_y)));
-                    // current_map->getTile(0, 0); // All member functions fail....
-                    game->setState(*entity, "unitmenu");
+                    Entity * ontile = map->getTile(current_x, current_y);
+
+                    if (ontile) {
+                        game->setState(*entity, "unitmenu");
+                    } else {
+                        game->setState(*entity, "options");
+                    }
+
                 }
             }
 
             if (is_pressed(kb_state, inputMap.cancel)) {
                 if (game->getState() == "unitmenu") {
+                    game->setState(*entity, "map");
+                }
+
+                if (game->getState() == "options") {
                     game->setState(*entity, "map");
                 }
             }
