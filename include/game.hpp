@@ -56,6 +56,7 @@ class Game {
         static TTF_Font * font;
 
     private:
+        void moveUnit(Entity & cursor, Entity & unit);
         void destroyUnitmenu(Entity & setting_entity);
         void createUnitmenu(Entity & in_entity);
         InputMap inputMap;

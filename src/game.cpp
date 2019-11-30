@@ -55,6 +55,15 @@ void Game::destroyUnitmenu(Entity & setting_entity) {
     }
 }
 
+void Game::moveUnit(Entity & cursor, Entity & unit) {
+    int newPos[2];
+    newPos[0] = cursor.getComponent<PositionComponent>().getPos().x;
+    newPos[1] = cursor.getComponent<PositionComponent>().getPos().y;
+
+    unit.getComponent<PositionComponent>().setPos(newPos[0], newPos[1]);
+}
+
+
 void Game::setState(Entity & setting_entity, const char * new_state) {
 
     if (new_state == "pause"){
@@ -82,7 +91,6 @@ void Game::setState(Entity & setting_entity, const char * new_state) {
             
         }
         if (new_state == "unitmove") {
-
             // findpath();            
             // drawpath();
             // waitforotheraccept();            
@@ -145,6 +153,7 @@ void Game::setState(Entity & setting_entity, const char * new_state) {
     
     if (this->state == "unitmove") {
         if (new_state == "unitmenu") {
+            // moveUnit();
         }
     }        
     
