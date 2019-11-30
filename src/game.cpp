@@ -35,20 +35,19 @@ Game::getFontsize() {
 
 void Game::createUnitmenu(Entity & setting_entity) {
     menu_entities.push(manager.getEntities().size());
-        manager.addEntity();
-        manager.getEntities()[menu_entities.top()]->addComponent<PositionComponent>();
-        manager.getEntities()[menu_entities.top()]->getComponent<PositionComponent>().setBounds(0, 2000, 0, 2000);
-        manager.getEntities()[menu_entities.top()]->getComponent<PositionComponent>().setPos(
+    manager.addEntity();
+    manager.getEntities()[menu_entities.top()]->addComponent<PositionComponent>();
+    manager.getEntities()[menu_entities.top()]->getComponent<PositionComponent>().setBounds(0, 2000, 0, 2000);
+    manager.getEntities()[menu_entities.top()]->getComponent<PositionComponent>().setPos(
         (int)(setting_entity.getComponent<PositionComponent>().getPos().x * tilesize[0]),
         (int)(setting_entity.getComponent<PositionComponent>().getPos().y * tilesize[1]));
-        SDL_Color black = {255, 255, 255};
-        manager.getEntities()[menu_entities.top()]->addComponent<SpriteComponent>("..//assets//textbox.png", (int []) {128, 128}); 
-        manager.getEntities()[menu_entities.top()]->addComponent<TextComponent>(fontsize, std::vector<std::string> {"Attack", "Wait"}, black);
-        manager.getEntities()[menu_entities.top()]->addGroup(manager.groupUI);
+    SDL_Color black = {255, 255, 255};
+    manager.getEntities()[menu_entities.top()]->addComponent<SpriteComponent>("..//assets//textbox.png", (int []) {128, 128}); 
+    manager.getEntities()[menu_entities.top()]->addComponent<TextComponent>(fontsize, std::vector<std::string> {"Attack", "Wait"}, black);
+    manager.getEntities()[menu_entities.top()]->addGroup(manager.groupUI);
 }        
 void Game::destroyUnitmenu(Entity & setting_entity) {
     if (!menu_entities.empty()) {
-        // printf("Trying to destroy textbox number %d \n", manager.getEntities().size());
         manager.getEntities()[menu_entities.top()]->destroy();
         menu_entities.pop();
     }  else {
@@ -83,7 +82,10 @@ void Game::setState(Entity & setting_entity, const char * new_state) {
             
         }
         if (new_state == "unitmove") {
-            
+
+            // findpath();            
+            // drawpath();
+            // waitforotheraccept();            
         }
         if (new_state == "options") {
             

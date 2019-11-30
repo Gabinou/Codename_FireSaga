@@ -96,24 +96,30 @@ class KeyboardController : public Component {
                     }
 
                 }
+
+                if (game->getState() == "unitmove") {
+                    // moveunit(*entity,positioncomponent->getPos().x, positioncomponent->getPos().y);
+                    game->setState(*entity, "unitmenu");
+                }
+
             }
 
             if (is_pressed(kb_state, inputMap.cancel)) {
-                if (game->getState() == "unitmenu") {
+                if ((game->getState() == "unitmenu") ||
+                        (game->getState() == "options") ||
+                        (game->getState() == "unitmove")) {
                     game->setState(*entity, "map");
                 }
 
-                if (game->getState() == "options") {
-                    game->setState(*entity, "map");
-                }
+
+
             }
 
             check_pressed(pressed);
             positioncomponent->setUpdatable(false);
+
         }
-
 };
-
 
 
 
