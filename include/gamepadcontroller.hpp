@@ -31,8 +31,9 @@ class GamepadController : public Component {
         }
 
         void update() override {
-            Sint16 axisval = SDL_GameControllerGetAxis(controller, SDL_CONTROLLER_AXIS_LEFTX);
-            printf("Controller axis val: %d", axisval);
+            Sint16 axisvalx = SDL_GameControllerGetAxis(controller, SDL_CONTROLLER_AXIS_LEFTX);
+            Sint16 axisvaly = SDL_GameControllerGetAxis(controller, SDL_CONTROLLER_AXIS_LEFTY);
+            printf("Controller axis val: %d\n", axisvalx);
         }
 };
 

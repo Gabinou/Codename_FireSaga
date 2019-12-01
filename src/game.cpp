@@ -312,8 +312,8 @@ void Game::update() {
     // printf("%d, %d \n", newPlayer.getComponent<PositionComponent>().x(), newPlayer.getComponent<PositionComponent>().y());
 }
  
-InputMap Game::getInputMap(){
-    return(inputMap);
+KeyboardInputMap Game::getKeyboardInputMap(){
+    return(KeyboardInputMap);
 }
 
 void Game::handleEvents() {

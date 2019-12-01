@@ -66,27 +66,27 @@ class KeyboardController : public Component {
             const Uint8 * kb_state = SDL_GetKeyboardState(NULL);
             std::vector<std::vector<SDL_Scancode>> pressed{};
             Manager & manager = entity->getManager();
-            InputMap inputMap = game->getInputMap();
+            KeyboardInputMap KeyboardInputMap = game->getKeyboardInputMap();
 
-            if (is_pressed(kb_state, inputMap.moveup) && !is_pressed(kb_state, inputMap.movedown)) {
+            if (is_pressed(kb_state, KeyboardInputMap.moveup) && !is_pressed(kb_state, KeyboardInputMap.movedown)) {
                 positioncomponent->addPos(Vector2D(0, -1));
-                pressed.push_back(inputMap.moveup);
-            } else if (!is_pressed(kb_state, inputMap.moveup) && is_pressed(kb_state, inputMap.movedown)) {
+                pressed.push_back(KeyboardInputMap.moveup);
+            } else if (!is_pressed(kb_state, KeyboardInputMap.moveup) && is_pressed(kb_state, KeyboardInputMap.movedown)) {
                 positioncomponent->addPos(Vector2D(0, 1));
-                pressed.push_back(inputMap.movedown);
+                pressed.push_back(KeyboardInputMap.movedown);
             }
 
-            if (!is_pressed(kb_state, inputMap.moveright) && is_pressed(kb_state, inputMap.moveleft)) {
+            if (!is_pressed(kb_state, KeyboardInputMap.moveright) && is_pressed(kb_state, KeyboardInputMap.moveleft)) {
                 positioncomponent->addPos(Vector2D(-1, 0));
-                pressed.push_back(inputMap.moveleft);
-            } else if (is_pressed(kb_state, inputMap.moveright) && !is_pressed(kb_state, inputMap.moveleft)) {
+                pressed.push_back(KeyboardInputMap.moveleft);
+            } else if (is_pressed(kb_state, KeyboardInputMap.moveright) && !is_pressed(kb_state, KeyboardInputMap.moveleft)) {
                 positioncomponent->addPos(Vector2D(1, 0));
-                pressed.push_back(inputMap.moveright);
+                pressed.push_back(KeyboardInputMap.moveright);
             }
 
             Entity * ontile = map->getTile(positioncomponent->getPos().x, positioncomponent->getPos().y);
 
-            if (is_pressed(kb_state, inputMap.accept)) {
+            if (is_pressed(kb_state, KeyboardInputMap.accept)) {
                 std::string toset = "";
                 Entity * setter;
                 // printf("a\n");
@@ -109,17 +109,17 @@ class KeyboardController : public Component {
 
                 if (toset != "") { game->setState(*setter, toset.c_str()); }
 
-                pressed.push_back(inputMap.accept);
+                pressed.push_back(KeyboardInputMap.accept);
             }
 
-            if (is_pressed(kb_state, inputMap.cancel)) {
+            if (is_pressed(kb_state, KeyboardInputMap.cancel)) {
                 if ((game->getState() == "unitmenu") ||
                         (game->getState() == "options") ||
                         (game->getState() == "unitmove")) {
                     game->setState(*entity, "map");
                 }
 
-                pressed.push_back(inputMap.accept);
+                pressed.push_back(KeyboardInputMap.accept);
             }
 
             check_pressed(pressed);

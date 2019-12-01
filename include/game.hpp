@@ -10,7 +10,7 @@
 #include "ECS.hpp"
 #include "map.hpp"
 
-struct InputMap {
+struct KeyboardInputMap {
     std::vector<SDL_Scancode> moveright{SDL_SCANCODE_RIGHT, SDL_SCANCODE_D, SDL_SCANCODE_L};
     std::vector<SDL_Scancode> moveup{SDL_SCANCODE_W, SDL_SCANCODE_UP, SDL_SCANCODE_I};
     std::vector<SDL_Scancode> movedown{SDL_SCANCODE_S, SDL_SCANCODE_DOWN, SDL_SCANCODE_K};
@@ -42,7 +42,7 @@ class Game {
 
         int getFontsize();
 
-        InputMap getInputMap();
+        KeyboardInputMap getKeyboardInputMap();
 
         void setState(Entity & in_entity, std::string new_state);
         void setState(const char * new_state);
@@ -59,7 +59,7 @@ class Game {
         void moveUnit(Entity & cursor);
         void destroyUnitmenu();
         void createUnitmenu(Entity & setting_entity);
-        InputMap inputMap;
+        KeyboardInputMap KeyboardInputMap;
         // Manager & manager;
         int fontsize;
         bool isRunning;
