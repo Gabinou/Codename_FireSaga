@@ -15,6 +15,7 @@ struct KeyboardInputMap {
     std::vector<SDL_Scancode> moveup{SDL_SCANCODE_W, SDL_SCANCODE_UP, SDL_SCANCODE_I};
     std::vector<SDL_Scancode> movedown{SDL_SCANCODE_S, SDL_SCANCODE_DOWN, SDL_SCANCODE_K};
     std::vector<SDL_Scancode> moveleft{SDL_SCANCODE_A, SDL_SCANCODE_LEFT, SDL_SCANCODE_J};
+
     std::vector<SDL_Scancode> accept{SDL_SCANCODE_SPACE};
     std::vector<SDL_Scancode> cancel{SDL_SCANCODE_BACKSPACE};
     std::vector<SDL_Scancode> stats{};
@@ -23,6 +24,31 @@ struct KeyboardInputMap {
     std::vector<SDL_Scancode> minimap{}; // Same controls as when in map state.
     std::vector<SDL_Scancode> faster{}; // Toggle or Hold?
     std::vector<SDL_Scancode> pause{SDL_SCANCODE_RETURN};
+};
+
+struct GamepadInputMap {
+    std::vector<SDL_GameControllerAxis> mainxaxis{SDL_CONTROLLER_AXIS_LEFTX};
+    std::vector<SDL_GameControllerAxis> mainyaxis{SDL_CONTROLLER_AXIS_LEFTY};
+    std::vector<SDL_GameControllerAxis> secondxaxis{SDL_CONTROLLER_AXIS_RIGHTX};
+    std::vector<SDL_GameControllerAxis> secondyaxis{SDL_CONTROLLER_AXIS_RIGHTY};
+    std::vector<SDL_GameControllerAxis> triggerleft{SDL_CONTROLLER_AXIS_TRIGGERLEFT};
+    std::vector<SDL_GameControllerAxis> triggerright{SDL_CONTROLLER_AXIS_TRIGGERRIGHT};
+
+    std::vector<SDL_GameControllerButton> moveright{SDL_CONTROLLER_BUTTON_DPAD_RIGHT};
+    std::vector<SDL_GameControllerButton> moveup{SDL_CONTROLLER_BUTTON_DPAD_UP};
+    std::vector<SDL_GameControllerButton> movedown{SDL_CONTROLLER_BUTTON_DPAD_DOWN};
+    std::vector<SDL_GameControllerButton> moveleft{SDL_CONTROLLER_BUTTON_DPAD_LEFT};
+
+    std::vector<SDL_GameControllerButton> accept{SDL_CONTROLLER_BUTTON_A};
+    std::vector<SDL_GameControllerButton> cancel{SDL_CONTROLLER_BUTTON_B};
+    std::vector<SDL_GameControllerButton> stats{SDL_CONTROLLER_BUTTON_X};
+    std::vector<SDL_GameControllerButton> menu_right{SDL_CONTROLLER_BUTTON_RIGHTSHOULDER};
+    std::vector<SDL_GameControllerButton> menu_left{SDL_CONTROLLER_BUTTON_LEFTSHOULDER};
+    std::vector<SDL_GameControllerButton> minimap{SDL_CONTROLLER_BUTTON_Y};
+    std::vector<SDL_GameControllerButton> faster{SDL_CONTROLLER_BUTTON_START};
+    std::vector<SDL_GameControllerButton> pause{SDL_CONTROLLER_BUTTON_START};
+
+
 };
 
 class Game {
