@@ -34,6 +34,7 @@ Game::getFontsize() {
 }
 
 void Game::createUnitmenu(Entity & setting_entity) {
+    printf("Creating unit menu\n");
     menu_entities.push(manager.getEntities().size());
     manager.addEntity();
     manager.getEntities()[menu_entities.top()]->addComponent<PositionComponent>();
@@ -65,7 +66,7 @@ void Game::moveUnit(Entity & cursor) {
 }
 
 
-void Game::setState(Entity & setting_entity, const char * new_state) {
+void Game::setState(Entity & setting_entity, std::string new_state) {
 
     printf("Game state changes from %s to %s\n", this->state.c_str(), new_state); 
 
@@ -87,7 +88,6 @@ void Game::setState(Entity & setting_entity, const char * new_state) {
         if (new_state == "unitmenu") {
             moveUnit(setting_entity);
             // Entity ** cursor = manager.getEntities()[unit_entities.top()];
-            // createUnitmenu(unit);
         }
         if (new_state == "stats") {
             
@@ -160,11 +160,13 @@ void Game::setState(Entity & setting_entity, const char * new_state) {
         }     
     }
     
-    
-    
     if (this->state == "unitmove") {
+        printf("halfconfirmed\n");
+        printf("New state %s\n", new_state);   
+        printf("New state %d\n", (new_state=="unitmenu"));   
         if (new_state == "unitmenu") {
-            // moveUnit();
+            printf("confirmed");
+            createUnitmenu(setting_entity);
         }
     }        
     

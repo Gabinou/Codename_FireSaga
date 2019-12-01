@@ -88,23 +88,18 @@ class KeyboardController : public Component {
 
             if (is_pressed(kb_state, inputMap.accept)) {
                 std::string toset = "";
-                printf("a\n");
-                printf("%d\n", lastpressed.pressed_frames);
+                // printf("a\n");
+                // printf("%d\n", lastpressed.pressed_frames);
 
                 if ((game->getState() == "map") && (lastpressed.pressed_frames == 1)) {
                     printf("cursor Position, %d %d \n", positioncomponent->getPos().x, positioncomponent->getPos().y);
 
                     if (ontile) {
-                        // printf("Passing ontile\n");
-                        // game->setState(*ontile, "unitmove");
                         toset = "unitmove";
                     } else {
-                        // game->setState(*entity, "options");
                         toset = "options";
                     }
                 } else if ((game->getState() == "unitmove") && (lastpressed.pressed_frames == 1)) {
-                    // moveunit(*entity,positioncomponent->getPos().x, positioncomponent->getPos().y);
-                    // game->setState(*entity, "unitmenu");
                     toset = "unitmenu";
                 }
 

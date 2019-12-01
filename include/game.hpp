@@ -44,7 +44,7 @@ class Game {
 
         InputMap getInputMap();
 
-        void setState(Entity & in_entity, const char * new_state);
+        void setState(Entity & in_entity, std::string new_state);
         void setState(const char * new_state);
 
         std::string getState();
