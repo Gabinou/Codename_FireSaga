@@ -166,11 +166,14 @@ void Game::setState(Entity & setting_entity, std::string new_state) {
             createUnitmenu(setting_entity);
             Vector2D new_position = setting_entity.getComponent<PositionComponent>().getPos();
             Vector2D old_position = manager.getEntities()[unit_entities.top()]->getComponent<PositionComponent>().getPos();
+            
+            printf("Old position %d, %d \n", old_position.x, old_position.y);
+            printf("New position %d, %d \n", new_position.x, new_position.y);
+
             manager.getEntities()[unit_entities.top()]->getComponent<PositionComponent>().setPos(            
                 new_position.x,
                 new_position.y);
-            mapp->removeTile(old_position.x, old_position.y);
-            mapp->setTile(new_position.x, new_position.y, (Entity *)&manager.getEntities()[unit_entities.top()]);
+
         }
     }        
     

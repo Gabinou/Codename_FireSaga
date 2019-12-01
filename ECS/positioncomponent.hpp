@@ -83,9 +83,6 @@ class PositionComponent : public Component {
 
         void setPos(int in_x, int in_y) {
             if (updatable) {
-                if (map != nullptr) {
-                    // map->setTile(in_x, in_y, entity);
-                }
 
                 if ((in_x >= bounds[0]) && (in_x <= bounds[1])) {
                     position.x = in_x;
@@ -95,7 +92,14 @@ class PositionComponent : public Component {
                 if ((in_y >= bounds[2]) && (in_y <= bounds[3])) {
                     position.y = in_y;
                 }
+
+                if (map != nullptr) {
+                    printf("set new tile");
+                    map->setTile(position.x, position.y, entity);
+                }
             }
+
+
         }
 
         void addPos(Vector2D move) {
