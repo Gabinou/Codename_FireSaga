@@ -46,7 +46,7 @@ void Game::createUnitmenu(Entity & setting_entity) {
     manager.getEntities()[menu_entities.top()]->addComponent<TextComponent>(fontsize, std::vector<std::string> {"Attack", "Wait"}, black);
     manager.getEntities()[menu_entities.top()]->addGroup(manager.groupUI);
 }        
-void Game::destroyUnitmenu(Entity & setting_entity) {
+void Game::destroyUnitmenu() {
     if (!menu_entities.empty()) {
         manager.getEntities()[menu_entities.top()]->destroy();
         menu_entities.pop();
@@ -55,16 +55,19 @@ void Game::destroyUnitmenu(Entity & setting_entity) {
     }
 }
 
-void Game::moveUnit(Entity & cursor, Entity & unit) {
+void Game::moveUnit(Entity & cursor) {
     int newPos[2];
     newPos[0] = cursor.getComponent<PositionComponent>().getPos().x;
     newPos[1] = cursor.getComponent<PositionComponent>().getPos().y;
 
-    unit.getComponent<PositionComponent>().setPos(newPos[0], newPos[1]);
+    manager.getEntities()[unit_entities.top()]->getComponent<PositionComponent>();
+    // unit_entities.top().getComponent<PositionComponent>().setPos(newPos[0], newPos[1]);
 }
 
 
 void Game::setState(Entity & setting_entity, const char * new_state) {
+
+    printf("Game state changes from %s to %s\n", this->state.c_str(), new_state); 
 
     if (new_state == "pause"){
         
@@ -82,7 +85,9 @@ void Game::setState(Entity & setting_entity, const char * new_state) {
     
     if (this->state == "map") {
         if (new_state == "unitmenu") {
-            createUnitmenu(setting_entity);
+            moveUnit(setting_entity);
+            // Entity ** cursor = manager.getEntities()[unit_entities.top()];
+            // createUnitmenu(unit);
         }
         if (new_state == "stats") {
             
@@ -91,6 +96,10 @@ void Game::setState(Entity & setting_entity, const char * new_state) {
             
         }
         if (new_state == "unitmove") {
+            for (int i=0; i < manager.getEntities().size(); i++) {
+                printf("allo");
+            }
+            // unit_entities.push(setting_entity);
             // findpath();            
             // drawpath();
             // waitforotheraccept();            
@@ -159,7 +168,7 @@ void Game::setState(Entity & setting_entity, const char * new_state) {
     
     if (this->state == "unitmenu") {
         if (new_state == "map") { 
-            destroyUnitmenu(setting_entity);
+            destroyUnitmenu();
         }
         if (new_state == "attack") { 
         
