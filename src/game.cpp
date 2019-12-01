@@ -287,7 +287,7 @@ void Game::init(const char * title, int xpos, int ypos, int width, int height, b
     if( SDL_NumJoysticks() < 1 ) {
         printf( "No joysticks connected.\n" );
     } else {
-         cursor.addComponent<GamepadController>();
+         cursor.addComponent<GamepadController>(this, mapp);
     }
 
     player.addComponent<SpriteComponent>(mapp, "..//assets//horse.png");
@@ -312,8 +312,12 @@ void Game::update() {
     // printf("%d, %d \n", newPlayer.getComponent<PositionComponent>().x(), newPlayer.getComponent<PositionComponent>().y());
 }
  
-KeyboardInputMap Game::getKeyboardInputMap(){
-    return(KeyboardInputMap);
+KeyboardInputMap Game::getKeyboardInputMap() {
+    return(keyboardInputMap);
+}
+
+GamepadInputMap Game::getGamepadInputMap() {
+    return(gamepadInputMap);
 }
 
 void Game::handleEvents() {

@@ -4,18 +4,31 @@
 #include "ECS.hpp"
 #include "game.hpp"
 #include "map.hpp"
-#include "textcomponent.hpp"
 
 class GamepadController : public Component {
 
     private:
         PositionComponent * positioncomponent;
-        int * tilesize;
         Game * game;
         Map * map;
         SDL_GameController * controller = NULL;
-        const int joystick_dead_zone = 8000;
+        GamepadInputMap inputmap;
+        int joystick_dead_zone = 8000;
     public:
+        GamepadController() = default;
+
+        GamepadController(Game * in_game) {
+            setGame(in_game);
+        }
+
+        GamepadController(Game * in_game, Map * in_map) : GamepadController(in_game) {
+            map = in_map;
+        }
+
+        void setGame(Game * in_game) {
+            game = in_game;
+        }
+
         void init() override {
             for (int i = 0; i < SDL_NumJoysticks(); ++i) {
                 if (SDL_IsGameController(i)) {
@@ -28,12 +41,34 @@ class GamepadController : public Component {
                     }
                 }
             }
+
+            positioncomponent = &entity->getComponent<PositionComponent>();
+            inputmap = game->getGamepadInputMap();
+            Manager & manager = entity->getManager();
+
         }
 
         void update() override {
-            Sint16 axisvalx = SDL_GameControllerGetAxis(controller, SDL_CONTROLLER_AXIS_LEFTX);
-            Sint16 axisvaly = SDL_GameControllerGetAxis(controller, SDL_CONTROLLER_AXIS_LEFTY);
-            printf("Controller axis val: %d\n", axisvalx);
+            Sint16 mainxaxis = SDL_GameControllerGetAxis(controller, inputmap.mainxaxis[0]);
+            Sint16 mainyaxis = SDL_GameControllerGetAxis(controller, inputmap.mainyaxis[0]);
+            Sint16 secondxaxis = SDL_GameControllerGetAxis(controller, inputmap.secondxaxis[0]);
+            Sint16 secondyaxis = SDL_GameControllerGetAxis(controller, inputmap.secondyaxis[0]);
+            // printf("Controller axis val: %d\n", mainxaxis);
+
+            if (mainxaxis > joystick_dead_zone) {
+                printf("updatexmainxaxis");
+                positioncomponent->addPos(Vector2D(1, 0));
+            } else if (mainxaxis < -joystick_dead_zone) {
+                positioncomponent->addPos(Vector2D(-1, 0));
+            }
+
+            if (mainyaxis > joystick_dead_zone) {
+                positioncomponent->addPos(Vector2D(0, 1));
+            } else if (mainyaxis < -joystick_dead_zone)  {
+                positioncomponent->addPos(Vector2D(0, -1));
+            }
+
+            positioncomponent->setUpdatable(false);
         }
 };
 

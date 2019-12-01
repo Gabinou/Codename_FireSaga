@@ -94,7 +94,6 @@ class PositionComponent : public Component {
                 }
 
                 if (map != nullptr) {
-                    printf("set new tile");
                     map->setTile(position.x, position.y, entity);
                 }
             }
