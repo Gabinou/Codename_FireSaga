@@ -91,7 +91,7 @@ class KeyboardController : public Component {
                 printf("a\n");
                 printf("%d\n", lastpressed.pressed_frames);
 
-                if (game->getState() == "map") {
+                if ((game->getState() == "map") && (lastpressed.pressed_frames == 1)) {
                     printf("cursor Position, %d %d \n", positioncomponent->getPos().x, positioncomponent->getPos().y);
 
                     if (ontile) {
@@ -102,7 +102,7 @@ class KeyboardController : public Component {
                         // game->setState(*entity, "options");
                         toset = "options";
                     }
-                } else if (game->getState() == "unitmove") {
+                } else if ((game->getState() == "unitmove") && (lastpressed.pressed_frames == 1)) {
                     // moveunit(*entity,positioncomponent->getPos().x, positioncomponent->getPos().y);
                     // game->setState(*entity, "unitmenu");
                     toset = "unitmenu";
