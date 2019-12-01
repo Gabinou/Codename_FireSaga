@@ -96,10 +96,12 @@ void Game::setState(Entity & setting_entity, const char * new_state) {
             
         }
         if (new_state == "unitmove") {
+            std::vector<std::unique_ptr<Entity>> current_entities;
             for (int i=0; i < manager.getEntities().size(); i++) {
-                printf("allo");
+                if (manager.getEntities()[i].get() == (Entity *)&setting_entity) {
+                    unit_entities.push(i);
+                }
             }
-            // unit_entities.push(setting_entity);
             // findpath();            
             // drawpath();
             // waitforotheraccept();            

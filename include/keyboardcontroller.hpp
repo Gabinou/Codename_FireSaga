@@ -84,24 +84,33 @@ class KeyboardController : public Component {
                 pressed.push_back(inputMap.moveright);
             }
 
+            Entity * ontile = map->getTile(positioncomponent->getPos().x, positioncomponent->getPos().y);
+
             if (is_pressed(kb_state, inputMap.accept)) {
+                std::string toset = "";
+                printf("a\n");
+                printf("%d\n", lastpressed.pressed_frames);
+
                 if (game->getState() == "map") {
                     printf("cursor Position, %d %d \n", positioncomponent->getPos().x, positioncomponent->getPos().y);
-                    Entity * ontile = map->getTile(positioncomponent->getPos().x, positioncomponent->getPos().y);
 
                     if (ontile) {
-                        game->setState(*entity, "unitmenu");
+                        // printf("Passing ontile\n");
+                        // game->setState(*ontile, "unitmove");
+                        toset = "unitmove";
                     } else {
-                        game->setState(*entity, "options");
+                        // game->setState(*entity, "options");
+                        toset = "options";
                     }
-
-                }
-
-                if (game->getState() == "unitmove") {
+                } else if (game->getState() == "unitmove") {
                     // moveunit(*entity,positioncomponent->getPos().x, positioncomponent->getPos().y);
-                    game->setState(*entity, "unitmenu");
+                    // game->setState(*entity, "unitmenu");
+                    toset = "unitmenu";
                 }
 
+                if (toset != "") { game->setState(*entity, toset.c_str()); }
+
+                pressed.push_back(inputMap.accept);
             }
 
             if (is_pressed(kb_state, inputMap.cancel)) {
@@ -111,8 +120,7 @@ class KeyboardController : public Component {
                     game->setState(*entity, "map");
                 }
 
-
-
+                pressed.push_back(inputMap.accept);
             }
 
             check_pressed(pressed);
