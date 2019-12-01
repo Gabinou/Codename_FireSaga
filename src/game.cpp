@@ -68,7 +68,7 @@ void Game::moveUnit(Entity & cursor) {
 
 void Game::setState(Entity & setting_entity, std::string new_state) {
 
-    printf("Game state changes from %s to %s\n", this->state.c_str(), new_state); 
+    printf("Game state changes from %s to %s\n", this->state.c_str(), new_state.c_str()); 
 
     if (new_state == "pause"){
         
@@ -102,6 +102,7 @@ void Game::setState(Entity & setting_entity, std::string new_state) {
                     unit_entities.push(i);
                 }
             }
+
             // findpath();            
             // drawpath();
             // waitforotheraccept();            
@@ -161,12 +162,15 @@ void Game::setState(Entity & setting_entity, std::string new_state) {
     }
     
     if (this->state == "unitmove") {
-        printf("halfconfirmed\n");
-        printf("New state %s\n", new_state);   
-        printf("New state %d\n", (new_state=="unitmenu"));   
         if (new_state == "unitmenu") {
-            printf("confirmed");
             createUnitmenu(setting_entity);
+            Vector2D new_position = setting_entity.getComponent<PositionComponent>().getPos();
+            Vector2D old_position = manager.getEntities()[unit_entities.top()]->getComponent<PositionComponent>().getPos();
+            manager.getEntities()[unit_entities.top()]->getComponent<PositionComponent>().setPos(            
+                new_position.x,
+                new_position.y);
+            mapp->removeTile(old_position.x, old_position.y);
+            mapp->setTile(new_position.x, new_position.y, (Entity *)&manager.getEntities()[unit_entities.top()]);
         }
     }        
     

@@ -10,7 +10,12 @@ int * Map::getTilesize() const {
 }
 
 void Map::setTile(int x, int y, Entity * in_entity) {
+    printf("setted");
     tiles[x][y] = in_entity;
+}
+
+void Map::removeTile(int x, int y) {
+    tiles[x][y] = nullptr;
 }
 
 Entity * Map::getTile(int x, int y) {

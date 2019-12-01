@@ -88,6 +88,7 @@ class KeyboardController : public Component {
 
             if (is_pressed(kb_state, inputMap.accept)) {
                 std::string toset = "";
+                Entity * setter;
                 // printf("a\n");
                 // printf("%d\n", lastpressed.pressed_frames);
 
@@ -96,14 +97,17 @@ class KeyboardController : public Component {
 
                     if (ontile) {
                         toset = "unitmove";
+                        setter = ontile;
                     } else {
                         toset = "options";
+                        setter = entity;
                     }
                 } else if ((game->getState() == "unitmove") && (lastpressed.pressed_frames == 1)) {
                     toset = "unitmenu";
+                    setter = entity;
                 }
 
-                if (toset != "") { game->setState(*entity, toset.c_str()); }
+                if (toset != "") { game->setState(*setter, toset.c_str()); }
 
                 pressed.push_back(inputMap.accept);
             }

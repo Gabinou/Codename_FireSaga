@@ -128,6 +128,15 @@ class SpriteComponent : public Component {
                 } else if (ss_looping == "reverse") {
                     srcrect.x = srcrect.w * (frames - static_cast<int>((SDL_GetTicks() / speed) % frames));
                 }
+            } else {
+                if (map == NULL) {
+                    slidepos.x = (int)positioncomponent->getPos().x;
+                    slidepos.y = (int)positioncomponent->getPos().y;
+                } else {
+                    slidepos.x = (int)positioncomponent->getPos().x * tilesize[0];
+                    slidepos.y = (int)positioncomponent->getPos().y * tilesize[1];
+                }
+
             }
 
             destrect.x = slidepos.x;

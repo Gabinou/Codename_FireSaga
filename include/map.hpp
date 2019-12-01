@@ -23,6 +23,7 @@ class Map {
         void setTilesize(const short int unsigned width, const short int unsigned height);
         int * getTilesize() const;
         void setTile(int x, int y, Entity * in_entity);
+        void removeTile(int x, int y);
         // Entity * getTile(int x, int y);
         Entity * getTile(int x, int y);
 
