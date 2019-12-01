@@ -1,22 +1,41 @@
-#ifndef KEYBOARDCONTROL_HPP
-#define KEYBOARDCONTROL_HPP
+#ifndef GAMEPADCONTROLLER_HPP
+#define GAMEPADCONTROLLER_HPP
 
 #include "ECS.hpp"
 #include "game.hpp"
 #include "map.hpp"
 #include "textcomponent.hpp"
 
-class KeyboardController : public Component {
+class GamepadController : public Component {
 
     private:
         PositionComponent * positioncomponent;
         int * tilesize;
         Game * game;
         Map * map;
+        SDL_GameController * controller = NULL;
+        const int joystick_dead_zone = 8000;
     public:
-       
+        void init() override {
+            for (int i = 0; i < SDL_NumJoysticks(); ++i) {
+                if (SDL_IsGameController(i)) {
+                    controller = SDL_GameControllerOpen(i);
+
+                    if (controller) {
+                        break;
+                    } else {
+                        fprintf(stderr, "Could not open gamecontroller %i: %s\n", i, SDL_GetError());
+                    }
+                }
+            }
+        }
+
+        void update() override {
+            Sint16 axisval = SDL_GameControllerGetAxis(controller, SDL_CONTROLLER_AXIS_LEFTX);
+            printf("Controller axis val: %d", axisval);
+        }
 };
 
 
 
-#endif /* KEYBOARDCONTROL_HPP */
+#endif /* GAMEPADCONTROLLER_HPP */

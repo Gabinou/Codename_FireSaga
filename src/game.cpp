@@ -10,6 +10,7 @@
 #include "slidecomponent.hpp"
 #include "textcomponent.hpp"
 #include "keyboardcontroller.hpp"
+#include "gamepadcontroller.hpp"
 
 Map * mapp;
 
@@ -282,6 +283,13 @@ void Game::init(const char * title, int xpos, int ypos, int width, int height, b
 
     SDL_Color black = {255,255,255};
     cursor.addComponent<KeyboardController>(this, mapp);
+
+    if( SDL_NumJoysticks() < 1 ) {
+        printf( "No joysticks connected.\n" );
+    } else {
+         cursor.addComponent<GamepadController>();
+    }
+
     player.addComponent<SpriteComponent>(mapp, "..//assets//horse.png");
     cursor.addComponent<SlideComponent>(mapp, "..//assets//cursors.png", 10, 50);
     // textbox.addComponent<SpriteComponent>("..//assets//textbox.png", (int []){128, 128});
