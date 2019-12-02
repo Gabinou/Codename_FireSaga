@@ -111,6 +111,11 @@ extern void write_all_units(const char * filename, char const * savestyle = "cpp
 extern void write_all_unit_classes(const char * filename);
 extern void read_all_unit_classes(const char * filename = "classes_FE1.txt");
 
+struct LastPressed {
+    std::vector<std::vector<SDL_Scancode>> keys;
+    unsigned int pressed_frames = 0;
+};
+
 // Texture stuff.
 
 extern SDL_Texture * loadTexture(const char * filename);

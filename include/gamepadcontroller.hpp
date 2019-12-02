@@ -49,6 +49,7 @@ class GamepadController : public Component {
         }
 
         void update() override {
+            printf("Gp%d",  positioncomponent->isUpdatable());
             Sint16 mainxaxis = SDL_GameControllerGetAxis(controller, inputmap.mainxaxis[0]);
             Sint16 mainyaxis = SDL_GameControllerGetAxis(controller, inputmap.mainyaxis[0]);
             Sint16 secondxaxis = SDL_GameControllerGetAxis(controller, inputmap.secondxaxis[0]);
@@ -56,7 +57,7 @@ class GamepadController : public Component {
             // printf("Controller axis val: %d\n", mainxaxis);
 
             if (mainxaxis > joystick_dead_zone) {
-                printf("updatexmainxaxis");
+                // printf("updatexmainxaxis\n");
                 positioncomponent->addPos(Vector2D(1, 0));
             } else if (mainxaxis < -joystick_dead_zone) {
                 positioncomponent->addPos(Vector2D(-1, 0));
@@ -68,7 +69,7 @@ class GamepadController : public Component {
                 positioncomponent->addPos(Vector2D(0, -1));
             }
 
-            positioncomponent->setUpdatable(false);
+            // printf("Gp: %d %d %d\n", positioncomponent->isUpdatable(), positioncomponent->getPos().x, positioncomponent->getPos().y);
         }
 };
 

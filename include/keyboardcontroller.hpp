@@ -6,11 +6,6 @@
 #include "map.hpp"
 #include "textcomponent.hpp"
 
-struct LastPressed {
-    std::vector<std::vector<SDL_Scancode>> keys;
-    unsigned int pressed_frames = 0;
-};
-
 class KeyboardController : public Component {
 
     private:
@@ -70,6 +65,7 @@ class KeyboardController : public Component {
         }
 
         void update() override {
+            printf("Kb%d",  positioncomponent->isUpdatable());
             const Uint8 * kb_state = SDL_GetKeyboardState(NULL);
             std::vector<std::vector<SDL_Scancode>> pressed{};
             Entity * ontile = map->getTile(positioncomponent->getPos().x, positioncomponent->getPos().y);
@@ -126,8 +122,10 @@ class KeyboardController : public Component {
                 pressed.push_back(inputmap.accept);
             }
 
+
+            // printf("Kb: %d %d %d\n", positioncomponent->isUpdatable(), positioncomponent->getPos().x, positioncomponent->getPos().y);
             check_pressed(pressed);
-            positioncomponent->setUpdatable(false);
+            // positioncomponent->setUpdatable(false);
 
         }
 };

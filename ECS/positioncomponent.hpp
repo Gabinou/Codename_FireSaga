@@ -57,6 +57,9 @@ class PositionComponent : public Component {
         void setUpdatable(bool in_updatable) {
             updatable = in_updatable;
         }
+        bool isUpdatable() {
+            return (updatable);
+        }
 
         PositionComponent(int in_x, int in_y) {
             setPos(in_x, in_y);
@@ -102,6 +105,7 @@ class PositionComponent : public Component {
         }
 
         void addPos(Vector2D move) {
+            // printf("addpos: %d\n", (move.x + position.x));
             setPos((move.x + position.x), (move.y + position.y));
         }
 

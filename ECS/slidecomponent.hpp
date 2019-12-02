@@ -36,11 +36,12 @@ class SlideComponent : public SpriteComponent {
         }
 
         void update() override {
+            printf("Slide%d",  positioncomponent->isUpdatable());
             SpriteComponent::update();
             LastPressed lastpressed = keyboardcontroller->getLastPressed();
             objectivepos.x = (int)positioncomponent->getPos().x * (tilesize[0]) - destrect.w / 4;
             objectivepos.y = (int)positioncomponent->getPos().y * (tilesize[1]) - destrect.h / 4;
-            // printf("before: %d %d\n", slidepos.x, slidepos.y);
+            // printf("before: %d %d\n", objectivepos.x, objectivepos.y);
 
             if (slidetype == "geometric") {
                 if (lastpressed.pressed_frames > 25) {
@@ -58,9 +59,12 @@ class SlideComponent : public SpriteComponent {
                 if ((objectivepos.x == slidepos.x) && (objectivepos.y == slidepos.y)) {
                     positioncomponent->setUpdatable(true);
                     slideint = 0;
+                } else {
+                    positioncomponent->setUpdatable(false);
                 }
             }
 
+            // printf("before: %d %d\n", slidepos.x, slidepos.y);
             // printf("after: %d %d\n", objectivepos.x, objectivepos.y);
             // printf("after: %d %d\n", slidepos.x, slidepos.y);
             destrect.x = slidepos.x;

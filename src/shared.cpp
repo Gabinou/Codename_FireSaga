@@ -2,7 +2,6 @@
 #include "shared.hpp"
 #include "game.hpp"
 
-
 SDL_Texture * loadTexture(const char * filename) {
     SDL_Surface * tempsurface = IMG_Load(filename);
     SDL_Texture * texture = SDL_CreateTextureFromSurface(Game::renderer, tempsurface);
