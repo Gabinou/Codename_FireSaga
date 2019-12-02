@@ -4,16 +4,18 @@
 #include "shared.hpp"
 #include "spritecomponent.hpp"
 #include "keyboardcontroller.hpp"
+#include "gamepadcontroller.hpp"
 #include "SDL2/SDL.h"
+
 
 class SlideComponent : public SpriteComponent {
 
     private:
         KeyboardController * keyboardcontroller;
+        GamepadController * gamepadcontroller;
         float slidefactors[2] = {2, 1.025}; // for slide_type = "geometric"
         int slideint = 0; // for slide_type = "geometric"
         int slidespeed = 10;
-
         std::string slidetype = "geometric";
 
     public:
@@ -26,7 +28,9 @@ class SlideComponent : public SpriteComponent {
         void init() override {
             printf("init\n");
             SpriteComponent::init();
+
             keyboardcontroller = &entity->getComponent<KeyboardController>();
+            gamepadcontroller = &entity->getComponent<GamepadController>();
             keyboardcontroller->setTilesize(tilesize);
             SpriteComponent::setSrcrect(64, 64); // Manually entered from cursor png size.
             SpriteComponent::setDestrect(tilesize[0] * 2, tilesize[1] * 2);
@@ -36,15 +40,16 @@ class SlideComponent : public SpriteComponent {
         }
 
         void update() override {
-            printf("Slide%d",  positioncomponent->isUpdatable());
             SpriteComponent::update();
-            LastPressed lastpressed = keyboardcontroller->getLastPressed();
+            int kb_held = keyboardcontroller->getHeldframes();
+            // gp_held = gamepadcontroller->getHeldframes();
+            int gp_held = 0;
             objectivepos.x = (int)positioncomponent->getPos().x * (tilesize[0]) - destrect.w / 4;
             objectivepos.y = (int)positioncomponent->getPos().y * (tilesize[1]) - destrect.h / 4;
             // printf("before: %d %d\n", objectivepos.x, objectivepos.y);
 
             if (slidetype == "geometric") {
-                if (lastpressed.pressed_frames > 25) {
+                if ((gp_held > 25) || (kb_held > 25))  {
                     slideint = 1;
                 }
 

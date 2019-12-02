@@ -14,11 +14,17 @@ class GamepadController : public Component {
         SDL_GameController * controller = NULL;
         GamepadInputMap inputmap;
         int joystick_dead_zone = 8000;
+        std::vector<std::vector<SDL_Scancode>> held_keys;
+        unsigned int held_frames = 0;
     public:
         GamepadController() = default;
 
         GamepadController(Game * in_game) {
             setGame(in_game);
+        }
+
+        int getHeldframes() {
+            return (held_frames);
         }
 
         GamepadController(Game * in_game, Map * in_map) : GamepadController(in_game) {
@@ -48,8 +54,17 @@ class GamepadController : public Component {
 
         }
 
+        // void check_pressed(std::vector<std::vector<SDL_Scancode>>pressed) {
+        //     if ((held_keys == pressed) && (!pressed.empty())) {
+        //         held_frames++;
+        //     } else {
+        //         held_keys = pressed;
+        //         held_frames = 0;
+        //     }
+        // }
+
+
         void update() override {
-            printf("Gp%d",  positioncomponent->isUpdatable());
             Sint16 mainxaxis = SDL_GameControllerGetAxis(controller, inputmap.mainxaxis[0]);
             Sint16 mainyaxis = SDL_GameControllerGetAxis(controller, inputmap.mainyaxis[0]);
             Sint16 secondxaxis = SDL_GameControllerGetAxis(controller, inputmap.secondxaxis[0]);
