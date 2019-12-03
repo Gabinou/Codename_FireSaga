@@ -44,13 +44,12 @@ class SlideComponent : public SpriteComponent {
             int kb_held = 0;
             int gp_held = 0;
 
-            if (keyboardcontroller) {
+            if (keyboardcontroller) { // this component check DOES NOT WORK.
                 kb_held = keyboardcontroller->getHeldframes();
             }
 
-            if (!gamepadcontroller) {
-                // this component check DOES NOT WORK.
-                //     gp_held = gamepadcontroller->getHeldframes();
+            if (gamepadcontroller) { // this component check DOES NOT WORK.
+                gp_held = gamepadcontroller->getHeldframes();
             }
 
             objectivepos.x = (int)positioncomponent->getPos().x * (tilesize[0]) - destrect.w / 4;
