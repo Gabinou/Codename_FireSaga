@@ -41,9 +41,18 @@ class SlideComponent : public SpriteComponent {
 
         void update() override {
             SpriteComponent::update();
-            int kb_held = keyboardcontroller->getHeldframes();
-            int gp_held = gamepadcontroller->getHeldframes();
-            // int gp_held = 0;
+            int kb_held = 0;
+            int gp_held = 0;
+
+            if (keyboardcontroller) {
+                kb_held = keyboardcontroller->getHeldframes();
+            }
+
+            if (!gamepadcontroller) {
+                // this component check DOES NOT WORK.
+                //     gp_held = gamepadcontroller->getHeldframes();
+            }
+
             objectivepos.x = (int)positioncomponent->getPos().x * (tilesize[0]) - destrect.w / 4;
             objectivepos.y = (int)positioncomponent->getPos().y * (tilesize[1]) - destrect.h / 4;
             // printf("before: %d %d\n", objectivepos.x, objectivepos.y);
