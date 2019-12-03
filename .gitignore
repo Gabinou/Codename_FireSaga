@@ -6,4 +6,5 @@
 
 latex/*
 build/*
+plots/*
 makefile

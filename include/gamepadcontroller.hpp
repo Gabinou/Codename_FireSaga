@@ -69,6 +69,7 @@ class GamepadController : public Component {
             Sint16 mainyaxis = SDL_GameControllerGetAxis(controller, inputmap.mainyaxis[0]);
             Sint16 secondxaxis = SDL_GameControllerGetAxis(controller, inputmap.secondxaxis[0]);
             Sint16 secondyaxis = SDL_GameControllerGetAxis(controller, inputmap.secondyaxis[0]);
+            std::vector<std::vector<SDL_Scancode>> pressed{};
             // printf("Controller axis val: %d\n", mainxaxis);
 
             if (mainxaxis > joystick_dead_zone) {

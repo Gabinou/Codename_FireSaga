@@ -110,8 +110,6 @@ class KeyboardController : public Component {
                 }
 
                 if (toset != "") { game->setState(*setter, toset.c_str()); }
-
-                pressed.push_back(inputmap.accept);
             }
 
             if (is_pressed(kb_state, inputmap.cancel)) {
@@ -120,15 +118,8 @@ class KeyboardController : public Component {
                         (game->getState() == "unitmove")) {
                     game->setState(*entity, "map");
                 }
-
-                pressed.push_back(inputmap.accept);
             }
-
-
-            // printf("Kb: %d %d %d\n", positioncomponent->isUpdatable(), positioncomponent->getPos().x, positioncomponent->getPos().y);
             check_pressed(pressed);
-            // positioncomponent->setUpdatable(false);
-
         }
 };
 
