@@ -14,7 +14,7 @@ class GamepadController : public Component {
         SDL_GameController * controller = NULL;
         GamepadInputMap inputmap;
         int joystick_dead_zone = 8000;
-        std::vector<std::vector<SDL_Scancode>> held_keys;
+        std::vector<std::string> held_keys;
         unsigned int held_frames = 0;
     public:
         GamepadController() = default;
@@ -54,14 +54,14 @@ class GamepadController : public Component {
 
         }
 
-        // void check_pressed(std::vector<std::vector<SDL_Scancode>>pressed) {
-        //     if ((held_keys == pressed) && (!pressed.empty())) {
-        //         held_frames++;
-        //     } else {
-        //         held_keys = pressed;
-        //         held_frames = 0;
-        //     }
-        // }
+        void check_pressed(std::vector<std::string>pressed) {
+            if ((held_keys == pressed) && (!pressed.empty())) {
+                held_frames++;
+            } else {
+                held_keys = pressed;
+                held_frames = 0;
+            }
+        }
 
 
         void update() override {
@@ -69,22 +69,27 @@ class GamepadController : public Component {
             Sint16 mainyaxis = SDL_GameControllerGetAxis(controller, inputmap.mainyaxis[0]);
             Sint16 secondxaxis = SDL_GameControllerGetAxis(controller, inputmap.secondxaxis[0]);
             Sint16 secondyaxis = SDL_GameControllerGetAxis(controller, inputmap.secondyaxis[0]);
-            std::vector<std::vector<SDL_Scancode>> pressed{};
+            std::vector<std::string> pressed{};
             // printf("Controller axis val: %d\n", mainxaxis);
 
             if (mainxaxis > joystick_dead_zone) {
                 // printf("updatexmainxaxis\n");
                 positioncomponent->addPos(Vector2D(1, 0));
+                pressed.push_back("right");
             } else if (mainxaxis < -joystick_dead_zone) {
                 positioncomponent->addPos(Vector2D(-1, 0));
+                pressed.push_back("left");
             }
 
             if (mainyaxis > joystick_dead_zone) {
                 positioncomponent->addPos(Vector2D(0, 1));
+                pressed.push_back("up");
             } else if (mainyaxis < -joystick_dead_zone)  {
                 positioncomponent->addPos(Vector2D(0, -1));
+                pressed.push_back("down");
             }
 
+            check_pressed(pressed);
             // printf("Gp: %d %d %d\n", positioncomponent->isUpdatable(), positioncomponent->getPos().x, positioncomponent->getPos().y);
         }
 };

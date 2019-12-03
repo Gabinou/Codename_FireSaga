@@ -119,6 +119,7 @@ class KeyboardController : public Component {
                     game->setState(*entity, "map");
                 }
             }
+
             check_pressed(pressed);
         }
 };
