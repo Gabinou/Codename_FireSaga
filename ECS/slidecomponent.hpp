@@ -17,6 +17,8 @@ class SlideComponent : public SpriteComponent {
         int slideint = 0; // for slide_type = "geometric"
         std::string slidetype = "geometric";
 
+        //
+
     public:
         using SpriteComponent::SpriteComponent; //inherits all constructors
 
