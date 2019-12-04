@@ -16,8 +16,10 @@ class KeyboardController : public Component {
         Game * game;
         Map * map;
         KeyboardInputMap inputmap;
-        std::vector<std::vector<SDL_Scancode>> held_keys;
-        unsigned int held_frames = 0;
+        std::vector<std::vector<SDL_Scancode>> held_button;
+        std::vector<std::vector<SDL_Scancode>> held_move;
+        unsigned int frames_button = 0;
+        unsigned int frames_move = 0;
     public:
         KeyboardController() = default;
 
@@ -30,10 +32,6 @@ class KeyboardController : public Component {
 
         void setGame(Game * in_game) {
             game = in_game;
-        }
-
-        int getHeldframes() {
-            return (held_frames);
         }
 
         void setTilesize(int * in_tilesize) {
@@ -58,12 +56,30 @@ class KeyboardController : public Component {
 
         }
 
-        void check_pressed(std::vector<std::vector<SDL_Scancode>>pressed) {
-            if ((held_keys == pressed) && (!pressed.empty())) {
-                held_frames++;
+        int getHeldframes() {
+            return (frames_move);
+        }
+
+        void check_pressed(std::vector<std::vector<SDL_Scancode>>in_pressed) {
+            check_move(in_pressed);
+            check_button(in_pressed);
+        }
+
+        void check_move(std::vector<std::vector<SDL_Scancode>>in_pressed) {
+            if ((held_move == in_pressed) && (!in_pressed.empty())) {
+                frames_move++;
             } else {
-                held_keys = pressed;
-                held_frames = 0;
+                held_move = in_pressed;
+                frames_move = 0;
+            }
+        }
+
+        void check_button(std::vector<std::vector<SDL_Scancode>>in_pressed) {
+            if ((held_button == in_pressed) && (!in_pressed.empty())) {
+                frames_button++;
+            } else {
+                held_button = in_pressed;
+                frames_button = 0;
             }
         }
 
@@ -89,12 +105,12 @@ class KeyboardController : public Component {
             }
 
             if (is_pressed(kb_state, inputmap.accept)) {
+                pressed.push_back(inputmap.accept);
                 std::string toset = "";
                 Entity * setter;
-                // printf("a\n");
-                // printf("%d\n", lastpressed.held_frames);
+                printf("%d\n", frames_button);
 
-                if ((game->getState() == "map") && (held_frames == 1)) {
+                if ((game->getState() == "map") && (frames_button == 1)) {
                     printf("cursor Position, %d %d \n", positioncomponent->getPos().x, positioncomponent->getPos().y);
 
                     if (ontile) {
@@ -104,15 +120,17 @@ class KeyboardController : public Component {
                         toset = "options";
                         setter = entity;
                     }
-                } else if ((game->getState() == "unitmove") && (held_frames == 1)) {
+                } else if ((game->getState() == "unitmove") && (frames_button == 1)) {
                     toset = "unitmenu";
                     setter = entity;
                 }
 
-                if (toset != "") { game->setState(*setter, toset.c_str()); }
+                if (toset != "") {game->setState(*setter, toset.c_str()); }
             }
 
             if (is_pressed(kb_state, inputmap.cancel)) {
+                pressed.push_back(inputmap.cancel);
+
                 if ((game->getState() == "unitmenu") ||
                         (game->getState() == "options") ||
                         (game->getState() == "unitmove")) {

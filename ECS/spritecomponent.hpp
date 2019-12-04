@@ -54,7 +54,6 @@ class SpriteComponent : public Component {
             visible = true;
         }
 
-
         void initSlide() {
             if (slidetype == "geometric") {
                 setSrcrect(64, 64); // Manually entered from cursor png size.
