@@ -41,13 +41,13 @@ class SpriteComponent : public Component {
         }
 
         void hide() {
-            printf("hiding");
+            // printf("hiding");
             visible = false;
-            printf("Is visible? %d\n", visible);
+            // printf("Is visible? %d\n", visible);
         }
 
         void show() {
-            // visible = true;
+            visible = true;
         }
 
         SpriteComponent(const char * in_path, int in_picsize[2]) : SpriteComponent(in_path)  {

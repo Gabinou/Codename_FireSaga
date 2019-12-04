@@ -15,7 +15,6 @@ class SlideComponent : public SpriteComponent {
         GamepadController * gamepadcontroller;
         float slidefactors[2] = {2, 1.025}; // for slide_type = "geometric"
         int slideint = 0; // for slide_type = "geometric"
-        int slidespeed = 10;
         std::string slidetype = "geometric";
 
     public:
@@ -63,6 +62,7 @@ class SlideComponent : public SpriteComponent {
             // printf("before: %d %d\n", objectivepos.x, objectivepos.y);
 
             if (slidetype == "geometric") {
+                // intended to animate the cursor.
                 if ((gp_held > 25) || (kb_held > 25))  {
                     slideint = 1;
                 }
@@ -83,13 +83,12 @@ class SlideComponent : public SpriteComponent {
                 }
             }
 
-            // printf("before: %d %d\n", slidepos.x, slidepos.y);
-            // printf("after: %d %d\n", objectivepos.x, objectivepos.y);
-            // printf("after: %d %d\n", slidepos.x, slidepos.y);
+            if (slidetype == "vector") {
+                //intended to animate units moving on the map.
+            }
+
             destrect.x = slidepos.x;
             destrect.y = slidepos.y;
-
-            // getchar();
         }
 
 };

@@ -278,9 +278,6 @@ void Game::init(const char * title, int xpos, int ypos, int width, int height, b
     player.addComponent<PositionComponent>(2, 2);
     player.getComponent<PositionComponent>().setMap(mapp);
 
-
-    // textbox.addComponent<PositionComponent>(200, 200);
-
     SDL_Color black = {255,255,255};
     cursor.addComponent<KeyboardController>(this, mapp);
 
@@ -292,11 +289,11 @@ void Game::init(const char * title, int xpos, int ypos, int width, int height, b
 
     player.addComponent<SpriteComponent>(mapp, "..//assets//horse.png");
     cursor.addComponent<SlideComponent>(mapp, "..//assets//cursors.png", 10, 50);
-    // textbox.addComponent<SpriteComponent>("..//assets//textbox.png", (int []){128, 128});
-    // textbox.addComponent<TextComponent>(Game::fontsize, std::vector<std::string> {"Attack", "Wait"}, black);
     
     player.addGroup(manager.groupUnits);
     cursor.addGroup(manager.groupUI);
+
+    cursor.getComponent<SlideComponent>().hide();
 
     this->setState("map");
     
