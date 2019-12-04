@@ -7,7 +7,6 @@
 #include "gamepadcontroller.hpp"
 #include "SDL2/SDL.h"
 
-
 class SlideComponent : public SpriteComponent {
 
     private:
@@ -20,14 +19,12 @@ class SlideComponent : public SpriteComponent {
         //
 
     public:
-        using SpriteComponent::SpriteComponent; //inherits all constructors
 
         void setSlideType(std::string in_slidetype) {
             slidetype = in_slidetype;
         }
 
         void init() override {
-            printf("init\n");
             SpriteComponent::init();
 
             if (entity->hasComponent<KeyboardController>()) {
@@ -39,8 +36,12 @@ class SlideComponent : public SpriteComponent {
                 gamepadcontroller = &entity->getComponent<GamepadController>();
             }
 
-            SpriteComponent::setSrcrect(64, 64); // Manually entered from cursor png size.
-            SpriteComponent::setDestrect(tilesize[0] * 2, tilesize[1] * 2);
+            if (entity->hasComponent<SpriteComponent>()) {
+                gamepadcontroller = &entity->getComponent<GamepadController>();
+            }
+
+            // SpriteComponent::setSrcrect(64, 64); // Manually entered from cursor png size.
+            // SpriteComponent::setDestrect(tilesize[0] * 2, tilesize[1] * 2);
 
             slidepos.x = objectivepos.x = (int)positioncomponent->getPos().x * tilesize[0] - destrect.w / 4;
             slidepos.y = objectivepos.y = (int)positioncomponent->getPos().y * tilesize[1] - destrect.h / 4;

@@ -288,7 +288,8 @@ void Game::init(const char * title, int xpos, int ypos, int width, int height, b
     }
 
     player.addComponent<SpriteComponent>(mapp, "..//assets//horse.png");
-    cursor.addComponent<SlideComponent>(mapp, "..//assets//cursors.png", 10, 50);
+    cursor.addComponent<SpriteComponent>(mapp, "..//assets//cursors.png", 10, 50);
+    cursor.getComponent<SpriteComponent>().setSlidetype("geometric");
     
     player.addGroup(manager.groupUnits);
     cursor.addGroup(manager.groupUI);
