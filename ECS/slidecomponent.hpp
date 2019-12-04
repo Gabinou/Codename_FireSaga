@@ -29,9 +29,15 @@ class SlideComponent : public SpriteComponent {
             printf("init\n");
             SpriteComponent::init();
 
-            keyboardcontroller = &entity->getComponent<KeyboardController>();
-            gamepadcontroller = &entity->getComponent<GamepadController>();
-            keyboardcontroller->setTilesize(tilesize);
+            if (entity->hasComponent<KeyboardController>()) {
+                keyboardcontroller = &entity->getComponent<KeyboardController>();
+                keyboardcontroller->setTilesize(tilesize);
+            }
+
+            if (entity->hasComponent<GamepadController>()) {
+                gamepadcontroller = &entity->getComponent<GamepadController>();
+            }
+
             SpriteComponent::setSrcrect(64, 64); // Manually entered from cursor png size.
             SpriteComponent::setDestrect(tilesize[0] * 2, tilesize[1] * 2);
 
@@ -44,11 +50,11 @@ class SlideComponent : public SpriteComponent {
             int kb_held = 0;
             int gp_held = 0;
 
-            if (keyboardcontroller) { // this component check DOES NOT WORK.
+            if (entity->hasComponent<KeyboardController>()) {
                 kb_held = keyboardcontroller->getHeldframes();
             }
 
-            if (gamepadcontroller) { // this component check DOES NOT WORK.
+            if (entity->hasComponent<GamepadController>()) {
                 gp_held = gamepadcontroller->getHeldframes();
             }
 

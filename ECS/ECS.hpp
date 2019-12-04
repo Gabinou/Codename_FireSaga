@@ -73,7 +73,7 @@ class Entity {
         }
 
         template <typename T> bool hasComponent() const {
-            return componentbitset[getComponentTypeID<T>];
+            return componentbitset[getComponentTypeID<T>()];
         }
 
         bool hasGroup(Group in_Group) {
