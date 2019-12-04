@@ -42,6 +42,35 @@ class SpriteComponent : public Component {
             setTexture(in_path);
         }
 
+        SpriteComponent(const char * in_path, int in_picsize[2]) : SpriteComponent(in_path)  {
+            srcrect.w = in_picsize[0];
+            srcrect.h = in_picsize[1];
+            destrect.w = in_picsize[0];
+            destrect.h = in_picsize[1];
+        }
+
+        SpriteComponent(Map * in_map, const char * in_path, int in_picsize[2]) : SpriteComponent(in_path)  {
+            srcrect.w = in_picsize[0];
+            srcrect.h = in_picsize[1];
+            destrect.w = in_picsize[0];
+            destrect.h = in_picsize[1];
+            setMap(in_map);
+        }
+
+        SpriteComponent(Map * in_map, const char * in_path) : SpriteComponent(in_path) {
+            setMap(in_map);
+        }
+
+        SpriteComponent(Map * in_map, const char * in_path, int inFrames, int inSpeed) : SpriteComponent(in_map, in_path) {
+            animated = true;
+            frames = inFrames;
+            speed = inSpeed;
+        }
+
+        SDL_Texture * getTexture() {
+            return (texture);
+        }
+
         int * getTilesize() {
             return (tilesize);
         }
@@ -72,33 +101,12 @@ class SpriteComponent : public Component {
             initSlide();
         }
 
-        SpriteComponent(const char * in_path, int in_picsize[2]) : SpriteComponent(in_path)  {
-            srcrect.w = in_picsize[0];
-            srcrect.h = in_picsize[1];
-            destrect.w = in_picsize[0];
-            destrect.h = in_picsize[1];
-        }
-
-        SpriteComponent(Map * inmap, const char * in_path) : SpriteComponent(in_path) {
-            setMap(inmap);
-        }
-
-        SpriteComponent(Map * inmap, const char * in_path, int inFrames, int inSpeed) : SpriteComponent(inmap, in_path) {
-            animated = true;
-            frames = inFrames;
-            speed = inSpeed;
-        }
-
-        SDL_Texture * getTexture() {
-            return (texture);
-        }
-
         void setTexture(const char * in_path) {
             texture = loadTexture(in_path);
         }
 
-        void setMap(Map * inmap) {
-            map = inmap;
+        void setMap(Map * in_map) {
+            map = in_map;
             tilesize = map->getTilesize();
             srcrect.w = tilesize[0];
             srcrect.h = tilesize[1];

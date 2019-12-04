@@ -43,7 +43,7 @@ void Game::createUnitmenu(Entity & setting_entity) {
         (int)(setting_entity.getComponent<PositionComponent>().getPos().x * tilesize[0]),
         (int)(setting_entity.getComponent<PositionComponent>().getPos().y * tilesize[1]));
     SDL_Color black = {255, 255, 255};
-    manager.getEntities()[menu_entities.top()]->addComponent<SpriteComponent>("..//assets//textbox.png", (int []) {128, 128}); 
+    manager.getEntities()[menu_entities.top()]->addComponent<SpriteComponent>(mapp, "..//assets//textbox.png", (int []) {128, 128}); 
     manager.getEntities()[menu_entities.top()]->addComponent<TextComponent>(fontsize, std::vector<std::string> {"Attack", "Wait"}, black);
     manager.getEntities()[menu_entities.top()]->addGroup(manager.groupUI);
 }        
@@ -163,7 +163,7 @@ void Game::setState(Entity & setting_entity, std::string new_state) {
     
     if (this->state == "unitmove") {
         if (new_state == "unitmenu") {
-            createUnitmenu(setting_entity);
+            createUnitmenu(setting_entity); //Problem here even since slidecomponent was deleted.
             Vector2D new_position = setting_entity.getComponent<PositionComponent>().getPos();
             Vector2D old_position = manager.getEntities()[unit_entities.top()]->getComponent<PositionComponent>().getPos();
             

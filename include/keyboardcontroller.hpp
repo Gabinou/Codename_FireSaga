@@ -108,7 +108,6 @@ class KeyboardController : public Component {
                 pressed.push_back(inputmap.accept);
                 std::string toset = "";
                 Entity * setter;
-                printf("%d\n", frames_button);
 
                 if ((game->getState() == "map") && (frames_button == 1)) {
                     printf("cursor Position, %d %d \n", positioncomponent->getPos().x, positioncomponent->getPos().y);
