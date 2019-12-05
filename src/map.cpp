@@ -23,7 +23,7 @@ void Map::moveTile(int x, int y, int new_x, int new_y) {
 }
 
 Entity * Map::getTile(int x, int y) {
-    return(tiles[x][x]);
+    return(tiles[x][y]);
 }
 
 void Map::loadTiles() {
