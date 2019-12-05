@@ -10,8 +10,6 @@ int * Map::getTilesize() const {
 }
 
 void Map::setTile(int x, int y, Entity * in_entity) {
-    printf("setted at %d %d\n", x, y);
-    printf("does setted exist? %d \n", (!in_entity));
     tiles[x][y] = in_entity;
 }
 
@@ -20,7 +18,6 @@ void Map::removeTile(int x, int y) {
 }
 
 void Map::moveTile(int x, int y, int new_x, int new_y) {
-    printf("moved");
     tiles[new_x][new_y] = tiles[x][y];
     tiles[x][y] = nullptr;
 }
@@ -63,7 +60,7 @@ void Map::loadMap(std::string filename) {
     Entity_ptr_matrix temp(map.size(), std::vector<Entity*>(map[0].size()));
 
     tiles = temp;
-    printf("Tiles size %d %d \n", tiles.size(), tiles[0].size());
+    // printf("Tiles size %d %d \n", tiles.size(), tiles[0].size());
     for (int row = 0; row < tiles.size(); row++) {
         for (int col = 0; col < tiles[row].size(); col++) {
             tiles[row][col] =  static_cast<Entity*>(nullptr);

@@ -56,7 +56,7 @@ class KeyboardController : public Component {
 
         }
 
-        int getHeldframes() {
+        int getHeldmove() {
             return (frames_move);
         }
 
@@ -101,7 +101,7 @@ class KeyboardController : public Component {
             }
 
             if (is_pressed(kb_state, inputmap.accept)) {
-                pressed.push_back(inputmap.accept);
+                pressed_button.push_back(inputmap.accept);
                 std::string toset = "";
                 Entity * setter;
 

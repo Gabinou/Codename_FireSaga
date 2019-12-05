@@ -14,17 +14,15 @@ class GamepadController : public Component {
         SDL_GameController * controller = NULL;
         GamepadInputMap inputmap;
         int joystick_dead_zone = 8000;
-        std::vector<std::string> held_keys;
-        unsigned int held_frames = 0;
+        std::vector<std::string> held_move;
+        std::vector<std::string> held_button;
+        unsigned int frames_move = 0;
+        unsigned int frames_button = 0;
     public:
         GamepadController() = default;
 
         GamepadController(Game * in_game) {
             setGame(in_game);
-        }
-
-        int getHeldframes() {
-            return (held_frames);
         }
 
         GamepadController(Game * in_game, Map * in_map) : GamepadController(in_game) {
@@ -54,42 +52,57 @@ class GamepadController : public Component {
 
         }
 
-        void check_pressed(std::vector<std::string>pressed) {
-            if ((held_keys == pressed) && (!pressed.empty())) {
-                held_frames++;
+        int getHeldmove() {
+            return (frames_move);
+        }
+
+        void check_move(std::vector<std::string>pressed_move) {
+            if ((held_move == pressed_move) && (!pressed_move.empty())) {
+                frames_move++;
             } else {
-                held_keys = pressed;
-                held_frames = 0;
+                held_move = pressed_move;
+                frames_move = 0;
             }
         }
 
+
+        void check_button(std::vector<std::string>pressed_button) {
+            if ((held_button == pressed_button) && (!pressed_button.empty())) {
+                frames_button++;
+            } else {
+                held_button = pressed_button;
+                frames_button = 0;
+            }
+        }
 
         void update() override {
             Sint16 mainxaxis = SDL_GameControllerGetAxis(controller, inputmap.mainxaxis[0]);
             Sint16 mainyaxis = SDL_GameControllerGetAxis(controller, inputmap.mainyaxis[0]);
             Sint16 secondxaxis = SDL_GameControllerGetAxis(controller, inputmap.secondxaxis[0]);
             Sint16 secondyaxis = SDL_GameControllerGetAxis(controller, inputmap.secondyaxis[0]);
-            std::vector<std::string> pressed{};
+            std::vector<std::string> pressed_move{};
+            std::vector<std::string> pressed_button{};
             // printf("Controller axis val: %d\n", mainxaxis);
 
             if (mainxaxis > joystick_dead_zone) {
                 // printf("updatexmainxaxis\n");
                 positioncomponent->addPos(Vector2D(1, 0));
-                pressed.push_back("right");
+                pressed_move.push_back("right");
             } else if (mainxaxis < -joystick_dead_zone) {
                 positioncomponent->addPos(Vector2D(-1, 0));
-                pressed.push_back("left");
+                pressed_move.push_back("left");
             }
 
             if (mainyaxis > joystick_dead_zone) {
                 positioncomponent->addPos(Vector2D(0, 1));
-                pressed.push_back("up");
+                pressed_move.push_back("up");
             } else if (mainyaxis < -joystick_dead_zone)  {
                 positioncomponent->addPos(Vector2D(0, -1));
-                pressed.push_back("down");
+                pressed_move.push_back("down");
             }
 
-            check_pressed(pressed);
+            check_move(pressed_move);
+            check_move(pressed_button);
             // printf("Gp: %d %d %d\n", positioncomponent->isUpdatable(), positioncomponent->getPos().x, positioncomponent->getPos().y);
         }
 };

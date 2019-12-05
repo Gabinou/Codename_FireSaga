@@ -180,11 +180,11 @@ class SpriteComponent : public Component {
             }
 
             if (entity->hasComponent<KeyboardController>()) {
-                kb_held = keyboardcontroller->getHeldframes();
+                kb_held = keyboardcontroller->getHeldmove();
             }
 
             if (entity->hasComponent<GamepadController>()) {
-                gp_held = gamepadcontroller->getHeldframes();
+                gp_held = gamepadcontroller->getHeldmove();
             }
 
 
