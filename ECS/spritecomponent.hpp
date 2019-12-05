@@ -50,11 +50,11 @@ class SpriteComponent : public Component {
         }
 
         SpriteComponent(Map * in_map, const char * in_path, int in_picsize[2]) : SpriteComponent(in_path)  {
+            setMap(in_map);
             srcrect.w = in_picsize[0];
             srcrect.h = in_picsize[1];
             destrect.w = in_picsize[0];
             destrect.h = in_picsize[1];
-            setMap(in_map);
         }
 
         SpriteComponent(Map * in_map, const char * in_path) : SpriteComponent(in_path) {
@@ -187,11 +187,14 @@ class SpriteComponent : public Component {
                 gp_held = gamepadcontroller->getHeldframes();
             }
 
-            objectivepos.x = (int)positioncomponent->getPos().x * (tilesize[0]) - destrect.w / 4;
-            objectivepos.y = (int)positioncomponent->getPos().y * (tilesize[1]) - destrect.h / 4;
+
             // printf("before: %d %d\n", objectivepos.x, objectivepos.y);
 
             if (slidetype == "geometric") {
+
+                objectivepos.x = (int)positioncomponent->getPos().x * (tilesize[0]) - destrect.w / 4;
+                objectivepos.y = (int)positioncomponent->getPos().y * (tilesize[1]) - destrect.h / 4;
+
                 // intended to animate the cursor.
                 if ((gp_held > 25) || (kb_held > 25))  {
                     slideint = 1;

@@ -60,11 +60,6 @@ class KeyboardController : public Component {
             return (frames_move);
         }
 
-        void check_pressed(std::vector<std::vector<SDL_Scancode>>in_pressed) {
-            check_move(in_pressed);
-            check_button(in_pressed);
-        }
-
         void check_move(std::vector<std::vector<SDL_Scancode>>in_pressed) {
             if ((held_move == in_pressed) && (!in_pressed.empty())) {
                 frames_move++;
@@ -85,23 +80,24 @@ class KeyboardController : public Component {
 
         void update() override {
             const Uint8 * kb_state = SDL_GetKeyboardState(NULL);
-            std::vector<std::vector<SDL_Scancode>> pressed{};
+            std::vector<std::vector<SDL_Scancode>> pressed_move{};
+            std::vector<std::vector<SDL_Scancode>> pressed_button{};
             Entity * ontile = map->getTile(positioncomponent->getPos().x, positioncomponent->getPos().y);
 
             if (is_pressed(kb_state, inputmap.moveup) && !is_pressed(kb_state, inputmap.movedown)) {
                 positioncomponent->addPos(Vector2D(0, -1));
-                pressed.push_back(inputmap.moveup);
+                pressed_move.push_back(inputmap.moveup);
             } else if (!is_pressed(kb_state, inputmap.moveup) && is_pressed(kb_state, inputmap.movedown)) {
                 positioncomponent->addPos(Vector2D(0, 1));
-                pressed.push_back(inputmap.movedown);
+                pressed_move.push_back(inputmap.movedown);
             }
 
             if (!is_pressed(kb_state, inputmap.moveright) && is_pressed(kb_state, inputmap.moveleft)) {
                 positioncomponent->addPos(Vector2D(-1, 0));
-                pressed.push_back(inputmap.moveleft);
+                pressed_move.push_back(inputmap.moveleft);
             } else if (is_pressed(kb_state, inputmap.moveright) && !is_pressed(kb_state, inputmap.moveleft)) {
                 positioncomponent->addPos(Vector2D(1, 0));
-                pressed.push_back(inputmap.moveright);
+                pressed_move.push_back(inputmap.moveright);
             }
 
             if (is_pressed(kb_state, inputmap.accept)) {
@@ -128,7 +124,7 @@ class KeyboardController : public Component {
             }
 
             if (is_pressed(kb_state, inputmap.cancel)) {
-                pressed.push_back(inputmap.cancel);
+                pressed_button.push_back(inputmap.cancel);
 
                 if ((game->getState() == "unitmenu") ||
                         (game->getState() == "options") ||
@@ -137,7 +133,8 @@ class KeyboardController : public Component {
                 }
             }
 
-            check_pressed(pressed);
+            check_move(pressed_move);
+            check_button(pressed_button);
         }
 };
 
