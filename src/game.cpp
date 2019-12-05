@@ -173,6 +173,10 @@ void Game::setState(Entity & setting_entity, std::string new_state) {
             manager.getEntities()[unit_entities.top()]->getComponent<PositionComponent>().setPos(            
                 new_position.x,
                 new_position.y);
+            Entity * ontile = mapp->getTile(old_position.x, old_position.y);
+
+            mapp->removeTile(old_position.x, old_position.y);
+            mapp->setTile(new_position.x, new_position.y, ontile);
 
         }
     }        
