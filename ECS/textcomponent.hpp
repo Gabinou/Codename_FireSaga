@@ -97,8 +97,8 @@ class TextComponent : public Component {
         void initRects() {
             // printf("initted Rect");
             srcrects[0].x = srcrects[0].y = 0;
-            destrects[0].x = (int)positioncomponent->getPos().x + padding[3];
-            destrects[0].y = (int)positioncomponent->getPos().y + padding[0];
+            destrects[0].x = (int)positioncomponent->getPos()[0] + padding[3];
+            destrects[0].y = (int)positioncomponent->getPos()[1] + padding[0];
 
             for (int i = 0; i < textures.size(); i++) {
                 srcrects[i].h = fontsize;

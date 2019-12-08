@@ -19,7 +19,6 @@ class Map {
         Map(const short unsigned int width, const short unsigned int height);
         void loadMap(std::string filename);
         void drawMap();
-
         void setTilesize(const short int unsigned width, const short int unsigned height);
         int * getTilesize() const;
         void setTile(int x, int y, Entity * in_entity);

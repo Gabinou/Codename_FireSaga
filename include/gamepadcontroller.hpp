@@ -84,18 +84,18 @@ class GamepadController : public Component {
             std::vector<std::string> pressed_button{};
 
             if (mainxaxis > joystick_dead_zone) {
-                positioncomponent->addPos(Vector2D(1, 0));
+                positioncomponent->addPos(1, 0);
                 pressed_move.push_back("right");
             } else if (mainxaxis < -joystick_dead_zone) {
-                positioncomponent->addPos(Vector2D(-1, 0));
+                positioncomponent->addPos(-1, 0);
                 pressed_move.push_back("left");
             }
 
             if (mainyaxis > joystick_dead_zone) {
-                positioncomponent->addPos(Vector2D(0, 1));
+                positioncomponent->addPos(0, 1);
                 pressed_move.push_back("up");
             } else if (mainyaxis < -joystick_dead_zone)  {
-                positioncomponent->addPos(Vector2D(0, -1));
+                positioncomponent->addPos(0, -1);
                 pressed_move.push_back("down");
             }
 

@@ -40,8 +40,8 @@ void Game::createUnitmenu(Entity & setting_entity) {
     manager.getEntities()[menu_entities.top()]->addComponent<PositionComponent>();
     manager.getEntities()[menu_entities.top()]->getComponent<PositionComponent>().setBounds(0, 2000, 0, 2000);
     manager.getEntities()[menu_entities.top()]->getComponent<PositionComponent>().setPos(
-        (int)(setting_entity.getComponent<PositionComponent>().getPos().x * tilesize[0]),
-        (int)(setting_entity.getComponent<PositionComponent>().getPos().y * tilesize[1]));
+        (int)(setting_entity.getComponent<PositionComponent>().getPos()[0] * tilesize[0]),
+        (int)(setting_entity.getComponent<PositionComponent>().getPos()[1] * tilesize[1]));
     SDL_Color black = {255, 255, 255};
     manager.getEntities()[menu_entities.top()]->addComponent<SpriteComponent>("..//assets//textbox.png", (int []) {128, 128}); 
     manager.getEntities()[menu_entities.top()]->addComponent<TextComponent>(fontsize, std::vector<std::string> {"Attack", "Wait"}, black);
@@ -58,8 +58,8 @@ void Game::destroyUnitmenu() {
 
 void Game::moveUnit(Entity & cursor) {
     int newPos[2];
-    newPos[0] = cursor.getComponent<PositionComponent>().getPos().x;
-    newPos[1] = cursor.getComponent<PositionComponent>().getPos().y;
+    newPos[0] = cursor.getComponent<PositionComponent>().getPos()[0];
+    newPos[1] = cursor.getComponent<PositionComponent>().getPos()[1];
 
     manager.getEntities()[unit_entities.top()]->getComponent<PositionComponent>();
     // unit_entities.top().getComponent<PositionComponent>().setPos(newPos[0], newPos[1]);
@@ -164,19 +164,25 @@ void Game::setState(Entity & setting_entity, std::string new_state) {
     if (this->state == "unitmove") {
         if (new_state == "unitmenu") {
             createUnitmenu(setting_entity); //Problem here even since slidecomponent was deleted.
-            Vector2D new_position = setting_entity.getComponent<PositionComponent>().getPos();
-            Vector2D old_position = manager.getEntities()[unit_entities.top()]->getComponent<PositionComponent>().getPos();
+            // int new_position[2];
+            // int old_position[2];
+            // new_position[0] = setting_entity.getComponent<PositionComponent>().getPos()[0];
+            // new_position[1] = setting_entity.getComponent<PositionComponent>().getPos()[1];
+            int *new_position = setting_entity.getComponent<PositionComponent>().getPos();
+            // old_position[0] = manager.getEntities()[unit_entities.top()]->getComponent<PositionComponent>().getPos()[0];
+            // old_position[1] = manager.getEntities()[unit_entities.top()]->getComponent<PositionComponent>().getPos()[1];
+            int *old_position = manager.getEntities()[unit_entities.top()]->getComponent<PositionComponent>().getPos();
             
-            printf("Old position %d, %d \n", old_position.x, old_position.y);
-            printf("New position %d, %d \n", new_position.x, new_position.y);
+            printf("Old position %d, %d \n", old_position[0], old_position[1]);
+            printf("New position %d, %d \n", new_position[0], new_position[1]);
 
             manager.getEntities()[unit_entities.top()]->getComponent<PositionComponent>().setPos(            
-                new_position.x,
-                new_position.y);
+                new_position[0],
+                new_position[1]);
             
-            Entity * ontile = mapp->getTile(old_position.x, old_position.y);
-            mapp->removeTile(old_position.x, old_position.y);
-            mapp->setTile(new_position.x, new_position.y, ontile);
+            Entity * ontile = mapp->getTile(old_position[0], old_position[1]);
+            mapp->removeTile(old_position[0], old_position[1]);
+            mapp->setTile(new_position[0], new_position[1], ontile);
 
         }
     }        

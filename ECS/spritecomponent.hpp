@@ -22,15 +22,14 @@ class SpriteComponent : public Component {
         SDL_Rect srcrect = {0, 0, 32, 32}; // x,y,w,h
         SDL_Rect destrect = {0, 0, 32, 32};
         Map * map = NULL; // no map-> position is not on a grid.
-        Vector2D objectivepos;
-        Vector2D slidepos;
+        int objectivepos[2];
+        int slidepos[2];
         int * tilesize; // if no map, just use the pixel position as usual.
         int frames = 10;
         int speed = 50;
         bool visible;
         bool animated = false;
         std::string ss_looping = "pingpong"; //ss: spritesheet
-
         float slidefactors[2] = {2, 1.025}; // for slide_type = "geometric"
         int slideint = 0; // for slide_type = "geometric"
         std::string slidetype = "";
@@ -87,8 +86,8 @@ class SpriteComponent : public Component {
             if (slidetype == "geometric") {
                 setSrcrect(64, 64); // Manually entered from cursor png size.
                 setDestrect(tilesize[0] * 2, tilesize[1] * 2);
-                slidepos.x = objectivepos.x = (int)positioncomponent->getPos().x * tilesize[0] - destrect.w / 4;
-                slidepos.y = objectivepos.y = (int)positioncomponent->getPos().y * tilesize[1] - destrect.h / 4;
+                slidepos[0] = objectivepos[0] = (int)positioncomponent->getPos()[0] * tilesize[0] - destrect.w / 4;
+                slidepos[1] = objectivepos[1] = (int)positioncomponent->getPos()[1] * tilesize[1] - destrect.h / 4;
             }
         }
 
@@ -133,11 +132,11 @@ class SpriteComponent : public Component {
             positioncomponent = &entity->getComponent<PositionComponent>();
 
             if (map == NULL) {
-                slidepos.x = (int)positioncomponent->getPos().x;
-                slidepos.y = (int)positioncomponent->getPos().y;
+                slidepos[0] = (int)positioncomponent->getPos()[0];
+                slidepos[1] = (int)positioncomponent->getPos()[1];
             } else {
-                slidepos.x = (int)positioncomponent->getPos().x * tilesize[0];
-                slidepos.y = (int)positioncomponent->getPos().y * tilesize[1];
+                slidepos[0] = (int)positioncomponent->getPos()[0] * tilesize[0];
+                slidepos[1] = (int)positioncomponent->getPos()[1] * tilesize[1];
             }
 
             if (entity->hasComponent<KeyboardController>()) {
@@ -170,11 +169,11 @@ class SpriteComponent : public Component {
                 }
             } else {
                 if (map == NULL) {
-                    slidepos.x = (int)positioncomponent->getPos().x;
-                    slidepos.y = (int)positioncomponent->getPos().y;
+                    slidepos[0] = (int)positioncomponent->getPos()[0];
+                    slidepos[1] = (int)positioncomponent->getPos()[1];
                 } else {
-                    slidepos.x = (int)positioncomponent->getPos().x * tilesize[0];
-                    slidepos.y = (int)positioncomponent->getPos().y * tilesize[1];
+                    slidepos[0] = (int)positioncomponent->getPos()[0] * tilesize[0];
+                    slidepos[1] = (int)positioncomponent->getPos()[1] * tilesize[1];
                 }
 
             }
@@ -187,28 +186,25 @@ class SpriteComponent : public Component {
                 gp_held = gamepadcontroller->getHeldmove();
             }
 
-
-            // printf("before: %d %d\n", objectivepos.x, objectivepos.y);
-
             if (slidetype == "geometric") {
 
-                objectivepos.x = (int)positioncomponent->getPos().x * (tilesize[0]) - destrect.w / 4;
-                objectivepos.y = (int)positioncomponent->getPos().y * (tilesize[1]) - destrect.h / 4;
+                objectivepos[0] = (int)positioncomponent->getPos()[0] * (tilesize[0]) - destrect.w / 4;
+                objectivepos[1] = (int)positioncomponent->getPos()[1] * (tilesize[1]) - destrect.h / 4;
 
                 // intended to animate the cursor.
                 if ((gp_held > 25) || (kb_held > 25))  {
                     slideint = 1;
                 }
 
-                if (objectivepos.x != slidepos.x) {
-                    slidepos.x += geometricslide((objectivepos.x - slidepos.x), slidefactors[slideint]);
+                if (objectivepos[0] != slidepos[0]) {
+                    slidepos[0] += geometricslide((objectivepos[0] - slidepos[0]), slidefactors[slideint]);
                 }
 
-                if (objectivepos.y != slidepos.y) {
-                    slidepos.y += geometricslide((objectivepos.y - slidepos.y), slidefactors[slideint]);
+                if (objectivepos[1] != slidepos[1]) {
+                    slidepos[1] += geometricslide((objectivepos[1] - slidepos[1]), slidefactors[slideint]);
                 }
 
-                if ((objectivepos.x == slidepos.x) && (objectivepos.y == slidepos.y)) {
+                if ((objectivepos[0] == slidepos[0]) && (objectivepos[1] == slidepos[1])) {
                     positioncomponent->setUpdatable(true);
                     slideint = 0;
                 } else {
@@ -220,12 +216,8 @@ class SpriteComponent : public Component {
                 //intended to animate units moving on the map.
             }
 
-            destrect.x = slidepos.x;
-            destrect.y = slidepos.y;
-
-
-
-
+            destrect.x = slidepos[0];
+            destrect.y = slidepos[1];
         }
 
         virtual void draw() override {

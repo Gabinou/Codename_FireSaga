@@ -13,7 +13,7 @@
 class PositionComponent : public Component {
     private:
         bool updatable = true;
-        Vector2D position;
+        int position[2] = {0};
         int bounds[4] = {0, 255, 0, 255}; //xmin, xmax, ymin, ymax
         Map * map = nullptr;
         // On first init of the component, entity is still a nullptr.
@@ -77,7 +77,7 @@ class PositionComponent : public Component {
 
         void setMap(Map * in_map) {
             map = in_map;
-            map->setTile(position.x, position.y, entity);
+            map->setTile(position[0], position[1], entity);
         }
 
         void setUpdatable(bool in_updatable) {
@@ -91,27 +91,27 @@ class PositionComponent : public Component {
             if (updatable) {
 
                 if ((in_x >= bounds[0]) && (in_x <= bounds[1])) {
-                    position.x = in_x;
+                    position[0] = in_x;
 
                 }
 
                 if ((in_y >= bounds[2]) && (in_y <= bounds[3])) {
-                    position.y = in_y;
+                    position[1] = in_y;
                 }
 
                 if (map != nullptr) {
-                    map->setTile(position.x, position.y, entity);
+                    map->setTile(position[0], position[1], entity);
                 }
             }
 
 
         }
 
-        void addPos(Vector2D move) {
-            setPos((move.x + position.x), (move.y + position.y));
+        void addPos(int move_x, int move_y) {
+            setPos((move_x + position[0]), (move_y + position[1]));
         }
 
-        Vector2D getPos() {
+        int * getPos() {
             return (position);
         }
 

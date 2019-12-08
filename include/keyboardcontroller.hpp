@@ -82,21 +82,21 @@ class KeyboardController : public Component {
             const Uint8 * kb_state = SDL_GetKeyboardState(NULL);
             std::vector<std::vector<SDL_Scancode>> pressed_move{};
             std::vector<std::vector<SDL_Scancode>> pressed_button{};
-            Entity * ontile = map->getTile(positioncomponent->getPos().x, positioncomponent->getPos().y);
+            Entity * ontile = map->getTile(positioncomponent->getPos()[0], positioncomponent->getPos()[1]);
 
             if (is_pressed(kb_state, inputmap.moveup) && !is_pressed(kb_state, inputmap.movedown)) {
-                positioncomponent->addPos(Vector2D(0, -1));
+                positioncomponent->addPos(0, -1);
                 pressed_move.push_back(inputmap.moveup);
             } else if (!is_pressed(kb_state, inputmap.moveup) && is_pressed(kb_state, inputmap.movedown)) {
-                positioncomponent->addPos(Vector2D(0, 1));
+                positioncomponent->addPos(0, 1);
                 pressed_move.push_back(inputmap.movedown);
             }
 
             if (!is_pressed(kb_state, inputmap.moveright) && is_pressed(kb_state, inputmap.moveleft)) {
-                positioncomponent->addPos(Vector2D(-1, 0));
+                positioncomponent->addPos(-1, 0);
                 pressed_move.push_back(inputmap.moveleft);
             } else if (is_pressed(kb_state, inputmap.moveright) && !is_pressed(kb_state, inputmap.moveleft)) {
-                positioncomponent->addPos(Vector2D(1, 0));
+                positioncomponent->addPos(1, 0);
                 pressed_move.push_back(inputmap.moveright);
             }
 
@@ -106,7 +106,7 @@ class KeyboardController : public Component {
                 Entity * setter;
 
                 if ((game->getState() == "map") && (frames_button == 1)) {
-                    printf("cursor Position, %d %d \n", positioncomponent->getPos().x, positioncomponent->getPos().y);
+                    printf("cursor Position, %d %d \n", positioncomponent->getPos()[0], positioncomponent->getPos()[1]);
 
                     if (ontile) {
                         toset = "unitmove";
