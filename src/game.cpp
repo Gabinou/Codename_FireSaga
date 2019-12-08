@@ -19,8 +19,9 @@ TTF_Font * Game::font = NULL;
 
 Manager manager;
 
+Entity & cursor = manager.addEntity(); // Cursor should always be entity 0.
 Entity & player = manager.addEntity();
-Entity & cursor = manager.addEntity();
+
 
 Game::Game() {}
 Game::~Game() {}
@@ -62,7 +63,7 @@ void Game::moveUnit(Entity & cursor) {
     newPos[1] = cursor.getComponent<PositionComponent>().getPos()[1];
 
     manager.getEntities()[unit_entities.top()]->getComponent<PositionComponent>();
-    // unit_entities.top().getComponent<PositionComponent>().setPos(newPos[0], newPos[1]);
+    unit_entities.top().getComponent<PositionComponent>().setPos(newPos[0], newPos[1]);
 }
 
 
@@ -105,7 +106,8 @@ void Game::setState(Entity & setting_entity, std::string new_state) {
 
             // int arrow_ind = manager.getEntities().size();
             // manager.addEntity();
-            // manager.getEntities()[menu_entities.top()]->addComponent<PositionComponent>();         
+            // manager.getEntities()[arrow_ind]->addComponent<PositionComponent>();         
+            // manager.getEntities()[arrow_ind]->addComponent<ArrowComponent>("..//assets//arrow.png");         
             // // findpath();           
             // drawpath();
             // waitforotheraccept();            

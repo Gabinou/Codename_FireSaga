@@ -117,7 +117,7 @@ class KeyboardController : public Component {
                     }
                 } else if ((game->getState() == "unitmove") && (frames_button == 1)) {
                     toset = "unitmenu";
-                    setter = entity;
+                    setter = ontile;
                 }
 
                 if (toset != "") {game->setState(*setter, toset.c_str()); }

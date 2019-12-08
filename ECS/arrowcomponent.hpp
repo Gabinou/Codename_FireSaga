@@ -16,7 +16,7 @@ class ArrowComponent : public Component {
         bool visible;
         Map * map = NULL; // no map-> position is not on a grid.
         int * tilesize; // if no map, just use the pixel position as usual.
-        Entity * cursor;
+        int * origin;
     public:
         ArrowComponent() = default;
 
@@ -40,11 +40,20 @@ class ArrowComponent : public Component {
 
         virtual void init() override {
             positioncomponent = &entity->getComponent<PositionComponent>();
-
+            origin = setting_entity.getComponent<PositionComponent>().getPos();
         }
 
         virtual void update() override {
             int * objectivepos = setting_entity.getComponent<PositionComponent>().getPos();
+
+
+            if (!setting_entity.getComponent<PositionComponent>().isUpdatable()) {
+                path[path.size()].push_back(objectivepos[0]);
+                path[path.size()].push_back(objectivepos[1]);
+            }
+
+            manager.getEntities()[0]->getComponent<PositionComponent>()
+
         }
 
         virtual void draw() override {
