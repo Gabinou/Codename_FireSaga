@@ -127,7 +127,7 @@ class Manager {
             }
         }
         void refresh() {
-            // How to erase? removes entites if they are not active.
+            // How to erase? removes entities if they are not active.
             for (auto i(0u); i < maxgroups; i++) {
                 auto & v(groupedEntities[i]);
                 v.erase(std::remove_if(std::begin(v), std::end(v), [i](Entity * in_Entity) {
