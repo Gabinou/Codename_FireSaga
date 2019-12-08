@@ -15,8 +15,8 @@ class Map {
         void loadTiles();
         void initVars();
         Map();
+        ~Map();
         Map(const short unsigned int width, const short unsigned int height);
-        // ~Map();
         void loadMap(std::string filename);
         void drawMap();
 

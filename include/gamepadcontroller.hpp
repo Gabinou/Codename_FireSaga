@@ -82,10 +82,8 @@ class GamepadController : public Component {
             Sint16 secondyaxis = SDL_GameControllerGetAxis(controller, inputmap.secondyaxis[0]);
             std::vector<std::string> pressed_move{};
             std::vector<std::string> pressed_button{};
-            // printf("Controller axis val: %d\n", mainxaxis);
 
             if (mainxaxis > joystick_dead_zone) {
-                // printf("updatexmainxaxis\n");
                 positioncomponent->addPos(Vector2D(1, 0));
                 pressed_move.push_back("right");
             } else if (mainxaxis < -joystick_dead_zone) {
@@ -103,7 +101,6 @@ class GamepadController : public Component {
 
             check_move(pressed_move);
             check_move(pressed_button);
-            // printf("Gp: %d %d %d\n", positioncomponent->isUpdatable(), positioncomponent->getPos().x, positioncomponent->getPos().y);
         }
 };
 

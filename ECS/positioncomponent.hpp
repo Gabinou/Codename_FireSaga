@@ -8,6 +8,8 @@
 #include "shared.hpp"
 #include "SDL2/SDL.h"
 
+// Where else is vector2D used?
+
 class PositionComponent : public Component {
     private:
         bool updatable = true;
