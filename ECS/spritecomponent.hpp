@@ -3,7 +3,6 @@
 
 #include "ECS.hpp"
 #include "map.hpp"
-#include "vector2D.hpp"
 #include "shared.hpp"
 #include "positioncomponent.hpp"
 #include "keyboardcontroller.hpp"
@@ -159,7 +158,7 @@ class SpriteComponent : public Component {
             int kb_held = 0;
             int gp_held = 0;
 
-            if (animated) {
+            if (animated) { //looping sprites.
                 if (ss_looping == "pingpong") {
                     srcrect.x = srcrect.w * pingpong(static_cast<int>(SDL_GetTicks() / speed), frames, 0);
                 } else if ((ss_looping == "linear") || (ss_looping == "direct")) {
@@ -168,10 +167,10 @@ class SpriteComponent : public Component {
                     srcrect.x = srcrect.w * (frames - static_cast<int>((SDL_GetTicks() / speed) % frames));
                 }
             } else {
-                if (map == NULL) {
+                if (map == NULL) {//move on the pixelspace
                     slidepos[0] = (int)positioncomponent->getPos()[0];
                     slidepos[1] = (int)positioncomponent->getPos()[1];
-                } else {
+                } else {//move on the map.
                     slidepos[0] = (int)positioncomponent->getPos()[0] * tilesize[0];
                     slidepos[1] = (int)positioncomponent->getPos()[1] * tilesize[1];
                 }
@@ -186,12 +185,11 @@ class SpriteComponent : public Component {
                 gp_held = gamepadcontroller->getHeldmove();
             }
 
-            if (slidetype == "geometric") {
+            if (slidetype == "geometric") { //Cursor movement on the map.
 
                 objectivepos[0] = (int)positioncomponent->getPos()[0] * (tilesize[0]) - destrect.w / 4;
                 objectivepos[1] = (int)positioncomponent->getPos()[1] * (tilesize[1]) - destrect.h / 4;
 
-                // intended to animate the cursor.
                 if ((gp_held > 25) || (kb_held > 25))  {
                     slideint = 1;
                 }
@@ -212,8 +210,8 @@ class SpriteComponent : public Component {
                 }
             }
 
-            if (slidetype == "vector") {
-                //intended to animate units moving on the map.
+            if (slidetype == "vector") { //unit movement on the map.
+
             }
 
             destrect.x = slidepos[0];

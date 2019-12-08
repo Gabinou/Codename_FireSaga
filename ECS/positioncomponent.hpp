@@ -2,7 +2,6 @@
 #define POSITIONCOMPONENT_HPP
 
 #include "ECS.hpp"
-#include "vector2D.hpp"
 #include "game.hpp"
 #include "map.hpp"
 #include "shared.hpp"

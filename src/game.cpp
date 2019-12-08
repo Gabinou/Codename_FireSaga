@@ -103,7 +103,10 @@ void Game::setState(Entity & setting_entity, std::string new_state) {
                 }
             }
 
-            // findpath();            
+            // int arrow_ind = manager.getEntities().size();
+            // manager.addEntity();
+            // manager.getEntities()[menu_entities.top()]->addComponent<PositionComponent>();         
+            // // findpath();           
             // drawpath();
             // waitforotheraccept();            
         }
