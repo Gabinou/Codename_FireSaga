@@ -164,13 +164,7 @@ void Game::setState(Entity & setting_entity, std::string new_state) {
     if (this->state == "unitmove") {
         if (new_state == "unitmenu") {
             createUnitmenu(setting_entity); //Problem here even since slidecomponent was deleted.
-            // int new_position[2];
-            // int old_position[2];
-            // new_position[0] = setting_entity.getComponent<PositionComponent>().getPos()[0];
-            // new_position[1] = setting_entity.getComponent<PositionComponent>().getPos()[1];
             int *new_position = setting_entity.getComponent<PositionComponent>().getPos();
-            // old_position[0] = manager.getEntities()[unit_entities.top()]->getComponent<PositionComponent>().getPos()[0];
-            // old_position[1] = manager.getEntities()[unit_entities.top()]->getComponent<PositionComponent>().getPos()[1];
             int *old_position = manager.getEntities()[unit_entities.top()]->getComponent<PositionComponent>().getPos();
             
             printf("Old position %d, %d \n", old_position[0], old_position[1]);
