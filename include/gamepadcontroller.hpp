@@ -110,6 +110,22 @@ class GamepadController : public Component {
                 pressed_move.push_back("down");
             }
 
+            if (isPressed(inputmap.moveright)) {
+                positioncomponent->addPos(1, 0);
+                pressed_move.push_back("right");
+            } else if (isPressed(inputmap.moveleft)) {
+                positioncomponent->addPos(-1, 0);
+                pressed_move.push_back("left");
+            }
+
+            if (isPressed(inputmap.moveup)) {
+                positioncomponent->addPos(0, -1);
+                pressed_move.push_back("up");
+            } else if (isPressed(inputmap.movedown)) {
+                positioncomponent->addPos(0, 1);
+                pressed_move.push_back("down");
+            }
+
             // if (SDL_GameControllerGetButton(inputmap.accept)) {
             //     pressed_button.push_back(inputmap.accept);
             //     std::string toset = "";
