@@ -82,7 +82,6 @@ class KeyboardController : public Component {
             const Uint8 * kb_state = SDL_GetKeyboardState(NULL);
             std::vector<std::vector<SDL_Scancode>> pressed_move{};
             std::vector<std::vector<SDL_Scancode>> pressed_button{};
-            Entity * ontile = map->getTile(positioncomponent->getPos()[0], positioncomponent->getPos()[1]);
 
             if (is_pressed(kb_state, inputmap.moveup) && !is_pressed(kb_state, inputmap.movedown)) {
                 positioncomponent->addPos(0, -1);
@@ -104,6 +103,7 @@ class KeyboardController : public Component {
                 pressed_button.push_back(inputmap.accept);
                 std::string toset = "";
                 Entity * setter;
+                Entity * ontile = map->getTile(positioncomponent->getPos()[0], positioncomponent->getPos()[1]);
 
                 if ((game->getState() == "map") && (frames_button == 1)) {
                     printf("cursor Position, %d %d \n", positioncomponent->getPos()[0], positioncomponent->getPos()[1]);

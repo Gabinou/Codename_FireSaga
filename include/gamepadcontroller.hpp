@@ -15,7 +15,7 @@ class GamepadController : public Component {
         GamepadInputMap inputmap;
         int joystick_dead_zone = 8000;
         std::vector<std::string> held_move;
-        std::vector<std::string> held_button;
+        std::vector<std::vector<SDL_GameControllerButton>> held_button;
         unsigned int frames_move = 0;
         unsigned int frames_button = 0;
     public:
@@ -67,7 +67,7 @@ class GamepadController : public Component {
             return (frames_move);
         }
 
-        void check_move(std::vector<std::string>pressed_move) {
+        void check_move(std::vector<std::string> pressed_move) {
             if ((held_move == pressed_move) && (!pressed_move.empty())) {
                 frames_move++;
             } else {
@@ -77,7 +77,7 @@ class GamepadController : public Component {
         }
 
 
-        void check_button(std::vector<std::string>pressed_button) {
+        void check_button(std::vector<std::vector<SDL_GameControllerButton>> pressed_button) {
             if ((held_button == pressed_button) && (!pressed_button.empty())) {
                 frames_button++;
             } else {
@@ -126,28 +126,29 @@ class GamepadController : public Component {
                 pressed_move.push_back("down");
             }
 
-            // if (SDL_GameControllerGetButton(inputmap.accept)) {
-            //     pressed_button.push_back(inputmap.accept);
-            //     std::string toset = "";
-            //     Entity * setter;
+            if (isPressed(inputmap.accept)) {
+                pressed_button.push_back(inputmap.accept);
+                std::string toset = "";
+                Entity * setter;
+                Entity * ontile = map->getTile(positioncomponent->getPos()[0], positioncomponent->getPos()[1]);
 
-            //     if ((game->getState() == "map") && (frames_button == 1)) {
-            //         printf("cursor Position, %d %d \n", positioncomponent->getPos()[0], positioncomponent->getPos()[1]);
+                if ((game->getState() == "map") && (frames_button == 1)) {
+                    printf("cursor Position, %d %d \n", positioncomponent->getPos()[0], positioncomponent->getPos()[1]);
 
-            //         if (ontile) {
-            //             toset = "unitmove";
-            //             setter = ontile;
-            //         } else {
-            //             toset = "options";
-            //             setter = entity;
-            //         }
-            //     } else if ((game->getState() == "unitmove") && (frames_button == 1)) {
-            //         toset = "unitmenu";
-            //         setter = entity;
-            //     }
+                    if (ontile) {
+                        toset = "unitmove";
+                        setter = ontile;
+                    } else {
+                        toset = "options";
+                        setter = entity;
+                    }
+                } else if ((game->getState() == "unitmove") && (frames_button == 1)) {
+                    toset = "unitmenu";
+                    setter = entity;
+                }
 
-            //     if (toset != "") {game->setState(*setter, toset.c_str()); }
-            // }
+                if (toset != "") {game->setState(*setter, toset.c_str()); }
+            }
 
             // if (is_pressed(kb_state, inputmap.cancel)) {
             //     pressed_button.push_back(inputmap.cancel);
@@ -162,7 +163,7 @@ class GamepadController : public Component {
 
 
             check_move(pressed_move);
-            // check_move(pressed_button);
+            check_button(pressed_button);
         }
 };
 
