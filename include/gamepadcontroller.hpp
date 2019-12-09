@@ -150,17 +150,15 @@ class GamepadController : public Component {
                 if (toset != "") {game->setState(*setter, toset.c_str()); }
             }
 
-            // if (is_pressed(kb_state, inputmap.cancel)) {
-            //     pressed_button.push_back(inputmap.cancel);
+            if (isPressed(inputmap.cancel)) {
+                pressed_button.push_back(inputmap.cancel);
 
-            //     if ((game->getState() == "unitmenu") ||
-            //             (game->getState() == "options") ||
-            //             (game->getState() == "unitmove")) {
-            //         game->setState(*entity, "map");
-            //     }
-            // }
-
-
+                if ((game->getState() == "unitmenu") ||
+                        (game->getState() == "options") ||
+                        (game->getState() == "unitmove")) {
+                    game->setState(*entity, "map");
+                }
+            }
 
             check_move(pressed_move);
             check_button(pressed_button);

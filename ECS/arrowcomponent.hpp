@@ -15,6 +15,7 @@ class ArrowComponent : public Component {
         std::vector < std::vector << int>> path;
         std::vector < std::vector << int>> open_tiles;
         bool visible;
+        int move = 6; //temporary, waiting for units to be able to give their move units.
         Map * map = NULL; // no map-> position is not on a grid.
         int * tilesize; // if no map, just use the pixel position as usual.
         int * origin;
@@ -49,9 +50,13 @@ class ArrowComponent : public Component {
 
 
             if (!setting_entity.getComponent<PositionComponent>().isUpdatable()) {
-                path.push_back(std::vector<int>());
-                path[path.size()].push_back(objectivepos[0]);
-                path[path.size()].push_back(objectivepos[1]);
+                if (path.size() < move) {
+                    path.push_back(std::vector<int>());
+                    path[path.size()].push_back(objectivepos[0]);
+                    path[path.size()].push_back(objectivepos[1]);
+                } else {
+                    make_path(setting_entity.getComponent<PositionComponent>().getPos());
+                }
             }
 
             manager.getEntities()[0]->getComponent<PositionComponent>()

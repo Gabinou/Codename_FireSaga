@@ -243,7 +243,7 @@ void Game::init(const char * title, int xpos, int ypos, int width, int height, b
         printf("TTF_Init: %s\n", TTF_GetError());
         exit(2);
     }
-    
+        
     // manager.setGame(this);
     
     Game::font = TTF_OpenFont("../fonts/arial.ttf", Game::fontsize); // Size translates to pixel size? 
