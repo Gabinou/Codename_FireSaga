@@ -13,6 +13,7 @@ class ArrowComponent : public Component {
         std::vector<SDL_Rect> srcrects = {{0, 0, 32, 32}, {32, 0, 32, 32}, {64, 0, 32, 32}}; // x,y,w,h
         std::vector<SDL_Rect> destrects = {{0, 0, 32, 32}};
         std::vector < std::vector << int>> path;
+        std::vector < std::vector << int>> open_tiles;
         bool visible;
         Map * map = NULL; // no map-> position is not on a grid.
         int * tilesize; // if no map, just use the pixel position as usual.
@@ -48,6 +49,7 @@ class ArrowComponent : public Component {
 
 
             if (!setting_entity.getComponent<PositionComponent>().isUpdatable()) {
+                path.push_back(std::vector<int>());
                 path[path.size()].push_back(objectivepos[0]);
                 path[path.size()].push_back(objectivepos[1]);
             }

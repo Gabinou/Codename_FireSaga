@@ -12,7 +12,6 @@ class KeyboardController : public Component {
     private:
         Entity * textboxptr;
         PositionComponent * positioncomponent;
-        int * tilesize;
         Game * game;
         Map * map;
         KeyboardInputMap inputmap;
@@ -20,6 +19,7 @@ class KeyboardController : public Component {
         std::vector<std::vector<SDL_Scancode>> held_move;
         unsigned int frames_button = 0;
         unsigned int frames_move = 0;
+        int * tilesize;
     public:
         KeyboardController() = default;
 
