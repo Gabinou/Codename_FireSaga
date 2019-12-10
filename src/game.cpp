@@ -7,6 +7,7 @@
 #include "map.hpp"
 #include "spritecomponent.hpp"
 #include "positioncomponent.hpp"
+#include "arrowcomponent.hpp"
 #include "textcomponent.hpp"
 #include "keyboardcontroller.hpp"
 #include "gamepadcontroller.hpp"
