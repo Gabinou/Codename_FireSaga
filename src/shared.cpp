@@ -30,6 +30,26 @@ SDL_Texture * textToTexture(std::string textureText, SDL_Color textColor, TTF_Fo
     return (texture);
 }
 
+void permutations_binary(int len, int num_0, int i, int out) {
+
+// permutations_binary
+    out[i] = 0;
+    if (num_0 > std::count(out, out + len, 0)) { 
+        permutations_binary(len, num_0, i+1, out);
+    }
+    out[i] = 1;
+    if ((len-num_0) > std::count(out, out + len, 1)) { 
+        permutations_binary(len, num_0, i+1, out);
+    }
+    if (len==i){
+        for (int i = 0; i < len; i++) { 
+            printf("%d",out[i]) 
+        } 
+        printf("\n");
+    }
+}
+
+
 int pingpong(int current, int upper, int lower) {
     // returns pingpong index.
     // modulo: x % 2 = 0,1,2,0,1,2,0...for x++

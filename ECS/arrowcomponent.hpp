@@ -71,7 +71,7 @@ class ArrowComponent : public Component {
             std::vector<int> path_x;
 
             for (int i = 0; i < distance; i++) {
-                if (i<delta_x){
+                if (i < delta_x) {
                     path_x.push_back(1);
                 } else {
                     path_x.push_back(0);

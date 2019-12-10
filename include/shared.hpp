@@ -111,6 +111,9 @@ extern void write_all_units(const char * filename, char const * savestyle = "cpp
 extern void write_all_unit_classes(const char * filename);
 extern void read_all_unit_classes(const char * filename = "classes_FE1.txt");
 
+extern void permutations_binary(int len, int num_0, int i = 0, int out = {});
+
+
 // Texture stuff.
 
 extern SDL_Texture * loadTexture(const char * filename);
