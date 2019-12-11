@@ -36,6 +36,15 @@ int main(int argc, char * argv[]) {
     // read_all_weapons("..\\weapons.txt");
     // read_all_units("..\\units_FE1.txt");
     // write_all_units("..\\units_test.txt"); // OKAY
+
+    int n = 5;
+
+    int arr[n];
+
+    permutations_binary(5, 2, arr);
+
+    getchar();
+
     const int FPS = 60;
     const int frame_delay = 1000 / FPS;
     Uint32 frame_start;
@@ -60,6 +69,9 @@ int main(int argc, char * argv[]) {
 
     firesaga->clean();
     return (0);
+
+
+
     // inventory_item("Rapier", 10);
     // printf("%d \f", inventory_items["Rapier_0000"]);
     // write_all_weapons("weapons2.txt");
