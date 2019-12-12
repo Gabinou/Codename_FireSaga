@@ -31,21 +31,26 @@ SDL_Texture * textToTexture(std::string textureText, SDL_Color textColor, TTF_Fo
 }
 
 int h_manhattan (int start[], int end[]){
+    // fast. Exact on a grid.
     return(abs(start[0] - end[0]) + abs(start[1] - end[1]));
 }
-
-
+double  h_euclidean (int start[], int end[]){
+    // Slower. More accurate.
+    return(std::sqrt(pow(start[0] - end[0], 2.0) + pow(start[1] - end[1], 2.0)));
+}
 
 
 void A_star(int start[], int end[]){
     std::stack<int*> openlist;
     std::stack<int*> path;
     path.push(start);
+    int f = 255;
+    int current_f = 255;
+    int to_push[2];
     int neighborxp[2] = {std::min(255, start[0]+1), start[1]};
     int neighboryp[2] = {start[0], std::min(255, start[1]+1)};
     int neighborxm[2] = {std::max(0, start[0]-1), start[1]};
     int neighborym[2] = {start[0], std::max(0, start[1]-1)};
-    int f = 255;
     if (start[0] > 0){
         openlist.push(neighborxm);
     }
@@ -58,11 +63,8 @@ void A_star(int start[], int end[]){
     if (start[1] < 255){
         openlist.push(neighboryp);
     }
-    
-    // openlist.push(start);
-    int f;
-    int map[10][10] =
-    {
+
+    int map[10][10] = {
         {1,1,1,1,1,1,1,1,1,1},
         {1,1,1,1,1,1,1,1,1,1},
         {1,1,1,1,-1,1,1,1,1,1},
@@ -77,18 +79,48 @@ void A_star(int start[], int end[]){
 
 
     while ((path.top()[0] != end[0]) && (path.top()[1] != end[1])) {
+        while (!openlist.empty()) {
 
-        f = map[openlist.top()[0]][openlist.top()[1]] + h_manhattan(start, openlist.top());
-        
-        // f = map[openlist.top()[0]][openlist.top()[1]];
-        // f = h_manhattan(start, openlist.top());
-        // path.push(openlist.top())
+            if (map[openlist.top()[0]][openlist.top()[1]] > 0) {
+                current_f = map[openlist.top()[0]][openlist.top()[1]] + h_manhattan(openlist.top(), end);
 
-        printf("%d", f);
+                if (current_f < f) {
+                    f = current_f;
+                    to_push[0] = openlist.top()[0];
+                    to_push[1] = openlist.top()[1];
+                }
+            }
+            openlist.pop();
+        }
 
+        neighborxp[0] = std::min(255, to_push[0] + 1);
+        neighborxp[1] = to_push[1];
+        neighboryp[0] = to_push[0];
+        neighboryp[1] = std::min(255, to_push[1] + 1);
+        neighborxm[0] = std::max(0, to_push[0] - 1);
+        neighborxm[1] = to_push[1];
+        neighborym[0] = to_push[0];
+        neighborym[1] = std::max(0, to_push[1] - 1);
+
+        if ((to_push[0] > 0) && (neighborxm[0] != path.top()[0])) {
+            openlist.push(neighborxm);
+        }
+        if ((to_push[0] < 255) && (neighborxp[0] != path.top()[0])) {
+            openlist.push(neighborxp);
+        }
+        if ((to_push[1] > 0)  && (neighborym[1] != path.top()[1])) {
+            openlist.push(neighborym);
+        }
+        if ((to_push[1] < 255) && (neighboryp[1] != path.top()[1])) {
+            openlist.push(neighboryp);
+        }
+
+        path.push(to_push);
+
+        printf("%d, %d\n", path.top()[0], path.top()[1]);
         getchar();
     }
-
+    printf("found a path.");
 }
 
 

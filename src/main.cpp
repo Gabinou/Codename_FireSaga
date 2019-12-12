@@ -49,6 +49,9 @@ int main(int argc, char * argv[]) {
     A_star(start, end);
 
     getchar();
+    getchar();
+    getchar();
+    getchar();
 
     const int FPS = 60;
     const int frame_delay = 1000 / FPS;
