@@ -30,10 +30,70 @@ SDL_Texture * textToTexture(std::string textureText, SDL_Color textColor, TTF_Fo
     return (texture);
 }
 
-void permutations_binary(int len, int num_0, int out[], int i) {
+int h_manhattan (int start[], int end[]){
+    return(abs(start[0] - end[0]) + abs(start[1] - end[1]));
+}
 
-// permutations_binary
-    // printf("in");
+
+
+
+void A_star(int start[], int end[]){
+    std::stack<int*> openlist;
+    std::stack<int*> path;
+    path.push(start);
+    int neighborxp[2] = {std::min(255, start[0]+1), start[1]};
+    int neighboryp[2] = {start[0], std::min(255, start[1]+1)};
+    int neighborxm[2] = {std::max(0, start[0]-1), start[1]};
+    int neighborym[2] = {start[0], std::max(0, start[1]-1)};
+    int f = 255;
+    if (start[0] > 0){
+        openlist.push(neighborxm);
+    }
+    if (start[0] < 255){
+        openlist.push(neighborxp);
+    }
+    if (start[1] > 0){
+        openlist.push(neighborym);
+    }
+    if (start[1] < 255){
+        openlist.push(neighboryp);
+    }
+    
+    // openlist.push(start);
+    int f;
+    int map[10][10] =
+    {
+        {1,1,1,1,1,1,1,1,1,1},
+        {1,1,1,1,1,1,1,1,1,1},
+        {1,1,1,1,-1,1,1,1,1,1},
+        {1,1,1,-1,1,1,1,1,1,1},
+        {1,1,-1,1,1,1,1,1,1,1},
+        {1,1,1,1,1,1,1,1,1,1},
+        {1,1,1,1,1,1,1,1,1,1},
+        {1,1,1,1,1,1,1,1,1,1},
+        {1,1,1,1,1,1,1,1,1,1},
+        {1,1,1,1,1,1,1,1,1,1}
+    }; // this is the movement cost
+
+
+    while ((path.top()[0] != end[0]) && (path.top()[1] != end[1])) {
+
+        f = map[openlist.top()[0]][openlist.top()[1]] + h_manhattan(start, openlist.top());
+        
+        // f = map[openlist.top()[0]][openlist.top()[1]];
+        // f = h_manhattan(start, openlist.top());
+        // path.push(openlist.top())
+
+        printf("%d", f);
+
+        getchar();
+    }
+
+}
+
+
+void permutations_binary(int len, int num_0, int out[], int i) {
+// cannot be used for pathfinding.
     out[i] = 0;
     if (num_0 > std::count(out, out + i, 0)) { 
         permutations_binary(len, num_0, out, i+1);

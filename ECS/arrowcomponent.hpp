@@ -60,26 +60,6 @@ class ArrowComponent : public Component {
             origin = positioncomponent->getPos();
         }
 
-        void make_path(int * cursor_pos) {
-            path.clear();
-            int delta_x = origin[0] - cursor_pos[0];
-            int sign_x = sgn(delta_x);
-            int delta_y = origin[1] - cursor_pos[1];
-            int sign_y = sgn(delta_y);
-            int distance = abs(delta_x) + abs(delta_y);
-            int tile_malus = 1;
-            std::vector<int> path_x;
-
-            for (int i = 0; i < distance; i++) {
-                if (i < delta_x) {
-                    path_x.push_back(1);
-                } else {
-                    path_x.push_back(0);
-                }
-            }
-
-        }
-
         virtual void update() override {
 
 
@@ -92,7 +72,7 @@ class ArrowComponent : public Component {
                     path[path.size()].push_back(objectivepos[0]);
                     path[path.size()].push_back(objectivepos[1]);
                 } else {
-                    make_path(cursor->getComponent<PositionComponent>().getPos());
+
                 }
             }
 

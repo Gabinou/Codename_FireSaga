@@ -56,7 +56,6 @@ Map::Map(const short unsigned int width, const short unsigned int height) : Map(
 
 void Map::loadMap(std::string filename) {
     map = readcsv_vec(filename.c_str(), 1);
-    printf("loadedmap\n\n");
     Entity_ptr_matrix temp(map.size(), std::vector<Entity*>(map[0].size()));
 
     tiles = temp;

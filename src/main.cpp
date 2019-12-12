@@ -37,11 +37,16 @@ int main(int argc, char * argv[]) {
     // read_all_units("..\\units_FE1.txt");
     // write_all_units("..\\units_test.txt"); // OKAY
 
-    int n = 5;
+    // int n = 5;
 
-    int arr[n];
+    // int arr[n];
 
-    permutations_binary(5, 2, arr);
+    // permutations_binary(8, 4, arr);
+
+    int start[2] = {2, 2};
+    int end[2] = {5, 4};
+
+    A_star(start, end);
 
     getchar();
 
