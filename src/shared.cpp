@@ -141,10 +141,9 @@ void A_star(int start[], int end[]){
                 closedlist.erase(closedlist.begin() + inclosedlist_index);
             }
             if (openlist.size()>1) {
-                printf("swapping?");
-                for (swap_index = 0; swap_index < openlist.size()-1; swap_index++) {
-                    if (openlist[swap_index+1][3] > openlist[swap_index][3]) {
-                       std::iter_swap(openlist.begin() + swap_index + 1, openlist.begin() + swap_index);
+                for (swap_index = (openlist.size()-1); swap_index >= 1; swap_index--) {
+                    if (openlist[swap_index-1][3] < openlist[swap_index][3]) {
+                        std::iter_swap(openlist.begin() + swap_index - 1, openlist.begin() + swap_index);
                     }
                 }
             }
