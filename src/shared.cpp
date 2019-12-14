@@ -56,6 +56,16 @@ double  h_euclidean (int start[], int end[]){
 }
 
 
+int find_row (int start[], std::vector<std::vector<int>> list) {
+    int row;
+    for (row = 0; row < list.size(); row++){
+        if ((list[row][0] == start[0]) && (list[row][1] == start[1])) {
+            return(row);
+        }
+    }
+    return(-1);
+}
+
 void A_star(int start[], int end[]){
     // Arrays containing points are arrays:
     // [0-1] = point [2] = f value [3-4] previous point.
@@ -64,13 +74,13 @@ void A_star(int start[], int end[]){
     std::vector<int> current;
     openlist.push_back({start[0], start[1], 0, 0, 0});
     current = openlist.back();  
-    int i;
+    int swap_index;
+    int inlist_index;
     int f;
     int neighborxp[2];
     int neighborxm[2];
     int neighboryp[2];
     int neighborym[2];
-
 
     int map[10][10] = {
         {1,1,1,1,1,1,1,1,1,1},
@@ -99,12 +109,18 @@ void A_star(int start[], int end[]){
         neighborym[1] = std::max(0, current[1] - 1);
         f = h_manhattan(current, start) + h_manhattan(current, end);
         current[2] = f;
+        openlist.size();
+        inlist_index = find_row(neighborxp, openlist)
+        if ((inlist_index > 0) &&){
 
+        }
+        
         printf("%d", f);
+        printf("%d", openlist.size());
         if (openlist.size()>1) {
-            i = 0;
-            while(openlist[i+1] < openlist[i]){
-                std::iter_swap(openlist.begin() + i + 1, openlist.begin() + i);
+            swap_index = 0;
+            while(openlist[swap_index + 1] < openlist[swap_index]){
+                std::iter_swap(openlist.begin() + swap_index + 1, openlist.begin() + swap_index);
             }
         }
 
