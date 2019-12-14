@@ -84,8 +84,8 @@ void A_star(int start[], int end[]){
     int neighborxm[2];
     int neighboryp[2];
     int neighborym[2];
-   
     int (* neighbors[4])[2];
+
     int map[10][10] = {
         {1,1,1,1,1,1,1,1,1,1},
         {1,1,1,1,1,1,1,1,1,1},
@@ -122,38 +122,30 @@ void A_star(int start[], int end[]){
         neighbors[1] = &neighborxm;
         neighbors[2] = &neighboryp;
         neighbors[3] = &neighborym;
+
         for (int i = 0; i < 4; i++){
-            printf("%d", *neighbors[i][0]); 
             inopenlist_index = find_row(*neighbors[i], openlist);
             inclosedlist_index = find_row(*neighbors[i], openlist);
             cost = current[2] + h_manhattan(current, end);
-            g_neighbor = current[2] + map[*neighbors[i][0]][*neighbors[i][1]];
+            printf("%d, ", (*neighbors[i])[0]);
+            printf(" %d\n", (*neighbors[i])[1]);
+            g_neighbor = current[2] + map[(*neighbors[i])[0]][(*neighbors[i])[1]];
             h_neighbor = h_manhattan(*neighbors[i], end);
-            printf("%d", inopenlist_index);
             if ((inopenlist_index < 0) && (inclosedlist_index < 0)) {
-                openlist.push_back({*neighbors[i][0], g_neighbor, h_neighbor + g_neighbor, current[0], current[1]});
+                openlist.push_back({(*neighbors[i])[0],(*neighbors[i])[1], g_neighbor, h_neighbor + g_neighbor, current[0], current[1]});
             }
-
-            // if ((inopenlist_index > 0) && (cost < g_neighbor)) {
-            //     openlist.erase(inopenlist_index);
-            // }
-            // if ((inclosedlist_index > 0) && (cost < g_neighbor)) {
-            //     closedlist.erase(inclosedlist_index);
-            // }
-        // if ((inclosedlist_index > 0) && (f < current[2])){
-        //     openlist[inlist_index][2] = f;
-        //     openlist[inlist_index][3] = current[0];
-        //     openlist[inlist_index][4] = current[1];
-        // }
-        
-        // printf("%d", f);
-        // printf("%d", openlist.size());
-        // if (openlist.size()>1) {
-        //     swap_index = 0;
-        //     while(openlist[swap_index + 1] < openlist[swap_index]){
-        //         std::iter_swap(openlist.begin() + swap_index + 1, openlist.begin() + swap_index);
-        //     }
-        // }
+            if ((inopenlist_index > 0) && (cost < g_neighbor)) {
+                openlist.erase(openlist.begin() + inopenlist_index);
+            }
+            if ((inclosedlist_index > 0) && (cost < g_neighbor)) {
+                closedlist.erase(closedlist.begin() + inclosedlist_index);
+            }
+            if (openlist.size()>1) {
+                swap_index = 0;
+                while(openlist[swap_index + 1][3] < openlist[swap_index][3]){
+                    std::iter_swap(openlist.begin() + swap_index + 1, openlist.begin() + swap_index);
+                }
+            }
         }
 
 
