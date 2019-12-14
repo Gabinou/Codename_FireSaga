@@ -147,11 +147,6 @@ void A_star(int start[], int end[]){
                     }
                 }
             }
-            printf("try");
-            for (int i = 0; i < openlist.size(); i++) {
-                printf("%d %d %d %d\n", openlist[i][0], openlist[i][1], openlist[i][2], openlist[i][3]);
-            }
-
             getchar();
         }
 
