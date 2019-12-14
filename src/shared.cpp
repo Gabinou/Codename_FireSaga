@@ -34,6 +34,22 @@ int h_manhattan (int start[], int end[]){
     // fast. Exact on a grid.
     return(abs(start[0] - end[0]) + abs(start[1] - end[1]));
 }
+
+int h_manhattan (std::vector<int> start, std::vector<int> end){
+    // fast. Exact on a grid.
+    return(abs(start[0] - end[0]) + abs(start[1] - end[1]));
+}
+
+int h_manhattan (std::vector<int> start, int end[]){
+    // fast. Exact on a grid.
+    return(abs(start[0] - end[0]) + abs(start[1] - end[1]));
+}
+
+int h_manhattan (int start[], std::vector<int> end){
+    // fast. Exact on a grid.
+    return(abs(start[0] - end[0]) + abs(start[1] - end[1]));
+}
+
 double  h_euclidean (int start[], int end[]){
     // Slower. More accurate.
     return(std::sqrt(pow(start[0] - end[0], 2.0) + pow(start[1] - end[1], 2.0)));
@@ -41,37 +57,15 @@ double  h_euclidean (int start[], int end[]){
 
 
 void A_star(int start[], int end[]){
-
-    struct cmp{
-        bool operator() (const int* lhs, const int* rhs){
-            return(lhs[2] < rhs[2]);
-        }
-    };
-
-    // std::multiset<int*, cpm> openlist2;
-
-    // std::stack<int*> openlist;
-    // std::stack<int*> path;
-    // path.push(start);
-    // int f = 255;
-    // int current_f = 255;
-    // int to_push[2];
-    // int neighborxp[2] = {std::min(255, start[0]+1), start[1]};
-    // int neighboryp[2] = {start[0], std::min(255, start[1]+1)};
-    // int neighborxm[2] = {std::max(0, start[0]-1), start[1]};
-    // int neighborym[2] = {start[0], std::max(0, start[1]-1)};
-    // if (start[0] > 0){
-    //     openlist.push(neighborxm);
-    // }
-    // if (start[0] < 255){
-    //     openlist.push(neighborxp);
-    // }
-    // if (start[1] > 0){
-    //     openlist.push(neighborym);
-    // }
-    // if (start[1] < 255){
-    //     openlist.push(neighboryp);
-    // }
+    // Arrays containing points are arrays:
+    // [0-1] = point [2] = f value [3-4] previous point.
+    std::vector<std::vector<int>> openlist;
+    std::vector<std::vector<int>> closedlist;
+    std::vector<int> current;
+    openlist.push_back({start[0], start[1], 0, 0, 0});
+    current = openlist.back();  
+    int i;
+    int f;
 
     int map[10][10] = {
         {1,1,1,1,1,1,1,1,1,1},
@@ -86,49 +80,23 @@ void A_star(int start[], int end[]){
         {1,1,1,1,1,1,1,1,1,1}
     }; // this is the movement cost
 
+    while((current[0] != end[0]) && (current[1] != end[1])){
+        printf("a");
+        current = openlist.back();  
+        openlist.pop_back();  
 
-    // while ((path.top()[0] != end[0]) && (path.top()[1] != end[1])) {
-    //     while (!openlist.empty()) {
+        f = h_manhattan(current, end);
+        if (openlist.size()>1) {
+            i = 0;
+            while(openlist[i+1] < openlist[i]){
+                std::iter_swap(openlist.begin() + i + 1, openlist.begin() + i);
+            }
+        }
 
-    //         if (map[openlist.top()[0]][openlist.top()[1]] > 0) {
-    //             current_f = map[openlist.top()[0]][openlist.top()[1]] + h_manhattan(openlist.top(), end);
 
-    //             if (current_f < f) {
-    //                 f = current_f;
-    //                 to_push[0] = openlist.top()[0];
-    //                 to_push[1] = openlist.top()[1];
-    //             }
-    //         }
-    //         openlist.pop();
-    //     }
-
-    //     neighborxp[0] = std::min(255, to_push[0] + 1);
-    //     neighborxp[1] = to_push[1];
-    //     neighboryp[0] = to_push[0];
-    //     neighboryp[1] = std::min(255, to_push[1] + 1);
-    //     neighborxm[0] = std::max(0, to_push[0] - 1);
-    //     neighborxm[1] = to_push[1];
-    //     neighborym[0] = to_push[0];
-    //     neighborym[1] = std::max(0, to_push[1] - 1);
-
-    //     if ((to_push[0] > 0) && (neighborxm[0] != path.top()[0])) {
-    //         openlist.push(neighborxm);
-    //     }
-    //     if ((to_push[0] < 255) && (neighborxp[0] != path.top()[0])) {
-    //         openlist.push(neighborxp);
-    //     }
-    //     if ((to_push[1] > 0)  && (neighborym[1] != path.top()[1])) {
-    //         openlist.push(neighborym);
-    //     }
-    //     if ((to_push[1] < 255) && (neighboryp[1] != path.top()[1])) {
-    //         openlist.push(neighboryp);
-    //     }
-
-    //     path.push(to_push);
-
-    //     printf("%d, %d\n", path.top()[0], path.top()[1]);
         getchar();
-    // }
+    }
+
     printf("found a path.");
 }
 
