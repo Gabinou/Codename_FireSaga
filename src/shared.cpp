@@ -66,6 +66,11 @@ void A_star(int start[], int end[]){
     current = openlist.back();  
     int i;
     int f;
+    int neighborxp[2];
+    int neighborxm[2];
+    int neighboryp[2];
+    int neighborym[2];
+
 
     int map[10][10] = {
         {1,1,1,1,1,1,1,1,1,1},
@@ -81,17 +86,30 @@ void A_star(int start[], int end[]){
     }; // this is the movement cost
 
     while((current[0] != end[0]) && (current[1] != end[1])){
-        printf("a");
+        printf("a\n");
         current = openlist.back();  
         openlist.pop_back();  
+        neighborxp[0] = std::min(255, current[0] + 1);
+        neighborxp[1] = current[1];
+        neighborxm[0] = std::max(0, current[0] - 1);
+        neighborxm[1] = current[1];
+        neighboryp[0] = current[0];
+        neighboryp[1] = std::min(255, current[1] + 1);
+        neighborym[0] = current[0];
+        neighborym[1] = std::max(0, current[1] - 1);
+        f = h_manhattan(current, start) + h_manhattan(current, end);
+        current[2] = f;
 
-        f = h_manhattan(current, end);
+        printf("%d", f);
         if (openlist.size()>1) {
             i = 0;
             while(openlist[i+1] < openlist[i]){
                 std::iter_swap(openlist.begin() + i + 1, openlist.begin() + i);
             }
         }
+
+
+
 
 
         getchar();
