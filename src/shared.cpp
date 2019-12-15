@@ -93,26 +93,23 @@ struct node{
     int distance;
 };
 
-void flood_fill(int start[], int move, int attack){
-    int map[10][10] = {
-        {1,1,1,1,1,1,1,1,1,1},
-        {1,1,1,1,1,1,1,1,1,1},
-        {1,1,1,1,1,1,1,1,1,1},
-        {1,1,1,1,1,1,1,1,1,1},
-        {1,1,1,1,1,1,1,1,1,1},
-        {1,1,1,1,2,1,2,1,1,1},
-        {1,1,1,1,1,2,1,1,1,1},
-        {1,1,1,1,1,1,1,1,1,1},
-        {1,1,1,1,1,1,1,1,1,1},
-        {1,1,1,1,1,1,1,1,1,1}
-    };
-    plot2Darray(map,10,10);
-    getchar();
+void flood_fill(std::vector<std::vector<int>> map, int start[], int move, int attack, std::string mode){
+    
+    printf("Movement cost map\n");
+    plot2Dvector(map);
+    std::vector<std::vector<int>> movemap = map;
+    for (int i = 0; i < movemap.size(); i++){
+        std::fill(movemap[i].begin(), movemap[i].end(), 0);
+    }
+
+    std::vector<std::vector<int>> attackmap = movemap;
+    std::vector<std::vector<int>> moveable;
+    std::vector<std::vector<int>> attackable;    
+
     bool add;
     std::vector<node> open;
     std::vector<node> closed;
-    std::vector<std::vector<int>> moveable;
-    std::vector<node> attackable;
+
     node current;
     node neighbor;
     current.x = start[0];
@@ -131,6 +128,9 @@ void flood_fill(int start[], int move, int attack){
             // this if might be unnecessary.
             printf("Added");
             moveable.push_back({current.x, current.y});
+            if (mode == "matrix") {
+                movemap[current.x][current.y] = 1;
+            }
         }
 
         // getchar();
@@ -161,6 +161,12 @@ void flood_fill(int start[], int move, int attack){
     for(int i=0; i < moveable.size(); i++){
         printf("Moveable: %d %d\n", moveable[i][0], moveable[i][1]);
     }
+
+    printf("Movement map\n");
+    plot2Dvector(movemap);
+
+    printf("Attack map\n");
+    plot2Dvector(attackmap);
 }
 
 

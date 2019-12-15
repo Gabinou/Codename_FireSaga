@@ -113,11 +113,9 @@ extern void read_all_unit_classes(const char * filename = "classes_FE1.txt");
 
 extern void permutations_binary(int len, int num_0, int out[], int i = 0);
 extern void A_star(int start[], int end[]);
-extern void flood_fill(int start[], int move, int attack = 1);
+extern void flood_fill(std::vector<std::vector<int>> map, int start[], int move, int attack = 1, std::string mode = "matrix");
 extern int h_manhattan(int start[], int end[]);
 extern double h_euclidean(int start[], int end[]);
-
-
 
 // Texture stuff.
 
