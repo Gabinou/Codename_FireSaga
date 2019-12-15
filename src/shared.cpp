@@ -121,15 +121,18 @@ void flood_fill(std::vector<std::vector<int>> map, int start[], int move, int at
 
     while (!open.empty()){
         current = open.back();
-        printf("Current: %d %d %d\n", current.x, current.y, current.distance);
+        // printf("Current: %d %d %d\n", current.x, current.y, current.distance);
         open.pop_back();
         closed.push_back(current);
-        if (current.distance <= move) {
-            // this if might be unnecessary.
-            printf("Added");
-            moveable.push_back({current.x, current.y});
-            if (mode == "matrix") {
+        printf("Added\n");
+        moveable.push_back({current.x, current.y});
+        if (mode == "matrix") {
+            if (current.distance <= move) {
                 movemap[current.x][current.y] = 1;
+            }
+            if (current.distance > move) {
+                printf("Current: %d %d %d\n", current.x, current.y, current.distance);
+                attackmap[current.x][current.y] = 1;
             }
         }
 
@@ -138,11 +141,11 @@ void flood_fill(std::vector<std::vector<int>> map, int start[], int move, int at
         while(i<2){
             j = -1;
             while(j<2){
-                neighbor.x = std::min(std::max(current.x+((i+j)/2),0),255);
-                neighbor.y = std::min(std::max(current.y+((i-j)/2),0),255);
+                neighbor.x = std::min(std::max(current.x+((i+j)/2),0),int(map.size()-1));
+                neighbor.y = std::min(std::max(current.y+((i-j)/2),0),int(map[0].size()-1));
                 // printf("Neighbor: %d %d\n", neighbor.x, neighbor.y);
-                neighbor.distance = current.distance + map[neighbor.x][neighbor.y];
-                if (neighbor.distance <= move){
+                neighbor.distance = abs(start[0] - neighbor.x) + abs(start[1] - neighbor.y);
+                if (neighbor.distance <= (move + attack)){
                     add=true;
                     for(int k=0; k < closed.size(); k++) {
                         if ((neighbor.x == closed[k].x) && (neighbor.y == closed[k].y)) {
