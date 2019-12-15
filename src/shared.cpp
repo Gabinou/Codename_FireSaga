@@ -133,13 +133,13 @@ void flood_fill(std::vector<std::vector<int>> map, int start[], int move, int at
             }
         }
 
-        if (current.distance > move) {
+        if (current.distance <= (move+attack)) {
             attackable.push_back({current.x, current.y});
-            // printf("Current: %d %d %d\n", current.x, current.y, current.distance);
             if (mode == "matrix") {
-                attackmap[current.x][current.y] = 1;
+               attackmap[current.x][current.y] = 1;
             }
         }
+        
         
         i = -1;
         while(i<2){
