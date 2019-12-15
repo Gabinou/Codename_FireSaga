@@ -66,6 +66,77 @@ int find_row (int start[], std::vector<std::vector<int>> list) {
     return(-1);
 }
 
+struct node{
+    int x;
+    int y;
+    int distance;
+};
+
+void flood_fill(int start[], int move, int attack){
+    int map[10][10] = {
+        {1,1,1,1,1,1,1,1,1,1},
+        {1,1,1,1,1,1,1,1,1,1},
+        {1,1,1,1,1,1,1,1,1,1},
+        {1,1,1,1,1,1,1,1,1,1},
+        {1,1,1,1,1,1,1,1,1,1},
+        {1,1,1,1,1,1,1,1,1,1},
+        {1,1,1,1,1,1,1,1,1,1},
+        {1,1,1,1,1,1,1,1,1,1},
+        {1,1,1,1,1,1,1,1,1,1},
+        {1,1,1,1,1,1,1,1,1,1}
+    };
+    bool add;
+    int toadd[2];
+    std::vector<node> open;
+    std::vector<node> closed;
+    std::vector<int*> moveable;
+    std::vector<node> attackable;
+    node current;
+    node neighbor;
+    current.x = start[0];
+    current.y = start[1];
+    current.distance = 0;
+    open.push_back(current);
+    moveable.push_back(start);
+    int i,j;
+
+    while (!open.empty()){
+        printf("inloop");
+        getchar();
+        i = -1;
+        while(i<2){
+            j = -1;
+            while(j<2){
+                neighbor.x = std::min(std::max(current.x+((i+j)/2),0),255);
+                neighbor.y = std::min(std::max(current.y+((i-j)/2),0),255);
+                printf("%d %d\n", neighbor.x, neighbor.y);
+                neighbor.distance = current.distance + map[neighbor.x][neighbor.y];
+                if (neighbor.distance <= move){
+                    for(int k=0; k < moveable.size(); k++) {
+                        if ((neighbor.x == moveable[k][0]) && (neighbor.y == moveable[k][1])) {
+                            add = false;
+                        }
+                    }
+                    if (add) {
+                        toadd[0] = neighbor.x;
+                        toadd[1] = neighbor.y;
+                        moveable.push_back(toadd);
+                    }
+                    open.push_back(neighbor);
+                }
+            j+=2;
+            } 
+        i+=2;
+        }
+    }
+    printf("outloop");
+    for(int i=0; i < moveable.size();i++){
+        printf("%d %d\n", moveable[i][0], moveable[i][1]);
+    }
+}
+
+
+
 void A_star(int start[], int end[]){
     // Arrays containing points are arrays:
     // [0-1] = point [2] = f value [3-4] previous point.

@@ -43,8 +43,15 @@ int main(int argc, char * argv[]) {
 
     // permutations_binary(8, 4, arr);
 
-    int start[2] = {1, 1};
+    int start[2] = {5, 5};
     int end[2] = {8, 8};
+
+    flood_fill(start, 4, 1);
+
+    getchar();
+    getchar();
+    getchar();
+    getchar();
 
     A_star(start, end);
 
