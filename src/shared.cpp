@@ -66,6 +66,27 @@ int find_row (int start[], std::vector<std::vector<int>> list) {
     return(-1);
 }
 
+void plot2Darray(int array[][10], int imax, int jmax){
+    //Don't know how to pass array that at least do not have 1D known before hand
+    for (int i = 0; i < imax; i++){
+        for (int j = 0; j < jmax; j++){
+            printf("%d ", array[i][j]);
+        }
+        printf("\n");
+    }
+}
+
+void plot2Dvector(std::vector<std::vector<int>> matrix){
+    //Don't know how to pass array that at least do not have 1D known before hand
+    for (int i = 0; i < matrix.size(); i++){
+        for (int j = 0; j < matrix[i].size(); j++){
+            printf("%d ", matrix[i][j]);
+        }
+        printf("\n");
+    }
+}
+
+
 struct node{
     int x;
     int y;
@@ -79,14 +100,15 @@ void flood_fill(int start[], int move, int attack){
         {1,1,1,1,1,1,1,1,1,1},
         {1,1,1,1,1,1,1,1,1,1},
         {1,1,1,1,1,1,1,1,1,1},
-        {1,1,1,1,1,1,1,1,1,1},
-        {1,1,1,1,1,1,1,1,1,1},
+        {1,1,1,1,2,1,2,1,1,1},
+        {1,1,1,1,1,2,1,1,1,1},
         {1,1,1,1,1,1,1,1,1,1},
         {1,1,1,1,1,1,1,1,1,1},
         {1,1,1,1,1,1,1,1,1,1}
     };
+    plot2Darray(map,10,10);
+    getchar();
     bool add;
-    int toadd[2];
     std::vector<node> open;
     std::vector<node> closed;
     std::vector<std::vector<int>> moveable;
