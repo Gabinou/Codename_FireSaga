@@ -43,7 +43,7 @@ int main(int argc, char * argv[]) {
 
     // permutations_binary(8, 4, arr);
 
-    int start[2] = {8, 8};
+    int start[2] = {7, 7};
     int end[2] = {8, 8};
 
     // int map[10][10] = {
@@ -73,7 +73,7 @@ int main(int argc, char * argv[]) {
 
     };
 
-    flood_fill(map, start, 2, 1);
+    flood_fill(map, start, 8, 1);
 
     getchar();
     getchar();
