@@ -125,23 +125,28 @@ void flood_fill(std::vector<std::vector<int>> map, int start[], int move, int at
         open.pop_back();
         closed.push_back(current);
         printf("Added\n");
-        moveable.push_back({current.x, current.y});
-        if (mode == "matrix") {
-            if (current.distance <= move) {
-                movemap[current.x][current.y] = 1;
+        
+        
+        if (current.distance <= move) {
+            moveable.push_back({current.x, current.y});
+            if (mode == "matrix") {
+               movemap[current.x][current.y] = 1;
             }
-            if (current.distance > move) {
-                printf("Current: %d %d %d\n", current.x, current.y, current.distance);
+        }
+        if (current.distance > move) {
+            attackable.push_back({current.x, current.y});
+            printf("Current: %d %d %d\n", current.x, current.y, current.distance);
+            if (mode == "matrix") {
                 attackmap[current.x][current.y] = 1;
             }
         }
+        
         i = -1;
         while(i<2){
             j = -1;
             while(j<2){
                 neighbor.x = std::min(std::max(current.x+((i+j)/2),0),int(map.size()-1));
                 neighbor.y = std::min(std::max(current.y+((i-j)/2),0),int(map[0].size()-1));
-                // printf("Neighbor: %d %d\n", neighbor.x, neighbor.y);
                 neighbor.distance = abs(start[0] - neighbor.x) + abs(start[1] - neighbor.y);
                 if ((neighbor.distance <= (move + attack)) && (map[neighbor.x][neighbor.y] > 0)){
                     add=true;
