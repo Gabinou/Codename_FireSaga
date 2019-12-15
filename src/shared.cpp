@@ -147,12 +147,17 @@ void flood_fill(std::vector<std::vector<int>> map, int start[], int move, int at
             while(j<2){
                 neighbor.x = std::min(std::max(current.x+((i+j)/2),0),int(map.size()-1));
                 neighbor.y = std::min(std::max(current.y+((i-j)/2),0),int(map[0].size()-1));
-                neighbor.distance = abs(start[0] - neighbor.x) + abs(start[1] - neighbor.y);
+                neighbor.distance = current.distance + map[neighbor.x][neighbor.y];
+                // neighbor.distance = abs(start[0] - neighbor.x) + abs(start[1] - neighbor.y);
                 if ((neighbor.distance <= (move + attack)) && (map[neighbor.x][neighbor.y] > 0)){
-                    add=true;
+                    add = true;
                     for(int k=0; k < closed.size(); k++) {
                         if ((neighbor.x == closed[k].x) && (neighbor.y == closed[k].y)) {
                             add = false;
+                            if (neighbor.distance < closed[k].distance){
+                                open.push_back(neighbor);
+                                closed.erase(closed.begin() + k);
+                            }
                         }
                     }
                     if (add) {
