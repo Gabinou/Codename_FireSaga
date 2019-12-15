@@ -86,6 +86,17 @@ void plot2Dvector(std::vector<std::vector<int>> matrix){
     }
 }
 
+std::vector<std::vector<int>> matrix_plus(std::vector<std::vector<int>> matrix1, std::vector<std::vector<int>> matrix2, int sign = 1){
+    //both matrices should have the same shape
+    std::vector<std::vector<int>> out = matrix1;
+    for (int i = 0; i < out.size(); i++){
+        for (int j = 0; j < out[i].size(); j++){
+            out[i][j] += sign * matrix2[i][j];
+        }
+    }
+    return(out);
+}
+
 
 struct node{
     int x;
@@ -133,13 +144,12 @@ void flood_fill(std::vector<std::vector<int>> map, int start[], int move, int at
             }
         }
 
-        if (current.distance <= (move+attack)) {
+        if (current.distance < (move + attack)) {
             attackable.push_back({current.x, current.y});
             if (mode == "matrix") {
                attackmap[current.x][current.y] = 1;
             }
         }
-        
         
         i = -1;
         while(i<2){
@@ -148,32 +158,29 @@ void flood_fill(std::vector<std::vector<int>> map, int start[], int move, int at
                 neighbor.x = std::min(std::max(current.x+((i+j)/2),0),int(map.size()-1));
                 neighbor.y = std::min(std::max(current.y+((i-j)/2),0),int(map[0].size()-1));
                 neighbor.distance = current.distance + map[neighbor.x][neighbor.y];
-                // neighbor.distance = abs(start[0] - neighbor.x) + abs(start[1] - neighbor.y);
-                if (neighbor.distance <= (move + attack)){
-                    if (map[neighbor.x][neighbor.y] > 0) {
-                        inclosed = false;
-                        for(int k=0; k < closed.size(); k++) {
-                            if ((neighbor.x == closed[k].x) && (neighbor.y == closed[k].y)) {
-                                inclosed = true;
-                                if (neighbor.distance < closed[k].distance){
-                                    open.push_back(neighbor);
-                                    closed.erase(closed.begin() + k);
-                                }
+                if ((neighbor.distance < (move + attack)) && (map[neighbor.x][neighbor.y] > 0)) {
+                    inclosed = false;
+                    for(int k=0; k < closed.size(); k++) {
+                        if ((neighbor.x == closed[k].x) && (neighbor.y == closed[k].y)) {
+                            inclosed = true;
+                            if (neighbor.distance < closed[k].distance){
+                                open.push_back(neighbor);
+                                closed.erase(closed.begin() + k);
                             }
                         }
-                        if (!inclosed) {
-                            open.push_back(neighbor);
-                        }
-                    } else {
-                        attackable.push_back({neighbor.x, neighbor.y});
-                        if (mode == "matrix") {
-                            attackmap[neighbor.x][neighbor.y] = 1;
-                        }
+                    }
+                    if (!inclosed) {
+                        open.push_back(neighbor);
+                    }
+                } else {
+                    attackable.push_back({neighbor.x, neighbor.y});
+                    if (mode == "matrix") {
+                        attackmap[neighbor.x][neighbor.y] = 1;
                     }
                 }
-            j+=2;
+                j+=2;
             } 
-        i+=2;
+            i+=2;
         }
     }
     // for(int i=0; i < moveable.size(); i++){
@@ -184,7 +191,7 @@ void flood_fill(std::vector<std::vector<int>> map, int start[], int move, int at
     plot2Dvector(movemap);
 
     printf("Attack map\n");
-    plot2Dvector(attackmap);
+    plot2Dvector(matrix_plus(attackmap, movemap, -1));
 }
 
 
