@@ -88,21 +88,22 @@ void A_star(int start[], int end[]){
 
     int map[10][10] = {
         {1,1,1,1,1,1,1,1,1,1},
-        {1,1,1,1,1,1,1,1,1,1},
-        {1,1,1,1,100,1,1,1,1,1},
-        {1,1,1,100,1,1,1,1,1,1},
-        {1,1,100,1,1,1,1,1,1,1},
+        {1,1,1,1,1,-1,1,1,1,1},
+        {1,1,1,1,-1,1,1,1,1,1},
+        {1,1,1,-1,1,1,1,1,1,1},
+        {1,1,-1,1,1,1,1,1,1,1},
         {1,1,1,1,1,1,1,1,1,1},
         {1,1,1,1,1,1,1,1,1,1},
         {1,1,1,1,1,1,1,1,1,1},
         {1,1,1,1,1,1,1,1,1,1},
         {1,1,1,1,1,1,1,1,1,1}
-    }; // this is the movement cost
-
-    while((current[0] != end[0]) && (current[1] != end[1])){
-        printf("a\n");
-        printf("%d %d \n", current[0], current[1]);
+    }; // this is the movement cost. [column][row]
+    printf("%d ", map[5][1]);
+    printf("%d\n", map[1][5]);
+    while((current[0] != end[0]) || (current[1] != end[1])){
+        // printf("%d %d \n", end[0], end[1]);
         current = openlist.back();  
+        // printf("%d %d \n", current[0], current[1]);
         closedlist.push_back(current);
         if ((current[0] == end[0]) && (current[1] == end[1])){
             break;
@@ -125,31 +126,48 @@ void A_star(int start[], int end[]){
         neighbors[3] = &neighborym;
 
         for (int i = 0; i < 4; i++){
-            inopenlist_index = find_row(*neighbors[i], openlist);
-            inclosedlist_index = find_row(*neighbors[i], openlist);
-            cost = current[2] + h_manhattan(current, end);
-            g_neighbor = current[2] + map[(*neighbors[i])[0]][(*neighbors[i])[1]];
-            h_neighbor = h_manhattan(*neighbors[i], end);
 
-            if ((inopenlist_index < 0) && (inclosedlist_index < 0)) {
-                openlist.push_back({(*neighbors[i])[0],(*neighbors[i])[1], g_neighbor, h_neighbor + g_neighbor, current[0], current[1]});
-            }
-            if ((inopenlist_index > 0) && (cost < g_neighbor)) {
-                openlist.erase(openlist.begin() + inopenlist_index);
-            }
-            if ((inclosedlist_index > 0) && (cost < g_neighbor)) {
-                closedlist.erase(closedlist.begin() + inclosedlist_index);
-            }
-            if (openlist.size()>1) {
-                for (swap_index = (openlist.size()-1); swap_index >= 1; swap_index--) {
-                    if (openlist[swap_index-1][3] < openlist[swap_index][3]) {
-                        std::iter_swap(openlist.begin() + swap_index - 1, openlist.begin() + swap_index);
+            if (map[(*neighbors[i])[0]][(*neighbors[i])[1]] > 0){
+                inopenlist_index = find_row(*neighbors[i], openlist);
+                inclosedlist_index = find_row(*neighbors[i], closedlist);
+                h_neighbor = h_manhattan(*neighbors[i], end);
+                g_neighbor = current[2] + map[(*neighbors[i])[0]][(*neighbors[i])[1]];
+
+                if (inopenlist_index > 0) {
+                    if (g_neighbor < openlist[inopenlist_index][2]) {
+                        openlist.erase(openlist.begin() + inopenlist_index);
+                    }
+                }
+                if (inclosedlist_index > 0) {
+                    if (g_neighbor < closedlist[inclosedlist_index][2]) {
+                        closedlist.erase(closedlist.begin() + inclosedlist_index);
+                    }
+                }
+                if ((inopenlist_index < 0) && (inclosedlist_index < 0)) {
+                    openlist.push_back({(*neighbors[i])[0],(*neighbors[i])[1], g_neighbor, h_neighbor + g_neighbor, current[0], current[1]});
+                }
+                if (openlist.size()>1) {
+                    for (swap_index = (openlist.size()-1); swap_index >= 1; swap_index--) {
+                        if (openlist[swap_index-1][3] < openlist[swap_index][3]) {
+                            std::iter_swap(openlist.begin() + swap_index - 1, openlist.begin() + swap_index);
+                        }
                     }
                 }
             }
-            getchar();
         }
+    }
+    std::vector<std::vector<int>> path;
+    path.push_back(closedlist.back());
+    closedlist.pop_back();
+    while (!closedlist.empty()){
+        if ((closedlist.back()[0] == path.back()[4]) && (closedlist.back()[1] == path.back()[5])) {
+            path.push_back(closedlist.back());
+        }
+        closedlist.pop_back();
+    }
 
+    for (int i = 0; i < path.size(); i++){
+        printf("%d %d \n", path[i][0], path[i][1]);
     }
 
     printf("found a path.");
