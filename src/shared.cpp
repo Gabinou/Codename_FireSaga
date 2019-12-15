@@ -89,7 +89,7 @@ void flood_fill(int start[], int move, int attack){
     int toadd[2];
     std::vector<node> open;
     std::vector<node> closed;
-    std::vector<int*> moveable;
+    std::vector<std::vector<int>> moveable;
     std::vector<node> attackable;
     node current;
     node neighbor;
@@ -97,41 +97,47 @@ void flood_fill(int start[], int move, int attack){
     current.y = start[1];
     current.distance = 0;
     open.push_back(current);
-    moveable.push_back(start);
+    moveable.push_back({start[0], start[1]});
     int i,j;
 
     while (!open.empty()){
-        printf("inloop");
-        getchar();
+        current = open.back();
+        printf("Current: %d %d %d\n", current.x, current.y, current.distance);
+        open.pop_back();
+        closed.push_back(current);
+        if (current.distance <= move) {
+            // this if might be unnecessary.
+            printf("Added");
+            moveable.push_back({current.x, current.y});
+        }
+
+        // getchar();
         i = -1;
         while(i<2){
             j = -1;
             while(j<2){
                 neighbor.x = std::min(std::max(current.x+((i+j)/2),0),255);
                 neighbor.y = std::min(std::max(current.y+((i-j)/2),0),255);
-                printf("%d %d\n", neighbor.x, neighbor.y);
+                // printf("Neighbor: %d %d\n", neighbor.x, neighbor.y);
                 neighbor.distance = current.distance + map[neighbor.x][neighbor.y];
                 if (neighbor.distance <= move){
-                    for(int k=0; k < moveable.size(); k++) {
-                        if ((neighbor.x == moveable[k][0]) && (neighbor.y == moveable[k][1])) {
+                    add=true;
+                    for(int k=0; k < closed.size(); k++) {
+                        if ((neighbor.x == closed[k].x) && (neighbor.y == closed[k].y)) {
                             add = false;
                         }
                     }
                     if (add) {
-                        toadd[0] = neighbor.x;
-                        toadd[1] = neighbor.y;
-                        moveable.push_back(toadd);
+                        open.push_back(neighbor);
                     }
-                    open.push_back(neighbor);
                 }
             j+=2;
             } 
         i+=2;
         }
     }
-    printf("outloop");
-    for(int i=0; i < moveable.size();i++){
-        printf("%d %d\n", moveable[i][0], moveable[i][1]);
+    for(int i=0; i < moveable.size(); i++){
+        printf("Moveable: %d %d\n", moveable[i][0], moveable[i][1]);
     }
 }
 
