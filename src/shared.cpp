@@ -103,7 +103,7 @@ void A_star(int start[], int end[]){
     while((current[0] != end[0]) || (current[1] != end[1])){
         // printf("%d %d \n", end[0], end[1]);
         current = openlist.back();  
-        // printf("%d %d \n", current[0], current[1]);
+        printf("current: %d %d \n", current[0], current[1]);
         closedlist.push_back(current);
         if ((current[0] == end[0]) && (current[1] == end[1])){
             break;
@@ -131,15 +131,24 @@ void A_star(int start[], int end[]){
                 inopenlist_index = find_row(*neighbors[i], openlist);
                 inclosedlist_index = find_row(*neighbors[i], closedlist);
                 h_neighbor = h_manhattan(*neighbors[i], end);
+
                 g_neighbor = current[2] + map[(*neighbors[i])[0]][(*neighbors[i])[1]];
 
+                printf("neighbor: %d %d \n", (*neighbors[i])[0], (*neighbors[i])[1]);
+                printf("g_neighbor: %d \n", g_neighbor);
                 if (inopenlist_index > 0) {
+                    printf("found open: %d %d \n", openlist[inopenlist_index][0], openlist[inopenlist_index][1]);
+                    printf("g: %d %d \n", g_neighbor, openlist[inopenlist_index][2]);
                     if (g_neighbor < openlist[inopenlist_index][2]) {
+                        printf("erase open\n");
                         openlist.erase(openlist.begin() + inopenlist_index);
                     }
                 }
                 if (inclosedlist_index > 0) {
+                    printf("found closed: %d %d \n", closedlist[inclosedlist_index][0], closedlist[inclosedlist_index][1]);
+                    printf("g: %d %d \n", g_neighbor, closedlist[inclosedlist_index][2]);
                     if (g_neighbor < closedlist[inclosedlist_index][2]) {
+                        printf("erase close\n");
                         closedlist.erase(closedlist.begin() + inclosedlist_index);
                     }
                 }
