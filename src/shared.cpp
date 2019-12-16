@@ -94,9 +94,8 @@ std::vector<std::vector<int>> movemap(std::vector<std::vector<int>> map, int sta
         movemap[current.x][current.y] = 1;
         // Two next whiles check the 4 neighbors. 
         // (i-j)/2 == 1 when (i+j)/2 == 0 and vice versa.
-       
-        for(int i = 0; i < 2; i++){
-            for(int j = 0; j < 2; j++ ){
+        for(int i = 0; i < 2; i++) {
+            for(int j = 0; j < 2; j++) {
                 neighbor.x = std::min(std::max(current.x+((index[i]+index[j])/2),0), int(map.size()-1));
                 neighbor.y = std::min(std::max(current.y+((index[i]-index[j])/2),0), int(map[0].size()-1));
                 neighbor.distance = current.distance + map[neighbor.x][neighbor.y];
@@ -122,6 +121,37 @@ std::vector<std::vector<int>> movemap(std::vector<std::vector<int>> map, int sta
     }
     return(movemap);
 }
+
+std::vector<std::vector<int>> attackmap(std::vector<std::vector<int>> movemap, int start[], int move, int attack){
+    
+    std::vector<std::vector<int>> attackmap = movemap;
+    for (int i = 0; i < attackmap.size(); i++){
+        std::fill(attackmap[i].begin(), attackmap[i].end(), 0);
+    }
+
+    for (int i = std::max(start[0] - move - attack-1, 0); i < std::min(start[0] + move + attack+1, int(movemap.size())); i++){
+        for (int j = std::max(start[1] - move - attack-1, 0); j < std::min(start[1] + move + attack+1, int(movemap[0].size())); j++){
+            for (int att = 1; att <= attack; att++){
+                if (movemap[i][j] == 0) {
+                    if (movemap[i][std::min(j+att, int(movemap[0].size()-1))] == 1){
+                        attackmap[i][j] = 1;
+                    }
+                    if (movemap[i][std::max(j-att, 0)] == 1){
+                        attackmap[i][j] = 1;
+                    }
+                    if (movemap[std::min(i+att, int(movemap.size()-1))][j] == 1){
+                        attackmap[i][j] = 1;
+                    }
+                    if (movemap[std::max(i-att, 0)][j] == 1){
+                        attackmap[i][j] = 1;
+                    }
+                }
+            }
+        }
+    }
+    return(attackmap);
+}
+
 
 void flood_fill(std::vector<std::vector<int>> map, int start[], int move, int attack, std::string mode){
     
