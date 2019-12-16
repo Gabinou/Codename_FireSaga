@@ -73,7 +73,7 @@ int main(int argc, char * argv[]) {
 
     };
 
-    flood_fill(map, start, 8, 2);
+    flood_fill(map, start, 8, 10);
 
     getchar();
     getchar();

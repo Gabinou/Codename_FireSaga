@@ -144,12 +144,12 @@ void flood_fill(std::vector<std::vector<int>> map, int start[], int move, int at
             }
         }
 
-        if (current.distance < (move + attack)) {
-            attackable.push_back({current.x, current.y});
-            if (mode == "matrix") {
-               attackmap[current.x][current.y] = 1;
-            }
-        }
+        // if (current.distance < (move + attack)) {
+        //     attackable.push_back({current.x, current.y});
+        //     if (mode == "matrix") {
+        //        attackmap[current.x][current.y] = 1;
+        //     }
+        // }
         
         i = -1;
         while(i<2){
@@ -172,12 +172,13 @@ void flood_fill(std::vector<std::vector<int>> map, int start[], int move, int at
                     if (!inclosed) {
                         open.push_back(neighbor);
                     }
-                } else {
-                    attackable.push_back({neighbor.x, neighbor.y});
-                    if (mode == "matrix") {
-                        attackmap[neighbor.x][neighbor.y] = 1;
-                    }
-                }
+                } 
+                // else {
+                //     attackable.push_back({neighbor.x, neighbor.y});
+                //     if (mode == "matrix") {
+                //         attackmap[neighbor.x][neighbor.y] = 1;
+                //     }
+                // }
                 j+=2;
             } 
             i+=2;
@@ -187,11 +188,36 @@ void flood_fill(std::vector<std::vector<int>> map, int start[], int move, int at
     //     printf("Moveable: %d %d\n", moveable[i][0], moveable[i][1]);
     // }
 
+
+    for (i = std::max(start[0] - move - attack-1, 0); i < std::min(start[0] + move + attack+1, int(map.size())); i++){
+        for (j = std::max(start[1] - move - attack-1, 0); j < std::min(start[1] + move + attack+1, int(map[0].size())); j++){
+            printf("%d %d \n", i, j);
+            for (int att = 1; att<=attack; att++){
+                if (movemap[i][j] == 0) {
+                    if (movemap[i][std::min(j+att, int(map[0].size()-1))] == 1){
+                        attackmap[i][j] = 1;
+                    }
+                    if (movemap[i][std::max(j-att, 0)] == 1){
+                        attackmap[i][j] = 1;
+                    }
+                    if (movemap[std::min(i+att, int(map.size()-1))][j] == 1){
+                        attackmap[i][j] = 1;
+                    }
+                    if (movemap[std::max(i-att, 0)][j] == 1){
+                        attackmap[i][j] = 1;
+                    }
+                }
+            }
+        }
+    }
+
     printf("Movement map\n");
     plot2Dvector(movemap);
 
     printf("Attack map\n");
-    plot2Dvector(matrix_plus(attackmap, movemap, -1));
+    plot2Dvector(attackmap);
+
+    // plot2Dvector(matrix_plus(attackmap, movemap, -1));
 }
 
 
