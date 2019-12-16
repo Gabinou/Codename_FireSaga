@@ -23,6 +23,7 @@
 #include "unit.hpp"
 #include "unit_class.hpp"
 #include "inventory_item.hpp"
+#include "linalg.hpp"
 
 /*! \file shared.hpp
 * \brief Shared data.
@@ -117,8 +118,10 @@ extern void flood_fill(std::vector<std::vector<int>> map, int start[], int move,
 extern int h_manhattan(int start[], int end[]);
 extern double h_euclidean(int start[], int end[]);
 
-// Texture stuff.
+extern std::vector<std::vector<int>> movemap(std::vector<std::vector<int>> map, int start[], int move);
 
+
+// Texture stuff.
 extern SDL_Texture * loadTexture(const char * filename);
 extern SDL_Texture * textToTexture(std::string textureText, SDL_Color textColor, TTF_Font * in_font);
 

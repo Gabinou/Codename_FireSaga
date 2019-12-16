@@ -66,36 +66,6 @@ int find_row (int start[], std::vector<std::vector<int>> list) {
     return(-1);
 }
 
-void plot2Darray(int array[][10], int imax, int jmax){
-    //Don't know how to pass array that at least do not have 1D known before hand
-    for (int i = 0; i < imax; i++){
-        for (int j = 0; j < jmax; j++){
-            printf("%d ", array[i][j]);
-        }
-        printf("\n");
-    }
-}
-
-void plot2Dvector(std::vector<std::vector<int>> matrix){
-    for (int i = 0; i < matrix.size(); i++){
-        for (int j = 0; j < matrix[i].size(); j++){
-            printf("%d ", matrix[i][j]);
-        }
-        printf("\n");
-    }
-}
-
-std::vector<std::vector<int>> matrix_plus(std::vector<std::vector<int>> matrix1, std::vector<std::vector<int>> matrix2, int sign = 1){
-    //both matrices should have the same shape
-    std::vector<std::vector<int>> out = matrix1;
-    for (int i = 0; i < out.size(); i++){
-        for (int j = 0; j < out[i].size(); j++){
-            out[i][j] += sign * matrix2[i][j];
-        }
-    }
-    return(out);
-}
-
 
 struct node{
     int x;
@@ -104,7 +74,7 @@ struct node{
 };
 
 
-std::vector<std::vector<int>> movemap(std::vector<std::vector<int>> map, int start[], int move, std::string mode){
+std::vector<std::vector<int>> movemap(std::vector<std::vector<int>> map, int start[], int move){
     // Using the map, computes all moveable tiles, and put it in 2D vector/map.
 
     // printf("Movement cost map\n");
@@ -128,19 +98,17 @@ std::vector<std::vector<int>> movemap(std::vector<std::vector<int>> map, int sta
         current = open.back();
         open.pop_back();
         closed.push_back(current);
-        
-        if (current.distance <= move) {
-           movemap[current.x][current.y] = 1;
-        }
-
+        movemap[current.x][current.y] = 1;
+        // Two next whiles check the 4 neighbors. 
+        // (i-j)/2 == 1 when (i+j)/2 == 0 and vice versa.
         i = -1;
         while(i<2){
             j = -1;
             while(j<2){
-                neighbor.x = std::min(std::max(current.x+((i+j)/2),0),int(map.size()-1));
-                neighbor.y = std::min(std::max(current.y+((i-j)/2),0),int(map[0].size()-1));
+                neighbor.x = std::min(std::max(current.x+((i+j)/2),0), int(map.size()-1));
+                neighbor.y = std::min(std::max(current.y+((i-j)/2),0), int(map[0].size()-1));
                 neighbor.distance = current.distance + map[neighbor.x][neighbor.y];
-                if ((neighbor.distance < move) && (map[neighbor.x][neighbor.y] > 0)) {
+                if ((neighbor.distance <= move) && (map[neighbor.x][neighbor.y] > 0)) {
                     inclosed = false;
                     for(int k=0; k < closed.size(); k++) {
                         if ((neighbor.x == closed[k].x) && (neighbor.y == closed[k].y)) {

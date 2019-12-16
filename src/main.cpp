@@ -72,8 +72,15 @@ int main(int argc, char * argv[]) {
         {1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1}
 
     };
+    std::vector<std::vector<int>> movemapp = map;
+    for (int i = 0; i < movemapp.size(); i++){
+        std::fill(movemapp[i].begin(), movemapp[i].end(), 0);
+    }
+    // flood_fill(map, start, 8, 10);
+    movemapp = movemap(map, start, 8);
 
-    flood_fill(map, start, 8, 10);
+    printf("Movement map\n");
+    plot2Dvector(movemapp);
 
     getchar();
     getchar();
