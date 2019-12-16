@@ -55,7 +55,6 @@ double  h_euclidean (int start[], int end[]){
     return(std::sqrt(pow(start[0] - end[0], 2.0) + pow(start[1] - end[1], 2.0)));
 }
 
-
 int find_row (int start[], std::vector<std::vector<int>> list) {
     int row;
     for (row = 0; row < list.size(); row++){
@@ -66,13 +65,11 @@ int find_row (int start[], std::vector<std::vector<int>> list) {
     return(-1);
 }
 
-
 struct node{
     int x;
     int y;
     int distance;
 };
-
 
 std::vector<std::vector<int>> movemap(std::vector<std::vector<int>> map, int start[], int move){
     // Using the map, computes all moveable tiles, and put it in 2D vector/map.
@@ -85,10 +82,8 @@ std::vector<std::vector<int>> movemap(std::vector<std::vector<int>> map, int sta
     }
 
     bool inclosed;
-    std::vector<node> open;
-    std::vector<node> closed;
-    node current;
-    node neighbor;
+    std::vector<node> open, closed;
+    node current, neighbor;
     current.x = start[0];
     current.y = start[1];
     current.distance = 0;
