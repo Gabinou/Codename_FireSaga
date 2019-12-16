@@ -77,7 +77,6 @@ void plot2Darray(int array[][10], int imax, int jmax){
 }
 
 void plot2Dvector(std::vector<std::vector<int>> matrix){
-    //Don't know how to pass array that at least do not have 1D known before hand
     for (int i = 0; i < matrix.size(); i++){
         for (int j = 0; j < matrix[i].size(); j++){
             printf("%d ", matrix[i][j]);
@@ -103,6 +102,66 @@ struct node{
     int y;
     int distance;
 };
+
+
+std::vector<std::vector<int>> movemap(std::vector<std::vector<int>> map, int start[], int move, std::string mode){
+    // Using the map, computes all moveable tiles, and put it in 2D vector/map.
+
+    // printf("Movement cost map\n");
+    // plot2Dvector(map);
+    std::vector<std::vector<int>> movemap = map;
+    for (int i = 0; i < movemap.size(); i++){
+        std::fill(movemap[i].begin(), movemap[i].end(), 0);
+    }
+
+    bool inclosed;
+    std::vector<node> open;
+    std::vector<node> closed;
+    node current;
+    node neighbor;
+    current.x = start[0];
+    current.y = start[1];
+    current.distance = 0;
+    open.push_back(current);
+    int i,j;
+    while (!open.empty()){
+        current = open.back();
+        open.pop_back();
+        closed.push_back(current);
+        
+        if (current.distance <= move) {
+           movemap[current.x][current.y] = 1;
+        }
+
+        i = -1;
+        while(i<2){
+            j = -1;
+            while(j<2){
+                neighbor.x = std::min(std::max(current.x+((i+j)/2),0),int(map.size()-1));
+                neighbor.y = std::min(std::max(current.y+((i-j)/2),0),int(map[0].size()-1));
+                neighbor.distance = current.distance + map[neighbor.x][neighbor.y];
+                if ((neighbor.distance < move) && (map[neighbor.x][neighbor.y] > 0)) {
+                    inclosed = false;
+                    for(int k=0; k < closed.size(); k++) {
+                        if ((neighbor.x == closed[k].x) && (neighbor.y == closed[k].y)) {
+                            inclosed = true;
+                            if (neighbor.distance < closed[k].distance){
+                                open.push_back(neighbor);
+                                closed.erase(closed.begin() + k);
+                            }
+                        }
+                    }
+                    if (!inclosed) {
+                        open.push_back(neighbor);
+                    }
+                } 
+                j+=2;
+            } 
+            i+=2;
+        }
+    }
+    return(movemap);
+}
 
 void flood_fill(std::vector<std::vector<int>> map, int start[], int move, int attack, std::string mode){
     
@@ -191,7 +250,7 @@ void flood_fill(std::vector<std::vector<int>> map, int start[], int move, int at
 
     for (i = std::max(start[0] - move - attack-1, 0); i < std::min(start[0] + move + attack+1, int(map.size())); i++){
         for (j = std::max(start[1] - move - attack-1, 0); j < std::min(start[1] + move + attack+1, int(map[0].size())); j++){
-            printf("%d %d \n", i, j);
+            // printf("%d %d \n", i, j);
             for (int att = 1; att<=attack; att++){
                 if (movemap[i][j] == 0) {
                     if (movemap[i][std::min(j+att, int(map[0].size()-1))] == 1){
