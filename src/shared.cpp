@@ -80,8 +80,6 @@ std::vector<std::vector<int>> movemap(std::vector<std::vector<int>> map, int sta
     for (int i = 0; i < movemap.size(); i++){
         std::fill(movemap[i].begin(), movemap[i].end(), 0);
     }
-
-    bool inclosed;
     std::vector<node> open, closed;
     node current, neighbor;
     current.x = start[0];
@@ -103,8 +101,8 @@ std::vector<std::vector<int>> movemap(std::vector<std::vector<int>> map, int sta
                 neighbor.y = std::min(std::max(current.y+((index[i]-index[j])/2),0), int(map[0].size()-1));
                 neighbor.distance = current.distance + map[neighbor.x][neighbor.y];
                 if ((neighbor.distance <= move) && (map[neighbor.x][neighbor.y] > 0)) {
-                    inclosed = false;
-                    for(int k=0; k < closed.size(); k++) {
+                    bool inclosed = false;
+                    for(int k = 0; k < closed.size(); k++) {
                         if ((neighbor.x == closed[k].x) && (neighbor.y == closed[k].y)) {
                             inclosed = true;
                             if (neighbor.distance < closed[k].distance){
