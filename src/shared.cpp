@@ -93,7 +93,7 @@ std::vector<std::vector<int>> movemap(std::vector<std::vector<int>> map, int sta
     current.y = start[1];
     current.distance = 0;
     open.push_back(current);
-    int i,j;
+    int index[2] = {-1, 1};
     while (!open.empty()){
         current = open.back();
         open.pop_back();
@@ -101,12 +101,11 @@ std::vector<std::vector<int>> movemap(std::vector<std::vector<int>> map, int sta
         movemap[current.x][current.y] = 1;
         // Two next whiles check the 4 neighbors. 
         // (i-j)/2 == 1 when (i+j)/2 == 0 and vice versa.
-        i = -1;
-        while(i<2){
-            j = -1;
-            while(j<2){
-                neighbor.x = std::min(std::max(current.x+((i+j)/2),0), int(map.size()-1));
-                neighbor.y = std::min(std::max(current.y+((i-j)/2),0), int(map[0].size()-1));
+       
+        for(int i = 0; i < 2; i++){
+            for(int j = 0; j < 2; j++ ){
+                neighbor.x = std::min(std::max(current.x+((index[i]+index[j])/2),0), int(map.size()-1));
+                neighbor.y = std::min(std::max(current.y+((index[i]-index[j])/2),0), int(map[0].size()-1));
                 neighbor.distance = current.distance + map[neighbor.x][neighbor.y];
                 if ((neighbor.distance <= move) && (map[neighbor.x][neighbor.y] > 0)) {
                     inclosed = false;
@@ -114,18 +113,18 @@ std::vector<std::vector<int>> movemap(std::vector<std::vector<int>> map, int sta
                         if ((neighbor.x == closed[k].x) && (neighbor.y == closed[k].y)) {
                             inclosed = true;
                             if (neighbor.distance < closed[k].distance){
-                                open.push_back(neighbor);
+                                inclosed = false;
                                 closed.erase(closed.begin() + k);
                             }
+                            break;
                         }
+
                     }
                     if (!inclosed) {
                         open.push_back(neighbor);
                     }
                 } 
-                j+=2;
             } 
-            i+=2;
         }
     }
     return(movemap);
