@@ -119,6 +119,7 @@ extern int h_manhattan(int start[], int end[]);
 extern double h_euclidean(int start[], int end[]);
 
 extern std::vector<std::vector<int>> movemap(std::vector<std::vector<int>> map, int start[], int move);
+extern std::vector<std::vector<int>> attackmap(std::vector<std::vector<int>> movemap, int start[], int move, int attack);
 
 
 // Texture stuff.

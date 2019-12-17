@@ -110,7 +110,6 @@ std::vector<std::vector<int>> movemap(std::vector<std::vector<int>> map, int sta
                             }
                             break;
                         }
-
                     }
                     if (!inclosed) {
                         open.push_back(neighbor);
@@ -128,7 +127,6 @@ std::vector<std::vector<int>> attackmap(std::vector<std::vector<int>> movemap, i
     for (int i = 0; i < attackmap.size(); i++){
         std::fill(attackmap[i].begin(), attackmap[i].end(), 0);
     }
-
     for (int i = std::max(start[0] - move - attack-1, 0); i < std::min(start[0] + move + attack+1, int(movemap.size())); i++){
         for (int j = std::max(start[1] - move - attack-1, 0); j < std::min(start[1] + move + attack+1, int(movemap[0].size())); j++){
             for (int att = 1; att <= attack; att++){
