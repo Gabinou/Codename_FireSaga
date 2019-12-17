@@ -71,14 +71,17 @@ struct node{
     int distance;
 };
 
-std::vector<std::vector<int>> movemap(std::vector<std::vector<int>> map, int start[], int move){
+std::vector<std::vector<int>> movemap(std::vector<std::vector<int>> map, int start[], int move, std::string mode){
     // Using the map, computes all moveable tiles, and put it in 2D vector/map.
 
     // printf("Movement cost map\n");
     // plot2Dvector(map);
-    std::vector<std::vector<int>> movemap = map;
-    for (int i = 0; i < movemap.size(); i++){
-        std::fill(movemap[i].begin(), movemap[i].end(), 0);
+    std::vector<std::vector<int>> movemap;
+    if (mode == "matrix"){
+        movemap = map;
+        for (int i = 0; i < movemap.size(); i++){
+            std::fill(movemap[i].begin(), movemap[i].end(), 0);
+        }
     }
     std::vector<node> open, closed;
     node current, neighbor;
@@ -91,7 +94,12 @@ std::vector<std::vector<int>> movemap(std::vector<std::vector<int>> map, int sta
         current = open.back();
         open.pop_back();
         closed.push_back(current);
-        movemap[current.x][current.y] = 1;
+        if (mode == "matrix") {
+            movemap[current.x][current.y] = 1;
+        }
+        if (mode == "list") {
+            movemap.push_back({current.x, current.y});
+        } 
         // Two next whiles check the 4 neighbors. 
         // (i-j)/2 == 1 when (i+j)/2 == 0 and vice versa.
         for(int i = 0; i < 2; i++) {
