@@ -43,7 +43,7 @@ int main(int argc, char * argv[]) {
 
     // permutations_binary(8, 4, arr);
 
-    int start[2] = {7, 7};
+    int start[2] = {5, 4};
     int end[2] = {8, 8};
 
     // int map[10][10] = {
@@ -70,42 +70,61 @@ int main(int argc, char * argv[]) {
         {1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1},
         {1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1},
         {1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1}
-
     };
-    std::vector<std::vector<int>> movemapp = map;
-    for (int i = 0; i < movemapp.size(); i++){
-        std::fill(movemapp[i].begin(), movemapp[i].end(), 0);
-    }
-    std::vector<std::vector<int>> attackmapp = movemapp;
-    // flood_fill(map, start, 8, 10);
-    movemapp = movemap(map, start, 8);
-    std::vector<std::vector<int>> movelist = movemap(map, start, 8, "list");
-    attackmapp = attackmap(movemapp, start, 8, 1);
-    std::vector<std::vector<int>> attacklist= attackmap(movemapp, start, 8, 1, "list");
-    // std::vector<std::vector<int>> attacklist =  = attackmap(movemapp, start, 8, 1);
+    std::vector<std::vector<int>> map2 = {
+        {1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1},
+        {1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1},
+        {1,1,1,1,1,1,1,-1,1,1,1,1,1,1,1,1,1,1,1,1},
+        {1,1,1,1,1,1,-1,1,1,1,1,1,1,1,1,1,1,1,1,1},
+        {1,1,1,1,1,1,-1,1,1,1,1,1,1,1,1,1,1,1,1,1},
+        {1,1,1,1,1,-1,1,1,1,1,1,1,1,1,1,1,1,1,1,1},
+        {1,1,-1,-1,-1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1},
+        {1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1},
+        {1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1},
+        {1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1},
+        {1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1},
+        {1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1},
+        {1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1},
+        {1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1},
+        {1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1},
+        {1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1},
+        {1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1},
+        {1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1},
+        {1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1},
+        {1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1},
+        {1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1},
+        {1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1}
+    };
 
-    printf("Movement map\n");
-    plot2Dvector(movemapp);
+    // std::vector<std::vector<int>> movemapp = map;
+    // for (int i = 0; i < movemapp.size(); i++){
+    //     std::fill(movemapp[i].begin(), movemapp[i].end(), 0);
+    // }
+    // std::vector<std::vector<int>> attackmapp = movemapp;
+    // movemapp = movemap(map, start, 8);
+    // std::vector<std::vector<int>> movelist = movemap(map, start, 8, "list");
+    // attackmapp = attackmap(movemapp, start, 8, 1);
+    // std::vector<std::vector<int>> attacklist= attackmap(movemapp, start, 8, 1, "list");
 
-    for (int i = 0; i < movelist.size(); i++){
-        printf("%d %d\n", movelist[i][0],  movelist[i][1]);
-    }
+    // printf("Movement map\n");
+    // plot2Dvector(movemapp);
 
-    printf("Attack map\n");
-    plot2Dvector(attackmapp);
+    // for (int i = 0; i < movelist.size(); i++){
+    //     printf("%d %d\n", movelist[i][0],  movelist[i][1]);
+    // }
 
-    for (int i = 0; i < attacklist.size(); i++){
-        printf("%d %d\n", attacklist[i][0],  attacklist[i][1]);
-    }
+    // printf("Attack map\n");
+    // plot2Dvector(attackmapp);
 
+    // for (int i = 0; i < attacklist.size(); i++){
+    //     printf("%d %d\n", attacklist[i][0],  attacklist[i][1]);
+    // }
+    // getchar();
+    // getchar();
+    // getchar();
+    // getchar();
 
-
-    getchar();
-    getchar();
-    getchar();
-    getchar();
-
-    A_star(start, end);
+    A_star(map2, start, end);
 
     getchar();
     getchar();

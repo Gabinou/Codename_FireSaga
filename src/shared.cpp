@@ -167,7 +167,7 @@ std::vector<std::vector<int>> attackmap(std::vector<std::vector<int>> movemap, i
                     attackmap[i][j] = 1;
                 }
                 if (mode == "list"){
-                    attackmap.push_back({i, j});  
+                    attackmap.push_back({i, j});   
                 } 
             }
         }
@@ -175,7 +175,7 @@ std::vector<std::vector<int>> attackmap(std::vector<std::vector<int>> movemap, i
     return(attackmap);
 }
 
-void A_star(int start[], int end[]){
+void A_star(std::vector<std::vector<int>> map, int start[], int end[]){
     // Arrays containing points are arrays:
     // [0-1] = point [2] = f value [3-4] previous point.
     std::vector<std::vector<int>> openlist;
@@ -195,20 +195,6 @@ void A_star(int start[], int end[]){
     int neighborym[2];
     int (* neighbors[4])[2];
 
-    int map[10][10] = {
-        {1,1,1,1,1,1,1,1,1,1},
-        {1,1,1,1,1,-1,1,1,1,1},
-        {1,1,1,1,-1,1,1,1,1,1},
-        {1,1,1,-1,1,1,1,1,1,1},
-        {1,1,-1,1,1,1,1,1,1,1},
-        {1,1,1,1,1,1,1,1,1,1},
-        {1,1,1,1,1,1,1,1,1,1},
-        {1,1,1,1,1,1,1,1,1,1},
-        {1,1,1,1,1,1,1,1,1,1},
-        {1,1,1,1,1,1,1,1,1,1}
-    }; // this is the movement cost. [column][row]
-    printf("%d ", map[5][1]);
-    printf("%d\n", map[1][5]);
     while((current[0] != end[0]) || (current[1] != end[1])){
         // printf("%d %d \n", end[0], end[1]);
         current = openlist.back();  
