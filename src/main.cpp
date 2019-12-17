@@ -79,12 +79,24 @@ int main(int argc, char * argv[]) {
     std::vector<std::vector<int>> attackmapp = movemapp;
     // flood_fill(map, start, 8, 10);
     movemapp = movemap(map, start, 8);
+    std::vector<std::vector<int>> movelist = movemap(map, start, 8, "list");
     attackmapp = attackmap(movemapp, start, 8, 1);
+    std::vector<std::vector<int>> attacklist= attackmap(movemapp, start, 8, 1, "list");
+    // std::vector<std::vector<int>> attacklist =  = attackmap(movemapp, start, 8, 1);
 
     printf("Movement map\n");
     plot2Dvector(movemapp);
+
+    for (int i = 0; i < movelist.size(); i++){
+        printf("%d %d\n", movelist[i][0],  movelist[i][1]);
+    }
+
     printf("Attack map\n");
     plot2Dvector(attackmapp);
+
+    for (int i = 0; i < attacklist.size(); i++){
+        printf("%d %d\n", attacklist[i][0],  attacklist[i][1]);
+    }
 
 
 

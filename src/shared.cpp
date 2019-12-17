@@ -129,29 +129,46 @@ std::vector<std::vector<int>> movemap(std::vector<std::vector<int>> map, int sta
     return(movemap);
 }
 
-std::vector<std::vector<int>> attackmap(std::vector<std::vector<int>> movemap, int start[], int move, int attack){
+std::vector<std::vector<int>> attackmap(std::vector<std::vector<int>> movemap, int start[], int move, int attack, std::string mode){
     
-    std::vector<std::vector<int>> attackmap = movemap;
-    for (int i = 0; i < attackmap.size(); i++){
-        std::fill(attackmap[i].begin(), attackmap[i].end(), 0);
+    std::vector<std::vector<int>> attackmap;
+    if (mode == "matrix"){
+        attackmap = movemap;
+        for (int i = 0; i < attackmap.size(); i++){
+            std::fill(attackmap[i].begin(), attackmap[i].end(), 0);
+        }
     }
+    bool add;
     for (int i = std::max(start[0] - move - attack-1, 0); i < std::min(start[0] + move + attack+1, int(movemap.size())); i++){
         for (int j = std::max(start[1] - move - attack-1, 0); j < std::min(start[1] + move + attack+1, int(movemap[0].size())); j++){
+            add = false;
             for (int att = 1; att <= attack; att++){
                 if (movemap[i][j] == 0) {
                     if (movemap[i][std::min(j+att, int(movemap[0].size()-1))] == 1){
-                        attackmap[i][j] = 1;
+                        add = true;
+                        break;
                     }
                     if (movemap[i][std::max(j-att, 0)] == 1){
-                        attackmap[i][j] = 1;
+                        add = true;
+                        break;
                     }
                     if (movemap[std::min(i+att, int(movemap.size()-1))][j] == 1){
-                        attackmap[i][j] = 1;
+                        add = true;
+                        break;
                     }
                     if (movemap[std::max(i-att, 0)][j] == 1){
-                        attackmap[i][j] = 1;
+                        add = true;
+                        break;
                     }
                 }
+            }
+            if (add) {
+                if (mode == "matrix") {
+                    attackmap[i][j] = 1;
+                }
+                if (mode == "list"){
+                    attackmap.push_back({i, j});  
+                } 
             }
         }
     }
