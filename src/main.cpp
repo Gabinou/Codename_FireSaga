@@ -41,8 +41,8 @@ int main(int argc, char * argv[]) {
 
     // int arr[n];
 
-    int start[2] = {5, 4};
-    int end[2] = {8, 8};
+    int start[2] = {2, 2};
+    int end[2] = {7, 7};
 
     // int map[10][10] = {
     std::vector<std::vector<int>> map = {
@@ -94,6 +94,19 @@ int main(int argc, char * argv[]) {
         {1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1}
     };
 
+    std::vector<std::vector<int>> map3 = {
+        {1,1,1,1,1,1,1,1,1,1},
+        {1,1,1,1,1,-1,1,1,1,1},
+        {1,1,1,1,-1,1,1,1,1,1},
+        {1,1,1,-1,1,1,1,1,1,1},
+        {1,1,-1,1,1,1,1,1,1,1},
+        {1,1,1,1,1,1,1,1,1,1},
+        {1,1,1,1,1,1,1,1,1,1},
+        {1,1,1,1,1,1,1,1,1,1},
+        {1,1,1,1,1,1,1,1,1,1},
+        {1,1,1,1,1,1,1,1,1,1}
+    };
+
     // std::vector<std::vector<int>> movemapp = map;
     // for (int i = 0; i < movemapp.size(); i++){
     //     std::fill(movemapp[i].begin(), movemapp[i].end(), 0);
@@ -122,7 +135,7 @@ int main(int argc, char * argv[]) {
     // getchar();
     // getchar();
 
-    std::vector<std::vector<int>> path = A_star(map2, start, end);
+    std::vector<std::vector<int>> path = A_star(map3, start, end);
 
     printf("Path\n");
     for (int i = 0; i < path.size(); i++){
