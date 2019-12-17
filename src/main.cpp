@@ -42,7 +42,7 @@ int main(int argc, char * argv[]) {
     // int arr[n];
 
     int start[2] = {2, 2};
-    int end[2] = {7, 7};
+    int end[2] = {6, 6};
 
     // int map[10][10] = {
     std::vector<std::vector<int>> map = {

@@ -189,11 +189,14 @@ std::vector<std::vector<int>> A_star(std::vector<std::vector<int>> map, int star
     int cost;
     int g_neighbor;
     int h_neighbor;
-    int neighborxp[2];
-    int neighborxm[2];
-    int neighboryp[2];
-    int neighborym[2];
-    int (* neighbors[4])[2];
+    
+    std::vector<node> open, closed;
+    node current, neighbor;
+    current.x = start[0];
+    current.y = start[1];
+    current.distance = 0;
+    open.push_back(current);
+    int index[2] = {-1, 1};
 
     while((current[0] != end[0]) || (current[1] != end[1])){
         // printf("%d %d \n", end[0], end[1]);
@@ -220,7 +223,10 @@ std::vector<std::vector<int>> A_star(std::vector<std::vector<int>> map, int star
         neighbors[2] = &neighboryp;
         neighbors[3] = &neighborym;
 
-        for (int i = 0; i < 4; i++){
+        for(int i = 0; i < 2; i++) {
+            for(int j = 0; j < 2; j++) {
+                neighbor.x = std::min(std::max(current.x+((index[i]+index[j])/2),0), int(map.size()-1));
+                neighbor.y = std::min(std::max(current.y+((index[i]-index[j])/2),0), int(map[0].size()-1));
 
             if (map[(*neighbors[i])[0]][(*neighbors[i])[1]] > 0){
                 inopenlist_index = find_row(*neighbors[i], openlist);
