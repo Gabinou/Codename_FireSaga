@@ -113,10 +113,10 @@ extern void write_all_unit_classes(const char * filename);
 extern void read_all_unit_classes(const char * filename = "classes_FE1.txt");
 
 extern void permutations_binary(int len, int num_0, int out[], int i = 0);
-extern void A_star(std::vector<std::vector<int>> map, int start[], int end[]);
 extern int h_manhattan(int start[], int end[]);
 extern double h_euclidean(int start[], int end[]);
 
+extern std::vector<std::vector<int>> A_star(std::vector<std::vector<int>> map, int start[], int end[], std::string mode = "list");
 extern std::vector<std::vector<int>> movemap(std::vector<std::vector<int>> map, int start[], int move, std::string mode = "matrix");
 extern std::vector<std::vector<int>> attackmap(std::vector<std::vector<int>> movemap, int start[], int move, int attack, std::string mode = "matrix");
 
