@@ -182,107 +182,118 @@ std::vector<std::vector<int>> attackmap(std::vector<std::vector<int>> movemap, i
     return(attackmap);
 }
 
-void A_star(std::vector<std::vector<int>> map, int start[], int end[], std::string mode){
-    // // Arrays containing points are arrays:
-    // // [0-1] = point [2] = f value [3-4] previous point.
+    int find_node (int start[], std::vector<std::vector<int>> list) {
+    int row;
+    for (row = 0; row < list.size(); row++){
+        if ((list[row][0] == start[0]) && (list[row][1] == start[1])) {
+            return(row);
+        }
+    }
+    return(-1);
+}
+
+
+std::vector<std::vector<int>> A_star(std::vector<std::vector<int>> map, int start[], int end[], std::string mode){
+    // Arrays containing points are arrays:
+    // [0-1] = point [2] = f value [3-4] previous point.
     // std::vector<std::vector<int>> openlist;
     // std::vector<std::vector<int>> closedlist;
     // std::vector<int> current;
     // openlist.push_back({start[0], start[1], 0, 0, 0, 0});
     // current = openlist.back();  
-    // int swap_index;
-    // int inclosedlist_index;
-    // int inopenlist_index;
-    // int cost;
-    // int g_neighbor;
-    // int h_neighbor;
+    int swap_index;
+    int inclosedlist_index;
+    int inopenlist_index;
+    int cost;
+    int g_neighbor;
+    int h_neighbor;
 
-    // struct node{
-    //     int x;
-    //     int y;
-    //     int h;
-    //     int g;
-    //     int parent_x;
-    //     int parent_y;
-    // };
+    struct node{
+        int x;
+        int y;
+        int h;
+        int g;
+        int parent_x;
+        int parent_y;
+    };
 
-    // std::vector<node> open, closed;
-    // node current, neighbor;
-    // current.x = start[0];
-    // current.y = start[1];
-    // current.distance = 0;
-    // open.push_back(current);
-    // int index[2] = {-1, 1};
 
-    // while((current[0] != end[0]) || (current[1] != end[1])){
-    //     // printf("%d %d \n", end[0], end[1]);
-    //     current = openlist.back();  
-    //     // printf("current: %d %d \n", current[0], current[1]);
-    //     closedlist.push_back(current);
-    //     if ((current[0] == end[0]) && (current[1] == end[1])){
-    //         break;
-    //     } else {
-    //         openlist.pop_back();
-    //     }
+    std::vector<node> open, closed;
+    node current, neighbor;
+    current.x = start[0];
+    current.y = start[1];
+    open.push_back(current);
+    int index[2] = {-1, 1};
 
-    //     neighborxp[0] = std::min(255, current[0] + 1);
-    //     neighborxp[1] = current[1];
-    //     neighborxm[0] = std::max(0, current[0] - 1);
-    //     neighborxm[1] = current[1];
-    //     neighboryp[0] = current[0];
-    //     neighboryp[1] = std::min(255, current[1] + 1);
-    //     neighborym[0] = current[0];
-    //     neighborym[1] = std::max(0, current[1] - 1);
+    while((current.x != end[0]) || (current.y != end[1])){
+        // printf("%d %d \n", end[0], end[1]);
+        current = open.back();  
+        // printf("current: %d %d \n", current[0], current[1]);
+        closed.push_back(current);
+        if ((current.x == end[0]) && (current.y == end[1])){
+            break;
+        } else {
+            open.pop_back();
+        }
 
-    //     neighbors[0] = &neighborxp;
-    //     neighbors[1] = &neighborxm;
-    //     neighbors[2] = &neighboryp;
-    //     neighbors[3] = &neighborym;
+        // neighborxp[0] = std::min(255, current[0] + 1);
+        // neighborxp[1] = current[1];
+        // neighborxm[0] = std::max(0, current[0] - 1);
+        // neighborxm[1] = current[1];
+        // neighboryp[0] = current[0];
+        // neighboryp[1] = std::min(255, current[1] + 1);
+        // neighborym[0] = current[0];
+        // neighborym[1] = std::max(0, current[1] - 1);
 
-    //     for(int i = 0; i < 2; i++) {
-    //         for(int j = 0; j < 2; j++) {
-    //             neighbor.x = std::min(std::max(current.x+((index[i]+index[j])/2),0), int(map.size()-1));
-    //             neighbor.y = std::min(std::max(current.y+((index[i]-index[j])/2),0), int(map[0].size()-1));
+        // neighbors[0] = &neighborxp;
+        // neighbors[1] = &neighborxm;
+        // neighbors[2] = &neighboryp;
+        // neighbors[3] = &neighborym;
 
-    //         if (map[(*neighbors[i])[0]][(*neighbors[i])[1]] > 0){
-    //             inopenlist_index = find_row(*neighbors[i], openlist);
-    //             inclosedlist_index = find_row(*neighbors[i], closedlist);
-    //             h_neighbor = h_manhattan(*neighbors[i], end);
+        for(int i = 0; i < 2; i++) {
+            for(int j = 0; j < 2; j++) {
+                neighbor.x = std::min(std::max(current.x+((index[i]+index[j])/2),0), int(map.size()-1));
+                neighbor.y = std::min(std::max(current.y+((index[i]-index[j])/2),0), int(map[0].size()-1));
 
-    //             g_neighbor = current[2] + map[(*neighbors[i])[0]][(*neighbors[i])[1]];
+            // if (map[neighbor.x][neighbor.y] > 0){
+            //     inopenlist_index = find_row(*neighbors[i], openlist);
+            //     inclosedlist_index = find_row(*neighbors[i], closedlist);
+            //     h_neighbor = h_manhattan(*neighbors[i], end);
 
-    //             // printf("neighbor: %d %d \n", (*neighbors[i])[0], (*neighbors[i])[1]);
-    //             // printf("g_neighbor: %d \n", g_neighbor);
-    //             if (inopenlist_index > 0) {
-    //                 // printf("found open: %d %d \n", openlist[inopenlist_index][0], openlist[inopenlist_index][1]);
-    //                 // printf("g: %d %d \n", g_neighbor, openlist[inopenlist_index][2]);
-    //                 if (g_neighbor < openlist[inopenlist_index][2]) {
-    //                     // printf("erase open\n");
-    //                     openlist.erase(openlist.begin() + inopenlist_index);
-    //                 }
-    //             }
-    //             if (inclosedlist_index > 0) {
-    //                 // printf("found closed: %d %d \n", closedlist[inclosedlist_index][0], closedlist[inclosedlist_index][1]);
-    //                 // printf("g: %d %d \n", g_neighbor, closedlist[inclosedlist_index][2]);
-    //                 if (g_neighbor < closedlist[inclosedlist_index][2]) {
-    //                     // printf("erase close\n");
-    //                     closedlist.erase(closedlist.begin() + inclosedlist_index);
-    //                 }
-    //             }
-    //             if ((inopenlist_index < 0) && (inclosedlist_index < 0)) {
-    //                 openlist.push_back({(*neighbors[i])[0],(*neighbors[i])[1], g_neighbor, h_neighbor + g_neighbor, current[0], current[1]});
-    //             }
-    //             if (openlist.size()>1) {
-    //                 for (swap_index = (openlist.size()-1); swap_index >= 1; swap_index--) {
-    //                     if (openlist[swap_index-1][3] < openlist[swap_index][3]) {
-    //                         std::iter_swap(openlist.begin() + swap_index - 1, openlist.begin() + swap_index);
-    //                     }
-    //                 }
-    //             }
-    //         }
-    //     }
-    // }
-    // std::vector<std::vector<int>> path;
+            //     g_neighbor = current[2] + map[(*neighbors[i])[0]][(*neighbors[i])[1]];
+
+            //     // printf("neighbor: %d %d \n", (*neighbors[i])[0], (*neighbors[i])[1]);
+            //     // printf("g_neighbor: %d \n", g_neighbor);
+            //     if (inopenlist_index > 0) {
+            //         // printf("found open: %d %d \n", openlist[inopenlist_index][0], openlist[inopenlist_index][1]);
+            //         // printf("g: %d %d \n", g_neighbor, openlist[inopenlist_index][2]);
+            //         if (g_neighbor < openlist[inopenlist_index][2]) {
+            //             // printf("erase open\n");
+            //             openlist.erase(openlist.begin() + inopenlist_index);
+            //         }
+            //     }
+            //     if (inclosedlist_index > 0) {
+            //         // printf("found closed: %d %d \n", closedlist[inclosedlist_index][0], closedlist[inclosedlist_index][1]);
+            //         // printf("g: %d %d \n", g_neighbor, closedlist[inclosedlist_index][2]);
+            //         if (g_neighbor < closedlist[inclosedlist_index][2]) {
+            //             // printf("erase close\n");
+            //             closedlist.erase(closedlist.begin() + inclosedlist_index);
+            //         }
+            //     }
+            //     if ((inopenlist_index < 0) && (inclosedlist_index < 0)) {
+            //         openlist.push_back({(*neighbors[i])[0],(*neighbors[i])[1], g_neighbor, h_neighbor + g_neighbor, current[0], current[1]});
+            //     }
+            //     if (openlist.size()>1) {
+            //         for (swap_index = (openlist.size()-1); swap_index >= 1; swap_index--) {
+            //             if (openlist[swap_index-1][3] < openlist[swap_index][3]) {
+            //                 std::iter_swap(openlist.begin() + swap_index - 1, openlist.begin() + swap_index);
+            //             }
+            //         }
+            //     }
+            }
+        }
+    }
+    std::vector<std::vector<int>> path;
     // path.push_back(closedlist.back());
     // closedlist.pop_back();
     // while (!closedlist.empty()){
@@ -291,7 +302,7 @@ void A_star(std::vector<std::vector<int>> map, int start[], int end[], std::stri
     //     }
     //     closedlist.pop_back();
     // }
-    // return(path);
+    return(path);
 }
 
 
