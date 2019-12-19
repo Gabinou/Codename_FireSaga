@@ -37,6 +37,42 @@ int main(int argc, char * argv[]) {
     // read_all_units("..\\units_FE1.txt");
     // write_all_units("..\\units_test.txt"); // OKAY
 
+    int start[2] = {1, 2};
+    int end[2] = {8, 8};
+
+    std::vector<std::vector<int>> map{
+        {1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1},
+        {1,1,1,1,1,1,1,-1,1,1,1,1,1,1,1,1},
+        {1,1,1,1,1,-1,1,1,1,1,1,1,1,1,1,1},
+        {1,1,1,1,-1,1,1,1,1,1,1,1,1,1,1,1},
+        {1,1,1,-1,1,1,1,1,1,1,1,1,1,1,1,1},
+        {1,1,-1,1,1,1,1,1,1,1,1,1,1,1,1,1},
+        {1,-1,1,1,1,1,1,1,1,1,1,1,1,1,1,1},
+        {1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1},
+        {1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1},
+        {1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1},
+        {1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1},
+        {1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1},
+        {1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1},
+        {1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1}
+    };
+    std::vector<std::vector<int>> path;
+    path = A_star(map, start, end, "matrix");
+    printf("Map\n");
+    plot2Dvector(map);
+    printf("Path\n");
+    plot2Dvector(path);
+
+    // printf("a");
+    // for (int i = 0; i < path.size(); i++){
+    //     printf("%d %d \n", path[i][0], path[i][1]);
+    // }
+
+    getchar();
+    getchar();
+    getchar();
+    getchar();
+
     const int FPS = 60;
     const int frame_delay = 1000 / FPS;
     Uint32 frame_start;
