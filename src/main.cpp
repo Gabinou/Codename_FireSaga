@@ -57,7 +57,8 @@ int main(int argc, char * argv[]) {
         {1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1}
     };
     std::vector<std::vector<int>> path;
-    path = A_star(map, start, end, "matrix");
+    std::string at = "matrix";
+    path = A_star(map, start, end, at);
     printf("Map\n");
     plot2Dvector(map);
     printf("Path\n");

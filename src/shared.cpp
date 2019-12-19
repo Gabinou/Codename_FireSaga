@@ -239,7 +239,7 @@ std::vector<std::vector<int>> A_star(std::vector<std::vector<int>> map, int star
         neighbors[3] = &neighborym;
 
         for (int i = 0; i<4; i++) {
-            if (map[*neighbors[i][0]][*neighbors[i][0]] > 0){
+            if (map[(*neighbors[i])[0]][(*neighbors[i])[1]] > 0){
                 inopenlist_index = find_row(*neighbors[i], openlist);
                 inclosedlist_index = find_row(*neighbors[i], closedlist);
 
@@ -279,28 +279,27 @@ std::vector<std::vector<int>> A_star(std::vector<std::vector<int>> map, int star
         }
     }
     std::vector<std::vector<int>> path;
+    std::vector<std::vector<int>> pathmap;
     if (mode == "matrix") {
-        path = map;
-        for (int i = 0; i < path.size(); i++){
-            std::fill(path[i].begin(), path[i].end(), 0);
+        pathmap = map;
+        for (int i = 0; i < pathmap.size(); i++){
+            std::fill(pathmap[i].begin(), pathmap[i].end(), 0);
         }
     }  
-    if (mode == "list") {
-        path.push_back(closedlist.back());
-    }
+    path.push_back(closedlist.back());
     closedlist.pop_back();
     while (!closedlist.empty()){
         if ((closedlist.back()[0] == path.back()[4]) && (closedlist.back()[1] == path.back()[5])) {
-            if (mode == "list") {
-                printf("c\n"); 
-                path.push_back(closedlist.back());
-            }
+            printf("d");
+            path.push_back(closedlist.back());
             if (mode == "matrix") {
-                printf("a\n");
-                path[closedlist.back()[0]][closedlist.back()[1]] = 1;
+                pathmap[closedlist.back()[0]][closedlist.back()[1]] = 1;
             }
         }
         closedlist.pop_back();
+    }
+    if (mode == "matrix") {
+        path = pathmap;
     }
     return(path);
 }
