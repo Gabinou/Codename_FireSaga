@@ -13,37 +13,25 @@ struct Equipped {
 };
 
 struct Unit_stats {
-    int str;
-    int mag;
-    int spd;
-    int skl;
-    int luck;
-    int def;
-    int res;
-    int con;
-};
-
-struct Char_stats {
-    char str;
-    char mag;
-    char spd;
-    char skl;
-    char luck;
-    char def;
-    char res;
-    char con;
+    unsigned char str;
+    unsigned char mag;
+    unsigned char spd;
+    unsigned char skl;
+    unsigned char luck;
+    unsigned char def;
+    unsigned char res;
+    unsigned char con;
 };
 
 struct Weapon_stats {
-    int dmg;
-    int hit;
-    int dodge;
-    int crit;
-    int favor;
-    int wgt;
+    unsigned char dmg;
+    unsigned char hit;
+    unsigned char dodge;
+    unsigned char crit;
+    unsigned char favor;
+    unsigned char wgt;
+    unsigned char range[2]; // [min_range, max_range]
     bool hand; //0 is 1 hand. 1 is 2 hands.
-    int range[2]; // [min_range, max_range]
-
 };
 
 class UnitComponent : public Component {
