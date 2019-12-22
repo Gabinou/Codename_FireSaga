@@ -1,6 +1,5 @@
 #ifndef UNITCOMPONENT_HPP
 #define UNITCOMPONENT_HPP
-
 #include "ECS.hpp"
 #include "game.hpp"
 #include "shared.hpp"
@@ -13,6 +12,7 @@ struct Equipped {
 };
 
 struct Unit_stats {
+    unsigned char hp;
     unsigned char str;
     unsigned char mag;
     unsigned char spd;
@@ -23,7 +23,7 @@ struct Unit_stats {
     unsigned char con;
 };
 
-struct Weapon_stats {
+struct Weapon {
     unsigned char dmg;
     unsigned char hit;
     unsigned char dodge;
@@ -32,11 +32,13 @@ struct Weapon_stats {
     unsigned char wgt;
     unsigned char range[2]; // [min_range, max_range]
     bool hand; //0 is 1 hand. 1 is 2 hands.
+    bool dmg_type; // 0 is 1 physical. 1 magic.
 };
 
 class UnitComponent : public Component {
     private:
         Equipped equipped;
+        Weapon temp_wpn;
         Unit_stats base_stats;
         Unit_stats current_stats;
         Unit_stats growths;
@@ -50,10 +52,11 @@ class UnitComponent : public Component {
 
             if (current_hp == 0) {death();};
         }
-        // void heal(const unsigned char healing) {
-        //     printf("%s gets healed for %d\n", name, healing);
-        //     current_hp = std::min(current_hp + healing, (int) stats[0]);
-        // }
+
+        void heal(const unsigned char healing) {
+            printf("%s gets healed for %d\n", name, healing);
+            current_hp = std::min(current_hp + healing, (int) current_stats.hp);
+        }
 
         unsigned char get_hp() const {
             return (current_hp);
@@ -66,22 +69,22 @@ class UnitComponent : public Component {
             printf("%s is dead.\n", name);
         }
 
-        // unsigned char attack_damage() {
-        //     char unit_power = 0;
-        //     char wpn_dmg = all_weapons[equipment[equipped[0]].name].stats[0];
+        unsigned char attack_damage() {
+            unsigned char unit_power = 0;
+            unsigned char wpn_dmg = temp_wpn.dmg;
 
-        //     if (all_weapons[equipment[equipped[0]].name].dmg_type == 0) {
-        //         // Physical attack_damage.
-        //         unit_power = stats[1];
-        //     } else {
-        //         // Magical attack_damage.
-        //         unit_power = stats[2];
-        //     };
+            if (temp_wpn.dmg_type == 0) {
+                // Physical attack_damage.
+                unit_power = current_stats.str;
+            } else {
+                // Magical attack_damage.
+                unit_power = current_stats.mag;
+            };
 
-        //     int attack_damage = wpn_dmg + unit_power;
+            int attack_damage = wpn_dmg + unit_power;
 
-        //     return (attack_damage);
-        // }
+            return (attack_damage);
+        }
 
         // unsigned char unit::combat_damage(const unit & enemy, bool critical) {
         //     char terrain_def = 0;
