@@ -41,12 +41,16 @@ class UnitComponent : public Component {
         Weapon temp_wpn;
         Unit_stats base_stats;
         Unit_stats bonus_stats;
+        Unit_stats stat_caps;
         Unit_stats malus_stats;
         Unit_stats current_stats;
         Unit_stats growths;
         unsigned char current_hp;
+        unsigned int exp;
         std::string name;
+        struct ::inventory_item equipment[7], weapons[3], items[3];
     public:
+
         void take_damage(const unsigned char damage) {
             printf("%s takes %d damage \n", name, damage);
             current_hp = std::max(0, current_hp - damage);
@@ -62,6 +66,15 @@ class UnitComponent : public Component {
         unsigned char get_hp() const {
             return (current_hp);
         }
+        
+        unsigned int get_lvl() const {
+            return (ceil(current_hp/100));
+        }
+
+        unsigned int get_exp() const {
+            return (exp);
+        }
+
         void set_hp(const unsigned char in_hp) {
             current_hp = in_hp;
         }
