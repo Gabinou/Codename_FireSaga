@@ -181,13 +181,11 @@ class UnitComponent : public Component {
             return (accuracy);
         }
 
-        // unsigned char unit::combat_hit(const unit & enemy) {
-        //     char supports = 0;
-        //     unsigned char wpn_hit = all_weapons[equipment[equipped[0]].name].stats[1];
-        //     unsigned char unit_acc = stats[3] * 2 + stats[5];
-        //     unsigned char accuracy = std::max(0, wpn_hit + unit_acc + supports - enemy.attack_probs[1]);
-        //     return (accuracy);
-        // }
+        unsigned char combat_hit(const Entity & enemy) {
+            int enemy_avoid = enemy.getComponent<UnitComponent>().avoid();
+            unsigned char hit = std::max(0, accuracy() - enemy_avoid);
+            return (hit);
+        }
 
         // unsigned char unit::attack(unit & enemy) {
         //     printf("%s attacks %s\n", name, enemy.name);
