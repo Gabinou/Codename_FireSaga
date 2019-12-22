@@ -40,6 +40,8 @@ class UnitComponent : public Component {
         Equipped equipped;
         Weapon temp_wpn;
         Unit_stats base_stats;
+        Unit_stats bonus_stats;
+        Unit_stats malus_stats;
         Unit_stats current_stats;
         Unit_stats growths;
         unsigned char current_hp;
@@ -86,7 +88,7 @@ class UnitComponent : public Component {
             return (attack_damage);
         }
 
-        unsigned char combat_damage(const Entity & enemy, bool critical) {
+        unsigned char combat_damage(const Entity & enemy, const bool critical) {
             unsigned char terrain_def = 0;
             unsigned char enemy_def = 0 ;
             unsigned char unit_power = 0;
@@ -105,42 +107,46 @@ class UnitComponent : public Component {
 
             if (critical) {crit_factor = 3;};
 
-            int attack_damage = crit_factor * (std::max(wpn_dmg + unit_power - enemy_def - terrain_def, 0)); // Modern FE style. for crit_factor = 3
+            unsigned char attack_damage = crit_factor * (std::max(wpn_dmg + unit_power - enemy_def - terrain_def, 0)); // Modern FE style. for crit_factor = 3
 
             // int attack_damage = crit_factor*(wpn_dmg + unit_power) - enemy_def - terrain_def);  // FE4-FE5 style. for crit_factor = 2
 
             return (attack_damage);
         }
 
-        // unsigned char unit::avoid() {
-        //     char supports = 0;
-        //     char terrain_avoid = 0;
-        //     unsigned char unit_avoid = stats[4] * 2 + stats[5];
-        //     unsigned char avoid = terrain_avoid + unit_avoid + supports ;
-        //     return (avoid);
-        // }
+        unsigned char avoid() {
+            unsigned char supports = 0;
+            unsigned char terrain_avoid = 0;
+            unsigned char unit_avoid = current_stats.skl * 2 + current_stats.luck;
+            unsigned char avoid = terrain_avoid + unit_avoid + supports;
+            return (avoid);
+        }
 
-        // unsigned char unit::critical() {
-        //     char supports = 0 ;
-        //     char unit_skill = 0;
-        //     unsigned char wpn_crit = all_weapons[equipment[equipped[0]].name].stats[2];
-        //     unsigned char critical = wpn_crit + unit_skill + supports;
-        //     return (critical);
-        // }
+        unsigned char critical() {
+            unsigned char supports = 0 ;
+            unsigned char unit_skill = 0;
+            unsigned char critical = temp_wpn.crit + unit_skill + supports;
+            return (critical);
+        }
 
-        // bool unit::retaliation(const unit & enemy) const {
-        //     unsigned char distance = abs(enemy.position[0] - position[0]) + abs(enemy.position[1] - position[1]);
-        //     // printf("Distance %d \n", distance);
-        //     bool out = 0;
+        bool retaliation(const Entity & enemy) {
+            // int unit_position[2] = {entity->getComponent<PositionComponent>().getPos()[0], entity->getComponent<PositionComponent>().getPos()[1]};
+            int * unit_position;
+            int * enemy_position;
+            unit_position = entity->getComponent<PositionComponent>().getPos();
+            enemy_position = enemy.getComponent<PositionComponent>().getPos();
+            unsigned char distance = std::abs(enemy_position[0] - unit_position[0]) + std::abs(enemy_position[1] - unit_position[1]);
+            // printf("Distance %d \n", distance);
+            bool retaliate = false;
 
-        //     for (int i = 0; i < 3; i++) {
-        //         if (distance == all_weapons[enemy.equipment[enemy.get_equipped()[0]].name].range[i]) {
-        //             out = 1;
-        //         }
-        //     }
+            for (int i = 0; i < 3; i++) {
+                if ((distance >= temp_wpn.range[0]) && (distance <= temp_wpn.range[1])) {
+                    retaliate = 1;
+                }
+            }
 
-        //     return (out);
-        // }
+            return (retaliate);
+        }
 
         // bool unit::combat_double(const unit & enemy) const {
         //     unsigned char unit_speed = stats[4];
