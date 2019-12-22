@@ -137,54 +137,49 @@ class UnitComponent : public Component {
             enemy_position = enemy.getComponent<PositionComponent>().getPos();
             unsigned char distance = std::abs(enemy_position[0] - unit_position[0]) + std::abs(enemy_position[1] - unit_position[1]);
             // printf("Distance %d \n", distance);
-            bool retaliate = false;
+            bool retaliates = false;
 
             for (int i = 0; i < 3; i++) {
                 if ((distance >= temp_wpn.range[0]) && (distance <= temp_wpn.range[1])) {
-                    retaliate = 1;
+                    retaliates = 1;
                 }
             }
 
-            return (retaliate);
+            return (retaliates);
         }
 
-        // bool unit::combat_double(const unit & enemy) const {
-        //     unsigned char unit_speed = stats[4];
-        //     unsigned char enemy_speed = enemy.stats[4];
-        //     bool out = ((unit_speed - wpn_weighed_down() - enemy_speed) > 4);
-        //     return (out);
-        // }
+        bool combat_double(const Entity & enemy) const {
+            unsigned char enemy_speed = enemy.getComponent<UnitComponent>().current_stats.spd;
+            bool doubles = ((current_stats.spd - wpn_weighed_down() - enemy_speed) > 4);
+            return (doubles);
+        }
 
-        // unsigned char unit::wpn_weighed_down() const {
-        //     //*DESIGN QUESTION* What should be the influence of weapons?
-        //     unsigned char wpn_wght = all_weapons[equipment[equipped[0]].name].stats[3];
-        //     unsigned char unit_con = stats[8];
-        //     return (std::max(wpn_wght - unit_con, 0));
-        // }
+        unsigned char wpn_weighed_down() const {
+            //*DESIGN QUESTION* What should be the influence of weapons?
+            // Average of Con and Str?
+            return (std::max(temp_wpn.wgt - current_stats.con, 0));
+        }
 
-        // unsigned char unit::combat_critical(const unit & enemy) {
-        //     char supports = 0;
-        //     char unit_skill = 0;
-        //     unsigned char wpn_crit = all_weapons[equipment[equipped[0]].name].stats[2];
-        //     unsigned char critical = std::max(0, wpn_crit + unit_skill + supports - enemy.attack_probs[3]);
-        //     return (critical);
-        // }
+        unsigned char combat_critical(const Entity & enemy) {
+            unsigned char supports = 0;
+            unsigned char unit_skill = 0;
+            unsigned char enemy_favor = enemy.getComponent<UnitComponent>().favor();
+            unsigned char critical = std::max(0, temp_wpn.crit + unit_skill + supports - enemy_favor);
+            return (critical);
+        }
 
-        // unsigned char unit::favor() {
-        //     char supports = 0 ;
-        //     char unit_favor = (ceil(stats[5] / 2.)); // By default, integer division floors
-        //     // For design simplicity, I think it is good to have percent values only change by increments of 1. Simple.
-        //     unsigned char favor = unit_favor + supports;
-        //     return (favor);
-        // }
+        unsigned char favor() {
+            unsigned char supports = 0 ;
+            unsigned char favor = (ceil(current_stats.luck / 2.)) + supports;
+            return (favor);
+        }
 
-        // unsigned char unit::accuracy() {
-        //     char supports = 0;
-        //     unsigned char wpn_hit = all_weapons[equipment[equipped[0]].name].stats[1];
-        //     unsigned char unit_acc = stats[3] * 2 + stats[5];
-        //     unsigned char accuracy = wpn_hit + unit_acc + supports;
-        //     return (accuracy);
-        // }
+        unsigned char accuracy() {
+            unsigned char supports = 0;
+            unsigned char unit_acc = current_stats.skl * 2 + current_stats.luck;
+            unsigned char accuracy = temp_wpn.hit + unit_acc + supports;
+            return (accuracy);
+        }
 
         // unsigned char unit::combat_hit(const unit & enemy) {
         //     char supports = 0;
