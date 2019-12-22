@@ -86,33 +86,31 @@ class UnitComponent : public Component {
             return (attack_damage);
         }
 
-        // unsigned char unit::combat_damage(const unit & enemy, bool critical) {
-        //     char terrain_def = 0;
-        //     char enemy_def = 0 ;
-        //     char unit_power = 0;
-        //     char wpn_dmg = all_weapons[equipment[equipped[0]].name].stats[0];
+        unsigned char combat_damage(const Entity & enemy, bool critical) {
+            unsigned char terrain_def = 0;
+            unsigned char enemy_def = 0 ;
+            unsigned char unit_power = 0;
+            unsigned char wpn_dmg = temp_wpn.dmg;
+            unsigned char crit_factor = 1;
 
-        //     if (all_weapons[equipment[equipped[0]].name].dmg_type == 0) {
-        //         // Physical attack_damage.
-        //         unit_power = stats[1];
-        //         enemy_def = enemy.stats[6];
-        //     } else {
-        //         // Magical attack_damage.
-        //         unit_power = stats[2];
-        //         enemy_def = enemy.stats[7];
-        //     };
+            if (temp_wpn.dmg_type == 0) {
+                // Physical attack_damage.
+                unit_power = current_stats.str;
+                enemy_def = enemy.getComponent<UnitComponent>().current_stats.def;
+            } else {
+                // Magical attack_damage.
+                unit_power = current_stats.mag;
+                enemy_def = enemy.getComponent<UnitComponent>().current_stats.res;
+            };
 
-        //     unsigned char crit_factor = 1;
+            if (critical) {crit_factor = 3;};
 
-        //     if (critical) {crit_factor = 3;};
+            int attack_damage = crit_factor * (std::max(wpn_dmg + unit_power - enemy_def - terrain_def, 0)); // Modern FE style. for crit_factor = 3
 
-        //     int attack_damage = crit_factor * (std::max(wpn_dmg + unit_power - enemy_def - terrain_def, 0)); // Modern FE style. for crit_factor = 3
+            // int attack_damage = crit_factor*(wpn_dmg + unit_power) - enemy_def - terrain_def);  // FE4-FE5 style. for crit_factor = 2
 
-        //     // int attack_damage = crit_factor*(wpn_dmg + unit_power) - enemy_def - terrain_def);  // FE4-FE5 style. for crit_factor = 2
-        //     if (attack_damage <= 0) {attack_damage = 0;};
-
-        //     return (attack_damage);
-        // }
+            return (attack_damage);
+        }
 
         // unsigned char unit::avoid() {
         //     char supports = 0;
