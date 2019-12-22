@@ -37,34 +37,34 @@ struct Weapon_stats {
 class UnitComponent : public Component {
     private:
         Equipped equipped;
-        char current_hp;
         Unit_stats base_stats;
         Unit_stats current_stats;
         Unit_stats growths;
-
+        unsigned char current_hp;
+        std::string name;
     public:
 
-        // void take_damage(const unsigned char damage) {
-        //     printf("%s takes %d damage \n", name, damage);
-        //     current_hp = std::max(0, current_hp - damage);
+        void take_damage(const unsigned char damage) {
+            printf("%s takes %d damage \n", name, damage);
+            current_hp = std::max(0, current_hp - damage);
 
-        //     if (current_hp == 0) {death();};
-        // }
+            if (current_hp == 0) {death();};
+        }
         // void heal(const unsigned char healing) {
         //     printf("%s gets healed for %d\n", name, healing);
         //     current_hp = std::min(current_hp + healing, (int) stats[0]);
         // }
 
-        // unsigned char get_hp() const {
-        //     return (current_hp);
-        // }
-        // void set_hp(in_hp) {
-        //     current_hp = in_hp;
-        // }
+        unsigned char get_hp() const {
+            return (current_hp);
+        }
+        void set_hp(const unsigned char in_hp) {
+            current_hp = in_hp;
+        }
 
-        // void unit::death() {
-        //     printf("%s is dead.\n", name);
-        // }
+        void death() {
+            printf("%s is dead.\n", name);
+        }
 
         // unsigned char attack_damage() {
         //     char unit_power = 0;

@@ -63,7 +63,6 @@ int main(int argc, char * argv[]) {
     // plot2Dvector(map);
     // printf("Path\n");
     // plot2Dvector(path);
-
     const int FPS = 60;
     const int frame_delay = 1000 / FPS;
     Uint32 frame_start;
