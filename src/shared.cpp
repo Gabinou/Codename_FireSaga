@@ -214,16 +214,13 @@ std::vector<std::vector<int>> A_star(std::vector<std::vector<int>> map, int star
     int (*neighbors[4])[2];
     printf("%s\n", mode.c_str());
     while(!openlist.empty()){
-        // printf("%d %d \n", end[0], end[1]);
         current = openlist.back();  
-        // printf("current: %d %d \n", current[0], current[1]);
         closedlist.push_back(current);
         if ((current[0] == end[0]) && (current[1] == end[1])){
             break;
         } else {
             openlist.pop_back();
         }
-
         neighborxp[0] = std::min(255, current[0] + 1);
         neighborxp[1] = current[1];
         neighborxm[0] = std::max(0, current[0] - 1);
@@ -244,24 +241,16 @@ std::vector<std::vector<int>> A_star(std::vector<std::vector<int>> map, int star
                 inclosedlist_index = find_row(*neighbors[i], closedlist);
 
                 h_neighbor = h_manhattan(*neighbors[i], end);
-
                 g_neighbor = current[2] + map[(*neighbors[i])[0]][(*neighbors[i])[1]];
 
-                // printf("neighbor: %d %d \n", (*neighbors[i])[0], (*neighbors[i])[1]);
-                // printf("g_neighbor: %d \n", g_neighbor);
                 if (inopenlist_index > 0) {
-                    // printf("found open: %d %d \n", openlist[inopenlist_index][0], openlist[inopenlist_index][1]);
-                    // printf("g: %d %d \n", g_neighbor, openlist[inopenlist_index][2]);
                     if (g_neighbor < openlist[inopenlist_index][2]) {
                         // printf("erase open\n");
                         openlist.erase(openlist.begin() + inopenlist_index);
                     }
                 }
                 if (inclosedlist_index > 0) {
-                    // printf("found closed: %d %d \n", closedlist[inclosedlist_index][0], closedlist[inclosedlist_index][1]);
-                    // printf("g: %d %d \n", g_neighbor, closedlist[inclosedlist_index][2]);
                     if (g_neighbor < closedlist[inclosedlist_index][2]) {
-                        // printf("erase close\n");
                         closedlist.erase(closedlist.begin() + inclosedlist_index);
                     }
                 }
