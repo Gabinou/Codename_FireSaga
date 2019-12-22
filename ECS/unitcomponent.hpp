@@ -87,7 +87,7 @@ class UnitComponent : public Component {
             return (attack_damage);
         }
 
-        unsigned char combat_damage(const Entity & enemy, const bool critical) {
+        unsigned char combat_damage(Entity & enemy, const bool critical) {
             unsigned char terrain_def = 0;
             unsigned char enemy_def = 0 ;
             unsigned char unit_power = 0;
@@ -132,7 +132,7 @@ class UnitComponent : public Component {
             return (critical);
         }
 
-        bool retaliation(const Entity & enemy) {
+        bool retaliation(Entity & enemy) {
             // int unit_position[2] = {entity->getComponent<PositionComponent>().getPos()[0], entity->getComponent<PositionComponent>().getPos()[1]};
             int * unit_position;
             int * enemy_position;
@@ -151,7 +151,7 @@ class UnitComponent : public Component {
             return (retaliates);
         }
 
-        bool combat_double(const Entity & enemy) const {
+        bool combat_double(Entity & enemy) const {
             unsigned char enemy_speed = enemy.getComponent<UnitComponent>().current_stats.spd;
             bool doubles = ((current_stats.spd - wpn_weighed_down() - enemy_speed) > 4);
             return (doubles);
@@ -163,7 +163,7 @@ class UnitComponent : public Component {
             return (std::max(temp_wpn.wgt - current_stats.con, 0));
         }
 
-        unsigned char combat_critical(const Entity & enemy) {
+        unsigned char combat_critical(Entity & enemy) {
             unsigned char supports = 0;
             unsigned char unit_skill = 0;
             unsigned char enemy_favor = enemy.getComponent<UnitComponent>().favor();
@@ -184,13 +184,13 @@ class UnitComponent : public Component {
             return (accuracy);
         }
 
-        unsigned char combat_hit(const Entity & enemy) {
+        unsigned char combat_hit(Entity & enemy) {
             int enemy_avoid = enemy.getComponent<UnitComponent>().avoid();
             unsigned char hit = std::max(0, accuracy() - enemy_avoid);
             return (hit);
         }
 
-        unsigned char attack(const Entity & enemy) {
+        unsigned char attack(Entity & enemy) {
             printf("%s attacks %s\n", name, enemy.getComponent<UnitComponent>().get_name());
             bool unit_hits = (get_rand() < combat_hit(enemy));
             bool unit_crits = (get_rand() < combat_critical(enemy));
@@ -198,35 +198,35 @@ class UnitComponent : public Component {
             // printf("%d crit chance \n", combat_critical(enemy));
             /* *DESIGN QUESTION* Should a random number always be rolled for crits, even if the hit doesn't connect?
             * I think so. Always same number of rand rolled.
-            * But what about crit animations? Should crit animations be shown to miss? Fire Emblem thinks not.
+            * But what about crit animations? Should crit animations be shown to miss? Fire Emblem thinks not. Me too.
             */
             // unit.take_damage( -= combat_damage(enemy, unit_crits);
             enemy.getComponent<UnitComponent>().take_damage(combat_damage(enemy, unit_crits));
-            // return (combat_damage(unit_crits));
-            return (1);
+            return (combat_damage(enemy, unit_crits));
+            // return (1);
         }
 
-        // void unit::combat(unit & enemy) {
-        //     printf("%s fights %s\n", name, enemy.name);
-        //     bool unit_doubles = combat_double(enemy);
-        //     bool enemy_retaliates = enemy.retaliation(static_cast<const unit &>(*this));
-        //     bool enemy_doubles = 0;
-        //     printf("%s doubles %d\n", name, unit_doubles);
-        //     // printf("enemy retaliates %d\n", enemy_retaliates);
-        //     attack(enemy);
+        void combat(Entity & enemy) {
+            printf("%s fights %s\n", name, enemy.getComponent<UnitComponent>().get_name());
+            bool unit_doubles = combat_double(enemy);
+            bool enemy_retaliates = enemy.getComponent<UnitComponent>().retaliation(enemy);
+            bool enemy_doubles = 0;
+            printf("%s doubles %d\n", name, unit_doubles);
+            // printf("enemy retaliates %d\n", enemy_retaliates);
+            attack(enemy);
 
-        //     if (enemy_retaliates) {
-        //         enemy.attack(static_cast<unit &>(*this));
-        //         enemy_doubles = enemy.combat_double(static_cast<const unit &>(*this));
-        //         printf("%s doubles %d\n", enemy.name, enemy_doubles);
-        //     };
+            if (enemy_retaliates) {
+                enemy.getComponent<UnitComponent>().attack(*entity);
+                enemy_doubles = enemy.getComponent<UnitComponent>().combat_double(*entity);
+                printf("%s doubles %d\n", enemy.getComponent<UnitComponent>().get_name(), enemy_doubles);
+            };
 
-        //     if (unit_doubles) {attack(enemy);};
+            if (unit_doubles) {attack(enemy);};
 
-        //     if (enemy_doubles) {enemy.attack(static_cast<unit &>(*this));};
+            if (enemy_doubles) {enemy.getComponent<UnitComponent>().attack(*entity);};
 
-        //     // retaliation();
-        // }
+            // retaliation();
+        }
 
         // void unit::enemy_select(const unit & enemy) {
         //     combat_probs[0] = combat_hit(enemy);
