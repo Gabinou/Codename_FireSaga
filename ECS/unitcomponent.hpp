@@ -5,36 +5,6 @@
 #include "shared.hpp"
 #include "SDL2/SDL.h"
 
-struct Equipped {
-    int left;
-    int right;
-    //Index in big array of all weapons? Or pointer to weapon?
-};
-
-struct Unit_stats {
-    unsigned char hp;
-    unsigned char str;
-    unsigned char mag;
-    unsigned char spd;
-    unsigned char skl;
-    unsigned char luck;
-    unsigned char def;
-    unsigned char res;
-    unsigned char con;
-};
-
-struct Weapon {
-    unsigned char dmg;
-    unsigned char hit;
-    unsigned char dodge;
-    unsigned char crit;
-    unsigned char favor;
-    unsigned char wgt;
-    unsigned char range[2]; // [min_range, max_range]
-    bool hand; //0 is 1 hand. 1 is 2 hands.
-    bool dmg_type; // 0 is 1 physical. 1 magic.
-};
-
 class UnitComponent : public Component {
     private:
         Equipped equipped;
@@ -48,8 +18,26 @@ class UnitComponent : public Component {
         unsigned char current_hp;
         unsigned int exp;
         std::string name;
+        std::string class_name;
         struct ::inventory_item equipment[7], weapons[3], items[3];
     public:
+
+        UnitComponent() = default;
+
+        UnitComponent(std::string in_name, std::string in_class, Unit_stats in_bases) {
+            base_stats = in_bases;
+            class_name = in_class;
+            name = in_name;
+        }
+
+        UnitComponent(std::string in_name, Unit_stats in_bases) {
+            base_stats = in_bases;
+            name = in_name;
+        }
+
+        UnitComponent(Unit_stats in_bases) {
+            base_stats = in_bases;
+        }
 
         void take_damage(const unsigned char damage) {
             printf("%s takes %d damage \n", name, damage);
@@ -66,13 +54,17 @@ class UnitComponent : public Component {
         unsigned char get_hp() const {
             return (current_hp);
         }
-        
+
         unsigned int get_lvl() const {
-            return (ceil(current_hp/100));
+            return (ceil(current_hp / 100));
         }
 
         unsigned int get_exp() const {
             return (exp);
+        }
+
+        void set_exp(const unsigned int in_exp) {
+            exp = in_exp;
         }
 
         void set_hp(const unsigned char in_hp) {
@@ -81,6 +73,33 @@ class UnitComponent : public Component {
 
         void death() {
             printf("%s is dead.\n", name);
+        }
+
+        void set_bonus(Unit_stats in_stats) {
+            bonus_stats = in_stats; // tested, works fine.
+        }
+
+        void set_malus(Unit_stats in_stats) {
+            malus_stats = in_stats; // tested, works fine.
+        }
+
+        void set_caps(Unit_stats in_stats) {
+            stat_caps = in_stats; // tested, works fine.
+        }
+
+        void set_stats(Unit_stats in_stats) {
+            current_stats = in_stats; // tested, works fine.
+            current_hp = current_stats.hp;
+        }
+
+        void set_bases(Unit_stats in_stats) {
+            base_stats = in_stats; // tested, works fine.
+            current_stats = in_stats; // tested, works fine.
+            current_hp = base_stats.hp;
+        }
+
+        void set_growths(Unit_stats in_growths) {
+            base_stats = in_growths; // tested, works fine.
         }
 
         unsigned char attack_damage() {
@@ -128,6 +147,13 @@ class UnitComponent : public Component {
 
         std::string get_name() {
             return (name);
+        }
+
+        void set_name(const std::string in_name) {
+            name = in_name;
+        }
+        void set_name(const char in_name) {
+            name = in_name;
         }
 
         unsigned char avoid() {
@@ -241,6 +267,10 @@ class UnitComponent : public Component {
                 printf("%s doubles\n", enemy.getComponent<UnitComponent>().get_name());
                 enemy.getComponent<UnitComponent>().attack(*entity);
             };
+        }
+
+        void write() {
+
         }
 
 };

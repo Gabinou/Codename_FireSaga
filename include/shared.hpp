@@ -112,6 +112,37 @@ extern void permutations_binary(int len, int num_0, int out[], int i = 0);
 extern int h_manhattan(int start[], int end[]);
 extern double h_euclidean(int start[], int end[]);
 
+
+struct Equipped {
+    int left;
+    int right;
+    //Index in big array of all weapons? Or pointer to weapon?
+};
+
+struct Unit_stats {
+    unsigned char hp;
+    unsigned char str;
+    unsigned char mag;
+    unsigned char spd;
+    unsigned char skl;
+    unsigned char luck;
+    unsigned char def;
+    unsigned char res;
+    unsigned char con;
+};
+
+struct Weapon {
+    unsigned char dmg;
+    unsigned char hit;
+    unsigned char dodge;
+    unsigned char crit;
+    unsigned char favor;
+    unsigned char wgt;
+    unsigned char range[2]; // [min_range, max_range]
+    bool hand; //0 is 1 hand. 1 is 2 hands.
+    bool dmg_type; // 0 is 1 physical. 1 magic.
+};
+
 extern std::vector<std::vector<int>> A_star(std::vector<std::vector<int>> map, int start[], int end[], std::string mode = "matrix");
 extern std::vector<std::vector<int>> movemap(std::vector<std::vector<int>> map, int start[], int move, std::string mode = "matrix");
 extern std::vector<std::vector<int>> attackmap(std::vector<std::vector<int>> movemap, int start[], int move, int attack, std::string mode = "matrix");

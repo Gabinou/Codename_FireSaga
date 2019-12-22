@@ -145,6 +145,8 @@ class Game {
         static SDL_Event event;
         static TTF_Font * font;
 
+        void baseUnits();
+
 
 };
 

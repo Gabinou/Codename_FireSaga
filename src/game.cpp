@@ -234,6 +234,18 @@ std::string Game::getState() {
     return(state);
 }
 
+void Game::baseUnits(){
+    Entity & current_unit = manager.addEntity();
+    Unit_stats temp;
+          //hp,str,mag,skl,spd,luck,def,res,con 
+    temp = {15,  4,  5,  7,  6,   8,  4, 6, 5};
+    current_unit.addComponent<UnitComponent>("Silou", "Mage", temp);
+    temp = {48, 14, 25, 32, 34,  28, 19, 40, 15};
+    current_unit.getComponent<UnitComponent>().set_caps(temp);
+    current_unit.getComponent<UnitComponent>().set_exp(400);
+
+}
+
 void Game::init(const char * title, int xpos, int ypos, int width, int height, bool fullscreen) {
     int flags = 0;
 
@@ -302,11 +314,17 @@ void Game::init(const char * title, int xpos, int ypos, int width, int height, b
     }
 
     player.addComponent<SpriteComponent>(mapp, "..//assets//horse.png");
+    player.addComponent<UnitComponent>();
     cursor.addComponent<SpriteComponent>(mapp, "..//assets//cursors.png", 10, 50);
     cursor.getComponent<SpriteComponent>().setSlidetype("geometric");
     
     player.addGroup(manager.groupUnits);
     cursor.addGroup(manager.groupUI);
+
+
+    Unit_stats test = {1,2,3};
+    player.getComponent<UnitComponent>().set_caps(test);
+
     // cursor.getComponent<SpriteComponent>().hide();
 
     this->setState("map");
