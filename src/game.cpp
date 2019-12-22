@@ -11,6 +11,7 @@
 #include "textcomponent.hpp"
 #include "keyboardcontroller.hpp"
 #include "gamepadcontroller.hpp"
+#include "unitcomponent.hpp"
 
 Map * mapp;
 
@@ -306,7 +307,6 @@ void Game::init(const char * title, int xpos, int ypos, int width, int height, b
     
     player.addGroup(manager.groupUnits);
     cursor.addGroup(manager.groupUI);
-
     // cursor.getComponent<SpriteComponent>().hide();
 
     this->setState("map");
