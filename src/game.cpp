@@ -238,11 +238,29 @@ void Game::baseUnits(){
     Entity & current_unit = manager.addEntity();
     Unit_stats temp;
           //hp,str,mag,skl,spd,luck,def,res,con 
+    temp = {17,  6,  2,  7,  7,   7,  4, 5, 6};
+    current_unit.addComponent<UnitComponent>("Main", "Mercenary", temp);
+    temp = {48, 14, 25, 32, 34,  28, 19, 40, 15};
+    current_unit.getComponent<UnitComponent>().set_caps(temp);
+    current_unit.getComponent<UnitComponent>().set_exp(0);
+
     temp = {15,  4,  5,  7,  6,   8,  4, 6, 5};
     current_unit.addComponent<UnitComponent>("Silou", "Mage", temp);
     temp = {48, 14, 25, 32, 34,  28, 19, 40, 15};
     current_unit.getComponent<UnitComponent>().set_caps(temp);
     current_unit.getComponent<UnitComponent>().set_exp(400);
+
+    temp = {15,  4,  5,  7,  6,   8,  4, 6, 5};
+    current_unit.addComponent<UnitComponent>("Servil", "Knight", temp);
+    temp = {48, 14, 25, 32, 34,  28, 19, 40, 15};
+    current_unit.getComponent<UnitComponent>().set_caps(temp);
+    current_unit.getComponent<UnitComponent>().set_exp(500);
+
+    temp = {15,  4,  5,  7,  6,   8,  4, 6, 5};
+    current_unit.addComponent<UnitComponent>("Pérignon", "Mage", temp);
+    temp = {48, 14, 25, 32, 34,  28, 19, 40, 15};
+    current_unit.getComponent<UnitComponent>().set_caps(temp);
+    current_unit.getComponent<UnitComponent>().set_exp(1200);
 
 }
 
