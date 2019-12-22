@@ -37,10 +37,6 @@
 /// \brief gets the next random number, using pre-defined Mersenne-Twister object applied to pre-defined uniform distribution.
 extern std::mt19937 mt;
 
-/// \fn dist
-/// \brief gets the next random number, using pre-defined Mersenne-Twister object applied to pre-defined uniform distribution.
-extern std::uniform_int_distribution<char> dist; //*DESIGN ***DESIGN QUESTION*** What should be the minimum and maximum probabilities?
-
 /// \fn get_rand
 /// \brief gets the next random number, using pre-defined Mersenne-Twister object applied to pre-defined uniform distribution.
 extern int get_rand();

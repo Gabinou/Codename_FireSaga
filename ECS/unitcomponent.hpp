@@ -47,7 +47,6 @@ class UnitComponent : public Component {
         unsigned char current_hp;
         std::string name;
     public:
-
         void take_damage(const unsigned char damage) {
             printf("%s takes %d damage \n", name, damage);
             current_hp = std::max(0, current_hp - damage);
@@ -112,6 +111,10 @@ class UnitComponent : public Component {
             // int attack_damage = crit_factor*(wpn_dmg + unit_power) - enemy_def - terrain_def);  // FE4-FE5 style. for crit_factor = 2
 
             return (attack_damage);
+        }
+
+        std::string get_name() {
+            return (name);
         }
 
         unsigned char avoid() {
@@ -187,20 +190,21 @@ class UnitComponent : public Component {
             return (hit);
         }
 
-        // unsigned char unit::attack(unit & enemy) {
-        //     printf("%s attacks %s\n", name, enemy.name);
-        //     bool unit_hits = (get_rand() < combat_hit(enemy));
-        //     bool unit_crits = (get_rand() < combat_critical(enemy));
-        //     // printf("%s crits %d \n", name, unit_crits);
-        //     // printf("%d crit chance \n", combat_critical(enemy));
-        //     /* *DESIGN QUESTION* Should a random number always be rolled for crits, even if the hit doesn't connect?
-        //     * I think so. Always same number of rand rolled.
-        //     * But what about crit animations? Should crit animations be shown to miss? Fire Emblem thinks not.
-        //     */
-        //     // unit.take_damage( -= combat_damage(enemy, unit_crits);
-        //     enemy.take_damage(combat_damage(enemy, unit_crits));
-        //     return (combat_damage(enemy, unit_crits));
-        // }
+        unsigned char attack(const Entity & enemy) {
+            printf("%s attacks %s\n", name, enemy.getComponent<UnitComponent>().get_name());
+            bool unit_hits = (get_rand() < combat_hit(enemy));
+            bool unit_crits = (get_rand() < combat_critical(enemy));
+            // printf("%s crits %d \n", name, unit_crits);
+            // printf("%d crit chance \n", combat_critical(enemy));
+            /* *DESIGN QUESTION* Should a random number always be rolled for crits, even if the hit doesn't connect?
+            * I think so. Always same number of rand rolled.
+            * But what about crit animations? Should crit animations be shown to miss? Fire Emblem thinks not.
+            */
+            // unit.take_damage( -= combat_damage(enemy, unit_crits);
+            enemy.getComponent<UnitComponent>().take_damage(combat_damage(enemy, unit_crits));
+            // return (combat_damage(unit_crits));
+            return (1);
+        }
 
         // void unit::combat(unit & enemy) {
         //     printf("%s fights %s\n", name, enemy.name);

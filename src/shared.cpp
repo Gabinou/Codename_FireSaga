@@ -565,8 +565,13 @@ std::vector<std::string> css_from_line(char * line) {
     return (names);
 }
 
+/// \fn dist
+/// \brief gets the next random number, using pre-defined Mersenne-Twister object applied to pre-defined uniform distribution.
+std::uniform_int_distribution<int> dir_99(0, 99); // more twice faster than Ureal_1
+
+
 int get_rand() {
-    return (dist(mt));
+    return (dir_99(mt));
 }
 
 bool single_roll(int in_prob) {
