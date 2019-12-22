@@ -211,29 +211,24 @@ class UnitComponent : public Component {
             bool unit_doubles = combat_double(enemy);
             bool enemy_retaliates = enemy.getComponent<UnitComponent>().retaliation(enemy);
             bool enemy_doubles = 0;
-            printf("%s doubles %d\n", name, unit_doubles);
-            // printf("enemy retaliates %d\n", enemy_retaliates);
             attack(enemy);
 
             if (enemy_retaliates) {
                 enemy.getComponent<UnitComponent>().attack(*entity);
+                printf("enemy %s retaliates %d\n", enemy.getComponent<UnitComponent>().get_name(), enemy_retaliates);
                 enemy_doubles = enemy.getComponent<UnitComponent>().combat_double(*entity);
-                printf("%s doubles %d\n", enemy.getComponent<UnitComponent>().get_name(), enemy_doubles);
             };
 
-            if (unit_doubles) {attack(enemy);};
+            if (unit_doubles) {
+                printf("%s doubles\n", name);
+                attack(enemy);
+            };
 
-            if (enemy_doubles) {enemy.getComponent<UnitComponent>().attack(*entity);};
-
-            // retaliation();
+            if (enemy_doubles) {
+                printf("%s doubles\n", enemy.getComponent<UnitComponent>().get_name());
+                enemy.getComponent<UnitComponent>().attack(*entity);
+            };
         }
-
-        // void unit::enemy_select(const unit & enemy) {
-        //     combat_probs[0] = combat_hit(enemy);
-        //     combat_probs[1] = combat_critical(enemy);
-        // }
-
-
 
 };
 
