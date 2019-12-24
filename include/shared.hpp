@@ -129,6 +129,7 @@ struct Unit_stats {
     unsigned char def;
     unsigned char res;
     unsigned char con;
+    unsigned char move;
 };
 
 struct Weapon {

@@ -234,71 +234,75 @@ std::string Game::getState() {
     return(state);
 }
 
+void Game::baseWeapons(){
+
+}
+
 void Game::baseUnits(){
     Entity & current_unit = manager.addEntity();
     Unit_stats temp;
-          //hp,str,mag,skl,spd,luck,def,res,con 
-    temp = {17,  6,  2,  7,  7,   7,  4, 5, 6};
+          //hp,str,mag,skl,spd,luck,def,res,con,move 
+    temp = {17,  6,  2,  7,  7,   7,  4,  5,  6, 5};
     current_unit.addComponent<UnitComponent>("Main", "Mercenary", temp);
     temp = {48, 14, 25, 32, 34,  28, 19, 40, 15};
     current_unit.getComponent<UnitComponent>().set_caps(temp);
     current_unit.getComponent<UnitComponent>().set_exp(0);  
 
-    temp = {17,  6,  2,  7,  7,   7,  4, 5, 6};
+    temp = {17,  6,  2,  7,  7,   7,  4,  5,  6, 7};
     current_unit.addComponent<UnitComponent>("Reliable", "Cavalier", temp);
     temp = {48, 14, 25, 32, 34,  28, 19, 40, 15};
     current_unit.getComponent<UnitComponent>().set_caps(temp);
     current_unit.getComponent<UnitComponent>().set_exp(100);
 
-    temp = {17,  6,  2,  7,  7,   7,  4, 5, 6};
+    temp = {17,  6,  2,  7,  7,   7,  4,  5,  6,  7};
     current_unit.addComponent<UnitComponent>("Coward", "Cavalier", temp);
     temp = {48, 14, 25, 32, 34,  28, 19, 40, 15};
     current_unit.getComponent<UnitComponent>().set_caps(temp);
     current_unit.getComponent<UnitComponent>().set_exp(200);
 
-    temp = {17,  6,  2,  7,  7,   7,  4, 5, 6};
+    temp = {17,  6,  2,  7,  7,   7,  4,  5,  6,  6};
     current_unit.addComponent<UnitComponent>("1H Jaigen", "Fencermaster", temp);
     temp = {48, 14, 25, 32, 34,  28, 19, 40, 15};
     current_unit.getComponent<UnitComponent>().set_caps(temp);
     current_unit.getComponent<UnitComponent>().set_exp(2200);
 
-    temp = {17,  6,  2,  7,  7,   7,  4, 5, 6};
+    temp = {17,  6,  2,  7,  7,   7,  4,  5,  6,  5};
     current_unit.addComponent<UnitComponent>("Lovely", "Priestess", temp);
     temp = {48, 14, 25, 32, 34,  28, 19, 40, 15};
     current_unit.getComponent<UnitComponent>().set_caps(temp);
     current_unit.getComponent<UnitComponent>().set_exp(100);
  
-    temp = {17,  6,  2,  7,  7,   7,  4, 5, 6};
+    temp = {17,  6,  2,  7,  7,   7,  4,  5,  6,  6};
     current_unit.addComponent<UnitComponent>("Hottie", "Thief", temp);
     temp = {48, 14, 25, 32, 34,  28, 19, 40, 15};
     current_unit.getComponent<UnitComponent>().set_caps(temp);
     current_unit.getComponent<UnitComponent>().set_exp(2200);
 
-    temp = {15,  4,  5,  7,  6,   8,  4, 6, 5};
+    temp = {15,  4,  5,  7,  6,   8,  4,  6,  5, 5};
     current_unit.addComponent<UnitComponent>("Silou", "Mage", temp);
     temp = {48, 14, 25, 32, 34,  28, 19, 40, 15};
     current_unit.getComponent<UnitComponent>().set_caps(temp);
     current_unit.getComponent<UnitComponent>().set_exp(400);
 
-    temp = {15,  4,  5,  7,  6,   8,  4, 6, 5};
+    temp = {15,  4,  5,  7,  6,   8,  4,  6,  5, 5}; // 4 or 5?
     current_unit.addComponent<UnitComponent>("Servil", "Knight", temp);
     temp = {48, 14, 25, 32, 34,  28, 19, 40, 15};
     current_unit.getComponent<UnitComponent>().set_caps(temp);
     current_unit.getComponent<UnitComponent>().set_exp(500);
 
-    temp = {15,  4,  5,  7,  6,   8,  4, 6, 5};
+    temp = {15,  4,  5,  7,  6,   8,  4,  6,  5, 5};
     current_unit.addComponent<UnitComponent>("Pérignon", "Mage", temp);
     temp = {48, 14, 25, 32, 34,  28, 19, 40, 15};
     current_unit.getComponent<UnitComponent>().set_caps(temp);
     current_unit.getComponent<UnitComponent>().set_exp(1200);
 
-    temp = {15,  4,  5,  7,  6,   8,  4, 6, 5};
+    temp = {15,  4,  5,  7,  6,   8,  4,  6,  5, 5};
     current_unit.addComponent<UnitComponent>("Poet", "Mage", temp);
     temp = {48, 14, 25, 32, 34,  28, 19, 40, 15};
     current_unit.getComponent<UnitComponent>().set_caps(temp);
     current_unit.getComponent<UnitComponent>().set_exp(400);
 
-    temp = {15,  4,  5,  7,  6,   8,  4, 6, 5};
+    temp = {15,  4,  5,  7,  6,   8,  4,  6,  5, 5};
     current_unit.addComponent<UnitComponent>("Arm Thief", "Mercenary", temp);
     temp = {48, 14, 25, 32, 34,  28, 19, 40, 15};
     current_unit.getComponent<UnitComponent>().set_caps(temp);
