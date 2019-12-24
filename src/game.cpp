@@ -298,6 +298,12 @@ void Game::baseUnits(){
     current_unit.getComponent<UnitComponent>().set_caps(temp);
     current_unit.getComponent<UnitComponent>().set_exp(400);
 
+    temp = {15,  4,  5,  7,  6,   8,  4, 6, 5};
+    current_unit.addComponent<UnitComponent>("Arm Thief", "Mercenary", temp);
+    temp = {48, 14, 25, 32, 34,  28, 19, 40, 15};
+    current_unit.getComponent<UnitComponent>().set_caps(temp);
+    current_unit.getComponent<UnitComponent>().set_exp(400);
+
 }
 
 void Game::init(const char * title, int xpos, int ypos, int width, int height, bool fullscreen) {
