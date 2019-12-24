@@ -6,6 +6,8 @@
 #include "shared.hpp"
 #include "SDL2/SDL.h"
 
+extern std::unordered_map<string, unit> all_units;
+
 class UnitComponent : public Component {
     private:
         Equipped equipped;
