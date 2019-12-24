@@ -24,11 +24,6 @@ Manager manager;
 Entity & cursor = manager.addEntity(); // FOR SOME REASON, having an 2, 4, 8 entities.... breaks something in the unitmove->unitmenu states move
 Entity & player = manager.addEntity();
 Entity & player2 = manager.addEntity();
-// Entity & player3 = manager.addEntity();
-// Entity & player4 = manager.addEntity();
-// Entity & player5 = manager.addEntity();
-// Entity & player6 = manager.addEntity();
-// Entity & player7 = manager.addEntity();
 
 Game::Game() {}
 Game::~Game() {}

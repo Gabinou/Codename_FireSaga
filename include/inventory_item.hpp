@@ -1,8 +1,5 @@
 #ifndef INVENTORY_ITEM_HPP
 #define INVENTORY_ITEM_HPP
-#include <bits/stdc++.h>
-#include <sstream>
-#include <iomanip>
 #include "shared.hpp"
 
 /*! \file inventory_item.hpp
