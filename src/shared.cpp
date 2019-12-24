@@ -610,54 +610,54 @@ string read_line(const char * filename, int skip) {
 /// \brief Write all_units stats to file.
 // write_all_units must be implemented here.
 void write_all_units(const char * filename, char const * savestyle) {
-    if (savestyle == "cpp") {
-        std::ofstream out(filename);
+    // if (savestyle == "cpp") {
+    //     std::ofstream out(filename);
 
-        for (auto & it : all_units) {
-            out << it.second;
-        }
+    //     for (auto & it : all_units) {
+    //         out << it.second;
+    //     }
 
-        out.close();
-    } else if (savestyle == "c") {
-        remove(filename);
+    //     out.close();
+    // } else if (savestyle == "c") {
+    //     remove(filename);
 
-        for (auto & it : all_units) {
-            // std::cout << it.second.name << endl;
-            it.second.write(filename);
-        }
-    }
+    //     for (auto & it : all_units) {
+    //         // std::cout << it.second.name << endl;
+    //         it.second.write(filename);
+    //     }
+    // }
 }
 
 void read_all_unit_classes(const char * filename) {
-    std::string line;
-    std::ifstream inFile(filename);
-    short int line_num = std::count(std::istreambuf_iterator<char>(inFile),
-                                    std::istreambuf_iterator<char>(), '\n') + 1;
+    // std::string line;
+    // std::ifstream inFile(filename);
+    // short int line_num = std::count(std::istreambuf_iterator<char>(inFile),
+    //                                 std::istreambuf_iterator<char>(), '\n') + 1;
 
-    for (int i = 0 ; i < line_num; i += 9) {
-        line = "";
+    // for (int i = 0 ; i < line_num; i += 9) {
+    //     line = "";
 
-        try {
-            line = read_line(filename, i);
-        } catch (const char * msg) {
-            break;
-        }
+    //     try {
+    //         line = read_line(filename, i);
+    //     } catch (const char * msg) {
+    //         break;
+    //     }
 
-        if (!line.empty() && line != "") {
-            all_unit_classes[line.substr(9, line.size()).c_str()] = unit_class();
-            all_unit_classes[line.substr(9, line.size()).c_str()].read(filename, i);
-        }
+    //     if (!line.empty() && line != "") {
+    //         all_unit_classes[line.substr(9, line.size()).c_str()] = unit_class();
+    //         all_unit_classes[line.substr(9, line.size()).c_str()].read(filename, i);
+    //     }
 
-        inFile.close();
-    }
+    //     inFile.close();
+    // }
 }
 
 void write_all_unit_classes(const char * filename) {
-    std::remove(filename);
+    // std::remove(filename);
 
-    for (auto & it : all_unit_classes) { // Iterate over unordered_map
-        it.second.write(filename);
-    }
+    // for (auto & it : all_unit_classes) { // Iterate over unordered_map
+    //     it.second.write(filename);
+    // }
 }
 
 
@@ -713,27 +713,27 @@ void read_all_weapons(const char * filename) {
 }
 
 void read_all_units(const char * filename) {
-    std::string line;
-    std::ifstream inFile(filename);
-    short int line_num = std::count(std::istreambuf_iterator<char>(inFile),
-                                    std::istreambuf_iterator<char>(), '\n') + 1;
+    // std::string line;
+    // std::ifstream inFile(filename);
+    // short int line_num = std::count(std::istreambuf_iterator<char>(inFile),
+    //                                 std::istreambuf_iterator<char>(), '\n') + 1;
 
-    for (int i = 0 ; i < line_num; i += 16) {
-        line = "";
+    // for (int i = 0 ; i < line_num; i += 16) {
+    //     line = "";
 
-        try {
-            line = read_line(filename, i);
-        } catch (const char * msg) {
-            break;
-        }
+    //     try {
+    //         line = read_line(filename, i);
+    //     } catch (const char * msg) {
+    //         break;
+    //     }
 
-        if (!line.empty() && line != "") {
-            all_units[line.c_str()] = unit();
-            all_units[line.c_str()].read(filename, i);
-        }
+    //     if (!line.empty() && line != "") {
+    //         all_units[line.c_str()] = unit();
+    //         all_units[line.c_str()].read(filename, i);
+    //     }
 
-        inFile.close();
-    }
+    //     inFile.close();
+    // }
 }
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
@@ -814,7 +814,7 @@ char weapon_slots = 4;
 /// \brief Main FEmaker algorithm.
 std::unordered_map<string, weapon> all_weapons;
 // std::unordered_map<string, struct inventory_item> inventory_items;
-std::unordered_map<string, unit> all_units;
+std::unordered_map<string, Entity> all_units;
 
-std::unordered_map<string, unit_class> all_unit_classes;
+// std::unordered_map<string, unit_class> all_unit_classes;
 std::unordered_map<string, int> wpn_indexes;

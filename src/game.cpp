@@ -234,74 +234,96 @@ void Game::baseWeapons(){
 }
 
 void Game::baseUnits(){
-    Entity & current_unit = manager.addEntity();
+    manager.addEntity();
+    // Entity current_unit;
     Unit_stats temp;
           //hp,str,mag,skl,spd,luck,def,res,con,move 
     temp = {17,  6,  2,  7,  7,   7,  4,  5,  6, 5};
-    current_unit.addComponent<UnitComponent>("Main", "Mercenary", temp);
+    manager.getEntities().back()->addComponent<UnitComponent>("Main", "Mercenary", temp);
     temp = {48, 14, 25, 32, 34,  28, 19, 40, 15};
-    current_unit.getComponent<UnitComponent>().set_caps(temp);
-    current_unit.getComponent<UnitComponent>().set_exp(0);  
+    manager.getEntities().back()->getComponent<UnitComponent>().set_caps(temp);
+    manager.getEntities().back()->getComponent<UnitComponent>().set_exp(0); 
+    all_units["Main"] = manager.getEntities().size() - 1;
 
+    manager.addEntity();
     temp = {17,  6,  2,  7,  7,   7,  4,  5,  6, 7};
-    current_unit.addComponent<UnitComponent>("Reliable", "Cavalier", temp);
+    manager.getEntities().back()->addComponent<UnitComponent>("Reliable", "Cavalier", temp);
     temp = {48, 14, 25, 32, 34,  28, 19, 40, 15};
-    current_unit.getComponent<UnitComponent>().set_caps(temp);
-    current_unit.getComponent<UnitComponent>().set_exp(100);
+    manager.getEntities().back()->getComponent<UnitComponent>().set_caps(temp);
+    manager.getEntities().back()->getComponent<UnitComponent>().set_exp(100);
+    all_units["Reliable"] = manager.getEntities().size() - 1;
 
+    manager.addEntity();
     temp = {17,  6,  2,  7,  7,   7,  4,  5,  6,  7};
-    current_unit.addComponent<UnitComponent>("Coward", "Cavalier", temp);
+    manager.getEntities().back()->addComponent<UnitComponent>("Coward", "Cavalier", temp);
     temp = {48, 14, 25, 32, 34,  28, 19, 40, 15};
-    current_unit.getComponent<UnitComponent>().set_caps(temp);
-    current_unit.getComponent<UnitComponent>().set_exp(200);
+    manager.getEntities().back()->getComponent<UnitComponent>().set_caps(temp);
+    manager.getEntities().back()->getComponent<UnitComponent>().set_exp(200);
+    all_units["Coward"] = manager.getEntities().size() - 1;
 
+    manager.addEntity();
     temp = {17,  6,  2,  7,  7,   7,  4,  5,  6,  6};
-    current_unit.addComponent<UnitComponent>("1H Jaigen", "Fencermaster", temp);
+    manager.getEntities().back()->addComponent<UnitComponent>("1H Jaigen", "Fencermaster", temp);
     temp = {48, 14, 25, 32, 34,  28, 19, 40, 15};
-    current_unit.getComponent<UnitComponent>().set_caps(temp);
-    current_unit.getComponent<UnitComponent>().set_exp(2200);
+    manager.getEntities().back()->getComponent<UnitComponent>().set_caps(temp);
+    manager.getEntities().back()->getComponent<UnitComponent>().set_exp(2200);
+    all_units["1H Jaigen"] = manager.getEntities().size() - 1;
 
+    manager.addEntity();
     temp = {17,  6,  2,  7,  7,   7,  4,  5,  6,  5};
-    current_unit.addComponent<UnitComponent>("Lovely", "Priestess", temp);
+    manager.getEntities().back()->addComponent<UnitComponent>("Lovely", "Priestess", temp);
     temp = {48, 14, 25, 32, 34,  28, 19, 40, 15};
-    current_unit.getComponent<UnitComponent>().set_caps(temp);
-    current_unit.getComponent<UnitComponent>().set_exp(100);
- 
+    manager.getEntities().back()->getComponent<UnitComponent>().set_caps(temp);
+    manager.getEntities().back()->getComponent<UnitComponent>().set_exp(100);
+    all_units["Lovely"] = manager.getEntities().size() - 1;
+    
+    manager.addEntity();
     temp = {17,  6,  2,  7,  7,   7,  4,  5,  6,  6};
-    current_unit.addComponent<UnitComponent>("Hottie", "Thief", temp);
+    manager.getEntities().back()->addComponent<UnitComponent>("Hottie", "Thief", temp);
     temp = {48, 14, 25, 32, 34,  28, 19, 40, 15};
-    current_unit.getComponent<UnitComponent>().set_caps(temp);
-    current_unit.getComponent<UnitComponent>().set_exp(2200);
+    manager.getEntities().back()->getComponent<UnitComponent>().set_caps(temp);
+    manager.getEntities().back()->getComponent<UnitComponent>().set_exp(2200);
+    all_units["Hottie"] = manager.getEntities().size() - 1;
 
+    manager.addEntity();
     temp = {15,  4,  5,  7,  6,   8,  4,  6,  5, 5};
-    current_unit.addComponent<UnitComponent>("Silou", "Mage", temp);
+    manager.getEntities().back()->addComponent<UnitComponent>("Silou", "Mage", temp);
     temp = {48, 14, 25, 32, 34,  28, 19, 40, 15};
-    current_unit.getComponent<UnitComponent>().set_caps(temp);
-    current_unit.getComponent<UnitComponent>().set_exp(400);
+    manager.getEntities().back()->getComponent<UnitComponent>().set_caps(temp);
+    manager.getEntities().back()->getComponent<UnitComponent>().set_exp(400);
+    all_units["Silou"] = manager.getEntities().size() - 1;
 
+    manager.addEntity();
     temp = {15,  4,  5,  7,  6,   8,  4,  6,  5, 5}; // 4 or 5?
-    current_unit.addComponent<UnitComponent>("Servil", "Knight", temp);
+    manager.getEntities().back()->addComponent<UnitComponent>("Servil", "Knight", temp);
     temp = {48, 14, 25, 32, 34,  28, 19, 40, 15};
-    current_unit.getComponent<UnitComponent>().set_caps(temp);
-    current_unit.getComponent<UnitComponent>().set_exp(500);
+    manager.getEntities().back()->getComponent<UnitComponent>().set_caps(temp);
+    manager.getEntities().back()->getComponent<UnitComponent>().set_exp(500);
+    all_units["Servil"] = manager.getEntities().size() - 1;
 
+    manager.addEntity();
     temp = {15,  4,  5,  7,  6,   8,  4,  6,  5, 5};
-    current_unit.addComponent<UnitComponent>("Pérignon", "Mage", temp);
+    manager.getEntities().back()->addComponent<UnitComponent>("Pérignon", "Mage", temp);
     temp = {48, 14, 25, 32, 34,  28, 19, 40, 15};
-    current_unit.getComponent<UnitComponent>().set_caps(temp);
-    current_unit.getComponent<UnitComponent>().set_exp(1200);
+    manager.getEntities().back()->getComponent<UnitComponent>().set_caps(temp);
+    manager.getEntities().back()->getComponent<UnitComponent>().set_exp(1200);
+    all_units["Pérignon"] = manager.getEntities().size() - 1;
 
+    manager.addEntity();
     temp = {15,  4,  5,  7,  6,   8,  4,  6,  5, 5};
-    current_unit.addComponent<UnitComponent>("Poet", "Mage", temp);
+    manager.getEntities().back()->addComponent<UnitComponent>("Poet", "Mage", temp);
     temp = {48, 14, 25, 32, 34,  28, 19, 40, 15};
-    current_unit.getComponent<UnitComponent>().set_caps(temp);
-    current_unit.getComponent<UnitComponent>().set_exp(400);
+    manager.getEntities().back()->getComponent<UnitComponent>().set_caps(temp);
+    manager.getEntities().back()->getComponent<UnitComponent>().set_exp(400);
+    all_units["Poet"] = manager.getEntities().size() - 1;
 
+    manager.addEntity();
     temp = {15,  4,  5,  7,  6,   8,  4,  6,  5, 5};
-    current_unit.addComponent<UnitComponent>("Arm Thief", "Mercenary", temp);
+    manager.getEntities().back()->addComponent<UnitComponent>("Arm Thief", "Mercenary", temp);
     temp = {48, 14, 25, 32, 34,  28, 19, 40, 15};
-    current_unit.getComponent<UnitComponent>().set_caps(temp);
-    current_unit.getComponent<UnitComponent>().set_exp(400);
+    manager.getEntities().back()->getComponent<UnitComponent>().set_caps(temp);
+    manager.getEntities().back()->getComponent<UnitComponent>().set_exp(400);
+    all_units["Arm Thief"] = manager.getEntities().size() - 1;
 
 }
 
@@ -383,6 +405,8 @@ void Game::init(const char * title, int xpos, int ypos, int width, int height, b
 
     Unit_stats test = {1,2,3};
     player.getComponent<UnitComponent>().set_caps(test);
+
+    baseUnits();
 
     // cursor.getComponent<SpriteComponent>().hide();
 

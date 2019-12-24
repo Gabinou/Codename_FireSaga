@@ -20,8 +20,6 @@
 #include "SDL2/SDL_ttf.h"
 #include "generic.hpp"
 #include "weapon.hpp"
-#include "unit.hpp"
-#include "unit_class.hpp"
 #include "inventory_item.hpp"
 #include "linalg.hpp"
 
