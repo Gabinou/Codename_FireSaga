@@ -237,8 +237,38 @@ void Game::baseWeapons(){
     Weapon wooden_sword("Wooden sword", "sword", temp_wpn);
     temp_wpn = {1, 50, 0, 0, 0, 3, {1,1}, 0, 0};
     Weapon kitchen_knife("Kitchen knife", "sword", temp_wpn);
+    temp_wpn = {1, 50, 0, 0, 0, 3, {1,1}, 0, 0};
+    Weapon fleuret("Fleuret", "sword", temp_wpn);
+    temp_wpn = {1, 50, 0, 0, 0, 3, {1,1}, 0, 0};
+    Weapon rapiere("Rapière", "sword", temp_wpn);
+    temp_wpn = {1, 50, 0, 0, 0, 3, {1,1}, 0, 0};
+    Weapon galatine("Galatine", "sword", temp_wpn);
+    temp_wpn = {1, 50, 0, 0, 0, 3, {1,1}, 0, 0};
+    Weapon glaive("Glaive", "sword", temp_wpn);
+    temp_wpn = {1, 50, 0, 0, 0, 3, {1,1}, 0, 0};
+    Weapon saber("Saber", "sword", temp_wpn);
+    temp_wpn = {1, 50, 0, 0, 0, 3, {1,1}, 0, 0};
+    Weapon fauchon("Fauchon", "sword", temp_wpn);
+    temp_wpn = {1, 50, 0, 0, 0, 3, {1,1}, 0, 0};
+    Weapon iron_sword("Iron sword", "sword", temp_wpn);
+    temp_wpn = {1, 50, 0, 0, 0, 3, {1,1}, 0, 0};
+    Weapon steel_sword("Steel sword", "sword", temp_wpn);
+    temp_wpn = {1, 50, 0, 0, 0, 3, {1,1}, 0, 0};
+    Weapon damas_sword("Damas sword", "sword", temp_wpn);
+    temp_wpn = {1, 50, 0, 0, 0, 3, {1,1}, 0, 0};
+    Weapon merciful_blade("Merciful blade", "sword", temp_wpn);
+    temp_wpn = {1, 50, 0, 0, 0, 3, {1,1}, 0, 0};
+    Weapon Excalibur("Excalibur", "sword", temp_wpn);
+    temp_wpn = {1, 50, 0, 0, 0, 3, {1,1}, 0, 0};
+    Weapon broadsword("Broadsword", "sword", temp_wpn);
+    temp_wpn = {1, 50, 0, 0, 0, 3, {1,1}, 0, 0};
+    Weapon espadon("Espadon", "sword", temp_wpn);
+    temp_wpn = {1, 50, 0, 0, 0, 3, {1,1}, 0, 0};
+    Weapon Hauteclaire("Hauteclaire", "sword", temp_wpn);
+    temp_wpn = {1, 50, 0, 0, 0, 3, {1,1}, 0, 0};
+    Weapon Premiere("Première", "sword", temp_wpn);
 
-}
+}qz
 
 void Game::baseUnits(){
     manager.addEntity();
@@ -254,7 +284,7 @@ void Game::baseUnits(){
     manager.getEntities().back()->getComponent<UnitComponent>().set_exp(0); 
     manager.getEntities().back()->getComponent<UnitComponent>().write("unit_test.txt");
     all_units["Main"] = manager.getEntities().size() - 1;
-    getchar();
+    // getchar();
 
     manager.addEntity();
     temp = {17,  6,  2,  7,  7,   7,  4,  5,  6, 7};
@@ -437,6 +467,7 @@ void Game::init(const char * title, int xpos, int ypos, int width, int height, b
     Unit_stats test = {1,2,3};
     player.getComponent<UnitComponent>().set_caps(test);
 
+    baseWeapons();
     baseUnits();
 
     // cursor.getComponent<SpriteComponent>().hide();
