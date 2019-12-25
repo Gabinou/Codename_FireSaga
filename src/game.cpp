@@ -230,7 +230,7 @@ std::string Game::getState() {
 }
 
 void Game::baseWeapons(){
-    inventory_item Damas_sword();
+
 }
 
 void Game::baseUnits(){

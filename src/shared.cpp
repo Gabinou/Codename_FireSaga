@@ -662,13 +662,13 @@ void write_all_unit_classes(const char * filename) {
 
 
 void write_all_weapons(const char * filename, char const * savestyle) {
-    std::remove(filename);
+    // std::remove(filename);
 
-    if (savestyle == "cpp") {
-        for (auto & it : all_weapons) { // Iterate over unordered_map
-            it.second.write(filename);
-        }
-    }
+    // if (savestyle == "cpp") {
+    //     for (auto & it : all_weapons) { // Iterate over unordered_map
+    //         it.second.write(filename);
+    //     }
+    // }
 }
 
 void write_all_maps(const char * filename) {
@@ -679,27 +679,27 @@ void read_all_maps(const char * filename) {
 }
 
 void read_all_weapons(const char * filename) {
-    std::string line;
-    std::ifstream inFile(filename);
-    short int line_num = std::count(std::istreambuf_iterator<char>(inFile),
-                                    std::istreambuf_iterator<char>(), '\n') + 1;
+    // std::string line;
+    // std::ifstream inFile(filename);
+    // short int line_num = std::count(std::istreambuf_iterator<char>(inFile),
+    //                                 std::istreambuf_iterator<char>(), '\n') + 1;
 
-    for (int i = 0 ; i < line_num; i += 10) {
-        line = "";
+    // for (int i = 0 ; i < line_num; i += 10) {
+    //     line = "";
 
-        try {
-            line = read_line(filename, i);
-        } catch (const char * msg) {
-            break;
-        }
+    //     try {
+    //         line = read_line(filename, i);
+    //     } catch (const char * msg) {
+    //         break;
+    //     }
 
-        if (!line.empty() && line != "") {
-            all_weapons[line.c_str()] = weapon();
-            all_weapons[line.c_str()].read(filename, i);
-        }
+    //     if (!line.empty() && line != "") {
+    //         all_weapons[line.c_str()] = weapon();
+    //         all_weapons[line.c_str()].read(filename, i);
+    //     }
 
-        inFile.close();
-    }
+    //     inFile.close();
+    // }
 
     // This part oif read_all_weapons creates an inventory_item for every weapon in all_weapons.
     // Have to run this anyway, better to put it here.

@@ -117,6 +117,17 @@ struct Equipped {
     //Index in big array of all weapons? Or pointer to weapon?
 };
 
+struct Weapon_stats {
+    unsigned char dmg;
+    unsigned char hit;
+    unsigned char crit;
+    unsigned char dodge;
+    unsigned char favor;
+    unsigned char wgt;
+    unsigned char hands;
+    unsigned char range[2];
+};
+
 struct Unit_stats {
     unsigned char hp;
     unsigned char str;
