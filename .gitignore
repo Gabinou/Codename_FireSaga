@@ -1,20 +1,10 @@
-*.exe
-*.dll
-*.txt
-*.xml
-Doxyfile
-# Ignore the build and lib dirs
-build/*
-lib/*
+*.*
+!*.cpp
+!*.hpp
+!.gitignore
+!CmakeLists.txt
 
-CMakeFiles/*
-
-# Ignore any executables
-html/*
 latex/*
-
-# Ignore any executables
-bin/*
-
-# Ignore Mac specific files
-.DS_Store
+build/*
+plots/*
+makefile
