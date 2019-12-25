@@ -812,7 +812,7 @@ char weapon_slots = 4;
 
 /// \fn main
 /// \brief Main FEmaker algorithm.
-std::unordered_map<std::string, Weapon> all_weapons;
+// std::unordered_map<std::string, Weapon> all_weapons;
 // std::unordered_map<string, struct inventory_item> inventory_items;
 std::unordered_map<std::string, Entity> all_units;
 

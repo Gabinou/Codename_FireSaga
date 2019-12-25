@@ -20,7 +20,6 @@
 #include "SDL2/SDL_ttf.h"
 #include "inventory_item.hpp"
 #include "linalg.hpp"
-#include "weapon.hpp"
 
 /*! \file shared.hpp
 * \brief Shared data.
