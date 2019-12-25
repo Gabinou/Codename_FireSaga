@@ -1,6 +1,6 @@
 #ifndef WEAPON_HPP
 #define WEAPON_HPP
-using namespace std;
+
 #include <istream>
 #include <ostream>
 #include <bits/stdc++.h>
@@ -13,8 +13,23 @@ using namespace std;
 /// \class weapon
 /// \brief Weapon class. Implemented to be as light as possible.
 /// All unsigned variables cannot be negative.
-class weapon {
+class Weapon {
+    private:
+    	std::string name;
+        Weapon_stats stats;
+        Unit_stats bonus;
+        Unit_stats malus;
+        std::string effect;
+        
+    public:
 
+        Weapon(Weapon_stats in_stats);
+        Weapon(std::string in_name, Weapon_stats in_stats);
+
+        void set_stats(Weapon_stats in_stats);
+        void set_bonus(Unit_stats in_bonus);
+        void set_malus(Unit_stats in_malus);
+        void set_effect(std::string in_effect);
 };
 
 /*! \var all_weapons
