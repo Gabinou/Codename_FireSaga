@@ -104,7 +104,7 @@ class UnitComponent : public Component {
         }
 
         void set_growths(Unit_stats in_growths) {
-            base_stats = in_growths; // tested, works fine.
+            growths = in_growths; // tested, works fine.
         }
 
         unsigned char attack_damage() {
@@ -291,7 +291,7 @@ class UnitComponent : public Component {
             fprintf(fp, "Stats, HP, Str, Mag, Skl, Spd, Luck, Def, Res, Con, Move\n");
             fprintf(fp, "Base stats,\t%d,\t%d,\t%d,\t%d,\t%d,\t%d,\t%d,\t%d,\t%d,\t%d\n", base_stats.hp, base_stats.str, base_stats.mag, base_stats.skl, base_stats.spd, base_stats.luck, base_stats.def, base_stats.res, base_stats.con, base_stats.move);
             fprintf(fp, "Growths,\t%d,\t%d,\t%d,\t%d,\t%d,\t%d,\t%d,\t%d,\t%d,\t%d\n", growths.hp, growths.str, growths.mag, growths.skl, growths.spd, growths.luck, growths.def, growths.res, growths.con, growths.move);
-            fprintf(fp, "Caps,\t%d,\t%d,\t%d,\t%d,\t%d,\t%d,\t%d,\t%d,\t%d,\t%d\n", caps_stats.hp, caps_stats.str, caps_stats.mag, caps_stats.skl, caps_stats.spd, caps_stats.luck, caps_stats.def, caps_stats.res, caps_stats.con, caps_stats.move);
+            fprintf(fp, "Caps,\t\t%d,\t%d,\t%d,\t%d,\t%d,\t%d,\t%d,\t%d,\t%d,\t%d\n", caps_stats.hp, caps_stats.str, caps_stats.mag, caps_stats.skl, caps_stats.spd, caps_stats.luck, caps_stats.def, caps_stats.res, caps_stats.con, caps_stats.move);
             fclose(fp);
         }
 
