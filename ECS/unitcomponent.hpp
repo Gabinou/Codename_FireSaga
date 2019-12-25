@@ -19,6 +19,8 @@ class UnitComponent : public Component {
         Unit_stats malus_stats;
         Unit_stats current_stats;
         std::vector<Unit_stats> grown_stats;
+        // SKILLS
+        // SUPPORTS
         Unit_stats growths;
         unsigned char current_hp;
         unsigned int exp;
