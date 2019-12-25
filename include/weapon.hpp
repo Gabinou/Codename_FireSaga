@@ -14,7 +14,7 @@ using namespace std;
 /// \class weapon
 /// \brief Weapon class. Implemented to be as light as possible.
 /// All unsigned variables cannot be negative.
-class weapon: public generic {
+class weapon {
 
 };
 
