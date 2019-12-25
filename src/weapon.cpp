@@ -19,6 +19,12 @@ Weapon::Weapon(std::string in_name, Weapon_stats in_stats){
     name = in_name;
 }
 
+Weapon::Weapon(std::string in_name, std::string in_type, Weapon_stats in_stats){
+    stats = in_stats;
+    name = in_name;
+    name = in_type;
+}
+
 void Weapon::set_malus(Unit_stats in_malus) {
     malus = in_malus;
 }

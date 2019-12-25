@@ -16,17 +16,18 @@
 /// All unsigned variables cannot be negative.
 class Weapon {
     private:
-        std::string name;
         Weapon_stats stats;
         Unit_stats bonus = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
         Unit_stats malus = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
         std::string effect = "None";
-
+        std::string type;
+        std::string name;
     public:
 
         Weapon();
         Weapon(Weapon_stats in_stats);
         Weapon(std::string in_name, Weapon_stats in_stats);
+        Weapon(std::string in_name, std::string in_type, Weapon_stats in_stats);
 
         void set_stats(Weapon_stats in_stats);
         void set_bonus(Unit_stats in_bonus);
