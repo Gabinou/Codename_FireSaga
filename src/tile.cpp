@@ -7,7 +7,6 @@
 using namespace std;
 #include "shared.hpp"
 #include "tile.hpp"
-#include "generic.hpp"
 
 tile::~tile() {
     // printf("tile %s is being deleted.\n" , name);

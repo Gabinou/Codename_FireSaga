@@ -2,13 +2,12 @@
 #define TILE_HPP
 using namespace std;
 #include "shared.hpp"
-#include "generic.hpp"
 /*! \file tile.hpp
 * \brief Tile class. All different possible tiles, representing terrain and stuff Graphics linked to tile can be different or even unique. This tile only contains the gameplay information.
 */
 /// \class tile
 /// \brief tile class. Implemented to be as light as possible.
-class tile: public generic {
+class tile {
     public:
         char def;
         char avoid;

@@ -5,4 +5,3 @@
 */
 #include "shared.hpp"
 #include "weapon.hpp"
-#include "generic.hpp"

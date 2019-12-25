@@ -18,7 +18,6 @@
 #include "SDL2/SDL.h"
 #include "SDL2/SDL_image.h"
 #include "SDL2/SDL_ttf.h"
-#include "generic.hpp"
 #include "weapon.hpp"
 #include "inventory_item.hpp"
 #include "linalg.hpp"
