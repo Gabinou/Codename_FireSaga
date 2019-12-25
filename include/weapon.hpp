@@ -18,9 +18,9 @@ class Weapon {
     private:
         std::string name;
         Weapon_stats stats;
-        Unit_stats bonus;
-        Unit_stats malus;
-        std::string effect;
+        Unit_stats bonus = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
+        Unit_stats malus = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
+        std::string effect = "None";
 
     public:
 

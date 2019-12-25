@@ -230,7 +230,12 @@ std::string Game::getState() {
 }
 
 void Game::baseWeapons(){
-
+    Weapon_stats temp_wpn;
+    Unit_stats temp_unit;
+    Unit_stats zero_unit = {0,0,0,0,0,0,0,0,0,0};
+    // dmg, hit, dodge, crit, favor, wgt, range, hand, dmg_stype
+    temp_wpn = {1, 10, 0, 0, 0, 3, {1,1}, 0, 0};
+    Weapon wooden_sword("Wooden sword", temp_wpn);
 }
 
 void Game::baseUnits(){
