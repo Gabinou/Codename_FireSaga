@@ -456,13 +456,13 @@ bool is_pressed(const Uint8 * state_array, std::vector<SDL_Scancode> to_find) {
     return (false);
 }
 
-std::vector<int> extract_int_string(string str) {
+std::vector<int> extract_int_string(std::string str) {
     // cannot read integers if not separated by at least one space and other chars.
-    stringstream ss;
+    std::stringstream ss;
     /* Storing the whole string into string stream */
     ss << str;
     /* Running loop till the end of the stream */
-    string temp;
+    std::string temp;
     int found;
     std::vector<int> founds;
 
@@ -471,7 +471,7 @@ std::vector<int> extract_int_string(string str) {
         ss >> temp;
 
         /* Checking the given word is integer or not */
-        if (stringstream(temp) >> found)
+        if (std::stringstream(temp) >> found)
             // cout << found << " ";
         { founds.push_back(found); }
 
@@ -508,11 +508,11 @@ std::vector<std::string> get_words(std::string line) {
     return (words);
 }
 
-std::vector<int> csv_from_line(string line, string delimiter) {
+std::vector<int> csv_from_line(std::string line, std::string delimiter) {
     std::vector<int> names;
     std::size_t found;
 
-    while ((found = line.find(delimiter)) != string::npos) {
+    while ((found = line.find(delimiter)) != std::string::npos) {
         // std::cout << line.substr(0, found) << endl;
         names.push_back(std::stoi(line.substr(0, found).c_str()));
         line.erase(0, found + delimiter.length());
@@ -523,11 +523,11 @@ std::vector<int> csv_from_line(string line, string delimiter) {
     return (names);
 }
 
-std::vector<std::string> css_from_line(string line, string delimiter) {
+std::vector<std::string> css_from_line(std::string line, std::string delimiter) {
     std::vector<std::string> names;
     std::size_t found;
 
-    while ((found = line.find(delimiter)) != string::npos) {
+    while ((found = line.find(delimiter)) != std::string::npos) {
         names.push_back(words2str(get_words(line.substr(0, found))));
         line.erase(0, found + delimiter.length());
     }
@@ -547,7 +547,7 @@ std::vector<std::string> css_from_line(char * line) {
     while (pch != NULL) {
         name = "";
         std::string temp(pch);
-        stringstream iss(temp);
+        std::stringstream iss(temp);
         word_num = 0;
 
         while (iss >> word) {
@@ -588,7 +588,7 @@ bool double_roll(int in_prob) {
     return (out);
 }
 
-string read_line(const char * filename, int skip) {
+std::string read_line(const char * filename, int skip) {
     // 2019/07/30: skip should be a multiple of *number of lines written to weapon.txt* which is 8.
     FILE * f = fopen(filename, "r");
     char line[500];
@@ -812,9 +812,9 @@ char weapon_slots = 4;
 
 /// \fn main
 /// \brief Main FEmaker algorithm.
-std::unordered_map<string, weapon> all_weapons;
+std::unordered_map<std::string, Weapon> all_weapons;
 // std::unordered_map<string, struct inventory_item> inventory_items;
-std::unordered_map<string, Entity> all_units;
+std::unordered_map<std::string, Entity> all_units;
 
 // std::unordered_map<string, unit_class> all_unit_classes;
-std::unordered_map<string, int> wpn_indexes;
+std::unordered_map<std::string, int> wpn_indexes;

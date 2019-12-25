@@ -18,9 +18,9 @@
 #include "SDL2/SDL.h"
 #include "SDL2/SDL_image.h"
 #include "SDL2/SDL_ttf.h"
-#include "weapon.hpp"
 #include "inventory_item.hpp"
 #include "linalg.hpp"
+#include "weapon.hpp"
 
 /*! \file shared.hpp
 * \brief Shared data.
@@ -109,22 +109,10 @@ extern void permutations_binary(int len, int num_0, int out[], int i = 0);
 extern int h_manhattan(int start[], int end[]);
 extern double h_euclidean(int start[], int end[]);
 
-
 struct Equipped {
     int left;
     int right;
     //Index in big array of all weapons? Or pointer to weapon?
-};
-
-struct Weapon_stats {
-    unsigned char dmg;
-    unsigned char hit;
-    unsigned char crit;
-    unsigned char dodge;
-    unsigned char favor;
-    unsigned char wgt;
-    unsigned char hands;
-    unsigned char range[2];
 };
 
 struct Unit_stats {
@@ -140,7 +128,7 @@ struct Unit_stats {
     unsigned char move;
 };
 
-struct Weapon {
+struct Weapon_stats {
     unsigned char dmg;
     unsigned char hit;
     unsigned char dodge;

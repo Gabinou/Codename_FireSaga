@@ -66,8 +66,8 @@ class Game {
         SDL_Window * window;
         std::string state;
         // I think these should be used as stacks: the last created entity should be the first destroyed:
-        stack <int> menu_entities;
-        stack <int> unit_entities;
+        std::stack <int> menu_entities;
+        std::stack <int> unit_entities;
 
         /* Possible states (make all letters lowercase when checking):
         *       worldmap: Story exposition, small animations of units moving around,

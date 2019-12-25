@@ -1,11 +1,12 @@
 #ifndef WEAPON_HPP
 #define WEAPON_HPP
 
-#include <istream>
-#include <ostream>
-#include <bits/stdc++.h>
-#include "inventory_item.hpp"
 #include "shared.hpp"
+#include "ECS.hpp"
+#include "game.hpp"
+#include "shared.hpp"
+#include "SDL2/SDL.h"
+#include <stdio.h>
 
 /*! \file weapon.hpp
 * \brief Weapon class. Not the one in the inventory, just the immutable weapon data.
@@ -15,14 +16,15 @@
 /// All unsigned variables cannot be negative.
 class Weapon {
     private:
-    	std::string name;
+        std::string name;
         Weapon_stats stats;
         Unit_stats bonus;
         Unit_stats malus;
         std::string effect;
-        
+
     public:
 
+        Weapon();
         Weapon(Weapon_stats in_stats);
         Weapon(std::string in_name, Weapon_stats in_stats);
 
@@ -40,6 +42,6 @@ class Weapon {
 *  number of times the item was used. If it is equal to
 *  the item's use, the item is destroyed.
 */
-extern std::unordered_map<string, weapon> all_weapons;
+extern std::unordered_map<std::string, Weapon> all_weapons;
 
 #endif /* WEAPON_HPP */

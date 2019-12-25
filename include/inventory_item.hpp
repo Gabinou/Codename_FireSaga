@@ -32,6 +32,6 @@ struct inventory_item {
 *  actually copying the weapon.
 */
 // I think a unordered map inventory_items should exist for every save.
-extern std::unordered_map<string, struct inventory_item> inventory_items;
+extern std::unordered_map<std::string, struct inventory_item> inventory_items;
 
 #endif /* INVENTORY_ITEM_HPP */

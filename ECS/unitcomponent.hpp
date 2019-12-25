@@ -4,15 +4,16 @@
 #include "ECS.hpp"
 #include "game.hpp"
 #include "shared.hpp"
-#include <stdio.h>
+#include "weapon.hpp"
 #include "SDL2/SDL.h"
+#include <stdio.h>
 
-extern std::unordered_map<string, int> all_units;
+extern std::unordered_map<std::string, int> all_units;
 
 class UnitComponent : public Component {
     private:
         Equipped equipped;
-        Weapon temp_wpn;
+        Weapon_stats temp_wpn;
         Unit_stats base_stats;
         Unit_stats bonus_stats;
         Unit_stats caps_stats;
