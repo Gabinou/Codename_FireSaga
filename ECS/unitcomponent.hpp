@@ -4,6 +4,7 @@
 #include "ECS.hpp"
 #include "game.hpp"
 #include "shared.hpp"
+#include <stdio.h>
 #include "SDL2/SDL.h"
 
 extern std::unordered_map<string, int> all_units;
@@ -14,7 +15,7 @@ class UnitComponent : public Component {
         Weapon temp_wpn;
         Unit_stats base_stats;
         Unit_stats bonus_stats;
-        Unit_stats stat_caps;
+        Unit_stats caps_stats;
         Unit_stats malus_stats;
         Unit_stats current_stats;
         std::vector<Unit_stats> grown_stats;
@@ -88,7 +89,7 @@ class UnitComponent : public Component {
         }
 
         void set_caps(Unit_stats in_stats) {
-            stat_caps = in_stats; // tested, works fine.
+            caps_stats = in_stats; // tested, works fine.
         }
 
         void set_stats(Unit_stats in_stats) {
@@ -273,8 +274,25 @@ class UnitComponent : public Component {
             };
         }
 
-        void write() {
+        // void write(std::string filename) {
+        //     FILE * fp;
+        //     fp = fopen(filename.c_str(), "w+");
+        //     fprintf(fp, name);
+        //     fprintf(fp, "Base stats, %d,", base_stats.hp);
+        //     fclose(fp);
+        // }
 
+        void write(const char * filename) {
+            FILE * fp;
+            fp = fopen(filename, "w+");
+            fprintf(fp, name.c_str());
+            fprintf(fp, "\n");
+            fprintf(fp, "%s", class_name);
+            fprintf(fp, "Stats, HP, Str, Mag, Skl, Spd, Luck, Def, Res, Con, Move\n");
+            fprintf(fp, "Base stats,\t%d,\t%d,\t%d,\t%d,\t%d,\t%d,\t%d,\t%d,\t%d,\t%d\n", base_stats.hp, base_stats.str, base_stats.mag, base_stats.skl, base_stats.spd, base_stats.luck, base_stats.def, base_stats.res, base_stats.con, base_stats.move);
+            fprintf(fp, "Growths,\t%d,\t%d,\t%d,\t%d,\t%d,\t%d,\t%d,\t%d,\t%d,\t%d\n", growths.hp, growths.str, growths.mag, growths.skl, growths.spd, growths.luck, growths.def, growths.res, growths.con, growths.move);
+            fprintf(fp, "Caps,\t%d,\t%d,\t%d,\t%d,\t%d,\t%d,\t%d,\t%d,\t%d,\t%d\n", caps_stats.hp, caps_stats.str, caps_stats.mag, caps_stats.skl, caps_stats.spd, caps_stats.luck, caps_stats.def, caps_stats.res, caps_stats.con, caps_stats.move);
+            fclose(fp);
         }
 
 };

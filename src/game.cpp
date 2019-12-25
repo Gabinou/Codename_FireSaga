@@ -243,7 +243,9 @@ void Game::baseUnits(){
     temp = {48, 14, 25, 32, 34,  28, 19, 40, 15};
     manager.getEntities().back()->getComponent<UnitComponent>().set_caps(temp);
     manager.getEntities().back()->getComponent<UnitComponent>().set_exp(0); 
+    manager.getEntities().back()->getComponent<UnitComponent>().write("unit_test.txt");
     all_units["Main"] = manager.getEntities().size() - 1;
+    getchar();
 
     manager.addEntity();
     temp = {17,  6,  2,  7,  7,   7,  4,  5,  6, 7};
