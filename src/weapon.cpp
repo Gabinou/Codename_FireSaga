@@ -25,16 +25,19 @@ Weapon::Weapon(std::string in_name, std::string in_type, Weapon_stats in_stats){
     name = in_type;
 }
 
-void Weapon::set_malus(Unit_stats in_malus) {
+void Weapon::setMalus(Unit_stats in_malus) {
     malus = in_malus;
 }
 
-void Weapon::set_bonus(Unit_stats in_bonus) {
+void Weapon::setBonus(Unit_stats in_bonus) {
     bonus = in_bonus;
 }
-void Weapon::set_effect(std::string in_effect) {
+void Weapon::setEffect(std::string in_effect) {
     effect = in_effect;
 }
-void Weapon::set_effective(std::vector<std::string> in_effective) {
+void Weapon::setEffective(std::vector<std::string> in_effective) {
 	effective = in_effective;
+}
+void Weapon::setDescription(std::string in_description) {
+	description = in_description;
 }

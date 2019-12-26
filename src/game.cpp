@@ -235,68 +235,97 @@ void Game::baseWeapons(){
     // dmg, hit, dodge, crit, favor, wgt, range, hand, dmg_stype
     temp_wpn = {3, 80, 0, 0, 0, 3, {1,1}, {1,2}, 0};
     Weapon wooden_sword("Wooden sword", "sword", temp_wpn);
+    wooden_sword.setDescription("Practice sword, made of wood. It's crushing blows are still deadly.")
     temp_wpn = {3, 80, 30, 0, 0, 3, {1,1}, {1,2}, 0};
     Weapon wrath_sword("Wrath sword", "sword", temp_wpn);
+    wrath_sword.setDescription("Increases critical hit chance.")
     temp_wpn = {1, 50, 0, 0, 0, 3, {1,1}, {1}, 0};
     Weapon kitchen_knife("Kitchen knife", "sword", temp_wpn);
+    kitchen_knife.setDescription("The poor, desperate swordman's dagger.")
     temp_wpn = {1, 50, 0, 0, 0, 3, {1,1}, {1}, 0};
     Weapon fleuret("Fleuret", "sword", temp_wpn);
-    fleuret.set_effective({"Armor"});
+    fleuret.setEffective({"Armor"});
+    fleuret.setDescription("Simple and light thrust swords. Effective against armor. Usually used with off-hand parry daggers.")
     temp_wpn = {1, 50, 0, 0, 0, 3, {1,1}, {1}, 0};
     Weapon rapiere("Rapière", "sword", temp_wpn);
-    rapiere.set_effective({"Armor"});
+    rapiere.setEffective({"Armor"});
+    rapiere.setDescription("Strong thrust swords. Effective against armor. Usually used with off-hand parry daggers.")
     temp_wpn = {1, 50, 0, 0, 0, 3, {1,1}, {1,2}, 0};
     Weapon glaive("Glaive", "sword", temp_wpn);
+    glaive.setDescription("Old-world style short sword.")
     temp_wpn = {1, 50, 0, 0, 0, 3, {1,1}, {1,2}, 0};
     Weapon saber("Saber", "sword", temp_wpn);
+    saber.setDescription("Curved sword made for slashing.")
     temp_wpn = {1, 50, 0, 0, 0, 3, {1,1}, {1,2}, 0};
     Weapon fauchon("Fauchon", "sword", temp_wpn);
+    fauchon.setDescription("Curved sword made for slashing.")
     temp_wpn = {1, 50, 0, 0, 0, 3, {1,1}, {1,2}, 0};
     Weapon iron_sword("Iron sword", "sword", temp_wpn);
+    iron_sword.setDescription("Simple straight sword made of iron. Cheap and reliable.")
     temp_wpn = {1, 50, 0, 0, 0, 3, {1,1}, {1,2}, 0};
     Weapon steel_sword("Steel sword", "sword", temp_wpn);
+    steel_sword.setDescription("Simple straight sword made of steel. Strong and durable.")
     temp_wpn = {1, 50, 0, 0, 0, 3, {1,1}, {1,2}, 0};
     Weapon damas_sword("Damas sword", "sword", temp_wpn);
+    damas_sword.setDescription("Simple straight sword made of damascus steel. Beautifully rippled, deadly and expensive.")
     temp_wpn = {1, 50, 0, 0, 0, 3, {1,1}, {1,2}, 0};
     Weapon merciful_blade("Merciful blade", "sword", temp_wpn);
-    merciful_blade.set_effect("spare");
+    merciful_blade.setEffect("spare");
+    merciful_blade.setDescription("Infused with the life-giving tears of the goddess. Cannot reduce enemy HP below 1.")
     temp_wpn = {1, 50, 0, 0, 0, 3, {1,1}, {1,2}, 0};
     Weapon broadsword("Broadsword", "sword", temp_wpn);
+    broadsword.setDescription("Blade of notable girth. Heavy and strong.")
     temp_wpn = {1, 50, 0, 0, 0, 3, {1,1}, {1,2}, 0};
     Weapon espadon("Espadon", "sword", temp_wpn);
+    espadon.setDescription("Blade of considerable girth and length. Heavier and stronger.")
     temp_wpn = {1, 50, 0, 0, 0, 3, {1,1}, {1,2}, 0};
     Weapon oodachi("Oodachi", "sword", temp_wpn);
+    oodachi.setDescription("Long, curved sword of the eastern lands.")
     temp_wpn = {1, 50, 0, 0, 0, 3, {1,1}, {1,2}, 0};
     Weapon uchigatana("Uchigatana", "sword", temp_wpn);
+    uchigatana.setDescription("Curved sword in the style of the eastern lands. Very sharp.")
     temp_wpn = {1, 50, 0, 0, 0, 3, {1,1}, {1,2}, 0};
     Weapon exsangue("Exsangue", "sword", temp_wpn);
-    exsangue.set_effect("lifesteal");
-    rapiere.set_effective({"Angel"});
+    exsangue.setEffect("lifesteal");
+    exsangue.setDescription("Drains enemies of their blood. Heals HP equal to damage dealt.")
     temp_wpn = {1, 50, 0, 0, 0, 3, {1,1}, {1,2}, 0};
     Weapon Hauteclaire("Hauteclaire", "sword", temp_wpn);
+    Hauteclaire.setDescription("")
     temp_wpn = {1, 50, 0, 0, 0, 3, {1,1}, {1,2}, 0};
     Weapon Secundus("Secundus", "sword", temp_wpn);
+    Secundus.setDescription("The first sword made by the God. The first sword is only the second weapon of man, after his fists.")
     temp_wpn = {1, 50, 0, 0, 0, 3, {1,1}, {1,2}, 0};
     Weapon Excalibur("Excalibur", "sword", temp_wpn);
-    rapiere.set_effective({"Demon"});
+    Excalibur.setEffective({"Demon"});
+    Excalibur.setDescription("The king's sword. Found in a rock.")
     temp_wpn = {1, 50, 0, 0, 0, 3, {1,1}, {1}, 0};
     Weapon Galatine("Galatine", "sword", temp_wpn);
-    Galatine.set_effective({"Armor"});
+    Galatine.setEffective({"Armor"});
+    Galatine.setDescription("A pragmatic and honorable knight's thrusting sword. Usually used with off-hand parry daggers.")
     temp_wpn = {1, 50, 0, 0, 0, 3, {1,1}, {1,2}, 0};
     Weapon Raijintou("Raijintou", "sword", temp_wpn);
+    Raijintou.setDescription("The thunder god's sword. Rains lightning upon enemies at a distance.")
     temp_wpn = {1, 50, 0, 0, 0, 3, {1,1}, {1,2}, 0};
     Weapon Fuujintou("Fuujintou", "sword", temp_wpn);
+    Fuujintou.setDescription("The wind god's sword. Cuts enemies with wind at a distance.")
     temp_wpn = {1, 50, 0, 0, 0, 3, {1,1}, {1,2}, 0};
     Weapon Honjou_Masamune("Honjou Masamune", "sword", temp_wpn);
+    Honjou_Masamune.setDescription("Lost sword made by the most skilled swordsmith of the eastern lands.")
     temp_wpn = {1, 50, 0, 0, 0, 3, {1,1}, {1,2}, 0};
     Weapon Raw_iron_slab("Raw Iron slab", "sword", temp_wpn);
+    Raw_iron_slab.setDescription("Tempered by the malevolence of countless slain demons. Effective againt demons and angels.")
+    Raw_iron_slab.setEffective({"Demon", "Angel"});
 
     temp_wpn = {1, 50, 0, 0, 0, 3, {1,1}, {1,2}, 0};
     Weapon pitchfork("Pitchfork", "lance", temp_wpn);
+    pitchfork.setDescription("Farming implement. Makeshift lance for desperate times.")
     temp_wpn = {1, 50, 0, 0, 0, 3, {1,1}, {1,2}, 0};
     Weapon fighthing_stick("Fighthing stick", "lance", temp_wpn);
+    fighthing_stick.setDescription("Simple two meter long wooden stick. Deadly in competent hands.")
     temp_wpn = {1, 50, 0, 0, 0, 3, {1,1}, {1,2}, 0};
     Weapon iron_lance("Iron lance", "lance", temp_wpn);
+    iron_lance.setDescription("Iron tipped lance")
+
     temp_wpn = {1, 50, 0, 0, 0, 3, {1,1}, {1,2}, 0};
     Weapon wrath_lance("Wrath lance", "lance", temp_wpn);
     temp_wpn = {1, 50, 0, 0, 0, 3, {1,1}, {1,2}, 0};
@@ -305,7 +334,7 @@ void Game::baseWeapons(){
     Weapon damas_lance("Damas lance", "lance", temp_wpn);
     temp_wpn = {1, 50, 0, 0, 0, 3, {1,2}, {1,2}, 0};
     Weapon heavy_spear("Heavy spear", "lance", temp_wpn);
-    heavy_spear.set_effective({"Armor"});
+    heavy_spear.setEffective({"Armor"});
     temp_wpn = {1, 50, 0, 0, 0, 3, {1,2}, {1,2}, 0};
     Weapon trident("Trident", "lance", temp_wpn);
     temp_wpn = {1, 50, 0, 0, 0, 3, {1,2}, {1,2}, 0};
@@ -318,7 +347,7 @@ void Game::baseWeapons(){
     Weapon Gungnir("Gungnir", "lance", temp_wpn);
     temp_wpn = {1, 50, 0, 0, 0, 3, {1,2}, {1,2}, 0};
     Weapon Achilles("Achilles", "lance", temp_wpn);
-    Achilles.set_effect("1%kill");
+    Achilles.setEffect("1%kill");
     temp_wpn = {1, 50, 0, 0, 0, 3, {1,1}, {1,2}, 0};
     Weapon Tonbokiri("Tonbokiri", "lance", temp_wpn);
 
@@ -338,13 +367,13 @@ void Game::baseWeapons(){
     Weapon club("Club", "axe", temp_wpn);
     temp_wpn = {1, 50, 0, 0, 0, 3, {1,1}, {1,2}, 0};
     Weapon halberd("Halberd", "axe", temp_wpn);
-    halberd.set_effective({"Mounted"});
+    halberd.setEffective({"Mounted"});
     temp_wpn = {1, 50, 0, 0, 0, 3, {1,1}, {1,2}, 0};
     Weapon hammer("Hammer", "axe", temp_wpn);
-    hammer.set_effective({"Armor"});
- temp_wpn = {1, 50, 0, 0, 0, 3, {1,1}, {1,2}, 0};
+    hammer.setEffective({"Armor"});
+    temp_wpn = {1, 50, 0, 0, 0, 3, {1,1}, {1,2}, 0};
     Weapon war_pick("War pick", "axe", temp_wpn);
-    war_pick.set_effective({"Armor"});
+    war_pick.setEffective({"Armor"});
     temp_wpn = {1, 50, 0, 0, 0, 3, {1,1}, {1,2}, 0};
     Weapon battleaxe("Battleaxe", "axe", temp_wpn);
     temp_wpn = {1, 50, 0, 0, 0, 3, {1,1}, {1,2}, 0};

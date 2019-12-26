@@ -23,6 +23,7 @@ class Weapon {
         std::string type;
         std::string name;
         std::vector<std::string> effective;
+        std::string description;
     public:
 
         Weapon();
@@ -30,11 +31,12 @@ class Weapon {
         Weapon(std::string in_name, Weapon_stats in_stats);
         Weapon(std::string in_name, std::string in_type, Weapon_stats in_stats);
 
-        void set_stats(Weapon_stats in_stats);
-        void set_bonus(Unit_stats in_bonus);
-        void set_malus(Unit_stats in_malus);
-        void set_effect(std::string in_effect);
-        void set_effective(std::vector<std::string> in_effective);
+        void setStats(Weapon_stats in_stats);
+        void setBonus(Unit_stats in_bonus);
+        void setMalus(Unit_stats in_malus);
+        void setEffect(std::string in_effect);
+        void setEffective(std::vector<std::string> in_effective);
+        void setDescription(std::string in_description);
 };
 
 /*! \var all_weapons
