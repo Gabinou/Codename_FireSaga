@@ -22,6 +22,7 @@ class Weapon {
         std::string effect = "None";
         std::string type;
         std::string name;
+        std::vector<std::string> effective;
     public:
 
         Weapon();
@@ -33,6 +34,7 @@ class Weapon {
         void set_bonus(Unit_stats in_bonus);
         void set_malus(Unit_stats in_malus);
         void set_effect(std::string in_effect);
+        void set_effective(std::vector<std::string> in_effective);
 };
 
 /*! \var all_weapons

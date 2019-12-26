@@ -35,3 +35,6 @@ void Weapon::set_bonus(Unit_stats in_bonus) {
 void Weapon::set_effect(std::string in_effect) {
     effect = in_effect;
 }
+void Weapon::set_effective(std::vector<std::string> in_effective) {
+	effective = in_effective;
+}

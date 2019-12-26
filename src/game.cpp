@@ -239,10 +239,10 @@ void Game::baseWeapons(){
     Weapon kitchen_knife("Kitchen knife", "sword", temp_wpn);
     temp_wpn = {1, 50, 0, 0, 0, 3, {1,1}, 0, 0};
     Weapon fleuret("Fleuret", "sword", temp_wpn);
+    fleuret.set_effective({"Armor"});
     temp_wpn = {1, 50, 0, 0, 0, 3, {1,1}, 0, 0};
     Weapon rapiere("Rapière", "sword", temp_wpn);
-    temp_wpn = {1, 50, 0, 0, 0, 3, {1,1}, 0, 0};
-    Weapon galatine("Galatine", "sword", temp_wpn);
+    rapiere.set_effective({"Armor"});
     temp_wpn = {1, 50, 0, 0, 0, 3, {1,1}, 0, 0};
     Weapon glaive("Glaive", "sword", temp_wpn);
     temp_wpn = {1, 50, 0, 0, 0, 3, {1,1}, 0, 0};
@@ -257,18 +257,41 @@ void Game::baseWeapons(){
     Weapon damas_sword("Damas sword", "sword", temp_wpn);
     temp_wpn = {1, 50, 0, 0, 0, 3, {1,1}, 0, 0};
     Weapon merciful_blade("Merciful blade", "sword", temp_wpn);
-    temp_wpn = {1, 50, 0, 0, 0, 3, {1,1}, 0, 0};
-    Weapon Excalibur("Excalibur", "sword", temp_wpn);
+    merciful_blade.set_effect("spare");
     temp_wpn = {1, 50, 0, 0, 0, 3, {1,1}, 0, 0};
     Weapon broadsword("Broadsword", "sword", temp_wpn);
     temp_wpn = {1, 50, 0, 0, 0, 3, {1,1}, 0, 0};
     Weapon espadon("Espadon", "sword", temp_wpn);
     temp_wpn = {1, 50, 0, 0, 0, 3, {1,1}, 0, 0};
+    Weapon oodachi("Oodachi", "sword", temp_wpn);
+    temp_wpn = {1, 50, 0, 0, 0, 3, {1,1}, 0, 0};
+    Weapon uchigatana("Uchigatana", "sword", temp_wpn);
+    temp_wpn = {1, 50, 0, 0, 0, 3, {1,1}, 0, 0};
+    Weapon exsangue("Exsangue", "sword", temp_wpn);
+    exsangue.set_effect("lifesteal");
+    rapiere.set_effective({"Angel"});
+    temp_wpn = {1, 50, 0, 0, 0, 3, {1,1}, 0, 0};
     Weapon Hauteclaire("Hauteclaire", "sword", temp_wpn);
     temp_wpn = {1, 50, 0, 0, 0, 3, {1,1}, 0, 0};
-    Weapon Premiere("Première", "sword", temp_wpn);
+    Weapon Secundus("Secundus", "sword", temp_wpn);
+    temp_wpn = {1, 50, 0, 0, 0, 3, {1,1}, 0, 0};
+    Weapon Excalibur("Excalibur", "sword", temp_wpn);
+    rapiere.set_effective({"Demon"});
+    temp_wpn = {1, 50, 0, 0, 0, 3, {1,1}, 0, 0};
+    Weapon Galatine("Galatine", "sword", temp_wpn);
+    Galatine.set_effective({"Armor"});
+    temp_wpn = {1, 50, 0, 0, 0, 3, {1,1}, 0, 0};
+    Weapon Raijintou("Raijintou", "sword", temp_wpn);
+    temp_wpn = {1, 50, 0, 0, 0, 3, {1,1}, 0, 0};
+    Weapon Fuujintou("Fuujintou", "sword", temp_wpn);
+    temp_wpn = {1, 50, 0, 0, 0, 3, {1,1}, 0, 0};
+    Weapon Honjou_Masamune("Honjou Masamune", "sword", temp_wpn);
 
-}qz
+
+    temp_wpn = {1, 50, 0, 0, 0, 3, {1,1}, 0, 0};
+    Weapon Tonbokiri("Tonbokiri", "spear", temp_wpn);
+ 
+}
 
 void Game::baseUnits(){
     manager.addEntity();
