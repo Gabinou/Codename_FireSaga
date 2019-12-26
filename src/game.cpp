@@ -235,12 +235,14 @@ void Game::baseWeapons(){
     // dmg, hit, dodge, crit, favor, wgt, range, hand, dmg_stype
     temp_wpn = {3, 80, 0, 0, 0, 3, {1,1}, {1,2}, 0};
     Weapon wooden_sword("Wooden sword", "sword", temp_wpn);
-    temp_wpn = {1, 50, 0, 0, 0, 3, {1,1}, {1,-1}, 0};
+    temp_wpn = {3, 80, 30, 0, 0, 3, {1,1}, {1,2}, 0};
+    Weapon wrath_sword("Wrath sword", "sword", temp_wpn);
+    temp_wpn = {1, 50, 0, 0, 0, 3, {1,1}, {1}, 0};
     Weapon kitchen_knife("Kitchen knife", "sword", temp_wpn);
-    temp_wpn = {1, 50, 0, 0, 0, 3, {1,1}, {1,-1}, 0};
+    temp_wpn = {1, 50, 0, 0, 0, 3, {1,1}, {1}, 0};
     Weapon fleuret("Fleuret", "sword", temp_wpn);
     fleuret.set_effective({"Armor"});
-    temp_wpn = {1, 50, 0, 0, 0, 3, {1,1}, {1,-1}, 0};
+    temp_wpn = {1, 50, 0, 0, 0, 3, {1,1}, {1}, 0};
     Weapon rapiere("Rapière", "sword", temp_wpn);
     rapiere.set_effective({"Armor"});
     temp_wpn = {1, 50, 0, 0, 0, 3, {1,1}, {1,2}, 0};
@@ -277,7 +279,7 @@ void Game::baseWeapons(){
     temp_wpn = {1, 50, 0, 0, 0, 3, {1,1}, {1,2}, 0};
     Weapon Excalibur("Excalibur", "sword", temp_wpn);
     rapiere.set_effective({"Demon"});
-    temp_wpn = {1, 50, 0, 0, 0, 3, {1,1}, {1,-1}, 0};
+    temp_wpn = {1, 50, 0, 0, 0, 3, {1,1}, {1}, 0};
     Weapon Galatine("Galatine", "sword", temp_wpn);
     Galatine.set_effective({"Armor"});
     temp_wpn = {1, 50, 0, 0, 0, 3, {1,1}, {1,2}, 0};
@@ -286,24 +288,29 @@ void Game::baseWeapons(){
     Weapon Fuujintou("Fuujintou", "sword", temp_wpn);
     temp_wpn = {1, 50, 0, 0, 0, 3, {1,1}, {1,2}, 0};
     Weapon Honjou_Masamune("Honjou Masamune", "sword", temp_wpn);
-
+    temp_wpn = {1, 50, 0, 0, 0, 3, {1,1}, {1,2}, 0};
+    Weapon Raw_iron_slab("Raw Iron slab", "sword", temp_wpn);
 
     temp_wpn = {1, 50, 0, 0, 0, 3, {1,1}, {1,2}, 0};
     Weapon pitchfork("Pitchfork", "lance", temp_wpn);
     temp_wpn = {1, 50, 0, 0, 0, 3, {1,1}, {1,2}, 0};
     Weapon fighthing_stick("Fighthing stick", "lance", temp_wpn);
     temp_wpn = {1, 50, 0, 0, 0, 3, {1,1}, {1,2}, 0};
-    Weapon iron_lance("Iron Lance", "lance", temp_wpn);
+    Weapon iron_lance("Iron lance", "lance", temp_wpn);
     temp_wpn = {1, 50, 0, 0, 0, 3, {1,1}, {1,2}, 0};
-    Weapon steel_lance("Steel Lance", "lance", temp_wpn);
+    Weapon wrath_lance("Wrath lance", "lance", temp_wpn);
     temp_wpn = {1, 50, 0, 0, 0, 3, {1,1}, {1,2}, 0};
-    Weapon damas_lance("Damas Lance", "lance", temp_wpn);
+    Weapon steel_lance("Steel lance", "lance", temp_wpn);
+    temp_wpn = {1, 50, 0, 0, 0, 3, {1,1}, {1,2}, 0};
+    Weapon damas_lance("Damas lance", "lance", temp_wpn);
+    temp_wpn = {1, 50, 0, 0, 0, 3, {1,2}, {1,2}, 0};
+    Weapon heavy_spear("Heavy spear", "lance", temp_wpn);
+    heavy_spear.set_effective({"Armor"});
     temp_wpn = {1, 50, 0, 0, 0, 3, {1,2}, {1,2}, 0};
     Weapon trident("Trident", "lance", temp_wpn);
     temp_wpn = {1, 50, 0, 0, 0, 3, {1,2}, {1,2}, 0};
     Weapon merciful_lance("Merciful lance", "lance", temp_wpn);
     temp_wpn = {1, 50, 0, 0, 0, 3, {1,2}, {1,2}, 0};
-    
     Weapon Javelin("Javelin", "lance", temp_wpn);
     temp_wpn = {1, 50, 0, 0, 0, 3, {1,2}, {1,2}, 0};
     Weapon Vel("Vel", "lance", temp_wpn);
@@ -314,7 +321,37 @@ void Game::baseWeapons(){
     Achilles.set_effect("1%kill");
     temp_wpn = {1, 50, 0, 0, 0, 3, {1,1}, {1,2}, 0};
     Weapon Tonbokiri("Tonbokiri", "lance", temp_wpn);
- 
+
+    temp_wpn = {1, 50, 0, 0, 0, 3, {1,1}, {1,2}, 0};
+    Weapon iron_axe("Iron axe", "axe", temp_wpn);
+    temp_wpn = {1, 50, 0, 0, 0, 3, {1,1}, {1,2}, 0};
+    Weapon steel_axe("Steel axe", "axe", temp_wpn);
+    temp_wpn = {1, 50, 0, 0, 0, 3, {1,1}, {1,2}, 0};
+    Weapon damas_axe("Damas axe", "axe", temp_wpn);
+    temp_wpn = {1, 50, 0, 0, 0, 3, {1,1}, {1,2}, 0};
+    Weapon throwing_axe("Throwing axe", "axe", temp_wpn);
+    temp_wpn = {1, 50, 0, 0, 0, 3, {1,1}, {1,2}, 0};
+    Weapon pick_axe("Pick axe", "axe", temp_wpn);
+    temp_wpn = {1, 50, 0, 0, 0, 3, {1,1}, {1,2}, 0};
+    Weapon hoe("Hoe", "axe", temp_wpn);
+    temp_wpn = {1, 50, 0, 0, 0, 3, {1,1}, {1,2}, 0};
+    Weapon club("Club", "axe", temp_wpn);
+    temp_wpn = {1, 50, 0, 0, 0, 3, {1,1}, {1,2}, 0};
+    Weapon halberd("Halberd", "axe", temp_wpn);
+    halberd.set_effective({"Mounted"});
+    temp_wpn = {1, 50, 0, 0, 0, 3, {1,1}, {1,2}, 0};
+    Weapon hammer("Hammer", "axe", temp_wpn);
+    hammer.set_effective({"Armor"});
+ temp_wpn = {1, 50, 0, 0, 0, 3, {1,1}, {1,2}, 0};
+    Weapon war_pick("War pick", "axe", temp_wpn);
+    war_pick.set_effective({"Armor"});
+    temp_wpn = {1, 50, 0, 0, 0, 3, {1,1}, {1,2}, 0};
+    Weapon battleaxe("Battleaxe", "axe", temp_wpn);
+    temp_wpn = {1, 50, 0, 0, 0, 3, {1,1}, {1,2}, 0};
+    Weapon Parashu("Parashu", "axe", temp_wpn);
+    temp_wpn = {1, 50, 0, 0, 0, 3, {1,1}, {1,2}, 0};
+    Weapon Hephaestus("Hephaestus", "axe", temp_wpn);
+
 }
 
 void Game::baseUnits(){
@@ -331,7 +368,6 @@ void Game::baseUnits(){
     manager.getEntities().back()->getComponent<UnitComponent>().set_exp(0); 
     manager.getEntities().back()->getComponent<UnitComponent>().write("unit_test.txt");
     all_units["Main"] = manager.getEntities().size() - 1;
-    // getchar();
 
     manager.addEntity();
     temp = {17,  6,  2,  7,  7,   7,  4,  5,  6, 7};
