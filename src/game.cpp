@@ -289,7 +289,14 @@ void Game::baseWeapons(){
 
 
     temp_wpn = {1, 50, 0, 0, 0, 3, {1,1}, 0, 0};
-    Weapon Tonbokiri("Tonbokiri", "spear", temp_wpn);
+    Weapon pitchfork("Pitchfork", "lance", temp_wpn);
+    temp_wpn = {1, 50, 0, 0, 0, 3, {1,1}, 0, 0};
+    Weapon fighthing_stick("Fighthing stick", "lance", temp_wpn);
+    temp_wpn = {1, 50, 0, 0, 0, 3, {1,1}, 0, 0};
+    Weapon Achilles("Achilles", "lance", temp_wpn);
+    Achilles.set_effect("1%kill");
+    temp_wpn = {1, 50, 0, 0, 0, 3, {1,1}, 0, 0};
+    Weapon Tonbokiri("Tonbokiri", "lance", temp_wpn);
  
 }
 

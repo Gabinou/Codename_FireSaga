@@ -137,6 +137,7 @@ struct Weapon_stats {
     unsigned char range[2]; // [min_range, max_range]
     bool hand; //0 is 1 hand. 1 is 2 hands.
     bool dmg_type; // 0 is 1 physical. 1 magic.
+    bool dmg_type2[2]; // 0 is 1 physical. 1 magic.
 };
 
 extern std::vector<std::vector<int>> A_star(std::vector<std::vector<int>> map, int start[], int end[], std::string mode = "matrix");
