@@ -35,7 +35,7 @@ void Weapon::setBonus(Unit_stats in_bonus) {
 void Weapon::setEffect(std::string in_effect) {
     effect = in_effect;
 }
-void Weapon::setEffective(std::vector<std::string> in_effective) {
+void Weapon::setEffective(std::string in_effective) {
 	effective = in_effective;
 }
 void Weapon::setDescription(std::string in_description) {
