@@ -134,6 +134,7 @@ struct Weapon_stats {
     unsigned char crit;
     unsigned char favor;
     unsigned char wgt;
+    unsigned char uses;
     unsigned char range[2]; // [min_range, max_range]
     unsigned char hand[2]; //[1,-1],[2,-1] or [1,2]
     bool dmg_type; // 0 is 1 physical. 1 magic.
