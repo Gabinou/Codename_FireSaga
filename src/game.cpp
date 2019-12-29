@@ -415,6 +415,48 @@ void Game::baseWeapons(){
     temp_wpn = {5, 70, 0, 0, 0, 5, 60, {1,1}, {1,2}, 0};
     Weapon Hephaestus("Hephaestus", "axe", temp_wpn);
     Hephaestus.setDescription("The god's hammer. Used to forge Secundus, the first sword.");
+
+    temp_wpn = {5, 70, 0, 0, 0, 5, 60, {1,2}, {1,2}, 1};
+    Weapon ball_lightning("Ball lightning", "elemental", temp_wpn);
+    ball_lightning.setDescription("Lightning, compressed and explosive.");
+    temp_wpn = {5, 70, 0, 0, 0, 5, 60, {1,2}, {1,2}, 1};
+    Weapon icicle("Icicle", "elemental", temp_wpn);
+    icicle.setDescription("Summons sharp and cold death spikes.");
+    temp_wpn = {5, 70, 0, 0, 0, 5, 60, {1,2}, {1,2}, 1};
+    Weapon volcano("Volcano", "elemental", temp_wpn);
+    volcano.setDescription("Summons magma spewing mountains from under enemies' feets.");
+    temp_wpn = {5, 70, 0, 0, 0, 5, 60, {1,2}, {1,2}, 1};
+    Weapon wind_spear("wind_spear", "elemental", temp_wpn);
+    wind_spear.setDescription("Invisible, swift and minuscule. Can pierce armor.");
+    temp_wpn = {5, 70, 0, 0, 0, 5, 60, {1,2}, {1,2}, 1};
+    Weapon ember("Ember", "elemental", temp_wpn);
+    ember.setDescription("Summon smoldering embers.");    
+    temp_wpn = {5, 70, 0, 0, 0, 5, 60, {1,2}, {1,2}, 1};
+    Weapon tsunami("Tsunami", "elemental", temp_wpn);
+    tsunami.setDescription("");
+    temp_wpn = {5, 70, 0, 0, 0, 5, 60, {1,2}, {1,2}, 1};
+    Weapon God_forge_fire("The God Forge's Fire", "elemental", temp_wpn);
+    God_forge_fire.setDescription("The fire used to forge Secundus, contained magically. Can melt any and all metals.");
+
+    temp_wpn = {5, 70, 0, 0, 0, 5, 60, {1,2}, {1,2}, 1};
+    Weapon _void("Void", "demonic", temp_wpn);
+    _void.setDescription("");
+    temp_wpn = {5, 70, 0, 0, 0, 5, 60, {1,2}, {1,2}, 1};
+    Weapon nether("Nether", "demonic", temp_wpn);
+    nether.setDescription("");
+    temp_wpn = {5, 70, 0, 0, 0, 5, 60, {1,2}, {1,2}, 1};
+    Weapon death_claw("Death claw", "demonic", temp_wpn);
+    death_claw.setDescription("");
+    temp_wpn = {5, 70, 0, 0, 0, 5, 60, {1,2}, {1,2}, 1};
+    Weapon downfall("Downfall", "demonic", temp_wpn);
+    downfall.setDescription("");
+    temp_wpn = {5, 70, 0, 0, 0, 5, 60, {1,2}, {1,2}, 1};
+    Weapon consume("Consume", "demonic", temp_wpn);
+    consume.setDescription("");
+    temp_wpn = {5, 70, 0, 0, 0, 5, 60, {1,2}, {1,2}, 1};
+    Weapon putrify("Putrify", "demonic", temp_wpn);
+    putrify.setDescription("");
+
 }
 
 void Game::baseUnits(){
