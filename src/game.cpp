@@ -437,6 +437,13 @@ void Game::baseWeapons(){
     temp_wpn = {5, 70, 0, 0, 0, 5, 60, {1,2}, {1,2}, 1};
     Weapon God_forge_fire("The God Forge's Fire", "elemental", temp_wpn);
     God_forge_fire.setDescription("The fire used to forge Secundus, contained magically. Can melt any and all metals.");
+    temp_wpn = {5, 70, 0, 0, 0, 5, 60, {1,2}, {1,2}, 1};
+    Weapon Fingolfin("Fingolfin", "elemental", temp_wpn);
+    Fingolfin.setDescription("Distilled courage, strikes at darkness's heart, especially in times of despair.");
+    temp_wpn = {5, 70, 0, 0, 0, 5, 60, {1,2}, {1,2}, 1};
+    Weapon Mithrandir("Mithrandir", "elemental", temp_wpn);
+    Mithrandir.setDescription("Inspires courage in the hearts of men. Effective against demons.");
+    Mithrandir.setEffective("Demon");
 
     temp_wpn = {5, 70, 0, 0, 0, 5, 60, {1,2}, {1,2}, 1};
     Weapon _void("Void", "demonic", temp_wpn);
@@ -456,6 +463,18 @@ void Game::baseWeapons(){
     temp_wpn = {5, 70, 0, 0, 0, 5, 60, {1,2}, {1,2}, 1};
     Weapon putrify("Putrify", "demonic", temp_wpn);
     putrify.setDescription("");
+    temp_wpn = {5, 70, 0, 0, 0, 5, 60, {1,2}, {1,2}, 1};
+    Weapon Glaurung("Glaurung", "demonic", temp_wpn);
+    Glaurung.setDescription("");
+    temp_wpn = {5, 70, 0, 0, 0, 5, 60, {1,2}, {1,2}, 1};
+    Weapon Morgoth("Morgoth", "demonic", temp_wpn);
+    Morgoth.setDescription("");
+    temp_wpn = {5, 70, 0, 0, 0, 5, 60, {1,2}, {1,2}, 1};
+    Weapon Gothmog("Gothmog", "demonic", temp_wpn);
+    Gothmog.setDescription("");
+    temp_wpn = {5, 70, 0, 0, 0, 5, 60, {1,2}, {1,2}, 1};
+    Weapon Fatalis("Fatalis", "demonic", temp_wpn);
+    Fatalis.setDescription("");
 
 }
 

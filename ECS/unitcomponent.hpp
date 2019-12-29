@@ -21,7 +21,7 @@ class UnitComponent : public Component {
         Unit_stats current_stats;
         std::vector<Unit_stats> grown_stats;
         // SKILLS
-        // SUPPORTS
+        // SUPPORTS/BONDS
         Unit_stats growths;
         unsigned char current_hp;
         unsigned int exp;
@@ -167,7 +167,7 @@ class UnitComponent : public Component {
         unsigned char avoid() {
             unsigned char supports = 0;
             unsigned char terrain_avoid = 0;
-            unsigned char unit_avoid = current_stats.skl * 2 + current_stats.luck;
+            unsigned char unit_avoid = current_stats.dex * 2 + current_stats.luck;
             unsigned char avoid = terrain_avoid + unit_avoid + supports;
             return (avoid);
         }
@@ -199,14 +199,14 @@ class UnitComponent : public Component {
         }
 
         bool combat_double(Entity & enemy) const {
-            unsigned char enemy_speed = enemy.getComponent<UnitComponent>().current_stats.spd;
-            bool doubles = ((current_stats.spd - wpn_weighed_down() - enemy_speed) > 4);
+            unsigned char enemy_speed = enemy.getComponent<UnitComponent>().current_stats.agi;
+            bool doubles = ((current_stats.agi - wpn_weighed_down() - enemy_speed) > 4);
             return (doubles);
         }
 
         unsigned char wpn_weighed_down() const {
             //*DESIGN QUESTION* What should be the influence of weapons?
-            // Average of Con and Str?
+            // Average of Con and Str? Con+Str/2?
             return (std::max(temp_wpn.wgt - current_stats.con, 0));
         }
 
@@ -225,8 +225,9 @@ class UnitComponent : public Component {
         }
 
         unsigned char accuracy() {
+            //*DESIGN QUESTION* In vesteria saga, dex*3.
             unsigned char supports = 0;
-            unsigned char unit_acc = current_stats.skl * 2 + current_stats.luck;
+            unsigned char unit_acc = current_stats.dex * 3 + current_stats.luck;
             unsigned char accuracy = temp_wpn.hit + unit_acc + supports;
             return (accuracy);
         }
@@ -292,9 +293,9 @@ class UnitComponent : public Component {
             fprintf(fp, "\n");
             fprintf(fp, "%s", class_name);
             fprintf(fp, "Stats, HP, Str, Mag, Skl, Spd, Luck, Def, Res, Con, Move\n");
-            fprintf(fp, "Base stats,\t%d,\t%d,\t%d,\t%d,\t%d,\t%d,\t%d,\t%d,\t%d,\t%d\n", base_stats.hp, base_stats.str, base_stats.mag, base_stats.skl, base_stats.spd, base_stats.luck, base_stats.def, base_stats.res, base_stats.con, base_stats.move);
-            fprintf(fp, "Growths,\t%d,\t%d,\t%d,\t%d,\t%d,\t%d,\t%d,\t%d,\t%d,\t%d\n", growths.hp, growths.str, growths.mag, growths.skl, growths.spd, growths.luck, growths.def, growths.res, growths.con, growths.move);
-            fprintf(fp, "Caps,\t\t%d,\t%d,\t%d,\t%d,\t%d,\t%d,\t%d,\t%d,\t%d,\t%d\n", caps_stats.hp, caps_stats.str, caps_stats.mag, caps_stats.skl, caps_stats.spd, caps_stats.luck, caps_stats.def, caps_stats.res, caps_stats.con, caps_stats.move);
+            fprintf(fp, "Base stats,\t%d,\t%d,\t%d,\t%d,\t%d,\t%d,\t%d,\t%d,\t%d,\t%d\n", base_stats.hp, base_stats.str, base_stats.mag, base_stats.dex, base_stats.agi, base_stats.luck, base_stats.def, base_stats.res, base_stats.con, base_stats.move);
+            fprintf(fp, "Growths,\t%d,\t%d,\t%d,\t%d,\t%d,\t%d,\t%d,\t%d,\t%d,\t%d\n", growths.hp, growths.str, growths.mag, growths.dex, growths.agi, growths.luck, growths.def, growths.res, growths.con, growths.move);
+            fprintf(fp, "Caps,\t\t%d,\t%d,\t%d,\t%d,\t%d,\t%d,\t%d,\t%d,\t%d,\t%d\n", caps_stats.hp, caps_stats.str, caps_stats.mag, caps_stats.dex, caps_stats.agi, caps_stats.luck, caps_stats.def, caps_stats.res, caps_stats.con, caps_stats.move);
             fclose(fp);
         }
 

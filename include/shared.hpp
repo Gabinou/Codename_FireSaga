@@ -118,8 +118,8 @@ struct Unit_stats {
     unsigned char hp;
     unsigned char str;
     unsigned char mag;
-    unsigned char spd;
-    unsigned char skl;
+    unsigned char agi;
+    unsigned char dex;
     unsigned char luck;
     unsigned char def;
     unsigned char res;
