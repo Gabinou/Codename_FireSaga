@@ -47,8 +47,9 @@ int main(int argc, char * argv[]) {
 
     const int FPS = 60;
     const int frame_delay = 1000 / FPS;
-    Uint32 frame_start;
+    Uint32 frame_start, frame_end;
     int frame_time;
+    float avgFPS;
     firesaga = new Game();
     printf("Made game.\n");
     firesaga->setFontsize(28);
@@ -64,6 +65,11 @@ int main(int argc, char * argv[]) {
         if (frame_delay > frame_time) {
             SDL_Delay(frame_delay - frame_time);
         }
+        frame_end = SDL_GetTicks();
+        avgFPS = 1000/(float)(frame_end-frame_start);
+        // printf("FPS: %d\n", frame_end-frame_start);
+        printf("FPS: %.4f\n", avgFPS);
+        // printf("aaaaa");
     }
 
     firesaga->clean();
