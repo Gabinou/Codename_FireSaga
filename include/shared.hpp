@@ -115,16 +115,18 @@ struct Equipped {
 };
 
 struct Unit_stats {
-    unsigned char hp;
-    unsigned char str;
-    unsigned char mag;
-    unsigned char agi;
-    unsigned char dex;
+    unsigned char hp; // hit points
+    unsigned char str; // strength
+    unsigned char mag; // magic power
+    unsigned char agi; // agility
+    unsigned char dex; // dexterity
     unsigned char luck;
-    unsigned char def;
-    unsigned char res;
-    unsigned char con;
-    unsigned char move;
+    unsigned char def; // defense power
+    unsigned char res; // resistance
+    unsigned char con; // constitution
+    unsigned char move; // movement
+    unsigned char prof; // proficiency
+
 };
 
 struct Weapon_stats {
@@ -133,7 +135,7 @@ struct Weapon_stats {
     unsigned char dodge;
     unsigned char crit;
     unsigned char favor;
-    unsigned char wgt;
+    unsigned char wgt; // weight
     unsigned char uses;
     unsigned char range[2]; // [min_range, max_range]
     unsigned char hand[2]; //[1,-1],[2,-1] or [1,2]
