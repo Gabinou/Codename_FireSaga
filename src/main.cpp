@@ -13,26 +13,6 @@ Game * firesaga = nullptr;
 
 int main(int argc, char * argv[]) {
     printf("TESTING THIS BITCH\n");
-    wpn_indexes["sword"] = 0;
-    wpn_indexes["swd"] = 0;
-    wpn_indexes["lance"] = 1;
-    wpn_indexes["lnc"] = 1;
-    wpn_indexes["axe"] = 2;
-    wpn_indexes["ax"] = 2;
-    wpn_indexes["bow"] = 3;
-    wpn_indexes["wind"] = 4;
-    wpn_indexes["wnd"] = 4;
-    wpn_indexes["fire"] = 5;
-    wpn_indexes["fir"] = 5;
-    wpn_indexes["thunder"] = 6;
-    wpn_indexes["tnd"] = 6;
-    wpn_indexes["thnd"] = 6;
-    wpn_indexes["dark"] = 7;
-    wpn_indexes["drk"] = 7;
-    wpn_indexes["light"] = 8;
-    wpn_indexes["lgt"] = 8;
-    wpn_indexes["staff"] = 9;
-    wpn_indexes["stf"] = 9;
     // read_all_weapons("..\\weapons.txt");
     // read_all_units("..\\units_FE1.txt");
     // write_all_units("..\\units_test.txt"); // OKAY
