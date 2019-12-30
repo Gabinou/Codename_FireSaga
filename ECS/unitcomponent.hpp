@@ -59,23 +59,23 @@ class UnitComponent : public Component {
             current_hp = std::min(current_hp + healing, (int) current_stats.hp);
         }
 
-        unsigned char get_hp() const {
+        unsigned char getHp() const {
             return (current_hp);
         }
 
-        unsigned int get_lvl() const {
+        unsigned int getLvl() const {
             return (ceil(current_hp / 100));
         }
 
-        unsigned int get_exp() const {
+        unsigned int getExp() const {
             return (exp);
         }
 
-        void set_exp(const unsigned int in_exp) {
+        void setExp(const unsigned int in_exp) {
             exp = in_exp;
         }
 
-        void set_hp(const unsigned char in_hp) {
+        void setHp(const unsigned char in_hp) {
             current_hp = in_hp;
         }
 
@@ -83,19 +83,19 @@ class UnitComponent : public Component {
             printf("%s is dead.\n", name);
         }
 
-        void set_bonus(Unit_stats in_stats) {
+        void setBonus(Unit_stats in_stats) {
             bonus_stats = in_stats; // tested, works fine.
         }
 
-        void set_malus(Unit_stats in_stats) {
+        void setMalus(Unit_stats in_stats) {
             malus_stats = in_stats; // tested, works fine.
         }
 
-        void set_caps(Unit_stats in_stats) {
+        void setCaps(Unit_stats in_stats) {
             caps_stats = in_stats; // tested, works fine.
         }
 
-        void set_stats(Unit_stats in_stats) {
+        void setStats(Unit_stats in_stats) {
             current_stats = in_stats; // tested, works fine.
             current_hp = current_stats.hp;
         }
@@ -104,13 +104,13 @@ class UnitComponent : public Component {
             return (current_stats);
         }
 
-        void set_bases(Unit_stats in_stats) {
+        void setBases(Unit_stats in_stats) {
             base_stats = in_stats; // tested, works fine.
             current_stats = in_stats; // tested, works fine.
             current_hp = base_stats.hp;
         }
 
-        void set_growths(Unit_stats in_growths) {
+        void setGrowths(Unit_stats in_growths) {
             growths = in_growths; // tested, works fine.
         }
 
