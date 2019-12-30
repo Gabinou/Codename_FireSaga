@@ -152,8 +152,20 @@ struct Weapon_exp {
     unsigned char elemental = 0;
     unsigned char offhand = 0;
     unsigned char shield = 0;
-
 };
+
+struct Weapon_type {
+    bool lance = false;
+    bool axe = false;
+    bool sword = false;
+    bool staff = false;
+    bool demonic = false;
+    bool angelic = false;
+    bool elemental = false;
+    bool offhand = false;
+    bool shield = false;
+};
+
 
 extern std::vector<std::vector<int>> A_star(std::vector<std::vector<int>> map, int start[], int end[], std::string mode = "matrix");
 extern std::vector<std::vector<int>> movemap(std::vector<std::vector<int>> map, int start[], int move, std::string mode = "matrix");

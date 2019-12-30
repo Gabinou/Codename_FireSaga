@@ -659,10 +659,17 @@ void Game::init(const char * title, int xpos, int ypos, int width, int height, b
     // allEntities["cursor"] = &cursor;
     
     cursor.addComponent<PositionComponent>(2, 2);
-    
+    Weapon_type atest;
+    Weapon_stats btest;
+    btest = {10, 50, 0, 0, 0, 11, 20, {1,1}, {1,2}, 0};
+    int ctest[9];
     printf("Silou index: %d \n", all_units["Silou"]);
     printf("Servil index: %d \n", all_units["Servil"]);
     printf("Entities size: %d \n", manager.getEntities().size());
+    printf("Weapon type size: %d \n", sizeof(atest));
+    printf("Weapon stats size: %d \n", sizeof(btest));
+    printf("Array same as type stats size: %d \n", sizeof(ctest));
+
 
     manager.getEntities()[all_units["Silou"]]->addComponent<PositionComponent>(2, 2);
     manager.getEntities()[all_units["Silou"]]->getComponent<PositionComponent>().setMap(mapp);
