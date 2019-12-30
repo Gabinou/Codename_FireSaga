@@ -106,6 +106,8 @@ void Game::setState(Entity & setting_entity, std::string new_state) {
                 }
             }
 
+            manager.getEntities()[menu_entities.top()]->addComponent<UnitComponent>().getStats().move;
+
             // int arrow_ind = manager.getEntities().size();
             // manager.addEntity();
             // manager.getEntities()[menu_entities.top()]->addComponent<PositionComponent>();         
@@ -170,6 +172,7 @@ void Game::setState(Entity & setting_entity, std::string new_state) {
     if (this->state == "unitmove") {
         if (new_state == "unitmenu") {
             createUnitmenu(setting_entity); 
+
             int *new_position = setting_entity.getComponent<PositionComponent>().getPos();
             int *old_position = manager.getEntities()[unit_entities.top()]->getComponent<PositionComponent>().getPos();
             

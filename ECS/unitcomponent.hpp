@@ -100,6 +100,10 @@ class UnitComponent : public Component {
             current_hp = current_stats.hp;
         }
 
+        Unit_stats getStats() {
+            return (current_stats);
+        }
+
         void set_bases(Unit_stats in_stats) {
             base_stats = in_stats; // tested, works fine.
             current_stats = in_stats; // tested, works fine.
