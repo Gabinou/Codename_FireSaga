@@ -112,7 +112,7 @@ class UnitComponent : public Component {
 
         unsigned char attack_damage() {
             unsigned char unit_power = 0;
-            unsigned char wpn_dmg = temp_wpn.dmg;
+            unsigned char wpn_dmg = temp_wpn.might;
 
             if (temp_wpn.dmg_type == 0) {
                 // Physical attack_damage.
@@ -131,7 +131,7 @@ class UnitComponent : public Component {
             unsigned char terrain_def = 0;
             unsigned char enemy_def = 0 ;
             unsigned char unit_power = 0;
-            unsigned char wpn_dmg = temp_wpn.dmg;
+            unsigned char wpn_dmg = temp_wpn.might;
             unsigned char crit_factor = 1;
 
             if (temp_wpn.dmg_type == 0) {

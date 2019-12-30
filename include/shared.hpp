@@ -128,7 +128,7 @@ struct Unit_stats {
 };
 
 struct Weapon_stats {
-    unsigned char dmg;
+    unsigned char might;
     unsigned char hit;
     unsigned char dodge;
     unsigned char crit;
