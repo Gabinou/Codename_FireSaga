@@ -651,8 +651,8 @@ void Game::init(const char * title, int xpos, int ypos, int width, int height, b
     
     cursor.addComponent<PositionComponent>(2, 2);
     
-    player.addComponent<PositionComponent>(2, 2);
-    player.getComponent<PositionComponent>().setMap(mapp);
+    manager.getEntities()[all_units["Silou"]]->addComponent<PositionComponent>(2, 2);
+    manager.getEntities()[all_units["Silou"]]->getComponent<PositionComponent>().setMap(mapp);
 
     SDL_Color black = {255,255,255};
     cursor.addComponent<KeyboardController>(this, mapp);
@@ -663,17 +663,13 @@ void Game::init(const char * title, int xpos, int ypos, int width, int height, b
         cursor.addComponent<GamepadController>(this, mapp);
     }
 
-    player.addComponent<SpriteComponent>(mapp, "..//assets//horse.png");
-    player.addComponent<UnitComponent>();
+    manager.getEntities()[all_units["Silou"]]->addComponent<SpriteComponent>(mapp, "..//assets//horse.png");
+    manager.getEntities()[all_units["Silou"]]->addComponent<UnitComponent>();
     cursor.addComponent<SpriteComponent>(mapp, "..//assets//cursors.png", 10, 50);
     cursor.getComponent<SpriteComponent>().setSlidetype("geometric");
     
-    player.addGroup(manager.groupUnits);
+    manager.getEntities()[all_units["Silou"]]->addGroup(manager.groupUnits);
     cursor.addGroup(manager.groupUI);
-
-
-    Unit_stats test = {1,2,3};
-    player.getComponent<UnitComponent>().set_caps(test);
 
     baseWeapons();
     baseUnits();
