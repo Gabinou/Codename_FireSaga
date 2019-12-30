@@ -140,6 +140,19 @@ struct Weapon_stats {
     bool dmg_type; // 0 is 1 physical. 1 magic.
 };
 
+struct Weapon_exp {
+    unsigned char lance = 0;
+    unsigned char axe = 0;
+    unsigned char sword = 0;
+    unsigned char staff = 0;
+    unsigned char demonic = 0;
+    unsigned char angelic = 0;
+    unsigned char elemental = 0;
+    unsigned char offhand = 0;
+    unsigned char shield = 0;
+
+};
+
 extern std::vector<std::vector<int>> A_star(std::vector<std::vector<int>> map, int start[], int end[], std::string mode = "matrix");
 extern std::vector<std::vector<int>> movemap(std::vector<std::vector<int>> map, int start[], int move, std::string mode = "matrix");
 extern std::vector<std::vector<int>> attackmap(std::vector<std::vector<int>> movemap, int start[], int move, int attack, std::string mode = "matrix");
