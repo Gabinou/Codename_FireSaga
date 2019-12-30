@@ -640,7 +640,10 @@ void Game::init(const char * title, int xpos, int ypos, int width, int height, b
     } else {
         isRunning = false;
     }
-
+    printf("Making weapons\n");
+    baseWeapons();
+    printf("Making Units\n");
+    baseUnits();
     printf("Creating map \n");
     tilesize[0] = 32;
     tilesize[1] = 32;
@@ -651,6 +654,10 @@ void Game::init(const char * title, int xpos, int ypos, int width, int height, b
     
     cursor.addComponent<PositionComponent>(2, 2);
     
+    printf("Silou index: %d \n", all_units["Silou"]);
+    printf("Servil index: %d \n", all_units["Servil"]);
+    printf("Entities size: %d \n", manager.getEntities().size());
+
     manager.getEntities()[all_units["Silou"]]->addComponent<PositionComponent>(2, 2);
     manager.getEntities()[all_units["Silou"]]->getComponent<PositionComponent>().setMap(mapp);
 
@@ -671,8 +678,7 @@ void Game::init(const char * title, int xpos, int ypos, int width, int height, b
     manager.getEntities()[all_units["Silou"]]->addGroup(manager.groupUnits);
     cursor.addGroup(manager.groupUI);
 
-    baseWeapons();
-    baseUnits();
+
 
     // cursor.getComponent<SpriteComponent>().hide();
 
