@@ -104,6 +104,9 @@ class TextComponent : public Component {
                 textures.erase(textures.begin() + index);
             }
         }
+        void removeTextures(unsigned int index = -1) {
+            textures.clear();
+        }
         void wraptext() {
             // Should wrap text inside the background texture and pâdding.
         }
