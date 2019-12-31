@@ -73,6 +73,14 @@ class TextComponent : public Component {
             setFontsize(in_fontsize);
         }
 
+        void setText(std::string in_text) {
+            if (text_lines.size() == 0) {
+                text_lines.push_back(in_text);
+            } else {
+                text_lines[0] = in_text;
+            }
+        }
+
         std::vector<SDL_Texture *> getTextures() {
             return (textures);
         }
