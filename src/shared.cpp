@@ -2,20 +2,6 @@
 #include "shared.hpp"
 #include "game.hpp"
 
-void writeText(int in_fontsize, int in_position[2], float in_sizefactor[2], std::string in_text, SDL_Color in_color, TTF_Font * in_font, SDL_Renderer * in_renderer) {
-    SDL_Texture * texture;
-    textToTexture(in_text, in_color, in_font);
-    SDL_Rect srcrect, destrect; // background always first?
-    srcrect.x = srcrect.y = 0;
-    destrect.x = in_position[0];
-    destrect.y = in_position[1];
-    srcrect.h = in_fontsize;
-    srcrect.w = in_text.length() * in_fontsize;
-    destrect.h = (int)in_fontsize * in_sizefactor[0];
-    destrect.w = (int)in_text.length() * in_fontsize * in_sizefactor[1];
-    SDL_RenderCopy(in_renderer, texture, &srcrect, &destrect);
-}
-
 SDL_Texture * loadTexture(const char * filename) {
     SDL_Surface * tempsurface = IMG_Load(filename);
     SDL_Texture * texture = SDL_CreateTextureFromSurface(Game::renderer, tempsurface);

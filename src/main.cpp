@@ -49,7 +49,8 @@ int main(int argc, char * argv[]) {
 
     const int FPS_cap = 60;
     const int frame_delay = 1000 / FPS_cap;
-
+    int FPS_pos[2] = {400, 400};
+    float FPS_sizefactor[2] = {1, 1};
     float FPS_avg;
     bool show_FPS = true;
     std::chrono::system_clock::time_point frame_start, frame_end, frame_middle;
@@ -59,6 +60,7 @@ int main(int argc, char * argv[]) {
     firesaga->setFontsize(28);
     firesaga->init("FireSaga", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 800, 600, false);
     SDL_Color black = {255, 255, 255};
+    std::string towrite = "FPSeeeee";
 
     while (firesaga->running()) {
         frame_start = std::chrono::high_resolution_clock::now();
@@ -73,8 +75,10 @@ int main(int argc, char * argv[]) {
         }
         frame_end = std::chrono::high_resolution_clock::now();
         FPS_avg = 1E9/(int)std::chrono::duration_cast<std::chrono::nanoseconds>(frame_end - frame_start).count();
+        writeText(firesaga->getFontsize(), FPS_pos, FPS_sizefactor, towrite, black, firesaga->font, firesaga->renderer);
+
         // printf("FPS: %d\n", frame_end-frame_start);
-        printf("FPS: %.4f\n", FPS_avg);
+        // printf("FPS: %.4f\n", FPS_avg);
         // printf("aaaaa");
     }
 
