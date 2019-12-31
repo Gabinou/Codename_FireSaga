@@ -6,6 +6,7 @@
 */
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
+#include <chrono>
 #include "shared.hpp"
 #include "game.hpp"
 
@@ -47,7 +48,7 @@ int main(int argc, char * argv[]) {
 
     const int FPS = 60;
     const int frame_delay = 1000 / FPS;
-    Uint32 frame_start, frame_end;
+    std::chrono::system_clock::time_point frame_start, frame_end, frame_middle;
     int frame_time;
     float avgFPS;
     firesaga = new Game();
@@ -56,17 +57,18 @@ int main(int argc, char * argv[]) {
     firesaga->init("FireSaga", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 800, 600, false);
 
     while (firesaga->running()) {
-        frame_start = SDL_GetTicks();
+        frame_start = std::chrono::high_resolution_clock::now();
         firesaga->handleEvents();
         firesaga->update();
         firesaga->render();
-        frame_time = SDL_GetTicks() - frame_start;
-
+        frame_middle = std::chrono::high_resolution_clock::now();
+        
+        frame_time = (int)std::chrono::duration_cast<std::chrono::nanoseconds>(frame_middle - frame_start).count()/1E6;
         if (frame_delay > frame_time) {
             SDL_Delay(frame_delay - frame_time);
         }
-        frame_end = SDL_GetTicks();
-        avgFPS = 1000/(float)(frame_end-frame_start);
+        frame_end = std::chrono::high_resolution_clock::now();
+        avgFPS = 1E9/(int)std::chrono::duration_cast<std::chrono::nanoseconds>(frame_end - frame_start).count();
         // printf("FPS: %d\n", frame_end-frame_start);
         printf("FPS: %.4f\n", avgFPS);
         // printf("aaaaa");
