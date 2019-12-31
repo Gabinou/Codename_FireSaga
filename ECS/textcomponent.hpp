@@ -39,6 +39,12 @@ class TextComponent : public Component {
             spacingfactor = in_factor;
         }
 
+        void setSizefactor(float in_factor[2]) {
+            sizefactor[0] = in_factor[0];
+            sizefactor[1] = in_factor[1];
+            initRects();
+        }
+
         void setLinespacing(int in_spacing) {
             linespacing = in_spacing;
         }
@@ -124,10 +130,10 @@ class TextComponent : public Component {
 
                 srcrects[i].h = fontsize;
                 srcrects[i].w = text_lines[i].length() * fontsize;
-                destrects[i].h = hgt;
-                // destrects[i].h = (int)fontsize * sizefactor[0];
-                destrects[i].w = wdt;
-                // destrects[i].w = (int)text_lines[i].length() * fontsize * sizefactor[1];
+                // destrects[i].h = hgt;
+                destrects[i].h = (int)fontsize * sizefactor[0];
+                // destrects[i].w = wdt;
+                destrects[i].w = (int)text_lines[i].length() * fontsize * sizefactor[1];
                 destrects[i].x = destrects[0].x;
                 destrects[i].y = destrects[0].y + linespacing * i;
             }

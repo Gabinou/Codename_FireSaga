@@ -72,7 +72,9 @@ int main(int argc, char * argv[]) {
     firesaga->manager.getEntities()[FPS_entity_ind]->addComponent<PositionComponent>();
     firesaga->manager.getEntities()[FPS_entity_ind]->getComponent<PositionComponent>().setBounds(0, 800, 0, 600);
     firesaga->manager.getEntities()[FPS_entity_ind]->getComponent<PositionComponent>().setPos(600, 0);
-    firesaga->manager.getEntities()[FPS_entity_ind]->addComponent<TextComponent>(firesaga->getFontsize()*2, "FPS:", black);
+    firesaga->manager.getEntities()[FPS_entity_ind]->addComponent<TextComponent>(28, "FPS", black);
+    float sizefactor[2] = {0.8, 0.8};
+    firesaga->manager.getEntities()[FPS_entity_ind]->getComponent<TextComponent>().setSizefactor(sizefactor);
     firesaga->manager.getEntities()[FPS_entity_ind]->addGroup(firesaga->manager.groupUI);
 
     while (firesaga->running()) {
@@ -88,7 +90,7 @@ int main(int argc, char * argv[]) {
         }
         frame_end = std::chrono::high_resolution_clock::now();
         FPS_avg = 1E9/(int)std::chrono::duration_cast<std::chrono::nanoseconds>(frame_end - frame_start).count();
-        firesaga->manager.getEntities()[FPS_entity_ind]->getComponent<TextComponent>().setText("Changed.");
+        // firesaga->manager.getEntities()[FPS_entity_ind]->getComponent<TextComponent>().setText("FPS:");
         // printf("FPS: %d\n", frame_end-frame_start);
         // printf("FPS: %.4f\n", FPS_avg);
         // printf("aaaaa");
