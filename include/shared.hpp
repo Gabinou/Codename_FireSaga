@@ -171,6 +171,9 @@ extern std::vector<std::vector<int>> A_star(std::vector<std::vector<int>> map, i
 extern std::vector<std::vector<int>> movemap(std::vector<std::vector<int>> map, int start[], int move, std::string mode = "matrix");
 extern std::vector<std::vector<int>> attackmap(std::vector<std::vector<int>> movemap, int start[], int move, int attack, std::string mode = "matrix");
 
+// extern void writeText();
+
+
 // Texture stuff.
 extern SDL_Texture * loadTexture(const char * filename);
 extern SDL_Texture * textToTexture(std::string textureText, SDL_Color textColor, TTF_Font * in_font);

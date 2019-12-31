@@ -8,6 +8,7 @@
 #include <SDL2/SDL_image.h>
 #include <chrono>
 #include "shared.hpp"
+#include "textcomponent.hpp"
 #include "game.hpp"
 
 Game * firesaga = nullptr;
@@ -46,15 +47,18 @@ int main(int argc, char * argv[]) {
     // plot2Dvector(path);
   
 
-    const int FPS = 60;
-    const int frame_delay = 1000 / FPS;
+    const int FPS_cap = 60;
+    const int frame_delay = 1000 / FPS_cap;
+
+    float FPS_avg;
+    bool show_FPS = true;
     std::chrono::system_clock::time_point frame_start, frame_end, frame_middle;
     int frame_time;
-    float avgFPS;
     firesaga = new Game();
     printf("Made game.\n");
     firesaga->setFontsize(28);
     firesaga->init("FireSaga", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 800, 600, false);
+    SDL_Color black = {255, 255, 255};
 
     while (firesaga->running()) {
         frame_start = std::chrono::high_resolution_clock::now();
@@ -68,9 +72,9 @@ int main(int argc, char * argv[]) {
             SDL_Delay(frame_delay - frame_time);
         }
         frame_end = std::chrono::high_resolution_clock::now();
-        avgFPS = 1E9/(int)std::chrono::duration_cast<std::chrono::nanoseconds>(frame_end - frame_start).count();
+        FPS_avg = 1E9/(int)std::chrono::duration_cast<std::chrono::nanoseconds>(frame_end - frame_start).count();
         // printf("FPS: %d\n", frame_end-frame_start);
-        printf("FPS: %.4f\n", avgFPS);
+        printf("FPS: %.4f\n", FPS_avg);
         // printf("aaaaa");
     }
 
