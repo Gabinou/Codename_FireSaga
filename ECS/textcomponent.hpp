@@ -22,7 +22,7 @@ class TextComponent : public Component {
         std::vector<SDL_Color> textColor;
         int linespacing = 10;
         float spacingfactor = 1.1;
-        float sizefactor[2] = {0.75, 0.5}; // height, width
+        float sizefactor[2] = {0.5, 0.5}; // height, width
         int padding[4] = {10, 10, 10, 10}; //html style: up right down left
         int fontsize;
 
@@ -61,6 +61,7 @@ class TextComponent : public Component {
         TextComponent(int in_fontsize, std::vector<std::string> in_text, SDL_Color in_textColor) {
             text_lines = in_text;
             textColor.push_back(in_textColor);
+
 
             for (int i = 0; i < in_text.size(); i++) {
                 addTextTexture(in_text[i], in_textColor);
@@ -116,11 +117,17 @@ class TextComponent : public Component {
             destrects[0].x = (int)positioncomponent->getPos()[0] + padding[3];
             destrects[0].y = (int)positioncomponent->getPos()[1] + padding[0];
 
+            int hgt, wdt;
+
             for (int i = 0; i < textures.size(); i++) {
+                SDL_QueryTexture(textures[i], NULL, NULL, &hgt, &wdt);
+
                 srcrects[i].h = fontsize;
                 srcrects[i].w = text_lines[i].length() * fontsize;
-                destrects[i].h = (int)fontsize * sizefactor[0];
-                destrects[i].w = (int)text_lines[i].length() * fontsize * sizefactor[1];
+                destrects[i].h = hgt;
+                // destrects[i].h = (int)fontsize * sizefactor[0];
+                destrects[i].w = wdt;
+                // destrects[i].w = (int)text_lines[i].length() * fontsize * sizefactor[1];
                 destrects[i].x = destrects[0].x;
                 destrects[i].y = destrects[0].y + linespacing * i;
             }

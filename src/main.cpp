@@ -71,8 +71,8 @@ int main(int argc, char * argv[]) {
 
     firesaga->manager.getEntities()[FPS_entity_ind]->addComponent<PositionComponent>();
     firesaga->manager.getEntities()[FPS_entity_ind]->getComponent<PositionComponent>().setBounds(0, 800, 0, 600);
-    firesaga->manager.getEntities()[FPS_entity_ind]->getComponent<PositionComponent>().setPos(700, 0);
-    firesaga->manager.getEntities()[FPS_entity_ind]->addComponent<TextComponent>(firesaga->getFontsize(), "FPS:", black);
+    firesaga->manager.getEntities()[FPS_entity_ind]->getComponent<PositionComponent>().setPos(600, 0);
+    firesaga->manager.getEntities()[FPS_entity_ind]->addComponent<TextComponent>(firesaga->getFontsize()*2, "FPS:", black);
     firesaga->manager.getEntities()[FPS_entity_ind]->addGroup(firesaga->manager.groupUI);
 
     while (firesaga->running()) {
