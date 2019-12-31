@@ -26,6 +26,7 @@ SDL_Texture * loadTexture(const char * filename) {
 
 SDL_Texture * textToTexture(std::string textureText, SDL_Color textColor, TTF_Font * in_font) {
     SDL_Surface * textsurface = TTF_RenderText_Blended(in_font, textureText.c_str(), textColor); // Blended is better than Solid
+    // TTF_RenderText_Shaded shades the whole destrect background.
     
     SDL_Texture * texture;
 
