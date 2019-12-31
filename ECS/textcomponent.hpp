@@ -16,10 +16,10 @@ class TextComponent : public Component {
     private:
         std::vector<SDL_Texture *> textures;
         std::vector<std::string> text_lines;
-        std::vector<SDL_Color> text_colors;
         PositionComponent * positioncomponent;
         std::vector<SDL_Rect> srcrects; // background always first?
         std::vector<SDL_Rect> destrects; // background always first?
+        std::vector<SDL_Color> textColor;
         int linespacing = 10;
         float spacingfactor = 1.1;
         float sizefactor[2] = {0.75, 0.5}; // height, width
@@ -45,6 +45,7 @@ class TextComponent : public Component {
 
         TextComponent(int in_fontsize, std::vector<std::string> in_text, std::vector<SDL_Color> in_textColor) {
             text_lines = in_text;
+            textColor = in_textColor;
 
             for (int i = 0; i < in_text.size(); i++) {
                 if (in_textColor.size() == 1) {
@@ -59,6 +60,7 @@ class TextComponent : public Component {
 
         TextComponent(int in_fontsize, std::vector<std::string> in_text, SDL_Color in_textColor) {
             text_lines = in_text;
+            textColor.push_back(in_textColor);
 
             for (int i = 0; i < in_text.size(); i++) {
                 addTextTexture(in_text[i], in_textColor);
@@ -67,9 +69,10 @@ class TextComponent : public Component {
             setFontsize(in_fontsize);
         }
 
-        TextComponent(int in_fontsize, std::string in_text, SDL_Color textColor) {
+        TextComponent(int in_fontsize, std::string in_text, SDL_Color in_textColor) {
             text_lines.push_back(in_text);
-            addTextTexture(in_text, textColor);
+            textColor.push_back(in_textColor);
+            addTextTexture(in_text, in_textColor);
             setFontsize(in_fontsize);
         }
 
@@ -79,6 +82,9 @@ class TextComponent : public Component {
             } else {
                 text_lines[0] = in_text;
             }
+
+            removeTexture();
+            addTextTexture(in_text, textColor[0]);
         }
 
         std::vector<SDL_Texture *> getTextures() {
