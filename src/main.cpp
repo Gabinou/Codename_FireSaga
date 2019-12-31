@@ -46,6 +46,13 @@ int main(int argc, char * argv[]) {
     // plot2Dvector(map);
     // printf("Path\n");
     // plot2Dvector(path);
+
+    firesaga = new Game();
+    printf("Made game.\n");
+    firesaga->setFontsize(28);
+    firesaga->init("FireSaga", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 800, 600, false);
+    printf("Initiated game.\n");
+
   
     const int FPS_cap = 60;
     const int frame_delay = 1000 / FPS_cap;
@@ -55,13 +62,18 @@ int main(int argc, char * argv[]) {
     bool show_FPS = true;
     std::chrono::system_clock::time_point frame_start, frame_end, frame_middle;
     int frame_time;
-    firesaga = new Game();
-    printf("Made game.\n");
-    firesaga->setFontsize(28);
-    firesaga->init("FireSaga", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 800, 600, false);
     SDL_Color black = {255, 255, 255};
+    black = {0, 0, 0};
     std::string towrite = "FPSeeeee";
 
+    int FPS_entity_ind = firesaga->manager.getEntities().size();
+    firesaga->manager.addEntity();
+
+    firesaga->manager.getEntities()[FPS_entity_ind]->addComponent<PositionComponent>();
+    firesaga->manager.getEntities()[FPS_entity_ind]->getComponent<PositionComponent>().setBounds(0, 800, 0, 600);
+    firesaga->manager.getEntities()[FPS_entity_ind]->getComponent<PositionComponent>().setPos(700, 0);
+    firesaga->manager.getEntities()[FPS_entity_ind]->addComponent<TextComponent>(firesaga->getFontsize(), "FPS:", black);
+    firesaga->manager.getEntities()[FPS_entity_ind]->addGroup(firesaga->manager.groupUI);
 
     while (firesaga->running()) {
         frame_start = std::chrono::high_resolution_clock::now();
