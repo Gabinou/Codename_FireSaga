@@ -18,12 +18,11 @@ Map * mapp;
 SDL_Renderer * Game::renderer = nullptr;
 SDL_Event Game::event;
 TTF_Font * Game::font = NULL;
+Manager Game::manager;
 
-Manager manager;
-
-Entity & cursor = manager.addEntity(); // FOR SOME REASON, having an 2, 4, 8 entities.... breaks something in the unitmove->unitmenu states move
-Entity & player = manager.addEntity();
-Entity & player2 = manager.addEntity();
+Entity & cursor = Game::manager.addEntity(); // FOR SOME REASON, having an 2, 4, 8 entities.... breaks something in the unitmove->unitmenu states move
+Entity & player = Game::manager.addEntity();
+Entity & player2 = Game::manager.addEntity();
 
 Game::Game() {}
 Game::~Game() {}
@@ -732,8 +731,8 @@ void Game::handleEvents() {
 }
 
 // auto& tiles(manager.getGroup(groupMap))
-std::vector<Entity *> & units = manager.getGroup(manager.groupUnits);
-std::vector<Entity *> & uxs = manager.getGroup(manager.groupUI);
+std::vector<Entity *> & units = Game::manager.getGroup(Game::manager.groupUnits);
+std::vector<Entity *> & uxs = Game::manager.getGroup(Game::manager.groupUI);
 
 void Game::render() {
     SDL_RenderClear(renderer);

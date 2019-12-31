@@ -58,7 +58,6 @@ class Game {
         void createUnitmenu(Entity & setting_entity);
         KeyboardInputMap keyboardInputMap;
         GamepadInputMap gamepadInputMap;
-        // Manager & manager;
         int fontsize;
         bool isRunning;
         int count;
@@ -115,8 +114,8 @@ class Game {
                     bonusexp
         */
 
-
     public:
+
         Game();
         ~Game();
 
@@ -144,6 +143,8 @@ class Game {
         static SDL_Renderer * renderer;
         static SDL_Event event;
         static TTF_Font * font;
+        static Manager manager;
+
 
         void baseUnits(); //generates the base units, and prints them to file.
         void baseWeapons(); // this generates the basic weapon infos.

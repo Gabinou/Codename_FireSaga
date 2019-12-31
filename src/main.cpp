@@ -11,6 +11,7 @@
 #include "textcomponent.hpp"
 #include "game.hpp"
 
+
 Game * firesaga = nullptr;
 
 int main(int argc, char * argv[]) {
@@ -46,7 +47,6 @@ int main(int argc, char * argv[]) {
     // printf("Path\n");
     // plot2Dvector(path);
   
-
     const int FPS_cap = 60;
     const int frame_delay = 1000 / FPS_cap;
     int FPS_pos[2] = {400, 400};
@@ -62,6 +62,7 @@ int main(int argc, char * argv[]) {
     SDL_Color black = {255, 255, 255};
     std::string towrite = "FPSeeeee";
 
+
     while (firesaga->running()) {
         frame_start = std::chrono::high_resolution_clock::now();
         firesaga->handleEvents();
@@ -75,7 +76,6 @@ int main(int argc, char * argv[]) {
         }
         frame_end = std::chrono::high_resolution_clock::now();
         FPS_avg = 1E9/(int)std::chrono::duration_cast<std::chrono::nanoseconds>(frame_end - frame_start).count();
-        writeText(firesaga->getFontsize(), FPS_pos, FPS_sizefactor, towrite, black, firesaga->font, firesaga->renderer);
 
         // printf("FPS: %d\n", frame_end-frame_start);
         // printf("FPS: %.4f\n", FPS_avg);
