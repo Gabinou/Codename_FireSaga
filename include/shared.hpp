@@ -167,6 +167,31 @@ struct Weapon_type {
 };
 
 
+struct Point {
+    int x;
+    int y;
+};
+
+struct Fps {
+    Point pos = {750, 0};
+    bool show = false;
+    float sizefactor[2] = {0.5, 0.5};
+    char cap = 60;
+    char hold = 4;
+    char held = 0;
+    char frame_delay = 1000 / cap;
+    SDL_Color color = {0, 0, 0};
+    float current = 60.0;
+    int ind;
+};
+
+struct Settings {
+    Point res = {800, 600};
+    char fontsize = 28;
+    Fps FPS;
+};
+
+
 extern std::vector<std::vector<int>> A_star(std::vector<std::vector<int>> map, int start[], int end[], std::string mode = "matrix");
 extern std::vector<std::vector<int>> movemap(std::vector<std::vector<int>> map, int start[], int move, std::string mode = "matrix");
 extern std::vector<std::vector<int>> attackmap(std::vector<std::vector<int>> movemap, int start[], int move, int attack, std::string mode = "matrix");

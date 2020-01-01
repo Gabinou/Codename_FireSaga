@@ -144,7 +144,7 @@ class Game {
         static SDL_Event event;
         static TTF_Font * font;
         static Manager manager;
-
+        static Settings settings;
 
         void baseUnits(); //generates the base units, and prints them to file.
         void baseWeapons(); // this generates the basic weapon infos.

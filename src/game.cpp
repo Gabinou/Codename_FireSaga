@@ -19,6 +19,7 @@ SDL_Renderer * Game::renderer = nullptr;
 SDL_Event Game::event;
 TTF_Font * Game::font = NULL;
 Manager Game::manager;
+Settings Game::settings;
 
 Entity & cursor = Game::manager.addEntity(); // FOR SOME REASON, having an 2, 4, 8 entities.... breaks something in the unitmove->unitmenu states move
 Entity & player = Game::manager.addEntity();
@@ -98,6 +99,7 @@ void Game::setState(Entity & setting_entity, std::string new_state) {
             
         }
         if (new_state == "unitmove") {
+            printf("%d\n", Game::manager.getEntities().size());
             std::vector<std::unique_ptr<Entity>> current_entities;
             for (int i=0; i < manager.getEntities().size(); i++) {
                 if (manager.getEntities()[i].get() == (Entity *)&setting_entity) {
@@ -172,7 +174,6 @@ void Game::setState(Entity & setting_entity, std::string new_state) {
     if (this->state == "unitmove") {
         if (new_state == "unitmenu") {
             createUnitmenu(setting_entity); 
-
             int *new_position = setting_entity.getComponent<PositionComponent>().getPos();
             int *old_position = manager.getEntities()[unit_entities.top()]->getComponent<PositionComponent>().getPos();
             

@@ -11,28 +11,7 @@
 #include "textcomponent.hpp"
 #include "game.hpp"
 
-struct Point{
-    int x;
-    int y;
-};
-
-struct Fps{
-    Point pos = {700, 0};
-    bool show = false;
-    float sizefactor[2] = {0.5, 0.5};
-    char cap = 60;
-    char hold = 4;
-    char frame_delay = 1000 / cap;
-    SDL_Color color = {0, 0, 0};
-};
-
-struct Settings{
-    Point res = {800, 600};
-    char fontsize = 28;
-    Fps FPS;
-};
-
-Settings settings;
+// Settings settings;
 
 Game * firesaga = nullptr;
 
@@ -67,28 +46,27 @@ int main(int argc, char * argv[]) {
     // plot2Dvector(map);
     // printf("Path\n");
     // plot2Dvector(path);
-    settings.FPS.show = true;
 
     firesaga = new Game();
     printf("Made game.\n");
+    firesaga->settings.FPS.show = true;
     firesaga->setFontsize(28);
-    firesaga->init("FireSaga", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, settings.res.x, settings.res.y, false);
+    firesaga->init("FireSaga", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, firesaga->settings.res.x, firesaga->settings.res.y, false);
     printf("Initiated game.\n");
   
-    float FPS_avg;
-    std::chrono::system_clock::time_point frame_start, frame_end, frame_middle, fps_shown;
-    int frame_time, FPS_hold = 0;
+    std::chrono::system_clock::time_point frame_start, frame_end, frame_middle;
+    int frame_time;
     char buffer[15];
 
-    int FPS_entity_ind = firesaga->manager.getEntities().size();
+    firesaga->settings.FPS.ind = firesaga->manager.getEntities().size();
     firesaga->manager.addEntity();
 
-    firesaga->manager.getEntities()[FPS_entity_ind]->addComponent<PositionComponent>();
-    firesaga->manager.getEntities()[FPS_entity_ind]->getComponent<PositionComponent>().setBounds(0, settings.res.x, 0, settings.res.y);
-    firesaga->manager.getEntities()[FPS_entity_ind]->getComponent<PositionComponent>().setPos(settings.FPS.pos.x, settings.FPS.pos.y);
-    firesaga->manager.getEntities()[FPS_entity_ind]->addComponent<TextComponent>(settings.fontsize, "60", settings.FPS.color);
-    firesaga->manager.getEntities()[FPS_entity_ind]->getComponent<TextComponent>().setSizefactor(settings.FPS.sizefactor);
-    firesaga->manager.getEntities()[FPS_entity_ind]->addGroup(firesaga->manager.groupUI);
+    firesaga->manager.getEntities()[firesaga->settings.FPS.ind]->addComponent<PositionComponent>();
+    firesaga->manager.getEntities()[firesaga->settings.FPS.ind]->getComponent<PositionComponent>().setBounds(0, firesaga->settings.res.x, 0, firesaga->settings.res.y);
+    firesaga->manager.getEntities()[firesaga->settings.FPS.ind]->getComponent<PositionComponent>().setPos(firesaga->settings.FPS.pos.x, firesaga->settings.FPS.pos.y);
+    firesaga->manager.getEntities()[firesaga->settings.FPS.ind]->addComponent<TextComponent>(firesaga->settings.fontsize, "60", firesaga->settings.FPS.color);
+    firesaga->manager.getEntities()[firesaga->settings.FPS.ind]->getComponent<TextComponent>().setSizefactor(firesaga->settings.FPS.sizefactor);
+    firesaga->manager.getEntities()[firesaga->settings.FPS.ind]->addGroup(firesaga->manager.groupUI);
 
     while (firesaga->running()) {
         frame_start = std::chrono::high_resolution_clock::now();
@@ -98,21 +76,22 @@ int main(int argc, char * argv[]) {
         frame_middle = std::chrono::high_resolution_clock::now();
         
         frame_time = (int)std::chrono::duration_cast<std::chrono::nanoseconds>(frame_middle - frame_start).count()/1E6;
-        if (settings.FPS.frame_delay > frame_time) {
-            SDL_Delay(settings.FPS.frame_delay - frame_time);
+        if (firesaga->settings.FPS.frame_delay > frame_time) {
+            SDL_Delay(firesaga->settings.FPS.frame_delay - frame_time);
         }
         frame_end = std::chrono::high_resolution_clock::now();
-        if (settings.FPS.show) { 
-            FPS_avg = 1E9/(int)std::chrono::duration_cast<std::chrono::nanoseconds>(frame_end - frame_start).count();
-            FPS_hold++;
-            if (FPS_hold == 4) {
-                sprintf(buffer, "%.1f", FPS_avg);
-                firesaga->manager.getEntities()[FPS_entity_ind]->getComponent<TextComponent>().setText(buffer);
-                FPS_hold = 0;   
+        if (firesaga->settings.FPS.show) { 
+            firesaga->settings.FPS.current = 1E9/(int)std::chrono::duration_cast<std::chrono::nanoseconds>(frame_end - frame_start).count();
+            firesaga->settings.FPS.held++;
+            if (firesaga->settings.FPS.held == 4) {
+                sprintf(buffer, "%.1f", firesaga->settings.FPS.current);
+                firesaga->manager.getEntities()[firesaga->settings.FPS.ind]->getComponent<TextComponent>().setText(buffer);
+                firesaga->settings.FPS.held = 0;   
             }
         }
     }
 
     firesaga->clean();
     return (0);
+
 }
