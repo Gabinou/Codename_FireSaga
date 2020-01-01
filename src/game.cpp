@@ -107,9 +107,10 @@ void Game::setState(Entity & setting_entity, std::string new_state) {
             }
             int unit_move = manager.getEntities()[unit_entities.top()]->getComponent<UnitComponent>().getStats().move;
 
-            manager.getEntities()[unit_entities.top()]->getComponent<PositionComponent>().getPos();
+            int * start;
+            start = manager.getEntities()[unit_entities.top()]->getComponent<PositionComponent>().getPos();
             
-            // movemap(mapp, int start[], unit_move, "list")
+            movemap(mapp, start, unit_move, "list");
             // int arrow_ind = manager.getEntities().size();
             // manager.addEntity();
             // manager.getEntities()[menu_entities.top()]->addComponent<PositionComponent>();         
