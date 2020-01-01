@@ -22,6 +22,7 @@ struct Fps{
     float sizefactor[2] = {0.5, 0.5};
     int cap = 60;
     int frame_delay = 1000 / cap;
+    SDL_Color color = {0, 0, 0};
 };
 
 struct Settings{
@@ -71,19 +72,13 @@ int main(int argc, char * argv[]) {
     firesaga->setFontsize(28);
     firesaga->init("FireSaga", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, settings.res.x, settings.res.y, false);
     printf("Initiated game.\n");
-
   
     const int FPS_cap = 60;
     const int frame_delay = 1000 / FPS_cap;
-    int FPS_pos[2] = {400, 400};
-    float FPS_sizefactor[2] = {1, 1};
     float FPS_avg;
     bool show_FPS = true;
     std::chrono::system_clock::time_point frame_start, frame_end, frame_middle, fps_shown;
     int frame_time, FPS_hold = 0;
-    SDL_Color black = {255, 255, 255};
-    black = {0, 0, 0};
-    std::string towrite = "FPSeeeee";
     char buffer[15];
 
     int FPS_entity_ind = firesaga->manager.getEntities().size();
@@ -92,7 +87,7 @@ int main(int argc, char * argv[]) {
     firesaga->manager.getEntities()[FPS_entity_ind]->addComponent<PositionComponent>();
     firesaga->manager.getEntities()[FPS_entity_ind]->getComponent<PositionComponent>().setBounds(0, settings.res.x, 0, settings.res.y);
     firesaga->manager.getEntities()[FPS_entity_ind]->getComponent<PositionComponent>().setPos(settings.FPS.pos.x, settings.FPS.pos.y);
-    firesaga->manager.getEntities()[FPS_entity_ind]->addComponent<TextComponent>(28, "FPS", black);
+    firesaga->manager.getEntities()[FPS_entity_ind]->addComponent<TextComponent>(settings.fontsize, "FPS", settings.FPS.color);
     firesaga->manager.getEntities()[FPS_entity_ind]->getComponent<TextComponent>().setSizefactor(settings.FPS.sizefactor);
     firesaga->manager.getEntities()[FPS_entity_ind]->addGroup(firesaga->manager.groupUI);
 
