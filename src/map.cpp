@@ -17,6 +17,10 @@ void Map::removeTile(int x, int y) {
     tiles[x][y] = nullptr;
 }
 
+std::vector<std::vector<int>> Map::get2D(){
+    return(map2D);
+}
+
 void Map::moveTile(int x, int y, int new_x, int new_y) {
     tiles[new_x][new_y] = tiles[x][y];
     tiles[x][y] = nullptr;
@@ -55,8 +59,8 @@ Map::Map(const short unsigned int width, const short unsigned int height) : Map(
 }
 
 void Map::loadMap(std::string filename) {
-    map = readcsv_vec(filename.c_str(), 1);
-    Entity_ptr_matrix temp(map.size(), std::vector<Entity*>(map[0].size()));
+    map2D = readcsv_vec(filename.c_str(), 1);
+    Entity_ptr_matrix temp(map2D.size(), std::vector<Entity*>(map2D[0].size()));
 
     tiles = temp;
     // printf("Tiles size %d %d \n", tiles.size(), tiles[0].size());
@@ -70,9 +74,9 @@ void Map::loadMap(std::string filename) {
 void Map::drawMap() {
     int type = 0;
     // This is cache friendly.
-    for (int row = 0; row < map.size(); row++) {
-        for (int col = 0; col < map[row].size(); col++) {
-            type =  map[row][col];
+    for (int row = 0; row < map2D.size(); row++) {
+        for (int col = 0; col < map2D[row].size(); col++) {
+            type =  map2D[row][col];
             destrect.x = (col + 1) * tilesize[0];
             destrect.y = (row + 1) * tilesize[1];
 

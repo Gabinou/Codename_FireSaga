@@ -21,16 +21,19 @@ class Map {
         void drawMap();
         void setTilesize(const short int unsigned width, const short int unsigned height);
         int * getTilesize() const;
+
+        std::vector<std::vector<int>> get2D();
+
+
         void setTile(int x, int y, Entity * in_entity);
         void removeTile(int x, int y);
         void moveTile(int x, int y, int new_x, int new_y);
-        // Entity * getTile(int x, int y);
         Entity * getTile(int x, int y);
 
     private:
         int tilesize[2];
 
-        std::vector<std::vector<int>> map;
+        std::vector<std::vector<int>> map2D;
 
         SDL_Rect srcrect, destrect;
 
