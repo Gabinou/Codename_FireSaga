@@ -20,14 +20,15 @@ struct Fps{
     Point pos = {700, 0};
     bool show = false;
     float sizefactor[2] = {0.5, 0.5};
-    int cap = 60;
-    int frame_delay = 1000 / cap;
+    char cap = 60;
+    char hold = 4;
+    char frame_delay = 1000 / cap;
     SDL_Color color = {0, 0, 0};
 };
 
 struct Settings{
     Point res = {800, 600};
-    int fontsize = 28;
+    char fontsize = 28;
     Fps FPS;
 };
 
@@ -66,6 +67,7 @@ int main(int argc, char * argv[]) {
     // plot2Dvector(map);
     // printf("Path\n");
     // plot2Dvector(path);
+    settings.FPS.show = true;
 
     firesaga = new Game();
     printf("Made game.\n");
@@ -73,10 +75,7 @@ int main(int argc, char * argv[]) {
     firesaga->init("FireSaga", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, settings.res.x, settings.res.y, false);
     printf("Initiated game.\n");
   
-    const int FPS_cap = 60;
-    const int frame_delay = 1000 / FPS_cap;
     float FPS_avg;
-    bool show_FPS = true;
     std::chrono::system_clock::time_point frame_start, frame_end, frame_middle, fps_shown;
     int frame_time, FPS_hold = 0;
     char buffer[15];
@@ -87,7 +86,7 @@ int main(int argc, char * argv[]) {
     firesaga->manager.getEntities()[FPS_entity_ind]->addComponent<PositionComponent>();
     firesaga->manager.getEntities()[FPS_entity_ind]->getComponent<PositionComponent>().setBounds(0, settings.res.x, 0, settings.res.y);
     firesaga->manager.getEntities()[FPS_entity_ind]->getComponent<PositionComponent>().setPos(settings.FPS.pos.x, settings.FPS.pos.y);
-    firesaga->manager.getEntities()[FPS_entity_ind]->addComponent<TextComponent>(settings.fontsize, "FPS", settings.FPS.color);
+    firesaga->manager.getEntities()[FPS_entity_ind]->addComponent<TextComponent>(settings.fontsize, "60", settings.FPS.color);
     firesaga->manager.getEntities()[FPS_entity_ind]->getComponent<TextComponent>().setSizefactor(settings.FPS.sizefactor);
     firesaga->manager.getEntities()[FPS_entity_ind]->addGroup(firesaga->manager.groupUI);
 
@@ -99,174 +98,21 @@ int main(int argc, char * argv[]) {
         frame_middle = std::chrono::high_resolution_clock::now();
         
         frame_time = (int)std::chrono::duration_cast<std::chrono::nanoseconds>(frame_middle - frame_start).count()/1E6;
-        if (frame_delay > frame_time) {
-            SDL_Delay(frame_delay - frame_time);
+        if (settings.FPS.frame_delay > frame_time) {
+            SDL_Delay(settings.FPS.frame_delay - frame_time);
         }
         frame_end = std::chrono::high_resolution_clock::now();
-        FPS_avg = 1E9/(int)std::chrono::duration_cast<std::chrono::nanoseconds>(frame_end - frame_start).count();
-        FPS_hold++;
-        if (FPS_hold == 4) {
-            sprintf(buffer, "%.1f", FPS_avg);
-            firesaga->manager.getEntities()[FPS_entity_ind]->getComponent<TextComponent>().setText(buffer);
-            FPS_hold = 0;   
+        if (settings.FPS.show) { 
+            FPS_avg = 1E9/(int)std::chrono::duration_cast<std::chrono::nanoseconds>(frame_end - frame_start).count();
+            FPS_hold++;
+            if (FPS_hold == 4) {
+                sprintf(buffer, "%.1f", FPS_avg);
+                firesaga->manager.getEntities()[FPS_entity_ind]->getComponent<TextComponent>().setText(buffer);
+                FPS_hold = 0;   
+            }
         }
     }
 
     firesaga->clean();
     return (0);
-
-
-    // inventory_item("Rapier", 10);
-    // printf("%d \f", inventory_items["Rapier_0000"]);
-    // write_all_weapons("weapons2.txt");
-    // all_unit_classes["Lord"] = unit_class("Lord", 0, 0, 0, 0, {40, 25, 20, 40, 70, 80, 20, 20,  0,  0, 0}, {""}, {"Sword"});
-    // // all_unit_classes["Mercenary"] = unit_class("Mercenary", 0, 0, 0, 0, {40, 25, 20, 40, 70, 80, 20, 20,  0,  0}, {"Hero"});
-    // all_unit_classes["Mercenary"] = unit_class();
-    // all_unit_classes["Mercenary"].read("classes_FE1.txt", 0);
-    // // all_unit_classes["Lord"] = unit_class();
-    // // unit_class();
-    // // all_unit_classes["Lord"].write("classes.txt");
-    // read_all_unit_classes("classes_FE1.txt");
-    // write_all_unit_classes("classes.txt");
-    //// TEST FOR SIZE OF DATA.
-    // std::unordered_map<string, std::vector<char>> testsupport({ {"Marth", {1,1,1,1,1,1,1,1,1,1,1}} });
-    // string a = "Marth";
-    // std::vector<char> b = {1,1,1,1,1,1,1,1,1,1,1};
-    // char c[11] = {1,1,1,1,1,1,1,1,1,1,1};
-    // char d[14] = "Marth";
-    // printf("%d \n", sizeof(a));
-    // printf("%d \n", sizeof(b));
-    // printf("%d \n", sizeof(c));
-    // printf("%d \n", sizeof(d));
-    // printf("%d \n", sizeof(testsupport));
-    // all_weapons["Rapier"] = weapon("Rapier", "swd", id++, 600,
-    // // dmg  hit  crt wght uses  exp
-    // {5,  90,  10,   7,  30,   2},
-    // {1, 1}, // range
-    // std::vector<char>(LEN(unit_stats), 0), {"Knight", "Cavalier"}, 0, 1);
-    // all_weapons["Bronze Sword"] = weapon("Bronze Sword", "swd", id++, 450,
-    // // dmg  hit  crt wght uses  exp
-    // {3,  80,   0,   5,  45,   1},
-    // {1, 1}, // range
-    // std::vector<char>(LEN(unit_stats), 0), {"", ""}, 0, 1);
-    // all_weapons["Iron Sword"] =  weapon("Iron Sword", "swd", id++, 450,
-    // // dmg hit  crt wght uses  exp
-    // {5,  80,    0,   7,  45,  1},
-    // {1, 1}, // range
-    // std::vector<char>(LEN(unit_stats), 0), {"", ""}, 0, 1);
-    // all_weapons["Iron Lance"] = weapon("Iron Lance", "lance", id++, 450,
-    // // dmg hit  crt wght uses  exp
-    // // dmg hit  crt wght uses  exp
-    // {6,  80,   0,   8,   40,  1},
-    // {1, 1}, // range
-    // std::vector<char>(LEN(unit_stats), 0), {"", ""}, 0, 1);
-    // all_weapons["Steel Sword"] = weapon("Steel Sword", "swd", id++, 500,
-    // // dmg hit  crt wght uses  exp
-    // {8,  70,   0,   9,   35,  1},
-    // {1, 1}, // range
-    // std::vector<char>(LEN(unit_stats), 0), {"", ""}, 0, 1);
-    // all_weapons["Lame de Damas"] = weapon("Lame de Damas", "swd", id++, 1000,
-    // // Other names: Acier de Damas. Damas Sword. Damascus Sword. Damas Sword. Damas steel sword.
-    // // dmg hit  crt wght uses  exp
-    // {15,  65,  0,   8,  25,   1},
-    // {1, 1}, // range
-    // std::vector<char>(LEN(unit_stats), 0), {"", ""}, 0, 3);
-    // Unordered map convention: "name" is the immutable original object.
-    // Copies have "name_id"
-    // all_units["Marth"] = unit("Marth", "Prince", id++,
-    // /*HP Str Mag Skl Spd Lck Def Res Con Mov
-    // stats_base*/        {18,  8,  2,  9, 10,  7,  5,  2,  6,  5},
-    // /*Growths*/         {60, 50, 20, 70, 60, 40, 30, 20,  0,  0},
-    // /*Skills*/          {18,  8,  2},
-    // /*Love_pts*/        { 0,  0,  0,  0,  0},
-    // /*Love_growths*/    { 0,  0,  0,  0,  0},
-    // //swd lnc axe bow wnd firetnd drk lgt staff
-    // /*Weapon_exp*/      { 1,  0,  0,  0,  0,  0,  0,  0,  0,  0},
-    // /*Position*/        { 1,  1,  1},
-    // /*Equipped*/        {0},
-    // /*Equipment*/       {inventory_items("Rapier", 0)},
-    // /*Weapons*/         {},
-    // /*Items*/           {},
-    // /*Exp*/             0,
-    // /*Lovers*/          {"Sheeda", "", "", "", ""},
-    // /*Mounted*/         0,
-    // /*Flying*/          0,
-    // /*Armored*/         0,
-    // /*Promoted*/        0);
-    // all_units["Sheeda"] = unit("Sheeda", "Pegasus Knight", id++,
-    // /*HP Str Mag Skl Spd Lck Def Res Con Mov
-    // stats_base*/        {18,  7,  2,  7, 18,  8,  4,  4,  5,  7},
-    // /*Growths*/         {40, 25, 20, 40, 70, 80, 20, 20,  0,  0},
-    // /*Skills*/          {18,  8,  2},
-    // /*Love_pts*/        { 0,  0,  0,  0,  0},
-    // /*Love_growths*/    { 0,  0,  0,  0,  0},
-    // //swd lnc axe bow wnd fir tnd drk lgt staff
-    // /*Weapon_exp*/      { 0,  1,  0,  0,  0,  0,  0,  0,  0,  0},
-    // /*Position*/        { 1,  2,  1},
-    // /*Equipped*/        {1},
-    // /*Equipment*/       {inventory_item("Iron Lance", 10), inventory_item("Iron Lance", 10)},
-    // /*Weapons*/         {},
-    // /*Items*/           {},
-    // /*Exp*/             0,
-    // /*Lovers*/          {"Marth", "", "", "", ""},
-    // /*Mounted*/         1,
-    // /*Flying*/          1,
-    // /*Armored*/         0,
-    // /*Promoted*/        0);
-    // all_units["Sheeda2"] = unit("Sheeda2", "Pegasus Knight", id++,
-    // /*HP Str Mag Skl Spd Lck Def Res Con Mov
-    // stats_base*/        {18,  7,  2,  7, 18,  8,  4,  4,  5,  7},
-    // /*Growths*/         {40, 25, 20, 40, 70, 80, 20, 20,  0,  0},
-    // /*Skills*/          {18,  8,  2},
-    // /*Love_pts*/        { 0,  0,  0,  0,  0},
-    // /*Love_growths*/    { 0,  0,  0,  0,  0},
-    // //swd lnc axe bow wnd fir tnd drk lgt staff
-    // /*Weapon_exp*/      { 1,  0,  0,  0,  0,  0,  0,  0,  0,  0},
-    // /*Position*/        { 1,  2,  1},
-    // /*Equipped*/        {0},
-    // /*Equipment*/       {inventory_item("Iron Lance", 10), inventory_item("Iron Sword", 10)},
-    // /*Weapons*/         {},
-    // /*Items*/           {},
-    // /*Exp*/             0,
-    // /*Lovers*/          {"Marth", "", "", "", ""},
-    // /*Mounted*/         1,
-    // /*Flying*/          1,
-    // /*Armored*/         0,
-    // /*Promoted*/        0);
-    // std::ofstream out("units.txt");
-    // out << all_units["Marth"]; // This is the c++ way of printing an object to file.
-    // out << all_units["Sheeda"];
-    // out.close();
-    // remove("units.txt");
-    // all_units["Marth"].write("units.txt");
-    // printf("where is the mistake %d \n", all_units["Sheeda"].flying);
-    // printf("where is the mistake %d \n", all_units["Sheeda2"].flying);
-    // printf("%d \n", all_units["Sheeda"].get_equipped()[0]);
-    // write_all_units("units.txt", "cpp");
-    // printf("%s \n", all_weapons["Iron Sword"].name);
-    // printf("%s \n", all_weapons["Rapier"].name);
-    // all_weapons["Iron Sword"].write("weaponrite.txt");
-    // all_units["Sheeda"].write("unitrite.txt");
-    // write_all_weapons("weaponrite.txt");
-    // all_units["Sheeda_test"].read("units.txt", 20);
-    // all_weapons["Sheeda_test"].read("weapons.txt", 20);
-    // printf("%s \n", all_units["Sheeda"].name);
-    // printf("%s \n", all_units["Sheeda"].supports["Marth"]);
-    // printf("%s \n", all_units["Marth"].name);
-    // printf("%s \n", all_units["Sheeda"].type);
-    // printf("%d \n", all_units["Sheeda"].stats_base[0]);
-    // printf("%d \n", all_units["Sheeda"].stats_base[1]);
-    // printf("%d \n", all_units["Sheeda"].stats_base[2]);
-    // printf("%d \n", all_units["Sheeda"].growths[0]);
-    // printf("%d \n", all_units["Sheeda"].stats[0]);
-    // printf("this is get_equipped %d \n", all_units["Sheeda"].get_equipped()[0]);
-    // printf("%s \n", all_units["Sheeda"].equipment[0].name);
-    // cout << all_units["Sheeda"].equipment[0].name << endl;
-    // printf("%s \n", all_units["Sheeda"].equipment[1].name);
-    // printf("%s \n", all_units["Sheeda"].lovers[0]);
-    // printf("%d \n", all_units["Sheeda"].exp);
-    // printf("%d \n", all_units["Sheeda"].mounted);
-    // printf("%d \n", all_units["Sheeda"].flying);
-    // printf("%d \n", all_units["Sheeda"].armored);
-    // printf("%d \n", all_units["Sheeda"].promoted);
 }
