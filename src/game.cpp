@@ -86,7 +86,6 @@ void Game::setState(Entity & setting_entity, std::string new_state) {
          
     }
     
-    
     if (this->state == "map") {
         if (new_state == "unitmenu") {
             moveUnit(setting_entity);
@@ -101,13 +100,14 @@ void Game::setState(Entity & setting_entity, std::string new_state) {
         if (new_state == "unitmove") {
             printf("%d\n", Game::manager.getEntities().size());
             std::vector<std::unique_ptr<Entity>> current_entities;
-            for (int i=0; i < manager.getEntities().size(); i++) {
+            for (int i = 0; i < manager.getEntities().size(); i++) {
                 if (manager.getEntities()[i].get() == (Entity *)&setting_entity) {
                     unit_entities.push(i);
                 }
             }
-            int unit_move = manager.getEntities()[menu_entities.top()]->getComponent<UnitComponent>().getStats().move;
-            manager.getEntities()[menu_entities.top()]->getComponent<PositionComponent>().getPos();
+            int unit_move = manager.getEntities()[unit_entities.top()]->getComponent<UnitComponent>().getStats().move;
+
+            manager.getEntities()[unit_entities.top()]->getComponent<PositionComponent>().getPos();
             
             // movemap(mapp, int start[], unit_move, "list")
             // int arrow_ind = manager.getEntities().size();
@@ -587,6 +587,26 @@ void Game::baseUnits(){
     manager.getEntities().back()->getComponent<UnitComponent>().setGrowths(temp);
     manager.getEntities().back()->getComponent<UnitComponent>().setExp(400);
     all_units["Poet"] = manager.getEntities().size() - 1;
+
+    manager.addEntity();
+    temp = {15,  4,  5,  7,  6,   8,  4,  6,  5, 5};
+    manager.getEntities().back()->addComponent<UnitComponent>("Poet", "Mage", temp);
+    temp = {48, 14, 25, 32, 34,  28, 19, 40, 15};
+    manager.getEntities().back()->getComponent<UnitComponent>().setCaps(temp);
+    temp = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
+    manager.getEntities().back()->getComponent<UnitComponent>().setGrowths(temp);
+    manager.getEntities().back()->getComponent<UnitComponent>().setExp(400);
+    all_units["Mage1"] = manager.getEntities().size() - 1;
+
+    manager.addEntity();
+    temp = {15,  4,  5,  7,  6,   8,  4,  6,  5, 5};
+    manager.getEntities().back()->addComponent<UnitComponent>("Poet", "Mage", temp);
+    temp = {48, 14, 25, 32, 34,  28, 19, 40, 15};
+    manager.getEntities().back()->getComponent<UnitComponent>().setCaps(temp);
+    temp = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
+    manager.getEntities().back()->getComponent<UnitComponent>().setGrowths(temp);
+    manager.getEntities().back()->getComponent<UnitComponent>().setExp(400);
+    all_units["Mage1"] = manager.getEntities().size() - 1;
 
     manager.addEntity();
     temp = {15,  4,  5,  7,  6,   8,  4,  6,  5, 5};
