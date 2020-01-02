@@ -37,7 +37,7 @@ void Map::loadTiles() {
     // Make this into an array of types, and breaks the switch into an array index. Also put the assets into a single  string vector.
 }
 
-void Map::LoadOverlays(std::vector<std::string> overlays) {
+void Map::loadOverlays(std::vector<std::string> overlays) {
 
 }
 
@@ -75,8 +75,16 @@ void Map::loadMap(std::string filename) {
     }
 }
 
-void Map::setList(std::string ) {
-
+void Map::setList(std::string in_type, std::vector<std::vector<int>> in_list) {
+    if ((in_type == "attack") || (in_type == "attacklist")){
+        attacklist = in_list;
+    } 
+    if ((in_type == "move") || (in_type == "movelist")){
+        movelist = in_list;
+    } 
+    if ((in_type == "heal") || (in_type == "heallist")){
+        heallist = in_list;
+    } 
 }
 void Map::clearLists() {
     attacklist.clear();
@@ -105,10 +113,18 @@ void Map::drawMap() {
             case 2:
                 SDL_RenderCopy(Game::renderer, dirt, &srcrect, &destrect);
                 break;
-
             default:
                 break;
             }
+            // if (ss_looping == "pingpong") {
+            //     srcrect.x = srcrect.w * pingpong(static_cast<int>(SDL_GetTicks() / speed), frames, 0);
+            // } else if ((ss_looping == "linear") || (ss_looping == "direct")) {
+            //     srcrect.x = srcrect.w * static_cast<int>((SDL_GetTicks() / speed) % frames);
+            // } else if (ss_looping == "reverse") {
+            //     srcrect.x = srcrect.w * (frames - static_cast<int>((SDL_GetTicks() / speed) % frames));
+            // }
+
+            // SDL_RenderCopy(Game::renderer, texture, &srcrect, &destrect);
         }
     }
 }

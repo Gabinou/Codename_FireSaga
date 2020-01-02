@@ -116,6 +116,7 @@ void Game::setState(Entity & setting_entity, std::string new_state) {
                 //Map overlay
                 // overlay.loadtextures();
                 // overlay.setMap();
+                // overlay.setMap();
 
             // int arrow_ind = manager.getEntities().size();
             // manager.addEntity();

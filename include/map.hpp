@@ -17,6 +17,7 @@ class Map {
         Map();
         ~Map();
         Map(const short unsigned int width, const short unsigned int height);
+        void loadOverlays(std::vector<std::string> overlays);
         void loadMap(std::string filename);
         void drawMap();
         void setTilesize(const short int unsigned width, const short int unsigned height);
@@ -28,10 +29,8 @@ class Map {
         void moveTile(int x, int y, int new_x, int new_y);
         Entity * getTile(int x, int y);
 
-        void setList();
+        void setList(std::string in_type, std::vector<std::vector<int>> in_list);
         void clearLists();
-
-
     private:
         int tilesize[2];
         int frames = 10, speed = 50;
@@ -45,6 +44,7 @@ class Map {
         SDL_Texture * dirt;
         SDL_Texture * grass;
         SDL_Texture * water;
+        std::string ss_looping = "linear";
 
         Entity_ptr_matrix tiles;
 
