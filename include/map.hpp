@@ -33,9 +33,13 @@ class Map {
 
         void setList(std::string in_type, std::vector<std::vector<int>> in_list);
         void clearLists();
+
+        void showOverlay();
+        void hideOverlay();
     private:
         int tilesize[2];
         int frames = 10, speed = 50;
+        bool show_overlay = false;
 
         std::vector<std::vector<int>> movelist, attacklist, heallist;
 

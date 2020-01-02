@@ -47,6 +47,14 @@ void Map::setOverlaymode(std::string in_mode) {
     overlay_mode = in_mode;
 }
 
+void Map::showOverlay(){
+    show_overlay = true;
+}
+
+void Map::hideOverlay(){
+    show_overlay = false;
+}
+
 void Map::initVars() {
     srcrect.x = srcrect.y = 0;
     destrect.x = destrect.y = 0;
@@ -119,6 +127,17 @@ void Map::drawMap() {
                 break;
             default:
                 break;
+            }
+
+            if (show_overlay) {
+                if (overlay_mode.find("move") != std::string::npos) {
+                    // printf("Should map overlay.\n");
+                    if (movelist[row][col] == 1){
+                        // SDL_RenderCopy(Game::renderer, overlays[0], &srcrect, &destrect);
+                        // printf("%d\n", (overlays[0] == NULL));
+
+                    }
+                }
             }
             // if (ss_looping == "pingpong") {
             //     srcrect.x = srcrect.w * pingpong(static_cast<int>(SDL_GetTicks() / speed), frames, 0);

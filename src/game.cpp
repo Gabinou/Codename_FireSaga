@@ -109,9 +109,10 @@ void Game::setState(Entity & setting_entity, std::string new_state) {
             int * start;
             start = manager.getEntities()[unit_entities.top()]->getComponent<PositionComponent>().getPos();
             
-            std::vector<std::vector<int>> movelist = movemap(mapp->get2D(), start, unit_move, "list");
+            std::vector<std::vector<int>> movemapp = movemap(mapp->get2D(), start, unit_move, "list");
             // std::vector<std::vector<int>> attacklist = attackmap(movelist, start, unit_move, 1, "list"); // attackmap cannot deal with a movelist.
-            mapp->setList("move", movelist);
+            mapp->setList("move", movemapp);
+            // mapp->showOverlay();
             // PSEUDOCODE:
                 // overlay.setMap();
 
