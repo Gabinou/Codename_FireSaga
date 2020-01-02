@@ -37,8 +37,23 @@ void Map::loadTiles() {
     // Make this into an array of types, and breaks the switch into an array index. Also put the assets into a single  string vector.
 }
 
-void Map::loadOverlays(std::vector<std::string> overlays) {
+void Map::loadOverlays(std::string overlay) {
+    if (overlay == "attack") {
 
+    }
+    if (overlay == "move") {
+
+    }
+
+    if (overlay == "heal") {
+
+    }
+}
+
+void Map::loadOverlays(std::vector<std::string> overlays) {
+    for (int i = 0; i < overlays.size(); i++) {
+        printf("%s", overlays[i]);
+    }
 }
 
 void Map::initVars() {

@@ -18,7 +18,10 @@ void writeText(int in_fontsize, int in_position[2], float in_sizefactor[2], std:
 }
 
 SDL_Texture * loadTexture(const char * filename) {
-    SDL_Surface * tempsurface = IMG_Load(filename);
+    SDL_Surface * tempsurface = IMG_Load(filename); //Not that fast.
+    if (!image) {
+        printf("loadTexture. IMG_Load: %s\n", IMG_GetError());
+    }
     SDL_Texture * texture = SDL_CreateTextureFromSurface(Game::renderer, tempsurface);
     SDL_FreeSurface(tempsurface);
     return (texture);
