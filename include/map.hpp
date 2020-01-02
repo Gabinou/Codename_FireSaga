@@ -17,12 +17,13 @@ class Map {
         Map();
         ~Map();
         Map(const short unsigned int width, const short unsigned int height);
-        void loadOverlays(std::vector<std::string> overlays);
-        void loadOverlays(std::string overlay);
+        void loadOverlays();
         void loadMap(std::string filename);
         void drawMap();
         void setTilesize(const short int unsigned width, const short int unsigned height);
         int * getTilesize() const;
+
+        void setOverlaymode(std::string in_mode);
 
         std::vector<std::vector<int>> get2D();
         void setTile(int x, int y, Entity * in_entity);
@@ -42,13 +43,15 @@ class Map {
 
         SDL_Rect srcrect, destrect;
 
+        std::string overlay_mode = "attackmoveheal";
+
         SDL_Texture * dirt;
         SDL_Texture * grass;
         SDL_Texture * water;
         SDL_Texture * move;
         SDL_Texture * attack;
         SDL_Texture * heal;
-        // std::vector<SDL_Texture *> overlays;
+        std::vector<SDL_Texture *> overlays{NULL, NULL, NULL};
         std::string ss_looping = "linear";
 
         Entity_ptr_matrix tiles;

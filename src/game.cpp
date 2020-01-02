@@ -98,7 +98,6 @@ void Game::setState(Entity & setting_entity, std::string new_state) {
             
         }
         if (new_state == "unitmove") {
-            printf("%d\n", Game::manager.getEntities().size());
             std::vector<std::unique_ptr<Entity>> current_entities;
             for (int i = 0; i < manager.getEntities().size(); i++) {
                 if (manager.getEntities()[i].get() == (Entity *)&setting_entity) {
@@ -110,12 +109,10 @@ void Game::setState(Entity & setting_entity, std::string new_state) {
             int * start;
             start = manager.getEntities()[unit_entities.top()]->getComponent<PositionComponent>().getPos();
             
-            movemap(mapp->get2D(), start, unit_move, "list");
-
+            std::vector<std::vector<int>> movelist = movemap(mapp->get2D(), start, unit_move, "list");
+            // std::vector<std::vector<int>> attacklist = attackmap(movelist, start, unit_move, 1, "list"); // attackmap cannot deal with a movelist.
+            mapp->setList("move", movelist);
             // PSEUDOCODE:
-                //Map overlay
-                // overlay.loadtextures();
-                // overlay.setMap();
                 // overlay.setMap();
 
             // int arrow_ind = manager.getEntities().size();
@@ -688,16 +685,9 @@ void Game::init(const char * title, int xpos, int ypos, int width, int height, b
     // allEntities["cursor"] = &cursor;
     
     cursor.addComponent<PositionComponent>(2, 2);
-    Weapon_type atest;
-    Weapon_stats btest;
-    btest = {10, 50, 0, 0, 0, 11, 20, {1,1}, {1,2}, 0};
-    bool ctest[9];
     printf("Silou index: %d \n", all_units["Silou"]);
     printf("Servil index: %d \n", all_units["Servil"]);
     printf("Entities size: %d \n", manager.getEntities().size());
-    printf("Weapon type size: %d \n", sizeof(atest));
-    printf("Weapon stats size: %d \n", sizeof(btest));
-    printf("Array same as type stats size: %d \n", sizeof(ctest));
 
 
     manager.getEntities()[all_units["Silou"]]->addComponent<PositionComponent>(2, 2);
@@ -719,8 +709,6 @@ void Game::init(const char * title, int xpos, int ypos, int width, int height, b
     
     manager.getEntities()[all_units["Silou"]]->addGroup(manager.groupUnits);
     cursor.addGroup(manager.groupUI);
-
-
 
     // cursor.getComponent<SpriteComponent>().hide();
 

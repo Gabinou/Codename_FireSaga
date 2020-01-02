@@ -75,13 +75,13 @@ int main(int argc, char * argv[]) {
         firesaga->render();
         frame_middle = std::chrono::high_resolution_clock::now();
         
-        frame_time = (int)std::chrono::duration_cast<std::chrono::nanoseconds>(frame_middle - frame_start).count()/1E6;
+        frame_time = (int)(std::chrono::duration_cast<std::chrono::nanoseconds>(frame_middle - frame_start).count()/1E6);
         if (firesaga->settings.FPS.frame_delay > frame_time) {
             SDL_Delay(firesaga->settings.FPS.frame_delay - frame_time);
         }
         frame_end = std::chrono::high_resolution_clock::now();
         if (firesaga->settings.FPS.show) { 
-            firesaga->settings.FPS.current = 1E9/(int)std::chrono::duration_cast<std::chrono::nanoseconds>(frame_end - frame_start).count();
+            firesaga->settings.FPS.current = (1E9/std::chrono::duration_cast<std::chrono::nanoseconds>(frame_end - frame_start).count());
             firesaga->settings.FPS.held++;
             if (firesaga->settings.FPS.held == 4) {
                 sprintf(buffer, "%.1f", firesaga->settings.FPS.current);

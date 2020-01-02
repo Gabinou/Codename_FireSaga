@@ -37,23 +37,14 @@ void Map::loadTiles() {
     // Make this into an array of types, and breaks the switch into an array index. Also put the assets into a single  string vector.
 }
 
-void Map::loadOverlays(std::string overlay) {
-    if (overlay == "attack") {
-
-    }
-    if (overlay == "move") {
-
-    }
-
-    if (overlay == "heal") {
-
-    }
+void Map::loadOverlays() {
+    overlays[0] = loadTexture("..//assets//tile_overlay_move.png");
+    // overlays[1] = loadTexture("..//assets//tile_overlay_attack.png");
+    // overlays[2] = loadTexture("..//assets//tile_overlay_heal.png");
 }
 
-void Map::loadOverlays(std::vector<std::string> overlays) {
-    for (int i = 0; i < overlays.size(); i++) {
-        printf("%s", overlays[i]);
-    }
+void Map::setOverlaymode(std::string in_mode) {
+    overlay_mode = in_mode;
 }
 
 void Map::initVars() {
@@ -68,6 +59,7 @@ void Map::initVars() {
 
 Map::Map() {
     loadTiles();
+    loadOverlays();
     initVars();
 }
 
@@ -92,13 +84,10 @@ void Map::loadMap(std::string filename) {
 
 void Map::setList(std::string in_type, std::vector<std::vector<int>> in_list) {
     if ((in_type == "attack") || (in_type == "attacklist")){
-        attacklist = in_list;
+        attacklist = in_list; //heal and attack maps/lists are the same.
     } 
     if ((in_type == "move") || (in_type == "movelist")){
         movelist = in_list;
-    } 
-    if ((in_type == "heal") || (in_type == "heallist")){
-        heallist = in_list;
     } 
 }
 void Map::clearLists() {
