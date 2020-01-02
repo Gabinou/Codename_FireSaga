@@ -24,8 +24,7 @@ class SpriteComponent : public Component {
         int objectivepos[2];
         int slidepos[2];
         int * tilesize; // if no map, just use the pixel position as usual.
-        int frames = 10;
-        int speed = 50;
+        int frames = 10, speed = 50;
         bool visible;
         bool animated = false;
         std::string ss_looping = "pingpong"; //ss: spritesheet

@@ -37,6 +37,10 @@ void Map::loadTiles() {
     // Make this into an array of types, and breaks the switch into an array index. Also put the assets into a single  string vector.
 }
 
+void Map::LoadOverlays(std::vector<std::string> overlays) {
+
+}
+
 void Map::initVars() {
     srcrect.x = srcrect.y = 0;
     destrect.x = destrect.y = 0;
@@ -69,6 +73,15 @@ void Map::loadMap(std::string filename) {
             tiles[row][col] =  static_cast<Entity*>(nullptr);
         }
     }
+}
+
+void Map::setList(std::string ) {
+
+}
+void Map::clearLists() {
+    attacklist.clear();
+    movelist.clear();
+    heallist.clear();
 }
 
 void Map::drawMap() {

@@ -23,15 +23,20 @@ class Map {
         int * getTilesize() const;
 
         std::vector<std::vector<int>> get2D();
-
-
         void setTile(int x, int y, Entity * in_entity);
         void removeTile(int x, int y);
         void moveTile(int x, int y, int new_x, int new_y);
         Entity * getTile(int x, int y);
 
+        void setList();
+        void clearLists();
+
+
     private:
         int tilesize[2];
+        int frames = 10, speed = 50;
+
+        std::vector<std::vector<int>> movelist, attacklist, heallist;
 
         std::vector<std::vector<int>> map2D;
 
