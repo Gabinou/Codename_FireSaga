@@ -580,7 +580,7 @@ void Game::baseUnits(){
     temp = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
     manager.getEntities().back()->getComponent<UnitComponent>().setGrowths(temp);
     manager.getEntities().back()->getComponent<UnitComponent>().setExp(400);
-    all_units["Silou"] = manager.getEntities().size() - 1;
+    all_units["Silou"] = manager.getEntities().size();
 
     manager.addEntity();
     temp = {15,  4,  5,  7,  6,   8,  4,  6,  5, 5}; // 4 or 5?
@@ -700,11 +700,11 @@ void Game::init(const char * title, int xpos, int ypos, int width, int height, b
     tilesize[1] = 32;
     mapp =  new Map(tilesize[0], tilesize[1]); // mapp is a pointer
     mapp->loadMap("..//testmap.txt");
-    // allEntities["horse"] = &player;
-    // allEntities["cursor"] = &cursor;
-    Unit_stats temp = {17,  6,  2,  7,  7,   7,  4,  5,  6,  6};
-    player.addComponent<UnitComponent>("Hottie", "Thief", temp);
+
     
+    printf("ALLO %d\n", player.getComponent<UnitComponent>().getStats().move);
+    
+
     cursor.addComponent<PositionComponent>(2, 2);
     printf("Silou index: %d \n", all_units["Silou"]);
     printf("Servil index: %d \n", all_units["Servil"]);
@@ -725,6 +725,9 @@ void Game::init(const char * title, int xpos, int ypos, int width, int height, b
 
     manager.getEntities()[all_units["Silou"]]->addComponent<SpriteComponent>(mapp, "..//assets//horse.png");
     manager.getEntities()[all_units["Silou"]]->addComponent<UnitComponent>();
+
+    printf("ALLO %d \n", manager.getEntities()[all_units["Silou"]]->getComponent<UnitComponent>().getStats().move);
+
     cursor.addComponent<SpriteComponent>(mapp, "..//assets//cursors.png", 10, 50);
     cursor.getComponent<SpriteComponent>().setSlidetype("geometric");
     
