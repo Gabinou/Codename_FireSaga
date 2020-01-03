@@ -117,7 +117,7 @@ void Game::setState(Entity & setting_entity, std::string new_state) {
             for (int i = 0; i < temp_moveable2.size(); i++){
                 std::fill(temp_moveable2[i].begin(), temp_moveable2[i].end(), 1);
             }
-            // printf("%d\n", unit_move);
+            printf("%d\n", unit_move);
             // printf("%d %d\n", start[0], start[1]);
             // std::vector<std::vector<int>> movemapp;
             std::vector<std::vector<int>> movemapp = movemap(temp_moveable2, start, 4, "matrix"); // movemap algo is slow.

@@ -34,17 +34,20 @@ class UnitComponent : public Component {
 
         UnitComponent(std::string in_name, std::string in_class, Unit_stats in_bases) {
             base_stats = in_bases;
+            current_stats = in_bases;
             class_name = in_class;
             name = in_name;
         }
 
         UnitComponent(std::string in_name, Unit_stats in_bases) {
             base_stats = in_bases;
+            current_stats = in_bases;
             name = in_name;
         }
 
         UnitComponent(Unit_stats in_bases) {
             base_stats = in_bases;
+            current_stats = in_bases;
         }
 
         void take_damage(const unsigned char damage) {
@@ -101,7 +104,7 @@ class UnitComponent : public Component {
         }
 
         Unit_stats getStats() {
-            return (current_stats);
+            return (base_stats);
         }
 
         void setBases(Unit_stats in_stats) {
