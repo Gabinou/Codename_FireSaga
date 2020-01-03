@@ -97,22 +97,34 @@ void Game::setState(Entity & setting_entity, std::string new_state) {
         if (new_state == "minimap") {
             
         }
-        if (new_state == "unitmove") {
+        if (new_state == "unitmove") { // GREAT BIG FPS DROP HERE.
             std::vector<std::unique_ptr<Entity>> current_entities;
             for (int i = 0; i < manager.getEntities().size(); i++) {
                 if (manager.getEntities()[i].get() == (Entity *)&setting_entity) {
                     unit_entities.push(i);
                 }
             }
-            int unit_move = manager.getEntities()[unit_entities.top()]->getComponent<UnitComponent>().getStats().move;
+            int unit_move = manager.getEntities()[unit_entities.top()]->getComponent<UnitComponent>().getStats().move; //0 for horse.
 
-            int * start;
-            start = manager.getEntities()[unit_entities.top()]->getComponent<PositionComponent>().getPos();
-            
-            std::vector<std::vector<int>> movemapp = movemap(mapp->get2D(), start, unit_move, "matrix");
+            int start[2];
+            start[0] = manager.getEntities()[unit_entities.top()]->getComponent<PositionComponent>().getPos()[0]; // Start is (+1,+1)?
+            start[1] = manager.getEntities()[unit_entities.top()]->getComponent<PositionComponent>().getPos()[1]; // Start is (+1,+1)?
+            start[0] = start[0] - 1;
+            start[1] = start[1] - 1;
+            std::vector<std::vector<int>> temp_moveable2;
+            temp_moveable2 = mapp->get2D();
+
+            for (int i = 0; i < temp_moveable2.size(); i++){
+                std::fill(temp_moveable2[i].begin(), temp_moveable2[i].end(), 1);
+            }
+            printf("%d\n", unit_move);
+            printf("%d %d\n", start[0], start[1]);
+            std::vector<std::vector<int>> movemapp = movemap(temp_moveable2, start, 4, "matrix");
+
             // std::vector<std::vector<int>> attacklist = attackmap(movelist, start, unit_move, 1, "list"); // attackmap cannot deal with a movelist.
             mapp->setList("move", movemapp);
             mapp->showOverlay();
+            plot2Dvector(temp_moveable2);
             plot2Dvector(movemapp);
 
             // PSEUDOCODE:
@@ -689,6 +701,8 @@ void Game::init(const char * title, int xpos, int ypos, int width, int height, b
     mapp->loadMap("..//testmap.txt");
     // allEntities["horse"] = &player;
     // allEntities["cursor"] = &cursor;
+    Unit_stats temp = {17,  6,  2,  7,  7,   7,  4,  5,  6,  6};
+    player.addComponent<UnitComponent>("Hottie", "Thief", temp);
     
     cursor.addComponent<PositionComponent>(2, 2);
     printf("Silou index: %d \n", all_units["Silou"]);

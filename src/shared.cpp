@@ -87,6 +87,8 @@ int find_row (int start[], std::vector<std::vector<int>> list) {
 
 std::vector<std::vector<int>> movemap(std::vector<std::vector<int>> map, int start[], int move, std::string mode){
     // Using the map, computes all moveable tiles, and put it in 2D vector/map.
+    
+    // MOVEMAP GOES DIAGONAL????
 
     // printf("Movement cost map\n");
     // plot2Dvector(map);
