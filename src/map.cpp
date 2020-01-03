@@ -128,12 +128,14 @@ void Map::drawMap() {
             default:
                 break;
             }
-
             if (show_overlay) {
+                // printf("%d %d \n", movelist.size(), movelist[0].size());
+                // printf("%d %d \n", row, col);
+                // printf("%d\n", (overlay_mode.find("move") != std::string::npos));
                 if (overlay_mode.find("move") != std::string::npos) {
                     // printf("Should map overlay.\n");
                     if (movelist[row][col] == 1){
-                        // SDL_RenderCopy(Game::renderer, overlays[0], &srcrect, &destrect);
+                        SDL_RenderCopy(Game::renderer, overlays[0], &srcrect, &destrect);
                         // printf("%d\n", (overlays[0] == NULL));
 
                     }

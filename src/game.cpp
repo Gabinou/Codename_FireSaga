@@ -109,10 +109,12 @@ void Game::setState(Entity & setting_entity, std::string new_state) {
             int * start;
             start = manager.getEntities()[unit_entities.top()]->getComponent<PositionComponent>().getPos();
             
-            std::vector<std::vector<int>> movemapp = movemap(mapp->get2D(), start, unit_move, "list");
+            std::vector<std::vector<int>> movemapp = movemap(mapp->get2D(), start, unit_move, "matrix");
             // std::vector<std::vector<int>> attacklist = attackmap(movelist, start, unit_move, 1, "list"); // attackmap cannot deal with a movelist.
             mapp->setList("move", movemapp);
-            // mapp->showOverlay();
+            mapp->showOverlay();
+            plot2Dvector(movemapp);
+
             // PSEUDOCODE:
                 // overlay.setMap();
 
@@ -179,6 +181,7 @@ void Game::setState(Entity & setting_entity, std::string new_state) {
     
     if (this->state == "unitmove") {
         if (new_state == "unitmenu") {
+            mapp->hideOverlay();
             createUnitmenu(setting_entity); 
             int *new_position = setting_entity.getComponent<PositionComponent>().getPos();
             int *old_position = manager.getEntities()[unit_entities.top()]->getComponent<PositionComponent>().getPos();
@@ -193,7 +196,9 @@ void Game::setState(Entity & setting_entity, std::string new_state) {
             Entity * ontile = mapp->getTile(old_position[0], old_position[1]);
             mapp->removeTile(old_position[0], old_position[1]);
             mapp->setTile(new_position[0], new_position[1], ontile);
-
+        }
+        if (new_state == "map") {
+            mapp->hideOverlay();
         }
     }        
     
