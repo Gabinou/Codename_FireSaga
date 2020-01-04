@@ -47,7 +47,7 @@ class Map {
 
         SDL_Rect srcrect, destrect;
 
-        std::string overlay_mode = "attackhealmove";
+        std::string overlay_mode = "";
 
         SDL_Texture * dirt;
         SDL_Texture * grass;
