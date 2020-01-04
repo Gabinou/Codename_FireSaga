@@ -166,31 +166,31 @@ std::vector<std::vector<int>> attackmap(std::vector<std::vector<int>> movemap, i
     bool add;
 
     int min_rows = std::max(start[0] - move - attack-1, 0);
-    int max_rows = std::min(start[0] + move + attack+1, int(movemap[0].size())-1);
+    int max_rows = std::min(start[0] + move + attack+1, int(movemap[0].size()));
     int min_cols = std::max(start[1] - move - attack-1, 0);
-    int max_cols = std::min(start[1] + move + attack+1, int(movemap.size())-1);
+    int max_cols = std::min(start[1] + move + attack+1, int(movemap.size()));
     printf("movemap in attackmap: %d %d \n", int(movemap.size()), int(movemap[0].size()));
     printf("rows: %d %d \n", min_rows, max_rows);
     printf("cols: %d %d \n", min_cols, max_cols);
 
-    for (int j = min_rows; j < max_rows; j++){
-        for (int i = min_cols; i < max_cols; i++){
+    for (int row = min_rows; row < max_rows; row++){
+        for (int col = min_cols; col < max_cols; col++){
             add = false;
             for (int att = 1; att <= attack; att++){
-                if ((movemap[i][j] == 0) || (i == 0) || (j == 0)) {
-                    if (movemap[i][std::min(j+att, int(movemap[0].size()-1))] == 1){
+                if ((movemap[col][row] == 0) || (col == 0) || (row == 0) || (row == (movemap[0].size()-1)) || (col == (movemap.size()-1))) {
+                    if (movemap[col][std::min(row + att, int(movemap[0].size()-1))] == 1){
                         add = true;
                         break;
                     }
-                    if (movemap[i][std::max(j-att, 0)] == 1){
+                    if (movemap[col][std::max(row - att, 0)] == 1){
                         add = true;
                         break;
                     }
-                    if (movemap[std::min(i+att, int(movemap.size()-1))][j] == 1){
+                    if (movemap[std::min(col + att, int(movemap.size()-1))][row] == 1){
                         add = true;
                         break;
                     }
-                    if (movemap[std::max(i-att, 0)][j] == 1){
+                    if (movemap[std::max(col - att, 0)][row] == 1){
                         add = true;
                         break;
                     }
@@ -198,10 +198,10 @@ std::vector<std::vector<int>> attackmap(std::vector<std::vector<int>> movemap, i
             }
             if (add) {
                 if (mode == "matrix") {
-                    attackmap[i][j] = 1;
+                    attackmap[col][row] = 1;
                 }
                 if (mode == "list"){
-                    attackmap.push_back({i, j});   
+                    attackmap.push_back({col, row});   
                 } 
             }
         }
