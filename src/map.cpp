@@ -40,7 +40,7 @@ void Map::loadTiles() {
 void Map::loadOverlays() {
     overlays[0] = loadTexture("..//assets//tile_overlay_move.png");
     overlays[1] = loadTexture("..//assets//tile_overlay_attack.png");
-    // overlays[2] = loadTexture("..//assets//tile_overlay_heal.png");
+    overlays[2] = loadTexture("..//assets//tile_overlay_heal.png");
 }
 
 void Map::setOverlaymode(std::string in_mode) {
@@ -91,17 +91,31 @@ void Map::loadMap(std::string filename) {
 }
 
 void Map::setList(std::string in_type, std::vector<std::vector<int>> in_list) {
+    if ((in_type == "heal") || (in_type == "heallist")){
+        heallist = in_list; //heal and attack maps/lists are the same.
+        // if (overlay_mode.find("heal") != std::string::npos) {
+        //     overlay_mode.append("heal");
+        // }
+    }
     if ((in_type == "attack") || (in_type == "attacklist")){
         attacklist = in_list; //heal and attack maps/lists are the same.
+        // if (overlay_mode.find("attack") != std::string::npos) {
+        //     overlay_mode.append("attack");
+        // }
     } 
     if ((in_type == "move") || (in_type == "movelist")){
         movelist = in_list;
+        // if (overlay_mode.find("move") != std::string::npos) {
+        //     overlay_mode.append("move");
+        // }
     } 
 }
+
 void Map::clearLists() {
     attacklist.clear();
     movelist.clear();
     heallist.clear();
+    overlay_mode = "";
 }
 
 void Map::drawMap() {
@@ -134,12 +148,20 @@ void Map::drawMap() {
                 // printf("%d\n", (overlay_mode.find("move") != std::string::npos));
                 if (overlay_mode.find("move") != std::string::npos) {
                     // printf("Should map overlay.\n");
-                    if (movelist[row][col] == 1){
+                    if (movelist[row][col] == 1) {
                         SDL_RenderCopy(Game::renderer, overlays[0], &srcrect, &destrect);
                         // printf("%d\n", (overlays[0] == NULL));
                     }
-                    if (attacklist[row][col] == 1){
+                }
+                if (overlay_mode.find("attack") != std::string::npos) {
+                    if (attacklist[row][col] == 1) {
                         SDL_RenderCopy(Game::renderer, overlays[1], &srcrect, &destrect);
+                        // printf("%d\n", (overlays[0] == NULL));
+                    }
+                }
+                if (overlay_mode.find("heal") != std::string::npos) {
+                    if (heallist[row][col] == 1) {
+                        SDL_RenderCopy(Game::renderer, overlays[2], &srcrect, &destrect);
                         // printf("%d\n", (overlays[0] == NULL));
                     }
                 }
