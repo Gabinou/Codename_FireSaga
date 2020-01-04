@@ -165,8 +165,17 @@ std::vector<std::vector<int>> attackmap(std::vector<std::vector<int>> movemap, i
         }
     }
     bool add;
-    for (int i = std::max(start[0] - move - attack-1, 0); i < std::min(start[0] + move + attack+1, int(movemap.size())); i++){
-        for (int j = std::max(start[1] - move - attack-1, 0); j < std::min(start[1] + move + attack+1, int(movemap[0].size())); j++){
+
+    int min_rows = std::max(start[0] - move - attack-1, 0);
+    int max_rows = std::min(start[0] + move + attack+1, int(movemap[0].size()));
+    int min_cols = std::max(start[1] - move - attack-1, 0);
+    int max_cols = std::min(start[1] + move + attack+1, int(movemap.size()));
+    printf("movemap in attackmap: %d %d \n", int(movemap.size()), int(movemap[0].size()));
+    printf("rows: %d %d \n", min_rows, max_rows);
+    printf("cols: %d %d \n", min_cols, max_cols);
+
+    for (int j = min_rows; j < max_rows; j++){
+        for (int i = min_cols; i < max_cols; i++){
             add = false;
             for (int att = 1; att <= attack; att++){
                 if (movemap[i][j] == 0) {
