@@ -39,7 +39,7 @@ void Map::loadTiles() {
 
 void Map::loadOverlays() {
     overlays[0] = loadTexture("..//assets//tile_overlay_move.png");
-    // overlays[1] = loadTexture("..//assets//tile_overlay_attack.png");
+    overlays[1] = loadTexture("..//assets//tile_overlay_attack.png");
     // overlays[2] = loadTexture("..//assets//tile_overlay_heal.png");
 }
 
@@ -137,7 +137,10 @@ void Map::drawMap() {
                     if (movelist[row][col] == 1){
                         SDL_RenderCopy(Game::renderer, overlays[0], &srcrect, &destrect);
                         // printf("%d\n", (overlays[0] == NULL));
-
+                    }
+                    if (attacklist[row][col] == 1){
+                        SDL_RenderCopy(Game::renderer, overlays[1], &srcrect, &destrect);
+                        // printf("%d\n", (overlays[0] == NULL));
                     }
                 }
             }

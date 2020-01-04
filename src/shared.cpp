@@ -149,12 +149,8 @@ std::vector<std::vector<int>> movemap(std::vector<std::vector<int>> map, int sta
 }
 
 std::vector<std::vector<int>> attackmap(std::vector<std::vector<int>> movemap, int start[], int move, int attack, std::string mode){
-
-    struct node{
-        int x;
-        int y;
-        int distance;
-    };
+    // Using the movemap to computes all attackable tiles.
+    // EXCLUDING moveable tiles.
 
     std::vector<std::vector<int>> attackmap;
     if (mode == "matrix"){
@@ -165,32 +161,29 @@ std::vector<std::vector<int>> attackmap(std::vector<std::vector<int>> movemap, i
     }
     bool add;
 
-    int min_rows = std::max(start[0] - move - attack-1, 0);
-    int max_rows = std::min(start[0] + move + attack+1, int(movemap[0].size()));
-    int min_cols = std::max(start[1] - move - attack-1, 0);
-    int max_cols = std::min(start[1] + move + attack+1, int(movemap.size()));
-    printf("movemap in attackmap: %d %d \n", int(movemap.size()), int(movemap[0].size()));
-    printf("rows: %d %d \n", min_rows, max_rows);
-    printf("cols: %d %d \n", min_cols, max_cols);
+    int min_rows = std::max(start[0] - move - attack - 1, 0);
+    int max_rows = std::min(start[0] + move + attack + 1, int(movemap[0].size()));
+    int min_cols = std::max(start[1] - move - attack - 1, 0);
+    int max_cols = std::min(start[1] + move + attack + 1, int(movemap.size()));
 
     for (int row = min_rows; row < max_rows; row++){
         for (int col = min_cols; col < max_cols; col++){
             add = false;
             for (int att = 1; att <= attack; att++){
-                if ((movemap[col][row] == 0) || (col == 0) || (row == 0) || (row == (movemap[0].size()-1)) || (col == (movemap.size()-1))) {
-                    if (movemap[col][std::min(row + att, int(movemap[0].size()-1))] == 1){
+                if ((movemap[col][row] == 0) || (col == 0) || (row == 0) || (row == (movemap[0].size() - 1)) || (col == (movemap.size() - 1))) {
+                    if (movemap[col][std::min(row + att, int(movemap[0].size() - 1))] == 1) {
                         add = true;
                         break;
                     }
-                    if (movemap[col][std::max(row - att, 0)] == 1){
+                    if (movemap[col][std::max(row - att, 0)] == 1) {
                         add = true;
                         break;
                     }
-                    if (movemap[std::min(col + att, int(movemap.size()-1))][row] == 1){
+                    if (movemap[std::min(col + att, int(movemap.size() - 1))][row] == 1) {
                         add = true;
                         break;
                     }
-                    if (movemap[std::max(col - att, 0)][row] == 1){
+                    if (movemap[std::max(col - att, 0)][row] == 1) {
                         add = true;
                         break;
                     }
@@ -201,15 +194,15 @@ std::vector<std::vector<int>> attackmap(std::vector<std::vector<int>> movemap, i
                     attackmap[col][row] = 1;
                 }
                 if (mode == "list"){
-                    attackmap.push_back({col, row});   
-                } 
+                    attackmap.push_back({col, row});
+                }
             }
         }
     }
     return(attackmap);
 }
 
-    int find_node (int start[], std::vector<std::vector<int>> list) {
+int find_node (int start[], std::vector<std::vector<int>> list) {
     int row;
     for (row = 0; row < list.size(); row++){
         if ((list[row][0] == start[0]) && (list[row][1] == start[1])) {
