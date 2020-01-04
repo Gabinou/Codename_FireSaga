@@ -117,15 +117,21 @@ void Game::setState(Entity & setting_entity, std::string new_state) {
             for (int i = 0; i < temp_moveable2.size(); i++){
                 std::fill(temp_moveable2[i].begin(), temp_moveable2[i].end(), 1);
             }
-            printf("%d\n", unit_move);
+            printf("UNIT MOVE: %d\n", unit_move);
             // printf("%d %d\n", start[0], start[1]);
             // std::vector<std::vector<int>> movemapp;
             std::vector<std::vector<int>> movemapp = movemap(temp_moveable2, start, 4, "matrix"); // movemap algo is slow.
+            printf("movemapp %d %d\n", movemapp.size(), movemapp[0].size());
+            
+
+
+            std::vector<std::vector<int>> attackmapp = attackmap(movemapp, start, 4, 1, "matrix"); // movemap algo is slow.
 
             // std::vector<std::vector<int>> attacklist = attackmap(movelist, start, unit_move, 1, "list"); // attackmap cannot deal with a movelist.
-            mapp->setList("move", movemapp);
+            // mapp->setList("move", movemapp);
+            mapp->setList("move", attackmapp);
             mapp->showOverlay();
-            // plot2Dvector(temp_moveable2);
+            plot2Dvector(attackmapp);
             // plot2Dvector(movemapp);
 
             // PSEUDOCODE:

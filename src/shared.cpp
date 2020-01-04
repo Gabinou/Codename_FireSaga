@@ -86,13 +86,10 @@ int find_row (int start[], std::vector<std::vector<int>> list) {
 }
 
 std::vector<std::vector<int>> movemap(std::vector<std::vector<int>> map, int start[], int move, std::string mode){
-    // Using the map, computes all moveable tiles, and put it in 2D vector/map.
+    // Using the map, computes all moveable tiles.
+    // outputs either a list of points, or a map of 1 and zeros.
+    // Both outputs are 2D vectors.
     
-    // MOVEMAP GOES DIAGONAL????
-
-    // printf("Movement cost map\n");
-    // plot2Dvector(map);
-
     struct node{
         int x;
         int y;
