@@ -95,9 +95,6 @@ std::vector<std::vector<int>> movemap(std::vector<std::vector<int>> map, int sta
         int y;
         int distance;
     };
-    printf("map in movemap: %d %d \n", map.size(), map[0].size());
-
-
     std::vector<std::vector<int>> movemap;
     if (mode == "matrix"){
         movemap = map;
@@ -105,20 +102,18 @@ std::vector<std::vector<int>> movemap(std::vector<std::vector<int>> map, int sta
             std::fill(movemap[i].begin(), movemap[i].end(), 0);
         }
     }
-    printf("movemap in movemap: %d %d \n", movemap.size(), movemap[0].size());
-
     std::vector<node> open, closed;
     node current, neighbor;
-    current.x = start[1];
-    current.y = start[0];
+    current.x = start[0];
+    current.y = start[1];
     current.distance = 0;
     open.push_back(current);
     int index[2] = {-1, 1};
-    while (!open.empty()){
+    while (!open.empty()) {
         current = open.back();
         open.pop_back();
         closed.push_back(current);
-        if (mode == "matrix") {
+        if (mode == "matrix") { 
             movemap[current.y][current.x] = 1;
         }
         if (mode == "list") {
@@ -128,10 +123,10 @@ std::vector<std::vector<int>> movemap(std::vector<std::vector<int>> map, int sta
         // (i-j)/2 == 1 when (i+j)/2 == 0 and vice versa.
         for(int i = 0; i < 2; i++) {
             for(int j = 0; j < 2; j++) {
-                neighbor.x = std::min(std::max(current.x+((index[i]+index[j])/2),0), int(map[0].size()-1));
-                neighbor.y = std::min(std::max(current.y+((index[i]-index[j])/2),0), int(map.size()-1));
-                neighbor.distance = current.distance + map[neighbor.x][neighbor.y];
-                if ((neighbor.distance <= move) && (map[neighbor.x][neighbor.y] > 0)) {
+                neighbor.x = std::min(std::max(current.x + ((index[i]+index[j])/2),0), int(map[0].size())-1);
+                neighbor.y = std::min(std::max(current.y + ((index[i]-index[j])/2),0), int(map.size())-1);
+                neighbor.distance = current.distance + map[neighbor.y][neighbor.x];
+                if ((neighbor.distance <= move) && (map[neighbor.y][neighbor.x] > 0)) {
                     bool inclosed = false;
                     for(int k = 0; k < closed.size(); k++) {
                         if ((neighbor.x == closed[k].x) && (neighbor.y == closed[k].y)) {

@@ -132,7 +132,7 @@ void Game::setState(Entity & setting_entity, std::string new_state) {
             // mapp->setList("move", attackmapp);
             mapp->showOverlay();
             plot2Dvector(movemapp);
-            plot2Dvector(attackmapp);
+            // plot2Dvector(attackmapp);
 
             // PSEUDOCODE:
                 // overlay.setMap();

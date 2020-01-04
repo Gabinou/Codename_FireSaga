@@ -186,7 +186,7 @@ struct Fps {
 };
 
 struct Settings {
-    Point res = {800, 900};
+    Point res = {1000, 1000};
     char fontsize = 28;
     Fps FPS;
 };
