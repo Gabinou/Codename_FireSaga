@@ -167,9 +167,9 @@ std::vector<std::vector<int>> attackmap(std::vector<std::vector<int>> movemap, i
     bool add;
 
     int min_rows = std::max(start[0] - move - attack-1, 0);
-    int max_rows = std::min(start[0] + move + attack+1, int(movemap[0].size()));
+    int max_rows = std::min(start[0] + move + attack+1, int(movemap[0].size())-1);
     int min_cols = std::max(start[1] - move - attack-1, 0);
-    int max_cols = std::min(start[1] + move + attack+1, int(movemap.size()));
+    int max_cols = std::min(start[1] + move + attack+1, int(movemap.size())-1);
     printf("movemap in attackmap: %d %d \n", int(movemap.size()), int(movemap[0].size()));
     printf("rows: %d %d \n", min_rows, max_rows);
     printf("cols: %d %d \n", min_cols, max_cols);
