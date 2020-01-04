@@ -178,7 +178,7 @@ std::vector<std::vector<int>> attackmap(std::vector<std::vector<int>> movemap, i
         for (int i = min_cols; i < max_cols; i++){
             add = false;
             for (int att = 1; att <= attack; att++){
-                if (movemap[i][j] == 0) {
+                if ((movemap[i][j] == 0) || (i == 0) || (j == 0)) {
                     if (movemap[i][std::min(j+att, int(movemap[0].size()-1))] == 1){
                         add = true;
                         break;
