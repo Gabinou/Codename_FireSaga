@@ -118,7 +118,7 @@ std::vector<std::vector<int>> movemap(std::vector<std::vector<int>> map, int sta
         open.pop_back();
         closed.push_back(current);
         if (mode == "matrix") {
-            movemap[current.x][current.y] = 1;
+            movemap[current.y][current.x] = 1;
         }
         if (mode == "list") {
             movemap.push_back({current.x, current.y});

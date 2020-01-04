@@ -580,7 +580,7 @@ void Game::baseUnits(){
     temp = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
     manager.getEntities().back()->getComponent<UnitComponent>().setGrowths(temp);
     manager.getEntities().back()->getComponent<UnitComponent>().setExp(400);
-    all_units["Silou"] = manager.getEntities().size();
+    all_units["Silou"] = manager.getEntities().size(); // index or something doesnt work.
 
     manager.addEntity();
     temp = {15,  4,  5,  7,  6,   8,  4,  6,  5, 5}; // 4 or 5?
