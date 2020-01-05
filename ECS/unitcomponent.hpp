@@ -32,20 +32,20 @@ class UnitComponent : public Component {
 
         UnitComponent() = default;
 
-        UnitComponent(std::string in_name, std::string in_class, Unit_stats in_bases) {
+        UnitComponent(const std::string in_name, const std::string in_class, const Unit_stats in_bases) {
             base_stats = in_bases;
             current_stats = in_bases;
             class_name = in_class;
             name = in_name;
         }
 
-        UnitComponent(std::string in_name, Unit_stats in_bases) {
+        UnitComponent(const std::string in_name, const Unit_stats in_bases) {
             base_stats = in_bases;
             current_stats = in_bases;
             name = in_name;
         }
 
-        UnitComponent(Unit_stats in_bases) {
+        UnitComponent(const Unit_stats in_bases) {
             base_stats = in_bases;
             current_stats = in_bases;
         }
@@ -86,19 +86,19 @@ class UnitComponent : public Component {
             printf("%s is dead.\n", name);
         }
 
-        void setBonus(Unit_stats in_stats) {
+        void setBonus(const Unit_stats in_stats) {
             bonus_stats = in_stats; // tested, works fine.
         }
 
-        void setMalus(Unit_stats in_stats) {
+        void setMalus(const Unit_stats in_stats) {
             malus_stats = in_stats; // tested, works fine.
         }
 
-        void setCaps(Unit_stats in_stats) {
+        void setCaps(const Unit_stats in_stats) {
             caps_stats = in_stats; // tested, works fine.
         }
 
-        void setStats(Unit_stats in_stats) {
+        void setStats(const Unit_stats in_stats) {
             current_stats = in_stats; // tested, works fine.
             current_hp = current_stats.hp;
         }
@@ -107,13 +107,13 @@ class UnitComponent : public Component {
             return (base_stats);
         }
 
-        void setBases(Unit_stats in_stats) {
+        void setBases(const Unit_stats in_stats) {
             base_stats = in_stats; // tested, works fine.
             current_stats = in_stats; // tested, works fine.
             current_hp = base_stats.hp;
         }
 
-        void setGrowths(Unit_stats in_growths) {
+        void setGrowths(const Unit_stats in_growths) {
             growths = in_growths; // tested, works fine.
         }
 
@@ -134,7 +134,7 @@ class UnitComponent : public Component {
             return (attack_damage);
         }
 
-        unsigned char combat_damage(Entity & enemy, const bool critical) {
+        unsigned char combat_damage(const Entity & enemy, const bool critical) {
             unsigned char terrain_def = 0;
             unsigned char enemy_def = 0 ;
             unsigned char unit_power = 0;
@@ -160,14 +160,14 @@ class UnitComponent : public Component {
             return (attack_damage);
         }
 
-        std::string get_name() {
+        std::string getName() {
             return (name);
         }
 
-        void set_name(const std::string in_name) {
+        void setName(const std::string in_name) {
             name = in_name;
         }
-        void set_name(const char in_name) {
+        void setName(const char in_name) {
             name = in_name;
         }
 
@@ -186,7 +186,7 @@ class UnitComponent : public Component {
             return (critical);
         }
 
-        bool retaliation(Entity & enemy) {
+        bool retaliation(const Entity & enemy) {
             // int unit_position[2] = {entity->getComponent<PositionComponent>().getPos()[0], entity->getComponent<PositionComponent>().getPos()[1]};
             int * unit_position;
             int * enemy_position;
@@ -217,7 +217,7 @@ class UnitComponent : public Component {
             return (std::max(temp_wpn.wgt - current_stats.con, 0));
         }
 
-        unsigned char combat_critical(Entity & enemy) {
+        unsigned char combat_critical(const Entity & enemy) {
             unsigned char supports = 0;
             unsigned char unit_skill = 0;
             unsigned char enemy_favor = enemy.getComponent<UnitComponent>().favor();
@@ -239,14 +239,14 @@ class UnitComponent : public Component {
             return (accuracy);
         }
 
-        unsigned char combat_hit(Entity & enemy) {
+        unsigned char combat_hit(const Entity & enemy) {
             int enemy_avoid = enemy.getComponent<UnitComponent>().avoid();
             unsigned char hit = std::max(0, accuracy() - enemy_avoid);
             return (hit);
         }
 
-        unsigned char attack(Entity & enemy) {
-            printf("%s attacks %s\n", name, enemy.getComponent<UnitComponent>().get_name());
+        unsigned char attack(const Entity & enemy) {
+            printf("%s attacks %s\n", name, enemy.getComponent<UnitComponent>().getName());
             bool unit_hits = (get_rand() < combat_hit(enemy));
             bool unit_crits = (get_rand() < combat_critical(enemy));
             // printf("%s crits %d \n", name, unit_crits);
@@ -262,7 +262,7 @@ class UnitComponent : public Component {
         }
 
         void combat(Entity & enemy) {
-            printf("%s fights %s\n", name, enemy.getComponent<UnitComponent>().get_name());
+            printf("%s fights %s\n", name, enemy.getComponent<UnitComponent>().getName());
             bool unit_doubles = combat_double(enemy);
             bool enemy_retaliates = enemy.getComponent<UnitComponent>().retaliation(enemy);
             bool enemy_doubles = 0;
@@ -270,7 +270,7 @@ class UnitComponent : public Component {
 
             if (enemy_retaliates) {
                 enemy.getComponent<UnitComponent>().attack(*entity);
-                printf("enemy %s retaliates %d\n", enemy.getComponent<UnitComponent>().get_name(), enemy_retaliates);
+                printf("enemy %s retaliates %d\n", enemy.getComponent<UnitComponent>().getName(), enemy_retaliates);
                 enemy_doubles = enemy.getComponent<UnitComponent>().combat_double(*entity);
             };
 
@@ -280,7 +280,7 @@ class UnitComponent : public Component {
             };
 
             if (enemy_doubles) {
-                printf("%s doubles\n", enemy.getComponent<UnitComponent>().get_name());
+                printf("%s doubles\n", enemy.getComponent<UnitComponent>().getName());
                 enemy.getComponent<UnitComponent>().attack(*entity);
             };
         }

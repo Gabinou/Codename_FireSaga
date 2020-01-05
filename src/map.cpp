@@ -92,13 +92,13 @@ void Map::loadMap(std::string filename) {
 
 void Map::setList(std::string in_type, std::vector<std::vector<int>> in_list) {
     if ((in_type == "heal") || (in_type == "heallist")){
-        heallist = in_list; //heal and attack maps/lists are the same.
+        heallist = in_list;
         if (overlay_mode.find("heal") == std::string::npos) {
             overlay_mode.append("heal");
         }
     }
     if ((in_type == "attack") || (in_type == "attacklist")){
-        attacklist = in_list; //heal and attack maps/lists are the same.
+        attacklist = in_list;
         if (overlay_mode.find("attack") == std::string::npos) {
             overlay_mode.append("attack");
         }

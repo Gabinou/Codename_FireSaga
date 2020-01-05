@@ -580,7 +580,7 @@ void Game::baseUnits(){
     all_units["Hottie"] = manager.getEntities().size() - 1;
 
     manager.addEntity();
-    temp = {15,  4,  5,  7,  6,   8,  4,  6,  5, 5};
+    temp = {15,  4,  5,  7,  6,   8,  4,  6,  5, 8};
     manager.getEntities().back()->addComponent<UnitComponent>("Silou", "Mage", temp);
     temp = {48, 14, 25, 32, 34,  28, 19, 40, 15};
     manager.getEntities().back()->getComponent<UnitComponent>().setCaps(temp);
@@ -588,7 +588,6 @@ void Game::baseUnits(){
     manager.getEntities().back()->getComponent<UnitComponent>().setGrowths(temp);
     manager.getEntities().back()->getComponent<UnitComponent>().setExp(400);
     all_units["Silou"] = manager.getEntities().size() - 1; // index or something doesnt work.
-    printf("Silou move in base_units: %d \n", manager.getEntities().back()->getComponent<UnitComponent>().getStats().move);
 
     manager.addEntity();
     temp = {15,  4,  5,  7,  6,   8,  4,  6,  5, 5}; // 4 or 5?
@@ -599,6 +598,7 @@ void Game::baseUnits(){
     manager.getEntities().back()->getComponent<UnitComponent>().setGrowths(temp); 
     manager.getEntities().back()->getComponent<UnitComponent>().setExp(500);
     all_units["Servil"] = manager.getEntities().size() - 1;
+    printf("Silou move in base_units: %d \n", manager.getEntities().back()->getComponent<UnitComponent>().getStats().move);
 
     manager.addEntity();
     temp = {15,  4,  5,  7,  6,   8,  4,  6,  5, 5};
@@ -731,7 +731,19 @@ void Game::init(const char * title, int xpos, int ypos, int width, int height, b
     manager.getEntities()[all_units["Silou"]]->addComponent<UnitComponent>();
 
     printf("Silou index: %d \n", all_units["Silou"]);
-    printf("Silou move: %d \n", manager.getEntities()[all_units["Silou"]]->getComponent<UnitComponent>().getStats().move);
+    printf("%s \n", manager.getEntities()[all_units["Silou"]-3]->getComponent<UnitComponent>().getName().c_str());
+    printf("%s \n", manager.getEntities()[all_units["Silou"]-2]->getComponent<UnitComponent>().getName().c_str());
+    printf("%s \n", manager.getEntities()[all_units["Silou"]-1]->getComponent<UnitComponent>().getName().c_str());
+    printf("%s \n", manager.getEntities()[all_units["Silou"]]->getComponent<UnitComponent>().getName().c_str());
+    printf("%s \n", manager.getEntities()[all_units["Silou"]+1]->getComponent<UnitComponent>().getName().c_str());
+    printf("%s \n", manager.getEntities()[all_units["Silou"]+2]->getComponent<UnitComponent>().getName().c_str());
+    printf("Silou move: %d \n", manager.getEntities()[all_units["Servil"]]->getComponent<UnitComponent>().getStats().str);
+    printf("Silou move: %d \n", manager.getEntities()[all_units["Servil"]]->getComponent<UnitComponent>().getStats().dex);
+    printf("Silou move: %d \n", manager.getEntities()[all_units["Servil"]]->getComponent<UnitComponent>().getStats().agi);
+    printf("Silou move: %d \n", manager.getEntities()[all_units["Servil"]]->getComponent<UnitComponent>().getStats().def);
+    printf("Silou move: %d \n", manager.getEntities()[all_units["Servil"]]->getComponent<UnitComponent>().getStats().luck);
+    printf("Silou move: %d \n", manager.getEntities()[all_units["Servil"]]->getComponent<UnitComponent>().getStats().con);
+    printf("Silou move: %d \n", manager.getEntities()[all_units["Servil"]]->getComponent<UnitComponent>().getStats().move);
 
     cursor.addComponent<SpriteComponent>(mapp, "..//assets//cursors.png", 10, 50);
     cursor.getComponent<SpriteComponent>().setSlidetype("geometric");
