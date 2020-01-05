@@ -12,6 +12,7 @@
 #include "keyboardcontroller.hpp"
 #include "gamepadcontroller.hpp"
 #include "unitcomponent.hpp"
+#include "weapon.hpp"
 
 Map * mapp;
 
@@ -20,6 +21,8 @@ SDL_Event Game::event;
 TTF_Font * Game::font = NULL;
 Manager Game::manager;
 Settings Game::settings;
+
+std::unordered_map<std::string, Weapon> all_weapons;
 
 Entity & cursor = Game::manager.addEntity(); // FOR SOME REASON, having an 2, 4, 8 entities.... breaks something in the unitmove->unitmenu states move
 Entity & player = Game::manager.addEntity();
@@ -117,17 +120,9 @@ void Game::setState(Entity & setting_entity, std::string new_state) {
             for (int i = 0; i < temp_moveable2.size(); i++){
                 std::fill(temp_moveable2[i].begin(), temp_moveable2[i].end(), 1);
             }
-            printf("UNIT MOVE: %d\n", unit_move);
-            // printf("%d %d\n", start[0], start[1]);
-            // std::vector<std::vector<int>> movemapp;
-            std::vector<std::vector<int>> movemapp = movemap(temp_moveable2, start, 4, "matrix"); // movemap algo is slow.
-            printf("movemapp %d %d\n", movemapp.size(), movemapp[0].size());
-            
+            std::vector<std::vector<int>> movemapp = movemap(temp_moveable2, start, unit_move, "matrix"); // movemap algo is slow.
+            std::vector<std::vector<int>> attackmapp = attackmap(movemapp, start, unit_move, 1, "matrix"); // movemap algo is slow.
 
-
-            std::vector<std::vector<int>> attackmapp = attackmap(movemapp, start, 4, 1, "matrix"); // movemap algo is slow.
-
-            // std::vector<std::vector<int>> attacklist = attackmap(movelist, start, unit_move, 1, "list"); // attackmap cannot deal with a movelist.
             mapp->setList("move", movemapp);
             // mapp->setList("attack", attackmapp);
             mapp->setList("heal", attackmapp);
@@ -271,81 +266,105 @@ void Game::baseWeapons(){
     temp_wpn = {3, 80, 0, 0, 0, 3, 30, {1,1}, {1,2}, 0};
     Weapon wooden_sword("Wooden sword", "sword", temp_wpn);
     wooden_sword.setDescription("Practice sword, made of wood. It's crushing blows are still deadly.");
+    all_weapons["wooden_sword"] = wooden_sword;
     temp_wpn = {7, 70, 0, 25, 0, 7, 30, {1,1}, {1,2}, 0};
     Weapon wrath_sword("Wrath sword", "sword", temp_wpn);
     wrath_sword.setDescription("Increases critical hit chance.");
+    all_weapons["wrath_sword"] = wrath_sword;
     temp_wpn = {1, 50, 0, 0, 0, 4, 10, {1,1}, {1}, 0};
     Weapon kitchen_knife("Kitchen knife", "sword", temp_wpn);
     kitchen_knife.setDescription("The poor, desperate swordman's dagger.");
+    all_weapons["kitchen_knife"] = kitchen_knife;
     temp_wpn = {2, 90, 0, 0, 0, 4, 20, {1,1}, {1}, 0};
     Weapon fleuret("Fleuret", "sword", temp_wpn);
     fleuret.setEffective("Armor");
     fleuret.setDescription("Simple and light thrust swords. Effective against armor. Usually used with off-hand parry daggers.");
+    all_weapons["fleuret"] = fleuret;
     temp_wpn = {4, 85, 5, 0, 0, 5, 25, {1,1}, {1}, 0};
     Weapon rapiere("Rapière", "sword", temp_wpn);
     rapiere.setEffective("Armor");
     rapiere.setDescription("Strong thrust swords. Effective against armor. Usually used with off-hand parry daggers.");
+    all_weapons["rapiere"] = rapiere;
     temp_wpn = {5, 80, 0, 0, 0, 7, 30, {1,1}, {1}, 0};
     Weapon glaive("Glaive", "sword", temp_wpn);
     glaive.setDescription("Old-world style short sword.");
+    all_weapons["glaive"] = glaive;
     temp_wpn = {6, 60, 10, 0, 0, 6, 40, {1,1}, {1}, 0};
     Weapon saber("Saber", "sword", temp_wpn);
     saber.setDescription("Curved sword made for slashing.");
+    all_weapons["saber"] = saber;
     temp_wpn = {8, 60, 15, 0, 0, 8, 35, {1,1}, {1}, 0};
     Weapon fauchon("Fauchon", "sword", temp_wpn);
     fauchon.setDescription("Curved sword made for slashing.");
+    all_weapons["fauchon"] = fauchon;
     temp_wpn = {6, 70, 0, 0, 0, 6, 45,{1,1}, {1,2}, 0};
     Weapon iron_sword("Iron sword", "sword", temp_wpn);
     iron_sword.setDescription("Simple straight sword made of iron. Cheap and reliable.");
     temp_wpn = {9, 60, 0, 0, 0, 9, 30, {1,1}, {1,2}, 0};
+    all_weapons["iron_sword"] = iron_sword;
     Weapon steel_sword("Steel sword", "sword", temp_wpn);
     steel_sword.setDescription("Simple straight sword made of steel. Strong and durable.");
+    all_weapons["steel_sword"] = steel_sword;
     temp_wpn = {11, 60, 0, 0, 0, 10, 25, {1,1}, {1,2}, 0};
     Weapon damas_sword("Damas sword", "sword", temp_wpn);
     damas_sword.setDescription("Simple straight sword made of damascus steel. Beautifully rippled, deadly and expensive.");
+    all_weapons["damas_sword"] = damas_sword;
     temp_wpn = {4, 70, 0, 0, 10, 6, 30, {1,1}, {1,2}, 0};
     Weapon merciful_blade("Merciful blade", "sword", temp_wpn);
     merciful_blade.setEffect("spare");
     merciful_blade.setDescription("Infused with the life-giving tears of the goddess. Cannot reduce enemy HP below 1.");
+    all_weapons["merciful_blade"] = merciful_blade;
     temp_wpn = {10, 40, 0, 0, 0, 10, 25, {1,1}, {1,2}, 0};
     Weapon broadsword("Broadsword", "sword", temp_wpn);
     broadsword.setDescription("Blade of notable girth. Heavy and strong.");
     temp_wpn = {12, 40, 0, 0, 0, 13, 20, {1,1}, {1,2}, 0};
+    all_weapons["broadsword"] = broadsword;
     Weapon espadon("Espadon", "sword", temp_wpn);
     espadon.setDescription("Blade of considerable girth and length. Heavier and stronger.");
+    all_weapons["espadon"] = espadon;
     temp_wpn = {9, 60, 10, 0, 0, 8, 25, {1,1}, {1,2}, 0};
     Weapon oodachi("Oodachi", "sword", temp_wpn);
     oodachi.setDescription("Long, curved sword of the eastern lands.");
+    all_weapons["oodachi"] = oodachi;
     temp_wpn = {7, 75, 5, 0, 0, 5, 30, {1,1}, {1,2}, 0};
     Weapon uchigatana("Uchigatana", "sword", temp_wpn);
     uchigatana.setDescription("Curved sword in the style of the eastern lands. Very sharp.");
+    all_weapons["uchigatana"] = uchigatana;
     temp_wpn = {1, 50, 0, 0, 0, 1, 20, {1,1}, {1,2}, 0};
     Weapon exsangue("Exsangue", "sword", temp_wpn);
     exsangue.setEffect("lifesteal");
     exsangue.setDescription("Drains enemies of their blood. Heals HP equal to damage dealt.");
+    all_weapons["exsangue"] = exsangue;
     temp_wpn = {14, 90, 10, 0, 0, 7, 25, {1,1}, {1,2}, 0};
     Weapon Hauteclaire("Hauteclaire", "sword", temp_wpn);
     Hauteclaire.setDescription("Crystal encrusted sword, as described in the Franc legends of old.");
+    all_weapons["Hauteclaire"] = Hauteclaire;
     temp_wpn = {16, 100, 0, 0, 10, 9, 20, {1,1}, {1,2}, 0};
     Weapon Secundus("Secundus", "sword", temp_wpn);
     Secundus.setDescription("The first sword made by the God. The first sword is only the second weapon of man, after his fists.");
+    all_weapons["Secundus"] = Secundus;
     temp_wpn = {13, 90, 10, 0, 0, 10, 25, {1,1}, {1,2}, 0};
     Weapon Excalibur("Excalibur", "sword", temp_wpn);
     Excalibur.setEffective({"Demon"});
-    Excalibur.setDescription("The king's sword. Found in a rock.");
+    Excalibur.setDescription("The king's sword. Found in a rock. To be thrown in a lake when broken.");
+    all_weapons["Excalibur"] = Excalibur;
     temp_wpn = {12, 100, 0, 0, 0, 6, 20, {1,1}, {1}, 0};
     Weapon Galatine("Galatine", "sword", temp_wpn);
     Galatine.setEffective("Armor");
     Galatine.setDescription("A pragmatic and honorable knight's thrusting sword. Usually used with off-hand parry daggers.");
+    all_weapons["Galatine"] = Galatine;
     temp_wpn = {5, 40, 0, 0, 0, 7, 25, {1,2}, {1,2}, 1};
     Weapon Raijintou("Raijintou", "sword", temp_wpn);
     Raijintou.setDescription("The thunder god's sword. Rains lightning upon enemies at a distance.");
+    all_weapons["Raijintou"] = Raijintou;
     temp_wpn = {9, 40, 0, 0, 0, 1, 25, {1,2}, {1,2}, 1};
     Weapon Fuujintou("Fuujintou", "sword", temp_wpn);
     Fuujintou.setDescription("The wind god's sword. Cuts enemies with wind at a distance.");
+    all_weapons["Fuujintou"] = Fuujintou;
     temp_wpn = {16, 60, 0, 0, 0, 7, 35, {1,1}, {1,2}, 0};
     Weapon Honjou_Masamune("Honjou Masamune", "sword", temp_wpn);
     Honjou_Masamune.setDescription("Lost sword made by the most skilled swordsmith of the eastern lands.");
+    all_weapons["Honjou_Masamune"] = Honjou_Masamune;
     temp_wpn = {18, 30, 0, 0, 0, 20, 50, {1,1}, {1,2}, 0};
     Weapon Raw_iron_slab("Raw Iron slab", "sword", temp_wpn);
     Raw_iron_slab.setDescription("Tempered by the malevolence of countless slain demons. Effective against demons and angels.");
@@ -611,7 +630,21 @@ void Game::baseUnits(){
 
     manager.addEntity();
     temp = {15,  4,  5,  7,  6,   8,  4,  6,  5, 5};
+<<<<<<< HEAD
     manager.getEntities().back()->addComponent<UnitComponent>("Arm Thief", "Mercenary", temp);
+=======
+    manager.getEntities().back()->addComponent<UnitComponent>("Silou", "Magee", temp);
+    temp = {48, 14, 25, 32, 34,  28, 19, 40, 15};
+    manager.getEntities().back()->getComponent<UnitComponent>().setCaps(temp);
+    temp = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
+    manager.getEntities().back()->getComponent<UnitComponent>().setGrowths(temp);
+    manager.getEntities().back()->getComponent<UnitComponent>().setExp(400);
+    all_units["Silou"] = manager.getEntities().size() - 1; // index or something doesnt work.
+
+    manager.addEntity();
+    temp = {15,  4,  5,  7,  6,   8,  4,  6,  5, 5};
+    manager.getEntities().back()->addComponent<UnitComponent>("Poet", "Mage", temp);
+>>>>>>> temp2
     temp = {48, 14, 25, 32, 34,  28, 19, 40, 15};
     manager.getEntities().back()->getComponent<UnitComponent>().setCaps(temp);
     temp = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
@@ -627,7 +660,7 @@ void Game::baseUnits(){
     temp = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
     manager.getEntities().back()->getComponent<UnitComponent>().setGrowths(temp);
     manager.getEntities().back()->getComponent<UnitComponent>().setExp(400);
-    all_units["Mage1"] = manager.getEntities().size() - 1;
+    all_units["Mage2"] = manager.getEntities().size() - 1;
 
     manager.addEntity();
     temp = {15,  4,  5,  7,  6,   8,  4,  6,  5, 5};
@@ -658,6 +691,7 @@ void Game::baseUnits(){
     // manager.getEntities().back()->getComponent<UnitComponent>().setGrowths(temp);
     // manager.getEntities().back()->getComponent<UnitComponent>().setExp(400);
     // all_units["ilhouette"] = manager.getEntities().size() - 1;
+
 
 }
 
@@ -719,10 +753,13 @@ void Game::init(const char * title, int xpos, int ypos, int width, int height, b
     mapp->loadMap("..//testmap.txt");
 
     cursor.addComponent<PositionComponent>(2, 2);
+<<<<<<< HEAD
     printf("ilhouette index: %d \n", all_units["ilhouette"]);
     printf("Servil index: %d \n", all_units["Servil"]);
     printf("Entities size: %d \n", manager.getEntities().size());
 
+=======
+>>>>>>> temp2
 
     manager.getEntities()[all_units["ilhouette"]]->addComponent<PositionComponent>(2, 2);
     manager.getEntities()[all_units["ilhouette"]]->getComponent<PositionComponent>().setMap(mapp);
@@ -736,6 +773,7 @@ void Game::init(const char * title, int xpos, int ypos, int width, int height, b
         cursor.addComponent<GamepadController>(this, mapp);
     }
 
+<<<<<<< HEAD
     // manager.getEntities()[all_units["ilhouette"]]->addComponent<SpriteComponent>(mapp, "..//assets//horse.png");
     // manager.getEntities()[all_units["ilhouette"]]->addComponent<UnitComponent>();
 
@@ -762,6 +800,9 @@ void Game::init(const char * title, int xpos, int ypos, int width, int height, b
     // printf("ilhouette move: %d \n", manager.getEntities()[all_units["Servil"]]->getComponent<UnitComponent>().getStats().res);
     // printf("ilhouette move: %d \n", manager.getEntities()[all_units["Servil"]]->getComponent<UnitComponent>().getStats().con);
     // printf("ilhouette move: %d \n", manager.getEntities()[all_units["Servil"]]->getComponent<UnitComponent>().getStats().move);
+=======
+    manager.getEntities()[all_units["Silou"]]->addComponent<SpriteComponent>(mapp, "..//assets//horse.png");
+>>>>>>> temp2
 
     cursor.addComponent<SpriteComponent>(mapp, "..//assets//cursors.png", 10, 50);
     cursor.getComponent<SpriteComponent>().setSlidetype("geometric");
