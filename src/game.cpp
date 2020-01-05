@@ -12,6 +12,7 @@
 #include "keyboardcontroller.hpp"
 #include "gamepadcontroller.hpp"
 #include "unitcomponent.hpp"
+#include "weapon.hpp"
 
 Map * mapp;
 
@@ -20,6 +21,8 @@ SDL_Event Game::event;
 TTF_Font * Game::font = NULL;
 Manager Game::manager;
 Settings Game::settings;
+
+std::unordered_map<std::string, Weapon> all_weapons;
 
 Entity & cursor = Game::manager.addEntity(); // FOR SOME REASON, having an 2, 4, 8 entities.... breaks something in the unitmove->unitmenu states move
 Entity & player = Game::manager.addEntity();
@@ -120,12 +123,12 @@ void Game::setState(Entity & setting_entity, std::string new_state) {
             printf("UNIT MOVE: %d\n", unit_move);
             // printf("%d %d\n", start[0], start[1]);
             // std::vector<std::vector<int>> movemapp;
-            std::vector<std::vector<int>> movemapp = movemap(temp_moveable2, start, 4, "matrix"); // movemap algo is slow.
+            std::vector<std::vector<int>> movemapp = movemap(temp_moveable2, start, unit_move, "matrix"); // movemap algo is slow.
             printf("movemapp %d %d\n", movemapp.size(), movemapp[0].size());
             
 
 
-            std::vector<std::vector<int>> attackmapp = attackmap(movemapp, start, 4, 1, "matrix"); // movemap algo is slow.
+            std::vector<std::vector<int>> attackmapp = attackmap(movemapp, start, unit_move, 1, "matrix"); // movemap algo is slow.
 
             // std::vector<std::vector<int>> attacklist = attackmap(movelist, start, unit_move, 1, "list"); // attackmap cannot deal with a movelist.
             mapp->setList("move", movemapp);
@@ -271,6 +274,7 @@ void Game::baseWeapons(){
     temp_wpn = {3, 80, 0, 0, 0, 3, 30, {1,1}, {1,2}, 0};
     Weapon wooden_sword("Wooden sword", "sword", temp_wpn);
     wooden_sword.setDescription("Practice sword, made of wood. It's crushing blows are still deadly.");
+    all_weapons["wooden_sword"] = wooden_sword;
     temp_wpn = {7, 70, 0, 25, 0, 7, 30, {1,1}, {1,2}, 0};
     Weapon wrath_sword("Wrath sword", "sword", temp_wpn);
     wrath_sword.setDescription("Increases critical hit chance.");
@@ -610,7 +614,7 @@ void Game::baseUnits(){
     all_units["Poet"] = manager.getEntities().size() - 1;
 
     manager.addEntity();
-    temp = {15,  4,  5,  7,  6,   8,  4,  6,  5, 8};
+    temp = {15,  4,  5,  7,  6,   8,  4,  6,  5, 5};
     manager.getEntities().back()->addComponent<UnitComponent>("Silou", "Magee", temp);
     temp = {48, 14, 25, 32, 34,  28, 19, 40, 15};
     manager.getEntities().back()->getComponent<UnitComponent>().setCaps(temp);

@@ -15,6 +15,7 @@ class UnitComponent : public Component {
         Equipped equipped;
         Weapon_stats temp_wpn;
         Unit_stats base_stats;
+        Unit_state state;
         Unit_stats bonus_stats;
         Unit_stats caps_stats;
         Unit_stats malus_stats;

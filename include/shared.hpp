@@ -114,6 +114,16 @@ struct Equipped {
     //Index in big array of all weapons? Or pointer to weapon?
 };
 
+struct Unit_state {
+    bool flight;
+    bool mounted;
+    bool armored;
+    std::string hand;
+    char poisoned;
+    char sleep;
+    char stone;
+};
+
 struct Unit_stats {
     unsigned char hp; // hit points
     unsigned char str; // strength
