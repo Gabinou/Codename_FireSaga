@@ -108,6 +108,17 @@ extern void permutations_binary(int len, int num_0, int out[], int i = 0);
 extern int h_manhattan(int start[], int end[]);
 extern double h_euclidean(int start[], int end[]);
 
+extern std::vector<std::vector<int>> A_star(std::vector<std::vector<int>> map, int start[], int end[], std::string mode = "matrix");
+extern std::vector<std::vector<int>> movemap(std::vector<std::vector<int>> map, int start[], int move, std::string mode = "matrix");
+extern std::vector<std::vector<int>> attackmap(std::vector<std::vector<int>> movemap, int start[], int move, int attack, std::string mode = "matrix");
+
+extern void writeText(int in_fontsize, int in_position[2], float in_sizefactor[2], std::string in_text, SDL_Color in_color, TTF_Font * in_font, SDL_Renderer * in_renderer);
+
+// Texture stuff.
+extern SDL_Texture * loadTexture(const char * filename);
+extern SDL_Texture * textToTexture(std::string textureText, SDL_Color textColor, TTF_Font * in_font);
+
+
 struct Equipped {
     int left;
     int right;
@@ -136,15 +147,18 @@ struct Unit_stats {
     unsigned char con; // constitution
     unsigned char move; // movement
     unsigned char prof; // proficiency
-
 };
 
-struct Weapon_stats {
-    unsigned char might;
+struct Combat_stats {
     unsigned char hit;
     unsigned char dodge;
     unsigned char crit;
     unsigned char favor;
+};
+
+struct Weapon_stats {
+    unsigned char might;
+    Combat_stats bonus;
     unsigned char wgt; // weight
     unsigned char uses;
     unsigned char range[2]; // [min_range, max_range]
@@ -176,6 +190,28 @@ struct Weapon_type {
     bool shield = false;
 };
 
+struct Movement_cost {
+    unsigned char foot1;
+    // fencer, mousquetaire, duelist, lord, duke, archer, marksman, mercenary, hero, trooper
+    unsigned char foot2;
+    // pickpocket thief assassin, demon
+    unsigned char mages;
+    // mage, battlemage, sage, oracle, priest, cleric, bishop, incarnate, possessed
+    unsigned char riders1;
+    // cavalier, archer and marksman rider, lord and duke rider.
+    unsigned char riders2;
+    // paladin, troubadour
+    unsigned char fliers;
+    // pegasus knight, angel
+    unsigned char armors;
+    // knight, general
+    unsigned char pirates;
+    // Corsair, viking
+    unsigned char bandits;
+    // bandit, ravage
+
+};
+
 
 struct Point {
     int x;
@@ -200,15 +236,5 @@ struct Settings {
     char fontsize = 28;
     Fps FPS;
 };
-
-extern std::vector<std::vector<int>> A_star(std::vector<std::vector<int>> map, int start[], int end[], std::string mode = "matrix");
-extern std::vector<std::vector<int>> movemap(std::vector<std::vector<int>> map, int start[], int move, std::string mode = "matrix");
-extern std::vector<std::vector<int>> attackmap(std::vector<std::vector<int>> movemap, int start[], int move, int attack, std::string mode = "matrix");
-
-extern void writeText(int in_fontsize, int in_position[2], float in_sizefactor[2], std::string in_text, SDL_Color in_color, TTF_Font * in_font, SDL_Renderer * in_renderer);
-
-// Texture stuff.
-extern SDL_Texture * loadTexture(const char * filename);
-extern SDL_Texture * textToTexture(std::string textureText, SDL_Color textColor, TTF_Font * in_font);
 
 #endif /* SHARED_HPP */

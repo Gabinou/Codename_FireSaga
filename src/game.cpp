@@ -262,7 +262,8 @@ std::string Game::getState() {
 void Game::baseWeapons(){
     Weapon_stats temp_wpn;
     Unit_stats temp_unit;
-    // dmg, hit, dodge, crit, favor, wgt, uses, range, hand, dmg_stype
+    // dmg, hit, dodge, crit, favor, wgt, uses, range, hand, dmg_type
+   // For shields, dmg is def? 
     temp_wpn = {3, 80, 0, 0, 0, 3, 30, {1,1}, {1,2}, 0};
     Weapon wooden_sword("Wooden sword", "sword", temp_wpn);
     wooden_sword.setDescription("Practice sword, made of wood. It's crushing blows are still deadly.");
@@ -367,9 +368,10 @@ void Game::baseWeapons(){
     all_weapons["Honjou_Masamune"] = Honjou_Masamune;
     temp_wpn = {18, 30, 0, 0, 0, 20, 50, {1,1}, {1,2}, 0};
     Weapon Raw_iron_slab("Raw Iron slab", "sword", temp_wpn);
-    Raw_iron_slab.setDescription("Tempered by the malevolence of countless slain demons. Effective against demons and angels.");
+    Raw_iron_slab.setDescription("Barely a sword. Too big, too thick, too massive, too rough. Tempered by the malevolence of countless slain demons. Effective against demons and angels.");
     Raw_iron_slab.setEffective("DemonAngel");
     all_weapons["Raw_iron_slab"] = Raw_iron_slab;
+    //Should be found inside a dragon skull? 
 
     temp_wpn = {2, 60, 0, 0, 0, 4, 15, {1,1}, {1,2}, 0};
     Weapon pitchfork("Pitchfork", "lance", temp_wpn);
@@ -482,7 +484,7 @@ void Game::baseWeapons(){
     temp_wpn = {8, 40, 0, 0, 0, 9, 30, {1,1}, {1,2}, 0};
     Weapon hammer("Hammer", "axe", temp_wpn);
     hammer.setEffective("Armor");
-    hammer.setDescription("Armor cannot stand heavy crushing blows.");
+    hammer.setDescription("Armor cannot stand the hammer's heavy crushing blows.");
     all_weapons["hammer"] = hammer;
     temp_wpn = {12, 50, 0, 0, 0, 12, 25, {1,1}, {1,2}, 0};
     Weapon war_pick("War pick", "axe", temp_wpn);
@@ -501,6 +503,117 @@ void Game::baseWeapons(){
     Weapon Hephaestus("Hephaestus", "axe", temp_wpn);
     Hephaestus.setDescription("The god's hammer. Used to forge Secundus, the first sword.");
     all_weapons["Hephaestus"] = Hephaestus;
+
+    temp_wpn = {2, 60, 0, 0, 0, 4, 15, {1,1}, {1}, 0};
+    Weapon adapted_crossbow("Adapted Crossbow", "Bow", temp_wpn);
+    adapted_crossbow.setDescription("Crossbow adapted to be fired, reloaded and drawn using one hand and one stump. 1H assassin only.");
+    all_weapons["adapted_crossbow"] = adapted_crossbow;
+    temp_wpn = {2, 60, 0, 0, 0, 4, 15, {1,1}, {1}, 0};
+    Weapon repeatable_crossbow("Repeatable Crossbow", "Bow", temp_wpn);
+    repeatable_crossbow.setDescription("Crossbow that fires many bolts every attack.");
+    all_weapons["repeatable_crossbow"] = repeatable_crossbow;
+    temp_wpn = {2, 60, 0, 0, 0, 4, 15, {1,1}, {1}, 0};
+    Weapon crossbow("Crossbow", "Bow", temp_wpn);
+    crossbow.setDescription("Powerful and easier to use than a bow, although quite heavy.");
+    all_weapons["crossbow"] = crossbow;
+    temp_wpn = {2, 60, 0, 0, 0, 4, 15, {1,1}, {1}, 0};
+    Weapon short_bow("Short bow", "Bow", temp_wpn);
+    short_bow.setDescription("Simple and light bow.");
+    all_weapons["short_bow"] = short_bow;
+    temp_wpn = {2, 60, 0, 0, 0, 4, 15, {1,1}, {1}, 0};
+    Weapon long_bow("Long bow", "Bow", temp_wpn);
+    long_bow.setDescription("Long and heavy bow. Has increased range.");
+    all_weapons["long_bow"] = long_bow;
+    temp_wpn = {2, 60, 0, 0, 0, 4, 15, {1,1}, {1}, 0};
+    Weapon composite_bow("Composite bow", "Bow", temp_wpn);
+    composite_bow.setDescription("Bow made of laminated wood and animal horn. Very useful for horseback shooting.");
+    all_weapons["composite_bow"] = composite_bow;
+    temp_wpn = {2, 60, 0, 0, 0, 4, 15, {1,1}, {1}, 0};
+    Weapon recurve_crossbow("Recurve Crossbow", "Bow", temp_wpn);
+    recurve_crossbow.setDescription("Crossbow with recurve limbs. Heavy and powerful.");
+    all_weapons["recurve_crossbow"] = recurve_crossbow;
+    temp_wpn = {2, 60, 0, 0, 0, 4, 15, {1,1}, {1}, 0};
+    Weapon recurve_bow("Recurve bow", "Bow", temp_wpn);
+    recurve_bow.setDescription("Bow whose limbs curve away when unstrung. Shoots faster and deadlier arrows.");
+    all_weapons["recurve_bow"] = recurve_bow;    
+    temp_wpn = {2, 60, 0, 0, 0, 4, 15, {1,1}, {1}, 0};
+    Weapon recurve_bow("Recurve bow", "Bow", temp_wpn);
+    recurve_bow.setDescription("Bow whose limbs curve away when unstrung. Shoots faster and deadlier arrows.");
+    all_weapons["recurve_bow"] = recurve_bow;
+    temp_wpn = {2, 60, 0, 0, 0, 4, 15, {1,1}, {1}, 0};
+    Weapon Apollo("Apollo", "Bow", temp_wpn);
+    Apollo.setDescription("Bow crafted of sun rays, used by the most handsome ancient god.");
+    all_weapons["Apollo"] = Apollo;
+    temp_wpn = {2, 60, 0, 0, 0, 4, 15, {1,1}, {1}, 0};
+    Weapon Artemis("Artemis", "Bow", temp_wpn);
+    Artemis.setDescription("Bow of the ancient goddess of hunting.");
+    all_weapons["Artemis"] = Artemis;    
+    temp_wpn = {2, 60, 0, 0, 0, 4, 15, {1,1}, {1}, 0};
+    Weapon Pinaka("Pinaka", "Bow", temp_wpn);
+    Pinaka.setDescription("Bow of the god of death.");
+    all_weapons["Pinaka"] = Pinaka;
+
+    temp_wpn = {2, 60, 0, 0, 0, 4, 15, {1,1}, {1}, 0};
+    Weapon adapted_shield("Adapted Shield", "shield", temp_wpn);
+    adapted_shield.setDescription("Shield adapted to be used without one's weak hand. Straps on the forearm. 1H assassin only.");
+    all_weapons["adapted_shield"] = adapted_shield;
+    temp_wpn = {2, 60, 0, 0, 0, 4, 15, {1,1}, {1}, 0};
+    Weapon cloak("Cloak, "shield", temp_wpn);
+    cloak.setDescription("The Mousquetaire\"s offhand shield in time of need.");
+    all_weapons["cloak"] = cloak;
+
+    temp_wpn = {2, 60, 0, 0, 0, 4, 15, {1,1}, {1}, 0};
+    Weapon wristblabe("Wristblade, "offhand", temp_wpn);
+    wristblade.setDescription("Blade generally strapped to the weak forearm. Used by assassins to increase crit potential.");
+    all_weapons["wristblade"] = wristblade;
+    temp_wpn = {2, 60, 0, 0, 0, 4, 15, {1,1}, {1}, 0};
+    Weapon retractable_wristblabe("Retractable Wristblade, "offhand", temp_wpn);
+    retractable_wristblade.setDescription("Blade generally strapped to the weak forearm. Controlled by hand movements. Used by assasins to stealthily increase crit potential.");
+    all_weapons["retractable_wristblade"] = retractable_wristblade;
+    temp_wpn = {1, 60, 0, 0, 0, 4, 15, {1,1}, {1}, 0};
+    Weapon main_gauche("Main Gauche, "offhand", temp_wpn);
+    main_gauche.setDescription("Dagger designed to parry using the left/weak/off-hand. Increases avoir and favor. ");
+    all_weapons["main_gauche"] = main_gauche;
+    temp_wpn = {2, 60, 0, 0, 0, 4, 15, {1,1}, {1}, 0};
+    Weapon swordbreaker("Swordbreaker, "offhand", temp_wpn);
+    swordbreaker.setDescription("Dagger with slots designed to not break, but catch swords. Increases avoid and favor. Rarely does it actually break swords... ");
+    all_weapons["swordbreaker"] = swordbreaker;
+    temp_wpn = {2, 60, 0, 0, 0, 4, 15, {1,1}, {1}, 0};
+    Weapon trident_dagger("Trident Dagger, "offhand", temp_wpn);
+    trident_dagger.setDescription("Dagger whose blade splits into three prongs. Designed to catch opposing swords. Increases avoid and favor.");
+    all_weapons["trident_dagger"] = trident_dagger;
+    temp_wpn = {2, 60, 0, 0, 0, 4, 15, {1,1}, {1}, 0};
+    Weapon tantou("Tantou, "offhand", temp_wpn);
+    tantou.setDescription("Eastern style short dagger. Very sharp and dangerous. Increases might.");
+    all_weapons["tantou"] = tantou;
+    temp_wpn = {2, 60, 0, 0, 0, 4, 15, {1,1}, {1}, 0};
+    Weapon  kodachi("Kodachi, "offhand", temp_wpn);
+    kodachi.setDescription("Dagger used by the legendary assasins of the East, the Ninja. Increases might.");
+    all_weapons["kodachi"] = kodachi;
+        temp_wpn = {2, 60, 0, 0, 0, 4, 15, {1,1}, {1}, 0};
+    Weapon  dague("Dague, "offhand", temp_wpn);
+    dague.setDescription("Messenic dagger. Simple and efficient. Adorned with ");
+    all_weapons["dague"] = dague;
+    temp_wpn = {2, 60, 0, 0, 0, 4, 15, {1,1}, {1}, 0};
+    Weapon wakizashi("Wakizashi, "offhand", temp_wpn);
+    wakizashi.setDescription("Dagger of the warriors of the East. Companion of the uchigatana. Very deadly.");
+    all_weapons["wakizashi"] = wakizashi;    
+    temp_wpn = {2, 60, 0, 0, 0, 4, 15, {1,1}, {1}, 0};
+    Weapon Baquemard("Baquemard, "offhand", temp_wpn);
+    Baquemard.setDescription("Legendary Dagger.");
+    all_weapons["Baquemard"] = Baquemard;    
+    temp_wpn = {2, 60, 0, 0, 0, 4, 15, {1,1}, {1}, 0};
+    Weapon misericorde("Misericorde, "offhand", temp_wpn);
+    Misericorde.setDescription("Used to delivery the Coup de grace to wounded knights. Might of this dagger increases by one for each missing 3 health.");
+    all_weapons["misericorde"] = misericorde;    
+    temp_wpn = {2, 60, 0, 0, 0, 4, 15, {1,1}, {1}, 0};
+    Weapon Carnwennan("Carnwennan, "offhand", temp_wpn);
+    Carnwennan.setDescription("The king\s dagger. Has the power to shroud its user in shadow.");
+    all_weapons["Carnwennan"] = Carnwennan;    
+    temp_wpn = {2, 60, 0, 0, 0, 4, 15, {1,1}, {1}, 0};
+    Weapon flintlock("Flintlock, "offhand", temp_wpn);
+    flintlock.setDescription("A gun!");
+    all_weapons["flintlock"] = flintlock;    
 
     temp_wpn = {12, 76, 0, 0, 0, 11, 25, {1,2}, {1,2}, 1};
     Weapon ball_lightning("Ball lightning", "elemental", temp_wpn);
@@ -560,7 +673,7 @@ void Game::baseWeapons(){
     temp_wpn = {5, 70, 0, 0, 0, 5, 60, {1,2}, {1,2}, 1};
     Weapon putrify("Putrify", "demonic", temp_wpn);
     putrify.setDescription("Brings out the inner rot.");
-    all_weapons["Putrify"] = Putrify;
+    all_weapons["Putrify"] = putrify;
     temp_wpn = {5, 70, 0, 0, 0, 5, 60, {1,2}, {1,2}, 1};
     Weapon Glaurung("Glaurung", "demonic", temp_wpn);
     Glaurung.setDescription("");
@@ -676,9 +789,6 @@ void Game::baseUnits(){
 
     manager.addEntity();
     temp = {15,  4,  5,  7,  6,   8,  4,  6,  5, 5};
-<<<<<<< HEAD
-    manager.getEntities().back()->addComponent<UnitComponent>("Arm Thief", "Mercenary", temp);
-=======
     manager.getEntities().back()->addComponent<UnitComponent>("Silou", "Magee", temp);
     temp = {48, 14, 25, 32, 34,  28, 19, 40, 15};
     manager.getEntities().back()->getComponent<UnitComponent>().setCaps(temp);
@@ -690,7 +800,6 @@ void Game::baseUnits(){
     manager.addEntity();
     temp = {15,  4,  5,  7,  6,   8,  4,  6,  5, 5};
     manager.getEntities().back()->addComponent<UnitComponent>("Poet", "Mage", temp);
->>>>>>> temp2
     temp = {48, 14, 25, 32, 34,  28, 19, 40, 15};
     manager.getEntities().back()->getComponent<UnitComponent>().setCaps(temp);
     temp = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
@@ -799,13 +908,6 @@ void Game::init(const char * title, int xpos, int ypos, int width, int height, b
     mapp->loadMap("..//testmap.txt");
 
     cursor.addComponent<PositionComponent>(2, 2);
-<<<<<<< HEAD
-    printf("ilhouette index: %d \n", all_units["ilhouette"]);
-    printf("Servil index: %d \n", all_units["Servil"]);
-    printf("Entities size: %d \n", manager.getEntities().size());
-
-=======
->>>>>>> temp2
 
     manager.getEntities()[all_units["ilhouette"]]->addComponent<PositionComponent>(2, 2);
     manager.getEntities()[all_units["ilhouette"]]->getComponent<PositionComponent>().setMap(mapp);
@@ -819,36 +921,7 @@ void Game::init(const char * title, int xpos, int ypos, int width, int height, b
         cursor.addComponent<GamepadController>(this, mapp);
     }
 
-<<<<<<< HEAD
-    // manager.getEntities()[all_units["ilhouette"]]->addComponent<SpriteComponent>(mapp, "..//assets//horse.png");
-    // manager.getEntities()[all_units["ilhouette"]]->addComponent<UnitComponent>();
-
-    // printf("ilhouette index: %d \n", all_units["ilhouette"]);
-    printf("Mage1 index: %d \n", all_units["Mage1"]);
-    printf("Mage2 index: %d \n", all_units["Mage2"]);
-    // printf("%s \n", manager.getEntities()[all_units["ilhouette"]]->getComponent<UnitComponent>().getName().c_str());
-    printf("ilhouette move: %d \n", manager.getEntities()[all_units["Mage1"]]->getComponent<UnitComponent>().getStats().hp);
-    // printf("ilhouette move: %d \n", manager.getEntities()[all_units["ilhouette"]]->getComponent<UnitComponent>().getStats().hp);
-    printf("ilhouette move: %d \n", manager.getEntities()[all_units["Servil"]]->getComponent<UnitComponent>().getStats().hp);
-    printf("ilhouette move: %d \n", manager.getEntities()[all_units["Main"]]->getComponent<UnitComponent>().getStats().hp);
-    printf("ilhouette move: %d \n", manager.getEntities()[all_units["Hottie"]]->getComponent<UnitComponent>().getStats().hp);
-    printf("ilhouette move: %d \n", manager.getEntities()[all_units["1H Jaigen"]]->getComponent<UnitComponent>().getStats().hp);
-    printf("ilhouette move: %d \n", manager.getEntities()[all_units["Reliable"]]->getComponent<UnitComponent>().getStats().hp);
-    printf("ilhouette move: %d \n", manager.getEntities()[all_units["Coward"]]->getComponent<UnitComponent>().getStats().hp);
-    printf("ilhouette move: %d \n", manager.getEntities()[all_units["Lovely"]]->getComponent<UnitComponent>().getStats().hp);
-    printf("ilhouette move: %d \n", manager.getEntities()[all_units["Poet"]]->getComponent<UnitComponent>().getStats().hp);
-    printf("ilhouette move: %d \n", manager.getEntities()[all_units["Pérignon"]]->getComponent<UnitComponent>().getStats().hp);
-    // printf("ilhouette move: %d \n", manager.getEntities()[all_units["Main"]]->getComponent<UnitComponent>().getStats().str);
-    // printf("ilhouette move: %d \n", manager.getEntities()[all_units["Main"]]->getComponent<UnitComponent>().getStats().dex);
-    // printf("ilhouette move: %d \n", manager.getEntities()[all_units["Main"]]->getComponent<UnitComponent>().getStats().agi);
-    // printf("ilhouette move: %d \n", manager.getEntities()[all_units["Main"]]->getComponent<UnitComponent>().getStats().luck);
-    // printf("ilhouette move: %d \n", manager.getEntities()[all_units["Servil"]]->getComponent<UnitComponent>().getStats().def);
-    // printf("ilhouette move: %d \n", manager.getEntities()[all_units["Servil"]]->getComponent<UnitComponent>().getStats().res);
-    // printf("ilhouette move: %d \n", manager.getEntities()[all_units["Servil"]]->getComponent<UnitComponent>().getStats().con);
-    // printf("ilhouette move: %d \n", manager.getEntities()[all_units["Servil"]]->getComponent<UnitComponent>().getStats().move);
-=======
     manager.getEntities()[all_units["Silou"]]->addComponent<SpriteComponent>(mapp, "..//assets//horse.png");
->>>>>>> temp2
 
     cursor.addComponent<SpriteComponent>(mapp, "..//assets//cursors.png", 10, 50);
     cursor.getComponent<SpriteComponent>().setSlidetype("geometric");
