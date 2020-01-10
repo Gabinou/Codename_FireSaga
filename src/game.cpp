@@ -263,7 +263,7 @@ void Game::baseWeapons(){
     Weapon_stats temp_wpn;
     Unit_stats temp_unit;
     // dmg, hit, dodge, crit, favor, wgt, uses, wpnlvl, range, hand, dmg_type
-   // For shields, dmg is def? 
+    // For shields, dmg is def? 
     temp_wpn = {3, 80, 0, 0, 0, 3, 30, 7, {1,1}, {1,2}, 0};
     Weapon wooden_sword("Wooden sword", "sword", temp_wpn);
     wooden_sword.setDescription("Practice sword, made of wood. It's crushing blows are still deadly.");
@@ -948,10 +948,10 @@ void Game::init(const char * title, int xpos, int ypos, int width, int height, b
 
     cursor.addComponent<PositionComponent>(2, 2);
 
-    manager.getEntities()[all_units["ilhouette"]]->addComponent<PositionComponent>(2, 2);
-    manager.getEntities()[all_units["ilhouette"]]->getComponent<PositionComponent>().setMap(mapp);
+    manager.getEntities()[all_units["Silou"]]->addComponent<PositionComponent>(2, 2);
+    manager.getEntities()[all_units["Silou"]]->getComponent<PositionComponent>().setMap(mapp);
 
-    SDL_Color black = {255,255,255};
+    SDL_Color black = {255, 255, 255};
     cursor.addComponent<KeyboardController>(this, mapp);
 
     if( SDL_NumJoysticks() < 1 ) {
@@ -965,7 +965,7 @@ void Game::init(const char * title, int xpos, int ypos, int width, int height, b
     cursor.addComponent<SpriteComponent>(mapp, "..//assets//cursors.png", 10, 50);
     cursor.getComponent<SpriteComponent>().setSlidetype("geometric");
     
-    manager.getEntities()[all_units["ilhouette"]]->addGroup(manager.groupUnits);
+    manager.getEntities()[all_units["Silou"]]->addGroup(manager.groupUnits);
     cursor.addGroup(manager.groupUI);
 
     // cursor.getComponent<SpriteComponent>().hide();
