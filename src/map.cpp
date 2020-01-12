@@ -116,19 +116,11 @@ void Map::makeEntitymap(int row_size, int col_size){
 
 void Map::loadTilemap(std::string filename) {
     tilemap = readcsv_vec(filename.c_str(), 1);
+    unique_textures = unique2D(tilemap);
+    loadTiles();
     int row_size = tilemap.size();
     int col_size = tilemap.size();
     makeEntitymap(row_size, col_size);
-}
-
-void Map::loadTexturemap(std::string filename) {
-    texturemap = readcsv_vec(filename.c_str(), 1);
-    unique_textures = unique2D(texturemap);
-    loadTiles();
-    int row_size = texturemap.size();
-    int col_size = texturemap.size();
-    makeEntitymap(row_size, col_size);
-    // loadTiles();
 }
 
 void Map::setList(std::string in_type, std::vector<std::vector<int>> in_list) {
@@ -167,23 +159,23 @@ void Map::drawMap() {
             tile_ind = tilemap[row][col];
             destrect.x = (col + 1) * tilesize[0];
             destrect.y = (row + 1) * tilesize[1];
-
-            switch (tile_ind) {
-            case 10:
-                SDL_RenderCopy(Game::renderer, grass, &srcrect, &destrect);
-                break;            
-            case 12:
-                SDL_RenderCopy(Game::renderer, tree, &srcrect, &destrect);
-                break;
-            case 20:
-                SDL_RenderCopy(Game::renderer, water, &srcrect, &destrect);
-                break;
-            case 30:
-                SDL_RenderCopy(Game::renderer, dirt, &srcrect, &destrect);
-                break;
-            default:
-                break;
-            }
+            SDL_RenderCopy(Game::renderer, textures[tile_ind], &srcrect, &destrect);
+            // switch (tile_ind) {
+            // case 100:
+            //     SDL_RenderCopy(Game::renderer, grass, &srcrect, &destrect);
+            //     break;            
+            // case 120:
+            //     SDL_RenderCopy(Game::renderer, tree, &srcrect, &destrect);
+            //     break;
+            // case 200:
+            //     SDL_RenderCopy(Game::renderer, water, &srcrect, &destrect);
+            //     break;
+            // case 300:
+            //     SDL_RenderCopy(Game::renderer, dirt, &srcrect, &destrect);
+            //     break;
+            // default:
+            //     break;
+            // }
             if (show_overlay) {
                 if ((overlay_mode.find("move") != std::string::npos) && (overlays[0] != NULL)) {
                     if (movelist[row][col] == 1) {

@@ -1129,7 +1129,6 @@ void Game::init(const char * title, int xpos, int ypos, int width, int height, b
     tilesize[1] = 32;
     mapp =  new Map(tilesize[0], tilesize[1]); // mapp is a pointer
     mapp->loadTilemap("..//maps//test_tilemap.txt");
-    mapp->loadTexturemap("..//maps//test_texturemap.txt");
 
     cursor.addComponent<PositionComponent>(2, 2);
 

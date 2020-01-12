@@ -20,7 +20,6 @@ class Map {
         void initVars();
         void loadOverlays();
         void loadTilemap(std::string filename);
-        void loadTexturemap(std::string filename);
         void drawMap();
         void makeEntitymap(int row_size, int col_size);
 
@@ -48,7 +47,6 @@ class Map {
 
         std::vector<std::vector<int>> movelist, attacklist, heallist;
         std::vector<std::vector<int>> tilemap;
-        std::vector<std::vector<int>> texturemap;
 
         SDL_Rect srcrect, destrect;
 
