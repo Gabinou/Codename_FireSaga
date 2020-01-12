@@ -17,6 +17,19 @@ void Map::removeTile(int x, int y) {
     tiles[x][y] = nullptr;
 }
 
+std::vector<std::vector<int>> Map::makeMvtCostmap(std::string unitmovetype){
+    
+    std::vector<std::vector<int>> costmap((int)map2D.size(), std::vector<int> ((int)map2D[0].size()));
+    for (int row = 0; row < map2D.size(); row++) {
+        for (int col = 0; col < map2D[row].size(); col++) {
+            tile =  map2D[row][col];
+            printf("%d", tile);
+            printf("%d", all_tiles[tile]);
+        }
+    }
+    return(costmap);
+}
+
 std::vector<std::vector<int>> Map::get2D(){
     return(map2D);
 }
@@ -128,15 +141,13 @@ void Map::drawMap() {
             destrect.y = (row + 1) * tilesize[1];
 
             switch (type) {
-            case 0:
-                SDL_RenderCopy(Game::renderer, water, &srcrect, &destrect);
-                break;
-
-            case 1:
+            case 10:
                 SDL_RenderCopy(Game::renderer, grass, &srcrect, &destrect);
                 break;
-
-            case 2:
+            case 20:
+                SDL_RenderCopy(Game::renderer, water, &srcrect, &destrect);
+                break;
+            case 30:
                 SDL_RenderCopy(Game::renderer, dirt, &srcrect, &destrect);
                 break;
             default:

@@ -122,6 +122,7 @@ void Game::setState(Entity & setting_entity, std::string new_state) {
             for (int i = 0; i < temp_moveable2.size(); i++){
                 std::fill(temp_moveable2[i].begin(), temp_moveable2[i].end(), 1);
             }
+
             std::vector<std::vector<int>> movemapp = movemap(temp_moveable2, start, unit_move, "matrix"); // movemap algo is slow.
             std::vector<std::vector<int>> attackmapp = attackmap(movemapp, start, unit_move, 1, "matrix"); // movemap algo is slow.
 
@@ -1121,7 +1122,7 @@ void Game::init(const char * title, int xpos, int ypos, int width, int height, b
     tilesize[0] = 32;
     tilesize[1] = 32;
     mapp =  new Map(tilesize[0], tilesize[1]); // mapp is a pointer
-    mapp->loadMap("..//testmap.txt");
+    mapp->loadMap("..//testmap2.txt");
 
     cursor.addComponent<PositionComponent>(2, 2);
 

@@ -36,6 +36,7 @@ class Map {
 
         void showOverlay();
         void hideOverlay();
+        std::vector<std::vector<int>> makeMvtCostmap(std::string unitmovetype);
     private:
         int tilesize[2];
         int frames = 10, speed = 50;

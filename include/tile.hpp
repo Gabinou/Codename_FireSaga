@@ -8,7 +8,7 @@ class Tile {
 
         std::string name;
 
-        struct {
+        struct Stats {
             unsigned int dodge;
             unsigned int def;
             unsigned int heal; // %
@@ -18,6 +18,10 @@ class Tile {
         Tile();
         ~Tile();
         Tile(std::string in_name, Movement_cost in_cost, unsigned int * in_stats[3]);
+
+        Movement_cost getCost();
+        std::string getName();
+        Stats getStats();
 
 };
 
