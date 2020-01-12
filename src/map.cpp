@@ -10,39 +10,36 @@ int * Map::getTilesize() const {
 }
 
 void Map::setTile(int x, int y, Entity * in_entity) {
-    tiles[x][y] = in_entity;
+    entitymap[x][y] = in_entity;
 }
 
 void Map::removeTile(int x, int y) {
-    tiles[x][y] = nullptr;
+    entitymap[x][y] = nullptr;
 }
 
 std::vector<std::vector<int>> Map::makeMvtCostmap(std::string unitmovetype){
-    int tile = 0;
-    std::vector<std::vector<int>> costmap((int)map2D.size(), std::vector<int> ((int)map2D[0].size()));
-    for (int row = 0; row < map2D.size(); row++) {
-        for (int col = 0; col < map2D[row].size(); col++) {
-            tile = map2D[row][col];
-            // printf("%d", tile);
-            // printf("%d", all_tiles[tile].getCost().riders_slow);
-            // printf("%s", all_tiles[tile].getName().c_str());
-            costmap[row][col] = all_tiles[tile].getCost().riders_slow;
+    int tile_ind = 0;
+    std::vector<std::vector<int>> costmap((int)tilemap.size(), std::vector<int> ((int)tilemap[0].size()));
+    for (int row = 0; row < tilemap.size(); row++) {
+        for (int col = 0; col < tilemap[row].size(); col++) {
+            tile_ind = tilemap[row][col];
+            costmap[row][col] = all_tiles[tile_ind].getCost().riders_slow;
         }
     }
     return(costmap);
 }
 
-std::vector<std::vector<int>> Map::get2D(){
-    return(map2D);
+std::vector<std::vector<int>> Map::getTilemap(){
+    return(tilemap);
 }
 
 void Map::moveTile(int x, int y, int new_x, int new_y) {
-    tiles[new_x][new_y] = tiles[x][y];
-    tiles[x][y] = nullptr;
+    entitymap[new_x][new_y] = entitymap[x][y];
+    entitymap[x][y] = nullptr;
 }
 
 Entity * Map::getTile(int x, int y) {
-    return(tiles[x][y]);
+    return(entitymap[x][y]);
 }
 
 void Map::loadTiles() {
@@ -78,7 +75,7 @@ void Map::initVars() {
     srcrect.h = destrect.h = 32;
     setTilesize(32, 32);
     Entity_ptr_matrix temp(255, std::vector<Entity*>(255));
-    tiles = temp;
+    entitymap = temp;
 }
 
 Map::Map() {
@@ -93,17 +90,32 @@ Map::Map(const short unsigned int width, const short unsigned int height) : Map(
     srcrect.h = destrect.h = height;
 }
 
-void Map::loadMap(std::string filename) {
-    map2D = readcsv_vec(filename.c_str(), 1);
-    Entity_ptr_matrix temp(map2D.size(), std::vector<Entity*>(map2D[0].size()));
-
-    tiles = temp;
-    // printf("Tiles size %d %d \n", tiles.size(), tiles[0].size());
-    for (int row = 0; row < tiles.size(); row++) {
-        for (int col = 0; col < tiles[row].size(); col++) {
-            tiles[row][col] =  static_cast<Entity*>(nullptr);
+void Map::makeEntitymap(int row_size, int col_size){
+    if (!made_entitymap) {
+        Entity_ptr_matrix temp(row_size, std::vector<Entity*>(col_size));
+        entitymap = temp;
+        // printf("entitymap size %d %d \n", entitymap.size(), entitymap[0].size());
+        for (int row = 0; row < entitymap.size(); row++) {
+            for (int col = 0; col < entitymap[row].size(); col++) {
+                entitymap[row][col] =  static_cast<Entity*>(nullptr);
+            }
         }
     }
+    made_entitymap = true;
+}
+
+void Map::loadTilemap(std::string filename) {
+    tilemap = readcsv_vec(filename.c_str(), 1);
+    int row_size = tilemap.size();
+    int col_size = tilemap.size();
+    makeEntitymap(row_size, col_size);
+}
+
+void Map::loadTexturemap(std::string filename) {
+    texturemap = readcsv_vec(filename.c_str(), 1);
+    int row_size = tilemap.size();
+    int col_size = tilemap.size();
+    makeEntitymap(row_size, col_size);
 }
 
 void Map::setList(std::string in_type, std::vector<std::vector<int>> in_list) {
@@ -135,15 +147,15 @@ void Map::clearLists() {
 }
 
 void Map::drawMap() {
-    int tile = 0;
+    int tile_ind = 0;
     // This is cache friendly.
-    for (int row = 0; row < map2D.size(); row++) {
-        for (int col = 0; col < map2D[row].size(); col++) {
-            tile = map2D[row][col];
+    for (int row = 0; row < tilemap.size(); row++) {
+        for (int col = 0; col < tilemap[row].size(); col++) {
+            tile_ind = tilemap[row][col];
             destrect.x = (col + 1) * tilesize[0];
             destrect.y = (row + 1) * tilesize[1];
 
-            switch (tile) {
+            switch (tile_ind) {
             case 10:
                 SDL_RenderCopy(Game::renderer, grass, &srcrect, &destrect);
                 break;            

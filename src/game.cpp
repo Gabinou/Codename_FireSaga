@@ -118,7 +118,7 @@ void Game::setState(Entity & setting_entity, std::string new_state) {
             start[1] = start[1] - 1;
             std::vector<std::vector<int>> temp_moveable2;
             std::vector<std::vector<int>> temp_moveable3;
-            temp_moveable2 = mapp->get2D();
+            temp_moveable2 = mapp->getTilemap();
 
             for (int i = 0; i < temp_moveable2.size(); i++){
                 std::fill(temp_moveable2[i].begin(), temp_moveable2[i].end(), 1);
@@ -1128,7 +1128,7 @@ void Game::init(const char * title, int xpos, int ypos, int width, int height, b
     tilesize[0] = 32;
     tilesize[1] = 32;
     mapp =  new Map(tilesize[0], tilesize[1]); // mapp is a pointer
-    mapp->loadMap("..//maps//test_tilemap.txt");
+    mapp->loadTilemap("..//maps//test_tilemap.txt");
 
     cursor.addComponent<PositionComponent>(2, 2);
 
@@ -1160,8 +1160,8 @@ void Game::init(const char * title, int xpos, int ypos, int width, int height, b
 
 void Game::update() {
     // player->update();
-    // Map->loadMap();
-    // mapp->loadMap("a");
+    // Map->loadTilemap();
+    // mapp->loadTilemap("a");
     manager.refresh();
     manager.update();
     // player.getComponent<PositionComponent>().position.Add(Vector2D(1,2));
