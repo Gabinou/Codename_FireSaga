@@ -192,15 +192,15 @@ struct Weapon_type {
 };
 
 struct Movement_cost {
-    unsigned char foot1;
+    unsigned char foot_slow;
     // fencer, mousquetaire, duelist, lord, duke, archer, marksman, mercenary, hero, trooper
-    unsigned char foot2;
+    unsigned char foot_fast;
     // pickpocket thief assassin, demon
     unsigned char mages;
     // mage, battlemage, sage, oracle, priest, cleric, bishop, incarnate, possessed
-    unsigned char riders1;
+    unsigned char riders_slow;
     // cavalier, archer and marksman rider, lord and duke rider.
-    unsigned char riders2;
+    unsigned char riders_fast;
     // paladin, troubadour
     unsigned char fliers;
     // pegasus knight, angel
@@ -209,8 +209,7 @@ struct Movement_cost {
     unsigned char pirates;
     // Corsair, viking
     unsigned char bandits;
-    // bandit, ravage
-
+    // bandit, ravager
 };
 
 

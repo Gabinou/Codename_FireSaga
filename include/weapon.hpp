@@ -37,7 +37,7 @@ class Weapon {
         void setBonus(Unit_stats in_bonus);
         Unit_stats getBonus();
         void setMalus(Unit_stats in_malus);
-        Unit_stats getMalus();
+        Unit_stats getMalus(); //may be uncessesary?
         void setEffect(std::string in_effect);
         std::string getEffect();
         void setEffective(std::string in_effective);
@@ -50,7 +50,7 @@ class Weapon {
 * \brief Contains all instances of weapons.
 *  Uses the weapon's name as std::unordered_map's key.
 *  Are immutable. Should never be changed in game.
-*  Instead, the inventory_item instances conatains the
+*  Instead, the inventory_item instances contains the
 *  number of times the item was used. If it is equal to
 *  the item's use, the item is destroyed.
 */

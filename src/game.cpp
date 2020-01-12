@@ -604,23 +604,6 @@ void Game::baseWeapons(){
     Ancile.setDescription("Shield of the ancient god of war.");
     all_weapons["Ancile"] = Ancile;
 
-    printf("weapon %d\n", all_weapons["Ancile"].getStats().might);
-    printf("weapon %d\n", all_weapons["Ancile"].getStats().combat.hit);
-    printf("weapon %d\n", all_weapons["Ancile"].getStats().combat.dodge);
-    printf("weapon %d\n", all_weapons["Ancile"].getStats().combat.crit);
-    printf("weapon %d\n", all_weapons["Ancile"].getStats().combat.favor);
-    printf("weapon %d\n", all_weapons["Ancile"].getStats().wgt);
-    printf("weapon %d\n", all_weapons["Ancile"].getStats().uses);
-    printf("weapon %d\n", all_weapons["Ancile"].getStats().wpnlvl);
-    printf("weapon %d\n", all_weapons["Ancile"].getStats().range[0]);
-    printf("weapon %d\n", all_weapons["Ancile"].getStats().range[1]);
-    printf("weapon %d\n", all_weapons["Ancile"].getStats().hand[0]);
-    printf("weapon %d\n", all_weapons["Ancile"].getStats().dmg_type);
-    printf("weapon %s\n", all_weapons["Ancile"].getDescription().c_str());
-    printf("weapon %s\n", all_weapons["Achilles"].getEffect().c_str());
-    printf("weapon %s\n", all_weapons["halberd"].getEffective().c_str());
-
-
     temp_wpn = {2, 10, 0, 10, 0, 5, 21, 16, {1,1}, {1}, 0};
     Weapon wristblade("Wristblade", "offhand", temp_wpn);
     wristblade.setDescription("Blade generally strapped to the weak forearm. Used by assassins to increase crit potential.");
@@ -673,7 +656,6 @@ void Game::baseWeapons(){
     Weapon flintlock("Flintlock", "offhand", temp_wpn);
     flintlock.setDescription("A gun!");
     all_weapons["flintlock"] = flintlock;    
-
 
     temp_wpn = {12, 76, 0, 0, 0, 11, 25, 7, {1,2}, {1,2}, 1};
     Weapon ball_lightning("Ball lightning", "elemental", temp_wpn);
@@ -960,7 +942,7 @@ void Game::init(const char * title, int xpos, int ypos, int width, int height, b
 
     printf("Making units\n");
     baseUnits();
-
+    
     printf("Creating map \n");
     tilesize[0] = 32;
     tilesize[1] = 32;
