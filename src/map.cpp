@@ -25,7 +25,8 @@ std::vector<std::vector<int>> Map::makeMvtCostmap(std::string unitmovetype){
             tile = map2D[row][col];
             // printf("%d", tile);
             // printf("%d", all_tiles[tile].getCost().riders_slow);
-            printf("%s", all_tiles[tile].getName().c_str());
+            // printf("%s", all_tiles[tile].getName().c_str());
+            costmap[row][col] = all_tiles[tile].getCost().riders_slow;
         }
     }
     return(costmap);
@@ -48,6 +49,7 @@ void Map::loadTiles() {
     dirt = loadTexture("..//assets//dirt.png");
     grass = loadTexture("..//assets//grass.png");
     water = loadTexture("..//assets//water.png");
+    tree = loadTexture("..//assets//tree.png");
     // Make this into an array of types, and breaks the switch into an array index. Also put the assets into a single  string vector.
 }
 
@@ -144,6 +146,9 @@ void Map::drawMap() {
             switch (tile) {
             case 10:
                 SDL_RenderCopy(Game::renderer, grass, &srcrect, &destrect);
+                break;            
+            case 12:
+                SDL_RenderCopy(Game::renderer, tree, &srcrect, &destrect);
                 break;
             case 20:
                 SDL_RenderCopy(Game::renderer, water, &srcrect, &destrect);

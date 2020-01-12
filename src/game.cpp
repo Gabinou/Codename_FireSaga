@@ -117,20 +117,21 @@ void Game::setState(Entity & setting_entity, std::string new_state) {
             start[0] = start[0] - 1;
             start[1] = start[1] - 1;
             std::vector<std::vector<int>> temp_moveable2;
+            std::vector<std::vector<int>> temp_moveable3;
             temp_moveable2 = mapp->get2D();
 
             for (int i = 0; i < temp_moveable2.size(); i++){
                 std::fill(temp_moveable2[i].begin(), temp_moveable2[i].end(), 1);
             }
 
-            mapp->makeMvtCostmap("riders_slow");
+            temp_moveable3 = mapp->makeMvtCostmap("riders_slow");
 
-            std::vector<std::vector<int>> movemapp = movemap(temp_moveable2, start, unit_move, "matrix"); // movemap algo is slow.
+            std::vector<std::vector<int>> movemapp = movemap(temp_moveable3, start, unit_move, "matrix"); // movemap algo is slow.
             std::vector<std::vector<int>> attackmapp = attackmap(movemapp, start, unit_move, 1, "matrix"); // movemap algo is slow.
 
             mapp->setList("move", movemapp);
             // mapp->setList("attack", attackmapp);
-            mapp->setList("heal", attackmapp);
+            mapp->setList("attack", attackmapp);
             mapp->showOverlay();
             // plot2Dvector(movemapp);
             // plot2Dvector(attackmapp);
@@ -1127,7 +1128,7 @@ void Game::init(const char * title, int xpos, int ypos, int width, int height, b
     tilesize[0] = 32;
     tilesize[1] = 32;
     mapp =  new Map(tilesize[0], tilesize[1]); // mapp is a pointer
-    mapp->loadMap("..//testmap2.txt");
+    mapp->loadMap("..//maps//test_tilemap.txt");
 
     cursor.addComponent<PositionComponent>(2, 2);
 

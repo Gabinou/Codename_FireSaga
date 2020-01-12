@@ -46,6 +46,7 @@ class Map {
         std::vector<std::vector<int>> movelist, attacklist, heallist;
 
         std::vector<std::vector<int>> map2D;
+        std::vector<std::vector<int>> texturemap;
 
         SDL_Rect srcrect, destrect;
 
@@ -54,6 +55,7 @@ class Map {
         SDL_Texture * dirt;
         SDL_Texture * grass;
         SDL_Texture * water;
+        SDL_Texture * tree;
         SDL_Texture * move;
         SDL_Texture * attack;
         SDL_Texture * heal;
