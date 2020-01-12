@@ -18,13 +18,14 @@ void Map::removeTile(int x, int y) {
 }
 
 std::vector<std::vector<int>> Map::makeMvtCostmap(std::string unitmovetype){
-    
+    int tile = 0;
     std::vector<std::vector<int>> costmap((int)map2D.size(), std::vector<int> ((int)map2D[0].size()));
     for (int row = 0; row < map2D.size(); row++) {
         for (int col = 0; col < map2D[row].size(); col++) {
-            tile =  map2D[row][col];
-            printf("%d", tile);
-            printf("%d", all_tiles[tile]);
+            tile = map2D[row][col];
+            // printf("%d", tile);
+            // printf("%d", all_tiles[tile].getCost().riders_slow);
+            printf("%s", all_tiles[tile].getName().c_str());
         }
     }
     return(costmap);
@@ -132,15 +133,15 @@ void Map::clearLists() {
 }
 
 void Map::drawMap() {
-    int type = 0;
+    int tile = 0;
     // This is cache friendly.
     for (int row = 0; row < map2D.size(); row++) {
         for (int col = 0; col < map2D[row].size(); col++) {
-            type =  map2D[row][col];
+            tile = map2D[row][col];
             destrect.x = (col + 1) * tilesize[0];
             destrect.y = (row + 1) * tilesize[1];
 
-            switch (type) {
+            switch (tile) {
             case 10:
                 SDL_RenderCopy(Game::renderer, grass, &srcrect, &destrect);
                 break;

@@ -123,6 +123,8 @@ void Game::setState(Entity & setting_entity, std::string new_state) {
                 std::fill(temp_moveable2[i].begin(), temp_moveable2[i].end(), 1);
             }
 
+            mapp->makeMvtCostmap("riders_slow");
+
             std::vector<std::vector<int>> movemapp = movemap(temp_moveable2, start, unit_move, "matrix"); // movemap algo is slow.
             std::vector<std::vector<int>> attackmapp = attackmap(movemapp, start, unit_move, 1, "matrix"); // movemap algo is slow.
 
@@ -907,9 +909,8 @@ void Game::baseTiles(){
     temp_cost = {4, 3, 4, 0, 0, 1, 0, 3, 3};
     Tile glacier("Glacier", temp_cost, temp_stats);
     all_tiles[71] = glacier;
-
-
 }
+
 void Game::baseUnits(){
     manager.addEntity();
     // Entity current_unit;
@@ -1118,6 +1119,10 @@ void Game::init(const char * title, int xpos, int ypos, int width, int height, b
 
     printf("Making units\n");
     baseUnits();
+
+    printf("Making tiles\n");
+    baseTiles();
+
     printf("Creating map \n");
     tilesize[0] = 32;
     tilesize[1] = 32;

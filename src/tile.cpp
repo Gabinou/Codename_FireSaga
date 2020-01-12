@@ -13,23 +13,23 @@ Tile::~Tile() {
 Tile::Tile(void) {
     // printf("tile %s is being deleted.\n" , name);
 }
-Tile::Tile(std::string in_name, Movement_cost in_cost, unsigned int* in_stats[3]) {
+Tile::Tile(const std::string in_name, const Movement_cost in_cost, unsigned int * in_stats[3]) {
 	name = in_name;
 	cost = in_cost;
-	stats.dodge = *in_stats[0];
-	stats.def = *in_stats[1];
-	stats.heal = *in_stats[2];
+	stats.dodge = (unsigned int)in_stats[0];
+	stats.def = (unsigned int)in_stats[1];
+	stats.heal = (unsigned int)in_stats[2];
 }
 
-Movement_cost getCost(){
+Movement_cost Tile::getCost(){
 	return(cost);
 }
 
-std::string getName(){
+std::string Tile::getName(){
 	return(name);
 }
 
-Stats getStats(){
+Tilestats Tile::getStats(){
 	return(stats);
 }
 

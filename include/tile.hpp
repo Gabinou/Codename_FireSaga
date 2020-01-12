@@ -1,28 +1,28 @@
 #ifndef TILE_HPP
 #define TILE_HPP
+
 #include "shared.hpp"
+
+struct Tilestats {
+    unsigned int dodge;
+    unsigned int def;
+    unsigned int heal; // %
+};
 
 class Tile {
     private:
         Movement_cost cost;
-
+        Tilestats stats;
         std::string name;
-
-        struct Stats {
-            unsigned int dodge;
-            unsigned int def;
-            unsigned int heal; // %
-        } stats;
 
     public:
         Tile();
         ~Tile();
-        Tile(std::string in_name, Movement_cost in_cost, unsigned int * in_stats[3]);
+        Tile(const std::string in_name, const Movement_cost in_cost, unsigned int * in_stats[3]);
 
         Movement_cost getCost();
         std::string getName();
-        Stats getStats();
-
+        Tilestats getStats();
 };
 
 extern std::unordered_map<int, Tile> all_tiles;
