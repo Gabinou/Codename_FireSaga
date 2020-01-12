@@ -33,6 +33,7 @@ std::vector<int> unique2D(std::vector<std::vector<int>> matrix) {
             }
             if (!found) {
                 uniques.push_back(matrix[i][j]);
+
             }
         }
     }

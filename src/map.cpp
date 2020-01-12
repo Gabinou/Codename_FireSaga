@@ -113,6 +113,7 @@ void Map::loadTilemap(std::string filename) {
 
 void Map::loadTexturemap(std::string filename) {
     texturemap = readcsv_vec(filename.c_str(), 1);
+    unique2D(texturemap);
     int row_size = texturemap.size();
     int col_size = texturemap.size();
     makeEntitymap(row_size, col_size);
