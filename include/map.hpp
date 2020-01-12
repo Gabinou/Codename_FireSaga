@@ -61,8 +61,11 @@ class Map {
         SDL_Texture * move;
         SDL_Texture * attack;
         SDL_Texture * heal;
+        std::vector<int> unique_textures;
         std::vector<SDL_Texture *> overlays{NULL, NULL, NULL};
         std::string ss_looping = "linear";
+
+        std::unordered_map<int, SDL_Texture *> textures;
 
         Entity_ptr_matrix entitymap;
 };

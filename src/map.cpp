@@ -43,6 +43,17 @@ Entity * Map::getTile(int x, int y) {
 }
 
 void Map::loadTiles() {
+    int tileindex;
+    std::string texturename;
+    for (int i = 0; i < unique_textures.size() - 1; i++) {
+        tileindex = (unique_textures[i]/10);
+        texturename = "..//assets//";
+        texturename +=  all_tiles[tileindex].getName();
+        texturename += "_";
+        texturename += std::to_string(unique_textures[i]);
+        texturename += ".png";
+        textures[unique_textures[i]] = loadTexture(texturename.c_str());
+    }
     dirt = loadTexture("..//assets//dirt.png");
     grass = loadTexture("..//assets//grass.png");
     water = loadTexture("..//assets//water.png");
@@ -79,7 +90,6 @@ void Map::initVars() {
 }
 
 Map::Map() {
-    loadTiles();
     loadOverlays();
     initVars();
 }
@@ -113,7 +123,8 @@ void Map::loadTilemap(std::string filename) {
 
 void Map::loadTexturemap(std::string filename) {
     texturemap = readcsv_vec(filename.c_str(), 1);
-    unique2D(texturemap);
+    unique_textures = unique2D(texturemap);
+    loadTiles();
     int row_size = texturemap.size();
     int col_size = texturemap.size();
     makeEntitymap(row_size, col_size);
