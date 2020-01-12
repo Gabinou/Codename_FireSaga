@@ -158,7 +158,7 @@ struct Combat_stats {
 
 struct Weapon_stats {
     unsigned char might;
-    Combat_stats bonus;
+    Combat_stats combat;
     unsigned char wgt; // weight
     unsigned char uses;
     unsigned char wpnlvl;

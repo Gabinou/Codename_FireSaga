@@ -183,7 +183,7 @@ class UnitComponent : public Component {
         unsigned char critical() {
             unsigned char supports = 0 ;
             unsigned char unit_skill = 0;
-            unsigned char critical = temp_wpn.bonus.crit + unit_skill + supports;
+            unsigned char critical = temp_wpn.combat.crit + unit_skill + supports;
             return (critical);
         }
 
@@ -222,7 +222,7 @@ class UnitComponent : public Component {
             unsigned char supports = 0;
             unsigned char unit_skill = 0;
             unsigned char enemy_favor = enemy.getComponent<UnitComponent>().favor();
-            unsigned char critical = std::max(0, temp_wpn.bonus.crit + unit_skill + supports - enemy_favor);
+            unsigned char critical = std::max(0, temp_wpn.combat.crit + unit_skill + supports - enemy_favor);
             return (critical);
         }
 
@@ -236,7 +236,7 @@ class UnitComponent : public Component {
             //*DESIGN QUESTION* In vesteria saga, dex*3.
             unsigned char supports = 0;
             unsigned char unit_acc = current_stats.dex * 3 + current_stats.luck;
-            unsigned char accuracy = temp_wpn.bonus.hit + unit_acc + supports;
+            unsigned char accuracy = temp_wpn.combat.hit + unit_acc + supports;
             return (accuracy);
         }
 

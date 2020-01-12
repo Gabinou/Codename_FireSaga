@@ -31,6 +31,7 @@ class Weapon {
         Weapon(std::string in_name, Weapon_stats in_stats);
         Weapon(std::string in_name, std::string in_type, Weapon_stats in_stats);
 
+        Weapon_stats getStats();
         void setStats(Weapon_stats in_stats);
         void setBonus(Unit_stats in_bonus);
         void setMalus(Unit_stats in_malus);
