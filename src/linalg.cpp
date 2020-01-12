@@ -20,6 +20,25 @@ void plot2Dvector(std::vector<std::vector<int>> matrix) {
     }
 }
 
+std::vector<int> unique2D(std::vector<std::vector<int>> matrix) {
+    std::vector<int> uniques;
+    bool found;
+    for (int i = 0; i < matrix.size(); i++) {
+        for (int j = 0; j < matrix[i].size(); j++) {
+            found = false;
+            for (int k = 0; k < uniques.size(); k++) {
+                if (uniques[k] == matrix[i][j]) {
+                    found = true;
+                }
+            }
+            if (!found) {
+                uniques.push_back(matrix[i][j]);
+            }
+        }
+    }
+    return(uniques);
+}
+
 std::vector<std::vector<int>> matrix_plus(std::vector<std::vector<int>> matrix1, std::vector<std::vector<int>> matrix2, int sign) {
     //both matrices should have the same shape
     std::vector<std::vector<int>> out = matrix1;

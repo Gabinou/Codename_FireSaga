@@ -113,9 +113,10 @@ void Map::loadTilemap(std::string filename) {
 
 void Map::loadTexturemap(std::string filename) {
     texturemap = readcsv_vec(filename.c_str(), 1);
-    int row_size = tilemap.size();
-    int col_size = tilemap.size();
+    int row_size = texturemap.size();
+    int col_size = texturemap.size();
     makeEntitymap(row_size, col_size);
+    // loadTiles();
 }
 
 void Map::setList(std::string in_type, std::vector<std::vector<int>> in_list) {
