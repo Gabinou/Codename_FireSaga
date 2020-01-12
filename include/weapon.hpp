@@ -17,6 +17,7 @@
 class Weapon {
     private:
         Weapon_stats stats;
+        //hp,str,mag,skl,spd,luck,def,res,con,move
         Unit_stats bonus = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
         Unit_stats malus = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
         std::string effect = "None";
@@ -31,13 +32,18 @@ class Weapon {
         Weapon(std::string in_name, Weapon_stats in_stats);
         Weapon(std::string in_name, std::string in_type, Weapon_stats in_stats);
 
-        Weapon_stats getStats();
         void setStats(Weapon_stats in_stats);
+        Weapon_stats getStats();
         void setBonus(Unit_stats in_bonus);
+        Unit_stats getBonus();
         void setMalus(Unit_stats in_malus);
+        Unit_stats getMalus();
         void setEffect(std::string in_effect);
+        std::string getEffect();
         void setEffective(std::string in_effective);
+        std::string getEffective();
         void setDescription(std::string in_description);
+        std::string getDescription();
 };
 
 /*! \var all_weapons

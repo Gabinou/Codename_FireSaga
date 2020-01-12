@@ -604,10 +604,21 @@ void Game::baseWeapons(){
     Ancile.setDescription("Shield of the ancient god of war.");
     all_weapons["Ancile"] = Ancile;
 
+    printf("weapon %d\n", all_weapons["Ancile"].getStats().might);
     printf("weapon %d\n", all_weapons["Ancile"].getStats().combat.hit);
     printf("weapon %d\n", all_weapons["Ancile"].getStats().combat.dodge);
     printf("weapon %d\n", all_weapons["Ancile"].getStats().combat.crit);
     printf("weapon %d\n", all_weapons["Ancile"].getStats().combat.favor);
+    printf("weapon %d\n", all_weapons["Ancile"].getStats().wgt);
+    printf("weapon %d\n", all_weapons["Ancile"].getStats().uses);
+    printf("weapon %d\n", all_weapons["Ancile"].getStats().wpnlvl);
+    printf("weapon %d\n", all_weapons["Ancile"].getStats().range[0]);
+    printf("weapon %d\n", all_weapons["Ancile"].getStats().range[1]);
+    printf("weapon %d\n", all_weapons["Ancile"].getStats().hand[0]);
+    printf("weapon %d\n", all_weapons["Ancile"].getStats().dmg_type);
+    printf("weapon %s\n", all_weapons["Ancile"].getDescription().c_str());
+    printf("weapon %s\n", all_weapons["Achilles"].getEffect().c_str());
+    printf("weapon %s\n", all_weapons["halberd"].getEffective().c_str());
 
 
     temp_wpn = {2, 10, 0, 10, 0, 5, 21, 16, {1,1}, {1}, 0};
