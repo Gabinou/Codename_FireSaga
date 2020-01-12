@@ -11,7 +11,7 @@ class Tile {
         struct {
             unsigned int dodge;
             unsigned int def;
-            unsigned int heal;
+            unsigned int heal; // %
         } stats;
 
     public:
