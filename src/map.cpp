@@ -47,18 +47,13 @@ void Map::loadTiles() {
     std::string texturename;
     for (int i = 0; i < unique_textures.size() - 1; i++) {
         tileindex = (unique_textures[i]/10);
-        texturename = "..//assets//";
-        texturename +=  all_tiles[tileindex].getName();
-        texturename += "_";
-        texturename += std::to_string(unique_textures[i]);
-        texturename += ".png";
+        texturename = "..//assets//" + all_tiles[tileindex].getName() + "_" + std::to_string(unique_textures[i]) + ".png";
         textures[unique_textures[i]] = loadTexture(texturename.c_str());
     }
-    dirt = loadTexture("..//assets//dirt.png");
-    grass = loadTexture("..//assets//grass.png");
-    water = loadTexture("..//assets//water.png");
-    tree = loadTexture("..//assets//tree.png");
-    // Make this into an array of types, and breaks the switch into an array index. Also put the assets into a single  string vector.
+    // dirt = loadTexture("..//assets//dirt.png");
+    // grass = loadTexture("..//assets//grass.png");
+    // water = loadTexture("..//assets//water.png");
+    // tree = loadTexture("..//assets//tree.png");
 }
 
 void Map::loadOverlays() {
@@ -160,22 +155,7 @@ void Map::drawMap() {
             destrect.x = (col + 1) * tilesize[0];
             destrect.y = (row + 1) * tilesize[1];
             SDL_RenderCopy(Game::renderer, textures[tile_ind], &srcrect, &destrect);
-            // switch (tile_ind) {
-            // case 100:
-            //     SDL_RenderCopy(Game::renderer, grass, &srcrect, &destrect);
-            //     break;            
-            // case 120:
-            //     SDL_RenderCopy(Game::renderer, tree, &srcrect, &destrect);
-            //     break;
-            // case 200:
-            //     SDL_RenderCopy(Game::renderer, water, &srcrect, &destrect);
-            //     break;
-            // case 300:
-            //     SDL_RenderCopy(Game::renderer, dirt, &srcrect, &destrect);
-            //     break;
-            // default:
-            //     break;
-            // }
+
             if (show_overlay) {
                 if ((overlay_mode.find("move") != std::string::npos) && (overlays[0] != NULL)) {
                     if (movelist[row][col] == 1) {
