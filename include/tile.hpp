@@ -9,7 +9,6 @@ class Tile {
         std::string name;
 
         struct {
-            unsigned int hit;
             unsigned int dodge;
             unsigned int def;
             unsigned int heal;
@@ -21,5 +20,7 @@ class Tile {
         Tile(std::string in_name, Movement_cost in_cost, unsigned int * in_stats[3]);
 
 };
+
+extern std::unordered_map<int, Tile> all_tiles;
 
 #endif /* TILE_HPP */

@@ -5,6 +5,7 @@
 #include "SDL2/SDL_image.h"
 #include "SDL2/SDL_ttf.h"
 #include "map.hpp"
+#include "tile.hpp"
 #include "spritecomponent.hpp"
 #include "positioncomponent.hpp"
 #include "arrowcomponent.hpp"
@@ -23,6 +24,7 @@ Manager Game::manager;
 Settings Game::settings;
 
 std::unordered_map<std::string, Weapon> all_weapons;
+std::unordered_map<int, Tile> all_tiles;
 
 Entity & cursor = Game::manager.addEntity(); // FOR SOME REASON, having an 2, 4, 8 entities.... breaks something in the unitmove->unitmenu states move
 Entity & player = Game::manager.addEntity();
@@ -734,6 +736,49 @@ void Game::baseWeapons(){
     all_weapons["Fatalis"] = Fatalis;
 }
 
+void Game::baseTiles(){
+    // dodge, def, heal
+    unsigned int * temp_stats[3] = {0, 0, 0};
+
+    // foot_slow, foot_fast, mages, riders_slow, riders_fast, fliers, armors, pirates, bandits;
+    Movement_cost temp_cost = {1, 1, 1, 1, 1, 1, 1, 1, 1};
+    Tile plain("Plain", temp_cost, temp_stats);
+    all_tiles[10] = plain;
+
+    temp_stats[0] = 10;
+    temp_stats[1] = 1;
+    Movement_cost temp_cost = {2, 1, 2, 3, 2, 1, 3, 2, 2};
+    Tile bush("Bush", temp_cost, temp_stats);
+    all_tiles[11] = bush;
+
+    temp_stats[0] = 15;
+    temp_stats[1] = 2;
+    Movement_cost temp_cost = {3, 2, 3, 3, 3, 1, 3, 3, 3};
+    Tile forest("Forest", temp_cost, temp_stats);
+    all_tiles[12] = forest;
+
+    temp_stats[0] = 0;
+    temp_stats[0] = 0;
+    Movement_cost temp_cost = {0, 0, 0, 0, 0, 1, 0, 0, 0};
+    Tile thicket("Thicket", temp_cost, temp_stats);
+    all_tiles[13] = thicket;
+
+    Movement_cost temp_cost = {0, 0, 0, 0, 0, 1, 0, 0, 0};
+    Tile snag("Snag", temp_cost, temp_stats);
+    all_tiles[14] = snag;
+
+    Movement_cost temp_cost = {1, 1, 1, 1, 1, 1, 1, 1, 1};
+    Tile bridge("Bridge", temp_cost, temp_stats);
+    all_tiles[15] = bridge;
+
+    Movement_cost temp_cost = {0, 0, 0, 0, 0, 1, 0, 3, 0};
+    Tile sea("Sea", temp_cost, temp_stats);
+    all_tiles[20] = sea;
+
+
+
+
+}
 void Game::baseUnits(){
     manager.addEntity();
     // Entity current_unit;
@@ -942,7 +987,6 @@ void Game::init(const char * title, int xpos, int ypos, int width, int height, b
 
     printf("Making units\n");
     baseUnits();
-    
     printf("Creating map \n");
     tilesize[0] = 32;
     tilesize[1] = 32;

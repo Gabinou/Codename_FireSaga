@@ -146,8 +146,9 @@ class Game {
         static Manager manager;
         static Settings settings;
 
-        void baseUnits(); //generates the base units, and prints them to file.
-        void baseWeapons(); // this generates the basic weapon infos.
+        void baseUnits(); // generates the base units.
+        void baseWeapons(); // this generates the basic weapons and stats.
+        void baseTiles(); // this generates the basic tiles.
 
 
 };
