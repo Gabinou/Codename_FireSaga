@@ -1056,18 +1056,6 @@ void Game::baseUnits(){
     manager.getEntities().back()->getComponent<UnitComponent>().setGrowths(temp);
     manager.getEntities().back()->getComponent<UnitComponent>().setExp(400);
     all_units["Mage3"] = manager.getEntities().size() - 1;
-
-    // manager.addEntity();
-    // temp = {16,  4,  5,  7,  6,   8,  4,  6,  5, 5};
-    // manager.getEntities().back()->addComponent<UnitComponent>("ilhouette", "Mage", temp);
-    // temp = {48, 14, 25, 32, 34,  28, 19, 40, 15};
-    // manager.getEntities().back()->getComponent<UnitComponent>().setCaps(temp);
-    // temp = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
-    // manager.getEntities().back()->getComponent<UnitComponent>().setGrowths(temp);
-    // manager.getEntities().back()->getComponent<UnitComponent>().setExp(400);
-    // all_units["ilhouette"] = manager.getEntities().size() - 1;
-
-
 }
 
 void Game::init(const char * title, int xpos, int ypos, int width, int height, bool fullscreen) {
@@ -1081,9 +1069,7 @@ void Game::init(const char * title, int xpos, int ypos, int width, int height, b
         printf("TTF_Init: %s\n", TTF_GetError());
         exit(2);
     }
-        
-    // manager.setGame(this);
-    
+            
     Game::font = TTF_OpenFont("../fonts/arial.ttf", Game::fontsize); // Size translates to pixel size? 
     //The srcrect does not change size with font pointsize.
 
@@ -1159,13 +1145,8 @@ void Game::init(const char * title, int xpos, int ypos, int width, int height, b
 };
 
 void Game::update() {
-    // player->update();
-    // Map->loadTilemap();
-    // mapp->loadTilemap("a");
     manager.refresh();
     manager.update();
-    // player.getComponent<PositionComponent>().position.Add(Vector2D(1,2));
-    // printf("%d, %d \n", newPlayer.getComponent<PositionComponent>().x(), newPlayer.getComponent<PositionComponent>().y());
 }
  
 KeyboardInputMap Game::getKeyboardInputMap() {
@@ -1189,7 +1170,6 @@ void Game::handleEvents() {
     }
 }
 
-// auto& tiles(manager.getGroup(groupMap))
 std::vector<Entity *> & units = Game::manager.getGroup(Game::manager.groupUnits);
 std::vector<Entity *> & uxs = Game::manager.getGroup(Game::manager.groupUI);
 

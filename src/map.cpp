@@ -148,7 +148,7 @@ void Map::clearLists() {
 
 void Map::drawMap() {
     int tile_ind = 0;
-    // This is cache friendly.
+    // This loop cache friendly.
     for (int row = 0; row < tilemap.size(); row++) {
         for (int col = 0; col < tilemap[row].size(); col++) {
             tile_ind = tilemap[row][col];
