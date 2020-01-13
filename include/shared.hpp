@@ -118,13 +118,6 @@ extern void writeText(int in_fontsize, int in_position[2], float in_sizefactor[2
 extern SDL_Texture * loadTexture(const char * filename);
 extern SDL_Texture * textToTexture(std::string textureText, SDL_Color textColor, TTF_Font * in_font);
 
-
-struct Equipped {
-    int left;
-    int right;
-    //Index in big array of all weapons? Or pointer to weapon?
-};
-
 struct Unit_state {
     bool flight;
     bool mounted;
@@ -184,27 +177,23 @@ struct Inventory_item {
     unsigned int used = 0;
 };
 
+struct Equipped {
+    Inventory_item left;
+    Inventory_item right;
+    //Index in big array of all weapons? Or pointer to weapon?
+};
 
 
 struct Movement_cost {
-    unsigned char foot_slow;
-    // fencer, mousquetaire, duelist, lord, duke, archer, marksman, mercenary, hero, trooper
-    unsigned char foot_fast;
-    // pickpocket thief assassin, demon
-    unsigned char mages;
-    // mage, battlemage, sage, oracle, priest, cleric, bishop, incarnate, possessed
-    unsigned char riders_slow;
-    // cavalier, archer and marksman rider, lord and duke rider.
-    unsigned char riders_fast;
-    // paladin, troubadour
-    unsigned char fliers;
-    // pegasus knight, angel
-    unsigned char armors;
-    // knight, general
-    unsigned char pirates;
-    // Corsair, viking
-    unsigned char bandits;
-    // bandit, ravager
+    unsigned char foot_slow; // fencer, mousquetaire, duelist, lord, duke, archer, marksman, mercenary, hero, trooper
+    unsigned char foot_fast; // pickpocket thief assassin, demon
+    unsigned char mages; // mage, battlemage, sage, oracle, priest, cleric, bishop, incarnate, possessed
+    unsigned char riders_slow; // cavalier, archer and marksman rider, lord and duke rider.
+    unsigned char riders_fast; // paladin, troubadour
+    unsigned char fliers; // pegasus knight, angel
+    unsigned char armors; // knight, general
+    unsigned char pirates; // Corsair, viking
+    unsigned char bandits; // bandit, ravager
 };
 
 

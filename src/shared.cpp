@@ -645,14 +645,5 @@ std::mt19937 mt(1899);
 std::uniform_int_distribution<char> dist(0, 100); //*DESIGN QUESTION* What should be the minimum and maximum probabilities?
 #endif /* DOXYGEN_SHOULD_SKIP_THIS */
 
-/// \fn main
-/// \brief Main FEmaker algorithm.
-// std::unordered_map<std::string, Weapon> all_weapons;
-// std::unordered_map<string, struct inventory_item> inventory_items;
 std::unordered_map<std::string, Entity> all_units;
-
-std::unordered_map<std::string, Weapon> all_weapons;
-
-
-// std::unordered_map<string, unit_class> all_unit_classes;
 std::unordered_map<std::string, int> wpn_indexes;
