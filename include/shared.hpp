@@ -32,45 +32,19 @@
 /// \fn mt
 /// \brief gets the next random number, using pre-defined Mersenne-Twister object applied to pre-defined uniform distribution.
 extern std::mt19937 mt;
+extern std::mt19937_64 mt_64;
 
-/// \fn get_rand
+/// \fn getRN
 /// \brief gets the next random number, using pre-defined Mersenne-Twister object applied to pre-defined uniform distribution.
-extern int get_rand();
+extern int getRN();
 
 /// \fn single_roll(int)
 /// \brief Check if event occurs using single RNG roll: if rand<prob, event occurs. True to probabilities, but humans think it is weird.
-extern bool single_roll(int);
+extern bool single_roll(const int RN, const int hit);
 
 /// \fn double_roll(int)
 /// \brief Check if event occurs using double RNG roll: if mean of 2 random numbers is lower than probability of event, it occurs. Skews probabilities, but largely fits with humans biases.
-extern bool double_roll(int);
-
-extern char unit_attributes[][24];
-
-extern char unit_stats[][14];
-/// \var extern char unit_stats
-/// \brief Global declaration of unit_stats.
-extern char weapon_stats[][14];
-/// \var extern char weapon_stats
-/// \brief Global declaration of weapon_stats.
-extern char wpn_types[][12];
-/// \var extern char wpn_types
-/// \brief Global declaration of wpn_types.
-extern char weapons[][14];
-/// \var extern char weapons
-/// \brief Global declaration of weapons.
-extern char statuses[][14];
-/// \var extern char statuses
-/// \brief Global declaration of statuses.
-extern char unit_classes[][24];
-/// \var extern char unit_classes
-/// \brief Global declaration of unit_classes.
-extern char equipment_slots;
-/// \var extern char equipment_slots
-/// \brief Global declaration of equipment_slots.
-extern unsigned char id;
-/// \var extern char id
-/// \brief Global declaration of id.
+extern bool double_roll(const int RN1, const int RN2, const int hit);
 
 extern std::vector<int> extract_int_string(std::string);
 

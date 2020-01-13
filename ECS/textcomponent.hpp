@@ -8,27 +8,25 @@
 #include "positioncomponent.hpp"
 #include "SDL2/SDL.h"
 
-// This component should: use the position component to set its position.
-// How will it interact with textBoxComponent if there is no position component?
-
 class TextComponent : public Component {
 
     private:
+        PositionComponent * positioncomponent;
         std::vector<SDL_Texture *> textures;
         std::vector<std::string> text_lines;
-        PositionComponent * positioncomponent;
         std::vector<SDL_Rect> srcrects; // background always first?
         std::vector<SDL_Rect> destrects; // background always first?
         std::vector<SDL_Color> textColor;
+
         int linespacing = 10;
-        float spacingfactor = 1.1;
-        float sizefactor[2] = {0.5, 0.5}; // height, width
         int padding[4] = {10, 10, 10, 10}; //html style: up right down left
         int fontsize;
 
+        float spacingfactor = 1.1;
+        float sizefactor[2] = {0.5, 0.5}; // height, width
+
     public:
-        TextComponent() {
-        };
+        TextComponent() {};
 
         void setFontsize(int in_fontsize) {
             fontsize = in_fontsize;
@@ -67,7 +65,6 @@ class TextComponent : public Component {
         TextComponent(int in_fontsize, std::vector<std::string> in_text, SDL_Color in_textColor) {
             text_lines = in_text;
             textColor.push_back(in_textColor);
-
 
             for (int i = 0; i < in_text.size(); i++) {
                 addTextTexture(in_text[i], in_textColor);
@@ -111,18 +108,19 @@ class TextComponent : public Component {
                 textures.erase(textures.begin() + index);
             }
         }
+
         void removeTextures(unsigned int index = -1) {
             textures.clear();
         }
+
         void wraptext() {
             // Should wrap text inside the background texture and pâdding.
         }
+
         void initRects() {
-            // printf("initted Rect");
             srcrects[0].x = srcrects[0].y = 0;
             destrects[0].x = (int)positioncomponent->getPos()[0] + padding[3];
             destrects[0].y = (int)positioncomponent->getPos()[1] + padding[0];
-
             int hgt, wdt;
 
             for (int i = 0; i < textures.size(); i++) {

@@ -248,8 +248,8 @@ class UnitComponent : public Component {
 
         unsigned char attack(const Entity & enemy) {
             printf("%s attacks %s\n", name, enemy.getComponent<UnitComponent>().getName());
-            bool unit_hits = (get_rand() < combat_hit(enemy));
-            bool unit_crits = (get_rand() < combat_critical(enemy));
+            bool unit_hits = (getRN() < combat_hit(enemy));
+            bool unit_crits = (getRN() < combat_critical(enemy));
             // printf("%s crits %d \n", name, unit_crits);
             // printf("%d crit chance \n", combat_critical(enemy));
             /* *DESIGN QUESTION* Should a random number always be rolled for crits, even if the hit doesn't connect?

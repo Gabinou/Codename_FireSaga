@@ -469,28 +469,18 @@ std::vector<std::string> css_from_line(char * line) {
     return (names);
 }
 
-
-
 /// \fn dist
 /// \brief gets the next random number, using pre-defined Mersenne-Twister object applied to pre-defined uniform distribution.
 std::uniform_int_distribution<int> dir_99(0, 99); // more twice faster than Ureal_1
 
-
-int get_rand() {
-    return (dir_99(mt));
+bool single_roll(const int RN, const int hit) {
+    return((RN<hit));
 }
 
-bool single_roll(int in_prob) {
-    bool out = (get_rand() < in_prob);
-    return (out);
+bool double_roll(const int RN1, const int RN2, const int hit) {
+    return((((RN1+RN2)/2)<hit));
 }
 
-bool double_roll(int in_prob) {
-    int rng1 = get_rand();
-    int rng2 = get_rand();
-    bool out = ((rng1 + rng2) < (2 * in_prob));
-    return (out);
-}
 
 std::string read_line(const char * filename, int skip) {
     // 2019/07/30: skip should be a multiple of *number of lines written to weapon.txt* which is 8.
@@ -640,10 +630,13 @@ void read_all_units(const char * filename) {
     // }
 }
 
-#ifndef DOXYGEN_SHOULD_SKIP_THIS
-std::mt19937 mt(1899);
-std::uniform_int_distribution<char> dist(0, 100); //*DESIGN QUESTION* What should be the minimum and maximum probabilities?
-#endif /* DOXYGEN_SHOULD_SKIP_THIS */
+std::mt19937_64 mt_64(123);
+std::mt19937 mt(123); // negligible perfomance difference
+std::uniform_int_distribution<int> Uint_99(0, 99); // more twice faster than Ureal_1
+
+int getRN(){
+    return(Uint_99(mt_64));
+}
 
 std::unordered_map<std::string, Entity> all_units;
 std::unordered_map<std::string, int> wpn_indexes;

@@ -14,22 +14,26 @@
 class SpriteComponent : public Component {
 
     protected:
+        Map * map = NULL; // no map-> position is not on a grid.
+        SDL_Rect srcrect = {0, 0, 32, 32}; //x,y,w,h
+        SDL_Rect destrect = {0, 0, 32, 32}; //x,y,w,h
         SDL_Texture * texture;
         PositionComponent * positioncomponent;
         KeyboardController * keyboardcontroller;
         GamepadController * gamepadcontroller;
-        SDL_Rect srcrect = {0, 0, 32, 32}; // x,y,w,h
-        SDL_Rect destrect = {0, 0, 32, 32};
-        Map * map = NULL; // no map-> position is not on a grid.
+
         int objectivepos[2];
         int slidepos[2];
         int * tilesize; // if no map, just use the pixel position as usual.
         int frames = 10, speed = 50;
+        int slideint = 0; // for slide_type = "geometric"
+
         bool visible;
         bool animated = false;
-        std::string ss_looping = "pingpong"; //ss: spritesheet
+
         float slidefactors[2] = {2, 1.025}; // for slide_type = "geometric"
-        int slideint = 0; // for slide_type = "geometric"
+
+        std::string ss_looping = "pingpong"; //ss: spritesheet
         std::string slidetype = "";
     public:
         SpriteComponent() = default;
@@ -109,7 +113,7 @@ class SpriteComponent : public Component {
             srcrect.h = tilesize[1];
             destrect.w = tilesize[0];
             destrect.h = tilesize[1];
-            map->getTile(0, 0); // Works here.
+            map->getTile(0, 0);
         }
 
         Map * getMap() {
@@ -166,10 +170,10 @@ class SpriteComponent : public Component {
                     srcrect.x = srcrect.w * (frames - static_cast<int>((SDL_GetTicks() / speed) % frames));
                 }
             } else {
-                if (map == NULL) {//move on the pixelspace
+                if (map == NULL) { //move on the pixelspace
                     slidepos[0] = (int)positioncomponent->getPos()[0];
                     slidepos[1] = (int)positioncomponent->getPos()[1];
-                } else {//move on the map.
+                } else { //move on the map.
                     slidepos[0] = (int)positioncomponent->getPos()[0] * tilesize[0];
                     slidepos[1] = (int)positioncomponent->getPos()[1] * tilesize[1];
                 }
@@ -184,8 +188,7 @@ class SpriteComponent : public Component {
                 gp_held = gamepadcontroller->getHeldmove();
             }
 
-            if (slidetype == "geometric") { //Cursor movement on the map.
-
+            if (slidetype == "geometric") { //for cursor mvt on map.
                 objectivepos[0] = (int)positioncomponent->getPos()[0] * (tilesize[0]) - destrect.w / 4;
                 objectivepos[1] = (int)positioncomponent->getPos()[1] * (tilesize[1]) - destrect.h / 4;
 
@@ -209,7 +212,7 @@ class SpriteComponent : public Component {
                 }
             }
 
-            if (slidetype == "vector") { //unit movement on the map.
+            if (slidetype == "vector") { //for unit mvt on map.
 
             }
 
@@ -218,7 +221,6 @@ class SpriteComponent : public Component {
         }
 
         virtual void draw() override {
-            // printf("Is visible? %d\n", visible == true);
             if (visible) {
                 SDL_RenderCopy(Game::renderer, texture, &srcrect, &destrect);
             }

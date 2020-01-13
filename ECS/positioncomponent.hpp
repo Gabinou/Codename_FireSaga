@@ -8,12 +8,13 @@
 #include "SDL2/SDL.h"
 
 class PositionComponent : public Component {
+        // On first init of the component, entity is still a nullptr.
     private:
         bool updatable = true;
         int position[2] = {0};
         int bounds[4] = {0, 255, 0, 255}; //xmin, xmax, ymin, ymax
         Map * map = nullptr;
-        // On first init of the component, entity is still a nullptr.
+
     public:
         PositionComponent() {
             setPos(0, 0);
@@ -41,7 +42,6 @@ class PositionComponent : public Component {
             : PositionComponent(in_x, in_y) {
             setBounds(in_bounds);
         }
-
 
         void setBounds(int xmin, int xmax, int ymin, int ymax) {
             bounds[0] = xmin;
@@ -100,8 +100,6 @@ class PositionComponent : public Component {
                     map->setTile(position[0], position[1], entity);
                 }
             }
-
-
         }
 
         void addPos(int move_x, int move_y) {
@@ -111,8 +109,6 @@ class PositionComponent : public Component {
         int * getPos() {
             return (position);
         }
-
 };
-
 
 #endif /* POSITIONCOMPONENT_HPP */
