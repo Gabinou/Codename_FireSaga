@@ -1,20 +1,11 @@
 #ifndef SHARED_HPP
 #define SHARED_HPP
+
 #include <stdio.h>
-#include <iostream>
 #include <string>
-#include <ostream>
-#include <istream>
-#include <ctype.h>
 #include <vector>
-#include <math.h>
-#include <random>
-#include <algorithm>
-#include <bitset>
-#include <array>
 #include <memory>
 #include <bits/stdc++.h>
-#include <stdint.h>
 #include "SDL2/SDL.h"
 #include "SDL2/SDL_image.h"
 #include "SDL2/SDL_ttf.h"
