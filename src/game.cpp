@@ -46,7 +46,8 @@ void Game::createUnitmenu(Entity & setting_entity) {
     manager.getEntities()[menu_entities.top()]->addComponent<SpriteComponent>("..//assets//textbox.png", (int []) {128, 128}); 
     manager.getEntities()[menu_entities.top()]->addComponent<TextComponent>(fontsize, std::vector<std::string> {"Attack", "Wait"}, black);
     manager.getEntities()[menu_entities.top()]->addGroup(manager.groupUI);
-}        
+}
+
 void Game::destroyUnitmenu() {
     if (!menu_entities.empty()) {
         manager.getEntities()[menu_entities.top()]->destroy();
@@ -60,14 +61,10 @@ void Game::moveUnit(Entity & cursor) {
     int newPos[2];
     newPos[0] = cursor.getComponent<PositionComponent>().getPos()[0];
     newPos[1] = cursor.getComponent<PositionComponent>().getPos()[1];
-
     manager.getEntities()[unit_entities.top()]->getComponent<PositionComponent>();
-    // unit_entities.top().getComponent<PositionComponent>().setPos(newPos[0], newPos[1]);
 }
 
-
 void Game::setState(Entity & setting_entity, std::string new_state) {
-
     printf("Game state changes from %s to %s\n", this->state.c_str(), new_state.c_str()); 
 
     if (new_state == "pause"){
@@ -125,11 +122,6 @@ void Game::setState(Entity & setting_entity, std::string new_state) {
             // mapp->setList("attack", attackmapp);
             mapp->setMap("attack", attackmapp);
             mapp->showOverlay();
-            // plot2Dvector(movemapp);
-            // plot2Dvector(attackmapp);
-
-            // PSEUDOCODE:
-                // overlay.setMap();
 
             // int arrow_ind = manager.getEntities().size();
             // manager.addEntity();
@@ -231,7 +223,6 @@ void Game::setState(Entity & setting_entity, std::string new_state) {
         if (new_state == "conversation") { 
         
         }
-        
     }
 
     if (this->state == "conversation") {
@@ -739,29 +730,24 @@ void Game::baseTiles(){
     Movement_cost temp_cost = {1, 1, 1, 1, 1, 1, 1, 1, 1};
     Tile plain("Plain", temp_cost, temp_stats);
     all_tiles[10] = plain;
-
     temp_stats[0] = (unsigned int *)10;
     temp_stats[1] = (unsigned int *)1;
     temp_cost = {2, 1, 2, 3, 2, 1, 3, 2, 2};
     Tile bush("Bush", temp_cost, temp_stats);
     all_tiles[11] = bush;
-
     temp_stats[0] = (unsigned int *)15;
     temp_stats[1] = (unsigned int *)2;
     temp_cost = {3, 2, 3, 3, 3, 1, 3, 3, 3};
     Tile forest("Forest", temp_cost, temp_stats);
     all_tiles[12] = forest;
-
     temp_stats[0] = (unsigned int *)0;
     temp_stats[1] = (unsigned int *)0;
     temp_cost = {0, 0, 0, 0, 0, 1, 0, 0, 0};
     Tile thicket("Thicket", temp_cost, temp_stats);
     all_tiles[13] = thicket;
-
     temp_cost = {0, 0, 0, 0, 0, 1, 0, 0, 0};
     Tile snag("Snag", temp_cost, temp_stats);
     all_tiles[14] = snag;
-
     temp_cost = {1, 1, 1, 1, 1, 1, 1, 1, 1};
     Tile bridge("Bridge", temp_cost, temp_stats);
     all_tiles[15] = bridge;
@@ -769,19 +755,15 @@ void Game::baseTiles(){
     temp_cost = {0, 0, 0, 0, 0, 1, 0, 2, 0};
     Tile sea("Sea", temp_cost, temp_stats);
     all_tiles[20] = sea;
-
     temp_cost = {0, 0, 0, 0, 0, 1, 0, 3, 0};
     Tile lake("Lake", temp_cost, temp_stats);
     all_tiles[21] = lake;
-
     temp_cost = {5, 4, 5, 0, 0, 1, 0, 2, 4};
     Tile river("River", temp_cost, temp_stats);
     all_tiles[22] = river;
-
     temp_cost = {0, 0, 0, 0, 0, 1, 0, 0, 0};
     Tile waterfall("Waterfall", temp_cost, temp_stats);
     all_tiles[23] = waterfall;
-
     temp_cost = {0, 0, 0, 0, 0, 1, 0, 0, 0};
     Tile cliff("cliff", temp_cost, temp_stats);
     all_tiles[24] = cliff;
@@ -791,13 +773,11 @@ void Game::baseTiles(){
     temp_cost = {3, 2, 3, 4, 3, 1, 4, 2, 2};
     Tile hill("hill", temp_cost, temp_stats);
     all_tiles[30] = hill;
-
     temp_stats[0] = (unsigned int *)25;
     temp_stats[1] = (unsigned int *)3;
     temp_cost = {4, 3, 4, 0, 4, 1, 0, 3, 3};
     Tile mountain("mountain", temp_cost, temp_stats);
     all_tiles[31] = mountain;
-
     temp_stats[0] = (unsigned int *)30;
     temp_stats[1] = (unsigned int *)4;
     temp_cost = {0, 5, 0, 0, 0, 1, 0, 5, 5};
@@ -809,17 +789,14 @@ void Game::baseTiles(){
     temp_cost = {3, 2, 1, 4, 3, 1, 3, 2, 2};
     Tile sand("Sand", temp_cost, temp_stats);
     all_tiles[40] = sand;
-
     temp_cost = {3, 2, 1, 4, 3, 1, 3, 2, 2};
     Tile wasteland("Wasteland", temp_cost, temp_stats);
     all_tiles[41] = wasteland;
-
     temp_stats[0] = (unsigned int *)5;
     temp_stats[1] = (unsigned int *)2;
     temp_cost = {0, 0, 0, 0, 0, 1, 0, 3, 3};
     Tile rock("Rock", temp_cost, temp_stats);
     all_tiles[42] = rock;
-
     temp_stats[0] = (unsigned int *)0;
     temp_stats[1] = (unsigned int *)0;
     temp_cost = {0, 0, 0, 0, 0, 1, 0, 0, 0};
@@ -829,25 +806,21 @@ void Game::baseTiles(){
     temp_cost = {1, 1, 1, 1, 1, 1, 1, 1, 1};
     Tile floor("Floor", temp_cost, temp_stats);
     all_tiles[50] = floor;
-
     temp_stats[0] = (unsigned int *)10;
     temp_stats[1] = (unsigned int *)1;
     temp_stats[2] = (unsigned int *)10;
     temp_cost = {2, 2, 2, 3, 3, 1, 3, 2, 2};
     Tile pillar("Pillar", temp_cost, temp_stats);
     all_tiles[51] = pillar;
-
     temp_stats[0] = (unsigned int *)0;
     temp_stats[1] = (unsigned int *)0;
     temp_stats[2] = (unsigned int *)0;
     temp_cost = {0, 0, 0, 0, 0, 1, 0, 0, 0};
     Tile wall("Wall", temp_cost, temp_stats);
     all_tiles[52] = wall;
-
     temp_cost = {0, 0, 0, 0, 0, 1, 0, 0, 0};
     Tile door("Door", temp_cost, temp_stats);
     all_tiles[53] = door;
-
     temp_stats[0] = (unsigned int *)20;
     temp_stats[1] = (unsigned int *)2;
     temp_stats[2] = (unsigned int *)15;
@@ -861,33 +834,27 @@ void Game::baseTiles(){
     temp_cost = {0, 0, 0, 0, 0, 1, 0, 0, 0};
     Tile gate("Gate", temp_cost, temp_stats);
     all_tiles[60] = gate;
-
     temp_cost = {0, 0, 0, 0, 0, 1, 0, 0, 0};
     Tile fence("Fence", temp_cost, temp_stats);
     all_tiles[61] = fence;
-
     temp_stats[0] = (unsigned int *)10;
     temp_stats[1] = (unsigned int *)1;
     temp_stats[2] = (unsigned int *)10;
     temp_cost = {1, 1, 1, 1, 1, 1, 1, 1, 1};
     Tile shop("Shop", temp_cost, temp_stats);
     all_tiles[62] = shop;
-
     temp_cost = {1, 1, 1, 1, 1, 1, 1, 1, 1};
     Tile armory("Armory", temp_cost, temp_stats);
     all_tiles[63] = armory;
-
     temp_cost = {1, 1, 1, 1, 1, 1, 1, 1, 1};
     Tile village("Village", temp_cost, temp_stats);
     all_tiles[64] = village;
-
     temp_stats[0] = (unsigned int *)10;
     temp_stats[1] = (unsigned int *)2;
     temp_stats[2] = (unsigned int *)10;
     temp_cost = {2, 2, 2, 2, 2, 1, 2, 2, 2};
     Tile fort("Fort", temp_cost, temp_stats);
     all_tiles[65] = fort;
-
     temp_stats[0] = (unsigned int *)0;
     temp_stats[1] = (unsigned int *)0;
     temp_stats[2] = (unsigned int *)0;
@@ -898,7 +865,6 @@ void Game::baseTiles(){
     temp_cost = {2, 2, 2, 3, 2, 1, 2, 2, 2};
     Tile snow("Snow", temp_cost, temp_stats);
     all_tiles[70] = snow;
-
     temp_cost = {4, 3, 4, 0, 0, 1, 0, 3, 3};
     Tile glacier("Glacier", temp_cost, temp_stats);
     all_tiles[71] = glacier;
@@ -906,7 +872,6 @@ void Game::baseTiles(){
 
 void Game::baseUnits(){
     manager.addEntity();
-    // Entity current_unit;
     Unit_stats temp;
     //hp,str,mag,skl,spd,luck,def,res,con,move 
     temp = {17,  6,  2,  7,  7,   7,  4,  5,  6, 5};
@@ -1007,7 +972,7 @@ void Game::baseUnits(){
     temp = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
     manager.getEntities().back()->getComponent<UnitComponent>().setGrowths(temp);
     manager.getEntities().back()->getComponent<UnitComponent>().setExp(400);
-    all_units["Silou"] = manager.getEntities().size() - 1; // index or something doesnt work.
+    all_units["Silou"] = manager.getEntities().size() - 1;
 
     manager.addEntity();
     temp = {15,  4,  5,  7,  6,   8,  4,  6,  5, 5};
