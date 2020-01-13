@@ -28,7 +28,6 @@ class Game {
         std::stack <int> unit_entities;
 
     public:
-
         Game();
         ~Game();
 
@@ -57,11 +56,9 @@ class Game {
         static Manager manager;
         static Settings settings;
 
-        void baseUnits(); // generates the base units.
-        void baseWeapons(); // this generates the basic weapons and stats.
-        void baseTiles(); // this generates the basic tiles.
-
-
+        void baseUnits();
+        void baseWeapons();
+        void baseTiles();
 };
 
 #endif /* GAME_HPP */
