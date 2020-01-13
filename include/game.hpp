@@ -1,13 +1,14 @@
 #ifndef GAME_HPP
 #define GAME_HPP
 
-#include <stdio.h>
+#include "shared.hpp"
 #include "SDL2/SDL.h"
 #include "SDL2/SDL_image.h"
 #include "SDL2/SDL_ttf.h"
-#include "shared.hpp"
 #include "ECS.hpp"
 #include "map.hpp"
+#include "weapon.hpp"
+#include "tile.hpp"
 
 struct KeyboardInputMap {
     std::vector<SDL_Scancode> moveright{SDL_SCANCODE_RIGHT, SDL_SCANCODE_D, SDL_SCANCODE_L};

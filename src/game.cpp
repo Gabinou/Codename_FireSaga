@@ -1,11 +1,4 @@
-#include <stdio.h>
 #include "game.hpp"
-#include "shared.hpp"
-#include "SDL2/SDL.h"
-#include "SDL2/SDL_image.h"
-#include "SDL2/SDL_ttf.h"
-#include "map.hpp"
-#include "tile.hpp"
 #include "spritecomponent.hpp"
 #include "positioncomponent.hpp"
 #include "arrowcomponent.hpp"
@@ -13,7 +6,6 @@
 #include "keyboardcontroller.hpp"
 #include "gamepadcontroller.hpp"
 #include "unitcomponent.hpp"
-#include "weapon.hpp"
 
 Map * mapp;
 
