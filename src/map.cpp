@@ -50,10 +50,6 @@ void Map::loadTiles() {
         texturename = "..//assets//" + all_tiles[tileindex].getName() + "_" + std::to_string(unique_textures[i]) + ".png";
         textures[unique_textures[i]] = loadTexture(texturename.c_str());
     }
-    // dirt = loadTexture("..//assets//dirt.png");
-    // grass = loadTexture("..//assets//grass.png");
-    // water = loadTexture("..//assets//water.png");
-    // tree = loadTexture("..//assets//tree.png");
 }
 
 void Map::loadOverlays() {

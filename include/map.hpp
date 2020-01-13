@@ -52,18 +52,14 @@ class Map {
 
         std::string overlay_mode = "";
 
-        SDL_Texture * dirt;
-        SDL_Texture * grass;
-        SDL_Texture * water;
-        SDL_Texture * tree;
         SDL_Texture * move;
         SDL_Texture * attack;
         SDL_Texture * heal;
+        std::unordered_map<int, SDL_Texture *> textures;
         std::vector<int> unique_textures;
         std::vector<SDL_Texture *> overlays{NULL, NULL, NULL};
         std::string ss_looping = "linear";
 
-        std::unordered_map<int, SDL_Texture *> textures;
 
         Entity_ptr_matrix entitymap;
 };

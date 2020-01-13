@@ -28,7 +28,7 @@ class UnitComponent : public Component {
         unsigned int exp;
         std::string name;
         std::string class_name;
-        // struct ::inventory_item equipment[7], weapons[3], items[3];
+        Inventory_item equipment[7], weapons[3], items[3];
     public:
 
         UnitComponent() = default;

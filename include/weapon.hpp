@@ -12,8 +12,7 @@
 * \brief Weapon class. Not the one in the inventory, just the immutable weapon data.
 */
 /// \class weapon
-/// \brief Weapon class. Implemented to be as light as possible.
-/// All unsigned variables cannot be negative.
+/// \brief Weapon class.
 class Weapon {
     private:
         Weapon_stats stats;
@@ -50,9 +49,6 @@ class Weapon {
 * \brief Contains all instances of weapons.
 *  Uses the weapon's name as std::unordered_map's key.
 *  Are immutable. Should never be changed in game.
-*  Instead, the inventory_item instances contains the
-*  number of times the item was used. If it is equal to
-*  the item's use, the item is destroyed.
 */
 extern std::unordered_map<std::string, Weapon> all_weapons;
 
