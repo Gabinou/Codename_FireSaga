@@ -113,6 +113,8 @@ void Game::setState(Entity & setting_entity, std::string new_state) {
                 std::fill(temp_moveable2[i].begin(), temp_moveable2[i].end(), 1);
             }
 
+            // manager.getEntities()[unit_entities.top()]->getComponent<UnitComponent>().get
+
             temp_moveable3 = mapp->makeMvtCostmap("riders_slow");
 
             std::vector<std::vector<int>> movemapp = movemap(temp_moveable3, start, unit_move, "matrix"); // movemap algo is slow.

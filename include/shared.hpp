@@ -148,7 +148,6 @@ struct Equipped {
     //Index in big array of all weapons? Or pointer to weapon?
 };
 
-
 struct Movement_cost {
     unsigned char foot_slow; // fencer, mousquetaire, duelist, lord, duke, archer, marksman, mercenary, hero, trooper
     unsigned char foot_fast; // pickpocket thief assassin, demon
