@@ -4,11 +4,8 @@
 #include "ECS.hpp"
 #include "game.hpp"
 #include "map.hpp"
-#include "textcomponent.hpp"
-
 
 class KeyboardController : public Component {
-
     private:
         Entity * textboxptr;
         PositionComponent * positioncomponent;

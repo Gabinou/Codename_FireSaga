@@ -11,6 +11,7 @@
 #include "SDL2/SDL_ttf.h"
 #include "linalg.hpp"
 
+
 /*! \file shared.hpp
 * \brief Shared data.
 */
