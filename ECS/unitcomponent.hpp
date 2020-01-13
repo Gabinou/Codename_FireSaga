@@ -122,11 +122,9 @@ class UnitComponent : public Component {
             unsigned char unit_power = 0;
             unsigned char wpn_dmg = temp_wpn.might;
 
-            if (temp_wpn.dmg_type == 0) {
-                // Physical attack_damage.
+            if (temp_wpn.dmg_type == 0) { // Physical dmg.
                 unit_power = current_stats.str;
-            } else {
-                // Magical attack_damage.
+            } else { // Magical dmg.
                 unit_power = current_stats.mag;
             };
 
@@ -188,13 +186,11 @@ class UnitComponent : public Component {
         }
 
         bool retaliation(const Entity & enemy) {
-            // int unit_position[2] = {entity->getComponent<PositionComponent>().getPos()[0], entity->getComponent<PositionComponent>().getPos()[1]};
             int * unit_position;
             int * enemy_position;
             unit_position = entity->getComponent<PositionComponent>().getPos();
             enemy_position = enemy.getComponent<PositionComponent>().getPos();
             unsigned char distance = std::abs(enemy_position[0] - unit_position[0]) + std::abs(enemy_position[1] - unit_position[1]);
-            // printf("Distance %d \n", distance);
             bool retaliates = false;
 
             for (int i = 0; i < 3; i++) {
@@ -250,10 +246,8 @@ class UnitComponent : public Component {
             printf("%s attacks %s\n", name, enemy.getComponent<UnitComponent>().getName());
             bool unit_hits = (getRN() < combat_hit(enemy));
             bool unit_crits = (getRN() < combat_critical(enemy));
-            // printf("%s crits %d \n", name, unit_crits);
-            // printf("%d crit chance \n", combat_critical(enemy));
             /* *DESIGN QUESTION* Should a random number always be rolled for crits, even if the hit doesn't connect?
-            * I think so. Always same number of rand rolled.
+            * I think so. Always same number of RN rolled.
             * But what about crit animations? Should crit animations be shown to miss? Fire Emblem thinks not. Me too.
             */
             // unit.take_damage( -= combat_damage(enemy, unit_crits);
@@ -285,14 +279,6 @@ class UnitComponent : public Component {
                 enemy.getComponent<UnitComponent>().attack(*entity);
             };
         }
-
-        // void write(std::string filename) {
-        //     FILE * fp;
-        //     fp = fopen(filename.c_str(), "w+");
-        //     fprintf(fp, name);
-        //     fprintf(fp, "Base stats, %d,", base_stats.hp);
-        //     fclose(fp);
-        // }
 
         void write(const char * filename) {
             FILE * fp;
