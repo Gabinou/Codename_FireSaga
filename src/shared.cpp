@@ -42,11 +42,8 @@ SDL_Texture * textToTexture(std::string textureText, SDL_Color textColor, TTF_Fo
         if (texture == NULL) {
             printf("Unable to create texture from rendered text! SDL Error: %s\n", SDL_GetError());
         }
-
-        //Get rid of old surface
-        SDL_FreeSurface(textsurface);
+        SDL_FreeSurface(textsurface); //Get rid of old surface
     }
-
     return (texture);
 }
 
@@ -70,7 +67,7 @@ int h_manhattan (int start[], std::vector<int> end){
     return(abs(start[0] - end[0]) + abs(start[1] - end[1]));
 }
 
-double  h_euclidean (int start[], int end[]){
+double h_euclidean (int start[], int end[]){
     // Slower. More accurate.
     return(std::sqrt(pow(start[0] - end[0], 2.0) + pow(start[1] - end[1], 2.0)));
 }
@@ -312,119 +309,6 @@ std::vector<std::vector<int>> A_star(std::vector<std::vector<int>> map, int star
     }
     return(path);
 }
-
-// std::vector<std::vector<int>> A_star_node(std::vector<std::vector<int>> map, int start[], int end[], std::string mode){
-//     // Arrays containing points are arrays:
-//     // [0-1] = point [2] = f value [3-4] previous point.
-//     // std::vector<std::vector<int>> openlist;
-//     // std::vector<std::vector<int>> closedlist;
-//     // std::vector<int> current;
-//     // openlist.push_back({start[0], start[1], 0, 0, 0, 0});
-//     // current = openlist.back();  
-//     int swap_index;
-//     int inclosedlist_index;
-//     int inopenlist_index;
-//     int cost;
-//     int g_neighbor;
-//     int h_neighbor;
-
-//     struct node{
-//         int x;
-//         int y;
-//         int h;
-//         int g;
-//         int parent_x;
-//         int parent_y;
-//     };
-
-
-//     std::vector<node> open, closed;
-//     node current, neighbor;
-//     current.x = start[0];
-//     current.y = start[1];
-//     open.push_back(current);
-//     int index[2] = {-1, 1};
-
-//     while((current.x != end[0]) || (current.y != end[1])){
-//         // printf("%d %d \n", end[0], end[1]);
-//         current = open.back();  
-//         // printf("current: %d %d \n", current[0], current[1]);
-//         closed.push_back(current);
-//         if ((current.x == end[0]) && (current.y == end[1])){
-//             break;
-//         } else {
-//             open.pop_back();
-//         }
-
-//         // neighborxp[0] = std::min(255, current[0] + 1);
-//         // neighborxp[1] = current[1];
-//         // neighborxm[0] = std::max(0, current[0] - 1);
-//         // neighborxm[1] = current[1];
-//         // neighboryp[0] = current[0];
-//         // neighboryp[1] = std::min(255, current[1] + 1);
-//         // neighborym[0] = current[0];
-//         // neighborym[1] = std::max(0, current[1] - 1);
-
-//         // neighbors[0] = &neighborxp;
-//         // neighbors[1] = &neighborxm;
-//         // neighbors[2] = &neighboryp;
-//         // neighbors[3] = &neighborym;
-
-//         for(int i = 0; i < 2; i++) {
-//             for(int j = 0; j < 2; j++) {
-//                 neighbor.x = std::min(std::max(current.x+((index[i]+index[j])/2),0), int(map.size()-1));
-//                 neighbor.y = std::min(std::max(current.y+((index[i]-index[j])/2),0), int(map[0].size()-1));
-
-//             if (map[neighbor.x][neighbor.y] > 0){
-//                 inopenlist_index = find_row({neighbor.x, neighbor.y}, open);
-//             //     inclosedlist_index = find_row(*neighbors[i], closedlist);
-//             //     h_neighbor = h_manhattan(*neighbors[i], end);
-
-//             //     g_neighbor = current[2] + map[(*neighbors[i])[0]][(*neighbors[i])[1]];
-
-//             //     // printf("neighbor: %d %d \n", (*neighbors[i])[0], (*neighbors[i])[1]);
-//             //     // printf("g_neighbor: %d \n", g_neighbor);
-//             //     if (inopenlist_index > 0) {
-//             //         // printf("found open: %d %d \n", openlist[inopenlist_index][0], openlist[inopenlist_index][1]);
-//             //         // printf("g: %d %d \n", g_neighbor, openlist[inopenlist_index][2]);
-//             //         if (g_neighbor < openlist[inopenlist_index][2]) {
-//             //             // printf("erase open\n");
-//             //             openlist.erase(openlist.begin() + inopenlist_index);
-//             //         }
-//             //     }
-//             //     if (inclosedlist_index > 0) {
-//             //         // printf("found closed: %d %d \n", closedlist[inclosedlist_index][0], closedlist[inclosedlist_index][1]);
-//             //         // printf("g: %d %d \n", g_neighbor, closedlist[inclosedlist_index][2]);
-//             //         if (g_neighbor < closedlist[inclosedlist_index][2]) {
-//             //             // printf("erase close\n");
-//             //             closedlist.erase(closedlist.begin() + inclosedlist_index);
-//             //         }
-//             //     }
-//             //     if ((inopenlist_index < 0) && (inclosedlist_index < 0)) {
-//             //         openlist.push_back({(*neighbors[i])[0],(*neighbors[i])[1], g_neighbor, h_neighbor + g_neighbor, current[0], current[1]});
-//             //     }
-//             //     if (openlist.size()>1) {
-//             //         for (swap_index = (openlist.size()-1); swap_index >= 1; swap_index--) {
-//             //             if (openlist[swap_index-1][3] < openlist[swap_index][3]) {
-//             //                 std::iter_swap(openlist.begin() + swap_index - 1, openlist.begin() + swap_index);
-//             //             }
-//             //         }
-//                 }
-//             }
-//         }
-//     }
-//     std::vector<std::vector<int>> path;
-//     // path.push_back(closedlist.back());
-//     // closedlist.pop_back();
-//     // while (!closedlist.empty()){
-//     //     if ((closedlist.back()[0] == path.back()[4]) && (closedlist.back()[1] == path.back()[5])) {
-//     //         path.push_back(closedlist.back());
-//     //     }
-//     //     closedlist.pop_back();
-//     // }
-//     return(path);
-// }
-
 
 void permutations_binary(int len, int num_0, int out[], int i) {
 // cannot be used for pathfinding.
@@ -761,80 +645,14 @@ std::mt19937 mt(1899);
 std::uniform_int_distribution<char> dist(0, 100); //*DESIGN QUESTION* What should be the minimum and maximum probabilities?
 #endif /* DOXYGEN_SHOULD_SKIP_THIS */
 
-unsigned char id = 0; //Number of objects. I think this is unecessary.
-
-char unit_stats[][14] = {"HP", "Str", "Mag", "Skill", "Speed", "Luck", "Def", "Res", "Con", "Move", "WpnLvl"};
-/*! \var char unit_stats
-* \brief Unit Statistics. <br>
-*   List, in order: <br>
-*  - HP: Hit Points. Unit health. Unit dies (forever) if unit.current_hp goes down to zero. <br>
-*  - Str: Strength. +1 Str -> +1 attack_damage. Refer to ... <br>
-*  - Mag: Magic. +1 Mag -> +1 attack_damage. Refer to ... <br>
-*  - Skill: Higher skill means higher accuracy and avoid. Refer to ...  <br>
-*  - Speed: Higher speeds lead to double strikes. Refer to ...  <br>
-*  - Luck: Increases hit, avoid, decreases enemy crit chance, etc. <br>
-*  - Def: Defense: +1 Def -> -1 Received Damage from physical attacks <br>
-*  - Res: Magic Resistance. +1 Red -> -1 Received Damage from magic attacks. <br>
-*  - Con: Constitution. Only a unit with a higher constitution can rescue another. Also weapons with weight higher than unit constitution weighs the unit down. Refer to... <br>
-*  - WpnLvl: Weapon level. Some games use this stat to check if characters can use weapons. <br>
-*  - Move: Distance, in squares, that a unit can move on the grid map. Refer to ... <br>
-*/
-char weapon_stats[][14] = {"dmg", "hit", "crit", "weight", "uses", "lvl"};
-/*! \var char weapon_stats
-* \brief Weapon Stats description: <br>
-*  - dmg: Damage. +1 dmg -> +1 attack_damage. Refer to... <br>
-*  - hit: Hit chance. % probability value to hit. Refer to ... <br>
-*  - crit: Crit chance. % probability value to crit. Refer to...  <br>
-*  - wpn_exp: Weapon experience. Base weapon experience for using the weapon. Refer to...  <br>
-*  - uses: Number of uses a weapon has before breaking.  <br>
-*  - range: distance in squares to which a unit can attack_damage with weapon.  <br>
-*  - lvl: Weapon level. Integer representing the weapon experience/level necessary to use the weapon. Refer to ...  <br>
-*/
-// char wpn_types[][12]  = {"swd", "lance", "axe", "bow", "mgc_wind", "mgc_fire", "mgc_thunder",  "mgc_dark",  "mgc_light", "staff"};
-/// \var char wpn_types
-/// \brief Weapon types.
-unsigned char wpn_exp_lvls[][14] = {25, 60, 100, 150};
-/*! \var char wpn_exp_lvls
-* \brief Weapon Experience levels <br>
-*  Weapon Experience necessary to go up a weapon level. <br>
-*/
-char statuses[][14] = {"healthy", "sleep", "poison", "stone", "berserk"};
-/*! \var char statuses
-*   \brief Statuses. Affects units for 5 turns each, except for stone, which is forever. *DESIGN QUESTION*
-*  - Healthy. <br>
-*  - Sleep: Unit cannot move, attack_damage, or retaliate. Unit wakes up after being attacked. Refer to ... <br>
-*  - Poison: Loses HP every turn. (How much?) <br>
-*  - Stone: Unit cannot move, attack_damage or retaliate. Can only be cured by the ... staff. <br>
-*  - Berserk. Unit attacks the weakest unit in range. Friend or foe. *DESIGN QUESTION* <br>
-*/
-
-char unit_classes[][24] = {"Lord", "Prince", "Princess", "Armor Knight", "Cavalier", "Pegasus Knight", "Wyvern Knight", "Axe Rider", "Lance Rider", "Sword Rider", "Mercernary", "Myrmidon", "Soldier", "Archer", "Mage", "Priest", "Priestess", "King", "Paladin", "Sniper", "General", "Bishop", "Hero", "Pirate", "Fighter", "Thief", "Troubadour", "Cleric", "Monk", "Shaman", "Dragon", "Dancer"};
-
-/// \var char unit_classes
-/// \brief Unit classes.
-/// Unit classes should not use smaller words that are included in other classes names.
-char unit_attributes[][24] = {"Flying", "Promoted", "Armored", "Mounted"};
-
-char all_unit_names[][14] = {"Marth", "Sheeda"};
-char all_weapon_names[][14] = {"Rapier", "Iron Sword", "Steel Sword", "Iron Lance", "Lame de Damas"};
-/// \var char all_unit_names
-/// \brief All Unit Names.
-
-char equipment_slots = 7;
-/// \var char equipment_slots
-/// \brief Total number of equipment slots. Only used for an inventory that mixes weapons and items.
-char item_slots = 4;
-/// \var char item_slots
-/// \brief Number of item slots. Separate from weapon slots.
-char weapon_slots = 4;
-/// \var weapon_slots
-/// \brief Number of weapon slots. Separate from weapon slots.
-
 /// \fn main
 /// \brief Main FEmaker algorithm.
 // std::unordered_map<std::string, Weapon> all_weapons;
 // std::unordered_map<string, struct inventory_item> inventory_items;
 std::unordered_map<std::string, Entity> all_units;
+
+std::unordered_map<std::string, Weapon> all_weapons;
+
 
 // std::unordered_map<string, unit_class> all_unit_classes;
 std::unordered_map<std::string, int> wpn_indexes;

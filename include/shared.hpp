@@ -167,18 +167,6 @@ struct Weapon_stats {
     bool dmg_type; // 0 is 1 physical. 1 magic.
 };
 
-struct Weapon_exp {
-    unsigned char lance = 0;
-    unsigned char axe = 0;
-    unsigned char sword = 0;
-    unsigned char staff = 0;
-    unsigned char demonic = 0;
-    unsigned char angelic = 0;
-    unsigned char elemental = 0;
-    unsigned char offhand = 0;
-    unsigned char shield = 0;
-};
-
 struct Weapon_type {
     bool lance = false;
     bool axe = false;
@@ -190,6 +178,13 @@ struct Weapon_type {
     bool offhand = false;
     bool shield = false;
 };
+
+struct Inventory_item {
+    std::string name;
+    unsigned int used = 0;
+};
+
+
 
 struct Movement_cost {
     unsigned char foot_slow;

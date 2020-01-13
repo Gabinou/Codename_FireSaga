@@ -1138,8 +1138,6 @@ void Game::init(const char * title, int xpos, int ypos, int width, int height, b
     manager.getEntities()[all_units["Silou"]]->addGroup(manager.groupUnits);
     cursor.addGroup(manager.groupUI);
 
-    // cursor.getComponent<SpriteComponent>().hide();
-
     this->setState("map");
     
 };
@@ -1176,18 +1174,17 @@ std::vector<Entity *> & uxs = Game::manager.getGroup(Game::manager.groupUI);
 void Game::render() {
     SDL_RenderClear(renderer);
     // Add stuff to render. Paint the background First.
-    // SDL_RenderCopy(renderer, playerTex, NULL, &destR);
-    // textbox.destroy();
+
     mapp->drawMap();
-    // manager.draw();
+
     for (auto& u : units) {
-        // printf("unit\n");
         u->draw();
     }
+
     for (auto& u : uxs) {
-        // printf("ux\n");
         u->draw();
     }
+
     SDL_RenderPresent(renderer);
 }
 void Game::clean() {
