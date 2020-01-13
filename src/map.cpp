@@ -1,5 +1,16 @@
 #include "map.hpp"
 
+Map::Map() {
+    loadOverlays();
+    initVars();
+}
+
+Map::Map(const short unsigned int width, const short unsigned int height) : Map() {
+    setTilesize(width, height);
+    srcrect.w = destrect.w = width;
+    srcrect.h = destrect.h = height;
+}
+
 void Map::setTilesize(const short int unsigned width, const short int unsigned height) {
     tilesize[0] = width;
     tilesize[1] = height;
@@ -80,22 +91,10 @@ void Map::initVars() {
     entitymap = temp;
 }
 
-Map::Map() {
-    loadOverlays();
-    initVars();
-}
-
-Map::Map(const short unsigned int width, const short unsigned int height) : Map() {
-    setTilesize(width, height);
-    srcrect.w = destrect.w = width;
-    srcrect.h = destrect.h = height;
-}
-
 void Map::makeEntitymap(int row_size, int col_size){
     if (!made_entitymap) {
         Entity_ptr_matrix temp(row_size, std::vector<Entity*>(col_size));
         entitymap = temp;
-        // printf("entitymap size %d %d \n", entitymap.size(), entitymap[0].size());
         for (int row = 0; row < entitymap.size(); row++) {
             for (int col = 0; col < entitymap[row].size(); col++) {
                 entitymap[row][col] =  static_cast<Entity*>(nullptr);
@@ -114,38 +113,37 @@ void Map::loadTilemap(std::string filename) {
     makeEntitymap(row_size, col_size);
 }
 
-void Map::setList(std::string in_type, std::vector<std::vector<int>> in_list) {
-    if ((in_type == "heal") || (in_type == "heallist")){
-        heallist = in_list;
+void Map::setMap(std::string in_type, std::vector<std::vector<int>> in_map) {
+    if ((in_type == "heal") || (in_type == "healmap")){
+        healmap = in_map;
         if (overlay_mode.find("heal") == std::string::npos) {
             overlay_mode.append("heal");
         }
     }
-    if ((in_type == "attack") || (in_type == "attacklist")){
-        attacklist = in_list;
+    if ((in_type == "attack") || (in_type == "attackmap")){
+        attackmap = in_map;
         if (overlay_mode.find("attack") == std::string::npos) {
             overlay_mode.append("attack");
         }
     } 
-    if ((in_type == "move") || (in_type == "movelist")){
-        movelist = in_list;
+    if ((in_type == "move") || (in_type == "movemap")){
+        movemap = in_map;
         if (overlay_mode.find("move") == std::string::npos) {
             overlay_mode.append("move");
         }
     } 
 }
 
-void Map::clearLists() {
-    attacklist.clear();
-    movelist.clear();
-    heallist.clear();
+void Map::clearmaps() {
+    attackmap.clear();
+    movemap.clear();
+    healmap.clear();
     overlay_mode = "";
 }
 
 void Map::drawMap() {
     int tile_ind = 0;
-    // This loop cache friendly.
-    for (int row = 0; row < tilemap.size(); row++) {
+    for (int row = 0; row < tilemap.size(); row++) {// This loop cache friendly.
         for (int col = 0; col < tilemap[row].size(); col++) {
             tile_ind = tilemap[row][col];
             destrect.x = (col + 1) * tilesize[0];
@@ -154,17 +152,17 @@ void Map::drawMap() {
 
             if (show_overlay) {
                 if ((overlay_mode.find("move") != std::string::npos) && (overlays[0] != NULL)) {
-                    if (movelist[row][col] == 1) {
+                    if (movemap[row][col] == 1) {
                         SDL_RenderCopy(Game::renderer, overlays[0], &srcrect, &destrect);
                     }
                 }
                 if ((overlay_mode.find("attack") != std::string::npos)  && (overlays[1] != NULL)) {
-                    if (attacklist[row][col] == 1) {
+                    if (attackmap[row][col] == 1) {
                         SDL_RenderCopy(Game::renderer, overlays[1], &srcrect, &destrect);
                     }
                 }
                 if ((overlay_mode.find("heal") != std::string::npos) && (overlays[2] != NULL)) {
-                    if (heallist[row][col] == 1) {
+                    if (healmap[row][col] == 1) {
                         SDL_RenderCopy(Game::renderer, overlays[2], &srcrect, &destrect);
                     }
                 }

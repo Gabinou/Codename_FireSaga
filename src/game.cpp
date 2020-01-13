@@ -129,9 +129,9 @@ void Game::setState(Entity & setting_entity, std::string new_state) {
             std::vector<std::vector<int>> movemapp = movemap(temp_moveable3, start, unit_move, "matrix"); // movemap algo is slow.
             std::vector<std::vector<int>> attackmapp = attackmap(movemapp, start, unit_move, 1, "matrix"); // movemap algo is slow.
 
-            mapp->setList("move", movemapp);
+            mapp->setMap("move", movemapp);
             // mapp->setList("attack", attackmapp);
-            mapp->setList("attack", attackmapp);
+            mapp->setMap("attack", attackmapp);
             mapp->showOverlay();
             // plot2Dvector(movemapp);
             // plot2Dvector(attackmapp);

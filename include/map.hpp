@@ -16,6 +16,7 @@ class Map {
         Map();
         ~Map();
         Map(const short unsigned int width, const short unsigned int height);
+
         void loadTiles();
         void initVars();
         void loadOverlays();
@@ -32,29 +33,27 @@ class Map {
         void moveTile(int x, int y, int new_x, int new_y);
         Entity * getTile(int x, int y);
 
-        void setList(std::string in_type, std::vector<std::vector<int>> in_list);
-        void clearLists();
+        void setMap(std::string in_type, std::vector<std::vector<int>> in_map);
+        void clearmaps();
 
         void setOverlaymode(std::string in_mode);
         void showOverlay();
         void hideOverlay();
         std::vector<std::vector<int>> makeMvtCostmap(std::string unitmovetype);
+
     private:
         int tilesize[2];
         int frames = 10, speed = 50;
         bool show_overlay = false;
         bool made_entitymap = false;
 
-        std::vector<std::vector<int>> movelist, attacklist, heallist;
+        std::vector<std::vector<int>> movemap, attackmap, healmap;
         std::vector<std::vector<int>> tilemap;
 
         SDL_Rect srcrect, destrect;
 
         std::string overlay_mode = "";
 
-        SDL_Texture * move;
-        SDL_Texture * attack;
-        SDL_Texture * heal;
         std::unordered_map<int, SDL_Texture *> textures;
         std::vector<int> unique_textures;
         std::vector<SDL_Texture *> overlays{NULL, NULL, NULL};
