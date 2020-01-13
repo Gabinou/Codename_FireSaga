@@ -6,7 +6,6 @@
 #include "map.hpp"
 
 class GamepadController : public Component {
-
     private:
         PositionComponent * positioncomponent;
         Game * game;
@@ -41,7 +40,6 @@ class GamepadController : public Component {
             }
 
             return (false);
-
         }
 
         void init() override {
@@ -60,7 +58,6 @@ class GamepadController : public Component {
             positioncomponent = &entity->getComponent<PositionComponent>();
             inputmap = game->getGamepadInputMap();
             Manager & manager = entity->getManager();
-
         }
 
         int getHeldmove() {

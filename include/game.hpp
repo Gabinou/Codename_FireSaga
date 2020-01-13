@@ -46,8 +46,6 @@ struct GamepadInputMap {
     std::vector<SDL_GameControllerButton> minimap{SDL_CONTROLLER_BUTTON_Y};
     std::vector<SDL_GameControllerButton> faster{SDL_CONTROLLER_BUTTON_START};
     std::vector<SDL_GameControllerButton> pause{SDL_CONTROLLER_BUTTON_START};
-
-
 };
 
 class Game {
@@ -64,55 +62,8 @@ class Game {
         int tilesize[2];
         SDL_Window * window;
         std::string state;
-        // I think these should be used as stacks: the last created entity should be the first destroyed:
         std::stack <int> menu_entities;
         std::stack <int> unit_entities;
-
-        /* Possible states (make all letters lowercase when checking):
-        *       worldmap: Story exposition, small animations of units moving around,
-        *           maybe even player control sometimes?
-        *       map: Cursor traveling on the map. Main button configuration. Units fight.
-        *       unitmove: Unit found on map after checking accept.
-        *           Draws the unit move overlay, draws arrows on map, pathfinds,
-        *           Goes to unit menu if accept or back to map if cancel.
-        *       unitmenu: After moving unit, decide what to do.
-        *       items: s/t
-        *       attack: s/t
-        *       trade: s/t
-        *       options: Clicking accept on map. Then  goes into options submenues.
-        *       pause: Clicking pause. Reduces sounds. Makes the screen black.
-        *       minimap: Makes minimap appear on screen. Map control still enabled.
-        *           Goes to map if accept or cancel, or to other menus.
-        *       stats: Shows unit statistics screen. changes some buttons around.
-        *       introvideo: When start menu is idle too long.
-        *       startmenu: s/t. Submenus:
-        *           saves: where you can delete or load files, start new games, etc.
-        *           soundroom: play songs from the game.
-        *           options: s/t. Should also be accessible from the map.
-        *       conversation: s/t
-        *       battle: s/t
-        *       cutscene: for scripted events/battles.
-        *       gameover: s/t
-        *       preparation: s/t. Submenus:
-        *           placement: goes to the map and places units.
-        *           chooseunits: s/t
-        *           equipment: s/t
-        *           forge: s/t
-        *           storage: s/t
-        *           bonusexp: s/t
-        *       shop: s/t
-        *     State hierarchy:
-        *       map
-                    unitmove
-                    unitmenu
-                options
-                preparation:
-                    chooseunits
-                    equipment
-                    forge
-                    storage
-                    bonusexp
-        */
 
     public:
 
@@ -127,7 +78,6 @@ class Game {
         void clean();
 
         void setFontsize(int in_fontsize);
-
         int getFontsize();
 
         KeyboardInputMap getKeyboardInputMap();
@@ -135,7 +85,6 @@ class Game {
 
         void setState(Entity & in_entity, std::string new_state);
         void setState(const char * new_state);
-
         std::string getState();
 
         bool running();
