@@ -5,9 +5,9 @@
 #include "shared.hpp"
 #include "positioncomponent.hpp"
 
+// I want this to not be able to be used for RNG abuse, because fuck RNG abuse.
 
 class ArrowComponent : public Component {
-// I want this to not be able to be used for RNG abuse, because fuck RNG abuse.
     protected:
         SDL_Texture * texture;
         std::vector<SDL_Rect> srcrects = {{0, 0, 32, 32}, {32, 0, 32, 32}, {64, 0, 32, 32}}; // x,y,w,h
