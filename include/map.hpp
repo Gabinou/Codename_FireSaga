@@ -20,21 +20,23 @@ class Map {
         void loadTiles();
         void initVars();
         void loadOverlays();
+
         void loadTilemap(std::string filename);
+        std::vector<std::vector<int>> getTilemap();
+
         void drawMap();
         void makeEntitymap(int row_size, int col_size);
 
         void setTilesize(const short int unsigned width, const short int unsigned height);
         int * getTilesize() const;
 
-        std::vector<std::vector<int>> getTilemap();
         void setTile(int x, int y, Entity * in_entity);
         void removeTile(int x, int y);
         void moveTile(int x, int y, int new_x, int new_y);
         Entity * getTile(int x, int y);
 
         void setMap(std::string in_type, std::vector<std::vector<int>> in_map);
-        void clearmaps();
+        void clearMaps();
 
         void setOverlaymode(std::string in_mode);
         void showOverlay();

@@ -1,4 +1,3 @@
-// Code créé par Gabriel Taillon
 #include "linalg.hpp"
 
 void plot2Darray(int array[][10], int imax, int jmax) {
@@ -33,7 +32,6 @@ std::vector<int> unique2D(std::vector<std::vector<int>> matrix) {
             }
             if (!found) {
                 uniques.push_back(matrix[i][j]);
-
             }
         }
     }

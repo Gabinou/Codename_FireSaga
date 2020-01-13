@@ -134,7 +134,7 @@ void Map::setMap(std::string in_type, std::vector<std::vector<int>> in_map) {
     } 
 }
 
-void Map::clearmaps() {
+void Map::clearMaps() {
     attackmap.clear();
     movemap.clear();
     healmap.clear();

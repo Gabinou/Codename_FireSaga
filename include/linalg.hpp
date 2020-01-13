@@ -9,5 +9,4 @@ extern void plot2Dvector(std::vector<std::vector<int>> matrix);
 extern std::vector<int> unique2D(std::vector<std::vector<int>> matrix);
 extern std::vector<std::vector<int>> matrix_plus(std::vector<std::vector<int>> matrix1, std::vector<std::vector<int>> matrix2, int sign = 1);
 
-
 #endif /* LINALG_HPP */

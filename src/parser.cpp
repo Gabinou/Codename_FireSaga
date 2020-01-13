@@ -1,13 +1,11 @@
 #include <parser.hpp>
 
-
 int findinchar(const char * string, const char * search) {
     for (int n = 0; string[n] != '\0'; n++) {
         if (string[n] == * search) {
             return (n);
         }
     }
-
     return (-1);
 }
 
@@ -98,23 +96,6 @@ int count(char * line, const char * counted = ",") {
     out++;
     return (out);
 }
-
-
-// Proxy (https://stackoverflow.com/questions/2717513/c-choose-function-by-return-type)
-// int x=f();
-// double x=f(); // different behaviour from above
-// by making f() return a proxy with an overloaded cast operator.
-
-// struct Proxy
-// {
-// operator double() const { return 1.1; }
-// operator int() const { return 2; }
-// };
-
-// Proxy f()
-// {
-// return Proxy();
-// }
 
 // How to use read_csv_vec for different datatypes?
 std::vector<std::vector<int>> readcsv_vec(const char * filename, const int header, const char * delim, const int out_size) {
