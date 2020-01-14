@@ -149,6 +149,32 @@ class UnitComponent : public Component {
             return (exp);
         }
 
+        unsigned char * getRange() const {
+            unsigned char * range;
+            unsigned char * right_range;
+
+            if (equipped.left > 0) {
+                range = all_weapons[equipment[equipped.left].name].getStats().range;
+            } else {
+                range[0] = 1;
+                range[1] = 1;
+            }
+
+            if (equipped.right > 0) {
+                right_range = all_weapons[equipment[equipped.left].name].getStats().range;
+                range[0] = std::min(right_range[0], range[0]);
+                range[1] = std::max(right_range[1], range[1]);
+            }
+
+            if ((equipped.left < 0) && (equipped.right < 0)) {
+                range[0] = 0;
+                range[1] = 0;
+            }
+
+            return (range);
+        }
+
+
         void setExp(const unsigned int in_exp) {
             exp = in_exp;
         }

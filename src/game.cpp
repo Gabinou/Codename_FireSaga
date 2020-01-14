@@ -107,9 +107,11 @@ void Game::setState(Entity & setting_entity, std::string new_state) {
             start[1] = start[1] - 1;
             std::vector<std::vector<int>> costmap;
             std::string unitmvttype;
-
+            unsigned char * range;
+            
 
             unitmvttype = manager.getEntities()[unit_entities.top()]->getComponent<UnitComponent>().getMvttype();
+            range = manager.getEntities()[unit_entities.top()]->getComponent<UnitComponent>().getRange();
 
             costmap = mapp->makeMvtCostmap(unitmvttype);
 
