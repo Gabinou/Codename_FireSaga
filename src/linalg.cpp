@@ -64,11 +64,25 @@ std::vector<std::vector<int>> matrix_or(std::vector<std::vector<int>> matrix1, s
 std::vector<std::vector<int>> matrix_edges(std::vector<std::vector<int>> matrix) {
     //both matrices should have the same shape
     std::vector<std::vector<int>> out = matrix;
-    for (int i = 1; i < (out.size() - 1); i++){
-        for (int j = 1; j < (out[i].size() - 1); j++){
-            abs(matrix[i-1][j] - matrix[i+1][j]);
-            abs(matrix[i][j-1] - matrix[i][j+1]);
-            // edge[i][j] = matrix[i-1][j] -
+    bool edge;
+    for (int i = 0; i < out.size(); i++){
+        for (int j = 0; j < out[i].size(); j++){
+            edge = false;
+            if (i != 0) {
+                edge = (abs(matrix[i-1][j] - matrix[i][j]) > 0);
+            }
+            if (j != 0) {
+                edge = (abs(matrix[i][j-1] - matrix[i][j]) > 0);
+            }
+            if (i != (out.size() - 1)) {
+                edge = (abs(matrix[i+1][j] - matrix[i][j]) > 0);
+            }
+            if (j != (out.size() - 1)) {
+                edge = (abs(matrix[i][j+1] - matrix[i][j]) > 0);
+            }
+            if (edge) {
+               out[i][j] = 1;
+            }
         }
     }
     return(out);
