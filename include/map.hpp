@@ -47,6 +47,8 @@ class Map {
         void setDangermode(std::string in_mode);
         void showDanger();
         void hideDanger();
+        void addDanger(std::vector<std::vector<int>> in_danger);
+        void subDanger(std::vector<std::vector<int>> in_danger);
 
     private:
         int tilesize[2];
@@ -67,6 +69,7 @@ class Map {
         std::unordered_map<int, SDL_Texture *> textures;
         std::vector<int> unique_textures;
         std::vector<SDL_Texture *> overlays{NULL, NULL, NULL};
+        std::vector<SDL_Texture *> dangers{NULL, NULL};
         std::string ss_looping = "linear";
 
 

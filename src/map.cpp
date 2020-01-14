@@ -70,6 +70,16 @@ void Map::loadOverlays() {
 }
 
 void Map::loadDanger() {
+    // dangers[0] = loadTexture("..//assets//tile_danger.png");
+    // dangers[1] = loadTexture("..//assets//danger_grid.png");
+}
+
+void Map::addDanger(std::vector<std::vector<int>> in_danger) {
+    dangermap = matrix_plus(dangermap, in_danger);
+}
+
+void Map::subDanger(std::vector<std::vector<int>> in_danger) {
+    dangermap = matrix_plus(dangermap, in_danger, -1);
 }
 
 void Map::setOverlaymode(std::string in_mode) {
