@@ -74,6 +74,9 @@ void Map::loadDanger() {
     // dangers[1] = loadTexture("..//assets//danger_grid.png");
 }
 
+void Map::loadGrid() {
+}
+
 void Map::addDanger(std::vector<std::vector<int>> in_danger) {
     dangermap = matrix_plus(dangermap, in_danger);
 }
@@ -190,6 +193,12 @@ void Map::drawMap() {
                     if (healmap[row][col] == 1) {
                         SDL_RenderCopy(Game::renderer, overlays[2], &srcrect, &destrect);
                     }
+                }
+            }
+
+            if (show_danger) {
+                if (dangermap[row][col] > 1) {
+                    SDL_RenderCopy(Game::renderer, dangers[0], &srcrect, &destrect);
                 }
             }
             // if (ss_looping == "pingpong") {

@@ -1,4 +1,5 @@
 #include "linalg.hpp"
+#include <stdlib.h>
 
 void plot2Darray(int array[][10], int imax, int jmax) {
     //Don't know how to pass array that at least do not have 1D known before hand
@@ -60,12 +61,14 @@ std::vector<std::vector<int>> matrix_or(std::vector<std::vector<int>> matrix1, s
     return(out);
 }
 
-std::vector<std::vector<int>> matrix_and(std::vector<std::vector<int>> matrix1, std::vector<std::vector<int>> matrix2) {
+std::vector<std::vector<int>> matrix_edges(std::vector<std::vector<int>> matrix) {
     //both matrices should have the same shape
-    std::vector<std::vector<int>> out = matrix1;
-    for (int i = 0; i < out.size(); i++){
-        for (int j = 0; j < out[i].size(); j++){
-            out[i][j] = out[i][j] && matrix2[i][j];
+    std::vector<std::vector<int>> out = matrix;
+    for (int i = 1; i < (out.size() - 1); i++){
+        for (int j = 1; j < (out[i].size() - 1); j++){
+            abs(matrix[i-1][j] - matrix[i+1][j]);
+            abs(matrix[i][j-1] - matrix[i][j+1]);
+            // edge[i][j] = matrix[i-1][j] -
         }
     }
     return(out);

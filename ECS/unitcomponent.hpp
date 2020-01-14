@@ -29,6 +29,7 @@ class UnitComponent : public Component {
         std::string name;
         std::string class_name;
         std::string mvt_type;
+        std::string army;
         Inventory_item equipment[7], weapons[3], items[3];
     public:
 
@@ -270,8 +271,17 @@ class UnitComponent : public Component {
         void setName(const std::string in_name) {
             name = in_name;
         }
+
         void setName(const char in_name) {
             name = in_name;
+        }
+
+        void setArmy(const std::string in_army) {
+            army = in_army;
+        }
+
+        void setArmy(const char in_army) {
+            army = in_army;
         }
 
         unsigned char avoid() {

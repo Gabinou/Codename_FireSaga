@@ -44,6 +44,10 @@ class Map {
         void showOverlay();
         void hideOverlay();
 
+        void loadGrid();
+        void showGrid();
+        void hideGrid();
+
         void setDangermode(std::string in_mode);
         void showDanger();
         void hideDanger();
@@ -55,6 +59,7 @@ class Map {
         int frames = 10, speed = 50;
         bool show_overlay = false;
         bool show_danger = false;
+        bool show_grid = false;
         bool made_entitymap = false;
 
         std::vector<std::vector<int>> movemap, attackmap, healmap;
