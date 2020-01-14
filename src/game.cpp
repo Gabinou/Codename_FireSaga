@@ -93,6 +93,11 @@ void Game::setState(Entity & setting_entity, std::string new_state) {
         }
         if (new_state == "unitmove") { // GREAT BIG FPS DROP HERE.
             std::vector<std::unique_ptr<Entity>> current_entities;
+            std::vector<std::vector<int>> costmap;
+            int start[2];
+            std::string unitmvttype;
+            unsigned char * range;
+
             for (int i = 0; i < manager.getEntities().size(); i++) {
                 if (manager.getEntities()[i].get() == (Entity *)&setting_entity) {
                     unit_entities.push(i);
@@ -100,14 +105,10 @@ void Game::setState(Entity & setting_entity, std::string new_state) {
             }
             int unit_move = manager.getEntities()[unit_entities.top()]->getComponent<UnitComponent>().getStats().move; //0 for horse.
 
-            int start[2];
             start[0] = manager.getEntities()[unit_entities.top()]->getComponent<PositionComponent>().getPos()[0]; // Start is (+1,+1)?
             start[1] = manager.getEntities()[unit_entities.top()]->getComponent<PositionComponent>().getPos()[1]; // Start is (+1,+1)?
             start[0] = start[0] - 1;
             start[1] = start[1] - 1;
-            std::vector<std::vector<int>> costmap;
-            std::string unitmvttype;
-            unsigned char * range;
 
             unitmvttype = manager.getEntities()[unit_entities.top()]->getComponent<UnitComponent>().getMvttype();
             range = manager.getEntities()[unit_entities.top()]->getComponent<UnitComponent>().getRange();
