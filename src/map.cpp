@@ -33,7 +33,7 @@ std::vector<std::vector<int>> Map::makeMvtCostmap(std::string unitmovetype){
     std::vector<std::vector<int>> costmap((int)tilemap.size(), std::vector<int> ((int)tilemap[0].size()));
     for (int row = 0; row < tilemap.size(); row++) {
         for (int col = 0; col < tilemap[row].size(); col++) {
-            tile_ind = tilemap[row][col];
+            tile_ind = tilemap[row][col]/10; // /10 eliminates one digit ont int's right
             costmap[row][col] = all_tiles[tile_ind].getCost().riders_slow;
         }
     }

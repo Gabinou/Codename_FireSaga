@@ -38,33 +38,43 @@ class UnitComponent : public Component {
             base_stats = in_bases;
             current_stats = in_bases;
             class_name = in_class;
+
             if ((class_name == "fencer") || (class_name == "mousquetaire") || (class_name == "duelist") || (class_name == "lord") || (class_name == "duke") || (class_name == "archer") || (class_name == "marksman") || (class_name == "mercenary") || (class_name == "hero") || (class_name == "trooper")) {
                 mvt_class = "foot_slow";
             }
+
             if ((class_name == "pickpocket") || (class_name == "thief") || (class_name == "assassin") || (class_name == "demon")) {
                 mvt_class = "foot_fast";
-            }            
+            }
+
             if ((class_name == "mage") || (class_name == "battlemage") || (class_name == "sage") || (class_name == "oracle") || (class_name == "priest") || (class_name == "cleric") || (class_name == "bishop") || (class_name == "incarnate") || (class_name == "possessed")) {
                 mvt_class = "mages";
             }
+
             if ((class_name == "cavalier") || (class_name == "archer rider") || (class_name == "marksman rider") || (class_name == "lord rider") || (class_name == "duke rider")) {
                 mvt_class = "riders_slow";
-            }            
+            }
+
             if ((class_name == "paladin") || (class_name == "troubadour")) {
                 mvt_class = "riders_fast";
             }
+
             if ((class_name == "pegasus knight") || (class_name == "angel")) {
                 mvt_class = "fliers";
             }
+
             if ((class_name == "knight") || (class_name == "general")) {
                 mvt_class = "armors";
             }
+
             if ((class_name == "corsair") || (class_name == "viking")) {
                 mvt_class = "pirates";
             }
+
             if ((class_name == "bandit") || (class_name == "viking")) {
                 mvt_class = "bandits";
             }
+
             name = in_name;
         }
 

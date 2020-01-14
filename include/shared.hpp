@@ -123,6 +123,7 @@ struct Weapon_stats {
     unsigned char range[2]; // [min_range, max_range]
     unsigned char hand[2]; //[1], [2] or [1,2]
     bool dmg_type; // 0 is 1 physical. 1 magic.
+    unsigned int price;
 };
 
 struct Weapon_type {
@@ -160,6 +161,7 @@ struct Movement_cost {
     unsigned char bandits; // bandit, ravager
 };
 
+extern std::unordered_map<std::string, unsigned char> Movement_cost2;
 
 struct Point {
     int x;

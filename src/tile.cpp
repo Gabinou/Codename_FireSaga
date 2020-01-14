@@ -15,6 +15,14 @@ Tile::Tile(const std::string in_name, const Movement_cost in_cost, unsigned int 
 	stats.heal = (unsigned int)in_stats[2];
 }
 
+Tile::Tile(const std::string in_name, const std::unordered_map<std::string, unsigned char> in_cost, unsigned int * in_stats[3]) {
+	name = in_name;
+	cost2 = in_cost;
+	stats.dodge = (unsigned int)in_stats[0];
+	stats.def = (unsigned int)in_stats[1];
+	stats.heal = (unsigned int)in_stats[2];
+}
+
 Movement_cost Tile::getCost(){
 	return(cost);
 }
