@@ -108,27 +108,21 @@ void Game::setState(Entity & setting_entity, std::string new_state) {
             std::vector<std::vector<int>> costmap;
             std::string unitmvttype;
             unsigned char * range;
-            
 
             unitmvttype = manager.getEntities()[unit_entities.top()]->getComponent<UnitComponent>().getMvttype();
             range = manager.getEntities()[unit_entities.top()]->getComponent<UnitComponent>().getRange();
 
             costmap = mapp->makeMvtCostmap(unitmvttype);
 
-            std::vector<std::vector<int>> movemapp = movemap(costmap, start, unit_move, "matrix"); // movemap algo is slow.
-            std::vector<std::vector<int>> attackmapp = attackmap(movemapp, start, unit_move, 1, "matrix"); // movemap algo is slow.
-
+            std::vector<std::vector<int>> movemapp = movemap(costmap, start, unit_move, "matrix");
             mapp->setMap("move", movemapp);
-            // mapp->setList("attack", attackmapp);
-            mapp->setMap("attack", attackmapp);
-            mapp->showOverlay();
 
-            // int arrow_ind = manager.getEntities().size();
-            // manager.addEntity();
-            // manager.getEntities()[menu_entities.top()]->addComponent<PositionComponent>();         
-            // // findpath();           
-            // drawpath();
-            // waitforotheraccept();            
+            if ((range[0] > 0) && (range[1] > 0)) {
+                std::vector<std::vector<int>> attackmapp = attackmap(movemapp, start, unit_move + range[0] - 1, range[1], "matrix");
+                mapp->setMap("attack", attackmapp);
+            }
+     
+            mapp->showOverlay();
         }
         if (new_state == "options") {
             
