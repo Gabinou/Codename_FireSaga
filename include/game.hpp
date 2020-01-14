@@ -9,6 +9,7 @@
 #include "map.hpp"
 #include "weapon.hpp"
 #include "tile.hpp"
+#include "linalg.hpp"
 
 class Game {
 

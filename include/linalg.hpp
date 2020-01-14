@@ -10,5 +10,6 @@ extern std::vector<int> unique2D(std::vector<std::vector<int>> matrix);
 extern std::vector<std::vector<int>> matrix_plus(std::vector<std::vector<int>> matrix1, std::vector<std::vector<int>> matrix2, int sign = 1);
 extern std::vector<std::vector<int>> matrix_or(std::vector<std::vector<int>> matrix1, std::vector<std::vector<int>> matrix2);
 extern std::vector<std::vector<int>> matrix_and(std::vector<std::vector<int>> matrix1, std::vector<std::vector<int>> matrix2);
+extern std::vector<std::vector<int>> matrix_edges(std::vector<std::vector<int>> matrix);
 
 #endif /* LINALG_HPP */

@@ -110,6 +110,7 @@ void Game::setState(Entity & setting_entity, std::string new_state) {
             start[0] = start[0] - 1;
             start[1] = start[1] - 1;
 
+
             unitmvttype = manager.getEntities()[unit_entities.top()]->getComponent<UnitComponent>().getMvttype();
             range = manager.getEntities()[unit_entities.top()]->getComponent<UnitComponent>().getRange();
 
@@ -117,6 +118,10 @@ void Game::setState(Entity & setting_entity, std::string new_state) {
 
             std::vector<std::vector<int>> movemapp = movemap(costmap, start, unit_move, "matrix");
             mapp->setMap("move", movemapp);
+
+            std::vector<std::vector<int>> edges = matrix_edges(movemapp);
+
+            plot2Dvector(edges);
 
             if ((range[0] > 0) && (range[1] > 0)) {
                 std::vector<std::vector<int>> attackmapp = attackmap(movemapp, start, unit_move + range[0] - 1, range[1], "matrix");

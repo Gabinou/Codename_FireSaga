@@ -62,7 +62,6 @@ std::vector<std::vector<int>> matrix_or(std::vector<std::vector<int>> matrix1, s
 }
 
 std::vector<std::vector<int>> matrix_edges(std::vector<std::vector<int>> matrix) {
-    //both matrices should have the same shape
     std::vector<std::vector<int>> out = matrix;
     bool edge;
     for (int i = 0; i < out.size(); i++){
