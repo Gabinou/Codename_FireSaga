@@ -105,19 +105,19 @@ class UnitComponent : public Component {
             equipped.right = -1;
         }
 
-        void equip(const unsigned int index, const std::string hand="right") {
+        void equip(const unsigned int index, const std::string hand = "right") {
             if (hand == "left") {
                 equipped.left = index;
             } else {
                 equipped.right = index;
             }
-        }        
+        }
 
-        void unequip(const std::string hand="right") {
+        void unequip(const std::string hand = "right") {
             if (hand == "left") {
-                equipped.left = index;
+                equipped.left = -1;
             } else {
-                equipped.right = index;
+                equipped.right = -1;
             }
         }
 
@@ -194,11 +194,13 @@ class UnitComponent : public Component {
 
         unsigned char attack_damage() {
             unsigned char unit_power = 0;
-            unsigned char wpn_dmg = temp_wpn.might;
+            unsigned char wpn_dmg;
 
             if (temp_wpn.dmg_type == 0) { // Physical dmg.
+                wpn_dmg = temp_wpn.Pmight;
                 unit_power = current_stats.str;
             } else { // Magical dmg.
+                wpn_dmg = temp_wpn.Mmight;
                 unit_power = current_stats.mag;
             };
 
@@ -211,15 +213,17 @@ class UnitComponent : public Component {
             unsigned char terrain_def = 0;
             unsigned char enemy_def = 0 ;
             unsigned char unit_power = 0;
-            unsigned char wpn_dmg = temp_wpn.might;
+            unsigned char wpn_dmg;
             unsigned char crit_factor = 1;
 
             if (temp_wpn.dmg_type == 0) {
                 // Physical attack_damage.
+                wpn_dmg = temp_wpn.Pmight;
                 unit_power = current_stats.str;
                 enemy_def = enemy.getComponent<UnitComponent>().current_stats.def;
             } else {
                 // Magical attack_damage.
+                wpn_dmg = temp_wpn.Mmight;
                 unit_power = current_stats.mag;
                 enemy_def = enemy.getComponent<UnitComponent>().current_stats.res;
             };

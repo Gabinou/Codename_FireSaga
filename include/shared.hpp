@@ -115,7 +115,8 @@ struct Combat_stats {
 };
 
 struct Weapon_stats {
-    unsigned char might;
+    unsigned char Pmight; //Physical might Pprot for shields.
+    unsigned char Mmight; //Magic might. Mprot for shields.
     Combat_stats combat;
     unsigned char wgt; // weight
     unsigned char uses;
