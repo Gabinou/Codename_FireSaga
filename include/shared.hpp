@@ -144,8 +144,8 @@ struct Inventory_item {
 };
 
 struct Equipped {
-    Inventory_item left;
-    Inventory_item right;
+    int left;
+    int right;
     //Index in big array of all weapons? Or pointer to weapon?
 };
 

@@ -12,7 +12,7 @@ extern std::unordered_map<std::string, int> all_units;
 
 class UnitComponent : public Component {
     private:
-        Equipped equipped;
+        Equipped equipped; // these are indices. -1 means no equipment.
         Weapon_stats temp_wpn;
         Unit_stats base_stats;
         Unit_state state;
@@ -28,7 +28,7 @@ class UnitComponent : public Component {
         unsigned int exp;
         std::string name;
         std::string class_name;
-        std::string mvt_class;
+        std::string mvt_type;
         Inventory_item equipment[7], weapons[3], items[3];
     public:
 
@@ -40,39 +40,39 @@ class UnitComponent : public Component {
             class_name = in_class;
 
             if ((class_name == "fencer") || (class_name == "mousquetaire") || (class_name == "duelist") || (class_name == "lord") || (class_name == "duke") || (class_name == "archer") || (class_name == "marksman") || (class_name == "mercenary") || (class_name == "hero") || (class_name == "trooper")) {
-                mvt_class = "foot_slow";
+                mvt_type = "foot_slow";
             }
 
             if ((class_name == "pickpocket") || (class_name == "thief") || (class_name == "assassin") || (class_name == "demon")) {
-                mvt_class = "foot_fast";
+                mvt_type = "foot_fast";
             }
 
             if ((class_name == "mage") || (class_name == "battlemage") || (class_name == "sage") || (class_name == "oracle") || (class_name == "priest") || (class_name == "cleric") || (class_name == "bishop") || (class_name == "incarnate") || (class_name == "possessed")) {
-                mvt_class = "mages";
+                mvt_type = "mages";
             }
 
             if ((class_name == "cavalier") || (class_name == "archer rider") || (class_name == "marksman rider") || (class_name == "lord rider") || (class_name == "duke rider")) {
-                mvt_class = "riders_slow";
+                mvt_type = "riders_slow";
             }
 
             if ((class_name == "paladin") || (class_name == "troubadour")) {
-                mvt_class = "riders_fast";
+                mvt_type = "riders_fast";
             }
 
             if ((class_name == "pegasus knight") || (class_name == "angel")) {
-                mvt_class = "fliers";
+                mvt_type = "fliers";
             }
 
             if ((class_name == "knight") || (class_name == "general")) {
-                mvt_class = "armors";
+                mvt_type = "armors";
             }
 
             if ((class_name == "corsair") || (class_name == "viking")) {
-                mvt_class = "pirates";
+                mvt_type = "pirates";
             }
 
             if ((class_name == "bandit") || (class_name == "viking")) {
-                mvt_class = "bandits";
+                mvt_type = "bandits";
             }
 
             name = in_name;
@@ -89,11 +89,47 @@ class UnitComponent : public Component {
             current_stats = in_bases;
         }
 
+        void equipL(const char index) {
+            equipped.left = index;
+        }
+
+        void unequipL() {
+            equipped.left = -1;
+        }
+
+        void equipR(const char index) {
+            equipped.right = index;
+        }
+
+        void unequipR() {
+            equipped.right = -1;
+        }
+
+        void equip(const unsigned int index, const std::string hand="right") {
+            if (hand == "left") {
+                equipped.left = index;
+            } else {
+                equipped.right = index;
+            }
+        }        
+
+        void unequip(const std::string hand="right") {
+            if (hand == "left") {
+                equipped.left = index;
+            } else {
+                equipped.right = index;
+            }
+        }
+
         void take_damage(const unsigned char damage) {
             printf("%s takes %d damage \n", name, damage);
             current_hp = std::max(0, current_hp - damage);
 
             if (current_hp == 0) {death();};
+        }
+
+        std::string getMvttype() {
+            return (mvt_type);
         }
 
         void heal(const unsigned char healing) {

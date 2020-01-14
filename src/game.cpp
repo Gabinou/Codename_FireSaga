@@ -17,7 +17,6 @@ Settings Game::settings;
 
 std::unordered_map<std::string, Weapon> all_weapons;
 std::unordered_map<int, Tile> all_tiles;
-std::unordered_map<std::string, unsigned char> Movement_cost2;
 
 Entity & cursor = Game::manager.addEntity(); // FOR SOME REASON, having an 2, 4, 8 entities.... breaks something in the unitmove->unitmenu states move
 Entity & player = Game::manager.addEntity();
@@ -106,21 +105,15 @@ void Game::setState(Entity & setting_entity, std::string new_state) {
             start[1] = manager.getEntities()[unit_entities.top()]->getComponent<PositionComponent>().getPos()[1]; // Start is (+1,+1)?
             start[0] = start[0] - 1;
             start[1] = start[1] - 1;
-            std::vector<std::vector<int>> temp_moveable2;
-            std::vector<std::vector<int>> temp_moveable3;
-            temp_moveable2 = mapp->getTilemap();
+            std::vector<std::vector<int>> costmap;
+            std::string unitmvttype;
 
-            for (int i = 0; i < temp_moveable2.size(); i++){
-                std::fill(temp_moveable2[i].begin(), temp_moveable2[i].end(), 1);
-            }
 
-            // manager.getEntities()[unit_entities.top()]->getComponent<UnitComponent>().get
+            unitmvttype = manager.getEntities()[unit_entities.top()]->getComponent<UnitComponent>().getMvttype();
 
-            temp_moveable3 = mapp->makeMvtCostmap("fliers");
-            // plot2Dvector(temp_moveable3);
-            // printf("unitmove %d \n", unit_move);
+            costmap = mapp->makeMvtCostmap(unitmvttype);
 
-            std::vector<std::vector<int>> movemapp = movemap(temp_moveable3, start, unit_move, "matrix"); // movemap algo is slow.
+            std::vector<std::vector<int>> movemapp = movemap(costmap, start, unit_move, "matrix"); // movemap algo is slow.
             std::vector<std::vector<int>> attackmapp = attackmap(movemapp, start, unit_move, 1, "matrix"); // movemap algo is slow.
 
             mapp->setMap("move", movemapp);
@@ -716,11 +709,11 @@ void Game::baseWeapons(){
     all_weapons["Glaurung"] = Glaurung;
     temp_wpn = {5, 70, 0, 0, 0, 5, 60, 7, {1,2}, {1,2}, 1, 1000};
     Weapon Morgoth("Morgoth", "demonic", temp_wpn);
-    Morgoth.setDescription("");
+    Morgoth.setDescription("Dark power, in the shape of a massive dark hammer. Makes craters wherever it strikes.");
     all_weapons["Morgoth"] = Morgoth;
     temp_wpn = {5, 70, 0, 0, 0, 5, 60, 7, {1,2}, {1,2}, 1, 1000};
     Weapon Gothmog("Gothmog", "demonic", temp_wpn);
-    Gothmog.setDescription("");
+    Gothmog.setDescription("Infernal whip of flame and shadows.");
     all_weapons["Gothmog"] = Gothmog;
     temp_wpn = {5, 70, 0, 0, 0, 5, 60, 7, {1,2}, {1,2}, 1, 1000};
     Weapon Fatalis("Fatalis", "demonic", temp_wpn);
@@ -729,59 +722,43 @@ void Game::baseWeapons(){
 }
 
 void Game::baseTiles(){
-    // dodge, def, heal
-    unsigned int * temp_stats[3] = {0, 0, 0};
+    unsigned int * temp_stats[3] = {0, 0, 0};// dodge, def, heal
 
-    Movement_cost2["foot_slow"] = 1;
-    Movement_cost2["foot_fast"] = 1;
-    Movement_cost2["mages"] = 1;
-    Movement_cost2["riders_slow"] = 1;
-    Movement_cost2["riders_fast"] = 1;
-    Movement_cost2["fliers"] = 1;
-    Movement_cost2["pirates"] = 1;
-    Movement_cost2["bandits"] = 1;
+    // Fliers always have 1 movement because they dismount inside.
     // foot_slow, foot_fast, mages, riders_slow, riders_fast, fliers, armors, pirates, bandits;
     Movement_cost temp_cost = {1, 1, 1, 1, 1, 1, 1, 1, 1};
-    //Tile plain("Plain", temp_cost, temp_stats);
-    Tile plain("Plain", Movement_cost2, temp_stats);
+    Tile plain("Plain", temp_cost, temp_stats);
     all_tiles[10] = plain;
     temp_stats[0] = (unsigned int *)10;
     temp_stats[1] = (unsigned int *)1;
-    Movement_cost2["foot_slow"] = 2;
     temp_cost = {2, 1, 2, 3, 2, 1, 3, 2, 2};
     Tile bush("Bush", temp_cost, temp_stats);
     all_tiles[11] = bush;
     temp_stats[0] = (unsigned int *)15;
     temp_stats[1] = (unsigned int *)2;
-    Movement_cost2["foot_slow"] = 3;
-    temp_cost = {3, 2, 3, 3, 3, 1, 3, 3, 3};
+    temp_cost = {3, 2, 3, 4, 3, 1, 3, 3, 3};
     Tile forest("Forest", temp_cost, temp_stats);
     all_tiles[12] = forest;
     temp_stats[0] = (unsigned int *)0;
     temp_stats[1] = (unsigned int *)0;
-    Movement_cost2["foot_slow"] = 0;
     temp_cost = {0, 0, 0, 0, 0, 1, 0, 0, 0};
     Tile thicket("Thicket", temp_cost, temp_stats);
     all_tiles[13] = thicket;
     temp_cost = {0, 0, 0, 0, 0, 1, 0, 0, 0};
     Tile snag("Snag", temp_cost, temp_stats);
     all_tiles[14] = snag;
-    Movement_cost2["foot_slow"] = 1;
     temp_cost = {1, 1, 1, 1, 1, 1, 1, 1, 1};
     Tile bridge("Bridge", temp_cost, temp_stats);
     all_tiles[15] = bridge;
-    Movement_cost2["foot_slow"] = 0;
     temp_cost = {0, 0, 0, 0, 0, 1, 0, 2, 0};
     Tile sea("Sea", temp_cost, temp_stats);
     all_tiles[20] = sea;
     temp_cost = {0, 0, 0, 0, 0, 1, 0, 3, 0};
     Tile lake("Lake", temp_cost, temp_stats);
     all_tiles[21] = lake;
-    Movement_cost2["foot_slow"] = 5;
     temp_cost = {5, 4, 5, 0, 0, 1, 0, 2, 4};
     Tile river("River", temp_cost, temp_stats);
     all_tiles[22] = river;
-    Movement_cost2["foot_slow"] = 0;
     temp_cost = {0, 0, 0, 0, 0, 1, 0, 0, 0};
     Tile waterfall("Waterfall", temp_cost, temp_stats);
     all_tiles[23] = waterfall;
@@ -791,7 +768,6 @@ void Game::baseTiles(){
 
     temp_stats[0] = (unsigned int *)15;
     temp_stats[1] = (unsigned int *)2;
-    Movement_cost2["foot_slow"] = 3;
     temp_cost = {3, 2, 3, 4, 3, 1, 4, 2, 2};
     Tile hill("hill", temp_cost, temp_stats);
     all_tiles[30] = hill;
@@ -881,6 +857,7 @@ void Game::baseTiles(){
     temp_stats[1] = (unsigned int *)0;
     temp_stats[2] = (unsigned int *)0;
     temp_cost = {0, 0, 0, 0, 0, 1, 0, 0, 0};
+    Movement_cost2["armors"] = 0;
     Tile castle("Castle", temp_cost, temp_stats);
     all_tiles[66] = castle;
 

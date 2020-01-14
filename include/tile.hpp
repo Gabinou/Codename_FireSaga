@@ -11,8 +11,8 @@ struct Tilestats {
 
 class Tile {
     private:
-        Movement_cost cost;
-        std::unordered_map<std::string, unsigned char> cost2;
+        Movement_cost cost_struct;
+        std::unordered_map<std::string, unsigned char> cost_map;
         Tilestats stats;
         std::string name;
     public:
@@ -20,9 +20,9 @@ class Tile {
         ~Tile();
 
         Tile(const std::string in_name, const Movement_cost in_cost, unsigned int * in_stats[3]);
-        Tile(const std::string in_name, const std::unordered_map<std::string, unsigned char> in_cost, unsigned int * in_stats[3]);
 
-        Movement_cost getCost();
+        Movement_cost getCoststruct();
+        std::unordered_map<std::string, unsigned char> getCostmap();
         std::string getName();
         Tilestats getStats();
 };
