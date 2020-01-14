@@ -69,8 +69,23 @@ void Map::loadOverlays() {
     overlays[2] = loadTexture("..//assets//tile_overlay_heal.png");
 }
 
+void Map::loadDanger() {
+}
+
 void Map::setOverlaymode(std::string in_mode) {
     overlay_mode = in_mode;
+}
+
+void Map::setDangermode(std::string in_mode) {
+    danger_mode = in_mode;
+}
+
+void Map::showDanger(){
+    show_danger = true;
+}
+
+void Map::hideDanger(){
+    show_overlay = false;
 }
 
 void Map::showOverlay(){

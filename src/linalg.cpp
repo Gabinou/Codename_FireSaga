@@ -48,3 +48,25 @@ std::vector<std::vector<int>> matrix_plus(std::vector<std::vector<int>> matrix1,
     }
     return(out);
 }
+
+std::vector<std::vector<int>> matrix_or(std::vector<std::vector<int>> matrix1, std::vector<std::vector<int>> matrix2) {
+    //both matrices should have the same shape
+    std::vector<std::vector<int>> out = matrix1;
+    for (int i = 0; i < out.size(); i++){
+        for (int j = 0; j < out[i].size(); j++){
+            out[i][j] = out[i][j] || matrix2[i][j];
+        }
+    }
+    return(out);
+}
+
+std::vector<std::vector<int>> matrix_and(std::vector<std::vector<int>> matrix1, std::vector<std::vector<int>> matrix2) {
+    //both matrices should have the same shape
+    std::vector<std::vector<int>> out = matrix1;
+    for (int i = 0; i < out.size(); i++){
+        for (int j = 0; j < out[i].size(); j++){
+            out[i][j] = out[i][j] && matrix2[i][j];
+        }
+    }
+    return(out);
+}

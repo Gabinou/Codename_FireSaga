@@ -20,9 +20,11 @@ class Map {
         void loadTiles();
         void initVars();
         void loadOverlays();
+        void loadDanger();
 
         void loadTilemap(std::string filename);
         std::vector<std::vector<int>> getTilemap();
+        std::vector<std::vector<int>> makeMvtCostmap(std::string unitmovetype);
 
         void drawMap();
         void makeEntitymap(int row_size, int col_size);
@@ -41,20 +43,26 @@ class Map {
         void setOverlaymode(std::string in_mode);
         void showOverlay();
         void hideOverlay();
-        std::vector<std::vector<int>> makeMvtCostmap(std::string unitmovetype);
+
+        void setDangermode(std::string in_mode);
+        void showDanger();
+        void hideDanger();
 
     private:
         int tilesize[2];
         int frames = 10, speed = 50;
         bool show_overlay = false;
+        bool show_danger = false;
         bool made_entitymap = false;
 
         std::vector<std::vector<int>> movemap, attackmap, healmap;
+        std::vector<std::vector<int>> dangermap;
         std::vector<std::vector<int>> tilemap;
 
         SDL_Rect srcrect, destrect;
 
         std::string overlay_mode = "";
+        std::string danger_mode = "";
 
         std::unordered_map<int, SDL_Texture *> textures;
         std::vector<int> unique_textures;
