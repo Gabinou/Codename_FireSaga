@@ -645,7 +645,48 @@ void Game::baseWeapons(){
     temp_wpn = {7, 0, 0, 0, 0, 0, 7, 8, 5, {1,1}, {1}, 0, 1000};
     Weapon flintlock("Flintlock", "offhand", temp_wpn);
     flintlock.setDescription("A gun!");
-    all_weapons["flintlock"] = flintlock;    
+    all_weapons["flintlock"] = flintlock;
+
+    temp_wpn = {7, 0, 0, 0, 0, 0, 7, 8, 5, {1,1}, {1}, 0, 1000};
+    Weapon shrunken_head("Shrunken Head", "trinket", temp_wpn);
+    shrunken_head.setDescription("");
+    all_weapons["shrunken_head"] = shrunken_head;        
+    temp_wpn = {7, 0, 0, 0, 0, 0, 7, 8, 5, {1,1}, {1}, 0, 1000};
+    Weapon crystal("Crystal", "trinket", temp_wpn);
+    crystal.setDescription("");
+    all_weapons["crystal"] = crystal;      
+    temp_wpn = {7, 0, 0, 0, 0, 0, 7, 8, 5, {1,1}, {1}, 0, 1000};
+    Weapon human_femur("Human femur", "trinket", temp_wpn);
+    human_femur.setDescription("");
+    all_weapons["human_femur"] = human_femur;        
+    temp_wpn = {7, 0, 0, 0, 0, 0, 7, 8, 5, {1,1}, {1}, 0, 1000};
+    Weapon void_fragment("Void fragment", "trinket", temp_wpn);
+    void_fragment.setDescription("");
+    all_weapons["void_fragment"] = void_fragment;
+    temp_wpn = {7, 0, 0, 0, 0, 0, 7, 8, 5, {1,1}, {1}, 0, 1000};
+    Weapon demon_fang("Demon fang", "trinket", temp_wpn);
+    demon_fang.setDescription("");
+    all_weapons["demon_fang"] = demon_fang;
+    temp_wpn = {7, 0, 0, 0, 0, 0, 7, 8, 5, {1,1}, {1}, 0, 1000};
+    Weapon angel_feather("Angel feather", "trinket", temp_wpn);
+    angel_feather.setDescription("");
+    all_weapons["angel_feather"] = angel_feather;
+    temp_wpn = {7, 0, 0, 0, 0, 0, 7, 8, 5, {1,1}, {1}, 0, 1000};
+    Weapon angel_hair("Angel hair", "trinket", temp_wpn);
+    angel_hair.setDescription("Golden strands of angel hair held up by a silver thread.");
+    all_weapons["angel_hair"] = angel_hair;
+    temp_wpn = {7, 0, 0, 0, 0, 0, 7, 8, 5, {1,1}, {1}, 0, 1000};
+    Weapon vial_of_light("Vial of light", "trinket", temp_wpn);
+    vial_of_light.setDescription("Light magically contained in glass. Shines brightest in darkness.");
+    all_weapons["vial_of_light"] = vial_of_light;       
+    temp_wpn = {7, 0, 0, 0, 0, 0, 7, 8, 5, {1,1}, {1}, 0, 1000};
+    Weapon glass_orb("Glass orb", "trinket", temp_wpn);
+    glass_orb.setDescription("Orb used to focus magical power.");
+    all_weapons["glass_orb"] = glass_orb;
+    temp_wpn = {7, 0, 0, 0, 0, 0, 7, 8, 5, {1,1}, {1}, 0, 1000};
+    Weapon war_horn("War horn", "trinket", temp_wpn);
+    war_horn.setDescription("Used to call for battle. Raise's close allies' combat abilities.");
+    all_weapons["war_horn"] = war_horn;    
 
     temp_wpn = {0, 12, 76, 0, 0, 0, 11, 25, 7, {1,2}, {1,2}, 1, 1000};
     Weapon ball_lightning("Ball lightning", "elemental", temp_wpn);
@@ -860,7 +901,6 @@ void Game::baseTiles(){
     temp_stats[1] = (unsigned int *)0;
     temp_stats[2] = (unsigned int *)0;
     temp_cost = {0, 0, 0, 0, 0, 1, 0, 0, 0};
-    Movement_cost2["armors"] = 0;
     Tile castle("Castle", temp_cost, temp_stats);
     all_tiles[66] = castle;
 

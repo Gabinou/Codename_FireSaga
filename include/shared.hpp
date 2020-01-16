@@ -137,6 +137,7 @@ struct Weapon_type {
     bool elemental = false;
     bool offhand = false;
     bool shield = false;
+    bool trinket = false;
 };
 
 struct Inventory_item {
