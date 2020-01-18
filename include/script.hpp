@@ -3,14 +3,6 @@
 
 #include "shared.hpp"
 
-//Script structure :
-//Dialog line: one person says one line.
-//Scene: contains all dialog lines, in order. Should also contain the animations? or at least point to them or something. Contains conditionals for dialog changes.
-//1 Chapter 1 script?
-//Scripts: contains in what chapter the scene occurs, or which event triggers the scene. Contains conditionals for triggering scenes.
-// the game should call unto the script to execute a scene, when it goes into. scene mode or something. The game should give some basic state information. According to the state, triggers a scene.
-//How to have dynamic dialogue ie changing dialog with gameplay? Dialog_lines could be dynamic and change according to input: char name, who died, who is alive, etc. Should scenes handle dialog linw modifications? Should I just go at it raw and write all dialog myself? Simpler, but conditions are hard to understand. I think having dynamic dialog actually makes the script more understandable in code.
-
 // I think Game should contain a struct containing its state from the point of view of the script.
 // What states of the game are important to the script?
 //      ->Characters alive or dead.
@@ -22,10 +14,6 @@ struct Script_state {
     std::unordered_map<std::string, bool> happened;
 };
 
-// Fist implementation: only two line switching, depending if someone is present or not.
-// NO FORGET THESE COMPLICATED THINGS. the objects are there, and other functions will manipulate them.
-
-
 struct Dialog_line {
     // How to make the line dynamic?
     std::string id;
@@ -34,8 +22,6 @@ struct Dialog_line {
 };
 
 class Scene {
-        // Should list of participants and deaths?
-        // How about having a list of conditionals?
     private:
         std::string id;
         std::unordered_map<std::string, Dialog_line> lines;
