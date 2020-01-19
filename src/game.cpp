@@ -94,39 +94,54 @@ void Game::setState(Entity & setting_entity, std::string new_state) {
         if (new_state == "unitmove") { // GREAT BIG FPS DROP HERE.
             std::vector<std::unique_ptr<Entity>> current_entities;
             std::vector<std::vector<int>> costmap;
+            std::vector<std::vector<int>> movemapp;
             int start[2];
             std::string unitmvttype;
-            unsigned char * range;
+            int unit_move;
+            unsigned char * range[2];
 
             for (int i = 0; i < manager.getEntities().size(); i++) {
                 if (manager.getEntities()[i].get() == (Entity *)&setting_entity) {
                     unit_entities.push(i);
                 }
             }
-            int unit_move = manager.getEntities()[unit_entities.top()]->getComponent<UnitComponent>().getStats().move; //0 for horse.
+            unit_move = manager.getEntities()[unit_entities.top()]->getComponent<UnitComponent>().getStats().move; //0 for horse.
 
             start[0] = manager.getEntities()[unit_entities.top()]->getComponent<PositionComponent>().getPos()[0]; // Start is (+1,+1)?
             start[1] = manager.getEntities()[unit_entities.top()]->getComponent<PositionComponent>().getPos()[1]; // Start is (+1,+1)?
             start[0] = start[0] - 1;
             start[1] = start[1] - 1;
 
-
             unitmvttype = manager.getEntities()[unit_entities.top()]->getComponent<UnitComponent>().getMvttype();
-            range = manager.getEntities()[unit_entities.top()]->getComponent<UnitComponent>().getRange();
+            range[0] = (unsigned char *)1; 
+            range[1] = (unsigned char *)1; 
+            // range = manager.getEntities()[unit_entities.top()]->getComponent<UnitComponent>().getRange();// THIS DOESNT WORK.
+            printf("%s\n", unitmvttype.c_str());
+            printf("%s\n", unitmvttype.c_str());
+            printf("%s\n", unitmvttype.c_str());
+            printf("%s\n", unitmvttype.c_str());
+            printf("%s\n", unitmvttype.c_str());
 
             costmap = mapp->makeMvtCostmap(unitmvttype);
+            plot2Dvector(costmap);
 
-            std::vector<std::vector<int>> movemapp = movemap(costmap, start, unit_move, "matrix");
+            printf("Move: %d \n", unit_move);
+
+            movemapp = movemap(costmap, start, unit_move, "matrix");
             mapp->setMap("move", movemapp);
+
+            // plot2Dvector(movemapp);
+
 
             std::vector<std::vector<int>> edges = matrix_edges(movemapp);
 
-            plot2Dvector(edges);
+            // plot2Dvector(edges);
+            printf("Range: %d %d \n", range[0], range[1]);
 
-            if ((range[0] > 0) && (range[1] > 0)) {
-                std::vector<std::vector<int>> attackmapp = attackmap(movemapp, start, unit_move + range[0] - 1, range[1], "matrix");
+            // if ((range[0] > 0) && (range[1] > 0)) {
+                std::vector<std::vector<int>> attackmapp = attackmap(movemapp, start, unit_move + (int)range[0] - 1, (int)range[1], "matrix");
                 mapp->setMap("attack", attackmapp);
-            }
+            // }
      
             mapp->showOverlay();
         }

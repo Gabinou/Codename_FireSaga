@@ -40,39 +40,39 @@ class UnitComponent : public Component {
             current_stats = in_bases;
             class_name = in_class;
 
-            if ((class_name == "fencer") || (class_name == "mousquetaire") || (class_name == "duelist") || (class_name == "lord") || (class_name == "duke") || (class_name == "archer") || (class_name == "marksman") || (class_name == "mercenary") || (class_name == "hero") || (class_name == "trooper")) {
+            if ((class_name == "Fencer") || (class_name == "Mousquetaire") || (class_name == "Duelist") || (class_name == "Lord") || (class_name == "Duke") || (class_name == "Archer") || (class_name == "Marksman") || (class_name == "Mercenary") || (class_name == "Hero") || (class_name == "Trooper")) {
                 mvt_type = "foot_slow";
             }
 
-            if ((class_name == "pickpocket") || (class_name == "thief") || (class_name == "assassin") || (class_name == "demon")) {
+            if ((class_name == "Pickpocket") || (class_name == "Thief") || (class_name == "Assassin") || (class_name == "Demon")) {
                 mvt_type = "foot_fast";
             }
 
-            if ((class_name == "mage") || (class_name == "battlemage") || (class_name == "sage") || (class_name == "oracle") || (class_name == "priest") || (class_name == "cleric") || (class_name == "bishop") || (class_name == "incarnate") || (class_name == "possessed")) {
+            if ((class_name == "Mage") || (class_name == "Battlemage") || (class_name == "Sage") || (class_name == "Oracle") || (class_name == "Priest") || (class_name == "Cleric") || (class_name == "Bishop") || (class_name == "Incarnate") || (class_name == "Possessed")) {
                 mvt_type = "mages";
             }
 
-            if ((class_name == "cavalier") || (class_name == "archer rider") || (class_name == "marksman rider") || (class_name == "lord rider") || (class_name == "duke rider")) {
+            if ((class_name == "Cavalier") || (class_name == "Archer rider") || (class_name == "Marksman rider") || (class_name == "Lord rider") || (class_name == "Duke rider")) {
                 mvt_type = "riders_slow";
             }
 
-            if ((class_name == "paladin") || (class_name == "troubadour")) {
+            if ((class_name == "Paladin") || (class_name == "Troubadour")) {
                 mvt_type = "riders_fast";
             }
 
-            if ((class_name == "pegasus knight") || (class_name == "angel")) {
+            if ((class_name == "Pegasus knight") || (class_name == "Angel")) {
                 mvt_type = "fliers";
             }
 
-            if ((class_name == "knight") || (class_name == "general")) {
+            if ((class_name == "Knight") || (class_name == "General")) {
                 mvt_type = "armors";
             }
 
-            if ((class_name == "corsair") || (class_name == "viking")) {
+            if ((class_name == "Corsair") || (class_name == "Viking")) {
                 mvt_type = "pirates";
             }
 
-            if ((class_name == "bandit") || (class_name == "viking")) {
+            if ((class_name == "Bandit") || (class_name == "Ravager")) {
                 mvt_type = "bandits";
             }
 
@@ -130,6 +130,7 @@ class UnitComponent : public Component {
         }
 
         std::string getMvttype() {
+            printf("insinde unitcomponent%s\n", mvt_type.c_str());
             return (mvt_type);
         }
 
