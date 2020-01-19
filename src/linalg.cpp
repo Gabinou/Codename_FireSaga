@@ -48,8 +48,13 @@ std::vector<std::vector<int>> tilesatdistance(int start[], int distance) {
     for (int dist = 0; dist < distance; dist++) {
         for (int i = 0; i <= 1; i++) {
             for (int j = 0; j <= 1; j++) {
-                temp_point[0] = start[0] + index[i]*dist;
-                temp_point[1] = start[1] + index[(1-i)]*(distance-dist);
+                if ((dist == 0) && (i == 1)) {
+                    temp_point[0] = start[0] + index[j]*(distance - dist);
+                    temp_point[1] = start[1] + index[i]*dist;
+                } else {
+                    temp_point[0] = start[0] + index[i]*dist;
+                    temp_point[1] = start[1] + index[j]*(distance - dist);
+                }
                 tiles_list.push_back(temp_point);
                 printf("%d %d \n", temp_point[0], temp_point[1]);
             }

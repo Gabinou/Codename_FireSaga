@@ -151,7 +151,7 @@ std::vector<std::vector<int>> attackmap(std::vector<std::vector<int>> movemap, i
     std::vector<std::vector<int>> edges;     
     std::vector<std::vector<int>> attackmap;
     bool add;
-    tilesatdistance(start , 2);
+    tilesatdistance(start, 1);
     edges = matrix_edges(movemap);
     // plot2Dvector(edges);
     
