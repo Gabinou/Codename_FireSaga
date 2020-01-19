@@ -86,7 +86,6 @@ std::vector<std::vector<int>> movemap(std::vector<std::vector<int>> map, int sta
     // Using the map, computes all moveable tiles.
     // outputs either a list of points, or a map of 1 and zeros.
     // Both outputs are 2D vectors.
-    
     struct node{
         int x;
         int y;
@@ -145,28 +144,36 @@ std::vector<std::vector<int>> movemap(std::vector<std::vector<int>> map, int sta
     return(movemap);
 }
 
-std::vector<std::vector<int>> attackmap(std::vector<std::vector<int>> movemap, int start[], int move, int attack, std::string mode){
+std::vector<std::vector<int>> attackmap(std::vector<std::vector<int>> movemap, int start[], int move, unsigned char range[2], std::string mode){
     // Using the movemap to computes all attackable tiles.
     // EXCLUDING moveable tiles.
-
+    // getchar();
+    std::vector<std::vector<int>> edges;     
     std::vector<std::vector<int>> attackmap;
+    bool add;
+    tilesatdistance(start , 2);
+    edges = matrix_edges(movemap);
+    // plot2Dvector(edges);
+    
     if (mode == "matrix"){
         attackmap = movemap;
         for (int i = 0; i < attackmap.size(); i++){
             std::fill(attackmap[i].begin(), attackmap[i].end(), 0);
         }
     }
-    bool add;
 
-    int min_rows = std::max(start[0] - move - attack - 1, 0);
-    int max_rows = std::min(start[0] + move + attack + 1, int(movemap[0].size()));
-    int min_cols = std::max(start[1] - move - attack - 1, 0);
-    int max_cols = std::min(start[1] + move + attack + 1, int(movemap.size()));
-
+    int min_rows = std::max(start[0] - move - (int)range[1] - 1, 0);
+    int max_rows = std::min(start[0] + move + (int)range[1] + 1, int(movemap[0].size()));
+    int min_cols = std::max(start[1] - move - (int)range[1] - 1, 0);
+    int max_cols = std::min(start[1] + move + (int)range[1] + 1, int(movemap.size()));
+    int distance;
     for (int row = min_rows; row < max_rows; row++){
         for (int col = min_cols; col < max_cols; col++){
             add = false;
-            for (int att = 1; att <= attack; att++){
+            for (int att = (int)range[0]; att <= (int)range[1]; att++) {
+
+
+
                 if ((movemap[col][row] == 0)) {
                     if (movemap[col][std::min(row + att, int(movemap[0].size() - 1))] == 1) {
                         add = true;

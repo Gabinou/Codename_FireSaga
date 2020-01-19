@@ -75,7 +75,7 @@ extern double h_euclidean(int start[], int end[]);
 
 extern std::vector<std::vector<int>> A_star(std::vector<std::vector<int>> map, int start[], int end[], std::string mode = "matrix");
 extern std::vector<std::vector<int>> movemap(std::vector<std::vector<int>> map, int start[], int move, std::string mode = "matrix");
-extern std::vector<std::vector<int>> attackmap(std::vector<std::vector<int>> movemap, int start[], int move, int attack, std::string mode = "matrix");
+extern std::vector<std::vector<int>> attackmap(std::vector<std::vector<int>> movemap, int start[], int move, unsigned char range[2], std::string mode = "matrix");
 
 extern void writeText(int in_fontsize, int in_position[2], float in_sizefactor[2], std::string in_text, SDL_Color in_color, TTF_Font * in_font, SDL_Renderer * in_renderer);
 

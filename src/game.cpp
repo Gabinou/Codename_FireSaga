@@ -95,6 +95,7 @@ void Game::setState(Entity & setting_entity, std::string new_state) {
             std::vector<std::unique_ptr<Entity>> current_entities;
             std::vector<std::vector<int>> costmap;
             std::vector<std::vector<int>> movemapp;
+            // std::vector<std::vector<int>> edges; 
             int start[2];
             std::string unitmvttype;
             int unit_move;
@@ -119,13 +120,15 @@ void Game::setState(Entity & setting_entity, std::string new_state) {
 
             movemapp = movemap(costmap, start, unit_move, "matrix");
             mapp->setMap("move", movemapp);
+            // plot2Dvector(movemapp);
 
-            std::vector<std::vector<int>> edges = matrix_edges(movemapp);
+            // edges = matrix_edges(movemapp);
+            // plot2Dvector(edges);
 
             if ((range[0] > 0) && (range[1] > 0)) {
-                std::vector<std::vector<int>> attackmapp = attackmap(movemapp, start, unit_move + 3, 3, "matrix");
+                std::vector<std::vector<int>> attackmapp = attackmap(movemapp, start, unit_move, range, "matrix");
                 // std::vector<std::vector<int>> attackmapp = attackmap(movemapp, start, unit_move + (int)range[0] - 1, (int)range[1], "matrix");
-                plot2Dvector(attackmapp);
+                // plot2Dvector(attackmapp);
                 mapp->setMap("attack", attackmapp);
             }
      
@@ -1116,9 +1119,9 @@ void Game::init(const char * title, int xpos, int ypos, int width, int height, b
     mapp =  new Map(tilesize[0], tilesize[1]); // mapp is a pointer
     mapp->loadTilemap("..//maps//test_tilemap.txt");
 
-    cursor.addComponent<PositionComponent>(2, 2);
+    cursor.addComponent<PositionComponent>(6, 6);
 
-    manager.getEntities()[all_units["Silou"]]->addComponent<PositionComponent>(2, 2);
+    manager.getEntities()[all_units["Silou"]]->addComponent<PositionComponent>(6, 6);
     manager.getEntities()[all_units["Silou"]]->getComponent<PositionComponent>().setMap(mapp);
 
     SDL_Color black = {255, 255, 255};

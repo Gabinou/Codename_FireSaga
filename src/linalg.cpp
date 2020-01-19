@@ -39,6 +39,26 @@ std::vector<int> unique2D(std::vector<std::vector<int>> matrix) {
     return(uniques);
 }
 
+std::vector<std::vector<int>> tilesatdistance(int start[], int distance) {
+    std::vector<std::vector<int>> tiles_list;
+    std::vector<int> temp_point = {0, 0};
+    int index[2] = {-1, 1};
+    printf("%d %d \n", start[0], start[1]);
+
+    for (int dist = 0; dist < distance; dist++) {
+        for (int i = 0; i <= 1; i++) {
+            for (int j = 0; j <= 1; j++) {
+                temp_point[0] = start[0] + index[i]*dist;
+                temp_point[1] = start[1] + index[(1-i)]*(distance-dist);
+                tiles_list.push_back(temp_point);
+                printf("%d %d \n", temp_point[0], temp_point[1]);
+            }
+        }
+    }
+    return(tiles_list);
+}
+
+
 std::vector<std::vector<int>> matrix_plus(std::vector<std::vector<int>> matrix1, std::vector<std::vector<int>> matrix2, int sign) {
     //both matrices should have the same shape
     std::vector<std::vector<int>> out = matrix1;
@@ -61,11 +81,17 @@ std::vector<std::vector<int>> matrix_or(std::vector<std::vector<int>> matrix1, s
     return(out);
 }
 
+
 std::vector<std::vector<int>> matrix_edges(std::vector<std::vector<int>> matrix) {
-    std::vector<std::vector<int>> out = matrix;
+    std::vector<std::vector<int>> edges = matrix;
+
+    for (int i = 0; i < edges.size(); i++){
+        std::fill(edges[i].begin(), edges[i].end(), 0);
+    }
+
     bool edge;
-    for (int i = 0; i < out.size(); i++){
-        for (int j = 0; j < out[i].size(); j++){
+    for (int i = 0; i < edges.size(); i++){
+        for (int j = 0; j < edges[i].size(); j++){
             edge = false;
             if (i != 0) {
                 edge = (abs(matrix[i-1][j] - matrix[i][j]) > 0);
@@ -73,16 +99,16 @@ std::vector<std::vector<int>> matrix_edges(std::vector<std::vector<int>> matrix)
             if (j != 0) {
                 edge = (abs(matrix[i][j-1] - matrix[i][j]) > 0);
             }
-            if (i != (out.size() - 1)) {
+            if (i != (edges.size() - 1)) {
                 edge = (abs(matrix[i+1][j] - matrix[i][j]) > 0);
             }
-            if (j != (out.size() - 1)) {
+            if (j != (edges.size() - 1)) {
                 edge = (abs(matrix[i][j+1] - matrix[i][j]) > 0);
             }
             if (edge) {
-               out[i][j] = 1;
+               edges[i][j] = 1;
             }
         }
     }
-    return(out);
+    return(edges);
 }
