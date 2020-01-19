@@ -35,10 +35,6 @@ std::vector<std::vector<int>> Map::makeMvtCostmap(std::string unitmovetype){
         for (int col = 0; col < tilemap[row].size(); col++) {
             tile_ind = tilemap[row][col]/10; // /10 eliminates one digit ont int's right
             costmap[row][col] = all_tiles[tile_ind].getCostmap()[unitmovetype];
-            // printf("tile_ind %d\n", tile_ind);
-            // printf("tile cost %d\n", all_tiles[tile_ind].getCostmap()[unitmovetype]);
-            // printf("movetype %s\n", unitmovetype.c_str());
-            // printf("%d\n", tilemap[row][col]/10);
         }
     }
     return(costmap);
