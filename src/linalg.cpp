@@ -1,5 +1,6 @@
 #include "linalg.hpp"
 #include <stdlib.h>
+#include <cmath>
 
 void plot2Darray(int array[][10], int imax, int jmax) {
     //Don't know how to pass array that at least do not have 1D known before hand
@@ -42,24 +43,48 @@ std::vector<int> unique2D(std::vector<std::vector<int>> matrix) {
 std::vector<std::vector<int>> tilesatdistance(int start[], int distance) {
     std::vector<std::vector<int>> tiles_list;
     std::vector<int> temp_point = {0, 0};
+    std::vector<int> x;
+    int y;
     int index[2] = {-1, 1};
-    printf("%d %d \n", start[0], start[1]);
-
-    for (int dist = 0; dist < distance; dist++) {
-        for (int i = 0; i <= 1; i++) {
-            for (int j = 0; j <= 1; j++) {
-                if ((dist == 0) && (i == 1)) {
-                    temp_point[0] = start[0] + index[j]*(distance - dist);
-                    temp_point[1] = start[1] + index[i]*dist;
-                } else {
-                    temp_point[0] = start[0] + index[i]*dist;
-                    temp_point[1] = start[1] + index[j]*(distance - dist);
-                }
-                tiles_list.push_back(temp_point);
-                printf("%d %d \n", temp_point[0], temp_point[1]);
-            }
-        }
+    // printf("%d %d \n", start[0], start[1]);
+    // printf("%d \n", distance);
+    for (int dist = 0; dist <= distance; dist++) {
+        x.push_back(start[0] - dist);
+        printf("%d \n", x[x.size()-1]);
+        x.push_back(start[0] + dist);
+        printf("%d \n", x[x.size()-1]);
     }
+    getchar();
+    for (int i = 0; i < x.size(); i++) {
+        // printf("%d \n", x[i]);
+        temp_point[0] = x[i];
+        temp_point[1] = start[1] + distance - std::abs(x[i]-start[0]);
+        tiles_list.push_back(temp_point);
+        printf("%d %d \n", temp_point[0], temp_point[1]);
+        temp_point[1] = start[1] - distance - std::abs(x[i]-start[0]);
+        tiles_list.push_back(temp_point);
+        printf("%d %d \n", temp_point[0], temp_point[1]);
+        // printf("%d \n", start[i] + distance - std::abs(x[i]-start[0]));
+        // temp_point[1] = start[i] - distance - std::abs((x[i]-start[0]));
+        // tiles_list.push_back(temp_point);
+        // printf("%d %d \n", temp_point[0], temp_point[1]);
+        
+    }
+    // for (int dist = 0; dist < distance; dist++) {
+    //     for (int i = 0; i <= 1; i++) {
+    //         for (int j = 0; j <= 1; j++) {
+    //             if ((dist == 0) && (i == 1)) {
+    //                 temp_point[0] = start[0] + index[j]*(distance - dist);
+    //                 temp_point[1] = start[1] + index[i]*dist;
+    //             } else {
+    //                 temp_point[0] = start[0] + index[i]*dist;
+    //                 temp_point[1] = start[1] + index[j]*(distance - dist);
+    //             }
+    //             tiles_list.push_back(temp_point);
+    //             printf("%d %d \n", temp_point[0], temp_point[1]);
+    //         }
+    //     }
+    // }
     return(tiles_list);
 }
 
