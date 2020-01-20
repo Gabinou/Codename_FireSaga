@@ -255,8 +255,7 @@ std::string Game::getState() {
 void Game::baseWeapons(){
     Weapon_stats temp_wpn;
     Unit_stats temp_unit;
-    // dmg, hit, dodge, crit, favor, wgt, uses, wpnlvl, range, hand, dmg_type
-    // For shields, dmg is def? 
+    // Pmight, Mmight, hit, dodge, crit, favor, wgt, uses, wpnlvl, range, hand, dmg_type
     temp_wpn = {3, 0, 80, 0, 0, 0, 3, 30, 2, {1,1}, {1,2}, 0, 1000};
     Weapon wooden_sword("Wooden sword", "sword", temp_wpn);
     wooden_sword.setDescription("Practice sword, made of wood. It's crushing blows are still deadly.");
@@ -269,7 +268,6 @@ void Game::baseWeapons(){
     Weapon wrath_sword("Wrath sword", "sword", temp_wpn);
     wrath_sword.setDescription("Increases critical hit chance.");
     all_weapons["wrath_sword"] = wrath_sword;
-
     temp_wpn = {4, 0, 90, 0, 0, 0, 4, 20, 6, {1,1}, {1}, 0, 1000};
     Weapon fleuret("Fleuret", "sword", temp_wpn);
     fleuret.setEffective("Armor");
@@ -362,11 +360,10 @@ void Game::baseWeapons(){
     Honjou_Masamune.setDescription("Lost sword made by the most skilled swordsmith of the eastern lands.");
     all_weapons["Honjou_Masamune"] = Honjou_Masamune;
     temp_wpn = {20, 0, 30, 0, 0, 0, 20, 50, 20, {1,1}, {1,2}, 0, 1000};
-    Weapon Raw_iron_slab("Raw Iron slab", "sword", temp_wpn);
+    Weapon Raw_iron_slab("Raw Iron slab", "sword", temp_wpn); //Should be found inside a dragon skull? 
     Raw_iron_slab.setDescription("Barely a sword. Too big, too thick, too massive, too rough. Tempered by the malevolence of countless slain demons. Effective against demons and angels.");
     Raw_iron_slab.setEffective("DemonAngel");
     all_weapons["Raw_iron_slab"] = Raw_iron_slab;
-    //Should be found inside a dragon skull? 
 
     temp_wpn = {2, 0, 60, 0, 0, 0, 4, 15, 1, {1,1}, {1,2}, 0, 1000};
     Weapon pitchfork("Pitchfork", "lance", temp_wpn);
@@ -596,6 +593,26 @@ void Game::baseWeapons(){
     Weapon Ancile("Ancile", "shield", temp_wpn);
     Ancile.setDescription("Shield of the ancient god of war.");
     all_weapons["Ancile"] = Ancile;
+    temp_wpn = {15, 0, 0, 10, 0, 2, 13, 19, 12, {1,1}, {1}, 0, 1000};
+    Weapon rock_plate("Rock plate", "shield", temp_wpn);
+    Ancile.setDescription("Almost a raw boulder. The powerful and dumb demon's favorite.");
+    all_weapons["rock_plate"] = rock_plate;    
+    temp_wpn = {15, 0, 0, 10, 0, 2, 13, 19, 12, {1,1}, {1}, 0, 1000};
+    Weapon obsidian_plate("Obsidian plate", "shield", temp_wpn);
+    Ancile.setDescription("Rock melted by demon-breath, then recystallized into a more demon-claw friendly shape. Even harder than rock, but more brittle.");
+    all_weapons["obsidian_plate"] = obsidian_plate;
+    temp_wpn = {15, 0, 0, 10, 0, 2, 13, 19, 12, {1,1}, {1}, 0, 1000};
+    Weapon marble_plate_shield("Marble plate shield", "shield", temp_wpn);
+    Ancile.setDescription("Kite shield lined in an ornate layer of sculpted marble. Magical.");
+    all_weapons["marble_plate_shield"] = marble_plate_shield;
+    temp_wpn = {15, 0, 0, 10, 0, 2, 13, 19, 12, {1,1}, {1}, 0, 1000};
+    Weapon marble_plate_shield("Marble plate shield", "shield", temp_wpn);
+    Ancile.setDescription("Kite shield lined in an ornate layer of sculpted marble. Magical.");
+    all_weapons["marble_plate_shield"] = marble_plate_shield;
+    temp_wpn = {15, 0, 0, 10, 0, 2, 13, 19, 12, {1,1}, {1}, 0, 1000};
+    Weapon divine_protector("Divine Protector", "shield", temp_wpn);
+    Ancile.setDescription("Large tower shield imbued with angelic properties. Surprinsgly light and effective against magic attacks.");
+    all_weapons["divine_protector"] = divine_protector;
 
     // Daggers get ridiculously low hit cause they are short and stubby!!!! Kitchen knife is the only exception.
     temp_wpn = {2, 0, 10, 0, 10, 0, 5, 21, 16, {1,1}, {1}, 0, 1000};
@@ -653,7 +670,7 @@ void Game::baseWeapons(){
 
     temp_wpn = {7, 0, 0, 0, 0, 0, 7, 8, 5, {1,1}, {1}, 0, 1000};
     Weapon shrunken_head("Shrunken Head", "trinket", temp_wpn);
-    shrunken_head.setDescription("");
+    shrunken_head.setDescription("Horrible. Infused with demonic energies.");
     all_weapons["shrunken_head"] = shrunken_head;        
     temp_wpn = {7, 0, 0, 0, 0, 0, 7, 8, 5, {1,1}, {1}, 0, 1000};
     Weapon crystal("Crystal", "trinket", temp_wpn);
@@ -661,7 +678,7 @@ void Game::baseWeapons(){
     all_weapons["crystal"] = crystal;      
     temp_wpn = {7, 0, 0, 0, 0, 0, 7, 8, 5, {1,1}, {1}, 0, 1000};
     Weapon human_femur("Human femur", "trinket", temp_wpn);
-    human_femur.setDescription("");
+    human_femur.setDescription("Taken from an ancient tomb. Used by demons to increase their magic power.");
     all_weapons["human_femur"] = human_femur;        
     temp_wpn = {7, 0, 0, 0, 0, 0, 7, 8, 5, {1,1}, {1}, 0, 1000};
     Weapon void_fragment("Void fragment", "trinket", temp_wpn);
@@ -669,15 +686,15 @@ void Game::baseWeapons(){
     all_weapons["void_fragment"] = void_fragment;
     temp_wpn = {7, 0, 0, 0, 0, 0, 7, 8, 5, {1,1}, {1}, 0, 1000};
     Weapon demon_fang("Demon fang", "trinket", temp_wpn);
-    demon_fang.setDescription("");
+    demon_fang.setDescription("Ripped from the mouth of a dead demon.");
     all_weapons["demon_fang"] = demon_fang;
     temp_wpn = {7, 0, 0, 0, 0, 0, 7, 8, 5, {1,1}, {1}, 0, 1000};
     Weapon angel_feather("Angel feather", "trinket", temp_wpn);
-    angel_feather.setDescription("");
+    angel_feather.setDescription("Beautiful and fluffy. Given by incarnates and possessed to the worthy. Increases magical ability. Unusable by demons and demon incarnates.");
     all_weapons["angel_feather"] = angel_feather;
     temp_wpn = {7, 0, 0, 0, 0, 0, 7, 8, 5, {1,1}, {1}, 0, 1000};
     Weapon angel_hair("Angel hair", "trinket", temp_wpn);
-    angel_hair.setDescription("Golden strands of angel hair held up by a silver thread.");
+    angel_hair.setDescription("Golden strands of angel hair held up by a silver thread. Increases magical ability. Unusable by demons and demon incarnates.");
     all_weapons["angel_hair"] = angel_hair;
     temp_wpn = {7, 0, 0, 0, 0, 0, 7, 8, 5, {1,1}, {1}, 0, 1000};
     Weapon vial_of_light("Vial of light", "trinket", temp_wpn);

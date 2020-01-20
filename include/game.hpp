@@ -29,6 +29,12 @@ class Game {
         std::stack <int> unit_entities;
 
     public:
+        static SDL_Renderer * renderer;
+        static SDL_Event event;
+        static TTF_Font * font;
+        static Manager manager;
+        static Settings settings;
+        
         Game();
         ~Game();
 
@@ -50,12 +56,6 @@ class Game {
         std::string getState();
 
         bool running();
-
-        static SDL_Renderer * renderer;
-        static SDL_Event event;
-        static TTF_Font * font;
-        static Manager manager;
-        static Settings settings;
 
         void baseUnits();
         void baseWeapons();
