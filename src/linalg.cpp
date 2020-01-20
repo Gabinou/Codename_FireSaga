@@ -46,11 +46,11 @@ std::vector<std::vector<int>> tilesatdistance(int start[], int distance, int xma
     std::vector<int> temp_point = {start[0] + distance - 1, start[1] + 1};
     int xtemp, ytemp;
     tiles_list.push_back(temp_point);
-    printf("start %d %d \n", start[0], start[1]);    
-    printf("out %d %d \n", tiles_list.back()[0], tiles_list.back()[1]);    
+    // printf("start %d %d \n", start[0], start[1]);    
+    // printf("out %d %d \n", tiles_list.back()[0], tiles_list.back()[1]);    
     int factor[2] = {-1, 1};
     while ((tiles_list.back()[0] != (start[0] + distance)) || ((tiles_list.back()[1] != (start[1])))) {
-        printf("in %d %d \n", tiles_list.back()[0], tiles_list.back()[1]);
+        // printf("in %d %d \n", tiles_list.back()[0], tiles_list.back()[1]);
         xtemp = std::min(std::max(tiles_list.back()[0] + factor[0], 0), xmax);
         ytemp = std::min(std::max(tiles_list.back()[1] + factor[1], 0), ymax);
         temp_point = {xtemp, ytemp};

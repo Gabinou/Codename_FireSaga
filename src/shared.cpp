@@ -147,16 +147,18 @@ std::vector<std::vector<int>> movemap(std::vector<std::vector<int>> map, int sta
 std::vector<std::vector<int>> attackmap(std::vector<std::vector<int>> movemap, int start[], int move, unsigned char range[2], std::string mode){
     // Using the movemap to computes all attackable tiles.
     // EXCLUDING moveable tiles.
-    // getchar();
     std::vector<std::vector<int>> edges;     
     std::vector<std::vector<int>> attackmap;
+    std::vector<std::vector<int>> fmovemap;
     bool add;
     tilesatdistance(start, 2);
+
     // edges = matrix_edges(movemap);
     // plot2Dvector(edges);
     
     if (mode == "matrix"){
         attackmap = movemap;
+        fmovemap = movemap;
         for (int i = 0; i < attackmap.size(); i++){
             std::fill(attackmap[i].begin(), attackmap[i].end(), 0);
         }
@@ -167,35 +169,45 @@ std::vector<std::vector<int>> attackmap(std::vector<std::vector<int>> movemap, i
     int min_cols = std::max(start[1] - move - (int)range[1] - 1, 0);
     int max_cols = std::min(start[1] + move + (int)range[1] + 1, int(movemap.size()));
     int distance;
-    for (int row = min_rows; row < max_rows; row++){
-        for (int col = min_cols; col < max_cols; col++){
-            add = false;
-            for (int att = (int)range[0]; att <= (int)range[1]; att++) {
+    printf("%d %d \n", range[0],range[1]);
+
+    for (int att = 1; att <= (int)range[1]; att++) {
+        for (int row = min_rows; row < max_rows; row++){
+            for (int col = min_cols; col < max_cols; col++){
+                add = false;
                 if ((movemap[col][row] == 0)) {
-                    if (movemap[col][std::min(row + att, int(movemap[0].size() - 1))] == 1) {
-                        add = true;
-                        break;
+                    if (fmovemap[col][std::min(row + 1, int(fmovemap[0].size() - 1))] == 1) {
+                        if (att >= range[0]) {
+                            fmovemap[row][col] = 1;
+                            add = true;
+                        }
                     }
-                    if (movemap[col][std::max(row - att, 0)] == 1) {
-                        add = true;
-                        break;
+                    if (fmovemap[col][std::max(row - 1, 0)] == 1) {
+                        if (att >= range[0]) {
+                            fmovemap[row][col] = 1;
+                            add = true;
+                        }
                     }
-                    if (movemap[std::min(col + att, int(movemap.size() - 1))][row] == 1) {
-                        add = true;
-                        break;
+                    if (fmovemap[std::min(col + 1, int(fmovemap.size() - 1))][row] == 1) {
+                        if (att >= range[0]) {
+                            fmovemap[row][col] = 1;
+                            add = true;
+                        }
                     }
-                    if (movemap[std::max(col - att, 0)][row] == 1) {
-                        add = true;
-                        break;
+                    if (fmovemap[std::max(col - 1, 0)][row] == 1) {
+                        if (att >= range[0]) {
+                            fmovemap[row][col] = 1;
+                            add = true;
+                        }
                     }
-                }
-            }
-            if (add) {
-                if (mode == "matrix") {
-                    attackmap[col][row] = 1;
-                }
-                if (mode == "list"){
-                    attackmap.push_back({col, row});
+                    if (add) {
+                        if (mode == "matrix") {
+                            attackmap[col][row] = 1;
+                        }
+                        if (mode == "list"){
+                            attackmap.push_back({col, row});
+                        }
+                    }
                 }
             }
         }
