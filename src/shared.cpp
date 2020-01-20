@@ -152,7 +152,7 @@ std::vector<std::vector<int>> attackmap(std::vector<std::vector<int>> movemap, i
     std::vector<std::vector<int>> attackmap;
     bool add;
     tilesatdistance(start, 2);
-    edges = matrix_edges(movemap);
+    // edges = matrix_edges(movemap);
     // plot2Dvector(edges);
     
     if (mode == "matrix"){
@@ -171,9 +171,6 @@ std::vector<std::vector<int>> attackmap(std::vector<std::vector<int>> movemap, i
         for (int col = min_cols; col < max_cols; col++){
             add = false;
             for (int att = (int)range[0]; att <= (int)range[1]; att++) {
-
-
-
                 if ((movemap[col][row] == 0)) {
                     if (movemap[col][std::min(row + att, int(movemap[0].size() - 1))] == 1) {
                         add = true;
