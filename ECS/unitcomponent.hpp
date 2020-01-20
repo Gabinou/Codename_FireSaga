@@ -178,8 +178,8 @@ class UnitComponent : public Component {
                 range[1] = 0;
             }
 
-            range[0] = 1;
-            range[1] = 2;
+            range[0] = 5;
+            range[1] = 10;
 
             return (range);
         }

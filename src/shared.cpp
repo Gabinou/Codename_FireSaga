@@ -164,8 +164,8 @@ std::vector<std::vector<int>> attackmap(std::vector<std::vector<int>> movemap, i
         }
     }
 
-    plot2Dvector(movemap);
-    plot2Dvector(bmovemap);
+    // plot2Dvector(movemap);
+    // plot2Dvector(bmovemap);
 
 
     int min_rows = std::max(start[0] - move - (int)range[1] - 1, 0);
@@ -181,28 +181,31 @@ std::vector<std::vector<int>> attackmap(std::vector<std::vector<int>> movemap, i
                 add = false;
                 if (amovemap[col][row] == 0) {
                     if (amovemap[col][std::min(row + 1, int(amovemap[0].size() - 1))] == 1) {
+                        bmovemap[col][row] = 1;
                         if (att >= range[0]) {
                             add = true; 
                         }
                     }
                     if (amovemap[col][std::max(row - 1, 0)] == 1) {
+                        bmovemap[col][row] = 1;
                         if (att >= range[0]) {
                             add = true;
                         }
                     }
                     if (amovemap[std::min(col + 1, int(amovemap.size() - 1))][row] == 1) {
+                        bmovemap[col][row] = 1;
                         if (att >= range[0]) {
                             add = true;
                         }
                     }
                     if (amovemap[std::max(col - 1, 0)][row] == 1) {
+                        bmovemap[col][row] = 1;
                         if (att >= range[0]) {
                             add = true;
                         }
                     }
                     if (add) {
                         if (mode == "matrix") {
-                            bmovemap[col][row] = 1;
                             attackmap[col][row] = 1;
                         }
                         if (mode == "list"){
@@ -214,8 +217,8 @@ std::vector<std::vector<int>> attackmap(std::vector<std::vector<int>> movemap, i
         }
         // plot2Dvector(bmovemap);
         amovemap = bmovemap;
-        plot2Dvector(bmovemap);
-        plot2Dvector(attackmap);
+        // plot2Dvector(bmovemap);
+        // plot2Dvector(attackmap);
     }
 
     return(attackmap);
