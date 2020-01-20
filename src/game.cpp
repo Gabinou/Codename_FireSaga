@@ -606,10 +606,6 @@ void Game::baseWeapons(){
     Ancile.setDescription("Kite shield lined in an ornate layer of sculpted marble. Magical.");
     all_weapons["marble_plate_shield"] = marble_plate_shield;
     temp_wpn = {15, 0, 0, 10, 0, 2, 13, 19, 12, {1,1}, {1}, 0, 1000};
-    Weapon marble_plate_shield("Marble plate shield", "shield", temp_wpn);
-    Ancile.setDescription("Kite shield lined in an ornate layer of sculpted marble. Magical.");
-    all_weapons["marble_plate_shield"] = marble_plate_shield;
-    temp_wpn = {15, 0, 0, 10, 0, 2, 13, 19, 12, {1,1}, {1}, 0, 1000};
     Weapon divine_protector("Divine Protector", "shield", temp_wpn);
     Ancile.setDescription("Large tower shield imbued with angelic properties. Surprinsgly light and effective against magic attacks.");
     all_weapons["divine_protector"] = divine_protector;

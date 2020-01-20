@@ -34,7 +34,7 @@ class Game {
         static TTF_Font * font;
         static Manager manager;
         static Settings settings;
-        
+
         Game();
         ~Game();
 
