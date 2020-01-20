@@ -11,6 +11,6 @@ extern std::vector<std::vector<int>> matrix_plus(std::vector<std::vector<int>> m
 extern std::vector<std::vector<int>> matrix_or(std::vector<std::vector<int>> matrix1, std::vector<std::vector<int>> matrix2);
 extern std::vector<std::vector<int>> matrix_and(std::vector<std::vector<int>> matrix1, std::vector<std::vector<int>> matrix2);
 extern std::vector<std::vector<int>> matrix_edges(std::vector<std::vector<int>> matrix);
-extern std::vector<std::vector<int>> tilesatdistance(int start[], int distance);
+extern std::vector<std::vector<int>> tilesatdistance(int start[], int distance, int xmax = 10, int ymax = 10);
 
 #endif /* LINALG_HPP */
