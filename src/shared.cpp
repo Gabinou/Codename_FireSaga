@@ -144,6 +144,36 @@ std::vector<std::vector<int>> movemap(std::vector<std::vector<int>> map, int sta
     return(movemap);
 }
 
+
+std::vector<std::vector<int>> matrix2list(std::vector<std::vector<int>> matrix) {
+    std::vector<std::vector<int>> list;
+    for (int col = 0; col < matrix.size(); col++) {
+        for (int row = 0; row < matrix[0].size(); row++) {
+            if (matrix[col][row] > 0) {
+                list.push_back({col,row});
+            }
+        }
+    }
+    return(list);
+}
+
+std::vector<std::vector<int>> list2matrix(std::vector<std::vector<int>> list, int x_size, int y_size) {
+    std::vector<std::vector<int>> matrix;
+    if (mode == "matrix"){
+        movemap = map;
+        for (int i = 0; i < movemap.size(); i++){
+            std::fill(movemap[i].begin(), movemap[i].end(), 0);
+        }
+    }
+    for (int ind = 0; ind < list.size(); ind++) {
+        matrix[list[ind][0]][list[ind][1]] = 1;
+    }
+    // plot2Dvector(matrix);
+    return(matrix);
+}
+
+// std::vector<int> sum2D
+
 std::vector<std::vector<int>> attackmap(std::vector<std::vector<int>> movemap, int start[], int move, unsigned char range[2], std::string mode){
     // Using the movemap to computes all attackable tiles.
     // EXCLUDING moveable tiles.
@@ -151,6 +181,7 @@ std::vector<std::vector<int>> attackmap(std::vector<std::vector<int>> movemap, i
     std::vector<std::vector<int>> attackmap;
     std::vector<std::vector<int>> amovemap = movemap;
     std::vector<std::vector<int>> bmovemap = movemap;
+    std::vector<std::vector<int>> movelist;
     bool add;
     tilesatdistance(start, 2);
 
@@ -159,6 +190,10 @@ std::vector<std::vector<int>> attackmap(std::vector<std::vector<int>> movemap, i
     
     if (mode == "matrix"){
         attackmap = movemap;
+        movelist = matrix2list(movemap);
+        movemap = list2matrix(movelist);
+        movelist = matrix2list(movemap);
+        movemap = list2matrix(movelist);
         for (int i = 0; i < attackmap.size(); i++){
             std::fill(attackmap[i].begin(), attackmap[i].end(), 0);
         }
@@ -180,30 +215,34 @@ std::vector<std::vector<int>> attackmap(std::vector<std::vector<int>> movemap, i
             for (int col = min_cols; col < max_cols; col++){
                 add = false;
                 if (amovemap[col][row] == 0) {
-                    if (amovemap[col][std::min(row + 1, int(amovemap[0].size() - 1))] == 1) {
-                        bmovemap[col][row] = 1;
-                        if (att >= range[0]) {
-                            add = true; 
-                        }
+                    if ((movemap[col][std::max(row-range[0],0)] == 1) || (movemap[col][std::max(row-range[1],0)] == 1)) {
+                        add == true;
                     }
-                    if (amovemap[col][std::max(row - 1, 0)] == 1) {
-                        bmovemap[col][row] = 1;
-                        if (att >= range[0]) {
-                            add = true;
-                        }
-                    }
-                    if (amovemap[std::min(col + 1, int(amovemap.size() - 1))][row] == 1) {
-                        bmovemap[col][row] = 1;
-                        if (att >= range[0]) {
-                            add = true;
-                        }
-                    }
-                    if (amovemap[std::max(col - 1, 0)][row] == 1) {
-                        bmovemap[col][row] = 1;
-                        if (att >= range[0]) {
-                            add = true;
-                        }
-                    }
+
+                    // if (amovemap[col][std::min(row + 1, int(amovemap[0].size() - 1))] == 1) {
+                    //     bmovemap[col][row] = 1;
+                    //     if (att >= movemap[col][row]) {
+                    //         add = true; 
+                    //     }
+                    // }
+                    // if (amovemap[col][std::max(row - 1, 0)] == 1) {
+                    //     bmovemap[col][row] = 1;
+                    //     if (att >= range[0]) {
+                    //         add = true;
+                    //     }
+                    // }
+                    // if (amovemap[std::min(col + 1, int(amovemap.size() - 1))][row] == 1) {
+                    //     bmovemap[col][row] = 1;
+                    //     if (att >= range[0]) {
+                    //         add = true;
+                    //     }
+                    // }
+                    // if (amovemap[std::max(col - 1, 0)][row] == 1) {
+                    //     bmovemap[col][row] = 1;
+                    //     if (att >= range[0]) {
+                    //         add = true;
+                    //     }
+                    // }
                     if (add) {
                         if (mode == "matrix") {
                             attackmap[col][row] = 1;
