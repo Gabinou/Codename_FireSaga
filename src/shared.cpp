@@ -1,7 +1,6 @@
 // Code créé par Gabriel Taillon
 #include "shared.hpp"
 #include "game.hpp"
-#include <iterator>
 
 void writeText(int in_fontsize, int in_position[2], float in_sizefactor[2], std::string in_text, SDL_Color in_color, TTF_Font * in_font, SDL_Renderer * in_renderer) {
     std::string text = "FPS";
@@ -196,10 +195,9 @@ std::vector<std::vector<int>> attackmap(std::vector<std::vector<int>> movemap, i
         // printf("%d\n", movelist[ind][0] + movelist[ind][1]);
         distances.push_back(movelist[ind][0] + movelist[ind][1]);
     }
-    std::vector<int>::iterator it;
-    it = std::unique(distances.begin(), distances.end());  
+    auto it = std::unique(distances.begin(), distances.end());  
 
-    distances.resize(distance(distances.begin(), it));
+    distances.erase(it, distances.end());
     printf("uniques\n");
     for (int ind = 0; ind < distances.size(); ind++) {
         printf("%d\n", distances[ind]);
