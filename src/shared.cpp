@@ -1,6 +1,7 @@
 // Code créé par Gabriel Taillon
 #include "shared.hpp"
 #include "game.hpp"
+#include <iterator>
 
 void writeText(int in_fontsize, int in_position[2], float in_sizefactor[2], std::string in_text, SDL_Color in_color, TTF_Font * in_font, SDL_Renderer * in_renderer) {
     std::string text = "FPS";
@@ -162,7 +163,6 @@ std::vector<std::vector<int>> list2matrix(std::vector<std::vector<int>> list, in
     for (int ind = 0; ind < list.size(); ind++) {
         matrix[list[ind][0]][list[ind][1]] = 1;
     }
-    plot2Dvector(matrix);
     return(matrix);
 }
 
@@ -176,83 +176,91 @@ std::vector<std::vector<int>> attackmap(std::vector<std::vector<int>> movemap, i
     std::vector<std::vector<int>> amovemap = movemap;
     std::vector<std::vector<int>> bmovemap = movemap;
     std::vector<std::vector<int>> movelist;
+    std::vector<int> distances;
+    std::vector<int> unique_distances;
     bool add;
-    tilesatdistance(start, 2);
+    // tilesatdistance(start, 2);
+    movelist = matrix2list(movemap);
 
-    // edges = matrix_edges(movemap);
-    // plot2Dvector(edges);
-    
     if (mode == "matrix"){
         attackmap = movemap;
-        movelist = matrix2list(movemap);
-        movemap = list2matrix(movelist, movemap.size(), movemap[0].size());
-        movelist = matrix2list(movemap);
-        movemap = list2matrix(movelist, movemap.size(), movemap[0].size());
         for (int i = 0; i < attackmap.size(); i++){
             std::fill(attackmap[i].begin(), attackmap[i].end(), 0);
         }
     }
 
-    // plot2Dvector(movemap);
-    // plot2Dvector(bmovemap);
+    plot2Dvector(movemap);
 
-
-    int min_rows = std::max(start[0] - move - (int)range[1] - 1, 0);
-    int max_rows = std::min(start[0] + move + (int)range[1] + 1, int(movemap[0].size()));
-    int min_cols = std::max(start[1] - move - (int)range[1] - 1, 0);
-    int max_cols = std::min(start[1] + move + (int)range[1] + 1, int(movemap.size()));
-    int distance;
-    printf("%d %d \n", range[0],range[1]);
-
-    for (int att = 1; att <= (int)range[1]; att++) {
-        for (int row = min_rows; row < max_rows; row++){
-            for (int col = min_cols; col < max_cols; col++){
-                add = false;
-                if (amovemap[col][row] == 0) {
-                    if ((movemap[col][std::max(row-range[0],0)] == 1) || (movemap[col][std::max(row-range[1],0)] == 1)) {
-                        add == true;
-                    }
-
-                    // if (amovemap[col][std::min(row + 1, int(amovemap[0].size() - 1))] == 1) {
-                    //     bmovemap[col][row] = 1;
-                    //     if (att >= movemap[col][row]) {
-                    //         add = true; 
-                    //     }
-                    // }
-                    // if (amovemap[col][std::max(row - 1, 0)] == 1) {
-                    //     bmovemap[col][row] = 1;
-                    //     if (att >= range[0]) {
-                    //         add = true;
-                    //     }
-                    // }
-                    // if (amovemap[std::min(col + 1, int(amovemap.size() - 1))][row] == 1) {
-                    //     bmovemap[col][row] = 1;
-                    //     if (att >= range[0]) {
-                    //         add = true;
-                    //     }
-                    // }
-                    // if (amovemap[std::max(col - 1, 0)][row] == 1) {
-                    //     bmovemap[col][row] = 1;
-                    //     if (att >= range[0]) {
-                    //         add = true;
-                    //     }
-                    // }
-                    if (add) {
-                        if (mode == "matrix") {
-                            attackmap[col][row] = 1;
-                        }
-                        if (mode == "list"){
-                            attackmap.push_back({col, row});
-                        }
-                    }
-                }
-            }
-        }
-        // plot2Dvector(bmovemap);
-        amovemap = bmovemap;
-        // plot2Dvector(bmovemap);
-        // plot2Dvector(attackmap);
+    for (int ind = 0; ind < movelist.size(); ind++) {
+        // printf("%d %d\n", movelist[ind][0], movelist[ind][1]);
+        // printf("%d\n", movelist[ind][0] + movelist[ind][1]);
+        distances.push_back(movelist[ind][0] + movelist[ind][1]);
     }
+    std::vector<int>::iterator it;
+    it = std::unique(distances.begin(), distances.end());  
+
+    distances.resize(distance(distances.begin(), it));
+    printf("uniques\n");
+    for (int ind = 0; ind < distances.size(); ind++) {
+        printf("%d\n", distances[ind]);
+    }
+
+    // int min_rows = std::max(start[0] - move - (int)range[1] - 1, 0);
+    // int max_rows = std::min(start[0] + move + (int)range[1] + 1, int(movemap[0].size()));
+    // int min_cols = std::max(start[1] - move - (int)range[1] - 1, 0);
+    // int max_cols = std::min(start[1] + move + (int)range[1] + 1, int(movemap.size()));
+    // int distance;
+    // printf("%d %d \n", range[0],range[1]);
+
+    // for (int att = 1; att <= (int)range[1]; att++) {
+    //     for (int row = min_rows; row < max_rows; row++){
+    //         for (int col = min_cols; col < max_cols; col++){
+    //             add = false;
+    //             if (amovemap[col][row] == 0) {
+    //                 if ((movemap[col][std::max(row-range[0],0)] == 1) || (movemap[col][std::max(row-range[1],0)] == 1)) {
+    //                     add == true;
+    //                 }
+
+    //                 // if (amovemap[col][std::min(row + 1, int(amovemap[0].size() - 1))] == 1) {
+    //                 //     bmovemap[col][row] = 1;
+    //                 //     if (att >= movemap[col][row]) {
+    //                 //         add = true; 
+    //                 //     }
+    //                 // }
+    //                 // if (amovemap[col][std::max(row - 1, 0)] == 1) {
+    //                 //     bmovemap[col][row] = 1;
+    //                 //     if (att >= range[0]) {
+    //                 //         add = true;
+    //                 //     }
+    //                 // }
+    //                 // if (amovemap[std::min(col + 1, int(amovemap.size() - 1))][row] == 1) {
+    //                 //     bmovemap[col][row] = 1;
+    //                 //     if (att >= range[0]) {
+    //                 //         add = true;
+    //                 //     }
+    //                 // }
+    //                 // if (amovemap[std::max(col - 1, 0)][row] == 1) {
+    //                 //     bmovemap[col][row] = 1;
+    //                 //     if (att >= range[0]) {
+    //                 //         add = true;
+    //                 //     }
+    //                 // }
+    //                 if (add) {
+    //                     if (mode == "matrix") {
+    //                         attackmap[col][row] = 1;
+    //                     }
+    //                     if (mode == "list"){
+    //                         attackmap.push_back({col, row});
+    //                     }
+    //                 }
+    //             }
+    //         }
+    //     }
+    //     // plot2Dvector(bmovemap);
+    //     amovemap = bmovemap;
+    //     // plot2Dvector(bmovemap);
+    //     // plot2Dvector(attackmap);
+    // }
 
     return(attackmap);
 }
