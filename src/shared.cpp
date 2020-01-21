@@ -157,18 +157,12 @@ std::vector<std::vector<int>> matrix2list(std::vector<std::vector<int>> matrix) 
     return(list);
 }
 
-std::vector<std::vector<int>> list2matrix(std::vector<std::vector<int>> list, int x_size, int y_size) {
-    std::vector<std::vector<int>> matrix;
-    if (mode == "matrix"){
-        movemap = map;
-        for (int i = 0; i < movemap.size(); i++){
-            std::fill(movemap[i].begin(), movemap[i].end(), 0);
-        }
-    }
+std::vector<std::vector<int>> list2matrix(std::vector<std::vector<int>> list, int col, int row) {
+    std::vector<std::vector<int>> matrix(col, std::vector<int> (row, 0));
     for (int ind = 0; ind < list.size(); ind++) {
         matrix[list[ind][0]][list[ind][1]] = 1;
     }
-    // plot2Dvector(matrix);
+    plot2Dvector(matrix);
     return(matrix);
 }
 
@@ -191,9 +185,9 @@ std::vector<std::vector<int>> attackmap(std::vector<std::vector<int>> movemap, i
     if (mode == "matrix"){
         attackmap = movemap;
         movelist = matrix2list(movemap);
-        movemap = list2matrix(movelist);
+        movemap = list2matrix(movelist, movemap.size(), movemap[0].size());
         movelist = matrix2list(movemap);
-        movemap = list2matrix(movelist);
+        movemap = list2matrix(movelist, movemap.size(), movemap[0].size());
         for (int i = 0; i < attackmap.size(); i++){
             std::fill(attackmap[i].begin(), attackmap[i].end(), 0);
         }
