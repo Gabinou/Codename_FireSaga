@@ -172,16 +172,11 @@ std::vector<std::vector<int>> list2matrix(std::vector<std::vector<int>> list, in
 std::vector<std::vector<int>> attackmap(std::vector<std::vector<int>> movemap, int start[], int move, unsigned char range[2], std::string mode){
     // Using the movemap to computes all attackable tiles.
     // EXCLUDING moveable tiles.
-    std::vector<std::vector<int>> edges;     
     std::vector<std::vector<int>> attackmap;
-    std::vector<std::vector<int>> amovemap = movemap;
-    std::vector<std::vector<int>> bmovemap = movemap;
     std::vector<std::vector<int>> movelist;
     std::vector<int> temp_point = {0, 0};
-    std::vector<int> distances;
-    std::vector<int> unique_distances;
-    bool add;
-    // tilesatdistance(start, 2);
+    int tempx, tempy;
+
     movelist = matrix2list(movemap);
 
     if (mode == "matrix"){
@@ -191,17 +186,11 @@ std::vector<std::vector<int>> attackmap(std::vector<std::vector<int>> movemap, i
         }
     }
 
-    plot2Dvector(movemap);
-    int tempy;
-    int tempx;
     for (int i = 0; i < movelist.size(); i++) {
-        // printf("%d %d\n", movelist[i][0], movelist[i][1]);
         for (int rangex = 0; rangex <= range[1]; rangex++) {
             int miny = std::max(0, range[0] - rangex);
             int maxy = std::max(range[1] - rangex, 0);
             for (int rangey = miny; rangey <= maxy; rangey++) {
-                // printf("rangex, rangey: %d %d\n", rangex, rangey);
-
                 tempx = movelist[i][1] + rangex;
                 tempy = movelist[i][0] + rangey;
                 if ( (tempx < (int)movemap.size()) && (tempy < (int)movemap[0].size())) {
@@ -260,67 +249,6 @@ std::vector<std::vector<int>> attackmap(std::vector<std::vector<int>> movemap, i
     if (mode == "list") {
         // make_uniques
     }
-    // getchar();
-    printf("Corrected attackmap\n");
-    plot2Dvector(attackmap);
-
-    // int min_rows = std::max(start[0] - move - (int)range[1] - 1, 0);
-    // int max_rows = std::min(start[0] + move + (int)range[1] + 1, int(movemap[0].size()));
-    // int min_cols = std::max(start[1] - move - (int)range[1] - 1, 0);
-    // int max_cols = std::min(start[1] + move + (int)range[1] + 1, int(movemap.size()));
-    // int distance;
-    // printf("%d %d \n", range[0],range[1]);
-
-    // for (int att = 1; att <= (int)range[1]; att++) {
-    //     for (int row = min_rows; row < max_rows; row++){
-    //         for (int col = min_cols; col < max_cols; col++){
-    //             add = false;
-    //             if (amovemap[col][row] == 0) {
-    //                 if ((movemap[col][std::max(row-range[0],0)] == 1) || (movemap[col][std::max(row-range[1],0)] == 1)) {
-    //                     add == true;
-    //                 }
-
-    //                 // if (amovemap[col][std::min(row + 1, int(amovemap[0].size() - 1))] == 1) {
-    //                 //     bmovemap[col][row] = 1;
-    //                 //     if (att >= movemap[col][row]) {
-    //                 //         add = true; 
-    //                 //     }
-    //                 // }
-    //                 // if (amovemap[col][std::max(row - 1, 0)] == 1) {
-    //                 //     bmovemap[col][row] = 1;
-    //                 //     if (att >= range[0]) {
-    //                 //         add = true;
-    //                 //     }
-    //                 // }
-    //                 // if (amovemap[std::min(col + 1, int(amovemap.size() - 1))][row] == 1) {
-    //                 //     bmovemap[col][row] = 1;
-    //                 //     if (att >= range[0]) {
-    //                 //         add = true;
-    //                 //     }
-    //                 // }
-    //                 // if (amovemap[std::max(col - 1, 0)][row] == 1) {
-    //                 //     bmovemap[col][row] = 1;
-    //                 //     if (att >= range[0]) {
-    //                 //         add = true;
-    //                 //     }
-    //                 // }
-    //                 if (add) {
-    //                     if (mode == "matrix") {
-    //                         attackmap[col][row] = 1;
-    //                     }
-    //                     if (mode == "list"){
-    //                         attackmap.push_back({col, row});
-    //                     }
-    //                 }
-    //             }
-    //         }
-    //     }
-    //     // plot2Dvector(bmovemap);
-    //     amovemap = bmovemap;
-    //     // plot2Dvector(bmovemap);
-    //     // plot2Dvector(attackmap);
-    // }
-
     return(attackmap);
 }
 
