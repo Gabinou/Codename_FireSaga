@@ -175,6 +175,7 @@ std::vector<std::vector<int>> attackmap(std::vector<std::vector<int>> movemap, i
     std::vector<std::vector<int>> amovemap = movemap;
     std::vector<std::vector<int>> bmovemap = movemap;
     std::vector<std::vector<int>> movelist;
+    std::vector<std::vector<int>> temp_point;
     std::vector<int> distances;
     std::vector<int> unique_distances;
     bool add;
@@ -189,20 +190,30 @@ std::vector<std::vector<int>> attackmap(std::vector<std::vector<int>> movemap, i
     }
 
     plot2Dvector(movemap);
-
-    for (int ind = 0; ind < movelist.size(); ind++) {
-        // printf("%d %d\n", movelist[ind][0], movelist[ind][1]);
-        // printf("%d\n", movelist[ind][0] + movelist[ind][1]);
-        distances.push_back(movelist[ind][0] + movelist[ind][1]);
-    }
-    auto it = std::unique(distances.begin(), distances.end());  
-
-    distances.erase(it, distances.end());
-    printf("uniques\n");
-    for (int ind = 0; ind < distances.size(); ind++) {
-        printf("%d\n", distances[ind]);
-    }
-
+    for (int i = 0; i < movelist.size(); i++) {
+        for (int rangex = 0; rangex <= range[1]; rangex++) {
+            int miny = std::max(0, range[0] - rangex);
+            int maxy = std::max(range[1] - rangex, range[0]);
+            for (int rangey = miny; rangey < maxy; rangex++) {
+                if (movelist[movelist[1] + rangey][movelist[0] + rangex] == 0) {
+                    temp_point = {movelist[0] + rangex, movelist[1] + rangey}
+                    movelist.push_back(temp_point);
+                }
+                if (movelist[movelist[1] + rangey][movelist[0] - rangex] == 0) {
+                    temp_point = {movelist[0] + rangex, movelist[1] - rangey}
+                    movelist.push_back(temp_point);
+                }
+                if (movelist[movelist[1] - rangey][movelist[0] + rangex] == 0) {
+                    temp_point = {movelist[0] - rangex, movelist[1] + rangey}
+                    movelist.push_back(temp_point);
+                }
+                if (movelist[movelist[1]-+ rangey][movelist[0] - rangex] == 0) {
+                    temp_point = {movelist[0] - rangex, movelist[1] - rangey}
+                    movelist.push_back(temp_point);
+                }
+            } 
+        }
+    } 
     // int min_rows = std::max(start[0] - move - (int)range[1] - 1, 0);
     // int max_rows = std::min(start[0] + move + (int)range[1] + 1, int(movemap[0].size()));
     // int min_cols = std::max(start[1] - move - (int)range[1] - 1, 0);
