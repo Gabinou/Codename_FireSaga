@@ -1,6 +1,8 @@
 // Code créé par Gabriel Taillon
 #include "shared.hpp"
 #include "game.hpp"
+#include <algorithm>
+
 
 void writeText(int in_fontsize, int in_position[2], float in_sizefactor[2], std::string in_text, SDL_Color in_color, TTF_Font * in_font, SDL_Renderer * in_renderer) {
     std::string text = "FPS";
@@ -175,7 +177,7 @@ std::vector<std::vector<int>> attackmap(std::vector<std::vector<int>> movemap, i
     std::vector<std::vector<int>> amovemap = movemap;
     std::vector<std::vector<int>> bmovemap = movemap;
     std::vector<std::vector<int>> movelist;
-    std::vector<std::vector<int>> temp_point;
+    std::vector<int> temp_point = {0, 0};
     std::vector<int> distances;
     std::vector<int> unique_distances;
     bool add;
@@ -190,50 +192,76 @@ std::vector<std::vector<int>> attackmap(std::vector<std::vector<int>> movemap, i
     }
 
     plot2Dvector(movemap);
+    int tempy;
+    int tempx;
     for (int i = 0; i < movelist.size(); i++) {
+        // printf("%d %d\n", movelist[i][0], movelist[i][1]);
         for (int rangex = 0; rangex <= range[1]; rangex++) {
             int miny = std::max(0, range[0] - rangex);
-            int maxy = std::max(range[1] - rangex, range[0]);
-            for (int rangey = miny; rangey < maxy; rangex++) {
-                if (movelist[movelist[1] + rangey][movelist[0] + rangex] == 0) {
-                    if (mode == "list") {
-                        temp_point = {movelist[0] + rangex, movelist[1] + rangey}
-                        attackmap.push_back(temp_point);
-                    }
-                    if (mode == "matrix") {
-                        attackmap[movelist[1] + rangey][movelist[0] + rangex] = 1;
-                    }
-                }
-                if (movelist[movelist[1] + rangey][movelist[0] - rangex] == 0) {
-                    if (mode == "list") {
-                        temp_point = {movelist[0] + rangex, movelist[1] - rangey}
-                        attackmap.push_back(temp_point);
-                    }
-                    if (mode == "matrix") {
-                        attackmap[movelist[1] - rangey][movelist[0] + rangex] = 1;
-                    }  
-                }
-                if (movelist[movelist[1] - rangey][movelist[0] + rangex] == 0) {
-                    if (mode == "list") {
-                        temp_point = {movelist[0] - rangex, movelist[1] + rangey}
-                        attackmap.push_back(temp_point);
-                    }
-                    if (mode == "matrix") {
-                        attackmap[movelist[1] - rangey][movelist[0] + rangex] = 1;
+            int maxy = std::max(range[1] - rangex, 0);
+            for (int rangey = miny; rangey <= maxy; rangey++) {
+                // printf("rangex, rangey: %d %d\n", rangex, rangey);
+
+                tempx = movelist[i][1] + rangex;
+                tempy = movelist[i][0] + rangey;
+                if ( (tempx < (int)movemap.size()) && (tempy < (int)movemap[0].size())) {
+                    if (movemap[tempy][tempx] == 0) {
+                        if (mode == "list") {
+                            temp_point = {tempx, tempy};
+                            attackmap.push_back(temp_point);
+                        }
+                        if (mode == "matrix") {
+                            attackmap[tempy][tempx] = 1;
+                        }
                     }
                 }
-                if (movelist[movelist[1]-+ rangey][movelist[0] - rangex] == 0) {
-                    if (mode == "list") {
-                        temp_point = {movelist[0] - rangex, movelist[1] - rangey}
-                        attackmap.push_back(temp_point);
+                tempx = movelist[i][1] - rangex;
+                tempy = movelist[i][0] + rangey;
+                if ((tempx >= 0) && (tempy < (int)movemap[0].size())) {
+                    if (movemap[tempy][tempx] == 0) {
+                        if (mode == "list") {
+                            temp_point = {tempx, tempy};
+                            attackmap.push_back(temp_point);
+                        }
+                        if (mode == "matrix") {
+                            attackmap[tempy][tempx] = 1;
+                        }
                     }
-                    if (mode == "matrix") {
-                        attackmap[movelist[1] - rangey][movelist[0] - rangex] = 1;
+                }                
+                tempx = movelist[i][1] + rangex;
+                tempy = movelist[i][0] - rangey;
+                if ((tempx < (int)movemap.size()) && (tempy >= 0)) {
+                     if (movemap[tempy][tempx] == 0) {
+                        if (mode == "list") {
+                            temp_point = {tempx, tempy};
+                            attackmap.push_back(temp_point);
+                        }
+                        if (mode == "matrix") {
+                            attackmap[tempy][tempx] = 1;
+                        }
+                    }
+                }                
+                tempx = movelist[i][1] - rangex;
+                tempy = movelist[i][0] - rangey;
+                if ((tempx >= 0) && (tempy >= 0)) {
+                   if (movemap[tempy][tempx] == 0) {
+                        if (mode == "list") {
+                            temp_point = {tempx, tempy};
+                            attackmap.push_back(temp_point);
+                        }
+                        if (mode == "matrix") {
+                            attackmap[tempy][tempx] = 1;
+                        }
                     }
                 }
             } 
         }
     }
+    if (mode == "list") {
+        // make_uniques
+    }
+    // getchar();
+    printf("Corrected attackmap\n");
     plot2Dvector(attackmap);
 
     // int min_rows = std::max(start[0] - move - (int)range[1] - 1, 0);
