@@ -196,20 +196,40 @@ std::vector<std::vector<int>> attackmap(std::vector<std::vector<int>> movemap, i
             int maxy = std::max(range[1] - rangex, range[0]);
             for (int rangey = miny; rangey < maxy; rangex++) {
                 if (movelist[movelist[1] + rangey][movelist[0] + rangex] == 0) {
-                    temp_point = {movelist[0] + rangex, movelist[1] + rangey}
-                    movelist.push_back(temp_point);
+                    if (mode == "list") {
+                        temp_point = {movelist[0] + rangex, movelist[1] + rangey}
+                        attackmap.push_back(temp_point);
+                    }
+                    if (mode == "matrix") {
+                        attackmap[movelist[1] + rangey][movelist[0] + rangex] = 1;
+                    }
                 }
                 if (movelist[movelist[1] + rangey][movelist[0] - rangex] == 0) {
-                    temp_point = {movelist[0] + rangex, movelist[1] - rangey}
-                    movelist.push_back(temp_point);
+                    if (mode == "list") {
+                        temp_point = {movelist[0] + rangex, movelist[1] - rangey}
+                        attackmap.push_back(temp_point);
+                    }
+                    if (mode == "matrix") {
+                        attackmap[movelist[1] - rangey][movelist[0] + rangex] = 1;
+                    }  
                 }
                 if (movelist[movelist[1] - rangey][movelist[0] + rangex] == 0) {
-                    temp_point = {movelist[0] - rangex, movelist[1] + rangey}
-                    movelist.push_back(temp_point);
+                    if (mode == "list") {
+                        temp_point = {movelist[0] - rangex, movelist[1] + rangey}
+                        attackmap.push_back(temp_point);
+                    }
+                    if (mode == "matrix") {
+                        attackmap[movelist[1] - rangey][movelist[0] + rangex] = 1;
+                    }
                 }
                 if (movelist[movelist[1]-+ rangey][movelist[0] - rangex] == 0) {
-                    temp_point = {movelist[0] - rangex, movelist[1] - rangey}
-                    movelist.push_back(temp_point);
+                    if (mode == "list") {
+                        temp_point = {movelist[0] - rangex, movelist[1] - rangey}
+                        attackmap.push_back(temp_point);
+                    }
+                    if (mode == "matrix") {
+                        attackmap[movelist[1] - rangey][movelist[0] - rangex] = 1;
+                    }
                 }
             } 
         }
