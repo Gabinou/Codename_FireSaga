@@ -233,7 +233,9 @@ std::vector<std::vector<int>> attackmap(std::vector<std::vector<int>> movemap, i
                 }
             } 
         }
-    } 
+    }
+    plot2Dvector(attackmap);
+
     // int min_rows = std::max(start[0] - move - (int)range[1] - 1, 0);
     // int max_rows = std::min(start[0] + move + (int)range[1] + 1, int(movemap[0].size()));
     // int min_cols = std::max(start[1] - move - (int)range[1] - 1, 0);
