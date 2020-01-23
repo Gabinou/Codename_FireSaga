@@ -35,6 +35,7 @@ class Scene {
         Dialog_line getLine(const std::string in_id);
         Dialog_line nextLine();
         std::string getID();
+        void setID(std::string in_id);
         void setParticipants(const std::vector<std::string> in_participants);
         std::vector<std::string> getParticipants();
 };

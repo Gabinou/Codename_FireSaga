@@ -57,7 +57,7 @@ int main(int argc, char * argv[]) {
 
     baseScript();
 
-    printf("%s\n", intro.getLine("1").line);
+    printf("%s\n", all_scripts["Chapter 1"].getScene("Intro").getLine("1").line.c_str());
 
     std::chrono::system_clock::time_point frame_start, frame_end, frame_middle;
     int frame_time;

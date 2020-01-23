@@ -22,6 +22,10 @@ std::string Scene::getID() {
     return(id);    
 }
 
+void Scene::setID(std::string in_id) {
+    id = in_id;
+}
+
 void Scene::addLine(const Dialog_line in_line) {
     lines[in_line.id] = in_line;
 }
@@ -50,9 +54,15 @@ std::string Script::getID() {
     return(id);    
 }
 
+std::unordered_map<std::string, Script> all_scripts;
+
 void baseScript() {
-    printf("Making dialog");
+    printf("Making base script\n");
     Dialog_line temp_line = {"1", "Silou", "the line"}; 
     Scene intro; 
     intro.addLine(temp_line);
+    intro.setID("Intro");
+    Script Chapter_1; 
+    Chapter_1.addScene(intro);
+    all_scripts["Chapter 1"] = Chapter_1;
 }
