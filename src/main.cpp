@@ -48,16 +48,17 @@ int main(int argc, char * argv[]) {
     // printf("Path\n");
     // plot2Dvector(path);
 
+
+    baseScript();
+
+    printf("%s\n", all_scripts["Chapter 1"].getScene("Intro").getLine("1").line.c_str());
+
     firesaga = new Game();
     printf("Made game.\n");
     firesaga->settings.FPS.show = true;
     firesaga->setFontsize(28);
     firesaga->init("FireSaga", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, firesaga->settings.res.x, firesaga->settings.res.y, false);
     printf("Initiated game.\n");
-
-    baseScript();
-
-    printf("%s\n", all_scripts["Chapter 1"].getScene("Intro").getLine("1").line.c_str());
 
     std::chrono::system_clock::time_point frame_start, frame_end, frame_middle;
     int frame_time;

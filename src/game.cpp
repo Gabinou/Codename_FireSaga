@@ -6,6 +6,7 @@
 #include "keyboardcontroller.hpp"
 #include "gamepadcontroller.hpp"
 #include "unitcomponent.hpp"
+#include "script.hpp"
 
 Map * mapp;
 
@@ -1153,6 +1154,8 @@ void Game::init(const char * title, int xpos, int ypos, int width, int height, b
     
     manager.getEntities()[all_units["Silou"]]->addGroup(manager.groupUnits);
     cursor.addGroup(manager.groupUI);
+    
+    printf("in game: %s\n", all_scripts["Chapter 1"].getScene("Intro").getLine("1").line.c_str());
 
     this->setState("map");
     
