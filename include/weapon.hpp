@@ -43,6 +43,7 @@ class Weapon {
         std::string getEffective();
         void setDescription(std::string in_description);
         std::string getDescription();
+        std::string getName();
 };
 
 /*! \var all_weapons
@@ -51,5 +52,7 @@ class Weapon {
 *  Are immutable. Should never be changed in game.
 */
 extern std::unordered_map<std::string, Weapon> all_weapons;
+
+void baseWeapons();
 
 #endif /* WEAPON_HPP */

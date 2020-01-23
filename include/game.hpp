@@ -10,6 +10,7 @@
 #include "weapon.hpp"
 #include "tile.hpp"
 #include "linalg.hpp"
+#include "script.hpp"
 
 class Game {
 

@@ -11,6 +11,7 @@
 #include "textcomponent.hpp"
 #include "game.hpp"
 #include "script.hpp"
+#include "weapon.hpp"
 
 // Settings settings;
 
@@ -18,40 +19,12 @@ Game * firesaga = nullptr;
 
 int main(int argc, char * argv[]) {
     printf("TESTING THIS BITCH\n");
-    // read_all_weapons("..\\weapons.txt");
-    // read_all_units("..\\units_FE1.txt");
-    // write_all_units("..\\units_test.txt"); // OKAY
-    // int start[2] = {1, 2};
-    // int end[2] = {8, 8};
-
-    // std::vector<std::vector<int>> map{
-    //     {1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1},
-    //     {1,1,1,1,1,1,1,-1,1,1,1,1,1,1,1,1},
-    //     {1,1,1,1,1,-1,1,1,1,1,1,1,1,1,1,1},
-    //     {1,1,1,1,-1,1,1,1,1,1,1,1,1,1,1,1},
-    //     {1,1,1,-1,1,1,1,1,1,1,1,1,1,1,1,1},
-    //     {1,1,-1,1,1,1,1,1,1,1,1,1,1,1,1,1},
-    //     {1,-1,1,1,1,1,1,1,1,1,1,1,1,1,1,1},
-    //     {1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1},
-    //     {1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1},
-    //     {1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1},
-    //     {1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1},
-    //     {1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1},
-    //     {1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1},
-    //     {1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1}
-    // };
-    // std::vector<std::vector<int>> path;
-    // std::string at = "matrix";
-    // path = A_star(map, start, end, at);
-    // printf("Map\n");
-    // plot2Dvector(map);
-    // printf("Path\n");
-    // plot2Dvector(path);
-
 
     baseScript();
+    printf("Testing script: %s\n", all_scripts["Chapter 1"].getScene("Intro").getLine("1").line.c_str());
 
-    printf("%s\n", all_scripts["Chapter 1"].getScene("Intro").getLine("1").line.c_str());
+    baseWeapons();
+    printf("Testing weapon: %s\n", all_weapons["wooden_sword"].getName().c_str());
 
     firesaga = new Game();
     printf("Made game.\n");
