@@ -49,3 +49,6 @@ void Script::addScene(Scene in_scene) {
 std::string Script::getID() {
     return(id);    
 }
+
+Dialog_line temp_line = {"1", "Silou", "the line"}; 
+Scene temp_scene = {"1", "Silou", "the line"}; 
