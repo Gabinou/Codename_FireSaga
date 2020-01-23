@@ -62,7 +62,6 @@ std::vector<std::vector<int>> matrix_or(std::vector<std::vector<int>> matrix1, s
     return(out);
 }
 
-
 std::vector<std::vector<int>> matrix_edges(std::vector<std::vector<int>> matrix) {
     std::vector<std::vector<int>> edges = matrix;
 
