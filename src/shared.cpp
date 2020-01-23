@@ -179,9 +179,9 @@ std::vector<std::vector<int>> attackmap(std::vector<std::vector<int>> movemap, i
 
     movelist = matrix2list(movemap);
 
-    if (mode == "matrix"){
+    if (mode == "matrix") {
         attackmap = movemap;
-        for (int i = 0; i < attackmap.size(); i++){
+        for (int i = 0; i < attackmap.size(); i++) {
             std::fill(attackmap[i].begin(), attackmap[i].end(), 0);
         }
     }
@@ -193,7 +193,7 @@ std::vector<std::vector<int>> attackmap(std::vector<std::vector<int>> movemap, i
             for (int rangey = miny; rangey <= maxy; rangey++) {
                 tempx = movelist[i][1] + rangex;
                 tempy = movelist[i][0] + rangey;
-                if ( (tempx < (int)movemap.size()) && (tempy < (int)movemap[0].size())) {
+                if ((tempx < (int)movemap.size()) && (tempy < (int)movemap[0].size())) {
                     if (movemap[tempy][tempx] == 0) {
                         if (mode == "list") {
                             temp_point = {tempx, tempy};

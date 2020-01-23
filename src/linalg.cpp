@@ -46,11 +46,8 @@ std::vector<std::vector<int>> tilesatdistance(int start[], int distance, int xma
     std::vector<int> temp_point = {start[0] + distance - 1, start[1] + 1};
     int xtemp, ytemp;
     tiles_list.push_back(temp_point);
-    // printf("start %d %d \n", start[0], start[1]);    
-    // printf("out %d %d \n", tiles_list.back()[0], tiles_list.back()[1]);    
     int factor[2] = {-1, 1};
     while ((tiles_list.back()[0] != (start[0] + distance)) || ((tiles_list.back()[1] != (start[1])))) {
-        // printf("in %d %d \n", tiles_list.back()[0], tiles_list.back()[1]);
         xtemp = std::min(std::max(tiles_list.back()[0] + factor[0], 0), xmax);
         ytemp = std::min(std::max(tiles_list.back()[1] + factor[1], 0), ymax);
         temp_point = {xtemp, ytemp};
@@ -70,49 +67,6 @@ std::vector<std::vector<int>> tilesatdistance(int start[], int distance, int xma
         }
     }
     printf("out %d %d \n", tiles_list.back()[0], tiles_list.back()[1]);
-
-    // std::vector<int> x;
-    // int y;
-    // int index[2] = {-1, 1};
-    // // printf("%d %d \n", start[0], start[1]);
-    // // printf("%d \n", distance);
-    // for (int dist = 0; dist <= distance; dist++) {
-    //     x.push_back(start[0] - dist);
-    //     printf("%d \n", x[x.size()-1]);
-    //     x.push_back(start[0] + dist);
-    //     printf("%d \n", x[x.size()-1]);
-    // }
-    // getchar();
-    // for (int i = 0; i < x.size(); i++) {
-    //     // printf("%d \n", x[i]);
-    //     temp_point[0] = x[i];
-    //     temp_point[1] = start[1] + distance - std::abs(x[i]-start[0]);
-    //     tiles_list.push_back(temp_point);
-    //     printf("%d %d \n", temp_point[0], temp_point[1]);
-    //     temp_point[1] = start[1] - distance - std::abs(x[i]-start[0]);
-    //     tiles_list.push_back(temp_point);
-    //     printf("%d %d \n", temp_point[0], temp_point[1]);
-    //     // printf("%d \n", start[i] + distance - std::abs(x[i]-start[0]));
-    //     // temp_point[1] = start[i] - distance - std::abs((x[i]-start[0]));
-    //     // tiles_list.push_back(temp_point);
-    //     // printf("%d %d \n", temp_point[0], temp_point[1]);
-        
-    // }
-    // for (int dist = 0; dist < distance; dist++) {
-    //     for (int i = 0; i <= 1; i++) {
-    //         for (int j = 0; j <= 1; j++) {
-    //             if ((dist == 0) && (i == 1)) {
-    //                 temp_point[0] = start[0] + index[j]*(distance - dist);
-    //                 temp_point[1] = start[1] + index[i]*dist;
-    //             } else {
-    //                 temp_point[0] = start[0] + index[i]*dist;
-    //                 temp_point[1] = start[1] + index[j]*(distance - dist);
-    //             }
-    //             tiles_list.push_back(temp_point);
-    //             printf("%d %d \n", temp_point[0], temp_point[1]);
-    //         }
-    //     }
-    // }
     return(tiles_list);
 }
 
