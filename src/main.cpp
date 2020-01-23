@@ -10,6 +10,7 @@
 #include "shared.hpp"
 #include "textcomponent.hpp"
 #include "game.hpp"
+#include "script.hpp"
 
 // Settings settings;
 
@@ -53,7 +54,11 @@ int main(int argc, char * argv[]) {
     firesaga->setFontsize(28);
     firesaga->init("FireSaga", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, firesaga->settings.res.x, firesaga->settings.res.y, false);
     printf("Initiated game.\n");
-  
+
+    baseScript();
+
+    printf("%s\n", intro.getLine("1").line);
+
     std::chrono::system_clock::time_point frame_start, frame_end, frame_middle;
     int frame_time;
     char buffer[15];

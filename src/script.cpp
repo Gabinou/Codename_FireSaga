@@ -50,5 +50,9 @@ std::string Script::getID() {
     return(id);    
 }
 
-Dialog_line temp_line = {"1", "Silou", "the line"}; 
-Scene temp_scene = {"1", "Silou", "the line"}; 
+void baseScript() {
+    printf("Making dialog");
+    Dialog_line temp_line = {"1", "Silou", "the line"}; 
+    Scene intro; 
+    intro.addLine(temp_line);
+}

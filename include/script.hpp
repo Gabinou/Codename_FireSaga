@@ -51,4 +51,8 @@ class Script {
         void addScene(Scene in_scene);
 };
 
+extern std::unordered_map<std::string, Script> all_scripts;
+
+void baseScript();
+
 #endif /* SCRIPT_HPP */
