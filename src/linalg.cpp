@@ -40,37 +40,6 @@ std::vector<int> unique2D(std::vector<std::vector<int>> matrix) {
     return(uniques);
 }
 
-std::vector<std::vector<int>> tilesatdistance(int start[], int distance, int xmax, int ymax) {
-    // assumes the minimum is 0.
-    std::vector<std::vector<int>> tiles_list;
-    std::vector<int> temp_point = {start[0] + distance - 1, start[1] + 1};
-    int xtemp, ytemp;
-    tiles_list.push_back(temp_point);
-    int factor[2] = {-1, 1};
-    while ((tiles_list.back()[0] != (start[0] + distance)) || ((tiles_list.back()[1] != (start[1])))) {
-        xtemp = std::min(std::max(tiles_list.back()[0] + factor[0], 0), xmax);
-        ytemp = std::min(std::max(tiles_list.back()[1] + factor[1], 0), ymax);
-        temp_point = {xtemp, ytemp};
-
-        tiles_list.push_back(temp_point);
-        if (tiles_list.back()[0] == (start[0] + distance)){
-        factor[0] = -1;
-        }         
-        if (tiles_list.back()[0] == (start[0] - distance)){
-        factor[0] = 1;
-        }         
-        if (tiles_list.back()[1] == (start[1] + distance)){
-        factor[1] = -1;
-        }         
-        if (tiles_list.back()[1] == (start[1] - distance)){
-        factor[1] = 1;
-        }
-    }
-    printf("out %d %d \n", tiles_list.back()[0], tiles_list.back()[1]);
-    return(tiles_list);
-}
-
-
 std::vector<std::vector<int>> matrix_plus(std::vector<std::vector<int>> matrix1, std::vector<std::vector<int>> matrix2, int sign) {
     //both matrices should have the same shape
     std::vector<std::vector<int>> out = matrix1;
