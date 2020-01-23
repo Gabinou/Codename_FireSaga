@@ -26,6 +26,9 @@ int main(int argc, char * argv[]) {
     baseWeapons();
     printf("Testing weapon: %s\n", all_weapons["wooden_sword"].getName().c_str());
 
+    baseTiles();
+    printf("Testing tiles: %s\n");
+
     firesaga = new Game();
     printf("Made game.\n");
     firesaga->settings.FPS.show = true;

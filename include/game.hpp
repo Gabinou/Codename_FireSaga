@@ -59,7 +59,7 @@ class Game {
         bool running();
 
         void baseUnits();
-        void baseTiles();
+        // void baseTiles();
 };
 
 #endif /* GAME_HPP */

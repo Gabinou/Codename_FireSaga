@@ -29,4 +29,7 @@ class Tile {
 
 extern std::unordered_map<int, Tile> all_tiles;
 
+void baseTiles();
+
+
 #endif /* TILE_HPP */
