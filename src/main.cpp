@@ -8,8 +8,8 @@
 #include <SDL2/SDL_image.h>
 #include <chrono>
 #include "shared.hpp"
-#include "ECS.hpp"
-#include "unitcomponent.hpp"
+// #include "ECS.hpp"
+// #include "unitcomponent.hpp"
 #include "textcomponent.hpp"
 #include "game.hpp"
 #include "script.hpp"
