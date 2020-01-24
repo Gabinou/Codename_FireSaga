@@ -1,6 +1,6 @@
 #include "unit.hpp"
 
-// extern std::unordered_map<std::string, int> all_units;
+std::unordered_map<std::string, Unit> all_units;
 
 Unit::Unit(const std::string in_name, const std::string in_class, const Unit_stats in_bases) {
     base_stats = in_bases;
@@ -386,148 +386,147 @@ void Unit::write(const char * filename) {
     fclose(fp);
 }
 
-// void baseUnits(Manager * manager) {
-//     printf("Making base units \n");
-//     manager->addEntity();
-//     Unit_stats temp;
-//     //hp,str,mag,skl,spd,luck,def,res,con,move
-//     temp = {17,  6,  2,  7,  7,   7,  4,  5,  6, 5};
-//     manager->getEntities().back()->addComponent<UnitComponent>("Main", "Mercenary", temp);
-//     temp = {48, 14, 25, 32, 34,  28, 19, 40, 15, 0};
-//     manager->getEntities().back()->getComponent<UnitComponent>().setCaps(temp);
-//     temp = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
-//     manager->getEntities().back()->getComponent<UnitComponent>().setGrowths(temp);
-//     manager->getEntities().back()->getComponent<UnitComponent>().setExp(0);
-//     manager->getEntities().back()->getComponent<UnitComponent>().write("unit_test.txt");
-//     all_units["Main"] = manager->getEntities().size() - 1;
+void baseUnits() {
+    printf("Making base units \n");
+    Unit_stats temp;
+    //hp,str,mag,skl,spd,luck,def,res,con,move
+    temp = {17,  6,  2,  7,  7,   7,  4,  5,  6, 5};
+    Unit temp_unit("Main", "Mercenary", temp);
+    // temp = {48, 14, 25, 32, 34,  28, 19, 40, 15, 0};
+    // temp_unit.setCaps(temp);
+    // temp = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
+    // temp_unit.setGrowths(temp);
+    // temp_unit.setExp(0);
+    // temp_unit.write("unit_test.txt");
+    // all_units["Main"] = temp_unit;
 
-//     manager->addEntity();
+//     
 //     temp = {18,  6,  2,  7,  7,   7,  4,  5,  6, 7};
-//     manager->getEntities().back()->addComponent<UnitComponent>("Reliable", "Cavalier", temp);
+//     Unit temp_unit("Reliable", "Cavalier", temp);
 //     temp = {48, 14, 25, 32, 34,  28, 19, 40, 15};
-//     manager->getEntities().back()->getComponent<UnitComponent>().setCaps(temp);
+//     temp_unit.setCaps(temp);
 //     temp = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
-//     manager->getEntities().back()->getComponent<UnitComponent>().setGrowths(temp);
-//     manager->getEntities().back()->getComponent<UnitComponent>().setExp(100);
-//     all_units["Reliable"] = manager->getEntities().size() - 1;
+//     temp_unit.setGrowths(temp);
+//     temp_unit.setExp(100);
+//     all_units["Reliable"] = temp_unit;
 
-//     manager->addEntity();
+//     
 //     temp = {19,  6,  2,  7,  7,   7,  4,  5,  6,  7};
-//     manager->getEntities().back()->addComponent<UnitComponent>("Coward", "Cavalier", temp);
+//     Unit temp_unit("Coward", "Cavalier", temp);
 //     temp = {48, 14, 25, 32, 34,  28, 19, 40, 15};
-//     manager->getEntities().back()->getComponent<UnitComponent>().setCaps(temp);
+//     temp_unit.setCaps(temp);
 //     temp = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
-//     manager->getEntities().back()->getComponent<UnitComponent>().setGrowths(temp);
-//     manager->getEntities().back()->getComponent<UnitComponent>().setExp(200);
-//     all_units["Coward"] = manager->getEntities().size() - 1;
+//     temp_unit.setGrowths(temp);
+//     temp_unit.setExp(200);
+//     all_units["Coward"] = temp_unit;
 
-//     manager->addEntity();
+//     
 //     temp = {20,  6,  2,  7,  7,   7,  4,  5,  6,  6};
-//     manager->getEntities().back()->addComponent<UnitComponent>("1H Jaigen", "Fencermaster", temp);
+//     Unit temp_unit("1H Jaigen", "Fencermaster", temp);
 //     temp = {48, 14, 25, 32, 34,  28, 19, 40, 15};
-//     manager->getEntities().back()->getComponent<UnitComponent>().setCaps(temp);
+//     temp_unit.setCaps(temp);
 //     temp = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
-//     manager->getEntities().back()->getComponent<UnitComponent>().setGrowths(temp);
-//     manager->getEntities().back()->getComponent<UnitComponent>().setExp(2200);
-//     all_units["1H Jaigen"] = manager->getEntities().size() - 1;
+//     temp_unit.setGrowths(temp);
+//     temp_unit.setExp(2200);
+//     all_units["1H Jaigen"] = temp_unit;
 
-//     manager->addEntity();
+//     
 //     temp = {14,  6,  2,  7,  7,   7,  4,  5,  6,  5};
-//     manager->getEntities().back()->addComponent<UnitComponent>("Lovely", "Priestess", temp);
+//     Unit temp_unit("Lovely", "Priestess", temp);
 //     temp = {48, 14, 25, 32, 34,  28, 19, 40, 15};
-//     manager->getEntities().back()->getComponent<UnitComponent>().setCaps(temp);
+//     temp_unit.setCaps(temp);
 //     temp = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
-//     manager->getEntities().back()->getComponent<UnitComponent>().setGrowths(temp);
-//     manager->getEntities().back()->getComponent<UnitComponent>().setExp(100);
-//     all_units["Lovely"] = manager->getEntities().size() - 1;
+//     temp_unit.setGrowths(temp);
+//     temp_unit.setExp(100);
+//     all_units["Lovely"] = temp_unit;
 
-//     manager->addEntity();
+//     
 //     temp = {16,  6,  2,  7,  7,   7,  4,  5,  6,  6};
-//     manager->getEntities().back()->addComponent<UnitComponent>("Hottie", "Thief", temp);
+//     Unit temp_unit("Hottie", "Thief", temp);
 //     temp = {48, 14, 25, 32, 34,  28, 19, 40, 15};
-//     manager->getEntities().back()->getComponent<UnitComponent>().setCaps(temp);
+//     temp_unit.setCaps(temp);
 //     temp = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
-//     manager->getEntities().back()->getComponent<UnitComponent>().setGrowths(temp);
-//     manager->getEntities().back()->getComponent<UnitComponent>().setExp(2200);
-//     all_units["Hottie"] = manager->getEntities().size() - 1;
+//     temp_unit.setGrowths(temp);
+//     temp_unit.setExp(2200);
+//     all_units["Hottie"] = temp_unit;
 
-//     manager->addEntity();
+//     
 //     temp = {22,  4,  5,  7,  6,   8,  4,  6,  5, 5}; // 4 or 5?
-//     manager->getEntities().back()->addComponent<UnitComponent>("Servil", "Knight", temp);
+//     Unit temp_unit("Servil", "Knight", temp);
 //     temp = {48, 14, 25, 32, 34,  28, 19, 40, 15};
-//     manager->getEntities().back()->getComponent<UnitComponent>().setCaps(temp);
+//     temp_unit.setCaps(temp);
 //     temp = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
-//     manager->getEntities().back()->getComponent<UnitComponent>().setGrowths(temp);
-//     manager->getEntities().back()->getComponent<UnitComponent>().setExp(500);
-//     all_units["Servil"] = manager->getEntities().size() - 1;
+//     temp_unit.setGrowths(temp);
+//     temp_unit.setExp(500);
+//     all_units["Servil"] = temp_unit;
 
-//     manager->addEntity();
+//     
 //     temp = {34,  4,  5,  7,  6,   8,  4,  6,  5, 5};
-//     manager->getEntities().back()->addComponent<UnitComponent>("Pérignon", "Mage", temp);
+//     Unit temp_unit("Pérignon", "Mage", temp);
 //     temp = {48, 14, 25, 32, 34,  28, 19, 40, 15};
-//     manager->getEntities().back()->getComponent<UnitComponent>().setCaps(temp);
+//     temp_unit.setCaps(temp);
 //     temp = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
-//     manager->getEntities().back()->getComponent<UnitComponent>().setGrowths(temp);
-//     manager->getEntities().back()->getComponent<UnitComponent>().setExp(1200);
-//     all_units["Pérignon"] = manager->getEntities().size() - 1;
+//     temp_unit.setGrowths(temp);
+//     temp_unit.setExp(1200);
+//     all_units["Pérignon"] = temp_unit;
 
-//     manager->addEntity();
+//     
 //     temp = {15,  4,  5,  7,  6,   8,  4,  6,  5, 5};
-//     manager->getEntities().back()->addComponent<UnitComponent>("Poet", "Mage", temp);
+//     Unit temp_unit("Poet", "Mage", temp);
 //     temp = {48, 14, 25, 32, 34,  28, 19, 40, 15};
-//     manager->getEntities().back()->getComponent<UnitComponent>().setCaps(temp);
+//     temp_unit.setCaps(temp);
 //     temp = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
-//     manager->getEntities().back()->getComponent<UnitComponent>().setGrowths(temp);
-//     manager->getEntities().back()->getComponent<UnitComponent>().setExp(400);
-//     all_units["Poet"] = manager->getEntities().size() - 1;
+//     temp_unit.setGrowths(temp);
+//     temp_unit.setExp(400);
+//     all_units["Poet"] = temp_unit;
 
-//     manager->addEntity();
+//     
 //     temp = {15,  4,  5,  7,  6,   8,  4,  6,  5, 5};
-//     manager->getEntities().back()->addComponent<UnitComponent>("Silou", "Mage", temp);
+//     Unit temp_unit("Silou", "Mage", temp);
 //     temp = {48, 14, 25, 32, 34,  28, 19, 40, 15};
-//     manager->getEntities().back()->getComponent<UnitComponent>().setCaps(temp);
+//     temp_unit.setCaps(temp);
 //     temp = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
-//     manager->getEntities().back()->getComponent<UnitComponent>().setGrowths(temp);
-//     manager->getEntities().back()->getComponent<UnitComponent>().setExp(400);
-//     all_units["Silou"] = manager->getEntities().size() - 1;
+//     temp_unit.setGrowths(temp);
+//     temp_unit.setExp(400);
+//     all_units["Silou"] = temp_unit;
 
-//     manager->addEntity();
+//     
 //     temp = {15,  4,  5,  7,  6,   8,  4,  6,  5, 5};
-//     manager->getEntities().back()->addComponent<UnitComponent>("Poet", "Mage", temp);
+//     Unit temp_unit("Poet", "Mage", temp);
 //     temp = {48, 14, 25, 32, 34,  28, 19, 40, 15};
-//     manager->getEntities().back()->getComponent<UnitComponent>().setCaps(temp);
+//     temp_unit.setCaps(temp);
 //     temp = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
-//     manager->getEntities().back()->getComponent<UnitComponent>().setGrowths(temp);
-//     manager->getEntities().back()->getComponent<UnitComponent>().setExp(400);
-//     all_units["Arm Thief"] = manager->getEntities().size() - 1;
+//     temp_unit.setGrowths(temp);
+//     temp_unit.setExp(400);
+//     all_units["Arm Thief"] = temp_unit;
 
-//     manager->addEntity();
+//     
 //     temp = {15,  4,  5,  7,  6,   8,  4,  6,  5, 5};
-//     manager->getEntities().back()->addComponent<UnitComponent>("Poet", "Mage", temp);
+//     Unit temp_unit("Poet", "Mage", temp);
 //     temp = {48, 14, 25, 32, 34,  28, 19, 40, 15};
-//     manager->getEntities().back()->getComponent<UnitComponent>().setCaps(temp);
+//     temp_unit.setCaps(temp);
 //     temp = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
-//     manager->getEntities().back()->getComponent<UnitComponent>().setGrowths(temp);
-//     manager->getEntities().back()->getComponent<UnitComponent>().setExp(400);
-//     all_units["Mage2"] = manager->getEntities().size() - 1;
+//     temp_unit.setGrowths(temp);
+//     temp_unit.setExp(400);
+//     all_units["Mage2"] = temp_unit;
 
-//     manager->addEntity();
+//     
 //     temp = {15,  4,  5,  7,  6,   8,  4,  6,  5, 5};
-//     manager->getEntities().back()->addComponent<UnitComponent>("Silou", "Mage", temp);
+//     Unit temp_unit("Silou", "Mage", temp);
 //     temp = {48, 14, 25, 32, 34,  28, 19, 40, 15};
-//     manager->getEntities().back()->getComponent<UnitComponent>().setCaps(temp);
+//     temp_unit.setCaps(temp);
 //     temp = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
-//     manager->getEntities().back()->getComponent<UnitComponent>().setGrowths(temp);
-//     manager->getEntities().back()->getComponent<UnitComponent>().setExp(400);
-//     all_units["Mage2"] = manager->getEntities().size() - 1;
+//     temp_unit.setGrowths(temp);
+//     temp_unit.setExp(400);
+//     all_units["Mage2"] = temp_unit;
 
-//     manager->addEntity();
+//     
 //     temp = {15,  4,  5,  7,  6,   8,  4,  6,  5, 5};
-//     manager->getEntities().back()->addComponent<UnitComponent>("Silou", "Mage", temp);
+//     Unit temp_unit("Silou", "Mage", temp);
 //     temp = {48, 14, 25, 32, 34,  28, 19, 40, 15};
-//     manager->getEntities().back()->getComponent<UnitComponent>().setCaps(temp);
+//     temp_unit.setCaps(temp);
 //     temp = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
-//     manager->getEntities().back()->getComponent<UnitComponent>().setGrowths(temp);
-//     manager->getEntities().back()->getComponent<UnitComponent>().setExp(400);
-//     all_units["Mage3"] = manager->getEntities().size() - 1;
-// }
+//     temp_unit.setGrowths(temp);
+//     temp_unit.setExp(400);
+//     all_units["Mage3"] = temp_unit;
+}

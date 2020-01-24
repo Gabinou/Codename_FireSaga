@@ -690,6 +690,3 @@ std::uniform_int_distribution<int> Uint_99(0, 99); // more twice faster than Ure
 int getRN(){
     return(Uint_99(mt_64));
 }
-
-std::unordered_map<std::string, Entity> all_units;
-std::unordered_map<std::string, int> wpn_indexes;
