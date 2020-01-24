@@ -395,142 +395,102 @@ void baseUnits() {
     Unit_stats temp;
     //hp,str,mag,skl,spd,luck,def,res,con,move
     temp = {17,  6,  2,  7,  7,   7,  4,  5,  6, 5};
-    Unit temp_unit("Main", "Mercenary", temp);
+    Unit main("Main", "Mercenary", temp);
     temp = {48, 14, 25, 32, 34,  28, 19, 40, 15, 0};
-    temp_unit.setCaps(temp);
+    main.setCaps(temp);
     temp = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
-    temp_unit.setGrowths(temp);
-    temp_unit.setExp(0);
-    temp_unit.write("unit_test.txt");
-    all_units["Main"] = temp_unit;
+    main.setGrowths(temp);
+    main.setExp(0);
+    main.write("unit_test.txt");
+    all_units["Main"] = main;
+    
+    temp = {18,  6,  2,  7,  7,   7,  4,  5,  6, 7};
+    Unit reliable("Reliable", "Cavalier", temp);
+    temp = {48, 14, 25, 32, 34,  28, 19, 40, 15};
+    reliable.setCaps(temp);
+    temp = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
+    reliable.setGrowths(temp);
+    reliable.setExp(100);
+    all_units["Reliable"] = reliable;
 
-//     
-//     temp = {18,  6,  2,  7,  7,   7,  4,  5,  6, 7};
-//     Unit temp_unit("Reliable", "Cavalier", temp);
-//     temp = {48, 14, 25, 32, 34,  28, 19, 40, 15};
-//     temp_unit.setCaps(temp);
-//     temp = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
-//     temp_unit.setGrowths(temp);
-//     temp_unit.setExp(100);
-//     all_units["Reliable"] = temp_unit;
+    
+    temp = {19,  6,  2,  7,  7,   7,  4,  5,  6,  7};
+    Unit coward("Coward", "Cavalier", temp);
+    temp = {48, 14, 25, 32, 34,  28, 19, 40, 15};
+    coward.setCaps(temp);
+    temp = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
+    coward.setGrowths(temp);
+    coward.setExp(200);
+    all_units["Coward"] = coward;
 
-//     
-//     temp = {19,  6,  2,  7,  7,   7,  4,  5,  6,  7};
-//     Unit temp_unit("Coward", "Cavalier", temp);
-//     temp = {48, 14, 25, 32, 34,  28, 19, 40, 15};
-//     temp_unit.setCaps(temp);
-//     temp = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
-//     temp_unit.setGrowths(temp);
-//     temp_unit.setExp(200);
-//     all_units["Coward"] = temp_unit;
+    
+    temp = {20,  6,  2,  7,  7,   7,  4,  5,  6,  6};
+    Unit hjaigen("1H Jaigen", "Fencermaster", temp);
+    temp = {48, 14, 25, 32, 34,  28, 19, 40, 15};
+    hjaigen.setCaps(temp);
+    temp = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
+    hjaigen.setGrowths(temp);
+    hjaigen.setExp(2200);
+    all_units["1H Jaigen"] = hjaigen;
 
-//     
-//     temp = {20,  6,  2,  7,  7,   7,  4,  5,  6,  6};
-//     Unit temp_unit("1H Jaigen", "Fencermaster", temp);
-//     temp = {48, 14, 25, 32, 34,  28, 19, 40, 15};
-//     temp_unit.setCaps(temp);
-//     temp = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
-//     temp_unit.setGrowths(temp);
-//     temp_unit.setExp(2200);
-//     all_units["1H Jaigen"] = temp_unit;
+    
+    temp = {14,  6,  2,  7,  7,   7,  4,  5,  6,  5};
+    Unit lovely("Lovely", "Priestess", temp);
+    temp = {48, 14, 25, 32, 34,  28, 19, 40, 15};
+    lovely.setCaps(temp);
+    temp = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
+    lovely.setGrowths(temp);
+    lovely.setExp(100);
+    all_units["Lovely"] = lovely;
 
-//     
-//     temp = {14,  6,  2,  7,  7,   7,  4,  5,  6,  5};
-//     Unit temp_unit("Lovely", "Priestess", temp);
-//     temp = {48, 14, 25, 32, 34,  28, 19, 40, 15};
-//     temp_unit.setCaps(temp);
-//     temp = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
-//     temp_unit.setGrowths(temp);
-//     temp_unit.setExp(100);
-//     all_units["Lovely"] = temp_unit;
+    
+    temp = {16,  6,  2,  7,  7,   7,  4,  5,  6,  6};
+    Unit hottie("Hottie", "Thief", temp);
+    temp = {48, 14, 25, 32, 34,  28, 19, 40, 15};
+    hottie.setCaps(temp);
+    temp = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
+    hottie.setGrowths(temp);
+    hottie.setExp(2200);
+    all_units["Hottie"] = hottie;
 
-//     
-//     temp = {16,  6,  2,  7,  7,   7,  4,  5,  6,  6};
-//     Unit temp_unit("Hottie", "Thief", temp);
-//     temp = {48, 14, 25, 32, 34,  28, 19, 40, 15};
-//     temp_unit.setCaps(temp);
-//     temp = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
-//     temp_unit.setGrowths(temp);
-//     temp_unit.setExp(2200);
-//     all_units["Hottie"] = temp_unit;
+    
+    temp = {22,  4,  5,  7,  6,   8,  4,  6,  5, 5}; // 4 or 5?
+    Unit servil("Servil", "Knight", temp);
+    temp = {48, 14, 25, 32, 34,  28, 19, 40, 15};
+    servil.setCaps(temp);
+    temp = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
+    servil.setGrowths(temp);
+    servil.setExp(500);
+    all_units["Servil"] = servil;
 
-//     
-//     temp = {22,  4,  5,  7,  6,   8,  4,  6,  5, 5}; // 4 or 5?
-//     Unit temp_unit("Servil", "Knight", temp);
-//     temp = {48, 14, 25, 32, 34,  28, 19, 40, 15};
-//     temp_unit.setCaps(temp);
-//     temp = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
-//     temp_unit.setGrowths(temp);
-//     temp_unit.setExp(500);
-//     all_units["Servil"] = temp_unit;
+    
+    temp = {34,  4,  5,  7,  6,   8,  4,  6,  5, 5};
+    Unit perignon("Pérignon", "Mage", temp);
+    temp = {48, 14, 25, 32, 34,  28, 19, 40, 15};
+    perignon.setCaps(temp);
+    temp = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
+    perignon.setGrowths(temp);
+    perignon.setExp(1200);
+    all_units["Pérignon"] = perignon;
 
-//     
-//     temp = {34,  4,  5,  7,  6,   8,  4,  6,  5, 5};
-//     Unit temp_unit("Pérignon", "Mage", temp);
-//     temp = {48, 14, 25, 32, 34,  28, 19, 40, 15};
-//     temp_unit.setCaps(temp);
-//     temp = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
-//     temp_unit.setGrowths(temp);
-//     temp_unit.setExp(1200);
-//     all_units["Pérignon"] = temp_unit;
+    
+    temp = {15,  4,  5,  7,  6,   8,  4,  6,  5, 5};
+    Unit poet("Poet", "Mage", temp);
+    temp = {48, 14, 25, 32, 34,  28, 19, 40, 15};
+    poet.setCaps(temp);
+    temp = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
+    poet.setGrowths(temp);
+    poet.setExp(400);
+    all_units["Poet"] = poet;
 
-//     
-//     temp = {15,  4,  5,  7,  6,   8,  4,  6,  5, 5};
-//     Unit temp_unit("Poet", "Mage", temp);
-//     temp = {48, 14, 25, 32, 34,  28, 19, 40, 15};
-//     temp_unit.setCaps(temp);
-//     temp = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
-//     temp_unit.setGrowths(temp);
-//     temp_unit.setExp(400);
-//     all_units["Poet"] = temp_unit;
+    
+    temp = {15,  4,  5,  7,  6,   8,  4,  6,  5, 5};
+    Unit silou("Silou", "Mage", temp);
+    temp = {48, 14, 25, 32, 34,  28, 19, 40, 15};
+    silou.setCaps(temp);
+    temp = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
+    silou.setGrowths(temp);
+    silou.setExp(400);
+    all_units["Silou"] = silou;
 
-//     
-//     temp = {15,  4,  5,  7,  6,   8,  4,  6,  5, 5};
-//     Unit temp_unit("Silou", "Mage", temp);
-//     temp = {48, 14, 25, 32, 34,  28, 19, 40, 15};
-//     temp_unit.setCaps(temp);
-//     temp = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
-//     temp_unit.setGrowths(temp);
-//     temp_unit.setExp(400);
-//     all_units["Silou"] = temp_unit;
-
-//     
-//     temp = {15,  4,  5,  7,  6,   8,  4,  6,  5, 5};
-//     Unit temp_unit("Poet", "Mage", temp);
-//     temp = {48, 14, 25, 32, 34,  28, 19, 40, 15};
-//     temp_unit.setCaps(temp);
-//     temp = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
-//     temp_unit.setGrowths(temp);
-//     temp_unit.setExp(400);
-//     all_units["Arm Thief"] = temp_unit;
-
-//     
-//     temp = {15,  4,  5,  7,  6,   8,  4,  6,  5, 5};
-//     Unit temp_unit("Poet", "Mage", temp);
-//     temp = {48, 14, 25, 32, 34,  28, 19, 40, 15};
-//     temp_unit.setCaps(temp);
-//     temp = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
-//     temp_unit.setGrowths(temp);
-//     temp_unit.setExp(400);
-//     all_units["Mage2"] = temp_unit;
-
-//     
-//     temp = {15,  4,  5,  7,  6,   8,  4,  6,  5, 5};
-//     Unit temp_unit("Silou", "Mage", temp);
-//     temp = {48, 14, 25, 32, 34,  28, 19, 40, 15};
-//     temp_unit.setCaps(temp);
-//     temp = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
-//     temp_unit.setGrowths(temp);
-//     temp_unit.setExp(400);
-//     all_units["Mage2"] = temp_unit;
-
-//     
-//     temp = {15,  4,  5,  7,  6,   8,  4,  6,  5, 5};
-//     Unit temp_unit("Silou", "Mage", temp);
-//     temp = {48, 14, 25, 32, 34,  28, 19, 40, 15};
-//     temp_unit.setCaps(temp);
-//     temp = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
-//     temp_unit.setGrowths(temp);
-//     temp_unit.setExp(400);
-//     all_units["Mage3"] = temp_unit;
 }

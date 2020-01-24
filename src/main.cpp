@@ -14,6 +14,7 @@
 #include "game.hpp"
 #include "script.hpp"
 #include "weapon.hpp"
+#include "unit.hpp"
 
 // Settings settings;
 
@@ -31,11 +32,11 @@ int main(int argc, char * argv[]) {
     baseTiles();
     printf("Testing tiles: %s\n");
 
+    baseUnits();
+    printf("Testing units: %s \n");
+
     firesaga = new Game();
     printf("Made game.\n");
-
-    // baseUnits(firesaga.manager);
-    printf("Testing units: %s \n");
 
     firesaga->settings.FPS.show = true;
     firesaga->setFontsize(28);
