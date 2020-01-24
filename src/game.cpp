@@ -15,6 +15,8 @@ TTF_Font * Game::font = NULL;
 Manager Game::manager;
 Settings Game::settings;
 
+std::unordered_map<std::string, int> all_unit_components;
+
 Entity & cursor = Game::manager.addEntity(); // FOR SOME REASON, having an 2, 4, 8 entities.... breaks something in the unitmove->unitmenu states move
 Entity & player = Game::manager.addEntity();
 Entity & player2 = Game::manager.addEntity();
@@ -249,7 +251,7 @@ std::string Game::getState() {
     return(state);
 }
 
-void Game::baseUnits(){
+void Game::baseUnitComponents(){
     manager.addEntity();
     Unit_stats temp;
     //hp,str,mag,skl,spd,luck,def,res,con,move 
@@ -261,7 +263,7 @@ void Game::baseUnits(){
     manager.getEntities().back()->getComponent<UnitComponent>().setGrowths(temp);
     manager.getEntities().back()->getComponent<UnitComponent>().setExp(0); 
     manager.getEntities().back()->getComponent<UnitComponent>().write("unit_test.txt");
-    all_units["Main"] = manager.getEntities().size() - 1;
+    all_unit_components["Main"] = manager.getEntities().size() - 1;
 
     manager.addEntity();
     temp = {18,  6,  2,  7,  7,   7,  4,  5,  6, 7};
@@ -271,7 +273,7 @@ void Game::baseUnits(){
     temp = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
     manager.getEntities().back()->getComponent<UnitComponent>().setGrowths(temp);
     manager.getEntities().back()->getComponent<UnitComponent>().setExp(100);
-    all_units["Reliable"] = manager.getEntities().size() - 1;
+    all_unit_components["Reliable"] = manager.getEntities().size() - 1;
 
     manager.addEntity();
     temp = {19,  6,  2,  7,  7,   7,  4,  5,  6,  7};
@@ -281,7 +283,7 @@ void Game::baseUnits(){
     temp = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
     manager.getEntities().back()->getComponent<UnitComponent>().setGrowths(temp);
     manager.getEntities().back()->getComponent<UnitComponent>().setExp(200);
-    all_units["Coward"] = manager.getEntities().size() - 1;
+    all_unit_components["Coward"] = manager.getEntities().size() - 1;
 
     manager.addEntity();
     temp = {20,  6,  2,  7,  7,   7,  4,  5,  6,  6};
@@ -291,7 +293,7 @@ void Game::baseUnits(){
     temp = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
     manager.getEntities().back()->getComponent<UnitComponent>().setGrowths(temp);
     manager.getEntities().back()->getComponent<UnitComponent>().setExp(2200);
-    all_units["1H Jaigen"] = manager.getEntities().size() - 1;
+    all_unit_components["1H Jaigen"] = manager.getEntities().size() - 1;
 
     manager.addEntity();
     temp = {14,  6,  2,  7,  7,   7,  4,  5,  6,  5};
@@ -301,7 +303,7 @@ void Game::baseUnits(){
     temp = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
     manager.getEntities().back()->getComponent<UnitComponent>().setGrowths(temp);
     manager.getEntities().back()->getComponent<UnitComponent>().setExp(100);
-    all_units["Lovely"] = manager.getEntities().size() - 1;
+    all_unit_components["Lovely"] = manager.getEntities().size() - 1;
     
     manager.addEntity();
     temp = {16,  6,  2,  7,  7,   7,  4,  5,  6,  6};
@@ -311,7 +313,7 @@ void Game::baseUnits(){
     temp = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
     manager.getEntities().back()->getComponent<UnitComponent>().setGrowths(temp);
     manager.getEntities().back()->getComponent<UnitComponent>().setExp(2200);
-    all_units["Hottie"] = manager.getEntities().size() - 1;
+    all_unit_components["Hottie"] = manager.getEntities().size() - 1;
 
     manager.addEntity();
     temp = {22,  4,  5,  7,  6,   8,  4,  6,  5, 5}; // 4 or 5?
@@ -321,7 +323,7 @@ void Game::baseUnits(){
     temp = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
     manager.getEntities().back()->getComponent<UnitComponent>().setGrowths(temp); 
     manager.getEntities().back()->getComponent<UnitComponent>().setExp(500);
-    all_units["Servil"] = manager.getEntities().size() - 1;
+    all_unit_components["Servil"] = manager.getEntities().size() - 1;
 
     manager.addEntity();
     temp = {34,  4,  5,  7,  6,   8,  4,  6,  5, 5};
@@ -331,7 +333,7 @@ void Game::baseUnits(){
     temp = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
     manager.getEntities().back()->getComponent<UnitComponent>().setGrowths(temp);
     manager.getEntities().back()->getComponent<UnitComponent>().setExp(1200);
-    all_units["Pérignon"] = manager.getEntities().size() - 1;
+    all_unit_components["Pérignon"] = manager.getEntities().size() - 1;
 
     manager.addEntity();
     temp = {15,  4,  5,  7,  6,   8,  4,  6,  5, 5};
@@ -341,7 +343,7 @@ void Game::baseUnits(){
     temp = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
     manager.getEntities().back()->getComponent<UnitComponent>().setGrowths(temp);
     manager.getEntities().back()->getComponent<UnitComponent>().setExp(400);
-    all_units["Poet"] = manager.getEntities().size() - 1;
+    all_unit_components["Poet"] = manager.getEntities().size() - 1;
 
     manager.addEntity();
     temp = {15,  4,  5,  7,  6,   8,  4,  6,  5, 5};
@@ -351,7 +353,7 @@ void Game::baseUnits(){
     temp = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
     manager.getEntities().back()->getComponent<UnitComponent>().setGrowths(temp);
     manager.getEntities().back()->getComponent<UnitComponent>().setExp(400);
-    all_units["Silou"] = manager.getEntities().size() - 1;
+    all_unit_components["Silou"] = manager.getEntities().size() - 1;
 
     manager.addEntity();
     temp = {15,  4,  5,  7,  6,   8,  4,  6,  5, 5};
@@ -361,7 +363,7 @@ void Game::baseUnits(){
     temp = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
     manager.getEntities().back()->getComponent<UnitComponent>().setGrowths(temp);
     manager.getEntities().back()->getComponent<UnitComponent>().setExp(400);
-    all_units["Arm Thief"] = manager.getEntities().size() - 1;
+    all_unit_components["Arm Thief"] = manager.getEntities().size() - 1;
 
     manager.addEntity();
     temp = {15,  4,  5,  7,  6,   8,  4,  6,  5, 5};
@@ -371,7 +373,7 @@ void Game::baseUnits(){
     temp = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
     manager.getEntities().back()->getComponent<UnitComponent>().setGrowths(temp);
     manager.getEntities().back()->getComponent<UnitComponent>().setExp(400);
-    all_units["Mage2"] = manager.getEntities().size() - 1;
+    all_unit_components["Mage2"] = manager.getEntities().size() - 1;
 
     manager.addEntity();
     temp = {15,  4,  5,  7,  6,   8,  4,  6,  5, 5};
@@ -381,7 +383,7 @@ void Game::baseUnits(){
     temp = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
     manager.getEntities().back()->getComponent<UnitComponent>().setGrowths(temp);
     manager.getEntities().back()->getComponent<UnitComponent>().setExp(400);
-    all_units["Mage2"] = manager.getEntities().size() - 1;
+    all_unit_components["Mage2"] = manager.getEntities().size() - 1;
 
     manager.addEntity();
     temp = {15,  4,  5,  7,  6,   8,  4,  6,  5, 5};
@@ -391,7 +393,7 @@ void Game::baseUnits(){
     temp = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
     manager.getEntities().back()->getComponent<UnitComponent>().setGrowths(temp);
     manager.getEntities().back()->getComponent<UnitComponent>().setExp(400);
-    all_units["Mage3"] = manager.getEntities().size() - 1;
+    all_unit_components["Mage3"] = manager.getEntities().size() - 1;
 }
 
 void Game::init(const char * title, int xpos, int ypos, int width, int height, bool fullscreen) {
@@ -438,7 +440,7 @@ void Game::init(const char * title, int xpos, int ypos, int width, int height, b
     }
 
     printf("Making units\n");
-    baseUnits();
+    baseUnitComponents();
 
     printf("Creating map \n");
     tilesize[0] = 32;
@@ -448,8 +450,8 @@ void Game::init(const char * title, int xpos, int ypos, int width, int height, b
 
     cursor.addComponent<PositionComponent>(6, 6);
 
-    manager.getEntities()[all_units["Silou"]]->addComponent<PositionComponent>(6, 6);
-    manager.getEntities()[all_units["Silou"]]->getComponent<PositionComponent>().setMap(mapp);
+    manager.getEntities()[all_unit_components["Silou"]]->addComponent<PositionComponent>(6, 6);
+    manager.getEntities()[all_unit_components["Silou"]]->getComponent<PositionComponent>().setMap(mapp);
 
     SDL_Color black = {255, 255, 255};
     cursor.addComponent<KeyboardController>(this, mapp);
@@ -460,12 +462,12 @@ void Game::init(const char * title, int xpos, int ypos, int width, int height, b
         cursor.addComponent<GamepadController>(this, mapp);
     }
 
-    manager.getEntities()[all_units["Silou"]]->addComponent<SpriteComponent>(mapp, "..//assets//horse.png");
+    manager.getEntities()[all_unit_components["Silou"]]->addComponent<SpriteComponent>(mapp, "..//assets//horse.png");
 
     cursor.addComponent<SpriteComponent>(mapp, "..//assets//cursors.png", 10, 50);
     cursor.getComponent<SpriteComponent>().setSlidetype("geometric");
     
-    manager.getEntities()[all_units["Silou"]]->addGroup(manager.groupUnits);
+    manager.getEntities()[all_unit_components["Silou"]]->addGroup(manager.groupUnits);
     cursor.addGroup(manager.groupUI);
     
     printf("in game: %s\n", all_scripts["Chapter 1"].getScene("Intro").getLine("1").line.c_str());
