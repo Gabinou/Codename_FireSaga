@@ -58,7 +58,7 @@ class Game {
 
         bool running();
 
-        // void baseUnits();
+        void baseUnits();
 };
 
 #endif /* GAME_HPP */

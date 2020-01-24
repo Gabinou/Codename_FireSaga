@@ -34,7 +34,7 @@ int main(int argc, char * argv[]) {
     firesaga = new Game();
     printf("Made game.\n");
 
-    baseUnits(firesaga.manager);
+    // baseUnits(firesaga.manager);
     printf("Testing units: %s \n");
 
     firesaga->settings.FPS.show = true;
