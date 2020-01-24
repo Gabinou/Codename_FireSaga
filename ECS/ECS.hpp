@@ -76,10 +76,7 @@ class Entity {
             return (groupbitset[in_Group]);
         }
 
-        void addGroup(Group in_Group) {
-            groupbitset[in_Group] = true;
-            manager.addtogroup(this, in_Group);
-        }
+        void addGroup(Group in_Group);
 
         void delGroup(Group in_Group) {
             groupbitset[in_Group] = false;

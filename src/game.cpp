@@ -437,8 +437,8 @@ void Game::init(const char * title, int xpos, int ypos, int width, int height, b
         isRunning = false;
     }
 
-    printf("Making units\n");
-    baseUnits();
+    // printf("Making units\n");
+    // baseUnits();
 
     // printf("Making tiles\n");
     // baseTiles();

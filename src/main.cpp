@@ -8,6 +8,8 @@
 #include <SDL2/SDL_image.h>
 #include <chrono>
 #include "shared.hpp"
+#include "ECS.hpp"
+#include "unitcomponent.hpp"
 #include "textcomponent.hpp"
 #include "game.hpp"
 #include "script.hpp"
@@ -31,6 +33,10 @@ int main(int argc, char * argv[]) {
 
     firesaga = new Game();
     printf("Made game.\n");
+
+    baseUnits(firesaga.manager);
+    printf("Testing units: %s \n");
+
     firesaga->settings.FPS.show = true;
     firesaga->setFontsize(28);
     firesaga->init("FireSaga", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, firesaga->settings.res.x, firesaga->settings.res.y, false);
