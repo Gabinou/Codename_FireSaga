@@ -1,6 +1,8 @@
 #include "unit.hpp"
 
-std::unordered_map<std::string, Unit> all_units;
+Unit::Unit() {
+
+}
 
 Unit::Unit(const std::string in_name, const std::string in_class, const Unit_stats in_bases) {
     base_stats = in_bases;
@@ -211,7 +213,7 @@ unsigned char Unit::attack_damage() {
     return (attack_damage);
 }
 
-unsigned char Unit::combat_damage(const Entity & enemy, const bool critical) {
+unsigned char Unit::combat_damage(const bool critical) {
     unsigned char terrain_def = 0;
     unsigned char enemy_def = 0 ;
     unsigned char unit_power = 0;
@@ -274,7 +276,7 @@ unsigned char Unit::critical() {
     return (critical);
 }
 
-bool Unit::retaliation(const Entity & enemy) {
+bool Unit::retaliation() {
     // int * unit_position;
     // int * enemy_position;
     // unit_position = entity->getComponent<PositionComponent>().getPos();
@@ -292,7 +294,7 @@ bool Unit::retaliation(const Entity & enemy) {
     return (true);
 }
 
-bool Unit::combat_double(Entity & enemy) const {
+bool Unit::combat_double() const {
     // unsigned char enemy_speed = enemy.getComponent<UnitComponent>().current_stats.agi;
     // bool doubles = ((current_stats.agi - wpn_weighed_down() - enemy_speed) > 4);
     // return (doubles);
@@ -305,7 +307,7 @@ unsigned char Unit::wpn_weighed_down() const {
     return (std::max(temp_wpn.wgt - current_stats.con, 0));
 }
 
-unsigned char Unit::combat_critical(const Entity & enemy) {
+unsigned char Unit::combat_critical() {
     // unsigned char supports = 0;
     // unsigned char unit_skill = 0;
     // unsigned char enemy_favor = enemy.getComponent<UnitComponent>().favor();
@@ -328,14 +330,14 @@ unsigned char Unit::accuracy() {
     return (accuracy);
 }
 
-unsigned char Unit::combat_hit(const Entity & enemy) {
+unsigned char Unit::combat_hit() {
     // int enemy_avoid = enemy.getComponent<UnitComponent>().avoid();
     // unsigned char hit = std::max(0, accuracy() - enemy_avoid);
     // return (hit);
     return (1);
 }
 
-unsigned char Unit::attack(const Entity & enemy) {
+unsigned char Unit::attack() {
     // printf("%s attacks %s\n", name, enemy.getComponent<UnitComponent>().getName());
     // bool unit_hits = (getRN() < combat_hit(enemy));
     // bool unit_crits = (getRN() < combat_critical(enemy));
@@ -349,7 +351,7 @@ unsigned char Unit::attack(const Entity & enemy) {
     return (1);
 }
 
-void Unit::combat(Entity & enemy) {
+void Unit::combat() {
     // printf("%s fights %s\n", name, enemy.getComponent<UnitComponent>().getName());
     // bool unit_doubles = combat_double(enemy);
     // bool enemy_retaliates = enemy.getComponent<UnitComponent>().retaliation(enemy);
@@ -386,19 +388,21 @@ void Unit::write(const char * filename) {
     fclose(fp);
 }
 
+std::unordered_map<std::string, Unit> all_units;
+
 void baseUnits() {
     printf("Making base units \n");
     Unit_stats temp;
     //hp,str,mag,skl,spd,luck,def,res,con,move
     temp = {17,  6,  2,  7,  7,   7,  4,  5,  6, 5};
     Unit temp_unit("Main", "Mercenary", temp);
-    // temp = {48, 14, 25, 32, 34,  28, 19, 40, 15, 0};
-    // temp_unit.setCaps(temp);
-    // temp = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
-    // temp_unit.setGrowths(temp);
-    // temp_unit.setExp(0);
-    // temp_unit.write("unit_test.txt");
-    // all_units["Main"] = temp_unit;
+    temp = {48, 14, 25, 32, 34,  28, 19, 40, 15, 0};
+    temp_unit.setCaps(temp);
+    temp = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
+    temp_unit.setGrowths(temp);
+    temp_unit.setExp(0);
+    temp_unit.write("unit_test.txt");
+    all_units["Main"] = temp_unit;
 
 //     
 //     temp = {18,  6,  2,  7,  7,   7,  4,  5,  6, 7};
