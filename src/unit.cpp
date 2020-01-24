@@ -289,12 +289,14 @@ bool Unit::retaliation(const Entity & enemy) {
     // }
 
     // return (retaliates);
+    return (true);
 }
 
 bool Unit::combat_double(Entity & enemy) const {
     // unsigned char enemy_speed = enemy.getComponent<UnitComponent>().current_stats.agi;
     // bool doubles = ((current_stats.agi - wpn_weighed_down() - enemy_speed) > 4);
     // return (doubles);
+    return (true);
 }
 
 unsigned char Unit::wpn_weighed_down() const {
@@ -309,6 +311,7 @@ unsigned char Unit::combat_critical(const Entity & enemy) {
     // unsigned char enemy_favor = enemy.getComponent<UnitComponent>().favor();
     // unsigned char critical = std::max(0, temp_wpn.combat.crit + unit_skill + supports - enemy_favor);
     // return (critical);
+    return (1);
 }
 
 unsigned char Unit::favor() {
@@ -329,6 +332,7 @@ unsigned char Unit::combat_hit(const Entity & enemy) {
     // int enemy_avoid = enemy.getComponent<UnitComponent>().avoid();
     // unsigned char hit = std::max(0, accuracy() - enemy_avoid);
     // return (hit);
+    return (1);
 }
 
 unsigned char Unit::attack(const Entity & enemy) {
@@ -342,7 +346,7 @@ unsigned char Unit::attack(const Entity & enemy) {
     // // unit.take_damage( -= combat_damage(enemy, unit_crits);
     // enemy.getComponent<UnitComponent>().take_damage(combat_damage(enemy, unit_crits));
     // return (combat_damage(enemy, unit_crits));
-    // // return (1);
+    return (1);
 }
 
 void Unit::combat(Entity & enemy) {
