@@ -3,11 +3,11 @@
 
 #include "ECS.hpp"
 
-class UnitComponent : public Component {
+class UnitContainer : public Component {
     private:
         std::string name;
     public:
-        UnitComponent() = default;
+        UnitContainer() = default;
 
         std::string getName() {
             return (name)

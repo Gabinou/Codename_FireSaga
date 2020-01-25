@@ -30,14 +30,15 @@ int main(int argc, char * argv[]) {
     printf("Testing weapon: %s\n", all_weapons["wooden_sword"].getName().c_str());
 
     baseTiles();
-    printf("Testing tiles: %s\n");
+    printf("Testing tiles: %s\n", all_tiles[10].getName());
 
     baseUnits();
-    printf("Testing units: %s \n");
+    printf("Testing units: %s \n", all_units["Silou"].getName());
 
     firesaga = new Game();
     printf("Made game.\n");
 
+    printf("Initiating game.\n");
     firesaga->settings.FPS.show = true;
     firesaga->setFontsize(28);
     firesaga->init("FireSaga", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, firesaga->settings.res.x, firesaga->settings.res.y, false);
@@ -47,15 +48,15 @@ int main(int argc, char * argv[]) {
     int frame_time;
     char buffer[15];
 
-    firesaga->settings.FPS.ind = firesaga->manager.getEntities().size();
+    firesaga->settings.FPS.entity = firesaga->manager.getEntities().size();
     firesaga->manager.addEntity();
 
-    firesaga->manager.getEntities()[firesaga->settings.FPS.ind]->addComponent<PositionComponent>();
-    firesaga->manager.getEntities()[firesaga->settings.FPS.ind]->getComponent<PositionComponent>().setBounds(0, firesaga->settings.res.x, 0, firesaga->settings.res.y);
-    firesaga->manager.getEntities()[firesaga->settings.FPS.ind]->getComponent<PositionComponent>().setPos(firesaga->settings.FPS.pos.x, firesaga->settings.FPS.pos.y);
-    firesaga->manager.getEntities()[firesaga->settings.FPS.ind]->addComponent<TextComponent>(firesaga->settings.fontsize, "60", firesaga->settings.FPS.color);
-    firesaga->manager.getEntities()[firesaga->settings.FPS.ind]->getComponent<TextComponent>().setSizefactor(firesaga->settings.FPS.sizefactor);
-    firesaga->manager.getEntities()[firesaga->settings.FPS.ind]->addGroup(firesaga->manager.groupUI);
+    firesaga->manager.getEntities()[firesaga->settings.FPS.entity]->addComponent<PositionComponent>();
+    firesaga->manager.getEntities()[firesaga->settings.FPS.entity]->getComponent<PositionComponent>().setBounds(0, firesaga->settings.res.x, 0, firesaga->settings.res.y);
+    firesaga->manager.getEntities()[firesaga->settings.FPS.entity]->getComponent<PositionComponent>().setPos(firesaga->settings.FPS.pos.x, firesaga->settings.FPS.pos.y);
+    firesaga->manager.getEntities()[firesaga->settings.FPS.entity]->addComponent<TextComponent>(firesaga->settings.fontsize, "60", firesaga->settings.FPS.textcolor);
+    firesaga->manager.getEntities()[firesaga->settings.FPS.entity]->getComponent<TextComponent>().setSizefactor(firesaga->settings.FPS.sizefactor);
+    firesaga->manager.getEntities()[firesaga->settings.FPS.entity]->addGroup(firesaga->manager.groupUI);
 
     while (firesaga->running()) {
         frame_start = std::chrono::high_resolution_clock::now();
@@ -74,7 +75,7 @@ int main(int argc, char * argv[]) {
             firesaga->settings.FPS.held++;
             if (firesaga->settings.FPS.held == 4) {
                 sprintf(buffer, "%.1f", firesaga->settings.FPS.current);
-                firesaga->manager.getEntities()[firesaga->settings.FPS.ind]->getComponent<TextComponent>().setText(buffer);
+                firesaga->manager.getEntities()[firesaga->settings.FPS.entity]->getComponent<TextComponent>().setText(buffer);
                 firesaga->settings.FPS.held = 0;   
             }
         }

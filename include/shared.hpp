@@ -181,9 +181,9 @@ struct Fps {
     char hold = 4;
     char held = 0;
     char frame_delay = 1000 / cap;
-    SDL_Color color = {0, 0, 0};
+    SDL_Color textcolor = {0, 0, 0};
     float current = 60.0;
-    int ind;
+    int entity;
 };
 
 struct Settings {
