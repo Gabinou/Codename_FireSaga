@@ -246,34 +246,6 @@ unsigned char Unit::total_might() {
     return (total_might);
 }
 
-unsigned char Unit::combat_damage(const bool critical) {
-    unsigned char terrain_def = 0;
-    unsigned char enemy_def = 0 ;
-    unsigned char unit_power = 0;
-    unsigned char wpn_dmg;
-    unsigned char crit_factor = 1;
-
-    if (temp_wpn.dmg_type == 0) {
-        // Physical total_might.
-        wpn_dmg = temp_wpn.Pmight;
-        unit_power = current_stats.str;
-        // enemy_def = enemy.getComponent<UnitComponent>().current_stats.def;
-    } else {
-        // Magical total_might.
-        wpn_dmg = temp_wpn.Mmight;
-        unit_power = current_stats.mag;
-        // enemy_def = enemy.getComponent<UnitComponent>().current_stats.res;
-    };
-
-    if (critical) {crit_factor = 3;};
-
-    unsigned char total_might = crit_factor * (std::max(wpn_dmg + unit_power - enemy_def - terrain_def, 0)); // Modern FE style. for crit_factor = 3
-
-    // int total_might = crit_factor*(wpn_dmg + unit_power) - enemy_def - terrain_def);  // FE4-FE5 style. for crit_factor = 2
-
-    return (total_might);
-}
-
 std::string Unit::getName() {
     return (name);
 }
