@@ -35,11 +35,11 @@ class Unit {
         Unit(const std::string in_name, const Unit_stats in_bases);
         Unit(const Unit_stats in_bases);
 
-        void setPos(const int in_pos[2]);
         int * getPos();
+        void setPos(const int in_pos[2]);
 
-        void setMvttype(const std::string in_class);
         std::string getMvttype();
+        void setMvttype(const std::string in_class);
 
         void equipsL(const char index);
         void equipsR(const char index);
@@ -49,7 +49,6 @@ class Unit {
         void unequips(const std::string hand = "right");
 
         void takesDamage(const unsigned char damage);
-
         void getsHealed(const unsigned char healing);
 
         unsigned char getHp() const;
@@ -63,25 +62,24 @@ class Unit {
 
         void setHp(const unsigned char in_hp);
 
-        void dies();
-
+        Unit_stats getBonus();
         void setBonus(const Unit_stats in_stats);
-
+        Unit_stats getMalus();
         void setMalus(const Unit_stats in_stats);
-
+        Unit_stats getCaps();
         void setCaps(const Unit_stats in_stats);
-
         Unit_stats getStats();
         void setStats(const Unit_stats in_stats);
-
+        Unit_stats getBases();
         void setBases(const Unit_stats in_stats);
-
+        Unit_stats getGrowths();
         void setGrowths(const Unit_stats in_growths);
 
         std::string getName();
         void setName(const std::string in_name);
         void setName(const char in_name);
 
+        std::string getArmy();
         void setArmy(const std::string in_army);
         void setArmy(const char in_army);
 
@@ -109,6 +107,7 @@ class Unit {
         unsigned char attacks();
 
         void fights(Unit * enemy);
+        void dies();
 
         void write(const char * filename);
 };
