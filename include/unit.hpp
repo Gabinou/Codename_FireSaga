@@ -1,14 +1,8 @@
 #ifndef UNIT_HPP
 #define UNIT_HPP
 
-#include "ECS.hpp"
-#include "game.hpp"
 #include "shared.hpp"
 #include "weapon.hpp"
-#include "SDL2/SDL.h"
-#include <stdio.h>
-
-// extern std::unordered_map<std::string, int> all_units;
 
 class Unit {
     private:
@@ -29,9 +23,12 @@ class Unit {
         std::string name;
         std::string class_name;
         std::string mvt_type;
-        std::string army;
+        std::string army; //affilistion?
+        bool sex; // 0:F, 1:M
         Inventory_item equipment[7], weapons[3], items[3];
     public:
+
+        Unit();
 
         Unit(const std::string in_name, const std::string in_class, const Unit_stats in_bases);
 
@@ -87,7 +84,7 @@ class Unit {
 
         unsigned char attack_damage();
 
-        unsigned char combat_damage(const Entity & enemy, const bool critical);
+        unsigned char combat_damage(const bool critical);
 
         std::string getName();
 
@@ -103,25 +100,29 @@ class Unit {
 
         unsigned char critical();
 
-        bool retaliation(const Entity & enemy);
+        bool retaliation();
 
-        bool combat_double(Entity & enemy) const;
+        bool combat_double() const;
 
         unsigned char wpn_weighed_down() const;
 
-        unsigned char combat_critical(const Entity & enemy);
+        unsigned char combat_critical();
 
         unsigned char favor();
 
         unsigned char accuracy();
 
-        unsigned char combat_hit(const Entity & enemy);
+        unsigned char combat_hit();
 
-        unsigned char attack(const Entity & enemy);
+        unsigned char attack();
 
-        void combat(Entity & enemy);
+        void combat();
 
         void write(const char * filename);
 };
+
+extern std::unordered_map<std::string, Unit> all_units;
+
+void baseUnits();
 
 #endif /* UNIT_HPP */
