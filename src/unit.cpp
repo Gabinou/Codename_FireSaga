@@ -8,7 +8,22 @@ Unit::Unit(const std::string in_name, const std::string in_class, const Unit_sta
     base_stats = in_bases;
     current_stats = in_bases;
     class_name = in_class;
+    setMvttype(in_class);
+    name = in_name;
+}
 
+Unit::Unit(const std::string in_name, const Unit_stats in_bases) {
+    base_stats = in_bases;
+    current_stats = in_bases;
+    name = in_name;
+}
+
+Unit::Unit(const Unit_stats in_bases) {
+    base_stats = in_bases;
+    current_stats = in_bases;
+}
+
+void Unit::setMvttype(const std::string in_class) {
     if ((class_name == "Fencer") || (class_name == "Mousquetaire") || (class_name == "Duelist") || (class_name == "Lord") || (class_name == "Duke") || (class_name == "Archer") || (class_name == "Marksman") || (class_name == "Mercenary") || (class_name == "Hero") || (class_name == "Trooper")) {
         mvt_type = "foot_slow";
     }
@@ -45,18 +60,6 @@ Unit::Unit(const std::string in_name, const std::string in_class, const Unit_sta
         mvt_type = "bandits";
     }
 
-    name = in_name;
-}
-
-Unit::Unit(const std::string in_name, const Unit_stats in_bases) {
-    base_stats = in_bases;
-    current_stats = in_bases;
-    name = in_name;
-}
-
-Unit::Unit(const Unit_stats in_bases) {
-    base_stats = in_bases;
-    current_stats = in_bases;
 }
 
 void Unit::equipL(const char index) {

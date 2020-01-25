@@ -36,21 +36,17 @@ class Unit {
 
         Unit(const Unit_stats in_bases);
 
+        void setMvttype(const std::string in_class);
+        std::string getMvttype();
+
         void equipL(const char index);
-
-        void unequipL();
-
         void equipR(const char index);
-
         void unequipR();
-
+        void unequipL();
         void equip(const unsigned int index, const std::string hand = "right");
-
         void unequip(const std::string hand = "right");
 
         void take_damage(const unsigned char damage);
-
-        std::string getMvttype();
 
         void heal(const unsigned char healing);
 

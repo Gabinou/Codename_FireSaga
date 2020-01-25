@@ -42,14 +42,14 @@ int main(int argc, char * argv[]) {
     firesaga->settings.FPS.show = true;
     firesaga->setFontsize(28);
     firesaga->init("FireSaga", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, firesaga->settings.res.x, firesaga->settings.res.y, false);
+    firesaga->makeFPSEntity();
     printf("Initiated game.\n");
 
     std::chrono::system_clock::time_point frame_start, frame_end, frame_middle;
     int frame_time;
     char buffer[15];
 
-    firesaga->makeFPSEntity();
-
+    printf("Starting main game loop.\n");
     while (firesaga->running()) {
         frame_start = std::chrono::high_resolution_clock::now();
         firesaga->handleEvents();
