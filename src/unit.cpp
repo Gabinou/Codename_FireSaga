@@ -335,7 +335,7 @@ unsigned char Unit::favor() {
     return (favor);
 }
 
-bool Unit::canRetaliate(Unit * enemy) {
+bool Unit::canRetaliate(Unit * enemy) const {
     int * unit_position;
     int * enemy_position;
     bool retaliates = false;
@@ -351,11 +351,9 @@ bool Unit::canRetaliate(Unit * enemy) {
     return (retaliates);
 }
 
-bool Unit::canDouble() const {
-    // unsigned char enemy_speed = enemy.getComponent<UnitComponent>().current_stats.agi;
-    // bool doubles = ((current_stats.agi - wpn_weighed_down() - enemy_speed) > 4);
-    // return (doubles);
-    return (true);
+bool Unit::canDouble(Unit * enemy) const {
+    bool doubles = ((current_speed - enemy->speed()) > 4);
+    return (doubles);
 }
 
 char Unit::speed() {

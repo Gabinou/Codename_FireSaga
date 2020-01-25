@@ -19,8 +19,8 @@ class Unit {
         Unit_stats malus_stats;
         Unit_stats current_stats;
         std::vector<Unit_stats> grown_stats;
-        // SKILLS
-        // SUPPORTS/BONDS
+        std::vector<std::string> skills;
+        std::unordered_map<std::string, int> supports;
         Unit_stats growths;
         unsigned char current_hp;
         char current_speed;
@@ -87,8 +87,8 @@ class Unit {
         void setArmy(const std::string in_army);
         void setArmy(const char in_army);
 
-        bool canRetaliate(Unit * enemy);
-        bool canDouble() const;
+        bool canRetaliate(Unit * enemy) const;
+        bool canDouble(Unit * enemy) const;
 
         unsigned char combat_damage(const bool critical); // useless.
 
