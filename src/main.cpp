@@ -28,10 +28,10 @@ int main(int argc, char * argv[]) {
     printf("Testing weapon: %s\n", all_weapons["wooden_sword"].getName().c_str());
 
     baseTiles();
-    printf("Testing tiles: %s\n", all_tiles[10].getName());
+    printf("Testing tiles: %s\n", all_tiles[10].getName().c_str());
 
     baseUnits();
-    printf("Testing units: %s \n", all_units["Silou"].getName());
+    printf("Testing units: %s \n", all_units["Silou"].getName().c_str());
 
     firesaga = new Game();
     printf("Made game.\n");
