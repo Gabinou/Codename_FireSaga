@@ -23,6 +23,20 @@ Unit::Unit(const Unit_stats in_bases) {
     current_stats = in_bases;
 }
 
+int * Unit::getPos() {
+    return(position);
+}
+
+void Unit::setPos(const int in_pos[2]) {
+    position[0] = in_pos[0];
+    position[1] = in_pos[1];
+}
+
+std::string Unit::getMvttype() {
+    printf("insinde unitcomponent%s\n", mvt_type.c_str());
+    return (mvt_type);
+}
+
 void Unit::setMvttype(const std::string in_class) {
     if ((class_name == "Fencer") || (class_name == "Mousquetaire") || (class_name == "Duelist") || (class_name == "Lord") || (class_name == "Duke") || (class_name == "Archer") || (class_name == "Marksman") || (class_name == "Mercenary") || (class_name == "Hero") || (class_name == "Trooper")) {
         mvt_type = "foot_slow";
@@ -61,25 +75,16 @@ void Unit::setMvttype(const std::string in_class) {
     }
 }
 
-void Unit::setPos(const int in_pos[2]) {
-    position[0] = in_pos[0];
-    position[1] = in_pos[1];
-}
-
-int * Unit::getPos() {
-    return(position);
-}
-
 void Unit::equipsL(const char index) {
     equipped.left = index;
 }
 
-void Unit::unequipsL() {
-    equipped.left = -1;
-}
-
 void Unit::equipsR(const char index) {
     equipped.right = index;
+}
+
+void Unit::unequipsL() {
+    equipped.left = -1;
 }
 
 void Unit::unequipsR() {
@@ -107,11 +112,6 @@ void Unit::takesDamage(const unsigned char damage) {
     current_hp = std::max(0, current_hp - damage);
 
     if (current_hp == 0) {dies();};
-}
-
-std::string Unit::getMvttype() {
-    printf("insinde unitcomponent%s\n", mvt_type.c_str());
-    return (mvt_type);
 }
 
 void Unit::getsHealed(const unsigned char healing) {
@@ -167,12 +167,16 @@ void Unit::setExp(const unsigned int in_exp) {
     exp = in_exp;
 }
 
+void Unit::addExp(const unsigned int in_exp) {
+    exp += in_exp;
+}
+
 void Unit::setHp(const unsigned char in_hp) {
     current_hp = in_hp;
 }
 
 void Unit::dies() {
-    printf("%s is dead.\n", name);
+    printf("%s is dead.\n", name.c_str());
 }
 
 void Unit::setBonus(const Unit_stats in_stats) {

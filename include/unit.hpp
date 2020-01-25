@@ -53,17 +53,17 @@ class Unit {
         void equips(const unsigned int index, const std::string hand = "right");
         void unequips(const std::string hand = "right");
 
-        void takesDamage(const unsigned char damage);
-        void getsHealed(const unsigned char healing);
-
         unsigned char * getRange() const;
 
         unsigned int getExp() const;
         unsigned int getLvl() const;
         void setExp(const unsigned int in_exp);
+        void addExp(const unsigned int in_exp);
 
         unsigned char getHp() const;
         void setHp(const unsigned char in_hp);
+        void takesDamage(const unsigned char damage);
+        void getsHealed(const unsigned char healing);
 
         Unit_stats getBonus();
         void setBonus(const Unit_stats in_stats);
