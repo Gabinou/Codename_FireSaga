@@ -176,19 +176,31 @@ void Unit::dies() {
 }
 
 void Unit::setBonus(const Unit_stats in_stats) {
-    bonus_stats = in_stats; // tested, works fine.
+    bonus_stats = in_stats;
+}
+
+Unit_stats Unit::getBonus() {
+    return(bonus_stats);
 }
 
 void Unit::setMalus(const Unit_stats in_stats) {
-    malus_stats = in_stats; // tested, works fine.
+    malus_stats = in_stats;
+}
+
+Unit_stats Unit::getMalus() {
+    return(malus_stats);
 }
 
 void Unit::setCaps(const Unit_stats in_stats) {
-    caps_stats = in_stats; // tested, works fine.
+    caps_stats = in_stats;
+}
+
+Unit_stats Unit::getCaps() {
+    return(caps_stats);
 }
 
 void Unit::setStats(const Unit_stats in_stats) {
-    current_stats = in_stats; // tested, works fine.
+    current_stats = in_stats;
     current_hp = current_stats.hp;
 }
 
@@ -197,13 +209,20 @@ Unit_stats Unit::getStats() {
 }
 
 void Unit::setBases(const Unit_stats in_stats) {
-    base_stats = in_stats; // tested, works fine.
-    current_stats = in_stats; // tested, works fine.
+    base_stats = in_stats;
+    current_stats = in_stats;
     current_hp = base_stats.hp;
+}
+Unit_stats Unit::getBases() {
+    return(base_stats);
 }
 
 void Unit::setGrowths(const Unit_stats in_growths) {
-    growths = in_growths; // tested, works fine.
+    growths = in_growths;
+}
+
+Unit_stats Unit::getGrowths() {
+    return(growths);
 }
 
 unsigned char Unit::total_might() {
