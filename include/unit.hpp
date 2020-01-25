@@ -10,7 +10,8 @@ class Unit {
         Weapon_stats temp_wpn;
         Weapon_stats right_wpn;
         Weapon_stats left_wpn;
-        Combat_stats current_combat_stats;
+        Combat_stats combat_stats_alone;
+        Combat_stats combat_stats;
         Unit_stats base_stats;
         Unit_state state;
         Unit_stats bonus_stats;
@@ -92,18 +93,19 @@ class Unit {
         unsigned char combat_damage(const bool critical); // useless.
 
         void combatStats_alone();
+        Combat_stats getCombatStats();
+        unsigned char hit();
         unsigned char dodge();
         unsigned char critical();
         unsigned char favor();
-        unsigned char hit();
         unsigned char total_might();
         char speed();
 
-        void combatStats_enemy();
+        void combatStats(Unit * enemy);
+        unsigned char hit(Unit * enemy);
         unsigned char dodge(Unit * enemy);
         unsigned char critical(Unit * enemy);
         unsigned char favor(Unit * enemy);
-        unsigned char hit(Unit * enemy);
         unsigned char attack_damage(Unit * enemy);
 
         unsigned char attacks();

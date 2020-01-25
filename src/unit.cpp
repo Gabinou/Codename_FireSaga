@@ -294,6 +294,26 @@ void Unit::setArmy(const char in_army) {
     army = in_army;
 }
 
+void Unit::combatStats_alone() {
+    combat_stats_alone.hit = hit();
+    combat_stats_alone.dodge = dodge();
+    combat_stats_alone.crit = critical();
+    combat_stats_alone.favor = favor();
+    speed();
+}
+
+void Unit::combatStats(Unit * enemy) {
+    combat_stats.hit = std::max(combat_stats_alone.hit - enemy.getStats().);
+}
+
+unsigned char Unit::hit() {
+    //*DESIGN QUESTION* In vesteria saga, dex*3.
+    unsigned char supports = 0;
+    unsigned char unit_acc = current_stats.dex * 3 + current_stats.luck;
+    unsigned char hit = temp_wpn.combat.hit + unit_acc + supports;
+    return (hit);
+}
+
 unsigned char Unit::dodge() {
     unsigned char supports = 0;
     unsigned char terrain_dodge = 0;
@@ -307,6 +327,12 @@ unsigned char Unit::critical() {
     unsigned char unit_skill = 0;
     unsigned char critical = temp_wpn.combat.crit + unit_skill + supports;
     return (critical);
+}
+
+unsigned char Unit::favor() {
+    unsigned char supports = 0 ;
+    unsigned char favor = (ceil(current_stats.luck / 2.)) + supports;
+    return (favor);
 }
 
 bool Unit::canRetaliate(Unit * enemy) {
@@ -337,20 +363,6 @@ char Unit::speed() {
     // Average of Con and Str? Con+Str/2?
     char current_speed = current_stats.agi - temp_wpn.wgt + current_stats.con + current_stats.str/2;
     return(current_speed);
-}
-
-unsigned char Unit::favor() {
-    unsigned char supports = 0 ;
-    unsigned char favor = (ceil(current_stats.luck / 2.)) + supports;
-    return (favor);
-}
-
-unsigned char Unit::hit() {
-    //*DESIGN QUESTION* In vesteria saga, dex*3.
-    unsigned char supports = 0;
-    unsigned char unit_acc = current_stats.dex * 3 + current_stats.luck;
-    unsigned char hit = temp_wpn.combat.hit + unit_acc + supports;
-    return (hit);
 }
 
 unsigned char Unit::attacks() {
