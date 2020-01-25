@@ -62,6 +62,15 @@ void Unit::setMvttype(const std::string in_class) {
 
 }
 
+void Unit::setPos(const int in_pos[2]) {
+    position[0] = in_pos[0];
+    position[1] = in_pos[1];
+}
+
+int * Unit::getPos() {
+    return(position);
+}
+
 void Unit::equipL(const char index) {
     equipped.left = index;
 }

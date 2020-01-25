@@ -20,18 +20,23 @@ class Unit {
         Unit_stats growths;
         unsigned char current_hp;
         unsigned int exp;
+        int position[2] = {0, 0};
         std::string name;
         std::string class_name;
         std::string mvt_type;
         std::string army; //affilistion?
         bool sex; // 0:F, 1:M
         Inventory_item equipment[7], weapons[3], items[3];
+
     public:
         Unit();
         Unit(const std::string in_name, const std::string in_class, const Unit_stats in_bases, const bool in_sex);
         Unit(const std::string in_name, const std::string in_class, const Unit_stats in_bases);
         Unit(const std::string in_name, const Unit_stats in_bases);
         Unit(const Unit_stats in_bases);
+
+        void setPos(const int in_pos[2]);
+        int * getPos();
 
         void setMvttype(const std::string in_class);
         std::string getMvttype();
