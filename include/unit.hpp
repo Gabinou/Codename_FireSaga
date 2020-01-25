@@ -89,8 +89,7 @@ class Unit {
         bool canDouble() const;
 
 
-        unsigned char combat_damage(const bool critical);
-
+        unsigned char combat_damage(const bool critical); // useless.
 
         unsigned char wpn_weighed_down() const;
 
@@ -102,9 +101,11 @@ class Unit {
         unsigned char total_might();
 
         void combatStats_enemy();
-
-        unsigned char combat_critical();
-        unsigned char combat_hit();
+        unsigned char dodge(Unit * enemy);
+        unsigned char critical(Unit * enemy);
+        unsigned char favor(Unit * enemy);
+        unsigned char hit(Unit * enemy);
+        unsigned char attack_damage(Unit * enemy);
 
         unsigned char attacks();
 
