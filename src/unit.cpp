@@ -309,10 +309,11 @@ bool Unit::canDouble() const {
     return (true);
 }
 
-unsigned char Unit::wpn_weighed_down() const {
+char Unit::speed() {
     //*DESIGN QUESTION* What should be the influence of weapons?
     // Average of Con and Str? Con+Str/2?
-    return (std::max(temp_wpn.wgt - current_stats.con, 0));
+    char current_speed = current_stats.agi - temp_wpn.wgt + current_stats.con + current_stats.str/2;
+    return(current_speed);
 }
 
 unsigned char Unit::favor() {

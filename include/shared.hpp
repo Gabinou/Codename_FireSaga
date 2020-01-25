@@ -115,6 +115,7 @@ struct Combat_stats {
     unsigned char dodge;
     unsigned char crit;
     unsigned char favor;
+    // char speed;
 };
 
 struct Weapon_stats {

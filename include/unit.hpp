@@ -8,6 +8,9 @@ class Unit {
     private:
         Equipped equipped; // these are indices. -1 means no equipsment.
         Weapon_stats temp_wpn;
+        Weapon_stats right_wpn;
+        Weapon_stats left_wpn;
+        Combat_stats current_combat_stats;
         Unit_stats base_stats;
         Unit_state state;
         Unit_stats bonus_stats;
@@ -19,12 +22,14 @@ class Unit {
         // SUPPORTS/BONDS
         Unit_stats growths;
         unsigned char current_hp;
+        char current_speed;
         unsigned int exp;
         int position[2] = {0, 0};
         std::string name;
         std::string class_name;
         std::string mvt_type;
         std::string army; //affilistion?
+
         bool sex; // 0:F, 1:M
         Inventory_item equipsment[7], weapons[3], items[3];
 
@@ -51,15 +56,13 @@ class Unit {
         void takesDamage(const unsigned char damage);
         void getsHealed(const unsigned char healing);
 
-        unsigned char getHp() const;
-
-        unsigned int getLvl() const;
-
         unsigned char * getRange() const;
 
         unsigned int getExp() const;
+        unsigned int getLvl() const;
         void setExp(const unsigned int in_exp);
 
+        unsigned char getHp() const;
         void setHp(const unsigned char in_hp);
 
         Unit_stats getBonus();
@@ -88,14 +91,13 @@ class Unit {
 
         unsigned char combat_damage(const bool critical); // useless.
 
-        unsigned char wpn_weighed_down() const;
-
         void combatStats_alone();
         unsigned char dodge();
         unsigned char critical();
         unsigned char favor();
         unsigned char hit();
         unsigned char total_might();
+        char speed();
 
         void combatStats_enemy();
         unsigned char dodge(Unit * enemy);
