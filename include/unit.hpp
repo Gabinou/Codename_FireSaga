@@ -88,24 +88,22 @@ class Unit {
         bool canRetaliate(Unit * enemy);
         bool canDouble() const;
 
-        unsigned char attack_damage();
 
         unsigned char combat_damage(const bool critical);
 
-        unsigned char dodge();
-
-        unsigned char critical();
-
-        unsigned char combat_critical();
 
         unsigned char wpn_weighed_down() const;
 
-        void combatStats();
-
+        void combatStats_alone();
+        unsigned char dodge();
+        unsigned char critical();
         unsigned char favor();
+        unsigned char hit();
+        unsigned char total_might();
 
-        unsigned char accuracy();
+        void combatStats_enemy();
 
+        unsigned char combat_critical();
         unsigned char combat_hit();
 
         unsigned char attacks();

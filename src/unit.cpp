@@ -206,7 +206,7 @@ void Unit::setGrowths(const Unit_stats in_growths) {
     growths = in_growths; // tested, works fine.
 }
 
-unsigned char Unit::attack_damage() {
+unsigned char Unit::total_might() {
     unsigned char unit_power = 0;
     unsigned char wpn_dmg;
 
@@ -218,9 +218,9 @@ unsigned char Unit::attack_damage() {
         unit_power = current_stats.mag;
     };
 
-    int attack_damage = wpn_dmg + unit_power;
+    int total_might = wpn_dmg + unit_power;
 
-    return (attack_damage);
+    return (total_might);
 }
 
 unsigned char Unit::combat_damage(const bool critical) {
@@ -231,12 +231,12 @@ unsigned char Unit::combat_damage(const bool critical) {
     unsigned char crit_factor = 1;
 
     if (temp_wpn.dmg_type == 0) {
-        // Physical attack_damage.
+        // Physical total_might.
         wpn_dmg = temp_wpn.Pmight;
         unit_power = current_stats.str;
         // enemy_def = enemy.getComponent<UnitComponent>().current_stats.def;
     } else {
-        // Magical attack_damage.
+        // Magical total_might.
         wpn_dmg = temp_wpn.Mmight;
         unit_power = current_stats.mag;
         // enemy_def = enemy.getComponent<UnitComponent>().current_stats.res;
@@ -244,11 +244,11 @@ unsigned char Unit::combat_damage(const bool critical) {
 
     if (critical) {crit_factor = 3;};
 
-    unsigned char attack_damage = crit_factor * (std::max(wpn_dmg + unit_power - enemy_def - terrain_def, 0)); // Modern FE style. for crit_factor = 3
+    unsigned char total_might = crit_factor * (std::max(wpn_dmg + unit_power - enemy_def - terrain_def, 0)); // Modern FE style. for crit_factor = 3
 
-    // int attack_damage = crit_factor*(wpn_dmg + unit_power) - enemy_def - terrain_def);  // FE4-FE5 style. for crit_factor = 2
+    // int total_might = crit_factor*(wpn_dmg + unit_power) - enemy_def - terrain_def);  // FE4-FE5 style. for crit_factor = 2
 
-    return (attack_damage);
+    return (total_might);
 }
 
 std::string Unit::getName() {
@@ -330,17 +330,17 @@ unsigned char Unit::favor() {
     return (favor);
 }
 
-unsigned char Unit::accuracy() {
+unsigned char Unit::hit() {
     //*DESIGN QUESTION* In vesteria saga, dex*3.
     unsigned char supports = 0;
     unsigned char unit_acc = current_stats.dex * 3 + current_stats.luck;
-    unsigned char accuracy = temp_wpn.combat.hit + unit_acc + supports;
-    return (accuracy);
+    unsigned char hit = temp_wpn.combat.hit + unit_acc + supports;
+    return (hit);
 }
 
 unsigned char Unit::combat_hit() {
     // int enemy_dodge = enemy.getComponent<UnitComponent>().dodge();
-    // unsigned char hit = std::max(0, accuracy() - enemy_dodge);
+    // unsigned char hit = std::max(0, hit() - enemy_dodge);
     // return (hit);
     return (1);
 }
