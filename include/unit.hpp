@@ -27,13 +27,10 @@ class Unit {
         bool sex; // 0:F, 1:M
         Inventory_item equipment[7], weapons[3], items[3];
     public:
-
         Unit();
-
+        Unit(const std::string in_name, const std::string in_class, const Unit_stats in_bases, const bool in_sex);
         Unit(const std::string in_name, const std::string in_class, const Unit_stats in_bases);
-
         Unit(const std::string in_name, const Unit_stats in_bases);
-
         Unit(const Unit_stats in_bases);
 
         void setMvttype(const std::string in_class);
@@ -54,10 +51,9 @@ class Unit {
 
         unsigned int getLvl() const;
 
-        unsigned int getExp() const;
-
         unsigned char * getRange() const;
 
+        unsigned int getExp() const;
         void setExp(const unsigned int in_exp);
 
         void setHp(const unsigned char in_hp);
@@ -70,9 +66,8 @@ class Unit {
 
         void setCaps(const Unit_stats in_stats);
 
-        void setStats(const Unit_stats in_stats);
-
         Unit_stats getStats();
+        void setStats(const Unit_stats in_stats);
 
         void setBases(const Unit_stats in_stats);
 
@@ -83,20 +78,17 @@ class Unit {
         unsigned char combat_damage(const bool critical);
 
         std::string getName();
-
         void setName(const std::string in_name);
-
         void setName(const char in_name);
 
         void setArmy(const std::string in_army);
-
         void setArmy(const char in_army);
 
         unsigned char avoid();
 
         unsigned char critical();
 
-        bool retaliation();
+        bool retaliation(Unit * enemy);
 
         bool combat_double() const;
 

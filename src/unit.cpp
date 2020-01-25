@@ -279,11 +279,11 @@ unsigned char Unit::critical() {
     return (critical);
 }
 
-bool Unit::retaliation() {
-    // int * unit_position;
-    // int * enemy_position;
+bool Unit::retaliation(Unit * enemy) {
+    int * unit_position;
+    int * enemy_position;
     // unit_position = entity->getComponent<PositionComponent>().getPos();
-    // enemy_position = enemy.getComponent<PositionComponent>().getPos();
+    // enemy_position = enemy->getPos();
     // unsigned char distance = std::abs(enemy_position[0] - unit_position[0]) + std::abs(enemy_position[1] - unit_position[1]);
     // bool retaliates = false;
 

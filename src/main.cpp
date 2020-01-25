@@ -16,8 +16,6 @@
 #include "weapon.hpp"
 #include "unit.hpp"
 
-// Settings settings;
-
 Game * firesaga = nullptr;
 
 int main(int argc, char * argv[]) {
