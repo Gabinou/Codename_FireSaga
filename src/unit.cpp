@@ -102,7 +102,7 @@ void Unit::unequip(const std::string hand) {
     }
 }
 
-void Unit::take_damage(const unsigned char damage) {
+void Unit::takeDamage(const unsigned char damage) {
     printf("%s takes %d damage \n", name, damage);
     current_hp = std::max(0, current_hp - damage);
 
@@ -287,21 +287,20 @@ unsigned char Unit::critical() {
     return (critical);
 }
 
-bool Unit::retaliation(Unit * enemy) {
+bool Unit::canRetaliate(Unit * enemy) {
     int * unit_position;
     int * enemy_position;
+    bool retaliates = false;
+
     enemy_position = enemy->getPos();
     unsigned char distance = std::abs(enemy_position[0] - position[0]) + std::abs(enemy_position[1] - position[1]);
-    bool retaliates = false;
 
     for (int i = 0; i < 3; i++) {
         if ((distance >= temp_wpn.range[0]) && (distance <= temp_wpn.range[1])) {
             retaliates = 1;
         }
     }
-
     return (retaliates);
-    // return (true);
 }
 
 bool Unit::combat_double() const {
@@ -355,8 +354,8 @@ unsigned char Unit::attack() {
     // * I think so. Always same number of RN rolled.
     // * But what about crit animations? Should crit animations be shown to miss? Fire Emblem thinks not. Me too.
     
-    // // unit.take_damage( -= combat_damage(enemy, unit_crits);
-    // enemy.getComponent<UnitComponent>().take_damage(combat_damage(enemy, unit_crits));
+    // // unit.takeDamage( -= combat_damage(enemy, unit_crits);
+    // enemy.getComponent<UnitComponent>().takeDamage(combat_damage(enemy, unit_crits));
     // return (combat_damage(enemy, unit_crits));
     return (1);
 }
@@ -364,7 +363,7 @@ unsigned char Unit::attack() {
 void Unit::combat() {
     // printf("%s fights %s\n", name, enemy.getComponent<UnitComponent>().getName());
     // bool unit_doubles = combat_double(enemy);
-    // bool enemy_retaliates = enemy.getComponent<UnitComponent>().retaliation(enemy);
+    // bool enemy_retaliates = enemy.getComponent<UnitComponent>().canRetaliate(enemy);
     // bool enemy_doubles = 0;
     // attack(enemy);
 

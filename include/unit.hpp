@@ -48,7 +48,7 @@ class Unit {
         void equip(const unsigned int index, const std::string hand = "right");
         void unequip(const std::string hand = "right");
 
-        void take_damage(const unsigned char damage);
+        void takeDamage(const unsigned char damage);
 
         void heal(const unsigned char healing);
 
@@ -93,7 +93,7 @@ class Unit {
 
         unsigned char critical();
 
-        bool retaliation(Unit * enemy);
+        bool canRetaliate(Unit * enemy);
 
         bool combat_double() const;
 
