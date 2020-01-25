@@ -2,11 +2,6 @@
 #define WEAPON_HPP
 
 #include "shared.hpp"
-#include "ECS.hpp"
-#include "game.hpp"
-#include "shared.hpp"
-#include "SDL2/SDL.h"
-#include <stdio.h>
 
 /*! \file weapon.hpp
 * \brief Weapon class. Not the one in the inventory, just the immutable weapon data.
