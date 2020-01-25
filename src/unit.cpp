@@ -315,15 +315,6 @@ unsigned char Unit::wpn_weighed_down() const {
     return (std::max(temp_wpn.wgt - current_stats.con, 0));
 }
 
-unsigned char Unit::critical() {
-    // unsigned char supports = 0;
-    // unsigned char unit_skill = 0;
-    // unsigned char enemy_favor = enemy.getComponent<UnitComponent>().favor();
-    // unsigned char critical = std::max(0, temp_wpn.fights.crit + unit_skill + supports - enemy_favor);
-    // return (critical);
-    return (1);
-}
-
 unsigned char Unit::favor() {
     unsigned char supports = 0 ;
     unsigned char favor = (ceil(current_stats.luck / 2.)) + supports;
@@ -336,13 +327,6 @@ unsigned char Unit::hit() {
     unsigned char unit_acc = current_stats.dex * 3 + current_stats.luck;
     unsigned char hit = temp_wpn.combat.hit + unit_acc + supports;
     return (hit);
-}
-
-unsigned char Unit::hit() {
-    // int enemy_dodge = enemy.getComponent<UnitComponent>().dodge();
-    // unsigned char hit = std::max(0, hit() - enemy_dodge);
-    // return (hit);
-    return (1);
 }
 
 unsigned char Unit::attacks() {
