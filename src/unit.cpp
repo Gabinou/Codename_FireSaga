@@ -59,7 +59,6 @@ void Unit::setMvttype(const std::string in_class) {
     if ((class_name == "Bandit") || (class_name == "Ravager")) {
         mvt_type = "bandits";
     }
-
 }
 
 void Unit::setPos(const int in_pos[2]) {
@@ -291,19 +290,18 @@ unsigned char Unit::critical() {
 bool Unit::retaliation(Unit * enemy) {
     int * unit_position;
     int * enemy_position;
-    // unit_position = entity->getComponent<PositionComponent>().getPos();
-    // enemy_position = enemy->getPos();
-    // unsigned char distance = std::abs(enemy_position[0] - unit_position[0]) + std::abs(enemy_position[1] - unit_position[1]);
-    // bool retaliates = false;
+    enemy_position = enemy->getPos();
+    unsigned char distance = std::abs(enemy_position[0] - position[0]) + std::abs(enemy_position[1] - position[1]);
+    bool retaliates = false;
 
-    // for (int i = 0; i < 3; i++) {
-    //     if ((distance >= temp_wpn.range[0]) && (distance <= temp_wpn.range[1])) {
-    //         retaliates = 1;
-    //     }
-    // }
+    for (int i = 0; i < 3; i++) {
+        if ((distance >= temp_wpn.range[0]) && (distance <= temp_wpn.range[1])) {
+            retaliates = 1;
+        }
+    }
 
-    // return (retaliates);
-    return (true);
+    return (retaliates);
+    // return (true);
 }
 
 bool Unit::combat_double() const {
