@@ -70,23 +70,23 @@ int * Unit::getPos() {
     return(position);
 }
 
-void Unit::equipL(const char index) {
+void Unit::equipsL(const char index) {
     equipped.left = index;
 }
 
-void Unit::unequipL() {
+void Unit::unequipsL() {
     equipped.left = -1;
 }
 
-void Unit::equipR(const char index) {
+void Unit::equipsR(const char index) {
     equipped.right = index;
 }
 
-void Unit::unequipR() {
+void Unit::unequipsR() {
     equipped.right = -1;
 }
 
-void Unit::equip(const unsigned int index, const std::string hand) {
+void Unit::equips(const unsigned int index, const std::string hand) {
     if (hand == "left") {
         equipped.left = index;
     } else {
@@ -94,7 +94,7 @@ void Unit::equip(const unsigned int index, const std::string hand) {
     }
 }
 
-void Unit::unequip(const std::string hand) {
+void Unit::unequips(const std::string hand) {
     if (hand == "left") {
         equipped.left = -1;
     } else {
@@ -102,11 +102,11 @@ void Unit::unequip(const std::string hand) {
     }
 }
 
-void Unit::takeDamage(const unsigned char damage) {
+void Unit::takesDamage(const unsigned char damage) {
     printf("%s takes %d damage \n", name, damage);
     current_hp = std::max(0, current_hp - damage);
 
-    if (current_hp == 0) {death();};
+    if (current_hp == 0) {dies();};
 }
 
 std::string Unit::getMvttype() {
@@ -114,7 +114,7 @@ std::string Unit::getMvttype() {
     return (mvt_type);
 }
 
-void Unit::heal(const unsigned char healing) {
+void Unit::getsHealed(const unsigned char healing) {
     printf("%s gets healed for %d\n", name, healing);
     current_hp = std::min(current_hp + healing, (int) current_stats.hp);
 }
@@ -137,16 +137,15 @@ unsigned char * Unit::getRange() const {
     unsigned char * right_range;
 
     if (equipped.left > 0) {
-        temp = all_weapons[equipment[equipped.left].name].getStats().range;
-        range[0] = temp[0];
-        range[1] = temp[1];
+        temp = all_weapons[equipsment[equipped.left].name].getStats().range;
+        range[0] = temp[0]; range[1] = temp[1];
     } else {
         range[0] = 1;
         range[1] = 1;
     }
 
     if (equipped.right > 0) {
-        temp = all_weapons[equipment[equipped.left].name].getStats().range;
+        temp = all_weapons[equipsment[equipped.left].name].getStats().range;
         right_range[0] = temp[0];
         right_range[1] = temp[1];
         range[0] = std::min(right_range[0], range[0]);
@@ -172,7 +171,7 @@ void Unit::setHp(const unsigned char in_hp) {
     current_hp = in_hp;
 }
 
-void Unit::death() {
+void Unit::dies() {
     printf("%s is dead.\n", name);
 }
 
@@ -272,12 +271,12 @@ void Unit::setArmy(const char in_army) {
     army = in_army;
 }
 
-unsigned char Unit::avoid() {
+unsigned char Unit::dodge() {
     unsigned char supports = 0;
-    unsigned char terrain_avoid = 0;
-    unsigned char unit_avoid = current_stats.dex * 2 + current_stats.luck;
-    unsigned char avoid = terrain_avoid + unit_avoid + supports;
-    return (avoid);
+    unsigned char terrain_dodge = 0;
+    unsigned char unit_dodge = current_stats.dex * 2 + current_stats.luck;
+    unsigned char dodge = terrain_dodge + unit_dodge + supports;
+    return (dodge);
 }
 
 unsigned char Unit::critical() {
@@ -303,7 +302,7 @@ bool Unit::canRetaliate(Unit * enemy) {
     return (retaliates);
 }
 
-bool Unit::combat_double() const {
+bool Unit::canDouble() const {
     // unsigned char enemy_speed = enemy.getComponent<UnitComponent>().current_stats.agi;
     // bool doubles = ((current_stats.agi - wpn_weighed_down() - enemy_speed) > 4);
     // return (doubles);
@@ -320,7 +319,7 @@ unsigned char Unit::combat_critical() {
     // unsigned char supports = 0;
     // unsigned char unit_skill = 0;
     // unsigned char enemy_favor = enemy.getComponent<UnitComponent>().favor();
-    // unsigned char critical = std::max(0, temp_wpn.combat.crit + unit_skill + supports - enemy_favor);
+    // unsigned char critical = std::max(0, temp_wpn.fights.crit + unit_skill + supports - enemy_favor);
     // return (critical);
     return (1);
 }
@@ -340,13 +339,13 @@ unsigned char Unit::accuracy() {
 }
 
 unsigned char Unit::combat_hit() {
-    // int enemy_avoid = enemy.getComponent<UnitComponent>().avoid();
-    // unsigned char hit = std::max(0, accuracy() - enemy_avoid);
+    // int enemy_dodge = enemy.getComponent<UnitComponent>().dodge();
+    // unsigned char hit = std::max(0, accuracy() - enemy_dodge);
     // return (hit);
     return (1);
 }
 
-unsigned char Unit::attack() {
+unsigned char Unit::attacks() {
     // printf("%s attacks %s\n", name, enemy.getComponent<UnitComponent>().getName());
     // bool unit_hits = (getRN() < combat_hit(enemy));
     // bool unit_crits = (getRN() < combat_critical(enemy));
@@ -354,15 +353,15 @@ unsigned char Unit::attack() {
     // * I think so. Always same number of RN rolled.
     // * But what about crit animations? Should crit animations be shown to miss? Fire Emblem thinks not. Me too.
     
-    // // unit.takeDamage( -= combat_damage(enemy, unit_crits);
-    // enemy.getComponent<UnitComponent>().takeDamage(combat_damage(enemy, unit_crits));
+    // // unit.takesDamage( -= combat_damage(enemy, unit_crits);
+    // enemy.getComponent<UnitComponent>().takesDamage(combat_damage(enemy, unit_crits));
     // return (combat_damage(enemy, unit_crits));
     return (1);
 }
 
-void Unit::combat() {
+void Unit::fights(Unit * enemy) {
     // printf("%s fights %s\n", name, enemy.getComponent<UnitComponent>().getName());
-    // bool unit_doubles = combat_double(enemy);
+    // bool unit_doubles = canDouble(enemy);
     // bool enemy_retaliates = enemy.getComponent<UnitComponent>().canRetaliate(enemy);
     // bool enemy_doubles = 0;
     // attack(enemy);
@@ -370,7 +369,7 @@ void Unit::combat() {
     // if (enemy_retaliates) {
     //     enemy.getComponent<UnitComponent>().attack(*entity);
     //     printf("enemy %s retaliates %d\n", enemy.getComponent<UnitComponent>().getName(), enemy_retaliates);
-    //     enemy_doubles = enemy.getComponent<UnitComponent>().combat_double(*entity);
+    //     enemy_doubles = enemy.getComponent<UnitComponent>().canDouble(*entity);
     // };
 
     // if (unit_doubles) {

@@ -6,7 +6,7 @@
 
 class Unit {
     private:
-        Equipped equipped; // these are indices. -1 means no equipment.
+        Equipped equipped; // these are indices. -1 means no equipsment.
         Weapon_stats temp_wpn;
         Unit_stats base_stats;
         Unit_state state;
@@ -26,7 +26,7 @@ class Unit {
         std::string mvt_type;
         std::string army; //affilistion?
         bool sex; // 0:F, 1:M
-        Inventory_item equipment[7], weapons[3], items[3];
+        Inventory_item equipsment[7], weapons[3], items[3];
 
     public:
         Unit();
@@ -41,16 +41,16 @@ class Unit {
         void setMvttype(const std::string in_class);
         std::string getMvttype();
 
-        void equipL(const char index);
-        void equipR(const char index);
-        void unequipR();
-        void unequipL();
-        void equip(const unsigned int index, const std::string hand = "right");
-        void unequip(const std::string hand = "right");
+        void equipsL(const char index);
+        void equipsR(const char index);
+        void unequipsR();
+        void unequipsL();
+        void equips(const unsigned int index, const std::string hand = "right");
+        void unequips(const std::string hand = "right");
 
-        void takeDamage(const unsigned char damage);
+        void takesDamage(const unsigned char damage);
 
-        void heal(const unsigned char healing);
+        void getsHealed(const unsigned char healing);
 
         unsigned char getHp() const;
 
@@ -63,7 +63,7 @@ class Unit {
 
         void setHp(const unsigned char in_hp);
 
-        void death();
+        void dies();
 
         void setBonus(const Unit_stats in_stats);
 
@@ -78,10 +78,6 @@ class Unit {
 
         void setGrowths(const Unit_stats in_growths);
 
-        unsigned char attack_damage();
-
-        unsigned char combat_damage(const bool critical);
-
         std::string getName();
         void setName(const std::string in_name);
         void setName(const char in_name);
@@ -89,17 +85,22 @@ class Unit {
         void setArmy(const std::string in_army);
         void setArmy(const char in_army);
 
-        unsigned char avoid();
+        bool canRetaliate(Unit * enemy);
+        bool canDouble() const;
+
+        unsigned char attack_damage();
+
+        unsigned char combat_damage(const bool critical);
+
+        unsigned char dodge();
 
         unsigned char critical();
 
-        bool canRetaliate(Unit * enemy);
-
-        bool combat_double() const;
+        unsigned char combat_critical();
 
         unsigned char wpn_weighed_down() const;
 
-        unsigned char combat_critical();
+        void combatStats();
 
         unsigned char favor();
 
@@ -107,9 +108,9 @@ class Unit {
 
         unsigned char combat_hit();
 
-        unsigned char attack();
+        unsigned char attacks();
 
-        void combat();
+        void fights(Unit * enemy);
 
         void write(const char * filename);
 };
