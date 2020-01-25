@@ -16,8 +16,8 @@ class Game {
 
     private:
         void moveUnit(Entity & cursor);
-        void destroyUnitmenu();
-        void createUnitmenu(Entity & setting_entity);
+        void killUnitmenu();
+        void makeUnitmenu(Entity & setting_entity);
         KeyboardInputMap keyboardInputMap;
         GamepadInputMap gamepadInputMap;
         int fontsize;
@@ -45,6 +45,8 @@ class Game {
         void update();
         void render();
         void clean();
+
+        void makeFPSEntity();
 
         void setFontsize(int in_fontsize);
         int getFontsize();

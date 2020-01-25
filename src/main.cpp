@@ -48,15 +48,7 @@ int main(int argc, char * argv[]) {
     int frame_time;
     char buffer[15];
 
-    firesaga->settings.FPS.entity = firesaga->manager.getEntities().size();
-    firesaga->manager.addEntity();
-
-    firesaga->manager.getEntities()[firesaga->settings.FPS.entity]->addComponent<PositionComponent>();
-    firesaga->manager.getEntities()[firesaga->settings.FPS.entity]->getComponent<PositionComponent>().setBounds(0, firesaga->settings.res.x, 0, firesaga->settings.res.y);
-    firesaga->manager.getEntities()[firesaga->settings.FPS.entity]->getComponent<PositionComponent>().setPos(firesaga->settings.FPS.pos.x, firesaga->settings.FPS.pos.y);
-    firesaga->manager.getEntities()[firesaga->settings.FPS.entity]->addComponent<TextComponent>(firesaga->settings.fontsize, "60", firesaga->settings.FPS.textcolor);
-    firesaga->manager.getEntities()[firesaga->settings.FPS.entity]->getComponent<TextComponent>().setSizefactor(firesaga->settings.FPS.sizefactor);
-    firesaga->manager.getEntities()[firesaga->settings.FPS.entity]->addGroup(firesaga->manager.groupUI);
+    firesaga->makeFPSEntity();
 
     while (firesaga->running()) {
         frame_start = std::chrono::high_resolution_clock::now();

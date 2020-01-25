@@ -32,8 +32,20 @@ Game::getFontsize() {
     return(fontsize);
 }
 
-void Game::createUnitmenu(Entity & setting_entity) {
-    printf("Creating unit menu\n");
+void Game::makeFPSEntity() {
+    settings.FPS.entity = manager.getEntities().size();
+    manager.addEntity();
+
+    manager.getEntities()[settings.FPS.entity]->addComponent<PositionComponent>();
+    manager.getEntities()[settings.FPS.entity]->getComponent<PositionComponent>().setBounds(0, settings.res.x, 0, settings.res.y);
+    manager.getEntities()[settings.FPS.entity]->getComponent<PositionComponent>().setPos(settings.FPS.pos.x, settings.FPS.pos.y);
+    manager.getEntities()[settings.FPS.entity]->addComponent<TextComponent>(settings.fontsize, "60", settings.FPS.textcolor);
+    manager.getEntities()[settings.FPS.entity]->getComponent<TextComponent>().setSizefactor(settings.FPS.sizefactor);
+    manager.getEntities()[settings.FPS.entity]->addGroup(manager.groupUI);
+}
+
+void Game::makeUnitmenu(Entity & setting_entity) {
+    printf("Making unit menu\n");
     menu_entities.push(manager.getEntities().size());
     manager.addEntity();
     manager.getEntities()[menu_entities.top()]->addComponent<PositionComponent>();
@@ -47,7 +59,8 @@ void Game::createUnitmenu(Entity & setting_entity) {
     manager.getEntities()[menu_entities.top()]->addGroup(manager.groupUI);
 }
 
-void Game::destroyUnitmenu() {
+void Game::killUnitmenu() {
+    printf("Killing unit menu\n");
     if (!menu_entities.empty()) {
         manager.getEntities()[menu_entities.top()]->destroy();
         menu_entities.pop();
@@ -190,7 +203,7 @@ void Game::setState(Entity & setting_entity, std::string new_state) {
     if (this->state == "unitmove") {
         if (new_state == "unitmenu") {
             mapp->hideOverlay();
-            createUnitmenu(setting_entity); 
+            makeUnitmenu(setting_entity); 
             int *new_position = setting_entity.getComponent<PositionComponent>().getPos();
             int *old_position = manager.getEntities()[unit_entities.top()]->getComponent<PositionComponent>().getPos();
             
@@ -212,7 +225,7 @@ void Game::setState(Entity & setting_entity, std::string new_state) {
     
     if (this->state == "unitmenu") {
         if (new_state == "map") { 
-            destroyUnitmenu();
+            killUnitmenu();
         }
         if (new_state == "attack") { 
         
