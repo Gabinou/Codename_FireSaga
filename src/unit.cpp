@@ -294,16 +294,16 @@ void Unit::setArmy(const char in_army) {
     army = in_army;
 }
 
-void Unit::combatStats_alone() {
-    combat_stats_alone.hit = hit();
-    combat_stats_alone.dodge = dodge();
-    combat_stats_alone.crit = critical();
-    combat_stats_alone.favor = favor();
-    speed();
+Combat_stats Unit::getCombatStats() {
+    return(combat_stats);
 }
 
-void Unit::combatStats(Unit * enemy) {
-    combat_stats.hit = std::max(combat_stats_alone.hit - enemy.getStats().);
+void Unit::combatStats() {
+    combat_stats.hit = hit();
+    combat_stats.dodge = dodge();
+    combat_stats.crit = critical();
+    combat_stats.favor = favor();
+    speed();
 }
 
 unsigned char Unit::hit() {

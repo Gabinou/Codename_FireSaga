@@ -9,6 +9,7 @@
 #include "map.hpp"
 #include "weapon.hpp"
 #include "tile.hpp"
+#include "unit.hpp"
 #include "linalg.hpp"
 #include "script.hpp"
 
@@ -18,6 +19,7 @@ class Game {
         void moveUnit(Entity & cursor);
         void killUnitmenu();
         void makeUnitmenu(Entity & setting_entity);
+        void makeCombatwindow(Unit * ally, Unit * enemy);
         KeyboardInputMap keyboardInputMap;
         GamepadInputMap gamepadInputMap;
         int fontsize;
@@ -45,6 +47,7 @@ class Game {
         void update();
         void render();
         void clean();
+        void combat();
 
         void makeFPSEntity();
 
