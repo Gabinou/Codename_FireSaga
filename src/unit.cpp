@@ -139,7 +139,7 @@ void Unit::setEquippable() {
 
 
 std::string Unit::getMvttype() {
-    printf("insinde unitcomponent%s\n", mvt_type.c_str());
+    printf("inside unit %s\n", mvt_type.c_str());
     return (mvt_type);
 }
 
@@ -263,26 +263,26 @@ unsigned char * Unit::getRange() const {
     static unsigned char range[2];
     unsigned char * right_range;
 
-    if (equipped.left > 0) {
-        temp = all_weapons[equipment[equipped.left].name].getStats().range;
-        range[0] = temp[0]; range[1] = temp[1];
-    } else {
-        range[0] = 1;
-        range[1] = 1;
-    }
+    // if (equipped.left > 0) {
+    //     temp = all_weapons[equipment[equipped.left].name].getStats().range;
+    //     range[0] = temp[0]; range[1] = temp[1];
+    // } else {
+    //     range[0] = 1;
+    //     range[1] = 1;
+    // }
 
-    if (equipped.right > 0) {
-        temp = all_weapons[equipment[equipped.left].name].getStats().range;
-        right_range[0] = temp[0];
-        right_range[1] = temp[1];
-        range[0] = std::min(right_range[0], range[0]);
-        range[1] = std::max(right_range[1], range[1]);
-    }
+    // if (equipped.right > 0) {
+    //     temp = all_weapons[equipment[equipped.left].name].getStats().range;
+    //     right_range[0] = temp[0];
+    //     right_range[1] = temp[1];
+    //     range[0] = std::min(right_range[0], range[0]);
+    //     range[1] = std::max(right_range[1], range[1]);
+    // }
 
-    if ((equipped.left < 0) && (equipped.right < 0)) {
-        range[0] = 0;
-        range[1] = 0;
-    }
+    // if ((equipped.left < 0) && (equipped.right < 0)) {
+    //     range[0] = 0;
+    //     range[1] = 0;
+    // }
 
     range[0] = 5;
     range[1] = 10;

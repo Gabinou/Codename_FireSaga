@@ -130,7 +130,7 @@ class UnitComponent : public Component {
         }
 
         std::string getMvttype() {
-            printf("insinde unitcomponent%s\n", mvt_type.c_str());
+            printf("inside unitcomponent %s\n", mvt_type.c_str());
             return (mvt_type);
         }
 

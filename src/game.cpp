@@ -6,6 +6,7 @@
 #include "keyboardcontroller.hpp"
 #include "gamepadcontroller.hpp"
 #include "unitcomponent.hpp"
+#include "unitcontainer.hpp"
 
 Map * mapp;
 
@@ -139,11 +140,10 @@ void Game::setState(Entity & setting_entity, std::string new_state) {
         if (new_state == "minimap") {
             
         }
-        if (new_state == "unitmove") { // GREAT BIG FPS DROP HERE.
+        if (new_state == "unitmove") {
             std::vector<std::unique_ptr<Entity>> current_entities;
             std::vector<std::vector<int>> costmap;
             std::vector<std::vector<int>> movemapp;
-            // std::vector<std::vector<int>> edges; 
             int start[2];
             std::string unitmvttype;
             int unit_move;
@@ -154,32 +154,33 @@ void Game::setState(Entity & setting_entity, std::string new_state) {
                     unit_entities.push(i);
                 }
             }
-            unit_move = manager.getEntities()[unit_entities.top()]->getComponent<UnitComponent>().getStats().move; //0 for horse.
+            std::string current_unit_name = manager.getEntities()[unit_entities.top()]->getComponent<UnitContainer>().getName(); // problem
+            printf("DOES IT WORK NOW? %s", current_unit_name.c_str());
+            unit_move = all_units[current_unit_name].getStats().move;
+            // unit_move = manager.getEntities()[unit_entities.top()]->getComponent<UnitComponent>().getStats().move; //0 for horse.
 
             start[0] = manager.getEntities()[unit_entities.top()]->getComponent<PositionComponent>().getPos()[0]; // Start is (+1,+1)?
             start[1] = manager.getEntities()[unit_entities.top()]->getComponent<PositionComponent>().getPos()[1]; // Start is (+1,+1)?
             start[0] = start[0] - 1;
             start[1] = start[1] - 1;
 
-            unitmvttype = manager.getEntities()[unit_entities.top()]->getComponent<UnitComponent>().getMvttype();
-            range = manager.getEntities()[unit_entities.top()]->getComponent<UnitComponent>().getRange();// THIS DOESNT WORK.
-
+            // unitmvttype = manager.getEntities()[unit_entities.top()]->getComponent<UnitComponent>().getMvttype();
+            unitmvttype = all_units[current_unit_name].getMvttype();
+            range = all_units[current_unit_name].getRange();
+            // range = manager.getEntities()[unit_entities.top()]->getComponent<UnitComponent>().getRange();
             costmap = mapp->makeMvtCostmap(unitmvttype);
 
             movemapp = movemap(costmap, start, unit_move, "matrix");
             mapp->setMap("move", movemapp);
-            // plot2Dvector(movemapp);
+            plot2Dvector(movemapp);
 
-            // edges = matrix_edges(movemapp);
-            // plot2Dvector(edges);
+            printf("%d %d \n", range[0], range[1]);
+            printf("%d \n", unit_move);
 
-            if ((range[0] > 0) && (range[1] > 0)) {
-                std::vector<std::vector<int>> attackmapp = attackmap(movemapp, start, unit_move, range, "matrix");
-                // std::vector<std::vector<int>> attackmapp = attackmap(movemapp, start, unit_move + (int)range[0] - 1, (int)range[1], "matrix");
-                // plot2Dvector(attackmapp);
-                mapp->setMap("attack", attackmapp);
-            }
-     
+            std::vector<std::vector<int>> attackmapp = attackmap(movemapp, start, unit_move, range, "matrix");
+            plot2Dvector(attackmapp);
+            mapp->setMap("attack", attackmapp);
+
             mapp->showOverlay();
         }
         if (new_state == "options") {
@@ -501,10 +502,13 @@ void Game::init(const char * title, int xpos, int ypos, int width, int height, b
 
     all_units["Silou"].setEntity(manager.getEntities().size());
     manager.addEntity();
-    manager.getEntities()[all_units["Silou"].getEntity()]->addComponent<PositionComponent>(8, 8);
+    manager.getEntities()[all_units["Silou"].getEntity()]->addComponent<PositionComponent>(6, 6);
+    manager.getEntities()[all_units["Silou"].getEntity()]->addComponent<UnitContainer>("Silou");
+    // printf("ALLO IT WORKS? %s\n", manager.getEntities()[all_units["Silou"].getEntity()]->getComponent<UnitContainer>().getName().c_str());
+
     manager.getEntities()[all_units["Silou"].getEntity()]->getComponent<PositionComponent>().setMap(mapp);
 
-    manager.getEntities()[all_unit_components["Silou"]]->addComponent<PositionComponent>(6, 6);
+    manager.getEntities()[all_unit_components["Silou"]]->addComponent<PositionComponent>(8, 8);
     manager.getEntities()[all_unit_components["Silou"]]->getComponent<PositionComponent>().setMap(mapp);
 
     SDL_Color black = {255, 255, 255};

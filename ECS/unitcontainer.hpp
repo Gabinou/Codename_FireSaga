@@ -8,9 +8,12 @@ class UnitContainer : public Component {
         std::string name;
     public:
         UnitContainer() = default;
+        UnitContainer(std::string in_name) {
+            name = in_name;
+        }
 
         std::string getName() {
-            return (name)
+            return (name);
         }
 
         void setName(std::string in_name) {
