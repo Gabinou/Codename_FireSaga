@@ -32,17 +32,15 @@ Game::getFontsize() {
     return(fontsize);
 }
 
-unsigned char Game::attack_damage(Unit * attacker, Unit * defender) {
-    // bool unit_hits = (getRN() < combat_hit(enemy));
-    // bool unit_crits = (getRN() < combat_critical(enemy));
+void Game::attack(Unit * attacker, Unit * defender) {
     //  *DESIGN QUESTION* Should a random number always be rolled for crits, even if the hit doesn't connect?
     // * I think so. Always same number of RN rolled.
     // * But what about crit animations? Should crit animations be shown to miss? Fire Emblem thinks not. Me too.
     
-    // // unit.takesDamage( -= combat_damage(enemy, unit_crits);
+    attacker->total_might();
     // enemy.getComponent<UnitComponent>().takesDamage(combat_damage(enemy, unit_crits));
     // return (combat_damage(enemy, unit_crits));
-    return (1);
+    // return (1);
 }
 
 void Game::fight(Unit * attacker, Unit * defender) {
@@ -51,22 +49,10 @@ void Game::fight(Unit * attacker, Unit * defender) {
     bool defender_retaliates = defender->canRetaliate(attacker);
     bool defender_doubles = defender->canDouble(attacker);
     // attack(enemy);
-
-    // if (enemy_retaliates) {
-    //     enemy.getComponent<UnitComponent>().attack(*entity);
-    //     printf("enemy %s retaliates %d\n", enemy.getComponent<UnitComponent>().getName(), enemy_retaliates);
-    //     enemy_doubles = enemy.getComponent<UnitComponent>().canDouble(*entity);
-    // };
-
-    // if (unit_doubles) {
-    //     printf("%s doubles\n", name);
-    //     attack(enemy);
-    // };
-
-    // if (enemy_doubles) {
-    //     printf("%s doubles\n", enemy.getComponent<UnitComponent>().getName());
-    //     enemy.getComponent<UnitComponent>().attack(*entity);
-    // };
+    Combat_stats attacker_stats = attacker->getCombatStats();
+    Combat_stats defender_stats = defender->getCombatStats();
+    bool attacker_hits = (getRN() < (attacker_stats.hit - defender_stats.dodge));
+    bool attacker_crits = (getRN() < (attacker_stats.crit - defender_stats.favor));
 }
 
 void Game::makeFPSEntity() {

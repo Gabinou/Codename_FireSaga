@@ -381,6 +381,33 @@ unsigned char Unit::total_might() {
     return (total_might);
 }
 
+unsigned char Unit::total_def(bool dmg_type){
+    unsigned char total_def = 0;
+    if (dmg_type){
+        total_def += current_stats.res;
+        total_def += all_weapons[equipment[equipped.left].name].getBonus().res;
+        total_def += all_weapons[equipment[equipped.right].name].getBonus().res;
+        if (all_weapons[equipment[equipped.right].name].getType() == "shield") {
+            total_def += all_weapons[equipment[equipped.right].name].getStats().Mmight;
+        }
+        if (all_weapons[equipment[equipped.left].name].getType() == "shield") {
+            total_def += all_weapons[equipment[equipped.left].name].getStats().Mmight;
+        }
+    } else {
+        total_def += current_stats.def;
+        total_def += all_weapons[equipment[equipped.left].name].getBonus().def;
+        total_def += all_weapons[equipment[equipped.right].name].getBonus().def;
+        if (all_weapons[equipment[equipped.right].name].getType() == "shield") {
+            total_def += all_weapons[equipment[equipped.right].name].getStats().Pmight;
+        }
+        if (all_weapons[equipment[equipped.left].name].getType() == "shield") {
+            total_def += all_weapons[equipment[equipped.left].name].getStats().Pmight;
+        }
+    }
+    return(total_def);
+}   
+
+
 std::string Unit::getName() {
     return (name);
 }

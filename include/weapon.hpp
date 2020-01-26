@@ -39,6 +39,7 @@ class Weapon {
         void setDescription(std::string in_description);
         std::string getDescription();
         std::string getName();
+        std::string getType();
 };
 
 /*! \var all_weapons

@@ -692,3 +692,29 @@ std::uniform_int_distribution<int> Uint_99(0, 99); // more twice faster than Ure
 int getRN(){
     return(Uint_99(mt_64));
 }
+
+int * boxmuller(int RN_U[2], float avg, float std_dev) {
+    // RNs frm 0 to 100.
+    // std_dev: standard deviation,  avg: average
+    // RN_G can be < 0 and > 100, but its okay.
+    //DESIGN: no need to change the int that come out of boxmuller. 
+    // -> (-7 < 50) returns true as much as (0 < 50)
+    static int RN_G[2];
+    float RNreal_U[2];
+    if (RN_U[0] == 0) {
+        RNreal_U[0] = 0.00001;
+    } else {
+        RNreal_U[0] = ((float)RN_U[0])/100.;
+    }
+    if (RN_U[1] == 0) {
+        RNreal_U[1] = 0.00001;
+    } else {
+        RNreal_U[1] = ((float)RN_U[1])/100.;
+    }
+    float term1 = sqrt(-2 *  log(RNreal_U[0]));
+    float term2 = 2 * M_PI * RNreal_U[1];
+    // printf("%f %f\n", (term1 * cos(term2)), (term1 * sin(term2)));
+    RN_G[0] = (int) ((term1 * cos(term2))*std_dev + avg);
+    RN_G[1] = (int) ((term1 * sin(term2))*std_dev + avg);
+    return(RN_G);
+}

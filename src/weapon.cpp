@@ -68,6 +68,9 @@ std::string Weapon::getDescription() {
 std::string Weapon::getName() {
     return(name);
 }
+std::string Weapon::getType() {
+    return(type);
+}
 
 std::unordered_map<std::string, Weapon> all_weapons;
 

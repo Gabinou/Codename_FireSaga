@@ -112,6 +112,7 @@ class Unit {
         unsigned char critical();
         unsigned char favor();
         unsigned char total_might();
+        unsigned char total_def(bool dmg_type);
         char speed();
 
         void dies();
