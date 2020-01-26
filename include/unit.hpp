@@ -105,9 +105,6 @@ class Unit {
         unsigned char total_might();
         char speed();
 
-        unsigned char attacks();
-
-        void fights(Unit * enemy);
         void dies();
 
         void write(const char * filename);

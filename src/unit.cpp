@@ -462,44 +462,6 @@ char Unit::speed() {
     return(current_speed);
 }
 
-unsigned char Unit::attacks() {
-    // printf("%s attacks %s\n", name, enemy.getComponent<UnitComponent>().getName());
-    // bool unit_hits = (getRN() < combat_hit(enemy));
-    // bool unit_crits = (getRN() < combat_critical(enemy));
-    //  *DESIGN QUESTION* Should a random number always be rolled for crits, even if the hit doesn't connect?
-    // * I think so. Always same number of RN rolled.
-    // * But what about crit animations? Should crit animations be shown to miss? Fire Emblem thinks not. Me too.
-    
-    // // unit.takesDamage( -= combat_damage(enemy, unit_crits);
-    // enemy.getComponent<UnitComponent>().takesDamage(combat_damage(enemy, unit_crits));
-    // return (combat_damage(enemy, unit_crits));
-    return (1);
-}
-
-void Unit::fights(Unit * enemy) {
-    // printf("%s fights %s\n", name, enemy.getComponent<UnitComponent>().getName());
-    // bool unit_doubles = canDouble(enemy);
-    // bool enemy_retaliates = enemy.getComponent<UnitComponent>().canRetaliate(enemy);
-    // bool enemy_doubles = 0;
-    // attack(enemy);
-
-    // if (enemy_retaliates) {
-    //     enemy.getComponent<UnitComponent>().attack(*entity);
-    //     printf("enemy %s retaliates %d\n", enemy.getComponent<UnitComponent>().getName(), enemy_retaliates);
-    //     enemy_doubles = enemy.getComponent<UnitComponent>().canDouble(*entity);
-    // };
-
-    // if (unit_doubles) {
-    //     printf("%s doubles\n", name);
-    //     attack(enemy);
-    // };
-
-    // if (enemy_doubles) {
-    //     printf("%s doubles\n", enemy.getComponent<UnitComponent>().getName());
-    //     enemy.getComponent<UnitComponent>().attack(*entity);
-    // };
-}
-
 void Unit::write(const char * filename) {
     FILE * fp;
     fp = fopen(filename, "w+");

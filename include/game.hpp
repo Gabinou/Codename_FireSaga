@@ -47,7 +47,8 @@ class Game {
         void update();
         void render();
         void clean();
-        void combat();
+        void fight(Unit * attacker, Unit * defender);
+        unsigned char attack_damage(Unit * attacker, Unit * defender);
 
         void makeFPSEntity();
 
