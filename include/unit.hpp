@@ -45,10 +45,10 @@ class Unit {
         void setPos(const int in_pos[2]);
 
         std::string getMvttype();
-        void setMvttype(const std::string in_class);
+        void setMvttype();
 
-        void setEquippable();
         std::vector<std::string> getEquippable();
+        void setEquippable();
         void equipsL(const char index);
         void equipsR(const char index);
         void unequipsR();

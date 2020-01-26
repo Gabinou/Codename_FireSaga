@@ -9,6 +9,7 @@ Unit::Unit(const std::string in_name, const std::string in_class, const Unit_sta
     current_stats = in_bases;
     class_name = in_class;
     setMvttype(in_class);
+    setEquippable()
     name = in_name;
 }
 
@@ -32,7 +33,7 @@ void Unit::setPos(const int in_pos[2]) {
     position[1] = in_pos[1];
 }
 
-void Unit::setEquippable(){
+void Unit::setEquippable() {
     equippable.clear();
     if ((class_name == "Mercenary") || (class_name == "Lord") || (class_name == "Duelist") || (class_name == "Thief")) {
         equippable.push_back("shield");
@@ -138,7 +139,7 @@ std::string Unit::getMvttype() {
     return (mvt_type);
 }
 
-void Unit::setMvttype(const std::string in_class) {
+void Unit::setMvttype() {
     if ((class_name == "Fencer") || (class_name == "Mousquetaire") || (class_name == "Duelist") || (class_name == "Lord") || (class_name == "Duke") || (class_name == "Archer") || (class_name == "Marksman") || (class_name == "Mercenary") || (class_name == "Hero") || (class_name == "Trooper")) {
         mvt_type = "foot_slow";
     }
