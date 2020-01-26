@@ -8,8 +8,8 @@ Unit::Unit(const std::string in_name, const std::string in_class, const Unit_sta
     base_stats = in_bases;
     current_stats = in_bases;
     class_name = in_class;
-    setMvttype(in_class);
-    setEquippable()
+    setMvttype();
+    setEquippable();
     name = in_name;
 }
 
@@ -31,6 +31,10 @@ int * Unit::getPos() {
 void Unit::setPos(const int in_pos[2]) {
     position[0] = in_pos[0];
     position[1] = in_pos[1];
+}
+
+std::vector<std::string> Unit::getEquippable() {
+    return(equippable);
 }
 
 void Unit::setEquippable() {

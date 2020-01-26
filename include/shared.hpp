@@ -147,6 +147,9 @@ struct Weapon_type {
 struct Inventory_item {
     std::string name;
     unsigned int used = 0;
+    bool highlighted = true;
+    // item images are highlighted by default.
+    // Only dark when in unit inventory and unequippable
 };
 
 struct Equipped {
