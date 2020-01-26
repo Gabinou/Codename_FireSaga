@@ -32,7 +32,7 @@ class Unit {
         std::string army; //affilistion?
 
         bool sex; // 0:F, 1:M
-        Inventory_item equipsment[7], weapons[3], items[3];
+        Inventory_item equipment[7], weapons[3], items[3];
 
     public:
         Unit();

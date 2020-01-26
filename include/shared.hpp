@@ -150,9 +150,9 @@ struct Inventory_item {
 };
 
 struct Equipped {
+    // Index of weapon in inventory of character.
     int left;
     int right;
-    //Index in big array of all weapons? Or pointer to weapon?
 };
 
 struct Movement_cost {

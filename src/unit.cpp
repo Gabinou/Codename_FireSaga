@@ -137,7 +137,7 @@ unsigned char * Unit::getRange() const {
     unsigned char * right_range;
 
     if (equipped.left > 0) {
-        temp = all_weapons[equipsment[equipped.left].name].getStats().range;
+        temp = all_weapons[equipment[equipped.left].name].getStats().range;
         range[0] = temp[0]; range[1] = temp[1];
     } else {
         range[0] = 1;
@@ -145,7 +145,7 @@ unsigned char * Unit::getRange() const {
     }
 
     if (equipped.right > 0) {
-        temp = all_weapons[equipsment[equipped.left].name].getStats().range;
+        temp = all_weapons[equipment[equipped.left].name].getStats().range;
         right_range[0] = temp[0];
         right_range[1] = temp[1];
         range[0] = std::min(right_range[0], range[0]);
