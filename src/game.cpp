@@ -128,7 +128,6 @@ void Game::setState(Entity & setting_entity, std::string new_state) {
     if (this->state == "minimap") {
          
     }
-    
     if (this->state == "map") {
         if (new_state == "unitmenu") {
             moveUnit(setting_entity);
@@ -500,6 +499,11 @@ void Game::init(const char * title, int xpos, int ypos, int width, int height, b
 
     cursor.addComponent<PositionComponent>(6, 6);
 
+    all_units["Silou"].setEntity(manager.getEntities().size());
+    manager.addEntity();
+    manager.getEntities()[all_units["Silou"].getEntity()]->addComponent<PositionComponent>(8, 8);
+    manager.getEntities()[all_units["Silou"].getEntity()]->getComponent<PositionComponent>().setMap(mapp);
+
     manager.getEntities()[all_unit_components["Silou"]]->addComponent<PositionComponent>(6, 6);
     manager.getEntities()[all_unit_components["Silou"]]->getComponent<PositionComponent>().setMap(mapp);
 
@@ -513,11 +517,13 @@ void Game::init(const char * title, int xpos, int ypos, int width, int height, b
     }
 
     manager.getEntities()[all_unit_components["Silou"]]->addComponent<SpriteComponent>(mapp, "..//assets//horse.png");
+    manager.getEntities()[all_units["Silou"].getEntity()]->addComponent<SpriteComponent>(mapp, "..//assets//horse.png");
 
     cursor.addComponent<SpriteComponent>(mapp, "..//assets//cursors.png", 10, 50);
     cursor.getComponent<SpriteComponent>().setSlidetype("geometric");
     
     manager.getEntities()[all_unit_components["Silou"]]->addGroup(manager.groupUnits);
+    manager.getEntities()[all_units["Silou"].getEntity()]->addGroup(manager.groupUnits);
     cursor.addGroup(manager.groupUI);
     
     printf("in game: %s\n", all_scripts["Chapter 1"].getScene("Intro").getLine("1").line.c_str());

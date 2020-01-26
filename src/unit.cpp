@@ -290,6 +290,14 @@ unsigned char * Unit::getRange() const {
     return (range);
 }
 
+void Unit::setEntity(int in_index) {
+    entity = in_index;
+}
+
+int Unit::getEntity() {
+    return(entity);
+}
+
 void Unit::setExp(const unsigned int in_exp) {
     exp = in_exp;
 }

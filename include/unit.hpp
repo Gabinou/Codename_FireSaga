@@ -9,29 +9,35 @@ class Unit {
         Weapon_stats temp_wpn;
         Weapon_stats right_wpn;
         Weapon_stats left_wpn;
+
         Combat_stats combat_stats;
+
         Unit_stats base_stats;
         Unit_state state;
         Unit_stats bonus_stats;
         Unit_stats caps_stats;
         Unit_stats malus_stats;
         Unit_stats current_stats;
+        Unit_stats growths;
+
         std::vector<Unit_stats> grown_stats;
         std::vector<std::string> skills;
+        std::vector<std::string> equippable;
+
         std::unordered_map<std::string, int> supports;
-        Unit_stats growths;
         unsigned char current_hp;
         char current_speed;
         unsigned int exp;
+        int entity;
         int position[2] = {0, 0};
+        bool sex; // 0:F, 1:M
+
         std::string name;
         std::string class_name;
         std::string mvt_type;
         std::string army; //affilistion?
 
-        bool sex; // 0:F, 1:M
         Equipped equipped; // these are indices. -1 means no equipment.
-        std::vector<std::string> equippable;
         Inventory_item equipment[7], weapons[3], items[3];
 
     public:
@@ -61,6 +67,9 @@ class Unit {
         void dropItem(int in_index);
 
         unsigned char * getRange() const;
+
+        void setEntity(int in_index);
+        int getEntity();
 
         unsigned int getExp() const;
         unsigned int getLvl() const;
