@@ -3,6 +3,7 @@
 #include "game.hpp"
 #include <algorithm>
 
+Inventory_item convoy[200];
 
 void writeText(int in_fontsize, int in_position[2], float in_sizefactor[2], std::string in_text, SDL_Color in_color, TTF_Font * in_font, SDL_Renderer * in_renderer) {
     std::string text = "FPS";
