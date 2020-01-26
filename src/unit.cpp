@@ -213,6 +213,24 @@ void Unit::unequips(const std::string hand) {
     }
 }
 
+void Unit::takeItem(Inventory_item * out_array, int in_index, int out_index) {
+    equipment[in_index] = out_array[out_index];
+    Inventory_item empty;
+    out_array[out_index] = empty;
+}
+
+void Unit::giveItem(Inventory_item * out_array, int in_index, int out_index) {
+    out_array[out_index] = equipment[in_index];
+    Inventory_item empty;
+    equipment[in_index] = empty;
+}
+
+void Unit::dropItem(int in_index) {
+    Inventory_item empty;
+    equipment[in_index] = empty;
+}
+
+
 void Unit::takesDamage(const unsigned char damage) {
     printf("%s takes %d damage \n", name, damage);
     current_hp = std::max(0, current_hp - damage);

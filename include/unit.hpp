@@ -56,6 +56,10 @@ class Unit {
         void equips(const unsigned int index, const std::string hand = "right");
         void unequips(const std::string hand = "right");
 
+        void takeItem(Inventory_item * out_array, int in_index, int out_index);
+        void giveItem(Inventory_item * out_array, int in_index, int out_index);
+        void dropItem(int in_index);
+
         unsigned char * getRange() const;
 
         unsigned int getExp() const;
