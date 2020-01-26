@@ -5,7 +5,6 @@
 #include "textcomponent.hpp"
 #include "keyboardcontroller.hpp"
 #include "gamepadcontroller.hpp"
-#include "unitcomponent.hpp"
 #include "unitcontainer.hpp"
 
 Map * mapp;
@@ -157,17 +156,14 @@ void Game::setState(Entity & setting_entity, std::string new_state) {
             std::string current_unit_name = manager.getEntities()[unit_entities.top()]->getComponent<UnitContainer>().getName(); // problem
             printf("DOES IT WORK NOW? %s", current_unit_name.c_str());
             unit_move = all_units[current_unit_name].getStats().move;
-            // unit_move = manager.getEntities()[unit_entities.top()]->getComponent<UnitComponent>().getStats().move; //0 for horse.
 
             start[0] = manager.getEntities()[unit_entities.top()]->getComponent<PositionComponent>().getPos()[0]; // Start is (+1,+1)?
             start[1] = manager.getEntities()[unit_entities.top()]->getComponent<PositionComponent>().getPos()[1]; // Start is (+1,+1)?
             start[0] = start[0] - 1;
             start[1] = start[1] - 1;
 
-            // unitmvttype = manager.getEntities()[unit_entities.top()]->getComponent<UnitComponent>().getMvttype();
             unitmvttype = all_units[current_unit_name].getMvttype();
             range = all_units[current_unit_name].getRange();
-            // range = manager.getEntities()[unit_entities.top()]->getComponent<UnitComponent>().getRange();
             costmap = mapp->makeMvtCostmap(unitmvttype);
 
             movemapp = movemap(costmap, start, unit_move, "matrix");
