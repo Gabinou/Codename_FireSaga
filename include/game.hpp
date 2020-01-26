@@ -63,8 +63,6 @@ class Game {
         std::string getState();
 
         bool running();
-
-        // void baseUnitComponents();
 };
 
 #endif /* GAME_HPP */
