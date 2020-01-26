@@ -6,11 +6,9 @@
 
 class Unit {
     private:
-        Equipped equipped; // these are indices. -1 means no equipsment.
         Weapon_stats temp_wpn;
         Weapon_stats right_wpn;
         Weapon_stats left_wpn;
-        // Combat_stats combat_stats_alone;
         Combat_stats combat_stats;
         Unit_stats base_stats;
         Unit_state state;
@@ -32,6 +30,8 @@ class Unit {
         std::string army; //affilistion?
 
         bool sex; // 0:F, 1:M
+        Equipped equipped; // these are indices. -1 means no equipment.
+        std::vector<std::string> equippable;
         Inventory_item equipment[7], weapons[3], items[3];
 
     public:
@@ -47,6 +47,8 @@ class Unit {
         std::string getMvttype();
         void setMvttype(const std::string in_class);
 
+        void setEquippable();
+        std::vector<std::string> getEquippable();
         void equipsL(const char index);
         void equipsR(const char index);
         void unequipsR();

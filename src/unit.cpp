@@ -32,6 +32,107 @@ void Unit::setPos(const int in_pos[2]) {
     position[1] = in_pos[1];
 }
 
+void Unit::setEquippable(){
+    equippable.clear();
+    if ((class_name == "Mercenary") || (class_name == "Lord") || (class_name == "Duelist") || (class_name == "Thief")) {
+        equippable.push_back("shield");
+        equippable.push_back("sword");
+        equippable.push_back("offhand");
+    }
+    if ((class_name == "Pegasus knight") || (class_name == "Trooper") || (class_name == "Cavalier") || (class_name == "Knight")) {
+        equippable.push_back("lance");
+        equippable.push_back("shield");
+    }
+    if (class_name == "Bandit") {
+        equippable.push_back("shield");
+        equippable.push_back("axe");
+    }
+    if ((class_name == "Corsair") || (class_name == "Viking")) {
+        equippable.push_back("shield");
+        equippable.push_back("axe");
+        equippable.push_back("offhand");
+    }
+    if ((class_name == "Fencer") || (class_name == "Pickpocket")){
+        equippable.push_back("offhand");
+        equippable.push_back("sword");
+    }
+    if ((class_name == "Mousquetaire") || (class_name == "Assassin") || (class_name == "Marksman")) {
+        equippable.push_back("sword");
+        equippable.push_back("offhand");
+        equippable.push_back("bow");
+    }
+    if (class_name == "Archer") {
+        equippable.push_back("bow");
+    }
+    if ((class_name == "Duke") || (class_name == "Paladin")) {
+        equippable.push_back("sword");
+        equippable.push_back("lance");
+        equippable.push_back("shield");
+        equippable.push_back("offhand");
+    }
+    if (class_name == "General") {
+        equippable.push_back("sword");
+        equippable.push_back("shield");
+        equippable.push_back("axe");
+        equippable.push_back("lance");
+    }
+    if ((class_name == "Cleric") || (class_name == "Priest")) {
+        equippable.push_back("staff");
+    }
+    if (class_name == "Mage") {
+        equippable.push_back("elemental");
+        equippable.push_back("trinket");
+    }
+    if (class_name == "Hero") {
+        equippable.push_back("axe");
+        equippable.push_back("sword");
+        equippable.push_back("shield");
+        equippable.push_back("offhand");
+    }
+    if (class_name == "Ravager") {
+        equippable.push_back("axe");
+        equippable.push_back("shield");
+        equippable.push_back("offhand");
+        equippable.push_back("bow");
+    }
+    if (class_name == "Battlemage") {
+        equippable.push_back("elemental");
+        equippable.push_back("shield");
+        equippable.push_back("sword");
+        equippable.push_back("trinket");
+    }
+    if ((class_name == "Sage") || (class_name == "Troubadour")) {
+        equippable.push_back("elemental");
+        equippable.push_back("staff");
+        equippable.push_back("trinket");
+    }
+    if ((class_name == "Bishop") || (class_name == "Oracle")) {
+        equippable.push_back("staff");
+        equippable.push_back("angelic");
+        equippable.push_back("trinket");
+    }
+    if (class_name == "Angel") {
+        equippable.push_back("angelic");
+        equippable.push_back("sword");
+        equippable.push_back("lance");
+        equippable.push_back("shield");
+    }
+    if (class_name == "Demon") {
+        equippable.push_back("demonic");
+        equippable.push_back("claw");
+        equippable.push_back("axe");
+    }
+    if (class_name == "Demonic Incarnate") {
+        equippable.push_back("demonic");
+        equippable.push_back("trinket");
+    }
+    if (class_name == "Angelic Incarnate") {
+        equippable.push_back("angelic");
+        equippable.push_back("trinket");
+    }
+}
+
+
 std::string Unit::getMvttype() {
     printf("insinde unitcomponent%s\n", mvt_type.c_str());
     return (mvt_type);
@@ -132,6 +233,9 @@ unsigned int Unit::getExp() const {
 }
 
 unsigned char * Unit::getRange() const {
+    // DESIGN QUESTION: what about equipping only an offhand? Should offhand have ranges? 
+    // Can you attack with only offhand weapons? how to treat their hit rate?
+
     unsigned char * temp;
     static unsigned char range[2];
     unsigned char * right_range;
