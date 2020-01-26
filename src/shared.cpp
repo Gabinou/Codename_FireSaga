@@ -193,8 +193,8 @@ std::vector<std::vector<int>> attackmap(std::vector<std::vector<int>> movemap, i
             int miny = std::max(0, range[0] - rangex);
             int maxy = std::max(range[1] - rangex, 0);
             for (int rangey = miny; rangey <= maxy; rangey++) {
-                tempx = movelist[i][1] + rangex;
-                tempy = movelist[i][0] + rangey;
+                tempx = std::min(movelist[i][1] + rangex, (int)(movemap[0].size() - 1));
+                tempy = std::min(movelist[i][0] + rangey, (int)(movemap.size() - 1));
                 if ((tempx < (int)movemap.size()) && (tempy < (int)movemap[0].size())) {
                     if (movemap[tempy][tempx] == 0) {
                         if (mode == "list") {
@@ -206,8 +206,8 @@ std::vector<std::vector<int>> attackmap(std::vector<std::vector<int>> movemap, i
                         }
                     }
                 }
-                tempx = movelist[i][1] - rangex;
-                tempy = movelist[i][0] + rangey;
+                tempx = std::max(movelist[i][1] - rangex, 0);
+                tempy = std::min(movelist[i][0] + rangey, (int)(movemap.size() - 1));
                 if ((tempx >= 0) && (tempy < (int)movemap[0].size())) {
                     if (movemap[tempy][tempx] == 0) {
                         if (mode == "list") {
@@ -219,8 +219,8 @@ std::vector<std::vector<int>> attackmap(std::vector<std::vector<int>> movemap, i
                         }
                     }
                 }                
-                tempx = movelist[i][1] + rangex;
-                tempy = movelist[i][0] - rangey;
+                tempx = std::min(movelist[i][1] + rangex, (int)(movemap[0].size() - 1));
+                tempy = std::max(movelist[i][0] - rangey, 0);
                 if ((tempx < (int)movemap.size()) && (tempy >= 0)) {
                      if (movemap[tempy][tempx] == 0) {
                         if (mode == "list") {
@@ -232,8 +232,8 @@ std::vector<std::vector<int>> attackmap(std::vector<std::vector<int>> movemap, i
                         }
                     }
                 }                
-                tempx = movelist[i][1] - rangex;
-                tempy = movelist[i][0] - rangey;
+                tempx = std::max(movelist[i][1] - rangex, 0);
+                tempy = std::max(movelist[i][0] - rangey, 0);
                 if ((tempx >= 0) && (tempy >= 0)) {
                    if (movemap[tempy][tempx] == 0) {
                         if (mode == "list") {
