@@ -80,7 +80,9 @@ void Game::attack(Unit * attacker, Unit * defender) {
     Combat_stats defender_stats = defender->getCombatStats();
     bool hitcrit = checkHitCrit(attacker_stats.hit - defender_stats.dodge, attacker_stats.crit - defender_stats.favor);
     if (hitcrit[0]) {
-
+        if (hitcrit[1]) {
+            // int damage = attacker->
+        }
     }
 }
 
