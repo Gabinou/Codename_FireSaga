@@ -359,7 +359,7 @@ Unit_stats Unit::getGrowths() {
     return(growths);
 }
 
-unsigned char Unit::total_might(bool dmg_type) {
+unsigned char Unit::totalMight(bool dmg_type) {
     // Damage type is determined by the held weapon? 
     // What about battlemages and infusion?
     unsigned char unit_power = 0;
@@ -378,7 +378,7 @@ unsigned char Unit::total_might(bool dmg_type) {
     return (total_might);
 }
 
-unsigned char Unit::total_def(bool dmg_type){
+unsigned char Unit::totalDef(bool dmg_type){
     unsigned char total_def = 0;
     if (dmg_type){
         total_def += current_stats.res;

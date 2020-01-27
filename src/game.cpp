@@ -42,9 +42,10 @@ bool Game::checkRate(int rate, std::string mode) {
         hit = (((getRN() + getRN())/2) < rate); //doubleroll
         return(hit);
     }
+    return(hit);
 }
 
-bool * checkHitCrit(int hit_rate, int crit_rate, std::string mode){
+bool * Game::checkHitCrit(int hit_rate, int crit_rate, std::string mode) {
     static bool hitcrit[2];
     if (mode == "single") {
         hitcrit[0] = (getRN() < hit_rate);
@@ -62,16 +63,18 @@ bool * checkHitCrit(int hit_rate, int crit_rate, std::string mode){
         hitcrit[1] = (RNs[1] < crit_rate);
         return(hitcrit);
     }
+    return(hitcrit);
 }
 
 void Game::attack(Unit * attacker, Unit * defender) {
     Combat_stats attacker_stats = attacker->getCombatStats();
     Combat_stats defender_stats = defender->getCombatStats();
     bool * hitcrit;
-    hitcrit = checkHitCrit(attacker_stats.hit - defender_stats.dodge, attacker_stats.crit - defender_stats.favor);
+    hitcrit = checkHitCrit((attacker_stats.hit - defender_stats.dodge), (attacker_stats.crit - defender_stats.favor));
     if (hitcrit[0]) {
         if (hitcrit[1]) {
-            // int damage = attacker->
+            
+            int damage = attacker->totalMight(false) -  defender->totalDef(false);
         }
     }
 }

@@ -111,8 +111,9 @@ class Unit {
         unsigned char dodge();
         unsigned char critical();
         unsigned char favor();
-        unsigned char total_might(bool dmg_type);
-        unsigned char total_def(bool dmg_type);
+        unsigned char totalMight(bool dmg_type);
+        unsigned char totalDef(bool dmg_type);
+        unsigned char dmgType();
         char speed();
 
         void dies();
