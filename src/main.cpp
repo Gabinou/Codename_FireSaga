@@ -4,17 +4,15 @@
 * \file main.cpp
 * \brief Main game algorithm page.
 */
+#include "shared.hpp"
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
-#include <chrono>
-#include "shared.hpp"
-// #include "ECS.hpp"
-// #include "unitcomponent.hpp"
 #include "textcomponent.hpp"
 #include "game.hpp"
 #include "script.hpp"
 #include "weapon.hpp"
 #include "unit.hpp"
+#include <chrono>
 
 Game * firesaga = nullptr;
 

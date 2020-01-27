@@ -13,6 +13,7 @@ class Tile {
     private:
         Movement_cost cost_struct;
         std::unordered_map<std::string, unsigned char> cost_map;
+        bool inside;
         Tilestats stats;
         std::string name;
     public:
@@ -25,6 +26,8 @@ class Tile {
         std::unordered_map<std::string, unsigned char> getCostmap();
         std::string getName();
         Tilestats getStats();
+        bool isInside();
+        bool isOutside();
 };
 
 extern std::unordered_map<int, Tile> all_tiles;

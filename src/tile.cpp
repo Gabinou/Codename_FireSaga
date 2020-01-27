@@ -39,6 +39,12 @@ std::string Tile::getName(){
 Tilestats Tile::getStats(){
 	return(stats);
 }
+Tilestats Tile::isInside(){
+    return(inside);
+}
+Tilestats Tile::isOutside(){
+    return(!inside);
+}
 
 std::unordered_map<int, Tile> all_tiles;
 
@@ -47,6 +53,7 @@ void baseTiles() {
 	unsigned int * temp_stats[3] = {0, 0, 0};// dodge, def, heal
 
     // Fliers always have 1 movement because they dismount inside.
+    
     // Mvt_types: foot_slow, foot_fast, mages, riders_slow, riders_fast, fliers, armors, pirates, bandits;
     Movement_cost temp_cost = {1, 1, 1, 1, 1, 1, 1, 1, 1};
     Tile plain("Plain", temp_cost, temp_stats);
