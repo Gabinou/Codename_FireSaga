@@ -47,15 +47,28 @@ bool Game::checkRate(int rate, std::string mode) {
     bool hit;
     if (mode == "single") {
         hit = (getRN() < rate); //single_roll
+        return(hit);
     }
     if (mode == "double") {
         hit = (((getRN() + getRN())/2) < rate); //doubleroll
+        return(hit);
     }
-    if (mode == "gaussian") {
-
-    }
-    return(hit);
 }
+
+bool * checkHitCrit(int hit_rate, int crit_rate, std::string mode){
+    static bool hitcrit[2];
+    if (mode == "single") {
+        hitcrit[0] = (getRN() < hit_rate);
+        hitcrit[1] = (getRN() < crit_rate);
+        return(hitcrit);
+    }
+    if (mode == "single") {
+        hitcrit[0] = (((getRN() + getRN())/2) < hit_rate);
+        hitcrit[1] = (((getRN() + getRN())/2) < crit_rate);
+        return(hitcrit);
+    }
+}
+
 
 void Game::fight(Unit * attacker, Unit * defender) {
     printf("%s fights %s\n", attacker->getName().c_str(), defender->getName().c_str());

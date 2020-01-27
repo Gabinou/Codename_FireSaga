@@ -51,6 +51,8 @@ class Game {
         void fight(Unit * attacker, Unit * defender);
         void attack(Unit * attacker, Unit * defender);
         bool checkRate(int crit_rate, std::string mode = "double");
+        bool * checkHitCrit(int hit_rate, int crit_rate, std::string mode = "gaussian");
+        bool * checkHitCrit(int rate[2], std::string mode = "gaussian");
         void makeFPSEntity();
 
         void setFontsize(int in_fontsize);
