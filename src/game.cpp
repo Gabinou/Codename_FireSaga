@@ -76,7 +76,6 @@ void Game::attack(Unit * attacker, Unit * defender) {
     }
 }
 
-
 void Game::fight(Unit * attacker, Unit * defender) {
     printf("%s fights %s\n", attacker->getName().c_str(), defender->getName().c_str());
     bool defender_doubles;
