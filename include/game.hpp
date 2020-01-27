@@ -30,6 +30,7 @@ class Game {
         std::string state;
         std::stack <int> menu_entities;
         std::stack <int> unit_entities;
+        bool gaussian_switch;
 
     public:
         static SDL_Renderer * renderer;

@@ -51,6 +51,9 @@ bool Game::checkRate(int rate, std::string mode) {
     if (mode == "double") {
         hit = (((getRN() + getRN())/2) < rate); //doubleroll
     }
+    if (mode == "gaussian") {
+
+    }
     return(hit);
 }
 
