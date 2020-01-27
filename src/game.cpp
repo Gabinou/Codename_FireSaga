@@ -43,6 +43,17 @@ void Game::attack(Unit * attacker, Unit * defender) {
     // return (1);
 }
 
+bool Game::checkRate(int rate, std::string mode) {
+    bool hit;
+    if (mode == "single") {
+        hit = (getRN() < rate); //single_roll
+    }
+    if (mode == "double") {
+        hit = (((getRN() + getRN())/2) < rate); //doubleroll
+    }
+    return(hit);
+}
+
 void Game::fight(Unit * attacker, Unit * defender) {
     printf("%s fights %s\n", attacker->getName().c_str(), defender->getName().c_str());
     bool attacker_doubles = attacker->canDouble(defender);

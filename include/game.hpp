@@ -49,7 +49,7 @@ class Game {
         void clean();
         void fight(Unit * attacker, Unit * defender);
         void attack(Unit * attacker, Unit * defender);
-
+        bool checkRate(int crit_rate, std::string mode = "double");
         void makeFPSEntity();
 
         void setFontsize(int in_fontsize);
