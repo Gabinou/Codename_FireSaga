@@ -32,17 +32,6 @@ Game::getFontsize() {
     return(fontsize);
 }
 
-void Game::attack(Unit * attacker, Unit * defender) {
-    //  *DESIGN QUESTION* Should a random number always be rolled for crits, even if the hit doesn't connect?
-    // * I think so. Always same number of RN rolled.
-    // * But what about crit animations? Should crit animations be shown to miss? Fire Emblem thinks not. Me too.
-    
-    attacker->total_might();
-    // enemy.getComponent<UnitComponent>().takesDamage(combat_damage(enemy, unit_crits));
-    // return (combat_damage(enemy, unit_crits));
-    // return (1);
-}
-
 bool Game::checkRate(int rate, std::string mode) {
     bool hit;
     if (mode == "single") {
@@ -78,7 +67,8 @@ bool * checkHitCrit(int hit_rate, int crit_rate, std::string mode){
 void Game::attack(Unit * attacker, Unit * defender) {
     Combat_stats attacker_stats = attacker->getCombatStats();
     Combat_stats defender_stats = defender->getCombatStats();
-    bool hitcrit = checkHitCrit(attacker_stats.hit - defender_stats.dodge, attacker_stats.crit - defender_stats.favor);
+    bool * hitcrit;
+    hitcrit = checkHitCrit(attacker_stats.hit - defender_stats.dodge, attacker_stats.crit - defender_stats.favor);
     if (hitcrit[0]) {
         if (hitcrit[1]) {
             // int damage = attacker->
@@ -89,19 +79,21 @@ void Game::attack(Unit * attacker, Unit * defender) {
 
 void Game::fight(Unit * attacker, Unit * defender) {
     printf("%s fights %s\n", attacker->getName().c_str(), defender->getName().c_str());
+    bool defender_doubles;
     bool attacker_doubles = attacker->canDouble(defender);
     bool defender_retaliates = defender->canRetaliate(attacker);
-    attack(Unit * attacker, Unit * defender);
+    attack(attacker, defender);
 
     if (defender_retaliates) {
-        attack(Unit * defender, Unit * attacker);
-        bool defender_doubles = defender->canDouble(attacker);
+        attack(defender, attacker);
+        defender_doubles = defender->canDouble(attacker);
     }
 
     if (attacker_doubles) {
-        attack(Unit * attacker, Unit * defender);
+        attack(attacker, defender);
+    }
     if (defender_doubles) {
-        attack(Unit * defender, Unit * attacker);
+        attack(defender, attacker);
     }
 
 }
