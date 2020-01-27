@@ -30,6 +30,7 @@ extern std::mt19937_64 mt_64;
 /// \brief gets the next random number, using pre-defined Mersenne-Twister object applied to pre-defined uniform distribution.
 extern int getRN();
 extern int * boxmuller(int RN_U[2], float avg = 50., float std_dev = 20.);
+extern int * getGRNs(float avg = 50., float std_dev = 20.);
 
 /// \fn single_roll(int)
 /// \brief Check if event occurs using single RNG roll: if rand<prob, event occurs. True to probabilities, but humans think it is weird.

@@ -62,9 +62,15 @@ bool * checkHitCrit(int hit_rate, int crit_rate, std::string mode){
         hitcrit[1] = (getRN() < crit_rate);
         return(hitcrit);
     }
-    if (mode == "single") {
+    if (mode == "double") {
         hitcrit[0] = (((getRN() + getRN())/2) < hit_rate);
         hitcrit[1] = (((getRN() + getRN())/2) < crit_rate);
+        return(hitcrit);
+    } 
+    if (mode == "gaussian") {
+        int * RNs = getGRNs();
+        hitcrit[0] = (RNs[0] < hit_rate);
+        hitcrit[1] = (RNs[1] < crit_rate);
         return(hitcrit);
     }
 }
