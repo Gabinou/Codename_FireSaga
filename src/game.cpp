@@ -75,7 +75,6 @@ bool * checkHitCrit(int hit_rate, int crit_rate, std::string mode){
     }
 }
 
-
 void Game::fight(Unit * attacker, Unit * defender) {
     printf("%s fights %s\n", attacker->getName().c_str(), defender->getName().c_str());
     bool attacker_doubles = attacker->canDouble(defender);
