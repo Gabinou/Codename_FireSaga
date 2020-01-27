@@ -23,6 +23,9 @@ Tile::Tile(const std::string in_name, const Movement_cost in_cost, unsigned int 
 	stats.def = (unsigned int)in_stats[1];
 	stats.heal = (unsigned int)in_stats[2];
 }
+Tile::Tile(const std::string in_name, const Movement_cost in_cost, unsigned int * in_stats[3], bool in_inside) : Tile(in_name, in_cost, in_stats){
+    inside = in_inside;
+}
 
 std::unordered_map<std::string, unsigned char> Tile::getCostmap(){
 	return(cost_map);
@@ -39,10 +42,10 @@ std::string Tile::getName(){
 Tilestats Tile::getStats(){
 	return(stats);
 }
-Tilestats Tile::isInside(){
+bool Tile::isInside(){
     return(inside);
 }
-Tilestats Tile::isOutside(){
+bool Tile::isOutside(){
     return(!inside);
 }
 
