@@ -4,18 +4,13 @@ Unit::Unit() {
 
 }
 
-Unit::Unit(const std::string in_name, const std::string in_class, const Unit_stats in_bases) {
-    base_stats = in_bases;
-    current_stats = in_bases;
+Unit::Unit(const std::string in_name, const std::string in_class, const Unit_stats in_bases) : Unit(in_name, in_bases) {
     class_name = in_class;
     setMvttype();
     setEquippable();
-    name = in_name;
 }
 
-Unit::Unit(const std::string in_name, const Unit_stats in_bases) {
-    base_stats = in_bases;
-    current_stats = in_bases;
+Unit::Unit(const std::string in_name, const Unit_stats in_bases) : Unit(in_bases) {
     name = in_name;
 }
 
