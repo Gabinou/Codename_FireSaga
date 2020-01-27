@@ -9,18 +9,15 @@ Weapon::Weapon() {
 
 }
 
-Weapon::Weapon(Weapon_stats in_stats){
+Weapon::Weapon(Weapon_stats in_stats) {
     stats = in_stats;
 }
 
-Weapon::Weapon(std::string in_name, Weapon_stats in_stats){
-    stats = in_stats;
+Weapon::Weapon(std::string in_name, Weapon_stats in_stats) : Weapon(in_stats) {
     name = in_name;
 }
 
-Weapon::Weapon(std::string in_name, std::string in_type, Weapon_stats in_stats){
-    stats = in_stats;
-    name = in_name;
+Weapon::Weapon(std::string in_name, std::string in_type, Weapon_stats in_stats ) : Weapon(in_name, in_stats) {
     type = in_type;
 }
 
