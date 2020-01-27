@@ -75,16 +75,33 @@ bool * checkHitCrit(int hit_rate, int crit_rate, std::string mode){
     }
 }
 
+void Game::attack(Unit * attacker, Unit * defender) {
+    Combat_stats attacker_stats = attacker->getCombatStats();
+    Combat_stats defender_stats = defender->getCombatStats();
+    bool hitcrit = checkHitCrit(attacker_stats.hit - defender_stats.dodge, attacker_stats.crit - defender_stats.favor);
+    if (hitcrit[0]) {
+
+    }
+}
+
+
 void Game::fight(Unit * attacker, Unit * defender) {
     printf("%s fights %s\n", attacker->getName().c_str(), defender->getName().c_str());
     bool attacker_doubles = attacker->canDouble(defender);
     bool defender_retaliates = defender->canRetaliate(attacker);
-    bool defender_doubles = defender->canDouble(attacker);
-    // attack(enemy);
-    Combat_stats attacker_stats = attacker->getCombatStats();
-    Combat_stats defender_stats = defender->getCombatStats();
-    bool attacker_hits = (getRN() < (attacker_stats.hit - defender_stats.dodge));
-    bool attacker_crits = (getRN() < (attacker_stats.crit - defender_stats.favor));
+    attack(Unit * attacker, Unit * defender);
+
+    if (defender_retaliates) {
+        attack(Unit * defender, Unit * attacker);
+        bool defender_doubles = defender->canDouble(attacker);
+    }
+
+    if (attacker_doubles) {
+        attack(Unit * attacker, Unit * defender);
+    if (defender_doubles) {
+        attack(Unit * defender, Unit * attacker);
+    }
+
 }
 
 void Game::makeFPSEntity() {
