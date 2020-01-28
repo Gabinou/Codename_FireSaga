@@ -147,7 +147,6 @@ std::vector<std::vector<int>> movemap(std::vector<std::vector<int>> map, int sta
     return(movemap);
 }
 
-
 std::vector<std::vector<int>> matrix2list(std::vector<std::vector<int>> matrix) {
     std::vector<std::vector<int>> list;
     for (int col = 0; col < matrix.size(); col++) {
@@ -167,8 +166,6 @@ std::vector<std::vector<int>> list2matrix(std::vector<std::vector<int>> list, in
     }
     return(matrix);
 }
-
-// std::vector<int> sum2D
 
 std::vector<std::vector<int>> attackmap(std::vector<std::vector<int>> movemap, int start[], int move, unsigned char range[2], std::string mode){
     // Using the movemap to computes all attackable tiles.
@@ -263,7 +260,6 @@ int find_node (int start[], std::vector<std::vector<int>> list) {
     }
     return(-1);
 }
-
 
 std::vector<std::vector<int>> A_star(std::vector<std::vector<int>> map, int start[], int end[], std::string mode){
     // Arrays containing points are arrays:
@@ -383,7 +379,6 @@ void permutations_binary(int len, int num_0, int out[], int i) {
     }
 }
 
-
 int pingpong(int current, int upper, int lower) {
     // returns pingpong index.
     // modulo: x % 2 = 0,1,2,0,1,2,0...for x++
@@ -393,7 +388,6 @@ int pingpong(int current, int upper, int lower) {
     int term2 = current % mod_factor;
     return (std::min(term1, term2) + lower);
 }
-
 
 int geometricslide(int distance, float geo_factor) {
     // geometric slide cause the series is geometric:
@@ -569,7 +563,6 @@ void read_all_unit_classes(const char * filename) {
 void write_all_unit_classes(const char * filename) {
 
 }
-
 
 void write_all_weapons(const char * filename, char const * savestyle) {
 
