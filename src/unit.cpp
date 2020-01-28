@@ -359,6 +359,24 @@ Unit_stats Unit::getGrowths() {
     return(growths);
 }
 
+bool Unit::dmgType() {
+    struct Types{
+        bool left = false;
+        bool right = false;
+    } types;
+    bool out = false;
+
+    types.left = all_weapons[equipment[equipped.left].name].getStats().dmg_type;
+    types.right = all_weapons[equipment[equipped.left].name].getStats().dmg_type;
+    if (types.right != types.left) {
+
+    } else {
+        out = types.right;
+    }
+
+    return(out);
+}
+
 unsigned char Unit::totalMight(bool dmg_type) {
     // Damage type is determined by the held weapon? 
     // What about battlemages and infusion?
