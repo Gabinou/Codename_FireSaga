@@ -413,7 +413,7 @@ void Game::init(const char * title, int xpos, int ypos, int width, int height, b
         isRunning = false;
     }
 
-    printf("Creating map \n");
+    // printf("Creating map \n");
     // tilesize[0] = 32;
     // tilesize[1] = 32;
     // mapp =  new Map(tilesize[0], tilesize[1]); // mapp is a pointer
@@ -421,10 +421,10 @@ void Game::init(const char * title, int xpos, int ypos, int width, int height, b
 
     // cursor.addComponent<PositionComponent>(6, 6);
 
-    all_units["Silou"].setEntity(manager.getEntities().size());
-    manager.addEntity();
-    manager.getEntities()[all_units["Silou"].getEntity()]->addComponent<PositionComponent>(6, 6);
-    manager.getEntities()[all_units["Silou"].getEntity()]->addComponent<UnitContainer>("Silou");
+    // all_units["Silou"].setEntity(manager.getEntities().size());
+    // manager.addEntity();
+    // manager.getEntities()[all_units["Silou"].getEntity()]->addComponent<PositionComponent>(6, 6);
+    // manager.getEntities()[all_units["Silou"].getEntity()]->addComponent<UnitContainer>("Silou");
 
     // manager.getEntities()[all_units["Silou"].getEntity()]->getComponent<PositionComponent>().setMap(mapp);
 
@@ -437,15 +437,14 @@ void Game::init(const char * title, int xpos, int ypos, int width, int height, b
     //     cursor.addComponent<GamepadController>(this, mapp);
     // }
 
-    manager.getEntities()[all_units["Silou"].getEntity()]->addComponent<SpriteComponent>(mapp, "..//assets//horse.png");
+    // manager.getEntities()[all_units["Silou"].getEntity()]->addComponent<SpriteComponent>(mapp, "..//assets//horse.png");
 
     // cursor.addComponent<SpriteComponent>(mapp, "..//assets//cursors.png", 10, 50);
     // cursor.getComponent<SpriteComponent>().setSlidetype("geometric");
     
-    manager.getEntities()[all_unit_components["Silou"]]->addGroup(manager.groupUnits);
-    manager.getEntities()[all_units["Silou"].getEntity()]->addGroup(manager.groupUnits);
+    // manager.getEntities()[all_unit_components["Silou"]]->addGroup(manager.groupUnits);
+    // manager.getEntities()[all_units["Silou"].getEntity()]->addGroup(manager.groupUnits);
     // cursor.addGroup(manager.groupUI);
-    
     printf("in game: %s\n", all_scripts["Chapter 1"].getScene("Intro").getLine("1").line.c_str());
 
     this->setState("map");
