@@ -352,10 +352,22 @@ void Game::loadMap(std::string filename) {
     cursor.addGroup(manager.groupUI);
 }
 
-void Game::loadUnits(std::vector<std::string> names, std::vector<std::vector<int>> positions) {
+void Game::loadUnits(std::vector<std::string> names, std::vector<std::string> asset_names, std::vector<std::vector<int>> positions_list) {
 
+    for (int i = 0; i < names.size(); i++) { 
+        all_units[names[i]].setEntity(manager.getEntities().size());
+        manager.addEntity();
+        manager.getEntities()[all_units[names[i]].getEntity()]->addComponent<PositionComponent>(positions_list[i][0], positions_list[i][1]);
+        manager.getEntities()[all_units[names[i]].getEntity()]->addComponent<UnitContainer>(names[i]);
+
+        manager.getEntities()[all_units[names[i]].getEntity()]->getComponent<PositionComponent>().setMap(mapp); //Should mapp be an input? No cause mapp is always the same object?
+
+        manager.getEntities()[all_units[names[i]].getEntity()]->addComponent<SpriteComponent>(mapp, asset_names[i].c_str());
+        
+        manager.getEntities()[all_unit_components[names[i]]]->addGroup(manager.groupUnits);
+        manager.getEntities()[all_units[names[i]].getEntity()]->addGroup(manager.groupUnits);
+    }
 }
-
 
 void Game::init(const char * title, int xpos, int ypos, int width, int height, bool fullscreen) {
     int flags = 0;
@@ -413,7 +425,7 @@ void Game::init(const char * title, int xpos, int ypos, int width, int height, b
     manager.getEntities()[all_units["Silou"].getEntity()]->addComponent<PositionComponent>(6, 6);
     manager.getEntities()[all_units["Silou"].getEntity()]->addComponent<UnitContainer>("Silou");
 
-    manager.getEntities()[all_units["Silou"].getEntity()]->getComponent<PositionComponent>().setMap(mapp);
+    // manager.getEntities()[all_units["Silou"].getEntity()]->getComponent<PositionComponent>().setMap(mapp);
 
     // SDL_Color black = {255, 255, 255};
     // cursor.addComponent<KeyboardController>(this, mapp);

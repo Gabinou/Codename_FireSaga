@@ -44,7 +44,7 @@ class Game {
 
         void init(const char * title, int xpos, int ypos, int width, int height, bool fullscreen);
         void loadMap(std::string filename);
-        void loadUnits(std::vector<std::string> names, std::vector<std::vector<int>> positions);
+        void loadUnits(std::vector<std::string> names, std::vector<std::string> asset_names, std::vector<std::vector<int>> positions_list);
 
         void handleEvents();
         void update();

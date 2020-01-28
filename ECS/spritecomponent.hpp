@@ -50,15 +50,10 @@ class SpriteComponent : public Component {
             destrect.h = in_picsize[1];
         }
 
-        SpriteComponent(Map * in_map, const char * in_path, int in_picsize[2]) : SpriteComponent(in_path)  {
-            setMap(in_map);
-            srcrect.w = in_picsize[0];
-            srcrect.h = in_picsize[1];
-            destrect.w = in_picsize[0];
-            destrect.h = in_picsize[1];
-        }
-
         SpriteComponent(Map * in_map, const char * in_path) : SpriteComponent(in_path) {
+            setMap(in_map);
+        }
+        SpriteComponent(Map * in_map, const char * in_path, int in_picsize[2]) : SpriteComponent(in_path, in_picsize)  {
             setMap(in_map);
         }
 
