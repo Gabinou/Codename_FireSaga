@@ -360,18 +360,25 @@ Unit_stats Unit::getGrowths() {
 }
 
 bool Unit::dmgType() {
-    struct Types{
+    struct dmg_types{
         bool left = false;
         bool right = false;
-    } types;
+    } dmg_types;    
+    struct wpn_types{
+        std::string left;
+        std::string right;
+    } wpn_types;
     bool out = false;
 
-    types.left = all_weapons[equipment[equipped.left].name].getStats().dmg_type;
-    types.right = all_weapons[equipment[equipped.left].name].getStats().dmg_type;
-    if (types.right != types.left) {
+    dmg_types.left = all_weapons[equipment[equipped.left].name].getStats().dmg_type;
+    dmg_types.right = all_weapons[equipment[equipped.left].name].getStats().dmg_type;
+    wpn_types.left = all_weapons[equipment[equipped.left].name].getType;
+    wpn_types.right = all_weapons[equipment[equipped.right].name].getType;
+
+    if (dmg_types.right != dmg_types.left) {
 
     } else {
-        out = types.right;
+        out = dmg_types.right;
     }
 
     return(out);
