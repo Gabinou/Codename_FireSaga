@@ -328,8 +328,8 @@ std::string Game::getState() {
 
 void Game::loadMap(std::string filename) {
     printf("Loading map \n");
-    // mapp =  new Map(settings.tilesize[0], settings.tilesize[1]); // mapp is a pointer
-    // mapp->loadTilemap(filename);
+    mapp =  new Map(settings.tilesize[0], settings.tilesize[1]); // mapp is a pointer
+    mapp->loadTilemap(filename);
     // cursor.getComponent<PositionComponent>().setPos(6, 6);
     // cursor.getComponent<KeyboardController>().setMap(mapp);
     // if (SDL_NumJoysticks() < 1) {
@@ -345,8 +345,19 @@ void Game::loadMap(std::string filename) {
 }
 
 void Game::loadCursor() {
-
-
+    // Map should be loaded before I think.
+    if (this->state == "map") {
+        cursor.addComponent<PositionComponent>(6, 6);
+        cursor.addComponent<KeyboardController>(this, mapp);
+        if (SDL_NumJoysticks() < 1) {
+            printf( "No joysticks connected.\n" );
+        } else {
+            cursor.addComponent<GamepadController>(this, mapp);
+        }
+        cursor.addComponent<SpriteComponent>(mapp, "..//assets//cursors.png", 10, 50);
+        cursor.getComponent<SpriteComponent>().setSlidetype("geometric");
+        cursor.addGroup(manager.groupUI);
+    }
 }
 
 void Game::loadUnits(std::vector<std::string> names, std::vector<std::string> asset_names, std::vector<std::vector<int>> positions_list) {
@@ -406,6 +417,7 @@ void Game::init(const char * title, int xpos, int ypos, int width, int height, b
         isRunning = false;
     }
 
+    // Map should be loaded before I think.
     // cursor.addComponent<PositionComponent>(6, 6);
     // cursor.addComponent<KeyboardController>(this);
     // if (SDL_NumJoysticks() < 1) {

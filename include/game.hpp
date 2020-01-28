@@ -45,6 +45,7 @@ class Game {
         void init(const char * title, int xpos, int ypos, int width, int height, bool fullscreen);
         void loadMap(std::string filename);
         void loadUnits(std::vector<std::string> names, std::vector<std::string> asset_names, std::vector<std::vector<int>> positions_list);
+        void loadCursor();
 
         void handleEvents();
         void update();
@@ -56,6 +57,7 @@ class Game {
         bool * checkHitCrit(int hit_rate, int crit_rate, std::string mode = "gaussian");
 
         void makeFPSEntity();
+
 
         void setFontsize(int in_fontsize);
         int getFontsize();
