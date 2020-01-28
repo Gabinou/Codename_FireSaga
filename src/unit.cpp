@@ -359,6 +359,10 @@ Unit_stats Unit::getGrowths() {
     return(growths);
 }
 
+bool Unit::canAttack() {
+
+}
+
 bool Unit::dmgType() {
     struct dmg_types{
         bool left = false;
@@ -370,10 +374,17 @@ bool Unit::dmgType() {
     } wpn_types;
     bool out = false;
 
+    wpn_types.left = all_weapons[equipment[equipped.left].name].getType;
+    if (wpn_types.left == "shield")　{
+
+    }
+
+    wpn_types.right = all_weapons[equipment[equipped.right].name].getType;
+
+
+
     dmg_types.left = all_weapons[equipment[equipped.left].name].getStats().dmg_type;
     dmg_types.right = all_weapons[equipment[equipped.left].name].getStats().dmg_type;
-    wpn_types.left = all_weapons[equipment[equipped.left].name].getType;
-    wpn_types.right = all_weapons[equipment[equipped.right].name].getType;
 
     if (dmg_types.right != dmg_types.left) {
 
