@@ -41,6 +41,10 @@ int main(int argc, char * argv[]) {
     firesaga->makeFPSEntity();
     printf("Initiated game.\n");
 
+    firesaga->loadMap("..//maps//test_tilemap.txt");
+    printf("Made map\n");
+
+
     std::chrono::system_clock::time_point frame_start, frame_end, frame_middle;
     int frame_time;
     char buffer[15];

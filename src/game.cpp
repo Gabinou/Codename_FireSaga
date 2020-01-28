@@ -328,6 +328,35 @@ std::string Game::getState() {
     return(state);
 }
 
+void Game::loadMap(std::string filename) {
+    printf("Loading map \n");
+
+    mapp =  new Map(settings.tilesize[0], settings.tilesize[1]); // mapp is a pointer
+    mapp->loadTilemap(filename);
+
+    cursor.addComponent<PositionComponent>(6, 6);
+
+    all_units["Silou"].setEntity(manager.getEntities().size());
+    SDL_Color black = {255, 255, 255};
+    cursor.addComponent<KeyboardController>(this, mapp);
+
+    if( SDL_NumJoysticks() < 1 ) {
+        printf( "No joysticks connected.\n" );
+    } else {
+        cursor.addComponent<GamepadController>(this, mapp);
+    }
+
+    cursor.addComponent<SpriteComponent>(mapp, "..//assets//cursors.png", 10, 50);
+    cursor.getComponent<SpriteComponent>().setSlidetype("geometric");
+
+    cursor.addGroup(manager.groupUI);
+}
+
+void Game::loadUnits(std::vector<std::string> names, std::vector<std::vector<int>> positions) {
+
+}
+
+
 void Game::init(const char * title, int xpos, int ypos, int width, int height, bool fullscreen) {
     int flags = 0;
 
@@ -372,12 +401,12 @@ void Game::init(const char * title, int xpos, int ypos, int width, int height, b
     }
 
     printf("Creating map \n");
-    tilesize[0] = 32;
-    tilesize[1] = 32;
-    mapp =  new Map(tilesize[0], tilesize[1]); // mapp is a pointer
-    mapp->loadTilemap("..//maps//test_tilemap.txt");
+    // tilesize[0] = 32;
+    // tilesize[1] = 32;
+    // mapp =  new Map(tilesize[0], tilesize[1]); // mapp is a pointer
+    // mapp->loadTilemap("..//maps//test_tilemap.txt");
 
-    cursor.addComponent<PositionComponent>(6, 6);
+    // cursor.addComponent<PositionComponent>(6, 6);
 
     all_units["Silou"].setEntity(manager.getEntities().size());
     manager.addEntity();
@@ -386,23 +415,23 @@ void Game::init(const char * title, int xpos, int ypos, int width, int height, b
 
     manager.getEntities()[all_units["Silou"].getEntity()]->getComponent<PositionComponent>().setMap(mapp);
 
-    SDL_Color black = {255, 255, 255};
-    cursor.addComponent<KeyboardController>(this, mapp);
+    // SDL_Color black = {255, 255, 255};
+    // cursor.addComponent<KeyboardController>(this, mapp);
 
-    if( SDL_NumJoysticks() < 1 ) {
-        printf( "No joysticks connected.\n" );
-    } else {
-        cursor.addComponent<GamepadController>(this, mapp);
-    }
+    // if( SDL_NumJoysticks() < 1 ) {
+    //     printf( "No joysticks connected.\n" );
+    // } else {
+    //     cursor.addComponent<GamepadController>(this, mapp);
+    // }
 
     manager.getEntities()[all_units["Silou"].getEntity()]->addComponent<SpriteComponent>(mapp, "..//assets//horse.png");
 
-    cursor.addComponent<SpriteComponent>(mapp, "..//assets//cursors.png", 10, 50);
-    cursor.getComponent<SpriteComponent>().setSlidetype("geometric");
+    // cursor.addComponent<SpriteComponent>(mapp, "..//assets//cursors.png", 10, 50);
+    // cursor.getComponent<SpriteComponent>().setSlidetype("geometric");
     
     manager.getEntities()[all_unit_components["Silou"]]->addGroup(manager.groupUnits);
     manager.getEntities()[all_units["Silou"].getEntity()]->addGroup(manager.groupUnits);
-    cursor.addGroup(manager.groupUI);
+    // cursor.addGroup(manager.groupUI);
     
     printf("in game: %s\n", all_scripts["Chapter 1"].getScene("Intro").getLine("1").line.c_str());
 

@@ -196,6 +196,7 @@ struct Settings {
     Point res = {1000, 1000};
     char fontsize = 28;
     Fps FPS;
+    int tilesize[2] = {32, 32};
 };
 
 struct KeyboardInputMap {
