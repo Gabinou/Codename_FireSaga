@@ -33,105 +33,104 @@ std::vector<std::string> Unit::getEquippable() {
 }
 
 void Unit::setEquippable() {
-    equippable.clear();
+    equippables.clear();
     if ((class_name == "Mercenary") || (class_name == "Lord") || (class_name == "Duelist") || (class_name == "Thief")) {
-        equippable.push_back("shield");
-        equippable.push_back("sword");
-        equippable.push_back("offhand");
+        equippables.push_back("shield");
+        equippables.push_back("sword");
+        equippables.push_back("offhand");
     }
     if ((class_name == "Pegasus knight") || (class_name == "Trooper") || (class_name == "Cavalier") || (class_name == "Knight")) {
-        equippable.push_back("lance");
-        equippable.push_back("shield");
+        equippables.push_back("lance");
+        equippables.push_back("shield");
     }
     if (class_name == "Bandit") {
-        equippable.push_back("shield");
-        equippable.push_back("axe");
+        equippables.push_back("shield");
+        equippables.push_back("axe");
     }
     if ((class_name == "Corsair") || (class_name == "Viking")) {
-        equippable.push_back("shield");
-        equippable.push_back("axe");
-        equippable.push_back("offhand");
+        equippables.push_back("shield");
+        equippables.push_back("axe");
+        equippables.push_back("offhand");
     }
     if ((class_name == "Fencer") || (class_name == "Pickpocket")){
-        equippable.push_back("offhand");
-        equippable.push_back("sword");
+        equippables.push_back("offhand");
+        equippables.push_back("sword");
     }
     if ((class_name == "Mousquetaire") || (class_name == "Assassin") || (class_name == "Marksman")) {
-        equippable.push_back("sword");
-        equippable.push_back("offhand");
-        equippable.push_back("bow");
+        equippables.push_back("sword");
+        equippables.push_back("offhand");
+        equippables.push_back("bow");
     }
     if (class_name == "Archer") {
-        equippable.push_back("bow");
+        equippables.push_back("bow");
     }
     if ((class_name == "Duke") || (class_name == "Paladin")) {
-        equippable.push_back("sword");
-        equippable.push_back("lance");
-        equippable.push_back("shield");
-        equippable.push_back("offhand");
+        equippables.push_back("sword");
+        equippables.push_back("lance");
+        equippables.push_back("shield");
+        equippables.push_back("offhand");
     }
     if (class_name == "General") {
-        equippable.push_back("sword");
-        equippable.push_back("shield");
-        equippable.push_back("axe");
-        equippable.push_back("lance");
+        equippables.push_back("sword");
+        equippables.push_back("shield");
+        equippables.push_back("axe");
+        equippables.push_back("lance");
     }
     if ((class_name == "Cleric") || (class_name == "Priest")) {
-        equippable.push_back("staff");
+        equippables.push_back("staff");
     }
     if (class_name == "Mage") {
-        equippable.push_back("elemental");
-        equippable.push_back("trinket");
+        equippables.push_back("elemental");
+        equippables.push_back("trinket");
     }
     if (class_name == "Hero") {
-        equippable.push_back("axe");
-        equippable.push_back("sword");
-        equippable.push_back("shield");
-        equippable.push_back("offhand");
+        equippables.push_back("axe");
+        equippables.push_back("sword");
+        equippables.push_back("shield");
+        equippables.push_back("offhand");
     }
     if (class_name == "Ravager") {
-        equippable.push_back("axe");
-        equippable.push_back("shield");
-        equippable.push_back("offhand");
-        equippable.push_back("bow");
+        equippables.push_back("axe");
+        equippables.push_back("shield");
+        equippables.push_back("offhand");
+        equippables.push_back("bow");
     }
     if (class_name == "Battlemage") {
-        equippable.push_back("elemental");
-        equippable.push_back("shield");
-        equippable.push_back("sword");
-        equippable.push_back("trinket");
+        equippables.push_back("elemental");
+        equippables.push_back("shield");
+        equippables.push_back("sword");
+        equippables.push_back("trinket");
     }
     if ((class_name == "Sage") || (class_name == "Troubadour")) {
-        equippable.push_back("elemental");
-        equippable.push_back("staff");
-        equippable.push_back("trinket");
+        equippables.push_back("elemental");
+        equippables.push_back("staff");
+        equippables.push_back("trinket");
     }
     if ((class_name == "Bishop") || (class_name == "Oracle")) {
-        equippable.push_back("staff");
-        equippable.push_back("angelic");
-        equippable.push_back("trinket");
+        equippables.push_back("staff");
+        equippables.push_back("angelic");
+        equippables.push_back("trinket");
     }
     if (class_name == "Angel") {
-        equippable.push_back("angelic");
-        equippable.push_back("sword");
-        equippable.push_back("lance");
-        equippable.push_back("shield");
+        equippables.push_back("angelic");
+        equippables.push_back("sword");
+        equippables.push_back("lance");
+        equippables.push_back("shield");
     }
     if (class_name == "Demon") {
-        equippable.push_back("demonic");
-        equippable.push_back("claw");
-        equippable.push_back("axe");
+        equippables.push_back("demonic");
+        equippables.push_back("claw");
+        equippables.push_back("axe");
     }
     if (class_name == "Demonic Incarnate") {
-        equippable.push_back("demonic");
-        equippable.push_back("trinket");
+        equippables.push_back("demonic");
+        equippables.push_back("trinket");
     }
     if (class_name == "Angelic Incarnate") {
-        equippable.push_back("angelic");
-        equippable.push_back("trinket");
+        equippables.push_back("angelic");
+        equippables.push_back("trinket");
     }
-}
-
+}
 
 std::string Unit::getMvttype() {
     printf("inside unit %s\n", mvt_type.c_str());
@@ -224,7 +223,6 @@ void Unit::dropItem(int in_index) {
     Inventory_item empty;
     equipment[in_index] = empty;
 }
-
 
 void Unit::takesDamage(const unsigned char damage) {
     printf("%s takes %d damage \n", name, damage);
@@ -359,30 +357,54 @@ Unit_stats Unit::getGrowths() {
     return(growths);
 }
 
-bool Unit::canAttack() {
+bool Unit::isEquippable(std::string in_name) {
+    std::string wpn_type = all_weapons[in_name].getType();
+    bool equippable = false;
+    for (int i = 0; i < equippables.size(); i++) {
+        if (equippables[i] == wpn_type) {
+            equippable = true;
+        }
+    }
+    return(equippable);
+} 
 
+bool Unit::canAttack() {
+    bool out;
+    struct Wpn_types {
+        std::string left;
+        std::string right;
+    } wpn_types;
+    if (equipped.left > 0) {
+        wpn_types.left = all_weapons[equipment[equipped.left]];
+        if ((wpn_types.left != "shield")  & (wpn_types.left != "trinket")) {
+                out = true;
+         } 
+    }
+    if (equipped.right > 0) {
+            wpn_types.right = all_weapons[equipment[equipped.right]];
+        if ((wpn_types.right != "shield")  & (wpn_types.right != "trinket")) {
+                out = true;
+         } 
+    }
+    return(out);
 }
 
 bool Unit::dmgType() {
-    struct dmg_types{
+    struct Dmg_types{
         bool left = false;
         bool right = false;
     } dmg_types;    
-    struct wpn_types{
+    struct Wpn_types{
         std::string left;
         std::string right;
     } wpn_types;
     bool out = false;
 
-    wpn_types.left = all_weapons[equipment[equipped.left].name].getType;
-    if (wpn_types.left == "shield")　{
-
-    }
-
-    wpn_types.right = all_weapons[equipment[equipped.right].name].getType;
-
-
-
+     all_weapons[equipment[equipped.left].name].getType;
+    if (wpn_types.left != "shield") {    
+wpn_types.left = all_weapons[equipment[equipped.left].name].getStats().dmg_type;
+    }
+    wpn_types.right = all_weapons[equipment[equipped.right].name].getType;
     dmg_types.left = all_weapons[equipment[equipped.left].name].getStats().dmg_type;
     dmg_types.right = all_weapons[equipment[equipped.left].name].getStats().dmg_type;
 

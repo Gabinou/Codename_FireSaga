@@ -75,7 +75,7 @@ void baseWeapons(){
     printf("Making base weapons\n");
     Weapon_stats temp_wpn;
     Unit_stats temp_unit;
-    // Pmight, Mmight, hit, dodge, crit, favor, wgt, uses, wpnlvl, range, hand, dmg_type
+    // Pmight, Mmight, hit, dodge, crit, favor, wgt, uses, wpnlvl, range, hand, dmg_type, cost
     temp_wpn = {3, 0, 80, 0, 0, 0, 3, 30, 2, {1,1}, {1,2}, 0, 1000};
     Weapon wooden_sword("Wooden sword", "sword", temp_wpn);
     wooden_sword.setDescription("Practice sword, made of wood. It's crushing blows are still deadly.");
