@@ -559,130 +559,36 @@ std::string read_line(const char * filename, int skip) {
 /// \brief Write all_units stats to file.
 // write_all_units must be implemented here.
 void write_all_units(const char * filename, char const * savestyle) {
-    // if (savestyle == "cpp") {
-    //     std::ofstream out(filename);
 
-    //     for (auto & it : all_units) {
-    //         out << it.second;
-    //     }
-
-    //     out.close();
-    // } else if (savestyle == "c") {
-    //     remove(filename);
-
-    //     for (auto & it : all_units) {
-    //         // std::cout << it.second.name << endl;
-    //         it.second.write(filename);
-    //     }
-    // }
 }
 
 void read_all_unit_classes(const char * filename) {
-    // std::string line;
-    // std::ifstream inFile(filename);
-    // short int line_num = std::count(std::istreambuf_iterator<char>(inFile),
-    //                                 std::istreambuf_iterator<char>(), '\n') + 1;
-
-    // for (int i = 0 ; i < line_num; i += 9) {
-    //     line = "";
-
-    //     try {
-    //         line = read_line(filename, i);
-    //     } catch (const char * msg) {
-    //         break;
-    //     }
-
-    //     if (!line.empty() && line != "") {
-    //         all_unit_classes[line.substr(9, line.size()).c_str()] = unit_class();
-    //         all_unit_classes[line.substr(9, line.size()).c_str()].read(filename, i);
-    //     }
-
-    //     inFile.close();
-    // }
+   
 }
 
 void write_all_unit_classes(const char * filename) {
-    // std::remove(filename);
 
-    // for (auto & it : all_unit_classes) { // Iterate over unordered_map
-    //     it.second.write(filename);
-    // }
 }
 
 
 void write_all_weapons(const char * filename, char const * savestyle) {
-    // std::remove(filename);
 
-    // if (savestyle == "cpp") {
-    //     for (auto & it : all_weapons) { // Iterate over unordered_map
-    //         it.second.write(filename);
-    //     }
-    // }
 }
 
 void write_all_maps(const char * filename) {
+
 }
 
-
 void read_all_maps(const char * filename) {
+
 }
 
 void read_all_weapons(const char * filename) {
-    // std::string line;
-    // std::ifstream inFile(filename);
-    // short int line_num = std::count(std::istreambuf_iterator<char>(inFile),
-    //                                 std::istreambuf_iterator<char>(), '\n') + 1;
 
-    // for (int i = 0 ; i < line_num; i += 10) {
-    //     line = "";
-
-    //     try {
-    //         line = read_line(filename, i);
-    //     } catch (const char * msg) {
-    //         break;
-    //     }
-
-    //     if (!line.empty() && line != "") {
-    //         all_weapons[line.c_str()] = weapon();
-    //         all_weapons[line.c_str()].read(filename, i);
-    //     }
-
-    //     inFile.close();
-    // }
-
-    // This part oif read_all_weapons creates an inventory_item for every weapon in all_weapons.
-    // Have to run this anyway, better to put it here.
-    // std::unordered_map<std::string, weapon>::iterator it = all_weapons.begin();
-    // while(it != all_weapons.end()) {
-    // char key[(it->first).size() + 1];
-    // strcpy(key, (it->first).c_str());
-    // inventory_items[strcat(key,"_0001")] = inventory_item(key, 10);
-    // it++;
-    // }
 }
 
 void read_all_units(const char * filename) {
-    // std::string line;
-    // std::ifstream inFile(filename);
-    // short int line_num = std::count(std::istreambuf_iterator<char>(inFile),
-    //                                 std::istreambuf_iterator<char>(), '\n') + 1;
 
-    // for (int i = 0 ; i < line_num; i += 16) {
-    //     line = "";
-
-    //     try {
-    //         line = read_line(filename, i);
-    //     } catch (const char * msg) {
-    //         break;
-    //     }
-
-    //     if (!line.empty() && line != "") {
-    //         all_units[line.c_str()] = unit();
-    //         all_units[line.c_str()].read(filename, i);
-    //     }
-
-    //     inFile.close();
-    // }
 }
 
 std::mt19937_64 mt_64(123);
