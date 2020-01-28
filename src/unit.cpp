@@ -369,7 +369,7 @@ bool Unit::isEquippable(std::string in_name) {
     return(equippable);
 } 
 
-bool Unit::canAttack() { //Useless?
+bool Unit::canAttack() {
     bool out;
     struct Wpn_types {
         std::string left;
@@ -390,49 +390,48 @@ bool Unit::canAttack() { //Useless?
     return(out);
 }
 
-bool Unit::dmgType() { //Useless?
-    // Assumes canAttack().
-    struct Dmg_types{
-        bool left = false;
-        bool right = false;
-    } dmg_types;    
-    struct Wpn_types{
-        std::string left;
-        std::string right;
-    } wpn_types;
-    bool out = false;
+// bool Unit::dmgType() { //Useless?
+//     // Assumes canAttack().
+//     struct Dmg_types{
+//         bool left = false;
+//         bool right = false;
+//     } dmg_types;    
+//     struct Wpn_types{
+//         std::string left;
+//         std::string right;
+//     } wpn_types;
+//     bool out = false;
 
-    wpn_types.left = all_weapons[equipment[equipped.left].name].getType();
-    wpn_types.right = all_weapons[equipment[equipped.right].name].getType();
+//     wpn_types.left = all_weapons[equipment[equipped.left].name].getType();
+//     wpn_types.right = all_weapons[equipment[equipped.right].name].getType();
 
 
-    if ((wpn_types.right.empty()) & (wpn_types.right.empty()) ) {
+//     if ((wpn_types.right.empty()) & (wpn_types.right.empty()) ) {
 
-    }
-    if ((wpn_types.left != "shield") & (wpn_types.left != "trinket")  & (wpn_types.left != "staff")) {
-        dmg_types.left = all_weapons[equipment[equipped.left].name].getStats().dmg_type;
-    }
+//     }
+//     if ((wpn_types.left != "shield") & (wpn_types.left != "trinket")  & (wpn_types.left != "staff")) {
+//         dmg_types.left = all_weapons[equipment[equipped.left].name].getStats().dmg_type;
+//     }
 
-    if (wpn_types.right != "shield") & (wpn_types.left != "trinket")  & (wpn_types.left != "staff") {
-        dmg_types.right = all_weapons[equipment[equipped.right].name].getStats().dmg_type;
-    }
+//     if (wpn_types.right != "shield") & (wpn_types.left != "trinket")  & (wpn_types.left != "staff") {
+//         dmg_types.right = all_weapons[equipment[equipped.right].name].getStats().dmg_type;
+//     }
 
-    // Classes who can have different weapons in both hands.
-    // Battlemage. Angel. Demon.
-    // The only important case is battlemage attacking with sword and trinket. But since we add all mights... Battlemage infusion should have constant damage output based on mage's magic power.
-    // Can battlemages give infused weapons to other units? Yes.
-    if (dmg_types.right != dmg_types.left) {
+//     // Classes who can have different weapons in both hands.
+//     // Battlemage. Angel. Demon.
+//     // The only important case is battlemage attacking with sword and trinket. But since we add all mights... Battlemage infusion should have constant damage output based on mage's magic power.
+//     // Can battlemages give infused weapons to other units? Yes.
+//     if (dmg_types.right != dmg_types.left) {
 
-    } else {
-        out = dmg_types.right;   
-    }
+//     } else {
+//         out = dmg_types.right;   
+//     }
 
-    return(out);
-}
+//     return(out);
+// }
 
 unsigned char Unit::totalMight(bool dmg_type) {
-    // Damage type is determined by the held weapon? 
-    // What about battlemages and infusion?
+    // Damage type is determined by the main weapon of attack.
     unsigned char unit_power = 0;
     unsigned char wpn_dmg;
 
