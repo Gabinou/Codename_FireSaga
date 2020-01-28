@@ -28,8 +28,8 @@ void Unit::setPos(const int in_pos[2]) {
     position[1] = in_pos[1];
 }
 
-std::vector<std::string> Unit::getEquippable() {
-    return(equippable);
+std::vector<std::string> Unit::getEquippables() {
+    return(equippables);
 }
 
 void Unit::setEquippable() {
@@ -130,7 +130,8 @@ void Unit::setEquippable() {
         equippables.push_back("angelic");
         equippables.push_back("trinket");
     }
-}
+}
+
 
 std::string Unit::getMvttype() {
     printf("inside unit %s\n", mvt_type.c_str());
@@ -375,15 +376,15 @@ bool Unit::canAttack() {
         std::string right;
     } wpn_types;
     if (equipped.left > 0) {
-        wpn_types.left = all_weapons[equipment[equipped.left]];
+        wpn_types.left = all_weapons[equipment[equipped.left].name].getType();
         if ((wpn_types.left != "shield")  & (wpn_types.left != "trinket")) {
-                out = true;
-         } 
+            out = true;
+        } 
     }
     if (equipped.right > 0) {
-            wpn_types.right = all_weapons[equipment[equipped.right]];
+        wpn_types.right = all_weapons[equipment[equipped.right].name].getType();
         if ((wpn_types.right != "shield")  & (wpn_types.right != "trinket")) {
-                out = true;
+            out = true;
          } 
     }
     return(out);
@@ -400,11 +401,16 @@ bool Unit::dmgType() {
     } wpn_types;
     bool out = false;
 
-     all_weapons[equipment[equipped.left].name].getType;
-    if (wpn_types.left != "shield") {    
-wpn_types.left = all_weapons[equipment[equipped.left].name].getStats().dmg_type;
-    }
-    wpn_types.right = all_weapons[equipment[equipped.right].name].getType;
+    all_weapons[equipment[equipped.left].name].getType();
+    if (wpn_types.left != "shield") {
+        wpn_types.left = all_weapons[equipment[equipped.left].name].getStats().dmg_type;
+    }
+
+    wpn_types.right = all_weapons[equipment[equipped.right].name].getType();
+    if (wpn_types.right != "shield") {
+        wpn_types.right = all_weapons[equipment[equipped.right].name].getStats().dmg_type;
+    }
+
     dmg_types.left = all_weapons[equipment[equipped.left].name].getStats().dmg_type;
     dmg_types.right = all_weapons[equipment[equipped.left].name].getStats().dmg_type;
 

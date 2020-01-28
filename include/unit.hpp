@@ -22,7 +22,7 @@ class Unit {
 
         std::vector<Unit_stats> grown_stats;
         std::vector<std::string> skills;
-        std::vector<std::string> equippable;
+        std::vector<std::string> equippables;
 
         std::unordered_map<std::string, int> supports;
         unsigned char current_hp;
@@ -53,7 +53,7 @@ class Unit {
         std::string getMvttype();
         void setMvttype();
 
-        std::vector<std::string> getEquippable();
+        std::vector<std::string> getEquippables();
         void setEquippable();
         void equipsL(const char index);
         void equipsR(const char index);
@@ -104,6 +104,8 @@ class Unit {
 
         bool canRetaliate(Unit * enemy) const;
         bool canDouble(Unit * enemy) const;
+        bool canAttack();
+        bool isEquippable(std::string in_name);
 
         void combatStats();
         Combat_stats getCombatStats();
@@ -113,7 +115,7 @@ class Unit {
         unsigned char favor();
         unsigned char totalMight(bool dmg_type);
         unsigned char totalDef(bool dmg_type);
-        unsigned char dmgType();
+        bool dmgType();
         char speed();
 
         void dies();
