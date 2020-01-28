@@ -73,7 +73,6 @@ void Game::attack(Unit * attacker, Unit * defender) {
     hitcrit = checkHitCrit((attacker_stats.hit - defender_stats.dodge), (attacker_stats.crit - defender_stats.favor));
     if (hitcrit[0]) {
         if (hitcrit[1]) {
-            
             int damage = attacker->totalMight(false) -  defender->totalDef(false);
         }
     }
@@ -103,7 +102,6 @@ void Game::fight(Unit * attacker, Unit * defender) {
 void Game::makeFPSEntity() {
     settings.FPS.entity = manager.getEntities().size();
     manager.addEntity();
-
     manager.getEntities()[settings.FPS.entity]->addComponent<PositionComponent>();
     manager.getEntities()[settings.FPS.entity]->getComponent<PositionComponent>().setBounds(0, settings.res.x, 0, settings.res.y);
     manager.getEntities()[settings.FPS.entity]->getComponent<PositionComponent>().setPos(settings.FPS.pos.x, settings.FPS.pos.y);
@@ -336,11 +334,9 @@ void Game::loadMap(std::string filename) {
 
     cursor.addComponent<PositionComponent>(6, 6);
 
-    all_units["Silou"].setEntity(manager.getEntities().size());
-    SDL_Color black = {255, 255, 255};
     cursor.addComponent<KeyboardController>(this, mapp);
 
-    if( SDL_NumJoysticks() < 1 ) {
+    if (SDL_NumJoysticks() < 1) {
         printf( "No joysticks connected.\n" );
     } else {
         cursor.addComponent<GamepadController>(this, mapp);
@@ -413,38 +409,6 @@ void Game::init(const char * title, int xpos, int ypos, int width, int height, b
         isRunning = false;
     }
 
-    // printf("Creating map \n");
-    // tilesize[0] = 32;
-    // tilesize[1] = 32;
-    // mapp =  new Map(tilesize[0], tilesize[1]); // mapp is a pointer
-    // mapp->loadTilemap("..//maps//test_tilemap.txt");
-
-    // cursor.addComponent<PositionComponent>(6, 6);
-
-    // all_units["Silou"].setEntity(manager.getEntities().size());
-    // manager.addEntity();
-    // manager.getEntities()[all_units["Silou"].getEntity()]->addComponent<PositionComponent>(6, 6);
-    // manager.getEntities()[all_units["Silou"].getEntity()]->addComponent<UnitContainer>("Silou");
-
-    // manager.getEntities()[all_units["Silou"].getEntity()]->getComponent<PositionComponent>().setMap(mapp);
-
-    // SDL_Color black = {255, 255, 255};
-    // cursor.addComponent<KeyboardController>(this, mapp);
-
-    // if( SDL_NumJoysticks() < 1 ) {
-    //     printf( "No joysticks connected.\n" );
-    // } else {
-    //     cursor.addComponent<GamepadController>(this, mapp);
-    // }
-
-    // manager.getEntities()[all_units["Silou"].getEntity()]->addComponent<SpriteComponent>(mapp, "..//assets//horse.png");
-
-    // cursor.addComponent<SpriteComponent>(mapp, "..//assets//cursors.png", 10, 50);
-    // cursor.getComponent<SpriteComponent>().setSlidetype("geometric");
-    
-    // manager.getEntities()[all_unit_components["Silou"]]->addGroup(manager.groupUnits);
-    // manager.getEntities()[all_units["Silou"].getEntity()]->addGroup(manager.groupUnits);
-    // cursor.addGroup(manager.groupUI);
     printf("in game: %s\n", all_scripts["Chapter 1"].getScene("Intro").getLine("1").line.c_str());
 
     this->setState("map");
