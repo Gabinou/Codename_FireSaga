@@ -353,6 +353,7 @@ void Game::loadMap(std::string filename) {
 }
 
 void Game::loadUnits(std::vector<std::string> names, std::vector<std::string> asset_names, std::vector<std::vector<int>> positions_list) {
+    printf("Loading Units. \n");
 
     for (int i = 0; i < names.size(); i++) { 
         all_units[names[i]].setEntity(manager.getEntities().size());
