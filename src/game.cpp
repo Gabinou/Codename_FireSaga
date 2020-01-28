@@ -328,20 +328,25 @@ std::string Game::getState() {
 
 void Game::loadMap(std::string filename) {
     printf("Loading map \n");
-    mapp =  new Map(settings.tilesize[0], settings.tilesize[1]); // mapp is a pointer
-    mapp->loadTilemap(filename);
-    cursor.getComponent<PositionComponent>().setPos(6, 6);
-    cursor.getComponent<KeyboardController>().setMap(mapp);
-    if (SDL_NumJoysticks() < 1) {
-        printf( "No joysticks connected.\n" );
-    } else {
-        cursor.getComponent<GamepadController>().setMap(mapp);
-    }
-    cursor.getComponent<SpriteComponent>().setMap(mapp);
-    cursor.getComponent<SpriteComponent>().setTexture("..//assets//cursors.png");
-    cursor.getComponent<SpriteComponent>().setAnimation(10, 50);
-    cursor.getComponent<SpriteComponent>().setSlidetype("geometric");
-    // cursor.addGroup(manager.groupUI);
+    // mapp =  new Map(settings.tilesize[0], settings.tilesize[1]); // mapp is a pointer
+    // mapp->loadTilemap(filename);
+    // cursor.getComponent<PositionComponent>().setPos(6, 6);
+    // cursor.getComponent<KeyboardController>().setMap(mapp);
+    // if (SDL_NumJoysticks() < 1) {
+    //     printf( "No joysticks connected.\n" );
+    // } else {
+    //     cursor.getComponent<GamepadController>().setMap(mapp);
+    // }
+    // cursor.getComponent<SpriteComponent>().setMap(mapp);
+    // cursor.getComponent<SpriteComponent>().setTexture("..//assets//cursors.png");
+    // cursor.getComponent<SpriteComponent>().setAnimation(10, 50);
+    // cursor.getComponent<SpriteComponent>().setSlidetype("geometric");
+    // // cursor.addGroup(manager.groupUI);
+}
+
+void Game::loadCursor() {
+
+
 }
 
 void Game::loadUnits(std::vector<std::string> names, std::vector<std::string> asset_names, std::vector<std::vector<int>> positions_list) {
@@ -401,16 +406,16 @@ void Game::init(const char * title, int xpos, int ypos, int width, int height, b
         isRunning = false;
     }
 
-    cursor.addComponent<PositionComponent>(6, 6);
-    cursor.addComponent<KeyboardController>(this);
-    if (SDL_NumJoysticks() < 1) {
-        printf( "No joysticks connected.\n" );
-    } else {
-        cursor.addComponent<GamepadController>(this);
-    }
-    cursor.addComponent<SpriteComponent>("..//assets//cursors.png", 10, 50);
-    cursor.getComponent<SpriteComponent>().setSlidetype("geometric");
-    cursor.addGroup(manager.groupUI);
+    // cursor.addComponent<PositionComponent>(6, 6);
+    // cursor.addComponent<KeyboardController>(this);
+    // if (SDL_NumJoysticks() < 1) {
+    //     printf( "No joysticks connected.\n" );
+    // } else {
+    //     cursor.addComponent<GamepadController>(this);
+    // }
+    // cursor.addComponent<SpriteComponent>("..//assets//cursors.png", 10, 50);
+    // cursor.getComponent<SpriteComponent>().setSlidetype("geometric");
+    // cursor.addGroup(manager.groupUI);
 
     printf("in game: %s\n", all_scripts["Chapter 1"].getScene("Intro").getLine("1").line.c_str());
 
