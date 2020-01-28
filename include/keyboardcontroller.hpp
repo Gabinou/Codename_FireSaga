@@ -31,6 +31,10 @@ class KeyboardController : public Component {
             game = in_game;
         }
 
+        void setMap(Map * in_map) {
+            map = in_map;
+        }
+
         void setTilesize(int * in_tilesize) {
             tilesize = in_tilesize;
         }

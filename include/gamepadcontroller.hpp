@@ -32,6 +32,10 @@ class GamepadController : public Component {
             game = in_game;
         }
 
+        void setMap(Map * in_map) {
+            map = in_map;
+        }
+
         bool isPressed(std::vector<SDL_GameControllerButton> in_map) {
             for (int i = 0; i < in_map.size(); ++i) {
                 if (SDL_GameControllerGetButton(controller, in_map[i])) {

@@ -328,39 +328,31 @@ std::string Game::getState() {
 
 void Game::loadMap(std::string filename) {
     printf("Loading map \n");
-
     mapp =  new Map(settings.tilesize[0], settings.tilesize[1]); // mapp is a pointer
     mapp->loadTilemap(filename);
-
-    cursor.addComponent<PositionComponent>(6, 6);
-
-    cursor.addComponent<KeyboardController>(this, mapp);
-
+    cursor.getComponent<PositionComponent>().setPos(6, 6);
+    cursor.getComponent<KeyboardController>().setMap(mapp);
     if (SDL_NumJoysticks() < 1) {
         printf( "No joysticks connected.\n" );
     } else {
-        cursor.addComponent<GamepadController>(this, mapp);
+        cursor.getComponent<GamepadController>().setMap(mapp);
     }
-
-    cursor.addComponent<SpriteComponent>(mapp, "..//assets//cursors.png", 10, 50);
+    cursor.getComponent<SpriteComponent>().setMap(mapp);
+    cursor.getComponent<SpriteComponent>().setTexture("..//assets//cursors.png");
+    cursor.getComponent<SpriteComponent>().setAnimation(10, 50);
     cursor.getComponent<SpriteComponent>().setSlidetype("geometric");
-
-    cursor.addGroup(manager.groupUI);
+    // cursor.addGroup(manager.groupUI);
 }
 
 void Game::loadUnits(std::vector<std::string> names, std::vector<std::string> asset_names, std::vector<std::vector<int>> positions_list) {
     printf("Loading Units. \n");
-
     for (int i = 0; i < names.size(); i++) { 
         all_units[names[i]].setEntity(manager.getEntities().size());
         manager.addEntity();
         manager.getEntities()[all_units[names[i]].getEntity()]->addComponent<PositionComponent>(positions_list[i][0], positions_list[i][1]);
         manager.getEntities()[all_units[names[i]].getEntity()]->addComponent<UnitContainer>(names[i]);
-
         manager.getEntities()[all_units[names[i]].getEntity()]->getComponent<PositionComponent>().setMap(mapp); //Should mapp be an input? No cause mapp is always the same object?
-
         manager.getEntities()[all_units[names[i]].getEntity()]->addComponent<SpriteComponent>(mapp, asset_names[i].c_str());
-        
         manager.getEntities()[all_unit_components[names[i]]]->addGroup(manager.groupUnits);
         manager.getEntities()[all_units[names[i]].getEntity()]->addGroup(manager.groupUnits);
     }
@@ -408,6 +400,17 @@ void Game::init(const char * title, int xpos, int ypos, int width, int height, b
     } else {
         isRunning = false;
     }
+
+    cursor.addComponent<PositionComponent>(6, 6);
+    cursor.addComponent<KeyboardController>(this);
+    if (SDL_NumJoysticks() < 1) {
+        printf( "No joysticks connected.\n" );
+    } else {
+        cursor.addComponent<GamepadController>(this);
+    }
+    cursor.addComponent<SpriteComponent>("..//assets//cursors.png", 10, 50);
+    cursor.getComponent<SpriteComponent>().setSlidetype("geometric");
+    cursor.addGroup(manager.groupUI);
 
     printf("in game: %s\n", all_scripts["Chapter 1"].getScene("Intro").getLine("1").line.c_str());
 

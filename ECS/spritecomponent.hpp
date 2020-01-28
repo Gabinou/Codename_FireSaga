@@ -63,6 +63,12 @@ class SpriteComponent : public Component {
             speed = inSpeed;
         }
 
+        SpriteComponent(const char * in_path, int inFrames, int inSpeed) : SpriteComponent(in_path) {
+            animated = true;
+            frames = inFrames;
+            speed = inSpeed;
+        }
+
         SDL_Texture * getTexture() {
             return (texture);
         }
@@ -92,13 +98,14 @@ class SpriteComponent : public Component {
             slidetype = in_slidetype;
             initSlide();
         }
-        void setSlidetype(const char * in_slidetype) {
-            slidetype = std::string(in_slidetype);
-            initSlide();
-        }
 
         void setTexture(const char * in_path) {
             texture = loadTexture(in_path);
+        }
+
+        void setAnimation(int inFrames, int inSpeed) {
+            frames = inFrames;
+            speed = inSpeed;
         }
 
         void setMap(Map * in_map) {
