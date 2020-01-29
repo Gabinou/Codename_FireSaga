@@ -11,7 +11,7 @@ SDL_Renderer * Game::renderer = nullptr;
 SDL_Event Game::event;
 TTF_Font * Game::font = NULL;
 Manager Game::manager;
-Settings Game::settings;
+// Settings Game::settings;
 
 Game::Game() {}
 Game::~Game() {}
@@ -22,6 +22,14 @@ void Game::setFontsize(int in_fontsize) {
 
 Game::getFontsize() {
     return(fontsize);
+}
+
+Settings Game::getSettings() {
+    return(settings);
+}
+
+void Game::setSettings(Settings in_settings) {
+    settings = in_settings;
 }
 
 bool Game::checkRate(int rate, std::string mode) {

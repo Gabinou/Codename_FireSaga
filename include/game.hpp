@@ -17,7 +17,7 @@ class Game {
 
     private:
         Map * mapp;
-        Entity & cursor = Game::manager.addEntity();
+        Entity & cursor = manager.addEntity();
         void moveUnit(Entity & cursor);
         void killUnitmenu();
         void makeUnitmenu(Entity & setting_entity);
@@ -33,13 +33,13 @@ class Game {
         std::stack <int> menu_entities;
         std::stack <int> unit_entities;
         bool gaussian_switch;
+        Settings settings;
 
     public:
-        static SDL_Renderer * renderer;
-        static SDL_Event event;
-        static TTF_Font * font;
-        static Manager manager;
-        static Settings settings;
+        static SDL_Renderer * renderer; // ->should be private member
+        static SDL_Event event; // ->should be private member
+        static TTF_Font * font; // ->should be private member
+        static Manager manager; // is fine here.
 
         Game();
         ~Game();
@@ -63,6 +63,8 @@ class Game {
 
         void setFontsize(int in_fontsize);
         int getFontsize();
+        Settings getSettings();
+        void setSettings(Settings);
 
         KeyboardInputMap getKeyboardInputMap();
         GamepadInputMap getGamepadInputMap();

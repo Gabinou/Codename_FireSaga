@@ -10,6 +10,7 @@
 #include "unit.hpp"
 
 Game * firesaga = nullptr;
+Settings temp_settings;
 
 int main(int argc, char * argv[]) {
     printf("TESTING THIS BITCH\n");
@@ -30,9 +31,11 @@ int main(int argc, char * argv[]) {
     printf("Made game.\n");
 
     printf("Initiating game.\n");
-    firesaga->settings.FPS.show = true;
+    temp_settings = firesaga->getSettings();
+    temp_settings.FPS.show = true; 
+    firesaga->setSettings(temp_settings);
     firesaga->setFontsize(28);
-    firesaga->init("FireSaga", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, firesaga->settings.res.x, firesaga->settings.res.y, false);
+    firesaga->init("FireSaga", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, firesaga->getSettings().res.x, firesaga->getSettings().res.y, false);
     firesaga->makeFPSEntity();
     printf("Initiated game.\n");
 
@@ -61,17 +64,22 @@ int main(int argc, char * argv[]) {
         frame_middle = std::chrono::high_resolution_clock::now();
         
         frame_time = (int)(std::chrono::duration_cast<std::chrono::nanoseconds>(frame_middle - frame_start).count()/1E6);
-        if (firesaga->settings.FPS.frame_delay > frame_time) {
-            SDL_Delay(firesaga->settings.FPS.frame_delay - frame_time);
+        if (firesaga->getSettings().FPS.frame_delay > frame_time) {
+            SDL_Delay(firesaga->getSettings().FPS.frame_delay - frame_time);
         }
         frame_end = std::chrono::high_resolution_clock::now();
-        if (firesaga->settings.FPS.show) { 
-            firesaga->settings.FPS.current = (1E9/std::chrono::duration_cast<std::chrono::nanoseconds>(frame_end - frame_start).count());
-            firesaga->settings.FPS.held++;
-            if (firesaga->settings.FPS.held == 4) {
-                sprintf(buffer, "%.1f", firesaga->settings.FPS.current);
-                firesaga->manager.getEntities()[firesaga->settings.FPS.entity]->getComponent<TextComponent>().setText(buffer);
-                firesaga->settings.FPS.held = 0;   
+        if (firesaga->getSettings().FPS.show) { 
+            temp_settings = firesaga->getSettings();
+            temp_settings.FPS.current = (1E9/std::chrono::duration_cast<std::chrono::nanoseconds>(frame_end - frame_start).count());
+            temp_settings.FPS.held++; 
+            firesaga->setSettings(temp_settings);
+            if (firesaga->getSettings().FPS.held == 4) {
+                sprintf(buffer, "%.1f", firesaga->getSettings().FPS.current);
+                firesaga->manager.getEntities()[firesaga->getSettings().FPS.entity]->getComponent<TextComponent>().setText(buffer);
+                temp_settings = firesaga->getSettings();
+                temp_settings.FPS.held = 0; 
+                firesaga->setSettings(temp_settings);
+                // firesaga->getSettings().FPS.held = 0;   
             }
         }
     }
