@@ -8,7 +8,7 @@
 #include "unitcontainer.hpp"
 
 SDL_Renderer * Game::renderer = nullptr;
-SDL_Event Game::event;
+// SDL_Event Game::event;
 TTF_Font * Game::font = NULL;
 Manager Game::manager;
 // Settings Game::settings;

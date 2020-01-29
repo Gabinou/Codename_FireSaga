@@ -32,12 +32,12 @@ class Game {
         std::stack <int> menu_entities;
         std::stack <int> unit_entities;
         bool isRunning;
+        SDL_Event event;
 
     public:
-        static SDL_Renderer * renderer; // ->should be private member
-        static SDL_Event event; // ->should be private member
-        static TTF_Font * font; // ->should be private member
-        static Manager manager; // is fine here.
+        static SDL_Renderer * renderer;
+        static TTF_Font * font;
+        static Manager manager;
 
         Game();
         ~Game();
@@ -60,6 +60,8 @@ class Game {
 
         Settings getSettings();
         void setSettings(Settings);
+
+        SDL_Renderer * getRenderer(Settings);
 
         KeyboardInputMap getKeyboardInputMap();
         GamepadInputMap getGamepadInputMap();
