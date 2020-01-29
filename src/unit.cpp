@@ -4,6 +4,14 @@ Unit::Unit() {
 
 }
 
+Unit::Unit(const std::string in_name, const std::string in_class, const Unit_stats in_bases, const std::string in_sex) : Unit(in_name, in_class, in_bases) {
+    setSex(in_sex);
+}
+
+Unit::Unit(const std::string in_name, const std::string in_class, const Unit_stats in_bases, const bool in_sex) : Unit(in_name, in_class, in_bases) {
+    setSex(in_sex);
+}
+
 Unit::Unit(const std::string in_name, const std::string in_class, const Unit_stats in_bases) : Unit(in_name, in_bases) {
     class_name = in_class;
     setMvttype();
@@ -26,6 +34,19 @@ int * Unit::getPos() {
 void Unit::setPos(const int in_pos[2]) {
     position[0] = in_pos[0];
     position[1] = in_pos[1];
+}
+
+void Unit::setSex(const bool in_sex) {
+    sex = in_sex;
+}
+
+void Unit::setSex(const std::string in_sex) {
+    if (in_sex == "F") {
+        sex = 0;
+    }
+    if (in_sex == "M") {
+        sex = 1;
+    }  
 }
 
 std::vector<std::string> Unit::getEquippables() {
@@ -601,7 +622,6 @@ void baseUnits() {
     reliable.setGrowths(temp);
     reliable.setExp(100);
     all_units["Reliable"] = reliable;
-
     
     temp = {19,  6,  2,  7,  7,   7,  4,  5,  6,  7};
     Unit coward("Coward", "Cavalier", temp);
@@ -611,7 +631,6 @@ void baseUnits() {
     coward.setGrowths(temp);
     coward.setExp(200);
     all_units["Coward"] = coward;
-
     
     temp = {20,  6,  2,  7,  7,   7,  4,  5,  6,  6};
     Unit hjaigen("1H Jaigen", "Fencermaster", temp);
@@ -622,7 +641,6 @@ void baseUnits() {
     hjaigen.setExp(2200);
     all_units["1H Jaigen"] = hjaigen;
 
-    
     temp = {14,  6,  2,  7,  7,   7,  4,  5,  6,  5};
     Unit lovely("Lovely", "Priestess", temp);
     temp = {48, 14, 25, 32, 34,  28, 19, 40, 15};
@@ -631,7 +649,6 @@ void baseUnits() {
     lovely.setGrowths(temp);
     lovely.setExp(100);
     all_units["Lovely"] = lovely;
-
     
     temp = {16,  6,  2,  7,  7,   7,  4,  5,  6,  6};
     Unit hottie("Hottie", "Thief", temp);
@@ -641,7 +658,6 @@ void baseUnits() {
     hottie.setGrowths(temp);
     hottie.setExp(2200);
     all_units["Hottie"] = hottie;
-
     
     temp = {22,  4,  5,  7,  6,   8,  4,  6,  5, 5}; // 4 or 5?
     Unit servil("Servil", "Knight", temp);
@@ -651,7 +667,6 @@ void baseUnits() {
     servil.setGrowths(temp);
     servil.setExp(500);
     all_units["Servil"] = servil;
-
     
     temp = {34,  4,  5,  7,  6,   8,  4,  6,  5, 5};
     Unit perignon("Pérignon", "Mage", temp);
@@ -661,7 +676,6 @@ void baseUnits() {
     perignon.setGrowths(temp);
     perignon.setExp(1200);
     all_units["Pérignon"] = perignon;
-
     
     temp = {15,  4,  5,  7,  6,   8,  4,  6,  5, 5};
     Unit poet("Poet", "Mage", temp);
@@ -671,7 +685,6 @@ void baseUnits() {
     poet.setGrowths(temp);
     poet.setExp(400);
     all_units["Poet"] = poet;
-
     
     temp = {15,  4,  5,  7,  6,   8,  4,  6,  5, 5};
     Unit silou("Silou", "Mage", temp);
@@ -681,5 +694,4 @@ void baseUnits() {
     silou.setGrowths(temp);
     silou.setExp(400);
     all_units["Silou"] = silou;
-
 }

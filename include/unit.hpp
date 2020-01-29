@@ -43,9 +43,13 @@ class Unit {
     public:
         Unit();
         Unit(const std::string in_name, const std::string in_class, const Unit_stats in_bases, const bool in_sex);
+        Unit(const std::string in_name, const std::string in_class, const Unit_stats in_bases, const std::string in_sex);
         Unit(const std::string in_name, const std::string in_class, const Unit_stats in_bases);
         Unit(const std::string in_name, const Unit_stats in_bases);
         Unit(const Unit_stats in_bases);
+
+        void setSex(const bool in_sex);
+        void setSex(const std::string in_sex);
 
         int * getPos();
         void setPos(const int in_pos[2]);
