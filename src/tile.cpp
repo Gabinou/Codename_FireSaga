@@ -42,9 +42,11 @@ std::string Tile::getName(){
 Tilestats Tile::getStats(){
 	return(stats);
 }
+
 bool Tile::isInside(){
     return(inside);
 }
+
 bool Tile::isOutside(){
     return(!inside);
 }
