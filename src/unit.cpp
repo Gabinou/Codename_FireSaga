@@ -36,6 +36,9 @@ void Unit::setPos(const int in_pos[2]) {
     position[1] = in_pos[1];
 }
 
+bool Unit::getSex() {
+    return(sex);
+}
 void Unit::setSex(const bool in_sex) {
     sex = in_sex;
 }
@@ -573,7 +576,8 @@ bool Unit::canRetaliate(Unit * enemy) const {
     return (retaliates);
 }
 
-bool Unit::canDouble(Unit * enemy) const {
+bool Unit::canDouble(Unit * enemy) {
+    speed();
     bool doubles = ((current_speed - enemy->speed()) > 4);
     return (doubles);
 }

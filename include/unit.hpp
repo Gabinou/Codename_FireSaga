@@ -50,6 +50,7 @@ class Unit {
 
         void setSex(const bool in_sex);
         void setSex(const std::string in_sex);
+        bool getSex();
 
         int * getPos();
         void setPos(const int in_pos[2]);
@@ -107,7 +108,7 @@ class Unit {
         void setArmy(const char in_army);
 
         bool canRetaliate(Unit * enemy) const;
-        bool canDouble(Unit * enemy) const;
+        bool canDouble(Unit * enemy);
         bool canAttack();
         bool isEquippable(std::string in_name);
 
