@@ -1,18 +1,13 @@
 // Code créé par Gabriel Taillon
-// Note on standards. Fuck all that complicated bullcrap. I'm writing for c++11. More convenient and the rest seems like bullshit.
-/*! \page handle main.cpp
-* \file main.cpp
-* \brief Main game algorithm page.
-*/
-#include "shared.hpp"
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
+#include <chrono>
+#include "shared.hpp"
 #include "textcomponent.hpp"
 #include "game.hpp"
 #include "script.hpp"
 #include "weapon.hpp"
 #include "unit.hpp"
-#include <chrono>
 
 Game * firesaga = nullptr;
 

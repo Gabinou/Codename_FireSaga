@@ -589,12 +589,12 @@ char Unit::speed() {
     return(current_speed);
 }
 
-void Unit::write(const char * filename) {
+void Unit::write(const char * filename, const char * mode) {
     FILE * fp;
-    fp = fopen(filename, "w+");
+    fp = fopen(filename, mode);
     fprintf(fp, name.c_str());
     fprintf(fp, "\n");
-    fprintf(fp, "%s", class_name);
+    fprintf(fp, "%s %s", sex, class_name);
     fprintf(fp, "Stats, HP, Str, Mag, Skl, Spd, Luck, Def, Res, Con, Move\n");
     fprintf(fp, "Base stats,\t%d,\t%d,\t%d,\t%d,\t%d,\t%d,\t%d,\t%d,\t%d,\t%d\n", base_stats.hp, base_stats.str, base_stats.mag, base_stats.dex, base_stats.agi, base_stats.luck, base_stats.def, base_stats.res, base_stats.con, base_stats.move);
     fprintf(fp, "Growths,\t%d,\t%d,\t%d,\t%d,\t%d,\t%d,\t%d,\t%d,\t%d,\t%d\n", growths.hp, growths.str, growths.mag, growths.dex, growths.agi, growths.luck, growths.def, growths.res, growths.con, growths.move);

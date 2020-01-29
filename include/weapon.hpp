@@ -20,7 +20,6 @@ class Weapon {
         std::string effective;
         std::string description;
     public:
-
         Weapon();
         Weapon(Weapon_stats in_stats);
         Weapon(std::string in_name, Weapon_stats in_stats);
@@ -40,6 +39,8 @@ class Weapon {
         std::string getDescription();
         std::string getName();
         std::string getType();
+
+        void write(const char * filename, const char * mode = "a");
 };
 
 /*! \var all_weapons

@@ -125,7 +125,7 @@ class Unit {
 
         void dies();
 
-        void write(const char * filename);
+        void write(const char * filename, const char * mode = "a");
 };
 
 extern std::unordered_map<std::string, Unit> all_units;

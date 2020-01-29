@@ -69,6 +69,13 @@ std::string Weapon::getType() {
     return(type);
 }
 
+void Weapon::write(const char * filename, const char * mode){
+    FILE * fp;
+    fp = fopen(filename, mode);
+    fprintf(fp, name.c_str());
+}
+
+
 std::unordered_map<std::string, Weapon> all_weapons;
 
 void baseWeapons(){
@@ -434,7 +441,12 @@ void baseWeapons(){
     temp_wpn = {2, 0, 10, 0, 10, 0, 5, 21, 16, {1,1}, {1}, 0, 1000};
     Weapon wristblade("Wristblade", "offhand", temp_wpn);
     wristblade.setDescription("Blade generally strapped to the weak forearm. Used by assassins to increase crit potential.");
-    all_weapons["wristblade"] = wristblade;
+    all_weapons["wristblade"] = wristblade;    
+    temp_wpn = {2, 0, 10, 0, 10, 0, 5, 21, 16, {1,1}, {1}, 0, 1000};
+    Weapon shieldhook("Shield Hook", "offhand", temp_wpn);
+    wristblade.setDescription("Offhand weapon designed to grab on shields to drag them aside. Ignores shield bonuses.");
+    wristblade.setEffect("ignoreshield");
+    all_weapons["shieldhook"] = shieldhook;
     temp_wpn = {4, 0, 8, 0, 14, 0, 7, 16, 19, {1,1}, {1}, 0, 1000};
     Weapon retractable_wristblade("Retractable Wristblade", "offhand", temp_wpn);
     retractable_wristblade.setDescription("Blade generally strapped to the weak forearm. Controlled by hand movements. Used by assasins to stealthily increase crit potential.");
