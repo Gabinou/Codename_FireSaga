@@ -7,15 +7,11 @@
 #include "gamepadcontroller.hpp"
 #include "unitcontainer.hpp"
 
-// Map * mapp;
-
 SDL_Renderer * Game::renderer = nullptr;
 SDL_Event Game::event;
 TTF_Font * Game::font = NULL;
 Manager Game::manager;
 Settings Game::settings;
-
-std::unordered_map<std::string, int> all_unit_components;
 
 Entity & cursor = Game::manager.addEntity(); // FOR SOME REASON, having an 2, 4, 8 entities.... breaks something in the unitmove->unitmenu states move
 Entity & player = Game::manager.addEntity();
