@@ -49,6 +49,21 @@ bool Tile::isOutside(){
     return(!inside);
 }
 
+void Tile::write(const char * filename, const char * mode){
+    FILE * fp;
+    fp = fopen(filename, mode);
+    fprintf(fp, "%s \n", name.c_str());
+    if (inside) {
+        fprintf(fp, "%s \n", "Inside");
+    } else {
+        fprintf(fp, "%s \n", "Outside");
+    }
+    fprintf(fp, "Stats, Dodge, PProtection, MProtection, Heal \n");
+    fprintf(fp, "Stats,\t\t%d,\t%d,\t%d,\t%d\n", stats.dodge, stats.Pprot, stats.Mprot, stats.heal);
+    fprintf(fp, "\n");
+    fclose(fp);
+}
+
 std::unordered_map<int, Tile> all_tiles;
 
 void baseTiles() {
@@ -62,17 +77,18 @@ void baseTiles() {
     Tile plain("Plain", temp_cost, temp_stats);
     all_tiles[10] = plain;
     temp_stats[0] = (unsigned int *)10;
-    temp_stats[1] = (unsigned int *)1;
+    temp_stats[1] = (unsigned int *)0;
+    temp_stats[2] = (unsigned int *)1;
     temp_cost = {2, 1, 2, 3, 2, 1, 3, 2, 2};
     Tile bush("Bush", temp_cost, temp_stats);
     all_tiles[11] = bush;
     temp_stats[0] = (unsigned int *)15;
-    temp_stats[1] = (unsigned int *)2;
+    temp_stats[2] = (unsigned int *)2;
     temp_cost = {3, 2, 3, 4, 3, 1, 3, 3, 3};
     Tile forest("Forest", temp_cost, temp_stats);
     all_tiles[12] = forest;
     temp_stats[0] = (unsigned int *)0;
-    temp_stats[1] = (unsigned int *)0;
+    temp_stats[2] = (unsigned int *)0;
     temp_cost = {0, 0, 0, 0, 0, 1, 0, 0, 0};
     Tile thicket("Thicket", temp_cost, temp_stats);
     all_tiles[13] = thicket;
@@ -99,23 +115,23 @@ void baseTiles() {
     all_tiles[24] = cliff;
 
     temp_stats[0] = (unsigned int *)15;
-    temp_stats[1] = (unsigned int *)2;
+    temp_stats[2] = (unsigned int *)2;
     temp_cost = {3, 2, 3, 4, 3, 1, 4, 2, 2};
     Tile hill("hill", temp_cost, temp_stats);
     all_tiles[30] = hill;
     temp_stats[0] = (unsigned int *)25;
-    temp_stats[1] = (unsigned int *)3;
+    temp_stats[2] = (unsigned int *)3;
     temp_cost = {4, 3, 4, 0, 4, 1, 0, 3, 3};
     Tile mountain("mountain", temp_cost, temp_stats);
     all_tiles[31] = mountain;
     temp_stats[0] = (unsigned int *)30;
-    temp_stats[1] = (unsigned int *)4;
+    temp_stats[2] = (unsigned int *)4;
     temp_cost = {0, 5, 0, 0, 0, 1, 0, 5, 5};
     Tile peak("Peak", temp_cost, temp_stats);
     all_tiles[32] = peak;
 
     temp_stats[0] = (unsigned int *)0;
-    temp_stats[1] = (unsigned int *)0;
+    temp_stats[2] = (unsigned int *)0;
     temp_cost = {3, 2, 1, 4, 3, 1, 3, 2, 2};
     Tile sand("Sand", temp_cost, temp_stats);
     all_tiles[40] = sand;
@@ -123,12 +139,12 @@ void baseTiles() {
     Tile wasteland("Wasteland", temp_cost, temp_stats);
     all_tiles[41] = wasteland;
     temp_stats[0] = (unsigned int *)5;
-    temp_stats[1] = (unsigned int *)2;
+    temp_stats[2] = (unsigned int *)2;
     temp_cost = {0, 0, 0, 0, 0, 1, 0, 3, 3};
     Tile rock("Rock", temp_cost, temp_stats);
     all_tiles[42] = rock;
     temp_stats[0] = (unsigned int *)0;
-    temp_stats[1] = (unsigned int *)0;
+    temp_stats[2] = (unsigned int *)0;
     temp_cost = {0, 0, 0, 0, 0, 1, 0, 0, 0};
     Tile bones("Bones", temp_cost, temp_stats);
     all_tiles[43] = bones;
@@ -137,14 +153,14 @@ void baseTiles() {
     Tile floor("Floor", temp_cost, temp_stats);
     all_tiles[50] = floor;
     temp_stats[0] = (unsigned int *)10;
-    temp_stats[1] = (unsigned int *)1;
-    temp_stats[2] = (unsigned int *)10;
+    temp_stats[2] = (unsigned int *)1;
+    temp_stats[3] = (unsigned int *)10;
     temp_cost = {2, 2, 2, 3, 3, 1, 3, 2, 2};
     Tile pillar("Pillar", temp_cost, temp_stats);
     all_tiles[51] = pillar;
     temp_stats[0] = (unsigned int *)0;
-    temp_stats[1] = (unsigned int *)0;
     temp_stats[2] = (unsigned int *)0;
+    temp_stats[3] = (unsigned int *)0;
     temp_cost = {0, 0, 0, 0, 0, 1, 0, 0, 0};
     Tile wall("Wall", temp_cost, temp_stats);
     all_tiles[52] = wall;
@@ -152,15 +168,15 @@ void baseTiles() {
     Tile door("Door", temp_cost, temp_stats);
     all_tiles[53] = door;
     temp_stats[0] = (unsigned int *)20;
-    temp_stats[1] = (unsigned int *)2;
-    temp_stats[2] = (unsigned int *)15;
+    temp_stats[2] = (unsigned int *)2;
+    temp_stats[3] = (unsigned int *)15;
     temp_cost = {0, 0, 0, 0, 0, 1, 0, 0, 0};
     Tile throne("Throne", temp_cost, temp_stats);
     all_tiles[54] = throne;
 
     temp_stats[0] = (unsigned int *)10;
-    temp_stats[1] = (unsigned int *)1;
-    temp_stats[2] = (unsigned int *)10;
+    temp_stats[2] = (unsigned int *)1;
+    temp_stats[3] = (unsigned int *)10;
     temp_cost = {0, 0, 0, 0, 0, 1, 0, 0, 0};
     Tile gate("Gate", temp_cost, temp_stats);
     all_tiles[60] = gate;
@@ -168,8 +184,8 @@ void baseTiles() {
     Tile fence("Fence", temp_cost, temp_stats);
     all_tiles[61] = fence;
     temp_stats[0] = (unsigned int *)10;
-    temp_stats[1] = (unsigned int *)1;
-    temp_stats[2] = (unsigned int *)10;
+    temp_stats[2] = (unsigned int *)1;
+    temp_stats[3] = (unsigned int *)10;
     temp_cost = {1, 1, 1, 1, 1, 1, 1, 1, 1};
     Tile shop("Shop", temp_cost, temp_stats);
     all_tiles[62] = shop;
@@ -180,14 +196,14 @@ void baseTiles() {
     Tile village("Village", temp_cost, temp_stats);
     all_tiles[64] = village;
     temp_stats[0] = (unsigned int *)10;
-    temp_stats[1] = (unsigned int *)2;
-    temp_stats[2] = (unsigned int *)10;
+    temp_stats[2] = (unsigned int *)2;
+    temp_stats[3] = (unsigned int *)10;
     temp_cost = {2, 2, 2, 2, 2, 1, 2, 2, 2};
     Tile fort("Fort", temp_cost, temp_stats);
     all_tiles[65] = fort;
     temp_stats[0] = (unsigned int *)0;
-    temp_stats[1] = (unsigned int *)0;
     temp_stats[2] = (unsigned int *)0;
+    temp_stats[3] = (unsigned int *)0;
     temp_cost = {0, 0, 0, 0, 0, 1, 0, 0, 0};
     Tile castle("Castle", temp_cost, temp_stats);
     all_tiles[66] = castle;
@@ -198,6 +214,5 @@ void baseTiles() {
     temp_cost = {4, 3, 4, 0, 0, 1, 0, 3, 3};
     Tile glacier("Glacier", temp_cost, temp_stats);
     all_tiles[71] = glacier;
-
 }
 

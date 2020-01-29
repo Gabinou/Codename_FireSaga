@@ -88,6 +88,13 @@ extern void writeText(int in_fontsize, int in_position[2], float in_sizefactor[2
 extern SDL_Texture * loadTexture(const char * filename);
 extern SDL_Texture * textToTexture(std::string textureText, SDL_Color textColor, TTF_Font * in_font);
 
+struct Tilestats {
+    unsigned int dodge;
+    unsigned int Pprot;
+    unsigned int Mprot;
+    unsigned int heal; // %
+};
+
 struct Unit_state {
     bool flight;
     bool mounted;

@@ -87,8 +87,9 @@ void Weapon::write(const char * filename, const char * mode){
     fprintf(fp, "Units Stats, HP, Str, Mag, Skl, Spd, Luck, Def, Res, Con, Move\n");
     fprintf(fp, "Unit Malus,\t\t%d,\t%d,\t%d,\t%d,\t%d,\t%d,\t%d,\t%d,\t%d,\t%d,\t%d\n", malus.hp, malus.str, malus.mag, malus.dex, malus.agi, malus.luck, malus.def, malus.res, malus.con, malus.move, malus.prof);
     fprintf(fp, "Unit Bonus,\t\t%d,\t%d,\t%d,\t%d,\t%d,\t%d,\t%d,\t%d,\t%d,\t%d,\t%d\n", bonus.hp, bonus.str, bonus.mag, bonus.dex, bonus.agi, bonus.luck, bonus.def, bonus.res, bonus.con, bonus.move, bonus.prof);
+    fprintf(fp, "\n");
+    fclose(fp);
 }
-
 
 std::unordered_map<std::string, Weapon> all_weapons;
 

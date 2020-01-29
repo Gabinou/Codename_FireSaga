@@ -3,12 +3,6 @@
 
 #include "shared.hpp"
 
-struct Tilestats {
-    unsigned int dodge;
-    unsigned int def;
-    unsigned int heal; // %
-};
-
 class Tile {
     private:
         Movement_cost cost_struct;
@@ -29,6 +23,8 @@ class Tile {
         Tilestats getStats();
         bool isInside();
         bool isOutside();
+
+        void write(const char * filename, const char * mode = "a");
 };
 
 extern std::unordered_map<int, Tile> all_tiles;
