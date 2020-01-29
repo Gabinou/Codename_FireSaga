@@ -13,9 +13,6 @@ TTF_Font * Game::font = NULL;
 Manager Game::manager;
 Settings Game::settings;
 
-Entity & player = Game::manager.addEntity();
-Entity & player2 = Game::manager.addEntity();
-
 Game::Game() {}
 Game::~Game() {}
 
