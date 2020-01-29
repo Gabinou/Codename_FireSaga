@@ -72,7 +72,15 @@ std::string Weapon::getType() {
 void Weapon::write(const char * filename, const char * mode){
     FILE * fp;
     fp = fopen(filename, mode);
-    fprintf(fp, name.c_str());
+    fprintf(fp, "%s \n", name.c_str());
+    fprintf(fp, "%s \n", type.c_str());
+    fprintf(fp, "%s \n", description.c_str());
+    fprintf(fp, "%s \n", effect.c_str());
+    fprintf(fp, "Stats, PMight, MMight, Hit, Dodge, Crit, Favor, Weight, Proficiency, Range min, Range max, Price\n");
+    fprintf(fp, "Stats,\t\t%d,\t%d,\t%d,\t%d,\t%d,\t%d,\t%d,\t%d,\t%d,\t%d,\t%d\n", stats.Pmight, stats.Mmight, stats.combat.hit, stats.combat.dodge, stats.combat.crit, stats.combat.favor, stats.prof, stats.uses, stats.wgt, stats.price);
+    fprintf(fp, "Units Stats, HP, Str, Mag, Skl, Spd, Luck, Def, Res, Con, Move\n");
+    fprintf(fp, "Unit Malus,\t\t%d,\t%d,\t%d,\t%d,\t%d,\t%d,\t%d,\t%d,\t%d,\t%d,\t%d\n", malus.hp, malus.str, malus.mag, malus.dex, malus.agi, malus.luck, malus.def, malus.res, malus.con, malus.move, malus.prof);
+    fprintf(fp, "Unit Bonus,\t\t%d,\t%d,\t%d,\t%d,\t%d,\t%d,\t%d,\t%d,\t%d,\t%d,\t%d\n", bonus.hp, bonus.str, bonus.mag, bonus.dex, bonus.agi, bonus.luck, bonus.def, bonus.res, bonus.con, bonus.move, bonus.prof);
 }
 
 
