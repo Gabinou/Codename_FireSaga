@@ -18,23 +18,20 @@ class Game {
     private:
         Map * mapp;
         Entity & cursor = manager.addEntity();
+        KeyboardInputMap keyboardInputMap;
+        GamepadInputMap gamepadInputMap;
+        SDL_Window * window;
+        Settings settings;
+
         void moveUnit(Entity & cursor);
         void killUnitmenu();
         void makeUnitmenu(Entity & setting_entity);
         void makeCombatwindow(Unit * ally, Unit * enemy);
 
-        KeyboardInputMap keyboardInputMap;
-        GamepadInputMap gamepadInputMap;
-
-        int count;
-        int tilesize[2];
-        SDL_Window * window;
         std::string state;
         std::stack <int> menu_entities;
         std::stack <int> unit_entities;
         bool isRunning;
-        bool gaussian_switch;
-        Settings settings;
 
     public:
         static SDL_Renderer * renderer; // ->should be private member

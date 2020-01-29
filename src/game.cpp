@@ -109,8 +109,8 @@ void Game::makeUnitmenu(Entity & setting_entity) {
     manager.getEntities()[menu_entities.top()]->addComponent<PositionComponent>();
     manager.getEntities()[menu_entities.top()]->getComponent<PositionComponent>().setBounds(0, 2000, 0, 2000);
     manager.getEntities()[menu_entities.top()]->getComponent<PositionComponent>().setPos(
-        (int)(setting_entity.getComponent<PositionComponent>().getPos()[0] * tilesize[0]),
-        (int)(setting_entity.getComponent<PositionComponent>().getPos()[1] * tilesize[1]));
+        (int)(setting_entity.getComponent<PositionComponent>().getPos()[0] * settings.tilesize[0]),
+        (int)(setting_entity.getComponent<PositionComponent>().getPos()[1] * settings.tilesize[1]));
     SDL_Color black = {255, 255, 255};
     manager.getEntities()[menu_entities.top()]->addComponent<SpriteComponent>("..//assets//textbox.png", (int []) {128, 128}); 
     manager.getEntities()[menu_entities.top()]->addComponent<TextComponent>(settings.fontsize, std::vector<std::string> {"Attack", "Wait"}, black);
