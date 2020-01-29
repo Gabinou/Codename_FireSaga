@@ -7,7 +7,7 @@
 #include "gamepadcontroller.hpp"
 #include "unitcontainer.hpp"
 
-Map * mapp;
+// Map * mapp;
 
 SDL_Renderer * Game::renderer = nullptr;
 SDL_Event Game::event;
@@ -367,9 +367,9 @@ void Game::loadUnits(std::vector<std::string> names, std::vector<std::string> as
         manager.addEntity();
         manager.getEntities()[all_units[names[i]].getEntity()]->addComponent<PositionComponent>(positions_list[i][0], positions_list[i][1]);
         manager.getEntities()[all_units[names[i]].getEntity()]->addComponent<UnitContainer>(names[i]);
-        manager.getEntities()[all_units[names[i]].getEntity()]->getComponent<PositionComponent>().setMap(mapp); //Should mapp be an input? No cause mapp is always the same object?
+        manager.getEntities()[all_units[names[i]].getEntity()]->getComponent<PositionComponent>().setMap(mapp); //Should mapp be an input? No mapp is always same ?
         manager.getEntities()[all_units[names[i]].getEntity()]->addComponent<SpriteComponent>(mapp, asset_names[i].c_str());
-        manager.getEntities()[all_unit_components[names[i]]]->addGroup(manager.groupUnits);
+        manager.getEntities()[all_units[names[i]].getEntity()]->addGroup(manager.groupUnits);
         manager.getEntities()[all_units[names[i]].getEntity()]->addGroup(manager.groupUnits);
     }
 }

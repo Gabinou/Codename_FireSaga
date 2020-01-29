@@ -16,6 +16,7 @@
 class Game {
 
     private:
+        Map * mapp;
         void moveUnit(Entity & cursor);
         void killUnitmenu();
         void makeUnitmenu(Entity & setting_entity);
