@@ -468,7 +468,7 @@ void Game::render() {
     SDL_RenderClear(renderer);
     // Add stuff to render. Paint the background First.
 
-    mapp->drawMap();
+    mapp->drawMap(renderer);
 
     for (auto& u : units) {
         u->draw();

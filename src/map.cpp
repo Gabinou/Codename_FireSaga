@@ -169,36 +169,36 @@ void Map::clearMaps() {
     overlay_mode = "";
 }
 
-void Map::drawMap() {
+void Map::drawMap(SDL_Renderer * renderer) {
     int tile_ind = 0;
     for (int row = 0; row < tilemap.size(); row++) {// This loop cache friendly.
         for (int col = 0; col < tilemap[row].size(); col++) {
             tile_ind = tilemap[row][col];
             destrect.x = (col + 1) * tilesize[0];
             destrect.y = (row + 1) * tilesize[1];
-            SDL_RenderCopy(Game::renderer, textures[tile_ind], &srcrect, &destrect);
+            SDL_RenderCopy(renderer, textures[tile_ind], &srcrect, &destrect);
 
             if (show_overlay) {
                 if ((overlay_mode.find("move") != std::string::npos) && (overlays[0] != NULL)) {
                     if (movemap[row][col] == 1) {
-                        SDL_RenderCopy(Game::renderer, overlays[0], &srcrect, &destrect);
+                        SDL_RenderCopy(renderer, overlays[0], &srcrect, &destrect);
                     }
                 }
                 if ((overlay_mode.find("attack") != std::string::npos)  && (overlays[1] != NULL)) {
                     if (attackmap[row][col] == 1) {
-                        SDL_RenderCopy(Game::renderer, overlays[1], &srcrect, &destrect);
+                        SDL_RenderCopy(renderer, overlays[1], &srcrect, &destrect);
                     }
                 }
                 if ((overlay_mode.find("heal") != std::string::npos) && (overlays[2] != NULL)) {
                     if (healmap[row][col] == 1) {
-                        SDL_RenderCopy(Game::renderer, overlays[2], &srcrect, &destrect);
+                        SDL_RenderCopy(renderer, overlays[2], &srcrect, &destrect);
                     }
                 }
             }
 
             if (show_danger) {
                 if (dangermap[row][col] > 1) {
-                    SDL_RenderCopy(Game::renderer, dangers[0], &srcrect, &destrect);
+                    SDL_RenderCopy(renderer, dangers[0], &srcrect, &destrect);
                 }
             }
             // if (ss_looping == "pingpong") {
@@ -209,7 +209,7 @@ void Map::drawMap() {
             //     srcrect.x = srcrect.w * (frames - static_cast<int>((SDL_GetTicks() / speed) % frames));
             // }
 
-            // SDL_RenderCopy(Game::renderer, texture, &srcrect, &destrect);
+            // SDL_RenderCopy(renderer, texture, &srcrect, &destrect);
         }
     }
 }
