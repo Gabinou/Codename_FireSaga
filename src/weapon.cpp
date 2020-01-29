@@ -76,6 +76,12 @@ void Weapon::write(const char * filename, const char * mode){
     fprintf(fp, "%s \n", type.c_str());
     fprintf(fp, "%s \n", description.c_str());
     fprintf(fp, "%s \n", effect.c_str());
+    if (stats.dmg_type) {
+        fprintf(fp, "Damage type: %s \n", "Magic");
+    } else {
+        fprintf(fp, "Damage type: %s \n", "Physical");
+    }
+    // Handedness variable sucks and is hard to print.
     fprintf(fp, "Stats, PMight, MMight, Hit, Dodge, Crit, Favor, Weight, Proficiency, Range min, Range max, Price\n");
     fprintf(fp, "Stats,\t\t%d,\t%d,\t%d,\t%d,\t%d,\t%d,\t%d,\t%d,\t%d,\t%d,\t%d\n", stats.Pmight, stats.Mmight, stats.combat.hit, stats.combat.dodge, stats.combat.crit, stats.combat.favor, stats.prof, stats.uses, stats.wgt, stats.price);
     fprintf(fp, "Units Stats, HP, Str, Mag, Skl, Spd, Luck, Def, Res, Con, Move\n");
