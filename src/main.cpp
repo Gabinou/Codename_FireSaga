@@ -33,8 +33,8 @@ int main(int argc, char * argv[]) {
     printf("Initiating game.\n");
     temp_settings = firesaga->getSettings();
     temp_settings.FPS.show = true; 
+    temp_settings.fontsize = 28; 
     firesaga->setSettings(temp_settings);
-    firesaga->setFontsize(28);
     firesaga->init("FireSaga", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, firesaga->getSettings().res.x, firesaga->getSettings().res.y, false);
     firesaga->makeFPSEntity();
     printf("Initiated game.\n");

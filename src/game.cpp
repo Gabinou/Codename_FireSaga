@@ -16,14 +16,6 @@ Manager Game::manager;
 Game::Game() {}
 Game::~Game() {}
 
-void Game::setFontsize(int in_fontsize) {
-    fontsize = in_fontsize;
-}
-
-Game::getFontsize() {
-    return(fontsize);
-}
-
 Settings Game::getSettings() {
     return(settings);
 }
@@ -121,7 +113,7 @@ void Game::makeUnitmenu(Entity & setting_entity) {
         (int)(setting_entity.getComponent<PositionComponent>().getPos()[1] * tilesize[1]));
     SDL_Color black = {255, 255, 255};
     manager.getEntities()[menu_entities.top()]->addComponent<SpriteComponent>("..//assets//textbox.png", (int []) {128, 128}); 
-    manager.getEntities()[menu_entities.top()]->addComponent<TextComponent>(fontsize, std::vector<std::string> {"Attack", "Wait"}, black);
+    manager.getEntities()[menu_entities.top()]->addComponent<TextComponent>(settings.fontsize, std::vector<std::string> {"Attack", "Wait"}, black);
     manager.getEntities()[menu_entities.top()]->addGroup(manager.groupUI);
 }
 
@@ -368,7 +360,7 @@ void Game::init(const char * title, int xpos, int ypos, int width, int height, b
         exit(2);
     }
             
-    Game::font = TTF_OpenFont("../fonts/arial.ttf", Game::fontsize); // Size translates to pixel size? 
+    Game::font = TTF_OpenFont("../fonts/arial.ttf", settings.fontsize); // Size translates to pixel size? 
     //The srcrect does not change size with font pointsize.
 
     if (Game::font == NULL) {

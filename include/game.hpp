@@ -22,16 +22,17 @@ class Game {
         void killUnitmenu();
         void makeUnitmenu(Entity & setting_entity);
         void makeCombatwindow(Unit * ally, Unit * enemy);
+
         KeyboardInputMap keyboardInputMap;
         GamepadInputMap gamepadInputMap;
-        int fontsize;
-        bool isRunning;
+
         int count;
         int tilesize[2];
         SDL_Window * window;
         std::string state;
         std::stack <int> menu_entities;
         std::stack <int> unit_entities;
+        bool isRunning;
         bool gaussian_switch;
         Settings settings;
 
@@ -60,9 +61,6 @@ class Game {
 
         void makeFPSEntity();
 
-
-        void setFontsize(int in_fontsize);
-        int getFontsize();
         Settings getSettings();
         void setSettings(Settings);
 
