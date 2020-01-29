@@ -13,7 +13,6 @@ TTF_Font * Game::font = NULL;
 Manager Game::manager;
 Settings Game::settings;
 
-Entity & cursor = Game::manager.addEntity(); // FOR SOME REASON, having an 2, 4, 8 entities.... breaks something in the unitmove->unitmenu states move
 Entity & player = Game::manager.addEntity();
 Entity & player2 = Game::manager.addEntity();
 
@@ -320,18 +319,6 @@ void Game::loadMap(std::string filename) {
     printf("Loading map \n");
     mapp =  new Map(settings.tilesize[0], settings.tilesize[1]); // mapp is a pointer
     mapp->loadTilemap(filename);
-    // cursor.getComponent<PositionComponent>().setPos(6, 6);
-    // cursor.getComponent<KeyboardController>().setMap(mapp);
-    // if (SDL_NumJoysticks() < 1) {
-    //     printf( "No joysticks connected.\n" );
-    // } else {
-    //     cursor.getComponent<GamepadController>().setMap(mapp);
-    // }
-    // cursor.getComponent<SpriteComponent>().setMap(mapp);
-    // cursor.getComponent<SpriteComponent>().setTexture("..//assets//cursors.png");
-    // cursor.getComponent<SpriteComponent>().setAnimation(10, 50);
-    // cursor.getComponent<SpriteComponent>().setSlidetype("geometric");
-    // // cursor.addGroup(manager.groupUI);
 }
 
 void Game::loadCursor() {

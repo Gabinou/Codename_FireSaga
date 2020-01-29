@@ -89,7 +89,6 @@ class PositionComponent : public Component {
 
                 if ((in_x >= bounds[0]) && (in_x <= bounds[1])) {
                     position[0] = in_x;
-
                 }
 
                 if ((in_y >= bounds[2]) && (in_y <= bounds[3])) {

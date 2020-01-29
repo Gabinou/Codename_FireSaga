@@ -17,6 +17,7 @@ class Game {
 
     private:
         Map * mapp;
+        Entity & cursor = Game::manager.addEntity();
         void moveUnit(Entity & cursor);
         void killUnitmenu();
         void makeUnitmenu(Entity & setting_entity);
