@@ -37,13 +37,16 @@ int main(int argc, char * argv[]) {
     printf("Initiated game.\n");
 
     firesaga->loadMap("..//maps//test_tilemap.txt");
-    printf("Made map\n");
+    printf("Map loaded\n");
+
+    firesaga->loadCursor();
+    printf("Cursor loaded\n");
 
     std::vector<std::string> names = {"Silou"};
     std::vector<std::string> asset_names = {"..//assets//horse.png"};
     std::vector<std::vector<int>> positions_list = {{6, 6}};
     firesaga->loadUnits(names, asset_names, positions_list);
-    printf("Loaded Units\n");
+    printf("Units loaded\n");
 
     std::chrono::system_clock::time_point frame_start, frame_end, frame_middle;
     int frame_time;

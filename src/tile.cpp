@@ -7,7 +7,7 @@ Tile::~Tile() {
 Tile::Tile(void) { 
 }
 
-Tile::Tile(const std::string in_name, const Movement_cost in_cost, unsigned int * in_stats[3]) {
+Tile::Tile(const std::string in_name, const Movement_cost in_cost, unsigned int * in_stats[4]) {
 	name = in_name;
 	cost_struct = in_cost;
     cost_map["foot_slow"] = in_cost.foot_slow;
@@ -20,8 +20,9 @@ Tile::Tile(const std::string in_name, const Movement_cost in_cost, unsigned int 
     cost_map["pirates"] = in_cost.pirates;
     cost_map["bandits"] = in_cost.bandits;
 	stats.dodge = (unsigned int)in_stats[0];
-	stats.def = (unsigned int)in_stats[1];
-	stats.heal = (unsigned int)in_stats[2];
+	stats.Pprot = (unsigned int)in_stats[1];
+    stats.Mprot = (unsigned int)in_stats[2];
+	stats.heal = (unsigned int)in_stats[3];
 }
 Tile::Tile(const std::string in_name, const Movement_cost in_cost, unsigned int * in_stats[3], bool in_inside) : Tile(in_name, in_cost, in_stats){
     inside = in_inside;

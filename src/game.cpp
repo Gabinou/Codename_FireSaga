@@ -179,7 +179,6 @@ void Game::setState(Entity & setting_entity, std::string new_state) {
                 }
             }
             std::string current_unit_name = manager.getEntities()[unit_entities.top()]->getComponent<UnitContainer>().getName(); // problem
-            printf("DOES IT WORK NOW? %s", current_unit_name.c_str());
             unit_move = all_units[current_unit_name].getStats().move;
 
             start[0] = manager.getEntities()[unit_entities.top()]->getComponent<PositionComponent>().getPos()[0]; // Start is (+1,+1)?
@@ -193,13 +192,8 @@ void Game::setState(Entity & setting_entity, std::string new_state) {
 
             movemapp = movemap(costmap, start, unit_move, "matrix");
             mapp->setMap("move", movemapp);
-            plot2Dvector(movemapp);
-
-            printf("%d %d \n", range[0], range[1]);
-            printf("%d \n", unit_move);
 
             std::vector<std::vector<int>> attackmapp = attackmap(movemapp, start, unit_move, range, "matrix");
-            plot2Dvector(attackmapp);
             mapp->setMap("attack", attackmapp);
 
             mapp->showOverlay();
@@ -413,19 +407,7 @@ void Game::init(const char * title, int xpos, int ypos, int width, int height, b
         isRunning = false;
     }
 
-    // Map should be loaded before I think.
-    // cursor.addComponent<PositionComponent>(6, 6);
-    // cursor.addComponent<KeyboardController>(this);
-    // if (SDL_NumJoysticks() < 1) {
-    //     printf( "No joysticks connected.\n" );
-    // } else {
-    //     cursor.addComponent<GamepadController>(this);
-    // }
-    // cursor.addComponent<SpriteComponent>("..//assets//cursors.png", 10, 50);
-    // cursor.getComponent<SpriteComponent>().setSlidetype("geometric");
-    // cursor.addGroup(manager.groupUI);
-
-    printf("in game: %s\n", all_scripts["Chapter 1"].getScene("Intro").getLine("1").line.c_str());
+    printf("Testing script in game: %s\n", all_scripts["Chapter 1"].getScene("Intro").getLine("1").line.c_str());
 
     this->setState("map");
     

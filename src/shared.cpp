@@ -170,7 +170,6 @@ std::vector<std::vector<int>> list2matrix(std::vector<std::vector<int>> list, in
 std::vector<std::vector<int>> attackmap(std::vector<std::vector<int>> movemap, int start[], int move, unsigned char range[2], std::string mode){
     // Using the movemap to computes all attackable tiles.
     // EXCLUDING moveable tiles.
-    printf("In attackmap\n");
     std::vector<std::vector<int>> attackmap;
     std::vector<std::vector<int>> movelist;
     std::vector<int> temp_point = {0, 0};
