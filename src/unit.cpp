@@ -605,7 +605,7 @@ void baseUnits() {
     Unit_stats temp;
     //hp,str,mag,skl,spd,luck,def,res,con,move
     temp = {17,  6,  2,  7,  7,   7,  4,  5,  6, 5};
-    Unit main("Main", "Mercenary", temp);
+    Unit main("Main", "Mercenary", temp, "M");
     temp = {48, 14, 25, 32, 34,  28, 19, 40, 15, 0};
     main.setCaps(temp);
     temp = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
@@ -615,7 +615,7 @@ void baseUnits() {
     all_units["Main"] = main;
     
     temp = {18,  6,  2,  7,  7,   7,  4,  5,  6, 7};
-    Unit reliable("Reliable", "Cavalier", temp);
+    Unit reliable("Reliable", "Cavalier", temp, "M");
     temp = {48, 14, 25, 32, 34,  28, 19, 40, 15};
     reliable.setCaps(temp);
     temp = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
@@ -624,7 +624,7 @@ void baseUnits() {
     all_units["Reliable"] = reliable;
     
     temp = {19,  6,  2,  7,  7,   7,  4,  5,  6,  7};
-    Unit coward("Coward", "Cavalier", temp);
+    Unit coward("Coward", "Cavalier", temp, "M");
     temp = {48, 14, 25, 32, 34,  28, 19, 40, 15};
     coward.setCaps(temp);
     temp = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
@@ -633,7 +633,7 @@ void baseUnits() {
     all_units["Coward"] = coward;
     
     temp = {20,  6,  2,  7,  7,   7,  4,  5,  6,  6};
-    Unit hjaigen("1H Jaigen", "Fencermaster", temp);
+    Unit hjaigen("1H Jaigen", "Fencermaster", temp, "M");
     temp = {48, 14, 25, 32, 34,  28, 19, 40, 15};
     hjaigen.setCaps(temp);
     temp = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
@@ -642,7 +642,7 @@ void baseUnits() {
     all_units["1H Jaigen"] = hjaigen;
 
     temp = {14,  6,  2,  7,  7,   7,  4,  5,  6,  5};
-    Unit lovely("Lovely", "Priestess", temp);
+    Unit lovely("Lovely", "Priestess", temp, "F");
     temp = {48, 14, 25, 32, 34,  28, 19, 40, 15};
     lovely.setCaps(temp);
     temp = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
@@ -651,7 +651,7 @@ void baseUnits() {
     all_units["Lovely"] = lovely;
     
     temp = {16,  6,  2,  7,  7,   7,  4,  5,  6,  6};
-    Unit hottie("Hottie", "Thief", temp);
+    Unit hottie("Hottie", "Thief", temp, "M");
     temp = {48, 14, 25, 32, 34,  28, 19, 40, 15};
     hottie.setCaps(temp);
     temp = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
@@ -660,7 +660,7 @@ void baseUnits() {
     all_units["Hottie"] = hottie;
     
     temp = {22,  4,  5,  7,  6,   8,  4,  6,  5, 5}; // 4 or 5?
-    Unit servil("Servil", "Knight", temp);
+    Unit servil("Servil", "Knight", temp, "M");
     temp = {48, 14, 25, 32, 34,  28, 19, 40, 15};
     servil.setCaps(temp);
     temp = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
@@ -669,7 +669,7 @@ void baseUnits() {
     all_units["Servil"] = servil;
     
     temp = {34,  4,  5,  7,  6,   8,  4,  6,  5, 5};
-    Unit perignon("Pérignon", "Mage", temp);
+    Unit perignon("Pérignon", "Mage", temp, "M");
     temp = {48, 14, 25, 32, 34,  28, 19, 40, 15};
     perignon.setCaps(temp);
     temp = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
@@ -678,7 +678,7 @@ void baseUnits() {
     all_units["Pérignon"] = perignon;
     
     temp = {15,  4,  5,  7,  6,   8,  4,  6,  5, 5};
-    Unit poet("Poet", "Mage", temp);
+    Unit poet("Poet", "Mage", temp, "M");
     temp = {48, 14, 25, 32, 34,  28, 19, 40, 15};
     poet.setCaps(temp);
     temp = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
@@ -687,7 +687,7 @@ void baseUnits() {
     all_units["Poet"] = poet;
     
     temp = {15,  4,  5,  7,  6,   8,  4,  6,  5, 5};
-    Unit silou("Silou", "Mage", temp);
+    Unit silou("Silou", "Mage", temp, "F");
     temp = {48, 14, 25, 32, 34,  28, 19, 40, 15};
     silou.setCaps(temp);
     temp = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
