@@ -33,6 +33,9 @@ void Scene::setID(std::string in_id) {
 void Scene::addLine(const Dialog_line in_line) {
     lines[in_line.id] = in_line;
 }
+void Scene::addLines(const std::unordered_map<std::string, Dialog_line> in_lines) {
+    lines = in_lines;
+}
 
 void Scene::setParticipants(const std::vector<std::string> in_participants) {
     participants = in_participants;
@@ -63,6 +66,7 @@ std::unordered_map<std::string, Script> all_scripts;
 void baseScript() {
     printf("Making base script\n");
     Dialog_line temp_line;
+    std::unordered_map<std::string, Dialog_line> temp_lines;
     Scene temp_scene;
     Script Chapter_1; 
 
@@ -74,10 +78,9 @@ void baseScript() {
 
     Script Support_Main_Lovely;
     temp_scene.setID("Support_Main_Lovely_C"); 
-    temp_line = {"1", "Main", "the line"}; 
-    temp_scene.addLine(temp_line);
-    temp_line = {"2", "Lovely", "the line"}; 
-    temp_scene.addLine(temp_line);
+    temp_lines["1"] = {"1", "Main", "the line"}; 
+    temp_lines["2"] = {"2", "Lovely", "the line"}; 
+    // temp_scene.addLine(temp_line);
 
 
 }

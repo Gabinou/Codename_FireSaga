@@ -33,6 +33,7 @@ class Scene {
         Scene(std::string in_id);
         Scene(std::unordered_map<std::string, Dialog_line> in_lines, std::vector<std::string> in_lines_id);
         void addLine(const Dialog_line in_line);
+        void addLines(const  std::unordered_map<std::string, Dialog_line> in_lines);
         Dialog_line getLine(const std::string in_id);
         Dialog_line nextLine();
         std::string getID();
