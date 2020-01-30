@@ -68,19 +68,47 @@ void baseScript() {
     Dialog_line temp_line;
     std::unordered_map<std::string, Dialog_line> temp_lines;
     Scene temp_scene;
-    Script Chapter_1; 
 
-    Scene intro("Intro"); 
-    temp_line = {"1", "Silou", "the line"};
-    intro.addLine(temp_line);
-    Chapter_1.addScene(intro);
+    Script Chapter_2; 
+    Script Chapter_3; 
+    Script Chapter_4; 
+    Script Chapter_5; 
+    Script Chapter_6; 
+    Script Chapter_7; 
+    Script Chapter_8; 
+    Script Chapter_9; 
+    Script Chapter_10; 
+    Script Chapter_11; 
+    Script Chapter_12; 
+    Script Chapter_13; 
+    Script Chapter_14; 
+    Script Chapter_15; 
+
+    Script Chapter_1; 
+    temp_scene.setID("Intro");
+    temp_lines["1"] = {"1", "Silou", "the line"};
+    temp_scene.addLines(temp_lines);
+    Chapter_1.addScene(temp_scene);
     all_scripts["Chapter 1"] = Chapter_1;
 
-    Script Support_Main_Lovely;
-    temp_scene.setID("Support_Main_Lovely_C"); 
-    temp_lines["1"] = {"1", "Main", "the line"}; 
+    Script Supports;
+    temp_scene.setID("Main_Lovely_C");
+    temp_lines["1"] = {"1", "Main", "the line2"};
     temp_lines["2"] = {"2", "Lovely", "the line"}; 
-    // temp_scene.addLine(temp_line);
-
-
+    temp_scene.addLines(temp_lines);
+    temp_lines.clear();
+    Supports.addScene(temp_scene);
+    temp_scene.setID("Main_Lovely_B");
+    temp_lines["1"] = {"1", "Main", "the line"};
+    temp_lines["2"] = {"2", "Lovely", "the line"}; 
+    temp_scene.addLines(temp_lines);
+    temp_lines.clear(); 
+    Supports.addScene(temp_scene);
+    temp_scene.setID("Main_Lovely_A");
+    temp_lines["1"] = {"1", "Main", "the line"};
+    temp_lines["2"] = {"2", "Lovely", "the line"}; 
+    temp_scene.addLines(temp_lines); 
+    Supports.addScene(temp_scene);
+    temp_lines.clear(); 
+    all_scripts["Supports"] = Supports;
 }
