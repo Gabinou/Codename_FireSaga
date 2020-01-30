@@ -76,7 +76,6 @@ std::unordered_map<int, Tile> all_tiles;
 void baseTiles() {
 	printf("Making base tiles\n");
 	unsigned int * temp_stats[3] = {0, 0, 0};// dodge, def, heal
-
     // Fliers always have 1 movement because they dismount inside.
     
     // Mvt_types: foot_slow, foot_fast, mages, riders_slow, riders_fast, fliers, armors, pirates, bandits;
