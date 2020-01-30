@@ -8,7 +8,7 @@ class Tile {
         Movement_cost cost_struct;
         std::unordered_map<std::string, unsigned char> cost_map;
         bool inside;
-        Tilestats stats;
+        Tile_stats stats;
         std::string name;
     public:
         Tile();
@@ -20,7 +20,7 @@ class Tile {
         Movement_cost getCoststruct();
         std::unordered_map<std::string, unsigned char> getCostmap();
         std::string getName();
-        Tilestats getStats();
+        Tile_stats getStats();
         bool isInside();
         bool isOutside();
 

@@ -3,6 +3,12 @@
 #include "game.hpp"
 #include <algorithm>
 
+int seed = 1990; 
+std::mt19937_64 mt_64(1990);
+std::mt19937 mt(1990); // negligible perfomance difference
+std::uniform_int_distribution<int> Uint_99(0, 99); // more twice faster than Ureal_1
+
+
 Inventory_item convoy[200];
 
 void writeText(int in_fontsize, int in_position[2], float in_sizefactor[2], std::string in_text, SDL_Color in_color, TTF_Font * in_font, SDL_Renderer * in_renderer) {
@@ -583,9 +589,6 @@ void read_all_units(const char * filename) {
 
 }
 
-std::mt19937_64 mt_64(123);
-std::mt19937 mt(123); // negligible perfomance difference
-std::uniform_int_distribution<int> Uint_99(0, 99); // more twice faster than Ureal_1
 
 int getRN(){
     return(Uint_99(mt_64));

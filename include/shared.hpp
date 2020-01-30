@@ -12,52 +12,34 @@
 #include "SDL2/SDL_ttf.h"
 #include "linalg.hpp"
 
-
-/*! \file shared.hpp
-* \brief Shared data.
-*/
-/// \def LEN(arr)
-/// \brief Measure length of array. I don't know why this is a macro.
 #define LEN(arr) ((int) (sizeof (arr) / sizeof (arr)[0]))
-// extern std::mt19937 mt(1899);
-//Deterministic seed. *DESIGN QUESTION*: What about the RNG? My answer: do like other fire Emblems. Always Same RNG, it is the player actions that change it. Makes debugging repeatable. Nice and convenient.
-/// \fn mt
-/// \brief gets the next random number, using pre-defined Mersenne-Twister object applied to pre-defined uniform distribution.
-extern std::mt19937 mt;
-extern std::mt19937_64 mt_64;
-
-/// \fn getRN
-/// \brief gets the next random number, using pre-defined Mersenne-Twister object applied to pre-defined uniform distribution.
-extern int getRN();
-extern int * boxmuller(int RN_U[2], float avg = 50., float std_dev = 20.);
-extern int * getGRNs(float avg = 50., float std_dev = 20.);
-
-/// \fn single_roll(int)
-/// \brief Check if event occurs using single RNG roll: if rand<prob, event occurs. True to probabilities, but humans think it is weird.
-extern bool single_roll(const int RN, const int hit);
-
-/// \fn double_roll(int)
-/// \brief Check if event occurs using double RNG roll: if mean of 2 random numbers is lower than probability of event, it occurs. Skews probabilities, but largely fits with humans biases.
-extern bool double_roll(const int RN1, const int RN2, const int hit);
-
-extern std::vector<int> extract_int_string(std::string);
-
-extern int geometricslide(int distance, float geo_factor = 2);
-extern int vectorslide(int x, int y, bool xfirst);
-extern bool is_pressed(const Uint8 * state_array, std::vector<SDL_Scancode> to_find);
-
-extern int pingpong(int current, int upper, int lower = 0);
-
 template <typename T> int sgn(T val) {
     return (T(0) < val) - (val < T(0));
 }
 
+extern std::mt19937 mt;
+extern std::mt19937_64 mt_64;
+
+extern int getRN();
+extern int * getGRNs(float avg = 50., float std_dev = 20.);
+extern int * boxmuller(int RN_U[2], float avg = 50., float std_dev = 20.);
+// boxmuller transforms uniforml RNs into gaussian RNs.
+
+extern bool single_roll(const int RN, const int hit);
+extern bool double_roll(const int RN1, const int RN2, const int hit);
+
+
+extern int geometricslide(int distance, float geo_factor = 2);
+extern int vectorslide(int x, int y, bool xfirst);
+extern int pingpong(int current, int upper, int lower = 0);
+extern bool is_pressed(const Uint8 * state_array, std::vector<SDL_Scancode> to_find);
+
+extern std::vector<int> extract_int_string(std::string);
 extern std::vector<std::string> css_from_line(char *);
 extern std::vector<std::string> css_from_line(std::string, std::string delimiter = ",");
 extern std::vector<std::string> get_words(std::string);
 extern std::string words2str(std::vector<std::string>);
 extern std::vector<int> csv_from_line(std::string, std::string delimiter = ",");
-extern std::unordered_map<std::string, int> wpn_indexes;
 
 extern std::string read_line(const char * filename, char skip);
 extern void read_all_weapons(const char * filename = "weapons.txt");
@@ -79,11 +61,10 @@ extern std::vector<std::vector<int>> list2matrix(std::vector<std::vector<int>> l
 
 extern void writeText(int in_fontsize, int in_position[2], float in_sizefactor[2], std::string in_text, SDL_Color in_color, TTF_Font * in_font, SDL_Renderer * in_renderer);
 
-// Texture stuff.
 extern SDL_Texture * loadTexture(const char * filename);
 extern SDL_Texture * textToTexture(std::string textureText, SDL_Color textColor, TTF_Font * in_font);
 
-struct Tilestats {
+struct Tile_stats {
     unsigned int dodge;
     unsigned int Pprot;
     unsigned int Mprot;
@@ -103,11 +84,11 @@ struct Unit_state {
 struct Unit_stats {
     unsigned char hp; // hit points
     unsigned char str; // strength
-    unsigned char mag; // magic power
+    unsigned char mag; // magic
     unsigned char agi; // agility
     unsigned char dex; // dexterity
     unsigned char luck;
-    unsigned char def; // defense power
+    unsigned char def; // defense
     unsigned char res; // resistance
     unsigned char con; // constitution
     unsigned char move; // movement

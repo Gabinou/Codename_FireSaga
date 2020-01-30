@@ -40,7 +40,7 @@ std::string Tile::getName(){
 	return(name);
 }
 
-Tilestats Tile::getStats(){
+Tile_stats Tile::getStats(){
 	return(stats);
 }
 
