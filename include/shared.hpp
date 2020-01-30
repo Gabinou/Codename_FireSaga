@@ -52,17 +52,12 @@ template <typename T> int sgn(T val) {
     return (T(0) < val) - (val < T(0));
 }
 
-/*! \fn css_from_line()
-*  \brief Get comma separated strings (css) from a line. Lines are gotten from fgets. outputs vector of string for simplicity. Fucking chars man. Sucks ballz.
-*/
 extern std::vector<std::string> css_from_line(char *);
 extern std::vector<std::string> css_from_line(std::string, std::string delimiter = ",");
 extern std::vector<std::string> get_words(std::string);
 extern std::string words2str(std::vector<std::string>);
 extern std::vector<int> csv_from_line(std::string, std::string delimiter = ",");
 extern std::unordered_map<std::string, int> wpn_indexes;
-
-//swd lnc axe bow wnd fir tnd drk lgt staff
 
 extern std::string read_line(const char * filename, char skip);
 extern void read_all_weapons(const char * filename = "weapons.txt");
