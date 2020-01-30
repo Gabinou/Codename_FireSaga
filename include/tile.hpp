@@ -23,6 +23,7 @@ class Tile {
         Tile_stats getStats();
         bool isInside();
         bool isOutside();
+        void setInside(bool in_inside);
 
         void write(const char * filename, const char * mode = "a");
 };

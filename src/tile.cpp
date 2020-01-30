@@ -52,6 +52,10 @@ bool Tile::isOutside(){
     return(!inside);
 }
 
+void Tile::setInside(bool in_inside){
+    inside = in_inside;
+}
+
 void Tile::write(const char * filename, const char * mode){
     FILE * fp;
     fp = fopen(filename, mode);
