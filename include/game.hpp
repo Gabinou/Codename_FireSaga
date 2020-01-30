@@ -64,7 +64,9 @@ class Game {
         SDL_Renderer * getRenderer(Settings);
 
         KeyboardInputMap getKeyboardInputMap();
+        void setKeyboardInputMap(const KeyboardInputMap in_keyboardInputMap);
         GamepadInputMap getGamepadInputMap();
+        void setGamepadInputMap(const GamepadInputMap in_gpmap);
 
         void setState(Entity & in_entity, std::string new_state);
         void setState(const char * new_state);

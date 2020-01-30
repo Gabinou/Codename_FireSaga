@@ -8,10 +8,8 @@
 #include "unitcontainer.hpp"
 
 SDL_Renderer * Game::renderer = nullptr;
-// SDL_Event Game::event;
 TTF_Font * Game::font = NULL;
 Manager Game::manager;
-// Settings Game::settings;
 
 Game::Game() {}
 Game::~Game() {}
@@ -81,7 +79,6 @@ void Game::fight(Unit * attacker, Unit * defender) {
         attack(defender, attacker);
         defender_doubles = defender->canDouble(attacker);
     }
-
     if (attacker_doubles) {
         attack(attacker, defender);
     }
@@ -405,9 +402,14 @@ void Game::update() {
 KeyboardInputMap Game::getKeyboardInputMap() {
     return(keyboardInputMap);
 }
-
+void Game::setKeyboardInputMap(KeyboardInputMap in_keyboardInputMap) {
+    keyboardInputMap = in_keyboardInputMap;
+}
 GamepadInputMap Game::getGamepadInputMap() {
     return(gamepadInputMap);
+}
+void Game::setGamepadInputMap(GamepadInputMap in_gamepadInputMap) {
+    gamepadInputMap = in_gamepadInputMap;
 }
 
 void Game::handleEvents() {
