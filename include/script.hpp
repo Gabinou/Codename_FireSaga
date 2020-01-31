@@ -46,6 +46,6 @@ class Script {
 extern std::unordered_map<std::string, Script> all_scripts;
 
 void baseScript();
-void baseNarrative();
+void baseNarrativeState();
 
 #endif /* SCRIPT_HPP */

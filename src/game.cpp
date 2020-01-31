@@ -85,7 +85,6 @@ void Game::fight(Unit * attacker, Unit * defender) {
     if (defender_doubles) {
         attack(defender, attacker);
     }
-
 }
 
 void Game::makeFPSEntity() {

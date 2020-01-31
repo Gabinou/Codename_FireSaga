@@ -63,7 +63,7 @@ std::string Script::getID() {
 
 std::unordered_map<std::string, Script> all_scripts;
 
-void baseNarrative() {
+void baseNarrativeState() {
     printf("Establishing base narrative state.\n");
     died["Erwin"] =  false;
     died["Kiara"] =  false;
