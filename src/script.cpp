@@ -63,6 +63,13 @@ std::string Script::getID() {
 
 std::unordered_map<std::string, Script> all_scripts;
 
+void baseNarrative() {
+    died["Erwin"] =  false;
+    promoted["Erwin"] =  false;
+    happened["ArmCut"] =  false;
+}
+
+
 void baseScript() {
     printf("Making base script\n");
     Dialog_line temp_line;

@@ -3,16 +3,10 @@
 
 #include "shared.hpp"
 
-// I think Game should contain a struct containing its state from the point of view of the script.
-// What states of the game are important to the script?
-//      ->Characters alive or dead.
-//      ->Characters promoted or not?
-//      ->Events happened?
-
-struct Script_state {
-    std::unordered_map<std::string, bool> isAlive;
-    std::unordered_map<std::string, bool> happened;
-};
+//For narrative purposes.
+std::unordered_map<std::string, bool> died;
+std::unordered_map<std::string, bool> promoted;
+std::unordered_map<std::string, bool> happened;
 
 struct Dialog_line {
     // How to make the line dynamic?
