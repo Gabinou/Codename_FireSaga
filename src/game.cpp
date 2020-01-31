@@ -64,6 +64,7 @@ void Game::attack(Unit * attacker, Unit * defender) {
     if (hitcrit[0]) {
         if (hitcrit[1]) {
             int damage = attacker->totalMight(false) -  defender->totalDef(false);
+            defender->takesDamage(damage);
         }
     }
 }
