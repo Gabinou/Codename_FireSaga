@@ -25,23 +25,20 @@ class Game {
 
         void moveUnit(Entity & cursor);
 
-        void killUnitmenu();
+        void killMenu(std::string name);
+        void killTopmenu();
         void makeUnitmenu(Entity & setting_entity);
 
         //TO BE IMPLEMENTED:
-        void killDefendermenu();
         void makeDefendermenu(Entity & setting_entity);
-        void killWeaponmenu();
         void makeWeaponmenu(Entity & setting_entity);
-        void killOptionmenu();
         void makeOptionsmenu(Entity & setting_entity);
-        void killSmallmap();
         void makeSmallmap(Entity & setting_entity);
-        void killCombatindow();
         void makeCombatindow(Unit * ally, Unit * enemy);
 
         std::string state;
-        std::stack <int> menu_entities;
+        std::stack <int> menu_entities; // I think stacks are bad. I don't want to only be able to delete menus from the top down. Sometimes I want to eliminate menus. I guess.
+        std::unordered_map<std::string, int> menus;
         std::stack <int> unit_entities;
         bool isRunning;
         SDL_Event event;

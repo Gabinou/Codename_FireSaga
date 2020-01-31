@@ -107,6 +107,7 @@ void Game::makeFPSEntity() {
 void Game::makeUnitmenu(Entity & setting_entity) {
     printf("Making unit menu\n");
     menu_entities.push(manager.getEntities().size());
+    menus["Unit menu"] = manager.getEntities().size();
     manager.addEntity();
     manager.getEntities()[menu_entities.top()]->addComponent<PositionComponent>();
     manager.getEntities()[menu_entities.top()]->getComponent<PositionComponent>().setBounds(0, 2000, 0, 2000);
@@ -119,7 +120,16 @@ void Game::makeUnitmenu(Entity & setting_entity) {
     manager.getEntities()[menu_entities.top()]->addGroup(manager.groupUI);
 }
 
-void Game::killUnitmenu() {
+void Game::killMenu(std::string name) {
+    if (menus[name] > -1) {
+        manager.getEntities()[menus[name]]->destroy();
+        menus[name] = -1;
+    } else {
+        printf("Could not destroy %s.", name.c_str());
+    }
+}
+
+void Game::killTopmenu() {
     printf("Killing unit menu\n");
     if (!menu_entities.empty()) {
         manager.getEntities()[menu_entities.top()]->destroy();
@@ -275,7 +285,7 @@ void Game::setState(Entity & setting_entity, std::string new_state) {
     
     if (this->state == "unitmenu") {
         if (new_state == "map") { 
-            killUnitmenu();
+            killTopmenu();
         }
         if (new_state == "attack") { 
         
