@@ -156,6 +156,10 @@ struct Movement_cost {
 };
 
 extern std::unordered_map<std::string, unsigned char> Movement_cost2;
+//For narrative purposes.
+extern std::unordered_map<std::string, bool> died;
+extern std::unordered_map<std::string, bool> promoted;
+extern std::unordered_map<std::string, bool> happened;
 
 struct Point {
     int x;

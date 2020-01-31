@@ -3,11 +3,6 @@
 
 #include "shared.hpp"
 
-//For narrative purposes.
-std::unordered_map<std::string, bool> died;
-std::unordered_map<std::string, bool> promoted;
-std::unordered_map<std::string, bool> happened;
-
 struct Dialog_line {
     // How to make the line dynamic?
     std::string id;
@@ -51,5 +46,6 @@ class Script {
 extern std::unordered_map<std::string, Script> all_scripts;
 
 void baseScript();
+void baseNarrative();
 
 #endif /* SCRIPT_HPP */

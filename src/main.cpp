@@ -19,6 +19,9 @@ int main(int argc, char * argv[]) {
     printf("Testing script: %s\n", all_scripts["Chapter 1"].getScene("Intro").getLine("1").line.c_str());
     printf("Testing script: %s\n", all_scripts["Supports"].getScene("Main_Lovely_C").getLine("1").line.c_str());
 
+    baseNarrative();
+    printf("Testing narrative: Did Erwin die? %d\n", died["Erwin"]);
+
     baseWeapons();
     printf("Testing weapon: %s\n", all_weapons["wooden_sword"].getName().c_str());
 
