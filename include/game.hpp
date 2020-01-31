@@ -24,9 +24,21 @@ class Game {
         Settings settings;
 
         void moveUnit(Entity & cursor);
+
         void killUnitmenu();
         void makeUnitmenu(Entity & setting_entity);
-        void makeCombatwindow(Unit * ally, Unit * enemy);
+
+        //TO BE IMPLEMENTED:
+        void killDefendermenu();
+        void makeDefendermenu(Entity & setting_entity);
+        void killWeaponmenu();
+        void makeWeaponmenu(Entity & setting_entity);
+        void killOptionmenu();
+        void makeOptionsmenu(Entity & setting_entity);
+        void killSmallmap();
+        void makeSmallmap(Entity & setting_entity);
+        void killCombatindow();
+        void makeCombatindow(Unit * ally, Unit * enemy);
 
         std::string state;
         std::stack <int> menu_entities;

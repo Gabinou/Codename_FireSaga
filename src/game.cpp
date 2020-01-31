@@ -53,10 +53,15 @@ bool * Game::checkHitCrit(int hit_rate, int crit_rate, std::string mode) {
         hitcrit[1] = (RNs[1] < crit_rate);
         return(hitcrit);
     }
+    if (mode == "hybrid") {
+    
+    }
+
     return(hitcrit);
 }
 
 void Game::attack(Unit * attacker, Unit * defender) {
+    printf("%s attacks %s\n", attacker->getName().c_str(), defender->getName().c_str());
     Combat_stats attacker_stats = attacker->getCombatStats();
     Combat_stats defender_stats = defender->getCombatStats();
     bool * hitcrit;
