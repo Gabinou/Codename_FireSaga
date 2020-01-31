@@ -26,7 +26,6 @@ class Game {
         void moveUnit(Entity & cursor);
 
         void killMenu(std::string name);
-        void killTopmenu();
         void makeUnitmenu(Entity & setting_entity);
 
         //TO BE IMPLEMENTED:
@@ -37,7 +36,7 @@ class Game {
         void makeCombatindow(Unit * ally, Unit * enemy);
 
         std::string state;
-        std::stack <int> menu_entities; // I think stacks are bad. I don't want to only be able to delete menus from the top down. Sometimes I want to eliminate menus. I guess.
+        // std::stack <int> menu_entities; // I think stacks are bad. I don't want to only be able to delete menus from the top down. Sometimes I want to eliminate menus. I guess.
         std::unordered_map<std::string, int> menus;
         std::stack <int> unit_entities;
         bool isRunning;

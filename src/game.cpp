@@ -106,18 +106,17 @@ void Game::makeFPSEntity() {
 
 void Game::makeUnitmenu(Entity & setting_entity) {
     printf("Making unit menu\n");
-    menu_entities.push(manager.getEntities().size());
     menus["Unit menu"] = manager.getEntities().size();
     manager.addEntity();
-    manager.getEntities()[menu_entities.top()]->addComponent<PositionComponent>();
-    manager.getEntities()[menu_entities.top()]->getComponent<PositionComponent>().setBounds(0, 2000, 0, 2000);
-    manager.getEntities()[menu_entities.top()]->getComponent<PositionComponent>().setPos(
+    manager.getEntities()[menus["Unit menu"]]->addComponent<PositionComponent>();
+    manager.getEntities()[menus["Unit menu"]]->getComponent<PositionComponent>().setBounds(0, 2000, 0, 2000);
+    manager.getEntities()[menus["Unit menu"]]->getComponent<PositionComponent>().setPos(
         (int)(setting_entity.getComponent<PositionComponent>().getPos()[0] * settings.tilesize[0]),
         (int)(setting_entity.getComponent<PositionComponent>().getPos()[1] * settings.tilesize[1]));
     SDL_Color black = {255, 255, 255};
-    manager.getEntities()[menu_entities.top()]->addComponent<SpriteComponent>("..//assets//textbox.png", (int []) {128, 128}); 
-    manager.getEntities()[menu_entities.top()]->addComponent<TextComponent>(settings.fontsize, std::vector<std::string> {"Attack", "Wait"}, black);
-    manager.getEntities()[menu_entities.top()]->addGroup(manager.groupUI);
+    manager.getEntities()[menus["Unit menu"]]->addComponent<SpriteComponent>("..//assets//textbox.png", (int []) {128, 128}); 
+    manager.getEntities()[menus["Unit menu"]]->addComponent<TextComponent>(settings.fontsize, std::vector<std::string> {"Attack", "Wait"}, black);
+    manager.getEntities()[menus["Unit menu"]]->addGroup(manager.groupUI);
 }
 
 void Game::killMenu(std::string name) {
@@ -126,16 +125,6 @@ void Game::killMenu(std::string name) {
         menus[name] = -1;
     } else {
         printf("Could not destroy %s.", name.c_str());
-    }
-}
-
-void Game::killTopmenu() {
-    printf("Killing unit menu\n");
-    if (!menu_entities.empty()) {
-        manager.getEntities()[menu_entities.top()]->destroy();
-        menu_entities.pop();
-    }  else {
-        printf("Could not destroy unit menu.");
     }
 }
 
@@ -285,7 +274,7 @@ void Game::setState(Entity & setting_entity, std::string new_state) {
     
     if (this->state == "unitmenu") {
         if (new_state == "map") { 
-            killTopmenu();
+            killMenu("Unit menu");
         }
         if (new_state == "attack") { 
         
