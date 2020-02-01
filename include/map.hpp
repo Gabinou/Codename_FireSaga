@@ -90,6 +90,6 @@ std::vector<std::vector<Map_enemy>(*)()> chapter_enemy_funcs;
 
 std::vector<Map_enemy> Chap1_mapEnemies();
 std::vector<Map_enemy> Chap2_mapEnemies();
-chapter_enemy_funcs.push_back(Chap1_mapEnemies);
+// chapter_enemy_funcs.push_back(&Chap1_mapEnemies);
 
 #endif /* MAP_HPP */
