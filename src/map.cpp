@@ -28,6 +28,18 @@ void Map::removeTile(int x, int y) {
     entitymap[x][y] = nullptr;
 }
 
+void Map::setEnemies(std::vector<Map_enemy> in_map_enemies) {
+    map_enemies = in_map_enemies;
+}
+
+void Map::addEnemy(Map_enemy in_map_enemy) {
+    map_enemies.push_back(in_map_enemy);
+}
+
+void Map::loadEnemies() {
+
+}
+
 std::vector<std::vector<int>> Map::makeMvtCostmap(std::string unitmovetype){
     int tile_ind = 0;
     std::vector<std::vector<int>> costmap((int)tilemap.size(), std::vector<int> ((int)tilemap[0].size()));

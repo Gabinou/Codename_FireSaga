@@ -28,7 +28,6 @@ extern int * boxmuller(int RN_U[2], float avg = 50., float std_dev = 20.);
 extern bool single_roll(const int RN, const int hit);
 extern bool double_roll(const int RN1, const int RN2, const int hit);
 
-
 extern int geometricslide(int distance, float geo_factor = 2);
 extern int vectorslide(int x, int y, bool xfirst);
 extern int pingpong(int current, int upper, int lower = 0);
@@ -148,6 +147,7 @@ struct Map_enemy {
     std::vector<std::string> equipment_names;
     Equipped equipped;
     int * position[2];
+    int arrival_turn; // 0 means visible in preparation, > 0 is reinforcements. NO AMBUSH SPAWNS.
 };
 
 struct Movement_cost {

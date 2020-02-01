@@ -48,6 +48,10 @@ class Map {
         void showGrid();
         void hideGrid();
 
+        void setEnemies(std::vector<Map_enemy> in_map_enemies);
+        void addEnemy(Map_enemy in_map_enemy);
+        void loadEnemies();
+
         void setDangermode(std::string in_mode);
         void showDanger();
         void hideDanger();
@@ -61,6 +65,8 @@ class Map {
         bool show_danger = false;
         bool show_grid = false;
         bool made_entitymap = false;
+
+        std::vector<Map_enemy> map_enemies;
 
         std::vector<std::vector<int>> movemap, attackmap, healmap;
         std::vector<std::vector<int>> dangermap;
@@ -76,7 +82,6 @@ class Map {
         std::vector<SDL_Texture *> overlays{NULL, NULL, NULL};
         std::vector<SDL_Texture *> dangers{NULL, NULL};
         std::string ss_looping = "linear";
-
 
         Entity_ptr_matrix entitymap;
 };
