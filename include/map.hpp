@@ -86,5 +86,10 @@ class Map {
         Entity_ptr_matrix entitymap;
 };
 
+std::vector<std::vector<Map_enemy> (*)()> Chapter_enemy_funcs;
+
+std::vector<Map_enemy> Chap1_mapEnemies();
+Chapter_enemy_funcs.push_back(Chap1_mapEnemies);
+std::vector<Map_enemy> Chap2_mapEnemies();
 
 #endif /* MAP_HPP */

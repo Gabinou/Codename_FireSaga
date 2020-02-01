@@ -225,3 +225,4 @@ void Map::drawMap(SDL_Renderer * renderer) {
         }
     }
 }
+
