@@ -705,156 +705,151 @@ void baseUnits() {
 }
 
 void baseEnemies() {
+    printf("Making base enemies\n");
+    Unit_stats temp;
+    //hp,str,mag,skl,spd,luck,def,res,con,move
+
     temp = {15,  4,  5,  7,  6,   8,  4,  6,  5, 5};
     Unit generic_bandit("Bandit", "Bandit", temp, "M");
     temp = {48, 14, 25, 32, 34,  28, 19, 40, 15};
-    silou.setCaps(temp);
+    generic_bandit.setCaps(temp);
     temp = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
-    silou.setGrowths(temp);
-    silou.setExp(0);
+    generic_bandit.setGrowths(temp);
+    generic_bandit.setExp(0);
     all_units["Bandit"] = generic_bandit;
-
-    temp = {15,  4,  5,  7,  6,   8,  4,  6,  5, 5};
-    Unit generic_fencer("Fencer", "Fencer", temp, "M");
-    temp = {48, 14, 25, 32, 34,  28, 19, 40, 15};
-    silou.setCaps(temp);
-    temp = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
-    silou.setGrowths(temp);
-    silou.setExp(0);
-    all_units["Fencer"] = generic_fencer;
 
     temp = {15,  4,  5,  7,  6,   8,  4,  6,  5, 5};
     Unit generic_Duelist("Duelist", "Duelist", temp, "M");
     temp = {48, 14, 25, 32, 34,  28, 19, 40, 15};
-    silou.setCaps(temp);
+    generic_Duelist.setCaps(temp);
     temp = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
-    silou.setGrowths(temp);
-    silou.setExp(0);
+    generic_Duelist.setGrowths(temp);
+    generic_Duelist.setExp(0);
     all_units["Duelist"] = generic_Duelist;
 
     temp = {15,  4,  5,  7,  6,   8,  4,  6,  5, 5};
     Unit generic_Pickpocket("Pickpocket", "Pickpocket", temp, "M");
     temp = {48, 14, 25, 32, 34,  28, 19, 40, 15};
-    silou.setCaps(temp);
+    generic_Pickpocket.setCaps(temp);
     temp = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
-    silou.setGrowths(temp);
-    silou.setExp(0);
+    generic_Pickpocket.setGrowths(temp);
+    generic_Pickpocket.setExp(0);
     all_units["Pickpocket"] = generic_Pickpocket;
 
     temp = {15,  4,  5,  7,  6,   8,  4,  6,  5, 5};
     Unit generic_Thief("Thief", "Thief", temp, "M");
     temp = {48, 14, 25, 32, 34,  28, 19, 40, 15};
-    silou.setCaps(temp);
+    generic_Thief.setCaps(temp);
     temp = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
-    silou.setGrowths(temp);
-    silou.setExp(0);
+    generic_Thief.setGrowths(temp);
+    generic_Thief.setExp(0);
     all_units["Thief"] = generic_Thief;    
 
     temp = {15,  4,  5,  7,  6,   8,  4,  6,  5, 5};
-    Unit generic_fencer("Fencer", "Fencer", temp, "M");
+    Unit generic_Assassin("Assassin", "Assassin", temp, "M");
     temp = {48, 14, 25, 32, 34,  28, 19, 40, 15};
-    silou.setCaps(temp);
+    generic_Assassin.setCaps(temp);
     temp = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
-    silou.setGrowths(temp);
-    silou.setExp(0);
-    all_units["Fencer"] = generic_fencer;
+    generic_Assassin.setGrowths(temp);
+    generic_Assassin.setExp(0);
+    all_units["Assassin"] = generic_Assassin;
+
+    temp = {15,  4,  5,  7,  6,   8,  4,  6,  5, 5};
+    Unit generic_Archer("Archer", "Archer", temp, "M");
+    temp = {48, 14, 25, 32, 34,  28, 19, 40, 15};
+    generic_Archer.setCaps(temp);
+    temp = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
+    generic_Archer.setGrowths(temp);
+    generic_Archer.setExp(0);
+    all_units["Archer"] = generic_Archer;
+
+    temp = {15,  4,  5,  7,  6,   8,  4,  6,  5, 5};
+    Unit generic_Marksman("Marksman", "Marksman", temp, "M");
+    temp = {48, 14, 25, 32, 34,  28, 19, 40, 15};
+    generic_Marksman.setCaps(temp);
+    temp = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
+    generic_Marksman.setGrowths(temp);
+    generic_Marksman.setExp(0);
+    all_units["Marksman"] = generic_Marksman;
+
+    temp = {15,  4,  5,  7,  6,   8,  4,  6,  5, 5};
+    Unit generic_Mercenary("Mercenary", "Mercenary", temp, "M");
+    temp = {48, 14, 25, 32, 34,  28, 19, 40, 15};
+    generic_Mercenary.setCaps(temp);
+    temp = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
+    generic_Mercenary.setGrowths(temp);
+    generic_Mercenary.setExp(0);
+    all_units["Mercenary"] = generic_Mercenary;
+
+    temp = {15,  4,  5,  7,  6,   8,  4,  6,  5, 5};
+    Unit generic_Hero("Hero", "Hero", temp, "M");
+    temp = {48, 14, 25, 32, 34,  28, 19, 40, 15};
+    generic_Hero.setCaps(temp);
+    temp = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
+    generic_Hero.setGrowths(temp);
+    generic_Hero.setExp(0);
+    all_units["Hero"] = generic_Hero;
+
+    temp = {15,  4,  5,  7,  6,   8,  4,  6,  5, 5};
+    Unit generic_Corsair("Corsair", "Corsair", temp, "M");
+    temp = {48, 14, 25, 32, 34,  28, 19, 40, 15};
+    generic_Corsair.setCaps(temp);
+    temp = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
+    generic_Corsair.setGrowths(temp);
+    generic_Corsair.setExp(0);
+    all_units["Corsair"] = generic_Corsair;
+
+    temp = {15,  4,  5,  7,  6,   8,  4,  6,  5, 5};
+    Unit generic_Viking("Viking", "Viking", temp, "M");
+    temp = {48, 14, 25, 32, 34,  28, 19, 40, 15};
+    generic_Viking.setCaps(temp);
+    temp = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
+    generic_Viking.setGrowths(temp);
+    generic_Viking.setExp(0);
+    all_units["Viking"] = generic_Viking;
+
+    temp = {15,  4,  5,  7,  6,   8,  4,  6,  5, 5};
+    Unit generic_Ravager("Ravager", "Ravager", temp, "M");
+    temp = {48, 14, 25, 32, 34,  28, 19, 40, 15};
+    generic_Ravager.setCaps(temp);
+    temp = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
+    generic_Ravager.setGrowths(temp);
+    generic_Ravager.setExp(0);
+    all_units["Ravager"] = generic_Ravager;
+
+    temp = {15,  4,  5,  7,  6,   8,  4,  6,  5, 5};
+    Unit generic_Cavalier("Cavalier", "Cavalier", temp, "M");
+    temp = {48, 14, 25, 32, 34,  28, 19, 40, 15};
+    generic_Cavalier.setCaps(temp);
+    temp = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
+    generic_Cavalier.setGrowths(temp);
+    generic_Cavalier.setExp(0);
+    all_units["Cavalier"] = generic_Cavalier;
+
+    temp = {15,  4,  5,  7,  6,   8,  4,  6,  5, 5};
+    Unit generic_Paladin("Paladin", "Paladin", temp, "M");
+    temp = {48, 14, 25, 32, 34,  28, 19, 40, 15};
+    generic_Paladin.setCaps(temp);
+    temp = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
+    generic_Paladin.setGrowths(temp);
+    generic_Paladin.setExp(0);
+    all_units["Paladin"] = generic_Paladin;
 
     temp = {15,  4,  5,  7,  6,   8,  4,  6,  5, 5};
     Unit generic_fencer("Fencer", "Fencer", temp, "M");
     temp = {48, 14, 25, 32, 34,  28, 19, 40, 15};
-    silou.setCaps(temp);
+    generic_fencer.setCaps(temp);
     temp = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
-    silou.setGrowths(temp);
-    silou.setExp(0);
-    all_units["Fencer"] = generic_fencer;
-
-    temp = {15,  4,  5,  7,  6,   8,  4,  6,  5, 5};
-    Unit generic_fencer("Fencer", "Fencer", temp, "M");
-    temp = {48, 14, 25, 32, 34,  28, 19, 40, 15};
-    silou.setCaps(temp);
-    temp = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
-    silou.setGrowths(temp);
-    silou.setExp(0);
-    all_units["Fencer"] = generic_fencer;
-
-    temp = {15,  4,  5,  7,  6,   8,  4,  6,  5, 5};
-    Unit generic_fencer("Fencer", "Fencer", temp, "M");
-    temp = {48, 14, 25, 32, 34,  28, 19, 40, 15};
-    silou.setCaps(temp);
-    temp = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
-    silou.setGrowths(temp);
-    silou.setExp(0);
-    all_units["Fencer"] = generic_fencer;
-
-    temp = {15,  4,  5,  7,  6,   8,  4,  6,  5, 5};
-    Unit generic_fencer("Fencer", "Fencer", temp, "M");
-    temp = {48, 14, 25, 32, 34,  28, 19, 40, 15};
-    silou.setCaps(temp);
-    temp = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
-    silou.setGrowths(temp);
-    silou.setExp(0);
-    all_units["Fencer"] = generic_fencer;
-
-    temp = {15,  4,  5,  7,  6,   8,  4,  6,  5, 5};
-    Unit generic_fencer("Fencer", "Fencer", temp, "M");
-    temp = {48, 14, 25, 32, 34,  28, 19, 40, 15};
-    silou.setCaps(temp);
-    temp = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
-    silou.setGrowths(temp);
-    silou.setExp(0);
-    all_units["Fencer"] = generic_fencer;
-
-    temp = {15,  4,  5,  7,  6,   8,  4,  6,  5, 5};
-    Unit generic_fencer("Fencer", "Fencer", temp, "M");
-    temp = {48, 14, 25, 32, 34,  28, 19, 40, 15};
-    silou.setCaps(temp);
-    temp = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
-    silou.setGrowths(temp);
-    silou.setExp(0);
-    all_units["Fencer"] = generic_fencer;
-
-    temp = {15,  4,  5,  7,  6,   8,  4,  6,  5, 5};
-    Unit generic_fencer("Fencer", "Fencer", temp, "M");
-    temp = {48, 14, 25, 32, 34,  28, 19, 40, 15};
-    silou.setCaps(temp);
-    temp = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
-    silou.setGrowths(temp);
-    silou.setExp(0);
-    all_units["Fencer"] = generic_fencer;
-
-    temp = {15,  4,  5,  7,  6,   8,  4,  6,  5, 5};
-    Unit generic_fencer("Fencer", "Fencer", temp, "M");
-    temp = {48, 14, 25, 32, 34,  28, 19, 40, 15};
-    silou.setCaps(temp);
-    temp = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
-    silou.setGrowths(temp);
-    silou.setExp(0);
-    all_units["Fencer"] = generic_fencer;
-
-    temp = {15,  4,  5,  7,  6,   8,  4,  6,  5, 5};
-    Unit generic_fencer("Fencer", "Fencer", temp, "M");
-    temp = {48, 14, 25, 32, 34,  28, 19, 40, 15};
-    silou.setCaps(temp);
-    temp = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
-    silou.setGrowths(temp);
-    silou.setExp(0);
-    all_units["Fencer"] = generic_fencer;
-
-    temp = {15,  4,  5,  7,  6,   8,  4,  6,  5, 5};
-    Unit generic_fencer("Fencer", "Fencer", temp, "M");
-    temp = {48, 14, 25, 32, 34,  28, 19, 40, 15};
-    silou.setCaps(temp);
-    temp = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
-    silou.setGrowths(temp);
-    silou.setExp(0);
+    generic_fencer.setGrowths(temp);
+    generic_fencer.setExp(0);
     all_units["Fencer"] = generic_fencer;
 
     temp = {15,  4,  5,  7,  6,   8,  4,  6,  5, 5};
     Unit generic_mousquetaire("Mousquetaire", "Mousquetaire", temp, "M");
     temp = {48, 14, 25, 32, 34,  28, 19, 40, 15};
-    silou.setCaps(temp);
+    generic_mousquetaire.setCaps(temp);
     temp = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
-    silou.setGrowths(temp);
-    silou.setExp(0);
+    generic_mousquetaire.setGrowths(temp);
+    generic_mousquetaire.setExp(0);
     all_units["Mousquetaire"] = generic_mousquetaire;
 }
