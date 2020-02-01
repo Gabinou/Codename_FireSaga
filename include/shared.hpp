@@ -143,6 +143,13 @@ struct Equipped {
     int right;
 };
 
+struct Map_enemy {
+    std::string name;
+    std::vector<std::string> equipment_names;
+    Equipped equipped;
+    int * position[2];
+};
+
 struct Movement_cost {
     unsigned char foot_slow; // fencer, mousquetaire, duelist, lord, duke, archer, marksman, mercenary, hero, trooper
     unsigned char foot_fast; // pickpocket thief assassin, demon

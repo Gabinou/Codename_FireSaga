@@ -131,5 +131,6 @@ class Unit {
 extern std::unordered_map<std::string, Unit> all_units;
 
 void baseUnits();
+void baseEnemies();
 
 #endif /* UNIT_HPP */
