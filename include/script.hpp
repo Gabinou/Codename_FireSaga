@@ -44,6 +44,10 @@ class Script {
 };
 
 extern std::unordered_map<std::string, Script> all_scripts;
+//For narrative purposes.
+extern std::unordered_map<std::string, bool> died;
+extern std::unordered_map<std::string, bool> promoted;
+extern std::unordered_map<std::string, bool> happened;
 
 void baseScript();
 void baseNarrativeState();

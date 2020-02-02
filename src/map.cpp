@@ -135,9 +135,10 @@ void Map::makeEntitymap(int row_size, int col_size){
     if (!made_entitymap) {
         Entity_ptr_matrix temp(row_size, std::vector<Entity*>(col_size));
         entitymap = temp;
-        for (int row = 0; row < entitymap.size(); row++) {
-            for (int col = 0; col < entitymap[row].size(); col++) {
-                entitymap[row][col] =  static_cast<Entity*>(nullptr);
+        // printf("Made Entitymap size: %d, %d\n", entitymap.size(), entitymap[0].size());
+        for (int col = 0; col < entitymap.size(); col++) {
+            for (int row = 0; row < entitymap[0].size(); row++) {
+                entitymap[col][row] =  static_cast<Entity*>(nullptr);
             }
         }
     }
@@ -148,8 +149,9 @@ void Map::loadTilemap(std::string filename) {
     tilemap = readcsv_vec(filename.c_str(), 1);
     unique_textures = unique2D(tilemap);
     loadTiles();
-    int row_size = tilemap.size();
     int col_size = tilemap.size();
+    int row_size = tilemap[0].size();
+    // printf("Loaded tilemap size: %d, %d\n", row_size, col_size);
     makeEntitymap(row_size, col_size);
 }
 

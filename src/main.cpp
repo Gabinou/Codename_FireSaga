@@ -5,6 +5,7 @@
 #include "shared.hpp"
 #include "textcomponent.hpp"
 #include "game.hpp"
+#include "map.hpp"
 #include "script.hpp"
 #include "weapon.hpp"
 #include "unit.hpp"

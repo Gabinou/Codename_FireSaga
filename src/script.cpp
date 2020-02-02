@@ -62,6 +62,10 @@ std::string Script::getID() {
 }
 
 std::unordered_map<std::string, Script> all_scripts;
+std::unordered_map<std::string, bool> died;
+std::unordered_map<std::string, bool> promoted;
+std::unordered_map<std::string, bool> happened;
+
 
 void baseNarrativeState() {
     printf("Establishing base narrative state.\n");
