@@ -36,12 +36,8 @@ void Map::addEnemy(Map_enemy in_map_enemy) {
     map_enemies.push_back(in_map_enemy);
 }
 
-void Map::loadEnemies() {
-
-    for (int i = 0; i < map_enemies.size(); i++) {
-
-    }
-
+std::vector<Map_enemy> Map::getEnemies() {
+    return(map_enemies);
 }
 
 std::vector<std::vector<int>> Map::makeMvtCostmap(std::string unitmovetype){
@@ -234,5 +230,5 @@ void Map::drawMap(SDL_Renderer * renderer) {
 
 
 void baseMapenemies(){
-    
+
 }

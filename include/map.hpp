@@ -49,7 +49,7 @@ class Map {
 
         void setEnemies(std::vector<Map_enemy> in_map_enemies);
         void addEnemy(Map_enemy in_map_enemy);
-        void loadEnemies();
+        std::vector<Map_enemy> getEnemies();
 
         void setDangermode(std::string in_mode);
         void showDanger();

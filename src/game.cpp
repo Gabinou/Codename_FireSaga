@@ -349,6 +349,18 @@ void Game::loadUnits(std::vector<std::string> names, std::vector<std::string> as
     }
 }
 
+void Game::loadMapEnemies() {
+    printf("Loading map enemies. \n");
+    std::vector<Map_enemy> map_enemies = mapp->getEnemies(); 
+    for (int i = 0; i < map_enemies.size(); i++) {
+        all_units[map_enemies[i].name].setEntity(manager.getEntities().size());
+    
+        manager.addEntity();
+
+    }
+
+}
+
 void Game::init(const char * title, int xpos, int ypos, int width, int height, bool fullscreen) {
     int flags = 0;
 
