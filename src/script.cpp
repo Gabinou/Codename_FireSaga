@@ -154,7 +154,7 @@ void baseScript() {
     temp_lines["25"] = {"25", "Kiara", "No! No... As you say... I want... sniff... I want children, Erwin. Uuuuh..."}; 
     temp_lines["26"] = {"26", "Erwin", "Oh."}; 
     temp_lines["27"] = {"27", "Kiara", "I can\'t help. I try to ignore it... aah... I try to think about other things, think about the army, the people, to focus on work... The more I suppress it, the more numerous my children are in my dreams... What should I do?"}; 
-    temp_lines["28"] = {"28", "Erwin", "Kiara... I can\'t..."}; 
+    temp_lines["28"] = {"28", "Erwin", "Kiara... I can\'t... You should..."}; 
     temp_lines["29"] = {"29", "Kiara", "... Uhhhh.... Ugh!!! aaah... I remember their faces... Beautiful and bright smiles... They look like their father, Erwin."}; 
     temp_lines["30"] = {"30", "Erwin", "Kiara! I can\'t let this one go Kiara. Marry me."};
     temp_lines["31"] = {"31", "Kiara", "Ah! Erwin! Yes! No! Don't do this to me!"}; 
