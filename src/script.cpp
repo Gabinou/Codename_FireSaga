@@ -65,7 +65,7 @@ std::unordered_map<std::string, Script> all_scripts;
 std::unordered_map<std::string, bool> died;
 std::unordered_map<std::string, bool> promoted;
 std::unordered_map<std::string, bool> happened;
-
+Script (*scriptChapter[15]) ();
 
 void baseNarrativeState() {
     printf("Establishing base narrative state.\n");

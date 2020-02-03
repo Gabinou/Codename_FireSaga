@@ -704,8 +704,8 @@ void baseUnits() {
     all_units["Silou"] = silou;
 }
 
-void baseEnemies() {
-    printf("Making base enemies\n");
+void genericEnemies() {
+    printf("Making generic enemies\n");
     Unit_stats temp;
     //hp,str,mag,skl,spd,luck,def,res,con,move
 
@@ -852,4 +852,20 @@ void baseEnemies() {
     generic_mousquetaire.setGrowths(temp);
     generic_mousquetaire.setExp(0);
     all_units["Mousquetaire"] = generic_mousquetaire;
+}
+
+
+
+void Chap1Enemies() {
+    // For special/unique enemies.
+    Unit_stats temp;
+    //hp,str,mag,skl,spd,luck,def,res,con,move
+    temp = {15,  4,  5,  7,  6,   8,  4,  6,  5, 5};
+    Unit generic_bandit("Bandit", "Bandit", temp, "M");
+    temp = {48, 14, 25, 32, 34,  28, 19, 40, 15};
+    generic_bandit.setCaps(temp);
+    temp = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
+    generic_bandit.setGrowths(temp);
+    generic_bandit.setExp(0);
+    all_units["Bandit1A"] = generic_bandit;
 }

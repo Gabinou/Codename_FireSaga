@@ -228,7 +228,20 @@ void Map::drawMap(SDL_Renderer * renderer) {
     }
 }
 
+std::vector<Map_enemy> (*mapEnemiesChap[25]) ();
 
-void baseMapenemies(){
-
+std::vector<Map_enemy> mapEnemies_chap1() {
+    std::vector<Map_enemy> enemies;
+    std::vector<std::string> temp_equipment;
+    Map_enemy temp_enemy;
+    Equipped temp_equipped = {0, 1};
+    temp_equipment = {"Iron axe", "Wooden shield"};
+    // name, equipment, equipped, arrival, level, position
+    temp_enemy = {"Bandit", temp_equipment, temp_equipped, 0, 5, {12, 5}};
+    enemies.push_back(temp_enemy);
+    temp_enemy = {"Bandit1a", temp_equipment, temp_equipped, 0, 5, {12, 5}};
+    enemies.push_back(temp_enemy);
+    mapEnemiesChap[0] = mapEnemies_chap1;
+    return(enemies);
 }
+
