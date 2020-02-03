@@ -91,4 +91,8 @@ class Map {
 // std::vector<Map_enemy> Chap2_mapEnemies();
 // chapter_enemy_funcs.push_back(&Chap1_mapEnemies);
 
+extern std::vector<Map_enemy> (*mapEnemiesChap[25])();
+extern std::vector<Map_enemy> (*mapEnemiesGaiden[25])();
+
+
 #endif /* MAP_HPP */
