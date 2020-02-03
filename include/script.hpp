@@ -48,7 +48,7 @@ extern std::unordered_map<std::string, Script> all_scripts;
 extern std::unordered_map<std::string, bool> died;
 extern std::unordered_map<std::string, bool> promoted;
 extern std::unordered_map<std::string, bool> happened;
-
+extern Script(*scriptChapter[15])();
 void baseScript();
 void baseNarrativeState();
 
