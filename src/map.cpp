@@ -230,18 +230,46 @@ void Map::drawMap(SDL_Renderer * renderer) {
 
 std::vector<Map_enemy> (*mapEnemiesChap[25]) ();
 
-std::vector<Map_enemy> mapEnemies_chap1() {
+std::vector<Map_enemy> mapEnemies_Prologue() {
     std::vector<Map_enemy> enemies;
     std::vector<std::string> temp_equipment;
     Map_enemy temp_enemy;
     Equipped temp_equipped = {0, 1};
     temp_equipment = {"Iron axe", "Wooden shield"};
+
+    // name, equipment, equipped, arrival, level, position
+    temp_enemy = {"Bandit", temp_equipment, temp_equipped, 0, 5, {12, 5}};
+    enemies.push_back(temp_enemy);
+    mapEnemiesChap[0] = mapEnemies_Prologue;
+    return(enemies);
+}
+
+std::vector<Map_enemy> mapEnemies_Chap1() {
+    std::vector<Map_enemy> enemies;
+    std::vector<std::string> temp_equipment;
+    Map_enemy temp_enemy;
+    Equipped temp_equipped = {0, 1};
+    temp_equipment = {"Iron axe", "Wooden shield"};
+
     // name, equipment, equipped, arrival, level, position
     temp_enemy = {"Bandit", temp_equipment, temp_equipped, 0, 5, {12, 5}};
     enemies.push_back(temp_enemy);
     temp_enemy = {"Bandit1a", temp_equipment, temp_equipped, 0, 5, {12, 5}};
     enemies.push_back(temp_enemy);
-    mapEnemiesChap[0] = mapEnemies_chap1;
+    mapEnemiesChap[1] = mapEnemies_Chap1;
+    return(enemies);
+}
+
+std::vector<Map_enemy> mapEnemies_Chap2() {
+    std::vector<Map_enemy> enemies;
+    std::vector<std::string> temp_equipment;
+    Map_enemy temp_enemy;
+    Equipped temp_equipped = {0, 1};
+    temp_equipment = {"Iron axe", "Wooden shield"};
+
+    // name, equipment, equipped, arrival, level, position
+
+    mapEnemiesChap[2] = mapEnemies_Chap2;
     return(enemies);
 }
 
