@@ -73,8 +73,44 @@ void Tile::write(const char * filename, const char * mode){
 
 std::unordered_map<int, Tile> all_tiles;
 
+void baseTiles(std::vector<int> toload) {
+    printf("Loading certain base tiles\n");
+    unsigned int * temp_stats[3];// dodge, def, heal
+    for (int i = 0; i < toload.size(); i++) {
+        switch (toload[i]){
+            case 10:
+                temp_stats[0] = (unsigned int *)0;
+                temp_stats[1] = (unsigned int *)0;
+                temp_stats[2] = (unsigned int *)0;
+                Movement_cost temp_cost = {1, 1, 1, 1, 1, 1, 1, 1, 1};
+                Tile plain("Plain", temp_cost, temp_stats);
+                all_tiles[10] = plain;
+                break;
+            case 11:
+                temp_stats[0] = (unsigned int *)10;
+                temp_stats[1] = (unsigned int *)0;
+                temp_stats[2] = (unsigned int *)1;
+                temp_cost = {2, 1, 2, 3, 2, 1, 3, 2, 2};
+                Tile bush("Bush", temp_cost, temp_stats);
+                all_tiles[11] = bush;
+                break;
+            case 12:
+                temp_stats[0] = (unsigned int *)10;
+                temp_stats[1] = (unsigned int *)0;
+                temp_stats[2] = (unsigned int *)1;
+                temp_cost = {2, 1, 2, 3, 2, 1, 3, 2, 2};
+                Tile bush("Bush", temp_cost, temp_stats);
+                all_tiles[11] = bush;
+                break;
+                
+            default:
+                break;
+        }
+    }
+}
+
 void baseTiles() {
-	printf("Making base tiles\n");
+	printf("Loading all base tiles\n");
 	unsigned int * temp_stats[3] = {0, 0, 0};// dodge, def, heal
     // Fliers always have 1 movement because they dismount inside.
     
