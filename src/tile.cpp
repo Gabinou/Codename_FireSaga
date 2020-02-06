@@ -598,3 +598,68 @@ std::vector<int> chap15Tiles(){
 }
 chapTiles[15] = chap15Tiles;
 
+std::vector<int> chap16Tiles(){
+    std::vector<int> temp_vector = {10, 12, 20, 30};
+    return(temp_vector);
+}
+chapTiles[16] = chap16Tiles;
+
+std::vector<int> chap17Tiles(){
+    std::vector<int> temp_vector = {10, 12, 20, 30};
+    return(temp_vector);
+}
+chapTiles[17] = chap17Tiles;
+
+std::vector<int> chap18Tiles(){
+    std::vector<int> temp_vector = {10, 12, 20, 30};
+    return(temp_vector);
+}
+chapTiles[18] = chap18Tiles;
+
+std::vector<int> chap19Tiles(){
+    std::vector<int> temp_vector = {10, 12, 20, 30};
+    return(temp_vector);
+}
+chapTiles[19] = chap19Tiles;
+
+std::vector<int> chap20Tiles(){
+    std::vector<int> temp_vector = {10, 12, 20, 30};
+    return(temp_vector);
+}
+chapTiles[20] = chap20Tiles;
+
+std::vector<int> chap21Tiles(){
+    std::vector<int> temp_vector = {10, 12, 20, 30};
+    return(temp_vector);
+}
+chapTiles[21] = chap21Tiles;
+
+std::vector<int> chap22Tiles(){
+    std::vector<int> temp_vector = {10, 12, 20, 30};
+    return(temp_vector);
+}
+chapTiles[22] = chap22Tiles;
+
+std::vector<int> chap23Tiles(){
+    std::vector<int> temp_vector = {10, 12, 20, 30};
+    return(temp_vector);
+}
+chapTiles[23] = chap23Tiles;
+
+std::vector<int> chap24Tiles(){
+    std::vector<int> temp_vector = {10, 12, 20, 30};
+    return(temp_vector);
+}
+chapTiles[24] = chap24Tiles;
+
+std::vector<int> chap25Tiles(){
+    std::vector<int> temp_vector = {10, 12, 20, 30};
+    return(temp_vector);
+}
+chapTiles[25] = chap25Tiles;
+
+std::vector<int> gaiden1Tiles(){
+    std::vector<int> temp_vector = {10, 12, 20, 30};
+    return(temp_vector);
+}
+gaindenTiles[1] = gaiden1Tiles;

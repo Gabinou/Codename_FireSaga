@@ -29,6 +29,7 @@ class Tile {
 };
 
 extern std::unordered_map<int, Tile> all_tiles;
+extern std::unordered_map<int, Tile> loaded_tiles;
 
 
 void baseTiles();
