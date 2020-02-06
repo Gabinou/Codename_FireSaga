@@ -63,8 +63,8 @@ std::vector<int> chap24Tiles();
 std::vector<int> chap25Tiles();
 
 
-extern std::vector<Map_enemy> (*chapTiles[25])();
-extern std::vector<Map_enemy> (*gaidenTiles[25])();
+extern std::vector<int> (*chapTiles[25])();
+extern std::vector<int> (*gaidenTiles[25])();
 
 
 #endif /* TILE_HPP */

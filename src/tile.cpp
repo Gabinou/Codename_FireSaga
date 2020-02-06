@@ -512,12 +512,15 @@ void baseTiles() {
     all_tiles[71] = glacier;
 }
 
+std::vector<int> (*chapTiles[25])();
+std::vector<int> (*gaidenTiles[25])();
 
 std::vector<int> testTiles(){
     std::vector<int> temp_vector = {10, 12, 20, 30};
     chapTiles[0] = testTiles;
     return(temp_vector);
 }
+
 std::vector<int> chap1Tiles(){
     std::vector<int> temp_vector = {10, 12, 20, 30};
     chapTiles[1] = chap1Tiles;
