@@ -104,6 +104,10 @@ void baseTiles() {
     temp_cost = {1, 1, 1, 1, 1, 1, 1, 1, 1};
     Tile bridge("Bridge", temp_cost, temp_stats);
     all_tiles[15] = bridge;
+    temp_cost = {1, 1, 1, 1, 1, 1, 1, 1, 1};
+    Tile hole("Hole", temp_cost, temp_stats);
+    all_tiles[16] = hole;
+
     temp_cost = {0, 0, 0, 0, 0, 1, 0, 2, 0};
     Tile sea("Sea", temp_cost, temp_stats);
     all_tiles[20] = sea;
@@ -134,7 +138,12 @@ void baseTiles() {
     temp_stats[2] = (unsigned int *)4;
     temp_cost = {0, 5, 0, 0, 0, 1, 0, 5, 5};
     Tile peak("Peak", temp_cost, temp_stats);
-    all_tiles[32] = peak;
+    all_tiles[32] = peak;    
+    temp_stats[0] = (unsigned int *)20;
+    temp_stats[2] = (unsigned int *)2;
+    temp_cost = {4, 3, 4, 0, 4, 1, 0, 3, 3};
+    Tile cave("Cave", temp_cost, temp_stats);
+    all_tiles[33] = cave;
 
     temp_stats[0] = (unsigned int *)0;
     temp_stats[2] = (unsigned int *)0;
