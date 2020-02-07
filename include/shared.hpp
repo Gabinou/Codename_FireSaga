@@ -17,6 +17,12 @@ template <typename T> int sgn(T val) {
     return (T(0) < val) - (val < T(0));
 }
 
+enum constants {
+    FLAG1 = 1,
+
+}; // replace text IN MY FILES by the values, at compilation.
+
+
 extern std::mt19937 mt;
 extern std::mt19937_64 mt_64;
 
