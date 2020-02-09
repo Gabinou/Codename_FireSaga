@@ -72,8 +72,6 @@ void Tile::write(const char * filename, const char * mode){
 }
 
 std::unordered_map<int, Tile> all_tiles;
-std::vector<int> (*chapTiles[25])() = {NULL, chap1Tiles};
-std::vector<int> (*gaidenTiles[25])();
 
 std::unordered_map<int, Tile> baseTiles(std::vector<int> toload) {
     printf("Loading certain base tiles\n");
@@ -686,33 +684,9 @@ std::vector<int> gaiden1Tiles(){
     std::vector<int> temp_vector = {10, 12, 20, 30};
     return(temp_vector);
 }
-
-void makechapTiles(){
-    chapTiles[1] = chap1Tiles;
-    chapTiles[2] = chap2Tiles;
-    chapTiles[3] = chap3Tiles;
-    chapTiles[4] = chap4Tiles;
-    chapTiles[5] = chap5Tiles;
-    chapTiles[6] = chap6Tiles;
-    chapTiles[7] = chap7Tiles;
-    chapTiles[8] = chap8Tiles;
-    chapTiles[9] = chap9Tiles;
-    chapTiles[10] = chap10Tiles;
-    chapTiles[11] = chap11Tiles;
-    chapTiles[12] = chap12Tiles;
-    chapTiles[13] = chap13Tiles;
-    chapTiles[14] = chap14Tiles;
-    chapTiles[15] = chap15Tiles;
-    chapTiles[16] = chap16Tiles;
-    chapTiles[17] = chap17Tiles;
-    chapTiles[18] = chap18Tiles;
-    chapTiles[19] = chap19Tiles;
-    chapTiles[20] = chap20Tiles;
-    chapTiles[21] = chap21Tiles;
-    chapTiles[22] = chap22Tiles;
-    chapTiles[23] = chap23Tiles;
-    chapTiles[25] = chap25Tiles;
-    chapTiles[24] = chap24Tiles;
-    gaidenTiles[1] = gaiden1Tiles;
-}
-    
+std::vector<int> (*chapTiles[25])() = {NULL, chap2Tiles, chap3Tiles, chap4Tiles,
+    chap5Tiles, chap6Tiles, chap7Tiles, chap8Tiles, chap9Tiles, chap10Tiles,
+    chap11Tiles, chap12Tiles, chap13Tiles, chap14Tiles, chap15Tiles, chap16Tiles,
+    chap17Tiles, chap18Tiles, chap19Tiles, chap20Tiles, chap21Tiles, chap22Tiles,
+    chap23Tiles, chap24Tiles, chap25Tiles,};
+std::vector<int> (*gaidenTiles[25])() = {NULL, gaiden1Tiles} ;
