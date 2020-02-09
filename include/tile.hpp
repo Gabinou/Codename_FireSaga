@@ -21,6 +21,7 @@ class Tile {
         std::unordered_map<std::string, unsigned char> getCostmap();
         std::string getName();
         Tile_stats getStats();
+
         bool isInside();
         bool isOutside();
         void setInside(bool in_inside);

@@ -72,7 +72,7 @@ void Tile::write(const char * filename, const char * mode){
 }
 
 std::unordered_map<int, Tile> all_tiles;
-std::vector<int> (*chapTiles[25])();
+std::vector<int> (*chapTiles[25])() = {NULL, chap1Tiles};
 std::vector<int> (*gaidenTiles[25])();
 
 std::unordered_map<int, Tile> baseTiles(std::vector<int> toload) {
@@ -689,30 +689,30 @@ std::vector<int> gaiden1Tiles(){
 
 void makechapTiles(){
     chapTiles[1] = chap1Tiles;
-    // chapTiles[2] = chap2Tiles;
-    // chapTiles[3] = chap3Tiles;
-    // chapTiles[4] = chap4Tiles;
-    // chapTiles[5] = chap5Tiles;
-    // chapTiles[6] = chap6Tiles;
-    // chapTiles[7] = chap7Tiles;
-    // chapTiles[8] = chap8Tiles;
-    // chapTiles[9] = chap9Tiles;
-    // chapTiles[10] = chap10Tiles;
-    // chapTiles[11] = chap11Tiles;
-    // chapTiles[12] = chap12Tiles;
-    // chapTiles[13] = chap13Tiles;
-    // chapTiles[14] = chap14Tiles;
-    // chapTiles[15] = chap15Tiles;
-    // chapTiles[16] = chap16Tiles;
-    // chapTiles[17] = chap17Tiles;
-    // chapTiles[18] = chap18Tiles;
-    // chapTiles[19] = chap19Tiles;
-    // chapTiles[20] = chap20Tiles;
-    // chapTiles[21] = chap21Tiles;
-    // chapTiles[22] = chap22Tiles;
-    // chapTiles[23] = chap23Tiles;
-    // chapTiles[25] = chap25Tiles;
-    // chapTiles[24] = chap24Tiles;
-    // gaidenTiles[1] = gaiden1Tiles;
+    chapTiles[2] = chap2Tiles;
+    chapTiles[3] = chap3Tiles;
+    chapTiles[4] = chap4Tiles;
+    chapTiles[5] = chap5Tiles;
+    chapTiles[6] = chap6Tiles;
+    chapTiles[7] = chap7Tiles;
+    chapTiles[8] = chap8Tiles;
+    chapTiles[9] = chap9Tiles;
+    chapTiles[10] = chap10Tiles;
+    chapTiles[11] = chap11Tiles;
+    chapTiles[12] = chap12Tiles;
+    chapTiles[13] = chap13Tiles;
+    chapTiles[14] = chap14Tiles;
+    chapTiles[15] = chap15Tiles;
+    chapTiles[16] = chap16Tiles;
+    chapTiles[17] = chap17Tiles;
+    chapTiles[18] = chap18Tiles;
+    chapTiles[19] = chap19Tiles;
+    chapTiles[20] = chap20Tiles;
+    chapTiles[21] = chap21Tiles;
+    chapTiles[22] = chap22Tiles;
+    chapTiles[23] = chap23Tiles;
+    chapTiles[25] = chap25Tiles;
+    chapTiles[24] = chap24Tiles;
+    gaidenTiles[1] = gaiden1Tiles;
 }
     
