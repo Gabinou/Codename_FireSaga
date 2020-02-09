@@ -856,9 +856,11 @@ void genericEnemies() {
 
 
 
-void Chap1Enemies() {
+std::unordered_map<std::string, Unit> chap1Enemies() {
     // For special/unique enemies.
     Unit_stats temp;
+    std::unordered_map<std::string, Unit> made_units;
+
     //hp,str,mag,skl,spd,luck,def,res,con,move
     temp = {15,  4,  5,  7,  6,   8,  4,  6,  5, 5};
     Unit generic_bandit("Bandit", "Bandit", temp, "M");
@@ -868,4 +870,5 @@ void Chap1Enemies() {
     generic_bandit.setGrowths(temp);
     generic_bandit.setExp(0);
     all_units["Bandit1A"] = generic_bandit;
+    return(made_units);
 }
