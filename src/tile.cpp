@@ -72,6 +72,7 @@ void Tile::write(const char * filename, const char * mode){
 }
 
 std::unordered_map<int, Tile> all_tiles;
+std::unordered_map<int, Tile> loaded_tiles;
 
 std::unordered_map<int, Tile> baseTiles(std::vector<int> toload) {
     printf("Loading certain base tiles\n");

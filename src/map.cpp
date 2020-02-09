@@ -46,7 +46,7 @@ std::vector<std::vector<int>> Map::makeMvtCostmap(std::string unitmovetype){
     for (int row = 0; row < tilemap.size(); row++) {
         for (int col = 0; col < tilemap[row].size(); col++) {
             tile_ind = tilemap[row][col]/10; // /10 eliminates one digit ont int's right
-            costmap[row][col] = all_tiles[tile_ind].getCostmap()[unitmovetype];
+            costmap[row][col] = loaded_tiles[tile_ind].getCostmap()[unitmovetype];
         }
     }
     return(costmap);
@@ -70,7 +70,7 @@ void Map::loadTiles() {
     std::string texturename;
     for (int i = 0; i < unique_textures.size() - 1; i++) {
         tileindex = (unique_textures[i]/10);
-        texturename = "..//assets//" + all_tiles[tileindex].getName() + "_" + std::to_string(unique_textures[i]) + ".png";
+        texturename = "..//assets//" + loaded_tiles[tileindex].getName() + "_" + std::to_string(unique_textures[i]) + ".png";
         textures[unique_textures[i]] = loadTexture(texturename.c_str());
     }
 }

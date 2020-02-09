@@ -58,6 +58,7 @@ class Map {
         void subDanger(std::vector<std::vector<int>> in_danger);
 
     private:
+        char index[2];
         int tilesize[2];
         int frames = 10, speed = 50;
         bool show_overlay = false;

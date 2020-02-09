@@ -31,6 +31,8 @@ class Tile {
 
 extern std::unordered_map<int, Tile> all_tiles;
 extern std::unordered_map<int, Tile> loaded_tiles;
+extern std::vector<int> (*chapTiles[25])();
+extern std::vector<int> (*gaidenTiles[25])();
 
 void baseTiles();
 void makechapTiles();
@@ -63,9 +65,5 @@ std::vector<int> chap22Tiles();
 std::vector<int> chap23Tiles();
 std::vector<int> chap24Tiles();
 std::vector<int> chap25Tiles();
-
-
-extern std::vector<int> (*chapTiles[25])();
-extern std::vector<int> (*gaidenTiles[25])();
 
 #endif /* TILE_HPP */
