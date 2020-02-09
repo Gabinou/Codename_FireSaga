@@ -19,7 +19,6 @@ template <typename T> int sgn(T val) {
 
 enum constants {
     FLAG1 = 1,
-
 }; // replace text IN MY FILES by the values, at compilation.
 
 
