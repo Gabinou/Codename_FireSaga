@@ -31,8 +31,7 @@ class Tile {
 
 extern std::unordered_map<int, Tile> all_tiles;
 extern std::unordered_map<int, Tile> loaded_tiles;
-extern std::vector<int> (*chapTiles[25])();
-extern std::vector<int> (*gaidenTiles[25])();
+extern std::vector<int> (*chapTiles[40])();
 
 void baseTiles();
 void makechapTiles();
