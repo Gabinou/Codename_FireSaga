@@ -684,7 +684,7 @@ std::vector<int> gaiden1Tiles(){
     std::vector<int> temp_vector = {10, 12, 20, 30};
     return(temp_vector);
 }
-std::vector<int> (*chapTiles[25])() = {NULL, chap2Tiles, chap3Tiles, chap4Tiles,
+std::vector<int> (*chapTiles[25])() = {testTiles, chap2Tiles, chap3Tiles, chap4Tiles,
     chap5Tiles, chap6Tiles, chap7Tiles, chap8Tiles, chap9Tiles, chap10Tiles,
     chap11Tiles, chap12Tiles, chap13Tiles, chap14Tiles, chap15Tiles, chap16Tiles,
     chap17Tiles, chap18Tiles, chap19Tiles, chap20Tiles, chap21Tiles, chap22Tiles,
