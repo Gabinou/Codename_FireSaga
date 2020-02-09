@@ -27,6 +27,8 @@ int main(int argc, char * argv[]) {
     printf("Testing weapon: %s\n", all_weapons["wooden_sword"].getName().c_str());
 
     baseTiles();
+    makechapTiles();
+    chapTiles[1]();
     printf("Testing tiles: %s\n", all_tiles[10].getName().c_str());
 
     baseUnits();
