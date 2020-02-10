@@ -20,6 +20,10 @@ template <typename T> int sgn(T val) {
 enum defaults {
     FLAG1 = 1,
     DEFAULT_TILESIZE = 32,
+    EQUIPMENT_SIZE = 7,
+    WEAPONS_SIZE = 3,
+    ITEMS_SIZE = 3,
+    CONVOY_SIZE = 200,
 }; // replace text IN MY FILES by the values, at compilation.
 
 
