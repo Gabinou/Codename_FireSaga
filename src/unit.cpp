@@ -879,7 +879,7 @@ void genericEnemies() {
 
 std::unordered_map<std::string, Unit> chaptestEnemies() {
     Unit_stats temp_stats;
-    Inventory_time temp_equipment[7];
+    Inventory_time temp_equipment[EQUIPMENT_SIZE];
     Equipped temp_equipped;
     Point temp_position;
     std::unordered_map<std::string, Unit> made_units;
