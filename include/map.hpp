@@ -47,9 +47,9 @@ class Map {
         void showGrid();
         void hideGrid();
 
-        void setEnemies(std::vector<Map_enemy> in_map_enemies);
-        void addEnemy(Map_enemy in_map_enemy);
-        std::vector<Map_enemy> getEnemies();
+        void setEnemies(std::vector<std::string> in_enemy_names);
+        void addEnemy(std::string in_enemy_name);
+        std::vector<std::string> getEnemies();
 
         void setDangermode(std::string in_mode);
         void showDanger();
@@ -66,7 +66,7 @@ class Map {
         bool show_grid = false;
         bool made_entitymap = false;
 
-        std::vector<Map_enemy> map_enemies;
+        std::vector<std::string> enemy_names;
 
         std::vector<std::vector<int>> movemap, attackmap, healmap;
         std::vector<std::vector<int>> dangermap;

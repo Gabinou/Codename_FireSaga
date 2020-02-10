@@ -27,10 +27,12 @@ class Unit {
         std::unordered_map<std::string, int> supports;
         unsigned char current_hp;
         char current_speed;
+        Map_enemy map_enemy;
+
         unsigned int exp;
         int entity;
         int position[2] = {0, 0};
-        bool sex; // 0:F, 1:M
+        bool sex; // 0:F, 1:
 
         std::string name;
         std::string class_name;
@@ -42,6 +44,8 @@ class Unit {
 
     public:
         Unit();
+        Unit(const std::string in_name, const std::string in_class, const Unit_stats in_bases, const bool in_sex, Map_enemy in_map_enemy);
+        Unit(const std::string in_name, const std::string in_class, const Unit_stats in_bases, const std::string in_sex, Map_enemy in_map_enemy);
         Unit(const std::string in_name, const std::string in_class, const Unit_stats in_bases, const bool in_sex);
         Unit(const std::string in_name, const std::string in_class, const Unit_stats in_bases, const std::string in_sex);
         Unit(const std::string in_name, const std::string in_class, const Unit_stats in_bases);
@@ -51,6 +55,9 @@ class Unit {
         void setSex(const bool in_sex);
         void setSex(const std::string in_sex);
         bool getSex();
+
+        Map_enemy getMap_enemy();
+        void setMap_enemy(Map_enemy in_map_enemy);
 
         int * getPos();
         void setPos(const int in_pos[2]);

@@ -155,12 +155,8 @@ struct Equipped {
 };
 
 struct Map_enemy {
-    std::string name;
-    int level;
-    std::vector<std::string> equipment_names;
-    Equipped equipped;
-    int arrival_turn; // 0 means visible in preparation, > 0 is reinforcements. NO AMBUSH SPAWNS.
-    Point position;
+    unsigned char arrival;
+    unsigned char levelup;
 };
 
 struct Movement_cost {
