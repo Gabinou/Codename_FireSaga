@@ -877,7 +877,7 @@ std::unordered_map<std::string, Unit> chaptestEnemies() {
     temp_stats = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
     bandit_test.setGrowths(temp_stats);
     bandit_test.setExp(0);
-    all_units["Bandit1test"] = bandit_test;
+    made_units["Bandit1test"] = bandit_test;
     temp_equipment = {"Iron Axe", "Wooden Shield"};
     temp_equipped = {0, 1};
     temp_position = {4, 5};
