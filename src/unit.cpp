@@ -854,7 +854,37 @@ void genericEnemies() {
     all_units["Mousquetaire"] = generic_mousquetaire;
 }
 
+// Map_enemy {
+//     std::string name;
+//     std::vector<std::string> equipment_names;
+//     Equipped equipped;
+//     int arrival_turn; // 0 means visible in preparation, > 0 is reinforcements. NO AMBUSH SPAWNS.
+//     int level;
+//     int position[2];
+// };
 
+std::unordered_map<std::string, Unit> chaptestEnemies() {
+    Map_enemy temp_map_enemy;
+    Unit_stats temp_stats;
+    std::vector<std::string> temp_equipment;
+    Equipped temp_equipped;
+    Point temp_position;
+    std::unordered_map<std::string, Unit> made_units;
+    temp_stats = {15,  4,  5,  7,  6,   8,  4,  6,  5, 5};
+    Unit bandit_test("Bandit", "Bandit", temp_stats, "M");
+    temp_stats = {48, 14, 25, 32, 34,  28, 19, 40, 15};
+    bandit_test.setCaps(temp_stats);
+    temp_stats = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
+    bandit_test.setGrowths(temp_stats);
+    bandit_test.setExp(0);
+    all_units["Bandit1test"] = bandit_test;
+    temp_equipment = {"Iron Axe", "Wooden Shield"};
+    temp_equipped = {0, 1};
+    temp_position = {4, 5};
+    // name, level, equipment, equipped, position.
+    temp_map_enemy = {"Bandit1test", 10, temp_equipment, temp_equipped, 0, temp_position}; 
+    return(made_units);
+} 
 
 std::unordered_map<std::string, Unit> chap1Enemies() {
     // For special/unique enemies.

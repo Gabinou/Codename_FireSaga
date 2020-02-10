@@ -16,7 +16,7 @@ class Map {
         ~Map();
         Map(const short unsigned int width, const short unsigned int height);
 
-        void loadTiles();
+        void loadTiletextures();
         void initVars();
         void loadOverlays();
         void loadDanger();
@@ -85,15 +85,5 @@ class Map {
 
         Entity_ptr_matrix entitymap;
 };
-
-// std::vector<std::vector<Map_enemy>(*)()> chapter_enemy_funcs;
-
-// std::vector<Map_enemy> Chap1_mapEnemies();
-// std::vector<Map_enemy> Chap2_mapEnemies();
-// chapter_enemy_funcs.push_back(&Chap1_mapEnemies);
-
-extern std::vector<Map_enemy> (*mapEnemiesChap[25])();
-extern std::vector<Map_enemy> (*mapEnemiesGaiden[25])();
-
 
 #endif /* MAP_HPP */

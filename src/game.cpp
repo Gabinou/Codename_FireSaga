@@ -313,6 +313,10 @@ std::string Game::getState() {
     return(state);
 }
 
+void Game::loadTiles(std::vector<int> in_tiles) {
+    loaded_tiles = baseTiles(in_tiles);
+} 
+
 void Game::loadMap(std::string filename) {
     printf("Loading map \n");
     mapp =  new Map(settings.tilesize[0], settings.tilesize[1]); // mapp is a pointer

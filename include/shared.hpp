@@ -17,8 +17,9 @@ template <typename T> int sgn(T val) {
     return (T(0) < val) - (val < T(0));
 }
 
-enum constants {
+enum defaults {
     FLAG1 = 1,
+    DEFAULT_TILESIZE = 32,
 }; // replace text IN MY FILES by the values, at compilation.
 
 
@@ -107,6 +108,12 @@ struct Combat_stats {
     // char speed;
 };
 
+struct Point {
+    int x;
+    int y;
+};
+
+
 struct Weapon_stats {
     unsigned char Pmight; //Physical might Pprot for shields.
     unsigned char Mmight; //Magic might. Mprot for shields.
@@ -143,17 +150,17 @@ struct Inventory_item {
 
 struct Equipped {
     // Index of weapon in inventory of character.
-    int left;
     int right;
+    int left;
 };
 
 struct Map_enemy {
     std::string name;
+    int level;
     std::vector<std::string> equipment_names;
     Equipped equipped;
     int arrival_turn; // 0 means visible in preparation, > 0 is reinforcements. NO AMBUSH SPAWNS.
-    int level;
-    int position[2];
+    Point position;
 };
 
 struct Movement_cost {
@@ -169,11 +176,6 @@ struct Movement_cost {
 };
 
 extern std::unordered_map<std::string, unsigned char> Movement_cost2;
-
-struct Point {
-    int x;
-    int y;
-};
 
 struct Fps {
     Point pos = {750, 0};

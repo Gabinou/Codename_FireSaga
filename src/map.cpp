@@ -65,7 +65,7 @@ Entity * Map::getTile(int x, int y) {
     return(entitymap[x][y]);
 }
 
-void Map::loadTiles() {
+void Map::loadTiletextures() {
     int tileindex;
     std::string texturename;
     for (int i = 0; i < unique_textures.size() - 1; i++) {
@@ -148,7 +148,7 @@ void Map::makeEntitymap(int row_size, int col_size){
 void Map::loadTilemap(std::string filename) {
     tilemap = readcsv_vec(filename.c_str(), 1);
     unique_textures = unique2D(tilemap);
-    loadTiles();
+    loadTiletextures();
     int col_size = tilemap.size();
     int row_size = tilemap[0].size();
     // printf("Loaded tilemap size: %d, %d\n", row_size, col_size);
@@ -228,46 +228,4 @@ void Map::drawMap(SDL_Renderer * renderer) {
     }
 }
 
-std::vector<Map_enemy> (*mapEnemiesChap[25]) ();
-
-std::vector<Map_enemy> mapEnemies_Prologue() {
-    std::vector<Map_enemy> enemies;
-    std::vector<std::string> temp_equipment;
-    Map_enemy temp_enemy;
-    Equipped temp_equipped = {0, 1};
-    temp_equipment = {"Iron axe", "Wooden shield"};
-
-    // name, equipment, equipped, arrival, level, position
-    temp_enemy = {"Bandit", temp_equipment, temp_equipped, 0, 5, {12, 5}};
-    enemies.push_back(temp_enemy);
-    mapEnemiesChap[0] = mapEnemies_Prologue;
-    return(enemies);
-}
-
-std::vector<Map_enemy> mapEnemies_Chap1() {
-    std::vector<Map_enemy> enemies;
-    std::vector<std::string> temp_equipment;
-    Map_enemy temp_enemy;
-    Equipped temp_equipped = {0, 1};
-    temp_equipment = {"Iron axe", "Wooden shield"};
-
-    // name, equipment, equipped, arrival, level, position
-    temp_enemy = {"Bandit", temp_equipment, temp_equipped, 0, 5, {12, 5}};
-    enemies.push_back(temp_enemy);
-    temp_enemy = {"Bandit1a", temp_equipment, temp_equipped, 0, 5, {12, 5}};
-    enemies.push_back(temp_enemy);
-    mapEnemiesChap[1] = mapEnemies_Chap1;
-    return(enemies);
-}
-
-std::vector<Map_enemy> mapEnemies_Chap2() {
-    std::vector<Map_enemy> enemies;
-    std::vector<std::string> temp_equipment;
-    Map_enemy temp_enemy;
-    Equipped temp_equipped = {0, 1};
-    temp_equipment = {"Iron axe", "Wooden shield"};
-    // name, equipment, equipped, arrival, level, position
-    mapEnemiesChap[2] = mapEnemies_Chap2;
-    return(enemies);
-}
 
