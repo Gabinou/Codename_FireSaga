@@ -45,6 +45,11 @@ void Unit::setPos(const int in_pos[2]) {
     position[1] = in_pos[1];
 }
 
+void Unit::setPos(const Point in_pos) {
+    position[0] = in_pos.y;
+    position[1] = in_pos.x;
+}
+
 bool Unit::getSex() {
     return(sex);
 }
@@ -275,7 +280,7 @@ void Unit::dropItem(int in_index) {
     equipment[in_index] = empty;
 }
 
-void Unit::takesDamage(const unsigned char damage) {
+void Unit::takesDamage(const unsigned char damage) { 
     printf("%s takes %d damage \n", name, damage);
     current_hp = std::max(0, current_hp - damage);
 
@@ -884,7 +889,6 @@ std::unordered_map<std::string, Unit> chaptestEnemies() {
     Unit_stats temp_stats;
     Inventory_item temp_equipment[EQUIPMENT_SIZE];
     Equipped temp_equipped;
-    // Unit_stats temp_equipped;
     Point temp_position;
     std::unordered_map<std::string, Unit> made_units;
     temp_stats = {15,  4,  5,  7,  6,   8,  4,  6,  5, 5};
@@ -898,26 +902,9 @@ std::unordered_map<std::string, Unit> chaptestEnemies() {
     temp_equipment[1].name = "Wooden Shield";
     bandit_test.setEquipment(temp_equipment);
     temp_equipped = {0, 1};
-    // bandit_test.setEquipped(temp_equipped);
-    // temp_position = {4, 5};
-
+    bandit_test.setEquipped(temp_equipped);
+    temp_position = {4, 5};
+    bandit_test.setPos(temp_position);
     made_units["Bandit1test"] = bandit_test;
     return(made_units);
 } 
-
-// std::unordered_map<std::string, Unit> chap1Enemies() {
-//     // For special/unique enemies.
-//     Unit_stats temp;
-//     std::unordered_map<std::string, Unit> made_units;
-
-//     //hp,str,mag,skl,spd,luck,def,res,con,move
-//     temp = {15,  4,  5,  7,  6,   8,  4,  6,  5, 5};
-//     Unit generic_bandit("Bandit", "Bandit", temp, "M");
-//     temp = {48, 14, 25, 32, 34,  28, 19, 40, 15};
-//     generic_bandit.setCaps(temp);
-//     temp = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
-//     generic_bandit.setGrowths(temp);
-//     generic_bandit.setExp(0);
-//     all_units["Bandit1A"] = generic_bandit;
-//     return(made_units);
-// }

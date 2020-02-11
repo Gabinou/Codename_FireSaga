@@ -61,6 +61,7 @@ class Unit {
 
         int * getPos();
         void setPos(const int in_pos[2]);
+        void setPos(const Point in_pos);
 
         std::string getMvttype();
         void setMvttype();
