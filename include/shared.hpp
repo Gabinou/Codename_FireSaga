@@ -152,8 +152,9 @@ struct Inventory_item {
     // Only dark when in unit inventory and unequippable
 };
 
-// Index of weapon in inventory of character.
 struct Equipped {
+// Index of weapon in inventory of character.
+
     int right;
     int left;
 };

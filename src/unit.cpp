@@ -1,7 +1,8 @@
 #include "unit.hpp"
 
 Unit::Unit() {
-
+    equipped.left = -1;
+    equipped.right = -1;
 }
 
 Unit::Unit(const std::string in_name, const std::string in_class, const Unit_stats in_bases, const std::string in_sex, Map_enemy in_map_enemy) : Unit(in_name, in_class, in_bases, in_sex) {
@@ -30,7 +31,7 @@ Unit::Unit(const std::string in_name, const Unit_stats in_bases) : Unit(in_bases
     name = in_name;
 }
 
-Unit::Unit(const Unit_stats in_bases) {
+Unit::Unit(const Unit_stats in_bases) : Unit() {
     base_stats = in_bases;
     current_stats = in_bases;
 }
