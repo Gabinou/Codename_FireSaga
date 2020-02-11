@@ -68,8 +68,10 @@ void Unit::setMap_enemy(Map_enemy in_map_enemy){
     map_enemy = in_map_enemy;
 }
 
-void Unit::setEquipment(Inventory_item in_equipment) {
-    equipment = in_equipment;
+void Unit::setEquipment(Inventory_item * in_equipment) {
+    for (int i = 0; i < EQUIPMENT_SIZE; i++) {
+        equipment[i] = in_equipment[i];
+    }
 }
 void Unit::setEquipped(Equipped in_equipped) {
     equipped = in_equipped;
@@ -879,8 +881,9 @@ void genericEnemies() {
 
 std::unordered_map<std::string, Unit> chaptestEnemies() {
     Unit_stats temp_stats;
-    Inventory_time temp_equipment[EQUIPMENT_SIZE];
+    Inventory_item temp_equipment[EQUIPMENT_SIZE];
     Equipped temp_equipped;
+    // Unit_stats temp_equipped;
     Point temp_position;
     std::unordered_map<std::string, Unit> made_units;
     temp_stats = {15,  4,  5,  7,  6,   8,  4,  6,  5, 5};
@@ -890,11 +893,12 @@ std::unordered_map<std::string, Unit> chaptestEnemies() {
     temp_stats = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
     bandit_test.setGrowths(temp_stats);
     bandit_test.setExp(0);
-    temp_equipment = {"Iron Axe", "Wooden Shield"};
+    temp_equipment[0].name = "Iron Axe";
+    temp_equipment[1].name = "Wooden Shield";
     bandit_test.setEquipment(temp_equipment);
     temp_equipped = {0, 1};
-    bandit_test.setEquipped(temp_equipped);
-    temp_position = {4, 5};
+    // bandit_test.setEquipped(temp_equipped);
+    // temp_position = {4, 5};
 
     made_units["Bandit1test"] = bandit_test;
     return(made_units);

@@ -145,15 +145,15 @@ struct Weapon_type {
 };
 
 struct Inventory_item {
-    std::string name;
+    std::string name = "";
     unsigned int used = 0;
     bool highlighted = true;
     // item images are highlighted by default.
     // Only dark when in unit inventory and unequippable
 };
 
+// Index of weapon in inventory of character.
 struct Equipped {
-    // Index of weapon in inventory of character.
     int right;
     int left;
 };
@@ -174,8 +174,6 @@ struct Movement_cost {
     unsigned char pirates; // Corsair, viking
     unsigned char bandits; // bandit, ravager
 };
-
-extern std::unordered_map<std::string, unsigned char> Movement_cost2;
 
 struct Fps {
     Point pos = {750, 0};
