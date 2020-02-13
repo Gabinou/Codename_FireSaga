@@ -18,8 +18,7 @@ template <typename T> int sgn(T val) {
 }
 namespace DEFAULT {
 enum DEFAULTS {
-    FLAG1 = 1,
-    DEFAULT_TILESIZE = 32,
+    TILESIZE = 32,
     EQUIPMENT_SIZE = 7,
     WEAPONS_SIZE = 3,
     ITEMS_SIZE = 3,
@@ -29,8 +28,7 @@ enum DEFAULTS {
 
 namespace CLASS {
 enum UNIT_CLASS {
-    LORD,
-    DUKE,
+    LORD, DUKE,
     ARCHER,
     ARCHER_RIDER,
     MARKSMAN,
@@ -42,9 +40,7 @@ enum UNIT_CLASS {
     FENCER,
     DUELIST,
     MOUSQUETAIRE,
-    PICKPOCKET,
-    THIEF,
-    ASSASSIN,
+    PICKPOCKET, THIEF, ASSASSIN,
     MERCENARY,
     HERO,
     CORSAIR,
@@ -61,6 +57,7 @@ enum UNIT_CLASS {
     PRIEST,
     BISHOP,
     ORACLE,
+    CLERIC,
     DEMIGOD,
     GOD,
     GODDESS,
