@@ -65,6 +65,50 @@ enum UNIT_CLASS {
 };
 }
 
+namespace TILE {
+    PLAIN = 10,
+    BUSH = 11,
+    FOREST = 12,
+    THICKET = 13,
+    SNAG = 14,
+    BRIDGE = 15,
+    HOLE = 16,
+
+    SEA = 21,
+    LAKE = 22,
+    RIVER = 23,
+    WATERFALL = 24,
+    CLIFF = 25,
+
+    HILL = 30,
+    MOUNTAIN = 31,
+    PEAK = 32,
+    CAVE = 33,
+
+    SAND = 40,
+    WASTELAND = 41,
+    ROCK = 42,
+    BONES = 43,
+
+    FLOOR = 50,
+    PILLAR = 51,
+    WALL = 52,
+    DOOR = 53,
+    THRONE = 54,
+
+    GATE = 60,
+    FENCE = 61,
+    SHOP = 62,
+    ARMORY = 63,
+    VILLAGE = 64,
+    FORT = 65,
+    CASTLE = 66,
+
+    SNOW = 70,
+    GLACIER = 71,
+    ICE = 72,
+}
+
 extern std::mt19937 mt;
 extern std::mt19937_64 mt_64;
 
