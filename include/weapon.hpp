@@ -16,6 +16,7 @@ class Weapon {
         Unit_stats malus = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
         std::string effect = "None";
         std::string type;
+        Weapon_type types; //this one is better
         std::string name;
         std::string effective;
         std::string description;

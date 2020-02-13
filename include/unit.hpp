@@ -23,6 +23,8 @@ class Unit {
         std::vector<Unit_stats> grown_stats;
         std::vector<std::string> skills;
         std::vector<std::string> equippables;
+        Weapon_type equippable;
+
 
         std::unordered_map<std::string, int> supports;
         unsigned char current_hp;
@@ -33,6 +35,8 @@ class Unit {
         int entity;
         int position[2] = {0, 0};
         bool sex; // 0:F, 1:
+
+
 
         std::string name;
         std::string class_name;
@@ -139,7 +143,7 @@ class Unit {
 };
 
 extern std::unordered_map<std::string, Unit> all_units;
-extern std::vector<int> (*chapEnemies[40])();
+extern std::unordered_map<std::string, Unit> (*chapEnemies[40])();
 
 void baseUnits();
 void baseEnemies();

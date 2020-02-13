@@ -16,8 +16,8 @@
 template <typename T> int sgn(T val) {
     return (T(0) < val) - (val < T(0));
 }
-
-enum defaults {
+namespace DEFAULT {
+enum DEFAULTS {
     FLAG1 = 1,
     DEFAULT_TILESIZE = 32,
     EQUIPMENT_SIZE = 7,
@@ -25,7 +25,48 @@ enum defaults {
     ITEMS_SIZE = 3,
     CONVOY_SIZE = 200,
 }; // replace text IN MY FILES by the values, at compilation.
+}
 
+namespace CLASS {
+enum UNIT_CLASS {
+    LORD,
+    DUKE,
+    ARCHER,
+    ARCHER_RIDER,
+    MARKSMAN,
+    MARKSMAN_RIDER,
+    ANGEL,
+    DEMON,
+    DEMONIC_INCARNATE,
+    ANGELIC_INCARNATE,
+    FENCER,
+    DUELIST,
+    MOUSQUETAIRE,
+    PICKPOCKET,
+    THIEF,
+    ASSASSIN,
+    MERCENARY,
+    HERO,
+    CORSAIR,
+    VIKING,
+    BANDIT,
+    RAVAGER,
+    PIKEMAN,
+    CAVALIER,
+    PALADIN,
+    MAGE,
+    BATTLEMAGE,
+    TROUBADOUR,
+    SAGE,
+    PRIEST,
+    BISHOP,
+    ORACLE,
+    DEMIGOD,
+    GOD,
+    GODDESS,
+    TWINBORN
+};
+}
 
 extern std::mt19937 mt;
 extern std::mt19937_64 mt_64;
@@ -81,10 +122,6 @@ struct Tile_stats {
 };
 
 struct Unit_state {
-    bool flight;
-    bool mounted;
-    bool armored;
-    std::string hand;
     char poisoned;
     char sleep;
     char stone;
@@ -162,6 +199,15 @@ struct Equipped {
 struct Map_enemy {
     unsigned char arrival;
     unsigned char levelup;
+};
+
+struct Unit_type {
+    bool human;
+    bool mounted;
+    bool flying;
+    bool armored;
+    bool demon;
+    bool angel;
 };
 
 struct Movement_cost {

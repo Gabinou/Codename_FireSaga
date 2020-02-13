@@ -206,6 +206,7 @@ void baseWeapons(){
     Raw_iron_slab.setDescription("Barely a sword. Too big, too thick, too massive, too rough. Tempered by the malevolence of countless slain demons. Effective against demons and angels.");
     Raw_iron_slab.setEffective("DemonAngel");
     all_weapons["Raw_iron_slab"] = Raw_iron_slab;
+// Should have deeps chinks. This isn't the first time demons roamed the earth. Has deep holes in it. Must be repaired before being usable. Who is willing to repair it? 
 
     temp_wpn = {2, 0, 60, 0, 0, 0, 4, 15, 1, {1,1}, {1,2}, 0, 1000};
     Weapon pitchfork("Pitchfork", "lance", temp_wpn);
