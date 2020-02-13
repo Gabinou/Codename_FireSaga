@@ -75,7 +75,7 @@ void Unit::setMap_enemy(Map_enemy in_map_enemy){
 }
 
 void Unit::setEquipment(Inventory_item * in_equipment) {
-    for (int i = 0; i < EQUIPMENT_SIZE; i++) {
+    for (int i = 0; i < DEFAULT::EQUIPMENT_SIZE; i++) {
         equipment[i] = in_equipment[i];
     }
 }
@@ -888,7 +888,7 @@ void genericEnemies() {
 
 std::unordered_map<std::string, Unit> chaptestEnemies() {
     Unit_stats temp_stats;
-    Inventory_item temp_equipment[EQUIPMENT_SIZE];
+    Inventory_item temp_equipment[DEFAULT::EQUIPMENT_SIZE];
     Equipped temp_equipped;
     Point temp_position;
     std::unordered_map<std::string, Unit> made_units;
@@ -912,7 +912,7 @@ std::unordered_map<std::string, Unit> chaptestEnemies() {
 
 std::unordered_map<std::string, Unit> chap1Enemies() {
     Unit_stats temp_stats;
-    Inventory_item temp_equipment[EQUIPMENT_SIZE];
+    Inventory_item temp_equipment[DEFAULT::EQUIPMENT_SIZE];
     Equipped temp_equipped;
     Point temp_position;
     std::unordered_map<std::string, Unit> made_units;
@@ -936,7 +936,7 @@ std::unordered_map<std::string, Unit> chap1Enemies() {
 
 std::unordered_map<std::string, Unit> chap2Enemies() {
     Unit_stats temp_stats;
-    Inventory_item temp_equipment[EQUIPMENT_SIZE];
+    Inventory_item temp_equipment[DEFAULT::EQUIPMENT_SIZE];
     Equipped temp_equipped;
     Point temp_position;
     std::unordered_map<std::string, Unit> made_units;
@@ -960,7 +960,7 @@ std::unordered_map<std::string, Unit> chap2Enemies() {
 
 std::unordered_map<std::string, Unit> chap3Enemies() {
     Unit_stats temp_stats;
-    Inventory_item temp_equipment[EQUIPMENT_SIZE];
+    Inventory_item temp_equipment[DEFAULT::EQUIPMENT_SIZE];
     Equipped temp_equipped;
     Point temp_position;
     std::unordered_map<std::string, Unit> made_units;
@@ -984,7 +984,7 @@ std::unordered_map<std::string, Unit> chap3Enemies() {
 
 std::unordered_map<std::string, Unit> chap4Enemies() {
     Unit_stats temp_stats;
-    Inventory_item temp_equipment[EQUIPMENT_SIZE];
+    Inventory_item temp_equipment[DEFAULT::EQUIPMENT_SIZE];
     Equipped temp_equipped;
     Point temp_position;
     std::unordered_map<std::string, Unit> made_units;
@@ -1008,7 +1008,7 @@ std::unordered_map<std::string, Unit> chap4Enemies() {
 
 std::unordered_map<std::string, Unit> chap5Enemies() {
     Unit_stats temp_stats;
-    Inventory_item temp_equipment[EQUIPMENT_SIZE];
+    Inventory_item temp_equipment[DEFAULT::EQUIPMENT_SIZE];
     Equipped temp_equipped;
     Point temp_position;
     std::unordered_map<std::string, Unit> made_units;
@@ -1032,7 +1032,7 @@ std::unordered_map<std::string, Unit> chap5Enemies() {
 
 std::unordered_map<std::string, Unit> chap6Enemies() {
     Unit_stats temp_stats;
-    Inventory_item temp_equipment[EQUIPMENT_SIZE];
+    Inventory_item temp_equipment[DEFAULT::EQUIPMENT_SIZE];
     Equipped temp_equipped;
     Point temp_position;
     std::unordered_map<std::string, Unit> made_units;
@@ -1056,7 +1056,7 @@ std::unordered_map<std::string, Unit> chap6Enemies() {
 
 std::unordered_map<std::string, Unit> chap7Enemies() {
     Unit_stats temp_stats;
-    Inventory_item temp_equipment[EQUIPMENT_SIZE];
+    Inventory_item temp_equipment[DEFAULT::EQUIPMENT_SIZE];
     Equipped temp_equipped;
     Point temp_position;
     std::unordered_map<std::string, Unit> made_units;
@@ -1080,7 +1080,7 @@ std::unordered_map<std::string, Unit> chap7Enemies() {
 
 std::unordered_map<std::string, Unit> chap8Enemies() {
     Unit_stats temp_stats;
-    Inventory_item temp_equipment[EQUIPMENT_SIZE];
+    Inventory_item temp_equipment[DEFAULT::EQUIPMENT_SIZE];
     Equipped temp_equipped;
     Point temp_position;
     std::unordered_map<std::string, Unit> made_units;
@@ -1104,7 +1104,7 @@ std::unordered_map<std::string, Unit> chap8Enemies() {
 
 std::unordered_map<std::string, Unit> chap9Enemies() {
     Unit_stats temp_stats;
-    Inventory_item temp_equipment[EQUIPMENT_SIZE];
+    Inventory_item temp_equipment[DEFAULT::EQUIPMENT_SIZE];
     Equipped temp_equipped;
     Point temp_position;
     std::unordered_map<std::string, Unit> made_units;
@@ -1128,7 +1128,7 @@ std::unordered_map<std::string, Unit> chap9Enemies() {
 
 std::unordered_map<std::string, Unit> chap10Enemies() {
     Unit_stats temp_stats;
-    Inventory_item temp_equipment[EQUIPMENT_SIZE];
+    Inventory_item temp_equipment[DEFAULT::EQUIPMENT_SIZE];
     Equipped temp_equipped;
     Point temp_position;
     std::unordered_map<std::string, Unit> made_units;
@@ -1152,7 +1152,7 @@ std::unordered_map<std::string, Unit> chap10Enemies() {
 
 std::unordered_map<std::string, Unit> chap11Enemies() {
     Unit_stats temp_stats;
-    Inventory_item temp_equipment[EQUIPMENT_SIZE];
+    Inventory_item temp_equipment[DEFAULT::EQUIPMENT_SIZE];
     Equipped temp_equipped;
     Point temp_position;
     std::unordered_map<std::string, Unit> made_units;
@@ -1176,7 +1176,7 @@ std::unordered_map<std::string, Unit> chap11Enemies() {
 
 std::unordered_map<std::string, Unit> chap12Enemies() {
     Unit_stats temp_stats;
-    Inventory_item temp_equipment[EQUIPMENT_SIZE];
+    Inventory_item temp_equipment[DEFAULT::EQUIPMENT_SIZE];
     Equipped temp_equipped;
     Point temp_position;
     std::unordered_map<std::string, Unit> made_units;
@@ -1200,7 +1200,7 @@ std::unordered_map<std::string, Unit> chap12Enemies() {
 
 std::unordered_map<std::string, Unit> chap13Enemies() {
     Unit_stats temp_stats;
-    Inventory_item temp_equipment[EQUIPMENT_SIZE];
+    Inventory_item temp_equipment[DEFAULT::EQUIPMENT_SIZE];
     Equipped temp_equipped;
     Point temp_position;
     std::unordered_map<std::string, Unit> made_units;
@@ -1224,7 +1224,7 @@ std::unordered_map<std::string, Unit> chap13Enemies() {
 
 std::unordered_map<std::string, Unit> chap14Enemies() {
     Unit_stats temp_stats;
-    Inventory_item temp_equipment[EQUIPMENT_SIZE];
+    Inventory_item temp_equipment[DEFAULT::EQUIPMENT_SIZE];
     Equipped temp_equipped;
     Point temp_position;
     std::unordered_map<std::string, Unit> made_units;
@@ -1248,7 +1248,7 @@ std::unordered_map<std::string, Unit> chap14Enemies() {
 
 std::unordered_map<std::string, Unit> chap15Enemies() {
     Unit_stats temp_stats;
-    Inventory_item temp_equipment[EQUIPMENT_SIZE];
+    Inventory_item temp_equipment[DEFAULT::EQUIPMENT_SIZE];
     Equipped temp_equipped;
     Point temp_position;
     std::unordered_map<std::string, Unit> made_units;
@@ -1272,7 +1272,7 @@ std::unordered_map<std::string, Unit> chap15Enemies() {
 
 std::unordered_map<std::string, Unit> chap16Enemies() {
     Unit_stats temp_stats;
-    Inventory_item temp_equipment[EQUIPMENT_SIZE];
+    Inventory_item temp_equipment[DEFAULT::EQUIPMENT_SIZE];
     Equipped temp_equipped;
     Point temp_position;
     std::unordered_map<std::string, Unit> made_units;
@@ -1296,7 +1296,7 @@ std::unordered_map<std::string, Unit> chap16Enemies() {
 
 std::unordered_map<std::string, Unit> chap17Enemies() {
     Unit_stats temp_stats;
-    Inventory_item temp_equipment[EQUIPMENT_SIZE];
+    Inventory_item temp_equipment[DEFAULT::EQUIPMENT_SIZE];
     Equipped temp_equipped;
     Point temp_position;
     std::unordered_map<std::string, Unit> made_units;
@@ -1320,7 +1320,7 @@ std::unordered_map<std::string, Unit> chap17Enemies() {
 
 std::unordered_map<std::string, Unit> chap18Enemies() {
     Unit_stats temp_stats;
-    Inventory_item temp_equipment[EQUIPMENT_SIZE];
+    Inventory_item temp_equipment[DEFAULT::EQUIPMENT_SIZE];
     Equipped temp_equipped;
     Point temp_position;
     std::unordered_map<std::string, Unit> made_units;
@@ -1344,7 +1344,7 @@ std::unordered_map<std::string, Unit> chap18Enemies() {
 
 std::unordered_map<std::string, Unit> chap19Enemies() {
     Unit_stats temp_stats;
-    Inventory_item temp_equipment[EQUIPMENT_SIZE];
+    Inventory_item temp_equipment[DEFAULT::EQUIPMENT_SIZE];
     Equipped temp_equipped;
     Point temp_position;
     std::unordered_map<std::string, Unit> made_units;
@@ -1368,7 +1368,7 @@ std::unordered_map<std::string, Unit> chap19Enemies() {
 
 std::unordered_map<std::string, Unit> chap20Enemies() {
     Unit_stats temp_stats;
-    Inventory_item temp_equipment[EQUIPMENT_SIZE];
+    Inventory_item temp_equipment[DEFAULT::EQUIPMENT_SIZE];
     Equipped temp_equipped;
     Point temp_position;
     std::unordered_map<std::string, Unit> made_units;
@@ -1392,7 +1392,7 @@ std::unordered_map<std::string, Unit> chap20Enemies() {
 
 std::unordered_map<std::string, Unit> chap21Enemies() {
     Unit_stats temp_stats;
-    Inventory_item temp_equipment[EQUIPMENT_SIZE];
+    Inventory_item temp_equipment[DEFAULT::EQUIPMENT_SIZE];
     Equipped temp_equipped;
     Point temp_position;
     std::unordered_map<std::string, Unit> made_units;
@@ -1416,7 +1416,7 @@ std::unordered_map<std::string, Unit> chap21Enemies() {
 
 std::unordered_map<std::string, Unit> chap22Enemies() {
     Unit_stats temp_stats;
-    Inventory_item temp_equipment[EQUIPMENT_SIZE];
+    Inventory_item temp_equipment[DEFAULT::EQUIPMENT_SIZE];
     Equipped temp_equipped;
     Point temp_position;
     std::unordered_map<std::string, Unit> made_units;
@@ -1440,7 +1440,7 @@ std::unordered_map<std::string, Unit> chap22Enemies() {
 
 std::unordered_map<std::string, Unit> chap23Enemies() {
     Unit_stats temp_stats;
-    Inventory_item temp_equipment[EQUIPMENT_SIZE];
+    Inventory_item temp_equipment[DEFAULT::EQUIPMENT_SIZE];
     Equipped temp_equipped;
     Point temp_position;
     std::unordered_map<std::string, Unit> made_units;
@@ -1464,7 +1464,7 @@ std::unordered_map<std::string, Unit> chap23Enemies() {
 
 std::unordered_map<std::string, Unit> chap24Enemies() {
     Unit_stats temp_stats;
-    Inventory_item temp_equipment[EQUIPMENT_SIZE];
+    Inventory_item temp_equipment[DEFAULT::EQUIPMENT_SIZE];
     Equipped temp_equipped;
     Point temp_position;
     std::unordered_map<std::string, Unit> made_units;
@@ -1488,7 +1488,7 @@ std::unordered_map<std::string, Unit> chap24Enemies() {
 
 std::unordered_map<std::string, Unit> chap25Enemies() {
     Unit_stats temp_stats;
-    Inventory_item temp_equipment[EQUIPMENT_SIZE];
+    Inventory_item temp_equipment[DEFAULT::EQUIPMENT_SIZE];
     Equipped temp_equipped;
     Point temp_position;
     std::unordered_map<std::string, Unit> made_units;

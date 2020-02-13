@@ -44,7 +44,7 @@ class Unit {
         std::string army; //affilistion?
 
         Equipped equipped; // these are indices. -1 means no equipment.
-        Inventory_item equipment[EQUIPMENT_SIZE], weapons[WEAPONS_SIZE], items[ITEMS_SIZE];
+        Inventory_item equipment[DEFAULT::EQUIPMENT_SIZE], weapons[DEFAULT::WEAPONS_SIZE], items[DEFAULT::ITEMS_SIZE];
 
     public:
         Unit();
