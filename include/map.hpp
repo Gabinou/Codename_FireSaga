@@ -23,6 +23,7 @@ class Map {
 
         void loadTilemap(std::string filename);
         std::vector<std::vector<int>> getTilemap();
+        void setTilemap(std::vector<std::vector<int>> in_tilemap);
         std::vector<std::vector<int>> makeMvtCostmap(std::string unitmovetype);
 
         void drawMap(SDL_Renderer * renderer);
@@ -86,10 +87,33 @@ class Map {
         Entity_ptr_matrix entitymap;
 };
 
-extern std::unordered_map<int, Tile> loaded_tiles;
-extern std::vector<std::vector<int>> (*chapTilemap[40])();
+extern std::vector<std::vector<int>> (*chapTilemaps[40])();
 
-std::vector<int> testTiles();
+std::vector<std::vector<int>> testTilemap();
+std::vector<std::vector<int>> chap2Tilemap();
+std::vector<std::vector<int>> chap3Tilemap();
+std::vector<std::vector<int>> chap4Tilemap();
+std::vector<std::vector<int>> chap5Tilemap();
+std::vector<std::vector<int>> chap6Tilemap();
+std::vector<std::vector<int>> chap7Tilemap();
+std::vector<std::vector<int>> chap8Tilemap();
+std::vector<std::vector<int>> chap9Tilemap();
+std::vector<std::vector<int>> chap10Tilemap();
+std::vector<std::vector<int>> chap11Tilemap();
+std::vector<std::vector<int>> chap12Tilemap();
+std::vector<std::vector<int>> chap13Tilemap();
+std::vector<std::vector<int>> chap14Tilemap();
+std::vector<std::vector<int>> chap15Tilemap();
+std::vector<std::vector<int>> chap16Tilemap();
+std::vector<std::vector<int>> chap17Tilemap();
+std::vector<std::vector<int>> chap18Tilemap();
+std::vector<std::vector<int>> chap19Tilemap();
+std::vector<std::vector<int>> chap20Tilemap();
+std::vector<std::vector<int>> chap21Tilemap();
+std::vector<std::vector<int>> chap22Tilemap();
+std::vector<std::vector<int>> chap23Tilemap();
+std::vector<std::vector<int>> chap24Tilemap();
+std::vector<std::vector<int>> chap25Tilemap();
 
 
 #endif /* MAP_HPP */
