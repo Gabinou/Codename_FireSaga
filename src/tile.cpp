@@ -81,307 +81,307 @@ std::unordered_map<int, Tile> baseTiles(std::vector<int> toload) {
     Movement_cost temp_cost;
     for (int i = 0; i < toload.size(); i++) {
         switch (toload[i]){
-            case 10 : {
+            case TILE::PLAIN: {
                 temp_stats[0] = (unsigned int *)0;
                 temp_stats[1] = (unsigned int *)0;
                 temp_stats[2] = (unsigned int *)0;
                 temp_cost = {1, 1, 1, 1, 1, 1, 1, 1, 1};
                 Tile plain("Plain", temp_cost, temp_stats);
-                temp_tiles[10] = plain;
+                temp_tiles[TILE::PLAIN] = plain;
                 break;
             }
-            case 11: {
+            case TILE::BUSH: {
                 temp_stats[0] = (unsigned int *)10;
                 temp_stats[1] = (unsigned int *)0;
                 temp_stats[2] = (unsigned int *)1;
                 temp_cost = {2, 1, 2, 3, 2, 1, 3, 2, 2};
                 Tile bush("Bush", temp_cost, temp_stats);
-                temp_tiles[11] = bush;
+                temp_tiles[TILE::BUSH] = bush;
                 break;
             }
-            case 12: {
-                Tile forest("Forest", temp_cost, temp_stats);
-                temp_tiles[12] = forest;
+            case TILE::FOREST: {
                 temp_stats[0] = (unsigned int *)0;
                 temp_stats[1] = (unsigned int *)0;
                 temp_stats[2] = (unsigned int *)0;
                 temp_cost = {0, 0, 0, 0, 0, 1, 0, 0, 0};
+                Tile forest("Forest", temp_cost, temp_stats);
+                temp_tiles[TILE::FOREST] = forest;
                 break; 
             }
-            case 13: {
+            case TILE::THICKET: {
                 temp_stats[0] = (unsigned int *)0;
                 temp_stats[1] = (unsigned int *)0;
                 temp_stats[2] = (unsigned int *)0;
                 temp_cost = {0, 0, 0, 0, 0, 1, 0, 0, 0};
                 Tile thicket("Thicket", temp_cost, temp_stats);
-                temp_tiles[13] = thicket;
+                temp_tiles[TILE::THICKET] = thicket;
                 break; 
             }
-            case 14: {
+            case TILE::SNAG: {
                 temp_stats[0] = (unsigned int *)0;
                 temp_stats[1] = (unsigned int *)0;
                 temp_stats[2] = (unsigned int *)0;
                 temp_cost = {0, 0, 0, 0, 0, 1, 0, 0, 0};
                 Tile snag("Snag", temp_cost, temp_stats);
-                temp_tiles[14] = snag;
+                temp_tiles[TILE::SNAG] = snag;
                 break; 
             }
-            case 15: {
+            case TILE::BRIDGE: {
                 temp_stats[0] = (unsigned int *)0;
                 temp_stats[1] = (unsigned int *)0;
                 temp_stats[2] = (unsigned int *)0;
                 temp_cost = {1, 1, 1, 1, 1, 1, 1, 1, 1};
                 Tile bridge("Bridge", temp_cost, temp_stats);
-                temp_tiles[15] = bridge;
+                temp_tiles[TILE::BRIDGE] = bridge;
                 break; 
             }
-            case 16: {
+            case TILE::HOLE: {
                 temp_stats[0] = (unsigned int *)0;
                 temp_stats[1] = (unsigned int *)0;
                 temp_stats[2] = (unsigned int *)0;
                 temp_cost = {1, 1, 1, 1, 1, 1, 1, 1, 1};
                 Tile hole("Hole", temp_cost, temp_stats);
-                temp_tiles[16] = hole;
+                temp_tiles[TILE::HOLE] = hole;
                 break; 
             }
-            case 20: {
+            case TILE::SEA: {
                 temp_stats[0] = (unsigned int *)0;
                 temp_stats[1] = (unsigned int *)0;
                 temp_stats[2] = (unsigned int *)0;
                 temp_cost = {0, 0, 0, 0, 0, 1, 0, 2, 0};
                 Tile sea("Sea", temp_cost, temp_stats);
-                temp_tiles[20] = sea;
+                temp_tiles[TILE::SEA] = sea;
                 break; 
             }
-            case 21: {
+            case TILE::LAKE: {
                 temp_stats[0] = (unsigned int *)0;
                 temp_stats[1] = (unsigned int *)0;
                 temp_stats[2] = (unsigned int *)0;
                 temp_cost = {0, 0, 0, 0, 0, 1, 0, 3, 0};
                 Tile lake("Lake", temp_cost, temp_stats);
-                temp_tiles[21] = lake;
+                temp_tiles[TILE::LAKE] = lake;
                 break; 
             }
-            case 22: {
+            case TILE::RIVER: {
                 temp_stats[0] = (unsigned int *)0;
                 temp_stats[1] = (unsigned int *)0;
                 temp_stats[2] = (unsigned int *)0;
                 temp_cost = {5, 4, 5, 0, 0, 1, 0, 2, 4};
                 Tile river("River", temp_cost, temp_stats);
-                temp_tiles[22] = river;
+                temp_tiles[TILE::RIVER] = river;
                 break; 
             }
-            case 23: {
+            case TILE::WATERFALL: {
                 temp_stats[0] = (unsigned int *)0;
                 temp_stats[1] = (unsigned int *)0;
                 temp_stats[2] = (unsigned int *)0;
                 temp_cost = {0, 0, 0, 0, 0, 1, 0, 0, 0};
                 Tile waterfall("Waterfall", temp_cost, temp_stats);
-                temp_tiles[23] = waterfall;
+                temp_tiles[TILE::WATERFALL] = waterfall;
                 break; 
             }
-            case 24: {
+            case TILE::CLIFF: {
                 temp_stats[0] = (unsigned int *)0;
                 temp_stats[1] = (unsigned int *)0;
                 temp_stats[2] = (unsigned int *)0;
                 temp_cost = {0, 0, 0, 0, 0, 1, 0, 0, 0};
                 Tile cliff("cliff", temp_cost, temp_stats);
-                temp_tiles[24] = cliff;
+                temp_tiles[TILE::CLIFF] = cliff;
                 break; 
             }
-            case 30: {
+            case TILE::HILL: {
                 temp_stats[0] = (unsigned int *)15;
                 temp_stats[1] = (unsigned int *)0;
                 temp_stats[2] = (unsigned int *)2;
                 temp_cost = {3, 2, 3, 4, 3, 1, 4, 2, 2};
                 Tile hill("hill", temp_cost, temp_stats);
-                temp_tiles[30] = hill;
+                temp_tiles[TILE::HILL] = hill;
                 break; 
             }
-            case 31: {
+            case TILE::MOUNTAIN: {
                 temp_stats[0] = (unsigned int *)25;
                 temp_stats[1] = (unsigned int *)0;
                 temp_stats[2] = (unsigned int *)3;
                 temp_cost = {4, 3, 4, 0, 4, 1, 0, 3, 3};
                 Tile mountain("mountain", temp_cost, temp_stats);
-                temp_tiles[31] = mountain;
+                temp_tiles[TILE::MOUNTAIN] = mountain;
                 break;
             }
-            case 32: {
+            case TILE::PEAK: {
                 temp_stats[0] = (unsigned int *)30;
                 temp_stats[1] = (unsigned int *)0;
                 temp_stats[2] = (unsigned int *)4;
                 temp_cost = {0, 5, 0, 0, 0, 1, 0, 5, 5};
                 Tile peak("Peak", temp_cost, temp_stats);
-                temp_tiles[32] = peak;    
+                temp_tiles[TILE::PEAK] = peak;    
                 break; 
             }
-            case 33: {
+            case TILE::CAVE: {
                 temp_stats[0] = (unsigned int *)20;
                 temp_stats[1] = (unsigned int *)0;
                 temp_stats[2] = (unsigned int *)2;
                 temp_cost = {4, 3, 4, 0, 4, 1, 0, 3, 3};
                 Tile cave("Cave", temp_cost, temp_stats);
-                temp_tiles[33] = cave;
+                temp_tiles[TILE::CAVE] = cave;
                 break; 
             }
-            case 40: {
+            case TILE::SAND: {
                 temp_stats[0] = (unsigned int *)0;
                 temp_stats[1] = (unsigned int *)0;
                 temp_stats[2] = (unsigned int *)0;
                 temp_cost = {3, 2, 1, 4, 3, 1, 3, 2, 2};
                 Tile sand("Sand", temp_cost, temp_stats);
-                temp_tiles[40] = sand;
+                temp_tiles[TILE::SAND] = sand;
                 break; 
             }
-            case 41: {
+            case TILE::WASTELAND: {
                 temp_stats[0] = (unsigned int *)0;
                 temp_stats[1] = (unsigned int *)0;
                 temp_stats[2] = (unsigned int *)0;
                 temp_cost = {3, 2, 1, 4, 3, 1, 3, 2, 2};
                 Tile wasteland("Wasteland", temp_cost, temp_stats);
-                temp_tiles[41] = wasteland;
+                temp_tiles[TILE::WASTELAND] = wasteland;
                 break; 
             }
-            case 42: {
+            case TILE::ROCK: {
                 temp_stats[0] = (unsigned int *)5;
                 temp_stats[1] = (unsigned int *)0;
                 temp_stats[2] = (unsigned int *)2;
                 temp_cost = {0, 0, 0, 0, 0, 1, 0, 3, 3};
                 Tile rock("Rock", temp_cost, temp_stats);
-                temp_tiles[42] = rock;
+                temp_tiles[TILE::ROCK] = rock;
                 break; 
             }
-            case 43: {
+            case TILE::BONES: {
                 temp_stats[0] = (unsigned int *)0;
                 temp_stats[1] = (unsigned int *)0;
                 temp_stats[2] = (unsigned int *)0;
                 temp_cost = {0, 0, 0, 0, 0, 1, 0, 0, 0};
                 Tile bones("Bones", temp_cost, temp_stats);
-                temp_tiles[43] = bones;
+                temp_tiles[TILE::BONES] = bones;
                 break; 
             }
-            case 50: {
+            case TILE::FLOOR: {
                 temp_stats[0] = (unsigned int *)0;
                 temp_stats[1] = (unsigned int *)0;
                 temp_stats[2] = (unsigned int *)0;
                 temp_cost = {1, 1, 1, 1, 1, 1, 1, 1, 1};
                 Tile floor("Floor", temp_cost, temp_stats);
-                temp_tiles[50] = floor;
+                temp_tiles[TILE::FLOOR] = floor;
                 break;
                 }
-            case 51: {
+            case TILE::PILLAR: {
                 temp_stats[0] = (unsigned int *)10;
                 temp_stats[1] = (unsigned int *)1;
                 temp_stats[2] = (unsigned int *)10;
                 temp_cost = {2, 2, 2, 3, 3, 1, 3, 2, 2};
                 Tile pillar("Pillar", temp_cost, temp_stats);
-                temp_tiles[51] = pillar;
+                temp_tiles[TILE::PILLAR] = pillar;
                 break; 
             }
-            case 52: {
+            case TILE::WALL: {
                 temp_stats[0] = (unsigned int *)0;
                 temp_stats[1] = (unsigned int *)0;
                 temp_stats[2] = (unsigned int *)0;
                 temp_cost = {0, 0, 0, 0, 0, 1, 0, 0, 0};
                 Tile wall("Wall", temp_cost, temp_stats);
-                temp_tiles[52] = wall;
+                temp_tiles[TILE::WALL] = wall;
                 break; 
             }
-            case 53: {
+            case TILE::DOOR: {
                 temp_stats[0] = (unsigned int *)0;
                 temp_stats[1] = (unsigned int *)0;
                 temp_stats[2] = (unsigned int *)0;
                 temp_cost = {0, 0, 0, 0, 0, 1, 0, 0, 0};
                 Tile door("Door", temp_cost, temp_stats);
-                temp_tiles[53] = door;
+                temp_tiles[TILE::DOOR] = door;
                 break; 
             }
-            case 54: {
+            case TILE::THRONE: {
                 temp_stats[0] = (unsigned int *)20;
                 temp_stats[1] = (unsigned int *)2;
                 temp_stats[2] = (unsigned int *)15;
                 temp_cost = {0, 0, 0, 0, 0, 1, 0, 0, 0};
                 Tile throne("Throne", temp_cost, temp_stats);
-                temp_tiles[54] = throne;
+                temp_tiles[TILE::THRONE] = throne;
                 break; 
             }
-            case 60: {
+            case TILE::GATE: {
                 temp_stats[0] = (unsigned int *)10;
                 temp_stats[1] = (unsigned int *)1;
                 temp_stats[2] = (unsigned int *)10;
                 temp_cost = {0, 0, 0, 0, 0, 1, 0, 0, 0};
                 Tile gate("Gate", temp_cost, temp_stats);
-                temp_tiles[60] = gate;
+                temp_tiles[TILE::GATE] = gate;
                 break; 
             }
-            case 61: {
+            case TILE::FENCE: {
                 temp_stats[0] = (unsigned int *)0;
                 temp_stats[1] = (unsigned int *)0;
                 temp_stats[2] = (unsigned int *)0;
                 temp_cost = {0, 0, 0, 0, 0, 1, 0, 0, 0};
                 Tile fence("Fence", temp_cost, temp_stats);
-                temp_tiles[61] = fence;
+                temp_tiles[TILE::FENCE] = fence;
                 break; 
             }
-            case 62: {
+            case TILE::SHOP: {
                 temp_stats[0] = (unsigned int *)10;
                 temp_stats[1] = (unsigned int *)1;
                 temp_stats[2] = (unsigned int *)10;
                 temp_cost = {1, 1, 1, 1, 1, 1, 1, 1, 1};
                 Tile shop("Shop", temp_cost, temp_stats);
-                temp_tiles[62] = shop;
+                temp_tiles[TILE::SHOP] = shop;
                 break; 
             }
-            case 63: {
+            case TILE::ARMORY: {
                 temp_stats[0] = (unsigned int *)0;
                 temp_stats[1] = (unsigned int *)0;
                 temp_stats[2] = (unsigned int *)0;
                 temp_cost = {1, 1, 1, 1, 1, 1, 1, 1, 1};
                 Tile armory("Armory", temp_cost, temp_stats);
-                temp_tiles[63] = armory;
+                temp_tiles[TILE::ARMORY] = armory;
                 break; 
             }
-            case 64: {
+            case TILE::VILLAGE: {
                 temp_cost = {1, 1, 1, 1, 1, 1, 1, 1, 1};
                 Tile village("Village", temp_cost, temp_stats);
-                temp_tiles[64] = village;
+                temp_tiles[TILE::VILLAGE] = village;
                 break; 
             }
-            case 65: {
+            case TILE::FORT: {
                 temp_stats[0] = (unsigned int *)10;
                 temp_stats[1] = (unsigned int *)2;
                 temp_stats[2] = (unsigned int *)10;
                 temp_cost = {2, 2, 2, 2, 2, 1, 2, 2, 2};
                 Tile fort("Fort", temp_cost, temp_stats);
-                temp_tiles[65] = fort;
+                temp_tiles[TILE::FORT] = fort;
                 break; 
             }
-            case 66: {
+            case TILE::CASTLE: {
                 temp_stats[0] = (unsigned int *)0;
                 temp_stats[1] = (unsigned int *)0;
                 temp_stats[2] = (unsigned int *)0;
                 temp_cost = {0, 0, 0, 0, 0, 1, 0, 0, 0};
                 Tile castle("Castle", temp_cost, temp_stats);
-                temp_tiles[66] = castle;
+                temp_tiles[TILE::CASTLE] = castle;
                 break; 
             }
-            case 70: {
+            case TILE::SNOW: {
                 temp_stats[0] = (unsigned int *)0;
                 temp_stats[1] = (unsigned int *)0;
                 temp_stats[2] = (unsigned int *)0;
                 temp_cost = {2, 2, 2, 3, 2, 1, 2, 2, 2};
                 Tile snow("Snow", temp_cost, temp_stats);
-                temp_tiles[70] = snow;
+                temp_tiles[TILE::SNOW] = snow;
                 break; 
             }            
-            case 71: {
+            case TILE::GLACIER: {
                 temp_stats[0] = (unsigned int *)0;
                 temp_stats[1] = (unsigned int *)0;
                 temp_stats[2] = (unsigned int *)0;
                 temp_cost = {4, 3, 4, 0, 0, 1, 0, 3, 3};
                 Tile glacier("Glacier", temp_cost, temp_stats);
-                temp_tiles[71] = glacier;
+                temp_tiles[TILE::GLACIER] = glacier;
                 break; 
             }
             default: {
@@ -400,289 +400,289 @@ void baseTiles() {
     // Mvt_types: foot_slow, foot_fast, mages, riders_slow, riders_fast, fliers, armors, pirates, bandits;
     Movement_cost temp_cost = {1, 1, 1, 1, 1, 1, 1, 1, 1};
     Tile plain("Plain", temp_cost, temp_stats);
-    all_tiles[10] = plain;
+    all_tiles[TILE::PLAIN] = plain;
     temp_stats[0] = (unsigned int *)10;
     temp_stats[1] = (unsigned int *)0;
     temp_stats[2] = (unsigned int *)1;
     temp_cost = {2, 1, 2, 3, 2, 1, 3, 2, 2};
     Tile bush("Bush", temp_cost, temp_stats);
-    all_tiles[11] = bush;
+    all_tiles[TILE::BUSH] = bush;
     temp_stats[0] = (unsigned int *)15;
     temp_stats[2] = (unsigned int *)2;
     temp_cost = {3, 2, 3, 4, 3, 1, 3, 3, 3};
     Tile forest("Forest", temp_cost, temp_stats);
-    all_tiles[12] = forest;
+    all_tiles[TILE::FOREST] = forest;
     temp_stats[0] = (unsigned int *)0;
     temp_stats[2] = (unsigned int *)0;
     temp_cost = {0, 0, 0, 0, 0, 1, 0, 0, 0};
     Tile thicket("Thicket", temp_cost, temp_stats);
-    all_tiles[13] = thicket;
+    all_tiles[TILE::THICKET] = thicket;
     temp_cost = {0, 0, 0, 0, 0, 1, 0, 0, 0};
     Tile snag("Snag", temp_cost, temp_stats);
-    all_tiles[14] = snag;
+    all_tiles[TILE::SNAG] = snag;
     temp_cost = {1, 1, 1, 1, 1, 1, 1, 1, 1};
     Tile bridge("Bridge", temp_cost, temp_stats);
-    all_tiles[15] = bridge;
+    all_tiles[TILE::BRIDGE] = bridge;
     temp_cost = {1, 1, 1, 1, 1, 1, 1, 1, 1};
     Tile hole("Hole", temp_cost, temp_stats);
-    all_tiles[16] = hole;
+    all_tiles[TILE::HOLE] = hole;
 
     temp_cost = {0, 0, 0, 0, 0, 1, 0, 2, 0};
     Tile sea("Sea", temp_cost, temp_stats);
-    all_tiles[20] = sea;
+    all_tiles[TILE::SEA] = sea;
     temp_cost = {0, 0, 0, 0, 0, 1, 0, 3, 0};
     Tile lake("Lake", temp_cost, temp_stats);
-    all_tiles[21] = lake;
+    all_tiles[TILE::LAKE] = lake;
     temp_cost = {5, 4, 5, 0, 0, 1, 0, 2, 4};
     Tile river("River", temp_cost, temp_stats);
-    all_tiles[22] = river;
+    all_tiles[TILE::RIVER] = river;
     temp_cost = {0, 0, 0, 0, 0, 1, 0, 0, 0};
     Tile waterfall("Waterfall", temp_cost, temp_stats);
-    all_tiles[23] = waterfall;
+    all_tiles[TILE::WATERFALL] = waterfall;
     temp_cost = {0, 0, 0, 0, 0, 1, 0, 0, 0};
     Tile cliff("cliff", temp_cost, temp_stats);
-    all_tiles[24] = cliff;
+    all_tiles[TILE::CLIFF] = cliff;
 
     temp_stats[0] = (unsigned int *)15;
     temp_stats[2] = (unsigned int *)2;
     temp_cost = {3, 2, 3, 4, 3, 1, 4, 2, 2};
     Tile hill("hill", temp_cost, temp_stats);
-    all_tiles[30] = hill;
+    all_tiles[TILE::HILL] = hill;
     temp_stats[0] = (unsigned int *)25;
     temp_stats[2] = (unsigned int *)3;
     temp_cost = {4, 3, 4, 0, 4, 1, 0, 3, 3};
     Tile mountain("mountain", temp_cost, temp_stats);
-    all_tiles[31] = mountain;
+    all_tiles[TILE::MOUNTAIN] = mountain;
     temp_stats[0] = (unsigned int *)30;
     temp_stats[2] = (unsigned int *)4;
     temp_cost = {0, 5, 0, 0, 0, 1, 0, 5, 5};
     Tile peak("Peak", temp_cost, temp_stats);
-    all_tiles[32] = peak;    
+    all_tiles[TILE::PEAK] = peak;    
     temp_stats[0] = (unsigned int *)20;
     temp_stats[2] = (unsigned int *)2;
     temp_cost = {4, 3, 4, 0, 4, 1, 0, 3, 3};
     Tile cave("Cave", temp_cost, temp_stats);
-    all_tiles[33] = cave;
+    all_tiles[TILE::CAVE] = cave;
 
     temp_stats[0] = (unsigned int *)0;
     temp_stats[2] = (unsigned int *)0;
     temp_cost = {3, 2, 1, 4, 3, 1, 3, 2, 2};
     Tile sand("Sand", temp_cost, temp_stats);
-    all_tiles[40] = sand;
+    all_tiles[TILE::SAND] = sand;
     temp_cost = {3, 2, 1, 4, 3, 1, 3, 2, 2};
     Tile wasteland("Wasteland", temp_cost, temp_stats);
-    all_tiles[41] = wasteland;
+    all_tiles[TILE::WASTELAND] = wasteland;
     temp_stats[0] = (unsigned int *)5;
     temp_stats[2] = (unsigned int *)2;
     temp_cost = {0, 0, 0, 0, 0, 1, 0, 3, 3};
     Tile rock("Rock", temp_cost, temp_stats);
-    all_tiles[42] = rock;
+    all_tiles[TILE::ROCK] = rock;
     temp_stats[0] = (unsigned int *)0;
     temp_stats[2] = (unsigned int *)0;
     temp_cost = {0, 0, 0, 0, 0, 1, 0, 0, 0};
     Tile bones("Bones", temp_cost, temp_stats);
-    all_tiles[43] = bones;
+    all_tiles[TILE::BONES] = bones;
 
     temp_cost = {1, 1, 1, 1, 1, 1, 1, 1, 1};
     Tile floor("Floor", temp_cost, temp_stats);
-    all_tiles[50] = floor;
+    all_tiles[TILE::FLOOR] = floor;
     temp_stats[0] = (unsigned int *)10;
     temp_stats[1] = (unsigned int *)1;
     temp_stats[2] = (unsigned int *)10;
     temp_cost = {2, 2, 2, 3, 3, 1, 3, 2, 2};
     Tile pillar("Pillar", temp_cost, temp_stats);
-    all_tiles[51] = pillar;
+    all_tiles[TILE::PILLAR] = pillar;
     temp_stats[0] = (unsigned int *)0;
     temp_stats[1] = (unsigned int *)0;
     temp_stats[2] = (unsigned int *)0;
     temp_cost = {0, 0, 0, 0, 0, 1, 0, 0, 0};
     Tile wall("Wall", temp_cost, temp_stats);
-    all_tiles[52] = wall;
+    all_tiles[TILE::WALL] = wall;
     temp_cost = {0, 0, 0, 0, 0, 1, 0, 0, 0};
     Tile door("Door", temp_cost, temp_stats);
-    all_tiles[53] = door;
+    all_tiles[TILE::DOOR] = door;
     temp_stats[0] = (unsigned int *)20;
     temp_stats[1] = (unsigned int *)2;
     temp_stats[2] = (unsigned int *)15;
     temp_cost = {0, 0, 0, 0, 0, 1, 0, 0, 0};
     Tile throne("Throne", temp_cost, temp_stats);
-    all_tiles[54] = throne;
+    all_tiles[TILE::THRONE] = throne;
 
     temp_stats[0] = (unsigned int *)10;
     temp_stats[1] = (unsigned int *)1;
     temp_stats[2] = (unsigned int *)10;
     temp_cost = {0, 0, 0, 0, 0, 1, 0, 0, 0};
     Tile gate("Gate", temp_cost, temp_stats);
-    all_tiles[60] = gate;
+    all_tiles[TILE::GATE] = gate;
     temp_cost = {0, 0, 0, 0, 0, 1, 0, 0, 0};
     Tile fence("Fence", temp_cost, temp_stats);
-    all_tiles[61] = fence;
+    all_tiles[TILE::FENCE] = fence;
     temp_stats[0] = (unsigned int *)10;
     temp_stats[1] = (unsigned int *)1;
     temp_stats[2] = (unsigned int *)10;
     temp_cost = {1, 1, 1, 1, 1, 1, 1, 1, 1};
     Tile shop("Shop", temp_cost, temp_stats);
-    all_tiles[62] = shop;
+    all_tiles[TILE::SHOP] = shop;
     temp_cost = {1, 1, 1, 1, 1, 1, 1, 1, 1};
     Tile armory("Armory", temp_cost, temp_stats);
-    all_tiles[63] = armory;
+    all_tiles[TILE::ARMORY] = armory;
     temp_cost = {1, 1, 1, 1, 1, 1, 1, 1, 1};
     Tile village("Village", temp_cost, temp_stats);
-    all_tiles[64] = village;
+    all_tiles[TILE::VILLAGE] = village;
     temp_stats[0] = (unsigned int *)10;
     temp_stats[1] = (unsigned int *)2;
     temp_stats[2] = (unsigned int *)10;
     temp_cost = {2, 2, 2, 2, 2, 1, 2, 2, 2};
     Tile fort("Fort", temp_cost, temp_stats);
-    all_tiles[65] = fort;
+    all_tiles[TILE::FORT] = fort;
     temp_stats[0] = (unsigned int *)0;
     temp_stats[1] = (unsigned int *)0;
     temp_stats[2] = (unsigned int *)0;
     temp_cost = {0, 0, 0, 0, 0, 1, 0, 0, 0};
     Tile castle("Castle", temp_cost, temp_stats);
-    all_tiles[66] = castle;
+    all_tiles[TILE::CASTLE] = castle;
 
     temp_cost = {2, 2, 2, 3, 2, 1, 2, 2, 2};
     Tile snow("Snow", temp_cost, temp_stats);
-    all_tiles[70] = snow;
+    all_tiles[TILE::SNOW] = snow;
     temp_cost = {4, 3, 4, 0, 0, 1, 0, 3, 3};
     Tile glacier("Glacier", temp_cost, temp_stats);
-    all_tiles[71] = glacier;
+    all_tiles[TILE::GLACIER] = glacier;
 }
 
 std::vector<int> testTiles(){
-    std::vector<int> temp_vector = {10, 12, 20, 30};
+    std::vector<int> temp_vector = {TILE::PLAIN, TILE::FOREST, TILE::SEA, TILE::HILL};
     chapTiles[0] = testTiles;
     return(temp_vector);
 }
 
 std::vector<int> chap1Tiles(){
-    std::vector<int> temp_vector = {10, 12, 20, 30};
+    std::vector<int> temp_vector = {TILE::PLAIN, TILE::FOREST, TILE::SEA, TILE::HILL};
     return(temp_vector);
 }
 
 std::vector<int> chap2Tiles(){
-    std::vector<int> temp_vector = {10, 12, 20, 30};
+    std::vector<int> temp_vector = {TILE::PLAIN, TILE::FOREST, TILE::SEA, TILE::HILL};
     return(temp_vector);
 }
 
 std::vector<int> chap3Tiles(){
-    std::vector<int> temp_vector = {10, 12, 20, 30};
+    std::vector<int> temp_vector = {TILE::PLAIN, TILE::FOREST, TILE::SEA, TILE::HILL};
     return(temp_vector);
 }
 
 std::vector<int> chap4Tiles(){
-    std::vector<int> temp_vector = {10, 12, 20, 30};
+    std::vector<int> temp_vector = {TILE::PLAIN, TILE::FOREST, TILE::SEA, TILE::HILL};
     return(temp_vector);
 }
 
 std::vector<int> chap5Tiles(){
-    std::vector<int> temp_vector = {10, 12, 20, 30};
+    std::vector<int> temp_vector = {TILE::PLAIN, TILE::FOREST, TILE::SEA, TILE::HILL};
     return(temp_vector);
 }
 
 std::vector<int> chap6Tiles(){
-    std::vector<int> temp_vector = {10, 12, 20, 30};
+    std::vector<int> temp_vector = {TILE::PLAIN, TILE::FOREST, TILE::SEA, TILE::HILL};
     return(temp_vector);
 }
 
 std::vector<int> chap7Tiles(){
-    std::vector<int> temp_vector = {10, 12, 20, 30};
+    std::vector<int> temp_vector = {TILE::PLAIN, TILE::FOREST, TILE::SEA, TILE::HILL};
     return(temp_vector);
 }
 
 std::vector<int> chap8Tiles(){
-    std::vector<int> temp_vector = {10, 12, 20, 30};
+    std::vector<int> temp_vector = {TILE::PLAIN, TILE::FOREST, TILE::SEA, TILE::HILL};
     return(temp_vector);
 }
 
 std::vector<int> chap9Tiles(){
-    std::vector<int> temp_vector = {10, 12, 20, 30};
+    std::vector<int> temp_vector = {TILE::PLAIN, TILE::FOREST, TILE::SEA, TILE::HILL};
     return(temp_vector);
 }
 
-std::vector<int> chap10Tiles(){
-    std::vector<int> temp_vector = {10, 12, 20, 30};
+std::vector<int> chapTILE::PLAINTiles(){
+    std::vector<int> temp_vector = {TILE::PLAIN, TILE::FOREST, TILE::SEA, TILE::HILL};
     return(temp_vector);
 }
 
 std::vector<int> chap11Tiles(){
-    std::vector<int> temp_vector = {10, 12, 20, 30};
+    std::vector<int> temp_vector = {TILE::PLAIN, TILE::FOREST, TILE::SEA, TILE::HILL};
     return(temp_vector);
 }
 
 std::vector<int> chap12Tiles(){
-    std::vector<int> temp_vector = {10, 12, 20, 30};
+    std::vector<int> temp_vector = {TILE::PLAIN, TILE::FOREST, TILE::SEA, TILE::HILL};
     return(temp_vector);
 }
 
 std::vector<int> chap13Tiles(){
-    std::vector<int> temp_vector = {10, 12, 20, 30};
+    std::vector<int> temp_vector = {TILE::PLAIN, TILE::FOREST, TILE::SEA, TILE::HILL};
     return(temp_vector);
 }
 
 std::vector<int> chap14Tiles(){
-    std::vector<int> temp_vector = {10, 12, 20, 30};
+    std::vector<int> temp_vector = {TILE::PLAIN, TILE::FOREST, TILE::SEA, TILE::HILL};
     return(temp_vector);
 }
 
 std::vector<int> chap15Tiles(){
-    std::vector<int> temp_vector = {10, 12, 20, 30};
+    std::vector<int> temp_vector = {TILE::PLAIN, TILE::FOREST, TILE::SEA, TILE::HILL};
     return(temp_vector);
 }
 
 std::vector<int> chap16Tiles(){
-    std::vector<int> temp_vector = {10, 12, 20, 30};
+    std::vector<int> temp_vector = {TILE::PLAIN, TILE::FOREST, TILE::SEA, TILE::HILL};
     return(temp_vector);
 }
 
 std::vector<int> chap17Tiles(){
-    std::vector<int> temp_vector = {10, 12, 20, 30};
+    std::vector<int> temp_vector = {TILE::PLAIN, TILE::FOREST, TILE::SEA, TILE::HILL};
     return(temp_vector);
 }
 
 std::vector<int> chap18Tiles(){
-    std::vector<int> temp_vector = {10, 12, 20, 30};
+    std::vector<int> temp_vector = {TILE::PLAIN, TILE::FOREST, TILE::SEA, TILE::HILL};
     return(temp_vector);
 }
 
 std::vector<int> chap19Tiles(){
-    std::vector<int> temp_vector = {10, 12, 20, 30};
+    std::vector<int> temp_vector = {TILE::PLAIN, TILE::FOREST, TILE::SEA, TILE::HILL};
     return(temp_vector);
 }
 
 std::vector<int> chap20Tiles(){
-    std::vector<int> temp_vector = {10, 12, 20, 30};
+    std::vector<int> temp_vector = {TILE::PLAIN, TILE::FOREST, TILE::SEA, TILE::HILL};
     return(temp_vector);
 }
 
 std::vector<int> chap21Tiles(){
-    std::vector<int> temp_vector = {10, 12, 20, 30};
+    std::vector<int> temp_vector = {TILE::PLAIN, TILE::FOREST, TILE::SEA, TILE::HILL};
     return(temp_vector);
 }
 
 std::vector<int> chap22Tiles(){
-    std::vector<int> temp_vector = {10, 12, 20, 30};
+    std::vector<int> temp_vector = {TILE::PLAIN, TILE::FOREST, TILE::SEA, TILE::HILL};
     return(temp_vector);
 }
 
 std::vector<int> chap23Tiles(){
-    std::vector<int> temp_vector = {10, 12, 20, 30};
+    std::vector<int> temp_vector = {TILE::PLAIN, TILE::FOREST, TILE::SEA, TILE::HILL};
     return(temp_vector);
 }
 
 std::vector<int> chap24Tiles(){
-    std::vector<int> temp_vector = {10, 12, 20, 30};
+    std::vector<int> temp_vector = {TILE::PLAIN, TILE::FOREST, TILE::SEA, TILE::HILL};
     return(temp_vector);
 }
 
 std::vector<int> chap25Tiles(){
-    std::vector<int> temp_vector = {10, 12, 20, 30};
+    std::vector<int> temp_vector = {TILE::PLAIN, TILE::FOREST, TILE::SEA, TILE::HILL};
     return(temp_vector);
 }
 
 std::vector<int> gaiden1Tiles(){
-    std::vector<int> temp_vector = {10, 12, 20, 30};
+    std::vector<int> temp_vector = {TILE::PLAIN, TILE::FOREST, TILE::SEA, TILE::HILL};
     return(temp_vector);
 }
 

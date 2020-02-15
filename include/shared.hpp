@@ -79,11 +79,11 @@ enum TILES {
     BRIDGE = 15,
     HOLE = 16,
 
-    SEA = 21,
-    LAKE = 22,
-    RIVER = 23,
-    WATERFALL = 24,
-    CLIFF = 25,
+    SEA = 20,
+    LAKE = 21,
+    RIVER = 22,
+    WATERFALL = 23,
+    CLIFF = 24,
 
     HILL = 30,
     MOUNTAIN = 31,
