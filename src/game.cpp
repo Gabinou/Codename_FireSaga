@@ -188,10 +188,10 @@ void Game::setState(Entity & setting_entity, std::string new_state) {
             costmap = mapp->makeMvtCostmap(unitmvttype);
 
             movemapp = movemap(costmap, start, unit_move, "matrix");
-            mapp->setMap("move", movemapp);
+            mapp->setOverlay("move", movemapp);
 
             std::vector<std::vector<int>> attackmapp = attackmap(movemapp, start, unit_move, range, "matrix");
-            mapp->setMap("attack", attackmapp);
+            mapp->setOverlay("attack", attackmapp);
 
             mapp->showOverlay();
         }

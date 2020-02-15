@@ -90,11 +90,11 @@ void Map::loadGrid() {
 }
 
 void Map::addDanger(std::vector<std::vector<int>> in_danger) {
-    dangermap = matrix_plus(dangermap, in_danger);
+    dangeroverlay = matrix_plus(dangeroverlay, in_danger);
 }
 
 void Map::subDanger(std::vector<std::vector<int>> in_danger) {
-    dangermap = matrix_plus(dangermap, in_danger, -1);
+    dangeroverlay = matrix_plus(dangeroverlay, in_danger, -1);
 }
 
 void Map::setOverlaymode(std::string in_mode) {
@@ -155,31 +155,31 @@ void Map::loadTilemap(std::string filename) {
     makeEntitymap(row_size, col_size);
 }
 
-void Map::setMap(std::string in_type, std::vector<std::vector<int>> in_map) {
-    if ((in_type == "heal") || (in_type == "healmap")){
-        healmap = in_map;
+void Map::setOverlay(std::string in_type, std::vector<std::vector<int>> in_map) {
+    if ((in_type == "heal") || (in_type == "healoverlay")){
+        healoverlay = in_map;
         if (overlay_mode.find("heal") == std::string::npos) {
             overlay_mode.append("heal");
         }
     }
-    if ((in_type == "attack") || (in_type == "attackmap")){
-        attackmap = in_map;
+    if ((in_type == "attack") || (in_type == "attackoverlay")){
+        attackoverlay = in_map;
         if (overlay_mode.find("attack") == std::string::npos) {
             overlay_mode.append("attack");
         }
     } 
-    if ((in_type == "move") || (in_type == "movemap")){
-        movemap = in_map;
+    if ((in_type == "move") || (in_type == "moveoverlay")){
+        moveoverlay = in_map;
         if (overlay_mode.find("move") == std::string::npos) {
             overlay_mode.append("move");
         }
     } 
 }
 
-void Map::clearMaps() {
-    attackmap.clear();
-    movemap.clear();
-    healmap.clear();
+void Map::clearOverlays() {
+    attackoverlay.clear();
+    moveoverlay.clear();
+    healoverlay.clear();
     overlay_mode = "";
 }
 
@@ -194,24 +194,24 @@ void Map::drawMap(SDL_Renderer * renderer) {
 
             if (show_overlay) {
                 if ((overlay_mode.find("move") != std::string::npos) && (overlays[0] != NULL)) {
-                    if (movemap[row][col] == 1) {
+                    if (moveoverlay[row][col] == 1) {
                         SDL_RenderCopy(renderer, overlays[0], &srcrect, &destrect);
                     }
                 }
                 if ((overlay_mode.find("attack") != std::string::npos)  && (overlays[1] != NULL)) {
-                    if (attackmap[row][col] == 1) {
+                    if (attackoverlay[row][col] == 1) {
                         SDL_RenderCopy(renderer, overlays[1], &srcrect, &destrect);
                     }
                 }
                 if ((overlay_mode.find("heal") != std::string::npos) && (overlays[2] != NULL)) {
-                    if (healmap[row][col] == 1) {
+                    if (healoverlay[row][col] == 1) {
                         SDL_RenderCopy(renderer, overlays[2], &srcrect, &destrect);
                     }
                 }
             }
 
             if (show_danger) {
-                if (dangermap[row][col] > 1) {
+                if (dangeroverlay[row][col] > 1) {
                     SDL_RenderCopy(renderer, dangers[0], &srcrect, &destrect);
                 }
             }

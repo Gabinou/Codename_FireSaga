@@ -29,13 +29,12 @@ class Tile {
         void write(const char * filename, const char * mode = "a");
 };
 
+void baseTiles();
+std::unordered_map<int, Tile> baseTiles(std::vector<int> toload);
+
 extern std::unordered_map<int, Tile> all_tiles;
 extern std::unordered_map<int, Tile> loaded_tiles;
 extern std::vector<int> (*chapTiles[40])();
-
-void baseTiles();
-void makechapTiles();
-std::unordered_map<int, Tile> baseTiles(std::vector<int> toload);
 
 std::vector<int> testTiles();
 std::vector<int> chap1Tiles();

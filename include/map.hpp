@@ -36,8 +36,8 @@ class Map {
         void moveTile(int x, int y, int new_x, int new_y);
         Entity * getTile(int x, int y);
 
-        void setMap(std::string in_type, std::vector<std::vector<int>> in_map);
-        void clearMaps();
+        void setOverlay(std::string in_type, std::vector<std::vector<int>> in_map);
+        void clearOverlays();
 
         void setOverlaymode(std::string in_mode);
         void showOverlay();
@@ -68,8 +68,8 @@ class Map {
 
         std::vector<std::string> enemy_names;
 
-        std::vector<std::vector<int>> movemap, attackmap, healmap;
-        std::vector<std::vector<int>> dangermap;
+        std::vector<std::vector<int>> moveoverlay, attackoverlay, healoverlay;
+        std::vector<std::vector<int>> dangeroverlay;
         std::vector<std::vector<int>> tilemap;
 
         SDL_Rect srcrect, destrect;
@@ -85,5 +85,11 @@ class Map {
 
         Entity_ptr_matrix entitymap;
 };
+
+extern std::unordered_map<int, Tile> loaded_tiles;
+extern std::vector<std::vector<int>> (*chapTilemap[40])();
+
+std::vector<int> testTiles();
+
 
 #endif /* MAP_HPP */

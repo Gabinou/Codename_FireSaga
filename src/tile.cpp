@@ -601,7 +601,7 @@ std::vector<int> chap9Tiles(){
     return(temp_vector);
 }
 
-std::vector<int> chapTILE::PLAINTiles(){
+std::vector<int> chap10Tiles(){
     std::vector<int> temp_vector = {TILE::PLAIN, TILE::FOREST, TILE::SEA, TILE::HILL};
     return(temp_vector);
 }
