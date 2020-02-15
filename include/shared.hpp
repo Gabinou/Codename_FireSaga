@@ -16,6 +16,7 @@
 template <typename T> int sgn(T val) {
     return (T(0) < val) - (val < T(0));
 }
+
 namespace DEFAULT {
 enum DEFAULTS {
     TILESIZE = 32,
@@ -28,7 +29,8 @@ enum DEFAULTS {
 
 namespace CLASS {
 enum UNIT_CLASS {
-    LORD, DUKE,
+    LORD,
+    DUKE,
     ARCHER,
     ARCHER_RIDER,
     MARKSMAN,
@@ -40,7 +42,9 @@ enum UNIT_CLASS {
     FENCER,
     DUELIST,
     MOUSQUETAIRE,
-    PICKPOCKET, THIEF, ASSASSIN,
+    PICKPOCKET,
+    THIEF,
+    ASSASSIN,
     MERCENARY,
     HERO,
     CORSAIR,
@@ -66,6 +70,7 @@ enum UNIT_CLASS {
 }
 
 namespace TILE {
+enum TILES {
     PLAIN = 10,
     BUSH = 11,
     FOREST = 12,
@@ -107,6 +112,7 @@ namespace TILE {
     SNOW = 70,
     GLACIER = 71,
     ICE = 72,
+};
 }
 
 extern std::mt19937 mt;
