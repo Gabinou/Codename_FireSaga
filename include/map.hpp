@@ -115,5 +115,4 @@ std::vector<std::vector<int>> chap23Tilemap();
 std::vector<std::vector<int>> chap24Tilemap();
 std::vector<std::vector<int>> chap25Tilemap();
 
-
 #endif /* MAP_HPP */
