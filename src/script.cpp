@@ -4,11 +4,11 @@ Scene::Scene() {
 
 }
 
-Scene::Scene(std::string in_id) {
+Scene::Scene(const std::string in_id) {
     id = in_id;
 }
 
-Scene::Scene(std::unordered_map<std::string, Dialog_line> in_lines,  std::vector<std::string> in_lines_id) {
+Scene::Scene(const std::unordered_map<std::string, Dialog_line> in_lines, const std::vector<std::string> in_lines_id) {
     lines = in_lines;
     all_lines_id = in_lines_id;
 }

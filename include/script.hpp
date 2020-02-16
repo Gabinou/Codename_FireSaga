@@ -19,14 +19,14 @@ class Scene {
         char current_line = -1;
     public:
         Scene();
-        Scene(std::string in_id);
-        Scene(std::unordered_map<std::string, Dialog_line> in_lines, std::vector<std::string> in_lines_id);
+        Scene(const std::string in_id);
+        Scene(const std::unordered_map<std::string, Dialog_line> in_lines, const std::vector<std::string> in_lines_id);
         void addLine(const Dialog_line in_line);
-        void addLines(const  std::unordered_map<std::string, Dialog_line> in_lines);
+        void addLines(const std::unordered_map<std::string, Dialog_line> in_lines);
         Dialog_line getLine(const std::string in_id);
         Dialog_line nextLine();
         std::string getID();
-        void setID(std::string in_id);
+        void setID(const std::string in_id);
         void setParticipants(const std::vector<std::string> in_participants);
         std::vector<std::string> getParticipants();
 };
