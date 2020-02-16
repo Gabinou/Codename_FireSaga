@@ -24,7 +24,7 @@ Tile::Tile(const std::string in_name, const Movement_cost in_cost, unsigned int 
     stats.Mprot = (unsigned int)in_stats[2];
 	stats.heal = (unsigned int)in_stats[3];
 }
-Tile::Tile(const std::string in_name, const Movement_cost in_cost, unsigned int * in_stats[3], bool in_inside) : Tile(in_name, in_cost, in_stats){
+Tile::Tile(const std::string in_name, const Movement_cost in_cost, unsigned int * in_stats[3], const bool in_inside) : Tile(in_name, in_cost, in_stats){
     inside = in_inside;
 }
 
@@ -52,7 +52,7 @@ bool Tile::isOutside(){
     return(!inside);
 }
 
-void Tile::setInside(bool in_inside){
+void Tile::setInside(const bool in_inside){
     inside = in_inside;
 }
 
@@ -74,7 +74,7 @@ void Tile::write(const char * filename, const char * mode){
 std::unordered_map<int, Tile> all_tiles;
 std::unordered_map<int, Tile> loaded_tiles;
 
-std::unordered_map<int, Tile> baseTiles(std::vector<int> toload) {
+std::unordered_map<int, Tile> baseTiles(const std::vector<int> toload) {
     printf("Loading certain base tiles\n");
     unsigned int * temp_stats[3];// dodge, def, heal
     std::unordered_map<int, Tile> temp_tiles;

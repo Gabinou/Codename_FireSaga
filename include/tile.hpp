@@ -15,7 +15,7 @@ class Tile {
         ~Tile();
 
         Tile(const std::string in_name, const Movement_cost in_cost, unsigned int * in_stats[3]);
-        Tile(const std::string in_name, const Movement_cost in_cost, unsigned int * in_stats[3], bool in_inside);
+        Tile(const std::string in_name, const Movement_cost in_cost, unsigned int * in_stats[3], const bool in_inside);
 
         Movement_cost getCoststruct();
         std::unordered_map<std::string, unsigned char> getCostmap();
@@ -24,7 +24,7 @@ class Tile {
 
         bool isInside();
         bool isOutside();
-        void setInside(bool in_inside);
+        void setInside(const bool in_inside);
 
         void write(const char * filename, const char * mode = "a");
 };
