@@ -80,7 +80,7 @@ std::unordered_map<int, Tile> baseTiles(std::vector<int> toload) {
     std::unordered_map<int, Tile> temp_tiles;
     Movement_cost temp_cost;
     for (int i = 0; i < toload.size(); i++) {
-        switch (toload[i]){
+        switch (toload[i]/10){
             case TILE::PLAIN: {
                 temp_stats[0] = (unsigned int *)0;
                 temp_stats[1] = (unsigned int *)0;
@@ -552,7 +552,6 @@ void baseTiles() {
 
 std::vector<int> testTiles(){
     std::vector<int> temp_vector = {TILE::PLAIN * 10 + 0, TILE::FOREST * 10 + 0, TILE::SEA * 10 + 0, TILE::HILL * 10 + 0};
-    chapTiles[0] = testTiles;
     return(temp_vector);
 }
 

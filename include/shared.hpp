@@ -71,6 +71,10 @@ enum UNIT_CLASS {
 
 namespace TILE {
 enum TILES {
+    //Basic tile index is 3 digits -> 100
+    // two first digits give the tile.
+    // third digit gives the asset index.
+    // Ex: 324: Peak tile, 4th asset of peak.
     PLAIN = 10,
     BUSH = 11,
     FOREST = 12,

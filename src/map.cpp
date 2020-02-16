@@ -72,7 +72,7 @@ Entity * Map::getTile(int x, int y) {
 void Map::loadTiletextures() {
     int tileindex;
     std::string texturename;
-    for (int i = 0; i < unique_textures.size() - 1; i++) {
+    for (int i = 0; i < unique_textures.size(); i++) {
         tileindex = (unique_textures[i]/10);
         printf("%d\n", tileindex);
         printf("%s\n", loaded_tiles[tileindex].getName().c_str());
