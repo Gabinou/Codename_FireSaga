@@ -551,138 +551,138 @@ void baseTiles() {
 }
 
 std::vector<int> testTiles(){
-    std::vector<int> temp_vector = {TILE::PLAIN, TILE::FOREST, TILE::SEA, TILE::HILL};
+    std::vector<int> temp_vector = {TILE::PLAIN * 10 + 0, TILE::FOREST * 10 + 0, TILE::SEA * 10 + 0, TILE::HILL * 10 + 0};
     chapTiles[0] = testTiles;
     return(temp_vector);
 }
 
 std::vector<int> chap1Tiles(){
-    std::vector<int> temp_vector = {TILE::PLAIN, TILE::FOREST, TILE::SEA, TILE::HILL};
+    std::vector<int> temp_vector = {TILE::PLAIN * 10 + 0, TILE::FOREST * 10 + 0, TILE::SEA * 10 + 0, TILE::HILL * 10 + 0};
     return(temp_vector);
 }
 
 std::vector<int> chap2Tiles(){
-    std::vector<int> temp_vector = {TILE::PLAIN, TILE::FOREST, TILE::SEA, TILE::HILL};
+    std::vector<int> temp_vector = {TILE::PLAIN * 10 + 0, TILE::FOREST * 10 + 0, TILE::SEA * 10 + 0, TILE::HILL * 10 + 0};
     return(temp_vector);
 }
 
 std::vector<int> chap3Tiles(){
-    std::vector<int> temp_vector = {TILE::PLAIN, TILE::FOREST, TILE::SEA, TILE::HILL};
+    std::vector<int> temp_vector = {TILE::PLAIN * 10 + 0, TILE::FOREST * 10 + 0, TILE::SEA * 10 + 0, TILE::HILL * 10 + 0};
     return(temp_vector);
 }
 
 std::vector<int> chap4Tiles(){
-    std::vector<int> temp_vector = {TILE::PLAIN, TILE::FOREST, TILE::SEA, TILE::HILL};
+    std::vector<int> temp_vector = {TILE::PLAIN * 10 + 0, TILE::FOREST * 10 + 0, TILE::SEA * 10 + 0, TILE::HILL * 10 + 0};
     return(temp_vector);
 }
 
 std::vector<int> chap5Tiles(){
-    std::vector<int> temp_vector = {TILE::PLAIN, TILE::FOREST, TILE::SEA, TILE::HILL};
+    std::vector<int> temp_vector = {TILE::PLAIN * 10 + 0, TILE::FOREST * 10 + 0, TILE::SEA * 10 + 0, TILE::HILL * 10 + 0};
     return(temp_vector);
 }
 
 std::vector<int> chap6Tiles(){
-    std::vector<int> temp_vector = {TILE::PLAIN, TILE::FOREST, TILE::SEA, TILE::HILL};
+    std::vector<int> temp_vector = {TILE::PLAIN * 10 + 0, TILE::FOREST * 10 + 0, TILE::SEA * 10 + 0, TILE::HILL * 10 + 0};
     return(temp_vector);
 }
 
 std::vector<int> chap7Tiles(){
-    std::vector<int> temp_vector = {TILE::PLAIN, TILE::FOREST, TILE::SEA, TILE::HILL};
+    std::vector<int> temp_vector = {TILE::PLAIN * 10 + 0, TILE::FOREST * 10 + 0, TILE::SEA * 10 + 0, TILE::HILL * 10 + 0};
     return(temp_vector);
 }
 
 std::vector<int> chap8Tiles(){
-    std::vector<int> temp_vector = {TILE::PLAIN, TILE::FOREST, TILE::SEA, TILE::HILL};
+    std::vector<int> temp_vector = {TILE::PLAIN * 10 + 0, TILE::FOREST * 10 + 0, TILE::SEA * 10 + 0, TILE::HILL * 10 + 0};
     return(temp_vector);
 }
 
 std::vector<int> chap9Tiles(){
-    std::vector<int> temp_vector = {TILE::PLAIN, TILE::FOREST, TILE::SEA, TILE::HILL};
+    std::vector<int> temp_vector = {TILE::PLAIN * 10 + 0, TILE::FOREST * 10 + 0, TILE::SEA * 10 + 0, TILE::HILL * 10 + 0};
     return(temp_vector);
 }
 
 std::vector<int> chap10Tiles(){
-    std::vector<int> temp_vector = {TILE::PLAIN, TILE::FOREST, TILE::SEA, TILE::HILL};
+    std::vector<int> temp_vector = {TILE::PLAIN * 10 + 0, TILE::FOREST * 10 + 0, TILE::SEA * 10 + 0, TILE::HILL * 10 + 0};
     return(temp_vector);
 }
 
 std::vector<int> chap11Tiles(){
-    std::vector<int> temp_vector = {TILE::PLAIN, TILE::FOREST, TILE::SEA, TILE::HILL};
+    std::vector<int> temp_vector = {TILE::PLAIN * 10 + 0, TILE::FOREST * 10 + 0, TILE::SEA * 10 + 0, TILE::HILL * 10 + 0};
     return(temp_vector);
 }
 
 std::vector<int> chap12Tiles(){
-    std::vector<int> temp_vector = {TILE::PLAIN, TILE::FOREST, TILE::SEA, TILE::HILL};
+    std::vector<int> temp_vector = {TILE::PLAIN * 10 + 0, TILE::FOREST * 10 + 0, TILE::SEA * 10 + 0, TILE::HILL * 10 + 0};
     return(temp_vector);
 }
 
 std::vector<int> chap13Tiles(){
-    std::vector<int> temp_vector = {TILE::PLAIN, TILE::FOREST, TILE::SEA, TILE::HILL};
+    std::vector<int> temp_vector = {TILE::PLAIN * 10 + 0, TILE::FOREST * 10 + 0, TILE::SEA * 10 + 0, TILE::HILL * 10 + 0};
     return(temp_vector);
 }
 
 std::vector<int> chap14Tiles(){
-    std::vector<int> temp_vector = {TILE::PLAIN, TILE::FOREST, TILE::SEA, TILE::HILL};
+    std::vector<int> temp_vector = {TILE::PLAIN * 10 + 0, TILE::FOREST * 10 + 0, TILE::SEA * 10 + 0, TILE::HILL * 10 + 0};
     return(temp_vector);
 }
 
 std::vector<int> chap15Tiles(){
-    std::vector<int> temp_vector = {TILE::PLAIN, TILE::FOREST, TILE::SEA, TILE::HILL};
+    std::vector<int> temp_vector = {TILE::PLAIN * 10 + 0, TILE::FOREST * 10 + 0, TILE::SEA * 10 + 0, TILE::HILL * 10 + 0};
     return(temp_vector);
 }
 
 std::vector<int> chap16Tiles(){
-    std::vector<int> temp_vector = {TILE::PLAIN, TILE::FOREST, TILE::SEA, TILE::HILL};
+    std::vector<int> temp_vector = {TILE::PLAIN * 10 + 0, TILE::FOREST * 10 + 0, TILE::SEA * 10 + 0, TILE::HILL * 10 + 0};
     return(temp_vector);
 }
 
 std::vector<int> chap17Tiles(){
-    std::vector<int> temp_vector = {TILE::PLAIN, TILE::FOREST, TILE::SEA, TILE::HILL};
+    std::vector<int> temp_vector = {TILE::PLAIN * 10 + 0, TILE::FOREST * 10 + 0, TILE::SEA * 10 + 0, TILE::HILL * 10 + 0};
     return(temp_vector);
 }
 
 std::vector<int> chap18Tiles(){
-    std::vector<int> temp_vector = {TILE::PLAIN, TILE::FOREST, TILE::SEA, TILE::HILL};
+    std::vector<int> temp_vector = {TILE::PLAIN * 10 + 0, TILE::FOREST * 10 + 0, TILE::SEA * 10 + 0, TILE::HILL * 10 + 0};
     return(temp_vector);
 }
 
 std::vector<int> chap19Tiles(){
-    std::vector<int> temp_vector = {TILE::PLAIN, TILE::FOREST, TILE::SEA, TILE::HILL};
+    std::vector<int> temp_vector = {TILE::PLAIN * 10 + 0, TILE::FOREST * 10 + 0, TILE::SEA * 10 + 0, TILE::HILL * 10 + 0};
     return(temp_vector);
 }
 
 std::vector<int> chap20Tiles(){
-    std::vector<int> temp_vector = {TILE::PLAIN, TILE::FOREST, TILE::SEA, TILE::HILL};
+    std::vector<int> temp_vector = {TILE::PLAIN * 10 + 0, TILE::FOREST * 10 + 0, TILE::SEA * 10 + 0, TILE::HILL * 10 + 0};
     return(temp_vector);
 }
 
 std::vector<int> chap21Tiles(){
-    std::vector<int> temp_vector = {TILE::PLAIN, TILE::FOREST, TILE::SEA, TILE::HILL};
+    std::vector<int> temp_vector = {TILE::PLAIN * 10 + 0, TILE::FOREST * 10 + 0, TILE::SEA * 10 + 0, TILE::HILL * 10 + 0};
     return(temp_vector);
 }
 
 std::vector<int> chap22Tiles(){
-    std::vector<int> temp_vector = {TILE::PLAIN, TILE::FOREST, TILE::SEA, TILE::HILL};
+    std::vector<int> temp_vector = {TILE::PLAIN * 10 + 0, TILE::FOREST * 10 + 0, TILE::SEA * 10 + 0, TILE::HILL * 10 + 0};
     return(temp_vector);
 }
 
 std::vector<int> chap23Tiles(){
-    std::vector<int> temp_vector = {TILE::PLAIN, TILE::FOREST, TILE::SEA, TILE::HILL};
+    std::vector<int> temp_vector = {TILE::PLAIN * 10 + 0, TILE::FOREST * 10 + 0, TILE::SEA * 10 + 0, TILE::HILL * 10 + 0};
     return(temp_vector);
 }
 
 std::vector<int> chap24Tiles(){
-    std::vector<int> temp_vector = {TILE::PLAIN, TILE::FOREST, TILE::SEA, TILE::HILL};
+    std::vector<int> temp_vector = {TILE::PLAIN * 10 + 0, TILE::FOREST * 10 + 0, TILE::SEA * 10 + 0, TILE::HILL * 10 + 0};
     return(temp_vector);
 }
 
 std::vector<int> chap25Tiles(){
-    std::vector<int> temp_vector = {TILE::PLAIN, TILE::FOREST, TILE::SEA, TILE::HILL};
+    std::vector<int> temp_vector = {TILE::PLAIN * 10 + 0, TILE::FOREST * 10 + 0, TILE::SEA * 10 + 0, TILE::HILL * 10 + 0};
     return(temp_vector);
 }
 
 std::vector<int> gaiden1Tiles(){
-    std::vector<int> temp_vector = {TILE::PLAIN, TILE::FOREST, TILE::SEA, TILE::HILL};
+    std::vector<int> temp_vector = {TILE::PLAIN * 10 + 0, TILE::FOREST * 10 + 0, TILE::SEA * 10 + 0, TILE::HILL * 10 + 0};
     return(temp_vector);
 }
 

@@ -74,6 +74,8 @@ void Map::loadTiletextures() {
     std::string texturename;
     for (int i = 0; i < unique_textures.size() - 1; i++) {
         tileindex = (unique_textures[i]/10);
+        printf("%d\n", tileindex);
+        printf("%s\n", loaded_tiles[tileindex].getName().c_str());
         texturename = "..//assets//" + loaded_tiles[tileindex].getName() + "_" + std::to_string(unique_textures[i]) + ".png";
         textures[unique_textures[i]] = loadTexture(texturename.c_str());
     }
@@ -151,16 +153,17 @@ void Map::makeEntitymap(int row_size, int col_size){
 
 void Map::loadTilemap(const std::string filename) {
     tilemap = readcsv_vec(filename.c_str(), 1);
+    unique_textures = unique2D(tilemap);
     postTilemap();
 }
 
 void Map::loadTilemap(const int in_map_index) {
     tilemap = chapTilemaps[in_map_index]();
+    unique_textures = chapTiles[in_map_index]();
     postTilemap();
 }
 
 void Map::postTilemap() {
-    unique_textures = unique2D(tilemap);
     loadTiletextures();
     int col_size = tilemap.size();
     int row_size = tilemap[0].size();

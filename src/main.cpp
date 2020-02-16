@@ -26,9 +26,8 @@ int main(int argc, char * argv[]) {
     baseWeapons();
     printf("Testing weapon: %s\n", all_weapons["wooden_sword"].getName().c_str());
 
-    // baseTiles();
-    loaded_tiles = baseTiles(chapTiles[1]());
-    printf("Testing tiles: %s\n", loaded_tiles[10].getName().c_str());
+    // loaded_tiles = baseTiles(chapTiles[0]());
+    // printf("Testing tiles: %s\n", loaded_tiles[10].getName().c_str());
 
     baseUnits();
     printf("Testing units: %s \n", all_units["Silou"].getName().c_str());
@@ -45,7 +44,8 @@ int main(int argc, char * argv[]) {
     firesaga->makeFPSEntity();
     printf("Initiated game.\n");
 
-    firesaga->loadMap("..//maps//test_tilemap.txt");
+    // firesaga->loadMap("..//maps//test_tilemap.txt");
+    firesaga->loadMap(0);
     printf("Map loaded\n");
 
     firesaga->loadCursor();
