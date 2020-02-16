@@ -149,13 +149,21 @@ void Map::makeEntitymap(int row_size, int col_size){
     made_entitymap = true;
 }
 
-void Map::loadTilemap(std::string filename) {
+void Map::loadTilemap(const std::string filename) {
     tilemap = readcsv_vec(filename.c_str(), 1);
+    postTilemap();
+}
+
+void Map::loadTilemap(const int in_map_index) {
+    tilemap = chapTilemaps[in_map_index]();
+    postTilemap();
+}
+
+void Map::postTilemap() {
     unique_textures = unique2D(tilemap);
     loadTiletextures();
     int col_size = tilemap.size();
     int row_size = tilemap[0].size();
-    // printf("Loaded tilemap size: %d, %d\n", row_size, col_size);
     makeEntitymap(row_size, col_size);
 }
 

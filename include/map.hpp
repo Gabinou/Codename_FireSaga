@@ -21,7 +21,10 @@ class Map {
         void loadOverlays();
         void loadDanger();
 
-        void loadTilemap(std::string filename);
+        void loadTilemap(const std::string filename);
+        void loadTilemap(const int in_map_index);
+        void postTilemap();
+
         std::vector<std::vector<int>> getTilemap();
         void setTilemap(std::vector<std::vector<int>> in_tilemap);
         std::vector<std::vector<int>> makeMvtCostmap(std::string unitmovetype);
