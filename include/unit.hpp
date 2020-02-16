@@ -36,8 +36,6 @@ class Unit {
         int position[2] = {0, 0};
         bool sex; // 0:F, 1:
 
-
-
         std::string name;
         std::string class_name;
         std::string mvt_type;
@@ -81,13 +79,13 @@ class Unit {
         void setEquipped(Equipped in_equipped);
         void setEquipment(Inventory_item * in_equipment);
 
-        void takeItem(Inventory_item * out_array, int in_index, int out_index);
-        void giveItem(Inventory_item * out_array, int in_index, int out_index);
-        void dropItem(int in_index);
+        void takeItem(Inventory_item * out_array, const int in_index, const int out_index);
+        void giveItem(Inventory_item * out_array, const int in_index, const int out_index);
+        void dropItem(const int in_index);
 
         unsigned char * getRange() const;
 
-        void setEntity(int in_index);
+        void setEntity(const int in_index);
         int getEntity();
 
         unsigned int getExp() const;
@@ -124,7 +122,7 @@ class Unit {
         bool canRetaliate(Unit * enemy) const;
         bool canDouble(Unit * enemy);
         bool canAttack();
-        bool isEquippable(std::string in_name);
+        bool isEquippable(const std::string in_name);
 
         void combatStats();
         Combat_stats getCombatStats();
@@ -132,8 +130,8 @@ class Unit {
         unsigned char dodge();
         unsigned char critical();
         unsigned char favor();
-        unsigned char totalMight(bool dmg_type);
-        unsigned char totalDef(bool dmg_type);
+        unsigned char totalMight(const bool dmg_type);
+        unsigned char totalDef(const bool dmg_type);
         bool dmgType();
         char speed();
 

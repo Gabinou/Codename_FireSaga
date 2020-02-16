@@ -74,8 +74,6 @@ void Map::loadTiletextures() {
     std::string texturename;
     for (int i = 0; i < unique_textures.size(); i++) {
         tileindex = (unique_textures[i]/10);
-        printf("%d\n", tileindex);
-        printf("%s\n", loaded_tiles[tileindex].getName().c_str());
         texturename = "..//assets//" + loaded_tiles[tileindex].getName() + "_" + std::to_string(unique_textures[i]) + ".png";
         textures[unique_textures[i]] = loadTexture(texturename.c_str());
     }
