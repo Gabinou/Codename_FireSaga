@@ -90,69 +90,6 @@ int find_row (int start[], std::vector<std::vector<int>> list) {
     return(-1);
 }
 
-
-// template <typename T> extern std::vector<std::vector<T>> movemap(std::vector<std::vector<T>> map, int start[], int move, std::string mode){
-//     // Using the map, computes all moveable tiles.
-//     // outputs either a list of points, or a map of 1 and zeros.
-//     // Both outputs are 2D vectors.
-//     struct node{
-//         T x;
-//         T y;
-//         T distance;
-//     };
-//     std::vector<std::vector<T>> movemap;
-//     if (mode == "matrix"){
-//         movemap = map;
-//         for (int i = 0; i < movemap.size(); i++){
-//             std::fill(movemap[i].begin(), movemap[i].end(), 0);
-//         }
-//     }
-//     std::vector<node> open, closed;
-//     node current, neighbor;
-//     current.x = start[0];
-//     current.y = start[1];
-//     current.distance = 0;
-//     open.push_back(current);
-//     int index[2] = {-1, 1};
-//     while (!open.empty()) {
-//         current = open.back();
-//         open.pop_back();
-//         closed.push_back(current);
-//         if (mode == "matrix") { 
-//             movemap[current.y][current.x] = 1;
-//         }
-//         if (mode == "list") {
-//             movemap.push_back({current.x, current.y});
-//         } 
-//         // Two next whiles check the 4 neighbors. 
-//         // (i-j)/2 == 1 when (i+j)/2 == 0 and vice versa.
-//         for(int i = 0; i < 2; i++) {
-//             for(int j = 0; j < 2; j++) {
-//                 neighbor.x = std::min(std::max(current.x + ((index[i]+index[j])/2),0), T(map[0].size())-1);
-//                 neighbor.y = std::min(std::max(current.y + ((index[i]-index[j])/2),0), T(map.size())-1);
-//                 neighbor.distance = current.distance + map[neighbor.y][neighbor.x];
-//                 if ((neighbor.distance <= move) && (map[neighbor.y][neighbor.x] > 0)) {
-//                     bool inclosed = false;
-//                     for(int k = 0; k < closed.size(); k++) {
-//                         if ((neighbor.x == closed[k].x) && (neighbor.y == closed[k].y)) {
-//                             inclosed = true;
-//                             if (neighbor.distance < closed[k].distance){
-//                                 inclosed = false;
-//                                 closed.erase(closed.begin() + k);
-//                             }
-//                             break;
-//                         }
-//                     }
-//                     if (!inclosed) {
-//                         open.push_back(neighbor);
-//                     }
-//                 } 
-//             } 
-//         }
-//     }
-//     return(movemap);
-// }
-
 std::vector<std::vector<int>> matrix2list(std::vector<std::vector<int>> matrix) {
     std::vector<std::vector<int>> list;
     for (int col = 0; col < matrix.size(); col++) {
@@ -173,88 +110,88 @@ std::vector<std::vector<int>> list2matrix(std::vector<std::vector<int>> list, in
     return(matrix);
 }
 
-std::vector<std::vector<int>> attackmap(std::vector<std::vector<int>> movemap, int start[], int move, unsigned char range[2], std::string mode){
-    // Using the movemap to computes all attackable tiles.
-    // EXCLUDING moveable tiles.
-    std::vector<std::vector<int>> attackmap;
-    std::vector<std::vector<int>> movelist;
-    std::vector<int> temp_point = {0, 0};
-    int tempx, tempy;
+// std::vector<std::vector<int>> attackmap(std::vector<std::vector<int>> movemap, int start[], int move, unsigned char range[2], std::string mode){
+//     // Using the movemap to computes all attackable tiles.
+//     // EXCLUDING moveable tiles.
+//     std::vector<std::vector<int>> attackmap;
+//     std::vector<std::vector<int>> movelist;
+//     std::vector<int> temp_point = {0, 0};
+//     int tempx, tempy;
 
-    movelist = matrix2list(movemap);
+//     movelist = matrix2list(movemap);
 
-    if (mode == "matrix") {
-        attackmap = movemap;
-        for (int i = 0; i < attackmap.size(); i++) {
-            std::fill(attackmap[i].begin(), attackmap[i].end(), 0);
-        }
-    }
+//     if (mode == "matrix") {
+//         attackmap = movemap;
+//         for (int i = 0; i < attackmap.size(); i++) {
+//             std::fill(attackmap[i].begin(), attackmap[i].end(), 0);
+//         }
+//     }
 
-    for (int i = 0; i < movelist.size(); i++) {
-        for (int rangex = 0; rangex <= range[1]; rangex++) {
-            int miny = std::max(0, range[0] - rangex);
-            int maxy = std::max(range[1] - rangex, 0);
-            for (int rangey = miny; rangey <= maxy; rangey++) {
-                tempx = std::min(movelist[i][1] + rangex, (int)(movemap[0].size() - 1));
-                tempy = std::min(movelist[i][0] + rangey, (int)(movemap.size() - 1));
-                if ((tempx < (int)movemap[0].size()) && (tempy < (int)movemap.size())) {
-                    if (movemap[tempy][tempx] == 0) {
-                        if (mode == "list") {
-                            temp_point = {tempx, tempy};
-                            attackmap.push_back(temp_point);
-                        }
-                        if (mode == "matrix") {
-                            attackmap[tempy][tempx] = 1;
-                        }
-                    }
-                }
-                tempx = std::max(movelist[i][1] - rangex, 0);
-                tempy = std::min(movelist[i][0] + rangey, (int)(movemap.size() - 1));
-                if ((tempx >= 0) && (tempy < (int)movemap.size())) {
-                    if (movemap[tempy][tempx] == 0) {
-                        if (mode == "list") {
-                            temp_point = {tempx, tempy};
-                            attackmap.push_back(temp_point);
-                        }
-                        if (mode == "matrix") {
-                            attackmap[tempy][tempx] = 1;
-                        }
-                    }
-                }                
-                tempx = std::min(movelist[i][1] + rangex, (int)(movemap[0].size() - 1));
-                tempy = std::max(movelist[i][0] - rangey, 0);
-                if ((tempx < (int)movemap[0].size()) && (tempy >= 0)) {
-                     if (movemap[tempy][tempx] == 0) {
-                        if (mode == "list") {
-                            temp_point = {tempx, tempy};
-                            attackmap.push_back(temp_point);
-                        }
-                        if (mode == "matrix") {
-                            attackmap[tempy][tempx] = 1;
-                        }
-                    }
-                }                
-                tempx = std::max(movelist[i][1] - rangex, 0);
-                tempy = std::max(movelist[i][0] - rangey, 0);
-                if ((tempx >= 0) && (tempy >= 0)) {
-                   if (movemap[tempy][tempx] == 0) {
-                        if (mode == "list") {
-                            temp_point = {tempx, tempy};
-                            attackmap.push_back(temp_point);
-                        }
-                        if (mode == "matrix") {
-                            attackmap[tempy][tempx] = 1;
-                        }
-                    }
-                }
-            } 
-        }
-    }
-    if (mode == "list") {
-        // make_uniques
-    }
-    return(attackmap);
-}
+//     for (int i = 0; i < movelist.size(); i++) {
+//         for (int rangex = 0; rangex <= range[1]; rangex++) {
+//             int miny = std::max(0, range[0] - rangex);
+//             int maxy = std::max(range[1] - rangex, 0);
+//             for (int rangey = miny; rangey <= maxy; rangey++) {
+//                 tempx = std::min(movelist[i][1] + rangex, (int)(movemap[0].size() - 1));
+//                 tempy = std::min(movelist[i][0] + rangey, (int)(movemap.size() - 1));
+//                 if ((tempx < (int)movemap[0].size()) && (tempy < (int)movemap.size())) {
+//                     if (movemap[tempy][tempx] == 0) {
+//                         if (mode == "list") {
+//                             temp_point = {tempx, tempy};
+//                             attackmap.push_back(temp_point);
+//                         }
+//                         if (mode == "matrix") {
+//                             attackmap[tempy][tempx] = 1;
+//                         }
+//                     }
+//                 }
+//                 tempx = std::max(movelist[i][1] - rangex, 0);
+//                 tempy = std::min(movelist[i][0] + rangey, (int)(movemap.size() - 1));
+//                 if ((tempx >= 0) && (tempy < (int)movemap.size())) {
+//                     if (movemap[tempy][tempx] == 0) {
+//                         if (mode == "list") {
+//                             temp_point = {tempx, tempy};
+//                             attackmap.push_back(temp_point);
+//                         }
+//                         if (mode == "matrix") {
+//                             attackmap[tempy][tempx] = 1;
+//                         }
+//                     }
+//                 }                
+//                 tempx = std::min(movelist[i][1] + rangex, (int)(movemap[0].size() - 1));
+//                 tempy = std::max(movelist[i][0] - rangey, 0);
+//                 if ((tempx < (int)movemap[0].size()) && (tempy >= 0)) {
+//                      if (movemap[tempy][tempx] == 0) {
+//                         if (mode == "list") {
+//                             temp_point = {tempx, tempy};
+//                             attackmap.push_back(temp_point);
+//                         }
+//                         if (mode == "matrix") {
+//                             attackmap[tempy][tempx] = 1;
+//                         }
+//                     }
+//                 }                
+//                 tempx = std::max(movelist[i][1] - rangex, 0);
+//                 tempy = std::max(movelist[i][0] - rangey, 0);
+//                 if ((tempx >= 0) && (tempy >= 0)) {
+//                    if (movemap[tempy][tempx] == 0) {
+//                         if (mode == "list") {
+//                             temp_point = {tempx, tempy};
+//                             attackmap.push_back(temp_point);
+//                         }
+//                         if (mode == "matrix") {
+//                             attackmap[tempy][tempx] = 1;
+//                         }
+//                     }
+//                 }
+//             } 
+//         }
+//     }
+//     if (mode == "list") {
+//         // make_uniques
+//     }
+//     return(attackmap);
+// }
 
 int find_node (int start[], std::vector<std::vector<int>> list) {
     int row;
