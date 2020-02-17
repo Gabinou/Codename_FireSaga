@@ -40,9 +40,9 @@ std::vector<std::string> Map::getEnemies() {
     return(enemy_names);
 }
 
-std::vector<std::vector<int>> Map::makeMvtCostmap(const std::string unitmovetype){
+std::vector<std::vector<short int>> Map::makeMvtCostmap(const std::string unitmovetype){
     int tile_ind = 0;
-    std::vector<std::vector<int>> costmap((int)tilemap.size(), std::vector<int> ((int)tilemap[0].size()));
+    std::vector<std::vector<short int>> costmap((int)tilemap.size(), std::vector<int> ((int)tilemap[0].size()));
     for (int row = 0; row < tilemap.size(); row++) {
         for (int col = 0; col < tilemap[row].size(); col++) {
             tile_ind = tilemap[row][col]/10; // /10 eliminates one digit ont int's right
@@ -52,11 +52,11 @@ std::vector<std::vector<int>> Map::makeMvtCostmap(const std::string unitmovetype
     return(costmap);
 }
 
-std::vector<std::vector<int>> Map::getTilemap(){
+std::vector<std::vector<short int>> Map::getTilemap(){
     return(tilemap);
 }
 
-void Map::setTilemap(const std::vector<std::vector<int>> in_tilemap){
+void Map::setTilemap(const std::vector<std::vector<short int>> in_tilemap){
     tilemap = in_tilemap;
 }
 
@@ -93,11 +93,11 @@ void Map::loadDanger() {
 void Map::loadGrid() {
 }
 
-void Map::addDanger(const std::vector<std::vector<int>> in_danger) {
+void Map::addDanger(const std::vector<std::vector<short int>> in_danger) {
     dangeroverlay = matrix_plus(dangeroverlay, in_danger);
 }
 
-void Map::subDanger(const std::vector<std::vector<int>> in_danger) {
+void Map::subDanger(const std::vector<std::vector<short int>> in_danger) {
     dangeroverlay = matrix_plus(dangeroverlay, in_danger, -1);
 }
 
@@ -168,7 +168,7 @@ void Map::postTilemap() {
     makeEntitymap(row_size, col_size);
 }
 
-void Map::setOverlay(const std::string in_type, const std::vector<std::vector<int>> in_map) {
+void Map::setOverlay(const std::string in_type, const std::vector<std::vector<short int>> in_map) {
     if ((in_type == "heal") || (in_type == "healoverlay")){
         healoverlay = in_map;
         if (overlay_mode.find("heal") == std::string::npos) {
@@ -242,8 +242,8 @@ void Map::drawMap(SDL_Renderer * renderer) {
 }
 
 
-std::vector<std::vector<int>> testTilemap(){
-    std::vector<std::vector<int>> tilemap = { 
+std::vector<std::vector<short int>> testTilemap(){
+    std::vector<std::vector<short int>> tilemap = { 
         {100, 100, 100, 100, 100, 100, 200, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 300, 300, 300, 300, 300, 100, 100, 100},
         {100, 100, 100, 100, 100, 100, 200, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 300, 300, 300, 300, 300, 100, 100, 100},
         {100, 100, 100, 100, 100, 100, 200, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 300, 300, 300, 300, 300, 100, 100, 100},
@@ -268,4 +268,4 @@ std::vector<std::vector<int>> testTilemap(){
     return(tilemap);
 }
 
-std::vector<std::vector<int>> (*chapTilemaps[40])() = {testTilemap,};
+std::vector<std::vector<short int>> (*chapTilemaps[40])() = {testTilemap,};

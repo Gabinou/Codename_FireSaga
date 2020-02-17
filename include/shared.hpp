@@ -155,7 +155,6 @@ extern int h_manhattan(int start[], int end[]);
 extern double h_euclidean(int start[], int end[]);
 
 extern std::vector<std::vector<int>> A_star(std::vector<std::vector<int>> map, int start[], int end[], std::string mode = "matrix");
-extern std::vector<std::vector<int>> matrix2list(std::vector<std::vector<int>> matrix);
 extern std::vector<std::vector<int>> list2matrix(std::vector<std::vector<int>> list);
 
 extern void writeText(int in_fontsize, int in_position[2], float in_sizefactor[2], std::string in_text, SDL_Color in_color, TTF_Font * in_font, SDL_Renderer * in_renderer);
@@ -330,14 +329,29 @@ struct GamepadInputMap {
     std::vector<SDL_GameControllerButton> pause{SDL_CONTROLLER_BUTTON_START};
 };
 
+template <typename T> extern std::vector<std::vector<T>> matrix2list(std::vector<std::vector<T>> matrix) {
+    std::vector<std::vector<T>> list;
 
-template <typename T> extern  std::vector<std::vector<T>> attackmap(std::vector<std::vector<T>> movemap, int start[], int move, unsigned char range[2], std::string mode = "matrix") {
+    for (T col = 0; col < matrix.size(); col++) {
+        for (T row = 0; row < matrix[0].size(); row++) {
+            if (matrix[col][row] > 0) {
+                list.push_back({col, row});
+            }
+        }
+    }
+
+    return (list);
+}
+
+
+
+template <typename T> extern std::vector<std::vector<T>> attackmap(std::vector<std::vector<T>> movemap, short unsigned int start[], short unsigned int move, unsigned char range[2], std::string mode = "matrix") {
     // Using the movemap to computes all attackable tiles.
     // EXCLUDING moveable tiles.
-    std::vector<std::vector<int>> attackmap;
-    std::vector<std::vector<int>> movelist;
-    std::vector<int> temp_point = {0, 0};
-    int tempx, tempy;
+    std::vector<std::vector<T>> attackmap;
+    std::vector<std::vector<T>> movelist;
+    std::vector<T> temp_point = {0, 0};
+    T tempx, tempy;
 
     movelist = matrix2list(movemap);
 
@@ -430,7 +444,7 @@ template <typename T> extern  std::vector<std::vector<T>> attackmap(std::vector<
 }
 
 
-template <typename T> extern std::vector<std::vector<T>> movemap(std::vector<std::vector<T>> map, int start[], int move, std::string mode = "matrix") {
+template <typename T> extern std::vector<std::vector<T>> movemap(std::vector<std::vector<T>> map, short unsigned int start[], short unsigned int move, std::string mode = "matrix") {
     // Using the map, computes all moveable tiles.
     // outputs either a list of points, or a map of 1 and zeros.
     // Both outputs are 2D vectors.

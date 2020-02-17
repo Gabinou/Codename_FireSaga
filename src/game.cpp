@@ -163,11 +163,12 @@ void Game::setState(Entity & setting_entity, std::string new_state) {
         }
         if (new_state == "unitmove") {
             std::vector<std::unique_ptr<Entity>> current_entities;
-            std::vector<std::vector<int>> costmap;
-            std::vector<std::vector<int>> movemapp;
-            int start[2];
+            std::vector<std::vector<short int>> costmap;
+            std::vector<std::vector<short int>> movemapp;
+            std::vector<std::vector<short int>> attackmapp;
+            short unsigned int start[2];
             std::string unitmvttype;
-            int unit_move;
+            short unsigned int unit_move;
             unsigned char * range;
 
             for (int i = 0; i < manager.getEntities().size(); i++) {
@@ -190,7 +191,7 @@ void Game::setState(Entity & setting_entity, std::string new_state) {
             movemapp = movemap(costmap, start, unit_move, "matrix");
             mapp->setOverlay("move", movemapp);
 
-            std::vector<std::vector<int>> attackmapp = attackmap(movemapp, start, unit_move, range, "matrix");
+            attackmapp = attackmap(movemapp, start, unit_move, range, "matrix");
             mapp->setOverlay("attack", attackmapp);
 
             mapp->showOverlay();

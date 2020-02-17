@@ -25,9 +25,9 @@ class Map {
         void loadTilemap(const short unsigned int in_map_index);
         void postTilemap();
 
-        std::vector<std::vector<int>> getTilemap();
-        void setTilemap(const std::vector<std::vector<int>> in_tilemap);
-        std::vector<std::vector<int>> makeMvtCostmap(const std::string unitmovetype);
+        std::vector<std::vector<short int>> getTilemap();
+        void setTilemap(const std::vector<std::vector<short int>> in_tilemap);
+        std::vector<std::vector<short int>> makeMvtCostmap(const std::string unitmovetype);
 
         void drawMap(SDL_Renderer * renderer);
         void makeEntitymap(const short unsigned int row_size, const short unsigned int col_size);
@@ -40,7 +40,7 @@ class Map {
         void moveTile(const short unsigned int x, const short unsigned int y, const short unsigned int new_x, const short unsigned int new_y);
         Entity * getTile(const short unsigned int x, const short unsigned int y);
 
-        void setOverlay(const std::string in_type, std::vector<std::vector<int>> in_map);
+        void setOverlay(const std::string in_type, std::vector<std::vector<short int>> in_map);
         void clearOverlays();
 
         void setOverlaymode(const std::string in_mode);
@@ -58,8 +58,8 @@ class Map {
         void setDangermode(const std::string in_mode);
         void showDanger();
         void hideDanger();
-        void addDanger(const std::vector<std::vector<int>> in_danger);
-        void subDanger(const std::vector<std::vector<int>> in_danger);
+        void addDanger(const std::vector<std::vector<short int>> in_danger);
+        void subDanger(const std::vector<std::vector<short int>> in_danger);
 
     private:
         char index;
@@ -72,10 +72,10 @@ class Map {
 
         std::vector<std::string> enemy_names;
 
-        std::vector<std::vector<int>> moveoverlay, attackoverlay, healoverlay;
-        std::vector<std::vector<int>> dangeroverlay;
-        std::vector<std::vector<int>> tilemap;
-        std::vector<std::vector<int>> tileupdate;
+        std::vector<std::vector<short int>> moveoverlay, attackoverlay, healoverlay;
+        std::vector<std::vector<short int>> dangeroverlay;
+        std::vector<std::vector<short int>> tilemap;
+        std::vector<std::vector<short int>> tileupdate;
 
         SDL_Rect srcrect, destrect;
 
@@ -91,32 +91,32 @@ class Map {
         Entity_ptr_matrix entitymap;
 };
 
-extern std::vector<std::vector<int>> (*chapTilemaps[40])();
+extern std::vector<std::vector<short int>> (*chapTilemaps[40])();
 
-std::vector<std::vector<int>> testTilemap();
-std::vector<std::vector<int>> chap2Tilemap();
-std::vector<std::vector<int>> chap3Tilemap();
-std::vector<std::vector<int>> chap4Tilemap();
-std::vector<std::vector<int>> chap5Tilemap();
-std::vector<std::vector<int>> chap6Tilemap();
-std::vector<std::vector<int>> chap7Tilemap();
-std::vector<std::vector<int>> chap8Tilemap();
-std::vector<std::vector<int>> chap9Tilemap();
-std::vector<std::vector<int>> chap10Tilemap();
-std::vector<std::vector<int>> chap11Tilemap();
-std::vector<std::vector<int>> chap12Tilemap();
-std::vector<std::vector<int>> chap13Tilemap();
-std::vector<std::vector<int>> chap14Tilemap();
-std::vector<std::vector<int>> chap15Tilemap();
-std::vector<std::vector<int>> chap16Tilemap();
-std::vector<std::vector<int>> chap17Tilemap();
-std::vector<std::vector<int>> chap18Tilemap();
-std::vector<std::vector<int>> chap19Tilemap();
-std::vector<std::vector<int>> chap20Tilemap();
-std::vector<std::vector<int>> chap21Tilemap();
-std::vector<std::vector<int>> chap22Tilemap();
-std::vector<std::vector<int>> chap23Tilemap();
-std::vector<std::vector<int>> chap24Tilemap();
-std::vector<std::vector<int>> chap25Tilemap();
+std::vector<std::vector<short int>> testTilemap();
+std::vector<std::vector<short int>> chap2Tilemap();
+std::vector<std::vector<short int>> chap3Tilemap();
+std::vector<std::vector<short int>> chap4Tilemap();
+std::vector<std::vector<short int>> chap5Tilemap();
+std::vector<std::vector<short int>> chap6Tilemap();
+std::vector<std::vector<short int>> chap7Tilemap();
+std::vector<std::vector<short int>> chap8Tilemap();
+std::vector<std::vector<short int>> chap9Tilemap();
+std::vector<std::vector<short int>> chap10Tilemap();
+std::vector<std::vector<short int>> chap11Tilemap();
+std::vector<std::vector<short int>> chap12Tilemap();
+std::vector<std::vector<short int>> chap13Tilemap();
+std::vector<std::vector<short int>> chap14Tilemap();
+std::vector<std::vector<short int>> chap15Tilemap();
+std::vector<std::vector<short int>> chap16Tilemap();
+std::vector<std::vector<short int>> chap17Tilemap();
+std::vector<std::vector<short int>> chap18Tilemap();
+std::vector<std::vector<short int>> chap19Tilemap();
+std::vector<std::vector<short int>> chap20Tilemap();
+std::vector<std::vector<short int>> chap21Tilemap();
+std::vector<std::vector<short int>> chap22Tilemap();
+std::vector<std::vector<short int>> chap23Tilemap();
+std::vector<std::vector<short int>> chap24Tilemap();
+std::vector<std::vector<short int>> chap25Tilemap();
 
 #endif /* MAP_HPP */

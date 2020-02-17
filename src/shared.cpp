@@ -90,18 +90,6 @@ int find_row (int start[], std::vector<std::vector<int>> list) {
     return(-1);
 }
 
-std::vector<std::vector<int>> matrix2list(std::vector<std::vector<int>> matrix) {
-    std::vector<std::vector<int>> list;
-    for (int col = 0; col < matrix.size(); col++) {
-        for (int row = 0; row < matrix[0].size(); row++) {
-            if (matrix[col][row] > 0) {
-                list.push_back({col,row});
-            }
-        }
-    }
-    return(list);
-}
-
 std::vector<std::vector<int>> list2matrix(std::vector<std::vector<int>> list, int col, int row) {
     std::vector<std::vector<int>> matrix(col, std::vector<int> (row, 0));
     for (int ind = 0; ind < list.size(); ind++) {
