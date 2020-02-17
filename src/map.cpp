@@ -41,10 +41,10 @@ std::vector<std::string> Map::getEnemies() {
 }
 
 std::vector<std::vector<short int>> Map::makeMvtCostmap(const std::string unitmovetype){
-    int tile_ind = 0;
-    std::vector<std::vector<short int>> costmap((int)tilemap.size(), std::vector<int> ((int)tilemap[0].size()));
-    for (int row = 0; row < tilemap.size(); row++) {
-        for (int col = 0; col < tilemap[row].size(); col++) {
+    short int tile_ind = 0;
+    std::vector<std::vector<short int>> costmap((short int)tilemap.size(), std::vector<short int> ((short int)tilemap[0].size()));
+    for (short int row = 0; row < tilemap.size(); row++) {
+        for (short int col = 0; col < tilemap[row].size(); col++) {
             tile_ind = tilemap[row][col]/10; // /10 eliminates one digit ont int's right
             costmap[row][col] = loaded_tiles[tile_ind].getCostmap()[unitmovetype];
         }
