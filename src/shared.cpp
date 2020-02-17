@@ -89,68 +89,67 @@ int find_row (int start[], std::vector<std::vector<int>> list) {
     }
     return(-1);
 }
-
-std::vector<std::vector<int>> movemap(std::vector<std::vector<int>> map, int start[], int move, std::string mode){
+// template <typename T> std::vector<std::vector<T>> movemap(std::vector<std::vector<T>> map, int start[], int move, std::string mode){
     // Using the map, computes all moveable tiles.
     // outputs either a list of points, or a map of 1 and zeros.
     // Both outputs are 2D vectors.
-    struct node{
-        int x;
-        int y;
-        int distance;
-    };
-    std::vector<std::vector<int>> movemap;
-    if (mode == "matrix"){
-        movemap = map;
-        for (int i = 0; i < movemap.size(); i++){
-            std::fill(movemap[i].begin(), movemap[i].end(), 0);
-        }
-    }
-    std::vector<node> open, closed;
-    node current, neighbor;
-    current.x = start[0];
-    current.y = start[1];
-    current.distance = 0;
-    open.push_back(current);
-    int index[2] = {-1, 1};
-    while (!open.empty()) {
-        current = open.back();
-        open.pop_back();
-        closed.push_back(current);
-        if (mode == "matrix") { 
-            movemap[current.y][current.x] = 1;
-        }
-        if (mode == "list") {
-            movemap.push_back({current.x, current.y});
-        } 
-        // Two next whiles check the 4 neighbors. 
-        // (i-j)/2 == 1 when (i+j)/2 == 0 and vice versa.
-        for(int i = 0; i < 2; i++) {
-            for(int j = 0; j < 2; j++) {
-                neighbor.x = std::min(std::max(current.x + ((index[i]+index[j])/2),0), int(map[0].size())-1);
-                neighbor.y = std::min(std::max(current.y + ((index[i]-index[j])/2),0), int(map.size())-1);
-                neighbor.distance = current.distance + map[neighbor.y][neighbor.x];
-                if ((neighbor.distance <= move) && (map[neighbor.y][neighbor.x] > 0)) {
-                    bool inclosed = false;
-                    for(int k = 0; k < closed.size(); k++) {
-                        if ((neighbor.x == closed[k].x) && (neighbor.y == closed[k].y)) {
-                            inclosed = true;
-                            if (neighbor.distance < closed[k].distance){
-                                inclosed = false;
-                                closed.erase(closed.begin() + k);
-                            }
-                            break;
-                        }
-                    }
-                    if (!inclosed) {
-                        open.push_back(neighbor);
-                    }
-                } 
-            } 
-        }
-    }
-    return(movemap);
-}
+    // struct node{
+    //     T x;
+    //     T y;
+    //     T distance;
+    // };
+    // std::vector<std::vector<T>> movemap;
+    // if (mode == "matrix"){
+    //     movemap = map;
+    //     for (int i = 0; i < movemap.size(); i++){
+    //         std::fill(movemap[i].begin(), movemap[i].end(), 0);
+    //     }
+    // }
+    // std::vector<node> open, closed;
+    // node current, neighbor;
+    // current.x = start[0];
+    // current.y = start[1];
+    // current.distance = 0;
+    // open.push_back(current);
+    // int index[2] = {-1, 1};
+    // while (!open.empty()) {
+    //     current = open.back();
+    //     open.pop_back();
+    //     closed.push_back(current);
+    //     if (mode == "matrix") { 
+    //         movemap[current.y][current.x] = 1;
+    //     }
+    //     if (mode == "list") {
+    //         movemap.push_back({current.x, current.y});
+    //     } 
+    //     // Two next whiles check the 4 neighbors. 
+    //     // (i-j)/2 == 1 when (i+j)/2 == 0 and vice versa.
+    //     for(int i = 0; i < 2; i++) {
+    //         for(int j = 0; j < 2; j++) {
+    //             neighbor.x = std::min(std::max(current.x + ((index[i]+index[j])/2),0), T(map[0].size())-1);
+    //             neighbor.y = std::min(std::max(current.y + ((index[i]-index[j])/2),0), T(map.size())-1);
+    //             neighbor.distance = current.distance + map[neighbor.y][neighbor.x];
+    //             if ((neighbor.distance <= move) && (map[neighbor.y][neighbor.x] > 0)) {
+    //                 bool inclosed = false;
+    //                 for(int k = 0; k < closed.size(); k++) {
+    //                     if ((neighbor.x == closed[k].x) && (neighbor.y == closed[k].y)) {
+    //                         inclosed = true;
+    //                         if (neighbor.distance < closed[k].distance){
+    //                             inclosed = false;
+    //                             closed.erase(closed.begin() + k);
+    //                         }
+    //                         break;
+    //                     }
+    //                 }
+    //                 if (!inclosed) {
+    //                     open.push_back(neighbor);
+    //                 }
+    //             } 
+    //         } 
+    //     }
+    // }
+    // return(movemap);
+// }
 
 std::vector<std::vector<int>> matrix2list(std::vector<std::vector<int>> matrix) {
     std::vector<std::vector<int>> list;
