@@ -22,28 +22,28 @@ class Map {
         void loadDanger();
 
         void loadTilemap(const std::string filename);
-        void loadTilemap(const int in_map_index);
+        void loadTilemap(const short unsigned int in_map_index);
         void postTilemap();
 
         std::vector<std::vector<int>> getTilemap();
-        void setTilemap(std::vector<std::vector<int>> in_tilemap);
-        std::vector<std::vector<int>> makeMvtCostmap(std::string unitmovetype);
+        void setTilemap(const std::vector<std::vector<int>> in_tilemap);
+        std::vector<std::vector<int>> makeMvtCostmap(const std::string unitmovetype);
 
         void drawMap(SDL_Renderer * renderer);
-        void makeEntitymap(int row_size, int col_size);
+        void makeEntitymap(const short unsigned int row_size, const short unsigned int col_size);
 
         void setTilesize(const short int unsigned width, const short int unsigned height);
         int * getTilesize() const;
 
-        void setTile(int x, int y, Entity * in_entity);
-        void removeTile(int x, int y);
-        void moveTile(int x, int y, int new_x, int new_y);
-        Entity * getTile(int x, int y);
+        void setTile(const short unsigned int x, const short unsigned int y, Entity * in_entity);
+        void removeTile(const short unsigned int x, const short unsigned int y);
+        void moveTile(const short unsigned int x, const short unsigned int y, const short unsigned int new_x, const short unsigned int new_y);
+        Entity * getTile(const short unsigned int x, const short unsigned int y);
 
-        void setOverlay(std::string in_type, std::vector<std::vector<int>> in_map);
+        void setOverlay(const std::string in_type, std::vector<std::vector<int>> in_map);
         void clearOverlays();
 
-        void setOverlaymode(std::string in_mode);
+        void setOverlaymode(const std::string in_mode);
         void showOverlay();
         void hideOverlay();
 
@@ -51,15 +51,15 @@ class Map {
         void showGrid();
         void hideGrid();
 
-        void setEnemies(std::vector<std::string> in_enemy_names);
-        void addEnemy(std::string in_enemy_name);
+        void setEnemies(const std::vector<std::string> in_enemy_names);
+        void addEnemy(const std::string in_enemy_name);
         std::vector<std::string> getEnemies();
 
-        void setDangermode(std::string in_mode);
+        void setDangermode(const std::string in_mode);
         void showDanger();
         void hideDanger();
-        void addDanger(std::vector<std::vector<int>> in_danger);
-        void subDanger(std::vector<std::vector<int>> in_danger);
+        void addDanger(const std::vector<std::vector<int>> in_danger);
+        void subDanger(const std::vector<std::vector<int>> in_danger);
 
     private:
         char index;
@@ -75,6 +75,7 @@ class Map {
         std::vector<std::vector<int>> moveoverlay, attackoverlay, healoverlay;
         std::vector<std::vector<int>> dangeroverlay;
         std::vector<std::vector<int>> tilemap;
+        std::vector<std::vector<int>> tileupdate;
 
         SDL_Rect srcrect, destrect;
 

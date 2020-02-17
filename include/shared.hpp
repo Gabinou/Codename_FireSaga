@@ -155,7 +155,12 @@ extern int h_manhattan(int start[], int end[]);
 extern double h_euclidean(int start[], int end[]);
 
 extern std::vector<std::vector<int>> A_star(std::vector<std::vector<int>> map, int start[], int end[], std::string mode = "matrix");
+
+
 extern std::vector<std::vector<int>> movemap(std::vector<std::vector<int>> map, int start[], int move, std::string mode = "matrix");
+
+
+
 extern std::vector<std::vector<int>> attackmap(std::vector<std::vector<int>> movemap, int start[], int move, unsigned char range[2], std::string mode = "matrix");
 extern std::vector<std::vector<int>> matrix2list(std::vector<std::vector<int>> matrix);
 extern std::vector<std::vector<int>> list2matrix(std::vector<std::vector<int>> list);
