@@ -156,8 +156,10 @@ extern double h_euclidean(int start[], int end[]);
 
 extern std::vector<std::vector<int>> A_star(std::vector<std::vector<int>> map, int start[], int end[], std::string mode = "matrix");
 
-
 template <typename T> extern std::vector<std::vector<T>> movemap(std::vector<std::vector<T>> map, int start[], int move, std::string mode = "matrix") {
+    // Using the map, computes all moveable tiles.
+    // outputs either a list of points, or a map of 1 and zeros.
+    // Both outputs are 2D vectors.
     struct node {
         T x;
         T y;
@@ -228,7 +230,6 @@ template <typename T> extern std::vector<std::vector<T>> movemap(std::vector<std
 
     return (movemap);
 }
-
 
 
 extern std::vector<std::vector<int>> attackmap(std::vector<std::vector<int>> movemap, int start[], int move, unsigned char range[2], std::string mode = "matrix");
