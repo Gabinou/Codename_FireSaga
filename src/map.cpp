@@ -20,11 +20,11 @@ int * Map::getTilesize() const {
     return ((int *)tilesize);
 }
 
-void Map::setTile(const int x, const int y, Entity * in_entity) {
+void Map::setTile(const short unsigned int x, const short unsigned int y, Entity * in_entity) {
     entitymap[x][y] = in_entity;
 }
 
-void Map::removeTile(const int x, const int y) {
+void Map::removeTile(const short unsigned int x, const short unsigned int y) {
     entitymap[x][y] = nullptr;
 }
 
@@ -60,12 +60,12 @@ void Map::setTilemap(const std::vector<std::vector<int>> in_tilemap){
     tilemap = in_tilemap;
 }
 
-void Map::moveTile(const int x, const int y, const int new_x, const int new_y) {
+void Map::moveTile(const short unsigned int x, const short unsigned int y, const short unsigned int new_x, const short unsigned int new_y) {
     entitymap[new_x][new_y] = entitymap[x][y];
     entitymap[x][y] = nullptr;
 }
 
-Entity * Map::getTile(const int x, const int y) {
+Entity * Map::getTile(const short unsigned int x, const short unsigned int y) {
     return(entitymap[x][y]);
 }
 
@@ -135,7 +135,7 @@ void Map::initVars() {
     entitymap = temp;
 }
 
-void Map::makeEntitymap(const int row_size, const int col_size){
+void Map::makeEntitymap(const short unsigned int row_size, const short unsigned int col_size){
     if (!made_entitymap) {
         Entity_ptr_matrix temp(row_size, std::vector<Entity*>(col_size));
         entitymap = temp;
@@ -155,7 +155,7 @@ void Map::loadTilemap(const std::string filename) {
     postTilemap();
 }
 
-void Map::loadTilemap(const int in_map_index) {
+void Map::loadTilemap(const short unsigned int in_map_index) {
     tilemap = chapTilemaps[in_map_index]();
     unique_textures = chapTiles[in_map_index]();
     postTilemap();
