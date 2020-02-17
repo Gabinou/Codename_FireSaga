@@ -20,19 +20,19 @@ int * Map::getTilesize() const {
     return ((int *)tilesize);
 }
 
-void Map::setTile(int x, int y, Entity * in_entity) {
+void Map::setTile(const int x, const int y, Entity * in_entity) {
     entitymap[x][y] = in_entity;
 }
 
-void Map::removeTile(int x, int y) {
+void Map::removeTile(const int x, const int y) {
     entitymap[x][y] = nullptr;
 }
 
-void Map::setEnemies(std::vector<std::string> in_enemy_names) {
+void Map::setEnemies(const std::vector<std::string> in_enemy_names) {
     enemy_names = in_enemy_names;
 }
 
-void Map::addEnemy(std::string in_enemy_name) {
+void Map::addEnemy(const std::string in_enemy_name) {
     enemy_names.push_back(in_enemy_name);
 }
 
@@ -56,16 +56,16 @@ std::vector<std::vector<int>> Map::getTilemap(){
     return(tilemap);
 }
 
-void Map::setTilemap(std::vector<std::vector<int>> in_tilemap){
+void Map::setTilemap(const std::vector<std::vector<int>> in_tilemap){
     tilemap = in_tilemap;
 }
 
-void Map::moveTile(int x, int y, int new_x, int new_y) {
+void Map::moveTile(const int x, const int y, const int new_x, const int new_y) {
     entitymap[new_x][new_y] = entitymap[x][y];
     entitymap[x][y] = nullptr;
 }
 
-Entity * Map::getTile(int x, int y) {
+Entity * Map::getTile(const int x, const int y) {
     return(entitymap[x][y]);
 }
 
@@ -93,19 +93,19 @@ void Map::loadDanger() {
 void Map::loadGrid() {
 }
 
-void Map::addDanger(std::vector<std::vector<int>> in_danger) {
+void Map::addDanger(const std::vector<std::vector<int>> in_danger) {
     dangeroverlay = matrix_plus(dangeroverlay, in_danger);
 }
 
-void Map::subDanger(std::vector<std::vector<int>> in_danger) {
+void Map::subDanger(const std::vector<std::vector<int>> in_danger) {
     dangeroverlay = matrix_plus(dangeroverlay, in_danger, -1);
 }
 
-void Map::setOverlaymode(std::string in_mode) {
+void Map::setOverlaymode(const std::string in_mode) {
     overlay_mode = in_mode;
 }
 
-void Map::setDangermode(std::string in_mode) {
+void Map::setDangermode(const std::string in_mode) {
     danger_mode = in_mode;
 }
 
@@ -135,7 +135,7 @@ void Map::initVars() {
     entitymap = temp;
 }
 
-void Map::makeEntitymap(int row_size, int col_size){
+void Map::makeEntitymap(const int row_size, const int col_size){
     if (!made_entitymap) {
         Entity_ptr_matrix temp(row_size, std::vector<Entity*>(col_size));
         entitymap = temp;
@@ -168,7 +168,7 @@ void Map::postTilemap() {
     makeEntitymap(row_size, col_size);
 }
 
-void Map::setOverlay(std::string in_type, std::vector<std::vector<int>> in_map) {
+void Map::setOverlay(const std::string in_type, const std::vector<std::vector<int>> in_map) {
     if ((in_type == "heal") || (in_type == "healoverlay")){
         healoverlay = in_map;
         if (overlay_mode.find("heal") == std::string::npos) {
