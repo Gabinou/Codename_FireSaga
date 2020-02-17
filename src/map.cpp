@@ -40,7 +40,7 @@ std::vector<std::string> Map::getEnemies() {
     return(enemy_names);
 }
 
-std::vector<std::vector<int>> Map::makeMvtCostmap(std::string unitmovetype){
+std::vector<std::vector<int>> Map::makeMvtCostmap(const std::string unitmovetype){
     int tile_ind = 0;
     std::vector<std::vector<int>> costmap((int)tilemap.size(), std::vector<int> ((int)tilemap[0].size()));
     for (int row = 0; row < tilemap.size(); row++) {
