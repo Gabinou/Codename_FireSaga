@@ -128,10 +128,10 @@ void Map::hideOverlay(){
 void Map::initVars() {
     srcrect.x = srcrect.y = 0;
     destrect.x = destrect.y = 0;
-    srcrect.w = destrect.w = 32;
-    srcrect.h = destrect.h = 32;
-    setTilesize(32, 32);
-    Entity_ptr_matrix temp(255, std::vector<Entity*>(255));
+    srcrect.w = destrect.w = DEFAULT::TILESIZE;
+    srcrect.h = destrect.h = DEFAULT::TILESIZE;
+    setTilesize(DEFAULT::TILESIZE, DEFAULT::TILESIZE);
+    Entity_ptr_matrix temp(DEFAULT::LINE_LENGTH, std::vector<Entity*>(DEFAULT::LINE_LENGTH));
     entitymap = temp;
 }
 
@@ -150,7 +150,7 @@ void Map::makeEntitymap(const short unsigned int row_size, const short unsigned 
 }
 
 void Map::loadTilemap(const std::string filename) {
-    tilemap = readcsv_vec(filename.c_str(), 1);
+    tilemap = readcsv_vec<short int>(filename.c_str(), 1);
     unique_textures = unique2D(tilemap);
     postTilemap();
 }
