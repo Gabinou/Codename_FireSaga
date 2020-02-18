@@ -65,7 +65,7 @@ template <typename T> extern std::vector<std::vector<T>> readcsv_vec(const char 
     while (!feof(fp)) {
         fgets(line_c, sizeof(line_c), fp);
         line_length = count(line_c);
-        col = parse_line_vec(line_c, ",");
+        col = parse_line_vec<std::vector<T>>(line_c);
         matrix.push_back(col);
     }
 
