@@ -17,5 +17,4 @@ extern std::vector<int> parse_line_vec(char * line, const char * until = ",");
 extern std::vector<std::vector<int>> readcsv_vec(const char * filename, const int header = 0, const char * delim = ",");
 extern std::vector<std::vector<short int>> readcsv_vec(const char * filename, const int header = 0, const char * delim = ",");
 
-
 #endif /* PARSER_HPP */
