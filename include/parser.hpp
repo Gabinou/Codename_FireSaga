@@ -73,5 +73,4 @@ template <typename T> extern std::vector<std::vector<T>> readcsv_vec(const char 
 }
 
 
-
 #endif /* PARSER_HPP */
