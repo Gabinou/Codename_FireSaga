@@ -9,7 +9,7 @@
 
 extern char * slice_char(const char * in, int start, int end);
 
-extern short unsigned int count(char line[DEFAULT::LINE_LENGTH], const char * counted = ",") {
+extern short unsigned int count(char line[DEFAULT::LINE_LENGTH], const char * counted) {
     short unsigned int out = 0;
     char * pch;
     pch = strchr(line, *counted);
@@ -23,7 +23,7 @@ extern short unsigned int count(char line[DEFAULT::LINE_LENGTH], const char * co
     return (out);
 }
 
-template <typename T> extern std::vector<T> parse_line_vec(char line[DEFAULT::LINE_LENGTH], const char * until = ",") {
+template <typename T> extern std::vector<T> parse_line_vec(char line[DEFAULT::LINE_LENGTH], const char * until) {
     std::vector<T> out;
     int start = 0;
     char * end;
@@ -43,7 +43,7 @@ template <typename T> extern std::vector<T> parse_line_vec(char line[DEFAULT::LI
 }
 
 
-template <typename T> extern std::vector<std::vector<T>> readcsv_vec(const char * filename, const int header = 0, const char * delim = ",") {
+template <typename T> extern std::vector<std::vector<T>> readcsv_vec(const char * filename, const int header = 0, const char * delim) {
     FILE * fp;
     char line_c[DEFAULT::LINE_LENGTH];
     // char * line_c;
@@ -65,7 +65,7 @@ template <typename T> extern std::vector<std::vector<T>> readcsv_vec(const char 
     while (!feof(fp)) {
         fgets(line_c, sizeof(line_c), fp);
         line_length = count(line_c);
-        col = parse_line_vec<std::vector<T>>(line_c);
+        col = parse_line_vec<std::vector<T>>(line_c,);
         matrix.push_back(col);
     }
 
