@@ -45,7 +45,6 @@ template <typename T> std::vector<T> extern parse_line_vec(char line[DEFAULT::LI
 template <typename T> extern std::vector<std::vector<T>> readcsv_vec(const char * filename, const int header = 0, const char * delim = ",") {
     FILE * fp;
     char line_c[DEFAULT::LINE_LENGTH];
-    // char * line_c;
     long int current_line = 0;
     static short unsigned int line_length;
     std::vector<T> col;
