@@ -98,30 +98,30 @@ int count(char * line, const char * counted = ",") {
 }
 
 // How to use read_csv_vec for different datatypes?
-std::vector<std::vector<int>> readcsv_vec(const char * filename, const int header, const char * delim, const int out_size) {
-    FILE * fp;
-    char line_c[255];
-    long int current_line = 0;
-    static int line_length;
-    std::vector<int> col;
-    std::vector<std::vector<int>> matrix;
-    fp = fopen(filename, "r");
+// std::vector<std::vector<int>> readcsv_vec(const char * filename, const int header, const char * delim, const int out_size) {
+//     FILE * fp;
+//     char line_c[255];
+//     long int current_line = 0;
+//     static int line_length;
+//     std::vector<int> col;
+//     std::vector<std::vector<int>> matrix;
+//     fp = fopen(filename, "r");
 
-    if (fp == NULL) {
-        perror("Error opening file");
-    }
+//     if (fp == NULL) {
+//         perror("Error opening file");
+//     }
 
-    while (current_line < header) {
-        fgets(line_c, sizeof(line_c), fp);
-        current_line++;
-    }
+//     while (current_line < header) {
+//         fgets(line_c, sizeof(line_c), fp);
+//         current_line++;
+//     }
 
-    while (!feof(fp)) {
-        fgets(line_c, sizeof(line_c), fp);
-        line_length = count(line_c);
-        col = parse_line_vec(line_c);
-        matrix.push_back(col);
-    }
+//     while (!feof(fp)) {
+//         fgets(line_c, sizeof(line_c), fp);
+//         line_length = count(line_c);
+//         col = parse_line_vec(line_c);
+//         matrix.push_back(col);
+//     }
 
-    return (matrix);
-}
+//     return (matrix);
+// }
