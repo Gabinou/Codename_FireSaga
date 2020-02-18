@@ -9,6 +9,34 @@ int findinchar(const char * string, const char * search) {
     return (-1);
 }
 
+extern short unsigned int count(char * line, const char * counted) {
+    short unsigned int out = 0;
+    char * pch;
+    pch = strchr(line, *counted);
+
+    while (pch != NULL) {
+        pch = strchr(pch + 1, *counted);
+        out++;
+    }
+
+    out++;
+    return (out);
+}
+
+extern unsigned int count(char * line, const char * counted) {
+    unsigned int out = 0;
+    char * pch;
+    pch = strchr(line, *counted);
+
+    while (pch != NULL) {
+        pch = strchr(pch + 1, *counted);
+        out++;
+    }
+
+    out++;
+    return (out);
+}
+
 char until(FILE * fp, const char * until = ",",  const char * interrupt = "@") {
     char single_char;
     char buffer[255];
@@ -83,17 +111,22 @@ std::vector<int> parse_line_vec(char * line, const char * until = ",", const int
     return (out);
 }
 
-int count(char * line, const char * counted = ",") {
-    int out = 0;
-    char * pch;
-    pch = strchr(line, *counted);
+std::vector<short int> parse_line_vec(char * line, const char * until = ",", const int out_size = 255) {
+    std::vector<short int> out;
+    int start = 0;
+    char * end;
+    char * current;
+    end = strchr(line, *until);
 
-    while (pch != NULL) {
-        pch = strchr(pch + 1, *counted);
-        out++;
+    while (end != NULL) {
+        current = slice_char(line, start, (int)(end - line));
+        start = end + 1 - line;
+        end = strchr(end + 1, *until);
+        out.push_back(atoi(current));
     }
 
-    out++;
+    current = slice_char(line, start, (int)(end));
+    out.push_back(atoi(current));
     return (out);
 }
 
