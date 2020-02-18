@@ -3,6 +3,7 @@
 
 #include <vector>
 #include <stdio.h>
+#include "shared.hpp"
 
 extern void plot2Darray(int array[][10], int imax, int jmax);
 template <typename T> extern void plot2Dvector(std::vector<std::vector<T>> matrix) {

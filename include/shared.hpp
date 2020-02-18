@@ -24,6 +24,7 @@ enum DEFAULTS {
     WEAPONS_SIZE = 3,
     ITEMS_SIZE = 3,
     CONVOY_SIZE = 200,
+    LINE_LENGTH = 255,
 }; // replace text IN MY FILES by the values, at compilation.
 }
 
