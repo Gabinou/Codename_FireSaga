@@ -128,9 +128,9 @@ void Map::hideOverlay(){
 void Map::initVars() {
     srcrect.x = srcrect.y = 0;
     destrect.x = destrect.y = 0;
+    setTilesize(DEFAULT::TILESIZE, DEFAULT::TILESIZE);
     srcrect.w = destrect.w = DEFAULT::TILESIZE;
     srcrect.h = destrect.h = DEFAULT::TILESIZE;
-    setTilesize(DEFAULT::TILESIZE, DEFAULT::TILESIZE);
     Entity_ptr_matrix temp(DEFAULT::LINE_LENGTH, std::vector<Entity*>(DEFAULT::LINE_LENGTH));
     entitymap = temp;
 }
@@ -140,8 +140,8 @@ void Map::makeEntitymap(const short unsigned int row_size, const short unsigned 
         Entity_ptr_matrix temp(row_size, std::vector<Entity*>(col_size));
         entitymap = temp;
         // printf("Made Entitymap size: %d, %d\n", entitymap.size(), entitymap[0].size());
-        for (int col = 0; col < entitymap.size(); col++) {
-            for (int row = 0; row < entitymap[0].size(); row++) {
+        for (short unsigned int col = 0; col < entitymap.size(); col++) {
+            for (short unsigned int row = 0; row < entitymap[0].size(); row++) {
                 entitymap[col][row] =  static_cast<Entity*>(nullptr);
             }
         }
@@ -163,12 +163,13 @@ void Map::loadTilemap(const short unsigned int in_map_index) {
 
 void Map::postTilemap() {
     loadTiletextures();
-    int col_size = tilemap.size();
-    int row_size = tilemap[0].size();
+    short unsigned int col_size = tilemap.size();
+    short unsigned int row_size = tilemap[0].size();
     makeEntitymap(row_size, col_size);
 }
 
 void Map::setOverlay(const std::string in_type, const std::vector<std::vector<short int>> in_map) {
+    // string compares are BAAAAD.
     if ((in_type == "heal") || (in_type == "healoverlay")){
         healoverlay = in_map;
         if (overlay_mode.find("heal") == std::string::npos) {

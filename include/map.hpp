@@ -63,8 +63,8 @@ class Map {
 
     private:
         char index;
-        int tilesize[2];
-        int frames = 10, speed = 50;
+        short unsigned int tilesize[2];
+        short unsigned int frames = 10, speed = 50;
         bool show_overlay = false;
         bool show_danger = false;
         bool show_grid = false;
