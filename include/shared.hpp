@@ -31,13 +31,16 @@ enum DEFAULTS {
 namespace CLASS {
 enum UNIT_CLASS {
     LORD,
+    LORD_RIDER,
     DUKE,
+    DUKE_RIDER,
     ARCHER,
     ARCHER_RIDER,
     MARKSMAN,
     MARKSMAN_RIDER,
     ANGEL,
     DEMON,
+    PEGASUS_KNIGHT,
     DEMONIC_INCARNATE,
     ANGELIC_INCARNATE,
     FENCER,
@@ -62,9 +65,11 @@ enum UNIT_CLASS {
     PRIEST,
     BISHOP,
     ORACLE,
+    GENERAL,
     CLERIC,
     DEMIGOD,
     GOD,
+    KNIGHT,
     GODDESS,
     TWINBORN
 };

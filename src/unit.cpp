@@ -189,47 +189,47 @@ void Unit::setEquippable() {
 }
 
 
-std::string Unit::getMvttype() {
-    printf("inside unit %s\n", mvt_type.c_str());
+unsigned char Unit::getMvttype() {
+    printf("inside unit %d\n", mvt_type);
     return (mvt_type);
 }
 
 void Unit::setMvttype() {
     // String compares are BAAAAD.
-    if ((class_name == "Fencer") || (class_name == "Mousquetaire") || (class_name == "Duelist") || (class_name == "Lord") || (class_name == "Duke") || (class_name == "Archer") || (class_name == "Marksman") || (class_name == "Mercenary") || (class_name == "Hero") || (class_name == "Trooper")) {
-        mvt_type = "foot_slow";
+    if ((class_index == CLASS::FENCER) || (class_index == CLASS::MOUSQUETAIRE) || (class_index == CLASS::DUELIST) || (class_index == CLASS::LORD) || (class_index == CLASS::DUKE) || (class_index == CLASS::ARCHER) || (class_index == CLASS::MARKSMAN) || (class_index == CLASS::MERCENARY) || (class_index == CLASS::HERO) || (class_index == CLASS::PIKEMAN)) {
+        mvt_type = MVT_TYPE::FOOT_SLOW;
     }
 
-    if ((class_name == "Pickpocket") || (class_name == "Thief") || (class_name == "Assassin") || (class_name == "Demon")) {
-        mvt_type = "foot_fast";
+    if ((class_index == CLASS::PICKPOCKET) || (class_index == CLASS::THIEF) || (class_index == CLASS::ASSASSIN) || (class_index == CLASS::DEMON)) {
+        mvt_type = MVT_TYPE::FOOT_FAST;
     }
 
-    if ((class_name == "Mage") || (class_name == "Battlemage") || (class_name == "Sage") || (class_name == "Oracle") || (class_name == "Priest") || (class_name == "Cleric") || (class_name == "Bishop") || (class_name == "Incarnate") || (class_name == "Possessed")) {
-        mvt_type = "mages";
+    if ((class_index == CLASS::MAGE) || (class_index == CLASS::BATTLEMAGE) || (class_index == CLASS::SAGE) || (class_index == CLASS::ORACLE) || (class_index == CLASS::PRIEST) || (class_index == CLASS::CLERIC) || (class_index == CLASS::BISHOP) || (class_index == CLASS::ANGELIC_INCARNATE) || (class_index == CLASS::DEMONIC_INCARNATE) || (class_index == CLASS::ANGEL) || (class_index == CLASS::DEMON)) {
+        mvt_type = MVT_TYPE::MAGES;
     }
 
-    if ((class_name == "Cavalier") || (class_name == "Archer rider") || (class_name == "Marksman rider") || (class_name == "Lord rider") || (class_name == "Duke rider")) {
-        mvt_type = "riders_slow";
+    if ((class_index == CLASS::CAVALIER) || (class_index == CLASS::ARCHER_RIDER) || (class_index == CLASS::MARKSMAN_RIDER) || (class_index == CLASS::LORD_RIDER) || (class_index == CLASS::DUKE_RIDER)) {
+        mvt_type = MVT_TYPE::RIDERS_SLOW;
     }
 
-    if ((class_name == "Paladin") || (class_name == "Troubadour")) {
-        mvt_type = "riders_fast";
+    if ((class_index == CLASS::PALADIN) || (class_index == CLASS::TROUBADOUR)) {
+        mvt_type = MVT_TYPE::RIDERS_FAST;
     }
 
-    if ((class_name == "Pegasus knight") || (class_name == "Angel")) {
-        mvt_type = "fliers";
+    if ((class_index == CLASS::PEGASUS_KNIGHT) || (class_index == CLASS::ANGEL)) {
+        mvt_type = MVT_TYPE::FLIERS;
     }
 
-    if ((class_name == "Knight") || (class_name == "General")) {
-        mvt_type = "armors";
+    if ((class_index == CLASS::KNIGHT) || (class_index == CLASS::GENERAL)) {
+        mvt_type = MVT_TYPE::ARMORS;
     }
 
-    if ((class_name == "Corsair") || (class_name == "Viking")) {
-        mvt_type = "pirates";
+    if ((class_index == CLASS::CORSAIR) || (class_index == CLASS::VIKING)) {
+        mvt_type = MVT_TYPE::PIRATES;
     }
 
-    if ((class_name == "Bandit") || (class_name == "Ravager")) {
-        mvt_type = "bandits";
+    if ((class_index == CLASS::BANDIT) || (class_index == CLASS::RAVAGER)) {
+        mvt_type = MVT_TYPE::BANDITS;
     }
 }
 

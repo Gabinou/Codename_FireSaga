@@ -34,11 +34,12 @@ class Unit {
         unsigned short int exp;
         unsigned short int entity;
         short int position[2] = {0, 0};
-        bool sex; // 0:F, 1:
+        bool sex; // 0:F, 1:M
 
         std::string name;
         std::string class_name;
-        std::string mvt_type;
+        unsigned char class_index;
+        unsigned char mvt_type;
         std::string army; //affilistion?
 
         Equipped equipped; // these are indices. -1 means no equipment.
@@ -65,7 +66,7 @@ class Unit {
         void setPos(const short int in_pos[2]);
         void setPos(const Point in_pos);
 
-        std::string getMvttype();
+        unsigned char getMvttype();
         void setMvttype();
 
         std::vector<std::string> getEquippables();
