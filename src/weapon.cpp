@@ -589,6 +589,7 @@ void baseWeapons(){
     Weapon Mithrandir("Mithrandir", "elemental", temp_wpn);
     Mithrandir.setDescription("Inspires courage in the hearts of men. Effective against demons.");
     Mithrandir.setEffective("Demon");
+    Mithrandir.setEffect("Demon");
     all_weapons["Mithrandir"] = Mithrandir;
 
     temp_wpn = {0, 5, 70, 0, 0, 0, 5, 60, 7, {1,2}, {1,2}, 1, 1000};

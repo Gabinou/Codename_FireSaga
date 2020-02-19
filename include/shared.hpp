@@ -71,6 +71,20 @@ enum UNIT_CLASS {
 }
 
 
+namespace MVT_TYPE {
+enum MVT_TYPES {
+    FOOT_SLOW,
+    FOOT_FAST,
+    MAGES,
+    RIDERS_SLOW,
+    RIDERS_FAST,
+    FLIERS,
+    ARMORS,
+    PIRATES,
+    BANDITS,
+};
+}
+
 namespace WEAPON {
 enum WEAPONS {
     WOODEN_SWORD,
