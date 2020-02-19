@@ -56,7 +56,7 @@ class Game {
         void loadUnits(std::vector<std::string> names, std::vector<std::string> asset_names, std::vector<std::vector<int>> positions_list);
         void loadMapEnemies();
         void loadCursor();
-        void loadTiles(std::vector<int> in_tiles);
+        template <typename T> void loadTiles(std::vector<T> in_tiles);
 
         void handleEvents();
         void update();

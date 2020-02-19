@@ -314,9 +314,9 @@ std::string Game::getState() {
     return(state);
 }
 
-void Game::loadTiles(std::vector<int> in_tiles) {
+template <typename T> void Game::loadTiles(std::vector<T> in_tiles) {
     loaded_tiles = baseTiles(in_tiles);
-} 
+}
 
 void Game::loadMap(const std::string filename) {
     printf("Loading map \n");

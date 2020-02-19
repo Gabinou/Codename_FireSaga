@@ -1,5 +1,19 @@
 #include <parser.hpp>
 
+short unsigned int count_words(char line[DEFAULT::LINE_LENGTH], const char * counted) {
+    short unsigned int out = 0;
+    char * pch;
+    pch = strchr(line, *counted);
+
+    while (pch != NULL) {
+        pch = strchr(pch + 1, *counted);
+        out++;
+    }
+
+    out++;
+    return (out);
+}
+
 int findinchar(const char * string, const char * search) {
     for (int n = 0; string[n] != '\0'; n++) {
         if (string[n] == * search) {

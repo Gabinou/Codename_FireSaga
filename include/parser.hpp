@@ -6,22 +6,11 @@
 #include <string.h>
 #include <stdio.h>
 #include <vector>
+#include "shared.hpp"
 
 extern char * slice_char(const char * in, int start, int end);
 
-extern short unsigned int count(char line[DEFAULT::LINE_LENGTH], const char * counted = ",") {
-    short unsigned int out = 0;
-    char * pch;
-    pch = strchr(line, *counted);
-
-    while (pch != NULL) {
-        pch = strchr(pch + 1, *counted);
-        out++;
-    }
-
-    out++;
-    return (out);
-}
+extern short unsigned int count_words(char line[DEFAULT::LINE_LENGTH], const char * counted = ",");
 
 template <typename T> std::vector<T> extern parse_line_vec(char line[DEFAULT::LINE_LENGTH], const char * until = ",") {
     std::vector<T> out;
@@ -62,7 +51,7 @@ template <typename T> extern std::vector<std::vector<T>> readcsv_vec(const char 
 
     while (!feof(fp)) {
         fgets(line_c, sizeof(line_c), fp);
-        line_length = count(line_c);
+        line_length = count_words(line_c);
         col = parse_line_vec<T>(line_c);
         matrix.push_back(col);
     }

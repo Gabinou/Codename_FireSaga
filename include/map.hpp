@@ -82,8 +82,8 @@ class Map {
         std::string overlay_mode = "";
         std::string danger_mode = "";
 
-        std::unordered_map<int, SDL_Texture *> textures;
-        std::vector<int> unique_textures;
+        std::unordered_map<short int, SDL_Texture *> textures;
+        std::vector<short int> unique_textures;
         std::vector<SDL_Texture *> overlays{NULL, NULL, NULL};
         std::vector<SDL_Texture *> dangers{NULL, NULL};
         std::string ss_looping = "linear";
