@@ -6,6 +6,7 @@
 #include "shared.hpp"
 
 extern void plot2Darray(int array[][10], int imax, int jmax);
+
 template <typename T> extern void plot2Dvector(std::vector<std::vector<T>> matrix) {
     for (short unsigned int i = 0; i < matrix.size(); i++) {
         for (short unsigned int j = 0; j < matrix[i].size(); j++) {
@@ -40,7 +41,7 @@ template <typename T> extern std::vector<T> unique2D(std::vector<std::vector<T>>
 }
 
 template <typename T> extern std::vector<std::vector<T>> matrix_plus(std::vector<std::vector<T>> matrix1, std::vector<std::vector<T>> matrix2, short int sign = 1) {
-//both matrices should have the same shape
+    //both matrices should have the same shape
     std::vector<std::vector<T>> out = matrix1;
 
     for (short unsigned int i = 0; i < out.size(); i++) {

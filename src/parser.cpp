@@ -15,7 +15,7 @@ short unsigned int count_words(char line[DEFAULT::LINE_LENGTH], const char * cou
 }
 
 int findinchar(const char * string, const char * search) {
-    for (int n = 0; string[n] != '\0'; n++) {
+    for (short unsigned int n = 0; string[n] != '\0'; n++) {
         if (string[n] == * search) {
             return (n);
         }
