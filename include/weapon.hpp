@@ -3,11 +3,6 @@
 
 #include "shared.hpp"
 
-/*! \file weapon.hpp
-* \brief Weapon class. Not the one in the inventory, just the immutable weapon data.
-*/
-/// \class weapon
-/// \brief Weapon class.
 class Weapon {
     private:
         Weapon_stats stats;
@@ -44,11 +39,6 @@ class Weapon {
         void write(const char * filename, const char * mode = "a");
 };
 
-/*! \var all_weapons
-* \brief Contains all instances of weapons.
-*  Uses the weapon's name as std::unordered_map's key.
-*  Are immutable. Should never be changed in game.
-*/
 extern std::unordered_map<std::string, Weapon> all_weapons;
 
 void baseWeapons();
