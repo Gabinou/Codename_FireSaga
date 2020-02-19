@@ -137,7 +137,6 @@ void baseWeapons(){
     iron_sword.setDescription("Simple straight sword made of iron. Cheap and reliable.");
     all_weapons["iron_sword"] = iron_sword;
     temp_wpn = {9, 0, 60, 0, 0, 0, 9, 30, 10, {1,1}, {1,2}, 0, 1000};
-
     Weapon steel_sword("Steel sword", "sword", temp_wpn);
     steel_sword.setDescription("Simple straight sword made of steel. Strong and durable.");
     all_weapons["steel_sword"] = steel_sword;
@@ -182,7 +181,7 @@ void baseWeapons(){
     temp_wpn = {15, 0, 90, 10, 0, 0, 10, 30, 15, {1,1}, {1,2}, 0, 1000};
     Weapon Excalibur("Excalibur", "sword", temp_wpn);
     Excalibur.setEffective({"Demon"});
-    Excalibur.setDescription("The king's sword. Found in a rock. To be thrown in a lake when broken.");
+    Excalibur.setDescription("The king's sword. Found in a rock.");
     all_weapons["Excalibur"] = Excalibur;
     temp_wpn = {12, 0, 100, 0, 0, 0, 6, 20, 18, {1,1}, {1}, 0, 1000};
     Weapon Galatine("Galatine", "sword", temp_wpn);
@@ -328,7 +327,7 @@ void baseWeapons(){
     all_weapons["war_pick"] = war_pick;
     temp_wpn = {15, 0, 45, 0, 0, 0, 14, 30, 14, {1,1}, {1,2}, 0, 1000};
     Weapon battleaxe("Battleaxe", "axe", temp_wpn);
-    battleaxe.setDescription("Comically oversized axe.");
+    battleaxe.setDescription("Double-bladed, comically oversized axe.");
     all_weapons["battleaxe"] = battleaxe;
     temp_wpn = {17, 0, 60, 0, 0, 0, 17, 20, 17, {1,1}, {1,2}, 0, 1000};
     Weapon Vidyu("Vidyu", "axe", temp_wpn);
@@ -473,7 +472,7 @@ void baseWeapons(){
     all_weapons["main_gauche"] = main_gauche;
     temp_wpn = {2, 0, 0, 22, 0, 4, 6, 28, 12, {1,1}, {1}, 0, 1000};
     Weapon swordbreaker("Swordbreaker", "offhand", temp_wpn);
-    swordbreaker.setDescription("Dagger with slots designed to not break, but catch swords. Increases avoid and favor. Rarely does it actually break swords... ");
+    swordbreaker.setDescription("Dagger with slots designed to catch swords. Increases avoid and favor. Rarely does it actually break swords...");
     all_weapons["swordbreaker"] = swordbreaker;
     temp_wpn = {3, 0, 14, 0, 8, 0, 4, 20, 10, {1,1}, {1}, 0, 1000};
     Weapon trident_dagger("Trident Dagger", "offhand", temp_wpn);

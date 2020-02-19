@@ -195,6 +195,7 @@ std::string Unit::getMvttype() {
 }
 
 void Unit::setMvttype() {
+    // String compares are BAAAAD.
     if ((class_name == "Fencer") || (class_name == "Mousquetaire") || (class_name == "Duelist") || (class_name == "Lord") || (class_name == "Duke") || (class_name == "Archer") || (class_name == "Marksman") || (class_name == "Mercenary") || (class_name == "Hero") || (class_name == "Trooper")) {
         mvt_type = "foot_slow";
     }
