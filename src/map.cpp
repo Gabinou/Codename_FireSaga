@@ -16,8 +16,8 @@ void Map::setTilesize(const short int unsigned width, const short int unsigned h
     tilesize[1] = height;
 }
 
-int * Map::getTilesize() const {
-    return ((int *)tilesize);
+short int * Map::getTilesize() const {
+    return ((short int *)tilesize);
 }
 
 void Map::setTile(const short unsigned int x, const short unsigned int y, Entity * in_entity) {

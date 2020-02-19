@@ -33,7 +33,7 @@ class Map {
         void makeEntitymap(const short unsigned int row_size, const short unsigned int col_size);
 
         void setTilesize(const short int unsigned width, const short int unsigned height);
-        int * getTilesize() const;
+        short int * getTilesize() const;
 
         void setTile(const short unsigned int x, const short unsigned int y, Entity * in_entity);
         void removeTile(const short unsigned int x, const short unsigned int y);
@@ -63,7 +63,7 @@ class Map {
 
     private:
         char index;
-        short unsigned int tilesize[2];
+        short int tilesize[2]; // Horse and  cursor disappear if unsigned or short
         short unsigned int frames = 10, speed = 50;
         bool show_overlay = false;
         bool show_danger = false;
