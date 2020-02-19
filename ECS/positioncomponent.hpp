@@ -11,60 +11,60 @@ class PositionComponent : public Component {
         // On first init of the component, entity is still a nullptr.
     private:
         bool updatable = true;
-        int position[2] = {0};
-        int bounds[4] = {0, 255, 0, 255}; //xmin, xmax, ymin, ymax
-        Map * map = nullptr;
+        Map * map = NULL; // no map-> position is not on a grid.
+        short int position[2] = {0};
+        short int bounds[4] = {0, 255, 0, 255}; //xmin, xmax, ymin, ymax
 
     public:
         PositionComponent() {
             setPos(0, 0);
         }
 
-        PositionComponent(int in_x, int in_y) {
+        PositionComponent(short int in_x, short int in_y) {
             setPos(in_x, in_y);
         }
 
-        PositionComponent(int in_x, int in_y,
-                          int xmin, int xmax,
-                          int ymin, int ymax)
+        PositionComponent(short int in_x, short int in_y,
+                          short int xmin, short int xmax,
+                          short int ymin, short int ymax)
             : PositionComponent(in_x, in_y) {
             setBounds(xmin, xmax, ymin, ymax);
         }
 
-        PositionComponent(int in_x, int in_y,
-                          int in_bounds[4])
+        PositionComponent(short int in_x, short int in_y,
+                          short int in_bounds[4])
             : PositionComponent(in_x, in_y) {
             setBounds(in_bounds);
         }
 
-        PositionComponent(int in_x, int in_y,
-                          std::vector<int> in_bounds)
+        PositionComponent(short int in_x, short int in_y,
+                          std::vector<short int> in_bounds)
             : PositionComponent(in_x, in_y) {
             setBounds(in_bounds);
         }
 
-        void setBounds(int xmin, int xmax, int ymin, int ymax) {
+        void setBounds(short int xmin, short int xmax, short int ymin, short int ymax) {
             bounds[0] = xmin;
             bounds[1] = xmax;
             bounds[2] = ymin;
             bounds[3] = ymax;
         }
 
-        void setBounds(int in_bounds[4]) {
+        void setBounds(short int in_bounds[4]) {
             bounds[0] = in_bounds[0];
             bounds[1] = in_bounds[1];
             bounds[2] = in_bounds[2];
             bounds[3] = in_bounds[3];
         }
 
-        void setBounds(std::vector<int> in_bounds) {
+        void setBounds(std::vector<short int> in_bounds) {
             bounds[0] = in_bounds[0];
             bounds[1] = in_bounds[1];
             bounds[2] = in_bounds[2];
             bounds[3] = in_bounds[3];
         }
 
-        int * getBounds() {
+        short int * getBounds() {
             return (bounds);
         }
 
@@ -84,7 +84,7 @@ class PositionComponent : public Component {
             return (updatable);
         }
 
-        void setPos(int in_x, int in_y) {
+        void setPos(short int in_x, short int in_y) {
             if (updatable) {
 
                 if ((in_x >= bounds[0]) && (in_x <= bounds[1])) {
@@ -101,11 +101,11 @@ class PositionComponent : public Component {
             }
         }
 
-        void addPos(int move_x, int move_y) {
+        void addPos(short int move_x, short int move_y) {
             setPos((move_x + position[0]), (move_y + position[1]));
         }
 
-        int * getPos() {
+        short int * getPos() {
             return (position);
         }
 };

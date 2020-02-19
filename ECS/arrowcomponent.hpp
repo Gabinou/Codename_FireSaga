@@ -12,19 +12,19 @@ class ArrowComponent : public Component {
         SDL_Texture * texture;
         std::vector<SDL_Rect> srcrects = {{0, 0, 32, 32}, {32, 0, 32, 32}, {64, 0, 32, 32}}; // x,y,w,h
         std::vector<SDL_Rect> destrects = {{0, 0, 32, 32}};
-        std::vector < std::vector< int>> path;// this is a 2D path with x and y.
-        std::vector <int> pathx;
+        std::vector<std::vector<short int>> path;// this is a 2D path with x and y.
+        std::vector<short int> pathx;
         // conaints only 1 or 0. 1 means move in x direction. 0 means move in y direction.
         // movement direction is based on computed distance between origin and cursor.
-        std::vector < std::vector< int>> open_tiles;
+        std::vector <std::vector<short int>> open_tiles;
         Entity * cursor;
         PositionComponent * positioncomponent;
         bool visible;
         bool updatable;
-        int move = 6; //temporary, waiting for units to be able to give their move units.
-        Map * map = NULL; // no map-> position is not on a grid.
+        short int move = 6; //temporary, waiting for units to be able to give their move units.
         short int * tilesize; // if no map, just use the pixel position as usual.
-        int * origin;
+        short int * origin;
+        Map * map = NULL; // no map-> position is not on a grid.
 
     public:
         ArrowComponent() = default;
@@ -63,12 +63,12 @@ class ArrowComponent : public Component {
         virtual void update() override {
 
 
-            int * objectivepos = cursor->getComponent<PositionComponent>().getPos();
+            short int * objectivepos = cursor->getComponent<PositionComponent>().getPos();
 
 
             if (!cursor->getComponent<PositionComponent>().isUpdatable()) {
                 if (path.size() < move) {
-                    path.push_back(std::vector<int>());
+                    path.push_back(std::vector<short int>());
                     path[path.size()].push_back(objectivepos[0]);
                     path[path.size()].push_back(objectivepos[1]);
                 } else {

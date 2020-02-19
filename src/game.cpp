@@ -254,8 +254,8 @@ void Game::setState(Entity & setting_entity, std::string new_state) {
         if (new_state == "unitmenu") {
             mapp->hideOverlay();
             makeUnitmenu(setting_entity); 
-            int *new_position = setting_entity.getComponent<PositionComponent>().getPos();
-            int *old_position = manager.getEntities()[unit_entities.top()]->getComponent<PositionComponent>().getPos();
+            short int *new_position = setting_entity.getComponent<PositionComponent>().getPos();
+            short int *old_position = manager.getEntities()[unit_entities.top()]->getComponent<PositionComponent>().getPos();
             
             printf("Old position %d, %d \n", old_position[0], old_position[1]);
             printf("New position %d, %d \n", new_position[0], new_position[1]);

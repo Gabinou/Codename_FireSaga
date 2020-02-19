@@ -22,11 +22,11 @@ class SpriteComponent : public Component {
         KeyboardController * keyboardcontroller;
         GamepadController * gamepadcontroller;
 
-        int objectivepos[2];
-        int slidepos[2];
+        short int objectivepos[2];
+        short int slidepos[2];
         short int * tilesize; // if no map, just use the pixel position as usual.
-        int frames = 10, speed = 50;
-        int slideint = 0; // for slide_type = "geometric"
+        short int frames = 10, speed = 50;
+        short int slideint = 0; // for slide_type = "geometric"
 
         bool visible;
         bool animated = false;

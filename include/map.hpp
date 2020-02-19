@@ -63,7 +63,7 @@ class Map {
 
     private:
         char index;
-        short int tilesize[2]; // Horse and  cursor disappear if unsigned or short
+        short int tilesize[2];
         short unsigned int frames = 10, speed = 50;
         bool show_overlay = false;
         bool show_danger = false;
