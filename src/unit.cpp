@@ -36,11 +36,11 @@ Unit::Unit(const Unit_stats in_bases) : Unit() {
     current_stats = in_bases;
 }
 
-int * Unit::getPos() {
+short int * Unit::getPos() {
     return(position);
 }
 
-void Unit::setPos(const int in_pos[2]) {
+void Unit::setPos(const short int in_pos[2]) {
     position[0] = in_pos[0];
     position[1] = in_pos[1];
 }
@@ -75,7 +75,7 @@ void Unit::setMap_enemy(Map_enemy in_map_enemy){
 }
 
 void Unit::setEquipment(Inventory_item * in_equipment) {
-    for (int i = 0; i < DEFAULT::EQUIPMENT_SIZE; i++) {
+    for (short unsigned int i = 0; i < DEFAULT::EQUIPMENT_SIZE; i++) {
         equipment[i] = in_equipment[i];
     }
 }
@@ -248,7 +248,7 @@ void Unit::unequipsR() {
     equipped.right = -1;
 }
 
-void Unit::equips(const unsigned int index, const std::string hand) {
+void Unit::equips(const short unsigned int index, const std::string hand) {
     if (hand == "left") {
         equipped.left = index;
     } else {
@@ -264,19 +264,19 @@ void Unit::unequips(const std::string hand) {
     }
 }
 
-void Unit::takeItem(Inventory_item * out_array, int in_index, int out_index) {
+void Unit::takeItem(Inventory_item * out_array, short int in_index, short int out_index) {
     equipment[in_index] = out_array[out_index];
     Inventory_item empty;
     out_array[out_index] = empty;
 }
 
-void Unit::giveItem(Inventory_item * out_array, int in_index, int out_index) {
+void Unit::giveItem(Inventory_item * out_array, short int in_index, short int out_index) {
     out_array[out_index] = equipment[in_index];
     Inventory_item empty;
     equipment[in_index] = empty;
 }
 
-void Unit::dropItem(int in_index) {
+void Unit::dropItem(short int in_index) {
     Inventory_item empty;
     equipment[in_index] = empty;
 }
@@ -290,18 +290,18 @@ void Unit::takesDamage(const unsigned char damage) {
 
 void Unit::getsHealed(const unsigned char healing) {
     printf("%s gets healed for %d\n", name, healing);
-    current_hp = std::min(current_hp + healing, (int) current_stats.hp);
+    current_hp = std::min( (short int) (current_hp + healing), (short int) current_stats.hp);
 }
 
 unsigned char Unit::getHp() const {
     return (current_hp);
 }
 
-unsigned int Unit::getLvl() const {
+unsigned short int Unit::getLvl() const {
     return (ceil(current_hp / 100));
 }
 
-unsigned int Unit::getExp() const {
+unsigned short int Unit::getExp() const {
     return (exp);
 }
 
@@ -340,7 +340,7 @@ unsigned char * Unit::getRange() const {
     return (range);
 }
 
-void Unit::setEntity(int in_index) {
+void Unit::setEntity(short int in_index) {
     entity = in_index;
 }
 
@@ -348,11 +348,11 @@ int Unit::getEntity() {
     return(entity);
 }
 
-void Unit::setExp(const unsigned int in_exp) {
+void Unit::setExp(const short unsigned int in_exp) {
     exp = in_exp;
 }
 
-void Unit::addExp(const unsigned int in_exp) {
+void Unit::addExp(const short unsigned int in_exp) {
     exp += in_exp;
 }
 
@@ -499,7 +499,7 @@ unsigned char Unit::totalMight(bool dmg_type) {
         unit_power = current_stats.mag;
     };
 
-    int total_might = wpn_dmg + unit_power;
+    short int total_might = wpn_dmg + unit_power;
 
     return (total_might);
 }
@@ -593,8 +593,8 @@ unsigned char Unit::favor() {
 }
 
 bool Unit::canRetaliate(Unit * enemy) const {
-    int * unit_position;
-    int * enemy_position;
+    short int * unit_position;
+    short int * enemy_position;
     bool retaliates = false;
 
     enemy_position = enemy->getPos();

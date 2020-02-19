@@ -31,9 +31,9 @@ class Unit {
         char current_speed;
         Map_enemy map_enemy;
 
-        unsigned int exp;
-        int entity;
-        int position[2] = {0, 0};
+        unsigned short int exp;
+        unsigned short int entity;
+        short int position[2] = {0, 0};
         bool sex; // 0:F, 1:
 
         std::string name;
@@ -61,8 +61,8 @@ class Unit {
         Map_enemy getMap_enemy();
         void setMap_enemy(Map_enemy in_map_enemy);
 
-        int * getPos();
-        void setPos(const int in_pos[2]);
+        short int * getPos();
+        void setPos(const short int in_pos[2]);
         void setPos(const Point in_pos);
 
         std::string getMvttype();
@@ -74,24 +74,24 @@ class Unit {
         void equipsR(const char index);
         void unequipsR();
         void unequipsL();
-        void equips(const unsigned int index, const std::string hand = "right");
+        void equips(const unsigned short int index, const std::string hand = "right");
         void unequips(const std::string hand = "right");
         void setEquipped(Equipped in_equipped);
         void setEquipment(Inventory_item * in_equipment);
 
-        void takeItem(Inventory_item * out_array, const int in_index, const int out_index);
-        void giveItem(Inventory_item * out_array, const int in_index, const int out_index);
-        void dropItem(const int in_index);
+        void takeItem(Inventory_item * out_array, const short int in_index, const short int out_index);
+        void giveItem(Inventory_item * out_array, const short int in_index, const short int out_index);
+        void dropItem(const short int in_index);
 
         unsigned char * getRange() const;
 
-        void setEntity(const int in_index);
+        void setEntity(const short int in_index);
         int getEntity();
 
-        unsigned int getExp() const;
-        unsigned int getLvl() const;
-        void setExp(const unsigned int in_exp);
-        void addExp(const unsigned int in_exp);
+        unsigned short int getExp() const;
+        unsigned short int getLvl() const;
+        void setExp(const unsigned short int in_exp);
+        void addExp(const unsigned short int in_exp);
 
         unsigned char getHp() const;
         void setHp(const unsigned char in_hp);
