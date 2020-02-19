@@ -198,9 +198,9 @@ void Map::clearOverlays() {
 }
 
 void Map::drawMap(SDL_Renderer * renderer) {
-    int tile_ind = 0;
-    for (int row = 0; row < tilemap.size(); row++) {// This loop cache friendly.
-        for (int col = 0; col < tilemap[row].size(); col++) {
+    short unsigned int tile_ind = 0;
+    for (short unsigned int row = 0; row < tilemap.size(); row++) {// This loop cache friendly.
+        for (short unsigned int col = 0; col < tilemap[row].size(); col++) {
             tile_ind = tilemap[row][col];
             destrect.x = (col + 1) * tilesize[0];
             destrect.y = (row + 1) * tilesize[1];
