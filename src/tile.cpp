@@ -19,10 +19,10 @@ Tile::Tile(const std::string in_name, const Movement_cost in_cost, unsigned int 
     cost_map["armors"] = in_cost.armors;
     cost_map["pirates"] = in_cost.pirates;
     cost_map["bandits"] = in_cost.bandits;
-	stats.dodge = (unsigned int)in_stats[0];
-	stats.Pprot = (unsigned int)in_stats[1];
-    stats.Mprot = (unsigned int)in_stats[2];
-	stats.heal = (unsigned int)in_stats[3];
+	tile_stats.dodge = (unsigned int)in_stats[0];
+	tile_stats.Pprot = (unsigned int)in_stats[1];
+    tile_stats.Mprot = (unsigned int)in_stats[2];
+	tile_stats.heal = (unsigned int)in_stats[3];
 }
 Tile::Tile(const std::string in_name, const Movement_cost in_cost, unsigned int * in_stats[3], const bool in_inside) : Tile(in_name, in_cost, in_stats){
     inside = in_inside;
@@ -41,7 +41,7 @@ std::string Tile::getName(){
 }
 
 Tile_stats Tile::getStats(){
-	return(stats);
+	return(tile_stats);
 }
 
 bool Tile::isInside(){
@@ -65,8 +65,8 @@ void Tile::write(const char * filename, const char * mode){
     } else {
         fprintf(fp, "%s \n", "Outside");
     }
-    fprintf(fp, "Stats, Dodge, PProtection, MProtection, Heal \n");
-    fprintf(fp, "Stats,\t\t%d,\t%d,\t%d,\t%d\n", stats.dodge, stats.Pprot, stats.Mprot, stats.heal);
+    fprintf(fp, "tile_stats, Dodge, PProtection, MProtection, Heal \n");
+    fprintf(fp, "tile_stats,\t\t%d,\t%d,\t%d,\t%d\n", tile_stats.dodge, tile_stats.Pprot, tile_stats.Mprot, tile_stats.heal);
     fprintf(fp, "\n");
     fclose(fp);
 }

@@ -8,14 +8,14 @@ class Tile {
         Movement_cost cost_struct;
         std::unordered_map<std::string, unsigned char> cost_map;
         bool inside;
-        Tile_stats stats;
+        Tile_stats tile_stats;
         std::string name;
     public:
         Tile();
         ~Tile();
 
-        Tile(const std::string in_name, const Movement_cost in_cost, unsigned int * in_stats[3]);
-        Tile(const std::string in_name, const Movement_cost in_cost, unsigned int * in_stats[3], const bool in_inside);
+        Tile(const std::string in_name, const Movement_cost in_cost, unsigned int * in_stats[4]);
+        Tile(const std::string in_name, const Movement_cost in_cost, unsigned int * in_stats[4], const bool in_inside);
 
         Movement_cost getCoststruct();
         std::unordered_map<std::string, unsigned char> getCostmap();
