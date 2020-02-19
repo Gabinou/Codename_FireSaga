@@ -415,6 +415,7 @@ struct Unit_type {
 };
 
 struct Movement_cost {
+    // i THINK THIS IS USELESS
     unsigned char foot_slow; // fencer, mousquetaire, duelist, lord, duke, archer, marksman, mercenary, hero, trooper
     unsigned char foot_fast; // pickpocket thief assassin, demon
     unsigned char mages; // mage, battlemage, sage, oracle, priest, cleric, bishop, incarnate, possessed

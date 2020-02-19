@@ -167,7 +167,7 @@ void Game::setState(Entity & setting_entity, std::string new_state) {
             std::vector<std::vector<short int>> movemapp;
             std::vector<std::vector<short int>> attackmapp;
             short unsigned int start[2];
-            std::string unitmvttype;
+            unsigned char unitmvttype;
             short unsigned int unit_move;
             unsigned char * range;
 

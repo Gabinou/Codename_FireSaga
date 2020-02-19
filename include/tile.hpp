@@ -6,7 +6,7 @@
 class Tile {
     private:
         Movement_cost cost_struct;
-        std::unordered_map<std::string, unsigned char> cost_map;
+        unsigned char cost[MVT_TYPE::BANDITS + 1];
         bool inside;
         Tile_stats stats;
         std::string name;
@@ -18,7 +18,7 @@ class Tile {
         Tile(const std::string in_name, const Movement_cost in_cost, unsigned int * in_stats[3], const bool in_inside);
 
         Movement_cost getCoststruct();
-        std::unordered_map<std::string, unsigned char> getCostmap();
+        unsigned char * getCost();
         std::string getName();
         Tile_stats getStats();
 
