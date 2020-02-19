@@ -72,7 +72,7 @@ Entity * Map::getTile(const short unsigned int x, const short unsigned int y) {
 void Map::loadTiletextures() {
     int tileindex;
     std::string texturename;
-    for (int i = 0; i < unique_textures.size(); i++) {
+    for (short unsigned int i = 0; i < unique_textures.size(); i++) {
         tileindex = (unique_textures[i]/10);
         texturename = "..//assets//" + loaded_tiles[tileindex].getName() + "_" + std::to_string(unique_textures[i]) + ".png";
         textures[unique_textures[i]] = loadTexture(texturename.c_str());
@@ -140,8 +140,8 @@ void Map::makeEntitymap(const short unsigned int row_size, const short unsigned 
         Entity_ptr_matrix temp(row_size, std::vector<Entity*>(col_size));
         entitymap = temp;
         // printf("Made Entitymap size: %d, %d\n", entitymap.size(), entitymap[0].size());
-        for (int col = 0; col < entitymap.size(); col++) {
-            for (int row = 0; row < entitymap[0].size(); row++) {
+        for (short unsigned int col = 0; col < entitymap.size(); col++) {
+            for (short unsigned int row = 0; row < entitymap[0].size(); row++) {
                 entitymap[col][row] =  static_cast<Entity*>(nullptr);
             }
         }
@@ -169,6 +169,7 @@ void Map::postTilemap() {
 }
 
 void Map::setOverlay(const std::string in_type, const std::vector<std::vector<short int>> in_map) {
+    // string compares are BAAAAD.
     if ((in_type == "heal") || (in_type == "healoverlay")){
         healoverlay = in_map;
         if (overlay_mode.find("heal") == std::string::npos) {
