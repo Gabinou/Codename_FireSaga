@@ -16,7 +16,7 @@ template <typename T> extern void plot2Dvector(std::vector<std::vector<T>> matri
     }
 }
 
-template <typename T> extern std::vector<int> unique2D(std::vector<std::vector<T>> matrix) {
+template <typename T> extern std::vector<T> unique2D(std::vector<std::vector<T>> matrix) {
     std::vector<T> uniques;
     bool found;
 
