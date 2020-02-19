@@ -72,7 +72,7 @@ Entity * Map::getTile(const short unsigned int x, const short unsigned int y) {
 void Map::loadTiletextures() {
     int tileindex;
     std::string texturename;
-    for (short unsigned int i = 0; i < unique_textures.size(); i++) {
+    for (int i = 0; i < unique_textures.size(); i++) {
         tileindex = (unique_textures[i]/10);
         texturename = "..//assets//" + loaded_tiles[tileindex].getName() + "_" + std::to_string(unique_textures[i]) + ".png";
         textures[unique_textures[i]] = loadTexture(texturename.c_str());
@@ -128,9 +128,9 @@ void Map::hideOverlay(){
 void Map::initVars() {
     srcrect.x = srcrect.y = 0;
     destrect.x = destrect.y = 0;
+    setTilesize(DEFAULT::TILESIZE, DEFAULT::TILESIZE);
     srcrect.w = destrect.w = DEFAULT::TILESIZE;
     srcrect.h = destrect.h = DEFAULT::TILESIZE;
-    setTilesize(DEFAULT::TILESIZE, DEFAULT::TILESIZE);
     Entity_ptr_matrix temp(DEFAULT::LINE_LENGTH, std::vector<Entity*>(DEFAULT::LINE_LENGTH));
     entitymap = temp;
 }
@@ -163,8 +163,8 @@ void Map::loadTilemap(const short unsigned int in_map_index) {
 
 void Map::postTilemap() {
     loadTiletextures();
-    int col_size = tilemap.size();
-    int row_size = tilemap[0].size();
+    short unsigned int col_size = tilemap.size();
+    short unsigned int row_size = tilemap[0].size();
     makeEntitymap(row_size, col_size);
 }
 
