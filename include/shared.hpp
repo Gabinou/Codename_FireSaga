@@ -164,13 +164,14 @@ extern SDL_Texture * loadTexture(const char * filename);
 extern SDL_Texture * textToTexture(std::string textureText, SDL_Color textColor, TTF_Font * in_font);
 
 struct Tile_stats {
-    unsigned int dodge;
-    unsigned int Pprot;
-    unsigned int Mprot;
-    unsigned int heal; // %
+    char dodge;
+    char Pprot;
+    char Mprot;
+    char heal; // %. Negative means damage.
 };
 
 struct Unit_state {
+    // Number of turns to be in this status. -1 means forever.
     char poisoned;
     char sleep;
     char stone;
@@ -199,8 +200,8 @@ struct Combat_stats {
 };
 
 struct Point {
-    int x;
-    int y;
+    short unsigned int x;
+    short unsigned int y;
 };
 
 
@@ -214,7 +215,7 @@ struct Weapon_stats {
     unsigned char range[2]; // [min_range, max_range]
     unsigned char hand[2]; //[1], [2] or [1,2]
     bool dmg_type; // 0 is 1 physical. 1 magic.
-    unsigned int price;
+    unsigned short int price;
 };
 
 struct Weapon_type {
@@ -232,17 +233,16 @@ struct Weapon_type {
 
 struct Inventory_item {
     std::string name = "";
-    unsigned int used = 0;
+    unsigned char used = 0;
     bool highlighted = true;
     // item images are highlighted by default.
     // Only dark when in unit inventory and unequippable
 };
 
 struct Equipped {
-// Index of weapon in inventory of character.
-
-    int right;
-    int left;
+    // Index of weapon in inventory of character.
+    unsigned char right;
+    unsigned char left;
 };
 
 struct Map_enemy {
@@ -275,20 +275,20 @@ struct Fps {
     Point pos = {750, 0};
     bool show = false;
     float sizefactor[2] = {0.5, 0.5};
-    char cap = 60;
-    char hold = 4;
-    char held = 0;
-    char frame_delay = 1000 / cap;
+    unsigned char cap = 60;
+    unsigned char hold = 4;
+    unsigned char held = 0;
+    unsigned char frame_delay = 1000 / cap;
     SDL_Color textcolor = {0, 0, 0};
     float current = 60.0;
-    int entity;
+    unsigned short int entity;
 };
 
 struct Settings {
     Point res = {1000, 1000};
-    char fontsize = 28;
+    unsigned char fontsize = 28;
     Fps FPS;
-    int tilesize[2] = {32, 32};
+    unsigned short int tilesize[2] = {32, 32};
 };
 
 struct KeyboardInputMap {
@@ -343,8 +343,6 @@ template <typename T> extern std::vector<std::vector<T>> matrix2list(std::vector
 
     return (list);
 }
-
-
 
 template <typename T> extern std::vector<std::vector<T>> attackmap(std::vector<std::vector<T>> movemap, short unsigned int start[], short unsigned int move, unsigned char range[2], std::string mode = "matrix") {
     // Using the movemap to computes all attackable tiles.
@@ -519,6 +517,5 @@ template <typename T> extern std::vector<std::vector<T>> movemap(std::vector<std
 
     return (movemap);
 }
-
 
 #endif /* SHARED_HPP */
