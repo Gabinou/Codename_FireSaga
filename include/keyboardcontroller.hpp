@@ -16,7 +16,7 @@ class KeyboardController : public Component {
         std::vector<std::vector<SDL_Scancode>> held_move;
         unsigned int frames_button = 0;
         unsigned int frames_move = 0;
-        int * tilesize;
+        short int * tilesize;
     public:
         KeyboardController() = default;
 
@@ -35,11 +35,11 @@ class KeyboardController : public Component {
             map = in_map;
         }
 
-        void setTilesize(int * in_tilesize) {
+        void setTilesize(short int * in_tilesize) {
             tilesize = in_tilesize;
         }
 
-        int * getTilesize() {
+        short int * getTilesize() {
             return (tilesize);
         }
 
