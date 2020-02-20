@@ -92,7 +92,7 @@ void Weapon::write(const char * filename, const char * mode){
 }
 
 std::unordered_map<std::string, Weapon> all_weapons;
-std::vector<Weapon> all_weapons2(WEAPON::FATALIS);
+std::vector<Weapon> all_weapons2(WEAPON::END);
 
 void baseWeapons2(){
     Weapon_stats temp_wpn;
@@ -109,6 +109,372 @@ std::vector<Weapon> baseWeapons(std::vector<short int> toload){
             case WEAPON::WOODEN_SWORD: {
                 break;
             }
+            case WEAPON::IRON_SWORD: {
+                break;
+            }
+            case WEAPON::STEEL_SWORD: {
+                break;
+            }
+            case WEAPON::DAMAS_SWORD: {
+                break;
+            }
+            case WEAPON::MERCIFUL_BLADE: {
+                break;
+            }
+            case WEAPON::BROADSWORD: {
+                break;
+            }
+            case WEAPON::KITCHEN_KNIFE: {
+                break;
+            }
+            case WEAPON::WRATH_SWORD: {
+                break;
+            }
+            case WEAPON::FLEURET: {
+                break;
+            }
+            case WEAPON::RAPIERE: {
+                break;
+            }
+            case WEAPON::GLAIVE: {
+                break;
+            }
+            case WEAPON::SABER: {
+                break;
+            }
+            case WEAPON::FAUCHON: {
+                break;
+            }
+            case WEAPON::ESPADON: {
+                break;
+            }
+            case WEAPON::OODACHI: {
+                break;
+            }
+            case WEAPON::UCHIGATANA: {
+                break;
+            }
+            case WEAPON::EXSANGUE: {
+                break;
+            }
+            case WEAPON::HAUTECLAIRE: {
+                break;
+            }
+            case WEAPON::SECUNDUS: {
+                break;
+            }
+            case WEAPON::GALATINE: {
+                break;
+            }
+            case WEAPON::RAIJINTOU: {
+                break;
+            }
+            case WEAPON::FUUJINTOU: {
+                break;
+            }
+            case WEAPON::HONJOU_MASAMUNE: {
+                break;
+            }
+            case WEAPON::RAW_IRON_SLAB: {
+                break;
+            }
+
+            case WEAPON::PITCHFORK: {
+                break;
+            }
+            case WEAPON::FIGHTING_STICK: {
+                break;
+            }
+            case WEAPON::IRON_LANCE: {
+                break;
+            }
+            case WEAPON::WRATH_LANCE: {
+                break;
+            }
+            case WEAPON::STEEL_LANCE: {
+                break;
+            }
+            case WEAPON::DAMAS_LANCE: {
+                break;
+            }
+            case WEAPON::HEAVY_SPEAR: {
+                break;
+            }
+            case WEAPON::TRIDENT: {
+                break;
+            }
+            case WEAPON::MERCIFUL_LANCE: {
+                break;
+            }
+            case WEAPON::JAVELIN: {
+                break;
+            }
+            case WEAPON::VEL: {
+                break;
+            }
+            case WEAPON::GUNGNIR: {
+                break;
+            }
+            case WEAPON::ACHILLES: {
+                break;
+            }
+            case WEAPON::TONBOKIRI: {
+                break;
+            }
+
+            case WEAPON::IRON_AXE: {
+                break;
+            }
+            case WEAPON::STEEL_AXE: {
+                break;
+            }
+            case WEAPON::DAMAS_AXE: {
+                break;
+            }
+            case WEAPON::WRATH_AXE: {
+                break;
+            }
+            case WEAPON::THROWING_AXE: {
+                break;
+            }
+            case WEAPON::TOMAHAWK: {
+                break;
+            }
+            case WEAPON::PICK_AXE: {
+                break;
+            }
+            case WEAPON::HOE: {
+                break;
+            }
+            case WEAPON::CLUB: {
+                break;
+            }
+            case WEAPON::HALBERD: {
+                break;
+            }
+            case WEAPON::HAMMER: {
+                break;
+            }
+            case WEAPON::WAR_PICK: {
+                break;
+            }
+            case WEAPON::BATTLEAXE: {
+                break;
+            }
+            case WEAPON::VIDYU: {
+                break;
+            }
+            case WEAPON::HEPHAESTUS: {
+                break;
+            }
+
+            case WEAPON::ADAPTED_CROSSBOW: {
+                break;
+            }
+            case WEAPON::REPEATABLE_CROSSBOW: {
+                break;
+            }
+            case WEAPON::RECURVE_CROSSBOW: {
+                break;
+            }
+            case WEAPON::CROSSBOW: {
+                break;
+            }
+            case WEAPON::SHORT_BOW: {
+                break;
+            }
+            case WEAPON::LONG_BOW: {
+                break;
+            }
+            case WEAPON::COMPOSITE_BOW: {
+                break;
+            }
+            case WEAPON::RECURVE_BOW: {
+                break;
+            }
+            case WEAPON::APOLLO: {
+                break;
+            }
+            case WEAPON::ARTEMIS: {
+                break;
+            }
+            case WEAPON::PINAKA: {
+                break;
+            }
+
+            case WEAPON::ADAPTED_SHIELD: {
+                break;
+            }
+            case WEAPON::POT_LID: {
+                break;
+            }
+            case WEAPON::WOODEN_SHIELD: {
+                break;
+            }
+            case WEAPON::CLOAK: {
+                break;
+            }
+            case WEAPON::LEATHER_SHIELD: {
+                break;
+            }
+            case WEAPON::STEEL_BUCKLER: {
+                break;
+            }
+            case WEAPON::SPIKED_BUCKLER: {
+                break;
+            }
+            case WEAPON::SCUTUM: {
+                break;
+            }
+            case WEAPON::MASTER_SHIELD: {
+                break;
+            }
+            case WEAPON::GODDESS_HAND: {
+                break;
+            }
+            case WEAPON::ROCK_PLATE: {
+                break;
+            }
+            case WEAPON::OBSIDIAN_PLATE: {
+                break;
+            }
+            case WEAPON::MARBLE_PLATE_SHIELD: {
+                break;
+            }
+            case WEAPON::DIVINE_PROTECTOR: {
+                break;
+            }
+            case WEAPON::ANCILE: {
+                break;
+            }
+
+            case WEAPON::WRISTBLADE: {
+                break;
+            }
+            case WEAPON::SHIELDHOOK: {
+                break;
+            }
+            case WEAPON::MAIN_GAUCHE: {
+                break;
+            }
+            case WEAPON::SWORDBREAKER: {
+                break;
+            }
+            case WEAPON::TRIDENT_DAGGER: {
+                break;
+            }
+            case WEAPON::TANTOU: {
+                break;
+            }
+            case WEAPON::KODACHI: {
+                break;
+            }
+            case WEAPON::WAKIZASHI: {
+                break;
+            }
+            case WEAPON::DAGUE: {
+                break;
+            }
+            case WEAPON::BRAQUEMARD: {
+                break;
+            }
+            case WEAPON::MISERICORDE: {
+                break;
+            }
+            case WEAPON::CARNWENNAN: {
+                break;
+            }
+            case WEAPON::FLINTLOCK: {
+                break;
+            }
+
+            case WEAPON::SHRUNKEN_HEAD: {
+                break;
+            }
+            case WEAPON::CRYSTAL: {
+                break;
+            }
+            case WEAPON::GLASS_ORB: {
+                break;
+            }
+            case WEAPON::HUMAN_FEMUR: {
+                break;
+            }
+            case WEAPON::VOID_FRAGMENT: {
+                break;
+            }
+            case WEAPON::DEMON_FANG: {
+                break;
+            }
+            case WEAPON::ANGEL_HAIR: {
+                break;
+            }
+            case WEAPON::VIAL_OF_LIGHT: {
+                break;
+            }
+            case WEAPON::MAIDENS_HANDKERCHIEF: {
+                break;
+            }
+            case WEAPON::WAR_HORN: {
+                break;
+            }
+
+            case WEAPON::BALL_LIGHTNING: {
+                break;
+            }
+            case WEAPON::ICICLE: {
+                break;
+            }
+            case WEAPON::VOLCANO: {
+                break;
+            }
+            case WEAPON::WIND_SPEAR: {
+                break;
+            }
+            case WEAPON::EMBER: {
+                break;
+            }
+            case WEAPON::TSUNAMI: {
+                break;
+            }
+            case WEAPON::GOD_FORGE_FIRE: {
+                break;
+            }
+            case WEAPON::MITHRANDIR: {
+                break;
+            }
+            case WEAPON::FINGOLFIN: {
+                break;
+            }
+
+            case WEAPON::VOIDD: {
+                break;
+            }
+            case WEAPON::NETHER: {
+                break;
+            }
+            case WEAPON::DOWNFALL: {
+                break;
+            }
+            case WEAPON::CONSUME: {
+                break;
+            }
+            case WEAPON::PUTRIFY: {
+                break;
+            }
+            case WEAPON::GLAURUNG: {
+                break;
+            }
+            case WEAPON::MORGOTH: {
+                break;
+            }
+            case WEAPON::GOTHMOG: {
+                break;
+            }
+            case WEAPON::FATALIS: {
+                break;
+            }
+
         }
     }
     return(out);

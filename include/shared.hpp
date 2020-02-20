@@ -71,7 +71,8 @@ enum UNIT_CLASS {
     GOD,
     KNIGHT,
     GODDESS,
-    TWINBORN
+    TWINBORN,
+    END
 };
 }
 
@@ -87,6 +88,7 @@ enum MVT_TYPES {
     ARMORS,
     PIRATES,
     BANDITS,
+    END,
 };
 }
 
@@ -220,6 +222,7 @@ enum WEAPONS {
     MORGOTH,
     GOTHMOG,
     FATALIS,
+    END,
 };
 }
 
