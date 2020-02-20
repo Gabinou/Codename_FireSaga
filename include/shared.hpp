@@ -219,7 +219,6 @@ enum WEAPONS {
     GOD_FORGE_FIRE,
     FINGOLFIN,
     MITHRANDIR,
-    //
 
     VOIDD,
     NETHER,
@@ -234,7 +233,22 @@ enum WEAPONS {
 };
 }
 
-
+namespace WPN_TYPE {
+enum WPN_TYPE {
+    // unsigned!!! short int equippable = sword + shield;
+    // if (type & equippeable) > 0, weapon is equippable.
+    SWORD = 1;
+    LANCE = 2;
+    AXE = 4;
+    BOW = 8;
+    TRINKET = 16;
+    OFFHAND = 32;
+    ELEMENTAL = 64;
+    DEMONIC = 128;
+    ANGELIC = 256;
+    SHIELD = 512;
+};
+}
 
 namespace TILE {
 enum TILES {

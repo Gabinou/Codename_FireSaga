@@ -97,7 +97,6 @@ std::vector<Weapon> all_weapons2(WEAPON::END);
 void baseWeapons2(){
     Weapon temp_wpn;
     Weapon_stats temp_wpn_stats;
-
     // Pmight, Mmight, hit, dodge, crit, favor, wgt, uses, wpnlvl, range, hand, dmg_type, cost
     temp_wpn_stats = {3, 0, 80, 0, 0, 0, 3, 30, 2, {1,1}, {1,2}, 0, 1000};
     temp_wpn = Weapon("Wooden sword", "sword", temp_wpn_stats);
@@ -107,7 +106,6 @@ void baseWeapons2(){
     temp_wpn = Weapon("Kitchen knife", "sword", temp_wpn_stats);
     temp_wpn.setDescription("The poor, desperate swordman's dagger.");
     all_weapons2[WEAPON::KITCHEN_KNIFE] = temp_wpn;
-
     temp_wpn_stats = {7, 0, 70, 0, 25, 0, 7, 30, 9, {1,1}, {1,2}, 0, 1000};
     temp_wpn = Weapon("Wrath sword", "sword", temp_wpn_stats);
     temp_wpn.setDescription("Increases critical hit chance.");
