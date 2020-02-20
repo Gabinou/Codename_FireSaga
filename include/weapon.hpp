@@ -40,7 +40,11 @@ class Weapon {
 };
 
 extern std::unordered_map<std::string, Weapon> all_weapons;
+extern std::vector<Weapon> all_weapons2;
+extern std::vector<Weapon> loaded_weapons;
 
 void baseWeapons();
+void baseWeapons2();
+std::vector<Weapon> baseWeapons(std::vector<short int> toload);
 
 #endif /* WEAPON_HPP */

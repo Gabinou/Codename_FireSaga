@@ -92,7 +92,27 @@ void Weapon::write(const char * filename, const char * mode){
 }
 
 std::unordered_map<std::string, Weapon> all_weapons;
+std::vector<Weapon> all_weapons2(WEAPON::FATALIS);
 
+void baseWeapons2(){
+    Weapon_stats temp_wpn;
+    temp_wpn = {3, 0, 80, 0, 0, 0, 3, 30, 2, {1,1}, {1,2}, 0, 1000};
+    Weapon wooden_sword("Wooden sword", "sword", temp_wpn);
+    wooden_sword.setDescription("Practice sword, made of wood. It's crushing blows are still deadly.");
+    all_weapons2.push_back(wooden_sword);
+}
+
+std::vector<Weapon> baseWeapons(std::vector<short int> toload){
+    std::vector<Weapon> out;
+    for (int i = 0; i < toload.size(); i++) {
+        switch (toload[i]/10){
+            case WEAPON::WOODEN_SWORD: {
+                break;
+            }
+        }
+    }
+    return(out);
+}
 void baseWeapons(){
     printf("Making base weapons\n");
     Weapon_stats temp_wpn;

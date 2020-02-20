@@ -144,7 +144,6 @@ class Unit {
 extern std::unordered_map<std::string, Unit> all_units;
 extern std::unordered_map<std::string, Unit> (*chapEnemies[40])();
 
-
 void baseUnits();
 void baseEnemies();
 extern std::unordered_map<std::string, Unit> chap1Enemies();

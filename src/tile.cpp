@@ -79,7 +79,7 @@ std::unordered_map<short int, Tile> baseTiles(const std::vector<short int> toloa
     unsigned int * temp_stats[3];// dodge, def, heal
     std::unordered_map<short int, Tile> temp_tiles;
     Movement_cost temp_cost;
-    for (int i = 0; i < toload.size(); i++) {
+    for (short unsigned int i = 0; i < toload.size(); i++) {
         switch (toload[i]/10){
             case TILE::PLAIN: {
                 temp_stats[0] = (unsigned int *)0;
