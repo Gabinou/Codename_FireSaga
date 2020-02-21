@@ -429,18 +429,18 @@ bool Unit::isEquippable(std::string in_name) {
 bool Unit::canAttack() {
     bool out;
     struct Wpn_types {
-        std::string left;
-        std::string right;
+        unsigned short int left;
+        unsigned short int right;
     } wpn_types;
     if (equipped.left > 0) {
-        wpn_types.left = all_weapons[equipment[equipped.left].name].getType();
-        if ((wpn_types.left != "shield")  & (wpn_types.left != "trinket") & (wpn_types.left != "staff")) {
+        wpn_types.left = all_weapons[equipment[equipped.left].id].getType();
+        if ((wpn_types.left != WPN_TYPE::SHIELD)  & (wpn_types.left != WPN_TYPE::TRINKET) & (wpn_types.left != WPN_TYPE::STAFF)) {
             out = true;
         } 
     }
     if (equipped.right > 0) {
-        wpn_types.right = all_weapons[equipment[equipped.right].name].getType();
-        if ((wpn_types.right != "shield")  & (wpn_types.right != "trinket") & (wpn_types.right != "staff")) {
+        wpn_types.right = all_weapons[equipment[equipped.right].id].getType();
+        if ((wpn_types.right != WPN_TYPE::SHIELD)  & (wpn_types.right != WPN_TYPE::TRINKET) & (wpn_types.right != WPN_TYPE::STAFF)) {
             out = true;
          } 
     }
@@ -900,8 +900,8 @@ std::unordered_map<std::string, Unit> chaptestEnemies() {
     temp_stats = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
     bandit_test.setGrowths(temp_stats);
     bandit_test.setExp(0);
-    temp_equipment[0].name = "Iron Axe";
-    temp_equipment[1].name = "Wooden Shield";
+  //temp_equipment[0].id = "Iron Axe";
+  //temp_equipment[1].id = "Wooden Shield";
     bandit_test.setEquipment(temp_equipment);
     temp_equipped = {0, 1};
     bandit_test.setEquipped(temp_equipped);
@@ -924,8 +924,8 @@ std::unordered_map<std::string, Unit> chap1Enemies() {
     temp_stats = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
     bandit_test.setGrowths(temp_stats);
     bandit_test.setExp(0);
-    temp_equipment[0].name = "Iron Axe";
-    temp_equipment[1].name = "Wooden Shield";
+  //temp_equipment[0].id = "Iron Axe";
+  //temp_equipment[1].id = "Wooden Shield";
     bandit_test.setEquipment(temp_equipment);
     temp_equipped = {0, 1};
     bandit_test.setEquipped(temp_equipped);
@@ -948,8 +948,8 @@ std::unordered_map<std::string, Unit> chap2Enemies() {
     temp_stats = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
     bandit_test.setGrowths(temp_stats);
     bandit_test.setExp(0);
-    temp_equipment[0].name = "Iron Axe";
-    temp_equipment[1].name = "Wooden Shield";
+  //temp_equipment[0].id = "Iron Axe";
+  //temp_equipment[1].id = "Wooden Shield";
     bandit_test.setEquipment(temp_equipment);
     temp_equipped = {0, 1};
     bandit_test.setEquipped(temp_equipped);
@@ -972,8 +972,8 @@ std::unordered_map<std::string, Unit> chap3Enemies() {
     temp_stats = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
     bandit_test.setGrowths(temp_stats);
     bandit_test.setExp(0);
-    temp_equipment[0].name = "Iron Axe";
-    temp_equipment[1].name = "Wooden Shield";
+  //temp_equipment[0].id = "Iron Axe";
+  //temp_equipment[1].id = "Wooden Shield";
     bandit_test.setEquipment(temp_equipment);
     temp_equipped = {0, 1};
     bandit_test.setEquipped(temp_equipped);
@@ -996,8 +996,8 @@ std::unordered_map<std::string, Unit> chap4Enemies() {
     temp_stats = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
     bandit_test.setGrowths(temp_stats);
     bandit_test.setExp(0);
-    temp_equipment[0].name = "Iron Axe";
-    temp_equipment[1].name = "Wooden Shield";
+  //temp_equipment[0].id = "Iron Axe";
+  //temp_equipment[1].id = "Wooden Shield";
     bandit_test.setEquipment(temp_equipment);
     temp_equipped = {0, 1};
     bandit_test.setEquipped(temp_equipped);
@@ -1020,8 +1020,8 @@ std::unordered_map<std::string, Unit> chap5Enemies() {
     temp_stats = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
     bandit_test.setGrowths(temp_stats);
     bandit_test.setExp(0);
-    temp_equipment[0].name = "Iron Axe";
-    temp_equipment[1].name = "Wooden Shield";
+  //temp_equipment[0].id = "Iron Axe";
+  //temp_equipment[1].id = "Wooden Shield";
     bandit_test.setEquipment(temp_equipment);
     temp_equipped = {0, 1};
     bandit_test.setEquipped(temp_equipped);
@@ -1044,8 +1044,8 @@ std::unordered_map<std::string, Unit> chap6Enemies() {
     temp_stats = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
     bandit_test.setGrowths(temp_stats);
     bandit_test.setExp(0);
-    temp_equipment[0].name = "Iron Axe";
-    temp_equipment[1].name = "Wooden Shield";
+  //temp_equipment[0].id = "Iron Axe";
+  //temp_equipment[1].id = "Wooden Shield";
     bandit_test.setEquipment(temp_equipment);
     temp_equipped = {0, 1};
     bandit_test.setEquipped(temp_equipped);
@@ -1068,8 +1068,8 @@ std::unordered_map<std::string, Unit> chap7Enemies() {
     temp_stats = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
     bandit_test.setGrowths(temp_stats);
     bandit_test.setExp(0);
-    temp_equipment[0].name = "Iron Axe";
-    temp_equipment[1].name = "Wooden Shield";
+  //temp_equipment[0].id = "Iron Axe";
+  //temp_equipment[1].id = "Wooden Shield";
     bandit_test.setEquipment(temp_equipment);
     temp_equipped = {0, 1};
     bandit_test.setEquipped(temp_equipped);
@@ -1092,8 +1092,8 @@ std::unordered_map<std::string, Unit> chap8Enemies() {
     temp_stats = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
     bandit_test.setGrowths(temp_stats);
     bandit_test.setExp(0);
-    temp_equipment[0].name = "Iron Axe";
-    temp_equipment[1].name = "Wooden Shield";
+  //temp_equipment[0].id = "Iron Axe";
+  //temp_equipment[1].id = "Wooden Shield";
     bandit_test.setEquipment(temp_equipment);
     temp_equipped = {0, 1};
     bandit_test.setEquipped(temp_equipped);
@@ -1116,8 +1116,8 @@ std::unordered_map<std::string, Unit> chap9Enemies() {
     temp_stats = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
     bandit_test.setGrowths(temp_stats);
     bandit_test.setExp(0);
-    temp_equipment[0].name = "Iron Axe";
-    temp_equipment[1].name = "Wooden Shield";
+  //temp_equipment[0].id = "Iron Axe";
+  //temp_equipment[1].id = "Wooden Shield";
     bandit_test.setEquipment(temp_equipment);
     temp_equipped = {0, 1};
     bandit_test.setEquipped(temp_equipped);
@@ -1140,8 +1140,8 @@ std::unordered_map<std::string, Unit> chap10Enemies() {
     temp_stats = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
     bandit_test.setGrowths(temp_stats);
     bandit_test.setExp(0);
-    temp_equipment[0].name = "Iron Axe";
-    temp_equipment[1].name = "Wooden Shield";
+  //temp_equipment[0].id = "Iron Axe";
+  //temp_equipment[1].id = "Wooden Shield";
     bandit_test.setEquipment(temp_equipment);
     temp_equipped = {0, 1};
     bandit_test.setEquipped(temp_equipped);
@@ -1164,8 +1164,8 @@ std::unordered_map<std::string, Unit> chap11Enemies() {
     temp_stats = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
     bandit_test.setGrowths(temp_stats);
     bandit_test.setExp(0);
-    temp_equipment[0].name = "Iron Axe";
-    temp_equipment[1].name = "Wooden Shield";
+  //temp_equipment[0].id = "Iron Axe";
+  //temp_equipment[1].id = "Wooden Shield";
     bandit_test.setEquipment(temp_equipment);
     temp_equipped = {0, 1};
     bandit_test.setEquipped(temp_equipped);
@@ -1188,8 +1188,8 @@ std::unordered_map<std::string, Unit> chap12Enemies() {
     temp_stats = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
     bandit_test.setGrowths(temp_stats);
     bandit_test.setExp(0);
-    temp_equipment[0].name = "Iron Axe";
-    temp_equipment[1].name = "Wooden Shield";
+  //temp_equipment[0].id = "Iron Axe";
+  //temp_equipment[1].id = "Wooden Shield";
     bandit_test.setEquipment(temp_equipment);
     temp_equipped = {0, 1};
     bandit_test.setEquipped(temp_equipped);
@@ -1212,8 +1212,8 @@ std::unordered_map<std::string, Unit> chap13Enemies() {
     temp_stats = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
     bandit_test.setGrowths(temp_stats);
     bandit_test.setExp(0);
-    temp_equipment[0].name = "Iron Axe";
-    temp_equipment[1].name = "Wooden Shield";
+  //temp_equipment[0].id = "Iron Axe";
+  //temp_equipment[1].id = "Wooden Shield";
     bandit_test.setEquipment(temp_equipment);
     temp_equipped = {0, 1};
     bandit_test.setEquipped(temp_equipped);
@@ -1236,8 +1236,8 @@ std::unordered_map<std::string, Unit> chap14Enemies() {
     temp_stats = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
     bandit_test.setGrowths(temp_stats);
     bandit_test.setExp(0);
-    temp_equipment[0].name = "Iron Axe";
-    temp_equipment[1].name = "Wooden Shield";
+  //temp_equipment[0].id = "Iron Axe";
+  //temp_equipment[1].id = "Wooden Shield";
     bandit_test.setEquipment(temp_equipment);
     temp_equipped = {0, 1};
     bandit_test.setEquipped(temp_equipped);
@@ -1260,8 +1260,8 @@ std::unordered_map<std::string, Unit> chap15Enemies() {
     temp_stats = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
     bandit_test.setGrowths(temp_stats);
     bandit_test.setExp(0);
-    temp_equipment[0].name = "Iron Axe";
-    temp_equipment[1].name = "Wooden Shield";
+  //temp_equipment[0].id = "Iron Axe";
+  //temp_equipment[1].id = "Wooden Shield";
     bandit_test.setEquipment(temp_equipment);
     temp_equipped = {0, 1};
     bandit_test.setEquipped(temp_equipped);
@@ -1284,8 +1284,8 @@ std::unordered_map<std::string, Unit> chap16Enemies() {
     temp_stats = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
     bandit_test.setGrowths(temp_stats);
     bandit_test.setExp(0);
-    temp_equipment[0].name = "Iron Axe";
-    temp_equipment[1].name = "Wooden Shield";
+  //temp_equipment[0].id = "Iron Axe";
+  //temp_equipment[1].id = "Wooden Shield";
     bandit_test.setEquipment(temp_equipment);
     temp_equipped = {0, 1};
     bandit_test.setEquipped(temp_equipped);
@@ -1308,8 +1308,8 @@ std::unordered_map<std::string, Unit> chap17Enemies() {
     temp_stats = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
     bandit_test.setGrowths(temp_stats);
     bandit_test.setExp(0);
-    temp_equipment[0].name = "Iron Axe";
-    temp_equipment[1].name = "Wooden Shield";
+  //temp_equipment[0].id = "Iron Axe";
+  //temp_equipment[1].id = "Wooden Shield";
     bandit_test.setEquipment(temp_equipment);
     temp_equipped = {0, 1};
     bandit_test.setEquipped(temp_equipped);
@@ -1332,8 +1332,8 @@ std::unordered_map<std::string, Unit> chap18Enemies() {
     temp_stats = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
     bandit_test.setGrowths(temp_stats);
     bandit_test.setExp(0);
-    temp_equipment[0].name = "Iron Axe";
-    temp_equipment[1].name = "Wooden Shield";
+  //temp_equipment[0].id = "Iron Axe";
+  //temp_equipment[1].id = "Wooden Shield";
     bandit_test.setEquipment(temp_equipment);
     temp_equipped = {0, 1};
     bandit_test.setEquipped(temp_equipped);
@@ -1356,8 +1356,8 @@ std::unordered_map<std::string, Unit> chap19Enemies() {
     temp_stats = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
     bandit_test.setGrowths(temp_stats);
     bandit_test.setExp(0);
-    temp_equipment[0].name = "Iron Axe";
-    temp_equipment[1].name = "Wooden Shield";
+  //temp_equipment[0].id = "Iron Axe";
+  //temp_equipment[1].id = "Wooden Shield";
     bandit_test.setEquipment(temp_equipment);
     temp_equipped = {0, 1};
     bandit_test.setEquipped(temp_equipped);
@@ -1380,8 +1380,8 @@ std::unordered_map<std::string, Unit> chap20Enemies() {
     temp_stats = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
     bandit_test.setGrowths(temp_stats);
     bandit_test.setExp(0);
-    temp_equipment[0].name = "Iron Axe";
-    temp_equipment[1].name = "Wooden Shield";
+  //temp_equipment[0].id = "Iron Axe";
+  //temp_equipment[1].id = "Wooden Shield";
     bandit_test.setEquipment(temp_equipment);
     temp_equipped = {0, 1};
     bandit_test.setEquipped(temp_equipped);
@@ -1404,8 +1404,8 @@ std::unordered_map<std::string, Unit> chap21Enemies() {
     temp_stats = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
     bandit_test.setGrowths(temp_stats);
     bandit_test.setExp(0);
-    temp_equipment[0].name = "Iron Axe";
-    temp_equipment[1].name = "Wooden Shield";
+  //temp_equipment[0].id = "Iron Axe";
+  //temp_equipment[1].id = "Wooden Shield";
     bandit_test.setEquipment(temp_equipment);
     temp_equipped = {0, 1};
     bandit_test.setEquipped(temp_equipped);
@@ -1428,8 +1428,8 @@ std::unordered_map<std::string, Unit> chap22Enemies() {
     temp_stats = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
     bandit_test.setGrowths(temp_stats);
     bandit_test.setExp(0);
-    temp_equipment[0].name = "Iron Axe";
-    temp_equipment[1].name = "Wooden Shield";
+  //temp_equipment[0].id = "Iron Axe";
+  //temp_equipment[1].id = "Wooden Shield";
     bandit_test.setEquipment(temp_equipment);
     temp_equipped = {0, 1};
     bandit_test.setEquipped(temp_equipped);
@@ -1452,8 +1452,8 @@ std::unordered_map<std::string, Unit> chap23Enemies() {
     temp_stats = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
     bandit_test.setGrowths(temp_stats);
     bandit_test.setExp(0);
-    temp_equipment[0].name = "Iron Axe";
-    temp_equipment[1].name = "Wooden Shield";
+  //temp_equipment[0].id = "Iron Axe";
+  //temp_equipment[1].id = "Wooden Shield";
     bandit_test.setEquipment(temp_equipment);
     temp_equipped = {0, 1};
     bandit_test.setEquipped(temp_equipped);
@@ -1476,8 +1476,8 @@ std::unordered_map<std::string, Unit> chap24Enemies() {
     temp_stats = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
     bandit_test.setGrowths(temp_stats);
     bandit_test.setExp(0);
-    temp_equipment[0].name = "Iron Axe";
-    temp_equipment[1].name = "Wooden Shield";
+  //temp_equipment[0].id = "Iron Axe";
+  //temp_equipment[1].id = "Wooden Shield";
     bandit_test.setEquipment(temp_equipment);
     temp_equipped = {0, 1};
     bandit_test.setEquipped(temp_equipped);
@@ -1500,8 +1500,8 @@ std::unordered_map<std::string, Unit> chap25Enemies() {
     temp_stats = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
     bandit_test.setGrowths(temp_stats);
     bandit_test.setExp(0);
-    temp_equipment[0].name = "Iron Axe";
-    temp_equipment[1].name = "Wooden Shield";
+  //temp_equipment[0].id = "Iron Axe";
+  //temp_equipment[1].id = "Wooden Shield";
     bandit_test.setEquipment(temp_equipment); 
     temp_equipped = {0, 1};
     bandit_test.setEquipped(temp_equipped);

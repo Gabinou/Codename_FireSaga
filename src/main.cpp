@@ -23,9 +23,8 @@ int main(int argc, char * argv[]) {
     baseNarrativeState();
     printf("Testing narrative: Did Erwin die? %d\n", died["Erwin"]);
 
-    baseWeapons();
     baseWeapons2();
-    printf("Testing weapon: %s\n", all_weapons["wooden_sword"].getName().c_str());
+    printf("Testing weapon: %s\n", all_weapons[WEAPON::WOODEN_SWORD].getName().c_str());
 
     // loaded_tiles = baseTiles(chapTiles[0]());
     // printf("Testing tiles: %s\n", loaded_tiles[10].getName().c_str());

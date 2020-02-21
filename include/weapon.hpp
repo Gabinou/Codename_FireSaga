@@ -16,11 +16,13 @@ class Weapon {
         std::string effective;
         short unsigned int effective2;
         std::string description;
+        unsigned char id;
     public:
         Weapon();
         Weapon(Weapon_stats in_stats);
         Weapon(std::string in_name, Weapon_stats in_stats);
         Weapon(std::string in_name, short unsigned int in_type, Weapon_stats in_stats);
+        Weapon(std::string in_name, short unsigned int in_type, Weapon_stats in_stats, unsigned char in_id);
 
         void setStats(Weapon_stats in_stats);
         Weapon_stats getStats();
@@ -41,8 +43,7 @@ class Weapon {
         void write(const char * filename, const char * mode = "a");
 };
 
-extern std::unordered_map<std::string, Weapon> all_weapons;
-extern std::vector<Weapon> all_weapons2;
+extern std::vector<Weapon> all_weapons;
 extern std::vector<Weapon> loaded_weapons;
 
 void baseWeapons();

@@ -246,8 +246,8 @@ enum WPN_TYPES {
     ELEMENTAL = 64,
     DEMONIC = 128,
     ANGELIC = 256,
-    SHIELD = 256*2,
-    STAFF = 256*4,
+    SHIELD = 256 * 2,
+    STAFF = 256 * 4,
 };
 }
 
@@ -256,7 +256,7 @@ enum WPN_EFFECTS {
     // short unsigned int 16 bits->65536
     // unsigned int 16?32 bits->4,294,967,295
     // long unsigned int 64 bits
-    KILL1% = 1,
+    KILL1P = 1,
     BRAVE2X = 2,
     BRAVE3X = 4,
     BRAVE4X = 8,
@@ -265,74 +265,74 @@ enum WPN_EFFECTS {
     IGNORE_RES = 64,
     IGNORE_SHIELD = 128,
     USE_HEAL = 256,
-    USE_BUFF = 256*2,
-    USE_DIVINE = 256*4,
-    NO_CRIT = 256*8,
-    NO_ATTACK = 256*16,
-    CHARM = 256*32,
-    IMMUNE_MAGIC = 256*64,
-    IMMUNE_PHYS = 256*128,
-    IMMUNE_PHYS = 256*256,
-    BREAK_WEAPON = 256*256*2,
-    EXP2X = 256*256*4,
-    LIFESTEAL = 256*256*8,
-    POISON = 256*256*16,
-    CURSED = 256*256*32, // weapon has a chance to deal damage to user.
-    MASOCHISM = 256*256*64,
-    STUN = 256*256*128,
-    PASS = 256*256*256,
-    JOUST = 256*256*256*2,
-    MERCY = 256*256*256*4,
-    CAPTURE = 256*256*256*8,
-    HALF_DMG = 256*256*256*16,
-    BREAK_SHIELD = 256*256*256*32,
-    COUP_DE_GRACE = 256*256*256*64,
+    USE_BUFF = 256 * 2,
+    USE_DIVINE = 256 * 4,
+    NO_CRIT = 256 * 8,
+    NO_ATTACK = 256 * 16,
+    CHARM = 256 * 32,
+    IMMUNE_MAGIC = 256 * 64,
+    IMMUNE_PHYS = 256 * 128,
+    COUP_DE_GRACE = 256 * 256,
+    BREAK_WEAPON = 256 * 256 * 2,
+    EXP2X = 256 * 256 * 4,
+    LIFESTEAL = 256 * 256 * 8,
+    POISON = 256 * 256 * 16,
+    CURSED = 256 * 256 * 32, // weapon has a chance to deal damage to user.
+    MASOCHISM = 256 * 256 * 64,
+    STUN = 256 * 256 * 128,
+    PASS = 256 * 256 * 256,
+    JOUST = 256 * 256 * 256 * 2,
+    MERCY = 256 * 256 * 256 * 4,
+    CAPTURE = 256 * 256 * 256 * 8,
+    HALF_DMG = 256 * 256 * 256 * 16,
+    BREAK_SHIELD = 256 * 256 * 256 * 32,
     // -> Should be 32bit int.
 };
 }
 
 namespace SKILL {
-enum SKILLS {
+enum SKILLS : unsigned int {
     // short unsigned int 16 bits->65536
     // unsigned int 16?32 bits->4,294,967,295
     // long unsigned int 64 bits
-    CANTO = 1,
-    SKILLED_RIDER = 2,
-    SPRINT = 4,
-    SWITCH = 8,
-    MOUNTAINWALK = 16,
-    WATERWALK = 32,
-    CRIT_KILLS = 64,
-    DISMEMBER = 128,
-    ATK_RANGE_P1 = 256,
-    DIVINE_SHIELD = 256*2,
-    NO_CRIT = 256*4,
-    NO_COUNTER = 256*4,
-    MAX_DESPAIR = 256*8,
-    TUNNELING = 256*16,
-    SCOUTING = 256*32,
-    ASSASSINATE = 256*64,
-    LOCKPICK = 256*128,
-    NO_LOCKPICK = 256*256, //Unlocks withouth lockpicks.
-    IMMUNE_MAGIC = 256*256*2,
-    IMMUNE_ELEMENTAL = 256*256*4,
-    IMMUNE_DEMONIC = 256*256*8,
-    IMMUNE_ANGELIC = 256*256*16,
-    LIFESTEAL_RN = 256*256*32, //sol
-    INFUSE = 256*256*64,
-    DOUBLE_EXP = 256*256*128,
-    AMBIDEXTRY = 256*256*256,
-    TWO_HAND_STYLE = 256*256*256*2, //Weight of weapons are halved if two hands.
-    PIERCE_RN = 256*256*256*4, //luna
+    CANTO = 0x0001,
+    SKILLED_RIDER = 0x0002,
+    SPRINT = 0x0004,
+    SWITCH = 0x0008,
+    MOUNTAINWALK = 0x0010,
+    WATERWALK = 0x0020,
+    CRIT_KILLS = 0x0040,
+    DISMEMBER = 0x0020,
+    ATK_RANGE_P1 = 0x0100,
+    DIVINE_SHIELD = 0x0100,
+    NO_CRIT = 0x0400,
+    NO_COUNTER = 0x0800,
+    MAX_DESPAIR = 0x1000,
+    TUNNELING = 0x2000,
+    SCOUTING = 0x4000,
+    ASSASSINATE = 0x8000,
+    LOCKPICK = 0x00010000,
+    NO_LOCKPICK = 0x00020000, //Unlocks withouth lockpicks.
+    IMMUNE_MAGIC = 0x00040000,
+    IMMUNE_ELEMENTAL = 0x00080000,
+    IMMUNE_DEMONIC = 0x00100000,
+    IMMUNE_ANGELIC = 0x00200000,
+    LIFESTEAL_RN = 0x00400000, //sol
+    INFUSE = 0x00800000,
+    DOUBLE_EXP = 0x01000000,
+    AMBIDEXTRY = 0x02000000,
+    TWO_HAND_STYLE = 0x04000000, //Weight of weapons are halved if two hands.
+    PIERCE_RN = 0x08000000, //luna
     // Boring skills
-    COUNTER = 256*256*256*8,
-    THRUST_SWORD_BONUS = 256*256*256*16,
-    SHIELD_BONUS = 256*256*256*32,
-    OFFHAND_BONUS = 256*256*256*64,
-    BOW_BONUS = 256*256*256*128,
-
-    // -> Should be 32bit int.
+    COUNTER = 0x10000000,
+    THRUST_SWORD_BONUS = 0x20000000,
+    SHIELD_BONUS = 0x40000000,
+    OFFHAND_BONUS = 0x80000000,
+    // -> Should be long 32bit int.
 };
+const unsigned long long int BOW_BONUS = 0x100000000;
+
+
 }
 
 namespace TILE {
@@ -487,7 +487,7 @@ struct Weapon_stats {
 };
 
 struct Inventory_item {
-    std::string name = "";
+    unsigned short int id;
     unsigned char used = 0;
     bool highlighted = true;
     // item images are highlighted by default.
@@ -505,14 +505,14 @@ struct Map_enemy {
     unsigned char levelup;
 };
 
-struct Unit_type {
-    bool human;
-    bool mounted;
-    bool flying;
-    bool armored;
-    bool demon;
-    bool angel;
-};
+// struct Unit_type {
+//     bool human;
+//     bool mounted;
+//     bool flying;
+//     bool armored;
+//     bool demon;
+//     bool angel;
+// };
 
 struct Movement_cost {
     // i THINK THIS IS USELESS
