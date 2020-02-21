@@ -76,7 +76,7 @@ void Weapon::write(const char * filename, const char * mode){
     FILE * fp;
     fp = fopen(filename, mode);
     fprintf(fp, "%s \n", name.c_str());
-    fprintf(fp, "%s \n", type.c_str());
+    fprintf(fp, "%d \n", type);
     fprintf(fp, "%s \n", description.c_str());
     fprintf(fp, "%s \n", effect.c_str());
     if (stats.dmg_type) {

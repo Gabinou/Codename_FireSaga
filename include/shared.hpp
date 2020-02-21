@@ -324,6 +324,8 @@ extern std::vector<std::string> get_words(std::string);
 extern std::string words2str(std::vector<std::string>);
 extern std::vector<int> csv_from_line(std::string, std::string delimiter = ",");
 
+extern std::vector<std::string> wpntype2str(short unsigned int in_type);
+
 extern std::string read_line(const char * filename, char skip);
 extern void read_all_weapons(const char * filename = "weapons.txt");
 extern void write_all_weapons(const char * filename, char const * savestyle = "cpp");
@@ -331,6 +333,7 @@ extern void read_all_units(const char * filename);
 extern void write_all_units(const char * filename, char const * savestyle = "cpp");
 extern void write_all_unit_classes(const char * filename);
 extern void read_all_unit_classes(const char * filename = "classes_FE1.txt");
+
 
 extern void permutations_binary(int len, int num_0, int out[], int i = 0);
 extern int h_manhattan(int start[], int end[]);
