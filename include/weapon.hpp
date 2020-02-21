@@ -10,16 +10,16 @@ class Weapon {
         Unit_stats bonus = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
         Unit_stats malus = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
         std::string effect = "None";
-        std::string type;
-        Weapon_type types; //this one is better
+        short unsigned int type;
         std::string name;
         std::string effective;
+        short unsigned int effective2;
         std::string description;
     public:
         Weapon();
         Weapon(Weapon_stats in_stats);
         Weapon(std::string in_name, Weapon_stats in_stats);
-        Weapon(std::string in_name, std::string in_type, Weapon_stats in_stats);
+        Weapon(std::string in_name, short unsigned int in_type, Weapon_stats in_stats);
 
         void setStats(Weapon_stats in_stats);
         Weapon_stats getStats();
@@ -34,7 +34,8 @@ class Weapon {
         void setDescription(std::string in_description);
         std::string getDescription();
         std::string getName();
-        std::string getType();
+        short unsigned int getType();
+        void setType(short unsigned int in_type);
 
         void write(const char * filename, const char * mode = "a");
 };

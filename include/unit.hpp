@@ -23,8 +23,7 @@ class Unit {
         std::vector<Unit_stats> grown_stats;
         std::vector<std::string> skills;
         std::vector<std::string> equippables;
-        Weapon_type equippable;
-
+        short unsigned int equippable;
 
         std::unordered_map<std::string, int> supports;
         unsigned char current_hp;

@@ -416,13 +416,13 @@ Unit_stats Unit::getGrowths() {
 }
 
 bool Unit::isEquippable(std::string in_name) {
-    std::string wpn_type = all_weapons[in_name].getType();
     bool equippable = false;
-    for (int i = 0; i < equippables.size(); i++) {
-        if (equippables[i] == wpn_type) {
-            equippable = true;
-        }
-    }
+    // std::string wpn_type = all_weapons[in_name].getType();
+    // for (int i = 0; i < equippables.size(); i++) {
+    //     if (equippables[i] == wpn_type) {
+    //         equippable = true;
+    //     }
+    // }
     return(equippable);
 } 
 
@@ -507,27 +507,27 @@ unsigned char Unit::totalMight(bool dmg_type) {
 
 unsigned char Unit::totalDef(bool dmg_type){
     unsigned char total_def = 0;
-    if (dmg_type){
-        total_def += current_stats.res;
-        total_def += all_weapons[equipment[equipped.left].name].getBonus().res;
-        total_def += all_weapons[equipment[equipped.right].name].getBonus().res;
-        if (all_weapons[equipment[equipped.right].name].getType() == "shield") {
-            total_def += all_weapons[equipment[equipped.right].name].getStats().Mmight;
-        }
-        if (all_weapons[equipment[equipped.left].name].getType() == "shield") {
-            total_def += all_weapons[equipment[equipped.left].name].getStats().Mmight;
-        }
-    } else {
-        total_def += current_stats.def;
-        total_def += all_weapons[equipment[equipped.left].name].getBonus().def;
-        total_def += all_weapons[equipment[equipped.right].name].getBonus().def;
-        if (all_weapons[equipment[equipped.right].name].getType() == "shield") {
-            total_def += all_weapons[equipment[equipped.right].name].getStats().Pmight;
-        }
-        if (all_weapons[equipment[equipped.left].name].getType() == "shield") {
-            total_def += all_weapons[equipment[equipped.left].name].getStats().Pmight;
-        }
-    }
+    // if (dmg_type){
+    //     total_def += current_stats.res;
+    //     total_def += all_weapons[equipment[equipped.left].name].getBonus().res;
+    //     total_def += all_weapons[equipment[equipped.right].name].getBonus().res;
+    //     if (all_weapons[equipment[equipped.right].name].getType() == "shield") {
+    //         total_def += all_weapons[equipment[equipped.right].name].getStats().Mmight;
+    //     }
+    //     if (all_weapons[equipment[equipped.left].name].getType() == "shield") {
+    //         total_def += all_weapons[equipment[equipped.left].name].getStats().Mmight;
+    //     }
+    // } else {
+    //     total_def += current_stats.def;
+    //     total_def += all_weapons[equipment[equipped.left].name].getBonus().def;
+    //     total_def += all_weapons[equipment[equipped.right].name].getBonus().def;
+    //     if (all_weapons[equipment[equipped.right].name].getType() == "shield") {
+    //         total_def += all_weapons[equipment[equipped.right].name].getStats().Pmight;
+    //     }
+    //     if (all_weapons[equipment[equipped.left].name].getType() == "shield") {
+    //         total_def += all_weapons[equipment[equipped.left].name].getStats().Pmight;
+    //     }
+    // }
     return(total_def);
 }   
 

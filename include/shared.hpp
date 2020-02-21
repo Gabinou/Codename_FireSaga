@@ -234,19 +234,20 @@ enum WEAPONS {
 }
 
 namespace WPN_TYPE {
-enum WPN_TYPE {
+enum WPN_TYPES {
     // unsigned!!! short int equippable = sword + shield;
     // if (type & equippeable) > 0, weapon is equippable.
-    SWORD = 1;
-    LANCE = 2;
-    AXE = 4;
-    BOW = 8;
-    TRINKET = 16;
-    OFFHAND = 32;
-    ELEMENTAL = 64;
-    DEMONIC = 128;
-    ANGELIC = 256;
-    SHIELD = 512;
+    SWORD = 1,
+    LANCE = 2,
+    AXE = 4,
+    BOW = 8,
+    TRINKET = 16,
+    OFFHAND = 32,
+    ELEMENTAL = 64,
+    DEMONIC = 128,
+    ANGELIC = 256,
+    SHIELD = 512,
+    STAFF = 1024,
 };
 }
 
@@ -396,19 +397,6 @@ struct Weapon_stats {
     unsigned char hand[2]; //[1], [2] or [1,2]
     bool dmg_type; // 0 is 1 physical. 1 magic.
     unsigned short int price;
-};
-
-struct Weapon_type {
-    bool lance = false;
-    bool axe = false;
-    bool sword = false;
-    bool staff = false;
-    bool demonic = false;
-    bool angelic = false;
-    bool elemental = false;
-    bool offhand = false;
-    bool shield = false;
-    bool trinket = false;
 };
 
 struct Inventory_item {
