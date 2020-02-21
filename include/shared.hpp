@@ -323,13 +323,13 @@ enum SKILLS {
     DOUBLE_EXP = 256*256*128,
     AMBIDEXTRY = 256*256*256,
     TWO_HAND_STYLE = 256*256*256*2, //Weight of weapons are halved if two hands.
-    PIERCE_RN = 256*256*32, //luna
+    PIERCE_RN = 256*256*256*4, //luna
     // Boring skills
-    THRUST_SWORD_BONUS = 256*256*256*4,
-    SHIELD_BONUS = 256*256*256*4,
-    OFFHAND_BONUS = 256*256*256*4,
-    COUNTER = 256*256*256*4,
-    MERCY = 256*256*256*4,
+    COUNTER = 256*256*256*8,
+    THRUST_SWORD_BONUS = 256*256*256*16,
+    SHIELD_BONUS = 256*256*256*32,
+    OFFHAND_BONUS = 256*256*256*64,
+    BOW_BONUS = 256*256*256*128,
 
     // -> Should be 32bit int.
 };
