@@ -1,7 +1,4 @@
-/*! \page handle weapon.cpp
-* \file weapon.cpp
-* \brief weapon class implementation.
-*/
+
 #include "weapon.hpp"
 #include "shared.hpp"
 
