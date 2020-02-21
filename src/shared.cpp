@@ -47,9 +47,8 @@ std::vector<std::string> wpntype2str(short unsigned int in_type){
     if ((in_type & WPN_TYPE::STAFF) > 0) {
         types.push_back("Staff");
     }
-
+    return(types);
 }
-
 
 void writeText(int in_fontsize, int in_position[2], float in_sizefactor[2], std::string in_text, SDL_Color in_color, TTF_Font * in_font, SDL_Renderer * in_renderer) {
     std::string text = "FPS";

@@ -251,6 +251,54 @@ enum WPN_TYPES {
 };
 }
 
+namespace WPN_EFFECT {
+enum WPN_EFFECTS {
+    // short unsigned int 16 bits->65536
+    // unsigned int 16?32 bits->4,294,967,295
+    // long unsigned int 64 bits
+    KILL1% = 1,
+    BRAVE2X = 2,
+    BRAVE3X = 4,
+    BRAVE4X = 8,
+    NOCOUNTER = 16,
+    IGNORE_DEF = 32,
+    IGNORE_RES = 64,
+    IGNORE_SHIELD = 128,
+    USE_HEAL = 256,
+    USE_BUFF = 256*2,
+    USE_DIVINE = 256*4,
+    NO_CRIT = 256*8,
+    NO_ATTACK = 256*16,
+    CHARM = 256*32,
+    IMMUNE_MAGIC = 256*64,
+    IMMUNE_PHYS = 256*128,
+    IMMUNE_PHYS = 256*256,
+    BREAK_WEAPON = 256*256*2,
+    EXP2X = 256*256*4,
+    LIFESTEAL = 256*256*8,
+    POISON = 256*256*16,
+    DEMONIC = 256*256*32,
+    MASOCHISM = 256*256*64,
+    STUN = 256*256*128,
+    PASS = 256*256*256,
+    JOUST = 256*256*256*2,
+    SPARE = 256*256*256*4,
+    CAPTURE = 256*256*256*8,
+    HALF_DMG = 256*256*256*16,
+    BREAK_SHIELD = 256*256*256*32,
+
+    // -> Should be 32bit int.
+};
+}
+
+namespace SKILL {
+enum SKILLS {
+    // short unsigned int 16 bits->65536
+    // unsigned int 16?32 bits->4,294,967,295
+    // long unsigned int 64 bits
+};
+}
+
 namespace TILE {
 enum TILES {
     //Basic tile index is 3 digits -> 100

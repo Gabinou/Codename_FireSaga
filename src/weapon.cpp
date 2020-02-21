@@ -76,7 +76,12 @@ void Weapon::write(const char * filename, const char * mode){
     FILE * fp;
     fp = fopen(filename, mode);
     fprintf(fp, "%s \n", name.c_str());
-    fprintf(fp, "%d \n", type);
+    std::vector<std::string> wpn_types = wpntype2str(type);
+    for (short unsigned int i = 0; i < wpn_types.size(); i++) {
+        fprintf(fp, "%s \n", wpn_types[i].c_str());
+    }
+    fprintf(fp, "%d", type);
+    fprintf(fp, "\n");
     fprintf(fp, "%s \n", description.c_str());
     fprintf(fp, "%s \n", effect.c_str());
     if (stats.dmg_type) {

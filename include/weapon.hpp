@@ -10,6 +10,7 @@ class Weapon {
         Unit_stats bonus = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
         Unit_stats malus = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
         std::string effect = "None";
+        unsigned int effect2;
         short unsigned int type;
         std::string name;
         std::string effective;
