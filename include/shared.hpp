@@ -246,8 +246,8 @@ enum WPN_TYPES {
     ELEMENTAL = 64,
     DEMONIC = 128,
     ANGELIC = 256,
-    SHIELD = 512,
-    STAFF = 1024,
+    SHIELD = 256*2,
+    STAFF = 256*4,
 };
 }
 
@@ -277,16 +277,16 @@ enum WPN_EFFECTS {
     EXP2X = 256*256*4,
     LIFESTEAL = 256*256*8,
     POISON = 256*256*16,
-    DEMONIC = 256*256*32,
+    CURSED = 256*256*32, // weapon has a chance to deal damage to user.
     MASOCHISM = 256*256*64,
     STUN = 256*256*128,
     PASS = 256*256*256,
     JOUST = 256*256*256*2,
-    SPARE = 256*256*256*4,
+    MERCY = 256*256*256*4,
     CAPTURE = 256*256*256*8,
     HALF_DMG = 256*256*256*16,
     BREAK_SHIELD = 256*256*256*32,
-
+    COUP_DE_GRACE = 256*256*256*64,
     // -> Should be 32bit int.
 };
 }
@@ -296,12 +296,48 @@ enum SKILLS {
     // short unsigned int 16 bits->65536
     // unsigned int 16?32 bits->4,294,967,295
     // long unsigned int 64 bits
+    CANTO = 1,
+    SKILLED_RIDER = 2,
+    SPRINT = 4,
+    SWITCH = 8,
+    MOUNTAINWALK = 16,
+    WATERWALK = 32,
+    CRIT_KILLS = 64,
+    DISMEMBER = 128,
+    ATK_RANGE_P1 = 256,
+    DIVINE_SHIELD = 256*2,
+    NO_CRIT = 256*4,
+    NO_COUNTER = 256*4,
+    MAX_DESPAIR = 256*8,
+    TUNNELING = 256*16,
+    SCOUTING = 256*32,
+    ASSASSINATE = 256*64,
+    LOCKPICK = 256*128,
+    NO_LOCKPICK = 256*256, //Unlocks withouth lockpicks.
+    IMMUNE_MAGIC = 256*256*2,
+    IMMUNE_ELEMENTAL = 256*256*4,
+    IMMUNE_DEMONIC = 256*256*8,
+    IMMUNE_ANGELIC = 256*256*16,
+    LIFESTEAL_RN = 256*256*32, //sol
+    INFUSE = 256*256*64,
+    DOUBLE_EXP = 256*256*128,
+    AMBIDEXTRY = 256*256*256,
+    TWO_HAND_STYLE = 256*256*256*2, //Weight of weapons are halved if two hands.
+    PIERCE_RN = 256*256*32, //luna
+    // Boring skills
+    THRUST_SWORD_BONUS = 256*256*256*4,
+    SHIELD_BONUS = 256*256*256*4,
+    OFFHAND_BONUS = 256*256*256*4,
+    COUNTER = 256*256*256*4,
+    MERCY = 256*256*256*4,
+
+    // -> Should be 32bit int.
 };
 }
 
 namespace TILE {
 enum TILES {
-    //Basic tile index is 3 digits -> 100
+    // Basic tile index is 3 digits -> 100
     // two first digits give the tile.
     // third digit gives the asset index.
     // Ex: 324: Peak tile, 4th asset of peak.
