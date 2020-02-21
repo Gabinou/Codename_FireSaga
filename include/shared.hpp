@@ -285,7 +285,7 @@ enum WPN_EFFECTS {
     STUN = 256 * 256 * 128,
     PASS = 256 * 256 * 256,
     JOUST = 256 * 256 * 256 * 2,
-    MERCY = 256 * 256 * 256 * 4,
+    SPARE = 256 * 256 * 256 * 4,
     CAPTURE = 256 * 256 * 256 * 8,
     HALF_DMG = 256 * 256 * 256 * 16,
     BREAK_SHIELD = 256 * 256 * 256 * 32,
@@ -334,8 +334,17 @@ enum SKILLS : unsigned int {
     // -> Should be long 32bit int.
 };
 const unsigned long long int BOW_BONUS = 0x100000000;
+}
 
-
+namespace UNIT_TYPE {
+enum UNIT_TYPES {
+    HUMAN = 0x0001,
+    MOUNTED = 0x0002,
+    FLYING = 0x0004,
+    ARMOR = 0x0008,
+    DEMON = 0x0010,
+    ANGEL = 0x0020,
+};
 }
 
 namespace TILE {
@@ -507,15 +516,6 @@ struct Map_enemy {
     unsigned char arrival;
     unsigned char levelup;
 };
-
-// struct Unit_type {
-//     bool human;
-//     bool mounted;
-//     bool flying;
-//     bool armored;
-//     bool demon;
-//     bool angel;
-// };
 
 struct Movement_cost {
     // i THINK THIS IS USELESS

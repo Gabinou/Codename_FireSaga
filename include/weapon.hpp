@@ -9,12 +9,10 @@ class Weapon {
         //hp,str,mag,skl,spd,luck,def,res,con,move
         Unit_stats bonus = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
         Unit_stats malus = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
-        std::string effect = "None";
-        unsigned int effect2;
+        long unsigned int effect;
         short unsigned int type;
+        short unsigned int effective;
         std::string name;
-        std::string effective;
-        short unsigned int effective2;
         std::string description;
         unsigned char id;
     public:
@@ -30,10 +28,10 @@ class Weapon {
         Unit_stats getBonus();
         void setMalus(Unit_stats in_malus);
         Unit_stats getMalus(); //may be uncessesary?
-        void setEffect(std::string in_effect);
-        std::string getEffect();
-        void setEffective(std::string in_effective);
-        std::string getEffective();
+        void setEffect(long unsigned int in_effect);
+        long unsigned int getEffect();
+        void setEffective(short unsigned int in_effective);
+        short unsigned int getEffective();
         void setDescription(std::string in_description);
         std::string getDescription();
         std::string getName();

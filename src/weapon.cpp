@@ -45,16 +45,16 @@ Unit_stats Weapon::getBonus() {
     return(bonus);
 }
 
-void Weapon::setEffect(std::string in_effect) {
+void Weapon::setEffect(long unsigned int in_effect) {
     effect = in_effect;
 }
-std::string Weapon::getEffect() {
+long unsigned int Weapon::getEffect() {
     return(effect);
 }
-void Weapon::setEffective(std::string in_effective) {
+void Weapon::setEffective(short unsigned int in_effective) {
 	effective = in_effective;
 }
-std::string Weapon::getEffective() {
+short unsigned int Weapon::getEffective() {
     return(effective);
 }
 void Weapon::setDescription(std::string in_description) {
@@ -84,7 +84,7 @@ void Weapon::write(const char * filename, const char * mode){
     fprintf(fp, "%d", type);
     fprintf(fp, "\n");
     fprintf(fp, "%s \n", description.c_str());
-    fprintf(fp, "%s \n", effect.c_str());
+    fprintf(fp, "%d \n", effect);
     if (stats.dmg_type) {
         fprintf(fp, "Damage type: %s \n", "Magic");
     } else {
@@ -120,12 +120,12 @@ void baseWeapons2(){
     all_weapons[WEAPON::WRATH_SWORD] = temp_wpn;
     temp_wpn_stats = {4, 0, 90, 0, 0, 0, 4, 20, 6, {1,1}, {1}, 0, 1000};
     temp_wpn = Weapon("Fleuret", WPN_TYPE::SWORD, temp_wpn_stats, WEAPON::FLEURET);
-    temp_wpn.setEffective("Armor");
+    temp_wpn.setEffective(UNIT_TYPE::ARMOR);
     temp_wpn.setDescription("Simple and light thrust swords. Effective against armor. Usually used with off-hand parry daggers.");
     all_weapons[WEAPON::FLEURET] = temp_wpn;
     temp_wpn_stats = {8, 0, 85, 5, 0, 0, 5, 25, 8, {1,1}, {1}, 0, 1000};
     temp_wpn = Weapon("Rapière", WPN_TYPE::SWORD, temp_wpn_stats, WEAPON::RAPIERE);
-    temp_wpn.setEffective("Armor");
+    temp_wpn.setEffective(UNIT_TYPE::ARMOR);
     temp_wpn.setDescription("Strong thrust swords. Effective against armor. Usually used with off-hand parry daggers.");
     all_weapons[WEAPON::RAPIERE] = temp_wpn;
     temp_wpn_stats = {5, 0, 55, 0, 0, 0, 7, 30, 3, {1,1}, {1}, 0, 1000};
@@ -154,7 +154,7 @@ void baseWeapons2(){
     all_weapons[WEAPON::DAMAS_SWORD] = temp_wpn;
     temp_wpn_stats = {4, 0, 70, 0, 0, 10, 6, 30, 9, {1,1}, {1,2}, 0, 1000};
     temp_wpn = Weapon("Merciful blade", WPN_TYPE::SWORD, temp_wpn_stats, WEAPON::MERCIFUL_BLADE);
-    temp_wpn.setEffect("spare");
+    temp_wpn.setEffect(WPN_EFFECT::SPARE);
     temp_wpn.setDescription("Infused with the life-giving tears of the goddess. Cannot reduce enemy HP below 1.");
     all_weapons[WEAPON::MERCIFUL_BLADE] = temp_wpn;
     temp_wpn_stats = {10, 0, 40, 0, 0, 0, 10, 25, 6, {1,1}, {1,2}, 0, 1000};
@@ -175,7 +175,7 @@ void baseWeapons2(){
     all_weapons[WEAPON::UCHIGATANA] = temp_wpn;
     temp_wpn_stats = {1, 0, 50, 0, 0, 0, 1, 20, 10, {1,1}, {1,2}, 0, 1000};
     temp_wpn = Weapon("Exsangue", WPN_TYPE::SWORD, temp_wpn_stats, WEAPON::EXSANGUE);
-    temp_wpn.setEffect("lifesteal");
+    temp_wpn.setEffect(WPN_EFFECT::LIFESTEAL);
     temp_wpn.setDescription("Drains enemies of their blood. Heals HP equal to damage dealt.");
     all_weapons[WEAPON::EXSANGUE] = temp_wpn;
     temp_wpn_stats = {14, 0, 90, 10, 0, 0, 7, 25, 14, {1,1}, {1,2}, 0, 1000};
@@ -188,12 +188,12 @@ void baseWeapons2(){
     all_weapons[WEAPON::SECUNDUS] = temp_wpn;
     temp_wpn_stats = {15, 0, 90, 10, 0, 0, 10, 30, 15, {1,1}, {1,2}, 0, 1000};
     temp_wpn = Weapon("Excalibur", WPN_TYPE::SWORD, temp_wpn_stats, WEAPON::EXCALIBUR);
-    temp_wpn.setEffective({"Demon"});
+    temp_wpn.setEffective(UNIT_TYPE::DEMON);
     temp_wpn.setDescription("The king's sword. Found in a rock.");
     all_weapons[WEAPON::EXCALIBUR] = temp_wpn;
     temp_wpn_stats = {12, 0, 100, 0, 0, 0, 6, 20, 18, {1,1}, {1}, 0, 1000};
     temp_wpn = Weapon("Galatine", WPN_TYPE::SWORD, temp_wpn_stats, WEAPON::GALATINE);
-    temp_wpn.setEffective("Armor");
+    temp_wpn.setEffective(UNIT_TYPE::ARMOR);
     temp_wpn.setDescription("A pragmatic and honorable knight's thrusting sword. Usually used with off-hand parry daggers.");
     all_weapons[WEAPON::GALATINE] = temp_wpn;
     temp_wpn_stats = {5, 0, 50, 0, 0, 0, 7, 25, 11, {1,2}, {1,2}, 1, 1000};
@@ -215,7 +215,7 @@ void baseWeapons2(){
     temp_wpn_stats = {20, 0, 30, 0, 0, 0, 20, 50, 20, {1,1}, {1,2}, 0, 1000};
     temp_wpn = Weapon("Raw Iron slab", WPN_TYPE::SWORD, temp_wpn_stats, WEAPON::RAW_IRON_SLAB); //Should be found inside a dragon skull? 
     temp_wpn.setDescription("Barely a sword. Too big, too thick, too massive, too rough. Tempered by the malevolence of countless slain demons. Effective against demons and angels.");
-    temp_wpn.setEffective("DemonAngel");
+    temp_wpn.setEffective(UNIT_TYPE::DEMON + UNIT_TYPE::ANGEL);
     all_weapons[WEAPON::RAW_IRON_SLAB] = temp_wpn;    
     // Should have deeps chinks. This isn't the first time demons roamed the earth. Has deep holes in it. Must be repaired before being usable. Who is willing to repair it? 
 
@@ -245,7 +245,7 @@ void baseWeapons2(){
     all_weapons[WEAPON::DAMAS_LANCE] = temp_wpn;
     temp_wpn_stats = {6, 0, 60, 0, 0, 0, 15, 10, 8, {1,1}, {1,2}, 0, 1000};
     temp_wpn = Weapon("Heavy spear", WPN_TYPE::LANCE, temp_wpn_stats, WEAPON::HEAVY_SPEAR);
-    temp_wpn.setEffective("Armor");
+    temp_wpn.setEffective(UNIT_TYPE::ARMOR);
     temp_wpn.setDescription("Heavy enough to pierce armor.");
     all_weapons[WEAPON::HEAVY_SPEAR] = temp_wpn;
     temp_wpn_stats = {8, 0, 90, 0, 0, 0, 8, 10, 10, {1,1}, {1,2}, 0, 1000};
@@ -278,7 +278,7 @@ void baseWeapons2(){
     all_weapons[WEAPON::GUNGNIR] = temp_wpn;
     temp_wpn_stats = {12, 0, 70, 0, 0, 0, 10, 32, 18, {1,2}, {1,2}, 0, 1000};
     temp_wpn = Weapon("Achilles", WPN_TYPE::LANCE, temp_wpn_stats, WEAPON::ACHILLES);
-    temp_wpn.setEffect("1%kill");
+    temp_wpn.setEffect(WPN_EFFECT::KILL1P);
     temp_wpn.setDescription("Legendary throwing spear named after a fearless, immortal hero. Kills instantly if hits enemy's heel (1%).");
     all_weapons[WEAPON::ACHILLES] = temp_wpn;
     temp_wpn_stats = {16, 0, 50, 0, 0, 0, 14, 24, 17, {1,1}, {1,2}, 0, 1000};
@@ -324,17 +324,17 @@ void baseWeapons2(){
     all_weapons[WEAPON::CLUB] = temp_wpn;
     temp_wpn_stats = {10, 0, 50, 0, 0, 0, 11, 20, 12, {1,1}, {1,2}, 0, 1000};
     temp_wpn = Weapon("Halberd", WPN_TYPE::AXE + WPN_TYPE::LANCE, temp_wpn_stats, WEAPON::HALBERD);
-    temp_wpn.setEffective("Mounted");
+    temp_wpn.setEffective(UNIT_TYPE::MOUNTED);
     temp_wpn.setDescription("Polearm specially designed to deal with cavalry. Is both a lance and an axe.");
     all_weapons[WEAPON::HALBERD] = temp_wpn;
     temp_wpn_stats = {8, 0, 40, 0, 0, 0, 9, 30, 8, {1,1}, {1,2}, 0, 1000};
     temp_wpn = Weapon("Hammer", WPN_TYPE::AXE, temp_wpn_stats, WEAPON::HAMMER);
-    temp_wpn.setEffective("Armor");
+    temp_wpn.setEffective(UNIT_TYPE::ARMOR);
     temp_wpn.setDescription("Armor cannot stand the hammer's heavy crushing blows.");
     all_weapons[WEAPON::HAMMER] = temp_wpn;
     temp_wpn_stats = {12, 0, 50, 0, 0, 0, 12, 25, 11, {1,1}, {1,2}, 0, 1000};
     temp_wpn = Weapon("War pick", WPN_TYPE::AXE, temp_wpn_stats, WEAPON::WAR_PICK);
-    temp_wpn.setEffective("Armor");
+    temp_wpn.setEffective(UNIT_TYPE::ARMOR);
     temp_wpn.setDescription("In trained hands, the pick can penatrate armor.");
     all_weapons[WEAPON::WAR_PICK] = temp_wpn;
     temp_wpn_stats = {15, 0, 45, 0, 0, 0, 14, 30, 14, {1,1}, {1,2}, 0, 1000};
@@ -472,7 +472,7 @@ void baseWeapons2(){
     temp_wpn_stats = {2, 0, 10, 0, 10, 0, 5, 21, 16, {1,1}, {1}, 0, 1000};
     temp_wpn = Weapon("Shield Hook", WPN_TYPE::OFFHAND, temp_wpn_stats, WEAPON::SHIELD_HOOK);
     temp_wpn.setDescription("Offhand weapon designed to grab on shields to drag them aside. Ignores shield bonuses.");
-    temp_wpn.setEffect("ignoreshield");
+    temp_wpn.setEffect(WPN_EFFECT::IGNORE_SHIELD);
     all_weapons[WEAPON::SHIELD_HOOK] = temp_wpn;
     temp_wpn_stats = {4, 0, 8, 0, 14, 0, 7, 16, 19, {1,1}, {1}, 0, 1000};
     temp_wpn = Weapon("Retractable Wristblade", WPN_TYPE::OFFHAND, temp_wpn_stats, WEAPON::RETRACTABLE_WRISTBLADE);
@@ -595,13 +595,12 @@ void baseWeapons2(){
     temp_wpn_stats = {0, 11, 50, 0, 0, 0, 9, 20, 7, {1,2}, {1,2}, 1, 1000};
     temp_wpn = Weapon("Fingolfin", WPN_TYPE::ELEMENTAL, temp_wpn_stats, WEAPON::FINGOLFIN);
     temp_wpn.setDescription("Distilled courage. Strikes at 7 times at darkness's heart. Effective against demons.");
-    temp_wpn.setEffective("Demon");
+    temp_wpn.setEffective(UNIT_TYPE::DEMON);
     all_weapons[WEAPON::FINGOLFIN] = temp_wpn;
     temp_wpn_stats = {0, 6, 65, 0, 0, 0, 5, 28, 7, {1,2}, {1,2}, 1, 1000};
     temp_wpn = Weapon("Mithrandir", WPN_TYPE::ELEMENTAL, temp_wpn_stats, WEAPON::MITHRANDIR);
     temp_wpn.setDescription("Inspires courage in the hearts of men. Effective against demons.");
-    temp_wpn.setEffective("Demon");
-    temp_wpn.setEffect("Demon");
+    temp_wpn.setEffective(UNIT_TYPE::DEMON);
     all_weapons[WEAPON::MITHRANDIR] = temp_wpn;
 
     temp_wpn_stats = {0, 5, 70, 0, 0, 0, 5, 60, 7, {1,2}, {1,2}, 1, 1000};
@@ -614,6 +613,7 @@ void baseWeapons2(){
     all_weapons[WEAPON::NETHER] = temp_wpn;
     temp_wpn_stats = {0, 5, 70, 0, 0, 0, 5, 60, 7, {1,2}, {1,2}, 1, 1000};
     temp_wpn = Weapon("Downfall", WPN_TYPE::DEMONIC, temp_wpn_stats, WEAPON::DOWNFALL);
+    temp_wpn.setDescription("");
     temp_wpn.setDescription("");
     all_weapons[WEAPON::DOWNFALL] = temp_wpn;
     temp_wpn_stats = {0, 5, 70, 0, 0, 0, 5, 60, 7, {1,2}, {1,2}, 1, 1000};
