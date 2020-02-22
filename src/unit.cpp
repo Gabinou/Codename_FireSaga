@@ -853,98 +853,99 @@ std::unordered_map<std::string, Unit> all_units;
 
 void baseUnits() {
     printf("Making base units \n");
+    Unit temp_unit;
     Unit_stats temp;
     //hp,str,mag,skl,spd,luck,def,res,con,move
     temp = {17,  6,  2,  7,  7,   7,  4,  5,  6, 5};
-    Unit main("Erwin", UNIT_CLASS::MERCENARY, temp, "M");
+    temp_unit = Unit("Erwin", UNIT_CLASS::MERCENARY, temp, "M");
     temp = {48, 14, 25, 32, 34,  28, 19, 40, 15, 0};
     main.setCaps(temp);
     temp = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
-    main.setGrowths(temp);
-    main.setExp(0);
-    main.write("unit_test.txt");
-    all_units["Erwin"] = main;
+    temp_unit.setGrowths(temp);
+    temp_unit.setExp(0);
+    temp_unit.write("unit_test.txt");
+    all_units["Erwin"] = temp_unit;
     
     temp = {18,  6,  2,  7,  7,   7,  4,  5,  6, 7};
-    Unit reliable("Reliable", UNIT_CLASS::CAVALIER, temp, "M");
+    temp_unit = Unit("Reliable", UNIT_CLASS::CAVALIER, temp, "M");
     temp = {48, 14, 25, 32, 34,  28, 19, 40, 15};
-    reliable.setCaps(temp);
+    temp_unit.setCaps(temp);
     temp = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
-    reliable.setGrowths(temp);
-    reliable.setExp(100);
-    all_units["Reliable"] = reliable;
+    temp_unit.setGrowths(temp);
+    temp_unit.setExp(100);
+    all_units["Reliable"] = temp_unit;
     
     temp = {19,  6,  2,  7,  7,   7,  4,  5,  6,  7};
-    Unit coward("Coward", UNIT_CLASS::CAVALIER, temp, "M");
+    temp_unit = Unit("Coward", UNIT_CLASS::CAVALIER, temp, "M");
     temp = {48, 14, 25, 32, 34,  28, 19, 40, 15};
-    coward.setCaps(temp);
+    temp_unit.setCaps(temp);
     temp = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
-    coward.setGrowths(temp);
-    coward.setExp(200);
-    all_units["Coward"] = coward;
+    temp_unit.setGrowths(temp);
+    temp_unit.setExp(200);
+    all_units["Coward"] = temp_unit;
     
     temp = {20,  6,  2,  7,  7,   7,  4,  5,  6,  6};
-    Unit hjaigen("1H Jaigen", UNIT_CLASS::MOUSQUETAIRE, temp, "M");
+    temp_unit = Unit("1H Jaigen", UNIT_CLASS::MOUSQUETAIRE, temp, "M");
     temp = {48, 14, 25, 32, 34,  28, 19, 40, 15};
-    hjaigen.setCaps(temp);
+    temp_unit.setCaps(temp);
     temp = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
-    hjaigen.setGrowths(temp);
-    hjaigen.setExp(2200);
-    all_units["1H Jaigen"] = hjaigen;
+    temp_unit.setGrowths(temp);
+    temp_unit.setExp(2200);
+    all_units["1H Jaigen"] = temp_unit;
 
     temp = {14,  6,  2,  7,  7,   7,  4,  5,  6,  5};
-    Unit lovely("Kiara", UNIT_CLASS::CLERIC, temp, "F");
+    temp_unit = Unit("Kiara", UNIT_CLASS::CLERIC, temp, "F");
     temp = {48, 14, 25, 32, 34,  28, 19, 40, 15};
-    lovely.setCaps(temp);
+    temp_unit.setCaps(temp);
     temp = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
-    lovely.setGrowths(temp);
-    lovely.setExp(100);
-    all_units["Kiara"] = lovely;
+    temp_unit.setGrowths(temp);
+    temp_unit.setExp(100);
+    all_units["Kiara"] = temp_unit;
     
     temp = {16,  6,  2,  7,  7,   7,  4,  5,  6,  6};
-    Unit hottie("Hottie", UNIT_CLASS::PICKPOCKET, temp, "M");
+    temp_unit = Unit("Hottie", UNIT_CLASS::PICKPOCKET, temp, "M");
     temp = {48, 14, 25, 32, 34,  28, 19, 40, 15};
-    hottie.setCaps(temp);
+    temp_unit.setCaps(temp);
     temp = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
-    hottie.setGrowths(temp);
-    hottie.setExp(2200);
-    all_units["Hottie"] = hottie;
+    temp_unit.setGrowths(temp);
+    temp_unit.setExp(2200);
+    all_units["Hottie"] = temp_unit;
     
     temp = {22,  4,  5,  7,  6,   8,  4,  6,  5, 5}; // 4 or 5?
-    Unit servil("Servil", UNIT_CLASS::KNIGHT, temp, "M");
+    temp_unit = Unit("Servil", UNIT_CLASS::KNIGHT, temp, "M");
     temp = {48, 14, 25, 32, 34,  28, 19, 40, 15};
-    servil.setCaps(temp);
+    temp_unit.setCaps(temp);
     temp = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
-    servil.setGrowths(temp);
-    servil.setExp(500);
-    all_units["Servil"] = servil;
+    temp_unit.setGrowths(temp);
+    temp_unit.setExp(500);
+    all_units["Servil"] = temp_unit;
     
     temp = {34,  4,  5,  7,  6,   8,  4,  6,  5, 5};
-    Unit perignon("Pérignon", UNIT_CLASS::MAGE, temp, "M");
+    temp_unit = Unit("Pérignon", UNIT_CLASS::MAGE, temp, "M");
     temp = {48, 14, 25, 32, 34,  28, 19, 40, 15};
-    perignon.setCaps(temp);
+    temp_unit.setCaps(temp);
     temp = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
-    perignon.setGrowths(temp);
-    perignon.setExp(1200);
-    all_units["Pérignon"] = perignon;
+    temp_unit.setGrowths(temp);
+    temp_unit.setExp(1200);
+    all_units["Pérignon"] = temp_unit;
     
     temp = {15,  4,  5,  7,  6,   8,  4,  6,  5, 5};
-    Unit poet("Poet", UNIT_CLASS::MAGE, temp, "M");
+    temp_unit = Unit("Poet", UNIT_CLASS::MAGE, temp, "M");
     temp = {48, 14, 25, 32, 34,  28, 19, 40, 15};
-    poet.setCaps(temp);
+    temp_unit.setCaps(temp);
     temp = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
-    poet.setGrowths(temp);
-    poet.setExp(400);
-    all_units["Poet"] = poet;
+    temp_unit.setGrowths(temp);
+    temp_unit.setExp(400);
+    all_units["Poet"] = temp_unit;
     
     temp = {15,  4,  5,  7,  6,   8,  4,  6,  5, 5};
-    Unit silou("Silou", UNIT_CLASS::MAGE, temp, "F");
+    temp_unit = Unit("Silou", UNIT_CLASS::MAGE, temp, "F");
     temp = {48, 14, 25, 32, 34,  28, 19, 40, 15};
-    silou.setCaps(temp);
+    temp_unit.setCaps(temp);
     temp = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
-    silou.setGrowths(temp);
-    silou.setExp(400);
-    all_units["Silou"] = silou;
+    temp_unit.setGrowths(temp);
+    temp_unit.setExp(400);
+    all_units["Silou"] = temp_unit;
 }
 
 void genericEnemies() {
@@ -953,148 +954,148 @@ void genericEnemies() {
     //hp,str,mag,skl,spd,luck,def,res,con,move
 
     temp = {15,  4,  5,  7,  6,   8,  4,  6,  5, 5};
-    Unit generic_bandit("Bandit", UNIT_CLASS::BANDIT, temp, "M");
+    temp_unit = Unit("Bandit", UNIT_CLASS::BANDIT, temp, "M");
     temp = {48, 14, 25, 32, 34,  28, 19, 40, 15};
-    generic_bandit.setCaps(temp);
+    temp_unit.setCaps(temp);
     temp = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
-    generic_bandit.setGrowths(temp);
-    generic_bandit.setExp(0);
-    all_units["Bandit"] = generic_bandit;
+    temp_unit.setGrowths(temp);
+    temp_unit.setExp(0);
+    all_units["Bandit"] = temp_unit;
 
     temp = {15,  4,  5,  7,  6,   8,  4,  6,  5, 5};
-    Unit generic_Duelist("Duelist", UNIT_CLASS::DUELIST, temp, "M");
+    temp_unit = Unit("Duelist", UNIT_CLASS::DUELIST, temp, "M");
     temp = {48, 14, 25, 32, 34,  28, 19, 40, 15};
-    generic_Duelist.setCaps(temp);
+    temp_unit.setCaps(temp);
     temp = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
-    generic_Duelist.setGrowths(temp);
-    generic_Duelist.setExp(0);
-    all_units["Duelist"] = generic_Duelist;
+    temp_unit.setGrowths(temp);
+    temp_unit.setExp(0);
+    all_units["Duelist"] = temp_unit;
 
     temp = {15,  4,  5,  7,  6,   8,  4,  6,  5, 5};
-    Unit generic_Pickpocket("Pickpocket", UNIT_CLASS::PICKPOCKET, temp, "M");
+    temp_unit = Unit("Pickpocket", UNIT_CLASS::PICKPOCKET, temp, "M");
     temp = {48, 14, 25, 32, 34,  28, 19, 40, 15};
-    generic_Pickpocket.setCaps(temp);
+    temp_unit.setCaps(temp);
     temp = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
-    generic_Pickpocket.setGrowths(temp);
-    generic_Pickpocket.setExp(0);
-    all_units["Pickpocket"] = generic_Pickpocket;
+    temp_unit.setGrowths(temp);
+    temp_unit.setExp(0);
+    all_units["Pickpocket"] = temp_unit;
 
     temp = {15,  4,  5,  7,  6,   8,  4,  6,  5, 5};
-    Unit generic_Thief("Thief", UNIT_CLASS::THIEF, temp, "M");
+    temp_unit = Unit("Thief", UNIT_CLASS::THIEF, temp, "M");
     temp = {48, 14, 25, 32, 34,  28, 19, 40, 15};
-    generic_Thief.setCaps(temp);
+    temp_unit.setCaps(temp);
     temp = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
-    generic_Thief.setGrowths(temp);
-    generic_Thief.setExp(0);
-    all_units["Thief"] = generic_Thief;    
+    temp_unit.setGrowths(temp);
+    temp_unit.setExp(0);
+    all_units["Thief"] = temp_unit;    
 
     temp = {15,  4,  5,  7,  6,   8,  4,  6,  5, 5};
-    Unit generic_Assassin("Assassin", UNIT_CLASS::ASSASSIN, temp, "M");
+    temp_unit = Unit("Assassin", UNIT_CLASS::ASSASSIN, temp, "M");
     temp = {48, 14, 25, 32, 34,  28, 19, 40, 15};
-    generic_Assassin.setCaps(temp);
+    temp_unit.setCaps(temp);
     temp = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
-    generic_Assassin.setGrowths(temp);
-    generic_Assassin.setExp(0);
-    all_units["Assassin"] = generic_Assassin;
+    temp_unit.setGrowths(temp);
+    temp_unit.setExp(0);
+    all_units["Assassin"] = temp_unit;
 
     temp = {15,  4,  5,  7,  6,   8,  4,  6,  5, 5};
-    Unit generic_Archer("Archer", UNIT_CLASS::ARCHER, temp, "M");
+    temp_unit = Unit("Archer", UNIT_CLASS::ARCHER, temp, "M");
     temp = {48, 14, 25, 32, 34,  28, 19, 40, 15};
-    generic_Archer.setCaps(temp);
+    temp_unit.setCaps(temp);
     temp = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
-    generic_Archer.setGrowths(temp);
-    generic_Archer.setExp(0);
-    all_units["Archer"] = generic_Archer;
+    temp_unit.setGrowths(temp);
+    temp_unit.setExp(0);
+    all_units["Archer"] = temp_unit;
 
     temp = {15,  4,  5,  7,  6,   8,  4,  6,  5, 5};
-    Unit generic_Marksman("Marksman", UNIT_CLASS::MARKSMAN, temp, "M");
+    temp_unit = Unit("Marksman", UNIT_CLASS::MARKSMAN, temp, "M");
     temp = {48, 14, 25, 32, 34,  28, 19, 40, 15};
-    generic_Marksman.setCaps(temp);
+    temp_unit.setCaps(temp);
     temp = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
-    generic_Marksman.setGrowths(temp);
-    generic_Marksman.setExp(0);
-    all_units["Marksman"] = generic_Marksman;
+    temp_unit.setGrowths(temp);
+    temp_unit.setExp(0);
+    all_units["Marksman"] = temp_unit;
 
     temp = {15,  4,  5,  7,  6,   8,  4,  6,  5, 5};
-    Unit generic_Mercenary("Mercenary", UNIT_CLASS::MERCENARY, temp, "M");
+    temp_unit = Unit("Mercenary", UNIT_CLASS::MERCENARY, temp, "M");
     temp = {48, 14, 25, 32, 34,  28, 19, 40, 15};
-    generic_Mercenary.setCaps(temp);
+    temp_unit.setCaps(temp);
     temp = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
-    generic_Mercenary.setGrowths(temp);
-    generic_Mercenary.setExp(0);
-    all_units["Mercenary"] = generic_Mercenary;
+    temp_unit.setGrowths(temp);
+    temp_unit.setExp(0);
+    all_units["Mercenary"] = temp_unit;
 
     temp = {15,  4,  5,  7,  6,   8,  4,  6,  5, 5};
-    Unit generic_Hero("Hero", UNIT_CLASS::HERO, temp, "M");
+    temp_unit = Unit("Hero", UNIT_CLASS::HERO, temp, "M");
     temp = {48, 14, 25, 32, 34,  28, 19, 40, 15};
-    generic_Hero.setCaps(temp);
+    temp_unit.setCaps(temp);
     temp = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
-    generic_Hero.setGrowths(temp);
-    generic_Hero.setExp(0);
-    all_units["Hero"] = generic_Hero;
+    temp_unit.setGrowths(temp);
+    temp_unit.setExp(0);
+    all_units["Hero"] = temp_unit;
 
     temp = {15,  4,  5,  7,  6,   8,  4,  6,  5, 5};
-    Unit generic_Corsair("Corsair", UNIT_CLASS::CORSAIR, temp, "M");
+    temp_unit = Unit("Corsair", UNIT_CLASS::CORSAIR, temp, "M");
     temp = {48, 14, 25, 32, 34,  28, 19, 40, 15};
-    generic_Corsair.setCaps(temp);
+    temp_unit.setCaps(temp);
     temp = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
-    generic_Corsair.setGrowths(temp);
-    generic_Corsair.setExp(0);
-    all_units["Corsair"] = generic_Corsair;
+    temp_unit.setGrowths(temp);
+    temp_unit.setExp(0);
+    all_units["Corsair"] = temp_unit;
 
     temp = {15,  4,  5,  7,  6,   8,  4,  6,  5, 5};
-    Unit generic_Viking("Viking", UNIT_CLASS::VIKING, temp, "M");
+    temp_unit = Unit("Viking", UNIT_CLASS::VIKING, temp, "M");
     temp = {48, 14, 25, 32, 34,  28, 19, 40, 15};
-    generic_Viking.setCaps(temp);
+    temp_unit.setCaps(temp);
     temp = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
-    generic_Viking.setGrowths(temp);
-    generic_Viking.setExp(0);
-    all_units["Viking"] = generic_Viking;
+    temp_unit.setGrowths(temp);
+    temp_unit.setExp(0);
+    all_units["Viking"] = temp_unit;
 
     temp = {15,  4,  5,  7,  6,   8,  4,  6,  5, 5};
-    Unit generic_Ravager("Ravager", UNIT_CLASS::RAVAGER, temp, "M");
+    temp_unit = Unit("Ravager", UNIT_CLASS::RAVAGER, temp, "M");
     temp = {48, 14, 25, 32, 34,  28, 19, 40, 15};
-    generic_Ravager.setCaps(temp);
+    temp_unit.setCaps(temp);
     temp = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
-    generic_Ravager.setGrowths(temp);
-    generic_Ravager.setExp(0);
-    all_units["Ravager"] = generic_Ravager;
+    temp_unit.setGrowths(temp);
+    temp_unit.setExp(0);
+    all_units["Ravager"] = temp_unit;
 
     temp = {15,  4,  5,  7,  6,   8,  4,  6,  5, 5};
-    Unit generic_Cavalier("Cavalier", UNIT_CLASS::CAVALIER, temp, "M");
+    temp_unit = Unit("Cavalier", UNIT_CLASS::CAVALIER, temp, "M");
     temp = {48, 14, 25, 32, 34,  28, 19, 40, 15};
-    generic_Cavalier.setCaps(temp);
+    temp_unit.setCaps(temp);
     temp = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
-    generic_Cavalier.setGrowths(temp);
-    generic_Cavalier.setExp(0);
-    all_units["Cavalier"] = generic_Cavalier;
+    temp_unit.setGrowths(temp);
+    temp_unit.setExp(0);
+    all_units["Cavalier"] = temp_unit;
 
     temp = {15,  4,  5,  7,  6,   8,  4,  6,  5, 5};
-    Unit generic_Paladin("Paladin", UNIT_CLASS::PALADIN, temp, "M");
+    temp_unit = Unit("Paladin", UNIT_CLASS::PALADIN, temp, "M");
     temp = {48, 14, 25, 32, 34,  28, 19, 40, 15};
-    generic_Paladin.setCaps(temp);
+    temp_unit.setCaps(temp);
     temp = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
-    generic_Paladin.setGrowths(temp);
-    generic_Paladin.setExp(0);
-    all_units["Paladin"] = generic_Paladin;
+    temp_unit.setGrowths(temp);
+    temp_unit.setExp(0);
+    all_units["Paladin"] = temp_unit;
 
     temp = {15,  4,  5,  7,  6,   8,  4,  6,  5, 5};
-    Unit generic_fencer("Fencer", UNIT_CLASS::FENCER, temp, "M");
+    temp_unit = Unit("Fencer", UNIT_CLASS::FENCER, temp, "M");
     temp = {48, 14, 25, 32, 34,  28, 19, 40, 15};
-    generic_fencer.setCaps(temp);
+    temp_unit.setCaps(temp);
     temp = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
-    generic_fencer.setGrowths(temp);
-    generic_fencer.setExp(0);
-    all_units["Fencer"] = generic_fencer;
+    temp_unit.setGrowths(temp);
+    temp_unit.setExp(0);
+    all_units["Fencer"] = temp_unit;
 
     temp = {15,  4,  5,  7,  6,   8,  4,  6,  5, 5};
-    Unit generic_mousquetaire("Mousquetaire", UNIT_CLASS::MOUSQUETAIRE, temp, "M");
+    temp_unit = Unit("Mousquetaire", UNIT_CLASS::MOUSQUETAIRE, temp, "M");
     temp = {48, 14, 25, 32, 34,  28, 19, 40, 15};
-    generic_mousquetaire.setCaps(temp);
+    temp_unit.setCaps(temp);
     temp = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
-    generic_mousquetaire.setGrowths(temp);
-    generic_mousquetaire.setExp(0);
-    all_units["Mousquetaire"] = generic_mousquetaire;
+    temp_unit.setGrowths(temp);
+    temp_unit.setExp(0);
+    all_units["Mousquetaire"] = temp_unit;
 }
 
 std::unordered_map<std::string, Unit> chaptestEnemies() {
@@ -1104,20 +1105,20 @@ std::unordered_map<std::string, Unit> chaptestEnemies() {
     Point temp_position;
     std::unordered_map<std::string, Unit> made_units;
     temp_stats = {15,  4,  5,  7,  6,   8,  4,  6,  5, 5};
-    Unit bandit_test("Bandit", UNIT_CLASS::BANDIT, temp_stats, "M");
+    temp_unit = Unit("Bandit", UNIT_CLASS::BANDIT, temp_stats, "M");
     temp_stats = {48, 14, 25, 32, 34,  28, 19, 40, 15};
-    bandit_test.setCaps(temp_stats);
+    temp_unit.setCaps(temp_stats);
     temp_stats = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
-    bandit_test.setGrowths(temp_stats);
-    bandit_test.setExp(0);
+    temp_unit.setGrowths(temp_stats);
+    temp_unit.setExp(0);
   //temp_equipment[0].id = "Iron Axe";
   //temp_equipment[1].id = "Wooden Shield";
-    bandit_test.setEquipment(temp_equipment);
+    temp_unit.setEquipment(temp_equipment);
     temp_equipped = {0, 1};
-    bandit_test.setEquipped(temp_equipped);
+    temp_unit.setEquipped(temp_equipped);
     temp_position = {4, 5};
-    bandit_test.setPos(temp_position);
-    made_units["Bandit1test"] = bandit_test;
+    temp_unit.setPos(temp_position);
+    made_units["Bandit1test"] = temp_unit;
     return(made_units);
 } 
 
@@ -1128,20 +1129,20 @@ std::unordered_map<std::string, Unit> chap1Enemies() {
     Point temp_position;
     std::unordered_map<std::string, Unit> made_units;
     temp_stats = {15,  4,  5,  7,  6,   8,  4,  6,  5, 5};
-    Unit bandit_test("Bandit", UNIT_CLASS::BANDIT, temp_stats, "M");
+    temp_unit = Unit("Bandit", UNIT_CLASS::BANDIT, temp_stats, "M");
     temp_stats = {48, 14, 25, 32, 34,  28, 19, 40, 15};
-    bandit_test.setCaps(temp_stats);
+    temp_unit.setCaps(temp_stats);
     temp_stats = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
-    bandit_test.setGrowths(temp_stats);
-    bandit_test.setExp(0);
+    temp_unit.setGrowths(temp_stats);
+    temp_unit.setExp(0);
   //temp_equipment[0].id = "Iron Axe";
   //temp_equipment[1].id = "Wooden Shield";
-    bandit_test.setEquipment(temp_equipment);
+    temp_unit.setEquipment(temp_equipment);
     temp_equipped = {0, 1};
-    bandit_test.setEquipped(temp_equipped);
+    temp_unit.setEquipped(temp_equipped);
     temp_position = {4, 5};
-    bandit_test.setPos(temp_position);
-    made_units["Bandit1test"] = bandit_test;
+    temp_unit.setPos(temp_position);
+    made_units["Bandit1test"] = temp_unit;
     return(made_units);
 } 
 
@@ -1152,20 +1153,20 @@ std::unordered_map<std::string, Unit> chap2Enemies() {
     Point temp_position;
     std::unordered_map<std::string, Unit> made_units;
     temp_stats = {15,  4,  5,  7,  6,   8,  4,  6,  5, 5};
-    Unit bandit_test("Bandit", UNIT_CLASS::BANDIT, temp_stats, "M");
+    temp_unit = Unit("Bandit", UNIT_CLASS::BANDIT, temp_stats, "M");
     temp_stats = {48, 14, 25, 32, 34,  28, 19, 40, 15};
-    bandit_test.setCaps(temp_stats);
+    temp_unit.setCaps(temp_stats);
     temp_stats = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
-    bandit_test.setGrowths(temp_stats);
-    bandit_test.setExp(0);
+    temp_unit.setGrowths(temp_stats);
+    temp_unit.setExp(0);
   //temp_equipment[0].id = "Iron Axe";
   //temp_equipment[1].id = "Wooden Shield";
-    bandit_test.setEquipment(temp_equipment);
+    temp_unit.setEquipment(temp_equipment);
     temp_equipped = {0, 1};
-    bandit_test.setEquipped(temp_equipped);
+    temp_unit.setEquipped(temp_equipped);
     temp_position = {4, 5};
-    bandit_test.setPos(temp_position);
-    made_units["Bandit1test"] = bandit_test;
+    temp_unit.setPos(temp_position);
+    made_units["Bandit1test"] = temp_unit;
     return(made_units);
 }
 
@@ -1176,20 +1177,20 @@ std::unordered_map<std::string, Unit> chap3Enemies() {
     Point temp_position;
     std::unordered_map<std::string, Unit> made_units;
     temp_stats = {15,  4,  5,  7,  6,   8,  4,  6,  5, 5};
-    Unit bandit_test("Bandit", UNIT_CLASS::BANDIT, temp_stats, "M");
+    temp_unit = Unit("Bandit", UNIT_CLASS::BANDIT, temp_stats, "M");
     temp_stats = {48, 14, 25, 32, 34,  28, 19, 40, 15};
-    bandit_test.setCaps(temp_stats);
+    temp_unit.setCaps(temp_stats);
     temp_stats = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
-    bandit_test.setGrowths(temp_stats);
-    bandit_test.setExp(0);
+    temp_unit.setGrowths(temp_stats);
+    temp_unit.setExp(0);
   //temp_equipment[0].id = "Iron Axe";
   //temp_equipment[1].id = "Wooden Shield";
-    bandit_test.setEquipment(temp_equipment);
+    temp_unit.setEquipment(temp_equipment);
     temp_equipped = {0, 1};
-    bandit_test.setEquipped(temp_equipped);
+    temp_unit.setEquipped(temp_equipped);
     temp_position = {4, 5};
-    bandit_test.setPos(temp_position);
-    made_units["Bandit1test"] = bandit_test;
+    temp_unit.setPos(temp_position);
+    made_units["Bandit1test"] = temp_unit;
     return(made_units);
 } 
 
@@ -1200,20 +1201,20 @@ std::unordered_map<std::string, Unit> chap4Enemies() {
     Point temp_position;
     std::unordered_map<std::string, Unit> made_units;
     temp_stats = {15,  4,  5,  7,  6,   8,  4,  6,  5, 5};
-    Unit bandit_test("Bandit", UNIT_CLASS::BANDIT, temp_stats, "M");
+    temp_unit = Unit("Bandit", UNIT_CLASS::BANDIT, temp_stats, "M");
     temp_stats = {48, 14, 25, 32, 34,  28, 19, 40, 15};
-    bandit_test.setCaps(temp_stats);
+    temp_unit.setCaps(temp_stats);
     temp_stats = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
-    bandit_test.setGrowths(temp_stats);
-    bandit_test.setExp(0);
+    temp_unit.setGrowths(temp_stats);
+    temp_unit.setExp(0);
   //temp_equipment[0].id = "Iron Axe";
   //temp_equipment[1].id = "Wooden Shield";
-    bandit_test.setEquipment(temp_equipment);
+    temp_unit.setEquipment(temp_equipment);
     temp_equipped = {0, 1};
-    bandit_test.setEquipped(temp_equipped);
+    temp_unit.setEquipped(temp_equipped);
     temp_position = {4, 5};
-    bandit_test.setPos(temp_position);
-    made_units["Bandit1test"] = bandit_test;
+    temp_unit.setPos(temp_position);
+    made_units["Bandit1test"] = temp_unit;
     return(made_units);
 }
 
@@ -1224,20 +1225,20 @@ std::unordered_map<std::string, Unit> chap5Enemies() {
     Point temp_position;
     std::unordered_map<std::string, Unit> made_units;
     temp_stats = {15,  4,  5,  7,  6,   8,  4,  6,  5, 5};
-    Unit bandit_test("Bandit", UNIT_CLASS::BANDIT, temp_stats, "M");
+    temp_unit = Unit("Bandit", UNIT_CLASS::BANDIT, temp_stats, "M");
     temp_stats = {48, 14, 25, 32, 34,  28, 19, 40, 15};
-    bandit_test.setCaps(temp_stats);
+    temp_unit.setCaps(temp_stats);
     temp_stats = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
-    bandit_test.setGrowths(temp_stats);
-    bandit_test.setExp(0);
+    temp_unit.setGrowths(temp_stats);
+    temp_unit.setExp(0);
   //temp_equipment[0].id = "Iron Axe";
   //temp_equipment[1].id = "Wooden Shield";
-    bandit_test.setEquipment(temp_equipment);
+    temp_unit.setEquipment(temp_equipment);
     temp_equipped = {0, 1};
-    bandit_test.setEquipped(temp_equipped);
+    temp_unit.setEquipped(temp_equipped);
     temp_position = {4, 5};
-    bandit_test.setPos(temp_position);
-    made_units["Bandit1test"] = bandit_test;
+    temp_unit.setPos(temp_position);
+    made_units["Bandit1test"] = temp_unit;
     return(made_units);
 }
 
@@ -1248,20 +1249,20 @@ std::unordered_map<std::string, Unit> chap6Enemies() {
     Point temp_position;
     std::unordered_map<std::string, Unit> made_units;
     temp_stats = {15,  4,  5,  7,  6,   8,  4,  6,  5, 5};
-    Unit bandit_test("Bandit", UNIT_CLASS::BANDIT, temp_stats, "M");
+    temp_unit = Unit("Bandit", UNIT_CLASS::BANDIT, temp_stats, "M");
     temp_stats = {48, 14, 25, 32, 34,  28, 19, 40, 15};
-    bandit_test.setCaps(temp_stats);
+    temp_unit.setCaps(temp_stats);
     temp_stats = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
-    bandit_test.setGrowths(temp_stats);
-    bandit_test.setExp(0);
+    temp_unit.setGrowths(temp_stats);
+    temp_unit.setExp(0);
   //temp_equipment[0].id = "Iron Axe";
   //temp_equipment[1].id = "Wooden Shield";
-    bandit_test.setEquipment(temp_equipment);
+    temp_unit.setEquipment(temp_equipment);
     temp_equipped = {0, 1};
-    bandit_test.setEquipped(temp_equipped);
+    temp_unit.setEquipped(temp_equipped);
     temp_position = {4, 5};
-    bandit_test.setPos(temp_position);
-    made_units["Bandit1test"] = bandit_test;
+    temp_unit.setPos(temp_position);
+    made_units["Bandit1test"] = temp_unit;
     return(made_units);
 } 
 
@@ -1272,20 +1273,20 @@ std::unordered_map<std::string, Unit> chap7Enemies() {
     Point temp_position;
     std::unordered_map<std::string, Unit> made_units;
     temp_stats = {15,  4,  5,  7,  6,   8,  4,  6,  5, 5};
-    Unit bandit_test("Bandit", UNIT_CLASS::BANDIT, temp_stats, "M");
+    temp_unit = Unit("Bandit", UNIT_CLASS::BANDIT, temp_stats, "M");
     temp_stats = {48, 14, 25, 32, 34,  28, 19, 40, 15};
-    bandit_test.setCaps(temp_stats);
+    temp_unit.setCaps(temp_stats);
     temp_stats = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
-    bandit_test.setGrowths(temp_stats);
-    bandit_test.setExp(0);
+    temp_unit.setGrowths(temp_stats);
+    temp_unit.setExp(0);
   //temp_equipment[0].id = "Iron Axe";
   //temp_equipment[1].id = "Wooden Shield";
-    bandit_test.setEquipment(temp_equipment);
+    temp_unit.setEquipment(temp_equipment);
     temp_equipped = {0, 1};
-    bandit_test.setEquipped(temp_equipped);
+    temp_unit.setEquipped(temp_equipped);
     temp_position = {4, 5};
-    bandit_test.setPos(temp_position);
-    made_units["Bandit1test"] = bandit_test;
+    temp_unit.setPos(temp_position);
+    made_units["Bandit1test"] = temp_unit;
     return(made_units);
 }
 
@@ -1296,20 +1297,20 @@ std::unordered_map<std::string, Unit> chap8Enemies() {
     Point temp_position;
     std::unordered_map<std::string, Unit> made_units;
     temp_stats = {15,  4,  5,  7,  6,   8,  4,  6,  5, 5};
-    Unit bandit_test("Bandit", UNIT_CLASS::BANDIT, temp_stats, "M");
+    temp_unit = Unit("Bandit", UNIT_CLASS::BANDIT, temp_stats, "M");
     temp_stats = {48, 14, 25, 32, 34,  28, 19, 40, 15};
-    bandit_test.setCaps(temp_stats);
+    temp_unit.setCaps(temp_stats);
     temp_stats = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
-    bandit_test.setGrowths(temp_stats);
-    bandit_test.setExp(0);
+    temp_unit.setGrowths(temp_stats);
+    temp_unit.setExp(0);
   //temp_equipment[0].id = "Iron Axe";
   //temp_equipment[1].id = "Wooden Shield";
-    bandit_test.setEquipment(temp_equipment);
+    temp_unit.setEquipment(temp_equipment);
     temp_equipped = {0, 1};
-    bandit_test.setEquipped(temp_equipped);
+    temp_unit.setEquipped(temp_equipped);
     temp_position = {4, 5};
-    bandit_test.setPos(temp_position);
-    made_units["Bandit1test"] = bandit_test;
+    temp_unit.setPos(temp_position);
+    made_units["Bandit1test"] = temp_unit;
     return(made_units);
 }
 
@@ -1320,20 +1321,20 @@ std::unordered_map<std::string, Unit> chap9Enemies() {
     Point temp_position;
     std::unordered_map<std::string, Unit> made_units;
     temp_stats = {15,  4,  5,  7,  6,   8,  4,  6,  5, 5};
-    Unit bandit_test("Bandit", UNIT_CLASS::BANDIT, temp_stats, "M");
+    temp_unit = Unit("Bandit", UNIT_CLASS::BANDIT, temp_stats, "M");
     temp_stats = {48, 14, 25, 32, 34,  28, 19, 40, 15};
-    bandit_test.setCaps(temp_stats);
+    temp_unit.setCaps(temp_stats);
     temp_stats = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
-    bandit_test.setGrowths(temp_stats);
-    bandit_test.setExp(0);
+    temp_unit.setGrowths(temp_stats);
+    temp_unit.setExp(0);
   //temp_equipment[0].id = "Iron Axe";
   //temp_equipment[1].id = "Wooden Shield";
-    bandit_test.setEquipment(temp_equipment);
+    temp_unit.setEquipment(temp_equipment);
     temp_equipped = {0, 1};
-    bandit_test.setEquipped(temp_equipped);
+    temp_unit.setEquipped(temp_equipped);
     temp_position = {4, 5};
-    bandit_test.setPos(temp_position);
-    made_units["Bandit1test"] = bandit_test;
+    temp_unit.setPos(temp_position);
+    made_units["Bandit1test"] = temp_unit;
     return(made_units);
 }
 
@@ -1344,20 +1345,20 @@ std::unordered_map<std::string, Unit> chap10Enemies() {
     Point temp_position;
     std::unordered_map<std::string, Unit> made_units;
     temp_stats = {15,  4,  5,  7,  6,   8,  4,  6,  5, 5};
-    Unit bandit_test("Bandit", UNIT_CLASS::BANDIT, temp_stats, "M");
+    temp_unit = Unit("Bandit", UNIT_CLASS::BANDIT, temp_stats, "M");
     temp_stats = {48, 14, 25, 32, 34,  28, 19, 40, 15};
-    bandit_test.setCaps(temp_stats);
+    temp_unit.setCaps(temp_stats);
     temp_stats = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
-    bandit_test.setGrowths(temp_stats);
-    bandit_test.setExp(0);
+    temp_unit.setGrowths(temp_stats);
+    temp_unit.setExp(0);
   //temp_equipment[0].id = "Iron Axe";
   //temp_equipment[1].id = "Wooden Shield";
-    bandit_test.setEquipment(temp_equipment);
+    temp_unit.setEquipment(temp_equipment);
     temp_equipped = {0, 1};
-    bandit_test.setEquipped(temp_equipped);
+    temp_unit.setEquipped(temp_equipped);
     temp_position = {4, 5};
-    bandit_test.setPos(temp_position);
-    made_units["Bandit1test"] = bandit_test;
+    temp_unit.setPos(temp_position);
+    made_units["Bandit1test"] = temp_unit;
     return(made_units);
 }
 
@@ -1368,20 +1369,20 @@ std::unordered_map<std::string, Unit> chap11Enemies() {
     Point temp_position;
     std::unordered_map<std::string, Unit> made_units;
     temp_stats = {15,  4,  5,  7,  6,   8,  4,  6,  5, 5};
-    Unit bandit_test("Bandit", UNIT_CLASS::BANDIT, temp_stats, "M");
+    temp_unit = Unit("Bandit", UNIT_CLASS::BANDIT, temp_stats, "M");
     temp_stats = {48, 14, 25, 32, 34,  28, 19, 40, 15};
-    bandit_test.setCaps(temp_stats);
+    temp_unit.setCaps(temp_stats);
     temp_stats = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
-    bandit_test.setGrowths(temp_stats);
-    bandit_test.setExp(0);
+    temp_unit.setGrowths(temp_stats);
+    temp_unit.setExp(0);
   //temp_equipment[0].id = "Iron Axe";
   //temp_equipment[1].id = "Wooden Shield";
-    bandit_test.setEquipment(temp_equipment);
+    temp_unit.setEquipment(temp_equipment);
     temp_equipped = {0, 1};
-    bandit_test.setEquipped(temp_equipped);
+    temp_unit.setEquipped(temp_equipped);
     temp_position = {4, 5};
-    bandit_test.setPos(temp_position);
-    made_units["Bandit1test"] = bandit_test;
+    temp_unit.setPos(temp_position);
+    made_units["Bandit1test"] = temp_unit;
     return(made_units);
 }
 
@@ -1392,20 +1393,20 @@ std::unordered_map<std::string, Unit> chap12Enemies() {
     Point temp_position;
     std::unordered_map<std::string, Unit> made_units;
     temp_stats = {15,  4,  5,  7,  6,   8,  4,  6,  5, 5};
-    Unit bandit_test("Bandit", UNIT_CLASS::BANDIT, temp_stats, "M");
+    temp_unit = Unit("Bandit", UNIT_CLASS::BANDIT, temp_stats, "M");
     temp_stats = {48, 14, 25, 32, 34,  28, 19, 40, 15};
-    bandit_test.setCaps(temp_stats);
+    temp_unit.setCaps(temp_stats);
     temp_stats = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
-    bandit_test.setGrowths(temp_stats);
-    bandit_test.setExp(0);
+    temp_unit.setGrowths(temp_stats);
+    temp_unit.setExp(0);
   //temp_equipment[0].id = "Iron Axe";
   //temp_equipment[1].id = "Wooden Shield";
-    bandit_test.setEquipment(temp_equipment);
+    temp_unit.setEquipment(temp_equipment);
     temp_equipped = {0, 1};
-    bandit_test.setEquipped(temp_equipped);
+    temp_unit.setEquipped(temp_equipped);
     temp_position = {4, 5};
-    bandit_test.setPos(temp_position);
-    made_units["Bandit1test"] = bandit_test;
+    temp_unit.setPos(temp_position);
+    made_units["Bandit1test"] = temp_unit;
     return(made_units);
 }
 
@@ -1416,20 +1417,20 @@ std::unordered_map<std::string, Unit> chap13Enemies() {
     Point temp_position;
     std::unordered_map<std::string, Unit> made_units;
     temp_stats = {15,  4,  5,  7,  6,   8,  4,  6,  5, 5};
-    Unit bandit_test("Bandit", UNIT_CLASS::BANDIT, temp_stats, "M");
+    temp_unit = Unit("Bandit", UNIT_CLASS::BANDIT, temp_stats, "M");
     temp_stats = {48, 14, 25, 32, 34,  28, 19, 40, 15};
-    bandit_test.setCaps(temp_stats);
+    temp_unit.setCaps(temp_stats);
     temp_stats = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
-    bandit_test.setGrowths(temp_stats);
-    bandit_test.setExp(0);
+    temp_unit.setGrowths(temp_stats);
+    temp_unit.setExp(0);
   //temp_equipment[0].id = "Iron Axe";
   //temp_equipment[1].id = "Wooden Shield";
-    bandit_test.setEquipment(temp_equipment);
+    temp_unit.setEquipment(temp_equipment);
     temp_equipped = {0, 1};
-    bandit_test.setEquipped(temp_equipped);
+    temp_unit.setEquipped(temp_equipped);
     temp_position = {4, 5};
-    bandit_test.setPos(temp_position);
-    made_units["Bandit1test"] = bandit_test;
+    temp_unit.setPos(temp_position);
+    made_units["Bandit1test"] = temp_unit;
     return(made_units);
 }
 
@@ -1440,20 +1441,20 @@ std::unordered_map<std::string, Unit> chap14Enemies() {
     Point temp_position;
     std::unordered_map<std::string, Unit> made_units;
     temp_stats = {15,  4,  5,  7,  6,   8,  4,  6,  5, 5};
-    Unit bandit_test("Bandit", UNIT_CLASS::BANDIT, temp_stats, "M");
+    temp_unit = Unit("Bandit", UNIT_CLASS::BANDIT, temp_stats, "M");
     temp_stats = {48, 14, 25, 32, 34,  28, 19, 40, 15};
-    bandit_test.setCaps(temp_stats);
+    temp_unit.setCaps(temp_stats);
     temp_stats = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
-    bandit_test.setGrowths(temp_stats);
-    bandit_test.setExp(0);
+    temp_unit.setGrowths(temp_stats);
+    temp_unit.setExp(0);
   //temp_equipment[0].id = "Iron Axe";
   //temp_equipment[1].id = "Wooden Shield";
-    bandit_test.setEquipment(temp_equipment);
+    temp_unit.setEquipment(temp_equipment);
     temp_equipped = {0, 1};
-    bandit_test.setEquipped(temp_equipped);
+    temp_unit.setEquipped(temp_equipped);
     temp_position = {4, 5};
-    bandit_test.setPos(temp_position);
-    made_units["Bandit1test"] = bandit_test;
+    temp_unit.setPos(temp_position);
+    made_units["Bandit1test"] = temp_unit;
     return(made_units);
 }
 
@@ -1464,20 +1465,20 @@ std::unordered_map<std::string, Unit> chap15Enemies() {
     Point temp_position;
     std::unordered_map<std::string, Unit> made_units;
     temp_stats = {15,  4,  5,  7,  6,   8,  4,  6,  5, 5};
-    Unit bandit_test("Bandit", UNIT_CLASS::BANDIT, temp_stats, "M");
+    temp_unit = Unit("Bandit", UNIT_CLASS::BANDIT, temp_stats, "M");
     temp_stats = {48, 14, 25, 32, 34,  28, 19, 40, 15};
-    bandit_test.setCaps(temp_stats);
+    temp_unit.setCaps(temp_stats);
     temp_stats = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
-    bandit_test.setGrowths(temp_stats);
-    bandit_test.setExp(0);
+    temp_unit.setGrowths(temp_stats);
+    temp_unit.setExp(0);
   //temp_equipment[0].id = "Iron Axe";
   //temp_equipment[1].id = "Wooden Shield";
-    bandit_test.setEquipment(temp_equipment);
+    temp_unit.setEquipment(temp_equipment);
     temp_equipped = {0, 1};
-    bandit_test.setEquipped(temp_equipped);
+    temp_unit.setEquipped(temp_equipped);
     temp_position = {4, 5};
-    bandit_test.setPos(temp_position);
-    made_units["Bandit1test"] = bandit_test;
+    temp_unit.setPos(temp_position);
+    made_units["Bandit1test"] = temp_unit;
     return(made_units);
 }
 
@@ -1488,20 +1489,20 @@ std::unordered_map<std::string, Unit> chap16Enemies() {
     Point temp_position;
     std::unordered_map<std::string, Unit> made_units;
     temp_stats = {15,  4,  5,  7,  6,   8,  4,  6,  5, 5};
-    Unit bandit_test("Bandit", UNIT_CLASS::BANDIT, temp_stats, "M");
+    temp_unit = Unit("Bandit", UNIT_CLASS::BANDIT, temp_stats, "M");
     temp_stats = {48, 14, 25, 32, 34,  28, 19, 40, 15};
-    bandit_test.setCaps(temp_stats);
+    temp_unit.setCaps(temp_stats);
     temp_stats = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
-    bandit_test.setGrowths(temp_stats);
-    bandit_test.setExp(0);
+    temp_unit.setGrowths(temp_stats);
+    temp_unit.setExp(0);
   //temp_equipment[0].id = "Iron Axe";
   //temp_equipment[1].id = "Wooden Shield";
-    bandit_test.setEquipment(temp_equipment);
+    temp_unit.setEquipment(temp_equipment);
     temp_equipped = {0, 1};
-    bandit_test.setEquipped(temp_equipped);
+    temp_unit.setEquipped(temp_equipped);
     temp_position = {4, 5};
-    bandit_test.setPos(temp_position);
-    made_units["Bandit1test"] = bandit_test;
+    temp_unit.setPos(temp_position);
+    made_units["Bandit1test"] = temp_unit;
     return(made_units);
 }
 
@@ -1512,20 +1513,20 @@ std::unordered_map<std::string, Unit> chap17Enemies() {
     Point temp_position;
     std::unordered_map<std::string, Unit> made_units;
     temp_stats = {15,  4,  5,  7,  6,   8,  4,  6,  5, 5};
-    Unit bandit_test("Bandit", UNIT_CLASS::BANDIT, temp_stats, "M");
+    temp_unit = Unit("Bandit", UNIT_CLASS::BANDIT, temp_stats, "M");
     temp_stats = {48, 14, 25, 32, 34,  28, 19, 40, 15};
-    bandit_test.setCaps(temp_stats);
+    temp_unit.setCaps(temp_stats);
     temp_stats = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
-    bandit_test.setGrowths(temp_stats);
-    bandit_test.setExp(0);
+    temp_unit.setGrowths(temp_stats);
+    temp_unit.setExp(0);
   //temp_equipment[0].id = "Iron Axe";
   //temp_equipment[1].id = "Wooden Shield";
-    bandit_test.setEquipment(temp_equipment);
+    temp_unit.setEquipment(temp_equipment);
     temp_equipped = {0, 1};
-    bandit_test.setEquipped(temp_equipped);
+    temp_unit.setEquipped(temp_equipped);
     temp_position = {4, 5};
-    bandit_test.setPos(temp_position);
-    made_units["Bandit1test"] = bandit_test;
+    temp_unit.setPos(temp_position);
+    made_units["Bandit1test"] = temp_unit;
     return(made_units);
 }
 
@@ -1536,20 +1537,20 @@ std::unordered_map<std::string, Unit> chap18Enemies() {
     Point temp_position;
     std::unordered_map<std::string, Unit> made_units;
     temp_stats = {15,  4,  5,  7,  6,   8,  4,  6,  5, 5};
-    Unit bandit_test("Bandit", UNIT_CLASS::BANDIT, temp_stats, "M");
+    temp_unit = Unit("Bandit", UNIT_CLASS::BANDIT, temp_stats, "M");
     temp_stats = {48, 14, 25, 32, 34,  28, 19, 40, 15};
-    bandit_test.setCaps(temp_stats);
+    temp_unit.setCaps(temp_stats);
     temp_stats = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
-    bandit_test.setGrowths(temp_stats);
-    bandit_test.setExp(0);
+    temp_unit.setGrowths(temp_stats);
+    temp_unit.setExp(0);
   //temp_equipment[0].id = "Iron Axe";
   //temp_equipment[1].id = "Wooden Shield";
-    bandit_test.setEquipment(temp_equipment);
+    temp_unit.setEquipment(temp_equipment);
     temp_equipped = {0, 1};
-    bandit_test.setEquipped(temp_equipped);
+    temp_unit.setEquipped(temp_equipped);
     temp_position = {4, 5};
-    bandit_test.setPos(temp_position);
-    made_units["Bandit1test"] = bandit_test;
+    temp_unit.setPos(temp_position);
+    made_units["Bandit1test"] = temp_unit;
     return(made_units);
 }
 
@@ -1560,20 +1561,20 @@ std::unordered_map<std::string, Unit> chap19Enemies() {
     Point temp_position;
     std::unordered_map<std::string, Unit> made_units;
     temp_stats = {15,  4,  5,  7,  6,   8,  4,  6,  5, 5};
-    Unit bandit_test("Bandit", UNIT_CLASS::BANDIT, temp_stats, "M");
+    temp_unit = Unit("Bandit", UNIT_CLASS::BANDIT, temp_stats, "M");
     temp_stats = {48, 14, 25, 32, 34,  28, 19, 40, 15};
-    bandit_test.setCaps(temp_stats);
+    temp_unit.setCaps(temp_stats);
     temp_stats = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
-    bandit_test.setGrowths(temp_stats);
-    bandit_test.setExp(0);
+    temp_unit.setGrowths(temp_stats);
+    temp_unit.setExp(0);
   //temp_equipment[0].id = "Iron Axe";
   //temp_equipment[1].id = "Wooden Shield";
-    bandit_test.setEquipment(temp_equipment);
+    temp_unit.setEquipment(temp_equipment);
     temp_equipped = {0, 1};
-    bandit_test.setEquipped(temp_equipped);
+    temp_unit.setEquipped(temp_equipped);
     temp_position = {4, 5};
-    bandit_test.setPos(temp_position);
-    made_units["Bandit1test"] = bandit_test;
+    temp_unit.setPos(temp_position);
+    made_units["Bandit1test"] = temp_unit;
     return(made_units);
 }
 
@@ -1584,20 +1585,20 @@ std::unordered_map<std::string, Unit> chap20Enemies() {
     Point temp_position;
     std::unordered_map<std::string, Unit> made_units;
     temp_stats = {15,  4,  5,  7,  6,   8,  4,  6,  5, 5};
-    Unit bandit_test("Bandit", UNIT_CLASS::BANDIT, temp_stats, "M");
+    temp_unit = Unit("Bandit", UNIT_CLASS::BANDIT, temp_stats, "M");
     temp_stats = {48, 14, 25, 32, 34,  28, 19, 40, 15};
-    bandit_test.setCaps(temp_stats);
+    temp_unit.setCaps(temp_stats);
     temp_stats = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
-    bandit_test.setGrowths(temp_stats);
-    bandit_test.setExp(0);
+    temp_unit.setGrowths(temp_stats);
+    temp_unit.setExp(0);
   //temp_equipment[0].id = "Iron Axe";
   //temp_equipment[1].id = "Wooden Shield";
-    bandit_test.setEquipment(temp_equipment);
+    temp_unit.setEquipment(temp_equipment);
     temp_equipped = {0, 1};
-    bandit_test.setEquipped(temp_equipped);
+    temp_unit.setEquipped(temp_equipped);
     temp_position = {4, 5};
-    bandit_test.setPos(temp_position);
-    made_units["Bandit1test"] = bandit_test;
+    temp_unit.setPos(temp_position);
+    made_units["Bandit1test"] = temp_unit;
     return(made_units);
 }
 
@@ -1608,20 +1609,20 @@ std::unordered_map<std::string, Unit> chap21Enemies() {
     Point temp_position;
     std::unordered_map<std::string, Unit> made_units;
     temp_stats = {15,  4,  5,  7,  6,   8,  4,  6,  5, 5};
-    Unit bandit_test("Bandit", UNIT_CLASS::BANDIT, temp_stats, "M");
+    temp_unit = Unit("Bandit", UNIT_CLASS::BANDIT, temp_stats, "M");
     temp_stats = {48, 14, 25, 32, 34,  28, 19, 40, 15};
-    bandit_test.setCaps(temp_stats);
+    temp_unit.setCaps(temp_stats);
     temp_stats = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
-    bandit_test.setGrowths(temp_stats);
-    bandit_test.setExp(0);
+    temp_unit.setGrowths(temp_stats);
+    temp_unit.setExp(0);
   //temp_equipment[0].id = "Iron Axe";
   //temp_equipment[1].id = "Wooden Shield";
-    bandit_test.setEquipment(temp_equipment);
+    temp_unit.setEquipment(temp_equipment);
     temp_equipped = {0, 1};
-    bandit_test.setEquipped(temp_equipped);
+    temp_unit.setEquipped(temp_equipped);
     temp_position = {4, 5};
-    bandit_test.setPos(temp_position);
-    made_units["Bandit1test"] = bandit_test;
+    temp_unit.setPos(temp_position);
+    made_units["Bandit1test"] = temp_unit;
     return(made_units);
 }
 
@@ -1632,20 +1633,20 @@ std::unordered_map<std::string, Unit> chap22Enemies() {
     Point temp_position;
     std::unordered_map<std::string, Unit> made_units;
     temp_stats = {15,  4,  5,  7,  6,   8,  4,  6,  5, 5};
-    Unit bandit_test("Bandit", UNIT_CLASS::BANDIT, temp_stats, "M");
+    temp_unit = Unit("Bandit", UNIT_CLASS::BANDIT, temp_stats, "M");
     temp_stats = {48, 14, 25, 32, 34,  28, 19, 40, 15};
-    bandit_test.setCaps(temp_stats);
+    temp_unit.setCaps(temp_stats);
     temp_stats = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
-    bandit_test.setGrowths(temp_stats);
-    bandit_test.setExp(0);
+    temp_unit.setGrowths(temp_stats);
+    temp_unit.setExp(0);
   //temp_equipment[0].id = "Iron Axe";
   //temp_equipment[1].id = "Wooden Shield";
-    bandit_test.setEquipment(temp_equipment);
+    temp_unit.setEquipment(temp_equipment);
     temp_equipped = {0, 1};
-    bandit_test.setEquipped(temp_equipped);
+    temp_unit.setEquipped(temp_equipped);
     temp_position = {4, 5};
-    bandit_test.setPos(temp_position);
-    made_units["Bandit1test"] = bandit_test;
+    temp_unit.setPos(temp_position);
+    made_units["Bandit1test"] = temp_unit;
     return(made_units);
 }
 
@@ -1656,20 +1657,20 @@ std::unordered_map<std::string, Unit> chap23Enemies() {
     Point temp_position;
     std::unordered_map<std::string, Unit> made_units;
     temp_stats = {15,  4,  5,  7,  6,   8,  4,  6,  5, 5};
-    Unit bandit_test("Bandit", UNIT_CLASS::BANDIT, temp_stats, "M");
+    temp_unit = Unit("Bandit", UNIT_CLASS::BANDIT, temp_stats, "M");
     temp_stats = {48, 14, 25, 32, 34,  28, 19, 40, 15};
-    bandit_test.setCaps(temp_stats);
+    temp_unit.setCaps(temp_stats);
     temp_stats = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
-    bandit_test.setGrowths(temp_stats);
-    bandit_test.setExp(0);
+    temp_unit.setGrowths(temp_stats);
+    temp_unit.setExp(0);
   //temp_equipment[0].id = "Iron Axe";
   //temp_equipment[1].id = "Wooden Shield";
-    bandit_test.setEquipment(temp_equipment);
+    temp_unit.setEquipment(temp_equipment);
     temp_equipped = {0, 1};
-    bandit_test.setEquipped(temp_equipped);
+    temp_unit.setEquipped(temp_equipped);
     temp_position = {4, 5};
-    bandit_test.setPos(temp_position);
-    made_units["Bandit1test"] = bandit_test;
+    temp_unit.setPos(temp_position);
+    made_units["Bandit1test"] = temp_unit;
     return(made_units);
 }
 
@@ -1680,20 +1681,20 @@ std::unordered_map<std::string, Unit> chap24Enemies() {
     Point temp_position;
     std::unordered_map<std::string, Unit> made_units;
     temp_stats = {15,  4,  5,  7,  6,   8,  4,  6,  5, 5};
-    Unit bandit_test("Bandit", UNIT_CLASS::BANDIT, temp_stats, "M");
+    temp_unit = Unit("Bandit", UNIT_CLASS::BANDIT, temp_stats, "M");
     temp_stats = {48, 14, 25, 32, 34,  28, 19, 40, 15};
-    bandit_test.setCaps(temp_stats);
+    temp_unit.setCaps(temp_stats);
     temp_stats = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
-    bandit_test.setGrowths(temp_stats);
-    bandit_test.setExp(0);
+    temp_unit.setGrowths(temp_stats);
+    temp_unit.setExp(0);
   //temp_equipment[0].id = "Iron Axe";
   //temp_equipment[1].id = "Wooden Shield";
-    bandit_test.setEquipment(temp_equipment);
+    temp_unit.setEquipment(temp_equipment);
     temp_equipped = {0, 1};
-    bandit_test.setEquipped(temp_equipped);
+    temp_unit.setEquipped(temp_equipped);
     temp_position = {4, 5};
-    bandit_test.setPos(temp_position);
-    made_units["Bandit1test"] = bandit_test;
+    temp_unit.setPos(temp_position);
+    made_units["Bandit1test"] = temp_unit;
     return(made_units);
 }
 
@@ -1704,20 +1705,20 @@ std::unordered_map<std::string, Unit> chap25Enemies() {
     Point temp_position;
     std::unordered_map<std::string, Unit> made_units;
     temp_stats = {15,  4,  5,  7,  6,   8,  4,  6,  5, 5};
-    Unit bandit_test("Bandit", UNIT_CLASS::BANDIT, temp_stats, "M");
+    temp_unit = Unit("Bandit", UNIT_CLASS::BANDIT, temp_stats, "M");
     temp_stats = {48, 14, 25, 32, 34,  28, 19, 40, 15};
-    bandit_test.setCaps(temp_stats);
+    temp_unit.setCaps(temp_stats);
     temp_stats = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
-    bandit_test.setGrowths(temp_stats);
-    bandit_test.setExp(0);
+    temp_unit.setGrowths(temp_stats);
+    temp_unit.setExp(0);
   //temp_equipment[0].id = "Iron Axe";
   //temp_equipment[1].id = "Wooden Shield";
-    bandit_test.setEquipment(temp_equipment); 
+    temp_unit.setEquipment(temp_equipment); 
     temp_equipped = {0, 1};
-    bandit_test.setEquipped(temp_equipped);
+    temp_unit.setEquipped(temp_equipped);
     temp_position = {4, 5};
-    bandit_test.setPos(temp_position);
-    made_units["Bandit1test"] = bandit_test;
+    temp_unit.setPos(temp_position);
+    made_units["Bandit1test"] = temp_unit;
     return(made_units);
 }
 

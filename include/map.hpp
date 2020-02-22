@@ -10,6 +10,33 @@
 using Entity_ptr_matrix = std::vector<std::vector<Entity *>>;
 
 class Map {
+    private:
+        short int tilesize[2];
+        short unsigned int frames = 10, speed = 50;
+        bool show_overlay = false;
+        bool show_danger = false;
+        bool show_grid = false;
+        bool made_entitymap = false;
+
+        std::vector<std::string> enemy_names;
+
+        std::vector<std::vector<short int>> moveoverlay, attackoverlay, healoverlay;
+        std::vector<std::vector<short int>> dangeroverlay;
+        std::vector<std::vector<short int>> tilemap;
+        std::vector<std::vector<short int>> tileupdate;
+
+        SDL_Rect srcrect, destrect;
+
+        std::string overlay_mode = "";
+        std::string danger_mode = "";
+
+        std::unordered_map<short int, SDL_Texture *> textures;
+        std::vector<short int> unique_textures;
+        std::vector<SDL_Texture *> overlays{NULL, NULL, NULL};
+        std::vector<SDL_Texture *> dangers{NULL, NULL};
+        std::string ss_looping = "linear";
+
+        Entity_ptr_matrix entitymap;
 
     public:
         Map();
@@ -61,33 +88,7 @@ class Map {
         void addDanger(const std::vector<std::vector<short int>> in_danger);
         void subDanger(const std::vector<std::vector<short int>> in_danger);
 
-    private:
-        short int tilesize[2];
-        short unsigned int frames = 10, speed = 50;
-        bool show_overlay = false;
-        bool show_danger = false;
-        bool show_grid = false;
-        bool made_entitymap = false;
 
-        std::vector<std::string> enemy_names;
-
-        std::vector<std::vector<short int>> moveoverlay, attackoverlay, healoverlay;
-        std::vector<std::vector<short int>> dangeroverlay;
-        std::vector<std::vector<short int>> tilemap;
-        std::vector<std::vector<short int>> tileupdate;
-
-        SDL_Rect srcrect, destrect;
-
-        std::string overlay_mode = "";
-        std::string danger_mode = "";
-
-        std::unordered_map<short int, SDL_Texture *> textures;
-        std::vector<short int> unique_textures;
-        std::vector<SDL_Texture *> overlays{NULL, NULL, NULL};
-        std::vector<SDL_Texture *> dangers{NULL, NULL};
-        std::string ss_looping = "linear";
-
-        Entity_ptr_matrix entitymap;
 };
 
 extern std::vector<std::vector<short int>> (*chapTilemaps[40])();

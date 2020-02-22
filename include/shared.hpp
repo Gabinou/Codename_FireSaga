@@ -348,6 +348,16 @@ enum UNIT_TYPES {
 };
 }
 
+namespace UNIT {
+enum UNITS {
+    ERWIN,
+    KIARA,
+    SILOU,
+    SERVIL,
+    PERIGNON,
+};
+}
+
 namespace TILE {
 enum TILES {
     // Basic tile index is 3 digits -> 100

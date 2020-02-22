@@ -23,23 +23,22 @@ class Unit {
         std::vector<Unit_stats> grown_stats;
         unsigned long long int skills;
         short unsigned int equippable;
+        unsigned short int exp;
+        unsigned short int entity;
+        unsigned short int affiliation;
+        unsigned char class_index;
+        unsigned char mvt_type;
 
-        std::unordered_map<std::string, int> supports;
         unsigned char current_hp;
         char current_speed;
         Map_enemy map_enemy;
 
-        unsigned short int exp;
-        unsigned short int entity;
         short int position[2] = {0, 0};
         bool sex; // 0:F, 1:M
 
         std::string name;
         std::string class_name;
-        unsigned char class_index;
-        unsigned char mvt_type;
         std::string army_name;
-        unsigned short int affiliation;
 
         Equipped equipped; // these are indices. -1 means no equipment.
         Inventory_item equipment[DEFAULT::EQUIPMENT_SIZE], weapons[DEFAULT::WEAPONS_SIZE], items[DEFAULT::ITEMS_SIZE];
