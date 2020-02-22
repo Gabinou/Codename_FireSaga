@@ -106,7 +106,7 @@ void Weapon::write(const char * filename, const char * mode){
 
 std::vector<Weapon> all_weapons(WEAPON::END);
 
-void baseWeapons2(){
+void baseWeapons(){
     Weapon temp_wpn;
     Weapon_stats temp_wpn_stats;
     // Pmight, Mmight, hit, dodge, crit, favor, wgt, uses, wpnlvl, range, hand, dmg_type, cost

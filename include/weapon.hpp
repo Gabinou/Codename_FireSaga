@@ -27,7 +27,7 @@ class Weapon {
         void setBonus(Unit_stats in_bonus);
         Unit_stats getBonus();
         void setMalus(Unit_stats in_malus);
-        Unit_stats getMalus(); //may be uncessesary?
+        Unit_stats getMalus();
         void setEffect(long unsigned int in_effect);
         long unsigned int getEffect();
         void setEffective(short unsigned int in_effective);
@@ -46,7 +46,6 @@ extern std::vector<Weapon> all_weapons;
 extern std::vector<Weapon> loaded_weapons;
 
 void baseWeapons();
-void baseWeapons2();
 std::vector<Weapon> baseWeapons(std::vector<short int> toload);
 
 #endif /* WEAPON_HPP */
