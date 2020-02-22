@@ -46,13 +46,13 @@ class Unit {
 
     public:
         Unit();
-        Unit(const std::string in_name, const std::string in_class, const Unit_stats in_bases, const std::string in_sex, Map_enemy in_map_enemy, unsigned long long int in_skills);
-        Unit(const std::string in_name, const std::string in_class, const Unit_stats in_bases, const bool in_sex, Map_enemy in_map_enemy, unsigned long long int in_skills);
-        Unit(const std::string in_name, const std::string in_class, const Unit_stats in_bases, const bool in_sex, Map_enemy in_map_enemy);
-        Unit(const std::string in_name, const std::string in_class, const Unit_stats in_bases, const std::string in_sex, Map_enemy in_map_enemy);
-        Unit(const std::string in_name, const std::string in_class, const Unit_stats in_bases, const bool in_sex);
-        Unit(const std::string in_name, const std::string in_class, const Unit_stats in_bases, const std::string in_sex);
-        Unit(const std::string in_name, const std::string in_class, const Unit_stats in_bases);
+        Unit(const std::string in_name, const unsigned char in_class_index, const Unit_stats in_bases, const std::string in_sex, Map_enemy in_map_enemy, unsigned long long int in_skills);
+        Unit(const std::string in_name, const unsigned char in_class_index, const Unit_stats in_bases, const bool in_sex, Map_enemy in_map_enemy, unsigned long long int in_skills);
+        Unit(const std::string in_name, const unsigned char in_class_index, const Unit_stats in_bases, const bool in_sex, Map_enemy in_map_enemy);
+        Unit(const std::string in_name, const unsigned char in_class_index, const Unit_stats in_bases, const std::string in_sex, Map_enemy in_map_enemy);
+        Unit(const std::string in_name, const unsigned char in_class_index, const Unit_stats in_bases, const bool in_sex);
+        Unit(const std::string in_name, const unsigned char in_class_index, const Unit_stats in_bases, const std::string in_sex);
+        Unit(const std::string in_name, const unsigned char in_class_index, const Unit_stats in_bases);
         Unit(const std::string in_name, const Unit_stats in_bases);
         Unit(const Unit_stats in_bases);
 
@@ -68,8 +68,8 @@ class Unit {
         void setPos(const Point in_pos);
 
         unsigned char getMvttype();
-        void setMvttype();
-        void setClassname();
+        void autoMvttype();
+        void autoClassname();
 
         short unsigned int getEquippable();
         void setEquippable();
