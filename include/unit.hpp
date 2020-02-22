@@ -22,7 +22,6 @@ class Unit {
 
         std::vector<Unit_stats> grown_stats;
         std::vector<std::string> skills;
-        std::vector<std::string> equippables;
         short unsigned int equippable;
 
         std::unordered_map<std::string, int> supports;
@@ -70,7 +69,7 @@ class Unit {
         void setMvttype();
         void setClassname();
 
-        std::vector<std::string> getEquippables();
+        short unsigned int getEquippable();
         void setEquippable();
         void equipsL(const char index);
         void equipsR(const char index);

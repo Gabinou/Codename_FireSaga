@@ -84,11 +84,13 @@ void Unit::setEquipped(Equipped in_equipped) {
     equipped = in_equipped;
 }
 
-std::vector<std::string> Unit::getEquippables() {
-    return(equippables);
+short unsigned int Unit::getEquippable() {
+    return(equippable);
 }
 
 void Unit::setEquippable() {
+    // Switch with individual cases:
+    // Easy to change equippable post-hoc
     switch(class_index) {
         case UNIT_CLASS::MERCENARY:
             equippable = WPN_TYPE::SHIELD + WPN_TYPE::SWORD + WPN_TYPE::OFFHAND;
