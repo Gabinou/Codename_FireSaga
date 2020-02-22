@@ -40,6 +40,7 @@ class Unit {
         unsigned char class_index;
         unsigned char mvt_type;
         std::string army; //affilistion?
+        short int affiliation;
 
         Equipped equipped; // these are indices. -1 means no equipment.
         Inventory_item equipment[DEFAULT::EQUIPMENT_SIZE], weapons[DEFAULT::WEAPONS_SIZE], items[DEFAULT::ITEMS_SIZE];

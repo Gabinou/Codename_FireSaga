@@ -1,4 +1,5 @@
 #include "unit.hpp"
+#include "shared.hpp"
 
 Unit::Unit() {
     equipped.left = -1;
@@ -88,103 +89,65 @@ std::vector<std::string> Unit::getEquippables() {
 }
 
 void Unit::setEquippable() {
-    //String compares are bad. 
-    equippables.clear();
-    if ((class_name == "Mercenary") || (class_name == "Lord") || (class_name == "Duelist") || (class_name == "Thief")) {
-        equippables.push_back("shield");
-        equippables.push_back("sword");
-        equippables.push_back("offhand");
+    if ((class_index == UNIT_CLASS::MERCENARY) || (class_index == UNIT_CLASS::LORD) || (class_index == UNIT_CLASS::DUELIST) || (class_index == UNIT_CLASS::THIEF)) {
+        equippable = WPN_TYPE::SHIELD + WPN_TYPE::SWORD + WPN_TYPE::OFFHAND;
     }
-    if ((class_name == "Pegasus knight") || (class_name == "Trooper") || (class_name == "Cavalier") || (class_name == "Knight")) {
-        equippables.push_back("lance");
-        equippables.push_back("shield");
+    if ((class_index == UNIT_CLASS::PEGASUS_KNIGHT) || (class_index == UNIT_CLASS::PIKEMAN) || (class_index == UNIT_CLASS::CAVALIER) || (class_index == UNIT_CLASS::KNIGHT)) {
+        equippable = WPN_TYPE::LANCE + WPN_TYPE::SHIELD;
     }
-    if (class_name == "Bandit") {
-        equippables.push_back("shield");
-        equippables.push_back("axe");
+    if (class_index == UNIT_CLASS::BANDIT) {
+        equippable = WPN_TYPE::SHIELD + WPN_TYPE::AXE;
     }
-    if ((class_name == "Corsair") || (class_name == "Viking")) {
-        equippables.push_back("shield");
-        equippables.push_back("axe");
-        equippables.push_back("offhand");
+    if ((class_index == UNIT_CLASS::CORSAIR) || (class_index == UNIT_CLASS::VIKING)) {
+        equippable = WPN_TYPE::SHIELD + WPN_TYPE::OFFHAND + WPN_TYPE::AXE;
     }
-    if ((class_name == "Fencer") || (class_name == "Pickpocket")){
-        equippables.push_back("offhand");
-        equippables.push_back("sword");
+    if ((class_index == UNIT_CLASS::FENCER) || (class_index == UNIT_CLASS::PICKPOCKET)){
+        equippable = WPN_TYPE::OFFHAND + WPN_TYPE::SWORD;
     }
-    if ((class_name == "Mousquetaire") || (class_name == "Assassin") || (class_name == "Marksman")) {
-        equippables.push_back("sword");
-        equippables.push_back("offhand");
-        equippables.push_back("bow");
+    if ((class_index == UNIT_CLASS::MOUSQUETAIRE) || (class_index == UNIT_CLASS::ASSASSIN) || (class_index == UNIT_CLASS::MARKSMAN)) {
+        equippable = WPN_TYPE::SWORD + WPN_TYPE::OFFHAND + WPN_TYPE::BOW; 
     }
-    if (class_name == "Archer") {
-        equippables.push_back("bow");
+    if (class_index == UNIT_CLASS::ARCHER) {
+        equippable = WPN_TYPE::BOW;
     }
-    if ((class_name == "Duke") || (class_name == "Paladin")) {
-        equippables.push_back("sword");
-        equippables.push_back("lance");
-        equippables.push_back("shield");
-        equippables.push_back("offhand");
+    if ((class_index == UNIT_CLASS::DUKE) || (class_index == UNIT_CLASS::PALADIN)) {
+        equippable = WPN_TYPE::SWORD + WPN_TYPE::LANCE + WPN_TYPE::SHIELD + WPN_TYPE::OFFHAND;
     }
-    if (class_name == "General") {
-        equippables.push_back("sword");
-        equippables.push_back("shield");
-        equippables.push_back("axe");
-        equippables.push_back("lance");
+    if (class_index == UNIT_CLASS::GENERAL) {
+        equippable = WPN_TYPE::SWORD + WPN_TYPE::SHIELD + WPN_TYPE::AXE + WPN_TYPE::LANCE;
     }
-    if ((class_name == "Cleric") || (class_name == "Priest")) {
-        equippables.push_back("staff");
+    if ((class_index == UNIT_CLASS::CLERIC) || (class_index == UNIT_CLASS::PRIEST)) {
+        equippable = WPN_TYPE::STAFF;
     }
-    if (class_name == "Mage") {
-        equippables.push_back("elemental");
-        equippables.push_back("trinket");
+    if (class_index == UNIT_CLASS::MAGE) {
+        equippable = WPN_TYPE::ELEMENTAL + WPN_TYPE::TRINKET;
     }
-    if (class_name == "Hero") {
-        equippables.push_back("axe");
-        equippables.push_back("sword");
-        equippables.push_back("shield");
-        equippables.push_back("offhand");
+    if (class_index == UNIT_CLASS::HERO) {
+        equippable = WPN_TYPE::AXE + WPN_TYPE::SWORD + WPN_TYPE::SHIELD + WPN_TYPE::OFFHAND;
     }
-    if (class_name == "Ravager") {
-        equippables.push_back("axe");
-        equippables.push_back("shield");
-        equippables.push_back("offhand");
-        equippables.push_back("bow");
+    if (class_index == UNIT_CLASS::RAVAGER) {
+        equippable = WPN_TYPE::AXE + WPN_TYPE::SHIELD + WPN_TYPE::OFFHAND + WPN_TYPE::BOW;
     }
-    if (class_name == "Battlemage") {
-        equippables.push_back("elemental");
-        equippables.push_back("shield");
-        equippables.push_back("sword");
-        equippables.push_back("trinket");
+    if (class_index == UNIT_CLASS::BATTLEMAGE) {
+        equippable = WPN_TYPE::ELEMENTAL + WPN_TYPE::SHIELD + WPN_TYPE::SWORD + WPN_TYPE::TRINKET;
     }
-    if ((class_name == "Sage") || (class_name == "Troubadour")) {
-        equippables.push_back("elemental");
-        equippables.push_back("staff");
-        equippables.push_back("trinket");
+    if ((class_index == UNIT_CLASS::SAGE) || (class_index == UNIT_CLASS::TROUBADOUR)) {
+        equippable = WPN_TYPE::ELEMENTAL + WPN_TYPE::STAFF + WPN_TYPE::TRINKET;
     }
-    if ((class_name == "Bishop") || (class_name == "Oracle")) {
-        equippables.push_back("staff");
-        equippables.push_back("angelic");
-        equippables.push_back("trinket");
+    if ((class_index == UNIT_CLASS::BISHOP) || (class_index == UNIT_CLASS::ORACLE)) {
+        equippable = WPN_TYPE::STAFF + WPN_TYPE::ANGELIC + WPN_TYPE::TRINKET;
     }
-    if (class_name == "Angel") {
-        equippables.push_back("angelic");
-        equippables.push_back("sword");
-        equippables.push_back("lance");
-        equippables.push_back("shield");
+    if (class_index == UNIT_CLASS::ANGEL) {
+        equippable = WPN_TYPE::ANGELIC + WPN_TYPE::SWORD + WPN_TYPE::LANCE + WPN_TYPE::SHIELD;
     }
-    if (class_name == "Demon") {
-        equippables.push_back("demonic");
-        equippables.push_back("claw");
-        equippables.push_back("axe");
+    if (class_index == UNIT_CLASS::DEMON) {
+        equippable = WPN_TYPE::DEMONIC + WPN_TYPE::CLAW + WPN_TYPE::AXE;
     }
-    if (class_name == "Demonic Incarnate") {
-        equippables.push_back("demonic");
-        equippables.push_back("trinket");
+    if (class_index == UNIT_CLASS::DEMONIC_INCARNATE) {
+        equippable = WPN_TYPE::DEMONIC + WPN_TYPE::TRINKET;
     }
-    if (class_name == "Angelic Incarnate") {
-        equippables.push_back("angelic");
-        equippables.push_back("trinket");
+    if (class_index == UNIT_CLASS::ANGELIC_INCARNATE) {
+        equippable = WPN_TYPE::ANGELIC + WPN_TYPE::TRINKET;
     }
 }
 
@@ -196,39 +159,39 @@ unsigned char Unit::getMvttype() {
 
 void Unit::setMvttype() {
     // String compares are BAAAAD.
-    if ((class_index == CLASS::FENCER) || (class_index == CLASS::MOUSQUETAIRE) || (class_index == CLASS::DUELIST) || (class_index == CLASS::LORD) || (class_index == CLASS::DUKE) || (class_index == CLASS::ARCHER) || (class_index == CLASS::MARKSMAN) || (class_index == CLASS::MERCENARY) || (class_index == CLASS::HERO) || (class_index == CLASS::PIKEMAN)) {
+    if ((class_index == UNIT_CLASS::FENCER) || (class_index == UNIT_CLASS::MOUSQUETAIRE) || (class_index == UNIT_CLASS::DUELIST) || (class_index == UNIT_CLASS::LORD) || (class_index == UNIT_CLASS::DUKE) || (class_index == UNIT_CLASS::ARCHER) || (class_index == UNIT_CLASS::MARKSMAN) || (class_index == UNIT_CLASS::MERCENARY) || (class_index == UNIT_CLASS::HERO) || (class_index == UNIT_CLASS::PIKEMAN)) {
         mvt_type = MVT_TYPE::FOOT_SLOW;
     }
 
-    if ((class_index == CLASS::PICKPOCKET) || (class_index == CLASS::THIEF) || (class_index == CLASS::ASSASSIN) || (class_index == CLASS::DEMON)) {
+    if ((class_index == UNIT_CLASS::PICKPOCKET) || (class_index == UNIT_CLASS::THIEF) || (class_index == UNIT_CLASS::ASSASSIN) || (class_index == UNIT_CLASS::DEMON)) {
         mvt_type = MVT_TYPE::FOOT_FAST;
     }
 
-    if ((class_index == CLASS::MAGE) || (class_index == CLASS::BATTLEMAGE) || (class_index == CLASS::SAGE) || (class_index == CLASS::ORACLE) || (class_index == CLASS::PRIEST) || (class_index == CLASS::CLERIC) || (class_index == CLASS::BISHOP) || (class_index == CLASS::ANGELIC_INCARNATE) || (class_index == CLASS::DEMONIC_INCARNATE) || (class_index == CLASS::ANGEL) || (class_index == CLASS::DEMON)) {
+    if ((class_index == UNIT_CLASS::MAGE) || (class_index == UNIT_CLASS::BATTLEMAGE) || (class_index == UNIT_CLASS::SAGE) || (class_index == UNIT_CLASS::ORACLE) || (class_index == UNIT_CLASS::PRIEST) || (class_index == UNIT_CLASS::CLERIC) || (class_index == UNIT_CLASS::BISHOP) || (class_index == UNIT_CLASS::ANGELIC_INCARNATE) || (class_index == UNIT_CLASS::DEMONIC_INCARNATE) || (class_index == UNIT_CLASS::ANGEL) || (class_index == UNIT_CLASS::DEMON)) {
         mvt_type = MVT_TYPE::MAGES;
     }
 
-    if ((class_index == CLASS::CAVALIER) || (class_index == CLASS::ARCHER_RIDER) || (class_index == CLASS::MARKSMAN_RIDER) || (class_index == CLASS::LORD_RIDER) || (class_index == CLASS::DUKE_RIDER)) {
+    if ((class_index == UNIT_CLASS::CAVALIER) || (class_index == UNIT_CLASS::ARCHER_RIDER) || (class_index == UNIT_CLASS::MARKSMAN_RIDER) || (class_index == UNIT_CLASS::LORD_RIDER) || (class_index == UNIT_CLASS::DUKE_RIDER)) {
         mvt_type = MVT_TYPE::RIDERS_SLOW;
     }
 
-    if ((class_index == CLASS::PALADIN) || (class_index == CLASS::TROUBADOUR)) {
+    if ((class_index == UNIT_CLASS::PALADIN) || (class_index == UNIT_CLASS::TROUBADOUR)) {
         mvt_type = MVT_TYPE::RIDERS_FAST;
     }
 
-    if ((class_index == CLASS::PEGASUS_KNIGHT) || (class_index == CLASS::ANGEL)) {
+    if ((class_index == UNIT_CLASS::PEGASUS_KNIGHT) || (class_index == UNIT_CLASS::ANGEL)) {
         mvt_type = MVT_TYPE::FLIERS;
     }
 
-    if ((class_index == CLASS::KNIGHT) || (class_index == CLASS::GENERAL)) {
+    if ((class_index == UNIT_CLASS::KNIGHT) || (class_index == UNIT_CLASS::GENERAL)) {
         mvt_type = MVT_TYPE::ARMORS;
     }
 
-    if ((class_index == CLASS::CORSAIR) || (class_index == CLASS::VIKING)) {
+    if ((class_index == UNIT_CLASS::CORSAIR) || (class_index == UNIT_CLASS::VIKING)) {
         mvt_type = MVT_TYPE::PIRATES;
     }
 
-    if ((class_index == CLASS::BANDIT) || (class_index == CLASS::RAVAGER)) {
+    if ((class_index == UNIT_CLASS::BANDIT) || (class_index == UNIT_CLASS::RAVAGER)) {
         mvt_type = MVT_TYPE::BANDITS;
     }
 }

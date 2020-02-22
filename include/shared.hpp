@@ -29,8 +29,8 @@ enum DEFAULTS {
 }; // replace text IN MY FILES by the values, at compilation.
 }
 
-namespace CLASS {
-enum UNIT_CLASS {
+namespace UNIT_CLASS {
+enum UNIT_CLASSES {
     LORD,
     LORD_RIDER,
     DUKE,
@@ -76,7 +76,6 @@ enum UNIT_CLASS {
     END
 };
 }
-
 
 namespace MVT_TYPE {
 enum MVT_TYPES {
@@ -252,6 +251,7 @@ enum WPN_TYPES {
     ANGELIC = 0x0100,
     SHIELD = 0x0200,
     STAFF = 0x0400,
+    CLAW = 0x0800,
 };
 }
 
