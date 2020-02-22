@@ -105,6 +105,23 @@ void Weapon::write(const char * filename, const char * mode){
 }
 
 std::vector<Weapon> all_weapons(WEAPON::END);
+std::vector<Weapon> loaded_weapons;
+
+std::vector<Weapon> baseWeapons(std::vector<short int> toload){
+    Weapon temp_wpn;
+    Weapon_stats temp_wpn_stats;
+    std::vector<Weapon> wpn_out;
+    short unsigned int index;
+    for (short unsigned int i = 0; i < toload.size(); i++) {
+        index = toload[i];
+        switch (index) {
+            case WEAPON::WOODEN_SWORD:
+                break;
+        }
+    }
+    return(wpn_out);
+}
+
 
 void baseWeapons(){
     Weapon temp_wpn;
