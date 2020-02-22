@@ -89,7 +89,7 @@ std::vector<std::string> Unit::getEquippables() {
 }
 
 void Unit::setEquippable() {
-    switch class_index {
+    switch(class_index) {
         case UNIT_CLASS::MERCENARY:
             equippable = WPN_TYPE::SHIELD + WPN_TYPE::SWORD + WPN_TYPE::OFFHAND;
             break;
@@ -195,8 +195,8 @@ void Unit::setEquippable() {
     }
 }
 
-Unit::setClassname() {
-    switch class_index {
+void Unit::setClassname() {
+    switch(class_index) {
         case UNIT_CLASS::MERCENARY:
             class_name = "Mercenary";
             break;
