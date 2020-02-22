@@ -34,6 +34,7 @@ class Weapon {
         short unsigned int getEffective();
         void setDescription(std::string in_description);
         std::string getDescription();
+        void  setName(std::string in_name);
         std::string getName();
         short unsigned int getType();
         void setType(short unsigned int in_type);

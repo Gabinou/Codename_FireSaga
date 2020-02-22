@@ -66,6 +66,9 @@ std::string Weapon::getDescription() {
 std::string Weapon::getName() {
     return(name);
 }
+void Weapon::setName(std::string in_name) {
+    name = in_name;
+}
 short unsigned int Weapon::getType() {
     return(type);
 }
@@ -85,6 +88,7 @@ void Weapon::write(const char * filename, const char * mode){
     fprintf(fp, "\n");
     fprintf(fp, "%s \n", description.c_str());
     fprintf(fp, "%d \n", effect);
+    fprintf(fp, "%d \n", effective);
     if (stats.dmg_type) {
         fprintf(fp, "Damage type: %s \n", "Magic");
     } else {
