@@ -21,7 +21,7 @@ class Unit {
         Unit_stats growths;
 
         std::vector<Unit_stats> grown_stats;
-        std::vector<std::string> skills;
+        unsigned long long int skills;
         short unsigned int equippable;
 
         std::unordered_map<std::string, int> supports;
