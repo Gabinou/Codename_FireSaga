@@ -68,6 +68,7 @@ class Unit {
 
         unsigned char getMvttype();
         void setMvttype();
+        void setClassname();
 
         std::vector<std::string> getEquippables();
         void setEquippable();

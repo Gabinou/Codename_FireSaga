@@ -89,67 +89,220 @@ std::vector<std::string> Unit::getEquippables() {
 }
 
 void Unit::setEquippable() {
-    if ((class_index == UNIT_CLASS::MERCENARY) || (class_index == UNIT_CLASS::LORD) || (class_index == UNIT_CLASS::DUELIST) || (class_index == UNIT_CLASS::THIEF)) {
-        equippable = WPN_TYPE::SHIELD + WPN_TYPE::SWORD + WPN_TYPE::OFFHAND;
-    }
-    if ((class_index == UNIT_CLASS::PEGASUS_KNIGHT) || (class_index == UNIT_CLASS::PIKEMAN) || (class_index == UNIT_CLASS::CAVALIER) || (class_index == UNIT_CLASS::KNIGHT)) {
-        equippable = WPN_TYPE::LANCE + WPN_TYPE::SHIELD;
-    }
-    if (class_index == UNIT_CLASS::BANDIT) {
-        equippable = WPN_TYPE::SHIELD + WPN_TYPE::AXE;
-    }
-    if ((class_index == UNIT_CLASS::CORSAIR) || (class_index == UNIT_CLASS::VIKING)) {
-        equippable = WPN_TYPE::SHIELD + WPN_TYPE::OFFHAND + WPN_TYPE::AXE;
-    }
-    if ((class_index == UNIT_CLASS::FENCER) || (class_index == UNIT_CLASS::PICKPOCKET)){
-        equippable = WPN_TYPE::OFFHAND + WPN_TYPE::SWORD;
-    }
-    if ((class_index == UNIT_CLASS::MOUSQUETAIRE) || (class_index == UNIT_CLASS::ASSASSIN) || (class_index == UNIT_CLASS::MARKSMAN)) {
-        equippable = WPN_TYPE::SWORD + WPN_TYPE::OFFHAND + WPN_TYPE::BOW; 
-    }
-    if (class_index == UNIT_CLASS::ARCHER) {
-        equippable = WPN_TYPE::BOW;
-    }
-    if ((class_index == UNIT_CLASS::DUKE) || (class_index == UNIT_CLASS::PALADIN)) {
-        equippable = WPN_TYPE::SWORD + WPN_TYPE::LANCE + WPN_TYPE::SHIELD + WPN_TYPE::OFFHAND;
-    }
-    if (class_index == UNIT_CLASS::GENERAL) {
-        equippable = WPN_TYPE::SWORD + WPN_TYPE::SHIELD + WPN_TYPE::AXE + WPN_TYPE::LANCE;
-    }
-    if ((class_index == UNIT_CLASS::CLERIC) || (class_index == UNIT_CLASS::PRIEST)) {
-        equippable = WPN_TYPE::STAFF;
-    }
-    if (class_index == UNIT_CLASS::MAGE) {
-        equippable = WPN_TYPE::ELEMENTAL + WPN_TYPE::TRINKET;
-    }
-    if (class_index == UNIT_CLASS::HERO) {
-        equippable = WPN_TYPE::AXE + WPN_TYPE::SWORD + WPN_TYPE::SHIELD + WPN_TYPE::OFFHAND;
-    }
-    if (class_index == UNIT_CLASS::RAVAGER) {
-        equippable = WPN_TYPE::AXE + WPN_TYPE::SHIELD + WPN_TYPE::OFFHAND + WPN_TYPE::BOW;
-    }
-    if (class_index == UNIT_CLASS::BATTLEMAGE) {
-        equippable = WPN_TYPE::ELEMENTAL + WPN_TYPE::SHIELD + WPN_TYPE::SWORD + WPN_TYPE::TRINKET;
-    }
-    if ((class_index == UNIT_CLASS::SAGE) || (class_index == UNIT_CLASS::TROUBADOUR)) {
-        equippable = WPN_TYPE::ELEMENTAL + WPN_TYPE::STAFF + WPN_TYPE::TRINKET;
-    }
-    if ((class_index == UNIT_CLASS::BISHOP) || (class_index == UNIT_CLASS::ORACLE)) {
-        equippable = WPN_TYPE::STAFF + WPN_TYPE::ANGELIC + WPN_TYPE::TRINKET;
-    }
-    if (class_index == UNIT_CLASS::ANGEL) {
-        equippable = WPN_TYPE::ANGELIC + WPN_TYPE::SWORD + WPN_TYPE::LANCE + WPN_TYPE::SHIELD;
-    }
-    if (class_index == UNIT_CLASS::DEMON) {
-        equippable = WPN_TYPE::DEMONIC + WPN_TYPE::CLAW + WPN_TYPE::AXE;
-    }
-    if (class_index == UNIT_CLASS::DEMONIC_INCARNATE) {
-        equippable = WPN_TYPE::DEMONIC + WPN_TYPE::TRINKET;
-    }
-    if (class_index == UNIT_CLASS::ANGELIC_INCARNATE) {
-        equippable = WPN_TYPE::ANGELIC + WPN_TYPE::TRINKET;
+    switch class_index {
+        case UNIT_CLASS::MERCENARY:
+            equippable = WPN_TYPE::SHIELD + WPN_TYPE::SWORD + WPN_TYPE::OFFHAND;
+            break;
+        case UNIT_CLASS::LORD:
+            equippable = WPN_TYPE::LANCE + WPN_TYPE::SHIELD;
+            break;
+        case UNIT_CLASS::DUELIST:
+            equippable = WPN_TYPE::LANCE + WPN_TYPE::SHIELD;
+            break;
+        case UNIT_CLASS::THIEF:
+            equippable = WPN_TYPE::LANCE + WPN_TYPE::SHIELD;
+            break;
+        case UNIT_CLASS::PEGASUS_KNIGHT:
+            equippable = WPN_TYPE::LANCE + WPN_TYPE::SHIELD;
+            break;
+        case UNIT_CLASS::PIKEMAN:
+            equippable = WPN_TYPE::LANCE + WPN_TYPE::SHIELD;
+            break;
+        case UNIT_CLASS::CAVALIER:
+            equippable = WPN_TYPE::LANCE + WPN_TYPE::SHIELD;
+            break;
+        case UNIT_CLASS::KNIGHT:
+            equippable = WPN_TYPE::LANCE + WPN_TYPE::SHIELD;
+            break;
+        case UNIT_CLASS::BANDIT:
+            equippable = WPN_TYPE::SHIELD + WPN_TYPE::AXE;
+            break;
+        case UNIT_CLASS::CORSAIR:
+            equippable = WPN_TYPE::SHIELD + WPN_TYPE::OFFHAND + WPN_TYPE::AXE;
+            break;
+        case UNIT_CLASS::VIKING:
+            equippable = WPN_TYPE::SHIELD + WPN_TYPE::OFFHAND + WPN_TYPE::AXE;
+            break;
+        case UNIT_CLASS::PICKPOCKET:
+            equippable = WPN_TYPE::OFFHAND + WPN_TYPE::SWORD;
+            break;
+        case UNIT_CLASS::FENCER:
+            equippable = WPN_TYPE::OFFHAND + WPN_TYPE::SWORD;
+            break;
+        case UNIT_CLASS::MOUSQUETAIRE:
+            equippable = WPN_TYPE::SWORD + WPN_TYPE::OFFHAND + WPN_TYPE::BOW; 
+            break;
+        case UNIT_CLASS::ASSASSIN:
+            equippable = WPN_TYPE::SWORD + WPN_TYPE::OFFHAND + WPN_TYPE::BOW; 
+            break;
+        case UNIT_CLASS::MARKSMAN:
+            equippable = WPN_TYPE::SWORD + WPN_TYPE::OFFHAND + WPN_TYPE::BOW; 
+            break;
+        case UNIT_CLASS::ARCHER:
+            equippable = WPN_TYPE::BOW;
+            break;
+        case UNIT_CLASS::DUKE:
+            equippable = WPN_TYPE::SWORD + WPN_TYPE::LANCE + WPN_TYPE::SHIELD + WPN_TYPE::OFFHAND;
+            break;
+        case UNIT_CLASS::PALADIN:
+            equippable = WPN_TYPE::SWORD + WPN_TYPE::LANCE + WPN_TYPE::SHIELD + WPN_TYPE::OFFHAND;
+            break;
+        case UNIT_CLASS::GENERAL:
+            equippable = WPN_TYPE::SWORD + WPN_TYPE::SHIELD + WPN_TYPE::AXE + WPN_TYPE::LANCE;
+            break;
+        case UNIT_CLASS::CLERIC:
+            equippable = WPN_TYPE::STAFF;
+            break;
+        case UNIT_CLASS::PRIEST:
+            equippable = WPN_TYPE::STAFF;
+            break;
+        case UNIT_CLASS::MAGE:
+            equippable = WPN_TYPE::ELEMENTAL + WPN_TYPE::TRINKET;
+            break;
+        case UNIT_CLASS::HERO:
+            equippable = WPN_TYPE::AXE + WPN_TYPE::SWORD + WPN_TYPE::SHIELD + WPN_TYPE::OFFHAND;
+            break;
+        case UNIT_CLASS::RAVAGER:
+            equippable = WPN_TYPE::AXE + WPN_TYPE::SHIELD + WPN_TYPE::OFFHAND + WPN_TYPE::BOW;
+            break;
+        case UNIT_CLASS::BATTLEMAGE:
+            equippable = WPN_TYPE::ELEMENTAL + WPN_TYPE::SHIELD + WPN_TYPE::SWORD + WPN_TYPE::TRINKET;
+            break;
+        case UNIT_CLASS::SAGE:
+            equippable = WPN_TYPE::ELEMENTAL + WPN_TYPE::STAFF + WPN_TYPE::TRINKET;
+            break;
+        case UNIT_CLASS::TROUBADOUR:
+            equippable = WPN_TYPE::ELEMENTAL + WPN_TYPE::STAFF + WPN_TYPE::TRINKET;
+            break;
+        case UNIT_CLASS::ORACLE:
+            equippable = WPN_TYPE::STAFF + WPN_TYPE::ANGELIC + WPN_TYPE::TRINKET;
+            break;
+        case UNIT_CLASS::BISHOP:
+            equippable = WPN_TYPE::STAFF + WPN_TYPE::ANGELIC + WPN_TYPE::TRINKET;
+            break;
+        case UNIT_CLASS::ANGEL:
+            equippable = WPN_TYPE::ANGELIC + WPN_TYPE::SWORD + WPN_TYPE::LANCE + WPN_TYPE::SHIELD;
+            break;
+        case UNIT_CLASS::DEMON:
+            equippable = WPN_TYPE::DEMONIC + WPN_TYPE::CLAW + WPN_TYPE::AXE;
+            break;
+        case UNIT_CLASS::DEMONIC_INCARNATE:
+            equippable = WPN_TYPE::DEMONIC + WPN_TYPE::TRINKET;
+            break;
+        case UNIT_CLASS::ANGELIC_INCARNATE:
+            equippable = WPN_TYPE::ANGELIC + WPN_TYPE::TRINKET;
+            break;
     }
 }
+
+Unit::setClassname() {
+    switch class_index {
+        case UNIT_CLASS::MERCENARY:
+            class_name = "Mercenary";
+            break;
+        case UNIT_CLASS::LORD:
+            class_name = "Lord";
+            break;
+        case UNIT_CLASS::DUELIST:
+            class_name = "Duelist";
+            break;
+        case UNIT_CLASS::THIEF:
+            class_name = "Thief";
+            break;
+        case UNIT_CLASS::PEGASUS_KNIGHT:
+            class_name = "Pegasus knight";
+            break;
+        case UNIT_CLASS::PIKEMAN:
+            class_name = "Pikeman";
+            break;
+        case UNIT_CLASS::CAVALIER:
+            class_name = "Cavalier";
+            break;
+        case UNIT_CLASS::KNIGHT:
+            class_name = "Knight";
+            break;
+        case UNIT_CLASS::BANDIT:
+            class_name = "Bandit";
+            break;
+        case UNIT_CLASS::CORSAIR:
+            class_name = "Corsair";
+            break;
+        case UNIT_CLASS::VIKING:
+            class_name = "Viking";
+            break;
+        case UNIT_CLASS::PICKPOCKET:
+            class_name = "Pickpocket";
+            break;
+        case UNIT_CLASS::FENCER:
+            class_name = "Fencer";
+            break;
+        case UNIT_CLASS::MOUSQUETAIRE:
+            class_name = "Mousquetaire";
+            break;
+        case UNIT_CLASS::ASSASSIN:
+            class_name = "Assassin";
+            break;
+        case UNIT_CLASS::MARKSMAN:
+            class_name = "Marksman";
+            break;
+        case UNIT_CLASS::ARCHER:
+            class_name = "Archer";
+            break;
+        case UNIT_CLASS::DUKE:
+            class_name = "Duke";
+            break;
+        case UNIT_CLASS::PALADIN:
+            class_name = "Paladin";
+            break;
+        case UNIT_CLASS::GENERAL:
+            class_name = "General";
+            break;
+        case UNIT_CLASS::CLERIC:
+            class_name = "Cleric";
+            break;
+        case UNIT_CLASS::PRIEST:
+            class_name = "Priest";
+            break;
+        case UNIT_CLASS::MAGE:
+            class_name = "Mage";
+            break;
+        case UNIT_CLASS::HERO:
+            class_name = "Hero";
+            break;
+        case UNIT_CLASS::RAVAGER:
+            class_name = "Ravager";
+            break;
+        case UNIT_CLASS::BATTLEMAGE:
+            class_name = "Battlemage";
+            break;
+        case UNIT_CLASS::SAGE:
+            class_name = "Sage";
+            break;
+        case UNIT_CLASS::TROUBADOUR:
+            class_name = "Troubadour";
+            break;
+        case UNIT_CLASS::ORACLE:
+            class_name = "Oracle";
+            break;
+        case UNIT_CLASS::BISHOP:
+            class_name = "Bishop";
+            break;
+        case UNIT_CLASS::ANGEL:
+            class_name = "Angel";
+            break;
+        case UNIT_CLASS::DEMON:
+            class_name = "Demon";
+            break;
+        case UNIT_CLASS::DEMONIC_INCARNATE:
+            class_name = "Demonic Incarnate";
+            break;
+        case UNIT_CLASS::ANGELIC_INCARNATE:
+            class_name = "Angelic Incarnate";
+            break;
+    }
+}
+
+
 
 
 unsigned char Unit::getMvttype() {
@@ -158,7 +311,6 @@ unsigned char Unit::getMvttype() {
 }
 
 void Unit::setMvttype() {
-    // String compares are BAAAAD.
     if ((class_index == UNIT_CLASS::FENCER) || (class_index == UNIT_CLASS::MOUSQUETAIRE) || (class_index == UNIT_CLASS::DUELIST) || (class_index == UNIT_CLASS::LORD) || (class_index == UNIT_CLASS::DUKE) || (class_index == UNIT_CLASS::ARCHER) || (class_index == UNIT_CLASS::MARKSMAN) || (class_index == UNIT_CLASS::MERCENARY) || (class_index == UNIT_CLASS::HERO) || (class_index == UNIT_CLASS::PIKEMAN)) {
         mvt_type = MVT_TYPE::FOOT_SLOW;
     }
