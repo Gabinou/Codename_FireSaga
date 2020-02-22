@@ -6,6 +6,14 @@ Unit::Unit() {
     equipped.right = -1;
 }
 
+Unit::Unit(const std::string in_name, const std::string in_class, const Unit_stats in_bases, const std::string in_sex, Map_enemy in_map_enemy, unsigned long long int in_skills) : Unit(in_name, in_class, in_bases, in_sex, in_map_enemy) {
+    skills = in_skills;
+}
+
+Unit::Unit(const std::string in_name, const std::string in_class, const Unit_stats in_bases, const bool in_sex, Map_enemy in_map_enemy, unsigned long long int in_skills) : Unit(in_name, in_class, in_bases, in_sex, in_map_enemy) {
+    skills = in_skills;
+}
+
 Unit::Unit(const std::string in_name, const std::string in_class, const Unit_stats in_bases, const std::string in_sex, Map_enemy in_map_enemy) : Unit(in_name, in_class, in_bases, in_sex) {
     setMap_enemy(in_map_enemy);
 }
@@ -204,6 +212,9 @@ void Unit::setClassname() {
             break;
         case UNIT_CLASS::LORD:
             class_name = "Lord";
+            break;        
+        case UNIT_CLASS::LORD_RIDER:
+            class_name = "Lord rider";
             break;
         case UNIT_CLASS::DUELIST:
             class_name = "Duelist";
@@ -246,12 +257,21 @@ void Unit::setClassname() {
             break;
         case UNIT_CLASS::MARKSMAN:
             class_name = "Marksman";
+            break;        
+        case UNIT_CLASS::MARKSMAN_RIDER:
+            class_name = "Marksman rider";
             break;
         case UNIT_CLASS::ARCHER:
             class_name = "Archer";
+            break;        
+        case UNIT_CLASS::ARCHER_RIDER:
+            class_name = "Archer rider";
             break;
         case UNIT_CLASS::DUKE:
             class_name = "Duke";
+            break;
+        case UNIT_CLASS::DUKE_RIDER:
+            class_name = "Duke rider";
             break;
         case UNIT_CLASS::PALADIN:
             class_name = "Paladin";
@@ -304,49 +324,122 @@ void Unit::setClassname() {
     }
 }
 
-
-
-
 unsigned char Unit::getMvttype() {
     printf("inside unit %d\n", mvt_type);
     return (mvt_type);
 }
 
 void Unit::setMvttype() {
-    if ((class_index == UNIT_CLASS::FENCER) || (class_index == UNIT_CLASS::MOUSQUETAIRE) || (class_index == UNIT_CLASS::DUELIST) || (class_index == UNIT_CLASS::LORD) || (class_index == UNIT_CLASS::DUKE) || (class_index == UNIT_CLASS::ARCHER) || (class_index == UNIT_CLASS::MARKSMAN) || (class_index == UNIT_CLASS::MERCENARY) || (class_index == UNIT_CLASS::HERO) || (class_index == UNIT_CLASS::PIKEMAN)) {
-        mvt_type = MVT_TYPE::FOOT_SLOW;
-    }
 
-    if ((class_index == UNIT_CLASS::PICKPOCKET) || (class_index == UNIT_CLASS::THIEF) || (class_index == UNIT_CLASS::ASSASSIN) || (class_index == UNIT_CLASS::DEMON)) {
-        mvt_type = MVT_TYPE::FOOT_FAST;
-    }
-
-    if ((class_index == UNIT_CLASS::MAGE) || (class_index == UNIT_CLASS::BATTLEMAGE) || (class_index == UNIT_CLASS::SAGE) || (class_index == UNIT_CLASS::ORACLE) || (class_index == UNIT_CLASS::PRIEST) || (class_index == UNIT_CLASS::CLERIC) || (class_index == UNIT_CLASS::BISHOP) || (class_index == UNIT_CLASS::ANGELIC_INCARNATE) || (class_index == UNIT_CLASS::DEMONIC_INCARNATE) || (class_index == UNIT_CLASS::ANGEL) || (class_index == UNIT_CLASS::DEMON)) {
-        mvt_type = MVT_TYPE::MAGES;
-    }
-
-    if ((class_index == UNIT_CLASS::CAVALIER) || (class_index == UNIT_CLASS::ARCHER_RIDER) || (class_index == UNIT_CLASS::MARKSMAN_RIDER) || (class_index == UNIT_CLASS::LORD_RIDER) || (class_index == UNIT_CLASS::DUKE_RIDER)) {
-        mvt_type = MVT_TYPE::RIDERS_SLOW;
-    }
-
-    if ((class_index == UNIT_CLASS::PALADIN) || (class_index == UNIT_CLASS::TROUBADOUR)) {
-        mvt_type = MVT_TYPE::RIDERS_FAST;
-    }
-
-    if ((class_index == UNIT_CLASS::PEGASUS_KNIGHT) || (class_index == UNIT_CLASS::ANGEL)) {
-        mvt_type = MVT_TYPE::FLIERS;
-    }
-
-    if ((class_index == UNIT_CLASS::KNIGHT) || (class_index == UNIT_CLASS::GENERAL)) {
-        mvt_type = MVT_TYPE::ARMORS;
-    }
-
-    if ((class_index == UNIT_CLASS::CORSAIR) || (class_index == UNIT_CLASS::VIKING)) {
-        mvt_type = MVT_TYPE::PIRATES;
-    }
-
-    if ((class_index == UNIT_CLASS::BANDIT) || (class_index == UNIT_CLASS::RAVAGER)) {
-        mvt_type = MVT_TYPE::BANDITS;
+    switch(class_index) {
+        case UNIT_CLASS::MERCENARY:
+            mvt_type = MVT_TYPE::FOOT_SLOW;
+            break;
+        case UNIT_CLASS::LORD:
+            mvt_type = MVT_TYPE::FOOT_SLOW;
+            break;
+        case UNIT_CLASS::DUELIST:
+            mvt_type = MVT_TYPE::FOOT_SLOW;
+            break;
+        case UNIT_CLASS::THIEF:
+            mvt_type = MVT_TYPE::FOOT_FAST;
+            break;
+        case UNIT_CLASS::PEGASUS_KNIGHT:
+            mvt_type = MVT_TYPE::FLIERS;
+            break;
+        case UNIT_CLASS::PIKEMAN:
+            mvt_type = MVT_TYPE::FOOT_SLOW;
+            break;
+        case UNIT_CLASS::CAVALIER:
+            mvt_type = MVT_TYPE::RIDERS_SLOW;
+            break;
+        case UNIT_CLASS::KNIGHT:
+            mvt_type = MVT_TYPE::ARMORS;
+            break;
+        case UNIT_CLASS::BANDIT:
+            mvt_type = MVT_TYPE::BANDITS;
+            break;
+        case UNIT_CLASS::CORSAIR:
+            mvt_type = MVT_TYPE::PIRATES;
+            break;
+        case UNIT_CLASS::VIKING:
+            mvt_type = MVT_TYPE::PIRATES;
+            break;
+        case UNIT_CLASS::PICKPOCKET:
+            mvt_type = MVT_TYPE::FOOT_FAST;
+            break;
+        case UNIT_CLASS::FENCER:
+            mvt_type = MVT_TYPE::FOOT_SLOW;
+            break;
+        case UNIT_CLASS::MOUSQUETAIRE:
+            mvt_type = MVT_TYPE::FOOT_SLOW;
+            break;
+        case UNIT_CLASS::ASSASSIN:
+            mvt_type = MVT_TYPE::FOOT_FAST;
+            break;
+        case UNIT_CLASS::MARKSMAN:
+            mvt_type = MVT_TYPE::FOOT_SLOW;
+            break;        
+        case UNIT_CLASS::MARKSMAN_RIDER:
+            mvt_type = MVT_TYPE::RIDERS_SLOW;
+            break;
+        case UNIT_CLASS::ARCHER:
+            mvt_type = MVT_TYPE::FOOT_SLOW;
+            break;        
+        case UNIT_CLASS::ARCHER_RIDER:
+            mvt_type = MVT_TYPE::RIDERS_SLOW;
+            break;
+        case UNIT_CLASS::DUKE:
+            mvt_type = MVT_TYPE::FOOT_SLOW;
+            break;
+        case UNIT_CLASS::PALADIN:
+            mvt_type = MVT_TYPE::RIDERS_FAST;
+            break;
+        case UNIT_CLASS::GENERAL:
+            mvt_type = MVT_TYPE::ARMORS;
+            break;
+        case UNIT_CLASS::CLERIC:
+            mvt_type = MVT_TYPE::MAGES;
+            break;
+        case UNIT_CLASS::PRIEST:
+            mvt_type = MVT_TYPE::MAGES;
+            break;
+        case UNIT_CLASS::MAGE:
+            mvt_type = MVT_TYPE::MAGES;
+            break;
+        case UNIT_CLASS::HERO:
+            mvt_type = MVT_TYPE::FOOT_SLOW;
+            break;
+        case UNIT_CLASS::RAVAGER:
+            mvt_type = MVT_TYPE::BANDITS;
+            break;
+        case UNIT_CLASS::BATTLEMAGE:
+            mvt_type = MVT_TYPE::MAGES;
+            break;
+        case UNIT_CLASS::SAGE:
+            mvt_type = MVT_TYPE::MAGES;
+            break;
+        case UNIT_CLASS::TROUBADOUR:
+            mvt_type = MVT_TYPE::RIDERS_FAST;
+            break;
+        case UNIT_CLASS::ORACLE:
+            mvt_type = MVT_TYPE::MAGES;
+            break;
+        case UNIT_CLASS::BISHOP:
+            mvt_type = MVT_TYPE::MAGES;
+            break;
+        case UNIT_CLASS::ANGEL:
+            mvt_type = MVT_TYPE::FLIERS;
+            break;
+        case UNIT_CLASS::DEMON:
+            mvt_type = MVT_TYPE::FOOT_FAST;
+            break;
+        case UNIT_CLASS::DEMONIC_INCARNATE:
+            mvt_type = MVT_TYPE::MAGES;
+            break;
+        case UNIT_CLASS::ANGELIC_INCARNATE:
+            mvt_type = MVT_TYPE::MAGES;
+            break;
     }
 }
 
