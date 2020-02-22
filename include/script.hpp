@@ -6,7 +6,7 @@
 struct Dialog_line {
     // How to make the line dynamic?
     std::string id;
-    std::string speaker;
+    unsigned char speaker;
     std::string line;
 };
 
