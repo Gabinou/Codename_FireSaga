@@ -25,6 +25,7 @@ enum DEFAULTS {
     ITEMS_SIZE = 3,
     CONVOY_SIZE = 200,
     LINE_LENGTH = 255,
+    TILE_DIVISOR = 10
 }; // replace text IN MY FILES by the values, at compilation.
 }
 
@@ -353,6 +354,7 @@ enum TILES {
     // two first digits give the tile.
     // third digit gives the asset index.
     // Ex: 324: Peak tile, 4th asset of peak.
+    // OCTAL NUMBERS BECAUSE WHY NOT?
     PLAIN = 10,
     BUSH = 11,
     FOREST = 12,
