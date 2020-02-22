@@ -661,12 +661,12 @@ void Unit::setName(const char in_name) {
     name = in_name;
 }
 
-void Unit::setArmy(const std::string in_army) {
-    army = in_army;
+void Unit::setArmy(const std::string in_army_name) {
+    army_name = in_army_name;
 }
 
-void Unit::setArmy(const char in_army) {
-    army = in_army;
+void Unit::setArmy(const char in_army_name) {
+    army_name = in_army_name;
 }
 
 Combat_stats Unit::getCombatStats() {

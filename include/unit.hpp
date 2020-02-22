@@ -38,14 +38,15 @@ class Unit {
         std::string class_name;
         unsigned char class_index;
         unsigned char mvt_type;
-        std::string army; //affilistion?
-        short int affiliation;
+        std::string army_name;
+        unsigned short int affiliation;
 
         Equipped equipped; // these are indices. -1 means no equipment.
         Inventory_item equipment[DEFAULT::EQUIPMENT_SIZE], weapons[DEFAULT::WEAPONS_SIZE], items[DEFAULT::ITEMS_SIZE];
 
     public:
         Unit();
+        Unit(const std::string in_name, const std::string in_class, const Unit_stats in_bases, const bool in_sex, Map_enemy in_map_enemy, unsigned long long int in_skills);
         Unit(const std::string in_name, const std::string in_class, const Unit_stats in_bases, const bool in_sex, Map_enemy in_map_enemy);
         Unit(const std::string in_name, const std::string in_class, const Unit_stats in_bases, const std::string in_sex, Map_enemy in_map_enemy);
         Unit(const std::string in_name, const std::string in_class, const Unit_stats in_bases, const bool in_sex);
