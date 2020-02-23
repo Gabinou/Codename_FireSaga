@@ -52,4 +52,17 @@ extern Script(*scriptChapter[15])();
 void baseScript();
 void baseNarrativeState();
 
+namespace SCENE{
+    enum SCENES{
+
+    };
+}
+namespace LINE{
+    enum LINES{
+
+    };
+}
+
+
+
 #endif /* SCRIPT_HPP */
