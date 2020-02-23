@@ -415,7 +415,7 @@ void Game::init(const char * title, int xpos, int ypos, int width, int height, b
         isRunning = false;
     }
 
-    printf("Testing script in game: %s\n", all_scripts["Chapter 1"].getScene("Intro").getLine("1").line.c_str());
+    // printf("Testing script in game: %s\n", all_scripts["Chapter 1"].getScene("Intro").getLine("1").line.c_str());
 
     this->setState("map");
     

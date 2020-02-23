@@ -17,11 +17,11 @@ int main(int argc, char * argv[]) {
     printf("TESTING THIS BITCH\n");
 
     baseScript();
-    printf("Testing script: %s\n", all_scripts["Chapter 1"].getScene("Intro").getLine("1").line.c_str());
-    printf("Testing script: %s\n", all_scripts["Supports"].getScene("Main_Lovely_C").getLine("1").line.c_str());
+    // printf("Testing script: %s\n", all_scripts["Chapter 1"].getScene("Intro").getLine("1").line.c_str());
+    // printf("Testing script: %s\n", all_scripts["Supports"].getScene("Main_Lovely_C").getLine("1").line.c_str());
 
     baseNarrativeState();
-    printf("Testing narrative: Did Erwin die? %d\n", died["Erwin"]);
+    // printf("Testing narrative: Did Erwin die? %d\n", died["Erwin"]);
 
     baseWeapons();
     printf("Testing weapon: %s\n", all_weapons[WEAPON::WOODEN_SWORD].getName().c_str());

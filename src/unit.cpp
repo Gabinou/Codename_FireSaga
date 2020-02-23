@@ -98,6 +98,7 @@ short unsigned int Unit::getEquippable() {
 }
 
 void Unit::setEquippable() {
+    //This should not be in all unit objects. So much wasted space. Make it one shared callable function. Same for other heqvy switches. 
     // Switch with individual cases:
     // Easy to change equippable post-hoc
     switch(class_index) {
@@ -859,7 +860,7 @@ void baseUnits() {
     temp = {17,  6,  2,  7,  7,   7,  4,  5,  6, 5};
     temp_unit = Unit("Erwin", UNIT_CLASS::MERCENARY, temp, "M");
     temp = {48, 14, 25, 32, 34,  28, 19, 40, 15, 0};
-    main.setCaps(temp);
+    temp_unit.setCaps(temp);
     temp = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
     temp_unit.setGrowths(temp);
     temp_unit.setExp(0);
@@ -951,6 +952,7 @@ void baseUnits() {
 void genericEnemies() {
     printf("Making generic enemies\n");
     Unit_stats temp;
+    Unit temp_unit;
     //hp,str,mag,skl,spd,luck,def,res,con,move
 
     temp = {15,  4,  5,  7,  6,   8,  4,  6,  5, 5};
@@ -1100,6 +1102,7 @@ void genericEnemies() {
 
 std::unordered_map<std::string, Unit> chaptestEnemies() {
     Unit_stats temp_stats;
+    Unit temp_unit;
     Inventory_item temp_equipment[DEFAULT::EQUIPMENT_SIZE];
     Equipped temp_equipped;
     Point temp_position;
@@ -1124,6 +1127,7 @@ std::unordered_map<std::string, Unit> chaptestEnemies() {
 
 std::unordered_map<std::string, Unit> chap1Enemies() {
     Unit_stats temp_stats;
+    Unit temp_unit;
     Inventory_item temp_equipment[DEFAULT::EQUIPMENT_SIZE];
     Equipped temp_equipped;
     Point temp_position;
@@ -1148,6 +1152,7 @@ std::unordered_map<std::string, Unit> chap1Enemies() {
 
 std::unordered_map<std::string, Unit> chap2Enemies() {
     Unit_stats temp_stats;
+    Unit temp_unit;
     Inventory_item temp_equipment[DEFAULT::EQUIPMENT_SIZE];
     Equipped temp_equipped;
     Point temp_position;
@@ -1172,6 +1177,7 @@ std::unordered_map<std::string, Unit> chap2Enemies() {
 
 std::unordered_map<std::string, Unit> chap3Enemies() {
     Unit_stats temp_stats;
+    Unit temp_unit;
     Inventory_item temp_equipment[DEFAULT::EQUIPMENT_SIZE];
     Equipped temp_equipped;
     Point temp_position;
@@ -1196,6 +1202,7 @@ std::unordered_map<std::string, Unit> chap3Enemies() {
 
 std::unordered_map<std::string, Unit> chap4Enemies() {
     Unit_stats temp_stats;
+    Unit temp_unit;
     Inventory_item temp_equipment[DEFAULT::EQUIPMENT_SIZE];
     Equipped temp_equipped;
     Point temp_position;
@@ -1220,6 +1227,7 @@ std::unordered_map<std::string, Unit> chap4Enemies() {
 
 std::unordered_map<std::string, Unit> chap5Enemies() {
     Unit_stats temp_stats;
+    Unit temp_unit;
     Inventory_item temp_equipment[DEFAULT::EQUIPMENT_SIZE];
     Equipped temp_equipped;
     Point temp_position;
@@ -1244,6 +1252,7 @@ std::unordered_map<std::string, Unit> chap5Enemies() {
 
 std::unordered_map<std::string, Unit> chap6Enemies() {
     Unit_stats temp_stats;
+    Unit temp_unit;
     Inventory_item temp_equipment[DEFAULT::EQUIPMENT_SIZE];
     Equipped temp_equipped;
     Point temp_position;
@@ -1268,6 +1277,7 @@ std::unordered_map<std::string, Unit> chap6Enemies() {
 
 std::unordered_map<std::string, Unit> chap7Enemies() {
     Unit_stats temp_stats;
+    Unit temp_unit;
     Inventory_item temp_equipment[DEFAULT::EQUIPMENT_SIZE];
     Equipped temp_equipped;
     Point temp_position;
@@ -1292,6 +1302,7 @@ std::unordered_map<std::string, Unit> chap7Enemies() {
 
 std::unordered_map<std::string, Unit> chap8Enemies() {
     Unit_stats temp_stats;
+    Unit temp_unit;
     Inventory_item temp_equipment[DEFAULT::EQUIPMENT_SIZE];
     Equipped temp_equipped;
     Point temp_position;
@@ -1316,6 +1327,7 @@ std::unordered_map<std::string, Unit> chap8Enemies() {
 
 std::unordered_map<std::string, Unit> chap9Enemies() {
     Unit_stats temp_stats;
+    Unit temp_unit;
     Inventory_item temp_equipment[DEFAULT::EQUIPMENT_SIZE];
     Equipped temp_equipped;
     Point temp_position;
@@ -1340,6 +1352,7 @@ std::unordered_map<std::string, Unit> chap9Enemies() {
 
 std::unordered_map<std::string, Unit> chap10Enemies() {
     Unit_stats temp_stats;
+    Unit temp_unit;
     Inventory_item temp_equipment[DEFAULT::EQUIPMENT_SIZE];
     Equipped temp_equipped;
     Point temp_position;
@@ -1364,6 +1377,7 @@ std::unordered_map<std::string, Unit> chap10Enemies() {
 
 std::unordered_map<std::string, Unit> chap11Enemies() {
     Unit_stats temp_stats;
+    Unit temp_unit;
     Inventory_item temp_equipment[DEFAULT::EQUIPMENT_SIZE];
     Equipped temp_equipped;
     Point temp_position;
@@ -1388,6 +1402,7 @@ std::unordered_map<std::string, Unit> chap11Enemies() {
 
 std::unordered_map<std::string, Unit> chap12Enemies() {
     Unit_stats temp_stats;
+    Unit temp_unit;
     Inventory_item temp_equipment[DEFAULT::EQUIPMENT_SIZE];
     Equipped temp_equipped;
     Point temp_position;
@@ -1412,6 +1427,7 @@ std::unordered_map<std::string, Unit> chap12Enemies() {
 
 std::unordered_map<std::string, Unit> chap13Enemies() {
     Unit_stats temp_stats;
+    Unit temp_unit;
     Inventory_item temp_equipment[DEFAULT::EQUIPMENT_SIZE];
     Equipped temp_equipped;
     Point temp_position;
@@ -1436,6 +1452,7 @@ std::unordered_map<std::string, Unit> chap13Enemies() {
 
 std::unordered_map<std::string, Unit> chap14Enemies() {
     Unit_stats temp_stats;
+    Unit temp_unit;
     Inventory_item temp_equipment[DEFAULT::EQUIPMENT_SIZE];
     Equipped temp_equipped;
     Point temp_position;
@@ -1460,6 +1477,7 @@ std::unordered_map<std::string, Unit> chap14Enemies() {
 
 std::unordered_map<std::string, Unit> chap15Enemies() {
     Unit_stats temp_stats;
+    Unit temp_unit;
     Inventory_item temp_equipment[DEFAULT::EQUIPMENT_SIZE];
     Equipped temp_equipped;
     Point temp_position;
@@ -1484,6 +1502,7 @@ std::unordered_map<std::string, Unit> chap15Enemies() {
 
 std::unordered_map<std::string, Unit> chap16Enemies() {
     Unit_stats temp_stats;
+    Unit temp_unit;
     Inventory_item temp_equipment[DEFAULT::EQUIPMENT_SIZE];
     Equipped temp_equipped;
     Point temp_position;
@@ -1508,6 +1527,7 @@ std::unordered_map<std::string, Unit> chap16Enemies() {
 
 std::unordered_map<std::string, Unit> chap17Enemies() {
     Unit_stats temp_stats;
+    Unit temp_unit;
     Inventory_item temp_equipment[DEFAULT::EQUIPMENT_SIZE];
     Equipped temp_equipped;
     Point temp_position;
@@ -1532,6 +1552,7 @@ std::unordered_map<std::string, Unit> chap17Enemies() {
 
 std::unordered_map<std::string, Unit> chap18Enemies() {
     Unit_stats temp_stats;
+    Unit temp_unit;
     Inventory_item temp_equipment[DEFAULT::EQUIPMENT_SIZE];
     Equipped temp_equipped;
     Point temp_position;
@@ -1556,6 +1577,7 @@ std::unordered_map<std::string, Unit> chap18Enemies() {
 
 std::unordered_map<std::string, Unit> chap19Enemies() {
     Unit_stats temp_stats;
+    Unit temp_unit;
     Inventory_item temp_equipment[DEFAULT::EQUIPMENT_SIZE];
     Equipped temp_equipped;
     Point temp_position;
@@ -1580,6 +1602,7 @@ std::unordered_map<std::string, Unit> chap19Enemies() {
 
 std::unordered_map<std::string, Unit> chap20Enemies() {
     Unit_stats temp_stats;
+    Unit temp_unit;
     Inventory_item temp_equipment[DEFAULT::EQUIPMENT_SIZE];
     Equipped temp_equipped;
     Point temp_position;
@@ -1604,6 +1627,7 @@ std::unordered_map<std::string, Unit> chap20Enemies() {
 
 std::unordered_map<std::string, Unit> chap21Enemies() {
     Unit_stats temp_stats;
+    Unit temp_unit;
     Inventory_item temp_equipment[DEFAULT::EQUIPMENT_SIZE];
     Equipped temp_equipped;
     Point temp_position;
@@ -1628,6 +1652,7 @@ std::unordered_map<std::string, Unit> chap21Enemies() {
 
 std::unordered_map<std::string, Unit> chap22Enemies() {
     Unit_stats temp_stats;
+    Unit temp_unit;
     Inventory_item temp_equipment[DEFAULT::EQUIPMENT_SIZE];
     Equipped temp_equipped;
     Point temp_position;
@@ -1652,6 +1677,7 @@ std::unordered_map<std::string, Unit> chap22Enemies() {
 
 std::unordered_map<std::string, Unit> chap23Enemies() {
     Unit_stats temp_stats;
+    Unit temp_unit;
     Inventory_item temp_equipment[DEFAULT::EQUIPMENT_SIZE];
     Equipped temp_equipped;
     Point temp_position;
@@ -1676,6 +1702,7 @@ std::unordered_map<std::string, Unit> chap23Enemies() {
 
 std::unordered_map<std::string, Unit> chap24Enemies() {
     Unit_stats temp_stats;
+    Unit temp_unit;
     Inventory_item temp_equipment[DEFAULT::EQUIPMENT_SIZE];
     Equipped temp_equipped;
     Point temp_position;
@@ -1700,6 +1727,7 @@ std::unordered_map<std::string, Unit> chap24Enemies() {
 
 std::unordered_map<std::string, Unit> chap25Enemies() {
     Unit_stats temp_stats;
+    Unit temp_unit;
     Inventory_item temp_equipment[DEFAULT::EQUIPMENT_SIZE];
     Equipped temp_equipped;
     Point temp_position;
