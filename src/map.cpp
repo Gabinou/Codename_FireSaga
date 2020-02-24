@@ -269,4 +269,10 @@ std::vector<std::vector<short int>> testTilemap(){
     return(tilemap);
 }
 
+std::vector<short unsigned int> testEnemyinds(){
+    std::vector<short unsigned int> enemies = {UNIT::SILOU};
+    return(enemies);
+}
+
 std::vector<std::vector<short int>> (*chapTilemaps[40])() = {testTilemap,};
+std::vector<short unsigned int> (*chapEnemyinds[40])() = {testEnemyinds,};

@@ -146,10 +146,10 @@ class Unit {
 
 extern std::vector<Unit> all_units;
 extern std::vector<Unit> loaded_units;
-extern std::vector<Unit> (*chapEnemies[40])();
+extern std::vector<Unit> (*chapEnemyUnits[40])();
 
 void baseUnits();
-void baseEnemies();
-extern std::vector<Unit> chap1Enemies();
+void baseEnemyUnits();
+extern std::vector<Unit> chap1EnemyUnits();
 
 #endif /* UNIT_HPP */

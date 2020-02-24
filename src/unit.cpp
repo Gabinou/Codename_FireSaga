@@ -968,7 +968,7 @@ void baseUnits() {
     all_units[UNIT::SILOU] = temp_unit;
 }
 
-void genericEnemies() {
+void genericEnemyUnits() {
     printf("Making generic enemies\n");
     Unit_stats temp;
     Unit temp_unit;
@@ -1119,7 +1119,7 @@ void genericEnemies() {
     all_units[UNIT::GENERIC_MOUSQUETAIRE] = temp_unit;
 }
 
-std::vector<Unit> chaptestEnemies() {
+std::vector<Unit> chaptestEnemyUnits() {
     Unit_stats temp_stats;
     Unit temp_unit;
     Inventory_item temp_equipment[DEFAULT::EQUIPMENT_SIZE];
@@ -1144,7 +1144,7 @@ std::vector<Unit> chaptestEnemies() {
     return(made_units);
 } 
 
-std::vector<Unit> chap1Enemies() {
+std::vector<Unit> chap1EnemyUnits() {
     Unit_stats temp_stats;
     Unit temp_unit;
     Inventory_item temp_equipment[DEFAULT::EQUIPMENT_SIZE];
@@ -1169,7 +1169,7 @@ std::vector<Unit> chap1Enemies() {
     return(made_units);
 } 
 
-std::vector<Unit> chap2Enemies() {
+std::vector<Unit> chap2EnemyUnits() {
     Unit_stats temp_stats;
     Unit temp_unit;
     Inventory_item temp_equipment[DEFAULT::EQUIPMENT_SIZE];
@@ -1194,7 +1194,7 @@ std::vector<Unit> chap2Enemies() {
     return(made_units);
 }
 
-std::vector<Unit> chap3Enemies() {
+std::vector<Unit> chap3EnemyUnits() {
     Unit_stats temp_stats;
     Unit temp_unit;
     Inventory_item temp_equipment[DEFAULT::EQUIPMENT_SIZE];
@@ -1219,7 +1219,7 @@ std::vector<Unit> chap3Enemies() {
     return(made_units);
 } 
 
-std::vector<Unit> chap4Enemies() {
+std::vector<Unit> chap4EnemyUnits() {
     Unit_stats temp_stats;
     Unit temp_unit;
     Inventory_item temp_equipment[DEFAULT::EQUIPMENT_SIZE];
@@ -1244,7 +1244,7 @@ std::vector<Unit> chap4Enemies() {
     return(made_units);
 }
 
-std::vector<Unit> chap5Enemies() {
+std::vector<Unit> chap5EnemyUnits() {
     Unit_stats temp_stats;
     Unit temp_unit;
     Inventory_item temp_equipment[DEFAULT::EQUIPMENT_SIZE];
@@ -1269,7 +1269,7 @@ std::vector<Unit> chap5Enemies() {
     return(made_units);
 }
 
-std::vector<Unit> chap6Enemies() {
+std::vector<Unit> chap6EnemyUnits() {
     Unit_stats temp_stats;
     Unit temp_unit;
     Inventory_item temp_equipment[DEFAULT::EQUIPMENT_SIZE];
@@ -1294,7 +1294,7 @@ std::vector<Unit> chap6Enemies() {
     return(made_units);
 } 
 
-std::vector<Unit> chap7Enemies() {
+std::vector<Unit> chap7EnemyUnits() {
     Unit_stats temp_stats;
     Unit temp_unit;
     Inventory_item temp_equipment[DEFAULT::EQUIPMENT_SIZE];
@@ -1319,7 +1319,7 @@ std::vector<Unit> chap7Enemies() {
     return(made_units);
 }
 
-std::vector<Unit> chap8Enemies() {
+std::vector<Unit> chap8EnemyUnits() {
     Unit_stats temp_stats;
     Unit temp_unit;
     Inventory_item temp_equipment[DEFAULT::EQUIPMENT_SIZE];
@@ -1344,7 +1344,7 @@ std::vector<Unit> chap8Enemies() {
     return(made_units);
 }
 
-std::vector<Unit> chap9Enemies() {
+std::vector<Unit> chap9EnemyUnits() {
     Unit_stats temp_stats;
     Unit temp_unit;
     Inventory_item temp_equipment[DEFAULT::EQUIPMENT_SIZE];
@@ -1369,7 +1369,7 @@ std::vector<Unit> chap9Enemies() {
     return(made_units);
 }
 
-std::vector<Unit> chap10Enemies() {
+std::vector<Unit> chap10EnemyUnits() {
     Unit_stats temp_stats;
     Unit temp_unit;
     Inventory_item temp_equipment[DEFAULT::EQUIPMENT_SIZE];
@@ -1394,7 +1394,7 @@ std::vector<Unit> chap10Enemies() {
     return(made_units);
 }
 
-std::vector<Unit> chap11Enemies() {
+std::vector<Unit> chap11EnemyUnits() {
     Unit_stats temp_stats;
     Unit temp_unit;
     Inventory_item temp_equipment[DEFAULT::EQUIPMENT_SIZE];
@@ -1419,7 +1419,7 @@ std::vector<Unit> chap11Enemies() {
     return(made_units);
 }
 
-std::vector<Unit> chap12Enemies() {
+std::vector<Unit> chap12EnemyUnits() {
     Unit_stats temp_stats;
     Unit temp_unit;
     Inventory_item temp_equipment[DEFAULT::EQUIPMENT_SIZE];
@@ -1444,7 +1444,7 @@ std::vector<Unit> chap12Enemies() {
     return(made_units);
 }
 
-std::vector<Unit> chap13Enemies() {
+std::vector<Unit> chap13EnemyUnits() {
     Unit_stats temp_stats;
     Unit temp_unit;
     Inventory_item temp_equipment[DEFAULT::EQUIPMENT_SIZE];
@@ -1469,7 +1469,7 @@ std::vector<Unit> chap13Enemies() {
     return(made_units);
 }
 
-std::vector<Unit> chap14Enemies() {
+std::vector<Unit> chap14EnemyUnits() {
     Unit_stats temp_stats;
     Unit temp_unit;
     Inventory_item temp_equipment[DEFAULT::EQUIPMENT_SIZE];
@@ -1494,7 +1494,7 @@ std::vector<Unit> chap14Enemies() {
     return(made_units);
 }
 
-std::vector<Unit> chap15Enemies() {
+std::vector<Unit> chap15EnemyUnits() {
     Unit_stats temp_stats;
     Unit temp_unit;
     Inventory_item temp_equipment[DEFAULT::EQUIPMENT_SIZE];
@@ -1519,7 +1519,7 @@ std::vector<Unit> chap15Enemies() {
     return(made_units);
 }
 
-std::vector<Unit> chap16Enemies() {
+std::vector<Unit> chap16EnemyUnits() {
     Unit_stats temp_stats;
     Unit temp_unit;
     Inventory_item temp_equipment[DEFAULT::EQUIPMENT_SIZE];
@@ -1544,7 +1544,7 @@ std::vector<Unit> chap16Enemies() {
     return(made_units);
 }
 
-std::vector<Unit> chap17Enemies() {
+std::vector<Unit> chap17EnemyUnits() {
     Unit_stats temp_stats;
     Unit temp_unit;
     Inventory_item temp_equipment[DEFAULT::EQUIPMENT_SIZE];
@@ -1569,7 +1569,7 @@ std::vector<Unit> chap17Enemies() {
     return(made_units);
 }
 
-std::vector<Unit> chap18Enemies() {
+std::vector<Unit> chap18EnemyUnits() {
     Unit_stats temp_stats;
     Unit temp_unit;
     Inventory_item temp_equipment[DEFAULT::EQUIPMENT_SIZE];
@@ -1594,7 +1594,7 @@ std::vector<Unit> chap18Enemies() {
     return(made_units);
 }
 
-std::vector<Unit> chap19Enemies() {
+std::vector<Unit> chap19EnemyUnits() {
     Unit_stats temp_stats;
     Unit temp_unit;
     Inventory_item temp_equipment[DEFAULT::EQUIPMENT_SIZE];
@@ -1619,7 +1619,7 @@ std::vector<Unit> chap19Enemies() {
     return(made_units);
 }
 
-std::vector<Unit> chap20Enemies() {
+std::vector<Unit> chap20EnemyUnits() {
     Unit_stats temp_stats;
     Unit temp_unit;
     Inventory_item temp_equipment[DEFAULT::EQUIPMENT_SIZE];
@@ -1644,7 +1644,7 @@ std::vector<Unit> chap20Enemies() {
     return(made_units);
 }
 
-std::vector<Unit> chap21Enemies() {
+std::vector<Unit> chap21EnemyUnits() {
     Unit_stats temp_stats;
     Unit temp_unit;
     Inventory_item temp_equipment[DEFAULT::EQUIPMENT_SIZE];
@@ -1669,7 +1669,7 @@ std::vector<Unit> chap21Enemies() {
     return(made_units);
 }
 
-std::vector<Unit> chap22Enemies() {
+std::vector<Unit> chap22EnemyUnits() {
     Unit_stats temp_stats;
     Unit temp_unit;
     Inventory_item temp_equipment[DEFAULT::EQUIPMENT_SIZE];
@@ -1694,7 +1694,7 @@ std::vector<Unit> chap22Enemies() {
     return(made_units);
 }
 
-std::vector<Unit> chap23Enemies() {
+std::vector<Unit> chap23EnemyUnits() {
     Unit_stats temp_stats;
     Unit temp_unit;
     Inventory_item temp_equipment[DEFAULT::EQUIPMENT_SIZE];
@@ -1719,7 +1719,7 @@ std::vector<Unit> chap23Enemies() {
     return(made_units);
 }
 
-std::vector<Unit> chap24Enemies() {
+std::vector<Unit> chap24EnemyUnits() {
     Unit_stats temp_stats;
     Unit temp_unit;
     Inventory_item temp_equipment[DEFAULT::EQUIPMENT_SIZE];
@@ -1744,7 +1744,7 @@ std::vector<Unit> chap24Enemies() {
     return(made_units);
 }
 
-std::vector<Unit> chap25Enemies() {
+std::vector<Unit> chap25EnemyUnits() {
     Unit_stats temp_stats;
     Unit temp_unit;
     Inventory_item temp_equipment[DEFAULT::EQUIPMENT_SIZE];
@@ -1769,7 +1769,7 @@ std::vector<Unit> chap25Enemies() {
     return(made_units);
 }
 
-std::vector<Unit> (*chapEnemies[40])() = {chaptestEnemies, chap1Enemies, chap2Enemies, chap3Enemies, chap4Enemies, chap5Enemies, chap6Enemies, chap7Enemies, chap8Enemies, chap9Enemies, chap10Enemies, chap11Enemies, chap12Enemies, chap13Enemies, chap14Enemies, chap15Enemies, chap16Enemies, chap17Enemies, chap18Enemies, chap19Enemies, chap20Enemies, chap21Enemies, chap22Enemies, chap23Enemies, chap24Enemies, chap25Enemies};
+std::vector<Unit> (*chapEnemyUnits[40])() = {chaptestEnemyUnits, chap1EnemyUnits, chap2EnemyUnits, chap3EnemyUnits, chap4EnemyUnits, chap5EnemyUnits, chap6EnemyUnits, chap7EnemyUnits, chap8EnemyUnits, chap9EnemyUnits, chap10EnemyUnits, chap11EnemyUnits, chap12EnemyUnits, chap13EnemyUnits, chap14EnemyUnits, chap15EnemyUnits, chap16EnemyUnits, chap17EnemyUnits, chap18EnemyUnits, chap19EnemyUnits, chap20EnemyUnits, chap21EnemyUnits, chap22EnemyUnits, chap23EnemyUnits, chap24EnemyUnits, chap25EnemyUnits};
 
 
 

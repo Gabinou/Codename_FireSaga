@@ -92,7 +92,9 @@ class Map {
 };
 
 extern std::vector<std::vector<short int>> (*chapTilemaps[40])();
+extern std::vector<short unsigned int> (*chapEnemyinds[40])();
 
+std::vector<short unsigned int> testEnemies();
 std::vector<std::vector<short int>> testTilemap();
 std::vector<std::vector<short int>> chap2Tilemap();
 std::vector<std::vector<short int>> chap3Tilemap();
