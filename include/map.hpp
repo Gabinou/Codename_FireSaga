@@ -27,14 +27,13 @@ class Map {
 
         SDL_Rect srcrect, destrect;
 
-        std::string overlay_mode = "";
-        std::string danger_mode = "";
+        unsigned char overlay_mode = 0;
+        unsigned char danger_mode = 0;
 
         std::unordered_map<short int, SDL_Texture *> textures;
         std::vector<short int> unique_textures;
         std::vector<SDL_Texture *> overlays{NULL, NULL, NULL};
         std::vector<SDL_Texture *> dangers{NULL, NULL};
-        std::string ss_looping = "linear";
 
         Entity_ptr_matrix entitymap;
 

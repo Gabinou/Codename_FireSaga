@@ -233,16 +233,6 @@ void Map::drawMap(SDL_Renderer * renderer) {
                     SDL_RenderCopy(renderer, dangers[0], &srcrect, &destrect);
                 }
             }
-            // if (ss_looping == "pingpong") {
-            //     srcrect.x = srcrect.w * pingpong(static_cast<int>(SDL_GetTicks() / speed), frames, 0);
-            // } else if ((ss_looping == "linear") || (ss_looping == "direct")) {
-            //     srcrect.x = srcrect.w * static_cast<int>((SDL_GetTicks() / speed) % frames);
-            // } else if (ss_looping == "reverse") {
-            //     srcrect.x = srcrect.w * (frames - static_cast<int>((SDL_GetTicks() / speed) % frames));
-            // }
-
-            // SDL_RenderCopy(renderer, texture, &srcrect, &destrect);
-        }
     }
 }
 
