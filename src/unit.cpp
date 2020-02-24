@@ -84,11 +84,26 @@ void Unit::setMap_enemy(Map_enemy in_map_enemy){
     map_enemy = in_map_enemy;
 }
 
+void Unit::removeEquipment(unsigned char in_index) {
+    Inventory_item empty;
+    equipment[in_index] = empty; 
+}
+
+void Unit::addEquipment(Inventory_item * in_equipment) {
+    for (short unsigned int i = 0; i < DEFAULT::EQUIPMENT_SIZE; i++) {
+        if (equipment[i].id == -1) {
+            equipment[i] = in_equipment[i]; 
+            break;
+        }
+    }
+}
+
 void Unit::setEquipment(Inventory_item * in_equipment) {
     for (short unsigned int i = 0; i < DEFAULT::EQUIPMENT_SIZE; i++) {
         equipment[i] = in_equipment[i];
     }
 }
+
 void Unit::setEquipped(Equipped in_equipped) {
     equipped = in_equipped;
 }

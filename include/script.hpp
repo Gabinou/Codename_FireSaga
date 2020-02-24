@@ -52,15 +52,15 @@ extern Script(*scriptChapter[15])();
 void baseScript();
 void baseNarrativeState();
 
-namespace SCENE{
-    enum SCENES{
+namespace SCENE {
+enum SCENES {
 
-    };
+};
 }
-namespace LINE{
-    enum LINES{
+namespace LINE {
+enum LINES {
 
-    };
+};
 }
 
 

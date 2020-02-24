@@ -511,7 +511,7 @@ struct Weapon_stats {
 };
 
 struct Inventory_item {
-    unsigned short int id;
+    short int id = -1;
     unsigned char used = 0;
     bool highlighted = true;
     // item images are highlighted by default.
