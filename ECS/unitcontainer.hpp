@@ -5,19 +5,19 @@
 
 class UnitContainer : public Component {
     private:
-        std::string name;
+        short unsigned int index;
     public:
         UnitContainer() = default;
-        UnitContainer(std::string in_name) {
-            name = in_name;
+        UnitContainer(short unsigned int in_index) {
+            index = in_index;
         }
 
-        std::string getName() {
-            return (name);
+        short unsigned int getIndex() {
+            return (index);
         }
 
-        void setName(std::string in_name) {
-            name = in_name;
+        void setIndex(short unsigned int in_index) {
+            index = in_index;
         }
 };
 

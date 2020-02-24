@@ -27,7 +27,7 @@ int main(int argc, char * argv[]) {
     printf("Testing weapon: %s\n", all_weapons[WEAPON::WOODEN_SWORD].getName().c_str());
     
     baseUnits();
-    printf("Testing units: %s \n", all_units["Silou"].getName().c_str());
+    printf("Testing units: %s \n", all_units[UNIT::SILOU].getName().c_str());
 
     firesaga = new Game();
     printf("Made game.\n");

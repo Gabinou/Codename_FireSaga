@@ -37,7 +37,7 @@ void Map::addEnemy(const short unsigned int in_enemy_ind) {
 }
 
 std::vector<short unsigned int> Map::getEnemies() {
-    return(enemy_names);
+    return(enemy_inds);
 }
 
 std::vector<std::vector<short int>> Map::makeMvtCostmap(const unsigned char unitmovetype){
