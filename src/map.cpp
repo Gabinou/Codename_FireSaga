@@ -32,6 +32,10 @@ void Map::setEnemies(const std::vector<short unsigned int> in_enemy_inds) {
     enemy_inds = in_enemy_inds;
 }
 
+void Map::loadEnemyinds(const short unsigned int in_chap_ind) {
+    enemy_inds = chapEnemyinds[in_chap_ind]();
+}
+
 void Map::addEnemy(const short unsigned int in_enemy_ind) {
     enemy_inds.push_back(in_enemy_ind);
 }

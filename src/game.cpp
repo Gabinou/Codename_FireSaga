@@ -330,6 +330,7 @@ void Game::loadMap(const int in_map_index) {
     loaded_tiles = baseTiles(chapTiles[in_map_index]());
     mapp =  new Map(settings.tilesize[0], settings.tilesize[1]); // mapp is a pointer
     mapp->loadTilemap(in_map_index);
+    mapp->loadEnemyinds(in_map_index);
     // printf("Testing tiles: %s\n", loaded_tiles[10].getName().c_str());
 }
 

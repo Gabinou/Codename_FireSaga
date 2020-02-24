@@ -79,6 +79,7 @@ class Map {
         void hideGrid();
 
         void setEnemies(const std::vector<short unsigned int> in_enemy_inds);
+        void loadEnemyinds(const short unsigned int in_chap_ind);
         void addEnemy(const short unsigned int in_enemy_ind);
         std::vector<short unsigned int> getEnemies();
 
@@ -87,7 +88,6 @@ class Map {
         void hideDanger();
         void addDanger(const std::vector<std::vector<short int>> in_danger);
         void subDanger(const std::vector<std::vector<short int>> in_danger);
-
 
 };
 
