@@ -28,15 +28,15 @@ void Map::removeTile(const short unsigned int x, const short unsigned int y) {
     entitymap[x][y] = nullptr;
 }
 
-void Map::setEnemies(const std::vector<std::string> in_enemy_names) {
-    enemy_names = in_enemy_names;
+void Map::setEnemies(const std::vector<short unsigned int> in_enemy_inds) {
+    enemy_inds = in_enemy_inds;
 }
 
-void Map::addEnemy(const std::string in_enemy_name) {
-    enemy_names.push_back(in_enemy_name);
+void Map::addEnemy(const short unsigned int in_enemy_ind) {
+    enemy_inds.push_back(in_enemy_ind);
 }
 
-std::vector<std::string> Map::getEnemies() {
+std::vector<short unsigned int> Map::getEnemies() {
     return(enemy_names);
 }
 

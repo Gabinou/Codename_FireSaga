@@ -18,7 +18,7 @@ class Map {
         bool show_grid = false;
         bool made_entitymap = false;
 
-        std::vector<std::string> enemy_names;
+        std::vector<short unsigned int> enemy_inds;
 
         std::vector<std::vector<short int>> moveoverlay, attackoverlay, healoverlay;
         std::vector<std::vector<short int>> dangeroverlay;
@@ -78,11 +78,11 @@ class Map {
         void showGrid();
         void hideGrid();
 
-        void setEnemies(const std::vector<std::string> in_enemy_names);
-        void addEnemy(const std::string in_enemy_name);
-        std::vector<std::string> getEnemies();
+        void setEnemies(const std::vector<short unsigned int> in_enemy_inds);
+        void addEnemy(const short unsigned int in_enemy_ind);
+        std::vector<short unsigned int> getEnemies();
 
-        void setDangermode(const std::string in_mode);
+        void setDangermode(const std::string in_mode); // SHOULD NOT BE A STRING.
         void showDanger();
         void hideDanger();
         void addDanger(const std::vector<std::vector<short int>> in_danger);

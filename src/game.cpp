@@ -349,23 +349,23 @@ void Game::loadCursor() {
     }
 }
 
-void Game::loadUnits(std::vector<std::string> names, std::vector<std::string> asset_names, std::vector<std::vector<int>> positions_list) {
+void Game::loadUnits(std::vector<short unsigned int> unit_inds, std::vector<std::string> asset_names, std::vector<std::vector<int>> positions_list) {
     printf("Loading Units. \n");
-    for (int i = 0; i < names.size(); i++) { 
-        all_units[names[i]].setEntity(manager.getEntities().size());
+    for (int i = 0; i < unit_inds.size(); i++) { 
+        all_units[unit_inds[i]].setEntity(manager.getEntities().size());
         manager.addEntity();
-        manager.getEntities()[all_units[names[i]].getEntity()]->addComponent<PositionComponent>(positions_list[i][0], positions_list[i][1]);
-        manager.getEntities()[all_units[names[i]].getEntity()]->addComponent<UnitContainer>(names[i]);
-        manager.getEntities()[all_units[names[i]].getEntity()]->getComponent<PositionComponent>().setMap(mapp); //Should mapp be an input? No mapp is always same ?
-        manager.getEntities()[all_units[names[i]].getEntity()]->addComponent<SpriteComponent>(mapp, asset_names[i].c_str());
-        manager.getEntities()[all_units[names[i]].getEntity()]->addGroup(manager.groupUnits);
-        manager.getEntities()[all_units[names[i]].getEntity()]->addGroup(manager.groupUnits);
+        manager.getEntities()[all_units[unit_inds[i]].getEntity()]->addComponent<PositionComponent>(positions_list[i][0], positions_list[i][1]);
+        manager.getEntities()[all_units[unit_inds[i]].getEntity()]->addComponent<UnitContainer>(unit_inds[i]);
+        manager.getEntities()[all_units[unit_inds[i]].getEntity()]->getComponent<PositionComponent>().setMap(mapp); //Should mapp be an input? No mapp is always same ?
+        manager.getEntities()[all_units[unit_inds[i]].getEntity()]->addComponent<SpriteComponent>(mapp, asset_names[i].c_str());
+        manager.getEntities()[all_units[unit_inds[i]].getEntity()]->addGroup(manager.groupUnits);
+        manager.getEntities()[all_units[unit_inds[i]].getEntity()]->addGroup(manager.groupUnits);
     }
 }
 
 void Game::loadMapEnemies() {
     printf("Loading map enemies. \n");
-    std::vector<std::string> map_enemies = mapp->getEnemies(); 
+    std::vector<short unsigned int> map_enemies = mapp->getEnemies(); 
     for (int i = 0; i < map_enemies.size(); i++) {
         all_units[map_enemies[i]].setEntity(manager.getEntities().size());
         manager.addEntity();
