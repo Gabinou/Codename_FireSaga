@@ -80,7 +80,7 @@ class Unit {
         void unequips(const std::string hand = "right");
         void setEquipped(Equipped in_equipped);
         void setEquipment(Inventory_item * in_equipment);
-        void addEquipment(Inventory_item * in_equipment);
+        void addEquipment(Inventory_item in_equipment);
         void removeEquipment(unsigned char in_index);
 
         void takeItem(Inventory_item * out_array, const short int in_index, const short int out_index);
@@ -144,11 +144,12 @@ class Unit {
         void write(const char * filename, const char * mode = "a");
 };
 
-extern std::unordered_map<std::string, Unit> all_units;
-extern std::unordered_map<std::string, Unit> (*chapEnemies[40])();
+extern std::vector<Unit> all_units;
+extern std::vector<Unit> loaded_units;
+extern std::vector<Unit> (*chapEnemies[40])();
 
 void baseUnits();
 void baseEnemies();
-extern std::unordered_map<std::string, Unit> chap1Enemies();
+extern std::vector<Unit> chap1Enemies();
 
 #endif /* UNIT_HPP */

@@ -176,16 +176,16 @@ void Game::setState(Entity & setting_entity, std::string new_state) {
                     unit_entities.push(i);
                 }
             }
-            std::string current_unit_name = manager.getEntities()[unit_entities.top()]->getComponent<UnitContainer>().getName(); // problem
-            unit_move = all_units[current_unit_name].getStats().move;
+            // std::string current_unit_name = manager.getEntities()[unit_entities.top()]->getComponent<UnitContainer>().getName(); // problem
+            unit_move = all_units[UNIT::SILOU].getStats().move;
 
             start[0] = manager.getEntities()[unit_entities.top()]->getComponent<PositionComponent>().getPos()[0]; // Start is (+1,+1)?
             start[1] = manager.getEntities()[unit_entities.top()]->getComponent<PositionComponent>().getPos()[1]; // Start is (+1,+1)?
             start[0] = start[0] - 1;
             start[1] = start[1] - 1;
 
-            unitmvttype = all_units[current_unit_name].getMvttype();
-            range = all_units[current_unit_name].getRange();
+            unitmvttype = all_units[UNIT::SILOU].getMvttype();
+            range = all_units[UNIT::SILOU].getRange();
             costmap = mapp->makeMvtCostmap(unitmvttype);
 
             movemapp = movemap(costmap, start, unit_move, "matrix");
