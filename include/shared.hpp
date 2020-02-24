@@ -350,26 +350,26 @@ enum UNIT_TYPES {
 }
 
 namespace MAP {
-    namespace OVERLAY {
-        enum OVERLAYS {
-            HEAL = 0x0001,
-            MOVE = 0x0002,
-            ATTACK = 0x0004,
-        };
-    }
-    namespace DANGER {
-        enum DANGERS {
+namespace OVERLAY {
+enum OVERLAYS {
+    HEAL = 0x0001,
+    MOVE = 0x0002,
+    ATTACK = 0x0004,
+};
+}
+namespace DANGER {
+enum DANGERS {
 
-        };
-    }
+};
+}
 }
 
 namespace LOOPING {
-    enum LOOPINGS {
-        PINGPONG,
-        DIRECT,
-        REVERSE
-    };
+enum LOOPINGS {
+    PINGPONG,
+    DIRECT,
+    REVERSE
+};
 }
 
 namespace UNIT {

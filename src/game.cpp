@@ -176,7 +176,7 @@ void Game::setState(Entity & setting_entity, std::string new_state) {
                     unit_entities.push(i);
                 }
             }
-            
+
             short unsigned int current_unit_id = manager.getEntities()[unit_entities.top()]->getComponent<UnitContainer>().getID();
             unit_move = all_units[current_unit_id].getStats().move;
 
@@ -190,10 +190,10 @@ void Game::setState(Entity & setting_entity, std::string new_state) {
             costmap = mapp->makeMvtCostmap(unitmvttype);
 
             movemapp = movemap(costmap, start, unit_move, "matrix");
-            mapp->setOverlay("move", movemapp);
+            mapp->setOverlay(MAP::OVERLAY::MOVE, movemapp);
 
             attackmapp = attackmap(movemapp, start, unit_move, range, "matrix");
-            mapp->setOverlay("attack", attackmapp);
+            mapp->setOverlay(MAP::OVERLAY::ATTACK, attackmapp);
 
             mapp->showOverlay();
         }

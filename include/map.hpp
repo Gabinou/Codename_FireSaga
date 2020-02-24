@@ -66,10 +66,10 @@ class Map {
         void moveTile(const short unsigned int x, const short unsigned int y, const short unsigned int new_x, const short unsigned int new_y);
         Entity * getTile(const short unsigned int x, const short unsigned int y);
 
-        void setOverlay(const std::string in_type, std::vector<std::vector<short int>> in_map);
+        void setOverlay(const unsigned char in_mode, std::vector<std::vector<short int>> in_map);
         void clearOverlays();
 
-        void setOverlaymode(const std::string in_mode);
+        void setOverlaymode(const unsigned char in_mode);
         void showOverlay();
         void hideOverlay();
 
@@ -82,7 +82,7 @@ class Map {
         void addEnemy(const short unsigned int in_enemy_ind);
         std::vector<short unsigned int> getEnemies();
 
-        void setDangermode(const std::string in_mode); // SHOULD NOT BE A STRING.
+        void setDangermode(const unsigned char in_mode);
         void showDanger();
         void hideDanger();
         void addDanger(const std::vector<std::vector<short int>> in_danger);
