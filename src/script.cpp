@@ -92,15 +92,18 @@ void baseScript() {
     Scene temp_scene;
     Script temp_script;
 
-    temp_script = Script();
-    temp_scene.setID(1);
-    temp_line = {1, UNIT::SILOU, "the line"};
-    temp_lines.push_back(temp_line);
-    temp_scene.addLines(temp_lines);
-    temp_script.addScene(temp_scene);
-    all_scripts.push_back(temp_script);
-    temp_lines.clear();
+    // printf("done");
 
+    // temp_script = Script();
+    // temp_scene.setID(1);
+    // temp_line = {1, UNIT::SILOU, "the line"};
+    // temp_lines.push_back(temp_line);
+    // temp_scene.addLines(temp_lines);
+    // temp_script.addScene(temp_scene);
+    // // all_scripts.push_back(temp_script);
+    // // temp_lines.clear();
+
+    // printf("REALLY done");
     // Script Supports;
     // temp_scene.setID("Erwin_Kiara_C");
     // temp_lines.push_back({1, UNIT::ERWIN, "the line2"});
