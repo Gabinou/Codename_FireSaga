@@ -170,22 +170,23 @@ void Game::setState(Entity & setting_entity, std::string new_state) {
             unsigned char unitmvttype;
             short unsigned int unit_move;
             unsigned char * range;
-
+            
             for (int i = 0; i < manager.getEntities().size(); i++) {
                 if (manager.getEntities()[i].get() == (Entity *)&setting_entity) {
                     unit_entities.push(i);
                 }
             }
-            // std::string current_unit_name = manager.getEntities()[unit_entities.top()]->getComponent<UnitContainer>().getName(); // problem
-            unit_move = all_units[UNIT::SILOU].getStats().move;
+            
+            short unsigned int current_unit_id = manager.getEntities()[unit_entities.top()]->getComponent<UnitContainer>().getID();
+            unit_move = all_units[current_unit_id].getStats().move;
 
             start[0] = manager.getEntities()[unit_entities.top()]->getComponent<PositionComponent>().getPos()[0]; // Start is (+1,+1)?
             start[1] = manager.getEntities()[unit_entities.top()]->getComponent<PositionComponent>().getPos()[1]; // Start is (+1,+1)?
             start[0] = start[0] - 1;
             start[1] = start[1] - 1;
 
-            unitmvttype = all_units[UNIT::SILOU].getMvttype();
-            range = all_units[UNIT::SILOU].getRange();
+            unitmvttype = all_units[current_unit_id].getMvttype();
+            range = all_units[current_unit_id].getRange();
             costmap = mapp->makeMvtCostmap(unitmvttype);
 
             movemapp = movemap(costmap, start, unit_move, "matrix");

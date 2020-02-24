@@ -12,7 +12,7 @@ class UnitContainer : public Component {
             index = in_index;
         }
 
-        short unsigned int getIndex() {
+        short unsigned int getID() {
             return (index);
         }
 
