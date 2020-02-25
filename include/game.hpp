@@ -80,7 +80,7 @@ class Game {
         void setGamepadInputMap(const GamepadInputMap in_gpmap);
 
         void setState(Entity & in_entity, short unsigned int new_state);
-        void setState(const char * new_state);
+        void setState(const short unsigned int new_state);
         short unsigned int getState();
 
         bool running();
