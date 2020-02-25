@@ -459,6 +459,35 @@ enum TILES {
 };
 }
 
+namespace GAME {
+namespace STATE {
+enum STATES {
+    PAUSE,
+    STATS,
+    MINIMAP,
+    MAP,
+    UNITMENU,
+    UNITMOVE,
+    CUTSCENE,
+    OPTIONS,
+    STARTMENU,
+    SOUNDROOM,
+    SAVES,
+    STORAGE,
+    FORGE,
+    BONUSEXP,
+    PLACEMENT,
+    PREPARATION,
+    CHOOSEUNITS,
+    ITEMS,
+    TRADE,
+    CONVERSTATION,
+    BATTLE,
+    ATTACK,
+};
+}
+}
+
 extern std::mt19937 mt;
 extern std::mt19937_64 mt_64;
 
