@@ -93,8 +93,9 @@ enum MVT_TYPES {
 };
 }
 
-namespace WEAPON {
-enum WEAPONS {
+namespace WPN {
+namespace NAME {
+enum NAMES {
     WOODEN_SWORD,
     KITCHEN_KNIFE,
     WRATH_SWORD,
@@ -236,9 +237,8 @@ enum WEAPONS {
     END,
 };
 }
-
-namespace WPN_TYPE {
-enum WPN_TYPES {
+namespace TYPE {
+enum TYPES {
     // unsigned!!! short int equippable = sword + shield;
     // if (type & equippeable) > 0, weapon is equippable.
     SWORD = 0x0001,
@@ -255,9 +255,8 @@ enum WPN_TYPES {
     CLAW = 0x0800,
 };
 }
-
-namespace WPN_EFFECT {
-enum WPN_EFFECTS {
+namespace EFFECT {
+enum EFFECTS {
     // short unsigned int 16 bits->65536
     // unsigned int 16?32 bits->4,294,967,295
     // long unsigned int 64 bits
@@ -294,6 +293,11 @@ enum WPN_EFFECTS {
     // -> Should be 32bit int.
 };
 }
+}
+
+
+
+
 
 namespace SKILL {
 enum SKILLS : unsigned int {

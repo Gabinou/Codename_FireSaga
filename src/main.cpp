@@ -24,7 +24,7 @@ int main(int argc, char * argv[]) {
     // printf("Testing narrative: Did Erwin die? %d\n", died["Erwin"]);
 
     baseWeapons();
-    printf("Testing weapon: %s\n", all_weapons[WEAPON::WOODEN_SWORD].getName().c_str());
+    printf("Testing weapon: %s\n", all_weapons[WPN::NAME::WOODEN_SWORD].getName().c_str());
     
     baseUnits();
     printf("Testing units: %s \n", all_units[UNIT::SILOU].getName().c_str());

@@ -118,106 +118,106 @@ void Unit::setEquippable() {
     // Easy to change equippable post-hoc
     switch(class_index) {
         case UNIT_CLASS::MERCENARY:
-            equippable = WPN_TYPE::SHIELD + WPN_TYPE::SWORD + WPN_TYPE::OFFHAND;
+            equippable = WPN::TYPE::SHIELD + WPN::TYPE::SWORD + WPN::TYPE::OFFHAND;
             break;
         case UNIT_CLASS::LORD:
-            equippable = WPN_TYPE::LANCE + WPN_TYPE::SHIELD;
+            equippable = WPN::TYPE::LANCE + WPN::TYPE::SHIELD;
             break;
         case UNIT_CLASS::DUELIST:
-            equippable = WPN_TYPE::LANCE + WPN_TYPE::SHIELD;
+            equippable = WPN::TYPE::LANCE + WPN::TYPE::SHIELD;
             break;
         case UNIT_CLASS::THIEF:
-            equippable = WPN_TYPE::LANCE + WPN_TYPE::SHIELD;
+            equippable = WPN::TYPE::LANCE + WPN::TYPE::SHIELD;
             break;
         case UNIT_CLASS::PEGASUS_KNIGHT:
-            equippable = WPN_TYPE::LANCE + WPN_TYPE::SHIELD;
+            equippable = WPN::TYPE::LANCE + WPN::TYPE::SHIELD;
             break;
         case UNIT_CLASS::PIKEMAN:
-            equippable = WPN_TYPE::LANCE + WPN_TYPE::SHIELD;
+            equippable = WPN::TYPE::LANCE + WPN::TYPE::SHIELD;
             break;
         case UNIT_CLASS::CAVALIER:
-            equippable = WPN_TYPE::LANCE + WPN_TYPE::SHIELD;
+            equippable = WPN::TYPE::LANCE + WPN::TYPE::SHIELD;
             break;
         case UNIT_CLASS::KNIGHT:
-            equippable = WPN_TYPE::LANCE + WPN_TYPE::SHIELD;
+            equippable = WPN::TYPE::LANCE + WPN::TYPE::SHIELD;
             break;
         case UNIT_CLASS::BANDIT:
-            equippable = WPN_TYPE::SHIELD + WPN_TYPE::AXE;
+            equippable = WPN::TYPE::SHIELD + WPN::TYPE::AXE;
             break;
         case UNIT_CLASS::CORSAIR:
-            equippable = WPN_TYPE::SHIELD + WPN_TYPE::OFFHAND + WPN_TYPE::AXE;
+            equippable = WPN::TYPE::SHIELD + WPN::TYPE::OFFHAND + WPN::TYPE::AXE;
             break;
         case UNIT_CLASS::VIKING:
-            equippable = WPN_TYPE::SHIELD + WPN_TYPE::OFFHAND + WPN_TYPE::AXE;
+            equippable = WPN::TYPE::SHIELD + WPN::TYPE::OFFHAND + WPN::TYPE::AXE;
             break;
         case UNIT_CLASS::PICKPOCKET:
-            equippable = WPN_TYPE::OFFHAND + WPN_TYPE::SWORD;
+            equippable = WPN::TYPE::OFFHAND + WPN::TYPE::SWORD;
             break;
         case UNIT_CLASS::FENCER:
-            equippable = WPN_TYPE::OFFHAND + WPN_TYPE::SWORD;
+            equippable = WPN::TYPE::OFFHAND + WPN::TYPE::SWORD;
             break;
         case UNIT_CLASS::MOUSQUETAIRE:
-            equippable = WPN_TYPE::SWORD + WPN_TYPE::OFFHAND + WPN_TYPE::BOW; 
+            equippable = WPN::TYPE::SWORD + WPN::TYPE::OFFHAND + WPN::TYPE::BOW; 
             break;
         case UNIT_CLASS::ASSASSIN:
-            equippable = WPN_TYPE::SWORD + WPN_TYPE::OFFHAND + WPN_TYPE::BOW; 
+            equippable = WPN::TYPE::SWORD + WPN::TYPE::OFFHAND + WPN::TYPE::BOW; 
             break;
         case UNIT_CLASS::MARKSMAN:
-            equippable = WPN_TYPE::SWORD + WPN_TYPE::OFFHAND + WPN_TYPE::BOW; 
+            equippable = WPN::TYPE::SWORD + WPN::TYPE::OFFHAND + WPN::TYPE::BOW; 
             break;
         case UNIT_CLASS::ARCHER:
-            equippable = WPN_TYPE::BOW;
+            equippable = WPN::TYPE::BOW;
             break;
         case UNIT_CLASS::DUKE:
-            equippable = WPN_TYPE::SWORD + WPN_TYPE::LANCE + WPN_TYPE::SHIELD + WPN_TYPE::OFFHAND;
+            equippable = WPN::TYPE::SWORD + WPN::TYPE::LANCE + WPN::TYPE::SHIELD + WPN::TYPE::OFFHAND;
             break;
         case UNIT_CLASS::PALADIN:
-            equippable = WPN_TYPE::SWORD + WPN_TYPE::LANCE + WPN_TYPE::SHIELD + WPN_TYPE::OFFHAND;
+            equippable = WPN::TYPE::SWORD + WPN::TYPE::LANCE + WPN::TYPE::SHIELD + WPN::TYPE::OFFHAND;
             break;
         case UNIT_CLASS::GENERAL:
-            equippable = WPN_TYPE::SWORD + WPN_TYPE::SHIELD + WPN_TYPE::AXE + WPN_TYPE::LANCE;
+            equippable = WPN::TYPE::SWORD + WPN::TYPE::SHIELD + WPN::TYPE::AXE + WPN::TYPE::LANCE;
             break;
         case UNIT_CLASS::CLERIC:
-            equippable = WPN_TYPE::STAFF;
+            equippable = WPN::TYPE::STAFF;
             break;
         case UNIT_CLASS::PRIEST:
-            equippable = WPN_TYPE::STAFF;
+            equippable = WPN::TYPE::STAFF;
             break;
         case UNIT_CLASS::MAGE:
-            equippable = WPN_TYPE::ELEMENTAL + WPN_TYPE::TRINKET;
+            equippable = WPN::TYPE::ELEMENTAL + WPN::TYPE::TRINKET;
             break;
         case UNIT_CLASS::HERO:
-            equippable = WPN_TYPE::AXE + WPN_TYPE::SWORD + WPN_TYPE::SHIELD + WPN_TYPE::OFFHAND;
+            equippable = WPN::TYPE::AXE + WPN::TYPE::SWORD + WPN::TYPE::SHIELD + WPN::TYPE::OFFHAND;
             break;
         case UNIT_CLASS::RAVAGER:
-            equippable = WPN_TYPE::AXE + WPN_TYPE::SHIELD + WPN_TYPE::OFFHAND + WPN_TYPE::BOW;
+            equippable = WPN::TYPE::AXE + WPN::TYPE::SHIELD + WPN::TYPE::OFFHAND + WPN::TYPE::BOW;
             break;
         case UNIT_CLASS::BATTLEMAGE:
-            equippable = WPN_TYPE::ELEMENTAL + WPN_TYPE::SHIELD + WPN_TYPE::SWORD + WPN_TYPE::TRINKET;
+            equippable = WPN::TYPE::ELEMENTAL + WPN::TYPE::SHIELD + WPN::TYPE::SWORD + WPN::TYPE::TRINKET;
             break;
         case UNIT_CLASS::SAGE:
-            equippable = WPN_TYPE::ELEMENTAL + WPN_TYPE::STAFF + WPN_TYPE::TRINKET;
+            equippable = WPN::TYPE::ELEMENTAL + WPN::TYPE::STAFF + WPN::TYPE::TRINKET;
             break;
         case UNIT_CLASS::TROUBADOUR:
-            equippable = WPN_TYPE::ELEMENTAL + WPN_TYPE::STAFF + WPN_TYPE::TRINKET;
+            equippable = WPN::TYPE::ELEMENTAL + WPN::TYPE::STAFF + WPN::TYPE::TRINKET;
             break;
         case UNIT_CLASS::ORACLE:
-            equippable = WPN_TYPE::STAFF + WPN_TYPE::ANGELIC + WPN_TYPE::TRINKET;
+            equippable = WPN::TYPE::STAFF + WPN::TYPE::ANGELIC + WPN::TYPE::TRINKET;
             break;
         case UNIT_CLASS::BISHOP:
-            equippable = WPN_TYPE::STAFF + WPN_TYPE::ANGELIC + WPN_TYPE::TRINKET;
+            equippable = WPN::TYPE::STAFF + WPN::TYPE::ANGELIC + WPN::TYPE::TRINKET;
             break;
         case UNIT_CLASS::ANGEL:
-            equippable = WPN_TYPE::ANGELIC + WPN_TYPE::SWORD + WPN_TYPE::LANCE + WPN_TYPE::SHIELD;
+            equippable = WPN::TYPE::ANGELIC + WPN::TYPE::SWORD + WPN::TYPE::LANCE + WPN::TYPE::SHIELD;
             break;
         case UNIT_CLASS::DEMON:
-            equippable = WPN_TYPE::DEMONIC + WPN_TYPE::CLAW + WPN_TYPE::AXE;
+            equippable = WPN::TYPE::DEMONIC + WPN::TYPE::CLAW + WPN::TYPE::AXE;
             break;
         case UNIT_CLASS::DEMONIC_INCARNATE:
-            equippable = WPN_TYPE::DEMONIC + WPN_TYPE::TRINKET;
+            equippable = WPN::TYPE::DEMONIC + WPN::TYPE::TRINKET;
             break;
         case UNIT_CLASS::ANGELIC_INCARNATE:
-            equippable = WPN_TYPE::ANGELIC + WPN_TYPE::TRINKET;
+            equippable = WPN::TYPE::ANGELIC + WPN::TYPE::TRINKET;
             break;
     }
 }
@@ -660,13 +660,13 @@ bool Unit::canAttack() {
     } wpn_types;
     if (equipped.left > 0) {
         wpn_types.left = all_weapons[equipment[equipped.left].id].getType();
-        if ((wpn_types.left != WPN_TYPE::SHIELD)  & (wpn_types.left != WPN_TYPE::TRINKET) & (wpn_types.left != WPN_TYPE::STAFF)) {
+        if ((wpn_types.left != WPN::TYPE::SHIELD)  & (wpn_types.left != WPN::TYPE::TRINKET) & (wpn_types.left != WPN::TYPE::STAFF)) {
             out = true;
         } 
     }
     if (equipped.right > 0) {
         wpn_types.right = all_weapons[equipment[equipped.right].id].getType();
-        if ((wpn_types.right != WPN_TYPE::SHIELD)  & (wpn_types.right != WPN_TYPE::TRINKET) & (wpn_types.right != WPN_TYPE::STAFF)) {
+        if ((wpn_types.right != WPN::TYPE::SHIELD)  & (wpn_types.right != WPN::TYPE::TRINKET) & (wpn_types.right != WPN::TYPE::STAFF)) {
             out = true;
          } 
     }
@@ -963,7 +963,7 @@ void baseUnits() {
     temp = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
     temp_unit.setGrowths(temp);
     temp_unit.setExp(400);
-    temp_wpn.id = WEAPON::BALL_LIGHTNING;
+    temp_wpn.id = WPN::NAME::BALL_LIGHTNING;
     temp_unit.addEquipment(temp_wpn);
     all_units[UNIT::SILOU] = temp_unit;
 }
