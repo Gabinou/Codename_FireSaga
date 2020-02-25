@@ -27,7 +27,7 @@ int main(int argc, char * argv[]) {
     printf("Testing weapon: %s\n", all_weapons[WPN::NAME::WOODEN_SWORD].getName().c_str());
     
     baseUnits();
-    printf("Testing units: %s \n", all_units[UNIT::SILOU].getName().c_str());
+    printf("Testing units: %s \n", all_units[UNIT::NAME::SILOU].getName().c_str());
 
     firesaga = new Game();
     printf("Made game.\n");
@@ -48,7 +48,7 @@ int main(int argc, char * argv[]) {
     firesaga->loadCursor();
     printf("Cursor loaded\n");
 
-    std::vector<short unsigned int> unit_inds = {UNIT::SILOU};
+    std::vector<short unsigned int> unit_inds = {UNIT::NAME::SILOU};
     std::vector<std::string> asset_names = {"..//assets//horse.png"};
     std::vector<std::vector<int>> positions_list = {{6, 6}};
     firesaga->loadUnits(unit_inds, asset_names, positions_list);

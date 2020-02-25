@@ -30,54 +30,6 @@ enum DEFAULTS {
 }; // replace text IN MY FILES by the values, at compilation.
 }
 
-namespace UNIT_CLASS {
-enum UNIT_CLASSES {
-    LORD,
-    LORD_RIDER,
-    DUKE,
-    DUKE_RIDER,
-    ARCHER,
-    ARCHER_RIDER,
-    MARKSMAN,
-    MARKSMAN_RIDER,
-    ANGEL,
-    DEMON,
-    PEGASUS_KNIGHT,
-    DEMONIC_INCARNATE,
-    ANGELIC_INCARNATE,
-    FENCER,
-    DUELIST,
-    MOUSQUETAIRE,
-    PICKPOCKET,
-    THIEF,
-    ASSASSIN,
-    MERCENARY,
-    HERO,
-    CORSAIR,
-    VIKING,
-    BANDIT,
-    RAVAGER,
-    PIKEMAN,
-    CAVALIER,
-    PALADIN,
-    MAGE,
-    BATTLEMAGE,
-    TROUBADOUR,
-    SAGE,
-    PRIEST,
-    BISHOP,
-    ORACLE,
-    GENERAL,
-    CLERIC,
-    DEMIGOD,
-    GOD,
-    KNIGHT,
-    GODDESS,
-    TWINBORN,
-    END
-};
-}
-
 namespace MVT_TYPE {
 enum MVT_TYPES {
     FOOT_SLOW,
@@ -295,10 +247,95 @@ enum EFFECTS {
 }
 }
 
-
-
-
-
+namespace UNIT {
+namespace CLASS {
+enum CLASSES {
+    LORD,
+    LORD_RIDER,
+    DUKE,
+    DUKE_RIDER,
+    ARCHER,
+    ARCHER_RIDER,
+    MARKSMAN,
+    MARKSMAN_RIDER,
+    ANGEL,
+    DEMON,
+    PEGASUS_KNIGHT,
+    DEMONIC_INCARNATE,
+    ANGELIC_INCARNATE,
+    FENCER,
+    DUELIST,
+    MOUSQUETAIRE,
+    PICKPOCKET,
+    THIEF,
+    ASSASSIN,
+    MERCENARY,
+    HERO,
+    CORSAIR,
+    VIKING,
+    BANDIT,
+    RAVAGER,
+    PIKEMAN,
+    CAVALIER,
+    PALADIN,
+    MAGE,
+    BATTLEMAGE,
+    TROUBADOUR,
+    SAGE,
+    PRIEST,
+    BISHOP,
+    ORACLE,
+    GENERAL,
+    CLERIC,
+    DEMIGOD,
+    GOD,
+    KNIGHT,
+    GODDESS,
+    TWINBORN,
+    END
+};
+}
+namespace TYPE {
+enum TYPES {
+    HUMAN = 0x0001,
+    MOUNTED = 0x0002,
+    FLYING = 0x0004,
+    ARMOR = 0x0008,
+    DEMON = 0x0010,
+    ANGEL = 0x0020,
+};
+}
+namespace NAME {
+enum NAMES {
+    ERWIN,
+    KIARA,
+    SILOU,
+    SERVIL,
+    PERIGNON,
+    POET,
+    RELIABLE,
+    COWARD,
+    JAIGEN1H,
+    HOTTIE,
+    GENERIC_BANDIT,
+    GENERIC_DUELIST,
+    GENERIC_PICKPOCKET,
+    GENERIC_THIEF,
+    GENERIC_ASSASSIN,
+    GENERIC_ARCHER,
+    GENERIC_MARKSMAN,
+    GENERIC_MERCENARY,
+    GENERIC_HERO,
+    GENERIC_CORSAIR,
+    GENERIC_VIKING,
+    GENERIC_RAVAGER,
+    GENERIC_CAVALIER,
+    GENERIC_PALADIN,
+    GENERIC_FENCER,
+    GENERIC_MOUSQUETAIRE,
+    END
+};
+}
 namespace SKILL {
 enum SKILLS : unsigned int {
     // short unsigned int 16 bits->65536
@@ -341,16 +378,6 @@ enum SKILLS : unsigned int {
 };
 const unsigned long long int BOW_BONUS = 0x100000000;
 }
-
-namespace UNIT_TYPE {
-enum UNIT_TYPES {
-    HUMAN = 0x0001,
-    MOUNTED = 0x0002,
-    FLYING = 0x0004,
-    ARMOR = 0x0008,
-    DEMON = 0x0010,
-    ANGEL = 0x0020,
-};
 }
 
 namespace MAP {
@@ -373,38 +400,6 @@ enum LOOPINGS {
     PINGPONG,
     DIRECT,
     REVERSE
-};
-}
-
-namespace UNIT {
-enum UNITS {
-    ERWIN,
-    KIARA,
-    SILOU,
-    SERVIL,
-    PERIGNON,
-    POET,
-    RELIABLE,
-    COWARD,
-    JAIGEN1H,
-    HOTTIE,
-    GENERIC_BANDIT,
-    GENERIC_DUELIST,
-    GENERIC_PICKPOCKET,
-    GENERIC_THIEF,
-    GENERIC_ASSASSIN,
-    GENERIC_ARCHER,
-    GENERIC_MARKSMAN,
-    GENERIC_MERCENARY,
-    GENERIC_HERO,
-    GENERIC_CORSAIR,
-    GENERIC_VIKING,
-    GENERIC_RAVAGER,
-    GENERIC_CAVALIER,
-    GENERIC_PALADIN,
-    GENERIC_FENCER,
-    GENERIC_MOUSQUETAIRE,
-    END
 };
 }
 

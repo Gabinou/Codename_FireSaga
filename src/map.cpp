@@ -256,7 +256,7 @@ std::vector<std::vector<short int>> testTilemap(){
 }
 
 std::vector<short unsigned int> testEnemyinds(){
-    std::vector<short unsigned int> enemies = {UNIT::SILOU};
+    std::vector<short unsigned int> enemies = {UNIT::NAME::SILOU};
     return(enemies);
 }
 

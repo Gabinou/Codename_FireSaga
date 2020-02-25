@@ -137,14 +137,14 @@ std::vector<Weapon> baseWeapons(std::vector<short int> toload){
             case WPN::NAME::FLEURET:
                 temp_wpn_stats = {4, 0, 90, 0, 0, 0, 4, 20, 6, {1,1}, {1}, 0, 1000};
                 temp_wpn = Weapon("Fleuret", WPN::TYPE::SWORD, temp_wpn_stats, WPN::NAME::FLEURET);
-                temp_wpn.setEffective(UNIT_TYPE::ARMOR);
+                temp_wpn.setEffective(UNIT::TYPE::ARMOR);
                 temp_wpn.setDescription("Simple and light thrust swords. Effective against armor. Usually used with off-hand parry daggers.");
                 wpn_out[WPN::NAME::FLEURET] = temp_wpn;
                 break;
             case WPN::NAME::RAPIERE:
                 temp_wpn_stats = {8, 0, 85, 5, 0, 0, 5, 25, 8, {1,1}, {1}, 0, 1000};
                 temp_wpn = Weapon("Rapière", WPN::TYPE::SWORD, temp_wpn_stats, WPN::NAME::RAPIERE);
-                temp_wpn.setEffective(UNIT_TYPE::ARMOR);
+                temp_wpn.setEffective(UNIT::TYPE::ARMOR);
                 temp_wpn.setDescription("Strong thrust swords. Effective against armor. Usually used with off-hand parry daggers.");
                 wpn_out[WPN::NAME::RAPIERE] = temp_wpn;
                 break;
@@ -237,14 +237,14 @@ std::vector<Weapon> baseWeapons(std::vector<short int> toload){
             case WPN::NAME::EXCALIBUR:
                 temp_wpn_stats = {15, 0, 90, 10, 0, 0, 10, 30, 15, {1,1}, {1,2}, 0, 1000};
                 temp_wpn = Weapon("Excalibur", WPN::TYPE::SWORD, temp_wpn_stats, WPN::NAME::EXCALIBUR);
-                temp_wpn.setEffective(UNIT_TYPE::DEMON);
+                temp_wpn.setEffective(UNIT::TYPE::DEMON);
                 temp_wpn.setDescription("The king's sword. Found in a rock.");
                 wpn_out[WPN::NAME::EXCALIBUR] = temp_wpn;
                 break;
             case WPN::NAME::GALATINE:
                 temp_wpn_stats = {12, 0, 100, 0, 0, 0, 6, 20, 18, {1,1}, {1}, 0, 1000};
                 temp_wpn = Weapon("Galatine", WPN::TYPE::SWORD, temp_wpn_stats, WPN::NAME::GALATINE);
-                temp_wpn.setEffective(UNIT_TYPE::ARMOR);
+                temp_wpn.setEffective(UNIT::TYPE::ARMOR);
                 temp_wpn.setDescription("A pragmatic and honorable knight's thrusting sword. Usually used with off-hand parry daggers.");
                 wpn_out[WPN::NAME::GALATINE] = temp_wpn;
                 break;
@@ -270,7 +270,7 @@ std::vector<Weapon> baseWeapons(std::vector<short int> toload){
                 temp_wpn_stats = {20, 0, 30, 0, 0, 0, 20, 50, 20, {1,1}, {1,2}, 0, 1000};
                 temp_wpn = Weapon("Raw Iron slab", WPN::TYPE::SWORD, temp_wpn_stats, WPN::NAME::RAW_IRON_SLAB); //Should be found inside a dragon skull? 
                 temp_wpn.setDescription("Barely a sword. Too big, too thick, too massive, too rough. Tempered by the malevolence of countless slain demons. Effective against demons and angels.");
-                temp_wpn.setEffective(UNIT_TYPE::DEMON + UNIT_TYPE::ANGEL);
+                temp_wpn.setEffective(UNIT::TYPE::DEMON + UNIT::TYPE::ANGEL);
                 wpn_out[WPN::NAME::RAW_IRON_SLAB] = temp_wpn;    
                 // Should have deeps chinks. This isn't the first time demons roamed the earth. Has deep holes in it. Must be repaired before being usable. Who is willing to repair it? 
                 break;
@@ -322,7 +322,7 @@ std::vector<Weapon> baseWeapons(std::vector<short int> toload){
             case WPN::NAME::HEAVY_SPEAR:
                 temp_wpn_stats = {6, 0, 60, 0, 0, 0, 15, 10, 8, {1,1}, {1,2}, 0, 1000};
                 temp_wpn = Weapon("Heavy spear", WPN::TYPE::LANCE, temp_wpn_stats, WPN::NAME::HEAVY_SPEAR);
-                temp_wpn.setEffective(UNIT_TYPE::ARMOR);
+                temp_wpn.setEffective(UNIT::TYPE::ARMOR);
                 temp_wpn.setDescription("Heavy enough to pierce armor.");
                 wpn_out[WPN::NAME::HEAVY_SPEAR] = temp_wpn;
                 break;
@@ -439,21 +439,21 @@ std::vector<Weapon> baseWeapons(std::vector<short int> toload){
             case WPN::NAME::HALBERD:
                 temp_wpn_stats = {10, 0, 50, 0, 0, 0, 11, 20, 12, {1,1}, {1,2}, 0, 1000};
                 temp_wpn = Weapon("Halberd", WPN::TYPE::AXE + WPN::TYPE::LANCE, temp_wpn_stats, WPN::NAME::HALBERD);
-                temp_wpn.setEffective(UNIT_TYPE::MOUNTED);
+                temp_wpn.setEffective(UNIT::TYPE::MOUNTED);
                 temp_wpn.setDescription("Polearm specially designed to deal with cavalry. Is both a lance and an axe.");
                 wpn_out[WPN::NAME::HALBERD] = temp_wpn;
                 break;
             case WPN::NAME::HAMMER:
                 temp_wpn_stats = {8, 0, 40, 0, 0, 0, 9, 30, 8, {1,1}, {1,2}, 0, 1000};
                 temp_wpn = Weapon("Hammer", WPN::TYPE::AXE, temp_wpn_stats, WPN::NAME::HAMMER);
-                temp_wpn.setEffective(UNIT_TYPE::ARMOR);
+                temp_wpn.setEffective(UNIT::TYPE::ARMOR);
                 temp_wpn.setDescription("Armor cannot stand the hammer's heavy crushing blows.");
                 wpn_out[WPN::NAME::HAMMER] = temp_wpn;
                 break;
             case WPN::NAME::WAR_PICK:
                 temp_wpn_stats = {12, 0, 50, 0, 0, 0, 12, 25, 11, {1,1}, {1,2}, 0, 1000};
                 temp_wpn = Weapon("War pick", WPN::TYPE::AXE, temp_wpn_stats, WPN::NAME::WAR_PICK);
-                temp_wpn.setEffective(UNIT_TYPE::ARMOR);
+                temp_wpn.setEffective(UNIT::TYPE::ARMOR);
                 temp_wpn.setDescription("In trained hands, the pick can penatrate armor.");
                 wpn_out[WPN::NAME::WAR_PICK] = temp_wpn;
                 break;
@@ -843,14 +843,14 @@ std::vector<Weapon> baseWeapons(std::vector<short int> toload){
                 temp_wpn_stats = {0, 11, 50, 0, 0, 0, 9, 20, 7, {1,2}, {1,2}, 1, 1000};
                 temp_wpn = Weapon("Fingolfin", WPN::TYPE::ELEMENTAL, temp_wpn_stats, WPN::NAME::FINGOLFIN);
                 temp_wpn.setDescription("Distilled courage. Strikes at 7 times at darkness's heart. Effective against demons.");
-                temp_wpn.setEffective(UNIT_TYPE::DEMON);
+                temp_wpn.setEffective(UNIT::TYPE::DEMON);
                 wpn_out[WPN::NAME::FINGOLFIN] = temp_wpn;
                 break;
             case WPN::NAME::MITHRANDIR:
                 temp_wpn_stats = {0, 6, 65, 0, 0, 0, 5, 28, 7, {1,2}, {1,2}, 1, 1000};
                 temp_wpn = Weapon("Mithrandir", WPN::TYPE::ELEMENTAL, temp_wpn_stats, WPN::NAME::MITHRANDIR);
                 temp_wpn.setDescription("Inspires courage in the hearts of men. Effective against demons.");
-                temp_wpn.setEffective(UNIT_TYPE::DEMON);
+                temp_wpn.setEffective(UNIT::TYPE::DEMON);
                 wpn_out[WPN::NAME::MITHRANDIR] = temp_wpn;
                 break;
 
@@ -931,12 +931,12 @@ void baseWeapons(){
     all_weapons[WPN::NAME::WRATH_SWORD] = temp_wpn;
     temp_wpn_stats = {4, 0, 90, 0, 0, 0, 4, 20, 6, {1,1}, {1}, 0, 1000};
     temp_wpn = Weapon("Fleuret", WPN::TYPE::SWORD, temp_wpn_stats, WPN::NAME::FLEURET);
-    temp_wpn.setEffective(UNIT_TYPE::ARMOR);
+    temp_wpn.setEffective(UNIT::TYPE::ARMOR);
     temp_wpn.setDescription("Simple and light thrust swords. Effective against armor. Usually used with off-hand parry daggers.");
     all_weapons[WPN::NAME::FLEURET] = temp_wpn;
     temp_wpn_stats = {8, 0, 85, 5, 0, 0, 5, 25, 8, {1,1}, {1}, 0, 1000};
     temp_wpn = Weapon("Rapière", WPN::TYPE::SWORD, temp_wpn_stats, WPN::NAME::RAPIERE);
-    temp_wpn.setEffective(UNIT_TYPE::ARMOR);
+    temp_wpn.setEffective(UNIT::TYPE::ARMOR);
     temp_wpn.setDescription("Strong thrust swords. Effective against armor. Usually used with off-hand parry daggers.");
     all_weapons[WPN::NAME::RAPIERE] = temp_wpn;
     temp_wpn_stats = {5, 0, 55, 0, 0, 0, 7, 30, 3, {1,1}, {1}, 0, 1000};
@@ -999,12 +999,12 @@ void baseWeapons(){
     all_weapons[WPN::NAME::SECUNDUS] = temp_wpn;
     temp_wpn_stats = {15, 0, 90, 10, 0, 0, 10, 30, 15, {1,1}, {1,2}, 0, 1000};
     temp_wpn = Weapon("Excalibur", WPN::TYPE::SWORD, temp_wpn_stats, WPN::NAME::EXCALIBUR);
-    temp_wpn.setEffective(UNIT_TYPE::DEMON);
+    temp_wpn.setEffective(UNIT::TYPE::DEMON);
     temp_wpn.setDescription("The king's sword. Found in a rock.");
     all_weapons[WPN::NAME::EXCALIBUR] = temp_wpn;
     temp_wpn_stats = {12, 0, 100, 0, 0, 0, 6, 20, 18, {1,1}, {1}, 0, 1000};
     temp_wpn = Weapon("Galatine", WPN::TYPE::SWORD, temp_wpn_stats, WPN::NAME::GALATINE);
-    temp_wpn.setEffective(UNIT_TYPE::ARMOR);
+    temp_wpn.setEffective(UNIT::TYPE::ARMOR);
     temp_wpn.setDescription("A pragmatic and honorable knight's thrusting sword. Usually used with off-hand parry daggers.");
     all_weapons[WPN::NAME::GALATINE] = temp_wpn;
     temp_wpn_stats = {5, 0, 50, 0, 0, 0, 7, 25, 11, {1,2}, {1,2}, 1, 1000};
@@ -1026,7 +1026,7 @@ void baseWeapons(){
     temp_wpn_stats = {20, 0, 30, 0, 0, 0, 20, 50, 20, {1,1}, {1,2}, 0, 1000};
     temp_wpn = Weapon("Raw Iron slab", WPN::TYPE::SWORD, temp_wpn_stats, WPN::NAME::RAW_IRON_SLAB); //Should be found inside a dragon skull? 
     temp_wpn.setDescription("Barely a sword. Too big, too thick, too massive, too rough. Tempered by the malevolence of countless slain demons. Effective against demons and angels.");
-    temp_wpn.setEffective(UNIT_TYPE::DEMON + UNIT_TYPE::ANGEL);
+    temp_wpn.setEffective(UNIT::TYPE::DEMON + UNIT::TYPE::ANGEL);
     all_weapons[WPN::NAME::RAW_IRON_SLAB] = temp_wpn;    
     // Should have deeps chinks. This isn't the first time demons roamed the earth. Has deep holes in it. Must be repaired before being usable. Who is willing to repair it? 
 
@@ -1056,7 +1056,7 @@ void baseWeapons(){
     all_weapons[WPN::NAME::DAMAS_LANCE] = temp_wpn;
     temp_wpn_stats = {6, 0, 60, 0, 0, 0, 15, 10, 8, {1,1}, {1,2}, 0, 1000};
     temp_wpn = Weapon("Heavy spear", WPN::TYPE::LANCE, temp_wpn_stats, WPN::NAME::HEAVY_SPEAR);
-    temp_wpn.setEffective(UNIT_TYPE::ARMOR);
+    temp_wpn.setEffective(UNIT::TYPE::ARMOR);
     temp_wpn.setDescription("Heavy enough to pierce armor.");
     all_weapons[WPN::NAME::HEAVY_SPEAR] = temp_wpn;
     temp_wpn_stats = {8, 0, 90, 0, 0, 0, 8, 10, 10, {1,1}, {1,2}, 0, 1000};
@@ -1135,17 +1135,17 @@ void baseWeapons(){
     all_weapons[WPN::NAME::CLUB] = temp_wpn;
     temp_wpn_stats = {10, 0, 50, 0, 0, 0, 11, 20, 12, {1,1}, {1,2}, 0, 1000};
     temp_wpn = Weapon("Halberd", WPN::TYPE::AXE + WPN::TYPE::LANCE, temp_wpn_stats, WPN::NAME::HALBERD);
-    temp_wpn.setEffective(UNIT_TYPE::MOUNTED);
+    temp_wpn.setEffective(UNIT::TYPE::MOUNTED);
     temp_wpn.setDescription("Polearm specially designed to deal with cavalry. Is both a lance and an axe.");
     all_weapons[WPN::NAME::HALBERD] = temp_wpn;
     temp_wpn_stats = {8, 0, 40, 0, 0, 0, 9, 30, 8, {1,1}, {1,2}, 0, 1000};
     temp_wpn = Weapon("Hammer", WPN::TYPE::AXE, temp_wpn_stats, WPN::NAME::HAMMER);
-    temp_wpn.setEffective(UNIT_TYPE::ARMOR);
+    temp_wpn.setEffective(UNIT::TYPE::ARMOR);
     temp_wpn.setDescription("Armor cannot stand the hammer's heavy crushing blows.");
     all_weapons[WPN::NAME::HAMMER] = temp_wpn;
     temp_wpn_stats = {12, 0, 50, 0, 0, 0, 12, 25, 11, {1,1}, {1,2}, 0, 1000};
     temp_wpn = Weapon("War pick", WPN::TYPE::AXE, temp_wpn_stats, WPN::NAME::WAR_PICK);
-    temp_wpn.setEffective(UNIT_TYPE::ARMOR);
+    temp_wpn.setEffective(UNIT::TYPE::ARMOR);
     temp_wpn.setDescription("In trained hands, the pick can penatrate armor.");
     all_weapons[WPN::NAME::WAR_PICK] = temp_wpn;
     temp_wpn_stats = {15, 0, 45, 0, 0, 0, 14, 30, 14, {1,1}, {1,2}, 0, 1000};
@@ -1406,12 +1406,12 @@ void baseWeapons(){
     temp_wpn_stats = {0, 11, 50, 0, 0, 0, 9, 20, 7, {1,2}, {1,2}, 1, 1000};
     temp_wpn = Weapon("Fingolfin", WPN::TYPE::ELEMENTAL, temp_wpn_stats, WPN::NAME::FINGOLFIN);
     temp_wpn.setDescription("Distilled courage. Strikes at 7 times at darkness's heart. Effective against demons.");
-    temp_wpn.setEffective(UNIT_TYPE::DEMON);
+    temp_wpn.setEffective(UNIT::TYPE::DEMON);
     all_weapons[WPN::NAME::FINGOLFIN] = temp_wpn;
     temp_wpn_stats = {0, 6, 65, 0, 0, 0, 5, 28, 7, {1,2}, {1,2}, 1, 1000};
     temp_wpn = Weapon("Mithrandir", WPN::TYPE::ELEMENTAL, temp_wpn_stats, WPN::NAME::MITHRANDIR);
     temp_wpn.setDescription("Inspires courage in the hearts of men. Effective against demons.");
-    temp_wpn.setEffective(UNIT_TYPE::DEMON);
+    temp_wpn.setEffective(UNIT::TYPE::DEMON);
     all_weapons[WPN::NAME::MITHRANDIR] = temp_wpn;
 
     temp_wpn_stats = {0, 5, 70, 0, 0, 0, 5, 60, 7, {1,2}, {1,2}, 1, 1000};

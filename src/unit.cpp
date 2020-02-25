@@ -117,106 +117,106 @@ void Unit::setEquippable() {
     // Switch with individual cases:
     // Easy to change equippable post-hoc
     switch(class_index) {
-        case UNIT_CLASS::MERCENARY:
+        case UNIT::CLASS::MERCENARY:
             equippable = WPN::TYPE::SHIELD + WPN::TYPE::SWORD + WPN::TYPE::OFFHAND;
             break;
-        case UNIT_CLASS::LORD:
+        case UNIT::CLASS::LORD:
             equippable = WPN::TYPE::LANCE + WPN::TYPE::SHIELD;
             break;
-        case UNIT_CLASS::DUELIST:
+        case UNIT::CLASS::DUELIST:
             equippable = WPN::TYPE::LANCE + WPN::TYPE::SHIELD;
             break;
-        case UNIT_CLASS::THIEF:
+        case UNIT::CLASS::THIEF:
             equippable = WPN::TYPE::LANCE + WPN::TYPE::SHIELD;
             break;
-        case UNIT_CLASS::PEGASUS_KNIGHT:
+        case UNIT::CLASS::PEGASUS_KNIGHT:
             equippable = WPN::TYPE::LANCE + WPN::TYPE::SHIELD;
             break;
-        case UNIT_CLASS::PIKEMAN:
+        case UNIT::CLASS::PIKEMAN:
             equippable = WPN::TYPE::LANCE + WPN::TYPE::SHIELD;
             break;
-        case UNIT_CLASS::CAVALIER:
+        case UNIT::CLASS::CAVALIER:
             equippable = WPN::TYPE::LANCE + WPN::TYPE::SHIELD;
             break;
-        case UNIT_CLASS::KNIGHT:
+        case UNIT::CLASS::KNIGHT:
             equippable = WPN::TYPE::LANCE + WPN::TYPE::SHIELD;
             break;
-        case UNIT_CLASS::BANDIT:
+        case UNIT::CLASS::BANDIT:
             equippable = WPN::TYPE::SHIELD + WPN::TYPE::AXE;
             break;
-        case UNIT_CLASS::CORSAIR:
+        case UNIT::CLASS::CORSAIR:
             equippable = WPN::TYPE::SHIELD + WPN::TYPE::OFFHAND + WPN::TYPE::AXE;
             break;
-        case UNIT_CLASS::VIKING:
+        case UNIT::CLASS::VIKING:
             equippable = WPN::TYPE::SHIELD + WPN::TYPE::OFFHAND + WPN::TYPE::AXE;
             break;
-        case UNIT_CLASS::PICKPOCKET:
+        case UNIT::CLASS::PICKPOCKET:
             equippable = WPN::TYPE::OFFHAND + WPN::TYPE::SWORD;
             break;
-        case UNIT_CLASS::FENCER:
+        case UNIT::CLASS::FENCER:
             equippable = WPN::TYPE::OFFHAND + WPN::TYPE::SWORD;
             break;
-        case UNIT_CLASS::MOUSQUETAIRE:
+        case UNIT::CLASS::MOUSQUETAIRE:
             equippable = WPN::TYPE::SWORD + WPN::TYPE::OFFHAND + WPN::TYPE::BOW; 
             break;
-        case UNIT_CLASS::ASSASSIN:
+        case UNIT::CLASS::ASSASSIN:
             equippable = WPN::TYPE::SWORD + WPN::TYPE::OFFHAND + WPN::TYPE::BOW; 
             break;
-        case UNIT_CLASS::MARKSMAN:
+        case UNIT::CLASS::MARKSMAN:
             equippable = WPN::TYPE::SWORD + WPN::TYPE::OFFHAND + WPN::TYPE::BOW; 
             break;
-        case UNIT_CLASS::ARCHER:
+        case UNIT::CLASS::ARCHER:
             equippable = WPN::TYPE::BOW;
             break;
-        case UNIT_CLASS::DUKE:
+        case UNIT::CLASS::DUKE:
             equippable = WPN::TYPE::SWORD + WPN::TYPE::LANCE + WPN::TYPE::SHIELD + WPN::TYPE::OFFHAND;
             break;
-        case UNIT_CLASS::PALADIN:
+        case UNIT::CLASS::PALADIN:
             equippable = WPN::TYPE::SWORD + WPN::TYPE::LANCE + WPN::TYPE::SHIELD + WPN::TYPE::OFFHAND;
             break;
-        case UNIT_CLASS::GENERAL:
+        case UNIT::CLASS::GENERAL:
             equippable = WPN::TYPE::SWORD + WPN::TYPE::SHIELD + WPN::TYPE::AXE + WPN::TYPE::LANCE;
             break;
-        case UNIT_CLASS::CLERIC:
+        case UNIT::CLASS::CLERIC:
             equippable = WPN::TYPE::STAFF;
             break;
-        case UNIT_CLASS::PRIEST:
+        case UNIT::CLASS::PRIEST:
             equippable = WPN::TYPE::STAFF;
             break;
-        case UNIT_CLASS::MAGE:
+        case UNIT::CLASS::MAGE:
             equippable = WPN::TYPE::ELEMENTAL + WPN::TYPE::TRINKET;
             break;
-        case UNIT_CLASS::HERO:
+        case UNIT::CLASS::HERO:
             equippable = WPN::TYPE::AXE + WPN::TYPE::SWORD + WPN::TYPE::SHIELD + WPN::TYPE::OFFHAND;
             break;
-        case UNIT_CLASS::RAVAGER:
+        case UNIT::CLASS::RAVAGER:
             equippable = WPN::TYPE::AXE + WPN::TYPE::SHIELD + WPN::TYPE::OFFHAND + WPN::TYPE::BOW;
             break;
-        case UNIT_CLASS::BATTLEMAGE:
+        case UNIT::CLASS::BATTLEMAGE:
             equippable = WPN::TYPE::ELEMENTAL + WPN::TYPE::SHIELD + WPN::TYPE::SWORD + WPN::TYPE::TRINKET;
             break;
-        case UNIT_CLASS::SAGE:
+        case UNIT::CLASS::SAGE:
             equippable = WPN::TYPE::ELEMENTAL + WPN::TYPE::STAFF + WPN::TYPE::TRINKET;
             break;
-        case UNIT_CLASS::TROUBADOUR:
+        case UNIT::CLASS::TROUBADOUR:
             equippable = WPN::TYPE::ELEMENTAL + WPN::TYPE::STAFF + WPN::TYPE::TRINKET;
             break;
-        case UNIT_CLASS::ORACLE:
+        case UNIT::CLASS::ORACLE:
             equippable = WPN::TYPE::STAFF + WPN::TYPE::ANGELIC + WPN::TYPE::TRINKET;
             break;
-        case UNIT_CLASS::BISHOP:
+        case UNIT::CLASS::BISHOP:
             equippable = WPN::TYPE::STAFF + WPN::TYPE::ANGELIC + WPN::TYPE::TRINKET;
             break;
-        case UNIT_CLASS::ANGEL:
+        case UNIT::CLASS::ANGEL:
             equippable = WPN::TYPE::ANGELIC + WPN::TYPE::SWORD + WPN::TYPE::LANCE + WPN::TYPE::SHIELD;
             break;
-        case UNIT_CLASS::DEMON:
+        case UNIT::CLASS::DEMON:
             equippable = WPN::TYPE::DEMONIC + WPN::TYPE::CLAW + WPN::TYPE::AXE;
             break;
-        case UNIT_CLASS::DEMONIC_INCARNATE:
+        case UNIT::CLASS::DEMONIC_INCARNATE:
             equippable = WPN::TYPE::DEMONIC + WPN::TYPE::TRINKET;
             break;
-        case UNIT_CLASS::ANGELIC_INCARNATE:
+        case UNIT::CLASS::ANGELIC_INCARNATE:
             equippable = WPN::TYPE::ANGELIC + WPN::TYPE::TRINKET;
             break;
     }
@@ -224,118 +224,118 @@ void Unit::setEquippable() {
 
 void Unit::autoClassname() {
     switch(class_index) {
-        case UNIT_CLASS::MERCENARY:
+        case UNIT::CLASS::MERCENARY:
             class_name = "Mercenary";
             break;
-        case UNIT_CLASS::LORD:
+        case UNIT::CLASS::LORD:
             class_name = "Lord";
             break;        
-        case UNIT_CLASS::LORD_RIDER:
+        case UNIT::CLASS::LORD_RIDER:
             class_name = "Lord rider";
             break;
-        case UNIT_CLASS::DUELIST:
+        case UNIT::CLASS::DUELIST:
             class_name = "Duelist";
             break;
-        case UNIT_CLASS::THIEF:
+        case UNIT::CLASS::THIEF:
             class_name = "Thief";
             break;
-        case UNIT_CLASS::PEGASUS_KNIGHT:
+        case UNIT::CLASS::PEGASUS_KNIGHT:
             class_name = "Pegasus knight";
             break;
-        case UNIT_CLASS::PIKEMAN:
+        case UNIT::CLASS::PIKEMAN:
             class_name = "Pikeman";
             break;
-        case UNIT_CLASS::CAVALIER:
+        case UNIT::CLASS::CAVALIER:
             class_name = "Cavalier";
             break;
-        case UNIT_CLASS::KNIGHT:
+        case UNIT::CLASS::KNIGHT:
             class_name = "Knight";
             break;
-        case UNIT_CLASS::BANDIT:
+        case UNIT::CLASS::BANDIT:
             class_name = "Bandit";
             break;
-        case UNIT_CLASS::CORSAIR:
+        case UNIT::CLASS::CORSAIR:
             class_name = "Corsair";
             break;
-        case UNIT_CLASS::VIKING:
+        case UNIT::CLASS::VIKING:
             class_name = "Viking";
             break;
-        case UNIT_CLASS::PICKPOCKET:
+        case UNIT::CLASS::PICKPOCKET:
             class_name = "Pickpocket";
             break;
-        case UNIT_CLASS::FENCER:
+        case UNIT::CLASS::FENCER:
             class_name = "Fencer";
             break;
-        case UNIT_CLASS::MOUSQUETAIRE:
+        case UNIT::CLASS::MOUSQUETAIRE:
             class_name = "Mousquetaire";
             break;
-        case UNIT_CLASS::ASSASSIN:
+        case UNIT::CLASS::ASSASSIN:
             class_name = "Assassin";
             break;
-        case UNIT_CLASS::MARKSMAN:
+        case UNIT::CLASS::MARKSMAN:
             class_name = "Marksman";
             break;        
-        case UNIT_CLASS::MARKSMAN_RIDER:
+        case UNIT::CLASS::MARKSMAN_RIDER:
             class_name = "Marksman rider";
             break;
-        case UNIT_CLASS::ARCHER:
+        case UNIT::CLASS::ARCHER:
             class_name = "Archer";
             break;        
-        case UNIT_CLASS::ARCHER_RIDER:
+        case UNIT::CLASS::ARCHER_RIDER:
             class_name = "Archer rider";
             break;
-        case UNIT_CLASS::DUKE:
+        case UNIT::CLASS::DUKE:
             class_name = "Duke";
             break;
-        case UNIT_CLASS::DUKE_RIDER:
+        case UNIT::CLASS::DUKE_RIDER:
             class_name = "Duke rider";
             break;
-        case UNIT_CLASS::PALADIN:
+        case UNIT::CLASS::PALADIN:
             class_name = "Paladin";
             break;
-        case UNIT_CLASS::GENERAL:
+        case UNIT::CLASS::GENERAL:
             class_name = "General";
             break;
-        case UNIT_CLASS::CLERIC:
+        case UNIT::CLASS::CLERIC:
             class_name = "Cleric";
             break;
-        case UNIT_CLASS::PRIEST:
+        case UNIT::CLASS::PRIEST:
             class_name = "Priest";
             break;
-        case UNIT_CLASS::MAGE:
+        case UNIT::CLASS::MAGE:
             class_name = "Mage";
             break;
-        case UNIT_CLASS::HERO:
+        case UNIT::CLASS::HERO:
             class_name = "Hero";
             break;
-        case UNIT_CLASS::RAVAGER:
+        case UNIT::CLASS::RAVAGER:
             class_name = "Ravager";
             break;
-        case UNIT_CLASS::BATTLEMAGE:
+        case UNIT::CLASS::BATTLEMAGE:
             class_name = "Battlemage";
             break;
-        case UNIT_CLASS::SAGE:
+        case UNIT::CLASS::SAGE:
             class_name = "Sage";
             break;
-        case UNIT_CLASS::TROUBADOUR:
+        case UNIT::CLASS::TROUBADOUR:
             class_name = "Troubadour";
             break;
-        case UNIT_CLASS::ORACLE:
+        case UNIT::CLASS::ORACLE:
             class_name = "Oracle";
             break;
-        case UNIT_CLASS::BISHOP:
+        case UNIT::CLASS::BISHOP:
             class_name = "Bishop";
             break;
-        case UNIT_CLASS::ANGEL:
+        case UNIT::CLASS::ANGEL:
             class_name = "Angel";
             break;
-        case UNIT_CLASS::DEMON:
+        case UNIT::CLASS::DEMON:
             class_name = "Demon";
             break;
-        case UNIT_CLASS::DEMONIC_INCARNATE:
+        case UNIT::CLASS::DEMONIC_INCARNATE:
             class_name = "Demonic Incarnate";
             break;
-        case UNIT_CLASS::ANGELIC_INCARNATE:
+        case UNIT::CLASS::ANGELIC_INCARNATE:
             class_name = "Angelic Incarnate";
             break;
     }
@@ -348,112 +348,112 @@ unsigned char Unit::getMvttype() {
 
 void Unit::autoMvttype() {
     switch(class_index) {
-        case UNIT_CLASS::MERCENARY:
+        case UNIT::CLASS::MERCENARY:
             mvt_type = MVT_TYPE::FOOT_SLOW;
             break;
-        case UNIT_CLASS::LORD:
+        case UNIT::CLASS::LORD:
             mvt_type = MVT_TYPE::FOOT_SLOW;
             break;
-        case UNIT_CLASS::DUELIST:
+        case UNIT::CLASS::DUELIST:
             mvt_type = MVT_TYPE::FOOT_SLOW;
             break;
-        case UNIT_CLASS::THIEF:
+        case UNIT::CLASS::THIEF:
             mvt_type = MVT_TYPE::FOOT_FAST;
             break;
-        case UNIT_CLASS::PEGASUS_KNIGHT:
+        case UNIT::CLASS::PEGASUS_KNIGHT:
             mvt_type = MVT_TYPE::FLIERS;
             break;
-        case UNIT_CLASS::PIKEMAN:
+        case UNIT::CLASS::PIKEMAN:
             mvt_type = MVT_TYPE::FOOT_SLOW;
             break;
-        case UNIT_CLASS::CAVALIER:
+        case UNIT::CLASS::CAVALIER:
             mvt_type = MVT_TYPE::RIDERS_SLOW;
             break;
-        case UNIT_CLASS::KNIGHT:
+        case UNIT::CLASS::KNIGHT:
             mvt_type = MVT_TYPE::ARMORS;
             break;
-        case UNIT_CLASS::BANDIT:
+        case UNIT::CLASS::BANDIT:
             mvt_type = MVT_TYPE::BANDITS;
             break;
-        case UNIT_CLASS::CORSAIR:
+        case UNIT::CLASS::CORSAIR:
             mvt_type = MVT_TYPE::PIRATES;
             break;
-        case UNIT_CLASS::VIKING:
+        case UNIT::CLASS::VIKING:
             mvt_type = MVT_TYPE::PIRATES;
             break;
-        case UNIT_CLASS::PICKPOCKET:
+        case UNIT::CLASS::PICKPOCKET:
             mvt_type = MVT_TYPE::FOOT_FAST;
             break;
-        case UNIT_CLASS::FENCER:
+        case UNIT::CLASS::FENCER:
             mvt_type = MVT_TYPE::FOOT_SLOW;
             break;
-        case UNIT_CLASS::MOUSQUETAIRE:
+        case UNIT::CLASS::MOUSQUETAIRE:
             mvt_type = MVT_TYPE::FOOT_SLOW;
             break;
-        case UNIT_CLASS::ASSASSIN:
+        case UNIT::CLASS::ASSASSIN:
             mvt_type = MVT_TYPE::FOOT_FAST;
             break;
-        case UNIT_CLASS::MARKSMAN:
+        case UNIT::CLASS::MARKSMAN:
             mvt_type = MVT_TYPE::FOOT_SLOW;
             break;        
-        case UNIT_CLASS::MARKSMAN_RIDER:
+        case UNIT::CLASS::MARKSMAN_RIDER:
             mvt_type = MVT_TYPE::RIDERS_SLOW;
             break;
-        case UNIT_CLASS::ARCHER:
+        case UNIT::CLASS::ARCHER:
             mvt_type = MVT_TYPE::FOOT_SLOW;
             break;        
-        case UNIT_CLASS::ARCHER_RIDER:
+        case UNIT::CLASS::ARCHER_RIDER:
             mvt_type = MVT_TYPE::RIDERS_SLOW;
             break;
-        case UNIT_CLASS::DUKE:
+        case UNIT::CLASS::DUKE:
             mvt_type = MVT_TYPE::FOOT_SLOW;
             break;
-        case UNIT_CLASS::PALADIN:
+        case UNIT::CLASS::PALADIN:
             mvt_type = MVT_TYPE::RIDERS_FAST;
             break;
-        case UNIT_CLASS::GENERAL:
+        case UNIT::CLASS::GENERAL:
             mvt_type = MVT_TYPE::ARMORS;
             break;
-        case UNIT_CLASS::CLERIC:
+        case UNIT::CLASS::CLERIC:
             mvt_type = MVT_TYPE::MAGES;
             break;
-        case UNIT_CLASS::PRIEST:
+        case UNIT::CLASS::PRIEST:
             mvt_type = MVT_TYPE::MAGES;
             break;
-        case UNIT_CLASS::MAGE:
+        case UNIT::CLASS::MAGE:
             mvt_type = MVT_TYPE::MAGES;
             break;
-        case UNIT_CLASS::HERO:
+        case UNIT::CLASS::HERO:
             mvt_type = MVT_TYPE::FOOT_SLOW;
             break;
-        case UNIT_CLASS::RAVAGER:
+        case UNIT::CLASS::RAVAGER:
             mvt_type = MVT_TYPE::BANDITS;
             break;
-        case UNIT_CLASS::BATTLEMAGE:
+        case UNIT::CLASS::BATTLEMAGE:
             mvt_type = MVT_TYPE::MAGES;
             break;
-        case UNIT_CLASS::SAGE:
+        case UNIT::CLASS::SAGE:
             mvt_type = MVT_TYPE::MAGES;
             break;
-        case UNIT_CLASS::TROUBADOUR:
+        case UNIT::CLASS::TROUBADOUR:
             mvt_type = MVT_TYPE::RIDERS_FAST;
             break;
-        case UNIT_CLASS::ORACLE:
+        case UNIT::CLASS::ORACLE:
             mvt_type = MVT_TYPE::MAGES;
             break;
-        case UNIT_CLASS::BISHOP:
+        case UNIT::CLASS::BISHOP:
             mvt_type = MVT_TYPE::MAGES;
             break;
-        case UNIT_CLASS::ANGEL:
+        case UNIT::CLASS::ANGEL:
             mvt_type = MVT_TYPE::FLIERS;
             break;
-        case UNIT_CLASS::DEMON:
+        case UNIT::CLASS::DEMON:
             mvt_type = MVT_TYPE::FOOT_FAST;
             break;
-        case UNIT_CLASS::DEMONIC_INCARNATE:
+        case UNIT::CLASS::DEMONIC_INCARNATE:
             mvt_type = MVT_TYPE::MAGES;
             break;
-        case UNIT_CLASS::ANGELIC_INCARNATE:
+        case UNIT::CLASS::ANGELIC_INCARNATE:
             mvt_type = MVT_TYPE::MAGES;
             break;
     }
@@ -865,7 +865,7 @@ void Unit::write(const char * filename, const char * mode) {
     fclose(fp);
 }
 
-std::vector<Unit> all_units(UNIT::END);
+std::vector<Unit> all_units(UNIT::NAME::END);
 std::vector<Unit> loaded_units;
 
 void baseUnits() {
@@ -875,89 +875,89 @@ void baseUnits() {
     Inventory_item temp_wpn;
     //hp,str,mag,skl,spd,luck,def,res,con,move
     temp = {17,  6,  2,  7,  7,   7,  4,  5,  6, 5};
-    temp_unit = Unit("Erwin", UNIT_CLASS::MERCENARY, temp, "M");
+    temp_unit = Unit("Erwin", UNIT::CLASS::MERCENARY, temp, "M");
     temp = {48, 14, 25, 32, 34,  28, 19, 40, 15, 0};
     temp_unit.setCaps(temp);
     temp = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
     temp_unit.setGrowths(temp);
     temp_unit.setExp(0);
     temp_unit.write("unit_test.txt");
-    all_units[UNIT::ERWIN] = temp_unit;
+    all_units[UNIT::NAME::ERWIN] = temp_unit;
     
     temp = {18,  6,  2,  7,  7,   7,  4,  5,  6, 7};
-    temp_unit = Unit("Reliable", UNIT_CLASS::CAVALIER, temp, "M");
+    temp_unit = Unit("Reliable", UNIT::CLASS::CAVALIER, temp, "M");
     temp = {48, 14, 25, 32, 34,  28, 19, 40, 15};
     temp_unit.setCaps(temp);
     temp = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
     temp_unit.setGrowths(temp);
     temp_unit.setExp(100);
-    all_units[UNIT::RELIABLE] = temp_unit;
+    all_units[UNIT::NAME::RELIABLE] = temp_unit;
     
     temp = {19,  6,  2,  7,  7,   7,  4,  5,  6,  7};
-    temp_unit = Unit("Coward", UNIT_CLASS::CAVALIER, temp, "M");
+    temp_unit = Unit("Coward", UNIT::CLASS::CAVALIER, temp, "M");
     temp = {48, 14, 25, 32, 34,  28, 19, 40, 15};
     temp_unit.setCaps(temp);
     temp = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
     temp_unit.setGrowths(temp);
     temp_unit.setExp(200);
-    all_units[UNIT::COWARD] = temp_unit;
+    all_units[UNIT::NAME::COWARD] = temp_unit;
     
     temp = {20,  6,  2,  7,  7,   7,  4,  5,  6,  6};
-    temp_unit = Unit("1H Jaigen", UNIT_CLASS::MOUSQUETAIRE, temp, "M");
+    temp_unit = Unit("1H Jaigen", UNIT::CLASS::MOUSQUETAIRE, temp, "M");
     temp = {48, 14, 25, 32, 34,  28, 19, 40, 15};
     temp_unit.setCaps(temp);
     temp = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
     temp_unit.setGrowths(temp);
     temp_unit.setExp(2200);
-    all_units[UNIT::JAIGEN1H] = temp_unit;
+    all_units[UNIT::NAME::JAIGEN1H] = temp_unit;
 
     temp = {14,  6,  2,  7,  7,   7,  4,  5,  6,  5};
-    temp_unit = Unit("Kiara", UNIT_CLASS::CLERIC, temp, "F");
+    temp_unit = Unit("Kiara", UNIT::CLASS::CLERIC, temp, "F");
     temp = {48, 14, 25, 32, 34,  28, 19, 40, 15};
     temp_unit.setCaps(temp);
     temp = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
     temp_unit.setGrowths(temp);
     temp_unit.setExp(100);
-    all_units[UNIT::KIARA] = temp_unit;
+    all_units[UNIT::NAME::KIARA] = temp_unit;
     
     temp = {16,  6,  2,  7,  7,   7,  4,  5,  6,  6};
-    temp_unit = Unit("Hottie", UNIT_CLASS::PICKPOCKET, temp, "M");
+    temp_unit = Unit("Hottie", UNIT::CLASS::PICKPOCKET, temp, "M");
     temp = {48, 14, 25, 32, 34,  28, 19, 40, 15};
     temp_unit.setCaps(temp);
     temp = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
     temp_unit.setGrowths(temp);
     temp_unit.setExp(2200);
-    all_units[UNIT::HOTTIE] = temp_unit;
+    all_units[UNIT::NAME::HOTTIE] = temp_unit;
     
     temp = {22,  4,  5,  7,  6,   8,  4,  6,  5, 5}; // 4 or 5?
-    temp_unit = Unit("Servil", UNIT_CLASS::KNIGHT, temp, "M");
+    temp_unit = Unit("Servil", UNIT::CLASS::KNIGHT, temp, "M");
     temp = {48, 14, 25, 32, 34,  28, 19, 40, 15};
     temp_unit.setCaps(temp);
     temp = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
     temp_unit.setGrowths(temp);
     temp_unit.setExp(500);
-    all_units[UNIT::SERVIL] = temp_unit;
+    all_units[UNIT::NAME::SERVIL] = temp_unit;
     
     temp = {34,  4,  5,  7,  6,   8,  4,  6,  5, 5};
-    temp_unit = Unit("Pérignon", UNIT_CLASS::MAGE, temp, "M");
+    temp_unit = Unit("Pérignon", UNIT::CLASS::MAGE, temp, "M");
     temp = {48, 14, 25, 32, 34,  28, 19, 40, 15};
     temp_unit.setCaps(temp);
     temp = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
     temp_unit.setGrowths(temp);
     temp_unit.setExp(1200);
-    all_units[UNIT::PERIGNON] = temp_unit;
+    all_units[UNIT::NAME::PERIGNON] = temp_unit;
     
     temp = {15,  4,  5,  7,  6,   8,  4,  6,  5, 5};
-    temp_unit = Unit("Poet", UNIT_CLASS::MAGE, temp, "M");
+    temp_unit = Unit("Poet", UNIT::CLASS::MAGE, temp, "M");
     temp = {48, 14, 25, 32, 34,  28, 19, 40, 15};
     temp_unit.setCaps(temp);
     temp = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
     temp_unit.setGrowths(temp);
     temp_unit.setExp(400);
-    all_units[UNIT::POET] = temp_unit;
+    all_units[UNIT::NAME::POET] = temp_unit;
     
     temp = {15,  4,  5,  7,  6,   8,  4,  6,  5, 5};
-    temp_unit = Unit("Silou", UNIT_CLASS::MAGE, temp, "F");
+    temp_unit = Unit("Silou", UNIT::CLASS::MAGE, temp, "F");
     temp = {48, 14, 25, 32, 34,  28, 19, 40, 15};
     temp_unit.setCaps(temp);
     temp = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
@@ -965,7 +965,7 @@ void baseUnits() {
     temp_unit.setExp(400);
     temp_wpn.id = WPN::NAME::BALL_LIGHTNING;
     temp_unit.addEquipment(temp_wpn);
-    all_units[UNIT::SILOU] = temp_unit;
+    all_units[UNIT::NAME::SILOU] = temp_unit;
 }
 
 void genericEnemyUnits() {
@@ -975,148 +975,148 @@ void genericEnemyUnits() {
     //hp,str,mag,skl,spd,luck,def,res,con,move
 
     temp = {15,  4,  5,  7,  6,   8,  4,  6,  5, 5};
-    temp_unit = Unit("Bandit", UNIT_CLASS::BANDIT, temp, "M");
+    temp_unit = Unit("Bandit", UNIT::CLASS::BANDIT, temp, "M");
     temp = {48, 14, 25, 32, 34,  28, 19, 40, 15};
     temp_unit.setCaps(temp);
     temp = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
     temp_unit.setGrowths(temp);
     temp_unit.setExp(0);
-    all_units[UNIT::GENERIC_BANDIT] = temp_unit;
+    all_units[UNIT::NAME::GENERIC_BANDIT] = temp_unit;
 
     temp = {15,  4,  5,  7,  6,   8,  4,  6,  5, 5};
-    temp_unit = Unit("Duelist", UNIT_CLASS::DUELIST, temp, "M");
+    temp_unit = Unit("Duelist", UNIT::CLASS::DUELIST, temp, "M");
     temp = {48, 14, 25, 32, 34,  28, 19, 40, 15};
     temp_unit.setCaps(temp);
     temp = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
     temp_unit.setGrowths(temp);
     temp_unit.setExp(0);
-    all_units[UNIT::GENERIC_DUELIST] = temp_unit;
+    all_units[UNIT::NAME::GENERIC_DUELIST] = temp_unit;
 
     temp = {15,  4,  5,  7,  6,   8,  4,  6,  5, 5};
-    temp_unit = Unit("Pickpocket", UNIT_CLASS::PICKPOCKET, temp, "M");
+    temp_unit = Unit("Pickpocket", UNIT::CLASS::PICKPOCKET, temp, "M");
     temp = {48, 14, 25, 32, 34,  28, 19, 40, 15};
     temp_unit.setCaps(temp);
     temp = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
     temp_unit.setGrowths(temp);
     temp_unit.setExp(0);
-    all_units[UNIT::GENERIC_PICKPOCKET] = temp_unit;
+    all_units[UNIT::NAME::GENERIC_PICKPOCKET] = temp_unit;
 
     temp = {15,  4,  5,  7,  6,   8,  4,  6,  5, 5};
-    temp_unit = Unit("Thief", UNIT_CLASS::THIEF, temp, "M");
+    temp_unit = Unit("Thief", UNIT::CLASS::THIEF, temp, "M");
     temp = {48, 14, 25, 32, 34,  28, 19, 40, 15};
     temp_unit.setCaps(temp);
     temp = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
     temp_unit.setGrowths(temp);
     temp_unit.setExp(0);
-    all_units[UNIT::GENERIC_THIEF] = temp_unit;    
+    all_units[UNIT::NAME::GENERIC_THIEF] = temp_unit;    
 
     temp = {15,  4,  5,  7,  6,   8,  4,  6,  5, 5};
-    temp_unit = Unit("Assassin", UNIT_CLASS::ASSASSIN, temp, "M");
+    temp_unit = Unit("Assassin", UNIT::CLASS::ASSASSIN, temp, "M");
     temp = {48, 14, 25, 32, 34,  28, 19, 40, 15};
     temp_unit.setCaps(temp);
     temp = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
     temp_unit.setGrowths(temp);
     temp_unit.setExp(0);
-    all_units[UNIT::GENERIC_ASSASSIN] = temp_unit;
+    all_units[UNIT::NAME::GENERIC_ASSASSIN] = temp_unit;
 
     temp = {15,  4,  5,  7,  6,   8,  4,  6,  5, 5};
-    temp_unit = Unit("Archer", UNIT_CLASS::ARCHER, temp, "M");
+    temp_unit = Unit("Archer", UNIT::CLASS::ARCHER, temp, "M");
     temp = {48, 14, 25, 32, 34,  28, 19, 40, 15};
     temp_unit.setCaps(temp);
     temp = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
     temp_unit.setGrowths(temp);
     temp_unit.setExp(0);
-    all_units[UNIT::GENERIC_ARCHER] = temp_unit;
+    all_units[UNIT::NAME::GENERIC_ARCHER] = temp_unit;
 
     temp = {15,  4,  5,  7,  6,   8,  4,  6,  5, 5};
-    temp_unit = Unit("Marksman", UNIT_CLASS::MARKSMAN, temp, "M");
+    temp_unit = Unit("Marksman", UNIT::CLASS::MARKSMAN, temp, "M");
     temp = {48, 14, 25, 32, 34,  28, 19, 40, 15};
     temp_unit.setCaps(temp);
     temp = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
     temp_unit.setGrowths(temp);
     temp_unit.setExp(0);
-    all_units[UNIT::GENERIC_MARKSMAN] = temp_unit;
+    all_units[UNIT::NAME::GENERIC_MARKSMAN] = temp_unit;
 
     temp = {15,  4,  5,  7,  6,   8,  4,  6,  5, 5};
-    temp_unit = Unit("Mercenary", UNIT_CLASS::MERCENARY, temp, "M");
+    temp_unit = Unit("Mercenary", UNIT::CLASS::MERCENARY, temp, "M");
     temp = {48, 14, 25, 32, 34,  28, 19, 40, 15};
     temp_unit.setCaps(temp);
     temp = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
     temp_unit.setGrowths(temp);
     temp_unit.setExp(0);
-    all_units[UNIT::GENERIC_MERCENARY] = temp_unit;
+    all_units[UNIT::NAME::GENERIC_MERCENARY] = temp_unit;
 
     temp = {15,  4,  5,  7,  6,   8,  4,  6,  5, 5};
-    temp_unit = Unit("Hero", UNIT_CLASS::HERO, temp, "M");
+    temp_unit = Unit("Hero", UNIT::CLASS::HERO, temp, "M");
     temp = {48, 14, 25, 32, 34,  28, 19, 40, 15};
     temp_unit.setCaps(temp);
     temp = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
     temp_unit.setGrowths(temp);
     temp_unit.setExp(0);
-    all_units[UNIT::GENERIC_HERO] = temp_unit;
+    all_units[UNIT::NAME::GENERIC_HERO] = temp_unit;
 
     temp = {15,  4,  5,  7,  6,   8,  4,  6,  5, 5};
-    temp_unit = Unit("Corsair", UNIT_CLASS::CORSAIR, temp, "M");
+    temp_unit = Unit("Corsair", UNIT::CLASS::CORSAIR, temp, "M");
     temp = {48, 14, 25, 32, 34,  28, 19, 40, 15};
     temp_unit.setCaps(temp);
     temp = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
     temp_unit.setGrowths(temp);
     temp_unit.setExp(0);
-    all_units[UNIT::GENERIC_CORSAIR] = temp_unit;
+    all_units[UNIT::NAME::GENERIC_CORSAIR] = temp_unit;
 
     temp = {15,  4,  5,  7,  6,   8,  4,  6,  5, 5};
-    temp_unit = Unit("Viking", UNIT_CLASS::VIKING, temp, "M");
+    temp_unit = Unit("Viking", UNIT::CLASS::VIKING, temp, "M");
     temp = {48, 14, 25, 32, 34,  28, 19, 40, 15};
     temp_unit.setCaps(temp);
     temp = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
     temp_unit.setGrowths(temp);
     temp_unit.setExp(0);
-    all_units[UNIT::GENERIC_VIKING] = temp_unit;
+    all_units[UNIT::NAME::GENERIC_VIKING] = temp_unit;
 
     temp = {15,  4,  5,  7,  6,   8,  4,  6,  5, 5};
-    temp_unit = Unit("Ravager", UNIT_CLASS::RAVAGER, temp, "M");
+    temp_unit = Unit("Ravager", UNIT::CLASS::RAVAGER, temp, "M");
     temp = {48, 14, 25, 32, 34,  28, 19, 40, 15};
     temp_unit.setCaps(temp);
     temp = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
     temp_unit.setGrowths(temp);
     temp_unit.setExp(0);
-    all_units[UNIT::GENERIC_RAVAGER] = temp_unit;
+    all_units[UNIT::NAME::GENERIC_RAVAGER] = temp_unit;
 
     temp = {15,  4,  5,  7,  6,   8,  4,  6,  5, 5};
-    temp_unit = Unit("Cavalier", UNIT_CLASS::CAVALIER, temp, "M");
+    temp_unit = Unit("Cavalier", UNIT::CLASS::CAVALIER, temp, "M");
     temp = {48, 14, 25, 32, 34,  28, 19, 40, 15};
     temp_unit.setCaps(temp);
     temp = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
     temp_unit.setGrowths(temp);
     temp_unit.setExp(0);
-    all_units[UNIT::GENERIC_CAVALIER] = temp_unit;
+    all_units[UNIT::NAME::GENERIC_CAVALIER] = temp_unit;
 
     temp = {15,  4,  5,  7,  6,   8,  4,  6,  5, 5};
-    temp_unit = Unit("Paladin", UNIT_CLASS::PALADIN, temp, "M");
+    temp_unit = Unit("Paladin", UNIT::CLASS::PALADIN, temp, "M");
     temp = {48, 14, 25, 32, 34,  28, 19, 40, 15};
     temp_unit.setCaps(temp);
     temp = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
     temp_unit.setGrowths(temp);
     temp_unit.setExp(0);
-    all_units[UNIT::GENERIC_PALADIN] = temp_unit;
+    all_units[UNIT::NAME::GENERIC_PALADIN] = temp_unit;
 
     temp = {15,  4,  5,  7,  6,   8,  4,  6,  5, 5};
-    temp_unit = Unit("Fencer", UNIT_CLASS::FENCER, temp, "M");
+    temp_unit = Unit("Fencer", UNIT::CLASS::FENCER, temp, "M");
     temp = {48, 14, 25, 32, 34,  28, 19, 40, 15};
     temp_unit.setCaps(temp);
     temp = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
     temp_unit.setGrowths(temp);
     temp_unit.setExp(0);
-    all_units[UNIT::GENERIC_FENCER] = temp_unit;
+    all_units[UNIT::NAME::GENERIC_FENCER] = temp_unit;
 
     temp = {15,  4,  5,  7,  6,   8,  4,  6,  5, 5};
-    temp_unit = Unit("Mousquetaire", UNIT_CLASS::MOUSQUETAIRE, temp, "M");
+    temp_unit = Unit("Mousquetaire", UNIT::CLASS::MOUSQUETAIRE, temp, "M");
     temp = {48, 14, 25, 32, 34,  28, 19, 40, 15};
     temp_unit.setCaps(temp);
     temp = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
     temp_unit.setGrowths(temp);
     temp_unit.setExp(0);
-    all_units[UNIT::GENERIC_MOUSQUETAIRE] = temp_unit;
+    all_units[UNIT::NAME::GENERIC_MOUSQUETAIRE] = temp_unit;
 }
 
 std::vector<Unit> chaptestEnemyUnits() {
@@ -1127,7 +1127,7 @@ std::vector<Unit> chaptestEnemyUnits() {
     Point temp_position;
     std::vector<Unit> made_units;
     temp_stats = {15,  4,  5,  7,  6,   8,  4,  6,  5, 5};
-    temp_unit = Unit("Bandit", UNIT_CLASS::BANDIT, temp_stats, "M");
+    temp_unit = Unit("Bandit", UNIT::CLASS::BANDIT, temp_stats, "M");
     temp_stats = {48, 14, 25, 32, 34,  28, 19, 40, 15};
     temp_unit.setCaps(temp_stats);
     temp_stats = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
@@ -1152,7 +1152,7 @@ std::vector<Unit> chap1EnemyUnits() {
     Point temp_position;
     std::vector<Unit> made_units;
     temp_stats = {15,  4,  5,  7,  6,   8,  4,  6,  5, 5};
-    temp_unit = Unit("Bandit", UNIT_CLASS::BANDIT, temp_stats, "M");
+    temp_unit = Unit("Bandit", UNIT::CLASS::BANDIT, temp_stats, "M");
     temp_stats = {48, 14, 25, 32, 34,  28, 19, 40, 15};
     temp_unit.setCaps(temp_stats);
     temp_stats = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
@@ -1177,7 +1177,7 @@ std::vector<Unit> chap2EnemyUnits() {
     Point temp_position;
     std::vector<Unit> made_units;
     temp_stats = {15,  4,  5,  7,  6,   8,  4,  6,  5, 5};
-    temp_unit = Unit("Bandit", UNIT_CLASS::BANDIT, temp_stats, "M");
+    temp_unit = Unit("Bandit", UNIT::CLASS::BANDIT, temp_stats, "M");
     temp_stats = {48, 14, 25, 32, 34,  28, 19, 40, 15};
     temp_unit.setCaps(temp_stats);
     temp_stats = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
@@ -1202,7 +1202,7 @@ std::vector<Unit> chap3EnemyUnits() {
     Point temp_position;
     std::vector<Unit> made_units;
     temp_stats = {15,  4,  5,  7,  6,   8,  4,  6,  5, 5};
-    temp_unit = Unit("Bandit", UNIT_CLASS::BANDIT, temp_stats, "M");
+    temp_unit = Unit("Bandit", UNIT::CLASS::BANDIT, temp_stats, "M");
     temp_stats = {48, 14, 25, 32, 34,  28, 19, 40, 15};
     temp_unit.setCaps(temp_stats);
     temp_stats = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
@@ -1227,7 +1227,7 @@ std::vector<Unit> chap4EnemyUnits() {
     Point temp_position;
     std::vector<Unit> made_units;
     temp_stats = {15,  4,  5,  7,  6,   8,  4,  6,  5, 5};
-    temp_unit = Unit("Bandit", UNIT_CLASS::BANDIT, temp_stats, "M");
+    temp_unit = Unit("Bandit", UNIT::CLASS::BANDIT, temp_stats, "M");
     temp_stats = {48, 14, 25, 32, 34,  28, 19, 40, 15};
     temp_unit.setCaps(temp_stats);
     temp_stats = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
@@ -1252,7 +1252,7 @@ std::vector<Unit> chap5EnemyUnits() {
     Point temp_position;
     std::vector<Unit> made_units;
     temp_stats = {15,  4,  5,  7,  6,   8,  4,  6,  5, 5};
-    temp_unit = Unit("Bandit", UNIT_CLASS::BANDIT, temp_stats, "M");
+    temp_unit = Unit("Bandit", UNIT::CLASS::BANDIT, temp_stats, "M");
     temp_stats = {48, 14, 25, 32, 34,  28, 19, 40, 15};
     temp_unit.setCaps(temp_stats);
     temp_stats = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
@@ -1277,7 +1277,7 @@ std::vector<Unit> chap6EnemyUnits() {
     Point temp_position;
     std::vector<Unit> made_units;
     temp_stats = {15,  4,  5,  7,  6,   8,  4,  6,  5, 5};
-    temp_unit = Unit("Bandit", UNIT_CLASS::BANDIT, temp_stats, "M");
+    temp_unit = Unit("Bandit", UNIT::CLASS::BANDIT, temp_stats, "M");
     temp_stats = {48, 14, 25, 32, 34,  28, 19, 40, 15};
     temp_unit.setCaps(temp_stats);
     temp_stats = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
@@ -1302,7 +1302,7 @@ std::vector<Unit> chap7EnemyUnits() {
     Point temp_position;
     std::vector<Unit> made_units;
     temp_stats = {15,  4,  5,  7,  6,   8,  4,  6,  5, 5};
-    temp_unit = Unit("Bandit", UNIT_CLASS::BANDIT, temp_stats, "M");
+    temp_unit = Unit("Bandit", UNIT::CLASS::BANDIT, temp_stats, "M");
     temp_stats = {48, 14, 25, 32, 34,  28, 19, 40, 15};
     temp_unit.setCaps(temp_stats);
     temp_stats = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
@@ -1327,7 +1327,7 @@ std::vector<Unit> chap8EnemyUnits() {
     Point temp_position;
     std::vector<Unit> made_units;
     temp_stats = {15,  4,  5,  7,  6,   8,  4,  6,  5, 5};
-    temp_unit = Unit("Bandit", UNIT_CLASS::BANDIT, temp_stats, "M");
+    temp_unit = Unit("Bandit", UNIT::CLASS::BANDIT, temp_stats, "M");
     temp_stats = {48, 14, 25, 32, 34,  28, 19, 40, 15};
     temp_unit.setCaps(temp_stats);
     temp_stats = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
@@ -1352,7 +1352,7 @@ std::vector<Unit> chap9EnemyUnits() {
     Point temp_position;
     std::vector<Unit> made_units;
     temp_stats = {15,  4,  5,  7,  6,   8,  4,  6,  5, 5};
-    temp_unit = Unit("Bandit", UNIT_CLASS::BANDIT, temp_stats, "M");
+    temp_unit = Unit("Bandit", UNIT::CLASS::BANDIT, temp_stats, "M");
     temp_stats = {48, 14, 25, 32, 34,  28, 19, 40, 15};
     temp_unit.setCaps(temp_stats);
     temp_stats = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
@@ -1377,7 +1377,7 @@ std::vector<Unit> chap10EnemyUnits() {
     Point temp_position;
     std::vector<Unit> made_units;
     temp_stats = {15,  4,  5,  7,  6,   8,  4,  6,  5, 5};
-    temp_unit = Unit("Bandit", UNIT_CLASS::BANDIT, temp_stats, "M");
+    temp_unit = Unit("Bandit", UNIT::CLASS::BANDIT, temp_stats, "M");
     temp_stats = {48, 14, 25, 32, 34,  28, 19, 40, 15};
     temp_unit.setCaps(temp_stats);
     temp_stats = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
@@ -1402,7 +1402,7 @@ std::vector<Unit> chap11EnemyUnits() {
     Point temp_position;
     std::vector<Unit> made_units;
     temp_stats = {15,  4,  5,  7,  6,   8,  4,  6,  5, 5};
-    temp_unit = Unit("Bandit", UNIT_CLASS::BANDIT, temp_stats, "M");
+    temp_unit = Unit("Bandit", UNIT::CLASS::BANDIT, temp_stats, "M");
     temp_stats = {48, 14, 25, 32, 34,  28, 19, 40, 15};
     temp_unit.setCaps(temp_stats);
     temp_stats = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
@@ -1427,7 +1427,7 @@ std::vector<Unit> chap12EnemyUnits() {
     Point temp_position;
     std::vector<Unit> made_units;
     temp_stats = {15,  4,  5,  7,  6,   8,  4,  6,  5, 5};
-    temp_unit = Unit("Bandit", UNIT_CLASS::BANDIT, temp_stats, "M");
+    temp_unit = Unit("Bandit", UNIT::CLASS::BANDIT, temp_stats, "M");
     temp_stats = {48, 14, 25, 32, 34,  28, 19, 40, 15};
     temp_unit.setCaps(temp_stats);
     temp_stats = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
@@ -1452,7 +1452,7 @@ std::vector<Unit> chap13EnemyUnits() {
     Point temp_position;
     std::vector<Unit> made_units;
     temp_stats = {15,  4,  5,  7,  6,   8,  4,  6,  5, 5};
-    temp_unit = Unit("Bandit", UNIT_CLASS::BANDIT, temp_stats, "M");
+    temp_unit = Unit("Bandit", UNIT::CLASS::BANDIT, temp_stats, "M");
     temp_stats = {48, 14, 25, 32, 34,  28, 19, 40, 15};
     temp_unit.setCaps(temp_stats);
     temp_stats = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
@@ -1477,7 +1477,7 @@ std::vector<Unit> chap14EnemyUnits() {
     Point temp_position;
     std::vector<Unit> made_units;
     temp_stats = {15,  4,  5,  7,  6,   8,  4,  6,  5, 5};
-    temp_unit = Unit("Bandit", UNIT_CLASS::BANDIT, temp_stats, "M");
+    temp_unit = Unit("Bandit", UNIT::CLASS::BANDIT, temp_stats, "M");
     temp_stats = {48, 14, 25, 32, 34,  28, 19, 40, 15};
     temp_unit.setCaps(temp_stats);
     temp_stats = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
@@ -1502,7 +1502,7 @@ std::vector<Unit> chap15EnemyUnits() {
     Point temp_position;
     std::vector<Unit> made_units;
     temp_stats = {15,  4,  5,  7,  6,   8,  4,  6,  5, 5};
-    temp_unit = Unit("Bandit", UNIT_CLASS::BANDIT, temp_stats, "M");
+    temp_unit = Unit("Bandit", UNIT::CLASS::BANDIT, temp_stats, "M");
     temp_stats = {48, 14, 25, 32, 34,  28, 19, 40, 15};
     temp_unit.setCaps(temp_stats);
     temp_stats = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
@@ -1527,7 +1527,7 @@ std::vector<Unit> chap16EnemyUnits() {
     Point temp_position;
     std::vector<Unit> made_units;
     temp_stats = {15,  4,  5,  7,  6,   8,  4,  6,  5, 5};
-    temp_unit = Unit("Bandit", UNIT_CLASS::BANDIT, temp_stats, "M");
+    temp_unit = Unit("Bandit", UNIT::CLASS::BANDIT, temp_stats, "M");
     temp_stats = {48, 14, 25, 32, 34,  28, 19, 40, 15};
     temp_unit.setCaps(temp_stats);
     temp_stats = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
@@ -1552,7 +1552,7 @@ std::vector<Unit> chap17EnemyUnits() {
     Point temp_position;
     std::vector<Unit> made_units;
     temp_stats = {15,  4,  5,  7,  6,   8,  4,  6,  5, 5};
-    temp_unit = Unit("Bandit", UNIT_CLASS::BANDIT, temp_stats, "M");
+    temp_unit = Unit("Bandit", UNIT::CLASS::BANDIT, temp_stats, "M");
     temp_stats = {48, 14, 25, 32, 34,  28, 19, 40, 15};
     temp_unit.setCaps(temp_stats);
     temp_stats = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
@@ -1577,7 +1577,7 @@ std::vector<Unit> chap18EnemyUnits() {
     Point temp_position;
     std::vector<Unit> made_units;
     temp_stats = {15,  4,  5,  7,  6,   8,  4,  6,  5, 5};
-    temp_unit = Unit("Bandit", UNIT_CLASS::BANDIT, temp_stats, "M");
+    temp_unit = Unit("Bandit", UNIT::CLASS::BANDIT, temp_stats, "M");
     temp_stats = {48, 14, 25, 32, 34,  28, 19, 40, 15};
     temp_unit.setCaps(temp_stats);
     temp_stats = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
@@ -1602,7 +1602,7 @@ std::vector<Unit> chap19EnemyUnits() {
     Point temp_position;
     std::vector<Unit> made_units;
     temp_stats = {15,  4,  5,  7,  6,   8,  4,  6,  5, 5};
-    temp_unit = Unit("Bandit", UNIT_CLASS::BANDIT, temp_stats, "M");
+    temp_unit = Unit("Bandit", UNIT::CLASS::BANDIT, temp_stats, "M");
     temp_stats = {48, 14, 25, 32, 34,  28, 19, 40, 15};
     temp_unit.setCaps(temp_stats);
     temp_stats = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
@@ -1627,7 +1627,7 @@ std::vector<Unit> chap20EnemyUnits() {
     Point temp_position;
     std::vector<Unit> made_units;
     temp_stats = {15,  4,  5,  7,  6,   8,  4,  6,  5, 5};
-    temp_unit = Unit("Bandit", UNIT_CLASS::BANDIT, temp_stats, "M");
+    temp_unit = Unit("Bandit", UNIT::CLASS::BANDIT, temp_stats, "M");
     temp_stats = {48, 14, 25, 32, 34,  28, 19, 40, 15};
     temp_unit.setCaps(temp_stats);
     temp_stats = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
@@ -1652,7 +1652,7 @@ std::vector<Unit> chap21EnemyUnits() {
     Point temp_position;
     std::vector<Unit> made_units;
     temp_stats = {15,  4,  5,  7,  6,   8,  4,  6,  5, 5};
-    temp_unit = Unit("Bandit", UNIT_CLASS::BANDIT, temp_stats, "M");
+    temp_unit = Unit("Bandit", UNIT::CLASS::BANDIT, temp_stats, "M");
     temp_stats = {48, 14, 25, 32, 34,  28, 19, 40, 15};
     temp_unit.setCaps(temp_stats);
     temp_stats = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
@@ -1677,7 +1677,7 @@ std::vector<Unit> chap22EnemyUnits() {
     Point temp_position;
     std::vector<Unit> made_units;
     temp_stats = {15,  4,  5,  7,  6,   8,  4,  6,  5, 5};
-    temp_unit = Unit("Bandit", UNIT_CLASS::BANDIT, temp_stats, "M");
+    temp_unit = Unit("Bandit", UNIT::CLASS::BANDIT, temp_stats, "M");
     temp_stats = {48, 14, 25, 32, 34,  28, 19, 40, 15};
     temp_unit.setCaps(temp_stats);
     temp_stats = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
@@ -1702,7 +1702,7 @@ std::vector<Unit> chap23EnemyUnits() {
     Point temp_position;
     std::vector<Unit> made_units;
     temp_stats = {15,  4,  5,  7,  6,   8,  4,  6,  5, 5};
-    temp_unit = Unit("Bandit", UNIT_CLASS::BANDIT, temp_stats, "M");
+    temp_unit = Unit("Bandit", UNIT::CLASS::BANDIT, temp_stats, "M");
     temp_stats = {48, 14, 25, 32, 34,  28, 19, 40, 15};
     temp_unit.setCaps(temp_stats);
     temp_stats = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
@@ -1727,7 +1727,7 @@ std::vector<Unit> chap24EnemyUnits() {
     Point temp_position;
     std::vector<Unit> made_units;
     temp_stats = {15,  4,  5,  7,  6,   8,  4,  6,  5, 5};
-    temp_unit = Unit("Bandit", UNIT_CLASS::BANDIT, temp_stats, "M");
+    temp_unit = Unit("Bandit", UNIT::CLASS::BANDIT, temp_stats, "M");
     temp_stats = {48, 14, 25, 32, 34,  28, 19, 40, 15};
     temp_unit.setCaps(temp_stats);
     temp_stats = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
@@ -1752,7 +1752,7 @@ std::vector<Unit> chap25EnemyUnits() {
     Point temp_position;
     std::vector<Unit> made_units;
     temp_stats = {15,  4,  5,  7,  6,   8,  4,  6,  5, 5};
-    temp_unit = Unit("Bandit", UNIT_CLASS::BANDIT, temp_stats, "M");
+    temp_unit = Unit("Bandit", UNIT::CLASS::BANDIT, temp_stats, "M");
     temp_stats = {48, 14, 25, 32, 34,  28, 19, 40, 15};
     temp_unit.setCaps(temp_stats);
     temp_stats = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
