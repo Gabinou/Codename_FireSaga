@@ -136,25 +136,25 @@ void Game::moveUnit(Entity & cursor) {
 }
 
 void Game::setState(Entity & setting_entity, short unsigned int new_state) {
-    printf("Game state changes from %s to %s\n", this->state.c_str(), new_state.c_str()); 
+    printf("Game state changes from %d to %d\n", this->state, new_state); 
 
     switch (this->state) {
-        case GAME::PAUSE:
+        case GAME::STATE::PAUSE:
             break;
-        case GAME::STATS:
+        case GAME::STATE::STATS:
             break;
-        case GAME::MINIMAP:
+        case GAME::STATE::MINIMAP:
             break;
-        case GAME::MAP:
+        case GAME::STATE::MAP:
             switch (new_state) {
-                case GAME::UNITMENU:
+                case GAME::STATE::UNITMENU:
                     moveUnit(setting_entity);
                     break;
-                case GAME::STATS:
+                case GAME::STATE::STATS:
                     break;
-                case GAME::MINIMAP:
+                case GAME::STATE::MINIMAP:
                     break;                
-                case GAME::UNITMOVE:
+                case GAME::STATE::UNITMOVE:
                     std::vector<std::unique_ptr<Entity>> current_entities;
                     std::vector<std::vector<short int>> costmap;
                     std::vector<std::vector<short int>> movemapp;
@@ -190,64 +190,64 @@ void Game::setState(Entity & setting_entity, short unsigned int new_state) {
 
                     mapp->showOverlay();
                     break;
-                case GAME::OPTIONS:
+                case GAME::STATE::OPTIONS:
                     break;    
-                case GAME::CUTSCENE:
+                case GAME::STATE::CUTSCENE:
                     break;    
             }
             break;
-        case GAME::OPTIONS:
+        case GAME::STATE::OPTIONS:
             switch (new_state) {
-                case GAME::MAP:
+                case GAME::STATE::MAP:
                     break;                
-                case GAME::STARTMENU:
+                case GAME::STATE::STARTMENU:
                     break;
                 }
             break;
-        case GAME::STARTMENU:
+        case GAME::STATE::STARTMENU:
             switch (new_state) {
-                case GAME::INTROVIDEO:
+                case GAME::STATE::INTROVIDEO:
                     break;                
-                case GAME::SAVES:
+                case GAME::STATE::SAVES:
                     break;
-                case GAME::SOUNDROOM:
+                case GAME::STATE::SOUNDROOM:
                     break;
-                case GAME::OPTIONS:
+                case GAME::STATE::OPTIONS:
                     break;
                 }
             break;
-        case GAME::PREPARATION:
+        case GAME::STATE::PREPARATION:
             switch (new_state) {
-                case GAME::PLACEMENT:
+                case GAME::STATE::PLACEMENT:
                     break;                
-                case GAME::CHOOSEUNITS:
+                case GAME::STATE::CHOOSEUNITS:
                     break;
-                case GAME::EQUIPMENT:
+                case GAME::STATE::EQUIPMENT:
                     break;
-                case GAME::FORGE:
+                case GAME::STATE::FORGE:
                     break;
-                case GAME::STORAGE:
+                case GAME::STATE::STORAGE:
                     break;               
-                case GAME::BONUSEXP:
+                case GAME::STATE::BONUSEXP:
                     break;       
                 }
             break;
-        case GAME::PLACEMENT: 
-        case GAME::CHOOSEUNITS: 
-        case GAME::EQUIPMENT: 
-        case GAME::FORGE: 
-        case GAME::STORAGE: 
-        case GAME::BONUSEXP: 
+        case GAME::STATE::PLACEMENT: 
+        case GAME::STATE::CHOOSEUNITS: 
+        case GAME::STATE::EQUIPMENT: 
+        case GAME::STATE::FORGE: 
+        case GAME::STATE::STORAGE: 
+        case GAME::STATE::BONUSEXP: 
             switch (new_state) {            
-                case GAME::PREPARATION:
+                case GAME::STATE::PREPARATION:
                     break;
-                case GAME::MAP:
+                case GAME::STATE::MAP:
                     break;       
                 }
             break;
-        case GAME::UNITMOVE:
+        case GAME::STATE::UNITMOVE:
             switch (new_state) {            
-                case GAME::UNITMENU:
+                case GAME::STATE::UNITMENU:
                     mapp->hideOverlay();
                     makeUnitmenu(setting_entity); 
                     short int *new_position = setting_entity.getComponent<PositionComponent>().getPos();
@@ -264,35 +264,35 @@ void Game::setState(Entity & setting_entity, short unsigned int new_state) {
                     mapp->removeTile(old_position[0], old_position[1]);
                     mapp->setTile(new_position[0], new_position[1], ontile);
                     break;
-                case GAME::MAP:
+                case GAME::STATE::MAP:
                     mapp->hideOverlay();
                     break;       
                 }
             break;
-        case GAME::UNITMENU:
+        case GAME::STATE::UNITMENU:
             switch (new_state) {            
-                case GAME::ATTACK:
+                case GAME::STATE::ATTACK:
                     break;                
-                case GAME::TRADE:
+                case GAME::STATE::TRADE:
                     break;                
-                case GAME::ITEMS:
+                case GAME::STATE::ITEMS:
                     break;                
-                case GAME::CONVERSATION:
+                case GAME::STATE::CONVERSATION:
                     break;
-                case GAME::MAP:
+                case GAME::STATE::MAP:
                     killMenu("Unit menu");
                     break;       
                 }
             break;
-        case GAME::CONVERSATION:
+        case GAME::STATE::CONVERSATION:
             switch (new_state) {            
-                case GAME::MAP:
+                case GAME::STATE::MAP:
                     break;                
                 }
             break;
-        case GAME::ATTACK:
+        case GAME::STATE::ATTACK:
             switch (new_state) {            
-                case GAME::BATTLE:
+                case GAME::STATE::BATTLE:
                     break;                
                 }
             break;
