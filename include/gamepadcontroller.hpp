@@ -4,6 +4,7 @@
 #include "ECS.hpp"
 #include "game.hpp"
 #include "map.hpp"
+#include "shared.hpp"
 
 class GamepadController : public Component {
     private:
@@ -137,14 +138,14 @@ class GamepadController : public Component {
                     printf("cursor Position, %d %d \n", positioncomponent->getPos()[0], positioncomponent->getPos()[1]);
 
                     if (ontile) {
-                        toset = "unitmove";
+                        toset = GAME::STATE::UNITMOVE;
                         setter = ontile;
                     } else {
-                        toset = "options";
+                        toset = GAME::STATE::OPTIONS;
                         setter = entity;
                     }
-                } else if ((game->getState() == "unitmove") && (frames_button == 1)) {
-                    toset = "unitmenu";
+                } else if ((game->getState() == GAME::STATE::UNITMOVE) && (frames_button == 1)) {
+                    toset = GAME::STATE::UNITMENU;
                     setter = entity;
                 }
 
@@ -154,9 +155,9 @@ class GamepadController : public Component {
             if (isPressed(inputmap.cancel)) {
                 pressed_button.push_back(inputmap.cancel);
 
-                if ((game->getState() == "unitmenu") ||
-                        (game->getState() == "options") ||
-                        (game->getState() == "unitmove")) {
+                if ((game->getState() == GAME::STATE::UNITMENU) ||
+                        (game->getState() == GAME::STATE::OPTIONS) ||
+                        (game->getState() == GAME::STATE::UNITMOVE)) {
                     game->setState(*entity, "map");
                 }
             }

@@ -35,9 +35,9 @@ class Game {
         void makeSmallmap(Entity & setting_entity);
         void makeCombatindow(Unit * ally, Unit * enemy);
 
-        std::string state;
-        // std::stack <int> menu_entities; // I think stacks are bad. I don't want to only be able to delete menus from the top down. Sometimes I want to eliminate menus. I guess.
-        std::unordered_map<std::string, int> menus;
+        short unsigned int state;
+
+        std::unordered_map<std::string, int> menus; // BAD.
         std::stack <int> unit_entities;
         bool isRunning;
         SDL_Event event;
@@ -79,9 +79,9 @@ class Game {
         GamepadInputMap getGamepadInputMap();
         void setGamepadInputMap(const GamepadInputMap in_gpmap);
 
-        void setState(Entity & in_entity, std::string new_state);
+        void setState(Entity & in_entity, short unsigned int new_state);
         void setState(const char * new_state);
-        std::string getState();
+        short unsigned int getState();
 
         bool running();
 };

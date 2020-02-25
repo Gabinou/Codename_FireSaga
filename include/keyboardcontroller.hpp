@@ -4,6 +4,7 @@
 #include "ECS.hpp"
 #include "game.hpp"
 #include "map.hpp"
+#include "shared.hpp"
 
 class KeyboardController : public Component {
     private:
@@ -102,35 +103,35 @@ class KeyboardController : public Component {
 
             if (is_pressed(kb_state, inputmap.accept)) {
                 pressed_button.push_back(inputmap.accept);
-                std::string toset = "";
+                short unsigned int toset = -1;
                 Entity * setter;
                 Entity * ontile = map->getTile(positioncomponent->getPos()[0], positioncomponent->getPos()[1]);
 
-                if ((game->getState() == "map") && (frames_button == 1)) {
+                if ((game->getState() == GAME::STATE::MAP) && (frames_button == 1)) {
                     printf("cursor Position, %d %d \n", positioncomponent->getPos()[0], positioncomponent->getPos()[1]);
 
                     if (ontile) {
-                        toset = "unitmove";
+                        toset = GAME::STATE::UNITMOVE;
                         setter = ontile;
                     } else {
-                        toset = "options";
+                        toset = GAME::STATE::OPTIONS;
                         setter = entity;
                     }
-                } else if ((game->getState() == "unitmove") && (frames_button == 1)) {
-                    toset = "unitmenu";
+                } else if ((game->getState() == GAME::STATE::UNITMOVE) && (frames_button == 1)) {
+                    toset = GAME::STATE::UNITMENU;
                     setter = entity;
                 }
 
-                if (toset != "") {game->setState(*setter, toset.c_str()); }
+                if (toset != -1) {game->setState(*setter, toset); }
             }
 
             if (is_pressed(kb_state, inputmap.cancel)) {
                 pressed_button.push_back(inputmap.cancel);
 
-                if ((game->getState() == "unitmenu") ||
-                        (game->getState() == "options") ||
-                        (game->getState() == "unitmove")) {
-                    game->setState(*entity, "map");
+                if ((game->getState() == GAME::STATE::UNITMENU) ||
+                        (game->getState() == GAME::STATE::OPTIONS) ||
+                        (game->getState() == GAME::STATE::UNITMOVE)) {
+                    game->setState(*entity, GAME::STATE::MAP);
                 }
             }
 
