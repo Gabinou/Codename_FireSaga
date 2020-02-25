@@ -22,13 +22,13 @@ void Game::setSettings(Settings in_settings) {
     settings = in_settings;
 }
 
-bool Game::checkRate(int rate, std::string mode) {
+bool Game::checkRate(int rate, short unsigned int mode) {
     bool hit;
-    if (mode == "single") {
+    if (mode == 1) {
         hit = (getRN() < rate); //single_roll
         return(hit);
     }
-    if (mode == "double") {
+    if (mode == 2) {
         hit = (((getRN() + getRN())/2) < rate); //doubleroll
         return(hit);
     }
