@@ -6,24 +6,12 @@ Unit::Unit() {
     equipped.right = -1;
 }
 
-Unit::Unit(const std::string in_name, const unsigned char in_class_index, const Unit_stats in_bases, const std::string in_sex, Map_enemy in_map_enemy, unsigned long long int in_skills) : Unit(in_name, in_class_index, in_bases, in_sex, in_map_enemy) {
-    skills = in_skills;
-}
-
 Unit::Unit(const std::string in_name, const unsigned char in_class_index, const Unit_stats in_bases, const bool in_sex, Map_enemy in_map_enemy, unsigned long long int in_skills) : Unit(in_name, in_class_index, in_bases, in_sex, in_map_enemy) {
     skills = in_skills;
 }
 
-Unit::Unit(const std::string in_name, const unsigned char in_class_index, const Unit_stats in_bases, const std::string in_sex, Map_enemy in_map_enemy) : Unit(in_name, in_class_index, in_bases, in_sex) {
-    setMap_enemy(in_map_enemy);
-}
-
 Unit::Unit(const std::string in_name, const unsigned char in_class_index, const Unit_stats in_bases, const bool in_sex, Map_enemy in_map_enemy) : Unit(in_name, in_class_index, in_bases, in_sex) {
     setMap_enemy(in_map_enemy);
-}
-
-Unit::Unit(const std::string in_name, const unsigned char in_class_index, const Unit_stats in_bases, const std::string in_sex) : Unit(in_name, in_class_index, in_bases) {
-    setSex(in_sex);
 }
 
 Unit::Unit(const std::string in_name, const unsigned char in_class_index, const Unit_stats in_bases, const bool in_sex) : Unit(in_name, in_class_index, in_bases) {
@@ -65,15 +53,6 @@ bool Unit::getSex() {
 }
 void Unit::setSex(const bool in_sex) {
     sex = in_sex;
-}
-
-void Unit::setSex(const std::string in_sex) {
-    if (in_sex == "F") {
-        sex = 0;
-    }
-    if (in_sex == "M") {
-        sex = 1;
-    }  
 }
 
 Map_enemy Unit::getMap_enemy(){
@@ -853,9 +832,9 @@ void Unit::write(const char * filename, const char * mode) {
     fp = fopen(filename, mode);
     fprintf(fp, "%s \n", name.c_str());
     if (sex) {
-        fprintf(fp, "%s %s", "M", class_name.c_str());
+        fprintf(fp, "%s %s", 1, class_name.c_str());
     } else {
-        fprintf(fp, "%s %s", "F", class_name.c_str());
+        fprintf(fp, "%s %s", 0, class_name.c_str());
     }
     fprintf(fp, "Stats, HP, Str, Mag, Skl, Spd, Luck, Def, Res, Con, Move\n");
     fprintf(fp, "Base stats,\t%d,\t%d,\t%d,\t%d,\t%d,\t%d,\t%d,\t%d,\t%d,\t%d,\t%d\n", base_stats.hp, base_stats.str, base_stats.mag, base_stats.dex, base_stats.agi, base_stats.luck, base_stats.def, base_stats.res, base_stats.con, base_stats.move, base_stats.prof);
@@ -875,7 +854,7 @@ void baseUnits() {
     Inventory_item temp_wpn;
     //hp,str,mag,skl,spd,luck,def,res,con,move
     temp = {17,  6,  2,  7,  7,   7,  4,  5,  6, 5};
-    temp_unit = Unit("Erwin", UNIT::CLASS::MERCENARY, temp, "M");
+    temp_unit = Unit("Erwin", UNIT::CLASS::MERCENARY, temp, 1);
     temp = {48, 14, 25, 32, 34,  28, 19, 40, 15, 0};
     temp_unit.setCaps(temp);
     temp = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
@@ -885,7 +864,7 @@ void baseUnits() {
     all_units[UNIT::NAME::ERWIN] = temp_unit;
     
     temp = {18,  6,  2,  7,  7,   7,  4,  5,  6, 7};
-    temp_unit = Unit("Reliable", UNIT::CLASS::CAVALIER, temp, "M");
+    temp_unit = Unit("Reliable", UNIT::CLASS::CAVALIER, temp, 1);
     temp = {48, 14, 25, 32, 34,  28, 19, 40, 15};
     temp_unit.setCaps(temp);
     temp = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
@@ -894,7 +873,7 @@ void baseUnits() {
     all_units[UNIT::NAME::RELIABLE] = temp_unit;
     
     temp = {19,  6,  2,  7,  7,   7,  4,  5,  6,  7};
-    temp_unit = Unit("Coward", UNIT::CLASS::CAVALIER, temp, "M");
+    temp_unit = Unit("Coward", UNIT::CLASS::CAVALIER, temp, 1);
     temp = {48, 14, 25, 32, 34,  28, 19, 40, 15};
     temp_unit.setCaps(temp);
     temp = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
@@ -903,7 +882,7 @@ void baseUnits() {
     all_units[UNIT::NAME::COWARD] = temp_unit;
     
     temp = {20,  6,  2,  7,  7,   7,  4,  5,  6,  6};
-    temp_unit = Unit("1H Jaigen", UNIT::CLASS::MOUSQUETAIRE, temp, "M");
+    temp_unit = Unit("1H Jaigen", UNIT::CLASS::MOUSQUETAIRE, temp, 1);
     temp = {48, 14, 25, 32, 34,  28, 19, 40, 15};
     temp_unit.setCaps(temp);
     temp = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
@@ -912,7 +891,7 @@ void baseUnits() {
     all_units[UNIT::NAME::JAIGEN1H] = temp_unit;
 
     temp = {14,  6,  2,  7,  7,   7,  4,  5,  6,  5};
-    temp_unit = Unit("Kiara", UNIT::CLASS::CLERIC, temp, "F");
+    temp_unit = Unit("Kiara", UNIT::CLASS::CLERIC, temp, 0);
     temp = {48, 14, 25, 32, 34,  28, 19, 40, 15};
     temp_unit.setCaps(temp);
     temp = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
@@ -921,7 +900,7 @@ void baseUnits() {
     all_units[UNIT::NAME::KIARA] = temp_unit;
     
     temp = {16,  6,  2,  7,  7,   7,  4,  5,  6,  6};
-    temp_unit = Unit("Hottie", UNIT::CLASS::PICKPOCKET, temp, "M");
+    temp_unit = Unit("Hottie", UNIT::CLASS::PICKPOCKET, temp, 1);
     temp = {48, 14, 25, 32, 34,  28, 19, 40, 15};
     temp_unit.setCaps(temp);
     temp = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
@@ -930,7 +909,7 @@ void baseUnits() {
     all_units[UNIT::NAME::HOTTIE] = temp_unit;
     
     temp = {22,  4,  5,  7,  6,   8,  4,  6,  5, 5}; // 4 or 5?
-    temp_unit = Unit("Servil", UNIT::CLASS::KNIGHT, temp, "M");
+    temp_unit = Unit("Servil", UNIT::CLASS::KNIGHT, temp, 1);
     temp = {48, 14, 25, 32, 34,  28, 19, 40, 15};
     temp_unit.setCaps(temp);
     temp = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
@@ -939,7 +918,7 @@ void baseUnits() {
     all_units[UNIT::NAME::SERVIL] = temp_unit;
     
     temp = {34,  4,  5,  7,  6,   8,  4,  6,  5, 5};
-    temp_unit = Unit("Pérignon", UNIT::CLASS::MAGE, temp, "M");
+    temp_unit = Unit("Pérignon", UNIT::CLASS::MAGE, temp, 1);
     temp = {48, 14, 25, 32, 34,  28, 19, 40, 15};
     temp_unit.setCaps(temp);
     temp = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
@@ -948,7 +927,7 @@ void baseUnits() {
     all_units[UNIT::NAME::PERIGNON] = temp_unit;
     
     temp = {15,  4,  5,  7,  6,   8,  4,  6,  5, 5};
-    temp_unit = Unit("Poet", UNIT::CLASS::MAGE, temp, "M");
+    temp_unit = Unit("Poet", UNIT::CLASS::MAGE, temp, 1);
     temp = {48, 14, 25, 32, 34,  28, 19, 40, 15};
     temp_unit.setCaps(temp);
     temp = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
@@ -957,7 +936,7 @@ void baseUnits() {
     all_units[UNIT::NAME::POET] = temp_unit;
     
     temp = {15,  4,  5,  7,  6,   8,  4,  6,  5, 5};
-    temp_unit = Unit("Silou", UNIT::CLASS::MAGE, temp, "F");
+    temp_unit = Unit("Silou", UNIT::CLASS::MAGE, temp, 0);
     temp = {48, 14, 25, 32, 34,  28, 19, 40, 15};
     temp_unit.setCaps(temp);
     temp = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
@@ -973,9 +952,8 @@ void genericEnemyUnits() {
     Unit_stats temp;
     Unit temp_unit;
     //hp,str,mag,skl,spd,luck,def,res,con,move
-
     temp = {15,  4,  5,  7,  6,   8,  4,  6,  5, 5};
-    temp_unit = Unit("Bandit", UNIT::CLASS::BANDIT, temp, "M");
+    temp_unit = Unit("Bandit", UNIT::CLASS::BANDIT, temp, 1);
     temp = {48, 14, 25, 32, 34,  28, 19, 40, 15};
     temp_unit.setCaps(temp);
     temp = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
@@ -984,7 +962,7 @@ void genericEnemyUnits() {
     all_units[UNIT::NAME::GENERIC_BANDIT] = temp_unit;
 
     temp = {15,  4,  5,  7,  6,   8,  4,  6,  5, 5};
-    temp_unit = Unit("Duelist", UNIT::CLASS::DUELIST, temp, "M");
+    temp_unit = Unit("Duelist", UNIT::CLASS::DUELIST, temp, 1);
     temp = {48, 14, 25, 32, 34,  28, 19, 40, 15};
     temp_unit.setCaps(temp);
     temp = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
@@ -993,7 +971,7 @@ void genericEnemyUnits() {
     all_units[UNIT::NAME::GENERIC_DUELIST] = temp_unit;
 
     temp = {15,  4,  5,  7,  6,   8,  4,  6,  5, 5};
-    temp_unit = Unit("Pickpocket", UNIT::CLASS::PICKPOCKET, temp, "M");
+    temp_unit = Unit("Pickpocket", UNIT::CLASS::PICKPOCKET, temp, 1);
     temp = {48, 14, 25, 32, 34,  28, 19, 40, 15};
     temp_unit.setCaps(temp);
     temp = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
@@ -1002,7 +980,7 @@ void genericEnemyUnits() {
     all_units[UNIT::NAME::GENERIC_PICKPOCKET] = temp_unit;
 
     temp = {15,  4,  5,  7,  6,   8,  4,  6,  5, 5};
-    temp_unit = Unit("Thief", UNIT::CLASS::THIEF, temp, "M");
+    temp_unit = Unit("Thief", UNIT::CLASS::THIEF, temp, 1);
     temp = {48, 14, 25, 32, 34,  28, 19, 40, 15};
     temp_unit.setCaps(temp);
     temp = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
@@ -1011,7 +989,7 @@ void genericEnemyUnits() {
     all_units[UNIT::NAME::GENERIC_THIEF] = temp_unit;    
 
     temp = {15,  4,  5,  7,  6,   8,  4,  6,  5, 5};
-    temp_unit = Unit("Assassin", UNIT::CLASS::ASSASSIN, temp, "M");
+    temp_unit = Unit("Assassin", UNIT::CLASS::ASSASSIN, temp, 1);
     temp = {48, 14, 25, 32, 34,  28, 19, 40, 15};
     temp_unit.setCaps(temp);
     temp = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
@@ -1020,7 +998,7 @@ void genericEnemyUnits() {
     all_units[UNIT::NAME::GENERIC_ASSASSIN] = temp_unit;
 
     temp = {15,  4,  5,  7,  6,   8,  4,  6,  5, 5};
-    temp_unit = Unit("Archer", UNIT::CLASS::ARCHER, temp, "M");
+    temp_unit = Unit("Archer", UNIT::CLASS::ARCHER, temp, 1);
     temp = {48, 14, 25, 32, 34,  28, 19, 40, 15};
     temp_unit.setCaps(temp);
     temp = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
@@ -1029,7 +1007,7 @@ void genericEnemyUnits() {
     all_units[UNIT::NAME::GENERIC_ARCHER] = temp_unit;
 
     temp = {15,  4,  5,  7,  6,   8,  4,  6,  5, 5};
-    temp_unit = Unit("Marksman", UNIT::CLASS::MARKSMAN, temp, "M");
+    temp_unit = Unit("Marksman", UNIT::CLASS::MARKSMAN, temp, 1);
     temp = {48, 14, 25, 32, 34,  28, 19, 40, 15};
     temp_unit.setCaps(temp);
     temp = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
@@ -1038,7 +1016,7 @@ void genericEnemyUnits() {
     all_units[UNIT::NAME::GENERIC_MARKSMAN] = temp_unit;
 
     temp = {15,  4,  5,  7,  6,   8,  4,  6,  5, 5};
-    temp_unit = Unit("Mercenary", UNIT::CLASS::MERCENARY, temp, "M");
+    temp_unit = Unit("Mercenary", UNIT::CLASS::MERCENARY, temp, 1);
     temp = {48, 14, 25, 32, 34,  28, 19, 40, 15};
     temp_unit.setCaps(temp);
     temp = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
@@ -1047,7 +1025,7 @@ void genericEnemyUnits() {
     all_units[UNIT::NAME::GENERIC_MERCENARY] = temp_unit;
 
     temp = {15,  4,  5,  7,  6,   8,  4,  6,  5, 5};
-    temp_unit = Unit("Hero", UNIT::CLASS::HERO, temp, "M");
+    temp_unit = Unit("Hero", UNIT::CLASS::HERO, temp, 1);
     temp = {48, 14, 25, 32, 34,  28, 19, 40, 15};
     temp_unit.setCaps(temp);
     temp = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
@@ -1056,7 +1034,7 @@ void genericEnemyUnits() {
     all_units[UNIT::NAME::GENERIC_HERO] = temp_unit;
 
     temp = {15,  4,  5,  7,  6,   8,  4,  6,  5, 5};
-    temp_unit = Unit("Corsair", UNIT::CLASS::CORSAIR, temp, "M");
+    temp_unit = Unit("Corsair", UNIT::CLASS::CORSAIR, temp, 1);
     temp = {48, 14, 25, 32, 34,  28, 19, 40, 15};
     temp_unit.setCaps(temp);
     temp = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
@@ -1065,7 +1043,7 @@ void genericEnemyUnits() {
     all_units[UNIT::NAME::GENERIC_CORSAIR] = temp_unit;
 
     temp = {15,  4,  5,  7,  6,   8,  4,  6,  5, 5};
-    temp_unit = Unit("Viking", UNIT::CLASS::VIKING, temp, "M");
+    temp_unit = Unit("Viking", UNIT::CLASS::VIKING, temp, 1);
     temp = {48, 14, 25, 32, 34,  28, 19, 40, 15};
     temp_unit.setCaps(temp);
     temp = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
@@ -1074,7 +1052,7 @@ void genericEnemyUnits() {
     all_units[UNIT::NAME::GENERIC_VIKING] = temp_unit;
 
     temp = {15,  4,  5,  7,  6,   8,  4,  6,  5, 5};
-    temp_unit = Unit("Ravager", UNIT::CLASS::RAVAGER, temp, "M");
+    temp_unit = Unit("Ravager", UNIT::CLASS::RAVAGER, temp, 1);
     temp = {48, 14, 25, 32, 34,  28, 19, 40, 15};
     temp_unit.setCaps(temp);
     temp = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
@@ -1083,7 +1061,7 @@ void genericEnemyUnits() {
     all_units[UNIT::NAME::GENERIC_RAVAGER] = temp_unit;
 
     temp = {15,  4,  5,  7,  6,   8,  4,  6,  5, 5};
-    temp_unit = Unit("Cavalier", UNIT::CLASS::CAVALIER, temp, "M");
+    temp_unit = Unit("Cavalier", UNIT::CLASS::CAVALIER, temp, 1);
     temp = {48, 14, 25, 32, 34,  28, 19, 40, 15};
     temp_unit.setCaps(temp);
     temp = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
@@ -1092,7 +1070,7 @@ void genericEnemyUnits() {
     all_units[UNIT::NAME::GENERIC_CAVALIER] = temp_unit;
 
     temp = {15,  4,  5,  7,  6,   8,  4,  6,  5, 5};
-    temp_unit = Unit("Paladin", UNIT::CLASS::PALADIN, temp, "M");
+    temp_unit = Unit("Paladin", UNIT::CLASS::PALADIN, temp, 1);
     temp = {48, 14, 25, 32, 34,  28, 19, 40, 15};
     temp_unit.setCaps(temp);
     temp = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
@@ -1101,7 +1079,7 @@ void genericEnemyUnits() {
     all_units[UNIT::NAME::GENERIC_PALADIN] = temp_unit;
 
     temp = {15,  4,  5,  7,  6,   8,  4,  6,  5, 5};
-    temp_unit = Unit("Fencer", UNIT::CLASS::FENCER, temp, "M");
+    temp_unit = Unit("Fencer", UNIT::CLASS::FENCER, temp, 1);
     temp = {48, 14, 25, 32, 34,  28, 19, 40, 15};
     temp_unit.setCaps(temp);
     temp = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
@@ -1110,7 +1088,7 @@ void genericEnemyUnits() {
     all_units[UNIT::NAME::GENERIC_FENCER] = temp_unit;
 
     temp = {15,  4,  5,  7,  6,   8,  4,  6,  5, 5};
-    temp_unit = Unit("Mousquetaire", UNIT::CLASS::MOUSQUETAIRE, temp, "M");
+    temp_unit = Unit("Mousquetaire", UNIT::CLASS::MOUSQUETAIRE, temp, 1);
     temp = {48, 14, 25, 32, 34,  28, 19, 40, 15};
     temp_unit.setCaps(temp);
     temp = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
@@ -1127,7 +1105,7 @@ std::vector<Unit> chaptestEnemyUnits() {
     Point temp_position;
     std::vector<Unit> made_units;
     temp_stats = {15,  4,  5,  7,  6,   8,  4,  6,  5, 5};
-    temp_unit = Unit("Bandit", UNIT::CLASS::BANDIT, temp_stats, "M");
+    temp_unit = Unit("Bandit", UNIT::CLASS::BANDIT, temp_stats, 1);
     temp_stats = {48, 14, 25, 32, 34,  28, 19, 40, 15};
     temp_unit.setCaps(temp_stats);
     temp_stats = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
@@ -1152,7 +1130,7 @@ std::vector<Unit> chap1EnemyUnits() {
     Point temp_position;
     std::vector<Unit> made_units;
     temp_stats = {15,  4,  5,  7,  6,   8,  4,  6,  5, 5};
-    temp_unit = Unit("Bandit", UNIT::CLASS::BANDIT, temp_stats, "M");
+    temp_unit = Unit("Bandit", UNIT::CLASS::BANDIT, temp_stats, 1);
     temp_stats = {48, 14, 25, 32, 34,  28, 19, 40, 15};
     temp_unit.setCaps(temp_stats);
     temp_stats = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
@@ -1177,7 +1155,7 @@ std::vector<Unit> chap2EnemyUnits() {
     Point temp_position;
     std::vector<Unit> made_units;
     temp_stats = {15,  4,  5,  7,  6,   8,  4,  6,  5, 5};
-    temp_unit = Unit("Bandit", UNIT::CLASS::BANDIT, temp_stats, "M");
+    temp_unit = Unit("Bandit", UNIT::CLASS::BANDIT, temp_stats, 1);
     temp_stats = {48, 14, 25, 32, 34,  28, 19, 40, 15};
     temp_unit.setCaps(temp_stats);
     temp_stats = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
@@ -1202,7 +1180,7 @@ std::vector<Unit> chap3EnemyUnits() {
     Point temp_position;
     std::vector<Unit> made_units;
     temp_stats = {15,  4,  5,  7,  6,   8,  4,  6,  5, 5};
-    temp_unit = Unit("Bandit", UNIT::CLASS::BANDIT, temp_stats, "M");
+    temp_unit = Unit("Bandit", UNIT::CLASS::BANDIT, temp_stats, 1);
     temp_stats = {48, 14, 25, 32, 34,  28, 19, 40, 15};
     temp_unit.setCaps(temp_stats);
     temp_stats = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
@@ -1227,7 +1205,7 @@ std::vector<Unit> chap4EnemyUnits() {
     Point temp_position;
     std::vector<Unit> made_units;
     temp_stats = {15,  4,  5,  7,  6,   8,  4,  6,  5, 5};
-    temp_unit = Unit("Bandit", UNIT::CLASS::BANDIT, temp_stats, "M");
+    temp_unit = Unit("Bandit", UNIT::CLASS::BANDIT, temp_stats, 1);
     temp_stats = {48, 14, 25, 32, 34,  28, 19, 40, 15};
     temp_unit.setCaps(temp_stats);
     temp_stats = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
@@ -1252,7 +1230,7 @@ std::vector<Unit> chap5EnemyUnits() {
     Point temp_position;
     std::vector<Unit> made_units;
     temp_stats = {15,  4,  5,  7,  6,   8,  4,  6,  5, 5};
-    temp_unit = Unit("Bandit", UNIT::CLASS::BANDIT, temp_stats, "M");
+    temp_unit = Unit("Bandit", UNIT::CLASS::BANDIT, temp_stats, 1);
     temp_stats = {48, 14, 25, 32, 34,  28, 19, 40, 15};
     temp_unit.setCaps(temp_stats);
     temp_stats = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
@@ -1277,7 +1255,7 @@ std::vector<Unit> chap6EnemyUnits() {
     Point temp_position;
     std::vector<Unit> made_units;
     temp_stats = {15,  4,  5,  7,  6,   8,  4,  6,  5, 5};
-    temp_unit = Unit("Bandit", UNIT::CLASS::BANDIT, temp_stats, "M");
+    temp_unit = Unit("Bandit", UNIT::CLASS::BANDIT, temp_stats, 1);
     temp_stats = {48, 14, 25, 32, 34,  28, 19, 40, 15};
     temp_unit.setCaps(temp_stats);
     temp_stats = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
@@ -1302,7 +1280,7 @@ std::vector<Unit> chap7EnemyUnits() {
     Point temp_position;
     std::vector<Unit> made_units;
     temp_stats = {15,  4,  5,  7,  6,   8,  4,  6,  5, 5};
-    temp_unit = Unit("Bandit", UNIT::CLASS::BANDIT, temp_stats, "M");
+    temp_unit = Unit("Bandit", UNIT::CLASS::BANDIT, temp_stats, 1);
     temp_stats = {48, 14, 25, 32, 34,  28, 19, 40, 15};
     temp_unit.setCaps(temp_stats);
     temp_stats = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
@@ -1327,7 +1305,7 @@ std::vector<Unit> chap8EnemyUnits() {
     Point temp_position;
     std::vector<Unit> made_units;
     temp_stats = {15,  4,  5,  7,  6,   8,  4,  6,  5, 5};
-    temp_unit = Unit("Bandit", UNIT::CLASS::BANDIT, temp_stats, "M");
+    temp_unit = Unit("Bandit", UNIT::CLASS::BANDIT, temp_stats, 1);
     temp_stats = {48, 14, 25, 32, 34,  28, 19, 40, 15};
     temp_unit.setCaps(temp_stats);
     temp_stats = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
@@ -1352,7 +1330,7 @@ std::vector<Unit> chap9EnemyUnits() {
     Point temp_position;
     std::vector<Unit> made_units;
     temp_stats = {15,  4,  5,  7,  6,   8,  4,  6,  5, 5};
-    temp_unit = Unit("Bandit", UNIT::CLASS::BANDIT, temp_stats, "M");
+    temp_unit = Unit("Bandit", UNIT::CLASS::BANDIT, temp_stats, 1);
     temp_stats = {48, 14, 25, 32, 34,  28, 19, 40, 15};
     temp_unit.setCaps(temp_stats);
     temp_stats = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
@@ -1377,7 +1355,7 @@ std::vector<Unit> chap10EnemyUnits() {
     Point temp_position;
     std::vector<Unit> made_units;
     temp_stats = {15,  4,  5,  7,  6,   8,  4,  6,  5, 5};
-    temp_unit = Unit("Bandit", UNIT::CLASS::BANDIT, temp_stats, "M");
+    temp_unit = Unit("Bandit", UNIT::CLASS::BANDIT, temp_stats, 1);
     temp_stats = {48, 14, 25, 32, 34,  28, 19, 40, 15};
     temp_unit.setCaps(temp_stats);
     temp_stats = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
@@ -1402,7 +1380,7 @@ std::vector<Unit> chap11EnemyUnits() {
     Point temp_position;
     std::vector<Unit> made_units;
     temp_stats = {15,  4,  5,  7,  6,   8,  4,  6,  5, 5};
-    temp_unit = Unit("Bandit", UNIT::CLASS::BANDIT, temp_stats, "M");
+    temp_unit = Unit("Bandit", UNIT::CLASS::BANDIT, temp_stats, 1);
     temp_stats = {48, 14, 25, 32, 34,  28, 19, 40, 15};
     temp_unit.setCaps(temp_stats);
     temp_stats = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
@@ -1427,7 +1405,7 @@ std::vector<Unit> chap12EnemyUnits() {
     Point temp_position;
     std::vector<Unit> made_units;
     temp_stats = {15,  4,  5,  7,  6,   8,  4,  6,  5, 5};
-    temp_unit = Unit("Bandit", UNIT::CLASS::BANDIT, temp_stats, "M");
+    temp_unit = Unit("Bandit", UNIT::CLASS::BANDIT, temp_stats, 1);
     temp_stats = {48, 14, 25, 32, 34,  28, 19, 40, 15};
     temp_unit.setCaps(temp_stats);
     temp_stats = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
@@ -1452,7 +1430,7 @@ std::vector<Unit> chap13EnemyUnits() {
     Point temp_position;
     std::vector<Unit> made_units;
     temp_stats = {15,  4,  5,  7,  6,   8,  4,  6,  5, 5};
-    temp_unit = Unit("Bandit", UNIT::CLASS::BANDIT, temp_stats, "M");
+    temp_unit = Unit("Bandit", UNIT::CLASS::BANDIT, temp_stats, 1);
     temp_stats = {48, 14, 25, 32, 34,  28, 19, 40, 15};
     temp_unit.setCaps(temp_stats);
     temp_stats = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
@@ -1477,7 +1455,7 @@ std::vector<Unit> chap14EnemyUnits() {
     Point temp_position;
     std::vector<Unit> made_units;
     temp_stats = {15,  4,  5,  7,  6,   8,  4,  6,  5, 5};
-    temp_unit = Unit("Bandit", UNIT::CLASS::BANDIT, temp_stats, "M");
+    temp_unit = Unit("Bandit", UNIT::CLASS::BANDIT, temp_stats, 1);
     temp_stats = {48, 14, 25, 32, 34,  28, 19, 40, 15};
     temp_unit.setCaps(temp_stats);
     temp_stats = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
@@ -1502,7 +1480,7 @@ std::vector<Unit> chap15EnemyUnits() {
     Point temp_position;
     std::vector<Unit> made_units;
     temp_stats = {15,  4,  5,  7,  6,   8,  4,  6,  5, 5};
-    temp_unit = Unit("Bandit", UNIT::CLASS::BANDIT, temp_stats, "M");
+    temp_unit = Unit("Bandit", UNIT::CLASS::BANDIT, temp_stats, 1);
     temp_stats = {48, 14, 25, 32, 34,  28, 19, 40, 15};
     temp_unit.setCaps(temp_stats);
     temp_stats = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
@@ -1527,7 +1505,7 @@ std::vector<Unit> chap16EnemyUnits() {
     Point temp_position;
     std::vector<Unit> made_units;
     temp_stats = {15,  4,  5,  7,  6,   8,  4,  6,  5, 5};
-    temp_unit = Unit("Bandit", UNIT::CLASS::BANDIT, temp_stats, "M");
+    temp_unit = Unit("Bandit", UNIT::CLASS::BANDIT, temp_stats, 1);
     temp_stats = {48, 14, 25, 32, 34,  28, 19, 40, 15};
     temp_unit.setCaps(temp_stats);
     temp_stats = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
@@ -1552,7 +1530,7 @@ std::vector<Unit> chap17EnemyUnits() {
     Point temp_position;
     std::vector<Unit> made_units;
     temp_stats = {15,  4,  5,  7,  6,   8,  4,  6,  5, 5};
-    temp_unit = Unit("Bandit", UNIT::CLASS::BANDIT, temp_stats, "M");
+    temp_unit = Unit("Bandit", UNIT::CLASS::BANDIT, temp_stats, 1);
     temp_stats = {48, 14, 25, 32, 34,  28, 19, 40, 15};
     temp_unit.setCaps(temp_stats);
     temp_stats = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
@@ -1577,7 +1555,7 @@ std::vector<Unit> chap18EnemyUnits() {
     Point temp_position;
     std::vector<Unit> made_units;
     temp_stats = {15,  4,  5,  7,  6,   8,  4,  6,  5, 5};
-    temp_unit = Unit("Bandit", UNIT::CLASS::BANDIT, temp_stats, "M");
+    temp_unit = Unit("Bandit", UNIT::CLASS::BANDIT, temp_stats, 1);
     temp_stats = {48, 14, 25, 32, 34,  28, 19, 40, 15};
     temp_unit.setCaps(temp_stats);
     temp_stats = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
@@ -1602,7 +1580,7 @@ std::vector<Unit> chap19EnemyUnits() {
     Point temp_position;
     std::vector<Unit> made_units;
     temp_stats = {15,  4,  5,  7,  6,   8,  4,  6,  5, 5};
-    temp_unit = Unit("Bandit", UNIT::CLASS::BANDIT, temp_stats, "M");
+    temp_unit = Unit("Bandit", UNIT::CLASS::BANDIT, temp_stats, 1);
     temp_stats = {48, 14, 25, 32, 34,  28, 19, 40, 15};
     temp_unit.setCaps(temp_stats);
     temp_stats = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
@@ -1627,7 +1605,7 @@ std::vector<Unit> chap20EnemyUnits() {
     Point temp_position;
     std::vector<Unit> made_units;
     temp_stats = {15,  4,  5,  7,  6,   8,  4,  6,  5, 5};
-    temp_unit = Unit("Bandit", UNIT::CLASS::BANDIT, temp_stats, "M");
+    temp_unit = Unit("Bandit", UNIT::CLASS::BANDIT, temp_stats, 1);
     temp_stats = {48, 14, 25, 32, 34,  28, 19, 40, 15};
     temp_unit.setCaps(temp_stats);
     temp_stats = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
@@ -1652,7 +1630,7 @@ std::vector<Unit> chap21EnemyUnits() {
     Point temp_position;
     std::vector<Unit> made_units;
     temp_stats = {15,  4,  5,  7,  6,   8,  4,  6,  5, 5};
-    temp_unit = Unit("Bandit", UNIT::CLASS::BANDIT, temp_stats, "M");
+    temp_unit = Unit("Bandit", UNIT::CLASS::BANDIT, temp_stats, 1);
     temp_stats = {48, 14, 25, 32, 34,  28, 19, 40, 15};
     temp_unit.setCaps(temp_stats);
     temp_stats = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
@@ -1677,7 +1655,7 @@ std::vector<Unit> chap22EnemyUnits() {
     Point temp_position;
     std::vector<Unit> made_units;
     temp_stats = {15,  4,  5,  7,  6,   8,  4,  6,  5, 5};
-    temp_unit = Unit("Bandit", UNIT::CLASS::BANDIT, temp_stats, "M");
+    temp_unit = Unit("Bandit", UNIT::CLASS::BANDIT, temp_stats, 1);
     temp_stats = {48, 14, 25, 32, 34,  28, 19, 40, 15};
     temp_unit.setCaps(temp_stats);
     temp_stats = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
@@ -1702,7 +1680,7 @@ std::vector<Unit> chap23EnemyUnits() {
     Point temp_position;
     std::vector<Unit> made_units;
     temp_stats = {15,  4,  5,  7,  6,   8,  4,  6,  5, 5};
-    temp_unit = Unit("Bandit", UNIT::CLASS::BANDIT, temp_stats, "M");
+    temp_unit = Unit("Bandit", UNIT::CLASS::BANDIT, temp_stats, 1);
     temp_stats = {48, 14, 25, 32, 34,  28, 19, 40, 15};
     temp_unit.setCaps(temp_stats);
     temp_stats = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
@@ -1727,7 +1705,7 @@ std::vector<Unit> chap24EnemyUnits() {
     Point temp_position;
     std::vector<Unit> made_units;
     temp_stats = {15,  4,  5,  7,  6,   8,  4,  6,  5, 5};
-    temp_unit = Unit("Bandit", UNIT::CLASS::BANDIT, temp_stats, "M");
+    temp_unit = Unit("Bandit", UNIT::CLASS::BANDIT, temp_stats, 1);
     temp_stats = {48, 14, 25, 32, 34,  28, 19, 40, 15};
     temp_unit.setCaps(temp_stats);
     temp_stats = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
@@ -1752,7 +1730,7 @@ std::vector<Unit> chap25EnemyUnits() {
     Point temp_position;
     std::vector<Unit> made_units;
     temp_stats = {15,  4,  5,  7,  6,   8,  4,  6,  5, 5};
-    temp_unit = Unit("Bandit", UNIT::CLASS::BANDIT, temp_stats, "M");
+    temp_unit = Unit("Bandit", UNIT::CLASS::BANDIT, temp_stats, 1);
     temp_stats = {48, 14, 25, 32, 34,  28, 19, 40, 15};
     temp_unit.setCaps(temp_stats);
     temp_stats = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
