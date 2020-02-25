@@ -376,7 +376,14 @@ enum MVT {
     END,
 };
 }
+namespace SEX {
+enum SEXES {
+    F = 0,
+    M = 1,
+};
 }
+}
+
 
 namespace MAP {
 namespace OVERLAY {

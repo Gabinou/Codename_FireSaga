@@ -854,7 +854,7 @@ void baseUnits() {
     Inventory_item temp_wpn;
     //hp,str,mag,skl,spd,luck,def,res,con,move
     temp = {17,  6,  2,  7,  7,   7,  4,  5,  6, 5};
-    temp_unit = Unit("Erwin", UNIT::CLASS::MERCENARY, temp, 1);
+    temp_unit = Unit("Erwin", UNIT::CLASS::MERCENARY, temp, UNIT::SEX::M);
     temp = {48, 14, 25, 32, 34,  28, 19, 40, 15, 0};
     temp_unit.setCaps(temp);
     temp = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
@@ -864,7 +864,7 @@ void baseUnits() {
     all_units[UNIT::NAME::ERWIN] = temp_unit;
     
     temp = {18,  6,  2,  7,  7,   7,  4,  5,  6, 7};
-    temp_unit = Unit("Reliable", UNIT::CLASS::CAVALIER, temp, 1);
+    temp_unit = Unit("Reliable", UNIT::CLASS::CAVALIER, temp, UNIT::SEX::M);
     temp = {48, 14, 25, 32, 34,  28, 19, 40, 15};
     temp_unit.setCaps(temp);
     temp = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
@@ -873,7 +873,7 @@ void baseUnits() {
     all_units[UNIT::NAME::RELIABLE] = temp_unit;
     
     temp = {19,  6,  2,  7,  7,   7,  4,  5,  6,  7};
-    temp_unit = Unit("Coward", UNIT::CLASS::CAVALIER, temp, 1);
+    temp_unit = Unit("Coward", UNIT::CLASS::CAVALIER, temp, UNIT::SEX::M);
     temp = {48, 14, 25, 32, 34,  28, 19, 40, 15};
     temp_unit.setCaps(temp);
     temp = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
@@ -882,7 +882,7 @@ void baseUnits() {
     all_units[UNIT::NAME::COWARD] = temp_unit;
     
     temp = {20,  6,  2,  7,  7,   7,  4,  5,  6,  6};
-    temp_unit = Unit("1H Jaigen", UNIT::CLASS::MOUSQUETAIRE, temp, 1);
+    temp_unit = Unit("1H Jaigen", UNIT::CLASS::MOUSQUETAIRE, temp, UNIT::SEX::M);
     temp = {48, 14, 25, 32, 34,  28, 19, 40, 15};
     temp_unit.setCaps(temp);
     temp = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
@@ -891,7 +891,7 @@ void baseUnits() {
     all_units[UNIT::NAME::JAIGEN1H] = temp_unit;
 
     temp = {14,  6,  2,  7,  7,   7,  4,  5,  6,  5};
-    temp_unit = Unit("Kiara", UNIT::CLASS::CLERIC, temp, 0);
+    temp_unit = Unit("Kiara", UNIT::CLASS::CLERIC, temp, UNIT::SEX::F);
     temp = {48, 14, 25, 32, 34,  28, 19, 40, 15};
     temp_unit.setCaps(temp);
     temp = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
@@ -900,7 +900,7 @@ void baseUnits() {
     all_units[UNIT::NAME::KIARA] = temp_unit;
     
     temp = {16,  6,  2,  7,  7,   7,  4,  5,  6,  6};
-    temp_unit = Unit("Hottie", UNIT::CLASS::PICKPOCKET, temp, 1);
+    temp_unit = Unit("Hottie", UNIT::CLASS::PICKPOCKET, temp, UNIT::SEX::M);
     temp = {48, 14, 25, 32, 34,  28, 19, 40, 15};
     temp_unit.setCaps(temp);
     temp = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
@@ -909,7 +909,7 @@ void baseUnits() {
     all_units[UNIT::NAME::HOTTIE] = temp_unit;
     
     temp = {22,  4,  5,  7,  6,   8,  4,  6,  5, 5}; // 4 or 5?
-    temp_unit = Unit("Servil", UNIT::CLASS::KNIGHT, temp, 1);
+    temp_unit = Unit("Servil", UNIT::CLASS::KNIGHT, temp, UNIT::SEX::M);
     temp = {48, 14, 25, 32, 34,  28, 19, 40, 15};
     temp_unit.setCaps(temp);
     temp = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
@@ -918,7 +918,7 @@ void baseUnits() {
     all_units[UNIT::NAME::SERVIL] = temp_unit;
     
     temp = {34,  4,  5,  7,  6,   8,  4,  6,  5, 5};
-    temp_unit = Unit("Pérignon", UNIT::CLASS::MAGE, temp, 1);
+    temp_unit = Unit("Pérignon", UNIT::CLASS::MAGE, temp, UNIT::SEX::M);
     temp = {48, 14, 25, 32, 34,  28, 19, 40, 15};
     temp_unit.setCaps(temp);
     temp = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
@@ -927,7 +927,7 @@ void baseUnits() {
     all_units[UNIT::NAME::PERIGNON] = temp_unit;
     
     temp = {15,  4,  5,  7,  6,   8,  4,  6,  5, 5};
-    temp_unit = Unit("Poet", UNIT::CLASS::MAGE, temp, 1);
+    temp_unit = Unit("Poet", UNIT::CLASS::MAGE, temp, UNIT::SEX::M);
     temp = {48, 14, 25, 32, 34,  28, 19, 40, 15};
     temp_unit.setCaps(temp);
     temp = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
@@ -936,7 +936,7 @@ void baseUnits() {
     all_units[UNIT::NAME::POET] = temp_unit;
     
     temp = {15,  4,  5,  7,  6,   8,  4,  6,  5, 5};
-    temp_unit = Unit("Silou", UNIT::CLASS::MAGE, temp, 0);
+    temp_unit = Unit("Silou", UNIT::CLASS::MAGE, temp, UNIT::SEX::F);
     temp = {48, 14, 25, 32, 34,  28, 19, 40, 15};
     temp_unit.setCaps(temp);
     temp = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
@@ -953,7 +953,7 @@ void genericEnemyUnits() {
     Unit temp_unit;
     //hp,str,mag,skl,spd,luck,def,res,con,move
     temp = {15,  4,  5,  7,  6,   8,  4,  6,  5, 5};
-    temp_unit = Unit("Bandit", UNIT::CLASS::BANDIT, temp, 1);
+    temp_unit = Unit("Bandit", UNIT::CLASS::BANDIT, temp, UNIT::SEX::M);
     temp = {48, 14, 25, 32, 34,  28, 19, 40, 15};
     temp_unit.setCaps(temp);
     temp = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
@@ -962,7 +962,7 @@ void genericEnemyUnits() {
     all_units[UNIT::NAME::GENERIC_BANDIT] = temp_unit;
 
     temp = {15,  4,  5,  7,  6,   8,  4,  6,  5, 5};
-    temp_unit = Unit("Duelist", UNIT::CLASS::DUELIST, temp, 1);
+    temp_unit = Unit("Duelist", UNIT::CLASS::DUELIST, temp, UNIT::SEX::M);
     temp = {48, 14, 25, 32, 34,  28, 19, 40, 15};
     temp_unit.setCaps(temp);
     temp = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
@@ -971,7 +971,7 @@ void genericEnemyUnits() {
     all_units[UNIT::NAME::GENERIC_DUELIST] = temp_unit;
 
     temp = {15,  4,  5,  7,  6,   8,  4,  6,  5, 5};
-    temp_unit = Unit("Pickpocket", UNIT::CLASS::PICKPOCKET, temp, 1);
+    temp_unit = Unit("Pickpocket", UNIT::CLASS::PICKPOCKET, temp, UNIT::SEX::M);
     temp = {48, 14, 25, 32, 34,  28, 19, 40, 15};
     temp_unit.setCaps(temp);
     temp = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
@@ -980,7 +980,7 @@ void genericEnemyUnits() {
     all_units[UNIT::NAME::GENERIC_PICKPOCKET] = temp_unit;
 
     temp = {15,  4,  5,  7,  6,   8,  4,  6,  5, 5};
-    temp_unit = Unit("Thief", UNIT::CLASS::THIEF, temp, 1);
+    temp_unit = Unit("Thief", UNIT::CLASS::THIEF, temp, UNIT::SEX::M);
     temp = {48, 14, 25, 32, 34,  28, 19, 40, 15};
     temp_unit.setCaps(temp);
     temp = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
@@ -989,7 +989,7 @@ void genericEnemyUnits() {
     all_units[UNIT::NAME::GENERIC_THIEF] = temp_unit;    
 
     temp = {15,  4,  5,  7,  6,   8,  4,  6,  5, 5};
-    temp_unit = Unit("Assassin", UNIT::CLASS::ASSASSIN, temp, 1);
+    temp_unit = Unit("Assassin", UNIT::CLASS::ASSASSIN, temp, UNIT::SEX::M);
     temp = {48, 14, 25, 32, 34,  28, 19, 40, 15};
     temp_unit.setCaps(temp);
     temp = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
@@ -998,7 +998,7 @@ void genericEnemyUnits() {
     all_units[UNIT::NAME::GENERIC_ASSASSIN] = temp_unit;
 
     temp = {15,  4,  5,  7,  6,   8,  4,  6,  5, 5};
-    temp_unit = Unit("Archer", UNIT::CLASS::ARCHER, temp, 1);
+    temp_unit = Unit("Archer", UNIT::CLASS::ARCHER, temp, UNIT::SEX::M);
     temp = {48, 14, 25, 32, 34,  28, 19, 40, 15};
     temp_unit.setCaps(temp);
     temp = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
@@ -1007,7 +1007,7 @@ void genericEnemyUnits() {
     all_units[UNIT::NAME::GENERIC_ARCHER] = temp_unit;
 
     temp = {15,  4,  5,  7,  6,   8,  4,  6,  5, 5};
-    temp_unit = Unit("Marksman", UNIT::CLASS::MARKSMAN, temp, 1);
+    temp_unit = Unit("Marksman", UNIT::CLASS::MARKSMAN, temp, UNIT::SEX::M);
     temp = {48, 14, 25, 32, 34,  28, 19, 40, 15};
     temp_unit.setCaps(temp);
     temp = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
@@ -1016,7 +1016,7 @@ void genericEnemyUnits() {
     all_units[UNIT::NAME::GENERIC_MARKSMAN] = temp_unit;
 
     temp = {15,  4,  5,  7,  6,   8,  4,  6,  5, 5};
-    temp_unit = Unit("Mercenary", UNIT::CLASS::MERCENARY, temp, 1);
+    temp_unit = Unit("Mercenary", UNIT::CLASS::MERCENARY, temp, UNIT::SEX::M);
     temp = {48, 14, 25, 32, 34,  28, 19, 40, 15};
     temp_unit.setCaps(temp);
     temp = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
@@ -1025,7 +1025,7 @@ void genericEnemyUnits() {
     all_units[UNIT::NAME::GENERIC_MERCENARY] = temp_unit;
 
     temp = {15,  4,  5,  7,  6,   8,  4,  6,  5, 5};
-    temp_unit = Unit("Hero", UNIT::CLASS::HERO, temp, 1);
+    temp_unit = Unit("Hero", UNIT::CLASS::HERO, temp, UNIT::SEX::M);
     temp = {48, 14, 25, 32, 34,  28, 19, 40, 15};
     temp_unit.setCaps(temp);
     temp = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
@@ -1034,7 +1034,7 @@ void genericEnemyUnits() {
     all_units[UNIT::NAME::GENERIC_HERO] = temp_unit;
 
     temp = {15,  4,  5,  7,  6,   8,  4,  6,  5, 5};
-    temp_unit = Unit("Corsair", UNIT::CLASS::CORSAIR, temp, 1);
+    temp_unit = Unit("Corsair", UNIT::CLASS::CORSAIR, temp, UNIT::SEX::M);
     temp = {48, 14, 25, 32, 34,  28, 19, 40, 15};
     temp_unit.setCaps(temp);
     temp = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
@@ -1043,7 +1043,7 @@ void genericEnemyUnits() {
     all_units[UNIT::NAME::GENERIC_CORSAIR] = temp_unit;
 
     temp = {15,  4,  5,  7,  6,   8,  4,  6,  5, 5};
-    temp_unit = Unit("Viking", UNIT::CLASS::VIKING, temp, 1);
+    temp_unit = Unit("Viking", UNIT::CLASS::VIKING, temp, UNIT::SEX::M);
     temp = {48, 14, 25, 32, 34,  28, 19, 40, 15};
     temp_unit.setCaps(temp);
     temp = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
@@ -1052,7 +1052,7 @@ void genericEnemyUnits() {
     all_units[UNIT::NAME::GENERIC_VIKING] = temp_unit;
 
     temp = {15,  4,  5,  7,  6,   8,  4,  6,  5, 5};
-    temp_unit = Unit("Ravager", UNIT::CLASS::RAVAGER, temp, 1);
+    temp_unit = Unit("Ravager", UNIT::CLASS::RAVAGER, temp, UNIT::SEX::M);
     temp = {48, 14, 25, 32, 34,  28, 19, 40, 15};
     temp_unit.setCaps(temp);
     temp = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
@@ -1061,7 +1061,7 @@ void genericEnemyUnits() {
     all_units[UNIT::NAME::GENERIC_RAVAGER] = temp_unit;
 
     temp = {15,  4,  5,  7,  6,   8,  4,  6,  5, 5};
-    temp_unit = Unit("Cavalier", UNIT::CLASS::CAVALIER, temp, 1);
+    temp_unit = Unit("Cavalier", UNIT::CLASS::CAVALIER, temp, UNIT::SEX::M);
     temp = {48, 14, 25, 32, 34,  28, 19, 40, 15};
     temp_unit.setCaps(temp);
     temp = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
@@ -1070,7 +1070,7 @@ void genericEnemyUnits() {
     all_units[UNIT::NAME::GENERIC_CAVALIER] = temp_unit;
 
     temp = {15,  4,  5,  7,  6,   8,  4,  6,  5, 5};
-    temp_unit = Unit("Paladin", UNIT::CLASS::PALADIN, temp, 1);
+    temp_unit = Unit("Paladin", UNIT::CLASS::PALADIN, temp, UNIT::SEX::M);
     temp = {48, 14, 25, 32, 34,  28, 19, 40, 15};
     temp_unit.setCaps(temp);
     temp = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
@@ -1079,7 +1079,7 @@ void genericEnemyUnits() {
     all_units[UNIT::NAME::GENERIC_PALADIN] = temp_unit;
 
     temp = {15,  4,  5,  7,  6,   8,  4,  6,  5, 5};
-    temp_unit = Unit("Fencer", UNIT::CLASS::FENCER, temp, 1);
+    temp_unit = Unit("Fencer", UNIT::CLASS::FENCER, temp, UNIT::SEX::M);
     temp = {48, 14, 25, 32, 34,  28, 19, 40, 15};
     temp_unit.setCaps(temp);
     temp = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
@@ -1088,7 +1088,7 @@ void genericEnemyUnits() {
     all_units[UNIT::NAME::GENERIC_FENCER] = temp_unit;
 
     temp = {15,  4,  5,  7,  6,   8,  4,  6,  5, 5};
-    temp_unit = Unit("Mousquetaire", UNIT::CLASS::MOUSQUETAIRE, temp, 1);
+    temp_unit = Unit("Mousquetaire", UNIT::CLASS::MOUSQUETAIRE, temp, UNIT::SEX::M);
     temp = {48, 14, 25, 32, 34,  28, 19, 40, 15};
     temp_unit.setCaps(temp);
     temp = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
