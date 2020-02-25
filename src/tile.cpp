@@ -10,15 +10,15 @@ Tile::Tile(void) {
 Tile::Tile(const std::string in_name, const Movement_cost in_cost, unsigned int * in_stats[4]) {
 	name = in_name;
 	cost_struct = in_cost;
-    cost[MVT_TYPE::FOOT_SLOW] = in_cost.foot_slow;
-    cost[MVT_TYPE::FOOT_FAST] = in_cost.foot_fast;
-    cost[MVT_TYPE::MAGES] = in_cost.mages;
-    cost[MVT_TYPE::RIDERS_SLOW] = in_cost.riders_slow;
-    cost[MVT_TYPE::RIDERS_FAST] = in_cost.riders_fast;
-    cost[MVT_TYPE::FLIERS] = in_cost.fliers;
-    cost[MVT_TYPE::ARMORS] = in_cost.armors;
-    cost[MVT_TYPE::PIRATES] = in_cost.pirates;
-    cost[MVT_TYPE::BANDITS] = in_cost.bandits;
+    cost[UNIT::MVT::FOOT_SLOW] = in_cost.foot_slow;
+    cost[UNIT::MVT::FOOT_FAST] = in_cost.foot_fast;
+    cost[UNIT::MVT::MAGES] = in_cost.mages;
+    cost[UNIT::MVT::RIDERS_SLOW] = in_cost.riders_slow;
+    cost[UNIT::MVT::RIDERS_FAST] = in_cost.riders_fast;
+    cost[UNIT::MVT::FLIERS] = in_cost.fliers;
+    cost[UNIT::MVT::ARMORS] = in_cost.armors;
+    cost[UNIT::MVT::PIRATES] = in_cost.pirates;
+    cost[UNIT::MVT::BANDITS] = in_cost.bandits;
 	stats.dodge = (unsigned int)in_stats[0];
 	stats.Pprot = (unsigned int)in_stats[1];
     stats.Mprot = (unsigned int)in_stats[2];

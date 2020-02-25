@@ -29,22 +29,6 @@ enum DEFAULTS {
     CHAP_NUMBER = 40,
 }; // replace text IN MY FILES by the values, at compilation.
 }
-
-namespace MVT_TYPE {
-enum MVT_TYPES {
-    FOOT_SLOW,
-    FOOT_FAST,
-    MAGES,
-    RIDERS_SLOW,
-    RIDERS_FAST,
-    FLIERS,
-    ARMORS,
-    PIRATES,
-    BANDITS,
-    END,
-};
-}
-
 namespace WPN {
 namespace NAME {
 enum NAMES {
@@ -377,6 +361,20 @@ enum SKILLS : unsigned int {
     // -> Should be long 32bit int.
 };
 const unsigned long long int BOW_BONUS = 0x100000000;
+}
+namespace MVT {
+enum MVT {
+    FOOT_SLOW,
+    FOOT_FAST,
+    MAGES,
+    RIDERS_SLOW,
+    RIDERS_FAST,
+    FLIERS,
+    ARMORS,
+    PIRATES,
+    BANDITS,
+    END,
+};
 }
 }
 

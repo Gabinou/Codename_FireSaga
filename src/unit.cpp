@@ -349,112 +349,112 @@ unsigned char Unit::getMvttype() {
 void Unit::autoMvttype() {
     switch(class_index) {
         case UNIT::CLASS::MERCENARY:
-            mvt_type = MVT_TYPE::FOOT_SLOW;
+            mvt_type = UNIT::MVT::FOOT_SLOW;
             break;
         case UNIT::CLASS::LORD:
-            mvt_type = MVT_TYPE::FOOT_SLOW;
+            mvt_type = UNIT::MVT::FOOT_SLOW;
             break;
         case UNIT::CLASS::DUELIST:
-            mvt_type = MVT_TYPE::FOOT_SLOW;
+            mvt_type = UNIT::MVT::FOOT_SLOW;
             break;
         case UNIT::CLASS::THIEF:
-            mvt_type = MVT_TYPE::FOOT_FAST;
+            mvt_type = UNIT::MVT::FOOT_FAST;
             break;
         case UNIT::CLASS::PEGASUS_KNIGHT:
-            mvt_type = MVT_TYPE::FLIERS;
+            mvt_type = UNIT::MVT::FLIERS;
             break;
         case UNIT::CLASS::PIKEMAN:
-            mvt_type = MVT_TYPE::FOOT_SLOW;
+            mvt_type = UNIT::MVT::FOOT_SLOW;
             break;
         case UNIT::CLASS::CAVALIER:
-            mvt_type = MVT_TYPE::RIDERS_SLOW;
+            mvt_type = UNIT::MVT::RIDERS_SLOW;
             break;
         case UNIT::CLASS::KNIGHT:
-            mvt_type = MVT_TYPE::ARMORS;
+            mvt_type = UNIT::MVT::ARMORS;
             break;
         case UNIT::CLASS::BANDIT:
-            mvt_type = MVT_TYPE::BANDITS;
+            mvt_type = UNIT::MVT::BANDITS;
             break;
         case UNIT::CLASS::CORSAIR:
-            mvt_type = MVT_TYPE::PIRATES;
+            mvt_type = UNIT::MVT::PIRATES;
             break;
         case UNIT::CLASS::VIKING:
-            mvt_type = MVT_TYPE::PIRATES;
+            mvt_type = UNIT::MVT::PIRATES;
             break;
         case UNIT::CLASS::PICKPOCKET:
-            mvt_type = MVT_TYPE::FOOT_FAST;
+            mvt_type = UNIT::MVT::FOOT_FAST;
             break;
         case UNIT::CLASS::FENCER:
-            mvt_type = MVT_TYPE::FOOT_SLOW;
+            mvt_type = UNIT::MVT::FOOT_SLOW;
             break;
         case UNIT::CLASS::MOUSQUETAIRE:
-            mvt_type = MVT_TYPE::FOOT_SLOW;
+            mvt_type = UNIT::MVT::FOOT_SLOW;
             break;
         case UNIT::CLASS::ASSASSIN:
-            mvt_type = MVT_TYPE::FOOT_FAST;
+            mvt_type = UNIT::MVT::FOOT_FAST;
             break;
         case UNIT::CLASS::MARKSMAN:
-            mvt_type = MVT_TYPE::FOOT_SLOW;
+            mvt_type = UNIT::MVT::FOOT_SLOW;
             break;        
         case UNIT::CLASS::MARKSMAN_RIDER:
-            mvt_type = MVT_TYPE::RIDERS_SLOW;
+            mvt_type = UNIT::MVT::RIDERS_SLOW;
             break;
         case UNIT::CLASS::ARCHER:
-            mvt_type = MVT_TYPE::FOOT_SLOW;
+            mvt_type = UNIT::MVT::FOOT_SLOW;
             break;        
         case UNIT::CLASS::ARCHER_RIDER:
-            mvt_type = MVT_TYPE::RIDERS_SLOW;
+            mvt_type = UNIT::MVT::RIDERS_SLOW;
             break;
         case UNIT::CLASS::DUKE:
-            mvt_type = MVT_TYPE::FOOT_SLOW;
+            mvt_type = UNIT::MVT::FOOT_SLOW;
             break;
         case UNIT::CLASS::PALADIN:
-            mvt_type = MVT_TYPE::RIDERS_FAST;
+            mvt_type = UNIT::MVT::RIDERS_FAST;
             break;
         case UNIT::CLASS::GENERAL:
-            mvt_type = MVT_TYPE::ARMORS;
+            mvt_type = UNIT::MVT::ARMORS;
             break;
         case UNIT::CLASS::CLERIC:
-            mvt_type = MVT_TYPE::MAGES;
+            mvt_type = UNIT::MVT::MAGES;
             break;
         case UNIT::CLASS::PRIEST:
-            mvt_type = MVT_TYPE::MAGES;
+            mvt_type = UNIT::MVT::MAGES;
             break;
         case UNIT::CLASS::MAGE:
-            mvt_type = MVT_TYPE::MAGES;
+            mvt_type = UNIT::MVT::MAGES;
             break;
         case UNIT::CLASS::HERO:
-            mvt_type = MVT_TYPE::FOOT_SLOW;
+            mvt_type = UNIT::MVT::FOOT_SLOW;
             break;
         case UNIT::CLASS::RAVAGER:
-            mvt_type = MVT_TYPE::BANDITS;
+            mvt_type = UNIT::MVT::BANDITS;
             break;
         case UNIT::CLASS::BATTLEMAGE:
-            mvt_type = MVT_TYPE::MAGES;
+            mvt_type = UNIT::MVT::MAGES;
             break;
         case UNIT::CLASS::SAGE:
-            mvt_type = MVT_TYPE::MAGES;
+            mvt_type = UNIT::MVT::MAGES;
             break;
         case UNIT::CLASS::TROUBADOUR:
-            mvt_type = MVT_TYPE::RIDERS_FAST;
+            mvt_type = UNIT::MVT::RIDERS_FAST;
             break;
         case UNIT::CLASS::ORACLE:
-            mvt_type = MVT_TYPE::MAGES;
+            mvt_type = UNIT::MVT::MAGES;
             break;
         case UNIT::CLASS::BISHOP:
-            mvt_type = MVT_TYPE::MAGES;
+            mvt_type = UNIT::MVT::MAGES;
             break;
         case UNIT::CLASS::ANGEL:
-            mvt_type = MVT_TYPE::FLIERS;
+            mvt_type = UNIT::MVT::FLIERS;
             break;
         case UNIT::CLASS::DEMON:
-            mvt_type = MVT_TYPE::FOOT_FAST;
+            mvt_type = UNIT::MVT::FOOT_FAST;
             break;
         case UNIT::CLASS::DEMONIC_INCARNATE:
-            mvt_type = MVT_TYPE::MAGES;
+            mvt_type = UNIT::MVT::MAGES;
             break;
         case UNIT::CLASS::ANGELIC_INCARNATE:
-            mvt_type = MVT_TYPE::MAGES;
+            mvt_type = UNIT::MVT::MAGES;
             break;
     }
 }

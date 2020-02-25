@@ -6,7 +6,7 @@
 class Tile {
     private:
         Movement_cost cost_struct;
-        unsigned char cost[MVT_TYPE::BANDITS + 1];
+        unsigned char cost[UNIT::MVT::BANDITS + 1];
         bool inside;
         Tile_stats stats;
         std::string name;
