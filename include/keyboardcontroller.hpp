@@ -17,7 +17,7 @@ class KeyboardController : public Component {
         std::vector<std::vector<SDL_Scancode>> held_move;
         unsigned int frames_button = 0;
         unsigned int frames_move = 0;
-        short int * tilesize;
+        short unsigned int * tilesize;
     public:
         KeyboardController() = default;
 
@@ -36,11 +36,11 @@ class KeyboardController : public Component {
             map = in_map;
         }
 
-        void setTilesize(short int * in_tilesize) {
+        void setTilesize(short unsigned int * in_tilesize) {
             tilesize = in_tilesize;
         }
 
-        short int * getTilesize() {
+        short unsigned int * getTilesize() {
             return (tilesize);
         }
 
@@ -103,7 +103,7 @@ class KeyboardController : public Component {
 
             if (is_pressed(kb_state, inputmap.accept)) {
                 pressed_button.push_back(inputmap.accept);
-                short unsigned int toset = -1;
+                short unsigned int toset = game->getState();
                 Entity * setter;
                 Entity * ontile = map->getTile(positioncomponent->getPos()[0], positioncomponent->getPos()[1]);
 

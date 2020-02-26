@@ -22,7 +22,7 @@ class ArrowComponent : public Component {
         bool visible;
         bool updatable;
         short int move = 6; //temporary, waiting for units to be able to give their move units.
-        short int * tilesize; // if no map, just use the pixel position as usual.
+        short unsigned int * tilesize; // if no map, just use the pixel position as usual.
         short int * origin;
         Map * map = NULL; // no map-> position is not on a grid.
 

@@ -24,7 +24,7 @@ class SpriteComponent : public Component {
 
         short int objectivepos[2];
         short int slidepos[2];
-        short int * tilesize; // if no map, just use the pixel position as usual.
+        short unsigned int * tilesize; // if no map, just use the pixel position as usual.
         short int frames = 10, speed = 50;
         short int slideint = 0; // for slide_type = "geometric"
 
@@ -73,7 +73,7 @@ class SpriteComponent : public Component {
             return (texture);
         }
 
-        short int * getTilesize() {
+        short unsigned int * getTilesize() {
             return (tilesize);
         }
 

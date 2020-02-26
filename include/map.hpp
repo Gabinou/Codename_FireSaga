@@ -11,7 +11,7 @@ using Entity_ptr_matrix = std::vector<std::vector<Entity *>>;
 
 class Map {
     private:
-        short int tilesize[2];
+        short unsigned int tilesize[2];
         short unsigned int frames = 10, speed = 50;
         bool show_overlay = false;
         bool show_danger = false;
@@ -59,7 +59,7 @@ class Map {
         void makeEntitymap(const short unsigned int row_size, const short unsigned int col_size);
 
         void setTilesize(const short int unsigned width, const short int unsigned height);
-        short int * getTilesize() const;
+        short unsigned int * getTilesize() const;
 
         void setTile(const short unsigned int x, const short unsigned int y, Entity * in_entity);
         void removeTile(const short unsigned int x, const short unsigned int y);

@@ -16,8 +16,8 @@ void Map::setTilesize(const short int unsigned width, const short int unsigned h
     tilesize[1] = height;
 }
 
-short int * Map::getTilesize() const {
-    return ((short int *)tilesize);
+short unsigned int * Map::getTilesize() const {
+    return ((short unsigned int *)tilesize);
 }
 
 void Map::setTile(const short unsigned int x, const short unsigned int y, Entity * in_entity) {
@@ -74,9 +74,9 @@ Entity * Map::getTile(const short unsigned int x, const short unsigned int y) {
 }
 
 void Map::loadTiletextures() {
-    int tileindex;
+    short unsigned int tileindex;
     std::string texturename;
-    for (int i = 0; i < unique_textures.size(); i++) {
+    for (short unsigned int i = 0; i < unique_textures.size(); i++) {
         tileindex = (unique_textures[i]/DEFAULT::TILE_DIVISOR);
         texturename = "..//assets//" + loaded_tiles[tileindex].getName() + "_" + std::to_string(unique_textures[i]) + ".png";
         textures[unique_textures[i]] = loadTexture(texturename.c_str());
