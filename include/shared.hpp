@@ -460,6 +460,22 @@ enum TILES {
 }
 
 namespace GAME {
+namespace BUTTON {
+enum BUTTONS {
+    RIGHT,
+    LEFT,
+    UP,
+    DOWN,
+    ACCEPT,
+    CANCEL,
+    MAP,
+    PAUSE,
+    STATS,
+    OPTIONS,
+    ACCELERATE,
+};
+}
+
 namespace RN {
 enum RNS {
     SINGLE,
@@ -468,6 +484,7 @@ enum RNS {
     GAUSSIAN,
 };
 }
+
 namespace STATE {
 enum STATES {
     PAUSE,

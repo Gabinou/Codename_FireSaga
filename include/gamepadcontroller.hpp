@@ -14,7 +14,7 @@ class GamepadController : public Component {
         SDL_GameController * controller = NULL;
         GamepadInputMap inputmap;
         int joystick_dead_zone = 8000;
-        std::vector<std::string> held_move;
+        std::vector<short unsigned int> held_move;
         std::vector<std::vector<SDL_GameControllerButton>> held_button;
         unsigned int frames_move = 0;
         unsigned int frames_button = 0;
@@ -69,7 +69,7 @@ class GamepadController : public Component {
             return (frames_move);
         }
 
-        void check_move(std::vector<std::string> pressed_move) {
+        void check_move(std::vector<short unsigned int> pressed_move) {
             if ((held_move == pressed_move) && (!pressed_move.empty())) {
                 frames_move++;
             } else {
@@ -77,7 +77,6 @@ class GamepadController : public Component {
                 frames_move = 0;
             }
         }
-
 
         void check_button(std::vector<std::vector<SDL_GameControllerButton>> pressed_button) {
             if ((held_button == pressed_button) && (!pressed_button.empty())) {
@@ -93,39 +92,39 @@ class GamepadController : public Component {
             Sint16 mainyaxis = SDL_GameControllerGetAxis(controller, inputmap.mainyaxis[0]);
             Sint16 secondxaxis = SDL_GameControllerGetAxis(controller, inputmap.secondxaxis[0]);
             Sint16 secondyaxis = SDL_GameControllerGetAxis(controller, inputmap.secondyaxis[0]);
-            std::vector<std::string> pressed_move{};
+            std::vector<short unsigned int> pressed_move{};
             std::vector<std::vector<SDL_GameControllerButton>> pressed_button{};
 
             if ((mainxaxis > joystick_dead_zone) || (secondxaxis > joystick_dead_zone)) {
                 positioncomponent->addPos(1, 0);
-                pressed_move.push_back("right");
+                pressed_move.push_back(GAME::BUTTON::RIGHT);
             } else if ((mainxaxis < -joystick_dead_zone) || (secondxaxis < -joystick_dead_zone)) {
                 positioncomponent->addPos(-1, 0);
-                pressed_move.push_back("left");
+                pressed_move.push_back(GAME::BUTTON::LEFT);
             }
 
             if ((mainyaxis > joystick_dead_zone) || (secondyaxis > joystick_dead_zone)) {
                 positioncomponent->addPos(0, 1);
-                pressed_move.push_back("up");
+                pressed_move.push_back(GAME::BUTTON::UP);
             } else if ((mainyaxis < -joystick_dead_zone) || (secondyaxis < -joystick_dead_zone))  {
                 positioncomponent->addPos(0, -1);
-                pressed_move.push_back("down");
+                pressed_move.push_back(GAME::BUTTON::DOWN);
             }
 
             if (isPressed(inputmap.moveright)) {
                 positioncomponent->addPos(1, 0);
-                pressed_move.push_back("right");
+                pressed_move.push_back(GAME::BUTTON::RIGHT);
             } else if (isPressed(inputmap.moveleft)) {
                 positioncomponent->addPos(-1, 0);
-                pressed_move.push_back("left");
+                pressed_move.push_back(GAME::BUTTON::LEFT);
             }
 
             if (isPressed(inputmap.moveup)) {
                 positioncomponent->addPos(0, -1);
-                pressed_move.push_back("up");
+                pressed_move.push_back(GAME::BUTTON::UP);
             } else if (isPressed(inputmap.movedown)) {
                 positioncomponent->addPos(0, 1);
-                pressed_move.push_back("down");
+                pressed_move.push_back(GAME::BUTTON::DOWN);
             }
 
             if (isPressed(inputmap.accept)) {
