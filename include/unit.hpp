@@ -36,9 +36,9 @@ class Unit {
         short int position[2] = {0, 0};
         bool sex; // 0:F, 1:M
 
-        std::string name;
-        std::string class_name;
-        std::string army_name;
+        std::string name = "";
+        std::string class_name = "";
+        std::string army_name = "";
 
         Equipped equipped; // these are indices. -1 means no equipment.
         Inventory_item equipment[DEFAULT::EQUIPMENT_SIZE], weapons[DEFAULT::WEAPONS_SIZE], items[DEFAULT::ITEMS_SIZE];
