@@ -141,161 +141,163 @@ void Game::setState(Entity & setting_entity, short unsigned int new_state) {
     switch (this->state) {
         case GAME::STATE::PAUSE:
             break;
-        // case GAME::STATE::STATS:
-        //     break;
-        // case GAME::STATE::MINIMAP:
-        //     break;
-        // case GAME::STATE::MAP:
-        //     switch (new_state) {
-        //         case GAME::STATE::UNITMENU:
-        //             moveUnit(setting_entity);
-        //             break;
-        //         case GAME::STATE::STATS:
-        //             break;
-        //         case GAME::STATE::MINIMAP:
-        //             break;                
-        //         case GAME::STATE::UNITMOVE:
-        //             std::vector<std::unique_ptr<Entity>> current_entities;
-        //             std::vector<std::vector<short int>> costmap;
-        //             std::vector<std::vector<short int>> movemapp;
-        //             std::vector<std::vector<short int>> attackmapp;
-        //             short unsigned int start[2];
-        //             unsigned char unitmvttype;
-        //             short unsigned int unit_move;
-        //             unsigned char * range;
+        case GAME::STATE::STATS:
+            break;
+        case GAME::STATE::MINIMAP:
+            break;
+        case GAME::STATE::MAP:
+            switch (new_state) {
+                case GAME::STATE::UNITMENU:
+                    moveUnit(setting_entity);
+                    break;
+                case GAME::STATE::STATS:
+                    break;
+                case GAME::STATE::MINIMAP:
+                    break;                
+                case GAME::STATE::UNITMOVE: {
+                    std::vector<std::unique_ptr<Entity>> current_entities;
+                    std::vector<std::vector<short int>> costmap;
+                    std::vector<std::vector<short int>> movemapp;
+                    std::vector<std::vector<short int>> attackmapp;
+                    short unsigned int start[2];
+                    unsigned char unitmvttype;
+                    short unsigned int unit_move;
+                    unsigned char * range;
                     
-        //             for (int i = 0; i < manager.getEntities().size(); i++) {
-        //                 if (manager.getEntities()[i].get() == (Entity *)&setting_entity) {
-        //                     unit_entities.push(i);
-        //                 }
-        //             }
+                    for (int i = 0; i < manager.getEntities().size(); i++) {
+                        if (manager.getEntities()[i].get() == (Entity *)&setting_entity) {
+                            unit_entities.push(i);
+                        }
+                    }
 
-        //             short unsigned int current_unit_id = manager.getEntities()[unit_entities.top()]->getComponent<UnitContainer>().getID();
-        //             unit_move = all_units[current_unit_id].getStats().move;
+                    short unsigned int current_unit_id = manager.getEntities()[unit_entities.top()]->getComponent<UnitContainer>().getID();
+                    unit_move = all_units[current_unit_id].getStats().move;
 
-        //             start[0] = manager.getEntities()[unit_entities.top()]->getComponent<PositionComponent>().getPos()[0]; // Start is (+1,+1)?
-        //             start[1] = manager.getEntities()[unit_entities.top()]->getComponent<PositionComponent>().getPos()[1]; // Start is (+1,+1)?
-        //             start[0] = start[0] - 1;
-        //             start[1] = start[1] - 1;
+                    start[0] = manager.getEntities()[unit_entities.top()]->getComponent<PositionComponent>().getPos()[0]; // Start is (+1,+1)?
+                    start[1] = manager.getEntities()[unit_entities.top()]->getComponent<PositionComponent>().getPos()[1]; // Start is (+1,+1)?
+                    start[0] = start[0] - 1;
+                    start[1] = start[1] - 1;
 
-        //             unitmvttype = all_units[current_unit_id].getMvttype();
-        //             range = all_units[current_unit_id].getRange();
-        //             costmap = mapp->makeMvtCostmap(unitmvttype);
+                    unitmvttype = all_units[current_unit_id].getMvttype();
+                    range = all_units[current_unit_id].getRange();
+                    costmap = mapp->makeMvtCostmap(unitmvttype);
 
-        //             movemapp = movemap(costmap, start, unit_move, "matrix");
-        //             mapp->setOverlay(MAP::OVERLAY::MOVE, movemapp);
+                    movemapp = movemap(costmap, start, unit_move, "matrix");
+                    mapp->setOverlay(MAP::OVERLAY::MOVE, movemapp);
 
-        //             attackmapp = attackmap(movemapp, start, unit_move, range, "matrix");
-        //             mapp->setOverlay(MAP::OVERLAY::ATTACK, attackmapp);
+                    attackmapp = attackmap(movemapp, start, unit_move, range, "matrix");
+                    mapp->setOverlay(MAP::OVERLAY::ATTACK, attackmapp);
 
-        //             mapp->showOverlay();
-        //             break;
-        //         case GAME::STATE::OPTIONS:
-        //             break;    
-        //         case GAME::STATE::CUTSCENE:
-        //             break;    
-        //     }
-        //     break;
-        // case GAME::STATE::OPTIONS:
-        //     switch (new_state) {
-        //         case GAME::STATE::MAP:
-        //             break;                
-        //         case GAME::STATE::STARTMENU:
-        //             break;
-        //         }
-        //     break;
-        // case GAME::STATE::STARTMENU:
-        //     switch (new_state) {
-        //         case GAME::STATE::INTROVIDEO:
-        //             break;                
-        //         case GAME::STATE::SAVES:
-        //             break;
-        //         case GAME::STATE::SOUNDROOM:
-        //             break;
-        //         case GAME::STATE::OPTIONS:
-        //             break;
-        //         }
-        //     break;
-        // case GAME::STATE::PREPARATION:
-        //     switch (new_state) {
-        //         case GAME::STATE::PLACEMENT:
-        //             break;                
-        //         case GAME::STATE::CHOOSEUNITS:
-        //             break;
-        //         case GAME::STATE::EQUIPMENT:
-        //             break;
-        //         case GAME::STATE::FORGE:
-        //             break;
-        //         case GAME::STATE::STORAGE:
-        //             break;               
-        //         case GAME::STATE::BONUSEXP:
-        //             break;       
-        //         }
-        //     break;
-        // case GAME::STATE::PLACEMENT: 
-        // case GAME::STATE::CHOOSEUNITS: 
-        // case GAME::STATE::EQUIPMENT: 
-        // case GAME::STATE::FORGE: 
-        // case GAME::STATE::STORAGE: 
-        // case GAME::STATE::BONUSEXP: 
-        //     switch (new_state) {            
-        //         case GAME::STATE::PREPARATION:
-        //             break;
-        //         case GAME::STATE::MAP:
-        //             break;       
-        //         }
-        //     break;
-        // case GAME::STATE::UNITMOVE:
-        //     switch (new_state) {            
-        //         case GAME::STATE::UNITMENU:
-        //             mapp->hideOverlay();
-        //             makeUnitmenu(setting_entity); 
-        //             short int *new_position = setting_entity.getComponent<PositionComponent>().getPos();
-        //             short int *old_position = manager.getEntities()[unit_entities.top()]->getComponent<PositionComponent>().getPos();
+                    mapp->showOverlay();
+                    }
+                    break;
+                case GAME::STATE::OPTIONS:
+                    break;    
+                case GAME::STATE::CUTSCENE:
+                    break;    
+            }
+            break;
+        case GAME::STATE::OPTIONS:
+            switch (new_state) {
+                case GAME::STATE::MAP:
+                    break;                
+                case GAME::STATE::STARTMENU:
+                    break;
+                }
+            break;
+        case GAME::STATE::STARTMENU:
+            switch (new_state) {
+                case GAME::STATE::INTROVIDEO:
+                    break;                
+                case GAME::STATE::SAVES:
+                    break;
+                case GAME::STATE::SOUNDROOM:
+                    break;
+                case GAME::STATE::OPTIONS:
+                    break;
+                }
+            break;
+        case GAME::STATE::PREPARATION:
+            switch (new_state) {
+                case GAME::STATE::PLACEMENT:
+                    break;                
+                case GAME::STATE::CHOOSEUNITS:
+                    break;
+                case GAME::STATE::EQUIPMENT:
+                    break;
+                case GAME::STATE::FORGE:
+                    break;
+                case GAME::STATE::STORAGE:
+                    break;               
+                case GAME::STATE::BONUSEXP:
+                    break;       
+                }
+            break;
+        case GAME::STATE::PLACEMENT: 
+        case GAME::STATE::CHOOSEUNITS: 
+        case GAME::STATE::EQUIPMENT: 
+        case GAME::STATE::FORGE: 
+        case GAME::STATE::STORAGE: 
+        case GAME::STATE::BONUSEXP: 
+            switch (new_state) {            
+                case GAME::STATE::PREPARATION:
+                    break;
+                case GAME::STATE::MAP:
+                    break;       
+                }
+            break;
+        case GAME::STATE::UNITMOVE:
+            switch (new_state) {            
+                case GAME::STATE::UNITMENU: {
+                    mapp->hideOverlay();
+                    makeUnitmenu(setting_entity); 
+                    short int *new_position = setting_entity.getComponent<PositionComponent>().getPos();
+                    short int *old_position = manager.getEntities()[unit_entities.top()]->getComponent<PositionComponent>().getPos();
                     
-        //             printf("Old position %d, %d \n", old_position[0], old_position[1]);
-        //             printf("New position %d, %d \n", new_position[0], new_position[1]);
+                    printf("Old position %d, %d \n", old_position[0], old_position[1]);
+                    printf("New position %d, %d \n", new_position[0], new_position[1]);
 
-        //             manager.getEntities()[unit_entities.top()]->getComponent<PositionComponent>().setPos(            
-        //                 new_position[0],
-        //                 new_position[1]);
+                    manager.getEntities()[unit_entities.top()]->getComponent<PositionComponent>().setPos(            
+                        new_position[0],
+                        new_position[1]);
                     
-        //             Entity * ontile = mapp->getTile(old_position[0], old_position[1]);
-        //             mapp->removeTile(old_position[0], old_position[1]);
-        //             mapp->setTile(new_position[0], new_position[1], ontile);
-        //             break;
-        //         case GAME::STATE::MAP:
-        //             mapp->hideOverlay();
-        //             break;       
-        //         }
-        //     break;
-        // case GAME::STATE::UNITMENU:
-        //     switch (new_state) {            
-        //         case GAME::STATE::ATTACK:
-        //             break;                
-        //         case GAME::STATE::TRADE:
-        //             break;                
-        //         case GAME::STATE::ITEMS:
-        //             break;                
-        //         case GAME::STATE::CONVERSATION:
-        //             break;
-        //         case GAME::STATE::MAP:
-        //             killMenu("Unit menu");
-        //             break;       
-        //         }
-        //     break;
-        // case GAME::STATE::CONVERSATION:
-        //     switch (new_state) {            
-        //         case GAME::STATE::MAP:
-        //             break;                
-        //         }
-        //     break;
-        // case GAME::STATE::ATTACK:
-        //     switch (new_state) {            
-        //         case GAME::STATE::BATTLE:
-        //             break;                
-        //         }
-        //     break;
+                    Entity * ontile = mapp->getTile(old_position[0], old_position[1]);
+                    mapp->removeTile(old_position[0], old_position[1]);
+                    mapp->setTile(new_position[0], new_position[1], ontile);
+                    }
+                    break;
+                case GAME::STATE::MAP:
+                    mapp->hideOverlay();
+                    break;       
+                }
+            break;
+        case GAME::STATE::UNITMENU:
+            switch (new_state) {            
+                case GAME::STATE::ATTACK:
+                    break;                
+                case GAME::STATE::TRADE:
+                    break;                
+                case GAME::STATE::ITEMS:
+                    break;                
+                case GAME::STATE::CONVERSATION:
+                    break;
+                case GAME::STATE::MAP:
+                    killMenu("Unit menu");
+                    break;       
+                }
+            break;
+        case GAME::STATE::CONVERSATION:
+            switch (new_state) {            
+                case GAME::STATE::MAP:
+                    break;                
+                }
+            break;
+        case GAME::STATE::ATTACK:
+            switch (new_state) {            
+                case GAME::STATE::BATTLE:
+                    break;                
+                }
+            break;
         }
 
     // if (this->state == "conversation") {
@@ -446,7 +448,6 @@ void Game::setState(Entity & setting_entity, short unsigned int new_state) {
     //     if (new_state == "startmenu") {
   
     //     }
-    // }
 
     state = new_state;
 }
