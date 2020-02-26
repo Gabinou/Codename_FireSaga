@@ -486,6 +486,7 @@ enum STATES {
     BATTLE,
     ATTACK,
     INTROVIDEO,
+    END,
 };
 }
 }

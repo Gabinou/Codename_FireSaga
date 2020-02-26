@@ -25,7 +25,7 @@ class Game {
 
         void moveUnit(Entity & cursor);
 
-        void killMenu(std::string name);
+        void killMenu(short unsigned int index);
         void makeUnitmenu(Entity & setting_entity);
 
         //TO BE IMPLEMENTED:
@@ -37,8 +37,8 @@ class Game {
 
         short unsigned int state;
 
-        std::unordered_map<std::string, int> menus; // BAD.
-        std::stack <int> unit_entities;
+        std::vector<int> menus; // BAD.
+        std::stack<int> unit_entities;
         bool isRunning;
         SDL_Event event;
 

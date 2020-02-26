@@ -11,7 +11,9 @@ SDL_Renderer * Game::renderer = nullptr;
 TTF_Font * Game::font = NULL;
 Manager Game::manager;
 
-Game::Game() {}
+Game::Game() {
+    menus.resize(GAME::STATE::END);
+}
 Game::~Game() {}
 
 Settings Game::getSettings() {
@@ -106,25 +108,25 @@ void Game::makeFPSEntity() {
 
 void Game::makeUnitmenu(Entity & setting_entity) {
     printf("Making unit menu\n");
-    menus["Unit menu"] = manager.getEntities().size();
+    menus[GAME::STATE::UNITMENU] = manager.getEntities().size();
     manager.addEntity();
-    manager.getEntities()[menus["Unit menu"]]->addComponent<PositionComponent>();
-    manager.getEntities()[menus["Unit menu"]]->getComponent<PositionComponent>().setBounds(0, 2000, 0, 2000);
-    manager.getEntities()[menus["Unit menu"]]->getComponent<PositionComponent>().setPos(
+    manager.getEntities()[menus[GAME::STATE::UNITMENU]]->addComponent<PositionComponent>();
+    manager.getEntities()[menus[GAME::STATE::UNITMENU]]->getComponent<PositionComponent>().setBounds(0, 2000, 0, 2000);
+    manager.getEntities()[menus[GAME::STATE::UNITMENU]]->getComponent<PositionComponent>().setPos(
         (int)(setting_entity.getComponent<PositionComponent>().getPos()[0] * settings.tilesize[0]),
         (int)(setting_entity.getComponent<PositionComponent>().getPos()[1] * settings.tilesize[1]));
     SDL_Color black = {255, 255, 255};
-    manager.getEntities()[menus["Unit menu"]]->addComponent<SpriteComponent>("..//assets//textbox.png", (int []) {128, 128}); 
-    manager.getEntities()[menus["Unit menu"]]->addComponent<TextComponent>(settings.fontsize, std::vector<std::string> {"Attack", "Wait"}, black);
-    manager.getEntities()[menus["Unit menu"]]->addGroup(manager.groupUI);
+    manager.getEntities()[menus[GAME::STATE::UNITMENU]]->addComponent<SpriteComponent>("..//assets//textbox.png", (int []) {128, 128}); 
+    manager.getEntities()[menus[GAME::STATE::UNITMENU]]->addComponent<TextComponent>(settings.fontsize, std::vector<std::string> {"Attack", "Wait"}, black);
+    manager.getEntities()[menus[GAME::STATE::UNITMENU]]->addGroup(manager.groupUI);
 }
 
-void Game::killMenu(std::string name) {
-    if (menus[name] > -1) {
-        manager.getEntities()[menus[name]]->destroy();
-        menus[name] = -1;
+void Game::killMenu(short unsigned int index) {
+    if (menus[index] > -1) {
+        manager.getEntities()[menus[index]]->destroy();
+        menus[index] = -1;
     } else {
-        printf("Could not destroy %s.", name.c_str());
+        printf("Could not destroy menu %d.", index);
     }
 }
 
@@ -282,7 +284,7 @@ void Game::setState(Entity & setting_entity, short unsigned int new_state) {
                 case GAME::STATE::CONVERSATION:
                     break;
                 case GAME::STATE::MAP:
-                    killMenu("Unit menu");
+                    killMenu(GAME::STATE::UNITMENU);
                     break;       
                 }
             break;
