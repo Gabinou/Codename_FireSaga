@@ -412,10 +412,15 @@ void Game::init(const char * title, int xpos, int ypos, int width, int height, b
     }
 
     // printf("Testing script in game: %s\n", all_scripts["Chapter 1"].getScene("Intro").getLine("1").line.c_str());
-
-    this->setState(GAME::STATE::MAP);
+    state = GAME::STATE::MAP;
+    // this->setState(GAME::STATE::MAP);
     
 };
+
+
+void Game::setState(const short unsigned int new_state) {
+    state = new_state;
+}
 
 void Game::update() {
     manager.refresh();
