@@ -1,4 +1,5 @@
 #include "game.hpp"
+#include "shared.hpp"
 #include "spritecomponent.hpp"
 #include "positioncomponent.hpp"
 #include "arrowcomponent.hpp"
@@ -37,25 +38,25 @@ bool Game::checkRate(int rate, short unsigned int mode) {
     return(hit);
 }
 
-bool * Game::checkHitCrit(int hit_rate, int crit_rate, std::string mode) {
+bool * Game::checkHitCrit(int hit_rate, int crit_rate, short unsigned int mode) {
     static bool hitcrit[2];
-    if (mode == "single") {
+    if (mode == GAME::RN::SINGLE) {
         hitcrit[0] = (getRN() < hit_rate);
         hitcrit[1] = (getRN() < crit_rate);
         return(hitcrit);
     }
-    if (mode == "double") {
+    if (mode == GAME::RN::DOUBLE) {
         hitcrit[0] = (((getRN() + getRN())/2) < hit_rate);
         hitcrit[1] = (((getRN() + getRN())/2) < crit_rate);
         return(hitcrit);
     } 
-    if (mode == "gaussian") {
+    if (mode == GAME::RN::GAUSSIAN) {
         int * RNs = getGRNs();
         hitcrit[0] = (RNs[0] < hit_rate);
         hitcrit[1] = (RNs[1] < crit_rate);
         return(hitcrit);
     }
-    if (mode == "hybrid") {
+    if (mode == GAME::RN::HYBRID) {
     
     }
 

@@ -460,6 +460,14 @@ enum TILES {
 }
 
 namespace GAME {
+namespace RN {
+enum RNS {
+    SINGLE,
+    DOUBLE,
+    HYBRID,
+    GAUSSIAN,
+};
+}
 namespace STATE {
 enum STATES {
     PAUSE,
