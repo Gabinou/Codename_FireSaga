@@ -33,11 +33,11 @@ class Game {
         void makeWeaponmenu(Entity & setting_entity);
         void makeOptionsmenu(Entity & setting_entity);
         void makeSmallmap(Entity & setting_entity);
-        void makeCombatindow(Unit * ally, Unit * enemy);
+        void makeCombatWindow(Unit * ally, Unit * enemy);
 
         short unsigned int state;
 
-        std::vector<int> menus; // BAD.
+        std::vector<int> menus;
         std::stack<int> unit_entities;
         bool isRunning;
         SDL_Event event;
