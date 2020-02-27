@@ -103,7 +103,7 @@ class KeyboardController : public Component {
 
             if (is_pressed(kb_state, inputmap.accept)) {
                 pressed_button.push_back(inputmap.accept);
-                short unsigned int toset = game->getState();
+                short int toset = -1;
                 Entity * setter;
                 Entity * ontile = map->getTile(positioncomponent->getPos()[0], positioncomponent->getPos()[1]);
 
@@ -122,7 +122,9 @@ class KeyboardController : public Component {
                     setter = entity;
                 }
 
-                if (toset != -1) {game->setState(*setter, toset); }
+                if (toset != -1) {
+                    game->setState(*setter, toset);
+                }
             }
 
             if (is_pressed(kb_state, inputmap.cancel)) {

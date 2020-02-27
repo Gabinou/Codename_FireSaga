@@ -3,6 +3,8 @@
 Map::Map() {
     loadOverlays();
     initVars();
+    overlay_mode = MAP::OVERLAY::MOVE + MAP::OVERLAY::ATTACK;
+
 }
 
 Map::Map(const short unsigned int width, const short unsigned int height) : Map() {
@@ -106,6 +108,7 @@ void Map::subDanger(const std::vector<std::vector<short int>> in_danger) {
 }
 
 void Map::setOverlaymode(const unsigned char in_mode) {
+    printf("Map ovelay mode; %d", in_mode);
     overlay_mode = in_mode;
 }
 
@@ -182,7 +185,6 @@ void Map::setOverlay(const unsigned char in_mode, const std::vector<std::vector<
     if ((in_mode & MAP::OVERLAY::MOVE) > 0) {
         moveoverlay = in_map;
     } 
-    overlay_mode += in_mode;
 }
 
 void Map::clearOverlays() {
