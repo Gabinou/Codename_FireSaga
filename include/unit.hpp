@@ -68,12 +68,12 @@ class Unit {
 
         short unsigned int getEquippable();
         void setEquippable();
-        void equipsL(const char index);
-        void equipsR(const char index);
+        void equipsL(const unsigned char index);
+        void equipsR(const unsigned char index);
         void unequipsR();
         void unequipsL();
-        void equips(const unsigned short int index, const std::string hand = "right");
-        void unequips(const std::string hand = "right");
+        void equips(const unsigned short int index, const bool hand = "right");
+        void unequips(const bool hand = "right");
         void setEquipped(Equipped in_equipped);
         void setEquipment(Inventory_item * in_equipment);
         void addEquipment(Inventory_item in_equipment);
@@ -122,7 +122,7 @@ class Unit {
         bool canRetaliate(Unit * enemy) const;
         bool canDouble(Unit * enemy);
         bool canAttack();
-        bool isEquippable(const short unsigned int in_id);
+        bool canEquip(const short unsigned int in_id);
 
         void combatStats();
         Combat_stats getCombatStats();

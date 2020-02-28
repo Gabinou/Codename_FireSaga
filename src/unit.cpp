@@ -92,7 +92,7 @@ short unsigned int Unit::getEquippable() {
 }
 
 void Unit::setEquippable() {
-    //This should not be in all unit objects. So much wasted space. Make it one shared callable function. Same for other heqvy switches. 
+    //This should not be in all unit objects. So much wasted space. Make it one shared callable function. Same for other heavy switches. 
     // Switch with individual cases:
     // Easy to change equippable post-hoc
     switch(class_index) {
@@ -438,11 +438,11 @@ void Unit::autoMvttype() {
     }
 }
 
-void Unit::equipsL(const char index) {
+void Unit::equipsL(const unsigned char index) {
     equipped.left = index;
 }
 
-void Unit::equipsR(const char index) {
+void Unit::equipsR(const unsigned char index) {
     equipped.right = index;
 }
 
@@ -454,16 +454,16 @@ void Unit::unequipsR() {
     equipped.right = -1;
 }
 
-void Unit::equips(const short unsigned int index, const std::string hand) {
-    if (hand == "left") {
+void Unit::equips(const short unsigned int index, const bool hand) {
+    if (hand) {
         equipped.left = index;
     } else {
         equipped.right = index;
     }
 }
 
-void Unit::unequips(const std::string hand) {
-    if (hand == "left") {
+void Unit::unequips(const bool hand) {
+    if (hand) {
         equipped.left = -1;
     } else {
         equipped.right = -1;
@@ -613,7 +613,7 @@ Unit_stats Unit::getGrowths() {
     return(growths);
 }
 
-bool Unit::isEquippable(unsigned short int in_id) {
+bool Unit::canEquip(unsigned short int in_id) {
     short unsigned int wpn_type = all_weapons[in_id].getType();
     return(((equippable & wpn_type) > 0));
 } 
