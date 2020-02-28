@@ -27,7 +27,7 @@ enum DEFAULTS {
     LINE_LENGTH = 255,
     TILE_DIVISOR = 10,
     CHAP_NUMBER = 40,
-}; // replace text IN MY FILES by the values, at compilation.
+};
 }
 namespace WPN {
 namespace NAME {

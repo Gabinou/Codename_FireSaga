@@ -4,7 +4,6 @@ Map::Map() {
     loadOverlays();
     initVars();
     overlay_mode = MAP::OVERLAY::MOVE + MAP::OVERLAY::ATTACK;
-
 }
 
 Map::Map(const short unsigned int width, const short unsigned int height) : Map() {
@@ -51,7 +50,7 @@ std::vector<std::vector<short int>> Map::makeMvtCostmap(const unsigned char unit
     std::vector<std::vector<short int>> costmap((short int)tilemap.size(), std::vector<short int> ((short int)tilemap[0].size()));
     for (short int row = 0; row < tilemap.size(); row++) {
         for (short int col = 0; col < tilemap[row].size(); col++) {
-            tile_ind = tilemap[row][col]/DEFAULT::TILE_DIVISOR; // /10 eliminates one digit ont int's right
+            tile_ind = tilemap[row][col]/DEFAULT::TILE_DIVISOR;
             costmap[row][col] = loaded_tiles[tile_ind].getCost()[unitmovetype];
         }
     }
@@ -146,7 +145,6 @@ void Map::makeEntitymap(const short unsigned int row_size, const short unsigned 
     if (!made_entitymap) {
         Entity_ptr_matrix temp(row_size, std::vector<Entity*>(col_size));
         entitymap = temp;
-        // printf("Made Entitymap size: %d, %d\n", entitymap.size(), entitymap[0].size());
         for (short unsigned int col = 0; col < entitymap.size(); col++) {
             for (short unsigned int row = 0; row < entitymap[0].size(); row++) {
                 entitymap[col][row] =  static_cast<Entity*>(nullptr);
