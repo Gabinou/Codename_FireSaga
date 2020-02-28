@@ -384,7 +384,6 @@ enum SEXES {
 }
 }
 
-
 namespace MAP {
 namespace OVERLAY {
 enum OVERLAYS {
@@ -602,7 +601,6 @@ struct Point {
     short unsigned int x;
     short unsigned int y;
 };
-
 
 struct Weapon_stats {
     unsigned char Pmight; //Physical might Pprot for shields.

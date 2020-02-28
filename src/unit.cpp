@@ -515,30 +515,23 @@ unsigned char * Unit::getRange() const {
     // DESIGN QUESTION: what about equipping only an offhand? Should offhand have ranges? 
     // Can you attack with only offhand weapons? how to treat their hit rate?
 
-    unsigned char * temp;
-    static unsigned char range[2];
-    unsigned char * right_range;
+    static unsigned char range[2] = {0, 0};
 
-    // if (equipped.left > 0) {
-    //     temp = all_weapons[equipment[equipped.left].name].getStats().range;
-    //     range[0] = temp[0]; range[1] = temp[1];
-    // } else {
-    //     range[0] = 1;
-    //     range[1] = 1;
-    // }
+    if (equipped.left > 0) {
+        unsigned char * temp = all_weapons[equipment[equipped.left].id].getStats().range;
+        range[0] = temp[0]; range[1] = temp[1];
+    }
 
-    // if (equipped.right > 0) {
-    //     temp = all_weapons[equipment[equipped.left].name].getStats().range;
-    //     right_range[0] = temp[0];
-    //     right_range[1] = temp[1];
-    //     range[0] = std::min(right_range[0], range[0]);
-    //     range[1] = std::max(right_range[1], range[1]);
-    // }
+    if (equipped.right > 0) {
+        unsigned char * temp = all_weapons[equipment[equipped.left].id].getStats().range;
+        range[0] = std::min(temp[0], range[0]);
+        range[1] = std::max(temp[1], range[1]);
+    }
 
-    // if ((equipped.left < 0) && (equipped.right < 0)) {
-    //     range[0] = 0;
-    //     range[1] = 0;
-    // }
+    if ((equipped.left < 0) && (equipped.right < 0)) {
+        range[0] = 0;
+        range[1] = 0;
+    }
 
     range[0] = 5;
     range[1] = 10;
