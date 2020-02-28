@@ -613,15 +613,9 @@ Unit_stats Unit::getGrowths() {
     return(growths);
 }
 
-bool Unit::isEquippable(std::string in_name) {
-    bool equippable = false;
-    // std::string wpn_type = all_weapons[in_name].getType();
-    // for (int i = 0; i < equippables.size(); i++) {
-    //     if (equippables[i] == wpn_type) {
-    //         equippable = true;
-    //     }
-    // }
-    return(equippable);
+bool Unit::isEquippable(unsigned short int in_id) {
+    short unsigned int wpn_type = all_weapons[in_id].getType();
+    return(((equippable & wpn_type) > 0));
 } 
 
 bool Unit::canAttack() {

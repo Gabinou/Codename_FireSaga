@@ -122,7 +122,7 @@ class Unit {
         bool canRetaliate(Unit * enemy) const;
         bool canDouble(Unit * enemy);
         bool canAttack();
-        bool isEquippable(const std::string in_name);
+        bool isEquippable(const short unsigned int in_id);
 
         void combatStats();
         Combat_stats getCombatStats();
