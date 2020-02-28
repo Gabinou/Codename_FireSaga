@@ -72,8 +72,8 @@ class Unit {
         void equipsR(const unsigned char index);
         void unequipsR();
         void unequipsL();
-        void equips(const unsigned short int index, const bool hand = "right");
-        void unequips(const bool hand = "right");
+        void equips(const unsigned short int index, const bool hand = true);
+        void unequips(const bool hand = true);
         void setEquipped(Equipped in_equipped);
         void setEquipment(Inventory_item * in_equipment);
         void addEquipment(Inventory_item in_equipment);

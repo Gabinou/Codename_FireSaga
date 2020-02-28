@@ -664,7 +664,7 @@ struct Settings {
     Point res = {1000, 1000};
     unsigned char fontsize = 28;
     Fps FPS;
-    unsigned short int tilesize[2] = {32, 32};
+    unsigned short int tilesize[2] = {DEFAULT::TILESIZE, DEFAULT::TILESIZE};
 };
 
 struct KeyboardInputMap {
