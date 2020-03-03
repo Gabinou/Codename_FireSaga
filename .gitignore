@@ -7,4 +7,5 @@
 latex/*
 build/*
 plots/*
+thirdparty/*
 makefile
