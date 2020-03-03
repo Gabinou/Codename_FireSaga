@@ -66,12 +66,12 @@ int init(char *argvZero, char* baseDir, char *assetsPath) {
 }
 
 void loadFileToMemory(const char *name, unsigned char **mem, size_t *len, bool addnull) {
-    PHYSFS_File *handle = PHYSFS_openRead(name);
-    if (handle == NULL)
+    PHYSFS_File *physfs_file = PHYSFS_openRead(name);
+    if (physfs_file == NULL)
     {
         return;
     }
-    PHYSFS_uint32 length = PHYSFS_fileLength(handle);
+    PHYSFS_uint32 length = PHYSFS_fileLength(physfs_file);
     if (len != NULL)
     {
         *len = length;
@@ -85,14 +85,15 @@ void loadFileToMemory(const char *name, unsigned char **mem, size_t *len, bool a
     {
         *mem = (unsigned char*) malloc(length);
     }
-    PHYSFS_readBytes(handle, *mem, length);
-    PHYSFS_close(handle);
+    PHYSFS_readBytes(physfs_file, *mem, length);
+    PHYSFS_close(physfs_file);
 }
 
 
 void deinit() {
     PHYSFS_deinit();
 }
+
 void freeMemory(unsigned char **mem)
 {
     free(*mem);
