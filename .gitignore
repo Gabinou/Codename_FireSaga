@@ -1,11 +1,12 @@
 *.*
 !*.cpp
 !*.hpp
+!*.h
+!*.c
 !.gitignore
 !CmakeLists.txt
 
 latex/*
 build/*
 plots/*
-thirdparty/*
 makefile
