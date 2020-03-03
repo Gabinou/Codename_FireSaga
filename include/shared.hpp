@@ -2,6 +2,7 @@
 #define SHARED_HPP
 
 #include <stdio.h>
+#include <zlib.h>
 #include <string>
 #include <vector>
 #include <memory>

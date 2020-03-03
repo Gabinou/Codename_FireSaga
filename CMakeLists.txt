@@ -11,11 +11,18 @@ project("FireSagaMaker")
 
 find_package(SDL2 REQUIRED)
 
-include_directories("include")
-include_directories("ECS")
-include_directories(${SDL2_INCLUDE_DIR})
+include_directories(
+	include
+	ECS
+	thirdparty/physfs
+	${SDL2_INCLUDE_DIR}
+)
 
-file(GLOB SOURCES "src/*.cpp")
+file(GLOB FSM_SRC "src/*.cpp")
+file(GLOB PFS_SRC "thirdparty/physfs/*.c")
 
-add_executable(${PROJECT_NAME} ${SOURCES})
-target_link_libraries(${PROJECT_NAME}  ${SDL2_LIBRARY} -O2 -lmingw32 -lSDL2main -lSDL2 -lSDL2_image -lSDL2_ttf)
+add_executable(${PROJECT_NAME} ${FSM_SRC})
+
+ADD_LIBRARY(physfs-static STATIC ${PFS_SRC})
+
+target_link_libraries(${PROJECT_NAME}  ${SDL2_LIBRARY} physfs-static -O2 -lmingw32 -lSDL2main -lSDL2 -lSDL2_image -lSDL2_ttf )
