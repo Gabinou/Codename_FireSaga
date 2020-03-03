@@ -14,12 +14,12 @@ find_package(SDL2 REQUIRED)
 include_directories(
 	include
 	ECS
-	thirdparty/physfs
+	third_party/physfs
 	${SDL2_INCLUDE_DIR}
 )
 
 file(GLOB FSM_SRC "src/*.cpp")
-file(GLOB PFS_SRC "thirdparty/physfs/*.c")
+file(GLOB PFS_SRC "third_party/physfs/*.c")
 
 add_executable(${PROJECT_NAME} ${FSM_SRC})
 
