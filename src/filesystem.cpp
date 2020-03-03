@@ -1,6 +1,7 @@
 
 #include "filesystem.hpp"
 #include "physfs.h"
+#include "LodePNG.h"
 #include "shared.hpp"
 #include <SDL2/SDL.h>
 #include <string>
@@ -64,7 +65,95 @@ int init(char *argvZero, char* baseDir, char *assetsPath) {
     return 1;
 }
 
+void loadFileToMemory(const char *name, unsigned char **mem, size_t *len, bool addnull) {
+    PHYSFS_File *handle = PHYSFS_openRead(name);
+    if (handle == NULL)
+    {
+        return;
+    }
+    PHYSFS_uint32 length = PHYSFS_fileLength(handle);
+    if (len != NULL)
+    {
+        *len = length;
+    }
+    if (addnull)
+    {
+        *mem = (unsigned char *) malloc(length + 1);
+        (*mem)[length] = 0;
+    }
+    else
+    {
+        *mem = (unsigned char*) malloc(length);
+    }
+    PHYSFS_readBytes(handle, *mem, length);
+    PHYSFS_close(handle);
+}
+
+
 void deinit() {
     PHYSFS_deinit();
 }
+void freeMemory(unsigned char **mem)
+{
+    free(*mem);
+    *mem = NULL;
+}
+}
+
+SDL_Surface* LoadImage(const char *filename, bool noBlend = true, bool noAlpha = false)
+{
+    //Temporary storage for the image that's loaded
+    SDL_Surface* loadedImage = NULL;
+    //The optimized image that will be used
+    SDL_Surface* optimizedImage = NULL;
+
+    unsigned char *data;
+    unsigned int width, height;
+
+    unsigned char *fileIn = NULL;
+    size_t length = 0;
+    FILESYSTEM::loadFileToMemory(filename, &fileIn, &length);
+    if (noAlpha)
+    {
+        lodepng_decode24(&data, &width, &height, fileIn, length);
+    }
+    else
+    {
+        lodepng_decode32(&data, &width, &height, fileIn, length);
+    }
+    FILESYSTEM::freeMemory(&fileIn);
+
+    loadedImage = SDL_CreateRGBSurfaceFrom(
+        data,
+        width,
+        height,
+        noAlpha ? 24 : 32,
+        width * (noAlpha ? 3 : 4),
+        0x000000FF,
+        0x0000FF00,
+        0x00FF0000,
+        noAlpha ? 0x00000000 : 0xFF000000
+    );
+
+    if (loadedImage != NULL)
+    {
+        optimizedImage = SDL_ConvertSurfaceFormat(
+            loadedImage,
+            SDL_PIXELFORMAT_ABGR8888, // FIXME: Format? -flibit
+            0
+        );
+        SDL_FreeSurface( loadedImage );
+        free(data);
+        if (noBlend)
+        {
+            SDL_SetSurfaceBlendMode(optimizedImage, SDL_BLENDMODE_BLEND);
+        }
+        return optimizedImage;
+    }
+    else
+    {
+        fprintf(stderr,"Image not found: %s\n", filename);
+        SDL_assert(0 && "Image not found! See stderr.");
+        return NULL;
+    }
 }
