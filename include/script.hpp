@@ -63,6 +63,4 @@ enum LINES {
 };
 }
 
-
-
 #endif /* SCRIPT_HPP */

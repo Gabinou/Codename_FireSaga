@@ -27,6 +27,7 @@ enum DEFAULTS {
     CONVOY_SIZE = 200,
     LINE_LENGTH = 255,
     TILE_DIVISOR = 10,
+    MAXPATH = 90,
     CHAP_NUMBER = 40,
 };
 }
