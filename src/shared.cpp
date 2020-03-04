@@ -266,20 +266,6 @@ bool is_pressed(const Uint8 * state_array, std::vector<SDL_Scancode> to_find) {
     return (false);
 }
 
-std::string words2str(std::vector<std::string > words) {
-    std::string new_str;
-
-    for (int i = 0; i < words.size(); i++) {
-        new_str += words[i];
-
-        if (i != (words.size() - 1)) {
-            new_str += " ";
-        }
-    }
-
-    return (new_str);
-}
-
 std::vector<std::string> get_words(std::string line) {
     std::vector<std::string> words;
     std::string word;
@@ -304,48 +290,6 @@ std::vector<int> csv_from_line(std::string line, std::string delimiter) {
 
     // std::cout << line << endl;
     names.push_back(std::stoi(line.c_str()));
-    return (names);
-}
-
-std::vector<std::string> css_from_line(std::string line, std::string delimiter) {
-    std::vector<std::string> names;
-    std::size_t found;
-
-    while ((found = line.find(delimiter)) != std::string::npos) {
-        names.push_back(words2str(get_words(line.substr(0, found))));
-        line.erase(0, found + delimiter.length());
-    }
-
-    names.push_back(words2str(get_words(line)));
-    return (names);
-}
-
-std::vector<std::string> css_from_line(char * line) {
-    char * pch;
-    std::string word;
-    std::string name;
-    std::vector<std::string> names;
-    char word_num;
-    pch = strtok(line, ",");
-
-    while (pch != NULL) {
-        name = "";
-        std::string temp(pch);
-        std::stringstream iss(temp);
-        word_num = 0;
-
-        while (iss >> word) {
-            if (word_num > 0) {name += " ";};
-
-            name += word;
-
-            word_num++;
-        }
-
-        names.push_back(name);
-        pch = strtok(NULL, ",");
-    }
-
     return (names);
 }
 
