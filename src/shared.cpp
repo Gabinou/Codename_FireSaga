@@ -248,7 +248,7 @@ int pingpong(int current, int upper, int lower) {
 
 int geometricslide(int distance, float geo_factor) {
     // geometric slide cause the series is geometric:
-    // distance/2 + distance/4 + distance/16....
+    // distance/2 + distance/4 + distance/16.... 1
     // animates slides
     int sign = sgn(distance);
     int out = sign * std::max(sign * (int)(distance / geo_factor), 1);
@@ -264,32 +264,6 @@ bool is_pressed(const Uint8 * state_array, std::vector<SDL_Scancode> to_find) {
         }
     }
     return (false);
-}
-
-std::vector<int> extract_int_string(std::string str) {
-    // cannot read integers if not separated by at least one space and other chars.
-    std::stringstream ss;
-    /* Storing the whole string into string stream */
-    ss << str;
-    /* Running loop till the end of the stream */
-    std::string temp;
-    int found;
-    std::vector<int> founds;
-
-    while (!ss.eof()) {
-        /* extracting word by word from stream */
-        ss >> temp;
-
-        /* Checking the given word is integer or not */
-        if (std::stringstream(temp) >> found)
-            // cout << found << " ";
-        { founds.push_back(found); }
-
-        /* To save from space at the end of string */
-        temp = "";
-    }
-
-    return (founds);
 }
 
 std::string words2str(std::vector<std::string > words) {

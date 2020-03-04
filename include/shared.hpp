@@ -35,7 +35,6 @@ extern int vectorslide(int x, int y, bool xfirst);
 extern int pingpong(int current, int upper, int lower = 0);
 extern bool is_pressed(const Uint8 * state_array, std::vector<SDL_Scancode> to_find);
 
-extern std::vector<int> extract_int_string(std::string);
 extern std::vector<std::string> css_from_line(char *);
 extern std::vector<std::string> css_from_line(std::string, std::string delimiter = ",");
 extern std::vector<std::string> get_words(std::string);
@@ -51,7 +50,6 @@ extern void read_all_units(const char * filename);
 extern void write_all_units(const char * filename, char const * savestyle = "cpp");
 extern void write_all_unit_classes(const char * filename);
 extern void read_all_unit_classes(const char * filename = "classes_FE1.txt");
-
 
 extern void permutations_binary(int len, int num_0, int out[], int i = 0);
 extern int h_manhattan(int start[], int end[]);
