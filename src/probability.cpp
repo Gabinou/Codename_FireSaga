@@ -79,25 +79,10 @@ unsigned char * getGRNs(const float avg, const float std_dev) {
     // RNs frm 0 to 100. Uses box-muller tranform and getURN function to compute it.
     // std_dev: standard deviation,  avg: average
     // RN_G can be < 0 and > 100
-    static unsigned char RN_G[2];
-    float RNreal_U[2];
+    static unsigned char * RN_G;
     unsigned char RN_U[2];
     RN_U[0] = getURN();
     RN_U[1] = getURN();
-    if (RN_U[0] == 0) {
-        RNreal_U[0] = 0.00001;
-    } else {
-        RNreal_U[0] = ((float)RN_U[0])/100.;
-    }
-    if (RN_U[1] == 0) {
-        RNreal_U[1] = 0.00001;
-    } else {
-        RNreal_U[1] = ((float)RN_U[1])/100.;
-    }
-    float term1 = sqrt(-2 *  log(RNreal_U[0]));
-    float term2 = 2 * M_PI * RNreal_U[1];
-    // prunsigned charf("%f %f\n", (term1 * cos(term2)), (term1 * sin(term2)));
-    RN_G[0] = (unsigned char) ((term1 * sin(term2))*std_dev + avg);
-    RN_G[1] = (unsigned char) ((term1 * cos(term2))*std_dev + avg);
+    RN_G = boxmuller(RN_U, avg, std_dev);
     return(RN_G);
 }
