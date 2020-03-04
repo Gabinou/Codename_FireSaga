@@ -6,12 +6,12 @@
 extern std::mt19937 mt;
 extern std::mt19937_64 mt_64;
 
-extern int getRN();
-extern int * getGRNs(float avg = 50., float std_dev = 20.);
-extern int * boxmuller(int RN_U[2], float avg = 50., float std_dev = 20.);
+extern unsigned char getRN();
+extern unsigned char * getGRNs(const float avg = 50., const float std_dev = 20.);
+extern unsigned char * boxmuller(const unsigned char RN_U[2], const float avg = 50., const float std_dev = 20.);
 
-extern bool single_roll(const int RN, const int hit);
-extern bool double_roll(const int RN1, const int RN2, const int hit);
+extern bool single_roll(const unsigned char RN, const unsigned char hit);
+extern bool double_roll(const unsigned char RN1, const unsigned char RN2, const unsigned char hit);
 
 
 #endif /* PROBABILITY_HPP */
