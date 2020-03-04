@@ -1,6 +1,5 @@
 
 #include "probability.hpp"
-#include <math.h>
 
 int seed = 1990; 
 std::mt19937_64 mt_64(1990);

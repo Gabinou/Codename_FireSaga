@@ -1,12 +1,7 @@
 #ifndef PROBABILITY_HPP
 #define PROBABILITY_HPP
 
-#include <stdio.h>
-#include <string>
-#include <vector>
-#include <memory>
 #include <bits/stdc++.h>
-#include <algorithm>
 
 extern std::mt19937 mt;
 extern std::mt19937_64 mt_64;
