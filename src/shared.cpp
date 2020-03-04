@@ -218,24 +218,6 @@ std::vector<std::vector<int>> A_star(std::vector<std::vector<int>> map, int star
     return(path);
 }
 
-void permutations_binary(int len, int num_0, int out[], int i) {
-// cannot be used for pathfinding.
-    out[i] = 0;
-    if (num_0 > std::count(out, out + i, 0)) { 
-        permutations_binary(len, num_0, out, i+1);
-    }
-    out[i] = 1;
-    if ((len-num_0) > std::count(out, out + i, 1)) { 
-        permutations_binary(len, num_0, out, i+1);
-    }
-    if (i == len){
-        for (int i = 0; i < len; i++) { 
-            printf("%d",out[i]);
-        } 
-        printf("\n");
-    }
-}
-
 int pingpong(int current, int upper, int lower) {
     // returns pingpong index.
     // modulo: x % 2 = 0,1,2,0,1,2,0...for x++
@@ -276,25 +258,6 @@ bool single_roll(const int RN, const int hit) {
 
 bool double_roll(const int RN1, const int RN2, const int hit) {
     return((((RN1+RN2)/2)<hit));
-}
-
-
-std::string read_line(const char * filename, int skip) {
-    // 2019/07/30: skip should be a multiple of *number of lines written to weapon.txt* which is 8.
-    FILE * f = fopen(filename, "r");
-    char line[500];
-
-    for (int i = 0; i < skip; i++) {
-        if (fgets(line, sizeof(line), f) == NULL) {
-            throw "eof Reached\n";
-        }
-    }
-
-    fgets(line, sizeof(line), f);
-    std::string out(line);
-    out.pop_back(); // fgets include the \n character at the end of the line. This removes it.
-    fclose(f);
-    return (out);
 }
 
 int getRN(){

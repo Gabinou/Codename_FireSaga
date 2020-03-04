@@ -15,6 +15,7 @@
 #include "enums.hpp"
 
 #define LEN(arr) ((int) (sizeof (arr) / sizeof (arr)[0]))
+
 template <typename T> int sgn(T val) {
     return (T(0) < val) - (val < T(0));
 }
@@ -37,9 +38,6 @@ extern bool is_pressed(const Uint8 * state_array, std::vector<SDL_Scancode> to_f
 
 extern std::vector<std::string> wpntype2str(short unsigned int in_type);
 
-extern std::string read_line(const char * filename, char skip);
-
-extern void permutations_binary(int len, int num_0, int out[], int i = 0);
 extern int h_manhattan(int start[], int end[]);
 extern double h_euclidean(int start[], int end[]);
 
