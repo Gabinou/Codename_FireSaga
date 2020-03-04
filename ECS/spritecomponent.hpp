@@ -4,6 +4,7 @@
 #include "ECS.hpp"
 #include "map.hpp"
 #include "shared.hpp"
+#include "filesystem.hpp"
 #include "positioncomponent.hpp"
 #include "keyboardcontroller.hpp"
 #include "gamepadcontroller.hpp"

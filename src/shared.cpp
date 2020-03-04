@@ -65,36 +65,6 @@ void writeText(int in_fontsize, int in_position[2], float in_sizefactor[2], std:
     SDL_RenderPresent(in_renderer);
 }
 
-SDL_Texture * loadTexture(const char * filename) {
-    SDL_Surface * tempsurface = IMG_Load(filename); //Not that fast.
-    if (!tempsurface) {
-        printf("loadTexture. IMG_Load: %s\n", IMG_GetError());
-    }
-    SDL_Texture * texture = SDL_CreateTextureFromSurface(Game::renderer, tempsurface);
-    SDL_FreeSurface(tempsurface);
-    return (texture);
-}
-
-SDL_Texture * textToTexture(std::string textureText, SDL_Color textColor, TTF_Font * in_font) {
-    SDL_Surface * textsurface = TTF_RenderText_Blended(in_font, textureText.c_str(), textColor); // Blended is better than Solid
-    // TTF_RenderText_Shaded shades the whole destrect background.
-    
-    SDL_Texture * texture;
-
-    if (textsurface == NULL) {
-        printf("Unable to render text surface! SDL_ttf Error: %s\n", TTF_GetError());
-    } else {
-        //Create texture from surface pixels
-        texture = SDL_CreateTextureFromSurface(Game::renderer, textsurface);
-
-        if (texture == NULL) {
-            printf("Unable to create texture from rendered text! SDL Error: %s\n", SDL_GetError());
-        }
-        SDL_FreeSurface(textsurface); //Get rid of old surface
-    }
-    return (texture);
-}
-
 int h_manhattan (int start[], int end[]){
     // fast. Exact on a grid.
     return(abs(start[0] - end[0]) + abs(start[1] - end[1]));

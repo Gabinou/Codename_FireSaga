@@ -5,6 +5,7 @@
 #include "SDL2/SDL.h"
 #include "shared.hpp"
 #include "parser.hpp"
+#include "filesystem.hpp"
 #include "tile.hpp"
 
 using Entity_ptr_matrix = std::vector<std::vector<Entity *>>;

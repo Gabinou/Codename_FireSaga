@@ -560,9 +560,6 @@ extern std::vector<std::vector<int>> list2matrix(std::vector<std::vector<int>> l
 
 extern void writeText(int in_fontsize, int in_position[2], float in_sizefactor[2], std::string in_text, SDL_Color in_color, TTF_Font * in_font, SDL_Renderer * in_renderer);
 
-extern SDL_Texture * loadTexture(const char * filename);
-extern SDL_Texture * textToTexture(std::string textureText, SDL_Color textColor, TTF_Font * in_font);
-
 struct Tile_stats {
     char dodge;
     char Pprot;

@@ -1,12 +1,22 @@
 
 #include "filesystem.hpp"
-#include "physfs.h"
-#include "LodePNG.h"
-#include "shared.hpp"
-#include <SDL2/SDL.h>
-#include <string>
-#include <cstring>
-#include <stdlib.h>
+#include "game.hpp"
+
+
+#if defined(_WIN32)
+#include <windows.h>
+int mkdir(char* path, int mode)
+{
+    WCHAR utf16_path[DEFAULT::MAXPATH];
+    MultiByteToWideChar(CP_UTF8, 0, path, -1, utf16_path, DEFAULT::MAXPATH);
+    return CreateDirectoryW(utf16_path, NULL);
+}
+#elif defined(__linux__) || defined(__APPLE__) || defined(__FreeBSD__) || defined(__OpenBSD__) || defined(__HAIKU__)
+#include <sys/stat.h>
+#include <limits.h>
+#include <unistd.h>
+#include <dirent.h>
+#endif
 
 namespace FILESYSTEM {
 int init(char *argvZero, char* baseDir, char *assetsPath) {
@@ -157,4 +167,35 @@ SDL_Surface* LoadImage(const char *filename, bool noBlend = true, bool noAlpha =
         SDL_assert(0 && "Image not found! See stderr.");
         return NULL;
     }
+}
+
+
+SDL_Texture * loadTexture(const char * filename) {
+    SDL_Surface * tempsurface = IMG_Load(filename); //Not that fast.
+    if (!tempsurface) {
+        printf("loadTexture. IMG_Load: %s\n", IMG_GetError());
+    }
+    SDL_Texture * texture = SDL_CreateTextureFromSurface(Game::renderer, tempsurface);
+    SDL_FreeSurface(tempsurface);
+    return (texture);
+}
+
+SDL_Texture * textToTexture(std::string textureText, SDL_Color textColor, TTF_Font * in_font) {
+    SDL_Surface * textsurface = TTF_RenderText_Blended(in_font, textureText.c_str(), textColor); // Blended is better than Solid
+    // TTF_RenderText_Shaded shades the whole destrect background.
+    
+    SDL_Texture * texture;
+
+    if (textsurface == NULL) {
+        printf("Unable to render text surface! SDL_ttf Error: %s\n", TTF_GetError());
+    } else {
+        //Create texture from surface pixels
+        texture = SDL_CreateTextureFromSurface(Game::renderer, textsurface);
+
+        if (texture == NULL) {
+            printf("Unable to create texture from rendered text! SDL Error: %s\n", SDL_GetError());
+        }
+        SDL_FreeSurface(textsurface); //Get rid of old surface
+    }
+    return (texture);
 }
