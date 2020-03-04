@@ -2,12 +2,10 @@
 #define SHARED_HPP
 
 #include <stdio.h>
-#include <zlib.h>
 #include <string>
 #include <vector>
 #include <memory>
 #include <bits/stdc++.h>
-#include <algorithm>
 #include "SDL2/SDL.h"
 #include "SDL2/SDL_image.h"
 #include "SDL2/SDL_ttf.h"
