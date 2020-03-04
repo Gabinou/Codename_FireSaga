@@ -266,34 +266,7 @@ bool is_pressed(const Uint8 * state_array, std::vector<SDL_Scancode> to_find) {
     return (false);
 }
 
-std::vector<std::string> get_words(std::string line) {
-    std::vector<std::string> words;
-    std::string word;
-    std::stringstream iss(line);
 
-    while (iss >> word)
-        // cout << word << endl;
-    { words.push_back(word); }
-
-    return (words);
-}
-
-std::vector<int> csv_from_line(std::string line, std::string delimiter) {
-    std::vector<int> names;
-    std::size_t found;
-
-    while ((found = line.find(delimiter)) != std::string::npos) {
-        // std::cout << line.substr(0, found) << endl;
-        names.push_back(std::stoi(line.substr(0, found).c_str()));
-        line.erase(0, found + delimiter.length());
-    }
-
-    // std::cout << line << endl;
-    names.push_back(std::stoi(line.c_str()));
-    return (names);
-}
-
-/// \fn dist
 /// \brief gets the next random number, using pre-defined Mersenne-Twister object applied to pre-defined uniform distribution.
 std::uniform_int_distribution<int> dir_99(0, 99); // more twice faster than Ureal_1
 
@@ -323,42 +296,6 @@ std::string read_line(const char * filename, int skip) {
     fclose(f);
     return (out);
 }
-
-/// \fn void write_all_units(const char *filename, char const *savestyle)
-/// \brief Write all_units stats to file.
-// write_all_units must be implemented here.
-void write_all_units(const char * filename, char const * savestyle) {
-
-}
-
-void read_all_unit_classes(const char * filename) {
-   
-}
-
-void write_all_unit_classes(const char * filename) {
-
-}
-
-void write_all_weapons(const char * filename, char const * savestyle) {
-
-}
-
-void write_all_maps(const char * filename) {
-
-}
-
-void read_all_maps(const char * filename) {
-
-}
-
-void read_all_weapons(const char * filename) {
-
-}
-
-void read_all_units(const char * filename) {
-
-}
-
 
 int getRN(){
     return(Uint_99(mt_64));
