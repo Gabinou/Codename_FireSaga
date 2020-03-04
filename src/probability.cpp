@@ -5,6 +5,8 @@
 // RN: Random number
 // U: Uniform(ly)
 // G: Gaussian/Normal(ly)
+// std_dev: standard deviation
+// avg: average
 
 #define SEED 19900508
 std::mt19937_64 mt_64(SEED);
@@ -24,8 +26,8 @@ unsigned char getURN(){
 }
 
 unsigned char * boxmuller(const unsigned char RN_U[2], const float avg, const float std_dev) {
-    // Transforms a pair of U distributed RNs into a pair of G distributed RNs
-    // std_dev: standard deviation,  avg: average
+    // Box-Muller Transform.
+    // 2 U distributed RNs -> 2 G distributed RNs
     // RN_G can be < 0 and > 100.
     static unsigned char RN_G[2];
     float RNreal_U[2];
