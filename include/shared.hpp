@@ -18,17 +18,6 @@ template <typename T> int sgn(T val) {
     return (T(0) < val) - (val < T(0));
 }
 
-extern std::mt19937 mt;
-extern std::mt19937_64 mt_64;
-
-extern int getRN();
-extern int * getGRNs(float avg = 50., float std_dev = 20.);
-extern int * boxmuller(int RN_U[2], float avg = 50., float std_dev = 20.);
-// boxmuller transforms uniforml RNs into gaussian RNs.
-
-extern bool single_roll(const int RN, const int hit);
-extern bool double_roll(const int RN1, const int RN2, const int hit);
-
 extern int geometricslide(int distance, float geo_factor = 2);
 extern int vectorslide(int x, int y, bool xfirst);
 extern int pingpong(int current, int upper, int lower = 0);

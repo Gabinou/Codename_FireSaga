@@ -6,7 +6,7 @@
 extern std::mt19937 mt;
 extern std::mt19937_64 mt_64;
 
-extern unsigned char getRN();
+extern unsigned char getURN();
 extern unsigned char * getGRNs(const float avg = 50., const float std_dev = 20.);
 extern unsigned char * boxmuller(const unsigned char RN_U[2], const float avg = 50., const float std_dev = 20.);
 

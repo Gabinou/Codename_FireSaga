@@ -7,6 +7,7 @@
 #include "keyboardcontroller.hpp"
 #include "gamepadcontroller.hpp"
 #include "unitcontainer.hpp"
+#include "probability.hpp"
 
 SDL_Renderer * Game::renderer = nullptr;
 TTF_Font * Game::font = NULL;
@@ -28,11 +29,11 @@ void Game::setSettings(Settings in_settings) {
 bool Game::checkRate(int rate, short unsigned int mode) {
     bool hit;
     if (mode == 1) {
-        hit = (getRN() < rate); //single_roll
+        hit = (getURN() < rate); //single_roll
         return(hit);
     }
     if (mode == 2) {
-        hit = (((getRN() + getRN())/2) < rate); //doubleroll
+        hit = (((getURN() + getURN())/2) < rate); //doubleroll
         return(hit);
     }
     return(hit);
@@ -41,17 +42,17 @@ bool Game::checkRate(int rate, short unsigned int mode) {
 bool * Game::checkHitCrit(int hit_rate, int crit_rate, short unsigned int mode) {
     static bool hitcrit[2];
     if (mode == GAME::RN::SINGLE) {
-        hitcrit[0] = (getRN() < hit_rate);
-        hitcrit[1] = (getRN() < crit_rate);
+        hitcrit[0] = (getURN() < hit_rate);
+        hitcrit[1] = (getURN() < crit_rate);
         return(hitcrit);
     }
     if (mode == GAME::RN::DOUBLE) {
-        hitcrit[0] = (((getRN() + getRN())/2) < hit_rate);
-        hitcrit[1] = (((getRN() + getRN())/2) < crit_rate);
+        hitcrit[0] = (((getURN() + getURN())/2) < hit_rate);
+        hitcrit[1] = (((getURN() + getURN())/2) < crit_rate);
         return(hitcrit);
     } 
     if (mode == GAME::RN::GAUSSIAN) {
-        int * RNs = getGRNs();
+        unsigned char * RNs = getGRNs();
         hitcrit[0] = (RNs[0] < hit_rate);
         hitcrit[1] = (RNs[1] < crit_rate);
         return(hitcrit);
