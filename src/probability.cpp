@@ -23,33 +23,6 @@ unsigned char getURN(){
     return(U_99(mt_64));
 }
 
-unsigned char boxmuller_switch(const unsigned char RN_U[2], const bool sin_switch = true, const float avg = 50., const float std_dev = 20.) {
-    // Transforms a pair of U distributed RNs into a pair of G distributed RNs
-    // std_dev: standard deviation,  avg: average
-    // RN_G can be < 0 and > 100.
-    unsigned char RN_G;
-    float RNreal_U[2];
-    if (RN_U[0] == 0) {
-        RNreal_U[0] = 0.00001;
-    } else {
-        RNreal_U[0] = ((float)RN_U[0])/100.;
-    }
-    if (RN_U[1] == 0) {
-        RNreal_U[1] = 0.00001;
-    } else {
-        RNreal_U[1] = ((float)RN_U[1])/100.;
-    }
-    float term1 = sqrt(-2 *  log(RNreal_U[0]));
-    float term2 = 2 * M_PI * RNreal_U[1];
-
-    if (sin_switch) {
-        RN_G = (unsigned char) ((term1 * sin(term2))*std_dev + avg);
-    } else {
-        RN_G = (unsigned char) ((term1 * cos(term2))*std_dev + avg);
-    }
-    return(RN_G);
-}
-
 unsigned char * boxmuller(const unsigned char RN_U[2], const float avg, const float std_dev) {
     // Transforms a pair of U distributed RNs into a pair of G distributed RNs
     // std_dev: standard deviation,  avg: average
@@ -76,8 +49,6 @@ unsigned char * boxmuller(const unsigned char RN_U[2], const float avg, const fl
 
 unsigned char * getGRNs(const float avg, const float std_dev) {
     // Get a pair of G distributed RNs.
-    // RNs frm 0 to 100. Uses box-muller tranform and getURN function to compute it.
-    // std_dev: standard deviation,  avg: average
     // RN_G can be < 0 and > 100
     static unsigned char * RN_G;
     unsigned char RN_U[2];
