@@ -2,6 +2,7 @@
 #define TILE_HPP
 
 #include "shared.hpp"
+#include <unordered_map>
 
 class Tile {
     private:

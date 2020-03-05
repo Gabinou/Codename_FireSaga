@@ -13,6 +13,7 @@
 #include "unit.hpp"
 #include "linalg.hpp"
 #include "script.hpp"
+#include <stack>
 
 class Game {
 
