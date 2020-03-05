@@ -170,17 +170,17 @@ SDL_Surface* LoadImage(const char *filename, bool noBlend = true, bool noAlpha =
 }
 
 
-SDL_Texture * loadTexture(SDL_Renderer * renderer, const char * filename) {
+SDL_Texture * loadTexture(SDL_Renderer * in_renderer, const char * filename) {
     SDL_Surface * tempsurface = IMG_Load(filename); //Not that fast.
     if (!tempsurface) {
         printf("loadTexture. IMG_Load: %s\n", IMG_GetError());
     }
-    SDL_Texture * texture = SDL_CreateTextureFromSurface(renderer, tempsurface);
+    SDL_Texture * texture = SDL_CreateTextureFromSurface(in_renderer, tempsurface);
     SDL_FreeSurface(tempsurface);
     return (texture);
 }
 
-SDL_Texture * textToTexture(SDL_Renderer * renderer, std::string textureText, SDL_Color textColor, TTF_Font * in_font) {
+SDL_Texture * textToTexture(SDL_Renderer * in_renderer, std::string textureText, SDL_Color textColor, TTF_Font * in_font) {
     SDL_Surface * textsurface = TTF_RenderText_Blended(in_font, textureText.c_str(), textColor); // Blended is better than Solid
     // TTF_RenderText_Shaded shades the whole destrect background.
     
@@ -190,7 +190,7 @@ SDL_Texture * textToTexture(SDL_Renderer * renderer, std::string textureText, SD
         printf("Unable to render text surface! SDL_ttf Error: %s\n", TTF_GetError());
     } else {
         //Create texture from surface pixels
-        texture = SDL_CreateTextureFromSurface(renderer, textsurface);
+        texture = SDL_CreateTextureFromSurface(in_renderer, textsurface);
 
         if (texture == NULL) {
             printf("Unable to create texture from rendered text! SDL Error: %s\n", SDL_GetError());
