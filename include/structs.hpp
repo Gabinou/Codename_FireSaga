@@ -1,6 +1,8 @@
 #ifndef STRUCTS_HPP
 #define STRUCTS_HPP
 
+#include <vector>
+#include "SDL2/SDL.h"
 
 struct Tile_stats {
     char dodge;

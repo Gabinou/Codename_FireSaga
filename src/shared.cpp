@@ -16,7 +16,7 @@ int pingpong(int current, int upper, int lower) {
 int geometricslide(int distance, float geo_factor) {
     // Retunrs geometrically decreasing index.
     // distance/geo_factor + distance/geo_factor**2 + distance/geo_factor**3
-    int sign = sgn(distance);
+    int sign = sgn(distance); 
     int out = sign * std::max(sign * (int)(distance / geo_factor), 1);
     return (out);
     // std::abs() possible instead of sign*distance,

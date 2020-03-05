@@ -1,7 +1,9 @@
 #ifndef WEAPON_HPP
 #define WEAPON_HPP
 
-#include "shared.hpp"
+#include "enums.hpp"
+#include "structs.hpp"
+#include <string>
 
 class Weapon {
     private:

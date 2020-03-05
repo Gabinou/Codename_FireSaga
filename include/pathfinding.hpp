@@ -4,6 +4,7 @@
 #include <string>
 #include <vector>
 #include <cmath>
+#include "linalg.hpp"
 
 extern int h_manhattan(int start[], int end[]);
 extern double h_euclidean(int start[], int end[]);

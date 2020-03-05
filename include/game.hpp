@@ -14,6 +14,7 @@
 #include "linalg.hpp"
 #include "script.hpp"
 #include <stack>
+#include <vector>
 
 class Game {
 

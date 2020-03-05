@@ -3,6 +3,7 @@
 
 #include "shared.hpp"
 #include "weapon.hpp"
+#include "linalg.hpp"
 
 class Unit {
     private:

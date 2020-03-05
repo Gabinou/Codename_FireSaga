@@ -1,7 +1,8 @@
 #ifndef TILE_HPP
 #define TILE_HPP
 
-#include "shared.hpp"
+#include "structs.hpp"
+#include "enums.hpp"
 #include <unordered_map>
 
 class Tile {

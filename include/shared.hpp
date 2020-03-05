@@ -1,16 +1,7 @@
 #ifndef SHARED_HPP
 #define SHARED_HPP
 
-#include <stdio.h>
-#include <string>
-#include <vector>
-#include <memory>
-#include "SDL2/SDL.h"
-#include "SDL2/SDL_image.h"
-#include "SDL2/SDL_ttf.h"
-#include "linalg.hpp"
 #include "enums.hpp"
-#include "structs.hpp"
 
 #define LEN(arr) ((unsigned int) (sizeof (arr) / sizeof (arr)[0]))
 

@@ -5,6 +5,7 @@
 #include "game.hpp"
 #include "map.hpp"
 #include "shared.hpp"
+#include <vector>
 
 class GamepadController : public Component {
     private:

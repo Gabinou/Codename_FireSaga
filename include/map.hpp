@@ -7,6 +7,7 @@
 #include "parser.hpp"
 #include "filesystem.hpp"
 #include "tile.hpp"
+#include "linalg.hpp"
 
 using Entity_ptr_matrix = std::vector<std::vector<Entity *>>;
 

@@ -1,7 +1,9 @@
 #ifndef SCRIPT_HPP
 #define SCRIPT_HPP
 
-#include "shared.hpp"
+#include <string>
+#include "enums.hpp"
+#include "structs.hpp"
 
 struct Dialog_line {
     // How to make the line dynamic?
