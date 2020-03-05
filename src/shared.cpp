@@ -4,7 +4,7 @@
 
 
 int pingpong(int current, int upper, int lower) {
-    // returns pingpong index.
+    // Returns "pingpong" index.
     // modulo: x % 2 = 0,1,2,0,1,2,0...for x++
     // pingpong(x, 2, 0) = 0,1,2,1,0,1,2... for x++
     int mod_factor = (2 * (upper - lower) - 2);
@@ -14,9 +14,8 @@ int pingpong(int current, int upper, int lower) {
 }
 
 int geometricslide(int distance, float geo_factor) {
-    // geometric slide cause the series is geometric:
-    // distance/2 + distance/4 + distance/16.... 1
-    // animates slides
+    // Retunrs geometrically decreasing index.
+    // distance/geo_factor + distance/geo_factor**2 + distance/geo_factor**3
     int sign = sgn(distance);
     int out = sign * std::max(sign * (int)(distance / geo_factor), 1);
     return (out);
