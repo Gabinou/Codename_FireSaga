@@ -21,7 +21,6 @@ template <typename T> int sgn(T val) {
 extern int geometricslide(int distance, float geo_factor = 2);
 extern int vectorslide(int x, int y, bool xfirst);
 extern int pingpong(int current, int upper, int lower = 0);
-// extern bool is_pressed(const Uint8 * state_array, std::vector<SDL_Scancode> to_find);
 
 extern std::vector<std::string> wpntype2str(short unsigned int in_type);
 
@@ -169,19 +168,5 @@ struct GamepadInputMap {
     std::vector<SDL_GameControllerButton> faster{SDL_CONTROLLER_BUTTON_START};
     std::vector<SDL_GameControllerButton> pause{SDL_CONTROLLER_BUTTON_START};
 };
-
-template <typename T> extern std::vector<std::vector<T>> matrix2list(std::vector<std::vector<T>> matrix) {
-    std::vector<std::vector<T>> list;
-
-    for (T col = 0; col < matrix.size(); col++) {
-        for (T row = 0; row < matrix[0].size(); row++) {
-            if (matrix[col][row] > 0) {
-                list.push_back({col, row});
-            }
-        }
-    }
-
-    return (list);
-}
 
 #endif /* SHARED_HPP */

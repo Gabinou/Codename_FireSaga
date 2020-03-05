@@ -119,4 +119,18 @@ template <typename T> extern std::vector<std::vector<T>> matrix_edges(std::vecto
     return (edges);
 }
 
+template <typename T> extern std::vector<std::vector<T>> matrix2list(std::vector<std::vector<T>> matrix) {
+    std::vector<std::vector<T>> list;
+
+    for (T col = 0; col < matrix.size(); col++) {
+        for (T row = 0; row < matrix[0].size(); row++) {
+            if (matrix[col][row] > 0) {
+                list.push_back({col, row});
+            }
+        }
+    }
+
+    return (list);
+}
+
 #endif /* LINALG_HPP */
