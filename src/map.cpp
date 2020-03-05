@@ -74,6 +74,10 @@ Entity * Map::getTile(const short unsigned int x, const short unsigned int y) {
     return(entitymap[x][y]);
 }
 
+void Map::setRenderer(SDL_Renderer * in_renderer){
+    renderer = in_renderer;
+}
+
 void Map::loadTiletextures() {
     short unsigned int tileindex;
     std::string texturename;
@@ -192,7 +196,7 @@ void Map::clearOverlays() {
     overlay_mode = 0;
 }
 
-void Map::drawMap(SDL_Renderer * renderer) {
+void Map::drawMap() {
     int tile_ind = 0;
     for (int row = 0; row < tilemap.size(); row++) {// This loop cache friendly.
         for (int col = 0; col < tilemap[row].size(); col++) {

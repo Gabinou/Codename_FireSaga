@@ -317,14 +317,15 @@ void Game::loadMap(const std::string filename) {
     printf("Loading map \n");
     // For this function, tiles have to be loaded manually somwhere else.
     mapp =  new Map(settings.tilesize[0], settings.tilesize[1]); // mapp is a pointer
+    mapp->setRenderer(renderer);
     mapp->loadTilemap(filename);
-    mapp->renderer = renderer;
 }
 
 void Game::loadMap(const int in_map_index) {
     printf("Loading map \n");
     loaded_tiles = baseTiles(chapTiles[in_map_index]());
     mapp =  new Map(settings.tilesize[0], settings.tilesize[1]); // mapp is a pointer
+    mapp->setRenderer(renderer);
     mapp->loadTilemap(in_map_index);
     mapp->loadEnemyinds(in_map_index);
     // printf("Testing tiles: %s\n", loaded_tiles[10].getName().c_str());
@@ -461,7 +462,7 @@ void Game::render() {
     SDL_RenderClear(renderer);
     // Add stuff to render. Paint the background First.
 
-    mapp->drawMap(renderer);
+    mapp->drawMap();
 
     for (auto& u : units) {
         u->draw();

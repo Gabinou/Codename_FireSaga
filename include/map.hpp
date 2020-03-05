@@ -28,6 +28,7 @@ class Map {
         std::vector<std::vector<short int>> tileupdate;
 
         SDL_Rect srcrect, destrect;
+        SDL_Renderer * renderer;
 
         unsigned char overlay_mode = 0;
         unsigned char danger_mode = 0;
@@ -40,7 +41,6 @@ class Map {
         Entity_ptr_matrix entitymap;
 
     public:
-        SDL_Renderer * renderer;
         Map();
         ~Map();
         Map(const short unsigned int width, const short unsigned int height);
@@ -58,7 +58,8 @@ class Map {
         void setTilemap(const std::vector<std::vector<short int>> in_tilemap);
         std::vector<std::vector<short int>> makeMvtCostmap(const unsigned char unitmovetype);
 
-        void drawMap(SDL_Renderer * renderer);
+        void setRenderer(SDL_Renderer * in_renderer);
+        void drawMap();
         void makeEntitymap(const short unsigned int row_size, const short unsigned int col_size);
 
         void setTilesize(const short int unsigned width, const short int unsigned height);
@@ -75,6 +76,7 @@ class Map {
         void setOverlaymode(const unsigned char in_mode);
         void showOverlay();
         void hideOverlay();
+
 
         void loadGrid();
         void showGrid();
