@@ -46,7 +46,7 @@ std::vector<std::string> wpntype2str(short unsigned int in_type){
 int pingpong(int current, int upper, int lower) {
     // returns pingpong index.
     // modulo: x % 2 = 0,1,2,0,1,2,0...for x++
-    // pingpong(x, 2) = 0,1,2,1,0,1,2... for x++
+    // pingpong(x, 2, 0) = 0,1,2,1,0,1,2... for x++
     int mod_factor = (2 * (upper - lower) - 2);
     int term1 = mod_factor - (current % mod_factor);
     int term2 = current % mod_factor;
