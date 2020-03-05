@@ -43,21 +43,6 @@ std::vector<std::string> wpntype2str(short unsigned int in_type){
     return(types);
 }
 
-void writeText(SDL_Renderer * in_renderer, int in_fontsize, int in_position[2], float in_sizefactor[2], std::string in_text, SDL_Color in_color, TTF_Font * in_font) {
-    std::string text = "FPS";
-    SDL_Texture * texture = textToTexture(in_renderer, text, in_color, in_font);
-    SDL_Rect srcrect, destrect; // background always first?
-    srcrect.x = srcrect.y = 0;
-    destrect.x = in_position[0];
-    destrect.y = in_position[1];
-    srcrect.h = in_fontsize;
-    srcrect.w = text.length() * in_fontsize;
-    destrect.h = (int)in_fontsize * in_sizefactor[0];
-    destrect.w = (int)text.length() * in_fontsize * in_sizefactor[1];
-    SDL_RenderCopy(in_renderer, texture, &srcrect, &destrect);
-    SDL_RenderPresent(in_renderer);
-}
-
 int pingpong(int current, int upper, int lower) {
     // returns pingpong index.
     // modulo: x % 2 = 0,1,2,0,1,2,0...for x++
