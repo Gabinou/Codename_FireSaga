@@ -58,14 +58,6 @@ void writeText(int in_fontsize, int in_position[2], float in_sizefactor[2], std:
     SDL_RenderPresent(in_renderer);
 }
 
-std::vector<std::vector<int>> list2matrix(std::vector<std::vector<int>> list, int col, int row) {
-    std::vector<std::vector<int>> matrix(col, std::vector<int> (row, 0));
-    for (int ind = 0; ind < list.size(); ind++) {
-        matrix[list[ind][0]][list[ind][1]] = 1;
-    }
-    return(matrix);
-}
-
 int pingpong(int current, int upper, int lower) {
     // returns pingpong index.
     // modulo: x % 2 = 0,1,2,0,1,2,0...for x++
