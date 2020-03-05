@@ -80,6 +80,17 @@ class KeyboardController : public Component {
             }
         }
 
+        bool is_pressed(const Uint8 * state_array, std::vector<SDL_Scancode> to_find) {
+            for (auto it = std::begin(to_find); it != std::end(to_find); ++it) {
+                if (state_array[*it]) {
+                    return (true);
+                }
+            }
+
+            return (false);
+        }
+
+
         void update() override {
             const Uint8 * kb_state = SDL_GetKeyboardState(NULL);
             std::vector<std::vector<SDL_Scancode>> pressed_move{};

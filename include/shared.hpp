@@ -21,10 +21,9 @@ template <typename T> int sgn(T val) {
 extern int geometricslide(int distance, float geo_factor = 2);
 extern int vectorslide(int x, int y, bool xfirst);
 extern int pingpong(int current, int upper, int lower = 0);
-extern bool is_pressed(const Uint8 * state_array, std::vector<SDL_Scancode> to_find);
+// extern bool is_pressed(const Uint8 * state_array, std::vector<SDL_Scancode> to_find);
 
 extern std::vector<std::string> wpntype2str(short unsigned int in_type);
-
 
 struct Tile_stats {
     char dodge;
