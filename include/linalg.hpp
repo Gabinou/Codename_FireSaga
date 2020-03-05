@@ -1,7 +1,6 @@
 #ifndef LINALG_HPP
 #define LINALG_HPP
 
-#include "shared.hpp"
 #include <vector>
 #include <stdio.h>
 #include <stdlib.h>
