@@ -2,9 +2,6 @@
 #include "shared.hpp"
 #include "game.hpp"
 
-Inventory_item convoy[200];
-
-
 
 int pingpong(int current, int upper, int lower) {
     // returns pingpong index.
