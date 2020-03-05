@@ -25,7 +25,7 @@ extern bool is_pressed(const Uint8 * state_array, std::vector<SDL_Scancode> to_f
 
 extern std::vector<std::string> wpntype2str(short unsigned int in_type);
 
-extern std::vector<std::vector<int>> list2matrix(std::vector<std::vector<int>> list);
+// extern std::vector<std::vector<int>> list2matrix(std::vector<std::vector<int>> list);
 
 extern void writeText(int in_fontsize, int in_position[2], float in_sizefactor[2], std::string in_text, SDL_Color in_color, TTF_Font * in_font, SDL_Renderer * in_renderer);
 
