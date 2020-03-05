@@ -12,7 +12,7 @@
 #include "enums.hpp"
 #include "structs.hpp"
 
-#define LEN(arr) ((int) (sizeof (arr) / sizeof (arr)[0]))
+#define LEN(arr) ((unsigned int) (sizeof (arr) / sizeof (arr)[0]))
 
 template <typename T> int sgn(T val) {
     return (T(0) < val) - (val < T(0));
