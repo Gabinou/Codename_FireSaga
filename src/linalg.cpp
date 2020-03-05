@@ -1,5 +1,5 @@
-#include "linalg.hpp"
 
+#include "linalg.hpp"
 
 void plot2Darray(int array[][10], short unsigned int imax, short unsigned int jmax) {
     //Don't know how to pass array that at least do not have 1D known before hand
