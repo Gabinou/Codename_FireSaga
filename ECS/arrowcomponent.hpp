@@ -30,7 +30,7 @@ class ArrowComponent : public Component {
         ArrowComponent() = default;
 
         ArrowComponent(const char * in_path) {
-            texture = loadTexture(in_path);
+            texture = loadTexture(Game::renderer, in_path);
         }
 
         ArrowComponent(const char * in_path, Entity * in_cursor) : ArrowComponent(in_path) {

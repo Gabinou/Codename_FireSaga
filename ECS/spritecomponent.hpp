@@ -101,7 +101,7 @@ class SpriteComponent : public Component {
         }
 
         void setTexture(const char * in_path) {
-            texture = loadTexture(in_path);
+            texture = loadTexture(Game::renderer, in_path);
         }
 
         void setAnimation(int inFrames, int inSpeed) {

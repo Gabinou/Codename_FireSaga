@@ -97,7 +97,7 @@ class TextComponent : public Component {
         }
 
         void addTextTexture(std::string in_text, SDL_Color in_textColor) {
-            textures.push_back(textToTexture(in_text, in_textColor, Game::font));
+            textures.push_back(textToTexture(Game::renderer, in_text, in_textColor, Game::font));
             srcrects.push_back(SDL_Rect{});
             destrects.push_back(SDL_Rect{});
         }

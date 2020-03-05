@@ -80,18 +80,18 @@ void Map::loadTiletextures() {
     for (short unsigned int i = 0; i < unique_textures.size(); i++) {
         tileindex = (unique_textures[i]/DEFAULT::TILE_DIVISOR);
         texturename = "..//assets//" + loaded_tiles[tileindex].getName() + "_" + std::to_string(unique_textures[i]) + ".png";
-        textures[unique_textures[i]] = loadTexture(texturename.c_str());
+        textures[unique_textures[i]] = loadTexture(Game::renderer, texturename.c_str());
     }
 }
 
 void Map::loadOverlays() {
-    overlays[0] = loadTexture("..//assets//tile_overlay_move.png");
-    overlays[1] = loadTexture("..//assets//tile_overlay_attack.png");
-    overlays[2] = loadTexture("..//assets//tile_overlay_heal.png");
+    overlays[0] = loadTexture(Game::renderer, "..//assets//tile_overlay_move.png");
+    overlays[1] = loadTexture(Game::renderer, "..//assets//tile_overlay_attack.png");
+    overlays[2] = loadTexture(Game::renderer, "..//assets//tile_overlay_heal.png");
 }
 
 void Map::loadDanger() {
-    dangers[0] = loadTexture("..//assets//danger.png");
+    dangers[0] = loadTexture(Game::renderer, "..//assets//danger.png");
     // dangers[1] = loadTexture("..//assets//danger_grid.png");
 }
 
