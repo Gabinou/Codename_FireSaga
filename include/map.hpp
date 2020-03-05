@@ -39,6 +39,7 @@ class Map {
         Entity_ptr_matrix entitymap;
 
     public:
+        SDL_Renderer * renderer;
         Map();
         ~Map();
         Map(const short unsigned int width, const short unsigned int height);

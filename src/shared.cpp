@@ -45,7 +45,7 @@ std::vector<std::string> wpntype2str(short unsigned int in_type){
 
 void writeText(int in_fontsize, int in_position[2], float in_sizefactor[2], std::string in_text, SDL_Color in_color, TTF_Font * in_font, SDL_Renderer * in_renderer) {
     std::string text = "FPS";
-    SDL_Texture * texture = textToTexture(text, in_color, in_font);
+    SDL_Texture * texture = textToTexture(in_renderer, text, in_color, in_font);
     SDL_Rect srcrect, destrect; // background always first?
     srcrect.x = srcrect.y = 0;
     destrect.x = in_position[0];
