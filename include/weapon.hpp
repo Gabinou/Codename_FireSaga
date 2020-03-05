@@ -42,6 +42,8 @@ class Weapon {
         void write(const char * filename, const char * mode = "a");
 };
 
+extern std::vector<std::string> wpntype2str(short unsigned int in_type);
+
 extern std::vector<Weapon> all_weapons;
 extern std::vector<Weapon> loaded_weapons;
 
