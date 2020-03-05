@@ -3,7 +3,7 @@
 
 #include "ECS.hpp"
 #include "SDL2/SDL.h"
-#include "shared.hpp"
+#include "utilities.hpp"
 #include "parser.hpp"
 #include "filesystem.hpp"
 #include "tile.hpp"

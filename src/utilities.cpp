@@ -1,5 +1,4 @@
-// Code créé par Gabriel Taillon
-#include "shared.hpp"
+#include "utilities.hpp"
 #include "game.hpp"
 
 

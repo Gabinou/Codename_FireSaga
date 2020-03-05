@@ -6,7 +6,8 @@
 #include <string.h>
 #include <stdio.h>
 #include <vector>
-#include "shared.hpp"
+#include "structs.hpp"
+#include "enums.hpp"
 
 extern char * slice_char(const char * in, int start, int end);
 

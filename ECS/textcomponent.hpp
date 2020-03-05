@@ -4,7 +4,6 @@
 #include <vector>
 #include "ECS.hpp"
 #include "map.hpp"
-#include "shared.hpp"
 #include "filesystem.hpp"
 #include "positioncomponent.hpp"
 #include "SDL2/SDL.h"

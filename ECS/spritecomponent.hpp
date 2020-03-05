@@ -3,13 +3,12 @@
 
 #include "ECS.hpp"
 #include "map.hpp"
-#include "shared.hpp"
 #include "filesystem.hpp"
 #include "positioncomponent.hpp"
 #include "keyboardcontroller.hpp"
 #include "gamepadcontroller.hpp"
 #include "game.hpp"
-#include "shared.hpp"
+#include "utilities.hpp"
 #include "SDL2/SDL.h"
 
 class SpriteComponent : public Component {

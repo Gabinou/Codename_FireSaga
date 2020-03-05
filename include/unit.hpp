@@ -1,7 +1,7 @@
 #ifndef UNIT_HPP
 #define UNIT_HPP
 
-#include "shared.hpp"
+#include "utilities.hpp"
 #include "weapon.hpp"
 #include "linalg.hpp"
 

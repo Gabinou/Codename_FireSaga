@@ -3,6 +3,7 @@
 
 #include <vector>
 #include "SDL2/SDL.h"
+#include "enums.hpp"
 
 struct Tile_stats {
     char dodge;

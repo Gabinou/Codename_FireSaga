@@ -1,6 +1,5 @@
 
 #include "weapon.hpp"
-#include "shared.hpp"
 
 Weapon::Weapon() {
 

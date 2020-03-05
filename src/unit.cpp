@@ -1,5 +1,4 @@
 #include "unit.hpp"
-#include "shared.hpp"
 
 Unit::Unit() {
     equipped.left = -1;

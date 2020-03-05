@@ -1,8 +1,6 @@
 #ifndef SHARED_HPP
 #define SHARED_HPP
 
-#include "enums.hpp"
-
 #define LEN(arr) ((unsigned int) (sizeof (arr) / sizeof (arr)[0]))
 
 template <typename T> int sgn(T val) {

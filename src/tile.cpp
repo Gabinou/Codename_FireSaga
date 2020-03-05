@@ -1,4 +1,3 @@
-#include "shared.hpp"
 #include "tile.hpp"
 
 Tile::~Tile() {

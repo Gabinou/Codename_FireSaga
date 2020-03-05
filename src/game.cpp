@@ -1,5 +1,4 @@
 #include "game.hpp"
-#include "shared.hpp"
 #include "spritecomponent.hpp"
 #include "positioncomponent.hpp"
 #include "arrowcomponent.hpp"

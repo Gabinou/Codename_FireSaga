@@ -2,7 +2,7 @@
 #define ARROWCOMPONENT_HPP
 
 #include "ECS.hpp"
-#include "shared.hpp"
+#include "utilities.hpp"
 #include "positioncomponent.hpp"
 
 // I want this to not be able to be used for RNG abuse, because fuck RNG abuse.

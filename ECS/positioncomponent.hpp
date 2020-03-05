@@ -4,7 +4,7 @@
 #include "ECS.hpp"
 #include "game.hpp"
 #include "map.hpp"
-#include "shared.hpp"
+#include "utilities.hpp"
 #include "SDL2/SDL.h"
 
 class PositionComponent : public Component {
