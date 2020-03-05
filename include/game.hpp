@@ -8,6 +8,7 @@
 #include "ECS.hpp"
 #include "map.hpp"
 #include "weapon.hpp"
+#include "pathfinding.hpp"
 #include "tile.hpp"
 #include "unit.hpp"
 #include "linalg.hpp"
