@@ -10,7 +10,6 @@
 #define RN_MIN 0
 
 extern unsigned char getURN(tinymt32_t & tinymt);
-extern unsigned char * getGRNs(const float avg = 50., const float std_dev = 20.);
 extern unsigned char * boxmuller(const unsigned char RN_U[2], const float avg = 50., const float std_dev = 20.);
 
 extern bool single_roll(const unsigned char RN, const unsigned char hit);

@@ -50,7 +50,10 @@ bool * Game::checkHitCrit(int hit_rate, int crit_rate, short unsigned int mode) 
         return(hitcrit);
     } 
     if (mode == GAME::RN::GAUSSIAN) {
-        unsigned char * RNs = getGRNs();
+        unsigned char * RNs;
+        RNs[0] = getURN(tinymt);
+        RNs[1] = getURN(tinymt);
+        RNs = boxmuller(RNs);
         hitcrit[0] = (RNs[0] < hit_rate);
         hitcrit[1] = (RNs[1] < crit_rate);
         return(hitcrit);

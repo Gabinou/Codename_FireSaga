@@ -44,17 +44,6 @@ unsigned char * boxmuller(const unsigned char RN_U[2], const float avg, const fl
     return(RN_G);
 }
 
-// unsigned char * getGRNs(const float avg, const float std_dev) {
-//     // Get a pair of G distributed RNs.
-//     // RN_G can be < 0 and > 100
-//     static unsigned char * RN_G;
-//     unsigned char RN_U[2];
-//     RN_U[0] = getURN();
-//     RN_U[1] = getURN();
-//     RN_G = boxmuller(RN_U, avg, std_dev);
-//     return(RN_G);
-// }
-
 unsigned int Uuint32_openBSD(tinymt32_t & tinymt, unsigned int max, unsigned int min) {
     // According to [1], it is unbiased.
     unsigned int t = -max % max;
