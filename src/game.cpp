@@ -6,7 +6,6 @@
 #include "keyboardcontroller.hpp"
 #include "gamepadcontroller.hpp"
 #include "unitcontainer.hpp"
-#include "probability.hpp"
 
 SDL_Renderer * Game::renderer = nullptr;
 TTF_Font * Game::font = NULL;
@@ -368,6 +367,13 @@ void Game::loadMapEnemies() {
         all_units[map_enemies[i]].setEntity(manager.getEntities().size());
         manager.addEntity();
     }
+}
+
+void Game::init_tinyMT() {
+    tinymt.mat1 = 1990; // Year
+    tinymt.mat2 = 5; // Month
+    tinymt.tmat = 8; // Date
+    tinymt32_init(&tinymt, 19900508); //YearMonthDate
 }
 
 void Game::init(const char * title, int xpos, int ypos, int width, int height, bool fullscreen) {

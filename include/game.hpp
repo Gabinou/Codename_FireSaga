@@ -1,10 +1,10 @@
 #ifndef GAME_HPP
 #define GAME_HPP
 
-#include "utilities.hpp"
 #include "SDL2/SDL.h"
 #include "SDL2/SDL_image.h"
 #include "SDL2/SDL_ttf.h"
+#include "utilities.hpp"
 #include "ECS.hpp"
 #include "map.hpp"
 #include "weapon.hpp"
@@ -13,6 +13,7 @@
 #include "unit.hpp"
 #include "linalg.hpp"
 #include "script.hpp"
+#include "probability.hpp"
 #include <stack>
 #include <vector>
 
@@ -25,6 +26,7 @@ class Game {
         GamepadInputMap gamepadInputMap;
         SDL_Window * window;
         Settings settings;
+        tinymt32_t tinymt;
 
         void moveUnit(Entity & cursor);
 
@@ -54,6 +56,7 @@ class Game {
         ~Game();
 
         void init(const char * title, int xpos, int ypos, int width, int height, bool fullscreen);
+        void init_tinyMT();
         void loadMap(const std::string filename);
         void loadMap(const int in_map_index);
         void loadUnits(std::vector<short unsigned int> names, std::vector<std::string> asset_names, std::vector<std::vector<int>> positions_list);

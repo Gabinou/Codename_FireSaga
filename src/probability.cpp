@@ -24,6 +24,10 @@ unsigned char getURN(){
     return(U_99(mt_64));
 }
 
+unsigned char getURN(tinymt32_t & tinymt){
+    return(Uuint32_openBSD(tinymt, RN_MAX, RN_MIN));
+}
+
 unsigned char * boxmuller(const unsigned char RN_U[2], const float avg, const float std_dev) {
     // Box-Muller Transform.
     // 2 U distributed RNs -> 2 G distributed RNs
@@ -59,7 +63,7 @@ unsigned char * getGRNs(const float avg, const float std_dev) {
     return(RN_G);
 }
 
-unsigned int UUINT32_openBSD(unsigned int max, tinymt32_t & tinymt) {
+unsigned int Uuint32_openBSD(tinymt32_t & tinymt, unsigned int max, unsigned int min ) {
     // According to [1], it is unbiased.
     unsigned int t = -max % max;
     unsigned int x;
@@ -68,5 +72,5 @@ unsigned int UUINT32_openBSD(unsigned int max, tinymt32_t & tinymt) {
         // Rejects the last pigeonhole.
         // Ex: 32 with max=5 -> values of 30,31,32 are rejected. 
     } while (x < t);
-    return(x % max);
+    return(min + (x % max));
 }
