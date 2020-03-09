@@ -3,8 +3,7 @@
 
 #include <stdio.h>
 #include <string>
-#include <string.h>
-#include <stdio.h>
+#include <cstring>
 #include <vector>
 #include "structs.hpp"
 #include "enums.hpp"

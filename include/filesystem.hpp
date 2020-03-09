@@ -3,15 +3,16 @@
 #define FILESYSTEM_HPP
 
 #include <stdio.h>
+#include <string>
+#include <cstring>
+#include <stdlib.h>
 #include "physfs.h"
 #include "LodePNG.h"
 #include "utilities.hpp"
 #include "SDL2/SDL_ttf.h"
 #include "SDL2/SDL_image.h"
-#include <SDL2/SDL.h>
-#include <string>
-#include <cstring>
-#include <stdlib.h>
+#include "SDL2/SDL.h"
+
 
 namespace FILESYSTEM {
 void loadFileToMemory(const char * name, unsigned char ** mem,
