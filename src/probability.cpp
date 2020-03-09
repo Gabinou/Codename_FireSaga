@@ -45,8 +45,9 @@ unsigned char * boxmuller(const unsigned char RN_U[2], const float avg, const fl
 }
 
 unsigned int Uuint32_openBSD(tinymt32_t & tinymt, unsigned int max, unsigned int min) {
+    // "Scales" uniform integer from [0 and 2**32 - 1] to [min, max]
     // According to [1], it is unbiased.
-    unsigned int t = -max % max;
+    unsigned int t = -(max - min) % (max - min);
     unsigned int x;
     do {
         x = tinymt32_generate_uint32(&tinymt);
