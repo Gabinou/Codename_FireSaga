@@ -16,16 +16,19 @@ include_directories(
 	ECS
 	third_party/physfs
 	third_party/LodePNG
+	third_party/tinymt
 	${SDL2_INCLUDE_DIR}
 )
 
 file(GLOB FSM_SRC "src/*.cpp")
 file(GLOB PFS_SRC "third_party/physfs/*.c")
+file(GLOB tinyMT_SRC "third_party/tinymt/*.c")
 file(GLOB LODE_SRC "third_party/LodePNG/*.cpp")
 
 add_executable(${PROJECT_NAME} ${FSM_SRC})
 
 ADD_LIBRARY(physfs-static STATIC ${PFS_SRC})
 ADD_LIBRARY(LodePNG-static STATIC ${LODE_SRC})
+ADD_LIBRARY(tinyMT-static STATIC ${tinyMT_SRC})
 
-target_link_libraries(${PROJECT_NAME}  ${SDL2_LIBRARY} LodePNG-static physfs-static -O2 -lmingw32 -lSDL2main -lSDL2 -lSDL2_image -lSDL2_ttf )
+target_link_libraries(${PROJECT_NAME}  ${SDL2_LIBRARY} LodePNG-static physfs-static tinyMT-static -O2 -lmingw32 -lSDL2main -lSDL2 -lSDL2_image -lSDL2_ttf )

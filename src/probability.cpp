@@ -8,7 +8,6 @@
 // std_dev: standard deviation
 // avg: average
 
-#define SEED 19900508
 std::mt19937_64 mt_64(SEED);
 std::mt19937 mt(SEED); // negligible perfomance difference to _64
 std::uniform_int_distribution<unsigned char> U_99(0, 99);
@@ -58,4 +57,16 @@ unsigned char * getGRNs(const float avg, const float std_dev) {
     RN_U[1] = getURN();
     RN_G = boxmuller(RN_U, avg, std_dev);
     return(RN_G);
+}
+
+unsigned int UUINT32_openBSD(unsigned int max, tinymt32_t & tinymt) {
+    // According to [1], it is unbiased.
+    unsigned int t = -max % max;
+    unsigned int x;
+    do {
+        x = tinymt32_generate_uint32(&tinymt);
+        // Rejects the last pigeonhole.
+        // Ex: 32 with max=5 -> values of 30,31,32 are rejected. 
+    } while (x < t);
+    return(x % max);
 }
