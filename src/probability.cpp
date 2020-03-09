@@ -63,7 +63,7 @@ unsigned char * getGRNs(const float avg, const float std_dev) {
     return(RN_G);
 }
 
-unsigned int Uuint32_openBSD(tinymt32_t & tinymt, unsigned int max, unsigned int min ) {
+unsigned int Uuint32_openBSD(tinymt32_t & tinymt, unsigned int max, unsigned int min) {
     // According to [1], it is unbiased.
     unsigned int t = -max % max;
     unsigned int x;

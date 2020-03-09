@@ -27,11 +27,11 @@ void Game::setSettings(Settings in_settings) {
 bool Game::checkRate(int rate, short unsigned int mode) {
     bool hit;
     if (mode == 1) {
-        hit = (getURN() < rate); //single_roll
+        hit = (getURN(tinymt) < rate); //single_roll
         return(hit);
     }
     if (mode == 2) {
-        hit = (((getURN() + getURN())/2) < rate); //doubleroll
+        hit = (((getURN(tinymt) + getURN(tinymt))/2) < rate); //doubleroll
         return(hit);
     }
     return(hit);
@@ -40,13 +40,13 @@ bool Game::checkRate(int rate, short unsigned int mode) {
 bool * Game::checkHitCrit(int hit_rate, int crit_rate, short unsigned int mode) {
     static bool hitcrit[2];
     if (mode == GAME::RN::SINGLE) {
-        hitcrit[0] = (getURN() < hit_rate);
-        hitcrit[1] = (getURN() < crit_rate);
+        hitcrit[0] = (getURN(tinymt) < hit_rate);
+        hitcrit[1] = (getURN(tinymt) < crit_rate);
         return(hitcrit);
     }
     if (mode == GAME::RN::DOUBLE) {
-        hitcrit[0] = (((getURN() + getURN())/2) < hit_rate);
-        hitcrit[1] = (((getURN() + getURN())/2) < crit_rate);
+        hitcrit[0] = (((getURN(tinymt) + getURN(tinymt))/2) < hit_rate);
+        hitcrit[1] = (((getURN(tinymt) + getURN(tinymt))/2) < crit_rate);
         return(hitcrit);
     } 
     if (mode == GAME::RN::GAUSSIAN) {
