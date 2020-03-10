@@ -13,8 +13,10 @@
 #include "SDL2/SDL_image.h"
 #include "SDL2/SDL.h"
 
+#define ASSET_LIB "assets.binou"
 
 namespace FILESYSTEM {
+int init(char * argvZero, char * baseDir, char * assetsPath);
 void loadFileToMemory(const char * name, unsigned char ** mem,
                       size_t * len, bool addnull = false);
 }

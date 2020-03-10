@@ -1,8 +1,10 @@
 // Code créé par Gabriel Taillon
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
+#include <unistd.h>
 #include <chrono>
 #include "textcomponent.hpp"
+#include "filesystem.hpp"
 #include "game.hpp"
 #include "map.hpp"
 #include "script.hpp"
@@ -15,6 +17,22 @@ Settings temp_settings;
 int main(int argc, char * argv[]) {
     printf("TESTING THIS BITCH\n");
 
+    char * buildDir = getcwd(NULL, 0);
+    int cwd_len = strlen(buildDir);
+    char bufferr[320];
+    int i;
+    for (i = 0 ; i < (cwd_len - 6); i++) {
+        bufferr[i] = buildDir[i];
+    }
+    bufferr[i] = '\0';
+    // char * baseDir = bufferr;
+    printf("buildDir: %s\n", buildDir);
+    printf("bufferr: %s\n", bufferr);
+    printf("cwd_len: %d\n", cwd_len);
+    printf("i: %i\n", i);
+    char * assetsPath = NULL;
+
+    // FILESYSTEM::init(0, baseDir, assetsPath);
     // baseScript();
     // printf("Testing script: %s\n", all_scripts["Chapter 1"].getScene("Intro").getLine("1").line.c_str());
     // printf("Testing script: %s\n", all_scripts["Supports"].getScene("Main_Lovely_C").getLine("1").line.c_str());

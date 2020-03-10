@@ -18,6 +18,7 @@ int mkdir(char* path, int mode)
 #include <dirent.h>
 #endif
 
+
 namespace FILESYSTEM {
 int init(char *argvZero, char* baseDir, char *assetsPath) {
     char output[DEFAULT::MAXPATH];
@@ -57,21 +58,21 @@ int init(char *argvZero, char* baseDir, char *assetsPath) {
         strcpy(output, assetsPath);
     } else {
         strcpy(output, PHYSFS_getBaseDir());
-        strcat(output, "assets.binou");
+        strcat(output, ASSET_LIB);
     }
     if (!PHYSFS_mount(output, NULL, 1))
     {
-        printf("Missing assets.binou");
+        printf("Missing assets.binou\n");
         SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_ERROR, "Missing assets.binou", "Missing assets.binou", NULL);
         return 0;
     }
 
-    // strcpy(output, PHYSFS_getBaseDir());
-    // strcpy(output, "gamecontrollerdb.txt");
-    // if (SDL_GameControllerAddMappingsFromFile(output) < 0)
-    // {
-    //     printf("gamecontrollerdb.txt not found!\n");
-    // }
+    strcpy(output, PHYSFS_getBaseDir());
+    strcpy(output, "gamecontrollerdb.txt");
+    if (SDL_GameControllerAddMappingsFromFile(output) < 0)
+    {
+        printf("gamecontrollerdb.txt not found!\n");
+    }
     return 1;
 }
 
