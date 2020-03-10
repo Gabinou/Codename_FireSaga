@@ -21,18 +21,16 @@ int main(int argc, char * argv[]) {
     int cwd_len = strlen(buildDir);
     char bufferr[320];
     int i;
-    for (i = 0 ; i < (cwd_len - 6); i++) {
+    for (i = 0 ; i < (cwd_len - strlen("build") - 1); i++) {
         bufferr[i] = buildDir[i];
     }
     bufferr[i] = '\0';
-    // char * baseDir = bufferr;
-    printf("buildDir: %s\n", buildDir);
-    printf("bufferr: %s\n", bufferr);
-    printf("cwd_len: %d\n", cwd_len);
-    printf("i: %i\n", i);
-    char * assetsPath = NULL;
+    char * assetsPath = bufferr;
+    char * baseDir = bufferr;
 
-    // FILESYSTEM::init(0, baseDir, assetsPath);
+    FILESYSTEM::init(0, baseDir, assetsPath);
+    printf("Initialized filesystem.");
+
     // baseScript();
     // printf("Testing script: %s\n", all_scripts["Chapter 1"].getScene("Intro").getLine("1").line.c_str());
     // printf("Testing script: %s\n", all_scripts["Supports"].getScene("Main_Lovely_C").getLine("1").line.c_str());

@@ -58,8 +58,9 @@ int init(char *argvZero, char* baseDir, char *assetsPath) {
         strcpy(output, assetsPath);
     } else {
         strcpy(output, PHYSFS_getBaseDir());
-        strcat(output, ASSET_LIB);
+        strcat(output, "assets.binou");
     }
+    printf("Path to assets: %s\n", output);
     if (!PHYSFS_mount(output, NULL, 1))
     {
         printf("Missing assets.binou\n");
