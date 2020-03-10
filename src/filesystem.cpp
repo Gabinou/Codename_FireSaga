@@ -56,9 +56,10 @@ int init(char *argvZero, char* baseDir, char *assetsPath) {
     /* Mount the stock content last */
     if (assetsPath) {
         strcpy(output, assetsPath);
+        strcat(output, "\\assets.binou");
     } else {
         strcpy(output, PHYSFS_getBaseDir());
-        strcat(output, "assets.binou");
+        strcat(output, "\\assets.binou");
     }
     printf("Path to assets: %s\n", output);
     if (!PHYSFS_mount(output, NULL, 1))
@@ -68,12 +69,13 @@ int init(char *argvZero, char* baseDir, char *assetsPath) {
         return 0;
     }
 
-    strcpy(output, PHYSFS_getBaseDir());
-    strcpy(output, "gamecontrollerdb.txt");
-    if (SDL_GameControllerAddMappingsFromFile(output) < 0)
-    {
-        printf("gamecontrollerdb.txt not found!\n");
-    }
+    strcpy(output, baseDir);
+    strcat(output, "\\gamecontrollerdb.txt");
+    printf("Path to gamecontrollerdb: %s\n", output);
+    // if (SDL_GameControllerAddMappingsFromFile(output) < 0)
+    // {
+    //     printf("gamecontrollerdb.txt not found!\n");
+    // }
     return 1;
 }
 
