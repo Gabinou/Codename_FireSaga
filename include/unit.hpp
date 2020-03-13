@@ -139,6 +139,8 @@ class Unit {
         void dies();
 
         void write(const char * filename, const char * mode = "a");
+        void load(const char * filename);
+        void loadxml(const char * filename);
         void writexml(const char * filename, const char * mode = "a");
 };
 
