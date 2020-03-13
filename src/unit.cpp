@@ -814,7 +814,12 @@ char Unit::speed() {
 }
 
 void Unit::writexml(const char * filename, const char * mode) {
-
+    // FILE* fp = fopen(filename, mode);
+    // tinyxml2::XMLPrinter printer(fp);
+    // printer.OpenElement("Unit");
+    // printer.PushText(name.c_str());
+    // // printer.CloseElement("Unit");
+    // fclose(fp);
 }
 
 void Unit::write(const char * filename, const char * mode) {
@@ -854,6 +859,7 @@ void baseUnits() {
     temp_unit.setExp(0);
     printf("Made unit.\n");
     temp_unit.write("unit_test.txt");
+    temp_unit.writexml("unit_test.xml", "w");
     printf("Made units.\n");
     all_units[UNIT::NAME::ERWIN] = temp_unit;
     

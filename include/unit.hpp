@@ -4,6 +4,7 @@
 #include "utilities.hpp"
 #include "weapon.hpp"
 #include "linalg.hpp"
+#include "tinyxml2.h"
 
 class Unit {
     private:
