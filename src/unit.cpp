@@ -813,14 +813,18 @@ char Unit::speed() {
     return(current_speed);
 }
 
+void Unit::writexml(const char * filename, const char * mode) {
+
+}
+
 void Unit::write(const char * filename, const char * mode) {
     FILE * fp;
     fp = fopen(filename, mode);
     fprintf(fp, "%s \n", name.c_str());
     if (sex) {
-        fprintf(fp, "%s %s", "M", class_name.c_str());
+        fprintf(fp, "%s %s \n", "M", class_name.c_str());
     } else {
-        fprintf(fp, "%s %s", "F", class_name.c_str());
+        fprintf(fp, "%s %s \n", "F", class_name.c_str());
     }
     fprintf(fp, "Stats, HP, Str, Mag, Skl, Spd, Luck, Def, Res, Con, Move\n");
     fprintf(fp, "Base stats,\t%d,\t%d,\t%d,\t%d,\t%d,\t%d,\t%d,\t%d,\t%d,\t%d,\t%d\n", base_stats.hp, base_stats.str, base_stats.mag, base_stats.dex, base_stats.agi, base_stats.luck, base_stats.def, base_stats.res, base_stats.con, base_stats.move, base_stats.prof);

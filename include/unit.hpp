@@ -139,6 +139,7 @@ class Unit {
         void dies();
 
         void write(const char * filename, const char * mode = "a");
+        void writexml(const char * filename, const char * mode = "a");
 };
 
 extern std::vector<Unit> all_units;
