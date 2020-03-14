@@ -14,8 +14,13 @@
 Game * firesaga = nullptr;
 Settings temp_settings;
 
+void log2file(const char* message) {
+    
+}
+
 int main(int argc, char * argv[]) {
     printf("TESTING THIS BITCH\n");
+    SDL_Log("TESTING THIS BITCH\n");
 
     char * buildDir = getcwd(NULL, 0);
     int cwd_len = strlen(buildDir);
