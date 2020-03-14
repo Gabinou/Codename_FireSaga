@@ -20,6 +20,11 @@ int mkdir(char* path, int mode)
 
 
 namespace FILESYSTEM {
+
+void log2file(const char* message) {
+    
+}
+
 int init(char *argvZero, char* baseDir, char *assetsPath) {
     char output[DEFAULT::MAXPATH];
     int mkdirResult;

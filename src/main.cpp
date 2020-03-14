@@ -14,10 +14,6 @@
 Game * firesaga = nullptr;
 Settings temp_settings;
 
-void log2file(const char* message) {
-    
-}
-
 int main(int argc, char * argv[]) {
     printf("TESTING THIS BITCH\n");
     SDL_Log("TESTING THIS BITCH\n");
