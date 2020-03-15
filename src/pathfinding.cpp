@@ -68,7 +68,7 @@ std::vector<std::vector<int>> A_star(std::vector<std::vector<int>> map, int star
     int neighboryp[2];    
     int neighborym[2];    
     int (*neighbors[4])[2];
-    printf("%s\n", mode.c_str());
+    SDL_Log("%s\n", mode.c_str());
     while(!openlist.empty()){
         current = openlist.back();  
         closedlist.push_back(current);
@@ -101,7 +101,7 @@ std::vector<std::vector<int>> A_star(std::vector<std::vector<int>> map, int star
 
                 if (inopenlist_index > 0) {
                     if (g_neighbor < openlist[inopenlist_index][2]) {
-                        // printf("erase open\n");
+                        // SDL_Log("erase open\n");
                         openlist.erase(openlist.begin() + inopenlist_index);
                     }
                 }
@@ -135,7 +135,6 @@ std::vector<std::vector<int>> A_star(std::vector<std::vector<int>> map, int star
     closedlist.pop_back();
     while (!closedlist.empty()){
         if ((closedlist.back()[0] == path.back()[4]) && (closedlist.back()[1] == path.back()[5])) {
-            printf("d");
             path.push_back(closedlist.back());
             if (mode == "matrix") {
                 pathmap[closedlist.back()[0]][closedlist.back()[1]] = 1;

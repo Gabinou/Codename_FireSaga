@@ -15,7 +15,7 @@ Game * firesaga = nullptr;
 Settings temp_settings;
 
 int main(int argc, char * argv[]) {
-    // freopen("output.txt", "a+", stdout);
+    fclose(fopen(LOGFILE, "w"));
     SDL_LogSetOutputFunction(&FILESYSTEM::log, NULL);
     SDL_Log("Starting project codename FireSaga\n");
 
@@ -31,7 +31,7 @@ int main(int argc, char * argv[]) {
     char * baseDir = bufferr;
 
     FILESYSTEM::init(0, baseDir, assetsPath);
-    SDL_Log("Initialized filesystem.");
+    SDL_Log("Initialized filesystem");
 
     // baseScript();
     // SDL_Log("Testing script: %s\n", all_scripts["Chapter 1"].getScene("Intro").getLine("1").line.c_str());
@@ -39,7 +39,6 @@ int main(int argc, char * argv[]) {
 
     // baseNarrativeState();
     // SDL_Log("Testing narrative: Did Erwin die? %d\n", died["Erwin"]);
-
     baseWeapons();
     SDL_Log("Testing weapon: %s\n", all_weapons[WPN::NAME::WOODEN_SWORD].getName().c_str());
     
@@ -47,16 +46,15 @@ int main(int argc, char * argv[]) {
     SDL_Log("Testing units: %s \n", all_units[UNIT::NAME::SILOU].getName().c_str());
 
     firesaga = new Game();
-    SDL_Log("Made game.\n");
+    SDL_Log("Game object created\n");
 
-    SDL_Log("Initiating game.\n");
     temp_settings = firesaga->getSettings();
     temp_settings.FPS.show = true; 
     temp_settings.fontsize = 28; 
     firesaga->setSettings(temp_settings);
     firesaga->init("FireSaga", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, firesaga->getSettings().res.x, firesaga->getSettings().res.y, false);
     firesaga->makeFPSEntity();
-    SDL_Log("Initiated game.\n");
+    SDL_Log("Game initiated\n");
 
     // firesaga->loadMap("..//maps//test_tilemap.txt");
     firesaga->loadMap(0);
@@ -75,7 +73,7 @@ int main(int argc, char * argv[]) {
     int frame_time;
     char buffer[15];
 
-    SDL_Log("Starting main game loop.\n");
+    SDL_Log("Starting main game loop\n");
     while (firesaga->running()) {
         frame_start = std::chrono::high_resolution_clock::now();
         firesaga->handleEvents();

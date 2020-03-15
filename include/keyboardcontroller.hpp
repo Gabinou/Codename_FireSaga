@@ -119,7 +119,7 @@ class KeyboardController : public Component {
                 Entity * ontile = map->getTile(positioncomponent->getPos()[0], positioncomponent->getPos()[1]);
 
                 if ((game->getState() == GAME::STATE::MAP) && (frames_button == 1)) {
-                    printf("cursor Position, %d %d \n", positioncomponent->getPos()[0], positioncomponent->getPos()[1]);
+                    SDL_Log("cursor Position, %d %d \n", positioncomponent->getPos()[0], positioncomponent->getPos()[1]);
 
                     if (ontile) {
                         toset = GAME::STATE::UNITMOVE;

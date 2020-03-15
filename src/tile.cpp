@@ -74,7 +74,7 @@ std::unordered_map<short int, Tile> all_tiles;
 std::unordered_map<short int, Tile> loaded_tiles;
 
 std::unordered_map<short int, Tile> baseTiles(const std::vector<short int> toload) {
-    printf("Loading certain base tiles\n");
+    SDL_Log("Loading certain base tiles\n");
     unsigned int * temp_stats[3];// dodge, def, heal
     std::unordered_map<short int, Tile> temp_tiles;
     Movement_cost temp_cost;
@@ -392,7 +392,7 @@ std::unordered_map<short int, Tile> baseTiles(const std::vector<short int> toloa
 }
 
 void baseTiles() {
-	printf("Loading all base tiles\n");
+	SDL_Log("Loading all base tiles\n");
 	unsigned int * temp_stats[3] = {0, 0, 0};// dodge, def, heal
     // Fliers always have 1 movement because they dismount inside.
     

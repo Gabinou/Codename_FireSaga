@@ -53,14 +53,14 @@ int init(char *argvZero, char* baseDir, char *assetsPath) {
     /* Mount our base user directory */
     PHYSFS_mount(output, NULL, 1);
     PHYSFS_setWriteDir(output);
-    printf("Base directory: %s\n", output);
+    SDL_Log("Base directory: %s\n", output);
 
     /* Create save directory */
     strcpy(saveDir, output);
     strcat(saveDir, "saves");
     strcat(saveDir, PHYSFS_getDirSeparator());
     // mkdir(saveDir, 0777);
-    printf("Save directory: %s\n", saveDir);
+    SDL_Log("Save directory: %s\n", saveDir);
 
     /* Mount the stock content last */
     if (assetsPath) {
@@ -70,20 +70,20 @@ int init(char *argvZero, char* baseDir, char *assetsPath) {
         strcpy(output, PHYSFS_getBaseDir());
         strcat(output, "\\assets.binou");
     }
-    printf("Path to assets: %s\n", output);
+    SDL_Log("Path to assets: %s\n", output);
     if (!PHYSFS_mount(output, NULL, 1))
     {
-        printf("Missing assets.binou\n");
+        SDL_Log("Missing assets.binou\n");
         SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_ERROR, "Missing assets.binou", "Missing assets.binou", NULL);
         return 0;
     }
 
     strcpy(output, baseDir);
     strcat(output, "\\gamecontrollerdb.txt");
-    printf("Path to gamecontrollerdb: %s\n", output);
+    SDL_Log("Path to gamecontrollerdb: %s\n", output);
     // if (SDL_GameControllerAddMappingsFromFile(output) < 0)
     // {
-    //     printf("gamecontrollerdb.txt not found!\n");
+    //     SDL_Log("gamecontrollerdb.txt not found!\n");
     // }
     return 1;
 }
@@ -186,7 +186,7 @@ SDL_Surface* LoadImage(const char *filename, bool noBlend = true, bool noAlpha =
 SDL_Texture * loadTexture(SDL_Renderer * in_renderer, const char * filename) {
     SDL_Surface * tempsurface = IMG_Load(filename); //Not that fast.
     if (!tempsurface) {
-        printf("loadTexture. IMG_Load: %s\n", IMG_GetError());
+        SDL_Log("loadTexture. IMG_Load: %s\n", IMG_GetError());
     }
     SDL_Texture * texture = SDL_CreateTextureFromSurface(in_renderer, tempsurface);
     SDL_FreeSurface(tempsurface);
@@ -200,13 +200,13 @@ SDL_Texture * textToTexture(SDL_Renderer * in_renderer, std::string textureText,
     SDL_Texture * texture;
 
     if (textsurface == NULL) {
-        printf("Unable to render text surface! SDL_ttf Error: %s\n", TTF_GetError());
+        SDL_Log("Unable to render text surface! SDL_ttf Error: %s\n", TTF_GetError());
     } else {
         //Create texture from surface pixels
         texture = SDL_CreateTextureFromSurface(in_renderer, textsurface);
 
         if (texture == NULL) {
-            printf("Unable to create texture from rendered text! SDL Error: %s\n", SDL_GetError());
+            SDL_Log("Unable to create texture from rendered text! SDL Error: %s\n", SDL_GetError());
         }
         SDL_FreeSurface(textsurface); //Get rid of old surface
     }

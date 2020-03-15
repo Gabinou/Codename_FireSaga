@@ -30,7 +30,7 @@ char until(FILE * fp, const char * until = ",",  const char * interrupt = "@") {
 
     while ((!feof(fp)) && (single_char != * until)) {
         single_char = fgetc(fp);
-        printf("%c\n", single_char);
+        SDL_Log("%c\n", single_char);
         buffer[i] = single_char;
         i++;
     }

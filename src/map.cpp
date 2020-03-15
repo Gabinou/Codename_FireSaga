@@ -111,7 +111,7 @@ void Map::subDanger(const std::vector<std::vector<short int>> in_danger) {
 }
 
 void Map::setOverlaymode(const unsigned char in_mode) {
-    printf("Map ovelay mode; %d", in_mode);
+    SDL_Log("Map ovelay mode; %d", in_mode);
     overlay_mode = in_mode;
 }
 
