@@ -185,20 +185,15 @@ SDL_Surface* LoadImage(const char *filename, bool noBlend = true, bool noAlpha =
 
 
 SDL_Texture * loadTexture(SDL_Renderer * in_renderer, const char * filename) {
-    SDL_Log("testload\n");
     SDL_Surface * tempsurface = IMG_Load(filename); // Not that fast.
-    SDL_Log("testload2\n");
     if (!tempsurface) {
         SDL_Log("loadTexture. IMG_Load: %s\n", IMG_GetError());
     }
-    SDL_Log("testload3\n");
     SDL_Texture * texture = SDL_CreateTextureFromSurface(in_renderer, tempsurface); // THIS FUNCTION CRASHES.
     if (texture == NULL) {
        SDL_Log("CreateTextureFromSurface failed: %s\n", SDL_GetError());
     }
-    SDL_Log("testload4\n");
     SDL_FreeSurface(tempsurface);
-    SDL_Log("testload5\n");
     return (texture);
 }
 

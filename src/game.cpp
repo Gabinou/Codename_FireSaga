@@ -326,9 +326,7 @@ void Game::loadMap(const std::string filename) {
 void Game::loadMap(const int in_map_index) {
     SDL_Log("Loading Map \n");
     loaded_tiles = baseTiles(chapTiles[in_map_index]());
-    SDL_Log("test\n");
     mapp = new Map(settings.tilesize[0], settings.tilesize[1]); // mapp is a pointer // THIS FUNCTION CRASHES SOMETIMES.
-    SDL_Log("testn\n");
     mapp->setRenderer(renderer);
     mapp->loadTilemap(in_map_index);
     mapp->loadEnemyinds(in_map_index);
