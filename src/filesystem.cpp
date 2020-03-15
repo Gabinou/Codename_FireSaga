@@ -193,6 +193,9 @@ SDL_Texture * loadTexture(SDL_Renderer * in_renderer, const char * filename) {
     }
     SDL_Log("testload3\n");
     SDL_Texture * texture = SDL_CreateTextureFromSurface(in_renderer, tempsurface); // THIS FUNCTION CRASHES.
+    if (texture == NULL) {
+       SDL_Log("CreateTextureFromSurface failed: %s\n", SDL_GetError());
+    }
     SDL_Log("testload4\n");
     SDL_FreeSurface(tempsurface);
     SDL_Log("testload5\n");

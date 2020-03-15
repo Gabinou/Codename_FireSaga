@@ -28,7 +28,7 @@ class Map {
         std::vector<std::vector<short int>> tileupdate;
 
         SDL_Rect srcrect, destrect;
-        SDL_Renderer * renderer;
+        SDL_Renderer * renderer = NULL;
 
         unsigned char overlay_mode = 0;
         unsigned char danger_mode = 0;
@@ -76,7 +76,6 @@ class Map {
         void setOverlaymode(const unsigned char in_mode);
         void showOverlay();
         void hideOverlay();
-
 
         void loadGrid();
         void showGrid();

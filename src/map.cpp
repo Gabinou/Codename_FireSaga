@@ -2,12 +2,9 @@
 
 Map::Map() {
     SDL_Log("test3\n");
-    loadOverlays(); // CRASHES HERE.
-    SDL_Log("test4\n");
     initVars();
-    SDL_Log("test5\n");
     overlay_mode = MAP::OVERLAY::MOVE + MAP::OVERLAY::ATTACK;
-    SDL_Log("test6\n");
+    SDL_Log("test4\n");
 }
 
 Map::~Map() {
@@ -84,6 +81,7 @@ Entity * Map::getTile(const short unsigned int x, const short unsigned int y) {
 
 void Map::setRenderer(SDL_Renderer * in_renderer){
     renderer = in_renderer;
+    loadOverlays(); // CRASHES HERE.
 }
 
 void Map::loadTiletextures() {
