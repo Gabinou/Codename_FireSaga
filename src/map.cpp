@@ -1,12 +1,20 @@
 #include "map.hpp"
 
 Map::Map() {
-    loadOverlays();
+    SDL_Log("test3\n");
+    loadOverlays(); // CRASHES HERE.
+    SDL_Log("test4\n");
     initVars();
+    SDL_Log("test5\n");
     overlay_mode = MAP::OVERLAY::MOVE + MAP::OVERLAY::ATTACK;
+    SDL_Log("test6\n");
+}
+
+Map::~Map() {
 }
 
 Map::Map(const short unsigned int width, const short unsigned int height) : Map() {
+    SDL_Log("test2\n");
     setTilesize(width, height);
     srcrect.w = destrect.w = width;
     srcrect.h = destrect.h = height;
@@ -89,9 +97,13 @@ void Map::loadTiletextures() {
 }
 
 void Map::loadOverlays() {
+    SDL_Log("testover\n");
     overlays[0] = loadTexture(renderer, "..//assets//tile_overlay_move.png");
+    SDL_Log("testover0\n");
     overlays[1] = loadTexture(renderer, "..//assets//tile_overlay_attack.png");
+    SDL_Log("testover1\n");
     overlays[2] = loadTexture(renderer, "..//assets//tile_overlay_heal.png");
+    SDL_Log("testoverdone\n");
 }
 
 void Map::loadDanger() {

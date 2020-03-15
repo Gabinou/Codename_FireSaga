@@ -23,10 +23,11 @@ namespace FILESYSTEM {
 
 void log(void* userdata, int category, SDL_LogPriority priority, const char* message) {
     FILE * logf = fopen(LOGFILE, "a");
-    fprintf(logf, "\n");
     fprintf(logf, message);
+    fprintf(logf, "\n");
     fclose(logf);
     printf(message);
+    printf("\n");
 }
 
 int init(char *argvZero, char* baseDir, char *assetsPath) {
@@ -184,12 +185,17 @@ SDL_Surface* LoadImage(const char *filename, bool noBlend = true, bool noAlpha =
 
 
 SDL_Texture * loadTexture(SDL_Renderer * in_renderer, const char * filename) {
-    SDL_Surface * tempsurface = IMG_Load(filename); //Not that fast.
+    SDL_Log("testload\n");
+    SDL_Surface * tempsurface = IMG_Load(filename); // Not that fast.
+    SDL_Log("testload2\n");
     if (!tempsurface) {
         SDL_Log("loadTexture. IMG_Load: %s\n", IMG_GetError());
     }
-    SDL_Texture * texture = SDL_CreateTextureFromSurface(in_renderer, tempsurface);
+    SDL_Log("testload3\n");
+    SDL_Texture * texture = SDL_CreateTextureFromSurface(in_renderer, tempsurface); // THIS FUNCTION CRASHES.
+    SDL_Log("testload4\n");
     SDL_FreeSurface(tempsurface);
+    SDL_Log("testload5\n");
     return (texture);
 }
 

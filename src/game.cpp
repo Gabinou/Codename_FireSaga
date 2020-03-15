@@ -316,17 +316,19 @@ template <typename T> void Game::loadTiles(std::vector<T> in_tiles) {
 }
 
 void Game::loadMap(const std::string filename) {
-    SDL_Log("Loading map \n");
+    SDL_Log("Loading Map \n");
     // For this function, tiles have to be loaded manually somwhere else.
-    mapp =  new Map(settings.tilesize[0], settings.tilesize[1]); // mapp is a pointer
+    mapp = new Map(settings.tilesize[0], settings.tilesize[1]); // mapp is a pointer
     mapp->setRenderer(renderer);
     mapp->loadTilemap(filename);
 }
 
 void Game::loadMap(const int in_map_index) {
-    SDL_Log("Loading map \n");
+    SDL_Log("Loading Map \n");
     loaded_tiles = baseTiles(chapTiles[in_map_index]());
-    mapp =  new Map(settings.tilesize[0], settings.tilesize[1]); // mapp is a pointer
+    SDL_Log("test\n");
+    mapp = new Map(settings.tilesize[0], settings.tilesize[1]); // mapp is a pointer // THIS FUNCTION CRASHES SOMETIMES.
+    SDL_Log("testn\n");
     mapp->setRenderer(renderer);
     mapp->loadTilemap(in_map_index);
     mapp->loadEnemyinds(in_map_index);
@@ -350,7 +352,7 @@ void Game::loadCursor() {
 }
 
 void Game::loadUnits(std::vector<short unsigned int> unit_inds, std::vector<std::string> asset_names, std::vector<std::vector<int>> positions_list) {
-    SDL_Log("Loading Units. \n");
+    SDL_Log("Loading Units\n");
     for (int i = 0; i < unit_inds.size(); i++) { 
         all_units[unit_inds[i]].setEntity(manager.getEntities().size());
         manager.addEntity();

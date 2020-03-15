@@ -30,8 +30,8 @@ int main(int argc, char * argv[]) {
     char * assetsPath = bufferr;
     char * baseDir = bufferr;
 
+    SDL_Log("Initializing Filesystem\n");
     FILESYSTEM::init(0, baseDir, assetsPath);
-    SDL_Log("Initialized filesystem\n");
 
     // baseScript();
     // SDL_Log("Testing script: %s\n", all_scripts["Chapter 1"].getScene("Intro").getLine("1").line.c_str());
@@ -48,26 +48,24 @@ int main(int argc, char * argv[]) {
     firesaga = new Game();
     SDL_Log("Game object created\n");
 
+    SDL_Log("Initiating game\n");
     temp_settings = firesaga->getSettings();
     temp_settings.FPS.show = true; 
     temp_settings.fontsize = 28; 
     firesaga->setSettings(temp_settings);
     firesaga->init("FireSaga", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, firesaga->getSettings().res.x, firesaga->getSettings().res.y, false);
     firesaga->makeFPSEntity();
-    SDL_Log("Game initiated\n");
 
     // firesaga->loadMap("..//maps//test_tilemap.txt");
     firesaga->loadMap(0);
-    SDL_Log("Map loaded\n");
 
+    SDL_Log("Loading Cursor\n");
     firesaga->loadCursor();
-    SDL_Log("Cursor loaded\n");
 
     std::vector<short unsigned int> unit_inds = {UNIT::NAME::SILOU};
     std::vector<std::string> asset_names = {"..//assets//horse.png"};
     std::vector<std::vector<int>> positions_list = {{6, 6}};
     firesaga->loadUnits(unit_inds, asset_names, positions_list);
-    SDL_Log("Units loaded\n");
 
     std::chrono::system_clock::time_point frame_start, frame_end, frame_middle;
     int frame_time;
