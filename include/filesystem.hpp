@@ -14,12 +14,13 @@
 #include "SDL2/SDL.h"
 
 #define ASSET_LIB "assets.binou"
+#define LOGFILE "log.txt"
 
 namespace FILESYSTEM {
 int init(char * argvZero, char * baseDir, char * assetsPath);
 void loadFileToMemory(const char * name, unsigned char ** mem,
                       size_t * len, bool addnull = false);
-void log2file(const char* message);
+void * log(void * userdata, int category, SDL_LogPriority priority, const char * message);
 }
 
 extern SDL_Texture * loadTexture(SDL_Renderer * in_renderer, const char * filename);

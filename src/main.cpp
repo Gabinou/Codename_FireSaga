@@ -15,8 +15,9 @@ Game * firesaga = nullptr;
 Settings temp_settings;
 
 int main(int argc, char * argv[]) {
-    printf("TESTING THIS BITCH\n");
-    SDL_Log("TESTING THIS BITCH\n");
+    // freopen("output.txt", "a+", stdout);
+    // SDL_LogSetOutputFunction(&FILESYSTEM::log, NULL);
+    SDL_Log("Starting project codename FireSaga\n");
 
     char * buildDir = getcwd(NULL, 0);
     int cwd_len = strlen(buildDir);
@@ -30,51 +31,51 @@ int main(int argc, char * argv[]) {
     char * baseDir = bufferr;
 
     FILESYSTEM::init(0, baseDir, assetsPath);
-    printf("Initialized filesystem.");
+    SDL_Log("Initialized filesystem.");
 
     // baseScript();
-    // printf("Testing script: %s\n", all_scripts["Chapter 1"].getScene("Intro").getLine("1").line.c_str());
-    // printf("Testing script: %s\n", all_scripts["Supports"].getScene("Main_Lovely_C").getLine("1").line.c_str());
+    // SDL_Log("Testing script: %s\n", all_scripts["Chapter 1"].getScene("Intro").getLine("1").line.c_str());
+    // SDL_Log("Testing script: %s\n", all_scripts["Supports"].getScene("Main_Lovely_C").getLine("1").line.c_str());
 
     // baseNarrativeState();
-    // printf("Testing narrative: Did Erwin die? %d\n", died["Erwin"]);
+    // SDL_Log("Testing narrative: Did Erwin die? %d\n", died["Erwin"]);
 
     baseWeapons();
-    printf("Testing weapon: %s\n", all_weapons[WPN::NAME::WOODEN_SWORD].getName().c_str());
+    SDL_Log("Testing weapon: %s\n", all_weapons[WPN::NAME::WOODEN_SWORD].getName().c_str());
     
     baseUnits();
-    printf("Testing units: %s \n", all_units[UNIT::NAME::SILOU].getName().c_str());
+    SDL_Log("Testing units: %s \n", all_units[UNIT::NAME::SILOU].getName().c_str());
 
     firesaga = new Game();
-    printf("Made game.\n");
+    SDL_Log("Made game.\n");
 
-    printf("Initiating game.\n");
+    SDL_Log("Initiating game.\n");
     temp_settings = firesaga->getSettings();
     temp_settings.FPS.show = true; 
     temp_settings.fontsize = 28; 
     firesaga->setSettings(temp_settings);
     firesaga->init("FireSaga", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, firesaga->getSettings().res.x, firesaga->getSettings().res.y, false);
     firesaga->makeFPSEntity();
-    printf("Initiated game.\n");
+    SDL_Log("Initiated game.\n");
 
     // firesaga->loadMap("..//maps//test_tilemap.txt");
     firesaga->loadMap(0);
-    printf("Map loaded\n");
+    SDL_Log("Map loaded\n");
 
     firesaga->loadCursor();
-    printf("Cursor loaded\n");
+    SDL_Log("Cursor loaded\n");
 
     std::vector<short unsigned int> unit_inds = {UNIT::NAME::SILOU};
     std::vector<std::string> asset_names = {"..//assets//horse.png"};
     std::vector<std::vector<int>> positions_list = {{6, 6}};
     firesaga->loadUnits(unit_inds, asset_names, positions_list);
-    printf("Units loaded\n");
+    SDL_Log("Units loaded\n");
 
     std::chrono::system_clock::time_point frame_start, frame_end, frame_middle;
     int frame_time;
     char buffer[15];
 
-    printf("Starting main game loop.\n");
+    SDL_Log("Starting main game loop.\n");
     while (firesaga->running()) {
         frame_start = std::chrono::high_resolution_clock::now();
         firesaga->handleEvents();
