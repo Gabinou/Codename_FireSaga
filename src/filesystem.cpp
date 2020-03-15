@@ -21,12 +21,12 @@ int mkdir(char* path, int mode)
 
 namespace FILESYSTEM {
 
-void * log(void* userdata, int category, SDL_LogPriority priority, const char* message) {
+void log(void* userdata, int category, SDL_LogPriority priority, const char* message) {
     FILE * logf = fopen(LOGFILE, "a");
+    fprintf(logf, "\n");
     fprintf(logf, message);
     fclose(logf);
     printf(message);
-    return(0);
 }
 
 int init(char *argvZero, char* baseDir, char *assetsPath) {

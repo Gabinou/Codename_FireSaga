@@ -16,7 +16,7 @@ Settings temp_settings;
 
 int main(int argc, char * argv[]) {
     // freopen("output.txt", "a+", stdout);
-    // SDL_LogSetOutputFunction(&FILESYSTEM::log, NULL);
+    SDL_LogSetOutputFunction(&FILESYSTEM::log, NULL);
     SDL_Log("Starting project codename FireSaga\n");
 
     char * buildDir = getcwd(NULL, 0);
