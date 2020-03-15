@@ -178,10 +178,8 @@ SDL_Surface * ZIP_loadSurface(const char *filename, bool noBlend = true, bool no
 SDL_Texture * loadTexture(SDL_Renderer * in_renderer, const char * filename) {
     SDL_Surface * tempsurface;
     if (PHYSFS_openRead(filename) != NULL) {
-        SDL_Log("ZIP_loadSurface works?");
         tempsurface = ZIP_loadSurface(filename); // How fast is this?
     } else {
-        SDL_Log("NOT ZIP_loadSurface");
         tempsurface = IMG_Load(filename); // Not that fast.
     }
     if (tempsurface == NULL) {
