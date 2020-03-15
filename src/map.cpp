@@ -78,7 +78,7 @@ Entity * Map::getTile(const short unsigned int x, const short unsigned int y) {
 
 void Map::setRenderer(SDL_Renderer * in_renderer){
     renderer = in_renderer;
-    loadOverlays(); // CRASHES HERE.
+    loadOverlays();
 }
 
 void Map::loadTiletextures() {
@@ -92,7 +92,9 @@ void Map::loadTiletextures() {
 }
 
 void Map::loadOverlays() {
-    overlays[0] = loadTexture(renderer, "..//assets//tile_overlay_move.png");
+    SDL_Log("Loading Map overlays");
+    overlays[0] = loadTexture(renderer, "tile_overlay_move.png");
+    // overlays[0] = loadTexture(renderer, "..//assets//tile_overlay_move.png");
     overlays[1] = loadTexture(renderer, "..//assets//tile_overlay_attack.png");
     overlays[2] = loadTexture(renderer, "..//assets//tile_overlay_heal.png");
 }

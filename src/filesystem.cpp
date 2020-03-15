@@ -164,21 +164,21 @@ SDL_Surface * ZIP_loadSurface(const char *filename, bool noBlend = true, bool no
     {
         optimizedImage = SDL_ConvertSurfaceFormat(
             loadedImage,
-            SDL_PIXELFORMAT_ABGR8888, // FIXME: Format? -flibit
+            SDL_PIXELFORMAT_ABGR8888,
             0
         );
-        SDL_FreeSurface( loadedImage );
+        SDL_FreeSurface(loadedImage);
         free(data);
         if (noBlend)
         {
             SDL_SetSurfaceBlendMode(optimizedImage, SDL_BLENDMODE_BLEND);
         }
+        SDL_Log("Returns optimized Image\n");
         return optimizedImage;
     }
     else
     {
-        fprintf(stderr,"Image not found: %s\n", filename);
-        SDL_assert(0 && "Image not found! See stderr.");
+        SDL_Log("Image not found: %s\n", filename);
         return NULL;
     }
 }
@@ -186,13 +186,13 @@ SDL_Surface * ZIP_loadSurface(const char *filename, bool noBlend = true, bool no
 SDL_Texture * loadTexture(SDL_Renderer * in_renderer, const char * filename) {
     SDL_Surface * tempsurface;
     if (PHYSFS_openRead(filename) != NULL) {
-        SDL_Log("Trying to ZIP_loadSurface");
+        SDL_Log("ZIP_loadSurface works?");
         tempsurface = ZIP_loadSurface(filename);
     } else {
         SDL_Log("NOT ZIP_loadSurface");
         tempsurface = IMG_Load(filename); // Not that fast.
     }
-    if (!tempsurface) {
+    if (tempsurface == NULL) {
         SDL_Log("loadTexture. IMG_Load: %s\n", IMG_GetError());
     }
     SDL_Texture * texture = SDL_CreateTextureFromSurface(in_renderer, tempsurface); // THIS FUNCTION CRASHES.
