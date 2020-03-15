@@ -125,7 +125,7 @@ void freeMemory(unsigned char **mem)
 }
 }
 
-SDL_Surface* LoadImage(const char *filename, bool noBlend = true, bool noAlpha = false)
+SDL_Surface * ZIP_loadSurface(const char *filename, bool noBlend = true, bool noAlpha = false)
 {
     //Temporary storage for the image that's loaded
     SDL_Surface* loadedImage = NULL;
@@ -183,9 +183,15 @@ SDL_Surface* LoadImage(const char *filename, bool noBlend = true, bool noAlpha =
     }
 }
 
-
 SDL_Texture * loadTexture(SDL_Renderer * in_renderer, const char * filename) {
-    SDL_Surface * tempsurface = IMG_Load(filename); // Not that fast.
+    SDL_Surface * tempsurface;
+    if (PHYSFS_openRead(filename) != NULL) {
+        SDL_Log("Trying to ZIP_loadSurface");
+        tempsurface = ZIP_loadSurface(filename);
+    } else {
+        SDL_Log("NOT ZIP_loadSurface");
+        tempsurface = IMG_Load(filename); // Not that fast.
+    }
     if (!tempsurface) {
         SDL_Log("loadTexture. IMG_Load: %s\n", IMG_GetError());
     }
