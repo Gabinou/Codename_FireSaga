@@ -31,7 +31,7 @@ int main(int argc, char * argv[]) {
     char * baseDir = bufferr;
 
     FILESYSTEM::init(0, baseDir, assetsPath);
-    SDL_Log("Initialized filesystem");
+    SDL_Log("Initialized filesystem\n");
 
     // baseScript();
     // SDL_Log("Testing script: %s\n", all_scripts["Chapter 1"].getScene("Intro").getLine("1").line.c_str());

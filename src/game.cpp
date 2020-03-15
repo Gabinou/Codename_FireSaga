@@ -66,7 +66,7 @@ bool * Game::checkHitCrit(int hit_rate, int crit_rate, short unsigned int mode) 
 }
 
 void Game::attack(Unit * attacker, Unit * defender) {
-    printf("%s attacks %s\n", attacker->getName().c_str(), defender->getName().c_str());
+    SDL_Log("%s attacks %s\n", attacker->getName().c_str(), defender->getName().c_str());
     Combat_stats attacker_stats = attacker->getCombatStats();
     Combat_stats defender_stats = defender->getCombatStats();
     bool * hitcrit;
@@ -80,7 +80,7 @@ void Game::attack(Unit * attacker, Unit * defender) {
 }
 
 void Game::fight(Unit * attacker, Unit * defender) {
-    printf("%s fights %s\n", attacker->getName().c_str(), defender->getName().c_str());
+    SDL_Log("%s fights %s\n", attacker->getName().c_str(), defender->getName().c_str());
     bool defender_doubles;
     bool attacker_doubles = attacker->canDouble(defender);
     bool defender_retaliates = defender->canRetaliate(attacker);
@@ -110,7 +110,7 @@ void Game::makeFPSEntity() {
 }
 
 void Game::makeUnitmenu(Entity & setting_entity) {
-    printf("Making unit menu\n");
+    SDL_Log("Making unit menu\n");
     menus[GAME::STATE::UNITMENU] = manager.getEntities().size();
     manager.addEntity();
     manager.getEntities()[menus[GAME::STATE::UNITMENU]]->addComponent<PositionComponent>();
@@ -129,7 +129,7 @@ void Game::killMenu(short unsigned int index) {
         manager.getEntities()[menus[index]]->destroy();
         menus[index] = -1;
     } else {
-        printf("Could not destroy menu %d.", index);
+        SDL_Log("Could not destroy menu %d.", index);
     }
 }
 
@@ -141,7 +141,7 @@ void Game::moveUnit(Entity & cursor) {
 }
 
 void Game::setState(Entity & setting_entity, short unsigned int new_state) {
-    printf("Game state changes from %d to %d\n", this->state, new_state); 
+    SDL_Log("Game state changes from %d to %d\n", this->state, new_state); 
 
     switch (this->state) {
         case GAME::STATE::PAUSE:
@@ -259,8 +259,8 @@ void Game::setState(Entity & setting_entity, short unsigned int new_state) {
                     short int *new_position = setting_entity.getComponent<PositionComponent>().getPos();
                     short int *old_position = manager.getEntities()[unit_entities.top()]->getComponent<PositionComponent>().getPos();
                     
-                    printf("Old position %d, %d \n", old_position[0], old_position[1]);
-                    printf("New position %d, %d \n", new_position[0], new_position[1]);
+                    SDL_Log("Old position %d, %d \n", old_position[0], old_position[1]);
+                    SDL_Log("New position %d, %d \n", new_position[0], new_position[1]);
 
                     manager.getEntities()[unit_entities.top()]->getComponent<PositionComponent>().setPos(            
                         new_position[0],
@@ -316,7 +316,7 @@ template <typename T> void Game::loadTiles(std::vector<T> in_tiles) {
 }
 
 void Game::loadMap(const std::string filename) {
-    printf("Loading map \n");
+    SDL_Log("Loading map \n");
     // For this function, tiles have to be loaded manually somwhere else.
     mapp =  new Map(settings.tilesize[0], settings.tilesize[1]); // mapp is a pointer
     mapp->setRenderer(renderer);
@@ -324,13 +324,13 @@ void Game::loadMap(const std::string filename) {
 }
 
 void Game::loadMap(const int in_map_index) {
-    printf("Loading map \n");
+    SDL_Log("Loading map \n");
     loaded_tiles = baseTiles(chapTiles[in_map_index]());
     mapp =  new Map(settings.tilesize[0], settings.tilesize[1]); // mapp is a pointer
     mapp->setRenderer(renderer);
     mapp->loadTilemap(in_map_index);
     mapp->loadEnemyinds(in_map_index);
-    // printf("Testing tiles: %s\n", loaded_tiles[10].getName().c_str());
+    // SDL_Log("Testing tiles: %s\n", loaded_tiles[10].getName().c_str());
 }
 
 void Game::loadCursor() {
@@ -339,7 +339,7 @@ void Game::loadCursor() {
         cursor.addComponent<PositionComponent>(6, 6);
         cursor.addComponent<KeyboardController>(this, mapp);
         if (SDL_NumJoysticks() < 1) {
-            printf( "No joysticks connected.\n" );
+            SDL_Log( "No joysticks connected.\n" );
         } else {
             cursor.addComponent<GamepadController>(this, mapp);
         }
@@ -350,7 +350,7 @@ void Game::loadCursor() {
 }
 
 void Game::loadUnits(std::vector<short unsigned int> unit_inds, std::vector<std::string> asset_names, std::vector<std::vector<int>> positions_list) {
-    printf("Loading Units. \n");
+    SDL_Log("Loading Units. \n");
     for (int i = 0; i < unit_inds.size(); i++) { 
         all_units[unit_inds[i]].setEntity(manager.getEntities().size());
         manager.addEntity();
@@ -364,7 +364,7 @@ void Game::loadUnits(std::vector<short unsigned int> unit_inds, std::vector<std:
 }
 
 void Game::loadMapEnemies() {
-    printf("Loading map enemies. \n");
+    SDL_Log("Loading map enemies. \n");
     std::vector<short unsigned int> map_enemies = mapp->getEnemies(); 
     for (int i = 0; i < map_enemies.size(); i++) {
         all_units[map_enemies[i]].setEntity(manager.getEntities().size());
@@ -387,7 +387,7 @@ void Game::init(const char * title, int xpos, int ypos, int width, int height, b
     }
 
     if (TTF_Init() == -1) {
-        printf("TTF_Init: %s\n", TTF_GetError());
+        SDL_Log("TTF_Init: %s\n", TTF_GetError());
         exit(2);
     }
             
@@ -395,26 +395,26 @@ void Game::init(const char * title, int xpos, int ypos, int width, int height, b
     //The srcrect does not change size with font pointsize.
 
     if (Game::font == NULL) {
-        printf("Failed to load lazy font! SDL_ttf Error: %s\n", TTF_GetError());
+        SDL_Log("Failed to load lazy font! SDL_ttf Error: %s\n", TTF_GetError());
     }
 
     if (SDL_Init(SDL_INIT_EVERYTHING) == 0) {
-        printf("SDL subsystems initialized.\n");
+        SDL_Log("SDL subsystems initialized.\n");
         window = SDL_CreateWindow(title, xpos, ypos, width, height, flags);
 
         if (window) {
-            printf("Window created.\n");
+            SDL_Log("Window created\n");
         }
 
         if (TTF_Init() == -1) {
-            printf("SDL_ttf could not initialize! SDL_ttf Error: %s\n", TTF_GetError());
+            SDL_Log("SDL_ttf could not initialize! SDL_ttf Error: %s\n", TTF_GetError());
         }
 
         renderer = SDL_CreateRenderer(window, -1, 0);
 
         if (renderer) {
             SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
-            printf("Renderer created.\n");
+            SDL_Log("Renderer created\n");
         }
 
         isRunning = true;
@@ -485,7 +485,7 @@ void Game::clean() {
     SDL_DestroyWindow(window);
     SDL_DestroyRenderer(renderer);
     SDL_Quit();
-    printf("Game cleanded.");
+    SDL_Log("Game cleanded.");
     SDL_Delay(5000);
 }
 bool Game::running() {

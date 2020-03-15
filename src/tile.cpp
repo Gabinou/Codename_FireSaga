@@ -74,7 +74,7 @@ std::unordered_map<short int, Tile> all_tiles;
 std::unordered_map<short int, Tile> loaded_tiles;
 
 std::unordered_map<short int, Tile> baseTiles(const std::vector<short int> toload) {
-    SDL_Log("Loading certain base tiles\n");
+    SDL_Log("Loading base tiles\n");
     unsigned int * temp_stats[3];// dodge, def, heal
     std::unordered_map<short int, Tile> temp_tiles;
     Movement_cost temp_cost;
