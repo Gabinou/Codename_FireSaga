@@ -859,18 +859,14 @@ void Unit::write(const char * filename, const char * mode) {
     fprintf(fp, "Base stats:\t%d,\t%d,\t%d,\t%d,\t%d,\t%d,\t%d,\t%d,\t%d,\t%d,\t%d\n", base_stats.hp, base_stats.str, base_stats.mag, base_stats.dex, base_stats.agi, base_stats.luck, base_stats.def, base_stats.res, base_stats.con, base_stats.move, base_stats.prof);
     fprintf(fp, "Growths:\t%d,\t%d,\t%d,\t%d,\t%d,\t%d,\t%d,\t%d,\t%d,\t%d,\t%d\n", growths.hp, growths.str, growths.mag, growths.dex, growths.agi, growths.luck, growths.def, growths.res, growths.con, growths.move, growths.prof);
     fprintf(fp, "Caps:\t\t%d,\t%d,\t%d,\t%d,\t%d,\t%d,\t%d,\t%d,\t%d,\t%d,\t%d\n", caps_stats.hp, caps_stats.str, caps_stats.mag, caps_stats.dex, caps_stats.agi, caps_stats.luck, caps_stats.def, caps_stats.res, caps_stats.con, caps_stats.move, caps_stats.prof);
-    fprintf(fp, "Grown Stats:\n");
+    fprintf(fp, "Level-ups:\n");
     for (int i = 0; i < grown_stats.size(); i++) {
-        fprintf(fp, "%d:\t\t%d,\t%d,\t%d,\t%d,\t%d,\t%d,\t%d,\t%d,\t%d,\t%d,\t%d\n", exp/10 , caps_stats.hp, caps_stats.str, caps_stats.mag, caps_stats.dex, caps_stats.agi, caps_stats.luck, caps_stats.def, caps_stats.res, caps_stats.con, caps_stats.move, caps_stats.prof);
-
+        fprintf(fp, "%d:\t\t%d,\t%d,\t%d,\t%d,\t%d,\t%d,\t%d,\t%d,\t%d,\t%d,\t%d\n", exp/10, grown_stats[i].hp, grown_stats[i].str, grown_stats[i].mag, grown_stats[i].dex, grown_stats[i].agi, grown_stats[i].luck, grown_stats[i].def, grown_stats[i].res, grown_stats[i].con, grown_stats[i].move, grown_stats[i].prof);
     }
-
-
-    fprintf(fp, "Equipment:\n");
+    fprintf(fp, "\nEquipment:\n");
     for (int i = 0; i < DEFAULT::EQUIPMENT_SIZE; i++) {
         fprintf(fp, "%d, \t%d\n", equipment[i].id, equipment[i].used);
     }
-
     fclose(fp);
 }
 
