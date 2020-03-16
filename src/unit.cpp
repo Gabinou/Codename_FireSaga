@@ -546,11 +546,12 @@ int Unit::getEntity() {
     return(entity);
 }
 
-void Unit::setExp(const short unsigned int in_exp) {
+void Unit::setBaseExp(const short unsigned int in_exp) {
     exp = in_exp;
+    base_exp = in_exp;
 }
 
-void Unit::addExp(const short unsigned int in_exp) {
+void Unit::gainExp(const short unsigned int in_exp) {
     exp += in_exp;
 }
 
@@ -814,28 +815,62 @@ char Unit::speed() {
 }
 
 void Unit::writexml(const char * filename, const char * mode) {
-    // FILE* fp = fopen(filename, mode);
-    // tinyxml2::XMLPrinter printer(fp);
-    // printer.OpenElement("Unit");
-    // printer.PushText(name.c_str());
-    // // printer.CloseElement("Unit");
-    // fclose(fp);
+    // I think XML SUCKS. 
+    // No need for all this verbosity and uselessly long priting to file requirements...
+    FILE* fp = fopen(filename, mode);
+    tinyxml2::XMLPrinter printer(fp);
+    printer.OpenElement("Unit");
+    printer.OpenElement("Name");
+    printer.PushText(name.c_str());
+    printer.CloseElement("Name");
+    printer.OpenElement("Stats");
+    
+    printer.CloseElement("Stats");
+
+    printer.CloseElement("Unit");
+    fclose(fp);
 }
 
+void Unit::read(const char * filename) {
+    FILE * fp;
+    fp = fopen(filename, "r");
+
+    fclose(fp);
+}
+
+
 void Unit::write(const char * filename, const char * mode) {
+    // Why simple .txt files.
+    // -> Simple. No external library.
+    // -> NO FILE SHARING. Files unique to the game.
+    // -> File structure easy to understand.
+    // -> Easy to parse?
     FILE * fp;
     fp = fopen(filename, mode);
     fprintf(fp, "%s \n", name.c_str());
     if (sex) {
-        fprintf(fp, "%s %s \n", "M", class_name.c_str());
+        fprintf(fp, "%s \n", "M");
     } else {
-        fprintf(fp, "%s %s \n", "F", class_name.c_str());
+        fprintf(fp, "%s \n", "F");
     }
-    fprintf(fp, "Stats, HP, Str, Mag, Skl, Spd, Luck, Def, Res, Con, Move\n");
-    fprintf(fp, "Base stats,\t%d,\t%d,\t%d,\t%d,\t%d,\t%d,\t%d,\t%d,\t%d,\t%d,\t%d\n", base_stats.hp, base_stats.str, base_stats.mag, base_stats.dex, base_stats.agi, base_stats.luck, base_stats.def, base_stats.res, base_stats.con, base_stats.move, base_stats.prof);
-    fprintf(fp, "Growths,\t%d,\t%d,\t%d,\t%d,\t%d,\t%d,\t%d,\t%d,\t%d,\t%d,\t%d\n", growths.hp, growths.str, growths.mag, growths.dex, growths.agi, growths.luck, growths.def, growths.res, growths.con, growths.move, growths.prof);
-    fprintf(fp, "Caps,\t\t%d,\t%d,\t%d,\t%d,\t%d,\t%d,\t%d,\t%d,\t%d,\t%d,\t%d\n", caps_stats.hp, caps_stats.str, caps_stats.mag, caps_stats.dex, caps_stats.agi, caps_stats.luck, caps_stats.def, caps_stats.res, caps_stats.con, caps_stats.move, caps_stats.prof);
-    fprintf(fp, "\n");
+    fprintf(fp, "%s \n", class_name.c_str());
+    fprintf(fp, "Exp: \t%d \n", exp);
+    fprintf(fp, "Stats: HP, Str, Mag, Skl, Spd, Luck, Def, Res, Con, Move\n");
+    fprintf(fp, "Base stats:\t%d,\t%d,\t%d,\t%d,\t%d,\t%d,\t%d,\t%d,\t%d,\t%d,\t%d\n", base_stats.hp, base_stats.str, base_stats.mag, base_stats.dex, base_stats.agi, base_stats.luck, base_stats.def, base_stats.res, base_stats.con, base_stats.move, base_stats.prof);
+    fprintf(fp, "Growths:\t%d,\t%d,\t%d,\t%d,\t%d,\t%d,\t%d,\t%d,\t%d,\t%d,\t%d\n", growths.hp, growths.str, growths.mag, growths.dex, growths.agi, growths.luck, growths.def, growths.res, growths.con, growths.move, growths.prof);
+    fprintf(fp, "Caps:\t\t%d,\t%d,\t%d,\t%d,\t%d,\t%d,\t%d,\t%d,\t%d,\t%d,\t%d\n", caps_stats.hp, caps_stats.str, caps_stats.mag, caps_stats.dex, caps_stats.agi, caps_stats.luck, caps_stats.def, caps_stats.res, caps_stats.con, caps_stats.move, caps_stats.prof);
+    fprintf(fp, "Grown Stats:\n");
+    for (int i = 0; i < grown_stats.size(); i++) {
+        fprintf(fp, "%d:\t\t%d,\t%d,\t%d,\t%d,\t%d,\t%d,\t%d,\t%d,\t%d,\t%d,\t%d\n", exp/10 , caps_stats.hp, caps_stats.str, caps_stats.mag, caps_stats.dex, caps_stats.agi, caps_stats.luck, caps_stats.def, caps_stats.res, caps_stats.con, caps_stats.move, caps_stats.prof);
+
+    }
+
+
+    fprintf(fp, "Equipment:\n");
+    for (int i = 0; i < DEFAULT::EQUIPMENT_SIZE; i++) {
+        fprintf(fp, "%d, \t%d\n", equipment[i].id, equipment[i].used);
+    }
+
     fclose(fp);
 }
 
@@ -856,10 +891,9 @@ void baseUnits() {
     temp_unit.setCaps(temp);
     temp = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
     temp_unit.setGrowths(temp);
-    temp_unit.setExp(0);
+    temp_unit.setBaseExp(0);
     printf("Made unit.\n");
-    temp_unit.write("unit_test.txt");
-    temp_unit.writexml("unit_test.xml", "w");
+    temp_unit.write("unit_test.txt", "w");
     printf("Made units.\n");
     all_units[UNIT::NAME::ERWIN] = temp_unit;
     
@@ -869,7 +903,7 @@ void baseUnits() {
     temp_unit.setCaps(temp);
     temp = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
     temp_unit.setGrowths(temp);
-    temp_unit.setExp(100);
+    temp_unit.setBaseExp(100);
     all_units[UNIT::NAME::RELIABLE] = temp_unit;
     
     temp = {19,  6,  2,  7,  7,   7,  4,  5,  6,  7};
@@ -878,7 +912,7 @@ void baseUnits() {
     temp_unit.setCaps(temp);
     temp = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
     temp_unit.setGrowths(temp);
-    temp_unit.setExp(200);
+    temp_unit.setBaseExp(200);
     all_units[UNIT::NAME::COWARD] = temp_unit;
     
     temp = {20,  6,  2,  7,  7,   7,  4,  5,  6,  6};
@@ -887,7 +921,7 @@ void baseUnits() {
     temp_unit.setCaps(temp);
     temp = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
     temp_unit.setGrowths(temp);
-    temp_unit.setExp(2200);
+    temp_unit.setBaseExp(2200);
     all_units[UNIT::NAME::JAIGEN1H] = temp_unit;
 
     temp = {14,  6,  2,  7,  7,   7,  4,  5,  6,  5};
@@ -896,7 +930,7 @@ void baseUnits() {
     temp_unit.setCaps(temp);
     temp = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
     temp_unit.setGrowths(temp);
-    temp_unit.setExp(100);
+    temp_unit.setBaseExp(100);
     all_units[UNIT::NAME::KIARA] = temp_unit;
     
     temp = {16,  6,  2,  7,  7,   7,  4,  5,  6,  6};
@@ -905,7 +939,7 @@ void baseUnits() {
     temp_unit.setCaps(temp);
     temp = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
     temp_unit.setGrowths(temp);
-    temp_unit.setExp(2200);
+    temp_unit.setBaseExp(2200);
     all_units[UNIT::NAME::HOTTIE] = temp_unit;
     
     temp = {22,  4,  5,  7,  6,   8,  4,  6,  5, 5}; // 4 or 5?
@@ -914,7 +948,7 @@ void baseUnits() {
     temp_unit.setCaps(temp);
     temp = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
     temp_unit.setGrowths(temp);
-    temp_unit.setExp(500);
+    temp_unit.setBaseExp(500);
     all_units[UNIT::NAME::SERVIL] = temp_unit;
     
     temp = {34,  4,  5,  7,  6,   8,  4,  6,  5, 5};
@@ -923,7 +957,7 @@ void baseUnits() {
     temp_unit.setCaps(temp);
     temp = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
     temp_unit.setGrowths(temp);
-    temp_unit.setExp(1200);
+    temp_unit.setBaseExp(1200);
     all_units[UNIT::NAME::PERIGNON] = temp_unit;
     
     temp = {15,  4,  5,  7,  6,   8,  4,  6,  5, 5};
@@ -932,7 +966,7 @@ void baseUnits() {
     temp_unit.setCaps(temp);
     temp = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
     temp_unit.setGrowths(temp);
-    temp_unit.setExp(400);
+    temp_unit.setBaseExp(400);
     all_units[UNIT::NAME::POET] = temp_unit;
     
     temp = {15,  4,  5,  7,  6,   8,  4,  6,  5, 5};
@@ -941,7 +975,7 @@ void baseUnits() {
     temp_unit.setCaps(temp);
     temp = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
     temp_unit.setGrowths(temp);
-    temp_unit.setExp(400);
+    temp_unit.setBaseExp(400);
     temp_wpn.id = WPN::NAME::BALL_LIGHTNING;
     temp_unit.addEquipment(temp_wpn);
     all_units[UNIT::NAME::SILOU] = temp_unit;
@@ -958,7 +992,7 @@ void genericEnemyUnits() {
     temp_unit.setCaps(temp);
     temp = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
     temp_unit.setGrowths(temp);
-    temp_unit.setExp(0);
+    temp_unit.setBaseExp(0);
     all_units[UNIT::NAME::GENERIC_BANDIT] = temp_unit;
 
     temp = {15,  4,  5,  7,  6,   8,  4,  6,  5, 5};
@@ -967,7 +1001,7 @@ void genericEnemyUnits() {
     temp_unit.setCaps(temp);
     temp = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
     temp_unit.setGrowths(temp);
-    temp_unit.setExp(0);
+    temp_unit.setBaseExp(0);
     all_units[UNIT::NAME::GENERIC_DUELIST] = temp_unit;
 
     temp = {15,  4,  5,  7,  6,   8,  4,  6,  5, 5};
@@ -976,7 +1010,7 @@ void genericEnemyUnits() {
     temp_unit.setCaps(temp);
     temp = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
     temp_unit.setGrowths(temp);
-    temp_unit.setExp(0);
+    temp_unit.setBaseExp(0);
     all_units[UNIT::NAME::GENERIC_PICKPOCKET] = temp_unit;
 
     temp = {15,  4,  5,  7,  6,   8,  4,  6,  5, 5};
@@ -985,7 +1019,7 @@ void genericEnemyUnits() {
     temp_unit.setCaps(temp);
     temp = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
     temp_unit.setGrowths(temp);
-    temp_unit.setExp(0);
+    temp_unit.setBaseExp(0);
     all_units[UNIT::NAME::GENERIC_THIEF] = temp_unit;    
 
     temp = {15,  4,  5,  7,  6,   8,  4,  6,  5, 5};
@@ -994,7 +1028,7 @@ void genericEnemyUnits() {
     temp_unit.setCaps(temp);
     temp = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
     temp_unit.setGrowths(temp);
-    temp_unit.setExp(0);
+    temp_unit.setBaseExp(0);
     all_units[UNIT::NAME::GENERIC_ASSASSIN] = temp_unit;
 
     temp = {15,  4,  5,  7,  6,   8,  4,  6,  5, 5};
@@ -1003,7 +1037,7 @@ void genericEnemyUnits() {
     temp_unit.setCaps(temp);
     temp = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
     temp_unit.setGrowths(temp);
-    temp_unit.setExp(0);
+    temp_unit.setBaseExp(0);
     all_units[UNIT::NAME::GENERIC_ARCHER] = temp_unit;
 
     temp = {15,  4,  5,  7,  6,   8,  4,  6,  5, 5};
@@ -1012,7 +1046,7 @@ void genericEnemyUnits() {
     temp_unit.setCaps(temp);
     temp = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
     temp_unit.setGrowths(temp);
-    temp_unit.setExp(0);
+    temp_unit.setBaseExp(0);
     all_units[UNIT::NAME::GENERIC_MARKSMAN] = temp_unit;
 
     temp = {15,  4,  5,  7,  6,   8,  4,  6,  5, 5};
@@ -1021,7 +1055,7 @@ void genericEnemyUnits() {
     temp_unit.setCaps(temp);
     temp = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
     temp_unit.setGrowths(temp);
-    temp_unit.setExp(0);
+    temp_unit.setBaseExp(0);
     all_units[UNIT::NAME::GENERIC_MERCENARY] = temp_unit;
 
     temp = {15,  4,  5,  7,  6,   8,  4,  6,  5, 5};
@@ -1030,7 +1064,7 @@ void genericEnemyUnits() {
     temp_unit.setCaps(temp);
     temp = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
     temp_unit.setGrowths(temp);
-    temp_unit.setExp(0);
+    temp_unit.setBaseExp(0);
     all_units[UNIT::NAME::GENERIC_HERO] = temp_unit;
 
     temp = {15,  4,  5,  7,  6,   8,  4,  6,  5, 5};
@@ -1039,7 +1073,7 @@ void genericEnemyUnits() {
     temp_unit.setCaps(temp);
     temp = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
     temp_unit.setGrowths(temp);
-    temp_unit.setExp(0);
+    temp_unit.setBaseExp(0);
     all_units[UNIT::NAME::GENERIC_CORSAIR] = temp_unit;
 
     temp = {15,  4,  5,  7,  6,   8,  4,  6,  5, 5};
@@ -1048,7 +1082,7 @@ void genericEnemyUnits() {
     temp_unit.setCaps(temp);
     temp = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
     temp_unit.setGrowths(temp);
-    temp_unit.setExp(0);
+    temp_unit.setBaseExp(0);
     all_units[UNIT::NAME::GENERIC_VIKING] = temp_unit;
 
     temp = {15,  4,  5,  7,  6,   8,  4,  6,  5, 5};
@@ -1057,7 +1091,7 @@ void genericEnemyUnits() {
     temp_unit.setCaps(temp);
     temp = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
     temp_unit.setGrowths(temp);
-    temp_unit.setExp(0);
+    temp_unit.setBaseExp(0);
     all_units[UNIT::NAME::GENERIC_RAVAGER] = temp_unit;
 
     temp = {15,  4,  5,  7,  6,   8,  4,  6,  5, 5};
@@ -1066,7 +1100,7 @@ void genericEnemyUnits() {
     temp_unit.setCaps(temp);
     temp = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
     temp_unit.setGrowths(temp);
-    temp_unit.setExp(0);
+    temp_unit.setBaseExp(0);
     all_units[UNIT::NAME::GENERIC_CAVALIER] = temp_unit;
 
     temp = {15,  4,  5,  7,  6,   8,  4,  6,  5, 5};
@@ -1075,7 +1109,7 @@ void genericEnemyUnits() {
     temp_unit.setCaps(temp);
     temp = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
     temp_unit.setGrowths(temp);
-    temp_unit.setExp(0);
+    temp_unit.setBaseExp(0);
     all_units[UNIT::NAME::GENERIC_PALADIN] = temp_unit;
 
     temp = {15,  4,  5,  7,  6,   8,  4,  6,  5, 5};
@@ -1084,7 +1118,7 @@ void genericEnemyUnits() {
     temp_unit.setCaps(temp);
     temp = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
     temp_unit.setGrowths(temp);
-    temp_unit.setExp(0);
+    temp_unit.setBaseExp(0);
     all_units[UNIT::NAME::GENERIC_FENCER] = temp_unit;
 
     temp = {15,  4,  5,  7,  6,   8,  4,  6,  5, 5};
@@ -1093,7 +1127,7 @@ void genericEnemyUnits() {
     temp_unit.setCaps(temp);
     temp = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
     temp_unit.setGrowths(temp);
-    temp_unit.setExp(0);
+    temp_unit.setBaseExp(0);
     all_units[UNIT::NAME::GENERIC_MOUSQUETAIRE] = temp_unit;
 }
 
@@ -1110,7 +1144,7 @@ std::vector<Unit> chaptestEnemyUnits() {
     temp_unit.setCaps(temp_stats);
     temp_stats = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
     temp_unit.setGrowths(temp_stats);
-    temp_unit.setExp(0);
+    temp_unit.setBaseExp(0);
   //temp_equipment[0].id = "Iron Axe";
   //temp_equipment[1].id = "Wooden Shield";
     temp_unit.setEquipment(temp_equipment);
@@ -1135,7 +1169,7 @@ std::vector<Unit> chap1EnemyUnits() {
     temp_unit.setCaps(temp_stats);
     temp_stats = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
     temp_unit.setGrowths(temp_stats);
-    temp_unit.setExp(0);
+    temp_unit.setBaseExp(0);
   //temp_equipment[0].id = "Iron Axe";
   //temp_equipment[1].id = "Wooden Shield";
     temp_unit.setEquipment(temp_equipment);
@@ -1160,7 +1194,7 @@ std::vector<Unit> chap2EnemyUnits() {
     temp_unit.setCaps(temp_stats);
     temp_stats = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
     temp_unit.setGrowths(temp_stats);
-    temp_unit.setExp(0);
+    temp_unit.setBaseExp(0);
   //temp_equipment[0].id = "Iron Axe";
   //temp_equipment[1].id = "Wooden Shield";
     temp_unit.setEquipment(temp_equipment);
@@ -1185,7 +1219,7 @@ std::vector<Unit> chap3EnemyUnits() {
     temp_unit.setCaps(temp_stats);
     temp_stats = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
     temp_unit.setGrowths(temp_stats);
-    temp_unit.setExp(0);
+    temp_unit.setBaseExp(0);
   //temp_equipment[0].id = "Iron Axe";
   //temp_equipment[1].id = "Wooden Shield";
     temp_unit.setEquipment(temp_equipment);
@@ -1210,7 +1244,7 @@ std::vector<Unit> chap4EnemyUnits() {
     temp_unit.setCaps(temp_stats);
     temp_stats = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
     temp_unit.setGrowths(temp_stats);
-    temp_unit.setExp(0);
+    temp_unit.setBaseExp(0);
   //temp_equipment[0].id = "Iron Axe";
   //temp_equipment[1].id = "Wooden Shield";
     temp_unit.setEquipment(temp_equipment);
@@ -1235,7 +1269,7 @@ std::vector<Unit> chap5EnemyUnits() {
     temp_unit.setCaps(temp_stats);
     temp_stats = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
     temp_unit.setGrowths(temp_stats);
-    temp_unit.setExp(0);
+    temp_unit.setBaseExp(0);
   //temp_equipment[0].id = "Iron Axe";
   //temp_equipment[1].id = "Wooden Shield";
     temp_unit.setEquipment(temp_equipment);
@@ -1260,7 +1294,7 @@ std::vector<Unit> chap6EnemyUnits() {
     temp_unit.setCaps(temp_stats);
     temp_stats = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
     temp_unit.setGrowths(temp_stats);
-    temp_unit.setExp(0);
+    temp_unit.setBaseExp(0);
   //temp_equipment[0].id = "Iron Axe";
   //temp_equipment[1].id = "Wooden Shield";
     temp_unit.setEquipment(temp_equipment);
@@ -1285,7 +1319,7 @@ std::vector<Unit> chap7EnemyUnits() {
     temp_unit.setCaps(temp_stats);
     temp_stats = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
     temp_unit.setGrowths(temp_stats);
-    temp_unit.setExp(0);
+    temp_unit.setBaseExp(0);
   //temp_equipment[0].id = "Iron Axe";
   //temp_equipment[1].id = "Wooden Shield";
     temp_unit.setEquipment(temp_equipment);
@@ -1310,7 +1344,7 @@ std::vector<Unit> chap8EnemyUnits() {
     temp_unit.setCaps(temp_stats);
     temp_stats = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
     temp_unit.setGrowths(temp_stats);
-    temp_unit.setExp(0);
+    temp_unit.setBaseExp(0);
   //temp_equipment[0].id = "Iron Axe";
   //temp_equipment[1].id = "Wooden Shield";
     temp_unit.setEquipment(temp_equipment);
@@ -1335,7 +1369,7 @@ std::vector<Unit> chap9EnemyUnits() {
     temp_unit.setCaps(temp_stats);
     temp_stats = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
     temp_unit.setGrowths(temp_stats);
-    temp_unit.setExp(0);
+    temp_unit.setBaseExp(0);
   //temp_equipment[0].id = "Iron Axe";
   //temp_equipment[1].id = "Wooden Shield";
     temp_unit.setEquipment(temp_equipment);
@@ -1360,7 +1394,7 @@ std::vector<Unit> chap10EnemyUnits() {
     temp_unit.setCaps(temp_stats);
     temp_stats = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
     temp_unit.setGrowths(temp_stats);
-    temp_unit.setExp(0);
+    temp_unit.setBaseExp(0);
   //temp_equipment[0].id = "Iron Axe";
   //temp_equipment[1].id = "Wooden Shield";
     temp_unit.setEquipment(temp_equipment);
@@ -1385,7 +1419,7 @@ std::vector<Unit> chap11EnemyUnits() {
     temp_unit.setCaps(temp_stats);
     temp_stats = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
     temp_unit.setGrowths(temp_stats);
-    temp_unit.setExp(0);
+    temp_unit.setBaseExp(0);
   //temp_equipment[0].id = "Iron Axe";
   //temp_equipment[1].id = "Wooden Shield";
     temp_unit.setEquipment(temp_equipment);
@@ -1410,7 +1444,7 @@ std::vector<Unit> chap12EnemyUnits() {
     temp_unit.setCaps(temp_stats);
     temp_stats = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
     temp_unit.setGrowths(temp_stats);
-    temp_unit.setExp(0);
+    temp_unit.setBaseExp(0);
   //temp_equipment[0].id = "Iron Axe";
   //temp_equipment[1].id = "Wooden Shield";
     temp_unit.setEquipment(temp_equipment);
@@ -1435,7 +1469,7 @@ std::vector<Unit> chap13EnemyUnits() {
     temp_unit.setCaps(temp_stats);
     temp_stats = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
     temp_unit.setGrowths(temp_stats);
-    temp_unit.setExp(0);
+    temp_unit.setBaseExp(0);
   //temp_equipment[0].id = "Iron Axe";
   //temp_equipment[1].id = "Wooden Shield";
     temp_unit.setEquipment(temp_equipment);
@@ -1460,7 +1494,7 @@ std::vector<Unit> chap14EnemyUnits() {
     temp_unit.setCaps(temp_stats);
     temp_stats = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
     temp_unit.setGrowths(temp_stats);
-    temp_unit.setExp(0);
+    temp_unit.setBaseExp(0);
   //temp_equipment[0].id = "Iron Axe";
   //temp_equipment[1].id = "Wooden Shield";
     temp_unit.setEquipment(temp_equipment);
@@ -1485,7 +1519,7 @@ std::vector<Unit> chap15EnemyUnits() {
     temp_unit.setCaps(temp_stats);
     temp_stats = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
     temp_unit.setGrowths(temp_stats);
-    temp_unit.setExp(0);
+    temp_unit.setBaseExp(0);
   //temp_equipment[0].id = "Iron Axe";
   //temp_equipment[1].id = "Wooden Shield";
     temp_unit.setEquipment(temp_equipment);
@@ -1510,7 +1544,7 @@ std::vector<Unit> chap16EnemyUnits() {
     temp_unit.setCaps(temp_stats);
     temp_stats = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
     temp_unit.setGrowths(temp_stats);
-    temp_unit.setExp(0);
+    temp_unit.setBaseExp(0);
   //temp_equipment[0].id = "Iron Axe";
   //temp_equipment[1].id = "Wooden Shield";
     temp_unit.setEquipment(temp_equipment);
@@ -1535,7 +1569,7 @@ std::vector<Unit> chap17EnemyUnits() {
     temp_unit.setCaps(temp_stats);
     temp_stats = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
     temp_unit.setGrowths(temp_stats);
-    temp_unit.setExp(0);
+    temp_unit.setBaseExp(0);
   //temp_equipment[0].id = "Iron Axe";
   //temp_equipment[1].id = "Wooden Shield";
     temp_unit.setEquipment(temp_equipment);
@@ -1560,7 +1594,7 @@ std::vector<Unit> chap18EnemyUnits() {
     temp_unit.setCaps(temp_stats);
     temp_stats = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
     temp_unit.setGrowths(temp_stats);
-    temp_unit.setExp(0);
+    temp_unit.setBaseExp(0);
   //temp_equipment[0].id = "Iron Axe";
   //temp_equipment[1].id = "Wooden Shield";
     temp_unit.setEquipment(temp_equipment);
@@ -1585,7 +1619,7 @@ std::vector<Unit> chap19EnemyUnits() {
     temp_unit.setCaps(temp_stats);
     temp_stats = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
     temp_unit.setGrowths(temp_stats);
-    temp_unit.setExp(0);
+    temp_unit.setBaseExp(0);
   //temp_equipment[0].id = "Iron Axe";
   //temp_equipment[1].id = "Wooden Shield";
     temp_unit.setEquipment(temp_equipment);
@@ -1610,7 +1644,7 @@ std::vector<Unit> chap20EnemyUnits() {
     temp_unit.setCaps(temp_stats);
     temp_stats = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
     temp_unit.setGrowths(temp_stats);
-    temp_unit.setExp(0);
+    temp_unit.setBaseExp(0);
   //temp_equipment[0].id = "Iron Axe";
   //temp_equipment[1].id = "Wooden Shield";
     temp_unit.setEquipment(temp_equipment);
@@ -1635,7 +1669,7 @@ std::vector<Unit> chap21EnemyUnits() {
     temp_unit.setCaps(temp_stats);
     temp_stats = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
     temp_unit.setGrowths(temp_stats);
-    temp_unit.setExp(0);
+    temp_unit.setBaseExp(0);
   //temp_equipment[0].id = "Iron Axe";
   //temp_equipment[1].id = "Wooden Shield";
     temp_unit.setEquipment(temp_equipment);
@@ -1660,7 +1694,7 @@ std::vector<Unit> chap22EnemyUnits() {
     temp_unit.setCaps(temp_stats);
     temp_stats = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
     temp_unit.setGrowths(temp_stats);
-    temp_unit.setExp(0);
+    temp_unit.setBaseExp(0);
   //temp_equipment[0].id = "Iron Axe";
   //temp_equipment[1].id = "Wooden Shield";
     temp_unit.setEquipment(temp_equipment);
@@ -1685,7 +1719,7 @@ std::vector<Unit> chap23EnemyUnits() {
     temp_unit.setCaps(temp_stats);
     temp_stats = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
     temp_unit.setGrowths(temp_stats);
-    temp_unit.setExp(0);
+    temp_unit.setBaseExp(0);
   //temp_equipment[0].id = "Iron Axe";
   //temp_equipment[1].id = "Wooden Shield";
     temp_unit.setEquipment(temp_equipment);
@@ -1710,7 +1744,7 @@ std::vector<Unit> chap24EnemyUnits() {
     temp_unit.setCaps(temp_stats);
     temp_stats = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
     temp_unit.setGrowths(temp_stats);
-    temp_unit.setExp(0);
+    temp_unit.setBaseExp(0);
   //temp_equipment[0].id = "Iron Axe";
   //temp_equipment[1].id = "Wooden Shield";
     temp_unit.setEquipment(temp_equipment);
@@ -1735,7 +1769,7 @@ std::vector<Unit> chap25EnemyUnits() {
     temp_unit.setCaps(temp_stats);
     temp_stats = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
     temp_unit.setGrowths(temp_stats);
-    temp_unit.setExp(0);
+    temp_unit.setBaseExp(0);
   //temp_equipment[0].id = "Iron Axe";
   //temp_equipment[1].id = "Wooden Shield";
     temp_unit.setEquipment(temp_equipment); 

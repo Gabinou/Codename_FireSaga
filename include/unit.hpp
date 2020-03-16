@@ -26,6 +26,7 @@ class Unit {
         unsigned long long int skills;
         short unsigned int equippable;
         unsigned short int exp;
+        unsigned short int base_exp;
         unsigned short int entity;
         unsigned short int affiliation;
         unsigned char class_index;
@@ -92,8 +93,8 @@ class Unit {
 
         unsigned short int getExp() const;
         unsigned short int getLvl() const;
-        void setExp(const unsigned short int in_exp);
-        void addExp(const unsigned short int in_exp);
+        void setBaseExp(const unsigned short int in_exp);
+        void gainExp(const unsigned short int in_exp);
 
         unsigned char getHp() const;
         void setHp(const unsigned char in_hp);
@@ -140,7 +141,7 @@ class Unit {
         void dies();
 
         void write(const char * filename, const char * mode = "a");
-        void load(const char * filename);
+        void read(const char * filename);
         void loadxml(const char * filename);
         void writexml(const char * filename, const char * mode = "a");
 };
