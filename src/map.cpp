@@ -94,9 +94,8 @@ void Map::loadTiletextures() {
 void Map::loadOverlays() {
     SDL_Log("Loading Map overlays");
     overlays[0] = loadTexture(renderer, "tile_overlay_move.png");
-    // overlays[0] = loadTexture(renderer, "..//assets//tile_overlay_move.png");
-    overlays[1] = loadTexture(renderer, "..//assets//tile_overlay_attack.png");
-    overlays[2] = loadTexture(renderer, "..//assets//tile_overlay_heal.png");
+    overlays[1] = loadTexture(renderer, "tile_overlay_attack.png");
+    overlays[2] = loadTexture(renderer, "tile_overlay_heal.png");
 }
 
 void Map::loadDanger() {
