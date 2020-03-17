@@ -820,7 +820,58 @@ void Unit::read(const char * filename) {
 
     fclose(fp);
 }
+void Unit::writeFS(const char * filename, const bool append) {
+    if (append) {
+        PHYSFS_file * fp = PHYSFS_openWrite(filename);
+    } else {
+        PHYSFS_file * fp = PHYSFS_openAppend(filename);
+    }
+    size_t buflen;
+    char varbuf[BUFFER_SIZE];
+    int retlen;
 
+    sprintf(varbuf, "%s \n", name.c_str());
+    buflen = strlen(varbuf);
+    retlen = PHYSFS_writeBytes(fp, varbuf, buflen);
+    if (sex) {
+        sprintf(varbuf, "%s \n", "M");
+    } else {
+        sprintf(varbuf, "%s \n", "F");
+    }
+    buflen = strlen(varbuf);
+    retlen = PHYSFS_writeBytes(fp, varbuf, buflen);
+    sprintf(varbuf, "%s \n", class_name.c_str());
+    buflen = strlen(varbuf);
+    retlen = PHYSFS_writeBytes(fp, varbuf, buflen);
+    sprintf(varbuf, "Exp: \t%d \n", exp);
+    buflen = strlen(varbuf);
+    retlen = PHYSFS_writeBytes(fp, varbuf, buflen);
+    sprintf(varbuf, "Stats: HP, Str, Mag, Skl, Spd, Luck, Def, Res, Con, Move\n");
+    buflen = strlen(varbuf);
+    retlen = PHYSFS_writeBytes(fp, varbuf, buflen);
+    sprintf(varbuf, "Base stats:\t%d,\t%d,\t%d,\t%d,\t%d,\t%d,\t%d,\t%d,\t%d,\t%d,\t%d\n", base_stats.hp, base_stats.str, base_stats.mag, base_stats.dex, base_stats.agi, base_stats.luck, base_stats.def, base_stats.res, base_stats.con, base_stats.move, base_stats.prof);
+    buflen = strlen(varbuf);
+    retlen = PHYSFS_writeBytes(fp, varbuf, buflen);
+    sprintf(varbuf, "Growths:\t%d,\t%d,\t%d,\t%d,\t%d,\t%d,\t%d,\t%d,\t%d,\t%d,\t%d\n", growths.hp, growths.str, growths.mag, growths.dex, growths.agi, growths.luck, growths.def, growths.res, growths.con, growths.move, growths.prof);
+    buflen = strlen(varbuf);
+    retlen = PHYSFS_writeBytes(fp, varbuf, buflen);
+    sprintf(varbuf, "Caps:\t\t%d,\t%d,\t%d,\t%d,\t%d,\t%d,\t%d,\t%d,\t%d,\t%d,\t%d\n", caps_stats.hp, caps_stats.str, caps_stats.mag, caps_stats.dex, caps_stats.agi, caps_stats.luck, caps_stats.def, caps_stats.res, caps_stats.con, caps_stats.move, caps_stats.prof);
+    buflen = strlen(varbuf);
+    retlen = PHYSFS_writeBytes(fp, varbuf, buflen);
+    sprintf(varbuf, "Level-ups:\n");
+    for (int i = 0; i < grown_stats.size(); i++) {
+        sprintf(varbuf, "%d:\t\t%d,\t%d,\t%d,\t%d,\t%d,\t%d,\t%d,\t%d,\t%d,\t%d,\t%d\n", exp/10, grown_stats[i].hp, grown_stats[i].str, grown_stats[i].mag, grown_stats[i].dex, grown_stats[i].agi, grown_stats[i].luck, grown_stats[i].def, grown_stats[i].res, grown_stats[i].con, grown_stats[i].move, grown_stats[i].prof);
+    }
+    buflen = strlen(varbuf);
+    retlen = PHYSFS_writeBytes(fp, varbuf, buflen);
+    sprintf(varbuf, "\nEquipment:\n");
+    for (int i = 0; i < DEFAULT::EQUIPMENT_SIZE; i++) {
+        sprintf(varbuf, "%d, \t%d\n", equipment[i].id, equipment[i].used);
+    }
+    buflen = strlen(varbuf);
+    retlen = PHYSFS_writeBytes(fp, varbuf, buflen);
+    PHYSFS_close(fp);
+}
 
 void Unit::write(const char * filename, const char * mode) {
     // Why simple .txt files.
@@ -828,8 +879,7 @@ void Unit::write(const char * filename, const char * mode) {
     // -> NO FILE SHARING. Files unique to the game.
     // -> File structure easy to understand.
     // -> Easy to parse?
-    FILE * fp;
-    fp = fopen(filename, mode);
+    FILE * fp = fopen(filename, mode);
     fprintf(fp, "%s \n", name.c_str());
     if (sex) {
         fprintf(fp, "%s \n", "M");

@@ -2,6 +2,7 @@
 #define UNIT_HPP
 
 #include "utilities.hpp"
+#include "enums.hpp"
 #include "weapon.hpp"
 #include "linalg.hpp"
 
@@ -140,6 +141,7 @@ class Unit {
         void dies();
 
         void write(const char * filename, const char * mode = "a");
+        void writeFS(const char * filename, const bool append = false);
         void read(const char * filename);
 };
 

@@ -12,6 +12,7 @@ enum DEFAULTS {
     TILE_DIVISOR = 10,
     MAXPATH = 90,
     CHAP_NUMBER = 40,
+    BUFFER_SIZE = 128,
 };
 }
 namespace WPN {
