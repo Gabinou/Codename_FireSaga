@@ -814,23 +814,6 @@ char Unit::speed() {
     return(current_speed);
 }
 
-void Unit::writexml(const char * filename, const char * mode) {
-    // I think XML SUCKS. 
-    // No need for all this verbosity and uselessly long priting to file requirements...
-    FILE* fp = fopen(filename, mode);
-    tinyxml2::XMLPrinter printer(fp);
-    printer.OpenElement("Unit");
-    printer.OpenElement("Name");
-    printer.PushText(name.c_str());
-    printer.CloseElement("Name");
-    printer.OpenElement("Stats");
-    
-    printer.CloseElement("Stats");
-
-    printer.CloseElement("Unit");
-    fclose(fp);
-}
-
 void Unit::read(const char * filename) {
     FILE * fp;
     fp = fopen(filename, "r");

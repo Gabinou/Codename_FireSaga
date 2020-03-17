@@ -4,7 +4,6 @@
 #include "utilities.hpp"
 #include "weapon.hpp"
 #include "linalg.hpp"
-#include "tinyxml2.h"
 
 class Unit {
     private:
@@ -142,8 +141,6 @@ class Unit {
 
         void write(const char * filename, const char * mode = "a");
         void read(const char * filename);
-        void loadxml(const char * filename);
-        void writexml(const char * filename, const char * mode = "a");
 };
 
 extern std::vector<Unit> all_units;
