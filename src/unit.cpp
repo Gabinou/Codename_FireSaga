@@ -821,6 +821,9 @@ void Unit::read(const char * filename) {
     fclose(fp);
 }
 void Unit::writeFS(const char * filename, const bool append) {
+    // Maybe this function should write constant number of bytes per line...
+    // Easier to read.
+
     if (append) {
         PHYSFS_file * fp = PHYSFS_openWrite(filename);
     } else {
