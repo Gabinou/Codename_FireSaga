@@ -173,8 +173,9 @@ SDL_Surface * ZIP_loadSurface(const char *filename, bool noBlend = true, bool no
 
 SDL_Texture * loadTexture(SDL_Renderer * in_renderer, const char * filename, const bool FS) {
     SDL_Surface * tempsurface;
+    SDL_Log("In loadTexture %d\n", FS);
     if (FS) {
-        // printf("ZipLoading %s\n", filename);
+        SDL_Log("ZipLoading %s\n", filename);
         tempsurface = ZIP_loadSurface(filename); // How fast is this?
     } else {
         tempsurface = IMG_Load(filename); // Not that fast.
