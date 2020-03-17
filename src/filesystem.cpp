@@ -1,5 +1,6 @@
 
 #include "filesystem.hpp"
+#include "game.hpp"
 
 #if defined(_WIN32)
 #include <windows.h>
@@ -38,13 +39,11 @@ int init(char *argvZero, char* baseDir, char *assetsPath) {
     PHYSFS_permitSymbolicLinks(1);
 
     /* Determine the OS user directory */
-    if (baseDir && strlen(baseDir) > 0)
-    {
+    if (baseDir && strlen(baseDir) > 0) {
         strcpy(output, baseDir);
 
         /* We later append to this path and assume it ends in a slash */
-        if (strcmp(std::string(1, output[strlen(output) - 1]).c_str(), pathSep) != 0)
-        {
+        if (strcmp(std::string(1, output[strlen(output) - 1]).c_str(), pathSep) != 0) {
             strcat(output, pathSep);
         }
     }
@@ -61,7 +60,6 @@ int init(char *argvZero, char* baseDir, char *assetsPath) {
     // mkdir(saveDir, 0777);
     SDL_Log("Save directory: %s\n", saveDir);
 
-    /* Mount the stock content last */
     if (assetsPath) {
         strcpy(output, assetsPath);
         strcat(output, "\\assets.binou");
@@ -173,9 +171,10 @@ SDL_Surface * ZIP_loadSurface(const char *filename, bool noBlend = true, bool no
     }
 }
 
-SDL_Texture * loadTexture(SDL_Renderer * in_renderer, const char * filename) {
+SDL_Texture * loadTexture(SDL_Renderer * in_renderer, const char * filename, const bool FS) {
     SDL_Surface * tempsurface;
-    if (PHYSFS_openRead(filename) != NULL) {
+    if (FS) {
+        // printf("ZipLoading %s\n", filename);
         tempsurface = ZIP_loadSurface(filename); // How fast is this?
     } else {
         tempsurface = IMG_Load(filename); // Not that fast.

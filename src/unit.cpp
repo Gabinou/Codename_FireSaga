@@ -823,13 +823,14 @@ void Unit::read(const char * filename) {
 void Unit::writeFS(const char * filename, const bool append) {
     // Maybe this function should write constant number of bytes per line...
     // Easier to read.
+    PHYSFS_file * fp;
     if (append) {
-        PHYSFS_file * fp = PHYSFS_openWrite(filename);
+        fp = PHYSFS_openWrite(filename);
     } else {
-        PHYSFS_file * fp = PHYSFS_openAppend(filename);
+        fp = PHYSFS_openAppend(filename);
     }
     size_t buflen;
-    char varbuf[BUFFER_SIZE];
+    char varbuf[DEFAULT::BUFFER_SIZE];
     int retlen;
 
     sprintf(varbuf, "%s \n", name.c_str());

@@ -5,6 +5,8 @@
 #include "enums.hpp"
 #include "weapon.hpp"
 #include "linalg.hpp"
+#include "physfs.h"
+#include "string.h"
 
 class Unit {
     private:
