@@ -69,8 +69,8 @@ struct Inventory_item {
 
 struct Equipped {
     // Index of weapon in inventory of character.
-    unsigned char right;
-    unsigned char left;
+    char right;
+    char left;
 };
 
 struct Map_enemy {

@@ -114,8 +114,7 @@ void deinit() {
     PHYSFS_deinit();
 }
 
-void freeMemory(unsigned char **mem)
-{
+void freeMemory(unsigned char **mem) {
     free(*mem);
     *mem = NULL;
 }
@@ -181,7 +180,7 @@ SDL_Texture * loadTexture(SDL_Renderer * in_renderer, const char * filename, con
         tempsurface = IMG_Load(filename); // Not that fast.
     }
     if (tempsurface == NULL) {
-        SDL_Log("loadTexture. IMG_Load: %s\n", IMG_GetError());
+        SDL_Log("loadTexture. IMG_Load error: %s\n", IMG_GetError());
     }
     SDL_Texture * texture = SDL_CreateTextureFromSurface(in_renderer, tempsurface); // THIS FUNCTION CRASHES.
     if (texture == NULL) {

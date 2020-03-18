@@ -513,8 +513,9 @@ unsigned short int Unit::getExp() const {
 unsigned char * Unit::getRange() const {
     // DESIGN QUESTION: what about equipping only an offhand? Should offhand have ranges? 
     // Can you attack with only offhand weapons? how to treat their hit rate?
-
+    SDL_Log("Computing unit range\n");
     static unsigned char range[2] = {0, 0};
+    SDL_Log("Rangetest %d %d\n", equipped.right, equipped.left);
 
     if (equipped.left > 0) {
         unsigned char * temp = all_weapons[equipment[equipped.left].id].getStats().range;

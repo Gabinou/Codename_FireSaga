@@ -100,6 +100,7 @@ void Map::loadOverlays() {
 }
 
 void Map::loadDanger() {
+    SDL_Log("Loading Map dangerzone");
     dangers[0] = loadTexture(renderer, "..//assets//danger.png", false);
     // dangers[1] = loadTexture("..//assets//danger_grid.png");
 }
@@ -116,7 +117,9 @@ void Map::subDanger(const std::vector<std::vector<short int>> in_danger) {
 }
 
 void Map::setOverlaymode(const unsigned char in_mode) {
-    SDL_Log("Map ovelay mode; %d", in_mode);
+    char message[DEFAULT::BUFFER_SIZE];
+    sprintf(message, "Set Map ovelay mode: %d", in_mode);
+    SDL_Log(message);
     overlay_mode = in_mode;
 }
 
