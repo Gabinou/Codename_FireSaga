@@ -515,7 +515,6 @@ unsigned char * Unit::getRange() const {
     // Can you attack with only offhand weapons? how to treat their hit rate?
     SDL_Log("Computing unit range\n");
     static unsigned char range[2] = {0, 0};
-    SDL_Log("Rangetest %d %d\n", equipped.right, equipped.left);
 
     if (equipped.left > 0) {
         unsigned char * temp = all_weapons[equipment[equipped.left].id].getStats().range;
@@ -523,7 +522,7 @@ unsigned char * Unit::getRange() const {
     }
 
     if (equipped.right > 0) {
-        unsigned char * temp = all_weapons[equipment[equipped.left].id].getStats().range;
+        unsigned char * temp = all_weapons[equipment[equipped.right].id].getStats().range;
         range[0] = std::min(temp[0], range[0]);
         range[1] = std::max(temp[1], range[1]);
     }

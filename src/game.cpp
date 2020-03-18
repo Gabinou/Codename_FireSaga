@@ -175,28 +175,21 @@ void Game::setState(Entity & setting_entity, short unsigned int new_state) {
                             unit_entities.push(i);
                         }
                     }
-                    SDL_Log("Test1\n");
 
                     short unsigned int current_unit_id = manager.getEntities()[unit_entities.top()]->getComponent<UnitContainer>().getID();
                     unit_move = all_units[current_unit_id].getStats().move;
-                    SDL_Log("Test2\n");
 
                     start[0] = manager.getEntities()[unit_entities.top()]->getComponent<PositionComponent>().getPos()[0]; // Start is (+1,+1)?
                     start[1] = manager.getEntities()[unit_entities.top()]->getComponent<PositionComponent>().getPos()[1]; // Start is (+1,+1)?
                     start[0] = start[0] - 1;
                     start[1] = start[1] - 1;
-                    SDL_Log("Test3\n");
 
                     unitmvttype = all_units[current_unit_id].getMvttype();
-                    SDL_Log("Test31\n");
                     range = all_units[current_unit_id].getRange();
-                    SDL_Log("Test32\n");
                     costmap = mapp->makeMvtCostmap(unitmvttype);
-                    SDL_Log("Test4\n");
 
                     movemapp = movemap(costmap, start, unit_move, "matrix");
                     mapp->setOverlay(MAP::OVERLAY::MOVE, movemapp);
-                    SDL_Log("Test5\n");
 
                     attackmapp = attackmap(movemapp, start, unit_move, range, "matrix");
                     mapp->setOverlay(MAP::OVERLAY::ATTACK, attackmapp);
