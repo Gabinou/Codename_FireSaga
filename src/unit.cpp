@@ -881,7 +881,7 @@ void Unit::write(const char * filename, const char * mode) {
     // -> Simple. No external library.
     // -> NO FILE SHARING. Files unique to the game.
     // -> File structure easy to understand.
-    // -> Easy to parse?
+    // -> NOT easy to parse...
     FILE * fp = fopen(filename, mode);
     fprintf(fp, "%s \n", name.c_str());
     if (sex) {
