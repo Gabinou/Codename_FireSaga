@@ -78,10 +78,9 @@ int init(char *argvZero, char* baseDir, char *assetsPath) {
     strcpy(output, baseDir);
     strcat(output, "\\gamecontrollerdb.txt");
     SDL_Log("Path to gamecontrollerdb: %s\n", output);
-    // if (SDL_GameControllerAddMappingsFromFile(output) < 0)
-    // {
-    //     SDL_Log("gamecontrollerdb.txt not found!\n");
-    // }
+    if (SDL_GameControllerAddMappingsFromFile(output) < 0) {
+        SDL_Log("gamecontrollerdb.txt not found!\n");
+    }
     return 1;
 }
 
