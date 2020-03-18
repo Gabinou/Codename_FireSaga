@@ -143,8 +143,10 @@ class Unit {
         void dies();
 
         void write(const char * filename, const char * mode = "a");
+        void writexml(const char * filename, const char * mode = "a");
         void writeFS(const char * filename, const bool append = false);
         void read(const char * filename);
+        void readxml(const char * filename);
 };
 
 extern std::vector<Unit> all_units;
