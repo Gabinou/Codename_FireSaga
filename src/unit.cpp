@@ -982,27 +982,38 @@ void Unit::writeXML(const char * filename, const bool append) {
     }
     tinyxml2::XMLDocument xmlDoc;
     xmlDoc.InsertFirstChild(xmlDoc.NewDeclaration());
+    
     tinyxml2::XMLElement * pUnit = xmlDoc.NewElement("Unit");
     xmlDoc.InsertEndChild(pUnit);
+    
     tinyxml2::XMLElement * pName = xmlDoc.NewElement("Name");
     pUnit->InsertEndChild(pName);
     pName->SetText(name.c_str());
+    
     tinyxml2::XMLElement * pSex = xmlDoc.NewElement("Sex");
     pUnit->InsertEndChild(pSex);
     pSex->SetText(sex_name.c_str());
-
+    
     tinyxml2::XMLElement * pClass = xmlDoc.NewElement("Class");
     pUnit->InsertEndChild(pClass);
     pClass->SetText(class_name.c_str());
+    
+    tinyxml2::XMLElement * pClassid = xmlDoc.NewElement("Classid");
+    pUnit->InsertEndChild(pClassid);
+    pClassid->SetText(class_index);
+    
     tinyxml2::XMLElement * pStats = xmlDoc.NewElement("Stats");
     pUnit->InsertEndChild(pStats);
     xmlstats(&xmlDoc, pStats, &current_stats);
+    
     tinyxml2::XMLElement * pGrowths = xmlDoc.NewElement("Growths");
     pUnit->InsertEndChild(pGrowths);
     xmlstats(&xmlDoc, pGrowths, &growths);
+    
     tinyxml2::XMLElement * pCaps = xmlDoc.NewElement("Caps");
     pUnit->InsertEndChild(pCaps);
     xmlstats(&xmlDoc, pCaps, &caps_stats);
+    
     tinyxml2::XMLElement * pBases = xmlDoc.NewElement("Bases");
     pUnit->InsertEndChild(pBases);
     xmlstats(&xmlDoc, pBases, &base_stats);
@@ -1037,24 +1048,26 @@ void Unit::writeXML(const char * filename, const bool append) {
     tinyxml2::XMLElement * pUsed;
     tinyxml2::XMLElement * pId;
     for (int i = 0; i < DEFAULT::EQUIPMENT_SIZE; i++) {
-            pItem = xmlDoc.NewElement("Item");
-            pEquipment->InsertEndChild(pItem);
-            pId = xmlDoc.NewElement("id");
-            pUsed = xmlDoc.NewElement("Used");
-            sprintf(buffer, "%d", equipment[i].id);
-            pId->SetText(buffer);
-            sprintf(buffer, "%d", equipment[i].used);
-            pUsed->SetText(buffer);
-            pItem->InsertEndChild(pId);
-            pItem->InsertEndChild(pUsed);
-
+        pItem = xmlDoc.NewElement("Item");
+        pEquipment->InsertEndChild(pItem);
+        pId = xmlDoc.NewElement("id");
+        pUsed = xmlDoc.NewElement("Used");
+        sprintf(buffer, "%d", equipment[i].id);
+        pId->SetText(buffer);
+        sprintf(buffer, "%d", equipment[i].used);
+        pUsed->SetText(buffer);
+        pItem->InsertEndChild(pId);
+        pItem->InsertEndChild(pUsed);
     }
+    
+    tinyxml2::XMLPrinter printer;
+    xmlDoc.Print(&printer);
+    char longbuffer[printer.CStrSize()];
+    sprintf(longbuffer, printer.CStr());
+    
+    PHYSFS_writeBytes(fp, longbuffer, printer.CStrSize());
 
-    // tinyxml2::XMLPrinter printer;
-    // xmlDoc.Print(&printer);
-    // xmlDoc.Print();
-    // SDL_Log(printer.CStr());
-    if (xmlDoc.SaveFile("unit_test_nophysfs.xml") != 0){
+    if (xmlDoc.SaveFile("unit_test_nophysfs.xml") != 0) {
         SDL_Log("TinyXML Save failed\n");
     }
     PHYSFS_close(fp);
