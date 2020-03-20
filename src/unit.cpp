@@ -976,9 +976,9 @@ void Unit::writeXML(const char * filename, const bool append) {
     PHYSFS_file * fp;
     char buffer[DEFAULT::BUFFER_SIZE];
     if (append) {
-        fp = PHYSFS_openWrite(filename);
-    } else {
         fp = PHYSFS_openAppend(filename);
+    } else {
+        fp = PHYSFS_openWrite(filename);
     }
     tinyxml2::XMLDocument xmlDoc;
     xmlDoc.InsertFirstChild(xmlDoc.NewDeclaration());
@@ -1061,15 +1061,13 @@ void Unit::writeXML(const char * filename, const bool append) {
     }
     
     tinyxml2::XMLPrinter printer;
+    xmlDoc.Print();
     xmlDoc.Print(&printer);
     char longbuffer[printer.CStrSize()];
     sprintf(longbuffer, printer.CStr());
     
     PHYSFS_writeBytes(fp, longbuffer, printer.CStrSize());
 
-    if (xmlDoc.SaveFile("unit_test_nophysfs.xml") != 0) {
-        SDL_Log("TinyXML Save failed\n");
-    }
     PHYSFS_close(fp);
 }
 void Unit::writeFS(const char * filename, const bool append) {
