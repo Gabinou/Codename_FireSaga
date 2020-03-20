@@ -833,11 +833,16 @@ void Unit::writeXML(const char * filename, const bool append) {
     tinyxml2::XMLDocument xmlDoc;
     xmlDoc.InsertFirstChild(xmlDoc.NewDeclaration());
     tinyxml2::XMLElement * pUnit = xmlDoc.NewElement("Unit");
-    tinyxml2::XMLElement * pName = xmlDoc.NewElement("Name");
     xmlDoc.InsertEndChild(pUnit);
+    tinyxml2::XMLElement * pName = xmlDoc.NewElement("Name");
     pUnit->InsertEndChild(pName);
     pName->SetText(name.c_str());
-    pUnit->InsertEndChild(pName);
+    tinyxml2::XMLElement * pStats = xmlDoc.NewElement("Stats");
+    tinyxml2::XMLElement * pGrowths = xmlDoc.NewElement("Growths");
+    tinyxml2::XMLElement * pCaps = xmlDoc.NewElement("Caps");
+    tinyxml2::XMLElement * pGrown = xmlDoc.NewElement("Level-ups");
+    tinyxml2::XMLElement * pSkills = xmlDoc.NewElement("Skills");
+    tinyxml2::XMLElement * pEquipment = xmlDoc.NewElement("Equipment");
 
     // tinyxml2::XMLPrinter printer;
     // xmlDoc.Print(&printer);
