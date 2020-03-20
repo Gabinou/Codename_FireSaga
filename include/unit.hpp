@@ -45,6 +45,8 @@ class Unit {
         std::string name = "";
         std::string class_name = "";
         std::string army_name = "";
+        std::string sex_name = "";
+        std::vector<std::string> skill_names;
 
         Equipped equipped; // these are indices. -1 means no equipment.
         Inventory_item equipment[DEFAULT::EQUIPMENT_SIZE], weapons[DEFAULT::WEAPONS_SIZE], items[DEFAULT::ITEMS_SIZE];
@@ -70,7 +72,9 @@ class Unit {
 
         unsigned char getMvttype();
         void autoMvttype();
-        void autoClassname();
+        void autoClass_name();
+        void autoSex_name();
+        void autoSkill_names();
 
         short unsigned int getEquippable();
         void setEquippable();
@@ -145,6 +149,7 @@ class Unit {
 
         void write(const char * filename, const char * mode = "a");
         void writeXML(const char * filename, const bool append = false);
+        void xmlstats(tinyxml2::XMLDocument * in_doc, tinyxml2::XMLElement * in_pStats, Unit_stats * in_stats);
         void writeFS(const char * filename, const bool append = false);
         void read(const char * filename);
         void readxml(const char * filename);

@@ -20,7 +20,9 @@ Unit::Unit(const std::string in_name, const unsigned char in_class_index, const 
 Unit::Unit(const std::string in_name, const unsigned char in_class_index, const Unit_stats in_bases) : Unit(in_name, in_bases) {
     class_index = in_class_index;
     autoMvttype();
-    autoClassname();
+    autoClass_name();
+    autoSex_name();
+    autoSkill_names();
     setEquippable();
 }
 
@@ -200,7 +202,67 @@ void Unit::setEquippable() {
     }
 }
 
-void Unit::autoClassname() {
+void Unit::autoSkill_names() {
+    if ((skills & UNIT::SKILL::CANTO) > 0) {
+        skill_names.push_back("Canto");
+    }
+    if ((skills & UNIT::SKILL::SKILLED_RIDER) > 0) {
+        skill_names.push_back("Canto");
+    }    
+    if ((skills & UNIT::SKILL::SPRINT) > 0) {
+        skill_names.push_back("Sprint");
+    } 
+    if ((skills & UNIT::SKILL::SWITCH) > 0) {
+        skill_names.push_back("Switch");
+    }   
+    if ((skills & UNIT::SKILL::MOUNTAINWALK) > 0) {
+        skill_names.push_back("Mountainwalk");
+    }    
+    if ((skills & UNIT::SKILL::WATERWALK) > 0) {
+        skill_names.push_back("Waterwalk");
+    }
+    if ((skills & UNIT::SKILL::CRIT_KILLS) > 0) {
+        skill_names.push_back("CritKill");
+    }
+    if ((skills & UNIT::SKILL::DISMEMBER) > 0) {
+        skill_names.push_back("Dismember");
+    }
+    if ((skills & UNIT::SKILL::ATK_RANGE_P1) > 0) {
+        skill_names.push_back("Range+1");
+    }
+    if ((skills & UNIT::SKILL::DIVINE_SHIELD) > 0) {
+        skill_names.push_back("Divine Shield");
+    }
+    if ((skills & UNIT::SKILL::NO_CRIT) > 0) {
+        skill_names.push_back("No crit");
+    }
+    if ((skills & UNIT::SKILL::NO_COUNTER) > 0) {
+        skill_names.push_back("No counter");
+    }
+    if ((skills & UNIT::SKILL::MAX_DESPAIR) > 0) {
+        skill_names.push_back("Maxima of Despair");
+    }
+    if ((skills & UNIT::SKILL::TUNNELING) > 0) {
+        skill_names.push_back("Tunneling");
+    }
+    if ((skills & UNIT::SKILL::SWITCH) > 0) {
+        skill_names.push_back("Switch");
+    }
+    if ((skills & UNIT::SKILL::LOCKPICK) > 0) {
+        skill_names.push_back("Lockpick");
+    }
+}
+
+void Unit::autoSex_name() {
+    if(sex) {
+        sex_name = "M";
+    } else {
+        sex_name = "F";
+    }
+}
+
+
+void Unit::autoClass_name() {
     switch(class_index) {
         case UNIT::CLASS::MERCENARY:
             class_name = "Mercenary";
@@ -820,6 +882,43 @@ void Unit::read(const char * filename) {
 
     fclose(fp);
 }
+
+void Unit::xmlstats(tinyxml2::XMLDocument * in_doc, tinyxml2::XMLElement * in_pStats, Unit_stats * in_stats) {
+    tinyxml2::XMLElement * php = in_doc->NewElement("hp");
+    tinyxml2::XMLElement * pstr = in_doc->NewElement("str");
+    tinyxml2::XMLElement * pmag = in_doc->NewElement("mag");
+    tinyxml2::XMLElement * pagi = in_doc->NewElement("agi");
+    tinyxml2::XMLElement * pdex = in_doc->NewElement("dex");
+    tinyxml2::XMLElement * pluck = in_doc->NewElement("luck");
+    tinyxml2::XMLElement * pdef = in_doc->NewElement("def");
+    tinyxml2::XMLElement * pres = in_doc->NewElement("res");
+    tinyxml2::XMLElement * pcon = in_doc->NewElement("con");
+    tinyxml2::XMLElement * pmove = in_doc->NewElement("move");
+    tinyxml2::XMLElement * pprof = in_doc->NewElement("prof");
+    in_pStats->InsertEndChild(php);
+    in_pStats->InsertEndChild(pstr);
+    in_pStats->InsertEndChild(pmag);
+    in_pStats->InsertEndChild(pagi);
+    in_pStats->InsertEndChild(pdex);
+    in_pStats->InsertEndChild(pluck);
+    in_pStats->InsertEndChild(pdef);
+    in_pStats->InsertEndChild(pres);
+    in_pStats->InsertEndChild(pcon);
+    in_pStats->InsertEndChild(pmove);
+    in_pStats->InsertEndChild(pprof);
+    php->SetText(in_stats->hp);
+    pstr->SetText(in_stats->str);
+    pmag->SetText(in_stats->mag);
+    pagi->SetText(in_stats->agi);
+    pdex->SetText(in_stats->dex);
+    pluck->SetText(in_stats->luck);
+    pdef->SetText(in_stats->def);
+    pres->SetText(in_stats->res);
+    pcon->SetText(in_stats->con);
+    pmove->SetText(in_stats->move);
+    pprof->SetText(in_stats->prof);
+}
+
 void Unit::writeXML(const char * filename, const bool append) {
     SDL_Log("Printing to XML using TinyXML2 and PhysFS\n");
     PHYSFS_file * fp;
@@ -828,8 +927,6 @@ void Unit::writeXML(const char * filename, const bool append) {
     } else {
         fp = PHYSFS_openAppend(filename);
     }
-
-
     tinyxml2::XMLDocument xmlDoc;
     xmlDoc.InsertFirstChild(xmlDoc.NewDeclaration());
     tinyxml2::XMLElement * pUnit = xmlDoc.NewElement("Unit");
@@ -837,10 +934,35 @@ void Unit::writeXML(const char * filename, const bool append) {
     tinyxml2::XMLElement * pName = xmlDoc.NewElement("Name");
     pUnit->InsertEndChild(pName);
     pName->SetText(name.c_str());
+    tinyxml2::XMLElement * pSex = xmlDoc.NewElement("Sex");
+    pUnit->InsertEndChild(pSex);
+    pSex->SetText(sex_name.c_str());
+
+    tinyxml2::XMLElement * pClass = xmlDoc.NewElement("Class");
+    pUnit->InsertEndChild(pClass);
+    pClass->SetText(class_name.c_str());
     tinyxml2::XMLElement * pStats = xmlDoc.NewElement("Stats");
+    pUnit->InsertEndChild(pStats);
+    xmlstats(&xmlDoc, pStats, &current_stats);
     tinyxml2::XMLElement * pGrowths = xmlDoc.NewElement("Growths");
+    pUnit->InsertEndChild(pGrowths);
+    xmlstats(&xmlDoc, pGrowths, &growths);
     tinyxml2::XMLElement * pCaps = xmlDoc.NewElement("Caps");
+    pUnit->InsertEndChild(pCaps);
+    xmlstats(&xmlDoc, pCaps, &caps_stats);
+    tinyxml2::XMLElement * pBases = xmlDoc.NewElement("Bases");
+    pUnit->InsertEndChild(pBases);
+    xmlstats(&xmlDoc, pBases, &base_stats);
     tinyxml2::XMLElement * pGrown = xmlDoc.NewElement("Level-ups");
+    pUnit->InsertEndChild(pGrown);
+    tinyxml2::XMLElement * pGrownLevel;
+    char * buffer;
+    for (int i = 0; i < grown_stats.size(); i++) {
+        itoa(i, buffer, 10);
+        pGrownLevel = xmlDoc.NewElement(buffer);
+        pGrown->InsertEndChild(pGrownLevel);
+        xmlstats(&xmlDoc, pGrownLevel, &base_stats);
+    }
     tinyxml2::XMLElement * pSkills = xmlDoc.NewElement("Skills");
     tinyxml2::XMLElement * pEquipment = xmlDoc.NewElement("Equipment");
 
@@ -1848,6 +1970,3 @@ std::vector<Unit> chap25EnemyUnits() {
 }
 
 std::vector<Unit> (*chapEnemyUnits[40])() = {chaptestEnemyUnits, chap1EnemyUnits, chap2EnemyUnits, chap3EnemyUnits, chap4EnemyUnits, chap5EnemyUnits, chap6EnemyUnits, chap7EnemyUnits, chap8EnemyUnits, chap9EnemyUnits, chap10EnemyUnits, chap11EnemyUnits, chap12EnemyUnits, chap13EnemyUnits, chap14EnemyUnits, chap15EnemyUnits, chap16EnemyUnits, chap17EnemyUnits, chap18EnemyUnits, chap19EnemyUnits, chap20EnemyUnits, chap21EnemyUnits, chap22EnemyUnits, chap23EnemyUnits, chap24EnemyUnits, chap25EnemyUnits};
-
-
-
