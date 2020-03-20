@@ -203,6 +203,7 @@ void Unit::setEquippable() {
 }
 
 void Unit::autoSkill_names() {
+    skill_names.clear();
     if ((skills & UNIT::SKILL::CANTO) > 0) {
         skill_names.push_back("Canto");
     }
