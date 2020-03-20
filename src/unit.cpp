@@ -831,26 +831,22 @@ void Unit::writeXML(const char * filename, const bool append) {
 
 
     tinyxml2::XMLDocument xmlDoc;
-    xmlDoc.NewDeclaration();
+    xmlDoc.InsertFirstChild(xmlDoc.NewDeclaration());
     tinyxml2::XMLElement * pUnit = xmlDoc.NewElement("Unit");
-    // pUnit->SetText(name.c_str());
-    pUnit->Attribute(name.c_str());
-    // tinyxml2::XMLElement * pElement = xmlDoc.NewElement("IntValue");
-    // pElement->SetText(10);
-    // pRoot->InsertEndChild(pElement);
-    // pElement = xmlDoc.NewElement("FloatValue");
-    // pElement->SetText(0.5f);
+    tinyxml2::XMLElement * pName = xmlDoc.NewElement("Name");
+    xmlDoc.InsertEndChild(pUnit);
+    pUnit->InsertEndChild(pName);
+    pName->SetText(name.c_str());
+    pUnit->InsertEndChild(pName);
 
-    // pRoot->InsertEndChild(pElement);
-    // If the following doesn't work, print to buffer.
-    // XMLPrinter printer( fp );
-    // doc.Print( &printer );
-
-    tinyxml2::XMLPrinter printer;
+    // tinyxml2::XMLPrinter printer;
     // xmlDoc.Print(&printer);
-    xmlDoc.Print();
+    // xmlDoc.Print();
     // SDL_Log(printer.CStr());
-    xmlDoc.SaveFile("unit_test_nophysfs.xml");
+    if (xmlDoc.SaveFile("unit_test_nophysfs.xml") != 0){
+        SDL_Log("TinyXML Save failed\n");
+    }
+    PHYSFS_close(fp);
 }
 void Unit::writeFS(const char * filename, const bool append) {
     // Maybe this function should write constant number of bytes per line...
