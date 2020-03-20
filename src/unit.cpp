@@ -1006,29 +1006,49 @@ void Unit::writeXML(const char * filename, const bool append) {
     tinyxml2::XMLElement * pBases = xmlDoc.NewElement("Bases");
     pUnit->InsertEndChild(pBases);
     xmlstats(&xmlDoc, pBases, &base_stats);
-    tinyxml2::XMLElement * pGrown = xmlDoc.NewElement("Level-ups");
-    pUnit->InsertEndChild(pGrown);
-    tinyxml2::XMLElement * pGrownLevel;
-    for (int i = 0; i < grown_stats.size(); i++) {
-        itoa(i, buffer, 10);
-        pGrownLevel = xmlDoc.NewElement(buffer);
-        pGrown->InsertEndChild(pGrownLevel);
-        xmlstats(&xmlDoc, pGrownLevel, &base_stats);
-    }
-    tinyxml2::XMLElement * pSkills = xmlDoc.NewElement("Skills");
-    tinyxml2::XMLElement * pSkill;
-    for (int i = 0; i < skill_names.size(); i++) {
-        pSkill = xmlDoc.NewElement("Skill");
-        pSkills->InsertEndChild(pSkill);
-        pSkill->SetText(skill_names[i].c_str());
+    if (grown_stats.size() > 0) {
+        tinyxml2::XMLElement * pGrown = xmlDoc.NewElement("Level-ups");
+        pUnit->InsertEndChild(pGrown);
+        tinyxml2::XMLElement * pGrownLevel;
+        for (int i = 0; i < grown_stats.size(); i++) {
+            itoa(i, buffer, 10);
+            pGrownLevel = xmlDoc.NewElement(buffer);
+            pGrown->InsertEndChild(pGrownLevel);
+            xmlstats(&xmlDoc, pGrownLevel, &base_stats);
+        }
+    }  
+    if (skill_names.size() > 0) {
+        tinyxml2::XMLElement * pSkills = xmlDoc.NewElement("Skills");
+        tinyxml2::XMLElement * pSkill;
+        for (int i = 0; i < skill_names.size(); i++) {
+            pSkill = xmlDoc.NewElement("Skill");
+            pSkills->InsertEndChild(pSkill);
+            pSkill->SetText(skill_names[i].c_str());
+        }
     }
     tinyxml2::XMLElement * pSkillsCode = xmlDoc.NewElement("SkillsCode");
     sprintf(buffer, "0x%llx", skills);
-    SDL_Log(buffer);
     pSkillsCode->SetText(buffer);
     pUnit->InsertEndChild(pSkillsCode);
 
     tinyxml2::XMLElement * pEquipment = xmlDoc.NewElement("Equipment");
+    pUnit->InsertEndChild(pEquipment);
+    tinyxml2::XMLElement * pItem;
+    tinyxml2::XMLElement * pUsed;
+    tinyxml2::XMLElement * pId;
+    for (int i = 0; i < DEFAULT::EQUIPMENT_SIZE; i++) {
+            pItem = xmlDoc.NewElement("Item");
+            pEquipment->InsertEndChild(pItem);
+            pId = xmlDoc.NewElement("id");
+            pUsed = xmlDoc.NewElement("Used");
+            sprintf(buffer, "%d", equipment[i].id);
+            pId->SetText(buffer);
+            sprintf(buffer, "%d", equipment[i].used);
+            pUsed->SetText(buffer);
+            pItem->InsertEndChild(pId);
+            pItem->InsertEndChild(pUsed);
+
+    }
 
     // tinyxml2::XMLPrinter printer;
     // xmlDoc.Print(&printer);
