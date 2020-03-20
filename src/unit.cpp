@@ -820,6 +820,38 @@ void Unit::read(const char * filename) {
 
     fclose(fp);
 }
+void Unit::writeXML(const char * filename, const bool append) {
+    SDL_Log("Printing to XML using TinyXML2 and PhysFS\n");
+    PHYSFS_file * fp;
+    if (append) {
+        fp = PHYSFS_openWrite(filename);
+    } else {
+        fp = PHYSFS_openAppend(filename);
+    }
+
+
+    tinyxml2::XMLDocument xmlDoc;
+    xmlDoc.NewDeclaration();
+    tinyxml2::XMLElement * pUnit = xmlDoc.NewElement("Unit");
+    // pUnit->SetText(name.c_str());
+    pUnit->Attribute(name.c_str());
+    // tinyxml2::XMLElement * pElement = xmlDoc.NewElement("IntValue");
+    // pElement->SetText(10);
+    // pRoot->InsertEndChild(pElement);
+    // pElement = xmlDoc.NewElement("FloatValue");
+    // pElement->SetText(0.5f);
+
+    // pRoot->InsertEndChild(pElement);
+    // If the following doesn't work, print to buffer.
+    // XMLPrinter printer( fp );
+    // doc.Print( &printer );
+
+    tinyxml2::XMLPrinter printer;
+    // xmlDoc.Print(&printer);
+    xmlDoc.Print();
+    // SDL_Log(printer.CStr());
+    xmlDoc.SaveFile("unit_test_nophysfs.xml");
+}
 void Unit::writeFS(const char * filename, const bool append) {
     // Maybe this function should write constant number of bytes per line...
     // Easier to read.
@@ -926,6 +958,7 @@ void baseUnits() {
     temp_unit.setBaseExp(0);
     printf("Made unit.\n");
     temp_unit.write("unit_test.txt", "w");
+    temp_unit.writeXML("unit_test.xml");
     printf("Made units.\n");
     all_units[UNIT::NAME::ERWIN] = temp_unit;
     

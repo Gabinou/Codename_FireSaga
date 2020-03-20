@@ -6,6 +6,7 @@
 #include "weapon.hpp"
 #include "linalg.hpp"
 #include "physfs.h"
+#include "tinyxml2.h"
 #include "string.h"
 
 class Unit {
@@ -143,7 +144,7 @@ class Unit {
         void dies();
 
         void write(const char * filename, const char * mode = "a");
-        void writexml(const char * filename, const char * mode = "a");
+        void writeXML(const char * filename, const bool append = false);
         void writeFS(const char * filename, const bool append = false);
         void read(const char * filename);
         void readxml(const char * filename);
