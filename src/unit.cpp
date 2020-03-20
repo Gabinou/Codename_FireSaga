@@ -1016,6 +1016,13 @@ void Unit::writeXML(const char * filename, const bool append) {
         xmlstats(&xmlDoc, pGrownLevel, &base_stats);
     }
     tinyxml2::XMLElement * pSkills = xmlDoc.NewElement("Skills");
+    tinyxml2::XMLElement * pSkill;
+    for (int i = 0; i < skill_names.size(); i++) {
+        pSkill = xmlDoc.NewElement("Skill");
+        pSkills->InsertEndChild(pSkill);
+        pSkill->SetText(skill_names[i].c_str());
+    }
+
     tinyxml2::XMLElement * pEquipment = xmlDoc.NewElement("Equipment");
 
     // tinyxml2::XMLPrinter printer;
