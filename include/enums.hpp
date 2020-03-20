@@ -336,7 +336,7 @@ enum SKILLS : unsigned int {
     LIFESTEAL_RN = 0x00400000, //sol
     INFUSE = 0x00800000,
     DOUBLE_EXP = 0x01000000,
-    AMBIDEXTRY = 0x02000000,
+    AMBIDEXTRY = 0x02000000, // *DESIGN QUESTION* should this be a skill?
     TWO_HAND_STYLE = 0x04000000, //Weight of weapons are halved if two hands.
     PIERCE_RN = 0x08000000, //luna
     // Boring skills

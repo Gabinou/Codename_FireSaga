@@ -245,11 +245,62 @@ void Unit::autoSkill_names() {
     if ((skills & UNIT::SKILL::TUNNELING) > 0) {
         skill_names.push_back("Tunneling");
     }
-    if ((skills & UNIT::SKILL::SWITCH) > 0) {
-        skill_names.push_back("Switch");
+    if ((skills & UNIT::SKILL::SCOUTING) > 0) {
+        skill_names.push_back("Scouting");
+    }
+    if ((skills & UNIT::SKILL::ASSASSINATE) > 0) {
+        skill_names.push_back("Assassinate");
     }
     if ((skills & UNIT::SKILL::LOCKPICK) > 0) {
         skill_names.push_back("Lockpick");
+    }
+    if ((skills & UNIT::SKILL::NO_LOCKPICK) > 0) {
+        skill_names.push_back("Pick");
+    }
+    if ((skills & UNIT::SKILL::IMMUNE_MAGIC) > 0) {
+        skill_names.push_back("Immune to magic");
+    }
+    if ((skills & UNIT::SKILL::IMMUNE_ELEMENTAL) > 0) {
+        skill_names.push_back("Immune to elemental");
+    }
+    if ((skills & UNIT::SKILL::IMMUNE_DEMONIC) > 0) {
+        skill_names.push_back("Immune to demonic");
+    }
+    if ((skills & UNIT::SKILL::IMMUNE_ANGELIC) > 0) {
+        skill_names.push_back("Immune to angelic");
+    }
+    if ((skills & UNIT::SKILL::LIFESTEAL_RN) > 0) {
+        skill_names.push_back("Sol");
+    }
+    if ((skills & UNIT::SKILL::INFUSE) > 0) {
+        skill_names.push_back("Infuse");
+    }
+    if ((skills & UNIT::SKILL::DOUBLE_EXP) > 0) {
+        skill_names.push_back("Double EXP");
+    }
+    if ((skills & UNIT::SKILL::AMBIDEXTRY) > 0) {
+        skill_names.push_back("Ambidextry");
+    }
+    if ((skills & UNIT::SKILL::TWO_HAND_STYLE) > 0) {
+        skill_names.push_back("Two-hand Style");
+    }
+    if ((skills & UNIT::SKILL::PIERCE_RN) > 0) {
+        skill_names.push_back("Luna");
+    }
+    if ((skills & UNIT::SKILL::COUNTER) > 0) {
+        skill_names.push_back("Counter");
+    }
+    if ((skills & UNIT::SKILL::THRUST_SWORD_BONUS) > 0) {
+        skill_names.push_back("Thrust sword bonus");
+    }
+    if ((skills & UNIT::SKILL::SHIELD_BONUS) > 0) {
+        skill_names.push_back("Shield bonus");
+    }
+    if ((skills & UNIT::SKILL::OFFHAND_BONUS) > 0) {
+        skill_names.push_back("Offhand bonus");
+    }
+    if ((skills & UNIT::SKILL::BOW_BONUS) > 0) {
+        skill_names.push_back("Bow bonus");
     }
 }
 
