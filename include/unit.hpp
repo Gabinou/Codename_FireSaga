@@ -26,7 +26,7 @@ class Unit {
         Unit_stats growths;
 
         std::vector<Unit_stats> grown_stats;
-        unsigned long long int skills;
+        unsigned long long int skills = 0;
         short unsigned int equippable;
         unsigned short int exp;
         unsigned short int base_exp;

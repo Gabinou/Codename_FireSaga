@@ -974,6 +974,7 @@ void Unit::xmlstats(tinyxml2::XMLDocument * in_doc, tinyxml2::XMLElement * in_pS
 void Unit::writeXML(const char * filename, const bool append) {
     SDL_Log("Printing to XML using TinyXML2 and PhysFS\n");
     PHYSFS_file * fp;
+    char buffer[DEFAULT::BUFFER_SIZE];
     if (append) {
         fp = PHYSFS_openWrite(filename);
     } else {
@@ -1008,7 +1009,6 @@ void Unit::writeXML(const char * filename, const bool append) {
     tinyxml2::XMLElement * pGrown = xmlDoc.NewElement("Level-ups");
     pUnit->InsertEndChild(pGrown);
     tinyxml2::XMLElement * pGrownLevel;
-    char * buffer;
     for (int i = 0; i < grown_stats.size(); i++) {
         itoa(i, buffer, 10);
         pGrownLevel = xmlDoc.NewElement(buffer);
@@ -1022,6 +1022,11 @@ void Unit::writeXML(const char * filename, const bool append) {
         pSkills->InsertEndChild(pSkill);
         pSkill->SetText(skill_names[i].c_str());
     }
+    tinyxml2::XMLElement * pSkillsCode = xmlDoc.NewElement("SkillsCode");
+    sprintf(buffer, "0x%llx", skills);
+    SDL_Log(buffer);
+    pSkillsCode->SetText(buffer);
+    pUnit->InsertEndChild(pSkillsCode);
 
     tinyxml2::XMLElement * pEquipment = xmlDoc.NewElement("Equipment");
 
