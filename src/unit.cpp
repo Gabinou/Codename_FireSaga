@@ -22,7 +22,7 @@ Unit::Unit(const std::string in_name, const unsigned char in_class_index, const 
     autoMvttype();
     autoClass_name();
     autoSex_name();
-    autoSkill_names();
+    autoSkill_names();no
     setEquippable();
 }
 
@@ -935,7 +935,42 @@ void Unit::read(const char * filename) {
     fclose(fp);
 }
 
-void Unit::xmlstats(tinyxml2::XMLDocument * in_doc, tinyxml2::XMLElement * in_pStats, Unit_stats * in_stats) {
+void Unit::xmlreadstats(tinyxml2::XMLDocument * in_doc, tinyxml2::XMLElement * in_pStats, Unit_stats * in_stats) {
+    tinyxml2::XMLElement * ptemp = FirstChildElement("hp");
+    ptemp->QueryIntValue(&in_stats.hp);
+
+    ptemp = FirstChildElement("str");
+    ptemp->QueryIntValue(&in_stats.str);
+
+    ptemp = FirstChildElement("mag");
+    ptemp->QueryIntValue(&in_stats.mag);
+
+    ptemp = FirstChildElement("agi");
+    ptemp->QueryIntValue(&in_stats.agi);
+
+    ptemp = FirstChildElement("dex");
+    ptemp->QueryIntValue(&in_stats.dex);
+
+    ptemp = FirstChildElement("luck");
+    ptemp->QueryIntValue(&in_stats.luck);
+
+    ptemp = FirstChildElement("def");
+    ptemp->QueryIntValue(&in_stats.res);
+
+    ptemp = FirstChildElement("res");
+    ptemp->QueryIntValue(&in_stats.res);
+
+    ptemp = FirstChildElement("con");
+    ptemp->QueryIntValue(&in_stats.con);
+
+    ptemp = FirstChildElement("move");
+    ptemp->QueryIntValue(&in_stats.move);
+
+    ptemp = FirstChildElement("prof");
+    ptemp->QueryIntValue(&in_stats.prof);
+} 
+
+void Unit::xmlwritestats(tinyxml2::XMLDocument * in_doc, tinyxml2::XMLElement * in_pStats, Unit_stats * in_stats) {
     tinyxml2::XMLElement * php = in_doc->NewElement("hp");
     tinyxml2::XMLElement * pstr = in_doc->NewElement("str");
     tinyxml2::XMLElement * pmag = in_doc->NewElement("mag");
@@ -971,6 +1006,18 @@ void Unit::xmlstats(tinyxml2::XMLDocument * in_doc, tinyxml2::XMLElement * in_pS
     pprof->SetText(in_stats->prof);
 }
 
+void Unit::readXML(const char * filename) {
+    PHYSFS_file * fp;
+    fp = PHYSFS_openRead(filename);
+    unsigned int filelen = PHYSFS_fileLength(fp);
+    char buffer[filelen];
+    PHYSFS_readBytes(fp, buffer, filelen);
+    PHYSFS_close(fp);
+    tinyxml2::XMLDocument xmlDoc.Parse(buffer);
+    tinyxml2::XMLElement * ptemp = FirstChildElement("Name");
+    ptemp->GetText() ;
+} 
+
 void Unit::writeXML(const char * filename, const bool append) {
     SDL_Log("Printing to XML using TinyXML2 and PhysFS\n");
     PHYSFS_file * fp;
@@ -1004,15 +1051,15 @@ void Unit::writeXML(const char * filename, const bool append) {
     
     tinyxml2::XMLElement * pStats = xmlDoc.NewElement("Stats");
     pUnit->InsertEndChild(pStats);
-    xmlstats(&xmlDoc, pStats, &current_stats);
+    xmlwritestats(&xmlDoc, pStats, &current_stats);
     
     tinyxml2::XMLElement * pGrowths = xmlDoc.NewElement("Growths");
     pUnit->InsertEndChild(pGrowths);
-    xmlstats(&xmlDoc, pGrowths, &growths);
+    xmlwritestats(&xmlDoc, pGrowths, &growths);
     
     tinyxml2::XMLElement * pCaps = xmlDoc.NewElement("Caps");
     pUnit->InsertEndChild(pCaps);
-    xmlstats(&xmlDoc, pCaps, &caps_stats);
+    xmlwritestats(&xmlDoc, pCaps, &caps_stats);
     
     tinyxml2::XMLElement * pBases = xmlDoc.NewElement("Bases");
     pUnit->InsertEndChild(pBases);
@@ -1025,7 +1072,7 @@ void Unit::writeXML(const char * filename, const bool append) {
             itoa(i, buffer, 10);
             pGrownLevel = xmlDoc.NewElement(buffer);
             pGrown->InsertEndChild(pGrownLevel);
-            xmlstats(&xmlDoc, pGrownLevel, &base_stats);
+            xmlwritestats(&xmlDoc, pGrownLevel, &base_stats);
         }
     }  
     if (skill_names.size() > 0) {
@@ -1060,8 +1107,7 @@ void Unit::writeXML(const char * filename, const bool append) {
         pItem->InsertEndChild(pUsed);
     }
     
-    tinyxml2::XMLPrinter printer;
-    xmlDoc.Print();
+    tinyxml2::XMLPrinter printer;
     xmlDoc.Print(&printer);
     char longbuffer[printer.CStrSize()];
     sprintf(longbuffer, printer.CStr());
