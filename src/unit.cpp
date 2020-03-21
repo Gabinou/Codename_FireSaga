@@ -93,7 +93,7 @@ short unsigned int Unit::getEquippable() {
 }
 
 void Unit::setEquippable() {
-    //This should not be in all unit objects. So much wasted space. Make it one shared callable function. Same for other heavy switches. 
+    // This should not be in all unit objects. So much wasted space. Make it one shared callable function. Same for other heavy switches. 
     // Switch with individual cases:
     // Easy to change equippable post-hoc
     switch(class_index) {
@@ -1021,6 +1021,7 @@ void Unit::xmlwritestats(tinyxml2::XMLDocument * in_doc, tinyxml2::XMLElement * 
 void Unit::readXML(const char * filename) {
     PHYSFS_file * fp;
     fp = PHYSFS_openRead(filename);
+    unsigned int bufint;
     unsigned int filelen = PHYSFS_fileLength(fp);
     char buffer[filelen];
     PHYSFS_readBytes(fp, buffer, filelen);
@@ -1030,9 +1031,21 @@ void Unit::readXML(const char * filename) {
     tinyxml2::XMLElement * ptemp = xmlDoc.FirstChildElement("Name");
     name = ptemp->GetText();
     ptemp = xmlDoc.FirstChildElement("Sex");
-    sex_name = ptemp->GetText();
-    ptemp = xmlDoc.FirstChildElement("Sex");
-    sex_name = ptemp->GetText();
+    ptemp->QueryBoolText(&sex);    
+    ptemp = xmlDoc.FirstChildElement("SkillsCode");
+    ptemp->QueryInt64Text(&skills);
+    ptemp = xmlDoc.FirstChildElement("Classid");
+    ptemp->QueryUnsignedText(&bufint);
+    class_index = (unsigned char)bufint;
+    ptemp = xmlDoc.FirstChildElement("Stats");
+    xmlreadstats(&xmlDoc, ptemp, &current_stats);
+    ptemp = xmlDoc.FirstChildElement("Growths");
+    xmlreadstats(&xmlDoc, ptemp, &growths);
+    ptemp = xmlDoc.FirstChildElement("Caps");
+    xmlreadstats(&xmlDoc, ptemp, &caps_stats);
+    ptemp = xmlDoc.FirstChildElement("Bases");
+    xmlreadstats(&xmlDoc, ptemp, &base_stats);
+
 
 } 
 
@@ -1055,17 +1068,17 @@ void Unit::writeXML(const char * filename, const bool append) {
     pUnit->InsertEndChild(pName);
     pName->SetText(name.c_str());
     
-    tinyxml2::XMLElement * pSexName = xmlDoc.NewElement("SexName");
-    pUnit->InsertEndChild(pSexName);
-    pSexName->SetText(sex_name.c_str());
+    // tinyxml2::XMLElement * pSexName = xmlDoc.NewElement("SexName");
+    // pUnit->InsertEndChild(pSexName);
+    // pSexName->SetText(sex_name.c_str());
 
     tinyxml2::XMLElement * pSex = xmlDoc.NewElement("Sex");
     pUnit->InsertEndChild(pSex);
     pSex->SetText(sex);
     
-    tinyxml2::XMLElement * pClass = xmlDoc.NewElement("Class");
-    pUnit->InsertEndChild(pClass);
-    pClass->SetText(class_name.c_str());
+    // tinyxml2::XMLElement * pClass = xmlDoc.NewElement("Class");
+    // pUnit->InsertEndChild(pClass);
+    // pClass->SetText(class_name.c_str());
     
     tinyxml2::XMLElement * pClassid = xmlDoc.NewElement("Classid");
     pUnit->InsertEndChild(pClassid);
