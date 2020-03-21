@@ -22,7 +22,7 @@ Unit::Unit(const std::string in_name, const unsigned char in_class_index, const 
     autoMvttype();
     autoClass_name();
     autoSex_name();
-    autoSkill_names();no
+    autoSkill_names();
     setEquippable();
 }
 
@@ -936,38 +936,38 @@ void Unit::read(const char * filename) {
 }
 
 void Unit::xmlreadstats(tinyxml2::XMLDocument * in_doc, tinyxml2::XMLElement * in_pStats, Unit_stats * in_stats) {
-    tinyxml2::XMLElement * ptemp = FirstChildElement("hp");
-    ptemp->QueryIntValue(&in_stats.hp);
+    tinyxml2::XMLElement * ptemp = in_doc->FirstChildElement("hp");
+    // ptemp->QueryIntValue(&in_stats.hp);
 
-    ptemp = FirstChildElement("str");
-    ptemp->QueryIntValue(&in_stats.str);
+    // ptemp = FirstChildElement("str");
+    // ptemp->QueryIntValue(&in_stats.str);
 
-    ptemp = FirstChildElement("mag");
-    ptemp->QueryIntValue(&in_stats.mag);
+    // ptemp = FirstChildElement("mag");
+    // ptemp->QueryIntValue(&in_stats.mag);
 
-    ptemp = FirstChildElement("agi");
-    ptemp->QueryIntValue(&in_stats.agi);
+    // ptemp = FirstChildElement("agi");
+    // ptemp->QueryIntValue(&in_stats.agi);
 
-    ptemp = FirstChildElement("dex");
-    ptemp->QueryIntValue(&in_stats.dex);
+    // ptemp = FirstChildElement("dex");
+    // ptemp->QueryIntValue(&in_stats.dex);
 
-    ptemp = FirstChildElement("luck");
-    ptemp->QueryIntValue(&in_stats.luck);
+    // ptemp = FirstChildElement("luck");
+    // ptemp->QueryIntValue(&in_stats.luck);
 
-    ptemp = FirstChildElement("def");
-    ptemp->QueryIntValue(&in_stats.res);
+    // ptemp = FirstChildElement("def");
+    // ptemp->QueryIntValue(&in_stats.res);
 
-    ptemp = FirstChildElement("res");
-    ptemp->QueryIntValue(&in_stats.res);
+    // ptemp = FirstChildElement("res");
+    // ptemp->QueryIntValue(&in_stats.res);
 
-    ptemp = FirstChildElement("con");
-    ptemp->QueryIntValue(&in_stats.con);
+    // ptemp = FirstChildElement("con");
+    // ptemp->QueryIntValue(&in_stats.con);
 
-    ptemp = FirstChildElement("move");
-    ptemp->QueryIntValue(&in_stats.move);
+    // ptemp = FirstChildElement("move");
+    // ptemp->QueryIntValue(&in_stats.move);
 
-    ptemp = FirstChildElement("prof");
-    ptemp->QueryIntValue(&in_stats.prof);
+    // ptemp = FirstChildElement("prof");
+    // ptemp->QueryIntValue(&in_stats.prof);
 } 
 
 void Unit::xmlwritestats(tinyxml2::XMLDocument * in_doc, tinyxml2::XMLElement * in_pStats, Unit_stats * in_stats) {
@@ -1013,8 +1013,9 @@ void Unit::readXML(const char * filename) {
     char buffer[filelen];
     PHYSFS_readBytes(fp, buffer, filelen);
     PHYSFS_close(fp);
-    tinyxml2::XMLDocument xmlDoc.Parse(buffer);
-    tinyxml2::XMLElement * ptemp = FirstChildElement("Name");
+    tinyxml2::XMLDocument xmlDoc;
+    xmlDoc.Parse(buffer);
+    tinyxml2::XMLElement * ptemp = xmlDoc.FirstChildElement("Name");
     ptemp->GetText() ;
 } 
 
@@ -1063,7 +1064,7 @@ void Unit::writeXML(const char * filename, const bool append) {
     
     tinyxml2::XMLElement * pBases = xmlDoc.NewElement("Bases");
     pUnit->InsertEndChild(pBases);
-    xmlstats(&xmlDoc, pBases, &base_stats);
+    xmlwritestats(&xmlDoc, pBases, &base_stats);
     if (grown_stats.size() > 0) {
         tinyxml2::XMLElement * pGrown = xmlDoc.NewElement("Level-ups");
         pUnit->InsertEndChild(pGrown);
@@ -1107,7 +1108,8 @@ void Unit::writeXML(const char * filename, const bool append) {
         pItem->InsertEndChild(pUsed);
     }
     
-    tinyxml2::XMLPrinter printer;
+    tinyxml2::XMLPrinter printer;
+
     xmlDoc.Print(&printer);
     char longbuffer[printer.CStrSize()];
     sprintf(longbuffer, printer.CStr());
