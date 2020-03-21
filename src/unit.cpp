@@ -937,37 +937,49 @@ void Unit::read(const char * filename) {
 
 void Unit::xmlreadstats(tinyxml2::XMLDocument * in_doc, tinyxml2::XMLElement * in_pStats, Unit_stats * in_stats) {
     tinyxml2::XMLElement * ptemp = in_doc->FirstChildElement("hp");
-    // ptemp->QueryIntValue(&in_stats.hp);
+    unsigned int bufint;
+    ptemp->QueryUnsignedText(&bufint);
+    in_stats->hp = (unsigned char)bufint;
 
-    // ptemp = FirstChildElement("str");
-    // ptemp->QueryIntValue(&in_stats.str);
+    ptemp = in_doc->FirstChildElement("str");
+    ptemp->QueryUnsignedText(&bufint);
+    in_stats->str = (unsigned char)bufint;
 
-    // ptemp = FirstChildElement("mag");
-    // ptemp->QueryIntValue(&in_stats.mag);
+    ptemp = in_doc->FirstChildElement("mag");
+    ptemp->QueryUnsignedText(&bufint);
+    in_stats->mag = (unsigned char)bufint;
 
-    // ptemp = FirstChildElement("agi");
-    // ptemp->QueryIntValue(&in_stats.agi);
+    ptemp = in_doc->FirstChildElement("agi");
+    ptemp->QueryUnsignedText(&bufint);
+    in_stats->agi = (unsigned char)bufint;
 
-    // ptemp = FirstChildElement("dex");
-    // ptemp->QueryIntValue(&in_stats.dex);
+    ptemp = in_doc->FirstChildElement("dex");
+    ptemp->QueryUnsignedText(&bufint);
+    in_stats->dex = (unsigned char)bufint;
 
-    // ptemp = FirstChildElement("luck");
-    // ptemp->QueryIntValue(&in_stats.luck);
+    ptemp = in_doc->FirstChildElement("luck");
+    ptemp->QueryUnsignedText(&bufint);
+    in_stats->luck = (unsigned char)bufint;
 
-    // ptemp = FirstChildElement("def");
-    // ptemp->QueryIntValue(&in_stats.res);
+    ptemp = in_doc->FirstChildElement("def");
+    ptemp->QueryUnsignedText(&bufint);
+    in_stats->def = (unsigned char)bufint;
 
-    // ptemp = FirstChildElement("res");
-    // ptemp->QueryIntValue(&in_stats.res);
+    ptemp = in_doc->FirstChildElement("res");
+    ptemp->QueryUnsignedText(&bufint);
+    in_stats->res = (unsigned char)bufint;
 
-    // ptemp = FirstChildElement("con");
-    // ptemp->QueryIntValue(&in_stats.con);
+    ptemp = in_doc->FirstChildElement("con");
+    ptemp->QueryUnsignedText(&bufint);
+    in_stats->con = (unsigned char)bufint;
 
-    // ptemp = FirstChildElement("move");
-    // ptemp->QueryIntValue(&in_stats.move);
+    ptemp = in_doc->FirstChildElement("move");
+    ptemp->QueryUnsignedText(&bufint);
+    in_stats->move = (unsigned char)bufint;
 
-    // ptemp = FirstChildElement("prof");
-    // ptemp->QueryIntValue(&in_stats.prof);
+    ptemp = in_doc->FirstChildElement("prof");
+    ptemp->QueryUnsignedText(&bufint);
+    in_stats->prof = (unsigned char)bufint;
 } 
 
 void Unit::xmlwritestats(tinyxml2::XMLDocument * in_doc, tinyxml2::XMLElement * in_pStats, Unit_stats * in_stats) {
@@ -1016,7 +1028,7 @@ void Unit::readXML(const char * filename) {
     tinyxml2::XMLDocument xmlDoc;
     xmlDoc.Parse(buffer);
     tinyxml2::XMLElement * ptemp = xmlDoc.FirstChildElement("Name");
-    ptemp->GetText() ;
+    ptemp->GetText();
 } 
 
 void Unit::writeXML(const char * filename, const bool append) {
