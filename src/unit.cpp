@@ -15,13 +15,13 @@ Unit::Unit(const std::string in_name, const unsigned char in_class_index, const 
 
 Unit::Unit(const std::string in_name, const unsigned char in_class_index, const Unit_stats in_bases, const bool in_sex) : Unit(in_name, in_class_index, in_bases) {
     setSex(in_sex);
+    autoSex_name();
 }
 
 Unit::Unit(const std::string in_name, const unsigned char in_class_index, const Unit_stats in_bases) : Unit(in_name, in_bases) {
     class_index = in_class_index;
     autoMvttype();
     autoClass_name();
-    autoSex_name();
     autoSkill_names();
     setEquippable();
 }
@@ -1028,7 +1028,12 @@ void Unit::readXML(const char * filename) {
     tinyxml2::XMLDocument xmlDoc;
     xmlDoc.Parse(buffer);
     tinyxml2::XMLElement * ptemp = xmlDoc.FirstChildElement("Name");
-    ptemp->GetText();
+    name = ptemp->GetText();
+    ptemp = xmlDoc.FirstChildElement("Sex");
+    sex_name = ptemp->GetText();
+    ptemp = xmlDoc.FirstChildElement("Sex");
+    sex_name = ptemp->GetText();
+
 } 
 
 void Unit::writeXML(const char * filename, const bool append) {
@@ -1050,9 +1055,13 @@ void Unit::writeXML(const char * filename, const bool append) {
     pUnit->InsertEndChild(pName);
     pName->SetText(name.c_str());
     
+    tinyxml2::XMLElement * pSexName = xmlDoc.NewElement("SexName");
+    pUnit->InsertEndChild(pSexName);
+    pSexName->SetText(sex_name.c_str());
+
     tinyxml2::XMLElement * pSex = xmlDoc.NewElement("Sex");
     pUnit->InsertEndChild(pSex);
-    pSex->SetText(sex_name.c_str());
+    pSex->SetText(sex);
     
     tinyxml2::XMLElement * pClass = xmlDoc.NewElement("Class");
     pUnit->InsertEndChild(pClass);

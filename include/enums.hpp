@@ -364,8 +364,8 @@ enum MVT {
 }
 namespace SEX {
 enum SEXES {
-    F = 0,
-    M = 1,
+    F = false,
+    M = true,
 };
 }
 }
