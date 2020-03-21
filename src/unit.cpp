@@ -936,7 +936,8 @@ void Unit::read(const char * filename) {
 }
 
 void Unit::xmlreadstats(tinyxml2::XMLDocument * in_doc, tinyxml2::XMLElement * in_pStats) {
-
+    tinyxml2::XMLElement * ptemp = in_doc->FirstChildElement("Item");
+    ptemp->NextSiblingElement("Item");
 }
 
 void Unit::xmlreadstats(tinyxml2::XMLDocument * in_doc, tinyxml2::XMLElement * in_pStats, Unit_stats * in_stats) {
