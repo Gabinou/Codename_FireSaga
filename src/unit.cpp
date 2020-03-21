@@ -935,6 +935,10 @@ void Unit::read(const char * filename) {
     fclose(fp);
 }
 
+void Unit::xmlreadstats(tinyxml2::XMLDocument * in_doc, tinyxml2::XMLElement * in_pStats) {
+
+}
+
 void Unit::xmlreadstats(tinyxml2::XMLDocument * in_doc, tinyxml2::XMLElement * in_pStats, Unit_stats * in_stats) {
     tinyxml2::XMLElement * ptemp = in_doc->FirstChildElement("hp");
     unsigned int bufint;
