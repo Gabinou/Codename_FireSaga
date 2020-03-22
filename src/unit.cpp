@@ -1115,7 +1115,7 @@ void Unit::xmlwritestats(tinyxml2::XMLDocument * in_doc, tinyxml2::XMLElement * 
 }
 
 void Unit::readXML(const char * filename) {
-    SDL_Log("Reading Unit XML file: %s.", filename);    
+    SDL_Log("Reading Unit XML file: %s", filename);    
     PHYSFS_file * fp;
     fp = PHYSFS_openRead(filename);
     unsigned int bufint;
@@ -1126,7 +1126,7 @@ void Unit::readXML(const char * filename) {
     PHYSFS_close(fp);
     tinyxml2::XMLDocument xmlDoc;
     if (xmlDoc.Parse(filebuffer, filelen) != 0) {
-        SDL_Log("XML file parsing failed.");
+        SDL_Log("XML file parsing failed");
     }
     tinyxml2::XMLElement * ptemp;
     tinyxml2::XMLElement * pUnit = xmlDoc.FirstChildElement("Unit");
@@ -1171,14 +1171,16 @@ void Unit::readXML(const char * filename) {
     xmlreadequipment(ptemp);
     
     tinyxml2::XMLElement * pLevelUps = pUnit->FirstChildElement("LevelUps");
-    ptemp = pLevelUps->FirstChildElement("LevelUp");
-    Unit_stats temp_stats = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
-    do {
-        xmlreadstats(ptemp, &temp_stats);
-        grown_stats.push_back(temp_stats); 
-        ptemp = ptemp->NextSiblingElement("LevelUp");
-    } while(ptemp);
-
+    if (!pLevelUps) {SDL_Log("Cannot get levelUps element");
+    } else {   
+        ptemp = pLevelUps->FirstChildElement("LevelUp");
+        Unit_stats temp_stats = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
+        do {
+            xmlreadstats(ptemp, &temp_stats);
+            grown_stats.push_back(temp_stats); 
+            ptemp = ptemp->NextSiblingElement("LevelUp");
+        } while(ptemp);
+    }
 } 
 
 void Unit::writeXML(const char * filename, const bool append) {

@@ -319,7 +319,7 @@ template <typename T> void Game::loadTiles(std::vector<T> in_tiles) {
 }
 
 void Game::loadMap(const std::string filename) {
-    SDL_Log("Loading Map \n");
+    SDL_Log("Loading Map: %s \n", filename);
     // For this function, tiles have to be loaded manually somwhere else.
     mapp = new Map(settings.tilesize[0], settings.tilesize[1]); // mapp is a pointer
     mapp->setRenderer(renderer);
@@ -327,7 +327,7 @@ void Game::loadMap(const std::string filename) {
 }
 
 void Game::loadMap(const int in_map_index) {
-    SDL_Log("Loading Map \n");
+    SDL_Log("Loading Map index: %d \n", in_map_index);
     loaded_tiles = baseTiles(chapTiles[in_map_index]());
     mapp = new Map(settings.tilesize[0], settings.tilesize[1]); // mapp is a pointer // THIS FUNCTION CRASHES SOMETIMES.
     mapp->setRenderer(renderer);
