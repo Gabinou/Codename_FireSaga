@@ -676,8 +676,7 @@ void Unit::gainExp(const short unsigned int in_exp) {
 void Unit::levelUp() {
     // How to deal with =+ 2 level ups?
     unsigned char prob;
-    Unit_stats temp_stats;
-    prob = getURN();
+    Unit_stats temp_stats = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
 
     current_stats.hp += (growths.hp / 100);
     temp_stats.hp += (growths.hp / 100);
@@ -712,6 +711,7 @@ void Unit::levelUp() {
     current_stats.con += (growths.con / 100);
     temp_stats.con += (growths.con / 100);
 
+    prob = getURN();
     if ((prob <= (growths.hp % 100)) && (current_stats.hp < caps_stats.hp)) {
         current_stats.hp += 1;
         temp_stats.hp += 1;
@@ -1261,7 +1261,7 @@ void Unit::writeXML(const char * filename, const bool append) {
             itoa(i + (base_exp/100), buffer, 10);
             pGrownLevel = xmlDoc.NewElement(buffer);
             pGrown->InsertEndChild(pGrownLevel);
-            xmlwritestats(&xmlDoc, pGrownLevel, &base_stats);
+            xmlwritestats(&xmlDoc, pGrownLevel, &(grown_stats[i]));
         }
     }
 
@@ -1413,13 +1413,14 @@ void baseUnits() {
     temp_unit.setGrowths(temp);
     temp_unit.setBaseExp(0);
     printf("Made unit.\n");
+    temp_unit.levelUp();
+    temp_unit.levelUp();
     temp_unit.write("unit_test.txt", "w");
     temp_unit.writeXML("unit_test.xml");
     printf("Made units.\n");
     all_units[UNIT::NAME::ERWIN] = temp_unit;
 
     temp_unit = Unit();
-    temp_unit.readXML("unit_test.xml");
     temp_unit.writeXML("unit_rewrite.xml");
 
     
