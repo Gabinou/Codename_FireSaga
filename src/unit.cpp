@@ -1115,7 +1115,7 @@ void Unit::xmlwritestats(tinyxml2::XMLDocument * in_doc, tinyxml2::XMLElement * 
 }
 
 void Unit::readXML(const char * filename) {
-    SDL_Log("Reading Unit XML file: %s", filename);    
+    SDL_Log("readXML Unit file: %s", filename);    
     PHYSFS_file * fp;
     fp = PHYSFS_openRead(filename);
     unsigned int bufint;
@@ -1184,7 +1184,8 @@ void Unit::readXML(const char * filename) {
 } 
 
 void Unit::writeXML(const char * filename, const bool append) {
-    SDL_Log("XMLWriting Unit to %s\n", filename);
+    SDL_Log("writeXML Unit to %s\n", filename);
+    // How to write files so that it is modifiable by randos?
     PHYSFS_file * fp;
     char buffer[DEFAULT::BUFFER_SIZE];
     if (append) {
@@ -1202,17 +1203,9 @@ void Unit::writeXML(const char * filename, const bool append) {
     pUnit->InsertEndChild(pName);
     pName->SetText(name.c_str());
     
-    // tinyxml2::XMLElement * pSexName = xmlDoc.NewElement("SexName");
-    // pUnit->InsertEndChild(pSexName);
-    // pSexName->SetText(sex_name.c_str());
-
     tinyxml2::XMLElement * pSex = xmlDoc.NewElement("Sex");
     pUnit->InsertEndChild(pSex);
     pSex->SetText(sex);
-    
-    // tinyxml2::XMLElement * pClass = xmlDoc.NewElement("Class");
-    // pUnit->InsertEndChild(pClass);
-    // pClass->SetText(class_name.c_str());
     
     tinyxml2::XMLElement * pClassid = xmlDoc.NewElement("Classid");
     pUnit->InsertEndChild(pClassid);
@@ -1353,11 +1346,7 @@ void Unit::writeFS(const char * filename, const bool append) {
 }
 
 void Unit::write(const char * filename, const char * mode) {
-    // Why simple .txt files.
-    // -> Simple. No external library.
-    // -> NO FILE SHARING. Files unique to the game.
-    // -> File structure easy to understand.
-    // -> NOT easy to parse...
+
     FILE * fp = fopen(filename, mode);
     fprintf(fp, "%s \n", name.c_str());
     if (sex) {
@@ -1385,6 +1374,31 @@ void Unit::write(const char * filename, const char * mode) {
 std::vector<Unit> all_units(UNIT::NAME::END);
 std::vector<Unit> loaded_units;
 
+
+void testXMLUnits() { 
+    SDL_Log("Testing Unit xml writing and reading\n");
+    Unit temp_unit;
+    Unit_stats temp;
+    Inventory_item temp_wpn;
+
+    temp = {17,  6,  2,  7,  7,   7,  4,  5,  6, 5};
+    temp_unit = Unit("Erwin", UNIT::CLASS::MERCENARY, temp, UNIT::SEX::M);
+    temp = {48, 14, 25, 32, 34,  28, 19, 40, 15, 0};
+    temp_unit.setCaps(temp);
+    temp = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
+    temp_unit.setGrowths(temp);
+    temp_unit.setBaseExp(0);
+    temp_unit.levelUp();
+    temp_unit.levelUp();
+    temp_unit.write("unit_test.txt", "w");
+    temp_unit.writeXML("unit_test.xml");
+
+    temp_unit = Unit();
+    temp_unit.readXML("unit_test.xml");
+    temp_unit.writeXML("unit_rewrite.xml");
+}
+
+
 void baseUnits() {
     printf("Making base units \n");
     Unit temp_unit;
@@ -1400,17 +1414,7 @@ void baseUnits() {
     temp = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
     temp_unit.setGrowths(temp);
     temp_unit.setBaseExp(0);
-    printf("Made unit.\n");
-    temp_unit.levelUp();
-    temp_unit.levelUp();
-    temp_unit.write("unit_test.txt", "w");
-    temp_unit.writeXML("unit_test.xml");
-    printf("Made units.\n");
     all_units[UNIT::NAME::ERWIN] = temp_unit;
-
-    temp_unit = Unit();
-    temp_unit.readXML("unit_test.xml");
-    temp_unit.writeXML("unit_rewrite.xml");
 
     
     temp = {18,  6,  2,  7,  7,   7,  4,  5,  6, 7};
