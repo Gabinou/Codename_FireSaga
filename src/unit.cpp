@@ -682,6 +682,35 @@ void Unit::levelUp() {
     current_stats.hp += (growths.hp / 100);
     temp_stats.hp += (growths.hp / 100);
 
+    current_stats.str += (growths.str / 100);
+    temp_stats.str += (growths.str / 100);
+
+    current_stats.mag += (growths.mag / 100);
+    temp_stats.mag += (growths.mag / 100);
+
+    current_stats.dex += (growths.dex / 100);
+    temp_stats.dex += (growths.dex / 100);
+
+    current_stats.agi += (growths.agi / 100);
+    temp_stats.agi += (growths.agi / 100);
+
+    current_stats.luck += (growths.luck / 100);
+    temp_stats.luck += (growths.luck / 100);
+
+    current_stats.def += (growths.def / 100);
+    temp_stats.def += (growths.def / 100);
+
+    current_stats.res += (growths.res / 100);
+    temp_stats.res += (growths.res / 100);
+
+    current_stats.move += (growths.move / 100);
+    temp_stats.move += (growths.move / 100);
+
+    current_stats.prof += (growths.prof / 100);
+    temp_stats.prof += (growths.prof / 100);
+
+    current_stats.con += (growths.con / 100);
+    temp_stats.con += (growths.con / 100);
 
     if ((prob <= (growths.hp % 100)) && (current_stats.hp < caps_stats.hp)) {
         current_stats.hp += 1;
