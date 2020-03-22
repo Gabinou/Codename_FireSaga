@@ -935,12 +935,11 @@ void Unit::read(const char * filename) {
     fclose(fp);
 }
 
-void Unit::xmlreadequipment(tinyxml2::XMLElement * in_pEquipment, tinyxml2::XMLElement * in_pStats) {
+void Unit::xmlreadequipment(tinyxml2::XMLElement * in_pEquipment) {
     tinyxml2::XMLElement * pItem = in_pEquipment->FirstChildElement("Item");
     tinyxml2::XMLElement * pId;
     tinyxml2::XMLElement * pUsed;
     int bufint;
-
     for (int i = 1; i < DEFAULT::EQUIPMENT_SIZE; i++) {
         pId = pItem->FirstChildElement("id");
         pUsed = pItem->FirstChildElement("Used");
@@ -950,52 +949,51 @@ void Unit::xmlreadequipment(tinyxml2::XMLElement * in_pEquipment, tinyxml2::XMLE
         equipment[i].used = bufint;
         pItem->NextSiblingElement("Item");
     }
-
 }
 
-void Unit::xmlreadstats(tinyxml2::XMLDocument * in_doc, tinyxml2::XMLElement * in_pStats, Unit_stats * in_stats) {
-    tinyxml2::XMLElement * ptemp = in_doc->FirstChildElement("hp");
+void Unit::xmlreadstats(tinyxml2::XMLElement * in_pStats, Unit_stats * in_stats) {
+    tinyxml2::XMLElement * ptemp = in_pStats->FirstChildElement("hp");
     unsigned int bufint;
     ptemp->QueryUnsignedText(&bufint);
     in_stats->hp = (unsigned char)bufint;
 
-    ptemp = in_doc->FirstChildElement("str");
+    ptemp = in_pStats->FirstChildElement("str");
     ptemp->QueryUnsignedText(&bufint);
     in_stats->str = (unsigned char)bufint;
 
-    ptemp = in_doc->FirstChildElement("mag");
+    ptemp = in_pStats->FirstChildElement("mag");
     ptemp->QueryUnsignedText(&bufint);
     in_stats->mag = (unsigned char)bufint;
 
-    ptemp = in_doc->FirstChildElement("agi");
+    ptemp = in_pStats->FirstChildElement("agi");
     ptemp->QueryUnsignedText(&bufint);
     in_stats->agi = (unsigned char)bufint;
 
-    ptemp = in_doc->FirstChildElement("dex");
+    ptemp = in_pStats->FirstChildElement("dex");
     ptemp->QueryUnsignedText(&bufint);
     in_stats->dex = (unsigned char)bufint;
 
-    ptemp = in_doc->FirstChildElement("luck");
+    ptemp = in_pStats->FirstChildElement("luck");
     ptemp->QueryUnsignedText(&bufint);
     in_stats->luck = (unsigned char)bufint;
 
-    ptemp = in_doc->FirstChildElement("def");
+    ptemp = in_pStats->FirstChildElement("def");
     ptemp->QueryUnsignedText(&bufint);
     in_stats->def = (unsigned char)bufint;
 
-    ptemp = in_doc->FirstChildElement("res");
+    ptemp = in_pStats->FirstChildElement("res");
     ptemp->QueryUnsignedText(&bufint);
     in_stats->res = (unsigned char)bufint;
 
-    ptemp = in_doc->FirstChildElement("con");
+    ptemp = in_pStats->FirstChildElement("con");
     ptemp->QueryUnsignedText(&bufint);
     in_stats->con = (unsigned char)bufint;
 
-    ptemp = in_doc->FirstChildElement("move");
+    ptemp = in_pStats->FirstChildElement("move");
     ptemp->QueryUnsignedText(&bufint);
     in_stats->move = (unsigned char)bufint;
 
-    ptemp = in_doc->FirstChildElement("prof");
+    ptemp = in_pStats->FirstChildElement("prof");
     ptemp->QueryUnsignedText(&bufint);
     in_stats->prof = (unsigned char)bufint;
 } 
@@ -1046,27 +1044,43 @@ void Unit::readXML(const char * filename) {
     PHYSFS_readBytes(fp, filebuffer, filelen);
     PHYSFS_close(fp);
     tinyxml2::XMLDocument xmlDoc;
-    xmlDoc.Parse(filebuffer);
-    tinyxml2::XMLElement * ptemp = xmlDoc.FirstChildElement("Name");
-    name = ptemp->GetText();
-    ptemp = xmlDoc.FirstChildElement("Sex");
-    ptemp->QueryBoolText(&sex);    
-    ptemp = xmlDoc.FirstChildElement("SkillsCode");
-    buffer = ptemp->GetText();
-    // skills = strtoull(buffer, NULL, 16);
-    sscanf(buffer, "%llx", skills);
-    ptemp = xmlDoc.FirstChildElement("Classid");
-    ptemp->QueryUnsignedText(&bufint);
-    class_index = (unsigned char)bufint;
-    ptemp = xmlDoc.FirstChildElement("Stats");
-    xmlreadstats(&xmlDoc, ptemp, &current_stats);
-    ptemp = xmlDoc.FirstChildElement("Growths");
-    xmlreadstats(&xmlDoc, ptemp, &growths);
-    ptemp = xmlDoc.FirstChildElement("Caps");
-    xmlreadstats(&xmlDoc, ptemp, &caps_stats);
-    ptemp = xmlDoc.FirstChildElement("Bases");
-    xmlreadstats(&xmlDoc, ptemp, &base_stats);
+    if (xmlDoc.Parse(filebuffer, filelen) != 0) {
+        SDL_Log("XML file parsing failed.");
+    }
+    tinyxml2::XMLElement * ptemp;
+    tinyxml2::XMLElement * pUnit = xmlDoc.FirstChildElement("Unit");
+    if (pUnit) {        
+        ptemp = pUnit->FirstChildElement("Name");
+        name = ptemp->GetText();
+    }
+    // ptemp = xmlDoc.FirstChildElement("Sex");
+    // ptemp->QueryBoolText(&sex);    
+    // ptemp = xmlDoc.FirstChildElement("SkillsCode");
+    // buffer = ptemp->GetText();
+    // // skills = strtoull(buffer, NULL, 16);
+    // sscanf(buffer, "%llx", skills);
+    // ptemp = xmlDoc.FirstChildElement("BaseExp");
+    // ptemp->QueryUnsignedText(&bufint);
+    // base_exp = (unsigned short int)bufint;
+    // ptemp = xmlDoc.FirstChildElement("Exp");
+    // ptemp->QueryUnsignedText(&bufint);
+    // exp = (unsigned short int)bufint;
+    // ptemp = xmlDoc.FirstChildElement("Classid");
+    // ptemp->QueryUnsignedText(&bufint);
+    // class_index = (unsigned char)bufint;
+    // ptemp = xmlDoc.FirstChildElement("Stats");
+    // xmlreadstats(ptemp, &current_stats);
+    // ptemp = xmlDoc.FirstChildElement("Growths");
+    // xmlreadstats(ptemp, &growths);
+    // ptemp = xmlDoc.FirstChildElement("Caps");
+    // xmlreadstats(ptemp, &caps_stats);
+    // ptemp = xmlDoc.FirstChildElement("Bases");
+    // xmlreadstats(ptemp, &base_stats);
+    // ptemp = xmlDoc.FirstChildElement("Equipment");
+    // xmlreadequipment(ptemp);
+    // ptemp = xmlDoc.FirstChildElement("Level-ups");
 
+    PHYSFS_close(fp);
 
 } 
 
@@ -1104,6 +1118,14 @@ void Unit::writeXML(const char * filename, const bool append) {
     tinyxml2::XMLElement * pClassid = xmlDoc.NewElement("Classid");
     pUnit->InsertEndChild(pClassid);
     pClassid->SetText(class_index);
+
+    tinyxml2::XMLElement * pExp = xmlDoc.NewElement("Exp");
+    pUnit->InsertEndChild(pExp);
+    pExp->SetText(exp);
+
+    tinyxml2::XMLElement * pBaseExp = xmlDoc.NewElement("BaseExp");
+    pUnit->InsertEndChild(pBaseExp);
+    pBaseExp->SetText(base_exp);
     
     tinyxml2::XMLElement * pStats = xmlDoc.NewElement("Stats");
     pUnit->InsertEndChild(pStats);
@@ -1282,6 +1304,11 @@ void baseUnits() {
     temp_unit.writeXML("unit_test.xml");
     printf("Made units.\n");
     all_units[UNIT::NAME::ERWIN] = temp_unit;
+
+    temp_unit = Unit();
+    temp_unit.readXML("unit_test.xml");
+    temp_unit.writeXML("unit_rewrite.xml");
+
     
     temp = {18,  6,  2,  7,  7,   7,  4,  5,  6, 7};
     temp_unit = Unit("Reliable", UNIT::CLASS::CAVALIER, temp, UNIT::SEX::M);

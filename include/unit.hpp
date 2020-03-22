@@ -151,8 +151,8 @@ class Unit {
         void writeXML(const char * filename, const bool append = false);
         void readXML(const char * filename);
         void xmlwritestats(tinyxml2::XMLDocument * in_doc, tinyxml2::XMLElement * in_pStats, Unit_stats * in_stats);
-        void xmlreadstats(tinyxml2::XMLDocument * in_doc, tinyxml2::XMLElement * in_pStats, Unit_stats * in_stats);
-        void xmlreadequipment(tinyxml2::XMLElement * in_pEquipment, tinyxml2::XMLElement * in_pStats);
+        void xmlreadstats(tinyxml2::XMLElement * in_pStats, Unit_stats * in_stats);
+        void xmlreadequipment(tinyxml2::XMLElement * in_pEquipment);
         void writeFS(const char * filename, const bool append = false);
         void read(const char * filename);
         void readxml(const char * filename);

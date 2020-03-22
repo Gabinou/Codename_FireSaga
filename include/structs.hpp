@@ -20,24 +20,24 @@ struct Unit_state {
 };
 
 struct Unit_stats {
-    unsigned char hp; // hit points
-    unsigned char str; // strength
-    unsigned char mag; // magic
-    unsigned char agi; // agility
-    unsigned char dex; // dexterity
-    unsigned char luck;
-    unsigned char def; // defense
-    unsigned char res; // resistance
-    unsigned char con; // constitution
-    unsigned char move; // movement
-    unsigned char prof; // proficiency
+    unsigned char hp = 0; // hit points
+    unsigned char str = 0; // strength
+    unsigned char mag = 0; // magic
+    unsigned char agi = 0; // agility
+    unsigned char dex = 0; // dexterity
+    unsigned char luck = 0;
+    unsigned char def = 0; // defense
+    unsigned char res = 0; // resistance
+    unsigned char con = 0; // constitution
+    unsigned char move = 0; // movement
+    unsigned char prof = 0; // proficiency
 };
 
 struct Combat_stats {
-    unsigned char hit;
-    unsigned char dodge;
-    unsigned char crit;
-    unsigned char favor;
+    unsigned char hit = 0;
+    unsigned char dodge = 0;
+    unsigned char crit = 0;
+    unsigned char favor = 0;
     // char speed;
 };
 
