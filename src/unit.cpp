@@ -674,6 +674,7 @@ void Unit::gainExp(const short unsigned int in_exp) {
 }
 
 void Unit::levelUp() {
+    getURN();
 
 }
 

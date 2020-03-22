@@ -5,6 +5,7 @@
 #include "enums.hpp"
 #include "weapon.hpp"
 #include "linalg.hpp"
+#include "probability.hpp"
 #include "physfs.h"
 #include "tinyxml2.h"
 #include "string.h"
