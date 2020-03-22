@@ -1398,12 +1398,11 @@ void testXMLUnits() {
     temp_unit.addEquipment(temp_wpn);
     temp_unit.write("unit_test.txt", "w");
     temp_unit.writeXML("unit_test.xml");
-
+    SDL_Log("Mount Point: %s", PHYSFS_getMountPoint("\\assets.binou"));
     temp_unit = Unit();
     temp_unit.readXML("unit_test.xml");
     temp_unit.writeXML("unit_rewrite.xml");
 }
-
 
 void baseUnits() {
     printf("Making base units \n");
