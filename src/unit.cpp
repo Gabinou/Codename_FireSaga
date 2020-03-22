@@ -674,53 +674,65 @@ void Unit::gainExp(const short unsigned int in_exp) {
 }
 
 void Unit::levelUp() {
-    
+    // How to deal with =+ 2 level ups?
     unsigned char prob;
-
+    Unit_stats temp_stats;
     prob = getURN();
     if ((prob <= growths.hp) && (current_stats.hp < caps_stats.hp)) {
         current_stats.hp += 1;
+        temp_stats.hp += 1;
     }
     prob = getURN();
     if ((prob <= growths.str) && (current_stats.str < caps_stats.str)) {
         current_stats.str += 1;
+        temp_stats.str += 1;
     }
     prob = getURN();
     if ((prob <= growths.mag) && (current_stats.mag < caps_stats.mag)) {
         current_stats.mag += 1;
+        temp_stats.mag += 1;
     }
     prob = getURN();
     if ((prob <= growths.dex) && (current_stats.dex < caps_stats.dex)) {
         current_stats.dex += 1;
+        temp_stats.dex += 1;
     }
     prob = getURN();
     if ((prob <= growths.agi) && (current_stats.agi < caps_stats.agi)) {
         current_stats.agi += 1;
+        temp_stats.agi += 1;
     }
     prob = getURN();
     if ((prob <= growths.luck) && (current_stats.luck < caps_stats.luck)) {
         current_stats.luck += 1;
+        temp_stats.luck += 1;
     }
     prob = getURN();
     if ((prob <= growths.def) && (current_stats.def < caps_stats.def)) {
         current_stats.def += 1;
+        temp_stats.def += 1;
     }
     prob = getURN();
     if ((prob <= growths.res) && (current_stats.res < caps_stats.res)) {
         current_stats.res += 1;
+        temp_stats.res += 1;
     }
     prob = getURN();
     if ((prob <= growths.con) && (current_stats.con < caps_stats.con)) {
         current_stats.con += 1;
+        temp_stats.con += 1;
     }
     prob = getURN();
     if ((prob <= growths.prof) && (current_stats.prof < caps_stats.prof)) {
         current_stats.prof += 1;
+        temp_stats.prof += 1;
     }
     prob = getURN();
     if ((prob <= growths.move) && (current_stats.move < caps_stats.move)) {
         current_stats.move += 1;
+        temp_stats.move += 1;
     }
+    grown_stats.push_back(temp_stats);
 
 }
 
