@@ -24,6 +24,8 @@ int main(int argc, char * argv[]) {
     SDL_Log("Initializing Filesystem\n");
     FILESYSTEM::init(0, buildDir, buildDir);
 
+    SDL_Log("Initializing TinyMT\n");
+    init_tinyMT();
     // baseScript();
     // SDL_Log("Testing script: %s\n", all_scripts["Chapter 1"].getScene("Intro").getLine("1").line.c_str());
     // SDL_Log("Testing script: %s\n", all_scripts["Supports"].getScene("Main_Lovely_C").getLine("1").line.c_str());

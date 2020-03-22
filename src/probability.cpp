@@ -7,6 +7,14 @@
 // G: Gaussian/Normal(ly)
 // std_dev: standard deviation
 // avg: average
+tinymt32_t tinyMT;
+
+void init_tinyMT(tinymt32_t &tinymt){
+    tinymt.mat1 = 1990;
+    tinymt.mat2 = 5;
+    tinymt.tmat = 8;
+    tinymt32_init(&tinymt, 29);
+}
 
 bool single_roll(const unsigned char RN, const unsigned char hit) {
     return((RN < hit));
@@ -16,7 +24,7 @@ bool double_roll(const unsigned char RN1, const unsigned char RN2, const unsigne
     return((((RN1 + RN2) / 2) < hit));
 }
 
-unsigned char getURN(tinymt32_t & tinymt){
+unsigned char getURN(tinymt32_t &tinymt){
     return(Uuint32_openBSD(tinymt, RN_MAX, RN_MIN));
 }
 
@@ -44,7 +52,7 @@ unsigned char * boxmuller(const unsigned char RN_U[2], const float avg, const fl
     return(RN_G);
 }
 
-unsigned int Uuint32_openBSD(tinymt32_t & tinymt, unsigned int max, unsigned int min) {
+unsigned int Uuint32_openBSD(tinymt32_t &tinymt, unsigned int max, unsigned int min) {
     // "Scales" uniform integer from [0 and 2**32 - 1] to [min, max]
     // According to [1], it is unbiased.
     unsigned int t = -(max - min) % (max - min);
