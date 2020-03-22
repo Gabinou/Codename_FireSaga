@@ -17,13 +17,14 @@ class Unit {
 
         Combat_stats combat_stats;
 
-        Unit_stats base_stats;
+        Unit_stats base_stats = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
+        Unit_stats bonus_stats = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
+        Unit_stats caps_stats = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
+        Unit_stats malus_stats = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
+        Unit_stats current_stats = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
+        Unit_stats growths = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
+
         Unit_state state;
-        Unit_stats bonus_stats;
-        Unit_stats caps_stats;
-        Unit_stats malus_stats;
-        Unit_stats current_stats;
-        Unit_stats growths;
 
         std::vector<Unit_stats> grown_stats;
         unsigned long long int skills = 0;
