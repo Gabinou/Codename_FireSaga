@@ -678,62 +678,66 @@ void Unit::levelUp() {
     unsigned char prob;
     Unit_stats temp_stats;
     prob = getURN();
-    if ((prob <= growths.hp) && (current_stats.hp < caps_stats.hp)) {
+
+    current_stats.hp += (growths.hp / 100);
+    temp_stats.hp += (growths.hp / 100);
+
+
+    if ((prob <= (growths.hp % 100)) && (current_stats.hp < caps_stats.hp)) {
         current_stats.hp += 1;
         temp_stats.hp += 1;
     }
     prob = getURN();
-    if ((prob <= growths.str) && (current_stats.str < caps_stats.str)) {
+    if ((prob <= (growths.str % 100)) && (current_stats.str < caps_stats.str)) {
         current_stats.str += 1;
         temp_stats.str += 1;
     }
     prob = getURN();
-    if ((prob <= growths.mag) && (current_stats.mag < caps_stats.mag)) {
+    if ((prob <= (growths.mag % 100)) && (current_stats.mag < caps_stats.mag)) {
         current_stats.mag += 1;
         temp_stats.mag += 1;
     }
     prob = getURN();
-    if ((prob <= growths.dex) && (current_stats.dex < caps_stats.dex)) {
+    if ((prob <= (growths.dex % 100)) && (current_stats.dex < caps_stats.dex)) {
         current_stats.dex += 1;
         temp_stats.dex += 1;
     }
     prob = getURN();
-    if ((prob <= growths.agi) && (current_stats.agi < caps_stats.agi)) {
+    if ((prob <= (growths.agi % 100)) && (current_stats.agi < caps_stats.agi)) {
         current_stats.agi += 1;
         temp_stats.agi += 1;
     }
     prob = getURN();
-    if ((prob <= growths.luck) && (current_stats.luck < caps_stats.luck)) {
+    if ((prob <= (growths.luck % 100)) && (current_stats.luck < caps_stats.luck)) {
         current_stats.luck += 1;
         temp_stats.luck += 1;
     }
     prob = getURN();
-    if ((prob <= growths.def) && (current_stats.def < caps_stats.def)) {
+    if ((prob <= (growths.def % 100)) && (current_stats.def < caps_stats.def)) {
         current_stats.def += 1;
         temp_stats.def += 1;
     }
     prob = getURN();
-    if ((prob <= growths.res) && (current_stats.res < caps_stats.res)) {
+    if ((prob <= (growths.res % 100)) && (current_stats.res < caps_stats.res)) {
         current_stats.res += 1;
         temp_stats.res += 1;
     }
     prob = getURN();
-    if ((prob <= growths.con) && (current_stats.con < caps_stats.con)) {
+    if ((prob <= (growths.con % 100)) && (current_stats.con < caps_stats.con)) {
         current_stats.con += 1;
         temp_stats.con += 1;
     }
     prob = getURN();
-    if ((prob <= growths.prof) && (current_stats.prof < caps_stats.prof)) {
+    if ((prob <= (growths.prof % 100)) && (current_stats.prof < caps_stats.prof)) {
         current_stats.prof += 1;
         temp_stats.prof += 1;
     }
     prob = getURN();
-    if ((prob <= growths.move) && (current_stats.move < caps_stats.move)) {
+    if ((prob <= (growths.move % 100)) && (current_stats.move < caps_stats.move)) {
         current_stats.move += 1;
         temp_stats.move += 1;
     }
     grown_stats.push_back(temp_stats);
-
 }
 
 void Unit::setHp(const unsigned char in_hp) {
