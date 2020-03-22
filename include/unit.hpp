@@ -104,6 +104,8 @@ class Unit {
         void setBaseExp(const unsigned short int in_exp);
         void gainExp(const unsigned short int in_exp);
 
+        void levelUp();
+
         unsigned char getHp() const;
         void setHp(const unsigned char in_hp);
         void takesDamage(const unsigned char damage);

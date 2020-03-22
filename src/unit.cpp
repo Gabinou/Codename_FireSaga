@@ -667,6 +667,14 @@ void Unit::setBaseExp(const short unsigned int in_exp) {
 
 void Unit::gainExp(const short unsigned int in_exp) {
     exp += in_exp;
+    if (((exp % 100) + in_exp) > 100) {
+        // Never should have two level ups at one time.
+        levelUp();
+    }
+}
+
+void Unit::levelUp() {
+
 }
 
 void Unit::setHp(const unsigned char in_hp) {
@@ -1152,17 +1160,19 @@ void Unit::writeXML(const char * filename, const bool append) {
     tinyxml2::XMLElement * pBases = xmlDoc.NewElement("Bases");
     pUnit->InsertEndChild(pBases);
     xmlwritestats(&xmlDoc, pBases, &base_stats);
+
     if (grown_stats.size() > 0) {
         tinyxml2::XMLElement * pGrown = xmlDoc.NewElement("Level-ups");
         pUnit->InsertEndChild(pGrown);
         tinyxml2::XMLElement * pGrownLevel;
         for (int i = 0; i < grown_stats.size(); i++) {
-            itoa(i, buffer, 10);
+            itoa(i + (base_exp/100), buffer, 10);
             pGrownLevel = xmlDoc.NewElement(buffer);
             pGrown->InsertEndChild(pGrownLevel);
             xmlwritestats(&xmlDoc, pGrownLevel, &base_stats);
         }
-    }  
+    }
+
     if (skill_names.size() > 0) {
         tinyxml2::XMLElement * pSkills = xmlDoc.NewElement("Skills");
         tinyxml2::XMLElement * pSkill;
@@ -1172,6 +1182,7 @@ void Unit::writeXML(const char * filename, const bool append) {
             pSkill->SetText(skill_names[i].c_str());
         }
     }
+
     tinyxml2::XMLElement * pSkillsCode = xmlDoc.NewElement("SkillsCode");
     sprintf(buffer, "0x%llx", skills);
     pSkillsCode->SetText(buffer);
