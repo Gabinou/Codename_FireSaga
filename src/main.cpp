@@ -29,11 +29,12 @@ int main(int argc, char * argv[]) {
 
     baseWeapons();
     SDL_Log("Testing weapon: %s\n", all_weapons[WPN::NAME::WOODEN_SWORD].getName().c_str());
+    testXMLWeapons();
     
     baseUnits();
     SDL_Log("Testing units: %s \n", all_units[UNIT::NAME::SILOU].getName().c_str());
     testXMLUnits();
-    
+
     firesaga = new Game();
     SDL_Log("Game object created\n");
 

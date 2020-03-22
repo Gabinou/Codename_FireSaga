@@ -75,6 +75,37 @@ void Weapon::setType(short unsigned int in_type) {
     type = in_type;
 }
 
+void Weapon::writeXML(const char * filename, const bool append) {
+    SDL_Log("writeXML Weapon to: %s\n", filename);
+    // How to write files so that it is modifiable by randos?
+    PHYSFS_file * fp;
+    char buffer[DEFAULT::BUFFER_SIZE];
+    if (append) {
+        fp = PHYSFS_openAppend(filename);
+    } else {
+        fp = PHYSFS_openWrite(filename);
+    }
+    tinyxml2::XMLDocument xmlDoc;
+    xmlDoc.InsertFirstChild(xmlDoc.NewDeclaration());
+
+    tinyxml2::XMLElement * pWpn = xmlDoc.NewElement("Weapon");
+    xmlDoc.InsertEndChild(pWpn);
+    
+    tinyxml2::XMLElement * pName = xmlDoc.NewElement("Name");
+    pWpn->InsertEndChild(pName);
+    pName->SetText(name.c_str());
+
+    tinyxml2::XMLPrinter printer;
+
+    xmlDoc.Print(&printer);
+    char longbuffer[printer.CStrSize()];
+    sprintf(longbuffer, printer.CStr());
+    
+    PHYSFS_writeBytes(fp, longbuffer, printer.CStrSize());
+
+    PHYSFS_close(fp);
+}
+
 void Weapon::write(const char * filename, const char * mode){
     FILE * fp;
     fp = fopen(filename, mode);
@@ -102,7 +133,6 @@ void Weapon::write(const char * filename, const char * mode){
     fprintf(fp, "\n");
     fclose(fp);
 }
-
 
 std::vector<std::string> wpntype2str(short unsigned int in_type){
     std::vector<std::string> types;
@@ -145,6 +175,16 @@ std::vector<std::string> wpntype2str(short unsigned int in_type){
 
 std::vector<Weapon> all_weapons(WPN::NAME::END);
 std::vector<Weapon> loaded_weapons;
+
+void testXMLWeapons(){
+    Weapon temp_wpn;
+    Weapon_stats temp_wpn_stats;
+    // Pmight, Mmight, hit, dodge, crit, favor, wgt, uses, wpnlvl, range, hand, dmg_type, cost
+    temp_wpn_stats = {3, 0, 80, 0, 0, 0, 3, 30, 2, {1,1}, {1,2}, 0, 1000};
+    temp_wpn = Weapon("Wooden sword", WPN::TYPE::SWORD, temp_wpn_stats, WPN::NAME::WOODEN_SWORD);
+    temp_wpn.setDescription("Practice sword, made of wood. It's crushing blows are still deadly.");
+    temp_wpn.writeXML("weapon_test.xml");
+}
 
 std::vector<Weapon> baseWeapons(std::vector<short int> toload){
     Weapon temp_wpn;
