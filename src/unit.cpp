@@ -1052,33 +1052,34 @@ void Unit::readXML(const char * filename) {
     if (pUnit) {        
         ptemp = pUnit->FirstChildElement("Name");
         name = ptemp->GetText();
+        ptemp = pUnit->FirstChildElement("Sex");
+        ptemp->QueryBoolText(&sex);    
+        ptemp = pUnit->FirstChildElement("SkillsCode");
+        buffer = ptemp->GetText();
+        // skills = strtoull(buffer, NULL, 16);
+        sscanf(buffer, "%llx", &skills);
+        ptemp = pUnit->FirstChildElement("BaseExp");
+        ptemp->QueryUnsignedText(&bufint);
+        base_exp = (unsigned short int)bufint;
+        ptemp = pUnit->FirstChildElement("Exp");
+        ptemp->QueryUnsignedText(&bufint);
+        exp = (unsigned short int)bufint;
+        ptemp = pUnit->FirstChildElement("Classid");
+        ptemp->QueryUnsignedText(&bufint);
+        class_index = (unsigned char)bufint;
+        ptemp = pUnit->FirstChildElement("Stats");
+        xmlreadstats(ptemp, &current_stats);
+        ptemp = pUnit->FirstChildElement("Growths");
+        xmlreadstats(ptemp, &growths);
+        ptemp = pUnit->FirstChildElement("Caps");
+        xmlreadstats(ptemp, &caps_stats);
+        ptemp = pUnit->FirstChildElement("Bases");
+        xmlreadstats(ptemp, &base_stats);
+        ptemp = pUnit->FirstChildElement("Equipment");
+        xmlreadequipment(ptemp);
+        ptemp = pUnit->FirstChildElement("Level-ups");
     }
-    // ptemp = xmlDoc.FirstChildElement("Sex");
-    // ptemp->QueryBoolText(&sex);    
-    // ptemp = xmlDoc.FirstChildElement("SkillsCode");
-    // buffer = ptemp->GetText();
-    // // skills = strtoull(buffer, NULL, 16);
-    // sscanf(buffer, "%llx", skills);
-    // ptemp = xmlDoc.FirstChildElement("BaseExp");
-    // ptemp->QueryUnsignedText(&bufint);
-    // base_exp = (unsigned short int)bufint;
-    // ptemp = xmlDoc.FirstChildElement("Exp");
-    // ptemp->QueryUnsignedText(&bufint);
-    // exp = (unsigned short int)bufint;
-    // ptemp = xmlDoc.FirstChildElement("Classid");
-    // ptemp->QueryUnsignedText(&bufint);
-    // class_index = (unsigned char)bufint;
-    // ptemp = xmlDoc.FirstChildElement("Stats");
-    // xmlreadstats(ptemp, &current_stats);
-    // ptemp = xmlDoc.FirstChildElement("Growths");
-    // xmlreadstats(ptemp, &growths);
-    // ptemp = xmlDoc.FirstChildElement("Caps");
-    // xmlreadstats(ptemp, &caps_stats);
-    // ptemp = xmlDoc.FirstChildElement("Bases");
-    // xmlreadstats(ptemp, &base_stats);
-    // ptemp = xmlDoc.FirstChildElement("Equipment");
-    // xmlreadequipment(ptemp);
-    // ptemp = xmlDoc.FirstChildElement("Level-ups");
+// 
 
     PHYSFS_close(fp);
 

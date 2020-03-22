@@ -29,19 +29,19 @@ class Unit {
         std::vector<Unit_stats> grown_stats;
         unsigned long long int skills = 0;
         short unsigned int equippable;
-        unsigned short int exp;
-        unsigned short int base_exp;
+        unsigned short int exp = 0;
+        unsigned short int base_exp = 0;
         unsigned short int entity;
         unsigned short int affiliation;
         unsigned char class_index;
         unsigned char mvt_type;
 
-        unsigned char current_hp;
-        char current_speed;
+        unsigned char current_hp = 0;
+        char current_speed = 0;
         Map_enemy map_enemy;
 
         short int position[2] = {0, 0};
-        bool sex; // 0:F, 1:M
+        bool sex = false; // 0:F, 1:M
 
         std::string name = "";
         std::string class_name = "";
