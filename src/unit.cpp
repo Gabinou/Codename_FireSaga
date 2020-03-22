@@ -1169,8 +1169,15 @@ void Unit::readXML(const char * filename) {
     ptemp = pUnit->FirstChildElement("Equipment");
     if (!ptemp) {SDL_Log("Cannot get Equipment element");}   
     xmlreadequipment(ptemp);
-    ptemp = pUnit->FirstChildElement("Level-up");
-    if (!ptemp) {SDL_Log("Cannot get Level-up element");}   
+    
+    tinyxml2::XMLElement * pLevelUps = pUnit->FirstChildElement("LevelUps");
+    ptemp = pLevelUps->FirstChildElement("LevelUp");
+    Unit_stats temp_stats = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
+    do {
+        xmlreadstats(ptemp, &temp_stats);
+        grown_stats.push_back(temp_stats); 
+        ptemp = ptemp->NextSiblingElement("LevelUp");
+    } while(ptemp);
 
 } 
 
@@ -1234,12 +1241,11 @@ void Unit::writeXML(const char * filename, const bool append) {
     xmlwritestats(&xmlDoc, pBases, &base_stats);
 
     if (grown_stats.size() > 0) {
-        tinyxml2::XMLElement * pGrown = xmlDoc.NewElement("Level-ups");
+        tinyxml2::XMLElement * pGrown = xmlDoc.NewElement("LevelUps");
         pUnit->InsertEndChild(pGrown);
         tinyxml2::XMLElement * pGrownLevel;
         for (int i = 0; i < grown_stats.size(); i++) {
-            itoa(i + (base_exp/100), buffer, 10);
-            pGrownLevel = xmlDoc.NewElement(buffer);
+            pGrownLevel = xmlDoc.NewElement("LevelUp");
             pGrown->InsertEndChild(pGrownLevel);
             xmlwritestats(&xmlDoc, pGrownLevel, &(grown_stats[i]));
         }
@@ -1401,6 +1407,7 @@ void baseUnits() {
     all_units[UNIT::NAME::ERWIN] = temp_unit;
 
     temp_unit = Unit();
+    temp_unit.readXML("unit_test.xml");
     temp_unit.writeXML("unit_rewrite.xml");
 
     
