@@ -89,6 +89,7 @@ class Unit {
         void setEquipped(Equipped in_equipped);
         void setEquipment(Inventory_item * in_equipment);
         void addEquipment(Inventory_item in_equipment);
+        void switchEquipment(Inventory_item in_equipment, const short int ind1, const short int ind2);
         void removeEquipment(unsigned char in_index);
 
         void takeItem(Inventory_item * out_array, const short int in_index, const short int out_index);

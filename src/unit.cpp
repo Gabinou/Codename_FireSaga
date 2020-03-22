@@ -1027,7 +1027,7 @@ void Unit::xmlreadequipment(tinyxml2::XMLElement * in_pEquipment) {
         equipment[i].id = bufint;
         pUsed->QueryIntText(&bufint);
         equipment[i].used = bufint;
-        pItem->NextSiblingElement("Item");
+        pItem = pItem->NextSiblingElement("Item");
     }
 }
 
@@ -1390,6 +1390,12 @@ void testXMLUnits() {
     temp_unit.setBaseExp(0);
     temp_unit.levelUp();
     temp_unit.levelUp();
+    temp_wpn.id = WPN::NAME::FLEURET;
+    temp_unit.addEquipment(temp_wpn);
+    temp_wpn.id = WPN::NAME::KITCHEN_KNIFE;
+    temp_unit.addEquipment(temp_wpn);
+    temp_wpn.id = WPN::NAME::POT_LID;
+    temp_unit.addEquipment(temp_wpn);
     temp_unit.write("unit_test.txt", "w");
     temp_unit.writeXML("unit_test.xml");
 
@@ -1414,9 +1420,14 @@ void baseUnits() {
     temp = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
     temp_unit.setGrowths(temp);
     temp_unit.setBaseExp(0);
+    temp_wpn.id = WPN::NAME::FLEURET;
+    temp_unit.addEquipment(temp_wpn);
+    temp_wpn.id = WPN::NAME::KITCHEN_KNIFE;
+    temp_unit.addEquipment(temp_wpn);
+    temp_wpn.id = WPN::NAME::POT_LID;
+    temp_unit.addEquipment(temp_wpn);
     all_units[UNIT::NAME::ERWIN] = temp_unit;
 
-    
     temp = {18,  6,  2,  7,  7,   7,  4,  5,  6, 7};
     temp_unit = Unit("Reliable", UNIT::CLASS::CAVALIER, temp, UNIT::SEX::M);
     temp = {48, 14, 25, 32, 34,  28, 19, 40, 15};
