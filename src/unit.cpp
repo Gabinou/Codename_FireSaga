@@ -1035,6 +1035,7 @@ void Unit::xmlwritestats(tinyxml2::XMLDocument * in_doc, tinyxml2::XMLElement * 
 }
 
 void Unit::readXML(const char * filename) {
+    SDL_Log("Reading Unit XML file: %s.", filename);    
     PHYSFS_file * fp;
     fp = PHYSFS_openRead(filename);
     unsigned int bufint;
@@ -1049,44 +1050,52 @@ void Unit::readXML(const char * filename) {
     }
     tinyxml2::XMLElement * ptemp;
     tinyxml2::XMLElement * pUnit = xmlDoc.FirstChildElement("Unit");
-    if (pUnit) {        
-        ptemp = pUnit->FirstChildElement("Name");
-        name = ptemp->GetText();
-        ptemp = pUnit->FirstChildElement("Sex");
-        ptemp->QueryBoolText(&sex);    
-        ptemp = pUnit->FirstChildElement("SkillsCode");
-        buffer = ptemp->GetText();
-        // skills = strtoull(buffer, NULL, 16);
-        sscanf(buffer, "%llx", &skills);
-        ptemp = pUnit->FirstChildElement("BaseExp");
-        ptemp->QueryUnsignedText(&bufint);
-        base_exp = (unsigned short int)bufint;
-        ptemp = pUnit->FirstChildElement("Exp");
-        ptemp->QueryUnsignedText(&bufint);
-        exp = (unsigned short int)bufint;
-        ptemp = pUnit->FirstChildElement("Classid");
-        ptemp->QueryUnsignedText(&bufint);
-        class_index = (unsigned char)bufint;
-        ptemp = pUnit->FirstChildElement("Stats");
-        xmlreadstats(ptemp, &current_stats);
-        ptemp = pUnit->FirstChildElement("Growths");
-        xmlreadstats(ptemp, &growths);
-        ptemp = pUnit->FirstChildElement("Caps");
-        xmlreadstats(ptemp, &caps_stats);
-        ptemp = pUnit->FirstChildElement("Bases");
-        xmlreadstats(ptemp, &base_stats);
-        ptemp = pUnit->FirstChildElement("Equipment");
-        xmlreadequipment(ptemp);
-        ptemp = pUnit->FirstChildElement("Level-ups");
-    }
-// 
-
-    PHYSFS_close(fp);
+    if (!pUnit) {SDL_Log("Cannot get Unit element");}   
+    ptemp = pUnit->FirstChildElement("Name");
+    if (!ptemp) {SDL_Log("Cannot get Name element");}   
+    name = ptemp->GetText();
+    ptemp = pUnit->FirstChildElement("Sex");
+    if (!ptemp) {SDL_Log("Cannot get Sex element");}   
+    ptemp->QueryBoolText(&sex);    
+    ptemp = pUnit->FirstChildElement("SkillsCode");
+    if (!ptemp) {SDL_Log("Cannot get SkillsCode element");}   
+    buffer = ptemp->GetText();
+    // skills = strtoull(buffer, NULL, 16);
+    sscanf(buffer, "%llx", &skills);
+    ptemp = pUnit->FirstChildElement("BaseExp");
+    if (!ptemp) {SDL_Log("Cannot get BaseExp element");}   
+    ptemp->QueryUnsignedText(&bufint);
+    base_exp = (unsigned short int)bufint;
+    ptemp = pUnit->FirstChildElement("Exp");
+    if (!ptemp) {SDL_Log("Cannot get Exp element");}   
+    ptemp->QueryUnsignedText(&bufint);
+    exp = (unsigned short int)bufint;
+    ptemp = pUnit->FirstChildElement("Classid");
+    if (!ptemp) {SDL_Log("Cannot get Classid element");}   
+    ptemp->QueryUnsignedText(&bufint);
+    class_index = (unsigned char)bufint;
+    ptemp = pUnit->FirstChildElement("Stats");
+    if (!ptemp) {SDL_Log("Cannot get Stats element");}   
+    xmlreadstats(ptemp, &current_stats);
+    ptemp = pUnit->FirstChildElement("Growths");
+    if (!ptemp) {SDL_Log("Cannot get Growths element");}   
+    xmlreadstats(ptemp, &growths);
+    ptemp = pUnit->FirstChildElement("Caps");
+    if (!ptemp) {SDL_Log("Cannot get Caps element");}   
+    xmlreadstats(ptemp, &caps_stats);
+    ptemp = pUnit->FirstChildElement("Bases");
+    if (!ptemp) {SDL_Log("Cannot get Bases element");}   
+    xmlreadstats(ptemp, &base_stats);
+    ptemp = pUnit->FirstChildElement("Equipment");
+    if (!ptemp) {SDL_Log("Cannot get Equipment element");}   
+    xmlreadequipment(ptemp);
+    ptemp = pUnit->FirstChildElement("Level-up");
+    if (!ptemp) {SDL_Log("Cannot get Level-up element");}   
 
 } 
 
 void Unit::writeXML(const char * filename, const bool append) {
-    SDL_Log("Printing to XML using TinyXML2 and PhysFS\n");
+    SDL_Log("XMLWriting Unit to %s\n", filename);
     PHYSFS_file * fp;
     char buffer[DEFAULT::BUFFER_SIZE];
     if (append) {
