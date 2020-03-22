@@ -8,7 +8,8 @@
 #include <stdlib.h>
 #include "physfs.h"
 #include "LodePNG.h"
-#include "utilities.hpp"
+#include "structs.hpp"
+#include "tinyxml2.h"
 #include "SDL2/SDL_ttf.h"
 #include "SDL2/SDL_image.h"
 #include "SDL2/SDL.h"
@@ -26,5 +27,8 @@ char * getlineFS();
 extern SDL_Texture * loadTexture(SDL_Renderer * in_renderer, const char * filename, const bool FS = false);
 extern SDL_Texture * textToTexture(SDL_Renderer * in_renderer, std::string textureText, SDL_Color textColor, TTF_Font * in_font);
 extern void writeText(int in_fontsize, int in_position[2], float in_sizefactor[2], std::string in_text, SDL_Color in_color, TTF_Font * in_font, SDL_Renderer * in_renderer);
+extern void xmlwritestats(tinyxml2::XMLDocument * in_doc, tinyxml2::XMLElement * in_pStats, Unit_stats * in_stats);
+extern void xmlwritewpnstats(tinyxml2::XMLDocument * in_doc, tinyxml2::XMLElement * in_pStats, Weapon_stats * in_stats);
+extern void xmlreadstats(tinyxml2::XMLElement * in_pStats, Unit_stats * in_stats);
 
 #endif /* FILESYSTEM_HPP */

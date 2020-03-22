@@ -221,3 +221,136 @@ void writeText(SDL_Renderer * in_renderer, int in_fontsize, int in_position[2], 
     SDL_RenderCopy(in_renderer, texture, &srcrect, &destrect);
     SDL_RenderPresent(in_renderer);
 }
+
+
+void xmlreadstats(tinyxml2::XMLElement * in_pStats, Unit_stats * in_stats) {
+    tinyxml2::XMLElement * ptemp = in_pStats->FirstChildElement("hp");
+    unsigned int bufint;
+    ptemp->QueryUnsignedText(&bufint);
+    in_stats->hp = (unsigned char)bufint;
+
+    ptemp = in_pStats->FirstChildElement("str");
+    ptemp->QueryUnsignedText(&bufint);
+    in_stats->str = (unsigned char)bufint;
+
+    ptemp = in_pStats->FirstChildElement("mag");
+    ptemp->QueryUnsignedText(&bufint);
+    in_stats->mag = (unsigned char)bufint;
+
+    ptemp = in_pStats->FirstChildElement("agi");
+    ptemp->QueryUnsignedText(&bufint);
+    in_stats->agi = (unsigned char)bufint;
+
+    ptemp = in_pStats->FirstChildElement("dex");
+    ptemp->QueryUnsignedText(&bufint);
+    in_stats->dex = (unsigned char)bufint;
+
+    ptemp = in_pStats->FirstChildElement("luck");
+    ptemp->QueryUnsignedText(&bufint);
+    in_stats->luck = (unsigned char)bufint;
+
+    ptemp = in_pStats->FirstChildElement("def");
+    ptemp->QueryUnsignedText(&bufint);
+    in_stats->def = (unsigned char)bufint;
+
+    ptemp = in_pStats->FirstChildElement("res");
+    ptemp->QueryUnsignedText(&bufint);
+    in_stats->res = (unsigned char)bufint;
+
+    ptemp = in_pStats->FirstChildElement("con");
+    ptemp->QueryUnsignedText(&bufint);
+    in_stats->con = (unsigned char)bufint;
+
+    ptemp = in_pStats->FirstChildElement("move");
+    ptemp->QueryUnsignedText(&bufint);
+    in_stats->move = (unsigned char)bufint;
+
+    ptemp = in_pStats->FirstChildElement("prof");
+    ptemp->QueryUnsignedText(&bufint);
+    in_stats->prof = (unsigned char)bufint;
+} 
+void xmlwritewpnstats(tinyxml2::XMLDocument * in_doc, tinyxml2::XMLElement * in_pStats, Weapon_stats * in_stats) {
+    // Pmight, Mmight, hit, dodge, crit, favor, wgt, uses, prof, range, hand, dmg_type, cost
+    Combat_stats combat;
+    tinyxml2::XMLElement * pPmight = in_doc->NewElement("Pmight");
+    tinyxml2::XMLElement * pMmight = in_doc->NewElement("Mmight");
+    tinyxml2::XMLElement * phit = in_doc->NewElement("hit");
+    tinyxml2::XMLElement * pdodge = in_doc->NewElement("dodge");
+    tinyxml2::XMLElement * pcrit = in_doc->NewElement("crit");
+    tinyxml2::XMLElement * pfavor = in_doc->NewElement("favor");
+    tinyxml2::XMLElement * pwgt = in_doc->NewElement("wgt");
+    tinyxml2::XMLElement * puses = in_doc->NewElement("uses");
+    tinyxml2::XMLElement * pprof = in_doc->NewElement("prof");
+    tinyxml2::XMLElement * pminrange = in_doc->NewElement("minrange");
+    tinyxml2::XMLElement * pmaxrange = in_doc->NewElement("maxrange");
+    tinyxml2::XMLElement * phand1 = in_doc->NewElement("hand");
+    tinyxml2::XMLElement * phand2 = in_doc->NewElement("hand");
+    tinyxml2::XMLElement * pdmg_type = in_doc->NewElement("dmg_type");
+    tinyxml2::XMLElement * pprice = in_doc->NewElement("cost");
+    in_pStats->InsertEndChild(pPmight);
+    in_pStats->InsertEndChild(pMmight);
+    in_pStats->InsertEndChild(phit);
+    in_pStats->InsertEndChild(pdodge);
+    in_pStats->InsertEndChild(pcrit);
+    in_pStats->InsertEndChild(pfavor);
+    in_pStats->InsertEndChild(pwgt);
+    in_pStats->InsertEndChild(puses);
+    in_pStats->InsertEndChild(pprof);
+    in_pStats->InsertEndChild(pminrange);
+    in_pStats->InsertEndChild(pmaxrange);
+    in_pStats->InsertEndChild(phand1);
+    in_pStats->InsertEndChild(phand2);
+    in_pStats->InsertEndChild(pdmg_type);
+    in_pStats->InsertEndChild(pprice);
+    pPmight->SetText(in_stats->Pmight);
+    pMmight->SetText(in_stats->Mmight);
+    phit->SetText(in_stats->combat.hit);
+    pdodge->SetText(in_stats->combat.dodge);
+    pcrit->SetText(in_stats->combat.crit);
+    pfavor->SetText(in_stats->combat.favor);
+    pwgt->SetText(in_stats->wgt);
+    puses->SetText(in_stats->uses);
+    pprof->SetText(in_stats->prof);
+    pminrange->SetText(in_stats->range[0]);
+    pmaxrange->SetText(in_stats->range[1]);
+    phand1->SetText(in_stats->hand[0]);
+    phand2->SetText(in_stats->hand[1]);
+    pdmg_type->SetText(in_stats->dmg_type);
+    pprice->SetText(in_stats->price);
+}
+
+void xmlwritestats(tinyxml2::XMLDocument * in_doc, tinyxml2::XMLElement * in_pStats, Unit_stats * in_stats) {
+    tinyxml2::XMLElement * php = in_doc->NewElement("hp");
+    tinyxml2::XMLElement * pstr = in_doc->NewElement("str");
+    tinyxml2::XMLElement * pmag = in_doc->NewElement("mag");
+    tinyxml2::XMLElement * pagi = in_doc->NewElement("agi");
+    tinyxml2::XMLElement * pdex = in_doc->NewElement("dex");
+    tinyxml2::XMLElement * pluck = in_doc->NewElement("luck");
+    tinyxml2::XMLElement * pdef = in_doc->NewElement("def");
+    tinyxml2::XMLElement * pres = in_doc->NewElement("res");
+    tinyxml2::XMLElement * pcon = in_doc->NewElement("con");
+    tinyxml2::XMLElement * pmove = in_doc->NewElement("move");
+    tinyxml2::XMLElement * pprof = in_doc->NewElement("prof");
+    in_pStats->InsertEndChild(php);
+    in_pStats->InsertEndChild(pstr);
+    in_pStats->InsertEndChild(pmag);
+    in_pStats->InsertEndChild(pagi);
+    in_pStats->InsertEndChild(pdex);
+    in_pStats->InsertEndChild(pluck);
+    in_pStats->InsertEndChild(pdef);
+    in_pStats->InsertEndChild(pres);
+    in_pStats->InsertEndChild(pcon);
+    in_pStats->InsertEndChild(pmove);
+    in_pStats->InsertEndChild(pprof);
+    php->SetText(in_stats->hp);
+    pstr->SetText(in_stats->str);
+    pmag->SetText(in_stats->mag);
+    pagi->SetText(in_stats->agi);
+    pdex->SetText(in_stats->dex);
+    pluck->SetText(in_stats->luck);
+    pdef->SetText(in_stats->def);
+    pres->SetText(in_stats->res);
+    pcon->SetText(in_stats->con);
+    pmove->SetText(in_stats->move);
+    pprof->SetText(in_stats->prof);
+}

@@ -26,11 +26,11 @@ Weapon_stats Weapon::getStats() {
 }
 
 void Weapon::setMalus(Unit_stats in_malus) {
-    malus = in_malus;
+    malus_stats = in_malus;
 }
 
 Unit_stats Weapon::getMalus() {
-    return(malus);
+    return(malus_stats);
 }
 
 void Weapon::setStats(Weapon_stats in_stats) {
@@ -38,10 +38,10 @@ void Weapon::setStats(Weapon_stats in_stats) {
 }
 
 void Weapon::setBonus(Unit_stats in_bonus) {
-    bonus = in_bonus;
+    bonus_stats = in_bonus;
 }
 Unit_stats Weapon::getBonus() {
-    return(bonus);
+    return(bonus_stats);
 }
 
 void Weapon::setEffect(long unsigned int in_effect) {
@@ -75,6 +75,28 @@ void Weapon::setType(short unsigned int in_type) {
     type = in_type;
 }
 
+void Weapon::readXML(const char * filename) {
+    SDL_Log("readXML Unit file: %s", filename);    
+    PHYSFS_file * fp;
+    fp = PHYSFS_openRead(filename);
+    unsigned int bufint;
+    unsigned int filelen = PHYSFS_fileLength(fp);
+    char filebuffer[filelen];
+    const char * buffer;
+    PHYSFS_readBytes(fp, filebuffer, filelen);
+    PHYSFS_close(fp);
+    tinyxml2::XMLDocument xmlDoc;
+    if (xmlDoc.Parse(filebuffer, filelen) != 0) {
+        SDL_Log("XML file parsing failed");
+    }
+    tinyxml2::XMLElement * ptemp;
+    tinyxml2::XMLElement * pWpn = xmlDoc.FirstChildElement("Weapon");
+    
+    ptemp = pWpn->FirstChildElement("Name");
+    if (!ptemp) {SDL_Log("Cannot get Name element");}   
+    name = ptemp->GetText();
+}
+
 void Weapon::writeXML(const char * filename, const bool append) {
     SDL_Log("writeXML Weapon to: %s\n", filename);
     // How to write files so that it is modifiable by randos?
@@ -89,18 +111,49 @@ void Weapon::writeXML(const char * filename, const bool append) {
     xmlDoc.InsertFirstChild(xmlDoc.NewDeclaration());
 
     tinyxml2::XMLElement * pWpn = xmlDoc.NewElement("Weapon");
-    xmlDoc.InsertFirstChild(pWpn);
+    xmlDoc.InsertEndChild(pWpn);
     
     tinyxml2::XMLElement * pName = xmlDoc.NewElement("Name");
-    pWpn->InsertFirstChild(pName);
+    pWpn->InsertEndChild(pName);
     pName->SetText(name.c_str());
+
+    tinyxml2::XMLElement * pStats = xmlDoc.NewElement("Stats");
+    pWpn->InsertEndChild(pStats);
+    xmlwritewpnstats(&xmlDoc, pStats, &stats);
+
+    tinyxml2::XMLElement * pId = xmlDoc.NewElement("id");
+    pWpn->InsertEndChild(pId);
+    pId->SetText(id);
+
+    tinyxml2::XMLElement * pDes = xmlDoc.NewElement("Description");
+    pWpn->InsertEndChild(pDes);
+    pDes->SetText(description.c_str());
+
+    tinyxml2::XMLElement * pBonus = xmlDoc.NewElement("Bonus");
+    pWpn->InsertEndChild(pBonus);
+    xmlwritestats(&xmlDoc, pBonus, &bonus_stats);
+
+    tinyxml2::XMLElement * pMalus = xmlDoc.NewElement("Malus");
+    pWpn->InsertEndChild(pMalus);
+    xmlwritestats(&xmlDoc, pMalus, &malus_stats);
+
+    tinyxml2::XMLElement * pEffective = xmlDoc.NewElement("Effective");
+    pWpn->InsertEndChild(pEffective);
+    pEffective->SetText(effective);
+
+    tinyxml2::XMLElement * pType = xmlDoc.NewElement("Type");
+    pWpn->InsertEndChild(pType);
+    pType->SetText(type);    
+
+    tinyxml2::XMLElement * pEffect = xmlDoc.NewElement("Effect");
+    pWpn->InsertEndChild(pEffect);
+    pEffect->SetText((uint64_t) effect);
 
     tinyxml2::XMLPrinter printer;
 
     xmlDoc.Print(&printer);
     char longbuffer[printer.CStrSize()];
     sprintf(longbuffer, printer.CStr());
-    SDL_Log("%s", longbuffer);
     PHYSFS_writeBytes(fp, longbuffer, printer.CStrSize());
 
     PHYSFS_close(fp);
@@ -129,8 +182,8 @@ void Weapon::write(const char * filename, const char * mode){
     fprintf(fp, "Stats, PMight, MMight, Hit, Dodge, Crit, Favor, Weight, Proficiency, Range min, Range max, Price\n");
     fprintf(fp, "Stats,\t\t%d,\t%d,\t%d,\t%d,\t%d,\t%d,\t%d,\t%d,\t%d,\t%d,\t%d\n", stats.Pmight, stats.Mmight, stats.combat.hit, stats.combat.dodge, stats.combat.crit, stats.combat.favor, stats.prof, stats.uses, stats.wgt, stats.price);
     fprintf(fp, "Units Stats, HP, Str, Mag, Skl, Spd, Luck, Def, Res, Con, Move\n");
-    fprintf(fp, "Unit Malus,\t\t%d,\t%d,\t%d,\t%d,\t%d,\t%d,\t%d,\t%d,\t%d,\t%d,\t%d\n", malus.hp, malus.str, malus.mag, malus.dex, malus.agi, malus.luck, malus.def, malus.res, malus.con, malus.move, malus.prof);
-    fprintf(fp, "Unit Bonus,\t\t%d,\t%d,\t%d,\t%d,\t%d,\t%d,\t%d,\t%d,\t%d,\t%d,\t%d\n", bonus.hp, bonus.str, bonus.mag, bonus.dex, bonus.agi, bonus.luck, bonus.def, bonus.res, bonus.con, bonus.move, bonus.prof);
+    fprintf(fp, "Unit Malus,\t\t%d,\t%d,\t%d,\t%d,\t%d,\t%d,\t%d,\t%d,\t%d,\t%d,\t%d\n", malus_stats.hp, malus_stats.str, malus_stats.mag, malus_stats.dex, malus_stats.agi, malus_stats.luck, malus_stats.def, malus_stats.res, malus_stats.con, malus_stats.move, malus_stats.prof);
+    fprintf(fp, "Unit Bonus,\t\t%d,\t%d,\t%d,\t%d,\t%d,\t%d,\t%d,\t%d,\t%d,\t%d,\t%d\n", bonus_stats.hp, bonus_stats.str, bonus_stats.mag, bonus_stats.dex, bonus_stats.agi, bonus_stats.luck, bonus_stats.def, bonus_stats.res, bonus_stats.con, bonus_stats.move, bonus_stats.prof);
     fprintf(fp, "\n");
     fclose(fp);
 }
@@ -186,6 +239,10 @@ void testXMLWeapons(){
     temp_wpn = Weapon("Wooden sword", WPN::TYPE::SWORD, temp_wpn_stats, WPN::NAME::WOODEN_SWORD);
     temp_wpn.setDescription("Practice sword, made of wood. It's crushing blows are still deadly.");
     temp_wpn.writeXML("weapon_test.xml");
+
+    temp_wpn = Weapon();
+    temp_wpn.readXML("weapon_test.xml");
+    temp_wpn.writeXML("weapon_rewrite.xml");
 }
 
 std::vector<Weapon> baseWeapons(std::vector<short int> toload){

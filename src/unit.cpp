@@ -1031,89 +1031,6 @@ void Unit::xmlreadequipment(tinyxml2::XMLElement * in_pEquipment) {
     }
 }
 
-void Unit::xmlreadstats(tinyxml2::XMLElement * in_pStats, Unit_stats * in_stats) {
-    tinyxml2::XMLElement * ptemp = in_pStats->FirstChildElement("hp");
-    unsigned int bufint;
-    ptemp->QueryUnsignedText(&bufint);
-    in_stats->hp = (unsigned char)bufint;
-
-    ptemp = in_pStats->FirstChildElement("str");
-    ptemp->QueryUnsignedText(&bufint);
-    in_stats->str = (unsigned char)bufint;
-
-    ptemp = in_pStats->FirstChildElement("mag");
-    ptemp->QueryUnsignedText(&bufint);
-    in_stats->mag = (unsigned char)bufint;
-
-    ptemp = in_pStats->FirstChildElement("agi");
-    ptemp->QueryUnsignedText(&bufint);
-    in_stats->agi = (unsigned char)bufint;
-
-    ptemp = in_pStats->FirstChildElement("dex");
-    ptemp->QueryUnsignedText(&bufint);
-    in_stats->dex = (unsigned char)bufint;
-
-    ptemp = in_pStats->FirstChildElement("luck");
-    ptemp->QueryUnsignedText(&bufint);
-    in_stats->luck = (unsigned char)bufint;
-
-    ptemp = in_pStats->FirstChildElement("def");
-    ptemp->QueryUnsignedText(&bufint);
-    in_stats->def = (unsigned char)bufint;
-
-    ptemp = in_pStats->FirstChildElement("res");
-    ptemp->QueryUnsignedText(&bufint);
-    in_stats->res = (unsigned char)bufint;
-
-    ptemp = in_pStats->FirstChildElement("con");
-    ptemp->QueryUnsignedText(&bufint);
-    in_stats->con = (unsigned char)bufint;
-
-    ptemp = in_pStats->FirstChildElement("move");
-    ptemp->QueryUnsignedText(&bufint);
-    in_stats->move = (unsigned char)bufint;
-
-    ptemp = in_pStats->FirstChildElement("prof");
-    ptemp->QueryUnsignedText(&bufint);
-    in_stats->prof = (unsigned char)bufint;
-} 
-
-void Unit::xmlwritestats(tinyxml2::XMLDocument * in_doc, tinyxml2::XMLElement * in_pStats, Unit_stats * in_stats) {
-    tinyxml2::XMLElement * php = in_doc->NewElement("hp");
-    tinyxml2::XMLElement * pstr = in_doc->NewElement("str");
-    tinyxml2::XMLElement * pmag = in_doc->NewElement("mag");
-    tinyxml2::XMLElement * pagi = in_doc->NewElement("agi");
-    tinyxml2::XMLElement * pdex = in_doc->NewElement("dex");
-    tinyxml2::XMLElement * pluck = in_doc->NewElement("luck");
-    tinyxml2::XMLElement * pdef = in_doc->NewElement("def");
-    tinyxml2::XMLElement * pres = in_doc->NewElement("res");
-    tinyxml2::XMLElement * pcon = in_doc->NewElement("con");
-    tinyxml2::XMLElement * pmove = in_doc->NewElement("move");
-    tinyxml2::XMLElement * pprof = in_doc->NewElement("prof");
-    in_pStats->InsertEndChild(php);
-    in_pStats->InsertEndChild(pstr);
-    in_pStats->InsertEndChild(pmag);
-    in_pStats->InsertEndChild(pagi);
-    in_pStats->InsertEndChild(pdex);
-    in_pStats->InsertEndChild(pluck);
-    in_pStats->InsertEndChild(pdef);
-    in_pStats->InsertEndChild(pres);
-    in_pStats->InsertEndChild(pcon);
-    in_pStats->InsertEndChild(pmove);
-    in_pStats->InsertEndChild(pprof);
-    php->SetText(in_stats->hp);
-    pstr->SetText(in_stats->str);
-    pmag->SetText(in_stats->mag);
-    pagi->SetText(in_stats->agi);
-    pdex->SetText(in_stats->dex);
-    pluck->SetText(in_stats->luck);
-    pdef->SetText(in_stats->def);
-    pres->SetText(in_stats->res);
-    pcon->SetText(in_stats->con);
-    pmove->SetText(in_stats->move);
-    pprof->SetText(in_stats->prof);
-}
-
 void Unit::readXML(const char * filename) {
     SDL_Log("readXML Unit file: %s", filename);    
     PHYSFS_file * fp;
@@ -1284,8 +1201,6 @@ void Unit::writeXML(const char * filename, const bool append) {
     xmlDoc.Print(&printer);
     char longbuffer[printer.CStrSize()];
     sprintf(longbuffer, printer.CStr());
-    SDL_Log("%s", longbuffer);
-    
     PHYSFS_writeBytes(fp, longbuffer, printer.CStrSize());
 
     PHYSFS_close(fp);

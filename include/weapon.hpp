@@ -5,21 +5,22 @@
 #include "structs.hpp"
 #include "physfs.h"
 #include "tinyxml2.h"
+#include "filesystem.hpp"
 #include "string.h"
 #include <string>
 
 class Weapon {
     private:
-        Weapon_stats stats;
-        //hp,str,mag,skl,spd,luck,def,res,con,move, prof
-        Unit_stats bonus = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
-        Unit_stats malus = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
-        long unsigned int effect;
-        short unsigned int type;
-        short unsigned int effective;
-        std::string name;
-        std::string description;
-        unsigned char id;
+        Weapon_stats stats = {0, 0, 0, 0, 0, 0, 0, 0, 0, {0, 0}, {0, 0}, 0, 0};
+        // Pmight, Mmight, hit, dodge, crit, favor, wgt, uses, prof, range, hand, dmg_type, cost
+        Unit_stats bonus_stats = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
+        Unit_stats malus_stats = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
+        long unsigned int effect = 0;
+        short unsigned int type = 0;
+        short unsigned int effective = 0;
+        std::string name = "";
+        std::string description = "";
+        unsigned char id = 0;
     public:
         Weapon();
         Weapon(Weapon_stats in_stats);
