@@ -26,18 +26,14 @@ int main(int argc, char * argv[]) {
 
     SDL_Log("Initializing TinyMT\n");
     init_tinyMT();
-    // baseScript();
-    // SDL_Log("Testing script: %s\n", all_scripts["Chapter 1"].getScene("Intro").getLine("1").line.c_str());
-    // SDL_Log("Testing script: %s\n", all_scripts["Supports"].getScene("Main_Lovely_C").getLine("1").line.c_str());
 
-    // baseNarrativeState();
-    // SDL_Log("Testing narrative: Did Erwin die? %d\n", died["Erwin"]);
     baseWeapons();
     SDL_Log("Testing weapon: %s\n", all_weapons[WPN::NAME::WOODEN_SWORD].getName().c_str());
     
     baseUnits();
     SDL_Log("Testing units: %s \n", all_units[UNIT::NAME::SILOU].getName().c_str());
-
+    testXMLUnits();
+    
     firesaga = new Game();
     SDL_Log("Game object created\n");
 

@@ -1184,7 +1184,7 @@ void Unit::readXML(const char * filename) {
 } 
 
 void Unit::writeXML(const char * filename, const bool append) {
-    SDL_Log("writeXML Unit to %s\n", filename);
+    SDL_Log("writeXML Unit to: %s\n", filename);
     // How to write files so that it is modifiable by randos?
     PHYSFS_file * fp;
     char buffer[DEFAULT::BUFFER_SIZE];
