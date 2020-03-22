@@ -265,18 +265,14 @@ void xmlreadwpnstats(tinyxml2::XMLElement * in_pStats, Weapon_stats * in_stats) 
     ptemp = in_pStats->FirstChildElement("hand");
     ptemp->QueryUnsignedText(&bufint);
     in_stats->hand[0] = (unsigned char)bufint;
-    ptemp = in_pStats->EndChildElement("hand");
+    ptemp = in_pStats->LastChildElement("hand");
     ptemp->QueryUnsignedText(&bufint);
-    in_stats->hamd[1] = (unsigned char)bufint;
+    in_stats->hand[1] = (unsigned char)bufint;
     ptemp = in_pStats->FirstChildElement("dmg_type");
+    ptemp->QueryBoolText(&in_stats->dmg_type);
+    ptemp = in_pStats->FirstChildElement("price");
     ptemp->QueryUnsignedText(&bufint);
-    in_stats->dmg+type = (unsigned char)bufint;
-    ptemp = in_pStats->FirstChildElement("");
-    ptemp->QueryUnsignedText(&bufint);
-    in_stats-> = (unsigned char)bufint;
-    ptemp = in_pStats->FirstChildElement("");
-    ptemp->QueryUnsignedText(&bufint);
-    in_stats-> = (unsigned char)bufint;
+    in_stats->price = (unsigned short int)bufint;
 }
 
 void xmlreadstats(tinyxml2::XMLElement * in_pStats, Unit_stats * in_stats) {
@@ -342,7 +338,7 @@ void xmlwritewpnstats(tinyxml2::XMLDocument * in_doc, tinyxml2::XMLElement * in_
     tinyxml2::XMLElement * phand1 = in_doc->NewElement("hand");
     tinyxml2::XMLElement * phand2 = in_doc->NewElement("hand");
     tinyxml2::XMLElement * pdmg_type = in_doc->NewElement("dmg_type");
-    tinyxml2::XMLElement * pprice = in_doc->NewElement("cost");
+    tinyxml2::XMLElement * pprice = in_doc->NewElement("price");
     in_pStats->InsertEndChild(pPmight);
     in_pStats->InsertEndChild(pMmight);
     in_pStats->InsertEndChild(phit);

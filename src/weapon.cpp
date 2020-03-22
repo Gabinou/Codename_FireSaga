@@ -95,6 +95,38 @@ void Weapon::readXML(const char * filename) {
     ptemp = pWpn->FirstChildElement("Name");
     if (!ptemp) {SDL_Log("Cannot get Name element");}   
     name = ptemp->GetText();
+
+    ptemp = pWpn->FirstChildElement("Name");
+    if (!ptemp) {SDL_Log("Cannot get Name element");}   
+    name = ptemp->GetText();
+    ptemp = pWpn->FirstChildElement("id");
+    if (!ptemp) {SDL_Log("Cannot get id element");}   
+    ptemp->QueryUnsignedText(&bufint);
+    id = (unsigned short int)bufint;
+    ptemp = pWpn->FirstChildElement("Description");
+    if (!ptemp) {SDL_Log("Cannot get Description element");}   
+    description = ptemp->GetText();
+    ptemp = pWpn->FirstChildElement("Bonus");
+    if (!ptemp) {SDL_Log("Cannot get Bonus element");}   
+    xmlreadstats(ptemp, &bonus_stats);    
+    ptemp = pWpn->FirstChildElement("Malus");
+    if (!ptemp) {SDL_Log("Cannot get Malus element");}   
+    xmlreadstats(ptemp, &malus_stats);
+    ptemp = pWpn->FirstChildElement("Type");
+    if (!ptemp) {SDL_Log("Cannot get Type element");}   
+    ptemp->QueryUnsignedText(&bufint);
+    id = (unsigned short int)bufint;
+    ptemp = pWpn->FirstChildElement("Effective");
+    if (!ptemp) {SDL_Log("Cannot get Effective element");}   
+    ptemp->QueryUnsignedText(&bufint);
+    effective = (unsigned long int)bufint;
+    ptemp = pWpn->FirstChildElement("Effect");
+    if (!ptemp) {SDL_Log("Cannot get Effect element");}   
+    ptemp->QueryUnsignedText(&bufint);
+    effect = (unsigned short int)bufint;
+    ptemp = pWpn->FirstChildElement("Stats");
+    if (!ptemp) {SDL_Log("Cannot get Stats element");}   
+    xmlreadwpnstats(ptemp, &stats);
 }
 
 void Weapon::writeXML(const char * filename, const bool append) {
@@ -234,7 +266,7 @@ void testXMLWeapons(){
     SDL_Log("Testing Weapon xml writing and reading\n");
     Weapon temp_wpn;
     Weapon_stats temp_wpn_stats;
-    // Pmight, Mmight, hit, dodge, crit, favor, wgt, uses, wpnlvl, range, hand, dmg_type, cost
+    // Pmight, Mmight, hit, dodge, crit, favor, wgt, uses, wpnlvl, range, hand, dmg_type, price
     temp_wpn_stats = {3, 0, 80, 0, 0, 0, 3, 30, 2, {1,1}, {1,2}, 0, 1000};
     temp_wpn = Weapon("Wooden sword", WPN::TYPE::SWORD, temp_wpn_stats, WPN::NAME::WOODEN_SWORD);
     temp_wpn.setDescription("Practice sword, made of wood. It's crushing blows are still deadly.");
@@ -254,7 +286,7 @@ std::vector<Weapon> baseWeapons(std::vector<short int> toload){
         index = toload[i];
         switch (index) {
             case WPN::NAME::WOODEN_SWORD:
-                // Pmight, Mmight, hit, dodge, crit, favor, wgt, uses, wpnlvl, range, hand, dmg_type, cost
+                // Pmight, Mmight, hit, dodge, crit, favor, wgt, uses, wpnlvl, range, hand, dmg_type, price
                 temp_wpn_stats = {3, 0, 80, 0, 0, 0, 3, 30, 2, {1,1}, {1,2}, 0, 1000};
                 temp_wpn = Weapon("Wooden sword", WPN::TYPE::SWORD, temp_wpn_stats, WPN::NAME::WOODEN_SWORD);
                 temp_wpn.setDescription("Practice sword, made of wood. It's crushing blows are still deadly.");
@@ -1054,7 +1086,7 @@ std::vector<Weapon> baseWeapons(std::vector<short int> toload){
 void baseWeapons(){
     Weapon temp_wpn;
     Weapon_stats temp_wpn_stats;
-    // Pmight, Mmight, hit, dodge, crit, favor, wgt, uses, wpnlvl, range, hand, dmg_type, cost
+    // Pmight, Mmight, hit, dodge, crit, favor, wgt, uses, wpnlvl, range, hand, dmg_type, price
     temp_wpn_stats = {3, 0, 80, 0, 0, 0, 3, 30, 2, {1,1}, {1,2}, 0, 1000};
     temp_wpn = Weapon("Wooden sword", WPN::TYPE::SWORD, temp_wpn_stats, WPN::NAME::WOODEN_SWORD);
     temp_wpn.setDescription("Practice sword, made of wood. It's crushing blows are still deadly.");
