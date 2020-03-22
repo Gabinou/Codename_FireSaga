@@ -1284,11 +1284,13 @@ void Unit::writeXML(const char * filename, const bool append) {
     xmlDoc.Print(&printer);
     char longbuffer[printer.CStrSize()];
     sprintf(longbuffer, printer.CStr());
+    SDL_Log("%s", longbuffer);
     
     PHYSFS_writeBytes(fp, longbuffer, printer.CStrSize());
 
     PHYSFS_close(fp);
 }
+
 void Unit::writeFS(const char * filename, const bool append) {
     // Maybe this function should write constant number of bytes per line...
     // Easier to read.
@@ -1396,9 +1398,7 @@ void testXMLUnits() {
     temp_unit.addEquipment(temp_wpn);
     temp_wpn.id = WPN::NAME::POT_LID;
     temp_unit.addEquipment(temp_wpn);
-    temp_unit.write("unit_test.txt", "w");
     temp_unit.writeXML("unit_test.xml");
-    SDL_Log("Mount Point: %s", PHYSFS_getMountPoint("\\assets.binou"));
     temp_unit = Unit();
     temp_unit.readXML("unit_test.xml");
     temp_unit.writeXML("unit_rewrite.xml");

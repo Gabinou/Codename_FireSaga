@@ -1,7 +1,6 @@
 #ifndef UNIT_HPP
 #define UNIT_HPP
 
-#include "utilities.hpp"
 #include "enums.hpp"
 #include "weapon.hpp"
 #include "linalg.hpp"
@@ -160,7 +159,6 @@ class Unit {
         void xmlreadequipment(tinyxml2::XMLElement * in_pEquipment);
         void writeFS(const char * filename, const bool append = false);
         void read(const char * filename);
-        void readxml(const char * filename);
 };
 
 extern std::vector<Unit> all_units;

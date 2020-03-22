@@ -89,10 +89,10 @@ void Weapon::writeXML(const char * filename, const bool append) {
     xmlDoc.InsertFirstChild(xmlDoc.NewDeclaration());
 
     tinyxml2::XMLElement * pWpn = xmlDoc.NewElement("Weapon");
-    xmlDoc.InsertEndChild(pWpn);
+    xmlDoc.InsertFirstChild(pWpn);
     
     tinyxml2::XMLElement * pName = xmlDoc.NewElement("Name");
-    pWpn->InsertEndChild(pName);
+    pWpn->InsertFirstChild(pName);
     pName->SetText(name.c_str());
 
     tinyxml2::XMLPrinter printer;
@@ -100,9 +100,10 @@ void Weapon::writeXML(const char * filename, const bool append) {
     xmlDoc.Print(&printer);
     char longbuffer[printer.CStrSize()];
     sprintf(longbuffer, printer.CStr());
-    
+    SDL_Log("%s", longbuffer);
     PHYSFS_writeBytes(fp, longbuffer, printer.CStrSize());
 
+    PHYSFS_close(fp);
     PHYSFS_close(fp);
 }
 
@@ -177,6 +178,7 @@ std::vector<Weapon> all_weapons(WPN::NAME::END);
 std::vector<Weapon> loaded_weapons;
 
 void testXMLWeapons(){
+    SDL_Log("Testing Weapon xml writing and reading\n");
     Weapon temp_wpn;
     Weapon_stats temp_wpn_stats;
     // Pmight, Mmight, hit, dodge, crit, favor, wgt, uses, wpnlvl, range, hand, dmg_type, cost
