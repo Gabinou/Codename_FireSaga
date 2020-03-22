@@ -8,9 +8,9 @@
 class Weapon {
     private:
         Weapon_stats stats;
-        //hp,str,mag,skl,spd,luck,def,res,con,move
-        Unit_stats bonus = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
-        Unit_stats malus = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
+        //hp,str,mag,skl,spd,luck,def,res,con,move,prof
+        Unit_stats bonus;
+        Unit_stats malus;
         long unsigned int effect;
         short unsigned int type;
         short unsigned int effective;
