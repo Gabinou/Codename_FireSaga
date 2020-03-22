@@ -30,5 +30,6 @@ extern void writeText(int in_fontsize, int in_position[2], float in_sizefactor[2
 extern void xmlwritestats(tinyxml2::XMLDocument * in_doc, tinyxml2::XMLElement * in_pStats, Unit_stats * in_stats);
 extern void xmlwritewpnstats(tinyxml2::XMLDocument * in_doc, tinyxml2::XMLElement * in_pStats, Weapon_stats * in_stats);
 extern void xmlreadstats(tinyxml2::XMLElement * in_pStats, Unit_stats * in_stats);
+extern void xmlreadwpnstats(tinyxml2::XMLElement * in_pStats, Weapon_stats * in_stats);
 
 #endif /* FILESYSTEM_HPP */

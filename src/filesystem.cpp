@@ -222,6 +222,62 @@ void writeText(SDL_Renderer * in_renderer, int in_fontsize, int in_position[2], 
     SDL_RenderPresent(in_renderer);
 }
 
+bool dmg_type; // 0 is 1 physical. 1 magic.
+unsigned short int price;
+
+void xmlreadwpnstats(tinyxml2::XMLElement * in_pStats, Weapon_stats * in_stats) {
+    tinyxml2::XMLElement * ptemp = in_pStats->FirstChildElement("Pmight");
+    unsigned int bufint;
+    ptemp->QueryUnsignedText(&bufint);
+    in_stats->Pmight = (unsigned char)bufint;
+
+    ptemp = in_pStats->FirstChildElement("Mmight");
+    ptemp->QueryUnsignedText(&bufint);
+    in_stats->Mmight = (unsigned char)bufint;
+
+    ptemp = in_pStats->FirstChildElement("hit");
+    ptemp->QueryUnsignedText(&bufint);
+    in_stats->combat.hit = (unsigned char)bufint;
+    ptemp = in_pStats->FirstChildElement("dodge");
+    ptemp->QueryUnsignedText(&bufint);
+    in_stats->combat.dodge = (unsigned char)bufint;
+    ptemp = in_pStats->FirstChildElement("crit");
+    ptemp->QueryUnsignedText(&bufint);
+    in_stats->combat.crit = (unsigned char)bufint;
+    ptemp = in_pStats->FirstChildElement("favor");
+    ptemp->QueryUnsignedText(&bufint);
+    in_stats->combat.favor = (unsigned char)bufint;
+    ptemp = in_pStats->FirstChildElement("wgt");
+    ptemp->QueryUnsignedText(&bufint);
+    in_stats->wgt = (unsigned char)bufint;
+    ptemp = in_pStats->FirstChildElement("uses");
+    ptemp->QueryUnsignedText(&bufint);
+    in_stats->uses = (unsigned char)bufint;
+    ptemp = in_pStats->FirstChildElement("prof");
+    ptemp->QueryUnsignedText(&bufint);
+    in_stats->prof = (unsigned char)bufint;
+    ptemp = in_pStats->FirstChildElement("minrange");
+    ptemp->QueryUnsignedText(&bufint);
+    in_stats->range[0] = (unsigned char)bufint;
+    ptemp = in_pStats->FirstChildElement("maxrange");
+    ptemp->QueryUnsignedText(&bufint);
+    in_stats->range[1] = (unsigned char)bufint;
+    ptemp = in_pStats->FirstChildElement("hand");
+    ptemp->QueryUnsignedText(&bufint);
+    in_stats->hand[0] = (unsigned char)bufint;
+    ptemp = in_pStats->EndChildElement("hand");
+    ptemp->QueryUnsignedText(&bufint);
+    in_stats->hamd[1] = (unsigned char)bufint;
+    ptemp = in_pStats->FirstChildElement("dmg_type");
+    ptemp->QueryUnsignedText(&bufint);
+    in_stats->dmg+type = (unsigned char)bufint;
+    ptemp = in_pStats->FirstChildElement("");
+    ptemp->QueryUnsignedText(&bufint);
+    in_stats-> = (unsigned char)bufint;
+    ptemp = in_pStats->FirstChildElement("");
+    ptemp->QueryUnsignedText(&bufint);
+    in_stats-> = (unsigned char)bufint;
+}
 
 void xmlreadstats(tinyxml2::XMLElement * in_pStats, Unit_stats * in_stats) {
     tinyxml2::XMLElement * ptemp = in_pStats->FirstChildElement("hp");
