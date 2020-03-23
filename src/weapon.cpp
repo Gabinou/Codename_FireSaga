@@ -108,10 +108,10 @@ void Weapon::readXML(const char * filename) {
     description = ptemp->GetText();
     ptemp = pWpn->FirstChildElement("Bonus");
     if (!ptemp) {SDL_Log("Cannot get Bonus element");}   
-    xmlreadstats(ptemp, &bonus_stats);    
+    readXML_stats(ptemp, &bonus_stats);    
     ptemp = pWpn->FirstChildElement("Malus");
     if (!ptemp) {SDL_Log("Cannot get Malus element");}   
-    xmlreadstats(ptemp, &malus_stats);
+    readXML_stats(ptemp, &malus_stats);
     ptemp = pWpn->FirstChildElement("Type");
     if (!ptemp) {SDL_Log("Cannot get Type element");}   
     ptemp->QueryUnsignedText(&bufint);
@@ -126,7 +126,7 @@ void Weapon::readXML(const char * filename) {
     effect = (unsigned short int)bufint;
     ptemp = pWpn->FirstChildElement("Stats");
     if (!ptemp) {SDL_Log("Cannot get Stats element");}   
-    xmlreadwpnstats(ptemp, &stats);
+    readXML_stats(ptemp, &stats);
 }
 
 void Weapon::writeXML(const char * filename, const bool append) {
@@ -151,7 +151,7 @@ void Weapon::writeXML(const char * filename, const bool append) {
 
     tinyxml2::XMLElement * pStats = xmlDoc.NewElement("Stats");
     pWpn->InsertEndChild(pStats);
-    xmlwritewpnstats(&xmlDoc, pStats, &stats);
+    writeXML_stats(&xmlDoc, pStats, &stats);
 
     tinyxml2::XMLElement * pId = xmlDoc.NewElement("id");
     pWpn->InsertEndChild(pId);
@@ -163,11 +163,11 @@ void Weapon::writeXML(const char * filename, const bool append) {
 
     tinyxml2::XMLElement * pBonus = xmlDoc.NewElement("Bonus");
     pWpn->InsertEndChild(pBonus);
-    xmlwritestats(&xmlDoc, pBonus, &bonus_stats);
+    writeXML_stats(&xmlDoc, pBonus, &bonus_stats);
 
     tinyxml2::XMLElement * pMalus = xmlDoc.NewElement("Malus");
     pWpn->InsertEndChild(pMalus);
-    xmlwritestats(&xmlDoc, pMalus, &malus_stats);
+    writeXML_stats(&xmlDoc, pMalus, &malus_stats);
 
     tinyxml2::XMLElement * pEffective = xmlDoc.NewElement("Effective");
     pWpn->InsertEndChild(pEffective);
@@ -188,7 +188,6 @@ void Weapon::writeXML(const char * filename, const bool append) {
     sprintf(longbuffer, printer.CStr());
     PHYSFS_writeBytes(fp, longbuffer, printer.CStrSize());
 
-    PHYSFS_close(fp);
     PHYSFS_close(fp);
 }
 

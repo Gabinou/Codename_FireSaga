@@ -225,7 +225,7 @@ void writeText(SDL_Renderer * in_renderer, int in_fontsize, int in_position[2], 
 bool dmg_type; // 0 is 1 physical. 1 magic.
 unsigned short int price;
 
-void xmlreadwpnstats(tinyxml2::XMLElement * in_pStats, Weapon_stats * in_stats) {
+void readXML_stats(tinyxml2::XMLElement * in_pStats, Weapon_stats * in_stats) {
     tinyxml2::XMLElement * ptemp = in_pStats->FirstChildElement("Pmight");
     unsigned int bufint;
     ptemp->QueryUnsignedText(&bufint);
@@ -275,7 +275,7 @@ void xmlreadwpnstats(tinyxml2::XMLElement * in_pStats, Weapon_stats * in_stats) 
     in_stats->price = (unsigned short int)bufint;
 }
 
-void xmlreadstats(tinyxml2::XMLElement * in_pStats, Unit_stats * in_stats) {
+void readXML_stats(tinyxml2::XMLElement * in_pStats, Unit_stats * in_stats) {
     tinyxml2::XMLElement * ptemp = in_pStats->FirstChildElement("hp");
     unsigned int bufint;
     ptemp->QueryUnsignedText(&bufint);
@@ -321,7 +321,7 @@ void xmlreadstats(tinyxml2::XMLElement * in_pStats, Unit_stats * in_stats) {
     ptemp->QueryUnsignedText(&bufint);
     in_stats->prof = (unsigned char)bufint;
 } 
-void xmlwritewpnstats(tinyxml2::XMLDocument * in_doc, tinyxml2::XMLElement * in_pStats, Weapon_stats * in_stats) {
+void writeXML_stats(tinyxml2::XMLDocument * in_doc, tinyxml2::XMLElement * in_pStats, Weapon_stats * in_stats) {
     // Pmight, Mmight, hit, dodge, crit, favor, wgt, uses, prof, range, hand, dmg_type, cost
     Combat_stats combat;
     tinyxml2::XMLElement * pPmight = in_doc->NewElement("Pmight");
@@ -371,7 +371,7 @@ void xmlwritewpnstats(tinyxml2::XMLDocument * in_doc, tinyxml2::XMLElement * in_
     pprice->SetText(in_stats->price);
 }
 
-void xmlwritestats(tinyxml2::XMLDocument * in_doc, tinyxml2::XMLElement * in_pStats, Unit_stats * in_stats) {
+void writeXML_stats(tinyxml2::XMLDocument * in_doc, tinyxml2::XMLElement * in_pStats, Unit_stats * in_stats) {
     tinyxml2::XMLElement * php = in_doc->NewElement("hp");
     tinyxml2::XMLElement * pstr = in_doc->NewElement("str");
     tinyxml2::XMLElement * pmag = in_doc->NewElement("mag");

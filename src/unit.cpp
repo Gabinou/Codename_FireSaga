@@ -1015,7 +1015,7 @@ void Unit::read(const char * filename) {
     fclose(fp);
 }
 
-void Unit::xmlreadequipment(tinyxml2::XMLElement * in_pEquipment) {
+void Unit::readXML_equipment(tinyxml2::XMLElement * in_pEquipment) {
     tinyxml2::XMLElement * pItem = in_pEquipment->FirstChildElement("Item");
     tinyxml2::XMLElement * pId;
     tinyxml2::XMLElement * pUsed;
@@ -1073,19 +1073,19 @@ void Unit::readXML(const char * filename) {
     class_index = (unsigned char)bufint;
     ptemp = pUnit->FirstChildElement("Stats");
     if (!ptemp) {SDL_Log("Cannot get Stats element");}   
-    xmlreadstats(ptemp, &current_stats);
+    readXML_stats(ptemp, &current_stats);
     ptemp = pUnit->FirstChildElement("Growths");
     if (!ptemp) {SDL_Log("Cannot get Growths element");}   
-    xmlreadstats(ptemp, &growths);
+    readXML_stats(ptemp, &growths);
     ptemp = pUnit->FirstChildElement("Caps");
     if (!ptemp) {SDL_Log("Cannot get Caps element");}   
-    xmlreadstats(ptemp, &caps_stats);
+    readXML_stats(ptemp, &caps_stats);
     ptemp = pUnit->FirstChildElement("Bases");
     if (!ptemp) {SDL_Log("Cannot get Bases element");}   
-    xmlreadstats(ptemp, &base_stats);
+    readXML_stats(ptemp, &base_stats);
     ptemp = pUnit->FirstChildElement("Equipment");
     if (!ptemp) {SDL_Log("Cannot get Equipment element");}   
-    xmlreadequipment(ptemp);
+    readXML_equipment(ptemp);
     
     tinyxml2::XMLElement * pLevelUps = pUnit->FirstChildElement("LevelUps");
     if (!pLevelUps) {SDL_Log("Cannot get levelUps element");
@@ -1093,7 +1093,7 @@ void Unit::readXML(const char * filename) {
         ptemp = pLevelUps->FirstChildElement("LevelUp");
         Unit_stats temp_stats = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
         do {
-            xmlreadstats(ptemp, &temp_stats);
+            readXML_stats(ptemp, &temp_stats);
             grown_stats.push_back(temp_stats); 
             ptemp = ptemp->NextSiblingElement("LevelUp");
         } while(ptemp);
@@ -1138,19 +1138,19 @@ void Unit::writeXML(const char * filename, const bool append) {
     
     tinyxml2::XMLElement * pStats = xmlDoc.NewElement("Stats");
     pUnit->InsertEndChild(pStats);
-    xmlwritestats(&xmlDoc, pStats, &current_stats);
+    writeXML_stats(&xmlDoc, pStats, &current_stats);
     
     tinyxml2::XMLElement * pGrowths = xmlDoc.NewElement("Growths");
     pUnit->InsertEndChild(pGrowths);
-    xmlwritestats(&xmlDoc, pGrowths, &growths);
+    writeXML_stats(&xmlDoc, pGrowths, &growths);
     
     tinyxml2::XMLElement * pCaps = xmlDoc.NewElement("Caps");
     pUnit->InsertEndChild(pCaps);
-    xmlwritestats(&xmlDoc, pCaps, &caps_stats);
+    writeXML_stats(&xmlDoc, pCaps, &caps_stats);
     
     tinyxml2::XMLElement * pBases = xmlDoc.NewElement("Bases");
     pUnit->InsertEndChild(pBases);
-    xmlwritestats(&xmlDoc, pBases, &base_stats);
+    writeXML_stats(&xmlDoc, pBases, &base_stats);
 
     if (grown_stats.size() > 0) {
         tinyxml2::XMLElement * pGrown = xmlDoc.NewElement("LevelUps");
@@ -1159,7 +1159,7 @@ void Unit::writeXML(const char * filename, const bool append) {
         for (int i = 0; i < grown_stats.size(); i++) {
             pGrownLevel = xmlDoc.NewElement("LevelUp");
             pGrown->InsertEndChild(pGrownLevel);
-            xmlwritestats(&xmlDoc, pGrownLevel, &(grown_stats[i]));
+            writeXML_stats(&xmlDoc, pGrownLevel, &(grown_stats[i]));
         }
     }
 
@@ -1314,9 +1314,13 @@ void testXMLUnits() {
     temp_wpn.id = WPN::NAME::POT_LID;
     temp_unit.addEquipment(temp_wpn);
     temp_unit.writeXML("unit_test.xml");
+    temp_unit.writeXML("unit_test.binou");
     temp_unit = Unit();
     temp_unit.readXML("unit_test.xml");
     temp_unit.writeXML("unit_rewrite.xml");
+    temp_unit = Unit();
+    temp_unit.readXML("unit_test.binou");
+    temp_unit.writeXML("unit_rewrite.binou");
 }
 
 void baseUnits() {
