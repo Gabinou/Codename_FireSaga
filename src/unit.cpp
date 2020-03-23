@@ -438,7 +438,7 @@ unsigned char Unit::getMvttype() {
     return (mvt_type);
 }
 
-void Unit::setSupports(const short int * in_names) {
+void Unit::setSupports(short int * in_names) {
     supports.names = in_names;
 }
 
@@ -1310,7 +1310,7 @@ void baseUnits() {
     Unit temp_unit;
     Unit_stats temp;
     Inventory_item temp_wpn;
-    short int temp_supports[DEFAULT::SUPPORTS_MAX];
+    short int temp_supports;
     //hp,str,mag,skl,spd,luck,def,res,con,move
     // printf("Made unit.\n");
 

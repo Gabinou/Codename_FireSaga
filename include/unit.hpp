@@ -64,7 +64,7 @@ class Unit {
         Unit(const std::string in_name, const Unit_stats in_bases);
         Unit(const Unit_stats in_bases);
 
-        void setSupports(const short int * in_names);
+        void setSupports(short int * in_names);
 
         void setSex(const bool in_sex);
         bool getSex();
