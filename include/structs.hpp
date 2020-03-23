@@ -78,6 +78,11 @@ struct Map_enemy {
     unsigned char levelup;
 };
 
+struct Supports {
+    short int names[DEFAULT::SUPPORTS_MAX] = {-1, -1, -1, -1, -1, -1, -1};
+    char level[DEFAULT::SUPPORTS_MAX] = {0, 0, 0, 0, 0, 0, 0};
+};
+
 struct Movement_cost {
     // i THINK THIS IS USELESS
     unsigned char foot_slow; // fencer, mousquetaire, duelist, lord, duke, archer, marksman, mercenary, hero, trooper

@@ -438,6 +438,12 @@ unsigned char Unit::getMvttype() {
     return (mvt_type);
 }
 
+void Unit::setSupports(const short int * in_names) {
+    supports.names = in_names;
+}
+
+
+
 void Unit::autoMvttype() {
     switch(class_index) {
         case UNIT::CLASS::MERCENARY:
@@ -1097,6 +1103,7 @@ void Unit::readXML(const char * filename) {
     autoClass_name();
     autoSex_name();
     autoSkill_names();
+    speed();
 } 
 
 void Unit::writeXML(const char * filename, const bool append) {
@@ -1104,13 +1111,16 @@ void Unit::writeXML(const char * filename, const bool append) {
     // How to write files so that it is modifiable by randos?
     PHYSFS_file * fp;
     char buffer[DEFAULT::BUFFER_SIZE];
+    tinyxml2::XMLDocument xmlDoc;
+    if (!PHYSFS_exists(filename)) {    
+        xmlDoc.InsertFirstChild(xmlDoc.NewDeclaration());
+    }
     if (append) {
         fp = PHYSFS_openAppend(filename);
+
     } else {
         fp = PHYSFS_openWrite(filename);
     }
-    tinyxml2::XMLDocument xmlDoc;
-    xmlDoc.InsertFirstChild(xmlDoc.NewDeclaration());
     
     tinyxml2::XMLElement * pUnit = xmlDoc.NewElement("Unit");
     xmlDoc.InsertEndChild(pUnit);
@@ -1300,6 +1310,7 @@ void baseUnits() {
     Unit temp_unit;
     Unit_stats temp;
     Inventory_item temp_wpn;
+    short int temp_supports[DEFAULT::SUPPORTS_MAX];
     //hp,str,mag,skl,spd,luck,def,res,con,move
     // printf("Made unit.\n");
 
@@ -1316,6 +1327,8 @@ void baseUnits() {
     temp_unit.addEquipment(temp_wpn);
     temp_wpn.id = WPN::NAME::POT_LID;
     temp_unit.addEquipment(temp_wpn);
+    temp_supports = {UNIT::NAME::KIARA}; 
+    temp_unit.setSupports(temp_supports);
     all_units[UNIT::NAME::ERWIN] = temp_unit;
 
     temp = {18,  6,  2,  7,  7,   7,  4,  5,  6, 7};
@@ -1400,6 +1413,17 @@ void baseUnits() {
     temp_wpn.id = WPN::NAME::BALL_LIGHTNING;
     temp_unit.addEquipment(temp_wpn);
     all_units[UNIT::NAME::SILOU] = temp_unit;
+
+    all_units[UNIT::NAME::ERWIN].writeXML("playables.xml", true); 
+    all_units[UNIT::NAME::KIARA].writeXML("playables.xml", true); 
+    all_units[UNIT::NAME::RELIABLE].writeXML("playables.xml", true); 
+    all_units[UNIT::NAME::COWARD].writeXML("playables.xml", true); 
+    all_units[UNIT::NAME::HOTTIE].writeXML("playables.xml", true); 
+    all_units[UNIT::NAME::POET].writeXML("playables.xml", true); 
+    all_units[UNIT::NAME::PERIGNON].writeXML("playables.xml", true); 
+    all_units[UNIT::NAME::SILOU].writeXML("playables.xml", true); 
+    all_units[UNIT::NAME::JAIGEN1H].writeXML("playables.xml", true); 
+
 }
 
 void genericEnemyUnits() {

@@ -18,6 +18,8 @@ class Unit {
 
         Combat_stats combat_stats;
 
+        Supports supports;
+
         Unit_stats base_stats = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
         Unit_stats bonus_stats = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
         Unit_stats caps_stats = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
@@ -61,6 +63,8 @@ class Unit {
         Unit(const std::string in_name, const unsigned char in_class_index, const Unit_stats in_bases);
         Unit(const std::string in_name, const Unit_stats in_bases);
         Unit(const Unit_stats in_bases);
+
+        void setSupports(const short int * in_names);
 
         void setSex(const bool in_sex);
         bool getSex();
