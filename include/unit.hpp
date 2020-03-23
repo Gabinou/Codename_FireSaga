@@ -152,13 +152,11 @@ class Unit {
 
         void dies();
 
-        void write(const char * filename, const char * mode = "a");
+        void write(const char * filename, const bool append = false);
         void writeXML(const char * filename, const bool append = false);
         void readXML(const char * filename);
 
         void readXML_equipment(tinyxml2::XMLElement * in_pEquipment);
-        void writeFS(const char * filename, const bool append = false);
-        void read(const char * filename);
 };
 
 extern std::vector<Unit> all_units;

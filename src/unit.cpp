@@ -1008,13 +1008,6 @@ char Unit::speed() {
     return(current_speed);
 }
 
-void Unit::read(const char * filename) {
-    FILE * fp;
-    fp = fopen(filename, "r");
-
-    fclose(fp);
-}
-
 void Unit::readXML_equipment(tinyxml2::XMLElement * in_pEquipment) {
     tinyxml2::XMLElement * pItem = in_pEquipment->FirstChildElement("Item");
     tinyxml2::XMLElement * pId;
@@ -1098,6 +1091,12 @@ void Unit::readXML(const char * filename) {
             ptemp = ptemp->NextSiblingElement("LevelUp");
         } while(ptemp);
     }
+
+    combatStats();
+    autoMvttype();
+    autoClass_name();
+    autoSex_name();
+    autoSkill_names();
 } 
 
 void Unit::writeXML(const char * filename, const bool append) {
@@ -1206,7 +1205,7 @@ void Unit::writeXML(const char * filename, const bool append) {
     PHYSFS_close(fp);
 }
 
-void Unit::writeFS(const char * filename, const bool append) {
+void Unit::write(const char * filename, const bool append) {
     // Maybe this function should write constant number of bytes per line...
     // Easier to read.
     PHYSFS_file * fp;
@@ -1262,35 +1261,8 @@ void Unit::writeFS(const char * filename, const bool append) {
     PHYSFS_close(fp);
 }
 
-void Unit::write(const char * filename, const char * mode) {
-
-    FILE * fp = fopen(filename, mode);
-    fprintf(fp, "%s \n", name.c_str());
-    if (sex) {
-        fprintf(fp, "%s \n", "M");
-    } else {
-        fprintf(fp, "%s \n", "F");
-    }
-    fprintf(fp, "%s \n", class_name.c_str());
-    fprintf(fp, "Exp: \t%d \n", exp);
-    fprintf(fp, "Stats: HP, Str, Mag, Skl, Spd, Luck, Def, Res, Con, Move\n");
-    fprintf(fp, "Base stats:\t%d,\t%d,\t%d,\t%d,\t%d,\t%d,\t%d,\t%d,\t%d,\t%d,\t%d\n", base_stats.hp, base_stats.str, base_stats.mag, base_stats.dex, base_stats.agi, base_stats.luck, base_stats.def, base_stats.res, base_stats.con, base_stats.move, base_stats.prof);
-    fprintf(fp, "Growths:\t%d,\t%d,\t%d,\t%d,\t%d,\t%d,\t%d,\t%d,\t%d,\t%d,\t%d\n", growths.hp, growths.str, growths.mag, growths.dex, growths.agi, growths.luck, growths.def, growths.res, growths.con, growths.move, growths.prof);
-    fprintf(fp, "Caps:\t\t%d,\t%d,\t%d,\t%d,\t%d,\t%d,\t%d,\t%d,\t%d,\t%d,\t%d\n", caps_stats.hp, caps_stats.str, caps_stats.mag, caps_stats.dex, caps_stats.agi, caps_stats.luck, caps_stats.def, caps_stats.res, caps_stats.con, caps_stats.move, caps_stats.prof);
-    fprintf(fp, "Level-ups:\n");
-    for (int i = 0; i < grown_stats.size(); i++) {
-        fprintf(fp, "%d:\t\t%d,\t%d,\t%d,\t%d,\t%d,\t%d,\t%d,\t%d,\t%d,\t%d,\t%d\n", exp/10, grown_stats[i].hp, grown_stats[i].str, grown_stats[i].mag, grown_stats[i].dex, grown_stats[i].agi, grown_stats[i].luck, grown_stats[i].def, grown_stats[i].res, grown_stats[i].con, grown_stats[i].move, grown_stats[i].prof);
-    }
-    fprintf(fp, "\nEquipment:\n");
-    for (int i = 0; i < DEFAULT::EQUIPMENT_SIZE; i++) {
-        fprintf(fp, "%d, \t%d\n", equipment[i].id, equipment[i].used);
-    }
-    fclose(fp);
-}
-
 std::vector<Unit> all_units(UNIT::NAME::END);
 std::vector<Unit> loaded_units;
-
 
 void testXMLUnits() { 
     SDL_Log("Testing Unit xml writing and reading\n");

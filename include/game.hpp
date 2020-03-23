@@ -89,6 +89,8 @@ class Game {
         void setState(const short unsigned int new_state);
         short unsigned int getState();
 
+        void Save(const char * filename, const bool append = false);
+
         bool running();
 };
 
