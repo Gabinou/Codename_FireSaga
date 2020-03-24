@@ -14,13 +14,13 @@ Unit::Unit(const std::string in_name, const unsigned char in_class_index, const 
 }
 
 Unit::Unit(const std::string in_name, const unsigned char in_class_index, const Unit_stats in_bases, const bool in_sex) : Unit(in_name, in_class_index, in_bases) {
-    setSex(in_sex);
-    autoSex_name();
+    sex = in_sex;
+    sex_name = sexName(sex);
 }
 
 Unit::Unit(const std::string in_name, const unsigned char in_class_index, const Unit_stats in_bases) : Unit(in_name, in_bases) {
     class_index = in_class_index;
-    autoMvttype();
+    mvt_type = mvtType(class_index);
     autoClass_name();
     autoSkill_names();
     setEquippable();
@@ -305,15 +305,6 @@ void Unit::autoSkill_names() {
     }
 }
 
-void Unit::autoSex_name() {
-    if(sex) {
-        sex_name = "M";
-    } else {
-        sex_name = "F";
-    }
-}
-
-
 void Unit::autoClass_name() {
     switch(class_index) {
         case UNIT::CLASS::MERCENARY:
@@ -440,121 +431,6 @@ unsigned char Unit::getMvttype() {
 
 void Unit::setSupports(short int * in_names) {
     // supports.names = in_names;
-}
-
-
-
-void Unit::autoMvttype() {
-    switch(class_index) {
-        case UNIT::CLASS::MERCENARY:
-            mvt_type = UNIT::MVT::FOOT_SLOW;
-            break;
-        case UNIT::CLASS::LORD:
-            mvt_type = UNIT::MVT::FOOT_SLOW;
-            break;
-        case UNIT::CLASS::DUELIST:
-            mvt_type = UNIT::MVT::FOOT_SLOW;
-            break;
-        case UNIT::CLASS::THIEF:
-            mvt_type = UNIT::MVT::FOOT_FAST;
-            break;
-        case UNIT::CLASS::PEGASUS_KNIGHT:
-            mvt_type = UNIT::MVT::FLIERS;
-            break;
-        case UNIT::CLASS::PIKEMAN:
-            mvt_type = UNIT::MVT::FOOT_SLOW;
-            break;
-        case UNIT::CLASS::CAVALIER:
-            mvt_type = UNIT::MVT::RIDERS_SLOW;
-            break;
-        case UNIT::CLASS::KNIGHT:
-            mvt_type = UNIT::MVT::ARMORS;
-            break;
-        case UNIT::CLASS::BANDIT:
-            mvt_type = UNIT::MVT::BANDITS;
-            break;
-        case UNIT::CLASS::CORSAIR:
-            mvt_type = UNIT::MVT::PIRATES;
-            break;
-        case UNIT::CLASS::VIKING:
-            mvt_type = UNIT::MVT::PIRATES;
-            break;
-        case UNIT::CLASS::PICKPOCKET:
-            mvt_type = UNIT::MVT::FOOT_FAST;
-            break;
-        case UNIT::CLASS::FENCER:
-            mvt_type = UNIT::MVT::FOOT_SLOW;
-            break;
-        case UNIT::CLASS::MOUSQUETAIRE:
-            mvt_type = UNIT::MVT::FOOT_SLOW;
-            break;
-        case UNIT::CLASS::ASSASSIN:
-            mvt_type = UNIT::MVT::FOOT_FAST;
-            break;
-        case UNIT::CLASS::MARKSMAN:
-            mvt_type = UNIT::MVT::FOOT_SLOW;
-            break;        
-        case UNIT::CLASS::MARKSMAN_RIDER:
-            mvt_type = UNIT::MVT::RIDERS_SLOW;
-            break;
-        case UNIT::CLASS::ARCHER:
-            mvt_type = UNIT::MVT::FOOT_SLOW;
-            break;        
-        case UNIT::CLASS::ARCHER_RIDER:
-            mvt_type = UNIT::MVT::RIDERS_SLOW;
-            break;
-        case UNIT::CLASS::DUKE:
-            mvt_type = UNIT::MVT::FOOT_SLOW;
-            break;
-        case UNIT::CLASS::PALADIN:
-            mvt_type = UNIT::MVT::RIDERS_FAST;
-            break;
-        case UNIT::CLASS::GENERAL:
-            mvt_type = UNIT::MVT::ARMORS;
-            break;
-        case UNIT::CLASS::CLERIC:
-            mvt_type = UNIT::MVT::MAGES;
-            break;
-        case UNIT::CLASS::PRIEST:
-            mvt_type = UNIT::MVT::MAGES;
-            break;
-        case UNIT::CLASS::MAGE:
-            mvt_type = UNIT::MVT::MAGES;
-            break;
-        case UNIT::CLASS::HERO:
-            mvt_type = UNIT::MVT::FOOT_SLOW;
-            break;
-        case UNIT::CLASS::RAVAGER:
-            mvt_type = UNIT::MVT::BANDITS;
-            break;
-        case UNIT::CLASS::BATTLEMAGE:
-            mvt_type = UNIT::MVT::MAGES;
-            break;
-        case UNIT::CLASS::SAGE:
-            mvt_type = UNIT::MVT::MAGES;
-            break;
-        case UNIT::CLASS::TROUBADOUR:
-            mvt_type = UNIT::MVT::RIDERS_FAST;
-            break;
-        case UNIT::CLASS::ORACLE:
-            mvt_type = UNIT::MVT::MAGES;
-            break;
-        case UNIT::CLASS::BISHOP:
-            mvt_type = UNIT::MVT::MAGES;
-            break;
-        case UNIT::CLASS::ANGEL:
-            mvt_type = UNIT::MVT::FLIERS;
-            break;
-        case UNIT::CLASS::DEMON:
-            mvt_type = UNIT::MVT::FOOT_FAST;
-            break;
-        case UNIT::CLASS::DEMONIC_INCARNATE:
-            mvt_type = UNIT::MVT::MAGES;
-            break;
-        case UNIT::CLASS::ANGELIC_INCARNATE:
-            mvt_type = UNIT::MVT::MAGES;
-            break;
-    }
 }
 
 void Unit::equipsL(const unsigned char index) {
@@ -1099,9 +975,9 @@ void Unit::readXML(const char * filename) {
     }
 
     combatStats();
-    autoMvttype();
+    mvt_type = mvtType(class_index);
     autoClass_name();
-    autoSex_name();
+    sex_name = sexName(sex);
     autoSkill_names();
     speed();
 } 

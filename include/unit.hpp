@@ -9,6 +9,7 @@
 #include "physfs.h"
 #include "tinyxml2.h"
 #include "string.h"
+#include "utilities.hpp"
 
 class Unit {
     private:
@@ -78,9 +79,7 @@ class Unit {
         void setPos(const Point in_pos);
 
         unsigned char getMvttype();
-        void autoMvttype();
         void autoClass_name();
-        void autoSex_name();
         void autoSkill_names();
 
         short unsigned int getEquippable();
