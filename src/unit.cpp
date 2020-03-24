@@ -439,7 +439,7 @@ unsigned char Unit::getMvttype() {
 }
 
 void Unit::setSupports(short int * in_names) {
-    supports.names = in_names;
+    // supports.names = in_names;
 }
 
 
