@@ -375,9 +375,6 @@ std::vector<std::string> skillNames(unsigned long long int in_skills) {
 }
 
 short unsigned int makeEquippable(unsigned char in_class_index) {
-    // This should not be in all unit objects. So much wasted space. Make it one shared callable function. Same for other heavy switches. 
-    // Switch with individual cases:
-    // Easy to change equippable post-hoc
     short unsigned int equippable;
     switch(in_class_index) {
         case UNIT::CLASS::MERCENARY:

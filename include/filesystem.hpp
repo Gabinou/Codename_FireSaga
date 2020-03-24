@@ -9,6 +9,7 @@
 #include "physfs.h"
 #include "LodePNG.h"
 #include "structs.hpp"
+#include "enums.hpp"
 #include "tinyxml2.h"
 #include "SDL2/SDL_ttf.h"
 #include "SDL2/SDL_image.h"
@@ -31,5 +32,6 @@ extern void writeXML_stats(tinyxml2::XMLDocument * in_doc, tinyxml2::XMLElement 
 extern void readXML_stats(tinyxml2::XMLElement * in_pStats, Unit_stats * in_stats);
 extern void writeXML_stats(tinyxml2::XMLDocument * in_doc, tinyxml2::XMLElement * in_pStats, Weapon_stats * in_stats);
 extern void readXML_stats(tinyxml2::XMLElement * in_pStats, Weapon_stats * in_stats);
+extern void readXML_equipment(Inventory_item * equipment, tinyxml2::XMLElement * in_pEquipment);
 
 #endif /* FILESYSTEM_HPP */

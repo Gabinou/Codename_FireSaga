@@ -407,3 +407,21 @@ void writeXML_stats(tinyxml2::XMLDocument * in_doc, tinyxml2::XMLElement * in_pS
     pmove->SetText(in_stats->move);
     pprof->SetText(in_stats->prof);
 }
+
+void readXML_equipment(Inventory_item * equipment, tinyxml2::XMLElement * in_pEquipment) {
+    tinyxml2::XMLElement * pItem = in_pEquipment->FirstChildElement("Item");
+    tinyxml2::XMLElement * pId;
+    tinyxml2::XMLElement * pUsed;
+    int bufint;
+    for (int i = 1; i < DEFAULT::EQUIPMENT_SIZE; i++) {
+        pId = pItem->FirstChildElement("id");
+        pUsed = pItem->FirstChildElement("Used");
+        pId->QueryIntText(&bufint);
+        equipment[i].id = bufint;
+        pUsed->QueryIntText(&bufint);
+        equipment[i].used = bufint;
+        pItem = pItem->NextSiblingElement("Item");
+    }
+}
+
+

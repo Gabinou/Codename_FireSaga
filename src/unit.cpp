@@ -224,7 +224,6 @@ void Unit::gainExp(const short unsigned int in_exp) {
 }
 
 void Unit::levelUp() {
-    // How to deal with =+ 2 level ups?
     unsigned char prob;
     Unit_stats temp_stats = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
 
@@ -558,21 +557,21 @@ char Unit::speed() {
     return(current_speed);
 }
 
-void Unit::readXML_equipment(tinyxml2::XMLElement * in_pEquipment) {
-    tinyxml2::XMLElement * pItem = in_pEquipment->FirstChildElement("Item");
-    tinyxml2::XMLElement * pId;
-    tinyxml2::XMLElement * pUsed;
-    int bufint;
-    for (int i = 1; i < DEFAULT::EQUIPMENT_SIZE; i++) {
-        pId = pItem->FirstChildElement("id");
-        pUsed = pItem->FirstChildElement("Used");
-        pId->QueryIntText(&bufint);
-        equipment[i].id = bufint;
-        pUsed->QueryIntText(&bufint);
-        equipment[i].used = bufint;
-        pItem = pItem->NextSiblingElement("Item");
-    }
-}
+// void Unit::readXML_equipment(tinyxml2::XMLElement * in_pEquipment) {
+//     tinyxml2::XMLElement * pItem = in_pEquipment->FirstChildElement("Item");
+//     tinyxml2::XMLElement * pId;
+//     tinyxml2::XMLElement * pUsed;
+//     int bufint;
+//     for (int i = 1; i < DEFAULT::EQUIPMENT_SIZE; i++) {
+//         pId = pItem->FirstChildElement("id");
+//         pUsed = pItem->FirstChildElement("Used");
+//         pId->QueryIntText(&bufint);
+//         equipment[i].id = bufint;
+//         pUsed->QueryIntText(&bufint);
+//         equipment[i].used = bufint;
+//         pItem = pItem->NextSiblingElement("Item");
+//     }
+// }
 
 void Unit::readXML(const char * filename) {
     SDL_Log("readXML Unit file: %s", filename);    
@@ -628,7 +627,7 @@ void Unit::readXML(const char * filename) {
     readXML_stats(ptemp, &base_stats);
     ptemp = pUnit->FirstChildElement("Equipment");
     if (!ptemp) {SDL_Log("Cannot get Equipment element");}   
-    readXML_equipment(ptemp);
+    readXML_equipment(equipment, ptemp);
     
     tinyxml2::XMLElement * pLevelUps = pUnit->FirstChildElement("LevelUps");
     if (!pLevelUps) {SDL_Log("Cannot get levelUps element");
@@ -669,7 +668,6 @@ void Unit::writeXML(const char * filename, const bool append) {
     tinyxml2::XMLElement * pUnit = xmlDoc.NewElement("Unit");
     xmlDoc.InsertEndChild(pUnit);
     // pUnit.setAttribute();
-    
     
     tinyxml2::XMLElement * pName = xmlDoc.NewElement("Name");
     pUnit->InsertEndChild(pName);
