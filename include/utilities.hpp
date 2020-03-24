@@ -19,5 +19,6 @@ extern std::string sexName(bool in_sex);
 extern unsigned char mvtType(unsigned char in_class_index);
 extern std::string className(unsigned char in_class_index);
 extern std::vector<std::string> skillNames(unsigned long long int in_skills);
+extern short unsigned int makeEquippable(unsigned char in_class_index);
 
 #endif /* SHARED_HPP */

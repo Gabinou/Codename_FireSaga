@@ -23,7 +23,7 @@ Unit::Unit(const std::string in_name, const unsigned char in_class_index, const 
     mvt_type = mvtType(class_index);
     class_name = className(class_index);
     skill_names = skillNames(skills);
-    setEquippable();
+    equippable = makeEquippable(class_index);
 }
 
 Unit::Unit(const std::string in_name, const Unit_stats in_bases) : Unit(in_bases) {
@@ -92,115 +92,6 @@ short unsigned int Unit::getEquippable() {
     return(equippable);
 }
 
-void Unit::setEquippable() {
-    // This should not be in all unit objects. So much wasted space. Make it one shared callable function. Same for other heavy switches. 
-    // Switch with individual cases:
-    // Easy to change equippable post-hoc
-    switch(class_index) {
-        case UNIT::CLASS::MERCENARY:
-            equippable = WPN::TYPE::SHIELD + WPN::TYPE::SWORD + WPN::TYPE::OFFHAND;
-            break;
-        case UNIT::CLASS::LORD:
-            equippable = WPN::TYPE::LANCE + WPN::TYPE::SHIELD;
-            break;
-        case UNIT::CLASS::DUELIST:
-            equippable = WPN::TYPE::LANCE + WPN::TYPE::SHIELD;
-            break;
-        case UNIT::CLASS::THIEF:
-            equippable = WPN::TYPE::LANCE + WPN::TYPE::SHIELD;
-            break;
-        case UNIT::CLASS::PEGASUS_KNIGHT:
-            equippable = WPN::TYPE::LANCE + WPN::TYPE::SHIELD;
-            break;
-        case UNIT::CLASS::PIKEMAN:
-            equippable = WPN::TYPE::LANCE + WPN::TYPE::SHIELD;
-            break;
-        case UNIT::CLASS::CAVALIER:
-            equippable = WPN::TYPE::LANCE + WPN::TYPE::SHIELD;
-            break;
-        case UNIT::CLASS::KNIGHT:
-            equippable = WPN::TYPE::LANCE + WPN::TYPE::SHIELD;
-            break;
-        case UNIT::CLASS::BANDIT:
-            equippable = WPN::TYPE::SHIELD + WPN::TYPE::AXE;
-            break;
-        case UNIT::CLASS::CORSAIR:
-            equippable = WPN::TYPE::SHIELD + WPN::TYPE::OFFHAND + WPN::TYPE::AXE;
-            break;
-        case UNIT::CLASS::VIKING:
-            equippable = WPN::TYPE::SHIELD + WPN::TYPE::OFFHAND + WPN::TYPE::AXE;
-            break;
-        case UNIT::CLASS::PICKPOCKET:
-            equippable = WPN::TYPE::OFFHAND + WPN::TYPE::SWORD;
-            break;
-        case UNIT::CLASS::FENCER:
-            equippable = WPN::TYPE::OFFHAND + WPN::TYPE::SWORD;
-            break;
-        case UNIT::CLASS::MOUSQUETAIRE:
-            equippable = WPN::TYPE::SWORD + WPN::TYPE::OFFHAND + WPN::TYPE::BOW; 
-            break;
-        case UNIT::CLASS::ASSASSIN:
-            equippable = WPN::TYPE::SWORD + WPN::TYPE::OFFHAND + WPN::TYPE::BOW; 
-            break;
-        case UNIT::CLASS::MARKSMAN:
-            equippable = WPN::TYPE::SWORD + WPN::TYPE::OFFHAND + WPN::TYPE::BOW; 
-            break;
-        case UNIT::CLASS::ARCHER:
-            equippable = WPN::TYPE::BOW;
-            break;
-        case UNIT::CLASS::DUKE:
-            equippable = WPN::TYPE::SWORD + WPN::TYPE::LANCE + WPN::TYPE::SHIELD + WPN::TYPE::OFFHAND;
-            break;
-        case UNIT::CLASS::PALADIN:
-            equippable = WPN::TYPE::SWORD + WPN::TYPE::LANCE + WPN::TYPE::SHIELD + WPN::TYPE::OFFHAND;
-            break;
-        case UNIT::CLASS::GENERAL:
-            equippable = WPN::TYPE::SWORD + WPN::TYPE::SHIELD + WPN::TYPE::AXE + WPN::TYPE::LANCE;
-            break;
-        case UNIT::CLASS::CLERIC:
-            equippable = WPN::TYPE::STAFF;
-            break;
-        case UNIT::CLASS::PRIEST:
-            equippable = WPN::TYPE::STAFF;
-            break;
-        case UNIT::CLASS::MAGE:
-            equippable = WPN::TYPE::ELEMENTAL + WPN::TYPE::TRINKET;
-            break;
-        case UNIT::CLASS::HERO:
-            equippable = WPN::TYPE::AXE + WPN::TYPE::SWORD + WPN::TYPE::SHIELD + WPN::TYPE::OFFHAND;
-            break;
-        case UNIT::CLASS::RAVAGER:
-            equippable = WPN::TYPE::AXE + WPN::TYPE::SHIELD + WPN::TYPE::OFFHAND + WPN::TYPE::BOW;
-            break;
-        case UNIT::CLASS::BATTLEMAGE:
-            equippable = WPN::TYPE::ELEMENTAL + WPN::TYPE::SHIELD + WPN::TYPE::SWORD + WPN::TYPE::TRINKET;
-            break;
-        case UNIT::CLASS::SAGE:
-            equippable = WPN::TYPE::ELEMENTAL + WPN::TYPE::STAFF + WPN::TYPE::TRINKET;
-            break;
-        case UNIT::CLASS::TROUBADOUR:
-            equippable = WPN::TYPE::ELEMENTAL + WPN::TYPE::STAFF + WPN::TYPE::TRINKET;
-            break;
-        case UNIT::CLASS::ORACLE:
-            equippable = WPN::TYPE::STAFF + WPN::TYPE::ANGELIC + WPN::TYPE::TRINKET;
-            break;
-        case UNIT::CLASS::BISHOP:
-            equippable = WPN::TYPE::STAFF + WPN::TYPE::ANGELIC + WPN::TYPE::TRINKET;
-            break;
-        case UNIT::CLASS::ANGEL:
-            equippable = WPN::TYPE::ANGELIC + WPN::TYPE::SWORD + WPN::TYPE::LANCE + WPN::TYPE::SHIELD;
-            break;
-        case UNIT::CLASS::DEMON:
-            equippable = WPN::TYPE::DEMONIC + WPN::TYPE::CLAW + WPN::TYPE::AXE;
-            break;
-        case UNIT::CLASS::DEMONIC_INCARNATE:
-            equippable = WPN::TYPE::DEMONIC + WPN::TYPE::TRINKET;
-            break;
-        case UNIT::CLASS::ANGELIC_INCARNATE:
-            equippable = WPN::TYPE::ANGELIC + WPN::TYPE::TRINKET;
-            break;
-    }
-}
 unsigned char Unit::getMvttype() {
     printf("inside unit %d\n", mvt_type);
     return (mvt_type);

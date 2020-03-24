@@ -81,7 +81,6 @@ class Unit {
         unsigned char getMvttype();
 
         short unsigned int getEquippable();
-        void setEquippable();
         void equipsL(const unsigned char index);
         void equipsR(const unsigned char index);
         void unequipsR();
