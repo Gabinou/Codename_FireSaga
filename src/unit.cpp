@@ -22,7 +22,7 @@ Unit::Unit(const std::string in_name, const unsigned char in_class_index, const 
     class_index = in_class_index;
     mvt_type = mvtType(class_index);
     class_name = className(class_index);
-    autoSkill_names();
+    skill_names = skillNames(skills);
     setEquippable();
 }
 
@@ -201,110 +201,6 @@ void Unit::setEquippable() {
             break;
     }
 }
-
-void Unit::autoSkill_names() {
-    skill_names.clear();
-    if ((skills & UNIT::SKILL::CANTO) > 0) {
-        skill_names.push_back("Canto");
-    }
-    if ((skills & UNIT::SKILL::SKILLED_RIDER) > 0) {
-        skill_names.push_back("Canto");
-    }    
-    if ((skills & UNIT::SKILL::SPRINT) > 0) {
-        skill_names.push_back("Sprint");
-    } 
-    if ((skills & UNIT::SKILL::SWITCH) > 0) {
-        skill_names.push_back("Switch");
-    }   
-    if ((skills & UNIT::SKILL::MOUNTAINWALK) > 0) {
-        skill_names.push_back("Mountainwalk");
-    }    
-    if ((skills & UNIT::SKILL::WATERWALK) > 0) {
-        skill_names.push_back("Waterwalk");
-    }
-    if ((skills & UNIT::SKILL::CRIT_KILLS) > 0) {
-        skill_names.push_back("CritKill");
-    }
-    if ((skills & UNIT::SKILL::DISMEMBER) > 0) {
-        skill_names.push_back("Dismember");
-    }
-    if ((skills & UNIT::SKILL::ATK_RANGE_P1) > 0) {
-        skill_names.push_back("Range+1");
-    }
-    if ((skills & UNIT::SKILL::DIVINE_SHIELD) > 0) {
-        skill_names.push_back("Divine Shield");
-    }
-    if ((skills & UNIT::SKILL::NO_CRIT) > 0) {
-        skill_names.push_back("No crit");
-    }
-    if ((skills & UNIT::SKILL::NO_COUNTER) > 0) {
-        skill_names.push_back("No counter");
-    }
-    if ((skills & UNIT::SKILL::MAX_DESPAIR) > 0) {
-        skill_names.push_back("Maxima of Despair");
-    }
-    if ((skills & UNIT::SKILL::TUNNELING) > 0) {
-        skill_names.push_back("Tunneling");
-    }
-    if ((skills & UNIT::SKILL::SCOUTING) > 0) {
-        skill_names.push_back("Scouting");
-    }
-    if ((skills & UNIT::SKILL::ASSASSINATE) > 0) {
-        skill_names.push_back("Assassinate");
-    }
-    if ((skills & UNIT::SKILL::LOCKPICK) > 0) {
-        skill_names.push_back("Lockpick");
-    }
-    if ((skills & UNIT::SKILL::NO_LOCKPICK) > 0) {
-        skill_names.push_back("Pick");
-    }
-    if ((skills & UNIT::SKILL::IMMUNE_MAGIC) > 0) {
-        skill_names.push_back("Immune to magic");
-    }
-    if ((skills & UNIT::SKILL::IMMUNE_ELEMENTAL) > 0) {
-        skill_names.push_back("Immune to elemental");
-    }
-    if ((skills & UNIT::SKILL::IMMUNE_DEMONIC) > 0) {
-        skill_names.push_back("Immune to demonic");
-    }
-    if ((skills & UNIT::SKILL::IMMUNE_ANGELIC) > 0) {
-        skill_names.push_back("Immune to angelic");
-    }
-    if ((skills & UNIT::SKILL::LIFESTEAL_RN) > 0) {
-        skill_names.push_back("Sol");
-    }
-    if ((skills & UNIT::SKILL::INFUSE) > 0) {
-        skill_names.push_back("Infuse");
-    }
-    if ((skills & UNIT::SKILL::DOUBLE_EXP) > 0) {
-        skill_names.push_back("Double EXP");
-    }
-    if ((skills & UNIT::SKILL::AMBIDEXTRY) > 0) {
-        skill_names.push_back("Ambidextry");
-    }
-    if ((skills & UNIT::SKILL::TWO_HAND_STYLE) > 0) {
-        skill_names.push_back("Two-hand Style");
-    }
-    if ((skills & UNIT::SKILL::PIERCE_RN) > 0) {
-        skill_names.push_back("Luna");
-    }
-    if ((skills & UNIT::SKILL::COUNTER) > 0) {
-        skill_names.push_back("Counter");
-    }
-    if ((skills & UNIT::SKILL::THRUST_SWORD_BONUS) > 0) {
-        skill_names.push_back("Thrust sword bonus");
-    }
-    if ((skills & UNIT::SKILL::SHIELD_BONUS) > 0) {
-        skill_names.push_back("Shield bonus");
-    }
-    if ((skills & UNIT::SKILL::OFFHAND_BONUS) > 0) {
-        skill_names.push_back("Offhand bonus");
-    }
-    if ((skills & UNIT::SKILL::BOW_BONUS) > 0) {
-        skill_names.push_back("Bow bonus");
-    }
-}
-
 unsigned char Unit::getMvttype() {
     printf("inside unit %d\n", mvt_type);
     return (mvt_type);
@@ -857,10 +753,9 @@ void Unit::readXML(const char * filename) {
 
     combatStats();
     mvt_type = mvtType(class_index);
-    // autoClass_name();
     class_name = className(class_index);
     sex_name = sexName(sex);
-    autoSkill_names();
+    skill_names = skillNames(skills);
     speed();
 } 
 

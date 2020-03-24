@@ -79,7 +79,6 @@ class Unit {
         void setPos(const Point in_pos);
 
         unsigned char getMvttype();
-        void autoSkill_names();
 
         short unsigned int getEquippable();
         void setEquippable();
