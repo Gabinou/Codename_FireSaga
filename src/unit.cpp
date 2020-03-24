@@ -1124,6 +1124,8 @@ void Unit::writeXML(const char * filename, const bool append) {
     
     tinyxml2::XMLElement * pUnit = xmlDoc.NewElement("Unit");
     xmlDoc.InsertEndChild(pUnit);
+    // pUnit.setAttribute();
+    
     
     tinyxml2::XMLElement * pName = xmlDoc.NewElement("Name");
     pUnit->InsertEndChild(pName);
@@ -1327,8 +1329,8 @@ void baseUnits() {
     temp_unit.addEquipment(temp_wpn);
     temp_wpn.id = WPN::NAME::POT_LID;
     temp_unit.addEquipment(temp_wpn);
-    temp_supports = {UNIT::NAME::KIARA}; 
-    temp_unit.setSupports(temp_supports);
+    // temp_supports = {UNIT::NAME::KIARA}; 
+    // temp_unit.setSupports(temp_supports);
     all_units[UNIT::NAME::ERWIN] = temp_unit;
 
     temp = {18,  6,  2,  7,  7,   7,  4,  5,  6, 7};

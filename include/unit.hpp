@@ -33,6 +33,7 @@ class Unit {
         unsigned long long int skills = 0;
         short unsigned int equippable;
         unsigned short int exp = 0;
+        unsigned short int id;
         unsigned short int base_exp = 0;
         unsigned short int entity;
         unsigned short int affiliation;

@@ -10,4 +10,6 @@ template <typename T> int sgn(T val) {
 extern int geometricslide(int distance, float geo_factor = 2);
 extern int pingpong(int current, int upper, int lower = 0);
 
+extern char * sex_name(bool in_sex);
+
 #endif /* SHARED_HPP */

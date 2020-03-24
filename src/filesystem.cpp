@@ -320,7 +320,8 @@ void readXML_stats(tinyxml2::XMLElement * in_pStats, Unit_stats * in_stats) {
     ptemp = in_pStats->FirstChildElement("prof");
     ptemp->QueryUnsignedText(&bufint);
     in_stats->prof = (unsigned char)bufint;
-} 
+}
+
 void writeXML_stats(tinyxml2::XMLDocument * in_doc, tinyxml2::XMLElement * in_pStats, Weapon_stats * in_stats) {
     // Pmight, Mmight, hit, dodge, crit, favor, wgt, uses, prof, range, hand, dmg_type, cost
     Combat_stats combat;

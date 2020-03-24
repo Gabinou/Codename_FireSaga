@@ -21,3 +21,12 @@ int geometricslide(int distance, float geo_factor) {
     // std::abs() possible instead of sign*distance,
     // but this is more elegant.
 }
+
+char * sex_name(bool in_sex) {
+    if(sex) {
+        sex_name = "M";
+    } else {
+        sex_name = "F";
+    }
+    return(sex_name);
+}
