@@ -21,7 +21,7 @@ Unit::Unit(const std::string in_name, const unsigned char in_class_index, const 
 Unit::Unit(const std::string in_name, const unsigned char in_class_index, const Unit_stats in_bases) : Unit(in_name, in_bases) {
     class_index = in_class_index;
     mvt_type = mvtType(class_index);
-    autoClass_name();
+    class_name = className(class_index);
     autoSkill_names();
     setEquippable();
 }
@@ -302,125 +302,6 @@ void Unit::autoSkill_names() {
     }
     if ((skills & UNIT::SKILL::BOW_BONUS) > 0) {
         skill_names.push_back("Bow bonus");
-    }
-}
-
-void Unit::autoClass_name() {
-    switch(class_index) {
-        case UNIT::CLASS::MERCENARY:
-            class_name = "Mercenary";
-            break;
-        case UNIT::CLASS::LORD:
-            class_name = "Lord";
-            break;        
-        case UNIT::CLASS::LORD_RIDER:
-            class_name = "Lord rider";
-            break;
-        case UNIT::CLASS::DUELIST:
-            class_name = "Duelist";
-            break;
-        case UNIT::CLASS::THIEF:
-            class_name = "Thief";
-            break;
-        case UNIT::CLASS::PEGASUS_KNIGHT:
-            class_name = "Pegasus knight";
-            break;
-        case UNIT::CLASS::PIKEMAN:
-            class_name = "Pikeman";
-            break;
-        case UNIT::CLASS::CAVALIER:
-            class_name = "Cavalier";
-            break;
-        case UNIT::CLASS::KNIGHT:
-            class_name = "Knight";
-            break;
-        case UNIT::CLASS::BANDIT:
-            class_name = "Bandit";
-            break;
-        case UNIT::CLASS::CORSAIR:
-            class_name = "Corsair";
-            break;
-        case UNIT::CLASS::VIKING:
-            class_name = "Viking";
-            break;
-        case UNIT::CLASS::PICKPOCKET:
-            class_name = "Pickpocket";
-            break;
-        case UNIT::CLASS::FENCER:
-            class_name = "Fencer";
-            break;
-        case UNIT::CLASS::MOUSQUETAIRE:
-            class_name = "Mousquetaire";
-            break;
-        case UNIT::CLASS::ASSASSIN:
-            class_name = "Assassin";
-            break;
-        case UNIT::CLASS::MARKSMAN:
-            class_name = "Marksman";
-            break;        
-        case UNIT::CLASS::MARKSMAN_RIDER:
-            class_name = "Marksman rider";
-            break;
-        case UNIT::CLASS::ARCHER:
-            class_name = "Archer";
-            break;        
-        case UNIT::CLASS::ARCHER_RIDER:
-            class_name = "Archer rider";
-            break;
-        case UNIT::CLASS::DUKE:
-            class_name = "Duke";
-            break;
-        case UNIT::CLASS::DUKE_RIDER:
-            class_name = "Duke rider";
-            break;
-        case UNIT::CLASS::PALADIN:
-            class_name = "Paladin";
-            break;
-        case UNIT::CLASS::GENERAL:
-            class_name = "General";
-            break;
-        case UNIT::CLASS::CLERIC:
-            class_name = "Cleric";
-            break;
-        case UNIT::CLASS::PRIEST:
-            class_name = "Priest";
-            break;
-        case UNIT::CLASS::MAGE:
-            class_name = "Mage";
-            break;
-        case UNIT::CLASS::HERO:
-            class_name = "Hero";
-            break;
-        case UNIT::CLASS::RAVAGER:
-            class_name = "Ravager";
-            break;
-        case UNIT::CLASS::BATTLEMAGE:
-            class_name = "Battlemage";
-            break;
-        case UNIT::CLASS::SAGE:
-            class_name = "Sage";
-            break;
-        case UNIT::CLASS::TROUBADOUR:
-            class_name = "Troubadour";
-            break;
-        case UNIT::CLASS::ORACLE:
-            class_name = "Oracle";
-            break;
-        case UNIT::CLASS::BISHOP:
-            class_name = "Bishop";
-            break;
-        case UNIT::CLASS::ANGEL:
-            class_name = "Angel";
-            break;
-        case UNIT::CLASS::DEMON:
-            class_name = "Demon";
-            break;
-        case UNIT::CLASS::DEMONIC_INCARNATE:
-            class_name = "Demonic Incarnate";
-            break;
-        case UNIT::CLASS::ANGELIC_INCARNATE:
-            class_name = "Angelic Incarnate";
-            break;
     }
 }
 
@@ -976,7 +857,8 @@ void Unit::readXML(const char * filename) {
 
     combatStats();
     mvt_type = mvtType(class_index);
-    autoClass_name();
+    // autoClass_name();
+    class_name = className(class_index);
     sex_name = sexName(sex);
     autoSkill_names();
     speed();
