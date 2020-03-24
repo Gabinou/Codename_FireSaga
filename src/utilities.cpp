@@ -32,6 +32,92 @@ std::string sexName(bool in_sex) {
     return(name);
 }
 
+std::string unitName(unsigned short int in_id) {
+    std::string name;
+    switch(in_id) {
+        case UNIT::NAME::ERWIN:
+            name = "Erwin";
+            break;
+        case UNIT::NAME::KIARA:
+            name = "Kiara";
+            break;
+        case UNIT::NAME::SILOU:
+            name = "SILOU";
+            break;
+        case UNIT::NAME::SERVIL:
+            name = "Servil";
+            break;
+        case UNIT::NAME::PERIGNON:
+            name = "Perignon";
+            break;
+        case UNIT::NAME::COWARD:
+            name = "Coward";
+            break;
+        case UNIT::NAME::POET:
+            name = "Poet";
+            break;
+        case UNIT::NAME::RELIABLE:
+            name = "Reliable";
+            break;
+        case UNIT::NAME::JAIGEN1H:
+            name = "Jaigen1H";
+            break;
+        case UNIT::NAME::HOTTIE:
+            name = "Hottie";
+            break;
+        case UNIT::NAME::GENERIC_BANDIT:
+            name = "Bandit";
+            break;
+        case UNIT::NAME::GENERIC_DUELIST:
+            name = "Duelist";
+            break;
+        case UNIT::NAME::GENERIC_PICKPOCKET:
+            name = "Pickpocket";
+            break;
+        case UNIT::NAME::GENERIC_THIEF:
+            name = "Thief";
+            break;
+        case UNIT::NAME::GENERIC_ASSASSIN:
+            name = "Assassing";
+            break;
+        case UNIT::NAME::GENERIC_ARCHER:
+            name = "Archer";
+            break;
+        case UNIT::NAME::GENERIC_MARKSMAN:
+            name = "Marksman";
+            break;
+        case UNIT::NAME::GENERIC_MERCENARY:
+            name = "Mercenary";
+            break;
+        case UNIT::NAME::GENERIC_HERO:
+            name = "Hero";
+            break;
+        case UNIT::NAME::GENERIC_CORSAIR:
+            name = "Corsair";
+            break;
+        case UNIT::NAME::GENERIC_VIKING:
+            name = "Viking";
+            break;
+        case UNIT::NAME::GENERIC_RAVAGER:
+            name = "Ravager";
+            break;
+        case UNIT::NAME::GENERIC_CAVALIER:
+            name = "Cavalier";
+            break;
+        case UNIT::NAME::GENERIC_PALADIN:
+            name = "Paladin";
+            break;
+        case UNIT::NAME::GENERIC_FENCER:
+            name = "Fencer";
+            break;
+        case UNIT::NAME::GENERIC_MOUSQUETAIRE:
+            name = "Mousquetaire";
+            break;
+    }
+    return(name);
+}
+
+
 unsigned char mvtType(unsigned char in_class_index) {
     unsigned char mvt_type;
     switch(in_class_index) {
