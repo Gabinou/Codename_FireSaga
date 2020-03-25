@@ -8,7 +8,6 @@
 #include "filesystem.hpp"
 #include "physfs.h"
 #include "tinyxml2.h"
-#include "string.h"
 #include "utilities.hpp"
 
 class Unit {

@@ -18,6 +18,7 @@ include_directories(
 	third_party/LodePNG
 	third_party/tinymt
 	third_party/tinyxml2
+	third_party/stb
 	${SDL2_INCLUDE_DIR}
 )
 
