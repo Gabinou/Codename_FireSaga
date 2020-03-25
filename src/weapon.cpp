@@ -1,5 +1,10 @@
 
 #include "weapon.hpp"
+// #ifndef STB_SPRINTF_IMPLEMENTATION
+// #define STB_SPRINTF_IMPLEMENTATION
+#include "stb_sprintf.h"
+//#endif /* STB_SPRINTF_IMPLEMENTATION */
+
 
 Weapon::Weapon() {
 
@@ -185,7 +190,7 @@ void Weapon::writeXML(const char * filename, const bool append) {
 
     xmlDoc.Print(&printer);
     char longbuffer[printer.CStrSize()];
-    sprintf(longbuffer, printer.CStr());
+    stbsp_sprintf(longbuffer, printer.CStr());
     PHYSFS_writeBytes(fp, longbuffer, printer.CStrSize());
 
     PHYSFS_close(fp);
