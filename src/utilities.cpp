@@ -32,6 +32,354 @@ std::string sexName(bool in_sex) {
     return(name);
 }
 
+std::string wpnName(unsigned short int in_id) {
+    std::string name;
+    switch(in_id) {
+        case WPN::NAME::WOODEN_SWORD:
+            name = "Wooden sword";
+            break;
+        case WPN::NAME::KITCHEN_KNIFE:
+            name = "Kitchen knife";
+            break;
+        case WPN::NAME::WRATH_SWORD:
+            name = "Wrath sword";
+            break;
+        case WPN::NAME::FLEURET:
+            name = "Fleuret";
+            break;
+        case WPN::NAME::RAPIERE:
+            name = "Rapière";
+            break;
+        case WPN::NAME::GLAIVE:
+            name = "Glaive";
+            break;
+        case WPN::NAME::SABER:
+            name = "Saber";
+            break;
+        case WPN::NAME::FAUCHON:
+            name = "Fauchon";
+            break;
+        case WPN::NAME::IRON_SWORD:
+            name = "Iron sword";
+            break;
+        case WPN::NAME::STEEL_SWORD:
+            name = "Steel sword";
+            break;
+        case WPN::NAME::DAMAS_SWORD:
+            name = "Damas sword";
+            break;
+        case WPN::NAME::MERCIFUL_BLADE:
+            name = "Merciful blade";
+            break;
+        case WPN::NAME::BROADSWORD:
+            name = "Broadsword";
+            break;
+        case WPN::NAME::ESPADON:
+            name = "Espadon";
+            break;
+        case WPN::NAME::OODACHI:
+            name = "Oodachi";
+            break;
+        case WPN::NAME::UCHIGATANA:
+            name = "Uchigatana";
+            break;
+        case WPN::NAME::EXSANGUE:
+            name = "Exsangue";
+            break;
+        case WPN::NAME::HAUTECLAIRE:
+            name = "Hauteclaire";
+            break;
+        case WPN::NAME::SECUNDUS:
+            name = "Secundus";
+            break;
+        case WPN::NAME::EXCALIBUR:
+            name = "Excalibur";
+            break;
+        case WPN::NAME::GALATINE:
+            name = "Galatine";
+            break;
+        case WPN::NAME::RAIJINTOU:
+            name = "Raijintou";
+            break;
+        case WPN::NAME::FUUJINTOU:
+            name = "Fuujintou";
+            break;
+        case WPN::NAME::HONJOU_MASAMUNE:
+            name = "Honjou masamune";
+            break;
+        case WPN::NAME::RAW_IRON_SLAB:
+            name = "Raw iron slab";
+            break;
+        case WPN::NAME::KIRITO:
+            name = "Kirito";
+            break;
+        case WPN::NAME::KILLY:
+            name = "Killy";
+            break;
+
+        case WPN::NAME::PITCHFORK:
+            name = "Pitchfork";
+            break;
+        case WPN::NAME::FIGHTING_STICK:
+            name = "Fighting stick";
+            break;
+        case WPN::NAME::IRON_LANCE:
+            name = "Iron lance";
+            break;
+        case WPN::NAME::WRATH_LANCE:
+            name = "Wrath lance";
+            break;
+        case WPN::NAME::STEEL_LANCE:
+            name = "Steel lance";
+            break;
+        case WPN::NAME::DAMAS_LANCE:
+            name = "Damas lance";
+            break;
+        case WPN::NAME::HEAVY_SPEAR:
+            name = "Heavy spear";
+            break;
+        case WPN::NAME::TRIDENT:
+            name = "Trident";
+            break;
+        case WPN::NAME::MERCIFUL_LANCE:
+            name = "Merciful lance";
+            break;
+        case WPN::NAME::JAVELIN:
+            name = "Javelin";
+            break;
+        case WPN::NAME::PILUM:
+            name = "Pilum";
+            break;
+        case WPN::NAME::SPEAR:
+            name = "Spear";
+            break;
+        case WPN::NAME::VEL:
+            name = "Vel";
+            break;
+        case WPN::NAME::GUNGNIR:
+            name = "Gungnir";
+            break;
+        case WPN::NAME::ACHILLES:
+            name = "Achilles";
+            break;
+        case WPN::NAME::TONBOKIRI:
+            name = "Tonbokiri";
+            break;
+
+        case WPN::NAME::IRON_AXE:
+            name = "Iron axe";
+            break;
+        case WPN::NAME::STEEL_AXE:
+            name = "Steel axe";
+            break;
+        case WPN::NAME::DAMAS_AXE:
+            name = "Damas axe";
+            break;
+        case WPN::NAME::WRATH_AXE:
+            name = "Wrath axe";
+            break;
+        case WPN::NAME::THROWING_AXE:
+            name = "Throwing axe";
+            break;
+        case WPN::NAME::TOMAHAK:
+            name = "Tomahawk";
+            break;
+        case WPN::NAME::PICK_AXE:
+            name = "Pick axe";
+            break;
+        case WPN::NAME::HOE:
+            name = "Hoe";
+            break;
+        case WPN::NAME::CLUB:
+            name = "Club";
+            break;
+        case WPN::NAME::HALBERD:
+            name = "Halberd";
+            break;
+        case WPN::NAME::HAMMER:
+            name = "Hammer";
+            break;
+        case WPN::NAME::WAR_PICK:
+            name = "War pick";
+            break;
+        case WPN::NAME::BATTLEAXE:
+            name = "Battleaxe";
+            break;
+        case WPN::NAME::VIDYU:
+            name = "Vidyu";
+            break;
+        case WPN::NAME::HEPHAESTUS:
+            name = "Hephaestus";
+            break;
+        case WPN::NAME::ADAPTED_CROSSBOW:
+            name = "Adapted crossbow";
+            break;
+        case WPN::NAME::REPEATABLE_CROSSBOW:
+            name = "Repeatable crossbow";
+            break;
+        case WPN::NAME::CROSSBOW:
+            name = "Crossbow";
+            break;
+        case WPN::NAME::SHORT_BOW:
+            name = "Short bow";
+            break;
+        case WPN::NAME::LONG_BOW:
+            name = "Long bow";
+            break;
+        case WPN::NAME::COMPOSITE_BOW:
+            name = "Composite bow";
+            break;
+        case WPN::NAME::RECURVE_BOW:
+            name = "Recurve bow";
+            break;
+        case WPN::NAME::APOLLO:
+            name = "Apollo";
+            break;
+        case WPN::NAME::ARTEMIS:
+            name = "Artemis";
+            break;
+        case WPN::NAME::PINAKA:
+            name = "Pinaka";
+            break;
+        case WPN::NAME::ADAPTED_SHIELD:
+            name = "Adapted shield";
+            break;
+        case WPN::NAME::SHIELD_HOOK:
+            name = "Shield hook";
+            break;
+        case WPN::NAME::RETRACTABLE_WRISTBLADE:
+            name = "Retractable wristblade";
+            break;
+        case WPN::NAME::MAIN_GAUCHE:
+            name = "Main gauche";
+            break;
+        case WPN::NAME::SWORDBREAKER:
+            name = "Swordbreaker";
+            break;
+        case WPN::NAME::TRIDENT_DAGGER:
+            name = "Trident dagger";
+            break;
+        case WPN::NAME::TANTOU:
+            name = "Tantou";
+            break;
+        case WPN::NAME::KODACHI:
+            name = "Kodachi";
+            break;
+        case WPN::NAME::DAGUE:
+            name = "Dague";
+            break;
+        case WPN::NAME::WAKIZASHI:
+            name = "Wakizashi";
+            break;
+        case WPN::NAME::BRAQUEMARD:
+            name = "Braquemard";
+            break;
+        case WPN::NAME::MISERICORDE:
+            name = "Misericorde";
+            break;
+        case WPN::NAME::CARNEWANN:
+            name = "Carnewann";
+            break;
+        case WPN::NAME::FLINTLOCK:
+            name = "Flintlock";
+            break;
+        case WPN::NAME::CIBO:
+            name = "Cibo";
+            break;
+
+        case WPN::NAME::SHRUNKEN_HEAD:
+            name = "Shrunken head";
+            break;
+        case WPN::NAME::CRYSTAL:
+            name = "Crystal";
+            break;
+        case WPN::NAME::GLASS_ORB:
+            name = "Glass orb";
+            break;
+        case WPN::NAME::HUMAN_FEMUR:
+            name = "Human femur";
+            break;
+        case WPN::NAME::VOID_FRAGMENT:
+            name = "Void fragment";
+            break;
+        case WPN::NAME::DEMON_FANG:
+            name = "Demon fang";
+            break;
+        case WPN::NAME::ANGEL_FEATHER:
+            name = "Angel feather";
+            break;
+        case WPN::NAME::ANGEL_HAIR:
+            name = "Angel hair";
+            break;
+        case WPN::NAME::VIAL_OF_LIGHT:
+            name = "Vial of light";
+            break;
+        case WPN::NAME::MAIDENS_HANDKERCHIEF:
+            name = "Maiden's handkerchief";
+            break;
+        case WPN::NAME::WAR_HORN:
+            name = "War horn";
+            break;
+
+        case WPN::NAME::BALL_LIGHTNING:
+            name = "Ball lightning";
+            break;
+        case WPN::NAME::ICICLE:
+            name = "Icicle";
+            break;
+        case WPN::NAME::VOLCANO:
+            name = "Volcano";
+            break;
+        case WPN::NAME::WIND_SPEAR:
+            name = "Wind spear";
+            break;
+        case WPN::NAME::EMBER:
+            name = "Ember";
+            break;
+        case WPN::NAME::TSUNAMI:
+            name = "Tsunami";
+            break;
+        case WPN::NAME::GOD_FORGE_FIRE:
+            name = "God's forge fire";
+            break;
+        case WPN::NAME::FINGOLFIN:
+            name = "Fingolfin";
+            break;
+        case WPN::NAME::MITHRANDIR:
+            name = "Mithrandir";
+            break;
+        case WPN::NAME::VOIDD:
+            name = "Void";
+            break;
+        case WPN::NAME::NETHER:
+            name = "Nether";
+            break;
+        case WPN::NAME::DOWNFALL:
+            name = "Downfall";
+            break;
+        case WPN::NAME::CONSUME:
+            name = "Consume";
+            break;
+        case WPN::NAME::PETRIFY:
+            name = "Petrify";
+            break;
+        case WPN::NAME::GLAURUNG:
+            name = "Glaurung";
+            break;
+        case WPN::NAME::MORGOTH:
+            name = "Morgoth";
+            break;
+        case WPN::NAME::GOTHMOG:
+            name = "Gothmog";
+            break;
+        case WPN::NAME::FATALIS:
+            name = "Fatalis";
+            break;
+    }
+    return(name);
+}
+
+
 std::string unitName(unsigned short int in_id) {
     std::string name;
     switch(in_id) {
