@@ -6,6 +6,7 @@
 #include "physfs.h"
 #include "tinyxml2.h"
 #include "filesystem.hpp"
+#include "utilities.hpp"
 #include "string.h"
 #include <string>
 
@@ -24,7 +25,7 @@ class Weapon {
     public:
         Weapon();
 
-        Weapon(std::string in_name, short unsigned int in_type, Weapon_stats in_stats, unsigned char in_id);
+        Weapon(short unsigned int in_type, Weapon_stats in_stats, unsigned char in_id);
 
         void setStats(Weapon_stats in_stats);
         Weapon_stats getStats();
