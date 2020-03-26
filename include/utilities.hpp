@@ -20,5 +20,6 @@ extern unsigned char mvtType(unsigned char in_class_index);
 extern std::string className(unsigned char in_class_index);
 extern std::vector<std::string> skillNames(unsigned long long int in_skills);
 extern short unsigned int makeEquippable(unsigned char in_class_index);
+extern std::string unitName(unsigned short int in_id);
 
 #endif /* SHARED_HPP */

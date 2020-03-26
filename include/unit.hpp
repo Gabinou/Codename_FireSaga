@@ -58,7 +58,7 @@ class Unit {
 
     public:
         Unit();
-        Unit(const std::string in_name, const unsigned char in_class_index, const Unit_stats in_bases, const bool in_sex);
+        Unit(const unsigned short int in_id, const unsigned char in_class_index, const Unit_stats in_bases, const bool in_sex);
 
         void setSupports(short int * in_names);
 

@@ -65,52 +65,52 @@ std::string unitName(unsigned short int in_id) {
         case UNIT::NAME::HOTTIE:
             name = "Hottie";
             break;
-        case UNIT::NAME::GENERIC_BANDIT:
+        case UNIT::NAME::BANDIT:
             name = "Bandit";
             break;
-        case UNIT::NAME::GENERIC_DUELIST:
+        case UNIT::NAME::DUELIST:
             name = "Duelist";
             break;
-        case UNIT::NAME::GENERIC_PICKPOCKET:
+        case UNIT::NAME::PICKPOCKET:
             name = "Pickpocket";
             break;
-        case UNIT::NAME::GENERIC_THIEF:
+        case UNIT::NAME::THIEF:
             name = "Thief";
             break;
-        case UNIT::NAME::GENERIC_ASSASSIN:
+        case UNIT::NAME::ASSASSIN:
             name = "Assassing";
             break;
-        case UNIT::NAME::GENERIC_ARCHER:
+        case UNIT::NAME::ARCHER:
             name = "Archer";
             break;
-        case UNIT::NAME::GENERIC_MARKSMAN:
+        case UNIT::NAME::MARKSMAN:
             name = "Marksman";
             break;
-        case UNIT::NAME::GENERIC_MERCENARY:
+        case UNIT::NAME::MERCENARY:
             name = "Mercenary";
             break;
-        case UNIT::NAME::GENERIC_HERO:
+        case UNIT::NAME::HERO:
             name = "Hero";
             break;
-        case UNIT::NAME::GENERIC_CORSAIR:
+        case UNIT::NAME::CORSAIR:
             name = "Corsair";
             break;
-        case UNIT::NAME::GENERIC_VIKING:
+        case UNIT::NAME::VIKING:
             name = "Viking";
             break;
-        case UNIT::NAME::GENERIC_RAVAGER:
+        case UNIT::NAME::RAVAGER:
             name = "Ravager";
             break;
-        case UNIT::NAME::GENERIC_CAVALIER:
+        case UNIT::NAME::CAVALIER:
             name = "Cavalier";
             break;
-        case UNIT::NAME::GENERIC_PALADIN:
+        case UNIT::NAME::PALADIN:
             name = "Paladin";
             break;
-        case UNIT::NAME::GENERIC_FENCER:
+        case UNIT::NAME::FENCER:
             name = "Fencer";
             break;
-        case UNIT::NAME::GENERIC_MOUSQUETAIRE:
+        case UNIT::NAME::MOUSQUETAIRE:
             name = "Mousquetaire";
             break;
     }
