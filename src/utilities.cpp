@@ -181,7 +181,7 @@ std::string wpnName(unsigned short int in_id) {
         case WPN::NAME::THROWING_AXE:
             name = "Throwing axe";
             break;
-        case WPN::NAME::TOMAHAK:
+        case WPN::NAME::TOMAHAWK:
             name = "Tomahawk";
             break;
         case WPN::NAME::PICK_AXE:
@@ -277,8 +277,8 @@ std::string wpnName(unsigned short int in_id) {
         case WPN::NAME::MISERICORDE:
             name = "Misericorde";
             break;
-        case WPN::NAME::CARNEWANN:
-            name = "Carnewann";
+        case WPN::NAME::CARNWENNAN:
+            name = "Carnwennan";
             break;
         case WPN::NAME::FLINTLOCK:
             name = "Flintlock";
@@ -360,8 +360,8 @@ std::string wpnName(unsigned short int in_id) {
         case WPN::NAME::CONSUME:
             name = "Consume";
             break;
-        case WPN::NAME::PETRIFY:
-            name = "Petrify";
+        case WPN::NAME::PUTRIFY:
+            name = "Putrify";
             break;
         case WPN::NAME::GLAURUNG:
             name = "Glaurung";
