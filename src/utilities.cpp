@@ -32,6 +32,45 @@ std::string sexName(bool in_sex) {
     return(name);
 }
 
+std::vector<std::string> wpnTypes(short unsigned int in_type) {
+    std::vector<std::string> types;
+    if ((in_type & WPN::TYPE::SWORD) > 0) {
+        types.push_back("Sword");
+    }
+    if ((in_type & WPN::TYPE::LANCE) > 0) {
+        types.push_back("Lance");
+    }
+    if ((in_type & WPN::TYPE::AXE) > 0) {
+        types.push_back("Axe");
+    }
+    if ((in_type & WPN::TYPE::BOW) > 0) {
+        types.push_back("Bow");
+    }
+    if ((in_type & WPN::TYPE::TRINKET) > 0) {
+        types.push_back("Trinket");
+    }
+    if ((in_type & WPN::TYPE::OFFHAND) > 0) {
+        types.push_back("Offhand");
+    }
+    if ((in_type & WPN::TYPE::ELEMENTAL) > 0) {
+        types.push_back("Magic");
+        // types.push_back("Elemental");
+    }
+    if ((in_type & WPN::TYPE::DEMONIC) > 0) {
+        types.push_back("Demonic");
+    }
+    if ((in_type & WPN::TYPE::ANGELIC) > 0) {
+        types.push_back("Angelic");
+    }
+    if ((in_type & WPN::TYPE::SHIELD) > 0) {
+        types.push_back("Shield");
+    }
+    if ((in_type & WPN::TYPE::STAFF) > 0) {
+        types.push_back("Staff");
+    }
+    return(types);
+}
+
 std::string wpnName(unsigned short int in_id) {
     std::string name;
     switch(in_id) {

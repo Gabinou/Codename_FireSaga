@@ -49,8 +49,6 @@ class Weapon {
         void readXML(const char * filename);
 };
 
-extern std::vector<std::string> wpntype2str(short unsigned int in_type);
-
 extern Inventory_item convoy[200];
 extern std::vector<Weapon> all_weapons;
 extern std::vector<Weapon> loaded_weapons;
