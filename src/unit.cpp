@@ -581,8 +581,8 @@ void Unit::readXML(const char * filename) {
     if (!ptemp) {SDL_Log("Cannot get Exp element");}   
     ptemp->QueryUnsignedText(&bufint);
     exp = (unsigned short int)bufint;
-    ptemp = pUnit->FirstChildElement("Classid");
-    if (!ptemp) {SDL_Log("Cannot get Classid element");}   
+    ptemp = pUnit->FirstChildElement("Class");
+    if (!ptemp) {SDL_Log("Cannot get Class element");}   
     ptemp->QueryUnsignedText(&bufint);
     class_index = (unsigned char)bufint;
     ptemp = pUnit->FirstChildElement("Stats");
@@ -649,9 +649,9 @@ void Unit::writeXML(const char * filename, const bool append) {
     pUnit->InsertEndChild(pSex);
     pSex->SetText(sex);
     
-    tinyxml2::XMLElement * pClassid = xmlDoc.NewElement("Classid");
-    pUnit->InsertEndChild(pClassid);
-    pClassid->SetText(class_index);
+    tinyxml2::XMLElement * pClass = xmlDoc.NewElement("Class");
+    pUnit->InsertEndChild(pClass);
+    pClass->SetText(class_index);
 
     tinyxml2::XMLElement * pExp = xmlDoc.NewElement("Exp");
     pUnit->InsertEndChild(pExp);
