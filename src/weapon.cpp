@@ -95,10 +95,8 @@ void Weapon::readXML(const char * filename) {
     ptemp = pWpn->FirstChildElement("Name");
     if (!ptemp) {SDL_Log("Cannot get Name element");}   
     name = ptemp->GetText();
-    ptemp = pWpn->FirstChildElement("id");
-    if (!ptemp) {SDL_Log("Cannot get id element");}   
-    ptemp->QueryUnsignedText(&bufint);
-    id = (unsigned short int)bufint;
+    id = (unsigned short int)pWpn->IntAttribute("id");
+    SDL_Log("id is : %d", id);
     ptemp = pWpn->FirstChildElement("Description");
     if (!ptemp) {SDL_Log("Cannot get Description element");}   
     description = ptemp->GetText();
@@ -111,7 +109,7 @@ void Weapon::readXML(const char * filename) {
     ptemp = pWpn->FirstChildElement("Type");
     if (!ptemp) {SDL_Log("Cannot get Type element");}   
     ptemp->QueryUnsignedText(&bufint);
-    id = (unsigned short int)bufint;
+    type = (unsigned short int)bufint;
     ptemp = pWpn->FirstChildElement("Effective");
     if (!ptemp) {SDL_Log("Cannot get Effective element");}   
     ptemp->QueryUnsignedText(&bufint);
@@ -140,6 +138,7 @@ void Weapon::writeXML(const char * filename, const bool append) {
 
     tinyxml2::XMLElement * pWpn = xmlDoc.NewElement("Weapon");
     xmlDoc.InsertEndChild(pWpn);
+    SDL_Log("id is: %d", id);
     pWpn->SetAttribute("id", id);
     
     tinyxml2::XMLElement * pName = xmlDoc.NewElement("Name");
