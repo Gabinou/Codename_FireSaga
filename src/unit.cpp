@@ -711,13 +711,10 @@ void Unit::writeXML(const char * filename, const bool append) {
     for (int i = 0; i < DEFAULT::EQUIPMENT_SIZE; i++) {
         pItem = xmlDoc.NewElement("Item");
         pEquipment->InsertEndChild(pItem);
-        pId = xmlDoc.NewElement("id");
+        pItem->SetAttribute("id", id);
         pUsed = xmlDoc.NewElement("Used");
-        stbsp_sprintf(buffer, "%d", equipment[i].id);
-        pId->SetText(buffer);
         stbsp_sprintf(buffer, "%d", equipment[i].used);
         pUsed->SetText(buffer);
-        pItem->InsertEndChild(pId);
         pItem->InsertEndChild(pUsed);
     }
     
