@@ -23,9 +23,7 @@ class Weapon {
         unsigned char id = 0;
     public:
         Weapon();
-        Weapon(Weapon_stats in_stats);
-        Weapon(std::string in_name, Weapon_stats in_stats);
-        Weapon(std::string in_name, short unsigned int in_type, Weapon_stats in_stats);
+
         Weapon(std::string in_name, short unsigned int in_type, Weapon_stats in_stats, unsigned char in_id);
 
         void setStats(Weapon_stats in_stats);

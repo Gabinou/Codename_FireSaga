@@ -1,8 +1,8 @@
 
 #include "weapon.hpp"
-// #ifndef STB_SPRINTF_IMPLEMENTATION
+// #ifndef STB_SPRINTF_IMPLEMENTATION //Why no need?
 // #define STB_SPRINTF_IMPLEMENTATION
-#include "stb_sprintf.h"
+#include "stb_sprintf.h" 
 //#endif /* STB_SPRINTF_IMPLEMENTATION */
 
 
@@ -10,19 +10,10 @@ Weapon::Weapon() {
 
 }
 
-Weapon::Weapon(Weapon_stats in_stats) {
+Weapon::Weapon(std::string in_name, short unsigned int in_type, Weapon_stats in_stats, unsigned char in_id){
     stats = in_stats;
-}
-
-Weapon::Weapon(std::string in_name, Weapon_stats in_stats) : Weapon(in_stats) {
     name = in_name;
-}
-
-Weapon::Weapon(std::string in_name, short unsigned int in_type, Weapon_stats in_stats) : Weapon(in_name, in_stats) {
     type = in_type;
-}
-
-Weapon::Weapon(std::string in_name, short unsigned int in_type, Weapon_stats in_stats, unsigned char in_id) : Weapon(in_name, in_type, in_stats) {
     id = in_id;
 }
 
@@ -149,6 +140,7 @@ void Weapon::writeXML(const char * filename, const bool append) {
 
     tinyxml2::XMLElement * pWpn = xmlDoc.NewElement("Weapon");
     xmlDoc.InsertEndChild(pWpn);
+    pWpn->SetAttribute("id", id);
     
     tinyxml2::XMLElement * pName = xmlDoc.NewElement("Name");
     pWpn->InsertEndChild(pName);
@@ -158,9 +150,9 @@ void Weapon::writeXML(const char * filename, const bool append) {
     pWpn->InsertEndChild(pStats);
     writeXML_stats(&xmlDoc, pStats, &stats);
 
-    tinyxml2::XMLElement * pId = xmlDoc.NewElement("id");
-    pWpn->InsertEndChild(pId);
-    pId->SetText(id);
+    //tinyxml2::XMLElement * pId = xmlDoc.NewElement("id");
+    //pWpn->InsertEndChild(pId);
+    //pId->SetText(id);
 
     tinyxml2::XMLElement * pDes = xmlDoc.NewElement("Description");
     pWpn->InsertEndChild(pDes);
@@ -1446,7 +1438,7 @@ void baseWeapons(){
     all_weapons[WPN::NAME::MARBLE_PLATE_SHIELD] = temp_wpn;
     temp_wpn_stats = {15, 0, 0, 10, 0, 2, 13, 19, 12, {1,1}, {1}, 0, 1000};
     temp_wpn = Weapon("Divine Protector", WPN::TYPE::SHIELD, temp_wpn_stats, WPN::NAME::DIVINE_PROTECTOR);
-    temp_wpn.setDescription("Large tower shield imbued with angelic properties. Surprinsgly light and effective against magic attacks.");
+    temp_wpn.setDescription("Large tower shield imbued with angelic properties. Surprisingly light and effective against magic attacks.");
     all_weapons[WPN::NAME::DIVINE_PROTECTOR] = temp_wpn;
 
     // Daggers get ridiculously low hit cause they are short and stubby!!!! Kitchen knife is the only exception.

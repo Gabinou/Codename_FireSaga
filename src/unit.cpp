@@ -5,38 +5,20 @@
 #endif /* STB_SPRINTF_IMPLEMENTATION */
 
 Unit::Unit() {
-    equipped.left = -1;
-    equipped.right = -1;
+
 }
 
-Unit::Unit(const std::string in_name, const unsigned char in_class_index, const Unit_stats in_bases, const bool in_sex, Map_enemy in_map_enemy, unsigned long long int in_skills) : Unit(in_name, in_class_index, in_bases, in_sex, in_map_enemy) {
-    skills = in_skills;
-}
-
-Unit::Unit(const std::string in_name, const unsigned char in_class_index, const Unit_stats in_bases, const bool in_sex, Map_enemy in_map_enemy) : Unit(in_name, in_class_index, in_bases, in_sex) {
-    setMap_enemy(in_map_enemy);
-}
-
-Unit::Unit(const std::string in_name, const unsigned char in_class_index, const Unit_stats in_bases, const bool in_sex) : Unit(in_name, in_class_index, in_bases) {
-    sex = in_sex;
-    sex_name = sexName(sex);
-}
-
-Unit::Unit(const std::string in_name, const unsigned char in_class_index, const Unit_stats in_bases) : Unit(in_name, in_bases) {
+Unit::Unit(const std::string in_name, const unsigned char in_class_index, const Unit_stats in_bases, const bool in_sex) {
+    base_stats = in_bases;
+    current_stats = in_bases;
+    name = in_name;
     class_index = in_class_index;
     mvt_type = mvtType(class_index);
     class_name = className(class_index);
     skill_names = skillNames(skills);
     equippable = makeEquippable(class_index);
-}
-
-Unit::Unit(const std::string in_name, const Unit_stats in_bases) : Unit(in_bases) {
-    name = in_name;
-}
-
-Unit::Unit(const Unit_stats in_bases) : Unit() {
-    base_stats = in_bases;
-    current_stats = in_bases;
+    sex = in_sex;
+    sex_name = sexName(sex);
 }
 
 short int * Unit::getPos() {
