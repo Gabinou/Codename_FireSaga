@@ -69,253 +69,254 @@ void Tile::write(const char * filename, const char * mode) {
     fclose(fp);
 }
 
-std::unordered_map<short int, Tile> all_tiles;
-std::unordered_map<short int, Tile> loaded_tiles;
+std::vector<Tile> all_tiles;
+std::vector<Tile> loaded_tiles;
 
-std::unordered_map<short int, Tile> baseTiles(const std::vector<short int> toload) {
+std::vector<Tile> baseTiles(const std::vector<short int> toload) {
     SDL_Log("Loading base tiles\n");
 //     unsigned int * temp_stats[3];// dodge, def, heal
-    std::unordered_map<short int, Tile> temp_tiles;
+    std::vector<Tile> temp_tiles;
     Movement_cost temp_cost;
     Tile_stats temp_stats;
+    Tile temp_tile;
     for (short unsigned int i = 0; i < toload.size(); i++) {
         switch (toload[i]/10){
             case TILE::PLAIN: {
                 temp_cost = {1, 1, 1, 1, 1, 1, 1, 1, 1};
                 temp_stats = {10, 0, 1, 0};
-                Tile plain(TILE::PLAIN, "Plain", temp_cost, temp_stats, false);
-                temp_tiles[TILE::PLAIN] = plain;
+                temp_tile = Tile(TILE::PLAIN, "Plain", temp_cost, temp_stats, false);
+                temp_tiles.push_back(temp_tile);
                 break;
             }
             case TILE::BUSH: {
                 temp_cost = {2, 1, 2, 3, 2, 1, 3, 2, 2};
                 temp_stats = {15, 0, 2, 0};
-                Tile bush(TILE::BUSH, "Bush", temp_cost, temp_stats, false);
-                temp_tiles[TILE::BUSH] = bush;
+                temp_tile = Tile(TILE::BUSH, "Bush", temp_cost, temp_stats, false);
+                temp_tiles.push_back(temp_tile);
                 break;
              }
              case TILE::FOREST: {
                 temp_cost = {3, 2, 3, 4, 3, 1, 3, 3, 3};
                 temp_stats = {15, 0, 2, 0};
-                Tile forest(TILE::FOREST, "Forest", temp_cost, temp_stats, false);
-                temp_tiles[TILE::FOREST] = forest;
+                temp_tile = Tile(TILE::FOREST, "Forest", temp_cost, temp_stats, false);
+                temp_tiles.push_back(temp_tile);
                 break; 
              }
              case TILE::THICKET: {
                 temp_cost = {0, 0, 0, 0, 0, 1, 0, 0, 0};
                 temp_stats = {20, 0, 3, 0};
-                Tile thicket(TILE::THICKET, "Thicket", temp_cost, temp_stats, false);
-                temp_tiles[TILE::THICKET] = thicket;
+                temp_tile = Tile(TILE::THICKET, "Thicket", temp_cost, temp_stats, false);
+                temp_tiles.push_back(temp_tile);
                 break; 
              }
              case TILE::SNAG: {
                 temp_cost = {0, 0, 0, 0, 0, 1, 0, 0, 0};
                 temp_stats = {15, 0, 2, 0};
-                Tile snag(TILE::SNAG, "Snag", temp_cost, temp_stats, false);
-                temp_tiles[TILE::SNAG] = snag;
+                temp_tile = Tile(TILE::SNAG, "Snag", temp_cost, temp_stats, false);
+                temp_tiles.push_back(temp_tile);
                 break; 
              }
              case TILE::BRIDGE: {
                 temp_cost = {1, 1, 1, 1, 1, 1, 1, 1, 1};
                 temp_stats = {15, 0, 2, 0};
-                Tile bridge(TILE::BRIDGE, "Bridge", temp_cost, temp_stats, false);
-                temp_tiles[TILE::BRIDGE] = bridge;
+                temp_tile = Tile(TILE::BRIDGE, "Bridge", temp_cost, temp_stats, false);
+                temp_tiles.push_back(temp_tile);
                 break; 
              }
              case TILE::HOLE: {
                 temp_cost = {1, 1, 1, 1, 1, 1, 1, 1, 1};
                 temp_stats = {15, 0, 2, 0};
-                Tile hole(TILE::HOLE, "Hole", temp_cost, temp_stats, false);
-                temp_tiles[TILE::HOLE] = hole;
+                temp_tile = Tile(TILE::HOLE, "Hole", temp_cost, temp_stats, false);
+                temp_tiles.push_back(temp_tile);
                 break; 
              }
              case TILE::SEA: {
                 temp_cost = {0, 0, 0, 0, 0, 1, 0, 2, 0};
                 temp_stats = {15, 0, 2, 0};
-                Tile sea(TILE::SEA, "Sea", temp_cost, temp_stats, false);
-                temp_tiles[TILE::SEA] = sea;
+                temp_tile = Tile(TILE::SEA, "Sea", temp_cost, temp_stats, false);
+                temp_tiles.push_back(temp_tile);
                 break; 
              }
              case TILE::LAKE: {
                 temp_cost = {0, 0, 0, 0, 0, 1, 0, 3, 0};
                 temp_stats = {15, 0, 2, 0};
-                Tile lake(TILE::LAKE, "Lake", temp_cost, temp_stats, false);
-                temp_tiles[TILE::LAKE] = lake;
+                temp_tile = Tile(TILE::LAKE, "Lake", temp_cost, temp_stats, false);
+                temp_tiles.push_back(temp_tile);
                 break; 
              }
              case TILE::RIVER: {
                 temp_cost = {5, 4, 5, 0, 0, 1, 0, 2, 4};
                 temp_stats = {15, 0, 2, 0};
-                Tile river(TILE::RIVER, "River", temp_cost, temp_stats, false);
-                temp_tiles[TILE::RIVER] = river;
+                temp_tile = Tile(TILE::RIVER, "River", temp_cost, temp_stats, false);
+                temp_tiles.push_back(temp_tile);
                 break; 
              }
              case TILE::WATERFALL: {
                 temp_cost = {0, 0, 0, 0, 0, 1, 0, 0, 0};
                 temp_stats = {15, 0, 2, 0};
-                Tile waterfall(TILE::WATERFALL, "Waterfall", temp_cost, temp_stats, false);
-                temp_tiles[TILE::WATERFALL] = waterfall;
+                temp_tile = Tile(TILE::WATERFALL, "Waterfall", temp_cost, temp_stats, false);
+                temp_tiles.push_back(temp_tile);
                 break; 
              }
              case TILE::CLIFF: {
                 temp_cost = {0, 0, 0, 0, 0, 1, 0, 0, 0};
                 temp_stats = {15, 0, 2, 0};
-                Tile cliff(TILE::CLIFF, "cliff", temp_cost, temp_stats, false);
-                temp_tiles[TILE::CLIFF] = cliff;
+                temp_tile = Tile(TILE::CLIFF, "cliff", temp_cost, temp_stats, false);
+                temp_tiles.push_back(temp_tile);
                 break; 
              }
              case TILE::HILL: {
                 temp_cost = {3, 2, 3, 4, 3, 1, 4, 2, 2};
                 temp_stats = {15, 0, 2, 0};
-                Tile hill(TILE::HILL, "Hill", temp_cost, temp_stats, false);
-                temp_tiles[TILE::HILL] = hill;
+                temp_tile = Tile(TILE::HILL, "Hill", temp_cost, temp_stats, false);
+                temp_tiles.push_back(temp_tile);
                 break; 
              }
              case TILE::MOUNTAIN: {
                 temp_cost = {4, 3, 4, 0, 4, 1, 0, 3, 3};
                 temp_stats = {25, 0, 3, 0};
-                Tile mountain(TILE::MOUNTAIN, "Mountain", temp_cost, temp_stats, false);
-                temp_tiles[TILE::MOUNTAIN] = mountain;
+                temp_tile = Tile(TILE::MOUNTAIN, "Mountain", temp_cost, temp_stats, false);
+                temp_tiles.push_back(temp_tile);
                 break;
              }
              case TILE::PEAK: {
                 temp_cost = {0, 5, 0, 0, 0, 1, 0, 5, 5};
                 temp_stats = {30, 0, 4, 0};
-                Tile peak(TILE::PEAK, "Peak", temp_cost, temp_stats, false);
-                temp_tiles[TILE::PEAK] = peak;    
+                temp_tile = Tile(TILE::PEAK, "Peak", temp_cost, temp_stats, false);
+                temp_tiles.push_back(temp_tile);
                 break; 
              }
              case TILE::CAVE: {
                 temp_cost = {4, 3, 4, 0, 4, 1, 0, 3, 3};
                 temp_stats = {20, 0, 2, 0};
-                Tile cave(TILE::CAVE, "Cave", temp_cost, temp_stats, false);
-                temp_tiles[TILE::CAVE] = cave;
+                temp_tile = Tile(TILE::CAVE, "Cave", temp_cost, temp_stats, false);
+                temp_tiles.push_back(temp_tile);
                 break; 
              }
              case TILE::SAND: {
                 temp_cost = {3, 2, 1, 4, 3, 1, 3, 2, 2};
                 temp_stats = {0, 0, 0, 0};
-                Tile sand(TILE::SAND, "Sand", temp_cost, temp_stats, false);
-                temp_tiles[TILE::SAND] = sand;
+                temp_tile = Tile(TILE::SAND, "Sand", temp_cost, temp_stats, false);
+                temp_tiles.push_back(temp_tile);
                 break; 
             }
             case TILE::WASTELAND: {
                 temp_cost = {3, 2, 1, 4, 3, 1, 3, 2, 2};
                 temp_stats = {0, 0, 0, 0};
-                Tile wasteland(TILE::WASTELAND, "Wasteland", temp_cost, temp_stats, false);
-                temp_tiles[TILE::WASTELAND] = wasteland;
+                temp_tile = Tile(TILE::WASTELAND, "Wasteland", temp_cost, temp_stats, false);
+                temp_tiles.push_back(temp_tile);
                 break; 
             }
             case TILE::ROCK: {
                 temp_cost = {0, 0, 0, 0, 0, 1, 0, 3, 3};
                 temp_stats = {5, 0, 2, 0};
-                Tile rock(TILE::ROCK, "Rock", temp_cost, temp_stats, false);
-                temp_tiles[TILE::ROCK] = rock;
+                temp_tile = Tile(TILE::ROCK, "Rock", temp_cost, temp_stats, false);
+                temp_tiles.push_back(temp_tile);
                 break; 
             }
             case TILE::BONES: {
                 temp_cost = {0, 0, 0, 0, 0, 1, 0, 0, 0};
                 temp_stats = {0, 0, 0, 0};
-                Tile bones(TILE::BONES, "Bones", temp_cost, temp_stats, false);
-                temp_tiles[TILE::BONES] = bones;
+                temp_tile = Tile(TILE::BONES, "Bones", temp_cost, temp_stats, false);
+                temp_tiles.push_back(temp_tile);
                 break; 
             }
             case TILE::FLOOR: {
                 temp_cost = {1, 1, 1, 1, 1, 1, 1, 1, 1};
                 temp_stats = {0, 0, 0, 0};
-                Tile floor(TILE::FLOOR, "Floor", temp_cost, temp_stats, true);
-                temp_tiles[TILE::FLOOR] = floor;
+                temp_tile = Tile(TILE::FLOOR, "Floor", temp_cost, temp_stats, true);
+                temp_tiles.push_back(temp_tile);
                 break;
                 }
             case TILE::PILLAR: {
                 temp_cost = {2, 2, 2, 3, 3, 1, 3, 2, 2};
                 temp_stats = {10, 1, 10, 0};
-                Tile pillar(TILE::PILLAR, "Pillar", temp_cost, temp_stats, true);
-                temp_tiles[TILE::PILLAR] = pillar;
+                temp_tile = Tile(TILE::PILLAR, "Pillar", temp_cost, temp_stats, true);
+                temp_tiles.push_back(temp_tile);
                 break; 
             }
             case TILE::WALL: {
                 temp_cost = {0, 0, 0, 0, 0, 1, 0, 0, 0};
                 temp_stats = {0, 0, 0, 0};
-                Tile wall(TILE::WALL, "Wall", temp_cost, temp_stats, true);
-                temp_tiles[TILE::WALL] = wall;
+                temp_tile = Tile(TILE::WALL, "Wall", temp_cost, temp_stats, true);
+                temp_tiles.push_back(temp_tile);
                 break; 
             }
             case TILE::DOOR: {
                 temp_cost = {0, 0, 0, 0, 0, 1, 0, 0, 0};
                 temp_stats = {0, 0, 0, 0};
-                Tile door(TILE::DOOR, "Door", temp_cost, temp_stats, true);
-                temp_tiles[TILE::DOOR] = door;
+                temp_tile = Tile(TILE::DOOR, "Door", temp_cost, temp_stats, true);
+                temp_tiles.push_back(temp_tile);
                 break; 
             }
             case TILE::THRONE: {
                 temp_cost = {0, 0, 0, 0, 0, 1, 0, 0, 0};
                 temp_stats = {20, 2, 15, 0};
-                Tile throne(TILE::THRONE, "Throne", temp_cost, temp_stats, true);
-                temp_tiles[TILE::THRONE] = throne;
+                temp_tile = Tile(TILE::THRONE, "Throne", temp_cost, temp_stats, true);
+                temp_tiles.push_back(temp_tile);
                 break; 
             }
             case TILE::GATE: {
                 temp_cost = {0, 0, 0, 0, 0, 1, 0, 0, 0};
                 temp_stats = {10, 1, 10, 0};
-                Tile gate(TILE::GATE, "Gate", temp_cost, temp_stats, false);
-                temp_tiles[TILE::GATE] = gate;
+                temp_tile = Tile(TILE::GATE, "Gate", temp_cost, temp_stats, false);
+                temp_tiles.push_back(temp_tile);
                 break; 
             }
             case TILE::FENCE: {
                 temp_cost = {0, 0, 0, 0, 0, 1, 0, 0, 0};
                 temp_stats = {0, 0, 0, 0};
-                Tile fence(TILE::FENCE, "Fence", temp_cost, temp_stats, false);
-                temp_tiles[TILE::FENCE] = fence;
+                temp_tile = Tile(TILE::FENCE, "Fence", temp_cost, temp_stats, false);
+                temp_tiles.push_back(temp_tile);
                 break; 
             }
             case TILE::SHOP: {
                 temp_cost = {1, 1, 1, 1, 1, 1, 1, 1, 1};
                 temp_stats = {10, 1, 10, 0};
-                Tile shop(TILE::SHOP, "Shop", temp_cost, temp_stats, false);
-                temp_tiles[TILE::SHOP] = shop;
+                temp_tile = Tile(TILE::SHOP, "Shop", temp_cost, temp_stats, false);
+                temp_tiles.push_back(temp_tile);
                 break; 
             }
             case TILE::ARMORY: {
                 temp_cost = {1, 1, 1, 1, 1, 1, 1, 1, 1};
                 temp_stats = {15, 0, 2, 0};
-                Tile armory(TILE::ARMORY, "Armory", temp_cost, temp_stats, false);
-                temp_tiles[TILE::ARMORY] = armory;
+                temp_tile = Tile(TILE::ARMORY, "Armory", temp_cost, temp_stats, false);
+                temp_tiles.push_back(temp_tile);
                 break; 
             }
             case TILE::VILLAGE: {
                 temp_cost = {1, 1, 1, 1, 1, 1, 1, 1, 1};
                 temp_stats = {15, 0, 2, 0};
-                Tile village(TILE::VILLAGE, "Village", temp_cost, temp_stats, false);
-                temp_tiles[TILE::VILLAGE] = village;
+                temp_tile = Tile(TILE::VILLAGE, "Village", temp_cost, temp_stats, false);
+                temp_tiles.push_back(temp_tile);
                 break; 
             }
             case TILE::FORT: {
                 temp_cost = {2, 2, 2, 2, 2, 1, 2, 2, 2};
                 temp_stats = {10, 2, 10, 0};
-                Tile fort(TILE::FORT, "Fort", temp_cost, temp_stats, false);
-                temp_tiles[TILE::FORT] = fort;
+                temp_tile = Tile(TILE::FORT, "Fort", temp_cost, temp_stats, false);
+                temp_tiles.push_back(temp_tile);
                 break; 
             }
             case TILE::CASTLE: {
                 temp_cost = {0, 0, 0, 0, 0, 1, 0, 0, 0};
                 temp_stats = {0, 0, 0, 0};
-                Tile castle(TILE::CASTLE, "Castle", temp_cost, temp_stats, false);
-                temp_tiles[TILE::CASTLE] = castle;
+                temp_tile = Tile(TILE::CASTLE, "Castle", temp_cost, temp_stats, false);
+                temp_tiles.push_back(temp_tile);
                 break; 
             }
             case TILE::SNOW: {
                 temp_cost = {2, 2, 2, 3, 2, 1, 2, 2, 2};
                 temp_stats = {0, 0, 0, 0};
-                Tile snow(TILE::SNOW, "Snow", temp_cost, temp_stats, false);
-                temp_tiles[TILE::SNOW] = snow;
+                temp_tile = Tile(TILE::SNOW, "Snow", temp_cost, temp_stats, false);
+                temp_tiles.push_back(temp_tile);
                 break; 
             }            
             case TILE::GLACIER: {
                 temp_cost = {4, 3, 4, 0, 0, 1, 0, 3, 3};
                 temp_stats = {0, 0, 0, 0};
-                Tile glacier(TILE::GLACIER, "Glacier", temp_cost, temp_stats, false);
-                temp_tiles[TILE::GLACIER] = glacier;
+                temp_tile = Tile(TILE::GLACIER, "Glacier", temp_cost, temp_stats, false);
+                temp_tiles.push_back(temp_tile);
                 break; 
             }
             default: {
@@ -330,151 +331,153 @@ void baseTiles() {
 	SDL_Log("Loading all base tiles\n");
     // Fliers always have 1 movement because they dismount inside.
     
+    Tile temp_tile;
+
     // Mvt_types: foot_slow, foot_fast, mages, riders_slow, riders_fast, fliers, armors, pirates, bandits;
     Movement_cost temp_cost = {1, 1, 1, 1, 1, 1, 1, 1, 1};
     // Tile_stats:  dodge, Pprot, Mprot, heal
     Tile_stats temp_stats = {10, 0, 1, 0};
-    Tile plain(TILE::PLAIN, "Plain", temp_cost, temp_stats, false);
-    all_tiles[TILE::PLAIN] = plain;
+    temp_tile = Tile(TILE::PLAIN, "Plain", temp_cost, temp_stats, false);
+    all_tiles.push_back(temp_tile);
     temp_cost = {2, 1, 2, 3, 2, 1, 3, 2, 2};
     temp_stats = {15, 0, 2, 0};
-    Tile bush(TILE::BUSH, "Bush", temp_cost, temp_stats, false);
-    all_tiles[TILE::BUSH] = bush;
+    temp_tile = Tile(TILE::BUSH, "Bush", temp_cost, temp_stats, false);
+    all_tiles.push_back(temp_tile);
 
     temp_cost = {3, 2, 3, 4, 3, 1, 3, 3, 3};
     temp_stats = {15, 0, 2, 0};
-    Tile forest(TILE::FOREST, "Forest", temp_cost, temp_stats, false);
-    all_tiles[TILE::FOREST] = forest;
+    temp_tile = Tile(TILE::FOREST, "Forest", temp_cost, temp_stats, false);
+    all_tiles.push_back(temp_tile);
     temp_cost = {0, 0, 0, 0, 0, 1, 0, 0, 0};
     temp_stats = {20, 0, 3, 0};
-    Tile thicket(TILE::THICKET, "Thicket", temp_cost, temp_stats, false);
-    all_tiles[TILE::THICKET] = thicket;
+    temp_tile = Tile(TILE::THICKET, "Thicket", temp_cost, temp_stats, false);
+    all_tiles.push_back(temp_tile);
     temp_cost = {0, 0, 0, 0, 0, 1, 0, 0, 0};
     temp_stats = {15, 0, 2, 0};
-    Tile snag(TILE::SNAG, "Snag", temp_cost, temp_stats, false);
-    all_tiles[TILE::SNAG] = snag;
+    temp_tile = Tile(TILE::SNAG, "Snag", temp_cost, temp_stats, false);
+    all_tiles.push_back(temp_tile);
     temp_cost = {1, 1, 1, 1, 1, 1, 1, 1, 1};
     temp_stats = {15, 0, 2, 0};
-    Tile bridge(TILE::BRIDGE, "Bridge", temp_cost, temp_stats, false);
-    all_tiles[TILE::BRIDGE] = bridge;
+    temp_tile = Tile(TILE::BRIDGE, "Bridge", temp_cost, temp_stats, false);
+    all_tiles.push_back(temp_tile);
     temp_cost = {1, 1, 1, 1, 1, 1, 1, 1, 1};
     temp_stats = {15, 0, 2, 0};
-    Tile hole(TILE::HOLE, "Hole", temp_cost, temp_stats, false);
-    all_tiles[TILE::HOLE] = hole;
+    temp_tile = Tile(TILE::HOLE, "Hole", temp_cost, temp_stats, false);
+    all_tiles.push_back(temp_tile);
 
     temp_cost = {0, 0, 0, 0, 0, 1, 0, 2, 0};
     temp_stats = {15, 0, 2, 0};
-    Tile sea(TILE::SEA, "Sea", temp_cost, temp_stats, false);
-    all_tiles[TILE::SEA] = sea;
+    temp_tile = Tile(TILE::SEA, "Sea", temp_cost, temp_stats, false);
+    all_tiles.push_back(temp_tile);
     temp_cost = {0, 0, 0, 0, 0, 1, 0, 3, 0};
     temp_stats = {15, 0, 2, 0};
-    Tile lake(TILE::LAKE, "Lake", temp_cost, temp_stats, false);
-    all_tiles[TILE::LAKE] = lake;
+    temp_tile = Tile(TILE::LAKE, "Lake", temp_cost, temp_stats, false);
+    all_tiles.push_back(temp_tile);
     temp_cost = {5, 4, 5, 0, 0, 1, 0, 2, 4};
     temp_stats = {15, 0, 2, 0};
-    Tile river(TILE::RIVER, "River", temp_cost, temp_stats, false);
-    all_tiles[TILE::RIVER] = river;
+    temp_tile = Tile(TILE::RIVER, "River", temp_cost, temp_stats, false);
+    all_tiles.push_back(temp_tile);
     temp_cost = {0, 0, 0, 0, 0, 1, 0, 0, 0};
     temp_stats = {15, 0, 2, 0};
-    Tile waterfall(TILE::WATERFALL, "Waterfall", temp_cost, temp_stats, false);
-    all_tiles[TILE::WATERFALL] = waterfall;
+    temp_tile = Tile(TILE::WATERFALL, "Waterfall", temp_cost, temp_stats, false);
+    all_tiles.push_back(temp_tile);
     temp_cost = {0, 0, 0, 0, 0, 1, 0, 0, 0};
     temp_stats = {15, 0, 2, 0};
-    Tile cliff(TILE::CLIFF, "Cliff", temp_cost, temp_stats, false);
-    all_tiles[TILE::CLIFF] = cliff;
+    temp_tile = Tile(TILE::CLIFF, "Cliff", temp_cost, temp_stats, false);
+    all_tiles.push_back(temp_tile);
 
     temp_cost = {3, 2, 3, 4, 3, 1, 4, 2, 2};
     temp_stats = {15, 0, 2, 0};
-    Tile hill(TILE::HILL, "Hill", temp_cost, temp_stats, false);
-    all_tiles[TILE::HILL] = hill;
+    temp_tile = Tile(TILE::HILL, "Hill", temp_cost, temp_stats, false);
+    all_tiles.push_back(temp_tile);
     temp_cost = {4, 3, 4, 0, 4, 1, 0, 3, 3};
     temp_stats = {25, 0, 3, 0};
-    Tile mountain(TILE::MOUNTAIN, "Mountain", temp_cost, temp_stats, false);
-    all_tiles[TILE::MOUNTAIN] = mountain;
+    temp_tile = Tile(TILE::MOUNTAIN, "Mountain", temp_cost, temp_stats, false);
+    all_tiles.push_back(temp_tile);
     temp_cost = {0, 5, 0, 0, 0, 1, 0, 5, 5};
     temp_stats = {30, 0, 4, 0};
-    Tile peak(TILE::PEAK, "Peak", temp_cost, temp_stats, false);
-    all_tiles[TILE::PEAK] = peak;    
+    temp_tile = Tile(TILE::PEAK, "Peak", temp_cost, temp_stats, false);
+    all_tiles.push_back(temp_tile);
     temp_cost = {4, 3, 4, 0, 4, 1, 0, 3, 3};
     temp_stats = {20, 0, 2, 0};
-    Tile cave(TILE::CAVE, "Cave", temp_cost, temp_stats, false);
-    all_tiles[TILE::CAVE] = cave;
+    temp_tile = Tile(TILE::CAVE, "Cave", temp_cost, temp_stats, false);
+    all_tiles.push_back(temp_tile);
 
     temp_cost = {3, 2, 1, 4, 3, 1, 3, 2, 2};
     temp_stats = {0, 0, 0, 0};
-    Tile sand(TILE::SAND, "Sand", temp_cost, temp_stats, false);
-    all_tiles[TILE::SAND] = sand;
+    temp_tile = Tile(TILE::SAND, "Sand", temp_cost, temp_stats, false);
+    all_tiles.push_back(temp_tile);
     temp_cost = {3, 2, 1, 4, 3, 1, 3, 2, 2};
     temp_stats = {0, 0, 0, 0};
-    Tile wasteland(TILE::WASTELAND, "Wasteland", temp_cost, temp_stats, false);
-    all_tiles[TILE::WASTELAND] = wasteland;
+    temp_tile = Tile(TILE::WASTELAND, "Wasteland", temp_cost, temp_stats, false);
+    all_tiles.push_back(temp_tile);
     temp_cost = {0, 0, 0, 0, 0, 1, 0, 3, 3};
     temp_stats = {5, 0, 2, 0};
-    Tile rock(TILE::ROCK, "Rock", temp_cost, temp_stats, false);
-    all_tiles[TILE::ROCK] = rock;
+    temp_tile = Tile(TILE::ROCK, "Rock", temp_cost, temp_stats, false);
+    all_tiles.push_back(temp_tile);
     temp_cost = {0, 0, 0, 0, 0, 1, 0, 0, 0};
     temp_stats = {0, 0, 0, 0};
-    Tile bones(TILE::BONES, "Bones", temp_cost, temp_stats, false);
-    all_tiles[TILE::BONES] = bones;
+    temp_tile = Tile(TILE::BONES, "Bones", temp_cost, temp_stats, false);
+    all_tiles.push_back(temp_tile);
 
     temp_cost = {1, 1, 1, 1, 1, 1, 1, 1, 1};
     temp_stats = {0, 0, 0, 0};
-    Tile floor(TILE::FLOOR, "Floor", temp_cost, temp_stats, true);
-    all_tiles[TILE::FLOOR] = floor;
+    temp_tile = Tile(TILE::FLOOR, "Floor", temp_cost, temp_stats, true);
+    all_tiles.push_back(temp_tile);
     temp_cost = {2, 2, 2, 3, 3, 1, 3, 2, 2};
     temp_stats = {10, 1, 10, 0};
-    Tile pillar(TILE::PILLAR, "Pillar", temp_cost, temp_stats, true);
-    all_tiles[TILE::PILLAR] = pillar;
+    temp_tile = Tile(TILE::PILLAR, "Pillar", temp_cost, temp_stats, true);
+    all_tiles.push_back(temp_tile);
     temp_cost = {0, 0, 0, 0, 0, 1, 0, 0, 0};
     temp_stats = {0, 0, 0, 0};
-    Tile wall(TILE::WALL, "Wall", temp_cost, temp_stats, true);
-    all_tiles[TILE::WALL] = wall;
+    temp_tile = Tile(TILE::WALL, "Wall", temp_cost, temp_stats, true);
+    all_tiles.push_back(temp_tile);
     temp_cost = {0, 0, 0, 0, 0, 1, 0, 0, 0};
     temp_stats = {0, 0, 0, 0};
-    Tile door(TILE::DOOR, "Door", temp_cost, temp_stats, true);
-    all_tiles[TILE::DOOR] = door;
+    temp_tile = Tile(TILE::DOOR, "Door", temp_cost, temp_stats, true);
+    all_tiles.push_back(temp_tile);
     temp_cost = {0, 0, 0, 0, 0, 1, 0, 0, 0};
     temp_stats = {20, 2, 15, 0};
-    Tile throne(TILE::THRONE, "Throne", temp_cost, temp_stats, true);
-    all_tiles[TILE::THRONE] = throne;
+    temp_tile = Tile(TILE::THRONE, "Throne", temp_cost, temp_stats, true);
+    all_tiles.push_back(temp_tile);
 
     temp_cost = {0, 0, 0, 0, 0, 1, 0, 0, 0};
     temp_stats = {10, 1, 10, 0};
-    Tile gate(TILE::GATE, "Gate", temp_cost, temp_stats, false);
-    all_tiles[TILE::GATE] = gate;
+    temp_tile = Tile(TILE::GATE, "Gate", temp_cost, temp_stats, false);
+    all_tiles.push_back(temp_tile);
     temp_cost = {0, 0, 0, 0, 0, 1, 0, 0, 0};
     temp_stats = {0, 0, 0, 0};
-    Tile fence(TILE::FENCE, "Fence", temp_cost, temp_stats, false);
-    all_tiles[TILE::FENCE] = fence;
+    temp_tile = Tile(TILE::FENCE, "Fence", temp_cost, temp_stats, false);
+    all_tiles.push_back(temp_tile);
     temp_cost = {1, 1, 1, 1, 1, 1, 1, 1, 1};
     temp_stats = {10, 1, 10, 0};
-    Tile shop(TILE::SHOP, "Shop", temp_cost, temp_stats, false);
-    all_tiles[TILE::SHOP] = shop;
+    temp_tile = Tile(TILE::SHOP, "Shop", temp_cost, temp_stats, false);
+    all_tiles.push_back(temp_tile);
     temp_cost = {1, 1, 1, 1, 1, 1, 1, 1, 1};
     temp_stats = {15, 0, 2, 0};
-    Tile armory(TILE::ARMORY, "Armory", temp_cost, temp_stats, false);
-    all_tiles[TILE::ARMORY] = armory;
+    temp_tile = Tile(TILE::ARMORY, "Armory", temp_cost, temp_stats, false);
+    all_tiles.push_back(temp_tile);
     temp_cost = {1, 1, 1, 1, 1, 1, 1, 1, 1};
     temp_stats = {15, 0, 2, 0};
-    Tile village(TILE::VILLAGE, "Village", temp_cost, temp_stats, false);
-    all_tiles[TILE::VILLAGE] = village;
+    temp_tile = Tile(TILE::VILLAGE, "Village", temp_cost, temp_stats, false);
+    all_tiles.push_back(temp_tile);
     temp_cost = {2, 2, 2, 2, 2, 1, 2, 2, 2};
     temp_stats = {10, 2, 10, 0};
-    Tile fort(TILE::FORT, "Fort", temp_cost, temp_stats, false);
-    all_tiles[TILE::FORT] = fort;
+    temp_tile = Tile(TILE::FORT, "Fort", temp_cost, temp_stats, false);
+    all_tiles.push_back(temp_tile);
     temp_cost = {0, 0, 0, 0, 0, 1, 0, 0, 0};
     temp_stats = {0, 0, 0, 0};
-    Tile castle(TILE::CASTLE, "Castle", temp_cost, temp_stats, false);
-    all_tiles[TILE::CASTLE] = castle;
+    temp_tile = Tile(TILE::CASTLE, "Castle", temp_cost, temp_stats, false);
+    all_tiles.push_back(temp_tile);
 
     temp_cost = {2, 2, 2, 3, 2, 1, 2, 2, 2};
     temp_stats = {0, 0, 0, 0};
-    Tile snow(TILE::SNOW, "Snow", temp_cost, temp_stats, false);
-    all_tiles[TILE::SNOW] = snow;
+    temp_tile = Tile(TILE::SNOW, "Snow", temp_cost, temp_stats, false);
+    all_tiles.push_back(temp_tile);
     temp_cost = {4, 3, 4, 0, 0, 1, 0, 3, 3};
     temp_stats = {0, 0, 0, 0};
-    Tile glacier(TILE::GLACIER, "Glacier", temp_cost, temp_stats, false);
-    all_tiles[TILE::GLACIER] = glacier;
+    temp_tile = Tile(TILE::GLACIER, "Glacier", temp_cost, temp_stats, false);
+    all_tiles.push_back(temp_tile);
 }
 
 std::vector<short int> testTiles() {

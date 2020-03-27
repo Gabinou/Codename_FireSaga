@@ -35,10 +35,10 @@ class Tile {
 };
 
 void baseTiles();
-std::unordered_map<short int, Tile> baseTiles(std::vector<short int> toload);
+std::vector<Tile> baseTiles(std::vector<short int> toload);
 
-extern std::unordered_map<short int, Tile> all_tiles;
-extern std::unordered_map<short int, Tile> loaded_tiles;
+extern std::vector<Tile> all_tiles;
+extern std::vector<Tile> loaded_tiles;
 extern std::vector<short int> (*chapTiles[40])();
 
 std::vector<short int> testTiles();
