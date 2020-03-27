@@ -648,6 +648,7 @@ void Unit::writeXML(const char * filename, const bool append) {
     tinyxml2::XMLElement * pSex = xmlDoc.NewElement("Sex");
     pUnit->InsertEndChild(pSex);
     pSex->SetText(sex);
+    pSex->SetAttribute("eg", "hasPenis");
     
     tinyxml2::XMLElement * pClass = xmlDoc.NewElement("Class");
     pUnit->InsertEndChild(pClass);
