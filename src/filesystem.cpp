@@ -1,6 +1,10 @@
 
 #include "filesystem.hpp"
 #include "game.hpp"
+// #ifndef STB_SPRINTF_IMPLEMENTATION //Why no need?
+// #define STB_SPRINTF_IMPLEMENTATION
+#include "stb_sprintf.h" 
+//#endif /* STB_SPRINTF_IMPLEMENTATION */
 
 #if defined(_WIN32)
 #include <windows.h>
@@ -407,6 +411,25 @@ void writeXML_stats(tinyxml2::XMLDocument * in_doc, tinyxml2::XMLElement * in_pS
     pcon->SetText(in_stats->con);
     pmove->SetText(in_stats->move);
     pprof->SetText(in_stats->prof);
+}
+
+void writeXML_equipment(tinyxml2::XMLDocument * in_doc, Inventory_item * equipment, tinyxml2::XMLElement * in_pEquipment) {
+    tinyxml2::XMLElement * pItem;
+    tinyxml2::XMLElement * pUsed;
+    tinyxml2::XMLElement * pwpnName;
+    char buffer[DEFAULT::BUFFER_SIZE];
+    for (int i = 0; i < DEFAULT::EQUIPMENT_SIZE; i++) {
+        pItem = in_doc->NewElement("Item");
+        in_pEquipment->InsertEndChild(pItem);
+        pItem->SetAttribute("id", equipment[i].id);
+        pUsed = in_doc->NewElement("Used");
+        stbsp_sprintf(buffer, "%d", equipment[i].used);
+        pUsed->SetText(buffer);
+        pItem->InsertEndChild(pUsed);
+        pwpnName = in_doc->NewElement("Name");
+        pwpnName->SetText(all_weapons[equipment[i].id].getName().c_str());
+        pItem->InsertFirstChild(pwpnName);
+    }
 }
 
 void readXML_equipment(Inventory_item * equipment, tinyxml2::XMLElement * in_pEquipment) {
