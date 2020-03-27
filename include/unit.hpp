@@ -151,7 +151,6 @@ class Unit {
         void writeXML(const char * filename, const bool append = false);
         void readXML(const char * filename);
 
-        // void readXML_equipment(tinyxml2::XMLElement * in_pEquipment);
 };
 
 extern std::vector<Unit> all_units;

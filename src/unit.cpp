@@ -583,8 +583,7 @@ void Unit::readXML(const char * filename) {
     exp = (unsigned short int)bufint;
     ptemp = pUnit->FirstChildElement("Class");
     if (!ptemp) {SDL_Log("Cannot get Class element");}   
-    ptemp->QueryUnsignedText(&bufint);
-    class_index = (unsigned char)bufint;
+    class_index = (unsigned char)ptemp->IntAttribute("id");;
     ptemp = pUnit->FirstChildElement("Stats");
     if (!ptemp) {SDL_Log("Cannot get Stats element");}   
     readXML_stats(ptemp, &current_stats);
@@ -651,7 +650,8 @@ void Unit::writeXML(const char * filename, const bool append) {
     
     tinyxml2::XMLElement * pClass = xmlDoc.NewElement("Class");
     pUnit->InsertEndChild(pClass);
-    pClass->SetText(class_index);
+    pClass->SetText(class_name.c_str());
+    pClass->SetAttribute("id", class_index);
 
     tinyxml2::XMLElement * pExp = xmlDoc.NewElement("Exp");
     pUnit->InsertEndChild(pExp);
@@ -707,15 +707,19 @@ void Unit::writeXML(const char * filename, const bool append) {
     pUnit->InsertEndChild(pEquipment);
     tinyxml2::XMLElement * pItem;
     tinyxml2::XMLElement * pUsed;
-    tinyxml2::XMLElement * pId;
+    tinyxml2::XMLElement * pwpnName;
     for (int i = 0; i < DEFAULT::EQUIPMENT_SIZE; i++) {
         pItem = xmlDoc.NewElement("Item");
         pEquipment->InsertEndChild(pItem);
-        pItem->SetAttribute("id", id);
+        pItem->SetAttribute("id", equipment[i].id);
         pUsed = xmlDoc.NewElement("Used");
         stbsp_sprintf(buffer, "%d", equipment[i].used);
         pUsed->SetText(buffer);
         pItem->InsertEndChild(pUsed);
+        pwpnName = xmlDoc.NewElement("Name");
+        pwpnName->SetText(all_weapons[equipment[i].id].getName().c_str());
+        pItem->InsertFirstChild(pwpnName);
+
     }
     
     tinyxml2::XMLPrinter printer;
