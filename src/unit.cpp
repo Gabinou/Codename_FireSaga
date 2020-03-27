@@ -58,6 +58,7 @@ void Unit::removeEquipment(unsigned char in_index) {
 
 void Unit::addEquipment(Inventory_item in_equipment) {
     for (short unsigned int i = 0; i < DEFAULT::EQUIPMENT_SIZE; i++) {
+        SDL_Log("%d", i);
         if (equipment[i].id == -1) {
             equipment[i] = in_equipment; 
             break;
@@ -719,7 +720,6 @@ void Unit::writeXML(const char * filename, const bool append) {
         pwpnName = xmlDoc.NewElement("Name");
         pwpnName->SetText(all_weapons[equipment[i].id].getName().c_str());
         pItem->InsertFirstChild(pwpnName);
-
     }
     
     tinyxml2::XMLPrinter printer;

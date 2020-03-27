@@ -412,7 +412,7 @@ void readXML_equipment(Inventory_item * equipment, tinyxml2::XMLElement * in_pEq
     tinyxml2::XMLElement * pItem = in_pEquipment->FirstChildElement("Item");
     tinyxml2::XMLElement * pUsed;
     int bufint;
-    for (int i = 1; i < DEFAULT::EQUIPMENT_SIZE; i++) {
+    for (int i = 0; i < DEFAULT::EQUIPMENT_SIZE; i++) {
         pUsed = pItem->FirstChildElement("Used");
         equipment[i].id = pItem->IntAttribute("id");
         pUsed->QueryIntText(&bufint);
