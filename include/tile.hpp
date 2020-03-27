@@ -8,7 +8,7 @@
 class Tile {
     private:
         Movement_cost cost_struct;
-        unsigned char cost[UNIT::MVT::BANDITS + 1];
+        unsigned char cost[UNIT::MVT::END];
         bool inside;
         Tile_stats stats;
         std::string name;
@@ -16,8 +16,7 @@ class Tile {
         Tile();
         ~Tile();
 
-        Tile(const std::string in_name, const Movement_cost in_cost, unsigned int * in_stats[3]);
-        Tile(const std::string in_name, const Movement_cost in_cost, unsigned int * in_stats[3], const bool in_inside);
+        Tile(const std::string in_name, const Movement_cost in_cost, const Tile_stats in_stats, const bool in_inside);
 
         Movement_cost getCoststruct();
         unsigned char * getCost();
@@ -29,6 +28,8 @@ class Tile {
         void setInside(const bool in_inside);
 
         void write(const char * filename, const char * mode = "a");
+        void writeXML(const char * filename, const bool append = false);
+        void readXML(const char * filename);
 };
 
 void baseTiles();
