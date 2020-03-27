@@ -105,18 +105,15 @@ void Weapon::readXML(const char * filename) {
     ptemp = pWpn->FirstChildElement("Malus");
     if (!ptemp) {SDL_Log("Cannot get Malus element");}   
     readXML_stats(ptemp, &malus_stats);
-    ptemp = pWpn->FirstChildElement("Type");
-    if (!ptemp) {SDL_Log("Cannot get Type element");}   
-    ptemp->QueryUnsignedText(&bufint);
-    type = (unsigned short int)bufint;
-    ptemp = pWpn->FirstChildElement("Effective");
-    if (!ptemp) {SDL_Log("Cannot get Effective element");}   
-    ptemp->QueryUnsignedText(&bufint);
-    effective = (unsigned long int)bufint;
-    ptemp = pWpn->FirstChildElement("Effect");
-    if (!ptemp) {SDL_Log("Cannot get Effect element");}   
-    ptemp->QueryUnsignedText(&bufint);
-    effect = (unsigned short int)bufint;
+    ptemp = pWpn->FirstChildElement("Types");
+    if (!ptemp) {SDL_Log("Cannot get Types element");}   
+    type = (unsigned short int)ptemp->IntAttribute("id");
+    ptemp = pWpn->FirstChildElement("Effectives");
+    if (!ptemp) {SDL_Log("Cannot get Effectives element");}  
+    effective = (unsigned short int)ptemp->IntAttribute("id");
+    ptemp = pWpn->FirstChildElement("Effects");
+    if (!ptemp) {SDL_Log("Cannot get Effects element");}   
+    effect = (long unsigned int)ptemp->IntAttribute("id");
     ptemp = pWpn->FirstChildElement("Stats");
     if (!ptemp) {SDL_Log("Cannot get Stats element");}   
     readXML_stats(ptemp, &stats);
