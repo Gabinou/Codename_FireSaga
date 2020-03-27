@@ -9,6 +9,7 @@ class Tile {
     private:
         Movement_cost cost_struct;
         unsigned char cost[UNIT::MVT::END];
+        short int id;
         bool inside;
         Tile_stats stats;
         std::string name;
@@ -16,11 +17,12 @@ class Tile {
         Tile();
         ~Tile();
 
-        Tile(const std::string in_name, const Movement_cost in_cost, const Tile_stats in_stats, const bool in_inside);
+        Tile(const short int in_id, const char * in_name, const Movement_cost in_cost, const Tile_stats in_stats, const bool in_inside);
 
         Movement_cost getCoststruct();
         unsigned char * getCost();
         std::string getName();
+        short int getid();
         Tile_stats getStats();
 
         bool isInside();
