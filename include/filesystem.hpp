@@ -38,6 +38,7 @@ extern void writeXML_equipment(tinyxml2::XMLDocument * in_doc, tinyxml2::XMLElem
 extern void writeXML_mvtcost(tinyxml2::XMLDocument * in_doc, tinyxml2::XMLElement * in_pCost, Movement_cost * in_cost);
 extern void readXML_mvtcost(tinyxml2::XMLElement * in_pCost, Movement_cost * in_cost);
 extern void writeXML_tilestats(tinyxml2::XMLDocument * in_doc, tinyxml2::XMLElement * in_pStats, Tile_stats * in_stats);
+extern void readXML_tilestats(tinyxml2::XMLElement * in_pStats, Tile_stats * in_stats);
 
 extern int parseXML(const char * filename, tinyxml2::XMLDocument * in_doc);
 
