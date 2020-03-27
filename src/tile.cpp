@@ -1,4 +1,6 @@
 #include "tile.hpp"
+#include "stb_sprintf.h"
+
 
 Tile::~Tile() {
 }
@@ -82,6 +84,19 @@ void Tile::writeXML(const char * filename, const bool append) {
     tinyxml2::XMLElement * pMvtCost = xmlDoc.NewElement("MvtCost");
     pTile->InsertEndChild(pMvtCost);
     writeXML_mvtcost(&xmlDoc, pMvtCost, &cost_struct);
+
+    tinyxml2::XMLElement * pStats = xmlDoc.NewElement("Stats");
+    pTile->InsertEndChild(pStats);
+    writeXML_tilestats(&xmlDoc, pStats, &stats);
+
+    tinyxml2::XMLPrinter printer;
+
+    xmlDoc.Print(&printer);
+    char longbuffer[printer.CStrSize()];
+    stbsp_sprintf(longbuffer, printer.CStr());
+    PHYSFS_writeBytes(fp, longbuffer, printer.CStrSize());
+
+    PHYSFS_close(fp);
 }
 
 

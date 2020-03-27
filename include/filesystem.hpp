@@ -36,6 +36,7 @@ extern void readXML_equipment(Inventory_item * equipment, tinyxml2::XMLElement *
 extern void writeXML_equipment(tinyxml2::XMLDocument * in_doc, tinyxml2::XMLElement * in_pEquipment, Inventory_item * in_equipment);
 
 extern void writeXML_mvtcost(tinyxml2::XMLDocument * in_doc, tinyxml2::XMLElement * in_pCost, Movement_cost * in_cost);
+extern void writeXML_tilestats(tinyxml2::XMLDocument * in_doc, tinyxml2::XMLElement * in_pStats, Tile_stats * in_stats);
 
 
 #endif /* FILESYSTEM_HPP */

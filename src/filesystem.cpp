@@ -413,7 +413,7 @@ void writeXML_stats(tinyxml2::XMLDocument * in_doc, tinyxml2::XMLElement * in_pS
     pprof->SetText(in_stats->prof);
 }
 
-void writeXML_equipment(tinyxml2::XMLDocument * in_doc, Inventory_item * in_equipment, tinyxml2::XMLElement * in_pEquipment) {
+void writeXML_equipment(tinyxml2::XMLDocument * in_doc, tinyxml2::XMLElement * in_pEquipment, Inventory_item * in_equipment) {
     tinyxml2::XMLElement * pItem;
     tinyxml2::XMLElement * pUsed;
     tinyxml2::XMLElement * pwpnName;
@@ -473,6 +473,22 @@ void writeXML_mvtcost(tinyxml2::XMLDocument * in_doc, tinyxml2::XMLElement * in_
     parmors->SetText(in_cost->armors);
     ppirates->SetText(in_cost->pirates);
     pbandits->SetText(in_cost->bandits);
+}
+
+void writeXML_tilestats(tinyxml2::XMLDocument * in_doc, tinyxml2::XMLElement * in_pStats, Tile_stats * in_stats) {
+    tinyxml2::XMLElement * pdodge = in_doc->NewElement("dodge");
+    tinyxml2::XMLElement * pPprot = in_doc->NewElement("Pprot");
+    tinyxml2::XMLElement * pMprot = in_doc->NewElement("Mprot");
+    tinyxml2::XMLElement * pheal = in_doc->NewElement("heal");
+    in_pStats->InsertEndChild(pdodge);
+    in_pStats->InsertEndChild(pPprot);
+    in_pStats->InsertEndChild(pMprot);
+    in_pStats->InsertEndChild(pheal);
+    pdodge->SetText(in_stats->dodge);
+    pPprot->SetText(in_stats->Pprot);
+    pMprot->SetText(in_stats->Mprot);
+    pheal->SetText(in_stats->heal);
 
 }
+
 
