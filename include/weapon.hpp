@@ -18,7 +18,7 @@ class Weapon {
         Unit_stats malus_stats = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
         long unsigned int effect = 0;
         short unsigned int type = 0;
-        short unsigned int effective = 0;
+        short unsigned int effective = 0; // is a unit type.
         std::string name = "";
         std::string description = "";
         unsigned char id = 0;

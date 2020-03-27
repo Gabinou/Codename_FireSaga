@@ -22,6 +22,142 @@ int geometricslide(int distance, float geo_factor) {
     // but this is more elegant.
 }
 
+std::vector<std::string> wpnEffects(long unsigned int in_effect) {
+    std::vector<std::string> names;
+    if ((in_effect & WPN::EFFECT::KILL1P) > 0) {
+        names.push_back("1% kill");
+    }
+    if ((in_effect & WPN::EFFECT::BRAVE2X) > 0) {
+        names.push_back("Double attack");
+    }
+    if ((in_effect & WPN::EFFECT::BRAVE3X) > 0) {
+        names.push_back("Triple attack");
+    }
+    if ((in_effect & WPN::EFFECT::BRAVE4X) > 0) {
+        names.push_back("Quadruple attack");
+    }
+    if ((in_effect & WPN::EFFECT::NOCOUNTER) > 0) {
+        names.push_back("No counter-attack");
+    }
+    if ((in_effect & WPN::EFFECT::IGNORE_DEF) > 0) {
+        names.push_back("Ignore defense");
+    }
+    if ((in_effect & WPN::EFFECT::IGNORE_RES) > 0) {
+        names.push_back("Ignore resistance");
+    }
+    if ((in_effect & WPN::EFFECT::IGNORE_SHIELD) > 0) {
+        names.push_back("Ignore shield");
+    }
+    if ((in_effect & WPN::EFFECT::USE_HEAL) > 0) {
+        names.push_back("Heal");
+    }
+    if ((in_effect & WPN::EFFECT::USE_BUFF) > 0) {
+        names.push_back("Buff");
+    }
+    if ((in_effect & WPN::EFFECT::USE_DIVINE) > 0) {
+        names.push_back("Divine shield");
+    }
+    if ((in_effect & WPN::EFFECT::NO_CRIT) > 0) {
+        names.push_back("Cannot be critted");
+    }
+    if ((in_effect & WPN::EFFECT::NO_ATTACK) > 0) {
+        names.push_back("Cannot be attacked");
+    }
+    if ((in_effect & WPN::EFFECT::CHARM) > 0) {
+        names.push_back("Charm");
+    }
+    if ((in_effect & WPN::EFFECT::IMMUNE_MAGIC) > 0) {
+        names.push_back("Immune to magic");
+    }
+    if ((in_effect & WPN::EFFECT::IMMUNE_PHYS) > 0) {
+        names.push_back("Immune to physical");
+    }
+    if ((in_effect & WPN::EFFECT::COUP_DE_GRACE) > 0) {
+        names.push_back("Coup de grâce");
+    }
+    if ((in_effect & WPN::EFFECT::BREAK_WEAPON) > 0) {
+        names.push_back("Break weapon");
+    }
+    if ((in_effect & WPN::EFFECT::EXP2X) > 0) {
+        names.push_back("Paragon");
+    }
+    if ((in_effect & WPN::EFFECT::LIFESTEAL) > 0) {
+        names.push_back("Lifesteal");
+    }
+    if ((in_effect & WPN::EFFECT::POISON) > 0) {
+        names.push_back("Poison");
+    }
+    if ((in_effect & WPN::EFFECT::CURSED) > 0) {
+        names.push_back("Cursed");
+    }
+    if ((in_effect & WPN::EFFECT::MASOCHISM) > 0) {
+        names.push_back("Masochism");
+    }
+    if ((in_effect & WPN::EFFECT::STUN) > 0) {
+        names.push_back("Stun");
+    }
+    if ((in_effect & WPN::EFFECT::PASS) > 0) {
+        names.push_back("Pass");
+    }
+    if ((in_effect & WPN::EFFECT::JOUST) > 0) {
+        names.push_back("Joust");
+    }
+    if ((in_effect & WPN::EFFECT::SPARE) > 0) {
+        names.push_back("Spare");
+    }
+    if ((in_effect & WPN::EFFECT::CAPTURE) > 0) {
+        names.push_back("Capture");
+    }
+    if ((in_effect & WPN::EFFECT::HALF_DMG) > 0) {
+        names.push_back("Half-damage");
+    }
+    if ((in_effect & WPN::EFFECT::BREAK_SHIELD) > 0) {
+        names.push_back("Shield breaker");
+    }
+    return(names);
+}
+
+std::vector<std::string> wpnTypeName(short unsigned int in_type) {
+    std::vector<std::string> names;
+    if ((in_type & WPN::TYPE::SWORD) > 0) {
+        names.push_back("Sword");
+    }
+    if ((in_type & WPN::TYPE::LANCE) > 0) {
+        names.push_back("Lance");
+    }
+    if ((in_type & WPN::TYPE::AXE) > 0) {
+        names.push_back("Axe");
+    }
+    if ((in_type & WPN::TYPE::BOW) > 0) {
+        names.push_back("Bow");
+    }
+    if ((in_type & WPN::TYPE::TRINKET) > 0) {
+        names.push_back("Trinket");
+    }
+    if ((in_type & WPN::TYPE::OFFHAND) > 0) {
+        names.push_back("Offhand");
+    }
+    if ((in_type & WPN::TYPE::ELEMENTAL) > 0) {
+        names.push_back("ELEMENTAL");
+    }
+    if ((in_type & WPN::TYPE::DEMONIC) > 0) {
+        names.push_back("Demonic");
+    }
+    if ((in_type & WPN::TYPE::ANGELIC) > 0) {
+        names.push_back("Angelic");
+    }
+    if ((in_type & WPN::TYPE::SHIELD) > 0) {
+        names.push_back("Shield");
+    }
+    if ((in_type & WPN::TYPE::STAFF) > 0) {
+        names.push_back("Staff");
+    }
+    if ((in_type & WPN::TYPE::CLAW) > 0) {
+        names.push_back("Claw");
+    }
+    return(names);
+}
+
 std::string sexName(bool in_sex) {
     std::string name;
     if(in_sex) {

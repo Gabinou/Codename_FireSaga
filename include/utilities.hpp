@@ -19,6 +19,10 @@ extern std::string sexName(bool in_sex);
 extern unsigned char mvtType(unsigned char in_class_index);
 extern std::string className(unsigned char in_class_index);
 extern std::vector<std::string> skillNames(unsigned long long int in_skills);
+
+extern std::vector<std::string> wpnTypeName(short unsigned int in_type);
+extern std::vector<std::string> wpnEffects(long unsigned int in_effect);
+
 extern short unsigned int makeEquippable(unsigned char in_class_index);
 extern std::string unitName(unsigned short int in_id);
 extern std::string wpnName(unsigned short int in_id);
