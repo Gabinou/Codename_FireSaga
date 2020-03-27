@@ -32,11 +32,14 @@ extern void writeXML_stats(tinyxml2::XMLDocument * in_doc, tinyxml2::XMLElement 
 extern void readXML_stats(tinyxml2::XMLElement * in_pStats, Unit_stats * in_stats);
 extern void writeXML_stats(tinyxml2::XMLDocument * in_doc, tinyxml2::XMLElement * in_pStats, Weapon_stats * in_stats);
 extern void readXML_stats(tinyxml2::XMLElement * in_pStats, Weapon_stats * in_stats);
-extern void readXML_equipment(Inventory_item * equipment, tinyxml2::XMLElement * in_pEquipment);
+extern void readXML_equipment(tinyxml2::XMLElement * in_pEquipment, Inventory_item * equipment);
 extern void writeXML_equipment(tinyxml2::XMLDocument * in_doc, tinyxml2::XMLElement * in_pEquipment, Inventory_item * in_equipment);
 
 extern void writeXML_mvtcost(tinyxml2::XMLDocument * in_doc, tinyxml2::XMLElement * in_pCost, Movement_cost * in_cost);
+extern void readXML_mvtcost(tinyxml2::XMLElement * in_pCost, Movement_cost * in_cost);
 extern void writeXML_tilestats(tinyxml2::XMLDocument * in_doc, tinyxml2::XMLElement * in_pStats, Tile_stats * in_stats);
+
+extern int parseXML(const char * filename, tinyxml2::XMLDocument * in_doc);
 
 
 #endif /* FILESYSTEM_HPP */

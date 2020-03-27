@@ -432,7 +432,7 @@ void writeXML_equipment(tinyxml2::XMLDocument * in_doc, tinyxml2::XMLElement * i
     }
 }
 
-void readXML_equipment(Inventory_item * equipment, tinyxml2::XMLElement * in_pEquipment) {
+void readXML_equipment(tinyxml2::XMLElement * in_pEquipment, Inventory_item * equipment) {
     tinyxml2::XMLElement * pItem = in_pEquipment->FirstChildElement("Item");
     tinyxml2::XMLElement * pUsed;
     int bufint;
@@ -488,7 +488,24 @@ void writeXML_tilestats(tinyxml2::XMLDocument * in_doc, tinyxml2::XMLElement * i
     pPprot->SetText(in_stats->Pprot);
     pMprot->SetText(in_stats->Mprot);
     pheal->SetText(in_stats->heal);
-
 }
+
+
+int parseXML(const char * filename, tinyxml2::XMLDocument * in_doc) {
+    PHYSFS_file * fp;
+    fp = PHYSFS_openRead(filename);
+    unsigned int bufint;
+    unsigned int filelen = PHYSFS_fileLength(fp);
+    char filebuffer[filelen];
+    const char * buffer;
+    PHYSFS_readBytes(fp, filebuffer, filelen);
+    PHYSFS_close(fp);
+    if (in_doc->Parse(filebuffer, filelen) != 0) {
+        SDL_Log("XML file parsing failed");
+        return(-1);
+    }
+    return(0);
+}
+
 
 

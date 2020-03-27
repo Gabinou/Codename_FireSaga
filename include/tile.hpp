@@ -37,6 +37,7 @@ class Tile {
 };
 
 void baseTiles();
+void testXMLTiles();
 std::vector<Tile> baseTiles(std::vector<short int> toload);
 
 extern std::vector<Tile> all_tiles;

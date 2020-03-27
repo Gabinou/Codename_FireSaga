@@ -56,6 +56,22 @@ void Tile::setInside(const bool in_inside) {
     inside = in_inside;
 }
 
+void Tile::readXML(const char * filename) {
+    SDL_Log("readXML Tile file: %s", filename);    
+    tinyxml2::XMLDocument xmlDoc;
+    parseXML(filename, &xmlDoc);
+
+    tinyxml2::XMLElement * ptemp;
+    tinyxml2::XMLElement * pTile = xmlDoc.FirstChildElement("Tile");
+    id = (unsigned short int)pTile->IntAttribute("id");
+
+    ptemp = pTile->FirstChildElement("Name");
+    if (!ptemp) {SDL_Log("Cannot get Name element");}   
+    name = ptemp->GetText();
+}
+
+
+
 void Tile::writeXML(const char * filename, const bool append) {
     SDL_Log("writeXML Tile to: %s\n", filename);
     // How to write files so that it is modifiable by randos?
@@ -666,3 +682,20 @@ std::vector<short int> (*chapTiles[40])() = {testTiles, chap1Tiles, chap2Tiles, 
     chap11Tiles, chap12Tiles, chap13Tiles, chap14Tiles, chap15Tiles, chap16Tiles,
     chap17Tiles, chap18Tiles, chap19Tiles, chap20Tiles, chap21Tiles, chap22Tiles,
     chap23Tiles, chap24Tiles, chap25Tiles, gaiden1Tiles};
+
+void testXMLTiles() {
+
+    SDL_Log("Testing Weapon xml writing and reading\n");
+    Tile temp_tile;
+    Tile_stats temp_tile_stats;
+    Movement_cost temp_cost;
+
+    temp_tile_stats = {3, 0, 80, 0, };
+    temp_cost = {2, 2, 2, 3, 3, 1, 3, 2, 2};
+    temp_tile = Tile(TILE::THRONE, "Throne", temp_cost, temp_tile_stats, true);
+    temp_tile.writeXML("tile_test.xml");
+
+    temp_tile = Tile();
+    // temp_tile.readXML("tile_test.xml");
+    // temp_tile.writeXML("tile_rewrite.xml");
+}

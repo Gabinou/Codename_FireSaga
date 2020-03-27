@@ -35,6 +35,8 @@ int main(int argc, char * argv[]) {
     SDL_Log("Testing units: %s \n", all_units[UNIT::NAME::SILOU].getName().c_str());
     testXMLUnits();
 
+    testXMLTiles();
+
     firesaga = new Game();
     SDL_Log("Game object created\n");
 
