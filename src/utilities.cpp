@@ -22,6 +22,31 @@ int geometricslide(int distance, float geo_factor) {
     // but this is more elegant.
 }
 
+
+std::vector<std::string> unitType(unsigned short int in_effect) {
+    std::vector<std::string> names;
+    if ((in_effect & UNIT::TYPE::HUMAN) > 0) {
+        names.push_back("Human");
+    }
+    if ((in_effect & UNIT::TYPE::MOUNTED) > 0) {
+        names.push_back("Mounted");
+    }
+    if ((in_effect & UNIT::TYPE::FLYING) > 0) {
+        names.push_back("Flying");
+    }
+    if ((in_effect & UNIT::TYPE::ARMOR) > 0) {
+        names.push_back("Armor");
+    }
+    if ((in_effect & UNIT::TYPE::DEMON) > 0) {
+        names.push_back("Demon");
+    }
+    if ((in_effect & UNIT::TYPE::ANGEL) > 0) {
+        names.push_back("Angel");
+    }
+    return(names);
+}
+
+
 std::vector<std::string> wpnEffects(long unsigned int in_effect) {
     std::vector<std::string> names;
     if ((in_effect & WPN::EFFECT::KILL1P) > 0) {
@@ -117,7 +142,7 @@ std::vector<std::string> wpnEffects(long unsigned int in_effect) {
     return(names);
 }
 
-std::vector<std::string> wpnTypeName(short unsigned int in_type) {
+std::vector<std::string> wpnType(short unsigned int in_type) {
     std::vector<std::string> names;
     if ((in_type & WPN::TYPE::SWORD) > 0) {
         names.push_back("Sword");

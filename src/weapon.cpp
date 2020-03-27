@@ -159,17 +159,38 @@ void Weapon::writeXML(const char * filename, const bool append) {
     pWpn->InsertEndChild(pMalus);
     writeXML_stats(&xmlDoc, pMalus, &malus_stats);
 
-    tinyxml2::XMLElement * pEffective = xmlDoc.NewElement("Effective");
-    pWpn->InsertEndChild(pEffective);
-    pEffective->SetText(effective);
+    tinyxml2::XMLElement * pEffectives = xmlDoc.NewElement("Effectives");
+    pWpn->InsertEndChild(pEffectives);
+    pEffectives->SetAttribute("id", effective);
+    std::vector<std::string> effectives = unitType(effective);
+    tinyxml2::XMLElement * pEffective;
+    for (int i = 0; i < effectives.size(); i++) {
+        pEffective = xmlDoc.NewElement("Effective");
+        pEffectives->InsertEndChild(pEffective);
+        pEffective->SetText(effectives[i].c_str());
+    }
+    
+    tinyxml2::XMLElement * pTypes = xmlDoc.NewElement("Types");
+    pWpn->InsertEndChild(pTypes);
+    pTypes->SetAttribute("id", type);
+    std::vector<std::string> types = wpnType(type);
+    tinyxml2::XMLElement * pType;    
+    for (int i = 0; i < types.size(); i++) {
+        pType = xmlDoc.NewElement("Type");
+        pTypes->InsertEndChild(pType);
+        pType->SetText(types[i].c_str());
+    }
 
-    tinyxml2::XMLElement * pType = xmlDoc.NewElement("Type");
-    pWpn->InsertEndChild(pType);
-    pType->SetText(type);    
-
-    tinyxml2::XMLElement * pEffect = xmlDoc.NewElement("Effect");
-    pWpn->InsertEndChild(pEffect);
-    pEffect->SetText((uint64_t) effect);
+    tinyxml2::XMLElement * pEffects = xmlDoc.NewElement("Effects");
+    pWpn->InsertEndChild(pEffects);
+    tinyxml2::XMLElement * pEffect;
+    std::vector<std::string> effects = wpnEffects(effect);
+    for (int i = 0; i < effects.size(); i++) {
+        pEffect = xmlDoc.NewElement("Effect");
+        pEffects->InsertEndChild(pEffect);
+        pEffect->SetText(effects[i].c_str());
+    }
+    pEffects->SetAttribute("id", (uint64_t) effect);
 
     tinyxml2::XMLPrinter printer;
 
