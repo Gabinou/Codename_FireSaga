@@ -8,6 +8,7 @@
 #include "filesystem.hpp"
 #include "tile.hpp"
 #include "linalg.hpp"
+#include <unordered_map>
 
 using Entity_ptr_matrix = std::vector<std::vector<Entity *>>;
 

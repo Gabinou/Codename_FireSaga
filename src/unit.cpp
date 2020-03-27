@@ -705,23 +705,7 @@ void Unit::writeXML(const char * filename, const bool append) {
     pUnit->InsertEndChild(pSkillsCode);
     tinyxml2::XMLElement * pEquipment = xmlDoc.NewElement("Equipment");
     pUnit->InsertEndChild(pEquipment);
-    writeXML_equipment(&xmlDoc, equipment, pEquipment);
-    // pUnit->InsertEndChild(pEquipment);
-    // tinyxml2::XMLElement * pItem;
-    // tinyxml2::XMLElement * pUsed;
-    // tinyxml2::XMLElement * pwpnName;
-    // for (int i = 0; i < DEFAULT::EQUIPMENT_SIZE; i++) {
-    //     pItem = xmlDoc.NewElement("Item");
-    //     pEquipment->InsertEndChild(pItem);
-    //     pItem->SetAttribute("id", equipment[i].id);
-    //     pUsed = xmlDoc.NewElement("Used");
-    //     stbsp_sprintf(buffer, "%d", equipment[i].used);
-    //     pUsed->SetText(buffer);
-    //     pItem->InsertEndChild(pUsed);
-    //     pwpnName = xmlDoc.NewElement("Name");
-    //     pwpnName->SetText(all_weapons[equipment[i].id].getName().c_str());
-    //     pItem->InsertFirstChild(pwpnName);
-    // }
+    writeXML_equipment(&xmlDoc, pEquipment, equipment);
     
     tinyxml2::XMLPrinter printer;
 

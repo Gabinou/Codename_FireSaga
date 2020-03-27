@@ -33,6 +33,9 @@ extern void readXML_stats(tinyxml2::XMLElement * in_pStats, Unit_stats * in_stat
 extern void writeXML_stats(tinyxml2::XMLDocument * in_doc, tinyxml2::XMLElement * in_pStats, Weapon_stats * in_stats);
 extern void readXML_stats(tinyxml2::XMLElement * in_pStats, Weapon_stats * in_stats);
 extern void readXML_equipment(Inventory_item * equipment, tinyxml2::XMLElement * in_pEquipment);
-extern void writeXML_equipment(tinyxml2::XMLDocument * in_doc, Inventory_item * equipment, tinyxml2::XMLElement * in_pEquipment);
+extern void writeXML_equipment(tinyxml2::XMLDocument * in_doc, tinyxml2::XMLElement * in_pEquipment, Inventory_item * in_equipment);
+
+extern void writeXML_mvtcost(tinyxml2::XMLDocument * in_doc, tinyxml2::XMLElement * in_pCost, Movement_cost * in_cost);
+
 
 #endif /* FILESYSTEM_HPP */

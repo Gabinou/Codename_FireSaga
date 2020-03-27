@@ -413,7 +413,7 @@ void writeXML_stats(tinyxml2::XMLDocument * in_doc, tinyxml2::XMLElement * in_pS
     pprof->SetText(in_stats->prof);
 }
 
-void writeXML_equipment(tinyxml2::XMLDocument * in_doc, Inventory_item * equipment, tinyxml2::XMLElement * in_pEquipment) {
+void writeXML_equipment(tinyxml2::XMLDocument * in_doc, Inventory_item * in_equipment, tinyxml2::XMLElement * in_pEquipment) {
     tinyxml2::XMLElement * pItem;
     tinyxml2::XMLElement * pUsed;
     tinyxml2::XMLElement * pwpnName;
@@ -421,13 +421,13 @@ void writeXML_equipment(tinyxml2::XMLDocument * in_doc, Inventory_item * equipme
     for (int i = 0; i < DEFAULT::EQUIPMENT_SIZE; i++) {
         pItem = in_doc->NewElement("Item");
         in_pEquipment->InsertEndChild(pItem);
-        pItem->SetAttribute("id", equipment[i].id);
+        pItem->SetAttribute("id", in_equipment[i].id);
         pUsed = in_doc->NewElement("Used");
-        stbsp_sprintf(buffer, "%d", equipment[i].used);
+        stbsp_sprintf(buffer, "%d", in_equipment[i].used);
         pUsed->SetText(buffer);
         pItem->InsertEndChild(pUsed);
         pwpnName = in_doc->NewElement("Name");
-        pwpnName->SetText(all_weapons[equipment[i].id].getName().c_str());
+        pwpnName->SetText(all_weapons[in_equipment[i].id].getName().c_str());
         pItem->InsertFirstChild(pwpnName);
     }
 }
@@ -445,4 +445,34 @@ void readXML_equipment(Inventory_item * equipment, tinyxml2::XMLElement * in_pEq
     }
 }
 
+void writeXML_mvtcost(tinyxml2::XMLDocument * in_doc, tinyxml2::XMLElement * in_pCost, Movement_cost * in_cost) {
+    tinyxml2::XMLElement * pfoot_slow = in_doc->NewElement("foot_slow");
+    tinyxml2::XMLElement * pfoot_fast = in_doc->NewElement("foot_fast");
+    tinyxml2::XMLElement * pmages = in_doc->NewElement("mages");
+    tinyxml2::XMLElement * priders_slow = in_doc->NewElement("riders_slow");
+    tinyxml2::XMLElement * priders_fast = in_doc->NewElement("riders_fast");
+    tinyxml2::XMLElement * pfliers = in_doc->NewElement("fliers");
+    tinyxml2::XMLElement * parmors = in_doc->NewElement("armors");
+    tinyxml2::XMLElement * ppirates = in_doc->NewElement("pirates");
+    tinyxml2::XMLElement * pbandits = in_doc->NewElement("bandits");
+    in_pCost->InsertEndChild(pfoot_slow);
+    in_pCost->InsertEndChild(pfoot_fast);
+    in_pCost->InsertEndChild(pmages);
+    in_pCost->InsertEndChild(priders_slow);
+    in_pCost->InsertEndChild(priders_fast);
+    in_pCost->InsertEndChild(pfliers);
+    in_pCost->InsertEndChild(parmors);
+    in_pCost->InsertEndChild(ppirates);
+    in_pCost->InsertEndChild(pbandits);
+    pfoot_slow->SetText(in_cost->foot_slow);
+    pfoot_fast->SetText(in_cost->foot_fast);
+    pmages->SetText(in_cost->mages);
+    priders_slow->SetText(in_cost->riders_slow);
+    priders_fast->SetText(in_cost->riders_fast);
+    pfliers->SetText(in_cost->fliers);
+    parmors->SetText(in_cost->armors);
+    ppirates->SetText(in_cost->pirates);
+    pbandits->SetText(in_cost->bandits);
+
+}
 

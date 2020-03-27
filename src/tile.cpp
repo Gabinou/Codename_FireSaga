@@ -73,10 +73,15 @@ void Tile::writeXML(const char * filename, const bool append) {
     tinyxml2::XMLElement * pTile = xmlDoc.NewElement("Tile");
     xmlDoc.InsertEndChild(pTile);
     pTile->SetAttribute("id", id);
+    pTile->SetAttribute("inside", inside);
 
     tinyxml2::XMLElement * pName = xmlDoc.NewElement("Name");
     pTile->InsertEndChild(pName);
     pName->SetText(name.c_str());
+
+    tinyxml2::XMLElement * pMvtCost = xmlDoc.NewElement("MvtCost");
+    pTile->InsertEndChild(pMvtCost);
+    writeXML_mvtcost(&xmlDoc, pMvtCost, &cost_struct);
 }
 
 
