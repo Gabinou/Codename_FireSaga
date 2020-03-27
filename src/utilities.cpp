@@ -280,9 +280,59 @@ std::string wpnName(unsigned short int in_id) {
         case WPN::NAME::PINAKA:
             name = "Pinaka";
             break;
+
         case WPN::NAME::ADAPTED_SHIELD:
             name = "Adapted shield";
+            break;        
+        case WPN::NAME::POT_LID:
+            name = "Pot lid";
             break;
+        case WPN::NAME::WOODEN_SHIELD:
+            name = "Wooden shield";
+            break;
+        case WPN::NAME::CLOAK:
+            name = "Cloak";
+            break;
+        case WPN::NAME::LEATHER_SHIELD:
+            name = "Leather shield";
+            break;
+        case WPN::NAME::KITE_SHIELD:
+            name = "Kite shield";
+            break;
+        case WPN::NAME::IRON_BUCKLER:
+            name = "Iron buckler";
+            break;
+        case WPN::NAME::STEEL_BUCKLER:
+            name = "Steel buckler";
+            break;
+        case WPN::NAME::SPIKED_BUCKLER:
+            name = "Spiked buckler";
+            break;
+        case WPN::NAME::SCUTUM:
+            name = "Scutum";
+            break;
+        case WPN::NAME::MASTER_SHIELD:
+            name = "Master shield";
+            break;
+        case WPN::NAME::GODDESS_HAND:
+            name = "Goddess's hand";
+            break;
+        case WPN::NAME::ANCILE:
+            name = "Ancile";
+            break;
+        case WPN::NAME::ROCK_PLATE:
+            name = "Rock plate";
+            break;
+        case WPN::NAME::OBSIDIAN_PLATE:
+            name = "Obisidan rock plate";
+            break;
+        case WPN::NAME::MARBLE_PLATE_SHIELD:
+            name = "Marble plate shield";
+            break;
+        case WPN::NAME::DIVINE_PROTECTOR:
+            name = "Divine protector";
+            break;
+
         case WPN::NAME::SHIELD_HOOK:
             name = "Shield hook";
             break;
