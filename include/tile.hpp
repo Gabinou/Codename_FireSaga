@@ -3,6 +3,8 @@
 
 #include "structs.hpp"
 #include "enums.hpp"
+#include "physfs.h"
+#include "tinyxml2.h"
 #include <unordered_map>
 
 class Tile {

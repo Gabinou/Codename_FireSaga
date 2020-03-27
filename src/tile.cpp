@@ -54,6 +54,32 @@ void Tile::setInside(const bool in_inside) {
     inside = in_inside;
 }
 
+void Tile::writeXML(const char * filename, const bool append) {
+    SDL_Log("writeXML Tile to: %s\n", filename);
+    // How to write files so that it is modifiable by randos?
+    PHYSFS_file * fp;
+    char buffer[DEFAULT::BUFFER_SIZE];
+    tinyxml2::XMLDocument xmlDoc;
+    if (!PHYSFS_exists(filename)) {    
+        xmlDoc.InsertFirstChild(xmlDoc.NewDeclaration());
+    }
+    if (append) {
+        fp = PHYSFS_openAppend(filename);
+
+    } else {
+        fp = PHYSFS_openWrite(filename);
+    }
+     
+    tinyxml2::XMLElement * pTile = xmlDoc.NewElement("Tile");
+    xmlDoc.InsertEndChild(pTile);
+    pTile->SetAttribute("id", id);
+
+    tinyxml2::XMLElement * pName = xmlDoc.NewElement("Name");
+    pTile->InsertEndChild(pName);
+    pName->SetText(name.c_str());
+}
+
+
 void Tile::write(const char * filename, const char * mode) {
     FILE * fp;
     fp = fopen(filename, mode);

@@ -6,6 +6,7 @@ Map::Map() {
 }
 
 Map::~Map() {
+    
 }
 
 Map::Map(const short unsigned int width, const short unsigned int height) : Map() {
@@ -96,7 +97,6 @@ void Map::loadOverlays() {
     overlays[0] = loadTexture(renderer, "tile_overlay_move.png", true);
     overlays[1] = loadTexture(renderer, "tile_overlay_attack.png", true);
     overlays[2] = loadTexture(renderer, "tile_overlay_heal.png", true);
-
 }
 
 void Map::loadDanger() {
