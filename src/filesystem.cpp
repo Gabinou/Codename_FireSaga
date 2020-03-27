@@ -370,6 +370,7 @@ void writeXML_stats(tinyxml2::XMLDocument * in_doc, tinyxml2::XMLElement * in_pS
     phand2->SetText(in_stats->hand[1]);
     pdmg_type->SetText(in_stats->dmg_type);
     pprice->SetText(in_stats->price);
+    pdmg_type->SetAttribute("eg", "isMagic");
 }
 
 void writeXML_stats(tinyxml2::XMLDocument * in_doc, tinyxml2::XMLElement * in_pStats, Unit_stats * in_stats) {
