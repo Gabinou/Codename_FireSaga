@@ -12,21 +12,25 @@ Tile::Tile(const short int in_id, const char* in_name, const Movement_cost in_co
 	name = in_name;
     id = in_id;
 	cost_struct = in_cost;
-    cost[UNIT::MVT::FOOT_SLOW] = in_cost.foot_slow;
-    cost[UNIT::MVT::FOOT_FAST] = in_cost.foot_fast;
-    cost[UNIT::MVT::MAGES] = in_cost.mages;
-    cost[UNIT::MVT::RIDERS_SLOW] = in_cost.riders_slow;
-    cost[UNIT::MVT::RIDERS_FAST] = in_cost.riders_fast;
-    cost[UNIT::MVT::FLIERS] = in_cost.fliers;
-    cost[UNIT::MVT::ARMORS] = in_cost.armors;
-    cost[UNIT::MVT::PIRATES] = in_cost.pirates;
-    cost[UNIT::MVT::BANDITS] = in_cost.bandits;
+    makeMvtCostarray();
     stats = in_stats;
     inside = in_inside;
 }
 
+void Tile::makeMvtCostarray() {
+    cost_array[UNIT::MVT::FOOT_SLOW] = cost_struct.foot_slow;
+    cost_array[UNIT::MVT::FOOT_FAST] = cost_struct.foot_fast;
+    cost_array[UNIT::MVT::MAGES] = cost_struct.mages;
+    cost_array[UNIT::MVT::RIDERS_SLOW] = cost_struct.riders_slow;
+    cost_array[UNIT::MVT::RIDERS_FAST] = cost_struct.riders_fast;
+    cost_array[UNIT::MVT::FLIERS] = cost_struct.fliers;
+    cost_array[UNIT::MVT::ARMORS] = cost_struct.armors;
+    cost_array[UNIT::MVT::PIRATES] = cost_struct.pirates;
+    cost_array[UNIT::MVT::BANDITS] = cost_struct.bandits;  
+}
+
 unsigned char * Tile::getCost() {
-	return(cost);
+	return(cost_array);
 }
 
 Movement_cost Tile::getCoststruct() {
@@ -68,9 +72,17 @@ void Tile::readXML(const char * filename) {
     ptemp = pTile->FirstChildElement("Name");
     if (!ptemp) {SDL_Log("Cannot get Name element");}   
     name = ptemp->GetText();
+
+    ptemp = pTile->FirstChildElement("MvtCost");
+    if (!ptemp) {SDL_Log("Cannot get Name element");}   
+    readXML_mvtcost(ptemp, &cost_struct);
+    makeMvtCostarray();
+
+    ptemp = pTile->FirstChildElement("Stats");
+    if (!ptemp) {SDL_Log("Cannot get Name element");}   
+    readXML_tilestats(ptemp, &stats);
+
 }
-
-
 
 void Tile::writeXML(const char * filename, const bool append) {
     SDL_Log("writeXML Tile to: %s\n", filename);
@@ -696,6 +708,6 @@ void testXMLTiles() {
     temp_tile.writeXML("tile_test.xml");
 
     temp_tile = Tile();
-    // temp_tile.readXML("tile_test.xml");
-    // temp_tile.writeXML("tile_rewrite.xml");
+    temp_tile.readXML("tile_test.xml");
+    temp_tile.writeXML("tile_rewrite.xml");
 }

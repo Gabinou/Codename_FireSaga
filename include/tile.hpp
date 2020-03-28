@@ -10,7 +10,7 @@
 class Tile {
     private:
         Movement_cost cost_struct;
-        unsigned char cost[UNIT::MVT::END];
+        unsigned char cost_array[UNIT::MVT::END];
         short int id;
         bool inside;
         Tile_stats stats;
@@ -30,6 +30,8 @@ class Tile {
         bool isInside();
         bool isOutside();
         void setInside(const bool in_inside);
+
+        void makeMvtCostarray();
 
         void write(const char * filename, const char * mode = "a");
         void writeXML(const char * filename, const bool append = false);

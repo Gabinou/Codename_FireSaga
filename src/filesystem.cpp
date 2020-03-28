@@ -475,6 +475,63 @@ void writeXML_mvtcost(tinyxml2::XMLDocument * in_doc, tinyxml2::XMLElement * in_
     pbandits->SetText(in_cost->bandits);
 }
 
+void readXML_mvtcost(tinyxml2::XMLElement * in_pCost, Movement_cost * in_cost) {
+
+    int bufint;
+
+    tinyxml2::XMLElement * pfoot_slow = in_pCost->FirstChildElement("foot_slow");
+    tinyxml2::XMLElement * pfoot_fast = in_pCost->FirstChildElement("foot_fast");
+    tinyxml2::XMLElement * pmages = in_pCost->FirstChildElement("mages");
+    tinyxml2::XMLElement * priders_slow = in_pCost->FirstChildElement("riders_slow");
+    tinyxml2::XMLElement * priders_fast = in_pCost->FirstChildElement("riders_fast");
+    tinyxml2::XMLElement * pfliers = in_pCost->FirstChildElement("fliers");
+    tinyxml2::XMLElement * parmors = in_pCost->FirstChildElement("armors");
+    tinyxml2::XMLElement * ppirates = in_pCost->FirstChildElement("pirates");
+    tinyxml2::XMLElement * pbandits = in_pCost->FirstChildElement("bandits");
+
+    pfoot_slow->QueryIntText(&bufint);
+    in_cost->foot_slow = (unsigned char)bufint;
+    pfoot_fast->QueryIntText(&bufint);
+    in_cost->foot_fast = (unsigned char)bufint;
+
+    pmages->QueryIntText(&bufint);
+    in_cost->mages = (unsigned char)bufint;
+    priders_slow->QueryIntText(&bufint);
+    in_cost->riders_slow = (unsigned char)bufint;
+    priders_fast->QueryIntText(&bufint);
+    in_cost->riders_fast = (unsigned char)bufint;
+    pfliers->QueryIntText(&bufint);
+    in_cost->fliers = (unsigned char)bufint;
+    parmors->QueryIntText(&bufint);
+    in_cost->armors = (unsigned char)bufint;
+    ppirates->QueryIntText(&bufint);
+    in_cost->pirates = (unsigned char)bufint;
+    pbandits->QueryIntText(&bufint);
+    in_cost->bandits = (unsigned char)bufint;
+
+}
+
+void readXML_tilestats(tinyxml2::XMLElement * in_pStats, Tile_stats * in_stats) {
+
+    int bufint;
+
+    tinyxml2::XMLElement * pdodge = in_pStats->FirstChildElement("dodge");
+    tinyxml2::XMLElement * pPprot = in_pStats->FirstChildElement("Pprot");
+    tinyxml2::XMLElement * pMprot = in_pStats->FirstChildElement("Mprot");
+    tinyxml2::XMLElement * pheal = in_pStats->FirstChildElement("heal");
+
+    pdodge->QueryIntText(&bufint);
+    in_stats->dodge = (char)bufint;
+    pPprot->QueryIntText(&bufint);
+    in_stats->Pprot = (char)bufint;
+    pMprot->QueryIntText(&bufint);
+    in_stats->Mprot = (char)bufint;
+    pheal->QueryIntText(&bufint);
+    in_stats->heal = (char)bufint;
+
+}
+
+
 void writeXML_tilestats(tinyxml2::XMLDocument * in_doc, tinyxml2::XMLElement * in_pStats, Tile_stats * in_stats) {
     tinyxml2::XMLElement * pdodge = in_doc->NewElement("dodge");
     tinyxml2::XMLElement * pPprot = in_doc->NewElement("Pprot");
