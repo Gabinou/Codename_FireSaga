@@ -22,7 +22,7 @@ class Weapon {
         short unsigned int effective = 0; // is a unit type.
         std::string name = "";
         std::string description = "";
-        short int id = -1;
+        unsigned short int id = 0; // 0 means empty.
         short int use_effect = -1;
         short int user_id = -1;
     public:
