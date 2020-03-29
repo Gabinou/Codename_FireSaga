@@ -16,6 +16,7 @@
 #include "probability.hpp"
 #include <stack>
 #include <vector>
+#include <unordered_map>
 
 class Game {
 
@@ -46,6 +47,7 @@ class Game {
         std::stack<int> unit_entities;
         bool isRunning;
         SDL_Event event;
+        std::unordered_map<int, Unit> party;
 
     public:
         static SDL_Renderer * renderer;
@@ -89,7 +91,8 @@ class Game {
         void setState(const short unsigned int new_state);
         short unsigned int getState();
 
-        void Save(const char * filename, const bool append = false);
+        void saveXML(const short int save_ind);
+        void loadXML(const short int save_ind);
 
         bool running();
 };

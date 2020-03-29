@@ -6,6 +6,11 @@
 #include "keyboardcontroller.hpp"
 #include "gamepadcontroller.hpp"
 #include "unitcontainer.hpp"
+// #ifndef STB_SPRINTF_IMPLEMENTATION
+// #define STB_SPRINTF_IMPLEMENTATION
+#include "stb_sprintf.h"
+// #endif /* STB_SPRINTF_IMPLEMENTATION */
+
 
 SDL_Renderer * Game::renderer = nullptr;
 TTF_Font * Game::font = NULL;
@@ -497,4 +502,31 @@ void Game::clean() {
 }
 bool Game::running() {
     return (isRunning);
+}
+
+
+void Game::saveXML(const short int save_ind) {
+    char filename[DEFAULT::BUFFER_SIZE];
+    char buffer[DEFAULT::BUFFER_SIZE];
+    stbsp_sprintf(filename, "save%04d.bsav", save_ind);
+    SDL_Log("saveXML Game to: %s\n", filename);
+
+    PHYSFS_file * fp;
+    fp = PHYSFS_openWrite(filename);
+    tinyxml2::XMLDocument xmlDoc;
+    xmlDoc.InsertFirstChild(xmlDoc.NewDeclaration());
+    
+    tinyxml2::XMLElement * pNarrative = xmlDoc.NewElement("Narrative");
+    xmlDoc.InsertEndChild(pNarrative);
+
+    tinyxml2::XMLElement * pUnits = xmlDoc.NewElement("Units");
+    xmlDoc.InsertEndChild(pUnits);
+
+    tinyxml2::XMLElement * pUnit;
+    for (auto it = party.begin(); it != party.end(); it++) {
+        it->second.writeXML(filename, true);        
+    }
+
+    PHYSFS_close(fp);
+
 }

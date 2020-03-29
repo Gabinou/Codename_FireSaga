@@ -23,6 +23,7 @@ struct Unit_state {
 struct Narrative {
     bool pc_death[UNIT::NAME::PC_END] = {0};
     bool npc_death[UNIT::NAME::NPC_END - UNIT::NAME::PC_END] = {0};
+    char chapter = 0;
 };
 
 struct Unit_stats {

@@ -62,7 +62,10 @@ int main(int argc, char * argv[]) {
     std::chrono::system_clock::time_point frame_start, frame_end, frame_middle;
     int frame_time;
     char buffer[15];
-
+    
+    SDL_Log("Game object saveXML test");
+    firesaga->saveXML(1);
+    
     SDL_Log("Starting main game loop\n");
     while (firesaga->running()) {
         frame_start = std::chrono::high_resolution_clock::now();
