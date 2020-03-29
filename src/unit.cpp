@@ -698,7 +698,7 @@ void Unit::writeXML(const char * filename, const bool append) {
     pUnit->InsertEndChild(pSkillsCode);
     tinyxml2::XMLElement * pEquipment = xmlDoc.NewElement("Equipment");
     pUnit->InsertEndChild(pEquipment);
-    // writeXML_equipment(&xmlDoc, pEquipment, equipment);
+    writeXML_equipment(&xmlDoc, pEquipment, equipment);
     
     tinyxml2::XMLPrinter printer;
 

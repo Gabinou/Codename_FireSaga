@@ -277,6 +277,9 @@ void readXML_stats(tinyxml2::XMLElement * in_pStats, Weapon_stats * in_stats) {
     ptemp = in_pStats->FirstChildElement("price");
     ptemp->QueryUnsignedText(&bufint);
     in_stats->price = (unsigned short int)bufint;
+    ptemp = in_pStats->FirstChildElement("heal");
+    ptemp->QueryUnsignedText(&bufint);
+    in_stats->heal = (unsigned char)bufint;
 }
 
 void readXML_stats(tinyxml2::XMLElement * in_pStats, Unit_stats * in_stats) {
