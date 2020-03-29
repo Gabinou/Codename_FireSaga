@@ -19,7 +19,7 @@ enum DEFAULTS {
 namespace ITEM {
 namespace NAME {
 enum NAMES {
-    WOODEN_SWORD,
+    WOODEN_SWORD = 1,
     KITCHEN_KNIFE,
     WRATH_SWORD,
     FLEURET,
@@ -237,7 +237,7 @@ enum EFFECTS {
 namespace UNIT {
 namespace CLASS {
 enum CLASSES {
-    LORD,
+    LORD = 1,
     LORD_RIDER,
     DUKE,
     DUKE_RIDER,
@@ -294,7 +294,7 @@ enum TYPES {
 }
 namespace NAME {
 enum NAMES {
-    ERWIN,
+    ERWIN = 1,
     KIARA,
     SILOU,
     SERVIL,
@@ -373,7 +373,7 @@ const unsigned long long int BOW_BONUS = 0x100000000;
 }
 namespace MVT {
 enum MVT {
-    FOOT_SLOW,
+    FOOT_SLOW = 1,
     FOOT_FAST,
     MAGES,
     RIDERS_SLOW,
@@ -470,7 +470,7 @@ enum TILES {
 namespace GAME {
 namespace BUTTON {
 enum BUTTONS {
-    RIGHT,
+    RIGHT = 1,
     LEFT,
     UP,
     DOWN,
@@ -486,7 +486,7 @@ enum BUTTONS {
 
 namespace RN {
 enum RNS {
-    SINGLE,
+    SINGLE = 1,
     DOUBLE,
     HYBRID,
     GAUSSIAN,

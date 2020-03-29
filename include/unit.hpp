@@ -96,6 +96,9 @@ class Unit {
         void setEntity(const short int in_index);
         int getEntity();
 
+        void setid(const unsigned short int in_id);
+        unsigned short int getid();
+
         unsigned short int getExp() const;
         unsigned short int getLvl() const;
         void setBaseExp(const unsigned short int in_exp);

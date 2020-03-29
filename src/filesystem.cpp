@@ -433,7 +433,11 @@ void writeXML_equipment(tinyxml2::XMLDocument * in_doc, tinyxml2::XMLElement * i
         pUsed->SetText(buffer);
         pItem->InsertEndChild(pUsed);
         pwpnName = in_doc->NewElement("Name");
-        pwpnName->SetText(all_weapons[in_equipment[i].id].getName().c_str());
+        if (in_equipment[i].id > 0) {
+            pwpnName->SetText(all_weapons[in_equipment[i].id].getName().c_str());
+        } else {
+            pwpnName->SetText("Empty");
+        }
         pItem->InsertFirstChild(pwpnName);
     }
 }

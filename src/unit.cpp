@@ -39,9 +39,19 @@ void Unit::setPos(const Point in_pos) {
 bool Unit::getSex() {
     return(sex);
 }
+
 void Unit::setSex(const bool in_sex) {
     sex = in_sex;
 }
+
+void Unit::setid(const unsigned short int in_id) {
+    id =  in_id;
+}
+
+unsigned short int Unit::getid() {
+    return(id);
+}
+
 
 Map_enemy Unit::getMap_enemy(){
     return(map_enemy);

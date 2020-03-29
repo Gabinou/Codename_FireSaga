@@ -429,9 +429,12 @@ void Game::init(const char * title, int xpos, int ypos, int width, int height, b
 
     state = GAME::STATE::MAP;
 
-    std::vector<short int> baseparty = {UNIT::NAME::ERWIN, UNIT::NAME::KIARA};
+    std::vector<short int> basepartyinds = {UNIT::NAME::ERWIN, UNIT::NAME::KIARA};
+    std::vector<Unit> baseparty = baseUnits(basepartyinds);
+    for (int i = 0; i < baseparty.size(); i++) {
+        // party[baseparty[i].getid()] = baseparty[i];
+    }
 
-    baseUnits(baseparty);
     
 };
 
