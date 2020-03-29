@@ -547,10 +547,11 @@ char Unit::speed() {
 void Unit::readXML(const char * filename) {
     SDL_Log("readXML Unit file: %s", filename);
     tinyxml2::XMLDocument xmlDoc;
-    parseXML(filename, &xmlDoc);
+    tinyxml2::XMLElement * ptemp;
     const char * buffer;
     unsigned int bufint;
-    tinyxml2::XMLElement * ptemp;
+    parseXML(filename, &xmlDoc);
+ 
     tinyxml2::XMLElement * pUnit = xmlDoc.FirstChildElement("Unit");
     if (!pUnit) {SDL_Log("Cannot get Unit element");}   
     id = (unsigned short int)pUnit->IntAttribute("id");
