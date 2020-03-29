@@ -591,7 +591,7 @@ void Unit::readXML(const char * filename) {
     readXML_stats(ptemp, &base_stats);
     ptemp = pUnit->FirstChildElement("Equipment");
     if (!ptemp) {SDL_Log("Cannot get Equipment element");}   
-    readXML_equipment(ptemp, equipment);
+    // readXML_equipment(ptemp, equipment);
     
     tinyxml2::XMLElement * pLevelUps = pUnit->FirstChildElement("LevelUps");
     if (!pLevelUps) {SDL_Log("Cannot get levelUps element");
@@ -698,7 +698,7 @@ void Unit::writeXML(const char * filename, const bool append) {
     pUnit->InsertEndChild(pSkillsCode);
     tinyxml2::XMLElement * pEquipment = xmlDoc.NewElement("Equipment");
     pUnit->InsertEndChild(pEquipment);
-    writeXML_equipment(&xmlDoc, pEquipment, equipment);
+    // writeXML_equipment(&xmlDoc, pEquipment, equipment);
     
     tinyxml2::XMLPrinter printer;
 

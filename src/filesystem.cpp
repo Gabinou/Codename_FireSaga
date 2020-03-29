@@ -344,6 +344,7 @@ void writeXML_stats(tinyxml2::XMLDocument * in_doc, tinyxml2::XMLElement * in_pS
     tinyxml2::XMLElement * phand2 = in_doc->NewElement("hand");
     tinyxml2::XMLElement * pdmg_type = in_doc->NewElement("dmg_type");
     tinyxml2::XMLElement * pprice = in_doc->NewElement("price");
+    tinyxml2::XMLElement * pheal = in_doc->NewElement("heal");
     in_pStats->InsertEndChild(pPmight);
     in_pStats->InsertEndChild(pMmight);
     in_pStats->InsertEndChild(phit);
@@ -359,6 +360,7 @@ void writeXML_stats(tinyxml2::XMLDocument * in_doc, tinyxml2::XMLElement * in_pS
     in_pStats->InsertEndChild(phand2);
     in_pStats->InsertEndChild(pdmg_type);
     in_pStats->InsertEndChild(pprice);
+    in_pStats->InsertEndChild(pheal);
     pPmight->SetText(in_stats->Pmight);
     pMmight->SetText(in_stats->Mmight);
     phit->SetText(in_stats->combat.hit);
@@ -375,6 +377,7 @@ void writeXML_stats(tinyxml2::XMLDocument * in_doc, tinyxml2::XMLElement * in_pS
     pdmg_type->SetText(in_stats->dmg_type);
     pprice->SetText(in_stats->price);
     pdmg_type->SetAttribute("eg", "isMagic");
+    pheal->SetText(in_stats->heal);
 }
 
 void writeXML_stats(tinyxml2::XMLDocument * in_doc, tinyxml2::XMLElement * in_pStats, Unit_stats * in_stats) {
