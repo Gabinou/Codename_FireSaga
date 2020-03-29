@@ -93,6 +93,9 @@ class Map {
         void addDanger(const std::vector<std::vector<short int>> in_danger);
         void subDanger(const std::vector<std::vector<short int>> in_danger);
 
+        void defeat();
+        void victory();
+
 };
 
 extern std::vector<std::vector<short int>> (*chapTilemaps[40])();

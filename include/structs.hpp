@@ -19,6 +19,11 @@ struct Unit_state {
     char stone;
 };
 
+
+struct Narrative {
+    // bool playable_deaths[];
+};
+
 struct Unit_stats {
     unsigned char hp; // hit points
     unsigned char str; // strength

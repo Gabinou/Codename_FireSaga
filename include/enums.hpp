@@ -288,6 +288,7 @@ enum NAMES {
     COWARD,
     JAIGEN1H,
     HOTTIE,
+    PC_END,
 
     BANDIT,
     DUELIST,
@@ -305,7 +306,7 @@ enum NAMES {
     PALADIN,
     FENCER,
     MOUSQUETAIRE,
-    END
+    NPC_END,
 };
 }
 namespace SKILL {

@@ -140,6 +140,8 @@ void Game::moveUnit(Entity & cursor) {
     manager.getEntities()[unit_entities.top()]->getComponent<PositionComponent>();
 }
 
+
+// I think this function is too big. Find a way to reduce it...
 void Game::setState(Entity & setting_entity, short unsigned int new_state) {
     SDL_Log("Game state changes from %d to %d\n", this->state, new_state); 
 

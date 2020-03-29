@@ -766,7 +766,7 @@ void Unit::write(const char * filename, const bool append) {
     PHYSFS_close(fp);
 }
 
-std::vector<Unit> all_units(UNIT::NAME::END);
+std::vector<Unit> all_units(UNIT::NAME::NPC_END);
 std::vector<Unit> loaded_units;
 
 void testXMLUnits() { 
