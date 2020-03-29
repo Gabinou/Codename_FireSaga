@@ -356,13 +356,13 @@ bool Unit::canAttack() {
     } wpn_types;
     if (equipped.left > 0) {
         wpn_types.left = all_weapons[equipment[equipped.left].id].getType();
-        if ((wpn_types.left != WPN::TYPE::SHIELD)  & (wpn_types.left != WPN::TYPE::TRINKET) & (wpn_types.left != WPN::TYPE::STAFF)) {
+        if ((wpn_types.left != ITEM::TYPE::SHIELD)  & (wpn_types.left != ITEM::TYPE::TRINKET) & (wpn_types.left != ITEM::TYPE::STAFF)) {
             out = true;
         } 
     }
     if (equipped.right > 0) {
         wpn_types.right = all_weapons[equipment[equipped.right].id].getType();
-        if ((wpn_types.right != WPN::TYPE::SHIELD)  & (wpn_types.right != WPN::TYPE::TRINKET) & (wpn_types.right != WPN::TYPE::STAFF)) {
+        if ((wpn_types.right != ITEM::TYPE::SHIELD)  & (wpn_types.right != ITEM::TYPE::TRINKET) & (wpn_types.right != ITEM::TYPE::STAFF)) {
             out = true;
          } 
     }
@@ -784,11 +784,11 @@ void testXMLUnits() {
     temp_unit.setBaseExp(0);
     temp_unit.levelUp();
     temp_unit.levelUp();
-    temp_wpn.id = WPN::NAME::FLEURET;
+    temp_wpn.id = ITEM::NAME::FLEURET;
     temp_unit.addEquipment(temp_wpn);
-    temp_wpn.id = WPN::NAME::KITCHEN_KNIFE;
+    temp_wpn.id = ITEM::NAME::KITCHEN_KNIFE;
     temp_unit.addEquipment(temp_wpn);
-    temp_wpn.id = WPN::NAME::POT_LID;
+    temp_wpn.id = ITEM::NAME::POT_LID;
     temp_unit.addEquipment(temp_wpn);
     temp_unit.writeXML("unit_test.xml");
     temp_unit.writeXML("unit_test.binou");
@@ -800,13 +800,114 @@ void testXMLUnits() {
     temp_unit.writeXML("unit_rewrite.binou");
 }
 
-std::vector<Weapon> baseUnits(std::vector<short int> toload) {
+std::vector<Unit> baseUnits(std::vector<short int> toload) {
     printf("Making base units \n");
     Unit temp_unit;
     Unit_stats temp;
     Inventory_item temp_wpn;
     short int temp_supports;
+    std::vector<Unit> temp_units; 
+    temp = {17,  6,  2,  7,  7,   7,  4,  5,  6, 5};
+    temp_unit = Unit(UNIT::NAME::ERWIN, UNIT::CLASS::MERCENARY, temp, UNIT::SEX::M);
+    temp = {48, 14, 25, 32, 34,  28, 19, 40, 15, 0};
+    temp_unit.setCaps(temp);
+    temp = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
+    temp_unit.setGrowths(temp);
+    temp_unit.setBaseExp(0);
+    temp_wpn.id = ITEM::NAME::FLEURET;
+    temp_unit.addEquipment(temp_wpn);
+    temp_wpn.id = ITEM::NAME::KITCHEN_KNIFE;
+    temp_unit.addEquipment(temp_wpn);
+    temp_wpn.id = ITEM::NAME::POT_LID;
+    temp_unit.addEquipment(temp_wpn);
+    // temp_supports = {UNIT::NAME::KIARA}; 
+    // temp_unit.setSupports(temp_supports);
+    temp_units.push_back(temp_unit);
 
+    temp = {18,  6,  2,  7,  7,   7,  4,  5,  6, 7};
+    temp_unit = Unit(UNIT::NAME::RELIABLE, UNIT::CLASS::CAVALIER, temp, UNIT::SEX::M);
+    temp = {48, 14, 25, 32, 34,  28, 19, 40, 15};
+    temp_unit.setCaps(temp);
+    temp = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
+    temp_unit.setGrowths(temp);
+    temp_unit.setBaseExp(100);
+    temp_units.push_back(temp_unit);
+    
+    temp = {19,  6,  2,  7,  7,   7,  4,  5,  6,  7};
+    temp_unit = Unit(UNIT::NAME::COWARD, UNIT::CLASS::CAVALIER, temp, UNIT::SEX::M);
+    temp = {48, 14, 25, 32, 34,  28, 19, 40, 15};
+    temp_unit.setCaps(temp);
+    temp = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
+    temp_unit.setGrowths(temp);
+    temp_unit.setBaseExp(200);
+    temp_units.push_back(temp_unit);
+    
+    temp = {20,  6,  2,  7,  7,   7,  4,  5,  6,  6};
+    temp_unit = Unit(UNIT::NAME::JAIGEN1H, UNIT::CLASS::MOUSQUETAIRE, temp, UNIT::SEX::M);
+    temp = {48, 14, 25, 32, 34,  28, 19, 40, 15};
+    temp_unit.setCaps(temp);
+    temp = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
+    temp_unit.setGrowths(temp);
+    temp_unit.setBaseExp(2200);
+    temp_units.push_back(temp_unit);
+
+    temp = {14,  6,  2,  7,  7,   7,  4,  5,  6,  5};
+    temp_unit = Unit(UNIT::NAME::KIARA, UNIT::CLASS::CLERIC, temp, UNIT::SEX::F);
+    temp = {48, 14, 25, 32, 34,  28, 19, 40, 15};
+    temp_unit.setCaps(temp);
+    temp = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
+    temp_unit.setGrowths(temp);
+    temp_unit.setBaseExp(100);
+    temp_units.push_back(temp_unit);
+    
+    temp = {16,  6,  2,  7,  7,   7,  4,  5,  6,  6};
+    temp_unit = Unit(UNIT::NAME::HOTTIE, UNIT::CLASS::PICKPOCKET, temp, UNIT::SEX::M);
+    temp = {48, 14, 25, 32, 34,  28, 19, 40, 15};
+    temp_unit.setCaps(temp);
+    temp = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
+    temp_unit.setGrowths(temp);
+    temp_unit.setBaseExp(2200);
+    temp_units.push_back(temp_unit);
+    
+    temp = {22,  4,  5,  7,  6,   8,  4,  6,  5, 5}; // 4 or 5?
+    temp_unit = Unit(UNIT::NAME::SERVIL, UNIT::CLASS::KNIGHT, temp, UNIT::SEX::M);
+    temp = {48, 14, 25, 32, 34,  28, 19, 40, 15};
+    temp_unit.setCaps(temp);
+    temp = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
+    temp_unit.setGrowths(temp);
+    temp_unit.setBaseExp(500);
+    temp_units.push_back(temp_unit);
+    
+    temp = {34,  4,  5,  7,  6,   8,  4,  6,  5, 5};
+    temp_unit = Unit(UNIT::NAME::PERIGNON, UNIT::CLASS::MAGE, temp, UNIT::SEX::M);
+    temp = {48, 14, 25, 32, 34,  28, 19, 40, 15};
+    temp_unit.setCaps(temp);
+    temp = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
+    temp_unit.setGrowths(temp);
+    temp_unit.setBaseExp(1200);
+    temp_units.push_back(temp_unit);
+    
+    temp = {15,  4,  5,  7,  6,   8,  4,  6,  5, 5};
+    temp_unit = Unit(UNIT::NAME::POET, UNIT::CLASS::MAGE, temp, UNIT::SEX::M);
+    temp = {48, 14, 25, 32, 34,  28, 19, 40, 15};
+    temp_unit.setCaps(temp);
+    temp = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
+    temp_unit.setGrowths(temp);
+    temp_unit.setBaseExp(400);
+    temp_units.push_back(temp_unit);
+    
+    temp = {15,  4,  5,  7,  6,   8,  4,  6,  5, 5};
+    temp_unit = Unit(UNIT::NAME::SILOU, UNIT::CLASS::MAGE, temp, UNIT::SEX::F);
+    temp = {48, 14, 25, 32, 34,  28, 19, 40, 15};
+    temp_unit.setCaps(temp);
+    temp = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
+    temp_unit.setGrowths(temp);
+    temp_unit.setBaseExp(400);
+    temp_wpn.id = ITEM::NAME::BALL_LIGHTNING;
+    temp_unit.addEquipment(temp_wpn);
+    temp_units.push_back(temp_unit);
+
+    return(temp_units);
 }
 
 
@@ -826,11 +927,11 @@ void baseUnits() {
     temp = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
     temp_unit.setGrowths(temp);
     temp_unit.setBaseExp(0);
-    temp_wpn.id = WPN::NAME::FLEURET;
+    temp_wpn.id = ITEM::NAME::FLEURET;
     temp_unit.addEquipment(temp_wpn);
-    temp_wpn.id = WPN::NAME::KITCHEN_KNIFE;
+    temp_wpn.id = ITEM::NAME::KITCHEN_KNIFE;
     temp_unit.addEquipment(temp_wpn);
-    temp_wpn.id = WPN::NAME::POT_LID;
+    temp_wpn.id = ITEM::NAME::POT_LID;
     temp_unit.addEquipment(temp_wpn);
     // temp_supports = {UNIT::NAME::KIARA}; 
     // temp_unit.setSupports(temp_supports);
@@ -915,10 +1016,12 @@ void baseUnits() {
     temp = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
     temp_unit.setGrowths(temp);
     temp_unit.setBaseExp(400);
-    temp_wpn.id = WPN::NAME::BALL_LIGHTNING;
+    temp_wpn.id = ITEM::NAME::BALL_LIGHTNING;
     temp_unit.addEquipment(temp_wpn);
     all_units[UNIT::NAME::SILOU] = temp_unit;
+}
 
+void writeAllplayables() {
     all_units[UNIT::NAME::ERWIN].writeXML("playables.xml", true); 
     all_units[UNIT::NAME::KIARA].writeXML("playables.xml", true); 
     all_units[UNIT::NAME::RELIABLE].writeXML("playables.xml", true); 
@@ -928,7 +1031,6 @@ void baseUnits() {
     all_units[UNIT::NAME::PERIGNON].writeXML("playables.xml", true); 
     all_units[UNIT::NAME::SILOU].writeXML("playables.xml", true); 
     all_units[UNIT::NAME::JAIGEN1H].writeXML("playables.xml", true); 
-
 }
 
 void genericEnemyUnits() {

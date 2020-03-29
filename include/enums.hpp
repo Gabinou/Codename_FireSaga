@@ -16,7 +16,7 @@ enum DEFAULTS {
     SUPPORTS_MAX = 7,
 };
 }
-namespace WPN {
+namespace ITEM {
 namespace NAME {
 enum NAMES {
     WOODEN_SWORD,
@@ -157,6 +157,20 @@ enum NAMES {
     MORGOTH,
     GOTHMOG,
     FATALIS,
+
+    HEAL,
+    REMEDY,
+    RENEW,
+    WISH,
+    PRAY,
+
+    SALVE, // heals for 10.
+    PANACEA,
+    HEALING_POTION,
+    TELPERION_EXTRACT,
+    LAURELIN_EXTRACT,
+    CROSS, // Little healing everyturn if in inventory? you or in range?
+
     END,
 };
 }
@@ -176,6 +190,8 @@ enum TYPES {
     SHIELD = 0x0200,
     STAFF = 0x0400,
     CLAW = 0x0800,
+    ITEM = 0x1000,
+
 };
 }
 namespace EFFECT {

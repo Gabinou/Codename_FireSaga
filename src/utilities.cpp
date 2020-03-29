@@ -49,94 +49,94 @@ std::vector<std::string> unitType(unsigned short int in_effect) {
 
 std::vector<std::string> wpnEffects(long unsigned int in_effect) {
     std::vector<std::string> names;
-    if ((in_effect & WPN::EFFECT::KILL1P) > 0) {
+    if ((in_effect & ITEM::EFFECT::KILL1P) > 0) {
         names.push_back("1% kill");
     }
-    if ((in_effect & WPN::EFFECT::BRAVE2X) > 0) {
+    if ((in_effect & ITEM::EFFECT::BRAVE2X) > 0) {
         names.push_back("Double attack");
     }
-    if ((in_effect & WPN::EFFECT::BRAVE3X) > 0) {
+    if ((in_effect & ITEM::EFFECT::BRAVE3X) > 0) {
         names.push_back("Triple attack");
     }
-    if ((in_effect & WPN::EFFECT::BRAVE4X) > 0) {
+    if ((in_effect & ITEM::EFFECT::BRAVE4X) > 0) {
         names.push_back("Quadruple attack");
     }
-    if ((in_effect & WPN::EFFECT::NOCOUNTER) > 0) {
+    if ((in_effect & ITEM::EFFECT::NOCOUNTER) > 0) {
         names.push_back("No counter-attack");
     }
-    if ((in_effect & WPN::EFFECT::IGNORE_DEF) > 0) {
+    if ((in_effect & ITEM::EFFECT::IGNORE_DEF) > 0) {
         names.push_back("Ignore defense");
     }
-    if ((in_effect & WPN::EFFECT::IGNORE_RES) > 0) {
+    if ((in_effect & ITEM::EFFECT::IGNORE_RES) > 0) {
         names.push_back("Ignore resistance");
     }
-    if ((in_effect & WPN::EFFECT::IGNORE_SHIELD) > 0) {
+    if ((in_effect & ITEM::EFFECT::IGNORE_SHIELD) > 0) {
         names.push_back("Ignore shield");
     }
-    if ((in_effect & WPN::EFFECT::USE_HEAL) > 0) {
+    if ((in_effect & ITEM::EFFECT::USE_HEAL) > 0) {
         names.push_back("Heal");
     }
-    if ((in_effect & WPN::EFFECT::USE_BUFF) > 0) {
+    if ((in_effect & ITEM::EFFECT::USE_BUFF) > 0) {
         names.push_back("Buff");
     }
-    if ((in_effect & WPN::EFFECT::USE_DIVINE) > 0) {
+    if ((in_effect & ITEM::EFFECT::USE_DIVINE) > 0) {
         names.push_back("Divine shield");
     }
-    if ((in_effect & WPN::EFFECT::NO_CRIT) > 0) {
+    if ((in_effect & ITEM::EFFECT::NO_CRIT) > 0) {
         names.push_back("Cannot be critted");
     }
-    if ((in_effect & WPN::EFFECT::NO_ATTACK) > 0) {
+    if ((in_effect & ITEM::EFFECT::NO_ATTACK) > 0) {
         names.push_back("Cannot be attacked");
     }
-    if ((in_effect & WPN::EFFECT::CHARM) > 0) {
+    if ((in_effect & ITEM::EFFECT::CHARM) > 0) {
         names.push_back("Charm");
     }
-    if ((in_effect & WPN::EFFECT::IMMUNE_MAGIC) > 0) {
+    if ((in_effect & ITEM::EFFECT::IMMUNE_MAGIC) > 0) {
         names.push_back("Immune to magic");
     }
-    if ((in_effect & WPN::EFFECT::IMMUNE_PHYS) > 0) {
+    if ((in_effect & ITEM::EFFECT::IMMUNE_PHYS) > 0) {
         names.push_back("Immune to physical");
     }
-    if ((in_effect & WPN::EFFECT::COUP_DE_GRACE) > 0) {
+    if ((in_effect & ITEM::EFFECT::COUP_DE_GRACE) > 0) {
         names.push_back("Coup de grâce");
     }
-    if ((in_effect & WPN::EFFECT::BREAK_WEAPON) > 0) {
+    if ((in_effect & ITEM::EFFECT::BREAK_WEAPON) > 0) {
         names.push_back("Break weapon");
     }
-    if ((in_effect & WPN::EFFECT::EXP2X) > 0) {
+    if ((in_effect & ITEM::EFFECT::EXP2X) > 0) {
         names.push_back("Paragon");
     }
-    if ((in_effect & WPN::EFFECT::LIFESTEAL) > 0) {
+    if ((in_effect & ITEM::EFFECT::LIFESTEAL) > 0) {
         names.push_back("Lifesteal");
     }
-    if ((in_effect & WPN::EFFECT::POISON) > 0) {
+    if ((in_effect & ITEM::EFFECT::POISON) > 0) {
         names.push_back("Poison");
     }
-    if ((in_effect & WPN::EFFECT::CURSED) > 0) {
+    if ((in_effect & ITEM::EFFECT::CURSED) > 0) {
         names.push_back("Cursed");
     }
-    if ((in_effect & WPN::EFFECT::MASOCHISM) > 0) {
+    if ((in_effect & ITEM::EFFECT::MASOCHISM) > 0) {
         names.push_back("Masochism");
     }
-    if ((in_effect & WPN::EFFECT::STUN) > 0) {
+    if ((in_effect & ITEM::EFFECT::STUN) > 0) {
         names.push_back("Stun");
     }
-    if ((in_effect & WPN::EFFECT::PASS) > 0) {
+    if ((in_effect & ITEM::EFFECT::PASS) > 0) {
         names.push_back("Pass");
     }
-    if ((in_effect & WPN::EFFECT::JOUST) > 0) {
+    if ((in_effect & ITEM::EFFECT::JOUST) > 0) {
         names.push_back("Joust");
     }
-    if ((in_effect & WPN::EFFECT::SPARE) > 0) {
+    if ((in_effect & ITEM::EFFECT::SPARE) > 0) {
         names.push_back("Spare");
     }
-    if ((in_effect & WPN::EFFECT::CAPTURE) > 0) {
+    if ((in_effect & ITEM::EFFECT::CAPTURE) > 0) {
         names.push_back("Capture");
     }
-    if ((in_effect & WPN::EFFECT::HALF_DMG) > 0) {
+    if ((in_effect & ITEM::EFFECT::HALF_DMG) > 0) {
         names.push_back("Half-damage");
     }
-    if ((in_effect & WPN::EFFECT::BREAK_SHIELD) > 0) {
+    if ((in_effect & ITEM::EFFECT::BREAK_SHIELD) > 0) {
         names.push_back("Shield breaker");
     }
     return(names);
@@ -144,40 +144,40 @@ std::vector<std::string> wpnEffects(long unsigned int in_effect) {
 
 std::vector<std::string> wpnType(short unsigned int in_type) {
     std::vector<std::string> names;
-    if ((in_type & WPN::TYPE::SWORD) > 0) {
+    if ((in_type & ITEM::TYPE::SWORD) > 0) {
         names.push_back("Sword");
     }
-    if ((in_type & WPN::TYPE::LANCE) > 0) {
+    if ((in_type & ITEM::TYPE::LANCE) > 0) {
         names.push_back("Lance");
     }
-    if ((in_type & WPN::TYPE::AXE) > 0) {
+    if ((in_type & ITEM::TYPE::AXE) > 0) {
         names.push_back("Axe");
     }
-    if ((in_type & WPN::TYPE::BOW) > 0) {
+    if ((in_type & ITEM::TYPE::BOW) > 0) {
         names.push_back("Bow");
     }
-    if ((in_type & WPN::TYPE::TRINKET) > 0) {
+    if ((in_type & ITEM::TYPE::TRINKET) > 0) {
         names.push_back("Trinket");
     }
-    if ((in_type & WPN::TYPE::OFFHAND) > 0) {
+    if ((in_type & ITEM::TYPE::OFFHAND) > 0) {
         names.push_back("Offhand");
     }
-    if ((in_type & WPN::TYPE::ELEMENTAL) > 0) {
+    if ((in_type & ITEM::TYPE::ELEMENTAL) > 0) {
         names.push_back("ELEMENTAL");
     }
-    if ((in_type & WPN::TYPE::DEMONIC) > 0) {
+    if ((in_type & ITEM::TYPE::DEMONIC) > 0) {
         names.push_back("Demonic");
     }
-    if ((in_type & WPN::TYPE::ANGELIC) > 0) {
+    if ((in_type & ITEM::TYPE::ANGELIC) > 0) {
         names.push_back("Angelic");
     }
-    if ((in_type & WPN::TYPE::SHIELD) > 0) {
+    if ((in_type & ITEM::TYPE::SHIELD) > 0) {
         names.push_back("Shield");
     }
-    if ((in_type & WPN::TYPE::STAFF) > 0) {
+    if ((in_type & ITEM::TYPE::STAFF) > 0) {
         names.push_back("Staff");
     }
-    if ((in_type & WPN::TYPE::CLAW) > 0) {
+    if ((in_type & ITEM::TYPE::CLAW) > 0) {
         names.push_back("Claw");
     }
     return(names);
@@ -195,38 +195,38 @@ std::string sexName(bool in_sex) {
 
 std::vector<std::string> wpnTypes(short unsigned int in_type) {
     std::vector<std::string> types;
-    if ((in_type & WPN::TYPE::SWORD) > 0) {
+    if ((in_type & ITEM::TYPE::SWORD) > 0) {
         types.push_back("Sword");
     }
-    if ((in_type & WPN::TYPE::LANCE) > 0) {
+    if ((in_type & ITEM::TYPE::LANCE) > 0) {
         types.push_back("Lance");
     }
-    if ((in_type & WPN::TYPE::AXE) > 0) {
+    if ((in_type & ITEM::TYPE::AXE) > 0) {
         types.push_back("Axe");
     }
-    if ((in_type & WPN::TYPE::BOW) > 0) {
+    if ((in_type & ITEM::TYPE::BOW) > 0) {
         types.push_back("Bow");
     }
-    if ((in_type & WPN::TYPE::TRINKET) > 0) {
+    if ((in_type & ITEM::TYPE::TRINKET) > 0) {
         types.push_back("Trinket");
     }
-    if ((in_type & WPN::TYPE::OFFHAND) > 0) {
+    if ((in_type & ITEM::TYPE::OFFHAND) > 0) {
         types.push_back("Offhand");
     }
-    if ((in_type & WPN::TYPE::ELEMENTAL) > 0) {
+    if ((in_type & ITEM::TYPE::ELEMENTAL) > 0) {
         types.push_back("Magic");
         // types.push_back("Elemental");
     }
-    if ((in_type & WPN::TYPE::DEMONIC) > 0) {
+    if ((in_type & ITEM::TYPE::DEMONIC) > 0) {
         types.push_back("Demonic");
     }
-    if ((in_type & WPN::TYPE::ANGELIC) > 0) {
+    if ((in_type & ITEM::TYPE::ANGELIC) > 0) {
         types.push_back("Angelic");
     }
-    if ((in_type & WPN::TYPE::SHIELD) > 0) {
+    if ((in_type & ITEM::TYPE::SHIELD) > 0) {
         types.push_back("Shield");
     }
-    if ((in_type & WPN::TYPE::STAFF) > 0) {
+    if ((in_type & ITEM::TYPE::STAFF) > 0) {
         types.push_back("Staff");
     }
     return(types);
@@ -235,394 +235,394 @@ std::vector<std::string> wpnTypes(short unsigned int in_type) {
 std::string wpnName(unsigned short int in_id) {
     std::string name;
     switch(in_id) {
-        case WPN::NAME::WOODEN_SWORD:
+        case ITEM::NAME::WOODEN_SWORD:
             name = "Wooden sword";
             break;
-        case WPN::NAME::KITCHEN_KNIFE:
+        case ITEM::NAME::KITCHEN_KNIFE:
             name = "Kitchen knife";
             break;
-        case WPN::NAME::WRATH_SWORD:
+        case ITEM::NAME::WRATH_SWORD:
             name = "Wrath sword";
             break;
-        case WPN::NAME::FLEURET:
+        case ITEM::NAME::FLEURET:
             name = "Fleuret";
             break;
-        case WPN::NAME::RAPIERE:
+        case ITEM::NAME::RAPIERE:
             name = "Rapière";
             break;
-        case WPN::NAME::GLAIVE:
+        case ITEM::NAME::GLAIVE:
             name = "Glaive";
             break;
-        case WPN::NAME::SABER:
+        case ITEM::NAME::SABER:
             name = "Saber";
             break;
-        case WPN::NAME::FAUCHON:
+        case ITEM::NAME::FAUCHON:
             name = "Fauchon";
             break;
-        case WPN::NAME::IRON_SWORD:
+        case ITEM::NAME::IRON_SWORD:
             name = "Iron sword";
             break;
-        case WPN::NAME::STEEL_SWORD:
+        case ITEM::NAME::STEEL_SWORD:
             name = "Steel sword";
             break;
-        case WPN::NAME::DAMAS_SWORD:
+        case ITEM::NAME::DAMAS_SWORD:
             name = "Damas sword";
             break;
-        case WPN::NAME::MERCIFUL_BLADE:
+        case ITEM::NAME::MERCIFUL_BLADE:
             name = "Merciful blade";
             break;
-        case WPN::NAME::BROADSWORD:
+        case ITEM::NAME::BROADSWORD:
             name = "Broadsword";
             break;
-        case WPN::NAME::ESPADON:
+        case ITEM::NAME::ESPADON:
             name = "Espadon";
             break;
-        case WPN::NAME::OODACHI:
+        case ITEM::NAME::OODACHI:
             name = "Oodachi";
             break;
-        case WPN::NAME::UCHIGATANA:
+        case ITEM::NAME::UCHIGATANA:
             name = "Uchigatana";
             break;
-        case WPN::NAME::EXSANGUE:
+        case ITEM::NAME::EXSANGUE:
             name = "Exsangue";
             break;
-        case WPN::NAME::HAUTECLAIRE:
+        case ITEM::NAME::HAUTECLAIRE:
             name = "Hauteclaire";
             break;
-        case WPN::NAME::SECUNDUS:
+        case ITEM::NAME::SECUNDUS:
             name = "Secundus";
             break;
-        case WPN::NAME::EXCALIBUR:
+        case ITEM::NAME::EXCALIBUR:
             name = "Excalibur";
             break;
-        case WPN::NAME::GALATINE:
+        case ITEM::NAME::GALATINE:
             name = "Galatine";
             break;
-        case WPN::NAME::RAIJINTOU:
+        case ITEM::NAME::RAIJINTOU:
             name = "Raijintou";
             break;
-        case WPN::NAME::FUUJINTOU:
+        case ITEM::NAME::FUUJINTOU:
             name = "Fuujintou";
             break;
-        case WPN::NAME::HONJOU_MASAMUNE:
+        case ITEM::NAME::HONJOU_MASAMUNE:
             name = "Honjou masamune";
             break;
-        case WPN::NAME::RAW_IRON_SLAB:
+        case ITEM::NAME::RAW_IRON_SLAB:
             name = "Raw iron slab";
             break;
-        case WPN::NAME::KIRITO:
+        case ITEM::NAME::KIRITO:
             name = "Kirito";
             break;
-        case WPN::NAME::KILLY:
+        case ITEM::NAME::KILLY:
             name = "Killy";
             break;
 
-        case WPN::NAME::PITCHFORK:
+        case ITEM::NAME::PITCHFORK:
             name = "Pitchfork";
             break;
-        case WPN::NAME::FIGHTING_STICK:
+        case ITEM::NAME::FIGHTING_STICK:
             name = "Fighting stick";
             break;
-        case WPN::NAME::IRON_LANCE:
+        case ITEM::NAME::IRON_LANCE:
             name = "Iron lance";
             break;
-        case WPN::NAME::WRATH_LANCE:
+        case ITEM::NAME::WRATH_LANCE:
             name = "Wrath lance";
             break;
-        case WPN::NAME::STEEL_LANCE:
+        case ITEM::NAME::STEEL_LANCE:
             name = "Steel lance";
             break;
-        case WPN::NAME::DAMAS_LANCE:
+        case ITEM::NAME::DAMAS_LANCE:
             name = "Damas lance";
             break;
-        case WPN::NAME::HEAVY_SPEAR:
+        case ITEM::NAME::HEAVY_SPEAR:
             name = "Heavy spear";
             break;
-        case WPN::NAME::TRIDENT:
+        case ITEM::NAME::TRIDENT:
             name = "Trident";
             break;
-        case WPN::NAME::MERCIFUL_LANCE:
+        case ITEM::NAME::MERCIFUL_LANCE:
             name = "Merciful lance";
             break;
-        case WPN::NAME::JAVELIN:
+        case ITEM::NAME::JAVELIN:
             name = "Javelin";
             break;
-        case WPN::NAME::PILUM:
+        case ITEM::NAME::PILUM:
             name = "Pilum";
             break;
-        case WPN::NAME::SPEAR:
+        case ITEM::NAME::SPEAR:
             name = "Spear";
             break;
-        case WPN::NAME::VEL:
+        case ITEM::NAME::VEL:
             name = "Vel";
             break;
-        case WPN::NAME::GUNGNIR:
+        case ITEM::NAME::GUNGNIR:
             name = "Gungnir";
             break;
-        case WPN::NAME::ACHILLES:
+        case ITEM::NAME::ACHILLES:
             name = "Achilles";
             break;
-        case WPN::NAME::TONBOKIRI:
+        case ITEM::NAME::TONBOKIRI:
             name = "Tonbokiri";
             break;
 
-        case WPN::NAME::IRON_AXE:
+        case ITEM::NAME::IRON_AXE:
             name = "Iron axe";
             break;
-        case WPN::NAME::STEEL_AXE:
+        case ITEM::NAME::STEEL_AXE:
             name = "Steel axe";
             break;
-        case WPN::NAME::DAMAS_AXE:
+        case ITEM::NAME::DAMAS_AXE:
             name = "Damas axe";
             break;
-        case WPN::NAME::WRATH_AXE:
+        case ITEM::NAME::WRATH_AXE:
             name = "Wrath axe";
             break;
-        case WPN::NAME::THROWING_AXE:
+        case ITEM::NAME::THROWING_AXE:
             name = "Throwing axe";
             break;
-        case WPN::NAME::TOMAHAWK:
+        case ITEM::NAME::TOMAHAWK:
             name = "Tomahawk";
             break;
-        case WPN::NAME::PICK_AXE:
+        case ITEM::NAME::PICK_AXE:
             name = "Pick axe";
             break;
-        case WPN::NAME::HOE:
+        case ITEM::NAME::HOE:
             name = "Hoe";
             break;
-        case WPN::NAME::CLUB:
+        case ITEM::NAME::CLUB:
             name = "Club";
             break;
-        case WPN::NAME::HALBERD:
+        case ITEM::NAME::HALBERD:
             name = "Halberd";
             break;
-        case WPN::NAME::HAMMER:
+        case ITEM::NAME::HAMMER:
             name = "Hammer";
             break;
-        case WPN::NAME::WAR_PICK:
+        case ITEM::NAME::WAR_PICK:
             name = "War pick";
             break;
-        case WPN::NAME::BATTLEAXE:
+        case ITEM::NAME::BATTLEAXE:
             name = "Battleaxe";
             break;
-        case WPN::NAME::VIDYU:
+        case ITEM::NAME::VIDYU:
             name = "Vidyu";
             break;
-        case WPN::NAME::HEPHAESTUS:
+        case ITEM::NAME::HEPHAESTUS:
             name = "Hephaestus";
             break;
-        case WPN::NAME::ADAPTED_CROSSBOW:
+        case ITEM::NAME::ADAPTED_CROSSBOW:
             name = "Adapted crossbow";
             break;
-        case WPN::NAME::REPEATABLE_CROSSBOW:
+        case ITEM::NAME::REPEATABLE_CROSSBOW:
             name = "Repeatable crossbow";
             break;
-        case WPN::NAME::CROSSBOW:
+        case ITEM::NAME::CROSSBOW:
             name = "Crossbow";
             break;
-        case WPN::NAME::SHORT_BOW:
+        case ITEM::NAME::SHORT_BOW:
             name = "Short bow";
             break;
-        case WPN::NAME::LONG_BOW:
+        case ITEM::NAME::LONG_BOW:
             name = "Long bow";
             break;
-        case WPN::NAME::COMPOSITE_BOW:
+        case ITEM::NAME::COMPOSITE_BOW:
             name = "Composite bow";
             break;
-        case WPN::NAME::RECURVE_BOW:
+        case ITEM::NAME::RECURVE_BOW:
             name = "Recurve bow";
             break;
-        case WPN::NAME::APOLLO:
+        case ITEM::NAME::APOLLO:
             name = "Apollo";
             break;
-        case WPN::NAME::ARTEMIS:
+        case ITEM::NAME::ARTEMIS:
             name = "Artemis";
             break;
-        case WPN::NAME::PINAKA:
+        case ITEM::NAME::PINAKA:
             name = "Pinaka";
             break;
 
-        case WPN::NAME::ADAPTED_SHIELD:
+        case ITEM::NAME::ADAPTED_SHIELD:
             name = "Adapted shield";
             break;        
-        case WPN::NAME::POT_LID:
+        case ITEM::NAME::POT_LID:
             name = "Pot lid";
             break;
-        case WPN::NAME::WOODEN_SHIELD:
+        case ITEM::NAME::WOODEN_SHIELD:
             name = "Wooden shield";
             break;
-        case WPN::NAME::CLOAK:
+        case ITEM::NAME::CLOAK:
             name = "Cloak";
             break;
-        case WPN::NAME::LEATHER_SHIELD:
+        case ITEM::NAME::LEATHER_SHIELD:
             name = "Leather shield";
             break;
-        case WPN::NAME::KITE_SHIELD:
+        case ITEM::NAME::KITE_SHIELD:
             name = "Kite shield";
             break;
-        case WPN::NAME::IRON_BUCKLER:
+        case ITEM::NAME::IRON_BUCKLER:
             name = "Iron buckler";
             break;
-        case WPN::NAME::STEEL_BUCKLER:
+        case ITEM::NAME::STEEL_BUCKLER:
             name = "Steel buckler";
             break;
-        case WPN::NAME::SPIKED_BUCKLER:
+        case ITEM::NAME::SPIKED_BUCKLER:
             name = "Spiked buckler";
             break;
-        case WPN::NAME::SCUTUM:
+        case ITEM::NAME::SCUTUM:
             name = "Scutum";
             break;
-        case WPN::NAME::MASTER_SHIELD:
+        case ITEM::NAME::MASTER_SHIELD:
             name = "Master shield";
             break;
-        case WPN::NAME::GODDESS_HAND:
+        case ITEM::NAME::GODDESS_HAND:
             name = "Goddess's hand";
             break;
-        case WPN::NAME::ANCILE:
+        case ITEM::NAME::ANCILE:
             name = "Ancile";
             break;
-        case WPN::NAME::ROCK_PLATE:
+        case ITEM::NAME::ROCK_PLATE:
             name = "Rock plate";
             break;
-        case WPN::NAME::OBSIDIAN_PLATE:
+        case ITEM::NAME::OBSIDIAN_PLATE:
             name = "Obisidan rock plate";
             break;
-        case WPN::NAME::MARBLE_PLATE_SHIELD:
+        case ITEM::NAME::MARBLE_PLATE_SHIELD:
             name = "Marble plate shield";
             break;
-        case WPN::NAME::DIVINE_PROTECTOR:
+        case ITEM::NAME::DIVINE_PROTECTOR:
             name = "Divine protector";
             break;
 
-        case WPN::NAME::SHIELD_HOOK:
+        case ITEM::NAME::SHIELD_HOOK:
             name = "Shield hook";
             break;
-        case WPN::NAME::RETRACTABLE_WRISTBLADE:
+        case ITEM::NAME::RETRACTABLE_WRISTBLADE:
             name = "Retractable wristblade";
             break;
-        case WPN::NAME::MAIN_GAUCHE:
+        case ITEM::NAME::MAIN_GAUCHE:
             name = "Main gauche";
             break;
-        case WPN::NAME::SWORDBREAKER:
+        case ITEM::NAME::SWORDBREAKER:
             name = "Swordbreaker";
             break;
-        case WPN::NAME::TRIDENT_DAGGER:
+        case ITEM::NAME::TRIDENT_DAGGER:
             name = "Trident dagger";
             break;
-        case WPN::NAME::TANTOU:
+        case ITEM::NAME::TANTOU:
             name = "Tantou";
             break;
-        case WPN::NAME::KODACHI:
+        case ITEM::NAME::KODACHI:
             name = "Kodachi";
             break;
-        case WPN::NAME::DAGUE:
+        case ITEM::NAME::DAGUE:
             name = "Dague";
             break;
-        case WPN::NAME::WAKIZASHI:
+        case ITEM::NAME::WAKIZASHI:
             name = "Wakizashi";
             break;
-        case WPN::NAME::BRAQUEMARD:
+        case ITEM::NAME::BRAQUEMARD:
             name = "Braquemard";
             break;
-        case WPN::NAME::MISERICORDE:
+        case ITEM::NAME::MISERICORDE:
             name = "Misericorde";
             break;
-        case WPN::NAME::CARNWENNAN:
+        case ITEM::NAME::CARNWENNAN:
             name = "Carnwennan";
             break;
-        case WPN::NAME::FLINTLOCK:
+        case ITEM::NAME::FLINTLOCK:
             name = "Flintlock";
             break;
-        case WPN::NAME::CIBO:
+        case ITEM::NAME::CIBO:
             name = "Cibo";
             break;
 
-        case WPN::NAME::SHRUNKEN_HEAD:
+        case ITEM::NAME::SHRUNKEN_HEAD:
             name = "Shrunken head";
             break;
-        case WPN::NAME::CRYSTAL:
+        case ITEM::NAME::CRYSTAL:
             name = "Crystal";
             break;
-        case WPN::NAME::GLASS_ORB:
+        case ITEM::NAME::GLASS_ORB:
             name = "Glass orb";
             break;
-        case WPN::NAME::HUMAN_FEMUR:
+        case ITEM::NAME::HUMAN_FEMUR:
             name = "Human femur";
             break;
-        case WPN::NAME::VOID_FRAGMENT:
+        case ITEM::NAME::VOID_FRAGMENT:
             name = "Void fragment";
             break;
-        case WPN::NAME::DEMON_FANG:
+        case ITEM::NAME::DEMON_FANG:
             name = "Demon fang";
             break;
-        case WPN::NAME::ANGEL_FEATHER:
+        case ITEM::NAME::ANGEL_FEATHER:
             name = "Angel feather";
             break;
-        case WPN::NAME::ANGEL_HAIR:
+        case ITEM::NAME::ANGEL_HAIR:
             name = "Angel hair";
             break;
-        case WPN::NAME::VIAL_OF_LIGHT:
+        case ITEM::NAME::VIAL_OF_LIGHT:
             name = "Vial of light";
             break;
-        case WPN::NAME::MAIDENS_HANDKERCHIEF:
+        case ITEM::NAME::MAIDENS_HANDKERCHIEF:
             name = "Maiden's handkerchief";
             break;
-        case WPN::NAME::WAR_HORN:
+        case ITEM::NAME::WAR_HORN:
             name = "War horn";
             break;
 
-        case WPN::NAME::BALL_LIGHTNING:
+        case ITEM::NAME::BALL_LIGHTNING:
             name = "Ball lightning";
             break;
-        case WPN::NAME::ICICLE:
+        case ITEM::NAME::ICICLE:
             name = "Icicle";
             break;
-        case WPN::NAME::VOLCANO:
+        case ITEM::NAME::VOLCANO:
             name = "Volcano";
             break;
-        case WPN::NAME::WIND_SPEAR:
+        case ITEM::NAME::WIND_SPEAR:
             name = "Wind spear";
             break;
-        case WPN::NAME::EMBER:
+        case ITEM::NAME::EMBER:
             name = "Ember";
             break;
-        case WPN::NAME::TSUNAMI:
+        case ITEM::NAME::TSUNAMI:
             name = "Tsunami";
             break;
-        case WPN::NAME::GOD_FORGE_FIRE:
+        case ITEM::NAME::GOD_FORGE_FIRE:
             name = "God's forge fire";
             break;
-        case WPN::NAME::FINGOLFIN:
+        case ITEM::NAME::FINGOLFIN:
             name = "Fingolfin";
             break;
-        case WPN::NAME::MITHRANDIR:
+        case ITEM::NAME::MITHRANDIR:
             name = "Mithrandir";
             break;
-        case WPN::NAME::VOIDD:
+        case ITEM::NAME::VOIDD:
             name = "Void";
             break;
-        case WPN::NAME::NETHER:
+        case ITEM::NAME::NETHER:
             name = "Nether";
             break;
-        case WPN::NAME::DOWNFALL:
+        case ITEM::NAME::DOWNFALL:
             name = "Downfall";
             break;
-        case WPN::NAME::CONSUME:
+        case ITEM::NAME::CONSUME:
             name = "Consume";
             break;
-        case WPN::NAME::PUTRIFY:
+        case ITEM::NAME::PUTRIFY:
             name = "Putrify";
             break;
-        case WPN::NAME::GLAURUNG:
+        case ITEM::NAME::GLAURUNG:
             name = "Glaurung";
             break;
-        case WPN::NAME::MORGOTH:
+        case ITEM::NAME::MORGOTH:
             name = "Morgoth";
             break;
-        case WPN::NAME::GOTHMOG:
+        case ITEM::NAME::GOTHMOG:
             name = "Gothmog";
             break;
-        case WPN::NAME::FATALIS:
+        case ITEM::NAME::FATALIS:
             name = "Fatalis";
             break;
     }
@@ -1062,106 +1062,106 @@ short unsigned int makeEquippable(unsigned char in_class_index) {
     short unsigned int equippable;
     switch(in_class_index) {
         case UNIT::CLASS::MERCENARY:
-            equippable = WPN::TYPE::SHIELD + WPN::TYPE::SWORD + WPN::TYPE::OFFHAND;
+            equippable = ITEM::TYPE::SHIELD + ITEM::TYPE::SWORD + ITEM::TYPE::OFFHAND;
             break;
         case UNIT::CLASS::LORD:
-            equippable = WPN::TYPE::LANCE + WPN::TYPE::SHIELD;
+            equippable = ITEM::TYPE::LANCE + ITEM::TYPE::SHIELD;
             break;
         case UNIT::CLASS::DUELIST:
-            equippable = WPN::TYPE::LANCE + WPN::TYPE::SHIELD;
+            equippable = ITEM::TYPE::LANCE + ITEM::TYPE::SHIELD;
             break;
         case UNIT::CLASS::THIEF:
-            equippable = WPN::TYPE::LANCE + WPN::TYPE::SHIELD;
+            equippable = ITEM::TYPE::LANCE + ITEM::TYPE::SHIELD;
             break;
         case UNIT::CLASS::PEGASUS_KNIGHT:
-            equippable = WPN::TYPE::LANCE + WPN::TYPE::SHIELD;
+            equippable = ITEM::TYPE::LANCE + ITEM::TYPE::SHIELD;
             break;
         case UNIT::CLASS::PIKEMAN:
-            equippable = WPN::TYPE::LANCE + WPN::TYPE::SHIELD;
+            equippable = ITEM::TYPE::LANCE + ITEM::TYPE::SHIELD;
             break;
         case UNIT::CLASS::CAVALIER:
-            equippable = WPN::TYPE::LANCE + WPN::TYPE::SHIELD;
+            equippable = ITEM::TYPE::LANCE + ITEM::TYPE::SHIELD;
             break;
         case UNIT::CLASS::KNIGHT:
-            equippable = WPN::TYPE::LANCE + WPN::TYPE::SHIELD;
+            equippable = ITEM::TYPE::LANCE + ITEM::TYPE::SHIELD;
             break;
         case UNIT::CLASS::BANDIT:
-            equippable = WPN::TYPE::SHIELD + WPN::TYPE::AXE;
+            equippable = ITEM::TYPE::SHIELD + ITEM::TYPE::AXE;
             break;
         case UNIT::CLASS::CORSAIR:
-            equippable = WPN::TYPE::SHIELD + WPN::TYPE::OFFHAND + WPN::TYPE::AXE;
+            equippable = ITEM::TYPE::SHIELD + ITEM::TYPE::OFFHAND + ITEM::TYPE::AXE;
             break;
         case UNIT::CLASS::VIKING:
-            equippable = WPN::TYPE::SHIELD + WPN::TYPE::OFFHAND + WPN::TYPE::AXE;
+            equippable = ITEM::TYPE::SHIELD + ITEM::TYPE::OFFHAND + ITEM::TYPE::AXE;
             break;
         case UNIT::CLASS::PICKPOCKET:
-            equippable = WPN::TYPE::OFFHAND + WPN::TYPE::SWORD;
+            equippable = ITEM::TYPE::OFFHAND + ITEM::TYPE::SWORD;
             break;
         case UNIT::CLASS::FENCER:
-            equippable = WPN::TYPE::OFFHAND + WPN::TYPE::SWORD;
+            equippable = ITEM::TYPE::OFFHAND + ITEM::TYPE::SWORD;
             break;
         case UNIT::CLASS::MOUSQUETAIRE:
-            equippable = WPN::TYPE::SWORD + WPN::TYPE::OFFHAND + WPN::TYPE::BOW; 
+            equippable = ITEM::TYPE::SWORD + ITEM::TYPE::OFFHAND + ITEM::TYPE::BOW; 
             break;
         case UNIT::CLASS::ASSASSIN:
-            equippable = WPN::TYPE::SWORD + WPN::TYPE::OFFHAND + WPN::TYPE::BOW; 
+            equippable = ITEM::TYPE::SWORD + ITEM::TYPE::OFFHAND + ITEM::TYPE::BOW; 
             break;
         case UNIT::CLASS::MARKSMAN:
-            equippable = WPN::TYPE::SWORD + WPN::TYPE::OFFHAND + WPN::TYPE::BOW; 
+            equippable = ITEM::TYPE::SWORD + ITEM::TYPE::OFFHAND + ITEM::TYPE::BOW; 
             break;
         case UNIT::CLASS::ARCHER:
-            equippable = WPN::TYPE::BOW;
+            equippable = ITEM::TYPE::BOW;
             break;
         case UNIT::CLASS::DUKE:
-            equippable = WPN::TYPE::SWORD + WPN::TYPE::LANCE + WPN::TYPE::SHIELD + WPN::TYPE::OFFHAND;
+            equippable = ITEM::TYPE::SWORD + ITEM::TYPE::LANCE + ITEM::TYPE::SHIELD + ITEM::TYPE::OFFHAND;
             break;
         case UNIT::CLASS::PALADIN:
-            equippable = WPN::TYPE::SWORD + WPN::TYPE::LANCE + WPN::TYPE::SHIELD + WPN::TYPE::OFFHAND;
+            equippable = ITEM::TYPE::SWORD + ITEM::TYPE::LANCE + ITEM::TYPE::SHIELD + ITEM::TYPE::OFFHAND;
             break;
         case UNIT::CLASS::GENERAL:
-            equippable = WPN::TYPE::SWORD + WPN::TYPE::SHIELD + WPN::TYPE::AXE + WPN::TYPE::LANCE;
+            equippable = ITEM::TYPE::SWORD + ITEM::TYPE::SHIELD + ITEM::TYPE::AXE + ITEM::TYPE::LANCE;
             break;
         case UNIT::CLASS::CLERIC:
-            equippable = WPN::TYPE::STAFF;
+            equippable = ITEM::TYPE::STAFF;
             break;
         case UNIT::CLASS::PRIEST:
-            equippable = WPN::TYPE::STAFF;
+            equippable = ITEM::TYPE::STAFF;
             break;
         case UNIT::CLASS::MAGE:
-            equippable = WPN::TYPE::ELEMENTAL + WPN::TYPE::TRINKET;
+            equippable = ITEM::TYPE::ELEMENTAL + ITEM::TYPE::TRINKET;
             break;
         case UNIT::CLASS::HERO:
-            equippable = WPN::TYPE::AXE + WPN::TYPE::SWORD + WPN::TYPE::SHIELD + WPN::TYPE::OFFHAND;
+            equippable = ITEM::TYPE::AXE + ITEM::TYPE::SWORD + ITEM::TYPE::SHIELD + ITEM::TYPE::OFFHAND;
             break;
         case UNIT::CLASS::RAVAGER:
-            equippable = WPN::TYPE::AXE + WPN::TYPE::SHIELD + WPN::TYPE::OFFHAND + WPN::TYPE::BOW;
+            equippable = ITEM::TYPE::AXE + ITEM::TYPE::SHIELD + ITEM::TYPE::OFFHAND + ITEM::TYPE::BOW;
             break;
         case UNIT::CLASS::BATTLEMAGE:
-            equippable = WPN::TYPE::ELEMENTAL + WPN::TYPE::SHIELD + WPN::TYPE::SWORD + WPN::TYPE::TRINKET;
+            equippable = ITEM::TYPE::ELEMENTAL + ITEM::TYPE::SHIELD + ITEM::TYPE::SWORD + ITEM::TYPE::TRINKET;
             break;
         case UNIT::CLASS::SAGE:
-            equippable = WPN::TYPE::ELEMENTAL + WPN::TYPE::STAFF + WPN::TYPE::TRINKET;
+            equippable = ITEM::TYPE::ELEMENTAL + ITEM::TYPE::STAFF + ITEM::TYPE::TRINKET;
             break;
         case UNIT::CLASS::TROUBADOUR:
-            equippable = WPN::TYPE::ELEMENTAL + WPN::TYPE::STAFF + WPN::TYPE::TRINKET;
+            equippable = ITEM::TYPE::ELEMENTAL + ITEM::TYPE::STAFF + ITEM::TYPE::TRINKET;
             break;
         case UNIT::CLASS::ORACLE:
-            equippable = WPN::TYPE::STAFF + WPN::TYPE::ANGELIC + WPN::TYPE::TRINKET;
+            equippable = ITEM::TYPE::STAFF + ITEM::TYPE::ANGELIC + ITEM::TYPE::TRINKET;
             break;
         case UNIT::CLASS::BISHOP:
-            equippable = WPN::TYPE::STAFF + WPN::TYPE::ANGELIC + WPN::TYPE::TRINKET;
+            equippable = ITEM::TYPE::STAFF + ITEM::TYPE::ANGELIC + ITEM::TYPE::TRINKET;
             break;
         case UNIT::CLASS::ANGEL:
-            equippable = WPN::TYPE::ANGELIC + WPN::TYPE::SWORD + WPN::TYPE::LANCE + WPN::TYPE::SHIELD;
+            equippable = ITEM::TYPE::ANGELIC + ITEM::TYPE::SWORD + ITEM::TYPE::LANCE + ITEM::TYPE::SHIELD;
             break;
         case UNIT::CLASS::DEMON:
-            equippable = WPN::TYPE::DEMONIC + WPN::TYPE::CLAW + WPN::TYPE::AXE;
+            equippable = ITEM::TYPE::DEMONIC + ITEM::TYPE::CLAW + ITEM::TYPE::AXE;
             break;
         case UNIT::CLASS::DEMONIC_INCARNATE:
-            equippable = WPN::TYPE::DEMONIC + WPN::TYPE::TRINKET;
+            equippable = ITEM::TYPE::DEMONIC + ITEM::TYPE::TRINKET;
             break;
         case UNIT::CLASS::ANGELIC_INCARNATE:
-            equippable = WPN::TYPE::ANGELIC + WPN::TYPE::TRINKET;
+            equippable = ITEM::TYPE::ANGELIC + ITEM::TYPE::TRINKET;
             break;
     }
     return(equippable);

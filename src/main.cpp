@@ -28,7 +28,7 @@ int main(int argc, char * argv[]) {
     init_tinyMT();
 
     baseWeapons();
-    SDL_Log("Testing weapon: %s\n", all_weapons[WPN::NAME::WOODEN_SWORD].getName().c_str());
+    SDL_Log("Testing weapon: %s\n", all_weapons[ITEM::NAME::WOODEN_SWORD].getName().c_str());
     testXMLWeapons();
     
     baseUnits();

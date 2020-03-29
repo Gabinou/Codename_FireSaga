@@ -42,6 +42,17 @@ Unit_stats Weapon::getBonus() {
 
 void Weapon::setEffect(long unsigned int in_effect) {
     effect = in_effect;
+    if ((in_effect & ITEM::EFFECT::USE_HEAL) > 0) {
+        use_effect = ITEM::EFFECT::USE_HEAL;
+    }    
+    if ((in_effect & ITEM::EFFECT::USE_BUFF) > 0) {
+        use_effect = ITEM::EFFECT::USE_BUFF;
+    }
+    if ((in_effect & ITEM::EFFECT::USE_DIVINE) > 0) {
+        use_effect = ITEM::EFFECT::USE_DIVINE;
+    }
+
+
 }
 long unsigned int Weapon::getEffect() {
     return(effect);
@@ -217,7 +228,7 @@ void Weapon::write(const char * filename, const char * mode){
     fclose(fp);
 }
 
-std::vector<Weapon> all_weapons(WPN::NAME::END);
+std::vector<Weapon> all_weapons(ITEM::NAME::END);
 std::vector<Weapon> loaded_weapons;
 
 void testXMLWeapons(){
@@ -226,7 +237,7 @@ void testXMLWeapons(){
     Weapon_stats temp_wpn_stats;
     // Pmight, Mmight, hit, dodge, crit, favor, wgt, uses, wpnlvl, range, hand, dmg_type, price
     temp_wpn_stats = {3, 0, 80, 0, 0, 0, 3, 30, 2, {1,1}, {1,2}, 0, 1000};
-    temp_wpn = Weapon(WPN::TYPE::SWORD, temp_wpn_stats, WPN::NAME::WOODEN_SWORD);
+    temp_wpn = Weapon(ITEM::TYPE::SWORD, temp_wpn_stats, ITEM::NAME::WOODEN_SWORD);
     temp_wpn.setDescription("Practice sword, made of wood. It's crushing blows are still deadly.");
     temp_wpn.writeXML("weapon_test.xml");
 
@@ -244,798 +255,798 @@ std::vector<Weapon> baseWeapons(std::vector<short int> toload) {
     for (short unsigned int i = 0; i < toload.size(); i++) {
         index = toload[i];
         switch (index) {
-            case WPN::NAME::WOODEN_SWORD:
+            case ITEM::NAME::WOODEN_SWORD:
                 // Pmight, Mmight, hit, dodge, crit, favor, wgt, uses, wpnlvl, range, hand, dmg_type, price
                 temp_wpn_stats = {3, 0, 80, 0, 0, 0, 3, 30, 2, {1,1}, {1,2}, 0, 1000};
-                temp_wpn = Weapon(WPN::TYPE::SWORD, temp_wpn_stats, WPN::NAME::WOODEN_SWORD);
+                temp_wpn = Weapon(ITEM::TYPE::SWORD, temp_wpn_stats, ITEM::NAME::WOODEN_SWORD);
                 temp_wpn.setDescription("Practice sword, made of wood. It's crushing blows are still deadly.");
-                wpn_out[WPN::NAME::WOODEN_SWORD] = temp_wpn;
+                wpn_out[ITEM::NAME::WOODEN_SWORD] = temp_wpn;
                 break;
-            case WPN::NAME::KITCHEN_KNIFE:
+            case ITEM::NAME::KITCHEN_KNIFE:
                 temp_wpn_stats = {1, 0, 25, 0, 0, 0, 2, 10, 1, {1,1}, {1}, 0, 1000};
-                temp_wpn = Weapon(WPN::TYPE::SWORD, temp_wpn_stats, WPN::NAME::KITCHEN_KNIFE);
+                temp_wpn = Weapon(ITEM::TYPE::SWORD, temp_wpn_stats, ITEM::NAME::KITCHEN_KNIFE);
                 temp_wpn.setDescription("The poor, desperate swordman's dagger.");
-                wpn_out[WPN::NAME::KITCHEN_KNIFE] = temp_wpn;
+                wpn_out[ITEM::NAME::KITCHEN_KNIFE] = temp_wpn;
                 break;
-            case WPN::NAME::WRATH_SWORD:
+            case ITEM::NAME::WRATH_SWORD:
                 temp_wpn_stats = {7, 0, 70, 0, 25, 0, 7, 30, 9, {1,1}, {1,2}, 0, 1000};
-                temp_wpn = Weapon(WPN::TYPE::SWORD, temp_wpn_stats, WPN::NAME::WRATH_SWORD);
+                temp_wpn = Weapon(ITEM::TYPE::SWORD, temp_wpn_stats, ITEM::NAME::WRATH_SWORD);
                 temp_wpn.setDescription("Increases critical hit chance.");
-                wpn_out[WPN::NAME::WRATH_SWORD] = temp_wpn;
+                wpn_out[ITEM::NAME::WRATH_SWORD] = temp_wpn;
                 break;
-            case WPN::NAME::FLEURET:
+            case ITEM::NAME::FLEURET:
                 temp_wpn_stats = {4, 0, 90, 0, 0, 0, 4, 20, 6, {1,1}, {1}, 0, 1000};
-                temp_wpn = Weapon(WPN::TYPE::SWORD, temp_wpn_stats, WPN::NAME::FLEURET);
+                temp_wpn = Weapon(ITEM::TYPE::SWORD, temp_wpn_stats, ITEM::NAME::FLEURET);
                 temp_wpn.setEffective(UNIT::TYPE::ARMOR);
                 temp_wpn.setDescription("Simple and light thrust swords. Effective against armor. Usually used with off-hand parry daggers.");
-                wpn_out[WPN::NAME::FLEURET] = temp_wpn;
+                wpn_out[ITEM::NAME::FLEURET] = temp_wpn;
                 break;
-            case WPN::NAME::RAPIERE:
+            case ITEM::NAME::RAPIERE:
                 temp_wpn_stats = {8, 0, 85, 5, 0, 0, 5, 25, 8, {1,1}, {1}, 0, 1000};
-                temp_wpn = Weapon(WPN::TYPE::SWORD, temp_wpn_stats, WPN::NAME::RAPIERE);
+                temp_wpn = Weapon(ITEM::TYPE::SWORD, temp_wpn_stats, ITEM::NAME::RAPIERE);
                 temp_wpn.setEffective(UNIT::TYPE::ARMOR);
                 temp_wpn.setDescription("Strong thrust swords. Effective against armor. Usually used with off-hand parry daggers.");
-                wpn_out[WPN::NAME::RAPIERE] = temp_wpn;
+                wpn_out[ITEM::NAME::RAPIERE] = temp_wpn;
                 break;
-            case WPN::NAME::GLAIVE:
+            case ITEM::NAME::GLAIVE:
                 temp_wpn_stats = {5, 0, 55, 0, 0, 0, 7, 30, 3, {1,1}, {1}, 0, 1000};
-                temp_wpn = Weapon(WPN::TYPE::SWORD, temp_wpn_stats, WPN::NAME::GLAIVE);
+                temp_wpn = Weapon(ITEM::TYPE::SWORD, temp_wpn_stats, ITEM::NAME::GLAIVE);
                 temp_wpn.setDescription("Old-world style short sword.");
-                wpn_out[WPN::NAME::GLAIVE] = temp_wpn;
+                wpn_out[ITEM::NAME::GLAIVE] = temp_wpn;
                 break;
-            case WPN::NAME::SABER:
+            case ITEM::NAME::SABER:
                 temp_wpn_stats = {7, 0, 60, 10, 0, 0, 6, 33, 8, {1,1}, {1}, 0, 1000};
-                temp_wpn = Weapon(WPN::TYPE::SWORD, temp_wpn_stats, WPN::NAME::SABER);
+                temp_wpn = Weapon(ITEM::TYPE::SWORD, temp_wpn_stats, ITEM::NAME::SABER);
                 temp_wpn.setDescription("Curved sword made for slashing.");
-                wpn_out[WPN::NAME::SABER] = temp_wpn;
+                wpn_out[ITEM::NAME::SABER] = temp_wpn;
                 break;
-            case WPN::NAME::FAUCHON:
+            case ITEM::NAME::FAUCHON:
                 temp_wpn_stats = {8, 0, 60, 15, 0, 0, 8, 27, 10, {1,1}, {1}, 0, 1000};
-                temp_wpn = Weapon(WPN::TYPE::SWORD, temp_wpn_stats, WPN::NAME::FAUCHON);
+                temp_wpn = Weapon(ITEM::TYPE::SWORD, temp_wpn_stats, ITEM::NAME::FAUCHON);
                 temp_wpn.setDescription("Curved sword made for slashing.");
-                wpn_out[WPN::NAME::FAUCHON] = temp_wpn;
+                wpn_out[ITEM::NAME::FAUCHON] = temp_wpn;
                 break;
-            case WPN::NAME::IRON_SWORD:
+            case ITEM::NAME::IRON_SWORD:
                 temp_wpn_stats = {6, 0, 70, 0, 0, 0, 6, 45, 6, {1,1}, {1,2}, 0, 1000};
-                temp_wpn = Weapon(WPN::TYPE::SWORD, temp_wpn_stats, WPN::NAME::IRON_SWORD);
+                temp_wpn = Weapon(ITEM::TYPE::SWORD, temp_wpn_stats, ITEM::NAME::IRON_SWORD);
                 temp_wpn.setDescription("Simple straight sword made of iron. Cheap and reliable.");
-                wpn_out[WPN::NAME::IRON_SWORD] = temp_wpn;
+                wpn_out[ITEM::NAME::IRON_SWORD] = temp_wpn;
                 break;
-            case WPN::NAME::STEEL_SWORD:
+            case ITEM::NAME::STEEL_SWORD:
                 temp_wpn_stats = {9, 0, 60, 0, 0, 0, 9, 30, 10, {1,1}, {1,2}, 0, 1000};
-                temp_wpn = Weapon(WPN::TYPE::SWORD, temp_wpn_stats, WPN::NAME::STEEL_SWORD);
+                temp_wpn = Weapon(ITEM::TYPE::SWORD, temp_wpn_stats, ITEM::NAME::STEEL_SWORD);
                 temp_wpn.setDescription("Simple straight sword made of steel. Strong and durable.");
-                wpn_out[WPN::NAME::STEEL_SWORD] = temp_wpn;
+                wpn_out[ITEM::NAME::STEEL_SWORD] = temp_wpn;
                 break;
-            case WPN::NAME::DAMAS_SWORD:
+            case ITEM::NAME::DAMAS_SWORD:
                 temp_wpn_stats = {13, 0, 65, 0, 0, 0, 10, 25, 12, {1,1}, {1,2}, 0, 1000};
-                temp_wpn = Weapon(WPN::TYPE::SWORD, temp_wpn_stats, WPN::NAME::DAMAS_SWORD);
+                temp_wpn = Weapon(ITEM::TYPE::SWORD, temp_wpn_stats, ITEM::NAME::DAMAS_SWORD);
                 temp_wpn.setDescription("Simple straight sword made of damascus steel. Beautifully rippled, deadly and expensive.");
-                wpn_out[WPN::NAME::DAMAS_SWORD] = temp_wpn;
+                wpn_out[ITEM::NAME::DAMAS_SWORD] = temp_wpn;
                 break;
-            case WPN::NAME::MERCIFUL_BLADE:
+            case ITEM::NAME::MERCIFUL_BLADE:
                 temp_wpn_stats = {4, 0, 70, 0, 0, 10, 6, 30, 9, {1,1}, {1,2}, 0, 1000};
-                temp_wpn = Weapon(WPN::TYPE::SWORD, temp_wpn_stats, WPN::NAME::MERCIFUL_BLADE);
-                temp_wpn.setEffect(WPN::EFFECT::SPARE);
+                temp_wpn = Weapon(ITEM::TYPE::SWORD, temp_wpn_stats, ITEM::NAME::MERCIFUL_BLADE);
+                temp_wpn.setEffect(ITEM::EFFECT::SPARE);
                 temp_wpn.setDescription("Infused with the life-giving tears of the goddess. Cannot reduce enemy HP below 1.");
-                wpn_out[WPN::NAME::MERCIFUL_BLADE] = temp_wpn;
+                wpn_out[ITEM::NAME::MERCIFUL_BLADE] = temp_wpn;
                 break;
-            case WPN::NAME::BROADSWORD:
+            case ITEM::NAME::BROADSWORD:
                 temp_wpn_stats = {10, 0, 40, 0, 0, 0, 10, 25, 6, {1,1}, {1,2}, 0, 1000};
-                temp_wpn = Weapon(WPN::TYPE::SWORD, temp_wpn_stats, WPN::NAME::BROADSWORD);
+                temp_wpn = Weapon(ITEM::TYPE::SWORD, temp_wpn_stats, ITEM::NAME::BROADSWORD);
                 temp_wpn.setDescription("Blade of notable girth. Heavy and strong.");
-                wpn_out[WPN::NAME::BROADSWORD] = temp_wpn;
+                wpn_out[ITEM::NAME::BROADSWORD] = temp_wpn;
                 break;
-            case WPN::NAME::ESPADON:
+            case ITEM::NAME::ESPADON:
                 temp_wpn_stats = {12, 0, 40, 0, 0, 0, 13, 20, 7, {1,1}, {1,2}, 0, 1000};
-                temp_wpn = Weapon(WPN::TYPE::SWORD, temp_wpn_stats, WPN::NAME::ESPADON);
+                temp_wpn = Weapon(ITEM::TYPE::SWORD, temp_wpn_stats, ITEM::NAME::ESPADON);
                 temp_wpn.setDescription("Blade of considerable girth and length. Heavier and stronger.");
-                wpn_out[WPN::NAME::ESPADON] = temp_wpn;
+                wpn_out[ITEM::NAME::ESPADON] = temp_wpn;
                 break;
-            case WPN::NAME::OODACHI:
+            case ITEM::NAME::OODACHI:
                 temp_wpn_stats = {9, 0, 60, 10, 5, 0, 8, 25, 10, {1,1}, {1,2}, 0, 1000};
-                temp_wpn = Weapon(WPN::TYPE::SWORD, temp_wpn_stats, WPN::NAME::OODACHI);
+                temp_wpn = Weapon(ITEM::TYPE::SWORD, temp_wpn_stats, ITEM::NAME::OODACHI);
                 temp_wpn.setDescription("Long, curved sword of the eastern lands.");
-                wpn_out[WPN::NAME::OODACHI] = temp_wpn;
+                wpn_out[ITEM::NAME::OODACHI] = temp_wpn;
                 break;
-            case WPN::NAME::UCHIGATANA:
+            case ITEM::NAME::UCHIGATANA:
                 temp_wpn_stats = {7, 0, 75, 5, 0, 0, 5, 30, 8, {1,1}, {1,2}, 0, 1000};
-                temp_wpn = Weapon(WPN::TYPE::SWORD, temp_wpn_stats, WPN::NAME::UCHIGATANA);
+                temp_wpn = Weapon(ITEM::TYPE::SWORD, temp_wpn_stats, ITEM::NAME::UCHIGATANA);
                 temp_wpn.setDescription("Curved sword in the style of the eastern lands. Very sharp.");
-                wpn_out[WPN::NAME::UCHIGATANA] = temp_wpn;
+                wpn_out[ITEM::NAME::UCHIGATANA] = temp_wpn;
                 break;
-            case WPN::NAME::EXSANGUE:
+            case ITEM::NAME::EXSANGUE:
                 temp_wpn_stats = {1, 0, 50, 0, 0, 0, 1, 20, 10, {1,1}, {1,2}, 0, 1000};
-                temp_wpn = Weapon(WPN::TYPE::SWORD, temp_wpn_stats, WPN::NAME::EXSANGUE);
-                temp_wpn.setEffect(WPN::EFFECT::LIFESTEAL);
+                temp_wpn = Weapon(ITEM::TYPE::SWORD, temp_wpn_stats, ITEM::NAME::EXSANGUE);
+                temp_wpn.setEffect(ITEM::EFFECT::LIFESTEAL);
                 temp_wpn.setDescription("Drains enemies of their blood. Heals HP equal to damage dealt.");
-                wpn_out[WPN::NAME::EXSANGUE] = temp_wpn;
+                wpn_out[ITEM::NAME::EXSANGUE] = temp_wpn;
                 break;
-            case WPN::NAME::HAUTECLAIRE:
+            case ITEM::NAME::HAUTECLAIRE:
                 temp_wpn_stats = {14, 0, 90, 10, 0, 0, 7, 25, 14, {1,1}, {1,2}, 0, 1000};
-                temp_wpn = Weapon(WPN::TYPE::SWORD, temp_wpn_stats, WPN::NAME::HAUTECLAIRE);
+                temp_wpn = Weapon(ITEM::TYPE::SWORD, temp_wpn_stats, ITEM::NAME::HAUTECLAIRE);
                 temp_wpn.setDescription("Crystal encrusted sword, as described in the Franc legends of old.");
-                wpn_out[WPN::NAME::HAUTECLAIRE] = temp_wpn;
+                wpn_out[ITEM::NAME::HAUTECLAIRE] = temp_wpn;
                 break;
-            case WPN::NAME::SECUNDUS:
+            case ITEM::NAME::SECUNDUS:
                 temp_wpn_stats = {16, 0, 100, 0, 0, 10, 9, 20, 12, {1,1}, {1,2}, 0, 1000};
-                temp_wpn = Weapon(WPN::TYPE::SWORD, temp_wpn_stats, WPN::NAME::SECUNDUS);
+                temp_wpn = Weapon(ITEM::TYPE::SWORD, temp_wpn_stats, ITEM::NAME::SECUNDUS);
                 temp_wpn.setDescription("The first sword made by the God. The first weapon really only the second weapon of man, after his fists.");
-                wpn_out[WPN::NAME::SECUNDUS] = temp_wpn;
+                wpn_out[ITEM::NAME::SECUNDUS] = temp_wpn;
                 break;
-            case WPN::NAME::EXCALIBUR:
+            case ITEM::NAME::EXCALIBUR:
                 temp_wpn_stats = {15, 0, 90, 10, 0, 0, 10, 30, 15, {1,1}, {1,2}, 0, 1000};
-                temp_wpn = Weapon(WPN::TYPE::SWORD, temp_wpn_stats, WPN::NAME::EXCALIBUR);
+                temp_wpn = Weapon(ITEM::TYPE::SWORD, temp_wpn_stats, ITEM::NAME::EXCALIBUR);
                 temp_wpn.setEffective(UNIT::TYPE::DEMON);
                 temp_wpn.setDescription("The king's sword. Found in a rock.");
-                wpn_out[WPN::NAME::EXCALIBUR] = temp_wpn;
+                wpn_out[ITEM::NAME::EXCALIBUR] = temp_wpn;
                 break;
-            case WPN::NAME::GALATINE:
+            case ITEM::NAME::GALATINE:
                 temp_wpn_stats = {12, 0, 100, 0, 0, 0, 6, 20, 18, {1,1}, {1}, 0, 1000};
-                temp_wpn = Weapon(WPN::TYPE::SWORD, temp_wpn_stats, WPN::NAME::GALATINE);
+                temp_wpn = Weapon(ITEM::TYPE::SWORD, temp_wpn_stats, ITEM::NAME::GALATINE);
                 temp_wpn.setEffective(UNIT::TYPE::ARMOR);
                 temp_wpn.setDescription("A pragmatic and honorable knight's thrusting sword. Usually used with off-hand parry daggers.");
-                wpn_out[WPN::NAME::GALATINE] = temp_wpn;
+                wpn_out[ITEM::NAME::GALATINE] = temp_wpn;
                 break;
-            case WPN::NAME::RAIJINTOU:
+            case ITEM::NAME::RAIJINTOU:
                 temp_wpn_stats = {5, 0, 50, 0, 0, 0, 7, 25, 11, {1,2}, {1,2}, 1, 1000};
-                temp_wpn = Weapon(WPN::TYPE::SWORD, temp_wpn_stats, WPN::NAME::RAIJINTOU);
+                temp_wpn = Weapon(ITEM::TYPE::SWORD, temp_wpn_stats, ITEM::NAME::RAIJINTOU);
                 temp_wpn.setDescription("The thunder god's sword. Rains lightning upon enemies at a distance.");
-                wpn_out[WPN::NAME::RAIJINTOU] = temp_wpn;
+                wpn_out[ITEM::NAME::RAIJINTOU] = temp_wpn;
                 break;
-            case WPN::NAME::FUUJINTOU:
+            case ITEM::NAME::FUUJINTOU:
                 temp_wpn_stats = {7, 0, 45, 0, 0, 0, 1, 25, 11, {1,2}, {1,2}, 1, 1000};
-                temp_wpn = Weapon(WPN::TYPE::SWORD, temp_wpn_stats, WPN::NAME::FUUJINTOU);
+                temp_wpn = Weapon(ITEM::TYPE::SWORD, temp_wpn_stats, ITEM::NAME::FUUJINTOU);
                 temp_wpn.setDescription("The wind god's sword. Cuts enemies with wind at a distance.");
-                wpn_out[WPN::NAME::FUUJINTOU] = temp_wpn;
+                wpn_out[ITEM::NAME::FUUJINTOU] = temp_wpn;
                 break;
-            case WPN::NAME::HONJOU_MASAMUNE:
+            case ITEM::NAME::HONJOU_MASAMUNE:
                 temp_wpn_stats = {16, 0, 60, 5, 5, 0, 7, 35, 18, {1,1}, {1,2}, 0, 1000};
-                temp_wpn = Weapon(WPN::TYPE::SWORD, temp_wpn_stats, WPN::NAME::HONJOU_MASAMUNE);
+                temp_wpn = Weapon(ITEM::TYPE::SWORD, temp_wpn_stats, ITEM::NAME::HONJOU_MASAMUNE);
                 temp_wpn.setDescription("Lost sword made by the most skilled swordsmith of the eastern lands.");
-                wpn_out[WPN::NAME::HONJOU_MASAMUNE] = temp_wpn;
+                wpn_out[ITEM::NAME::HONJOU_MASAMUNE] = temp_wpn;
                 break;
-            case WPN::NAME::RAW_IRON_SLAB:
+            case ITEM::NAME::RAW_IRON_SLAB:
                 temp_wpn_stats = {20, 0, 30, 0, 0, 0, 20, 50, 20, {1,1}, {1,2}, 0, 1000};
-                temp_wpn = Weapon(WPN::TYPE::SWORD, temp_wpn_stats, WPN::NAME::RAW_IRON_SLAB); //Should be found inside a dragon skull? 
+                temp_wpn = Weapon(ITEM::TYPE::SWORD, temp_wpn_stats, ITEM::NAME::RAW_IRON_SLAB); //Should be found inside a dragon skull? 
                 temp_wpn.setDescription("Barely a sword. Too big, too thick, too massive, too rough. Tempered by the malevolence of countless slain demons. Effective against demons and angels.");
                 temp_wpn.setEffective(UNIT::TYPE::DEMON + UNIT::TYPE::ANGEL);
-                wpn_out[WPN::NAME::RAW_IRON_SLAB] = temp_wpn;    
+                wpn_out[ITEM::NAME::RAW_IRON_SLAB] = temp_wpn;    
                 // Should have deeps chinks. This isn't the first time demons roamed the earth. Has deep holes in it. Must be repaired before being usable. Who is willing to repair it? 
                 break;
-            case WPN::NAME::KIRITO:
+            case ITEM::NAME::KIRITO:
                 temp_wpn_stats = {0, 0, 0, 0, 0, 0, 0, 10, 30, {1,1}, {1,2}, 0, 0};
-                temp_wpn = Weapon(WPN::TYPE::SWORD, temp_wpn_stats, WPN::NAME::KIRITO); //Should be found inside a dragon skull? 
+                temp_wpn = Weapon(ITEM::TYPE::SWORD, temp_wpn_stats, ITEM::NAME::KIRITO); //Should be found inside a dragon skull? 
                 temp_wpn.setDescription("Useless sword of a fake black swordsman.");
-                wpn_out[WPN::NAME::KIRITO] = temp_wpn;
+                wpn_out[ITEM::NAME::KIRITO] = temp_wpn;
                 break;
-            case WPN::NAME::KILLY:
+            case ITEM::NAME::KILLY:
                 break;
 
-            case WPN::NAME::PITCHFORK:
+            case ITEM::NAME::PITCHFORK:
                 temp_wpn_stats = {2, 0, 60, 0, 0, 0, 4, 15, 1, {1,1}, {1,2}, 0, 1000};
-                temp_wpn = Weapon(WPN::TYPE::LANCE, temp_wpn_stats, WPN::NAME::PITCHFORK);
+                temp_wpn = Weapon(ITEM::TYPE::LANCE, temp_wpn_stats, ITEM::NAME::PITCHFORK);
                 temp_wpn.setDescription("Farming implement. Makeshift lance for desperate times.");
-                wpn_out[WPN::NAME::PITCHFORK] = temp_wpn;
+                wpn_out[ITEM::NAME::PITCHFORK] = temp_wpn;
                 break;
-            case WPN::NAME::FIGHTING_STICK:
+            case ITEM::NAME::FIGHTING_STICK:
                 temp_wpn_stats = {3, 0, 70, 0, 0, 0, 3, 30, 5, {1,1}, {2}, 0, 1000};
-                temp_wpn = Weapon(WPN::TYPE::LANCE, temp_wpn_stats, WPN::NAME::FIGHTING_STICK);
+                temp_wpn = Weapon(ITEM::TYPE::LANCE, temp_wpn_stats, ITEM::NAME::FIGHTING_STICK);
                 temp_wpn.setDescription("Simple two meter long wooden stick. Deadly in competent hands.");
-                wpn_out[WPN::NAME::FIGHTING_STICK] = temp_wpn;
+                wpn_out[ITEM::NAME::FIGHTING_STICK] = temp_wpn;
                 break;
-            case WPN::NAME::IRON_LANCE:
+            case ITEM::NAME::IRON_LANCE:
                 temp_wpn_stats = {5, 0, 95, 0, 0, 0, 5, 40, 4, {1,1}, {1,2}, 0, 1000};
-                temp_wpn = Weapon(WPN::TYPE::LANCE, temp_wpn_stats, WPN::NAME::IRON_LANCE);
+                temp_wpn = Weapon(ITEM::TYPE::LANCE, temp_wpn_stats, ITEM::NAME::IRON_LANCE);
                 temp_wpn.setDescription("Sharp iron tip on a wooden stick. Standard military fare.");
-                wpn_out[WPN::NAME::IRON_LANCE] = temp_wpn;
+                wpn_out[ITEM::NAME::IRON_LANCE] = temp_wpn;
                 break;
-            case WPN::NAME::WRATH_LANCE:
+            case ITEM::NAME::WRATH_LANCE:
                 temp_wpn_stats = {7, 0, 80, 30, 0, 0, 3, 30, 9, {1,1}, {1,2}, 0, 1000};
-                temp_wpn = Weapon(WPN::TYPE::LANCE, temp_wpn_stats, WPN::NAME::WRATH_LANCE);
+                temp_wpn = Weapon(ITEM::TYPE::LANCE, temp_wpn_stats, ITEM::NAME::WRATH_LANCE);
                 temp_wpn.setDescription("Increases critical hit chance.");
-                wpn_out[WPN::NAME::WRATH_LANCE] = temp_wpn;
+                wpn_out[ITEM::NAME::WRATH_LANCE] = temp_wpn;
                 break;
-            case WPN::NAME::STEEL_LANCE:
+            case ITEM::NAME::STEEL_LANCE:
                 temp_wpn_stats = {8, 0, 90, 0, 0, 0, 9, 35, 7, {1,1}, {1,2}, 0, 1000};
-                temp_wpn = Weapon(WPN::TYPE::LANCE, temp_wpn_stats, WPN::NAME::STEEL_LANCE);
+                temp_wpn = Weapon(ITEM::TYPE::LANCE, temp_wpn_stats, ITEM::NAME::STEEL_LANCE);
                 temp_wpn.setDescription("Stronger and deadlier.");
-                wpn_out[WPN::NAME::STEEL_LANCE] = temp_wpn;
+                wpn_out[ITEM::NAME::STEEL_LANCE] = temp_wpn;
                 break;
-            case WPN::NAME::DAMAS_LANCE:
+            case ITEM::NAME::DAMAS_LANCE:
                 temp_wpn_stats = {12, 0, 85, 0, 0, 0, 12, 25, 13, {1,1}, {1,2}, 0, 1000};
-                temp_wpn = Weapon(WPN::TYPE::LANCE, temp_wpn_stats, WPN::NAME::DAMAS_LANCE);
+                temp_wpn = Weapon(ITEM::TYPE::LANCE, temp_wpn_stats, ITEM::NAME::DAMAS_LANCE);
                 temp_wpn.setDescription("Fancy and fatal.");
-                wpn_out[WPN::NAME::DAMAS_LANCE] = temp_wpn;
+                wpn_out[ITEM::NAME::DAMAS_LANCE] = temp_wpn;
                 break;
-            case WPN::NAME::HEAVY_SPEAR:
+            case ITEM::NAME::HEAVY_SPEAR:
                 temp_wpn_stats = {6, 0, 60, 0, 0, 0, 15, 10, 8, {1,1}, {1,2}, 0, 1000};
-                temp_wpn = Weapon(WPN::TYPE::LANCE, temp_wpn_stats, WPN::NAME::HEAVY_SPEAR);
+                temp_wpn = Weapon(ITEM::TYPE::LANCE, temp_wpn_stats, ITEM::NAME::HEAVY_SPEAR);
                 temp_wpn.setEffective(UNIT::TYPE::ARMOR);
                 temp_wpn.setDescription("Heavy enough to pierce armor.");
-                wpn_out[WPN::NAME::HEAVY_SPEAR] = temp_wpn;
+                wpn_out[ITEM::NAME::HEAVY_SPEAR] = temp_wpn;
                 break;
-            case WPN::NAME::TRIDENT:
+            case ITEM::NAME::TRIDENT:
                 temp_wpn_stats = {8, 0, 90, 0, 0, 0, 8, 10, 10, {1,1}, {1,2}, 0, 1000};
-                temp_wpn = Weapon(WPN::TYPE::LANCE, temp_wpn_stats, WPN::NAME::TRIDENT);
+                temp_wpn = Weapon(ITEM::TYPE::LANCE, temp_wpn_stats, ITEM::NAME::TRIDENT);
                 temp_wpn.setDescription("Fancy pitchfork");
-                wpn_out[WPN::NAME::TRIDENT] = temp_wpn;
+                wpn_out[ITEM::NAME::TRIDENT] = temp_wpn;
                 break;
-            case WPN::NAME::MERCIFUL_LANCE:
+            case ITEM::NAME::MERCIFUL_LANCE:
                 temp_wpn_stats = {6, 0, 70, 0, 0, 0, 7, 20, 7, {1,1}, {1,2}, 0, 1000};
-                temp_wpn = Weapon(WPN::TYPE::LANCE, temp_wpn_stats, WPN::NAME::MERCIFUL_LANCE);
+                temp_wpn = Weapon(ITEM::TYPE::LANCE, temp_wpn_stats, ITEM::NAME::MERCIFUL_LANCE);
                 temp_wpn.setDescription("Infused with the life-giving tears of the goddess. Cannot reduce enemy HP below 1.");
-                wpn_out[WPN::NAME::MERCIFUL_LANCE] = temp_wpn;
+                wpn_out[ITEM::NAME::MERCIFUL_LANCE] = temp_wpn;
                 break;
-            case WPN::NAME::JAVELIN:
+            case ITEM::NAME::JAVELIN:
                 temp_wpn_stats = {4, 0, 40, 0, 0, 0, 6, 25, 9, {1,2}, {1}, 0, 1000};
-                temp_wpn = Weapon(WPN::TYPE::LANCE, temp_wpn_stats, WPN::NAME::JAVELIN);
+                temp_wpn = Weapon(ITEM::TYPE::LANCE, temp_wpn_stats, ITEM::NAME::JAVELIN);
                 temp_wpn.setDescription("Simple throwing lance.");
-                wpn_out[WPN::NAME::JAVELIN] = temp_wpn;
+                wpn_out[ITEM::NAME::JAVELIN] = temp_wpn;
                 break;
-            case WPN::NAME::PILUM:
+            case ITEM::NAME::PILUM:
                 temp_wpn_stats = {6, 0, 45, 0, 0, 0, 8, 23, 10, {1,2}, {1}, 0, 1000};
-                temp_wpn = Weapon(WPN::TYPE::LANCE, temp_wpn_stats, WPN::NAME::PILUM);
+                temp_wpn = Weapon(ITEM::TYPE::LANCE, temp_wpn_stats, ITEM::NAME::PILUM);
                 temp_wpn.setDescription("Reliable throwing lance.");
-                wpn_out[WPN::NAME::PILUM] = temp_wpn;
+                wpn_out[ITEM::NAME::PILUM] = temp_wpn;
                 break;
-            case WPN::NAME::SPEAR:
+            case ITEM::NAME::SPEAR:
                 temp_wpn_stats = {9, 0, 50, 0, 0, 0, 11, 20, 11, {1,2}, {1}, 0, 1000};
-                temp_wpn = Weapon(WPN::TYPE::LANCE, temp_wpn_stats, WPN::NAME::SPEAR);
+                temp_wpn = Weapon(ITEM::TYPE::LANCE, temp_wpn_stats, ITEM::NAME::SPEAR);
                 temp_wpn.setDescription("Strong throwing Lance. Strikes true.");
-                wpn_out[WPN::NAME::SPEAR] = temp_wpn;
+                wpn_out[ITEM::NAME::SPEAR] = temp_wpn;
                 break;
-            case WPN::NAME::VEL:
+            case ITEM::NAME::VEL:
                 temp_wpn_stats = {14, 0, 60, 0, 0, 0, 9, 25, 15, {1,2}, {1,2}, 0, 1000};
-                temp_wpn = Weapon(WPN::TYPE::LANCE, temp_wpn_stats, WPN::NAME::VEL);
+                temp_wpn = Weapon(ITEM::TYPE::LANCE, temp_wpn_stats, ITEM::NAME::VEL);
                 temp_wpn.setDescription("Legendary throwing lance. Said to be able to home in on the heart of your enemies.");
-                wpn_out[WPN::NAME::VEL] = temp_wpn;
+                wpn_out[ITEM::NAME::VEL] = temp_wpn;
                 break;
-            case WPN::NAME::GUNGNIR:
+            case ITEM::NAME::GUNGNIR:
                 temp_wpn_stats = {8, 0, 90, 0, 0, 0, 6, 20, 9, {1,2}, {1,2}, 1, 1000};
-                temp_wpn = Weapon(WPN::TYPE::LANCE, temp_wpn_stats, WPN::NAME::GUNGNIR);
+                temp_wpn = Weapon(ITEM::TYPE::LANCE, temp_wpn_stats, ITEM::NAME::GUNGNIR);
                 temp_wpn.setDescription("A lightning bolt resides in its tip. Can shoot lightning at enemies at a distance.");
-                wpn_out[WPN::NAME::GUNGNIR] = temp_wpn;
+                wpn_out[ITEM::NAME::GUNGNIR] = temp_wpn;
                 break;
-            case WPN::NAME::ACHILLES:
+            case ITEM::NAME::ACHILLES:
                 temp_wpn_stats = {12, 0, 70, 0, 0, 0, 10, 32, 18, {1,2}, {1,2}, 0, 1000};
-                temp_wpn = Weapon(WPN::TYPE::LANCE, temp_wpn_stats, WPN::NAME::ACHILLES);
-                temp_wpn.setEffect(WPN::EFFECT::KILL1P);
+                temp_wpn = Weapon(ITEM::TYPE::LANCE, temp_wpn_stats, ITEM::NAME::ACHILLES);
+                temp_wpn.setEffect(ITEM::EFFECT::KILL1P);
                 temp_wpn.setDescription("Legendary throwing spear named after a fearless, immortal hero. Kills instantly if hits enemy's heel (1%).");
-                wpn_out[WPN::NAME::ACHILLES] = temp_wpn;
+                wpn_out[ITEM::NAME::ACHILLES] = temp_wpn;
                 break;
-            case WPN::NAME::TONBOKIRI:
+            case ITEM::NAME::TONBOKIRI:
                 temp_wpn_stats = {16, 0, 50, 0, 0, 0, 14, 24, 17, {1,1}, {1,2}, 0, 1000};
-                temp_wpn = Weapon(WPN::TYPE::LANCE, temp_wpn_stats, WPN::NAME::TONBOKIRI);
+                temp_wpn = Weapon(ITEM::TYPE::LANCE, temp_wpn_stats, ITEM::NAME::TONBOKIRI);
                 temp_wpn.setDescription("Cut a dragonfly that tried to land on its tip. Excessively sharp and dangerous.");
-                wpn_out[WPN::NAME::TONBOKIRI] = temp_wpn;
+                wpn_out[ITEM::NAME::TONBOKIRI] = temp_wpn;
                 break;
 
-            case WPN::NAME::IRON_AXE:
+            case ITEM::NAME::IRON_AXE:
                 temp_wpn_stats = {8, 0, 40, 0, 0, 0, 8, 40, 4, {1,1}, {1,2}, 0, 1000};
-                temp_wpn = Weapon(WPN::TYPE::AXE, temp_wpn_stats, WPN::NAME::IRON_AXE);
+                temp_wpn = Weapon(ITEM::TYPE::AXE, temp_wpn_stats, ITEM::NAME::IRON_AXE);
                 temp_wpn.setDescription("Iron cutting head on a stick. Simple, easy to repair. Bandits' favorite.");
-                wpn_out[WPN::NAME::IRON_AXE] = temp_wpn;
+                wpn_out[ITEM::NAME::IRON_AXE] = temp_wpn;
                 break;
-            case WPN::NAME::STEEL_AXE:
+            case ITEM::NAME::STEEL_AXE:
                 temp_wpn_stats = {11, 0, 50, 0, 0, 0, 10, 35, 7, {1,1}, {1,2}, 0, 1000};
-                temp_wpn = Weapon(WPN::TYPE::AXE, temp_wpn_stats, WPN::NAME::STEEL_AXE);
+                temp_wpn = Weapon(ITEM::TYPE::AXE, temp_wpn_stats, ITEM::NAME::STEEL_AXE);
                 temp_wpn.setDescription("Steel cutting head on a stick. Stronger. Smart bandits like it.");
-                wpn_out[WPN::NAME::STEEL_AXE] = temp_wpn;
+                wpn_out[ITEM::NAME::STEEL_AXE] = temp_wpn;
                 break;
-            case WPN::NAME::DAMAS_AXE:
+            case ITEM::NAME::DAMAS_AXE:
                 temp_wpn_stats = {14, 0, 55, 0, 0, 0, 13, 25, 11, {1,1}, {1,2}, 0, 1000};
-                temp_wpn = Weapon(WPN::TYPE::AXE, temp_wpn_stats, WPN::NAME::DAMAS_AXE);
+                temp_wpn = Weapon(ITEM::TYPE::AXE, temp_wpn_stats, ITEM::NAME::DAMAS_AXE);
                 temp_wpn.setDescription("Damas cutting head on a stick. Fancy and deadly. Scorned by dumb bandits.");
-                wpn_out[WPN::NAME::DAMAS_AXE] = temp_wpn;
+                wpn_out[ITEM::NAME::DAMAS_AXE] = temp_wpn;
                 break;
-            case WPN::NAME::WRATH_AXE:
+            case ITEM::NAME::WRATH_AXE:
                 temp_wpn_stats = {14, 0, 65, 20, 0, 0, 11, 30, 10, {1,1}, {1,2}, 0, 1000};
-                temp_wpn = Weapon(WPN::TYPE::AXE, temp_wpn_stats, WPN::NAME::WRATH_AXE);
+                temp_wpn = Weapon(ITEM::TYPE::AXE, temp_wpn_stats, ITEM::NAME::WRATH_AXE);
                 temp_wpn.setDescription("Increases critical hit chance.");
-                wpn_out[WPN::NAME::WRATH_AXE] = temp_wpn;
+                wpn_out[ITEM::NAME::WRATH_AXE] = temp_wpn;
                 break;
-            case WPN::NAME::THROWING_AXE:
+            case ITEM::NAME::THROWING_AXE:
                 temp_wpn_stats = {6, 0, 30, 0, 0, 0, 7, 25, 5, {1,2}, {1,2}, 0, 1000};
-                temp_wpn = Weapon(WPN::TYPE::AXE, temp_wpn_stats, WPN::NAME::THROWING_AXE);
+                temp_wpn = Weapon(ITEM::TYPE::AXE, temp_wpn_stats, ITEM::NAME::THROWING_AXE);
                 temp_wpn.setDescription("Smaller, balanced axe, made for throwing. Cheapest option for ranged attacks.");
-                wpn_out[WPN::NAME::THROWING_AXE] = temp_wpn;
+                wpn_out[ITEM::NAME::THROWING_AXE] = temp_wpn;
                 break;
-            case WPN::NAME::TOMAHAWK:
+            case ITEM::NAME::TOMAHAWK:
                 temp_wpn_stats = {10, 0, 40, 0, 0, 0, 7, 25, 10, {1,2}, {1,2}, 0, 1000};
-                temp_wpn = Weapon(WPN::TYPE::AXE, temp_wpn_stats, WPN::NAME::TOMAHAWK);
+                temp_wpn = Weapon(ITEM::TYPE::AXE, temp_wpn_stats, ITEM::NAME::TOMAHAWK);
                 temp_wpn.setDescription("Smaller, balanced axe, made for throwing. Cheapest option for ranged attacks.");
-                wpn_out[WPN::NAME::TOMAHAWK] = temp_wpn;
+                wpn_out[ITEM::NAME::TOMAHAWK] = temp_wpn;
                 break;
-            case WPN::NAME::PICK_AXE:
+            case ITEM::NAME::PICK_AXE:
                 temp_wpn_stats = {7, 0, 60, 0, 0, 0, 9, 20, 3, {1,1}, {1,2}, 0, 1000};
-                temp_wpn = Weapon(WPN::TYPE::AXE, temp_wpn_stats, WPN::NAME::PICK_AXE);
+                temp_wpn = Weapon(ITEM::TYPE::AXE, temp_wpn_stats, ITEM::NAME::PICK_AXE);
                 temp_wpn.setDescription("Mining implement. Weapon in time of need.");
-                wpn_out[WPN::NAME::PICK_AXE] = temp_wpn;
+                wpn_out[ITEM::NAME::PICK_AXE] = temp_wpn;
                 break;
-            case WPN::NAME::HOE:
+            case ITEM::NAME::HOE:
                 temp_wpn_stats = {4, 0, 40, 0, 0, 0, 5, 25, 2, {1,1}, {1,2}, 0, 1000};
-                temp_wpn = Weapon(WPN::TYPE::AXE, temp_wpn_stats, WPN::NAME::HOE);
+                temp_wpn = Weapon(ITEM::TYPE::AXE, temp_wpn_stats, ITEM::NAME::HOE);
                 temp_wpn.setDescription("Farming implement. Can be used as an axe if need be.");
-                wpn_out[WPN::NAME::HOE] = temp_wpn;
+                wpn_out[ITEM::NAME::HOE] = temp_wpn;
                 break;
-            case WPN::NAME::CLUB:
+            case ITEM::NAME::CLUB:
                 temp_wpn_stats = {9, 0, 50, 5, 0, 0, 6, 15, 1, {1,1}, {1,2}, 0, 1000};
-                temp_wpn = Weapon(WPN::TYPE::AXE, temp_wpn_stats, WPN::NAME::CLUB);
+                temp_wpn = Weapon(ITEM::TYPE::AXE, temp_wpn_stats, ITEM::NAME::CLUB);
                 temp_wpn.setDescription("Big and wooden. For when the old-world weapons just aren't quite old enough.");
-                wpn_out[WPN::NAME::CLUB] = temp_wpn;
+                wpn_out[ITEM::NAME::CLUB] = temp_wpn;
                 break;
-            case WPN::NAME::HALBERD:
+            case ITEM::NAME::HALBERD:
                 temp_wpn_stats = {10, 0, 50, 0, 0, 0, 11, 20, 12, {1,1}, {1,2}, 0, 1000};
-                temp_wpn = Weapon(WPN::TYPE::AXE + WPN::TYPE::LANCE, temp_wpn_stats, WPN::NAME::HALBERD);
+                temp_wpn = Weapon(ITEM::TYPE::AXE + ITEM::TYPE::LANCE, temp_wpn_stats, ITEM::NAME::HALBERD);
                 temp_wpn.setEffective(UNIT::TYPE::MOUNTED);
                 temp_wpn.setDescription("Polearm specially designed to deal with cavalry. Is both a lance and an axe.");
-                wpn_out[WPN::NAME::HALBERD] = temp_wpn;
+                wpn_out[ITEM::NAME::HALBERD] = temp_wpn;
                 break;
-            case WPN::NAME::HAMMER:
+            case ITEM::NAME::HAMMER:
                 temp_wpn_stats = {8, 0, 40, 0, 0, 0, 9, 30, 8, {1,1}, {1,2}, 0, 1000};
-                temp_wpn = Weapon(WPN::TYPE::AXE, temp_wpn_stats, WPN::NAME::HAMMER);
+                temp_wpn = Weapon(ITEM::TYPE::AXE, temp_wpn_stats, ITEM::NAME::HAMMER);
                 temp_wpn.setEffective(UNIT::TYPE::ARMOR);
                 temp_wpn.setDescription("Armor cannot stand the hammer's heavy crushing blows.");
-                wpn_out[WPN::NAME::HAMMER] = temp_wpn;
+                wpn_out[ITEM::NAME::HAMMER] = temp_wpn;
                 break;
-            case WPN::NAME::WAR_PICK:
+            case ITEM::NAME::WAR_PICK:
                 temp_wpn_stats = {12, 0, 50, 0, 0, 0, 12, 25, 11, {1,1}, {1,2}, 0, 1000};
-                temp_wpn = Weapon(WPN::TYPE::AXE, temp_wpn_stats, WPN::NAME::WAR_PICK);
+                temp_wpn = Weapon(ITEM::TYPE::AXE, temp_wpn_stats, ITEM::NAME::WAR_PICK);
                 temp_wpn.setEffective(UNIT::TYPE::ARMOR);
                 temp_wpn.setDescription("In trained hands, the pick can penatrate armor.");
-                wpn_out[WPN::NAME::WAR_PICK] = temp_wpn;
+                wpn_out[ITEM::NAME::WAR_PICK] = temp_wpn;
                 break;
-            case WPN::NAME::BATTLEAXE:
+            case ITEM::NAME::BATTLEAXE:
                 temp_wpn_stats = {15, 0, 45, 0, 0, 0, 14, 30, 14, {1,1}, {1,2}, 0, 1000};
-                temp_wpn = Weapon(WPN::TYPE::AXE, temp_wpn_stats, WPN::NAME::BATTLEAXE);
+                temp_wpn = Weapon(ITEM::TYPE::AXE, temp_wpn_stats, ITEM::NAME::BATTLEAXE);
                 temp_wpn.setDescription("Double-bladed, comically oversized axe.");
-                wpn_out[WPN::NAME::BATTLEAXE] = temp_wpn;
+                wpn_out[ITEM::NAME::BATTLEAXE] = temp_wpn;
                 break;
-            case WPN::NAME::VIDYU:
+            case ITEM::NAME::VIDYU:
                 temp_wpn_stats = {17, 0, 60, 0, 0, 0, 17, 20, 17, {1,1}, {1,2}, 0, 1000};
-                temp_wpn = Weapon(WPN::TYPE::AXE, temp_wpn_stats, WPN::NAME::VIDYU);
+                temp_wpn = Weapon(ITEM::TYPE::AXE, temp_wpn_stats, ITEM::NAME::VIDYU);
                 temp_wpn.setDescription("Battleaxe of the many-headed and armed gods of the east.");
-                wpn_out[WPN::NAME::VIDYU] = temp_wpn;
+                wpn_out[ITEM::NAME::VIDYU] = temp_wpn;
                 break;
-            case WPN::NAME::HEPHAESTUS:
+            case ITEM::NAME::HEPHAESTUS:
                 temp_wpn_stats = {19, 0, 70, 0, 0, 0, 5, 60, 20, {1,1}, {1,2}, 0, 1000};
-                temp_wpn = Weapon(WPN::TYPE::AXE, temp_wpn_stats, WPN::NAME::HEPHAESTUS);
+                temp_wpn = Weapon(ITEM::TYPE::AXE, temp_wpn_stats, ITEM::NAME::HEPHAESTUS);
                 temp_wpn.setDescription("The god's hammer. Used to forge Secundus, the first sword. Basically a vaguely square stone fixed to a wooden handle.");
-                wpn_out[WPN::NAME::HEPHAESTUS] = temp_wpn;
+                wpn_out[ITEM::NAME::HEPHAESTUS] = temp_wpn;
                 break;
 
-            case WPN::NAME::ADAPTED_CROSSBOW:
+            case ITEM::NAME::ADAPTED_CROSSBOW:
                 temp_wpn_stats = {12, 0, 70, 0, 0, 0, 14, 35, 9, {1,1}, {1}, 0, 1000};
-                temp_wpn = Weapon(WPN::TYPE::BOW, temp_wpn_stats, WPN::NAME::ADAPTED_CROSSBOW);
+                temp_wpn = Weapon(ITEM::TYPE::BOW, temp_wpn_stats, ITEM::NAME::ADAPTED_CROSSBOW);
                 temp_wpn.setDescription("Crossbow adapted to be fired, reloaded and drawn using one hand and one stump. 1H assassin only.");
-                wpn_out[WPN::NAME::ADAPTED_CROSSBOW] = temp_wpn;
+                wpn_out[ITEM::NAME::ADAPTED_CROSSBOW] = temp_wpn;
                 break;
-            case WPN::NAME::REPEATABLE_CROSSBOW:
+            case ITEM::NAME::REPEATABLE_CROSSBOW:
                 temp_wpn_stats = {8, 0, 60, 0, 0, 0, 18, 28, 14, {1,1}, {1}, 0, 1000};
-                temp_wpn = Weapon(WPN::TYPE::BOW, temp_wpn_stats, WPN::NAME::REPEATABLE_CROSSBOW);
+                temp_wpn = Weapon(ITEM::TYPE::BOW, temp_wpn_stats, ITEM::NAME::REPEATABLE_CROSSBOW);
                 temp_wpn.setDescription("Crossbow that fires many bolts every attack.");
-                wpn_out[WPN::NAME::REPEATABLE_CROSSBOW] = temp_wpn;
+                wpn_out[ITEM::NAME::REPEATABLE_CROSSBOW] = temp_wpn;
                 break;
-            case WPN::NAME::CROSSBOW:
+            case ITEM::NAME::CROSSBOW:
                 temp_wpn_stats = {10, 0, 85, 0, 0, 0, 12, 15, 7, {1,1}, {1}, 0, 1000};
-                temp_wpn = Weapon(WPN::TYPE::BOW, temp_wpn_stats, WPN::NAME::CROSSBOW);
+                temp_wpn = Weapon(ITEM::TYPE::BOW, temp_wpn_stats, ITEM::NAME::CROSSBOW);
                 temp_wpn.setDescription("Powerful and easier to use than a bow, although quite heavy.");
-                wpn_out[WPN::NAME::CROSSBOW] = temp_wpn;
+                wpn_out[ITEM::NAME::CROSSBOW] = temp_wpn;
                 break;
-            case WPN::NAME::SHORT_BOW:
+            case ITEM::NAME::SHORT_BOW:
                 temp_wpn_stats = {4, 0, 90, 0, 0, 0, 4, 35, 5, {1,2}, {1}, 0, 1000};
-                temp_wpn = Weapon(WPN::TYPE::BOW, temp_wpn_stats, WPN::NAME::SHORT_BOW);
+                temp_wpn = Weapon(ITEM::TYPE::BOW, temp_wpn_stats, ITEM::NAME::SHORT_BOW);
                 temp_wpn.setDescription("Simple and light bow.");
-                wpn_out[WPN::NAME::SHORT_BOW] = temp_wpn;
+                wpn_out[ITEM::NAME::SHORT_BOW] = temp_wpn;
                 break;
-            case WPN::NAME::LONG_BOW:
+            case ITEM::NAME::LONG_BOW:
                 temp_wpn_stats = {8, 0, 70, 0, 0, 0, 10, 25, 11, {1,3}, {1}, 0, 1000};
-                temp_wpn = Weapon(WPN::TYPE::BOW, temp_wpn_stats, WPN::NAME::LONG_BOW);
+                temp_wpn = Weapon(ITEM::TYPE::BOW, temp_wpn_stats, ITEM::NAME::LONG_BOW);
                 temp_wpn.setDescription("Long and heavy bow. Has increased range.");
-                wpn_out[WPN::NAME::LONG_BOW] = temp_wpn;
+                wpn_out[ITEM::NAME::LONG_BOW] = temp_wpn;
                 break;
-            case WPN::NAME::COMPOSITE_BOW:
+            case ITEM::NAME::COMPOSITE_BOW:
                 temp_wpn_stats = {7, 0, 80, 0, 0, 0, 5, 30, 10, {1,1}, {1}, 0, 1000};
-                temp_wpn = Weapon(WPN::TYPE::BOW, temp_wpn_stats, WPN::NAME::COMPOSITE_BOW);
+                temp_wpn = Weapon(ITEM::TYPE::BOW, temp_wpn_stats, ITEM::NAME::COMPOSITE_BOW);
                 temp_wpn.setDescription("Bow made of laminated wood and animal horn. Very useful for horseback shooting.");
-                wpn_out[WPN::NAME::COMPOSITE_BOW] = temp_wpn;
+                wpn_out[ITEM::NAME::COMPOSITE_BOW] = temp_wpn;
                 break;
-            case WPN::NAME::RECURVE_CROSSBOW:
+            case ITEM::NAME::RECURVE_CROSSBOW:
                 temp_wpn_stats = {18, 0, 50, 0, 0, 0, 19, 20, 11, {1,1}, {1}, 0, 1000};
-                temp_wpn = Weapon(WPN::TYPE::BOW, temp_wpn_stats, WPN::NAME::RECURVE_CROSSBOW);
+                temp_wpn = Weapon(ITEM::TYPE::BOW, temp_wpn_stats, ITEM::NAME::RECURVE_CROSSBOW);
                 temp_wpn.setDescription("Crossbow with recurve limbs. Heavy and powerful.");
-                wpn_out[WPN::NAME::RECURVE_CROSSBOW] = temp_wpn;
+                wpn_out[ITEM::NAME::RECURVE_CROSSBOW] = temp_wpn;
                 break;
-            case WPN::NAME::RECURVE_BOW:
+            case ITEM::NAME::RECURVE_BOW:
                 temp_wpn_stats = {13, 0, 75, 0, 0, 0, 10, 24, 14, {1,1}, {1}, 0, 1000};
-                temp_wpn = Weapon(WPN::TYPE::BOW, temp_wpn_stats, WPN::NAME::RECURVE_BOW);
+                temp_wpn = Weapon(ITEM::TYPE::BOW, temp_wpn_stats, ITEM::NAME::RECURVE_BOW);
                 temp_wpn.setDescription("Bow whose limbs curve away when unstrung. Shoots faster and deadlier arrows.");
-                wpn_out[WPN::NAME::RECURVE_BOW] = temp_wpn;
+                wpn_out[ITEM::NAME::RECURVE_BOW] = temp_wpn;
                 break;
-            case WPN::NAME::APOLLO:
+            case ITEM::NAME::APOLLO:
                 temp_wpn_stats = {19, 0, 69, 0, 0, 0, 9, 25, 17, {1,1}, {1}, 0, 1000};
-                temp_wpn = Weapon(WPN::TYPE::BOW, temp_wpn_stats, WPN::NAME::APOLLO);
+                temp_wpn = Weapon(ITEM::TYPE::BOW, temp_wpn_stats, ITEM::NAME::APOLLO);
                 temp_wpn.setDescription("Bow crafted of sun rays, used by the most handsome ancient god.");
-                wpn_out[WPN::NAME::APOLLO] = temp_wpn;
+                wpn_out[ITEM::NAME::APOLLO] = temp_wpn;
                 break;
-            case WPN::NAME::ARTEMIS:
+            case ITEM::NAME::ARTEMIS:
                 temp_wpn_stats = {18, 0, 96, 0, 0, 0, 4, 26, 19, {1,1}, {1}, 0, 1000};
-                temp_wpn = Weapon(WPN::TYPE::BOW, temp_wpn_stats, WPN::NAME::ARTEMIS);
+                temp_wpn = Weapon(ITEM::TYPE::BOW, temp_wpn_stats, ITEM::NAME::ARTEMIS);
                 temp_wpn.setDescription("Bow of the ancient goddess of hunting.");
-                wpn_out[WPN::NAME::ARTEMIS] = temp_wpn;
+                wpn_out[ITEM::NAME::ARTEMIS] = temp_wpn;
                 break;
-            case WPN::NAME::PINAKA:
+            case ITEM::NAME::PINAKA:
                 temp_wpn_stats = {17, 0, 100, 0, 0, 0, 7, 35, 16, {1,1}, {1}, 0, 1000};
-                temp_wpn = Weapon(WPN::TYPE::BOW, temp_wpn_stats, WPN::NAME::PINAKA);
+                temp_wpn = Weapon(ITEM::TYPE::BOW, temp_wpn_stats, ITEM::NAME::PINAKA);
                 temp_wpn.setDescription("Bow of the god of death.");
-                wpn_out[WPN::NAME::PINAKA] = temp_wpn;
+                wpn_out[ITEM::NAME::PINAKA] = temp_wpn;
                 break;
 
-            case WPN::NAME::ADAPTED_SHIELD:
+            case ITEM::NAME::ADAPTED_SHIELD:
                 temp_wpn_stats = {5, 0, 0, 10, 0, 5, 4, 45, 8, {1,1}, {1}, 0, 1000};
-                temp_wpn = Weapon(WPN::TYPE::SHIELD, temp_wpn_stats, WPN::NAME::ADAPTED_SHIELD);
+                temp_wpn = Weapon(ITEM::TYPE::SHIELD, temp_wpn_stats, ITEM::NAME::ADAPTED_SHIELD);
                 temp_wpn.setDescription("Shield adapted to be used without one\'s weak hand. Straps on the forearm. 1H assassin only.");
-                wpn_out[WPN::NAME::ADAPTED_SHIELD] = temp_wpn;
+                wpn_out[ITEM::NAME::ADAPTED_SHIELD] = temp_wpn;
                 break;
-            case WPN::NAME::POT_LID:
+            case ITEM::NAME::POT_LID:
                 temp_wpn_stats = {1, 0, 0, 5, 0, 1, 2, 15, 2, {1,1}, {1}, 0, 1000};
-                temp_wpn = Weapon(WPN::TYPE::SHIELD, temp_wpn_stats, WPN::NAME::POT_LID);
+                temp_wpn = Weapon(ITEM::TYPE::SHIELD, temp_wpn_stats, ITEM::NAME::POT_LID);
                 temp_wpn.setDescription("Useful in the kitchen. For the poor militia man: life saving device.");
-                wpn_out[WPN::NAME::POT_LID] = temp_wpn;
+                wpn_out[ITEM::NAME::POT_LID] = temp_wpn;
                 break;
-            case WPN::NAME::WOODEN_SHIELD:
+            case ITEM::NAME::WOODEN_SHIELD:
                 temp_wpn_stats = {2, 0, 0, 8, 0, 0, 3, 20, 7, {1,1}, {1}, 0, 1000};
-                temp_wpn = Weapon(WPN::TYPE::SHIELD, temp_wpn_stats, WPN::NAME::WOODEN_SHIELD);
+                temp_wpn = Weapon(ITEM::TYPE::SHIELD, temp_wpn_stats, ITEM::NAME::WOODEN_SHIELD);
                 temp_wpn.setDescription("Simple wood plank with a strap. Will probably save your life.");
-                wpn_out[WPN::NAME::WOODEN_SHIELD] = temp_wpn;
+                wpn_out[ITEM::NAME::WOODEN_SHIELD] = temp_wpn;
                 break;
-            case WPN::NAME::CLOAK:
+            case ITEM::NAME::CLOAK:
                 temp_wpn_stats = {4, 0, 0, 10, 0, 4, 5, 0, 13, {1,1}, {1}, 0, 1000};
-                temp_wpn = Weapon(WPN::TYPE::SHIELD, temp_wpn_stats, WPN::NAME::CLOAK);
+                temp_wpn = Weapon(ITEM::TYPE::SHIELD, temp_wpn_stats, ITEM::NAME::CLOAK);
                 temp_wpn.setDescription("The Mousquetaire\"s offhand shield in time of need.");
-                wpn_out[WPN::NAME::CLOAK] = temp_wpn;
+                wpn_out[ITEM::NAME::CLOAK] = temp_wpn;
                 break;
-            case WPN::NAME::LEATHER_SHIELD:
+            case ITEM::NAME::LEATHER_SHIELD:
                 temp_wpn_stats = {3, 0, 0, 9, 0, 2, 4, 25, 9, {1,1}, {1}, 0, 1000};
-                temp_wpn = Weapon(WPN::TYPE::SHIELD, temp_wpn_stats, WPN::NAME::LEATHER_SHIELD);
+                temp_wpn = Weapon(ITEM::TYPE::SHIELD, temp_wpn_stats, ITEM::NAME::LEATHER_SHIELD);
                 temp_wpn.setDescription("Wooden plank lined with leather. Smooth and slippery. Cheap way to redirect weapons away from the body.");
-                wpn_out[WPN::NAME::LEATHER_SHIELD] = temp_wpn;
+                wpn_out[ITEM::NAME::LEATHER_SHIELD] = temp_wpn;
                 break;
-            case WPN::NAME::KITE_SHIELD:
+            case ITEM::NAME::KITE_SHIELD:
                 temp_wpn_stats = {8, 0, 0, 15, 0, 4, 4, 35, 12, {1,1}, {1}, 0, 1000};
-                temp_wpn = Weapon(WPN::TYPE::SHIELD, temp_wpn_stats, WPN::NAME::KITE_SHIELD);
+                temp_wpn = Weapon(ITEM::TYPE::SHIELD, temp_wpn_stats, ITEM::NAME::KITE_SHIELD);
                 temp_wpn.setDescription("Large wooden shield of recognizable shape, to increase protection.");
-                wpn_out[WPN::NAME::KITE_SHIELD] = temp_wpn;
+                wpn_out[ITEM::NAME::KITE_SHIELD] = temp_wpn;
                 break;
-            case WPN::NAME::IRON_BUCKLER:
+            case ITEM::NAME::IRON_BUCKLER:
                 temp_wpn_stats = {6, 0, 0, 6, 0, 6, 6, 36, 6, {1,1}, {1}, 0, 1000};
-                temp_wpn = Weapon(WPN::TYPE::SHIELD, temp_wpn_stats, WPN::NAME::IRON_BUCKLER);
+                temp_wpn = Weapon(ITEM::TYPE::SHIELD, temp_wpn_stats, ITEM::NAME::IRON_BUCKLER);
                 temp_wpn.setDescription("Small round iron shield. Light, resistant.");
-                wpn_out[WPN::NAME::IRON_BUCKLER] = temp_wpn;
+                wpn_out[ITEM::NAME::IRON_BUCKLER] = temp_wpn;
                 break;
-            case WPN::NAME::STEEL_BUCKLER:
+            case ITEM::NAME::STEEL_BUCKLER:
                 temp_wpn_stats = {7, 0, 0, 7, 0, 7, 7, 37, 7, {1,1}, {1}, 0, 1000};
-                temp_wpn = Weapon(WPN::TYPE::SHIELD, temp_wpn_stats, WPN::NAME::STEEL_BUCKLER);
+                temp_wpn = Weapon(ITEM::TYPE::SHIELD, temp_wpn_stats, ITEM::NAME::STEEL_BUCKLER);
                 temp_wpn.setDescription("Small round steel shield. Heavier and more resistant.");
-                wpn_out[WPN::NAME::STEEL_BUCKLER] = temp_wpn;
+                wpn_out[ITEM::NAME::STEEL_BUCKLER] = temp_wpn;
                 break;
-            case WPN::NAME::SPIKED_BUCKLER:
+            case ITEM::NAME::SPIKED_BUCKLER:
                 temp_wpn_stats = {5, 0, 0, 5, 0, 5, 9, 30, 10, {1,1}, {1}, 0, 1000};
-                temp_wpn = Weapon(WPN::TYPE::SHIELD, temp_wpn_stats, WPN::NAME::SPIKED_BUCKLER);
+                temp_wpn = Weapon(ITEM::TYPE::SHIELD, temp_wpn_stats, ITEM::NAME::SPIKED_BUCKLER);
                 temp_wpn.setDescription("Iron buckler with a prickly spike at its center. Damages attackers upon their attacks.");
-                wpn_out[WPN::NAME::SPIKED_BUCKLER] = temp_wpn;
+                wpn_out[ITEM::NAME::SPIKED_BUCKLER] = temp_wpn;
                 break;
-            case WPN::NAME::SCUTUM:
+            case ITEM::NAME::SCUTUM:
                 temp_wpn_stats = {11, 0, 0, 15, 0, 5, 13, 25, 7, {1,1}, {1}, 0, 1000};
-                temp_wpn = Weapon(WPN::TYPE::SHIELD, temp_wpn_stats, WPN::NAME::SCUTUM);
+                temp_wpn = Weapon(ITEM::TYPE::SHIELD, temp_wpn_stats, ITEM::NAME::SCUTUM);
                 temp_wpn.setDescription("Very large and heavy shield.");
-                wpn_out[WPN::NAME::SCUTUM] = temp_wpn;
+                wpn_out[ITEM::NAME::SCUTUM] = temp_wpn;
                 break;
-            case WPN::NAME::MASTER_SHIELD:
+            case ITEM::NAME::MASTER_SHIELD:
                 temp_wpn_stats = {12, 0, 0, 20, 0, 10, 10, 0, 14, {1,1}, {1}, 0, 1000};
-                temp_wpn = Weapon( WPN::TYPE::SHIELD, temp_wpn_stats, WPN::NAME::MASTER_SHIELD);
+                temp_wpn = Weapon( ITEM::TYPE::SHIELD, temp_wpn_stats, ITEM::NAME::MASTER_SHIELD);
                 temp_wpn.setDescription("Shield of the princess of time.");
-                wpn_out[WPN::NAME::MASTER_SHIELD] = temp_wpn;
+                wpn_out[ITEM::NAME::MASTER_SHIELD] = temp_wpn;
                 break;
-            case WPN::NAME::GODDESS_HAND:
+            case ITEM::NAME::GODDESS_HAND:
                 temp_wpn_stats = {9, 0, 0, 5, 0, 200, 9, 22, 13, {1,1}, {1}, 0, 1000};
-                temp_wpn = Weapon(WPN::TYPE::SHIELD, temp_wpn_stats, WPN::NAME::GODDESS_HAND);
+                temp_wpn = Weapon(ITEM::TYPE::SHIELD, temp_wpn_stats, ITEM::NAME::GODDESS_HAND);
                 temp_wpn.setDescription("Offers the protection of the goddess. Negates enemy critical hits.");
-                wpn_out[WPN::NAME::GODDESS_HAND] = temp_wpn;
+                wpn_out[ITEM::NAME::GODDESS_HAND] = temp_wpn;
                 break;
-            case WPN::NAME::ANCILE:
+            case ITEM::NAME::ANCILE:
                 temp_wpn_stats = {15, 0, 0, 10, 0, 2, 13, 19, 12, {1,1}, {1}, 0, 1000};
-                temp_wpn = Weapon(WPN::TYPE::SHIELD, temp_wpn_stats, WPN::NAME::ANCILE);
+                temp_wpn = Weapon(ITEM::TYPE::SHIELD, temp_wpn_stats, ITEM::NAME::ANCILE);
                 temp_wpn.setDescription("Shield of the ancient god of war.");
-                wpn_out[WPN::NAME::ANCILE] = temp_wpn;
+                wpn_out[ITEM::NAME::ANCILE] = temp_wpn;
                 break;
-            case WPN::NAME::ROCK_PLATE:
+            case ITEM::NAME::ROCK_PLATE:
                 temp_wpn_stats = {15, 0, 0, 10, 0, 2, 13, 19, 12, {1,1}, {1}, 0, 1000};
-                temp_wpn = Weapon(WPN::TYPE::SHIELD, temp_wpn_stats, WPN::NAME::ROCK_PLATE);
+                temp_wpn = Weapon(ITEM::TYPE::SHIELD, temp_wpn_stats, ITEM::NAME::ROCK_PLATE);
                 temp_wpn.setDescription("Almost a raw boulder. The powerful and dumb demon's favorite.");
-                wpn_out[WPN::NAME::ROCK_PLATE] = temp_wpn;
+                wpn_out[ITEM::NAME::ROCK_PLATE] = temp_wpn;
                 break;
-            case WPN::NAME::OBSIDIAN_PLATE:
+            case ITEM::NAME::OBSIDIAN_PLATE:
                 temp_wpn_stats = {15, 0, 0, 10, 0, 2, 13, 19, 12, {1,1}, {1}, 0, 1000};
-                temp_wpn = Weapon(WPN::TYPE::SHIELD, temp_wpn_stats, WPN::NAME::OBSIDIAN_PLATE);
+                temp_wpn = Weapon(ITEM::TYPE::SHIELD, temp_wpn_stats, ITEM::NAME::OBSIDIAN_PLATE);
                 temp_wpn.setDescription("Rock melted by demon-breath, then recystallized into a more demon-claw friendly shape. Even harder than rock, but more brittle.");
-                wpn_out[WPN::NAME::OBSIDIAN_PLATE] = temp_wpn;
+                wpn_out[ITEM::NAME::OBSIDIAN_PLATE] = temp_wpn;
                 break;
-            case WPN::NAME::MARBLE_PLATE_SHIELD:
+            case ITEM::NAME::MARBLE_PLATE_SHIELD:
                 temp_wpn_stats = {15, 0, 0, 10, 0, 2, 13, 19, 12, {1,1}, {1}, 0, 1000};
-                temp_wpn = Weapon(WPN::TYPE::SHIELD, temp_wpn_stats, WPN::NAME::MARBLE_PLATE_SHIELD);
+                temp_wpn = Weapon(ITEM::TYPE::SHIELD, temp_wpn_stats, ITEM::NAME::MARBLE_PLATE_SHIELD);
                 temp_wpn.setDescription("Kite shield lined in an ornate layer of sculpted marble. Magical.");
-                wpn_out[WPN::NAME::MARBLE_PLATE_SHIELD] = temp_wpn;
+                wpn_out[ITEM::NAME::MARBLE_PLATE_SHIELD] = temp_wpn;
                 break;
-            case WPN::NAME::DIVINE_PROTECTOR:
+            case ITEM::NAME::DIVINE_PROTECTOR:
                 temp_wpn_stats = {15, 0, 0, 10, 0, 2, 13, 19, 12, {1,1}, {1}, 0, 1000};
-                temp_wpn = Weapon(WPN::TYPE::SHIELD, temp_wpn_stats, WPN::NAME::DIVINE_PROTECTOR);
+                temp_wpn = Weapon(ITEM::TYPE::SHIELD, temp_wpn_stats, ITEM::NAME::DIVINE_PROTECTOR);
                 temp_wpn.setDescription("Large tower shield imbued with angelic properties. Surprinsgly light and effective against magic attacks.");
-                wpn_out[WPN::NAME::DIVINE_PROTECTOR] = temp_wpn;
+                wpn_out[ITEM::NAME::DIVINE_PROTECTOR] = temp_wpn;
                 break;
 
-            case WPN::NAME::WRISTBLADE:
+            case ITEM::NAME::WRISTBLADE:
                 temp_wpn_stats = {2, 0, 10, 0, 10, 0, 5, 21, 16, {1,1}, {1}, 0, 1000};
-                temp_wpn = Weapon(WPN::TYPE::OFFHAND, temp_wpn_stats, WPN::NAME::WRISTBLADE);
+                temp_wpn = Weapon(ITEM::TYPE::OFFHAND, temp_wpn_stats, ITEM::NAME::WRISTBLADE);
                 temp_wpn.setDescription("Blade generally strapped to the weak forearm. Used by assassins to increase crit potential.");
-                wpn_out[WPN::NAME::WRISTBLADE] = temp_wpn;
+                wpn_out[ITEM::NAME::WRISTBLADE] = temp_wpn;
                 break;
-            case WPN::NAME::SHIELD_HOOK:
+            case ITEM::NAME::SHIELD_HOOK:
                 temp_wpn_stats = {2, 0, 10, 0, 10, 0, 5, 21, 16, {1,1}, {1}, 0, 1000};
-                temp_wpn = Weapon(WPN::TYPE::OFFHAND, temp_wpn_stats, WPN::NAME::SHIELD_HOOK);
+                temp_wpn = Weapon(ITEM::TYPE::OFFHAND, temp_wpn_stats, ITEM::NAME::SHIELD_HOOK);
                 temp_wpn.setDescription("Offhand weapon designed to grab on shields to drag them aside. Ignores shield bonuses.");
-                temp_wpn.setEffect(WPN::EFFECT::IGNORE_SHIELD);
-                wpn_out[WPN::NAME::SHIELD_HOOK] = temp_wpn;
+                temp_wpn.setEffect(ITEM::EFFECT::IGNORE_SHIELD);
+                wpn_out[ITEM::NAME::SHIELD_HOOK] = temp_wpn;
                 break;
-            case WPN::NAME::RETRACTABLE_WRISTBLADE:
+            case ITEM::NAME::RETRACTABLE_WRISTBLADE:
                 temp_wpn_stats = {4, 0, 8, 0, 14, 0, 7, 16, 19, {1,1}, {1}, 0, 1000};
-                temp_wpn = Weapon(WPN::TYPE::OFFHAND, temp_wpn_stats, WPN::NAME::RETRACTABLE_WRISTBLADE);
+                temp_wpn = Weapon(ITEM::TYPE::OFFHAND, temp_wpn_stats, ITEM::NAME::RETRACTABLE_WRISTBLADE);
                 temp_wpn.setDescription("Blade generally strapped to the weak forearm. Controlled by hand movements. Used by assasins to stealthily increase crit potential.");
-                wpn_out[WPN::NAME::RETRACTABLE_WRISTBLADE] = temp_wpn;
+                wpn_out[ITEM::NAME::RETRACTABLE_WRISTBLADE] = temp_wpn;
                 break;
-            case WPN::NAME::MAIN_GAUCHE:
+            case ITEM::NAME::MAIN_GAUCHE:
                 temp_wpn_stats = {1, 0, 0, 10, 0, 5, 4, 35, 7, {1,1}, {1}, 0, 1000};
-                temp_wpn = Weapon(WPN::TYPE::OFFHAND, temp_wpn_stats, WPN::NAME::MAIN_GAUCHE);
+                temp_wpn = Weapon(ITEM::TYPE::OFFHAND, temp_wpn_stats, ITEM::NAME::MAIN_GAUCHE);
                 temp_wpn.setDescription("Dagger designed to parry using the left/weak/off-hand. Increases avoir and favor.");
-                wpn_out[WPN::NAME::MAIN_GAUCHE] = temp_wpn;
+                wpn_out[ITEM::NAME::MAIN_GAUCHE] = temp_wpn;
                 break;
-            case WPN::NAME::SWORDBREAKER:
+            case ITEM::NAME::SWORDBREAKER:
                 temp_wpn_stats = {2, 0, 0, 22, 0, 4, 6, 28, 12, {1,1}, {1}, 0, 1000};
-                temp_wpn = Weapon(WPN::TYPE::OFFHAND, temp_wpn_stats, WPN::NAME::SWORDBREAKER);
+                temp_wpn = Weapon(ITEM::TYPE::OFFHAND, temp_wpn_stats, ITEM::NAME::SWORDBREAKER);
                 temp_wpn.setDescription("Dagger with slots designed to catch swords. Increases avoid and favor. Rarely does it actually break swords...");
-                wpn_out[WPN::NAME::SWORDBREAKER] = temp_wpn;
+                wpn_out[ITEM::NAME::SWORDBREAKER] = temp_wpn;
                 break;
-            case WPN::NAME::TRIDENT_DAGGER:
+            case ITEM::NAME::TRIDENT_DAGGER:
                 temp_wpn_stats = {3, 0, 14, 0, 8, 0, 4, 20, 10, {1,1}, {1}, 0, 1000};
-                temp_wpn = Weapon(WPN::TYPE::OFFHAND, temp_wpn_stats, WPN::NAME::TRIDENT_DAGGER);
+                temp_wpn = Weapon(ITEM::TYPE::OFFHAND, temp_wpn_stats, ITEM::NAME::TRIDENT_DAGGER);
                 temp_wpn.setDescription("Dagger whose blade splits into three prongs. Designed to catch opposing swords. Increases avoid and favor.");
-                wpn_out[WPN::NAME::TRIDENT_DAGGER] = temp_wpn;
+                wpn_out[ITEM::NAME::TRIDENT_DAGGER] = temp_wpn;
                 break;
-            case WPN::NAME::TANTOU:
+            case ITEM::NAME::TANTOU:
                 temp_wpn_stats = {3, 0, 5, 0, 0, 0, 2, 26, 8, {1,1}, {1}, 0, 1000};
-                temp_wpn = Weapon(WPN::TYPE::OFFHAND, temp_wpn_stats, WPN::NAME::TANTOU);
+                temp_wpn = Weapon(ITEM::TYPE::OFFHAND, temp_wpn_stats, ITEM::NAME::TANTOU);
                 temp_wpn.setDescription("Eastern style short dagger. Very sharp and dangerous. Increases might.");
-                wpn_out[WPN::NAME::TANTOU] = temp_wpn;
+                wpn_out[ITEM::NAME::TANTOU] = temp_wpn;
                 break;
-            case WPN::NAME::KODACHI:
+            case ITEM::NAME::KODACHI:
                 temp_wpn_stats = {5, 0, 8, 0, 0, 0, 4, 24, 11, {1,1}, {1}, 0, 1000};
-                temp_wpn = Weapon(WPN::TYPE::OFFHAND, temp_wpn_stats, WPN::NAME::KODACHI);
+                temp_wpn = Weapon(ITEM::TYPE::OFFHAND, temp_wpn_stats, ITEM::NAME::KODACHI);
                 temp_wpn.setDescription("Dagger used by the legendary assasins of the East, the Ninja. Increases might.");
-                wpn_out[WPN::NAME::KODACHI] = temp_wpn;
+                wpn_out[ITEM::NAME::KODACHI] = temp_wpn;
                 break;
-            case WPN::NAME::DAGUE:
+            case ITEM::NAME::DAGUE:
                 temp_wpn_stats = {4, 0, 10, 0, 0, 0, 3, 20, 10, {1,1}, {1}, 0, 1000};
-                temp_wpn = Weapon(WPN::TYPE::OFFHAND, temp_wpn_stats, WPN::NAME::DAGUE);
+                temp_wpn = Weapon(ITEM::TYPE::OFFHAND, temp_wpn_stats, ITEM::NAME::DAGUE);
                 temp_wpn.setDescription("Messenic dagger. Simple and efficient. Beautiful engravings adorn the blade surface. ");
-                wpn_out[WPN::NAME::DAGUE] = temp_wpn;
+                wpn_out[ITEM::NAME::DAGUE] = temp_wpn;
                 break;
-            case WPN::NAME::WAKIZASHI:
+            case ITEM::NAME::WAKIZASHI:
                 temp_wpn_stats = {7, 0, 0, 0, 0, 0, 8, 10, 15, {1,1}, {1}, 0, 1000};
-                temp_wpn = Weapon(WPN::TYPE::OFFHAND, temp_wpn_stats, WPN::NAME::WAKIZASHI);
+                temp_wpn = Weapon(ITEM::TYPE::OFFHAND, temp_wpn_stats, ITEM::NAME::WAKIZASHI);
                 temp_wpn.setDescription("Dagger of the warriors of the East. Companion of the uchigatana. Very deadly.");
-                wpn_out[WPN::NAME::WAKIZASHI] = temp_wpn;
+                wpn_out[ITEM::NAME::WAKIZASHI] = temp_wpn;
                 break;
-            case WPN::NAME::BRAQUEMARD:
+            case ITEM::NAME::BRAQUEMARD:
                 temp_wpn_stats = {2, 0, 0, 0, 0, 0, 4, 15, 7, {1,1}, {1}, 0, 1000};
-                temp_wpn = Weapon(WPN::TYPE::OFFHAND, temp_wpn_stats, WPN::NAME::BRAQUEMARD);
+                temp_wpn = Weapon(ITEM::TYPE::OFFHAND, temp_wpn_stats, ITEM::NAME::BRAQUEMARD);
                 temp_wpn.setDescription("Legendary Dagger.");
-                wpn_out[WPN::NAME::BRAQUEMARD] = temp_wpn;
+                wpn_out[ITEM::NAME::BRAQUEMARD] = temp_wpn;
                 break;
-            case WPN::NAME::MISERICORDE:
+            case ITEM::NAME::MISERICORDE:
                 temp_wpn_stats = {0, 0, 0, 0, 0, 0, 7, 30, 10, {1,1}, {1}, 0, 1000};
-                temp_wpn = Weapon(WPN::TYPE::OFFHAND, temp_wpn_stats, WPN::NAME::MISERICORDE);
+                temp_wpn = Weapon(ITEM::TYPE::OFFHAND, temp_wpn_stats, ITEM::NAME::MISERICORDE);
                 temp_wpn.setDescription("Used to delivery the Coup de grace to wounded knights. Might of this dagger increases by one for each missing 3 health.");
-                wpn_out[WPN::NAME::MISERICORDE] = temp_wpn;
+                wpn_out[ITEM::NAME::MISERICORDE] = temp_wpn;
                 break;
-            case WPN::NAME::CARNWENNAN:
+            case ITEM::NAME::CARNWENNAN:
                 temp_wpn_stats = {8, 0, 10, 10, 0, 2, 9, 24, 17, {1,1}, {1}, 0, 1000};
-                temp_wpn = Weapon(WPN::TYPE::OFFHAND, temp_wpn_stats, WPN::NAME::CARNWENNAN);
+                temp_wpn = Weapon(ITEM::TYPE::OFFHAND, temp_wpn_stats, ITEM::NAME::CARNWENNAN);
                 temp_wpn.setDescription("The king\'s dagger. Has the power to shroud its user in shadow.");
-                wpn_out[WPN::NAME::CARNWENNAN] = temp_wpn;
+                wpn_out[ITEM::NAME::CARNWENNAN] = temp_wpn;
                 break;
-            case WPN::NAME::FLINTLOCK:
+            case ITEM::NAME::FLINTLOCK:
                 temp_wpn_stats = {7, 0, 0, 0, 0, 0, 7, 8, 5, {1,1}, {1}, 0, 1000};
-                temp_wpn = Weapon(WPN::TYPE::OFFHAND, temp_wpn_stats, WPN::NAME::FLINTLOCK);
+                temp_wpn = Weapon(ITEM::TYPE::OFFHAND, temp_wpn_stats, ITEM::NAME::FLINTLOCK);
                 temp_wpn.setDescription("A gun!");
-                wpn_out[WPN::NAME::FLINTLOCK] = temp_wpn;
+                wpn_out[ITEM::NAME::FLINTLOCK] = temp_wpn;
                 break;
-            case WPN::NAME::CIBO:
+            case ITEM::NAME::CIBO:
                 break;
 
-            case WPN::NAME::SHRUNKEN_HEAD:
+            case ITEM::NAME::SHRUNKEN_HEAD:
                 temp_wpn_stats = {7, 0, 0, 0, 0, 0, 7, 8, 5, {1,1}, {1}, 0, 1000};
-                temp_wpn = Weapon(WPN::TYPE::TRINKET, temp_wpn_stats, WPN::NAME::SHRUNKEN_HEAD);
+                temp_wpn = Weapon(ITEM::TYPE::TRINKET, temp_wpn_stats, ITEM::NAME::SHRUNKEN_HEAD);
                 temp_wpn.setDescription("Horrible. Infused with demonic energies.");
-                wpn_out[WPN::NAME::SHRUNKEN_HEAD] = temp_wpn;
+                wpn_out[ITEM::NAME::SHRUNKEN_HEAD] = temp_wpn;
                 break;
-            case WPN::NAME::CRYSTAL:
+            case ITEM::NAME::CRYSTAL:
                 temp_wpn_stats = {7, 0, 0, 0, 0, 0, 7, 8, 5, {1,1}, {1}, 0, 1000};
-                temp_wpn = Weapon(WPN::TYPE::TRINKET, temp_wpn_stats, WPN::NAME::CRYSTAL);
+                temp_wpn = Weapon(ITEM::TYPE::TRINKET, temp_wpn_stats, ITEM::NAME::CRYSTAL);
                 temp_wpn.setDescription("");
-                wpn_out[WPN::NAME::CRYSTAL] = temp_wpn;
+                wpn_out[ITEM::NAME::CRYSTAL] = temp_wpn;
                 break;
-            case WPN::NAME::GLASS_ORB:
+            case ITEM::NAME::GLASS_ORB:
                 temp_wpn_stats = {7, 0, 0, 0, 0, 0, 7, 8, 5, {1,1}, {1}, 0, 1000};
-                temp_wpn = Weapon(WPN::TYPE::TRINKET, temp_wpn_stats, WPN::NAME::GLASS_ORB);
+                temp_wpn = Weapon(ITEM::TYPE::TRINKET, temp_wpn_stats, ITEM::NAME::GLASS_ORB);
                 temp_wpn.setDescription("Orb used to focus magical power.");
-                wpn_out[WPN::NAME::GLASS_ORB] = temp_wpn;
+                wpn_out[ITEM::NAME::GLASS_ORB] = temp_wpn;
                 break;
-            case WPN::NAME::HUMAN_FEMUR:
+            case ITEM::NAME::HUMAN_FEMUR:
                 temp_wpn_stats = {7, 0, 0, 0, 0, 0, 7, 8, 5, {1,1}, {1}, 0, 1000};
-                temp_wpn = Weapon(WPN::TYPE::TRINKET, temp_wpn_stats, WPN::NAME::HUMAN_FEMUR);
+                temp_wpn = Weapon(ITEM::TYPE::TRINKET, temp_wpn_stats, ITEM::NAME::HUMAN_FEMUR);
                 temp_wpn.setDescription("Taken from an ancient tomb. Used by demons to increase their magic power.");
-                wpn_out[WPN::NAME::HUMAN_FEMUR] = temp_wpn;
+                wpn_out[ITEM::NAME::HUMAN_FEMUR] = temp_wpn;
                 break;
-            case WPN::NAME::VOID_FRAGMENT:
+            case ITEM::NAME::VOID_FRAGMENT:
                 temp_wpn_stats = {7, 0, 0, 0, 0, 0, 7, 8, 5, {1,1}, {1}, 0, 1000};
-                temp_wpn = Weapon(WPN::TYPE::TRINKET, temp_wpn_stats, WPN::NAME::VOID_FRAGMENT);
+                temp_wpn = Weapon(ITEM::TYPE::TRINKET, temp_wpn_stats, ITEM::NAME::VOID_FRAGMENT);
                 temp_wpn.setDescription("");
-                wpn_out[WPN::NAME::VOID_FRAGMENT] = temp_wpn;
+                wpn_out[ITEM::NAME::VOID_FRAGMENT] = temp_wpn;
                 break;
-            case WPN::NAME::DEMON_FANG:
+            case ITEM::NAME::DEMON_FANG:
                 temp_wpn_stats = {7, 0, 0, 0, 0, 0, 7, 8, 5, {1,1}, {1}, 0, 1000};
-                temp_wpn = Weapon(WPN::TYPE::TRINKET, temp_wpn_stats, WPN::NAME::DEMON_FANG);
+                temp_wpn = Weapon(ITEM::TYPE::TRINKET, temp_wpn_stats, ITEM::NAME::DEMON_FANG);
                 temp_wpn.setDescription("Ripped from the mouth of a dead demon. Unusable by demons.");
-                wpn_out[WPN::NAME::DEMON_FANG] = temp_wpn;
+                wpn_out[ITEM::NAME::DEMON_FANG] = temp_wpn;
                 break;
-            case WPN::NAME::ANGEL_FEATHER:
+            case ITEM::NAME::ANGEL_FEATHER:
                 temp_wpn_stats = {7, 0, 0, 0, 0, 0, 7, 8, 5, {1,1}, {1}, 0, 1000};
-                temp_wpn = Weapon(WPN::TYPE::TRINKET, temp_wpn_stats, WPN::NAME::ANGEL_FEATHER);
+                temp_wpn = Weapon(ITEM::TYPE::TRINKET, temp_wpn_stats, ITEM::NAME::ANGEL_FEATHER);
                 temp_wpn.setDescription("Beautiful and fluffy. Given by incarnates and possessed to the worthy. Increases magical ability. Unusable by demons and demon incarnates.");
-                wpn_out[WPN::NAME::ANGEL_FEATHER] = temp_wpn;
+                wpn_out[ITEM::NAME::ANGEL_FEATHER] = temp_wpn;
                 break;
-            case WPN::NAME::ANGEL_HAIR:
+            case ITEM::NAME::ANGEL_HAIR:
                 temp_wpn_stats = {7, 0, 0, 0, 0, 0, 7, 8, 5, {1,1}, {1}, 0, 1000};
-                temp_wpn = Weapon(WPN::TYPE::TRINKET, temp_wpn_stats, WPN::NAME::ANGEL_HAIR);
+                temp_wpn = Weapon(ITEM::TYPE::TRINKET, temp_wpn_stats, ITEM::NAME::ANGEL_HAIR);
                 temp_wpn.setDescription("Golden strands of angel hair held up by a silver thread. Increases magical ability. Unusable by demons and demon incarnates.");
-                wpn_out[WPN::NAME::ANGEL_HAIR] = temp_wpn;
+                wpn_out[ITEM::NAME::ANGEL_HAIR] = temp_wpn;
                 break;
-            case WPN::NAME::VIAL_OF_LIGHT:
+            case ITEM::NAME::VIAL_OF_LIGHT:
                 temp_wpn_stats = {7, 0, 0, 0, 0, 0, 7, 8, 5, {1,1}, {1}, 0, 1000};
-                temp_wpn = Weapon(WPN::TYPE::TRINKET, temp_wpn_stats, WPN::NAME::VIAL_OF_LIGHT);
+                temp_wpn = Weapon(ITEM::TYPE::TRINKET, temp_wpn_stats, ITEM::NAME::VIAL_OF_LIGHT);
                 temp_wpn.setDescription("Light magically contained in glass. Shines brightest in darkness.");
-                wpn_out[WPN::NAME::VIAL_OF_LIGHT] = temp_wpn;
+                wpn_out[ITEM::NAME::VIAL_OF_LIGHT] = temp_wpn;
                 break;
-            case WPN::NAME::MAIDENS_HANDKERCHIEF:
+            case ITEM::NAME::MAIDENS_HANDKERCHIEF:
                 break;
-            case WPN::NAME::WAR_HORN:
+            case ITEM::NAME::WAR_HORN:
                 temp_wpn_stats = {7, 0, 0, 0, 0, 0, 7, 8, 5, {1,1}, {1}, 0, 1000};
-                temp_wpn = Weapon(WPN::TYPE::TRINKET, temp_wpn_stats, WPN::NAME::WAR_HORN);
+                temp_wpn = Weapon(ITEM::TYPE::TRINKET, temp_wpn_stats, ITEM::NAME::WAR_HORN);
                 temp_wpn.setDescription("Used to call for battle. Raise's close allies' combat abilities.");
-                wpn_out[WPN::NAME::WAR_HORN] = temp_wpn;
+                wpn_out[ITEM::NAME::WAR_HORN] = temp_wpn;
                 break;
 
-            case WPN::NAME::BALL_LIGHTNING:
+            case ITEM::NAME::BALL_LIGHTNING:
                 temp_wpn_stats = {0, 12, 76, 0, 0, 0, 11, 25, 7, {1,2}, {1,2}, 1, 1000};
-                temp_wpn = Weapon(WPN::TYPE::ELEMENTAL, temp_wpn_stats, WPN::NAME::BALL_LIGHTNING);
+                temp_wpn = Weapon(ITEM::TYPE::ELEMENTAL, temp_wpn_stats, ITEM::NAME::BALL_LIGHTNING);
                 temp_wpn.setDescription("Lightning, compressed and explosive.");
-                wpn_out[WPN::NAME::BALL_LIGHTNING] = temp_wpn;
+                wpn_out[ITEM::NAME::BALL_LIGHTNING] = temp_wpn;
                 break;
-            case WPN::NAME::ICICLE:
+            case ITEM::NAME::ICICLE:
                 break;
                 temp_wpn_stats = {0, 6, 70, 0, 0, 0, 5, 34, 7, {1,2}, {1,2}, 1, 1000};
-                temp_wpn = Weapon(WPN::TYPE::ELEMENTAL, temp_wpn_stats, WPN::NAME::ICICLE);
+                temp_wpn = Weapon(ITEM::TYPE::ELEMENTAL, temp_wpn_stats, ITEM::NAME::ICICLE);
                 temp_wpn.setDescription("Summons sharp and cold death spikes.");
-                wpn_out[WPN::NAME::ICICLE] = temp_wpn;
-            case WPN::NAME::VOLCANO:
+                wpn_out[ITEM::NAME::ICICLE] = temp_wpn;
+            case ITEM::NAME::VOLCANO:
                 temp_wpn_stats = {0, 14, 50, 0, 0, 0, 13, 20, 7, {1,2}, {1,2}, 1, 1000};
-                temp_wpn = Weapon( WPN::TYPE::ELEMENTAL, temp_wpn_stats, WPN::NAME::VOLCANO);
+                temp_wpn = Weapon( ITEM::TYPE::ELEMENTAL, temp_wpn_stats, ITEM::NAME::VOLCANO);
                 temp_wpn.setDescription("Summons magma spewing mountains from under enemies' feets.");
-                wpn_out[WPN::NAME::VOLCANO] = temp_wpn;
+                wpn_out[ITEM::NAME::VOLCANO] = temp_wpn;
                 break;
-            case WPN::NAME::WIND_SPEAR:
+            case ITEM::NAME::WIND_SPEAR:
                 temp_wpn_stats = {0, 4, 80, 0, 0, 0, 3, 40, 7, {1,2}, {1,2}, 1, 1000};
-                temp_wpn = Weapon(WPN::TYPE::ELEMENTAL, temp_wpn_stats, WPN::NAME::WIND_SPEAR);
+                temp_wpn = Weapon(ITEM::TYPE::ELEMENTAL, temp_wpn_stats, ITEM::NAME::WIND_SPEAR);
                 temp_wpn.setDescription("Invisible, swift and minuscule. Can pierce armor.");
-                wpn_out[WPN::NAME::WIND_SPEAR] = temp_wpn;
+                wpn_out[ITEM::NAME::WIND_SPEAR] = temp_wpn;
                 break;
-            case WPN::NAME::EMBER:
+            case ITEM::NAME::EMBER:
                 temp_wpn_stats = {0, 6, 60, 0, 0, 0, 8, 30, 7, {1,2}, {1,2}, 1, 1000};
-                temp_wpn = Weapon(WPN::TYPE::ELEMENTAL, temp_wpn_stats, WPN::NAME::EMBER);
+                temp_wpn = Weapon(ITEM::TYPE::ELEMENTAL, temp_wpn_stats, ITEM::NAME::EMBER);
                 temp_wpn.setDescription("Summon smoldering embers.");    
-                wpn_out[WPN::NAME::EMBER] = temp_wpn;
+                wpn_out[ITEM::NAME::EMBER] = temp_wpn;
                 break;
-            case WPN::NAME::TSUNAMI:
+            case ITEM::NAME::TSUNAMI:
                 temp_wpn_stats = {0, 13, 40, 0, 0, 0, 11, 25, 7, {1,2}, {1,2}, 1, 1000};
-                temp_wpn = Weapon(WPN::TYPE::ELEMENTAL, temp_wpn_stats, WPN::NAME::TSUNAMI);
+                temp_wpn = Weapon(ITEM::TYPE::ELEMENTAL, temp_wpn_stats, ITEM::NAME::TSUNAMI);
                 temp_wpn.setDescription("");
-                wpn_out[WPN::NAME::TSUNAMI] = temp_wpn;
+                wpn_out[ITEM::NAME::TSUNAMI] = temp_wpn;
                 break;
-            case WPN::NAME::GOD_FORGE_FIRE:
+            case ITEM::NAME::GOD_FORGE_FIRE:
                 temp_wpn_stats = {0, 18, 50, 0, 0, 0, 11, 15, 7, {1,2}, {1,2}, 1, 1000};
-                temp_wpn = Weapon(WPN::TYPE::ELEMENTAL, temp_wpn_stats, WPN::NAME::GOD_FORGE_FIRE);
+                temp_wpn = Weapon(ITEM::TYPE::ELEMENTAL, temp_wpn_stats, ITEM::NAME::GOD_FORGE_FIRE);
                 temp_wpn.setDescription("The fire used to forge Secundus, contained magically. Can melt any and all metals.");
-                wpn_out[WPN::NAME::GOD_FORGE_FIRE] = temp_wpn;
+                wpn_out[ITEM::NAME::GOD_FORGE_FIRE] = temp_wpn;
                 break;
-            case WPN::NAME::FINGOLFIN:
+            case ITEM::NAME::FINGOLFIN:
                 temp_wpn_stats = {0, 11, 50, 0, 0, 0, 9, 20, 7, {1,2}, {1,2}, 1, 1000};
-                temp_wpn = Weapon(WPN::TYPE::ELEMENTAL, temp_wpn_stats, WPN::NAME::FINGOLFIN);
+                temp_wpn = Weapon(ITEM::TYPE::ELEMENTAL, temp_wpn_stats, ITEM::NAME::FINGOLFIN);
                 temp_wpn.setDescription("Distilled courage. Strikes at 7 times at darkness's heart. Effective against demons.");
                 temp_wpn.setEffective(UNIT::TYPE::DEMON);
-                wpn_out[WPN::NAME::FINGOLFIN] = temp_wpn;
+                wpn_out[ITEM::NAME::FINGOLFIN] = temp_wpn;
                 break;
-            case WPN::NAME::MITHRANDIR:
+            case ITEM::NAME::MITHRANDIR:
                 temp_wpn_stats = {0, 6, 65, 0, 0, 0, 5, 28, 7, {1,2}, {1,2}, 1, 1000};
-                temp_wpn = Weapon(WPN::TYPE::ELEMENTAL, temp_wpn_stats, WPN::NAME::MITHRANDIR);
+                temp_wpn = Weapon(ITEM::TYPE::ELEMENTAL, temp_wpn_stats, ITEM::NAME::MITHRANDIR);
                 temp_wpn.setDescription("Inspires courage in the hearts of men. Effective against demons.");
                 temp_wpn.setEffective(UNIT::TYPE::DEMON);
-                wpn_out[WPN::NAME::MITHRANDIR] = temp_wpn;
+                wpn_out[ITEM::NAME::MITHRANDIR] = temp_wpn;
                 break;
 
-            case WPN::NAME::VOIDD:
+            case ITEM::NAME::VOIDD:
                 temp_wpn_stats = {0, 5, 70, 0, 0, 0, 5, 60, 7, {1,2}, {1,2}, 1, 1000};
-                temp_wpn = Weapon(WPN::TYPE::DEMONIC, temp_wpn_stats, WPN::NAME::VOIDD);
+                temp_wpn = Weapon(ITEM::TYPE::DEMONIC, temp_wpn_stats, ITEM::NAME::VOIDD);
                 temp_wpn.setDescription("");
-                wpn_out[WPN::NAME::VOIDD] = temp_wpn;
+                wpn_out[ITEM::NAME::VOIDD] = temp_wpn;
                 break;
-            case WPN::NAME::NETHER:
+            case ITEM::NAME::NETHER:
                 temp_wpn_stats = {0, 5, 70, 0, 0, 0, 5, 60, 7, {1,2}, {1,2}, 1, 1000};
-                temp_wpn = Weapon(WPN::TYPE::DEMONIC, temp_wpn_stats, WPN::NAME::NETHER);
+                temp_wpn = Weapon(ITEM::TYPE::DEMONIC, temp_wpn_stats, ITEM::NAME::NETHER);
                 temp_wpn.setDescription("");
-                wpn_out[WPN::NAME::NETHER] = temp_wpn;
+                wpn_out[ITEM::NAME::NETHER] = temp_wpn;
                 break;
-            case WPN::NAME::DOWNFALL:
-                temp_wpn = Weapon(WPN::TYPE::DEMONIC, temp_wpn_stats, WPN::NAME::DOWNFALL);
+            case ITEM::NAME::DOWNFALL:
+                temp_wpn = Weapon(ITEM::TYPE::DEMONIC, temp_wpn_stats, ITEM::NAME::DOWNFALL);
                 temp_wpn.setDescription("");
                 temp_wpn.setDescription("");
-                wpn_out[WPN::NAME::DOWNFALL] = temp_wpn;
+                wpn_out[ITEM::NAME::DOWNFALL] = temp_wpn;
                 break;
-            case WPN::NAME::CONSUME:
+            case ITEM::NAME::CONSUME:
                 temp_wpn_stats = {0, 5, 70, 0, 0, 0, 5, 60, 7, {1,2}, {1,2}, 1, 1000};
-                temp_wpn = Weapon(WPN::TYPE::DEMONIC, temp_wpn_stats, WPN::NAME::CONSUME);
+                temp_wpn = Weapon(ITEM::TYPE::DEMONIC, temp_wpn_stats, ITEM::NAME::CONSUME);
                 temp_wpn.setDescription("");
-                wpn_out[WPN::NAME::CONSUME] = temp_wpn;
+                wpn_out[ITEM::NAME::CONSUME] = temp_wpn;
                 break;
-            case WPN::NAME::PUTRIFY:
+            case ITEM::NAME::PUTRIFY:
                 temp_wpn_stats = {0, 5, 70, 0, 0, 0, 5, 60, 7, {1,2}, {1,2}, 1, 1000};
-                temp_wpn = Weapon(WPN::TYPE::DEMONIC, temp_wpn_stats, WPN::NAME::PUTRIFY);
+                temp_wpn = Weapon(ITEM::TYPE::DEMONIC, temp_wpn_stats, ITEM::NAME::PUTRIFY);
                 temp_wpn.setDescription("Brings out the inner rot.");
-                wpn_out[WPN::NAME::PUTRIFY] = temp_wpn;
+                wpn_out[ITEM::NAME::PUTRIFY] = temp_wpn;
                 break;
-            case WPN::NAME::GLAURUNG:
+            case ITEM::NAME::GLAURUNG:
                 temp_wpn_stats = {0, 5, 70, 0, 0, 0, 5, 60, 7, {1,2}, {1,2}, 1, 1000};
-                temp_wpn = Weapon(WPN::TYPE::DEMONIC, temp_wpn_stats, WPN::NAME::GLAURUNG);
+                temp_wpn = Weapon(ITEM::TYPE::DEMONIC, temp_wpn_stats, ITEM::NAME::GLAURUNG);
                 temp_wpn.setDescription("");
-                wpn_out[WPN::NAME::GLAURUNG] = temp_wpn;
+                wpn_out[ITEM::NAME::GLAURUNG] = temp_wpn;
                 break;
-            case WPN::NAME::MORGOTH:
+            case ITEM::NAME::MORGOTH:
                 temp_wpn_stats = {0, 5, 70, 0, 0, 0, 5, 60, 7, {1,2}, {1,2}, 1, 1000};
-                temp_wpn = Weapon(WPN::TYPE::DEMONIC, temp_wpn_stats, WPN::NAME::MORGOTH);
+                temp_wpn = Weapon(ITEM::TYPE::DEMONIC, temp_wpn_stats, ITEM::NAME::MORGOTH);
                 temp_wpn.setDescription("Dark power, in the shape of a massive dark hammer. Makes craters wherever it strikes.");
-                wpn_out[WPN::NAME::MORGOTH] = temp_wpn;
+                wpn_out[ITEM::NAME::MORGOTH] = temp_wpn;
                 temp_wpn_stats = {0, 5, 70, 0, 0, 0, 5, 60, 7, {1,2}, {1,2}, 1, 1000};
                 break;
-            case WPN::NAME::GOTHMOG:
-                temp_wpn = Weapon(WPN::TYPE::DEMONIC, temp_wpn_stats, WPN::NAME::GOTHMOG);
+            case ITEM::NAME::GOTHMOG:
+                temp_wpn = Weapon(ITEM::TYPE::DEMONIC, temp_wpn_stats, ITEM::NAME::GOTHMOG);
                 temp_wpn.setDescription("Infernal whip of flame and shadows.");
-                wpn_out[WPN::NAME::GOTHMOG] = temp_wpn;
+                wpn_out[ITEM::NAME::GOTHMOG] = temp_wpn;
                 break;
-            case WPN::NAME::FATALIS:
+            case ITEM::NAME::FATALIS:
                 temp_wpn_stats = {0, 5, 70, 0, 0, 0, 5, 60, 7, {1,2}, {1,2}, 1, 1000};
-                temp_wpn = Weapon(WPN::TYPE::DEMONIC, temp_wpn_stats, WPN::NAME::FATALIS);
+                temp_wpn = Weapon(ITEM::TYPE::DEMONIC, temp_wpn_stats, ITEM::NAME::FATALIS);
                 temp_wpn.setDescription("");
-                wpn_out[WPN::NAME::FATALIS] = temp_wpn;
+                wpn_out[ITEM::NAME::FATALIS] = temp_wpn;
                 break;
         }
     }
@@ -1048,536 +1059,541 @@ void baseWeapons() {
     Weapon_stats temp_wpn_stats;
     // Pmight, Mmight, hit, dodge, crit, favor, wgt, uses, wpnlvl, range, hand, dmg_type, price
     temp_wpn_stats = {3, 0, 80, 0, 0, 0, 3, 30, 2, {1,1}, {1,2}, 0, 1000};
-    temp_wpn = Weapon(WPN::TYPE::SWORD, temp_wpn_stats, WPN::NAME::WOODEN_SWORD);
+    temp_wpn = Weapon(ITEM::TYPE::SWORD, temp_wpn_stats, ITEM::NAME::WOODEN_SWORD);
     temp_wpn.setDescription("Practice sword, made of wood. It's crushing blows are still deadly.");
-    all_weapons[WPN::NAME::WOODEN_SWORD] = temp_wpn;
+    all_weapons[ITEM::NAME::WOODEN_SWORD] = temp_wpn;
     temp_wpn_stats = {1, 0, 25, 0, 0, 0, 2, 10, 1, {1,1}, {1}, 0, 1000};
-    temp_wpn = Weapon(WPN::TYPE::SWORD, temp_wpn_stats, WPN::NAME::KITCHEN_KNIFE);
+    temp_wpn = Weapon(ITEM::TYPE::SWORD, temp_wpn_stats, ITEM::NAME::KITCHEN_KNIFE);
     temp_wpn.setDescription("The poor, desperate swordman's dagger.");
-    all_weapons[WPN::NAME::KITCHEN_KNIFE] = temp_wpn;
+    all_weapons[ITEM::NAME::KITCHEN_KNIFE] = temp_wpn;
     temp_wpn_stats = {7, 0, 70, 0, 25, 0, 7, 30, 9, {1,1}, {1,2}, 0, 1000};
-    temp_wpn = Weapon(WPN::TYPE::SWORD, temp_wpn_stats, WPN::NAME::WRATH_SWORD);
+    temp_wpn = Weapon(ITEM::TYPE::SWORD, temp_wpn_stats, ITEM::NAME::WRATH_SWORD);
     temp_wpn.setDescription("Increases critical hit chance.");
-    all_weapons[WPN::NAME::WRATH_SWORD] = temp_wpn;
+    all_weapons[ITEM::NAME::WRATH_SWORD] = temp_wpn;
     temp_wpn_stats = {4, 0, 90, 0, 0, 0, 4, 20, 6, {1,1}, {1}, 0, 1000};
-    temp_wpn = Weapon(WPN::TYPE::SWORD, temp_wpn_stats, WPN::NAME::FLEURET);
+    temp_wpn = Weapon(ITEM::TYPE::SWORD, temp_wpn_stats, ITEM::NAME::FLEURET);
     temp_wpn.setEffective(UNIT::TYPE::ARMOR);
     temp_wpn.setDescription("Simple and light thrust swords. Effective against armor. Usually used with off-hand parry daggers.");
-    all_weapons[WPN::NAME::FLEURET] = temp_wpn;
+    all_weapons[ITEM::NAME::FLEURET] = temp_wpn;
     temp_wpn_stats = {8, 0, 85, 5, 0, 0, 5, 25, 8, {1,1}, {1}, 0, 1000};
-    temp_wpn = Weapon(WPN::TYPE::SWORD, temp_wpn_stats, WPN::NAME::RAPIERE);
+    temp_wpn = Weapon(ITEM::TYPE::SWORD, temp_wpn_stats, ITEM::NAME::RAPIERE);
     temp_wpn.setEffective(UNIT::TYPE::ARMOR);
     temp_wpn.setDescription("Strong thrust swords. Effective against armor. Usually used with off-hand parry daggers.");
-    all_weapons[WPN::NAME::RAPIERE] = temp_wpn;
+    all_weapons[ITEM::NAME::RAPIERE] = temp_wpn;
     temp_wpn_stats = {5, 0, 55, 0, 0, 0, 7, 30, 3, {1,1}, {1}, 0, 1000};
-    temp_wpn = Weapon(WPN::TYPE::SWORD, temp_wpn_stats, WPN::NAME::GLAIVE);
+    temp_wpn = Weapon(ITEM::TYPE::SWORD, temp_wpn_stats, ITEM::NAME::GLAIVE);
     temp_wpn.setDescription("Old-world style short sword.");
-    all_weapons[WPN::NAME::GLAIVE] = temp_wpn;
+    all_weapons[ITEM::NAME::GLAIVE] = temp_wpn;
     temp_wpn_stats = {7, 0, 60, 10, 0, 0, 6, 33, 8, {1,1}, {1}, 0, 1000};
-    temp_wpn = Weapon(WPN::TYPE::SWORD, temp_wpn_stats, WPN::NAME::SABER);
+    temp_wpn = Weapon(ITEM::TYPE::SWORD, temp_wpn_stats, ITEM::NAME::SABER);
     temp_wpn.setDescription("Curved sword made for slashing.");
-    all_weapons[WPN::NAME::SABER] = temp_wpn;
+    all_weapons[ITEM::NAME::SABER] = temp_wpn;
     temp_wpn_stats = {8, 0, 60, 15, 0, 0, 8, 27, 10, {1,1}, {1}, 0, 1000};
-    temp_wpn = Weapon(WPN::TYPE::SWORD, temp_wpn_stats, WPN::NAME::FAUCHON);
+    temp_wpn = Weapon(ITEM::TYPE::SWORD, temp_wpn_stats, ITEM::NAME::FAUCHON);
     temp_wpn.setDescription("Curved sword made for slashing.");
-    all_weapons[WPN::NAME::FAUCHON] = temp_wpn;
+    all_weapons[ITEM::NAME::FAUCHON] = temp_wpn;
     temp_wpn_stats = {6, 0, 70, 0, 0, 0, 6, 45, 6, {1,1}, {1,2}, 0, 1000};
-    temp_wpn = Weapon(WPN::TYPE::SWORD, temp_wpn_stats, WPN::NAME::IRON_SWORD);
+    temp_wpn = Weapon(ITEM::TYPE::SWORD, temp_wpn_stats, ITEM::NAME::IRON_SWORD);
     temp_wpn.setDescription("Simple straight sword made of iron. Cheap and reliable.");
-    all_weapons[WPN::NAME::IRON_SWORD] = temp_wpn;
+    all_weapons[ITEM::NAME::IRON_SWORD] = temp_wpn;
     temp_wpn_stats = {9, 0, 60, 0, 0, 0, 9, 30, 10, {1,1}, {1,2}, 0, 1000};
-    temp_wpn = Weapon(WPN::TYPE::SWORD, temp_wpn_stats, WPN::NAME::STEEL_SWORD);
+    temp_wpn = Weapon(ITEM::TYPE::SWORD, temp_wpn_stats, ITEM::NAME::STEEL_SWORD);
     temp_wpn.setDescription("Simple straight sword made of steel. Strong and durable.");
-    all_weapons[WPN::NAME::STEEL_SWORD] = temp_wpn;
+    all_weapons[ITEM::NAME::STEEL_SWORD] = temp_wpn;
     temp_wpn_stats = {13, 0, 65, 0, 0, 0, 10, 25, 12, {1,1}, {1,2}, 0, 1000};
-    temp_wpn = Weapon(WPN::TYPE::SWORD, temp_wpn_stats, WPN::NAME::DAMAS_SWORD);
+    temp_wpn = Weapon(ITEM::TYPE::SWORD, temp_wpn_stats, ITEM::NAME::DAMAS_SWORD);
     temp_wpn.setDescription("Simple straight sword made of damascus steel. Beautifully rippled, deadly and expensive.");
-    all_weapons[WPN::NAME::DAMAS_SWORD] = temp_wpn;
+    all_weapons[ITEM::NAME::DAMAS_SWORD] = temp_wpn;
     temp_wpn_stats = {4, 0, 70, 0, 0, 10, 6, 30, 9, {1,1}, {1,2}, 0, 1000};
-    temp_wpn = Weapon(WPN::TYPE::SWORD, temp_wpn_stats, WPN::NAME::MERCIFUL_BLADE);
-    temp_wpn.setEffect(WPN::EFFECT::SPARE);
+    temp_wpn = Weapon(ITEM::TYPE::SWORD, temp_wpn_stats, ITEM::NAME::MERCIFUL_BLADE);
+    temp_wpn.setEffect(ITEM::EFFECT::SPARE);
     temp_wpn.setDescription("Infused with the life-giving tears of the goddess. Cannot reduce enemy HP below 1.");
-    all_weapons[WPN::NAME::MERCIFUL_BLADE] = temp_wpn;
+    all_weapons[ITEM::NAME::MERCIFUL_BLADE] = temp_wpn;
     temp_wpn_stats = {10, 0, 40, 0, 0, 0, 10, 25, 6, {1,1}, {1,2}, 0, 1000};
-    temp_wpn = Weapon(WPN::TYPE::SWORD, temp_wpn_stats, WPN::NAME::BROADSWORD);
+    temp_wpn = Weapon(ITEM::TYPE::SWORD, temp_wpn_stats, ITEM::NAME::BROADSWORD);
     temp_wpn.setDescription("Blade of notable girth. Heavy and strong.");
     temp_wpn_stats = {12, 0, 40, 0, 0, 0, 13, 20, 7, {1,1}, {1,2}, 0, 1000};
-    all_weapons[WPN::NAME::BROADSWORD] = temp_wpn;
-    temp_wpn = Weapon(WPN::TYPE::SWORD, temp_wpn_stats, WPN::NAME::ESPADON);
+    all_weapons[ITEM::NAME::BROADSWORD] = temp_wpn;
+    temp_wpn = Weapon(ITEM::TYPE::SWORD, temp_wpn_stats, ITEM::NAME::ESPADON);
     temp_wpn.setDescription("Blade of considerable girth and length. Heavier and stronger.");
-    all_weapons[WPN::NAME::ESPADON] = temp_wpn;
+    all_weapons[ITEM::NAME::ESPADON] = temp_wpn;
     temp_wpn_stats = {9, 0, 60, 10, 5, 0, 8, 25, 10, {1,1}, {1,2}, 0, 1000};
-    temp_wpn = Weapon(WPN::TYPE::SWORD, temp_wpn_stats, WPN::NAME::OODACHI);
+    temp_wpn = Weapon(ITEM::TYPE::SWORD, temp_wpn_stats, ITEM::NAME::OODACHI);
     temp_wpn.setDescription("Long, curved sword of the eastern lands.");
-    all_weapons[WPN::NAME::OODACHI] = temp_wpn;
+    all_weapons[ITEM::NAME::OODACHI] = temp_wpn;
     temp_wpn_stats = {7, 0, 75, 5, 0, 0, 5, 30, 8, {1,1}, {1,2}, 0, 1000};
-    temp_wpn = Weapon(WPN::TYPE::SWORD, temp_wpn_stats, WPN::NAME::UCHIGATANA);
+    temp_wpn = Weapon(ITEM::TYPE::SWORD, temp_wpn_stats, ITEM::NAME::UCHIGATANA);
     temp_wpn.setDescription("Curved sword in the style of the eastern lands. Very sharp.");
-    all_weapons[WPN::NAME::UCHIGATANA] = temp_wpn;
+    all_weapons[ITEM::NAME::UCHIGATANA] = temp_wpn;
     temp_wpn_stats = {1, 0, 50, 0, 0, 0, 1, 20, 10, {1,1}, {1,2}, 0, 1000};
-    temp_wpn = Weapon(WPN::TYPE::SWORD, temp_wpn_stats, WPN::NAME::EXSANGUE);
-    temp_wpn.setEffect(WPN::EFFECT::LIFESTEAL);
+    temp_wpn = Weapon(ITEM::TYPE::SWORD, temp_wpn_stats, ITEM::NAME::EXSANGUE);
+    temp_wpn.setEffect(ITEM::EFFECT::LIFESTEAL);
     temp_wpn.setDescription("Drains enemies of their blood. Heals HP equal to damage dealt.");
-    all_weapons[WPN::NAME::EXSANGUE] = temp_wpn;
+    all_weapons[ITEM::NAME::EXSANGUE] = temp_wpn;
     temp_wpn_stats = {14, 0, 90, 10, 0, 0, 7, 25, 14, {1,1}, {1,2}, 0, 1000};
-    temp_wpn = Weapon(WPN::TYPE::SWORD, temp_wpn_stats, WPN::NAME::HAUTECLAIRE);
+    temp_wpn = Weapon(ITEM::TYPE::SWORD, temp_wpn_stats, ITEM::NAME::HAUTECLAIRE);
     temp_wpn.setDescription("Crystal encrusted sword, as described in the Franc legends of old.");
-    all_weapons[WPN::NAME::HAUTECLAIRE] = temp_wpn;
+    all_weapons[ITEM::NAME::HAUTECLAIRE] = temp_wpn;
     temp_wpn_stats = {16, 0, 100, 0, 0, 10, 9, 20, 12, {1,1}, {1,2}, 0, 1000};
-    temp_wpn = Weapon(WPN::TYPE::SWORD, temp_wpn_stats, WPN::NAME::SECUNDUS);
+    temp_wpn = Weapon(ITEM::TYPE::SWORD, temp_wpn_stats, ITEM::NAME::SECUNDUS);
     temp_wpn.setDescription("The first sword made by the God. The first weapon really only the second weapon of man, after his fists.");
-    all_weapons[WPN::NAME::SECUNDUS] = temp_wpn;
+    all_weapons[ITEM::NAME::SECUNDUS] = temp_wpn;
     temp_wpn_stats = {15, 0, 90, 10, 0, 0, 10, 30, 15, {1,1}, {1,2}, 0, 1000};
-    temp_wpn = Weapon(WPN::TYPE::SWORD, temp_wpn_stats, WPN::NAME::EXCALIBUR);
+    temp_wpn = Weapon(ITEM::TYPE::SWORD, temp_wpn_stats, ITEM::NAME::EXCALIBUR);
     temp_wpn.setEffective(UNIT::TYPE::DEMON);
     temp_wpn.setDescription("The king's sword. Found in a rock.");
-    all_weapons[WPN::NAME::EXCALIBUR] = temp_wpn;
+    all_weapons[ITEM::NAME::EXCALIBUR] = temp_wpn;
     temp_wpn_stats = {12, 0, 100, 0, 0, 0, 6, 20, 18, {1,1}, {1}, 0, 1000};
-    temp_wpn = Weapon(WPN::TYPE::SWORD, temp_wpn_stats, WPN::NAME::GALATINE);
+    temp_wpn = Weapon(ITEM::TYPE::SWORD, temp_wpn_stats, ITEM::NAME::GALATINE);
     temp_wpn.setEffective(UNIT::TYPE::ARMOR);
     temp_wpn.setDescription("A pragmatic and honorable knight's thrusting sword. Usually used with off-hand parry daggers.");
-    all_weapons[WPN::NAME::GALATINE] = temp_wpn;
+    all_weapons[ITEM::NAME::GALATINE] = temp_wpn;
     temp_wpn_stats = {5, 0, 50, 0, 0, 0, 7, 25, 11, {1,2}, {1,2}, 1, 1000};
-    temp_wpn = Weapon(WPN::TYPE::SWORD, temp_wpn_stats, WPN::NAME::RAIJINTOU);
+    temp_wpn = Weapon(ITEM::TYPE::SWORD, temp_wpn_stats, ITEM::NAME::RAIJINTOU);
     temp_wpn.setDescription("The thunder god's sword. Rains lightning upon enemies at a distance.");
-    all_weapons[WPN::NAME::RAIJINTOU] = temp_wpn;
+    all_weapons[ITEM::NAME::RAIJINTOU] = temp_wpn;
     temp_wpn_stats = {7, 0, 45, 0, 0, 0, 1, 25, 11, {1,2}, {1,2}, 1, 1000};
-    temp_wpn = Weapon(WPN::TYPE::SWORD, temp_wpn_stats, WPN::NAME::FUUJINTOU);
+    temp_wpn = Weapon(ITEM::TYPE::SWORD, temp_wpn_stats, ITEM::NAME::FUUJINTOU);
     temp_wpn.setDescription("The wind god's sword. Cuts enemies with wind at a distance.");
-    all_weapons[WPN::NAME::FUUJINTOU] = temp_wpn;
+    all_weapons[ITEM::NAME::FUUJINTOU] = temp_wpn;
     temp_wpn_stats = {16, 0, 60, 5, 5, 0, 7, 35, 18, {1,1}, {1,2}, 0, 1000};
-    temp_wpn = Weapon(WPN::TYPE::SWORD, temp_wpn_stats, WPN::NAME::HONJOU_MASAMUNE);
+    temp_wpn = Weapon(ITEM::TYPE::SWORD, temp_wpn_stats, ITEM::NAME::HONJOU_MASAMUNE);
     temp_wpn.setDescription("Lost sword made by the most skilled swordsmith of the eastern lands.");
-    all_weapons[WPN::NAME::HONJOU_MASAMUNE] = temp_wpn;
+    all_weapons[ITEM::NAME::HONJOU_MASAMUNE] = temp_wpn;
     temp_wpn_stats = {0, 0, 0, 0, 0, 0, 0, 10, 30, {1,1}, {1,2}, 0, 9001};
-    temp_wpn = Weapon(WPN::TYPE::SWORD, temp_wpn_stats, WPN::NAME::KIRITO); //Should be found inside a dragon skull? 
+    temp_wpn = Weapon(ITEM::TYPE::SWORD, temp_wpn_stats, ITEM::NAME::KIRITO); //Should be found inside a dragon skull? 
     temp_wpn.setDescription("Useless sword of a fake black swordsman.");
-    all_weapons[WPN::NAME::KIRITO] = temp_wpn;
+    all_weapons[ITEM::NAME::KIRITO] = temp_wpn;
     temp_wpn_stats = {20, 0, 30, 0, 0, 0, 20, 50, 20, {1,1}, {1,2}, 0, 1000};
-    temp_wpn = Weapon(WPN::TYPE::SWORD, temp_wpn_stats, WPN::NAME::RAW_IRON_SLAB); //Should be found inside a dragon skull? 
+    temp_wpn = Weapon(ITEM::TYPE::SWORD, temp_wpn_stats, ITEM::NAME::RAW_IRON_SLAB); //Should be found inside a dragon skull? 
     temp_wpn.setDescription("Barely a sword. Too big, too thick, too massive, too rough. Tempered by the malevolence of countless slain demons. Effective against demons and angels.");
     temp_wpn.setEffective(UNIT::TYPE::DEMON + UNIT::TYPE::ANGEL);
-    all_weapons[WPN::NAME::RAW_IRON_SLAB] = temp_wpn;    
+    all_weapons[ITEM::NAME::RAW_IRON_SLAB] = temp_wpn;    
     // Should have deeps chinks. This isn't the first time demons roamed the earth. Has deep holes in it. Must be repaired before being usable. Who is willing to repair it? 
 
     temp_wpn_stats = {2, 0, 60, 0, 0, 0, 4, 15, 1, {1,1}, {1,2}, 0, 1000};
-    temp_wpn = Weapon(WPN::TYPE::LANCE, temp_wpn_stats, WPN::NAME::PITCHFORK);
+    temp_wpn = Weapon(ITEM::TYPE::LANCE, temp_wpn_stats, ITEM::NAME::PITCHFORK);
     temp_wpn.setDescription("Farming implement. Makeshift lance for desperate times.");
-    all_weapons[WPN::NAME::PITCHFORK] = temp_wpn;
+    all_weapons[ITEM::NAME::PITCHFORK] = temp_wpn;
     temp_wpn_stats = {3, 0, 70, 0, 0, 0, 3, 30, 5, {1,1}, {2}, 0, 1000};
-    temp_wpn = Weapon(WPN::TYPE::LANCE, temp_wpn_stats, WPN::NAME::FIGHTING_STICK);
+    temp_wpn = Weapon(ITEM::TYPE::LANCE, temp_wpn_stats, ITEM::NAME::FIGHTING_STICK);
     temp_wpn.setDescription("Simple two meter long wooden stick. Deadly in competent hands.");
-    all_weapons[WPN::NAME::FIGHTING_STICK] = temp_wpn;
+    all_weapons[ITEM::NAME::FIGHTING_STICK] = temp_wpn;
     temp_wpn_stats = {5, 0, 95, 0, 0, 0, 5, 40, 4, {1,1}, {1,2}, 0, 1000};
-    temp_wpn = Weapon(WPN::TYPE::LANCE, temp_wpn_stats, WPN::NAME::IRON_LANCE);
+    temp_wpn = Weapon(ITEM::TYPE::LANCE, temp_wpn_stats, ITEM::NAME::IRON_LANCE);
     temp_wpn.setDescription("Sharp iron tip on a wooden stick. Standard military fare.");
-    all_weapons[WPN::NAME::IRON_LANCE] = temp_wpn;
+    all_weapons[ITEM::NAME::IRON_LANCE] = temp_wpn;
     temp_wpn_stats = {7, 0, 80, 30, 0, 0, 3, 30, 9, {1,1}, {1,2}, 0, 1000};
-    temp_wpn = Weapon(WPN::TYPE::LANCE, temp_wpn_stats, WPN::NAME::WRATH_LANCE);
+    temp_wpn = Weapon(ITEM::TYPE::LANCE, temp_wpn_stats, ITEM::NAME::WRATH_LANCE);
     temp_wpn.setDescription("Increases critical hit chance.");
-    all_weapons[WPN::NAME::WRATH_LANCE] = temp_wpn;
+    all_weapons[ITEM::NAME::WRATH_LANCE] = temp_wpn;
     temp_wpn_stats = {8, 0, 90, 0, 0, 0, 9, 35, 7, {1,1}, {1,2}, 0, 1000};
-    temp_wpn = Weapon(WPN::TYPE::LANCE, temp_wpn_stats, WPN::NAME::STEEL_LANCE);
+    temp_wpn = Weapon(ITEM::TYPE::LANCE, temp_wpn_stats, ITEM::NAME::STEEL_LANCE);
     temp_wpn.setDescription("Stronger and deadlier.");
-    all_weapons[WPN::NAME::STEEL_LANCE] = temp_wpn;
+    all_weapons[ITEM::NAME::STEEL_LANCE] = temp_wpn;
     temp_wpn_stats = {12, 0, 85, 0, 0, 0, 12, 25, 13, {1,1}, {1,2}, 0, 1000};
-    temp_wpn = Weapon(WPN::TYPE::LANCE, temp_wpn_stats, WPN::NAME::DAMAS_LANCE);
+    temp_wpn = Weapon(ITEM::TYPE::LANCE, temp_wpn_stats, ITEM::NAME::DAMAS_LANCE);
     temp_wpn.setDescription("Fancy and fatal.");
-    all_weapons[WPN::NAME::DAMAS_LANCE] = temp_wpn;
+    all_weapons[ITEM::NAME::DAMAS_LANCE] = temp_wpn;
     temp_wpn_stats = {6, 0, 60, 0, 0, 0, 15, 10, 8, {1,1}, {1,2}, 0, 1000};
-    temp_wpn = Weapon(WPN::TYPE::LANCE, temp_wpn_stats, WPN::NAME::HEAVY_SPEAR);
+    temp_wpn = Weapon(ITEM::TYPE::LANCE, temp_wpn_stats, ITEM::NAME::HEAVY_SPEAR);
     temp_wpn.setEffective(UNIT::TYPE::ARMOR);
     temp_wpn.setDescription("Heavy enough to pierce armor.");
-    all_weapons[WPN::NAME::HEAVY_SPEAR] = temp_wpn;
+    all_weapons[ITEM::NAME::HEAVY_SPEAR] = temp_wpn;
     temp_wpn_stats = {8, 0, 90, 0, 0, 0, 8, 10, 10, {1,1}, {1,2}, 0, 1000};
-    temp_wpn = Weapon(WPN::TYPE::LANCE, temp_wpn_stats, WPN::NAME::TRIDENT);
+    temp_wpn = Weapon(ITEM::TYPE::LANCE, temp_wpn_stats, ITEM::NAME::TRIDENT);
     temp_wpn.setDescription("Fancy pitchfork");
-    all_weapons[WPN::NAME::TRIDENT] = temp_wpn;
+    all_weapons[ITEM::NAME::TRIDENT] = temp_wpn;
     temp_wpn_stats = {6, 0, 70, 0, 0, 0, 7, 20, 7, {1,1}, {1,2}, 0, 1000};
-    temp_wpn = Weapon(WPN::TYPE::LANCE, temp_wpn_stats, WPN::NAME::MERCIFUL_LANCE);
+    temp_wpn = Weapon(ITEM::TYPE::LANCE, temp_wpn_stats, ITEM::NAME::MERCIFUL_LANCE);
     temp_wpn.setDescription("Infused with the life-giving tears of the goddess. Cannot reduce enemy HP below 1.");
-    all_weapons[WPN::NAME::MERCIFUL_LANCE] = temp_wpn;
+    all_weapons[ITEM::NAME::MERCIFUL_LANCE] = temp_wpn;
     temp_wpn_stats = {4, 0, 40, 0, 0, 0, 6, 25, 9, {1,2}, {1}, 0, 1000};
-    temp_wpn = Weapon(WPN::TYPE::LANCE, temp_wpn_stats, WPN::NAME::JAVELIN);
+    temp_wpn = Weapon(ITEM::TYPE::LANCE, temp_wpn_stats, ITEM::NAME::JAVELIN);
     temp_wpn.setDescription("Simple throwing lance.");
-    all_weapons[WPN::NAME::JAVELIN] = temp_wpn;
+    all_weapons[ITEM::NAME::JAVELIN] = temp_wpn;
     temp_wpn_stats = {6, 0, 45, 0, 0, 0, 8, 23, 10, {1,2}, {1}, 0, 1000};
-    temp_wpn = Weapon(WPN::TYPE::LANCE, temp_wpn_stats, WPN::NAME::PILUM);
+    temp_wpn = Weapon(ITEM::TYPE::LANCE, temp_wpn_stats, ITEM::NAME::PILUM);
     temp_wpn.setDescription("Reliable throwing lance.");
-    all_weapons[WPN::NAME::PILUM] = temp_wpn;
+    all_weapons[ITEM::NAME::PILUM] = temp_wpn;
     temp_wpn_stats = {9, 0, 50, 0, 0, 0, 11, 20, 11, {1,2}, {1}, 0, 1000};
-    temp_wpn = Weapon(WPN::TYPE::LANCE, temp_wpn_stats, WPN::NAME::SPEAR);
+    temp_wpn = Weapon(ITEM::TYPE::LANCE, temp_wpn_stats, ITEM::NAME::SPEAR);
     temp_wpn.setDescription("Strong throwing Lance. Strikes true.");
-    all_weapons[WPN::NAME::SPEAR] = temp_wpn;
+    all_weapons[ITEM::NAME::SPEAR] = temp_wpn;
     temp_wpn_stats = {14, 0, 60, 0, 0, 0, 9, 25, 15, {1,2}, {1,2}, 0, 1000};
-    temp_wpn = Weapon(WPN::TYPE::LANCE, temp_wpn_stats, WPN::NAME::VEL);
+    temp_wpn = Weapon(ITEM::TYPE::LANCE, temp_wpn_stats, ITEM::NAME::VEL);
     temp_wpn.setDescription("Legendary throwing lance. Said to be able to home in on the heart of your enemies.");
-    all_weapons[WPN::NAME::VEL] = temp_wpn;
+    all_weapons[ITEM::NAME::VEL] = temp_wpn;
     temp_wpn_stats = {8, 0, 90, 0, 0, 0, 6, 20, 9, {1,2}, {1,2}, 1, 1000};
-    temp_wpn = Weapon(WPN::TYPE::LANCE, temp_wpn_stats, WPN::NAME::GUNGNIR);
+    temp_wpn = Weapon(ITEM::TYPE::LANCE, temp_wpn_stats, ITEM::NAME::GUNGNIR);
     temp_wpn.setDescription("A lightning bolt resides in its tip. Can shoot lightning at enemies at a distance.");
-    all_weapons[WPN::NAME::GUNGNIR] = temp_wpn;
+    all_weapons[ITEM::NAME::GUNGNIR] = temp_wpn;
     temp_wpn_stats = {12, 0, 70, 0, 0, 0, 10, 32, 18, {1,2}, {1,2}, 0, 1000};
-    temp_wpn = Weapon(WPN::TYPE::LANCE, temp_wpn_stats, WPN::NAME::ACHILLES);
-    temp_wpn.setEffect(WPN::EFFECT::KILL1P);
+    temp_wpn = Weapon(ITEM::TYPE::LANCE, temp_wpn_stats, ITEM::NAME::ACHILLES);
+    temp_wpn.setEffect(ITEM::EFFECT::KILL1P);
     temp_wpn.setDescription("Legendary throwing spear named after a fearless, immortal hero. Kills instantly if hits enemy's heel (1%).");
-    all_weapons[WPN::NAME::ACHILLES] = temp_wpn;
+    all_weapons[ITEM::NAME::ACHILLES] = temp_wpn;
     temp_wpn_stats = {16, 0, 50, 0, 0, 0, 14, 24, 17, {1,1}, {1,2}, 0, 1000};
-    temp_wpn = Weapon(WPN::TYPE::LANCE, temp_wpn_stats, WPN::NAME::TONBOKIRI);
+    temp_wpn = Weapon(ITEM::TYPE::LANCE, temp_wpn_stats, ITEM::NAME::TONBOKIRI);
     temp_wpn.setDescription("Cut a dragonfly that tried to land on its tip. Excessively sharp and dangerous.");
-    all_weapons[WPN::NAME::TONBOKIRI] = temp_wpn;
+    all_weapons[ITEM::NAME::TONBOKIRI] = temp_wpn;
 
     temp_wpn_stats = {8, 0, 40, 0, 0, 0, 8, 40, 4, {1,1}, {1,2}, 0, 1000};
-    temp_wpn = Weapon(WPN::TYPE::AXE, temp_wpn_stats, WPN::NAME::IRON_AXE);
+    temp_wpn = Weapon(ITEM::TYPE::AXE, temp_wpn_stats, ITEM::NAME::IRON_AXE);
     temp_wpn.setDescription("Iron cutting head on a stick. Simple, easy to repair. Bandits' favorite.");
-    all_weapons[WPN::NAME::IRON_AXE] = temp_wpn;
+    all_weapons[ITEM::NAME::IRON_AXE] = temp_wpn;
     temp_wpn_stats = {11, 0, 50, 0, 0, 0, 10, 35, 7, {1,1}, {1,2}, 0, 1000};
-    temp_wpn = Weapon(WPN::TYPE::AXE, temp_wpn_stats, WPN::NAME::STEEL_AXE);
+    temp_wpn = Weapon(ITEM::TYPE::AXE, temp_wpn_stats, ITEM::NAME::STEEL_AXE);
     temp_wpn.setDescription("Steel cutting head on a stick. Stronger. Smart bandits like it.");
-    all_weapons[WPN::NAME::STEEL_AXE] = temp_wpn;
+    all_weapons[ITEM::NAME::STEEL_AXE] = temp_wpn;
     temp_wpn_stats = {14, 0, 55, 0, 0, 0, 13, 25, 11, {1,1}, {1,2}, 0, 1000};
-    temp_wpn = Weapon(WPN::TYPE::AXE, temp_wpn_stats, WPN::NAME::DAMAS_AXE);
+    temp_wpn = Weapon(ITEM::TYPE::AXE, temp_wpn_stats, ITEM::NAME::DAMAS_AXE);
     temp_wpn.setDescription("Damas cutting head on a stick. Fancy and deadly. Scorned by dumb bandits.");
-    all_weapons[WPN::NAME::DAMAS_AXE] = temp_wpn;
+    all_weapons[ITEM::NAME::DAMAS_AXE] = temp_wpn;
     temp_wpn_stats = {14, 0, 65, 20, 0, 0, 11, 30, 10, {1,1}, {1,2}, 0, 1000};
-    temp_wpn = Weapon(WPN::TYPE::AXE, temp_wpn_stats, WPN::NAME::WRATH_AXE);
+    temp_wpn = Weapon(ITEM::TYPE::AXE, temp_wpn_stats, ITEM::NAME::WRATH_AXE);
     temp_wpn.setDescription("Increases critical hit chance.");
-    all_weapons[WPN::NAME::WRATH_AXE] = temp_wpn;
+    all_weapons[ITEM::NAME::WRATH_AXE] = temp_wpn;
     temp_wpn_stats = {6, 0, 30, 0, 0, 0, 7, 25, 5, {1,2}, {1,2}, 0, 1000};
-    temp_wpn = Weapon(WPN::TYPE::AXE, temp_wpn_stats, WPN::NAME::THROWING_AXE);
+    temp_wpn = Weapon(ITEM::TYPE::AXE, temp_wpn_stats, ITEM::NAME::THROWING_AXE);
     temp_wpn.setDescription("Smaller, balanced axe, made for throwing. Cheapest option for ranged attacks.");
-    all_weapons[WPN::NAME::THROWING_AXE] = temp_wpn;
+    all_weapons[ITEM::NAME::THROWING_AXE] = temp_wpn;
     temp_wpn_stats = {10, 0, 40, 0, 0, 0, 7, 25, 10, {1,2}, {1,2}, 0, 1000};
-    temp_wpn = Weapon(WPN::TYPE::AXE, temp_wpn_stats, WPN::NAME::TOMAHAWK);
+    temp_wpn = Weapon(ITEM::TYPE::AXE, temp_wpn_stats, ITEM::NAME::TOMAHAWK);
     temp_wpn.setDescription("Smaller, balanced axe, made for throwing. Cheapest option for ranged attacks.");
-    all_weapons[WPN::NAME::TOMAHAWK] = temp_wpn;
+    all_weapons[ITEM::NAME::TOMAHAWK] = temp_wpn;
     temp_wpn_stats = {7, 0, 60, 0, 0, 0, 9, 20, 3, {1,1}, {1,2}, 0, 1000};
-    temp_wpn = Weapon(WPN::TYPE::AXE, temp_wpn_stats, WPN::NAME::PICK_AXE);
+    temp_wpn = Weapon(ITEM::TYPE::AXE, temp_wpn_stats, ITEM::NAME::PICK_AXE);
     temp_wpn.setDescription("Mining implement. Weapon in time of need.");
-    all_weapons[WPN::NAME::PICK_AXE] = temp_wpn;
+    all_weapons[ITEM::NAME::PICK_AXE] = temp_wpn;
     temp_wpn_stats = {4, 0, 40, 0, 0, 0, 5, 25, 2, {1,1}, {1,2}, 0, 1000};
-    temp_wpn = Weapon(WPN::TYPE::AXE, temp_wpn_stats, WPN::NAME::HOE);
+    temp_wpn = Weapon(ITEM::TYPE::AXE, temp_wpn_stats, ITEM::NAME::HOE);
     temp_wpn.setDescription("Farming implement. Can be used as an axe if need be.");
-    all_weapons[WPN::NAME::HOE] = temp_wpn;
+    all_weapons[ITEM::NAME::HOE] = temp_wpn;
     temp_wpn_stats = {9, 0, 50, 5, 0, 0, 6, 15, 1, {1,1}, {1,2}, 0, 1000};
-    temp_wpn = Weapon(WPN::TYPE::AXE, temp_wpn_stats, WPN::NAME::CLUB);
+    temp_wpn = Weapon(ITEM::TYPE::AXE, temp_wpn_stats, ITEM::NAME::CLUB);
     temp_wpn.setDescription("Big and wooden. For when the old-world weapons just aren't quite old enough.");
-    all_weapons[WPN::NAME::CLUB] = temp_wpn;
+    all_weapons[ITEM::NAME::CLUB] = temp_wpn;
     temp_wpn_stats = {10, 0, 50, 0, 0, 0, 11, 20, 12, {1,1}, {1,2}, 0, 1000};
-    temp_wpn = Weapon(WPN::TYPE::AXE + WPN::TYPE::LANCE, temp_wpn_stats, WPN::NAME::HALBERD);
+    temp_wpn = Weapon(ITEM::TYPE::AXE + ITEM::TYPE::LANCE, temp_wpn_stats, ITEM::NAME::HALBERD);
     temp_wpn.setEffective(UNIT::TYPE::MOUNTED);
     temp_wpn.setDescription("Polearm specially designed to deal with cavalry. Is both a lance and an axe.");
-    all_weapons[WPN::NAME::HALBERD] = temp_wpn;
+    all_weapons[ITEM::NAME::HALBERD] = temp_wpn;
     temp_wpn_stats = {8, 0, 40, 0, 0, 0, 9, 30, 8, {1,1}, {1,2}, 0, 1000};
-    temp_wpn = Weapon(WPN::TYPE::AXE, temp_wpn_stats, WPN::NAME::HAMMER);
+    temp_wpn = Weapon(ITEM::TYPE::AXE, temp_wpn_stats, ITEM::NAME::HAMMER);
     temp_wpn.setEffective(UNIT::TYPE::ARMOR);
     temp_wpn.setDescription("Armor cannot stand the hammer's heavy crushing blows.");
-    all_weapons[WPN::NAME::HAMMER] = temp_wpn;
+    all_weapons[ITEM::NAME::HAMMER] = temp_wpn;
     temp_wpn_stats = {12, 0, 50, 0, 0, 0, 12, 25, 11, {1,1}, {1,2}, 0, 1000};
-    temp_wpn = Weapon(WPN::TYPE::AXE, temp_wpn_stats, WPN::NAME::WAR_PICK);
+    temp_wpn = Weapon(ITEM::TYPE::AXE, temp_wpn_stats, ITEM::NAME::WAR_PICK);
     temp_wpn.setEffective(UNIT::TYPE::ARMOR);
     temp_wpn.setDescription("In trained hands, the pick can penatrate armor.");
-    all_weapons[WPN::NAME::WAR_PICK] = temp_wpn;
+    all_weapons[ITEM::NAME::WAR_PICK] = temp_wpn;
     temp_wpn_stats = {15, 0, 45, 0, 0, 0, 14, 30, 14, {1,1}, {1,2}, 0, 1000};
-    temp_wpn = Weapon(WPN::TYPE::AXE, temp_wpn_stats, WPN::NAME::BATTLEAXE);
+    temp_wpn = Weapon(ITEM::TYPE::AXE, temp_wpn_stats, ITEM::NAME::BATTLEAXE);
     temp_wpn.setDescription("Double-bladed, comically oversized axe.");
-    all_weapons[WPN::NAME::BATTLEAXE] = temp_wpn;
+    all_weapons[ITEM::NAME::BATTLEAXE] = temp_wpn;
     temp_wpn_stats = {17, 0, 60, 0, 0, 0, 17, 20, 17, {1,1}, {1,2}, 0, 1000};
-    temp_wpn = Weapon(WPN::TYPE::AXE, temp_wpn_stats, WPN::NAME::VIDYU);
+    temp_wpn = Weapon(ITEM::TYPE::AXE, temp_wpn_stats, ITEM::NAME::VIDYU);
     temp_wpn.setDescription("Battleaxe of the many-headed and armed gods of the east.");
-    all_weapons[WPN::NAME::VIDYU] = temp_wpn;
+    all_weapons[ITEM::NAME::VIDYU] = temp_wpn;
     temp_wpn_stats = {19, 0, 70, 0, 0, 0, 5, 60, 20, {1,1}, {1,2}, 0, 1000};
-    temp_wpn = Weapon(WPN::TYPE::AXE, temp_wpn_stats, WPN::NAME::HEPHAESTUS);
+    temp_wpn = Weapon(ITEM::TYPE::AXE, temp_wpn_stats, ITEM::NAME::HEPHAESTUS);
     temp_wpn.setDescription("The god's hammer. Used to forge Secundus, the first sword. Basically a vaguely square stone fixed to a wooden handle.");
-    all_weapons[WPN::NAME::HEPHAESTUS] = temp_wpn;
+    all_weapons[ITEM::NAME::HEPHAESTUS] = temp_wpn;
 
     temp_wpn_stats = {12, 0, 70, 0, 0, 0, 14, 35, 9, {1,1}, {1}, 0, 1000};
-    temp_wpn = Weapon(WPN::TYPE::BOW, temp_wpn_stats, WPN::NAME::ADAPTED_CROSSBOW);
+    temp_wpn = Weapon(ITEM::TYPE::BOW, temp_wpn_stats, ITEM::NAME::ADAPTED_CROSSBOW);
     temp_wpn.setDescription("Crossbow adapted to be fired, reloaded and drawn using one hand and one stump. 1H assassin only.");
-    all_weapons[WPN::NAME::ADAPTED_CROSSBOW] = temp_wpn;
+    all_weapons[ITEM::NAME::ADAPTED_CROSSBOW] = temp_wpn;
     temp_wpn_stats = {8, 0, 60, 0, 0, 0, 18, 28, 14, {1,1}, {1}, 0, 1000};
-    temp_wpn = Weapon(WPN::TYPE::BOW, temp_wpn_stats, WPN::NAME::REPEATABLE_CROSSBOW);
+    temp_wpn = Weapon(ITEM::TYPE::BOW, temp_wpn_stats, ITEM::NAME::REPEATABLE_CROSSBOW);
     temp_wpn.setDescription("Crossbow that fires many bolts every attack.");
-    all_weapons[WPN::NAME::REPEATABLE_CROSSBOW] = temp_wpn;
+    all_weapons[ITEM::NAME::REPEATABLE_CROSSBOW] = temp_wpn;
     temp_wpn_stats = {10, 0, 85, 0, 0, 0, 12, 15, 7, {1,1}, {1}, 0, 1000};
-    temp_wpn = Weapon(WPN::TYPE::BOW, temp_wpn_stats, WPN::NAME::CROSSBOW);
+    temp_wpn = Weapon(ITEM::TYPE::BOW, temp_wpn_stats, ITEM::NAME::CROSSBOW);
     temp_wpn.setDescription("Powerful and easier to use than a bow, although quite heavy.");
-    all_weapons[WPN::NAME::CROSSBOW] = temp_wpn;
+    all_weapons[ITEM::NAME::CROSSBOW] = temp_wpn;
     temp_wpn_stats = {4, 0, 90, 0, 0, 0, 4, 35, 5, {1,2}, {1}, 0, 1000};
-    temp_wpn = Weapon(WPN::TYPE::BOW, temp_wpn_stats, WPN::NAME::SHORT_BOW);
+    temp_wpn = Weapon(ITEM::TYPE::BOW, temp_wpn_stats, ITEM::NAME::SHORT_BOW);
     temp_wpn.setDescription("Simple and light bow.");
-    all_weapons[WPN::NAME::SHORT_BOW] = temp_wpn;
+    all_weapons[ITEM::NAME::SHORT_BOW] = temp_wpn;
     temp_wpn_stats = {8, 0, 70, 0, 0, 0, 10, 25, 11, {1,3}, {1}, 0, 1000};
-    temp_wpn = Weapon(WPN::TYPE::BOW, temp_wpn_stats, WPN::NAME::LONG_BOW);
+    temp_wpn = Weapon(ITEM::TYPE::BOW, temp_wpn_stats, ITEM::NAME::LONG_BOW);
     temp_wpn.setDescription("Long and heavy bow. Has increased range.");
-    all_weapons[WPN::NAME::LONG_BOW] = temp_wpn;
+    all_weapons[ITEM::NAME::LONG_BOW] = temp_wpn;
     temp_wpn_stats = {7, 0, 80, 0, 0, 0, 5, 30, 10, {1,1}, {1}, 0, 1000};
-    temp_wpn = Weapon(WPN::TYPE::BOW, temp_wpn_stats, WPN::NAME::COMPOSITE_BOW);
+    temp_wpn = Weapon(ITEM::TYPE::BOW, temp_wpn_stats, ITEM::NAME::COMPOSITE_BOW);
     temp_wpn.setDescription("Bow made of laminated wood and animal horn. Very useful for horseback shooting.");
-    all_weapons[WPN::NAME::COMPOSITE_BOW] = temp_wpn;
+    all_weapons[ITEM::NAME::COMPOSITE_BOW] = temp_wpn;
     temp_wpn_stats = {18, 0, 50, 0, 0, 0, 19, 20, 11, {1,1}, {1}, 0, 1000};
-    temp_wpn = Weapon(WPN::TYPE::BOW, temp_wpn_stats, WPN::NAME::RECURVE_CROSSBOW);
+    temp_wpn = Weapon(ITEM::TYPE::BOW, temp_wpn_stats, ITEM::NAME::RECURVE_CROSSBOW);
     temp_wpn.setDescription("Crossbow with recurve limbs. Heavy and powerful.");
-    all_weapons[WPN::NAME::RECURVE_CROSSBOW] = temp_wpn;
+    all_weapons[ITEM::NAME::RECURVE_CROSSBOW] = temp_wpn;
     temp_wpn_stats = {13, 0, 75, 0, 0, 0, 10, 24, 14, {1,1}, {1}, 0, 1000};
-    temp_wpn = Weapon(WPN::TYPE::BOW, temp_wpn_stats, WPN::NAME::RECURVE_BOW);
+    temp_wpn = Weapon(ITEM::TYPE::BOW, temp_wpn_stats, ITEM::NAME::RECURVE_BOW);
     temp_wpn.setDescription("Bow whose limbs curve away when unstrung. Shoots faster and deadlier arrows.");
-    all_weapons[WPN::NAME::RECURVE_BOW] = temp_wpn;
+    all_weapons[ITEM::NAME::RECURVE_BOW] = temp_wpn;
     temp_wpn_stats = {19, 0, 69, 0, 0, 0, 9, 25, 17, {1,1}, {1}, 0, 1000};
-    temp_wpn = Weapon(WPN::TYPE::BOW, temp_wpn_stats, WPN::NAME::APOLLO);
+    temp_wpn = Weapon(ITEM::TYPE::BOW, temp_wpn_stats, ITEM::NAME::APOLLO);
     temp_wpn.setDescription("Bow crafted of sun rays, used by the most handsome ancient god.");
-    all_weapons[WPN::NAME::APOLLO] = temp_wpn;
+    all_weapons[ITEM::NAME::APOLLO] = temp_wpn;
     temp_wpn_stats = {18, 0, 96, 0, 0, 0, 4, 26, 19, {1,1}, {1}, 0, 1000};
-    temp_wpn = Weapon(WPN::TYPE::BOW, temp_wpn_stats, WPN::NAME::ARTEMIS);
+    temp_wpn = Weapon(ITEM::TYPE::BOW, temp_wpn_stats, ITEM::NAME::ARTEMIS);
     temp_wpn.setDescription("Bow of the ancient goddess of hunting.");
-    all_weapons[WPN::NAME::ARTEMIS] = temp_wpn;
+    all_weapons[ITEM::NAME::ARTEMIS] = temp_wpn;
     temp_wpn_stats = {17, 0, 100, 0, 0, 0, 7, 35, 16, {1,1}, {1}, 0, 1000};
-    temp_wpn = Weapon(WPN::TYPE::BOW, temp_wpn_stats, WPN::NAME::PINAKA);
+    temp_wpn = Weapon(ITEM::TYPE::BOW, temp_wpn_stats, ITEM::NAME::PINAKA);
     temp_wpn.setDescription("Bow of the god of death.");
-    all_weapons[WPN::NAME::PINAKA] = temp_wpn;
+    all_weapons[ITEM::NAME::PINAKA] = temp_wpn;
 
     temp_wpn_stats = {5, 0, 0, 10, 0, 5, 4, 45, 8, {1,1}, {1}, 0, 1000};
-    temp_wpn = Weapon(WPN::TYPE::SHIELD, temp_wpn_stats, WPN::NAME::ADAPTED_SHIELD);
+    temp_wpn = Weapon(ITEM::TYPE::SHIELD, temp_wpn_stats, ITEM::NAME::ADAPTED_SHIELD);
     temp_wpn.setDescription("Shield adapted to be used without one\'s weak hand. Straps on the forearm. 1H assassin only.");
-    all_weapons[WPN::NAME::ADAPTED_SHIELD] = temp_wpn;
+    all_weapons[ITEM::NAME::ADAPTED_SHIELD] = temp_wpn;
     temp_wpn_stats = {1, 0, 0, 5, 0, 1, 2, 15, 2, {1,1}, {1}, 0, 1000};
-    temp_wpn = Weapon(WPN::TYPE::SHIELD, temp_wpn_stats, WPN::NAME::POT_LID);
+    temp_wpn = Weapon(ITEM::TYPE::SHIELD, temp_wpn_stats, ITEM::NAME::POT_LID);
     temp_wpn.setDescription("Useful in the kitchen. For the poor militia man: life saving device.");
-    all_weapons[WPN::NAME::POT_LID] = temp_wpn;
+    all_weapons[ITEM::NAME::POT_LID] = temp_wpn;
     temp_wpn_stats = {2, 0, 0, 8, 0, 0, 3, 20, 7, {1,1}, {1}, 0, 1000};
-    temp_wpn = Weapon(WPN::TYPE::SHIELD, temp_wpn_stats, WPN::NAME::WOODEN_SHIELD);
+    temp_wpn = Weapon(ITEM::TYPE::SHIELD, temp_wpn_stats, ITEM::NAME::WOODEN_SHIELD);
     temp_wpn.setDescription("Simple wood plank with a strap. Will probably save your life.");
-    all_weapons[WPN::NAME::WOODEN_SHIELD] = temp_wpn;
+    all_weapons[ITEM::NAME::WOODEN_SHIELD] = temp_wpn;
     temp_wpn_stats = {4, 0, 0, 10, 0, 4, 5, 0, 13, {1,1}, {1}, 0, 1000};
-    temp_wpn = Weapon(WPN::TYPE::SHIELD, temp_wpn_stats, WPN::NAME::CLOAK);
+    temp_wpn = Weapon(ITEM::TYPE::SHIELD, temp_wpn_stats, ITEM::NAME::CLOAK);
     temp_wpn.setDescription("The Mousquetaire\"s offhand shield in time of need.");
-    all_weapons[WPN::NAME::CLOAK] = temp_wpn;
+    all_weapons[ITEM::NAME::CLOAK] = temp_wpn;
     temp_wpn_stats = {3, 0, 0, 9, 0, 2, 4, 25, 9, {1,1}, {1}, 0, 1000};
-    temp_wpn = Weapon(WPN::TYPE::SHIELD, temp_wpn_stats, WPN::NAME::LEATHER_SHIELD);
+    temp_wpn = Weapon(ITEM::TYPE::SHIELD, temp_wpn_stats, ITEM::NAME::LEATHER_SHIELD);
     temp_wpn.setDescription("Wooden plank lined with leather. Smooth and slippery. Cheap way to redirect weapons away from the body.");
-    all_weapons[WPN::NAME::LEATHER_SHIELD] = temp_wpn;
+    all_weapons[ITEM::NAME::LEATHER_SHIELD] = temp_wpn;
     temp_wpn_stats = {8, 0, 0, 15, 0, 4, 4, 35, 12, {1,1}, {1}, 0, 1000};
-    temp_wpn = Weapon(WPN::TYPE::SHIELD, temp_wpn_stats, WPN::NAME::KITE_SHIELD);
+    temp_wpn = Weapon(ITEM::TYPE::SHIELD, temp_wpn_stats, ITEM::NAME::KITE_SHIELD);
     temp_wpn.setDescription("Large wooden shield of recognizable shape, to increase protection.");
-    all_weapons[WPN::NAME::KITE_SHIELD] = temp_wpn;
+    all_weapons[ITEM::NAME::KITE_SHIELD] = temp_wpn;
     temp_wpn_stats = {6, 0, 0, 6, 0, 6, 6, 36, 6, {1,1}, {1}, 0, 1000};
-    temp_wpn = Weapon(WPN::TYPE::SHIELD, temp_wpn_stats, WPN::NAME::IRON_BUCKLER);
+    temp_wpn = Weapon(ITEM::TYPE::SHIELD, temp_wpn_stats, ITEM::NAME::IRON_BUCKLER);
     temp_wpn.setDescription("Small round iron shield. Light, resistant.");
-    all_weapons[WPN::NAME::IRON_BUCKLER] = temp_wpn;
+    all_weapons[ITEM::NAME::IRON_BUCKLER] = temp_wpn;
     temp_wpn_stats = {7, 0, 0, 7, 0, 7, 7, 37, 7, {1,1}, {1}, 0, 1000};
-    temp_wpn = Weapon(WPN::TYPE::SHIELD, temp_wpn_stats, WPN::NAME::STEEL_BUCKLER);
+    temp_wpn = Weapon(ITEM::TYPE::SHIELD, temp_wpn_stats, ITEM::NAME::STEEL_BUCKLER);
     temp_wpn.setDescription("Small round steel shield. Heavier and more resistant.");
-    all_weapons[WPN::NAME::STEEL_BUCKLER] = temp_wpn;
+    all_weapons[ITEM::NAME::STEEL_BUCKLER] = temp_wpn;
     temp_wpn_stats = {5, 0, 0, 5, 0, 5, 9, 30, 10, {1,1}, {1}, 0, 1000};
-    temp_wpn = Weapon(WPN::TYPE::SHIELD, temp_wpn_stats, WPN::NAME::SPIKED_BUCKLER);
+    temp_wpn = Weapon(ITEM::TYPE::SHIELD, temp_wpn_stats, ITEM::NAME::SPIKED_BUCKLER);
     temp_wpn.setDescription("Iron buckler with a prickly spike at its center. Damages attackers upon their attacks.");
-    all_weapons[WPN::NAME::SPIKED_BUCKLER] = temp_wpn;
+    all_weapons[ITEM::NAME::SPIKED_BUCKLER] = temp_wpn;
     temp_wpn_stats = {11, 0, 0, 15, 0, 5, 13, 25, 7, {1,1}, {1}, 0, 1000};
-    temp_wpn = Weapon(WPN::TYPE::SHIELD, temp_wpn_stats, WPN::NAME::SCUTUM);
+    temp_wpn = Weapon(ITEM::TYPE::SHIELD, temp_wpn_stats, ITEM::NAME::SCUTUM);
     temp_wpn.setDescription("Very large and heavy shield.");
-    all_weapons[WPN::NAME::SCUTUM] = temp_wpn;
+    all_weapons[ITEM::NAME::SCUTUM] = temp_wpn;
     temp_wpn_stats = {12, 0, 0, 20, 0, 10, 10, 0, 14, {1,1}, {1}, 0, 1000};
-    temp_wpn = Weapon(WPN::TYPE::SHIELD, temp_wpn_stats, WPN::NAME::MASTER_SHIELD);
+    temp_wpn = Weapon(ITEM::TYPE::SHIELD, temp_wpn_stats, ITEM::NAME::MASTER_SHIELD);
     temp_wpn.setDescription("Shield of the princess of time.");
-    all_weapons[WPN::NAME::MASTER_SHIELD] = temp_wpn;
+    all_weapons[ITEM::NAME::MASTER_SHIELD] = temp_wpn;
     temp_wpn_stats = {9, 0, 0, 5, 0, 200, 9, 22, 13, {1,1}, {1}, 0, 1000};
-    temp_wpn = Weapon(WPN::TYPE::SHIELD, temp_wpn_stats, WPN::NAME::GODDESS_HAND);
+    temp_wpn = Weapon(ITEM::TYPE::SHIELD, temp_wpn_stats, ITEM::NAME::GODDESS_HAND);
     temp_wpn.setDescription("Offers the protection of the goddess. Negates enemy critical hits.");
-    all_weapons[WPN::NAME::GODDESS_HAND] = temp_wpn;
+    all_weapons[ITEM::NAME::GODDESS_HAND] = temp_wpn;
     temp_wpn_stats = {15, 0, 0, 10, 0, 2, 13, 19, 12, {1,1}, {1}, 0, 1000};
-    temp_wpn = Weapon(WPN::TYPE::SHIELD, temp_wpn_stats, WPN::NAME::ANCILE);
+    temp_wpn = Weapon(ITEM::TYPE::SHIELD, temp_wpn_stats, ITEM::NAME::ANCILE);
     temp_wpn.setDescription("Shield of the ancient god of war.");
-    all_weapons[WPN::NAME::ANCILE] = temp_wpn;
+    all_weapons[ITEM::NAME::ANCILE] = temp_wpn;
     temp_wpn_stats = {15, 0, 0, 10, 0, 2, 13, 19, 12, {1,1}, {1}, 0, 1000};
-    temp_wpn = Weapon(WPN::TYPE::SHIELD, temp_wpn_stats, WPN::NAME::ROCK_PLATE);
+    temp_wpn = Weapon(ITEM::TYPE::SHIELD, temp_wpn_stats, ITEM::NAME::ROCK_PLATE);
     temp_wpn.setDescription("Almost a raw boulder. The powerful and dumb demon's favorite.");
-    all_weapons[WPN::NAME::ROCK_PLATE] = temp_wpn;
+    all_weapons[ITEM::NAME::ROCK_PLATE] = temp_wpn;
     temp_wpn_stats = {15, 0, 0, 10, 0, 2, 13, 19, 12, {1,1}, {1}, 0, 1000};
-    temp_wpn = Weapon(WPN::TYPE::SHIELD, temp_wpn_stats, WPN::NAME::OBSIDIAN_PLATE);
+    temp_wpn = Weapon(ITEM::TYPE::SHIELD, temp_wpn_stats, ITEM::NAME::OBSIDIAN_PLATE);
     temp_wpn.setDescription("Rock melted by demon-breath, then recystallized into a more demon-claw friendly shape. Even harder than rock, but more brittle.");
-    all_weapons[WPN::NAME::OBSIDIAN_PLATE] = temp_wpn;
+    all_weapons[ITEM::NAME::OBSIDIAN_PLATE] = temp_wpn;
     temp_wpn_stats = {15, 0, 0, 10, 0, 2, 13, 19, 12, {1,1}, {1}, 0, 1000};
-    temp_wpn = Weapon(WPN::TYPE::SHIELD, temp_wpn_stats, WPN::NAME::MARBLE_PLATE_SHIELD);
+    temp_wpn = Weapon(ITEM::TYPE::SHIELD, temp_wpn_stats, ITEM::NAME::MARBLE_PLATE_SHIELD);
     temp_wpn.setDescription("Kite shield lined in an ornate layer of sculpted marble. Magical.");
-    all_weapons[WPN::NAME::MARBLE_PLATE_SHIELD] = temp_wpn;
+    all_weapons[ITEM::NAME::MARBLE_PLATE_SHIELD] = temp_wpn;
     temp_wpn_stats = {15, 0, 0, 10, 0, 2, 13, 19, 12, {1,1}, {1}, 0, 1000};
-    temp_wpn = Weapon(WPN::TYPE::SHIELD, temp_wpn_stats, WPN::NAME::DIVINE_PROTECTOR);
+    temp_wpn = Weapon(ITEM::TYPE::SHIELD, temp_wpn_stats, ITEM::NAME::DIVINE_PROTECTOR);
     temp_wpn.setDescription("Large tower shield imbued with angelic properties. Surprisingly light and effective against magic attacks.");
-    all_weapons[WPN::NAME::DIVINE_PROTECTOR] = temp_wpn;
+    all_weapons[ITEM::NAME::DIVINE_PROTECTOR] = temp_wpn;
 
     // Daggers get ridiculously low hit cause they are short and stubby!!!! Kitchen knife is the only exception.
     temp_wpn_stats = {2, 0, 10, 0, 10, 0, 5, 21, 16, {1,1}, {1}, 0, 1000};
-    temp_wpn = Weapon(WPN::TYPE::OFFHAND, temp_wpn_stats, WPN::NAME::WRISTBLADE);
+    temp_wpn = Weapon(ITEM::TYPE::OFFHAND, temp_wpn_stats, ITEM::NAME::WRISTBLADE);
     temp_wpn.setDescription("Blade generally strapped to the weak forearm. Used by assassins to increase crit potential.");
-    all_weapons[WPN::NAME::WRISTBLADE] = temp_wpn;
+    all_weapons[ITEM::NAME::WRISTBLADE] = temp_wpn;
     temp_wpn_stats = {2, 0, 10, 0, 10, 0, 5, 21, 16, {1,1}, {1}, 0, 1000};
-    temp_wpn = Weapon(WPN::TYPE::OFFHAND, temp_wpn_stats, WPN::NAME::SHIELD_HOOK);
+    temp_wpn = Weapon(ITEM::TYPE::OFFHAND, temp_wpn_stats, ITEM::NAME::SHIELD_HOOK);
     temp_wpn.setDescription("Offhand weapon designed to grab on shields to drag them aside. Ignores shield bonuses.");
-    temp_wpn.setEffect(WPN::EFFECT::IGNORE_SHIELD);
-    all_weapons[WPN::NAME::SHIELD_HOOK] = temp_wpn;
+    temp_wpn.setEffect(ITEM::EFFECT::IGNORE_SHIELD);
+    all_weapons[ITEM::NAME::SHIELD_HOOK] = temp_wpn;
     temp_wpn_stats = {4, 0, 8, 0, 14, 0, 7, 16, 19, {1,1}, {1}, 0, 1000};
-    temp_wpn = Weapon(WPN::TYPE::OFFHAND, temp_wpn_stats, WPN::NAME::RETRACTABLE_WRISTBLADE);
+    temp_wpn = Weapon(ITEM::TYPE::OFFHAND, temp_wpn_stats, ITEM::NAME::RETRACTABLE_WRISTBLADE);
     temp_wpn.setDescription("Blade generally strapped to the weak forearm. Controlled by hand movements. Used by assasins to stealthily increase crit potential.");
-    all_weapons[WPN::NAME::RETRACTABLE_WRISTBLADE] = temp_wpn;
+    all_weapons[ITEM::NAME::RETRACTABLE_WRISTBLADE] = temp_wpn;
     temp_wpn_stats = {1, 0, 0, 10, 0, 5, 4, 35, 7, {1,1}, {1}, 0, 1000};
-    temp_wpn = Weapon(WPN::TYPE::OFFHAND, temp_wpn_stats, WPN::NAME::MAIN_GAUCHE);
+    temp_wpn = Weapon(ITEM::TYPE::OFFHAND, temp_wpn_stats, ITEM::NAME::MAIN_GAUCHE);
     temp_wpn.setDescription("Dagger designed to parry using the left/weak/off-hand. Increases avoir and favor.");
-    all_weapons[WPN::NAME::MAIN_GAUCHE] = temp_wpn;
+    all_weapons[ITEM::NAME::MAIN_GAUCHE] = temp_wpn;
     temp_wpn_stats = {2, 0, 0, 22, 0, 4, 6, 28, 12, {1,1}, {1}, 0, 1000};
-    temp_wpn = Weapon(WPN::TYPE::OFFHAND, temp_wpn_stats, WPN::NAME::SWORDBREAKER);
+    temp_wpn = Weapon(ITEM::TYPE::OFFHAND, temp_wpn_stats, ITEM::NAME::SWORDBREAKER);
     temp_wpn.setDescription("Dagger with slots designed to catch swords. Increases avoid and favor. Rarely does it actually break swords...");
-    all_weapons[WPN::NAME::SWORDBREAKER] = temp_wpn;
+    all_weapons[ITEM::NAME::SWORDBREAKER] = temp_wpn;
     temp_wpn_stats = {3, 0, 14, 0, 8, 0, 4, 20, 10, {1,1}, {1}, 0, 1000};
-    temp_wpn = Weapon(WPN::TYPE::OFFHAND, temp_wpn_stats, WPN::NAME::TRIDENT_DAGGER);
+    temp_wpn = Weapon(ITEM::TYPE::OFFHAND, temp_wpn_stats, ITEM::NAME::TRIDENT_DAGGER);
     temp_wpn.setDescription("Dagger whose blade splits into three prongs. Designed to catch opposing swords. Increases avoid and favor.");
-    all_weapons[WPN::NAME::TRIDENT_DAGGER] = temp_wpn;
+    all_weapons[ITEM::NAME::TRIDENT_DAGGER] = temp_wpn;
     temp_wpn_stats = {3, 0, 5, 0, 0, 0, 2, 26, 8, {1,1}, {1}, 0, 1000};
-    temp_wpn = Weapon(WPN::TYPE::OFFHAND, temp_wpn_stats, WPN::NAME::TANTOU);
+    temp_wpn = Weapon(ITEM::TYPE::OFFHAND, temp_wpn_stats, ITEM::NAME::TANTOU);
     temp_wpn.setDescription("Eastern style short dagger. Very sharp and dangerous. Increases might.");
-    all_weapons[WPN::NAME::TANTOU] = temp_wpn;
+    all_weapons[ITEM::NAME::TANTOU] = temp_wpn;
     temp_wpn_stats = {5, 0, 8, 0, 0, 0, 4, 24, 11, {1,1}, {1}, 0, 1000};
-    temp_wpn = Weapon(WPN::TYPE::OFFHAND, temp_wpn_stats, WPN::NAME::KODACHI);
+    temp_wpn = Weapon(ITEM::TYPE::OFFHAND, temp_wpn_stats, ITEM::NAME::KODACHI);
     temp_wpn.setDescription("Dagger used by the legendary assasins of the East, the Ninja. Increases might.");
-    all_weapons[WPN::NAME::KODACHI] = temp_wpn;
+    all_weapons[ITEM::NAME::KODACHI] = temp_wpn;
     temp_wpn_stats = {4, 0, 10, 0, 0, 0, 3, 20, 10, {1,1}, {1}, 0, 1000};
-    temp_wpn = Weapon(WPN::TYPE::OFFHAND, temp_wpn_stats, WPN::NAME::DAGUE);
+    temp_wpn = Weapon(ITEM::TYPE::OFFHAND, temp_wpn_stats, ITEM::NAME::DAGUE);
     temp_wpn.setDescription("Messenic dagger. Simple and efficient. Beautiful engravings adorn the blade surface. ");
-    all_weapons[WPN::NAME::DAGUE] = temp_wpn;
+    all_weapons[ITEM::NAME::DAGUE] = temp_wpn;
     temp_wpn_stats = {7, 0, 0, 0, 0, 0, 8, 10, 15, {1,1}, {1}, 0, 1000};
-    temp_wpn = Weapon(WPN::TYPE::OFFHAND, temp_wpn_stats, WPN::NAME::WAKIZASHI);
+    temp_wpn = Weapon(ITEM::TYPE::OFFHAND, temp_wpn_stats, ITEM::NAME::WAKIZASHI);
     temp_wpn.setDescription("Dagger of the warriors of the East. Companion of the uchigatana. Very deadly.");
-    all_weapons[WPN::NAME::WAKIZASHI] = temp_wpn;
+    all_weapons[ITEM::NAME::WAKIZASHI] = temp_wpn;
     temp_wpn_stats = {2, 0, 0, 0, 0, 0, 4, 15, 7, {1,1}, {1}, 0, 1000};
-    temp_wpn = Weapon(WPN::TYPE::OFFHAND, temp_wpn_stats, WPN::NAME::BRAQUEMARD);
+    temp_wpn = Weapon(ITEM::TYPE::OFFHAND, temp_wpn_stats, ITEM::NAME::BRAQUEMARD);
     temp_wpn.setDescription("Legendary Dagger.");
-    all_weapons[WPN::NAME::BRAQUEMARD] = temp_wpn;
+    all_weapons[ITEM::NAME::BRAQUEMARD] = temp_wpn;
     temp_wpn_stats = {0, 0, 0, 0, 0, 0, 7, 30, 10, {1,1}, {1}, 0, 1000};
-    temp_wpn = Weapon(WPN::TYPE::OFFHAND, temp_wpn_stats, WPN::NAME::MISERICORDE);
+    temp_wpn = Weapon(ITEM::TYPE::OFFHAND, temp_wpn_stats, ITEM::NAME::MISERICORDE);
     temp_wpn.setDescription("Used to delivery the Coup de grace to wounded knights. Might of this dagger increases by one for each missing 3 health.");
-    all_weapons[WPN::NAME::MISERICORDE] = temp_wpn;
+    all_weapons[ITEM::NAME::MISERICORDE] = temp_wpn;
     temp_wpn_stats = {8, 0, 10, 10, 0, 2, 9, 24, 17, {1,1}, {1}, 0, 1000};
-    temp_wpn = Weapon(WPN::TYPE::OFFHAND, temp_wpn_stats, WPN::NAME::CARNWENNAN);
+    temp_wpn = Weapon(ITEM::TYPE::OFFHAND, temp_wpn_stats, ITEM::NAME::CARNWENNAN);
     temp_wpn.setDescription("The king\'s dagger. Has the power to shroud its user in shadow.");
-    all_weapons[WPN::NAME::CARNWENNAN] = temp_wpn;
+    all_weapons[ITEM::NAME::CARNWENNAN] = temp_wpn;
     temp_wpn_stats = {7, 0, 0, 0, 0, 0, 7, 8, 5, {1,1}, {1}, 0, 1000};
-    temp_wpn = Weapon(WPN::TYPE::OFFHAND, temp_wpn_stats, WPN::NAME::FLINTLOCK);
+    temp_wpn = Weapon(ITEM::TYPE::OFFHAND, temp_wpn_stats, ITEM::NAME::FLINTLOCK);
     temp_wpn.setDescription("A gun!");
-    all_weapons[WPN::NAME::FLINTLOCK] = temp_wpn;
+    all_weapons[ITEM::NAME::FLINTLOCK] = temp_wpn;
 
     temp_wpn_stats = {7, 0, 0, 0, 0, 0, 7, 8, 5, {1,1}, {1}, 0, 1000};
-    temp_wpn = Weapon(WPN::TYPE::TRINKET, temp_wpn_stats, WPN::NAME::SHRUNKEN_HEAD);
+    temp_wpn = Weapon(ITEM::TYPE::TRINKET, temp_wpn_stats, ITEM::NAME::SHRUNKEN_HEAD);
     temp_wpn.setDescription("Horrible. Infused with demonic energies.");
-    all_weapons[WPN::NAME::SHRUNKEN_HEAD] = temp_wpn;
+    all_weapons[ITEM::NAME::SHRUNKEN_HEAD] = temp_wpn;
     temp_wpn_stats = {7, 0, 0, 0, 0, 0, 7, 8, 5, {1,1}, {1}, 0, 1000};
-    temp_wpn = Weapon(WPN::TYPE::TRINKET, temp_wpn_stats, WPN::NAME::CRYSTAL);
+    temp_wpn = Weapon(ITEM::TYPE::TRINKET, temp_wpn_stats, ITEM::NAME::CRYSTAL);
     temp_wpn.setDescription("");
-    all_weapons[WPN::NAME::CRYSTAL] = temp_wpn;
+    all_weapons[ITEM::NAME::CRYSTAL] = temp_wpn;
     temp_wpn_stats = {7, 0, 0, 0, 0, 0, 7, 8, 5, {1,1}, {1}, 0, 1000};
-    temp_wpn = Weapon(WPN::TYPE::TRINKET, temp_wpn_stats, WPN::NAME::HUMAN_FEMUR);
+    temp_wpn = Weapon(ITEM::TYPE::TRINKET, temp_wpn_stats, ITEM::NAME::HUMAN_FEMUR);
     temp_wpn.setDescription("Taken from an ancient tomb. Used by demons to increase their magic power.");
-    all_weapons[WPN::NAME::HUMAN_FEMUR] = temp_wpn;
+    all_weapons[ITEM::NAME::HUMAN_FEMUR] = temp_wpn;
     temp_wpn_stats = {7, 0, 0, 0, 0, 0, 7, 8, 5, {1,1}, {1}, 0, 1000};
-    temp_wpn = Weapon(WPN::TYPE::TRINKET, temp_wpn_stats, WPN::NAME::VOID_FRAGMENT);
+    temp_wpn = Weapon(ITEM::TYPE::TRINKET, temp_wpn_stats, ITEM::NAME::VOID_FRAGMENT);
     temp_wpn.setDescription("");
-    all_weapons[WPN::NAME::VOID_FRAGMENT] = temp_wpn;
+    all_weapons[ITEM::NAME::VOID_FRAGMENT] = temp_wpn;
     temp_wpn_stats = {7, 0, 0, 0, 0, 0, 7, 8, 5, {1,1}, {1}, 0, 1000};
-    temp_wpn = Weapon(WPN::TYPE::TRINKET, temp_wpn_stats, WPN::NAME::DEMON_FANG);
+    temp_wpn = Weapon(ITEM::TYPE::TRINKET, temp_wpn_stats, ITEM::NAME::DEMON_FANG);
     temp_wpn.setDescription("Ripped from the mouth of a dead demon. Unusable by demons.");
-    all_weapons[WPN::NAME::DEMON_FANG] = temp_wpn;
+    all_weapons[ITEM::NAME::DEMON_FANG] = temp_wpn;
     temp_wpn_stats = {7, 0, 0, 0, 0, 0, 7, 8, 5, {1,1}, {1}, 0, 1000};
-    temp_wpn = Weapon(WPN::TYPE::TRINKET, temp_wpn_stats, WPN::NAME::ANGEL_FEATHER);
+    temp_wpn = Weapon(ITEM::TYPE::TRINKET, temp_wpn_stats, ITEM::NAME::ANGEL_FEATHER);
     temp_wpn.setDescription("Beautiful and fluffy. Given by incarnates and possessed to the worthy. Increases magical ability. Unusable by demons and demon incarnates.");
-    all_weapons[WPN::NAME::ANGEL_FEATHER] = temp_wpn;
+    all_weapons[ITEM::NAME::ANGEL_FEATHER] = temp_wpn;
     temp_wpn_stats = {7, 0, 0, 0, 0, 0, 7, 8, 5, {1,1}, {1}, 0, 1000};
-    temp_wpn = Weapon(WPN::TYPE::TRINKET, temp_wpn_stats, WPN::NAME::ANGEL_HAIR);
+    temp_wpn = Weapon(ITEM::TYPE::TRINKET, temp_wpn_stats, ITEM::NAME::ANGEL_HAIR);
     temp_wpn.setDescription("Golden strands of angel hair held up by a silver thread. Increases magical ability. Unusable by demons and demon incarnates.");
-    all_weapons[WPN::NAME::ANGEL_HAIR] = temp_wpn;
+    all_weapons[ITEM::NAME::ANGEL_HAIR] = temp_wpn;
     temp_wpn_stats = {7, 0, 0, 0, 0, 0, 7, 8, 5, {1,1}, {1}, 0, 1000};
-    temp_wpn = Weapon(WPN::TYPE::TRINKET, temp_wpn_stats, WPN::NAME::VIAL_OF_LIGHT);
+    temp_wpn = Weapon(ITEM::TYPE::TRINKET, temp_wpn_stats, ITEM::NAME::VIAL_OF_LIGHT);
     temp_wpn.setDescription("Light magically contained in glass. Shines brightest in darkness.");
-    all_weapons[WPN::NAME::VIAL_OF_LIGHT] = temp_wpn;
+    all_weapons[ITEM::NAME::VIAL_OF_LIGHT] = temp_wpn;
     temp_wpn_stats = {7, 0, 0, 0, 0, 0, 7, 8, 5, {1,1}, {1}, 0, 1000};
-    temp_wpn = Weapon(WPN::TYPE::TRINKET, temp_wpn_stats, WPN::NAME::GLASS_ORB);
+    temp_wpn = Weapon(ITEM::TYPE::TRINKET, temp_wpn_stats, ITEM::NAME::GLASS_ORB);
     temp_wpn.setDescription("Orb used to focus magical power.");
-    all_weapons[WPN::NAME::GLASS_ORB] = temp_wpn;
+    all_weapons[ITEM::NAME::GLASS_ORB] = temp_wpn;
     temp_wpn_stats = {7, 0, 0, 0, 0, 0, 7, 8, 5, {1,1}, {1}, 0, 1000};
-    temp_wpn = Weapon(WPN::TYPE::TRINKET, temp_wpn_stats, WPN::NAME::WAR_HORN);
+    temp_wpn = Weapon(ITEM::TYPE::TRINKET, temp_wpn_stats, ITEM::NAME::WAR_HORN);
     temp_wpn.setDescription("Used to call for battle. Raise's close allies' combat abilities.");
-    all_weapons[WPN::NAME::WAR_HORN] = temp_wpn;
+    all_weapons[ITEM::NAME::WAR_HORN] = temp_wpn;
 
     temp_wpn_stats = {0, 12, 76, 0, 0, 0, 11, 25, 7, {1,2}, {1,2}, 1, 1000};
-    temp_wpn = Weapon(WPN::TYPE::ELEMENTAL, temp_wpn_stats, WPN::NAME::BALL_LIGHTNING);
+    temp_wpn = Weapon(ITEM::TYPE::ELEMENTAL, temp_wpn_stats, ITEM::NAME::BALL_LIGHTNING);
     temp_wpn.setDescription("Lightning, compressed and explosive.");
-    all_weapons[WPN::NAME::BALL_LIGHTNING] = temp_wpn;
+    all_weapons[ITEM::NAME::BALL_LIGHTNING] = temp_wpn;
     temp_wpn_stats = {0, 6, 70, 0, 0, 0, 5, 34, 7, {1,2}, {1,2}, 1, 1000};
-    temp_wpn = Weapon(WPN::TYPE::ELEMENTAL, temp_wpn_stats, WPN::NAME::ICICLE);
+    temp_wpn = Weapon(ITEM::TYPE::ELEMENTAL, temp_wpn_stats, ITEM::NAME::ICICLE);
     temp_wpn.setDescription("Summons sharp and cold death spikes.");
-    all_weapons[WPN::NAME::ICICLE] = temp_wpn;
+    all_weapons[ITEM::NAME::ICICLE] = temp_wpn;
     temp_wpn_stats = {0, 14, 50, 0, 0, 0, 13, 20, 7, {1,2}, {1,2}, 1, 1000};
-    temp_wpn = Weapon(WPN::TYPE::ELEMENTAL, temp_wpn_stats, WPN::NAME::VOLCANO);
+    temp_wpn = Weapon(ITEM::TYPE::ELEMENTAL, temp_wpn_stats, ITEM::NAME::VOLCANO);
     temp_wpn.setDescription("Summons magma spewing mountains from under enemies' feets.");
-    all_weapons[WPN::NAME::VOLCANO] = temp_wpn;
+    all_weapons[ITEM::NAME::VOLCANO] = temp_wpn;
     temp_wpn_stats = {0, 4, 80, 0, 0, 0, 3, 40, 7, {1,2}, {1,2}, 1, 1000};
-    temp_wpn = Weapon(WPN::TYPE::ELEMENTAL, temp_wpn_stats, WPN::NAME::WIND_SPEAR);
+    temp_wpn = Weapon(ITEM::TYPE::ELEMENTAL, temp_wpn_stats, ITEM::NAME::WIND_SPEAR);
     temp_wpn.setDescription("Invisible, swift and minuscule. Can pierce armor.");
-    all_weapons[WPN::NAME::WIND_SPEAR] = temp_wpn;
+    all_weapons[ITEM::NAME::WIND_SPEAR] = temp_wpn;
     temp_wpn_stats = {0, 6, 60, 0, 0, 0, 8, 30, 7, {1,2}, {1,2}, 1, 1000};
-    temp_wpn = Weapon(WPN::TYPE::ELEMENTAL, temp_wpn_stats, WPN::NAME::EMBER);
+    temp_wpn = Weapon(ITEM::TYPE::ELEMENTAL, temp_wpn_stats, ITEM::NAME::EMBER);
     temp_wpn.setDescription("Summon smoldering embers.");    
-    all_weapons[WPN::NAME::EMBER] = temp_wpn;
+    all_weapons[ITEM::NAME::EMBER] = temp_wpn;
     temp_wpn_stats = {0, 13, 40, 0, 0, 0, 11, 25, 7, {1,2}, {1,2}, 1, 1000};
-    temp_wpn = Weapon(WPN::TYPE::ELEMENTAL, temp_wpn_stats, WPN::NAME::TSUNAMI);
+    temp_wpn = Weapon(ITEM::TYPE::ELEMENTAL, temp_wpn_stats, ITEM::NAME::TSUNAMI);
     temp_wpn.setDescription("");
-    all_weapons[WPN::NAME::TSUNAMI] = temp_wpn;
+    all_weapons[ITEM::NAME::TSUNAMI] = temp_wpn;
     temp_wpn_stats = {0, 18, 50, 0, 0, 0, 11, 15, 7, {1,2}, {1,2}, 1, 1000};
-    temp_wpn = Weapon(WPN::TYPE::ELEMENTAL, temp_wpn_stats, WPN::NAME::GOD_FORGE_FIRE);
+    temp_wpn = Weapon(ITEM::TYPE::ELEMENTAL, temp_wpn_stats, ITEM::NAME::GOD_FORGE_FIRE);
     temp_wpn.setDescription("The fire used to forge Secundus, contained magically. Can melt any and all metals.");
-    all_weapons[WPN::NAME::GOD_FORGE_FIRE] = temp_wpn;
+    all_weapons[ITEM::NAME::GOD_FORGE_FIRE] = temp_wpn;
     temp_wpn_stats = {0, 11, 50, 0, 0, 0, 9, 20, 7, {1,2}, {1,2}, 1, 1000};
-    temp_wpn = Weapon(WPN::TYPE::ELEMENTAL, temp_wpn_stats, WPN::NAME::FINGOLFIN);
+    temp_wpn = Weapon(ITEM::TYPE::ELEMENTAL, temp_wpn_stats, ITEM::NAME::FINGOLFIN);
     temp_wpn.setDescription("Distilled courage. Strikes at 7 times at darkness's heart. Effective against demons.");
     temp_wpn.setEffective(UNIT::TYPE::DEMON);
-    all_weapons[WPN::NAME::FINGOLFIN] = temp_wpn;
+    all_weapons[ITEM::NAME::FINGOLFIN] = temp_wpn;
     temp_wpn_stats = {0, 6, 65, 0, 0, 0, 5, 28, 7, {1,2}, {1,2}, 1, 1000};
-    temp_wpn = Weapon(WPN::TYPE::ELEMENTAL, temp_wpn_stats, WPN::NAME::MITHRANDIR);
+    temp_wpn = Weapon(ITEM::TYPE::ELEMENTAL, temp_wpn_stats, ITEM::NAME::MITHRANDIR);
     temp_wpn.setDescription("Inspires courage in the hearts of men. Effective against demons.");
     temp_wpn.setEffective(UNIT::TYPE::DEMON);
-    all_weapons[WPN::NAME::MITHRANDIR] = temp_wpn;
+    all_weapons[ITEM::NAME::MITHRANDIR] = temp_wpn;
 
     temp_wpn_stats = {0, 5, 70, 0, 0, 0, 5, 60, 7, {1,2}, {1,2}, 1, 1000};
-    temp_wpn = Weapon(WPN::TYPE::DEMONIC, temp_wpn_stats, WPN::NAME::VOIDD);
+    temp_wpn = Weapon(ITEM::TYPE::DEMONIC, temp_wpn_stats, ITEM::NAME::VOIDD);
     temp_wpn.setDescription("");
-    all_weapons[WPN::NAME::VOIDD] = temp_wpn;
+    all_weapons[ITEM::NAME::VOIDD] = temp_wpn;
     temp_wpn_stats = {0, 5, 70, 0, 0, 0, 5, 60, 7, {1,2}, {1,2}, 1, 1000};
-    temp_wpn = Weapon(WPN::TYPE::DEMONIC, temp_wpn_stats, WPN::NAME::NETHER);
+    temp_wpn = Weapon(ITEM::TYPE::DEMONIC, temp_wpn_stats, ITEM::NAME::NETHER);
     temp_wpn.setDescription("");
-    all_weapons[WPN::NAME::NETHER] = temp_wpn;
+    all_weapons[ITEM::NAME::NETHER] = temp_wpn;
     temp_wpn_stats = {0, 5, 70, 0, 0, 0, 5, 60, 7, {1,2}, {1,2}, 1, 1000};
-    temp_wpn = Weapon(WPN::TYPE::DEMONIC, temp_wpn_stats, WPN::NAME::DOWNFALL);
+    temp_wpn = Weapon(ITEM::TYPE::DEMONIC, temp_wpn_stats, ITEM::NAME::DOWNFALL);
     temp_wpn.setDescription("");
-    all_weapons[WPN::NAME::DOWNFALL] = temp_wpn;
+    all_weapons[ITEM::NAME::DOWNFALL] = temp_wpn;
     temp_wpn_stats = {0, 5, 70, 0, 0, 0, 5, 60, 7, {1,2}, {1,2}, 1, 1000};
-    temp_wpn = Weapon(WPN::TYPE::DEMONIC, temp_wpn_stats, WPN::NAME::CONSUME);
+    temp_wpn = Weapon(ITEM::TYPE::DEMONIC, temp_wpn_stats, ITEM::NAME::CONSUME);
     temp_wpn.setDescription("");
-    all_weapons[WPN::NAME::CONSUME] = temp_wpn;
+    all_weapons[ITEM::NAME::CONSUME] = temp_wpn;
     temp_wpn_stats = {0, 5, 70, 0, 0, 0, 5, 60, 7, {1,2}, {1,2}, 1, 1000};
-    temp_wpn = Weapon(WPN::TYPE::DEMONIC, temp_wpn_stats, WPN::NAME::PUTRIFY);
+    temp_wpn = Weapon(ITEM::TYPE::DEMONIC, temp_wpn_stats, ITEM::NAME::PUTRIFY);
     temp_wpn.setDescription("Brings out the inner rot.");
-    all_weapons[WPN::NAME::PUTRIFY] = temp_wpn;
+    all_weapons[ITEM::NAME::PUTRIFY] = temp_wpn;
     temp_wpn_stats = {0, 5, 70, 0, 0, 0, 5, 60, 7, {1,2}, {1,2}, 1, 1000};
-    temp_wpn = Weapon(WPN::TYPE::DEMONIC, temp_wpn_stats, WPN::NAME::GLAURUNG);
+    temp_wpn = Weapon(ITEM::TYPE::DEMONIC, temp_wpn_stats, ITEM::NAME::GLAURUNG);
     temp_wpn.setDescription("");
-    all_weapons[WPN::NAME::GLAURUNG] = temp_wpn;
+    all_weapons[ITEM::NAME::GLAURUNG] = temp_wpn;
     temp_wpn_stats = {0, 5, 70, 0, 0, 0, 5, 60, 7, {1,2}, {1,2}, 1, 1000};
-    temp_wpn = Weapon(WPN::TYPE::DEMONIC, temp_wpn_stats, WPN::NAME::MORGOTH);
+    temp_wpn = Weapon(ITEM::TYPE::DEMONIC, temp_wpn_stats, ITEM::NAME::MORGOTH);
     temp_wpn.setDescription("Dark power, in the shape of a massive dark hammer. Makes craters wherever it strikes.");
-    all_weapons[WPN::NAME::MORGOTH] = temp_wpn;
+    all_weapons[ITEM::NAME::MORGOTH] = temp_wpn;
     temp_wpn_stats = {0, 5, 70, 0, 0, 0, 5, 60, 7, {1,2}, {1,2}, 1, 1000};
-    temp_wpn = Weapon(WPN::TYPE::DEMONIC, temp_wpn_stats, WPN::NAME::GOTHMOG);
+    temp_wpn = Weapon(ITEM::TYPE::DEMONIC, temp_wpn_stats, ITEM::NAME::GOTHMOG);
     temp_wpn.setDescription("Infernal whip of flame and shadows.");
-    all_weapons[WPN::NAME::GOTHMOG] = temp_wpn;
+    all_weapons[ITEM::NAME::GOTHMOG] = temp_wpn;
     temp_wpn_stats = {0, 5, 70, 0, 0, 0, 5, 60, 7, {1,2}, {1,2}, 1, 1000};
-    temp_wpn = Weapon(WPN::TYPE::DEMONIC, temp_wpn_stats, WPN::NAME::FATALIS);
+    temp_wpn = Weapon(ITEM::TYPE::DEMONIC, temp_wpn_stats, ITEM::NAME::FATALIS);
     temp_wpn.setDescription("");
-    all_weapons[WPN::NAME::FATALIS] = temp_wpn;
+    all_weapons[ITEM::NAME::FATALIS] = temp_wpn;
+
+    temp_wpn_stats = {0, 5, 70, 0, 0, 0, 5, 60, 7, {1,2}, {1,2}, 1, 1000};
+    temp_wpn = Weapon(ITEM::TYPE::STAFF, temp_wpn_stats, ITEM::NAME::FATALIS);
+    temp_wpn.setDescription("");
+    all_weapons[ITEM::NAME::FATALIS] = temp_wpn;
 }

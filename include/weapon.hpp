@@ -14,6 +14,7 @@ class Weapon {
     private:
         Weapon_stats stats = {0, 0, 0, 0, 0, 0, 0, 0, 0, {0, 0}, {0, 0}, 0, 0};
         // Pmight, Mmight, hit, dodge, crit, favor, wgt, uses, prof, range, hand, dmg_type, cost
+
         Unit_stats bonus_stats = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
         Unit_stats malus_stats = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
         long unsigned int effect = 0;
@@ -21,7 +22,9 @@ class Weapon {
         short unsigned int effective = 0; // is a unit type.
         std::string name = "";
         std::string description = "";
-        short int id = 0;
+        short int id = -1;
+        short int use_effect = -1;
+        short int user_id = -1;
     public:
         Weapon();
 
@@ -43,6 +46,8 @@ class Weapon {
         std::string getName();
         short unsigned int getType();
         void setType(short unsigned int in_type);
+
+        void use();
 
         void write(const char * filename, const char * mode = "a");
         void writeXML(const char * filename, const bool append = false);

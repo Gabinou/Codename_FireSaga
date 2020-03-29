@@ -429,11 +429,9 @@ void Game::init(const char * title, int xpos, int ypos, int width, int height, b
 
     state = GAME::STATE::MAP;
 
-    party
+    std::vector<short int> baseparty = {UNIT::NAME::ERWIN, UNIT::NAME::KIARA};
 
-    std::vector
-
-    baseUnits()
+    baseUnits(baseparty);
     
 };
 
