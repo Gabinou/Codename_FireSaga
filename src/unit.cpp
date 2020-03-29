@@ -817,105 +817,123 @@ std::vector<Unit> baseUnits(std::vector<short int> toload) {
     Inventory_item temp_wpn;
     short int temp_supports;
     std::vector<Unit> temp_units; 
-    temp = {17,  6,  2,  7,  7,   7,  4,  5,  6, 5};
-    temp_unit = Unit(UNIT::NAME::ERWIN, UNIT::CLASS::MERCENARY, temp, UNIT::SEX::M);
-    temp = {48, 14, 25, 32, 34,  28, 19, 40, 15, 0};
-    temp_unit.setCaps(temp);
-    temp = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
-    temp_unit.setGrowths(temp);
-    temp_unit.setBaseExp(0);
-    temp_wpn.id = ITEM::NAME::FLEURET;
-    temp_unit.addEquipment(temp_wpn);
-    temp_wpn.id = ITEM::NAME::KITCHEN_KNIFE;
-    temp_unit.addEquipment(temp_wpn);
-    temp_wpn.id = ITEM::NAME::POT_LID;
-    temp_unit.addEquipment(temp_wpn);
-    // temp_supports = {UNIT::NAME::KIARA}; 
-    // temp_unit.setSupports(temp_supports);
-    temp_units.push_back(temp_unit);
-
-    temp = {18,  6,  2,  7,  7,   7,  4,  5,  6, 7};
-    temp_unit = Unit(UNIT::NAME::RELIABLE, UNIT::CLASS::CAVALIER, temp, UNIT::SEX::M);
-    temp = {48, 14, 25, 32, 34,  28, 19, 40, 15};
-    temp_unit.setCaps(temp);
-    temp = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
-    temp_unit.setGrowths(temp);
-    temp_unit.setBaseExp(100);
-    temp_units.push_back(temp_unit);
+    int index;
     
-    temp = {19,  6,  2,  7,  7,   7,  4,  5,  6,  7};
-    temp_unit = Unit(UNIT::NAME::COWARD, UNIT::CLASS::CAVALIER, temp, UNIT::SEX::M);
-    temp = {48, 14, 25, 32, 34,  28, 19, 40, 15};
-    temp_unit.setCaps(temp);
-    temp = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
-    temp_unit.setGrowths(temp);
-    temp_unit.setBaseExp(200);
-    temp_units.push_back(temp_unit);
-    
-    temp = {20,  6,  2,  7,  7,   7,  4,  5,  6,  6};
-    temp_unit = Unit(UNIT::NAME::JAIGEN1H, UNIT::CLASS::MOUSQUETAIRE, temp, UNIT::SEX::M);
-    temp = {48, 14, 25, 32, 34,  28, 19, 40, 15};
-    temp_unit.setCaps(temp);
-    temp = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
-    temp_unit.setGrowths(temp);
-    temp_unit.setBaseExp(2200);
-    temp_units.push_back(temp_unit);
-
-    temp = {14,  6,  2,  7,  7,   7,  4,  5,  6,  5};
-    temp_unit = Unit(UNIT::NAME::KIARA, UNIT::CLASS::CLERIC, temp, UNIT::SEX::F);
-    temp = {48, 14, 25, 32, 34,  28, 19, 40, 15};
-    temp_unit.setCaps(temp);
-    temp = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
-    temp_unit.setGrowths(temp);
-    temp_unit.setBaseExp(100);
-    temp_units.push_back(temp_unit);
-    
-    temp = {16,  6,  2,  7,  7,   7,  4,  5,  6,  6};
-    temp_unit = Unit(UNIT::NAME::HOTTIE, UNIT::CLASS::PICKPOCKET, temp, UNIT::SEX::M);
-    temp = {48, 14, 25, 32, 34,  28, 19, 40, 15};
-    temp_unit.setCaps(temp);
-    temp = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
-    temp_unit.setGrowths(temp);
-    temp_unit.setBaseExp(2200);
-    temp_units.push_back(temp_unit);
-    
-    temp = {22,  4,  5,  7,  6,   8,  4,  6,  5, 5}; // 4 or 5?
-    temp_unit = Unit(UNIT::NAME::SERVIL, UNIT::CLASS::KNIGHT, temp, UNIT::SEX::M);
-    temp = {48, 14, 25, 32, 34,  28, 19, 40, 15};
-    temp_unit.setCaps(temp);
-    temp = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
-    temp_unit.setGrowths(temp);
-    temp_unit.setBaseExp(500);
-    temp_units.push_back(temp_unit);
-    
-    temp = {34,  4,  5,  7,  6,   8,  4,  6,  5, 5};
-    temp_unit = Unit(UNIT::NAME::PERIGNON, UNIT::CLASS::MAGE, temp, UNIT::SEX::M);
-    temp = {48, 14, 25, 32, 34,  28, 19, 40, 15};
-    temp_unit.setCaps(temp);
-    temp = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
-    temp_unit.setGrowths(temp);
-    temp_unit.setBaseExp(1200);
-    temp_units.push_back(temp_unit);
-    
-    temp = {15,  4,  5,  7,  6,   8,  4,  6,  5, 5};
-    temp_unit = Unit(UNIT::NAME::POET, UNIT::CLASS::MAGE, temp, UNIT::SEX::M);
-    temp = {48, 14, 25, 32, 34,  28, 19, 40, 15};
-    temp_unit.setCaps(temp);
-    temp = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
-    temp_unit.setGrowths(temp);
-    temp_unit.setBaseExp(400);
-    temp_units.push_back(temp_unit);
-    
-    temp = {15,  4,  5,  7,  6,   8,  4,  6,  5, 5};
-    temp_unit = Unit(UNIT::NAME::SILOU, UNIT::CLASS::MAGE, temp, UNIT::SEX::F);
-    temp = {48, 14, 25, 32, 34,  28, 19, 40, 15};
-    temp_unit.setCaps(temp);
-    temp = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
-    temp_unit.setGrowths(temp);
-    temp_unit.setBaseExp(400);
-    temp_wpn.id = ITEM::NAME::BALL_LIGHTNING;
-    temp_unit.addEquipment(temp_wpn);
-    temp_units.push_back(temp_unit);
+    for (short unsigned int i = 0; i < toload.size(); i++) {
+        index = toload[i];
+        switch (index) {
+            case UNIT::NAME::ERWIN:
+                temp = {17,  6,  2,  7,  7,   7,  4,  5,  6, 5};
+                temp_unit = Unit(UNIT::NAME::ERWIN, UNIT::CLASS::MERCENARY, temp, UNIT::SEX::M);
+                temp = {48, 14, 25, 32, 34,  28, 19, 40, 15, 0};
+                temp_unit.setCaps(temp);
+                temp = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
+                temp_unit.setGrowths(temp);
+                temp_unit.setBaseExp(0);
+                temp_wpn.id = ITEM::NAME::FLEURET;
+                temp_unit.addEquipment(temp_wpn);
+                temp_wpn.id = ITEM::NAME::KITCHEN_KNIFE;
+                temp_unit.addEquipment(temp_wpn);
+                temp_wpn.id = ITEM::NAME::POT_LID;
+                temp_unit.addEquipment(temp_wpn);
+                // temp_supports = {UNIT::NAME::KIARA}; 
+                // temp_unit.setSupports(temp_supports);
+                temp_units.push_back(temp_unit);
+                break;
+            case UNIT::NAME::RELIABLE:
+                temp = {18,  6,  2,  7,  7,   7,  4,  5,  6, 7};
+                temp_unit = Unit(UNIT::NAME::RELIABLE, UNIT::CLASS::CAVALIER, temp, UNIT::SEX::M);
+                temp = {48, 14, 25, 32, 34,  28, 19, 40, 15};
+                temp_unit.setCaps(temp);
+                temp = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
+                temp_unit.setGrowths(temp);
+                temp_unit.setBaseExp(100);
+                temp_units.push_back(temp_unit);
+                break;
+            case UNIT::NAME::COWARD:
+                temp = {19,  6,  2,  7,  7,   7,  4,  5,  6,  7};
+                temp_unit = Unit(UNIT::NAME::COWARD, UNIT::CLASS::CAVALIER, temp, UNIT::SEX::M);
+                temp = {48, 14, 25, 32, 34,  28, 19, 40, 15};
+                temp_unit.setCaps(temp);
+                temp = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
+                temp_unit.setGrowths(temp);
+                temp_unit.setBaseExp(200);
+                temp_units.push_back(temp_unit);
+                break;
+            case UNIT::NAME::JAIGEN1H:
+                temp = {20,  6,  2,  7,  7,   7,  4,  5,  6,  6};
+                temp_unit = Unit(UNIT::NAME::JAIGEN1H, UNIT::CLASS::MOUSQUETAIRE, temp, UNIT::SEX::M);
+                temp = {48, 14, 25, 32, 34,  28, 19, 40, 15};
+                temp_unit.setCaps(temp);
+                temp = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
+                temp_unit.setGrowths(temp);
+                temp_unit.setBaseExp(2200);
+                temp_units.push_back(temp_unit);
+                break;
+            case UNIT::NAME::KIARA:
+                temp = {14,  6,  2,  7,  7,   7,  4,  5,  6,  5};
+                temp_unit = Unit(UNIT::NAME::KIARA, UNIT::CLASS::CLERIC, temp, UNIT::SEX::F);
+                temp = {48, 14, 25, 32, 34,  28, 19, 40, 15};
+                temp_unit.setCaps(temp);
+                temp = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
+                temp_unit.setGrowths(temp);
+                temp_unit.setBaseExp(100);
+                temp_units.push_back(temp_unit);
+                break;
+            case UNIT::NAME::HOTTIE:
+                temp = {16,  6,  2,  7,  7,   7,  4,  5,  6,  6};
+                temp_unit = Unit(UNIT::NAME::HOTTIE, UNIT::CLASS::PICKPOCKET, temp, UNIT::SEX::M);
+                temp = {48, 14, 25, 32, 34,  28, 19, 40, 15};
+                temp_unit.setCaps(temp);
+                temp = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
+                temp_unit.setGrowths(temp);
+                temp_unit.setBaseExp(2200);
+                temp_units.push_back(temp_unit);
+                break;
+            case UNIT::NAME::SERVIL:
+                temp = {22,  4,  5,  7,  6,   8,  4,  6,  5, 5}; // 4 or 5?
+                temp_unit = Unit(UNIT::NAME::SERVIL, UNIT::CLASS::KNIGHT, temp, UNIT::SEX::M);
+                temp = {48, 14, 25, 32, 34,  28, 19, 40, 15};
+                temp_unit.setCaps(temp);
+                temp = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
+                temp_unit.setGrowths(temp);
+                temp_unit.setBaseExp(500);
+                temp_units.push_back(temp_unit);
+                break;
+            case UNIT::NAME::PERIGNON:
+                temp = {34,  4,  5,  7,  6,   8,  4,  6,  5, 5};
+                temp_unit = Unit(UNIT::NAME::PERIGNON, UNIT::CLASS::MAGE, temp, UNIT::SEX::M);
+                temp = {48, 14, 25, 32, 34,  28, 19, 40, 15};
+                temp_unit.setCaps(temp);
+                temp = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
+                temp_unit.setGrowths(temp);
+                temp_unit.setBaseExp(1200);
+                temp_units.push_back(temp_unit);
+                break;
+            case UNIT::NAME::POET:
+                temp = {15,  4,  5,  7,  6,   8,  4,  6,  5, 5};
+                temp_unit = Unit(UNIT::NAME::POET, UNIT::CLASS::MAGE, temp, UNIT::SEX::M);
+                temp = {48, 14, 25, 32, 34,  28, 19, 40, 15};
+                temp_unit.setCaps(temp);
+                temp = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
+                temp_unit.setGrowths(temp);
+                temp_unit.setBaseExp(400);
+                temp_units.push_back(temp_unit);
+                break;
+            case UNIT::NAME::SILOU:
+                temp = {15,  4,  5,  7,  6,   8,  4,  6,  5, 5};
+                temp_unit = Unit(UNIT::NAME::SILOU, UNIT::CLASS::MAGE, temp, UNIT::SEX::F);
+                temp = {48, 14, 25, 32, 34,  28, 19, 40, 15};
+                temp_unit.setCaps(temp);
+                temp = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
+                temp_unit.setGrowths(temp);
+                temp_unit.setBaseExp(400);
+                temp_wpn.id = ITEM::NAME::BALL_LIGHTNING;
+                temp_unit.addEquipment(temp_wpn);
+                temp_units.push_back(temp_unit);
+                break;
+            }
+        }
 
     return(temp_units);
 }

@@ -432,7 +432,7 @@ void Game::init(const char * title, int xpos, int ypos, int width, int height, b
     std::vector<short int> basepartyinds = {UNIT::NAME::ERWIN, UNIT::NAME::KIARA};
     std::vector<Unit> baseparty = baseUnits(basepartyinds);
     for (int i = 0; i < baseparty.size(); i++) {
-        // party[baseparty[i].getid()] = baseparty[i];
+        party[baseparty[i].getid()] = baseparty[i];
     }
 
     
@@ -508,7 +508,7 @@ bool Game::running() {
 void Game::saveXML(const short int save_ind) {
     char filename[DEFAULT::BUFFER_SIZE];
     char buffer[DEFAULT::BUFFER_SIZE];
-    stbsp_sprintf(filename, "save%04d.bsav", save_ind);
+    stbsp_sprintf(filename, "save%04d.xml", save_ind);
     SDL_Log("saveXML Game to: %s\n", filename);
 
     PHYSFS_file * fp;
@@ -522,11 +522,6 @@ void Game::saveXML(const short int save_ind) {
     tinyxml2::XMLElement * pUnits = xmlDoc.NewElement("Units");
     xmlDoc.InsertEndChild(pUnits);
 
-    tinyxml2::XMLElement * pUnit;
-    for (auto it = party.begin(); it != party.end(); it++) {
-        it->second.writeXML(filename, true);        
-    }
-
     tinyxml2::XMLPrinter printer;
 
     xmlDoc.Print(&printer);
@@ -535,5 +530,12 @@ void Game::saveXML(const short int save_ind) {
     PHYSFS_writeBytes(fp, longbuffer, printer.CStrSize());
 
     PHYSFS_close(fp);
+    
+    // // tinyxml2::XMLElement * pUnit;
+    // for (auto it = party.begin(); it != party.end(); it++) {
+    //     it->second.writeXML(filename, true);        
+    // }
+
+
 
 }
