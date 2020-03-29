@@ -22,6 +22,7 @@ class Game {
 
     private:
         Map * mapp;
+        Narrative narrative;
         Entity & cursor = manager.addEntity();
         KeyboardInputMap keyboardInputMap;
         GamepadInputMap gamepadInputMap;

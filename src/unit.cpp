@@ -800,8 +800,18 @@ void testXMLUnits() {
     temp_unit.writeXML("unit_rewrite.binou");
 }
 
-void baseUnits() {
+std::vector<Weapon> baseUnits(std::vector<short int> toload) {
     printf("Making base units \n");
+    Unit temp_unit;
+    Unit_stats temp;
+    Inventory_item temp_wpn;
+    short int temp_supports;
+
+}
+
+
+void baseUnits() {
+    printf("Making all base units \n");
     Unit temp_unit;
     Unit_stats temp;
     Inventory_item temp_wpn;

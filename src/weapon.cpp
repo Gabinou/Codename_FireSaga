@@ -235,7 +235,8 @@ void testXMLWeapons(){
     temp_wpn.writeXML("weapon_rewrite.xml");
 }
 
-std::vector<Weapon> baseWeapons(std::vector<short int> toload){
+std::vector<Weapon> baseWeapons(std::vector<short int> toload) {
+    SDL_Log("Making some base weapons");
     Weapon temp_wpn;
     Weapon_stats temp_wpn_stats;
     std::vector<Weapon> wpn_out;
@@ -1041,7 +1042,8 @@ std::vector<Weapon> baseWeapons(std::vector<short int> toload){
     return(wpn_out);
 }
 
-void baseWeapons(){
+void baseWeapons() {
+    SDL_Log("Making all base weapons");
     Weapon temp_wpn;
     Weapon_stats temp_wpn_stats;
     // Pmight, Mmight, hit, dodge, crit, favor, wgt, uses, wpnlvl, range, hand, dmg_type, price
