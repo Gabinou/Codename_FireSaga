@@ -384,13 +384,6 @@ void Game::loadMapEnemies() {
     }
 }
 
-void Game::init_tinyMT() {
-    tinymt.mat1 = 1990; // Year
-    tinymt.mat2 = 5; // Month
-    tinymt.tmat = 8; // Date
-    tinymt32_init(&tinymt, 19900508); //YearMonthDate
-}
-
 void Game::init(const char * title, int xpos, int ypos, int width, int height, bool fullscreen) {
     int flags = 0;
 
@@ -526,6 +519,13 @@ void Game::saveXML(const short int save_ind) {
     for (auto it = party.begin(); it != party.end(); it++) {
         it->second.writeXML(filename, true);        
     }
+
+    tinyxml2::XMLPrinter printer;
+
+    xmlDoc.Print(&printer);
+    char longbuffer[printer.CStrSize()];
+    stbsp_sprintf(longbuffer, printer.CStr());
+    PHYSFS_writeBytes(fp, longbuffer, printer.CStrSize());
 
     PHYSFS_close(fp);
 

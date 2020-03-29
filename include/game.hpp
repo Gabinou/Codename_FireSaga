@@ -58,7 +58,6 @@ class Game {
         ~Game();
 
         void init(const char * title, int xpos, int ypos, int width, int height, bool fullscreen);
-        void init_tinyMT();
         void loadMap(const std::string filename);
         void loadMap(const int in_map_index);
         void loadUnits(std::vector<short unsigned int> names, std::vector<std::string> asset_names, std::vector<std::vector<int>> positions_list);
