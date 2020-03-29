@@ -290,6 +290,10 @@ enum NAMES {
     HOTTIE,
     PC_END,
 
+    ZINEDAN,
+    ZIDINE, // Zinedine Zidan
+    NPC_END,
+
     BANDIT,
     DUELIST,
     PICKPOCKET,
@@ -306,7 +310,7 @@ enum NAMES {
     PALADIN,
     FENCER,
     MOUSQUETAIRE,
-    NPC_END,
+    GENERIC_END,
 };
 }
 namespace SKILL {
