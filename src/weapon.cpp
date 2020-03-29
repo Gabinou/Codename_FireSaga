@@ -73,18 +73,8 @@ void Weapon::setType(short unsigned int in_type) {
 
 void Weapon::readXML(const char * filename) {
     SDL_Log("readXML Unit file: %s", filename);    
-    PHYSFS_file * fp;
-    fp = PHYSFS_openRead(filename);
-    unsigned int bufint;
-    unsigned int filelen = PHYSFS_fileLength(fp);
-    char filebuffer[filelen];
-    const char * buffer;
-    PHYSFS_readBytes(fp, filebuffer, filelen);
-    PHYSFS_close(fp);
     tinyxml2::XMLDocument xmlDoc;
-    if (xmlDoc.Parse(filebuffer, filelen) != 0) {
-        SDL_Log("XML file parsing failed");
-    }
+    parseXML(filename, &xmlDoc);
     tinyxml2::XMLElement * ptemp;
     tinyxml2::XMLElement * pWpn = xmlDoc.FirstChildElement("Weapon");
     

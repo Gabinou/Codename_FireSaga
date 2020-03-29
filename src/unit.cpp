@@ -545,19 +545,11 @@ char Unit::speed() {
 }
 
 void Unit::readXML(const char * filename) {
-    SDL_Log("readXML Unit file: %s", filename);    
-    PHYSFS_file * fp;
-    fp = PHYSFS_openRead(filename);
-    unsigned int bufint;
-    unsigned int filelen = PHYSFS_fileLength(fp);
-    char filebuffer[filelen];
-    const char * buffer;
-    PHYSFS_readBytes(fp, filebuffer, filelen);
-    PHYSFS_close(fp);
+    SDL_Log("readXML Unit file: %s", filename);
     tinyxml2::XMLDocument xmlDoc;
-    if (xmlDoc.Parse(filebuffer, filelen) != 0) {
-        SDL_Log("XML file parsing failed");
-    }
+    parseXML(filename, &xmlDoc);
+    const char * buffer;
+    unsigned int bufint;
     tinyxml2::XMLElement * ptemp;
     tinyxml2::XMLElement * pUnit = xmlDoc.FirstChildElement("Unit");
     if (!pUnit) {SDL_Log("Cannot get Unit element");}   

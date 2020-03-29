@@ -65,4 +65,8 @@ enum LINES {
 };
 }
 
+// Scene makeScene(Narrative_state in_state, short int in_id) {
+
+// }
+
 #endif /* SCRIPT_HPP */
