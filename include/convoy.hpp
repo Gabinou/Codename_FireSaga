@@ -12,7 +12,18 @@
 
 class Convoy {
     private:
-        Inventory_item convoy[DEFAULT::CONVOY_SIZE];
+        Inventory_item convoy[DEFAULT::CONVOY_SIZE], swords[DEFAULT::CONVOY_SIZE], lances[DEFAULT::CONVOY_SIZE];
+        axe[DEFAULT::CONVOY_SIZE];
+         bow[DEFAULT::CONVOY_SIZE];
+         trinket[DEFAULT::CONVOY_SIZE];
+         offhand[DEFAULT::CONVOY_SIZE];
+         elemental[DEFAULT::CONVOY_SIZE];
+         demonic[DEFAULT::CONVOY_SIZE];
+         angelic[DEFAULT::CONVOY_SIZE];
+         shield[DEFAULT::CONVOY_SIZE];
+         staff[DEFAULT::CONVOY_SIZE];
+         claw[DEFAULT::CONVOY_SIZE];
+         item[DEFAULT::CONVOY_SIZE];
 
     public:
         Convoy();
