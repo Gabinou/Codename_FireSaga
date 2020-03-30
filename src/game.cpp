@@ -505,6 +505,12 @@ bool Game::running() {
 }
 
 
+void Game::loadXML(const short int save_ind) {
+
+}
+
+
+
 void Game::saveXML(const short int save_ind) {
     char filename[DEFAULT::BUFFER_SIZE];
     char buffer[DEFAULT::BUFFER_SIZE];
@@ -514,8 +520,6 @@ void Game::saveXML(const short int save_ind) {
 
     stbsp_snprintf(filename, DEFAULT::BUFFER_SIZE, "saves//save%04d.bsav", save_ind);
     SDL_Log("saveXML Game to: %s\n", filename);
-
-
 
     PHYSFS_delete(filename);
 
