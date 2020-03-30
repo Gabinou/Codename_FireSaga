@@ -630,6 +630,16 @@ std::string wpnName(unsigned short int in_id) {
 }
 
 
+// (*)(Unit) makeheal(Weapon * in_weapon) {
+
+//     void heal_func(Unit * in_unit) {
+//         in_unit->getsHealed(weapon->stats.heal);
+//     }
+//     return(heal_func);
+// }
+
+
+
 std::string unitName(unsigned short int in_id) {
     std::string name;
     switch(in_id) {

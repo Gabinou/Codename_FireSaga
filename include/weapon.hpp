@@ -4,6 +4,7 @@
 #include "enums.hpp"
 #include "structs.hpp"
 #include "physfs.h"
+#include "unit.hpp"
 #include "tinyxml2.h"
 #include "filesystem.hpp"
 #include "utilities.hpp"
@@ -13,8 +14,7 @@
 class Weapon {
     private:
         Weapon_stats stats = {0, 0, 0, 0, 0, 0, 0, 0, 0, {0, 0}, {0, 0}, 0, 0};
-        // Pmight, Mmight, hit, dodge, crit, favor, wgt, uses, prof, range, hand, dmg_type, cost
-
+        // Pmight, Mmight, hit, dodge, crit, favor, wgt, uses, prof, range, hand, dmg_type, cost, heal
         Unit_stats bonus_stats = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
         Unit_stats malus_stats = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
         long unsigned int effect = 0;
@@ -60,5 +60,8 @@ extern std::vector<Weapon> loaded_weapons;
 void baseWeapons();
 void testXMLWeapons();
 std::vector<Weapon> baseWeapons(std::vector<short int> toload);
+
+// void heal(Unit * in_unit, unsigned char heal);
+// (*)(Unit) makeheal(Weapon in_weapon);
 
 #endif /* WEAPON_HPP */
