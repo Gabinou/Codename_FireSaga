@@ -54,7 +54,6 @@ class Weapon {
         void readXML(const char * filename);
 };
 
-extern Inventory_item convoy[200];
 extern std::vector<Weapon> all_weapons;
 extern std::vector<Weapon> loaded_weapons;
 

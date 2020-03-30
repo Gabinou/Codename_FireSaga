@@ -336,27 +336,38 @@ void writeXML_narrative(tinyxml2::XMLDocument * in_doc, tinyxml2::XMLElement * i
     tinyxml2::XMLElement * pnpc_death = in_doc->NewElement("npc_death");
     tinyxml2::XMLElement * precruited = in_doc->NewElement("recruited");
     tinyxml2::XMLElement * pchapter = in_doc->NewElement("chapter");
+    in_pNarrative->InsertEndChild(pchapter);
     in_pNarrative->InsertEndChild(ppc_death);
     in_pNarrative->InsertEndChild(pnpc_death);
+    in_pNarrative->InsertEndChild(precruited);
+
+    pchapter->SetText(in_state->chapter);
+
     tinyxml2::XMLElement * ptemp;
     bool tempb;
     std::string name;
     char buffer[DEFAULT::BUFFER_SIZE];
 
     for (unsigned int i = UNIT::NAME::ERWIN; i < UNIT::NAME::PC_END; i++) {
-        tempb = in_state->pc_death[i - UNIT::NAME::ERWIN];
         name = unitName(i);
+        tempb = in_state->pc_death[i - UNIT::NAME::ERWIN];
         ptemp = in_doc->NewElement(name.c_str());
         ppc_death->InsertEndChild(ptemp);
+        ptemp->SetText(tempb);
+        ptemp->SetAttribute("id", i);
+
+        tempb = in_state->recruited[i - UNIT::NAME::ERWIN];
+        ptemp = in_doc->NewElement(name.c_str());
+        precruited->InsertEndChild(ptemp);
         ptemp->SetText(tempb);
         ptemp->SetAttribute("id", i);
     }
 
     for (unsigned int i = UNIT::NAME::ZINEDAN; i < UNIT::NAME::NPC_END; i++) {
         tempb = in_state->npc_death[i - UNIT::NAME::ZINEDAN];
-        stbsp_sprintf(buffer, "%d", i);
+        stbsp_sprintf(buffer, "NPC%d", i);
         ptemp = in_doc->NewElement(buffer);
-        ppc_death->InsertEndChild(ptemp);
+        pnpc_death->InsertEndChild(ptemp);
         ptemp->SetText(tempb);
         ptemp->SetAttribute("id", i);
     }
