@@ -47,7 +47,7 @@ class Weapon {
         short unsigned int getType();
         void setType(short unsigned int in_type);
 
-        void use();
+        void (*use)();
 
         void write(const char * filename, const char * mode = "a");
         void writeXML(const char * filename, const bool append = false);
