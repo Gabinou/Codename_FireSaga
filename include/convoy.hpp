@@ -1,5 +1,5 @@
-#ifndef WEAPON_HPP
-#define WEAPON_HPP
+#ifndef CONVOY_HPP
+#define CONVOY_HPP
 
 #include "enums.hpp"
 #include "structs.hpp"
@@ -12,7 +12,7 @@
 
 class Convoy {
     private:
-        Inventory_item convoy[200];
+        Inventory_item convoy[DEFAULT::CONVOY_SIZE];
 
     public:
         Convoy();
@@ -22,4 +22,4 @@ class Convoy {
         void readXML(const char * filename);
 };
 
-#endif /* WEAPON_HPP */
+#endif /* CONVOY_HPP */
