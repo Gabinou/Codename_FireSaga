@@ -508,34 +508,37 @@ bool Game::running() {
 void Game::saveXML(const short int save_ind) {
     char filename[DEFAULT::BUFFER_SIZE];
     char buffer[DEFAULT::BUFFER_SIZE];
-    stbsp_sprintf(filename, "save%04d.xml", save_ind);
+    stbsp_snprintf(filename, DEFAULT::BUFFER_SIZE, "save%04d.bsav", save_ind);
     SDL_Log("saveXML Game to: %s\n", filename);
 
-    PHYSFS_file * fp;
-    fp = PHYSFS_openWrite(filename);
+    PHYSFS_delete(filename);
+
+    PHYSFS_file * fp = PHYSFS_openWrite(filename);
+
     tinyxml2::XMLDocument xmlDoc;
-    xmlDoc.InsertFirstChild(xmlDoc.NewDeclaration());
-    
+    xmlDoc.InsertFirstChild(xmlDoc.NewDeclaration());    
     tinyxml2::XMLElement * pNarrative = xmlDoc.NewElement("Narrative");
     xmlDoc.InsertEndChild(pNarrative);
-    pNarrative->SetAttribute("id", 1);
-
-    tinyxml2::XMLElement * pUnits = xmlDoc.NewElement("Units");
-    xmlDoc.InsertEndChild(pUnits);
+    pNarrative->SetText("1");
+    pNarrative->SetAttribute("eg", "hello");
 
     tinyxml2::XMLPrinter printer;
 
     xmlDoc.Print(&printer);
     char longbuffer[printer.CStrSize()];
-    stbsp_sprintf(longbuffer, printer.CStr());
+    stbsp_snprintf(longbuffer, printer.CStrSize(), printer.CStr());
+    SDL_Log(longbuffer);
+    if (!PHYSFS_setBuffer(fp, printer.CStrSize())) {
+        SDL_Log("PHYSFS_setBuffer failed");
+    }
     PHYSFS_writeBytes(fp, longbuffer, printer.CStrSize());
 
     PHYSFS_close(fp);
 
-    // // tinyxml2::XMLElement * pUnit;
-    // for (auto it = party.begin(); it != party.end(); it++) {
-    //     it->second.writeXML(filename, true);        
-    // }
+    // tinyxml2::XMLElement * pUnit;
+    for (auto it = party.begin(); it != party.end(); it++) {
+        it->second.writeXML(filename, true);        
+    }
 
 
 
