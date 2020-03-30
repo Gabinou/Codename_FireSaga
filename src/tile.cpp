@@ -80,7 +80,7 @@ void Tile::readXML(const char * filename) {
 
     ptemp = pTile->FirstChildElement("Stats");
     if (!ptemp) {SDL_Log("Cannot get Name element");}   
-    readXML_tilestats(ptemp, &stats);
+    readXML_stats(ptemp, &stats);
 
 }
 
@@ -115,7 +115,7 @@ void Tile::writeXML(const char * filename, const bool append) {
 
     tinyxml2::XMLElement * pStats = xmlDoc.NewElement("Stats");
     pTile->InsertEndChild(pStats);
-    writeXML_tilestats(&xmlDoc, pStats, &stats);
+    writeXML_stats(&xmlDoc, pStats, &stats);
 
     tinyxml2::XMLPrinter printer;
 
