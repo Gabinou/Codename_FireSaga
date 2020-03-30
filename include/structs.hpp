@@ -19,7 +19,6 @@ struct Unit_state {
     char stone;
 };
 
-
 struct Narrative {
     bool pc_death[UNIT::NAME::PC_END - UNIT::NAME::ERWIN] = {0};
     bool recruited[UNIT::NAME::PC_END - UNIT::NAME::ERWIN] = {0};

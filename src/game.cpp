@@ -532,15 +532,13 @@ void Game::saveXML(const short int save_ind) {
     tinyxml2::XMLElement * pDeaths = xmlDoc.NewElement("Deaths");
     tinyxml2::XMLElement * pRecruited = xmlDoc.NewElement("Recruited");
     xmlDoc.InsertEndChild(pNarrative);
-    pNarrative->SetText("1");
-    pNarrative->SetAttribute("eg", "hello");
+    writeXML_narrative(&xmlDoc, pNarrative, &narrative);
+
 
     tinyxml2::XMLPrinter printer;
-
     xmlDoc.Print(&printer);
     char longbuffer[printer.CStrSize()];
     stbsp_snprintf(longbuffer, printer.CStrSize(), printer.CStr());
-    SDL_Log(longbuffer);
     if (!PHYSFS_setBuffer(fp, printer.CStrSize())) {
         SDL_Log("PHYSFS_setBuffer failed");
     }

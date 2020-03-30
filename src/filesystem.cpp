@@ -211,6 +211,8 @@ SDL_Texture * textToTexture(SDL_Renderer * in_renderer, std::string textureText,
     return (texture);
 }
 
+
+
 void writeText(SDL_Renderer * in_renderer, int in_fontsize, int in_position[2], float in_sizefactor[2], std::string in_text, SDL_Color in_color, TTF_Font * in_font) {
     std::string text = "FPS";
     SDL_Texture * texture = textToTexture(in_renderer, text, in_color, in_font);
@@ -329,9 +331,41 @@ void readXML_stats(tinyxml2::XMLElement * in_pStats, Unit_stats * in_stats) {
     in_stats->prof = (unsigned char)bufint;
 }
 
+void writeXML_narrative(tinyxml2::XMLDocument * in_doc, tinyxml2::XMLElement * in_pNarrative, Narrative * in_state) {
+    tinyxml2::XMLElement * ppc_death = in_doc->NewElement("pc_death");
+    tinyxml2::XMLElement * pnpc_death = in_doc->NewElement("npc_death");
+    tinyxml2::XMLElement * precruited = in_doc->NewElement("recruited");
+    tinyxml2::XMLElement * pchapter = in_doc->NewElement("chapter");
+    in_pNarrative->InsertEndChild(ppc_death);
+    in_pNarrative->InsertEndChild(pnpc_death);
+    tinyxml2::XMLElement * ptemp;
+    bool tempb;
+    std::string name;
+    char buffer[DEFAULT::BUFFER_SIZE];
+
+    for (unsigned int i = UNIT::NAME::ERWIN; i < UNIT::NAME::PC_END; i++) {
+        tempb = in_state->pc_death[i - UNIT::NAME::ERWIN];
+        name = unitName(i);
+        ptemp = in_doc->NewElement(name.c_str());
+        ppc_death->InsertEndChild(ptemp);
+        ptemp->SetText(tempb);
+        ptemp->SetAttribute("id", i);
+    }
+
+    for (unsigned int i = UNIT::NAME::ZINEDAN; i < UNIT::NAME::NPC_END; i++) {
+        tempb = in_state->npc_death[i - UNIT::NAME::ZINEDAN];
+        stbsp_sprintf(buffer, "%d", i);
+        ptemp = in_doc->NewElement(buffer);
+        ppc_death->InsertEndChild(ptemp);
+        ptemp->SetText(tempb);
+        ptemp->SetAttribute("id", i);
+    }
+
+}
+
+
 void writeXML_stats(tinyxml2::XMLDocument * in_doc, tinyxml2::XMLElement * in_pStats, Weapon_stats * in_stats) {
     // Pmight, Mmight, hit, dodge, crit, favor, wgt, uses, prof, range, hand, dmg_type, cost
-    Combat_stats combat;
     tinyxml2::XMLElement * pPmight = in_doc->NewElement("Pmight");
     tinyxml2::XMLElement * pMmight = in_doc->NewElement("Mmight");
     tinyxml2::XMLElement * phit = in_doc->NewElement("hit");
@@ -521,7 +555,7 @@ void readXML_mvtcost(tinyxml2::XMLElement * in_pCost, Movement_cost * in_cost) {
 
 }
 
-void readXML_tilestats(tinyxml2::XMLElement * in_pStats, Tile_stats * in_stats) {
+void readXML_stats(tinyxml2::XMLElement * in_pStats, Tile_stats * in_stats) {
 
     int bufint;
 
@@ -542,7 +576,7 @@ void readXML_tilestats(tinyxml2::XMLElement * in_pStats, Tile_stats * in_stats) 
 }
 
 
-void writeXML_tilestats(tinyxml2::XMLDocument * in_doc, tinyxml2::XMLElement * in_pStats, Tile_stats * in_stats) {
+void writeXML_stats(tinyxml2::XMLDocument * in_doc, tinyxml2::XMLElement * in_pStats, Tile_stats * in_stats) {
     tinyxml2::XMLElement * pdodge = in_doc->NewElement("dodge");
     tinyxml2::XMLElement * pPprot = in_doc->NewElement("Pprot");
     tinyxml2::XMLElement * pMprot = in_doc->NewElement("Mprot");
