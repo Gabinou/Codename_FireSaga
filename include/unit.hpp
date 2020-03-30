@@ -150,6 +150,8 @@ class Unit {
 
         void dies();
 
+        void use(int in_ind);
+
         void write(const char * filename, const bool append = false);
         void writeXML(const char * filename, const bool append = false);
         void readXML(const char * filename);

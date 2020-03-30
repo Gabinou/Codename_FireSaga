@@ -53,8 +53,12 @@ unsigned short int Unit::getid() {
 }
 
 
-Map_enemy Unit::getMap_enemy(){
+Map_enemy Unit::getMap_enemy() {
     return(map_enemy);
+}
+
+void Unit::use(int in_ind) {
+
 }
 
 void Unit::setMap_enemy(Map_enemy in_map_enemy){

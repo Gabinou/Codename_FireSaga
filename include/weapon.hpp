@@ -47,8 +47,6 @@ class Weapon {
         short unsigned int getType();
         void setType(short unsigned int in_type);
 
-        void (*use)();
-
         void write(const char * filename, const char * mode = "a");
         void writeXML(const char * filename, const bool append = false);
         void readXML(const char * filename);
@@ -60,8 +58,5 @@ extern std::vector<Weapon> loaded_weapons;
 void baseWeapons();
 void testXMLWeapons();
 std::vector<Weapon> baseWeapons(std::vector<short int> toload);
-
-// void heal(Unit * in_unit, unsigned char heal);
-// (*)(Unit) makeheal(Weapon in_weapon);
 
 #endif /* WEAPON_HPP */

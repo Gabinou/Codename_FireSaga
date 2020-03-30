@@ -2,6 +2,8 @@
 #define SHARED_HPP
 
 #include "enums.hpp"
+#include "weapon.hpp"
+#include "unit.hpp"
 #include <string>
 #include <vector>
 
@@ -28,5 +30,8 @@ extern std::string unitName(unsigned short int in_id);
 extern std::vector<std::string> unitType(unsigned short int in_effect);
 extern std::string wpnName(unsigned short int in_id);
 extern std::vector<std::string> wpnTypes(short unsigned int in_type);
+
+// extern void heal(Unit * in_unit, unsigned char heal);
+// extern * (Unit) makeheal(Weapon in_weapon);
 
 #endif /* SHARED_HPP */
