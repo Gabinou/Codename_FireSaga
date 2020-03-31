@@ -37,6 +37,8 @@ class Convoy {
         void swap(int arr[], int ind1, int ind2);
         void swapwpn(int wpntype, int ind1, int ind2);
 
+        void sort(int wpntype, int stattype);
+
         void write(const char * filename, const char * mode = "a");
         void writeXML(const char * filename, const bool append = false);
         void readXML(const char * filename);
