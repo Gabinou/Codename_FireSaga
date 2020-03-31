@@ -15,8 +15,8 @@ class Convoy {
         unsigned int bank = 0;
         unsigned char quantity = 0;
 
-        Inventory_item convoy[DEFAULT::CONVOY_SIZE], swords[DEFAULT::CONVOY_SIZE],
-                       lances[DEFAULT::CONVOY_SIZE], axe[DEFAULT::CONVOY_SIZE],
+        Inventory_item convoy[DEFAULT::CONVOY_SIZE], sword[DEFAULT::CONVOY_SIZE],
+                       lance[DEFAULT::CONVOY_SIZE], axe[DEFAULT::CONVOY_SIZE],
                        bow[DEFAULT::CONVOY_SIZE], trinket[DEFAULT::CONVOY_SIZE],
                        offhand[DEFAULT::CONVOY_SIZE], elemental[DEFAULT::CONVOY_SIZE],
                        demonic[DEFAULT::CONVOY_SIZE], angelic[DEFAULT::CONVOY_SIZE],

@@ -842,7 +842,8 @@ unsigned char mvtType(unsigned char in_class_index) {
     }
     return(mvt_type);
 }
-
+
+
 std::string className(unsigned char in_class_index) {
     std::string class_name;
     switch(in_class_index) {
