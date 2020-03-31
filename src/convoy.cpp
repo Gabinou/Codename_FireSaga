@@ -190,7 +190,6 @@ void Convoy::sort(int wpntype, int stattype) {
     int * arr;
     arr = getarr(wpntype, stattype);
     quicksort(arr, 0, DEFAULT::CONVOY_SIZE, wpntype);
-
 }
       
 
@@ -292,14 +291,6 @@ int * Convoy::getarr(int wpntype, int stattype) {
     return(temparr);
 }
 
-// void Convoy::exch(int ind1, int ind2, Inventory_item * in_item) {
-//     Inventory_item buffer[2];
-//     buffer[0] = in_item[ind1];
-//     buffer[1] = in_item[ind2];
-//     in_item[ind1] = buffer[1];
-//     in_item[ind2] = buffer[0];
-// }
-
 Inventory_item Convoy::withdraw(int in_index, int wpntype) {
     Inventory_item temp;
     Inventory_item empty;
@@ -380,3 +371,10 @@ void Convoy::earn(int in_money) {
 void Convoy::spend(int out_money) {
     bank += out_money;
 } 
+
+
+void testConvoy() {
+    Convoy test_convoy;
+    Inventory_item temp;
+    // test_convoy.deposit();
+}

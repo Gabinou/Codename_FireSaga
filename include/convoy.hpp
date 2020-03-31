@@ -7,6 +7,7 @@
 #include "tinyxml2.h"
 #include "filesystem.hpp"
 #include "utilities.hpp"
+#include "weapon.hpp"
 #include "string.h"
 #include <string>
 
@@ -14,7 +15,7 @@ class Convoy {
     private:
         unsigned int bank = 0;
         Quantity quantity;
-        bool full;
+        bool full = false;
 
         Inventory_item swords[DEFAULT::CONVOY_SIZE],
                        lances[DEFAULT::CONVOY_SIZE], axes[DEFAULT::CONVOY_SIZE],
@@ -43,5 +44,7 @@ class Convoy {
         void writeXML(const char * filename, const bool append = false);
         void readXML(const char * filename);
 };
+
+extern void testConvoy();
 
 #endif /* CONVOY_HPP */
