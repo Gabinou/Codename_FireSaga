@@ -21,28 +21,64 @@ void Convoy::swapwpn(int wpntype, int ind1, int ind2) {
             swords[ind2] = buffer;
             break;
         case ITEM::TYPE::LANCE:
+            buffer = lances[ind1];
+            lances[ind1] = lances[ind2];
+            lances[ind2] = buffer;
             break;
         case ITEM::TYPE::AXE:
+            buffer = axes[ind1];
+            axes[ind1] = axes[ind2];
+            axes[ind2] = buffer;
             break;
         case ITEM::TYPE::BOW:
+            buffer = bows[ind1];
+            bows[ind1] = bows[ind2];
+            bows[ind2] = buffer;
             break;
         case ITEM::TYPE::TRINKET:
+            buffer = trinkets[ind1];
+            trinkets[ind1] = trinkets[ind2];
+            trinkets[ind2] = buffer;
             break;
         case ITEM::TYPE::OFFHAND:
+            buffer = offhands[ind1];
+            offhands[ind1] = offhands[ind2];
+            offhands[ind2] = buffer;
             break;
         case ITEM::TYPE::ELEMENTAL:
+            buffer = elemental[ind1];
+            elemental[ind1] = elemental[ind2];
+            elemental[ind2] = buffer;
             break;
         case ITEM::TYPE::DEMONIC:
+            buffer = demonic[ind1];
+            demonic[ind1] = demonic[ind2];
+            demonic[ind2] = buffer;
             break;
         case ITEM::TYPE::ANGELIC:
+            buffer = angelic[ind1];
+            angelic[ind1] = angelic[ind2];
+            angelic[ind2] = buffer;
             break;
         case ITEM::TYPE::SHIELD:
+            buffer = shields[ind1];
+            shields[ind1] = shields[ind2];
+            shields[ind2] = buffer;
             break;
         case ITEM::TYPE::STAFF:
+            buffer = staffs[ind1];
+            staffs[ind1] = staffs[ind2];
+            staffs[ind2] = buffer;
             break;
         case ITEM::TYPE::CLAW:
+            buffer = claws[ind1];
+            claws[ind1] = claws[ind2];
+            claws[ind2] = buffer;
             break;
         case ITEM::TYPE::ITEM:
+            buffer = items[ind1];
+            items[ind1] = items[ind2];
+            items[ind2] = buffer;
             break;
     }
 }
