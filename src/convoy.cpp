@@ -269,72 +269,73 @@ int * Convoy::getarr(int wpntype, int stattype) {
 Inventory_item Convoy::withdraw(int in_index, int in_type) {
     Inventory_item temp;
     Inventory_item empty;
-
-        if (in_type == ITEM::TYPE::SWORD) {
+    switch (wpntype) {
+        case ITEM::TYPE::SWORD:
             temp = swords[in_index];
             swords[in_index] = empty;
             quantity.swords -= 1;
-        }
-        if (in_type == ITEM::TYPE::LANCE) {
+            break;
+        case ITEM::TYPE::LANCE:
             temp = lances[in_index];
             lances[in_index] = empty;
             quantity.lances -= 1;
-        }
-        if (in_type == ITEM::TYPE::AXE) {
+            break;
+        case ITEM::TYPE::AXE:
             temp = axes[in_index];
             axes[in_index] = empty;
             quantity.axes -= 1;
-        }
-        if (in_type == ITEM::TYPE::BOW) {
+            break;
+        case ITEM::TYPE::BOW:
             temp = bows[in_index];
             bows[in_index] = empty;
             quantity.bows -= 1;
-        }
-        if (in_type == ITEM::TYPE::TRINKET) {
+            break;
+        case ITEM::TYPE::TRINKET:
             temp = trinkets[in_index];
             trinkets[in_index] = empty;
             quantity.trinkets -= 1;
-        }
-        if (in_type == ITEM::TYPE::OFFHAND) {
+            break;
+        case ITEM::TYPE::OFFHAND:
             temp = offhands[in_index];
             offhands[in_index] = empty;
             quantity.offhands -= 1;
-        }
-        if (in_type == ITEM::TYPE::ELEMENTAL) {
+            break;
+        case ITEM::TYPE::ELEMENTAL:
             temp = elemental[in_index];
             elemental[in_index] = empty;
             quantity.elemental -= 1;
-        }
-        if (in_type == ITEM::TYPE::DEMONIC) {
+            break;
+        case ITEM::TYPE::DEMONIC:
             temp = demonic[in_index];
             demonic[in_index] = empty;
             quantity.demonic -= 1;
-        }
-        if (in_type == ITEM::TYPE::ANGELIC) {
+            break;
+        case ITEM::TYPE::ANGELIC:
             temp = angelic[in_index];
             angelic[in_index] = empty;
             quantity.angelic -= 1;
-        }
-        if (in_type == ITEM::TYPE::SHIELD) {
+            break;
+        case ITEM::TYPE::SHIELD:
             temp = shields[in_index];
             shields[in_index] = empty;
             quantity.shields -= 1;
-        }
-        if (in_type == ITEM::TYPE::STAFF) {
+            break;
+        case ITEM::TYPE::STAFF:
             temp = staffs[in_index];
             staffs[in_index] = empty;
             quantity.staffs -= 1;
-        }
-        if (in_type == ITEM::TYPE::CLAW) {
+            break;
+        case ITEM::TYPE::CLAW:
             temp = claws[in_index];
             claws[in_index] = empty;
             quantity.claws -= 1;
-        }
-        if (in_type == ITEM::TYPE::ITEM) {
+            break;
+        case ITEM::TYPE::ITEM:
             temp = items[in_index];
             items[in_index] = empty;
             quantity.items -= 1;
-        }
+            break;
+    }
     return(temp);
 }
 
