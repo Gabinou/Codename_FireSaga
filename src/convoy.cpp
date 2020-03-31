@@ -12,58 +12,39 @@ void Convoy::swap(int arr[], int ind1, int ind2) {
     arr[ind2] = buffer;
 }
 
-void Convoy::swapwpn(int wpn_type, int ind1, int ind2) {
+void Convoy::swapwpn(int wpntype, int ind1, int ind2) {
     Inventory_item buffer;
-    buffer = arr[ind1];
-    arr[ind1] = arr[ind2];
-    arr[ind2] = buffer;
-
-    if ((type & ITEM::TYPE::SWORD) > 0) {
-        swords[quantity.swords] = in_item;
+    switch (wpntype) {
+        case ITEM::TYPE::SWORD:
+            buffer = swords[ind1];
+            swords[ind1] = swords[ind2];
+            swords[ind2] = buffer;
+            break;
+        case ITEM::TYPE::LANCE:
+            break;
+        case ITEM::TYPE::AXE:
+            break;
+        case ITEM::TYPE::BOW:
+            break;
+        case ITEM::TYPE::TRINKET:
+            break;
+        case ITEM::TYPE::OFFHAND:
+            break;
+        case ITEM::TYPE::ELEMENTAL:
+            break;
+        case ITEM::TYPE::DEMONIC:
+            break;
+        case ITEM::TYPE::ANGELIC:
+            break;
+        case ITEM::TYPE::SHIELD:
+            break;
+        case ITEM::TYPE::STAFF:
+            break;
+        case ITEM::TYPE::CLAW:
+            break;
+        case ITEM::TYPE::ITEM:
+            break;
     }
-    if ((type & ITEM::TYPE::LANCE) > 0) {
-        lances[quantity.lances] = in_item;
-    }
-    if ((type & ITEM::TYPE::AXE) > 0) {
-        axes[quantity.axes] = in_item;
-    }
-    if ((type & ITEM::TYPE::BOW) > 0) {
-        bows[quantity.bows] = in_item;
-    }
-    if ((type & ITEM::TYPE::TRINKET) > 0) {
-        trinkets[quantity.trinkets] = in_item;
-    }
-    if ((type & ITEM::TYPE::OFFHAND) > 0) {
-        offhands[quantity.offhands] = in_item;
-    }
-    if ((type & ITEM::TYPE::ELEMENTAL) > 0) {
-        elemental[quantity.elemental] = in_item;
-    }
-    if ((type & ITEM::TYPE::DEMONIC) > 0) {
-        demonic[quantity.demonic] = in_item;
-        quantity.demonic += 1;
-    }
-    if ((type & ITEM::TYPE::ANGELIC) > 0) {
-        angelic[quantity.angelic] = in_item;
-        quantity.angelic += 1;
-    }
-    if ((type & ITEM::TYPE::SHIELD) > 0) {
-        shields[quantity.shields] = in_item;
-        quantity.shields += 1;
-    }
-    if ((type & ITEM::TYPE::STAFF) > 0) {
-        staffs[quantity.staffs] = in_item;
-        quantity.staffs += 1;
-    }
-    if ((type & ITEM::TYPE::CLAW) > 0) {
-        claws[quantity.claws] = in_item;
-        quantity.claws += 1;
-    }
-    if ((type & ITEM::TYPE::ITEM) > 0) {
-        items[quantity.items] = in_item;
-        quantity.items += 1;
-    }
-
 }
 
 
@@ -98,57 +79,69 @@ void Convoy::deposit(Inventory_item in_item) {
         if ((type & ITEM::TYPE::SWORD) > 0) {
             swords[quantity.swords] = in_item;
             quantity.swords += 1;
+            goto DEPOSIT_END;
         }
         if ((type & ITEM::TYPE::LANCE) > 0) {
             lances[quantity.lances] = in_item;
             quantity.lances += 1;
+            goto DEPOSIT_END;
         }
         if ((type & ITEM::TYPE::AXE) > 0) {
             axes[quantity.axes] = in_item;
             quantity.axes += 1;
+            goto DEPOSIT_END;
         }
         if ((type & ITEM::TYPE::BOW) > 0) {
             bows[quantity.bows] = in_item;
             quantity.bows += 1;
+            goto DEPOSIT_END;
         }
         if ((type & ITEM::TYPE::TRINKET) > 0) {
             trinkets[quantity.trinkets] = in_item;
             quantity.trinkets += 1;
+            goto DEPOSIT_END;
         }
         if ((type & ITEM::TYPE::OFFHAND) > 0) {
             offhands[quantity.offhands] = in_item;
             quantity.offhands += 1;
+            goto DEPOSIT_END;
         }
         if ((type & ITEM::TYPE::ELEMENTAL) > 0) {
             elemental[quantity.elemental] = in_item;
             quantity.elemental += 1;
+            goto DEPOSIT_END;
         }
         if ((type & ITEM::TYPE::DEMONIC) > 0) {
             demonic[quantity.demonic] = in_item;
             quantity.demonic += 1;
+            goto DEPOSIT_END;
         }
         if ((type & ITEM::TYPE::ANGELIC) > 0) {
             angelic[quantity.angelic] = in_item;
             quantity.angelic += 1;
+            goto DEPOSIT_END;
         }
         if ((type & ITEM::TYPE::SHIELD) > 0) {
             shields[quantity.shields] = in_item;
             quantity.shields += 1;
+            goto DEPOSIT_END;
         }
         if ((type & ITEM::TYPE::STAFF) > 0) {
             staffs[quantity.staffs] = in_item;
             quantity.staffs += 1;
+            goto DEPOSIT_END;
         }
         if ((type & ITEM::TYPE::CLAW) > 0) {
             claws[quantity.claws] = in_item;
             quantity.claws += 1;
+            goto DEPOSIT_END;
         }
         if ((type & ITEM::TYPE::ITEM) > 0) {
             items[quantity.items] = in_item;
             quantity.items += 1;
+            goto DEPOSIT_END;
         }
-
-        int sum = quantity.swords + quantity.lances + quantity.axes +
+        DEPOSIT_END: int sum = quantity.swords + quantity.lances + quantity.axes +
             quantity.bows + quantity.trinkets + quantity.offhands + quantity.elemental +
             quantity.demonic + quantity.angelic + quantity.shields + 
             quantity.staffs + quantity.claws + quantity.items;
@@ -265,7 +258,7 @@ int * Convoy::getarr(int wpntype, int stattype) {
 //     in_item[ind2] = buffer[0];
 // }
 
-Inventory_item Convoy::withdraw(int in_index, int in_type) {
+Inventory_item Convoy::withdraw(int in_index, int wpntype) {
     Inventory_item temp;
     Inventory_item empty;
     switch (wpntype) {
