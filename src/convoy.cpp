@@ -154,7 +154,7 @@ void Convoy::exchall(int ind1, int ind2) {
     items[ind2] = buffer[0];
 }
 
-void sort() {
+void sort(Inventory_item * in_item) {
 
 }
 

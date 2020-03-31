@@ -78,7 +78,7 @@ struct Weapon_stats {
     unsigned char prof;
     unsigned char range[2]; // [min_range, max_range]
     unsigned char hand[2]; //[1], [2] or [1,2]
-    bool dmg_type; // 0 is 1 physical. 1 magic.
+    bool dmg_type; // 0 is physical. 1 magic.
     unsigned short int price;
     unsigned char heal;
 };

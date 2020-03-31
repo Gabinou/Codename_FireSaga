@@ -194,6 +194,31 @@ enum TYPES {
 
 };
 }
+namespace DMG_TYPE {
+enum DMG_TYPES {
+    PHYSICAL = false,
+    MAGICAL =  true,
+};
+}
+namespace STAT {
+enum STATS {
+    PMIGHT,
+    MMIGHT,
+    HIT,
+    DODGE,
+    CRIT,
+    FAVOR,
+    WGT,
+    USES,
+    PROF,
+    RANGEMIN,
+    RANGEMAX,
+    HANDLEFT,
+    HANDRIGHT,
+    PRICE,
+    HEAL,
+};
+}
 namespace EFFECT {
 enum EFFECTS {
     // short unsigned int 16 bits->65536
