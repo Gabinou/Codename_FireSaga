@@ -7,7 +7,7 @@ if(NOT CMAKE_BUILD_TYPE)
   set(CMAKE_BUILD_TYPE Release)
 endif()
 
-project("FireSagaMaker")
+project("CodenameFireSaga")
 
 find_package(SDL2 REQUIRED)
 

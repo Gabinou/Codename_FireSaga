@@ -13,21 +13,24 @@
 class Convoy {
     private:
         unsigned int bank = 0;
-        unsigned char quantity = 0;
+        Quantity quantity;
+        bool full;
 
-        Inventory_item convoy[DEFAULT::CONVOY_SIZE], sword[DEFAULT::CONVOY_SIZE],
-                       lance[DEFAULT::CONVOY_SIZE], axe[DEFAULT::CONVOY_SIZE],
-                       bow[DEFAULT::CONVOY_SIZE], trinket[DEFAULT::CONVOY_SIZE],
-                       offhand[DEFAULT::CONVOY_SIZE], elemental[DEFAULT::CONVOY_SIZE],
+        Inventory_item all[DEFAULT::CONVOY_SIZE], swords[DEFAULT::CONVOY_SIZE],
+                       lances[DEFAULT::CONVOY_SIZE], axes[DEFAULT::CONVOY_SIZE],
+                       bows[DEFAULT::CONVOY_SIZE], trinkets[DEFAULT::CONVOY_SIZE],
+                       offhands[DEFAULT::CONVOY_SIZE], elemental[DEFAULT::CONVOY_SIZE],
                        demonic[DEFAULT::CONVOY_SIZE], angelic[DEFAULT::CONVOY_SIZE],
-                       shield[DEFAULT::CONVOY_SIZE], staff[DEFAULT::CONVOY_SIZE],
-                       claw[DEFAULT::CONVOY_SIZE], item[DEFAULT::CONVOY_SIZE];
-
+                       shields[DEFAULT::CONVOY_SIZE], staffs[DEFAULT::CONVOY_SIZE],
+                       claws[DEFAULT::CONVOY_SIZE], items[DEFAULT::CONVOY_SIZE];
     public:
         Convoy();
 
         void deposit(Inventory_item in_item);
         void withdraw(int index);
+        void sort();
+        void exch(int ind1, int ind2, Inventory_item * in_item);
+        void exchall(int ind1, int ind2);
         void earn(int in_money);
         void spend(int out_money);
 

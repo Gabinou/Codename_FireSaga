@@ -8,6 +8,7 @@
 #include "ECS.hpp"
 #include "map.hpp"
 #include "weapon.hpp"
+#include "convoy.hpp"
 #include "pathfinding.hpp"
 #include "tile.hpp"
 #include "unit.hpp"
@@ -29,6 +30,7 @@ class Game {
         SDL_Window * window;
         Settings settings;
         tinymt32_t tinymt;
+        Convoy convoy;
 
         void moveUnit(Entity & cursor);
 

@@ -19,6 +19,22 @@ struct Unit_state {
     char stone;
 };
 
+struct Quantity {
+    unsigned char swords;
+    unsigned char lances;
+    unsigned char axes;
+    unsigned char bows;
+    unsigned char trinkets;
+    unsigned char offhands;
+    unsigned char elemental;
+    unsigned char demonic;
+    unsigned char angelic;
+    unsigned char shields;
+    unsigned char staffs;
+    unsigned char claws;
+    unsigned char items;
+};
+
 struct Narrative {
     bool pc_death[UNIT::NAME::PC_END - UNIT::NAME::ERWIN] = {0};
     bool recruited[UNIT::NAME::PC_END - UNIT::NAME::ERWIN] = {0};
