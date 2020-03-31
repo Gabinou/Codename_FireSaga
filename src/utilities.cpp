@@ -22,6 +22,19 @@ int geometricslide(int distance, float geo_factor) {
     // but this is more elegant.
 }
 
+void quicksort(int arr[], int high, int low) {
+
+}
+
+void partition(int arr[], int high, int low) {
+
+    int pivot;
+    int i = low - 1;
+
+    for (int j = low; j <= high ; j++) {
+        if
+    }
+}
 
 std::vector<std::string> unitType(unsigned short int in_effect) {
     std::vector<std::string> names;
@@ -842,7 +855,6 @@ unsigned char mvtType(unsigned char in_class_index) {
     }
     return(mvt_type);
 }
-
 
 std::string className(unsigned char in_class_index) {
     std::string class_name;

@@ -154,9 +154,6 @@ void Convoy::exchall(int ind1, int ind2) {
     items[ind2] = buffer[0];
 }
 
-void sort(Inventory_item * in_item) {
-
-}
 
 
 Inventory_item Convoy::withdraw(int in_index, int in_type) {

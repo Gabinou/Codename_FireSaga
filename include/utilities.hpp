@@ -31,6 +31,9 @@ extern std::vector<std::string> unitType(unsigned short int in_effect);
 extern std::string wpnName(unsigned short int in_id);
 extern std::vector<std::string> wpnTypes(short unsigned int in_type);
 
+extern void quicksort(int arr[], int low, int high);
+extern void partition(int arr[], int low, int high);
+
 // extern void heal(Unit * in_unit, unsigned char heal);
 // extern * (Unit) makeheal(Weapon in_weapon);
 
