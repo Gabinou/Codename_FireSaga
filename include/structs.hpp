@@ -20,19 +20,19 @@ struct Unit_state {
 };
 
 struct Quantity {
-    unsigned char swords;
-    unsigned char lances;
-    unsigned char axes;
-    unsigned char bows;
-    unsigned char trinkets;
-    unsigned char offhands;
-    unsigned char elemental;
-    unsigned char demonic;
-    unsigned char angelic;
-    unsigned char shields;
-    unsigned char staffs;
-    unsigned char claws;
-    unsigned char items;
+    unsigned char swords = 0;
+    unsigned char lances = 0;
+    unsigned char axes = 0;
+    unsigned char bows = 0;
+    unsigned char trinkets = 0;
+    unsigned char offhands = 0;
+    unsigned char elemental = 0;
+    unsigned char demonic = 0;
+    unsigned char angelic = 0;
+    unsigned char shields = 0;
+    unsigned char staffs = 0;
+    unsigned char claws = 0;
+    unsigned char items = 0;
 };
 
 struct Narrative {
