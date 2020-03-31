@@ -72,48 +72,97 @@ void Convoy::deposit(Inventory_item in_item) {
 } 
       
 
-int * Convoy::getarr(int type) {
+int * Convoy::getarr(int wpntype, int stattype) {
     static int temparr[DEFAULT::CONVOY_SIZE];
     Inventory_item temp[DEFAULT::CONVOY_SIZE];
-    if ((type & ITEM::TYPE::SWORD) > 0) {
+    if ((wpntype & ITEM::TYPE::SWORD) > 0) {
         memcpy(temp, swords, DEFAULT::CONVOY_SIZE);
     }
-    // if ((type & ITEM::TYPE::LANCE) > 0) {
-    //     temp = lances;
-    // }
-    // if ((type & ITEM::TYPE::AXE) > 0) {
-    //     temp = axes;
-    // }
-    // if ((type & ITEM::TYPE::BOW) > 0) {
-    //     temp = bows;
-    // }
-    // if ((type & ITEM::TYPE::TRINKET) > 0) {
-    //     temp = trinkets;
-    // }
-    // if ((type & ITEM::TYPE::OFFHAND) > 0) {
-    //     temp = offhands;
-    // }
-    // if ((type & ITEM::TYPE::ELEMENTAL) > 0) {
-    //     temp = elemental;
-    // }
-    // if ((type & ITEM::TYPE::DEMONIC) > 0) {
-    //     temp = demonic;
-    // }
-    // if ((type & ITEM::TYPE::ANGELIC) > 0) {
-    //     temp = angelic;
-    // }
-    // if ((type & ITEM::TYPE::SHIELD) > 0) {
-    //     temp = shields;
-    // }
-    // if ((type & ITEM::TYPE::STAFF) > 0) {
-    //     temp = staffs;
-    // }
-    // if ((type & ITEM::TYPE::CLAW) > 0) {
-    //     temp = claws;
-    // }
-    // if ((type & ITEM::TYPE::ITEM) > 0) {
-    //     temp = items;
-    // }
+    if ((wpntype & ITEM::TYPE::LANCE) > 0) {
+        memcpy(temp, lances, DEFAULT::CONVOY_SIZE);
+    }
+    if ((wpntype & ITEM::TYPE::AXE) > 0) {
+        memcpy(temp, axes, DEFAULT::CONVOY_SIZE);
+    }
+    if ((wpntype & ITEM::TYPE::BOW) > 0) {
+        memcpy(temp, bows, DEFAULT::CONVOY_SIZE);
+    }
+    if ((wpntype & ITEM::TYPE::TRINKET) > 0) {
+        memcpy(temp, trinkets, DEFAULT::CONVOY_SIZE);
+    }
+    if ((wpntype & ITEM::TYPE::OFFHAND) > 0) {
+        memcpy(temp, offhands, DEFAULT::CONVOY_SIZE);
+    }
+    if ((wpntype & ITEM::TYPE::ELEMENTAL) > 0) {
+        memcpy(temp, elemental, DEFAULT::CONVOY_SIZE);
+    }
+    if ((wpntype & ITEM::TYPE::DEMONIC) > 0) {
+        memcpy(temp, demonic, DEFAULT::CONVOY_SIZE);
+    }
+    if ((wpntype & ITEM::TYPE::ANGELIC) > 0) {
+        memcpy(temp, angelic, DEFAULT::CONVOY_SIZE);
+    }
+    if ((wpntype & ITEM::TYPE::SHIELD) > 0) {
+        memcpy(temp, shields, DEFAULT::CONVOY_SIZE);
+    }
+    if ((wpntype & ITEM::TYPE::STAFF) > 0) {
+        memcpy(temp, staffs, DEFAULT::CONVOY_SIZE);
+    }
+    if ((wpntype & ITEM::TYPE::CLAW) > 0) {
+        memcpy(temp, claws, DEFAULT::CONVOY_SIZE);
+    }
+    if ((wpntype & ITEM::TYPE::ITEM) > 0) {
+        memcpy(temp, items, DEFAULT::CONVOY_SIZE);
+    }
+    for (int i = 0; i < DEFAULT::CONVOY_SIZE; i++) {
+        switch(stattype) {
+            case ITEM::STAT::PMIGHT:
+                temparr[i] = all_weapons[temp[i].id].getStats().Pmight;
+                break;
+            case ITEM::STAT::MMIGHT:
+                temparr[i] = all_weapons[temp[i].id].getStats().Mmight;
+                break;
+            case ITEM::STAT::HIT:
+                temparr[i] = all_weapons[temp[i].id].getStats().combat.hit;
+                break;
+            case ITEM::STAT::DODGE:
+                temparr[i] = all_weapons[temp[i].id].getStats().combat.dodge;
+                break;
+            case ITEM::STAT::CRIT:
+                temparr[i] = all_weapons[temp[i].id].getStats().combat.crit;
+                break;
+            case ITEM::STAT::FAVOR:
+                temparr[i] = all_weapons[temp[i].id].getStats().combat.favor;
+                break;
+            case ITEM::STAT::WGT:
+                temparr[i] = all_weapons[temp[i].id].getStats().wgt;
+                break;
+            case ITEM::STAT::USES:
+                temparr[i] = all_weapons[temp[i].id].getStats().uses;
+                break;
+            case ITEM::STAT::PROF:
+                temparr[i] = all_weapons[temp[i].id].getStats().prof;
+                break;
+            case ITEM::STAT::RANGEMIN:
+                temparr[i] = all_weapons[temp[i].id].getStats().range[0];
+                break;
+            case ITEM::STAT::RANGEMAX:
+                temparr[i] = all_weapons[temp[i].id].getStats().range[1];
+                break;
+            case ITEM::STAT::HANDLEFT:
+                temparr[i] = all_weapons[temp[i].id].getStats().hand[0];
+                break;
+            case ITEM::STAT::HANDRIGHT:
+                temparr[i] = all_weapons[temp[i].id].getStats().hand[1];
+                break;
+            case ITEM::STAT::PRICE:
+                temparr[i] = all_weapons[temp[i].id].getStats().price;
+                break;
+            case ITEM::STAT::HEAL:
+                temparr[i] = all_weapons[temp[i].id].getStats().heal;
+                break;
+        }
+    }
 
     return(temparr);
 }

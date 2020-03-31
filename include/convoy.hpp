@@ -28,7 +28,7 @@ class Convoy {
 
         void deposit(Inventory_item in_item);
         Inventory_item withdraw(int index, int type);
-        int * getarr(int type);
+        int * getarr(int wpntype, int stattype);
         void earn(int in_money);
         void spend(int out_money);
 
