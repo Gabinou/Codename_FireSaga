@@ -16,7 +16,7 @@ class Convoy {
         Quantity quantity;
         bool full;
 
-        Inventory_item all[DEFAULT::CONVOY_SIZE], swords[DEFAULT::CONVOY_SIZE],
+        Inventory_item swords[DEFAULT::CONVOY_SIZE],
                        lances[DEFAULT::CONVOY_SIZE], axes[DEFAULT::CONVOY_SIZE],
                        bows[DEFAULT::CONVOY_SIZE], trinkets[DEFAULT::CONVOY_SIZE],
                        offhands[DEFAULT::CONVOY_SIZE], elemental[DEFAULT::CONVOY_SIZE],
@@ -28,8 +28,7 @@ class Convoy {
 
         void deposit(Inventory_item in_item);
         Inventory_item withdraw(int index, int type);
-        void exch(int ind1, int ind2, Inventory_item * in_item);
-        void exchall(int ind1, int ind2);
+        int * getarr(int type);
         void earn(int in_money);
         void spend(int out_money);
 

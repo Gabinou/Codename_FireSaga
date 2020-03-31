@@ -72,89 +72,59 @@ void Convoy::deposit(Inventory_item in_item) {
 } 
       
 
-void Convoy::exch(int ind1, int ind2, Inventory_item * in_item) {
-    Inventory_item buffer[2];
-    buffer[0] = in_item[ind1];
-    buffer[1] = in_item[ind2];
-    in_item[ind1] = buffer[1];
-    in_item[ind2] = buffer[0];
+int * Convoy::getarr(int type) {
+    static int temparr[DEFAULT::CONVOY_SIZE];
+    Inventory_item temp[DEFAULT::CONVOY_SIZE];
+    if ((type & ITEM::TYPE::SWORD) > 0) {
+        memcpy(temp, swords, DEFAULT::CONVOY_SIZE);
+    }
+    // if ((type & ITEM::TYPE::LANCE) > 0) {
+    //     temp = lances;
+    // }
+    // if ((type & ITEM::TYPE::AXE) > 0) {
+    //     temp = axes;
+    // }
+    // if ((type & ITEM::TYPE::BOW) > 0) {
+    //     temp = bows;
+    // }
+    // if ((type & ITEM::TYPE::TRINKET) > 0) {
+    //     temp = trinkets;
+    // }
+    // if ((type & ITEM::TYPE::OFFHAND) > 0) {
+    //     temp = offhands;
+    // }
+    // if ((type & ITEM::TYPE::ELEMENTAL) > 0) {
+    //     temp = elemental;
+    // }
+    // if ((type & ITEM::TYPE::DEMONIC) > 0) {
+    //     temp = demonic;
+    // }
+    // if ((type & ITEM::TYPE::ANGELIC) > 0) {
+    //     temp = angelic;
+    // }
+    // if ((type & ITEM::TYPE::SHIELD) > 0) {
+    //     temp = shields;
+    // }
+    // if ((type & ITEM::TYPE::STAFF) > 0) {
+    //     temp = staffs;
+    // }
+    // if ((type & ITEM::TYPE::CLAW) > 0) {
+    //     temp = claws;
+    // }
+    // if ((type & ITEM::TYPE::ITEM) > 0) {
+    //     temp = items;
+    // }
+
+    return(temparr);
 }
 
-
-void Convoy::exchall(int ind1, int ind2) {
-    Inventory_item buffer[2];
-    buffer[0] = all[ind1];
-    buffer[1] = all[ind2];
-    all[ind1] = buffer[1];
-    all[ind2] = buffer[0];
-
-    buffer[0] = swords[ind1];
-    buffer[1] = swords[ind2];
-    swords[ind1] = buffer[1];
-    swords[ind2] = buffer[0];
-
-    buffer[0] = lances[ind1];
-    buffer[1] = lances[ind2];
-    lances[ind1] = buffer[1];
-    lances[ind2] = buffer[0];
-
-    buffer[0] = axes[ind1];
-    buffer[1] = axes[ind2];
-    axes[ind1] = buffer[1];
-    axes[ind2] = buffer[0];
-
-    buffer[0] = bows[ind1];
-    buffer[1] = bows[ind2];
-    bows[ind1] = buffer[1];
-    bows[ind2] = buffer[0];
-
-    buffer[0] = trinkets[ind1];
-    buffer[1] = trinkets[ind2];
-    trinkets[ind1] = buffer[1];
-    trinkets[ind2] = buffer[0];
-
-    buffer[0] = offhands[ind1];
-    buffer[1] = offhands[ind2];
-    offhands[ind1] = buffer[1];
-    offhands[ind2] = buffer[0];
-
-    buffer[0] = shields[ind1];
-    buffer[1] = shields[ind2];
-    shields[ind1] = buffer[1];
-    shields[ind2] = buffer[0];
-
-    buffer[0] = elemental[ind1];
-    buffer[1] = elemental[ind2];
-    elemental[ind1] = buffer[1];
-    elemental[ind2] = buffer[0];
-
-    buffer[0] = demonic[ind1];
-    buffer[1] = demonic[ind2];
-    demonic[ind1] = buffer[1];
-    demonic[ind2] = buffer[0];
-
-    buffer[0] = angelic[ind1];
-    buffer[1] = angelic[ind2];
-    angelic[ind1] = buffer[1];
-    angelic[ind2] = buffer[0];
-
-    buffer[0] = claws[ind1];
-    buffer[1] = claws[ind2];
-    claws[ind1] = buffer[1];
-    claws[ind2] = buffer[0];
-
-    buffer[0] = staffs[ind1];
-    buffer[1] = staffs[ind2];
-    staffs[ind1] = buffer[1];
-    staffs[ind2] = buffer[0];
-
-    buffer[0] = items[ind1];
-    buffer[1] = items[ind2];
-    items[ind1] = buffer[1];
-    items[ind2] = buffer[0];
-}
-
-
+// void Convoy::exch(int ind1, int ind2, Inventory_item * in_item) {
+//     Inventory_item buffer[2];
+//     buffer[0] = in_item[ind1];
+//     buffer[1] = in_item[ind2];
+//     in_item[ind1] = buffer[1];
+//     in_item[ind2] = buffer[0];
+// }
 
 Inventory_item Convoy::withdraw(int in_index, int in_type) {
     Inventory_item temp;
