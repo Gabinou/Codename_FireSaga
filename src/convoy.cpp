@@ -95,7 +95,6 @@ int Convoy::partition(int arr[], int low, int high, int wpntype) {
 void Convoy::deposit(Inventory_item in_item) {
     if (!full) {
         short unsigned int type = all_weapons[in_item.id].getType();
-
         if ((type & ITEM::TYPE::SWORD) > 0) {
             swords[quantity.swords] = in_item;
             quantity.swords += 1;
