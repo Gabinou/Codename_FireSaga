@@ -12,6 +12,9 @@
 
 class Convoy {
     private:
+        unsigned int bank = 0;
+        unsigned char quantity = 0;
+
         Inventory_item convoy[DEFAULT::CONVOY_SIZE], swords[DEFAULT::CONVOY_SIZE],
                        lances[DEFAULT::CONVOY_SIZE], axe[DEFAULT::CONVOY_SIZE],
                        bow[DEFAULT::CONVOY_SIZE], trinket[DEFAULT::CONVOY_SIZE],
@@ -22,6 +25,11 @@ class Convoy {
 
     public:
         Convoy();
+
+        void deposit(Inventory_item in_item);
+        void withdraw(int index);
+        void earn(int in_money);
+        void spend(int out_money);
 
         void write(const char * filename, const char * mode = "a");
         void writeXML(const char * filename, const bool append = false);

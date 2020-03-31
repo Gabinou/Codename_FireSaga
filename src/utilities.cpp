@@ -46,7 +46,6 @@ std::vector<std::string> unitType(unsigned short int in_effect) {
     return(names);
 }
 
-
 std::vector<std::string> wpnEffects(long unsigned int in_effect) {
     std::vector<std::string> names;
     if ((in_effect & ITEM::EFFECT::KILL1P) > 0) {
@@ -179,6 +178,9 @@ std::vector<std::string> wpnType(short unsigned int in_type) {
     }
     if ((in_type & ITEM::TYPE::CLAW) > 0) {
         names.push_back("Claw");
+    }
+    if ((in_type & ITEM::TYPE::ITEM) > 0) {
+        names.push_back("Item");
     }
     return(names);
 }
@@ -840,8 +842,7 @@ unsigned char mvtType(unsigned char in_class_index) {
     }
     return(mvt_type);
 }
-
-
+
 std::string className(unsigned char in_class_index) {
     std::string class_name;
     switch(in_class_index) {
