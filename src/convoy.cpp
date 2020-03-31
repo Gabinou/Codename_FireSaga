@@ -5,6 +5,93 @@ Convoy::Convoy() {
 
 }
 
+void Convoy::swap(int arr[], int ind1, int ind2) {
+    int buffer;
+    buffer = arr[ind1];
+    arr[ind1] = arr[ind2];
+    arr[ind2] = buffer;
+}
+
+void Convoy::swapwpn(int wpn_type, int ind1, int ind2) {
+    Inventory_item buffer;
+    buffer = arr[ind1];
+    arr[ind1] = arr[ind2];
+    arr[ind2] = buffer;
+
+    if ((type & ITEM::TYPE::SWORD) > 0) {
+        swords[quantity.swords] = in_item;
+    }
+    if ((type & ITEM::TYPE::LANCE) > 0) {
+        lances[quantity.lances] = in_item;
+    }
+    if ((type & ITEM::TYPE::AXE) > 0) {
+        axes[quantity.axes] = in_item;
+    }
+    if ((type & ITEM::TYPE::BOW) > 0) {
+        bows[quantity.bows] = in_item;
+    }
+    if ((type & ITEM::TYPE::TRINKET) > 0) {
+        trinkets[quantity.trinkets] = in_item;
+    }
+    if ((type & ITEM::TYPE::OFFHAND) > 0) {
+        offhands[quantity.offhands] = in_item;
+    }
+    if ((type & ITEM::TYPE::ELEMENTAL) > 0) {
+        elemental[quantity.elemental] = in_item;
+    }
+    if ((type & ITEM::TYPE::DEMONIC) > 0) {
+        demonic[quantity.demonic] = in_item;
+        quantity.demonic += 1;
+    }
+    if ((type & ITEM::TYPE::ANGELIC) > 0) {
+        angelic[quantity.angelic] = in_item;
+        quantity.angelic += 1;
+    }
+    if ((type & ITEM::TYPE::SHIELD) > 0) {
+        shields[quantity.shields] = in_item;
+        quantity.shields += 1;
+    }
+    if ((type & ITEM::TYPE::STAFF) > 0) {
+        staffs[quantity.staffs] = in_item;
+        quantity.staffs += 1;
+    }
+    if ((type & ITEM::TYPE::CLAW) > 0) {
+        claws[quantity.claws] = in_item;
+        quantity.claws += 1;
+    }
+    if ((type & ITEM::TYPE::ITEM) > 0) {
+        items[quantity.items] = in_item;
+        quantity.items += 1;
+    }
+
+}
+
+
+void Convoy::quicksort(int arr[], int low, int high, int wpntype) {
+    int pi;
+    if (low < high) {
+        pi = partition(arr, low, high, wpntype);
+        quicksort(arr, low, pi - 1, wpntype);
+        quicksort(arr, pi + 1, high, wpntype);
+    }
+}
+
+int Convoy::partition(int arr[], int low, int high, int wpntype) {
+    int pivot = arr[high];
+    int i = low - 1;
+    for (int j = low; j < high; j++) {
+        if (arr[j] < pivot) {
+            i++;
+            swap(arr, i, j);
+            swapwpn(wpntype, i, j);
+        }
+    }
+    swap(arr, i + 1, high);
+    swapwpn(wpntype, i + 1, high);
+    return(i + 1);
+}
+
+
 void Convoy::deposit(Inventory_item in_item) {
     if (!full) {
         short unsigned int type = all_weapons[in_item.id].getType();
@@ -61,6 +148,7 @@ void Convoy::deposit(Inventory_item in_item) {
             items[quantity.items] = in_item;
             quantity.items += 1;
         }
+
         int sum = quantity.swords + quantity.lances + quantity.axes +
             quantity.bows + quantity.trinkets + quantity.offhands + quantity.elemental +
             quantity.demonic + quantity.angelic + quantity.shields + 
@@ -75,45 +163,49 @@ void Convoy::deposit(Inventory_item in_item) {
 int * Convoy::getarr(int wpntype, int stattype) {
     static int temparr[DEFAULT::CONVOY_SIZE];
     Inventory_item temp[DEFAULT::CONVOY_SIZE];
-    if ((wpntype & ITEM::TYPE::SWORD) > 0) {
-        memcpy(temp, swords, DEFAULT::CONVOY_SIZE);
+
+    switch (wpntype) {
+        case ITEM::TYPE::SWORD:
+            memcpy(temp, swords, DEFAULT::CONVOY_SIZE);
+            break;
+        case ITEM::TYPE::LANCE:
+            memcpy(temp, lances, DEFAULT::CONVOY_SIZE);
+            break;
+        case ITEM::TYPE::AXE:
+            memcpy(temp, axes, DEFAULT::CONVOY_SIZE);
+            break;
+        case ITEM::TYPE::BOW:
+            memcpy(temp, bows, DEFAULT::CONVOY_SIZE);
+            break;
+        case ITEM::TYPE::TRINKET:
+            memcpy(temp, trinkets, DEFAULT::CONVOY_SIZE);
+            break;
+        case ITEM::TYPE::OFFHAND:
+            memcpy(temp, offhands, DEFAULT::CONVOY_SIZE);
+            break;
+        case ITEM::TYPE::ELEMENTAL:
+            memcpy(temp, elemental, DEFAULT::CONVOY_SIZE);
+            break;
+        case ITEM::TYPE::DEMONIC:
+            memcpy(temp, demonic, DEFAULT::CONVOY_SIZE);
+            break;
+        case ITEM::TYPE::ANGELIC:
+            memcpy(temp, angelic, DEFAULT::CONVOY_SIZE);
+            break;
+        case ITEM::TYPE::SHIELD:
+            memcpy(temp, shields, DEFAULT::CONVOY_SIZE);
+            break;
+        case ITEM::TYPE::STAFF:
+            memcpy(temp, staffs, DEFAULT::CONVOY_SIZE);
+            break;
+        case ITEM::TYPE::CLAW:
+            memcpy(temp, claws, DEFAULT::CONVOY_SIZE);
+            break;
+        case ITEM::TYPE::ITEM:
+            memcpy(temp, items, DEFAULT::CONVOY_SIZE);
+            break;
     }
-    if ((wpntype & ITEM::TYPE::LANCE) > 0) {
-        memcpy(temp, lances, DEFAULT::CONVOY_SIZE);
-    }
-    if ((wpntype & ITEM::TYPE::AXE) > 0) {
-        memcpy(temp, axes, DEFAULT::CONVOY_SIZE);
-    }
-    if ((wpntype & ITEM::TYPE::BOW) > 0) {
-        memcpy(temp, bows, DEFAULT::CONVOY_SIZE);
-    }
-    if ((wpntype & ITEM::TYPE::TRINKET) > 0) {
-        memcpy(temp, trinkets, DEFAULT::CONVOY_SIZE);
-    }
-    if ((wpntype & ITEM::TYPE::OFFHAND) > 0) {
-        memcpy(temp, offhands, DEFAULT::CONVOY_SIZE);
-    }
-    if ((wpntype & ITEM::TYPE::ELEMENTAL) > 0) {
-        memcpy(temp, elemental, DEFAULT::CONVOY_SIZE);
-    }
-    if ((wpntype & ITEM::TYPE::DEMONIC) > 0) {
-        memcpy(temp, demonic, DEFAULT::CONVOY_SIZE);
-    }
-    if ((wpntype & ITEM::TYPE::ANGELIC) > 0) {
-        memcpy(temp, angelic, DEFAULT::CONVOY_SIZE);
-    }
-    if ((wpntype & ITEM::TYPE::SHIELD) > 0) {
-        memcpy(temp, shields, DEFAULT::CONVOY_SIZE);
-    }
-    if ((wpntype & ITEM::TYPE::STAFF) > 0) {
-        memcpy(temp, staffs, DEFAULT::CONVOY_SIZE);
-    }
-    if ((wpntype & ITEM::TYPE::CLAW) > 0) {
-        memcpy(temp, claws, DEFAULT::CONVOY_SIZE);
-    }
-    if ((wpntype & ITEM::TYPE::ITEM) > 0) {
-        memcpy(temp, items, DEFAULT::CONVOY_SIZE);
-    }
+
     for (int i = 0; i < DEFAULT::CONVOY_SIZE; i++) {
         switch(stattype) {
             case ITEM::STAT::PMIGHT:
@@ -163,7 +255,6 @@ int * Convoy::getarr(int wpntype, int stattype) {
                 break;
         }
     }
-
     return(temparr);
 }
 

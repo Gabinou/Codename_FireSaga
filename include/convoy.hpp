@@ -32,6 +32,11 @@ class Convoy {
         void earn(int in_money);
         void spend(int out_money);
 
+        void quicksort(int arr[], int low, int high, int wpntype);
+        int partition(int arr[], int low, int high, int wpntype);
+        void swap(int arr[], int ind1, int ind2);
+        void swapwpn(int wpntype, int ind1, int ind2);
+
         void write(const char * filename, const char * mode = "a");
         void writeXML(const char * filename, const bool append = false);
         void readXML(const char * filename);
