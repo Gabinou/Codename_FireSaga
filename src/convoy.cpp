@@ -187,7 +187,7 @@ void Convoy::deposit(Inventory_item in_item) {
     }
 } 
 void Convoy::sort(int wpntype, int stattype) {
-    int arr[DEFAULT::CONVOY_SIZE];
+    int * arr;
     arr = getarr(wpntype, stattype);
     quicksort(arr, 0, DEFAULT::CONVOY_SIZE, wpntype);
 
