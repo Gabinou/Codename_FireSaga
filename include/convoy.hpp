@@ -27,7 +27,7 @@ class Convoy {
         Convoy();
 
         void deposit(Inventory_item in_item);
-        void withdraw(int index);
+        Inventory_item withdraw(int index, int type);
         void sort();
         void exch(int ind1, int ind2, Inventory_item * in_item);
         void exchall(int ind1, int ind2);
