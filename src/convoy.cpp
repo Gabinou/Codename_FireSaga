@@ -184,11 +184,13 @@ void Convoy::deposit(Inventory_item in_item) {
         if (sum >= DEFAULT::CONVOY_SIZE) {
             full = true;
         }
+    } else {
+        SDL_Log("Convoy is full");
     }
 } 
 void Convoy::check(int wpntype) {
-    Inventory_item * tempitems = getitems(wpntype);
-    int tempqty = getquantity(wpntype);
+    Inventory_item * tempitems = getItems(wpntype);
+    int tempqty = getQuantity(wpntype);
     SDL_Log("Quantity: %d \nArray:\n", tempqty);
     for (int i = 0; i < tempqty; i++) {
         if (tempitems[i].id > 0) {
@@ -200,11 +202,11 @@ void Convoy::check(int wpntype) {
 void Convoy::sort(int wpntype, int stattype) {
     int * arr;
     arr = getarr(wpntype, stattype);
-    int high = getquantity(wpntype);
+    int high = getQuantity(wpntype);
     quicksort(arr, 0, high, wpntype);
 }
 
-Inventory_item * Convoy::getitems(int wpntype) {
+Inventory_item * Convoy::getItems(int wpntype) {
     static Inventory_item temp[DEFAULT::CONVOY_SIZE];
 
     switch (wpntype) {
@@ -251,9 +253,11 @@ Inventory_item * Convoy::getitems(int wpntype) {
     return(temp);
 }
 
-      
+Quantity Convoy::getQuantity() {
+    return(quantity);
+}
 
-int Convoy::getquantity(int wpntype) {
+int Convoy::getQuantity(int wpntype) {
     static int temp;
         switch (wpntype) {
         case ITEM::TYPE::SWORD:
@@ -302,7 +306,7 @@ int Convoy::getquantity(int wpntype) {
 
 int * Convoy::getarr(int wpntype, int stattype) {
     static int temparr[DEFAULT::CONVOY_SIZE];
-    Inventory_item * temp = getitems(wpntype);
+    Inventory_item * temp = getItems(wpntype);
 
     for (int i = 0; i < DEFAULT::CONVOY_SIZE; i++) {
         switch(stattype) {
@@ -438,7 +442,29 @@ void Convoy::spend(int out_money) {
 } 
 
 
+void testConvoyfull() {
+    Convoy test_convoy;
+    Inventory_item temp;
+    temp.id = ITEM::NAME::WOODEN_SWORD;
+    test_convoy.deposit(temp);
+    for (int i = 0; i < (DEFAULT::CONVOY_SIZE + 2); i++) {
+        test_convoy.deposit(temp);
+    }
+    test_convoy.withdraw(0, ITEM::TYPE::SWORD);
+    temp.id = ITEM::NAME::DAMAS_LANCE;
+    test_convoy.deposit(temp);
+    test_convoy.deposit(temp);
+
+
+}
+
+
 void testConvoy() {
+    testConvoyfull();
+    testConvoysort();
+}
+
+void testConvoysort() {
     SDL_Log("Testing Convoy sorting abilities");
     Convoy test_convoy;
     Inventory_item temp;

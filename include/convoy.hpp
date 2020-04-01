@@ -39,9 +39,10 @@ class Convoy {
 
         void sort(int wpntype, int stattype);
 
-        int getquantity(int wpntype);
+        int getQuantity(int wpntype);
+        Quantity getQuantity();
         int * getarr(int wpntype, int stattype);
-        Inventory_item * getitems(int wpntype);
+        Inventory_item * getItems(int wpntype);
 
         void check(int wpntype);
 
@@ -51,5 +52,7 @@ class Convoy {
 };
 
 extern void testConvoy();
+extern void testConvoyfull();
+extern void testConvoysort();
 
 #endif /* CONVOY_HPP */
