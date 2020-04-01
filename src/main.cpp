@@ -31,6 +31,7 @@ int main(int argc, char * argv[]) {
     baseWeapons();
     SDL_Log("Testing weapon: %s\n", all_weapons[ITEM::NAME::WOODEN_SWORD].getName().c_str());
     testXMLWeapons();
+    writeallXMLWeapons();
     
     baseUnits();
     SDL_Log("Testing units: %s \n", all_units[UNIT::NAME::SILOU].getName().c_str());

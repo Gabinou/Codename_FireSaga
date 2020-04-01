@@ -57,6 +57,7 @@ extern std::vector<Weapon> loaded_weapons;
 
 void baseWeapons();
 void testXMLWeapons();
+void writeallXMLWeapons();
 std::vector<Weapon> baseWeapons(std::vector<short int> toload);
 
 #endif /* WEAPON_HPP */

@@ -246,6 +246,13 @@ void testXMLWeapons(){
     temp_wpn.writeXML("weapon_rewrite.xml");
 }
 
+void writeallXMLWeapons() {
+    SDL_Log("Writinga all Weapon in an xml\n");
+    for (int i = 1; i < ITEM::NAME::END; i++) {
+        all_weapons[i].writeXML("all_weapons.xml", true);
+    }
+}
+
 std::vector<Weapon> baseWeapons(std::vector<short int> toload) {
     SDL_Log("Making some base weapons");
     Weapon temp_wpn;

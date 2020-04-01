@@ -189,6 +189,7 @@ void Convoy::deposit(Inventory_item in_item) {
 void Convoy::check(int wpntype) {
     Inventory_item * tempitems = getitems(wpntype);
     int tempqty = getquantity(wpntype);
+    SDL_Log("Array:\n");
     for (int i = 0; i < tempqty; i++) {
         SDL_Log("%d: %s", i, all_weapons[tempitems[i].id].getName().c_str());
     }
@@ -479,8 +480,17 @@ void testConvoy() {
     temp.id = ITEM::NAME::MERCIFUL_BLADE;
     test_convoy.deposit(temp);
 
+    // test_convoy.check(ITEM::TYPE::SWORD);
+    // test_convoy.sort(ITEM::TYPE::SWORD, ITEM::STAT::PMIGHT);
+    // test_convoy.check(ITEM::TYPE::SWORD);
+    // test_convoy.sort(ITEM::TYPE::SWORD, ITEM::STAT::MMIGHT);
+    // test_convoy.check(ITEM::TYPE::SWORD);
+    // test_convoy.sort(ITEM::TYPE::SWORD, ITEM::STAT::DODGE);
+    // test_convoy.check(ITEM::TYPE::SWORD);
+    // test_convoy.sort(ITEM::TYPE::SWORD, ITEM::STAT::CRIT);
+    // test_convoy.check(ITEM::TYPE::SWORD);
+    test_convoy.sort(ITEM::TYPE::SWORD, ITEM::STAT::HIT);
     test_convoy.check(ITEM::TYPE::SWORD);
-    test_convoy.sort(ITEM::TYPE::SWORD, ITEM::STAT::PMIGHT);
-    test_convoy.check(ITEM::TYPE::SWORD);
-    
+
+
 }
