@@ -186,16 +186,22 @@ void Convoy::deposit(Inventory_item in_item) {
         }
     }
 } 
+void Convoy::check(int wpntype) {
+    Inventory_item * tempitems = getitems(wpntype);
+    int tempqty = getquantity(wpntype);
+    for (int i = 0; i < tempqty; i++) {
+
+    }
+}
+
 void Convoy::sort(int wpntype, int stattype) {
     int * arr;
     arr = getarr(wpntype, stattype);
     quicksort(arr, 0, DEFAULT::CONVOY_SIZE, wpntype);
 }
-      
 
-int * Convoy::getarr(int wpntype, int stattype) {
-    static int temparr[DEFAULT::CONVOY_SIZE];
-    Inventory_item temp[DEFAULT::CONVOY_SIZE];
+Inventory_item * Convoy::getitems(int wpntype) {
+    static Inventory_item temp[DEFAULT::CONVOY_SIZE];
 
     switch (wpntype) {
         case ITEM::TYPE::SWORD:
@@ -238,6 +244,61 @@ int * Convoy::getarr(int wpntype, int stattype) {
             memcpy(temp, items, DEFAULT::CONVOY_SIZE);
             break;
     }
+    return(temp);
+}
+
+      
+
+int Convoy::getquantity(int wpntype) {
+    static int temp;
+        switch (wpntype) {
+        case ITEM::TYPE::SWORD:
+            temp = quantity.swords;
+            break;
+        case ITEM::TYPE::LANCE:
+            temp = quantity.lances;
+            break;
+        case ITEM::TYPE::AXE:
+            temp = quantity.axes;
+            break;
+        case ITEM::TYPE::BOW:
+            temp = quantity.bows;
+            break;
+        case ITEM::TYPE::TRINKET:
+            temp = quantity.trinkets;
+            break;
+        case ITEM::TYPE::OFFHAND:
+            temp = quantity.offhands;
+            break;
+        case ITEM::TYPE::ELEMENTAL:
+            temp = quantity.elemental;
+            break;
+        case ITEM::TYPE::DEMONIC:
+            temp = quantity.demonic;
+            break;
+        case ITEM::TYPE::ANGELIC:
+            temp = quantity.angelic;
+            break;
+        case ITEM::TYPE::SHIELD:
+            temp = quantity.shields;
+            break;
+        case ITEM::TYPE::STAFF:
+            temp = quantity.staffs;
+            break;
+        case ITEM::TYPE::CLAW:
+            temp = quantity.claws;
+            break;
+        case ITEM::TYPE::ITEM:
+            temp = quantity.items;
+            break;
+    }
+    return(temp);
+}
+
+
+int * Convoy::getarr(int wpntype, int stattype) {
+    static int temparr[DEFAULT::CONVOY_SIZE];
+    Inventory_item * temp = getitems(wpntype);
 
     for (int i = 0; i < DEFAULT::CONVOY_SIZE; i++) {
         switch(stattype) {
@@ -374,9 +435,48 @@ void Convoy::spend(int out_money) {
 
 
 void testConvoy() {
-    SDL_Log("Testing Convoy sorting abilities.")
+    SDL_Log("Testing Convoy sorting abilities.");
     Convoy test_convoy;
     Inventory_item temp;
     temp.id = ITEM::NAME::WOODEN_SWORD;
     test_convoy.deposit(temp);
+    temp.id = ITEM::NAME::KITCHEN_KNIFE;
+    test_convoy.deposit(temp);
+    temp.id = ITEM::NAME::WRATH_SWORD;
+    test_convoy.deposit(temp);
+    temp.id = ITEM::NAME::FLEURET;
+    test_convoy.deposit(temp);
+    temp.id = ITEM::NAME::DAMAS_SWORD;
+    test_convoy.deposit(temp);
+    temp.id = ITEM::NAME::DAMAS_SWORD;
+    test_convoy.deposit(temp);
+    temp.id = ITEM::NAME::WOODEN_SWORD;
+    test_convoy.deposit(temp);
+    temp.id = ITEM::NAME::WOODEN_SWORD;
+    test_convoy.deposit(temp);
+    temp.id = ITEM::NAME::WOODEN_SWORD;
+    test_convoy.deposit(temp);
+    temp.id = ITEM::NAME::WOODEN_SWORD;
+    test_convoy.deposit(temp);
+    temp.id = ITEM::NAME::WOODEN_SWORD;
+    test_convoy.deposit(temp);
+    temp.id = ITEM::NAME::WOODEN_SWORD;
+    test_convoy.deposit(temp);
+    temp.id = ITEM::NAME::WOODEN_SWORD;
+    test_convoy.deposit(temp);
+    temp.id = ITEM::NAME::WOODEN_SWORD;
+    test_convoy.deposit(temp);
+    temp.id = ITEM::NAME::WOODEN_SWORD;
+    test_convoy.deposit(temp);
+    temp.id = ITEM::NAME::WOODEN_SWORD;
+    test_convoy.deposit(temp);
+    temp.id = ITEM::NAME::WOODEN_SWORD;
+    test_convoy.deposit(temp);
+    temp.id = ITEM::NAME::WOODEN_SWORD;
+    test_convoy.deposit(temp);
+    temp.id = ITEM::NAME::WOODEN_SWORD;
+    test_convoy.deposit(temp);
+    temp.id = ITEM::NAME::WOODEN_SWORD;
+    test_convoy.deposit(temp);
+
 }

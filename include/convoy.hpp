@@ -29,7 +29,6 @@ class Convoy {
 
         void deposit(Inventory_item in_item);
         Inventory_item withdraw(int index, int type);
-        int * getarr(int wpntype, int stattype);
         void earn(int in_money);
         void spend(int out_money);
 
@@ -39,6 +38,12 @@ class Convoy {
         void swapwpn(int wpntype, int ind1, int ind2);
 
         void sort(int wpntype, int stattype);
+
+        int getquantity(int wpntype);
+        int * getarr(int wpntype, int stattype);
+        Inventory_item * getitems(int wpntype);
+
+        void check(int wpntype);
 
         void write(const char * filename, const char * mode = "a");
         void writeXML(const char * filename, const bool append = false);
