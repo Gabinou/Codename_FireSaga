@@ -44,7 +44,7 @@ class Convoy {
         int * getarr(int wpntype, int stattype);
         Inventory_item * getItems(int wpntype);
 
-        void check(int wpntype);
+        void contents(int wpntype);
 
         void write(const char * filename, const char * mode = "a");
         void writeXML(const char * filename, const bool append = false);

@@ -112,68 +112,68 @@ int Convoy::partition(int arr[], int low, int high, int wpntype) {
 void Convoy::deposit(Inventory_item in_item) {
     if (!full) {
         SDL_Log("Depositing: %d", in_item.id);
-        short unsigned int type = all_weapons[in_item.id].getType();
-        if ((type & ITEM::TYPE::SWORD) > 0) {
+        short unsigned int wpntypecode = all_weapons[in_item.id].getType();
+        if ((wpntypecode & ITEM::TYPE::SWORD) > 0) {
             swords[quantity.swords] = in_item;
             quantity.swords += 1;
             goto DEPOSIT_END;
         }
-        if ((type & ITEM::TYPE::LANCE) > 0) {
+        if ((wpntypecode & ITEM::TYPE::LANCE) > 0) {
             lances[quantity.lances] = in_item;
             quantity.lances += 1;
             goto DEPOSIT_END;
         }
-        if ((type & ITEM::TYPE::AXE) > 0) {
+        if ((wpntypecode & ITEM::TYPE::AXE) > 0) {
             axes[quantity.axes] = in_item;
             quantity.axes += 1;
             goto DEPOSIT_END;
         }
-        if ((type & ITEM::TYPE::BOW) > 0) {
+        if ((wpntypecode & ITEM::TYPE::BOW) > 0) {
             bows[quantity.bows] = in_item;
             quantity.bows += 1;
             goto DEPOSIT_END;
         }
-        if ((type & ITEM::TYPE::TRINKET) > 0) {
+        if ((wpntypecode & ITEM::TYPE::TRINKET) > 0) {
             trinkets[quantity.trinkets] = in_item;
             quantity.trinkets += 1;
             goto DEPOSIT_END;
         }
-        if ((type & ITEM::TYPE::OFFHAND) > 0) {
+        if ((wpntypecode & ITEM::TYPE::OFFHAND) > 0) {
             offhands[quantity.offhands] = in_item;
             quantity.offhands += 1;
             goto DEPOSIT_END;
         }
-        if ((type & ITEM::TYPE::ELEMENTAL) > 0) {
+        if ((wpntypecode & ITEM::TYPE::ELEMENTAL) > 0) {
             elemental[quantity.elemental] = in_item;
             quantity.elemental += 1;
             goto DEPOSIT_END;
         }
-        if ((type & ITEM::TYPE::DEMONIC) > 0) {
+        if ((wpntypecode & ITEM::TYPE::DEMONIC) > 0) {
             demonic[quantity.demonic] = in_item;
             quantity.demonic += 1;
             goto DEPOSIT_END;
         }
-        if ((type & ITEM::TYPE::ANGELIC) > 0) {
+        if ((wpntypecode & ITEM::TYPE::ANGELIC) > 0) {
             angelic[quantity.angelic] = in_item;
             quantity.angelic += 1;
             goto DEPOSIT_END;
         }
-        if ((type & ITEM::TYPE::SHIELD) > 0) {
+        if ((wpntypecode & ITEM::TYPE::SHIELD) > 0) {
             shields[quantity.shields] = in_item;
             quantity.shields += 1;
             goto DEPOSIT_END;
         }
-        if ((type & ITEM::TYPE::STAFF) > 0) {
+        if ((wpntypecode & ITEM::TYPE::STAFF) > 0) {
             staffs[quantity.staffs] = in_item;
             quantity.staffs += 1;
             goto DEPOSIT_END;
         }
-        if ((type & ITEM::TYPE::CLAW) > 0) {
+        if ((wpntypecode & ITEM::TYPE::CLAW) > 0) {
             claws[quantity.claws] = in_item;
             quantity.claws += 1;
             goto DEPOSIT_END;
         }
-        if ((type & ITEM::TYPE::ITEM) > 0) {
+        if ((wpntypecode & ITEM::TYPE::ITEM) > 0) {
             items[quantity.items] = in_item;
             quantity.items += 1;
             goto DEPOSIT_END;
@@ -193,7 +193,7 @@ void Convoy::isFull() {
     full = (sum >= DEFAULT::CONVOY_SIZE);
 }
 
-void Convoy::check(int wpntype) {
+void Convoy::contents(int wpntype) {
     Inventory_item * tempitems = getItems(wpntype);
     int tempqty = getQuantity(wpntype);
     SDL_Log("Quantity: %d \nArray:\n", tempqty);
@@ -450,7 +450,6 @@ void Convoy::spend(int out_money) {
     bank += out_money;
 } 
 
-
 void testConvoyfull() {
     Convoy test_convoy;
     Inventory_item temp;
@@ -464,7 +463,6 @@ void testConvoyfull() {
     temp.id = ITEM::NAME::DAMAS_LANCE;
     test_convoy.deposit(temp);
     test_convoy.deposit(temp);
-
 
 }
 
@@ -518,6 +516,29 @@ void testConvoysort() {
     test_convoy.deposit(temp);
     temp.id = ITEM::NAME::MERCIFUL_BLADE;
     test_convoy.deposit(temp);
+
+
+    temp.id = ITEM::NAME::DAMAS_LANCE;
+    test_convoy.deposit(temp);
+    temp.id = ITEM::NAME::ACHILLES;
+    test_convoy.deposit(temp);
+    temp.id = ITEM::NAME::VEL;
+    test_convoy.deposit(temp);
+    temp.id = ITEM::NAME::MERCIFUL_BLADE;
+    test_convoy.deposit(temp);
+    temp.id = ITEM::NAME::MERCIFUL_BLADE;
+    test_convoy.deposit(temp);
+    temp.id = ITEM::NAME::MERCIFUL_BLADE;
+    test_convoy.deposit(temp);
+    temp.id = ITEM::NAME::MERCIFUL_BLADE;
+    test_convoy.deposit(temp);
+    temp.id = ITEM::NAME::MERCIFUL_BLADE;
+    test_convoy.deposit(temp);
+    temp.id = ITEM::NAME::MERCIFUL_BLADE;
+    test_convoy.deposit(temp);
+    temp.id = ITEM::NAME::MERCIFUL_BLADE;
+    test_convoy.deposit(temp);
+
 
     SDL_Log("Base Convoy Order.");
     test_convoy.check(ITEM::TYPE::SWORD);
