@@ -48,6 +48,8 @@ int main(int argc, char * argv[]) {
     firesaga->init("FireSaga", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, firesaga->getSettings().res.x, firesaga->getSettings().res.y, false);
     firesaga->makeFPSEntity();
 
+    
+
     // firesaga->loadMap("..//maps//test_tilemap.txt");
     firesaga->loadMap(0);
 

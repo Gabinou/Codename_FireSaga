@@ -22,6 +22,13 @@ int geometricslide(int distance, float geo_factor) {
     // but this is more elegant.
 }
 
+void printarr(int arr[], int size) {
+    printf("Array:\n");
+    for (int i = 0; i < size; i++) {
+        printf("%d\n", arr[i]);
+    }
+}
+
 std::vector<std::string> unitType(unsigned short int in_effect) {
     std::vector<std::string> names;
     if ((in_effect & UNIT::TYPE::HUMAN) > 0) {

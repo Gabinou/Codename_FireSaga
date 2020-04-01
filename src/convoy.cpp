@@ -374,7 +374,9 @@ void Convoy::spend(int out_money) {
 
 
 void testConvoy() {
+    SDL_Log("Testing Convoy sorting abilities.")
     Convoy test_convoy;
     Inventory_item temp;
-    // test_convoy.deposit();
+    temp.id = ITEM::NAME::WOODEN_SWORD;
+    test_convoy.deposit(temp);
 }
