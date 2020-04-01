@@ -206,8 +206,11 @@ void Convoy::contents(int wpntype) {
 
 void Convoy::sort(int wpntype, int stattype) {
     int * arr;
+    int * arrid;
     arr = getarr(wpntype, stattype);
+    // arrid = getarr(wpntype, ITEM::STAT::ID);
     int high = getQuantity(wpntype);
+    // quicksort(arrid, 0, high - 1, wpntype);
     quicksort(arr, 0, high - 1, wpntype);
 }
 
@@ -315,6 +318,9 @@ int * Convoy::getarr(int wpntype, int stattype) {
 
     for (int i = 0; i < DEFAULT::CONVOY_SIZE; i++) {
         switch(stattype) {
+            case ITEM::STAT::ID:
+                temparr[i] = temp[i].id;
+                break;
             case ITEM::STAT::PMIGHT:
                 temparr[i] = all_weapons[temp[i].id].getStats().Pmight;
                 break;
