@@ -248,6 +248,7 @@ void testXMLWeapons(){
 
 void writeallXMLWeapons() {
     SDL_Log("Writinga all Weapon in an xml\n");
+    PHYSFS_delete("all_weapons.xml");
     for (int i = 1; i < ITEM::NAME::END; i++) {
         all_weapons[i].writeXML("all_weapons.xml", true);
     }
@@ -449,7 +450,7 @@ std::vector<Weapon> baseWeapons(std::vector<short int> toload) {
                 wpn_out[ITEM::NAME::IRON_LANCE] = temp_wpn;
                 break;
             case ITEM::NAME::WRATH_LANCE:
-                temp_wpn_stats = {7, 0, 80, 30, 0, 0, 3, 30, 9, {1,1}, {1,2}, 0, 1000, 0};
+                temp_wpn_stats = {7, 0, 80, 0, 30, 0, 3, 30, 9, {1,1}, {1,2}, 0, 1000, 0};
                 temp_wpn = Weapon(ITEM::TYPE::LANCE, temp_wpn_stats, ITEM::NAME::WRATH_LANCE);
                 temp_wpn.setDescription("Increases critical hit chance.");
                 wpn_out[ITEM::NAME::WRATH_LANCE] = temp_wpn;
@@ -548,7 +549,7 @@ std::vector<Weapon> baseWeapons(std::vector<short int> toload) {
                 wpn_out[ITEM::NAME::DAMAS_AXE] = temp_wpn;
                 break;
             case ITEM::NAME::WRATH_AXE:
-                temp_wpn_stats = {14, 0, 65, 20, 0, 0, 11, 30, 10, {1,1}, {1,2}, 0, 1000, 0};
+                temp_wpn_stats = {14, 0, 65, 0, 20, 0, 11, 30, 10, {1,1}, {1,2}, 0, 1000, 0};
                 temp_wpn = Weapon(ITEM::TYPE::AXE, temp_wpn_stats, ITEM::NAME::WRATH_AXE);
                 temp_wpn.setDescription("Increases critical hit chance.");
                 wpn_out[ITEM::NAME::WRATH_AXE] = temp_wpn;
@@ -1190,7 +1191,7 @@ void baseWeapons() {
     temp_wpn = Weapon(ITEM::TYPE::LANCE, temp_wpn_stats, ITEM::NAME::IRON_LANCE);
     temp_wpn.setDescription("Sharp iron tip on a wooden stick. Standard military fare.");
     all_weapons[ITEM::NAME::IRON_LANCE] = temp_wpn;
-    temp_wpn_stats = {7, 0, 80, 30, 0, 0, 3, 30, 9, {1,1}, {1,2}, 0, 1000, 0};
+    temp_wpn_stats = {7, 0, 80, 0, 30, 0, 3, 30, 9, {1,1}, {1,2}, 0, 1000, 0};
     temp_wpn = Weapon(ITEM::TYPE::LANCE, temp_wpn_stats, ITEM::NAME::WRATH_LANCE);
     temp_wpn.setDescription("Increases critical hit chance.");
     all_weapons[ITEM::NAME::WRATH_LANCE] = temp_wpn;
@@ -1257,7 +1258,7 @@ void baseWeapons() {
     temp_wpn = Weapon(ITEM::TYPE::AXE, temp_wpn_stats, ITEM::NAME::DAMAS_AXE);
     temp_wpn.setDescription("Damas cutting head on a stick. Fancy and deadly. Scorned by dumb bandits.");
     all_weapons[ITEM::NAME::DAMAS_AXE] = temp_wpn;
-    temp_wpn_stats = {14, 0, 65, 20, 0, 0, 11, 30, 10, {1,1}, {1,2}, 0, 1000, 0};
+    temp_wpn_stats = {14, 0, 65, 0, 20, 0, 11, 30, 10, {1,1}, {1,2}, 0, 1000, 0};
     temp_wpn = Weapon(ITEM::TYPE::AXE, temp_wpn_stats, ITEM::NAME::WRATH_AXE);
     temp_wpn.setDescription("Increases critical hit chance.");
     all_weapons[ITEM::NAME::WRATH_AXE] = temp_wpn;

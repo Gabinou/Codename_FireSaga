@@ -208,7 +208,7 @@ void Convoy::sort(int wpntype, int stattype) {
     int * arr;
     arr = getarr(wpntype, stattype);
     int high = getQuantity(wpntype);
-    quicksort(arr, 0, high, wpntype);
+    quicksort(arr, 0, high - 1, wpntype);
 }
 
 Inventory_item * Convoy::getItems(int wpntype) {
