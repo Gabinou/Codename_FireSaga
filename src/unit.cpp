@@ -358,25 +358,26 @@ Unit_stats Unit::getGrowths() {
 }
 
 bool Unit::canEquip(unsigned short int in_id) {
-    short unsigned int wpn_type = all_weapons[in_id].getType();
-    return(((equippable & wpn_type) > 0));
+    short unsigned int wpntypecode = all_weapons[in_id].getType();
+    return(((equippable & wpntypecode) > 0));
 } 
 
 bool Unit::canAttack() {
+    // THIS FUNCTION needs to be updated with the fact that some weapons can have multiple types. -> typecodes
     bool out;
-    struct Wpn_types {
+    struct wpntypecodes {
         unsigned short int left;
         unsigned short int right;
-    } wpn_types;
+    } wpntypecodes;
     if (equipped.left > 0) {
-        wpn_types.left = all_weapons[equipment[equipped.left].id].getType();
-        if ((wpn_types.left != ITEM::TYPE::SHIELD)  & (wpn_types.left != ITEM::TYPE::TRINKET) & (wpn_types.left != ITEM::TYPE::STAFF)) {
+        wpntypecodes.left = all_weapons[equipment[equipped.left].id].getType();
+        if ((wpntypecodes.left != ITEM::TYPE::SHIELD)  & (wpntypecodes.left != ITEM::TYPE::TRINKET) & (wpntypecodes.left != ITEM::TYPE::STAFF)) {
             out = true;
         } 
     }
     if (equipped.right > 0) {
-        wpn_types.right = all_weapons[equipment[equipped.right].id].getType();
-        if ((wpn_types.right != ITEM::TYPE::SHIELD)  & (wpn_types.right != ITEM::TYPE::TRINKET) & (wpn_types.right != ITEM::TYPE::STAFF)) {
+        wpntypecodes.right = all_weapons[equipment[equipped.right].id].getType();
+        if ((wpntypecodes.right != ITEM::TYPE::SHIELD)  & (wpntypecodes.right != ITEM::TYPE::TRINKET) & (wpntypecodes.right != ITEM::TYPE::STAFF)) {
             out = true;
          } 
     }
@@ -389,24 +390,24 @@ bool Unit::canAttack() {
 //         bool left = false;
 //         bool right = false;
 //     } dmg_types;    
-//     struct Wpn_types{
+//     struct wpntypes{
 //         std::string left;
 //         std::string right;
-//     } wpn_types;
+//     } wpntypes;
 //     bool out = false;
 
-//     wpn_types.left = all_weapons[equipment[equipped.left].name].getType();
-//     wpn_types.right = all_weapons[equipment[equipped.right].name].getType();
+//     wpntypes.left = all_weapons[equipment[equipped.left].name].getType();
+//     wpntypes.right = all_weapons[equipment[equipped.right].name].getType();
 
 
-//     if ((wpn_types.right.empty()) & (wpn_types.right.empty()) ) {
+//     if ((wpntypes.right.empty()) & (wpntypes.right.empty()) ) {
 
 //     }
-//     if ((wpn_types.left != "shield") & (wpn_types.left != "trinket")  & (wpn_types.left != "staff")) {
+//     if ((wpntypes.left != "shield") & (wpntypes.left != "trinket")  & (wpntypes.left != "staff")) {
 //         dmg_types.left = all_weapons[equipment[equipped.left].name].getStats().dmg_type;
 //     }
 
-//     if (wpn_types.right != "shield") & (wpn_types.left != "trinket")  & (wpn_types.left != "staff") {
+//     if (wpntypes.right != "shield") & (wpntypes.left != "trinket")  & (wpntypes.left != "staff") {
 //         dmg_types.right = all_weapons[equipment[equipped.right].name].getStats().dmg_type;
 //     }
 
