@@ -191,7 +191,9 @@ void Convoy::check(int wpntype) {
     int tempqty = getquantity(wpntype);
     SDL_Log("Array:\n");
     for (int i = 0; i < tempqty; i++) {
-        SDL_Log("%d: %s", i, all_weapons[tempitems[i].id].getName().c_str());
+        if (tempitems[i].id > 0) {
+            SDL_Log("%d: %s", i, all_weapons[tempitems[i].id].getName().c_str());
+        }
     }
 }
 
