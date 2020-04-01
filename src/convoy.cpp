@@ -111,6 +111,7 @@ int Convoy::partition(int arr[], int low, int high, int wpntype) {
 
 void Convoy::deposit(Inventory_item in_item) {
     if (!full) {
+        SDL_Log("Depositing: %d", in_item.id);
         short unsigned int type = all_weapons[in_item.id].getType();
         if ((type & ITEM::TYPE::SWORD) > 0) {
             swords[quantity.swords] = in_item;
@@ -177,17 +178,21 @@ void Convoy::deposit(Inventory_item in_item) {
             quantity.items += 1;
             goto DEPOSIT_END;
         }
-        DEPOSIT_END: int sum = quantity.swords + quantity.lances + quantity.axes +
-            quantity.bows + quantity.trinkets + quantity.offhands + quantity.elemental +
-            quantity.demonic + quantity.angelic + quantity.shields + 
-            quantity.staffs + quantity.claws + quantity.items;
-        if (sum >= DEFAULT::CONVOY_SIZE) {
-            full = true;
-        }
+        DEPOSIT_END: isFull();
     } else {
         SDL_Log("Convoy is full");
     }
 } 
+
+void Convoy::isFull() {
+    int sum = quantity.swords + quantity.lances + quantity.axes +
+        quantity.bows + quantity.trinkets + quantity.offhands + quantity.elemental +
+        quantity.demonic + quantity.angelic + quantity.shields + 
+        quantity.staffs + quantity.claws + quantity.items;
+    // SDL_Log("Total quantity: %d", sum);
+    full = (sum >= DEFAULT::CONVOY_SIZE);
+}
+
 void Convoy::check(int wpntype) {
     Inventory_item * tempitems = getItems(wpntype);
     int tempqty = getQuantity(wpntype);
@@ -363,10 +368,13 @@ int * Convoy::getarr(int wpntype, int stattype) {
 Inventory_item Convoy::withdraw(int in_index, int wpntype) {
     Inventory_item temp;
     Inventory_item empty;
+    SDL_Log("Withdraw. Index: %d", in_index);
     switch (wpntype) {
         case ITEM::TYPE::SWORD:
+            SDL_Log("Withdrawing a sword");
             temp = swords[in_index];
-            swords[in_index] = empty;
+            swapwpn(wpntype, in_index, quantity.swords);
+            swords[quantity.swords] = empty;
             quantity.swords -= 1;
             break;
         case ITEM::TYPE::LANCE:
@@ -430,6 +438,7 @@ Inventory_item Convoy::withdraw(int in_index, int wpntype) {
             quantity.items -= 1;
             break;
     }
+    isFull();
     return(temp);
 }
 
@@ -451,6 +460,7 @@ void testConvoyfull() {
         test_convoy.deposit(temp);
     }
     test_convoy.withdraw(0, ITEM::TYPE::SWORD);
+    test_convoy.withdraw(1, ITEM::TYPE::SWORD);
     temp.id = ITEM::NAME::DAMAS_LANCE;
     test_convoy.deposit(temp);
     test_convoy.deposit(temp);

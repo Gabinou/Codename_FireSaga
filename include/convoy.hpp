@@ -38,7 +38,7 @@ class Convoy {
         void swapwpn(int wpntype, int ind1, int ind2);
 
         void sort(int wpntype, int stattype);
-
+        void isFull();
         int getQuantity(int wpntype);
         Quantity getQuantity();
         int * getarr(int wpntype, int stattype);
