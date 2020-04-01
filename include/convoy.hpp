@@ -53,6 +53,7 @@ class Convoy {
 
 extern void testConvoy();
 extern void testConvoyfull();
-extern void testConvoysort();
+extern void testConvoysortstats();
+extern void testConvoysortuses();
 
 #endif /* CONVOY_HPP */
