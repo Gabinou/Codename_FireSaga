@@ -217,6 +217,7 @@ enum STATS {
     HANDRIGHT,
     PRICE,
     HEAL,
+    END,
 };
 }
 namespace EFFECT {
