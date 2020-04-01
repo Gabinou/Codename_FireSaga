@@ -190,7 +190,7 @@ void Convoy::check(int wpntype) {
     Inventory_item * tempitems = getitems(wpntype);
     int tempqty = getquantity(wpntype);
     for (int i = 0; i < tempqty; i++) {
-
+        SDL_Log("%d: %s", i, all_weapons[tempitems[i].id].getName().c_str());
     }
 }
 
@@ -454,29 +454,33 @@ void testConvoy() {
     test_convoy.deposit(temp);
     temp.id = ITEM::NAME::WOODEN_SWORD;
     test_convoy.deposit(temp);
-    temp.id = ITEM::NAME::WOODEN_SWORD;
+    temp.id = ITEM::NAME::IRON_SWORD;
     test_convoy.deposit(temp);
-    temp.id = ITEM::NAME::WOODEN_SWORD;
+    temp.id = ITEM::NAME::STEEL_SWORD;
     test_convoy.deposit(temp);
-    temp.id = ITEM::NAME::WOODEN_SWORD;
+    temp.id = ITEM::NAME::DAMAS_SWORD;
     test_convoy.deposit(temp);
-    temp.id = ITEM::NAME::WOODEN_SWORD;
+    temp.id = ITEM::NAME::ESPADON;
     test_convoy.deposit(temp);
-    temp.id = ITEM::NAME::WOODEN_SWORD;
+    temp.id = ITEM::NAME::EXSANGUE;
     test_convoy.deposit(temp);
-    temp.id = ITEM::NAME::WOODEN_SWORD;
+    temp.id = ITEM::NAME::SECUNDUS;
     test_convoy.deposit(temp);
-    temp.id = ITEM::NAME::WOODEN_SWORD;
+    temp.id = ITEM::NAME::FAUCHON;
     test_convoy.deposit(temp);
-    temp.id = ITEM::NAME::WOODEN_SWORD;
+    temp.id = ITEM::NAME::SABER;
     test_convoy.deposit(temp);
-    temp.id = ITEM::NAME::WOODEN_SWORD;
+    temp.id = ITEM::NAME::GALATINE;
     test_convoy.deposit(temp);
-    temp.id = ITEM::NAME::WOODEN_SWORD;
+    temp.id = ITEM::NAME::HAUTECLAIRE;
     test_convoy.deposit(temp);
-    temp.id = ITEM::NAME::WOODEN_SWORD;
+    temp.id = ITEM::NAME::BROADSWORD;
     test_convoy.deposit(temp);
-    temp.id = ITEM::NAME::WOODEN_SWORD;
+    temp.id = ITEM::NAME::MERCIFUL_BLADE;
     test_convoy.deposit(temp);
 
+    test_convoy.check(ITEM::TYPE::SWORD);
+    test_convoy.sort(ITEM::TYPE::SWORD, ITEM::STAT::PMIGHT);
+    test_convoy.check(ITEM::TYPE::SWORD);
+    
 }

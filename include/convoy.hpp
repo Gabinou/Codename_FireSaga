@@ -14,7 +14,7 @@
 class Convoy {
     private:
         unsigned int bank = 0;
-        int quantity[];
+        Quantity quantity;
         bool full = false;
 
         Inventory_item swords[DEFAULT::CONVOY_SIZE],
