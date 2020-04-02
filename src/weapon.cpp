@@ -391,7 +391,7 @@ std::vector<Weapon> baseWeapons(std::vector<short int> toload) {
                 break;
             case ITEM::NAME::GALATINE:
                 temp_wpn_stats = {12, 0, 100, 0, 0, 0, 6, 20, 18, {1,1}, {1}, 0, 2000, 0};
-                temp_wpn = Weapon(ITEM::TYPE::SWORD, temp_wpn_stats, ITEM::NAME::GALATINE);
+                temp_wpn = Weapon(ITEM::TYPE::SWORD, temp_wpn_stats, ITEM::NAME::GALATINE);q no HCG
                 temp_wpn.setEffective(UNIT::TYPE::ARMOR);
                 temp_wpn.setDescription("A pragmatic and honorable knight's thrusting sword. Usually used with off-hand parry daggers.");
                 wpn_out[ITEM::NAME::GALATINE] = temp_wpn;

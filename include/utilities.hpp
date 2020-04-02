@@ -33,6 +33,8 @@ extern std::vector<std::string> wpnTypes(short unsigned int in_type);
 
 extern void printarr(int arr[], int size);
 
+extern int * cuniques(int arr[], int size);
+extern int * cwhere(int tofind, int arr[], int size);
 // extern void heal(Unit * in_unit, unsigned char heal);
 // extern * (Unit) makeheal(Weapon in_weapon);
 

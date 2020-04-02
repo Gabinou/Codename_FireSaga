@@ -29,6 +29,40 @@ void printarr(int arr[], int size) {
     }
 }
 
+int * cwhere(int tofind, int arr[], int size) {
+    int * found_inds;
+    found_inds = (int*) malloc(size * sizeof(*found_inds));
+    int found_num = 1;
+    for (int i = 0; i < size; i++) {
+        if (arr[i] == tofind) {
+            found_inds[found_num] = i;
+            found_num++;
+        }
+    }
+    found_inds = (int*) realloc(found_inds, found_num*sizeof((*found_inds) / size));
+    found_inds[0] = found_num - 1;
+    return(found_inds);
+}
+
+int * cuniques(int arr[], int size) {
+    int * uniques;
+    uniques = (int*) malloc((size + 1) * sizeof(*uniques));
+    int * inunique;
+    int found_uniques = 2;
+    uniques[1] = arr[0];
+    for (int i = 1; i < size; i++) {
+        inunique = cwhere(arr[i], uniques, found_uniques);
+        printf("%d %d\n", arr[i], inunique[0]);
+        if (inunique[0] == 0) {
+            uniques[found_uniques] = arr[i];
+            found_uniques++;
+        }
+    }
+    uniques = (int*) realloc(uniques, found_uniques*sizeof((*uniques) / size));
+    uniques[0] = found_uniques - 1;
+    return(uniques);
+}
+
 std::vector<std::string> unitType(unsigned short int in_effect) {
     std::vector<std::string> names;
     if ((in_effect & UNIT::TYPE::HUMAN) > 0) {

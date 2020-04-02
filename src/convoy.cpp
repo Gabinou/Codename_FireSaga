@@ -207,12 +207,21 @@ void Convoy::contents(int wpntype) {
 void Convoy::sort(int wpntype, int stattype) {
     int * arr;
     int * arrid;
+    int * uniqueids;
     arr = getarr(wpntype, stattype);
+    arrid = getarr(wpntype, ITEM::STAT::ID);
+
     // arrid = getarr(wpntype, ITEM::STAT::ID);
     int high = getQuantity(wpntype);
     // quicksort(arrid, 0, high - 1, wpntype);
     quicksort(arr, 0, high - 1, wpntype);
+
+
+
 }
+
+
+
 
 Inventory_item * Convoy::getItems(int wpntype) {
     static Inventory_item temp[DEFAULT::CONVOY_SIZE];
