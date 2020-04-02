@@ -217,15 +217,36 @@ void Convoy::printstats(int wpntype, int stattype) {
 }
 
 void Convoy::sortused(int wpntype) {
-    int * arrid = getStats(wpntype, ITEM::STAT::ID);    
+    SDL_Log("In sortused");
     int size = getQuantity(wpntype);
-    int * arrused = getStats(wpntype, ITEM::STAT::USED);
-    int * uniques = cuniques(arrid, size);
+    SDL_Log("Size:%d", size);
+
+    int * arrused;
+    arrused = (int*) malloc(size * sizeof(*arrused));
+    int * arrid;
+    arrid = (int*) malloc(size * sizeof(*arrid));
     int * where;
-    for (int i = 1; i <= uniques[0]; i++) {
-        where = cwhere(arrid[uniques[i]], arrid, size);
-        quicksort(arruses, where[1], where[where[0]], wpntype);
-    }
+    where = (int*) malloc(size * sizeof(*where));
+
+    printf("%d %d %d", arrused, arrid, where);
+
+    arrid = getStats(wpntype, ITEM::STAT::ID);    
+    SDL_Log("Ids");
+    printarr(arrid, size);
+    printarr(arrused, size);
+    arrused = getStats(wpntype, ITEM::STAT::USES_LEFT);
+    printarr(arrid, size);
+    printarr(arrused, size);
+    getchar();
+    // printstats(ITEM::TYPE::SWORD, ITEM::STAT::ID);
+    // int * uniques = cuniques(arrid, size);
+    // SDL_Log("Uniques");
+    // printarr(uniques, uniques[0]);
+    // for (int i = 1; i <= uniques[0]; i++) {
+    //     where = cwhere(arrid[uniques[i]], arrid, size);
+    //     SDL_Log("where: %d %d %d ", where[0], where[1], where[where[0]]);
+    //     quicksort(arrused, where[1], where[where[0]], wpntype);
+    // }
 
 }
 
@@ -370,6 +391,9 @@ int * Convoy::getStats(int wpntype, int stattype) {
                 break;
             case ITEM::STAT::USES:
                 temparr[i] = all_weapons[temp[i].id].getStats().uses;
+                break;            
+            case ITEM::STAT::USES_LEFT:
+                temparr[i] = all_weapons[temp[i].id].getStats().uses - temp[i].used;
                 break;
             case ITEM::STAT::USED:
                 temparr[i] = temp[i].used;
@@ -559,7 +583,8 @@ void testConvoysortused() {
     test_convoy.printcontents(ITEM::TYPE::SWORD);
     SDL_Log("Sorting swords according to Pmight");
     test_convoy.sort(ITEM::TYPE::SWORD, ITEM::STAT::PMIGHT);
-    test_convoy.printstats(ITEM::TYPE::SWORD, ITEM::STAT::USES);
+    test_convoy.printstats(ITEM::TYPE::SWORD, ITEM::STAT::ID);
+    test_convoy.printstats(ITEM::TYPE::SWORD, ITEM::STAT::USES_LEFT);
 }
 
 void testConvoysortstats() {

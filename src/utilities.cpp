@@ -52,7 +52,6 @@ int * cuniques(int arr[], int size) {
     uniques[1] = arr[0];
     for (int i = 1; i < size; i++) {
         inunique = cwhere(arr[i], uniques, found_uniques);
-        printf("%d %d\n", arr[i], inunique[0]);
         if (inunique[0] == 0) {
             uniques[found_uniques] = arr[i];
             found_uniques++;
@@ -535,7 +534,6 @@ std::string wpnName(unsigned short int in_id) {
         case ITEM::NAME::DIVINE_PROTECTOR:
             name = "Divine protector";
             break;
-
         case ITEM::NAME::SHIELD_HOOK:
             name = "Shield hook";
             break;
@@ -708,6 +706,9 @@ std::string statName(unsigned short int in_id) {
             break;
         case ITEM::STAT::USES:
             name = "Uses";
+            break;
+        case ITEM::STAT::USES_LEFT:
+            name = "Uses left";
             break;
         case ITEM::STAT::USED:
             name = "Used";

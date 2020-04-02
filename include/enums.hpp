@@ -211,6 +211,7 @@ enum STATS {
     WGT,
     USES,
     USED,
+    USES_LEFT,
     PROF,
     RANGEMIN,
     RANGEMAX,
