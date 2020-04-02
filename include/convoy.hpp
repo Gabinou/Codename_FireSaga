@@ -39,14 +39,14 @@ class Convoy {
 
         void sortstats(int wpntype, int stattype);
         void sortuniques(int wpntype);
-        void sort();
+        void sortall();
         void isFull();
         int getQuantity(int wpntype);
         Quantity getQuantity();
         int * getarr(int wpntype, int stattype);
         Inventory_item * getItems(int wpntype);
 
-        void printcontents(int wpntype);
+        void printcontents(int wpntype); // Useless?
         void printstats(int wpntype, int stattype);
 
         void write(const char * filename, const char * mode = "a");
