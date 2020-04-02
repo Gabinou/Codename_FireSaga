@@ -189,7 +189,6 @@ void Convoy::isFull() {
         quantity.bows + quantity.trinkets + quantity.offhands + quantity.elemental +
         quantity.demonic + quantity.angelic + quantity.shields + 
         quantity.staffs + quantity.claws + quantity.items;
-    // SDL_Log("Total quantity: %d", sum);
     full = (sum >= DEFAULT::CONVOY_SIZE);
 }
 
@@ -204,13 +203,15 @@ void Convoy::printcontents(int wpntype) {
     }
 }
 
-void Convoy::printstats(int wpntype) {
+void Convoy::printstats(int wpntype, int stattype) {
     Inventory_item * tempitems = getItems(wpntype);
     int tempqty = getQuantity(wpntype);
-    SDL_Log("Quantity: %d \nArray:\n", tempqty);
+    std::string statname = statName(wpntype);
+    int * arrstats = getarr(wpntype, stattype);
+    SDL_Log("Quantity: %d \nWpn \t %s \n", tempqty, statname.c_str());
     for (int i = 0; i < tempqty; i++) {
         if (tempitems[i].id > 0) {
-            SDL_Log("%d: %s", i, all_weapons[tempitems[i].id].getName().c_str());
+            SDL_Log("%d: %s", i, all_weapons[tempitems[i].id].getName().c_str(), arrstats[i]);
         }
     }
 }
@@ -494,9 +495,10 @@ void testConvoyfull() {
 void testConvoy() {
     testConvoyfull();
     testConvoysortstats();
+    testConvoysortstatsuses();
 }
 
-void testConvoysortuses() {
+void testConvoysortstatsuses() {
 
 }
 
@@ -544,7 +546,6 @@ void testConvoysortstats() {
     test_convoy.deposit(temp);
     temp.id = ITEM::NAME::MERCIFUL_BLADE;
     test_convoy.deposit(temp);
-
 
     temp.id = ITEM::NAME::DAMAS_LANCE;
     test_convoy.deposit(temp);
