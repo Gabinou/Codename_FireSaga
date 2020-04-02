@@ -682,6 +682,61 @@ std::string wpnName(unsigned short int in_id) {
 
 
 
+std::string statName(unsigned short int in_id) {
+    std::string name;
+    switch(in_id) {
+        case ITEM::STAT::PMIGHT:
+            name = "PMight";
+            break;
+        case ITEM::STAT::MMIGHT:
+            name = "Mmight";
+            break;
+        case ITEM::STAT::HIT:
+            name = "Hit";
+            break;
+        case ITEM::STAT::DODGE:
+            name = "Dodge";
+            break;
+        case ITEM::STAT::CRIT:
+            name = "Crit";
+            break;
+        case ITEM::STAT::FAVOR:
+            name = "Favor";
+            break;
+        case ITEM::STAT::WGT:
+            name = "Weight";
+            break;
+        case ITEM::STAT::USES:
+            name = "Uses";
+            break;
+        case ITEM::STAT::PROF:
+            name = "Prof";
+            break;
+        case ITEM::STAT::RANGEMIN:
+            name = "Rangemin";
+            break;
+        case ITEM::STAT::RANGEMAX:
+            name = "Rangemax";
+            break;
+        case ITEM::STAT::HANDLEFT:
+            name = "Left hand";
+            break;
+        case ITEM::STAT::HANDRIGHT:
+            name = "Right hand";
+            break;
+        case ITEM::STAT::PRICE:
+            name = "Price";
+            break;
+        case ITEM::STAT::HEAL:
+            name = "heal";
+            break;
+        case ITEM::STAT::ID:
+            name = "id";
+            break;
+    }
+}
+
+
 std::string unitName(unsigned short int in_id) {
     std::string name;
     switch(in_id) {

@@ -193,7 +193,18 @@ void Convoy::isFull() {
     full = (sum >= DEFAULT::CONVOY_SIZE);
 }
 
-void Convoy::contents(int wpntype) {
+void Convoy::printcontents(int wpntype) {
+    Inventory_item * tempitems = getItems(wpntype);
+    int tempqty = getQuantity(wpntype);
+    SDL_Log("Quantity: %d \nArray:\n", tempqty);
+    for (int i = 0; i < tempqty; i++) {
+        if (tempitems[i].id > 0) {
+            SDL_Log("%d: %s", i, all_weapons[tempitems[i].id].getName().c_str());
+        }
+    }
+}
+
+void Convoy::printstats(int wpntype) {
     Inventory_item * tempitems = getItems(wpntype);
     int tempqty = getQuantity(wpntype);
     SDL_Log("Quantity: %d \nArray:\n", tempqty);
@@ -208,6 +219,10 @@ void Convoy::sortuniques(int wpntype) {
     int * arrid = getarr(wpntype, ITEM::STAT::ID);
     int size = getQuantity(wpntype);
     int * uniques = cuniques(arrid, size);
+    int * where;
+    for (int i = 1; i <= uniques[0]; i++) {
+        where = cwhere(arrid[uniques[i]], arrid, size);
+    }
 
 }
 
@@ -553,81 +568,81 @@ void testConvoysortstats() {
     test_convoy.deposit(temp);
 
     SDL_Log("SWORD: Base Convoy Order.");
-    test_convoy.contents(ITEM::TYPE::SWORD);
+    test_convoy.printcontents(ITEM::TYPE::SWORD);
     SDL_Log("Sorting swords according to Pmight");
     test_convoy.sortstats(ITEM::TYPE::SWORD, ITEM::STAT::PMIGHT);
-    test_convoy.contents(ITEM::TYPE::SWORD);
+    test_convoy.printcontents(ITEM::TYPE::SWORD);
     SDL_Log("Sorting swords according to Mmight");
     test_convoy.sortstats(ITEM::TYPE::SWORD, ITEM::STAT::MMIGHT);
-    test_convoy.contents(ITEM::TYPE::SWORD);
+    test_convoy.printcontents(ITEM::TYPE::SWORD);
     SDL_Log("Sorting swords according to hit");
     test_convoy.sortstats(ITEM::TYPE::SWORD, ITEM::STAT::HIT);
-    test_convoy.contents(ITEM::TYPE::SWORD);
+    test_convoy.printcontents(ITEM::TYPE::SWORD);
     SDL_Log("Sorting swords according to dodge");
     test_convoy.sortstats(ITEM::TYPE::SWORD, ITEM::STAT::DODGE);
-    test_convoy.contents(ITEM::TYPE::SWORD);
+    test_convoy.printcontents(ITEM::TYPE::SWORD);
     SDL_Log("Sorting swords according to crit");
     test_convoy.sortstats(ITEM::TYPE::SWORD, ITEM::STAT::CRIT);
-    test_convoy.contents(ITEM::TYPE::SWORD);
+    test_convoy.printcontents(ITEM::TYPE::SWORD);
     SDL_Log("Sorting swords according to favor");
     test_convoy.sortstats(ITEM::TYPE::SWORD, ITEM::STAT::FAVOR);
-    test_convoy.contents(ITEM::TYPE::SWORD);
+    test_convoy.printcontents(ITEM::TYPE::SWORD);
     SDL_Log("Sorting swords according to weight");
     test_convoy.sortstats(ITEM::TYPE::SWORD, ITEM::STAT::WGT);
-    test_convoy.contents(ITEM::TYPE::SWORD);
+    test_convoy.printcontents(ITEM::TYPE::SWORD);
     SDL_Log("Sorting swords according to uses");
     test_convoy.sortstats(ITEM::TYPE::SWORD, ITEM::STAT::USES);
-    test_convoy.contents(ITEM::TYPE::SWORD);
+    test_convoy.printcontents(ITEM::TYPE::SWORD);
     SDL_Log("Sorting swords according to proficiency");
     test_convoy.sortstats(ITEM::TYPE::SWORD, ITEM::STAT::PROF);
-    test_convoy.contents(ITEM::TYPE::SWORD);
+    test_convoy.printcontents(ITEM::TYPE::SWORD);
     SDL_Log("Sorting swords according to minimum range");
     test_convoy.sortstats(ITEM::TYPE::SWORD, ITEM::STAT::RANGEMIN);
-    test_convoy.contents(ITEM::TYPE::SWORD);
+    test_convoy.printcontents(ITEM::TYPE::SWORD);
     SDL_Log("Sorting swords according to maximum range");
     test_convoy.sortstats(ITEM::TYPE::SWORD, ITEM::STAT::RANGEMAX);
-    test_convoy.contents(ITEM::TYPE::SWORD);
+    test_convoy.printcontents(ITEM::TYPE::SWORD);
     SDL_Log("Sorting swords according to price");
     test_convoy.sortstats(ITEM::TYPE::SWORD, ITEM::STAT::PRICE);
-    test_convoy.contents(ITEM::TYPE::SWORD);
+    test_convoy.printcontents(ITEM::TYPE::SWORD);
 
     SDL_Log("LANCE: Base Convoy Order.");
-    test_convoy.contents(ITEM::TYPE::LANCE);
+    test_convoy.printcontents(ITEM::TYPE::LANCE);
     SDL_Log("Sorting lances according to Pmight");
     test_convoy.sortstats(ITEM::TYPE::LANCE, ITEM::STAT::PMIGHT);
-    test_convoy.contents(ITEM::TYPE::LANCE);
+    test_convoy.printcontents(ITEM::TYPE::LANCE);
     SDL_Log("Sorting lances according to Mmight");
     test_convoy.sortstats(ITEM::TYPE::LANCE, ITEM::STAT::MMIGHT);
-    test_convoy.contents(ITEM::TYPE::LANCE);
+    test_convoy.printcontents(ITEM::TYPE::LANCE);
     SDL_Log("Sorting lances according to hit");
     test_convoy.sortstats(ITEM::TYPE::LANCE, ITEM::STAT::HIT);
-    test_convoy.contents(ITEM::TYPE::LANCE);
+    test_convoy.printcontents(ITEM::TYPE::LANCE);
     SDL_Log("Sorting lances according to dodge");
     test_convoy.sortstats(ITEM::TYPE::LANCE, ITEM::STAT::DODGE);
-    test_convoy.contents(ITEM::TYPE::LANCE);
+    test_convoy.printcontents(ITEM::TYPE::LANCE);
     SDL_Log("Sorting lances according to crit");
     test_convoy.sortstats(ITEM::TYPE::LANCE, ITEM::STAT::CRIT);
-    test_convoy.contents(ITEM::TYPE::LANCE);
+    test_convoy.printcontents(ITEM::TYPE::LANCE);
     SDL_Log("Sorting lances according to favor");
     test_convoy.sortstats(ITEM::TYPE::LANCE, ITEM::STAT::FAVOR);
-    test_convoy.contents(ITEM::TYPE::LANCE);
+    test_convoy.printcontents(ITEM::TYPE::LANCE);
     SDL_Log("Sorting lances according to weight");
     test_convoy.sortstats(ITEM::TYPE::LANCE, ITEM::STAT::WGT);
-    test_convoy.contents(ITEM::TYPE::LANCE);
+    test_convoy.printcontents(ITEM::TYPE::LANCE);
     SDL_Log("Sorting lances according to uses");
     test_convoy.sortstats(ITEM::TYPE::LANCE, ITEM::STAT::USES);
-    test_convoy.contents(ITEM::TYPE::LANCE);
+    test_convoy.printcontents(ITEM::TYPE::LANCE);
     SDL_Log("Sorting lances according to proficiency");
     test_convoy.sortstats(ITEM::TYPE::LANCE, ITEM::STAT::PROF);
-    test_convoy.contents(ITEM::TYPE::LANCE);
+    test_convoy.printcontents(ITEM::TYPE::LANCE);
     SDL_Log("Sorting lances according to minimum range");
     test_convoy.sortstats(ITEM::TYPE::LANCE, ITEM::STAT::RANGEMIN);
-    test_convoy.contents(ITEM::TYPE::LANCE);
+    test_convoy.printcontents(ITEM::TYPE::LANCE);
     SDL_Log("Sorting lances according to maximum range");
     test_convoy.sortstats(ITEM::TYPE::LANCE, ITEM::STAT::RANGEMAX);
-    test_convoy.contents(ITEM::TYPE::LANCE);
+    test_convoy.printcontents(ITEM::TYPE::LANCE);
     SDL_Log("Sorting lances according to price");
     test_convoy.sortstats(ITEM::TYPE::LANCE, ITEM::STAT::PRICE);
-    test_convoy.contents(ITEM::TYPE::LANCE);    
+    test_convoy.printcontents(ITEM::TYPE::LANCE);    
 
 }
