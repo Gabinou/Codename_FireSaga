@@ -53,6 +53,8 @@ int main(int argc, char * argv[]) {
     SDL_Log("Testing convoy\n");
     testConvoy();
 
+    getchar();
+
     // firesaga->loadMap("..//maps//test_tilemap.txt");
     firesaga->loadMap(0);
 

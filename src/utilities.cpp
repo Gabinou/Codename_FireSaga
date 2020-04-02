@@ -709,6 +709,9 @@ std::string statName(unsigned short int in_id) {
         case ITEM::STAT::USES:
             name = "Uses";
             break;
+        case ITEM::STAT::USED:
+            name = "Used";
+            break;
         case ITEM::STAT::PROF:
             name = "Prof";
             break;

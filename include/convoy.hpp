@@ -38,12 +38,13 @@ class Convoy {
         void swapwpn(int wpntype, int ind1, int ind2);
 
         void sortstats(int wpntype, int stattype);
-        void sortuniques(int wpntype);
-        void sortall();
+        void sortused(int wpntype);
+        void sort(int wpntype, int stattype);
+
         void isFull();
         int getQuantity(int wpntype);
         Quantity getQuantity();
-        int * getarr(int wpntype, int stattype);
+        int * getStats(int wpntype, int stattype);
         Inventory_item * getItems(int wpntype);
 
         void printcontents(int wpntype); // Useless?
@@ -57,6 +58,6 @@ class Convoy {
 extern void testConvoy();
 extern void testConvoyfull();
 extern void testConvoysortstats();
-extern void testConvoysortuses();
+extern void testConvoysortused();
 
 #endif /* CONVOY_HPP */

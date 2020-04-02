@@ -111,7 +111,7 @@ int Convoy::partition(int arr[], int low, int high, int wpntype) {
 
 void Convoy::deposit(Inventory_item in_item) {
     if (!full) {
-        SDL_Log("Depositing: %d", in_item.id);
+        // SDL_Log("Depositing: %d", in_item.id);
         short unsigned int wpntypecode = all_weapons[in_item.id].getType();
         if ((wpntypecode & ITEM::TYPE::SWORD) > 0) {
             swords[quantity.swords] = in_item;
@@ -207,30 +207,37 @@ void Convoy::printstats(int wpntype, int stattype) {
     Inventory_item * tempitems = getItems(wpntype);
     int tempqty = getQuantity(wpntype);
     std::string statname = statName(wpntype);
-    int * arrstats = getarr(wpntype, stattype);
-    SDL_Log("Quantity: %d Wpn \t %s \n", tempqty, statname.c_str());
+    int * arrstats = getStats(wpntype, stattype);
+    SDL_Log("Quantity: %d %s \t Wpn \n", tempqty, statname.c_str());
     for (int i = 0; i < tempqty; i++) {
         if (tempitems[i].id > 0) {
-            SDL_Log("%s \t %d", all_weapons[tempitems[i].id].getName().c_str(), arrstats[i]);
+            SDL_Log("%d \t %s", arrstats[i], all_weapons[tempitems[i].id].getName().c_str());
         }
     }
 }
 
-void Convoy::sortuniques(int wpntype) {
-    int * arrid = getarr(wpntype, ITEM::STAT::ID);
+void Convoy::sortused(int wpntype) {
+    int * arrid = getStats(wpntype, ITEM::STAT::ID);    
     int size = getQuantity(wpntype);
+    int * arrused = getStats(wpntype, ITEM::STAT::USED);
     int * uniques = cuniques(arrid, size);
     int * where;
     for (int i = 1; i <= uniques[0]; i++) {
         where = cwhere(arrid[uniques[i]], arrid, size);
+        quicksort(arruses, where[1], where[where[0]], wpntype);
     }
 
 }
 
 void Convoy::sortstats(int wpntype, int stattype) {
-    int * arr = getarr(wpntype, stattype);
+    int * arr = getStats(wpntype, stattype);
     int high = getQuantity(wpntype);
     quicksort(arr, 0, high - 1, wpntype);
+}
+
+void Convoy::sort(int wpntype, int stattype) {
+    sortstats(wpntype, stattype);
+    sortused(wpntype);
 }
 
 Inventory_item * Convoy::getItems(int wpntype) {
@@ -331,11 +338,11 @@ int Convoy::getQuantity(int wpntype) {
 }
 
 
-int * Convoy::getarr(int wpntype, int stattype) {
+int * Convoy::getStats(int wpntype, int stattype) {
+    int tempqty = getQuantity(wpntype);
     static int temparr[DEFAULT::CONVOY_SIZE];
     Inventory_item * temp = getItems(wpntype);
-
-    for (int i = 0; i < DEFAULT::CONVOY_SIZE; i++) {
+    for (int i = 0; i < tempqty; i++) {
         switch(stattype) {
             case ITEM::STAT::ID:
                 temparr[i] = temp[i].id;
@@ -364,6 +371,9 @@ int * Convoy::getarr(int wpntype, int stattype) {
             case ITEM::STAT::USES:
                 temparr[i] = all_weapons[temp[i].id].getStats().uses;
                 break;
+            case ITEM::STAT::USED:
+                temparr[i] = temp[i].used;
+                break;            
             case ITEM::STAT::PROF:
                 temparr[i] = all_weapons[temp[i].id].getStats().prof;
                 break;
@@ -495,14 +505,65 @@ void testConvoyfull() {
 void testConvoy() {
     testConvoyfull();
     testConvoysortstats();
+    testConvoysortused();
 }
 
-void testConvoysortuses() {
+void testConvoysortused() {
+    SDL_Log("Testing Convoy sorting for stats and uses abilities");
+    Convoy test_convoy;
+    Inventory_item temp;
+    temp.id = ITEM::NAME::WOODEN_SWORD;
+    test_convoy.deposit(temp);
+    temp.id = ITEM::NAME::KITCHEN_KNIFE;
+    test_convoy.deposit(temp);
+    temp.id = ITEM::NAME::WRATH_SWORD;
+    test_convoy.deposit(temp);
+    temp.id = ITEM::NAME::FLEURET;
+    test_convoy.deposit(temp);
+    temp.id = ITEM::NAME::DAMAS_SWORD;
+    temp.used = 0;
+    test_convoy.deposit(temp);
+    temp.id = ITEM::NAME::DAMAS_SWORD;
+    temp.used = 1;
+    test_convoy.deposit(temp);
+    temp.id = ITEM::NAME::WOODEN_SWORD;
+    temp.used = 1;
+    test_convoy.deposit(temp);
+    temp.id = ITEM::NAME::WOODEN_SWORD;
+    temp.used = 2;
+    test_convoy.deposit(temp);
+    temp.id = ITEM::NAME::WOODEN_SWORD;
+    temp.used = 20;
+    test_convoy.deposit(temp);
+    temp.id = ITEM::NAME::WOODEN_SWORD;
+    temp.used = 21;
+    test_convoy.deposit(temp);
+    temp.id = ITEM::NAME::WOODEN_SWORD;
+    temp.used = 10;
+    test_convoy.deposit(temp);
+    temp.id = ITEM::NAME::WOODEN_SWORD;
+    temp.used = 11;
+    test_convoy.deposit(temp);
+    temp.id = ITEM::NAME::WOODEN_SWORD;
+    temp.used = 12;
+    test_convoy.deposit(temp);
+    temp.id = ITEM::NAME::WOODEN_SWORD;
+    test_convoy.deposit(temp);
+    temp.id = ITEM::NAME::IRON_SWORD;
+    test_convoy.deposit(temp);
+    temp.id = ITEM::NAME::STEEL_SWORD;
+    test_convoy.deposit(temp);
+    
 
+    SDL_Log("SWORD: Base Convoy Order.");
+    test_convoy.printcontents(ITEM::TYPE::SWORD);
+    SDL_Log("Sorting swords according to Pmight");
+    test_convoy.sort(ITEM::TYPE::SWORD, ITEM::STAT::PMIGHT);
+    test_convoy.printstats(ITEM::TYPE::SWORD, ITEM::STAT::USES);
 }
 
 void testConvoysortstats() {
-    SDL_Log("Testing Convoy sorting abilities");
+    SDL_Log("Testing Convoy for stat sorting abilities");
     Convoy test_convoy;
     Inventory_item temp;
     temp.id = ITEM::NAME::WOODEN_SWORD;

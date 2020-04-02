@@ -210,6 +210,7 @@ enum STATS {
     FAVOR,
     WGT,
     USES,
+    USED,
     PROF,
     RANGEMIN,
     RANGEMAX,
