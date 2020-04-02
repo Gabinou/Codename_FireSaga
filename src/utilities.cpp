@@ -23,10 +23,40 @@ int geometricslide(int distance, float geo_factor) {
 }
 
 void printarr(int arr[], int size) {
-    printf("Array:\n");
+    SDL_Log("Array:\n");
     for (int i = 0; i < size; i++) {
-        printf("%d\n", arr[i]);
+        SDL_Log("%d\n", arr[i]);
     }
+}
+
+void printvec(std::vector<int> vec) {
+    SDL_Log("Vector:\n");
+    for (int i = 0; i < vec.size(); i++) {
+        SDL_Log("%d\n", vec[i]);
+    }
+}
+
+std::vector<int> cppwhere(int tofind, std::vector<int> vec) {
+    std::vector<int> found_inds;
+    for (int i = 0; i < vec.size(); i++) {
+        if (vec[i] == tofind) {
+            found_inds.push_back(i);
+        }
+    }
+    return(found_inds);
+}
+
+std::vector<int> cppuniques(std::vector<int> vec) {
+    std::vector<int> uniques;
+    std::vector<int> inuniques;
+    uniques.push_back(vec[0]);    
+    for (int i = 1; i < vec.size(); i++) {
+        inuniques = cppwhere(vec[i], uniques);
+        if (inuniques.size() == 0) {
+            uniques.push_back(vec[i]);
+        }
+    }
+    return(uniques);
 }
 
 int * cwhere(int tofind, int arr[], int size) {

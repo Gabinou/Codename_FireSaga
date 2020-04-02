@@ -10,6 +10,7 @@
 #include "weapon.hpp"
 #include "string.h"
 #include <string>
+#include <algorithm>
 
 class Convoy {
     private:
@@ -44,7 +45,7 @@ class Convoy {
         void isFull();
         int getQuantity(int wpntype);
         Quantity getQuantity();
-        int * getStats(int wpntype, int stattype);
+        std::vector<int> getStats(int wpntype, int stattype);
         Inventory_item * getItems(int wpntype);
 
         void printcontents(int wpntype); // Useless?

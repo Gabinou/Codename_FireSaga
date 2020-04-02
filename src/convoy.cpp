@@ -207,51 +207,43 @@ void Convoy::printstats(int wpntype, int stattype) {
     Inventory_item * tempitems = getItems(wpntype);
     int tempqty = getQuantity(wpntype);
     std::string statname = statName(wpntype);
-    int * arrstats = getStats(wpntype, stattype);
+    std::vector<int> vecstats = getStats(wpntype, stattype);
     SDL_Log("Quantity: %d %s \t Wpn \n", tempqty, statname.c_str());
     for (int i = 0; i < tempqty; i++) {
         if (tempitems[i].id > 0) {
-            SDL_Log("%d \t %s", arrstats[i], all_weapons[tempitems[i].id].getName().c_str());
+            SDL_Log("%d \t %s", vecstats[i], all_weapons[tempitems[i].id].getName().c_str());
         }
     }
 }
 
 void Convoy::sortused(int wpntype) {
     SDL_Log("In sortused");
-    int size = getQuantity(wpntype);
-    SDL_Log("Size:%d", size);
+    std::vector<int> vecid;
+    std::vector<int> vecusesleft;
+    std::vector<int> vecwhere;
+    std::vector<int> uniqueids;
+    int arrusesleft[DEFAULT::CONVOY_SIZE];
+    std::copy(vecusesleft.begin(), vecusesleft.end(), arrusesleft);
+    
+    vecid = getStats(wpntype, ITEM::STAT::ID);    
+    vecusesleft = getStats(wpntype, ITEM::STAT::USES_LEFT);    
+    // SDL_Log("Ids");
+    // printvec(vecid);
+    // SDL_Log("Uses left");
+    // printvec(vecusesleft);
 
-    int * arrused;
-    arrused = (int*) malloc(size * sizeof(*arrused));
-    int * arrid;
-    arrid = (int*) malloc(size * sizeof(*arrid));
-    int * where;
-    where = (int*) malloc(size * sizeof(*where));
-
-    printf("%d %d %d", arrused, arrid, where);
-
-    arrid = getStats(wpntype, ITEM::STAT::ID);    
-    SDL_Log("Ids");
-    printarr(arrid, size);
-    printarr(arrused, size);
-    arrused = getStats(wpntype, ITEM::STAT::USES_LEFT);
-    printarr(arrid, size);
-    printarr(arrused, size);
-    getchar();
-    // printstats(ITEM::TYPE::SWORD, ITEM::STAT::ID);
-    // int * uniques = cuniques(arrid, size);
-    // SDL_Log("Uniques");
-    // printarr(uniques, uniques[0]);
-    // for (int i = 1; i <= uniques[0]; i++) {
-    //     where = cwhere(arrid[uniques[i]], arrid, size);
-    //     SDL_Log("where: %d %d %d ", where[0], where[1], where[where[0]]);
-    //     quicksort(arrused, where[1], where[where[0]], wpntype);
-    // }
-
+    uniqueids = cppuniques(vecid);
+    // printvec(uniqueids);
+    for (int i = 0; i < uniqueids.size(); i++) {
+        vecwhere = cppwhere(uniqueids[i], vecid);
+        // SDL_Log("Where %d %d ", vecwhere[0], vecwhere.back());
+        quicksort(arrusesleft, vecwhere[0], vecwhere.back(), wpntype);
+    }
 }
 
 void Convoy::sortstats(int wpntype, int stattype) {
-    int * arr = getStats(wpntype, stattype);
+    std::vector<int> vecid = getStats(wpntype, stattype);
+    int* arr = &vecid[0];
     int high = getQuantity(wpntype);
     quicksort(arr, 0, high - 1, wpntype);
 }
@@ -263,7 +255,6 @@ void Convoy::sort(int wpntype, int stattype) {
 
 Inventory_item * Convoy::getItems(int wpntype) {
     static Inventory_item temp[DEFAULT::CONVOY_SIZE];
-
     switch (wpntype) {
         case ITEM::TYPE::SWORD:
             memcpy(temp, swords, DEFAULT::CONVOY_SIZE);
@@ -359,69 +350,69 @@ int Convoy::getQuantity(int wpntype) {
 }
 
 
-int * Convoy::getStats(int wpntype, int stattype) {
+std::vector<int> Convoy::getStats(int wpntype, int stattype) {
     int tempqty = getQuantity(wpntype);
-    static int temparr[DEFAULT::CONVOY_SIZE];
+    std::vector<int> vecstats;
     Inventory_item * temp = getItems(wpntype);
     for (int i = 0; i < tempqty; i++) {
         switch(stattype) {
             case ITEM::STAT::ID:
-                temparr[i] = temp[i].id;
+                vecstats.push_back(temp[i].id);
                 break;
             case ITEM::STAT::PMIGHT:
-                temparr[i] = all_weapons[temp[i].id].getStats().Pmight;
+                vecstats.push_back(all_weapons[temp[i].id].getStats().Pmight);
                 break;
             case ITEM::STAT::MMIGHT:
-                temparr[i] = all_weapons[temp[i].id].getStats().Mmight;
+                vecstats.push_back(all_weapons[temp[i].id].getStats().Mmight);
                 break;
             case ITEM::STAT::HIT:
-                temparr[i] = all_weapons[temp[i].id].getStats().combat.hit;
+                vecstats.push_back(all_weapons[temp[i].id].getStats().combat.hit);
                 break;
             case ITEM::STAT::DODGE:
-                temparr[i] = all_weapons[temp[i].id].getStats().combat.dodge;
+                vecstats.push_back(all_weapons[temp[i].id].getStats().combat.dodge);
                 break;
             case ITEM::STAT::CRIT:
-                temparr[i] = all_weapons[temp[i].id].getStats().combat.crit;
+                vecstats.push_back(all_weapons[temp[i].id].getStats().combat.crit);
                 break;
             case ITEM::STAT::FAVOR:
-                temparr[i] = all_weapons[temp[i].id].getStats().combat.favor;
+                vecstats.push_back(all_weapons[temp[i].id].getStats().combat.favor);
                 break;
             case ITEM::STAT::WGT:
-                temparr[i] = all_weapons[temp[i].id].getStats().wgt;
+                vecstats.push_back(all_weapons[temp[i].id].getStats().wgt);
                 break;
             case ITEM::STAT::USES:
-                temparr[i] = all_weapons[temp[i].id].getStats().uses;
+                vecstats.push_back(all_weapons[temp[i].id].getStats().uses);
                 break;            
             case ITEM::STAT::USES_LEFT:
-                temparr[i] = all_weapons[temp[i].id].getStats().uses - temp[i].used;
+                vecstats.push_back(all_weapons[temp[i].id].getStats().uses - temp[i].used);
                 break;
             case ITEM::STAT::USED:
-                temparr[i] = temp[i].used;
+                vecstats.push_back(temp[i].used);
                 break;            
             case ITEM::STAT::PROF:
-                temparr[i] = all_weapons[temp[i].id].getStats().prof;
+                vecstats.push_back(all_weapons[temp[i].id].getStats().prof);
                 break;
             case ITEM::STAT::RANGEMIN:
-                temparr[i] = all_weapons[temp[i].id].getStats().range[0];
+                vecstats.push_back(all_weapons[temp[i].id].getStats().range[0]);
                 break;
             case ITEM::STAT::RANGEMAX:
-                temparr[i] = all_weapons[temp[i].id].getStats().range[1];
+                vecstats.push_back(all_weapons[temp[i].id].getStats().range[1]);
                 break;
             case ITEM::STAT::HANDLEFT:
-                temparr[i] = all_weapons[temp[i].id].getStats().hand[0];
+                vecstats.push_back(all_weapons[temp[i].id].getStats().hand[0]);
                 break;
             case ITEM::STAT::HANDRIGHT:
-                temparr[i] = all_weapons[temp[i].id].getStats().hand[1];
+                vecstats.push_back(all_weapons[temp[i].id].getStats().hand[1]);
                 break;
             case ITEM::STAT::PRICE:
-                temparr[i] = all_weapons[temp[i].id].getStats().price;
+                vecstats.push_back(all_weapons[temp[i].id].getStats().price);
                 break;
             case ITEM::STAT::HEAL:
-                temparr[i] = all_weapons[temp[i].id].getStats().heal;
+                vecstats.push_back(all_weapons[temp[i].id].getStats().heal);
                 break;
         }
     }
-    return(temparr);
+    return(vecstats);
 }
 
 Inventory_item Convoy::withdraw(int in_index, int wpntype) {
@@ -528,7 +519,7 @@ void testConvoyfull() {
 
 void testConvoy() {
     testConvoyfull();
-    testConvoysortstats();
+    // testConvoysortstats();
     testConvoysortused();
 }
 
@@ -581,9 +572,10 @@ void testConvoysortused() {
 
     SDL_Log("SWORD: Base Convoy Order.");
     test_convoy.printcontents(ITEM::TYPE::SWORD);
+    test_convoy.printstats(ITEM::TYPE::SWORD, ITEM::STAT::USES_LEFT);
     SDL_Log("Sorting swords according to Pmight");
     test_convoy.sort(ITEM::TYPE::SWORD, ITEM::STAT::PMIGHT);
-    test_convoy.printstats(ITEM::TYPE::SWORD, ITEM::STAT::ID);
+    // test_convoy.printstats(ITEM::TYPE::SWORD, ITEM::STAT::ID);
     test_convoy.printstats(ITEM::TYPE::SWORD, ITEM::STAT::USES_LEFT);
 }
 
