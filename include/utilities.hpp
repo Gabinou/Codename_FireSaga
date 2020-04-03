@@ -22,15 +22,15 @@ extern unsigned char mvtType(unsigned char in_class_index);
 extern std::string className(unsigned char in_class_index);
 extern std::vector<std::string> skillNames(unsigned long long int in_skills);
 
-extern std::vector<std::string> wpnType(short unsigned int in_type);
 extern std::vector<std::string> wpnEffects(long unsigned int in_effect);
 
 extern short unsigned int makeEquippable(unsigned char in_class_index);
 extern std::string unitName(unsigned short int in_id);
 extern std::string statName(unsigned short int in_id);
-extern std::vector<std::string> unitType(unsigned short int in_effect);
 extern std::string wpnName(unsigned short int in_id);
-extern std::vector<std::string> wpnTypes(short unsigned int in_type);
+extern std::string wpnType(short unsigned int in_type);
+extern std::vector<std::string> unitType(unsigned short int in_effect);
+extern std::vector<std::string> wpnTypes(short unsigned int in_typecode);
 
 extern void printarr(int arr[], int size);
 extern void printvec(std::vector<int> vec);

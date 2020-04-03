@@ -302,7 +302,7 @@ Quantity Convoy::getQuantity() {
 
 int Convoy::getQuantity(int wpntype) {
     static int temp;
-        switch (wpntype) {
+    switch (wpntype) {
         case ITEM::TYPE::SWORD:
             temp = quantity.swords;
             break;
@@ -510,7 +510,6 @@ void testConvoyfull() {
     temp.id = ITEM::NAME::DAMAS_LANCE;
     test_convoy.deposit(temp);
     test_convoy.deposit(temp);
-
 }
 
 
@@ -565,8 +564,6 @@ void testConvoysortused() {
     test_convoy.deposit(temp);
     temp.id = ITEM::NAME::STEEL_SWORD;
     test_convoy.deposit(temp);
-    
-
     SDL_Log("SWORD: Base Convoy Order.");
     test_convoy.printcontents(ITEM::TYPE::SWORD);
     test_convoy.printstats(ITEM::TYPE::SWORD, ITEM::STAT::USES_LEFT);

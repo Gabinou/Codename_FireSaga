@@ -210,48 +210,50 @@ std::vector<std::string> wpnEffects(long unsigned int in_effect) {
     return(names);
 }
 
-std::vector<std::string> wpnType(short unsigned int in_type) {
-    std::vector<std::string> names;
-    if ((in_type & ITEM::TYPE::SWORD) > 0) {
-        names.push_back("Sword");
+std::string wpnType(short unsigned int in_type) {
+    std::vector<std::string> name;
+    switch (wpntype) {
+        case ITEM::TYPE::SWORD:
+            name = "Sword";
+            break;
+        case ITEM::TYPE::LANCE:
+            name = "Lance";
+            break;
+        case ITEM::TYPE::AXE:
+            name = "Axe";
+            break;
+        case ITEM::TYPE::BOW:
+            name = "Bow";
+            break;
+        case ITEM::TYPE::TRINKET:
+            name = "Trinket";
+            break;
+        case ITEM::TYPE::OFFHAND:
+            name = "Offhand";
+            break;
+        case ITEM::TYPE::ELEMENTAL:
+            name = "Elemental";
+            break;
+        case ITEM::TYPE::DEMONIC:
+            name = "Demonic";
+            break;
+        case ITEM::TYPE::ANGELIC:
+            name = "Angelic";
+            break;
+        case ITEM::TYPE::SHIELD:
+            name = "Shield";
+            break;
+        case ITEM::TYPE::STAFF:
+            name = "Staff";
+            break;
+        case ITEM::TYPE::CLAW:
+            name = "Claw";
+            break;
+        case ITEM::TYPE::ITEM:
+            name = "Item";
+            break;
     }
-    if ((in_type & ITEM::TYPE::LANCE) > 0) {
-        names.push_back("Lance");
-    }
-    if ((in_type & ITEM::TYPE::AXE) > 0) {
-        names.push_back("Axe");
-    }
-    if ((in_type & ITEM::TYPE::BOW) > 0) {
-        names.push_back("Bow");
-    }
-    if ((in_type & ITEM::TYPE::TRINKET) > 0) {
-        names.push_back("Trinket");
-    }
-    if ((in_type & ITEM::TYPE::OFFHAND) > 0) {
-        names.push_back("Offhand");
-    }
-    if ((in_type & ITEM::TYPE::ELEMENTAL) > 0) {
-        names.push_back("ELEMENTAL");
-    }
-    if ((in_type & ITEM::TYPE::DEMONIC) > 0) {
-        names.push_back("Demonic");
-    }
-    if ((in_type & ITEM::TYPE::ANGELIC) > 0) {
-        names.push_back("Angelic");
-    }
-    if ((in_type & ITEM::TYPE::SHIELD) > 0) {
-        names.push_back("Shield");
-    }
-    if ((in_type & ITEM::TYPE::STAFF) > 0) {
-        names.push_back("Staff");
-    }
-    if ((in_type & ITEM::TYPE::CLAW) > 0) {
-        names.push_back("Claw");
-    }
-    if ((in_type & ITEM::TYPE::ITEM) > 0) {
-        names.push_back("Item");
-    }
-    return(names);
+    return(name);
 }
 
 std::string sexName(bool in_sex) {
@@ -264,40 +266,40 @@ std::string sexName(bool in_sex) {
     return(name);
 }
 
-std::vector<std::string> wpnTypes(short unsigned int in_type) {
+std::vector<std::string> wpnTypes(short unsigned int in_typecode) {
     std::vector<std::string> types;
-    if ((in_type & ITEM::TYPE::SWORD) > 0) {
+    if ((in_typecode & ITEM::TYPE::SWORD) > 0) {
         types.push_back("Sword");
     }
-    if ((in_type & ITEM::TYPE::LANCE) > 0) {
+    if ((in_typecode & ITEM::TYPE::LANCE) > 0) {
         types.push_back("Lance");
     }
-    if ((in_type & ITEM::TYPE::AXE) > 0) {
+    if ((in_typecode & ITEM::TYPE::AXE) > 0) {
         types.push_back("Axe");
     }
-    if ((in_type & ITEM::TYPE::BOW) > 0) {
+    if ((in_typecode & ITEM::TYPE::BOW) > 0) {
         types.push_back("Bow");
     }
-    if ((in_type & ITEM::TYPE::TRINKET) > 0) {
+    if ((in_typecode & ITEM::TYPE::TRINKET) > 0) {
         types.push_back("Trinket");
     }
-    if ((in_type & ITEM::TYPE::OFFHAND) > 0) {
+    if ((in_typecode & ITEM::TYPE::OFFHAND) > 0) {
         types.push_back("Offhand");
     }
-    if ((in_type & ITEM::TYPE::ELEMENTAL) > 0) {
+    if ((in_typecode & ITEM::TYPE::ELEMENTAL) > 0) {
         types.push_back("Magic");
         // types.push_back("Elemental");
     }
-    if ((in_type & ITEM::TYPE::DEMONIC) > 0) {
+    if ((in_typecode & ITEM::TYPE::DEMONIC) > 0) {
         types.push_back("Demonic");
     }
-    if ((in_type & ITEM::TYPE::ANGELIC) > 0) {
+    if ((in_typecode & ITEM::TYPE::ANGELIC) > 0) {
         types.push_back("Angelic");
     }
-    if ((in_type & ITEM::TYPE::SHIELD) > 0) {
+    if ((in_typecode & ITEM::TYPE::SHIELD) > 0) {
         types.push_back("Shield");
     }
-    if ((in_type & ITEM::TYPE::STAFF) > 0) {
+    if ((in_typecode & ITEM::TYPE::STAFF) > 0) {
         types.push_back("Staff");
     }
     return(types);
