@@ -328,9 +328,13 @@ template <typename T> void Game::loadTiles(std::vector<T> in_tiles) {
 void Game::loadMap(const std::string filename) {
     SDL_Log("Loading Map: %s \n", filename);
     // For this function, tiles have to be loaded manually somwhere else.
-    mapp = new Map(settings.tilesize[0], settings.tilesize[1]); // mapp is a pointer
-    mapp->setRenderer(renderer);
-    mapp->loadTilemap(filename);
+    if (!mapp) {
+        mapp = new Map(settings.tilesize[0], settings.tilesize[1]); // mapp is a pointer
+        mapp->setRenderer(renderer);
+        mapp->loadTilemap(filename);
+    }  else {
+        SDL_Log("Failed to loadMap. Was mapp deleted?");
+    }
 }
 
 void Game::loadMap(const int in_map_index) {
@@ -338,10 +342,14 @@ void Game::loadMap(const int in_map_index) {
     loaded_tiles = baseTiles(chapTiles[in_map_index]());
     SDL_Log("loadedtiles: %d", loaded_tiles[0].getid());
     SDL_Log("loadedtiles: %s", loaded_tiles[0].getName().c_str());
-    mapp = new Map(settings.tilesize[0], settings.tilesize[1]); // mapp is a pointer // THIS FUNCTION CRASHES SOMETIMES.
-    mapp->setRenderer(renderer);
-    mapp->loadTilemap(in_map_index);
-    mapp->loadEnemyinds(in_map_index);
+    if (!mapp) {
+        mapp = new Map(settings.tilesize[0], settings.tilesize[1]); // mapp is a pointer // THIS FUNCTION CRASHES SOMETIMES.
+        mapp->setRenderer(renderer);
+        mapp->loadTilemap(in_map_index);
+        mapp->loadEnemyinds(in_map_index);
+    } else {
+        SDL_Log("Failed to loadMap. Was mapp deleted?");
+    }
     // SDL_Log("Testing tiles: %s\n", loaded_tiles[10].getName().c_str());
 }
 
