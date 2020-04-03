@@ -484,7 +484,6 @@ void Game::saveXML(const short int save_ind) {
     xmlDoc.InsertEndChild(pNarrative);
     writeXML_narrative(&xmlDoc, pNarrative, &narrative);
 
-
     tinyxml2::XMLPrinter printer;
     xmlDoc.Print(&printer);
     char longbuffer[printer.CStrSize()];
@@ -500,6 +499,9 @@ void Game::saveXML(const short int save_ind) {
     for (auto it = party.begin(); it != party.end(); it++) {
         it->second.writeXML(filename, true);        
     }
+
+    convoy.writeXML(filename, true);
+
 }
 
 void Game::setState(const short unsigned int new_state) {

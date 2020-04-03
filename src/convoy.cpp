@@ -581,19 +581,17 @@ void Convoy::readXML(const char * filename) {
     }
 }
 
-
 void Convoy::writeXML(const char * filename, const bool append) {
     SDL_Log("writeXML Convoy to: %s\n", filename);
-    // How to write files so that it is modifiable by randos?
     PHYSFS_file * fp;
     char buffer[DEFAULT::BUFFER_SIZE];
+    tinyxml2::XMLDocument xmlDoc;
     if (append) {
         fp = PHYSFS_openAppend(filename);
     } else {
         fp = PHYSFS_openWrite(filename);
+        xmlDoc.InsertFirstChild(xmlDoc.NewDeclaration());
     }
-    tinyxml2::XMLDocument xmlDoc;
-    xmlDoc.InsertFirstChild(xmlDoc.NewDeclaration());
 
     tinyxml2::XMLElement * pConvoy = xmlDoc.NewElement("Convoy");
     xmlDoc.InsertEndChild(pConvoy);    
@@ -624,10 +622,10 @@ void Convoy::writeXML(const char * filename, const bool append) {
 }
 
 void testConvoy() {
-    // testConvoyfull();
-    // testConvoysortStats();
+    testConvoyfull();
+    testConvoysortStats();
     testConvoyWriteXML();
-    // testConvoysortused();
+    testConvoysortused();
 }
 
 void testConvoyfull() {

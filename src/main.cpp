@@ -22,12 +22,7 @@ int main(int argc, char * argv[]) {
     SDL_Log("Starting project codename FireSaga\n");
 
     SDL_Log("Initializing utilities\n");
-    makeunitNames();
-    makestatNames();
-    makesexNames();
-    makeclassNames();
-    makemvtTypes();
-    makewpnNames();
+    loadUtilities();
 
     SDL_Log("Initializing Filesystem\n");
     char * buildDir = SDL_GetBasePath();
@@ -36,16 +31,18 @@ int main(int argc, char * argv[]) {
     SDL_Log("Initializing TinyMT\n");
     init_tinyMT();
 
+    SDL_Log("Loading base weapons.");
     baseWeapons();
-    SDL_Log("Testing weapon: %s\n", all_weapons[ITEM::NAME::WOODEN_SWORD].getName().c_str());
-    testXMLWeapons();
+    // SDL_Log("Testing weapon: %s\n", all_weapons[ITEM::NAME::WOODEN_SWORD].getName().c_str());
+    // testXMLWeapons();
     // writeallXMLWeapons();
-    
-    baseUnits();
-    SDL_Log("Testing units: %s \n", all_units[UNIT::NAME::SILOU].getName().c_str());
-    testXMLUnits();
 
-    testXMLTiles();
+    SDL_Log("Loading base units.");
+    baseUnits();
+    // SDL_Log("Testing units: %s \n", all_units[UNIT::NAME::SILOU].getName().c_str());
+    // testXMLUnits();
+
+    // testXMLTiles();
 
     firesaga = new Game();
     SDL_Log("Game object created\n");
@@ -58,10 +55,10 @@ int main(int argc, char * argv[]) {
     firesaga->init("FireSaga", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, firesaga->getSettings().res.x, firesaga->getSettings().res.y, false);
     firesaga->makeFPSEntity();
 
-    SDL_Log("Testing convoy\n");
-    testConvoy();
+    // SDL_Log("Testing convoy\n");
+    // testConvoy();
 
-    getchar();
+    // getchar();
 
     // firesaga->loadMap("..//maps//test_tilemap.txt");
     firesaga->loadMap(0);
@@ -78,7 +75,7 @@ int main(int argc, char * argv[]) {
     int frame_time;
     char buffer[15];
     
-    SDL_Log("Game object saveXML test");
+    SDL_Log("Testing game object's ");
     firesaga->saveXML(1);
     
     SDL_Log("Starting main game loop\n");

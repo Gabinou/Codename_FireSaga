@@ -210,6 +210,15 @@ std::vector<std::string> wpnEffects(long unsigned int in_effect) {
     return(names);
 }
 
+void loadUtilities() {
+    makeunitNames();
+    makestatNames();
+    makesexNames();
+    makeclassNames();
+    makemvtTypes();
+    makewpnNames();
+}
+
 std::vector<std::string> wpnTypes(short unsigned int in_typecode) {
     std::vector<std::string> types;
     if ((in_typecode & ITEM::TYPE::SWORD) > 0) {

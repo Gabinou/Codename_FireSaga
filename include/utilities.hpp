@@ -35,6 +35,8 @@ extern void makeclassNames();
 extern std::vector<unsigned char> mvtTypes;
 extern void makemvtTypes();
 
+extern void loadUtilities();
+
 extern void printarr(int arr[], int size);
 extern void printvec(std::vector<int> vec);
 extern int * cuniques(int arr[], int size);
