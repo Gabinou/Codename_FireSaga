@@ -7,7 +7,6 @@
 #include <string>
 #include <vector>
 
-
 #define LEN(arr) ((unsigned int) (sizeof (arr) / sizeof (arr)[0]))
 
 template <typename T> int sgn(T val) {
@@ -31,6 +30,8 @@ extern std::string wpnName(unsigned short int in_id);
 extern std::string wpnType(short unsigned int in_type);
 extern std::vector<std::string> unitType(unsigned short int in_typecode);
 extern std::vector<std::string> wpnTypes(short unsigned int in_typecode);
+
+
 // wpnType() COULD JUST BE A VECTOR.
 // ->statName also.
 // ->unitName also.
@@ -38,7 +39,14 @@ extern std::vector<std::string> wpnTypes(short unsigned int in_typecode);
 // NO NEED TO RUN CODE EVERYTIME. JUST USE A VECTOR.
 // cannot be used for wpnTypes()
 
-
+extern std::vector<std::string> unitNames;
+extern void makeunitNames();
+extern std::vector<std::string> statNames;
+extern void makestatNames();
+extern std::vector<std::string> sexNames;
+extern void makesexNames();
+extern std::vector<unsigned char> mvtTypes;
+extern void makemvtTypes();
 
 extern void printarr(int arr[], int size);
 extern void printvec(std::vector<int> vec);

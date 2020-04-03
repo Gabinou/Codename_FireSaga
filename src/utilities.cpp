@@ -773,6 +773,70 @@ std::string statName(unsigned short int in_id) {
     return(name);
 }
 
+std::vector<std::string> unitNames;
+void makeunitNames() {
+    unitNames.push_back("");
+    unitNames.push_back("Erwin");
+    unitNames.push_back("Kiara");
+    unitNames.push_back("Silou");
+    unitNames.push_back("Servil");
+    unitNames.push_back("Perignon");
+    unitNames.push_back("Poet");
+    unitNames.push_back("Reliable");
+    unitNames.push_back("Coward");
+    unitNames.push_back("Jaigen1H");
+    unitNames.push_back("Pirou");
+    unitNames.push_back("");
+    unitNames.push_back("Zinedan");
+    unitNames.push_back("Zidine");
+    unitNames.push_back("");
+    unitNames.push_back("Bandit");
+    unitNames.push_back("Duelist");
+    unitNames.push_back("Pickpocket");
+    unitNames.push_back("Thief");
+    unitNames.push_back("Assassin");
+    unitNames.push_back("Archer");
+    unitNames.push_back("Marksman");
+    unitNames.push_back("Mercenary");
+    unitNames.push_back("Hero");
+    unitNames.push_back("Corsair");
+    unitNames.push_back("Viking");
+    unitNames.push_back("Ravager");
+    unitNames.push_back("Cavalier");
+    unitNames.push_back("Paladin");
+    unitNames.push_back("Fencer");
+    unitNames.push_back("Mousquetaire");
+}
+
+std::vector<std::string> statNames;
+void makestatNames() {
+    statNames.push_back("");
+    statNames.push_back("Pmight");
+    statNames.push_back("Mmight");
+    statNames.push_back("Hit");
+    statNames.push_back("Dodge");
+    statNames.push_back("Crit");
+    statNames.push_back("Favor");
+    statNames.push_back("Wgt");
+    statNames.push_back("Uses");
+    statNames.push_back("Used");
+    statNames.push_back("Uses left");
+    statNames.push_back("Prof");
+    statNames.push_back("Min range");
+    statNames.push_back("Max range");
+    statNames.push_back("Left hand");
+    statNames.push_back("Right hand");
+    statNames.push_back("Price");
+    statNames.push_back("Heal");
+    statNames.push_back("ID");
+    statNames.push_back("");
+}
+
+std::vector<std::string> sexNames;
+void makesexNames() {
+    sexNames.push_back("F");
+    sexNames.push_back("M");
+}
 
 std::string unitName(unsigned short int in_id) {
     std::string name;
@@ -857,6 +921,54 @@ std::string unitName(unsigned short int in_id) {
             break;
     }
     return(name);
+}
+
+std::vector<unsigned char> mvtTypes;
+extern void makemvtTypes() {
+    mvtTypes.push_back(0);
+    mvtTypes.push_back(UNIT::MVT::FOOT_SLOW); // LORD
+    mvtTypes.push_back(UNIT::MVT::RIDERS_SLOW); // LORD_RIDER
+    mvtTypes.push_back(UNIT::MVT::FOOT_SLOW); // DUKE
+    mvtTypes.push_back(UNIT::MVT::RIDERS_SLOW); // DUKE_RIDER
+    mvtTypes.push_back(UNIT::MVT::FOOT_SLOW); // ARCHER
+    mvtTypes.push_back(UNIT::MVT::RIDERS_SLOW); // ARCHER_RIDER
+    mvtTypes.push_back(UNIT::MVT::FOOT_SLOW); // MARKSMAN
+    mvtTypes.push_back(UNIT::MVT::RIDERS_SLOW); // MARKSMAN_RIDER
+    mvtTypes.push_back(UNIT::MVT::FLIERS); // ANGEL
+    mvtTypes.push_back(UNIT::MVT::FOOT_FAST); // DEMON
+    mvtTypes.push_back(UNIT::MVT::FLIERS); // PEGASUS_KNIGHT
+    mvtTypes.push_back(UNIT::MVT::MAGES); // DEMONIC_INCARNATE
+    mvtTypes.push_back(UNIT::MVT::MAGES); // ANGELIC_INCARNATE
+    mvtTypes.push_back(UNIT::MVT::FOOT_SLOW); // FENCER
+    mvtTypes.push_back(UNIT::MVT::FOOT_SLOW); // DUELIST
+    mvtTypes.push_back(UNIT::MVT::FOOT_SLOW); // MOUSQUETAIRE
+    mvtTypes.push_back(UNIT::MVT::FOOT_FAST); // PICKPOCKET
+    mvtTypes.push_back(UNIT::MVT::FOOT_FAST); // THIEF
+    mvtTypes.push_back(UNIT::MVT::FOOT_SLOW); // ASSASSIN
+    mvtTypes.push_back(UNIT::MVT::FOOT_SLOW); // MERCENARY
+    mvtTypes.push_back(UNIT::MVT::FOOT_SLOW); // HERO
+    mvtTypes.push_back(UNIT::MVT::PIRATES); // CORSAIR
+    mvtTypes.push_back(UNIT::MVT::PIRATES); // VIKING
+    mvtTypes.push_back(UNIT::MVT::BANDITS); // BANDIT
+    mvtTypes.push_back(UNIT::MVT::BANDITS); // RAVAGER
+    mvtTypes.push_back(UNIT::MVT::FOOT_SLOW); // PIKEMAN
+    mvtTypes.push_back(UNIT::MVT::RIDERS_SLOW); // CAVALIER
+    mvtTypes.push_back(UNIT::MVT::RIDERS_FAST); // PALADIN
+    mvtTypes.push_back(UNIT::MVT::MAGES); // MAGE
+    mvtTypes.push_back(UNIT::MVT::MAGES); // BATTLEMAGE
+    mvtTypes.push_back(UNIT::MVT::RIDERS_SLOW); // TROUBADOUR
+    mvtTypes.push_back(UNIT::MVT::MAGES); // SAGE
+    mvtTypes.push_back(UNIT::MVT::MAGES); // PRIEST
+    mvtTypes.push_back(UNIT::MVT::MAGES); // BISHOP
+    mvtTypes.push_back(UNIT::MVT::MAGES); // ORACLE
+    mvtTypes.push_back(UNIT::MVT::FOOT_SLOW); // GENERAL
+    mvtTypes.push_back(UNIT::MVT::MAGES); // CLERIC
+    mvtTypes.push_back(UNIT::MVT::FOOT_FAST); // DEMIGOD
+    mvtTypes.push_back(UNIT::MVT::FOOT_FAST); // GOD
+    mvtTypes.push_back(UNIT::MVT::FOOT_SLOW); // KNIGHT
+    mvtTypes.push_back(UNIT::MVT::FOOT_FAST); // GODDESS
+    mvtTypes.push_back(UNIT::MVT::FOOT_FAST); // TWINBORN
+
 }
 
 
