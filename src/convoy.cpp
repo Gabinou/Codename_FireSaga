@@ -206,9 +206,9 @@ void Convoy::printcontents(int wpntype) {
 void Convoy::printstats(int wpntype, int stattype) {
     Inventory_item * tempitems = getItems(wpntype);
     int tempqty = getQuantity(wpntype);
-    std::string statname = statName(wpntype);
+    std::string statname = statName(stattype);
     std::vector<int> vecstats = getStats(wpntype, stattype);
-    SDL_Log("Quantity: %d %s \t Wpn \n", tempqty, statname.c_str());
+    SDL_Log("Quantity: %d \n%s \t Wpn \n", tempqty, statname.c_str());
     for (int i = 0; i < tempqty; i++) {
         if (tempitems[i].id > 0) {
             SDL_Log("%d \t %s", vecstats[i], all_weapons[tempitems[i].id].getName().c_str());
@@ -223,10 +223,10 @@ void Convoy::sortused(int wpntype) {
     std::vector<int> vecwhere;
     std::vector<int> uniqueids;
     int arrusesleft[DEFAULT::CONVOY_SIZE];
-    std::copy(vecusesleft.begin(), vecusesleft.end(), arrusesleft);
     
     vecid = getStats(wpntype, ITEM::STAT::ID);    
     vecusesleft = getStats(wpntype, ITEM::STAT::USES_LEFT);    
+    std::copy(vecusesleft.begin(), vecusesleft.end(), arrusesleft);
     // SDL_Log("Ids");
     // printvec(vecid);
     // SDL_Log("Uses left");
@@ -236,8 +236,10 @@ void Convoy::sortused(int wpntype) {
     // printvec(uniqueids);
     for (int i = 0; i < uniqueids.size(); i++) {
         vecwhere = cppwhere(uniqueids[i], vecid);
-        // SDL_Log("Where %d %d ", vecwhere[0], vecwhere.back());
-        quicksort(arrusesleft, vecwhere[0], vecwhere.back(), wpntype);
+        SDL_Log("Where %d %d ", vecwhere[0], vecwhere.back());
+        if (vecwhere[0] != vecwhere.back()) {
+            quicksort(arrusesleft, vecwhere[0], vecwhere.back(), wpntype);
+        }
     }
 }
 
@@ -574,8 +576,9 @@ void testConvoysortused() {
     test_convoy.printcontents(ITEM::TYPE::SWORD);
     test_convoy.printstats(ITEM::TYPE::SWORD, ITEM::STAT::USES_LEFT);
     SDL_Log("Sorting swords according to Pmight");
-    test_convoy.sort(ITEM::TYPE::SWORD, ITEM::STAT::PMIGHT);
-    // test_convoy.printstats(ITEM::TYPE::SWORD, ITEM::STAT::ID);
+    test_convoy.sortstats(ITEM::TYPE::SWORD, ITEM::STAT::PMIGHT);
+    test_convoy.printstats(ITEM::TYPE::SWORD, ITEM::STAT::USES_LEFT);
+    test_convoy.sortused(ITEM::TYPE::SWORD);
     test_convoy.printstats(ITEM::TYPE::SWORD, ITEM::STAT::USES_LEFT);
 }
 

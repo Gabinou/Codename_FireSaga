@@ -202,7 +202,7 @@ enum DMG_TYPES {
 }
 namespace STAT {
 enum STATS {
-    PMIGHT,
+    PMIGHT = 1,
     MMIGHT,
     HIT,
     DODGE,
