@@ -92,7 +92,7 @@ int * cuniques(int arr[], int size) {
     return(uniques);
 }
 
-std::vector<std::string> unitType(unsigned short int in_effect) {
+std::vector<std::string> unitType(unsigned short int in_typecode) {
     std::vector<std::string> names;
     if ((in_effect & UNIT::TYPE::HUMAN) > 0) {
         names.push_back("Human");
@@ -211,8 +211,8 @@ std::vector<std::string> wpnEffects(long unsigned int in_effect) {
 }
 
 std::string wpnType(short unsigned int in_type) {
-    std::vector<std::string> name;
-    switch (wpntype) {
+    std::string name;
+    switch (in_type) {
         case ITEM::TYPE::SWORD:
             name = "Sword";
             break;

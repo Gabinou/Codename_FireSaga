@@ -171,7 +171,7 @@ void Weapon::writeXML(const char * filename, const bool append) {
     tinyxml2::XMLElement * pTypes = xmlDoc.NewElement("Types");
     pWpn->InsertEndChild(pTypes);
     pTypes->SetAttribute("id", type);
-    std::vector<std::string> types = wpnType(type);
+    std::vector<std::string> types = wpnTypes(type);
     tinyxml2::XMLElement * pType;    
     for (int i = 0; i < types.size(); i++) {
         pType = xmlDoc.NewElement("Type");

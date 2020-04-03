@@ -29,8 +29,16 @@ extern std::string unitName(unsigned short int in_id);
 extern std::string statName(unsigned short int in_id);
 extern std::string wpnName(unsigned short int in_id);
 extern std::string wpnType(short unsigned int in_type);
-extern std::vector<std::string> unitType(unsigned short int in_effect);
+extern std::vector<std::string> unitType(unsigned short int in_typecode);
 extern std::vector<std::string> wpnTypes(short unsigned int in_typecode);
+// wpnType() COULD JUST BE A VECTOR.
+// ->statName also.
+// ->unitName also.
+// ->sexName also.
+// NO NEED TO RUN CODE EVERYTIME. JUST USE A VECTOR.
+// cannot be used for wpnTypes()
+
+
 
 extern void printarr(int arr[], int size);
 extern void printvec(std::vector<int> vec);
