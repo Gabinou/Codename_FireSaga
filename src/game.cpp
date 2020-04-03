@@ -459,15 +459,40 @@ void Game::init(const char * title, int xpos, int ypos, int width, int height, b
 
 void Game::loadXML(const short int save_ind) {
     char filename[DEFAULT::BUFFER_SIZE];
-    char buffer[DEFAULT::BUFFER_SIZE];
     if (!PHYSFS_exists("saves")) {
-        PHYSFS_mkdir("saves");
+        SDL_Log("Could not find 'saves' folder!");
     }
+
+    stbsp_snprintf(filename, DEFAULT::BUFFER_SIZE, "saves//save%04d.bsav", save_ind);
+    SDL_Log("saveXML Game to: %s\n", filename);
+
+    PHYSFS_file * fp = PHYSFS_openRead(filename);
+    tinyxml2::XMLDocument xmlDoc;
+    parseXML(filename, &xmlDoc);
+ 
+
+    tinyxml2::XMLElement * ptemp;
+
+    ptemp = xmlDoc.FirstChildElement("Convoy");
+    convoy.readXML(ptemp);
+
+    ptemp = xmlDoc.FirstChildElement("Unit");
+
+    unsigned short int id;
+    while(ptemp) {
+        id = (unsigned short int)ptemp->IntAttribute("id");
+        party[id] = Unit();
+        party[id].readXML(ptemp);
+        ptemp = xmlDoc.NextSiblingElement("Unit");
+    }
+
+    ptemp = xmlDoc.FirstChildElement("Narrative");
+
+
 }
 
 void Game::saveXML(const short int save_ind) {
     char filename[DEFAULT::BUFFER_SIZE];
-    char buffer[DEFAULT::BUFFER_SIZE];
     if (!PHYSFS_exists("saves")) {
         PHYSFS_mkdir("saves");
     }
@@ -488,11 +513,13 @@ void Game::saveXML(const short int save_ind) {
     tinyxml2::XMLElement * ptemp;
     for (auto it = party.begin(); it != party.end(); it++) {
         ptemp = xmlDoc.NewElement("Unit");
-        it->second.writeXML(&xmlDoc, ptemp);        
+        it->second.writeXML(&xmlDoc, ptemp);
+        xmlDoc.InsertEndChild(ptemp);
     }
 
     ptemp = xmlDoc.NewElement("Convoy");
     convoy.writeXML(&xmlDoc, ptemp);
+    xmlDoc.InsertEndChild(ptemp);
 
     tinyxml2::XMLPrinter printer;
     xmlDoc.Print(&printer);

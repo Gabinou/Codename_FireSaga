@@ -331,6 +331,11 @@ void readXML_stats(tinyxml2::XMLElement * in_pStats, Unit_stats * in_stats) {
     in_stats->prof = (unsigned char)bufint;
 }
 
+void writeXML_narrative(tinyxml2::XMLElement * in_pNarrative, Narrative * in_state) {
+
+}
+
+
 void writeXML_narrative(tinyxml2::XMLDocument * in_doc, tinyxml2::XMLElement * in_pNarrative, Narrative * in_state) {
     tinyxml2::XMLElement * ppc_death = in_doc->NewElement("pc_death");
     tinyxml2::XMLElement * pnpc_death = in_doc->NewElement("npc_death");
