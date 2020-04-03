@@ -12,7 +12,6 @@ Weapon::Weapon() {
 
 Weapon::Weapon(short unsigned int in_type, Weapon_stats in_stats, unsigned char in_id) {
     stats = in_stats;
-    SDL_Log("wpn id: %d: %s", in_id, wpnNames[in_id].c_str());
     name = wpnNames[in_id];
     type = in_type;
     id = in_id;

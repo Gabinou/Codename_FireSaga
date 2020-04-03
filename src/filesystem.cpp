@@ -349,7 +349,7 @@ void writeXML_narrative(tinyxml2::XMLDocument * in_doc, tinyxml2::XMLElement * i
     char buffer[DEFAULT::BUFFER_SIZE];
 
     for (unsigned int i = UNIT::NAME::ERWIN; i < UNIT::NAME::PC_END; i++) {
-        name = unitName(i);
+        name = unitNames[i];
         tempb = in_state->pc_death[i - UNIT::NAME::ERWIN];
         ptemp = in_doc->NewElement(name.c_str());
         ppc_death->InsertEndChild(ptemp);

@@ -12,7 +12,7 @@ Unit::Unit(const unsigned short int in_id, const unsigned char in_class_index, c
     base_stats = in_bases;
     current_stats = in_bases;
     id = in_id;
-    name = unitName(in_id);
+    name = unitNames[in_id];
     class_index = in_class_index;
     mvt_type = mvtType(class_index);
     class_name = className(class_index);
