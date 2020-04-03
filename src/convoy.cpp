@@ -222,21 +222,16 @@ void Convoy::sortused(int wpntype) {
     std::vector<int> vecusesleft;
     std::vector<int> vecwhere;
     std::vector<int> uniqueids;
-    int arrusesleft[DEFAULT::CONVOY_SIZE];
     
     vecid = getStats(wpntype, ITEM::STAT::ID);    
     vecusesleft = getStats(wpntype, ITEM::STAT::USES_LEFT);    
-    std::copy(vecusesleft.begin(), vecusesleft.end(), arrusesleft);
-    // SDL_Log("Ids");
-    // printvec(vecid);
-    // SDL_Log("Uses left");
-    // printvec(vecusesleft);
+    // int arrusesleft[DEFAULT::CONVOY_SIZE];
+    // std::copy(vecusesleft.begin(), vecusesleft.end(), arrusesleft);
+    int * arrusesleft = &vecusesleft[0];
 
     uniqueids = cppuniques(vecid);
-    // printvec(uniqueids);
     for (int i = 0; i < uniqueids.size(); i++) {
         vecwhere = cppwhere(uniqueids[i], vecid);
-        SDL_Log("Where %d %d ", vecwhere[0], vecwhere.back());
         if (vecwhere[0] != vecwhere.back()) {
             quicksort(arrusesleft, vecwhere[0], vecwhere.back(), wpntype);
         }

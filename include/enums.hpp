@@ -439,7 +439,7 @@ enum DANGERS {
 
 namespace LOOPING {
 enum LOOPINGS {
-    PINGPONG,
+    PINGPONG = 1,
     DIRECT,
     REVERSE
 };
@@ -524,31 +524,31 @@ enum RNS {
 
 namespace STATE {
 enum STATES {
-    PAUSE = 0,
-    STATS = 1,
-    MINIMAP = 2,
-    MAP = 3,
-    UNITMENU = 4,
-    UNITMOVE = 5,
-    CUTSCENE = 6,
-    OPTIONS = 7,
-    STARTMENU = 8,
-    EQUIPMENT = 9,
-    SOUNDROOM = 10,
-    SAVES = 11,
-    STORAGE = 12,
-    FORGE = 13,
-    BONUSEXP = 14,
-    PLACEMENT = 15,
-    PREPARATION = 16,
-    CHOOSEUNITS = 17,
-    ITEMS = 18,
-    TRADE = 19,
-    CONVERSATION = 20,
-    BATTLE = 21,
-    ATTACK = 22,
-    INTROVIDEO = 23,
-    END = 24,
+    PAUSE = 1,
+    STATS,
+    MINIMAP,
+    MAP,
+    UNITMENU,
+    UNITMOVE,
+    CUTSCENE,
+    OPTIONS,
+    STARTMENU,
+    EQUIPMENT,
+    SOUNDROOM,
+    SAVES,
+    STORAGE,
+    FORGE,
+    BONUSEXP,
+    PLACEMENT,
+    PREPARATION,
+    CHOOSEUNITS,
+    ITEMS,
+    TRADE,
+    CONVERSATION,
+    BATTLE,
+    ATTACK,
+    INTROVIDEO,
+    END,
 };
 }
 }
