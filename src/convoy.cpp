@@ -547,24 +547,18 @@ void Convoy::spend(int out_money) {
     bank += out_money;
 }
 
-void Convoy::readXML(const char * filename) {
-    SDL_Log("readXML Unit file: %s", filename);
-    tinyxml2::XMLDocument xmlDoc;
-    tinyxml2::XMLElement * ptemp;
-    unsigned int bufint;
-    parseXML(filename, &xmlDoc);
-    tinyxml2::XMLElement * pConvoy = xmlDoc.FirstChildElement("Convoy");
-    if (!pConvoy) {SDL_Log("Cannot get Convoy element");}   
+void Convoy::readXML(tinyxml2::XMLElement * in_pConvoy) {
     std::vector<std::string> names;
     Inventory_item tempitems[DEFAULT::CONVOY_SIZE];
     Inventory_item * currentitems;
     Inventory_item empty;
+    tinyxml2::XMLElement * ptemp;
     int i = 1;
     int j;
     while (i < ITEM::TYPE::END) {
         names = wpnTypes(i);
         currentitems = getItems(i);
-        ptemp = pConvoy->FirstChildElement(names[0].c_str());
+        ptemp = in_pConvoy->FirstChildElement(names[0].c_str());
         if (!ptemp) {SDL_Log("Cannot get %s element", names[0].c_str());}
         readXML_items(ptemp, tempitems);
 
@@ -576,6 +570,19 @@ void Convoy::readXML(const char * filename) {
         }
         i*=2;
     }
+}
+
+
+void Convoy::readXML(const char * filename) {
+    SDL_Log("readXML Unit file: %s", filename);
+    tinyxml2::XMLDocument xmlDoc;
+    parseXML(filename, &xmlDoc);
+    tinyxml2::XMLElement * pConvoy = xmlDoc.FirstChildElement("Convoy");
+    if (!pConvoy) {
+        SDL_Log("Cannot get Convoy element");
+    } else {
+        readXML(pConvoy);
+    }   
 }
 
 void Convoy::writeXML(tinyxml2::XMLDocument * in_doc, tinyxml2::XMLElement * in_pConvoy) {
