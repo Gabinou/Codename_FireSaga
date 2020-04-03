@@ -377,6 +377,23 @@ void makewpnNames() {
     wpnNames.push_back("Apollo");
     wpnNames.push_back("Artemis");
     wpnNames.push_back("Pinaka");
+    wpnNames.push_back("Adapted shield");
+    wpnNames.push_back("Pot lid");
+    wpnNames.push_back("Wooden shield");
+    wpnNames.push_back("Cloak");
+    wpnNames.push_back("Leather shield");
+    wpnNames.push_back("Kite shield");
+    wpnNames.push_back("Iron buckler");
+    wpnNames.push_back("Steel buckler");
+    wpnNames.push_back("Spiked buckler");
+    wpnNames.push_back("Scutum");
+    wpnNames.push_back("Master shield");
+    wpnNames.push_back("Goddess's hand");
+    wpnNames.push_back("Ancile");
+    wpnNames.push_back("Rock plate");
+    wpnNames.push_back("Obsidian plate");
+    wpnNames.push_back("Marble plate shield");
+    wpnNames.push_back("Divine protector");
     wpnNames.push_back("Wristblade");
     wpnNames.push_back("Shield hook");
     wpnNames.push_back("Retractable wristblade");
@@ -620,6 +637,7 @@ std::string wpnName(unsigned short int in_id) {
             break;
         case ITEM::NAME::CROSSBOW:
             name = "Crossbow";
+
             break;
         case ITEM::NAME::SHORT_BOW:
             name = "Short bow";

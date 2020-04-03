@@ -29,7 +29,6 @@ int main(int argc, char * argv[]) {
     makemvtTypes();
     makewpnNames();
 
-
     SDL_Log("Initializing Filesystem\n");
     char * buildDir = SDL_GetBasePath();
     FILESYSTEM::init(0, buildDir, buildDir);
