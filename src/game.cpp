@@ -495,11 +495,9 @@ void Game::saveXML(const short int save_ind) {
 
     PHYSFS_close(fp);
 
-    // tinyxml2::XMLElement * pUnit;
     for (auto it = party.begin(); it != party.end(); it++) {
         it->second.writeXML(filename, true);        
     }
-
     convoy.writeXML(filename, true);
 
 }
