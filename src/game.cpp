@@ -485,6 +485,15 @@ void Game::saveXML(const short int save_ind) {
     xmlDoc.InsertEndChild(pNarrative);
     writeXML_narrative(&xmlDoc, pNarrative, &narrative);
 
+    tinyxml2::XMLElement * ptemp;
+    for (auto it = party.begin(); it != party.end(); it++) {
+        ptemp = xmlDoc.NewElement("Unit");
+        it->second.writeXML(&xmlDoc, ptemp);        
+    }
+
+    ptemp = xmlDoc.NewElement("Convoy");
+    convoy.writeXML(&xmlDoc, ptemp);
+
     tinyxml2::XMLPrinter printer;
     xmlDoc.Print(&printer);
     char longbuffer[printer.CStrSize()];
@@ -496,10 +505,6 @@ void Game::saveXML(const short int save_ind) {
 
     PHYSFS_close(fp);
 
-    for (auto it = party.begin(); it != party.end(); it++) {
-        it->second.writeXML(filename, true);        
-    }
-    convoy.writeXML(filename, true);
 
 }
 

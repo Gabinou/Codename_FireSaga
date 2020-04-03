@@ -40,7 +40,7 @@ int main(int argc, char * argv[]) {
     SDL_Log("Loading base units.");
     baseUnits();
     SDL_Log("Testing units: %s \n", all_units[UNIT::NAME::SILOU].getName().c_str());
-    testXMLUnits();
+    // testXMLUnits();
 
     // testXMLTiles();
 
@@ -55,8 +55,8 @@ int main(int argc, char * argv[]) {
     firesaga->init("FireSaga", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, firesaga->getSettings().res.x, firesaga->getSettings().res.y, false);
     firesaga->makeFPSEntity();
 
-    SDL_Log("Testing convoy\n");
-    testConvoy();
+    // SDL_Log("Testing convoy\n");
+    // testConvoy();
 
     // getchar();
 
