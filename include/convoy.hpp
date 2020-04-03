@@ -36,9 +36,9 @@ class Convoy {
         void quicksort(int arr[], int low, int high, int wpntype);
         int partition(int arr[], int low, int high, int wpntype);
         void swap(int arr[], int ind1, int ind2);
-        void swapwpn(int wpntype, int ind1, int ind2);
+        void swapWpn(int wpntype, int ind1, int ind2);
 
-        void sortstats(int wpntype, int stattype);
+        void sortStats(int wpntype, int stattype);
         void sortused(int wpntype);
         void sort(int wpntype, int stattype);
 
@@ -48,8 +48,8 @@ class Convoy {
         std::vector<int> getStats(int wpntype, int stattype);
         Inventory_item * getItems(int wpntype);
 
-        void printcontents(int wpntype); // Useless?
-        void printstats(int wpntype, int stattype);
+        void printContents(int wpntype); // Useless?
+        void printStats(int wpntype, int stattype);
 
         void write(const char * filename, const char * mode = "a");
         void writeXML(const char * filename, const bool append = false);
@@ -58,7 +58,7 @@ class Convoy {
 
 extern void testConvoy();
 extern void testConvoyfull();
-extern void testConvoysortstats();
+extern void testConvoysortStats();
 extern void testConvoysortused();
 
 #endif /* CONVOY_HPP */

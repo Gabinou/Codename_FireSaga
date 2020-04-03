@@ -1097,7 +1097,7 @@ std::string className(unsigned char in_class_index) {
 }
 
 
-std::vector<std::string> skillNames(unsigned long long int in_skills) {
+std::vector<std::string> skillNames(unsigned long long int in_skillscode) {
     std::vector<std::string> skill_names;
     if ((in_skills & UNIT::SKILL::CANTO) > 0) {
         skill_names.push_back("Canto");

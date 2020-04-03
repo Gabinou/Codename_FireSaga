@@ -20,7 +20,7 @@ extern int pingpong(int current, int upper, int lower = 0);
 extern std::string sexName(bool in_sex);
 extern unsigned char mvtType(unsigned char in_class_index);
 extern std::string className(unsigned char in_class_index);
-extern std::vector<std::string> skillNames(unsigned long long int in_skills);
+extern std::vector<std::string> skillNames(unsigned long long int in_skillscode);
 
 extern std::vector<std::string> wpnEffects(long unsigned int in_effect);
 
