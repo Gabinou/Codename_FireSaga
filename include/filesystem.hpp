@@ -8,6 +8,7 @@
 #include <stdlib.h>
 #include "physfs.h"
 #include "LodePNG.h"
+#include "unit.hpp"
 #include "structs.hpp"
 #include "enums.hpp"
 #include "tinyxml2.h"
@@ -35,12 +36,15 @@ extern void writeXML_stats(tinyxml2::XMLDocument * in_doc, tinyxml2::XMLElement 
 extern void readXML_stats(tinyxml2::XMLElement * in_pStats, Weapon_stats * in_stats);
 extern void writeXML_stats(tinyxml2::XMLDocument * in_doc, tinyxml2::XMLElement * in_pStats, Tile_stats * in_stats);
 extern void readXML_stats(tinyxml2::XMLElement * in_pStats, Tile_stats * in_stats);
-extern void readXML_items(tinyxml2::XMLElement * in_pEquipment, Inventory_item * equipment);
-extern void writeXML_items(tinyxml2::XMLDocument * in_doc, tinyxml2::XMLElement * in_pEquipment, Inventory_item * in_equipment, int size);
 extern void writeXML_mvtcost(tinyxml2::XMLDocument * in_doc, tinyxml2::XMLElement * in_pCost, Movement_cost * in_cost);
 extern void readXML_mvtcost(tinyxml2::XMLElement * in_pCost, Movement_cost * in_cost);
 extern void writeXML_narrative(tinyxml2::XMLDocument * in_doc, tinyxml2::XMLElement * in_pNarrative, Narrative * in_state);
 extern void readXML_narrative(tinyxml2::XMLElement * in_pNarrative, Tile_stats * in_stats);
+
+extern void readXML_items(tinyxml2::XMLElement * in_pEquipment, Inventory_item * equipment);
+extern void writeXML_items(tinyxml2::XMLDocument * in_doc, tinyxml2::XMLElement * in_pEquipment, Inventory_item * in_equipment, int size);
+// SHOULD BE MOVED TO WEAPON?
+
 
 extern int parseXML(const char * filename, tinyxml2::XMLDocument * in_doc);
 

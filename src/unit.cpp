@@ -628,11 +628,84 @@ void Unit::readXML(const char * filename) {
     speed();
 } 
 
+void Unit::writeXML(tinyxml2::XMLDocument * in_doc, tinyxml2::XMLElement * in_pUnit) {
+    char buffer[DEFAULT::BUFFER_SIZE];
+    
+    in_pUnit->SetAttribute("id", id);
+    
+    tinyxml2::XMLElement * pName = in_doc->NewElement("Name");
+    in_pUnit->InsertEndChild(pName);
+    pName->SetText(name.c_str());
+    
+    tinyxml2::XMLElement * pSex = in_doc->NewElement("Sex");
+    in_pUnit->InsertEndChild(pSex);
+    pSex->SetText(sex);
+    pSex->SetAttribute("eg", "hasPenis");
+    
+    tinyxml2::XMLElement * pClass = in_doc->NewElement("Class");
+    in_pUnit->InsertEndChild(pClass);
+    pClass->SetText(class_name.c_str());
+    pClass->SetAttribute("id", class_index);
+
+    tinyxml2::XMLElement * pExp = in_doc->NewElement("Exp");
+    in_pUnit->InsertEndChild(pExp);
+    pExp->SetText(exp);
+
+    tinyxml2::XMLElement * pBaseExp = in_doc->NewElement("BaseExp");
+    in_pUnit->InsertEndChild(pBaseExp);
+    pBaseExp->SetText(base_exp);
+    
+    tinyxml2::XMLElement * pStats = in_doc->NewElement("Stats");
+    in_pUnit->InsertEndChild(pStats);
+    writeXML_stats(in_doc, pStats, &current_stats);
+    
+    tinyxml2::XMLElement * pGrowths = in_doc->NewElement("Growths");
+    in_pUnit->InsertEndChild(pGrowths);
+    writeXML_stats(in_doc, pGrowths, &growths);
+    
+    tinyxml2::XMLElement * pCaps = in_doc->NewElement("Caps");
+    in_pUnit->InsertEndChild(pCaps);
+    writeXML_stats(in_doc, pCaps, &caps_stats);
+    
+    tinyxml2::XMLElement * pBases = in_doc->NewElement("Bases");
+    in_pUnit->InsertEndChild(pBases);
+    writeXML_stats(in_doc, pBases, &base_stats);
+
+    if (grown_stats.size() > 0) {
+        tinyxml2::XMLElement * pGrown = in_doc->NewElement("LevelUps");
+        in_pUnit->InsertEndChild(pGrown);
+        tinyxml2::XMLElement * pGrownLevel;
+        for (int i = 0; i < grown_stats.size(); i++) {
+            pGrownLevel = in_doc->NewElement("LevelUp");
+            pGrown->InsertEndChild(pGrownLevel);
+            writeXML_stats(in_doc, pGrownLevel, &(grown_stats[i]));
+        }
+    }
+
+    if (skill_names.size() > 0) {
+        tinyxml2::XMLElement * pSkills = in_doc->NewElement("Skills");
+        tinyxml2::XMLElement * pSkill;
+        for (int i = 0; i < skill_names.size(); i++) {
+            pSkill = in_doc->NewElement("Skill");
+            pSkills->InsertEndChild(pSkill);
+            pSkill->SetText(skill_names[i].c_str());
+        }
+    }
+
+    tinyxml2::XMLElement * pSkillsCode = in_doc->NewElement("SkillsCode");
+    stbsp_sprintf(buffer, "0x%llx", skills);
+    pSkillsCode->SetText(buffer);
+    in_pUnit->InsertEndChild(pSkillsCode);
+    tinyxml2::XMLElement * pEquipment = in_doc->NewElement("Equipment");
+    in_pUnit->InsertEndChild(pEquipment);
+    writeXML_items(in_doc, pEquipment, equipment, DEFAULT::EQUIPMENT_SIZE);
+}
+
+
 void Unit::writeXML(const char * filename, const bool append) {
     SDL_Log("writeXML Unit to: %s\n", filename);
     // How to write files so that it is modifiable by randos?
     PHYSFS_file * fp;
-    char buffer[DEFAULT::BUFFER_SIZE];
     tinyxml2::XMLDocument xmlDoc;
     if (!PHYSFS_exists(filename)) {    
         xmlDoc.InsertFirstChild(xmlDoc.NewDeclaration());
@@ -646,74 +719,75 @@ void Unit::writeXML(const char * filename, const bool append) {
     
     tinyxml2::XMLElement * pUnit = xmlDoc.NewElement("Unit");
     xmlDoc.InsertEndChild(pUnit);
-    pUnit->SetAttribute("id", id);
+    writeXML(&xmlDoc, pUnit);
+    // pUnit->SetAttribute("id", id);
     
-    tinyxml2::XMLElement * pName = xmlDoc.NewElement("Name");
-    pUnit->InsertEndChild(pName);
-    pName->SetText(name.c_str());
+    // tinyxml2::XMLElement * pName = xmlDoc.NewElement("Name");
+    // pUnit->InsertEndChild(pName);
+    // pName->SetText(name.c_str());
     
-    tinyxml2::XMLElement * pSex = xmlDoc.NewElement("Sex");
-    pUnit->InsertEndChild(pSex);
-    pSex->SetText(sex);
-    pSex->SetAttribute("eg", "hasPenis");
+    // tinyxml2::XMLElement * pSex = xmlDoc.NewElement("Sex");
+    // pUnit->InsertEndChild(pSex);
+    // pSex->SetText(sex);
+    // pSex->SetAttribute("eg", "hasPenis");
     
-    tinyxml2::XMLElement * pClass = xmlDoc.NewElement("Class");
-    pUnit->InsertEndChild(pClass);
-    pClass->SetText(class_name.c_str());
-    pClass->SetAttribute("id", class_index);
+    // tinyxml2::XMLElement * pClass = xmlDoc.NewElement("Class");
+    // pUnit->InsertEndChild(pClass);
+    // pClass->SetText(class_name.c_str());
+    // pClass->SetAttribute("id", class_index);
 
-    tinyxml2::XMLElement * pExp = xmlDoc.NewElement("Exp");
-    pUnit->InsertEndChild(pExp);
-    pExp->SetText(exp);
+    // tinyxml2::XMLElement * pExp = xmlDoc.NewElement("Exp");
+    // pUnit->InsertEndChild(pExp);
+    // pExp->SetText(exp);
 
-    tinyxml2::XMLElement * pBaseExp = xmlDoc.NewElement("BaseExp");
-    pUnit->InsertEndChild(pBaseExp);
-    pBaseExp->SetText(base_exp);
+    // tinyxml2::XMLElement * pBaseExp = xmlDoc.NewElement("BaseExp");
+    // pUnit->InsertEndChild(pBaseExp);
+    // pBaseExp->SetText(base_exp);
     
-    tinyxml2::XMLElement * pStats = xmlDoc.NewElement("Stats");
-    pUnit->InsertEndChild(pStats);
-    writeXML_stats(&xmlDoc, pStats, &current_stats);
+    // tinyxml2::XMLElement * pStats = xmlDoc.NewElement("Stats");
+    // pUnit->InsertEndChild(pStats);
+    // writeXML_stats(&xmlDoc, pStats, &current_stats);
     
-    tinyxml2::XMLElement * pGrowths = xmlDoc.NewElement("Growths");
-    pUnit->InsertEndChild(pGrowths);
-    writeXML_stats(&xmlDoc, pGrowths, &growths);
+    // tinyxml2::XMLElement * pGrowths = xmlDoc.NewElement("Growths");
+    // pUnit->InsertEndChild(pGrowths);
+    // writeXML_stats(&xmlDoc, pGrowths, &growths);
     
-    tinyxml2::XMLElement * pCaps = xmlDoc.NewElement("Caps");
-    pUnit->InsertEndChild(pCaps);
-    writeXML_stats(&xmlDoc, pCaps, &caps_stats);
+    // tinyxml2::XMLElement * pCaps = xmlDoc.NewElement("Caps");
+    // pUnit->InsertEndChild(pCaps);
+    // writeXML_stats(&xmlDoc, pCaps, &caps_stats);
     
-    tinyxml2::XMLElement * pBases = xmlDoc.NewElement("Bases");
-    pUnit->InsertEndChild(pBases);
-    writeXML_stats(&xmlDoc, pBases, &base_stats);
+    // tinyxml2::XMLElement * pBases = xmlDoc.NewElement("Bases");
+    // pUnit->InsertEndChild(pBases);
+    // writeXML_stats(&xmlDoc, pBases, &base_stats);
 
-    if (grown_stats.size() > 0) {
-        tinyxml2::XMLElement * pGrown = xmlDoc.NewElement("LevelUps");
-        pUnit->InsertEndChild(pGrown);
-        tinyxml2::XMLElement * pGrownLevel;
-        for (int i = 0; i < grown_stats.size(); i++) {
-            pGrownLevel = xmlDoc.NewElement("LevelUp");
-            pGrown->InsertEndChild(pGrownLevel);
-            writeXML_stats(&xmlDoc, pGrownLevel, &(grown_stats[i]));
-        }
-    }
+    // if (grown_stats.size() > 0) {
+    //     tinyxml2::XMLElement * pGrown = xmlDoc.NewElement("LevelUps");
+    //     pUnit->InsertEndChild(pGrown);
+    //     tinyxml2::XMLElement * pGrownLevel;
+    //     for (int i = 0; i < grown_stats.size(); i++) {
+    //         pGrownLevel = xmlDoc.NewElement("LevelUp");
+    //         pGrown->InsertEndChild(pGrownLevel);
+    //         writeXML_stats(&xmlDoc, pGrownLevel, &(grown_stats[i]));
+    //     }
+    // }
 
-    if (skill_names.size() > 0) {
-        tinyxml2::XMLElement * pSkills = xmlDoc.NewElement("Skills");
-        tinyxml2::XMLElement * pSkill;
-        for (int i = 0; i < skill_names.size(); i++) {
-            pSkill = xmlDoc.NewElement("Skill");
-            pSkills->InsertEndChild(pSkill);
-            pSkill->SetText(skill_names[i].c_str());
-        }
-    }
+    // if (skill_names.size() > 0) {
+    //     tinyxml2::XMLElement * pSkills = xmlDoc.NewElement("Skills");
+    //     tinyxml2::XMLElement * pSkill;
+    //     for (int i = 0; i < skill_names.size(); i++) {
+    //         pSkill = xmlDoc.NewElement("Skill");
+    //         pSkills->InsertEndChild(pSkill);
+    //         pSkill->SetText(skill_names[i].c_str());
+    //     }
+    // }
 
-    tinyxml2::XMLElement * pSkillsCode = xmlDoc.NewElement("SkillsCode");
-    stbsp_sprintf(buffer, "0x%llx", skills);
-    pSkillsCode->SetText(buffer);
-    pUnit->InsertEndChild(pSkillsCode);
-    tinyxml2::XMLElement * pEquipment = xmlDoc.NewElement("Equipment");
-    pUnit->InsertEndChild(pEquipment);
-    writeXML_items(&xmlDoc, pEquipment, equipment, DEFAULT::EQUIPMENT_SIZE);
+    // tinyxml2::XMLElement * pSkillsCode = xmlDoc.NewElement("SkillsCode");
+    // stbsp_sprintf(buffer, "0x%llx", skills);
+    // pSkillsCode->SetText(buffer);
+    // pUnit->InsertEndChild(pSkillsCode);
+    // tinyxml2::XMLElement * pEquipment = xmlDoc.NewElement("Equipment");
+    // pUnit->InsertEndChild(pEquipment);
+    // writeXML_items(&xmlDoc, pEquipment, equipment, DEFAULT::EQUIPMENT_SIZE);
     
     tinyxml2::XMLPrinter printer;
 
