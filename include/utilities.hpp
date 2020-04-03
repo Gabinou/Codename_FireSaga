@@ -41,6 +41,8 @@ extern std::vector<std::string> wpnTypes(short unsigned int in_typecode);
 
 extern std::vector<std::string> unitNames;
 extern void makeunitNames();
+extern std::vector<std::string> wpnNames;
+extern void makewpnNames();
 extern std::vector<std::string> statNames;
 extern void makestatNames();
 extern std::vector<std::string> sexNames;

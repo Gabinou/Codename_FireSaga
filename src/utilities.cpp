@@ -210,61 +210,61 @@ std::vector<std::string> wpnEffects(long unsigned int in_effect) {
     return(names);
 }
 
-std::string wpnType(short unsigned int in_type) {
-    std::string name;
-    switch (in_type) {
-        case ITEM::TYPE::SWORD:
-            name = "Sword";
-            break;
-        case ITEM::TYPE::LANCE:
-            name = "Lance";
-            break;
-        case ITEM::TYPE::AXE:
-            name = "Axe";
-            break;
-        case ITEM::TYPE::BOW:
-            name = "Bow";
-            break;
-        case ITEM::TYPE::TRINKET:
-            name = "Trinket";
-            break;
-        case ITEM::TYPE::OFFHAND:
-            name = "Offhand";
-            break;
-        case ITEM::TYPE::ELEMENTAL:
-            name = "Elemental";
-            break;
-        case ITEM::TYPE::DEMONIC:
-            name = "Demonic";
-            break;
-        case ITEM::TYPE::ANGELIC:
-            name = "Angelic";
-            break;
-        case ITEM::TYPE::SHIELD:
-            name = "Shield";
-            break;
-        case ITEM::TYPE::STAFF:
-            name = "Staff";
-            break;
-        case ITEM::TYPE::CLAW:
-            name = "Claw";
-            break;
-        case ITEM::TYPE::ITEM:
-            name = "Item";
-            break;
-    }
-    return(name);
-}
+// std::string wpnType(short unsigned int in_type) {
+//     std::string name;
+//     switch (in_type) {
+//         case ITEM::TYPE::SWORD:
+//             name = "Sword";
+//             break;
+//         case ITEM::TYPE::LANCE:
+//             name = "Lance";
+//             break;
+//         case ITEM::TYPE::AXE:
+//             name = "Axe";
+//             break;
+//         case ITEM::TYPE::BOW:
+//             name = "Bow";
+//             break;
+//         case ITEM::TYPE::TRINKET:
+//             name = "Trinket";
+//             break;
+//         case ITEM::TYPE::OFFHAND:
+//             name = "Offhand";
+//             break;
+//         case ITEM::TYPE::ELEMENTAL:
+//             name = "Elemental";
+//             break;
+//         case ITEM::TYPE::DEMONIC:
+//             name = "Demonic";
+//             break;
+//         case ITEM::TYPE::ANGELIC:
+//             name = "Angelic";
+//             break;
+//         case ITEM::TYPE::SHIELD:
+//             name = "Shield";
+//             break;
+//         case ITEM::TYPE::STAFF:
+//             name = "Staff";
+//             break;
+//         case ITEM::TYPE::CLAW:
+//             name = "Claw";
+//             break;
+//         case ITEM::TYPE::ITEM:
+//             name = "Item";
+//             break;
+//     }
+//     return(name);
+// }
 
-std::string sexName(bool in_sex) {
-    std::string name;
-    if(in_sex) {
-        name = "M";
-    } else {
-        name = "F";
-    }
-    return(name);
-}
+// std::string sexName(bool in_sex) {
+//     std::string name;
+//     if(in_sex) {
+//         name = "M";
+//     } else {
+//         name = "F";
+//     }
+//     return(name);
+// }
 
 std::vector<std::string> wpnTypes(short unsigned int in_typecode) {
     std::vector<std::string> types;
@@ -303,6 +303,134 @@ std::vector<std::string> wpnTypes(short unsigned int in_typecode) {
         types.push_back("Staff");
     }
     return(types);
+}
+
+std::vector<std::string> wpnNames;
+void makewpnNames() {
+    wpnNames.push_back("");
+    wpnNames.push_back("Wooden sword");
+    wpnNames.push_back("Kitchen knife");
+    wpnNames.push_back("Wrath sword");
+    wpnNames.push_back("Fleuret");
+    wpnNames.push_back("Rapière");
+    wpnNames.push_back("Glaive");
+    wpnNames.push_back("Saber");
+    wpnNames.push_back("Fauchon");
+    wpnNames.push_back("Iron sword");
+    wpnNames.push_back("Steel sword");
+    wpnNames.push_back("Damas sword");
+    wpnNames.push_back("Merciful blade");
+    wpnNames.push_back("Broadsword");
+    wpnNames.push_back("Espadon");
+    wpnNames.push_back("Oodachi");
+    wpnNames.push_back("Uchigatana");
+    wpnNames.push_back("Exsangue");
+    wpnNames.push_back("Hauteclaire");
+    wpnNames.push_back("Secundus");
+    wpnNames.push_back("Excalibur");
+    wpnNames.push_back("Galatine");
+    wpnNames.push_back("Raijintou");
+    wpnNames.push_back("Fuujintou");
+    wpnNames.push_back("Honjou masamune");
+    wpnNames.push_back("Raw Iron Slab");
+    wpnNames.push_back("Kirito");
+    wpnNames.push_back("Killy");
+    wpnNames.push_back("Pitchfork");
+    wpnNames.push_back("Fighting stick");
+    wpnNames.push_back("Iron lance");
+    wpnNames.push_back("Wrath lance");
+    wpnNames.push_back("Steel lance");
+    wpnNames.push_back("Damas lance");
+    wpnNames.push_back("Heavy spear");
+    wpnNames.push_back("Trident");
+    wpnNames.push_back("Merciful lance");
+    wpnNames.push_back("Javelin");
+    wpnNames.push_back("Pilum");
+    wpnNames.push_back("Spear");
+    wpnNames.push_back("Vel");
+    wpnNames.push_back("Gungnir");
+    wpnNames.push_back("Achilles");
+    wpnNames.push_back("Tonbokiri");
+    wpnNames.push_back("Iron axe");
+    wpnNames.push_back("Steel axe");
+    wpnNames.push_back("Damas axe");
+    wpnNames.push_back("Wrath axe");
+    wpnNames.push_back("Throwing axe");
+    wpnNames.push_back("Tomahawk");
+    wpnNames.push_back("Pick axe");
+    wpnNames.push_back("Hoe");
+    wpnNames.push_back("Club");
+    wpnNames.push_back("Halberd");
+    wpnNames.push_back("Hammer");
+    wpnNames.push_back("War Pick");
+    wpnNames.push_back("Battleaxe");
+    wpnNames.push_back("Vidyu");
+    wpnNames.push_back("Hephaestus");
+    wpnNames.push_back("Adapted Crossbow");
+    wpnNames.push_back("Repeatable Crossbow");
+    wpnNames.push_back("Crossbow");
+    wpnNames.push_back("Short bow");
+    wpnNames.push_back("Long bow");
+    wpnNames.push_back("Composite bow");
+    wpnNames.push_back("Recurve Crossbow");
+    wpnNames.push_back("Recurve bow");
+    wpnNames.push_back("Apollo");
+    wpnNames.push_back("Artemis");
+    wpnNames.push_back("Pinaka");
+    wpnNames.push_back("Wristblade");
+    wpnNames.push_back("Shield hook");
+    wpnNames.push_back("Retractable wristblade");
+    wpnNames.push_back("Main Gauche");
+    wpnNames.push_back("Swordbreaker");
+    wpnNames.push_back("Trident Dagger");
+    wpnNames.push_back("Tantou");
+    wpnNames.push_back("Kodachi");
+    wpnNames.push_back("Dague");
+    wpnNames.push_back("Wakizashi");
+    wpnNames.push_back("Braquemard");
+    wpnNames.push_back("Miséricorde");
+    wpnNames.push_back("Carnwennan");
+    wpnNames.push_back("Flintlock");
+    wpnNames.push_back("Cibo");
+    wpnNames.push_back("Shrunken head");
+    wpnNames.push_back("Crystal");
+    wpnNames.push_back("Glass orb");
+    wpnNames.push_back("Human femur");
+    wpnNames.push_back("Void fragment");
+    wpnNames.push_back("Demon fang");
+    wpnNames.push_back("Angel feather");
+    wpnNames.push_back("Angel hair");
+    wpnNames.push_back("Vial of light");
+    wpnNames.push_back("Maiden's handkerchief");
+    wpnNames.push_back("War Horn");
+    wpnNames.push_back("Ball lightning");
+    wpnNames.push_back("Icicle");
+    wpnNames.push_back("Volcano");
+    wpnNames.push_back("Wind spear");
+    wpnNames.push_back("Ember");
+    wpnNames.push_back("Tsunami");
+    wpnNames.push_back("God's forge fire");
+    wpnNames.push_back("Fingolfin");
+    wpnNames.push_back("Mithrandir");
+    wpnNames.push_back("Void");
+    wpnNames.push_back("Nether");
+    wpnNames.push_back("Downfall");
+    wpnNames.push_back("Consume");
+    wpnNames.push_back("Putrify");
+    wpnNames.push_back("Glaurung");
+    wpnNames.push_back("Gothmog");
+    wpnNames.push_back("Fatalis");
+    wpnNames.push_back("Heal");
+    wpnNames.push_back("Remedy");
+    wpnNames.push_back("Renew");
+    wpnNames.push_back("Wish");
+    wpnNames.push_back("Pray");
+    wpnNames.push_back("Salve");
+    wpnNames.push_back("Panacea");
+    wpnNames.push_back("Healing Potion");
+    wpnNames.push_back("Telperion extract");
+    wpnNames.push_back("Laurelin extract");
+    wpnNames.push_back("Cross");
 }
 
 std::string wpnName(unsigned short int in_id) {

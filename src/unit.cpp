@@ -19,7 +19,7 @@ Unit::Unit(const unsigned short int in_id, const unsigned char in_class_index, c
     skill_names = skillNames(skills);
     equippable = makeEquippable(class_index);
     sex = in_sex;
-    sex_name = sexName(sex);
+    sex_name = sexNames[sex];
 }
 
 short int * Unit::getPos() {
@@ -623,7 +623,7 @@ void Unit::readXML(const char * filename) {
     combatStats();
     mvt_type = mvtType(class_index);
     class_name = className(class_index);
-    sex_name = sexName(sex);
+    sex_name = sexNames[sex];
     skill_names = skillNames(skills);
     speed();
 } 

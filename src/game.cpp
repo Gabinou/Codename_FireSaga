@@ -454,12 +454,6 @@ void Game::init(const char * title, int xpos, int ypos, int width, int height, b
     for (int i = 0; i < baseparty.size(); i++) {
         party[baseparty[i].getid()] = baseparty[i];
     }
-
-    makeunitNames();
-    makestatNames();
-    makesexNames();
-    makeclassNames();
-    makemvtTypes();
     
 };
 

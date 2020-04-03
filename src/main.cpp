@@ -5,6 +5,7 @@
 #include <chrono>
 #include "textcomponent.hpp"
 #include "filesystem.hpp"
+#include "utilities.hpp"
 #include "game.hpp"
 #include "map.hpp"
 #include "script.hpp"
@@ -20,9 +21,17 @@ int main(int argc, char * argv[]) {
     SDL_LogSetOutputFunction(&FILESYSTEM::log, NULL);
     SDL_Log("Starting project codename FireSaga\n");
 
-    char * buildDir = SDL_GetBasePath();
+    SDL_Log("Initializing utilities\n");
+    makeunitNames();
+    makestatNames();
+    makesexNames();
+    makeclassNames();
+    makemvtTypes();
+    makewpnNames();
+
 
     SDL_Log("Initializing Filesystem\n");
+    char * buildDir = SDL_GetBasePath();
     FILESYSTEM::init(0, buildDir, buildDir);
 
     SDL_Log("Initializing TinyMT\n");
