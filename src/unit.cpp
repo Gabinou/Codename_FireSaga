@@ -14,8 +14,8 @@ Unit::Unit(const unsigned short int in_id, const unsigned char in_class_index, c
     id = in_id;
     name = unitNames[in_id];
     class_index = in_class_index;
-    mvt_type = mvtType(class_index);
-    class_name = className(class_index);
+    mvt_type = mvtTypes[class_index];
+    class_name = classNames[class_index];
     skill_names = skillNames(skills);
     equippable = makeEquippable(class_index);
     sex = in_sex;
@@ -621,8 +621,8 @@ void Unit::readXML(const char * filename) {
     }
 
     combatStats();
-    mvt_type = mvtType(class_index);
-    class_name = className(class_index);
+    mvt_type = mvtTypes[class_index];
+    class_name = classNames[class_index];
     sex_name = sexNames[sex];
     skill_names = skillNames(skills);
     speed();

@@ -16,20 +16,18 @@ template <typename T> int sgn(T val) {
 extern int geometricslide(int distance, float geo_factor = 2);
 extern int pingpong(int current, int upper, int lower = 0);
 
-extern std::string sexName(bool in_sex);
-extern unsigned char mvtType(unsigned char in_class_index);
-extern std::string className(unsigned char in_class_index);
-extern std::vector<std::string> skillNames(unsigned long long int in_skillscode);
-
-extern std::vector<std::string> wpnEffects(long unsigned int in_effect);
-
 extern short unsigned int makeEquippable(unsigned char in_class_index);
-extern std::string unitName(unsigned short int in_id);
-extern std::string statName(unsigned short int in_id);
-extern std::string wpnName(unsigned short int in_id);
-extern std::string wpnType(short unsigned int in_type);
-extern std::vector<std::string> unitType(unsigned short int in_typecode);
+extern std::vector<std::string> skillNames(unsigned long long int in_skillscode);
+extern std::vector<std::string> wpnEffects(long unsigned int in_effect);
+extern std::vector<std::string> unitTypes(unsigned short int in_typecode);
 extern std::vector<std::string> wpnTypes(short unsigned int in_typecode);
+// extern std::string sexName(bool in_sex);
+// extern unsigned char mvtType(unsigned char in_class_index);
+// extern std::string className(unsigned char in_class_index);
+// extern std::string unitName(unsigned short int in_id);
+// extern std::string statName(unsigned short int in_id);
+// extern std::string wpnName(unsigned short int in_id);
+// extern std::string wpnType(short unsigned int in_type);
 
 
 // wpnType() COULD JUST BE A VECTOR.

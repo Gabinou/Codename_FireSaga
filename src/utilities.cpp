@@ -92,7 +92,7 @@ int * cuniques(int arr[], int size) {
     return(uniques);
 }
 
-std::vector<std::string> unitType(unsigned short int in_typecode) {
+std::vector<std::string> unitTypes(unsigned short int in_typecode) {
     std::vector<std::string> names;
     if ((in_typecode & UNIT::TYPE::HUMAN) > 0) {
         names.push_back("Human");

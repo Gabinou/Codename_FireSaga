@@ -160,7 +160,7 @@ void Weapon::writeXML(const char * filename, const bool append) {
     tinyxml2::XMLElement * pEffectives = xmlDoc.NewElement("Effectives");
     pWpn->InsertEndChild(pEffectives);
     pEffectives->SetAttribute("id", effective);
-    std::vector<std::string> effectives = unitType(effective);
+    std::vector<std::string> effectives = unitTypes(effective);
     tinyxml2::XMLElement * pEffective;
     for (int i = 0; i < effectives.size(); i++) {
         pEffective = xmlDoc.NewElement("Effective");
