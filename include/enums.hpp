@@ -191,6 +191,7 @@ enum TYPES {
     STAFF = 0x0400,
     CLAW = 0x0800,
     ITEM = 0x1000,
+    END = 0x2000,
 
 };
 }

@@ -60,5 +60,6 @@ extern void testConvoy();
 extern void testConvoyfull();
 extern void testConvoysortStats();
 extern void testConvoysortused();
+extern void testConvoyWriteXML();
 
 #endif /* CONVOY_HPP */

@@ -245,6 +245,12 @@ std::vector<std::string> wpnTypes(short unsigned int in_typecode) {
     }
     if ((in_typecode & ITEM::TYPE::STAFF) > 0) {
         types.push_back("Staff");
+    }    
+    if ((in_typecode & ITEM::TYPE::CLAW) > 0) {
+        types.push_back("Claw");
+    }
+    if ((in_typecode & ITEM::TYPE::ITEM) > 0) {
+        types.push_back("Item");
     }
     return(types);
 }
