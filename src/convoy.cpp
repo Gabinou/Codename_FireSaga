@@ -551,7 +551,6 @@ void Convoy::readXML(const char * filename) {
     SDL_Log("readXML Unit file: %s", filename);
     tinyxml2::XMLDocument xmlDoc;
     tinyxml2::XMLElement * ptemp;
-    const char * buffer;
     unsigned int bufint;
     parseXML(filename, &xmlDoc);
     tinyxml2::XMLElement * pConvoy = xmlDoc.FirstChildElement("Convoy");
@@ -579,10 +578,27 @@ void Convoy::readXML(const char * filename) {
     }
 }
 
+void Convoy::writeXML(tinyxml2::XMLDocument * in_doc, tinyxml2::XMLElement * in_pConvoy) {
+    tinyxml2::XMLElement * ptemp;
+    std::vector<std::string> names;
+    Inventory_item * tempitem;
+    int quantity;
+    int i = 1;
+    while (i < ITEM::TYPE::END) {
+        names = wpnTypes(i);
+        quantity = getQuantity(i);
+        tempitem = getItems(i);
+        ptemp = in_doc->NewElement(names[0].c_str());
+        in_pConvoy->InsertEndChild(ptemp);
+        writeXML_items(in_doc, ptemp, tempitem, quantity);
+        i*=2;
+    }
+}
+
+
 void Convoy::writeXML(const char * filename, const bool append) {
     SDL_Log("writeXML Convoy to: %s\n", filename);
     PHYSFS_file * fp;
-    char buffer[DEFAULT::BUFFER_SIZE];
     tinyxml2::XMLDocument xmlDoc;
     if (append) {
         fp = PHYSFS_openAppend(filename);
@@ -594,20 +610,7 @@ void Convoy::writeXML(const char * filename, const bool append) {
     tinyxml2::XMLElement * pConvoy = xmlDoc.NewElement("Convoy");
     xmlDoc.InsertEndChild(pConvoy);    
 
-    tinyxml2::XMLElement * ptemp;
-    std::vector<std::string> names;
-    Inventory_item * tempitem;
-    int quantity;
-    int i = 1;
-    while (i < ITEM::TYPE::END) {
-        names = wpnTypes(i);
-        quantity = getQuantity(i);
-        tempitem = getItems(i);
-        ptemp = xmlDoc.NewElement(names[0].c_str());
-        pConvoy->InsertEndChild(ptemp);
-        writeXML_items(&xmlDoc, ptemp, tempitem, quantity);
-        i*=2;
-    }
+    writeXML(&xmlDoc, pConvoy);
 
     tinyxml2::XMLPrinter printer;
 

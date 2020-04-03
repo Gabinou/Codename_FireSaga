@@ -814,6 +814,7 @@ void testXMLUnits() {
     temp_unit.levelUp();
     temp_unit.levelUp();
     temp_wpn.id = ITEM::NAME::FLEURET;
+    temp_wpn.id = ITEM::NAME::FLEURET;
     temp_unit.addEquipment(temp_wpn);
     temp_wpn.id = ITEM::NAME::KITCHEN_KNIFE;
     temp_unit.addEquipment(temp_wpn);
