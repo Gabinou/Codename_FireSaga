@@ -12,7 +12,7 @@ Weapon::Weapon() {
 
 Weapon::Weapon(short unsigned int in_type, Weapon_stats in_stats, unsigned char in_id) {
     stats = in_stats;
-    name = wpnName(in_id);
+    name = wpnNames[in_id];
     type = in_type;
     id = in_id;
 }
