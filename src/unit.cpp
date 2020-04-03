@@ -559,56 +559,51 @@ char Unit::speed() {
     return(current_speed);
 }
 
-void Unit::readXML(const char * filename) {
-    SDL_Log("readXML Unit file: %s", filename);
-    tinyxml2::XMLDocument xmlDoc;
-    tinyxml2::XMLElement * ptemp;
+void Unit::readXML(tinyxml2::XMLElement * in_pUnit) {
     const char * buffer;
     unsigned int bufint;
-    parseXML(filename, &xmlDoc);
- 
-    tinyxml2::XMLElement * pUnit = xmlDoc.FirstChildElement("Unit");
-    if (!pUnit) {SDL_Log("Cannot get Unit element");}   
-    id = (unsigned short int)pUnit->IntAttribute("id");
-    ptemp = pUnit->FirstChildElement("Name");
+    tinyxml2::XMLElement * ptemp;
+
+    id = (unsigned short int)in_pUnit->IntAttribute("id");
+    ptemp = in_pUnit->FirstChildElement("Name");
     if (!ptemp) {SDL_Log("Cannot get Name element");}   
     name = ptemp->GetText();
-    ptemp = pUnit->FirstChildElement("Sex");
+    ptemp = in_pUnit->FirstChildElement("Sex");
     if (!ptemp) {SDL_Log("Cannot get Sex element");}   
     ptemp->QueryBoolText(&sex);    
-    ptemp = pUnit->FirstChildElement("SkillsCode");
+    ptemp = in_pUnit->FirstChildElement("SkillsCode");
     if (!ptemp) {SDL_Log("Cannot get SkillsCode element");}   
     buffer = ptemp->GetText();
     // skills = strtoull(buffer, NULL, 16);
     sscanf(buffer, "%llx", &skills);
-    ptemp = pUnit->FirstChildElement("BaseExp");
+    ptemp = in_pUnit->FirstChildElement("BaseExp");
     if (!ptemp) {SDL_Log("Cannot get BaseExp element");}   
     ptemp->QueryUnsignedText(&bufint);
     base_exp = (unsigned short int)bufint;
-    ptemp = pUnit->FirstChildElement("Exp");
+    ptemp = in_pUnit->FirstChildElement("Exp");
     if (!ptemp) {SDL_Log("Cannot get Exp element");}   
     ptemp->QueryUnsignedText(&bufint);
     exp = (unsigned short int)bufint;
-    ptemp = pUnit->FirstChildElement("Class");
+    ptemp = in_pUnit->FirstChildElement("Class");
     if (!ptemp) {SDL_Log("Cannot get Class element");}   
     class_index = (unsigned char)ptemp->IntAttribute("id");;
-    ptemp = pUnit->FirstChildElement("Stats");
+    ptemp = in_pUnit->FirstChildElement("Stats");
     if (!ptemp) {SDL_Log("Cannot get Stats element");}   
     readXML_stats(ptemp, &current_stats);
-    ptemp = pUnit->FirstChildElement("Growths");
+    ptemp = in_pUnit->FirstChildElement("Growths");
     if (!ptemp) {SDL_Log("Cannot get Growths element");}   
     readXML_stats(ptemp, &growths);
-    ptemp = pUnit->FirstChildElement("Caps");
+    ptemp = in_pUnit->FirstChildElement("Caps");
     if (!ptemp) {SDL_Log("Cannot get Caps element");}   
     readXML_stats(ptemp, &caps_stats);
-    ptemp = pUnit->FirstChildElement("Bases");
+    ptemp = in_pUnit->FirstChildElement("Bases");
     if (!ptemp) {SDL_Log("Cannot get Bases element");}   
     readXML_stats(ptemp, &base_stats);
-    ptemp = pUnit->FirstChildElement("Equipment");
+    ptemp = in_pUnit->FirstChildElement("Equipment");
     if (!ptemp) {SDL_Log("Cannot get Equipment element");}   
     readXML_items(ptemp, equipment);
     
-    tinyxml2::XMLElement * pLevelUps = pUnit->FirstChildElement("LevelUps");
+    tinyxml2::XMLElement * pLevelUps = in_pUnit->FirstChildElement("LevelUps");
     if (!pLevelUps) {SDL_Log("Cannot get levelUps element");
     } else {   
         ptemp = pLevelUps->FirstChildElement("LevelUp");
@@ -626,6 +621,20 @@ void Unit::readXML(const char * filename) {
     sex_name = sexNames[sex];
     skill_names = skillNames(skills);
     speed();
+}
+
+
+void Unit::readXML(const char * filename) {
+    SDL_Log("readXML Unit file: %s", filename);
+    tinyxml2::XMLDocument xmlDoc;
+    parseXML(filename, &xmlDoc);
+ 
+    tinyxml2::XMLElement * pUnit = xmlDoc.FirstChildElement("Unit");
+    if (!pUnit) {
+        SDL_Log("Cannot get Unit element");
+    } else {
+        readXML(pUnit);
+    }
 } 
 
 void Unit::writeXML(tinyxml2::XMLDocument * in_doc, tinyxml2::XMLElement * in_pUnit) {
@@ -700,7 +709,6 @@ void Unit::writeXML(tinyxml2::XMLDocument * in_doc, tinyxml2::XMLElement * in_pU
     in_pUnit->InsertEndChild(pEquipment);
     writeXML_items(in_doc, pEquipment, equipment, DEFAULT::EQUIPMENT_SIZE);
 }
-
 
 void Unit::writeXML(const char * filename, const bool append) {
     SDL_Log("writeXML Unit to: %s\n", filename);
