@@ -523,10 +523,8 @@ void Convoy::writeXML(const char * filename, const bool append) {
     int quantity;
     int i = 1;
     while (i < ITEM::TYPE::END) {
-        SDL_Log("i: %d", i);
         names = wpnTypes(i);
         quantity = getQuantity(i);
-        SDL_Log("name: %s", names[0].c_str());
         tempitem = getItems(i);
         ptemp = xmlDoc.NewElement(names[0].c_str());
         pConvoy->InsertEndChild(ptemp);
