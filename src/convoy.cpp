@@ -520,16 +520,17 @@ void Convoy::writeXML(const char * filename, const bool append) {
     tinyxml2::XMLElement * ptemp;
     std::vector<std::string> names;
     Inventory_item * tempitem;
-
+    int quantity;
     int i = 1;
     while (i < ITEM::TYPE::END) {
         SDL_Log("i: %d", i);
         names = wpnTypes(i);
+        quantity = getQuantity(i);
         SDL_Log("name: %s", names[0].c_str());
         tempitem = getItems(i);
         ptemp = xmlDoc.NewElement(names[0].c_str());
         pConvoy->InsertEndChild(ptemp);
-        writeXML_equipment(&xmlDoc, ptemp, tempitem);
+        writeXML_items(&xmlDoc, ptemp, tempitem, quantity);
         i*=2;
     }
 

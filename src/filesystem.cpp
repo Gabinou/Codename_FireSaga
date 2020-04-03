@@ -464,22 +464,22 @@ void writeXML_stats(tinyxml2::XMLDocument * in_doc, tinyxml2::XMLElement * in_pS
     pprof->SetText(in_stats->prof);
 }
 
-void writeXML_equipment(tinyxml2::XMLDocument * in_doc, tinyxml2::XMLElement * in_pEquipment, Inventory_item * in_equipment) {
+void writeXML_items(tinyxml2::XMLDocument * in_doc, tinyxml2::XMLElement * in_pItems, Inventory_item * in_items, int size) {
     tinyxml2::XMLElement * pItem;
     tinyxml2::XMLElement * pUsed;
     tinyxml2::XMLElement * pwpnName;
     char buffer[DEFAULT::BUFFER_SIZE];
-    for (int i = 0; i < DEFAULT::EQUIPMENT_SIZE; i++) {
+    for (int i = 0; i < size; i++) {
         pItem = in_doc->NewElement("Item");
-        in_pEquipment->InsertEndChild(pItem);
-        pItem->SetAttribute("id", in_equipment[i].id);
+        in_pItems->InsertEndChild(pItem);
+        pItem->SetAttribute("id", in_items[i].id);
         pUsed = in_doc->NewElement("Used");
-        stbsp_sprintf(buffer, "%d", in_equipment[i].used);
+        stbsp_sprintf(buffer, "%d", in_items[i].used);
         pUsed->SetText(buffer);
         pItem->InsertEndChild(pUsed);
         pwpnName = in_doc->NewElement("Name");
-        if (in_equipment[i].id > 0) {
-            pwpnName->SetText(all_weapons[in_equipment[i].id].getName().c_str());
+        if (in_items[i].id > 0) {
+            pwpnName->SetText(all_weapons[in_items[i].id].getName().c_str());
         } else {
             pwpnName->SetText("Empty");
         }
@@ -487,15 +487,15 @@ void writeXML_equipment(tinyxml2::XMLDocument * in_doc, tinyxml2::XMLElement * i
     }
 }
 
-void readXML_equipment(tinyxml2::XMLElement * in_pEquipment, Inventory_item * equipment) {
-    tinyxml2::XMLElement * pItem = in_pEquipment->FirstChildElement("Item");
+void readXML_items(tinyxml2::XMLElement * in_pItems, Inventory_item * in_items, int size) {
+    tinyxml2::XMLElement * pItem = in_pItems->FirstChildElement("Item");
     tinyxml2::XMLElement * pUsed;
     int bufint;
-    for (int i = 0; i < DEFAULT::EQUIPMENT_SIZE; i++) {
+    for (int i = 0; i < size; i++) {
         pUsed = pItem->FirstChildElement("Used");
-        equipment[i].id = pItem->IntAttribute("id");
+        in_items[i].id = pItem->IntAttribute("id");
         pUsed->QueryIntText(&bufint);
-        equipment[i].used = bufint;
+        in_items[i].used = bufint;
         pItem = pItem->NextSiblingElement("Item");
     }
 }
