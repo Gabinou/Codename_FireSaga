@@ -94,22 +94,22 @@ int * cuniques(int arr[], int size) {
 
 std::vector<std::string> unitType(unsigned short int in_typecode) {
     std::vector<std::string> names;
-    if ((in_effect & UNIT::TYPE::HUMAN) > 0) {
+    if ((in_typecode & UNIT::TYPE::HUMAN) > 0) {
         names.push_back("Human");
     }
-    if ((in_effect & UNIT::TYPE::MOUNTED) > 0) {
+    if ((in_typecode & UNIT::TYPE::MOUNTED) > 0) {
         names.push_back("Mounted");
     }
-    if ((in_effect & UNIT::TYPE::FLYING) > 0) {
+    if ((in_typecode & UNIT::TYPE::FLYING) > 0) {
         names.push_back("Flying");
     }
-    if ((in_effect & UNIT::TYPE::ARMOR) > 0) {
+    if ((in_typecode & UNIT::TYPE::ARMOR) > 0) {
         names.push_back("Armor");
     }
-    if ((in_effect & UNIT::TYPE::DEMON) > 0) {
+    if ((in_typecode & UNIT::TYPE::DEMON) > 0) {
         names.push_back("Demon");
     }
-    if ((in_effect & UNIT::TYPE::ANGEL) > 0) {
+    if ((in_typecode & UNIT::TYPE::ANGEL) > 0) {
         names.push_back("Angel");
     }
     return(names);
@@ -1099,103 +1099,103 @@ std::string className(unsigned char in_class_index) {
 
 std::vector<std::string> skillNames(unsigned long long int in_skillscode) {
     std::vector<std::string> skill_names;
-    if ((in_skills & UNIT::SKILL::CANTO) > 0) {
+    if ((in_skillscode & UNIT::SKILL::CANTO) > 0) {
         skill_names.push_back("Canto");
     }
-    if ((in_skills & UNIT::SKILL::SKILLED_RIDER) > 0) {
+    if ((in_skillscode & UNIT::SKILL::SKILLED_RIDER) > 0) {
         skill_names.push_back("Skilled rider");
     }    
-    if ((in_skills & UNIT::SKILL::SPRINT) > 0) {
+    if ((in_skillscode & UNIT::SKILL::SPRINT) > 0) {
         skill_names.push_back("Sprint");
     } 
-    if ((in_skills & UNIT::SKILL::SWITCH) > 0) {
+    if ((in_skillscode & UNIT::SKILL::SWITCH) > 0) {
         skill_names.push_back("Switch");
     }   
-    if ((in_skills & UNIT::SKILL::MOUNTAINWALK) > 0) {
+    if ((in_skillscode & UNIT::SKILL::MOUNTAINWALK) > 0) {
         skill_names.push_back("Mountainwalk");
     }    
-    if ((in_skills & UNIT::SKILL::WATERWALK) > 0) {
+    if ((in_skillscode & UNIT::SKILL::WATERWALK) > 0) {
         skill_names.push_back("Waterwalk");
     }
-    if ((in_skills & UNIT::SKILL::CRIT_KILLS) > 0) {
+    if ((in_skillscode & UNIT::SKILL::CRIT_KILLS) > 0) {
         skill_names.push_back("CritKill");
     }
-    if ((in_skills & UNIT::SKILL::DISMEMBER) > 0) {
+    if ((in_skillscode & UNIT::SKILL::DISMEMBER) > 0) {
         skill_names.push_back("Dismember");
     }
-    if ((in_skills & UNIT::SKILL::ATK_RANGE_P1) > 0) {
+    if ((in_skillscode & UNIT::SKILL::ATK_RANGE_P1) > 0) {
         skill_names.push_back("Range+1");
     }
-    if ((in_skills & UNIT::SKILL::DIVINE_SHIELD) > 0) {
+    if ((in_skillscode & UNIT::SKILL::DIVINE_SHIELD) > 0) {
         skill_names.push_back("Divine Shield");
     }
-    if ((in_skills & UNIT::SKILL::NO_CRIT) > 0) {
+    if ((in_skillscode & UNIT::SKILL::NO_CRIT) > 0) {
         skill_names.push_back("No crit");
     }
-    if ((in_skills & UNIT::SKILL::NO_COUNTER) > 0) {
+    if ((in_skillscode & UNIT::SKILL::NO_COUNTER) > 0) {
         skill_names.push_back("No counter");
     }
-    if ((in_skills & UNIT::SKILL::MAX_DESPAIR) > 0) {
+    if ((in_skillscode & UNIT::SKILL::MAX_DESPAIR) > 0) {
         skill_names.push_back("Maxima of Despair");
     }
-    if ((in_skills & UNIT::SKILL::TUNNELING) > 0) {
+    if ((in_skillscode & UNIT::SKILL::TUNNELING) > 0) {
         skill_names.push_back("Tunneling");
     }
-    if ((in_skills & UNIT::SKILL::SCOUTING) > 0) {
+    if ((in_skillscode & UNIT::SKILL::SCOUTING) > 0) {
         skill_names.push_back("Scouting");
     }
-    if ((in_skills & UNIT::SKILL::ASSASSINATE) > 0) {
+    if ((in_skillscode & UNIT::SKILL::ASSASSINATE) > 0) {
         skill_names.push_back("Assassinate");
     }
-    if ((in_skills & UNIT::SKILL::LOCKPICK) > 0) {
+    if ((in_skillscode & UNIT::SKILL::LOCKPICK) > 0) {
         skill_names.push_back("Lockpick");
     }
-    if ((in_skills & UNIT::SKILL::NO_LOCKPICK) > 0) {
+    if ((in_skillscode & UNIT::SKILL::NO_LOCKPICK) > 0) {
         skill_names.push_back("Pick");
     }
-    if ((in_skills & UNIT::SKILL::IMMUNE_MAGIC) > 0) {
+    if ((in_skillscode & UNIT::SKILL::IMMUNE_MAGIC) > 0) {
         skill_names.push_back("Immune to magic");
     }
-    if ((in_skills & UNIT::SKILL::IMMUNE_ELEMENTAL) > 0) {
+    if ((in_skillscode & UNIT::SKILL::IMMUNE_ELEMENTAL) > 0) {
         skill_names.push_back("Immune to elemental");
     }
-    if ((in_skills & UNIT::SKILL::IMMUNE_DEMONIC) > 0) {
+    if ((in_skillscode & UNIT::SKILL::IMMUNE_DEMONIC) > 0) {
         skill_names.push_back("Immune to demonic");
     }
-    if ((in_skills & UNIT::SKILL::IMMUNE_ANGELIC) > 0) {
+    if ((in_skillscode & UNIT::SKILL::IMMUNE_ANGELIC) > 0) {
         skill_names.push_back("Immune to angelic");
     }
-    if ((in_skills & UNIT::SKILL::LIFESTEAL_RN) > 0) {
+    if ((in_skillscode & UNIT::SKILL::LIFESTEAL_RN) > 0) {
         skill_names.push_back("Sol");
     }
-    if ((in_skills & UNIT::SKILL::INFUSE) > 0) {
+    if ((in_skillscode & UNIT::SKILL::INFUSE) > 0) {
         skill_names.push_back("Infuse");
     }
-    if ((in_skills & UNIT::SKILL::DOUBLE_EXP) > 0) {
+    if ((in_skillscode & UNIT::SKILL::DOUBLE_EXP) > 0) {
         skill_names.push_back("Double EXP");
     }
-    if ((in_skills & UNIT::SKILL::AMBIDEXTRY) > 0) {
+    if ((in_skillscode & UNIT::SKILL::AMBIDEXTRY) > 0) {
         skill_names.push_back("Ambidextry");
     }
-    if ((in_skills & UNIT::SKILL::TWO_HAND_STYLE) > 0) {
+    if ((in_skillscode & UNIT::SKILL::TWO_HAND_STYLE) > 0) {
         skill_names.push_back("Two-hand Style");
     }
-    if ((in_skills & UNIT::SKILL::PIERCE_RN) > 0) {
+    if ((in_skillscode & UNIT::SKILL::PIERCE_RN) > 0) {
         skill_names.push_back("Luna");
     }
-    if ((in_skills & UNIT::SKILL::COUNTER) > 0) {
+    if ((in_skillscode & UNIT::SKILL::COUNTER) > 0) {
         skill_names.push_back("Counter");
     }
-    if ((in_skills & UNIT::SKILL::THRUST_SWORD_BONUS) > 0) {
+    if ((in_skillscode & UNIT::SKILL::THRUST_SWORD_BONUS) > 0) {
         skill_names.push_back("Thrust sword bonus");
     }
-    if ((in_skills & UNIT::SKILL::SHIELD_BONUS) > 0) {
+    if ((in_skillscode & UNIT::SKILL::SHIELD_BONUS) > 0) {
         skill_names.push_back("Shield bonus");
     }
-    if ((in_skills & UNIT::SKILL::OFFHAND_BONUS) > 0) {
+    if ((in_skillscode & UNIT::SKILL::OFFHAND_BONUS) > 0) {
         skill_names.push_back("Offhand bonus");
     }
-    if ((in_skills & UNIT::SKILL::BOW_BONUS) > 0) {
+    if ((in_skillscode & UNIT::SKILL::BOW_BONUS) > 0) {
         skill_names.push_back("Bow bonus");
     }
     return(skill_names);
