@@ -567,15 +567,12 @@ void Convoy::readXML(const char * filename) {
     while (i < ITEM::TYPE::END) {
         names = wpnTypes(i);
         currentitems = getItems(i);
-        SDL_Log("names: %s", names[0].c_str());
         ptemp = pConvoy->FirstChildElement(names[0].c_str());
         if (!ptemp) {SDL_Log("Cannot get %s element", names[0].c_str());}
-        // tempitems = {0};
         readXML_items(ptemp, tempitems);
-        // setItems(i, tempitems);
+
         j = 0;
         while(tempitems[j].id > 0) {
-            SDL_Log("found: %d", tempitems[j].id);
             deposit(tempitems[j]);
             tempitems[j] = empty;
             j++;
