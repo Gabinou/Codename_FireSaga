@@ -206,7 +206,7 @@ void Convoy::printContents(int wpntype) {
 void Convoy::printStats(int wpntype, int stattype) {
     Inventory_item * tempitems = getItems(wpntype);
     int tempqty = getQuantity(wpntype);
-    std::string statname = statName(stattype);
+    std::string statname = statNames[stattype];
     std::vector<int> vecstats = getStats(wpntype, stattype);
     SDL_Log("Quantity: %d \n%s \t Wpn \n", tempqty, statname.c_str());
     for (int i = 0; i < tempqty; i++) {

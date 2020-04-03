@@ -377,10 +377,14 @@ void Game::loadUnits(std::vector<short unsigned int> unit_inds, std::vector<std:
 
 void Game::loadMapEnemies() {
     SDL_Log("Loading map enemies. \n");
-    std::vector<short unsigned int> map_enemies = mapp->getEnemies(); 
-    for (int i = 0; i < map_enemies.size(); i++) {
-        all_units[map_enemies[i]].setEntity(manager.getEntities().size());
-        manager.addEntity();
+    if (mapp) {
+        std::vector<short unsigned int> map_enemies = mapp->getEnemies(); 
+        for (int i = 0; i < map_enemies.size(); i++) {
+            all_units[map_enemies[i]].setEntity(manager.getEntities().size());
+            manager.addEntity();
+        }
+    } else {
+        SDL_Log("Failed to loadMapEnemies.");
     }
 }
 
@@ -435,6 +439,11 @@ void Game::init(const char * title, int xpos, int ypos, int width, int height, b
         party[baseparty[i].getid()] = baseparty[i];
     }
 
+    makeunitNames();
+    makestatNames();
+    makesexNames();
+    makeclassNames();
+    makemvtTypes();
     
 };
 
