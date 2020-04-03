@@ -47,6 +47,7 @@ class Convoy {
         Quantity getQuantity();
         std::vector<int> getStats(int wpntype, int stattype);
         Inventory_item * getItems(int wpntype);
+        void setItems(int wpntype, Inventory_item * in_items);
 
         void printContents(int wpntype); // Useless?
         void printStats(int wpntype, int stattype);

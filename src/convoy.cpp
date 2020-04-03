@@ -258,46 +258,92 @@ Inventory_item * Convoy::getItems(int wpntype) {
     static Inventory_item temp[DEFAULT::CONVOY_SIZE];
     switch (wpntype) {
         case ITEM::TYPE::SWORD:
-            memcpy(temp, swords, DEFAULT::CONVOY_SIZE);
+            memcpy(temp, swords, sizeof(temp));
             break;
         case ITEM::TYPE::LANCE:
-            memcpy(temp, lances, DEFAULT::CONVOY_SIZE);
+            memcpy(temp, lances, sizeof(temp));
             break;
         case ITEM::TYPE::AXE:
-            memcpy(temp, axes, DEFAULT::CONVOY_SIZE);
+            memcpy(temp, axes, sizeof(temp));
             break;
         case ITEM::TYPE::BOW:
-            memcpy(temp, bows, DEFAULT::CONVOY_SIZE);
+            memcpy(temp, bows, sizeof(temp));
             break;
         case ITEM::TYPE::TRINKET:
-            memcpy(temp, trinkets, DEFAULT::CONVOY_SIZE);
+            memcpy(temp, trinkets, sizeof(temp));
             break;
         case ITEM::TYPE::OFFHAND:
-            memcpy(temp, offhands, DEFAULT::CONVOY_SIZE);
+            memcpy(temp, offhands, sizeof(temp));
             break;
         case ITEM::TYPE::ELEMENTAL:
-            memcpy(temp, elemental, DEFAULT::CONVOY_SIZE);
+            memcpy(temp, elemental, sizeof(temp));
             break;
         case ITEM::TYPE::DEMONIC:
-            memcpy(temp, demonic, DEFAULT::CONVOY_SIZE);
+            memcpy(temp, demonic, sizeof(temp));
             break;
         case ITEM::TYPE::ANGELIC:
-            memcpy(temp, angelic, DEFAULT::CONVOY_SIZE);
+            memcpy(temp, angelic, sizeof(temp));
             break;
         case ITEM::TYPE::SHIELD:
-            memcpy(temp, shields, DEFAULT::CONVOY_SIZE);
+            memcpy(temp, shields, sizeof(temp));
             break;
         case ITEM::TYPE::STAFF:
-            memcpy(temp, staffs, DEFAULT::CONVOY_SIZE);
+            memcpy(temp, staffs, sizeof(temp));
             break;
         case ITEM::TYPE::CLAW:
-            memcpy(temp, claws, DEFAULT::CONVOY_SIZE);
+            memcpy(temp, claws, sizeof(temp));
             break;
         case ITEM::TYPE::ITEM:
-            memcpy(temp, items, DEFAULT::CONVOY_SIZE);
+            memcpy(temp, items, sizeof(temp));
             break;
     }
     return(temp);
+}
+
+
+void Convoy::setItems(int wpntype, Inventory_item * in_items) {
+    // Does not work.
+    switch (wpntype) {
+        case ITEM::TYPE::SWORD:
+            memcpy(swords, in_items, sizeof(swords));
+            break;
+        case ITEM::TYPE::LANCE:
+            memcpy(lances, in_items, sizeof(lances));
+            break;
+        case ITEM::TYPE::AXE:
+            memcpy(axes, in_items, sizeof(axes));
+            break;
+        case ITEM::TYPE::BOW:
+            memcpy(bows, in_items, sizeof(bows));
+            break;
+        case ITEM::TYPE::TRINKET:
+            memcpy(trinkets, in_items, sizeof(trinkets));
+            break;
+        case ITEM::TYPE::OFFHAND:
+            memcpy(offhands, in_items, sizeof(offhands));
+            break;
+        case ITEM::TYPE::ELEMENTAL:
+            memcpy(elemental, in_items, sizeof(elemental));
+            break;
+        case ITEM::TYPE::DEMONIC:
+            memcpy(demonic, in_items, sizeof(demonic));
+            break;
+        case ITEM::TYPE::ANGELIC:
+            memcpy(angelic, in_items, sizeof(angelic));
+            break;
+        case ITEM::TYPE::SHIELD:
+            memcpy(shields, in_items, sizeof(shields));
+            break;
+        case ITEM::TYPE::STAFF:
+            memcpy(staffs, in_items, sizeof(staffs));
+            break;
+        case ITEM::TYPE::CLAW:
+            memcpy(claws, in_items, sizeof(claws));
+            break;
+        case ITEM::TYPE::ITEM:
+            memcpy(items, in_items, sizeof(items));
+            break;
+    }
 }
 
 Quantity Convoy::getQuantity() {
@@ -501,6 +547,44 @@ void Convoy::spend(int out_money) {
     bank += out_money;
 }
 
+void Convoy::readXML(const char * filename) {
+    SDL_Log("readXML Unit file: %s", filename);
+    tinyxml2::XMLDocument xmlDoc;
+    tinyxml2::XMLElement * ptemp;
+    const char * buffer;
+    unsigned int bufint;
+    parseXML(filename, &xmlDoc);
+ 
+    tinyxml2::XMLElement * pConvoy = xmlDoc.FirstChildElement("Convoy");
+    if (!pConvoy) {SDL_Log("Cannot get Convoy element");}   
+
+    std::vector<std::string> names;
+    Inventory_item tempitems[DEFAULT::CONVOY_SIZE];
+    Inventory_item * currentitems;
+    Inventory_item empty;
+    int i = 1;
+    int j;
+    while (i < ITEM::TYPE::END) {
+        names = wpnTypes(i);
+        currentitems = getItems(i);
+        SDL_Log("names: %s", names[0].c_str());
+        ptemp = pConvoy->FirstChildElement(names[0].c_str());
+        if (!ptemp) {SDL_Log("Cannot get %s element", names[0].c_str());}
+        // tempitems = {0};
+        readXML_items(ptemp, tempitems);
+        // setItems(i, tempitems);
+        j = 0;
+        while(tempitems[j].id > 0) {
+            SDL_Log("found: %d", tempitems[j].id);
+            deposit(tempitems[j]);
+            tempitems[j] = empty;
+            j++;
+        }
+        i*=2;
+    }
+}
+
+
 void Convoy::writeXML(const char * filename, const bool append) {
     SDL_Log("writeXML Convoy to: %s\n", filename);
     // How to write files so that it is modifiable by randos?
@@ -684,6 +768,10 @@ void testConvoyWriteXML() {
     temp.id = ITEM::NAME::SPEAR;
     test_convoy.deposit(temp);
     test_convoy.writeXML("convoy_test.xml");
+
+    Convoy test_convoy2;
+    test_convoy2.readXML("convoy_test.xml");
+    test_convoy2.writeXML("convoy_rewrite.xml");
 }
 
 void testConvoysortStats() {

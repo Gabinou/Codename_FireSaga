@@ -487,16 +487,18 @@ void writeXML_items(tinyxml2::XMLDocument * in_doc, tinyxml2::XMLElement * in_pI
     }
 }
 
-void readXML_items(tinyxml2::XMLElement * in_pItems, Inventory_item * in_items, int size) {
+void readXML_items(tinyxml2::XMLElement * in_pItems, Inventory_item * in_items) {
     tinyxml2::XMLElement * pItem = in_pItems->FirstChildElement("Item");
     tinyxml2::XMLElement * pUsed;
     int bufint;
-    for (int i = 0; i < size; i++) {
+    int i = 0;
+    while (pItem) {
         pUsed = pItem->FirstChildElement("Used");
         in_items[i].id = pItem->IntAttribute("id");
         pUsed->QueryIntText(&bufint);
         in_items[i].used = bufint;
         pItem = pItem->NextSiblingElement("Item");
+        i++;
     }
 }
 
