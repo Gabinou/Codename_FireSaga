@@ -45,6 +45,8 @@ extern std::vector<std::string> statNames;
 extern void makestatNames();
 extern std::vector<std::string> sexNames;
 extern void makesexNames();
+extern std::vector<std::string> classNames;
+extern void makeclassNames();
 extern std::vector<unsigned char> mvtTypes;
 extern void makemvtTypes();
 

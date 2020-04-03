@@ -1087,6 +1087,53 @@ unsigned char mvtType(unsigned char in_class_index) {
     return(mvt_type);
 }
 
+std::vector<std::string> classNames;
+void makeclassNames() {
+    classNames.push_back("");
+    classNames.push_back("Lord");
+    classNames.push_back("Lord Rider");
+    classNames.push_back("Duke");
+    classNames.push_back("Duke Rider");
+    classNames.push_back("Archer");
+    classNames.push_back("Archer Rider");
+    classNames.push_back("Marksman");
+    classNames.push_back("Marksman Rider");
+    classNames.push_back("Angel");
+    classNames.push_back("Demon");
+    classNames.push_back("Pegasus Knight");
+    classNames.push_back("Demonic Incarnate");
+    classNames.push_back("Angelic Incarnate");
+    classNames.push_back("Fencer");
+    classNames.push_back("Duelist");
+    classNames.push_back("Mousquetaire");
+    classNames.push_back("Pickpocket");
+    classNames.push_back("Thief");
+    classNames.push_back("Assassin");
+    classNames.push_back("Mercenary");
+    classNames.push_back("Hero");
+    classNames.push_back("Corsair");
+    classNames.push_back("Viking");
+    classNames.push_back("Bandit");
+    classNames.push_back("Ravager");
+    classNames.push_back("Pikeman");
+    classNames.push_back("Cavalier");
+    classNames.push_back("Paladin");
+    classNames.push_back("Mage");
+    classNames.push_back("Battlemage");
+    classNames.push_back("Troubadour");
+    classNames.push_back("Sage");
+    classNames.push_back("Priest");
+    classNames.push_back("Bishop");
+    classNames.push_back("Oracle");
+    classNames.push_back("General");
+    classNames.push_back("Cleric");
+    classNames.push_back("Demigod");
+    classNames.push_back("God");
+    classNames.push_back("Knight");
+    classNames.push_back("Goddess");
+    classNames.push_back("Twinborn");
+}
+
 std::string className(unsigned char in_class_index) {
     std::string class_name;
     switch(in_class_index) {
