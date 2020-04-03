@@ -554,10 +554,8 @@ void Convoy::readXML(const char * filename) {
     const char * buffer;
     unsigned int bufint;
     parseXML(filename, &xmlDoc);
- 
     tinyxml2::XMLElement * pConvoy = xmlDoc.FirstChildElement("Convoy");
     if (!pConvoy) {SDL_Log("Cannot get Convoy element");}   
-
     std::vector<std::string> names;
     Inventory_item tempitems[DEFAULT::CONVOY_SIZE];
     Inventory_item * currentitems;

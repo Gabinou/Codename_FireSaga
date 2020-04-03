@@ -458,7 +458,11 @@ void Game::init(const char * title, int xpos, int ypos, int width, int height, b
 };
 
 void Game::loadXML(const short int save_ind) {
-
+    char filename[DEFAULT::BUFFER_SIZE];
+    char buffer[DEFAULT::BUFFER_SIZE];
+    if (!PHYSFS_exists("saves")) {
+        PHYSFS_mkdir("saves");
+    }
 }
 
 void Game::saveXML(const short int save_ind) {
@@ -478,9 +482,6 @@ void Game::saveXML(const short int save_ind) {
     tinyxml2::XMLDocument xmlDoc;
     xmlDoc.InsertFirstChild(xmlDoc.NewDeclaration());    
     tinyxml2::XMLElement * pNarrative = xmlDoc.NewElement("Narrative");
-    tinyxml2::XMLElement * pChapter = xmlDoc.NewElement("Chapter");
-    tinyxml2::XMLElement * pDeaths = xmlDoc.NewElement("Deaths");
-    tinyxml2::XMLElement * pRecruited = xmlDoc.NewElement("Recruited");
     xmlDoc.InsertEndChild(pNarrative);
     writeXML_narrative(&xmlDoc, pNarrative, &narrative);
 
