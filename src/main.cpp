@@ -45,6 +45,12 @@ int main(int argc, char * argv[]) {
     // testXMLTiles();
 
     firesaga = new Game();
+    SDL_Log("Testing game load->save XML");
+    firesaga->loadXML(1);
+    firesaga->saveXML(2);
+    getchar();
+
+
     SDL_Log("Game object created\n");
 
     SDL_Log("Initiating game\n");
@@ -75,8 +81,8 @@ int main(int argc, char * argv[]) {
     int frame_time;
     char buffer[15];
     
-    SDL_Log("Testing game object's ");
-    firesaga->saveXML(1);
+    SDL_Log("Testing game save XML");
+    // firesaga->saveXML(1);
     
     SDL_Log("Starting main game loop\n");
     while (firesaga->running()) {

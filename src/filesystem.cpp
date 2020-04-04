@@ -233,114 +233,146 @@ unsigned short int price;
 
 void readXML_stats(tinyxml2::XMLElement * in_pStats, Weapon_stats * in_stats) {
     tinyxml2::XMLElement * ptemp = in_pStats->FirstChildElement("Pmight");
-    unsigned int bufint;
-    ptemp->QueryUnsignedText(&bufint);
-    in_stats->Pmight = (unsigned char)bufint;
+    unsigned int buffint;
+    ptemp->QueryUnsignedText(&buffint);
+    in_stats->Pmight = (unsigned char)buffint;
 
     ptemp = in_pStats->FirstChildElement("Mmight");
-    ptemp->QueryUnsignedText(&bufint);
-    in_stats->Mmight = (unsigned char)bufint;
+    ptemp->QueryUnsignedText(&buffint);
+    in_stats->Mmight = (unsigned char)buffint;
 
     ptemp = in_pStats->FirstChildElement("hit");
-    ptemp->QueryUnsignedText(&bufint);
-    in_stats->combat.hit = (unsigned char)bufint;
+    ptemp->QueryUnsignedText(&buffint);
+    in_stats->combat.hit = (unsigned char)buffint;
     ptemp = in_pStats->FirstChildElement("dodge");
-    ptemp->QueryUnsignedText(&bufint);
-    in_stats->combat.dodge = (unsigned char)bufint;
+    ptemp->QueryUnsignedText(&buffint);
+    in_stats->combat.dodge = (unsigned char)buffint;
     ptemp = in_pStats->FirstChildElement("crit");
-    ptemp->QueryUnsignedText(&bufint);
-    in_stats->combat.crit = (unsigned char)bufint;
+    ptemp->QueryUnsignedText(&buffint);
+    in_stats->combat.crit = (unsigned char)buffint;
     ptemp = in_pStats->FirstChildElement("favor");
-    ptemp->QueryUnsignedText(&bufint);
-    in_stats->combat.favor = (unsigned char)bufint;
+    ptemp->QueryUnsignedText(&buffint);
+    in_stats->combat.favor = (unsigned char)buffint;
     ptemp = in_pStats->FirstChildElement("wgt");
-    ptemp->QueryUnsignedText(&bufint);
-    in_stats->wgt = (unsigned char)bufint;
+    ptemp->QueryUnsignedText(&buffint);
+    in_stats->wgt = (unsigned char)buffint;
     ptemp = in_pStats->FirstChildElement("uses");
-    ptemp->QueryUnsignedText(&bufint);
-    in_stats->uses = (unsigned char)bufint;
+    ptemp->QueryUnsignedText(&buffint);
+    in_stats->uses = (unsigned char)buffint;
     ptemp = in_pStats->FirstChildElement("prof");
-    ptemp->QueryUnsignedText(&bufint);
-    in_stats->prof = (unsigned char)bufint;
+    ptemp->QueryUnsignedText(&buffint);
+    in_stats->prof = (unsigned char)buffint;
     ptemp = in_pStats->FirstChildElement("minrange");
-    ptemp->QueryUnsignedText(&bufint);
-    in_stats->range[0] = (unsigned char)bufint;
+    ptemp->QueryUnsignedText(&buffint);
+    in_stats->range[0] = (unsigned char)buffint;
     ptemp = in_pStats->FirstChildElement("maxrange");
-    ptemp->QueryUnsignedText(&bufint);
-    in_stats->range[1] = (unsigned char)bufint;
+    ptemp->QueryUnsignedText(&buffint);
+    in_stats->range[1] = (unsigned char)buffint;
     ptemp = in_pStats->FirstChildElement("hand");
-    ptemp->QueryUnsignedText(&bufint);
-    in_stats->hand[0] = (unsigned char)bufint;
+    ptemp->QueryUnsignedText(&buffint);
+    in_stats->hand[0] = (unsigned char)buffint;
     ptemp = in_pStats->LastChildElement("hand");
-    ptemp->QueryUnsignedText(&bufint);
-    in_stats->hand[1] = (unsigned char)bufint;
+    ptemp->QueryUnsignedText(&buffint);
+    in_stats->hand[1] = (unsigned char)buffint;
     ptemp = in_pStats->FirstChildElement("dmg_type");
     ptemp->QueryBoolText(&in_stats->dmg_type);
     ptemp = in_pStats->FirstChildElement("price");
-    ptemp->QueryUnsignedText(&bufint);
-    in_stats->price = (unsigned short int)bufint;
+    ptemp->QueryUnsignedText(&buffint);
+    in_stats->price = (unsigned short int)buffint;
     ptemp = in_pStats->FirstChildElement("heal");
-    ptemp->QueryUnsignedText(&bufint);
-    in_stats->heal = (unsigned char)bufint;
+    ptemp->QueryUnsignedText(&buffint);
+    in_stats->heal = (unsigned char)buffint;
 }
 
 void readXML_stats(tinyxml2::XMLElement * in_pStats, Unit_stats * in_stats) {
     tinyxml2::XMLElement * ptemp = in_pStats->FirstChildElement("hp");
-    unsigned int bufint;
-    ptemp->QueryUnsignedText(&bufint);
-    in_stats->hp = (unsigned char)bufint;
+    unsigned int buffint;
+    ptemp->QueryUnsignedText(&buffint);
+    in_stats->hp = (unsigned char)buffint;
 
     ptemp = in_pStats->FirstChildElement("str");
-    ptemp->QueryUnsignedText(&bufint);
-    in_stats->str = (unsigned char)bufint;
+    ptemp->QueryUnsignedText(&buffint);
+    in_stats->str = (unsigned char)buffint;
 
     ptemp = in_pStats->FirstChildElement("mag");
-    ptemp->QueryUnsignedText(&bufint);
-    in_stats->mag = (unsigned char)bufint;
+    ptemp->QueryUnsignedText(&buffint);
+    in_stats->mag = (unsigned char)buffint;
 
     ptemp = in_pStats->FirstChildElement("agi");
-    ptemp->QueryUnsignedText(&bufint);
-    in_stats->agi = (unsigned char)bufint;
+    ptemp->QueryUnsignedText(&buffint);
+    in_stats->agi = (unsigned char)buffint;
 
     ptemp = in_pStats->FirstChildElement("dex");
-    ptemp->QueryUnsignedText(&bufint);
-    in_stats->dex = (unsigned char)bufint;
+    ptemp->QueryUnsignedText(&buffint);
+    in_stats->dex = (unsigned char)buffint;
 
     ptemp = in_pStats->FirstChildElement("luck");
-    ptemp->QueryUnsignedText(&bufint);
-    in_stats->luck = (unsigned char)bufint;
+    ptemp->QueryUnsignedText(&buffint);
+    in_stats->luck = (unsigned char)buffint;
 
     ptemp = in_pStats->FirstChildElement("def");
-    ptemp->QueryUnsignedText(&bufint);
-    in_stats->def = (unsigned char)bufint;
+    ptemp->QueryUnsignedText(&buffint);
+    in_stats->def = (unsigned char)buffint;
 
     ptemp = in_pStats->FirstChildElement("res");
-    ptemp->QueryUnsignedText(&bufint);
-    in_stats->res = (unsigned char)bufint;
+    ptemp->QueryUnsignedText(&buffint);
+    in_stats->res = (unsigned char)buffint;
 
     ptemp = in_pStats->FirstChildElement("con");
-    ptemp->QueryUnsignedText(&bufint);
-    in_stats->con = (unsigned char)bufint;
+    ptemp->QueryUnsignedText(&buffint);
+    in_stats->con = (unsigned char)buffint;
 
     ptemp = in_pStats->FirstChildElement("move");
-    ptemp->QueryUnsignedText(&bufint);
-    in_stats->move = (unsigned char)bufint;
+    ptemp->QueryUnsignedText(&buffint);
+    in_stats->move = (unsigned char)buffint;
 
     ptemp = in_pStats->FirstChildElement("prof");
-    ptemp->QueryUnsignedText(&bufint);
-    in_stats->prof = (unsigned char)bufint;
+    ptemp->QueryUnsignedText(&buffint);
+    in_stats->prof = (unsigned char)buffint;
+}
+
+void readXML_narrativeUnits(tinyxml2::XMLElement * in_pUnit, bool in_statearr[]) {
+    unsigned int buffint;
+    bool buffbool;
+    short unsigned int id;
+    tinyxml2::XMLElement * ptemp;
+    while (in_pUnit) {
+        id = (unsigned short int)ptemp->IntAttribute("id");
+        ptemp = in_pUnit->FirstChildElement("Died");
+        ptemp->QueryBoolText(&buffbool);
+        in_statearr[id] = buffbool;
+        in_pUnit = in_pUnit->NextSiblingElement("Unit");
+    }
 }
 
 void readXML_narrative(tinyxml2::XMLElement * in_pNarrative, Narrative * in_state) {
+    unsigned int buffint;
+    bool buffbool;
 
+    tinyxml2::XMLElement * ppc_death = in_pNarrative->FirstChildElement("Death_PC");
+    tinyxml2::XMLElement * pnpc_death = in_pNarrative->FirstChildElement("Death_NPC");
+    tinyxml2::XMLElement * precruited = in_pNarrative->FirstChildElement("Recruited");
+    tinyxml2::XMLElement * pUnit;
+
+    tinyxml2::XMLElement * pchapter = in_pNarrative->FirstChildElement("Chapter");
+    pchapter->QueryUnsignedText(&buffint);
+    in_state->chapter = buffint;
+
+    pUnit = ppc_death->FirstChildElement("Unit");
+    readXML_narrativeUnits(pUnit, in_state->pc_death);
+    pUnit = pnpc_death->FirstChildElement("Unit");
+    readXML_narrativeUnits(pUnit, in_state->npc_death);
+    pUnit = precruited->FirstChildElement("Unit");
+    readXML_narrativeUnits(pUnit, in_state->recruited);
+    
 }
 
 
 void writeXML_narrative(tinyxml2::XMLDocument * in_doc, tinyxml2::XMLElement * in_pNarrative, Narrative * in_state) {
-    tinyxml2::XMLElement * ppc_death = in_doc->NewElement("pc_death");
-    tinyxml2::XMLElement * pnpc_death = in_doc->NewElement("npc_death");
-    tinyxml2::XMLElement * precruited = in_doc->NewElement("recruited");
-    tinyxml2::XMLElement * pchapter = in_doc->NewElement("chapter");
+    tinyxml2::XMLElement * ppc_death = in_doc->NewElement("Death_PC");
+    tinyxml2::XMLElement * pnpc_death = in_doc->NewElement("Death_NPC");
+    tinyxml2::XMLElement * precruited = in_doc->NewElement("Recruited");
+    tinyxml2::XMLElement * pchapter = in_doc->NewElement("Chapter");
     in_pNarrative->InsertEndChild(pchapter);
     in_pNarrative->InsertEndChild(ppc_death);
     in_pNarrative->InsertEndChild(pnpc_death);
@@ -351,36 +383,37 @@ void writeXML_narrative(tinyxml2::XMLDocument * in_doc, tinyxml2::XMLElement * i
     tinyxml2::XMLElement * ptemp1;
     tinyxml2::XMLElement * ptemp2;
     tinyxml2::XMLElement * ptemp3;
-    bool tempb;
+    bool buffbool;
     std::string name;
     char buffer[DEFAULT::BUFFER_SIZE];
 
     for (unsigned int i = UNIT::NAME::ERWIN; i < UNIT::NAME::PC_END; i++) {
         name = unitNames[i];
-        tempb = in_state->pc_death[i - UNIT::NAME::ERWIN];
+        buffbool = in_state->pc_death[i - UNIT::NAME::ERWIN];
         ptemp1 = in_doc->NewElement("Unit");
         ptemp2 = in_doc->NewElement("Died");
         ptemp3 = in_doc->NewElement("Name");
         ppc_death->InsertEndChild(ptemp1);
         ptemp1->InsertEndChild(ptemp3);
         ptemp1->InsertEndChild(ptemp2);
-        ptemp2->SetText(tempb);
+        ptemp2->SetText(buffbool);
         ptemp3->SetText(name.c_str());
         ptemp1->SetAttribute("id", i);
 
-        tempb = in_state->recruited[i - UNIT::NAME::ERWIN];
+        buffbool = in_state->recruited[i - UNIT::NAME::ERWIN];
         ptemp1 = in_doc->NewElement("Unit");
         ptemp2 = in_doc->NewElement("Recruited");
         ptemp3 = in_doc->NewElement("Name");
         precruited->InsertEndChild(ptemp1);
         ptemp1->InsertEndChild(ptemp3);
         ptemp1->InsertEndChild(ptemp2);
-        ptemp2->SetText(tempb);
+        ptemp2->SetText(buffbool);
         ptemp3->SetText(name.c_str());
-        ptemp1->SetAttribute("id", i);    }
+        ptemp1->SetAttribute("id", i);    
+    }
 
     for (unsigned int i = UNIT::NAME::ZINEDAN; i < UNIT::NAME::NPC_END; i++) {
-        tempb = in_state->npc_death[i - UNIT::NAME::ZINEDAN];
+        buffbool = in_state->npc_death[i - UNIT::NAME::ZINEDAN];
         stbsp_sprintf(buffer, "NPC%d", i);
         ptemp1 = in_doc->NewElement("Unit");
         ptemp2 = in_doc->NewElement("Died");
@@ -388,7 +421,7 @@ void writeXML_narrative(tinyxml2::XMLDocument * in_doc, tinyxml2::XMLElement * i
         pnpc_death->InsertEndChild(ptemp1);
         ptemp1->InsertEndChild(ptemp3);
         ptemp1->InsertEndChild(ptemp2);
-        ptemp2->SetText(tempb);
+        ptemp2->SetText(buffbool);
         ptemp3->SetText(buffer);
         ptemp1->SetAttribute("id", i);
     }
@@ -509,13 +542,13 @@ void writeXML_items(tinyxml2::XMLDocument * in_doc, tinyxml2::XMLElement * in_pI
 void readXML_items(tinyxml2::XMLElement * in_pItems, Inventory_item * in_items) {
     tinyxml2::XMLElement * pItem = in_pItems->FirstChildElement("Item");
     tinyxml2::XMLElement * pUsed;
-    int bufint;
+    int buffint;
     int i = 0;
     while (pItem) {
         pUsed = pItem->FirstChildElement("Used");
         in_items[i].id = pItem->IntAttribute("id");
-        pUsed->QueryIntText(&bufint);
-        in_items[i].used = bufint;
+        pUsed->QueryIntText(&buffint);
+        in_items[i].used = buffint;
         pItem = pItem->NextSiblingElement("Item");
         i++;
     }
@@ -553,7 +586,7 @@ void writeXML_mvtcost(tinyxml2::XMLDocument * in_doc, tinyxml2::XMLElement * in_
 
 void readXML_mvtcost(tinyxml2::XMLElement * in_pCost, Movement_cost * in_cost) {
 
-    int bufint;
+    int buffint;
 
     tinyxml2::XMLElement * pfoot_slow = in_pCost->FirstChildElement("foot_slow");
     tinyxml2::XMLElement * pfoot_fast = in_pCost->FirstChildElement("foot_fast");
@@ -565,45 +598,45 @@ void readXML_mvtcost(tinyxml2::XMLElement * in_pCost, Movement_cost * in_cost) {
     tinyxml2::XMLElement * ppirates = in_pCost->FirstChildElement("pirates");
     tinyxml2::XMLElement * pbandits = in_pCost->FirstChildElement("bandits");
 
-    pfoot_slow->QueryIntText(&bufint);
-    in_cost->foot_slow = (unsigned char)bufint;
-    pfoot_fast->QueryIntText(&bufint);
-    in_cost->foot_fast = (unsigned char)bufint;
+    pfoot_slow->QueryIntText(&buffint);
+    in_cost->foot_slow = (unsigned char)buffint;
+    pfoot_fast->QueryIntText(&buffint);
+    in_cost->foot_fast = (unsigned char)buffint;
 
-    pmages->QueryIntText(&bufint);
-    in_cost->mages = (unsigned char)bufint;
-    priders_slow->QueryIntText(&bufint);
-    in_cost->riders_slow = (unsigned char)bufint;
-    priders_fast->QueryIntText(&bufint);
-    in_cost->riders_fast = (unsigned char)bufint;
-    pfliers->QueryIntText(&bufint);
-    in_cost->fliers = (unsigned char)bufint;
-    parmors->QueryIntText(&bufint);
-    in_cost->armors = (unsigned char)bufint;
-    ppirates->QueryIntText(&bufint);
-    in_cost->pirates = (unsigned char)bufint;
-    pbandits->QueryIntText(&bufint);
-    in_cost->bandits = (unsigned char)bufint;
+    pmages->QueryIntText(&buffint);
+    in_cost->mages = (unsigned char)buffint;
+    priders_slow->QueryIntText(&buffint);
+    in_cost->riders_slow = (unsigned char)buffint;
+    priders_fast->QueryIntText(&buffint);
+    in_cost->riders_fast = (unsigned char)buffint;
+    pfliers->QueryIntText(&buffint);
+    in_cost->fliers = (unsigned char)buffint;
+    parmors->QueryIntText(&buffint);
+    in_cost->armors = (unsigned char)buffint;
+    ppirates->QueryIntText(&buffint);
+    in_cost->pirates = (unsigned char)buffint;
+    pbandits->QueryIntText(&buffint);
+    in_cost->bandits = (unsigned char)buffint;
 
 }
 
 void readXML_stats(tinyxml2::XMLElement * in_pStats, Tile_stats * in_stats) {
 
-    int bufint;
+    int buffint;
 
     tinyxml2::XMLElement * pdodge = in_pStats->FirstChildElement("dodge");
     tinyxml2::XMLElement * pPprot = in_pStats->FirstChildElement("Pprot");
     tinyxml2::XMLElement * pMprot = in_pStats->FirstChildElement("Mprot");
     tinyxml2::XMLElement * pheal = in_pStats->FirstChildElement("heal");
 
-    pdodge->QueryIntText(&bufint);
-    in_stats->dodge = (char)bufint;
-    pPprot->QueryIntText(&bufint);
-    in_stats->Pprot = (char)bufint;
-    pMprot->QueryIntText(&bufint);
-    in_stats->Mprot = (char)bufint;
-    pheal->QueryIntText(&bufint);
-    in_stats->heal = (char)bufint;
+    pdodge->QueryIntText(&buffint);
+    in_stats->dodge = (char)buffint;
+    pPprot->QueryIntText(&buffint);
+    in_stats->Pprot = (char)buffint;
+    pMprot->QueryIntText(&buffint);
+    in_stats->Mprot = (char)buffint;
+    pheal->QueryIntText(&buffint);
+    in_stats->heal = (char)buffint;
 
 }
 
@@ -627,7 +660,7 @@ void writeXML_stats(tinyxml2::XMLDocument * in_doc, tinyxml2::XMLElement * in_pS
 int parseXML(const char * filename, tinyxml2::XMLDocument * in_doc) {
     PHYSFS_file * fp;
     fp = PHYSFS_openRead(filename);
-    unsigned int bufint;
+    unsigned int buffint;
     unsigned int filelen = PHYSFS_fileLength(fp);
     char filebuffer[filelen];
     const char * buffer;
