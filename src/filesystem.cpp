@@ -331,7 +331,7 @@ void readXML_stats(tinyxml2::XMLElement * in_pStats, Unit_stats * in_stats) {
     in_stats->prof = (unsigned char)bufint;
 }
 
-void writeXML_narrative(tinyxml2::XMLElement * in_pNarrative, Narrative * in_state) {
+void readXML_narrative(tinyxml2::XMLElement * in_pNarrative, Narrative * in_state) {
 
 }
 
@@ -348,7 +348,9 @@ void writeXML_narrative(tinyxml2::XMLDocument * in_doc, tinyxml2::XMLElement * i
 
     pchapter->SetText(in_state->chapter);
 
-    tinyxml2::XMLElement * ptemp;
+    tinyxml2::XMLElement * ptemp1;
+    tinyxml2::XMLElement * ptemp2;
+    tinyxml2::XMLElement * ptemp3;
     bool tempb;
     std::string name;
     char buffer[DEFAULT::BUFFER_SIZE];
@@ -356,29 +358,41 @@ void writeXML_narrative(tinyxml2::XMLDocument * in_doc, tinyxml2::XMLElement * i
     for (unsigned int i = UNIT::NAME::ERWIN; i < UNIT::NAME::PC_END; i++) {
         name = unitNames[i];
         tempb = in_state->pc_death[i - UNIT::NAME::ERWIN];
-        ptemp = in_doc->NewElement(name.c_str());
-        ppc_death->InsertEndChild(ptemp);
-        ptemp->SetText(tempb);
-        ptemp->SetAttribute("id", i);
+        ptemp1 = in_doc->NewElement("Unit");
+        ptemp2 = in_doc->NewElement("Died");
+        ptemp3 = in_doc->NewElement("Name");
+        ppc_death->InsertEndChild(ptemp1);
+        ptemp1->InsertEndChild(ptemp3);
+        ptemp1->InsertEndChild(ptemp2);
+        ptemp2->SetText(tempb);
+        ptemp3->SetText(name.c_str());
+        ptemp1->SetAttribute("id", i);
 
         tempb = in_state->recruited[i - UNIT::NAME::ERWIN];
-        ptemp = in_doc->NewElement(name.c_str());
-        precruited->InsertEndChild(ptemp);
-        ptemp->SetText(tempb);
-        ptemp->SetAttribute("id", i);
-    }
+        ptemp1 = in_doc->NewElement("Unit");
+        ptemp2 = in_doc->NewElement("Recruited");
+        ptemp3 = in_doc->NewElement("Name");
+        precruited->InsertEndChild(ptemp1);
+        ptemp1->InsertEndChild(ptemp3);
+        ptemp1->InsertEndChild(ptemp2);
+        ptemp2->SetText(tempb);
+        ptemp3->SetText(name.c_str());
+        ptemp1->SetAttribute("id", i);    }
 
     for (unsigned int i = UNIT::NAME::ZINEDAN; i < UNIT::NAME::NPC_END; i++) {
         tempb = in_state->npc_death[i - UNIT::NAME::ZINEDAN];
         stbsp_sprintf(buffer, "NPC%d", i);
-        ptemp = in_doc->NewElement(buffer);
-        pnpc_death->InsertEndChild(ptemp);
-        ptemp->SetText(tempb);
-        ptemp->SetAttribute("id", i);
+        ptemp1 = in_doc->NewElement("Unit");
+        ptemp2 = in_doc->NewElement("Died");
+        ptemp3 = in_doc->NewElement("Name");
+        pnpc_death->InsertEndChild(ptemp1);
+        ptemp1->InsertEndChild(ptemp3);
+        ptemp1->InsertEndChild(ptemp2);
+        ptemp2->SetText(tempb);
+        ptemp3->SetText(buffer);
+        ptemp1->SetAttribute("id", i);
     }
-
 }
-
 
 void writeXML_stats(tinyxml2::XMLDocument * in_doc, tinyxml2::XMLElement * in_pStats, Weapon_stats * in_stats) {
     // Pmight, Mmight, hit, dodge, crit, favor, wgt, uses, prof, range, hand, dmg_type, cost
