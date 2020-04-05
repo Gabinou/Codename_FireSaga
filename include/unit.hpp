@@ -162,8 +162,8 @@ class Unit {
 };
 
 extern std::unordered_map<int, Unit> loaded_units;
-extern void baseUnits(std::unordered_map<int, Unit> * units);
-extern void baseUnits(std::unordered_map<int, Unit> * units, std::vector<short int> toload);
+extern void baseUnits(std::unordered_map<int, Unit> * in_units);
+extern void baseUnits(std::unordered_map<int, Unit> * in_units, std::vector<short int> toload);
 extern std::unordered_map<int, Unit> chap1EnemyUnits();
 extern std::unordered_map<int, Unit> (*chapEnemyUnits[40])();
 void testXMLUnits();

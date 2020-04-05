@@ -391,14 +391,14 @@ void Game::loadUnitEntities(std::vector<short unsigned int> unit_inds, std::vect
     }
 }
 void Game::loadUnits(unsigned char in_chap) {
-    std::unordered_map<int, Unit> = temp;
-    temp = chapEnemyUnits[in_chap]();
+    // std::unordered_map<int, Unit> = temp;
+    // temp = chapEnemyUnits[in_chap]();
     // units.insert(chapEnemyUnits[in_chap]());
 }
 
 void Game::loadUnits(std::vector<short int> toload) {
-    std::unordered_map<int, Unit> = temp;
-    temp = chapEnemyUnits[in_chap]();
+    // std::unordered_map<int, Unit> = temp;
+    // temp = chapEnemyUnits[in_chap]();
     // units.insert(baseUnits(toload));
 }
 
@@ -461,10 +461,11 @@ void Game::init(const char * title, int xpos, int ypos, int width, int height, b
     state = GAME::STATE::MAP;
 
     std::vector<short int> basepartyinds = {UNIT::NAME::ERWIN, UNIT::NAME::KIARA};
-    std::vector<Unit> baseparty = baseUnits(basepartyinds);
-    for (int i = 0; i < baseparty.size(); i++) {
-        units[baseparty[i].getid()] = baseparty[i];
-    }
+    loadUnits(basepartyinds);
+    // std::vector<Unit> baseparty = baseUnits(basepartyinds);
+    // for (int i = 0; i < baseparty.size(); i++) {
+    //     units[baseparty[i].getid()] = baseparty[i];
+    // }
     
 };
 
@@ -601,8 +602,8 @@ void Game::handleEvents() {
     }
 }
 
-std::vector<Entity *> & units = Game::manager.getGroup(Game::manager.groupUnits);
-std::vector<Entity *> & uxs = Game::manager.getGroup(Game::manager.groupUI);
+std::vector<Entity *> & unitEntities = Game::manager.getGroup(Game::manager.groupUnits);
+std::vector<Entity *> & uxEntities = Game::manager.getGroup(Game::manager.groupUI);
 
 void Game::render() {
     SDL_RenderClear(renderer);
@@ -610,11 +611,11 @@ void Game::render() {
 
     mapp->drawMap();
 
-    for (auto& u : units) {
+    for (auto& u : unitEntities) {
         u->draw();
     }
 
-    for (auto& u : uxs) {
+    for (auto& u : uxEntities) {
         u->draw();
     }
 
