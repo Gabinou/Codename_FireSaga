@@ -795,9 +795,6 @@ void Unit::write(const char * filename, const bool append) {
     PHYSFS_close(fp);
 }
 
-std::vector<Unit> all_units(UNIT::NAME::NPC_END);
-std::vector<Unit> loaded_units;
-
 void testXMLUnits() { 
     SDL_Log("Testing Unit xml writing and reading\n");
     Unit temp_unit;
@@ -858,7 +855,7 @@ void baseUnits(std::unordered_map<int, Unit> * in_units, std::vector<short int> 
                 temp_unit.addEquipment(temp_wpn);
                 // temp_supports = {UNIT::NAME::KIARA}; 
                 // temp_unit.setSupports(temp_supports);
-                in_units[index] = temp_unit;
+                in_units->emplace(index,temp_unit);
                 break;
             case UNIT::NAME::RELIABLE:
                 temp = {18,  6,  2,  7,  7,   7,  4,  5,  6, 7};
@@ -868,7 +865,7 @@ void baseUnits(std::unordered_map<int, Unit> * in_units, std::vector<short int> 
                 temp = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
                 temp_unit.setGrowths(temp);
                 temp_unit.setBaseExp(100);
-                in_units[index] = temp_unit;
+                in_units->emplace(index,temp_unit);
                 break;
             case UNIT::NAME::COWARD:
                 temp = {19,  6,  2,  7,  7,   7,  4,  5,  6,  7};
@@ -878,7 +875,7 @@ void baseUnits(std::unordered_map<int, Unit> * in_units, std::vector<short int> 
                 temp = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
                 temp_unit.setGrowths(temp);
                 temp_unit.setBaseExp(200);
-                in_units[index] = temp_unit;
+                in_units->emplace(index,temp_unit);
                 break;
             case UNIT::NAME::JAIGEN1H:
                 temp = {20,  6,  2,  7,  7,   7,  4,  5,  6,  6};
@@ -888,7 +885,7 @@ void baseUnits(std::unordered_map<int, Unit> * in_units, std::vector<short int> 
                 temp = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
                 temp_unit.setGrowths(temp);
                 temp_unit.setBaseExp(2200);
-                in_units[index] = temp_unit;
+                in_units->emplace(index,temp_unit);
                 break;
             case UNIT::NAME::KIARA:
                 temp = {14,  6,  2,  7,  7,   7,  4,  5,  6,  5};
@@ -898,7 +895,7 @@ void baseUnits(std::unordered_map<int, Unit> * in_units, std::vector<short int> 
                 temp = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
                 temp_unit.setGrowths(temp);
                 temp_unit.setBaseExp(100);
-                in_units[index] = temp_unit;
+                in_units->emplace(index,temp_unit);
                 break;
             case UNIT::NAME::HOTTIE:
                 temp = {16,  6,  2,  7,  7,   7,  4,  5,  6,  6};
@@ -908,7 +905,7 @@ void baseUnits(std::unordered_map<int, Unit> * in_units, std::vector<short int> 
                 temp = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
                 temp_unit.setGrowths(temp);
                 temp_unit.setBaseExp(2200);
-                in_units[index] = temp_unit;
+                in_units->emplace(index,temp_unit);
                 break;
             case UNIT::NAME::SERVIL:
                 temp = {22,  4,  5,  7,  6,   8,  4,  6,  5, 5}; // 4 or 5?
@@ -918,7 +915,7 @@ void baseUnits(std::unordered_map<int, Unit> * in_units, std::vector<short int> 
                 temp = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
                 temp_unit.setGrowths(temp);
                 temp_unit.setBaseExp(500);
-                in_units[index] = temp_unit;
+                in_units->emplace(index,temp_unit);
                 break;
             case UNIT::NAME::PERIGNON:
                 temp = {34,  4,  5,  7,  6,   8,  4,  6,  5, 5};
@@ -928,7 +925,7 @@ void baseUnits(std::unordered_map<int, Unit> * in_units, std::vector<short int> 
                 temp = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
                 temp_unit.setGrowths(temp);
                 temp_unit.setBaseExp(1200);
-                in_units[index] = temp_unit;
+                in_units->emplace(index,temp_unit);
                 break;
             case UNIT::NAME::POET:
                 temp = {15,  4,  5,  7,  6,   8,  4,  6,  5, 5};
@@ -938,7 +935,7 @@ void baseUnits(std::unordered_map<int, Unit> * in_units, std::vector<short int> 
                 temp = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
                 temp_unit.setGrowths(temp);
                 temp_unit.setBaseExp(400);
-                in_units[index] = temp_unit;
+                in_units->emplace(index,temp_unit);
                 break;
             case UNIT::NAME::SILOU:
                       //hp,str,mag,agi,dex,luck,def,res,con,move,prof
@@ -951,7 +948,7 @@ void baseUnits(std::unordered_map<int, Unit> * in_units, std::vector<short int> 
                 temp_unit.setBaseExp(400);
                 temp_wpn.id = ITEM::NAME::BALL_LIGHTNING;
                 temp_unit.addEquipment(temp_wpn);
-                in_units[index] = temp_unit;
+                in_units->emplace(index,temp_unit);
                 break;
             }
         }
@@ -976,180 +973,180 @@ void baseUnits(std::unordered_map<int, Unit> * in_units) {
 //     all_units[UNIT::NAME::JAIGEN1H].writeXML("playables.xml", true); 
 // }
 
-void genericEnemyUnits() {
-    printf("Making generic enemies\n");
-    Unit_stats temp;
-    Unit temp_unit;
-    //hp,str,mag,skl,spd,luck,def,res,con,move
-    temp = {15,  4,  5,  7,  6,   8,  4,  6,  5, 5};
-    temp_unit = Unit(UNIT::NAME::BANDIT, UNIT::CLASS::BANDIT, temp, UNIT::SEX::M);
-    temp = {48, 14, 25, 32, 34,  28, 19, 40, 15};
-    temp_unit.setCaps(temp);
-    temp = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
-    temp_unit.setGrowths(temp);
-    temp_unit.setBaseExp(0);
-    all_units[UNIT::NAME::BANDIT] = temp_unit;
+// void genericEnemyUnits() {
+//     printf("Making generic enemies\n");
+//     Unit_stats temp;
+//     Unit temp_unit;
+//     //hp,str,mag,skl,spd,luck,def,res,con,move
+//     temp = {15,  4,  5,  7,  6,   8,  4,  6,  5, 5};
+//     temp_unit = Unit(UNIT::NAME::BANDIT, UNIT::CLASS::BANDIT, temp, UNIT::SEX::M);
+//     temp = {48, 14, 25, 32, 34,  28, 19, 40, 15};
+//     temp_unit.setCaps(temp);
+//     temp = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
+//     temp_unit.setGrowths(temp);
+//     temp_unit.setBaseExp(0);
+//     all_units[UNIT::NAME::BANDIT] = temp_unit;
 
-    temp = {15,  4,  5,  7,  6,   8,  4,  6,  5, 5};
-    temp_unit = Unit(UNIT::NAME::DUELIST, UNIT::CLASS::DUELIST, temp, UNIT::SEX::M);
-    temp = {48, 14, 25, 32, 34,  28, 19, 40, 15};
-    temp_unit.setCaps(temp);
-    temp = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
-    temp_unit.setGrowths(temp);
-    temp_unit.setBaseExp(0);
-    all_units[UNIT::NAME::DUELIST] = temp_unit;
+//     temp = {15,  4,  5,  7,  6,   8,  4,  6,  5, 5};
+//     temp_unit = Unit(UNIT::NAME::DUELIST, UNIT::CLASS::DUELIST, temp, UNIT::SEX::M);
+//     temp = {48, 14, 25, 32, 34,  28, 19, 40, 15};
+//     temp_unit.setCaps(temp);
+//     temp = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
+//     temp_unit.setGrowths(temp);
+//     temp_unit.setBaseExp(0);
+//     all_units[UNIT::NAME::DUELIST] = temp_unit;
 
-    temp = {15,  4,  5,  7,  6,   8,  4,  6,  5, 5};
-    temp_unit = Unit(UNIT::NAME::PICKPOCKET, UNIT::CLASS::PICKPOCKET, temp, UNIT::SEX::M);
-    temp = {48, 14, 25, 32, 34,  28, 19, 40, 15};
-    temp_unit.setCaps(temp);
-    temp = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
-    temp_unit.setGrowths(temp);
-    temp_unit.setBaseExp(0);
-    all_units[UNIT::NAME::PICKPOCKET] = temp_unit;
+//     temp = {15,  4,  5,  7,  6,   8,  4,  6,  5, 5};
+//     temp_unit = Unit(UNIT::NAME::PICKPOCKET, UNIT::CLASS::PICKPOCKET, temp, UNIT::SEX::M);
+//     temp = {48, 14, 25, 32, 34,  28, 19, 40, 15};
+//     temp_unit.setCaps(temp);
+//     temp = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
+//     temp_unit.setGrowths(temp);
+//     temp_unit.setBaseExp(0);
+//     all_units[UNIT::NAME::PICKPOCKET] = temp_unit;
 
-    temp = {15,  4,  5,  7,  6,   8,  4,  6,  5, 5};
-    temp_unit = Unit(UNIT::NAME::THIEF, UNIT::CLASS::THIEF, temp, UNIT::SEX::M);
-    temp = {48, 14, 25, 32, 34,  28, 19, 40, 15};
-    temp_unit.setCaps(temp);
-    temp = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
-    temp_unit.setGrowths(temp);
-    temp_unit.setBaseExp(0);
-    all_units[UNIT::NAME::THIEF] = temp_unit;    
+//     temp = {15,  4,  5,  7,  6,   8,  4,  6,  5, 5};
+//     temp_unit = Unit(UNIT::NAME::THIEF, UNIT::CLASS::THIEF, temp, UNIT::SEX::M);
+//     temp = {48, 14, 25, 32, 34,  28, 19, 40, 15};
+//     temp_unit.setCaps(temp);
+//     temp = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
+//     temp_unit.setGrowths(temp);
+//     temp_unit.setBaseExp(0);
+//     all_units[UNIT::NAME::THIEF] = temp_unit;    
 
-    temp = {15,  4,  5,  7,  6,   8,  4,  6,  5, 5};
-    temp_unit = Unit(UNIT::NAME::ASSASSIN, UNIT::CLASS::ASSASSIN, temp, UNIT::SEX::M);
-    temp = {48, 14, 25, 32, 34,  28, 19, 40, 15};
-    temp_unit.setCaps(temp);
-    temp = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
-    temp_unit.setGrowths(temp);
-    temp_unit.setBaseExp(0);
-    all_units[UNIT::NAME::ASSASSIN] = temp_unit;
+//     temp = {15,  4,  5,  7,  6,   8,  4,  6,  5, 5};
+//     temp_unit = Unit(UNIT::NAME::ASSASSIN, UNIT::CLASS::ASSASSIN, temp, UNIT::SEX::M);
+//     temp = {48, 14, 25, 32, 34,  28, 19, 40, 15};
+//     temp_unit.setCaps(temp);
+//     temp = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
+//     temp_unit.setGrowths(temp);
+//     temp_unit.setBaseExp(0);
+//     all_units[UNIT::NAME::ASSASSIN] = temp_unit;
 
-    temp = {15,  4,  5,  7,  6,   8,  4,  6,  5, 5};
-    temp_unit = Unit(UNIT::NAME::ARCHER, UNIT::CLASS::ARCHER, temp, UNIT::SEX::M);
-    temp = {48, 14, 25, 32, 34,  28, 19, 40, 15};
-    temp_unit.setCaps(temp);
-    temp = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
-    temp_unit.setGrowths(temp);
-    temp_unit.setBaseExp(0);
-    all_units[UNIT::NAME::ARCHER] = temp_unit;
+//     temp = {15,  4,  5,  7,  6,   8,  4,  6,  5, 5};
+//     temp_unit = Unit(UNIT::NAME::ARCHER, UNIT::CLASS::ARCHER, temp, UNIT::SEX::M);
+//     temp = {48, 14, 25, 32, 34,  28, 19, 40, 15};
+//     temp_unit.setCaps(temp);
+//     temp = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
+//     temp_unit.setGrowths(temp);
+//     temp_unit.setBaseExp(0);
+//     all_units[UNIT::NAME::ARCHER] = temp_unit;
 
-    temp = {15,  4,  5,  7,  6,   8,  4,  6,  5, 5};
-    temp_unit = Unit(UNIT::NAME::MARKSMAN, UNIT::CLASS::MARKSMAN, temp, UNIT::SEX::M);
-    temp = {48, 14, 25, 32, 34,  28, 19, 40, 15};
-    temp_unit.setCaps(temp);
-    temp = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
-    temp_unit.setGrowths(temp);
-    temp_unit.setBaseExp(0);
-    all_units[UNIT::NAME::MARKSMAN] = temp_unit;
+//     temp = {15,  4,  5,  7,  6,   8,  4,  6,  5, 5};
+//     temp_unit = Unit(UNIT::NAME::MARKSMAN, UNIT::CLASS::MARKSMAN, temp, UNIT::SEX::M);
+//     temp = {48, 14, 25, 32, 34,  28, 19, 40, 15};
+//     temp_unit.setCaps(temp);
+//     temp = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
+//     temp_unit.setGrowths(temp);
+//     temp_unit.setBaseExp(0);
+//     all_units[UNIT::NAME::MARKSMAN] = temp_unit;
 
-    temp = {15,  4,  5,  7,  6,   8,  4,  6,  5, 5};
-    temp_unit = Unit(UNIT::NAME::MERCENARY, UNIT::CLASS::MERCENARY, temp, UNIT::SEX::M);
-    temp = {48, 14, 25, 32, 34,  28, 19, 40, 15};
-    temp_unit.setCaps(temp);
-    temp = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
-    temp_unit.setGrowths(temp);
-    temp_unit.setBaseExp(0);
-    all_units[UNIT::NAME::MERCENARY] = temp_unit;
+//     temp = {15,  4,  5,  7,  6,   8,  4,  6,  5, 5};
+//     temp_unit = Unit(UNIT::NAME::MERCENARY, UNIT::CLASS::MERCENARY, temp, UNIT::SEX::M);
+//     temp = {48, 14, 25, 32, 34,  28, 19, 40, 15};
+//     temp_unit.setCaps(temp);
+//     temp = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
+//     temp_unit.setGrowths(temp);
+//     temp_unit.setBaseExp(0);
+//     all_units[UNIT::NAME::MERCENARY] = temp_unit;
 
-    temp = {15,  4,  5,  7,  6,   8,  4,  6,  5, 5};
-    temp_unit = Unit(UNIT::NAME::HERO, UNIT::CLASS::HERO, temp, UNIT::SEX::M);
-    temp = {48, 14, 25, 32, 34,  28, 19, 40, 15};
-    temp_unit.setCaps(temp);
-    temp = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
-    temp_unit.setGrowths(temp);
-    temp_unit.setBaseExp(0);
-    all_units[UNIT::NAME::HERO] = temp_unit;
+//     temp = {15,  4,  5,  7,  6,   8,  4,  6,  5, 5};
+//     temp_unit = Unit(UNIT::NAME::HERO, UNIT::CLASS::HERO, temp, UNIT::SEX::M);
+//     temp = {48, 14, 25, 32, 34,  28, 19, 40, 15};
+//     temp_unit.setCaps(temp);
+//     temp = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
+//     temp_unit.setGrowths(temp);
+//     temp_unit.setBaseExp(0);
+//     all_units[UNIT::NAME::HERO] = temp_unit;
 
-    temp = {15,  4,  5,  7,  6,   8,  4,  6,  5, 5};
-    temp_unit = Unit(UNIT::NAME::CORSAIR, UNIT::CLASS::CORSAIR, temp, UNIT::SEX::M);
-    temp = {48, 14, 25, 32, 34,  28, 19, 40, 15};
-    temp_unit.setCaps(temp);
-    temp = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
-    temp_unit.setGrowths(temp);
-    temp_unit.setBaseExp(0);
-    all_units[UNIT::NAME::CORSAIR] = temp_unit;
+//     temp = {15,  4,  5,  7,  6,   8,  4,  6,  5, 5};
+//     temp_unit = Unit(UNIT::NAME::CORSAIR, UNIT::CLASS::CORSAIR, temp, UNIT::SEX::M);
+//     temp = {48, 14, 25, 32, 34,  28, 19, 40, 15};
+//     temp_unit.setCaps(temp);
+//     temp = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
+//     temp_unit.setGrowths(temp);
+//     temp_unit.setBaseExp(0);
+//     all_units[UNIT::NAME::CORSAIR] = temp_unit;
 
-    temp = {15,  4,  5,  7,  6,   8,  4,  6,  5, 5};
-    temp_unit = Unit(UNIT::NAME::VIKING, UNIT::CLASS::VIKING, temp, UNIT::SEX::M);
-    temp = {48, 14, 25, 32, 34,  28, 19, 40, 15};
-    temp_unit.setCaps(temp);
-    temp = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
-    temp_unit.setGrowths(temp);
-    temp_unit.setBaseExp(0);
-    all_units[UNIT::NAME::VIKING] = temp_unit;
+//     temp = {15,  4,  5,  7,  6,   8,  4,  6,  5, 5};
+//     temp_unit = Unit(UNIT::NAME::VIKING, UNIT::CLASS::VIKING, temp, UNIT::SEX::M);
+//     temp = {48, 14, 25, 32, 34,  28, 19, 40, 15};
+//     temp_unit.setCaps(temp);
+//     temp = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
+//     temp_unit.setGrowths(temp);
+//     temp_unit.setBaseExp(0);
+//     all_units[UNIT::NAME::VIKING] = temp_unit;
 
-    temp = {15,  4,  5,  7,  6,   8,  4,  6,  5, 5};
-    temp_unit = Unit(UNIT::NAME::RAVAGER, UNIT::CLASS::RAVAGER, temp, UNIT::SEX::M);
-    temp = {48, 14, 25, 32, 34,  28, 19, 40, 15};
-    temp_unit.setCaps(temp);
-    temp = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
-    temp_unit.setGrowths(temp);
-    temp_unit.setBaseExp(0);
-    all_units[UNIT::NAME::RAVAGER] = temp_unit;
+//     temp = {15,  4,  5,  7,  6,   8,  4,  6,  5, 5};
+//     temp_unit = Unit(UNIT::NAME::RAVAGER, UNIT::CLASS::RAVAGER, temp, UNIT::SEX::M);
+//     temp = {48, 14, 25, 32, 34,  28, 19, 40, 15};
+//     temp_unit.setCaps(temp);
+//     temp = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
+//     temp_unit.setGrowths(temp);
+//     temp_unit.setBaseExp(0);
+//     all_units[UNIT::NAME::RAVAGER] = temp_unit;
 
-    temp = {15,  4,  5,  7,  6,   8,  4,  6,  5, 5};
-    temp_unit = Unit(UNIT::NAME::CAVALIER, UNIT::CLASS::CAVALIER, temp, UNIT::SEX::M);
-    temp = {48, 14, 25, 32, 34,  28, 19, 40, 15};
-    temp_unit.setCaps(temp);
-    temp = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
-    temp_unit.setGrowths(temp);
-    temp_unit.setBaseExp(0);
-    all_units[UNIT::NAME::CAVALIER] = temp_unit;
+//     temp = {15,  4,  5,  7,  6,   8,  4,  6,  5, 5};
+//     temp_unit = Unit(UNIT::NAME::CAVALIER, UNIT::CLASS::CAVALIER, temp, UNIT::SEX::M);
+//     temp = {48, 14, 25, 32, 34,  28, 19, 40, 15};
+//     temp_unit.setCaps(temp);
+//     temp = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
+//     temp_unit.setGrowths(temp);
+//     temp_unit.setBaseExp(0);
+//     all_units[UNIT::NAME::CAVALIER] = temp_unit;
 
-    temp = {15,  4,  5,  7,  6,   8,  4,  6,  5, 5};
-    temp_unit = Unit(UNIT::NAME::PALADIN, UNIT::CLASS::PALADIN, temp, UNIT::SEX::M);
-    temp = {48, 14, 25, 32, 34,  28, 19, 40, 15};
-    temp_unit.setCaps(temp);
-    temp = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
-    temp_unit.setGrowths(temp);
-    temp_unit.setBaseExp(0);
-    all_units[UNIT::NAME::PALADIN] = temp_unit;
+//     temp = {15,  4,  5,  7,  6,   8,  4,  6,  5, 5};
+//     temp_unit = Unit(UNIT::NAME::PALADIN, UNIT::CLASS::PALADIN, temp, UNIT::SEX::M);
+//     temp = {48, 14, 25, 32, 34,  28, 19, 40, 15};
+//     temp_unit.setCaps(temp);
+//     temp = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
+//     temp_unit.setGrowths(temp);
+//     temp_unit.setBaseExp(0);
+//     all_units[UNIT::NAME::PALADIN] = temp_unit;
 
-    temp = {15,  4,  5,  7,  6,   8,  4,  6,  5, 5};
-    temp_unit = Unit(UNIT::NAME::FENCER, UNIT::CLASS::FENCER, temp, UNIT::SEX::M);
-    temp = {48, 14, 25, 32, 34,  28, 19, 40, 15};
-    temp_unit.setCaps(temp);
-    temp = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
-    temp_unit.setGrowths(temp);
-    temp_unit.setBaseExp(0);
-    all_units[UNIT::NAME::FENCER] = temp_unit;
+//     temp = {15,  4,  5,  7,  6,   8,  4,  6,  5, 5};
+//     temp_unit = Unit(UNIT::NAME::FENCER, UNIT::CLASS::FENCER, temp, UNIT::SEX::M);
+//     temp = {48, 14, 25, 32, 34,  28, 19, 40, 15};
+//     temp_unit.setCaps(temp);
+//     temp = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
+//     temp_unit.setGrowths(temp);
+//     temp_unit.setBaseExp(0);
+//     all_units[UNIT::NAME::FENCER] = temp_unit;
 
-    temp = {15,  4,  5,  7,  6,   8,  4,  6,  5, 5};
-    temp_unit = Unit(UNIT::NAME::MOUSQUETAIRE, UNIT::CLASS::MOUSQUETAIRE, temp, UNIT::SEX::M);
-    temp = {48, 14, 25, 32, 34,  28, 19, 40, 15};
-    temp_unit.setCaps(temp);
-    temp = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
-    temp_unit.setGrowths(temp);
-    temp_unit.setBaseExp(0);
-    all_units[UNIT::NAME::MOUSQUETAIRE] = temp_unit;
-}
+//     temp = {15,  4,  5,  7,  6,   8,  4,  6,  5, 5};
+//     temp_unit = Unit(UNIT::NAME::MOUSQUETAIRE, UNIT::CLASS::MOUSQUETAIRE, temp, UNIT::SEX::M);
+//     temp = {48, 14, 25, 32, 34,  28, 19, 40, 15};
+//     temp_unit.setCaps(temp);
+//     temp = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
+//     temp_unit.setGrowths(temp);
+//     temp_unit.setBaseExp(0);
+//     all_units[UNIT::NAME::MOUSQUETAIRE] = temp_unit;
+// }
 
-std::vector<Unit> chaptestEnemyUnits() {
-    Unit_stats temp_stats;
-    Unit temp_unit;
-    Inventory_item temp_equipment[DEFAULT::EQUIPMENT_SIZE];
-    Equipped temp_equipped;
-    Point temp_position;
-    std::vector<Unit> made_units;
-    temp_stats = {15,  4,  5,  7,  6,   8,  4,  6,  5, 5};
-    temp_unit = Unit(UNIT::NAME::BANDIT, UNIT::CLASS::BANDIT, temp_stats, 1);
-    temp_stats = {48, 14, 25, 32, 34,  28, 19, 40, 15};
-    temp_unit.setCaps(temp_stats);
-    temp_stats = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
-    temp_unit.setGrowths(temp_stats);
-    temp_unit.setBaseExp(0);
-  //temp_equipment[0].id = "Iron Axe";
-  //temp_equipment[1].id = "Wooden Shield";
-    temp_unit.setEquipment(temp_equipment);
-    temp_equipped = {0, 1};
-    temp_unit.setEquipped(temp_equipped);
-    temp_position = {4, 5};
-    temp_unit.setPos(temp_position);
-    made_units[UNIT::NAME::BANDIT] = temp_unit;
-    return(made_units);
-} 
+// std::vector<Unit> chaptestEnemyUnits() {
+//     Unit_stats temp_stats;
+//     Unit temp_unit;
+//     Inventory_item temp_equipment[DEFAULT::EQUIPMENT_SIZE];
+//     Equipped temp_equipped;
+//     Point temp_position;
+//     std::vector<Unit> made_units;
+//     temp_stats = {15,  4,  5,  7,  6,   8,  4,  6,  5, 5};
+//     temp_unit = Unit(UNIT::NAME::BANDIT, UNIT::CLASS::BANDIT, temp_stats, 1);
+//     temp_stats = {48, 14, 25, 32, 34,  28, 19, 40, 15};
+//     temp_unit.setCaps(temp_stats);
+//     temp_stats = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
+//     temp_unit.setGrowths(temp_stats);
+//     temp_unit.setBaseExp(0);
+//   //temp_equipment[0].id = "Iron Axe";
+//   //temp_equipment[1].id = "Wooden Shield";
+//     temp_unit.setEquipment(temp_equipment);
+//     temp_equipped = {0, 1};
+//     temp_unit.setEquipped(temp_equipped);
+//     temp_position = {4, 5};
+//     temp_unit.setPos(temp_position);
+//     made_units[UNIT::NAME::BANDIT] = temp_unit;
+//     return(made_units);
+// } 
 
 // std::vector<Unit> chap1EnemyUnits() {
 //     Unit_stats temp_stats;
