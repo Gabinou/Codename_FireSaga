@@ -161,7 +161,6 @@ class Unit {
 
 extern std::vector<short int> base_units;
 
-extern std::unordered_map<int, Unit> loaded_units;
 extern void baseUnits(std::unordered_map<int, Unit> * in_units);
 extern void baseUnits(std::unordered_map<int, Unit> * in_units, std::vector<short int> toload);
 extern std::unordered_map<int, Unit> chap1EnemyUnits();

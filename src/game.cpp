@@ -193,14 +193,9 @@ void Game::setState(Entity & setting_entity, short unsigned int new_state) {
 
                     unitmvttype = units[current_unit_id].getMvttype();
                     range = units[current_unit_id].getRange();
-                    SDL_Log("current_unit_id %d", current_unit_id);
-                    SDL_Log("unitmvttype: %d", unitmvttype);
-                    SDL_Log("unitname: %s", units[current_unit_id].getName().c_str());
                     costmap = mapp->makeMvtCostmap(unitmvttype);
 
-                    plot2Dvec(costmap);
                     movemapp = movemap(costmap, start, unit_move, "matrix");
-                    plot2Dvec(movemapp);
                     mapp->setOverlay(MAP::OVERLAY::MOVE, movemapp);
 
                     attackmapp = attackmap(movemapp, start, unit_move, range, "matrix");
@@ -394,14 +389,18 @@ void Game::loadUnitEntities(std::vector<short unsigned int> unit_inds, std::vect
     }
 }
 void Game::loadUnits(unsigned char in_chap) {
-    std::vector<short int> = chapTiles[in_chap]
-    // std::unordered_map<int, Unit> = temp;
-    // temp = chapEnemyUnits[in_chap]();
-    // units.insert(chapEnemyUnits[in_chap]());
+    std::vector<short int> toload = chapTiles[in_chap]();
+    baseUnits(&units, toload);
 }
 
 void Game::loadUnits(std::vector<short int> toload) {
     baseUnits(&units, toload);
+}
+
+void Game::unloadUnits(std::vector<short int> to_unload) {
+    for (int i = 0; i < to_unload.size(); i++) {
+        units.erase(to_unload[i]);
+    }
 }
 
 void Game::loadMapEnemies() {
