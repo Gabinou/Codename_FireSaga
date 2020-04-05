@@ -139,6 +139,7 @@ void Game::killMenu(short unsigned int index) {
 }
 
 void Game::moveUnit(Entity & cursor) {
+    // USELESS?
     int newPos[2];
     newPos[0] = cursor.getComponent<PositionComponent>().getPos()[0];
     newPos[1] = cursor.getComponent<PositionComponent>().getPos()[1];
@@ -167,13 +168,12 @@ void Game::setState(Entity & setting_entity, short unsigned int new_state) {
                     break;                
                 case GAME::STATE::UNITMOVE: {
                     SDL_Log("Changing to unitmove\n");
-                    std::vector<std::unique_ptr<Entity>> current_entities;
                     std::vector<std::vector<short int>> costmap;
                     std::vector<std::vector<short int>> movemapp;
                     std::vector<std::vector<short int>> attackmapp;
                     short unsigned int start[2];
-                    unsigned char unitmvttype;
                     short unsigned int unit_move;
+                    unsigned char unitmvttype;
                     unsigned char * range;
                     
                     for (int i = 0; i < manager.getEntities().size(); i++) {
@@ -184,7 +184,6 @@ void Game::setState(Entity & setting_entity, short unsigned int new_state) {
 
                     short unsigned int current_unit_id = manager.getEntities()[unit_entities.top()]->getComponent<UnitContainer>().getID();
                     unit_move = units[current_unit_id].getStats().move;
-                    SDL_Log("move: %d", unit_move);
 
                     start[0] = manager.getEntities()[unit_entities.top()]->getComponent<PositionComponent>().getPos()[0]; // Start is (+1,+1)?
                     start[1] = manager.getEntities()[unit_entities.top()]->getComponent<PositionComponent>().getPos()[1]; // Start is (+1,+1)?
