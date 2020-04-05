@@ -57,13 +57,24 @@ std::vector<std::vector<short int>> Map::makeMvtCostmap(const unsigned char unit
         for (short int col = 0; col < tilemap[row].size(); col++) {
             tile_ind = tilemap[row][col]/DEFAULT::TILE_DIVISOR;
             // SDL_Log("tile_ind: %d", tile_ind);
-            costmap[row][col] = loaded_tiles[tile_ind].getCost()[unitmovetype];
+            costmap[row][col] = tiles[tile_ind].getCost()[unitmovetype];
             // SDL_Log("Mvt_cost: %d", loaded_tiles[tile_ind].getCost()[unitmovetype]);
         
         }
     }
     return(costmap);
 }
+
+void Map::loadTiles(std::vector<short int> to_load) {
+    baseTiles(&tiles, to_load);
+}
+
+void Map::unloadTiles(std::vector<short int> to_unload) {
+    for (int i = 0; i < to_unload.size(); i++) {
+        tiles.erase(to_unload[i]);
+    }
+}
+
 
 std::vector<std::vector<short int>> Map::getTilemap(){
     return(tilemap);
@@ -92,7 +103,7 @@ void Map::loadTiletextures() {
     std::string texturename;
     for (short unsigned int i = 0; i < unique_textures.size(); i++) {
         tileindex = (unique_textures[i]/DEFAULT::TILE_DIVISOR);
-        texturename = "..//assets//" + loaded_tiles[i].getName() + "_" + std::to_string(unique_textures[i]) + ".png";
+        texturename = "..//assets//" + tiles[i].getName() + "_" + std::to_string(unique_textures[i]) + ".png";
         textures[unique_textures[i]] = loadTexture(renderer, texturename.c_str());
     }
 }

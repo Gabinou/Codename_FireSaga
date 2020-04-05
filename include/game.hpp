@@ -53,7 +53,6 @@ class Game {
         SDL_Event event;
 
         std::unordered_map<int, Unit> units;
-        std::unordered_map<int, Tile> tiles;
 
     public:
         static SDL_Renderer * renderer;

@@ -38,9 +38,8 @@ class Tile {
         void readXML(const char * filename);
 };
 
-void baseTiles();
 void testXMLTiles();
-std::vector<Tile> baseTiles(std::vector<short int> toload);
+void baseTiles(std::unordered_map<int, Tile> * in_tiles, std::vector<short int> toload);
 
 extern std::vector<Tile> all_tiles;
 extern std::vector<Tile> loaded_tiles;

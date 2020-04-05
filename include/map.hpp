@@ -41,23 +41,29 @@ class Map {
 
         Entity_ptr_matrix entitymap;
 
+        std::unordered_map<int, Tile> tiles;
+
     public:
         Map();
         ~Map();
         Map(const short unsigned int width, const short unsigned int height);
+
 
         void loadTiletextures();
         void initVars();
         void loadOverlays();
         void loadDanger();
 
+        void loadTiles(std::vector<short int> to_load);
+        void unloadTiles(std::vector<short int> to_unload);
+
         void loadTilemap(const std::string filename);
         void loadTilemap(const short unsigned int in_map_index);
         void postTilemap();
-
         std::vector<std::vector<short int>> getTilemap();
         void setTilemap(const std::vector<std::vector<short int>> in_tilemap);
         std::vector<std::vector<short int>> makeMvtCostmap(const unsigned char unitmovetype);
+
 
         void setRenderer(SDL_Renderer * in_renderer);
         void drawMap();
@@ -66,10 +72,10 @@ class Map {
         void setTilesize(const short int unsigned width, const short int unsigned height);
         short unsigned int * getTilesize() const;
 
-        void setTile(const short unsigned int x, const short unsigned int y, Entity * in_entity);
-        void removeTile(const short unsigned int x, const short unsigned int y);
-        void moveTile(const short unsigned int x, const short unsigned int y, const short unsigned int new_x, const short unsigned int new_y);
-        Entity * getTile(const short unsigned int x, const short unsigned int y);
+        void setTile(const short unsigned int x, const short unsigned int y, Entity * in_entity); // TO RENAME
+        void removeTile(const short unsigned int x, const short unsigned int y); // TO RENAME
+        void moveTile(const short unsigned int x, const short unsigned int y, const short unsigned int new_x, const short unsigned int new_y); // TO RENAME
+        Entity * getTile(const short unsigned int x, const short unsigned int y); // TO RENAME
 
         void setOverlay(const unsigned char in_mode, std::vector<std::vector<short int>> in_map);
         void clearOverlays();

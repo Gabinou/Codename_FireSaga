@@ -323,9 +323,9 @@ short unsigned int Game::getState() {
     return(state);
 }
 
-template <typename T> void Game::loadTiles(std::vector<T> in_tiles) {
-    loaded_tiles = baseTiles(in_tiles);
-}
+// template <typename T> void Game::loadTiles(std::vector<T> in_tiles) {
+//     loaded_tiles = baseTiles(in_tiles);
+// }
 
 void Game::loadMap(const std::string filename) {
     SDL_Log("Loading Map: %s \n", filename);
@@ -341,11 +341,11 @@ void Game::loadMap(const std::string filename) {
 
 void Game::loadMap(const int in_map_index) {
     SDL_Log("Loading Map index: %d \n", in_map_index);
-    loaded_tiles = baseTiles(chapTiles[in_map_index]());
     if (!mapp) {
         mapp = new Map(settings.tilesize[0], settings.tilesize[1]);
         mapp->setRenderer(renderer);
         mapp->loadTilemap(in_map_index);
+        mapp->loadTiles(chapTiles[in_map_index]());
         mapp->loadEnemyinds(in_map_index);
     } else {
         SDL_Log("Failed to loadMap. Was mapp deleted previously?");
