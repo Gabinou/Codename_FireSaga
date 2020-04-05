@@ -193,6 +193,9 @@ void Game::setState(Entity & setting_entity, short unsigned int new_state) {
 
                     unitmvttype = units[current_unit_id].getMvttype();
                     range = units[current_unit_id].getRange();
+                    SDL_Log("current_unit_id %d", current_unit_id);
+                    SDL_Log("unitmvttype: %d", unitmvttype);
+                    SDL_Log("unitname: %s", units[current_unit_id].getName().c_str());
                     costmap = mapp->makeMvtCostmap(unitmvttype);
 
                     plot2Dvec(costmap);
@@ -205,7 +208,7 @@ void Game::setState(Entity & setting_entity, short unsigned int new_state) {
 
                     mapp->showOverlay();
 
-                    }
+                }
                     break;
                 case GAME::STATE::OPTIONS:
                     break;    
@@ -391,15 +394,14 @@ void Game::loadUnitEntities(std::vector<short unsigned int> unit_inds, std::vect
     }
 }
 void Game::loadUnits(unsigned char in_chap) {
+    std::vector<short int> = chapTiles[in_chap]
     // std::unordered_map<int, Unit> = temp;
     // temp = chapEnemyUnits[in_chap]();
     // units.insert(chapEnemyUnits[in_chap]());
 }
 
 void Game::loadUnits(std::vector<short int> toload) {
-    // std::unordered_map<int, Unit> = temp;
-    // temp = chapEnemyUnits[in_chap]();
-    // units.insert(baseUnits(toload));
+    baseUnits(&units, toload);
 }
 
 void Game::loadMapEnemies() {
@@ -460,7 +462,7 @@ void Game::init(const char * title, int xpos, int ypos, int width, int height, b
 
     state = GAME::STATE::MAP;
 
-    std::vector<short int> basepartyinds = {UNIT::NAME::ERWIN, UNIT::NAME::KIARA};
+    std::vector<short int> basepartyinds = {UNIT::NAME::ERWIN, UNIT::NAME::KIARA, UNIT::NAME::SILOU};
     loadUnits(basepartyinds);
     // std::vector<Unit> baseparty = baseUnits(basepartyinds);
     // for (int i = 0; i < baseparty.size(); i++) {

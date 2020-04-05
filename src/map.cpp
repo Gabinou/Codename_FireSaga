@@ -58,7 +58,7 @@ std::vector<std::vector<short int>> Map::makeMvtCostmap(const unsigned char unit
             tile_ind = tilemap[row][col]/DEFAULT::TILE_DIVISOR;
             costmap[row][col] = tiles[tile_ind].getCost()[unitmovetype];
             // SDL_Log("tile_ind: %d", tile_ind);
-            // SDL_Log("Mvt_cost: %d", loaded_tiles[tile_ind].getCost()[unitmovetype]);
+            // SDL_Log("Tile: %s, Mvt_cost: %d", tiles[tile_ind].getName().c_str(), tiles[tile_ind].getCost()[unitmovetype]);
         }
     }
     return(costmap);

@@ -94,7 +94,7 @@ short unsigned int Unit::getEquippable() {
 }
 
 unsigned char Unit::getMvttype() {
-    printf("inside unit %d\n", mvt_type);
+    printf("inside unit %s %d\n", name.c_str(), mvt_type);
     return (mvt_type);
 }
 
@@ -617,6 +617,7 @@ void Unit::readXML(tinyxml2::XMLElement * in_pUnit) {
 
     combatStats();
     mvt_type = mvtTypes[class_index];
+    SDL_Log("Mvttype: %d", mvt_type);
     class_name = classNames[class_index];
     sex_name = sexNames[sex];
     skill_names = skillNames(skills);
