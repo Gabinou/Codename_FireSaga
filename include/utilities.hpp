@@ -40,7 +40,16 @@ extern void loadUtilities();
 
 extern void printarr(int arr[], int size);
 extern void printvec(std::vector<int> vec);
-extern std::vector<int> cpprange(int ind1, int ind2);
+template <typename T>
+extern std::vector<T> cpprange(T ind1, T ind2) {
+    std::vector<T> out;
+
+    for (int i = ind1; i < ind2; i++) {
+        out.push_back(i);
+    }
+
+    return (out);
+}
 extern std::vector<int> cppwhere(int tofind, std::vector<int> vec);
 extern std::vector<int> cppuniques(std::vector<int> vec);
 

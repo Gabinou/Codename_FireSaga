@@ -17,7 +17,6 @@ Unit::Unit(const unsigned short int in_id, const unsigned char in_class_index, c
     mvt_type = mvtTypes[class_index];
     class_name = classNames[class_index];
     skill_names = skillNames(skills);
-    // equippable = makeEquippable(class_index);
     equippable = equippableCodes[class_index];
     sex = in_sex;
     sex_name = sexNames[sex];
@@ -844,9 +843,10 @@ std::vector<Unit> baseUnits(std::vector<short int> toload) {
         index = toload[i];
         switch (index) {
             case UNIT::NAME::ERWIN:
-                temp = {17,  6,  2,  7,  7,   7,  4,  5,  6, 5};
+                      //hp,str,mag,agi,dex,luck,def,res,con,move,prof
+                temp = {17,  6,  2,  7,  7,   7,  4,  5,  6, 5, 4};
                 temp_unit = Unit(UNIT::NAME::ERWIN, UNIT::CLASS::MERCENARY, temp, UNIT::SEX::M);
-                temp = {48, 14, 25, 32, 34,  28, 19, 40, 15, 0};
+                temp = {48, 14, 25, 32, 34,  28, 19, 40, 15, 7, 20};
                 temp_unit.setCaps(temp);
                 temp = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
                 temp_unit.setGrowths(temp);
@@ -955,119 +955,16 @@ std::vector<Unit> baseUnits(std::vector<short int> toload) {
                 break;
             }
         }
-
     return(temp_units);
 }
 
 
-void baseUnits() {
+std::vector<Unit> baseUnits() {
     printf("Making all base units \n");
-    Unit temp_unit;
-    Unit_stats temp;
-    Inventory_item temp_wpn;
-    short int temp_supports;
-    //hp,str,mag,skl,spd,luck,def,res,con,move
-    // printf("Made unit.\n");
-
-    temp = {17,  6,  2,  7,  7,   7,  4,  5,  6, 5};
-    temp_unit = Unit(UNIT::NAME::ERWIN, UNIT::CLASS::MERCENARY, temp, UNIT::SEX::M);
-    temp = {48, 14, 25, 32, 34,  28, 19, 40, 15, 0};
-    temp_unit.setCaps(temp);
-    temp = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
-    temp_unit.setGrowths(temp);
-    temp_unit.setBaseExp(0);
-    temp_wpn.id = ITEM::NAME::FLEURET;
-    temp_unit.addEquipment(temp_wpn);
-    temp_wpn.id = ITEM::NAME::KITCHEN_KNIFE;
-    temp_unit.addEquipment(temp_wpn);
-    temp_wpn.id = ITEM::NAME::POT_LID;
-    temp_unit.addEquipment(temp_wpn);
-    // temp_supports = {UNIT::NAME::KIARA}; 
-    // temp_unit.setSupports(temp_supports);
-    all_units[UNIT::NAME::ERWIN] = temp_unit;
-
-    temp = {18,  6,  2,  7,  7,   7,  4,  5,  6, 7};
-    temp_unit = Unit(UNIT::NAME::RELIABLE, UNIT::CLASS::CAVALIER, temp, UNIT::SEX::M);
-    temp = {48, 14, 25, 32, 34,  28, 19, 40, 15};
-    temp_unit.setCaps(temp);
-    temp = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
-    temp_unit.setGrowths(temp);
-    temp_unit.setBaseExp(100);
-    all_units[UNIT::NAME::RELIABLE] = temp_unit;
-    
-    temp = {19,  6,  2,  7,  7,   7,  4,  5,  6,  7};
-    temp_unit = Unit(UNIT::NAME::COWARD, UNIT::CLASS::CAVALIER, temp, UNIT::SEX::M);
-    temp = {48, 14, 25, 32, 34,  28, 19, 40, 15};
-    temp_unit.setCaps(temp);
-    temp = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
-    temp_unit.setGrowths(temp);
-    temp_unit.setBaseExp(200);
-    all_units[UNIT::NAME::COWARD] = temp_unit;
-    
-    temp = {20,  6,  2,  7,  7,   7,  4,  5,  6,  6};
-    temp_unit = Unit(UNIT::NAME::JAIGEN1H, UNIT::CLASS::MOUSQUETAIRE, temp, UNIT::SEX::M);
-    temp = {48, 14, 25, 32, 34,  28, 19, 40, 15};
-    temp_unit.setCaps(temp);
-    temp = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
-    temp_unit.setGrowths(temp);
-    temp_unit.setBaseExp(2200);
-    all_units[UNIT::NAME::JAIGEN1H] = temp_unit;
-
-    temp = {14,  6,  2,  7,  7,   7,  4,  5,  6,  5};
-    temp_unit = Unit(UNIT::NAME::KIARA, UNIT::CLASS::CLERIC, temp, UNIT::SEX::F);
-    temp = {48, 14, 25, 32, 34,  28, 19, 40, 15};
-    temp_unit.setCaps(temp);
-    temp = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
-    temp_unit.setGrowths(temp);
-    temp_unit.setBaseExp(100);
-    all_units[UNIT::NAME::KIARA] = temp_unit;
-    
-    temp = {16,  6,  2,  7,  7,   7,  4,  5,  6,  6};
-    temp_unit = Unit(UNIT::NAME::HOTTIE, UNIT::CLASS::PICKPOCKET, temp, UNIT::SEX::M);
-    temp = {48, 14, 25, 32, 34,  28, 19, 40, 15};
-    temp_unit.setCaps(temp);
-    temp = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
-    temp_unit.setGrowths(temp);
-    temp_unit.setBaseExp(2200);
-    all_units[UNIT::NAME::HOTTIE] = temp_unit;
-    
-    temp = {22,  4,  5,  7,  6,   8,  4,  6,  5, 5}; // 4 or 5?
-    temp_unit = Unit(UNIT::NAME::SERVIL, UNIT::CLASS::KNIGHT, temp, UNIT::SEX::M);
-    temp = {48, 14, 25, 32, 34,  28, 19, 40, 15};
-    temp_unit.setCaps(temp);
-    temp = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
-    temp_unit.setGrowths(temp);
-    temp_unit.setBaseExp(500);
-    all_units[UNIT::NAME::SERVIL] = temp_unit;
-    
-    temp = {34,  4,  5,  7,  6,   8,  4,  6,  5, 5};
-    temp_unit = Unit(UNIT::NAME::PERIGNON, UNIT::CLASS::MAGE, temp, UNIT::SEX::M);
-    temp = {48, 14, 25, 32, 34,  28, 19, 40, 15};
-    temp_unit.setCaps(temp);
-    temp = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
-    temp_unit.setGrowths(temp);
-    temp_unit.setBaseExp(1200);
-    all_units[UNIT::NAME::PERIGNON] = temp_unit;
-    
-    temp = {15,  4,  5,  7,  6,   8,  4,  6,  5, 5};
-    temp_unit = Unit(UNIT::NAME::POET, UNIT::CLASS::MAGE, temp, UNIT::SEX::M);
-    temp = {48, 14, 25, 32, 34,  28, 19, 40, 15};
-    temp_unit.setCaps(temp);
-    temp = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
-    temp_unit.setGrowths(temp);
-    temp_unit.setBaseExp(400);
-    all_units[UNIT::NAME::POET] = temp_unit;
-    
-    temp = {15,  4,  5,  7,  6,   8,  4,  6,  5, 5};
-    temp_unit = Unit(UNIT::NAME::SILOU, UNIT::CLASS::MAGE, temp, UNIT::SEX::F);
-    temp = {48, 14, 25, 32, 34,  28, 19, 40, 15};
-    temp_unit.setCaps(temp);
-    temp = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
-    temp_unit.setGrowths(temp);
-    temp_unit.setBaseExp(400);
-    temp_wpn.id = ITEM::NAME::BALL_LIGHTNING;
-    temp_unit.addEquipment(temp_wpn);
-    all_units[UNIT::NAME::SILOU] = temp_unit;
+    std::vector<Unit> temp_units; 
+    std::vector<short int> toload = cpprange((short int)UNIT::NAME::ERWIN, (short int)(UNIT::NAME::PC_END - 1));
+    temp_units = baseUnits(toload);
+    return(temp_units);
 }
 
 void writeAllplayables() {

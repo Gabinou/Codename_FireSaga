@@ -165,8 +165,8 @@ extern std::vector<Unit> all_units;
 extern std::vector<Unit> loaded_units;
 extern std::vector<Unit> (*chapEnemyUnits[40])();
 
-void baseUnits();
-std::vector<Unit> baseUnits(std::vector<short int> toload);
+extern std::vector<Unit> baseUnits();
+extern std::vector<Unit> baseUnits(std::vector<short int> toload);
 void testXMLUnits();
 void baseEnemyUnits();
 extern std::vector<Unit> chap1EnemyUnits();
