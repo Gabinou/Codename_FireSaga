@@ -185,6 +185,7 @@ void Game::setState(Entity & setting_entity, short unsigned int new_state) {
 
                     short unsigned int current_unit_id = manager.getEntities()[unit_entities.top()]->getComponent<UnitContainer>().getID();
                     unit_move = all_units[current_unit_id].getStats().move;
+                    SDL_Log("move: %d", unit_move);
 
                     start[0] = manager.getEntities()[unit_entities.top()]->getComponent<PositionComponent>().getPos()[0]; // Start is (+1,+1)?
                     start[1] = manager.getEntities()[unit_entities.top()]->getComponent<PositionComponent>().getPos()[1]; // Start is (+1,+1)?
@@ -196,6 +197,7 @@ void Game::setState(Entity & setting_entity, short unsigned int new_state) {
                     costmap = mapp->makeMvtCostmap(unitmvttype);
 
                     movemapp = movemap(costmap, start, unit_move, "matrix");
+                    plot2Dvec(movemapp);
                     mapp->setOverlay(MAP::OVERLAY::MOVE, movemapp);
 
                     attackmapp = attackmap(movemapp, start, unit_move, range, "matrix");

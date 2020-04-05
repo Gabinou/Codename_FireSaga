@@ -6,7 +6,6 @@
 #include <stdlib.h>
 #include <cmath>
 
-extern void plot2Darray(int array[][10], int imax, int jmax);
 extern std::vector<std::vector<int>> list2matrix(std::vector<std::vector<int>> list);
 
 template <typename T> extern void plot2Dvector(std::vector<std::vector<T>> matrix) {

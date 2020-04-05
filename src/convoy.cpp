@@ -112,7 +112,6 @@ int Convoy::partition(int arr[], int low, int high, int wpntype) {
     return(i + 1);
 }
 
-
 void Convoy::deposit(Inventory_item in_item) {
     if (!full) {
         // SDL_Log("Depositing: %d", in_item.id);
@@ -300,7 +299,6 @@ Inventory_item * Convoy::getItems(int wpntype) {
     return(temp);
 }
 
-
 void Convoy::setItems(int wpntype, Inventory_item * in_items) {
     // Does not work.
     switch (wpntype) {
@@ -395,7 +393,6 @@ int Convoy::getQuantity(int wpntype) {
     }
     return(temp);
 }
-
 
 std::vector<int> Convoy::getStats(int wpntype, int stattype) {
     int tempqty = getQuantity(wpntype);

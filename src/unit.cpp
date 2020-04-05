@@ -942,7 +942,8 @@ std::vector<Unit> baseUnits(std::vector<short int> toload) {
                 temp_units.push_back(temp_unit);
                 break;
             case UNIT::NAME::SILOU:
-                temp = {15,  4,  5,  7,  6,   8,  4,  6,  5, 5};
+                      //hp,str,mag,agi,dex,luck,def,res,con,move,prof
+                temp = {15,  4,  5,  7,  6,   8,  4,  6,  5,  5,  6};
                 temp_unit = Unit(UNIT::NAME::SILOU, UNIT::CLASS::MAGE, temp, UNIT::SEX::F);
                 temp = {48, 14, 25, 32, 34,  28, 19, 40, 15};
                 temp_unit.setCaps(temp);

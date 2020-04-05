@@ -1,6 +1,16 @@
 
 #include "pathfinding.hpp"
 
+void plot2Darray(int array[][10], short unsigned int imax, short unsigned int jmax) {
+    //Don't know how to pass array that at least do not have 1D known before hand
+    for (short unsigned int i = 0; i < imax; i++){
+        for (short unsigned int j = 0; j < jmax; j++){
+            printf("%d ", array[i][j]);
+        }
+        printf("\n");
+    }
+}
+
 int h_manhattan (int start[], int end[]){
     // fast. Exact on a grid.
     return(abs(start[0] - end[0]) + abs(start[1] - end[1]));
@@ -36,8 +46,6 @@ int find_row (int start[], std::vector<std::vector<int>> list) {
     }
     return(-1);
 }
-
-
 
 int find_node (int start[], std::vector<std::vector<int>> list) {
     int row;
