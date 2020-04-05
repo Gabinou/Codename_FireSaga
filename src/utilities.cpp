@@ -59,39 +59,6 @@ std::vector<int> cppuniques(std::vector<int> vec) {
     return(uniques);
 }
 
-// int * cwhere(int tofind, int arr[], int size) {
-//     int * found_inds;
-//     found_inds = (int*) malloc(size * sizeof(*found_inds));
-//     int found_num = 1;
-//     for (int i = 0; i < size; i++) {
-//         if (arr[i] == tofind) {
-//             found_inds[found_num] = i;
-//             found_num++;
-//         }
-//     }
-//     found_inds = (int*) realloc(found_inds, found_num*sizeof((*found_inds) / size));
-//     found_inds[0] = found_num - 1;
-//     return(found_inds);
-// }
-
-// int * cuniques(int arr[], int size) {
-//     int * uniques;
-//     uniques = (int*) malloc((size + 1) * sizeof(*uniques));
-//     int * inunique;
-//     int found_uniques = 2;
-//     uniques[1] = arr[0];
-//     for (int i = 1; i < size; i++) {
-//         inunique = cwhere(arr[i], uniques, found_uniques);
-//         if (inunique[0] == 0) {
-//             uniques[found_uniques] = arr[i];
-//             found_uniques++;
-//         }
-//     }
-//     uniques = (int*) realloc(uniques, found_uniques*sizeof((*uniques) / size));
-//     uniques[0] = found_uniques - 1;
-//     return(uniques);
-// }
-
 std::vector<std::string> unitTypes(unsigned short int in_typecode) {
     std::vector<std::string> names;
     if ((in_typecode & UNIT::TYPE::HUMAN) > 0) {
@@ -217,6 +184,7 @@ void loadUtilities() {
     makeclassNames();
     makemvtTypes();
     makewpnNames();
+    makeEquippableCodes()
 }
 
 std::vector<std::string> wpnTypes(short unsigned int in_typecode) {
@@ -911,110 +879,157 @@ std::vector<std::string> skillNames(unsigned long long int in_skillscode) {
     return(skill_names);
 }
 
+std::vector<short unsigned int> equippableCodes;
+void makeEquippableCodes() {
+    equippableCodes.push_back();
+    equippableCodes.push_back(ITEM::TYPE::LANCE + ITEM::TYPE::SHIELD);
+    equippableCodes.push_back(ITEM::TYPE::LANCE + ITEM::TYPE::SHIELD); //LORD_RIDER
+    equippableCodes.push_back(ITEM::TYPE::SWORD + ITEM::TYPE::LANCE + ITEM::TYPE::SHIELD + ITEM::TYPE::OFFHAND); //DUKE
+    equippableCodes.push_back(ITEM::TYPE::SWORD + ITEM::TYPE::LANCE + ITEM::TYPE::SHIELD + ITEM::TYPE::OFFHAND); //DUKE_RIDER
+    equippableCodes.push_back(ITEM::TYPE::BOW); //ARCHER
+    equippableCodes.push_back(ITEM::TYPE::BOW); //ARCHER_RIDER
+    equippableCodes.push_back(ITEM::TYPE::SWORD + ITEM::TYPE::OFFHAND + ITEM::TYPE::BOW); 
+    equippableCodes.push_back(ITEM::TYPE::SWORD + ITEM::TYPE::OFFHAND + ITEM::TYPE::BOW); 
+    equippableCodes.push_back(ITEM::TYPE::ANGELIC + ITEM::TYPE::SWORD + ITEM::TYPE::LANCE + ITEM::TYPE::SHIELD);
+    equippableCodes.push_back(ITEM::TYPE::DEMONIC + ITEM::TYPE::CLAW + ITEM::TYPE::AXE);
+    equippableCodes.push_back(ITEM::TYPE::LANCE + ITEM::TYPE::SHIELD);
+    equippableCodes.push_back(ITEM::TYPE::ANGELIC + ITEM::TYPE::TRINKET); //ANGELIC_INCARNATE
+    equippableCodes.push_back(ITEM::TYPE::DEMONIC + ITEM::TYPE::TRINKET); //DEMONIC_INCARNATE
+    equippableCodes.push_back(ITEM::TYPE::OFFHAND + ITEM::TYPE::SWORD); //FENCER
+    equippableCodes.push_back(ITEM::TYPE::LANCE + ITEM::TYPE::SHIELD); //DUELIST
+    equippableCodes.push_back(ITEM::TYPE::SWORD + ITEM::TYPE::OFFHAND + ITEM::TYPE::BOW); //MOUSQUETAIRE 
+    equippableCodes.push_back(ITEM::TYPE::OFFHAND + ITEM::TYPE::SWORD); //PICKPOCKET
+    equippableCodes.push_back(ITEM::TYPE::LANCE + ITEM::TYPE::SHIELD); // THIEF
+    equippableCodes.push_back(ITEM::TYPE::SWORD + ITEM::TYPE::OFFHAND + ITEM::TYPE::BOW); //ASSASSIN 
+    equippableCodes.push_back(ITEM::TYPE::SHIELD + ITEM::TYPE::SWORD + ITEM::TYPE::OFFHAND); //MERCERNARY
+    equippableCodes.push_back(ITEM::TYPE::AXE + ITEM::TYPE::SWORD + ITEM::TYPE::SHIELD + ITEM::TYPE::OFFHAND); //HERO
+    equippableCodes.push_back(ITEM::TYPE::SHIELD + ITEM::TYPE::OFFHAND + ITEM::TYPE::AXE); // CORSAIR
+    equippableCodes.push_back(ITEM::TYPE::SHIELD + ITEM::TYPE::OFFHAND + ITEM::TYPE::AXE); // VIKING
+    equippableCodes.push_back(ITEM::TYPE::SHIELD + ITEM::TYPE::AXE); //BANDIT
+    equippableCodes.push_back(ITEM::TYPE::AXE + ITEM::TYPE::SHIELD + ITEM::TYPE::OFFHAND + ITEM::TYPE::BOW); // RAVAGER
+    equippableCodes.push_back(ITEM::TYPE::LANCE + ITEM::TYPE::SHIELD); // PIKEMAN
+    equippableCodes.push_back(ITEM::TYPE::LANCE + ITEM::TYPE::SHIELD); // CAVALIER
+    equippableCodes.push_back(ITEM::TYPE::SWORD + ITEM::TYPE::LANCE + ITEM::TYPE::SHIELD + ITEM::TYPE::OFFHAND); //PALADIN
+    equippableCodes.push_back(ITEM::TYPE::ELEMENTAL + ITEM::TYPE::TRINKET); // MAGE
+    equippableCodes.push_back(ITEM::TYPE::ELEMENTAL + ITEM::TYPE::SHIELD + ITEM::TYPE::SWORD + ITEM::TYPE::TRINKET); // BATTLEMAGE
+    equippableCodes.push_back(ITEM::TYPE::ELEMENTAL + ITEM::TYPE::STAFF + ITEM::TYPE::TRINKET); //TROUBADOUR
+    equippableCodes.push_back(ITEM::TYPE::ELEMENTAL + ITEM::TYPE::STAFF + ITEM::TYPE::TRINKET); //SAGE
+    equippableCodes.push_back(ITEM::TYPE::STAFF); //PRIEST
+    equippableCodes.push_back(ITEM::TYPE::STAFF + ITEM::TYPE::ANGELIC + ITEM::TYPE::TRINKET); //BISHOP
+    equippableCodes.push_back(ITEM::TYPE::STAFF + ITEM::TYPE::ANGELIC + ITEM::TYPE::TRINKET); //ORACLE
+    equippableCodes.push_back(ITEM::TYPE::SWORD + ITEM::TYPE::SHIELD + ITEM::TYPE::AXE + ITEM::TYPE::LANCE); // GENERAL
+    equippableCodes.push_back(ITEM::TYPE::STAFF); //CLERIC
+    equippableCodes.push_back(ITEM::TYPE::STAFF); //DEMIGOD
+    equippableCodes.push_back(ITEM::TYPE::STAFF); //GOD
+    equippableCodes.push_back(ITEM::TYPE::LANCE + ITEM::TYPE::SHIELD); //KNIGHT
+    equippableCodes.push_back(ITEM::TYPE::LANCE + ITEM::TYPE::SHIELD); //GODDESS
+    equippableCodes.push_back(ITEM::TYPE::LANCE + ITEM::TYPE::SHIELD); //TWINBORN
+}
+
 short unsigned int makeEquippable(unsigned char in_class_index) {
     short unsigned int equippable;
     switch(in_class_index) {
         case UNIT::CLASS::MERCENARY:
-            equippable = ITEM::TYPE::SHIELD + ITEM::TYPE::SWORD + ITEM::TYPE::OFFHAND;
+            equippableCodes.push_back(ITEM::TYPE::SHIELD + ITEM::TYPE::SWORD + ITEM::TYPE::OFFHAND;
             break;
         case UNIT::CLASS::LORD:
-            equippable = ITEM::TYPE::LANCE + ITEM::TYPE::SHIELD;
+            equippableCodes.push_back(ITEM::TYPE::LANCE + ITEM::TYPE::SHIELD;
             break;
         case UNIT::CLASS::DUELIST:
-            equippable = ITEM::TYPE::LANCE + ITEM::TYPE::SHIELD;
+            equippableCodes.push_back(ITEM::TYPE::LANCE + ITEM::TYPE::SHIELD;
             break;
         case UNIT::CLASS::THIEF:
-            equippable = ITEM::TYPE::LANCE + ITEM::TYPE::SHIELD;
+            equippableCodes.push_back(ITEM::TYPE::LANCE + ITEM::TYPE::SHIELD;
             break;
         case UNIT::CLASS::PEGASUS_KNIGHT:
-            equippable = ITEM::TYPE::LANCE + ITEM::TYPE::SHIELD;
+            equippableCodes.push_back(ITEM::TYPE::LANCE + ITEM::TYPE::SHIELD;
             break;
         case UNIT::CLASS::PIKEMAN:
-            equippable = ITEM::TYPE::LANCE + ITEM::TYPE::SHIELD;
+            equippableCodes.push_back(ITEM::TYPE::LANCE + ITEM::TYPE::SHIELD;
             break;
         case UNIT::CLASS::CAVALIER:
-            equippable = ITEM::TYPE::LANCE + ITEM::TYPE::SHIELD;
+            equippableCodes.push_back(ITEM::TYPE::LANCE + ITEM::TYPE::SHIELD;
             break;
         case UNIT::CLASS::KNIGHT:
-            equippable = ITEM::TYPE::LANCE + ITEM::TYPE::SHIELD;
+            equippableCodes.push_back(ITEM::TYPE::LANCE + ITEM::TYPE::SHIELD;
             break;
         case UNIT::CLASS::BANDIT:
-            equippable = ITEM::TYPE::SHIELD + ITEM::TYPE::AXE;
+            equippableCodes.push_back(ITEM::TYPE::SHIELD + ITEM::TYPE::AXE;
             break;
         case UNIT::CLASS::CORSAIR:
-            equippable = ITEM::TYPE::SHIELD + ITEM::TYPE::OFFHAND + ITEM::TYPE::AXE;
+            equippableCodes.push_back(ITEM::TYPE::SHIELD + ITEM::TYPE::OFFHAND + ITEM::TYPE::AXE;
             break;
         case UNIT::CLASS::VIKING:
-            equippable = ITEM::TYPE::SHIELD + ITEM::TYPE::OFFHAND + ITEM::TYPE::AXE;
+            equippableCodes.push_back(ITEM::TYPE::SHIELD + ITEM::TYPE::OFFHAND + ITEM::TYPE::AXE;
             break;
         case UNIT::CLASS::PICKPOCKET:
-            equippable = ITEM::TYPE::OFFHAND + ITEM::TYPE::SWORD;
+            equippableCodes.push_back(ITEM::TYPE::OFFHAND + ITEM::TYPE::SWORD;
             break;
         case UNIT::CLASS::FENCER:
-            equippable = ITEM::TYPE::OFFHAND + ITEM::TYPE::SWORD;
+            equippableCodes.push_back(ITEM::TYPE::OFFHAND + ITEM::TYPE::SWORD;
             break;
         case UNIT::CLASS::MOUSQUETAIRE:
-            equippable = ITEM::TYPE::SWORD + ITEM::TYPE::OFFHAND + ITEM::TYPE::BOW; 
+            equippableCodes.push_back(ITEM::TYPE::SWORD + ITEM::TYPE::OFFHAND + ITEM::TYPE::BOW; 
             break;
         case UNIT::CLASS::ASSASSIN:
-            equippable = ITEM::TYPE::SWORD + ITEM::TYPE::OFFHAND + ITEM::TYPE::BOW; 
+            equippableCodes.push_back(ITEM::TYPE::SWORD + ITEM::TYPE::OFFHAND + ITEM::TYPE::BOW; 
             break;
         case UNIT::CLASS::MARKSMAN:
-            equippable = ITEM::TYPE::SWORD + ITEM::TYPE::OFFHAND + ITEM::TYPE::BOW; 
+            equippableCodes.push_back(ITEM::TYPE::SWORD + ITEM::TYPE::OFFHAND + ITEM::TYPE::BOW; 
             break;
         case UNIT::CLASS::ARCHER:
-            equippable = ITEM::TYPE::BOW;
+            equippableCodes.push_back(ITEM::TYPE::BOW;
             break;
         case UNIT::CLASS::DUKE:
-            equippable = ITEM::TYPE::SWORD + ITEM::TYPE::LANCE + ITEM::TYPE::SHIELD + ITEM::TYPE::OFFHAND;
+            equippableCodes.push_back(ITEM::TYPE::SWORD + ITEM::TYPE::LANCE + ITEM::TYPE::SHIELD + ITEM::TYPE::OFFHAND;
             break;
         case UNIT::CLASS::PALADIN:
-            equippable = ITEM::TYPE::SWORD + ITEM::TYPE::LANCE + ITEM::TYPE::SHIELD + ITEM::TYPE::OFFHAND;
+            equippableCodes.push_back(ITEM::TYPE::SWORD + ITEM::TYPE::LANCE + ITEM::TYPE::SHIELD + ITEM::TYPE::OFFHAND;
             break;
         case UNIT::CLASS::GENERAL:
-            equippable = ITEM::TYPE::SWORD + ITEM::TYPE::SHIELD + ITEM::TYPE::AXE + ITEM::TYPE::LANCE;
+            equippableCodes.push_back(ITEM::TYPE::SWORD + ITEM::TYPE::SHIELD + ITEM::TYPE::AXE + ITEM::TYPE::LANCE;
             break;
         case UNIT::CLASS::CLERIC:
-            equippable = ITEM::TYPE::STAFF;
+            equippableCodes.push_back(ITEM::TYPE::STAFF;
             break;
         case UNIT::CLASS::PRIEST:
-            equippable = ITEM::TYPE::STAFF;
+            equippableCodes.push_back(ITEM::TYPE::STAFF;
             break;
         case UNIT::CLASS::MAGE:
-            equippable = ITEM::TYPE::ELEMENTAL + ITEM::TYPE::TRINKET;
+            equippableCodes.push_back(ITEM::TYPE::ELEMENTAL + ITEM::TYPE::TRINKET;
             break;
         case UNIT::CLASS::HERO:
-            equippable = ITEM::TYPE::AXE + ITEM::TYPE::SWORD + ITEM::TYPE::SHIELD + ITEM::TYPE::OFFHAND;
+            equippableCodes.push_back(ITEM::TYPE::AXE + ITEM::TYPE::SWORD + ITEM::TYPE::SHIELD + ITEM::TYPE::OFFHAND;
             break;
         case UNIT::CLASS::RAVAGER:
-            equippable = ITEM::TYPE::AXE + ITEM::TYPE::SHIELD + ITEM::TYPE::OFFHAND + ITEM::TYPE::BOW;
+            equippableCodes.push_back(ITEM::TYPE::AXE + ITEM::TYPE::SHIELD + ITEM::TYPE::OFFHAND + ITEM::TYPE::BOW;
             break;
         case UNIT::CLASS::BATTLEMAGE:
-            equippable = ITEM::TYPE::ELEMENTAL + ITEM::TYPE::SHIELD + ITEM::TYPE::SWORD + ITEM::TYPE::TRINKET;
+            equippableCodes.push_back(ITEM::TYPE::ELEMENTAL + ITEM::TYPE::SHIELD + ITEM::TYPE::SWORD + ITEM::TYPE::TRINKET;
             break;
         case UNIT::CLASS::SAGE:
-            equippable = ITEM::TYPE::ELEMENTAL + ITEM::TYPE::STAFF + ITEM::TYPE::TRINKET;
+            equippableCodes.push_back(ITEM::TYPE::ELEMENTAL + ITEM::TYPE::STAFF + ITEM::TYPE::TRINKET;
             break;
         case UNIT::CLASS::TROUBADOUR:
-            equippable = ITEM::TYPE::ELEMENTAL + ITEM::TYPE::STAFF + ITEM::TYPE::TRINKET;
+            equippableCodes.push_back(ITEM::TYPE::ELEMENTAL + ITEM::TYPE::STAFF + ITEM::TYPE::TRINKET;
             break;
         case UNIT::CLASS::ORACLE:
-            equippable = ITEM::TYPE::STAFF + ITEM::TYPE::ANGELIC + ITEM::TYPE::TRINKET;
+            equippableCodes.push_back(ITEM::TYPE::STAFF + ITEM::TYPE::ANGELIC + ITEM::TYPE::TRINKET;
             break;
         case UNIT::CLASS::BISHOP:
-            equippable = ITEM::TYPE::STAFF + ITEM::TYPE::ANGELIC + ITEM::TYPE::TRINKET;
+            equippableCodes.push_back(ITEM::TYPE::STAFF + ITEM::TYPE::ANGELIC + ITEM::TYPE::TRINKET;
             break;
         case UNIT::CLASS::ANGEL:
-            equippable = ITEM::TYPE::ANGELIC + ITEM::TYPE::SWORD + ITEM::TYPE::LANCE + ITEM::TYPE::SHIELD;
+            equippableCodes.push_back(ITEM::TYPE::ANGELIC + ITEM::TYPE::SWORD + ITEM::TYPE::LANCE + ITEM::TYPE::SHIELD;
             break;
         case UNIT::CLASS::DEMON:
-            equippable = ITEM::TYPE::DEMONIC + ITEM::TYPE::CLAW + ITEM::TYPE::AXE;
+            equippableCodes.push_back(ITEM::TYPE::DEMONIC + ITEM::TYPE::CLAW + ITEM::TYPE::AXE;
             break;
         case UNIT::CLASS::DEMONIC_INCARNATE:
-            equippable = ITEM::TYPE::DEMONIC + ITEM::TYPE::TRINKET;
+            equippableCodes.push_back(ITEM::TYPE::DEMONIC + ITEM::TYPE::TRINKET;
             break;
         case UNIT::CLASS::ANGELIC_INCARNATE:
-            equippable = ITEM::TYPE::ANGELIC + ITEM::TYPE::TRINKET;
+            equippableCodes.push_back(ITEM::TYPE::ANGELIC + ITEM::TYPE::TRINKET;
             break;
     }
     return(equippable);

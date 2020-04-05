@@ -34,13 +34,14 @@ extern std::vector<std::string> classNames;
 extern void makeclassNames();
 extern std::vector<unsigned char> mvtTypes;
 extern void makemvtTypes();
+extern std::vector<short unsigned int> equippableCodes;
+extern void makeEquippableCodes();
+
 
 extern void loadUtilities();
 
 extern void printarr(int arr[], int size);
 extern void printvec(std::vector<int> vec);
-// extern int * cuniques(int arr[], int size);
-// extern int * cwhere(int tofind, int arr[], int size);
 extern std::vector<int> cpprange(int ind1, int ind2);
 extern std::vector<int> cppwhere(int tofind, std::vector<int> vec);
 extern std::vector<int> cppuniques(std::vector<int> vec);
