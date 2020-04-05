@@ -96,6 +96,8 @@ class Game {
         short unsigned int getState();
 
         void saveXML(const short int save_ind);
+        void deleteSaveXML(const short int delete_ind);
+        void copySaveXML(const short int from_ind, const short int to_ind);
         void loadXML(const short int save_ind);
 
         bool running();

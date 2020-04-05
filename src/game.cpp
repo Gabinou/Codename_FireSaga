@@ -459,18 +459,15 @@ void Game::init(const char * title, int xpos, int ypos, int width, int height, b
 
 void Game::loadXML(const short int save_ind) {
     char filename[DEFAULT::BUFFER_SIZE];
-    if (!PHYSFS_exists("saves")) {
+    if (!PHYSFS_exists(SAVE_FOLDER)) {
         SDL_Log("Could not find 'saves' folder!");
     }
-
     stbsp_snprintf(filename, DEFAULT::BUFFER_SIZE, "saves//save%04d.bsav", save_ind);
     SDL_Log("saveXML Game to: %s\n", filename);
 
     PHYSFS_file * fp = PHYSFS_openRead(filename);
     tinyxml2::XMLDocument xmlDoc;
     parseXML(filename, &xmlDoc);
- 
-
     tinyxml2::XMLElement * ptemp;
 
     ptemp = xmlDoc.FirstChildElement("Convoy");
@@ -485,23 +482,48 @@ void Game::loadXML(const short int save_ind) {
         party[id].readXML(ptemp);
         ptemp = xmlDoc.NextSiblingElement("Unit");
     }
-
     ptemp = xmlDoc.FirstChildElement("Narrative");
+}
 
+void Game::copySaveXML(const short int from_ind, const short int to_ind) {
+    if (!PHYSFS_exists(SAVE_FOLDER)) {
+        SDL_Log("Could not find save folder!");
+    } else {
+        char filenameto[DEFAULT::BUFFER_SIZE];
+        char filenamefrom[DEFAULT::BUFFER_SIZE];
+        stbsp_snprintf(filenamefrom, DEFAULT::BUFFER_SIZE, "saves//save%04d.bsav", from_ind);
+        stbsp_snprintf(filenameto, DEFAULT::BUFFER_SIZE, "saves//save%04d.bsav", to_ind);
+        SDL_Log("copSaveXML Game from %s to %s\n", filenamefrom, filenameto);
+        PHYSFS_file * pfrom = PHYSFS_openRead(filenamefrom);
+        PHYSFS_file * pto = PHYSFS_openWrite(filenameto);
+        int len = PHYSFS_fileLength(pfrom);
+        char longbuffer[len];
+        PHYSFS_readBytes(pfrom, longbuffer, len);
+        PHYSFS_writeBytes(pto, longbuffer, len);
+        PHYSFS_close(pfrom);
+        PHYSFS_close(pto);
+    }
+}
 
+void Game::deleteSaveXML(const short int save_ind) {
+    if (!PHYSFS_exists(SAVE_FOLDER)) {
+        SDL_Log("Could not find save folder!");
+    } else {
+        char filename[DEFAULT::BUFFER_SIZE];
+        stbsp_snprintf(filename, DEFAULT::BUFFER_SIZE, "saves//save%04d.bsav", save_ind);
+        SDL_Log("Deleting Game: %s\n", filename);
+        PHYSFS_delete(filename);
+    }
 }
 
 void Game::saveXML(const short int save_ind) {
     char filename[DEFAULT::BUFFER_SIZE];
-    if (!PHYSFS_exists("saves")) {
-        PHYSFS_mkdir("saves");
+    if (!PHYSFS_exists(SAVE_FOLDER)) {
+        PHYSFS_mkdir(SAVE_FOLDER);
     }
-
     stbsp_snprintf(filename, DEFAULT::BUFFER_SIZE, "saves//save%04d.bsav", save_ind);
     SDL_Log("saveXML Game to: %s\n", filename);
-
     PHYSFS_delete(filename);
-
     PHYSFS_file * fp = PHYSFS_openWrite(filename);
 
     tinyxml2::XMLDocument xmlDoc;
@@ -531,8 +553,6 @@ void Game::saveXML(const short int save_ind) {
     PHYSFS_writeBytes(fp, longbuffer, printer.CStrSize());
 
     PHYSFS_close(fp);
-
-
 }
 
 void Game::setState(const short unsigned int new_state) {

@@ -1,6 +1,8 @@
 #ifndef ENUMS_HPP
 #define ENUMS_HPP
 
+#define SAVE_FOLDER "saves"
+
 namespace DEFAULT {
 enum DEFAULTS {
     TILESIZE = 32,
