@@ -5,7 +5,9 @@
 #include <stdio.h>
 #include <string>
 #include <cstring>
+#include <cstring>
 #include <stdlib.h>
+#include <unordered_map>
 #include "physfs.h"
 #include "LodePNG.h"
 #include "unit.hpp"
