@@ -196,6 +196,7 @@ void Game::setState(Entity & setting_entity, short unsigned int new_state) {
                     range = all_units[current_unit_id].getRange();
                     costmap = mapp->makeMvtCostmap(unitmvttype);
 
+                    plot2Dvec(costmap);
                     movemapp = movemap(costmap, start, unit_move, "matrix");
                     plot2Dvec(movemapp);
                     mapp->setOverlay(MAP::OVERLAY::MOVE, movemapp);
@@ -342,8 +343,6 @@ void Game::loadMap(const std::string filename) {
 void Game::loadMap(const int in_map_index) {
     SDL_Log("Loading Map index: %d \n", in_map_index);
     loaded_tiles = baseTiles(chapTiles[in_map_index]());
-    SDL_Log("loadedtiles: %d", loaded_tiles[0].getid());
-    SDL_Log("loadedtiles: %s", loaded_tiles[0].getName().c_str());
     if (!mapp) {
         mapp = new Map(settings.tilesize[0], settings.tilesize[1]);
         mapp->setRenderer(renderer);

@@ -26,7 +26,9 @@ void Tile::makeMvtCostarray() {
     cost_array[UNIT::MVT::FLIERS] = cost_struct.fliers;
     cost_array[UNIT::MVT::ARMORS] = cost_struct.armors;
     cost_array[UNIT::MVT::PIRATES] = cost_struct.pirates;
-    cost_array[UNIT::MVT::BANDITS] = cost_struct.bandits;  
+    cost_array[UNIT::MVT::BANDITS] = cost_struct.bandits;
+    SDL_Log("Made cost array: %d %d ", UNIT::MVT::FOOT_SLOW, cost_array[UNIT::MVT::FOOT_SLOW]);
+    // printarr(cost_array, UNIT::MVT::END);
 }
 
 unsigned char * Tile::getCost() {
@@ -397,6 +399,7 @@ std::vector<Tile> baseTiles(const std::vector<short int> toload) {
                 break; 
             }
         }
+        SDL_Log("loaded tile: %s, %d", temp_tiles.back().getName().c_str(), temp_tiles.back().getid());
     }
     return(temp_tiles);
 }
