@@ -35,13 +35,13 @@ class Map {
         unsigned char danger_mode = 0;
 
         std::unordered_map<short int, SDL_Texture *> textures;
-        std::vector<short int> unique_textures;
         std::vector<SDL_Texture *> overlays{NULL, NULL, NULL};
         std::vector<SDL_Texture *> dangers{NULL, NULL};
 
         Entity_ptr_matrix entitymap;
 
         std::unordered_map<int, Tile> tiles;
+        std::vector<short int> tilesasset_ind;
 
     public:
         Map();

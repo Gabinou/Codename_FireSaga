@@ -56,16 +56,16 @@ std::vector<std::vector<short int>> Map::makeMvtCostmap(const unsigned char unit
     for (short int row = 0; row < tilemap.size(); row++) {
         for (short int col = 0; col < tilemap[row].size(); col++) {
             tile_ind = tilemap[row][col]/DEFAULT::TILE_DIVISOR;
-            // SDL_Log("tile_ind: %d", tile_ind);
             costmap[row][col] = tiles[tile_ind].getCost()[unitmovetype];
+            // SDL_Log("tile_ind: %d", tile_ind);
             // SDL_Log("Mvt_cost: %d", loaded_tiles[tile_ind].getCost()[unitmovetype]);
-        
         }
     }
     return(costmap);
 }
 
 void Map::loadTiles(std::vector<short int> to_load) {
+    tilesasset_ind = to_load;
     baseTiles(&tiles, to_load);
 }
 
@@ -99,12 +99,12 @@ void Map::setRenderer(SDL_Renderer * in_renderer){
 }
 
 void Map::loadTiletextures() {
-    short unsigned int tileindex;
+    short unsigned int tile_ind;
     std::string texturename;
-    for (short unsigned int i = 0; i < unique_textures.size(); i++) {
-        tileindex = (unique_textures[i]/DEFAULT::TILE_DIVISOR);
-        texturename = "..//assets//" + tiles[i].getName() + "_" + std::to_string(unique_textures[i]) + ".png";
-        textures[unique_textures[i]] = loadTexture(renderer, texturename.c_str());
+    for (short unsigned int i = 0; i < tilesasset_ind.size(); i++) {
+        tile_ind = (tilesasset_ind[i]/DEFAULT::TILE_DIVISOR);
+        texturename = "..//assets//" + tiles[tile_ind].getName() + "_" + std::to_string(tilesasset_ind[i]) + ".png";
+        textures[tilesasset_ind[i]] = loadTexture(renderer, texturename.c_str());
     }
 }
 
@@ -184,13 +184,11 @@ void Map::makeEntitymap(const short unsigned int row_size, const short unsigned 
 
 void Map::loadTilemap(const std::string filename) {
     tilemap = readcsv_vec<short int>(filename.c_str(), 1);
-    unique_textures = unique2D(tilemap);
     postTilemap();
 }
 
 void Map::loadTilemap(const short unsigned int in_map_index) {
     tilemap = chapTilemaps[in_map_index]();
-    unique_textures = chapTiles[in_map_index]();
     postTilemap();
 }
 

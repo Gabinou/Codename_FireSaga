@@ -152,7 +152,7 @@ void baseTiles(std::unordered_map<int, Tile> * in_tiles, const std::vector<short
     Tile_stats temp_stats;
     int index;
     for (short unsigned int i = 0; i < toload.size(); i++) {
-        index = toload[i]/10;
+        index = toload[i]/DEFAULT::TILE_DIVISOR;
         switch (index) {
             case TILE::PLAIN: {
                 temp_cost = {1, 1, 1, 1, 1, 1, 1, 1, 1};
@@ -396,7 +396,7 @@ void baseTiles(std::unordered_map<int, Tile> * in_tiles, const std::vector<short
                 break; 
             }
         }
-        // SDL_Log("loaded tile: %s, %d", temp_tiles.back().getName().c_str(), temp_tiles.back().getid());
+        SDL_Log("loaded tile: %s, %d", temp_tile.getName().c_str(), temp_tile.getid());
     }
 }
 
