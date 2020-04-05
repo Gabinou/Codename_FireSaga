@@ -157,9 +157,9 @@ class Unit {
         void writeXML(tinyxml2::XMLDocument * in_doc, tinyxml2::XMLElement * in_pUnit);
         void readXML(const char * filename);
         void readXML(tinyxml2::XMLElement * in_pUnit);
-
-
 };
+
+extern std::vector<short int> base_units;
 
 extern std::unordered_map<int, Unit> loaded_units;
 extern void baseUnits(std::unordered_map<int, Unit> * in_units);

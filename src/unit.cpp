@@ -954,6 +954,8 @@ void baseUnits(std::unordered_map<int, Unit> * in_units, std::vector<short int> 
         }
 }
 
+std::vector<short int> base_units = {UNIT::NAME::ERWIN, UNIT::NAME::KIARA};
+
 void baseUnits(std::unordered_map<int, Unit> * in_units) {
     printf("Making all base units \n");
     std::unordered_map<int, Unit> temp_units; 
