@@ -69,6 +69,7 @@ class Game {
         void loadUnitEntities(std::vector<short unsigned int> names, std::vector<std::string> asset_names, std::vector<std::vector<int>> positions_list);
         void loadUnits(unsigned char in_chap);
         void loadUnits(std::vector<short int> to_load);
+        void unloadUnits(std::vector<short int> to_unload);
         void loadMapEnemies();
         void loadCursor();
         template <typename T> void loadTiles(std::vector<T> in_tiles);

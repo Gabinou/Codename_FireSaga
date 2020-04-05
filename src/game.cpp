@@ -390,12 +390,16 @@ void Game::loadUnitEntities(std::vector<short unsigned int> unit_inds, std::vect
         manager.getEntities()[units[unit_inds[i]].getEntity()]->addGroup(manager.groupUnits);
     }
 }
-void loadUnits(unsigned char in_chap) {
-    units.insert(chapEnemyUnits[in_chap]);
+void Game::loadUnits(unsigned char in_chap) {
+    std::unordered_map<int, Unit> = temp;
+    temp = chapEnemyUnits[in_chap]();
+    // units.insert(chapEnemyUnits[in_chap]());
 }
 
-void loadUnits(std::vector<short int> toload) {
-    units.insert(baseUnits(toload));
+void Game::loadUnits(std::vector<short int> toload) {
+    std::unordered_map<int, Unit> = temp;
+    temp = chapEnemyUnits[in_chap]();
+    // units.insert(baseUnits(toload));
 }
 
 void Game::loadMapEnemies() {
