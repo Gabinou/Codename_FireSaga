@@ -184,7 +184,7 @@ void loadUtilities() {
     makeclassNames();
     makemvtTypes();
     makewpnNames();
-    makeEquippableCodes()
+    makeEquippableCodes();
 }
 
 std::vector<std::string> wpnTypes(short unsigned int in_typecode) {
@@ -881,7 +881,7 @@ std::vector<std::string> skillNames(unsigned long long int in_skillscode) {
 
 std::vector<short unsigned int> equippableCodes;
 void makeEquippableCodes() {
-    equippableCodes.push_back();
+    equippableCodes.push_back(0);
     equippableCodes.push_back(ITEM::TYPE::LANCE + ITEM::TYPE::SHIELD);
     equippableCodes.push_back(ITEM::TYPE::LANCE + ITEM::TYPE::SHIELD); //LORD_RIDER
     equippableCodes.push_back(ITEM::TYPE::SWORD + ITEM::TYPE::LANCE + ITEM::TYPE::SHIELD + ITEM::TYPE::OFFHAND); //DUKE
@@ -926,111 +926,111 @@ void makeEquippableCodes() {
     equippableCodes.push_back(ITEM::TYPE::LANCE + ITEM::TYPE::SHIELD); //TWINBORN
 }
 
-short unsigned int makeEquippable(unsigned char in_class_index) {
-    short unsigned int equippable;
-    switch(in_class_index) {
-        case UNIT::CLASS::MERCENARY:
-            equippableCodes.push_back(ITEM::TYPE::SHIELD + ITEM::TYPE::SWORD + ITEM::TYPE::OFFHAND;
-            break;
-        case UNIT::CLASS::LORD:
-            equippableCodes.push_back(ITEM::TYPE::LANCE + ITEM::TYPE::SHIELD;
-            break;
-        case UNIT::CLASS::DUELIST:
-            equippableCodes.push_back(ITEM::TYPE::LANCE + ITEM::TYPE::SHIELD;
-            break;
-        case UNIT::CLASS::THIEF:
-            equippableCodes.push_back(ITEM::TYPE::LANCE + ITEM::TYPE::SHIELD;
-            break;
-        case UNIT::CLASS::PEGASUS_KNIGHT:
-            equippableCodes.push_back(ITEM::TYPE::LANCE + ITEM::TYPE::SHIELD;
-            break;
-        case UNIT::CLASS::PIKEMAN:
-            equippableCodes.push_back(ITEM::TYPE::LANCE + ITEM::TYPE::SHIELD;
-            break;
-        case UNIT::CLASS::CAVALIER:
-            equippableCodes.push_back(ITEM::TYPE::LANCE + ITEM::TYPE::SHIELD;
-            break;
-        case UNIT::CLASS::KNIGHT:
-            equippableCodes.push_back(ITEM::TYPE::LANCE + ITEM::TYPE::SHIELD;
-            break;
-        case UNIT::CLASS::BANDIT:
-            equippableCodes.push_back(ITEM::TYPE::SHIELD + ITEM::TYPE::AXE;
-            break;
-        case UNIT::CLASS::CORSAIR:
-            equippableCodes.push_back(ITEM::TYPE::SHIELD + ITEM::TYPE::OFFHAND + ITEM::TYPE::AXE;
-            break;
-        case UNIT::CLASS::VIKING:
-            equippableCodes.push_back(ITEM::TYPE::SHIELD + ITEM::TYPE::OFFHAND + ITEM::TYPE::AXE;
-            break;
-        case UNIT::CLASS::PICKPOCKET:
-            equippableCodes.push_back(ITEM::TYPE::OFFHAND + ITEM::TYPE::SWORD;
-            break;
-        case UNIT::CLASS::FENCER:
-            equippableCodes.push_back(ITEM::TYPE::OFFHAND + ITEM::TYPE::SWORD;
-            break;
-        case UNIT::CLASS::MOUSQUETAIRE:
-            equippableCodes.push_back(ITEM::TYPE::SWORD + ITEM::TYPE::OFFHAND + ITEM::TYPE::BOW; 
-            break;
-        case UNIT::CLASS::ASSASSIN:
-            equippableCodes.push_back(ITEM::TYPE::SWORD + ITEM::TYPE::OFFHAND + ITEM::TYPE::BOW; 
-            break;
-        case UNIT::CLASS::MARKSMAN:
-            equippableCodes.push_back(ITEM::TYPE::SWORD + ITEM::TYPE::OFFHAND + ITEM::TYPE::BOW; 
-            break;
-        case UNIT::CLASS::ARCHER:
-            equippableCodes.push_back(ITEM::TYPE::BOW;
-            break;
-        case UNIT::CLASS::DUKE:
-            equippableCodes.push_back(ITEM::TYPE::SWORD + ITEM::TYPE::LANCE + ITEM::TYPE::SHIELD + ITEM::TYPE::OFFHAND;
-            break;
-        case UNIT::CLASS::PALADIN:
-            equippableCodes.push_back(ITEM::TYPE::SWORD + ITEM::TYPE::LANCE + ITEM::TYPE::SHIELD + ITEM::TYPE::OFFHAND;
-            break;
-        case UNIT::CLASS::GENERAL:
-            equippableCodes.push_back(ITEM::TYPE::SWORD + ITEM::TYPE::SHIELD + ITEM::TYPE::AXE + ITEM::TYPE::LANCE;
-            break;
-        case UNIT::CLASS::CLERIC:
-            equippableCodes.push_back(ITEM::TYPE::STAFF;
-            break;
-        case UNIT::CLASS::PRIEST:
-            equippableCodes.push_back(ITEM::TYPE::STAFF;
-            break;
-        case UNIT::CLASS::MAGE:
-            equippableCodes.push_back(ITEM::TYPE::ELEMENTAL + ITEM::TYPE::TRINKET;
-            break;
-        case UNIT::CLASS::HERO:
-            equippableCodes.push_back(ITEM::TYPE::AXE + ITEM::TYPE::SWORD + ITEM::TYPE::SHIELD + ITEM::TYPE::OFFHAND;
-            break;
-        case UNIT::CLASS::RAVAGER:
-            equippableCodes.push_back(ITEM::TYPE::AXE + ITEM::TYPE::SHIELD + ITEM::TYPE::OFFHAND + ITEM::TYPE::BOW;
-            break;
-        case UNIT::CLASS::BATTLEMAGE:
-            equippableCodes.push_back(ITEM::TYPE::ELEMENTAL + ITEM::TYPE::SHIELD + ITEM::TYPE::SWORD + ITEM::TYPE::TRINKET;
-            break;
-        case UNIT::CLASS::SAGE:
-            equippableCodes.push_back(ITEM::TYPE::ELEMENTAL + ITEM::TYPE::STAFF + ITEM::TYPE::TRINKET;
-            break;
-        case UNIT::CLASS::TROUBADOUR:
-            equippableCodes.push_back(ITEM::TYPE::ELEMENTAL + ITEM::TYPE::STAFF + ITEM::TYPE::TRINKET;
-            break;
-        case UNIT::CLASS::ORACLE:
-            equippableCodes.push_back(ITEM::TYPE::STAFF + ITEM::TYPE::ANGELIC + ITEM::TYPE::TRINKET;
-            break;
-        case UNIT::CLASS::BISHOP:
-            equippableCodes.push_back(ITEM::TYPE::STAFF + ITEM::TYPE::ANGELIC + ITEM::TYPE::TRINKET;
-            break;
-        case UNIT::CLASS::ANGEL:
-            equippableCodes.push_back(ITEM::TYPE::ANGELIC + ITEM::TYPE::SWORD + ITEM::TYPE::LANCE + ITEM::TYPE::SHIELD;
-            break;
-        case UNIT::CLASS::DEMON:
-            equippableCodes.push_back(ITEM::TYPE::DEMONIC + ITEM::TYPE::CLAW + ITEM::TYPE::AXE;
-            break;
-        case UNIT::CLASS::DEMONIC_INCARNATE:
-            equippableCodes.push_back(ITEM::TYPE::DEMONIC + ITEM::TYPE::TRINKET;
-            break;
-        case UNIT::CLASS::ANGELIC_INCARNATE:
-            equippableCodes.push_back(ITEM::TYPE::ANGELIC + ITEM::TYPE::TRINKET;
-            break;
-    }
-    return(equippable);
-}
+// short unsigned int makeEquippable(unsigned char in_class_index) {
+//     short unsigned int equippable;
+//     switch(in_class_index) {
+//         case UNIT::CLASS::MERCENARY:
+//             equippableCodes.push_back(ITEM::TYPE::SHIELD + ITEM::TYPE::SWORD + ITEM::TYPE::OFFHAND;
+//             break;
+//         case UNIT::CLASS::LORD:
+//             equippableCodes.push_back(ITEM::TYPE::LANCE + ITEM::TYPE::SHIELD;
+//             break;
+//         case UNIT::CLASS::DUELIST:
+//             equippableCodes.push_back(ITEM::TYPE::LANCE + ITEM::TYPE::SHIELD;
+//             break;
+//         case UNIT::CLASS::THIEF:
+//             equippableCodes.push_back(ITEM::TYPE::LANCE + ITEM::TYPE::SHIELD;
+//             break;
+//         case UNIT::CLASS::PEGASUS_KNIGHT:
+//             equippableCodes.push_back(ITEM::TYPE::LANCE + ITEM::TYPE::SHIELD;
+//             break;
+//         case UNIT::CLASS::PIKEMAN:
+//             equippableCodes.push_back(ITEM::TYPE::LANCE + ITEM::TYPE::SHIELD;
+//             break;
+//         case UNIT::CLASS::CAVALIER:
+//             equippableCodes.push_back(ITEM::TYPE::LANCE + ITEM::TYPE::SHIELD;
+//             break;
+//         case UNIT::CLASS::KNIGHT:
+//             equippableCodes.push_back(ITEM::TYPE::LANCE + ITEM::TYPE::SHIELD;
+//             break;
+//         case UNIT::CLASS::BANDIT:
+//             equippableCodes.push_back(ITEM::TYPE::SHIELD + ITEM::TYPE::AXE;
+//             break;
+//         case UNIT::CLASS::CORSAIR:
+//             equippableCodes.push_back(ITEM::TYPE::SHIELD + ITEM::TYPE::OFFHAND + ITEM::TYPE::AXE;
+//             break;
+//         case UNIT::CLASS::VIKING:
+//             equippableCodes.push_back(ITEM::TYPE::SHIELD + ITEM::TYPE::OFFHAND + ITEM::TYPE::AXE;
+//             break;
+//         case UNIT::CLASS::PICKPOCKET:
+//             equippableCodes.push_back(ITEM::TYPE::OFFHAND + ITEM::TYPE::SWORD;
+//             break;
+//         case UNIT::CLASS::FENCER:
+//             equippableCodes.push_back(ITEM::TYPE::OFFHAND + ITEM::TYPE::SWORD;
+//             break;
+//         case UNIT::CLASS::MOUSQUETAIRE:
+//             equippableCodes.push_back(ITEM::TYPE::SWORD + ITEM::TYPE::OFFHAND + ITEM::TYPE::BOW; 
+//             break;
+//         case UNIT::CLASS::ASSASSIN:
+//             equippableCodes.push_back(ITEM::TYPE::SWORD + ITEM::TYPE::OFFHAND + ITEM::TYPE::BOW; 
+//             break;
+//         case UNIT::CLASS::MARKSMAN:
+//             equippableCodes.push_back(ITEM::TYPE::SWORD + ITEM::TYPE::OFFHAND + ITEM::TYPE::BOW; 
+//             break;
+//         case UNIT::CLASS::ARCHER:
+//             equippableCodes.push_back(ITEM::TYPE::BOW;
+//             break;
+//         case UNIT::CLASS::DUKE:
+//             equippableCodes.push_back(ITEM::TYPE::SWORD + ITEM::TYPE::LANCE + ITEM::TYPE::SHIELD + ITEM::TYPE::OFFHAND;
+//             break;
+//         case UNIT::CLASS::PALADIN:
+//             equippableCodes.push_back(ITEM::TYPE::SWORD + ITEM::TYPE::LANCE + ITEM::TYPE::SHIELD + ITEM::TYPE::OFFHAND;
+//             break;
+//         case UNIT::CLASS::GENERAL:
+//             equippableCodes.push_back(ITEM::TYPE::SWORD + ITEM::TYPE::SHIELD + ITEM::TYPE::AXE + ITEM::TYPE::LANCE;
+//             break;
+//         case UNIT::CLASS::CLERIC:
+//             equippableCodes.push_back(ITEM::TYPE::STAFF;
+//             break;
+//         case UNIT::CLASS::PRIEST:
+//             equippableCodes.push_back(ITEM::TYPE::STAFF;
+//             break;
+//         case UNIT::CLASS::MAGE:
+//             equippableCodes.push_back(ITEM::TYPE::ELEMENTAL + ITEM::TYPE::TRINKET;
+//             break;
+//         case UNIT::CLASS::HERO:
+//             equippableCodes.push_back(ITEM::TYPE::AXE + ITEM::TYPE::SWORD + ITEM::TYPE::SHIELD + ITEM::TYPE::OFFHAND;
+//             break;
+//         case UNIT::CLASS::RAVAGER:
+//             equippableCodes.push_back(ITEM::TYPE::AXE + ITEM::TYPE::SHIELD + ITEM::TYPE::OFFHAND + ITEM::TYPE::BOW;
+//             break;
+//         case UNIT::CLASS::BATTLEMAGE:
+//             equippableCodes.push_back(ITEM::TYPE::ELEMENTAL + ITEM::TYPE::SHIELD + ITEM::TYPE::SWORD + ITEM::TYPE::TRINKET;
+//             break;
+//         case UNIT::CLASS::SAGE:
+//             equippableCodes.push_back(ITEM::TYPE::ELEMENTAL + ITEM::TYPE::STAFF + ITEM::TYPE::TRINKET;
+//             break;
+//         case UNIT::CLASS::TROUBADOUR:
+//             equippableCodes.push_back(ITEM::TYPE::ELEMENTAL + ITEM::TYPE::STAFF + ITEM::TYPE::TRINKET;
+//             break;
+//         case UNIT::CLASS::ORACLE:
+//             equippableCodes.push_back(ITEM::TYPE::STAFF + ITEM::TYPE::ANGELIC + ITEM::TYPE::TRINKET;
+//             break;
+//         case UNIT::CLASS::BISHOP:
+//             equippableCodes.push_back(ITEM::TYPE::STAFF + ITEM::TYPE::ANGELIC + ITEM::TYPE::TRINKET;
+//             break;
+//         case UNIT::CLASS::ANGEL:
+//             equippableCodes.push_back(ITEM::TYPE::ANGELIC + ITEM::TYPE::SWORD + ITEM::TYPE::LANCE + ITEM::TYPE::SHIELD;
+//             break;
+//         case UNIT::CLASS::DEMON:
+//             equippableCodes.push_back(ITEM::TYPE::DEMONIC + ITEM::TYPE::CLAW + ITEM::TYPE::AXE;
+//             break;
+//         case UNIT::CLASS::DEMONIC_INCARNATE:
+//             equippableCodes.push_back(ITEM::TYPE::DEMONIC + ITEM::TYPE::TRINKET;
+//             break;
+//         case UNIT::CLASS::ANGELIC_INCARNATE:
+//             equippableCodes.push_back(ITEM::TYPE::ANGELIC + ITEM::TYPE::TRINKET;
+//             break;
+//     }
+//     return(equippable);
+// }

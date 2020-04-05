@@ -17,7 +17,8 @@ Unit::Unit(const unsigned short int in_id, const unsigned char in_class_index, c
     mvt_type = mvtTypes[class_index];
     class_name = classNames[class_index];
     skill_names = skillNames(skills);
-    equippable = makeEquippable(class_index);
+    // equippable = makeEquippable(class_index);
+    equippable = equippableCodes[class_index];
     sex = in_sex;
     sex_name = sexNames[sex];
 }
