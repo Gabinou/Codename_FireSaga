@@ -16,7 +16,6 @@ template <typename T> int sgn(T val) {
 extern int geometricslide(int distance, float geo_factor = 2);
 extern int pingpong(int current, int upper, int lower = 0);
 
-extern short unsigned int makeEquippable(unsigned char in_class_index);
 extern std::vector<std::string> skillNames(unsigned long long int in_skillscode);
 extern std::vector<std::string> wpnEffects(long unsigned int in_effect);
 extern std::vector<std::string> unitTypes(unsigned short int in_typecode);
@@ -36,7 +35,6 @@ extern std::vector<unsigned char> mvtTypes;
 extern void makemvtTypes();
 extern std::vector<short unsigned int> equippableCodes;
 extern void makeEquippableCodes();
-
 
 extern void loadUtilities();
 
