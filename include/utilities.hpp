@@ -39,8 +39,8 @@ extern void loadUtilities();
 
 extern void printarr(int arr[], int size);
 extern void printvec(std::vector<int> vec);
-extern int * cuniques(int arr[], int size);
-extern int * cwhere(int tofind, int arr[], int size);
+// extern int * cuniques(int arr[], int size);
+// extern int * cwhere(int tofind, int arr[], int size);
 extern std::vector<int> cpprange(int ind1, int ind2);
 extern std::vector<int> cppwhere(int tofind, std::vector<int> vec);
 extern std::vector<int> cppuniques(std::vector<int> vec);
