@@ -51,7 +51,8 @@ class Game {
         std::stack<int> unit_entities;
         bool isRunning;
         SDL_Event event;
-        std::unordered_map<int, Unit> party;
+
+        std::unordered_map<int, Unit> units;
 
     public:
         static SDL_Renderer * renderer;
@@ -65,7 +66,9 @@ class Game {
         void loadMap(const std::string filename);
         void loadMap(const int in_map_index);
         void unloadMap();
-        void loadUnits(std::vector<short unsigned int> names, std::vector<std::string> asset_names, std::vector<std::vector<int>> positions_list);
+        void loadUnitEntities(std::vector<short unsigned int> names, std::vector<std::string> asset_names, std::vector<std::vector<int>> positions_list);
+        void loadUnits(unsigned char in_chap);
+        void loadUnits(std::vector<short int> to_load);
         void loadMapEnemies();
         void loadCursor();
         template <typename T> void loadTiles(std::vector<T> in_tiles);

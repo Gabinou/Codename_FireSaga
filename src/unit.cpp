@@ -830,13 +830,13 @@ void testXMLUnits() {
     temp_unit.writeXML("unit_rewrite.binou");
 }
 
-std::vector<Unit> baseUnits(std::vector<short int> toload) {
+std::unordered_map<int, Unit> baseUnits(std::vector<short int> toload) {
     printf("Making base units \n");
     Unit temp_unit;
     Unit_stats temp;
     Inventory_item temp_wpn;
     short int temp_supports;
-    std::vector<Unit> temp_units; 
+    std::unordered_map<int, Unit> temp_units; 
     int index;
     
     for (short unsigned int i = 0; i < toload.size(); i++) {
@@ -859,7 +859,7 @@ std::vector<Unit> baseUnits(std::vector<short int> toload) {
                 temp_unit.addEquipment(temp_wpn);
                 // temp_supports = {UNIT::NAME::KIARA}; 
                 // temp_unit.setSupports(temp_supports);
-                temp_units.push_back(temp_unit);
+                temp_units[index] = temp_unit;
                 break;
             case UNIT::NAME::RELIABLE:
                 temp = {18,  6,  2,  7,  7,   7,  4,  5,  6, 7};
@@ -869,7 +869,7 @@ std::vector<Unit> baseUnits(std::vector<short int> toload) {
                 temp = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
                 temp_unit.setGrowths(temp);
                 temp_unit.setBaseExp(100);
-                temp_units.push_back(temp_unit);
+                temp_units[index] = temp_unit;
                 break;
             case UNIT::NAME::COWARD:
                 temp = {19,  6,  2,  7,  7,   7,  4,  5,  6,  7};
@@ -879,7 +879,7 @@ std::vector<Unit> baseUnits(std::vector<short int> toload) {
                 temp = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
                 temp_unit.setGrowths(temp);
                 temp_unit.setBaseExp(200);
-                temp_units.push_back(temp_unit);
+                temp_units[index] = temp_unit;
                 break;
             case UNIT::NAME::JAIGEN1H:
                 temp = {20,  6,  2,  7,  7,   7,  4,  5,  6,  6};
@@ -889,7 +889,7 @@ std::vector<Unit> baseUnits(std::vector<short int> toload) {
                 temp = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
                 temp_unit.setGrowths(temp);
                 temp_unit.setBaseExp(2200);
-                temp_units.push_back(temp_unit);
+                temp_units[index] = temp_unit;
                 break;
             case UNIT::NAME::KIARA:
                 temp = {14,  6,  2,  7,  7,   7,  4,  5,  6,  5};
@@ -899,7 +899,7 @@ std::vector<Unit> baseUnits(std::vector<short int> toload) {
                 temp = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
                 temp_unit.setGrowths(temp);
                 temp_unit.setBaseExp(100);
-                temp_units.push_back(temp_unit);
+                temp_units[index] = temp_unit;
                 break;
             case UNIT::NAME::HOTTIE:
                 temp = {16,  6,  2,  7,  7,   7,  4,  5,  6,  6};
@@ -909,7 +909,7 @@ std::vector<Unit> baseUnits(std::vector<short int> toload) {
                 temp = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
                 temp_unit.setGrowths(temp);
                 temp_unit.setBaseExp(2200);
-                temp_units.push_back(temp_unit);
+                temp_units[index] = temp_unit;
                 break;
             case UNIT::NAME::SERVIL:
                 temp = {22,  4,  5,  7,  6,   8,  4,  6,  5, 5}; // 4 or 5?
@@ -919,7 +919,7 @@ std::vector<Unit> baseUnits(std::vector<short int> toload) {
                 temp = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
                 temp_unit.setGrowths(temp);
                 temp_unit.setBaseExp(500);
-                temp_units.push_back(temp_unit);
+                temp_units[index] = temp_unit;
                 break;
             case UNIT::NAME::PERIGNON:
                 temp = {34,  4,  5,  7,  6,   8,  4,  6,  5, 5};
@@ -929,7 +929,7 @@ std::vector<Unit> baseUnits(std::vector<short int> toload) {
                 temp = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
                 temp_unit.setGrowths(temp);
                 temp_unit.setBaseExp(1200);
-                temp_units.push_back(temp_unit);
+                temp_units[index] = temp_unit;
                 break;
             case UNIT::NAME::POET:
                 temp = {15,  4,  5,  7,  6,   8,  4,  6,  5, 5};
@@ -939,7 +939,7 @@ std::vector<Unit> baseUnits(std::vector<short int> toload) {
                 temp = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
                 temp_unit.setGrowths(temp);
                 temp_unit.setBaseExp(400);
-                temp_units.push_back(temp_unit);
+                temp_units[index] = temp_unit;
                 break;
             case UNIT::NAME::SILOU:
                       //hp,str,mag,agi,dex,luck,def,res,con,move,prof
@@ -952,33 +952,32 @@ std::vector<Unit> baseUnits(std::vector<short int> toload) {
                 temp_unit.setBaseExp(400);
                 temp_wpn.id = ITEM::NAME::BALL_LIGHTNING;
                 temp_unit.addEquipment(temp_wpn);
-                temp_units.push_back(temp_unit);
+                temp_units[index] = temp_unit;
                 break;
             }
         }
     return(temp_units);
 }
 
-
-std::vector<Unit> baseUnits() {
+std::unordered_map<int, Unit> baseUnits() {
     printf("Making all base units \n");
-    std::vector<Unit> temp_units; 
+    std::unordered_map<int, Unit> temp_units; 
     std::vector<short int> toload = cpprange((short int)UNIT::NAME::ERWIN, (short int)(UNIT::NAME::PC_END - 1));
     temp_units = baseUnits(toload);
     return(temp_units);
 }
 
-void writeAllplayables() {
-    all_units[UNIT::NAME::ERWIN].writeXML("playables.xml", true); 
-    all_units[UNIT::NAME::KIARA].writeXML("playables.xml", true); 
-    all_units[UNIT::NAME::RELIABLE].writeXML("playables.xml", true); 
-    all_units[UNIT::NAME::COWARD].writeXML("playables.xml", true); 
-    all_units[UNIT::NAME::HOTTIE].writeXML("playables.xml", true); 
-    all_units[UNIT::NAME::POET].writeXML("playables.xml", true); 
-    all_units[UNIT::NAME::PERIGNON].writeXML("playables.xml", true); 
-    all_units[UNIT::NAME::SILOU].writeXML("playables.xml", true); 
-    all_units[UNIT::NAME::JAIGEN1H].writeXML("playables.xml", true); 
-}
+// void writeAllplayables() {
+//     all_units[UNIT::NAME::ERWIN].writeXML("playables.xml", true); 
+//     all_units[UNIT::NAME::KIARA].writeXML("playables.xml", true); 
+//     all_units[UNIT::NAME::RELIABLE].writeXML("playables.xml", true); 
+//     all_units[UNIT::NAME::COWARD].writeXML("playables.xml", true); 
+//     all_units[UNIT::NAME::HOTTIE].writeXML("playables.xml", true); 
+//     all_units[UNIT::NAME::POET].writeXML("playables.xml", true); 
+//     all_units[UNIT::NAME::PERIGNON].writeXML("playables.xml", true); 
+//     all_units[UNIT::NAME::SILOU].writeXML("playables.xml", true); 
+//     all_units[UNIT::NAME::JAIGEN1H].writeXML("playables.xml", true); 
+// }
 
 void genericEnemyUnits() {
     printf("Making generic enemies\n");
@@ -1151,7 +1150,7 @@ std::vector<Unit> chaptestEnemyUnits() {
     temp_unit.setEquipped(temp_equipped);
     temp_position = {4, 5};
     temp_unit.setPos(temp_position);
-    made_units.push_back(temp_unit);
+    made_units[UNIT::NAME::BANDIT] = temp_unit;
     return(made_units);
 } 
 
@@ -1176,7 +1175,7 @@ std::vector<Unit> chap1EnemyUnits() {
     temp_unit.setEquipped(temp_equipped);
     temp_position = {4, 5};
     temp_unit.setPos(temp_position);
-    made_units.push_back(temp_unit);
+    made_units[UNIT::NAME::BANDIT] = temp_unit;
     return(made_units);
 } 
 
@@ -1201,7 +1200,7 @@ std::vector<Unit> chap2EnemyUnits() {
     temp_unit.setEquipped(temp_equipped);
     temp_position = {4, 5};
     temp_unit.setPos(temp_position);
-    made_units.push_back(temp_unit);
+    made_units[UNIT::NAME::BANDIT] = temp_unit;
     return(made_units);
 }
 
@@ -1226,7 +1225,7 @@ std::vector<Unit> chap3EnemyUnits() {
     temp_unit.setEquipped(temp_equipped);
     temp_position = {4, 5};
     temp_unit.setPos(temp_position);
-    made_units.push_back(temp_unit);
+    made_units[UNIT::NAME::BANDIT] = temp_unit;
     return(made_units);
 } 
 
@@ -1251,7 +1250,7 @@ std::vector<Unit> chap4EnemyUnits() {
     temp_unit.setEquipped(temp_equipped);
     temp_position = {4, 5};
     temp_unit.setPos(temp_position);
-    made_units.push_back(temp_unit);
+    made_units[UNIT::NAME::BANDIT] = temp_unit;
     return(made_units);
 }
 
@@ -1276,7 +1275,7 @@ std::vector<Unit> chap5EnemyUnits() {
     temp_unit.setEquipped(temp_equipped);
     temp_position = {4, 5};
     temp_unit.setPos(temp_position);
-    made_units.push_back(temp_unit);
+    made_units[UNIT::NAME::BANDIT] = temp_unit;
     return(made_units);
 }
 
@@ -1301,7 +1300,7 @@ std::vector<Unit> chap6EnemyUnits() {
     temp_unit.setEquipped(temp_equipped);
     temp_position = {4, 5};
     temp_unit.setPos(temp_position);
-    made_units.push_back(temp_unit);
+    made_units[UNIT::NAME::BANDIT] = temp_unit;
     return(made_units);
 } 
 
@@ -1326,7 +1325,7 @@ std::vector<Unit> chap7EnemyUnits() {
     temp_unit.setEquipped(temp_equipped);
     temp_position = {4, 5};
     temp_unit.setPos(temp_position);
-    made_units.push_back(temp_unit);
+    made_units[UNIT::NAME::BANDIT] = temp_unit;
     return(made_units);
 }
 
@@ -1351,7 +1350,7 @@ std::vector<Unit> chap8EnemyUnits() {
     temp_unit.setEquipped(temp_equipped);
     temp_position = {4, 5};
     temp_unit.setPos(temp_position);
-    made_units.push_back(temp_unit);
+    made_units[UNIT::NAME::BANDIT] = temp_unit;
     return(made_units);
 }
 
@@ -1376,7 +1375,7 @@ std::vector<Unit> chap9EnemyUnits() {
     temp_unit.setEquipped(temp_equipped);
     temp_position = {4, 5};
     temp_unit.setPos(temp_position);
-    made_units.push_back(temp_unit);
+    made_units[UNIT::NAME::BANDIT] = temp_unit;
     return(made_units);
 }
 
@@ -1401,7 +1400,7 @@ std::vector<Unit> chap10EnemyUnits() {
     temp_unit.setEquipped(temp_equipped);
     temp_position = {4, 5};
     temp_unit.setPos(temp_position);
-    made_units.push_back(temp_unit);
+    made_units[UNIT::NAME::BANDIT] = temp_unit;
     return(made_units);
 }
 
@@ -1426,7 +1425,7 @@ std::vector<Unit> chap11EnemyUnits() {
     temp_unit.setEquipped(temp_equipped);
     temp_position = {4, 5};
     temp_unit.setPos(temp_position);
-    made_units.push_back(temp_unit);
+    made_units[UNIT::NAME::BANDIT] = temp_unit;
     return(made_units);
 }
 
@@ -1451,7 +1450,7 @@ std::vector<Unit> chap12EnemyUnits() {
     temp_unit.setEquipped(temp_equipped);
     temp_position = {4, 5};
     temp_unit.setPos(temp_position);
-    made_units.push_back(temp_unit);
+    made_units[UNIT::NAME::BANDIT] = temp_unit;
     return(made_units);
 }
 
@@ -1476,7 +1475,7 @@ std::vector<Unit> chap13EnemyUnits() {
     temp_unit.setEquipped(temp_equipped);
     temp_position = {4, 5};
     temp_unit.setPos(temp_position);
-    made_units.push_back(temp_unit);
+    made_units[UNIT::NAME::BANDIT] = temp_unit;
     return(made_units);
 }
 
@@ -1501,7 +1500,7 @@ std::vector<Unit> chap14EnemyUnits() {
     temp_unit.setEquipped(temp_equipped);
     temp_position = {4, 5};
     temp_unit.setPos(temp_position);
-    made_units.push_back(temp_unit);
+    made_units[UNIT::NAME::BANDIT] = temp_unit;
     return(made_units);
 }
 
@@ -1526,7 +1525,7 @@ std::vector<Unit> chap15EnemyUnits() {
     temp_unit.setEquipped(temp_equipped);
     temp_position = {4, 5};
     temp_unit.setPos(temp_position);
-    made_units.push_back(temp_unit);
+    made_units[UNIT::NAME::BANDIT] = temp_unit;
     return(made_units);
 }
 
@@ -1551,7 +1550,7 @@ std::vector<Unit> chap16EnemyUnits() {
     temp_unit.setEquipped(temp_equipped);
     temp_position = {4, 5};
     temp_unit.setPos(temp_position);
-    made_units.push_back(temp_unit);
+    made_units[UNIT::NAME::BANDIT] = temp_unit;
     return(made_units);
 }
 
@@ -1576,7 +1575,7 @@ std::vector<Unit> chap17EnemyUnits() {
     temp_unit.setEquipped(temp_equipped);
     temp_position = {4, 5};
     temp_unit.setPos(temp_position);
-    made_units.push_back(temp_unit);
+    made_units[UNIT::NAME::BANDIT] = temp_unit;
     return(made_units);
 }
 
@@ -1601,7 +1600,7 @@ std::vector<Unit> chap18EnemyUnits() {
     temp_unit.setEquipped(temp_equipped);
     temp_position = {4, 5};
     temp_unit.setPos(temp_position);
-    made_units.push_back(temp_unit);
+    made_units[UNIT::NAME::BANDIT] = temp_unit;
     return(made_units);
 }
 
@@ -1626,7 +1625,7 @@ std::vector<Unit> chap19EnemyUnits() {
     temp_unit.setEquipped(temp_equipped);
     temp_position = {4, 5};
     temp_unit.setPos(temp_position);
-    made_units.push_back(temp_unit);
+    made_units[UNIT::NAME::BANDIT] = temp_unit;
     return(made_units);
 }
 
@@ -1651,7 +1650,7 @@ std::vector<Unit> chap20EnemyUnits() {
     temp_unit.setEquipped(temp_equipped);
     temp_position = {4, 5};
     temp_unit.setPos(temp_position);
-    made_units.push_back(temp_unit);
+    made_units[UNIT::NAME::BANDIT] = temp_unit;
     return(made_units);
 }
 
@@ -1676,7 +1675,7 @@ std::vector<Unit> chap21EnemyUnits() {
     temp_unit.setEquipped(temp_equipped);
     temp_position = {4, 5};
     temp_unit.setPos(temp_position);
-    made_units.push_back(temp_unit);
+    made_units[UNIT::NAME::BANDIT] = temp_unit;
     return(made_units);
 }
 
@@ -1701,7 +1700,7 @@ std::vector<Unit> chap22EnemyUnits() {
     temp_unit.setEquipped(temp_equipped);
     temp_position = {4, 5};
     temp_unit.setPos(temp_position);
-    made_units.push_back(temp_unit);
+    made_units[UNIT::NAME::BANDIT] = temp_unit;
     return(made_units);
 }
 
@@ -1726,7 +1725,7 @@ std::vector<Unit> chap23EnemyUnits() {
     temp_unit.setEquipped(temp_equipped);
     temp_position = {4, 5};
     temp_unit.setPos(temp_position);
-    made_units.push_back(temp_unit);
+    made_units[UNIT::NAME::BANDIT] = temp_unit;
     return(made_units);
 }
 
@@ -1751,7 +1750,7 @@ std::vector<Unit> chap24EnemyUnits() {
     temp_unit.setEquipped(temp_equipped);
     temp_position = {4, 5};
     temp_unit.setPos(temp_position);
-    made_units.push_back(temp_unit);
+    made_units[UNIT::NAME::BANDIT] = temp_unit;
     return(made_units);
 }
 
@@ -1776,8 +1775,8 @@ std::vector<Unit> chap25EnemyUnits() {
     temp_unit.setEquipped(temp_equipped);
     temp_position = {4, 5};
     temp_unit.setPos(temp_position);
-    made_units.push_back(temp_unit);
+    made_units[UNIT::NAME::BANDIT] = temp_unit;
     return(made_units);
 }
 
-std::vector<Unit> (*chapEnemyUnits[40])() = {chaptestEnemyUnits, chap1EnemyUnits, chap2EnemyUnits, chap3EnemyUnits, chap4EnemyUnits, chap5EnemyUnits, chap6EnemyUnits, chap7EnemyUnits, chap8EnemyUnits, chap9EnemyUnits, chap10EnemyUnits, chap11EnemyUnits, chap12EnemyUnits, chap13EnemyUnits, chap14EnemyUnits, chap15EnemyUnits, chap16EnemyUnits, chap17EnemyUnits, chap18EnemyUnits, chap19EnemyUnits, chap20EnemyUnits, chap21EnemyUnits, chap22EnemyUnits, chap23EnemyUnits, chap24EnemyUnits, chap25EnemyUnits};
+std::unordered_map<int, Unit> (*chapEnemyUnits[40])() = {chaptestEnemyUnits, chap1EnemyUnits, chap2EnemyUnits, chap3EnemyUnits, chap4EnemyUnits, chap5EnemyUnits, chap6EnemyUnits, chap7EnemyUnits, chap8EnemyUnits, chap9EnemyUnits, chap10EnemyUnits, chap11EnemyUnits, chap12EnemyUnits, chap13EnemyUnits, chap14EnemyUnits, chap15EnemyUnits, chap16EnemyUnits, chap17EnemyUnits, chap18EnemyUnits, chap19EnemyUnits, chap20EnemyUnits, chap21EnemyUnits, chap22EnemyUnits, chap23EnemyUnits, chap24EnemyUnits, chap25EnemyUnits};

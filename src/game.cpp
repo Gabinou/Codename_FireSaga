@@ -145,7 +145,6 @@ void Game::moveUnit(Entity & cursor) {
     manager.getEntities()[unit_entities.top()]->getComponent<PositionComponent>();
 }
 
-
 // I think this function is too big. Find a way to reduce it...
 void Game::setState(Entity & setting_entity, short unsigned int new_state) {
     SDL_Log("Game state changes from %d to %d\n", this->state, new_state); 
@@ -184,7 +183,7 @@ void Game::setState(Entity & setting_entity, short unsigned int new_state) {
                     }
 
                     short unsigned int current_unit_id = manager.getEntities()[unit_entities.top()]->getComponent<UnitContainer>().getID();
-                    unit_move = all_units[current_unit_id].getStats().move;
+                    unit_move = units[current_unit_id].getStats().move;
                     SDL_Log("move: %d", unit_move);
 
                     start[0] = manager.getEntities()[unit_entities.top()]->getComponent<PositionComponent>().getPos()[0]; // Start is (+1,+1)?
@@ -192,8 +191,8 @@ void Game::setState(Entity & setting_entity, short unsigned int new_state) {
                     start[0] = start[0] - 1;
                     start[1] = start[1] - 1;
 
-                    unitmvttype = all_units[current_unit_id].getMvttype();
-                    range = all_units[current_unit_id].getRange();
+                    unitmvttype = units[current_unit_id].getMvttype();
+                    range = units[current_unit_id].getRange();
                     costmap = mapp->makeMvtCostmap(unitmvttype);
 
                     plot2Dvec(costmap);
@@ -378,18 +377,25 @@ void Game::loadCursor() {
     }
 }
 
-void Game::loadUnits(std::vector<short unsigned int> unit_inds, std::vector<std::string> asset_names, std::vector<std::vector<int>> positions_list) {
+void Game::loadUnitEntities(std::vector<short unsigned int> unit_inds, std::vector<std::string> asset_names, std::vector<std::vector<int>> positions_list) {
     SDL_Log("Loading Units\n");
     for (int i = 0; i < unit_inds.size(); i++) { 
-        all_units[unit_inds[i]].setEntity(manager.getEntities().size());
+        units[unit_inds[i]].setEntity(manager.getEntities().size());
         manager.addEntity();
-        manager.getEntities()[all_units[unit_inds[i]].getEntity()]->addComponent<PositionComponent>(positions_list[i][0], positions_list[i][1]);
-        manager.getEntities()[all_units[unit_inds[i]].getEntity()]->addComponent<UnitContainer>(unit_inds[i]);
-        manager.getEntities()[all_units[unit_inds[i]].getEntity()]->getComponent<PositionComponent>().setMap(mapp); //Should mapp be an input? No mapp is always same ?
-        manager.getEntities()[all_units[unit_inds[i]].getEntity()]->addComponent<SpriteComponent>(mapp, asset_names[i].c_str());
-        manager.getEntities()[all_units[unit_inds[i]].getEntity()]->addGroup(manager.groupUnits);
-        manager.getEntities()[all_units[unit_inds[i]].getEntity()]->addGroup(manager.groupUnits);
+        manager.getEntities()[units[unit_inds[i]].getEntity()]->addComponent<PositionComponent>(positions_list[i][0], positions_list[i][1]);
+        manager.getEntities()[units[unit_inds[i]].getEntity()]->addComponent<UnitContainer>(unit_inds[i]);
+        manager.getEntities()[units[unit_inds[i]].getEntity()]->getComponent<PositionComponent>().setMap(mapp); //Should mapp be an input? No mapp is always same ?
+        manager.getEntities()[units[unit_inds[i]].getEntity()]->addComponent<SpriteComponent>(mapp, asset_names[i].c_str());
+        manager.getEntities()[units[unit_inds[i]].getEntity()]->addGroup(manager.groupUnits);
+        manager.getEntities()[units[unit_inds[i]].getEntity()]->addGroup(manager.groupUnits);
     }
+}
+void loadUnits(unsigned char in_chap) {
+    units.insert(chapEnemyUnits[in_chap]);
+}
+
+void loadUnits(std::vector<short int> toload) {
+    units.insert(baseUnits(toload));
 }
 
 void Game::loadMapEnemies() {
@@ -397,7 +403,7 @@ void Game::loadMapEnemies() {
     if (mapp) {
         std::vector<short unsigned int> map_enemies = mapp->getEnemies(); 
         for (int i = 0; i < map_enemies.size(); i++) {
-            all_units[map_enemies[i]].setEntity(manager.getEntities().size());
+            units[map_enemies[i]].setEntity(manager.getEntities().size());
             manager.addEntity();
         }
     } else {
@@ -453,7 +459,7 @@ void Game::init(const char * title, int xpos, int ypos, int width, int height, b
     std::vector<short int> basepartyinds = {UNIT::NAME::ERWIN, UNIT::NAME::KIARA};
     std::vector<Unit> baseparty = baseUnits(basepartyinds);
     for (int i = 0; i < baseparty.size(); i++) {
-        party[baseparty[i].getid()] = baseparty[i];
+        units[baseparty[i].getid()] = baseparty[i];
     }
     
 };
@@ -479,8 +485,8 @@ void Game::loadXML(const short int save_ind) {
     unsigned short int id;
     while(ptemp) {
         id = (unsigned short int)ptemp->IntAttribute("id");
-        party[id] = Unit();
-        party[id].readXML(ptemp);
+        units[id] = Unit();
+        units[id].readXML(ptemp);
         ptemp = xmlDoc.NextSiblingElement("Unit");
     }
     ptemp = xmlDoc.FirstChildElement("Narrative");
@@ -534,7 +540,7 @@ void Game::saveXML(const short int save_ind) {
     writeXML_narrative(&xmlDoc, pNarrative, &narrative);
 
     tinyxml2::XMLElement * ptemp;
-    for (auto it = party.begin(); it != party.end(); it++) {
+    for (auto it = units.begin(); it != units.end(); it++) {
         ptemp = xmlDoc.NewElement("Unit");
         it->second.writeXML(&xmlDoc, ptemp);
         xmlDoc.InsertEndChild(ptemp);

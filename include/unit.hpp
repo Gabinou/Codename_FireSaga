@@ -161,14 +161,12 @@ class Unit {
 
 };
 
-extern std::vector<Unit> all_units;
-extern std::vector<Unit> loaded_units;
-extern std::vector<Unit> (*chapEnemyUnits[40])();
-
-extern std::vector<Unit> baseUnits();
-extern std::vector<Unit> baseUnits(std::vector<short int> toload);
+extern std::unordered_map<int, Unit> loaded_units;
+extern std::unordered_map<int, Unit> baseUnits();
+extern std::unordered_map<int, Unit> baseUnits(std::vector<short int> toload);
+extern std::unordered_map<int, Unit> chap1EnemyUnits();
+extern std::unordered_map<int, Unit> (*chapEnemyUnits[40])();
 void testXMLUnits();
 void baseEnemyUnits();
-extern std::vector<Unit> chap1EnemyUnits();
 
 #endif /* UNIT_HPP */
