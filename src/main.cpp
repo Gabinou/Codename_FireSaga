@@ -44,7 +44,6 @@ int main(int argc, char * argv[]) {
     // testXMLUnits();
     // testXMLTiles();
 
-
     firesaga = new Game();
     firesaga->loadUnits(0);
     // SDL_Log("Testing game load->save XML");
