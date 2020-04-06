@@ -60,7 +60,6 @@ class XML_IO {
         void readXML(const char * filename);
         virtual void readXML(tinyxml2::XMLElement * in_pEle);
         virtual void writeXML(tinyxml2::XMLDocument * in_doc, tinyxml2::XMLElement * in_pEle);
-
         void setXMLElement(std::string in_xmlElement);
         std::string getXMLElement();
 };
