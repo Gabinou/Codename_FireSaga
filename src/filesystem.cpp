@@ -687,6 +687,14 @@ void XML_IO::readXML(const char * filename) {
     }
 } 
 
+void XML_IO::readXML(tinyxml2::XMLElement * in_pEle) {
+
+}
+
+void XML_IO::writeXML(tinyxml2::XMLDocument * in_doc, tinyxml2::XMLElement * in_pEle) {
+
+}
+
 void XML_IO::writeXML(const char * filename, const bool append) {
     SDL_Log("writeXML %s to: %s\n", xmlElement.c_str(), filename);
     // How to write files so that it is modifiable by randos?

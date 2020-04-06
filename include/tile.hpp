@@ -7,7 +7,7 @@
 #include "tinyxml2.h"
 #include "filesystem.hpp"
 
-class Tile {
+class Tile : public XML_IO {
     private:
         Movement_cost cost_struct;
         unsigned char cost_array[UNIT::MVT::END];
@@ -34,9 +34,9 @@ class Tile {
         void makeMvtCostarray();
 
         void write(const char * filename, const char * mode = "a");
-        void writeXML(const char * filename, const bool append = false);
+        using XML_IO::writeXML;
+        using XML_IO::readXML;
         void writeXML(tinyxml2::XMLDocument * in_doc, tinyxml2::XMLElement * in_pTile);
-        void readXML(const char * filename);
         void readXML(tinyxml2::XMLElement * in_pTile);
 };
 

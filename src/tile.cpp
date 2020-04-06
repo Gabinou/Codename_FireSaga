@@ -3,12 +3,13 @@
 
 
 Tile::~Tile() {
+    setXMLElement("Tile");
 }
 
 Tile::Tile(void) { 
 }
 
-Tile::Tile(const short int in_id, const char* in_name, const Movement_cost in_cost, const Tile_stats in_stats, const bool in_inside) {
+Tile::Tile(const short int in_id, const char* in_name, const Movement_cost in_cost, const Tile_stats in_stats, const bool in_inside) : Tile() {
 	name = in_name;
     id = in_id;
 	cost_struct = in_cost;
@@ -80,17 +81,17 @@ void Tile::readXML(tinyxml2::XMLElement * in_pTile) {
     readXML_stats(ptemp, &stats);
 }
 
-void Tile::readXML(const char * filename) {
-    SDL_Log("readXML Tile file: %s", filename);    
-    tinyxml2::XMLDocument xmlDoc;
-    parseXML(filename, &xmlDoc);
-    tinyxml2::XMLElement * pTile = xmlDoc.FirstChildElement("Tile");
-    if (!pTile) {
-        SDL_Log("Cannot get Tile element");
-    } else {
-        readXML(pTile);
-    }
-}
+// void Tile::readXML(const char * filename) {
+//     SDL_Log("readXML Tile file: %s", filename);    
+//     tinyxml2::XMLDocument xmlDoc;
+//     parseXML(filename, &xmlDoc);
+//     tinyxml2::XMLElement * pTile = xmlDoc.FirstChildElement("Tile");
+//     if (!pTile) {
+//         SDL_Log("Cannot get Tile element");
+//     } else {
+//         readXML(pTile);
+//     }
+// }
 
 void Tile::writeXML(tinyxml2::XMLDocument * in_doc, tinyxml2::XMLElement * in_pTile) {
     in_pTile->SetAttribute("id", id);
@@ -109,28 +110,28 @@ void Tile::writeXML(tinyxml2::XMLDocument * in_doc, tinyxml2::XMLElement * in_pT
     writeXML_stats(in_doc, pStats, &stats);
 }
 
-void Tile::writeXML(const char * filename, const bool append) {
-    SDL_Log("writeXML Tile to: %s\n", filename);
-    // How to write files so that it is modifiable by randos?
-    PHYSFS_file * fp;
-    char buffer[DEFAULT::BUFFER_SIZE];
-    tinyxml2::XMLDocument xmlDoc;
-    if (append) {
-        fp = PHYSFS_openAppend(filename);
-    } else {
-        fp = PHYSFS_openWrite(filename);
-        xmlDoc.InsertFirstChild(xmlDoc.NewDeclaration());
-    }
-    if (!fp) {
-        SDL_Log("Could not open %s for Tile writing\n", filename);
-    } else {
-        tinyxml2::XMLElement * pTile = xmlDoc.NewElement("Tile");
-        xmlDoc.InsertEndChild(pTile);
-        writeXML(&xmlDoc, pTile);
-        printXMLDoc(fp, &xmlDoc); 
-        PHYSFS_close(fp);
-    }
-}
+// void Tile::writeXML(const char * filename, const bool append) {
+//     SDL_Log("writeXML Tile to: %s\n", filename);
+//     // How to write files so that it is modifiable by randos?
+//     PHYSFS_file * fp;
+//     char buffer[DEFAULT::BUFFER_SIZE];
+//     tinyxml2::XMLDocument xmlDoc;
+//     if (append) {
+//         fp = PHYSFS_openAppend(filename);
+//     } else {
+//         fp = PHYSFS_openWrite(filename);
+//         xmlDoc.InsertFirstChild(xmlDoc.NewDeclaration());
+//     }
+//     if (!fp) {
+//         SDL_Log("Could not open %s for Tile writing\n", filename);
+//     } else {
+//         tinyxml2::XMLElement * pTile = xmlDoc.NewElement("Tile");
+//         xmlDoc.InsertEndChild(pTile);
+//         writeXML(&xmlDoc, pTile);
+//         printXMLDoc(fp, &xmlDoc); 
+//         PHYSFS_close(fp);
+//     }
+// }
 
 void Tile::write(const char * filename, const char * mode) {
     FILE * fp;
