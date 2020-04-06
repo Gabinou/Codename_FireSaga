@@ -724,12 +724,13 @@ void Unit::writeXML(const char * filename, const bool append) {
     }
     if (!fp) {
         SDL_Log("Could not open %s for Unit writing\n", filename);
+    } else {
+        tinyxml2::XMLElement * pUnit = xmlDoc.NewElement("Unit");
+        xmlDoc.InsertEndChild(pUnit);
+        writeXML(&xmlDoc, pUnit);
+        printXMLDoc(fp, &xmlDoc); 
+        PHYSFS_close(fp);
     }
-    tinyxml2::XMLElement * pUnit = xmlDoc.NewElement("Unit");
-    xmlDoc.InsertEndChild(pUnit);
-    writeXML(&xmlDoc, pUnit);
-    printXMLDoc(fp, &xmlDoc); 
-    PHYSFS_close(fp);
 }
 
 void Unit::write(const char * filename, const bool append) {

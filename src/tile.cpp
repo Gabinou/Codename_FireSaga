@@ -118,12 +118,15 @@ void Tile::writeXML(const char * filename, const bool append) {
         fp = PHYSFS_openWrite(filename);
         xmlDoc.InsertFirstChild(xmlDoc.NewDeclaration());
     }
-     
-    tinyxml2::XMLElement * pTile = xmlDoc.NewElement("Tile");
-    xmlDoc.InsertEndChild(pTile);
-    writeXML(&xmlDoc, pTile);
-    printXMLDoc(fp, &xmlDoc); 
-    PHYSFS_close(fp);
+    if (!fp) {
+        SDL_Log("Could not open %s for Tile writing\n", filename);
+    } else {
+        tinyxml2::XMLElement * pTile = xmlDoc.NewElement("Tile");
+        xmlDoc.InsertEndChild(pTile);
+        writeXML(&xmlDoc, pTile);
+        printXMLDoc(fp, &xmlDoc); 
+        PHYSFS_close(fp);
+    }
 }
 
 void Tile::write(const char * filename, const char * mode) {

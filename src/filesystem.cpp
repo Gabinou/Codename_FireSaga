@@ -659,10 +659,12 @@ void writeXML_stats(tinyxml2::XMLDocument * in_doc, tinyxml2::XMLElement * in_pS
 int parseXML(const char * filename, tinyxml2::XMLDocument * in_doc) {
     PHYSFS_file * fp;
     fp = PHYSFS_openRead(filename);
-    unsigned int buffint;
+    if (!fp) {
+        SDL_Log("Failed to open %s for parsing." filename);
+        return(-1);
+    }
     unsigned int filelen = PHYSFS_fileLength(fp);
     char filebuffer[filelen];
-    const char * buffer;
     PHYSFS_readBytes(fp, filebuffer, filelen);
     PHYSFS_close(fp);
     if (in_doc->Parse(filebuffer, filelen) != 0) {

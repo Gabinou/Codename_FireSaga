@@ -610,13 +610,15 @@ void Convoy::writeXML(const char * filename, const bool append) {
         fp = PHYSFS_openWrite(filename);
         xmlDoc.InsertFirstChild(xmlDoc.NewDeclaration());
     }
-
-    tinyxml2::XMLElement * pConvoy = xmlDoc.NewElement("Convoy");
-    xmlDoc.InsertEndChild(pConvoy);    
-
-    writeXML(&xmlDoc, pConvoy);
-    printXMLDoc(fp, &xmlDoc); 
-    PHYSFS_close(fp);
+    if (!fp) {
+        SDL_Log("Could not open %s for Convoy writing\n", filename);
+    } else {
+        tinyxml2::XMLElement * pConvoy = xmlDoc.NewElement("Convoy");
+        xmlDoc.InsertEndChild(pConvoy);    
+        writeXML(&xmlDoc, pConvoy);
+        printXMLDoc(fp, &xmlDoc); 
+        PHYSFS_close(fp);
+    }
 }
 
 void testConvoy() {
