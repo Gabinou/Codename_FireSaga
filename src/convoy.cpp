@@ -6,7 +6,7 @@
 //#endif /* STB_SPRINTF_IMPLEMENTATION */
 
 Convoy::Convoy() {
-
+    setXMLElement("Convoy");
 }
 
 void Convoy::swap(int arr[], int ind1, int ind2) {
@@ -570,17 +570,17 @@ void Convoy::readXML(tinyxml2::XMLElement * in_pConvoy) {
 }
 
 
-void Convoy::readXML(const char * filename) {
-    SDL_Log("readXML Unit file: %s", filename);
-    tinyxml2::XMLDocument xmlDoc;
-    parseXML(filename, &xmlDoc);
-    tinyxml2::XMLElement * pConvoy = xmlDoc.FirstChildElement("Convoy");
-    if (!pConvoy) {
-        SDL_Log("Cannot get Convoy element");
-    } else {
-        readXML(pConvoy);
-    }   
-}
+// void Convoy::readXML(const char * filename) {
+//     SDL_Log("readXML Unit file: %s", filename);
+//     tinyxml2::XMLDocument xmlDoc;
+//     parseXML(filename, &xmlDoc);
+//     tinyxml2::XMLElement * pConvoy = xmlDoc.FirstChildElement("Convoy");
+//     if (!pConvoy) {
+//         SDL_Log("Cannot get Convoy element");
+//     } else {
+//         readXML(pConvoy);
+//     }   
+// }
 
 void Convoy::writeXML(tinyxml2::XMLDocument * in_doc, tinyxml2::XMLElement * in_pConvoy) {
     tinyxml2::XMLElement * ptemp;
@@ -599,27 +599,26 @@ void Convoy::writeXML(tinyxml2::XMLDocument * in_doc, tinyxml2::XMLElement * in_
     }
 }
 
-
-void Convoy::writeXML(const char * filename, const bool append) {
-    SDL_Log("writeXML Convoy to: %s\n", filename);
-    PHYSFS_file * fp;
-    tinyxml2::XMLDocument xmlDoc;
-    if (append) {
-        fp = PHYSFS_openAppend(filename);
-    } else {
-        fp = PHYSFS_openWrite(filename);
-        xmlDoc.InsertFirstChild(xmlDoc.NewDeclaration());
-    }
-    if (!fp) {
-        SDL_Log("Could not open %s for Convoy writing\n", filename);
-    } else {
-        tinyxml2::XMLElement * pConvoy = xmlDoc.NewElement("Convoy");
-        xmlDoc.InsertEndChild(pConvoy);    
-        writeXML(&xmlDoc, pConvoy);
-        printXMLDoc(fp, &xmlDoc); 
-        PHYSFS_close(fp);
-    }
-}
+// void Convoy::writeXML(const char * filename, const bool append) {
+//     SDL_Log("writeXML Convoy to: %s\n", filename);
+//     PHYSFS_file * fp;
+//     tinyxml2::XMLDocument xmlDoc;
+//     if (append) {
+//         fp = PHYSFS_openAppend(filename);
+//     } else {
+//         fp = PHYSFS_openWrite(filename);
+//         xmlDoc.InsertFirstChild(xmlDoc.NewDeclaration());
+//     }
+//     if (!fp) {
+//         SDL_Log("Could not open %s for Convoy writing\n", filename);
+//     } else {
+//         tinyxml2::XMLElement * pConvoy = xmlDoc.NewElement("Convoy");
+//         xmlDoc.InsertEndChild(pConvoy);    
+//         writeXML(&xmlDoc, pConvoy);
+//         printXMLDoc(fp, &xmlDoc); 
+//         PHYSFS_close(fp);
+//     }
+// }
 
 void testConvoy() {
     testConvoyfull();

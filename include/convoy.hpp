@@ -12,7 +12,7 @@
 #include <string>
 #include <algorithm>
 
-class Convoy {
+class Convoy : public XML_IO {
     private:
         unsigned int bank = 0;
         Quantity quantity;
@@ -53,9 +53,9 @@ class Convoy {
         void printStats(int wpntype, int stattype);
 
         void write(const char * filename, const char * mode = "a");
-        void writeXML(const char * filename, const bool append = false);
+        using XML_IO::writeXML;
+        using XML_IO::readXML;
         void writeXML(tinyxml2::XMLDocument * in_doc, tinyxml2::XMLElement * in_pConvoy);
-        void readXML(const char * filename);
         void readXML(tinyxml2::XMLElement * in_pConvoy);
 };
 
