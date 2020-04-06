@@ -104,8 +104,8 @@ struct Map_enemy {
 
 struct Support {
     // std::vector<short int> inds;
-    short int index;
-    char level;
+    short int index = -1;
+    char level = -1;
 };
 
 struct Movement_cost {

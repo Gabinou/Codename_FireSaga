@@ -62,9 +62,9 @@ class Unit : public XML_IO {
         Unit();
         Unit(const unsigned short int in_id, const unsigned char in_class_index, const Unit_stats in_bases, const bool in_sex);
 
-        void setSupports(Support in_supports[]);
+        void setSupports(std::vector<short int> in_supports);
         Support * getSupports();
-        void supportUp(unsigned short int in_id);
+        void supportUp(short int in_id);
 
         void setSex(const bool in_sex);
         bool getSex();

@@ -98,10 +98,23 @@ unsigned char Unit::getMvttype() {
     return (mvt_type);
 }
 
+void Unit::supportUp(short int in_id) {
+    int i = 0;
 
-void Unit::setSupports(Support in_supports[]) {
-    for (int i = 0; i < DEFAULT::SUPPORTS_MAX; i++) {
-        supports[i] = in_supports[i];
+    while ((supports[i].index =! in_id) && (i < DEFAULT::SUPPORTS_MAX)) {
+        i++;
+    }
+    if (i == DEFAULT::SUPPORTS_MAX) {
+        SDL_Log("Could not find support of index %d", in_id);
+    }
+    supports[i].level += 1;
+}
+
+
+void Unit::setSupports(std::vector<short int> in_supports) {
+    for (int i = 0; i < in_supports.size(); i++) {
+        supports[i].index = in_supports[i];
+        supports[i].level = 0;
     }
 }
 
@@ -792,7 +805,7 @@ void baseUnits(std::unordered_map<int, Unit> * in_units, std::vector<short int> 
     Unit temp_unit;
     Unit_stats temp;
     Inventory_item temp_wpn;
-    Support temp_supports[DEFAULT::SUPPORTS_MAX];
+    std::vector<short int> temp_supports;
     int index;
     
     for (short unsigned int i = 0; i < toload.size(); i++) {
@@ -813,7 +826,7 @@ void baseUnits(std::unordered_map<int, Unit> * in_units, std::vector<short int> 
                 temp_unit.addEquipment(temp_wpn);
                 temp_wpn.id = ITEM::NAME::POT_LID;
                 temp_unit.addEquipment(temp_wpn);
-                temp_supports[0] = {UNIT::NAME::KIARA, 0};
+                temp_supports = {UNIT::NAME::KIARA};
                 temp_unit.setSupports(temp_supports);
                 in_units->emplace(index,temp_unit);
                 break;
