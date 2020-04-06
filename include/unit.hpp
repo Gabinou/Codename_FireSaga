@@ -1,16 +1,16 @@
 #ifndef UNIT_HPP
 #define UNIT_HPP
 
+#include "filesystem.hpp"
 #include "enums.hpp"
 #include "weapon.hpp"
 #include "linalg.hpp"
 #include "probability.hpp"
-#include "filesystem.hpp"
 #include "physfs.h"
 #include "tinyxml2.h"
 #include "utilities.hpp"
 
-class Unit {
+class Unit : public XML_IO {
     private:
         Weapon_stats temp_wpn;
         Weapon_stats right_wpn;
@@ -153,9 +153,9 @@ class Unit {
         void use(int in_ind);
 
         void write(const char * filename, const bool append = false);
-        void writeXML(const char * filename, const bool append = false);
+        using XML_IO::writeXML;
+        using XML_IO::readXML;
         void writeXML(tinyxml2::XMLDocument * in_doc, tinyxml2::XMLElement * in_pUnit);
-        void readXML(const char * filename);
         void readXML(tinyxml2::XMLElement * in_pUnit);
 };
 

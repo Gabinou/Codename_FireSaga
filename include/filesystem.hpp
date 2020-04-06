@@ -10,7 +10,6 @@
 #include <unordered_map>
 #include "physfs.h"
 #include "LodePNG.h"
-#include "unit.hpp"
 #include "structs.hpp"
 #include "enums.hpp"
 #include "tinyxml2.h"

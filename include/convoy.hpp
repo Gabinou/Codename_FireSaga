@@ -1,11 +1,11 @@
 #ifndef CONVOY_HPP
 #define CONVOY_HPP
 
+#include "filesystem.hpp"
 #include "enums.hpp"
 #include "structs.hpp"
 #include "physfs.h"
 #include "tinyxml2.h"
-#include "filesystem.hpp"
 #include "utilities.hpp"
 #include "weapon.hpp"
 #include "string.h"
