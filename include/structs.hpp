@@ -104,7 +104,7 @@ struct Map_enemy {
 
 struct Supports {
     short int names[DEFAULT::SUPPORTS_MAX] = {-1, -1, -1, -1, -1, -1, -1};
-    char level[DEFAULT::SUPPORTS_MAX] = {0, 0, 0, 0, 0, 0, 0};
+    char level[DEFAULT::SUPPORTS_MAX]   =    {-1, -1, -1, -1, -1, -1, -1};
 };
 
 struct Movement_cost {

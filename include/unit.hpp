@@ -60,7 +60,9 @@ class Unit : public XML_IO {
         Unit();
         Unit(const unsigned short int in_id, const unsigned char in_class_index, const Unit_stats in_bases, const bool in_sex);
 
-        void setSupports(short int * in_names);
+        void setSupports(Supports in_supports);
+        Supports getSupports();
+        void supportUp(unsigned short int in_id);
 
         void setSex(const bool in_sex);
         bool getSex();

@@ -98,8 +98,8 @@ unsigned char Unit::getMvttype() {
     return (mvt_type);
 }
 
-void Unit::setSupports(short int * in_names) {
-    // supports.names = in_names;
+void Unit::setSupports(Supports in_supports) {
+    supports = in_supports;
 }
 
 void Unit::equipsL(const unsigned char index) {
