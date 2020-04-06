@@ -64,7 +64,6 @@ class Map {
         void setTilemap(const std::vector<std::vector<short int>> in_tilemap);
         std::vector<std::vector<short int>> makeMvtCostmap(const unsigned char unitmovetype);
 
-
         void setRenderer(SDL_Renderer * in_renderer);
         void drawMap();
         void makeEntitymap(const short unsigned int row_size, const short unsigned int col_size);

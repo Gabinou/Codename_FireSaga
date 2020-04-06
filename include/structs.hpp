@@ -102,9 +102,10 @@ struct Map_enemy {
     unsigned char levelup;
 };
 
-struct Supports {
-    short int names[DEFAULT::SUPPORTS_MAX] = {-1, -1, -1, -1, -1, -1, -1};
-    char level[DEFAULT::SUPPORTS_MAX]   =    {-1, -1, -1, -1, -1, -1, -1};
+struct Support {
+    // std::vector<short int> inds;
+    short int index;
+    char level;
 };
 
 struct Movement_cost {

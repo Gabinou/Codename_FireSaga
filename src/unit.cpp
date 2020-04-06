@@ -98,8 +98,11 @@ unsigned char Unit::getMvttype() {
     return (mvt_type);
 }
 
-void Unit::setSupports(Supports in_supports) {
-    supports = in_supports;
+
+void Unit::setSupports(Support in_supports[]) {
+    for (int i = 0; i < DEFAULT::SUPPORTS_MAX; i++) {
+        supports[i] = in_supports[i];
+    }
 }
 
 void Unit::equipsL(const unsigned char index) {
@@ -789,7 +792,7 @@ void baseUnits(std::unordered_map<int, Unit> * in_units, std::vector<short int> 
     Unit temp_unit;
     Unit_stats temp;
     Inventory_item temp_wpn;
-    short int temp_supports;
+    Support temp_supports[DEFAULT::SUPPORTS_MAX];
     int index;
     
     for (short unsigned int i = 0; i < toload.size(); i++) {
@@ -810,8 +813,8 @@ void baseUnits(std::unordered_map<int, Unit> * in_units, std::vector<short int> 
                 temp_unit.addEquipment(temp_wpn);
                 temp_wpn.id = ITEM::NAME::POT_LID;
                 temp_unit.addEquipment(temp_wpn);
-                // temp_supports = {UNIT::NAME::KIARA}; 
-                // temp_unit.setSupports(temp_supports);
+                temp_supports[0] = {UNIT::NAME::KIARA, 0};
+                temp_unit.setSupports(temp_supports);
                 in_units->emplace(index,temp_unit);
                 break;
             case UNIT::NAME::RELIABLE:

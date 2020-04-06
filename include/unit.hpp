@@ -18,7 +18,9 @@ class Unit : public XML_IO {
 
         Combat_stats combat_stats;
 
-        Supports supports;
+        Support supports[DEFAULT::SUPPORTS_MAX];
+        // short int supports[DEFAULT::SUPPORTS_MAX];
+        // char support_levels[DEFAULT::SUPPORTS_MAX];
 
         Unit_stats base_stats = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
         Unit_stats bonus_stats = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
@@ -60,8 +62,8 @@ class Unit : public XML_IO {
         Unit();
         Unit(const unsigned short int in_id, const unsigned char in_class_index, const Unit_stats in_bases, const bool in_sex);
 
-        void setSupports(Supports in_supports);
-        Supports getSupports();
+        void setSupports(Support in_supports[]);
+        Support * getSupports();
         void supportUp(unsigned short int in_id);
 
         void setSex(const bool in_sex);
