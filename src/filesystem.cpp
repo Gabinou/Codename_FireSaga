@@ -675,4 +675,44 @@ int parseXML(const char * filename, tinyxml2::XMLDocument * in_doc) {
 }
 
 
+void XML_IO::readXML(const char * filename) {
+    SDL_Log("readXML file: %s", filename);
+    tinyxml2::XMLDocument xmlDoc;
+    parseXML(filename, &xmlDoc);
+    tinyxml2::XMLElement * pEle = xmlDoc.FirstChildElement(xmlElement.c_str());
+    if (!pEle) {
+        SDL_Log("Cannot get %s element", xmlElement.c_str());
+    } else {
+        readXML(pEle);
+    }
+} 
 
+void XML_IO::writeXML(const char * filename, const bool append) {
+    SDL_Log("writeXML %s to: %s\n", xmlElement.c_str(), filename);
+    // How to write files so that it is modifiable by randos?
+    PHYSFS_file * fp;
+    tinyxml2::XMLDocument xmlDoc;
+    if (append) {
+        fp = PHYSFS_openAppend(filename);
+    } else {
+        fp = PHYSFS_openWrite(filename);
+        xmlDoc.InsertFirstChild(xmlDoc.NewDeclaration());
+    }
+    if (!fp) {
+        SDL_Log("Could not open %s for %s writing\n", filename, xmlElement.c_str());
+    } else {
+        tinyxml2::XMLElement * pEle = xmlDoc.NewElement(xmlElement.c_str());
+        xmlDoc.InsertEndChild(pEle);
+        writeXML(&xmlDoc, pEle);
+        printXMLDoc(fp, &xmlDoc); 
+        PHYSFS_close(fp);
+    }
+}
+
+void XML_IO::setXMLElement(std::string in_xmlElement) {
+    xmlElement = in_xmlElement;
+}
+
+std::string XML_IO::getXMLElement() {
+    return(xmlElement);
+}

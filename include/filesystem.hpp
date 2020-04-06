@@ -51,4 +51,19 @@ extern void printXMLDoc(PHYSFS_file * in_fp, tinyxml2::XMLDocument * in_doc);
 extern int parseXML(const char * filename, tinyxml2::XMLDocument * in_doc);
 
 
+class XML_IO {
+    private:
+        std::string xmlElement = "";
+    public:
+        void write(const char * filename, const char * mode = "a");
+        void writeXML(const char * filename, const bool append = false);
+        void readXML(const char * filename);
+        virtual void readXML(tinyxml2::XMLElement * in_pEle);
+        virtual void writeXML(tinyxml2::XMLDocument * in_doc, tinyxml2::XMLElement * in_pEle);
+
+        void setXMLElement(std::string in_xmlElement);
+        std::string getXMLElement();
+};
+
+
 #endif /* FILESYSTEM_HPP */

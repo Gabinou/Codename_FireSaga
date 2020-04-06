@@ -85,7 +85,7 @@ void Tile::readXML(const char * filename) {
     tinyxml2::XMLDocument xmlDoc;
     parseXML(filename, &xmlDoc);
     tinyxml2::XMLElement * pTile = xmlDoc.FirstChildElement("Tile");
-    if (!pUnit) {
+    if (!pTile) {
         SDL_Log("Cannot get Tile element");
     } else {
         readXML(pTile);
