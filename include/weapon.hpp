@@ -11,7 +11,7 @@
 #include "string.h"
 #include <string>
 
-class Weapon {
+class Weapon : public XML_IO {
     private:
         Weapon_stats stats = {0, 0, 0, 0, 0, 0, 0, 0, 0, {0, 0}, {0, 0}, 0, 0};
         // Pmight, Mmight, hit, dodge, crit, favor, wgt, uses, prof, range, hand, dmg_type, cost, heal
@@ -49,9 +49,9 @@ class Weapon {
         void setType(short unsigned int in_type);
 
         void write(const char * filename, const char * mode = "a");
-        void writeXML(const char * filename, const bool append = false);
+        using XML_IO::writeXML;
+        using XML_IO::readXML;
         void writeXML(tinyxml2::XMLDocument * in_doc, tinyxml2::XMLElement * in_pWpn);
-        void readXML(const char * filename);
         void readXML(tinyxml2::XMLElement * in_pWpn);
 };
 

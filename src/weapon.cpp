@@ -82,119 +82,129 @@ void Weapon::setType(short unsigned int in_type) {
     type = in_type;
 }
 
-void Weapon::readXML(const char * filename) {
-    SDL_Log("readXML Unit file: %s", filename);    
-    tinyxml2::XMLDocument xmlDoc;
-    parseXML(filename, &xmlDoc);
+void Weapon::readXML(tinyxml2::XMLElement * in_pWpn) {
     tinyxml2::XMLElement * ptemp;
-    tinyxml2::XMLElement * pWpn = xmlDoc.FirstChildElement("Weapon");
     
-    ptemp = pWpn->FirstChildElement("Name");
+    ptemp = in_pWpn->FirstChildElement("Name");
     if (!ptemp) {SDL_Log("Cannot get Name element");}   
     name = ptemp->GetText();
 
-    ptemp = pWpn->FirstChildElement("Name");
+    ptemp = in_pWpn->FirstChildElement("Name");
     if (!ptemp) {SDL_Log("Cannot get Name element");}   
     name = ptemp->GetText();
-    id = (unsigned short int)pWpn->IntAttribute("id");
-    ptemp = pWpn->FirstChildElement("Description");
+    id = (unsigned short int)in_pWpn->IntAttribute("id");
+    ptemp = in_pWpn->FirstChildElement("Description");
     if (!ptemp) {SDL_Log("Cannot get Description element");}   
     description = ptemp->GetText();
-    ptemp = pWpn->FirstChildElement("Bonus");
+    ptemp = in_pWpn->FirstChildElement("Bonus");
     if (!ptemp) {SDL_Log("Cannot get Bonus element");}   
     readXML_stats(ptemp, &bonus_stats);    
-    ptemp = pWpn->FirstChildElement("Malus");
+    ptemp = in_pWpn->FirstChildElement("Malus");
     if (!ptemp) {SDL_Log("Cannot get Malus element");}   
     readXML_stats(ptemp, &malus_stats);
-    ptemp = pWpn->FirstChildElement("Types");
+    ptemp = in_pWpn->FirstChildElement("Types");
     if (!ptemp) {SDL_Log("Cannot get Types element");}   
     type = (unsigned short int)ptemp->IntAttribute("id");
-    ptemp = pWpn->FirstChildElement("Effectives");
+    ptemp = in_pWpn->FirstChildElement("Effectives");
     if (!ptemp) {SDL_Log("Cannot get Effectives element");}  
     effective = (unsigned short int)ptemp->IntAttribute("id");
-    ptemp = pWpn->FirstChildElement("Effects");
+    ptemp = in_pWpn->FirstChildElement("Effects");
     if (!ptemp) {SDL_Log("Cannot get Effects element");}   
     effect = (long unsigned int)ptemp->IntAttribute("id");
-    ptemp = pWpn->FirstChildElement("Stats");
+    ptemp = in_pWpn->FirstChildElement("Stats");
     if (!ptemp) {SDL_Log("Cannot get Stats element");}   
     readXML_stats(ptemp, &stats);
 }
 
-void Weapon::writeXML(const char * filename, const bool append) {
-    SDL_Log("writeXML Weapon to: %s\n", filename);
-    // How to write files so that it is modifiable by randos?
-    PHYSFS_file * fp;
-    char buffer[DEFAULT::BUFFER_SIZE];
-    tinyxml2::XMLDocument xmlDoc;
-    if (append) {
-        fp = PHYSFS_openAppend(filename);
-    } else {
-        fp = PHYSFS_openWrite(filename);
-        xmlDoc.InsertFirstChild(xmlDoc.NewDeclaration());
-    }
-    if (!fp) {
-        SDL_Log("Could not open %s for Weapon writing\n", filename);
-    }
-    tinyxml2::XMLElement * pWpn = xmlDoc.NewElement("Weapon");
-    xmlDoc.InsertEndChild(pWpn);
-    pWpn->SetAttribute("id", id);
+// void Weapon::readXML(const char * filename) {
+//     SDL_Log("readXML Unit file: %s", filename);    
+//     tinyxml2::XMLDocument xmlDoc;
+//     parseXML(filename, &xmlDoc);
+//     tinyxml2::XMLElement * ptemp;
+//     tinyxml2::XMLElement * in_pWpn = xmlDoc.FirstChildElement("Weapon");
     
-    tinyxml2::XMLElement * pName = xmlDoc.NewElement("Name");
-    pWpn->InsertEndChild(pName);
+// }
+
+void Weapon::writeXML(tinyxml2::XMLDocument * in_doc, tinyxml2::XMLElement * in_pWpn) {
+    in_pWpn->SetAttribute("id", id);
+    
+    tinyxml2::XMLElement * pName = in_doc->NewElement("Name");
+    in_pWpn->InsertEndChild(pName);
     pName->SetText(name.c_str());
 
-    tinyxml2::XMLElement * pStats = xmlDoc.NewElement("Stats");
-    pWpn->InsertEndChild(pStats);
-    writeXML_stats(&xmlDoc, pStats, &stats);
+    tinyxml2::XMLElement * pStats = in_doc->NewElement("Stats");
+    in_pWpn->InsertEndChild(pStats);
+    writeXML_stats(in_doc, pStats, &stats);
 
-    tinyxml2::XMLElement * pDes = xmlDoc.NewElement("Description");
-    pWpn->InsertEndChild(pDes);
+    tinyxml2::XMLElement * pDes = in_doc->NewElement("Description");
+    in_pWpn->InsertEndChild(pDes);
     pDes->SetText(description.c_str());
 
-    tinyxml2::XMLElement * pBonus = xmlDoc.NewElement("Bonus");
-    pWpn->InsertEndChild(pBonus);
-    writeXML_stats(&xmlDoc, pBonus, &bonus_stats);
+    tinyxml2::XMLElement * pBonus = in_doc->NewElement("Bonus");
+    in_pWpn->InsertEndChild(pBonus);
+    writeXML_stats(in_doc, pBonus, &bonus_stats);
 
-    tinyxml2::XMLElement * pMalus = xmlDoc.NewElement("Malus");
-    pWpn->InsertEndChild(pMalus);
-    writeXML_stats(&xmlDoc, pMalus, &malus_stats);
+    tinyxml2::XMLElement * pMalus = in_doc->NewElement("Malus");
+    in_pWpn->InsertEndChild(pMalus);
+    writeXML_stats(in_doc, pMalus, &malus_stats);
 
-    tinyxml2::XMLElement * pEffectives = xmlDoc.NewElement("Effectives");
-    pWpn->InsertEndChild(pEffectives);
+    tinyxml2::XMLElement * pEffectives = in_doc->NewElement("Effectives");
+    in_pWpn->InsertEndChild(pEffectives);
     pEffectives->SetAttribute("id", effective);
     std::vector<std::string> effectives = unitTypes(effective);
     tinyxml2::XMLElement * pEffective;
     for (int i = 0; i < effectives.size(); i++) {
-        pEffective = xmlDoc.NewElement("Effective");
+        pEffective = in_doc->NewElement("Effective");
         pEffectives->InsertEndChild(pEffective);
         pEffective->SetText(effectives[i].c_str());
     }
     
-    tinyxml2::XMLElement * pTypes = xmlDoc.NewElement("Types");
-    pWpn->InsertEndChild(pTypes);
+    tinyxml2::XMLElement * pTypes = in_doc->NewElement("Types");
+    in_pWpn->InsertEndChild(pTypes);
     pTypes->SetAttribute("id", type);
     std::vector<std::string> types = wpnTypes(type);
     tinyxml2::XMLElement * pType;    
     for (int i = 0; i < types.size(); i++) {
-        pType = xmlDoc.NewElement("Type");
+        pType = in_doc->NewElement("Type");
         pTypes->InsertEndChild(pType);
         pType->SetText(types[i].c_str());
     }
 
-    tinyxml2::XMLElement * pEffects = xmlDoc.NewElement("Effects");
-    pWpn->InsertEndChild(pEffects);
+    tinyxml2::XMLElement * pEffects = in_doc->NewElement("Effects");
+    in_pWpn->InsertEndChild(pEffects);
     tinyxml2::XMLElement * pEffect;
     std::vector<std::string> effects = wpnEffects(effect);
     for (int i = 0; i < effects.size(); i++) {
-        pEffect = xmlDoc.NewElement("Effect");
+        pEffect = in_doc->NewElement("Effect");
         pEffects->InsertEndChild(pEffect);
         pEffect->SetText(effects[i].c_str());
     }
     pEffects->SetAttribute("id", (uint64_t) effect);
-
-    printXMLDoc(fp, &xmlDoc); 
-    PHYSFS_close(fp);
 }
+
+
+// void Weapon::writeXML(const char * filename, const bool append) {
+//     SDL_Log("writeXML Weapon to: %s\n", filename);
+//     // How to write files so that it is modifiable by randos?
+//     PHYSFS_file * fp;
+//     char buffer[DEFAULT::BUFFER_SIZE];
+//     tinyxml2::XMLDocument xmlDoc;
+//     if (append) {
+//         fp = PHYSFS_openAppend(filename);
+//     } else {
+//         fp = PHYSFS_openWrite(filename);
+//         in_doc->InsertFirstChild(xmlDoc.NewDeclaration());
+//     }
+//     if (!fp) {
+//         SDL_Log("Could not open %s for Weapon writing\n", filename);
+//     }
+//     tinyxml2::XMLElement * pWpn = xmlDoc.NewElement("Weapon");
+//     xmlDoc.InsertEndChild(pWpn);
+    
+
+//     printXMLDoc(fp, &xmlDoc); 
+//     PHYSFS_close(fp);
+// }
 
 void Weapon::write(const char * filename, const char * mode){
     FILE * fp;
