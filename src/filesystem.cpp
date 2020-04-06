@@ -660,7 +660,7 @@ int parseXML(const char * filename, tinyxml2::XMLDocument * in_doc) {
     PHYSFS_file * fp;
     fp = PHYSFS_openRead(filename);
     if (!fp) {
-        SDL_Log("Failed to open %s for parsing." filename);
+        SDL_Log("Failed to open %s for xml parsing.", filename);
         return(-1);
     }
     unsigned int filelen = PHYSFS_fileLength(fp);
@@ -668,7 +668,7 @@ int parseXML(const char * filename, tinyxml2::XMLDocument * in_doc) {
     PHYSFS_readBytes(fp, filebuffer, filelen);
     PHYSFS_close(fp);
     if (in_doc->Parse(filebuffer, filelen) != 0) {
-        SDL_Log("XML file parsing failed");
+        SDL_Log("Failed to parseXML %s", filename);
         return(-1);
     }
     return(0);

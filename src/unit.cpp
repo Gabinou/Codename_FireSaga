@@ -617,7 +617,6 @@ void Unit::readXML(tinyxml2::XMLElement * in_pUnit) {
 
     combatStats();
     mvt_type = mvtTypes[class_index];
-    SDL_Log("Mvttype: %d", mvt_type);
     class_name = classNames[class_index];
     sex_name = sexNames[sex];
     skill_names = skillNames(skills);
@@ -629,7 +628,6 @@ void Unit::readXML(const char * filename) {
     SDL_Log("readXML Unit file: %s", filename);
     tinyxml2::XMLDocument xmlDoc;
     parseXML(filename, &xmlDoc);
- 
     tinyxml2::XMLElement * pUnit = xmlDoc.FirstChildElement("Unit");
     if (!pUnit) {
         SDL_Log("Cannot get Unit element");
