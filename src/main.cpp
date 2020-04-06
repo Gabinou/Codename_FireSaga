@@ -33,16 +33,16 @@ int main(int argc, char * argv[]) {
 
     SDL_Log("Loading base weapons.");
     baseWeapons();
+
     // SDL_Log("Testing weapon: %s\n", all_weapons[ITEM::NAME::WOODEN_SWORD].getName().c_str());
-    testXMLWeapons();
+    // testXMLWeapons();
     // writeallXMLWeapons();
 
     // SDL_Log("Loading base units.");
     // all_units = baseUnits();
     // SDL_Log("Testing units: %s \n", all_units[UNIT::NAME::SILOU].getName().c_str());
-    testXMLUnits();
-
-    testXMLTiles();
+    // testXMLUnits();
+    // testXMLTiles();
 
 
     firesaga = new Game();
@@ -65,8 +65,6 @@ int main(int argc, char * argv[]) {
 
     SDL_Log("Testing convoy\n");
     testConvoy();
-
-    getchar();
 
     // firesaga->loadMap("..//maps//test_tilemap.txt");
     firesaga->loadMap(0);

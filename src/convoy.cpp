@@ -87,7 +87,6 @@ void Convoy::swapWpn(int wpntype, int ind1, int ind2) {
     }
 }
 
-
 void Convoy::quicksort(int arr[], int low, int high, int wpntype) {
     int pi;
     if (low < high) {

@@ -28,7 +28,6 @@ class Weapon : public XML_IO {
         bool sellable;
     public:
         Weapon();
-
         Weapon(short unsigned int in_type, Weapon_stats in_stats, unsigned char in_id);
 
         void setStats(Weapon_stats in_stats);
