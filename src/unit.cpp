@@ -623,19 +623,6 @@ void Unit::readXML(tinyxml2::XMLElement * in_pUnit) {
     speed();
 }
 
-
-// void Unit::readXML(const char * filename) {
-//     SDL_Log("readXML Unit file: %s", filename);
-//     tinyxml2::XMLDocument xmlDoc;
-//     parseXML(filename, &xmlDoc);
-//     tinyxml2::XMLElement * pUnit = xmlDoc.FirstChildElement("Unit");
-//     if (!pUnit) {
-//         SDL_Log("Cannot get Unit element");
-//     } else {
-//         readXML(pUnit);
-//     }
-// } 
-
 void Unit::writeXML(tinyxml2::XMLDocument * in_doc, tinyxml2::XMLElement * in_pUnit) {
     char buffer[DEFAULT::BUFFER_SIZE];
     
@@ -708,28 +695,6 @@ void Unit::writeXML(tinyxml2::XMLDocument * in_doc, tinyxml2::XMLElement * in_pU
     in_pUnit->InsertEndChild(pEquipment);
     writeXML_items(in_doc, pEquipment, equipment, DEFAULT::EQUIPMENT_SIZE);
 }
-
-// void Unit::writeXML(const char * filename, const bool append) {
-//     SDL_Log("writeXML Unit to: %s\n", filename);
-//     // How to write files so that it is modifiable by randos?
-//     PHYSFS_file * fp;
-//     tinyxml2::XMLDocument xmlDoc;
-//     if (append) {
-//         fp = PHYSFS_openAppend(filename);
-//     } else {
-//         fp = PHYSFS_openWrite(filename);
-//         xmlDoc.InsertFirstChild(xmlDoc.NewDeclaration());
-//     }
-//     if (!fp) {
-//         SDL_Log("Could not open %s for Unit writing\n", filename);
-//     } else {
-//         tinyxml2::XMLElement * pUnit = xmlDoc.NewElement("Unit");
-//         xmlDoc.InsertEndChild(pUnit);
-//         writeXML(&xmlDoc, pUnit);
-//         printXMLDoc(fp, &xmlDoc); 
-//         PHYSFS_close(fp);
-//     }
-// }
 
 void Unit::write(const char * filename, const bool append) {
     // Maybe this function should write constant number of bytes per line...
