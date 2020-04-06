@@ -1135,13 +1135,13 @@ void baseUnits(std::unordered_map<int, Unit> * in_units) {
 // std::unordered_map<int, Unit> (*chapEnemyUnits[40])() = {chaptestEnemyUnits, chap1EnemyUnits, chap2EnemyUnits, chap3EnemyUnits, chap4EnemyUnits, chap5EnemyUnits, chap6EnemyUnits, chap7EnemyUnits, chap8EnemyUnits, chap9EnemyUnits, chap10EnemyUnits, chap11EnemyUnits, chap12EnemyUnits, chap13EnemyUnits, chap14EnemyUnits, chap15EnemyUnits, chap16EnemyUnits, chap17EnemyUnits, chap18EnemyUnits, chap19EnemyUnits, chap20EnemyUnits, chap21EnemyUnits, chap22EnemyUnits, chap23EnemyUnits, chap24EnemyUnits, chap25EnemyUnits};
 // std::vector<short int> basePartyIndex = {UNIT::NAME::ERWIN, UNIT::NAME::KIARA, UNIT::NAME::SILOU};
 
-std::vector<short int> chapTestUnits() {
+std::vector<short int> chapTestUnitsInds() {
     std::vector<short int> out = {UNIT::NAME::SILOU};
     return(out);
 }
-std::vector<short int> chap1Units() {
+std::vector<short int> chap1UnitsInds() {
     std::vector<short int> out = {UNIT::NAME::ERWIN, UNIT::NAME::KIARA};
     return(out);
 }
 
-std::vector<short int> (*chapBaseUnits[30])() = {chapTestUnits, chap1Units};
+std::vector<short int> (*chapBaseUnitsInds[30])() = {chapTestUnitsInds, chap1UnitsInds};

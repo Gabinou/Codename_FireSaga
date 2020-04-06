@@ -159,13 +159,10 @@ class Unit : public XML_IO {
         void readXML(tinyxml2::XMLElement * in_pUnit);
 };
 
-extern std::vector<short int> base_units;
-
 extern void baseUnits(std::unordered_map<int, Unit> * in_units);
 extern void baseUnits(std::unordered_map<int, Unit> * in_units, std::vector<short int> toload);
-extern std::unordered_map<int, Unit> chap1EnemyUnits();
-extern std::unordered_map<int, Unit> (*chapEnemyUnits[40])();
-extern std::vector<short int> (*chapBaseUnits[30])();
+extern std::unordered_map<int, Unit> (*chapEnemyUnitsInds[40])();
+extern std::vector<short int> (*chapBaseUnitsInds[30])();
 void testXMLUnits();
 void baseEnemyUnits();
 
