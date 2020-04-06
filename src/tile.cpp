@@ -61,27 +61,32 @@ void Tile::setInside(const bool in_inside) {
     inside = in_inside;
 }
 
+void Tile::readXML(tinyxml2::XMLElement * in_pTile) {
+    tinyxml2::XMLElement * ptemp;
+   
+    id = (unsigned short int)in_pTile->IntAttribute("id");
+
+    ptemp = in_pTile->FirstChildElement("Name");
+    if (!ptemp) {SDL_Log("Cannot get Name element");}   
+    name = ptemp->GetText();
+
+    ptemp = in_pTile->FirstChildElement("MvtCost");
+    if (!ptemp) {SDL_Log("Cannot get Name element");}   
+    readXML_mvtcost(ptemp, &cost_struct);
+    makeMvtCostarray();
+
+    ptemp = in_pTile->FirstChildElement("Stats");
+    if (!ptemp) {SDL_Log("Cannot get Name element");}   
+    readXML_stats(ptemp, &stats);
+}
+
 void Tile::readXML(const char * filename) {
     SDL_Log("readXML Tile file: %s", filename);    
     tinyxml2::XMLDocument xmlDoc;
     parseXML(filename, &xmlDoc);
 
-    tinyxml2::XMLElement * ptemp;
     tinyxml2::XMLElement * pTile = xmlDoc.FirstChildElement("Tile");
-    id = (unsigned short int)pTile->IntAttribute("id");
-
-    ptemp = pTile->FirstChildElement("Name");
-    if (!ptemp) {SDL_Log("Cannot get Name element");}   
-    name = ptemp->GetText();
-
-    ptemp = pTile->FirstChildElement("MvtCost");
-    if (!ptemp) {SDL_Log("Cannot get Name element");}   
-    readXML_mvtcost(ptemp, &cost_struct);
-    makeMvtCostarray();
-
-    ptemp = pTile->FirstChildElement("Stats");
-    if (!ptemp) {SDL_Log("Cannot get Name element");}   
-    readXML_stats(ptemp, &stats);
+    readXML(pTile);
 }
 
 void Tile::writeXML(tinyxml2::XMLDocument * in_doc, tinyxml2::XMLElement * in_pTile) {
@@ -117,14 +122,7 @@ void Tile::writeXML(const char * filename, const bool append) {
     tinyxml2::XMLElement * pTile = xmlDoc.NewElement("Tile");
     xmlDoc.InsertEndChild(pTile);
     writeXML(&xmlDoc, pTile);
-
-    tinyxml2::XMLPrinter printer;
-
-    xmlDoc.Print(&printer);
-    char longbuffer[printer.CStrSize()];
-    stbsp_sprintf(longbuffer, printer.CStr());
-    PHYSFS_writeBytes(fp, longbuffer, printer.CStrSize());
-
+    printXMLDoc(fp, &xmlDoc); 
     PHYSFS_close(fp);
 }
 

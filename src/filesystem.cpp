@@ -224,6 +224,14 @@ void writeText(SDL_Renderer * in_renderer, int in_fontsize, int in_position[2], 
     SDL_RenderPresent(in_renderer);
 }
 
+void printXMLDoc(PHYSFS_file * in_fp, tinyxml2::XMLDocument * in_doc) {
+    tinyxml2::XMLPrinter printer;
+    in_doc->Print(&printer);
+    char longbuffer[printer.CStrSize()];
+    stbsp_sprintf(longbuffer, printer.CStr());
+    PHYSFS_writeBytes(in_fp, longbuffer, printer.CStrSize());
+}
+
 void readXML_stats(tinyxml2::XMLElement * in_pStats, Weapon_stats * in_stats) {
     tinyxml2::XMLElement * ptemp = in_pStats->FirstChildElement("Pmight");
     unsigned int buffint;

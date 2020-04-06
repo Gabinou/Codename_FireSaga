@@ -727,13 +727,8 @@ void Unit::writeXML(const char * filename, const bool append) {
     }
     tinyxml2::XMLElement * pUnit = xmlDoc.NewElement("Unit");
     xmlDoc.InsertEndChild(pUnit);
-    tinyxml2::XMLPrinter printer;
-    
     writeXML(&xmlDoc, pUnit);
-    xmlDoc.Print(&printer);
-    char longbuffer[printer.CStrSize()];
-    stbsp_sprintf(longbuffer, printer.CStr());
-    PHYSFS_writeBytes(fp, longbuffer, printer.CStrSize());
+    printXMLDoc(fp, &xmlDoc); 
     PHYSFS_close(fp);
 }
 

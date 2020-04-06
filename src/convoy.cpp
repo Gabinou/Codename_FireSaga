@@ -615,14 +615,7 @@ void Convoy::writeXML(const char * filename, const bool append) {
     xmlDoc.InsertEndChild(pConvoy);    
 
     writeXML(&xmlDoc, pConvoy);
-
-    tinyxml2::XMLPrinter printer;
-
-    xmlDoc.Print(&printer);
-    char longbuffer[printer.CStrSize()];
-    stbsp_sprintf(longbuffer, printer.CStr());
-    PHYSFS_writeBytes(fp, longbuffer, printer.CStrSize());
-
+    printXMLDoc(fp, &xmlDoc); 
     PHYSFS_close(fp);
 }
 

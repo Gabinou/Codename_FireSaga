@@ -192,13 +192,7 @@ void Weapon::writeXML(const char * filename, const bool append) {
     }
     pEffects->SetAttribute("id", (uint64_t) effect);
 
-    tinyxml2::XMLPrinter printer;
-
-    xmlDoc.Print(&printer);
-    char longbuffer[printer.CStrSize()];
-    stbsp_sprintf(longbuffer, printer.CStr());
-    PHYSFS_writeBytes(fp, longbuffer, printer.CStrSize());
-
+    printXMLDoc(fp, &xmlDoc); 
     PHYSFS_close(fp);
 }
 
