@@ -209,8 +209,6 @@ SDL_Texture * textToTexture(SDL_Renderer * in_renderer, std::string textureText,
     return (texture);
 }
 
-
-
 void writeText(SDL_Renderer * in_renderer, int in_fontsize, int in_position[2], float in_sizefactor[2], std::string in_text, SDL_Color in_color, TTF_Font * in_font) {
     std::string text = "FPS";
     SDL_Texture * texture = textToTexture(in_renderer, text, in_color, in_font);
@@ -225,9 +223,6 @@ void writeText(SDL_Renderer * in_renderer, int in_fontsize, int in_position[2], 
     SDL_RenderCopy(in_renderer, texture, &srcrect, &destrect);
     SDL_RenderPresent(in_renderer);
 }
-
-bool dmg_type; // 0 is 1 physical. 1 magic.
-unsigned short int price;
 
 void readXML_stats(tinyxml2::XMLElement * in_pStats, Weapon_stats * in_stats) {
     tinyxml2::XMLElement * ptemp = in_pStats->FirstChildElement("Pmight");
@@ -362,9 +357,7 @@ void readXML_narrative(tinyxml2::XMLElement * in_pNarrative, Narrative * in_stat
     readXML_narrativeUnits(pUnit, in_state->npc_death);
     pUnit = precruited->FirstChildElement("Unit");
     readXML_narrativeUnits(pUnit, in_state->recruited);
-    
 }
-
 
 void writeXML_narrative(tinyxml2::XMLDocument * in_doc, tinyxml2::XMLElement * in_pNarrative, Narrative * in_state) {
     tinyxml2::XMLElement * ppc_death = in_doc->NewElement("Death_PC");
