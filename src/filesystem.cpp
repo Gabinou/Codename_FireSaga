@@ -229,7 +229,11 @@ void printXMLDoc(PHYSFS_file * in_fp, tinyxml2::XMLDocument * in_doc) {
     in_doc->Print(&printer);
     char longbuffer[printer.CStrSize()];
     stbsp_sprintf(longbuffer, printer.CStr());
-    PHYSFS_writeBytes(in_fp, longbuffer, printer.CStrSize());
+    if (!PHYSFS_setBuffer(in_fp, printer.CStrSize())) {
+        SDL_Log("PHYSFS_setBuffer failed");
+    } else {
+        PHYSFS_writeBytes(in_fp, longbuffer, printer.CStrSize());
+    }
 }
 
 void readXML_stats(tinyxml2::XMLElement * in_pStats, Weapon_stats * in_stats) {

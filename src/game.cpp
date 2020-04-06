@@ -545,16 +545,7 @@ void Game::saveXML(const short int save_ind) {
     ptemp = xmlDoc.NewElement("Convoy");
     convoy.writeXML(&xmlDoc, ptemp);
     xmlDoc.InsertEndChild(ptemp);
-
-    tinyxml2::XMLPrinter printer;
-    xmlDoc.Print(&printer);
-    char longbuffer[printer.CStrSize()];
-    stbsp_snprintf(longbuffer, printer.CStrSize(), printer.CStr());
-    if (!PHYSFS_setBuffer(fp, printer.CStrSize())) {
-        SDL_Log("PHYSFS_setBuffer failed");
-    }
-    PHYSFS_writeBytes(fp, longbuffer, printer.CStrSize());
-
+    printXMLDoc(fp, &xmlDoc);
     PHYSFS_close(fp);
 }
 
