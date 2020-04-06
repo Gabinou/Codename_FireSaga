@@ -125,14 +125,16 @@ void Weapon::writeXML(const char * filename, const bool append) {
     // How to write files so that it is modifiable by randos?
     PHYSFS_file * fp;
     char buffer[DEFAULT::BUFFER_SIZE];
+    tinyxml2::XMLDocument xmlDoc;
     if (append) {
         fp = PHYSFS_openAppend(filename);
     } else {
         fp = PHYSFS_openWrite(filename);
+        xmlDoc.InsertFirstChild(xmlDoc.NewDeclaration());
     }
-    tinyxml2::XMLDocument xmlDoc;
-    xmlDoc.InsertFirstChild(xmlDoc.NewDeclaration());
-
+    if (!fp) {
+        SDL_Log("Could not open %s for Weapon writing\n", filename);
+    }
     tinyxml2::XMLElement * pWpn = xmlDoc.NewElement("Weapon");
     xmlDoc.InsertEndChild(pWpn);
     pWpn->SetAttribute("id", id);

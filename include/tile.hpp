@@ -35,7 +35,9 @@ class Tile {
 
         void write(const char * filename, const char * mode = "a");
         void writeXML(const char * filename, const bool append = false);
+        void writeXML(tinyxml2::XMLDocument * in_doc, tinyxml2::XMLElement * in_pTile);
         void readXML(const char * filename);
+        void readXML(tinyxml2::XMLElement * in_pTile);
 };
 
 void testXMLTiles();

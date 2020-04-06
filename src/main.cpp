@@ -63,7 +63,7 @@ int main(int argc, char * argv[]) {
     firesaga->makeFPSEntity();
 
     // SDL_Log("Testing convoy\n");
-    // testConvoy();
+    testConvoy();
 
     // getchar();
 

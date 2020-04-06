@@ -27,8 +27,7 @@ void Tile::makeMvtCostarray() {
     cost_array[UNIT::MVT::ARMORS] = cost_struct.armors;
     cost_array[UNIT::MVT::PIRATES] = cost_struct.pirates;
     cost_array[UNIT::MVT::BANDITS] = cost_struct.bandits;
-    SDL_Log("Made cost array: %d %d ", UNIT::MVT::FOOT_SLOW, cost_array[UNIT::MVT::FOOT_SLOW]);
-    // printarr(cost_array, UNIT::MVT::END);
+    // SDL_Log("Made cost array: %d %d ", UNIT::MVT::FOOT_SLOW, cost_array[UNIT::MVT::FOOT_SLOW]);
 }
 
 unsigned char * Tile::getCost() {
@@ -85,6 +84,9 @@ void Tile::readXML(const char * filename) {
     readXML_stats(ptemp, &stats);
 
 }
+void writeXML(tinyxml2::XMLDocument * in_doc, tinyxml2::XMLElement * in_pTile) {
+
+}
 
 void Tile::writeXML(const char * filename, const bool append) {
     SDL_Log("writeXML Tile to: %s\n", filename);
@@ -92,14 +94,11 @@ void Tile::writeXML(const char * filename, const bool append) {
     PHYSFS_file * fp;
     char buffer[DEFAULT::BUFFER_SIZE];
     tinyxml2::XMLDocument xmlDoc;
-    if (!PHYSFS_exists(filename)) {    
-        xmlDoc.InsertFirstChild(xmlDoc.NewDeclaration());
-    }
     if (append) {
         fp = PHYSFS_openAppend(filename);
-
     } else {
         fp = PHYSFS_openWrite(filename);
+        xmlDoc.InsertFirstChild(xmlDoc.NewDeclaration());
     }
      
     tinyxml2::XMLElement * pTile = xmlDoc.NewElement("Tile");

@@ -716,27 +716,25 @@ void Unit::writeXML(const char * filename, const bool append) {
     // How to write files so that it is modifiable by randos?
     PHYSFS_file * fp;
     tinyxml2::XMLDocument xmlDoc;
-    if (!PHYSFS_exists(filename)) {    
-        xmlDoc.InsertFirstChild(xmlDoc.NewDeclaration());
-    }
     if (append) {
         fp = PHYSFS_openAppend(filename);
-
     } else {
         fp = PHYSFS_openWrite(filename);
+        xmlDoc.InsertFirstChild(xmlDoc.NewDeclaration());
     }
-    
+    if (!fp) {
+        SDL_Log("Could not open %s for Unit writing\n", filename);
+    }
+    char longbuffer[printer.CStrSize()];
     tinyxml2::XMLElement * pUnit = xmlDoc.NewElement("Unit");
     xmlDoc.InsertEndChild(pUnit);
-    writeXML(&xmlDoc, pUnit);
-    
     tinyxml2::XMLPrinter printer;
-
+    
+    writeXML(&xmlDoc, pUnit);
     xmlDoc.Print(&printer);
-    char longbuffer[printer.CStrSize()];
+
     stbsp_sprintf(longbuffer, printer.CStr());
     PHYSFS_writeBytes(fp, longbuffer, printer.CStrSize());
-
     PHYSFS_close(fp);
 }
 
