@@ -1,12 +1,12 @@
 #include "tile.hpp"
 #include "stb_sprintf.h"
 
-
-Tile::~Tile() {
+Tile::Tile() { 
     setXMLElement("Tile");
 }
 
-Tile::Tile(void) { 
+Tile::~Tile() {
+
 }
 
 Tile::Tile(const short int in_id, const char* in_name, const Movement_cost in_cost, const Tile_stats in_stats, const bool in_inside) : Tile() {
