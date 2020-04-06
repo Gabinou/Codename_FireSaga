@@ -46,7 +46,7 @@ int main(int argc, char * argv[]) {
 
 
     firesaga = new Game();
-    firesaga->loadUnits(base_units);
+    firesaga->loadUnits(0);
     // SDL_Log("Testing game load->save XML");
     // firesaga->loadXML(1);
     // firesaga->saveXML(2);
@@ -63,8 +63,8 @@ int main(int argc, char * argv[]) {
     firesaga->init("FireSaga", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, firesaga->getSettings().res.x, firesaga->getSettings().res.y, false);
     firesaga->makeFPSEntity();
 
-    SDL_Log("Testing convoy\n");
-    testConvoy();
+    // SDL_Log("Testing convoy\n");
+    // testConvoy();
 
     // firesaga->loadMap("..//maps//test_tilemap.txt");
     firesaga->loadMap(0);

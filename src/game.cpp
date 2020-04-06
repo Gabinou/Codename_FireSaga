@@ -387,7 +387,7 @@ void Game::loadUnitEntities(std::vector<short unsigned int> unit_inds, std::vect
     }
 }
 void Game::loadUnits(unsigned char in_chap) {
-    std::vector<short int> toload = chapTiles[in_chap]();
+    std::vector<short int> toload = chapBaseUnits[in_chap]();
     baseUnits(&units, toload);
 }
 
@@ -458,14 +458,7 @@ void Game::init(const char * title, int xpos, int ypos, int width, int height, b
     }
 
     state = GAME::STATE::MAP;
-
-    std::vector<short int> basepartyinds = {UNIT::NAME::ERWIN, UNIT::NAME::KIARA, UNIT::NAME::SILOU};
-    loadUnits(basepartyinds);
-    // std::vector<Unit> baseparty = baseUnits(basepartyinds);
-    // for (int i = 0; i < baseparty.size(); i++) {
-    //     units[baseparty[i].getid()] = baseparty[i];
-    // }
-    
+    loadUnits(chapBaseUnits[0]());
 };
 
 void Game::loadXML(const short int save_ind) {
