@@ -28,7 +28,7 @@ void loadFileToMemory(const char * name, unsigned char ** mem,
 void log(void * userdata, int category, SDL_LogPriority priority, const char * message);
 }
 char * getlineFS();
-extern SDL_Texture * loadTexture(SDL_Renderer * in_renderer, const char * filename, const bool FS = false);
+extern SDL_Texture * loadTexture(SDL_Renderer * in_renderer, const char * filename, const bool ZIP = false);
 extern SDL_Texture * textToTexture(SDL_Renderer * in_renderer, std::string textureText, SDL_Color textColor, TTF_Font * in_font);
 extern void writeText(int in_fontsize, int in_position[2], float in_sizefactor[2], std::string in_text, SDL_Color in_color, TTF_Font * in_font, SDL_Renderer * in_renderer);
 

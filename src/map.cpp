@@ -49,16 +49,13 @@ std::vector<short unsigned int> Map::getEnemies() {
 }
 
 std::vector<std::vector<short int>> Map::makeMvtCostmap(const unsigned char unitmovetype) {
-    SDL_Log("Making MvtCostmap");
-    SDL_Log("unitmovetype %d", unitmovetype);
+    // SDL_Log("Making MvtCostmap");
     short int tile_ind = 0;
     std::vector<std::vector<short int>> costmap((short int)tilemap.size(), std::vector<short int> ((short int)tilemap[0].size()));
     for (short int row = 0; row < tilemap.size(); row++) {
         for (short int col = 0; col < tilemap[row].size(); col++) {
             tile_ind = tilemap[row][col]/DEFAULT::TILE_DIVISOR;
             costmap[row][col] = tiles[tile_ind].getCost()[unitmovetype];
-            // SDL_Log("tile_ind: %d", tile_ind);
-            // SDL_Log("Tile: %s, Mvt_cost: %d", tiles[tile_ind].getName().c_str(), tiles[tile_ind].getCost()[unitmovetype]);
         }
     }
     return(costmap);

@@ -11,7 +11,6 @@
 #include "stb_sprintf.h"
 // #endif /* STB_SPRINTF_IMPLEMENTATION */
 
-
 SDL_Renderer * Game::renderer = nullptr;
 TTF_Font * Game::font = NULL;
 Manager Game::manager;
@@ -262,7 +261,7 @@ void Game::setState(Entity & setting_entity, short unsigned int new_state) {
         case GAME::STATE::UNITMOVE:
             switch (new_state) {            
                 case GAME::STATE::UNITMENU: {
-                    SDL_Log("Chaging to unitmenu\n");
+                    SDL_Log("Changing to unitmenu\n");
                     mapp->hideOverlay();
                     makeUnitmenu(setting_entity); 
                     short int *new_position = setting_entity.getComponent<PositionComponent>().getPos();

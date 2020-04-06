@@ -125,16 +125,14 @@ void freeMemory(unsigned char **mem) {
 
 SDL_Surface * ZIP_loadSurface(const char *filename, bool noBlend = true, bool noAlpha = false)
 {
-    //Temporary storage for the image that's loaded
-    SDL_Surface* loadedImage = NULL;
-    //The optimized image that will be used
-    SDL_Surface* optimizedImage = NULL;
+    SDL_Surface* loadedImage = NULL; //Temporary storage for image
+    SDL_Surface* optimizedImage = NULL;//optimized image to be used
 
     unsigned char *data;
-    unsigned int width, height;
-
     unsigned char *fileIn = NULL;
+    unsigned int width, height;
     size_t length = 0;
+
     FILESYSTEM::loadFileToMemory(filename, &fileIn, &length);
     if (noAlpha) {
         lodepng_decode24(&data, &width, &height, fileIn, length);
@@ -173,10 +171,10 @@ SDL_Surface * ZIP_loadSurface(const char *filename, bool noBlend = true, bool no
     }
 }
 
-SDL_Texture * loadTexture(SDL_Renderer * in_renderer, const char * filename, const bool FS) {
+SDL_Texture * loadTexture(SDL_Renderer * in_renderer, const char * filename, const bool ZIP) {
     SDL_Surface * tempsurface;
     SDL_Log("LoadTexture: %s\n", filename);
-    if (FS) {
+    if (ZIP) {
         tempsurface = ZIP_loadSurface(filename); // How fast is this?
     } else {
         tempsurface = IMG_Load(filename); // Not that fast.
@@ -184,7 +182,7 @@ SDL_Texture * loadTexture(SDL_Renderer * in_renderer, const char * filename, con
     if (tempsurface == NULL) {
         SDL_Log("loadTexture. IMG_Load error: %s\n", IMG_GetError());
     }
-    SDL_Texture * texture = SDL_CreateTextureFromSurface(in_renderer, tempsurface); // THIS FUNCTION CRASHES.
+    SDL_Texture * texture = SDL_CreateTextureFromSurface(in_renderer, tempsurface);
     if (texture == NULL) {
        SDL_Log("CreateTextureFromSurface failed: %s\n", SDL_GetError()); 
     }
