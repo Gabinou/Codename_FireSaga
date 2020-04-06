@@ -7,10 +7,11 @@
 
 
 Weapon::Weapon() {
+    setXMLElement("Weapon");
 
 }
 
-Weapon::Weapon(short unsigned int in_type, Weapon_stats in_stats, unsigned char in_id) {
+Weapon::Weapon(short unsigned int in_type, Weapon_stats in_stats, unsigned char in_id) : Weapon() {
     stats = in_stats;
     name = wpnNames[in_id];
     type = in_type;
@@ -84,7 +85,7 @@ void Weapon::setType(short unsigned int in_type) {
 
 void Weapon::readXML(tinyxml2::XMLElement * in_pWpn) {
     tinyxml2::XMLElement * ptemp;
-    
+
     ptemp = in_pWpn->FirstChildElement("Name");
     if (!ptemp) {SDL_Log("Cannot get Name element");}   
     name = ptemp->GetText();
