@@ -117,15 +117,6 @@ void Weapon::readXML(tinyxml2::XMLElement * in_pWpn) {
     readXML_stats(ptemp, &stats);
 }
 
-// void Weapon::readXML(const char * filename) {
-//     SDL_Log("readXML Unit file: %s", filename);    
-//     tinyxml2::XMLDocument xmlDoc;
-//     parseXML(filename, &xmlDoc);
-//     tinyxml2::XMLElement * ptemp;
-//     tinyxml2::XMLElement * in_pWpn = xmlDoc.FirstChildElement("Weapon");
-    
-// }
-
 void Weapon::writeXML(tinyxml2::XMLDocument * in_doc, tinyxml2::XMLElement * in_pWpn) {
     in_pWpn->SetAttribute("id", id);
     
@@ -182,30 +173,6 @@ void Weapon::writeXML(tinyxml2::XMLDocument * in_doc, tinyxml2::XMLElement * in_
     }
     pEffects->SetAttribute("id", (uint64_t) effect);
 }
-
-
-// void Weapon::writeXML(const char * filename, const bool append) {
-//     SDL_Log("writeXML Weapon to: %s\n", filename);
-//     // How to write files so that it is modifiable by randos?
-//     PHYSFS_file * fp;
-//     char buffer[DEFAULT::BUFFER_SIZE];
-//     tinyxml2::XMLDocument xmlDoc;
-//     if (append) {
-//         fp = PHYSFS_openAppend(filename);
-//     } else {
-//         fp = PHYSFS_openWrite(filename);
-//         in_doc->InsertFirstChild(xmlDoc.NewDeclaration());
-//     }
-//     if (!fp) {
-//         SDL_Log("Could not open %s for Weapon writing\n", filename);
-//     }
-//     tinyxml2::XMLElement * pWpn = xmlDoc.NewElement("Weapon");
-//     xmlDoc.InsertEndChild(pWpn);
-    
-
-//     printXMLDoc(fp, &xmlDoc); 
-//     PHYSFS_close(fp);
-// }
 
 void Weapon::write(const char * filename, const char * mode){
     FILE * fp;
