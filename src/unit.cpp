@@ -725,14 +725,13 @@ void Unit::writeXML(const char * filename, const bool append) {
     if (!fp) {
         SDL_Log("Could not open %s for Unit writing\n", filename);
     }
-    char longbuffer[printer.CStrSize()];
     tinyxml2::XMLElement * pUnit = xmlDoc.NewElement("Unit");
     xmlDoc.InsertEndChild(pUnit);
     tinyxml2::XMLPrinter printer;
     
     writeXML(&xmlDoc, pUnit);
     xmlDoc.Print(&printer);
-
+    char longbuffer[printer.CStrSize()];
     stbsp_sprintf(longbuffer, printer.CStr());
     PHYSFS_writeBytes(fp, longbuffer, printer.CStrSize());
     PHYSFS_close(fp);

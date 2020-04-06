@@ -82,10 +82,23 @@ void Tile::readXML(const char * filename) {
     ptemp = pTile->FirstChildElement("Stats");
     if (!ptemp) {SDL_Log("Cannot get Name element");}   
     readXML_stats(ptemp, &stats);
-
 }
-void writeXML(tinyxml2::XMLDocument * in_doc, tinyxml2::XMLElement * in_pTile) {
 
+void Tile::writeXML(tinyxml2::XMLDocument * in_doc, tinyxml2::XMLElement * in_pTile) {
+    in_pTile->SetAttribute("id", id);
+    in_pTile->SetAttribute("inside", inside);
+
+    tinyxml2::XMLElement * pName = in_doc->NewElement("Name");
+    in_pTile->InsertEndChild(pName);
+    pName->SetText(name.c_str());
+
+    tinyxml2::XMLElement * pMvtCost = in_doc->NewElement("MvtCost");
+    in_pTile->InsertEndChild(pMvtCost);
+    writeXML_mvtcost(in_doc, pMvtCost, &cost_struct);
+
+    tinyxml2::XMLElement * pStats = in_doc->NewElement("Stats");
+    in_pTile->InsertEndChild(pStats);
+    writeXML_stats(in_doc, pStats, &stats);
 }
 
 void Tile::writeXML(const char * filename, const bool append) {
@@ -103,20 +116,7 @@ void Tile::writeXML(const char * filename, const bool append) {
      
     tinyxml2::XMLElement * pTile = xmlDoc.NewElement("Tile");
     xmlDoc.InsertEndChild(pTile);
-    pTile->SetAttribute("id", id);
-    pTile->SetAttribute("inside", inside);
-
-    tinyxml2::XMLElement * pName = xmlDoc.NewElement("Name");
-    pTile->InsertEndChild(pName);
-    pName->SetText(name.c_str());
-
-    tinyxml2::XMLElement * pMvtCost = xmlDoc.NewElement("MvtCost");
-    pTile->InsertEndChild(pMvtCost);
-    writeXML_mvtcost(&xmlDoc, pMvtCost, &cost_struct);
-
-    tinyxml2::XMLElement * pStats = xmlDoc.NewElement("Stats");
-    pTile->InsertEndChild(pStats);
-    writeXML_stats(&xmlDoc, pStats, &stats);
+    writeXML(&xmlDoc, pTile);
 
     tinyxml2::XMLPrinter printer;
 
@@ -127,7 +127,6 @@ void Tile::writeXML(const char * filename, const bool append) {
 
     PHYSFS_close(fp);
 }
-
 
 void Tile::write(const char * filename, const char * mode) {
     FILE * fp;
