@@ -188,6 +188,7 @@ void loadUtilities() {
     makeArmyNames();
 }
 
+std::vector<std::string> armyNames;
 void makeArmyNames() {
      armyNames.push_back("");
      armyNames.push_back("Friendly");

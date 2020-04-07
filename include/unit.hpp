@@ -134,8 +134,7 @@ class Unit : public XML_IO {
         void setName(const char in_name);
 
         std::string getArmy();
-        void setArmy(const std::string in_army);
-        void setArmy(const char in_army);
+        void setArmy(const unsigned char in_army);
 
         bool canRetaliate(Unit * enemy) const;
         bool canDouble(Unit * enemy);

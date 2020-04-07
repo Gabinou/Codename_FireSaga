@@ -499,6 +499,7 @@ void Unit::setName(const char in_name) {
 
 void Unit::setArmy(const unsigned char in_army) {
     army = in_army;
+    army_name = armyNames[army];
 }
 
 Combat_stats Unit::getCombatStats() {
