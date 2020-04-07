@@ -639,7 +639,7 @@ bool rout(Map * in_map) {
 }
 
 bool positionCondition(Unit * in_unit, Map_condition * in_mcond) {
-    
+    // Called by the game everytime a unit moves.
     if (in_mcond->army > 0) {
         if (in_mcond->army != in_unit->getArmy()) {
             return(false);
@@ -652,30 +652,17 @@ bool positionCondition(Unit * in_unit, Map_condition * in_mcond) {
     }
     short int * unitpos = in_unit->getPos();
 
-    if (unitpos[0] < std::max(0, in_mcond->colmin)) {
+    if (unitpos[0] < std::max(0, (int)in_mcond->colmin)) {
         return(false);
     }
-    if (unitpos[0] > std::min(255, in_mcond->colmax)) {
+    if (unitpos[0] > std::min(255, (int)in_mcond->colmax)) {
         return(false);
     }
-    if (unitpos[1] < std::max(0, in_mcond->rowmin)) {
+    if (unitpos[1] < std::max(0, (int)in_mcond->rowmin)) {
         return(false);
     }
-    if (unitpos[1] > std::min(255, in_mcond->rowmax)) {
+    if (unitpos[1] > std::min(255, (int)in_mcond->rowmax)) {
         return(false);
     }
     return(true);
 }
-
-bool positionCondition(Map * in_map, Map_condition * in_mcond) {
-    std::vector<std::vector<Entity *>> entitymap = in_map->getEntitymap();
-
-    for (int col = std::max(0, in_mcond->colmin); col < in_mcond->colmax; col++) {
-        for (int row = in_mcond->rowmin; row < in_mcond->rowmax; row++) {
-
-        }
-    }
-
-    return(false);
-}
-
