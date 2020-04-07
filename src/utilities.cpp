@@ -185,7 +185,23 @@ void loadUtilities() {
     makemvtTypes();
     makewpnNames();
     makeEquippableCodes();
+    makeArmyNames();
 }
+
+void makeArmyNames() {
+     armyNames.push_back("");
+     armyNames.push_back("Friendly");
+     armyNames.push_back("Enemy");
+     armyNames.push_back("Neutral");
+     armyNames.push_back("Imperial");
+     armyNames.push_back("Voldan");
+     armyNames.push_back("Kewac");
+     armyNames.push_back("Theocratic");
+     armyNames.push_back("Free Milita");
+     armyNames.push_back("Erwin");
+     armyNames.push_back("");
+}
+
 
 std::vector<std::string> wpnTypes(short unsigned int in_typecode) {
     std::vector<std::string> types;

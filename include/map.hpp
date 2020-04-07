@@ -10,8 +10,6 @@
 #include "linalg.hpp"
 #include <unordered_map>
 
-using Entity_ptr_matrix = std::vector<std::vector<Entity *>>;
-
 class Map {
     private:
         short unsigned int tilesize[2];
@@ -47,7 +45,7 @@ class Map {
         std::vector<SDL_Texture *> overlays{NULL, NULL, NULL};
         std::vector<SDL_Texture *> dangers{NULL, NULL};
 
-        Entity_ptr_matrix entitymap;
+        std::vector<std::vector<Entity *>> entitymap;
 
         std::unordered_map<int, Tile> tiles;
         std::vector<short int> tilesasset_ind;

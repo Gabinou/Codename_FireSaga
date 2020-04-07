@@ -41,6 +41,7 @@ class Unit : public XML_IO {
         unsigned short int affiliation;
         unsigned char class_index;
         unsigned char mvt_type;
+        unsigned char army;
 
         unsigned char current_hp = 0;
         char current_speed = 0;

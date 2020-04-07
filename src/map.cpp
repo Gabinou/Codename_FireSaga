@@ -161,13 +161,13 @@ void Map::initVars() {
     setTilesize(DEFAULT::TILESIZE, DEFAULT::TILESIZE);
     srcrect.w = destrect.w = DEFAULT::TILESIZE;
     srcrect.h = destrect.h = DEFAULT::TILESIZE;
-    Entity_ptr_matrix temp(DEFAULT::LINE_LENGTH, std::vector<Entity*>(DEFAULT::LINE_LENGTH));
+    std::vector<std::vector<Entity *>> temp(DEFAULT::LINE_LENGTH, std::vector<Entity*>(DEFAULT::LINE_LENGTH));
     entitymap = temp;
 }
 
 void Map::makeEntitymap(const short unsigned int row_size, const short unsigned int col_size){
     if (!made_entitymap) {
-        Entity_ptr_matrix temp(row_size, std::vector<Entity*>(col_size));
+        std::vector<std::vector<Entity *>> temp(row_size, std::vector<Entity*>(col_size));
         entitymap = temp;
         for (short unsigned int col = 0; col < entitymap.size(); col++) {
             for (short unsigned int row = 0; row < entitymap[0].size(); row++) {

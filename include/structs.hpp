@@ -19,6 +19,15 @@ struct Unit_state {
     char stone;
 };
 
+struct Map_condition {
+    short int unit = -1;
+    short int army = -1;
+    short int xmax = -1;
+    short int xmin = -1;
+    short int ymax = -1;
+    short int ymin = -1;
+};
+
 struct Quantity {
     unsigned char swords = 0;
     unsigned char lances = 0;

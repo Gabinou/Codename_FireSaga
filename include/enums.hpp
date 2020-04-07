@@ -324,6 +324,19 @@ enum TYPES {
     ANGEL = 0x0020,
 };
 }
+namespace ARMY {
+enum ARMIES {
+    FRIENDLY = 1,
+    ENEMY,
+    NEUTRAL,
+    IMPERIAL,
+    VOLDAN,
+    KEWAC,
+    THEOCRACY,
+    FREE_MILITIA,
+    ERWIN,
+};
+}
 namespace NAME {
 enum NAMES {
     ERWIN = 1,

@@ -35,6 +35,8 @@ extern std::vector<unsigned char> mvtTypes;
 extern void makemvtTypes();
 extern std::vector<short unsigned int> equippableCodes;
 extern void makeEquippableCodes();
+extern std::vector<std::string> armyNames;
+extern void makeArmyNames();
 
 extern void loadUtilities();
 
