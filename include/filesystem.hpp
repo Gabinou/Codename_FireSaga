@@ -41,11 +41,10 @@ extern void writeXML_mvtcost(tinyxml2::XMLDocument * in_doc, tinyxml2::XMLElemen
 extern void readXML_mvtcost(tinyxml2::XMLElement * in_pCost, Movement_cost * in_cost);
 extern void writeXML_narrative(tinyxml2::XMLDocument * in_doc, tinyxml2::XMLElement * in_pNarrative, Narrative * in_state);
 extern void readXML_narrative(tinyxml2::XMLElement * in_pNarrative, Narrative * in_state);
-
 extern void readXML_items(tinyxml2::XMLElement * in_pEquipment, Inventory_item * equipment);
 extern void writeXML_items(tinyxml2::XMLDocument * in_doc, tinyxml2::XMLElement * in_pEquipment, Inventory_item * in_equipment, int size);
-extern void printXMLDoc(PHYSFS_file * in_fp, tinyxml2::XMLDocument * in_doc);
 
+extern void printXMLDoc(PHYSFS_file * in_fp, tinyxml2::XMLDocument * in_doc);
 extern int parseXML(const char * filename, tinyxml2::XMLDocument * in_doc);
 
 class XML_IO {
@@ -60,6 +59,5 @@ class XML_IO {
         void setXMLElement(std::string in_xmlElement);
         std::string getXMLElement();
 };
-
 
 #endif /* FILESYSTEM_HPP */

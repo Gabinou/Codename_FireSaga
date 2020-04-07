@@ -624,9 +624,7 @@ void readXML_mvtcost(tinyxml2::XMLElement * in_pCost, Movement_cost * in_cost) {
 }
 
 void readXML_stats(tinyxml2::XMLElement * in_pStats, Tile_stats * in_stats) {
-
     int buffint;
-
     tinyxml2::XMLElement * pdodge = in_pStats->FirstChildElement("dodge");
     tinyxml2::XMLElement * pPprot = in_pStats->FirstChildElement("Pprot");
     tinyxml2::XMLElement * pMprot = in_pStats->FirstChildElement("Mprot");
@@ -640,9 +638,7 @@ void readXML_stats(tinyxml2::XMLElement * in_pStats, Tile_stats * in_stats) {
     in_stats->Mprot = (char)buffint;
     pheal->QueryIntText(&buffint);
     in_stats->heal = (char)buffint;
-
 }
-
 
 void writeXML_stats(tinyxml2::XMLDocument * in_doc, tinyxml2::XMLElement * in_pStats, Tile_stats * in_stats) {
     tinyxml2::XMLElement * pdodge = in_doc->NewElement("dodge");
@@ -677,7 +673,6 @@ int parseXML(const char * filename, tinyxml2::XMLDocument * in_doc) {
     }
     return(0);
 }
-
 
 void XML_IO::readXML(const char * filename) {
     SDL_Log("readXML file: %s", filename);

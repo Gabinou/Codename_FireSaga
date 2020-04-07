@@ -98,6 +98,10 @@ class Map {
         void addDanger(const std::vector<std::vector<short int>> in_danger);
         void subDanger(const std::vector<std::vector<short int>> in_danger);
 
+        std::vector<bool (*)()> win_conditions;
+        std::vector<bool (*)()> sidequests;
+        std::vector<bool (*)()> lose_conditions;
+
         void defeat();
         void victory();
 
