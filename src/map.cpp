@@ -196,6 +196,11 @@ void Map::postTilemap() {
     makeEntitymap(row_size, col_size);
 }
 
+unsigned char Map::getnumEnemies() {
+    return(num_enemies);
+}
+
+
 void Map::setOverlay(const unsigned char in_mode, const std::vector<std::vector<short int>> in_map) {
     if ((in_mode & MAP::OVERLAY::HEAL) > 0) {
         healoverlay = in_map;
@@ -290,16 +295,18 @@ std::vector<short unsigned int> (*chapEnemyinds[40])() = {testEnemyinds,};
 bool essentialDied(Map * in_map) { 
 
 
+    return(false);
 }
 
 
 // win conditions
 bool bossDied(Map * in_map) {
 
+    return(false);
 }
 
 bool rout(Map * in_map) {
-    if (in_map->num_enemies < 1) {
+    if (in_map->getnumEnemies() < 1) {
         return(false);
     } else {
         return(true);
