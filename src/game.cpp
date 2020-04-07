@@ -637,3 +637,10 @@ bool bossesDied(Map * in_map) {
 bool rout(Map * in_map) {
     return((in_map->getnumEnemies() < 1));
 }
+
+// ()bool functionmaker() {
+    bool insidefunc() {
+        return(false);
+    }
+    // return(insidefunc);
+// }
