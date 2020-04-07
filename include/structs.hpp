@@ -2,6 +2,7 @@
 #define STRUCTS_HPP
 
 #include <vector>
+#include <unordered_map>
 #include "SDL2/SDL.h"
 #include "enums.hpp"
 
@@ -36,9 +37,9 @@ struct Quantity {
 };
 
 struct Narrative {
-    bool pc_death[UNIT::NAME::PC_END - UNIT::NAME::ERWIN] = {0};
-    bool recruited[UNIT::NAME::PC_END - UNIT::NAME::ERWIN] = {0};
-    bool npc_death[UNIT::NAME::NPC_END - UNIT::NAME::PC_END - UNIT::NAME::ERWIN] = {0};
+    std::unordered_map<int, bool> pc_death;
+    std::unordered_map<int, bool> npc_death;
+    std::unordered_map<int, bool> recruited;
     char chapter = 0;
 };
 

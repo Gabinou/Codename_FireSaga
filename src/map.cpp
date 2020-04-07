@@ -200,8 +200,12 @@ unsigned char Map::getnumEnemies() {
     return(num_enemies);
 }
 
-std::vector<unsigned short int> Map::getBosses() {
-    return(bosses);
+unsigned short int Map::getBoss() {
+    return(boss);
+}
+
+bool Map::getBossDeath() {
+    return(bossdied);
 }
 
 std::vector<unsigned short int> Map::getEssentials() {
@@ -297,28 +301,3 @@ std::vector<short unsigned int> testEnemyinds(){
 
 std::vector<std::vector<short int>> (*chapTilemaps[40])() = {testTilemap,};
 std::vector<short unsigned int> (*chapEnemyinds[40])() = {testEnemyinds,};
-
-
-bool essentialDied(Map * in_map, Narrative in_narrative) { 
-    std::vector<short unsigned int> essentials = in_map->getEssentials();
-    for (int i = 0; i < essentials.size(); i++) {
-        // if 
-    }
-
-    return(false);
-}
-
-// win conditions
-bool bossesDied(Map * in_map) {
-
-    return(false);
-}
-
-bool rout(Map * in_map) {
-    if (in_map->getnumEnemies() < 1) {
-        return(false);
-    } else {
-        return(true);
-    }
-
-}

@@ -40,6 +40,7 @@ extern void loadUtilities();
 
 extern void printarr(int arr[], int size);
 extern void printvec(std::vector<int> vec);
+
 template <typename T>
 extern std::vector<T> cpprange(T ind1, T ind2) {
     std::vector<T> out;

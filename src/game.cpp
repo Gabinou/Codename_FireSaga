@@ -613,3 +613,33 @@ void Game::clean() {
 bool Game::running() {
     return (isRunning);
 }
+
+
+
+// loss conditions
+bool essentialDied(Map * in_map, const Narrative * in_narrative) { 
+    std::vector<short unsigned int> essentials = in_map->getEssentials();
+    for (int i = 0; i < essentials.size(); i++) {
+        if (in_narrative->death[essentials[i]]) {
+            return(true)
+        }
+    }
+    return(false);
+}
+
+// win conditions
+bool bossesDied(Map * in_map) {
+    std::vector<short unsigned int> bosses = in_map->getBosses();
+    std::vector<short unsigned int> bossdeath = in_map->getEssentials();
+
+    return(false);
+}
+
+bool rout(Map * in_map) {
+    if (in_map->getnumEnemies() < 1) {
+        return(false);
+    } else {
+        return(true);
+    }
+
+}
