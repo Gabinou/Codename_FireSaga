@@ -614,14 +614,12 @@ bool Game::running() {
     return (isRunning);
 }
 
-
-
 // loss conditions
 bool essentialDied(Map * in_map, const Narrative * in_narrative) { 
     std::vector<short unsigned int> essentials = in_map->getEssentials();
     for (int i = 0; i < essentials.size(); i++) {
-        if (in_narrative->pc_death[essentials[i]]) {
-            return(true)
+        if (in_narrative->death[essentials[i]]) {
+            return(true);
         }
     }
     return(false);
@@ -629,17 +627,9 @@ bool essentialDied(Map * in_map, const Narrative * in_narrative) {
 
 // win conditions
 bool bossesDied(Map * in_map) {
-    std::vector<short unsigned int> bosses = in_map->getBosses();
-    std::vector<short unsigned int> bossdeath = in_map->getEssentials();
-
-    return(false);
+    return(in_map->getBossDeath());
 }
 
 bool rout(Map * in_map) {
-    if (in_map->getnumEnemies() < 1) {
-        return(false);
-    } else {
-        return(true);
-    }
-
+    return((in_map->getnumEnemies() < 1));
 }

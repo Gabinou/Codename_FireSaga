@@ -354,8 +354,7 @@ void readXML_narrative(tinyxml2::XMLElement * in_pNarrative, Narrative * in_stat
     unsigned int buffint;
     bool buffbool;
 
-    tinyxml2::XMLElement * ppc_death = in_pNarrative->FirstChildElement("Death_PC");
-    tinyxml2::XMLElement * pnpc_death = in_pNarrative->FirstChildElement("Death_NPC");
+    tinyxml2::XMLElement * ppc_death = in_pNarrative->FirstChildElement("Death");
     tinyxml2::XMLElement * precruited = in_pNarrative->FirstChildElement("Recruited");
     tinyxml2::XMLElement * pUnit;
 
@@ -364,21 +363,17 @@ void readXML_narrative(tinyxml2::XMLElement * in_pNarrative, Narrative * in_stat
     in_state->chapter = buffint;
 
     pUnit = ppc_death->FirstChildElement("Unit");
-    readXML_narrativeUnits(pUnit, in_state->pc_death);
-    pUnit = pnpc_death->FirstChildElement("Unit");
-    readXML_narrativeUnits(pUnit, in_state->npc_death);
+    readXML_narrativeUnits(pUnit, in_state->death);
     pUnit = precruited->FirstChildElement("Unit");
     readXML_narrativeUnits(pUnit, in_state->recruited);
 }
 
 void writeXML_narrative(tinyxml2::XMLDocument * in_doc, tinyxml2::XMLElement * in_pNarrative, Narrative * in_state) {
-    tinyxml2::XMLElement * ppc_death = in_doc->NewElement("Death_PC");
-    tinyxml2::XMLElement * pnpc_death = in_doc->NewElement("Death_NPC");
+    tinyxml2::XMLElement * pdeath = in_doc->NewElement("Death");
     tinyxml2::XMLElement * precruited = in_doc->NewElement("Recruited");
     tinyxml2::XMLElement * pchapter = in_doc->NewElement("Chapter");
     in_pNarrative->InsertEndChild(pchapter);
-    in_pNarrative->InsertEndChild(ppc_death);
-    in_pNarrative->InsertEndChild(pnpc_death);
+    in_pNarrative->InsertEndChild(pdeath);
     in_pNarrative->InsertEndChild(precruited);
 
     pchapter->SetText(in_state->chapter);
@@ -390,43 +385,31 @@ void writeXML_narrative(tinyxml2::XMLDocument * in_doc, tinyxml2::XMLElement * i
     std::string name;
     char buffer[DEFAULT::BUFFER_SIZE];
 
-    for (unsigned int i = UNIT::NAME::ERWIN; i < UNIT::NAME::PC_END; i++) {
+    for (unsigned int i = UNIT::NAME::ERWIN; i < UNIT::NAME::NPC_END; i++) {
         name = unitNames[i];
-        buffbool = in_state->pc_death[i - UNIT::NAME::ERWIN];
+        buffbool = in_state->death[i - UNIT::NAME::ERWIN];
         ptemp1 = in_doc->NewElement("Unit");
         ptemp2 = in_doc->NewElement("Died");
         ptemp3 = in_doc->NewElement("Name");
-        ppc_death->InsertEndChild(ptemp1);
+        pdeath->InsertEndChild(ptemp1);
         ptemp1->InsertEndChild(ptemp3);
         ptemp1->InsertEndChild(ptemp2);
         ptemp2->SetText(buffbool);
         ptemp3->SetText(name.c_str());
         ptemp1->SetAttribute("id", i);
 
-        buffbool = in_state->recruited[i - UNIT::NAME::ERWIN];
-        ptemp1 = in_doc->NewElement("Unit");
-        ptemp2 = in_doc->NewElement("Recruited");
-        ptemp3 = in_doc->NewElement("Name");
-        precruited->InsertEndChild(ptemp1);
-        ptemp1->InsertEndChild(ptemp3);
-        ptemp1->InsertEndChild(ptemp2);
-        ptemp2->SetText(buffbool);
-        ptemp3->SetText(name.c_str());
-        ptemp1->SetAttribute("id", i);    
-    }
-
-    for (unsigned int i = UNIT::NAME::ZINEDAN; i < UNIT::NAME::NPC_END; i++) {
-        buffbool = in_state->npc_death[i - UNIT::NAME::ZINEDAN];
-        stbsp_sprintf(buffer, "NPC%d", i);
-        ptemp1 = in_doc->NewElement("Unit");
-        ptemp2 = in_doc->NewElement("Died");
-        ptemp3 = in_doc->NewElement("Name");
-        pnpc_death->InsertEndChild(ptemp1);
-        ptemp1->InsertEndChild(ptemp3);
-        ptemp1->InsertEndChild(ptemp2);
-        ptemp2->SetText(buffbool);
-        ptemp3->SetText(buffer);
-        ptemp1->SetAttribute("id", i);
+        if (i < UNIT::NAME::PC_END) {
+            buffbool = in_state->recruited[i - UNIT::NAME::ERWIN];
+            ptemp1 = in_doc->NewElement("Unit");
+            ptemp2 = in_doc->NewElement("Recruited");
+            ptemp3 = in_doc->NewElement("Name");
+            precruited->InsertEndChild(ptemp1);
+            ptemp1->InsertEndChild(ptemp3);
+            ptemp1->InsertEndChild(ptemp2);
+            ptemp2->SetText(buffbool);
+            ptemp3->SetText(name.c_str());
+            ptemp1->SetAttribute("id", i);
+        }
     }
 }
 

@@ -36,9 +36,8 @@ struct Quantity {
 };
 
 struct Narrative {
-    bool pc_death[UNIT::NAME::NPC_END - UNIT::NAME::ERWIN] = {0};
+    bool death[UNIT::NAME::NPC_END - UNIT::NAME::ERWIN] = {0};
     bool recruited[UNIT::NAME::PC_END - UNIT::NAME::ERWIN] = {0};
-    bool npc_death[UNIT::NAME::NPC_END - UNIT::NAME::PC_END - UNIT::NAME::ERWIN] = {0};
     char chapter = 0;
 };
 
