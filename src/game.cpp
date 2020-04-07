@@ -627,15 +627,23 @@ bool essentialDied(Map * in_map, const Narrative * in_narrative) {
 
 // win conditions
 bool throneSeized(Map * in_map) {
+    //Maybe not necessary? maybe win is called when the throne is seized?
     return(in_map->getSeized());
 }
 
-bool bossesDied(Map * in_map) {
+bool talked(Map * in_map) {
+    return(false)
+}
+bool bossDied(Map * in_map) {
     return(in_map->getBossDeath());
 }
 
 bool rout(Map * in_map) {
     return((in_map->getnumEnemies() < 1));
+}
+
+bool areAlive() {
+    return(false);
 }
 
 bool positionCondition(Unit * in_unit, Map_condition * in_mcond) {
