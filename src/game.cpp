@@ -620,7 +620,7 @@ bool Game::running() {
 bool essentialDied(Map * in_map, const Narrative * in_narrative) { 
     std::vector<short unsigned int> essentials = in_map->getEssentials();
     for (int i = 0; i < essentials.size(); i++) {
-        if (in_narrative->death[essentials[i]]) {
+        if (in_narrative->pc_death[essentials[i]]) {
             return(true)
         }
     }
