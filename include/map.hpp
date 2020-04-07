@@ -30,6 +30,7 @@ class Map {
         std::vector<unsigned short int> essentials = {UNIT::NAME::ERWIN};
         unsigned short int boss;
         bool bossdied;
+        bool seized;
 
         std::vector<std::vector<short int>> moveoverlay, attackoverlay, healoverlay;
         std::vector<std::vector<short int>> dangeroverlay;
@@ -108,6 +109,7 @@ class Map {
         unsigned char getnumEnemies();
         unsigned short int getBoss();
         bool getBossDeath();
+        bool getSeized();
         std::vector<unsigned short int> getEssentials();
 
         std::vector<bool (*)(Map)> win_conditions;

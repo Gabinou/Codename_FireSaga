@@ -80,11 +80,11 @@ int main(int argc, char * argv[]) {
     int frame_time;
     char buffer[15];
     
-    // SDL_Log("Testing game save XML");
-    // firesaga->saveXML(1);
-    // firesaga->copySaveXML(1, 2);
-    // firesaga->copySaveXML(2, 3);
-    // firesaga->deleteSaveXML(2);
+    SDL_Log("Testing game save XML");
+    firesaga->saveXML(1);
+    firesaga->copySaveXML(1, 2);
+    firesaga->copySaveXML(2, 3);
+    firesaga->deleteSaveXML(2);
     
     SDL_Log("Starting main game loop\n");
     while (firesaga->running()) {

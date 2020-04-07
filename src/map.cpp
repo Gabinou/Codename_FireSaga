@@ -72,7 +72,6 @@ void Map::unloadTiles(std::vector<short int> to_unload) {
     }
 }
 
-
 std::vector<std::vector<short int>> Map::getTilemap(){
     return(tilemap);
 }
@@ -205,6 +204,10 @@ unsigned short int Map::getBoss() {
 }
 
 bool Map::getBossDeath() {
+    return(bossdied);
+}
+
+bool Map::getSeized() {
     return(bossdied);
 }
 

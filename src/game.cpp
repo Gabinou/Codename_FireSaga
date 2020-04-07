@@ -626,6 +626,10 @@ bool essentialDied(Map * in_map, const Narrative * in_narrative) {
 }
 
 // win conditions
+bool throneSeized(Map * in_map) {
+    return(in_map->getSeized());
+}
+
 bool bossesDied(Map * in_map) {
     return(in_map->getBossDeath());
 }
