@@ -200,6 +200,13 @@ unsigned char Map::getnumEnemies() {
     return(num_enemies);
 }
 
+std::vector<unsigned short int> Map::getBosses() {
+    return(bosses);
+}
+
+std::vector<unsigned short int> Map::getEssentials() {
+    return(essentials);
+}
 
 void Map::setOverlay(const unsigned char in_mode, const std::vector<std::vector<short int>> in_map) {
     if ((in_mode & MAP::OVERLAY::HEAL) > 0) {
@@ -292,15 +299,17 @@ std::vector<std::vector<short int>> (*chapTilemaps[40])() = {testTilemap,};
 std::vector<short unsigned int> (*chapEnemyinds[40])() = {testEnemyinds,};
 
 
-bool essentialDied(Map * in_map) { 
-
+bool essentialDied(Map * in_map, Narrative in_narrative) { 
+    std::vector<short unsigned int> essentials = in_map->getEssentials();
+    for (int i = 0; i < essentials.size(); i++) {
+        // if 
+    }
 
     return(false);
 }
 
-
 // win conditions
-bool bossDied(Map * in_map) {
+bool bossesDied(Map * in_map) {
 
     return(false);
 }

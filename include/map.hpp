@@ -27,7 +27,7 @@ class Map {
         unsigned char num_neutral;
         unsigned char num_enemies;
 
-        std::vector<unsigned short int> essentialUnits = {UNIT::NAME::ERWIN};
+        std::vector<unsigned short int> essentials = {UNIT::NAME::ERWIN};
         std::vector<unsigned short int> bosses;
 
         std::vector<std::vector<short int>> moveoverlay, attackoverlay, healoverlay;
@@ -105,6 +105,8 @@ class Map {
         void subDanger(const std::vector<std::vector<short int>> in_danger);
 
         unsigned char getnumEnemies();
+        std::vector<unsigned short int> getBosses();
+        std::vector<unsigned short int> getEssentials();
 
         std::vector<bool (*)(Map)> win_conditions;
         std::vector<bool (*)(Map)> sidequests;
