@@ -497,7 +497,7 @@ void Unit::setName(const char in_name) {
     name = in_name;
 }
 
-std::string Unit::getArmy() {
+std::string Unit::getArmyName() {
     return(armyName);
 }
 

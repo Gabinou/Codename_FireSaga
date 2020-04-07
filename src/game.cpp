@@ -639,7 +639,17 @@ bool rout(Map * in_map) {
 }
 
 bool positionCondition(Unit * in_unit, Map_condition * in_mcond) {
-    in_unit->getid;
+    
+    if (in_mcond->army > 0) {
+        if (in_mcond->army != in_unit->getArmy()) {
+            return(false);
+        }
+    }
+    if (in_mcond->unit > 0) {
+        if (in_mcond->unit != in_unit->getid()) {
+            return(false);
+        }
+    }
 
 
 
