@@ -178,6 +178,11 @@ void Map::makeEntitymap(const short unsigned int row_size, const short unsigned 
     made_entitymap = true;
 }
 
+std::vector<std::vector<Entity *>> Map::getEntitymap() {
+    return(entitymap);
+}
+
+
 void Map::loadTilemap(const std::string filename) {
     tilemap = readcsv_vec<short int>(filename.c_str(), 1);
     postTilemap();

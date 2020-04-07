@@ -17,6 +17,7 @@ class Unit : public XML_IO {
         Weapon_stats left_wpn;
 
         Combat_stats combat_stats;
+        Unit_state state;
 
         Support supports[DEFAULT::SUPPORTS_MAX];
         // short int supports[DEFAULT::SUPPORTS_MAX];
@@ -28,8 +29,6 @@ class Unit : public XML_IO {
         Unit_stats malus_stats = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
         Unit_stats current_stats = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
         Unit_stats growths = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
-
-        Unit_state state;
 
         std::vector<Unit_stats> grown_stats;
         unsigned long long int skills = 0;
@@ -133,7 +132,8 @@ class Unit : public XML_IO {
         void setName(const std::string in_name);
         void setName(const char in_name);
 
-        std::string getArmy();
+        unsigned char getArmy();
+        std::string getArmyName();
         void setArmy(const unsigned char in_army);
 
         bool canRetaliate(Unit * enemy) const;

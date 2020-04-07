@@ -638,9 +638,23 @@ bool rout(Map * in_map) {
     return((in_map->getnumEnemies() < 1));
 }
 
-bool mapCondition(Map * in_map, Map_condition in_map_condition) {
+bool positionCondition(Unit * in_unit, Map_condition * in_mcond) {
+    in_unit->getid;
 
 
 
     return(false);
 }
+
+bool positionCondition(Map * in_map, Map_condition * in_mcond) {
+    std::vector<std::vector<Entity *>> entitymap = in_map->getEntitymap();
+
+    for (int col = in_mcond->colmin; col < in_mcond->colmax; col++) {
+        for (int row = in_mcond->rowmin; row < in_mcond->rowmax; row++) {
+
+        }
+    }
+
+    return(false);
+}
+

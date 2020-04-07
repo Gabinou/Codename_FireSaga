@@ -22,10 +22,10 @@ struct Unit_state {
 struct Map_condition {
     short int unit = -1;
     short int army = -1;
-    short int xmax = -1;
-    short int xmin = -1;
-    short int ymax = -1;
-    short int ymin = -1;
+    short int colmin = -1;
+    short int colmax = -1;
+    short int rowmin = -1;
+    short int rowmax = -1;
 };
 
 struct Quantity {
