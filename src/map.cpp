@@ -285,3 +285,24 @@ std::vector<short unsigned int> testEnemyinds(){
 
 std::vector<std::vector<short int>> (*chapTilemaps[40])() = {testTilemap,};
 std::vector<short unsigned int> (*chapEnemyinds[40])() = {testEnemyinds,};
+
+
+bool essentialDied(Map * in_map) { 
+
+
+}
+
+
+// win conditions
+bool bossDied(Map * in_map) {
+
+}
+
+bool rout(Map * in_map) {
+    if (in_map->num_enemies < 1) {
+        return(false);
+    } else {
+        return(true);
+    }
+
+}

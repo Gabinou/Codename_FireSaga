@@ -23,6 +23,13 @@ class Map {
 
         std::vector<short unsigned int> enemy_inds;
 
+        unsigned char num_friendlies;
+        unsigned char num_neutral;
+        unsigned char num_enemies;
+
+        std::vector<unsigned short int> essentialUnits = {UNIT::NAME::ERWIN};
+        std::vector<unsigned short int> bosses;
+
         std::vector<std::vector<short int>> moveoverlay, attackoverlay, healoverlay;
         std::vector<std::vector<short int>> dangeroverlay;
         std::vector<std::vector<short int>> tilemap;
@@ -47,7 +54,6 @@ class Map {
         Map();
         ~Map();
         Map(const short unsigned int width, const short unsigned int height);
-
 
         void loadTiletextures();
         void initVars();
@@ -98,9 +104,11 @@ class Map {
         void addDanger(const std::vector<std::vector<short int>> in_danger);
         void subDanger(const std::vector<std::vector<short int>> in_danger);
 
-        std::vector<bool (*)()> win_conditions;
-        std::vector<bool (*)()> sidequests;
-        std::vector<bool (*)()> lose_conditions;
+        unsigned char getnumEnemies();
+
+        std::vector<bool (*)(Map)> win_conditions;
+        std::vector<bool (*)(Map)> sidequests;
+        std::vector<bool (*)(Map)> lose_conditions;
 
         void defeat();
         void victory();
