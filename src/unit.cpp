@@ -931,12 +931,157 @@ void baseUnits(std::unordered_map<int, Unit> * in_units, std::vector<short int> 
                 temp = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
                 temp_unit.setGrowths(temp);
                 temp_unit.setBaseExp(0);
-                // temp_wpn.id = ITEM::NAME::IRON_AXE;
-                // temp_unit.addEquipment(temp_wpn);
-                // temp_wpn.id = ITEM::NAME::WOODEN_SHIELD;
-                // temp_unit.addEquipment(temp_wpn);
-                // temp_equipped = {0, 1};
                 temp_unit.setEquipped(temp_equipped);
+                in_units->emplace(index, temp_unit);
+                break;
+            case UNIT::NAME::DUELIST:
+                temp = {15,  4,  5,  7,  6,   8,  4,  6,  5, 5};
+                temp_unit = Unit(UNIT::NAME::DUELIST, UNIT::CLASS::DUELIST, temp, UNIT::SEX::M);
+                temp = {48, 14, 25, 32, 34,  28, 19, 40, 15};
+                temp_unit.setCaps(temp);
+                temp = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
+                temp_unit.setGrowths(temp);
+                temp_unit.setBaseExp(0);
+                in_units->emplace(index, temp_unit);
+                break;
+            case UNIT::NAME::PICKPOCKET:
+                temp = {15,  4,  5,  7,  6,   8,  4,  6,  5, 5};
+                temp_unit = Unit(UNIT::NAME::PICKPOCKET, UNIT::CLASS::PICKPOCKET, temp, UNIT::SEX::M);
+                temp = {48, 14, 25, 32, 34,  28, 19, 40, 15};
+                temp_unit.setCaps(temp);
+                temp = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
+                temp_unit.setGrowths(temp);
+                temp_unit.setBaseExp(0);
+                in_units->emplace(index, temp_unit);
+                break;
+            case UNIT::NAME::THIEF:
+                temp = {15,  4,  5,  7,  6,   8,  4,  6,  5, 5};
+                temp_unit = Unit(UNIT::NAME::THIEF, UNIT::CLASS::THIEF, temp, UNIT::SEX::M);
+                temp = {48, 14, 25, 32, 34,  28, 19, 40, 15};
+                temp_unit.setCaps(temp);
+                temp = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
+                temp_unit.setGrowths(temp);
+                temp_unit.setBaseExp(0);
+                in_units->emplace(index, temp_unit);
+                break;
+            case UNIT::NAME::ASSASSSIN:
+                temp = {15,  4,  5,  7,  6,   8,  4,  6,  5, 5};
+                temp_unit = Unit(UNIT::NAME::ASSASSIN, UNIT::CLASS::ASSASSIN, temp, UNIT::SEX::M);
+                temp = {48, 14, 25, 32, 34,  28, 19, 40, 15};
+                temp_unit.setCaps(temp);
+                temp = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
+                temp_unit.setGrowths(temp);
+                temp_unit.setBaseExp(0);
+                in_units->emplace(index, temp_unit);
+                break;
+            case UNIT::NAME::ARCHER:
+                temp = {15,  4,  5,  7,  6,   8,  4,  6,  5, 5};
+                temp_unit = Unit(UNIT::NAME::ARCHER, UNIT::CLASS::ARCHER, temp, UNIT::SEX::M);
+                temp = {48, 14, 25, 32, 34,  28, 19, 40, 15};
+                temp_unit.setCaps(temp);
+                temp = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
+                temp_unit.setGrowths(temp);
+                temp_unit.setBaseExp(0);
+                in_units->emplace(index, temp_unit);
+                break;
+            case UNIT::NAME::MARKSMAN:
+                temp = {15,  4,  5,  7,  6,   8,  4,  6,  5, 5};
+                temp_unit = Unit(UNIT::NAME::MARKSMAN, UNIT::CLASS::MARKSMAN, temp, UNIT::SEX::M);
+                temp = {48, 14, 25, 32, 34,  28, 19, 40, 15};
+                temp_unit.setCaps(temp);
+                temp = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
+                temp_unit.setGrowths(temp);
+                temp_unit.setBaseExp(0);
+                in_units->emplace(index, temp_unit);
+                break;
+            case UNIT::NAME::MERCERNARY:
+                temp = {15,  4,  5,  7,  6,   8,  4,  6,  5, 5};
+                temp_unit = Unit(UNIT::NAME::MERCENARY, UNIT::CLASS::MERCENARY, temp, UNIT::SEX::M);
+                temp = {48, 14, 25, 32, 34,  28, 19, 40, 15};
+                temp_unit.setCaps(temp);
+                temp = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
+                temp_unit.setGrowths(temp);
+                temp_unit.setBaseExp(0);
+                in_units->emplace(index, temp_unit);
+                break;
+            case UNIT::NAME::HERO:
+                temp = {15,  4,  5,  7,  6,   8,  4,  6,  5, 5};
+                temp_unit = Unit(UNIT::NAME::HERO, UNIT::CLASS::HERO, temp, UNIT::SEX::M);
+                temp = {48, 14, 25, 32, 34,  28, 19, 40, 15};
+                temp_unit.setCaps(temp);
+                temp = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
+                temp_unit.setGrowths(temp);
+                temp_unit.setBaseExp(0);
+                in_units->emplace(index, temp_unit);
+                break;
+            case UNIT::NAME::CORSAIR:
+                temp = {15,  4,  5,  7,  6,   8,  4,  6,  5, 5};
+                temp_unit = Unit(UNIT::NAME::CORSAIR, UNIT::CLASS::CORSAIR, temp, UNIT::SEX::M);
+                temp = {48, 14, 25, 32, 34,  28, 19, 40, 15};
+                temp_unit.setCaps(temp);
+                temp = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
+                temp_unit.setGrowths(temp);
+                temp_unit.setBaseExp(0);
+                in_units->emplace(index, temp_unit);
+                break;
+            case UNIT::NAME::VIKING:
+                temp = {15,  4,  5,  7,  6,   8,  4,  6,  5, 5};
+                temp_unit = Unit(UNIT::NAME::VIKING, UNIT::CLASS::VIKING, temp, UNIT::SEX::M);
+                temp = {48, 14, 25, 32, 34,  28, 19, 40, 15};
+                temp_unit.setCaps(temp);
+                temp = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
+                temp_unit.setGrowths(temp);
+                temp_unit.setBaseExp(0);
+                in_units->emplace(index, temp_unit);
+                break;
+            case UNIT::NAME::RAVAGER:
+                temp = {15,  4,  5,  7,  6,   8,  4,  6,  5, 5};
+                temp_unit = Unit(UNIT::NAME::RAVAGER, UNIT::CLASS::RAVAGER, temp, UNIT::SEX::M);
+                temp = {48, 14, 25, 32, 34,  28, 19, 40, 15};
+                temp_unit.setCaps(temp);
+                temp = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
+                temp_unit.setGrowths(temp);
+                temp_unit.setBaseExp(0);
+                in_units->emplace(index, temp_unit);
+                break;
+            case UNIT::NAME::CAVALIER:
+                temp = {15,  4,  5,  7,  6,   8,  4,  6,  5, 5};
+                temp_unit = Unit(UNIT::NAME::CAVALIER, UNIT::CLASS::CAVALIER, temp, UNIT::SEX::M);
+                temp = {48, 14, 25, 32, 34,  28, 19, 40, 15};
+                temp_unit.setCaps(temp);
+                temp = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
+                temp_unit.setGrowths(temp);
+                temp_unit.setBaseExp(0);
+                in_units->emplace(index, temp_unit);
+                break;
+            case UNIT::NAME::PALADIN:
+                temp = {15,  4,  5,  7,  6,   8,  4,  6,  5, 5};
+                temp_unit = Unit(UNIT::NAME::PALADIN, UNIT::CLASS::PALADIN, temp, UNIT::SEX::M);
+                temp = {48, 14, 25, 32, 34,  28, 19, 40, 15};
+                temp_unit.setCaps(temp);
+                temp = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
+                temp_unit.setGrowths(temp);
+                temp_unit.setBaseExp(0);
+                in_units->emplace(index, temp_unit);
+                break;
+            case UNIT::NAME::FENCER:
+                temp = {15,  4,  5,  7,  6,   8,  4,  6,  5, 5};
+                temp_unit = Unit(UNIT::NAME::FENCER, UNIT::CLASS::FENCER, temp, UNIT::SEX::M);
+                temp = {48, 14, 25, 32, 34,  28, 19, 40, 15};
+                temp_unit.setCaps(temp);
+                temp = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
+                temp_unit.setGrowths(temp);
+                temp_unit.setBaseExp(0);
+                in_units->emplace(index, temp_unit);
+                break;
+            case UNIT::NAME::MOUSQUETAIRE:
+                temp = {15,  4,  5,  7,  6,   8,  4,  6,  5, 5};
+                temp_unit = Unit(UNIT::NAME::MOUSQUETAIRE, UNIT::CLASS::MOUSQUETAIRE, temp, UNIT::SEX::M);
+                temp = {48, 14, 25, 32, 34,  28, 19, 40, 15};
+                temp_unit.setCaps(temp);
+                temp = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
+                temp_unit.setGrowths(temp);
+                temp_unit.setBaseExp(0);
                 in_units->emplace(index, temp_unit);
                 break;
             }
@@ -964,155 +1109,7 @@ void baseUnits(std::unordered_map<int, Unit> * in_units) {
 //     all_units[UNIT::NAME::JAIGEN1H].writeXML("playables.xml", true); 
 // }
 
-// void genericEnemyUnits() {
-//     printf("Making generic enemies\n");
-//     Unit_stats temp;
-//     Unit temp_unit;
-//     //hp,str,mag,skl,spd,luck,def,res,con,move
-//     temp = {15,  4,  5,  7,  6,   8,  4,  6,  5, 5};
-//     temp_unit = Unit(UNIT::NAME::BANDIT, UNIT::CLASS::BANDIT, temp, UNIT::SEX::M);
-//     temp = {48, 14, 25, 32, 34,  28, 19, 40, 15};
-//     temp_unit.setCaps(temp);
-//     temp = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
-//     temp_unit.setGrowths(temp);
-//     temp_unit.setBaseExp(0);
-//     all_units[UNIT::NAME::BANDIT] = temp_unit;
 
-//     temp = {15,  4,  5,  7,  6,   8,  4,  6,  5, 5};
-//     temp_unit = Unit(UNIT::NAME::DUELIST, UNIT::CLASS::DUELIST, temp, UNIT::SEX::M);
-//     temp = {48, 14, 25, 32, 34,  28, 19, 40, 15};
-//     temp_unit.setCaps(temp);
-//     temp = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
-//     temp_unit.setGrowths(temp);
-//     temp_unit.setBaseExp(0);
-//     all_units[UNIT::NAME::DUELIST] = temp_unit;
-
-//     temp = {15,  4,  5,  7,  6,   8,  4,  6,  5, 5};
-//     temp_unit = Unit(UNIT::NAME::PICKPOCKET, UNIT::CLASS::PICKPOCKET, temp, UNIT::SEX::M);
-//     temp = {48, 14, 25, 32, 34,  28, 19, 40, 15};
-//     temp_unit.setCaps(temp);
-//     temp = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
-//     temp_unit.setGrowths(temp);
-//     temp_unit.setBaseExp(0);
-//     all_units[UNIT::NAME::PICKPOCKET] = temp_unit;
-
-//     temp = {15,  4,  5,  7,  6,   8,  4,  6,  5, 5};
-//     temp_unit = Unit(UNIT::NAME::THIEF, UNIT::CLASS::THIEF, temp, UNIT::SEX::M);
-//     temp = {48, 14, 25, 32, 34,  28, 19, 40, 15};
-//     temp_unit.setCaps(temp);
-//     temp = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
-//     temp_unit.setGrowths(temp);
-//     temp_unit.setBaseExp(0);
-//     all_units[UNIT::NAME::THIEF] = temp_unit;    
-
-//     temp = {15,  4,  5,  7,  6,   8,  4,  6,  5, 5};
-//     temp_unit = Unit(UNIT::NAME::ASSASSIN, UNIT::CLASS::ASSASSIN, temp, UNIT::SEX::M);
-//     temp = {48, 14, 25, 32, 34,  28, 19, 40, 15};
-//     temp_unit.setCaps(temp);
-//     temp = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
-//     temp_unit.setGrowths(temp);
-//     temp_unit.setBaseExp(0);
-//     all_units[UNIT::NAME::ASSASSIN] = temp_unit;
-
-//     temp = {15,  4,  5,  7,  6,   8,  4,  6,  5, 5};
-//     temp_unit = Unit(UNIT::NAME::ARCHER, UNIT::CLASS::ARCHER, temp, UNIT::SEX::M);
-//     temp = {48, 14, 25, 32, 34,  28, 19, 40, 15};
-//     temp_unit.setCaps(temp);
-//     temp = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
-//     temp_unit.setGrowths(temp);
-//     temp_unit.setBaseExp(0);
-//     all_units[UNIT::NAME::ARCHER] = temp_unit;
-
-//     temp = {15,  4,  5,  7,  6,   8,  4,  6,  5, 5};
-//     temp_unit = Unit(UNIT::NAME::MARKSMAN, UNIT::CLASS::MARKSMAN, temp, UNIT::SEX::M);
-//     temp = {48, 14, 25, 32, 34,  28, 19, 40, 15};
-//     temp_unit.setCaps(temp);
-//     temp = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
-//     temp_unit.setGrowths(temp);
-//     temp_unit.setBaseExp(0);
-//     all_units[UNIT::NAME::MARKSMAN] = temp_unit;
-
-//     temp = {15,  4,  5,  7,  6,   8,  4,  6,  5, 5};
-//     temp_unit = Unit(UNIT::NAME::MERCENARY, UNIT::CLASS::MERCENARY, temp, UNIT::SEX::M);
-//     temp = {48, 14, 25, 32, 34,  28, 19, 40, 15};
-//     temp_unit.setCaps(temp);
-//     temp = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
-//     temp_unit.setGrowths(temp);
-//     temp_unit.setBaseExp(0);
-//     all_units[UNIT::NAME::MERCENARY] = temp_unit;
-
-//     temp = {15,  4,  5,  7,  6,   8,  4,  6,  5, 5};
-//     temp_unit = Unit(UNIT::NAME::HERO, UNIT::CLASS::HERO, temp, UNIT::SEX::M);
-//     temp = {48, 14, 25, 32, 34,  28, 19, 40, 15};
-//     temp_unit.setCaps(temp);
-//     temp = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
-//     temp_unit.setGrowths(temp);
-//     temp_unit.setBaseExp(0);
-//     all_units[UNIT::NAME::HERO] = temp_unit;
-
-//     temp = {15,  4,  5,  7,  6,   8,  4,  6,  5, 5};
-//     temp_unit = Unit(UNIT::NAME::CORSAIR, UNIT::CLASS::CORSAIR, temp, UNIT::SEX::M);
-//     temp = {48, 14, 25, 32, 34,  28, 19, 40, 15};
-//     temp_unit.setCaps(temp);
-//     temp = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
-//     temp_unit.setGrowths(temp);
-//     temp_unit.setBaseExp(0);
-//     all_units[UNIT::NAME::CORSAIR] = temp_unit;
-
-//     temp = {15,  4,  5,  7,  6,   8,  4,  6,  5, 5};
-//     temp_unit = Unit(UNIT::NAME::VIKING, UNIT::CLASS::VIKING, temp, UNIT::SEX::M);
-//     temp = {48, 14, 25, 32, 34,  28, 19, 40, 15};
-//     temp_unit.setCaps(temp);
-//     temp = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
-//     temp_unit.setGrowths(temp);
-//     temp_unit.setBaseExp(0);
-//     all_units[UNIT::NAME::VIKING] = temp_unit;
-
-//     temp = {15,  4,  5,  7,  6,   8,  4,  6,  5, 5};
-//     temp_unit = Unit(UNIT::NAME::RAVAGER, UNIT::CLASS::RAVAGER, temp, UNIT::SEX::M);
-//     temp = {48, 14, 25, 32, 34,  28, 19, 40, 15};
-//     temp_unit.setCaps(temp);
-//     temp = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
-//     temp_unit.setGrowths(temp);
-//     temp_unit.setBaseExp(0);
-//     all_units[UNIT::NAME::RAVAGER] = temp_unit;
-
-//     temp = {15,  4,  5,  7,  6,   8,  4,  6,  5, 5};
-//     temp_unit = Unit(UNIT::NAME::CAVALIER, UNIT::CLASS::CAVALIER, temp, UNIT::SEX::M);
-//     temp = {48, 14, 25, 32, 34,  28, 19, 40, 15};
-//     temp_unit.setCaps(temp);
-//     temp = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
-//     temp_unit.setGrowths(temp);
-//     temp_unit.setBaseExp(0);
-//     all_units[UNIT::NAME::CAVALIER] = temp_unit;
-
-//     temp = {15,  4,  5,  7,  6,   8,  4,  6,  5, 5};
-//     temp_unit = Unit(UNIT::NAME::PALADIN, UNIT::CLASS::PALADIN, temp, UNIT::SEX::M);
-//     temp = {48, 14, 25, 32, 34,  28, 19, 40, 15};
-//     temp_unit.setCaps(temp);
-//     temp = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
-//     temp_unit.setGrowths(temp);
-//     temp_unit.setBaseExp(0);
-//     all_units[UNIT::NAME::PALADIN] = temp_unit;
-
-//     temp = {15,  4,  5,  7,  6,   8,  4,  6,  5, 5};
-//     temp_unit = Unit(UNIT::NAME::FENCER, UNIT::CLASS::FENCER, temp, UNIT::SEX::M);
-//     temp = {48, 14, 25, 32, 34,  28, 19, 40, 15};
-//     temp_unit.setCaps(temp);
-//     temp = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
-//     temp_unit.setGrowths(temp);
-//     temp_unit.setBaseExp(0);
-//     all_units[UNIT::NAME::FENCER] = temp_unit;
-
-//     temp = {15,  4,  5,  7,  6,   8,  4,  6,  5, 5};
-//     temp_unit = Unit(UNIT::NAME::MOUSQUETAIRE, UNIT::CLASS::MOUSQUETAIRE, temp, UNIT::SEX::M);
-//     temp = {48, 14, 25, 32, 34,  28, 19, 40, 15};
-//     temp_unit.setCaps(temp);
-//     temp = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
-//     temp_unit.setGrowths(temp);
-//     temp_unit.setBaseExp(0);
-//     all_units[UNIT::NAME::MOUSQUETAIRE] = temp_unit;
-// }
 
 std::vector<short int> chapTestUnitsInds() {
     std::vector<short int> out = {UNIT::NAME::SILOU};
