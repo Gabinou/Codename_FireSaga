@@ -408,7 +408,7 @@ void Game::unloadUnits(std::vector<short int> to_unload) {
 void Game::loadMapEnemies() {
     SDL_Log("Loading map enemies. \n");
     if (mapp) {
-        std::vector<Map_arrival> map_arrivals = mapp->getEnemies(); 
+        std::vector<Map_arrival> map_arrivals = mapp->getArrivals(); 
         unsigned short int currentturn = mapp->getTurn();
         std::string asset_name;
         Unit Utemp;
@@ -660,7 +660,7 @@ bool bossDied(Map * in_map) {
 }
 
 bool rout(Map * in_map) {
-    return((in_map->getnumEnemies() < 1));
+    return((in_map->getnumArrivals() < 1));
 }
 
 bool areAlive() {
