@@ -39,6 +39,8 @@ class Map {
         std::vector<std::vector<short int>> tilemap;
         std::vector<std::vector<short int>> tileupdate;
 
+        std::vector<Point> starting_positions;
+
         SDL_Rect srcrect, destrect;
         SDL_Renderer * renderer = NULL;
 

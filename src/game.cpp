@@ -339,7 +339,7 @@ void Game::loadMap(const int in_map_index) {
     SDL_Log("Loading Map index: %d \n", in_map_index);
     if (!mapp) {
         mapp = new Map(settings.tilesize[0], settings.tilesize[1]);
-        mapp->loadTiles(chapTiles[in_map_index]());
+        mapp->loadTiles(in_map_index);
         mapp->setRenderer(renderer);
         mapp->loadTilemap(in_map_index);
         // mapp->loadEnemyinds(in_map_index);
