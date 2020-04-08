@@ -1097,19 +1097,15 @@ void baseUnits(std::unordered_map<int, Unit> * in_units) {
     baseUnits(in_units, toload);
 }
 
-// void writeAllplayables() {
-//     all_units[UNIT::NAME::ERWIN].writeXML("playables.xml", true); 
-//     all_units[UNIT::NAME::KIARA].writeXML("playables.xml", true); 
-//     all_units[UNIT::NAME::RELIABLE].writeXML("playables.xml", true); 
-//     all_units[UNIT::NAME::COWARD].writeXML("playables.xml", true); 
-//     all_units[UNIT::NAME::HOTTIE].writeXML("playables.xml", true); 
-//     all_units[UNIT::NAME::POET].writeXML("playables.xml", true); 
-//     all_units[UNIT::NAME::PERIGNON].writeXML("playables.xml", true); 
-//     all_units[UNIT::NAME::SILOU].writeXML("playables.xml", true); 
-//     all_units[UNIT::NAME::JAIGEN1H].writeXML("playables.xml", true); 
-// }
+void writeAllplayables() {
+    for (int i = 1; i < UNIT::NAME::PC_END; i++) {
+        all_units[i].writeXML("playables.xml", true); 
+    }
+}
 
+void writeallUnits() {
 
+}
 
 std::vector<short int> chapTestUnitsInds() {
     std::vector<short int> out = {UNIT::NAME::SILOU};
