@@ -379,18 +379,18 @@ void Game::loadUnitEntities(std::vector<short unsigned int> unit_inds, std::vect
     Unit Utemp;
     for (int i = 0; i < unit_inds.size(); i++) { 
         Utemp = units[unit_inds[i]];
-        Utemp.setEntity(manager.getEntities().size());
         asset_name = "..//assets//" +  Utemp.getName() + ".png";
+        Utemp.setEntity(manager.getEntities().size());
         manager.addEntity();
         manager.getEntities()[Utemp.getEntity()]->addComponent<PositionComponent>(positions_list[i][0], positions_list[i][1]);
         manager.getEntities()[Utemp.getEntity()]->addComponent<UnitContainer>(unit_inds[i]);
-        manager.getEntities()[Utemp.getEntity()]->getComponent<PositionComponent>().setMap(mapp); //Should mapp be an input? No mapp is always same ?
-        manager.getEntities()[Utemp.getEntity()]->addComponent<SpriteComponent>(mapp, asset_name.c_str()  );
-        manager.getEntities()[Utemp.getEntity()]->addGroup(manager.groupUnits);
+        manager.getEntities()[Utemp.getEntity()]->getComponent<PositionComponent>().setMap(mapp);
+        manager.getEntities()[Utemp.getEntity()]->addComponent<SpriteComponent>(mapp, asset_name.c_str());
         manager.getEntities()[Utemp.getEntity()]->addGroup(manager.groupUnits);
     }
 }
 void Game::loadUnits(unsigned char in_chap) {
+    // Not necessary. I think would be better to load the party from a savefile or something.
     std::vector<short int> toload = chapBaseUnitsInds[in_chap]();
     baseUnits(&units, toload);
 }
@@ -410,13 +410,19 @@ void Game::loadMapEnemies() {
     if (mapp) {
         std::vector<Map_enemy> map_enemies = mapp->getEnemies(); 
         unsigned short int currentturn = mapp->getTurn();
+        std::string asset_name;
         Unit Utemp;
         for (int i = 0; i < map_enemies.size(); i++) {
-            
             if (map_enemies[i].arrivalturn == currentturn) {
                 Utemp = units[map_enemies[i].id];
+                asset_name = "..//assets//" +  Utemp.getName() + ".png";
                 Utemp.setEntity(manager.getEntities().size());
                 manager.addEntity();
+                manager.getEntities()[Utemp.getEntity()]->addComponent<PositionComponent>(map_enemies[i].position.x, map_enemies[i].position.y);
+                manager.getEntities()[Utemp.getEntity()]->addComponent<UnitContainer>(Utemp.getid());
+                manager.getEntities()[Utemp.getEntity()]->getComponent<PositionComponent>().setMap(mapp);
+                manager.getEntities()[Utemp.getEntity()]->addComponent<SpriteComponent>(mapp, asset_name.c_str());
+                manager.getEntities()[Utemp.getEntity()]->addGroup(manager.groupUnits);
             }
         }
     } else {

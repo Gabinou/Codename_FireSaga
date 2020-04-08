@@ -8,7 +8,7 @@ Unit::Unit() {
     setXMLElement("Unit");
 }
 
-Unit::Unit(const unsigned short int in_id, const unsigned char in_class_index, const Unit_stats in_bases, const bool in_sex) : Unit() {
+Unit::Unit(const unsigned short int in_id, const unsigned char in_class_index,  const Unit_stats in_bases, const bool in_sex) : Unit() {
     base_stats = in_bases;
     current_stats = in_bases;
     id = in_id;
@@ -134,7 +134,7 @@ void Unit::unequipsR() {
     equipped.right = -1;
 }
 
-void Unit::equips(const short unsigned int index, const bool hand) {
+void Unit::equips(const short unsigned int index,  const bool hand) {
     if (hand) {
         equipped.left = index;
     } else {
@@ -150,13 +150,13 @@ void Unit::unequips(const bool hand) {
     }
 }
 
-void Unit::takeItem(Inventory_item * out_array, short int in_index, short int out_index) {
+void Unit::takeItem(Inventory_item * out_array, short int in_index,  short int out_index) {
     equipment[in_index] = out_array[out_index];
     Inventory_item empty;
     out_array[out_index] = empty;
 }
 
-void Unit::giveItem(Inventory_item * out_array, short int in_index, short int out_index) {
+void Unit::giveItem(Inventory_item * out_array, short int in_index,  short int out_index) {
     out_array[out_index] = equipment[in_index];
     Inventory_item empty;
     equipment[in_index] = empty;
@@ -484,7 +484,6 @@ unsigned char Unit::totalDef(bool dmg_type){
     return(total_def);
 }   
 
-
 std::string Unit::getName() {
     return (name);
 }
@@ -811,8 +810,8 @@ void baseUnits(std::unordered_map<int, Unit> * in_units, std::vector<short int> 
     Unit_stats temp;
     Inventory_item temp_wpn;
     std::vector<short int> temp_supports;
+    Equipped temp_equipped;
     int index;
-    
     for (short unsigned int i = 0; i < toload.size(); i++) {
         index = toload[i];
         switch (index) {
@@ -833,7 +832,7 @@ void baseUnits(std::unordered_map<int, Unit> * in_units, std::vector<short int> 
                 temp_unit.addEquipment(temp_wpn);
                 temp_supports = {UNIT::NAME::KIARA};
                 temp_unit.setSupports(temp_supports);
-                in_units->emplace(index,temp_unit);
+                in_units->emplace(index, temp_unit);
                 break;
             case UNIT::NAME::RELIABLE:
                 temp = {18,  6,  2,  7,  7,   7,  4,  5,  6, 7};
@@ -843,7 +842,7 @@ void baseUnits(std::unordered_map<int, Unit> * in_units, std::vector<short int> 
                 temp = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
                 temp_unit.setGrowths(temp);
                 temp_unit.setBaseExp(100);
-                in_units->emplace(index,temp_unit);
+                in_units->emplace(index, temp_unit);
                 break;
             case UNIT::NAME::COWARD:
                 temp = {19,  6,  2,  7,  7,   7,  4,  5,  6,  7};
@@ -853,7 +852,7 @@ void baseUnits(std::unordered_map<int, Unit> * in_units, std::vector<short int> 
                 temp = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
                 temp_unit.setGrowths(temp);
                 temp_unit.setBaseExp(200);
-                in_units->emplace(index,temp_unit);
+                in_units->emplace(index, temp_unit);
                 break;
             case UNIT::NAME::JAIGEN1H:
                 temp = {20,  6,  2,  7,  7,   7,  4,  5,  6,  6};
@@ -863,7 +862,7 @@ void baseUnits(std::unordered_map<int, Unit> * in_units, std::vector<short int> 
                 temp = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
                 temp_unit.setGrowths(temp);
                 temp_unit.setBaseExp(2200);
-                in_units->emplace(index,temp_unit);
+                in_units->emplace(index, temp_unit);
                 break;
             case UNIT::NAME::KIARA:
                 temp = {14,  6,  2,  7,  7,   7,  4,  5,  6,  5};
@@ -873,7 +872,7 @@ void baseUnits(std::unordered_map<int, Unit> * in_units, std::vector<short int> 
                 temp = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
                 temp_unit.setGrowths(temp);
                 temp_unit.setBaseExp(100);
-                in_units->emplace(index,temp_unit);
+                in_units->emplace(index, temp_unit);
                 break;
             case UNIT::NAME::HOTTIE:
                 temp = {16,  6,  2,  7,  7,   7,  4,  5,  6,  6};
@@ -883,7 +882,7 @@ void baseUnits(std::unordered_map<int, Unit> * in_units, std::vector<short int> 
                 temp = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
                 temp_unit.setGrowths(temp);
                 temp_unit.setBaseExp(2200);
-                in_units->emplace(index,temp_unit);
+                in_units->emplace(index, temp_unit);
                 break;
             case UNIT::NAME::SERVIL:
                 temp = {22,  4,  5,  7,  6,   8,  4,  6,  5, 5}; // 4 or 5?
@@ -893,7 +892,7 @@ void baseUnits(std::unordered_map<int, Unit> * in_units, std::vector<short int> 
                 temp = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
                 temp_unit.setGrowths(temp);
                 temp_unit.setBaseExp(500);
-                in_units->emplace(index,temp_unit);
+                in_units->emplace(index, temp_unit);
                 break;
             case UNIT::NAME::PERIGNON:
                 temp = {34,  4,  5,  7,  6,   8,  4,  6,  5, 5};
@@ -903,7 +902,7 @@ void baseUnits(std::unordered_map<int, Unit> * in_units, std::vector<short int> 
                 temp = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
                 temp_unit.setGrowths(temp);
                 temp_unit.setBaseExp(1200);
-                in_units->emplace(index,temp_unit);
+                in_units->emplace(index, temp_unit);
                 break;
             case UNIT::NAME::POET:
                 temp = {15,  4,  5,  7,  6,   8,  4,  6,  5, 5};
@@ -913,7 +912,7 @@ void baseUnits(std::unordered_map<int, Unit> * in_units, std::vector<short int> 
                 temp = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
                 temp_unit.setGrowths(temp);
                 temp_unit.setBaseExp(400);
-                in_units->emplace(index,temp_unit);
+                in_units->emplace(index, temp_unit);
                 break;
             case UNIT::NAME::SILOU:
                       //hp,str,mag,agi,dex,luck,def,res,con,move,prof
@@ -926,7 +925,23 @@ void baseUnits(std::unordered_map<int, Unit> * in_units, std::vector<short int> 
                 temp_unit.setBaseExp(400);
                 temp_wpn.id = ITEM::NAME::BALL_LIGHTNING;
                 temp_unit.addEquipment(temp_wpn);
-                in_units->emplace(index,temp_unit);
+                in_units->emplace(index, temp_unit);
+                break;
+            case UNIT::NAME::BANDIT:
+                temp_stats = {15,  4,  5,  7,  6,   8,  4,  6,  5, 5};
+                temp_unit = Unit(UNIT::NAME::BANDIT, UNIT::CLASS::BANDIT, temp_stats, 1);
+                temp_stats = {48, 14, 25, 32, 34,  28, 19, 40, 15};
+                temp_unit.setCaps(temp_stats);
+                temp_stats = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
+                temp_unit.setGrowths(temp_stats);
+                temp_unit.setBaseExp(0);
+                 temp_equipment[0].id = "Iron Axe";
+                temp_unit.setEquipment(temp_equipment);
+                temp_equipment[1].id = "Wooden Shield";
+                temp_unit.setEquipment(temp_equipment);
+                temp_equipped = {0, 1};
+                temp_unit.setEquipped(temp_equipped);
+                in_units->emplace(index, temp_unit);
                 break;
             }
         }
@@ -1103,31 +1118,6 @@ void baseUnits(std::unordered_map<int, Unit> * in_units) {
 //     all_units[UNIT::NAME::MOUSQUETAIRE] = temp_unit;
 // }
 
-// std::vector<Unit> chaptestEnemyUnits() {
-//     Unit_stats temp_stats;
-//     Unit temp_unit;
-//     Inventory_item temp_equipment[DEFAULT::EQUIPMENT_SIZE];
-//     Equipped temp_equipped;
-//     Point temp_position;
-//     std::vector<Unit> made_units;
-//     temp_stats = {15,  4,  5,  7,  6,   8,  4,  6,  5, 5};
-//     temp_unit = Unit(UNIT::NAME::BANDIT, UNIT::CLASS::BANDIT, temp_stats, 1);
-//     temp_stats = {48, 14, 25, 32, 34,  28, 19, 40, 15};
-//     temp_unit.setCaps(temp_stats);
-//     temp_stats = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
-//     temp_unit.setGrowths(temp_stats);
-//     temp_unit.setBaseExp(0);
-//   //temp_equipment[0].id = "Iron Axe";
-//   //temp_equipment[1].id = "Wooden Shield";
-//     temp_unit.setEquipment(temp_equipment);
-//     temp_equipped = {0, 1};
-//     temp_unit.setEquipped(temp_equipped);
-//     temp_position = {4, 5};
-//     temp_unit.setPos(temp_position);
-//     made_units[UNIT::NAME::BANDIT] = temp_unit;
-//     return(made_units);
-// } 
-
 // std::vector<Unit> chap1EnemyUnits() {
 //     Unit_stats temp_stats;
 //     Unit temp_unit;
@@ -1166,3 +1156,4 @@ std::vector<short int> chap1UnitsInds() {
 }
 
 std::vector<short int> (*chapBaseUnitsInds[30])() = {chapTestUnitsInds, chap1UnitsInds};
+std::vector<Map_enemy> (*mapEnemies[30])() = {};
