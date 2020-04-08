@@ -373,17 +373,21 @@ void Game::loadCursor() {
     }
 }
 
-void Game::loadUnitEntities(std::vector<short unsigned int> unit_inds, std::vector<std::string> asset_names, std::vector<std::vector<int>> positions_list) {
+void Game::loadUnitEntities(std::vector<short unsigned int> unit_inds, std::vector<std::vector<int>> positions_list) {
     SDL_Log("Loading Units\n");
+    std::string asset_name;
+    Unit Utemp;
     for (int i = 0; i < unit_inds.size(); i++) { 
-        units[unit_inds[i]].setEntity(manager.getEntities().size());
+        Utemp = units[unit_inds[i]];
+        Utemp.setEntity(manager.getEntities().size());
+        asset_name = "..//assets//" +  Utemp.getName() + ".png";
         manager.addEntity();
-        manager.getEntities()[units[unit_inds[i]].getEntity()]->addComponent<PositionComponent>(positions_list[i][0], positions_list[i][1]);
-        manager.getEntities()[units[unit_inds[i]].getEntity()]->addComponent<UnitContainer>(unit_inds[i]);
-        manager.getEntities()[units[unit_inds[i]].getEntity()]->getComponent<PositionComponent>().setMap(mapp); //Should mapp be an input? No mapp is always same ?
-        manager.getEntities()[units[unit_inds[i]].getEntity()]->addComponent<SpriteComponent>(mapp, asset_names[i].c_str());
-        manager.getEntities()[units[unit_inds[i]].getEntity()]->addGroup(manager.groupUnits);
-        manager.getEntities()[units[unit_inds[i]].getEntity()]->addGroup(manager.groupUnits);
+        manager.getEntities()[Utemp.getEntity()]->addComponent<PositionComponent>(positions_list[i][0], positions_list[i][1]);
+        manager.getEntities()[Utemp.getEntity()]->addComponent<UnitContainer>(unit_inds[i]);
+        manager.getEntities()[Utemp.getEntity()]->getComponent<PositionComponent>().setMap(mapp); //Should mapp be an input? No mapp is always same ?
+        manager.getEntities()[Utemp.getEntity()]->addComponent<SpriteComponent>(mapp, asset_names[i].c_str());
+        manager.getEntities()[Utemp.getEntity()]->addGroup(manager.groupUnits);
+        manager.getEntities()[Utemp.getEntity()]->addGroup(manager.groupUnits);
     }
 }
 void Game::loadUnits(unsigned char in_chap) {

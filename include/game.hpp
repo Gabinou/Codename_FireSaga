@@ -66,7 +66,7 @@ class Game {
         void loadMap(const std::string filename);
         void loadMap(const int in_map_index);
         void unloadMap();
-        void loadUnitEntities(std::vector<short unsigned int> names, std::vector<std::string> asset_names, std::vector<std::vector<int>> positions_list);
+        void loadUnitEntities(std::vector<short unsigned int> names, std::vector<std::vector<int>> positions_list);
         void loadUnits(unsigned char in_chap);
         void loadUnits(std::vector<short int> to_load);
         void unloadUnits(std::vector<short int> to_unload);
