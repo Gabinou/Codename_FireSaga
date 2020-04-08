@@ -42,7 +42,7 @@ void Map::addEnemy(const Map_enemy in_enemy) {
 
 void Map::removeMapEnemy(const unsigned char index) {
     loaded_map_enemies.push_back(map_enemies[index]);
-    // map_enemies.erase(index);
+    map_enemies.erase(map_enemies.begin() + index);
 }
 
 
