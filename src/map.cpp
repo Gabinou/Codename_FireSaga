@@ -32,6 +32,14 @@ void Map::removeTile(const short unsigned int x, const short unsigned int y) {
     entitymap[x][y] = nullptr;
 }
 
+void Map::setArrivalEquipments(const std::vector<std::vector<Inventory_item>> in_arrival_equipments) {
+    arrival_equipments = in_arrival_equipments;
+}
+
+std::vector<std::vector<Inventory_item>> Map::getArrivalEquipments() {
+    return(arrival_equipments);
+}
+
 void Map::setArrivals(const std::vector<Map_arrival> in_arrivals) {
     map_arrivals = in_arrivals;
 }

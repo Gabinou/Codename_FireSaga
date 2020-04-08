@@ -104,6 +104,9 @@ class Map {
         void showGrid();
         void hideGrid();
 
+        void setArrivalEquipments(const std::vector<std::vector<Inventory_item>> in_arrival_equipments);
+        std::vector<std::vector<Inventory_item>> getArrivalEquipments();
+
         void setArrivals(const std::vector<Map_arrival> in_enemies);
         void addArrival(const Map_arrival in_enemy);
         void removeMapArrival(const unsigned char index);
