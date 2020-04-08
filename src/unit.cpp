@@ -964,7 +964,7 @@ void baseUnits(std::unordered_map<int, Unit> * in_units, std::vector<short int> 
                 temp_unit.setBaseExp(0);
                 in_units->emplace(index, temp_unit);
                 break;
-            case UNIT::NAME::ASSASSSIN:
+            case UNIT::NAME::ASSASSIN:
                 temp = {15,  4,  5,  7,  6,   8,  4,  6,  5, 5};
                 temp_unit = Unit(UNIT::NAME::ASSASSIN, UNIT::CLASS::ASSASSIN, temp, UNIT::SEX::M);
                 temp = {48, 14, 25, 32, 34,  28, 19, 40, 15};
@@ -994,7 +994,7 @@ void baseUnits(std::unordered_map<int, Unit> * in_units, std::vector<short int> 
                 temp_unit.setBaseExp(0);
                 in_units->emplace(index, temp_unit);
                 break;
-            case UNIT::NAME::MERCERNARY:
+            case UNIT::NAME::MERCENARY:
                 temp = {15,  4,  5,  7,  6,   8,  4,  6,  5, 5};
                 temp_unit = Unit(UNIT::NAME::MERCENARY, UNIT::CLASS::MERCENARY, temp, UNIT::SEX::M);
                 temp = {48, 14, 25, 32, 34,  28, 19, 40, 15};
@@ -1097,14 +1097,33 @@ void baseUnits(std::unordered_map<int, Unit> * in_units) {
     baseUnits(in_units, toload);
 }
 
-void writeAllplayables() {
-    for (int i = 1; i < UNIT::NAME::PC_END; i++) {
-        all_units[i].writeXML("playables.xml", true); 
+void writeUnits_NPC(const char * filename) {
+    Unit Utemp;
+    std::unordered_map<int, Unit> units;
+    std::vector<short int> temp_int = {0};
+    for (int i = UNIT::NAME::PC_END; i < UNIT::NAME::NPC_END; i++) {
+        temp_int[0] = i;
+        baseUnits(&units, temp_int);
+        Utemp = units[i];
+        Utemp.writeXML(filename, true); 
     }
 }
 
-void writeallUnits() {
+void writeUnits_PC(const char * filename) {
+    Unit Utemp;
+    std::unordered_map<int, Unit> units;
+    std::vector<short int> temp_int = {0};
+    for (int i = UNIT::NAME::ERWIN; i < UNIT::NAME::PC_END; i++) {
+        temp_int[0] = i;
+        baseUnits(&units, temp_int);
+        Utemp = units[i];
+        Utemp.writeXML(filename, true); 
+    }
+}
 
+void writeAllUnits(const char * filename) {
+    writeUnits_PC(filename);
+    writeUnits_NPC(filename);
 }
 
 std::vector<short int> chapTestUnitsInds() {
