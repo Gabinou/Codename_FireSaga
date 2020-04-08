@@ -32,21 +32,20 @@ void Map::removeTile(const short unsigned int x, const short unsigned int y) {
     entitymap[x][y] = nullptr;
 }
 
-void Map::setEnemies(const std::vector<Map_arrival> in_arrivals) {
+void Map::setArrivals(const std::vector<Map_arrival> in_arrivals) {
     map_arrivals = in_arrivals;
 }
 
-void Map::addEnemy(const Map_arrival in_enemy) {
+void Map::addArrival(const Map_arrival in_enemy) {
     map_arrivals.push_back(in_enemy);
 }
 
-void Map::removeMapEnemy(const unsigned char index) {
+void Map::removeMapArrival(const unsigned char index) {
     loaded_map_arrivals.push_back(map_arrivals[index]);
     map_arrivals.erase(map_arrivals.begin() + index);
 }
 
-
-std::vector<Map_arrival> Map::getEnemies() {
+std::vector<Map_arrival> Map::getArrivals() {
     return(map_arrivals);
 }
 
@@ -209,7 +208,7 @@ void Map::postTilemap() {
     makeEntitymap(row_size, col_size);
 }
 
-unsigned char Map::getnumEnemies() {
+unsigned char Map::getnumArrivals() {
     return(num_enemies);
 }
 
@@ -310,10 +309,10 @@ std::vector<std::vector<short int>> testTilemap(){
     return(tilemap);
 }
 
-std::vector<short unsigned int> testEnemyinds(){
+std::vector<short unsigned int> testArrivalinds(){
     std::vector<short unsigned int> enemies = {UNIT::NAME::SILOU};
     return(enemies);
 }
 
 std::vector<std::vector<short int>> (*chapTilemaps[40])() = {testTilemap,};
-std::vector<short unsigned int> (*chapEnemyinds[40])() = {testEnemyinds,};
+std::vector<short unsigned int> (*chapArrivalinds[40])() = {testArrivalinds,};

@@ -104,10 +104,10 @@ class Map {
         void showGrid();
         void hideGrid();
 
-        void setEnemies(const std::vector<Map_arrival> in_enemies);
-        void addEnemy(const Map_arrival in_enemy);
-        void removeMapEnemy(const unsigned char index);
-        std::vector<Map_arrival> getEnemies();
+        void setArrivals(const std::vector<Map_arrival> in_enemies);
+        void addArrival(const Map_arrival in_enemy);
+        void removeMapArrival(const unsigned char index);
+        std::vector<Map_arrival> getArrivals();
 
         void setDangermode(const unsigned char in_mode);
         void showDanger();
@@ -115,7 +115,7 @@ class Map {
         void addDanger(const std::vector<std::vector<short int>> in_danger);
         void subDanger(const std::vector<std::vector<short int>> in_danger);
 
-        unsigned char getnumEnemies();
+        unsigned char getnumArrivals();
         unsigned short int getBoss();
         bool getBossDeath();
         bool getSeized();
@@ -131,9 +131,9 @@ class Map {
 };
 
 extern std::vector<std::vector<short int>> (*chapTilemaps[40])();
-extern std::vector<short unsigned int> (*chapEnemyinds[40])();
+extern std::vector<short unsigned int> (*chapArrivalinds[40])();
 
-std::vector<short unsigned int> testEnemies();
+std::vector<short unsigned int> testArrivals();
 std::vector<std::vector<short int>> testTilemap();
 std::vector<std::vector<short int>> chap2Tilemap();
 std::vector<std::vector<short int>> chap3Tilemap();
