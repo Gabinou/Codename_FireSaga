@@ -1177,4 +1177,4 @@ std::vector<std::vector<Inventory_item>> chapTestEquipments() {
 
 std::vector<short int> (*chapBaseUnitsInds[30])() = {chapTestUnitsInds, chap1UnitsInds};
 std::vector<Map_arrival> (*mapArrivals[30])() = {chapTestArrivals};
-std::vector<std::vector<Inventory_item>> (*mapEquipments[30])() = {chapTestEquipments};
+std::vector<std::vector<Inventory_item>> (*arrivalEquipments[30])() = {chapTestEquipments};

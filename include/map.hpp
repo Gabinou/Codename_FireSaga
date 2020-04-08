@@ -23,6 +23,7 @@ class Map {
 
         std::vector<Map_arrival> map_arrivals;
         std::vector<Map_arrival> loaded_map_arrivals;
+        std::vector<std::vector<Inventory_item>> arrival_equipments;
 
         unsigned char num_friendlies;
         unsigned char num_neutral;

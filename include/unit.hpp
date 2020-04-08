@@ -161,8 +161,11 @@ class Unit : public XML_IO {
 
 extern void baseUnits(std::unordered_map<int, Unit> * in_units);
 extern void baseUnits(std::unordered_map<int, Unit> * in_units, std::vector<short int> toload);
-extern std::unordered_map<int, Unit> (*chapEnemyUnitsInds[40])();
+
 extern std::vector<short int> (*chapBaseUnitsInds[30])();
+extern std::vector<Map_arrival> (*mapArrivals[30])() = {chapTestArrivals};
+extern std::vector<std::vector<Inventory_item>> (*arrivalEquipments[30])();
+
 void testXMLUnits();
 void baseEnemyUnits();
 
