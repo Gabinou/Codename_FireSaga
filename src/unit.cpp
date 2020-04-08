@@ -1168,7 +1168,6 @@ std::vector<std::vector<Inventory_item>> chapTestEquipments() {
     return(out);
 }
 
-
 std::vector<short int> (*chapBaseUnitsInds[30])() = {chapTestUnitsInds, chap1UnitsInds};
 std::vector<Map_arrival> (*mapArrivals[30])() = {};
 std::vector<std::vector<Inventory_item>> (*mapEquipments[30])() = {};
