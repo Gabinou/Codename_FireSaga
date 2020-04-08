@@ -72,9 +72,9 @@ int main(int argc, char * argv[]) {
     firesaga->loadCursor();
 
     std::vector<short unsigned int> unit_inds = {UNIT::NAME::SILOU};
-    std::vector<std::string> asset_names = {"..//assets//horse.png"};
+    // std::vector<std::string> asset_names = {"..//assets//horse.png"};
     std::vector<std::vector<int>> positions_list = {{6, 6}};
-    firesaga->loadUnitEntities(unit_inds, asset_names, positions_list);
+    firesaga->loadUnitEntities(unit_inds, positions_list);
 
     std::chrono::system_clock::time_point frame_start, frame_end, frame_middle;
     int frame_time;

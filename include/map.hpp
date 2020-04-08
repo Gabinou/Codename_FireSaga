@@ -1,6 +1,8 @@
 #ifndef MAP_HPP
 #define MAP_HPP
 
+#include "enums.hpp"
+#include "structs.hpp"
 #include "ECS.hpp"
 #include "SDL2/SDL.h"
 #include "utilities.hpp"
@@ -20,7 +22,7 @@ class Map {
         bool made_entitymap = false;
 
         // std::vector<short unsigned int> enemy_inds;
-        std::vector<Map_Enemy> map_enemies;
+        std::vector<Map_enemy> map_enemies;
 
         unsigned char num_friendlies;
         unsigned char num_neutral;

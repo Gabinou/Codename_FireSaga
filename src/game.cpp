@@ -342,7 +342,7 @@ void Game::loadMap(const int in_map_index) {
         mapp->loadTiles(chapTiles[in_map_index]());
         mapp->setRenderer(renderer);
         mapp->loadTilemap(in_map_index);
-        mapp->loadEnemyinds(in_map_index);
+        // mapp->loadEnemyinds(in_map_index);
     } else {
         SDL_Log("Failed to loadMap. Was mapp deleted previously?");
     }
@@ -385,7 +385,7 @@ void Game::loadUnitEntities(std::vector<short unsigned int> unit_inds, std::vect
         manager.getEntities()[Utemp.getEntity()]->addComponent<PositionComponent>(positions_list[i][0], positions_list[i][1]);
         manager.getEntities()[Utemp.getEntity()]->addComponent<UnitContainer>(unit_inds[i]);
         manager.getEntities()[Utemp.getEntity()]->getComponent<PositionComponent>().setMap(mapp); //Should mapp be an input? No mapp is always same ?
-        manager.getEntities()[Utemp.getEntity()]->addComponent<SpriteComponent>(mapp, asset_names[i].c_str());
+        manager.getEntities()[Utemp.getEntity()]->addComponent<SpriteComponent>(mapp, asset_name.c_str());
         manager.getEntities()[Utemp.getEntity()]->addGroup(manager.groupUnits);
         manager.getEntities()[Utemp.getEntity()]->addGroup(manager.groupUnits);
     }
@@ -405,18 +405,18 @@ void Game::unloadUnits(std::vector<short int> to_unload) {
     }
 }
 
-void Game::loadMapEnemies() {
-    SDL_Log("Loading map enemies. \n");
-    if (mapp) {
-        std::vector<short unsigned int> map_enemies = mapp->getEnemies(); 
-        for (int i = 0; i < map_enemies.size(); i++) {
-            units[map_enemies[i]].setEntity(manager.getEntities().size());
-            manager.addEntity();
-        }
-    } else {
-        SDL_Log("Failed to loadMapEnemies.");
-    }
-}
+// void Game::loadMapEnemies() {
+//     SDL_Log("Loading map enemies. \n");
+//     if (mapp) {
+//         std::vector<short unsigned int> map_enemies = mapp->getEnemies(); 
+//         for (int i = 0; i < map_enemies.size(); i++) {
+//             units[map_enemies[i]].setEntity(manager.getEntities().size());
+//             manager.addEntity();
+//         }
+//     } else {
+//         SDL_Log("Failed to loadMapEnemies.");
+//     }
+// }
 
 void Game::init(const char * title, int xpos, int ypos, int width, int height, bool fullscreen) {
     int flags = 0;
@@ -631,7 +631,7 @@ bool essentialDied(Map * in_map, const Narrative * in_narrative) {
 
 // win conditions
 bool escaped(Map * in_map) {
-
+    return(false);
 }
 
 bool Seized(Map * in_map) {
@@ -640,8 +640,9 @@ bool Seized(Map * in_map) {
 }
 
 bool talked() {
-    return(false)
+    return(false);
 }
+
 bool bossDied(Map * in_map) {
     return(in_map->getBossDeath());
 }

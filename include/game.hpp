@@ -4,6 +4,8 @@
 #include "SDL2/SDL.h"
 #include "SDL2/SDL_image.h"
 #include "SDL2/SDL_ttf.h"
+#include "enums.hpp"
+#include "structs.hpp"
 #include "ECS.hpp"
 #include "map.hpp"
 #include "weapon.hpp"
