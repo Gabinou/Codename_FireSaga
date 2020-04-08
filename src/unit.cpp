@@ -919,17 +919,17 @@ void baseUnits(std::unordered_map<int, Unit> * in_units, std::vector<short int> 
                 in_units->emplace(index, temp_unit);
                 break;
             case UNIT::NAME::BANDIT:
-                temp_stats = {15,  4,  5,  7,  6,   8,  4,  6,  5, 5};
-                temp_unit = Unit(UNIT::NAME::BANDIT, UNIT::CLASS::BANDIT, temp_stats, 1);
-                temp_stats = {48, 14, 25, 32, 34,  28, 19, 40, 15};
-                temp_unit.setCaps(temp_stats);
-                temp_stats = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
-                temp_unit.setGrowths(temp_stats);
+                temp = {15,  4,  5,  7,  6,   8,  4,  6,  5, 5};
+                temp_unit = Unit(UNIT::NAME::BANDIT, UNIT::CLASS::BANDIT, temp, 1);
+                temp = {48, 14, 25, 32, 34,  28, 19, 40, 15};
+                temp_unit.setCaps(temp);
+                temp = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
+                temp_unit.setGrowths(temp);
                 temp_unit.setBaseExp(0);
-                 temp_equipment[0].id = "Iron Axe";
-                temp_unit.setEquipment(temp_equipment);
-                temp_equipment[1].id = "Wooden Shield";
-                temp_unit.setEquipment(temp_equipment);
+                temp_wpn.id = ITEM::NAME::IRON_AXE;
+                temp_unit.addEquipment(temp_wpn);
+                temp_wpn.id = ITEM::NAME::WOODEN_SHIELD;
+                temp_unit.addEquipment(temp_wpn);
                 temp_equipped = {0, 1};
                 temp_unit.setEquipped(temp_equipped);
                 in_units->emplace(index, temp_unit);
