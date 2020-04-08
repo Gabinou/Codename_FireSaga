@@ -62,10 +62,14 @@ std::vector<std::vector<short int>> Map::makeMvtCostmap(const unsigned char unit
     }
     return(costmap);
 }
+void Map::loadTiles(const int in_map_index) {
+    tilesasset_ind = chapTiles[in_map_index]();
+    baseTiles(&tiles, tilesasset_ind);
+}
 
 void Map::loadTiles(std::vector<short int> to_load) {
     tilesasset_ind = to_load;
-    baseTiles(&tiles, to_load);
+    baseTiles(&tiles, tilesasset_ind);
 }
 
 void Map::unloadTiles(std::vector<short int> to_unload) {

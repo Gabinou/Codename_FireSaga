@@ -64,6 +64,7 @@ class Map {
         void loadOverlays();
         void loadDanger();
 
+        void loadTiles(const int in_map_index);
         void loadTiles(std::vector<short int> to_load);
         void unloadTiles(std::vector<short int> to_unload);
 
