@@ -56,7 +56,7 @@ class Game {
         std::unordered_map<int, Unit> units;
         std::unordered_map<int, Unit> party;
         std::unordered_map<int, Unit> enemies;
-        std::unordered_map<int, Weapone> weapons;
+        std::unordered_map<int, Weapon> weapons;
 
     public:
         static SDL_Renderer * renderer;

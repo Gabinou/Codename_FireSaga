@@ -105,7 +105,7 @@ struct Equipped {
     char left;
 };
 
-struct Map_enemy {
+struct Map_arrival {
     unsigned char arrivalturn;
     unsigned char levelups;
     short int id;

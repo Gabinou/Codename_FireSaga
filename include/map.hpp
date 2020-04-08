@@ -21,8 +21,8 @@ class Map {
         bool show_grid = false;
         bool made_entitymap = false;
 
-        std::vector<Map_enemy> map_enemies;
-        std::vector<Map_enemy> loaded_map_enemies;
+        std::vector<Map_arrival> map_arrivals;
+        std::vector<Map_arrival> loaded_map_arrivals;
 
         unsigned char num_friendlies;
         unsigned char num_neutral;
@@ -100,10 +100,10 @@ class Map {
         void showGrid();
         void hideGrid();
 
-        void setEnemies(const std::vector<Map_enemy> in_enemies);
-        void addEnemy(const Map_enemy in_enemy);
+        void setEnemies(const std::vector<Map_arrival> in_enemies);
+        void addEnemy(const Map_arrival in_enemy);
         void removeMapEnemy(const unsigned char index);
-        std::vector<Map_enemy> getEnemies();
+        std::vector<Map_arrival> getEnemies();
 
         void setDangermode(const unsigned char in_mode);
         void showDanger();

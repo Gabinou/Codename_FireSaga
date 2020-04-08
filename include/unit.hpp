@@ -44,7 +44,6 @@ class Unit : public XML_IO {
 
         unsigned char current_hp = 0;
         char current_speed = 0;
-        Map_enemy map_enemy;
 
         short int position[2] = {0, 0};
         bool sex = false; // 0:F, 1:M
@@ -68,9 +67,6 @@ class Unit : public XML_IO {
 
         void setSex(const bool in_sex);
         bool getSex();
-
-        Map_enemy getMap_enemy();
-        void setMap_enemy(Map_enemy in_map_enemy);
 
         short int * getPos();
         void setPos(const short int in_pos[2]);

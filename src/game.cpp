@@ -408,17 +408,17 @@ void Game::unloadUnits(std::vector<short int> to_unload) {
 void Game::loadMapEnemies() {
     SDL_Log("Loading map enemies. \n");
     if (mapp) {
-        std::vector<Map_enemy> map_enemies = mapp->getEnemies(); 
+        std::vector<Map_arrival> map_arrivals = mapp->getEnemies(); 
         unsigned short int currentturn = mapp->getTurn();
         std::string asset_name;
         Unit Utemp;
-        for (int i = 0; i < map_enemies.size(); i++) {
-            if (map_enemies[i].arrivalturn == currentturn) {
-                Utemp = units[map_enemies[i].id];
+        for (int i = 0; i < map_arrivals.size(); i++) {
+            if (map_arrivals[i].arrivalturn == currentturn) {
+                Utemp = units[map_arrivals[i].id];
                 asset_name = "..//assets//" +  Utemp.getName() + ".png";
                 Utemp.setEntity(manager.getEntities().size());
                 manager.addEntity();
-                manager.getEntities()[Utemp.getEntity()]->addComponent<PositionComponent>(map_enemies[i].position.x, map_enemies[i].position.y);
+                manager.getEntities()[Utemp.getEntity()]->addComponent<PositionComponent>(map_arrivals[i].position.x, map_arrivals[i].position.y);
                 manager.getEntities()[Utemp.getEntity()]->addComponent<UnitContainer>(Utemp.getid());
                 manager.getEntities()[Utemp.getEntity()]->getComponent<PositionComponent>().setMap(mapp);
                 manager.getEntities()[Utemp.getEntity()]->addComponent<SpriteComponent>(mapp, asset_name.c_str());

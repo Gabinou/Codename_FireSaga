@@ -32,22 +32,22 @@ void Map::removeTile(const short unsigned int x, const short unsigned int y) {
     entitymap[x][y] = nullptr;
 }
 
-void Map::setEnemies(const std::vector<Map_enemy> in_enemies) {
-    map_enemies = in_enemies;
+void Map::setEnemies(const std::vector<Map_arrival> in_arrivals) {
+    map_arrivals = in_arrivals;
 }
 
-void Map::addEnemy(const Map_enemy in_enemy) {
-    map_enemies.push_back(in_enemy);
+void Map::addEnemy(const Map_arrival in_enemy) {
+    map_arrivals.push_back(in_enemy);
 }
 
 void Map::removeMapEnemy(const unsigned char index) {
-    loaded_map_enemies.push_back(map_enemies[index]);
-    map_enemies.erase(map_enemies.begin() + index);
+    loaded_map_arrivals.push_back(map_arrivals[index]);
+    map_arrivals.erase(map_arrivals.begin() + index);
 }
 
 
-std::vector<Map_enemy> Map::getEnemies() {
-    return(map_enemies);
+std::vector<Map_arrival> Map::getEnemies() {
+    return(map_arrivals);
 }
 
 std::vector<std::vector<short int>> Map::makeMvtCostmap(const unsigned char unitmovetype) {

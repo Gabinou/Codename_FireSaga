@@ -52,17 +52,8 @@ unsigned short int Unit::getid() {
     return(id);
 }
 
-
-Map_enemy Unit::getMap_enemy() {
-    return(map_enemy);
-}
-
 void Unit::use(int in_ind) {
 
-}
-
-void Unit::setMap_enemy(Map_enemy in_map_enemy){
-    map_enemy = in_map_enemy;
 }
 
 void Unit::removeEquipment(unsigned char in_index) {
@@ -1156,4 +1147,4 @@ std::vector<short int> chap1UnitsInds() {
 }
 
 std::vector<short int> (*chapBaseUnitsInds[30])() = {chapTestUnitsInds, chap1UnitsInds};
-std::vector<Map_enemy> (*mapEnemies[30])() = {};
+std::vector<Map_arrival> (*mapEnemies[30])() = {};
