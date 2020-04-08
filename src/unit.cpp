@@ -76,9 +76,8 @@ void Unit::setEquipment(std::vector<Inventory_item> in_equipment) {
             equipment[i] = in_equipment[i];
         }
     } else {
-        SDL_Log("Unit in_equipment is too large.")
+        SDL_Log("Unit in_equipment is too large.");
     }
-
 }
 
 void Unit::setEquipped(Equipped in_equipped) {
@@ -931,11 +930,11 @@ void baseUnits(std::unordered_map<int, Unit> * in_units, std::vector<short int> 
                 temp = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
                 temp_unit.setGrowths(temp);
                 temp_unit.setBaseExp(0);
-                temp_wpn.id = ITEM::NAME::IRON_AXE;
-                temp_unit.addEquipment(temp_wpn);
-                temp_wpn.id = ITEM::NAME::WOODEN_SHIELD;
-                temp_unit.addEquipment(temp_wpn);
-                temp_equipped = {0, 1};
+                // temp_wpn.id = ITEM::NAME::IRON_AXE;
+                // temp_unit.addEquipment(temp_wpn);
+                // temp_wpn.id = ITEM::NAME::WOODEN_SHIELD;
+                // temp_unit.addEquipment(temp_wpn);
+                // temp_equipped = {0, 1};
                 temp_unit.setEquipped(temp_equipped);
                 in_units->emplace(index, temp_unit);
                 break;
@@ -1151,5 +1150,25 @@ std::vector<short int> chap1UnitsInds() {
     return(out);
 }
 
+std::vector<short int> chapTestArrivals() {
+    std::vector<short int> out = {UNIT::NAME::BANDIT};
+    return(out);
+}
+std::vector<std::vector<Inventory_item>> chapTestEquipments() {
+    std::vector<std::vector<Inventory_item>> out;
+    std::vector<Inventory_item> temp_equipment;
+    Inventory_item temp_item;
+
+    temp_item.id = ITEM::NAME::IRON_AXE;
+    temp_equipment.push_back(temp_item);
+    temp_item.id = ITEM::NAME::WOODEN_SHIELD;
+    temp_equipment.push_back(temp_item);
+    out.push_back(temp_equipment);
+    temp_equipment.clear();
+    return(out);
+}
+
+
 std::vector<short int> (*chapBaseUnitsInds[30])() = {chapTestUnitsInds, chap1UnitsInds};
-std::vector<Map_arrival> (*mapEnemies[30])() = {};
+std::vector<Map_arrival> (*mapArrivals[30])() = {};
+std::vector<std::vector<Inventory_item>> (*mapEquipments[30])() = {};
