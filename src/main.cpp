@@ -75,17 +75,17 @@ int main(int argc, char * argv[]) {
     // std::vector<std::string> asset_names = {"..//assets//horse.png"};
     std::vector<std::vector<int>> positions_list = {{6, 6}};
     firesaga->loadUnitEntities(unit_inds, positions_list);
+    firesaga->loadMapArrivals();
+
+    // SDL_Log("Testing game save XML");
+    // firesaga->saveXML(1);
+    // firesaga->copySaveXML(1, 2);
+    // firesaga->copySaveXML(2, 3);
+    // firesaga->deleteSaveXML(2);
 
     std::chrono::system_clock::time_point frame_start, frame_end, frame_middle;
     int frame_time;
     char buffer[15];
-    
-    SDL_Log("Testing game save XML");
-    firesaga->saveXML(1);
-    firesaga->copySaveXML(1, 2);
-    firesaga->copySaveXML(2, 3);
-    firesaga->deleteSaveXML(2);
-    
     SDL_Log("Starting main game loop\n");
     while (firesaga->running()) {
         frame_start = std::chrono::high_resolution_clock::now();

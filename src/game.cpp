@@ -342,7 +342,7 @@ void Game::loadMap(const int in_map_index) {
         mapp->loadTiles(in_map_index);
         mapp->setRenderer(renderer);
         mapp->loadTilemap(in_map_index);
-        // mapp->loadEnemyinds(in_map_index);
+        mapp->setArrivals(mapArrivals[in_map_index]());
     } else {
         SDL_Log("Failed to loadMap. Was mapp deleted previously?");
     }
@@ -389,6 +389,7 @@ void Game::loadUnitEntities(std::vector<short unsigned int> unit_inds, std::vect
         manager.getEntities()[Utemp.getEntity()]->addGroup(manager.groupUnits);
     }
 }
+
 void Game::loadUnits(unsigned char in_chap) {
     // Not necessary. I think would be better to load the party from a savefile or something.
     std::vector<short int> toload = chapBaseUnitsInds[in_chap]();
@@ -405,8 +406,8 @@ void Game::unloadUnits(std::vector<short int> to_unload) {
     }
 }
 
-void Game::loadMapEnemies() {
-    SDL_Log("Loading map enemies. \n");
+void Game::loadMapArrivals() {
+    SDL_Log("Loading map arrivals.\n");
     if (mapp) {
         std::vector<Map_arrival> map_arrivals = mapp->getArrivals(); 
         unsigned short int currentturn = mapp->getTurn();
@@ -415,7 +416,8 @@ void Game::loadMapEnemies() {
         for (int i = 0; i < map_arrivals.size(); i++) {
             if (map_arrivals[i].arrivalturn == currentturn) {
                 Utemp = units[map_arrivals[i].id];
-                asset_name = "..//assets//" +  Utemp.getName() + ".png";
+                asset_name = "..//assets//horse.png";
+                // asset_name = "..//assets//" +  Utemp.getName() + ".png";
                 Utemp.setEntity(manager.getEntities().size());
                 manager.addEntity();
                 manager.getEntities()[Utemp.getEntity()]->addComponent<PositionComponent>(map_arrivals[i].position.x, map_arrivals[i].position.y);
@@ -426,7 +428,7 @@ void Game::loadMapEnemies() {
             }
         }
     } else {
-        SDL_Log("Failed to loadMapEnemies.");
+        SDL_Log("Failed to loadMapArrivals.");
     }
 }
 

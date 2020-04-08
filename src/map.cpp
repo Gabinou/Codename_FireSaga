@@ -44,8 +44,8 @@ void Map::setArrivals(const std::vector<Map_arrival> in_arrivals) {
     map_arrivals = in_arrivals;
 }
 
-void Map::addArrival(const Map_arrival in_enemy) {
-    map_arrivals.push_back(in_enemy);
+void Map::addArrival(const Map_arrival in_arrival) {
+    map_arrivals.push_back(in_arrival);
 }
 
 void Map::removeMapArrival(const unsigned char index) {

@@ -74,7 +74,7 @@ class Game {
         void loadUnits(unsigned char in_chap);
         void loadUnits(std::vector<short int> to_load);
         void unloadUnits(std::vector<short int> to_unload);
-        void loadMapEnemies();
+        void loadMapArrivals();
         void loadCursor();
         template <typename T> void loadTiles(std::vector<T> in_tiles);
 

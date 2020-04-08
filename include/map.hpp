@@ -107,8 +107,8 @@ class Map {
         void setArrivalEquipments(const std::vector<std::vector<Inventory_item>> in_arrival_equipments);
         std::vector<std::vector<Inventory_item>> getArrivalEquipments();
 
-        void setArrivals(const std::vector<Map_arrival> in_enemies);
-        void addArrival(const Map_arrival in_enemy);
+        void setArrivals(const std::vector<Map_arrival> in_arrivals);
+        void addArrival(const Map_arrival in_arrival);
         void removeMapArrival(const unsigned char index);
         std::vector<Map_arrival> getArrivals();
 
