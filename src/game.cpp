@@ -390,22 +390,6 @@ void Game::loadUnitEntities(std::vector<short unsigned int> unit_inds, std::vect
     }
 }
 
-void Game::loadUnits(unsigned char in_chap) {
-    // Not necessary. I think would be better to load the party from a savefile or something.
-    std::vector<short int> toload = chapBaseUnitsInds[in_chap]();
-    baseUnits(&units, toload);
-}
-
-void Game::loadUnits(std::vector<short int> toload) {
-    baseUnits(&units, toload);
-}
-
-void Game::unloadUnits(std::vector<short int> to_unload) {
-    for (int i = 0; i < to_unload.size(); i++) {
-        units.erase(to_unload[i]);
-    }
-}
-
 void Game::loadMapArrivals() {
     SDL_Log("Loading map arrivals.\n");
     if (mapp) {
@@ -413,6 +397,7 @@ void Game::loadMapArrivals() {
         unsigned short int currentturn = mapp->getTurn();
         std::string asset_name;
         Unit Utemp;
+        SDL_Log("Am i in arrivals? %d", map_arrivals.size());
         for (int i = 0; i < map_arrivals.size(); i++) {
             if (map_arrivals[i].arrivalturn == currentturn) {
                 Utemp = units[map_arrivals[i].id];
@@ -431,6 +416,23 @@ void Game::loadMapArrivals() {
         SDL_Log("Failed to loadMapArrivals.");
     }
 }
+
+void Game::loadUnits(unsigned char in_chap) {
+    // Not necessary. I think would be better to load the party from a savefile or something.
+    std::vector<short int> toload = chapBaseUnitsInds[in_chap]();
+    baseUnits(&units, toload);
+}
+
+void Game::loadUnits(std::vector<short int> toload) {
+    baseUnits(&units, toload);
+}
+
+void Game::unloadUnits(std::vector<short int> to_unload) {
+    for (int i = 0; i < to_unload.size(); i++) {
+        units.erase(to_unload[i]);
+    }
+}
+
 
 void Game::init(const char * title, int xpos, int ypos, int width, int height, bool fullscreen) {
     int flags = 0;

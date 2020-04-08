@@ -6,7 +6,8 @@
 
 Unit::Unit() {
     setXMLElement("Unit");
-    equipped = {0, 1};
+    equipsR(0);
+    equipsL(1);
 }
 
 Unit::Unit(const unsigned short int in_id, const unsigned char in_class_index,  const Unit_stats in_bases, const bool in_sex) : Unit() {
@@ -115,11 +116,15 @@ void Unit::setSupports(std::vector<short int> in_supports) {
 }
 
 void Unit::equipsL(const unsigned char index) {
-    equipped.left = index;
+    if (equipment[index].id > 0) {
+        equipped.left = index;
+    }
 }
 
 void Unit::equipsR(const unsigned char index) {
-    equipped.right = index;
+    if (equipment[index].id > 0) {
+        equipped.right = index;
+    }
 }
 
 void Unit::unequipsL() {
@@ -130,11 +135,13 @@ void Unit::unequipsR() {
     equipped.right = -1;
 }
 
-void Unit::equips(const short unsigned int index,  const bool hand) {
-    if (hand) {
-        equipped.left = index;
-    } else {
-        equipped.right = index;
+void Unit::equips(const short unsigned int index, const bool hand) {
+    if (equipment[index].id > 0) {
+        if (hand) {
+            equipped.left = index;
+        } else {
+            equipped.right = index;
+        }
     }
 }
 
@@ -1143,6 +1150,7 @@ std::vector<Map_arrival> chapTestArrivals() {
     temp.arrivalturn = 0;
     temp.position = {6, 10};
     temp.levelups = 0;
+    out.push_back(temp);
     return(out);
 }
 
