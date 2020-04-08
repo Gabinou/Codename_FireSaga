@@ -414,13 +414,10 @@ void Game::loadMapEnemies() {
         for (int i = 0; i < map_enemies.size(); i++) {
             
             if (map_enemies[i].arrivalturn == currentturn) {
-                
+                Utemp = units[map_enemies[i].id];
+                Utemp.setEntity(manager.getEntities().size());
+                manager.addEntity();
             }
-
-            Utemp = units[unit_inds[i]];
-
-            units[map_enemies[i]].setEntity(manager.getEntities().size());
-            manager.addEntity();
         }
     } else {
         SDL_Log("Failed to loadMapEnemies.");

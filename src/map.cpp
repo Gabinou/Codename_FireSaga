@@ -40,6 +40,12 @@ void Map::addEnemy(const Map_enemy in_enemy) {
     map_enemies.push_back(in_enemy);
 }
 
+void Map::removeMapEnemy(const unsigned char index) {
+    loaded_map_enemies.push_back(map_enemies[index]);
+    // map_enemies.erase(index);
+}
+
+
 std::vector<Map_enemy> Map::getEnemies() {
     return(map_enemies);
 }
@@ -76,7 +82,7 @@ void Map::setTilemap(const std::vector<std::vector<short int>> in_tilemap){
     tilemap = in_tilemap;
 }
 
-unsigned char getTurn() {
+unsigned char Map::getTurn() {
     return(turn);
 }
 
