@@ -6,6 +6,7 @@
 
 Unit::Unit() {
     setXMLElement("Unit");
+    equipped = {0, 1};
 }
 
 Unit::Unit(const unsigned short int in_id, const unsigned char in_class_index,  const Unit_stats in_bases, const bool in_sex) : Unit() {
@@ -1150,18 +1151,24 @@ std::vector<short int> chap1UnitsInds() {
     return(out);
 }
 
-std::vector<short int> chapTestArrivals() {
-    std::vector<short int> out = {UNIT::NAME::BANDIT};
+std::vector<Map_arrival> chapTestArrivals() {
+    std::vector<Map_arrival> out;
+    Map_arrival temp;
+    temp.id = UNIT::NAME::BANDIT;
+    temp.arrivalturn = 0;
+    temp.position = {6, 10};
+    temp.levelups = 0;
     return(out);
 }
 std::vector<std::vector<Inventory_item>> chapTestEquipments() {
+    //Default equipped is 0R, 1L.
     std::vector<std::vector<Inventory_item>> out;
     std::vector<Inventory_item> temp_equipment;
     Inventory_item temp_item;
 
-    temp_item.id = ITEM::NAME::IRON_AXE;
+    temp_item.id = ITEM::NAME::IRON_AXE; //Rhand by default
     temp_equipment.push_back(temp_item);
-    temp_item.id = ITEM::NAME::WOODEN_SHIELD;
+    temp_item.id = ITEM::NAME::WOODEN_SHIELD; //Lhand by default
     temp_equipment.push_back(temp_item);
     out.push_back(temp_equipment);
     temp_equipment.clear();
@@ -1169,5 +1176,5 @@ std::vector<std::vector<Inventory_item>> chapTestEquipments() {
 }
 
 std::vector<short int> (*chapBaseUnitsInds[30])() = {chapTestUnitsInds, chap1UnitsInds};
-std::vector<Map_arrival> (*mapArrivals[30])() = {};
-std::vector<std::vector<Inventory_item>> (*mapEquipments[30])() = {};
+std::vector<Map_arrival> (*mapArrivals[30])() = {chapTestArrivals};
+std::vector<std::vector<Inventory_item>> (*mapEquipments[30])() = {chapTestEquipments};
