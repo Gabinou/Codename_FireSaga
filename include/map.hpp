@@ -19,11 +19,13 @@ class Map {
         bool show_grid = false;
         bool made_entitymap = false;
 
-        std::vector<short unsigned int> enemy_inds;
+        // std::vector<short unsigned int> enemy_inds;
+        std::vector<Map_Enemy> map_enemies;
 
         unsigned char num_friendlies;
         unsigned char num_neutral;
         unsigned char num_enemies;
+        unsigned char turn = 0; // Automatic loss if turn 255?
 
         std::vector<unsigned short int> essentials = {UNIT::NAME::ERWIN};
         unsigned short int boss;
@@ -94,10 +96,9 @@ class Map {
         void showGrid();
         void hideGrid();
 
-        void setEnemies(const std::vector<short unsigned int> in_enemy_inds);
-        void loadEnemyinds(const short unsigned int in_chap_ind);
-        void addEnemy(const short unsigned int in_enemy_ind);
-        std::vector<short unsigned int> getEnemies();
+        void setEnemies(const std::vector<Map_enemy> in_enemies);
+        void addEnemy(const Map_enemy in_enemy);
+        std::vector<Map_enemy> getEnemies();
 
         void setDangermode(const unsigned char in_mode);
         void showDanger();

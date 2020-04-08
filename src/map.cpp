@@ -32,20 +32,16 @@ void Map::removeTile(const short unsigned int x, const short unsigned int y) {
     entitymap[x][y] = nullptr;
 }
 
-void Map::setEnemies(const std::vector<short unsigned int> in_enemy_inds) {
-    enemy_inds = in_enemy_inds;
+void Map::setEnemies(const std::vector<Map_enemy> in_enemies) {
+    map_enemies = in_enemies;
 }
 
-void Map::loadEnemyinds(const short unsigned int in_chap_ind) {
-    enemy_inds = chapEnemyinds[in_chap_ind]();
+void Map::addEnemy(const Map_enemy in_enemy) {
+    map_enemies.push_back(in_enemy);
 }
 
-void Map::addEnemy(const short unsigned int in_enemy_ind) {
-    enemy_inds.push_back(in_enemy_ind);
-}
-
-std::vector<short unsigned int> Map::getEnemies() {
-    return(enemy_inds);
+std::vector<Map_enemy> Map::getEnemies() {
+    return(map_enemies);
 }
 
 std::vector<std::vector<short int>> Map::makeMvtCostmap(const unsigned char unitmovetype) {
@@ -182,7 +178,6 @@ std::vector<std::vector<Entity *>> Map::getEntitymap() {
     return(entitymap);
 }
 
-
 void Map::loadTilemap(const std::string filename) {
     tilemap = readcsv_vec<short int>(filename.c_str(), 1);
     postTilemap();
@@ -274,7 +269,6 @@ void Map::drawMap() {
         }
     }
 }
-
 
 std::vector<std::vector<short int>> testTilemap(){
     std::vector<std::vector<short int>> tilemap = { 

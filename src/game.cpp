@@ -626,12 +626,16 @@ bool essentialDied(Map * in_map, const Narrative * in_narrative) {
 }
 
 // win conditions
-bool throneSeized(Map * in_map) {
+bool escaped(Map * in_map) {
+
+}
+
+bool Seized(Map * in_map) {
     //Maybe not necessary? maybe win is called when the throne is seized?
     return(in_map->getSeized());
 }
 
-bool talked(Map * in_map) {
+bool talked() {
     return(false)
 }
 bool bossDied(Map * in_map) {

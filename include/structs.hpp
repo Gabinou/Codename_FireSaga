@@ -20,8 +20,8 @@ struct Unit_state {
 };
 
 struct Map_condition {
-    short int unit = -1;
     short int army = -1;
+    short int unit = -1;
     short int colmin = -1;
     short int colmax = -1;
     short int rowmin = -1;
@@ -106,8 +106,10 @@ struct Equipped {
 };
 
 struct Map_enemy {
-    unsigned char arrival;
-    unsigned char levelup;
+    unsigned char arrivalturn;
+    unsigned char levelups;
+    short int id;
+    Point position;
 };
 
 struct Support {
