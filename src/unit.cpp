@@ -61,19 +61,24 @@ void Unit::removeEquipment(unsigned char in_index) {
     equipment[in_index] = empty; 
 }
 
-void Unit::addEquipment(Inventory_item in_equipment) {
+void Unit::addEquipment(Inventory_item in_item) {
     for (short unsigned int i = 0; i < DEFAULT::EQUIPMENT_SIZE; i++) {
         if (equipment[i].id == -1) {
-            equipment[i] = in_equipment; 
+            equipment[i] = in_item; 
             break;
         }
     }
 }
 
-void Unit::setEquipment(Inventory_item * in_equipment) {
-    for (short unsigned int i = 0; i < DEFAULT::EQUIPMENT_SIZE; i++) {
-        equipment[i] = in_equipment[i];
+void Unit::setEquipment(std::vector<Inventory_item> in_equipment) {
+    if (in_equipment.size() <= DEFAULT::EQUIPMENT_SIZE) {
+        for (short unsigned int i = 0; i < in_equipment.size(); i++) {
+            equipment[i] = in_equipment[i];
+        }
+    } else {
+        SDL_Log("Unit in_equipment is too large.")
     }
+
 }
 
 void Unit::setEquipped(Equipped in_equipped) {

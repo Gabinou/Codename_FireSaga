@@ -82,8 +82,8 @@ class Unit : public XML_IO {
         void equips(const unsigned short int index, const bool hand = true);
         void unequips(const bool hand = true);
         void setEquipped(Equipped in_equipped);
-        void setEquipment(Inventory_item * in_equipment);
-        void addEquipment(Inventory_item in_equipment);
+        void setEquipment(std::vector<Inventory_item> in_equipment);
+        void addEquipment(Inventory_item in_item);
         void switchEquipment(Inventory_item in_equipment, const short int ind1, const short int ind2);
         void removeEquipment(unsigned char in_index);
 
