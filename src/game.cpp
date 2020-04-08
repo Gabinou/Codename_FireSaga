@@ -385,7 +385,7 @@ void Game::loadUnitEntities(std::vector<short unsigned int> unit_inds, std::vect
         manager.getEntities()[Utemp.getEntity()]->addComponent<PositionComponent>(positions_list[i][0], positions_list[i][1]);
         manager.getEntities()[Utemp.getEntity()]->addComponent<UnitContainer>(unit_inds[i]);
         manager.getEntities()[Utemp.getEntity()]->getComponent<PositionComponent>().setMap(mapp); //Should mapp be an input? No mapp is always same ?
-        manager.getEntities()[Utemp.getEntity()]->addComponent<SpriteComponent>(mapp, asset_name.c_str());
+        manager.getEntities()[Utemp.getEntity()]->addComponent<SpriteComponent>(mapp, asset_name.c_str()  );
         manager.getEntities()[Utemp.getEntity()]->addGroup(manager.groupUnits);
         manager.getEntities()[Utemp.getEntity()]->addGroup(manager.groupUnits);
     }
@@ -405,18 +405,27 @@ void Game::unloadUnits(std::vector<short int> to_unload) {
     }
 }
 
-// void Game::loadMapEnemies() {
-//     SDL_Log("Loading map enemies. \n");
-//     if (mapp) {
-//         std::vector<short unsigned int> map_enemies = mapp->getEnemies(); 
-//         for (int i = 0; i < map_enemies.size(); i++) {
-//             units[map_enemies[i]].setEntity(manager.getEntities().size());
-//             manager.addEntity();
-//         }
-//     } else {
-//         SDL_Log("Failed to loadMapEnemies.");
-//     }
-// }
+void Game::loadMapEnemies() {
+    SDL_Log("Loading map enemies. \n");
+    if (mapp) {
+        std::vector<Map_enemy> map_enemies = mapp->getEnemies(); 
+        unsigned short int currentturn = mapp->getTurn();
+        Unit Utemp;
+        for (int i = 0; i < map_enemies.size(); i++) {
+            
+            if (map_enemies[i].arrivalturn == currentturn) {
+                
+            }
+
+            Utemp = units[unit_inds[i]];
+
+            units[map_enemies[i]].setEntity(manager.getEntities().size());
+            manager.addEntity();
+        }
+    } else {
+        SDL_Log("Failed to loadMapEnemies.");
+    }
+}
 
 void Game::init(const char * title, int xpos, int ypos, int width, int height, bool fullscreen) {
     int flags = 0;

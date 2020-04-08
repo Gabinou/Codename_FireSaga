@@ -90,6 +90,8 @@ class Map {
         void setOverlay(const unsigned char in_mode, std::vector<std::vector<short int>> in_map);
         void clearOverlays();
 
+        unsigned char getTurn();
+
         void setOverlaymode(const unsigned char in_mode);
         void showOverlay();
         void hideOverlay();

@@ -76,6 +76,10 @@ void Map::setTilemap(const std::vector<std::vector<short int>> in_tilemap){
     tilemap = in_tilemap;
 }
 
+unsigned char getTurn() {
+    return(turn);
+}
+
 void Map::moveTile(const short unsigned int x, const short unsigned int y, const short unsigned int new_x, const short unsigned int new_y) {
     entitymap[new_x][new_y] = entitymap[x][y];
     entitymap[x][y] = nullptr;
