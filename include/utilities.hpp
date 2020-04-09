@@ -20,7 +20,7 @@ extern std::vector<std::string> skillNames(unsigned long long int in_skillscode)
 extern std::vector<std::string> wpnEffects(long unsigned int in_effect);
 extern std::vector<std::string> unitTypes(unsigned short int in_typecode);
 extern std::vector<std::string> wpnTypes(short unsigned int in_typecode);
-extern unsigned char id2army(short unsigned int in_unitid);
+extern unsigned char unitid2army(short unsigned int in_unitid);
 
 
 extern std::vector<std::string> unitNames;

@@ -14,6 +14,7 @@ Unit::Unit(const unsigned short int in_id, const unsigned char in_class_index,  
     base_stats = in_bases;
     current_stats = in_bases;
     id = in_id;
+    setArmy(unitid2army(id));
     name = unitNames[in_id];
     class_index = in_class_index;
     mvt_type = mvtTypes[class_index];

@@ -622,7 +622,7 @@ unsigned char mvtType(unsigned char in_class_index) {
     return(mvt_type);
 }
 
-unsigned char id2army(short unsigned int in_unitid) {
+unsigned char unitid2army(short unsigned int in_unitid) {
     // only used for unit init. baseArmy
     unsigned char armyid = 0;
     switch(in_unitid) {
