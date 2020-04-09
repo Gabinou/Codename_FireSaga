@@ -11,6 +11,7 @@
 #include "script.hpp"
 #include "weapon.hpp"
 #include "unit.hpp"
+#include "flecs.h"
 #include "convoy.hpp"
 
 Game * firesaga = nullptr;
@@ -58,7 +59,7 @@ int main(int argc, char * argv[]) {
     temp_settings.fontsize = 28; 
     firesaga->setSettings(temp_settings);
     firesaga->init("FireSaga", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, firesaga->getSettings().res.x, firesaga->getSettings().res.y, false);
-    firesaga->makeFPSEntity();
+    // firesaga->makeFPSEntity();
 
     // SDL_Log("Testing convoy\n");
     // testConvoy();
@@ -70,7 +71,7 @@ int main(int argc, char * argv[]) {
 
     std::vector<short unsigned int> unit_inds = {UNIT::NAME::SILOU};
     std::vector<std::vector<int>> positions_list = {{6, 6}};
-    firesaga->loadUnitEntities(unit_inds, positions_list);
+    // firesaga->loadUnitEntities(unit_inds, positions_list);
     firesaga->loadMapArrivals();
 
     // SDL_Log("Testing game save XML");

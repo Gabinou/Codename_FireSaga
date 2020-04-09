@@ -330,8 +330,8 @@ void Game::loadMap(const std::string filename) {
         mapp = new Map(settings.tilesize[0], settings.tilesize[1]); // mapp is a pointer
         mapp->setRenderer(renderer);
         mapp->loadTilemap(filename);
-        SDL_Log("Loading Cursor\n");
-        loadCursor();
+        // SDL_Log("Loading Cursor\n");
+        // loadCursor();
     }  else {
         SDL_Log("Failed to loadMap. Was mapp deleted previously?");
     }
@@ -345,8 +345,8 @@ void Game::loadMap(const int in_map_index) {
         mapp->setRenderer(renderer);
         mapp->loadTilemap(in_map_index);
         mapp->setArrivals(mapArrivals[in_map_index]());
-        SDL_Log("Loading Cursor\n");
-        loadCursor();
+        // SDL_Log("Loading Cursor\n");
+        // loadCursor();
     } else {
         SDL_Log("Failed to loadMap. Was mapp deleted previously?");
     }
@@ -361,69 +361,69 @@ void Game::unloadMap() {
     }
 }
 
-void Game::loadCursor() {
-    // Map should be loaded before I think.
-    if (this->state == GAME::STATE::MAP) {
-        cursor.addComponent<PositionComponent>(6, 6);
-        cursor.addComponent<KeyboardController>(this, mapp);
-        if (SDL_NumJoysticks() < 1) {
-            SDL_Log( "No joysticks connected.\n" );
-        } else {
-            cursor.addComponent<GamepadController>(this, mapp);
-        }
-        cursor.addComponent<SpriteComponent>(mapp, "..//assets//cursors.png", 10, 50);
-        cursor.getComponent<SpriteComponent>().setSlidetype("geometric");
-        cursor.addGroup(manager.groupUI);
-    }
-}
+// void Game::loadCursor() {
+//     // Map should be loaded before I think.
+//     if (this->state == GAME::STATE::MAP) {
+//         cursor.addComponent<PositionComponent>(6, 6);
+//         cursor.addComponent<KeyboardController>(this, mapp);
+//         if (SDL_NumJoysticks() < 1) {
+//             SDL_Log( "No joysticks connected.\n" );
+//         } else {
+//             cursor.addComponent<GamepadController>(this, mapp);
+//         }
+//         cursor.addComponent<SpriteComponent>(mapp, "..//assets//cursors.png", 10, 50);
+//         cursor.getComponent<SpriteComponent>().setSlidetype("geometric");
+//         cursor.addGroup(manager.groupUI);
+//     }
+// }
 
-void Game::unloadCursor() {
+// void Game::unloadCursor() {
 
-}
+// }
 
 
-void Game::loadUnitEntities(std::vector<short unsigned int> unit_inds, std::vector<std::vector<int>> positions_list) {
-    SDL_Log("Loading Units\n");
-    std::string asset_name;
-    Unit Utemp;
-    for (int i = 0; i < unit_inds.size(); i++) { 
-        Utemp = units[unit_inds[i]];
-        asset_name = "..//assets//" +  Utemp.getName() + ".png";
-        Utemp.setEntity(manager.getEntities().size());
-        manager.addEntity();
-        manager.getEntities()[Utemp.getEntity()]->addComponent<PositionComponent>(positions_list[i][0], positions_list[i][1]);
-        manager.getEntities()[Utemp.getEntity()]->addComponent<UnitContainer>(unit_inds[i]);
-        manager.getEntities()[Utemp.getEntity()]->getComponent<PositionComponent>().setMap(mapp);
-        manager.getEntities()[Utemp.getEntity()]->addComponent<SpriteComponent>(mapp, asset_name.c_str());
-        manager.getEntities()[Utemp.getEntity()]->addGroup(manager.groupUnits);
-    }
-}
+// void Game::loadUnitEntities(std::vector<short unsigned int> unit_inds, std::vector<std::vector<int>> positions_list) {
+//     SDL_Log("Loading Units\n");
+//     std::string asset_name;
+//     Unit Utemp;
+//     for (int i = 0; i < unit_inds.size(); i++) { 
+//         Utemp = units[unit_inds[i]];
+//         asset_name = "..//assets//" +  Utemp.getName() + ".png";
+//         Utemp.setEntity(manager.getEntities().size());
+//         manager.addEntity();
+//         manager.getEntities()[Utemp.getEntity()]->addComponent<PositionComponent>(positions_list[i][0], positions_list[i][1]);
+//         manager.getEntities()[Utemp.getEntity()]->addComponent<UnitContainer>(unit_inds[i]);
+//         manager.getEntities()[Utemp.getEntity()]->getComponent<PositionComponent>().setMap(mapp);
+//         manager.getEntities()[Utemp.getEntity()]->addComponent<SpriteComponent>(mapp, asset_name.c_str());
+//         manager.getEntities()[Utemp.getEntity()]->addGroup(manager.groupUnits);
+//     }
+// }
 
-void Game::loadMapArrivals() {
-    SDL_Log("Loading map arrivals.\n");
-    if (mapp) {
-        std::vector<Map_arrival> map_arrivals = mapp->getArrivals(); 
-        unsigned short int currentturn = mapp->getTurn();
-        std::string asset_name;
-        Unit Utemp;
-        for (int i = 0; i < map_arrivals.size(); i++) {
-            if (map_arrivals[i].arrivalturn == currentturn) {
-                Utemp = units[map_arrivals[i].id];
-                asset_name = "..//assets//horse.png";
-                // asset_name = "..//assets//" +  Utemp.getName() + ".png";
-                Utemp.setEntity(manager.getEntities().size());
-                manager.addEntity();
-                manager.getEntities()[Utemp.getEntity()]->addComponent<PositionComponent>(map_arrivals[i].position.x, map_arrivals[i].position.y);
-                manager.getEntities()[Utemp.getEntity()]->addComponent<UnitContainer>(Utemp.getid());
-                manager.getEntities()[Utemp.getEntity()]->getComponent<PositionComponent>().setMap(mapp);
-                manager.getEntities()[Utemp.getEntity()]->addComponent<SpriteComponent>(mapp, asset_name.c_str());
-                manager.getEntities()[Utemp.getEntity()]->addGroup(manager.groupUnits);
-            }
-        }
-    } else {
-        SDL_Log("Failed to loadMapArrivals.");
-    }
-}
+// void Game::loadMapArrivals() {
+//     SDL_Log("Loading map arrivals.\n");
+//     if (mapp) {
+//         std::vector<Map_arrival> map_arrivals = mapp->getArrivals(); 
+//         unsigned short int currentturn = mapp->getTurn();
+//         std::string asset_name;
+//         Unit Utemp;
+//         for (int i = 0; i < map_arrivals.size(); i++) {
+//             if (map_arrivals[i].arrivalturn == currentturn) {
+//                 Utemp = units[map_arrivals[i].id];
+//                 asset_name = "..//assets//horse.png";
+//                 // asset_name = "..//assets//" +  Utemp.getName() + ".png";
+//                 Utemp.setEntity(manager.getEntities().size());
+//                 manager.addEntity();
+//                 manager.getEntities()[Utemp.getEntity()]->addComponent<PositionComponent>(map_arrivals[i].position.x, map_arrivals[i].position.y);
+//                 manager.getEntities()[Utemp.getEntity()]->addComponent<UnitContainer>(Utemp.getid());
+//                 manager.getEntities()[Utemp.getEntity()]->getComponent<PositionComponent>().setMap(mapp);
+//                 manager.getEntities()[Utemp.getEntity()]->addComponent<SpriteComponent>(mapp, asset_name.c_str());
+//                 manager.getEntities()[Utemp.getEntity()]->addGroup(manager.groupUnits);
+//             }
+//         }
+//     } else {
+//         SDL_Log("Failed to loadMapArrivals.");
+//     }
+// }
 
 void Game::loadUnits(unsigned char in_chap) {
     // Not necessary. I think would be better to load the party from a savefile or something.
@@ -599,38 +599,38 @@ void Game::setGamepadInputMap(GamepadInputMap in_gamepadInputMap) {
     gamepadInputMap = in_gamepadInputMap;
 }
 
-void Game::handleEvents() {
-    SDL_PollEvent(&event);
+// void Game::handleEvents() {
+//     SDL_PollEvent(&event);
 
-    switch (event.type) {
-    case SDL_QUIT:
-        isRunning = false;
-        break;
+//     switch (event.type) {
+//     case SDL_QUIT:
+//         isRunning = false;
+//         break;
 
-    default:
-        break;
-    }
-}
+//     default:
+//         break;
+//     }
+// }
 
-std::vector<Entity *> & unitEntities = Game::manager.getGroup(Game::manager.groupUnits);
-std::vector<Entity *> & uxEntities = Game::manager.getGroup(Game::manager.groupUI);
+// std::vector<Entity *> & unitEntities = Game::manager.getGroup(Game::manager.groupUnits);
+// std::vector<Entity *> & uxEntities = Game::manager.getGroup(Game::manager.groupUI);
 
-void Game::render() {
-    SDL_RenderClear(renderer);
-    // Add stuff to render. Paint the background First.
+// void Game::render() {
+//     SDL_RenderClear(renderer);
+//     // Add stuff to render. Paint the background First.
 
-    mapp->drawMap();
+//     mapp->drawMap();
 
-    for (auto& u : unitEntities) {
-        u->draw();
-    }
+//     for (auto& u : unitEntities) {
+//         u->draw();
+//     }
 
-    for (auto& u : uxEntities) {
-        u->draw();
-    }
+//     for (auto& u : uxEntities) {
+//         u->draw();
+//     }
 
-    SDL_RenderPresent(renderer);
-}
+//     SDL_RenderPresent(renderer);
+// }
 void Game::clean() {
     SDL_DestroyWindow(window);
     SDL_DestroyRenderer(renderer);
