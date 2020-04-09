@@ -76,6 +76,7 @@ class Game {
         void unloadUnits(std::vector<short int> to_unload);
         void loadMapArrivals();
         void loadCursor();
+        void unloadCursor();
         template <typename T> void loadTiles(std::vector<T> in_tiles);
 
         void handleEvents();

@@ -377,6 +377,11 @@ void Game::loadCursor() {
     }
 }
 
+void Game::unloadCursor() {
+
+}
+
+
 void Game::loadUnitEntities(std::vector<short unsigned int> unit_inds, std::vector<std::vector<int>> positions_list) {
     SDL_Log("Loading Units\n");
     std::string asset_name;
