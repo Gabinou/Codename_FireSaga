@@ -72,7 +72,7 @@ int main(int argc, char * argv[]) {
     std::vector<short unsigned int> unit_inds = {UNIT::NAME::SILOU};
     std::vector<std::vector<int>> positions_list = {{6, 6}};
     // firesaga->loadUnitEntities(unit_inds, positions_list);
-    firesaga->loadMapArrivals();
+    // firesaga->loadMapArrivals();
 
     // SDL_Log("Testing game save XML");
     // firesaga->saveXML(1);
@@ -86,9 +86,9 @@ int main(int argc, char * argv[]) {
     SDL_Log("Starting main game loop\n");
     while (firesaga->running()) {
         frame_start = std::chrono::high_resolution_clock::now();
-        firesaga->handleEvents();
-        firesaga->update();
-        firesaga->render();
+        // firesaga->handleEvents();
+        // firesaga->update();
+        // firesaga->render();
         frame_middle = std::chrono::high_resolution_clock::now();
         
         frame_time = (int)(std::chrono::duration_cast<std::chrono::nanoseconds>(frame_middle - frame_start).count()/1E6);
@@ -103,7 +103,7 @@ int main(int argc, char * argv[]) {
             firesaga->setSettings(temp_settings);
             if (firesaga->getSettings().FPS.held == 4) {
                 sprintf(buffer, "%.1f", firesaga->getSettings().FPS.current);
-                firesaga->manager.getEntities()[firesaga->getSettings().FPS.entity]->getComponent<TextComponent>().setText(buffer);
+                // firesaga->manager.getEntities()[firesaga->getSettings().FPS.entity]->getComponent<TextComponent>().setText(buffer);
                 temp_settings = firesaga->getSettings();
                 temp_settings.FPS.held = 0; 
                 firesaga->setSettings(temp_settings);

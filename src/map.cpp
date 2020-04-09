@@ -178,26 +178,26 @@ void Map::initVars() {
     setTilesize(DEFAULT::TILESIZE, DEFAULT::TILESIZE);
     srcrect.w = destrect.w = DEFAULT::TILESIZE;
     srcrect.h = destrect.h = DEFAULT::TILESIZE;
-    std::vector<std::vector<Entity *>> temp(DEFAULT::LINE_LENGTH, std::vector<Entity*>(DEFAULT::LINE_LENGTH));
-    entitymap = temp;
+    // std::vector<std::vector<Entity *>> temp(DEFAULT::LINE_LENGTH, std::vector<Entity*>(DEFAULT::LINE_LENGTH));
+    // entitymap = temp;
 }
 
-void Map::makeEntitymap(const short unsigned int row_size, const short unsigned int col_size){
-    if (!made_entitymap) {
-        std::vector<std::vector<Entity *>> temp(row_size, std::vector<Entity*>(col_size));
-        entitymap = temp;
-        for (short unsigned int col = 0; col < entitymap.size(); col++) {
-            for (short unsigned int row = 0; row < entitymap[0].size(); row++) {
-                entitymap[col][row] =  static_cast<Entity*>(nullptr);
-            }
-        }
-    }
-    made_entitymap = true;
-}
+// void Map::makeEntitymap(const short unsigned int row_size, const short unsigned int col_size){
+//     if (!made_entitymap) {
+//         std::vector<std::vector<Entity *>> temp(row_size, std::vector<Entity*>(col_size));
+//         entitymap = temp;
+//         for (short unsigned int col = 0; col < entitymap.size(); col++) {
+//             for (short unsigned int row = 0; row < entitymap[0].size(); row++) {
+//                 entitymap[col][row] =  static_cast<Entity*>(nullptr);
+//             }
+//         }
+//     }
+//     made_entitymap = true;
+// }
 
-std::vector<std::vector<Entity *>> Map::getEntitymap() {
-    return(entitymap);
-}
+// std::vector<std::vector<Entity *>> Map::getEntitymap() {
+//     return(entitymap);
+// }
 
 void Map::loadTilemap(const std::string filename) {
     tilemap = readcsv_vec<short int>(filename.c_str(), 1);
@@ -213,7 +213,7 @@ void Map::postTilemap() {
     loadTiletextures();
     short unsigned int col_size = tilemap.size();
     short unsigned int row_size = tilemap[0].size();
-    makeEntitymap(row_size, col_size);
+    // makeEntitymap(row_size, col_size);
 }
 
 unsigned char Map::getnumArrivals() {

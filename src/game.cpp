@@ -102,48 +102,48 @@ void Game::fight(Unit * attacker, Unit * defender) {
     }
 }
 
-void Game::makeFPSEntity() {
-    settings.FPS.entity = manager.getEntities().size();
-    manager.addEntity();
-    manager.getEntities()[settings.FPS.entity]->addComponent<PositionComponent>();
-    manager.getEntities()[settings.FPS.entity]->getComponent<PositionComponent>().setBounds(0, settings.res.x, 0, settings.res.y);
-    manager.getEntities()[settings.FPS.entity]->getComponent<PositionComponent>().setPos(settings.FPS.pos.x, settings.FPS.pos.y);
-    manager.getEntities()[settings.FPS.entity]->addComponent<TextComponent>(settings.fontsize, "60", settings.FPS.textcolor);
-    manager.getEntities()[settings.FPS.entity]->getComponent<TextComponent>().setSizefactor(settings.FPS.sizefactor);
-    manager.getEntities()[settings.FPS.entity]->addGroup(manager.groupUI);
-}
+// void Game::makeFPSEntity() {
+//     settings.FPS.entity = manager.getEntities().size();
+//     manager.addEntity();
+//     manager.getEntities()[settings.FPS.entity]->addComponent<PositionComponent>();
+//     manager.getEntities()[settings.FPS.entity]->getComponent<PositionComponent>().setBounds(0, settings.res.x, 0, settings.res.y);
+//     manager.getEntities()[settings.FPS.entity]->getComponent<PositionComponent>().setPos(settings.FPS.pos.x, settings.FPS.pos.y);
+//     manager.getEntities()[settings.FPS.entity]->addComponent<TextComponent>(settings.fontsize, "60", settings.FPS.textcolor);
+//     manager.getEntities()[settings.FPS.entity]->getComponent<TextComponent>().setSizefactor(settings.FPS.sizefactor);
+//     manager.getEntities()[settings.FPS.entity]->addGroup(manager.groupUI);
+// }
 
-void Game::makeUnitmenu(Entity & setting_entity) {
-    SDL_Log("Making unit menu\n");
-    menus[GAME::STATE::UNITMENU] = manager.getEntities().size();
-    manager.addEntity();
-    manager.getEntities()[menus[GAME::STATE::UNITMENU]]->addComponent<PositionComponent>();
-    manager.getEntities()[menus[GAME::STATE::UNITMENU]]->getComponent<PositionComponent>().setBounds(0, 2000, 0, 2000);
-    manager.getEntities()[menus[GAME::STATE::UNITMENU]]->getComponent<PositionComponent>().setPos(
-        (int)(setting_entity.getComponent<PositionComponent>().getPos()[0] * settings.tilesize[0]),
-        (int)(setting_entity.getComponent<PositionComponent>().getPos()[1] * settings.tilesize[1]));
-    SDL_Color black = {255, 255, 255};
-    manager.getEntities()[menus[GAME::STATE::UNITMENU]]->addComponent<SpriteComponent>("..//assets//textbox.png", (int []) {128, 128}); 
-    manager.getEntities()[menus[GAME::STATE::UNITMENU]]->addComponent<TextComponent>(settings.fontsize, std::vector<std::string> {"Attack", "Wait"}, black);
-    manager.getEntities()[menus[GAME::STATE::UNITMENU]]->addGroup(manager.groupUI);
-}
+// void Game::makeUnitmenu(Entity & setting_entity) {
+//     SDL_Log("Making unit menu\n");
+//     menus[GAME::STATE::UNITMENU] = manager.getEntities().size();
+//     manager.addEntity();
+//     manager.getEntities()[menus[GAME::STATE::UNITMENU]]->addComponent<PositionComponent>();
+//     manager.getEntities()[menus[GAME::STATE::UNITMENU]]->getComponent<PositionComponent>().setBounds(0, 2000, 0, 2000);
+//     manager.getEntities()[menus[GAME::STATE::UNITMENU]]->getComponent<PositionComponent>().setPos(
+//         (int)(setting_entity.getComponent<PositionComponent>().getPos()[0] * settings.tilesize[0]),
+//         (int)(setting_entity.getComponent<PositionComponent>().getPos()[1] * settings.tilesize[1]));
+//     SDL_Color black = {255, 255, 255};
+//     manager.getEntities()[menus[GAME::STATE::UNITMENU]]->addComponent<SpriteComponent>("..//assets//textbox.png", (int []) {128, 128}); 
+//     manager.getEntities()[menus[GAME::STATE::UNITMENU]]->addComponent<TextComponent>(settings.fontsize, std::vector<std::string> {"Attack", "Wait"}, black);
+//     manager.getEntities()[menus[GAME::STATE::UNITMENU]]->addGroup(manager.groupUI);
+// }
 
-void Game::killMenu(short unsigned int index) {
-    if (menus[index] > -1) {
-        manager.getEntities()[menus[index]]->destroy();
-        menus[index] = -1;
-    } else {
-        SDL_Log("Could not destroy menu %d.", index);
-    }
-}
+// void Game::killMenu(short unsigned int index) {
+//     if (menus[index] > -1) {
+//         manager.getEntities()[menus[index]]->destroy();
+//         menus[index] = -1;
+//     } else {
+//         SDL_Log("Could not destroy menu %d.", index);
+//     }
+// }
 
-void Game::moveUnit(Entity & cursor) {
-    // USELESS?
-    int newPos[2];
-    newPos[0] = cursor.getComponent<PositionComponent>().getPos()[0];
-    newPos[1] = cursor.getComponent<PositionComponent>().getPos()[1];
-    manager.getEntities()[unit_entities.top()]->getComponent<PositionComponent>();
-}
+// void Game::moveUnit(Entity & cursor) {
+//     // USELESS?
+//     int newPos[2];
+//     newPos[0] = cursor.getComponent<PositionComponent>().getPos()[0];
+//     newPos[1] = cursor.getComponent<PositionComponent>().getPos()[1];
+//     manager.getEntities()[unit_entities.top()]->getComponent<PositionComponent>();
+// }
 
 // I think this function is too big. Find a way to reduce it...
 void Game::setState(Entity & setting_entity, short unsigned int new_state) {
@@ -159,7 +159,7 @@ void Game::setState(Entity & setting_entity, short unsigned int new_state) {
         case GAME::STATE::MAP:
             switch (new_state) {
                 case GAME::STATE::UNITMENU:
-                    moveUnit(setting_entity);
+                    // moveUnit(setting_entity);
                     break;
                 case GAME::STATE::STATS:
                     break;
@@ -175,19 +175,23 @@ void Game::setState(Entity & setting_entity, short unsigned int new_state) {
                     unsigned char unitmvttype;
                     unsigned char * range;
                     
-                    for (int i = 0; i < manager.getEntities().size(); i++) {
-                        if (manager.getEntities()[i].get() == (Entity *)&setting_entity) {
-                            unit_entities.push(i);
-                        }
-                    }
+                    // for (int i = 0; i < manager.getEntities().size(); i++) {
+                    //     if (manager.getEntities()[i].get() == (Entity *)&setting_entity) {
+                    //         unit_entities.push(i);
+                    //     }
+                    // }
 
-                    short unsigned int current_unit_id = manager.getEntities()[unit_entities.top()]->getComponent<UnitContainer>().getID();
-                    unit_move = units[current_unit_id].getStats().move;
+                    // short unsigned int current_unit_id = manager.getEntities()[unit_entities.top()]->getComponent<UnitContainer>().getID();
+                    // unit_move = units[current_unit_id].getStats().move;
 
-                    start[0] = manager.getEntities()[unit_entities.top()]->getComponent<PositionComponent>().getPos()[0]; // Start is (+1,+1)?
-                    start[1] = manager.getEntities()[unit_entities.top()]->getComponent<PositionComponent>().getPos()[1]; // Start is (+1,+1)?
-                    start[0] = start[0] - 1;
-                    start[1] = start[1] - 1;
+                    // start[0] = manager.getEntities()[unit_entities.top()]->getComponent<PositionComponent>().getPos()[0]; // Start is (+1,+1)?
+                    // start[1] = manager.getEntities()[unit_entities.top()]->getComponent<PositionComponent>().getPos()[1]; // Start is (+1,+1)?
+                    // start[0] = start[0] - 1;
+                    // start[1] = start[1] - 1;
+                    unit_move = 5;
+                    start[0] = 6;
+                    start[1] = 6;
+                    short unsigned int current_unit_id = UNIT::NAME::SILOU;
 
                     unitmvttype = units[current_unit_id].getMvttype();
                     range = units[current_unit_id].getRange();
@@ -263,20 +267,20 @@ void Game::setState(Entity & setting_entity, short unsigned int new_state) {
                 case GAME::STATE::UNITMENU: {
                     SDL_Log("Changing to unitmenu\n");
                     mapp->hideOverlay();
-                    makeUnitmenu(setting_entity); 
-                    short int *new_position = setting_entity.getComponent<PositionComponent>().getPos();
-                    short int *old_position = manager.getEntities()[unit_entities.top()]->getComponent<PositionComponent>().getPos();
+                    // makeUnitmenu(setting_entity); 
+                    // short int *new_position = setting_entity.getComponent<PositionComponent>().getPos();
+                    // short int *old_position = manager.getEntities()[unit_entities.top()]->getComponent<PositionComponent>().getPos();
                     
-                    SDL_Log("Old position %d, %d \n", old_position[0], old_position[1]);
-                    SDL_Log("New position %d, %d \n", new_position[0], new_position[1]);
+                    // SDL_Log("Old position %d, %d \n", old_position[0], old_position[1]);
+                    // SDL_Log("New position %d, %d \n", new_position[0], new_position[1]);
 
-                    manager.getEntities()[unit_entities.top()]->getComponent<PositionComponent>().setPos(            
-                        new_position[0],
-                        new_position[1]);
+                    // manager.getEntities()[unit_entities.top()]->getComponent<PositionComponent>().setPos(            
+                        // new_position[0],
+                        // new_position[1]);
                     
-                    Entity * ontile = mapp->getTile(old_position[0], old_position[1]);
-                    mapp->removeTile(old_position[0], old_position[1]);
-                    mapp->setTile(new_position[0], new_position[1], ontile);
+                    // Entity * ontile = mapp->getTile(old_position[0], old_position[1]);
+                    // mapp->removeTile(old_position[0], old_position[1]);
+                    // mapp->setTile(new_position[0], new_position[1], ontile);
                     }
                     break;
                 case GAME::STATE::MAP:
@@ -295,7 +299,7 @@ void Game::setState(Entity & setting_entity, short unsigned int new_state) {
                 case GAME::STATE::CONVERSATION:
                     break;
                 case GAME::STATE::MAP:
-                    killMenu(GAME::STATE::UNITMENU);
+                    // killMenu(GAME::STATE::UNITMENU);
                     break;       
                 }
             break;
@@ -581,10 +585,10 @@ void Game::setState(const short unsigned int new_state) {
     state = new_state;
 }
 
-void Game::update() {
-    manager.refresh();
-    manager.update();
-}
+// void Game::update() {
+//     manager.refresh();
+//     manager.update();
+// }
  
 KeyboardInputMap Game::getKeyboardInputMap() {
     return(keyboardInputMap);
