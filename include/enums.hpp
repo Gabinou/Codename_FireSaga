@@ -566,5 +566,12 @@ enum STATES {
 };
 }
 }
+namespace CHAPTER {
+enum CHAPTERS {
+    TEST = 0,
+    CHAP1,
+    END,
+};
+}
 
 #endif /* ENUMS_HPP */

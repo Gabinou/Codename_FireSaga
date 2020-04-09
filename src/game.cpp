@@ -397,7 +397,6 @@ void Game::loadMapArrivals() {
         unsigned short int currentturn = mapp->getTurn();
         std::string asset_name;
         Unit Utemp;
-        SDL_Log("Am i in arrivals? %d", map_arrivals.size());
         for (int i = 0; i < map_arrivals.size(); i++) {
             if (map_arrivals[i].arrivalturn == currentturn) {
                 Utemp = units[map_arrivals[i].id];
@@ -419,7 +418,7 @@ void Game::loadMapArrivals() {
 
 void Game::loadUnits(unsigned char in_chap) {
     // Not necessary. I think would be better to load the party from a savefile or something.
-    std::vector<short int> toload = chapBaseUnitsInds[in_chap]();
+    std::vector<short int> toload = baseParties[in_chap]();
     baseUnits(&units, toload);
 }
 

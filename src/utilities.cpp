@@ -507,7 +507,6 @@ extern void makemvtTypes() {
 
 }
 
-
 unsigned char mvtType(unsigned char in_class_index) {
     unsigned char mvt_type;
     switch(in_class_index) {
@@ -622,6 +621,20 @@ unsigned char mvtType(unsigned char in_class_index) {
     }
     return(mvt_type);
 }
+
+unsigned char id2army(short unsigned int in_unitid) {
+    // only used for unit init. baseArmy
+    unsigned char armyid;
+    switch(in_unitid) {
+        case UNIT::NAME::ERWIN:
+            armyid = ARMY::ERWIN;
+            break;
+        case UNIT::NAME:::
+            armyid = ARMY::;
+            break;
+    }
+}
+
 
 std::vector<std::string> classNames;
 void makeclassNames() {

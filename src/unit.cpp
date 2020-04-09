@@ -1133,12 +1133,13 @@ void writeAllUnits(const char * filename) {
     writeUnits_NPC(filename);
 }
 
-std::vector<short int> chapTestUnitsInds() {
+std::vector<short int> testParty() {
+    // shouLdn't those be arrivals instead?
     std::vector<short int> out = {UNIT::NAME::SILOU};
     return(out);
 }
 
-std::vector<short int> chap1UnitsInds() {
+std::vector<short int> baseParty() {
     std::vector<short int> out = {UNIT::NAME::ERWIN, UNIT::NAME::KIARA};
     return(out);
 }
@@ -1169,6 +1170,6 @@ std::vector<std::vector<Inventory_item>> chapTestEquipments() {
     return(out);
 }
 
-std::vector<short int> (*chapBaseUnitsInds[30])() = {chapTestUnitsInds, chap1UnitsInds};
-std::vector<Map_arrival> (*mapArrivals[30])() = {chapTestArrivals};
-std::vector<std::vector<Inventory_item>> (*arrivalEquipments[30])() = {chapTestEquipments};
+std::vector<short int> (*baseParties[CHAPTER::CHAP1 - CHAPTER::TEST + 1])() = {testParty, baseParty};
+std::vector<Map_arrival> (*mapArrivals[CHAPTER::END - CHAPTER::TEST + 1])() = {chapTestArrivals};
+std::vector<std::vector<Inventory_item>> (*arrivalEquipments[CHAPTER::END - CHAPTER::TEST + 1])() = {chapTestEquipments};
