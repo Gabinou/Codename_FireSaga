@@ -1,8 +1,10 @@
 // Code créé par Gabriel Taillon
+#include "flecs.h"
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
 // #include <unistd.h>
 #include <chrono>
+#include <iostream>
 #include "textcomponent.hpp"
 #include "filesystem.hpp"
 #include "utilities.hpp"
@@ -11,7 +13,6 @@
 #include "script.hpp"
 #include "weapon.hpp"
 #include "unit.hpp"
-#include "flecs.h"
 #include "convoy.hpp"
 
 Game * firesaga = nullptr;
@@ -34,6 +35,11 @@ int main(int argc, char * argv[]) {
 
     SDL_Log("Loading base weapons.");
     baseWeapons();
+
+    SDL_Log("Making ECS");  
+    flecs::world world(argc, argv);
+
+    // flecs::component<Unit>(world, "Unit");
 
     // SDL_Log("Testing weapon: %s\n", all_weapons[ITEM::NAME::WOODEN_SWORD].getName().c_str());
     // testXMLWeapons();

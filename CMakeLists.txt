@@ -3,6 +3,8 @@ cmake_minimum_required (VERSION 2.6)
 set(CMAKE_CXX_STANDARD 11)
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${PROJECT_SOURCE_DIR}/cmake")
 
+OPTION(ENABLE_WARNINGS "Enable compilation warnings" ON)
+
 if(NOT CMAKE_BUILD_TYPE)
   set(CMAKE_BUILD_TYPE Release)
 endif()
@@ -21,7 +23,6 @@ include_directories(
 	third_party/stb
 	third_party/flecs
 	third_party/flecs/include
-	third_party/flecs/include/flecs
 	${SDL2_INCLUDE_DIR}
 )
 
@@ -40,4 +41,4 @@ ADD_LIBRARY(tinyMT-static STATIC ${tinyMT_SRC})
 ADD_LIBRARY(tinyXML2-static STATIC ${tinyXML2_SRC})
 ADD_LIBRARY(flecs-static STATIC ${FLECS_SRC})
 
-target_link_libraries(${PROJECT_NAME}  ${SDL2_LIBRARY} LodePNG-static physfs-static tinyMT-static tinyXML2-static flecs-static -O2 -lmingw32 -lSDL2main -lSDL2 -lSDL2_image -lSDL2_ttf )
+target_link_libraries(${PROJECT_NAME}  ${SDL2_LIBRARY} LodePNG-static physfs-static tinyMT-static tinyXML2-static flecs-static -O2 -lmingw32 -lSDL2main -lSDL2 -lSDL2_image -lSDL2_ttf)
