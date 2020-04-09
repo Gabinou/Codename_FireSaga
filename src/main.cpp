@@ -66,8 +66,7 @@ int main(int argc, char * argv[]) {
     // firesaga->loadMap("..//maps//test_tilemap.txt");
     firesaga->loadMap(0);
 
-    SDL_Log("Loading Cursor\n");
-    firesaga->loadCursor();
+    // firesaga->loadCursor();
 
     std::vector<short unsigned int> unit_inds = {UNIT::NAME::SILOU};
     std::vector<std::vector<int>> positions_list = {{6, 6}};

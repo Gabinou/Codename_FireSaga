@@ -330,6 +330,8 @@ void Game::loadMap(const std::string filename) {
         mapp = new Map(settings.tilesize[0], settings.tilesize[1]); // mapp is a pointer
         mapp->setRenderer(renderer);
         mapp->loadTilemap(filename);
+        SDL_Log("Loading Cursor\n");
+        loadCursor();
     }  else {
         SDL_Log("Failed to loadMap. Was mapp deleted previously?");
     }
@@ -343,6 +345,8 @@ void Game::loadMap(const int in_map_index) {
         mapp->setRenderer(renderer);
         mapp->loadTilemap(in_map_index);
         mapp->setArrivals(mapArrivals[in_map_index]());
+        SDL_Log("Loading Cursor\n");
+        loadCursor();
     } else {
         SDL_Log("Failed to loadMap. Was mapp deleted previously?");
     }
