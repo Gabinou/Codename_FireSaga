@@ -624,15 +624,94 @@ unsigned char mvtType(unsigned char in_class_index) {
 
 unsigned char id2army(short unsigned int in_unitid) {
     // only used for unit init. baseArmy
-    unsigned char armyid;
+    unsigned char armyid = 0;
     switch(in_unitid) {
         case UNIT::NAME::ERWIN:
-            armyid = ARMY::ERWIN;
+            armyid = UNIT::ARMY::ERWIN;
             break;
-        case UNIT::NAME:::
-            armyid = ARMY::;
+        case UNIT::NAME::KIARA:
+            armyid = UNIT::ARMY::ERWIN;
+            break;
+        case UNIT::NAME::SILOU:
+            armyid = UNIT::ARMY::NEUTRAL;
+            break;
+        case UNIT::NAME::SERVIL:
+            armyid = UNIT::ARMY::IMPERIAL;
+            break;
+        case UNIT::NAME::PERIGNON:
+            armyid = UNIT::ARMY::ERWIN;
+            break;
+        case UNIT::NAME::POET:
+            armyid = UNIT::ARMY::NEUTRAL;
+            break;
+        case UNIT::NAME::RELIABLE:
+            armyid = UNIT::ARMY::ERWIN;
+            break;
+        case UNIT::NAME::COWARD:
+            armyid = UNIT::ARMY::ERWIN;
+            break;
+        case UNIT::NAME::JAIGEN1H:
+            armyid = UNIT::ARMY::NEUTRAL;
+            break;
+        case UNIT::NAME::HOTTIE:
+            armyid = UNIT::ARMY::ERWIN;
+            break;
+        case UNIT::NAME::ZINEDAN:
+            armyid = UNIT::ARMY::BANDITS;
+            break;
+        case UNIT::NAME::ZIDINE:
+            armyid = UNIT::ARMY::BANDITS;
+            break;
+        case UNIT::NAME::BANDIT:
+            armyid = UNIT::ARMY::BANDITS;
+            break;
+        case UNIT::NAME::DUELIST:
+            armyid = UNIT::ARMY::ENEMY;
+            break;
+        case UNIT::NAME::PICKPOCKET:
+            armyid = UNIT::ARMY::ENEMY;
+            break;
+        case UNIT::NAME::THIEF:
+            armyid = UNIT::ARMY::ENEMY;
+            break;
+        case UNIT::NAME::ASSASSIN:
+            armyid = UNIT::ARMY::ENEMY;
+            break;
+        case UNIT::NAME::ARCHER:
+            armyid = UNIT::ARMY::ENEMY;
+            break;
+        case UNIT::NAME::MARKSMAN:
+            armyid = UNIT::ARMY::ENEMY;
+            break;
+        case UNIT::NAME::MERCENARY:
+            armyid = UNIT::ARMY::ENEMY;
+            break;
+        case UNIT::NAME::HERO:
+            armyid = UNIT::ARMY::ENEMY;
+            break;
+        case UNIT::NAME::CORSAIR:
+            armyid = UNIT::ARMY::ENEMY;
+            break;
+        case UNIT::NAME::VIKING:
+            armyid = UNIT::ARMY::ENEMY;
+            break;
+        case UNIT::NAME::RAVAGER:
+            armyid = UNIT::ARMY::ENEMY;
+            break;
+        case UNIT::NAME::CAVALIER:
+            armyid = UNIT::ARMY::ENEMY;
+            break;
+        case UNIT::NAME::PALADIN:
+            armyid = UNIT::ARMY::ENEMY;
+            break;
+        case UNIT::NAME::FENCER:
+            armyid = UNIT::ARMY::ENEMY;
+            break;
+        case UNIT::NAME::MOUSQUETAIRE:
+            armyid = UNIT::ARMY::ENEMY;
             break;
     }
+    return(armyid);
 }
 
 

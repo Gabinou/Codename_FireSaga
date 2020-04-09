@@ -335,6 +335,7 @@ enum ARMIES {
     THEOCRACY,
     FREE_MILITIA,
     ERWIN,
+    BANDITS,
 };
 }
 namespace NAME {
