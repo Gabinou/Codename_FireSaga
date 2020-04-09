@@ -52,8 +52,6 @@ int main(int argc, char * argv[]) {
     // getchar();
 
 
-    SDL_Log("Game object created\n");
-
     SDL_Log("Initiating game\n");
     temp_settings = firesaga->getSettings();
     temp_settings.FPS.show = true; 
@@ -72,7 +70,6 @@ int main(int argc, char * argv[]) {
     firesaga->loadCursor();
 
     std::vector<short unsigned int> unit_inds = {UNIT::NAME::SILOU};
-    // std::vector<std::string> asset_names = {"..//assets//horse.png"};
     std::vector<std::vector<int>> positions_list = {{6, 6}};
     firesaga->loadUnitEntities(unit_inds, positions_list);
     firesaga->loadMapArrivals();
@@ -110,7 +107,6 @@ int main(int argc, char * argv[]) {
                 temp_settings = firesaga->getSettings();
                 temp_settings.FPS.held = 0; 
                 firesaga->setSettings(temp_settings);
-                // firesaga->getSettings().FPS.held = 0;   
             }
         }
     }
