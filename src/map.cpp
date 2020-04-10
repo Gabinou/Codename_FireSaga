@@ -258,7 +258,7 @@ void Map::clearOverlays() {
     overlay_mode = 0;
 }
 
-void Map::drawMap() {
+void Map::draw() {
     int tile_ind = 0;
     for (int row = 0; row < tilemap.size(); row++) {// This loop cache friendly.
         for (int col = 0; col < tilemap[row].size(); col++) {
