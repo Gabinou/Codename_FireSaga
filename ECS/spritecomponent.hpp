@@ -1,7 +1,7 @@
 #ifndef SPRITECOMPONENT_HPP
 #define SPRITECOMPONENT_HPP
 
-#include "ECS.hpp"
+#include "ECS.h"
 #include "map.hpp"
 #include "filesystem.hpp"
 #include "positioncomponent.hpp"
@@ -11,7 +11,7 @@
 #include "utilities.hpp"
 #include "SDL2/SDL.h"
 
-class SpriteComponent : public Component {
+class SpriteComponent {
 
     protected:
         Map * map = NULL; // no map-> position is not on a grid.
