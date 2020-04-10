@@ -6,7 +6,7 @@
 #include "SDL2/SDL_ttf.h"
 #include "enums.hpp"
 #include "structs.hpp"
-#include "ECS.hpp"
+#include "ECS.h"
 #include "map.hpp"
 #include "weapon.hpp"
 #include "utilities.hpp"
@@ -26,7 +26,10 @@ class Game {
     private:
         Map * mapp = nullptr;
         Narrative narrative;
-        Entity & cursor = manager.addEntity();
+
+        ECS::Entity * cursor;
+        ECS::World * world;
+
         KeyboardInputMap keyboardInputMap;
         GamepadInputMap gamepadInputMap;
         SDL_Window * window;
@@ -34,16 +37,16 @@ class Game {
         tinymt32_t tinymt;
         Convoy convoy;
 
-        void moveUnit(Entity & cursor);
+        void moveUnit(ECS::Entity & cursor);
 
         void killMenu(short unsigned int index);
-        void makeUnitmenu(Entity & setting_entity);
+        void makeUnitmenu(ECS::Entity & setting_entity);
 
         //TO BE IMPLEMENTED:
-        void makeDefendermenu(Entity & setting_entity);
-        void makeWeaponmenu(Entity & setting_entity);
-        void makeOptionsmenu(Entity & setting_entity);
-        void makeSmallmap(Entity & setting_entity);
+        void makeDefendermenu(ECS::Entity & setting_entity);
+        void makeWeaponmenu(ECS::Entity & setting_entity);
+        void makeOptionsmenu(ECS::Entity & setting_entity);
+        void makeSmallmap(ECS::Entity & setting_entity);
         void makeCombatWindow(Unit * ally, Unit * enemy);
 
         short unsigned int state;
@@ -61,9 +64,9 @@ class Game {
     public:
         static SDL_Renderer * renderer;
         static TTF_Font * font;
-        static Manager manager;
 
         Game();
+        Game(ECS::World * in_world);
         ~Game();
 
         void init(const char * title, int xpos, int ypos, int width, int height, bool fullscreen);
@@ -100,7 +103,7 @@ class Game {
         GamepadInputMap getGamepadInputMap();
         void setGamepadInputMap(const GamepadInputMap in_gpmap);
 
-        void setState(Entity & in_entity, short unsigned int new_state);
+        void setState(ECS::Entity & in_entity, short unsigned int new_state);
         void setState(const short unsigned int new_state);
         short unsigned int getState();
 

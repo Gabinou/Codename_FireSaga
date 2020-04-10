@@ -144,7 +144,7 @@ class KeyboardController : public Component {
                 if ((game->getState() == GAME::STATE::UNITMENU) ||
                         (game->getState() == GAME::STATE::OPTIONS) ||
                         (game->getState() == GAME::STATE::UNITMOVE)) {
-                    game->setState(*entity, GAME::STATE::MAP);
+                    // game->setState(*entity, GAME::STATE::MAP);
                 }
             }
 

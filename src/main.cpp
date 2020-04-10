@@ -19,6 +19,7 @@ ECS_TYPE_IMPLEMENTATION;
 Game * firesaga = nullptr;
 Settings temp_settings;
 
+
 int main(int argc, char * argv[]) {
     fclose(fopen(LOGFILE, "w"));
     SDL_LogSetOutputFunction(&FILESYSTEM::log, NULL);
@@ -38,7 +39,7 @@ int main(int argc, char * argv[]) {
     baseWeapons();
 
     SDL_Log("Making ECS");  
-    ECS::World* world = ECS::World::createWorld();
+    ECS::World * world = ECS::World::createWorld();
 
     // SDL_Log("Testing weapon: %s\n", all_weapons[ITEM::NAME::WOODEN_SWORD].getName().c_str());
     // testXMLWeapons();
@@ -50,7 +51,7 @@ int main(int argc, char * argv[]) {
     // testXMLUnits();
     // testXMLTiles();
 
-    firesaga = new Game();
+    firesaga = new Game(world);
     firesaga->loadUnits(0);
     // SDL_Log("Testing game load->save XML");
     // firesaga->loadXML(1);

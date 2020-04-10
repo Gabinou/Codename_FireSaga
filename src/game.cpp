@@ -13,11 +13,16 @@
 
 SDL_Renderer * Game::renderer = nullptr;
 TTF_Font * Game::font = NULL;
-Manager Game::manager;
+// Manager Game::manager;
 
 Game::Game() {
     menus.resize(GAME::STATE::END);
 }
+
+Game::Game(ECS::World * in_world) : Game() {
+    world = in_world;
+}
+
 Game::~Game() {}
 
 Settings Game::getSettings() {
@@ -113,7 +118,7 @@ void Game::fight(Unit * attacker, Unit * defender) {
 //     manager.getEntities()[settings.FPS.entity]->addGroup(manager.groupUI);
 // }
 
-// void Game::makeUnitmenu(Entity & setting_entity) {
+// void Game::makeUnitmenu(ECS::Entity &setting_entity) {
 //     SDL_Log("Making unit menu\n");
 //     menus[GAME::STATE::UNITMENU] = manager.getEntities().size();
 //     manager.addEntity();
@@ -137,7 +142,7 @@ void Game::fight(Unit * attacker, Unit * defender) {
 //     }
 // }
 
-// void Game::moveUnit(Entity & cursor) {
+// void Game::moveUnit(ECS::Entity &cursor) {
 //     // USELESS?
 //     int newPos[2];
 //     newPos[0] = cursor.getComponent<PositionComponent>().getPos()[0];
@@ -146,7 +151,7 @@ void Game::fight(Unit * attacker, Unit * defender) {
 // }
 
 // I think this function is too big. Find a way to reduce it...
-void Game::setState(Entity & setting_entity, short unsigned int new_state) {
+void Game::setState(ECS::Entity &setting_entity, short unsigned int new_state) {
     SDL_Log("Game state changes from %d to %d\n", this->state, new_state); 
 
     switch (this->state) {
