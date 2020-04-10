@@ -36,9 +36,12 @@ class RenderSystem: public ECS::EntitySystem {
             world->each<Map>([&](ECS::Entity * ent, ECS::ComponentHandle<Map> map) {
                 map->draw();
             });
-            // world->each<SpriteComponent>([&](ECS::Entity * ent, ECS::ComponentHandle<SpriteComponent> sprite) {
-            //     sprite->draw();
-            // });
+            // world->each<UnitComponent>([&](ECS::Entity * ent, ECS::ComponentHandle<UnitComponent> unit) {
+            //     ComponentHandle<UnitComponent> sprite = ent->get<SpriteComponent>();
+                   // -sprite->draw();
+
+            // }
+            // Iterate over Menu component? which are boxes?
             SDL_RenderPresent(renderer);
         }
 };

@@ -24,12 +24,12 @@
 class Game {
 
     private:
-        ECS::Entity * mapp_ent = nullptr;
-        ECS::ComponentHandle<Map> mapp = nullptr;
-        Narrative narrative;
-
-        ECS::Entity * cursor;
         ECS::World * world;
+        ECS::Entity * mapp_ent = nullptr;
+        ECS::Entity * cursor;
+        ECS::ComponentHandle<Map> mapp = nullptr;
+
+        Narrative narrative;
 
         KeyboardInputMap keyboardInputMap;
         GamepadInputMap gamepadInputMap;
