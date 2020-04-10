@@ -1,5 +1,6 @@
 // Code créé par Gabriel Taillon
 #include "ECS.h"
+ECS_TYPE_IMPLEMENTATION;
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
 #include <chrono>
@@ -9,6 +10,7 @@
 #include "utilities.hpp"
 #include "game.hpp"
 #include "map.hpp"
+#include "systems.hpp"
 #include "script.hpp"
 #include "weapon.hpp"
 #include "unit.hpp"

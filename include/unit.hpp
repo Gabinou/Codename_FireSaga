@@ -1,8 +1,6 @@
 #ifndef UNIT_HPP
 #define UNIT_HPP
 
-
-#include "ECS.h"
 #include "filesystem.hpp"
 #include "enums.hpp"
 #include "weapon.hpp"
