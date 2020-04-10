@@ -24,7 +24,8 @@
 class Game {
 
     private:
-        Map * mapp = nullptr;
+        ECS::Entity * mapp_ent = nullptr;
+        ECS::ComponentHandle<Map> mapp = nullptr;
         Narrative narrative;
 
         ECS::Entity * cursor;

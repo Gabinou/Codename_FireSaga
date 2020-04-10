@@ -40,7 +40,6 @@ class RenderSystem: public ECS::EntitySystem {
             //     sprite->draw();
             // });
             SDL_RenderPresent(renderer);
-
         }
 };
 

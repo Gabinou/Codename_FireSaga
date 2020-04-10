@@ -336,7 +336,9 @@ void Game::loadMap(const std::string filename) {
     SDL_Log("Loading Map: %s \n", filename);
     // For this function, tiles have to be loaded manually somwhere else.
     if (!mapp) {
-        mapp = new Map(settings.tilesize[0], settings.tilesize[1]); // mapp is a pointer
+        mapp_ent = world->create();
+        mapp_ent->assign<Map>(settings.tilesize[0], settings.tilesize[1]); // mapp is a pointer
+        mapp = mapp_ent->get<Map>();
         mapp->setRenderer(renderer);
         mapp->loadTilemap(filename);
         // SDL_Log("Loading Cursor\n");
@@ -349,7 +351,9 @@ void Game::loadMap(const std::string filename) {
 void Game::loadMap(const int in_map_index) {
     SDL_Log("Loading Map index: %d \n", in_map_index);
     if (!mapp) {
-        mapp = new Map(settings.tilesize[0], settings.tilesize[1]);
+        mapp_ent = world->create();
+        mapp_ent->assign<Map>(settings.tilesize[0], settings.tilesize[1]); // mapp is a pointer
+        mapp = mapp_ent->get<Map>();
         mapp->loadTiles(in_map_index);
         mapp->setRenderer(renderer);
         mapp->loadTilemap(in_map_index);
@@ -364,7 +368,7 @@ void Game::loadMap(const int in_map_index) {
 void Game::unloadMap() {
     SDL_Log("Unloading Map");
     if (!mapp) {
-        delete mapp;
+        // delete mapp;
     } else {
         SDL_Log("Failed to unloadMap. Was mapp deleted previously?");
     }

@@ -259,6 +259,7 @@ void Map::clearOverlays() {
 }
 
 void Map::draw() {
+    SDL_Log("Drawing Map");
     int tile_ind = 0;
     for (int row = 0; row < tilemap.size(); row++) {// This loop cache friendly.
         for (int col = 0; col < tilemap[row].size(); col++) {
