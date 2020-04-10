@@ -1,9 +1,9 @@
 #ifndef UNITCONTAINER_HPP
 #define UNITCONTAINER_HPP
 
-#include "ECS.hpp"
+#include "ECS.h"
 
-class UnitContainer : public Component {
+class UnitContainer {
     private:
         short unsigned int index;
     public:

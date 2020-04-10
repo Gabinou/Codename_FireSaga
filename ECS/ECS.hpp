@@ -94,10 +94,10 @@ class Entity {
             return *c;
         }
 
-        template<typename T> T & getComponent() const {
-            auto ptr(componentarray[getComponentTypeID<T>()]);
-            return (*static_cast<T *>(ptr));
-        }
+        // template<typename T> T & getComponent() const {
+        //     auto ptr(componentarray[getComponentTypeID<T>()]);
+        //     return (*static_cast<T *>(ptr));
+        // }
 
 };
 

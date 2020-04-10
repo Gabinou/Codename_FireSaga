@@ -47,7 +47,7 @@ class ArrowComponent : public Component {
             tilesize = map->getTilesize();
             destrects[0].w = tilesize[0];
             destrects[0].h = tilesize[1];
-            map->getTile(0, 0); // Works here.
+            // map->getTile(0, 0);
         }
 
         bool traversable(int * tile_pos) {

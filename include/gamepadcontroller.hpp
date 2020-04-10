@@ -131,25 +131,25 @@ class GamepadController : public Component {
             if (isPressed(inputmap.accept)) {
                 pressed_button.push_back(inputmap.accept);
                 short unsigned int toset = -1;
-                Entity * setter;
-                Entity * ontile = map->getTile(positioncomponent->getPos()[0], positioncomponent->getPos()[1]);
+                // Entity * setter;
+                // Entity * ontile = map->getTile(positioncomponent->getPos()[0], positioncomponent->getPos()[1]);
 
                 if ((game->getState() == GAME::STATE::MAP) && (frames_button == 1)) {
                     SDL_Log("cursor Position, %d %d \n", positioncomponent->getPos()[0], positioncomponent->getPos()[1]);
 
-                    if (ontile) {
-                        toset = GAME::STATE::UNITMOVE;
-                        setter = ontile;
-                    } else {
-                        toset = GAME::STATE::OPTIONS;
-                        setter = entity;
-                    }
+                    // if (ontile) {
+                    //     toset = GAME::STATE::UNITMOVE;
+                    //     setter = ontile;
+                    // } else {
+                    //     toset = GAME::STATE::OPTIONS;
+                    //     setter = entity;
+                    // }
                 } else if ((game->getState() == GAME::STATE::UNITMOVE) && (frames_button == 1)) {
-                    toset = GAME::STATE::UNITMENU;
-                    setter = entity;
+                    // toset = GAME::STATE::UNITMENU;
+                    // setter = entity;
                 }
 
-                if (toset != -1) {game->setState(*setter, toset); }
+                // if (toset != -1) {game->setState(*setter, toset); }
             }
 
             if (isPressed(inputmap.cancel)) {

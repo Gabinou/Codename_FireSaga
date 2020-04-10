@@ -1,13 +1,13 @@
 #ifndef POSITIONCOMPONENT_HPP
 #define POSITIONCOMPONENT_HPP
 
-#include "ECS.hpp"
+#include "ECS.h"
 #include "game.hpp"
 #include "map.hpp"
 #include "utilities.hpp"
 #include "SDL2/SDL.h"
 
-class PositionComponent : public Component {
+class PositionComponent {
         // On first init of the component, entity is still a nullptr.
     private:
         bool updatable = true;
@@ -74,7 +74,7 @@ class PositionComponent : public Component {
 
         void setMap(Map * in_map) {
             map = in_map;
-            map->setTile(position[0], position[1], entity);
+            // map->setTile(position[0], position[1], entity);
         }
 
         void setUpdatable(bool in_updatable) {
@@ -96,7 +96,7 @@ class PositionComponent : public Component {
                 }
 
                 if (map != nullptr) {
-                    map->setTile(position[0], position[1], entity);
+                    // map->setTile(position[0], position[1], entity);
                 }
             }
         }
