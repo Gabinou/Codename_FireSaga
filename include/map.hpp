@@ -58,6 +58,7 @@ class Map {
         std::vector<short int> tilesasset_ind;
 
     public:
+        ECS_DECLARE_TYPE;
         Map();
         ~Map();
         Map(const short unsigned int width, const short unsigned int height);
@@ -79,7 +80,7 @@ class Map {
         std::vector<std::vector<short int>> makeMvtCostmap(const unsigned char unitmovetype);
 
         void setRenderer(SDL_Renderer * in_renderer);
-        void drawMap();
+        void draw();
         void makeEntitymap(const short unsigned int row_size, const short unsigned int col_size);
         // std::vector<std::vector<Entity *>> getEntitymap();
 

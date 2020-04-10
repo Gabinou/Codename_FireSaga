@@ -11,7 +11,6 @@
 #include "stb_sprintf.h"
 // #endif /* STB_SPRINTF_IMPLEMENTATION */
 
-SDL_Renderer * Game::renderer = nullptr;
 TTF_Font * Game::font = NULL;
 // Manager Game::manager;
 
@@ -624,22 +623,22 @@ void Game::setGamepadInputMap(GamepadInputMap in_gamepadInputMap) {
 // std::vector<Entity *> & unitEntities = Game::manager.getGroup(Game::manager.groupUnits);
 // std::vector<Entity *> & uxEntities = Game::manager.getGroup(Game::manager.groupUI);
 
-void Game::render() {
-    SDL_RenderClear(renderer);
-//     // Add stuff to render. Paint the background First.
+// void Game::render() {
+//     SDL_RenderClear(renderer);
+// //     // Add stuff to render. Paint the background First.
 
-    mapp->drawMap();
+//     mapp->drawMap();
 
-//     for (auto& u : unitEntities) {
-//         u->draw();
-//     }
+// //     for (auto& u : unitEntities) {
+// //         u->draw();
+// //     }
 
-//     for (auto& u : uxEntities) {
-//         u->draw();
-//     }
+// //     for (auto& u : uxEntities) {
+// //         u->draw();
+// //     }
 
-    SDL_RenderPresent(renderer);
-}
+//     SDL_RenderPresent(renderer);
+// }
 
 void Game::clean() {
     SDL_DestroyWindow(window);

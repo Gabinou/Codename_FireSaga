@@ -96,8 +96,6 @@ class Game {
         Settings getSettings();
         void setSettings(Settings);
 
-        SDL_Renderer * getRenderer(Settings);
-
         KeyboardInputMap getKeyboardInputMap();
         void setKeyboardInputMap(const KeyboardInputMap in_keyboardInputMap);
         GamepadInputMap getGamepadInputMap();

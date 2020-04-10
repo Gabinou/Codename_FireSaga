@@ -1,5 +1,8 @@
 #include "map.hpp"
 
+ECS_DEFINE_TYPE(Map);
+
+
 Map::Map() {
     initVars();
     overlay_mode = MAP::OVERLAY::MOVE + MAP::OVERLAY::ATTACK;

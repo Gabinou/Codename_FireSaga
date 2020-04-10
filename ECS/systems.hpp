@@ -18,12 +18,19 @@ class InitSystem: public ECS::EntitySystem {
         }
 };
 
-class DrawSystem: public ECS::EntitySystem {
+class RenderSystem: public ECS::EntitySystem {
     public:
+        // No Need a draw system. I think I need a Render system
         virtual void tick(ECS::World * world, float deltaTime) override {
-            world->each<SpriteComponent>([&](ECS::Entity * ent, ECS::ComponentHandle<SpriteComponent> sprite) {
-                sprite->draw();
+            SDL_RenderClear(renderer);
+            world->each<Map>([&](ECS::Entity * ent, ECS::ComponentHandle<Map> map) {
+                map->draw();
             });
+            // world->each<SpriteComponent>([&](ECS::Entity * ent, ECS::ComponentHandle<SpriteComponent> sprite) {
+            //     sprite->draw();
+            // });
+            SDL_RenderPresent(renderer);
+            
         }
 };
 
