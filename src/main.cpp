@@ -1,8 +1,7 @@
 // Code créé par Gabriel Taillon
-#include "flecs.h"
+#include "ECS.h"
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
-// #include <unistd.h>
 #include <chrono>
 #include <iostream>
 #include "textcomponent.hpp"
@@ -37,7 +36,6 @@ int main(int argc, char * argv[]) {
     baseWeapons();
 
     SDL_Log("Making ECS");  
-    flecs::world world(argc, argv);
 
     // flecs::component<Unit>(world, "Unit");
 

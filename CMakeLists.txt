@@ -21,8 +21,7 @@ include_directories(
 	third_party/tinymt
 	third_party/tinyxml2
 	third_party/stb
-	third_party/flecs
-	third_party/flecs/include
+	third_party/redxdev
 	${SDL2_INCLUDE_DIR}
 )
 
@@ -31,7 +30,6 @@ file(GLOB PFS_SRC "third_party/physfs/*.c")
 file(GLOB tinyMT_SRC "third_party/tinymt/*.c")
 file(GLOB tinyXML2_SRC "third_party/tinyxml2/*.cpp")
 file(GLOB LODE_SRC "third_party/LodePNG/*.cpp")
-file(GLOB FLECS_SRC "third_party/flecs/*.c")
 
 add_executable(${PROJECT_NAME} ${FSM_SRC})
 
@@ -39,6 +37,5 @@ ADD_LIBRARY(physfs-static STATIC ${PFS_SRC})
 ADD_LIBRARY(LodePNG-static STATIC ${LODE_SRC})
 ADD_LIBRARY(tinyMT-static STATIC ${tinyMT_SRC})
 ADD_LIBRARY(tinyXML2-static STATIC ${tinyXML2_SRC})
-ADD_LIBRARY(flecs-static STATIC ${FLECS_SRC})
 
-target_link_libraries(${PROJECT_NAME}  ${SDL2_LIBRARY} LodePNG-static physfs-static tinyMT-static tinyXML2-static flecs-static -O2 -lmingw32 -lSDL2main -lSDL2 -lSDL2_image -lSDL2_ttf)
+target_link_libraries(${PROJECT_NAME}  ${SDL2_LIBRARY} LodePNG-static physfs-static tinyMT-static tinyXML2-static -O2 -lmingw32 -lSDL2main -lSDL2 -lSDL2_image -lSDL2_ttf)
