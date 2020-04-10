@@ -36,8 +36,7 @@ int main(int argc, char * argv[]) {
     baseWeapons();
 
     SDL_Log("Making ECS");  
-
-    // flecs::component<Unit>(world, "Unit");
+    ECS::World* world = ECS::World::createWorld();
 
     // SDL_Log("Testing weapon: %s\n", all_weapons[ITEM::NAME::WOODEN_SWORD].getName().c_str());
     // testXMLWeapons();
