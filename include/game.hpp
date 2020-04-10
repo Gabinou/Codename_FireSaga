@@ -62,7 +62,7 @@ class Game {
         std::unordered_map<int, Weapon> weapons;
 
     public:
-        // static SDL_Renderer * renderer;
+        static SDL_Renderer * renderer;
         static TTF_Font * font;
 
         Game();

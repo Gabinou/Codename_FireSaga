@@ -1,6 +1,7 @@
 #ifndef SYSTEMS_HPP
 #define SYSTEMS_HPP
 
+#include <SDL2/SDL.h>
 #include "ECS.h"
 #include "spritecomponent.hpp"
 
@@ -19,8 +20,17 @@ class InitSystem: public ECS::EntitySystem {
 };
 
 class RenderSystem: public ECS::EntitySystem {
+    private:
+        SDL_Renderer * renderer = NULL;
     public:
-        // No Need a draw system. I think I need a Render system
+        void setRenderer(SDL_Renderer * in_renderer) {
+            renderer = in_renderer;
+        };
+
+        RenderSystem(SDL_Renderer * in_renderer) {
+            renderer = in_renderer;
+        }
+
         virtual void tick(ECS::World * world, float deltaTime) override {
             SDL_RenderClear(renderer);
             world->each<Map>([&](ECS::Entity * ent, ECS::ComponentHandle<Map> map) {

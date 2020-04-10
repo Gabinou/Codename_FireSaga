@@ -11,6 +11,7 @@
 #include "stb_sprintf.h"
 // #endif /* STB_SPRINTF_IMPLEMENTATION */
 
+SDL_Renderer * Game::renderer = nullptr;
 TTF_Font * Game::font = NULL;
 // Manager Game::manager;
 

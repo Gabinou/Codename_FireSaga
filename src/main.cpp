@@ -41,6 +41,7 @@ int main(int argc, char * argv[]) {
 
     SDL_Log("Making ECS");  
     ECS::World * world = ECS::World::createWorld();
+    ECS::World * world = ECS::World::createWorld();
 
     // SDL_Log("Testing weapon: %s\n", all_weapons[ITEM::NAME::WOODEN_SWORD].getName().c_str());
     // testXMLWeapons();
