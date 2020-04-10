@@ -24,9 +24,9 @@ short unsigned int * Map::getTilesize() const {
     return ((short unsigned int *)tilesize);
 }
 
-void Map::setTile(const short unsigned int x, const short unsigned int y, Entity * in_entity) {
+// void Map::setTile(const short unsigned int x, const short unsigned int y, Entity * in_entity) {
     // entitymap[x][y] = in_entity;
-}
+// }
 
 void Map::removeTile(const short unsigned int x, const short unsigned int y) {
     // entitymap[x][y] = nullptr;

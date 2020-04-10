@@ -49,7 +49,7 @@ class KeyboardController : public Component {
         }
 
         void init() override {
-            positioncomponent = &entity->getComponent<PositionComponent>();
+            // positioncomponent = &entity->getComponent<PositionComponent>();
             inputmap = game->getKeyboardInputMap();
             Manager & manager = entity->getManager();
         }
@@ -97,18 +97,18 @@ class KeyboardController : public Component {
             std::vector<std::vector<SDL_Scancode>> pressed_button{};
 
             if (is_pressed(kb_state, inputmap.moveup) && !is_pressed(kb_state, inputmap.movedown)) {
-                positioncomponent->addPos(0, -1);
+                // positioncomponent->addPos(0, -1);
                 pressed_move.push_back(inputmap.moveup);
             } else if (!is_pressed(kb_state, inputmap.moveup) && is_pressed(kb_state, inputmap.movedown)) {
-                positioncomponent->addPos(0, 1);
+                // positioncomponent->addPos(0, 1);
                 pressed_move.push_back(inputmap.movedown);
             }
 
             if (!is_pressed(kb_state, inputmap.moveright) && is_pressed(kb_state, inputmap.moveleft)) {
-                positioncomponent->addPos(-1, 0);
+                // positioncomponent->addPos(-1, 0);
                 pressed_move.push_back(inputmap.moveleft);
             } else if (is_pressed(kb_state, inputmap.moveright) && !is_pressed(kb_state, inputmap.moveleft)) {
-                positioncomponent->addPos(1, 0);
+                // positioncomponent->addPos(1, 0);
                 pressed_move.push_back(inputmap.moveright);
             }
 

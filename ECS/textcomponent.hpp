@@ -138,7 +138,7 @@ class TextComponent : public Component {
         }
 
         virtual void init() override {
-            positioncomponent = &entity->getComponent<PositionComponent>();
+            // positioncomponent = &entity->getComponent<PositionComponent>();
             initRects();
         }
 

@@ -56,25 +56,25 @@ class ArrowComponent : public Component {
 
 
         virtual void init() override {
-            positioncomponent = &entity->getComponent<PositionComponent>();
+            // positioncomponent = &entity->getComponent<PositionComponent>();
             origin = positioncomponent->getPos();
         }
 
         virtual void update() override {
 
 
-            short int * objectivepos = cursor->getComponent<PositionComponent>().getPos();
+            // short int * objectivepos = cursor->getComponent<PositionComponent>().getPos();
 
 
-            if (!cursor->getComponent<PositionComponent>().isUpdatable()) {
-                if (path.size() < move) {
-                    path.push_back(std::vector<short int>());
-                    path[path.size()].push_back(objectivepos[0]);
-                    path[path.size()].push_back(objectivepos[1]);
-                } else {
+            // if (!cursor->getComponent<PositionComponent>().isUpdatable()) {
+            //     if (path.size() < move) {
+            //         path.push_back(std::vector<short int>());
+            //         path[path.size()].push_back(objectivepos[0]);
+            //         path[path.size()].push_back(objectivepos[1]);
+            //     } else {
 
-                }
-            }
+            //     }
+            // }
 
         }
 

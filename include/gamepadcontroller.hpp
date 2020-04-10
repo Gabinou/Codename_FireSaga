@@ -61,9 +61,9 @@ class GamepadController : public Component {
                 }
             }
 
-            positioncomponent = &entity->getComponent<PositionComponent>();
+            // positioncomponent = &entity->getComponent<PositionComponent>();
             inputmap = game->getGamepadInputMap();
-            Manager & manager = entity->getManager();
+            // Manager & manager = entity->getManager();
         }
 
         int getHeldmove() {
@@ -97,34 +97,34 @@ class GamepadController : public Component {
             std::vector<std::vector<SDL_GameControllerButton>> pressed_button{};
 
             if ((mainxaxis > joystick_dead_zone) || (secondxaxis > joystick_dead_zone)) {
-                positioncomponent->addPos(1, 0);
+                // positioncomponent->addPos(1, 0);
                 pressed_move.push_back(GAME::BUTTON::RIGHT);
             } else if ((mainxaxis < -joystick_dead_zone) || (secondxaxis < -joystick_dead_zone)) {
-                positioncomponent->addPos(-1, 0);
+                // positioncomponent->addPos(-1, 0);
                 pressed_move.push_back(GAME::BUTTON::LEFT);
             }
 
             if ((mainyaxis > joystick_dead_zone) || (secondyaxis > joystick_dead_zone)) {
-                positioncomponent->addPos(0, 1);
+                // positioncomponent->addPos(0, 1);
                 pressed_move.push_back(GAME::BUTTON::UP);
             } else if ((mainyaxis < -joystick_dead_zone) || (secondyaxis < -joystick_dead_zone))  {
-                positioncomponent->addPos(0, -1);
+                // positioncomponent->addPos(0, -1);
                 pressed_move.push_back(GAME::BUTTON::DOWN);
             }
 
             if (isPressed(inputmap.moveright)) {
-                positioncomponent->addPos(1, 0);
+                // positioncomponent->addPos(1, 0);
                 pressed_move.push_back(GAME::BUTTON::RIGHT);
             } else if (isPressed(inputmap.moveleft)) {
-                positioncomponent->addPos(-1, 0);
+                // positioncomponent->addPos(-1, 0);
                 pressed_move.push_back(GAME::BUTTON::LEFT);
             }
 
             if (isPressed(inputmap.moveup)) {
-                positioncomponent->addPos(0, -1);
+                // positioncomponent->addPos(0, -1);
                 pressed_move.push_back(GAME::BUTTON::UP);
             } else if (isPressed(inputmap.movedown)) {
-                positioncomponent->addPos(0, 1);
+                // positioncomponent->addPos(0, 1);
                 pressed_move.push_back(GAME::BUTTON::DOWN);
             }
 
@@ -134,23 +134,22 @@ class GamepadController : public Component {
                 // Entity * setter;
                 // Entity * ontile = map->getTile(positioncomponent->getPos()[0], positioncomponent->getPos()[1]);
 
-                if ((game->getState() == GAME::STATE::MAP) && (frames_button == 1)) {
-                    SDL_Log("cursor Position, %d %d \n", positioncomponent->getPos()[0], positioncomponent->getPos()[1]);
+                // if ((game->getState() == GAME::STATE::MAP) && (frames_button == 1)) {
+                SDL_Log("cursor Position, %d %d \n", positioncomponent->getPos()[0], positioncomponent->getPos()[1]);
 
-                    // if (ontile) {
-                    //     toset = GAME::STATE::UNITMOVE;
-                    //     setter = ontile;
-                    // } else {
-                    //     toset = GAME::STATE::OPTIONS;
-                    //     setter = entity;
-                    // }
-                } else if ((game->getState() == GAME::STATE::UNITMOVE) && (frames_button == 1)) {
-                    // toset = GAME::STATE::UNITMENU;
-                    // setter = entity;
-                }
-
-                // if (toset != -1) {game->setState(*setter, toset); }
+                // if (ontile) {
+                //     toset = GAME::STATE::UNITMOVE;
+                //     setter = ontile;
+                // } else {
+                //     toset = GAME::STATE::OPTIONS;
+                //     setter = entity;
+                // }
+            } else if ((game->getState() == GAME::STATE::UNITMOVE) && (frames_button == 1)) {
+                // toset = GAME::STATE::UNITMENU;
+                // setter = entity;
             }
+
+            // if (toset != -1) {game->setState(*setter, toset); }
 
             if (isPressed(inputmap.cancel)) {
                 pressed_button.push_back(inputmap.cancel);
