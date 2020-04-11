@@ -11,19 +11,26 @@ Unit::Unit() {
 }
 
 Unit::Unit(const unsigned short int in_id, const unsigned char in_class_index,  const Unit_stats in_bases, const bool in_sex) : Unit() {
-    base_stats = in_bases;
-    current_stats = in_bases;
-    id = in_id;
-    setArmy(unitid2army(id));
-    name = unitNames[in_id];
-    class_index = in_class_index;
-    mvt_type = mvtTypes[class_index];
-    class_name = classNames[class_index];
-    skill_names = skillNames(skills);
-    equippable = equippableCodes[class_index];
-    sex = in_sex;
-    sex_name = sexNames[sex];
+    setBases(in_bases);
+    setStats(in_bases);
+    setid(in_id);
+    setClassind(in_class_index);
+    setSex(in_sex);
 }
+
+Unit::Unit(const Unit &obj)  {
+    setSex(obj->getSex());
+    setPos(obj->getPos());
+    setid(obj->getid());
+    setBases(obj->getBases());
+    setStats(obj->getStats());
+    setGrowths(obj->getGrowths());
+    setClassind(obj->getClassind());
+    setEquipment(obj->getEquipment());
+    setSkills(obj->getSkills());
+    setSupports(obj->getSupports());
+}
+
 
 short int * Unit::getPos() {
     return(position);
@@ -45,10 +52,13 @@ bool Unit::getSex() {
 
 void Unit::setSex(const bool in_sex) {
     sex = in_sex;
+    sex_name = sexNames[sex];
 }
 
 void Unit::setid(const unsigned short int in_id) {
     id =  in_id;
+    name = unitNames[in_id];
+    setArmy(unitid2army(id));
 }
 
 unsigned short int Unit::getid() {
@@ -58,6 +68,16 @@ unsigned short int Unit::getid() {
 void Unit::use(int in_ind) {
 
 }
+
+unsigned long long int getSkills() {
+    return(skills);
+}
+
+void setSkills(unsigned long long int in_skills) {
+    skills = in_skills;
+    skill_names = skillNames(skills);
+}
+
 
 void Unit::removeEquipment(unsigned char in_index) {
     Inventory_item empty;
@@ -83,6 +103,17 @@ void Unit::setEquipment(std::vector<Inventory_item> in_equipment) {
     }
 }
 
+std::vector<Inventory_item> Unit::getEquipment() {
+    std::vector<Inventory_item> out;
+    for (short unsigned int i = 0; i < DEFAULT::EQUIPMENT_SIZE; i++) {
+        if (equipment[i].id > 0) {
+            out.push_back(equipment[i]);
+        }
+    }
+    return(out);
+}
+
+
 void Unit::setEquipped(Equipped in_equipped) {
     equipped = in_equipped;
 }
@@ -92,9 +123,20 @@ short unsigned int Unit::getEquippable() {
 }
 
 unsigned char Unit::getMvttype() {
-    printf("inside unit %s %d\n", name.c_str(), mvt_type);
-    return (mvt_type);
+    return(mvt_type);
 }
+
+unsigned char Unit::getClassind() {
+    return(class_index);
+}
+
+void Unit::setClassind(unsigned char in_class_index) {
+    class_index = in_class_index;
+    mvt_type = mvtTypes[class_index];
+    class_name = classNames[class_index];
+    equippable = equippableCodes[class_index];
+}
+
 
 void Unit::supportUp(short int in_id) {
     int i = 0;
@@ -359,6 +401,8 @@ void Unit::setStats(const Unit_stats in_stats) {
 Unit_stats Unit::getStats() {
     return (base_stats);
 }
+
+
 
 void Unit::setBases(const Unit_stats in_stats) {
     base_stats = in_stats;

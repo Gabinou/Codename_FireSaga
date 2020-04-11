@@ -406,22 +406,24 @@ void Game::unloadMap() {
 // }
 
 
-// void Game::loadUnitEntities(std::vector<short unsigned int> unit_inds, std::vector<std::vector<int>> positions_list) {
-//     SDL_Log("Loading Units\n");
-//     std::string asset_name;
-//     Unit Utemp;
-//     for (int i = 0; i < unit_inds.size(); i++) { 
-//         Utemp = units[unit_inds[i]];
-//         asset_name = "..//assets//" +  Utemp.getName() + ".png";
-//         Utemp.setEntity(manager.getEntities().size());
-//         manager.addEntity();
-//         manager.getEntities()[Utemp.getEntity()]->addComponent<PositionComponent>(positions_list[i][0], positions_list[i][1]);
-//         manager.getEntities()[Utemp.getEntity()]->addComponent<UnitContainer>(unit_inds[i]);
-//         manager.getEntities()[Utemp.getEntity()]->getComponent<PositionComponent>().setMap(mappx);
-//         manager.getEntities()[Utemp.getEntity()]->addComponent<SpriteComponent>(mappx, asset_name.c_str());
-//         manager.getEntities()[Utemp.getEntity()]->addGroup(manager.groupUnits);
-//     }
-// }
+void Game::loadUnitEntities(std::vector<short unsigned int> unit_inds, std::vector<std::vector<int>> positions_list) {
+    SDL_Log("Loading Units\n");
+    std::string asset_name;
+    Unit Utemp;
+    entityx::Entity Uent;
+    for (int i = 0; i < unit_inds.size(); i++) { 
+        Utemp = units[unit_inds[i]];
+        Uent = entities.create();
+        Uent.assign<Unit>(units[unit_inds[i]]);
+        // asset_name = "..//assets//" +  Utemp.getName() + ".png";
+
+        // Uent.assign<PositionComponent>(positions_list[i][0], positions_list[i][1]);
+        // mapp_entx.component<Map>()->setMap(mappx);
+        // Uent.assign<SpriteComponent>(mappx, asset_name.c_str());
+
+
+    }
+}
 
 // void Game::loadMapArrivals() {
 //     SDL_Log("Loading map arrivals.\n");
@@ -437,10 +439,10 @@ void Game::unloadMap() {
 //                 // asset_name = "..//assets//" +  Utemp.getName() + ".png";
 //                 Utemp.setEntity(manager.getEntities().size());
 //                 manager.addEntity();
-//                 manager.getEntities()[Utemp.getEntity()]->addComponent<PositionComponent>(map_arrivals[i].position.x, map_arrivals[i].position.y);
-//                 manager.getEntities()[Utemp.getEntity()]->addComponent<UnitContainer>(Utemp.getid());
+//                 Uent.assign<PositionComponent>(map_arrivals[i].position.x, map_arrivals[i].position.y);
+//                 Uent.assign<UnitContainer>(Utemp.getid());
 //                 manager.getEntities()[Utemp.getEntity()]->getComponent<PositionComponent>().setMap(mappx);
-//                 manager.getEntities()[Utemp.getEntity()]->addComponent<SpriteComponent>(mappx, asset_name.c_str());
+//                 Uent.assign<SpriteComponent>(mappx, asset_name.c_str());
 //                 manager.getEntities()[Utemp.getEntity()]->addGroup(manager.groupUnits);
 //             }
 //         }

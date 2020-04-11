@@ -60,6 +60,7 @@ class Unit : public XML_IO {
     public:
         Unit();
         Unit(const unsigned short int in_id, const unsigned char in_class_index, const Unit_stats in_bases, const bool in_sex);
+        Unit(const Unit & obj); // copy constructor
 
         void setSupports(std::vector<short int> in_supports);
         Support * getSupports();
@@ -73,6 +74,9 @@ class Unit : public XML_IO {
         void setPos(const Point in_pos);
 
         unsigned char getMvttype();
+        unsigned char getClassind();
+        void setClassind(unsigned char in_class_ind);
+
 
         short unsigned int getEquippable();
         void equipsL(const unsigned char index);
@@ -83,6 +87,7 @@ class Unit : public XML_IO {
         void unequips(const bool hand = true);
         void setEquipped(Equipped in_equipped);
         void setEquipment(std::vector<Inventory_item> in_equipment);
+        std::vector<Inventory_item> getEquipment();
         void addEquipment(Inventory_item in_item);
         void switchEquipment(Inventory_item in_equipment, const short int ind1, const short int ind2);
         void removeEquipment(unsigned char in_index);
@@ -103,6 +108,8 @@ class Unit : public XML_IO {
         unsigned short int getLvl() const;
         void setBaseExp(const unsigned short int in_exp);
         void gainExp(const unsigned short int in_exp);
+
+        unsigned long long int getSkills();
 
         void levelUp();
 
