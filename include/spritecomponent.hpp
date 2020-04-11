@@ -33,42 +33,50 @@ class SpriteComponent {
 
         float slidefactors[2] = {2, 1.025}; // for slide_type = "geometric"
 
+        std::string asset_name;
         std::string ss_looping = "pingpong"; //ss: spritesheet
         std::string slidetype = "";
     public:
         SpriteComponent() = default;
 
-        SpriteComponent(const char * in_path) {
+        SpriteComponent(const char * in_asset_name) {
             visible = true;
-            setTexture(in_path);
+            asset_name = in_asset_name;
+            setTexture(in_asset_name);
         }
 
-        SpriteComponent(const char * in_path, int in_picsize[2]) : SpriteComponent(in_path)  {
+        SpriteComponent(const char * in_asset_name, int in_picsize[2]) : SpriteComponent(in_asset_name)  {
             srcrect.w = in_picsize[0];
             srcrect.h = in_picsize[1];
             destrect.w = in_picsize[0];
             destrect.h = in_picsize[1];
         }
 
-        SpriteComponent(Map * in_map, const char * in_path) : SpriteComponent(in_path) {
+        SpriteComponent(Map * in_map, const char * in_asset_name) : SpriteComponent(in_asset_name) {
             setMap(in_map);
         }
 
-        // SpriteComponent(Map * in_map, const char * in_path) : SpriteComponent(in_path) {
-        //     setMap(in_map);
-        // }
+        SpriteComponent(entityx::ComponentHandle<Map> in_mapx, const char * in_asset_name) : SpriteComponent(in_asset_name) {
+            setMap(in_mapx);
+        }
 
-        SpriteComponent(Map * in_map, const char * in_path, int in_picsize[2]) : SpriteComponent(in_path, in_picsize)  {
+        SpriteComponent(Map * in_map, const char * in_asset_name, int in_picsize[2]) : SpriteComponent(in_asset_name, in_picsize)  {
             setMap(in_map);
         }
 
-        SpriteComponent(Map * in_map, const char * in_path, int inFrames, int inSpeed) : SpriteComponent(in_map, in_path) {
+        SpriteComponent(Map * in_map, const char * in_asset_name, int inFrames, int inSpeed) : SpriteComponent(in_map, in_asset_name) {
             animated = true;
             frames = inFrames;
             speed = inSpeed;
         }
 
-        SpriteComponent(const char * in_path, int inFrames, int inSpeed) : SpriteComponent(in_path) {
+        SpriteComponent(entityx::ComponentHandle<Map> in_mapx, const char * in_asset_name, int inFrames, int inSpeed) : SpriteComponent(in_mapx, in_asset_name) {
+            animated = true;
+            frames = inFrames;
+            speed = inSpeed;
+        }
+
+        SpriteComponent(const char * in_asset_name, int inFrames, int inSpeed) : SpriteComponent(in_asset_name) {
             animated = true;
             frames = inFrames;
             speed = inSpeed;
@@ -76,6 +84,10 @@ class SpriteComponent {
 
         SDL_Texture * getTexture() {
             return (texture);
+        }
+
+        float * getSlidefactors() {
+            return (slidefactors);
         }
 
         short unsigned int * getTilesize() {
@@ -86,9 +98,27 @@ class SpriteComponent {
             visible = false;
         }
 
+        bool isAnimated() {
+            return (animated);
+        }
+
         bool isVisible() {
             return (visible);
         }
+
+        std::string getSs_looping() {
+            return (ss_looping);
+        }
+
+        short int getFrames() {
+            return (frames);
+        }
+
+        short int getSpeed() {
+            return (speed);
+        }
+
+
 
         void show() {
             visible = true;
@@ -98,9 +128,13 @@ class SpriteComponent {
             if (slidetype == "geometric") {
                 setSrcrect(64, 64); // Manually entered from cursor png size.
                 setDestrect(tilesize[0] * 2, tilesize[1] * 2);
-                // slidepos[0] = objectivepos[0] = (int)positioncomponent->getPos()[0] * tilesize[0] - destrect.w / 4;
-                // slidepos[1] = objectivepos[1] = (int)positioncomponent->getPos()[1] * tilesize[1] - destrect.h / 4;
+                slidepos[0] = objectivepos[0] = (int)positioncomponent->getPos()[0] * tilesize[0] - destrect.w / 4;
+                slidepos[1] = objectivepos[1] = (int)positioncomponent->getPos()[1] * tilesize[1] - destrect.h / 4;
             }
+        }
+
+        std::string getSlidetype() {
+            return (slidetype);
         }
 
         void setSlidetype(std::string in_slidetype) {
@@ -108,13 +142,27 @@ class SpriteComponent {
             initSlide();
         }
 
-        void setTexture(const char * in_path) {
-            texture = loadTexture(Game::renderer, in_path);
+        void setTexture(const char * in_asset_name) {
+            texture = loadTexture(Game::renderer, in_asset_name);
         }
 
         void setAnimation(int inFrames, int inSpeed) {
             frames = inFrames;
             speed = inSpeed;
+        }
+
+        short int getSlideint() {
+            return (slideint);
+        }
+
+
+        void setMap(entityx::ComponentHandle<Map> in_mapx) {
+            mapx = in_mapx;
+            tilesize = mapx->getTilesize();
+            srcrect.w = tilesize[0];
+            srcrect.h = tilesize[1];
+            destrect.w = tilesize[0];
+            destrect.h = tilesize[1];
         }
 
         void setMap(Map * in_map) {
@@ -131,9 +179,17 @@ class SpriteComponent {
             return (map);
         }
 
+        void setSrcrect(SDL_Rect in_rect) {
+            srcrect = in_rect;
+        }
+
         void setSrcrect(int width, int height) {
             srcrect.w = width;
             srcrect.h = height;
+        }
+
+        void setDestrect(SDL_Rect in_rect) {
+            destrect = in_rect;
         }
 
         void setDestrect(int width, int height) {
@@ -141,94 +197,122 @@ class SpriteComponent {
             destrect.h = height;
         }
 
+        SDL_Rect getSrcrect() {
+            return (srcrect);
+        }
+
+        SDL_Rect getDestrect() {
+            return (destrect);
+        }
+
+        short int * getSlidepos() {
+            return (slidepos);
+        }
+
+        short int * getObjpos() {
+            return (objectivepos);
+        }
+
+
+
+        void setSlidepos(short int * in_slidepos) {
+            slidepos[0] = in_slidepos[0];
+            slidepos[1] = in_slidepos[1];
+        }
+
+        void setObjpos(short int * in_objectivepos) {
+            objectivepos[0] = in_objectivepos[0];
+            objectivepos[1] = in_objectivepos[1];
+        }
+
         void init() {
-            //     positioncomponent = &entity->getComponent<PositionComponent>();
+            // positioncomponent = &entity->getComponent<PositionComponent>();
 
-            //     if (map == NULL) {
-            //         slidepos[0] = (int)positioncomponent->getPos()[0];
-            //         slidepos[1] = (int)positioncomponent->getPos()[1];
-            //     } else {
-            //         slidepos[0] = (int)positioncomponent->getPos()[0] * tilesize[0];
-            //         slidepos[1] = (int)positioncomponent->getPos()[1] * tilesize[1];
-            //     }
+            if (tilesize[0] == 0 && tilesize[1] == 0) {
+                slidepos[0] = (int)positioncomponent->getPos()[0];
+                slidepos[1] = (int)positioncomponent->getPos()[1];
+            } else {
+                slidepos[0] = (int)positioncomponent->getPos()[0] * tilesize[0];
+                slidepos[1] = (int)positioncomponent->getPos()[1] * tilesize[1];
+            }
 
-            //     if (entity->hasComponent<KeyboardController>()) {
-            //         keyboardcontroller = &entity->getComponent<KeyboardController>();
-            //         keyboardcontroller->setTilesize(tilesize);
-            //     }
+            // if (entity->hasComponent<KeyboardController>()) {
+            //     keyboardcontroller = &entity->getComponent<KeyboardController>();
+            //     keyboardcontroller->setTilesize(tilesize);
+            // }
 
-            //     if (entity->hasComponent<GamepadController>()) {
-            //         gamepadcontroller = &entity->getComponent<GamepadController>();
-            //     }
+            // if (entity->hasComponent<GamepadController>()) {
+            //     gamepadcontroller = &entity->getComponent<GamepadController>();
+            // }
 
-            //     if (entity->hasComponent<SpriteComponent>()) {
-            //         gamepadcontroller = &entity->getComponent<GamepadController>();
-            //     }
+            // if (entity->hasComponent<SpriteComponent>()) {
+            //     gamepadcontroller = &entity->getComponent<GamepadController>();
+            // }
 
-            //     initSlide();
+            initSlide();
         }
 
         void update() {
-            //     int kb_held = 0;
-            //     int gp_held = 0;
+            int kb_held = 0;
+            int gp_held = 0;
 
-            //     if (animated) { //looping sprites.
-            //         if (ss_looping == "pingpong") {
-            //             srcrect.x = srcrect.w * pingpong(static_cast<int>(SDL_GetTicks() / speed), frames, 0);
-            //         } else if ((ss_looping == "linear") || (ss_looping == "direct")) {
-            //             srcrect.x = srcrect.w * static_cast<int>((SDL_GetTicks() / speed) % frames);
-            //         } else if (ss_looping == "reverse") {
-            //             srcrect.x = srcrect.w * (frames - static_cast<int>((SDL_GetTicks() / speed) % frames));
-            //         }
-            //     } else {
-            //         if (map == NULL) { //move on the pixelspace
-            //             slidepos[0] = (int)positioncomponent->getPos()[0];
-            //             slidepos[1] = (int)positioncomponent->getPos()[1];
-            //         } else { //move on the map.
-            //             slidepos[0] = (int)positioncomponent->getPos()[0] * tilesize[0];
-            //             slidepos[1] = (int)positioncomponent->getPos()[1] * tilesize[1];
-            //         }
+            if (animated) { //looping sprites.
+                if (ss_looping == "pingpong") {
+                    srcrect.x = srcrect.w * pingpong(static_cast<int>(SDL_GetTicks() / speed), frames, 0);
+                } else if ((ss_looping == "linear") || (ss_looping == "direct")) {
+                    srcrect.x = srcrect.w * static_cast<int>((SDL_GetTicks() / speed) % frames);
+                } else if (ss_looping == "reverse") {
+                    srcrect.x = srcrect.w * (frames - static_cast<int>((SDL_GetTicks() / speed) % frames));
+                }
+            } else {
+                if (tilesize[0] == 0 && tilesize[1] == 0) { //move on the pixelspace
+                    slidepos[0] = (int)positioncomponent->getPos()[0];
+                    slidepos[1] = (int)positioncomponent->getPos()[1];
+                } else { //move on the map.
+                    slidepos[0] = (int)positioncomponent->getPos()[0] * tilesize[0];
+                    slidepos[1] = (int)positioncomponent->getPos()[1] * tilesize[1];
+                }
 
-            //     }
+            }
 
-            //     if (entity->hasComponent<KeyboardController>()) {
-            //         kb_held = keyboardcontroller->getHeldmove();
-            //     }
+            // if (entity->hasComponent<KeyboardController>()) {
+            //     kb_held = keyboardcontroller->getHeldmove();
+            // }
 
-            //     if (entity->hasComponent<GamepadController>()) {
-            //         gp_held = gamepadcontroller->getHeldmove();
-            //     }
+            // if (entity->hasComponent<GamepadController>()) {
+            //     gp_held = gamepadcontroller->getHeldmove();
+            // }
 
-            //     if (slidetype == "geometric") { //for cursor mvt on map.
-            //         objectivepos[0] = (int)positioncomponent->getPos()[0] * (tilesize[0]) - destrect.w / 4;
-            //         objectivepos[1] = (int)positioncomponent->getPos()[1] * (tilesize[1]) - destrect.h / 4;
+            if (slidetype == "geometric") { //for cursor mvt on map.
+                objectivepos[0] = (int)positioncomponent->getPos()[0] * (tilesize[0]) - destrect.w / 4;
+                objectivepos[1] = (int)positioncomponent->getPos()[1] * (tilesize[1]) - destrect.h / 4;
 
-            //         if ((gp_held > 25) || (kb_held > 25))  {
-            //             slideint = 1;
-            //         }
+                if ((gp_held > 25) || (kb_held > 25))  {
+                    slideint = 1;
+                }
 
-            //         if (objectivepos[0] != slidepos[0]) {
-            //             slidepos[0] += geometricslide((objectivepos[0] - slidepos[0]), slidefactors[slideint]);
-            //         }
+                if (objectivepos[0] != slidepos[0]) {
+                    slidepos[0] += geometricslide((objectivepos[0] - slidepos[0]), slidefactors[slideint]);
+                }
 
-            //         if (objectivepos[1] != slidepos[1]) {
-            //             slidepos[1] += geometricslide((objectivepos[1] - slidepos[1]), slidefactors[slideint]);
-            //         }
+                if (objectivepos[1] != slidepos[1]) {
+                    slidepos[1] += geometricslide((objectivepos[1] - slidepos[1]), slidefactors[slideint]);
+                }
 
-            //         if ((objectivepos[0] == slidepos[0]) && (objectivepos[1] == slidepos[1])) {
-            //             positioncomponent->setUpdatable(true);
-            //             slideint = 0;
-            //         } else {
-            //             positioncomponent->setUpdatable(false);
-            //         }
-            //     }
+                if ((objectivepos[0] == slidepos[0]) && (objectivepos[1] == slidepos[1])) {
+                    positioncomponent->setUpdatable(true);
+                    slideint = 0;
+                } else {
+                    positioncomponent->setUpdatable(false);
+                }
+            }
 
-            //     if (slidetype == "vector") { //for unit mvt on map.
+            if (slidetype == "vector") { //for unit mvt on map.
 
-            //     }
+            }
 
-            //     destrect.x = slidepos[0];
-            //     destrect.y = slidepos[1];
+            destrect.x = slidepos[0];
+            destrect.y = slidepos[1];
         }
 
         void draw() {

@@ -17,7 +17,6 @@
 #include "linalg.hpp"
 #include "script.hpp"
 #include "probability.hpp"
-#include "systems.hpp"
 #include <stack>
 #include <vector>
 #include <unordered_map>

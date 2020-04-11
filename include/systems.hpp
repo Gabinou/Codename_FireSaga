@@ -3,6 +3,7 @@
 
 #include <SDL2/SDL.h>
 #include "map.hpp"
+#include "spritecomponent.hpp"
 #include <entityx/entityx.h>
 
 class RenderSystemx: public entityx::System<RenderSystemx> {
@@ -31,9 +32,86 @@ class RenderSystemx: public entityx::System<RenderSystemx> {
             es.each<Map>([dt](entityx::Entity ent, Map & map) {
                 map.draw();
             });
-            // es.each<Sprite>([dt](entityx::Entity ent, SpriteComponent & sprite) {
-            //     sprite.draw();
-            // });
+            es.each<SpriteComponent, PositionComponent>([dt](entityx::Entity ent, SpriteComponent & sprite, PositionComponent & position) {
+                int kb_held = 0;
+                int gp_held = 0;
+
+                SDL_Rect srcrect = sprite.getSrcrect();
+                SDL_Rect destrect = sprite.getDestrect();
+                short int frames = sprite.getFrames();
+                short int speed = sprite.getSpeed();
+                short unsigned int * tilesize = sprite.getTilesize();
+                short int * slidepos = sprite.getSlidepos();
+                short int * objectivepos = sprite.getObjpos();
+                std::string slidetype = sprite.getSlidetype();
+                short int slideint = sprite.getSlideint();
+                float * slidefactors = sprite.getSlidefactors();
+
+                if (sprite.isAnimated()) { //looping sprites.
+                    std::string looping = sprite.getSs_looping();
+
+
+                    if (looping == "pingpong") {
+                        srcrect.x = srcrect.w * pingpong(static_cast<int>(SDL_GetTicks() / speed), frames, 0);
+                    } else if ((looping == "linear") || (looping == "direct")) {
+                        srcrect.x = srcrect.w * static_cast<int>((SDL_GetTicks() / speed) % frames);
+                    } else if (looping == "reverse") {
+                        srcrect.x = srcrect.w * (frames - static_cast<int>((SDL_GetTicks() / speed) % frames));
+                    }
+                } else {
+                    if (tilesize[0] == 0 && tilesize[1] == 0) { //move on the pixelspace
+                        slidepos[0] = (int)position.getPos()[0];
+                        slidepos[1] = (int)position.getPos()[1];
+                    } else { //move on the map.
+                        slidepos[0] = (int)position.getPos()[0] * tilesize[0];
+                        slidepos[1] = (int)position.getPos()[1] * tilesize[1];
+                    }
+
+                }
+
+                // if (entity->hasComponent<KeyboardController>()) {
+                //     kb_held = keyboardcontroller->getHeldmove();
+                // }
+
+                // if (entity->hasComponent<GamepadController>()) {
+                //     gp_held = gamepadcontroller->getHeldmove();
+                // }
+
+                if (slidetype == "geometric") { //for cursor mvt on map.
+                    objectivepos[0] = (int)position.getPos()[0] * (tilesize[0]) - destrect.w / 4;
+                    objectivepos[1] = (int)position.getPos()[1] * (tilesize[1]) - destrect.h / 4;
+
+                    if ((gp_held > 25) || (kb_held > 25))  {
+                        slideint = 1;
+                    }
+
+                    if (objectivepos[0] != slidepos[0]) {
+                        slidepos[0] += geometricslide((objectivepos[0] - slidepos[0]), slidefactors[slideint]);
+                    }
+
+                    if (objectivepos[1] != slidepos[1]) {
+                        slidepos[1] += geometricslide((objectivepos[1] - slidepos[1]), slidefactors[slideint]);
+                    }
+
+                    if ((objectivepos[0] == slidepos[0]) && (objectivepos[1] == slidepos[1])) {
+                        position.setUpdatable(true);
+                        slideint = 0;
+                    } else {
+                        position.setUpdatable(false);
+                    }
+                }
+
+                if (slidetype == "vector") { //for unit mvt on map.
+
+                }
+
+                destrect.x = slidepos[0];
+                destrect.y = slidepos[1];
+
+                sprite.setSrcrect(srcrect);
+                sprite.setDestrect(destrect);
+                sprite.draw();
+            });
             SDL_RenderPresent(renderer);
         }
 };

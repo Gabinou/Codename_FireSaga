@@ -78,7 +78,7 @@ int main(int argc, char * argv[]) {
 
     std::vector<short unsigned int> unit_inds = {UNIT::NAME::SILOU};
     std::vector<std::vector<int>> positions_list = {{6, 6}};
-    // firesaga->loadUnitEntities(unit_inds, positions_list);
+    firesaga->loadUnitEntities(unit_inds, positions_list);
     // firesaga->loadMapArrivals();
 
     // SDL_Log("Testing game save XML");
