@@ -110,6 +110,7 @@ class Unit : public XML_IO {
         void gainExp(const unsigned short int in_exp);
 
         unsigned long long int getSkills();
+        void setSkills(unsigned long long int in_skills);
 
         void levelUp();
 

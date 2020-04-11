@@ -19,16 +19,16 @@ Unit::Unit(const unsigned short int in_id, const unsigned char in_class_index,  
 }
 
 Unit::Unit(const Unit &obj)  {
-    setSex(obj->getSex());
-    setPos(obj->getPos());
-    setid(obj->getid());
-    setBases(obj->getBases());
-    setStats(obj->getStats());
-    setGrowths(obj->getGrowths());
-    setClassind(obj->getClassind());
-    setEquipment(obj->getEquipment());
-    setSkills(obj->getSkills());
-    setSupports(obj->getSupports());
+    setSex(obj.sex);
+    // setPos(obj->getPos());
+    // setid(obj->getid());
+    // setBases(obj->getBases());
+    // setStats(obj->getStats());
+    // setGrowths(obj->getGrowths());
+    // setClassind(obj->getClassind());
+    // setEquipment(obj->getEquipment());
+    // setSkills(obj->getSkills());
+    // setSupports(obj->getSupports());
 }
 
 
@@ -69,11 +69,11 @@ void Unit::use(int in_ind) {
 
 }
 
-unsigned long long int getSkills() {
+unsigned long long int Unit::getSkills() {
     return(skills);
 }
 
-void setSkills(unsigned long long int in_skills) {
+void Unit::setSkills(unsigned long long int in_skills) {
     skills = in_skills;
     skill_names = skillNames(skills);
 }
