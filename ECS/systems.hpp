@@ -77,33 +77,33 @@ class RenderSystemx: public entityx::System<RenderSystemx> {
 //         }
 // };
 
-class Manager : public entityx::EntityX {
-    private:
-        SDL_Renderer * renderer = NULL;
-    public:
-        Manager() {
-        }
+// class Manager : public entityx::EntityX {
+//     private:
+//         SDL_Renderer * renderer = NULL;
+//     public:
+//         Manager() {
+//         }
 
-        Manager(SDL_Renderer * in_renderer) {
-            setRenderer(in_renderer);
-        }
+//         Manager(SDL_Renderer * in_renderer) {
+//             setRenderer(in_renderer);
+//         }
 
-        void setRenderer(SDL_Renderer * in_renderer) {
-            if (in_renderer) {
-                SDL_Log("Added renderer to Manager");
-                renderer = in_renderer;
-            } else {
-                SDL_Log("In renderer is null");
-            }
+//         void setRenderer(SDL_Renderer * in_renderer) {
+//             if (in_renderer) {
+//                 SDL_Log("Added renderer to Manager");
+//                 renderer = in_renderer;
+//             } else {
+//                 SDL_Log("In renderer is null");
+//             }
 
-            systems.add<RenderSystemx>(renderer);
-            systems.configure();
-        }
+//             systems.add<RenderSystemx>(renderer);
+//             systems.configure();
+//         }
 
-        void update(entityx::TimeDelta dt) {
-            systems.update<RenderSystemx>(dt);
-        }
-};
+//         void update(entityx::TimeDelta dt) {
+//             systems.update<RenderSystemx>(dt);
+//         }
+// };
 
 
 #endif /* SYSTEMS_HPP */

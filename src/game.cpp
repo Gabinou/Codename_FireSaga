@@ -14,7 +14,7 @@
 
 SDL_Renderer * Game::renderer = nullptr;
 TTF_Font * Game::font = NULL;
-Manager Game::manager;
+// Manager Game::manager;
 
 Game::Game() {
     menus.resize(GAME::STATE::END);
@@ -342,7 +342,7 @@ void Game::loadMap(const std::string filename) {
     // For this function, tiles have to be loaded manually somwhere else.
     if (!mappx) {
         // mapp_ent = world->create();
-        mapp_entx = manager.entities.create();
+        mapp_entx = entities.create();
         // mapp_ent->assign<Map>(settings.tilesize[0], settings.tilesize[1]); // mappx is a pointer
         mapp_entx.assign<Map>(settings.tilesize[0], settings.tilesize[1]); // mappx is a pointer
         mappx = mapp_entx.component<Map>();
@@ -360,7 +360,7 @@ void Game::loadMap(const int in_map_index) {
     SDL_Log("Loading Map index: %d \n", in_map_index);
     if (!mappx) {
         // mapp_ent = world->create();
-        mapp_entx = manager.entities.create();
+        mapp_entx = entities.create();
         // mapp_ent->assign<Map>(settings.tilesize[0], settings.tilesize[1]); // mappx is a pointer
         mapp_entx.assign<Map>(settings.tilesize[0], settings.tilesize[1]); // mappx is a pointer
         // mappx = mapp_ent->get<Map>();
@@ -509,9 +509,8 @@ void Game::init(const char * title, int xpos, int ypos, int width, int height, b
         isRunning = false;
     }
 
-    Manager manager(renderer);
-    // manager.setRenderer(renderer);
-
+    systems.add<RenderSystemx>(renderer);
+    systems.configure();
     state = GAME::STATE::MAP;
 };
 
@@ -668,6 +667,11 @@ void Game::clean() {
 }
 bool Game::running() {
     return (isRunning);
+}
+
+
+void Game::update(entityx::TimeDelta dt) {
+    systems.update<RenderSystemx>(dt);
 }
 
 // loss conditions

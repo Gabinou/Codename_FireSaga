@@ -23,7 +23,7 @@
 #include <vector>
 #include <unordered_map>
 
-class Game {
+class Game : public entityx::EntityX {
 
     private:
         ECS::World * world;
@@ -69,7 +69,7 @@ class Game {
 
     public:
         static SDL_Renderer * renderer;
-        static Manager manager;
+        // static Manager manager;
         static TTF_Font * font;
 
         Game();
@@ -118,6 +118,7 @@ class Game {
         void loadXML(const short int save_ind);
 
         bool running();
+        void update(entityx::TimeDelta dt);
 };
 
 #endif /* GAME_HPP */
