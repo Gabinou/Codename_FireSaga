@@ -13,20 +13,17 @@
 class SpriteComponent {
 
     protected:
-        Map * map = NULL; // no map-> position is not on a grid.
-        entityx::ComponentHandle<Map> mapx;// no map-> position is not on a grid.
         SDL_Rect srcrect = {0, 0, 32, 32}; //x,y,w,h
         SDL_Rect destrect = {0, 0, 32, 32}; //x,y,w,h
         SDL_Texture * texture;
 
-        short unsigned int * tilesize; // if no map, just use the pixel position as usual.
         short int frames = 10, speed = 50;
         short int slideint = 0; // for slide_type = "geometric"
+        float slidefactors[2] = {2, 1.025}; // for slide_type = "geometric"
 
         bool visible;
         bool animated = false;
 
-        float slidefactors[2] = {2, 1.025}; // for slide_type = "geometric"
 
         std::string asset_name;
         std::string ss_looping = "pingpong"; //ss: spritesheet
@@ -47,30 +44,6 @@ class SpriteComponent {
             destrect.h = in_picsize[1];
         }
 
-        SpriteComponent(Map * in_map, const char * in_asset_name) : SpriteComponent(in_asset_name) {
-            setMap(in_map);
-        }
-
-        SpriteComponent(entityx::ComponentHandle<Map> in_mapx, const char * in_asset_name) : SpriteComponent(in_asset_name) {
-            setMap(in_mapx);
-        }
-
-        SpriteComponent(Map * in_map, const char * in_asset_name, int in_picsize[2]) : SpriteComponent(in_asset_name, in_picsize)  {
-            setMap(in_map);
-        }
-
-        SpriteComponent(Map * in_map, const char * in_asset_name, int inFrames, int inSpeed) : SpriteComponent(in_map, in_asset_name) {
-            animated = true;
-            frames = inFrames;
-            speed = inSpeed;
-        }
-
-        SpriteComponent(entityx::ComponentHandle<Map> in_mapx, const char * in_asset_name, int inFrames, int inSpeed) : SpriteComponent(in_mapx, in_asset_name) {
-            animated = true;
-            frames = inFrames;
-            speed = inSpeed;
-        }
-
         SpriteComponent(const char * in_asset_name, int inFrames, int inSpeed) : SpriteComponent(in_asset_name) {
             animated = true;
             frames = inFrames;
@@ -83,10 +56,6 @@ class SpriteComponent {
 
         float * getSlidefactors() {
             return (slidefactors);
-        }
-
-        short unsigned int * getTilesize() {
-            return (tilesize);
         }
 
         void hide() {
@@ -120,7 +89,7 @@ class SpriteComponent {
         void initSlide() {
             if (slidetype == "geometric") {
                 setSrcrect(64, 64); // Manually entered from cursor png size.
-                setDestrect(tilesize[0] * 2, tilesize[1] * 2);
+                // setDestrect(tilesize[0] * 2, tilesize[1] * 2);
             }
         }
 
@@ -144,29 +113,6 @@ class SpriteComponent {
 
         short int getSlideint() {
             return (slideint);
-        }
-
-        void setMap(entityx::ComponentHandle<Map> in_mapx) {
-            mapx = in_mapx;
-            tilesize = mapx->getTilesize();
-            srcrect.w = tilesize[0];
-            srcrect.h = tilesize[1];
-            destrect.w = tilesize[0];
-            destrect.h = tilesize[1];
-        }
-
-        void setMap(Map * in_map) {
-            map = in_map;
-            tilesize = map->getTilesize();
-            srcrect.w = tilesize[0];
-            srcrect.h = tilesize[1];
-            destrect.w = tilesize[0];
-            destrect.h = tilesize[1];
-            // map->getTile(0, 0);
-        }
-
-        Map * getMap() {
-            return (map);
         }
 
         void setSrcrect(SDL_Rect in_rect) {

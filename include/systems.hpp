@@ -11,6 +11,9 @@
 class RenderSystemx: public entityx::System<RenderSystemx> {
     private:
         SDL_Renderer * renderer = NULL;
+        SDL_Rect srcrect;
+        SDL_Rect destrect;
+        short unsigned int * tilesize;
     public:
         void setRenderer(SDL_Renderer * in_renderer) {
             if (in_renderer) {
@@ -31,18 +34,19 @@ class RenderSystemx: public entityx::System<RenderSystemx> {
 
         void update(entityx::EntityManager & es, entityx::EventManager & events, entityx::TimeDelta dt) override {
             SDL_RenderClear(renderer);
-            es.each<Map>([dt](entityx::Entity ent, Map & map) {
+            es.each<Map>([dt, this](entityx::Entity ent, Map & map) {
                 map.draw();
+                tilesize = map.getTilesize();
+                srcrect.w = tilesize[0];
+                destrect.w = tilesize[0];
+                srcrect.h = tilesize[1];
+                destrect.h = tilesize[1];
             });
-            es.each<SpriteComponent, PositionComponent>([dt](entityx::Entity ent, SpriteComponent & sprite, PositionComponent & position) {
+            es.each<SpriteComponent, PositionComponent>([dt, this](entityx::Entity ent, SpriteComponent & sprite, PositionComponent & position) {
                 int kb_held = 0;
                 int gp_held = 0;
-
-                SDL_Rect srcrect = sprite.getSrcrect();
-                SDL_Rect destrect = sprite.getDestrect();
                 short int frames = sprite.getFrames();
                 short int speed = sprite.getSpeed();
-                short unsigned int * tilesize = sprite.getTilesize();
                 short int slidepos[2];
                 short int objectivepos[2];
                 std::string slidetype = sprite.getSlidetype();
