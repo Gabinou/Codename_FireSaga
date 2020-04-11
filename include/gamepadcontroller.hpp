@@ -1,13 +1,12 @@
 #ifndef GAMEPADCONTROLLER_HPP
 #define GAMEPADCONTROLLER_HPP
 
-#include "ECS.hpp"
 #include "game.hpp"
 #include "map.hpp"
 #include "utilities.hpp"
 #include <vector>
 
-class GamepadController : public Component {
+class GamepadController {
     private:
         PositionComponent * positioncomponent;
         Game * game;
@@ -48,7 +47,7 @@ class GamepadController : public Component {
             return (false);
         }
 
-        void init() override {
+        void init()  {
             for (int i = 0; i < SDL_NumJoysticks(); ++i) {
                 if (SDL_IsGameController(i)) {
                     controller = SDL_GameControllerOpen(i);
@@ -88,7 +87,7 @@ class GamepadController : public Component {
             }
         }
 
-        void update() override {
+        void update()  {
             Sint16 mainxaxis = SDL_GameControllerGetAxis(controller, inputmap.mainxaxis[0]);
             Sint16 mainyaxis = SDL_GameControllerGetAxis(controller, inputmap.mainyaxis[0]);
             Sint16 secondxaxis = SDL_GameControllerGetAxis(controller, inputmap.secondxaxis[0]);

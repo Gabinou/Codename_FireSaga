@@ -2,13 +2,13 @@
 #define TEXTCOMPONENT_HPP
 
 #include <vector>
-#include "ECS.hpp"
+// #include "ECS.hpp"
 #include "map.hpp"
 #include "filesystem.hpp"
 #include "positioncomponent.hpp"
 #include "SDL2/SDL.h"
 
-class TextComponent : public Component {
+class TextComponent {
 
     private:
         PositionComponent * positioncomponent;
@@ -137,15 +137,15 @@ class TextComponent : public Component {
             }
         }
 
-        virtual void init() override {
+        virtual void init() {
             // positioncomponent = &entity->getComponent<PositionComponent>();
             initRects();
         }
 
-        virtual void update() override {
+        virtual void update() {
         }
 
-        void draw() override {
+        void draw() {
             // Find a way to draw text letter by letter, word by word, etc. for future script.
             for (int i = 0; i < textures.size(); i++) {
                 SDL_RenderCopy(Game::renderer, textures[i], &srcrects[i], &destrects[i]);

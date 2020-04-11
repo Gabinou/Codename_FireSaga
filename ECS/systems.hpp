@@ -3,20 +3,10 @@
 
 #include <SDL2/SDL.h>
 #include "ECS.h"
+#include "map.hpp"
+#include <entityx/entityx.h>
+#include "entityx/deps/Dependencies.h"
 #include "spritecomponent.hpp"
-
-class Manager : public EntityX {
-
-    public:
-        systems.add<RenderSystem>;
-
-    void update(deltaTime dt) {
-        systems.update<RenderSystem>(dt);
-    }
-
-    Manager manager;
-};
-
 
 class UpdateSystem: public ECS::EntitySystem {
     public:
@@ -30,6 +20,33 @@ class InitSystem: public ECS::EntitySystem {
         virtual void tick(ECS::World * world, float deltaTime) override {
 
         }
+};
+
+class RenderSystemx: public entityx::System<RenderSystemx> {
+    private:
+        SDL_Renderer * renderer = NULL;
+    public:
+        void setRenderer(SDL_Renderer * in_renderer) {
+            renderer = in_renderer;
+        };
+
+        RenderSystemx(SDL_Renderer * in_renderer) {
+            renderer = in_renderer;
+        }
+
+        // void update(entityx::EntityManager & es, entityx::EventManager & events, entityx::TimeDelta dt) override {
+        //     SDL_RenderClear(renderer);
+        //     es.each<Map>([dt](entityx::Entity ent, Map & map) {
+        //         map->draw();
+        //     });
+        //     // world->each<UnitComponent>([&](ECS::Entity * ent, ECS::ComponentHandle<UnitComponent> unit) {
+        //     //     ComponentHandle<UnitComponent> sprite = ent->get<SpriteComponent>();
+        //     // -sprite->draw();
+
+        //     // }
+        //     // Iterate over Menu component? which are boxes?
+        //     SDL_RenderPresent(renderer);
+        // }
 };
 
 class RenderSystem: public ECS::EntitySystem {
@@ -58,6 +75,20 @@ class RenderSystem: public ECS::EntitySystem {
             SDL_RenderPresent(renderer);
         }
 };
+
+// class Manager : public entityx::EntityX {
+//     public:
+//         explicit Manager() {
+//             systems.add<RenderSystem>;
+//             systems.configure();
+//         }
+
+//         void update(entityx::TimeDelta dt) {
+//             systems.update<RenderSystem>(dt);
+//         }
+
+//         Manager manager;
+// };
 
 
 #endif /* SYSTEMS_HPP */

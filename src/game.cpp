@@ -1,4 +1,5 @@
 #include "game.hpp"
+#include "systems.hpp"
 #include "spritecomponent.hpp"
 #include "positioncomponent.hpp"
 #include "arrowcomponent.hpp"
@@ -23,9 +24,9 @@ Game::Game(ECS::World * in_world) : Game() {
     world = in_world;
 }
 
-Game::Game(entityx::Entityx in_ex) : Game() {
-    ex = in_ex;
-}
+// Game::Game(entityx::Entityx in_ex) : Game() {
+//     ex = in_ex;
+// }
 
 Game::~Game() {}
 
@@ -341,7 +342,7 @@ void Game::loadMap(const std::string filename) {
     // For this function, tiles have to be loaded manually somwhere else.
     if (!mappx) {
         // mapp_ent = world->create();
-        mapp_entx = ex.entities.create();
+        // mapp_entx = ex.entities.create();
         // mapp_ent->assign<Map>(settings.tilesize[0], settings.tilesize[1]); // mappx is a pointer
         mapp_entx->assign<Map>(settings.tilesize[0], settings.tilesize[1]); // mappx is a pointer
         mappx = mapp_entx->component<Map>();
@@ -359,7 +360,7 @@ void Game::loadMap(const int in_map_index) {
     SDL_Log("Loading Map index: %d \n", in_map_index);
     if (!mappx) {
         // mapp_ent = world->create();
-        mapp_entx = ex.entities.create();
+        // mapp_entx = ex.entities.create();
         // mapp_ent->assign<Map>(settings.tilesize[0], settings.tilesize[1]); // mappx is a pointer
         mapp_entx->assign<Map>(settings.tilesize[0], settings.tilesize[1]); // mappx is a pointer
         // mappx = mapp_ent->get<Map>();

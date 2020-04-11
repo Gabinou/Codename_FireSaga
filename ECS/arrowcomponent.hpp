@@ -1,13 +1,12 @@
 #ifndef ARROWCOMPONENT_HPP
 #define ARROWCOMPONENT_HPP
 
-#include "ECS.hpp"
 #include "utilities.hpp"
 #include "positioncomponent.hpp"
 
 // I want this to not be able to be used for RNG abuse, because fuck RNG abuse.
 
-class ArrowComponent : public Component {
+class ArrowComponent {
     protected:
         SDL_Texture * texture;
         std::vector<SDL_Rect> srcrects = {{0, 0, 32, 32}, {32, 0, 32, 32}, {64, 0, 32, 32}}; // x,y,w,h
@@ -17,7 +16,7 @@ class ArrowComponent : public Component {
         // conaints only 1 or 0. 1 means move in x direction. 0 means move in y direction.
         // movement direction is based on computed distance between origin and cursor.
         std::vector <std::vector<short int>> open_tiles;
-        Entity * cursor;
+        // Entity * cursor;
         PositionComponent * positioncomponent;
         bool visible;
         bool updatable;
@@ -33,10 +32,10 @@ class ArrowComponent : public Component {
             texture = loadTexture(Game::renderer, in_path);
         }
 
-        ArrowComponent(const char * in_path, Entity * in_cursor) : ArrowComponent(in_path) {
-            visible = true;
-            cursor = in_cursor;
-        }
+        // ArrowComponent(const char * in_path, Entity * in_cursor) : ArrowComponent(in_path) {
+        //     visible = true;
+        //     cursor = in_cursor;
+        // }
 
         ArrowComponent(Map * in_map, const char * in_path) : ArrowComponent(in_path) {
             setMap(in_map);
@@ -55,12 +54,12 @@ class ArrowComponent : public Component {
         }
 
 
-        virtual void init() override {
+        virtual void init() {
             // positioncomponent = &entity->getComponent<PositionComponent>();
             origin = positioncomponent->getPos();
         }
 
-        virtual void update() override {
+        virtual void update() {
 
 
             // short int * objectivepos = cursor->getComponent<PositionComponent>().getPos();
@@ -78,7 +77,7 @@ class ArrowComponent : public Component {
 
         }
 
-        virtual void draw() override {
+        virtual void draw() {
             // printf("Is visible? %d\n", visible == true);
             if (visible) {
                 SDL_RenderCopy(Game::renderer, texture, &srcrects[0], &destrects[0]);

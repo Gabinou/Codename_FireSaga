@@ -29,10 +29,10 @@ class Game {
         ECS::Entity * mapp_ent = nullptr;
         ECS::Entity * cursor;
         ECS::ComponentHandle<Map> mapp = nullptr;
-        entityx::EntityX * ex;
+        // Manager * ex;
         entityx::Entity * mapp_entx = nullptr;
         entityx::Entity * cursorx;
-        entityx::ComponentHandle<Map> * mappx = nullptr;
+        entityx::ComponentHandle<Map> mappx;
 
         Narrative narrative;
 
@@ -73,7 +73,7 @@ class Game {
 
         Game();
         Game(ECS::World * in_world);
-        Game(entityx::Entityx in_ex);
+        // Game(entityx::Entityx in_ex);
         ~Game();
 
         void init(const char * title, int xpos, int ypos, int width, int height, bool fullscreen);

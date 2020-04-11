@@ -1,14 +1,13 @@
 #ifndef KEYBOARDCONTROL_HPP
 #define KEYBOARDCONTROL_HPP
 
-#include "ECS.hpp"
 #include "game.hpp"
 #include "map.hpp"
 #include "utilities.hpp"
 
-class KeyboardController : public Component {
+class KeyboardController {
     private:
-        Entity * textboxptr;
+        // Entity * textboxptr;
         PositionComponent * positioncomponent;
         Game * game;
         Map * map;
@@ -48,10 +47,10 @@ class KeyboardController : public Component {
             inputmap = game->getKeyboardInputMap();
         }
 
-        void init() override {
+        void init() {
             // positioncomponent = &entity->getComponent<PositionComponent>();
             inputmap = game->getKeyboardInputMap();
-            Manager & manager = entity->getManager();
+            // Manager & manager = entity->getManager();
         }
 
         void switchCursor() {
@@ -91,7 +90,7 @@ class KeyboardController : public Component {
         }
 
 
-        void update() override {
+        void update() {
             const Uint8 * kb_state = SDL_GetKeyboardState(NULL);
             std::vector<std::vector<SDL_Scancode>> pressed_move{};
             std::vector<std::vector<SDL_Scancode>> pressed_button{};
