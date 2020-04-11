@@ -82,11 +82,13 @@ class Manager : public entityx::EntityX {
         SDL_Renderer * renderer = NULL;
     public:
         Manager() {
-            systems.add<RenderSystemx>();
-            systems.configure();
         }
 
         Manager(SDL_Renderer * in_renderer) {
+            setRenderer(in_renderer);
+        }
+
+        void setRenderer(SDL_Renderer * in_renderer) {
             if (in_renderer) {
                 SDL_Log("Added renderer to Manager");
                 renderer = in_renderer;

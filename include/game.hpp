@@ -69,14 +69,12 @@ class Game {
 
     public:
         static SDL_Renderer * renderer;
-        static Manager * manager;
+        static Manager manager;
         static TTF_Font * font;
 
         Game();
         Game(ECS::World * in_world);
         ~Game();
-
-        void setManager(Manager * in_manager);
 
         void init(const char * title, int xpos, int ypos, int width, int height, bool fullscreen);
         void loadMap(const std::string filename);

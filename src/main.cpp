@@ -19,7 +19,7 @@ ECS_TYPE_IMPLEMENTATION;
 
 Game * firesaga = nullptr;
 Settings temp_settings;
-SDL_Renderer * renderer = nullptr;
+// SDL_Renderer * renderer = nullptr;
 
 int main(int argc, char * argv[]) {
     fclose(fopen(LOGFILE, "w"));
@@ -68,9 +68,7 @@ int main(int argc, char * argv[]) {
     firesaga->init("FireSaga", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, firesaga->getSettings().res.x, firesaga->getSettings().res.y, false);
     // world->registerSystem(new RenderSystem(firesaga->renderer));
     SDL_Log("Making ECS with entityx");  
-    Manager manager(firesaga->renderer);
-    firesaga->setManager(&manager);
- 
+
     // firesaga->makeFPSEntity();
 
     // SDL_Log("Testing convoy\n");
@@ -102,7 +100,7 @@ int main(int argc, char * argv[]) {
         // firesaga->update();
         // firesaga->render();
         // world->tick(1.);
-        firesaga->manager->update(1.);
+        firesaga->manager.update(1.);
         frame_middle = std::chrono::high_resolution_clock::now();
         
         frame_time = (int)(std::chrono::duration_cast<std::chrono::nanoseconds>(frame_middle - frame_start).count()/1E6);
