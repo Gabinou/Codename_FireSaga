@@ -26,7 +26,7 @@ class Game : public entityx::EntityX {
     private:
 
         entityx::Entity map_entx;
-        entityx::Entity * cursorx;
+        entityx::Entity cursorx;
         entityx::ComponentHandle<Map> mapx;
 
         Narrative narrative;

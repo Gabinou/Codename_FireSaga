@@ -24,7 +24,6 @@ class SpriteComponent {
         bool visible;
         bool animated = false;
 
-
         std::string asset_name;
         std::string ss_looping = "pingpong"; //ss: spritesheet
         std::string slidetype = "";

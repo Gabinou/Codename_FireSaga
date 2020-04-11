@@ -3,6 +3,7 @@
 
 #include <SDL2/SDL.h>
 #include "map.hpp"
+// #include "game.hpp"
 #include "spritecomponent.hpp"
 #include "keyboardcontroller.hpp"
 #include "gamepadcontroller.hpp"
@@ -45,6 +46,7 @@ class RenderSystemx: public entityx::System<RenderSystemx> {
             es.each<Map>([dt, this](entityx::Entity ent, Map & map) {
                 map.draw();
             });
+
             es.each<SpriteComponent, PositionComponent>([dt, this](entityx::Entity ent, SpriteComponent & sprite, PositionComponent & position) {
                 int kb_held = 0;
                 int gp_held = 0;
@@ -127,6 +129,38 @@ class RenderSystemx: public entityx::System<RenderSystemx> {
             SDL_RenderPresent(renderer);
         }
 };
+
+class ControlSystemx: public entityx::System<ControlSystemx> {
+    private:
+        short unsigned int * tilesize;
+        SDL_Rect srcrect;
+        SDL_Rect destrect;
+        Game * game;
+    public:
+        ControlSystemx() {
+
+        }
+
+        void setMap(entityx::ComponentHandle<Map> in_map) {
+            tilesize = in_map->getTilesize();
+            srcrect.w = tilesize[0];
+            destrect.w = tilesize[0];
+            srcrect.h = tilesize[1];
+            destrect.h = tilesize[1];
+        }
+
+
+        void update(entityx::EntityManager & es, entityx::EventManager & events, entityx::TimeDelta dt) override {
+            es.each<KeyboardController, PositionComponent>([dt, this](entityx::Entity ent, KeyboardController & keyboard, PositionComponent & position) {
+
+            });
+            es.each<GamepadController, PositionComponent>([dt, this](entityx::Entity ent, GamepadController & gamepad, PositionComponent & position) {
+
+            });
+        }
+
+};
+
 
 // class RenderSystem: public ECS::EntitySystem {
 //     private:

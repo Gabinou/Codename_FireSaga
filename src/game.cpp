@@ -377,11 +377,12 @@ void Game::unloadMap() {
     }
 }
 
-// void Game::loadCursor() {
-//     // Map should be loaded before I think.
-//     if (this->state == GAME::STATE::MAP) {
-//         cursor.addComponent<PositionComponent>(6, 6);
-//         cursor.addComponent<KeyboardController>(this, mapx);
+void Game::loadCursor() {
+    // Map should be loaded before I think.
+    if (this->state == GAME::STATE::MAP) {
+        cursorx = entities.create();
+        cursorx.assign<PositionComponent>(6, 6);
+        // cursorx.assign<KeyboardController>(this, mapx);
 //         if (SDL_NumJoysticks() < 1) {
 //             SDL_Log( "No joysticks connected.\n" );
 //         } else {
@@ -390,8 +391,8 @@ void Game::unloadMap() {
 //         cursor.addComponent<SpriteComponent>(mapx, "..//assets//cursors.png", 10, 50);
 //         cursor.getComponent<SpriteComponent>().setSlidetype("geometric");
 //         cursor.addGroup(manager.groupUI);
-//     }
-// }
+    }
+}
 
 // void Game::unloadCursor() {
 
