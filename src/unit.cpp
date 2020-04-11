@@ -20,15 +20,15 @@ Unit::Unit(const unsigned short int in_id, const unsigned char in_class_index,  
 
 Unit::Unit(const Unit &obj)  {
     setSex(obj.sex);
-    // setPos(obj->getPos());
-    // setid(obj->getid());
-    // setBases(obj->getBases());
-    // setStats(obj->getStats());
-    // setGrowths(obj->getGrowths());
-    // setClassind(obj->getClassind());
-    // setEquipment(obj->getEquipment());
-    // setSkills(obj->getSkills());
-    // setSupports(obj->getSupports());
+    setPos(obj.position);
+    setid(obj.id);
+    setBases(obj.base_stats);
+    setStats(obj.current_stats);
+    setGrowths(obj.growths);
+    setClassind(obj.class_index);
+    setEquipment(obj.equipment);
+    setSkills(obj.skills);
+    setSupports(obj.supports);
 }
 
 
@@ -56,7 +56,7 @@ void Unit::setSex(const bool in_sex) {
 }
 
 void Unit::setid(const unsigned short int in_id) {
-    id =  in_id;
+    id = in_id;
     name = unitNames[in_id];
     setArmy(unitid2army(id));
 }
@@ -90,6 +90,12 @@ void Unit::addEquipment(Inventory_item in_item) {
             equipment[i] = in_item; 
             break;
         }
+    }
+}
+
+void Unit::setEquipment(const Inventory_item in_equipment[DEFAULT::EQUIPMENT_SIZE]) {
+    for (short unsigned int i = 0; i < DEFAULT::EQUIPMENT_SIZE; i++) {
+        equipment[i] = in_equipment[i];
     }
 }
 
@@ -148,6 +154,13 @@ void Unit::supportUp(short int in_id) {
         SDL_Log("Could not find support of index %d", in_id);
     }
     supports[i].level += 1;
+}
+
+void Unit::setSupports(const Support in_supports[DEFAULT::SUPPORTS_MAX]) {
+    for (int i = 0; i < DEFAULT::SUPPORTS_MAX; i++) {
+        supports[i].index = in_supports[i].index;
+        supports[i].level = in_supports[i].level;
+    }  
 }
 
 

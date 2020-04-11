@@ -63,6 +63,7 @@ class Unit : public XML_IO {
         Unit(const Unit & obj); // copy constructor
 
         void setSupports(std::vector<short int> in_supports);
+        void setSupports(const Support in_supports[DEFAULT::SUPPORTS_MAX]);
         Support * getSupports();
         void supportUp(short int in_id);
 
@@ -87,6 +88,8 @@ class Unit : public XML_IO {
         void unequips(const bool hand = true);
         void setEquipped(Equipped in_equipped);
         void setEquipment(std::vector<Inventory_item> in_equipment);
+        void setEquipment(const Inventory_item in_equipment[DEFAULT::EQUIPMENT_SIZE]);
+
         std::vector<Inventory_item> getEquipment();
         void addEquipment(Inventory_item in_item);
         void switchEquipment(Inventory_item in_equipment, const short int ind1, const short int ind2);
