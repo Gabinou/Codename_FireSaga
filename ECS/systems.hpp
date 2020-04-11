@@ -5,8 +5,6 @@
 #include "ECS.h"
 #include "map.hpp"
 #include <entityx/entityx.h>
-#include "entityx/deps/Dependencies.h"
-#include "spritecomponent.hpp"
 
 class UpdateSystem: public ECS::EntitySystem {
     public:
@@ -43,11 +41,6 @@ class RenderSystemx: public entityx::System<RenderSystemx> {
             es.each<Map>([dt](entityx::Entity ent, Map & map) {
                 map.draw();
             });
-            //     // world->each<UnitComponent>([&](ECS::Entity * ent, ECS::ComponentHandle<UnitComponent> unit) {
-            //     //     ComponentHandle<UnitComponent> sprite = ent->get<SpriteComponent>();
-            //     // -sprite->draw();
-
-            //     // }
             SDL_RenderPresent(renderer);
         }
 };
@@ -89,8 +82,6 @@ class Manager : public entityx::EntityX {
         void update(entityx::TimeDelta dt) {
             systems.update<RenderSystemx>(dt);
         }
-
-//         Manager manager;
 };
 
 

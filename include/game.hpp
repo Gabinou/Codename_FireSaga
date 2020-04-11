@@ -18,6 +18,7 @@
 #include "linalg.hpp"
 #include "script.hpp"
 #include "probability.hpp"
+#include "systems.hpp"
 #include <stack>
 #include <vector>
 #include <unordered_map>
@@ -29,8 +30,8 @@ class Game {
         ECS::Entity * mapp_ent = nullptr;
         ECS::Entity * cursor;
         ECS::ComponentHandle<Map> mapp = nullptr;
-        // Manager * ex;
-        entityx::Entity * mapp_entx = nullptr;
+        Manager * manager;
+        entityx::Entity mapp_entx;
         entityx::Entity * cursorx;
         entityx::ComponentHandle<Map> mappx;
 
@@ -73,7 +74,7 @@ class Game {
 
         Game();
         Game(ECS::World * in_world);
-        // Game(entityx::Entityx in_ex);
+        Game(Manager * in_manager);
         ~Game();
 
         void init(const char * title, int xpos, int ypos, int width, int height, bool fullscreen);

@@ -41,7 +41,8 @@ int main(int argc, char * argv[]) {
 
     SDL_Log("Making ECS");  
     ECS::World * world = ECS::World::createWorld();
-    entityx::EntityX ex;
+    Manager manager;
+    // manager.entities.create();
     // SDL_Log("Testing weapon: %s\n", all_weapons[ITEM::NAME::WOODEN_SWORD].getName().c_str());
     // testXMLWeapons();
     // writeallXMLWeapons();
@@ -52,7 +53,7 @@ int main(int argc, char * argv[]) {
     // testXMLUnits();
     // testXMLTiles();
 
-    firesaga = new Game();
+    firesaga = new Game(&manager);
     firesaga->loadUnits(0);
     // SDL_Log("Testing game load->save XML");
     // firesaga->loadXML(1);
