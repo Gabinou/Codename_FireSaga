@@ -32,15 +32,18 @@ class RenderSystemx: public entityx::System<RenderSystemx> {
             setRenderer(in_renderer);
         }
 
+        void setMap(entityx::ComponentHandle<Map> in_map) {
+            tilesize = in_map->getTilesize();
+            srcrect.w = tilesize[0];
+            destrect.w = tilesize[0];
+            srcrect.h = tilesize[1];
+            destrect.h = tilesize[1];
+        }
+
         void update(entityx::EntityManager & es, entityx::EventManager & events, entityx::TimeDelta dt) override {
             SDL_RenderClear(renderer);
             es.each<Map>([dt, this](entityx::Entity ent, Map & map) {
                 map.draw();
-                tilesize = map.getTilesize();
-                srcrect.w = tilesize[0];
-                destrect.w = tilesize[0];
-                srcrect.h = tilesize[1];
-                destrect.h = tilesize[1];
             });
             es.each<SpriteComponent, PositionComponent>([dt, this](entityx::Entity ent, SpriteComponent & sprite, PositionComponent & position) {
                 int kb_held = 0;

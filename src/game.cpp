@@ -365,6 +365,7 @@ void Game::loadMap(const int in_map_index) {
         mapx->setRenderer(renderer);
         mapx->loadTilemap(in_map_index);
         mapx->setArrivals(mapArrivals[in_map_index]());
+        systems.system<RenderSystemx>()->setMap(mapx);
         // SDL_Log("Loading Cursor\n");
         // loadCursor();
     } else {
