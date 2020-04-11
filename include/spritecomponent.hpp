@@ -18,12 +18,7 @@ class SpriteComponent {
         SDL_Rect srcrect = {0, 0, 32, 32}; //x,y,w,h
         SDL_Rect destrect = {0, 0, 32, 32}; //x,y,w,h
         SDL_Texture * texture;
-        PositionComponent * positioncomponent;
-        KeyboardController * keyboardcontroller;
-        GamepadController * gamepadcontroller;
 
-        short int objectivepos[2];
-        short int slidepos[2];
         short unsigned int * tilesize; // if no map, just use the pixel position as usual.
         short int frames = 10, speed = 50;
         short int slideint = 0; // for slide_type = "geometric"
@@ -118,8 +113,6 @@ class SpriteComponent {
             return (speed);
         }
 
-
-
         void show() {
             visible = true;
         }
@@ -128,8 +121,6 @@ class SpriteComponent {
             if (slidetype == "geometric") {
                 setSrcrect(64, 64); // Manually entered from cursor png size.
                 setDestrect(tilesize[0] * 2, tilesize[1] * 2);
-                slidepos[0] = objectivepos[0] = (int)positioncomponent->getPos()[0] * tilesize[0] - destrect.w / 4;
-                slidepos[1] = objectivepos[1] = (int)positioncomponent->getPos()[1] * tilesize[1] - destrect.h / 4;
             }
         }
 
@@ -154,7 +145,6 @@ class SpriteComponent {
         short int getSlideint() {
             return (slideint);
         }
-
 
         void setMap(entityx::ComponentHandle<Map> in_mapx) {
             mapx = in_mapx;
@@ -205,40 +195,10 @@ class SpriteComponent {
             return (destrect);
         }
 
-        short int * getSlidepos() {
-            return (slidepos);
-        }
-
-        short int * getObjpos() {
-            return (objectivepos);
-        }
-
-
-
-        void setSlidepos(short int * in_slidepos) {
-            slidepos[0] = in_slidepos[0];
-            slidepos[1] = in_slidepos[1];
-        }
-
-        void setObjpos(short int * in_objectivepos) {
-            objectivepos[0] = in_objectivepos[0];
-            objectivepos[1] = in_objectivepos[1];
-        }
-
         void init() {
-            // positioncomponent = &entity->getComponent<PositionComponent>();
-
-            if (tilesize[0] == 0 && tilesize[1] == 0) {
-                slidepos[0] = (int)positioncomponent->getPos()[0];
-                slidepos[1] = (int)positioncomponent->getPos()[1];
-            } else {
-                slidepos[0] = (int)positioncomponent->getPos()[0] * tilesize[0];
-                slidepos[1] = (int)positioncomponent->getPos()[1] * tilesize[1];
-            }
-
             initSlide();
         }
-        
+
         void draw() {
             if (visible) {
                 SDL_RenderCopy(Game::renderer, texture, &srcrect, &destrect);
