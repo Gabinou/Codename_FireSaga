@@ -124,7 +124,7 @@ void Map::loadTiletextures() {
     for (short unsigned int i = 0; i < tilesasset_ind.size(); i++) {
         tile_ind = (tilesasset_ind[i]/DEFAULT::TILE_DIVISOR);
         texturename = "..//assets//" + tiles[tile_ind].getName() + "_" + std::to_string(tilesasset_ind[i]) + ".png";
-        SDL_Log("loadTexture: %s", texturename);
+        SDL_Log("loadTexture: %s", texturename.c_str());
         textures[tilesasset_ind[i]] = loadTexture(renderer, texturename.c_str());
     }
 }
@@ -264,7 +264,7 @@ void Map::clearOverlays() {
 }
 
 void Map::draw() {
-    SDL_Log("Drawing Map");
+    // SDL_Log("Drawing Map");
     int tile_ind = 0;
     for (int row = 0; row < tilemap.size(); row++) {// This loop cache friendly.
         for (int col = 0; col < tilemap[row].size(); col++) {
