@@ -496,7 +496,7 @@ void Game::init(const char * title, int xpos, int ypos, int width, int height, b
         if (TTF_Init() == -1) {
             SDL_Log("SDL_ttf could not initialize! SDL_ttf Error: %s\n", TTF_GetError());
         }
-
+        
         renderer = SDL_CreateRenderer(window, -1, 0);
 
         if (renderer) {

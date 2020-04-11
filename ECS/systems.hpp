@@ -33,8 +33,13 @@ class RenderSystemx: public entityx::System<RenderSystemx> {
         }
 
         RenderSystemx(SDL_Renderer * in_renderer) {
-            SDL_Log("Added renderer to renderSystemx");
-            renderer = in_renderer;
+            if (in_renderer) {
+                SDL_Log("Added renderer to renderSystemx");
+                renderer = in_renderer;
+            } else {
+                SDL_Log("In renderer is null");
+            }
+
         }
 
         void update(entityx::EntityManager & es, entityx::EventManager & events, entityx::TimeDelta dt) override {

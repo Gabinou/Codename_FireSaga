@@ -109,7 +109,12 @@ unsigned char Map::getTurn() {
 // }
 
 void Map::setRenderer(SDL_Renderer * in_renderer){
-    renderer = in_renderer;
+    SDL_Log("Setting Map renderer");
+    if (in_renderer) {
+        renderer = in_renderer;
+    } else {
+        SDL_Log("Could not set map renderer");
+    }
     loadOverlays();
 }
 
