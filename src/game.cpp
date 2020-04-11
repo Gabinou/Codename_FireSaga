@@ -24,11 +24,11 @@ Game::Game(ECS::World * in_world) : Game() {
     world = in_world;
 }
 
-Game::Game(Manager * in_manager) : Game() {
+Game::~Game() {}
+
+void Game::setManager(Manager * in_manager) {
     manager = in_manager;
 }
-
-Game::~Game() {}
 
 Settings Game::getSettings() {
     return(settings);

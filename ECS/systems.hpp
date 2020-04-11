@@ -33,6 +33,7 @@ class RenderSystemx: public entityx::System<RenderSystemx> {
         }
 
         RenderSystemx(SDL_Renderer * in_renderer) {
+            SDL_Log("Added renderer to renderSystemx");
             renderer = in_renderer;
         }
 
@@ -73,9 +74,17 @@ class RenderSystemx: public entityx::System<RenderSystemx> {
 // };
 
 class Manager : public entityx::EntityX {
+    private:
+        SDL_Renderer * renderer = NULL;
     public:
         explicit Manager() {
             systems.add<RenderSystemx>();
+            systems.configure();
+        }
+
+        explicit Manager(SDL_Renderer * in_renderer) {
+            renderer = in_renderer;
+            systems.add<RenderSystemx>(renderer);
             systems.configure();
         }
 

@@ -19,7 +19,7 @@ ECS_TYPE_IMPLEMENTATION;
 
 Game * firesaga = nullptr;
 Settings temp_settings;
-SDL_Renderer * renderer = nullptr;
+// SDL_Renderer * renderer = nullptr;
 
 int main(int argc, char * argv[]) {
     fclose(fopen(LOGFILE, "w"));
@@ -41,7 +41,6 @@ int main(int argc, char * argv[]) {
 
     SDL_Log("Making ECS");  
     ECS::World * world = ECS::World::createWorld();
-    Manager manager;
     // manager.entities.create();
     // SDL_Log("Testing weapon: %s\n", all_weapons[ITEM::NAME::WOODEN_SWORD].getName().c_str());
     // testXMLWeapons();
@@ -53,7 +52,7 @@ int main(int argc, char * argv[]) {
     // testXMLUnits();
     // testXMLTiles();
 
-    firesaga = new Game(&manager);
+    firesaga = new Game();
     firesaga->loadUnits(0);
     // SDL_Log("Testing game load->save XML");
     // firesaga->loadXML(1);
@@ -68,6 +67,8 @@ int main(int argc, char * argv[]) {
     firesaga->setSettings(temp_settings);
     firesaga->init("FireSaga", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, firesaga->getSettings().res.x, firesaga->getSettings().res.y, false);
     // world->registerSystem(new RenderSystem(firesaga->renderer));
+    Manager manager(firesaga->renderer);
+    firesaga->setManager(&manager);
  
     // firesaga->makeFPSEntity();
 

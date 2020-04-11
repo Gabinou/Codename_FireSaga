@@ -74,8 +74,9 @@ class Game {
 
         Game();
         Game(ECS::World * in_world);
-        Game(Manager * in_manager);
         ~Game();
+
+        void setManager(Manager * in_manager);
 
         void init(const char * title, int xpos, int ypos, int width, int height, bool fullscreen);
         void loadMap(const std::string filename);
