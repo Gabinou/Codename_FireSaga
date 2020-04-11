@@ -124,7 +124,6 @@ void Map::loadTiletextures() {
     for (short unsigned int i = 0; i < tilesasset_ind.size(); i++) {
         tile_ind = (tilesasset_ind[i]/DEFAULT::TILE_DIVISOR);
         texturename = "..//assets//" + tiles[tile_ind].getName() + "_" + std::to_string(tilesasset_ind[i]) + ".png";
-        SDL_Log("loadTexture: %s", texturename.c_str());
         textures[tilesasset_ind[i]] = loadTexture(renderer, texturename.c_str());
     }
 }

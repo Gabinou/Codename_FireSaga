@@ -39,7 +39,6 @@ int main(int argc, char * argv[]) {
     SDL_Log("Loading base weapons.");
     baseWeapons();
 
-    SDL_Log("Making ECS");  
     // ECS::World * world = ECS::World::createWorld();
     // manager.entities.create();
     // SDL_Log("Testing weapon: %s\n", all_weapons[ITEM::NAME::WOODEN_SWORD].getName().c_str());
@@ -67,8 +66,6 @@ int main(int argc, char * argv[]) {
     firesaga->setSettings(temp_settings);
     firesaga->init("FireSaga", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, firesaga->getSettings().res.x, firesaga->getSettings().res.y, false);
     // world->registerSystem(new RenderSystem(firesaga->renderer));
-    SDL_Log("Making ECS with entityx");  
-
     // firesaga->makeFPSEntity();
 
     // SDL_Log("Testing convoy\n");
