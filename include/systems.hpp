@@ -41,8 +41,8 @@ class RenderSystemx: public entityx::System<RenderSystemx> {
                 short int frames = sprite.getFrames();
                 short int speed = sprite.getSpeed();
                 short unsigned int * tilesize = sprite.getTilesize();
-                short int * slidepos = sprite.getSlidepos();
-                short int * objectivepos = sprite.getObjpos();
+                short int slidepos[2];
+                short int objectivepos[2];
                 std::string slidetype = sprite.getSlidetype();
                 short int slideint = sprite.getSlideint();
                 float * slidefactors = sprite.getSlidefactors();
