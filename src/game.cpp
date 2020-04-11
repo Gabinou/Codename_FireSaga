@@ -337,14 +337,12 @@ void Game::loadMap(const std::string filename) {
     SDL_Log("Loading Map: %s \n", filename);
     // For this function, tiles have to be loaded manually somwhere else.
     if (!mapx) {
-        // mapp_ent = world->create();
         map_entx = entities.create();
-        // mapp_ent->assign<Map>(settings.tilesize[0], settings.tilesize[1]); // mapx is a pointer
         map_entx.assign<Map>(settings.tilesize[0], settings.tilesize[1]); // mapx is a pointer
         mapx = map_entx.component<Map>();
-        // mapx = mapp_ent->get<Map>();
         mapx->setRenderer(renderer);
         mapx->loadTilemap(filename);
+        systems.system<RenderSystemx>()->setMap(mapx);
         // SDL_Log("Loading Cursor\n");
         // loadCursor();
     }  else {
@@ -355,11 +353,8 @@ void Game::loadMap(const std::string filename) {
 void Game::loadMap(const int in_map_index) {
     SDL_Log("Loading Map index: %d \n", in_map_index);
     if (!mapx) {
-        // mapp_ent = world->create();
         map_entx = entities.create();
-        // mapp_ent->assign<Map>(settings.tilesize[0], settings.tilesize[1]); // mapx is a pointer
         map_entx.assign<Map>(settings.tilesize[0], settings.tilesize[1]); // mapx is a pointer
-        // mapx = mapp_ent->get<Map>();
         mapx = map_entx.component<Map>();
         mapx->loadTiles(in_map_index);
         mapx->setRenderer(renderer);
