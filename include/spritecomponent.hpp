@@ -36,8 +36,6 @@ class SpriteComponent {
         std::string ss_looping = "pingpong"; //ss: spritesheet
         std::string slidetype = "";
     public:
-        ECS_DECLARE_TYPE;
-
         SpriteComponent() = default;
 
         SpriteComponent(const char * in_path) {
@@ -239,7 +237,5 @@ class SpriteComponent {
             }
         }
 };
-
-ECS_DEFINE_TYPE(SpriteComponent);
 
 #endif /* SPRITECOMPONENT_HPP */
