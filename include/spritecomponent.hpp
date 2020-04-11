@@ -236,85 +236,9 @@ class SpriteComponent {
                 slidepos[1] = (int)positioncomponent->getPos()[1] * tilesize[1];
             }
 
-            // if (entity->hasComponent<KeyboardController>()) {
-            //     keyboardcontroller = &entity->getComponent<KeyboardController>();
-            //     keyboardcontroller->setTilesize(tilesize);
-            // }
-
-            // if (entity->hasComponent<GamepadController>()) {
-            //     gamepadcontroller = &entity->getComponent<GamepadController>();
-            // }
-
-            // if (entity->hasComponent<SpriteComponent>()) {
-            //     gamepadcontroller = &entity->getComponent<GamepadController>();
-            // }
-
             initSlide();
         }
-
-        void update() {
-            int kb_held = 0;
-            int gp_held = 0;
-
-            if (animated) { //looping sprites.
-                if (ss_looping == "pingpong") {
-                    srcrect.x = srcrect.w * pingpong(static_cast<int>(SDL_GetTicks() / speed), frames, 0);
-                } else if ((ss_looping == "linear") || (ss_looping == "direct")) {
-                    srcrect.x = srcrect.w * static_cast<int>((SDL_GetTicks() / speed) % frames);
-                } else if (ss_looping == "reverse") {
-                    srcrect.x = srcrect.w * (frames - static_cast<int>((SDL_GetTicks() / speed) % frames));
-                }
-            } else {
-                if (tilesize[0] == 0 && tilesize[1] == 0) { //move on the pixelspace
-                    slidepos[0] = (int)positioncomponent->getPos()[0];
-                    slidepos[1] = (int)positioncomponent->getPos()[1];
-                } else { //move on the map.
-                    slidepos[0] = (int)positioncomponent->getPos()[0] * tilesize[0];
-                    slidepos[1] = (int)positioncomponent->getPos()[1] * tilesize[1];
-                }
-
-            }
-
-            // if (entity->hasComponent<KeyboardController>()) {
-            //     kb_held = keyboardcontroller->getHeldmove();
-            // }
-
-            // if (entity->hasComponent<GamepadController>()) {
-            //     gp_held = gamepadcontroller->getHeldmove();
-            // }
-
-            if (slidetype == "geometric") { //for cursor mvt on map.
-                objectivepos[0] = (int)positioncomponent->getPos()[0] * (tilesize[0]) - destrect.w / 4;
-                objectivepos[1] = (int)positioncomponent->getPos()[1] * (tilesize[1]) - destrect.h / 4;
-
-                if ((gp_held > 25) || (kb_held > 25))  {
-                    slideint = 1;
-                }
-
-                if (objectivepos[0] != slidepos[0]) {
-                    slidepos[0] += geometricslide((objectivepos[0] - slidepos[0]), slidefactors[slideint]);
-                }
-
-                if (objectivepos[1] != slidepos[1]) {
-                    slidepos[1] += geometricslide((objectivepos[1] - slidepos[1]), slidefactors[slideint]);
-                }
-
-                if ((objectivepos[0] == slidepos[0]) && (objectivepos[1] == slidepos[1])) {
-                    positioncomponent->setUpdatable(true);
-                    slideint = 0;
-                } else {
-                    positioncomponent->setUpdatable(false);
-                }
-            }
-
-            if (slidetype == "vector") { //for unit mvt on map.
-
-            }
-
-            destrect.x = slidepos[0];
-            destrect.y = slidepos[1];
-        }
-
+        
         void draw() {
             if (visible) {
                 SDL_RenderCopy(Game::renderer, texture, &srcrect, &destrect);

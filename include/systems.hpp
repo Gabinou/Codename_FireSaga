@@ -4,6 +4,8 @@
 #include <SDL2/SDL.h>
 #include "map.hpp"
 #include "spritecomponent.hpp"
+#include "keyboardcontroller.hpp"
+#include "gamepadcontroller.hpp"
 #include <entityx/entityx.h>
 
 class RenderSystemx: public entityx::System<RenderSystemx> {
@@ -50,7 +52,6 @@ class RenderSystemx: public entityx::System<RenderSystemx> {
                 if (sprite.isAnimated()) { //looping sprites.
                     std::string looping = sprite.getSs_looping();
 
-
                     if (looping == "pingpong") {
                         srcrect.x = srcrect.w * pingpong(static_cast<int>(SDL_GetTicks() / speed), frames, 0);
                     } else if ((looping == "linear") || (looping == "direct")) {
@@ -69,13 +70,17 @@ class RenderSystemx: public entityx::System<RenderSystemx> {
 
                 }
 
-                // if (entity->hasComponent<KeyboardController>()) {
-                //     kb_held = keyboardcontroller->getHeldmove();
-                // }
+                entityx::ComponentHandle<KeyboardController> keyboard = ent.component<KeyboardController>();
 
-                // if (entity->hasComponent<GamepadController>()) {
-                //     gp_held = gamepadcontroller->getHeldmove();
-                // }
+                if (keyboard) {
+                    kb_held = keyboard->getHeldmove();
+                }
+
+                entityx::ComponentHandle<GamepadController> gamepad = ent.component<GamepadController>();
+
+                if (gamepad) {
+                    gp_held = gamepad->getHeldmove();
+                }
 
                 if (slidetype == "geometric") { //for cursor mvt on map.
                     objectivepos[0] = (int)position.getPos()[0] * (tilesize[0]) - destrect.w / 4;
