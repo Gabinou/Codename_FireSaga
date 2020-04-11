@@ -1,7 +1,6 @@
 #ifndef SPRITECOMPONENT_HPP
 #define SPRITECOMPONENT_HPP
 
-#include "ECS.h"
 #include "map.hpp"
 #include "filesystem.hpp"
 #include "positioncomponent.hpp"
@@ -15,6 +14,7 @@ class SpriteComponent {
 
     protected:
         Map * map = NULL; // no map-> position is not on a grid.
+        entityx::ComponentHandle<Map> mapx;// no map-> position is not on a grid.
         SDL_Rect srcrect = {0, 0, 32, 32}; //x,y,w,h
         SDL_Rect destrect = {0, 0, 32, 32}; //x,y,w,h
         SDL_Texture * texture;
@@ -55,6 +55,11 @@ class SpriteComponent {
         SpriteComponent(Map * in_map, const char * in_path) : SpriteComponent(in_path) {
             setMap(in_map);
         }
+
+        // SpriteComponent(Map * in_map, const char * in_path) : SpriteComponent(in_path) {
+        //     setMap(in_map);
+        // }
+
         SpriteComponent(Map * in_map, const char * in_path, int in_picsize[2]) : SpriteComponent(in_path, in_picsize)  {
             setMap(in_map);
         }

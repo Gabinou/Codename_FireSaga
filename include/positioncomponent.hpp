@@ -1,7 +1,6 @@
 #ifndef POSITIONCOMPONENT_HPP
 #define POSITIONCOMPONENT_HPP
 
-#include "ECS.h"
 #include "game.hpp"
 #include "map.hpp"
 #include "utilities.hpp"

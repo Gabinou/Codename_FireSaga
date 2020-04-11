@@ -20,10 +20,6 @@ Game::Game() {
     menus.resize(GAME::STATE::END);
 }
 
-Game::Game(ECS::World * in_world) : Game() {
-    world = in_world;
-}
-
 Game::~Game() {}
 
 // void Game::setManager(Manager * in_manager) {
@@ -123,7 +119,7 @@ void Game::fight(Unit * attacker, Unit * defender) {
 //     manager.getEntities()[settings.FPS.entity]->addGroup(manager.groupUI);
 // }
 
-// void Game::makeUnitmenu(ECS::Entity &setting_entity) {
+// void Game::makeUnitmenu(entityx::Entity &setting_entity) {
 //     SDL_Log("Making unit menu\n");
 //     menus[GAME::STATE::UNITMENU] = manager.getEntities().size();
 //     manager.addEntity();
@@ -147,7 +143,7 @@ void Game::fight(Unit * attacker, Unit * defender) {
 //     }
 // }
 
-// void Game::moveUnit(ECS::Entity &cursor) {
+// void Game::moveUnit(entityx::Entity &cursor) {
 //     // USELESS?
 //     int newPos[2];
 //     newPos[0] = cursor.getComponent<PositionComponent>().getPos()[0];
@@ -156,7 +152,7 @@ void Game::fight(Unit * attacker, Unit * defender) {
 // }
 
 // I think this function is too big. Find a way to reduce it...
-void Game::setState(ECS::Entity &setting_entity, short unsigned int new_state) {
+void Game::setState(entityx::Entity &setting_entity, short unsigned int new_state) {
     SDL_Log("Game state changes from %d to %d\n", this->state, new_state); 
 
     switch (this->state) {
@@ -205,15 +201,15 @@ void Game::setState(ECS::Entity &setting_entity, short unsigned int new_state) {
 
                     unitmvttype = units[current_unit_id].getMvttype();
                     range = units[current_unit_id].getRange();
-                    costmap = mappx->makeMvtCostmap(unitmvttype);
+                    costmap = mapx->makeMvtCostmap(unitmvttype);
 
                     movemapp = movemap(costmap, start, unit_move, "matrix");
-                    mappx->setOverlay(MAP::OVERLAY::MOVE, movemapp);
+                    mapx->setOverlay(MAP::OVERLAY::MOVE, movemapp);
 
                     attackmapp = attackmap(movemapp, start, unit_move, range, "matrix");
-                    mappx->setOverlay(MAP::OVERLAY::ATTACK, attackmapp);
+                    mapx->setOverlay(MAP::OVERLAY::ATTACK, attackmapp);
 
-                    mappx->showOverlay();
+                    mapx->showOverlay();
 
                 }
                     break;
@@ -276,7 +272,7 @@ void Game::setState(ECS::Entity &setting_entity, short unsigned int new_state) {
             switch (new_state) {            
                 case GAME::STATE::UNITMENU: {
                     SDL_Log("Changing to unitmenu\n");
-                    mappx->hideOverlay();
+                    mapx->hideOverlay();
                     // makeUnitmenu(setting_entity); 
                     // short int *new_position = setting_entity.getComponent<PositionComponent>().getPos();
                     // short int *old_position = manager.getEntities()[unit_entities.top()]->getComponent<PositionComponent>().getPos();
@@ -288,13 +284,13 @@ void Game::setState(ECS::Entity &setting_entity, short unsigned int new_state) {
                         // new_position[0],
                         // new_position[1]);
                     
-                    // Entity * ontile = mappx->getTile(old_position[0], old_position[1]);
-                    // mappx->removeTile(old_position[0], old_position[1]);
-                    // mappx->setTile(new_position[0], new_position[1], ontile);
+                    // Entity * ontile = mapx->getTile(old_position[0], old_position[1]);
+                    // mapx->removeTile(old_position[0], old_position[1]);
+                    // mapx->setTile(new_position[0], new_position[1], ontile);
                     }
                     break;
                 case GAME::STATE::MAP:
-                    mappx->hideOverlay();
+                    mapx->hideOverlay();
                     break;       
                 }
             break;
@@ -340,48 +336,48 @@ short unsigned int Game::getState() {
 void Game::loadMap(const std::string filename) {
     SDL_Log("Loading Map: %s \n", filename);
     // For this function, tiles have to be loaded manually somwhere else.
-    if (!mappx) {
+    if (!mapx) {
         // mapp_ent = world->create();
-        mapp_entx = entities.create();
-        // mapp_ent->assign<Map>(settings.tilesize[0], settings.tilesize[1]); // mappx is a pointer
-        mapp_entx.assign<Map>(settings.tilesize[0], settings.tilesize[1]); // mappx is a pointer
-        mappx = mapp_entx.component<Map>();
-        // mappx = mapp_ent->get<Map>();
-        mappx->setRenderer(renderer);
-        mappx->loadTilemap(filename);
+        map_entx = entities.create();
+        // mapp_ent->assign<Map>(settings.tilesize[0], settings.tilesize[1]); // mapx is a pointer
+        map_entx.assign<Map>(settings.tilesize[0], settings.tilesize[1]); // mapx is a pointer
+        mapx = map_entx.component<Map>();
+        // mapx = mapp_ent->get<Map>();
+        mapx->setRenderer(renderer);
+        mapx->loadTilemap(filename);
         // SDL_Log("Loading Cursor\n");
         // loadCursor();
     }  else {
-        SDL_Log("Failed to loadMap. Was mappx deleted previously?");
+        SDL_Log("Failed to loadMap. Was mapx deleted previously?");
     }
 }
 
 void Game::loadMap(const int in_map_index) {
     SDL_Log("Loading Map index: %d \n", in_map_index);
-    if (!mappx) {
+    if (!mapx) {
         // mapp_ent = world->create();
-        mapp_entx = entities.create();
-        // mapp_ent->assign<Map>(settings.tilesize[0], settings.tilesize[1]); // mappx is a pointer
-        mapp_entx.assign<Map>(settings.tilesize[0], settings.tilesize[1]); // mappx is a pointer
-        // mappx = mapp_ent->get<Map>();
-        mappx = mapp_entx.component<Map>();
-        mappx->loadTiles(in_map_index);
-        mappx->setRenderer(renderer);
-        mappx->loadTilemap(in_map_index);
-        mappx->setArrivals(mapArrivals[in_map_index]());
+        map_entx = entities.create();
+        // mapp_ent->assign<Map>(settings.tilesize[0], settings.tilesize[1]); // mapx is a pointer
+        map_entx.assign<Map>(settings.tilesize[0], settings.tilesize[1]); // mapx is a pointer
+        // mapx = mapp_ent->get<Map>();
+        mapx = map_entx.component<Map>();
+        mapx->loadTiles(in_map_index);
+        mapx->setRenderer(renderer);
+        mapx->loadTilemap(in_map_index);
+        mapx->setArrivals(mapArrivals[in_map_index]());
         // SDL_Log("Loading Cursor\n");
         // loadCursor();
     } else {
-        SDL_Log("Failed to loadMap. Was mappx deleted previously?");
+        SDL_Log("Failed to loadMap. Was mapx deleted previously?");
     }
 }
 
 void Game::unloadMap() {
     SDL_Log("Unloading Map");
-    if (!mappx) {
-        // delete mappx;
+    if (!mapx) {
+        // delete mapx;
     } else {
-        SDL_Log("Failed to unloadMap. Was mappx deleted previously?");
+        SDL_Log("Failed to unloadMap. Was mapx deleted previously?");
     }
 }
 
@@ -389,13 +385,13 @@ void Game::unloadMap() {
 //     // Map should be loaded before I think.
 //     if (this->state == GAME::STATE::MAP) {
 //         cursor.addComponent<PositionComponent>(6, 6);
-//         cursor.addComponent<KeyboardController>(this, mappx);
+//         cursor.addComponent<KeyboardController>(this, mapx);
 //         if (SDL_NumJoysticks() < 1) {
 //             SDL_Log( "No joysticks connected.\n" );
 //         } else {
-//             cursor.addComponent<GamepadController>(this, mappx);
+//             cursor.addComponent<GamepadController>(this, mapx);
 //         }
-//         cursor.addComponent<SpriteComponent>(mappx, "..//assets//cursors.png", 10, 50);
+//         cursor.addComponent<SpriteComponent>(mapx, "..//assets//cursors.png", 10, 50);
 //         cursor.getComponent<SpriteComponent>().setSlidetype("geometric");
 //         cursor.addGroup(manager.groupUI);
 //     }
@@ -413,23 +409,19 @@ void Game::loadUnitEntities(std::vector<short unsigned int> unit_inds, std::vect
     entityx::Entity Uent;
     for (int i = 0; i < unit_inds.size(); i++) { 
         Utemp = units[unit_inds[i]];
+        asset_name = "..//assets//" +  Utemp.getName() + ".png";
         Uent = entities.create();
         Uent.assign<Unit>(units[unit_inds[i]]);
-        // asset_name = "..//assets//" +  Utemp.getName() + ".png";
-
-        // Uent.assign<PositionComponent>(positions_list[i][0], positions_list[i][1]);
-        // mapp_entx.component<Map>()->setMap(mappx);
-        // Uent.assign<SpriteComponent>(mappx, asset_name.c_str());
-
-
+        Uent.assign<PositionComponent>(positions_list[i][0], positions_list[i][1]);
+        // Uent.assign<SpriteComponent>(mapx, asset_name.c_str());
     }
 }
 
 // void Game::loadMapArrivals() {
 //     SDL_Log("Loading map arrivals.\n");
-//     if (mappx) {
-//         std::vector<Map_arrival> map_arrivals = mappx->getArrivals(); 
-//         unsigned short int currentturn = mappx->getTurn();
+//     if (mapx) {
+//         std::vector<Map_arrival> map_arrivals = mapx->getArrivals(); 
+//         unsigned short int currentturn = mapx->getTurn();
 //         std::string asset_name;
 //         Unit Utemp;
 //         for (int i = 0; i < map_arrivals.size(); i++) {
@@ -441,8 +433,8 @@ void Game::loadUnitEntities(std::vector<short unsigned int> unit_inds, std::vect
 //                 manager.addEntity();
 //                 Uent.assign<PositionComponent>(map_arrivals[i].position.x, map_arrivals[i].position.y);
 //                 Uent.assign<UnitContainer>(Utemp.getid());
-//                 manager.getEntities()[Utemp.getEntity()]->getComponent<PositionComponent>().setMap(mappx);
-//                 Uent.assign<SpriteComponent>(mappx, asset_name.c_str());
+//                 manager.getEntities()[Utemp.getEntity()]->getComponent<PositionComponent>().setMap(mapx);
+//                 Uent.assign<SpriteComponent>(mapx, asset_name.c_str());
 //                 manager.getEntities()[Utemp.getEntity()]->addGroup(manager.groupUnits);
 //             }
 //         }
@@ -647,7 +639,7 @@ void Game::setGamepadInputMap(GamepadInputMap in_gamepadInputMap) {
 //     SDL_RenderClear(renderer);
 // //     // Add stuff to render. Paint the background First.
 
-//     mappx->drawMap();
+//     mapx->drawMap();
 
 // //     for (auto& u : unitEntities) {
 // //         u->draw();

@@ -6,7 +6,6 @@
 #include "SDL2/SDL_ttf.h"
 #include "enums.hpp"
 #include "structs.hpp"
-#include "ECS.h"
 #include <entityx/entityx.h>
 #include "map.hpp"
 #include "weapon.hpp"
@@ -26,13 +25,10 @@
 class Game : public entityx::EntityX {
 
     private:
-        ECS::World * world;
-        ECS::Entity * mapp_ent = nullptr;
-        ECS::Entity * cursor;
-        ECS::ComponentHandle<Map> mapp = nullptr;
-        entityx::Entity mapp_entx;
+
+        entityx::Entity map_entx;
         entityx::Entity * cursorx;
-        entityx::ComponentHandle<Map> mappx;
+        entityx::ComponentHandle<Map> mapx;
 
         Narrative narrative;
 
@@ -43,16 +39,16 @@ class Game : public entityx::EntityX {
         tinymt32_t tinymt;
         Convoy convoy;
 
-        void moveUnit(ECS::Entity & cursor);
+        void moveUnit(entityx::Entity & cursor);
 
         void killMenu(short unsigned int index);
-        void makeUnitmenu(ECS::Entity & setting_entity);
+        void makeUnitmenu(entityx::Entity & setting_entity);
 
         //TO BE IMPLEMENTED:
-        void makeDefendermenu(ECS::Entity & setting_entity);
-        void makeWeaponmenu(ECS::Entity & setting_entity);
-        void makeOptionsmenu(ECS::Entity & setting_entity);
-        void makeSmallmap(ECS::Entity & setting_entity);
+        void makeDefendermenu(entityx::Entity & setting_entity);
+        void makeWeaponmenu(entityx::Entity & setting_entity);
+        void makeOptionsmenu(entityx::Entity & setting_entity);
+        void makeSmallmap(entityx::Entity & setting_entity);
         void makeCombatWindow(Unit * ally, Unit * enemy);
 
         short unsigned int state;
@@ -73,7 +69,6 @@ class Game : public entityx::EntityX {
         static TTF_Font * font;
 
         Game();
-        Game(ECS::World * in_world);
         ~Game();
 
         void init(const char * title, int xpos, int ypos, int width, int height, bool fullscreen);
@@ -108,7 +103,7 @@ class Game : public entityx::EntityX {
         GamepadInputMap getGamepadInputMap();
         void setGamepadInputMap(const GamepadInputMap in_gpmap);
 
-        void setState(ECS::Entity & in_entity, short unsigned int new_state);
+        void setState(entityx::Entity & in_entity, short unsigned int new_state);
         void setState(const short unsigned int new_state);
         short unsigned int getState();
 

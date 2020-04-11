@@ -5,20 +5,6 @@
 #include "map.hpp"
 #include <entityx/entityx.h>
 
-class UpdateSystem: public ECS::EntitySystem {
-    public:
-        virtual void tick(ECS::World * world, float deltaTime) override {
-
-        }
-};
-
-class InitSystem: public ECS::EntitySystem {
-    public:
-        virtual void tick(ECS::World * world, float deltaTime) override {
-
-        }
-};
-
 class RenderSystemx: public entityx::System<RenderSystemx> {
     private:
         SDL_Renderer * renderer = NULL;

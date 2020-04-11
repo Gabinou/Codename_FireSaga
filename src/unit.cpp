@@ -25,10 +25,13 @@ Unit::Unit(const Unit &obj)  {
     setBases(obj.base_stats);
     setStats(obj.current_stats);
     setGrowths(obj.growths);
+    setCaps(obj.caps_stats);
     setClassind(obj.class_index);
     setEquipment(obj.equipment);
     setSkills(obj.skills);
     setSupports(obj.supports);
+    exp = obj.exp;
+    base_exp = obj.base_exp;
 }
 
 
@@ -162,7 +165,6 @@ void Unit::setSupports(const Support in_supports[DEFAULT::SUPPORTS_MAX]) {
         supports[i].level = in_supports[i].level;
     }  
 }
-
 
 void Unit::setSupports(std::vector<short int> in_supports) {
     for (int i = 0; i < in_supports.size(); i++) {

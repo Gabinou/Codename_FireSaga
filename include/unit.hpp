@@ -37,7 +37,6 @@ class Unit : public XML_IO {
         unsigned short int id;
         unsigned short int base_exp = 0;
         unsigned short int entity;
-        unsigned short int affiliation;
         unsigned char class_index;
         unsigned char mvt_type;
         unsigned char army;
