@@ -5,6 +5,19 @@
 #include "ECS.h"
 #include "spritecomponent.hpp"
 
+class Manager : public EntityX {
+
+    public:
+        systems.add<RenderSystem>;
+
+    void update(deltaTime dt) {
+        systems.update<RenderSystem>(dt);
+    }
+
+    Manager manager;
+};
+
+
 class UpdateSystem: public ECS::EntitySystem {
     public:
         virtual void tick(ECS::World * world, float deltaTime) override {

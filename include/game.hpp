@@ -73,7 +73,7 @@ class Game {
 
         Game();
         Game(ECS::World * in_world);
-        Game(entityx::Entityx * in_ex);
+        Game(entityx::Entityx in_ex);
         ~Game();
 
         void init(const char * title, int xpos, int ypos, int width, int height, bool fullscreen);

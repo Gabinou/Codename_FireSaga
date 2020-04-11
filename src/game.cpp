@@ -23,7 +23,7 @@ Game::Game(ECS::World * in_world) : Game() {
     world = in_world;
 }
 
-Game::Game(entityx::Entityx * in_ex) : Game() {
+Game::Game(entityx::Entityx in_ex) : Game() {
     ex = in_ex;
 }
 
@@ -204,15 +204,15 @@ void Game::setState(ECS::Entity &setting_entity, short unsigned int new_state) {
 
                     unitmvttype = units[current_unit_id].getMvttype();
                     range = units[current_unit_id].getRange();
-                    costmap = mapp->makeMvtCostmap(unitmvttype);
+                    costmap = mappx->makeMvtCostmap(unitmvttype);
 
                     movemapp = movemap(costmap, start, unit_move, "matrix");
-                    mapp->setOverlay(MAP::OVERLAY::MOVE, movemapp);
+                    mappx->setOverlay(MAP::OVERLAY::MOVE, movemapp);
 
                     attackmapp = attackmap(movemapp, start, unit_move, range, "matrix");
-                    mapp->setOverlay(MAP::OVERLAY::ATTACK, attackmapp);
+                    mappx->setOverlay(MAP::OVERLAY::ATTACK, attackmapp);
 
-                    mapp->showOverlay();
+                    mappx->showOverlay();
 
                 }
                     break;
@@ -275,7 +275,7 @@ void Game::setState(ECS::Entity &setting_entity, short unsigned int new_state) {
             switch (new_state) {            
                 case GAME::STATE::UNITMENU: {
                     SDL_Log("Changing to unitmenu\n");
-                    mapp->hideOverlay();
+                    mappx->hideOverlay();
                     // makeUnitmenu(setting_entity); 
                     // short int *new_position = setting_entity.getComponent<PositionComponent>().getPos();
                     // short int *old_position = manager.getEntities()[unit_entities.top()]->getComponent<PositionComponent>().getPos();
@@ -287,13 +287,13 @@ void Game::setState(ECS::Entity &setting_entity, short unsigned int new_state) {
                         // new_position[0],
                         // new_position[1]);
                     
-                    // Entity * ontile = mapp->getTile(old_position[0], old_position[1]);
-                    // mapp->removeTile(old_position[0], old_position[1]);
-                    // mapp->setTile(new_position[0], new_position[1], ontile);
+                    // Entity * ontile = mappx->getTile(old_position[0], old_position[1]);
+                    // mappx->removeTile(old_position[0], old_position[1]);
+                    // mappx->setTile(new_position[0], new_position[1], ontile);
                     }
                     break;
                 case GAME::STATE::MAP:
-                    mapp->hideOverlay();
+                    mappx->hideOverlay();
                     break;       
                 }
             break;
@@ -339,43 +339,48 @@ short unsigned int Game::getState() {
 void Game::loadMap(const std::string filename) {
     SDL_Log("Loading Map: %s \n", filename);
     // For this function, tiles have to be loaded manually somwhere else.
-    if (!mapp) {
-        mapp_ent = world->create();
+    if (!mappx) {
+        // mapp_ent = world->create();
         mapp_entx = ex.entities.create();
-        mapp_ent->assign<Map>(settings.tilesize[0], settings.tilesize[1]); // mapp is a pointer
-        mapp = mapp_ent->get<Map>();
-        mapp->setRenderer(renderer);
-        mapp->loadTilemap(filename);
+        // mapp_ent->assign<Map>(settings.tilesize[0], settings.tilesize[1]); // mappx is a pointer
+        mapp_entx->assign<Map>(settings.tilesize[0], settings.tilesize[1]); // mappx is a pointer
+        mappx = mapp_entx->component<Map>();
+        // mappx = mapp_ent->get<Map>();
+        mappx->setRenderer(renderer);
+        mappx->loadTilemap(filename);
         // SDL_Log("Loading Cursor\n");
         // loadCursor();
     }  else {
-        SDL_Log("Failed to loadMap. Was mapp deleted previously?");
+        SDL_Log("Failed to loadMap. Was mappx deleted previously?");
     }
 }
 
 void Game::loadMap(const int in_map_index) {
     SDL_Log("Loading Map index: %d \n", in_map_index);
-    if (!mapp) {
-        mapp_ent = world->create();
-        mapp_ent->assign<Map>(settings.tilesize[0], settings.tilesize[1]); // mapp is a pointer
-        mapp = mapp_ent->get<Map>();
-        mapp->loadTiles(in_map_index);
-        mapp->setRenderer(renderer);
-        mapp->loadTilemap(in_map_index);
-        mapp->setArrivals(mapArrivals[in_map_index]());
+    if (!mappx) {
+        // mapp_ent = world->create();
+        mapp_entx = ex.entities.create();
+        // mapp_ent->assign<Map>(settings.tilesize[0], settings.tilesize[1]); // mappx is a pointer
+        mapp_entx->assign<Map>(settings.tilesize[0], settings.tilesize[1]); // mappx is a pointer
+        // mappx = mapp_ent->get<Map>();
+        mappx = mapp_entx->component<Map>();
+        // mappx->loadTiles(in_map_index);
+        mappx->setRenderer(renderer);
+        mappx->loadTilemap(in_map_index);
+        mappx->setArrivals(mapArrivals[in_map_index]());
         // SDL_Log("Loading Cursor\n");
         // loadCursor();
     } else {
-        SDL_Log("Failed to loadMap. Was mapp deleted previously?");
+        SDL_Log("Failed to loadMap. Was mappx deleted previously?");
     }
 }
 
 void Game::unloadMap() {
     SDL_Log("Unloading Map");
-    if (!mapp) {
-        // delete mapp;
+    if (!mappx) {
+        // delete mappx;
     } else {
-        SDL_Log("Failed to unloadMap. Was mapp deleted previously?");
+        SDL_Log("Failed to unloadMap. Was mappx deleted previously?");
     }
 }
 
@@ -383,13 +388,13 @@ void Game::unloadMap() {
 //     // Map should be loaded before I think.
 //     if (this->state == GAME::STATE::MAP) {
 //         cursor.addComponent<PositionComponent>(6, 6);
-//         cursor.addComponent<KeyboardController>(this, mapp);
+//         cursor.addComponent<KeyboardController>(this, mappx);
 //         if (SDL_NumJoysticks() < 1) {
 //             SDL_Log( "No joysticks connected.\n" );
 //         } else {
-//             cursor.addComponent<GamepadController>(this, mapp);
+//             cursor.addComponent<GamepadController>(this, mappx);
 //         }
-//         cursor.addComponent<SpriteComponent>(mapp, "..//assets//cursors.png", 10, 50);
+//         cursor.addComponent<SpriteComponent>(mappx, "..//assets//cursors.png", 10, 50);
 //         cursor.getComponent<SpriteComponent>().setSlidetype("geometric");
 //         cursor.addGroup(manager.groupUI);
 //     }
@@ -411,17 +416,17 @@ void Game::unloadMap() {
 //         manager.addEntity();
 //         manager.getEntities()[Utemp.getEntity()]->addComponent<PositionComponent>(positions_list[i][0], positions_list[i][1]);
 //         manager.getEntities()[Utemp.getEntity()]->addComponent<UnitContainer>(unit_inds[i]);
-//         manager.getEntities()[Utemp.getEntity()]->getComponent<PositionComponent>().setMap(mapp);
-//         manager.getEntities()[Utemp.getEntity()]->addComponent<SpriteComponent>(mapp, asset_name.c_str());
+//         manager.getEntities()[Utemp.getEntity()]->getComponent<PositionComponent>().setMap(mappx);
+//         manager.getEntities()[Utemp.getEntity()]->addComponent<SpriteComponent>(mappx, asset_name.c_str());
 //         manager.getEntities()[Utemp.getEntity()]->addGroup(manager.groupUnits);
 //     }
 // }
 
 // void Game::loadMapArrivals() {
 //     SDL_Log("Loading map arrivals.\n");
-//     if (mapp) {
-//         std::vector<Map_arrival> map_arrivals = mapp->getArrivals(); 
-//         unsigned short int currentturn = mapp->getTurn();
+//     if (mappx) {
+//         std::vector<Map_arrival> map_arrivals = mappx->getArrivals(); 
+//         unsigned short int currentturn = mappx->getTurn();
 //         std::string asset_name;
 //         Unit Utemp;
 //         for (int i = 0; i < map_arrivals.size(); i++) {
@@ -433,8 +438,8 @@ void Game::unloadMap() {
 //                 manager.addEntity();
 //                 manager.getEntities()[Utemp.getEntity()]->addComponent<PositionComponent>(map_arrivals[i].position.x, map_arrivals[i].position.y);
 //                 manager.getEntities()[Utemp.getEntity()]->addComponent<UnitContainer>(Utemp.getid());
-//                 manager.getEntities()[Utemp.getEntity()]->getComponent<PositionComponent>().setMap(mapp);
-//                 manager.getEntities()[Utemp.getEntity()]->addComponent<SpriteComponent>(mapp, asset_name.c_str());
+//                 manager.getEntities()[Utemp.getEntity()]->getComponent<PositionComponent>().setMap(mappx);
+//                 manager.getEntities()[Utemp.getEntity()]->addComponent<SpriteComponent>(mappx, asset_name.c_str());
 //                 manager.getEntities()[Utemp.getEntity()]->addGroup(manager.groupUnits);
 //             }
 //         }
@@ -637,7 +642,7 @@ void Game::setGamepadInputMap(GamepadInputMap in_gamepadInputMap) {
 //     SDL_RenderClear(renderer);
 // //     // Add stuff to render. Paint the background First.
 
-//     mapp->drawMap();
+//     mappx->drawMap();
 
 // //     for (auto& u : unitEntities) {
 // //         u->draw();
