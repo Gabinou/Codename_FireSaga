@@ -1,6 +1,6 @@
 #include "map.hpp"
 
-ECS_DEFINE_TYPE(Map);
+// ECS_DEFINE_TYPE(Map);
 
 
 Map::Map() {

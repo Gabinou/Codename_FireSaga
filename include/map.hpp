@@ -3,7 +3,8 @@
 
 #include "enums.hpp"
 #include "structs.hpp"
-#include "ECS.h"
+// #include "ECS.h"
+#include <entityx/entityx.h>
 #include "SDL2/SDL.h"
 #include "utilities.hpp"
 #include "parser.hpp"
@@ -58,7 +59,7 @@ class Map {
         std::vector<short int> tilesasset_ind;
 
     public:
-        ECS_DECLARE_TYPE;
+        // ECS_DECLARE_TYPE;
         Map();
         ~Map();
         Map(const short unsigned int width, const short unsigned int height);

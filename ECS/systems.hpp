@@ -30,23 +30,26 @@ class RenderSystemx: public entityx::System<RenderSystemx> {
             renderer = in_renderer;
         };
 
+        RenderSystemx() {
+
+        }
+
         RenderSystemx(SDL_Renderer * in_renderer) {
             renderer = in_renderer;
         }
 
-        // void update(entityx::EntityManager & es, entityx::EventManager & events, entityx::TimeDelta dt) override {
-        //     SDL_RenderClear(renderer);
-        //     es.each<Map>([dt](entityx::Entity ent, Map & map) {
-        //         map->draw();
-        //     });
-        //     // world->each<UnitComponent>([&](ECS::Entity * ent, ECS::ComponentHandle<UnitComponent> unit) {
-        //     //     ComponentHandle<UnitComponent> sprite = ent->get<SpriteComponent>();
-        //     // -sprite->draw();
+        void update(entityx::EntityManager & es, entityx::EventManager & events, entityx::TimeDelta dt) override {
+            SDL_RenderClear(renderer);
+            es.each<Map>([dt](entityx::Entity ent, Map & map) {
+                //         map->draw();
+            });
+            //     // world->each<UnitComponent>([&](ECS::Entity * ent, ECS::ComponentHandle<UnitComponent> unit) {
+            //     //     ComponentHandle<UnitComponent> sprite = ent->get<SpriteComponent>();
+            //     // -sprite->draw();
 
-        //     // }
-        //     // Iterate over Menu component? which are boxes?
-        //     SDL_RenderPresent(renderer);
-        // }
+            //     // }
+            SDL_RenderPresent(renderer);
+        }
 };
 
 class RenderSystem: public ECS::EntitySystem {
@@ -76,19 +79,19 @@ class RenderSystem: public ECS::EntitySystem {
         }
 };
 
-// class Manager : public entityx::EntityX {
-//     public:
-//         explicit Manager() {
-//             systems.add<RenderSystem>;
-//             systems.configure();
-//         }
+class Manager : public entityx::EntityX {
+    public:
+        explicit Manager() {
+            systems.add<RenderSystemx>();
+            systems.configure();
+        }
 
-//         void update(entityx::TimeDelta dt) {
-//             systems.update<RenderSystem>(dt);
-//         }
+        void update(entityx::TimeDelta dt) {
+            systems.update<RenderSystemx>(dt);
+        }
 
 //         Manager manager;
-// };
+};
 
 
 #endif /* SYSTEMS_HPP */
