@@ -1,6 +1,7 @@
 // Code créé par Gabriel Taillon
 #include "ECS.h"
 ECS_TYPE_IMPLEMENTATION;
+#include <entityx/entityx.h>
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
 #include <chrono>

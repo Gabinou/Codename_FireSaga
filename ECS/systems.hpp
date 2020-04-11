@@ -38,7 +38,7 @@ class RenderSystem: public ECS::EntitySystem {
             });
             // world->each<UnitComponent>([&](ECS::Entity * ent, ECS::ComponentHandle<UnitComponent> unit) {
             //     ComponentHandle<UnitComponent> sprite = ent->get<SpriteComponent>();
-                   // -sprite->draw();
+            // -sprite->draw();
 
             // }
             // Iterate over Menu component? which are boxes?
