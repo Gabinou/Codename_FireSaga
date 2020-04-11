@@ -7,6 +7,7 @@
 #include "enums.hpp"
 #include "structs.hpp"
 #include "ECS.h"
+#include <entityx/entityx.h>
 #include "map.hpp"
 #include "weapon.hpp"
 #include "utilities.hpp"
@@ -28,6 +29,10 @@ class Game {
         ECS::Entity * mapp_ent = nullptr;
         ECS::Entity * cursor;
         ECS::ComponentHandle<Map> mapp = nullptr;
+        entityx::EntityX * ex;
+        entityx::Entity * mapp_entx = nullptr;
+        entityx::Entity * cursorx;
+        entityx::ComponentHandle<Map> * mappx = nullptr;
 
         Narrative narrative;
 
