@@ -671,7 +671,8 @@ bool Game::running() {
 
 
 void Game::update(entityx::TimeDelta dt) {
-    systems.update<RenderSystemx>(dt);
+    systems.update_all(dt);
+    // systems.update<RenderSystemx>(dt);
 }
 
 // loss conditions
