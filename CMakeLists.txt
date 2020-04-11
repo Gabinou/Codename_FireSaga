@@ -15,7 +15,6 @@ find_package(SDL2 REQUIRED)
 
 include_directories(
 	include
-	ECS
 	third_party
 	third_party/physfs
 	third_party/LodePNG
