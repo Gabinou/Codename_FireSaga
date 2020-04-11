@@ -23,6 +23,10 @@ Game::Game(ECS::World * in_world) : Game() {
     world = in_world;
 }
 
+Game::Game(entityx::Entityx * in_ex) : Game() {
+    ex = in_ex;
+}
+
 Game::~Game() {}
 
 Settings Game::getSettings() {
@@ -337,6 +341,7 @@ void Game::loadMap(const std::string filename) {
     // For this function, tiles have to be loaded manually somwhere else.
     if (!mapp) {
         mapp_ent = world->create();
+        mapp_entx = ex.entities.create();
         mapp_ent->assign<Map>(settings.tilesize[0], settings.tilesize[1]); // mapp is a pointer
         mapp = mapp_ent->get<Map>();
         mapp->setRenderer(renderer);
