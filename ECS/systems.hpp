@@ -41,7 +41,7 @@ class RenderSystemx: public entityx::System<RenderSystemx> {
         void update(entityx::EntityManager & es, entityx::EventManager & events, entityx::TimeDelta dt) override {
             SDL_RenderClear(renderer);
             es.each<Map>([dt](entityx::Entity ent, Map & map) {
-                //         map->draw();
+                map.draw();
             });
             //     // world->each<UnitComponent>([&](ECS::Entity * ent, ECS::ComponentHandle<UnitComponent> unit) {
             //     //     ComponentHandle<UnitComponent> sprite = ent->get<SpriteComponent>();
@@ -52,32 +52,32 @@ class RenderSystemx: public entityx::System<RenderSystemx> {
         }
 };
 
-class RenderSystem: public ECS::EntitySystem {
-    private:
-        SDL_Renderer * renderer = NULL;
-    public:
-        void setRenderer(SDL_Renderer * in_renderer) {
-            renderer = in_renderer;
-        };
+// class RenderSystem: public ECS::EntitySystem {
+//     private:
+//         SDL_Renderer * renderer = NULL;
+//     public:
+//         void setRenderer(SDL_Renderer * in_renderer) {
+//             renderer = in_renderer;
+//         };
 
-        RenderSystem(SDL_Renderer * in_renderer) {
-            renderer = in_renderer;
-        }
+//         RenderSystem(SDL_Renderer * in_renderer) {
+//             renderer = in_renderer;
+//         }
 
-        virtual void tick(ECS::World * world, float deltaTime) override {
-            SDL_RenderClear(renderer);
-            world->each<Map>([&](ECS::Entity * ent, ECS::ComponentHandle<Map> map) {
-                map->draw();
-            });
-            // world->each<UnitComponent>([&](ECS::Entity * ent, ECS::ComponentHandle<UnitComponent> unit) {
-            //     ComponentHandle<UnitComponent> sprite = ent->get<SpriteComponent>();
-            // -sprite->draw();
+//         virtual void tick(ECS::World * world, float deltaTime) override {
+//             SDL_RenderClear(renderer);
+//             world->each<Map>([&](ECS::Entity * ent, ECS::ComponentHandle<Map> map) {
+//                 map->draw();
+//             });
+//             // world->each<UnitComponent>([&](ECS::Entity * ent, ECS::ComponentHandle<UnitComponent> unit) {
+//             //     ComponentHandle<UnitComponent> sprite = ent->get<SpriteComponent>();
+//             // -sprite->draw();
 
-            // }
-            // Iterate over Menu component? which are boxes?
-            SDL_RenderPresent(renderer);
-        }
-};
+//             // }
+//             // Iterate over Menu component? which are boxes?
+//             SDL_RenderPresent(renderer);
+//         }
+// };
 
 class Manager : public entityx::EntityX {
     public:
