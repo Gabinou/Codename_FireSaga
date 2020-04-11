@@ -365,7 +365,7 @@ void Game::loadMap(const int in_map_index) {
         mapp_entx.assign<Map>(settings.tilesize[0], settings.tilesize[1]); // mappx is a pointer
         // mappx = mapp_ent->get<Map>();
         mappx = mapp_entx.component<Map>();
-        // mappx->loadTiles(in_map_index);
+        mappx->loadTiles(in_map_index);
         mappx->setRenderer(renderer);
         mappx->loadTilemap(in_map_index);
         mappx->setArrivals(mapArrivals[in_map_index]());

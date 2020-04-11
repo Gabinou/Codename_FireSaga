@@ -2,7 +2,6 @@
 #define SYSTEMS_HPP
 
 #include <SDL2/SDL.h>
-#include "ECS.h"
 #include "map.hpp"
 #include <entityx/entityx.h>
 
