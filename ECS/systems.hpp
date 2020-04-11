@@ -39,7 +39,6 @@ class RenderSystemx: public entityx::System<RenderSystemx> {
             } else {
                 SDL_Log("In renderer is null");
             }
-
         }
 
         void update(entityx::EntityManager & es, entityx::EventManager & events, entityx::TimeDelta dt) override {
@@ -82,13 +81,19 @@ class Manager : public entityx::EntityX {
     private:
         SDL_Renderer * renderer = NULL;
     public:
-        explicit Manager() {
+        Manager() {
             systems.add<RenderSystemx>();
             systems.configure();
         }
 
-        explicit Manager(SDL_Renderer * in_renderer) {
-            renderer = in_renderer;
+        Manager(SDL_Renderer * in_renderer) {
+            if (in_renderer) {
+                SDL_Log("Added renderer to Manager");
+                renderer = in_renderer;
+            } else {
+                SDL_Log("In renderer is null");
+            }
+
             systems.add<RenderSystemx>(renderer);
             systems.configure();
         }

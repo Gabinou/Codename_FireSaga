@@ -40,7 +40,7 @@ int main(int argc, char * argv[]) {
     baseWeapons();
 
     SDL_Log("Making ECS");  
-    ECS::World * world = ECS::World::createWorld();
+    // ECS::World * world = ECS::World::createWorld();
     // manager.entities.create();
     // SDL_Log("Testing weapon: %s\n", all_weapons[ITEM::NAME::WOODEN_SWORD].getName().c_str());
     // testXMLWeapons();
@@ -67,6 +67,7 @@ int main(int argc, char * argv[]) {
     firesaga->setSettings(temp_settings);
     firesaga->init("FireSaga", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, firesaga->getSettings().res.x, firesaga->getSettings().res.y, false);
     // world->registerSystem(new RenderSystem(firesaga->renderer));
+    SDL_Log("Making ECS with entityx");  
     Manager manager(firesaga->renderer);
     firesaga->setManager(&manager);
  
@@ -101,7 +102,7 @@ int main(int argc, char * argv[]) {
         // firesaga->update();
         // firesaga->render();
         // world->tick(1.);
-        manager.update(1.);
+        firesaga->manager->update(1.);
         frame_middle = std::chrono::high_resolution_clock::now();
         
         frame_time = (int)(std::chrono::duration_cast<std::chrono::nanoseconds>(frame_middle - frame_start).count()/1E6);

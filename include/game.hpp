@@ -30,7 +30,6 @@ class Game {
         ECS::Entity * mapp_ent = nullptr;
         ECS::Entity * cursor;
         ECS::ComponentHandle<Map> mapp = nullptr;
-        Manager * manager;
         entityx::Entity mapp_entx;
         entityx::Entity * cursorx;
         entityx::ComponentHandle<Map> mappx;
@@ -70,6 +69,7 @@ class Game {
 
     public:
         static SDL_Renderer * renderer;
+        static Manager * manager;
         static TTF_Font * font;
 
         Game();
