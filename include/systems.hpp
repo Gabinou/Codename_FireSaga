@@ -205,8 +205,8 @@ class ControlSystemx: public entityx::System<ControlSystemx> {
                     SDL_Log("Pressed accept on keyboard");
                     pressed_button.push_back(keyboardInputMap.accept);
                     short int toset = -1;
-                    entityx::Entity * setter;
-                    entityx::Entity * ontile = map->getEnt(position.getPos()[0], position.getPos()[1]);
+                    entityx::Entity setter;
+                    entityx::Entity ontile = map->getEnt(position.getPos()[0], position.getPos()[1]);
                     SDL_Log("Works until now");
                     unsigned int frames_button = keyboard.getHeldbutton();
 
@@ -218,15 +218,15 @@ class ControlSystemx: public entityx::System<ControlSystemx> {
                             setter = ontile;
                         } else {
                             toset = GAME::STATE::OPTIONS;
-                            setter = &ent;
+                            setter = ent;
                         }
                     } else if ((game->getState() == GAME::STATE::UNITMOVE) && (frames_button == 1)) {
                         toset = GAME::STATE::UNITMENU;
-                        setter = &ent;
+                        setter = ent;
                     }
 
                     if (toset != -1) {
-                        game->setState(*setter, toset);
+                        game->setState(setter, toset);
                     }
                 }
 
@@ -288,11 +288,11 @@ class ControlSystemx: public entityx::System<ControlSystemx> {
                 }
 
                 short unsigned int toset = -1;
-                entityx::Entity * setter;
+                entityx::Entity setter;
 
                 if (gamepad.isPressed(gamepadInputMap.accept)) {
                     pressed_button.push_back(gamepadInputMap.accept);
-                    entityx::Entity * ontile = map->getEnt(position.getPos()[0], position.getPos()[1]);
+                    entityx::Entity ontile = map->getEnt(position.getPos()[0], position.getPos()[1]);
                     unsigned int frames_button = gamepad.getHeldbutton();
 
                     SDL_Log("cursor Position, %d %d \n", position.getPos()[0], position.getPos()[1]);
@@ -302,11 +302,11 @@ class ControlSystemx: public entityx::System<ControlSystemx> {
                         setter = ontile;
                     } else {
                         toset = GAME::STATE::OPTIONS;
-                        setter = &ent;
+                        setter = ent;
                     }
 
                     if (toset != -1) {
-                        game->setState(*setter, toset);
+                        game->setState(setter, toset);
                     }
                 }
 

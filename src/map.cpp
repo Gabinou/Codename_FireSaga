@@ -32,8 +32,8 @@ void Map::putEnt(const short unsigned int x, const short unsigned int y, entityx
 }
 
 void Map::removeEnt(const short unsigned int x, const short unsigned int y) {
-    entityx::Entity::Id id = entityx::Entity().INVALID;
-    entitymap[x][y] = id;
+    // entityx::Entity::Id id = ;
+    // entitymap[x][y] = entityx::Entity();
 }
 
 void Map::moveEnt(const short unsigned int x, const short unsigned int y, const short unsigned int new_x, const short unsigned int new_y) {
@@ -41,7 +41,7 @@ void Map::moveEnt(const short unsigned int x, const short unsigned int y, const 
     // entitymap[x][y] = entityx::Entity::Id.INVALID;
 }
 
-entityx::Entity * Map::getEnt(const short unsigned int x, const short unsigned int y) {
+entityx::Entity Map::getEnt(const short unsigned int x, const short unsigned int y) {
     return(entitymap[x][y]);
 }
 
@@ -193,7 +193,7 @@ void Map::initVars() {
 
 void Map::makeEntitymap() {
     if (!made_entitymap) {
-        std::vector<std::vector<entityx::Entity *>> temp(bounds[1], std::vector<entityx::Entity>(bounds[0]));
+        std::vector<std::vector<entityx::Entity>> temp(bounds[1], std::vector<entityx::Entity>(bounds[0]));
         entitymap = temp;
     }
     made_entitymap = true;

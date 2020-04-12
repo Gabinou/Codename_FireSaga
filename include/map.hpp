@@ -91,7 +91,7 @@ class Map {
         short unsigned int * getTilesize() const;
 
         void putEnt(const short unsigned int x, const short unsigned int y, entityx::Entity in_entity); // TO RENAME
-        entityx::Entity * getEnt(const short unsigned int x, const short unsigned int y); // TO RENAME
+        entityx::Entity getEnt(const short unsigned int x, const short unsigned int y); // TO RENAME
         void removeEnt(const short unsigned int x, const short unsigned int y); // TO RENAME
         void moveEnt(const short unsigned int x, const short unsigned int y, const short unsigned int new_x, const short unsigned int new_y); // TO RENAME
 
