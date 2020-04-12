@@ -12,8 +12,8 @@
 class RenderSystemx: public entityx::System<RenderSystemx> {
     private:
         SDL_Renderer * renderer = NULL;
-        SDL_Rect srcrect;
-        SDL_Rect destrect; // maybe should not be a member variable?
+        // SDL_Rect srcrect;
+        // SDL_Rect destrect; // maybe should not be a member variable?
         short unsigned int * tilesize;
     public:
         void setRenderer(SDL_Renderer * in_renderer) {
@@ -35,21 +35,21 @@ class RenderSystemx: public entityx::System<RenderSystemx> {
 
         void setMap(entityx::ComponentHandle<Map> in_map) {
             tilesize = in_map->getTilesize();
-            initRects(tilesize);
+            // initRects(tilesize);
         }
 
-        void initRects(short unsigned int * tilesize) {
-            srcrect.w = tilesize[0];
-            destrect.w = tilesize[0];
-            srcrect.h = tilesize[1];
-            destrect.h = tilesize[1];
-        }
+        // void initRects(short unsigned int * tilesize) {
+        //     srcrect.w = tilesize[0];
+        //     destrect.w = tilesize[0];
+        //     srcrect.h = tilesize[1];
+        //     destrect.h = tilesize[1];
+        // }
 
         void update(entityx::EntityManager & es, entityx::EventManager & events, entityx::TimeDelta dt) override {
             SDL_RenderClear(renderer);
             es.each<Map>([dt, this](entityx::Entity ent, Map & map) {
                 map.draw();
-                initRects(map.getTilesize());
+                // initRects(map.getTilesize());
             });
 
             es.each<SpriteComponent, PositionComponent>([dt, this](entityx::Entity ent, SpriteComponent & sprite, PositionComponent & position) {
@@ -58,6 +58,8 @@ class RenderSystemx: public entityx::System<RenderSystemx> {
                     short int speed = sprite.getSpeed();
                     short int slidepos[2];
                     short int objectivepos[2];
+                    SDL_Rect srcrect = sprite.getSrcrect();
+                    SDL_Rect destrect = sprite.getDestrect();
                     std::string slidetype = sprite.getSlidetype();
                     short int slideint = sprite.getSlideint();
                     float * slidefactors = sprite.getSlidefactors();
@@ -73,17 +75,6 @@ class RenderSystemx: public entityx::System<RenderSystemx> {
                             srcrect.x = srcrect.w * (frames - static_cast<int>((SDL_GetTicks() / speed) % frames));
                         }
                     } else {
-                        srcrect.x = 0;
-                        srcrect.y = 0;
-                        srcrect.w = tilesize[0];
-                        srcrect.h = tilesize[1];
-                        destrect.x = 0;
-                        destrect.y = 0;
-                        destrect.w = tilesize[0];
-                        destrect.h = tilesize[1];
-                        sprite.setSrcrect(srcrect);
-                        sprite.setDestrect(destrect);
-
                         if (tilesize[0] == 0 && tilesize[1] == 0) { //move on the pixelspace
                             // SDL_Log("Move on the pixelspace");
                             slidepos[0] = (int)position.getPos()[0];
@@ -117,6 +108,8 @@ class RenderSystemx: public entityx::System<RenderSystemx> {
                 short int speed = sprite.getSpeed();
                 short int slidepos[2];
                 short int objectivepos[2];
+                SDL_Rect srcrect = sprite.getSrcrect();
+                SDL_Rect destrect = sprite.getDestrect();
                 std::string slidetype = sprite.getSlidetype();
                 short int slideint = sprite.getSlideint();
                 float * slidefactors = sprite.getSlidefactors();
