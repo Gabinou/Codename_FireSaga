@@ -73,6 +73,17 @@ class RenderSystemx: public entityx::System<RenderSystemx> {
                             srcrect.x = srcrect.w * (frames - static_cast<int>((SDL_GetTicks() / speed) % frames));
                         }
                     } else {
+                        srcrect.x = 0;
+                        srcrect.y = 0;
+                        srcrect.w = tilesize[0];
+                        srcrect.h = tilesize[1];
+                        destrect.x = 0;
+                        destrect.y = 0;
+                        destrect.w = tilesize[0];
+                        destrect.h = tilesize[1];
+                        sprite.setSrcrect(srcrect);
+                        sprite.setDestrect(destrect);
+
                         if (tilesize[0] == 0 && tilesize[1] == 0) { //move on the pixelspace
                             // SDL_Log("Move on the pixelspace");
                             slidepos[0] = (int)position.getPos()[0];
@@ -123,7 +134,7 @@ class RenderSystemx: public entityx::System<RenderSystemx> {
                 if (slidetype == "geometric") {
                     // SDL_Log("tilesize: %d, %d", tilesize[0], tilesize[1]);
                     srcrect.w = tilesize[0] * 2;
-                    srcrect.h = tilesize[0] * 2;
+                    srcrect.h = tilesize[1] * 2;
                     destrect.w = tilesize[0] * 2;
                     destrect.h = tilesize[1] * 2;
                     sprite.setSrcrect(srcrect);
