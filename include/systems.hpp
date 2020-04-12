@@ -32,6 +32,7 @@ class RenderSystemx: public entityx::System<RenderSystemx> {
         }
 
         void setMap(entityx::ComponentHandle<Map> in_map) {
+            //Make into Settilemap.
             tilesize = in_map->getTilesize();
         }
 
@@ -143,43 +144,25 @@ class ControlSystemx: public entityx::System<ControlSystemx> {
         SDL_Rect srcrect;
         SDL_Rect destrect;
         Game * game;
-        entityx::ComponentHandle<Map> map;
         KeyboardInputMap keyboardInputMap;
         GamepadInputMap gamepadInputMap;
+        std::vector<std::vector<entityx::Entity * >> entitymap;
     public:
         ControlSystemx() {
 
         }
 
-        ControlSystemx(Game * in_game, entityx::ComponentHandle<Map> in_map) {
-            setGame(in_game);
-            setMap(in_map);
-        }
-
-        ControlSystemx(entityx::ComponentHandle<Map> in_map, Game * in_game) {
-            setGame(in_game);
-            setMap(in_map);
-        }
-
         ControlSystemx(Game * in_game) {
-            setGame(in_game);
-        }
-
-        ControlSystemx(entityx::ComponentHandle<Map> in_map) {
-            setMap(in_map);
-        }
-
-        void setGame(Game * in_game) {
             game = in_game;
             keyboardInputMap = game->getKeyboardInputMap();
             gamepadInputMap = game->getGamepadInputMap();
         }
 
-        void setMap(entityx::ComponentHandle<Map> in_map) {
-            map = in_map;
-        }
-
         void update(entityx::EntityManager & es, entityx::EventManager & events, entityx::TimeDelta dt) override {
+            es.each<Map>([dt, this](entityx::Entity ent, Map & map) {
+                entitymap = map.getEntitymap();
+            });
+
             es.each<KeyboardController, PositionComponent>([dt, this](entityx::Entity ent, KeyboardController & keyboard, PositionComponent & position) {
                 const Uint8 * kb_state = SDL_GetKeyboardState(NULL);
                 std::vector<std::vector<SDL_Scancode>> pressed_move{};
@@ -202,16 +185,22 @@ class ControlSystemx: public entityx::System<ControlSystemx> {
                 }
 
                 if (keyboard.is_pressed(kb_state, keyboardInputMap.accept)) {
-                    SDL_Log("Pressed accept on keyboard");
                     pressed_button.push_back(keyboardInputMap.accept);
                     short int toset = -1;
                     entityx::Entity setter;
-                    entityx::Entity ontile = map->getEnt(position.getPos()[0], position.getPos()[1]);
-                    SDL_Log("Works until now");
+                    entityx::Entity ontile = *entitymap[position.getPos()[0]][position.getPos()[1]];
                     unsigned int frames_button = keyboard.getHeldbutton();
 
                     if ((game->getState() == GAME::STATE::MAP) && (frames_button == 1)) {
                         SDL_Log("cursor Position, %d %d \n", position.getPos()[0], position.getPos()[1]);
+
+                        if (ontile.component<Unit>()) {
+                            SDL_Log("ontile has a unit component");
+                        }
+
+                        if (ontile.component<PositionComponent>()) {
+                            SDL_Log("ontile has a unit component");
+                        }
 
                         if (ontile) {
                             toset = GAME::STATE::UNITMOVE;
@@ -292,14 +281,14 @@ class ControlSystemx: public entityx::System<ControlSystemx> {
 
                 if (gamepad.isPressed(gamepadInputMap.accept)) {
                     pressed_button.push_back(gamepadInputMap.accept);
-                    entityx::Entity ontile = map->getEnt(position.getPos()[0], position.getPos()[1]);
+                    entityx::Entity * ontile = entitymap[position.getPos()[0]][position.getPos()[1]];
                     unsigned int frames_button = gamepad.getHeldbutton();
 
                     SDL_Log("cursor Position, %d %d \n", position.getPos()[0], position.getPos()[1]);
 
                     if (ontile) {
                         toset = GAME::STATE::UNITMOVE;
-                        setter = ontile;
+                        setter = *ontile;
                     } else {
                         toset = GAME::STATE::OPTIONS;
                         setter = ent;

@@ -4,9 +4,9 @@
 #include "SDL2/SDL.h"
 #include "SDL2/SDL_image.h"
 #include "SDL2/SDL_ttf.h"
+#include <entityx/entityx.h>
 #include "enums.hpp"
 #include "structs.hpp"
-#include <entityx/entityx.h>
 #include "map.hpp"
 #include "weapon.hpp"
 #include "utilities.hpp"

@@ -172,6 +172,7 @@ void Game::setState(entityx::Entity setting_entity, short unsigned int new_state
                     std::vector<std::vector<short int>> movemapp;
                     std::vector<std::vector<short int>> attackmapp;
                     entityx::ComponentHandle<PositionComponent> cursorpos;
+                    entityx::ComponentHandle<Unit> unitcomp;
                     short unsigned int start[2];
                     short unsigned int unit_move;
                     short unsigned int current_unit_id;
@@ -181,6 +182,7 @@ void Game::setState(entityx::Entity setting_entity, short unsigned int new_state
                     SDL_Log("Works until now");
 
                     cursorpos = setting_entity.component<PositionComponent>();
+                    unitcomp = setting_entity.component<Unit>();
                     if (cursorpos) {
                         start[0] = (short unsigned int)cursorpos->getPos()[0];
                         start[1] = (short unsigned int)cursorpos->getPos()[1];
@@ -189,7 +191,14 @@ void Game::setState(entityx::Entity setting_entity, short unsigned int new_state
                     } else {
                         SDL_Log("Could not get cursor position component");
                     }
-                    SDL_Log("%d %d", start[0], start[1]);
+
+                    if (unitcomp) {
+
+                    } else {
+                        SDL_Log("Could not get unit component");
+                    }
+
+                    // SDL_Log("%d %d", start[0], start[1]);
                     SDL_Log("But not here");
                     // unit_move = units[current_unit_id].getStats().move;
                     // start[0] = manager.getEntities()[unit_entities.top()]->getComponent<PositionComponent>().getPos()[0]; // Start is (+1,+1)?
@@ -197,17 +206,17 @@ void Game::setState(entityx::Entity setting_entity, short unsigned int new_state
                     // start[0] = start[0] - 1;
                     // start[1] = start[1] - 1;
 
-                    unitmvttype = units[current_unit_id].getMvttype();
-                    range = units[current_unit_id].getRange();
-                    costmap = mapx->makeMvtCostmap(unitmvttype);
+                    // unitmvttype = units[current_unit_id].getMvttype();
+                    // range = units[current_unit_id].getRange();
+                    // costmap = mapx->makeMvtCostmap(unitmvttype);
 
-                    movemapp = movemap(costmap, start, unit_move, "matrix");
-                    mapx->setOverlay(MAP::OVERLAY::MOVE, movemapp);
+                    // movemapp = movemap(costmap, start, unit_move, "matrix");
+                    // mapx->setOverlay(MAP::OVERLAY::MOVE, movemapp);
 
-                    attackmapp = attackmap(movemapp, start, unit_move, range, "matrix");
-                    mapx->setOverlay(MAP::OVERLAY::ATTACK, attackmapp);
+                    // attackmapp = attackmap(movemapp, start, unit_move, range, "matrix");
+                    // mapx->setOverlay(MAP::OVERLAY::ATTACK, attackmapp);
 
-                    mapx->showOverlay();
+                    // mapx->showOverlay();
 
                 }
                     break;
@@ -342,7 +351,6 @@ void Game::loadMap(const std::string filename) {
         mapx->loadTilemap(filename);
         mapx->makeEntitymap();
         systems.system<RenderSystemx>()->setMap(mapx);
-        systems.system<ControlSystemx>()->setMap(mapx);
     }  else {
         SDL_Log("Failed to loadMap. Was mapx deleted previously?");
     }
@@ -360,7 +368,6 @@ void Game::loadMap(const int in_map_index) {
         mapx->setArrivals(mapArrivals[in_map_index]());
         mapx->makeEntitymap();
         systems.system<RenderSystemx>()->setMap(mapx);
-        systems.system<ControlSystemx>()->setMap(mapx);
     } else {
         SDL_Log("Failed to loadMap. Was mapx deleted previously?");
     }
@@ -411,10 +418,7 @@ void Game::loadUnitEntities(std::vector<short unsigned int> unit_inds, std::vect
         Uent.assign<Unit>(units[unit_inds[i]]);
         Uent.assign<PositionComponent>(positions_list[i][0], positions_list[i][1]);
         Uent.assign<SpriteComponent>(asset_name.c_str());
-        SDL_Log("Putting entity");
         mapx->putEnt(positions_list[i][0], positions_list[i][1], &Uent);
-        SDL_Log("Put entity");
-
     }
 }
 
