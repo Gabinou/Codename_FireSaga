@@ -12,8 +12,6 @@
 class RenderSystemx: public entityx::System<RenderSystemx> {
     private:
         SDL_Renderer * renderer = NULL;
-        // SDL_Rect srcrect;
-        // SDL_Rect destrect; // maybe should not be a member variable?
         short unsigned int * tilesize;
     public:
         void setRenderer(SDL_Renderer * in_renderer) {
@@ -57,26 +55,13 @@ class RenderSystemx: public entityx::System<RenderSystemx> {
                 int gp_held = 0;
                 short int frames = sprite.getFrames();
                 short int speed = sprite.getSpeed();
-                short int slidepos[2];
-                short int objectivepos[2];
+                short int * slidepos = sprite.getSlidepos();
+                short int * objectivepos = sprite.getObjpos();
                 SDL_Rect srcrect = sprite.getSrcrect();
                 SDL_Rect destrect = sprite.getDestrect();
                 std::string slidetype = sprite.getSlidetype();
                 short int slideint = sprite.getSlideint();
                 float * slidefactors = sprite.getSlidefactors();
-
-                // //initslide
-                if (slidetype == "geometric") {
-                    // SDL_Log("tilesize: %d, %d", tilesize[0], tilesize[1]);
-                    srcrect.w = tilesize[0] * 2;
-                    srcrect.h = tilesize[1] * 2;
-                    destrect.w = tilesize[0] * 2;
-                    destrect.h = tilesize[1] * 2;
-                    sprite.setSrcrect(srcrect);
-                    sprite.setDestrect(destrect);
-                    slidepos[0] = objectivepos[0] = (int)position.getPos()[0] * tilesize[0] - destrect.w / 4;
-                    slidepos[1] = objectivepos[1] = (int)position.getPos()[1] * tilesize[1] - destrect.h / 4;
-                }
 
                 if (sprite.isAnimated()) { //looping sprites.
                     std::string looping = sprite.getSs_looping();
@@ -94,21 +79,14 @@ class RenderSystemx: public entityx::System<RenderSystemx> {
                         slidepos[0] = (int)position.getPos()[0];
                         slidepos[1] = (int)position.getPos()[1];
                     } else { //move on the map.
-                        // SDL_Log("Move on the map");
                         slidepos[0] = (int)(position.getPos()[0] * tilesize[0]);
                         slidepos[1] = (int)(position.getPos()[1] * tilesize[1]);
-                        // SDL_Log("Rendering Keyboard Controller %d %d", position.getPos()[0], position.getPos()[1]);
-                        // SDL_Log("Rendering Keyboard Controller %d %d", slidepos[0], slidepos[1]);
                     }
                 }
 
                 entityx::ComponentHandle<KeyboardController> keyboard = ent.component<KeyboardController>();
-                // SDL_Log("Rendering Keyboard Controller %d %d", slidepos[0], slidepos[1]);
 
                 if (keyboard) {
-                    // SDL_Log("Rendering Keyboard Controller %d %d", tilesize[0], tilesize[1]);
-                    // SDL_Log("Rendering Keyboard Controller %d %d", position.getPos()[0], position.getPos()[1]);
-                    // SDL_Log("Rendering Keyboard Controller %d %d", slidepos[0], slidepos[1]);
                     kb_held = keyboard->getHeldmove();
                 }
 
@@ -120,13 +98,14 @@ class RenderSystemx: public entityx::System<RenderSystemx> {
                 }
 
                 if (slidetype == "geometric") { //for cursor mvt on map.
-                    SDL_Log("kb_held %d", kb_held);
                     objectivepos[0] = (int)position.getPos()[0] * (tilesize[0]) - destrect.w / 4;
                     objectivepos[1] = (int)position.getPos()[1] * (tilesize[1]) - destrect.h / 4;
 
                     if ((gp_held > 25) || (kb_held > 25))  {
                         slideint = 1;
                     }
+
+                    SDL_Log("kb_held %d %d", objectivepos[0], slidepos[0]);
 
                     if (objectivepos[0] != slidepos[0]) {
                         slidepos[0] += geometricslide((objectivepos[0] - slidepos[0]), slidefactors[slideint]);
@@ -151,6 +130,8 @@ class RenderSystemx: public entityx::System<RenderSystemx> {
                 destrect.x = slidepos[0];
                 destrect.y = slidepos[1];
 
+                sprite.setSlidepos(slidepos);
+                sprite.setObjpos(objectivepos);
                 sprite.setSrcrect(srcrect);
                 sprite.setDestrect(destrect);
                 sprite.draw();

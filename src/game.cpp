@@ -360,6 +360,7 @@ void Game::loadMap(const int in_map_index) {
         SDL_Log("Loading Cursor\n");
         loadCursor();
         cursorx.component<PositionComponent>()->setBounds(mapx->getBounds());
+        cursorx.component<SpriteComponent>()->init(cursorx.component<PositionComponent>()->getPos());
     } else {
         SDL_Log("Failed to loadMap. Was mapx deleted previously?");
     }

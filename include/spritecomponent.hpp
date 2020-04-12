@@ -18,12 +18,14 @@ class SpriteComponent {
         SDL_Texture * texture;
 
         short int frames = 10, speed = 50;
+        short int objectivepos[2];
+        short int slidepos[2];
         short int slideint = 0; // for slide_type = "geometric"
+        short unsigned int tilesize[2];
         float slidefactors[2] = {2, 1.025}; // for slide_type = "geometric"
 
         bool visible;
         bool animated = false;
-
         std::string asset_name;
         std::string ss_looping = "pingpong"; //ss: spritesheet
         std::string slidetype = "";
@@ -85,17 +87,42 @@ class SpriteComponent {
             visible = true;
         }
 
+        short int * getSlidepos() {
+            return (slidepos);
+        }
+
+        short int * getObjpos() {
+            return (objectivepos);
+        }
+
+        void setSlidepos(short int * in_slidepos) {
+            slidepos[0] = in_slidepos[0];
+            slidepos[1] = in_slidepos[1];
+        }
+
+        void setObjpos(short int * in_objectivepos) {
+            objectivepos[0] = in_objectivepos[0];
+            objectivepos[1] = in_objectivepos[1];
+        }
+
         std::string getSlidetype() {
             return (slidetype);
         }
 
-        void setSlidetype(std::string in_slidetype, short unsigned int * tilesize) {
+        void setSlidetype(std::string in_slidetype, short unsigned int * in_tilesize) {
             slidetype = in_slidetype;
+            tilesize[0] = in_tilesize[0];
+            tilesize[1] = in_tilesize[1];
 
             if (slidetype == "geometric") {
                 setSrcrect(tilesize[0] * 2, tilesize[1] * 2); // Manually entered from cursor png size.
                 setDestrect(tilesize[0] * 2, tilesize[1] * 2);
             }
+        }
+
+        void init(short int * in_position) {
+            slidepos[0] = objectivepos[0] = (int)in_position[0] * tilesize[0] - destrect.w / 4;
+            slidepos[1] = objectivepos[1] = (int)in_position[1] * tilesize[1] - destrect.h / 4;
         }
 
         void setTexture(const char * in_asset_name) {
