@@ -381,6 +381,7 @@ void Game::loadCursor() {
         cursorx = entities.create();
         cursorx.assign<PositionComponent>(6, 6);
         cursorx.assign<KeyboardController>();
+        cursorx.assign<GamepadController>();
         if (SDL_NumJoysticks() < 1) {
             SDL_Log( "No joysticks connected.\n" );
         } else {

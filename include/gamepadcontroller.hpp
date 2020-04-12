@@ -16,7 +16,9 @@ class GamepadController {
         unsigned int frames_move = 0;
         unsigned int frames_button = 0;
     public:
-        GamepadController() = default;
+        GamepadController() {
+            init();
+        }
 
         int getDeadzone() {
             return (joystick_dead_zone);
@@ -65,10 +67,6 @@ class GamepadController {
                     }
                 }
             }
-        }
-
-        int getHeldmove() {
-            return (frames_move);
         }
 
         void check_move(std::vector<short unsigned int> pressed_move) {

@@ -251,6 +251,7 @@ class ControlSystemx: public entityx::System<ControlSystemx> {
                 std::vector<short unsigned int> pressed_move{};
                 std::vector<std::vector<SDL_GameControllerButton>> pressed_button{};
                 int joystick_dead_zone = gamepad.getDeadzone();
+                unsigned int frames_button = gamepad.getHeldbutton();
 
 
                 if ((mainxaxis > joystick_dead_zone) || (secondxaxis > joystick_dead_zone)) {
@@ -308,7 +309,7 @@ class ControlSystemx: public entityx::System<ControlSystemx> {
 
                 // if (toset != -1) {game->setState(*setter, toset); }
 
-                if (isPressed(gamepadInputMap.cancel)) {
+                if (gamepad.isPressed(gamepadInputMap.cancel)) {
                     pressed_button.push_back(gamepadInputMap.cancel);
 
                     if ((game->getState() == GAME::STATE::UNITMENU) ||
