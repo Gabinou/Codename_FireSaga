@@ -157,18 +157,18 @@ class ControlSystemx: public entityx::System<ControlSystemx> {
                 std::vector<std::vector<SDL_Scancode>> pressed_button{};
 
                 if (keyboard.is_pressed(kb_state, keyboardInputMap.moveup) && !keyboard.is_pressed(kb_state, keyboardInputMap.movedown)) {
-                    //     // positioncomponent->addPos(0, -1);
-                    //     pressed_move.push_back(keyboardInputMap.moveup);
+                    position.addPos(0, -1);
+                    pressed_move.push_back(keyboardInputMap.moveup);
                 } else if (!keyboard.is_pressed(kb_state, keyboardInputMap.moveup) && keyboard.is_pressed(kb_state, keyboardInputMap.movedown)) {
-                    //     // positioncomponent->addPos(0, 1);
-                    //     pressed_move.push_back(keyboardInputMap.movedown);
+                    position.addPos(0, 1);
+                    pressed_move.push_back(keyboardInputMap.movedown);
                 }
 
                 // if (!is_pressed(kb_state, keyboardInputMap.moveright) && is_pressed(kb_state, keyboardInputMap.moveleft)) {
-                //     // positioncomponent->addPos(-1, 0);
+                //     // position.addPos(-1, 0);
                 //     pressed_move.push_back(keyboardInputMap.moveleft);
                 // } else if (is_pressed(kb_state, keyboardInputMap.moveright) && !is_pressed(kb_state, keyboardInputMap.moveleft)) {
-                //     // positioncomponent->addPos(1, 0);
+                //     // position.addPos(1, 0);
                 //     pressed_move.push_back(keyboardInputMap.moveright);
                 // }
 
@@ -176,10 +176,10 @@ class ControlSystemx: public entityx::System<ControlSystemx> {
                 //     pressed_button.push_back(keyboardInputMap.accept);
                 //     short int toset = -1;
                 //     // Entity * setter;
-                //     // Entity * ontile = map->getTile(positioncomponent->getPos()[0], positioncomponent->getPos()[1]);
+                //     // Entity * ontile = map->getTile(position.getPos()[0], position.getPos()[1]);
 
                 //     if ((game->getState() == GAME::STATE::MAP) && (frames_button == 1)) {
-                //         SDL_Log("cursor Position, %d %d \n", positioncomponent->getPos()[0], positioncomponent->getPos()[1]);
+                //         SDL_Log("cursor Position, %d %d \n", position.getPos()[0], position.getPos()[1]);
 
                 //         // if (ontile) {
                 //         //     toset = GAME::STATE::UNITMOVE;
