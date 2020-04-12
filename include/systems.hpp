@@ -136,9 +136,17 @@ class ControlSystemx: public entityx::System<ControlSystemx> {
         SDL_Rect srcrect;
         SDL_Rect destrect;
         Game * game;
+        KeyboardInputMap keyboardInputMap;
+        GamepadInputMap gamepadInputMap;
     public:
         ControlSystemx() {
 
+        }        
+
+        ControlSystemx(Game * in_game) {
+            game = in_game;
+            keyboardInputMap = getKeyboardInputMap();
+            gamepadInputMap = getGamepadInputMap();
         }
 
         void setMap(entityx::ComponentHandle<Map> in_map) {
@@ -153,6 +161,64 @@ class ControlSystemx: public entityx::System<ControlSystemx> {
         void update(entityx::EntityManager & es, entityx::EventManager & events, entityx::TimeDelta dt) override {
             es.each<KeyboardController, PositionComponent>([dt, this](entityx::Entity ent, KeyboardController & keyboard, PositionComponent & position) {
 
+                    const Uint8 * kb_state = SDL_GetKeyboardState(NULL);
+                    std::vector<std::vector<SDL_Scancode>> pressed_move{};
+                    std::vector<std::vector<SDL_Scancode>> pressed_button{};
+
+                    if (is_pressed(kb_state, inputmap.moveup) && !is_pressed(kb_state, inputmap.movedown)) {
+                        // positioncomponent->addPos(0, -1);
+                        pressed_move.push_back(inputmap.moveup);
+                    } else if (!is_pressed(kb_state, inputmap.moveup) && is_pressed(kb_state, inputmap.movedown)) {
+                        // positioncomponent->addPos(0, 1);
+                        pressed_move.push_back(inputmap.movedown);
+                    }
+
+                    if (!is_pressed(kb_state, inputmap.moveright) && is_pressed(kb_state, inputmap.moveleft)) {
+                        // positioncomponent->addPos(-1, 0);
+                        pressed_move.push_back(inputmap.moveleft);
+                    } else if (is_pressed(kb_state, inputmap.moveright) && !is_pressed(kb_state, inputmap.moveleft)) {
+                        // positioncomponent->addPos(1, 0);
+                        pressed_move.push_back(inputmap.moveright);
+                    }
+
+                    if (is_pressed(kb_state, inputmap.accept)) {
+                        pressed_button.push_back(inputmap.accept);
+                        short int toset = -1;
+                        // Entity * setter;
+                        // Entity * ontile = map->getTile(positioncomponent->getPos()[0], positioncomponent->getPos()[1]);
+
+                        if ((game->getState() == GAME::STATE::MAP) && (frames_button == 1)) {
+                            SDL_Log("cursor Position, %d %d \n", positioncomponent->getPos()[0], positioncomponent->getPos()[1]);
+
+                            // if (ontile) {
+                            //     toset = GAME::STATE::UNITMOVE;
+                            //     setter = ontile;
+                            // } else {
+                            //     toset = GAME::STATE::OPTIONS;
+                            //     setter = entity;
+                            // }
+                        } else if ((game->getState() == GAME::STATE::UNITMOVE) && (frames_button == 1)) {
+                            // toset = GAME::STATE::UNITMENU;
+                            // setter = entity;
+                        }
+
+                        if (toset != -1) {
+                            // game->setState(*setter, toset);
+                        }
+                    }
+
+                    if (is_pressed(kb_state, inputmap.cancel)) {
+                        pressed_button.push_back(inputmap.cancel);
+
+                        if ((game->getState() == GAME::STATE::UNITMENU) ||
+                                (game->getState() == GAME::STATE::OPTIONS) ||
+                                (game->getState() == GAME::STATE::UNITMOVE)) {
+                            // game->setState(*entity, GAME::STATE::MAP);
+                        }
+                    }
+
+                    check_move(pressed_move);
+                    check_button(pressed_button);
             });
             es.each<GamepadController, PositionComponent>([dt, this](entityx::Entity ent, GamepadController & gamepad, PositionComponent & position) {
 
@@ -160,33 +226,5 @@ class ControlSystemx: public entityx::System<ControlSystemx> {
         }
 
 };
-
-
-// class RenderSystem: public ECS::EntitySystem {
-//     private:
-//         SDL_Renderer * renderer = NULL;
-//     public:
-//         void setRenderer(SDL_Renderer * in_renderer) {
-//             renderer = in_renderer;
-//         };
-
-//         RenderSystem(SDL_Renderer * in_renderer) {
-//             renderer = in_renderer;
-//         }
-
-//         virtual void tick(ECS::World * world, float deltaTime) override {
-//             SDL_RenderClear(renderer);
-//             world->each<Map>([&](ECS::Entity * ent, ECS::ComponentHandle<Map> map) {
-//                 map->draw();
-//             });
-//             // world->each<UnitComponent>([&](ECS::Entity * ent, ECS::ComponentHandle<UnitComponent> unit) {
-//             //     ComponentHandle<UnitComponent> sprite = ent->get<SpriteComponent>();
-//             // -sprite->draw();
-
-//             // }
-//             // Iterate over Menu component? which are boxes?
-//             SDL_RenderPresent(renderer);
-//         }
-// };
 
 #endif /* SYSTEMS_HPP */
