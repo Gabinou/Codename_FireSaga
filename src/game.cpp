@@ -382,15 +382,14 @@ void Game::loadCursor() {
     if (this->state == GAME::STATE::MAP) {
         cursorx = entities.create();
         cursorx.assign<PositionComponent>(6, 6);
-        // cursorx.assign<KeyboardController>(this, mapx);
-//         if (SDL_NumJoysticks() < 1) {
-//             SDL_Log( "No joysticks connected.\n" );
-//         } else {
-//             cursor.addComponent<GamepadController>(this, mapx);
-//         }
-//         cursor.addComponent<SpriteComponent>(mapx, "..//assets//cursors.png", 10, 50);
-//         cursor.getComponent<SpriteComponent>().setSlidetype("geometric");
-//         cursor.addGroup(manager.groupUI);
+        cursorx.assign<KeyboardController>(this, mapx);
+        // if (SDL_NumJoysticks() < 1) {
+        //     SDL_Log( "No joysticks connected.\n" );
+        // } else {
+        //     cursor.addComponent<GamepadController>(this, mapx);
+        // }
+        cursorx.assign<SpriteComponent>(mapx, "..//assets//cursors.png", 10, 50);
+        // cursorx.component<SpriteComponent>()->setSlidetype("geometric");
     }
 }
 
