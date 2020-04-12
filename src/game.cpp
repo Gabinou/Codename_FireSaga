@@ -337,8 +337,6 @@ void Game::loadMap(const std::string filename) {
         mapx->makeEntitymap();
         systems.system<RenderSystemx>()->setMap(mapx);
         systems.system<ControlSystemx>()->setMap(mapx);
-        SDL_Log("Loading Cursor\n");
-        loadCursor();
     }  else {
         SDL_Log("Failed to loadMap. Was mapx deleted previously?");
     }
@@ -357,10 +355,6 @@ void Game::loadMap(const int in_map_index) {
         mapx->makeEntitymap();
         systems.system<RenderSystemx>()->setMap(mapx);
         systems.system<ControlSystemx>()->setMap(mapx);
-        SDL_Log("Loading Cursor\n");
-        loadCursor();
-        cursorx.component<PositionComponent>()->setBounds(mapx->getBounds());
-        cursorx.component<SpriteComponent>()->init(cursorx.component<PositionComponent>()->getPos());
     } else {
         SDL_Log("Failed to loadMap. Was mapx deleted previously?");
     }
@@ -368,8 +362,8 @@ void Game::loadMap(const int in_map_index) {
 
 void Game::unloadMap() {
     SDL_Log("Unloading Map");
-    if (!mapx) {
-        // delete mapx;
+    if (mapx) {
+        map_entx.destroy();
     } else {
         SDL_Log("Failed to unloadMap. Was mapx deleted previously?");
     }
@@ -389,6 +383,8 @@ void Game::loadCursor() {
         }
         cursorx.assign<SpriteComponent>("..//assets//cursors.png", 10, 50);
         cursorx.component<SpriteComponent>()->setSlidetype(SLIDETYPE::GEOMETRIC, mapx->getTilesize());
+        cursorx.component<PositionComponent>()->setBounds(mapx->getBounds());
+        cursorx.component<SpriteComponent>()->init(cursorx.component<PositionComponent>()->getPos());
     }
 }
 

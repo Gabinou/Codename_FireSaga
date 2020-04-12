@@ -28,7 +28,9 @@ short unsigned int * Map::getTilesize() const {
 
 void Map::putEnt(const short unsigned int x, const short unsigned int y, entityx::Entity in_entity) {
     SDL_Log("Inside PutEnt");
-    entitymap[x][y] = in_entity;
+    if (made_entitymap) {
+       entitymap[x][y] = in_entity;
+   }
 }
 
 void Map::removeEnt(const short unsigned int x, const short unsigned int y) {
