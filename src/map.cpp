@@ -26,6 +26,14 @@ short unsigned int * Map::getTilesize() const {
     return ((short unsigned int *)tilesize);
 }
 
+void Map::putUnit(const short unsigned int x, const short unsigned int y, entityx::ComponentHandle<Unit> in_unit) {
+    unitmap[x][y] = in_unit; 
+}
+
+entityx::ComponentHandle<Unit> Map::getUnit(const short unsigned int x, const short unsigned int y) {
+    return(unitmap[x][y]);
+}
+
 void Map::putEnt(const short unsigned int x, const short unsigned int y, entityx::Entity * in_entity) {
     if (made_entitymap) {
         entitymap[x][y] = in_entity;
@@ -205,19 +213,14 @@ void Map::initVars() {
     srcrect.h = destrect.h = DEFAULT::TILESIZE;
 }
 
-void Map::makeEntitymap() {
-    SDL_Log("Making Entity Map");
-    if (!made_entitymap) {
-        std::vector<std::vector<entityx::Entity *>> temp(bounds[1], std::vector<entityx::Entity *>(bounds[3]));
-        // all elements are nullptr.
-        entitymap = temp;
-    }
-    made_entitymap = true;
-}
-
 std::vector<std::vector<entityx::Entity *>> Map::getEntitymap() {
     return(entitymap);
 }
+
+std::vector<std::vector<entityx::ComponentHandle<Unit>>> Map::getUnitmap() {
+    return(unitmap);
+}
+
 
 void Map::loadTilemap(const std::string filename) {
     tilemap = readcsv_vec<short int>(filename.c_str(), 1);
@@ -235,6 +238,10 @@ void Map::postTilemap() {
     short unsigned int row_size = tilemap[0].size();
     bounds[1] = row_size;
     bounds[3] = col_size;
+    std::vector<std::vector<entityx::Entity *>> tempent(bounds[1], std::vector<entityx::Entity *>(bounds[3]));
+    entitymap = tempent;
+    std::vector<std::vector<entityx::ComponentHandle<Unit>>> tempunit(bounds[1], std::vector<entityx::ComponentHandle<Unit>>(bounds[3]));
+    unitmap = tempunit; 
 }
 
 short int * Map::getBounds() {

@@ -349,7 +349,6 @@ void Game::loadMap(const std::string filename) {
         mapx = map_entx.component<Map>();
         mapx->setRenderer(renderer);
         mapx->loadTilemap(filename);
-        mapx->makeEntitymap();
         systems.system<RenderSystemx>()->setMap(mapx);
     }  else {
         SDL_Log("Failed to loadMap. Was mapx deleted previously?");
@@ -366,7 +365,6 @@ void Game::loadMap(const int in_map_index) {
         mapx->setRenderer(renderer);
         mapx->loadTilemap(in_map_index);
         mapx->setArrivals(mapArrivals[in_map_index]());
-        mapx->makeEntitymap();
         systems.system<RenderSystemx>()->setMap(mapx);
     } else {
         SDL_Log("Failed to loadMap. Was mapx deleted previously?");
@@ -419,6 +417,7 @@ void Game::loadUnitEntities(std::vector<short unsigned int> unit_inds, std::vect
         Uent.assign<PositionComponent>(positions_list[i][0], positions_list[i][1]);
         Uent.assign<SpriteComponent>(asset_name.c_str());
         mapx->putEnt(positions_list[i][0], positions_list[i][1], &Uent);
+        mapx->putUnit(positions_list[i][0], positions_list[i][1], Uent.component<Unit>());
     }
 }
 

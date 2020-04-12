@@ -56,6 +56,7 @@ class Map {
 
         // std::vector<std::vector<Entity *>> entitymap;
         std::vector<std::vector<entityx::Entity * >> entitymap;
+        std::vector<std::vector<entityx::ComponentHandle<Unit>>> unitmap;
 
         std::unordered_map<int, Tile> tiles;
         std::vector<short int> tilesasset_ind;
@@ -84,11 +85,15 @@ class Map {
 
         void setRenderer(SDL_Renderer * in_renderer);
         void draw();
-        void makeEntitymap();
+
         std::vector<std::vector<entityx::Entity *>> getEntitymap();
+        std::vector<std::vector<entityx::ComponentHandle<Unit>>> getUnitmap();
 
         void setTilesize(const short int unsigned width, const short int unsigned height);
         short unsigned int * getTilesize() const;
+
+        void putUnit(const short unsigned int x, const short unsigned int y, entityx::ComponentHandle<Unit> in_unit);
+        entityx::ComponentHandle<Unit> getUnit(const short unsigned int x, const short unsigned int y);
 
         void putEnt(const short unsigned int x, const short unsigned int y, entityx::Entity * in_entity);
         entityx::Entity * getEnt(const short unsigned int x, const short unsigned int y);
