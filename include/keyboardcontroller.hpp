@@ -22,8 +22,12 @@ class KeyboardController {
             return (tilesize);
         }
 
-        int getHeldmove() {
+        unsigned int getHeldmove() {
             return (frames_move);
+        }
+
+        unsigned int getHeldbutton() {
+            return (frames_button);
         }
 
         void check_move(std::vector<std::vector<SDL_Scancode>>in_pressed) {

@@ -198,27 +198,29 @@ class ControlSystemx: public entityx::System<ControlSystemx> {
                 if (keyboard.is_pressed(kb_state, keyboardInputMap.accept)) {
                     pressed_button.push_back(keyboardInputMap.accept);
                     short int toset = -1;
-                    //     // Entity * setter;
-                    //     // Entity * ontile = map->getTile(position.getPos()[0], position.getPos()[1]);
+                    entityx::Entity * setter;
+                    entityx::Entity * ontile = map->getEnt(position.getPos()[0], position.getPos()[1]);
 
-                    // if ((game->getState() == GAME::STATE::MAP) && (frames_button == 1)) {
-                    //     SDL_Log("cursor Position, %d %d \n", position.getPos()[0], position.getPos()[1]);
+                    unsigned int frames_button = keyboard.getHeldbutton();
 
-                    //         // if (ontile) {
-                    //         //     toset = GAME::STATE::UNITMOVE;
-                    //         //     setter = ontile;
-                    //         // } else {
-                    //         //     toset = GAME::STATE::OPTIONS;
-                    //         //     setter = entity;
-                    //         // }
-                    //     } else if ((game->getState() == GAME::STATE::UNITMOVE) && (frames_button == 1)) {
-                    //         // toset = GAME::STATE::UNITMENU;
-                    //         // setter = entity;
-                    // }
+                    if ((game->getState() == GAME::STATE::MAP) && (frames_button == 1)) {
+                        SDL_Log("cursor Position, %d %d \n", position.getPos()[0], position.getPos()[1]);
 
-                    //     if (toset != -1) {
-                    //         // game->setState(*setter, toset);
-                    //     }
+                        if (ontile) {
+                            toset = GAME::STATE::UNITMOVE;
+                            setter = ontile;
+                        } else {
+                            toset = GAME::STATE::OPTIONS;
+                            setter = &ent;
+                        }
+                    } else if ((game->getState() == GAME::STATE::UNITMOVE) && (frames_button == 1)) {
+                        toset = GAME::STATE::UNITMENU;
+                        setter = &ent;
+                    }
+
+                    if (toset != -1) {
+                        game->setState(*setter, toset);
+                    }
                 }
 
                 if (keyboard.is_pressed(kb_state, keyboardInputMap.cancel)) {
@@ -227,7 +229,7 @@ class ControlSystemx: public entityx::System<ControlSystemx> {
                     if ((game->getState() == GAME::STATE::UNITMENU) ||
                             (game->getState() == GAME::STATE::OPTIONS) ||
                             (game->getState() == GAME::STATE::UNITMOVE)) {
-                        // game->setState(*entity, GAME::STATE::MAP);
+                        game->setState(ent, GAME::STATE::MAP);
                     }
                 }
 
