@@ -152,28 +152,28 @@ class ControlSystemx: public entityx::System<ControlSystemx> {
         void update(entityx::EntityManager & es, entityx::EventManager & events, entityx::TimeDelta dt) override {
             es.each<KeyboardController, PositionComponent>([dt, this](entityx::Entity ent, KeyboardController & keyboard, PositionComponent & position) {
 
-                // const Uint8 * kb_state = SDL_GetKeyboardState(NULL);
-                // std::vector<std::vector<SDL_Scancode>> pressed_move{};
-                // std::vector<std::vector<SDL_Scancode>> pressed_button{};
+                const Uint8 * kb_state = SDL_GetKeyboardState(NULL);
+                std::vector<std::vector<SDL_Scancode>> pressed_move{};
+                std::vector<std::vector<SDL_Scancode>> pressed_button{};
 
-                // if (is_pressed(kb_state, inputmap.moveup) && !is_pressed(kb_state, inputmap.movedown)) {
-                //     // positioncomponent->addPos(0, -1);
-                //     pressed_move.push_back(inputmap.moveup);
-                // } else if (!is_pressed(kb_state, inputmap.moveup) && is_pressed(kb_state, inputmap.movedown)) {
-                //     // positioncomponent->addPos(0, 1);
-                //     pressed_move.push_back(inputmap.movedown);
-                // }
+                if (keyboard.is_pressed(kb_state, keyboardInputMap.moveup) && !keyboard.is_pressed(kb_state, keyboardInputMap.movedown)) {
+                    //     // positioncomponent->addPos(0, -1);
+                    //     pressed_move.push_back(keyboardInputMap.moveup);
+                } else if (!keyboard.is_pressed(kb_state, keyboardInputMap.moveup) && keyboard.is_pressed(kb_state, keyboardInputMap.movedown)) {
+                    //     // positioncomponent->addPos(0, 1);
+                    //     pressed_move.push_back(keyboardInputMap.movedown);
+                }
 
-                // if (!is_pressed(kb_state, inputmap.moveright) && is_pressed(kb_state, inputmap.moveleft)) {
+                // if (!is_pressed(kb_state, keyboardInputMap.moveright) && is_pressed(kb_state, keyboardInputMap.moveleft)) {
                 //     // positioncomponent->addPos(-1, 0);
-                //     pressed_move.push_back(inputmap.moveleft);
-                // } else if (is_pressed(kb_state, inputmap.moveright) && !is_pressed(kb_state, inputmap.moveleft)) {
+                //     pressed_move.push_back(keyboardInputMap.moveleft);
+                // } else if (is_pressed(kb_state, keyboardInputMap.moveright) && !is_pressed(kb_state, keyboardInputMap.moveleft)) {
                 //     // positioncomponent->addPos(1, 0);
-                //     pressed_move.push_back(inputmap.moveright);
+                //     pressed_move.push_back(keyboardInputMap.moveright);
                 // }
 
-                // if (is_pressed(kb_state, inputmap.accept)) {
-                //     pressed_button.push_back(inputmap.accept);
+                // if (is_pressed(kb_state, keyboardInputMap.accept)) {
+                //     pressed_button.push_back(keyboardInputMap.accept);
                 //     short int toset = -1;
                 //     // Entity * setter;
                 //     // Entity * ontile = map->getTile(positioncomponent->getPos()[0], positioncomponent->getPos()[1]);
@@ -198,8 +198,8 @@ class ControlSystemx: public entityx::System<ControlSystemx> {
                 //     }
                 // }
 
-                // if (is_pressed(kb_state, inputmap.cancel)) {
-                //     pressed_button.push_back(inputmap.cancel);
+                // if (is_pressed(kb_state, keyboardInputMap.cancel)) {
+                //     pressed_button.push_back(keyboardInputMap.cancel);
 
                 //     if ((game->getState() == GAME::STATE::UNITMENU) ||
                 //             (game->getState() == GAME::STATE::OPTIONS) ||
