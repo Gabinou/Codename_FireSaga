@@ -180,12 +180,6 @@ void Game::setState(entityx::Entity &setting_entity, short unsigned int new_stat
                     short unsigned int unit_move;
                     unsigned char unitmvttype;
                     unsigned char * range;
-                    
-                    // for (int i = 0; i < manager.getEntities().size(); i++) {
-                    //     if (manager.getEntities()[i].get() == (Entity *)&setting_entity) {
-                    //         unit_entities.push(i);
-                    //     }
-                    // }
 
                     // short unsigned int current_unit_id = manager.getEntities()[unit_entities.top()]->getComponent<UnitContainer>().getID();
                     // unit_move = units[current_unit_id].getStats().move;
@@ -618,18 +612,18 @@ void Game::setGamepadInputMap(GamepadInputMap in_gamepadInputMap) {
     gamepadInputMap = in_gamepadInputMap;
 }
 
-// void Game::handleEvents() {
-//     SDL_PollEvent(&event);
+void Game::handleEvents() {
+    SDL_PollEvent(&event);
 
-//     switch (event.type) {
-//     case SDL_QUIT:
-//         isRunning = false;
-//         break;
+    switch (event.type) {
+    case SDL_QUIT:
+        isRunning = false;
+        break;
 
-//     default:
-//         break;
-//     }
-// }
+    default:
+        break;
+    }
+}
 
 // std::vector<Entity *> & unitEntities = Game::manager.getGroup(Game::manager.groupUnits);
 // std::vector<Entity *> & uxEntities = Game::manager.getGroup(Game::manager.groupUI);

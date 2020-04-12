@@ -93,11 +93,11 @@ int main(int argc, char * argv[]) {
     SDL_Log("Starting main game loop\n");
     while (firesaga->running()) {
         frame_start = std::chrono::high_resolution_clock::now();
-        // firesaga->handleEvents();
+        firesaga->handleEvents();
         // firesaga->update();
         // firesaga->render();
         // world->tick(1.);
-        firesaga->update(0.1);
+        firesaga->update(0.001);
         frame_middle = std::chrono::high_resolution_clock::now();
         
         frame_time = (int)(std::chrono::duration_cast<std::chrono::nanoseconds>(frame_middle - frame_start).count()/1E6);

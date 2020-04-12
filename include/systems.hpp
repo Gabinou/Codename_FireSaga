@@ -208,6 +208,8 @@ class ControlSystemx: public entityx::System<ControlSystemx> {
                 std::vector<std::vector<SDL_Scancode>> pressed_button{};
 
                 if (keyboard.is_pressed(kb_state, keyboardInputMap.moveup) && !keyboard.is_pressed(kb_state, keyboardInputMap.movedown)) {
+                    SDL_Log("Move Up?");
+
                     position.addPos(0, -1);
                     pressed_move.push_back(keyboardInputMap.moveup);
                 } else if (!keyboard.is_pressed(kb_state, keyboardInputMap.moveup) && keyboard.is_pressed(kb_state, keyboardInputMap.movedown)) {
