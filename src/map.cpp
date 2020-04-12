@@ -26,12 +26,21 @@ short unsigned int * Map::getTilesize() const {
     return ((short unsigned int *)tilesize);
 }
 
-// void Map::setTile(const short unsigned int x, const short unsigned int y, Entity * in_entity) {
-    // entitymap[x][y] = in_entity;
-// }
+void Map::putEnt(const short unsigned int x, const short unsigned int y, entityx::Entity * in_entity) {
+    entitymap[x][y] = in_entity;
+}
 
-void Map::removeTile(const short unsigned int x, const short unsigned int y) {
-    // entitymap[x][y] = nullptr;
+void Map::removeEnt(const short unsigned int x, const short unsigned int y) {
+    entitymap[x][y] = nullptr;
+}
+
+void Map::moveEnt(const short unsigned int x, const short unsigned int y, const short unsigned int new_x, const short unsigned int new_y) {
+    entitymap[new_x][new_y] = entitymap[x][y];
+    entitymap[x][y] = nullptr;
+}
+
+entityx::Entity * Map::getEnt(const short unsigned int x, const short unsigned int y) {
+    return(entitymap[x][y]);
 }
 
 void Map::setArrivalEquipments(const std::vector<std::vector<Inventory_item>> in_arrival_equipments) {
@@ -98,15 +107,6 @@ void Map::setTilemap(const std::vector<std::vector<short int>> in_tilemap){
 unsigned char Map::getTurn() {
     return(turn);
 }
-
-// void Map::moveTile(const short unsigned int x, const short unsigned int y, const short unsigned int new_x, const short unsigned int new_y) {
-//     entitymap[new_x][new_y] = entitymap[x][y];
-//     entitymap[x][y] = nullptr;
-// }
-
-// Entity * Map::getTile(const short unsigned int x, const short unsigned int y) {
-//     return(entitymap[x][y]);
-// }
 
 void Map::setRenderer(SDL_Renderer * in_renderer){
     SDL_Log("Setting Map renderer");

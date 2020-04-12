@@ -54,6 +54,7 @@ class Map {
         std::vector<SDL_Texture *> dangers{NULL, NULL};
 
         // std::vector<std::vector<Entity *>> entitymap;
+        std::vector<std::vector<entityx::Entity *>> entitymap;
 
         std::unordered_map<int, Tile> tiles;
         std::vector<short int> tilesasset_ind;
@@ -88,10 +89,10 @@ class Map {
         void setTilesize(const short int unsigned width, const short int unsigned height);
         short unsigned int * getTilesize() const;
 
-        // void setTile(const short unsigned int x, const short unsigned int y, Entity * in_entity); // TO RENAME
-        void removeTile(const short unsigned int x, const short unsigned int y); // TO RENAME
-        void moveTile(const short unsigned int x, const short unsigned int y, const short unsigned int new_x, const short unsigned int new_y); // TO RENAME
-        // Entity * getTile(const short unsigned int x, const short unsigned int y); // TO RENAME
+        void putEnt(const short unsigned int x, const short unsigned int y, entityx::Entity * in_entity); // TO RENAME
+        entityx::Entity * getEnt(const short unsigned int x, const short unsigned int y); // TO RENAME
+        void removeEnt(const short unsigned int x, const short unsigned int y); // TO RENAME
+        void moveEnt(const short unsigned int x, const short unsigned int y, const short unsigned int new_x, const short unsigned int new_y); // TO RENAME
 
         void setOverlay(const unsigned char in_mode, std::vector<std::vector<short int>> in_map);
         void clearOverlays();

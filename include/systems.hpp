@@ -144,21 +144,31 @@ class ControlSystemx: public entityx::System<ControlSystemx> {
 
         }
 
-        ControlSystemx(Game * in_game) {
+        ControlSystemx(Game * in_game, Map * in_map) {
             setGame(in_game);
-        }        
-
-        ControlSystemx(Map * in_map) {
-            setMap(in_game);
+            setMap(in_map);
         }
 
-        setGame(Game * in_game) {
+        ControlSystemx(Map * in_map, Game * in_game) {
+            setGame(in_game);
+            setMap(in_map);
+        }
+
+        ControlSystemx(Game * in_game) {
+            setGame(in_game);
+        }
+
+        ControlSystemx(Map * in_map) {
+            setMap(in_map);
+        }
+
+        void setGame(Game * in_game) {
             game = in_game;
             keyboardInputMap = game->getKeyboardInputMap();
             gamepadInputMap = game->getGamepadInputMap();
         }
 
-        setMap(Map * in_map) {
+        void setMap(Map * in_map) {
             map = in_map;
         }
 
@@ -188,27 +198,27 @@ class ControlSystemx: public entityx::System<ControlSystemx> {
                 if (keyboard.is_pressed(kb_state, keyboardInputMap.accept)) {
                     pressed_button.push_back(keyboardInputMap.accept);
                     short int toset = -1;
-                //     // Entity * setter;
-                //     // Entity * ontile = map->getTile(position.getPos()[0], position.getPos()[1]);
+                    //     // Entity * setter;
+                    //     // Entity * ontile = map->getTile(position.getPos()[0], position.getPos()[1]);
 
-                    if ((game->getState() == GAME::STATE::MAP) && (frames_button == 1)) {
-                        SDL_Log("cursor Position, %d %d \n", position.getPos()[0], position.getPos()[1]);
+                    // if ((game->getState() == GAME::STATE::MAP) && (frames_button == 1)) {
+                    //     SDL_Log("cursor Position, %d %d \n", position.getPos()[0], position.getPos()[1]);
 
-                //         // if (ontile) {
-                //         //     toset = GAME::STATE::UNITMOVE;
-                //         //     setter = ontile;
-                //         // } else {
-                //         //     toset = GAME::STATE::OPTIONS;
-                //         //     setter = entity;
-                //         // }
-                //     } else if ((game->getState() == GAME::STATE::UNITMOVE) && (frames_button == 1)) {
-                //         // toset = GAME::STATE::UNITMENU;
-                //         // setter = entity;
-                //     }
+                    //         // if (ontile) {
+                    //         //     toset = GAME::STATE::UNITMOVE;
+                    //         //     setter = ontile;
+                    //         // } else {
+                    //         //     toset = GAME::STATE::OPTIONS;
+                    //         //     setter = entity;
+                    //         // }
+                    //     } else if ((game->getState() == GAME::STATE::UNITMOVE) && (frames_button == 1)) {
+                    //         // toset = GAME::STATE::UNITMENU;
+                    //         // setter = entity;
+                    // }
 
-                //     if (toset != -1) {
-                //         // game->setState(*setter, toset);
-                //     }
+                    //     if (toset != -1) {
+                    //         // game->setState(*setter, toset);
+                    //     }
                 }
 
                 if (keyboard.is_pressed(kb_state, keyboardInputMap.cancel)) {
