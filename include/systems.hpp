@@ -49,7 +49,8 @@ class RenderSystemx: public entityx::System<RenderSystemx> {
                 map.draw();
                 // initRects(map.getTilesize());
             });
-
+            // RENDERING NOTE: First laded, last animated.
+            // -> load cursor first to render it over everything else.
             es.each<SpriteComponent, PositionComponent>([dt, this](entityx::Entity ent, SpriteComponent & sprite, PositionComponent & position) {
                 int kb_held = 0;
                 int gp_held = 0;
@@ -59,19 +60,26 @@ class RenderSystemx: public entityx::System<RenderSystemx> {
                 short int * objectivepos = sprite.getObjpos();
                 SDL_Rect srcrect = sprite.getSrcrect();
                 SDL_Rect destrect = sprite.getDestrect();
-                std::string slidetype = sprite.getSlidetype();
+                unsigned char slidetype = sprite.getSlidetype();
                 short int slideint = sprite.getSlideint();
                 float * slidefactors = sprite.getSlidefactors();
 
                 if (sprite.isAnimated()) { //looping sprites.
-                    std::string looping = sprite.getSs_looping();
+                    unsigned char looping = sprite.getSs_looping();
 
-                    if (looping == "pingpong") {
+                    switch (looping) {
+                    case LOOPING::PINGPONG:
                         srcrect.x = srcrect.w * pingpong(static_cast<int>(SDL_GetTicks() / speed), frames, 0);
-                    } else if ((looping == "linear") || (looping == "direct")) {
+                        break;
+
+                    case LOOPING::LINEAR:
+                    case LOOPING::DIRECT:
                         srcrect.x = srcrect.w * static_cast<int>((SDL_GetTicks() / speed) % frames);
-                    } else if (looping == "reverse") {
+                        break;
+
+                    case LOOPING::REVERSE:
                         srcrect.x = srcrect.w * (frames - static_cast<int>((SDL_GetTicks() / speed) % frames));
+                        break;
                     }
                 } else {
                     if (tilesize[0] == 0 && tilesize[1] == 0) { //move on the pixelspace
@@ -97,15 +105,13 @@ class RenderSystemx: public entityx::System<RenderSystemx> {
                     gp_held = gamepad->getHeldmove();
                 }
 
-                if (slidetype == "geometric") { //for cursor mvt on map.
+                if (slidetype == SLIDETYPE::GEOMETRIC) { //for cursor mvt on map.
                     objectivepos[0] = (int)position.getPos()[0] * (tilesize[0]) - destrect.w / 4;
                     objectivepos[1] = (int)position.getPos()[1] * (tilesize[1]) - destrect.h / 4;
 
                     if ((gp_held > 25) || (kb_held > 25))  {
                         slideint = 1;
                     }
-
-                    SDL_Log("kb_held %d %d", objectivepos[0], slidepos[0]);
 
                     if (objectivepos[0] != slidepos[0]) {
                         slidepos[0] += geometricslide((objectivepos[0] - slidepos[0]), slidefactors[slideint]);

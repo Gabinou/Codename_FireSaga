@@ -71,14 +71,15 @@ int main(int argc, char * argv[]) {
     // SDL_Log("Testing convoy\n");
     // testConvoy();
 
+    std::vector<short unsigned int> unit_inds = {UNIT::NAME::SILOU};
+    std::vector<std::vector<int>> positions_list = {{6, 6}};
+    firesaga->loadUnitEntities(unit_inds, positions_list);
+    
     // firesaga->loadMap("..//maps//test_tilemap.txt");
     firesaga->loadMap(0);
 
     // firesaga->loadCursor();
 
-    std::vector<short unsigned int> unit_inds = {UNIT::NAME::SILOU};
-    std::vector<std::vector<int>> positions_list = {{6, 6}};
-    firesaga->loadUnitEntities(unit_inds, positions_list);
     // firesaga->loadMapArrivals();
 
     // SDL_Log("Testing game save XML");

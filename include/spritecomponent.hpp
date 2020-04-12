@@ -27,8 +27,8 @@ class SpriteComponent {
         bool visible;
         bool animated = false;
         std::string asset_name;
-        std::string ss_looping = "pingpong"; //ss: spritesheet
-        std::string slidetype = "";
+        unsigned char ss_looping = LOOPING::PINGPONG; //ss: spritesheet
+        unsigned char slidetype = 0;
     public:
         SpriteComponent() = default;
 
@@ -71,7 +71,7 @@ class SpriteComponent {
             return (visible);
         }
 
-        std::string getSs_looping() {
+        unsigned char getSs_looping() {
             return (ss_looping);
         }
 
@@ -105,18 +105,20 @@ class SpriteComponent {
             objectivepos[1] = in_objectivepos[1];
         }
 
-        std::string getSlidetype() {
+        unsigned char getSlidetype() {
             return (slidetype);
         }
 
-        void setSlidetype(std::string in_slidetype, short unsigned int * in_tilesize) {
+        void setSlidetype(unsigned char in_slidetype, short unsigned int * in_tilesize) {
             slidetype = in_slidetype;
             tilesize[0] = in_tilesize[0];
             tilesize[1] = in_tilesize[1];
 
-            if (slidetype == "geometric") {
+            switch (slidetype) {
+            case SLIDETYPE::GEOMETRIC:
                 setSrcrect(tilesize[0] * 2, tilesize[1] * 2); // Manually entered from cursor png size.
                 setDestrect(tilesize[0] * 2, tilesize[1] * 2);
+                break;
             }
         }
 

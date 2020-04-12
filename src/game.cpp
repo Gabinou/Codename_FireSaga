@@ -387,7 +387,7 @@ void Game::loadCursor() {
         //     cursor.addComponent<GamepadController>(this, mapx);
         }
         cursorx.assign<SpriteComponent>("..//assets//cursors.png", 10, 50);
-        cursorx.component<SpriteComponent>()->setSlidetype("geometric", mapx->getTilesize());
+        cursorx.component<SpriteComponent>()->setSlidetype(SLIDETYPE::GEOMETRIC, mapx->getTilesize());
     }
 }
 

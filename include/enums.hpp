@@ -18,6 +18,14 @@ enum DEFAULTS {
     SUPPORTS_MAX = 7,
 };
 }
+
+namespace SLIDETYPE {
+enum SLIDETYPES {
+    GEOMETRIC = 1,
+    VECTOR,
+};
+}
+
 namespace ITEM {
 namespace NAME {
 enum NAMES {
@@ -456,7 +464,8 @@ namespace LOOPING {
 enum LOOPINGS {
     PINGPONG = 1,
     DIRECT,
-    REVERSE
+    LINEAR,
+    REVERSE,
 };
 }
 
