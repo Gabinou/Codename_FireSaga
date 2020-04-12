@@ -26,24 +26,25 @@ short unsigned int * Map::getTilesize() const {
     return ((short unsigned int *)tilesize);
 }
 
-void Map::putEnt(const short unsigned int x, const short unsigned int y, entityx::Entity in_entity) {
+void Map::putEnt(const short unsigned int x, const short unsigned int y, entityx::Entity * in_entity) {
     SDL_Log("Inside PutEnt");
     if (made_entitymap) {
-       entitymap[x][y] = in_entity;
+        entitymap[x][y] = in_entity;
+
    }
 }
 
 void Map::removeEnt(const short unsigned int x, const short unsigned int y) {
-    // entityx::Entity::Id id = ;
-    // entitymap[x][y] = entityx::Entity();
+    entitymap[x][y] = nullptr;
 }
 
 void Map::moveEnt(const short unsigned int x, const short unsigned int y, const short unsigned int new_x, const short unsigned int new_y) {
-    // entitymap[new_x][new_y] = entitymap[x][y];
-    // entitymap[x][y] = entityx::Entity::Id.INVALID;
+    entityx::Entity * buffer = entitymap[new_x][new_y];
+    entitymap[new_x][new_y] = entitymap[x][y];
+    entitymap[x][y] = buffer;
 }
 
-entityx::Entity Map::getEnt(const short unsigned int x, const short unsigned int y) {
+entityx::Entity * Map::getEnt(const short unsigned int x, const short unsigned int y) {
     return(entitymap[x][y]);
 }
 
@@ -195,15 +196,17 @@ void Map::initVars() {
 
 void Map::makeEntitymap() {
     if (!made_entitymap) {
-        std::vector<std::vector<entityx::Entity>> temp(bounds[1], std::vector<entityx::Entity>(bounds[0]));
+        SDL_Log("bounds: %d %d", bounds[1], bounds[3]);
+        std::vector<std::vector<entityx::Entity *>> temp(bounds[1], std::vector<entityx::Entity *>(bounds[3]));
+        // all elements are nullptr.
         entitymap = temp;
     }
     made_entitymap = true;
 }
 
-// std::vector<std::vector<Entity *>> Map::getEntitymap() {
-//     return(entitymap);
-// }
+std::vector<std::vector<entityx::Entity *>> Map::getEntitymap() {
+    return(entitymap);
+}
 
 void Map::loadTilemap(const std::string filename) {
     tilemap = readcsv_vec<short int>(filename.c_str(), 1);
