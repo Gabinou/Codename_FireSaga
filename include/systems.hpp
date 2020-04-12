@@ -13,7 +13,7 @@ class RenderSystemx: public entityx::System<RenderSystemx> {
     private:
         SDL_Renderer * renderer = NULL;
         SDL_Rect srcrect;
-        SDL_Rect destrect;
+        SDL_Rect destrect; // maybe should not be a member variable?
         short unsigned int * tilesize;
     public:
         void setRenderer(SDL_Renderer * in_renderer) {
@@ -35,6 +35,10 @@ class RenderSystemx: public entityx::System<RenderSystemx> {
 
         void setMap(entityx::ComponentHandle<Map> in_map) {
             tilesize = in_map->getTilesize();
+            initRects(tilesize);
+        }
+
+        void initRects(short unsigned int * tilesize) {
             srcrect.w = tilesize[0];
             destrect.w = tilesize[0];
             srcrect.h = tilesize[1];
@@ -45,6 +49,7 @@ class RenderSystemx: public entityx::System<RenderSystemx> {
             SDL_RenderClear(renderer);
             es.each<Map>([dt, this](entityx::Entity ent, Map & map) {
                 map.draw();
+                initRects(map.getTilesize());
             });
 
             es.each<SpriteComponent, PositionComponent>([dt, this](entityx::Entity ent, SpriteComponent & sprite, PositionComponent & position) {
@@ -95,43 +100,50 @@ class RenderSystemx: public entityx::System<RenderSystemx> {
                 }
             });
             es.each<SpriteComponent, PositionComponent, KeyboardController>([dt, this](entityx::Entity ent, SpriteComponent & sprite, PositionComponent & position, KeyboardController & keyboard) {
-                // int kb_held = 0;
-                // int gp_held = 0;
-                // short int frames = sprite.getFrames();
-                // short int speed = sprite.getSpeed();
-                // short int slidepos[2];
-                // short int objectivepos[2];
-                // std::string slidetype = sprite.getSlidetype();
-                // short int slideint = sprite.getSlideint();
-                // float * slidefactors = sprite.getSlidefactors();
+                int kb_held = 0;
+                int gp_held = 0;
+                short int frames = sprite.getFrames();
+                short int speed = sprite.getSpeed();
+                short int slidepos[2];
+                short int objectivepos[2];
+                std::string slidetype = sprite.getSlidetype();
+                short int slideint = sprite.getSlideint();
+                float * slidefactors = sprite.getSlidefactors();
 
-                // //     //init
-                // // if (map == NULL) {
-                // //     slidepos[0] = (int)position.getPos()[0];
-                // //     slidepos[1] = (int)position.getPos()[1];
-                // // } else {
-                // //     slidepos[0] = (int)position.getPos()[0] * tilesize[0];
-                // //     slidepos[1] = (int)position.getPos()[1] * tilesize[1];
-                // // }
+                //init
+                if (tilesize[0] == 0 && tilesize[1] == 0) {
+                    slidepos[0] = (int)position.getPos()[0];
+                    slidepos[1] = (int)position.getPos()[1];
+                } else {
+                    slidepos[0] = (int)position.getPos()[0] * tilesize[0];
+                    slidepos[1] = (int)position.getPos()[1] * tilesize[1];
+                }
 
                 // //initslide
-                // if (slidetype == "geometric") {
-                //     sprite.setSrcrect(tilesize[0] * 2, tilesize[1] * 2);
-                //     sprite.setDestrect(tilesize[0] * 2, tilesize[1] * 2);
-                //     slidepos[0] = objectivepos[0] = (int)position.getPos()[0] * tilesize[0] - destrect.w / 4;
-                //     slidepos[1] = objectivepos[1] = (int)position.getPos()[1] * tilesize[1] - destrect.h / 4;
-                // }
+                if (slidetype == "geometric") {
+                    // SDL_Log("tilesize: %d, %d", tilesize[0], tilesize[1]);
+                    srcrect.w = tilesize[0] * 2;
+                    srcrect.h = tilesize[0] * 2;
+                    destrect.w = tilesize[0] * 2;
+                    destrect.h = tilesize[1] * 2;
+                    sprite.setSrcrect(srcrect);
+                    sprite.setDestrect(destrect);
+                    slidepos[0] = objectivepos[0] = (int)position.getPos()[0] * tilesize[0] - destrect.w / 4;
+                    slidepos[1] = objectivepos[1] = (int)position.getPos()[1] * tilesize[1] - destrect.h / 4;
+                }
 
-                // if (sprite.isAnimated()) { //looping sprites.
-                //     std::string looping = sprite.getSs_looping();
+                if (sprite.isAnimated()) { //looping sprites.
+                    std::string looping = sprite.getSs_looping();
 
-                //     if (looping == "pingpong") {
-                //         srcrect.x = srcrect.w * pingpong(static_cast<int>(SDL_GetTicks() / speed), frames, 0);
-                //     } else if ((looping == "linear") || (looping == "direct")) {
-                //         srcrect.x = srcrect.w * static_cast<int>((SDL_GetTicks() / speed) % frames);
-                //     } else if (looping == "reverse") {
-                //         srcrect.x = srcrect.w * (frames - static_cast<int>((SDL_GetTicks() / speed) % frames));
-                //     }
+                    if (looping == "pingpong") {
+                        srcrect.x = srcrect.w * pingpong(static_cast<int>(SDL_GetTicks() / speed), frames, 0);
+                    } else if ((looping == "linear") || (looping == "direct")) {
+                        srcrect.x = srcrect.w * static_cast<int>((SDL_GetTicks() / speed) % frames);
+                    } else if (looping == "reverse") {
+                        srcrect.x = srcrect.w * (frames - static_cast<int>((SDL_GetTicks() / speed) % frames));
+                    }
+                }
+
                 // } else {
                 //     if (tilesize[0] == 0 && tilesize[1] == 0) { //move on the pixelspace
                 //         // SDL_Log("Move on the pixelspace");
@@ -192,12 +204,12 @@ class RenderSystemx: public entityx::System<RenderSystemx> {
 
                 // }
 
-                // destrect.x = slidepos[0];
-                // destrect.y = slidepos[1];
+                destrect.x = slidepos[0];
+                destrect.y = slidepos[1];
 
-                // sprite.setSrcrect(srcrect);
-                // sprite.setDestrect(destrect);
-                // sprite.draw();
+                sprite.setSrcrect(srcrect);
+                sprite.setDestrect(destrect);
+                sprite.draw();
             });
             SDL_RenderPresent(renderer);
         }
