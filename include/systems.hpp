@@ -136,6 +136,7 @@ class ControlSystemx: public entityx::System<ControlSystemx> {
         SDL_Rect srcrect;
         SDL_Rect destrect;
         Game * game;
+        Map * map;
         KeyboardInputMap keyboardInputMap;
         GamepadInputMap gamepadInputMap;
     public:
@@ -144,9 +145,21 @@ class ControlSystemx: public entityx::System<ControlSystemx> {
         }
 
         ControlSystemx(Game * in_game) {
+            setGame(in_game);
+        }        
+
+        ControlSystemx(Map * in_map) {
+            setMap(in_game);
+        }
+
+        setGame(Game * in_game) {
             game = in_game;
             keyboardInputMap = game->getKeyboardInputMap();
             gamepadInputMap = game->getGamepadInputMap();
+        }
+
+        setMap(Map * in_map) {
+            map = in_map;
         }
 
         void update(entityx::EntityManager & es, entityx::EventManager & events, entityx::TimeDelta dt) override {
@@ -172,14 +185,14 @@ class ControlSystemx: public entityx::System<ControlSystemx> {
                     pressed_move.push_back(keyboardInputMap.moveright);
                 }
 
-                // if (keyboard.is_pressed(kb_state, keyboardInputMap.accept)) {
-                //     pressed_button.push_back(keyboardInputMap.accept);
-                //     short int toset = -1;
+                if (keyboard.is_pressed(kb_state, keyboardInputMap.accept)) {
+                    pressed_button.push_back(keyboardInputMap.accept);
+                    short int toset = -1;
                 //     // Entity * setter;
                 //     // Entity * ontile = map->getTile(position.getPos()[0], position.getPos()[1]);
 
-                //     if ((game->getState() == GAME::STATE::MAP) && (frames_button == 1)) {
-                //         SDL_Log("cursor Position, %d %d \n", position.getPos()[0], position.getPos()[1]);
+                    if ((game->getState() == GAME::STATE::MAP) && (frames_button == 1)) {
+                        SDL_Log("cursor Position, %d %d \n", position.getPos()[0], position.getPos()[1]);
 
                 //         // if (ontile) {
                 //         //     toset = GAME::STATE::UNITMOVE;
@@ -196,7 +209,7 @@ class ControlSystemx: public entityx::System<ControlSystemx> {
                 //     if (toset != -1) {
                 //         // game->setState(*setter, toset);
                 //     }
-                // }
+                }
 
                 if (keyboard.is_pressed(kb_state, keyboardInputMap.cancel)) {
                     pressed_button.push_back(keyboardInputMap.cancel);
