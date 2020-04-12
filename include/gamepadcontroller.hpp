@@ -8,9 +8,6 @@
 
 class GamepadController {
     private:
-        PositionComponent * positioncomponent;
-        Game * game;
-        Map * map;
         SDL_GameController * controller = NULL;
         GamepadInputMap inputmap;
         int joystick_dead_zone = 8000;
@@ -21,21 +18,26 @@ class GamepadController {
     public:
         GamepadController() = default;
 
-        GamepadController(Game * in_game) {
-            setGame(in_game);
+        int getDeadzone() {
+            return (joystick_dead_zone);
         }
 
-        GamepadController(Game * in_game, Map * in_map) : GamepadController(in_game) {
-            map = in_map;
+        GamepadInputMap getInputMap() {
+            return (inputmap);
         }
 
-        void setGame(Game * in_game) {
-            game = in_game;
+        void setInputMap(GamepadInputMap in_inputmap) {
+            inputmap = in_inputmap;
         }
 
-        void setMap(Map * in_map) {
-            map = in_map;
+        unsigned int getHeldmove() {
+            return (frames_move);
         }
+
+        unsigned int getHeldbutton() {
+            return (frames_button);
+        }
+
 
         bool isPressed(std::vector<SDL_GameControllerButton> in_map) {
             for (int i = 0; i < in_map.size(); ++i) {
@@ -45,6 +47,10 @@ class GamepadController {
             }
 
             return (false);
+        }
+
+        SDL_GameController * getController() {
+            return (controller);
         }
 
         void init()  {
@@ -59,10 +65,6 @@ class GamepadController {
                     }
                 }
             }
-
-            // positioncomponent = &entity->getComponent<PositionComponent>();
-            inputmap = game->getGamepadInputMap();
-            // Manager & manager = entity->getManager();
         }
 
         int getHeldmove() {
@@ -87,82 +89,6 @@ class GamepadController {
             }
         }
 
-        void update()  {
-            Sint16 mainxaxis = SDL_GameControllerGetAxis(controller, inputmap.mainxaxis[0]);
-            Sint16 mainyaxis = SDL_GameControllerGetAxis(controller, inputmap.mainyaxis[0]);
-            Sint16 secondxaxis = SDL_GameControllerGetAxis(controller, inputmap.secondxaxis[0]);
-            Sint16 secondyaxis = SDL_GameControllerGetAxis(controller, inputmap.secondyaxis[0]);
-            std::vector<short unsigned int> pressed_move{};
-            std::vector<std::vector<SDL_GameControllerButton>> pressed_button{};
-
-            if ((mainxaxis > joystick_dead_zone) || (secondxaxis > joystick_dead_zone)) {
-                // positioncomponent->addPos(1, 0);
-                pressed_move.push_back(GAME::BUTTON::RIGHT);
-            } else if ((mainxaxis < -joystick_dead_zone) || (secondxaxis < -joystick_dead_zone)) {
-                // positioncomponent->addPos(-1, 0);
-                pressed_move.push_back(GAME::BUTTON::LEFT);
-            }
-
-            if ((mainyaxis > joystick_dead_zone) || (secondyaxis > joystick_dead_zone)) {
-                // positioncomponent->addPos(0, 1);
-                pressed_move.push_back(GAME::BUTTON::UP);
-            } else if ((mainyaxis < -joystick_dead_zone) || (secondyaxis < -joystick_dead_zone))  {
-                // positioncomponent->addPos(0, -1);
-                pressed_move.push_back(GAME::BUTTON::DOWN);
-            }
-
-            if (isPressed(inputmap.moveright)) {
-                // positioncomponent->addPos(1, 0);
-                pressed_move.push_back(GAME::BUTTON::RIGHT);
-            } else if (isPressed(inputmap.moveleft)) {
-                // positioncomponent->addPos(-1, 0);
-                pressed_move.push_back(GAME::BUTTON::LEFT);
-            }
-
-            if (isPressed(inputmap.moveup)) {
-                // positioncomponent->addPos(0, -1);
-                pressed_move.push_back(GAME::BUTTON::UP);
-            } else if (isPressed(inputmap.movedown)) {
-                // positioncomponent->addPos(0, 1);
-                pressed_move.push_back(GAME::BUTTON::DOWN);
-            }
-
-            if (isPressed(inputmap.accept)) {
-                pressed_button.push_back(inputmap.accept);
-                short unsigned int toset = -1;
-                // Entity * setter;
-                // Entity * ontile = map->getTile(positioncomponent->getPos()[0], positioncomponent->getPos()[1]);
-
-                // if ((game->getState() == GAME::STATE::MAP) && (frames_button == 1)) {
-                SDL_Log("cursor Position, %d %d \n", positioncomponent->getPos()[0], positioncomponent->getPos()[1]);
-
-                // if (ontile) {
-                //     toset = GAME::STATE::UNITMOVE;
-                //     setter = ontile;
-                // } else {
-                //     toset = GAME::STATE::OPTIONS;
-                //     setter = entity;
-                // }
-            } else if ((game->getState() == GAME::STATE::UNITMOVE) && (frames_button == 1)) {
-                // toset = GAME::STATE::UNITMENU;
-                // setter = entity;
-            }
-
-            // if (toset != -1) {game->setState(*setter, toset); }
-
-            if (isPressed(inputmap.cancel)) {
-                pressed_button.push_back(inputmap.cancel);
-
-                if ((game->getState() == GAME::STATE::UNITMENU) ||
-                        (game->getState() == GAME::STATE::OPTIONS) ||
-                        (game->getState() == GAME::STATE::UNITMOVE)) {
-                    // game->setState(*entity, GAME::STATE::MAP);
-                }
-            }
-
-            check_move(pressed_move);
-            check_button(pressed_button);
-        }
 };
 
 

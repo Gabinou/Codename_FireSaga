@@ -33,21 +33,12 @@ class RenderSystemx: public entityx::System<RenderSystemx> {
 
         void setMap(entityx::ComponentHandle<Map> in_map) {
             tilesize = in_map->getTilesize();
-            // initRects(tilesize);
         }
-
-        // void initRects(short unsigned int * tilesize) {
-        //     srcrect.w = tilesize[0];
-        //     destrect.w = tilesize[0];
-        //     srcrect.h = tilesize[1];
-        //     destrect.h = tilesize[1];
-        // }
 
         void update(entityx::EntityManager & es, entityx::EventManager & events, entityx::TimeDelta dt) override {
             SDL_RenderClear(renderer);
             es.each<Map>([dt, this](entityx::Entity ent, Map & map) {
                 map.draw();
-                // initRects(map.getTilesize());
             });
             // RENDERING NOTE: First laded, last animated.
             // -> load cursor first to render it over everything else.
@@ -83,7 +74,6 @@ class RenderSystemx: public entityx::System<RenderSystemx> {
                     }
                 } else {
                     if (tilesize[0] == 0 && tilesize[1] == 0) { //move on the pixelspace
-                        // SDL_Log("Move on the pixelspace");
                         slidepos[0] = (int)position.getPos()[0];
                         slidepos[1] = (int)position.getPos()[1];
                     } else { //move on the map.
@@ -101,7 +91,7 @@ class RenderSystemx: public entityx::System<RenderSystemx> {
                 entityx::ComponentHandle<GamepadController> gamepad = ent.component<GamepadController>();
 
                 if (gamepad) {
-                    SDL_Log("Rendering Gamepad Controller.");
+                    // SDL_Log("Rendering Gamepad Controller.");
                     gp_held = gamepad->getHeldmove();
                 }
 
@@ -253,6 +243,83 @@ class ControlSystemx: public entityx::System<ControlSystemx> {
             });
             es.each<GamepadController, PositionComponent>([dt, this](entityx::Entity ent, GamepadController & gamepad, PositionComponent & position) {
 
+                SDL_GameController * controller = gamepad.getController();
+                Sint16 mainxaxis = SDL_GameControllerGetAxis(controller, gamepadInputMap.mainxaxis[0]);
+                Sint16 mainyaxis = SDL_GameControllerGetAxis(controller, gamepadInputMap.mainyaxis[0]);
+                Sint16 secondxaxis = SDL_GameControllerGetAxis(controller, gamepadInputMap.secondxaxis[0]);
+                Sint16 secondyaxis = SDL_GameControllerGetAxis(controller, gamepadInputMap.secondyaxis[0]);
+                std::vector<short unsigned int> pressed_move{};
+                std::vector<std::vector<SDL_GameControllerButton>> pressed_button{};
+                int joystick_dead_zone = gamepad.getDeadzone();
+
+
+                if ((mainxaxis > joystick_dead_zone) || (secondxaxis > joystick_dead_zone)) {
+                    position.addPos(1, 0);
+                    pressed_move.push_back(GAME::BUTTON::RIGHT);
+                } else if ((mainxaxis < -joystick_dead_zone) || (secondxaxis < -joystick_dead_zone)) {
+                    position.addPos(-1, 0);
+                    pressed_move.push_back(GAME::BUTTON::LEFT);
+                }
+
+                if ((mainyaxis > joystick_dead_zone) || (secondyaxis > joystick_dead_zone)) {
+                    position.addPos(0, 1);
+                    pressed_move.push_back(GAME::BUTTON::UP);
+                } else if ((mainyaxis < -joystick_dead_zone) || (secondyaxis < -joystick_dead_zone))  {
+                    position.addPos(0, -1);
+                    pressed_move.push_back(GAME::BUTTON::DOWN);
+                }
+
+                if (gamepad.isPressed(gamepadInputMap.moveright)) {
+                    position.addPos(1, 0);
+                    pressed_move.push_back(GAME::BUTTON::RIGHT);
+                } else if (gamepad.isPressed(gamepadInputMap.moveleft)) {
+                    position.addPos(-1, 0);
+                    pressed_move.push_back(GAME::BUTTON::LEFT);
+                }
+
+                if (gamepad.isPressed(gamepadInputMap.moveup)) {
+                    position.addPos(0, -1);
+                    pressed_move.push_back(GAME::BUTTON::UP);
+                } else if (gamepad.isPressed(gamepadInputMap.movedown)) {
+                    position.addPos(0, 1);
+                    pressed_move.push_back(GAME::BUTTON::DOWN);
+                }
+
+                if (gamepad.isPressed(gamepadInputMap.accept)) {
+                    pressed_button.push_back(gamepadInputMap.accept);
+                    short unsigned int toset = -1;
+                    // Entity * setter;
+                    // Entity * ontile = map->getTile(position.getPos()[0], position.getPos()[1]);
+
+                    // if ((game->getState() == GAME::STATE::MAP) && (frames_button == 1)) {
+                    SDL_Log("cursor Position, %d %d \n", position.getPos()[0], position.getPos()[1]);
+
+                    // if (ontile) {
+                    //     toset = GAME::STATE::UNITMOVE;
+                    //     setter = ontile;
+                    // } else {
+                    //     toset = GAME::STATE::OPTIONS;
+                    //     setter = entity;
+                    // }
+                } else if ((game->getState() == GAME::STATE::UNITMOVE) && (frames_button == 1)) {
+                    // toset = GAME::STATE::UNITMENU;
+                    // setter = entity;
+                }
+
+                // if (toset != -1) {game->setState(*setter, toset); }
+
+                if (isPressed(gamepadInputMap.cancel)) {
+                    pressed_button.push_back(gamepadInputMap.cancel);
+
+                    if ((game->getState() == GAME::STATE::UNITMENU) ||
+                            (game->getState() == GAME::STATE::OPTIONS) ||
+                            (game->getState() == GAME::STATE::UNITMOVE)) {
+                        game->setState(ent, GAME::STATE::MAP);
+                    }
+                }
+
+                gamepad.check_move(pressed_move);
+                gamepad.check_button(pressed_button);
             });
         }
 
