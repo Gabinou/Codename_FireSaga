@@ -27,7 +27,6 @@ short unsigned int * Map::getTilesize() const {
 }
 
 void Map::putEnt(const short unsigned int x, const short unsigned int y, entityx::Entity * in_entity) {
-    SDL_Log("Inside PutEnt");
     if (made_entitymap) {
         entitymap[x][y] = in_entity;
 
@@ -190,13 +189,10 @@ void Map::initVars() {
     setTilesize(DEFAULT::TILESIZE, DEFAULT::TILESIZE);
     srcrect.w = destrect.w = DEFAULT::TILESIZE;
     srcrect.h = destrect.h = DEFAULT::TILESIZE;
-    // std::vector<std::vector<Entity *>> temp(DEFAULT::LINE_LENGTH, std::vector<Entity*>(DEFAULT::LINE_LENGTH));
-    // entitymap = temp;
 }
 
 void Map::makeEntitymap() {
     if (!made_entitymap) {
-        SDL_Log("bounds: %d %d", bounds[1], bounds[3]);
         std::vector<std::vector<entityx::Entity *>> temp(bounds[1], std::vector<entityx::Entity *>(bounds[3]));
         // all elements are nullptr.
         entitymap = temp;

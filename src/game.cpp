@@ -21,10 +21,6 @@ Game::Game() {
 
 Game::~Game() {}
 
-// void Game::setManager(Manager * in_manager) {
-//     manager = in_manager;
-// }
-
 Settings Game::getSettings() {
     return(settings);
 }
@@ -35,12 +31,12 @@ void Game::setSettings(Settings in_settings) {
 
 bool Game::checkRate(int rate, short unsigned int mode) {
     bool hit;
-    if (mode == 1) {
-        hit = (getURN(tinymt) < rate); //single_roll
+    if (mode == GAME::RN::SINGLE) {
+        hit = (getURN(tinymt) < rate);
         return(hit);
     }
-    if (mode == 2) {
-        hit = (((getURN(tinymt) + getURN(tinymt))/2) < rate); //doubleroll
+    if (mode == GAME::RN::DOUBLE) {
+        hit = (((getURN(tinymt) + getURN(tinymt))/2) < rate);
         return(hit);
     }
     return(hit);
@@ -151,7 +147,7 @@ void Game::fight(Unit * attacker, Unit * defender) {
 // }
 
 // I think this function is too big. Find a way to reduce it...
-void Game::setState(entityx::Entity &setting_entity, short unsigned int new_state) {
+void Game::setState(entityx::Entity setting_entity, short unsigned int new_state) {
     SDL_Log("Game state changes from %d to %d\n", this->state, new_state); 
 
     switch (this->state) {
@@ -175,20 +171,31 @@ void Game::setState(entityx::Entity &setting_entity, short unsigned int new_stat
                     std::vector<std::vector<short int>> costmap;
                     std::vector<std::vector<short int>> movemapp;
                     std::vector<std::vector<short int>> attackmapp;
+                    entityx::ComponentHandle<PositionComponent> cursorpos;
                     short unsigned int start[2];
                     short unsigned int unit_move;
+                    short unsigned int current_unit_id;
                     unsigned char unitmvttype;
                     unsigned char * range;
 
-                    short unsigned int current_unit_id = setting_entity.component<Unit>()->getid();
-                    unit_move = units[current_unit_id].getStats().move;
                     SDL_Log("Works until now");
+
+                    cursorpos = setting_entity.component<PositionComponent>();
+                    if (cursorpos) {
+                        start[0] = (short unsigned int)cursorpos->getPos()[0];
+                        start[1] = (short unsigned int)cursorpos->getPos()[1];
+                        SDL_Log("%d %d", cursorpos->getPos()[0], cursorpos->getPos()[1]);
+
+                    } else {
+                        SDL_Log("Could not get cursor position component");
+                    }
+                    SDL_Log("%d %d", start[0], start[1]);
+                    SDL_Log("But not here");
+                    // unit_move = units[current_unit_id].getStats().move;
                     // start[0] = manager.getEntities()[unit_entities.top()]->getComponent<PositionComponent>().getPos()[0]; // Start is (+1,+1)?
                     // start[1] = manager.getEntities()[unit_entities.top()]->getComponent<PositionComponent>().getPos()[1]; // Start is (+1,+1)?
                     // start[0] = start[0] - 1;
                     // start[1] = start[1] - 1;
-                    start[0] = 6;
-                    start[1] = 6;
 
                     unitmvttype = units[current_unit_id].getMvttype();
                     range = units[current_unit_id].getRange();
