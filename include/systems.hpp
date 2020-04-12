@@ -164,15 +164,15 @@ class ControlSystemx: public entityx::System<ControlSystemx> {
                     pressed_move.push_back(keyboardInputMap.movedown);
                 }
 
-                // if (!is_pressed(kb_state, keyboardInputMap.moveright) && is_pressed(kb_state, keyboardInputMap.moveleft)) {
-                //     // position.addPos(-1, 0);
-                //     pressed_move.push_back(keyboardInputMap.moveleft);
-                // } else if (is_pressed(kb_state, keyboardInputMap.moveright) && !is_pressed(kb_state, keyboardInputMap.moveleft)) {
-                //     // position.addPos(1, 0);
-                //     pressed_move.push_back(keyboardInputMap.moveright);
-                // }
+                if (!keyboard.is_pressed(kb_state, keyboardInputMap.moveright) && keyboard.is_pressed(kb_state, keyboardInputMap.moveleft)) {
+                    position.addPos(-1, 0);
+                    pressed_move.push_back(keyboardInputMap.moveleft);
+                } else if (keyboard.is_pressed(kb_state, keyboardInputMap.moveright) && !keyboard.is_pressed(kb_state, keyboardInputMap.moveleft)) {
+                    position.addPos(1, 0);
+                    pressed_move.push_back(keyboardInputMap.moveright);
+                }
 
-                // if (is_pressed(kb_state, keyboardInputMap.accept)) {
+                // if (keyboard.is_pressed(kb_state, keyboardInputMap.accept)) {
                 //     pressed_button.push_back(keyboardInputMap.accept);
                 //     short int toset = -1;
                 //     // Entity * setter;
@@ -198,18 +198,18 @@ class ControlSystemx: public entityx::System<ControlSystemx> {
                 //     }
                 // }
 
-                // if (is_pressed(kb_state, keyboardInputMap.cancel)) {
-                //     pressed_button.push_back(keyboardInputMap.cancel);
+                if (keyboard.is_pressed(kb_state, keyboardInputMap.cancel)) {
+                    pressed_button.push_back(keyboardInputMap.cancel);
 
-                //     if ((game->getState() == GAME::STATE::UNITMENU) ||
-                //             (game->getState() == GAME::STATE::OPTIONS) ||
-                //             (game->getState() == GAME::STATE::UNITMOVE)) {
-                //         // game->setState(*entity, GAME::STATE::MAP);
-                //     }
-                // }
+                    if ((game->getState() == GAME::STATE::UNITMENU) ||
+                            (game->getState() == GAME::STATE::OPTIONS) ||
+                            (game->getState() == GAME::STATE::UNITMOVE)) {
+                        // game->setState(*entity, GAME::STATE::MAP);
+                    }
+                }
 
-                // check_move(pressed_move);
-                // check_button(pressed_button);
+                keyboard.check_move(pressed_move);
+                keyboard.check_button(pressed_button);
             });
             es.each<GamepadController, PositionComponent>([dt, this](entityx::Entity ent, GamepadController & gamepad, PositionComponent & position) {
 
