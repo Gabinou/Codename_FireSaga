@@ -55,7 +55,7 @@ class Map {
         std::vector<SDL_Texture *> dangers{NULL, NULL};
 
         // std::vector<std::vector<Entity *>> entitymap;
-        std::vector<std::vector<entityx::Entity *>> entitymap;
+        std::vector<std::vector<entityx::Entity>> entitymap;
 
         std::unordered_map<int, Tile> tiles;
         std::vector<short int> tilesasset_ind;
@@ -84,13 +84,13 @@ class Map {
 
         void setRenderer(SDL_Renderer * in_renderer);
         void draw();
-        void makeEntitymap(const short unsigned int row_size, const short unsigned int col_size);
+        void makeEntitymap();
         // std::vector<std::vector<Entity *>> getEntitymap();
 
         void setTilesize(const short int unsigned width, const short int unsigned height);
         short unsigned int * getTilesize() const;
 
-        void putEnt(const short unsigned int x, const short unsigned int y, entityx::Entity * in_entity); // TO RENAME
+        void putEnt(const short unsigned int x, const short unsigned int y, entityx::Entity in_entity); // TO RENAME
         entityx::Entity * getEnt(const short unsigned int x, const short unsigned int y); // TO RENAME
         void removeEnt(const short unsigned int x, const short unsigned int y); // TO RENAME
         void moveEnt(const short unsigned int x, const short unsigned int y, const short unsigned int new_x, const short unsigned int new_y); // TO RENAME

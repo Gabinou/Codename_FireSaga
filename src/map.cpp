@@ -26,17 +26,19 @@ short unsigned int * Map::getTilesize() const {
     return ((short unsigned int *)tilesize);
 }
 
-void Map::putEnt(const short unsigned int x, const short unsigned int y, entityx::Entity * in_entity) {
+void Map::putEnt(const short unsigned int x, const short unsigned int y, entityx::Entity in_entity) {
+    SDL_Log("Inside PutEnt");
     entitymap[x][y] = in_entity;
 }
 
 void Map::removeEnt(const short unsigned int x, const short unsigned int y) {
-    entitymap[x][y] = nullptr;
+    entityx::Entity::Id id = entityx::Entity().INVALID;
+    entitymap[x][y] = id;
 }
 
 void Map::moveEnt(const short unsigned int x, const short unsigned int y, const short unsigned int new_x, const short unsigned int new_y) {
-    entitymap[new_x][new_y] = entitymap[x][y];
-    entitymap[x][y] = nullptr;
+    // entitymap[new_x][new_y] = entitymap[x][y];
+    // entitymap[x][y] = entityx::Entity::Id.INVALID;
 }
 
 entityx::Entity * Map::getEnt(const short unsigned int x, const short unsigned int y) {
@@ -189,18 +191,13 @@ void Map::initVars() {
     // entitymap = temp;
 }
 
-// void Map::makeEntitymap(const short unsigned int row_size, const short unsigned int col_size){
-//     if (!made_entitymap) {
-//         std::vector<std::vector<Entity *>> temp(row_size, std::vector<Entity*>(col_size));
-//         entitymap = temp;
-//         for (short unsigned int col = 0; col < entitymap.size(); col++) {
-//             for (short unsigned int row = 0; row < entitymap[0].size(); row++) {
-//                 entitymap[col][row] =  static_cast<Entity*>(nullptr);
-//             }
-//         }
-//     }
-//     made_entitymap = true;
-// }
+void Map::makeEntitymap() {
+    if (!made_entitymap) {
+        std::vector<std::vector<entityx::Entity *>> temp(bounds[1], std::vector<entityx::Entity>(bounds[0]));
+        entitymap = temp;
+    }
+    made_entitymap = true;
+}
 
 // std::vector<std::vector<Entity *>> Map::getEntitymap() {
 //     return(entitymap);

@@ -181,17 +181,15 @@ void Game::setState(entityx::Entity &setting_entity, short unsigned int new_stat
                     unsigned char unitmvttype;
                     unsigned char * range;
 
-                    // short unsigned int current_unit_id = manager.getEntities()[unit_entities.top()]->getComponent<UnitContainer>().getID();
-                    // unit_move = units[current_unit_id].getStats().move;
-
+                    short unsigned int current_unit_id = setting_entity.component<Unit>()->getid();
+                    unit_move = units[current_unit_id].getStats().move;
+                    SDL_Log("Works until now");
                     // start[0] = manager.getEntities()[unit_entities.top()]->getComponent<PositionComponent>().getPos()[0]; // Start is (+1,+1)?
                     // start[1] = manager.getEntities()[unit_entities.top()]->getComponent<PositionComponent>().getPos()[1]; // Start is (+1,+1)?
                     // start[0] = start[0] - 1;
                     // start[1] = start[1] - 1;
-                    unit_move = 5;
                     start[0] = 6;
                     start[1] = 6;
-                    short unsigned int current_unit_id = UNIT::NAME::SILOU;
 
                     unitmvttype = units[current_unit_id].getMvttype();
                     range = units[current_unit_id].getRange();
@@ -336,6 +334,7 @@ void Game::loadMap(const std::string filename) {
         mapx = map_entx.component<Map>();
         mapx->setRenderer(renderer);
         mapx->loadTilemap(filename);
+        mapx->makeEntitymap();
         systems.system<RenderSystemx>()->setMap(mapx);
         systems.system<ControlSystemx>()->setMap(mapx);
         SDL_Log("Loading Cursor\n");
@@ -355,6 +354,7 @@ void Game::loadMap(const int in_map_index) {
         mapx->setRenderer(renderer);
         mapx->loadTilemap(in_map_index);
         mapx->setArrivals(mapArrivals[in_map_index]());
+        mapx->makeEntitymap();
         systems.system<RenderSystemx>()->setMap(mapx);
         systems.system<ControlSystemx>()->setMap(mapx);
         SDL_Log("Loading Cursor\n");
@@ -409,6 +409,10 @@ void Game::loadUnitEntities(std::vector<short unsigned int> unit_inds, std::vect
         Uent.assign<Unit>(units[unit_inds[i]]);
         Uent.assign<PositionComponent>(positions_list[i][0], positions_list[i][1]);
         Uent.assign<SpriteComponent>(asset_name.c_str());
+        SDL_Log("Putting entity");
+        mapx->putEnt(positions_list[i][0], positions_list[i][1], Uent);
+        SDL_Log("Put entity");
+
     }
 }
 

@@ -202,10 +202,12 @@ class ControlSystemx: public entityx::System<ControlSystemx> {
                 }
 
                 if (keyboard.is_pressed(kb_state, keyboardInputMap.accept)) {
+                    SDL_Log("Pressed accept on keyboard");
                     pressed_button.push_back(keyboardInputMap.accept);
                     short int toset = -1;
                     entityx::Entity * setter;
                     entityx::Entity * ontile = map->getEnt(position.getPos()[0], position.getPos()[1]);
+                    SDL_Log("Works until now");
                     unsigned int frames_button = keyboard.getHeldbutton();
 
                     if ((game->getState() == GAME::STATE::MAP) && (frames_button == 1)) {
