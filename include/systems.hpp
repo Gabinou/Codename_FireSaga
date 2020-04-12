@@ -82,12 +82,14 @@ class RenderSystemx: public entityx::System<RenderSystemx> {
                 entityx::ComponentHandle<KeyboardController> keyboard = ent.component<KeyboardController>();
 
                 if (keyboard) {
+                    // SDL_Log("Rendering Keyboard Controller.");
                     kb_held = keyboard->getHeldmove();
                 }
 
                 entityx::ComponentHandle<GamepadController> gamepad = ent.component<GamepadController>();
 
                 if (gamepad) {
+                    SDL_Log("Rendering Gamepad Controller.");
                     gp_held = gamepad->getHeldmove();
                 }
 
@@ -136,7 +138,7 @@ class ControlSystemx: public entityx::System<ControlSystemx> {
         SDL_Rect srcrect;
         SDL_Rect destrect;
         Game * game;
-        Map * map;
+        entityx::ComponentHandle<Map> map;
         KeyboardInputMap keyboardInputMap;
         GamepadInputMap gamepadInputMap;
     public:
@@ -144,12 +146,12 @@ class ControlSystemx: public entityx::System<ControlSystemx> {
 
         }
 
-        ControlSystemx(Game * in_game, Map * in_map) {
+        ControlSystemx(Game * in_game, entityx::ComponentHandle<Map> in_map) {
             setGame(in_game);
             setMap(in_map);
         }
 
-        ControlSystemx(Map * in_map, Game * in_game) {
+        ControlSystemx(entityx::ComponentHandle<Map> in_map, Game * in_game) {
             setGame(in_game);
             setMap(in_map);
         }
@@ -158,7 +160,7 @@ class ControlSystemx: public entityx::System<ControlSystemx> {
             setGame(in_game);
         }
 
-        ControlSystemx(Map * in_map) {
+        ControlSystemx(entityx::ComponentHandle<Map> in_map) {
             setMap(in_map);
         }
 
@@ -168,13 +170,12 @@ class ControlSystemx: public entityx::System<ControlSystemx> {
             gamepadInputMap = game->getGamepadInputMap();
         }
 
-        void setMap(Map * in_map) {
+        void setMap(entityx::ComponentHandle<Map> in_map) {
             map = in_map;
         }
 
         void update(entityx::EntityManager & es, entityx::EventManager & events, entityx::TimeDelta dt) override {
             es.each<KeyboardController, PositionComponent>([dt, this](entityx::Entity ent, KeyboardController & keyboard, PositionComponent & position) {
-
                 const Uint8 * kb_state = SDL_GetKeyboardState(NULL);
                 std::vector<std::vector<SDL_Scancode>> pressed_move{};
                 std::vector<std::vector<SDL_Scancode>> pressed_button{};

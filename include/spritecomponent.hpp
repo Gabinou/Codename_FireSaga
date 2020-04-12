@@ -85,20 +85,17 @@ class SpriteComponent {
             visible = true;
         }
 
-        void initSlide() {
-            if (slidetype == "geometric") {
-                setSrcrect(64, 64); // Manually entered from cursor png size.
-                // setDestrect(tilesize[0] * 2, tilesize[1] * 2);
-            }
-        }
-
         std::string getSlidetype() {
             return (slidetype);
         }
 
-        void setSlidetype(std::string in_slidetype) {
+        void setSlidetype(std::string in_slidetype, short unsigned int * tilesize) {
             slidetype = in_slidetype;
-            initSlide();
+
+            if (slidetype == "geometric") {
+                setSrcrect(tilesize[0] * 2, tilesize[1] * 2); // Manually entered from cursor png size.
+                setDestrect(tilesize[0] * 2, tilesize[1] * 2);
+            }
         }
 
         void setTexture(const char * in_asset_name) {
@@ -138,10 +135,6 @@ class SpriteComponent {
 
         SDL_Rect getDestrect() {
             return (destrect);
-        }
-
-        void init() {
-            initSlide();
         }
 
         void draw() {

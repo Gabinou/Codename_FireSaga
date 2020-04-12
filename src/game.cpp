@@ -343,8 +343,9 @@ void Game::loadMap(const std::string filename) {
         mapx->setRenderer(renderer);
         mapx->loadTilemap(filename);
         systems.system<RenderSystemx>()->setMap(mapx);
-        // SDL_Log("Loading Cursor\n");
-        // loadCursor();
+        systems.system<ControlSystemx>()->setMap(mapx);
+        SDL_Log("Loading Cursor\n");
+        loadCursor();
     }  else {
         SDL_Log("Failed to loadMap. Was mapx deleted previously?");
     }
@@ -361,8 +362,9 @@ void Game::loadMap(const int in_map_index) {
         mapx->loadTilemap(in_map_index);
         mapx->setArrivals(mapArrivals[in_map_index]());
         systems.system<RenderSystemx>()->setMap(mapx);
-        // SDL_Log("Loading Cursor\n");
-        // loadCursor();
+        systems.system<ControlSystemx>()->setMap(mapx);
+        SDL_Log("Loading Cursor\n");
+        loadCursor();
     } else {
         SDL_Log("Failed to loadMap. Was mapx deleted previously?");
     }
@@ -382,14 +384,14 @@ void Game::loadCursor() {
     if (this->state == GAME::STATE::MAP) {
         cursorx = entities.create();
         cursorx.assign<PositionComponent>(6, 6);
-        cursorx.assign<KeyboardController>(this, mapx);
-        // if (SDL_NumJoysticks() < 1) {
-        //     SDL_Log( "No joysticks connected.\n" );
-        // } else {
+        cursorx.assign<KeyboardController>();
+        if (SDL_NumJoysticks() < 1) {
+            SDL_Log( "No joysticks connected.\n" );
+        } else {
         //     cursor.addComponent<GamepadController>(this, mapx);
-        // }
-        cursorx.assign<SpriteComponent>(mapx, "..//assets//cursors.png", 10, 50);
-        // cursorx.component<SpriteComponent>()->setSlidetype("geometric");
+        }
+        cursorx.assign<SpriteComponent>("..//assets//cursors.png", 10, 50);
+        cursorx.component<SpriteComponent>()->setSlidetype("geometric", mapx->getTilesize());
     }
 }
 
@@ -500,6 +502,7 @@ void Game::init(const char * title, int xpos, int ypos, int width, int height, b
     }
 
     systems.add<RenderSystemx>(renderer);
+    systems.add<ControlSystemx>(this);
     systems.configure();
     state = GAME::STATE::MAP;
 };
@@ -661,8 +664,9 @@ bool Game::running() {
 
 
 void Game::update(entityx::TimeDelta dt) {
-    systems.update_all(dt);
-    // systems.update<RenderSystemx>(dt);
+    // systems.update_all(dt);
+    systems.update<ControlSystemx>(dt);
+    systems.update<RenderSystemx>(dt);
 }
 
 // loss conditions

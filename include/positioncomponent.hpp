@@ -7,10 +7,8 @@
 #include "SDL2/SDL.h"
 
 class PositionComponent {
-        // On first init of the component, entity is still a nullptr.
     private:
         bool updatable = true;
-        Map * map = NULL; // no map-> position is not on a grid.
         short int position[2] = {0};
         short int bounds[4] = {0, 255, 0, 255}; //xmin, xmax, ymin, ymax
 
@@ -67,15 +65,6 @@ class PositionComponent {
             return (bounds);
         }
 
-        Map * getMap() {
-            return (map);
-        }
-
-        void setMap(Map * in_map) {
-            map = in_map;
-            // map->setTile(position[0], position[1], entity);
-        }
-
         void setUpdatable(bool in_updatable) {
             updatable = in_updatable;
         }
@@ -94,9 +83,6 @@ class PositionComponent {
                     position[1] = in_y;
                 }
 
-                if (map != nullptr) {
-                    // map->setTile(position[0], position[1], entity);
-                }
             }
         }
 
