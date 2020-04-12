@@ -66,13 +66,13 @@ class RenderSystemx: public entityx::System<RenderSystemx> {
                 float * slidefactors = sprite.getSlidefactors();
 
                 //init
-                if (tilesize[0] == 0 && tilesize[1] == 0) {
-                    slidepos[0] = (int)position.getPos()[0];
-                    slidepos[1] = (int)position.getPos()[1];
-                } else {
-                    slidepos[0] = (int)position.getPos()[0] * tilesize[0];
-                    slidepos[1] = (int)position.getPos()[1] * tilesize[1];
-                }
+                // if (tilesize[0] == 0 && tilesize[1] == 0) {
+                //     slidepos[0] = (int)position.getPos()[0];
+                //     slidepos[1] = (int)position.getPos()[1];
+                // } else {
+                //     slidepos[0] = (int)position.getPos()[0] * tilesize[0];
+                //     slidepos[1] = (int)position.getPos()[1] * tilesize[1];
+                // }
 
                 // //initslide
                 if (slidetype == "geometric") {
