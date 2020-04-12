@@ -359,6 +359,7 @@ void Game::loadMap(const int in_map_index) {
         systems.system<ControlSystemx>()->setMap(mapx);
         SDL_Log("Loading Cursor\n");
         loadCursor();
+        cursorx.component<PositionComponent>()->setBounds(mapx->getBounds());
     } else {
         SDL_Log("Failed to loadMap. Was mapx deleted previously?");
     }

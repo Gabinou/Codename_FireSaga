@@ -120,6 +120,7 @@ class RenderSystemx: public entityx::System<RenderSystemx> {
                 }
 
                 if (slidetype == "geometric") { //for cursor mvt on map.
+                    SDL_Log("kb_held %d", kb_held);
                     objectivepos[0] = (int)position.getPos()[0] * (tilesize[0]) - destrect.w / 4;
                     objectivepos[1] = (int)position.getPos()[1] * (tilesize[1]) - destrect.h / 4;
 
@@ -208,8 +209,6 @@ class ControlSystemx: public entityx::System<ControlSystemx> {
                 std::vector<std::vector<SDL_Scancode>> pressed_button{};
 
                 if (keyboard.is_pressed(kb_state, keyboardInputMap.moveup) && !keyboard.is_pressed(kb_state, keyboardInputMap.movedown)) {
-                    SDL_Log("Move Up?");
-
                     position.addPos(0, -1);
                     pressed_move.push_back(keyboardInputMap.moveup);
                 } else if (!keyboard.is_pressed(kb_state, keyboardInputMap.moveup) && keyboard.is_pressed(kb_state, keyboardInputMap.movedown)) {
@@ -230,7 +229,6 @@ class ControlSystemx: public entityx::System<ControlSystemx> {
                     short int toset = -1;
                     entityx::Entity * setter;
                     entityx::Entity * ontile = map->getEnt(position.getPos()[0], position.getPos()[1]);
-
                     unsigned int frames_button = keyboard.getHeldbutton();
 
                     if ((game->getState() == GAME::STATE::MAP) && (frames_button == 1)) {

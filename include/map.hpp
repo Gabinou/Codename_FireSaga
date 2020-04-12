@@ -21,6 +21,7 @@ class Map {
         bool show_danger = false;
         bool show_grid = false;
         bool made_entitymap = false;
+        short int bounds[4] = {0, 255, 0, 255}; //xmin, xmax, ymin, ymax
 
         std::vector<Map_arrival> map_arrivals;
         std::vector<Map_arrival> loaded_map_arrivals;
@@ -126,6 +127,8 @@ class Map {
         bool getBossDeath();
         bool getSeized();
         std::vector<unsigned short int> getEssentials();
+
+        short int * getBounds();
 
         std::vector<bool (*)(Map)> win_conditions;
         std::vector<bool (*)(Map)> sidequests;

@@ -220,7 +220,12 @@ void Map::postTilemap() {
     loadTiletextures();
     short unsigned int col_size = tilemap.size();
     short unsigned int row_size = tilemap[0].size();
-    // makeEntitymap(row_size, col_size);
+    bounds[1] = row_size;
+    bounds[3] = col_size;
+}
+
+short int * Map::getBounds() {
+    return(bounds);
 }
 
 unsigned char Map::getnumArrivals() {
