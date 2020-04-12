@@ -47,6 +47,9 @@ class RenderSystemx: public entityx::System<RenderSystemx> {
                 map.draw();
             });
 
+            es.each<SpriteComponent, PositionComponent, KeyboardController>([dt, this](entityx::Entity ent, SpriteComponent & sprite, PositionComponent & position, KeyboardController & keyboard) {
+
+            }
             es.each<SpriteComponent, PositionComponent>([dt, this](entityx::Entity ent, SpriteComponent & sprite, PositionComponent & position) {
                 int kb_held = 0;
                 int gp_held = 0;
@@ -57,6 +60,23 @@ class RenderSystemx: public entityx::System<RenderSystemx> {
                 std::string slidetype = sprite.getSlidetype();
                 short int slideint = sprite.getSlideint();
                 float * slidefactors = sprite.getSlidefactors();
+
+                //     //init
+                // if (map == NULL) {
+                //     slidepos[0] = (int)position.getPos()[0];
+                //     slidepos[1] = (int)position.getPos()[1];
+                // } else {
+                //     slidepos[0] = (int)position.getPos()[0] * tilesize[0];
+                //     slidepos[1] = (int)position.getPos()[1] * tilesize[1];
+                // }
+
+                //initslide
+                if (slidetype == "geometric") {
+                    sprite.setSrcrect(tilesize[0] * 2, tilesize[1] * 2);
+                    sprite.setDestrect(tilesize[0] * 2, tilesize[1] * 2);
+                    slidepos[0] = objectivepos[0] = (int)position.getPos()[0] * tilesize[0] - destrect.w / 4;
+                    slidepos[1] = objectivepos[1] = (int)position.getPos()[1] * tilesize[1] - destrect.h / 4;
+                }
 
                 if (sprite.isAnimated()) { //looping sprites.
                     std::string looping = sprite.getSs_looping();
@@ -70,19 +90,26 @@ class RenderSystemx: public entityx::System<RenderSystemx> {
                     }
                 } else {
                     if (tilesize[0] == 0 && tilesize[1] == 0) { //move on the pixelspace
+                        // SDL_Log("Move on the pixelspace");
                         slidepos[0] = (int)position.getPos()[0];
                         slidepos[1] = (int)position.getPos()[1];
                     } else { //move on the map.
-                        slidepos[0] = (int)position.getPos()[0] * tilesize[0];
-                        slidepos[1] = (int)position.getPos()[1] * tilesize[1];
+                        // SDL_Log("Move on the map");
+                        slidepos[0] = (int)(position.getPos()[0] * tilesize[0]);
+                        slidepos[1] = (int)(position.getPos()[1] * tilesize[1]);
+                        // SDL_Log("Rendering Keyboard Controller %d %d", position.getPos()[0], position.getPos()[1]);
+                        // SDL_Log("Rendering Keyboard Controller %d %d", slidepos[0], slidepos[1]);
                     }
 
                 }
 
                 entityx::ComponentHandle<KeyboardController> keyboard = ent.component<KeyboardController>();
+                // SDL_Log("Rendering Keyboard Controller %d %d", slidepos[0], slidepos[1]);
 
                 if (keyboard) {
-                    // SDL_Log("Rendering Keyboard Controller.");
+                    // SDL_Log("Rendering Keyboard Controller %d %d", tilesize[0], tilesize[1]);
+                    // SDL_Log("Rendering Keyboard Controller %d %d", position.getPos()[0], position.getPos()[1]);
+                    // SDL_Log("Rendering Keyboard Controller %d %d", slidepos[0], slidepos[1]);
                     kb_held = keyboard->getHeldmove();
                 }
 
