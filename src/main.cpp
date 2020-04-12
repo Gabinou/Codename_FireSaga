@@ -65,7 +65,6 @@ int main(int argc, char * argv[]) {
     temp_settings.fontsize = 28; 
     firesaga->setSettings(temp_settings);
     firesaga->init("FireSaga", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, firesaga->getSettings().res.x, firesaga->getSettings().res.y, false);
-    // world->registerSystem(new RenderSystem(firesaga->renderer));
     // firesaga->makeFPSEntity();
 
     // SDL_Log("Testing convoy\n");
