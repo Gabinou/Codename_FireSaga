@@ -40,7 +40,6 @@ class GamepadController {
             return (frames_button);
         }
 
-
         bool isPressed(std::vector<SDL_GameControllerButton> in_map) {
             for (int i = 0; i < in_map.size(); ++i) {
                 if (SDL_GameControllerGetButton(controller, in_map[i])) {

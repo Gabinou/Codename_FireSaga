@@ -3,7 +3,6 @@
 
 #include "enums.hpp"
 #include "structs.hpp"
-// #include "ECS.h"
 #include <entityx/entityx.h>
 #include "SDL2/SDL.h"
 #include "utilities.hpp"
@@ -12,7 +11,7 @@
 #include "linalg.hpp"
 #include <unordered_map>
 
-class Map {
+class Map : public XML_IO {
     private:
         short unsigned int tilesize[2];
         short unsigned int frames = 10, speed = 50;
@@ -58,7 +57,7 @@ class Map {
         std::vector<std::vector<entityx::ComponentHandle<Unit>>> unitmap;
 
         std::unordered_map<int, Tile> tiles;
-        std::vector<short int> tilesasset_ind;
+        std::vector<short int> tilesindex;
 
     public:
         // ECS_DECLARE_TYPE;
@@ -141,6 +140,11 @@ class Map {
 
         void defeat();
         void victory();
+
+        using XML_IO::writeXML;
+        using XML_IO::readXML;
+        void writeXML(tinyxml2::XMLDocument * in_doc, tinyxml2::XMLElement * in_pMap);
+        void readXML(tinyxml2::XMLElement * in_pMap);
 
 };
 

@@ -17,6 +17,18 @@ Map::Map(const short unsigned int width, const short unsigned int height) : Map(
     srcrect.h = destrect.h = height;
 }
 
+
+void Map::writeXML(tinyxml2::XMLDocument * in_doc, tinyxml2::XMLElement * in_pMap) {
+    char buffer[DEFAULT::BUFFER_SIZE];
+    
+    // in_pMap->SetAttribute("id", id);
+    
+    // tinyxml2::XMLElement * pName = in_doc->NewElement("Name");
+    // in_pUnit->InsertEndChild(pName);
+    // pName->SetText(name.c_str());
+
+}
+
 void Map::setTilesize(const short int unsigned width, const short int unsigned height) {
     tilesize[0] = width;
     tilesize[1] = height;
@@ -114,13 +126,13 @@ std::vector<std::vector<short int>> Map::makeMvtCostmap(const unsigned char unit
     return(costmap);
 }
 void Map::loadTiles(const int in_map_index) {
-    tilesasset_ind = chapTiles[in_map_index]();
-    baseTiles(&tiles, tilesasset_ind);
+    tilesindex = chapTiles[in_map_index]();
+    baseTiles(&tiles, tilesindex);
 }
 
 void Map::loadTiles(std::vector<short int> to_load) {
-    tilesasset_ind = to_load;
-    baseTiles(&tiles, tilesasset_ind);
+    tilesindex = to_load;
+    baseTiles(&tiles, tilesindex);
 }
 
 void Map::unloadTiles(std::vector<short int> to_unload) {
@@ -154,10 +166,10 @@ void Map::setRenderer(SDL_Renderer * in_renderer){
 void Map::loadTiletextures() {
     short unsigned int tile_ind;
     std::string texturename;
-    for (short unsigned int i = 0; i < tilesasset_ind.size(); i++) {
-        tile_ind = (tilesasset_ind[i]/DEFAULT::TILE_DIVISOR);
-        texturename = "..//assets//" + tiles[tile_ind].getName() + "_" + std::to_string(tilesasset_ind[i]) + ".png";
-        textures[tilesasset_ind[i]] = loadTexture(renderer, texturename.c_str());
+    for (short unsigned int i = 0; i < tilesindex.size(); i++) {
+        tile_ind = (tilesindex[i]/DEFAULT::TILE_DIVISOR);
+        texturename = "..//assets//" + tiles[tile_ind].getName() + "_" + std::to_string(tilesindex[i]) + ".png";
+        textures[tilesindex[i]] = loadTexture(renderer, texturename.c_str());
     }
 }
 
@@ -227,12 +239,6 @@ std::vector<std::vector<entityx::Entity *>> Map::getEntitymap() {
 std::vector<std::vector<entityx::ComponentHandle<Unit>>> Map::getUnitmap() {
     return(unitmap);
 }
-
-
-// void Map::loadTilemap(const std::string filename) {
-//     tilemap = readcsv_vec<short int>(filename.c_str(), 1);
-//     postTilemap();
-// }
 
 void Map::loadTilemap(const short unsigned int in_map_index) {
     tilemap = chapTilemaps[in_map_index]();
