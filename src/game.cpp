@@ -706,19 +706,19 @@ bool positionCondition(Unit * in_unit, Map_condition * in_mcond) {
             return(false);
         }
     }
-    short int * unitpos = in_unit->getPos();
+    // short int * unitpos = in_unit->getPos();
 
-    if (unitpos[0] < std::max(0, (int)in_mcond->colmin)) {
-        return(false);
-    }
-    if (unitpos[0] > std::min(255, (int)in_mcond->colmax)) {
-        return(false);
-    }
-    if (unitpos[1] < std::max(0, (int)in_mcond->rowmin)) {
-        return(false);
-    }
-    if (unitpos[1] > std::min(255, (int)in_mcond->rowmax)) {
-        return(false);
-    }
+    // if (unitpos[0] < std::max(0, (int)in_mcond->colmin)) {
+    //     return(false);
+    // }
+    // if (unitpos[0] > std::min(255, (int)in_mcond->colmax)) {
+    //     return(false);
+    // }
+    // if (unitpos[1] < std::max(0, (int)in_mcond->rowmin)) {
+    //     return(false);
+    // }
+    // if (unitpos[1] > std::min(255, (int)in_mcond->rowmax)) {
+    //     return(false);
+    // }
     return(true);
 }

@@ -20,7 +20,6 @@ Unit::Unit(const unsigned short int in_id, const unsigned char in_class_index,  
 
 Unit::Unit(const Unit &obj)  {
     setSex(obj.sex);
-    setPos(obj.position);
     setid(obj.id);
     setBases(obj.base_stats);
     setStats(obj.current_stats);
@@ -32,21 +31,6 @@ Unit::Unit(const Unit &obj)  {
     setSupports(obj.supports);
     exp = obj.exp;
     base_exp = obj.base_exp;
-}
-
-
-short int * Unit::getPos() {
-    return(position);
-}
-
-void Unit::setPos(const short int in_pos[2]) {
-    position[0] = in_pos[0];
-    position[1] = in_pos[1];
-}
-
-void Unit::setPos(const Point in_pos) {
-    position[0] = in_pos.y;
-    position[1] = in_pos.x;
 }
 
 bool Unit::getSex() {
@@ -612,19 +596,19 @@ unsigned char Unit::favor() {
 }
 
 bool Unit::canRetaliate(Unit * enemy) const {
-    short int * unit_position;
-    short int * enemy_position;
-    bool retaliates = false;
+    // short int * unit_position;
+    // short int * enemy_position;
+    // bool retaliates = false;
 
-    enemy_position = enemy->getPos();
-    unsigned char distance = std::abs(enemy_position[0] - position[0]) + std::abs(enemy_position[1] - position[1]);
+    // enemy_position = enemy->getPos();
+    // unsigned char distance = std::abs(enemy_position[0] - position[0]) + std::abs(enemy_position[1] - position[1]);
 
-    for (int i = 0; i < 3; i++) {
-        if ((distance >= temp_wpn.range[0]) && (distance <= temp_wpn.range[1])) {
-            retaliates = 1;
-        }
-    }
-    return (retaliates);
+    // for (int i = 0; i < 3; i++) {
+    //     if ((distance >= temp_wpn.range[0]) && (distance <= temp_wpn.range[1])) {
+    //         retaliates = 1;
+    //     }
+    // }
+    return (false);
 }
 
 bool Unit::canDouble(Unit * enemy) {

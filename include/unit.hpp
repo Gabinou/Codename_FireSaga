@@ -44,7 +44,6 @@ class Unit : public XML_IO {
         unsigned char current_hp = 0;
         char current_speed = 0;
 
-        short int position[2] = {0, 0};
         bool sex = false; // 0:F, 1:M
 
         std::string name = "";
@@ -69,14 +68,9 @@ class Unit : public XML_IO {
         void setSex(const bool in_sex);
         bool getSex();
 
-        short int * getPos();
-        void setPos(const short int in_pos[2]);
-        void setPos(const Point in_pos);
-
         unsigned char getMvttype();
         unsigned char getClassind();
         void setClassind(unsigned char in_class_ind);
-
 
         short unsigned int getEquippable();
         void equipsL(const unsigned char index);
