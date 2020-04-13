@@ -38,7 +38,31 @@ void Map::writeXML(tinyxml2::XMLDocument * in_doc, tinyxml2::XMLElement * in_pMa
         pName->SetText(tilenames[i].c_str());
     }
 
+    tinyxml2::XMLElement * pBounds = in_doc->NewElement("Bounds");
+    tinyxml2::XMLElement * pRowmax = in_doc->NewElement("row_max");
+    tinyxml2::XMLElement * pColmax = in_doc->NewElement("col_max");
+    in_pMap->InsertEndChild(pBounds);
+    pBounds->InsertEndChild(pRowmax);
+    pBounds->InsertEndChild(pColmax);
+    pRowmax->SetText(bounds[1]);
+    pColmax->SetText(bounds[3]);
+
+
+
     tinyxml2::XMLElement * pTilemap = in_doc->NewElement("Tilemap");
+    tinyxml2::XMLElement * pIndex = in_doc->NewElement("Index");
+    in_pMap->InsertEndChild(pTilemap);
+
+    for (int i = bounds[0]; i < bounds[1]; i++) {
+        for (int j = bounds[2]; j < bounds[3]; j++) {
+            pTilemap->InsertEndChild(pIndex);
+            in_pMap->SetAttribute("row", i);
+            in_pMap->SetAttribute("col", j);
+            pIndex->SetText(tilemap[j][i]);
+        }
+    }
+
+
 }
 
 void Map::setTilesize(const short int unsigned width, const short int unsigned height) {

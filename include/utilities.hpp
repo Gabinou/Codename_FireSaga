@@ -40,7 +40,6 @@ extern void makeEquippableCodes();
 extern std::vector<std::string> armyNames;
 extern void makeArmyNames();
 
-
 extern void loadUtilities();
 
 extern void printarr(int arr[], int size);
