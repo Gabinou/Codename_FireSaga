@@ -53,7 +53,6 @@ class Map : public XML_IO {
         std::vector<SDL_Texture *> overlays{NULL, NULL, NULL};
         std::vector<SDL_Texture *> dangers{NULL, NULL};
 
-        // std::vector<std::vector<entityx::Entity * >> entitymap;
         std::vector<std::vector<entityx::ComponentHandle<Unit>>> unitmap;
 
         std::unordered_map<int, Tile> tiles;
@@ -94,11 +93,6 @@ class Map : public XML_IO {
         void putUnit(const short unsigned int x, const short unsigned int y, entityx::ComponentHandle<Unit> in_unit);
         entityx::ComponentHandle<Unit> getUnit(const short unsigned int x, const short unsigned int y);
         void moveUnit(const short unsigned int x, const short unsigned int y, const short unsigned int new_x, const short unsigned int new_y);
-
-        void putEnt(const short unsigned int x, const short unsigned int y, entityx::Entity * in_entity);
-        entityx::Entity * getEnt(const short unsigned int x, const short unsigned int y);
-        void removeEnt(const short unsigned int x, const short unsigned int y);
-        void moveEnt(const short unsigned int x, const short unsigned int y, const short unsigned int new_x, const short unsigned int new_y);
 
         void setOverlay(const unsigned char in_mode, std::vector<std::vector<short int>> in_map);
         void clearOverlays();
