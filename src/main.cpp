@@ -37,11 +37,13 @@ int main(int argc, char * argv[]) {
     SDL_Log("Loading base weapons.");
     baseWeapons();
 
-    // ECS::World * world = ECS::World::createWorld();
-    // manager.entities.create();
     // SDL_Log("Testing weapon: %s\n", all_weapons[ITEM::NAME::WOODEN_SWORD].getName().c_str());
     // testXMLWeapons();
     // writeallXMLWeapons();
+
+
+    SDL_Log("Testing map writing.");
+    testXMLMap();
 
     // SDL_Log("Loading base units.");
     // all_units = baseUnits();

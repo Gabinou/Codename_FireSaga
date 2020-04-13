@@ -386,5 +386,9 @@ std::vector<short unsigned int> (*chapArrivalinds[40])() = {testArrivalinds,};
 
 void testXMLMap() {
     SDL_Log("Testing Map xml writing and reading\n");
-
+    Map map(32, 32); // mapx is a pointer
+    map.loadTiles(0);
+    map.loadTilemap(0);
+    map.setArrivals(mapArrivals[0]());
+    map.writeXML("map_test.xml");
 }
