@@ -72,6 +72,7 @@ class PositionComponent {
         void setUpdatable(bool in_updatable) {
             updatable = in_updatable;
         }
+
         bool isUpdatable() {
             return (updatable);
         }

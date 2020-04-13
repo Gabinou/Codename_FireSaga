@@ -115,11 +115,15 @@ void Game::makeFPSEntity() {
 void Game::makeUnitmenu(entityx::Entity &setter) {
     SDL_Log("Making unit menu\n");
     unitmenux = entities.create();
-    unitmenux.assign<PositionComponent>(
-        (int)setter.component<PositionComponent>()->getPos()[0] * settings.tilesize[0],
-        (int)setter.component<PositionComponent>()->getPos()[1] * settings.tilesize[1]
-        );
+    unitmenux.assign<PositionComponent>();
     unitmenux.component<PositionComponent>()->setBounds(0, 2000, 0, 2000);
+    unitmenux.component<PositionComponent>()->setPos(
+        (int)(setter.component<PositionComponent>()->getPos()[0] * settings.tilesize[0]),
+        (int)(setter.component<PositionComponent>()->getPos()[1] * settings.tilesize[1])
+        );
+    SDL_Log("Unitmenu setter position %d %d\n", setter.component<PositionComponent>()->getPos()[0], setter.component<PositionComponent>()->getPos()[1]);
+    SDL_Log("Unitmenu position %d %d\n", unitmenux.component<PositionComponent>()->getPos()[0], unitmenux.component<PositionComponent>()->getPos()[1]);
+
     SDL_Color black = {255, 255, 255};
     unitmenux.assign<SpriteComponent>("..//assets//textbox.png", (int []) {128, 128});
     // I think the menu textures should be loaded elsewhere when initted or first called. Then, should be only unloaded after a while. 

@@ -127,6 +127,11 @@ class SpriteComponent {
             slidepos[1] = objectivepos[1] = (int)in_position[1] * tilesize[1] - destrect.h / 4;
         }
 
+        void setDestrectpos(short int * in_position) {
+            destrect.x = in_position[0];
+            destrect.y = in_position[1];
+        }
+
         void setTexture(const char * in_asset_name) {
             texture = loadTexture(Game::renderer, in_asset_name);
         }

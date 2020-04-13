@@ -137,9 +137,12 @@ class RenderSystemx: public entityx::System<RenderSystemx> {
                 }
 
             });
-            es.each<TextComponent, PositionComponent>([dt, this](entityx::Entity ent, TextComponent & text, PositionComponent) {
+            es.each<TextComponent, PositionComponent>([dt, this](entityx::Entity ent, TextComponent & text, PositionComponent & pos) {
+                short int * position = pos.getPos();
+                // SDL_Log("unit menu position: %d %d", position[0], position[1]);
 
                 if (ent.has_component<SpriteComponent>()) {
+                    ent.component<SpriteComponent>()->setDestrectpos(position);
                     ent.component<SpriteComponent>()->draw();
                 }
 
