@@ -87,28 +87,28 @@ void Map::moveUnit(const short unsigned int x, const short unsigned int y, const
     unitmap[x][y] = buffer;
 }
 
-void Map::putEnt(const short unsigned int x, const short unsigned int y, entityx::Entity * in_entity) {
-    if (made_entitymap) {
-        entitymap[x][y] = in_entity;
-        // SDL_Log("in put ent: %d %d", x, y);
-        // if(in_entity->component<Unit>()) {
-        //     SDL_Log("Put entity has a unit component");
-        // } 
-        // if(entitymap[x][y]->component<Unit>()) {
-        //     SDL_Log("Put entity has a unit component");
-        // }        
-   }
-}
+// void Map::putEnt(const short unsigned int x, const short unsigned int y, entityx::Entity * in_entity) {
+//     if (made_entitymap) {
+//         entitymap[x][y] = in_entity;
+//         // SDL_Log("in put ent: %d %d", x, y);
+//         // if(in_entity->component<Unit>()) {
+//         //     SDL_Log("Put entity has a unit component");
+//         // } 
+//         // if(entitymap[x][y]->component<Unit>()) {
+//         //     SDL_Log("Put entity has a unit component");
+//         // }        
+//    }
+// }
 
-entityx::Entity * Map::getEnt(const short unsigned int x, const short unsigned int y) {
-    // if (made_entitymap) {
-        // SDL_Log("in get ent: %d %d", x, y);    
-        // if(entitymap[x][y]->component<Unit>()) {
-        //     SDL_Log("Got entity has a unit component");
-        // }        
-    // }
-    return(entitymap[x][y]);
-}
+// entityx::Entity * Map::getEnt(const short unsigned int x, const short unsigned int y) {
+//     // if (made_entitymap) {
+//         // SDL_Log("in get ent: %d %d", x, y);    
+//         // if(entitymap[x][y]->component<Unit>()) {
+//         //     SDL_Log("Got entity has a unit component");
+//         // }        
+//     // }
+//     return(entitymap[x][y]);
+// }
 
 void Map::removeEnt(const short unsigned int x, const short unsigned int y) {
     entitymap[x][y] = nullptr;

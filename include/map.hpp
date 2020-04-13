@@ -29,6 +29,7 @@ class Map : public XML_IO {
         unsigned char num_neutral;
         unsigned char num_enemies;
         unsigned char turn = 0; // Automatic loss if turn 255?
+        unsigned char chapter = 0;
 
         std::vector<unsigned short int> essentials = {UNIT::NAME::ERWIN};
         unsigned short int boss;
@@ -52,7 +53,7 @@ class Map : public XML_IO {
         std::vector<SDL_Texture *> overlays{NULL, NULL, NULL};
         std::vector<SDL_Texture *> dangers{NULL, NULL};
 
-        std::vector<std::vector<entityx::Entity * >> entitymap;
+        // std::vector<std::vector<entityx::Entity * >> entitymap;
         std::vector<std::vector<entityx::ComponentHandle<Unit>>> unitmap;
 
         std::unordered_map<int, Tile> tiles;
