@@ -95,9 +95,6 @@ int main(int argc, char * argv[]) {
     while (firesaga->running()) {
         frame_start = std::chrono::high_resolution_clock::now();
         firesaga->handleEvents();
-        // firesaga->update();
-        // firesaga->render();
-        // world->tick(1.);
         firesaga->update(0.001);
         frame_middle = std::chrono::high_resolution_clock::now();
         
