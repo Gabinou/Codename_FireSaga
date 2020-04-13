@@ -2,7 +2,7 @@
 #define ARROWCOMPONENT_HPP
 
 #include "utilities.hpp"
-#include "positioncomponent.hpp"
+#include "position.hpp"
 
 // I want this to not be able to be used for RNG abuse, because fuck RNG abuse.
 
@@ -17,7 +17,7 @@ class ArrowComponent {
         // movement direction is based on computed distance between origin and cursor.
         std::vector <std::vector<short int>> open_tiles;
         // Entity * cursor;
-        PositionComponent * positioncomponent;
+        Position * position;
         bool visible;
         bool updatable;
         short int move = 6; //temporary, waiting for units to be able to give their move units.
@@ -55,17 +55,17 @@ class ArrowComponent {
 
 
         virtual void init() {
-            // positioncomponent = &entity->getComponent<PositionComponent>();
-            origin = positioncomponent->getPos();
+            // position = &entity->getComponent<Position>();
+            origin = position->getPos();
         }
 
         virtual void update() {
 
 
-            // short int * objectivepos = cursor->getComponent<PositionComponent>().getPos();
+            // short int * objectivepos = cursor->getComponent<Position>().getPos();
 
 
-            // if (!cursor->getComponent<PositionComponent>().isUpdatable()) {
+            // if (!cursor->getComponent<Position>().isUpdatable()) {
             //     if (path.size() < move) {
             //         path.push_back(std::vector<short int>());
             //         path[path.size()].push_back(objectivepos[0]);

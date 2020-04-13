@@ -44,7 +44,7 @@ class RenderSystemx: public entityx::System<RenderSystemx> {
             });
             // RENDERING NOTE: First laded, last animated.
             // -> load cursor first to render it over everything else.
-            es.each<Sprite, PositionComponent>([dt, this](entityx::Entity ent, Sprite & sprite, PositionComponent & position) {
+            es.each<Sprite, Position>([dt, this](entityx::Entity ent, Sprite & sprite, Position & position) {
                 if (!ent.has_component<TextComponent>()) {
                     int kb_held = 0;
                     int gp_held = 0;
@@ -137,7 +137,7 @@ class RenderSystemx: public entityx::System<RenderSystemx> {
                 }
 
             });
-            es.each<TextComponent, PositionComponent>([dt, this](entityx::Entity ent, TextComponent & text, PositionComponent & pos) {
+            es.each<TextComponent, Position>([dt, this](entityx::Entity ent, TextComponent & text, Position & pos) {
                 short int * position = pos.getPos();
                 // SDL_Log("unit menu position: %d %d", position[0], position[1]);
 
@@ -191,7 +191,7 @@ class ControlSystemx: public entityx::System<ControlSystemx> {
                 unitmap = map.getUnitmap();
             });
 
-            es.each<KeyboardController, PositionComponent>([dt, this](entityx::Entity ent, KeyboardController & keyboard, PositionComponent & position) {
+            es.each<KeyboardController, Position>([dt, this](entityx::Entity ent, KeyboardController & keyboard, Position & position) {
                 const Uint8 * kb_state = SDL_GetKeyboardState(NULL);
                 std::vector<std::vector<SDL_Scancode>> pressed_move{};
                 std::vector<std::vector<SDL_Scancode>> pressed_button{};
@@ -253,7 +253,7 @@ class ControlSystemx: public entityx::System<ControlSystemx> {
                 keyboard.check_move(pressed_move);
                 keyboard.check_button(pressed_button);
             });
-            es.each<GamepadController, PositionComponent>([dt, this](entityx::Entity ent, GamepadController & gamepad, PositionComponent & position) {
+            es.each<GamepadController, Position>([dt, this](entityx::Entity ent, GamepadController & gamepad, Position & position) {
                 SDL_GameController * controller = gamepad.getController();
                 Sint16 mainxaxis = SDL_GameControllerGetAxis(controller, gamepadInputMap.mainxaxis[0]);
                 Sint16 mainyaxis = SDL_GameControllerGetAxis(controller, gamepadInputMap.mainyaxis[0]);

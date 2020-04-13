@@ -1,7 +1,7 @@
 #include "game.hpp"
 #include "systems.hpp"
 #include "sprite.hpp"
-#include "positioncomponent.hpp"
+#include "position.hpp"
 #include "arrowcomponent.hpp"
 #include "textcomponent.hpp"
 #include "keyboardcontroller.hpp"
@@ -105,9 +105,9 @@ void Game::fight(Unit * attacker, Unit * defender) {
 
 void Game::makeFPSEntity() {
     settings.FPS.entity = entities.create();
-    settings.FPS.entity.assign<PositionComponent>();
-    settings.FPS.entity.component<PositionComponent>()->setBounds(0, settings.res.x, 0, settings.res.y);
-    settings.FPS.entity.component<PositionComponent>()->setPos(settings.FPS.pos.x, settings.FPS.pos.y);
+    settings.FPS.entity.assign<Position>();
+    settings.FPS.entity.component<Position>()->setBounds(0, settings.res.x, 0, settings.res.y);
+    settings.FPS.entity.component<Position>()->setPos(settings.FPS.pos.x, settings.FPS.pos.y);
     settings.FPS.entity.assign<TextComponent>(settings.fontsize, "60", settings.FPS.textcolor);
     settings.FPS.entity.component<TextComponent>()->setSizefactor(settings.FPS.sizefactor);
     settings.FPS.entity.component<TextComponent>()->setRects(settings.FPS.pos.x, settings.FPS.pos.y);
@@ -116,14 +116,14 @@ void Game::makeFPSEntity() {
 void Game::makeUnitmenu(entityx::Entity &setter) {
     SDL_Log("Making unit menu\n");
     unitmenux = entities.create();
-    unitmenux.assign<PositionComponent>();
-    unitmenux.component<PositionComponent>()->setBounds(0, 2000, 0, 2000);
-    unitmenux.component<PositionComponent>()->setPos(
-        (int)(setter.component<PositionComponent>()->getPos()[0] * settings.tilesize[0]),
-        (int)(setter.component<PositionComponent>()->getPos()[1] * settings.tilesize[1])
+    unitmenux.assign<Position>();
+    unitmenux.component<Position>()->setBounds(0, 2000, 0, 2000);
+    unitmenux.component<Position>()->setPos(
+        (int)(setter.component<Position>()->getPos()[0] * settings.tilesize[0]),
+        (int)(setter.component<Position>()->getPos()[1] * settings.tilesize[1])
         );
-    SDL_Log("Unitmenu setter position %d %d\n", setter.component<PositionComponent>()->getPos()[0], setter.component<PositionComponent>()->getPos()[1]);
-    SDL_Log("Unitmenu position %d %d\n", unitmenux.component<PositionComponent>()->getPos()[0], unitmenux.component<PositionComponent>()->getPos()[1]);
+    SDL_Log("Unitmenu setter position %d %d\n", setter.component<Position>()->getPos()[0], setter.component<Position>()->getPos()[1]);
+    SDL_Log("Unitmenu position %d %d\n", unitmenux.component<Position>()->getPos()[0], unitmenux.component<Position>()->getPos()[1]);
 
     SDL_Color black = {255, 255, 255};
     unitmenux.assign<Sprite>("..//assets//textbox.png", (int []) {128, 128});
@@ -157,9 +157,6 @@ void Game::setState(entityx::Entity setter, short unsigned int new_state) {
             break;
         case GAME::STATE::MAP:
             switch (new_state) {
-                case GAME::STATE::UNITMENU:
-                    // moveUnit(setter);
-                    break;
                 case GAME::STATE::STATS:
                     break;
                 case GAME::STATE::MINIMAP:
@@ -169,7 +166,7 @@ void Game::setState(entityx::Entity setter, short unsigned int new_state) {
                     std::vector<std::vector<short int>> costmap;
                     std::vector<std::vector<short int>> movemapp;
                     std::vector<std::vector<short int>> attackmapp;
-                    entityx::ComponentHandle<PositionComponent> cursorpos; // because setter should be the cursor.
+                    entityx::ComponentHandle<Position> cursorpos; // because setter should be the cursor.
                     entityx::ComponentHandle<Unit> unitcomp;
                     short unsigned int * start;
                     short unsigned int unit_move;
@@ -177,7 +174,7 @@ void Game::setState(entityx::Entity setter, short unsigned int new_state) {
                     unsigned char unitmvttype;
                     unsigned char * range;
 
-                    cursorpos = setter.component<PositionComponent>();
+                    cursorpos = setter.component<Position>();
                     unitcomp = setter.component<Unit>();
                     selected = unitcomp.entity();
                     if (cursorpos) {
@@ -277,13 +274,13 @@ void Game::setState(entityx::Entity setter, short unsigned int new_state) {
                     short int * new_position;
                     short int * old_position;
 
-                    entityx::ComponentHandle<PositionComponent> setterpos;
-                    entityx::ComponentHandle<PositionComponent> selectedpos;
+                    entityx::ComponentHandle<Position> setterpos;
+                    entityx::ComponentHandle<Position> selectedpos;
                     entityx::ComponentHandle<Unit> unitcomp;
-                    setterpos = setter.component<PositionComponent>();
+                    setterpos = setter.component<Position>();
 
                     if (selected.valid()) {
-                        selectedpos = selected.component<PositionComponent>();
+                        selectedpos = selected.component<Position>();
                         if (selectedpos) {
                             old_position = selectedpos->getPos();
                             // SDL_Log("Old position %d, %d \n", old_position[0], old_position[1]);
@@ -301,7 +298,7 @@ void Game::setState(entityx::Entity setter, short unsigned int new_state) {
                         SDL_Log("Could not get setter(unit) position component");
                     }
                     mapx->moveUnit(old_position[0], old_position[1], new_position[0], new_position[1]);
-                    unitmenux.component<PositionComponent>()->setPos(new_position[0] * settings.tilesize[0], new_position[1] * settings.tilesize[1]);
+                    unitmenux.component<Position>()->setPos(new_position[0] * settings.tilesize[0], new_position[1] * settings.tilesize[1]);
                     selectedpos->setPos(new_position); // move at the end, cause new and old_position are pointers!
                     }
                     break;
@@ -378,7 +375,7 @@ void Game::loadCursor() {
     // Map should be loaded before I think.
     if (this->state == GAME::STATE::MAP) {
         cursorx = entities.create();
-        cursorx.assign<PositionComponent>(6, 6);
+        cursorx.assign<Position>(6, 6);
         cursorx.assign<KeyboardController>();
         cursorx.assign<GamepadController>();
         if (SDL_NumJoysticks() < 1) {
@@ -388,8 +385,8 @@ void Game::loadCursor() {
         }
         cursorx.assign<Sprite>("..//assets//cursors.png", 10, 50);
         cursorx.component<Sprite>()->setSlidetype(SLIDETYPE::GEOMETRIC, mapx->getTilesize());
-        cursorx.component<PositionComponent>()->setBounds(mapx->getBounds());
-        cursorx.component<Sprite>()->init(cursorx.component<PositionComponent>()->getPos());
+        cursorx.component<Position>()->setBounds(mapx->getBounds());
+        cursorx.component<Sprite>()->init(cursorx.component<Position>()->getPos());
     }
 }
 
@@ -408,7 +405,7 @@ void Game::loadUnitEntities(std::vector<short unsigned int> unit_inds, std::vect
         asset_name = "..//assets//" +  Utemp.getName() + ".png";
         Uent = entities.create();
         Uent.assign<Unit>(units[unit_inds[i]]);
-        Uent.assign<PositionComponent>(positions_list[i][0], positions_list[i][1]);
+        Uent.assign<Position>(positions_list[i][0], positions_list[i][1]);
         Uent.assign<Sprite>(asset_name.c_str());
         mapx->putEnt(positions_list[i][0], positions_list[i][1], &Uent);
         mapx->putUnit(positions_list[i][0], positions_list[i][1], Uent.component<Unit>());
@@ -429,7 +426,7 @@ void Game::loadMapArrivals() {
                 asset_name = "..//assets//horse.png";
                 // asset_name = "..//assets//" +  Utemp.getName() + ".png";
                 Uent = entities.create();
-                Uent.assign<PositionComponent>(map_arrivals[i].position.x, map_arrivals[i].position.y);
+                Uent.assign<Position>(map_arrivals[i].position.x, map_arrivals[i].position.y);
                 Uent.assign<Sprite>(asset_name.c_str());
             }
         }

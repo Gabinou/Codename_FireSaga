@@ -3,7 +3,7 @@
 
 #include "map.hpp"
 #include "filesystem.hpp"
-#include "positioncomponent.hpp"
+#include "position.hpp"
 #include "keyboardcontroller.hpp"
 #include "gamepadcontroller.hpp"
 #include "game.hpp"
