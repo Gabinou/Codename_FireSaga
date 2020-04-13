@@ -110,16 +110,16 @@ void Map::moveUnit(const short unsigned int x, const short unsigned int y, const
 //     return(entitymap[x][y]);
 // }
 
-void Map::removeEnt(const short unsigned int x, const short unsigned int y) {
-    entitymap[x][y] = nullptr;
-}
+// void Map::removeEnt(const short unsigned int x, const short unsigned int y) {
+//     entitymap[x][y] = nullptr;
+// }
 
-void Map::moveEnt(const short unsigned int x, const short unsigned int y, const short unsigned int new_x, const short unsigned int new_y) {
-    SDL_Log("Move ent");
-    entityx::Entity * buffer = entitymap[new_x][new_y];
-    entitymap[new_x][new_y] = entitymap[x][y];
-    entitymap[x][y] = buffer;
-}
+// void Map::moveEnt(const short unsigned int x, const short unsigned int y, const short unsigned int new_x, const short unsigned int new_y) {
+//     SDL_Log("Move ent");
+//     entityx::Entity * buffer = entitymap[new_x][new_y];
+//     entitymap[new_x][new_y] = entitymap[x][y];
+//     entitymap[x][y] = buffer;
+// }
 
 
 void Map::setArrivalEquipments(const std::vector<std::vector<Inventory_item>> in_arrival_equipments) {
@@ -268,9 +268,9 @@ void Map::initVars() {
     srcrect.h = destrect.h = DEFAULT::TILESIZE;
 }
 
-std::vector<std::vector<entityx::Entity *>> Map::getEntitymap() {
-    return(entitymap);
-}
+// std::vector<std::vector<entityx::Entity *>> Map::getEntitymap() {
+//     return(entitymap);
+// }
 
 std::vector<std::vector<entityx::ComponentHandle<Unit>>> Map::getUnitmap() {
     return(unitmap);
@@ -287,8 +287,6 @@ void Map::postTilemap() {
     short unsigned int row_size = tilemap[0].size();
     bounds[1] = row_size;
     bounds[3] = col_size;
-    std::vector<std::vector<entityx::Entity *>> tempent(row_size, std::vector<entityx::Entity *>(col_size));
-    entitymap = tempent;
     std::vector<std::vector<entityx::ComponentHandle<Unit>>> tempunit(row_size, std::vector<entityx::ComponentHandle<Unit>>(col_size));
     unitmap = tempunit; 
 }

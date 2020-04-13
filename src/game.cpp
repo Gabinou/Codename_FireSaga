@@ -407,7 +407,7 @@ void Game::loadUnitEntities(std::vector<short unsigned int> unit_inds, std::vect
         Uent.assign<Unit>(units[unit_inds[i]]);
         Uent.assign<Position>(positions_list[i][0], positions_list[i][1]);
         Uent.assign<Sprite>(asset_name.c_str());
-        mapx->putEnt(positions_list[i][0], positions_list[i][1], &Uent);
+        // mapx->putEnt(positions_list[i][0], positions_list[i][1], &Uent);
         mapx->putUnit(positions_list[i][0], positions_list[i][1], Uent.component<Unit>());
     }
 }
