@@ -625,26 +625,6 @@ void Game::handleEvents() {
     }
 }
 
-// std::vector<Entity *> & unitEntities = Game::manager.getGroup(Game::manager.groupUnits);
-// std::vector<Entity *> & uxEntities = Game::manager.getGroup(Game::manager.groupUI);
-
-// void Game::render() {
-//     SDL_RenderClear(renderer);
-// //     // Add stuff to render. Paint the background First.
-
-//     mapx->drawMap();
-
-// //     for (auto& u : unitEntities) {
-// //         u->draw();
-// //     }
-
-// //     for (auto& u : uxEntities) {
-// //         u->draw();
-// //     }
-
-//     SDL_RenderPresent(renderer);
-// }
-
 void Game::clean() {
     SDL_DestroyWindow(window);
     SDL_DestroyRenderer(renderer);
@@ -655,7 +635,6 @@ void Game::clean() {
 bool Game::running() {
     return (isRunning);
 }
-
 
 void Game::update(entityx::TimeDelta dt) {
     // systems.update_all(dt);
