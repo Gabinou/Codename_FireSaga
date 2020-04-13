@@ -94,6 +94,7 @@ class Map {
 
         void putUnit(const short unsigned int x, const short unsigned int y, entityx::ComponentHandle<Unit> in_unit);
         entityx::ComponentHandle<Unit> getUnit(const short unsigned int x, const short unsigned int y);
+        void moveUnit(const short unsigned int x, const short unsigned int y, const short unsigned int new_x, const short unsigned int new_y);
 
         void putEnt(const short unsigned int x, const short unsigned int y, entityx::Entity * in_entity);
         entityx::Entity * getEnt(const short unsigned int x, const short unsigned int y);

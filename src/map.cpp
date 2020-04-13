@@ -34,6 +34,13 @@ entityx::ComponentHandle<Unit> Map::getUnit(const short unsigned int x, const sh
     return(unitmap[x][y]);
 }
 
+void Map::moveUnit(const short unsigned int x, const short unsigned int y, const short unsigned int new_x, const short unsigned int new_y) {
+    SDL_Log("Move Unit");
+    entityx::ComponentHandle<Unit> buffer = unitmap[new_x][new_y];
+    unitmap[new_x][new_y] = unitmap[x][y];
+    unitmap[x][y] = buffer;
+}
+
 void Map::putEnt(const short unsigned int x, const short unsigned int y, entityx::Entity * in_entity) {
     if (made_entitymap) {
         entitymap[x][y] = in_entity;

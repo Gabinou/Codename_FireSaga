@@ -125,22 +125,9 @@ void Game::makeUnitmenu(entityx::Entity &setter) {
     unitmenux.assign<TextComponent>(settings.fontsize, std::vector<std::string> {"Attack", "Wait"}, black);
 }
 
-// void Game::killMenu(short unsigned int index) {
-//     if (menus[index] > -1) {
-//         manager.getEntities()[menus[index]]->destroy();
-//         menus[index] = -1;
-//     } else {
-//         SDL_Log("Could not destroy menu %d.", index);
-//     }
-// }
-
-// void Game::moveUnit(entityx::Entity &cursor) {
-//     // USELESS?
-//     int newPos[2];
-//     newPos[0] = cursor.getComponent<PositionComponent>().getPos()[0];
-//     newPos[1] = cursor.getComponent<PositionComponent>().getPos()[1];
-//     manager.getEntities()[unit_entities.top()]->getComponent<PositionComponent>();
-// }
+void Game::killMenu(short unsigned int index) {
+    unitmenux.destroy();
+}
 
 // I think this function is too big. Find a way to reduce it...
 void Game::setState(entityx::Entity setter, short unsigned int new_state) {
@@ -301,7 +288,7 @@ void Game::setState(entityx::Entity setter, short unsigned int new_state) {
 
                     selectedpos->setPos(new_position);
                     
-                    mapx->moveEnt(old_position[0], old_position[1], new_position[0], new_position[1]);
+                    mapx->moveUnit(old_position[0], old_position[1], new_position[0], new_position[1]);
                     
                     }
                     break;
@@ -321,7 +308,7 @@ void Game::setState(entityx::Entity setter, short unsigned int new_state) {
                 case GAME::STATE::CONVERSATION:
                     break;
                 case GAME::STATE::MAP:
-                    // killMenu(GAME::STATE::UNITMENU);
+                    killMenu(GAME::STATE::UNITMENU);
                     break;       
                 }
             break;
