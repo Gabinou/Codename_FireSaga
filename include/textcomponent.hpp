@@ -21,6 +21,7 @@ class TextComponent {
         int padding[4] = {10, 10, 10, 10}; //html style: up right down left
         int fontsize;
 
+        bool visible = true;
         float spacingfactor = 1.1;
         float sizefactor[2] = {0.5, 0.5}; // height, width
 
@@ -30,6 +31,17 @@ class TextComponent {
         void setFontsize(int in_fontsize) {
             fontsize = in_fontsize;
             linespacing = (int)(fontsize * sizefactor[0] * spacingfactor);
+        }
+
+        void show() {
+            visible = true;
+        }
+
+        void hide() {
+            visible = false;
+        }
+        bool isVisible() {
+            return (visible);
         }
 
         void setSpacingfactor(float in_factor) {
@@ -141,8 +153,10 @@ class TextComponent {
 
         void draw() {
             // Find a way to draw text letter by letter, word by word, etc. for future script.
-            for (int i = 0; i < textures.size(); i++) {
-                SDL_RenderCopy(Game::renderer, textures[i], &srcrects[i], &destrects[i]);
+            if (visible) {
+                for (int i = 0; i < textures.size(); i++) {
+                    SDL_RenderCopy(Game::renderer, textures[i], &srcrects[i], &destrects[i]);
+                }
             }
         }
 };
