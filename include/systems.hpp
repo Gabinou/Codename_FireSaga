@@ -273,13 +273,12 @@ class ControlSystemx: public entityx::System<ControlSystemx> {
                 entityx::Entity setter;
 
                 if (gamepad.isPressed(gamepadInputMap.accept)) {
+                    SDL_Log("Gamepad pressed accept.");
                     pressed_button.push_back(gamepadInputMap.accept);
                     short int toset = -1;
                     entityx::Entity setter;
                     entityx::ComponentHandle<Unit> unitontile = unitmap[position.getPos()[0]][position.getPos()[1]];
                     unsigned int frames_button = gamepad.getHeldbutton();
-
-                    SDL_Log("cursor Position, %d %d \n", position.getPos()[0], position.getPos()[1]);
 
                     if ((game->getState() == GAME::STATE::MAP) && (frames_button == 1)) {
                         SDL_Log("cursor Position, %d %d \n", position.getPos()[0], position.getPos()[1]);
