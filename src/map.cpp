@@ -47,18 +47,16 @@ void Map::writeXML(tinyxml2::XMLDocument * in_doc, tinyxml2::XMLElement * in_pMa
     pRowmax->SetText(bounds[1]);
     pColmax->SetText(bounds[3]);
 
-
-
     tinyxml2::XMLElement * pTilemap = in_doc->NewElement("Tilemap");
     tinyxml2::XMLElement * pIndex = in_doc->NewElement("Index");
     in_pMap->InsertEndChild(pTilemap);
 
-    for (int i = bounds[0]; i < bounds[1]; i++) {
-        for (int j = bounds[2]; j < bounds[3]; j++) {
+    for (int row = 0; row < tilemap.size(); row++) {// This loop cache friendly.
+        for (int col = 0; col < tilemap[row].size(); col++) {
             pTilemap->InsertEndChild(pIndex);
-            in_pMap->SetAttribute("row", i);
-            in_pMap->SetAttribute("col", j);
-            pIndex->SetText(tilemap[j][i]);
+            in_pMap->SetAttribute("row", row);
+            in_pMap->SetAttribute("col", col);
+            pIndex->SetText(tilemap[row][col]);
         }
     }
 
@@ -289,9 +287,9 @@ void Map::postTilemap() {
     short unsigned int row_size = tilemap[0].size();
     bounds[1] = row_size;
     bounds[3] = col_size;
-    std::vector<std::vector<entityx::Entity *>> tempent(bounds[1], std::vector<entityx::Entity *>(bounds[3]));
+    std::vector<std::vector<entityx::Entity *>> tempent(row_size, std::vector<entityx::Entity *>(col_size));
     entitymap = tempent;
-    std::vector<std::vector<entityx::ComponentHandle<Unit>>> tempunit(bounds[1], std::vector<entityx::ComponentHandle<Unit>>(bounds[3]));
+    std::vector<std::vector<entityx::ComponentHandle<Unit>>> tempunit(row_size, std::vector<entityx::ComponentHandle<Unit>>(col_size));
     unitmap = tempunit; 
 }
 
