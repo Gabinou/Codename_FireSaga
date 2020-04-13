@@ -3,7 +3,7 @@
 #include "sprite.hpp"
 #include "position.hpp"
 #include "arrowcomponent.hpp"
-#include "textcomponent.hpp"
+#include "text.hpp"
 #include "keyboardcontroller.hpp"
 #include "gamepadcontroller.hpp"
 // #ifndef STB_SPRINTF_IMPLEMENTATION
@@ -108,9 +108,9 @@ void Game::makeFPSEntity() {
     settings.FPS.entity.assign<Position>();
     settings.FPS.entity.component<Position>()->setBounds(0, settings.res.x, 0, settings.res.y);
     settings.FPS.entity.component<Position>()->setPos(settings.FPS.pos.x, settings.FPS.pos.y);
-    settings.FPS.entity.assign<TextComponent>(settings.fontsize, "60", settings.FPS.textcolor);
-    settings.FPS.entity.component<TextComponent>()->setSizefactor(settings.FPS.sizefactor);
-    settings.FPS.entity.component<TextComponent>()->setRects(settings.FPS.pos.x, settings.FPS.pos.y);
+    settings.FPS.entity.assign<Text>(settings.fontsize, "60", settings.FPS.textcolor);
+    settings.FPS.entity.component<Text>()->setSizefactor(settings.FPS.sizefactor);
+    settings.FPS.entity.component<Text>()->setRects(settings.FPS.pos.x, settings.FPS.pos.y);
 }
 
 void Game::makeUnitmenu(entityx::Entity &setter) {
@@ -129,7 +129,7 @@ void Game::makeUnitmenu(entityx::Entity &setter) {
     unitmenux.assign<Sprite>("..//assets//textbox.png", (int []) {128, 128});
     // I think the menu textures should be loaded elsewhere when initted or first called. Then, should be only unloaded after a while. 
     //Not loaded and unloaded after EACH CALL.
-    unitmenux.assign<TextComponent>(settings.fontsize, std::vector<std::string> {"Attack", "Wait"}, black);
+    unitmenux.assign<Text>(settings.fontsize, std::vector<std::string> {"Attack", "Wait"}, black);
 }
 
 void Game::killMenu(short unsigned int index) {
@@ -137,11 +137,11 @@ void Game::killMenu(short unsigned int index) {
 }
 void Game::hideMenu(short unsigned int index) {
     unitmenux.component<Sprite>()->hide();
-    unitmenux.component<TextComponent>()->hide();
+    unitmenux.component<Text>()->hide();
 }
 void Game::showMenu(short unsigned int index) {
     unitmenux.component<Sprite>()->show();
-    unitmenux.component<TextComponent>()->show();
+    unitmenux.component<Text>()->show();
 }
 
 // I think this function is too big. Find a way to reduce it...

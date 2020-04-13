@@ -5,7 +5,7 @@
 #include "map.hpp"
 // #include "game.hpp"
 #include "sprite.hpp"
-#include "textcomponent.hpp"
+#include "text.hpp"
 #include "keyboardcontroller.hpp"
 #include "gamepadcontroller.hpp"
 #include <entityx/entityx.h>
@@ -45,7 +45,7 @@ class RenderSystemx: public entityx::System<RenderSystemx> {
             // RENDERING NOTE: First laded, last animated.
             // -> load cursor first to render it over everything else.
             es.each<Sprite, Position>([dt, this](entityx::Entity ent, Sprite & sprite, Position & position) {
-                if (!ent.has_component<TextComponent>()) {
+                if (!ent.has_component<Text>()) {
                     int kb_held = 0;
                     int gp_held = 0;
                     short int frames = sprite.getFrames();
@@ -137,7 +137,7 @@ class RenderSystemx: public entityx::System<RenderSystemx> {
                 }
 
             });
-            es.each<TextComponent, Position>([dt, this](entityx::Entity ent, TextComponent & text, Position & pos) {
+            es.each<Text, Position>([dt, this](entityx::Entity ent, Text & text, Position & pos) {
                 short int * position = pos.getPos();
                 // SDL_Log("unit menu position: %d %d", position[0], position[1]);
 
