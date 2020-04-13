@@ -179,15 +179,12 @@ void Game::setState(entityx::Entity setting_entity, short unsigned int new_state
                     unsigned char unitmvttype;
                     unsigned char * range;
 
-                    SDL_Log("Works until now");
-
                     cursorpos = setting_entity.component<PositionComponent>();
                     unitcomp = setting_entity.component<Unit>();
                     if (cursorpos) {
                         start[0] = (short unsigned int)cursorpos->getPos()[0];
                         start[1] = (short unsigned int)cursorpos->getPos()[1];
                         SDL_Log("%d %d", cursorpos->getPos()[0], cursorpos->getPos()[1]);
-
                     } else {
                         SDL_Log("Could not get cursor position component");
                     }
