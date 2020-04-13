@@ -211,7 +211,6 @@ std::vector<std::string> wpnTypes(short unsigned int in_typecode) {
     if ((in_typecode & ITEM::TYPE::LANCE) > 0) {
         types.push_back("Lance");
     }
-    }
     if ((in_typecode & ITEM::TYPE::AXE) > 0) {
         types.push_back("Axe");
     }
@@ -394,7 +393,7 @@ void makewpnNames() {
     wpnNames.push_back("Cross");
 }
 
-std::vector<std::string> gettileNames(std::vector<short int> in_tilesindex) {
+std::vector<std::string> getTilenames(std::vector<short int> in_tilesindex) {
     std::vector<std::string> out;
     short int index;
     for (int i = 0; i < in_tilesindex.size(); i++) {

@@ -58,6 +58,7 @@ class Map : public XML_IO {
 
         std::unordered_map<int, Tile> tiles;
         std::vector<short int> tilesindex;
+        std::vector<std::string> tilenames;
 
     public:
         // ECS_DECLARE_TYPE;

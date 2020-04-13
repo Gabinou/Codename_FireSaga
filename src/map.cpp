@@ -29,15 +29,16 @@ void Map::writeXML(tinyxml2::XMLDocument * in_doc, tinyxml2::XMLElement * in_pMa
     tinyxml2::XMLElement * pTiles = in_doc->NewElement("Tiles");
     in_pMap->InsertEndChild(pTiles);
     tinyxml2::XMLElement * pTile = in_doc->NewElement("Tile");
-    for (int i = 0; i < tilesindex.size(); i++) {
+    tinyxml2::XMLElement * pName = in_doc->NewElement("Name");
 
+    for (int i = 0; i < tilesindex.size(); i++) {
         pTile->SetAttribute("id", tilesindex[i]);
         pTiles->InsertEndChild(pTile);
-
+        pTile->InsertEndChild(pName);
+        pName->SetText(tilenames[i].c_str());
     }
-    // in_pMap->SetAttribute("id", id);
-    // pName->SetText(name.c_str());
 
+    tinyxml2::XMLElement * pTilemap = in_doc->NewElement("Tilemap");
 }
 
 void Map::setTilesize(const short int unsigned width, const short int unsigned height) {
@@ -138,11 +139,13 @@ std::vector<std::vector<short int>> Map::makeMvtCostmap(const unsigned char unit
 }
 void Map::loadTiles(const int in_map_index) {
     tilesindex = chapTiles[in_map_index]();
+    tilenames = getTilenames(tilesindex);
     baseTiles(&tiles, tilesindex);
 }
 
 void Map::loadTiles(std::vector<short int> to_load) {
     tilesindex = to_load;
+    tilenames = getTilenames(tilesindex);
     baseTiles(&tiles, tilesindex);
 }
 
