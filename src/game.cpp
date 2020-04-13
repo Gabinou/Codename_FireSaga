@@ -168,7 +168,7 @@ void Game::setState(entityx::Entity setter, short unsigned int new_state) {
                     std::vector<std::vector<short int>> movemapp;
                     std::vector<std::vector<short int>> attackmapp;
                     entityx::ComponentHandle<PositionComponent> cursorpos; // because setter should be the cursor.
-                    entityx::ComponentHandle<Unit> selected;
+                    entityx::ComponentHandle<Unit> unitcomp;
                     short unsigned int start[2];
                     short unsigned int unit_move;
                     short unsigned int current_unit_id;
@@ -176,8 +176,8 @@ void Game::setState(entityx::Entity setter, short unsigned int new_state) {
                     unsigned char * range;
 
                     cursorpos = setter.component<PositionComponent>();
-                    selected = setter.component<Unit>();
-                    selectedx = selected.entity();
+                    unitcomp = setter.component<Unit>();
+                    selected = unitcomp.entity();
                     if (cursorpos) {
                         start[0] = (short unsigned int)cursorpos->getPos()[0];
                         start[1] = (short unsigned int)cursorpos->getPos()[1];
@@ -186,10 +186,10 @@ void Game::setState(entityx::Entity setter, short unsigned int new_state) {
                         SDL_Log("Could not get cursor position component");
                     }
 
-                    if (selected) {
-                        unit_move = selected->getStats().move;
-                        unitmvttype = selected->getMvttype();
-                        range = selected->getRange();
+                    if (unitcomp) {
+                        unit_move = unitcomp->getStats().move;
+                        unitmvttype = unitcomp->getMvttype();
+                        range = unitcomp->getRange();
                     } else {
                         SDL_Log("Could not get unit component");
                     }
@@ -275,21 +275,15 @@ void Game::setState(entityx::Entity setter, short unsigned int new_state) {
                     short int *old_position;
 
                     entityx::ComponentHandle<PositionComponent> setterpos;
+                    entityx::ComponentHandle<PositionComponent> selectedpos;
                     entityx::ComponentHandle<Unit> unitcomp;
                     setterpos = setter.component<PositionComponent>();
 
-                    if (selected) {
-                        old_position = selected->getPos();
-                        SDL_Log("Old position %d, %d \n", old_position[0], old_position[1]);
-                    } else {
-                        SDL_Log("Could not get selected unit component");
-                    }   
-
-                    if (selectedx.valid()) {
-                        unitcomp = selectedx.component<Unit>();
-                        if (unitcomp) {
+                    if (selected.valid()) {
+                        selectedpos = selected.component<PositionComponent>();
+                        if (selectedpos) {
                             SDL_Log("Got unitcomp");
-                            old_position = unitcomp->getPos();
+                            old_position = selectedpos->getPos();
                             SDL_Log("Old position %d, %d \n", old_position[0], old_position[1]);
                         } else {
                             SDL_Log("Could not get selectedx unit component");
@@ -297,8 +291,6 @@ void Game::setState(entityx::Entity setter, short unsigned int new_state) {
                     } else {
                         SDL_Log("Could not get selected entity");
                     }              
-
-
 
                     if (setterpos) {
                         new_position = setterpos->getPos();
