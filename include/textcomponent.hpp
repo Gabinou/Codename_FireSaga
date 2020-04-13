@@ -115,7 +115,11 @@ class TextComponent {
             // Should wrap text inside the background texture and pâdding.
         }
 
-        void initRects(short int x, short int y) {
+        void setRects(short int * in_position) {
+            setRects(in_position[0], in_position[1]);
+        }
+
+        void setRects(short int x, short int y) {
             srcrects[0].x = srcrects[0].y = 0;
             destrects[0].x = x + padding[3];
             destrects[0].y = y + padding[0];

@@ -146,6 +146,7 @@ class RenderSystemx: public entityx::System<RenderSystemx> {
                     ent.component<SpriteComponent>()->draw();
                 }
 
+                text.setRects(position);
                 text.draw();
             });
             SDL_RenderPresent(renderer);

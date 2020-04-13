@@ -109,7 +109,7 @@ void Game::makeFPSEntity() {
     settings.FPS.entity.component<PositionComponent>()->setBounds(0, settings.res.x, 0, settings.res.y);
     settings.FPS.entity.assign<TextComponent>(settings.fontsize, "60", settings.FPS.textcolor);
     settings.FPS.entity.component<TextComponent>()->setSizefactor(settings.FPS.sizefactor);
-    settings.FPS.entity.component<TextComponent>()->initRects(settings.FPS.pos.x, settings.FPS.pos.y);
+    settings.FPS.entity.component<TextComponent>()->setRects(settings.FPS.pos.x, settings.FPS.pos.y);
 }
 
 void Game::makeUnitmenu(entityx::Entity &setter) {
