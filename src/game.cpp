@@ -193,30 +193,26 @@ void Game::setState(entityx::Entity setting_entity, short unsigned int new_state
                     }
 
                     if (unitcomp) {
+                        unit_move = unitcomp->getStats().move;
+                        unitmvttype = unitcomp->getMvttype();
+                        range = unitcomp->getRange();
 
                     } else {
                         SDL_Log("Could not get unit component");
                     }
 
-                    // SDL_Log("%d %d", start[0], start[1]);
-                    SDL_Log("But not here");
-                    // unit_move = units[current_unit_id].getStats().move;
-                    // start[0] = manager.getEntities()[unit_entities.top()]->getComponent<PositionComponent>().getPos()[0]; // Start is (+1,+1)?
-                    // start[1] = manager.getEntities()[unit_entities.top()]->getComponent<PositionComponent>().getPos()[1]; // Start is (+1,+1)?
-                    // start[0] = start[0] - 1;
-                    // start[1] = start[1] - 1;
+                    SDL_Log("start: %d %d", start[0], start[1]);
+                    SDL_Log("unitmove: %d", unit_move);
 
-                    // unitmvttype = units[current_unit_id].getMvttype();
-                    // range = units[current_unit_id].getRange();
-                    // costmap = mapx->makeMvtCostmap(unitmvttype);
+                    costmap = mapx->makeMvtCostmap(unitmvttype);
 
-                    // movemapp = movemap(costmap, start, unit_move, "matrix");
-                    // mapx->setOverlay(MAP::OVERLAY::MOVE, movemapp);
+                    movemapp = movemap(costmap, start, unit_move, "matrix");
+                    mapx->setOverlay(MAP::OVERLAY::MOVE, movemapp);
 
-                    // attackmapp = attackmap(movemapp, start, unit_move, range, "matrix");
-                    // mapx->setOverlay(MAP::OVERLAY::ATTACK, attackmapp);
+                    attackmapp = attackmap(movemapp, start, unit_move, range, "matrix");
+                    mapx->setOverlay(MAP::OVERLAY::ATTACK, attackmapp);
 
-                    // mapx->showOverlay();
+                    mapx->showOverlay();
 
                 }
                     break;
