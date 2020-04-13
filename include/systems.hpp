@@ -146,7 +146,6 @@ class ControlSystemx: public entityx::System<ControlSystemx> {
         Game * game;
         KeyboardInputMap keyboardInputMap;
         GamepadInputMap gamepadInputMap;
-        std::vector<std::vector<entityx::Entity * >> entitymap;
         std::vector<std::vector<entityx::ComponentHandle<Unit>>> unitmap;
     public:
         ControlSystemx() {
@@ -161,7 +160,6 @@ class ControlSystemx: public entityx::System<ControlSystemx> {
 
         void update(entityx::EntityManager & es, entityx::EventManager & events, entityx::TimeDelta dt) override {
             es.each<Map>([dt, this](entityx::Entity ent, Map & map) {
-                entitymap = map.getEntitymap();
                 unitmap = map.getUnitmap();
             });
 
@@ -187,10 +185,10 @@ class ControlSystemx: public entityx::System<ControlSystemx> {
                 }
 
                 if (keyboard.is_pressed(kb_state, keyboardInputMap.accept)) {
+                    SDL_Log("Keyboard pressed accept.");
                     pressed_button.push_back(keyboardInputMap.accept);
                     short int toset = -1;
                     entityx::Entity setter;
-                    entityx::Entity ontile = *entitymap[position.getPos()[0]][position.getPos()[1]];
                     entityx::ComponentHandle<Unit> unitontile = unitmap[position.getPos()[0]][position.getPos()[1]];
                     unsigned int frames_button = keyboard.getHeldbutton();
 
@@ -198,16 +196,8 @@ class ControlSystemx: public entityx::System<ControlSystemx> {
                         SDL_Log("cursor Position, %d %d \n", position.getPos()[0], position.getPos()[1]);
 
                         if (unitontile) {
-                            SDL_Log("unitontile");
-                        }
-
-                        if (ontile.component<PositionComponent>()) {
-                            SDL_Log("ontile has a unit component");
-                        }
-
-                        if (ontile) {
                             toset = GAME::STATE::UNITMOVE;
-                            setter = ontile;
+                            setter = unitontile.entity();
                         } else {
                             toset = GAME::STATE::OPTIONS;
                             setter = ent;
@@ -284,26 +274,30 @@ class ControlSystemx: public entityx::System<ControlSystemx> {
 
                 if (gamepad.isPressed(gamepadInputMap.accept)) {
                     pressed_button.push_back(gamepadInputMap.accept);
-                    entityx::Entity * ontile = entitymap[position.getPos()[0]][position.getPos()[1]];
+                    short int toset = -1;
+                    entityx::Entity setter;
+                    entityx::ComponentHandle<Unit> unitontile = unitmap[position.getPos()[0]][position.getPos()[1]];
                     unsigned int frames_button = gamepad.getHeldbutton();
 
                     SDL_Log("cursor Position, %d %d \n", position.getPos()[0], position.getPos()[1]);
 
-                    if (ontile) {
-                        toset = GAME::STATE::UNITMOVE;
-                        setter = *ontile;
-                    } else {
-                        toset = GAME::STATE::OPTIONS;
-                        setter = ent;
-                    }
+                    if ((game->getState() == GAME::STATE::MAP) && (frames_button == 1)) {
+                        SDL_Log("cursor Position, %d %d \n", position.getPos()[0], position.getPos()[1]);
 
-                    if (toset != -1) {
-                        game->setState(setter, toset);
-                    }
-                }
+                        if (unitontile) {
+                            toset = GAME::STATE::UNITMOVE;
+                            setter = unitontile.entity();
+                        } else {
+                            toset = GAME::STATE::OPTIONS;
+                            setter = ent;
+                        }
 
-                if ((game->getState() == GAME::STATE::UNITMOVE) && (frames_button == 1)) {
-                    game->setState(ent, GAME::STATE::UNITMENU);
+                        if (toset != -1) {
+                            game->setState(setter, toset);
+                        }
+                    } else if ((game->getState() == GAME::STATE::UNITMOVE) && (frames_button == 1)) {
+                        game->setState(ent, GAME::STATE::UNITMENU);
+                    }
                 }
 
 
@@ -321,7 +315,6 @@ class ControlSystemx: public entityx::System<ControlSystemx> {
                 gamepad.check_button(pressed_button);
             });
         }
-
 };
 
 #endif /* SYSTEMS_HPP */
