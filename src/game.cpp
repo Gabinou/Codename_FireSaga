@@ -414,31 +414,28 @@ void Game::loadUnitEntities(std::vector<short unsigned int> unit_inds, std::vect
     }
 }
 
-// void Game::loadMapArrivals() {
-//     SDL_Log("Loading map arrivals.\n");
-//     if (mapx) {
-//         std::vector<Map_arrival> map_arrivals = mapx->getArrivals(); 
-//         unsigned short int currentturn = mapx->getTurn();
-//         std::string asset_name;
-//         Unit Utemp;
-//         for (int i = 0; i < map_arrivals.size(); i++) {
-//             if (map_arrivals[i].arrivalturn == currentturn) {
-//                 Utemp = units[map_arrivals[i].id];
-//                 asset_name = "..//assets//horse.png";
-//                 // asset_name = "..//assets//" +  Utemp.getName() + ".png";
-//                 Utemp.setEntity(manager.getEntities().size());
-//                 manager.addEntity();
-//                 Uent.assign<PositionComponent>(map_arrivals[i].position.x, map_arrivals[i].position.y);
-//                 Uent.assign<UnitContainer>(Utemp.getid());
-//                 manager.getEntities()[Utemp.getEntity()]->getComponent<PositionComponent>().setMap(mapx);
-//                 Uent.assign<SpriteComponent>(mapx, asset_name.c_str());
-//                 manager.getEntities()[Utemp.getEntity()]->addGroup(manager.groupUnits);
-//             }
-//         }
-//     } else {
-//         SDL_Log("Failed to loadMapArrivals.");
-//     }
-// }
+void Game::loadMapArrivals() {
+    SDL_Log("Loading map arrivals.\n");
+    if (mapx) {
+        std::vector<Map_arrival> map_arrivals = mapx->getArrivals(); 
+        unsigned short int currentturn = mapx->getTurn();
+        std::string asset_name;
+        Unit Utemp;
+        entityx::Entity Uent;
+        for (int i = 0; i < map_arrivals.size(); i++) {
+            if (map_arrivals[i].arrivalturn == currentturn) {
+                Utemp = units[map_arrivals[i].id];
+                asset_name = "..//assets//horse.png";
+                // asset_name = "..//assets//" +  Utemp.getName() + ".png";
+                Uent = entities.create();
+                Uent.assign<PositionComponent>(map_arrivals[i].position.x, map_arrivals[i].position.y);
+                Uent.assign<SpriteComponent>(asset_name.c_str());
+            }
+        }
+    } else {
+        SDL_Log("Failed to loadMapArrivals.");
+    }
+}
 
 void Game::loadUnits(unsigned char in_chap) {
     // Not necessary. I think would be better to load the party from a savefile or something.
@@ -542,7 +539,7 @@ void Game::copySaveXML(const short int from_ind, const short int to_ind) {
         char filenamefrom[DEFAULT::BUFFER_SIZE];
         stbsp_snprintf(filenamefrom, DEFAULT::BUFFER_SIZE, "saves//save%04d.bsav", from_ind);
         stbsp_snprintf(filenameto, DEFAULT::BUFFER_SIZE, "saves//save%04d.bsav", to_ind);
-        SDL_Log("copSaveXML Game from %s to %s\n", filenamefrom, filenameto);
+        SDL_Log("copy SaveXML Game from %s to %s\n", filenamefrom, filenameto);
         PHYSFS_file * pfrom = PHYSFS_openRead(filenamefrom);
         PHYSFS_file * pto = PHYSFS_openWrite(filenameto);
         int len = PHYSFS_fileLength(pfrom);
