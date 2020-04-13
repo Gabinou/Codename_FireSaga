@@ -112,20 +112,18 @@ void Game::makeFPSEntity() {
     settings.FPS.entity.component<TextComponent>()->initRects(settings.FPS.pos.x, settings.FPS.pos.y);
 }
 
-// void Game::makeUnitmenu(entityx::Entity &setting_entity) {
-//     SDL_Log("Making unit menu\n");
-//     menus[GAME::STATE::UNITMENU] = manager.getEntities().size();
-//     manager.addEntity();
-//     manager.getEntities()[menus[GAME::STATE::UNITMENU]]->addComponent<PositionComponent>();
-//     manager.getEntities()[menus[GAME::STATE::UNITMENU]]->getComponent<PositionComponent>().setBounds(0, 2000, 0, 2000);
-//     manager.getEntities()[menus[GAME::STATE::UNITMENU]]->getComponent<PositionComponent>().setPos(
-//         (int)(setting_entity.getComponent<PositionComponent>().getPos()[0] * settings.tilesize[0]),
-//         (int)(setting_entity.getComponent<PositionComponent>().getPos()[1] * settings.tilesize[1]));
-//     SDL_Color black = {255, 255, 255};
-//     manager.getEntities()[menus[GAME::STATE::UNITMENU]]->addComponent<SpriteComponent>("..//assets//textbox.png", (int []) {128, 128}); 
-//     manager.getEntities()[menus[GAME::STATE::UNITMENU]]->addComponent<TextComponent>(settings.fontsize, std::vector<std::string> {"Attack", "Wait"}, black);
-//     manager.getEntities()[menus[GAME::STATE::UNITMENU]]->addGroup(manager.groupUI);
-// }
+void Game::makeUnitmenu(entityx::Entity &setting_entity) {
+    SDL_Log("Making unit menu\n");
+    unitmenux = entities.create();
+    unitmenux.assign<PositionComponent>(
+        (int)setting_entity.component<PositionComponent>()->getPos()[0] * settings.tilesize[0],
+        (int)setting_entity.component<PositionComponent>()->getPos()[1] * settings.tilesize[1]
+        );
+    unitmenux.component<PositionComponent>()->setBounds(0, 2000, 0, 2000);
+    SDL_Color black = {255, 255, 255};
+    unitmenux.assign<SpriteComponent>("..//assets//textbox.png", (int []) {128, 128}); 
+    unitmenux.assign<TextComponent>(settings.fontsize, std::vector<std::string> {"Attack", "Wait"}, black);
+}
 
 // void Game::killMenu(short unsigned int index) {
 //     if (menus[index] > -1) {
@@ -271,7 +269,7 @@ void Game::setState(entityx::Entity setting_entity, short unsigned int new_state
                 case GAME::STATE::UNITMENU: {
                     SDL_Log("Changing to unitmenu\n");
                     mapx->hideOverlay();
-                    // makeUnitmenu(setting_entity); 
+                    makeUnitmenu(setting_entity); 
                     // short int *new_position = setting_entity.getComponent<PositionComponent>().getPos();
                     // short int *old_position = manager.getEntities()[unit_entities.top()]->getComponent<PositionComponent>().getPos();
                     
@@ -335,9 +333,9 @@ void Game::loadMap(const std::string filename) {
     SDL_Log("Loading Map: %s \n", filename);
     // For this function, tiles have to be loaded manually somwhere else.
     if (!mapx) {
-        map_entx = entities.create();
-        map_entx.assign<Map>(settings.tilesize[0], settings.tilesize[1]); // mapx is a pointer
-        mapx = map_entx.component<Map>();
+        mapEntx = entities.create();
+        mapEntx.assign<Map>(settings.tilesize[0], settings.tilesize[1]); // mapx is a pointer
+        mapx = mapEntx.component<Map>();
         mapx->setRenderer(renderer);
         mapx->loadTilemap(filename);
         systems.system<RenderSystemx>()->setMap(mapx);
@@ -349,9 +347,9 @@ void Game::loadMap(const std::string filename) {
 void Game::loadMap(const int in_map_index) {
     SDL_Log("Loading Map index: %d \n", in_map_index);
     if (!mapx) {
-        map_entx = entities.create();
-        map_entx.assign<Map>(settings.tilesize[0], settings.tilesize[1]); // mapx is a pointer
-        mapx = map_entx.component<Map>();
+        mapEntx = entities.create();
+        mapEntx.assign<Map>(settings.tilesize[0], settings.tilesize[1]); // mapx is a pointer
+        mapx = mapEntx.component<Map>();
         mapx->loadTiles(in_map_index);
         mapx->setRenderer(renderer);
         mapx->loadTilemap(in_map_index);
@@ -365,7 +363,7 @@ void Game::loadMap(const int in_map_index) {
 void Game::unloadMap() {
     SDL_Log("Unloading Map");
     if (mapx) {
-        map_entx.destroy();
+        mapEntx.destroy();
     } else {
         SDL_Log("Failed to unloadMap. Was mapx deleted previously?");
     }

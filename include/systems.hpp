@@ -45,97 +45,102 @@ class RenderSystemx: public entityx::System<RenderSystemx> {
             // RENDERING NOTE: First laded, last animated.
             // -> load cursor first to render it over everything else.
             es.each<SpriteComponent, PositionComponent>([dt, this](entityx::Entity ent, SpriteComponent & sprite, PositionComponent & position) {
-                int kb_held = 0;
-                int gp_held = 0;
-                short int frames = sprite.getFrames();
-                short int speed = sprite.getSpeed();
-                short int * slidepos = sprite.getSlidepos();
-                short int * objectivepos = sprite.getObjpos();
-                SDL_Rect srcrect = sprite.getSrcrect();
-                SDL_Rect destrect = sprite.getDestrect();
-                unsigned char slidetype = sprite.getSlidetype();
-                short int slideint = sprite.getSlideint();
-                float * slidefactors = sprite.getSlidefactors();
+                if (!ent.has_component<TextComponent>()) {
+                    int kb_held = 0;
+                    int gp_held = 0;
+                    short int frames = sprite.getFrames();
+                    short int speed = sprite.getSpeed();
+                    short int * slidepos = sprite.getSlidepos();
+                    short int * objectivepos = sprite.getObjpos();
+                    SDL_Rect srcrect = sprite.getSrcrect();
+                    SDL_Rect destrect = sprite.getDestrect();
+                    unsigned char slidetype = sprite.getSlidetype();
+                    short int slideint = sprite.getSlideint();
+                    float * slidefactors = sprite.getSlidefactors();
 
-                if (sprite.isAnimated()) { //looping sprites.
-                    unsigned char looping = sprite.getSs_looping();
+                    if (sprite.isAnimated()) { //looping sprites.
+                        unsigned char looping = sprite.getSs_looping();
 
-                    switch (looping) {
-                    case LOOPING::PINGPONG:
-                        srcrect.x = srcrect.w * pingpong(static_cast<int>(SDL_GetTicks() / speed), frames, 0);
-                        break;
+                        switch (looping) {
+                        case LOOPING::PINGPONG:
+                            srcrect.x = srcrect.w * pingpong(static_cast<int>(SDL_GetTicks() / speed), frames, 0);
+                            break;
 
-                    case LOOPING::LINEAR:
-                    case LOOPING::DIRECT:
-                        srcrect.x = srcrect.w * static_cast<int>((SDL_GetTicks() / speed) % frames);
-                        break;
+                        case LOOPING::LINEAR:
+                        case LOOPING::DIRECT:
+                            srcrect.x = srcrect.w * static_cast<int>((SDL_GetTicks() / speed) % frames);
+                            break;
 
-                    case LOOPING::REVERSE:
-                        srcrect.x = srcrect.w * (frames - static_cast<int>((SDL_GetTicks() / speed) % frames));
-                        break;
-                    }
-                } else {
-                    if (tilesize[0] == 0 && tilesize[1] == 0) { //move on the pixelspace
-                        slidepos[0] = (int)position.getPos()[0];
-                        slidepos[1] = (int)position.getPos()[1];
-                    } else { //move on the map.
-                        slidepos[0] = (int)(position.getPos()[0] * tilesize[0]);
-                        slidepos[1] = (int)(position.getPos()[1] * tilesize[1]);
-                    }
-                }
-
-                entityx::ComponentHandle<KeyboardController> keyboard = ent.component<KeyboardController>();
-
-                if (keyboard) {
-                    kb_held = keyboard->getHeldmove();
-                }
-
-                entityx::ComponentHandle<GamepadController> gamepad = ent.component<GamepadController>();
-
-                if (gamepad) {
-                    // SDL_Log("Rendering Gamepad Controller.");
-                    gp_held = gamepad->getHeldmove();
-                }
-
-                if (slidetype == SLIDETYPE::GEOMETRIC) { //for cursor mvt on map.
-                    objectivepos[0] = (int)position.getPos()[0] * (tilesize[0]) - destrect.w / 4;
-                    objectivepos[1] = (int)position.getPos()[1] * (tilesize[1]) - destrect.h / 4;
-
-                    if ((gp_held > 25) || (kb_held > 25))  {
-                        slideint = 1;
-                    }
-
-                    if (objectivepos[0] != slidepos[0]) {
-                        slidepos[0] += geometricslide((objectivepos[0] - slidepos[0]), slidefactors[slideint]);
-                    }
-
-                    if (objectivepos[1] != slidepos[1]) {
-                        slidepos[1] += geometricslide((objectivepos[1] - slidepos[1]), slidefactors[slideint]);
-                    }
-
-                    if ((objectivepos[0] == slidepos[0]) && (objectivepos[1] == slidepos[1])) {
-                        position.setUpdatable(true);
-                        slideint = 0;
+                        case LOOPING::REVERSE:
+                            srcrect.x = srcrect.w * (frames - static_cast<int>((SDL_GetTicks() / speed) % frames));
+                            break;
+                        }
                     } else {
-                        position.setUpdatable(false);
+                        if (tilesize[0] == 0 && tilesize[1] == 0) { //move on the pixelspace
+                            slidepos[0] = (int)position.getPos()[0];
+                            slidepos[1] = (int)position.getPos()[1];
+                        } else { //move on the map.
+                            slidepos[0] = (int)(position.getPos()[0] * tilesize[0]);
+                            slidepos[1] = (int)(position.getPos()[1] * tilesize[1]);
+                        }
                     }
+
+                    entityx::ComponentHandle<KeyboardController> keyboard = ent.component<KeyboardController>();
+
+                    if (keyboard) {
+                        kb_held = keyboard->getHeldmove();
+                    }
+
+                    entityx::ComponentHandle<GamepadController> gamepad = ent.component<GamepadController>();
+
+                    if (gamepad) {
+                        // SDL_Log("Rendering Gamepad Controller.");
+                        gp_held = gamepad->getHeldmove();
+                    }
+
+                    if (slidetype == SLIDETYPE::GEOMETRIC) { //for cursor mvt on map.
+                        objectivepos[0] = (int)position.getPos()[0] * (tilesize[0]) - destrect.w / 4;
+                        objectivepos[1] = (int)position.getPos()[1] * (tilesize[1]) - destrect.h / 4;
+
+                        if ((gp_held > 25) || (kb_held > 25))  {
+                            slideint = 1;
+                        }
+
+                        if (objectivepos[0] != slidepos[0]) {
+                            slidepos[0] += geometricslide((objectivepos[0] - slidepos[0]), slidefactors[slideint]);
+                        }
+
+                        if (objectivepos[1] != slidepos[1]) {
+                            slidepos[1] += geometricslide((objectivepos[1] - slidepos[1]), slidefactors[slideint]);
+                        }
+
+                        if ((objectivepos[0] == slidepos[0]) && (objectivepos[1] == slidepos[1])) {
+                            position.setUpdatable(true);
+                            slideint = 0;
+                        } else {
+                            position.setUpdatable(false);
+                        }
+                    }
+
+                    // if (slidetype == "vector") { //for unit mvt on map.
+
+                    // }
+
+                    destrect.x = slidepos[0];
+                    destrect.y = slidepos[1];
+
+                    sprite.setSlidepos(slidepos);
+                    sprite.setObjpos(objectivepos);
+                    sprite.setSrcrect(srcrect);
+                    sprite.setDestrect(destrect);
+                    sprite.draw();
                 }
-
-                // if (slidetype == "vector") { //for unit mvt on map.
-
-                // }
-
-                destrect.x = slidepos[0];
-                destrect.y = slidepos[1];
-
-                sprite.setSlidepos(slidepos);
-                sprite.setObjpos(objectivepos);
-                sprite.setSrcrect(srcrect);
-                sprite.setDestrect(destrect);
-                sprite.draw();
 
             });
             es.each<TextComponent, PositionComponent>([dt, this](entityx::Entity ent, TextComponent & text, PositionComponent) {
+                if (ent.has_component<SpriteComponent>()) {
+                    ent.component<SpriteComponent>()->draw();
+                }
                 text.draw();
             });
             SDL_RenderPresent(renderer);

@@ -21,6 +21,10 @@ class PositionComponent {
             setPos(in_x, in_y);
         }
 
+        PositionComponent(short int * position) {
+            setPos(position[0], position[1]);
+        }
+
         PositionComponent(short int in_x, short int in_y,
                           short int xmin, short int xmax,
                           short int ymin, short int ymax)
