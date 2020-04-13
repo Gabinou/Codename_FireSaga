@@ -599,11 +599,6 @@ void Game::setState(const short unsigned int new_state) {
     state = new_state;
 }
 
-// void Game::update() {
-//     manager.refresh();
-//     manager.update();
-// }
- 
 KeyboardInputMap Game::getKeyboardInputMap() {
     return(keyboardInputMap);
 }

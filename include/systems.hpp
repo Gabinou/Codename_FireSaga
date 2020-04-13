@@ -226,7 +226,6 @@ class ControlSystemx: public entityx::System<ControlSystemx> {
                 keyboard.check_button(pressed_button);
             });
             es.each<GamepadController, PositionComponent>([dt, this](entityx::Entity ent, GamepadController & gamepad, PositionComponent & position) {
-
                 SDL_GameController * controller = gamepad.getController();
                 Sint16 mainxaxis = SDL_GameControllerGetAxis(controller, gamepadInputMap.mainxaxis[0]);
                 Sint16 mainyaxis = SDL_GameControllerGetAxis(controller, gamepadInputMap.mainyaxis[0]);
