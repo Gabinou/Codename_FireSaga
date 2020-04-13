@@ -22,7 +22,7 @@ extern std::vector<std::string> unitTypes(unsigned short int in_typecode);
 extern std::vector<std::string> wpnTypes(short unsigned int in_typecode);
 extern unsigned char unitid2army(short unsigned int in_unitid);
 
-
+extern std::vector<std::string> gettileNames(std::vector<short int> in_tilesindex);
 extern std::vector<std::string> unitNames;
 extern void makeunitNames();
 extern std::vector<std::string> wpnNames;

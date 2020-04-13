@@ -17,14 +17,25 @@ Map::Map(const short unsigned int width, const short unsigned int height) : Map(
     srcrect.h = destrect.h = height;
 }
 
+void Map::readXML(tinyxml2::XMLElement * in_pMap) {
+
+}
 
 void Map::writeXML(tinyxml2::XMLDocument * in_doc, tinyxml2::XMLElement * in_pMap) {
     char buffer[DEFAULT::BUFFER_SIZE];
     
     // in_pMap->SetAttribute("id", id);
     
-    // tinyxml2::XMLElement * pName = in_doc->NewElement("Name");
-    // in_pUnit->InsertEndChild(pName);
+    tinyxml2::XMLElement * pTiles = in_doc->NewElement("Tiles");
+    in_pMap->InsertEndChild(pTiles);
+    tinyxml2::XMLElement * pTile = in_doc->NewElement("Tile");
+    for (int i = 0; i < tilesindex.size(); i++) {
+
+        pTile->SetAttribute("id", tilesindex[i]);
+        pTiles->InsertEndChild(pTile);
+
+    }
+    // in_pMap->SetAttribute("id", id);
     // pName->SetText(name.c_str());
 
 }

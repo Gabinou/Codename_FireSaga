@@ -1,7 +1,6 @@
 #include "utilities.hpp"
 #include "game.hpp"
 
-
 int pingpong(int current, int upper, int lower) {
     // Returns "pingpong" index.
     // modulo: x % 2 = 0,1,2,0,1,2,0...for x++
@@ -212,6 +211,7 @@ std::vector<std::string> wpnTypes(short unsigned int in_typecode) {
     if ((in_typecode & ITEM::TYPE::LANCE) > 0) {
         types.push_back("Lance");
     }
+    }
     if ((in_typecode & ITEM::TYPE::AXE) > 0) {
         types.push_back("Axe");
     }
@@ -392,6 +392,122 @@ void makewpnNames() {
     wpnNames.push_back("Telperion extract");
     wpnNames.push_back("Laurelin extract");
     wpnNames.push_back("Cross");
+}
+
+std::vector<std::string> gettileNames(std::vector<short int> in_tilesindex) {
+    std::vector<std::string> out;
+    short int index;
+    for (int i = 0; i < in_tilesindex.size(); i++) {
+        index = in_tilesindex[i];
+        switch(index) {
+            case TILE::PLAIN:
+                out.push_back("Plain");
+                break;
+            case TILE::BUSH:
+                out.push_back("Bush");
+                break;
+            case TILE::FOREST:
+                out.push_back("Forest");
+                break;
+            case TILE::THICKET:
+                out.push_back("Thicket");
+                break;
+            case TILE::SNAG:
+                out.push_back("Snag");
+                break;
+            case TILE::BRIDGE:
+                out.push_back("Bridge");
+                break;
+            case TILE::HOLE:
+                out.push_back("Hole");
+                break;
+            case TILE::SEA:
+                out.push_back("Sea");
+                break;
+            case TILE::LAKE:
+                out.push_back("Lake");
+                break;
+            case TILE::RIVER:
+                out.push_back("River");
+                break;
+            case TILE::WATERFALL:
+                out.push_back("Waterfall");
+                break;
+            case TILE::CLIFF:
+                out.push_back("Cliff");
+                break;
+            case TILE::HILL:
+                out.push_back("Hill");
+                break;
+            case TILE::MOUNTAIN:
+                out.push_back("Mountain");
+                break;
+            case TILE::PEAK:
+                out.push_back("Peak");
+                break;
+            case TILE::CAVE:
+                out.push_back("Cave");
+                break;
+            case TILE::SAND:
+                out.push_back("Sand");
+                break;
+            case TILE::WASTELAND:
+                out.push_back("Wasteland");
+                break;
+            case TILE::ROCK:
+                out.push_back("Rock");
+                break;
+            case TILE::BONES:
+                out.push_back("Bones");
+                break;
+            case TILE::FLOOR:
+                out.push_back("Floor");
+                break;
+            case TILE::PILLAR:
+                out.push_back("Pillar");
+                break;
+            case TILE::WALL:
+                out.push_back("Wall");
+                break;
+            case TILE::DOOR:
+                out.push_back("Door");
+                break;
+            case TILE::THRONE:
+                out.push_back("Throne");
+                break;
+            case TILE::GATE:
+                out.push_back("Gate");
+                break;
+            case TILE::FENCE:
+                out.push_back("Fence");
+                break;
+            case TILE::SHOP:
+                out.push_back("Shop");
+                break;
+            case TILE::ARMORY:
+                out.push_back("Armory");
+                break;
+            case TILE::VILLAGE:
+                out.push_back("Village");
+                break;
+            case TILE::FORT:
+                out.push_back("Fort");
+                break;
+            case TILE::CASTLE:
+                out.push_back("Castle");
+                break;
+            case TILE::SNOW:
+                out.push_back("Snow");
+                break;
+            case TILE::GLACIER:
+                out.push_back("Glacier");
+                break;
+            case TILE::ICE:
+                out.push_back("Ice");
+                break;
+        }
+    }
+    return(out);
 }
 
 std::vector<std::string> unitNames;
