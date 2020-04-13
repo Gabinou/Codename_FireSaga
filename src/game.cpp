@@ -345,20 +345,20 @@ short unsigned int Game::getState() {
 //     loaded_tiles = baseTiles(in_tiles);
 // }
 
-void Game::loadMap(const std::string filename) {
-    SDL_Log("Loading Map: %s \n", filename);
-    // For this function, tiles have to be loaded manually somwhere else.
-    if (!mapx) {
-        mapEntx = entities.create();
-        mapEntx.assign<Map>(settings.tilesize[0], settings.tilesize[1]); // mapx is a pointer
-        mapx = mapEntx.component<Map>();
-        mapx->setRenderer(renderer);
-        mapx->loadTilemap(filename);
-        systems.system<RenderSystemx>()->setMap(mapx);
-    }  else {
-        SDL_Log("Failed to loadMap. Was mapx deleted previously?");
-    }
-}
+// void Game::loadMap(const std::string filename) {
+//     SDL_Log("Loading Map: %s \n", filename);
+//     // For this function, tiles have to be loaded manually somwhere else.
+//     if (!mapx) {
+//         mapEntx = entities.create();
+//         mapEntx.assign<Map>(settings.tilesize[0], settings.tilesize[1]); // mapx is a pointer
+//         mapx = mapEntx.component<Map>();
+//         mapx->setRenderer(renderer);
+//         mapx->loadTilemap(filename);
+//         systems.system<RenderSystemx>()->setMap(mapx);
+//     }  else {
+//         SDL_Log("Failed to loadMap. Was mapx deleted previously?");
+//     }
+// }
 
 void Game::loadMap(const int in_map_index) {
     SDL_Log("Loading Map index: %d \n", in_map_index);

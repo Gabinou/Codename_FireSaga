@@ -7,7 +7,6 @@
 #include <entityx/entityx.h>
 #include "SDL2/SDL.h"
 #include "utilities.hpp"
-#include "parser.hpp"
 #include "filesystem.hpp"
 #include "tile.hpp"
 #include "linalg.hpp"

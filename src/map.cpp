@@ -229,10 +229,10 @@ std::vector<std::vector<entityx::ComponentHandle<Unit>>> Map::getUnitmap() {
 }
 
 
-void Map::loadTilemap(const std::string filename) {
-    tilemap = readcsv_vec<short int>(filename.c_str(), 1);
-    postTilemap();
-}
+// void Map::loadTilemap(const std::string filename) {
+//     tilemap = readcsv_vec<short int>(filename.c_str(), 1);
+//     postTilemap();
+// }
 
 void Map::loadTilemap(const short unsigned int in_map_index) {
     tilemap = chapTilemaps[in_map_index]();
