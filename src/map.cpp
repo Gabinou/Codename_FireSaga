@@ -24,7 +24,7 @@ void Map::readXML(tinyxml2::XMLElement * in_pMap) {
 void Map::writeXML(tinyxml2::XMLDocument * in_doc, tinyxml2::XMLElement * in_pMap) {
     char buffer[DEFAULT::BUFFER_SIZE];
     
-    // in_pMap->SetAttribute("id", id);
+    in_pMap->SetAttribute("chapter", chapter);
     
     tinyxml2::XMLElement * pTiles = in_doc->NewElement("Tiles");
     in_pMap->InsertEndChild(pTiles);
@@ -60,6 +60,12 @@ void Map::writeXML(tinyxml2::XMLDocument * in_doc, tinyxml2::XMLElement * in_pMa
         }
     }
 
+    tinyxml2::XMLElement * pArrivals = in_doc->NewElement("Arrivals");
+    tinyxml2::XMLElement * pArrival = in_doc->NewElement("Arrival");
+    for (int i = 0; i < map_arrivals.size(); i++) {
+        pBounds->InsertEndChild(pArrivals);
+        writeXML_arrival(in_doc, pArrival, &map_arrivals[i]);
+    }
 
 }
 

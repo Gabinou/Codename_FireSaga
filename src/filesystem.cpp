@@ -466,6 +466,26 @@ void writeXML_stats(tinyxml2::XMLDocument * in_doc, tinyxml2::XMLElement * in_pS
     pheal->SetText(in_stats->heal);
 }
 
+void writeXML_arrival(tinyxml2::XMLDocument * in_doc, tinyxml2::XMLElement * in_pArrival, Map_arrival * in_arrival){ 
+    tinyxml2::XMLElement * pTurn = in_doc->NewElement("Turn");
+    tinyxml2::XMLElement * pLevels = in_doc->NewElement("levelups");
+    tinyxml2::XMLElement * pPosition = in_doc->NewElement("Position");
+    tinyxml2::XMLElement * pRow = in_doc->NewElement("Row");
+    tinyxml2::XMLElement * pCol = in_doc->NewElement("Col");
+    in_pArrival->InsertEndChild(pTurn);
+    in_pArrival->InsertEndChild(pLevels);
+    in_pArrival->InsertEndChild(pPosition);
+    pPosition->InsertEndChild(pRow);
+    pPosition->InsertEndChild(pCol);
+    in_pArrival->SetAttribute("id", in_arrival->id);
+    pTurn->SetText(in_arrival->turn);
+    pLevels->SetText(in_arrival->levelups);
+    pPosition->SetAttribute("row", in_arrival->position.x);
+    pPosition->SetAttribute("col", in_arrival->position.y);
+    pRow->SetText(in_arrival->position.x);
+    pCol->SetText(in_arrival->position.y);
+}
+
 void writeXML_stats(tinyxml2::XMLDocument * in_doc, tinyxml2::XMLElement * in_pStats, Unit_stats * in_stats) {
     tinyxml2::XMLElement * php = in_doc->NewElement("hp");
     tinyxml2::XMLElement * pstr = in_doc->NewElement("str");

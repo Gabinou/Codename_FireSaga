@@ -108,7 +108,7 @@ struct Equipped {
 };
 
 struct Map_arrival {
-    unsigned char arrivalturn;
+    unsigned char turn;
     unsigned char levelups;
     short int id;
     Point position;

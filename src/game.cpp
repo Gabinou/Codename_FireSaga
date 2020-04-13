@@ -420,7 +420,7 @@ void Game::loadMapArrivals() {
         Unit Utemp;
         entityx::Entity Uent;
         for (int i = 0; i < map_arrivals.size(); i++) {
-            if (map_arrivals[i].arrivalturn == currentturn) {
+            if (map_arrivals[i].turn == currentturn) {
                 Utemp = units[map_arrivals[i].id];
                 asset_name = "..//assets//horse.png";
                 // asset_name = "..//assets//" +  Utemp.getName() + ".png";
