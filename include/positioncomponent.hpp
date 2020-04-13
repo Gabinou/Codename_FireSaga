@@ -76,6 +76,10 @@ class PositionComponent {
             return (updatable);
         }
 
+        void setPos(short int * in_pos) {
+            setPos(in_pos[0], in_pos[1]);
+        }
+
         void setPos(short int in_x, short int in_y) {
             if (updatable) {
                 if ((in_x >= bounds[0]) && (in_x <= bounds[1])) {

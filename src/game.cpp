@@ -112,12 +112,12 @@ void Game::makeFPSEntity() {
     settings.FPS.entity.component<TextComponent>()->initRects(settings.FPS.pos.x, settings.FPS.pos.y);
 }
 
-void Game::makeUnitmenu(entityx::Entity &setting_entity) {
+void Game::makeUnitmenu(entityx::Entity &setter) {
     SDL_Log("Making unit menu\n");
     unitmenux = entities.create();
     unitmenux.assign<PositionComponent>(
-        (int)setting_entity.component<PositionComponent>()->getPos()[0] * settings.tilesize[0],
-        (int)setting_entity.component<PositionComponent>()->getPos()[1] * settings.tilesize[1]
+        (int)setter.component<PositionComponent>()->getPos()[0] * settings.tilesize[0],
+        (int)setter.component<PositionComponent>()->getPos()[1] * settings.tilesize[1]
         );
     unitmenux.component<PositionComponent>()->setBounds(0, 2000, 0, 2000);
     SDL_Color black = {255, 255, 255};
@@ -143,7 +143,7 @@ void Game::makeUnitmenu(entityx::Entity &setting_entity) {
 // }
 
 // I think this function is too big. Find a way to reduce it...
-void Game::setState(entityx::Entity setting_entity, short unsigned int new_state) {
+void Game::setState(entityx::Entity setter, short unsigned int new_state) {
     SDL_Log("Game state changes from %d to %d\n", this->state, new_state); 
 
     switch (this->state) {
@@ -156,7 +156,7 @@ void Game::setState(entityx::Entity setting_entity, short unsigned int new_state
         case GAME::STATE::MAP:
             switch (new_state) {
                 case GAME::STATE::UNITMENU:
-                    // moveUnit(setting_entity);
+                    // moveUnit(setter);
                     break;
                 case GAME::STATE::STATS:
                     break;
@@ -167,16 +167,17 @@ void Game::setState(entityx::Entity setting_entity, short unsigned int new_state
                     std::vector<std::vector<short int>> costmap;
                     std::vector<std::vector<short int>> movemapp;
                     std::vector<std::vector<short int>> attackmapp;
-                    entityx::ComponentHandle<PositionComponent> cursorpos;
-                    entityx::ComponentHandle<Unit> unitcomp;
+                    entityx::ComponentHandle<PositionComponent> cursorpos; // because setter should be the cursor.
+                    entityx::ComponentHandle<Unit> selected;
                     short unsigned int start[2];
                     short unsigned int unit_move;
                     short unsigned int current_unit_id;
                     unsigned char unitmvttype;
                     unsigned char * range;
 
-                    cursorpos = setting_entity.component<PositionComponent>();
-                    unitcomp = setting_entity.component<Unit>();
+                    cursorpos = setter.component<PositionComponent>();
+                    selected = setter.component<Unit>();
+                    selectedx = selected.entity();
                     if (cursorpos) {
                         start[0] = (short unsigned int)cursorpos->getPos()[0];
                         start[1] = (short unsigned int)cursorpos->getPos()[1];
@@ -185,11 +186,10 @@ void Game::setState(entityx::Entity setting_entity, short unsigned int new_state
                         SDL_Log("Could not get cursor position component");
                     }
 
-                    if (unitcomp) {
-                        unit_move = unitcomp->getStats().move;
-                        unitmvttype = unitcomp->getMvttype();
-                        range = unitcomp->getRange();
-
+                    if (selected) {
+                        unit_move = selected->getStats().move;
+                        unitmvttype = selected->getMvttype();
+                        range = selected->getRange();
                     } else {
                         SDL_Log("Could not get unit component");
                     }
@@ -269,18 +269,48 @@ void Game::setState(entityx::Entity setting_entity, short unsigned int new_state
                 case GAME::STATE::UNITMENU: {
                     SDL_Log("Changing to unitmenu\n");
                     mapx->hideOverlay();
-                    makeUnitmenu(setting_entity); 
-                    // short int *new_position = setting_entity.getComponent<PositionComponent>().getPos();
-                    // short int *old_position = manager.getEntities()[unit_entities.top()]->getComponent<PositionComponent>().getPos();
+                    makeUnitmenu(setter); 
                     
-                    // SDL_Log("Old position %d, %d \n", old_position[0], old_position[1]);
-                    // SDL_Log("New position %d, %d \n", new_position[0], new_position[1]);
+                    short int *new_position;
+                    short int *old_position;
 
-                    // manager.getEntities()[unit_entities.top()]->getComponent<PositionComponent>().setPos(            
-                        // new_position[0],
-                        // new_position[1]);
+                    entityx::ComponentHandle<PositionComponent> setterpos;
+                    entityx::ComponentHandle<Unit> unitcomp;
+                    setterpos = setter.component<PositionComponent>();
+
+                    if (selected) {
+                        old_position = selected->getPos();
+                        SDL_Log("Old position %d, %d \n", old_position[0], old_position[1]);
+                    } else {
+                        SDL_Log("Could not get selected unit component");
+                    }   
+
+                    if (selectedx.valid()) {
+                        unitcomp = selectedx.component<Unit>();
+                        if (unitcomp) {
+                            SDL_Log("Got unitcomp");
+                            old_position = unitcomp->getPos();
+                            SDL_Log("Old position %d, %d \n", old_position[0], old_position[1]);
+                        } else {
+                            SDL_Log("Could not get selectedx unit component");
+                        }
+                    } else {
+                        SDL_Log("Could not get selected entity");
+                    }              
+
+
+
+                    if (setterpos) {
+                        new_position = setterpos->getPos();
+                        SDL_Log("New position %d, %d \n", new_position[0], new_position[1]);
+                    } else {
+                        SDL_Log("Could not get setter(unit) position component");
+                    }
+
+
+
+                    // setterpos.setPos(new_position);
                     
-                    // Entity * ontile = mapx->getTile(old_position[0], old_position[1]);
                     // mapx->removeTile(old_position[0], old_position[1]);
                     // mapx->setTile(new_position[0], new_position[1], ontile);
                     }

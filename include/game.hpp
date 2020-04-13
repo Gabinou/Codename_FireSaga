@@ -29,6 +29,8 @@ class Game : public entityx::EntityX {
         entityx::Entity cursorx;
         entityx::Entity unitmenux;
         entityx::ComponentHandle<Map> mapx;
+        entityx::ComponentHandle<Unit> selected;
+        entityx::Entity selectedx;
 
         Narrative narrative;
 

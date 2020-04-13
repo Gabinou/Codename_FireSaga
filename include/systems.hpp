@@ -138,9 +138,11 @@ class RenderSystemx: public entityx::System<RenderSystemx> {
 
             });
             es.each<TextComponent, PositionComponent>([dt, this](entityx::Entity ent, TextComponent & text, PositionComponent) {
+
                 if (ent.has_component<SpriteComponent>()) {
                     ent.component<SpriteComponent>()->draw();
                 }
+
                 text.draw();
             });
             SDL_RenderPresent(renderer);

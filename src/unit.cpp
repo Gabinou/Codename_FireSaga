@@ -417,8 +417,6 @@ Unit_stats Unit::getStats() {
     return (base_stats);
 }
 
-
-
 void Unit::setBases(const Unit_stats in_stats) {
     base_stats = in_stats;
     current_stats = in_stats;
