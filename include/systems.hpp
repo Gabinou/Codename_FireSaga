@@ -5,6 +5,7 @@
 #include "map.hpp"
 // #include "game.hpp"
 #include "spritecomponent.hpp"
+#include "textcomponent.hpp"
 #include "keyboardcontroller.hpp"
 #include "gamepadcontroller.hpp"
 #include <entityx/entityx.h>
@@ -134,9 +135,25 @@ class RenderSystemx: public entityx::System<RenderSystemx> {
                 sprite.draw();
 
             });
+            es.each<TextComponent, PositionComponent>([dt, this](entityx::Entity ent, TextComponent & text, PositionComponent) {
+                text.draw();
+            });
             SDL_RenderPresent(renderer);
         }
 };
+
+// class TurnSystemx: public entityx::System<TurnSystemx> {
+
+// public:
+//    void update(entityx::EntityManager &es, entityx::EventManager &events, TimeDelta dt) override {
+//         ComponentHandle<Unit> unit;
+//         for (Entity unit : es.entities_with_components(unit)) {
+//             if (wait(unit)) {
+//                 events.emit<Wait>(unit);
+//             }
+//         }
+//     };
+// };
 
 class ControlSystemx: public entityx::System<ControlSystemx> {
     private:

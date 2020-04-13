@@ -103,16 +103,14 @@ void Game::fight(Unit * attacker, Unit * defender) {
     }
 }
 
-// void Game::makeFPSEntity() {
-//     settings.FPS.entity = manager.getEntities().size();
-//     manager.addEntity();
-//     manager.getEntities()[settings.FPS.entity]->addComponent<PositionComponent>();
-//     manager.getEntities()[settings.FPS.entity]->getComponent<PositionComponent>().setBounds(0, settings.res.x, 0, settings.res.y);
-//     manager.getEntities()[settings.FPS.entity]->getComponent<PositionComponent>().setPos(settings.FPS.pos.x, settings.FPS.pos.y);
-//     manager.getEntities()[settings.FPS.entity]->addComponent<TextComponent>(settings.fontsize, "60", settings.FPS.textcolor);
-//     manager.getEntities()[settings.FPS.entity]->getComponent<TextComponent>().setSizefactor(settings.FPS.sizefactor);
-//     manager.getEntities()[settings.FPS.entity]->addGroup(manager.groupUI);
-// }
+void Game::makeFPSEntity() {
+    settings.FPS.entity = entities.create();
+    settings.FPS.entity.assign<PositionComponent>(settings.FPS.pos.x, settings.FPS.pos.y);
+    settings.FPS.entity.component<PositionComponent>()->setBounds(0, settings.res.x, 0, settings.res.y);
+    settings.FPS.entity.assign<TextComponent>(settings.fontsize, "60", settings.FPS.textcolor);
+    settings.FPS.entity.component<TextComponent>()->setSizefactor(settings.FPS.sizefactor);
+    settings.FPS.entity.component<TextComponent>()->initRects(settings.FPS.pos.x, settings.FPS.pos.y);
+}
 
 // void Game::makeUnitmenu(entityx::Entity &setting_entity) {
 //     SDL_Log("Making unit menu\n");

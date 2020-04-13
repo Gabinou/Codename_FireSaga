@@ -2,16 +2,15 @@
 #define TEXTCOMPONENT_HPP
 
 #include <vector>
-// #include "ECS.hpp"
 #include "map.hpp"
 #include "filesystem.hpp"
-#include "positioncomponent.hpp"
 #include "SDL2/SDL.h"
+#include "game.hpp"
+
 
 class TextComponent {
 
     private:
-        PositionComponent * positioncomponent;
         std::vector<SDL_Texture *> textures;
         std::vector<std::string> text_lines;
         std::vector<SDL_Rect> srcrects; // background always first?
@@ -40,7 +39,6 @@ class TextComponent {
         void setSizefactor(float in_factor[2]) {
             sizefactor[0] = in_factor[0];
             sizefactor[1] = in_factor[1];
-            initRects();
         }
 
         void setLinespacing(int in_spacing) {
@@ -117,10 +115,10 @@ class TextComponent {
             // Should wrap text inside the background texture and pâdding.
         }
 
-        void initRects() {
+        void initRects(short int x, short int y) {
             srcrects[0].x = srcrects[0].y = 0;
-            destrects[0].x = (int)positioncomponent->getPos()[0] + padding[3];
-            destrects[0].y = (int)positioncomponent->getPos()[1] + padding[0];
+            destrects[0].x = x + padding[3];
+            destrects[0].y = y + padding[0];
             int hgt, wdt;
 
             for (int i = 0; i < textures.size(); i++) {
@@ -135,14 +133,6 @@ class TextComponent {
                 destrects[i].x = destrects[0].x;
                 destrects[i].y = destrects[0].y + linespacing * i;
             }
-        }
-
-        virtual void init() {
-            // positioncomponent = &entity->getComponent<PositionComponent>();
-            initRects();
-        }
-
-        virtual void update() {
         }
 
         void draw() {

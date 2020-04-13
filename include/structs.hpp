@@ -3,7 +3,9 @@
 
 #include <vector>
 #include "SDL2/SDL.h"
+#include <entityx/entityx.h>
 #include "enums.hpp"
+
 
 struct Tile_stats {
     char dodge;
@@ -141,7 +143,7 @@ struct Fps {
     unsigned char frame_delay = 1000 / cap;
     SDL_Color textcolor = {0, 0, 0};
     float current = 60.0;
-    unsigned short int entity;
+    entityx::Entity entity;
 };
 
 struct Settings {
