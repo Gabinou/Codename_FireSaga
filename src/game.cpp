@@ -299,12 +299,10 @@ void Game::setState(entityx::Entity setter, short unsigned int new_state) {
                         SDL_Log("Could not get setter(unit) position component");
                     }
 
-
-
-                    // setterpos.setPos(new_position);
+                    selectedpos->setPos(new_position);
                     
-                    // mapx->removeTile(old_position[0], old_position[1]);
-                    // mapx->setTile(new_position[0], new_position[1], ontile);
+                    mapx->moveEnt(old_position[0], old_position[1], new_position[0], new_position[1]);
+                    
                     }
                     break;
                 case GAME::STATE::MAP:
