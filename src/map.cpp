@@ -66,7 +66,14 @@ void Map::writeXML(tinyxml2::XMLDocument * in_doc, tinyxml2::XMLElement * in_pMa
         pBounds->InsertEndChild(pArrivals);
         writeXML_arrival(in_doc, pArrival, &map_arrivals[i]);
     }
-
+    tinyxml2::XMLElement * pArrivalEqs = in_doc->NewElement("ArrivalEqs");    
+    tinyxml2::XMLElement * pArrivalEq = in_doc->NewElement("ArrivalEq");    
+    in_pMap->InsertEndChild(pArrivalEqs);
+    for (int i = 0; i < arrival_equipments.size(); i++) {
+        pArrivalEqs->InsertEndChild(pArrivalEq);
+        pArrivalEq->SetAttribute("unitid", map_arrivals[i].id);
+        writeXML_items(in_doc, pArrivalEq, arrival_equipments[i]);
+    }
 }
 
 void Map::setTilesize(const short int unsigned width, const short int unsigned height) {

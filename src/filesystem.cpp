@@ -522,6 +522,10 @@ void writeXML_stats(tinyxml2::XMLDocument * in_doc, tinyxml2::XMLElement * in_pS
     pprof->SetText(in_stats->prof);
 }
 
+void writeXML_items(tinyxml2::XMLDocument * in_doc, tinyxml2::XMLElement * in_pItems, std::vector<Inventory_item> in_items) {
+    writeXML_items(in_doc, in_pItems, in_items.data(), in_items.size());
+}
+
 void writeXML_items(tinyxml2::XMLDocument * in_doc, tinyxml2::XMLElement * in_pItems, Inventory_item * in_items, int size) {
     tinyxml2::XMLElement * pItem;
     tinyxml2::XMLElement * pUsed;

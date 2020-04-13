@@ -43,6 +43,7 @@ extern void writeXML_narrative(tinyxml2::XMLDocument * in_doc, tinyxml2::XMLElem
 extern void readXML_narrative(tinyxml2::XMLElement * in_pNarrative, Narrative * in_state);
 extern void readXML_items(tinyxml2::XMLElement * in_pEquipment, Inventory_item * equipment);
 extern void writeXML_items(tinyxml2::XMLDocument * in_doc, tinyxml2::XMLElement * in_pEquipment, Inventory_item * in_equipment, int size);
+extern void writeXML_items(tinyxml2::XMLDocument * in_doc, tinyxml2::XMLElement * in_pItems, std::vector<Inventory_item> in_items);
 extern void readXML_arrival(tinyxml2::XMLElement * in_pArrival, Map_arrival * in_arrival);
 extern void writeXML_arrival(tinyxml2::XMLDocument * in_doc, tinyxml2::XMLElement * in_pArrival, Map_arrival * in_arrival);
 
