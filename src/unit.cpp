@@ -1137,8 +1137,6 @@ void baseUnits(std::unordered_map<int, Unit> * in_units, std::vector<short int> 
         }
 }
 
-
-
 void baseUnits(std::unordered_map<int, Unit> * in_units) {
     printf("Making all base units \n");
     std::unordered_map<int, Unit> temp_units; 

@@ -205,7 +205,7 @@ void Weapon::write(const char * filename, const char * mode){
 std::vector<Weapon> all_weapons(ITEM::NAME::END);
 std::vector<Weapon> loaded_weapons;
 
-void testXMLWeapons(){
+void testXMLWeapons() {
     SDL_Log("Testing Weapon xml writing and reading\n");
     Weapon temp_wpn;
     Weapon_stats temp_wpn_stats;

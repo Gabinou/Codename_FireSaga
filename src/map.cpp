@@ -382,3 +382,9 @@ std::vector<short unsigned int> testArrivalinds(){
 
 std::vector<std::vector<short int>> (*chapTilemaps[40])() = {testTilemap,};
 std::vector<short unsigned int> (*chapArrivalinds[40])() = {testArrivalinds,};
+
+
+void testXMLMap() {
+    SDL_Log("Testing Map xml writing and reading\n");
+
+}
