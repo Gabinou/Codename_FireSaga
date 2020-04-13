@@ -43,6 +43,8 @@ class Game : public entityx::EntityX {
         void moveUnit(entityx::Entity & cursor);
 
         void killMenu(short unsigned int index);
+        void hideMenu(short unsigned int index);
+        void showMenu(short unsigned int index);
         void makeUnitmenu(entityx::Entity & setting_entity);
 
         //TO BE IMPLEMENTED:

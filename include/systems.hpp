@@ -209,7 +209,7 @@ class ControlSystemx: public entityx::System<ControlSystemx> {
                 }
 
                 if (keyboard.is_pressed(kb_state, keyboardInputMap.accept)) {
-                    SDL_Log("Keyboard pressed accept.");
+                    // SDL_Log("Keyboard pressed accept.");
                     pressed_button.push_back(keyboardInputMap.accept);
                     short int toset = -1;
                     entityx::Entity setter;
@@ -296,7 +296,7 @@ class ControlSystemx: public entityx::System<ControlSystemx> {
                 entityx::Entity setter;
 
                 if (gamepad.isPressed(gamepadInputMap.accept)) {
-                    SDL_Log("Gamepad pressed accept.");
+                    // SDL_Log("Gamepad pressed accept.");
                     pressed_button.push_back(gamepadInputMap.accept);
                     short int toset = -1;
                     entityx::Entity setter;

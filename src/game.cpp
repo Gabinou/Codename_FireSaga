@@ -121,12 +121,20 @@ void Game::makeUnitmenu(entityx::Entity &setter) {
         );
     unitmenux.component<PositionComponent>()->setBounds(0, 2000, 0, 2000);
     SDL_Color black = {255, 255, 255};
-    unitmenux.assign<SpriteComponent>("..//assets//textbox.png", (int []) {128, 128}); 
+    unitmenux.assign<SpriteComponent>("..//assets//textbox.png", (int []) {128, 128});
+    // I think the menu textures should be loaded elsewhere when initted or first called. Then, should be only unloaded after a while. 
+    //Not loaded and unloaded after EACH CALL.
     unitmenux.assign<TextComponent>(settings.fontsize, std::vector<std::string> {"Attack", "Wait"}, black);
 }
 
 void Game::killMenu(short unsigned int index) {
     unitmenux.destroy();
+}
+void Game::hideMenu(short unsigned int index) {
+    unitmenux.component<SpriteComponent>()->hide();
+}
+void Game::showMenu(short unsigned int index) {
+    unitmenux.component<SpriteComponent>()->show();
 }
 
 // I think this function is too big. Find a way to reduce it...
@@ -156,7 +164,7 @@ void Game::setState(entityx::Entity setter, short unsigned int new_state) {
                     std::vector<std::vector<short int>> attackmapp;
                     entityx::ComponentHandle<PositionComponent> cursorpos; // because setter should be the cursor.
                     entityx::ComponentHandle<Unit> unitcomp;
-                    short unsigned int start[2];
+                    short unsigned int * start;
                     short unsigned int unit_move;
                     short unsigned int current_unit_id;
                     unsigned char unitmvttype;
@@ -166,9 +174,8 @@ void Game::setState(entityx::Entity setter, short unsigned int new_state) {
                     unitcomp = setter.component<Unit>();
                     selected = unitcomp.entity();
                     if (cursorpos) {
-                        start[0] = (short unsigned int)cursorpos->getPos()[0];
-                        start[1] = (short unsigned int)cursorpos->getPos()[1];
-                        SDL_Log("%d %d", cursorpos->getPos()[0], cursorpos->getPos()[1]);
+                        start = (short unsigned int *)cursorpos->getPos();
+                        SDL_Log("%d %d", start[0], start[1]);
                     } else {
                         SDL_Log("Could not get cursor position component");
                     }
@@ -256,10 +263,13 @@ void Game::setState(entityx::Entity setter, short unsigned int new_state) {
                 case GAME::STATE::UNITMENU: {
                     SDL_Log("Changing to unitmenu\n");
                     mapx->hideOverlay();
-                    makeUnitmenu(setter); 
-                    
-                    short int *new_position;
-                    short int *old_position;
+                    if (unitmenux.valid()) {
+                        showMenu(GAME::STATE::UNITMENU);
+                    } else {
+                        makeUnitmenu(setter); 
+                    }               
+                    short int * new_position;
+                    short int * old_position;
 
                     entityx::ComponentHandle<PositionComponent> setterpos;
                     entityx::ComponentHandle<PositionComponent> selectedpos;
@@ -285,11 +295,8 @@ void Game::setState(entityx::Entity setter, short unsigned int new_state) {
                     } else {
                         SDL_Log("Could not get setter(unit) position component");
                     }
-
-                    selectedpos->setPos(new_position);
-                    
                     mapx->moveUnit(old_position[0], old_position[1], new_position[0], new_position[1]);
-                    
+                    selectedpos->setPos(new_position); // move at the end, cause new and old_position are pointers!
                     }
                     break;
                 case GAME::STATE::MAP:
@@ -308,7 +315,7 @@ void Game::setState(entityx::Entity setter, short unsigned int new_state) {
                 case GAME::STATE::CONVERSATION:
                     break;
                 case GAME::STATE::MAP:
-                    killMenu(GAME::STATE::UNITMENU);
+                    hideMenu(GAME::STATE::UNITMENU);
                     break;       
                 }
             break;
