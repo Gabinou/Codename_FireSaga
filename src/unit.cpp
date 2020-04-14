@@ -714,14 +714,14 @@ void Unit::writeXML(tinyxml2::XMLDocument * in_doc, tinyxml2::XMLElement * in_pU
     tinyxml2::XMLElement * pBaseExp = in_doc->NewElement("BaseExp");
     in_pUnit->InsertEndChild(pBaseExp);
     pBaseExp->SetText(base_exp);
+
+    tinyxml2::XMLElement * pCurrenthp = in_doc->NewElement("CurrentHP");
+    in_pUnit->InsertEndChild(pCurrenthp);
+    pCurrenthp->SetText(current_hp);
     
     tinyxml2::XMLElement * pStats = in_doc->NewElement("Stats");
     in_pUnit->InsertEndChild(pStats);
     writeXML_stats(in_doc, pStats, &current_stats);    
-
-    tinyxml2::XMLElement * pCurrenthp = in_doc->NewElement("CurrentHP");
-    pStats->InsertFirstChild(pCurrenthp);
-    pBaseExp->SetText(current_hp);
     
     tinyxml2::XMLElement * pGrowths = in_doc->NewElement("Growths");
     in_pUnit->InsertEndChild(pGrowths);

@@ -25,6 +25,7 @@ class Weapon : public XML_IO {
         unsigned short int id = 0; // 0 means empty.
         short int use_effect = -1;
         short int user_id = -1;
+        char infused = -1;
         bool sellable;
     public:
         Weapon();
@@ -46,6 +47,7 @@ class Weapon : public XML_IO {
         std::string getName();
         short unsigned int getType();
         void setType(short unsigned int in_type);
+        void infuse(unsigned char in_mag);
 
         void write(const char * filename, const char * mode = "a");
         using XML_IO::writeXML;

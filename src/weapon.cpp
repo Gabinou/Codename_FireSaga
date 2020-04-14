@@ -41,6 +41,10 @@ Unit_stats Weapon::getBonus() {
     return(bonus_stats);
 }
 
+void Weapon::infuse(unsigned char in_mag) {
+    infused = in_mag;
+}
+
 void Weapon::setEffect(long unsigned int in_effect) {
     effect = in_effect;
     if ((in_effect & ITEM::EFFECT::USE_HEAL) > 0) {

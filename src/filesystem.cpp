@@ -530,6 +530,7 @@ void writeXML_items(tinyxml2::XMLDocument * in_doc, tinyxml2::XMLElement * in_pI
     tinyxml2::XMLElement * pItem;
     tinyxml2::XMLElement * pUsed;
     tinyxml2::XMLElement * pwpnName;
+    tinyxml2::XMLElement * pInfused;
     char buffer[DEFAULT::BUFFER_SIZE];
     for (int i = 0; i < size; i++) {
         pItem = in_doc->NewElement("Item");
@@ -540,6 +541,12 @@ void writeXML_items(tinyxml2::XMLDocument * in_doc, tinyxml2::XMLElement * in_pI
         pUsed->SetText(buffer);
         pItem->InsertEndChild(pUsed);
         pwpnName = in_doc->NewElement("Name");
+        if (in_items[i].infused > 0) {
+            pInfused = in_doc->NewElement("Infused");
+            pItem->InsertEndChild(pInfused);
+            pInfused->SetText(in_items[i].infused);
+        }
+
         if (in_items[i].id > 0) {
             pwpnName->SetText(all_weapons[in_items[i].id].getName().c_str());
         } else {
