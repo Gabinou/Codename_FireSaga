@@ -147,7 +147,6 @@ extern std::vector<std::vector<short int>> (*chapTilemaps[40])();
 extern std::vector<short unsigned int> (*chapArrivalinds[40])();
 extern void testXMLMap();
 
-
 std::vector<short unsigned int> testArrivals();
 std::vector<std::vector<short int>> testTilemap();
 std::vector<std::vector<short int>> chap2Tilemap();

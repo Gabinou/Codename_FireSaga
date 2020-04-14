@@ -12,6 +12,26 @@ struct Dialog_line {
     std::string line;
 };
 
+struct Page {
+    std::string text;
+    // limit to how much text?
+    std::vector<std::string> images;
+};
+
+class Book {
+    private:
+        std::vector<Page> pages;
+        std::string name;
+        unsigned short int id;
+    public:
+        Book();
+        Books(std::string in_name);
+        addPage(Page in_page);
+        setPages(std::vector<Page> in_pages);
+};
+
+extern void makeBooks();
+
 class Scene {
     private:
         short unsigned int id;

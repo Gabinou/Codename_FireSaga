@@ -23,7 +23,6 @@ void Map::readXML(tinyxml2::XMLElement * in_pMap) {
 
 void Map::writeXML(tinyxml2::XMLDocument * in_doc, tinyxml2::XMLElement * in_pMap) {
     char buffer[DEFAULT::BUFFER_SIZE];
-    
     in_pMap->SetAttribute("chapter", chapter);
     
     tinyxml2::XMLElement * pTiles = in_doc->NewElement("Tiles");
@@ -31,11 +30,16 @@ void Map::writeXML(tinyxml2::XMLDocument * in_doc, tinyxml2::XMLElement * in_pMa
     tinyxml2::XMLElement * pTile = in_doc->NewElement("Tile");
     tinyxml2::XMLElement * pName = in_doc->NewElement("Name");
 
-    for (int i = 0; i < tilesindex.size(); i++) {
-        pTile->SetAttribute("id", tilesindex[i]);
-        pTiles->InsertEndChild(pTile);
-        pTile->InsertEndChild(pName);
-        pName->SetText(tilenames[i].c_str());
+    if (tilesindex.size() == tilenames.size()) {
+        for (int i = 0; i < tilesindex.size(); i++) {
+            pTile->SetAttribute("id", tilesindex[i]);
+            pTiles->InsertEndChild(pTile);
+            pTile->InsertEndChild(pName);
+            SDL_Log("Until here.");
+            pName->SetText(tilenames[i].c_str());
+        }
+    } else {
+        SDL_Log("Not the same number of tilenames as tile indices.")
     }
 
     tinyxml2::XMLElement * pBounds = in_doc->NewElement("Bounds");
@@ -368,6 +372,7 @@ std::vector<std::vector<short int>> testTilemap(){
         {100, 100, 100, 100, 100, 100, 100, 100, 100, 200, 100, 100, 100, 100, 100, 100, 100, 100, 100, 120, 100, 100, 100, 100, 100},
         {100, 100, 100, 100, 100, 100, 100, 100, 100, 200, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100},
         {100, 100, 100, 100, 100, 100, 100, 100, 100, 200, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100},
+        {100, 100, 100, 100, 100, 100, 100, 100, 100, 200, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100},
         {100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100},
         {100, 100, 100, 100, 100, 100, 100, 100, 100, 200, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100},
         {100, 100, 100, 100, 100, 100, 100, 100, 100, 200, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100}
@@ -390,5 +395,6 @@ void testXMLMap() {
     map.loadTiles(0);
     map.loadTilemap(0);
     map.setArrivals(mapArrivals[0]());
+    map.setArrivalEquipments(arrivalEquipments[0]());
     map.writeXML("map_test.xml");
 }
