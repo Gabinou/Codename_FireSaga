@@ -5,6 +5,7 @@
 Map::Map() {
     initVars();
     overlay_mode = MAP::OVERLAY::MOVE + MAP::OVERLAY::ATTACK;
+    setXMLElement("Map");
 }
 
 Map::~Map() {
@@ -35,11 +36,10 @@ void Map::writeXML(tinyxml2::XMLDocument * in_doc, tinyxml2::XMLElement * in_pMa
             pTile->SetAttribute("id", tilesindex[i]);
             pTiles->InsertEndChild(pTile);
             pTile->InsertEndChild(pName);
-            SDL_Log("Until here.");
             pName->SetText(tilenames[i].c_str());
         }
     } else {
-        SDL_Log("Not the same number of tilenames as tile indices.")
+        SDL_Log("Not the same number of tilenames as tileindex.");
     }
 
     tinyxml2::XMLElement * pBounds = in_doc->NewElement("Bounds");
