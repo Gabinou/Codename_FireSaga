@@ -28,12 +28,14 @@ void Map::writeXML(tinyxml2::XMLDocument * in_doc, tinyxml2::XMLElement * in_pMa
     
     tinyxml2::XMLElement * pTiles = in_doc->NewElement("Tiles");
     in_pMap->InsertEndChild(pTiles);
-    tinyxml2::XMLElement * pTile = in_doc->NewElement("Tile");
-    tinyxml2::XMLElement * pName = in_doc->NewElement("Name");
+    tinyxml2::XMLElement * pTile;
+    tinyxml2::XMLElement * pName;
 
     if (tilesindex.size() == tilenames.size()) {
         for (int i = 0; i < tilesindex.size(); i++) {
-            pTile->SetAttribute("id", tilesindex[i]);
+            pTile = in_doc->NewElement("Tile");
+            pName = in_doc->NewElement("Name");
+            pTile->SetAttribute("id", tilesindex[i]/DEFAULT::TILE_DIVISOR);
             pTiles->InsertEndChild(pTile);
             pTile->InsertEndChild(pName);
             pName->SetText(tilenames[i].c_str());
@@ -52,22 +54,28 @@ void Map::writeXML(tinyxml2::XMLDocument * in_doc, tinyxml2::XMLElement * in_pMa
     pColmax->SetText(bounds[3]);
 
     tinyxml2::XMLElement * pTilemap = in_doc->NewElement("Tilemap");
-    tinyxml2::XMLElement * pIndex = in_doc->NewElement("Index");
+    tinyxml2::XMLElement * pRow;
+    tinyxml2::XMLElement * pCol;
+    tinyxml2::XMLElement * pIndex;
     in_pMap->InsertEndChild(pTilemap);
 
     for (int row = 0; row < tilemap.size(); row++) {// This loop cache friendly.
+        pRow = in_doc->NewElement("Row");
+        pRow->SetAttribute("row", row);
+        pTilemap->InsertEndChild(pRow);
         for (int col = 0; col < tilemap[row].size(); col++) {
-            pTilemap->InsertEndChild(pIndex);
-            in_pMap->SetAttribute("row", row);
-            in_pMap->SetAttribute("col", col);
-            pIndex->SetText(tilemap[row][col]);
+            pCol = in_doc->NewElement("Col");
+            pCol->SetAttribute("col", col);
+            pRow->InsertEndChild(pCol);
+            pCol->SetText(tilemap[row][col]);
         }
     }
 
     tinyxml2::XMLElement * pArrivals = in_doc->NewElement("Arrivals");
     tinyxml2::XMLElement * pArrival = in_doc->NewElement("Arrival");
+    in_pMap->InsertEndChild(pArrivals);
     for (int i = 0; i < map_arrivals.size(); i++) {
-        pBounds->InsertEndChild(pArrivals);
+        pArrivals->InsertEndChild(pArrival);
         writeXML_arrival(in_doc, pArrival, &map_arrivals[i]);
     }
     tinyxml2::XMLElement * pArrivalEqs = in_doc->NewElement("ArrivalEqs");    

@@ -477,7 +477,7 @@ void writeXML_arrival(tinyxml2::XMLDocument * in_doc, tinyxml2::XMLElement * in_
     in_pArrival->InsertEndChild(pPosition);
     pPosition->InsertEndChild(pRow);
     pPosition->InsertEndChild(pCol);
-    in_pArrival->SetAttribute("id", in_arrival->id);
+    in_pArrival->SetAttribute("unitid", in_arrival->id);
     pTurn->SetText(in_arrival->turn);
     pLevels->SetText(in_arrival->levelups);
     pPosition->SetAttribute("row", in_arrival->position.x);
