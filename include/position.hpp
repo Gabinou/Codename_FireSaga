@@ -2,7 +2,6 @@
 #define POSITION_HPP
 
 #include "game.hpp"
-#include "map.hpp"
 #include "utilities.hpp"
 #include "SDL2/SDL.h"
 

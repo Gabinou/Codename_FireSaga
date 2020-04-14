@@ -1,4 +1,5 @@
 #include "map.hpp"
+#include "position.hpp"
 
 // ECS_DEFINE_TYPE(Map);
 
@@ -86,6 +87,25 @@ void Map::writeXML(tinyxml2::XMLDocument * in_doc, tinyxml2::XMLElement * in_pMa
         pArrivalEq->SetAttribute("unitid", map_arrivals[i].id);
         writeXML_items(in_doc, pArrivalEq, arrival_equipments[i]);
     }
+
+    tinyxml2::XMLElement * pUnitMap = in_doc->NewElement("UnitMap");
+    tinyxml2::XMLElement * pOnmap;
+    in_pMap->InsertEndChild(pUnitMap);
+    entityx::ComponentHandle<Unit> tempunit;
+    for (int row = 0; row < unitmap.size(); row++) {// This loop cache friendly.
+        for (int col = 0; col < unitmap[row].size(); col++) {
+            // tempunit = unitmap[row][col];
+            if (unitmap[row][col]) {
+                SDL_Log("Found unit on Map");
+                pOnmap = in_doc->NewElement("OnMap");
+                pUnitMap->InsertEndChild(pOnmap);
+                unitmap[row][col]->writeXML(in_doc, pOnmap); 
+            }
+        }
+        
+    }
+
+
 }
 
 void Map::setTilesize(const short int unsigned width, const short int unsigned height) {
@@ -404,5 +424,28 @@ void testXMLMap() {
     map.loadTilemap(0);
     map.setArrivals(mapArrivals[0]());
     map.setArrivalEquipments(arrivalEquipments[0]());
+    std::string asset_name;
+    entityx::EntityX ex;
+    entityx::Entity Uent = ex.entities.create();;
+    Unit temp_unit;
+    Unit_stats temp;
+    Inventory_item temp_wpn;
+    std::vector<short int> temp_supports;
+    Equipped temp_equipped;
+    temp = {15,  4,  5,  7,  6,   8,  4,  6,  5,  5,  6};
+    temp_unit = Unit(UNIT::NAME::SILOU, UNIT::CLASS::MAGE, temp, UNIT::SEX::F);
+    temp = {48, 14, 25, 32, 34,  28, 19, 40, 15};
+    temp_unit.setCaps(temp);
+    temp = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
+    temp_unit.setGrowths(temp);
+    temp_unit.setBaseExp(400);
+    temp_wpn.id = ITEM::NAME::BALL_LIGHTNING;
+    temp_unit.addEquipment(temp_wpn);
+
+    asset_name = "..//assets//" +  temp_unit.getName() + ".png";
+    Uent.assign<Unit>(temp_unit);
+    Uent.assign<Position>(6, 6);
+    Uent.assign<Sprite>(asset_name.c_str());
+    map.putUnit(6, 6, Uent.component<Unit>());
     map.writeXML("map_test.xml");
 }
