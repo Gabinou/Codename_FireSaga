@@ -97,6 +97,7 @@ struct Inventory_item {
     short int id = -1;
     unsigned char used = 0;
     bool highlighted = true;
+    char infused = -1;
     // item images are highlighted by default.
     // Only dark when in unit inventory and unequippable
 };
