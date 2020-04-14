@@ -1,5 +1,6 @@
 #include "map.hpp"
 #include "position.hpp"
+#include "sprite.hpp"
 
 // ECS_DEFINE_TYPE(Map);
 
@@ -98,14 +99,13 @@ void Map::writeXML(tinyxml2::XMLDocument * in_doc, tinyxml2::XMLElement * in_pMa
             if (unitmap[row][col]) {
                 SDL_Log("Found unit on Map");
                 pOnmap = in_doc->NewElement("OnMap");
+                pOnmap->SetAttribute("row", row);
+                pOnmap->SetAttribute("col", col);
                 pUnitMap->InsertEndChild(pOnmap);
                 unitmap[row][col]->writeXML(in_doc, pOnmap); 
             }
         }
-        
     }
-
-
 }
 
 void Map::setTilesize(const short int unsigned width, const short int unsigned height) {
