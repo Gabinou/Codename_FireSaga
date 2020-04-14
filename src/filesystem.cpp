@@ -466,7 +466,23 @@ void writeXML_stats(tinyxml2::XMLDocument * in_doc, tinyxml2::XMLElement * in_pS
     pheal->SetText(in_stats->heal);
 }
 
-void writeXML_arrival(tinyxml2::XMLDocument * in_doc, tinyxml2::XMLElement * in_pArrival, Map_arrival * in_arrival){ 
+void readXML_arrival(tinyxml2::XMLElement * in_pArrival, Map_arrival * in_arrival) {
+    unsigned int buffint;
+
+    tinyxml2::XMLElement * pTurn = in_pArrival->FirstChildElement("Turn");
+    tinyxml2::XMLElement * plevelups = in_pArrival->FirstChildElement("levelups");
+    tinyxml2::XMLElement * pPosition = in_pArrival->FirstChildElement("Position");
+
+
+    pTurn->QueryUnsignedText(&buffint);
+    in_arrival->turn = buffint;
+    in_arrival->position.x = (short int)pPosition->IntAttribute("row");
+    in_arrival->position.y = (short int)pPosition->IntAttribute("col");
+    plevelups->QueryUnsignedText(&buffint);
+    in_arrival->levelups = buffint;
+} 
+
+void writeXML_arrival(tinyxml2::XMLDocument * in_doc, tinyxml2::XMLElement * in_pArrival, Map_arrival * in_arrival) { 
     tinyxml2::XMLElement * pTurn = in_doc->NewElement("Turn");
     tinyxml2::XMLElement * pLevels = in_doc->NewElement("levelups");
     tinyxml2::XMLElement * pPosition = in_doc->NewElement("Position");
