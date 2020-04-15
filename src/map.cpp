@@ -109,7 +109,6 @@ void Map::readXML(tinyxml2::XMLElement * in_pMap) {
         
         tempUent.assign<Position>(pOnMap->IntAttribute("row"), pOnMap->IntAttribute("col"));
         unitmap[pOnMap->IntAttribute("row")][pOnMap->IntAttribute("col")] = tempUent.component<Unit>();
-        readUnits.push_back(tempunit);
 
         pOnMap = pOnMap->NextSiblingElement("OnMap");
     }

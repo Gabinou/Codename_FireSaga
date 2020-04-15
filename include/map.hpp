@@ -18,8 +18,7 @@ class Map : public XML_IO {
         bool show_overlay = false;
         bool show_danger = false;
         bool show_grid = false;
-        bool made_entitymap = false;
-        short int bounds[4] = {0, 255, 0, 255}; //xmin, xmax, ymin, ymax
+        short int bounds[4] = {0, 255, 0, 255}; //rowmin, rowmax, colmin, colmax
 
         entityx::EntityManager * manager;
 
@@ -56,7 +55,6 @@ class Map : public XML_IO {
         std::vector<SDL_Texture *> dangers{NULL, NULL};
 
         std::vector<std::vector<entityx::ComponentHandle<Unit>>> unitmap;
-        std::vector<Unit> readUnits;
 
         std::unordered_map<int, Tile> tiles;
         std::vector<short int> tilesindex;
