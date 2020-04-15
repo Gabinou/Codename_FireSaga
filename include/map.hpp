@@ -74,16 +74,15 @@ class Map : public XML_IO {
         std::vector<std::vector<short int>> getTilemap();
         void setTilemap(const std::vector<std::vector<short int>> in_tilemap);
         std::vector<std::vector<short int>> makeMvtCostmap(const unsigned char unitmovetype);
-
+        void setTilesize(const short int unsigned width, const short int unsigned height);
+        short unsigned int * getTilesize() const;
 
         void setManager(entityx::EntityManager * in_manager);
         void setRenderer(SDL_Renderer * in_renderer);
         void draw();
 
         std::vector<std::vector<entityx::ComponentHandle<Unit>>> getUnitmap();
-
-        void setTilesize(const short int unsigned width, const short int unsigned height);
-        short unsigned int * getTilesize() const;
+        void clearUnitmap();
 
         void putUnit(const short unsigned int x, const short unsigned int y, entityx::ComponentHandle<Unit> in_unit);
         entityx::ComponentHandle<Unit> getUnit(const short unsigned int x, const short unsigned int y);
@@ -101,8 +100,6 @@ class Map : public XML_IO {
         void loadGrid();
         void showGrid();
         void hideGrid();
-
-        void clearUnitmap();
 
         void setArrivalEquipments(const std::vector<std::vector<Inventory_item>> in_arrival_equipments);
         std::vector<std::vector<Inventory_item>> getArrivalEquipments();
