@@ -74,7 +74,6 @@ void Map::readXML(tinyxml2::XMLElement * in_pMap) {
         pRow = pRow->NextSiblingElement("Row");
     }
 
-    std::vector<std::vector<short int>> unitmap ((short int)bounds[3], std::vector<short int> ((short int)bounds[1]));
     tinyxml2::XMLElement * pArrivals = in_pMap->FirstChildElement("Arrivals");
     tinyxml2::XMLElement * pArrival = pArrivals->FirstChildElement("Arrival");
     Map_arrival temp_arrival;
@@ -93,12 +92,24 @@ void Map::readXML(tinyxml2::XMLElement * in_pMap) {
         arrival_equipments.push_back(tempeq);
         pArrivalEq = pArrivalEq->NextSiblingElement("ArrivalEq");
     }
+
+    std::vector<std::vector<short int>> unitmap ((short int)bounds[3], std::vector<short int> ((short int)bounds[1]));
     tinyxml2::XMLElement * pUnitmap = in_pMap->FirstChildElement("Unitmap");
     tinyxml2::XMLElement * pOnMap = pUnitmap->FirstChildElement("OnMap");
     Unit tempunit;
+    
+    entityx::Entity tempUent;
+    entityx::EntityX ex;
     clearUnitmap();
     while (pOnMap) {
         tempunit.readXML(pOnMap);
+        tempUent = ex.entities.create();
+        tempUent.assign<Unit>(tempunit);
+        
+        tempUent.assign<Position>(pOnMap->IntAttribute("row"), pOnMap->IntAttribute("col"));
+        unitmap[pOnMap->IntAttribute("row")][pOnMap->IntAttribute("col")] = tempUent.component<Unit>();
+        readUnits.push_back(tempunit);
+
         pOnMap = pOnMap->NextSiblingElement("OnMap");
     }
 
@@ -190,9 +201,9 @@ void Map::writeXML(tinyxml2::XMLDocument * in_doc, tinyxml2::XMLElement * in_pMa
         writeXML_items(in_doc, pArrivalEq, arrival_equipments[i]);
     }
 
-    tinyxml2::XMLElement * pUnitMap = in_doc->NewElement("UnitMap");
+    tinyxml2::XMLElement * pUnitmap = in_doc->NewElement("Unitmap");
     tinyxml2::XMLElement * pOnmap;
-    in_pMap->InsertEndChild(pUnitMap);
+    in_pMap->InsertEndChild(pUnitmap);
     entityx::ComponentHandle<Unit> tempunit;
     if ((unitmap.size() == bounds[1]) && (unitmap[0].size() == bounds[3])) {
         for (int row = 0; row < unitmap.size(); row++) {// This loop cache friendly.
@@ -202,7 +213,7 @@ void Map::writeXML(tinyxml2::XMLDocument * in_doc, tinyxml2::XMLElement * in_pMa
                     pOnmap = in_doc->NewElement("OnMap");
                     pOnmap->SetAttribute("row", row);
                     pOnmap->SetAttribute("col", col);
-                    pUnitMap->InsertEndChild(pOnmap);
+                    pUnitmap->InsertEndChild(pOnmap);
                     unitmap[row][col]->writeXML(in_doc, pOnmap); 
                 }
             }

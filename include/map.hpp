@@ -54,6 +54,7 @@ class Map : public XML_IO {
         std::vector<SDL_Texture *> dangers{NULL, NULL};
 
         std::vector<std::vector<entityx::ComponentHandle<Unit>>> unitmap;
+        std::vector<Unit> readUnits;
 
         std::unordered_map<int, Tile> tiles;
         std::vector<short int> tilesindex;
