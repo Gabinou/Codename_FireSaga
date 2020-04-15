@@ -84,6 +84,16 @@ void Map::readXML(tinyxml2::XMLElement * in_pMap) {
         pArrival = pArrival->NextSiblingElement("Arrival");
     }
 
+    tinyxml2::XMLElement * pArrivalEqs = in_pMap->FirstChildElement("ArrivalEqs");
+    tinyxml2::XMLElement * pArrivalEq = pArrivalEqs->FirstChildElement("ArrivalEq");
+    arrival_equipments.clear();
+    std::vector<Inventory_item> tempeq;
+    while (pArrivalEq) {
+        readXML_items(pArrivalEq, &tempeq);
+        arrival_equipments.push_back(tempeq);
+        pArrivalEq = pArrivalEq->NextSiblingElement("ArrivalEq");
+    }
+
 }
 
 void Map::writeXML(tinyxml2::XMLDocument * in_doc, tinyxml2::XMLElement * in_pMap) {

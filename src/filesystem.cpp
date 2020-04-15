@@ -480,6 +480,7 @@ void readXML_arrival(tinyxml2::XMLElement * in_pArrival, Map_arrival * in_arriva
     in_arrival->position.y = (short int)pPosition->IntAttribute("col");
     plevelups->QueryUnsignedText(&buffint);
     in_arrival->levelups = buffint;
+    in_arrival->id = (short int)in_pArrival->IntAttribute("unitid");
 } 
 
 void writeXML_arrival(tinyxml2::XMLDocument * in_doc, tinyxml2::XMLElement * in_pArrival, Map_arrival * in_arrival) { 
@@ -572,13 +573,41 @@ void writeXML_items(tinyxml2::XMLDocument * in_doc, tinyxml2::XMLElement * in_pI
     }
 }
 
+void readXML_items(tinyxml2::XMLElement * in_pItems, std::vector<Inventory_item> * equipment) {
+    tinyxml2::XMLElement * pItem = in_pItems->FirstChildElement("Item");
+    tinyxml2::XMLElement * pInfused;
+    tinyxml2::XMLElement * pUsed;
+    int buffint;
+    Inventory_item temp;
+    equipment->clear();
+    while (pItem) {
+        pUsed = pItem->FirstChildElement("Used");
+        pInfused = pItem->FirstChildElement("Infused");
+        if (pInfused) {
+            pInfused->QueryIntText(&buffint);
+            temp.infused = buffint;   
+        }
+        temp.id = pItem->IntAttribute("id");
+        pUsed->QueryIntText(&buffint);
+        temp.used = buffint;
+        equipment->push_back(temp);
+        pItem = pItem->NextSiblingElement("Item");
+    }
+}
+
 void readXML_items(tinyxml2::XMLElement * in_pItems, Inventory_item * in_items) {
     tinyxml2::XMLElement * pItem = in_pItems->FirstChildElement("Item");
     tinyxml2::XMLElement * pUsed;
+    tinyxml2::XMLElement * pInfused;
     int buffint;
     int i = 0;
     while (pItem) {
         pUsed = pItem->FirstChildElement("Used");
+        pInfused = pItem->FirstChildElement("Infused");
+        if (pInfused) {
+            pInfused->QueryIntText(&buffint);
+            in_items[i].infused = buffint;   
+        }
         in_items[i].id = pItem->IntAttribute("id");
         pUsed->QueryIntText(&buffint);
         in_items[i].used = buffint;
