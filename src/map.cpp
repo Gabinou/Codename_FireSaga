@@ -203,8 +203,6 @@ void Map::writeXML(tinyxml2::XMLDocument * in_doc, tinyxml2::XMLElement * in_pMa
         writeXML_items(in_doc, pArrivalEq, arrival_equipments[i]);
     }
 
-    // SDL_Log("until here.");
-
     tinyxml2::XMLElement * pUnitmap = in_doc->NewElement("Unitmap");
     tinyxml2::XMLElement * pOnmap;
     in_pMap->InsertEndChild(pUnitmap);
@@ -563,7 +561,7 @@ void testXMLMap() {
     map.writeXML("map_test.xml");
 
     Map test;
-    test.readXML("map_test.xml");
-    test.writeXML("map_rewrite.xml");
+    // test.readXML("map_test.xml");
+    // test.writeXML("map_rewrite.xml");
 
 }
