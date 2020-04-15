@@ -93,14 +93,14 @@ void Map::readXML(tinyxml2::XMLElement * in_pMap) {
         pArrivalEq = pArrivalEq->NextSiblingElement("ArrivalEq");
     }
 
-    std::vector<std::vector<short int>> unitmap ((short int)bounds[3], std::vector<short int> ((short int)bounds[1]));
+    clearUnitmap();
+    std::vector<std::vector<entityx::ComponentHandle<Unit>>> tempunitmap(bounds[1], std::vector<entityx::ComponentHandle<Unit>>(bounds[3]));
+    unitmap = tempunitmap; 
     tinyxml2::XMLElement * pUnitmap = in_pMap->FirstChildElement("Unitmap");
     tinyxml2::XMLElement * pOnMap = pUnitmap->FirstChildElement("OnMap");
     Unit tempunit;
-    
     entityx::Entity tempUent;
     entityx::EntityX ex;
-    clearUnitmap();
     while (pOnMap) {
         tempunit.readXML(pOnMap);
         tempUent = ex.entities.create();
