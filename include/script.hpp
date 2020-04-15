@@ -13,24 +13,35 @@ struct Dialog_line {
 };
 
 struct Page {
-    std::string text;
+    std::vector<std::string> paragraphs;
+    std::string title = "";
     // limit to how much text?
-    std::vector<std::string> images;
+    std::string image;
+
 };
 
 class Book {
     private:
         std::vector<Page> pages;
-        std::string name;
+        std::string title;
+        std::string author;
+
         unsigned short int id;
+
     public:
         Book();
-        Books(std::string in_name);
-        addPage(Page in_page);
-        setPages(std::vector<Page> in_pages);
+        Book(std::string in_title, unsigned short int in_id);
+        void setAuthor(std::string in_author);
+        std::string getAuthor();
+        void setTitle(std::string in_title);
+        std::string getTitle();
+        void setid(unsigned short int in_id);
+        unsigned short int getid();
+        void addPage(Page in_page);
 };
 
-extern void makeBooks();
+extern void baseBooks();
+extern void testXML_books();
 
 class Scene {
     private:

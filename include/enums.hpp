@@ -181,6 +181,14 @@ enum NAMES {
     LAURELIN_EXTRACT,
     CROSS, // Little healing everyturn if in inventory? you or in range?
 
+    BOOKBASICS,
+    BOOKWEAPONS,
+    BOOKELEMENTAL,
+    BOOKMATHEMAGICS,
+    BOOKLOVE,
+    BOOKGROWTHS,
+    BOOKPOSSESSION,
+
     END,
 };
 }
