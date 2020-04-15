@@ -84,7 +84,6 @@ class Map : public XML_IO {
         void setRenderer(SDL_Renderer * in_renderer);
         void draw();
 
-        std::vector<std::vector<entityx::Entity *>> getEntitymap();
         std::vector<std::vector<entityx::ComponentHandle<Unit>>> getUnitmap();
 
         void setTilesize(const short int unsigned width, const short int unsigned height);

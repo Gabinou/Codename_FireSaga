@@ -52,35 +52,34 @@ void Map::readXML(tinyxml2::XMLElement * in_pMap) {
     bounds[3] = buffint;
 
     tilemap.clear();
-    std::vector<std::vector<short int>> tilemap ((short int)bounds[1], std::vector<short int> ((short int)bounds[3]));
 
     tinyxml2::XMLElement * pTilemap = in_pMap->FirstChildElement("Tilemap");
     tinyxml2::XMLElement * pRow = pTilemap->FirstChildElement("Row");
     tinyxml2::XMLElement * pCol;
     int tempcol;
     int temprow;
-    if ((tilemap.size() <= bounds[1]) && (tilemap[0].size() <= bounds[3])) {
-        while(pRow) {
-            pCol = pRow->FirstChildElement("Col");
-            temprow = pRow->IntAttribute("row");
-            while(pCol) {
-                pCol->QueryIntText(&buffint);
-                tempcol = pCol->IntAttribute("col");
-                tilemap[temprow][tempcol] = buffint;
-                pCol = pCol->NextSiblingElement("Col");
-                SDL_Log("%d %d %d", temprow, tempcol, buffint);
-            }
-            pRow = pRow->NextSiblingElement("Row");
+    tilemap.clear();
+    std::vector<short int> tempvec;
+    while(pRow) {
+        pCol = pRow->FirstChildElement("Col");
+        temprow = pRow->IntAttribute("row");
+        tempvec.clear();
+        while(pCol) {
+            pCol->QueryIntText(&buffint);
+            tempcol = pCol->IntAttribute("col");
+            tempvec.push_back(buffint);
+            pCol = pCol->NextSiblingElement("Col");
+            // SDL_Log("%d %d %d", temprow, tempcol, buffint);
         }
-    } else {
-        SDL_Log("Problem with read tilemap bounds");
+        tilemap.push_back(tempvec);
+        pRow = pRow->NextSiblingElement("Row");
     }
 
+    std::vector<std::vector<short int>> unitmap ((short int)bounds[3], std::vector<short int> ((short int)bounds[1]));
     tinyxml2::XMLElement * pArrivals = in_pMap->FirstChildElement("Arrivals");
     tinyxml2::XMLElement * pArrival = pArrivals->FirstChildElement("Arrival");
     Map_arrival temp_arrival;
     while (pArrival) {
-    SDL_Log("until here");
         readXML_arrival(pArrival, &temp_arrival);
         map_arrivals.push_back(temp_arrival);
         pArrival = pArrival->NextSiblingElement("Arrival");
@@ -123,22 +122,27 @@ void Map::writeXML(tinyxml2::XMLDocument * in_doc, tinyxml2::XMLElement * in_pMa
     pRowmax->SetText(bounds[1]);
     pColmax->SetText(bounds[3]);
 
+
     tinyxml2::XMLElement * pTilemap = in_doc->NewElement("Tilemap");
     tinyxml2::XMLElement * pRow;
     tinyxml2::XMLElement * pCol;
     tinyxml2::XMLElement * pIndex;
     in_pMap->InsertEndChild(pTilemap);
 
-    for (int row = 0; row < tilemap.size(); row++) {// This loop cache friendly.
-        pRow = in_doc->NewElement("Row");
-        pRow->SetAttribute("row", row);
-        pTilemap->InsertEndChild(pRow);
-        for (int col = 0; col < tilemap[row].size(); col++) {
-            pCol = in_doc->NewElement("Col");
-            pCol->SetAttribute("col", col);
-            pRow->InsertEndChild(pCol);
-            pCol->SetText(tilemap[row][col]);
+    if ((tilemap.size() == bounds[3]) && (tilemap[0].size() == bounds[1])) {
+        for (int row = 0; row < tilemap.size(); row++) {// This loop cache friendly.
+            pRow = in_doc->NewElement("Row");
+            pRow->SetAttribute("row", row);
+            pTilemap->InsertEndChild(pRow);
+            for (int col = 0; col < tilemap[row].size(); col++) {
+                pCol = in_doc->NewElement("Col");
+                pCol->SetAttribute("col", col);
+                pRow->InsertEndChild(pCol);
+                pCol->SetText(tilemap[row][col]);
+            }
         }
+    } else {
+        SDL_Log("Problem with tilemap size");
     }
 
     tinyxml2::XMLElement * pArrivals = in_doc->NewElement("Arrivals");
@@ -157,22 +161,27 @@ void Map::writeXML(tinyxml2::XMLDocument * in_doc, tinyxml2::XMLElement * in_pMa
         writeXML_items(in_doc, pArrivalEq, arrival_equipments[i]);
     }
 
+    SDL_Log("until here");
     tinyxml2::XMLElement * pUnitMap = in_doc->NewElement("UnitMap");
     tinyxml2::XMLElement * pOnmap;
     in_pMap->InsertEndChild(pUnitMap);
     entityx::ComponentHandle<Unit> tempunit;
-    for (int row = 0; row < unitmap.size(); row++) {// This loop cache friendly.
-        for (int col = 0; col < unitmap[row].size(); col++) {
-            // tempunit = unitmap[row][col];
-            if (unitmap[row][col]) {
-                SDL_Log("Found unit on Map");
-                pOnmap = in_doc->NewElement("OnMap");
-                pOnmap->SetAttribute("row", row);
-                pOnmap->SetAttribute("col", col);
-                pUnitMap->InsertEndChild(pOnmap);
-                unitmap[row][col]->writeXML(in_doc, pOnmap); 
+    if ((unitmap.size() == bounds[3]) && (unitmap[0].size() == bounds[1])) {
+        for (int row = 0; row < unitmap.size(); row++) {// This loop cache friendly.
+            for (int col = 0; col < unitmap[row].size(); col++) {
+                // tempunit = unitmap[row][col];
+                if (unitmap[row][col]) {
+                    SDL_Log("Found unit on Map");
+                    pOnmap = in_doc->NewElement("OnMap");
+                    pOnmap->SetAttribute("row", row);
+                    pOnmap->SetAttribute("col", col);
+                    pUnitMap->InsertEndChild(pOnmap);
+                    unitmap[row][col]->writeXML(in_doc, pOnmap); 
+                }
             }
         }
+    } else {
+        SDL_Log("Problem with unitmap bounds");
     }
 }
 
@@ -487,6 +496,7 @@ std::vector<short unsigned int> (*chapArrivalinds[40])() = {testArrivalinds,};
 
 void testXMLMap() {
     SDL_Log("Testing Map xml writing and reading\n");
+    // Must be run when units are in memory.
     Map map(32, 32); // mapx is a pointer
     map.loadTiles(0);
     map.loadTilemap(0);
