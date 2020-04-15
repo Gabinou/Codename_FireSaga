@@ -25,6 +25,8 @@ void Map::readXML(tinyxml2::XMLElement * in_pMap) {
     int buffint;
     tinyxml2::XMLElement * ptemp;
 
+    SDL_Log("XMLElement: %s", getXMLElement().c_str());
+
     chapter = (unsigned short int)in_pMap->IntAttribute("chapter");
     tinyxml2::XMLElement * pTiles = in_pMap->FirstChildElement("Tiles");
     tinyxml2::XMLElement * pTile;
@@ -125,6 +127,7 @@ void Map::clearUnitmap() {
             }
         }
     }
+    unitmap.clear();
 }
 
 void Map::writeXML(tinyxml2::XMLDocument * in_doc, tinyxml2::XMLElement * in_pMap) {
@@ -161,7 +164,6 @@ void Map::writeXML(tinyxml2::XMLDocument * in_doc, tinyxml2::XMLElement * in_pMa
     pBounds->InsertEndChild(pColmax);
     pRowmax->SetText(bounds[1]);
     pColmax->SetText(bounds[3]);
-
 
     tinyxml2::XMLElement * pTilemap = in_doc->NewElement("Tilemap");
     tinyxml2::XMLElement * pRow;
@@ -209,7 +211,6 @@ void Map::writeXML(tinyxml2::XMLDocument * in_doc, tinyxml2::XMLElement * in_pMa
         for (int row = 0; row < unitmap.size(); row++) {// This loop cache friendly.
             for (int col = 0; col < unitmap[row].size(); col++) {
                 if (unitmap[row][col]) {
-                    SDL_Log("Found unit on Map");
                     pOnmap = in_doc->NewElement("OnMap");
                     pOnmap->SetAttribute("row", row);
                     pOnmap->SetAttribute("col", col);
