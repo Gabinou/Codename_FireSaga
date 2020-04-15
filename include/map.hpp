@@ -13,52 +13,47 @@
 
 class Map : public XML_IO {
     private:
-        short unsigned int tilesize[2];
-        short unsigned int frames = 10, speed = 50;
-        bool show_overlay = false;
-        bool show_danger = false;
-        bool show_grid = false;
-        short int bounds[4] = {0, 255, 0, 255}; //rowmin, rowmax, colmin, colmax
-
         entityx::EntityManager * manager;
-
-        std::vector<Map_arrival> map_arrivals;
-        std::vector<Map_arrival> loaded_map_arrivals;
-        std::vector<std::vector<Inventory_item>> arrival_equipments;
-
-        unsigned char num_friendlies;
-        unsigned char num_neutral;
-        unsigned char num_enemies;
-        unsigned char turn = 0; // Automatic loss if turn 255?
-        unsigned char chapter = 0;
-
-        std::vector<unsigned short int> essentials = {UNIT::NAME::ERWIN};
-        unsigned short int boss;
-        bool bossdied;
-        bool seized;
-
-        std::vector<std::vector<short int>> moveoverlay, attackoverlay, healoverlay;
-        std::vector<std::vector<short int>> dangeroverlay;
-        std::vector<std::vector<short int>> tilemap;
-        std::vector<std::vector<short int>> tileupdate;
-
-        std::vector<Point> starting_positions;
 
         SDL_Rect srcrect, destrect;
         SDL_Renderer * renderer = NULL;
-
-        unsigned char overlay_mode = 0;
-        unsigned char danger_mode = 0;
+        short unsigned int frames = 10, speed = 50;
+        short unsigned int tilesize[2];
 
         std::unordered_map<short int, SDL_Texture *> textures;
         std::vector<SDL_Texture *> overlays{NULL, NULL, NULL};
         std::vector<SDL_Texture *> dangers{NULL, NULL};
 
-        std::vector<std::vector<entityx::ComponentHandle<Unit>>> unitmap;
+        std::vector<std::vector<short int>> moveoverlay, attackoverlay, healoverlay;
+        bool show_overlay = false;
+        bool show_danger = false;
+        bool show_grid = false;
+        unsigned char overlay_mode = 0;
+        std::vector<std::vector<short int>> dangeroverlay;
+        unsigned char danger_mode = 0;
 
+        std::vector<std::vector<short int>> tilemap;
         std::unordered_map<int, Tile> tiles;
         std::vector<short int> tilesindex;
         std::vector<std::string> tilenames;
+
+        short int bounds[4] = {0, 255, 0, 255}; //rowmin, rowmax, colmin, colmax
+        unsigned char num_friendlies = 0;
+        unsigned char num_neutral = 0;
+        unsigned char num_enemies = 0;
+        unsigned char turn = 0; // Automatic loss if turn 255?
+        unsigned char chapter = 0;
+
+        std::vector<Map_arrival> map_arrivals;
+        std::vector<Map_arrival> loaded_map_arrivals;
+        std::vector<std::vector<Inventory_item>> arrival_equipments;
+
+        std::vector<Point> starting_positions;
+        std::vector<std::vector<entityx::ComponentHandle<Unit>>> unitmap;
+        std::vector<unsigned short int> essentials = {UNIT::NAME::ERWIN};
+        unsigned short int boss;
+        bool bossdied;
+        bool seized; // maybe unecessary if turn system.
 
     public:
         // ECS_DECLARE_TYPE;
@@ -67,7 +62,6 @@ class Map : public XML_IO {
         Map(const short unsigned int width, const short unsigned int height);
 
         void loadTiletextures();
-        void initVars();
         void loadOverlays();
         void loadDanger();
 

@@ -2,10 +2,12 @@
 #include "position.hpp"
 #include "sprite.hpp"
 
-// ECS_DEFINE_TYPE(Map);
-
-Map::Map() {
-    initVars();
+Map::Map() { // Delegated constructor is called BEFORE.
+    srcrect.x = srcrect.y = 0;
+    destrect.x = destrect.y = 0;
+    setTilesize(DEFAULT::TILESIZE, DEFAULT::TILESIZE);
+    srcrect.w = destrect.w = DEFAULT::TILESIZE;
+    srcrect.h = destrect.h = DEFAULT::TILESIZE;
     overlay_mode = MAP::OVERLAY::MOVE + MAP::OVERLAY::ATTACK;
     setXMLElement("Map");
 }
@@ -194,8 +196,6 @@ void Map::writeXML(tinyxml2::XMLDocument * in_doc, tinyxml2::XMLElement * in_pMa
         writeXML_arrival(in_doc, pArrival, &map_arrivals[i]);
     }
     
-    SDL_Log("Until here");
-
     tinyxml2::XMLElement * pArrivalEqs = in_doc->NewElement("ArrivalEqs");    
     tinyxml2::XMLElement * pArrivalEq = in_doc->NewElement("ArrivalEq");    
     in_pMap->InsertEndChild(pArrivalEqs);
@@ -204,9 +204,6 @@ void Map::writeXML(tinyxml2::XMLDocument * in_doc, tinyxml2::XMLElement * in_pMa
         pArrivalEq->SetAttribute("unitid", map_arrivals[i].id);
         writeXML_items(in_doc, pArrivalEq, arrival_equipments[i]);
     }
-
-    SDL_Log("But not here");
-
 
     tinyxml2::XMLElement * pUnitmap = in_doc->NewElement("Unitmap");
     tinyxml2::XMLElement * pOnmap;
@@ -393,14 +390,6 @@ void Map::showOverlay(){
 
 void Map::hideOverlay(){
     show_overlay = false;
-}
-
-void Map::initVars() {
-    srcrect.x = srcrect.y = 0;
-    destrect.x = destrect.y = 0;
-    setTilesize(DEFAULT::TILESIZE, DEFAULT::TILESIZE);
-    srcrect.w = destrect.w = DEFAULT::TILESIZE;
-    srcrect.h = destrect.h = DEFAULT::TILESIZE;
 }
 
 std::vector<std::vector<entityx::ComponentHandle<Unit>>> Map::getUnitmap() {
