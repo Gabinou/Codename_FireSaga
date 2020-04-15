@@ -625,6 +625,7 @@ char Unit::speed() {
 }
 
 void Unit::readXML(tinyxml2::XMLElement * in_pUnit) {
+    SDL_Log("Reading Unit element.");
     const char * buffer;
     unsigned int bufint;
     tinyxml2::XMLElement * ptemp;
