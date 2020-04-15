@@ -69,7 +69,6 @@ void Map::readXML(tinyxml2::XMLElement * in_pMap) {
             tempcol = pCol->IntAttribute("col");
             tempvec.push_back(buffint);
             pCol = pCol->NextSiblingElement("Col");
-            // SDL_Log("%d %d %d", temprow, tempcol, buffint);
         }
         tilemap.push_back(tempvec);
         pRow = pRow->NextSiblingElement("Row");
@@ -129,7 +128,7 @@ void Map::writeXML(tinyxml2::XMLDocument * in_doc, tinyxml2::XMLElement * in_pMa
     tinyxml2::XMLElement * pIndex;
     in_pMap->InsertEndChild(pTilemap);
 
-    if ((tilemap.size() == bounds[3]) && (tilemap[0].size() == bounds[1])) {
+    if ((tilemap.size() == bounds[1]) && (tilemap[0].size() == bounds[3])) {
         for (int row = 0; row < tilemap.size(); row++) {// This loop cache friendly.
             pRow = in_doc->NewElement("Row");
             pRow->SetAttribute("row", row);
@@ -161,15 +160,13 @@ void Map::writeXML(tinyxml2::XMLDocument * in_doc, tinyxml2::XMLElement * in_pMa
         writeXML_items(in_doc, pArrivalEq, arrival_equipments[i]);
     }
 
-    SDL_Log("until here");
     tinyxml2::XMLElement * pUnitMap = in_doc->NewElement("UnitMap");
     tinyxml2::XMLElement * pOnmap;
     in_pMap->InsertEndChild(pUnitMap);
     entityx::ComponentHandle<Unit> tempunit;
-    if ((unitmap.size() == bounds[3]) && (unitmap[0].size() == bounds[1])) {
+    if ((unitmap.size() == bounds[1]) && (unitmap[0].size() == bounds[3])) {
         for (int row = 0; row < unitmap.size(); row++) {// This loop cache friendly.
             for (int col = 0; col < unitmap[row].size(); col++) {
-                // tempunit = unitmap[row][col];
                 if (unitmap[row][col]) {
                     SDL_Log("Found unit on Map");
                     pOnmap = in_doc->NewElement("OnMap");
@@ -355,10 +352,6 @@ void Map::initVars() {
     srcrect.h = destrect.h = DEFAULT::TILESIZE;
 }
 
-// std::vector<std::vector<entityx::Entity *>> Map::getEntitymap() {
-//     return(entitymap);
-// }
-
 std::vector<std::vector<entityx::ComponentHandle<Unit>>> Map::getUnitmap() {
     return(unitmap);
 }
@@ -370,11 +363,9 @@ void Map::loadTilemap(const short unsigned int in_map_index) {
 
 void Map::postTilemap() {
     loadTiletextures();
-    short unsigned int col_size = tilemap.size();
-    short unsigned int row_size = tilemap[0].size();
-    bounds[1] = row_size;
-    bounds[3] = col_size;
-    std::vector<std::vector<entityx::ComponentHandle<Unit>>> tempunit(row_size, std::vector<entityx::ComponentHandle<Unit>>(col_size));
+    bounds[1] = tilemap.size();
+    bounds[3] = tilemap[0].size();
+    std::vector<std::vector<entityx::ComponentHandle<Unit>>> tempunit(bounds[1], std::vector<entityx::ComponentHandle<Unit>>(bounds[3]));
     unitmap = tempunit; 
 }
 
