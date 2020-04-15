@@ -106,6 +106,8 @@ class Map : public XML_IO {
         void showGrid();
         void hideGrid();
 
+        void clearUnitmap();
+
         void setArrivalEquipments(const std::vector<std::vector<Inventory_item>> in_arrival_equipments);
         std::vector<std::vector<Inventory_item>> getArrivalEquipments();
 

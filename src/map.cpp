@@ -93,7 +93,27 @@ void Map::readXML(tinyxml2::XMLElement * in_pMap) {
         arrival_equipments.push_back(tempeq);
         pArrivalEq = pArrivalEq->NextSiblingElement("ArrivalEq");
     }
+    tinyxml2::XMLElement * pUnitmap = in_pMap->FirstChildElement("Unitmap");
+    tinyxml2::XMLElement * pOnMap = pUnitmap->FirstChildElement("OnMap");
+    Unit tempunit;
+    clearUnitmap();
+    while (pOnMap) {
+        tempunit.readXML(pOnMap);
+        pOnMap = pOnMap->NextSiblingElement("OnMap");
+    }
 
+}
+
+void Map::clearUnitmap() {
+    entityx::ComponentHandle<Unit> tempunit;
+    for (int row = 0; row < unitmap.size(); row++) {// This loop cache friendly.
+        for (int col = 0; col < unitmap[row].size(); col++) {
+            tempunit = unitmap[row][col]; 
+            if (tempunit) {
+                tempunit.entity().destroy();
+            }
+        }
+    }
 }
 
 void Map::writeXML(tinyxml2::XMLDocument * in_doc, tinyxml2::XMLElement * in_pMap) {
