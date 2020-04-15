@@ -102,10 +102,9 @@ void Map::readXML(tinyxml2::XMLElement * in_pMap) {
     tinyxml2::XMLElement * pOnMap = pUnitmap->FirstChildElement("OnMap");
     Unit tempunit;
     entityx::Entity tempUent;
-    entityx::EntityX ex;
     while (pOnMap) {
         tempunit.readXML(pOnMap);
-        tempUent = ex.entities.create();
+        tempUent = manager->create();
         tempUent.assign<Unit>(tempunit);
         
         tempUent.assign<Position>(pOnMap->IntAttribute("row"), pOnMap->IntAttribute("col"));
@@ -187,6 +186,7 @@ void Map::writeXML(tinyxml2::XMLDocument * in_doc, tinyxml2::XMLElement * in_pMa
         SDL_Log("Problem with tilemap size");
     }
 
+
     tinyxml2::XMLElement * pArrivals = in_doc->NewElement("Arrivals");
     tinyxml2::XMLElement * pArrival = in_doc->NewElement("Arrival");
     in_pMap->InsertEndChild(pArrivals);
@@ -194,6 +194,9 @@ void Map::writeXML(tinyxml2::XMLDocument * in_doc, tinyxml2::XMLElement * in_pMa
         pArrivals->InsertEndChild(pArrival);
         writeXML_arrival(in_doc, pArrival, &map_arrivals[i]);
     }
+    
+    SDL_Log("Until here");
+
     tinyxml2::XMLElement * pArrivalEqs = in_doc->NewElement("ArrivalEqs");    
     tinyxml2::XMLElement * pArrivalEq = in_doc->NewElement("ArrivalEq");    
     in_pMap->InsertEndChild(pArrivalEqs);
@@ -202,6 +205,9 @@ void Map::writeXML(tinyxml2::XMLDocument * in_doc, tinyxml2::XMLElement * in_pMa
         pArrivalEq->SetAttribute("unitid", map_arrivals[i].id);
         writeXML_items(in_doc, pArrivalEq, arrival_equipments[i]);
     }
+
+    SDL_Log("But not here");
+
 
     tinyxml2::XMLElement * pUnitmap = in_doc->NewElement("Unitmap");
     tinyxml2::XMLElement * pOnmap;
@@ -323,6 +329,10 @@ void Map::setRenderer(SDL_Renderer * in_renderer){
         SDL_Log("Could not set map renderer");
     }
     loadOverlays();
+}
+
+void Map::setManager(entityx::EntityManager * in_manager) {
+    manager = in_manager;
 }
 
 void Map::loadTiletextures() {
@@ -525,43 +535,3 @@ std::vector<short unsigned int> testArrivalinds(){
 
 std::vector<std::vector<short int>> (*chapTilemaps[40])() = {testTilemap,};
 std::vector<short unsigned int> (*chapArrivalinds[40])() = {testArrivalinds,};
-
-
-void testXMLMap() {
-    SDL_Log("Testing Map xml writing and reading\n");
-    // Must be run when units are in memory.
-    Map map(32, 32); // mapx is a pointer
-    map.loadTiles(0);
-    map.loadTilemap(0);
-    map.setArrivals(mapArrivals[0]());
-    map.setArrivalEquipments(arrivalEquipments[0]());
-    std::string asset_name;
-    entityx::EntityX ex;
-    entityx::Entity Uent = ex.entities.create();;
-    Unit temp_unit;
-    Unit_stats temp;
-    Inventory_item temp_wpn;
-    std::vector<short int> temp_supports;
-    Equipped temp_equipped;
-    temp = {15,  4,  5,  7,  6,   8,  4,  6,  5,  5,  6};
-    temp_unit = Unit(UNIT::NAME::SILOU, UNIT::CLASS::MAGE, temp, UNIT::SEX::F);
-    temp = {48, 14, 25, 32, 34,  28, 19, 40, 15};
-    temp_unit.setCaps(temp);
-    temp = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
-    temp_unit.setGrowths(temp);
-    temp_unit.setBaseExp(400);
-    temp_wpn.id = ITEM::NAME::BALL_LIGHTNING;
-    temp_unit.addEquipment(temp_wpn);
-
-    asset_name = "..//assets//" +  temp_unit.getName() + ".png";
-    Uent.assign<Unit>(temp_unit);
-    Uent.assign<Position>(6, 6);
-    Uent.assign<Sprite>(asset_name.c_str());
-    map.putUnit(6, 6, Uent.component<Unit>());
-    map.writeXML("map_test.xml");
-
-    Map test;
-    // test.readXML("map_test.xml");
-    // test.writeXML("map_rewrite.xml");
-
-}

@@ -42,8 +42,7 @@ int main(int argc, char * argv[]) {
     // writeallXMLWeapons();
 
 
-    SDL_Log("Testing map writing.");
-    testXMLMap();
+
 
     // SDL_Log("Loading base units.");
     // all_units = baseUnits();
@@ -69,6 +68,9 @@ int main(int argc, char * argv[]) {
 
     // SDL_Log("Testing convoy\n");
     // testConvoy();
+
+    SDL_Log("Testing map writing.");
+    firesaga->testXMLMap();
 
     firesaga->loadMap(0);
 

@@ -113,6 +113,7 @@ class Game : public entityx::EntityX {
         void deleteSaveXML(const short int delete_ind);
         void copySaveXML(const short int from_ind, const short int to_ind);
         void loadXML(const short int save_ind);
+        void testXMLMap();
 
         bool running();
         void update(entityx::TimeDelta dt);

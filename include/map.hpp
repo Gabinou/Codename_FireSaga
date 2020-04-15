@@ -21,6 +21,8 @@ class Map : public XML_IO {
         bool made_entitymap = false;
         short int bounds[4] = {0, 255, 0, 255}; //xmin, xmax, ymin, ymax
 
+        entityx::EntityManager * manager;
+
         std::vector<Map_arrival> map_arrivals;
         std::vector<Map_arrival> loaded_map_arrivals;
         std::vector<std::vector<Inventory_item>> arrival_equipments;
@@ -82,6 +84,8 @@ class Map : public XML_IO {
         void setTilemap(const std::vector<std::vector<short int>> in_tilemap);
         std::vector<std::vector<short int>> makeMvtCostmap(const unsigned char unitmovetype);
 
+
+        void setManager(entityx::EntityManager * in_manager);
         void setRenderer(SDL_Renderer * in_renderer);
         void draw();
 
@@ -147,7 +151,6 @@ class Map : public XML_IO {
 
 extern std::vector<std::vector<short int>> (*chapTilemaps[40])();
 extern std::vector<short unsigned int> (*chapArrivalinds[40])();
-extern void testXMLMap();
 
 std::vector<short unsigned int> testArrivals();
 std::vector<std::vector<short int>> testTilemap();
