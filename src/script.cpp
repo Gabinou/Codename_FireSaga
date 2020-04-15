@@ -183,14 +183,29 @@ void baseScript() {
     // all_scripts["Supports"] = Supports;
 }
 
+std::string stats2str(Unit_stats in_stats) {
+
+}
+
+Page unit2page(Unit in_unit) {
+
+}
+
 void baseBooks() {
     Page page;
     Book book;
 
     book = Book("Basics of Army Management", ITEM::NAME::BOOKBASICS);
+    book.setAuthor("Ancestor of Erwin?");
+
     book = Book("Weapons of the World", ITEM::NAME::BOOKWEAPONS);
+    book.setAuthor("Member of the Guild of blacksmiths?.");
+
     book = Book("Magic: The Definitive Guide", ITEM::NAME::BOOKELEMENTAL);
+    book.setAuthor("Ancestor of the gifted brothers.");
     book = Book("Deep and Arcane Mathemagics", ITEM::NAME::BOOKMATHEMAGICS);
+    book.setAuthor("Ancestor of the gifted brothers.");
+    page.title = "Introduction to Mathemagics";
     page.paragraphs.push_back("This world is governed by randomness. All soldiers realize this fact: nothing is certain. Taking but a single swing of a sword means to take a risk, to bet on your skills against your opponent's capacity to dodge.");
     page.paragraphs.push_back("An enemy may very well carry the Goddess's favor and evade all the attacks of a master. While you, no doubt skilled reader, might only earn her scorn and receive a swift death at the point of a spear wielded by a novice.");
     page.paragraphs.push_back("Such is the tapestry She weaves... May She have mercy on all. Blasphemers say She is a capricious Goddess, that her judgements are cruel, unfair and arbitrary. Those of weak faith may yet be convinced already. But the tapestry of the world is never woven carelessly. Rules guide randomness.");
@@ -198,7 +213,8 @@ void baseBooks() {
     std::vector<std::string> paragraphs;
     book.addPage(page);
     page.paragraphs.clear();
-    page.title = "Slow Introduction to Mathemagics";
+
+    page.title = "Random Events";
     page.paragraphs.push_back("Random events have a certain chance of occuring, generally noted in percents (%). For example, a simple coin has a 50\% chance of landing on its face. Flipping the coin once has no bearing on the future coin flips. As such, we call these independent random events.");
     page.paragraphs.push_back("These constrast directly with dependent events. For example, drawing cards. Imagine a standard 52 card deck, from which I draw a Jack of Diamond. The chance of me drawing a Jack of Diamond is zero, while the chance of me drawing any other card from the deck is increased slightly (unless of course, I put the Jack of Diamond back in the deck.)");
     page.paragraphs.push_back("All of the chance events related to war in this world are independent. Having dodged an attack does not increase (nor decrease!) the likelihood of dodging the next attack.");
@@ -215,14 +231,33 @@ void baseBooks() {
     page.title = "Single and Double Roll";
     page.paragraphs.push_back("In the previous page, we mentionned that 'if the hit rate is greater than the next Random Number (RN), the hit will land'. That is only true if we live in a Single Roll world. Unfortunately, we live in a Double Roll universe.");
     page.paragraphs.push_back("In a Double Roll universe, two RNs are averaged together, then compared to the Hit rate. The Goddess chose the double Roll for its simplicity, and to reward the skillful. An unfortunate side-effect of this universal constant is that the less skilled are punished. Above a hit rate of 50%, Double Roll increase the likelihood of a hit, but under 50\% decreases it instead.  'To everyone who has, more shall be given; but from those who does not have, everything shall be taken away.'");
-    book.addPage(page);    
+    book.addPage(page);     
 
     page.paragraphs.clear();
-    page.title = "Single and Double Roll";
-    book.addPage(page);
-
+    page.title = "Double Roll: True rates";
+    page.paragraphs.push_back("");
+    book.addPage(page);   
+    
+    page.paragraphs.clear();
+    page.title = "Gaussian Roll";
+    page.paragraphs.push_back("");
+    book.addPage(page);    
 
     book = Book("Love blooms on the Battlefield", ITEM::NAME::BOOKLOVE);
+    book.setAuthor("A girl PC that likes Shipping. Kiara?.");
+    
+    page.paragraphs.clear();
+    page.title = "Gaussian Roll";
+    page.paragraphs.push_back("");
+    book.addPage(page);    
+    
     book = Book("Growth & Potential", ITEM::NAME::BOOKGROWTHS);
+    book.setAuthor("");
+
+    page.paragraphs.clear();
+    page.title = "Gaussian Roll";
+    page.paragraphs.push_back("");
+    book.addPage(page);    
+
     book = Book("Angelic and Demonic Possession", ITEM::NAME::BOOKPOSSESSION);
 }

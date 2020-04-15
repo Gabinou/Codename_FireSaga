@@ -3,22 +3,8 @@
 
 #include <string>
 #include "enums.hpp"
+#include "unit.hpp"
 #include "structs.hpp"
-
-struct Dialog_line {
-    // How to make the line dynamic?
-    unsigned short int id;
-    unsigned char speaker;
-    std::string line;
-};
-
-struct Page {
-    std::vector<std::string> paragraphs;
-    std::string title = "";
-    // limit to how much text?
-    std::string image;
-
-};
 
 class Book {
     private:
@@ -84,6 +70,9 @@ extern std::vector<bool> happened;
 extern Script(*scriptChapter[15])();
 void baseScript();
 void baseNarrativeState();
+
+extern std::string stats2str(Unit_stats in_stats);
+extern struct Page unit2page(Unit in_unit);
 
 namespace SCENE {
 enum SCENES {

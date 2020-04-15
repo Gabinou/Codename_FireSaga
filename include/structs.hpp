@@ -66,6 +66,21 @@ struct Unit_stats {
     unsigned char prof; // proficiency
 };
 
+struct Dialog_line {
+    // How to make the line dynamic?
+    unsigned short int id;
+    unsigned char speaker;
+    std::string line;
+};
+
+struct Page {
+    std::vector<std::string> paragraphs;
+    std::string title = "";
+    // limit to how much text?
+    std::string image;
+
+};
+
 struct Combat_stats {
     unsigned char hit;
     unsigned char dodge;
