@@ -56,7 +56,6 @@ class Map : public XML_IO {
         bool seized; // maybe unecessary if turn system.
 
     public:
-        // ECS_DECLARE_TYPE;
         Map();
         ~Map();
         Map(const short unsigned int width, const short unsigned int height);

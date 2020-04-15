@@ -187,7 +187,6 @@ void Map::writeXML(tinyxml2::XMLDocument * in_doc, tinyxml2::XMLElement * in_pMa
         SDL_Log("Problem with tilemap size");
     }
 
-
     tinyxml2::XMLElement * pArrivals = in_doc->NewElement("Arrivals");
     tinyxml2::XMLElement * pArrival = in_doc->NewElement("Arrival");
     in_pMap->InsertEndChild(pArrivals);
