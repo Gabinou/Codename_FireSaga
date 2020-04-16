@@ -56,6 +56,8 @@ public:
     void readXML(tinyxml2::XMLElement * in_pWpn);
 };
 
+extern std::string stats2str(Weapon_stats in_stats);
+
 extern std::vector<Weapon> all_weapons;
 extern std::vector<Weapon> loaded_weapons;
 

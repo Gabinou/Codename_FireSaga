@@ -186,13 +186,6 @@ void baseScript() {
     // all_scripts["Supports"] = Supports;
 }
 
-std::string stats2str(Unit_stats in_stats) {
-    char buffer[DEFAULT::BUFFER_SIZE];
-    stbsp_sprintf(buffer, "%02d %02d %02d %02d %02d %02d %02d %02d %02d %02d %02d", in_stats.hp, in_stats.str, in_stats.mag, in_stats.agi, in_stats.dex, in_stats.luck, in_stats.def, in_stats.res, in_stats.con, in_stats.move, in_stats.prof);
-    std::string out(buffer);
-    return (out);
-}
-
 Page unit2page(Unit in_unit) {
     Page out;
 

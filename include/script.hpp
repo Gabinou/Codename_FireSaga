@@ -71,7 +71,6 @@ extern Script(*scriptChapter[15])();
 void baseScript();
 void baseNarrativeState();
 
-extern std::string stats2str(Unit_stats in_stats);
 extern std::string stats2str(Weapon_stats in_stats);
 extern struct Page unit2page(Unit in_unit);
 

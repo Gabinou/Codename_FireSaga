@@ -1624,3 +1624,11 @@ void baseWeapons() {
     temp_wpn.setDescription("");
     all_weapons[ITEM::NAME::FATALIS] = temp_wpn;
 }
+
+std::string stats2str(Weapon_stats in_stats) {
+    char buffer[DEFAULT::BUFFER_SIZE];
+    stbsp_sprintf(buffer, "%02d %02d %02d %02d %02d %02d %02d %02d %02d %02d %02d %02d %02d %02d %06d %02d", in_stats.Pmight, in_stats.Mmight, in_stats.combat.hit, in_stats.combat.dodge, in_stats.combat.crit, in_stats.combat.favor, in_stats.wgt, in_stats.uses, in_stats.prof, in_stats.range[0], in_stats.range[1], in_stats.hand[0], in_stats.hand[1], in_stats.dmg_type, in_stats.price, in_stats.heal);
+    std::string out(buffer);
+    return (out);
+}
+
