@@ -84,7 +84,7 @@ int main(int argc, char * argv[]) {
 
     // firesaga->loadCursor();
 
-    // firesaga->loadMapArrivals();
+    firesaga->loadMapArrivals();
 
     // SDL_Log("Testing game save XML");
     // firesaga->saveXML(1);

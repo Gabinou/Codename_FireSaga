@@ -153,18 +153,19 @@ public:
     }
 };
 
-// class TurnSystemx: public entityx::System<TurnSystemx> {
+class TurnSystemx: public entityx::System<TurnSystemx> {
 
-// public:
-//    void update(entityx::EntityManager &es, entityx::EventManager &events, TimeDelta dt) override {
-//         ComponentHandle<Unit> unit;
-//         for (Entity unit : es.entities_with_components(unit)) {
-//             if (wait(unit)) {
-//                 events.emit<Wait>(unit);
-//             }
-//         }
-//     };
-// };
+public:
+    void update(entityx::EntityManager & es, entityx::EventManager & events, entityx::TimeDelta dt) override {
+        entityx::ComponentHandle<Unit> unit;
+
+        // for (entityx::Entity unit : es.entities_with_components(unit)) {
+        // if (wait(unit)) {
+        // events.emit<Wait>(unit);
+        // }
+        // }
+    };
+};
 
 class ControlSystemx: public entityx::System<ControlSystemx> {
 private:

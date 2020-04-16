@@ -108,6 +108,7 @@ public:
     void addArrival(const Map_arrival in_arrival);
     void removeMapArrival(const unsigned char index);
     std::vector<Map_arrival> getArrivals();
+    unsigned char getnumArrivals();
 
     void setDangermode(const unsigned char in_mode);
     void showDanger();
@@ -115,7 +116,6 @@ public:
     void addDanger(const std::vector<std::vector<short int>> in_danger);
     void subDanger(const std::vector<std::vector<short int>> in_danger);
 
-    unsigned char getnumArrivals();
     unsigned short int getBoss();
     bool getBossDeath();
     bool getSeized();
