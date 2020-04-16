@@ -6,7 +6,7 @@
 #include "map.hpp"
 // #include "game.hpp"
 #include "sprite.hpp"
-#include "systems.hpp"
+#include "events.hpp"
 #include "text.hpp"
 #include "keyboardcontroller.hpp"
 #include "gamepadcontroller.hpp"
@@ -166,11 +166,28 @@ public:
 };
 
 class UnitSystemx: public entityx::System<UnitSystemx>, public entityx::Receiver<UnitSystemx> {
+private:
+
+public:
+
     void configure(entityx::EventManager & event_manager) {
         event_manager.subscribe<beginTurnEvent>(*this);
         event_manager.subscribe<endTurnEvent>(*this);
+        event_manager.subscribe<unitHealEvent>(*this);
     }
-}
+    void receive(const beginTurnEvent & begin) {
+
+    }
+    void receive(const endTurnEvent & end) {
+
+    }
+
+    void receive(const unitHealEvent & heal) {
+
+    }
+
+
+};
 
 class TurnSystemx: public entityx::System<TurnSystemx>, public entityx::Receiver<TurnSystemx> {
 private:

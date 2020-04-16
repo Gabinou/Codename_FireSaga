@@ -17,6 +17,20 @@ struct endTurnEvent {
     //Player cursor or AI ender.
 };
 
+struct seizeEvent {
+    seizeEvent(entityx::Entity victor) : victor(victor) {}
+
+    entityx::Entity victor;
+    //unit.
+};
+
+struct gameOver {
+    gameOver(entityx::Entity victor) : victor(victor) {}
+
+    entityx::Entity victor;
+};
+
+
 struct unitRefreshEvent {
     unitRefreshEvent(entityx::Entity refresher) : refresher(refresher) {}
 
@@ -37,10 +51,22 @@ struct unitHealEvent {
 };
 
 struct unitDieEvent {
-    unitHealEvent(entityx::Entity victim, entityx::Entity killer) : killer(killer), victim(victim) {}
+    unitDieEvent(entityx::Entity victim, entityx::Entity killer) : killer(killer), victim(victim) {}
 
     entityx::Entity killer, victim;
-}
+};
+
+struct enterShopEvent {
+    enterShopEvent(entityx::Entity guest, entityx::Entity shop) : guest(guest), shop(shop) {}
+
+    entityx::Entity guest, shop;
+};
+
+struct enterVillageEvent {
+    enterVillageEvent(entityx::Entity guest, entityx::Entity village) : guest(guest), village(village) {}
+
+    entityx::Entity guest, village;
+};
 
 
 #endif /* EVENTS_HPP */
