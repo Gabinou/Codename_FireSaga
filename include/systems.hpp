@@ -2,6 +2,7 @@
 #define SYSTEMS_HPP
 
 #include <SDL2/SDL.h>
+#include <queue>
 #include "map.hpp"
 // #include "game.hpp"
 #include "sprite.hpp"
@@ -178,9 +179,16 @@ struct endTurnEvent {
 };
 
 class TurnSystemx: public entityx::System<TurnSystemx>, public entityx::Receiver<TurnSystemx> {
+private:
+    std::queue<unsigned char> armies;
+
 public:
     explicit TurnSystemx() {
 
+    }
+
+    void addArmy(unsigned char in_army) {
+        armies.push(in_army);
     }
 
     void configure(entityx::EventManager & event_manager) {
@@ -194,6 +202,8 @@ public:
 
     void receive(const endTurnEvent & end) {
         SDL_Log("Received a endTurnEvent from...");
+        armies.push(armies.front());
+        armies.pop();
     }
 
     void update(entityx::EntityManager & es, entityx::EventManager & events, entityx::TimeDelta dt) override {
@@ -305,6 +315,10 @@ public:
             if (false) {
                 events.emit<beginTurnEvent>(ent);
             }
+
+            if (false) {
+                events.emit<endTurnEvent>(ent);
+            }
         }
 
         for (entityx::Entity ent : es.entities_with_components<KeyboardController, Position>()) {
@@ -396,6 +410,14 @@ public:
 
             gamepad->check_move(pressed_move);
             gamepad->check_button(pressed_button);
+
+            if (false) {
+                events.emit<beginTurnEvent>(ent);
+            }
+
+            if (false) {
+                events.emit<endTurnEvent>(ent);
+            }
         }
     }
 };
