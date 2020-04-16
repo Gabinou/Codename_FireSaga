@@ -174,15 +174,32 @@ public:
         event_manager.subscribe<beginTurnEvent>(*this);
         event_manager.subscribe<endTurnEvent>(*this);
         event_manager.subscribe<unitHealEvent>(*this);
+        event_manager.subscribe<unitWaitEvent>(*this);
+        event_manager.subscribe<unitDieEvent>(*this);
+        event_manager.subscribe<unitRefreshEvent>(*this);
     }
+
     void receive(const beginTurnEvent & begin) {
 
     }
+
     void receive(const endTurnEvent & end) {
 
     }
 
     void receive(const unitHealEvent & heal) {
+
+    }
+
+    void receive(const unitDieEvent & death) {
+
+    }
+
+    void receive(const unitWaitEvent & wait) {
+
+    }
+
+    void receive(const unitRefreshEvent & refreshes) {
 
     }
 
