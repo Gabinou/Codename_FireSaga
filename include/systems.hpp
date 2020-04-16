@@ -6,6 +6,7 @@
 #include "map.hpp"
 // #include "game.hpp"
 #include "sprite.hpp"
+#include "systems.hpp"
 #include "text.hpp"
 #include "keyboardcontroller.hpp"
 #include "gamepadcontroller.hpp"
@@ -164,19 +165,12 @@ public:
     }
 };
 
-struct beginTurnEvent {
-    beginTurnEvent(entityx::Entity beginner) : beginner(beginner) {}
-
-    entityx::Entity beginner;
-    //Game? or AI ender.
-};
-
-struct endTurnEvent {
-    endTurnEvent(entityx::Entity ender) : ender(ender) {}
-
-    entityx::Entity ender;
-    //Player cursor or AI ender.
-};
+class UnitSystemx: public entityx::System<UnitSystemx>, public entityx::Receiver<UnitSystemx> {
+    void configure(entityx::EventManager & event_manager) {
+        event_manager.subscribe<beginTurnEvent>(*this);
+        event_manager.subscribe<endTurnEvent>(*this);
+    }
+}
 
 class TurnSystemx: public entityx::System<TurnSystemx>, public entityx::Receiver<TurnSystemx> {
 private:
