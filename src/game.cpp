@@ -431,28 +431,40 @@ void Game::unloadMap() {
 
 void Game::loadCursor() {
     // Map should be loaded before I think.
-    if (this->state == GAME::STATE::MAP) {
-        cursorx = entities.create();
-        cursorx.assign<Position>(6, 6);
-        cursorx.assign<KeyboardController>();
-        cursorx.assign<GamepadController>();
 
-        if (SDL_NumJoysticks() < 1) {
-            SDL_Log("No joysticks connected.\n");
-        } else {
-            //     cursor.addComponent<GamepadController>(this, mapx);
-        }
+    if (cursorx.valid()) {
+        cursorx.destroy();
+    }
 
-        cursorx.assign<Sprite>("..//assets//cursors.png", 10, 50);
-        cursorx.component<Sprite>()->setSlidetype(SLIDETYPE::GEOMETRIC, mapx->getTilesize());
-        cursorx.component<Position>()->setBounds(mapx->getBounds());
-        cursorx.component<Sprite>()->init(cursorx.component<Position>()->getPos());
+    cursorx = entities.create();
+    cursorx.assign<KeyboardController>();
+    cursorx.assign<GamepadController>();
+
+    switch (state) {
+        case GAME::STATE::MAP:
+            cursorx.assign<Position>(6, 6);
+
+            if (SDL_NumJoysticks() < 1) {
+                SDL_Log("No joysticks connected.\n");
+            } else {
+                //     cursor.addComponent<GamepadController>(this, mapx);
+            }
+
+            cursorx.assign<Sprite>("..//assets//cursors.png", 10, 50);
+            cursorx.component<Sprite>()->setSlidetype(SLIDETYPE::GEOMETRIC, mapx->getTilesize());
+            cursorx.component<Position>()->setBounds(mapx->getBounds());
+            cursorx.component<Sprite>()->init(cursorx.component<Position>()->getPos());
+            break;
+
+        case GAME::STATE::UNITMENU:
+            break;
+
     }
 }
 
-// void Game::unloadCursor() {
-
-// }
+void Game::unloadCursor() {
+    cursorx.destroy();
+}
 
 
 void Game::loadUnitEntities(std::vector<short unsigned int> unit_inds, std::vector<std::vector<int>> positions_list) {

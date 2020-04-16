@@ -69,8 +69,8 @@ int main(int argc, char * argv[]) {
     // SDL_Log("Testing convoy\n");
     // testConvoy();
 
-    SDL_Log("Testing map writing.");
-    firesaga->testXMLMap();
+    // SDL_Log("Testing map writing.");
+    // firesaga->testXMLMap();
 
     firesaga->loadMap(0);
 
@@ -79,10 +79,6 @@ int main(int argc, char * argv[]) {
     firesaga->loadUnitEntities(unit_inds, positions_list);
 
     firesaga->loadCursor();
-
-    // firesaga->loadMap("..//maps//test_tilemap.txt");
-
-    // firesaga->loadCursor();
 
     firesaga->loadMapArrivals();
 

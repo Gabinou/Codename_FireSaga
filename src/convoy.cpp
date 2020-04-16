@@ -210,6 +210,12 @@ void Convoy::deposit(Inventory_item in_item) {
             goto DEPOSIT_END;
         }
 
+        if ((wpntypecode & ITEM::TYPE::BOOK) > 0) {
+            books[booksnum] = in_item;
+            booksnum += 1;
+            goto DEPOSIT_END;
+        }
+
 DEPOSIT_END:
         isFull();
     } else {
@@ -341,6 +347,10 @@ Inventory_item * Convoy::getItems(int wpntype) {
 
         case ITEM::TYPE::ITEM:
             memcpy(temp, items, sizeof(temp));
+            break;
+
+        case ITEM::TYPE::BOOK:
+            memcpy(temp, books, sizeof(temp));
             break;
     }
 
@@ -636,6 +646,12 @@ Inventory_item Convoy::withdraw(int in_index, int wpntype) {
             temp = items[in_index];
             items[in_index] = empty;
             quantity.items -= 1;
+            break;
+
+        case ITEM::TYPE::BOOK:
+            temp = books[in_index];
+            books[in_index] = empty;
+            booksnum -= 1;
             break;
     }
 
