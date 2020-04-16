@@ -153,9 +153,39 @@ public:
     }
 };
 
-class TurnSystemx: public entityx::System<TurnSystemx> {
+struct beginTurnEvent {
+    beginTurnEvent(entityx::Entity beginner) : beginner(beginner) {}
 
+    entityx::Entity beginner;
+    //Game? or AI ender.
+};
+
+struct endTurnEvent {
+    endTurnEvent(entityx::Entity ender) : ender(ender) {}
+
+    entityx::Entity ender;
+    //Player cursor or AI ender.
+};
+
+class TurnSystemx: public entityx::System<TurnSystemx>, public entityx::Receiver<TurnSystemx> {
 public:
+    explicit TurnSystemx() {
+
+    }
+
+    void configure(entityx::EventManager & event_manager) {
+        event_manager.subscribe<beginTurnEvent>(*this);
+        event_manager.subscribe<endTurnEvent>(*this);
+    }
+
+    void receive(const beginTurnEvent & begin) {
+        SDL_Log("Received a beginTurnEvent from...");
+    }
+
+    void receive(const endTurnEvent & end) {
+        SDL_Log("Received a endTurnEvent from...");
+    }
+
     void update(entityx::EntityManager & es, entityx::EventManager & events, entityx::TimeDelta dt) override {
         entityx::ComponentHandle<Unit> unit;
 
@@ -164,7 +194,7 @@ public:
         // events.emit<Wait>(unit);
         // }
         // }
-    };
+    }
 };
 
 class ControlSystemx: public entityx::System<ControlSystemx> {
@@ -176,6 +206,10 @@ private:
     KeyboardInputMap keyboardInputMap;
     GamepadInputMap gamepadInputMap;
     std::vector<std::vector<entityx::ComponentHandle<Unit>>> unitmap;
+    struct Candidate {
+        entityx::Entity ent;
+    };
+    std::vector<Candidate> candidates;
 public:
     ControlSystemx() {
 
@@ -188,6 +222,15 @@ public:
     }
 
     void update(entityx::EntityManager & es, entityx::EventManager & events, entityx::TimeDelta dt) override {
+        // entityx::ComponentHandle<Position> position;
+        // entityx::ComponentHandle<KeyboardController> kcontroller;
+
+        for (entityx::Entity ent : es.entities_with_components<KeyboardController, Position>()) {
+            if (false) {
+                events.emit<beginTurnEvent>(ent);
+            }
+        }
+
         es.each<Map>([dt, this](entityx::Entity ent, Map & map) {
             unitmap = map.getUnitmap();
         });
@@ -254,6 +297,7 @@ public:
             keyboard.check_move(pressed_move);
             keyboard.check_button(pressed_button);
         });
+
         es.each<GamepadController, Position>([dt, this](entityx::Entity ent, GamepadController & gamepad, Position & position) {
             SDL_GameController * controller = gamepad.getController();
             Sint16 mainxaxis = SDL_GameControllerGetAxis(controller, gamepadInputMap.mainxaxis[0]);
