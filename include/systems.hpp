@@ -222,50 +222,46 @@ public:
     }
 
     void update(entityx::EntityManager & es, entityx::EventManager & events, entityx::TimeDelta dt) override {
-        // entityx::ComponentHandle<Position> position;
-        // entityx::ComponentHandle<KeyboardController> kcontroller;
 
-        for (entityx::Entity ent : es.entities_with_components<KeyboardController, Position>()) {
-            if (false) {
-                events.emit<beginTurnEvent>(ent);
-            }
+
+        for (entityx::Entity ent : es.entities_with_components<Map>()) {
+            unitmap = ent.component<Map>()->getUnitmap();
         }
 
-        es.each<Map>([dt, this](entityx::Entity ent, Map & map) {
-            unitmap = map.getUnitmap();
-        });
+        for (entityx::Entity ent : es.entities_with_components<KeyboardController, Position>()) {
+            entityx::ComponentHandle<Position> position = ent.component<Position>();
+            entityx::ComponentHandle<KeyboardController> keyboard = ent.component<KeyboardController>();
 
-        es.each<KeyboardController, Position>([dt, this](entityx::Entity ent, KeyboardController & keyboard, Position & position) {
             const Uint8 * kb_state = SDL_GetKeyboardState(NULL);
             std::vector<std::vector<SDL_Scancode>> pressed_move{};
             std::vector<std::vector<SDL_Scancode>> pressed_button{};
 
-            if (keyboard.is_pressed(kb_state, keyboardInputMap.moveup) && !keyboard.is_pressed(kb_state, keyboardInputMap.movedown)) {
-                position.addPos(0, -1);
+            if (keyboard->is_pressed(kb_state, keyboardInputMap.moveup) && !keyboard->is_pressed(kb_state, keyboardInputMap.movedown)) {
+                position->addPos(0, -1);
                 pressed_move.push_back(keyboardInputMap.moveup);
-            } else if (!keyboard.is_pressed(kb_state, keyboardInputMap.moveup) && keyboard.is_pressed(kb_state, keyboardInputMap.movedown)) {
-                position.addPos(0, 1);
+            } else if (!keyboard->is_pressed(kb_state, keyboardInputMap.moveup) && keyboard->is_pressed(kb_state, keyboardInputMap.movedown)) {
+                position->addPos(0, 1);
                 pressed_move.push_back(keyboardInputMap.movedown);
             }
 
-            if (!keyboard.is_pressed(kb_state, keyboardInputMap.moveright) && keyboard.is_pressed(kb_state, keyboardInputMap.moveleft)) {
-                position.addPos(-1, 0);
+            if (!keyboard->is_pressed(kb_state, keyboardInputMap.moveright) && keyboard->is_pressed(kb_state, keyboardInputMap.moveleft)) {
+                position->addPos(-1, 0);
                 pressed_move.push_back(keyboardInputMap.moveleft);
-            } else if (keyboard.is_pressed(kb_state, keyboardInputMap.moveright) && !keyboard.is_pressed(kb_state, keyboardInputMap.moveleft)) {
-                position.addPos(1, 0);
+            } else if (keyboard->is_pressed(kb_state, keyboardInputMap.moveright) && !keyboard->is_pressed(kb_state, keyboardInputMap.moveleft)) {
+                position->addPos(1, 0);
                 pressed_move.push_back(keyboardInputMap.moveright);
             }
 
-            if (keyboard.is_pressed(kb_state, keyboardInputMap.accept)) {
+            if (keyboard->is_pressed(kb_state, keyboardInputMap.accept)) {
                 // SDL_Log("Keyboard pressed accept.");
                 pressed_button.push_back(keyboardInputMap.accept);
                 short int toset = -1;
                 entityx::Entity setter;
-                entityx::ComponentHandle<Unit> unitontile = unitmap[position.getPos()[0]][position.getPos()[1]];
-                unsigned int frames_button = keyboard.getHeldbutton();
+                entityx::ComponentHandle<Unit> unitontile = unitmap[position->getPos()[0]][position->getPos()[1]];
+                unsigned int frames_button = keyboard->getHeldbutton();
 
                 if ((game->getState() == GAME::STATE::MAP) && (frames_button == 1)) {
-                    SDL_Log("cursor Position, %d %d \n", position.getPos()[0], position.getPos()[1]);
+                    SDL_Log("cursor Position, %d %d \n", position->getPos()[0], position->getPos()[1]);
 
                     if (unitontile) {
                         toset = GAME::STATE::UNITMOVE;
@@ -284,7 +280,7 @@ public:
                 }
             }
 
-            if (keyboard.is_pressed(kb_state, keyboardInputMap.cancel)) {
+            if (keyboard->is_pressed(kb_state, keyboardInputMap.cancel)) {
                 pressed_button.push_back(keyboardInputMap.cancel);
 
                 if ((game->getState() == GAME::STATE::UNITMENU) ||
@@ -294,9 +290,13 @@ public:
                 }
             }
 
-            keyboard.check_move(pressed_move);
-            keyboard.check_button(pressed_button);
-        });
+            keyboard->check_move(pressed_move);
+            keyboard->check_button(pressed_button);
+
+            if (false) {
+                events.emit<beginTurnEvent>(ent);
+            }
+        }
 
         es.each<GamepadController, Position>([dt, this](entityx::Entity ent, GamepadController & gamepad, Position & position) {
             SDL_GameController * controller = gamepad.getController();
