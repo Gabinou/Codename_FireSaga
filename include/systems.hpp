@@ -39,27 +39,33 @@ public:
 
     void update(entityx::EntityManager & es, entityx::EventManager & events, entityx::TimeDelta dt) override {
         SDL_RenderClear(renderer);
-        es.each<Map>([dt, this](entityx::Entity ent, Map & map) {
-            map.draw();
-        });
+
+        for (entityx::Entity ent : es.entities_with_components<Map>()) {
+            entityx::ComponentHandle<Map> map = ent.component<Map>();
+            map->draw();
+        }
+
         // RENDERING NOTE: First laded, last animated.
         // -> load cursor first to render it over everything else.
-        es.each<Sprite, Position>([dt, this](entityx::Entity ent, Sprite & sprite, Position & position) {
+        for (entityx::Entity ent : es.entities_with_components<Sprite, Position>()) {
+            entityx::ComponentHandle<Sprite> sprite = ent.component<Sprite>();
+            entityx::ComponentHandle<Position> position = ent.component<Position>();
+
             if (!ent.has_component<Text>()) {
                 int kb_held = 0;
                 int gp_held = 0;
-                short int frames = sprite.getFrames();
-                short int speed = sprite.getSpeed();
-                short int * slidepos = sprite.getSlidepos();
-                short int * objectivepos = sprite.getObjpos();
-                SDL_Rect srcrect = sprite.getSrcrect();
-                SDL_Rect destrect = sprite.getDestrect();
-                unsigned char slidetype = sprite.getSlidetype();
-                short int slideint = sprite.getSlideint();
-                float * slidefactors = sprite.getSlidefactors();
+                short int frames = sprite->getFrames();
+                short int speed = sprite->getSpeed();
+                short int * slidepos = sprite->getSlidepos();
+                short int * objectivepos = sprite->getObjpos();
+                SDL_Rect srcrect = sprite->getSrcrect();
+                SDL_Rect destrect = sprite->getDestrect();
+                unsigned char slidetype = sprite->getSlidetype();
+                short int slideint = sprite->getSlideint();
+                float * slidefactors = sprite->getSlidefactors();
 
-                if (sprite.isAnimated()) { //looping sprites.
-                    unsigned char looping = sprite.getSs_looping();
+                if (sprite->isAnimated()) { //looping sprites.
+                    unsigned char looping = sprite->getSs_looping();
 
                     switch (looping) {
                         case LOOPING::PINGPONG:
@@ -77,11 +83,11 @@ public:
                     }
                 } else {
                     if (tilesize[0] == 0 && tilesize[1] == 0) { //move on the pixelspace
-                        slidepos[0] = (int)position.getPos()[0];
-                        slidepos[1] = (int)position.getPos()[1];
+                        slidepos[0] = (int)position->getPos()[0];
+                        slidepos[1] = (int)position->getPos()[1];
                     } else { //move on the map.
-                        slidepos[0] = (int)(position.getPos()[0] * tilesize[0]);
-                        slidepos[1] = (int)(position.getPos()[1] * tilesize[1]);
+                        slidepos[0] = (int)(position->getPos()[0] * tilesize[0]);
+                        slidepos[1] = (int)(position->getPos()[1] * tilesize[1]);
                     }
                 }
 
@@ -99,8 +105,8 @@ public:
                 }
 
                 if (slidetype == SLIDETYPE::GEOMETRIC) { //for cursor mvt on map.
-                    objectivepos[0] = (int)position.getPos()[0] * (tilesize[0]) - destrect.w / 4;
-                    objectivepos[1] = (int)position.getPos()[1] * (tilesize[1]) - destrect.h / 4;
+                    objectivepos[0] = (int)position->getPos()[0] * (tilesize[0]) - destrect.w / 4;
+                    objectivepos[1] = (int)position->getPos()[1] * (tilesize[1]) - destrect.h / 4;
 
                     if ((gp_held > 25) || (kb_held > 25))  {
                         slideint = 1;
@@ -115,10 +121,10 @@ public:
                     }
 
                     if ((objectivepos[0] == slidepos[0]) && (objectivepos[1] == slidepos[1])) {
-                        position.setUpdatable(true);
+                        position->setUpdatable(true);
                         slideint = 0;
                     } else {
-                        position.setUpdatable(false);
+                        position->setUpdatable(false);
                     }
                 }
 
@@ -129,26 +135,30 @@ public:
                 destrect.x = slidepos[0];
                 destrect.y = slidepos[1];
 
-                sprite.setSlidepos(slidepos);
-                sprite.setObjpos(objectivepos);
-                sprite.setSrcrect(srcrect);
-                sprite.setDestrect(destrect);
-                sprite.draw();
+                sprite->setSlidepos(slidepos);
+                sprite->setObjpos(objectivepos);
+                sprite->setSrcrect(srcrect);
+                sprite->setDestrect(destrect);
+                sprite->draw();
             }
 
-        });
-        es.each<Text, Position>([dt, this](entityx::Entity ent, Text & text, Position & pos) {
-            short int * position = pos.getPos();
+        }
+
+        for (entityx::Entity ent : es.entities_with_components<Text, Position>()) {
+            entityx::ComponentHandle<Position> position = ent.component<Position>();
+            entityx::ComponentHandle<Text> text = ent.component<Text>();
+            short int * pos = position->getPos();
             // SDL_Log("unit menu position: %d %d", position[0], position[1]);
 
             if (ent.has_component<Sprite>()) {
-                ent.component<Sprite>()->setDestrectpos(position);
+                ent.component<Sprite>()->setDestrectpos(pos);
                 ent.component<Sprite>()->draw();
             }
 
-            text.setRects(position);
-            text.draw();
-        });
+            text->setRects(pos);
+            text->draw();
+        }
+
         SDL_RenderPresent(renderer);
     }
 };
