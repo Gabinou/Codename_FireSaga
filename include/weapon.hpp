@@ -12,48 +12,48 @@
 #include <string>
 
 class Weapon : public XML_IO {
-    private:
-        Weapon_stats stats = {0, 0, 0, 0, 0, 0, 0, 0, 0, {0, 0}, {0, 0}, 0, 0};
-        // Pmight, Mmight, hit, dodge, crit, favor, wgt, uses, prof, range, hand, dmg_type, cost, heal
-        Unit_stats bonus_stats = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
-        Unit_stats malus_stats = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
-        long unsigned int effect = 0;
-        short unsigned int type = 0;
-        short unsigned int effective = 0; // is a unit type.
-        std::string name = "";
-        std::string description = "";
-        unsigned short int id = 0; // 0 means empty.
-        short int use_effect = -1;
-        short int user_id = -1;
-        char infused = -1;
-        bool sellable;
-    public:
-        Weapon();
-        Weapon(short unsigned int in_type, Weapon_stats in_stats, unsigned char in_id);
+private:
+    Weapon_stats stats = {0, 0, 0, 0, 0, 0, 0, 0, 0, {0, 0}, {0, 0}, 0, 0};
+    // Pmight, Mmight, hit, dodge, crit, favor, wgt, uses, prof, range, hand, dmg_type, cost, heal
+    Unit_stats bonus_stats = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
+    Unit_stats malus_stats = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
+    long unsigned int effect = 0;
+    short unsigned int type = 0;
+    short unsigned int effective = 0; // is a unit type.
+    std::string name = "";
+    std::string description = "";
+    unsigned short int id = 0; // 0 means empty.
+    short int use_effect = -1;
+    short int user_id = -1;
+    char infused = -1;
+    bool sellable;
+public:
+    Weapon();
+    Weapon(short unsigned int in_type, Weapon_stats in_stats, unsigned char in_id);
 
-        void setStats(Weapon_stats in_stats);
-        Weapon_stats getStats();
-        void setBonus(Unit_stats in_bonus);
-        Unit_stats getBonus();
-        void setMalus(Unit_stats in_malus);
-        Unit_stats getMalus();
-        void setEffect(long unsigned int in_effect);
-        long unsigned int getEffect();
-        void setEffective(short unsigned int in_effective);
-        short unsigned int getEffective();
-        void setDescription(std::string in_description);
-        std::string getDescription();
-        void  setName(std::string in_name);
-        std::string getName();
-        short unsigned int getType();
-        void setType(short unsigned int in_type);
-        void infuse(unsigned char in_mag);
+    void setStats(Weapon_stats in_stats);
+    Weapon_stats getStats();
+    void setBonus(Unit_stats in_bonus);
+    Unit_stats getBonus();
+    void setMalus(Unit_stats in_malus);
+    Unit_stats getMalus();
+    void setEffect(long unsigned int in_effect);
+    long unsigned int getEffect();
+    void setEffective(short unsigned int in_effective);
+    short unsigned int getEffective();
+    void setDescription(std::string in_description);
+    std::string getDescription();
+    void  setName(std::string in_name);
+    std::string getName();
+    short unsigned int getType();
+    void setType(short unsigned int in_type);
+    void infuse(unsigned char in_mag);
 
-        void write(const char * filename, const char * mode = "a");
-        using XML_IO::writeXML;
-        using XML_IO::readXML;
-        void writeXML(tinyxml2::XMLDocument * in_doc, tinyxml2::XMLElement * in_pWpn);
-        void readXML(tinyxml2::XMLElement * in_pWpn);
+    void write(const char * filename, const char * mode = "a");
+    using XML_IO::writeXML;
+    using XML_IO::readXML;
+    void writeXML(tinyxml2::XMLDocument * in_doc, tinyxml2::XMLElement * in_pWpn);
+    void readXML(tinyxml2::XMLElement * in_pWpn);
 };
 
 extern std::vector<Weapon> all_weapons;

@@ -13,7 +13,7 @@ Map::Map() { // Delegated constructor is called BEFORE.
 }
 
 Map::~Map() {
-    
+
 }
 
 Map::Map(const short unsigned int width, const short unsigned int height) : Map() {
@@ -34,8 +34,10 @@ void Map::readXML(tinyxml2::XMLElement * in_pMap) {
     tinyxml2::XMLElement * pTile;
     tilenames.clear();
     tilesindex.clear();
+
     if (pTiles) {
         pTile = pTiles->FirstChildElement("Tile");
+
         while (pTile) {
             tilesindex.push_back(pTile->IntAttribute("id"));
             ptemp = pTile->FirstChildElement("Name");
@@ -47,7 +49,9 @@ void Map::readXML(tinyxml2::XMLElement * in_pMap) {
     }
 
     tinyxml2::XMLElement * pBounds = in_pMap->FirstChildElement("Bounds");
+
     if (!pBounds) {SDL_Log("Cannot get Bounds element");}
+
     ptemp = pBounds->FirstChildElement("row_max");
     ptemp->QueryIntText(&buffint);
     bounds[1] = buffint;
@@ -64,16 +68,19 @@ void Map::readXML(tinyxml2::XMLElement * in_pMap) {
     int temprow;
     tilemap.clear();
     std::vector<short int> tempvec;
-    while(pRow) {
+
+    while (pRow) {
         pCol = pRow->FirstChildElement("Col");
         temprow = pRow->IntAttribute("row");
         tempvec.clear();
-        while(pCol) {
+
+        while (pCol) {
             pCol->QueryIntText(&buffint);
             tempcol = pCol->IntAttribute("col");
             tempvec.push_back(buffint);
             pCol = pCol->NextSiblingElement("Col");
         }
+
         tilemap.push_back(tempvec);
         pRow = pRow->NextSiblingElement("Row");
     }
@@ -81,6 +88,7 @@ void Map::readXML(tinyxml2::XMLElement * in_pMap) {
     tinyxml2::XMLElement * pArrivals = in_pMap->FirstChildElement("Arrivals");
     tinyxml2::XMLElement * pArrival = pArrivals->FirstChildElement("Arrival");
     Map_arrival temp_arrival;
+
     while (pArrival) {
         readXML_arrival(pArrival, &temp_arrival);
         map_arrivals.push_back(temp_arrival);
@@ -91,6 +99,7 @@ void Map::readXML(tinyxml2::XMLElement * in_pMap) {
     tinyxml2::XMLElement * pArrivalEq = pArrivalEqs->FirstChildElement("ArrivalEq");
     arrival_equipments.clear();
     std::vector<Inventory_item> tempeq;
+
     while (pArrivalEq) {
         readXML_items(pArrivalEq, &tempeq);
         arrival_equipments.push_back(tempeq);
@@ -99,16 +108,17 @@ void Map::readXML(tinyxml2::XMLElement * in_pMap) {
 
     clearUnitmap();
     std::vector<std::vector<entityx::ComponentHandle<Unit>>> tempunitmap(bounds[1], std::vector<entityx::ComponentHandle<Unit>>(bounds[3]));
-    unitmap = tempunitmap; 
+    unitmap = tempunitmap;
     tinyxml2::XMLElement * pUnitmap = in_pMap->FirstChildElement("Unitmap");
     tinyxml2::XMLElement * pOnMap = pUnitmap->FirstChildElement("OnMap");
     Unit tempunit;
     entityx::Entity tempUent;
+
     while (pOnMap) {
         tempunit.readXML(pOnMap);
         tempUent = manager->create();
         tempUent.assign<Unit>(tempunit);
-        
+
         tempUent.assign<Position>(pOnMap->IntAttribute("row"), pOnMap->IntAttribute("col"));
         unitmap[pOnMap->IntAttribute("row")][pOnMap->IntAttribute("col")] = tempUent.component<Unit>();
 
@@ -119,21 +129,24 @@ void Map::readXML(tinyxml2::XMLElement * in_pMap) {
 
 void Map::clearUnitmap() {
     entityx::ComponentHandle<Unit> tempunit;
+
     for (int row = 0; row < unitmap.size(); row++) {// This loop cache friendly.
         for (int col = 0; col < unitmap[row].size(); col++) {
-            tempunit = unitmap[row][col]; 
+            tempunit = unitmap[row][col];
+
             if (tempunit) {
                 tempunit.entity().destroy();
             }
         }
     }
+
     unitmap.clear();
 }
 
 void Map::writeXML(tinyxml2::XMLDocument * in_doc, tinyxml2::XMLElement * in_pMap) {
     char buffer[DEFAULT::BUFFER_SIZE];
     in_pMap->SetAttribute("chapter", chapter);
-    
+
     tinyxml2::XMLElement * pTiles = in_doc->NewElement("Tiles");
     in_pMap->InsertEndChild(pTiles);
     tinyxml2::XMLElement * pTile;
@@ -143,11 +156,13 @@ void Map::writeXML(tinyxml2::XMLDocument * in_doc, tinyxml2::XMLElement * in_pMa
         for (int i = 0; i < tilesindex.size(); i++) {
             pTile = in_doc->NewElement("Tile");
             pName = in_doc->NewElement("Name");
+
             if (tilesindex[i] >= 100) {
-                pTile->SetAttribute("id", tilesindex[i]/DEFAULT::TILE_DIVISOR);
+                pTile->SetAttribute("id", tilesindex[i] / DEFAULT::TILE_DIVISOR);
             } else {
                 pTile->SetAttribute("id", tilesindex[i]);
             }
+
             pTiles->InsertEndChild(pTile);
             pTile->InsertEndChild(pName);
             pName->SetText(tilenames[i].c_str());
@@ -176,6 +191,7 @@ void Map::writeXML(tinyxml2::XMLDocument * in_doc, tinyxml2::XMLElement * in_pMa
             pRow = in_doc->NewElement("Row");
             pRow->SetAttribute("row", row);
             pTilemap->InsertEndChild(pRow);
+
             for (int col = 0; col < tilemap[row].size(); col++) {
                 pCol = in_doc->NewElement("Col");
                 pCol->SetAttribute("col", col);
@@ -190,14 +206,16 @@ void Map::writeXML(tinyxml2::XMLDocument * in_doc, tinyxml2::XMLElement * in_pMa
     tinyxml2::XMLElement * pArrivals = in_doc->NewElement("Arrivals");
     tinyxml2::XMLElement * pArrival = in_doc->NewElement("Arrival");
     in_pMap->InsertEndChild(pArrivals);
+
     for (int i = 0; i < map_arrivals.size(); i++) {
         pArrivals->InsertEndChild(pArrival);
         writeXML_arrival(in_doc, pArrival, &map_arrivals[i]);
     }
-    
-    tinyxml2::XMLElement * pArrivalEqs = in_doc->NewElement("ArrivalEqs");    
-    tinyxml2::XMLElement * pArrivalEq = in_doc->NewElement("ArrivalEq");    
+
+    tinyxml2::XMLElement * pArrivalEqs = in_doc->NewElement("ArrivalEqs");
+    tinyxml2::XMLElement * pArrivalEq = in_doc->NewElement("ArrivalEq");
     in_pMap->InsertEndChild(pArrivalEqs);
+
     for (int i = 0; i < arrival_equipments.size(); i++) {
         pArrivalEqs->InsertEndChild(pArrivalEq);
         pArrivalEq->SetAttribute("unitid", map_arrivals[i].id);
@@ -208,6 +226,7 @@ void Map::writeXML(tinyxml2::XMLDocument * in_doc, tinyxml2::XMLElement * in_pMa
     tinyxml2::XMLElement * pOnmap;
     in_pMap->InsertEndChild(pUnitmap);
     entityx::ComponentHandle<Unit> tempunit;
+
     if ((unitmap.size() == bounds[1]) && (unitmap[0].size() == bounds[3])) {
         for (int row = 0; row < unitmap.size(); row++) {// This loop cache friendly.
             for (int col = 0; col < unitmap[row].size(); col++) {
@@ -216,7 +235,7 @@ void Map::writeXML(tinyxml2::XMLDocument * in_doc, tinyxml2::XMLElement * in_pMa
                     pOnmap->SetAttribute("row", row);
                     pOnmap->SetAttribute("col", col);
                     pUnitmap->InsertEndChild(pOnmap);
-                    unitmap[row][col]->writeXML(in_doc, pOnmap); 
+                    unitmap[row][col]->writeXML(in_doc, pOnmap);
                 }
             }
         }
@@ -235,11 +254,11 @@ short unsigned int * Map::getTilesize() const {
 }
 
 void Map::putUnit(const short unsigned int x, const short unsigned int y, entityx::ComponentHandle<Unit> in_unit) {
-    unitmap[x][y] = in_unit; 
+    unitmap[x][y] = in_unit;
 }
 
 entityx::ComponentHandle<Unit> Map::getUnit(const short unsigned int x, const short unsigned int y) {
-    return(unitmap[x][y]);
+    return (unitmap[x][y]);
 }
 
 void Map::moveUnit(const short unsigned int x, const short unsigned int y, const short unsigned int new_x, const short unsigned int new_y) {
@@ -254,7 +273,7 @@ void Map::setArrivalEquipments(const std::vector<std::vector<Inventory_item>> in
 }
 
 std::vector<std::vector<Inventory_item>> Map::getArrivalEquipments() {
-    return(arrival_equipments);
+    return (arrival_equipments);
 }
 
 void Map::setArrivals(const std::vector<Map_arrival> in_arrivals) {
@@ -271,20 +290,22 @@ void Map::removeMapArrival(const unsigned char index) {
 }
 
 std::vector<Map_arrival> Map::getArrivals() {
-    return(map_arrivals);
+    return (map_arrivals);
 }
 
 std::vector<std::vector<short int>> Map::makeMvtCostmap(const unsigned char unitmovetype) {
     // SDL_Log("Making MvtCostmap");
     short int tile_ind = 0;
     std::vector<std::vector<short int>> costmap((short int)tilemap.size(), std::vector<short int> ((short int)tilemap[0].size()));
+
     for (short int row = 0; row < tilemap.size(); row++) {
         for (short int col = 0; col < tilemap[row].size(); col++) {
-            tile_ind = tilemap[row][col]/DEFAULT::TILE_DIVISOR;
+            tile_ind = tilemap[row][col] / DEFAULT::TILE_DIVISOR;
             costmap[row][col] = tiles[tile_ind].getCost()[unitmovetype];
         }
     }
-    return(costmap);
+
+    return (costmap);
 }
 void Map::loadTiles(const int in_map_index) {
     tilesindex = chapTiles[in_map_index]();
@@ -304,25 +325,27 @@ void Map::unloadTiles(std::vector<short int> to_unload) {
     }
 }
 
-std::vector<std::vector<short int>> Map::getTilemap(){
-    return(tilemap);
+std::vector<std::vector<short int>> Map::getTilemap() {
+    return (tilemap);
 }
 
-void Map::setTilemap(const std::vector<std::vector<short int>> in_tilemap){
+void Map::setTilemap(const std::vector<std::vector<short int>> in_tilemap) {
     tilemap = in_tilemap;
 }
 
 unsigned char Map::getTurn() {
-    return(turn);
+    return (turn);
 }
 
-void Map::setRenderer(SDL_Renderer * in_renderer){
+void Map::setRenderer(SDL_Renderer * in_renderer) {
     SDL_Log("Setting Map renderer");
+
     if (in_renderer) {
         renderer = in_renderer;
     } else {
         SDL_Log("Could not set map renderer");
     }
+
     loadOverlays();
 }
 
@@ -333,8 +356,9 @@ void Map::setManager(entityx::EntityManager * in_manager) {
 void Map::loadTiletextures() {
     short unsigned int tile_ind;
     std::string texturename;
+
     for (short unsigned int i = 0; i < tilesindex.size(); i++) {
-        tile_ind = (tilesindex[i]/DEFAULT::TILE_DIVISOR);
+        tile_ind = (tilesindex[i] / DEFAULT::TILE_DIVISOR);
         texturename = "..//assets//" + tiles[tile_ind].getName() + "_" + std::to_string(tilesindex[i]) + ".png";
         textures[tilesindex[i]] = loadTexture(renderer, texturename.c_str());
     }
@@ -375,24 +399,24 @@ void Map::setDangermode(const unsigned char in_mode) {
     danger_mode = in_mode;
 }
 
-void Map::showDanger(){
+void Map::showDanger() {
     show_danger = true;
 }
 
-void Map::hideDanger(){
+void Map::hideDanger() {
     show_overlay = false;
 }
 
-void Map::showOverlay(){
+void Map::showOverlay() {
     show_overlay = true;
 }
 
-void Map::hideOverlay(){
+void Map::hideOverlay() {
     show_overlay = false;
 }
 
 std::vector<std::vector<entityx::ComponentHandle<Unit>>> Map::getUnitmap() {
-    return(unitmap);
+    return (unitmap);
 }
 
 void Map::loadTilemap(const short unsigned int in_map_index) {
@@ -405,43 +429,45 @@ void Map::postTilemap() {
     bounds[1] = tilemap.size();
     bounds[3] = tilemap[0].size();
     std::vector<std::vector<entityx::ComponentHandle<Unit>>> tempunit(bounds[1], std::vector<entityx::ComponentHandle<Unit>>(bounds[3]));
-    unitmap = tempunit; 
+    unitmap = tempunit;
 }
 
 short int * Map::getBounds() {
-    return(bounds);
+    return (bounds);
 }
 
 unsigned char Map::getnumArrivals() {
-    return(num_enemies);
+    return (num_enemies);
 }
 
 unsigned short int Map::getBoss() {
-    return(boss);
+    return (boss);
 }
 
 bool Map::getBossDeath() {
-    return(bossdied);
+    return (bossdied);
 }
 
 bool Map::getSeized() {
-    return(bossdied);
+    return (bossdied);
 }
 
 std::vector<unsigned short int> Map::getEssentials() {
-    return(essentials);
+    return (essentials);
 }
 
 void Map::setOverlay(const unsigned char in_mode, const std::vector<std::vector<short int>> in_map) {
     if ((in_mode & MAP::OVERLAY::HEAL) > 0) {
         healoverlay = in_map;
     }
+
     if ((in_mode & MAP::OVERLAY::ATTACK) > 0) {
         attackoverlay = in_map;
-    } 
+    }
+
     if ((in_mode & MAP::OVERLAY::MOVE) > 0) {
         moveoverlay = in_map;
-    } 
+    }
 }
 
 void Map::clearOverlays() {
@@ -454,6 +480,7 @@ void Map::clearOverlays() {
 void Map::draw() {
     // SDL_Log("Drawing Map");
     int tile_ind = 0;
+
     for (int row = 0; row < tilemap.size(); row++) {// This loop cache friendly.
         for (int col = 0; col < tilemap[row].size(); col++) {
             tile_ind = tilemap[row][col];
@@ -467,11 +494,13 @@ void Map::draw() {
                         SDL_RenderCopy(renderer, overlays[0], &srcrect, &destrect);
                     }
                 }
+
                 if (((overlay_mode & MAP::OVERLAY::ATTACK) > 0)  && (overlays[1] != NULL)) {
                     if (attackoverlay[row][col] == 1) {
                         SDL_RenderCopy(renderer, overlays[1], &srcrect, &destrect);
                     }
                 }
+
                 if (((overlay_mode & MAP::OVERLAY::HEAL) > 0) && (overlays[2] != NULL)) {
                     if (healoverlay[row][col] == 1) {
                         SDL_RenderCopy(renderer, overlays[2], &srcrect, &destrect);
@@ -488,8 +517,8 @@ void Map::draw() {
     }
 }
 
-std::vector<std::vector<short int>> testTilemap(){
-    std::vector<std::vector<short int>> tilemap = { 
+std::vector<std::vector<short int>> testTilemap() {
+    std::vector<std::vector<short int>> tilemap = {
         {100, 100, 100, 100, 100, 100, 200, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 300, 300, 300, 300, 300, 100, 100, 100},
         {100, 100, 100, 100, 100, 100, 200, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 300, 300, 300, 300, 300, 100, 100, 100},
         {100, 100, 100, 100, 100, 100, 200, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 300, 300, 300, 300, 300, 100, 100, 100},
@@ -512,12 +541,12 @@ std::vector<std::vector<short int>> testTilemap(){
         {100, 100, 100, 100, 100, 100, 100, 100, 100, 200, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100},
         {100, 100, 100, 100, 100, 100, 100, 100, 100, 200, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100}
     };
-    return(tilemap);
+    return (tilemap);
 }
 
-std::vector<short unsigned int> testArrivalinds(){
+std::vector<short unsigned int> testArrivalinds() {
     std::vector<short unsigned int> enemies = {UNIT::NAME::SILOU};
-    return(enemies);
+    return (enemies);
 }
 
 std::vector<std::vector<short int>> (*chapTilemaps[40])() = {testTilemap,};

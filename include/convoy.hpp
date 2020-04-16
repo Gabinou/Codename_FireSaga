@@ -13,50 +13,50 @@
 #include <algorithm>
 
 class Convoy : public XML_IO {
-    private:
-        unsigned int bank = 0;
-        Quantity quantity;
-        bool full = false;
+private:
+    unsigned int bank = 0;
+    Quantity quantity;
+    bool full = false;
 
-        Inventory_item swords[DEFAULT::CONVOY_SIZE],
-                       lances[DEFAULT::CONVOY_SIZE], axes[DEFAULT::CONVOY_SIZE],
-                       bows[DEFAULT::CONVOY_SIZE], trinkets[DEFAULT::CONVOY_SIZE],
-                       offhands[DEFAULT::CONVOY_SIZE], elemental[DEFAULT::CONVOY_SIZE],
-                       demonic[DEFAULT::CONVOY_SIZE], angelic[DEFAULT::CONVOY_SIZE],
-                       shields[DEFAULT::CONVOY_SIZE], staffs[DEFAULT::CONVOY_SIZE],
-                       claws[DEFAULT::CONVOY_SIZE], items[DEFAULT::CONVOY_SIZE];
-    public:
-        Convoy();
+    Inventory_item swords[DEFAULT::CONVOY_SIZE],
+                   lances[DEFAULT::CONVOY_SIZE], axes[DEFAULT::CONVOY_SIZE],
+                   bows[DEFAULT::CONVOY_SIZE], trinkets[DEFAULT::CONVOY_SIZE],
+                   offhands[DEFAULT::CONVOY_SIZE], elemental[DEFAULT::CONVOY_SIZE],
+                   demonic[DEFAULT::CONVOY_SIZE], angelic[DEFAULT::CONVOY_SIZE],
+                   shields[DEFAULT::CONVOY_SIZE], staffs[DEFAULT::CONVOY_SIZE],
+                   claws[DEFAULT::CONVOY_SIZE], items[DEFAULT::CONVOY_SIZE];
+public:
+    Convoy();
 
-        void deposit(Inventory_item in_item);
-        Inventory_item withdraw(int index, int type);
-        void earn(int in_money);
-        void spend(int out_money);
+    void deposit(Inventory_item in_item);
+    Inventory_item withdraw(int index, int type);
+    void earn(int in_money);
+    void spend(int out_money);
 
-        void quicksort(int arr[], int low, int high, int wpntype);
-        int partition(int arr[], int low, int high, int wpntype);
-        void swap(int arr[], int ind1, int ind2);
-        void swapWpn(int wpntype, int ind1, int ind2);
+    void quicksort(int arr[], int low, int high, int wpntype);
+    int partition(int arr[], int low, int high, int wpntype);
+    void swap(int arr[], int ind1, int ind2);
+    void swapWpn(int wpntype, int ind1, int ind2);
 
-        void sortStats(int wpntype, int stattype);
-        void sortused(int wpntype);
-        void sort(int wpntype, int stattype);
+    void sortStats(int wpntype, int stattype);
+    void sortused(int wpntype);
+    void sort(int wpntype, int stattype);
 
-        void isFull();
-        int getQuantity(int wpntype);
-        Quantity getQuantity();
-        std::vector<int> getStats(int wpntype, int stattype);
-        Inventory_item * getItems(int wpntype);
-        void setItems(int wpntype, Inventory_item * in_items);
+    void isFull();
+    int getQuantity(int wpntype);
+    Quantity getQuantity();
+    std::vector<int> getStats(int wpntype, int stattype);
+    Inventory_item * getItems(int wpntype);
+    void setItems(int wpntype, Inventory_item * in_items);
 
-        void printContents(int wpntype); // Useless?
-        void printStats(int wpntype, int stattype);
+    void printContents(int wpntype); // Useless?
+    void printStats(int wpntype, int stattype);
 
-        void write(const char * filename, const char * mode = "a");
-        using XML_IO::writeXML;
-        using XML_IO::readXML;
-        void writeXML(tinyxml2::XMLDocument * in_doc, tinyxml2::XMLElement * in_pConvoy);
-        void readXML(tinyxml2::XMLElement * in_pConvoy);
+    void write(const char * filename, const char * mode = "a");
+    using XML_IO::writeXML;
+    using XML_IO::readXML;
+    void writeXML(tinyxml2::XMLDocument * in_doc, tinyxml2::XMLElement * in_pConvoy);
+    void readXML(tinyxml2::XMLElement * in_pConvoy);
 };
 
 extern void testConvoy();

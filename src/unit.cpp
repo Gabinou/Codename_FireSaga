@@ -18,7 +18,7 @@ Unit::Unit(const unsigned short int in_id, const unsigned char in_class_index,  
     setSex(in_sex);
 }
 
-Unit::Unit(const Unit &obj)  {
+Unit::Unit(const Unit & obj)  {
     setSex(obj.sex);
     setid(obj.id);
     setBases(obj.base_stats);
@@ -34,7 +34,7 @@ Unit::Unit(const Unit &obj)  {
 }
 
 bool Unit::getSex() {
-    return(sex);
+    return (sex);
 }
 
 void Unit::setSex(const bool in_sex) {
@@ -49,7 +49,7 @@ void Unit::setid(const unsigned short int in_id) {
 }
 
 unsigned short int Unit::getid() {
-    return(id);
+    return (id);
 }
 
 void Unit::use(int in_ind) {
@@ -57,7 +57,7 @@ void Unit::use(int in_ind) {
 }
 
 unsigned long long int Unit::getSkills() {
-    return(skills);
+    return (skills);
 }
 
 void Unit::setSkills(unsigned long long int in_skills) {
@@ -68,13 +68,13 @@ void Unit::setSkills(unsigned long long int in_skills) {
 
 void Unit::removeEquipment(unsigned char in_index) {
     Inventory_item empty;
-    equipment[in_index] = empty; 
+    equipment[in_index] = empty;
 }
 
 void Unit::addEquipment(Inventory_item in_item) {
     for (short unsigned int i = 0; i < DEFAULT::EQUIPMENT_SIZE; i++) {
         if (equipment[i].id == -1) {
-            equipment[i] = in_item; 
+            equipment[i] = in_item;
             break;
         }
     }
@@ -98,12 +98,14 @@ void Unit::setEquipment(std::vector<Inventory_item> in_equipment) {
 
 std::vector<Inventory_item> Unit::getEquipment() {
     std::vector<Inventory_item> out;
+
     for (short unsigned int i = 0; i < DEFAULT::EQUIPMENT_SIZE; i++) {
         if (equipment[i].id > 0) {
             out.push_back(equipment[i]);
         }
     }
-    return(out);
+
+    return (out);
 }
 
 
@@ -112,15 +114,15 @@ void Unit::setEquipped(Equipped in_equipped) {
 }
 
 short unsigned int Unit::getEquippable() {
-    return(equippable);
+    return (equippable);
 }
 
 unsigned char Unit::getMvttype() {
-    return(mvt_type);
+    return (mvt_type);
 }
 
 unsigned char Unit::getClassind() {
-    return(class_index);
+    return (class_index);
 }
 
 void Unit::setClassind(unsigned char in_class_index) {
@@ -134,12 +136,14 @@ void Unit::setClassind(unsigned char in_class_index) {
 void Unit::supportUp(short int in_id) {
     int i = 0;
 
-    while ((supports[i].index =! in_id) && (i < DEFAULT::SUPPORTS_MAX)) {
+    while ((supports[i].index = ! in_id) && (i < DEFAULT::SUPPORTS_MAX)) {
         i++;
     }
+
     if (i == DEFAULT::SUPPORTS_MAX) {
         SDL_Log("Could not find support of index %d", in_id);
     }
+
     supports[i].level += 1;
 }
 
@@ -147,7 +151,7 @@ void Unit::setSupports(const Support in_supports[DEFAULT::SUPPORTS_MAX]) {
     for (int i = 0; i < DEFAULT::SUPPORTS_MAX; i++) {
         supports[i].index = in_supports[i].index;
         supports[i].level = in_supports[i].level;
-    }  
+    }
 }
 
 void Unit::setSupports(std::vector<short int> in_supports) {
@@ -212,7 +216,7 @@ void Unit::dropItem(short int in_index) {
     equipment[in_index] = empty;
 }
 
-void Unit::takesDamage(const unsigned char damage) { 
+void Unit::takesDamage(const unsigned char damage) {
     printf("%s takes %d damage \n", name, damage);
     current_hp = std::max(0, current_hp - damage);
 
@@ -221,7 +225,7 @@ void Unit::takesDamage(const unsigned char damage) {
 
 void Unit::getsHealed(const unsigned char healing) {
     printf("%s gets healed for %d\n", name, healing);
-    current_hp = std::min( (short int) (current_hp + healing), (short int) current_stats.hp);
+    current_hp = std::min((short int)(current_hp + healing), (short int) current_stats.hp);
 }
 
 unsigned char Unit::getHp() const {
@@ -237,14 +241,15 @@ unsigned short int Unit::getExp() const {
 }
 
 unsigned char * Unit::getRange() const {
-    // DESIGN QUESTION: what about equipping only an offhand? Should offhand have ranges? 
+    // DESIGN QUESTION: what about equipping only an offhand? Should offhand have ranges?
     // Can you attack with only offhand weapons? how to treat their hit rate?
     SDL_Log("Computing unit range\n");
     static unsigned char range[2] = {0, 0};
 
     if (equipped.left > 0) {
         unsigned char * temp = all_weapons[equipment[equipped.left].id].getStats().range;
-        range[0] = temp[0]; range[1] = temp[1];
+        range[0] = temp[0];
+        range[1] = temp[1];
     }
 
     if (equipped.right > 0) {
@@ -269,7 +274,7 @@ void Unit::setEntity(short int in_index) {
 }
 
 int Unit::getEntity() {
-    return(entity);
+    return (entity);
 }
 
 void Unit::setBaseExp(const short unsigned int in_exp) {
@@ -279,6 +284,7 @@ void Unit::setBaseExp(const short unsigned int in_exp) {
 
 void Unit::gainExp(const short unsigned int in_exp) {
     exp += in_exp;
+
     if (((exp % 100) + in_exp) > 100) {
         // Never should have two level ups at one time.
         levelUp();
@@ -302,49 +308,71 @@ void Unit::levelUp() {
     temp_stats.con += (growths.con / 100);
 
     prob = getURN();
+
     if ((prob <= (growths.hp % 100)) && (current_stats.hp < caps_stats.hp)) {
         temp_stats.hp += 1;
     }
+
     prob = getURN();
+
     if ((prob <= (growths.str % 100)) && (current_stats.str < caps_stats.str)) {
         temp_stats.str += 1;
     }
+
     prob = getURN();
+
     if ((prob <= (growths.mag % 100)) && (current_stats.mag < caps_stats.mag)) {
         temp_stats.mag += 1;
     }
+
     prob = getURN();
+
     if ((prob <= (growths.dex % 100)) && (current_stats.dex < caps_stats.dex)) {
         temp_stats.dex += 1;
     }
+
     prob = getURN();
+
     if ((prob <= (growths.agi % 100)) && (current_stats.agi < caps_stats.agi)) {
         temp_stats.agi += 1;
     }
+
     prob = getURN();
+
     if ((prob <= (growths.luck % 100)) && (current_stats.luck < caps_stats.luck)) {
         temp_stats.luck += 1;
     }
+
     prob = getURN();
+
     if ((prob <= (growths.def % 100)) && (current_stats.def < caps_stats.def)) {
         temp_stats.def += 1;
     }
+
     prob = getURN();
+
     if ((prob <= (growths.res % 100)) && (current_stats.res < caps_stats.res)) {
         temp_stats.res += 1;
     }
+
     prob = getURN();
+
     if ((prob <= (growths.con % 100)) && (current_stats.con < caps_stats.con)) {
         temp_stats.con += 1;
     }
+
     prob = getURN();
+
     if ((prob <= (growths.prof % 100)) && (current_stats.prof < caps_stats.prof)) {
         temp_stats.prof += 1;
     }
+
     prob = getURN();
+
     if ((prob <= (growths.move % 100)) && (current_stats.move < caps_stats.move)) {
         temp_stats.move += 1;
     }
+
     grown_stats.push_back(temp_stats);
 
     current_stats.hp += temp_stats.hp;
@@ -373,7 +401,7 @@ void Unit::setBonus(const Unit_stats in_stats) {
 }
 
 Unit_stats Unit::getBonus() {
-    return(bonus_stats);
+    return (bonus_stats);
 }
 
 void Unit::setMalus(const Unit_stats in_stats) {
@@ -381,7 +409,7 @@ void Unit::setMalus(const Unit_stats in_stats) {
 }
 
 Unit_stats Unit::getMalus() {
-    return(malus_stats);
+    return (malus_stats);
 }
 
 void Unit::setCaps(const Unit_stats in_stats) {
@@ -389,7 +417,7 @@ void Unit::setCaps(const Unit_stats in_stats) {
 }
 
 Unit_stats Unit::getCaps() {
-    return(caps_stats);
+    return (caps_stats);
 }
 
 void Unit::setStats(const Unit_stats in_stats) {
@@ -407,7 +435,7 @@ void Unit::setBases(const Unit_stats in_stats) {
     current_hp = base_stats.hp;
 }
 Unit_stats Unit::getBases() {
-    return(base_stats);
+    return (base_stats);
 }
 
 void Unit::setGrowths(const Unit_stats in_growths) {
@@ -415,13 +443,13 @@ void Unit::setGrowths(const Unit_stats in_growths) {
 }
 
 Unit_stats Unit::getGrowths() {
-    return(growths);
+    return (growths);
 }
 
 bool Unit::canEquip(unsigned short int in_id) {
     short unsigned int wpntypecode = all_weapons[in_id].getType();
-    return(((equippable & wpntypecode) > 0));
-} 
+    return (((equippable & wpntypecode) > 0));
+}
 
 bool Unit::canAttack() {
     // THIS FUNCTION needs to be updated with the fact that some weapons can have multiple types. -> typecodes
@@ -430,19 +458,24 @@ bool Unit::canAttack() {
         unsigned short int left;
         unsigned short int right;
     } wpntypecodes;
+
     if (equipped.left > 0) {
         wpntypecodes.left = all_weapons[equipment[equipped.left].id].getType();
+
         if ((wpntypecodes.left != ITEM::TYPE::SHIELD)  & (wpntypecodes.left != ITEM::TYPE::TRINKET) & (wpntypecodes.left != ITEM::TYPE::STAFF)) {
             out = true;
-        } 
+        }
     }
+
     if (equipped.right > 0) {
         wpntypecodes.right = all_weapons[equipment[equipped.right].id].getType();
+
         if ((wpntypecodes.right != ITEM::TYPE::SHIELD)  & (wpntypecodes.right != ITEM::TYPE::TRINKET) & (wpntypecodes.right != ITEM::TYPE::STAFF)) {
             out = true;
-         } 
+        }
     }
-    return(out);
+
+    return (out);
 }
 
 // bool Unit::dmgType() { //Useless?
@@ -450,7 +483,7 @@ bool Unit::canAttack() {
 //     struct Dmg_types{
 //         bool left = false;
 //         bool right = false;
-//     } dmg_types;    
+//     } dmg_types;
 //     struct wpntypes{
 //         std::string left;
 //         std::string right;
@@ -479,7 +512,7 @@ bool Unit::canAttack() {
 //     if (dmg_types.right != dmg_types.left) {
 
 //     } else {
-//         out = dmg_types.right;   
+//         out = dmg_types.right;
 //     }
 
 //     return(out);
@@ -503,7 +536,7 @@ unsigned char Unit::totalMight(bool dmg_type) {
     return (total_might);
 }
 
-unsigned char Unit::totalDef(bool dmg_type){
+unsigned char Unit::totalDef(bool dmg_type) {
     unsigned char total_def = 0;
     // if (dmg_type){
     //     total_def += current_stats.res;
@@ -526,8 +559,8 @@ unsigned char Unit::totalDef(bool dmg_type){
     //         total_def += all_weapons[equipment[equipped.left].name].getStats().Pmight;
     //     }
     // }
-    return(total_def);
-}   
+    return (total_def);
+}
 
 std::string Unit::getName() {
     return (name);
@@ -542,11 +575,11 @@ void Unit::setName(const char in_name) {
 }
 
 std::string Unit::getArmyName() {
-    return(army_name);
+    return (army_name);
 }
 
 unsigned char Unit::getArmy() {
-    return(army);
+    return (army);
 }
 
 void Unit::setArmy(const unsigned char in_army) {
@@ -555,7 +588,7 @@ void Unit::setArmy(const unsigned char in_army) {
 }
 
 Combat_stats Unit::getCombatStats() {
-    return(combat_stats);
+    return (combat_stats);
 }
 
 void Unit::combatStats() {
@@ -620,8 +653,8 @@ bool Unit::canDouble(Unit * enemy) {
 char Unit::speed() {
     //*DESIGN QUESTION* What should be the influence of weapons?
     // Average of Con and Str? Con+Str/2?
-    char current_speed = current_stats.agi - temp_wpn.wgt + current_stats.con + current_stats.str/2;
-    return(current_speed);
+    char current_speed = current_stats.agi - temp_wpn.wgt + current_stats.con + current_stats.str / 2;
+    return (current_speed);
 }
 
 void Unit::readXML(tinyxml2::XMLElement * in_pUnit) {
@@ -632,53 +665,78 @@ void Unit::readXML(tinyxml2::XMLElement * in_pUnit) {
 
     id = (unsigned short int)in_pUnit->IntAttribute("id");
     ptemp = in_pUnit->FirstChildElement("Name");
-    if (!ptemp) {SDL_Log("Cannot get Name element");}   
+
+    if (!ptemp) {SDL_Log("Cannot get Name element");}
+
     name = ptemp->GetText();
     ptemp = in_pUnit->FirstChildElement("Sex");
-    if (!ptemp) {SDL_Log("Cannot get Sex element");}   
-    ptemp->QueryBoolText(&sex);    
+
+    if (!ptemp) {SDL_Log("Cannot get Sex element");}
+
+    ptemp->QueryBoolText(&sex);
     ptemp = in_pUnit->FirstChildElement("SkillsCode");
-    if (!ptemp) {SDL_Log("Cannot get SkillsCode element");}   
+
+    if (!ptemp) {SDL_Log("Cannot get SkillsCode element");}
+
     buffer = ptemp->GetText();
     // skills = strtoull(buffer, NULL, 16);
     sscanf(buffer, "%llx", &skills);
     ptemp = in_pUnit->FirstChildElement("BaseExp");
-    if (!ptemp) {SDL_Log("Cannot get BaseExp element");}   
+
+    if (!ptemp) {SDL_Log("Cannot get BaseExp element");}
+
     ptemp->QueryUnsignedText(&bufint);
     base_exp = (unsigned short int)bufint;
     ptemp = in_pUnit->FirstChildElement("Exp");
-    if (!ptemp) {SDL_Log("Cannot get Exp element");}   
+
+    if (!ptemp) {SDL_Log("Cannot get Exp element");}
+
     ptemp->QueryUnsignedText(&bufint);
     exp = (unsigned short int)bufint;
     ptemp = in_pUnit->FirstChildElement("Class");
-    if (!ptemp) {SDL_Log("Cannot get Class element");}   
+
+    if (!ptemp) {SDL_Log("Cannot get Class element");}
+
     class_index = (unsigned char)ptemp->IntAttribute("id");;
     ptemp = in_pUnit->FirstChildElement("Stats");
-    if (!ptemp) {SDL_Log("Cannot get Stats element");}   
+
+    if (!ptemp) {SDL_Log("Cannot get Stats element");}
+
     readXML_stats(ptemp, &current_stats);
     ptemp = in_pUnit->FirstChildElement("Growths");
-    if (!ptemp) {SDL_Log("Cannot get Growths element");}   
+
+    if (!ptemp) {SDL_Log("Cannot get Growths element");}
+
     readXML_stats(ptemp, &growths);
     ptemp = in_pUnit->FirstChildElement("Caps");
-    if (!ptemp) {SDL_Log("Cannot get Caps element");}   
+
+    if (!ptemp) {SDL_Log("Cannot get Caps element");}
+
     readXML_stats(ptemp, &caps_stats);
     ptemp = in_pUnit->FirstChildElement("Bases");
-    if (!ptemp) {SDL_Log("Cannot get Bases element");}   
+
+    if (!ptemp) {SDL_Log("Cannot get Bases element");}
+
     readXML_stats(ptemp, &base_stats);
     ptemp = in_pUnit->FirstChildElement("Equipment");
-    if (!ptemp) {SDL_Log("Cannot get Equipment element");}   
+
+    if (!ptemp) {SDL_Log("Cannot get Equipment element");}
+
     readXML_items(ptemp, equipment);
-    
+
     tinyxml2::XMLElement * pLevelUps = in_pUnit->FirstChildElement("LevelUps");
-    if (!pLevelUps) {SDL_Log("Cannot get levelUps element");
-    } else {   
+
+    if (!pLevelUps) {
+        SDL_Log("Cannot get levelUps element");
+    } else {
         ptemp = pLevelUps->FirstChildElement("LevelUp");
         Unit_stats temp_stats = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
+
         do {
             readXML_stats(ptemp, &temp_stats);
-            grown_stats.push_back(temp_stats); 
+            grown_stats.push_back(temp_stats);
             ptemp = ptemp->NextSiblingElement("LevelUp");
-        } while(ptemp);
+        } while (ptemp);
     }
 
     combatStats();
@@ -691,9 +749,9 @@ void Unit::readXML(tinyxml2::XMLElement * in_pUnit) {
 
 void Unit::writeXML(tinyxml2::XMLDocument * in_doc, tinyxml2::XMLElement * in_pUnit) {
     char buffer[DEFAULT::BUFFER_SIZE];
-    
+
     in_pUnit->SetAttribute("id", id);
-    
+
     tinyxml2::XMLElement * pName = in_doc->NewElement("Name");
     in_pUnit->InsertEndChild(pName);
     pName->SetText(name.c_str());
@@ -702,7 +760,7 @@ void Unit::writeXML(tinyxml2::XMLDocument * in_doc, tinyxml2::XMLElement * in_pU
     in_pUnit->InsertEndChild(pSex);
     pSex->SetText(sex);
     pSex->SetAttribute("eg", "hasPenis");
-    
+
     tinyxml2::XMLElement * pClass = in_doc->NewElement("Class");
     in_pUnit->InsertEndChild(pClass);
     pClass->SetText(class_name.c_str());
@@ -719,19 +777,19 @@ void Unit::writeXML(tinyxml2::XMLDocument * in_doc, tinyxml2::XMLElement * in_pU
     tinyxml2::XMLElement * pCurrenthp = in_doc->NewElement("CurrentHP");
     in_pUnit->InsertEndChild(pCurrenthp);
     pCurrenthp->SetText(current_hp);
-    
+
     tinyxml2::XMLElement * pStats = in_doc->NewElement("Stats");
     in_pUnit->InsertEndChild(pStats);
-    writeXML_stats(in_doc, pStats, &current_stats);    
-    
+    writeXML_stats(in_doc, pStats, &current_stats);
+
     tinyxml2::XMLElement * pGrowths = in_doc->NewElement("Growths");
     in_pUnit->InsertEndChild(pGrowths);
     writeXML_stats(in_doc, pGrowths, &growths);
-    
+
     tinyxml2::XMLElement * pCaps = in_doc->NewElement("Caps");
     in_pUnit->InsertEndChild(pCaps);
     writeXML_stats(in_doc, pCaps, &caps_stats);
-    
+
     tinyxml2::XMLElement * pBases = in_doc->NewElement("Bases");
     in_pUnit->InsertEndChild(pBases);
     writeXML_stats(in_doc, pBases, &base_stats);
@@ -740,6 +798,7 @@ void Unit::writeXML(tinyxml2::XMLDocument * in_doc, tinyxml2::XMLElement * in_pU
         tinyxml2::XMLElement * pGrown = in_doc->NewElement("LevelUps");
         in_pUnit->InsertEndChild(pGrown);
         tinyxml2::XMLElement * pGrownLevel;
+
         for (int i = 0; i < grown_stats.size(); i++) {
             pGrownLevel = in_doc->NewElement("LevelUp");
             pGrown->InsertEndChild(pGrownLevel);
@@ -750,6 +809,7 @@ void Unit::writeXML(tinyxml2::XMLDocument * in_doc, tinyxml2::XMLElement * in_pU
     if (skill_names.size() > 0) {
         tinyxml2::XMLElement * pSkills = in_doc->NewElement("Skills");
         tinyxml2::XMLElement * pSkill;
+
         for (int i = 0; i < skill_names.size(); i++) {
             pSkill = in_doc->NewElement("Skill");
             pSkills->InsertEndChild(pSkill);
@@ -770,11 +830,13 @@ void Unit::write(const char * filename, const bool append) {
     // Maybe this function should write constant number of bytes per line...
     // Easier to read.
     PHYSFS_file * fp;
+
     if (append) {
         fp = PHYSFS_openWrite(filename);
     } else {
         fp = PHYSFS_openAppend(filename);
     }
+
     size_t buflen;
     char varbuf[DEFAULT::BUFFER_SIZE];
     int retlen;
@@ -782,11 +844,13 @@ void Unit::write(const char * filename, const bool append) {
     stbsp_sprintf(varbuf, "%s \n", name.c_str());
     buflen = strlen(varbuf);
     retlen = PHYSFS_writeBytes(fp, varbuf, buflen);
+
     if (sex) {
         stbsp_sprintf(varbuf, "%s \n", "M");
     } else {
         stbsp_sprintf(varbuf, "%s \n", "F");
     }
+
     buflen = strlen(varbuf);
     retlen = PHYSFS_writeBytes(fp, varbuf, buflen);
     stbsp_sprintf(varbuf, "%s \n", class_name.c_str());
@@ -808,21 +872,25 @@ void Unit::write(const char * filename, const bool append) {
     buflen = strlen(varbuf);
     retlen = PHYSFS_writeBytes(fp, varbuf, buflen);
     stbsp_sprintf(varbuf, "Level-ups:\n");
+
     for (int i = 0; i < grown_stats.size(); i++) {
-        stbsp_sprintf(varbuf, "%d:\t\t%d,\t%d,\t%d,\t%d,\t%d,\t%d,\t%d,\t%d,\t%d,\t%d,\t%d\n", exp/10, grown_stats[i].hp, grown_stats[i].str, grown_stats[i].mag, grown_stats[i].dex, grown_stats[i].agi, grown_stats[i].luck, grown_stats[i].def, grown_stats[i].res, grown_stats[i].con, grown_stats[i].move, grown_stats[i].prof);
+        stbsp_sprintf(varbuf, "%d:\t\t%d,\t%d,\t%d,\t%d,\t%d,\t%d,\t%d,\t%d,\t%d,\t%d,\t%d\n", exp / 10, grown_stats[i].hp, grown_stats[i].str, grown_stats[i].mag, grown_stats[i].dex, grown_stats[i].agi, grown_stats[i].luck, grown_stats[i].def, grown_stats[i].res, grown_stats[i].con, grown_stats[i].move, grown_stats[i].prof);
     }
+
     buflen = strlen(varbuf);
     retlen = PHYSFS_writeBytes(fp, varbuf, buflen);
     stbsp_sprintf(varbuf, "\nEquipment:\n");
+
     for (int i = 0; i < DEFAULT::EQUIPMENT_SIZE; i++) {
         stbsp_sprintf(varbuf, "%d, \t%d\n", equipment[i].id, equipment[i].used);
     }
+
     buflen = strlen(varbuf);
     retlen = PHYSFS_writeBytes(fp, varbuf, buflen);
     PHYSFS_close(fp);
 }
 
-void testXMLUnits() { 
+void testXMLUnits() {
     SDL_Log("Testing Unit xml writing and reading\n");
     Unit temp_unit;
     Unit_stats temp;
@@ -862,11 +930,13 @@ void baseUnits(std::unordered_map<int, Unit> * in_units, std::vector<short int> 
     std::vector<short int> temp_supports;
     Equipped temp_equipped;
     int index;
+
     for (short unsigned int i = 0; i < toload.size(); i++) {
         index = toload[i];
+
         switch (index) {
             case UNIT::NAME::ERWIN:
-                      //hp,str,mag,agi,dex,luck,def,res,con,move,prof
+                //hp,str,mag,agi,dex,luck,def,res,con,move,prof
                 temp = {17,  6,  2,  7,  7,   7,  4,  5,  6, 5, 4};
                 temp_unit = Unit(UNIT::NAME::ERWIN, UNIT::CLASS::MERCENARY, temp, UNIT::SEX::M);
                 temp = {48, 14, 25, 32, 34,  28, 19, 40, 15, 7, 20};
@@ -965,7 +1035,7 @@ void baseUnits(std::unordered_map<int, Unit> * in_units, std::vector<short int> 
                 in_units->emplace(index, temp_unit);
                 break;
             case UNIT::NAME::SILOU:
-                      //hp,str,mag,agi,dex,luck,def,res,con,move,prof
+                //hp,str,mag,agi,dex,luck,def,res,con,move,prof
                 temp = {15,  4,  5,  7,  6,   8,  4,  6,  5,  5,  6};
                 temp_unit = Unit(UNIT::NAME::SILOU, UNIT::CLASS::MAGE, temp, UNIT::SEX::F);
                 temp = {48, 14, 25, 32, 34,  28, 19, 40, 15};
@@ -1138,13 +1208,13 @@ void baseUnits(std::unordered_map<int, Unit> * in_units, std::vector<short int> 
                 temp_unit.setBaseExp(0);
                 in_units->emplace(index, temp_unit);
                 break;
-            }
         }
+    }
 }
 
 void baseUnits(std::unordered_map<int, Unit> * in_units) {
     printf("Making all base units \n");
-    std::unordered_map<int, Unit> temp_units; 
+    std::unordered_map<int, Unit> temp_units;
     std::vector<short int> toload = cpprange((short int)UNIT::NAME::ERWIN, (short int)(UNIT::NAME::PC_END - 1));
     baseUnits(in_units, toload);
 }
@@ -1153,11 +1223,12 @@ void writeUnits_NPC(const char * filename) {
     Unit Utemp;
     std::unordered_map<int, Unit> units;
     std::vector<short int> temp_int = {0};
+
     for (int i = UNIT::NAME::PC_END; i < UNIT::NAME::NPC_END; i++) {
         temp_int[0] = i;
         baseUnits(&units, temp_int);
         Utemp = units[i];
-        Utemp.writeXML(filename, true); 
+        Utemp.writeXML(filename, true);
     }
 }
 
@@ -1165,11 +1236,12 @@ void writeUnits_PC(const char * filename) {
     Unit Utemp;
     std::unordered_map<int, Unit> units;
     std::vector<short int> temp_int = {0};
+
     for (int i = UNIT::NAME::ERWIN; i < UNIT::NAME::PC_END; i++) {
         temp_int[0] = i;
         baseUnits(&units, temp_int);
         Utemp = units[i];
-        Utemp.writeXML(filename, true); 
+        Utemp.writeXML(filename, true);
     }
 }
 
@@ -1181,12 +1253,12 @@ void writeAllUnits(const char * filename) {
 std::vector<short int> testParty() {
     // shouLdn't those be arrivals instead?
     std::vector<short int> out = {UNIT::NAME::SILOU};
-    return(out);
+    return (out);
 }
 
 std::vector<short int> baseParty() {
     std::vector<short int> out = {UNIT::NAME::ERWIN, UNIT::NAME::KIARA};
-    return(out);
+    return (out);
 }
 
 std::vector<Map_arrival> chapTestArrivals() {
@@ -1197,7 +1269,7 @@ std::vector<Map_arrival> chapTestArrivals() {
     temp.position = {6, 10};
     temp.levelups = 0;
     out.push_back(temp);
-    return(out);
+    return (out);
 }
 
 std::vector<std::vector<Inventory_item>> chapTestEquipments() {
@@ -1212,7 +1284,7 @@ std::vector<std::vector<Inventory_item>> chapTestEquipments() {
     temp_equipment.push_back(temp_item);
     out.push_back(temp_equipment);
     temp_equipment.clear();
-    return(out);
+    return (out);
 }
 
 std::vector<short int> (*baseParties[CHAPTER::CHAP1 - CHAPTER::TEST + 1])() = {testParty, baseParty};

@@ -72,6 +72,7 @@ void Text::setText(std::string in_text) {
     } else {
         text_lines[0] = in_text;
     }
+
     removeTexture();
     addTextTexture(in_text, textColor[0]);
 }

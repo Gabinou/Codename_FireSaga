@@ -22,7 +22,7 @@ Game::Game() {
 Game::~Game() {}
 
 Settings Game::getSettings() {
-    return(settings);
+    return (settings);
 }
 
 void Game::setSettings(Settings in_settings) {
@@ -31,29 +31,35 @@ void Game::setSettings(Settings in_settings) {
 
 bool Game::checkRate(int rate, short unsigned int mode) {
     bool hit;
+
     if (mode == GAME::RN::SINGLE) {
         hit = (getURN(tinymt) < rate);
-        return(hit);
+        return (hit);
     }
+
     if (mode == GAME::RN::DOUBLE) {
-        hit = (((getURN(tinymt) + getURN(tinymt))/2) < rate);
-        return(hit);
+        hit = (((getURN(tinymt) + getURN(tinymt)) / 2) < rate);
+        return (hit);
     }
-    return(hit);
+
+    return (hit);
 }
 
 bool * Game::checkHitCrit(int hit_rate, int crit_rate, short unsigned int mode) {
     static bool hitcrit[2];
+
     if (mode == GAME::RN::SINGLE) {
         hitcrit[0] = (getURN(tinymt) < hit_rate);
         hitcrit[1] = (getURN(tinymt) < crit_rate);
-        return(hitcrit);
+        return (hitcrit);
     }
+
     if (mode == GAME::RN::DOUBLE) {
-        hitcrit[0] = (((getURN(tinymt) + getURN(tinymt))/2) < hit_rate);
-        hitcrit[1] = (((getURN(tinymt) + getURN(tinymt))/2) < crit_rate);
-        return(hitcrit);
-    } 
+        hitcrit[0] = (((getURN(tinymt) + getURN(tinymt)) / 2) < hit_rate);
+        hitcrit[1] = (((getURN(tinymt) + getURN(tinymt)) / 2) < crit_rate);
+        return (hitcrit);
+    }
+
     if (mode == GAME::RN::GAUSSIAN) {
         unsigned char * RNs;
         RNs[0] = getURN(tinymt);
@@ -61,13 +67,14 @@ bool * Game::checkHitCrit(int hit_rate, int crit_rate, short unsigned int mode) 
         RNs = boxmuller(RNs);
         hitcrit[0] = (RNs[0] < hit_rate);
         hitcrit[1] = (RNs[1] < crit_rate);
-        return(hitcrit);
-    }
-    if (mode == GAME::RN::HYBRID) {
-    
+        return (hitcrit);
     }
 
-    return(hitcrit);
+    if (mode == GAME::RN::HYBRID) {
+
+    }
+
+    return (hitcrit);
 }
 
 void Game::attack(Unit * attacker, Unit * defender) {
@@ -76,6 +83,7 @@ void Game::attack(Unit * attacker, Unit * defender) {
     Combat_stats defender_stats = defender->getCombatStats();
     bool * hitcrit;
     hitcrit = checkHitCrit((attacker_stats.hit - defender_stats.dodge), (attacker_stats.crit - defender_stats.favor));
+
     if (hitcrit[0]) {
         if (hitcrit[1]) {
             int damage = attacker->totalMight(false) -  defender->totalDef(false);
@@ -95,9 +103,11 @@ void Game::fight(Unit * attacker, Unit * defender) {
         attack(defender, attacker);
         defender_doubles = defender->canDouble(attacker);
     }
+
     if (attacker_doubles) {
         attack(attacker, defender);
     }
+
     if (defender_doubles) {
         attack(defender, attacker);
     }
@@ -113,7 +123,7 @@ void Game::makeFPSEntity() {
     settings.FPS.entity.component<Text>()->setRects(settings.FPS.pos.x, settings.FPS.pos.y);
 }
 
-void Game::makeUnitmenu(entityx::Entity &setter) {
+void Game::makeUnitmenu(entityx::Entity & setter) {
     SDL_Log("Making unit menu\n");
     unitmenux = entities.create();
     unitmenux.assign<Position>();
@@ -121,13 +131,13 @@ void Game::makeUnitmenu(entityx::Entity &setter) {
     unitmenux.component<Position>()->setPos(
         (int)(setter.component<Position>()->getPos()[0] * settings.tilesize[0]),
         (int)(setter.component<Position>()->getPos()[1] * settings.tilesize[1])
-        );
+    );
     SDL_Log("Unitmenu setter position %d %d\n", setter.component<Position>()->getPos()[0], setter.component<Position>()->getPos()[1]);
     SDL_Log("Unitmenu position %d %d\n", unitmenux.component<Position>()->getPos()[0], unitmenux.component<Position>()->getPos()[1]);
 
     SDL_Color black = {255, 255, 255};
     unitmenux.assign<Sprite>("..//assets//textbox.png", (int []) {128, 128});
-    // I think the menu textures should be loaded elsewhere when initted or first called. Then, should be only unloaded after a while. 
+    // I think the menu textures should be loaded elsewhere when initted or first called. Then, should be only unloaded after a while.
     //Not loaded and unloaded after EACH CALL.
     unitmenux.assign<Text>(settings.fontsize, std::vector<std::string> {"Attack", "Wait"}, black);
 }
@@ -146,21 +156,26 @@ void Game::showMenu(short unsigned int index) {
 
 // I think this function is too big. Find a way to reduce it...
 void Game::setState(entityx::Entity setter, short unsigned int new_state) {
-    SDL_Log("Game state changes from %d to %d\n", this->state, new_state); 
+    SDL_Log("Game state changes from %d to %d\n", this->state, new_state);
 
     switch (this->state) {
         case GAME::STATE::PAUSE:
             break;
+
         case GAME::STATE::STATS:
             break;
+
         case GAME::STATE::MINIMAP:
             break;
+
         case GAME::STATE::MAP:
             switch (new_state) {
                 case GAME::STATE::STATS:
                     break;
+
                 case GAME::STATE::MINIMAP:
-                    break;                
+                    break;
+
                 case GAME::STATE::UNITMOVE: {
                     SDL_Log("Changing to unitmove\n");
                     std::vector<std::vector<short int>> costmap;
@@ -177,6 +192,7 @@ void Game::setState(entityx::Entity setter, short unsigned int new_state) {
                     cursorpos = setter.component<Position>();
                     unitcomp = setter.component<Unit>();
                     selected = unitcomp.entity();
+
                     if (cursorpos) {
                         start = (short unsigned int *)cursorpos->getPos();
                     } else {
@@ -205,72 +221,96 @@ void Game::setState(entityx::Entity setter, short unsigned int new_state) {
                     mapx->showOverlay();
 
                 }
-                    break;
+                break;
+
                 case GAME::STATE::OPTIONS:
-                    break;    
+                    break;
+
                 case GAME::STATE::CUTSCENE:
-                    break;    
+                    break;
             }
+
             break;
+
         case GAME::STATE::OPTIONS:
             switch (new_state) {
                 case GAME::STATE::MAP:
-                    break;                
+                    break;
+
                 case GAME::STATE::STARTMENU:
                     break;
-                }
+            }
+
             break;
+
         case GAME::STATE::STARTMENU:
             switch (new_state) {
                 case GAME::STATE::INTROVIDEO:
-                    break;                
+                    break;
+
                 case GAME::STATE::SAVES:
                     break;
+
                 case GAME::STATE::SOUNDROOM:
                     break;
+
                 case GAME::STATE::OPTIONS:
                     break;
-                }
+            }
+
             break;
+
         case GAME::STATE::PREPARATION:
             switch (new_state) {
                 case GAME::STATE::PLACEMENT:
-                    break;                
+                    break;
+
                 case GAME::STATE::CHOOSEUNITS:
                     break;
+
                 case GAME::STATE::EQUIPMENT:
                     break;
+
                 case GAME::STATE::FORGE:
                     break;
+
                 case GAME::STATE::STORAGE:
-                    break;               
+                    break;
+
                 case GAME::STATE::BONUSEXP:
-                    break;       
-                }
+                    break;
+            }
+
             break;
-        case GAME::STATE::PLACEMENT: 
-        case GAME::STATE::CHOOSEUNITS: 
-        case GAME::STATE::EQUIPMENT: 
-        case GAME::STATE::FORGE: 
-        case GAME::STATE::STORAGE: 
-        case GAME::STATE::BONUSEXP: 
-            switch (new_state) {            
+
+        case GAME::STATE::PLACEMENT:
+        case GAME::STATE::CHOOSEUNITS:
+        case GAME::STATE::EQUIPMENT:
+        case GAME::STATE::FORGE:
+        case GAME::STATE::STORAGE:
+        case GAME::STATE::BONUSEXP:
+            switch (new_state) {
                 case GAME::STATE::PREPARATION:
                     break;
+
                 case GAME::STATE::MAP:
-                    break;       
-                }
+                    break;
+            }
+
             break;
+
         case GAME::STATE::UNITMOVE:
-            switch (new_state) {            
+            switch (new_state) {
                 case GAME::STATE::UNITMENU: {
                     SDL_Log("Changing to unitmenu\n");
                     mapx->hideOverlay();
+
                     if (unitmenux.valid()) {
                         showMenu(GAME::STATE::UNITMENU);
                     } else {
-                        makeUnitmenu(setter); 
-                    }               
+                        makeUnitmenu(setter);
+                    }
+
                     short int * new_position;
                     short int * old_position;
 
@@ -281,6 +321,7 @@ void Game::setState(entityx::Entity setter, short unsigned int new_state) {
 
                     if (selected.valid()) {
                         selectedpos = selected.component<Position>();
+
                         if (selectedpos) {
                             old_position = selectedpos->getPos();
                             // SDL_Log("Old position %d, %d \n", old_position[0], old_position[1]);
@@ -289,7 +330,7 @@ void Game::setState(entityx::Entity setter, short unsigned int new_state) {
                         }
                     } else {
                         SDL_Log("Could not get selected entity");
-                    }              
+                    }
 
                     if (setterpos) {
                         new_position = setterpos->getPos();
@@ -297,49 +338,63 @@ void Game::setState(entityx::Entity setter, short unsigned int new_state) {
                     } else {
                         SDL_Log("Could not get setter(unit) position component");
                     }
+
                     mapx->moveUnit(old_position[0], old_position[1], new_position[0], new_position[1]);
                     unitmenux.component<Position>()->setPos(new_position[0] * settings.tilesize[0], new_position[1] * settings.tilesize[1]);
                     selectedpos->setPos(new_position); // move at the end, cause new and old_position are pointers!
-                    }
-                    break;
+                }
+                break;
+
                 case GAME::STATE::MAP:
                     mapx->hideOverlay();
-                    break;       
-                }
+                    break;
+            }
+
             break;
+
         case GAME::STATE::UNITMENU:
-            switch (new_state) {            
+            switch (new_state) {
                 case GAME::STATE::ATTACK:
-                    break;                
+                    break;
+
                 case GAME::STATE::TRADE:
-                    break;                
+                    break;
+
                 case GAME::STATE::ITEMS:
-                    break;                
+                    break;
+
                 case GAME::STATE::CONVERSATION:
                     break;
+
                 case GAME::STATE::MAP:
                     hideMenu(GAME::STATE::UNITMENU);
-                    break;       
-                }
+                    break;
+            }
+
             break;
+
         case GAME::STATE::CONVERSATION:
-            switch (new_state) {            
+            switch (new_state) {
                 case GAME::STATE::MAP:
-                    break;                
-                }
+                    break;
+            }
+
             break;
+
         case GAME::STATE::ATTACK:
-            switch (new_state) {            
+            switch (new_state) {
                 case GAME::STATE::BATTLE:
-                    break;                
-                }
+                    break;
+            }
+
             break;
-        }
+    }
+
     state = new_state;
 }
 
 short unsigned int Game::getState() {
-    return(state);
+    return (state);
 }
 
 // template <typename T> void Game::loadTiles(std::vector<T> in_tiles) {
@@ -348,6 +403,7 @@ short unsigned int Game::getState() {
 
 void Game::loadMap(const int in_map_index) {
     SDL_Log("Loading Map index: %d \n", in_map_index);
+
     if (!mapx) {
         mapEntx = entities.create();
         mapEntx.assign<Map>(settings.tilesize[0], settings.tilesize[1]); // mapx is a pointer
@@ -365,6 +421,7 @@ void Game::loadMap(const int in_map_index) {
 
 void Game::unloadMap() {
     SDL_Log("Unloading Map");
+
     if (mapx) {
         mapEntx.destroy();
     } else {
@@ -379,11 +436,13 @@ void Game::loadCursor() {
         cursorx.assign<Position>(6, 6);
         cursorx.assign<KeyboardController>();
         cursorx.assign<GamepadController>();
+
         if (SDL_NumJoysticks() < 1) {
-            SDL_Log( "No joysticks connected.\n" );
+            SDL_Log("No joysticks connected.\n");
         } else {
-        //     cursor.addComponent<GamepadController>(this, mapx);
+            //     cursor.addComponent<GamepadController>(this, mapx);
         }
+
         cursorx.assign<Sprite>("..//assets//cursors.png", 10, 50);
         cursorx.component<Sprite>()->setSlidetype(SLIDETYPE::GEOMETRIC, mapx->getTilesize());
         cursorx.component<Position>()->setBounds(mapx->getBounds());
@@ -401,7 +460,8 @@ void Game::loadUnitEntities(std::vector<short unsigned int> unit_inds, std::vect
     std::string asset_name;
     Unit Utemp;
     entityx::Entity Uent;
-    for (int i = 0; i < unit_inds.size(); i++) { 
+
+    for (int i = 0; i < unit_inds.size(); i++) {
         Utemp = units[unit_inds[i]];
         asset_name = "..//assets//" +  Utemp.getName() + ".png";
         Uent = entities.create();
@@ -414,12 +474,14 @@ void Game::loadUnitEntities(std::vector<short unsigned int> unit_inds, std::vect
 
 void Game::loadMapArrivals() {
     SDL_Log("Loading map arrivals.\n");
+
     if (mapx) {
-        std::vector<Map_arrival> map_arrivals = mapx->getArrivals(); 
+        std::vector<Map_arrival> map_arrivals = mapx->getArrivals();
         unsigned short int currentturn = mapx->getTurn();
         std::string asset_name;
         Unit Utemp;
         entityx::Entity Uent;
+
         for (int i = 0; i < map_arrivals.size(); i++) {
             if (map_arrivals[i].turn == currentturn) {
                 Utemp = units[map_arrivals[i].id];
@@ -463,8 +525,8 @@ void Game::init(const char * title, int xpos, int ypos, int width, int height, b
         SDL_Log("TTF_Init: %s\n", TTF_GetError());
         exit(2);
     }
-            
-    Game::font = TTF_OpenFont("../fonts/arial.ttf", settings.fontsize); // Size translates to pixel size? 
+
+    Game::font = TTF_OpenFont("../fonts/arial.ttf", settings.fontsize); // Size translates to pixel size?
     //The srcrect does not change size with font pointsize.
 
     if (Game::font == NULL) {
@@ -503,9 +565,11 @@ void Game::init(const char * title, int xpos, int ypos, int width, int height, b
 
 void Game::loadXML(const short int save_ind) {
     char filename[DEFAULT::BUFFER_SIZE];
+
     if (!PHYSFS_exists(SAVE_FOLDER)) {
         SDL_Log("Could not find 'saves' folder!");
     }
+
     stbsp_snprintf(filename, DEFAULT::BUFFER_SIZE, "saves//save%04d.bsav", save_ind);
     SDL_Log("saveXML Game to: %s\n", filename);
 
@@ -520,12 +584,14 @@ void Game::loadXML(const short int save_ind) {
     ptemp = xmlDoc.FirstChildElement("Unit");
 
     unsigned short int id;
-    while(ptemp) {
+
+    while (ptemp) {
         id = (unsigned short int)ptemp->IntAttribute("id");
         units[id] = Unit();
         units[id].readXML(ptemp);
         ptemp = xmlDoc.NextSiblingElement("Unit");
     }
+
     ptemp = xmlDoc.FirstChildElement("Narrative");
 }
 
@@ -562,21 +628,24 @@ void Game::deleteSaveXML(const short int save_ind) {
 
 void Game::saveXML(const short int save_ind) {
     char filename[DEFAULT::BUFFER_SIZE];
+
     if (!PHYSFS_exists(SAVE_FOLDER)) {
         PHYSFS_mkdir(SAVE_FOLDER);
     }
+
     stbsp_snprintf(filename, DEFAULT::BUFFER_SIZE, "saves//save%04d.bsav", save_ind);
     SDL_Log("saveXML Game to: %s\n", filename);
     PHYSFS_delete(filename);
     PHYSFS_file * fp = PHYSFS_openWrite(filename);
 
     tinyxml2::XMLDocument xmlDoc;
-    xmlDoc.InsertFirstChild(xmlDoc.NewDeclaration());    
+    xmlDoc.InsertFirstChild(xmlDoc.NewDeclaration());
     tinyxml2::XMLElement * pNarrative = xmlDoc.NewElement("Narrative");
     xmlDoc.InsertEndChild(pNarrative);
     writeXML_narrative(&xmlDoc, pNarrative, &narrative);
 
     tinyxml2::XMLElement * ptemp;
+
     for (auto it = units.begin(); it != units.end(); it++) {
         ptemp = xmlDoc.NewElement("Unit");
         it->second.writeXML(&xmlDoc, ptemp);
@@ -595,13 +664,13 @@ void Game::setState(const short unsigned int new_state) {
 }
 
 KeyboardInputMap Game::getKeyboardInputMap() {
-    return(keyboardInputMap);
+    return (keyboardInputMap);
 }
 void Game::setKeyboardInputMap(KeyboardInputMap in_keyboardInputMap) {
     keyboardInputMap = in_keyboardInputMap;
 }
 GamepadInputMap Game::getGamepadInputMap() {
-    return(gamepadInputMap);
+    return (gamepadInputMap);
 }
 void Game::setGamepadInputMap(GamepadInputMap in_gamepadInputMap) {
     gamepadInputMap = in_gamepadInputMap;
@@ -611,12 +680,12 @@ void Game::handleEvents() {
     SDL_PollEvent(&event);
 
     switch (event.type) {
-    case SDL_QUIT:
-        isRunning = false;
-        break;
+        case SDL_QUIT:
+            isRunning = false;
+            break;
 
-    default:
-        break;
+        default:
+            break;
     }
 }
 
@@ -677,54 +746,58 @@ void Game::testXMLMap() {
 }
 
 // loss conditions
-bool essentialDied(Map * in_map, const Narrative * in_narrative) { 
+bool essentialDied(Map * in_map, const Narrative * in_narrative) {
     std::vector<short unsigned int> essentials = in_map->getEssentials();
+
     for (int i = 0; i < essentials.size(); i++) {
         if (in_narrative->death[essentials[i]]) {
-            return(true);
+            return (true);
         }
     }
-    return(false);
+
+    return (false);
 }
 
 // win conditions
 bool escaped(Map * in_map) {
-    return(false);
+    return (false);
 }
 
 bool Seized(Map * in_map) {
     //Maybe not necessary? maybe win is called when the throne is seized?
-    return(in_map->getSeized());
+    return (in_map->getSeized());
 }
 
 bool talked() {
-    return(false);
+    return (false);
 }
 
 bool bossDied(Map * in_map) {
-    return(in_map->getBossDeath());
+    return (in_map->getBossDeath());
 }
 
 bool rout(Map * in_map) {
-    return((in_map->getnumArrivals() < 1));
+    return ((in_map->getnumArrivals() < 1));
 }
 
 bool areAlive() {
-    return(false);
+    return (false);
 }
 
 bool positionCondition(Unit * in_unit, Map_condition * in_mcond) {
     // Called by the game everytime a unit moves.
     if (in_mcond->army > 0) {
         if (in_mcond->army != in_unit->getArmy()) {
-            return(false);
+            return (false);
         }
     }
+
     if (in_mcond->unit > 0) {
         if (in_mcond->unit != in_unit->getid()) {
-            return(false);
+            return (false);
         }
     }
+
     // short int * unitpos = in_unit->getPos();
 
     // if (unitpos[0] < std::max(0, (int)in_mcond->colmin)) {
@@ -739,7 +812,7 @@ bool positionCondition(Unit * in_unit, Map_condition * in_mcond) {
     // if (unitpos[1] > std::min(255, (int)in_mcond->rowmax)) {
     //     return(false);
     // }
-    return(true);
+    return (true);
 }
 
 

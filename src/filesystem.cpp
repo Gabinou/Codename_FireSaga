@@ -3,13 +3,12 @@
 #include "game.hpp"
 // #ifndef STB_SPRINTF_IMPLEMENTATION //Why no need?
 // #define STB_SPRINTF_IMPLEMENTATION
-#include "stb_sprintf.h" 
+#include "stb_sprintf.h"
 //#endif /* STB_SPRINTF_IMPLEMENTATION */
 
 #if defined(_WIN32)
 #include <windows.h>
-int mkdir(char* path, int mode)
-{
+int mkdir(char * path, int mode) {
     WCHAR utf16_path[DEFAULT::MAXPATH];
     MultiByteToWideChar(CP_UTF8, 0, path, -1, utf16_path, DEFAULT::MAXPATH);
     return CreateDirectoryW(utf16_path, NULL);
@@ -24,7 +23,7 @@ int mkdir(char* path, int mode)
 
 namespace FILESYSTEM {
 
-void log(void* userdata, int category, SDL_LogPriority priority, const char* message) {
+void log(void * userdata, int category, SDL_LogPriority priority, const char * message) {
     FILE * logf = fopen(LOGFILE, "a");
     fprintf(logf, message);
     fprintf(logf, "\n");
@@ -33,7 +32,7 @@ void log(void* userdata, int category, SDL_LogPriority priority, const char* mes
     printf("\n");
 }
 
-int init(char *argvZero, char* baseDir, char *assetsPath) {
+int init(char * argvZero, char * baseDir, char * assetsPath) {
     char output[DEFAULT::MAXPATH];
     int mkdirResult;
     const char * pathSep = PHYSFS_getDirSeparator();
@@ -71,9 +70,10 @@ int init(char *argvZero, char* baseDir, char *assetsPath) {
         strcpy(output, PHYSFS_getBaseDir());
         strcat(output, "\\assets.binou");
     }
+
     SDL_Log("Path to assets: %s\n", output);
-    if (!PHYSFS_mount(output, NULL, 1))
-    {
+
+    if (!PHYSFS_mount(output, NULL, 1)) {
         SDL_Log("Missing assets.binou\n");
         SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_ERROR, "Missing assets.binou", "Missing assets.binou", NULL);
         return 0;
@@ -82,32 +82,34 @@ int init(char *argvZero, char* baseDir, char *assetsPath) {
     strcpy(output, baseDir);
     strcat(output, "\\gamecontrollerdb.txt");
     SDL_Log("Path to gamecontrollerdb: %s\n", output);
+
     if (SDL_GameControllerAddMappingsFromFile(output) < 0) {
         SDL_Log("gamecontrollerdb.txt not found!\n");
     }
+
     return 1;
 }
 
-void loadFileToMemory(const char *name, unsigned char **mem, size_t *len, bool addnull) {
-    PHYSFS_File *physfs_file = PHYSFS_openRead(name);
-    if (physfs_file == NULL)
-    {
+void loadFileToMemory(const char * name, unsigned char ** mem, size_t * len, bool addnull) {
+    PHYSFS_File * physfs_file = PHYSFS_openRead(name);
+
+    if (physfs_file == NULL) {
         return;
     }
+
     PHYSFS_uint32 length = PHYSFS_fileLength(physfs_file);
-    if (len != NULL)
-    {
+
+    if (len != NULL) {
         *len = length;
     }
-    if (addnull)
-    {
+
+    if (addnull) {
         *mem = (unsigned char *) malloc(length + 1);
         (*mem)[length] = 0;
+    } else {
+        *mem = (unsigned char *) malloc(length);
     }
-    else
-    {
-        *mem = (unsigned char*) malloc(length);
-    }
+
     PHYSFS_readBytes(physfs_file, *mem, length);
     PHYSFS_close(physfs_file);
 }
@@ -117,53 +119,56 @@ void deinit() {
     PHYSFS_deinit();
 }
 
-void freeMemory(unsigned char **mem) {
+void freeMemory(unsigned char ** mem) {
     free(*mem);
     *mem = NULL;
 }
 }
 
-SDL_Surface * ZIP_loadSurface(const char *filename, bool noBlend = true, bool noAlpha = false)
-{
-    SDL_Surface* loadedImage = NULL; //Temporary storage for image
-    SDL_Surface* optimizedImage = NULL;//optimized image to be used
+SDL_Surface * ZIP_loadSurface(const char * filename, bool noBlend = true, bool noAlpha = false) {
+    SDL_Surface * loadedImage = NULL; //Temporary storage for image
+    SDL_Surface * optimizedImage = NULL; //optimized image to be used
 
-    unsigned char *data;
-    unsigned char *fileIn = NULL;
+    unsigned char * data;
+    unsigned char * fileIn = NULL;
     unsigned int width, height;
     size_t length = 0;
 
     FILESYSTEM::loadFileToMemory(filename, &fileIn, &length);
+
     if (noAlpha) {
         lodepng_decode24(&data, &width, &height, fileIn, length);
     } else {
         lodepng_decode32(&data, &width, &height, fileIn, length);
     }
+
     FILESYSTEM::freeMemory(&fileIn);
 
     loadedImage = SDL_CreateRGBSurfaceFrom(
-        data,
-        width,
-        height,
-        noAlpha ? 24 : 32,
-        width * (noAlpha ? 3 : 4),
-        0x000000FF,
-        0x0000FF00,
-        0x00FF0000,
-        noAlpha ? 0x00000000 : 0xFF000000
-    );
+                      data,
+                      width,
+                      height,
+                      noAlpha ? 24 : 32,
+                      width * (noAlpha ? 3 : 4),
+                      0x000000FF,
+                      0x0000FF00,
+                      0x00FF0000,
+                      noAlpha ? 0x00000000 : 0xFF000000
+                  );
 
     if (loadedImage != NULL) {
         optimizedImage = SDL_ConvertSurfaceFormat(
-            loadedImage,
-            SDL_PIXELFORMAT_ABGR8888,
-            0
-        );
+                             loadedImage,
+                             SDL_PIXELFORMAT_ABGR8888,
+                             0
+                         );
         SDL_FreeSurface(loadedImage);
         free(data);
+
         if (noBlend) {
             SDL_SetSurfaceBlendMode(optimizedImage, SDL_BLENDMODE_BLEND);
         }
+
         return optimizedImage;
     } else {
         SDL_Log("Image not found: %s\n", filename);
@@ -174,25 +179,30 @@ SDL_Surface * ZIP_loadSurface(const char *filename, bool noBlend = true, bool no
 SDL_Texture * loadTexture(SDL_Renderer * in_renderer, const char * filename, const bool ZIP) {
     SDL_Surface * tempsurface;
     SDL_Log("LoadTexture: %s\n", filename);
+
     if (ZIP) {
         tempsurface = ZIP_loadSurface(filename); // How fast is this?
     } else {
         tempsurface = IMG_Load(filename); // Not that fast.
     }
+
     if (tempsurface == NULL) {
         SDL_Log("loadTexture. IMG_Load error: %s\n", IMG_GetError());
     }
+
     SDL_Texture * texture = SDL_CreateTextureFromSurface(in_renderer, tempsurface);
+
     if (texture == NULL) {
-       SDL_Log("CreateTextureFromSurface failed: %s\n", SDL_GetError()); 
+        SDL_Log("CreateTextureFromSurface failed: %s\n", SDL_GetError());
     }
+
     return (texture);
 }
 
 SDL_Texture * textToTexture(SDL_Renderer * in_renderer, std::string textureText, SDL_Color textColor, TTF_Font * in_font) {
     SDL_Surface * textsurface = TTF_RenderText_Blended(in_font, textureText.c_str(), textColor); // Blended is better than Solid
     // TTF_RenderText_Shaded shades the whole destrect background.
-    
+
     SDL_Texture * texture;
 
     if (textsurface == NULL) {
@@ -204,8 +214,10 @@ SDL_Texture * textToTexture(SDL_Renderer * in_renderer, std::string textureText,
         if (texture == NULL) {
             SDL_Log("Unable to create texture from rendered text! SDL Error: %s\n", SDL_GetError());
         }
+
         SDL_FreeSurface(textsurface); //Get rid of old surface
     }
+
     return (texture);
 }
 
@@ -229,6 +241,7 @@ void printXMLDoc(PHYSFS_file * in_fp, tinyxml2::XMLDocument * in_doc) {
     in_doc->Print(&printer);
     char longbuffer[printer.CStrSize()];
     stbsp_sprintf(longbuffer, printer.CStr());
+
     if (!PHYSFS_setBuffer(in_fp, printer.CStrSize())) {
         SDL_Log("PHYSFS_setBuffer failed");
     } else {
@@ -341,6 +354,7 @@ void readXML_narrativeUnits(tinyxml2::XMLElement * in_pUnit, bool in_statearr[])
     bool buffbool;
     short unsigned int id;
     tinyxml2::XMLElement * ptemp;
+
     while (in_pUnit) {
         id = (unsigned short int)ptemp->IntAttribute("id");
         ptemp = in_pUnit->FirstChildElement("Died");
@@ -481,9 +495,9 @@ void readXML_arrival(tinyxml2::XMLElement * in_pArrival, Map_arrival * in_arriva
     plevelups->QueryUnsignedText(&buffint);
     in_arrival->levelups = buffint;
     in_arrival->id = (short int)in_pArrival->IntAttribute("unitid");
-} 
+}
 
-void writeXML_arrival(tinyxml2::XMLDocument * in_doc, tinyxml2::XMLElement * in_pArrival, Map_arrival * in_arrival) { 
+void writeXML_arrival(tinyxml2::XMLDocument * in_doc, tinyxml2::XMLElement * in_pArrival, Map_arrival * in_arrival) {
     tinyxml2::XMLElement * pTurn = in_doc->NewElement("Turn");
     tinyxml2::XMLElement * pLevels = in_doc->NewElement("levelups");
     tinyxml2::XMLElement * pPosition = in_doc->NewElement("Position");
@@ -549,6 +563,7 @@ void writeXML_items(tinyxml2::XMLDocument * in_doc, tinyxml2::XMLElement * in_pI
     tinyxml2::XMLElement * pwpnName;
     tinyxml2::XMLElement * pInfused;
     char buffer[DEFAULT::BUFFER_SIZE];
+
     for (int i = 0; i < size; i++) {
         pItem = in_doc->NewElement("Item");
         in_pItems->InsertEndChild(pItem);
@@ -558,6 +573,7 @@ void writeXML_items(tinyxml2::XMLDocument * in_doc, tinyxml2::XMLElement * in_pI
         pUsed->SetText(buffer);
         pItem->InsertEndChild(pUsed);
         pwpnName = in_doc->NewElement("Name");
+
         if (in_items[i].infused > 0) {
             pInfused = in_doc->NewElement("Infused");
             pItem->InsertEndChild(pInfused);
@@ -569,6 +585,7 @@ void writeXML_items(tinyxml2::XMLDocument * in_doc, tinyxml2::XMLElement * in_pI
         } else {
             pwpnName->SetText("Empty");
         }
+
         pItem->InsertFirstChild(pwpnName);
     }
 }
@@ -580,13 +597,16 @@ void readXML_items(tinyxml2::XMLElement * in_pItems, std::vector<Inventory_item>
     int buffint;
     Inventory_item temp;
     equipment->clear();
+
     while (pItem) {
         pUsed = pItem->FirstChildElement("Used");
         pInfused = pItem->FirstChildElement("Infused");
+
         if (pInfused) {
             pInfused->QueryIntText(&buffint);
-            temp.infused = buffint;   
+            temp.infused = buffint;
         }
+
         temp.id = pItem->IntAttribute("id");
         pUsed->QueryIntText(&buffint);
         temp.used = buffint;
@@ -601,13 +621,16 @@ void readXML_items(tinyxml2::XMLElement * in_pItems, Inventory_item * in_items) 
     tinyxml2::XMLElement * pInfused;
     int buffint;
     int i = 0;
+
     while (pItem) {
         pUsed = pItem->FirstChildElement("Used");
         pInfused = pItem->FirstChildElement("Infused");
+
         if (pInfused) {
             pInfused->QueryIntText(&buffint);
-            in_items[i].infused = buffint;   
+            in_items[i].infused = buffint;
         }
+
         in_items[i].id = pItem->IntAttribute("id");
         pUsed->QueryIntText(&buffint);
         in_items[i].used = buffint;
@@ -718,19 +741,23 @@ void writeXML_stats(tinyxml2::XMLDocument * in_doc, tinyxml2::XMLElement * in_pS
 int parseXML(const char * filename, tinyxml2::XMLDocument * in_doc) {
     PHYSFS_file * fp;
     fp = PHYSFS_openRead(filename);
+
     if (!fp) {
         SDL_Log("Failed to open %s for xml parsing.", filename);
-        return(-1);
+        return (-1);
     }
+
     unsigned int filelen = PHYSFS_fileLength(fp);
     char filebuffer[filelen];
     PHYSFS_readBytes(fp, filebuffer, filelen);
     PHYSFS_close(fp);
+
     if (in_doc->Parse(filebuffer, filelen) != 0) {
         SDL_Log("Failed to parseXML %s", filename);
-        return(-1);
+        return (-1);
     }
-    return(0);
+
+    return (0);
 }
 
 void XML_IO::readXML(const char * filename) {
@@ -738,12 +765,13 @@ void XML_IO::readXML(const char * filename) {
     tinyxml2::XMLDocument xmlDoc;
     parseXML(filename, &xmlDoc);
     tinyxml2::XMLElement * pEle = xmlDoc.FirstChildElement(xmlElement.c_str());
+
     if (!pEle) {
         SDL_Log("Cannot get %s element", xmlElement.c_str());
     } else {
         readXML(pEle);
     }
-} 
+}
 
 void XML_IO::readXML(tinyxml2::XMLElement * in_pEle) {
 
@@ -758,19 +786,21 @@ void XML_IO::writeXML(const char * filename, const bool append) {
     // How to write files so that it is modifiable by randos?
     PHYSFS_file * fp;
     tinyxml2::XMLDocument xmlDoc;
+
     if (append) {
         fp = PHYSFS_openAppend(filename);
     } else {
         fp = PHYSFS_openWrite(filename);
         xmlDoc.InsertFirstChild(xmlDoc.NewDeclaration());
     }
+
     if (!fp) {
         SDL_Log("Could not open %s for %s writing\n", filename, xmlElement.c_str());
     } else {
         tinyxml2::XMLElement * pEle = xmlDoc.NewElement(xmlElement.c_str());
         xmlDoc.InsertEndChild(pEle);
         writeXML(&xmlDoc, pEle);
-        printXMLDoc(fp, &xmlDoc); 
+        printXMLDoc(fp, &xmlDoc);
         PHYSFS_close(fp);
     }
 }
@@ -780,5 +810,5 @@ void XML_IO::setXMLElement(std::string in_xmlElement) {
 }
 
 std::string XML_IO::getXMLElement() {
-    return(xmlElement);
+    return (xmlElement);
 }

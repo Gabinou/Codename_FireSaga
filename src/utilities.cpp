@@ -14,7 +14,7 @@ int pingpong(int current, int upper, int lower) {
 int geometricslide(int distance, float geo_factor) {
     // Returns geometrically decreasing indices.
     // Ex: distance/geo_factor -> distance/geo_factor**2 -> distance/geo_factor**3
-    int sign = sgn(distance); 
+    int sign = sgn(distance);
     int out = sign * std::max(sign * (int)(distance / geo_factor), 1);
     return (out);
     // std::abs() possible instead of sign*distance,
@@ -23,6 +23,7 @@ int geometricslide(int distance, float geo_factor) {
 
 void printarr(int arr[], int size) {
     SDL_Log("Array:\n");
+
     for (int i = 0; i < size; i++) {
         SDL_Log("%d\n", arr[i]);
     }
@@ -30,6 +31,7 @@ void printarr(int arr[], int size) {
 
 void printvec(std::vector<int> vec) {
     SDL_Log("Vector:\n");
+
     for (int i = 0; i < vec.size(); i++) {
         SDL_Log("%d\n", vec[i]);
     }
@@ -37,143 +39,186 @@ void printvec(std::vector<int> vec) {
 
 std::vector<int> cppwhere(int tofind, std::vector<int> vec) {
     std::vector<int> found_inds;
+
     for (int i = 0; i < vec.size(); i++) {
         if (vec[i] == tofind) {
             found_inds.push_back(i);
         }
     }
-    return(found_inds);
+
+    return (found_inds);
 }
 
 std::vector<int> cppuniques(std::vector<int> vec) {
     std::vector<int> uniques;
     std::vector<int> inuniques;
-    uniques.push_back(vec[0]);    
+    uniques.push_back(vec[0]);
+
     for (int i = 1; i < vec.size(); i++) {
         inuniques = cppwhere(vec[i], uniques);
+
         if (inuniques.size() == 0) {
             uniques.push_back(vec[i]);
         }
     }
-    return(uniques);
+
+    return (uniques);
 }
 
 std::vector<std::string> unitTypes(unsigned short int in_typecode) {
     std::vector<std::string> names;
+
     if ((in_typecode & UNIT::TYPE::HUMAN) > 0) {
         names.push_back("Human");
     }
+
     if ((in_typecode & UNIT::TYPE::MOUNTED) > 0) {
         names.push_back("Mounted");
     }
+
     if ((in_typecode & UNIT::TYPE::FLYING) > 0) {
         names.push_back("Flying");
     }
+
     if ((in_typecode & UNIT::TYPE::ARMOR) > 0) {
         names.push_back("Armor");
     }
+
     if ((in_typecode & UNIT::TYPE::DEMON) > 0) {
         names.push_back("Demon");
     }
+
     if ((in_typecode & UNIT::TYPE::ANGEL) > 0) {
         names.push_back("Angel");
     }
-    return(names);
+
+    return (names);
 }
 
 std::vector<std::string> wpnEffects(long unsigned int in_effect) {
     std::vector<std::string> names;
+
     if ((in_effect & ITEM::EFFECT::KILL1P) > 0) {
         names.push_back("1% kill");
     }
+
     if ((in_effect & ITEM::EFFECT::BRAVE2X) > 0) {
         names.push_back("Double attack");
     }
+
     if ((in_effect & ITEM::EFFECT::BRAVE3X) > 0) {
         names.push_back("Triple attack");
     }
+
     if ((in_effect & ITEM::EFFECT::BRAVE4X) > 0) {
         names.push_back("Quadruple attack");
     }
+
     if ((in_effect & ITEM::EFFECT::NOCOUNTER) > 0) {
         names.push_back("No counter-attack");
     }
+
     if ((in_effect & ITEM::EFFECT::IGNORE_DEF) > 0) {
         names.push_back("Ignore defense");
     }
+
     if ((in_effect & ITEM::EFFECT::IGNORE_RES) > 0) {
         names.push_back("Ignore resistance");
     }
+
     if ((in_effect & ITEM::EFFECT::IGNORE_SHIELD) > 0) {
         names.push_back("Ignore shield");
     }
+
     if ((in_effect & ITEM::EFFECT::USE_HEAL) > 0) {
         names.push_back("Heal");
     }
+
     if ((in_effect & ITEM::EFFECT::USE_BUFF) > 0) {
         names.push_back("Buff");
     }
+
     if ((in_effect & ITEM::EFFECT::USE_DIVINE) > 0) {
         names.push_back("Divine shield");
     }
+
     if ((in_effect & ITEM::EFFECT::NO_CRIT) > 0) {
         names.push_back("Cannot be critted");
     }
+
     if ((in_effect & ITEM::EFFECT::NO_ATTACK) > 0) {
         names.push_back("Cannot be attacked");
     }
+
     if ((in_effect & ITEM::EFFECT::CHARM) > 0) {
         names.push_back("Charm");
     }
+
     if ((in_effect & ITEM::EFFECT::IMMUNE_MAGIC) > 0) {
         names.push_back("Immune to magic");
     }
+
     if ((in_effect & ITEM::EFFECT::IMMUNE_PHYS) > 0) {
         names.push_back("Immune to physical");
     }
+
     if ((in_effect & ITEM::EFFECT::COUP_DE_GRACE) > 0) {
         names.push_back("Coup de grâce");
     }
+
     if ((in_effect & ITEM::EFFECT::BREAK_WEAPON) > 0) {
         names.push_back("Break weapon");
     }
+
     if ((in_effect & ITEM::EFFECT::EXP2X) > 0) {
         names.push_back("Paragon");
     }
+
     if ((in_effect & ITEM::EFFECT::LIFESTEAL) > 0) {
         names.push_back("Lifesteal");
     }
+
     if ((in_effect & ITEM::EFFECT::POISON) > 0) {
         names.push_back("Poison");
     }
+
     if ((in_effect & ITEM::EFFECT::CURSED) > 0) {
         names.push_back("Cursed");
     }
+
     if ((in_effect & ITEM::EFFECT::MASOCHISM) > 0) {
         names.push_back("Masochism");
     }
+
     if ((in_effect & ITEM::EFFECT::STUN) > 0) {
         names.push_back("Stun");
     }
+
     if ((in_effect & ITEM::EFFECT::PASS) > 0) {
         names.push_back("Pass");
     }
+
     if ((in_effect & ITEM::EFFECT::JOUST) > 0) {
         names.push_back("Joust");
     }
+
     if ((in_effect & ITEM::EFFECT::SPARE) > 0) {
         names.push_back("Spare");
     }
+
     if ((in_effect & ITEM::EFFECT::CAPTURE) > 0) {
         names.push_back("Capture");
     }
+
     if ((in_effect & ITEM::EFFECT::HALF_DMG) > 0) {
         names.push_back("Half-damage");
     }
+
     if ((in_effect & ITEM::EFFECT::BREAK_SHIELD) > 0) {
         names.push_back("Shield breaker");
     }
-    return(names);
+
+    return (names);
 }
 
 void loadUtilities() {
@@ -189,63 +234,77 @@ void loadUtilities() {
 
 std::vector<std::string> armyNames;
 void makeArmyNames() {
-     armyNames.push_back("");
-     armyNames.push_back("Friendly");
-     armyNames.push_back("Enemy");
-     armyNames.push_back("Neutral");
-     armyNames.push_back("Imperial");
-     armyNames.push_back("Voldan");
-     armyNames.push_back("Kewac");
-     armyNames.push_back("Theocratic");
-     armyNames.push_back("Free Milita");
-     armyNames.push_back("Erwin");
-     armyNames.push_back("");
+    armyNames.push_back("");
+    armyNames.push_back("Friendly");
+    armyNames.push_back("Enemy");
+    armyNames.push_back("Neutral");
+    armyNames.push_back("Imperial");
+    armyNames.push_back("Voldan");
+    armyNames.push_back("Kewac");
+    armyNames.push_back("Theocratic");
+    armyNames.push_back("Free Milita");
+    armyNames.push_back("Erwin");
+    armyNames.push_back("");
 }
 
 
 std::vector<std::string> wpnTypes(short unsigned int in_typecode) {
     std::vector<std::string> types;
+
     if ((in_typecode & ITEM::TYPE::SWORD) > 0) {
         types.push_back("Sword");
     }
+
     if ((in_typecode & ITEM::TYPE::LANCE) > 0) {
         types.push_back("Lance");
     }
+
     if ((in_typecode & ITEM::TYPE::AXE) > 0) {
         types.push_back("Axe");
     }
+
     if ((in_typecode & ITEM::TYPE::BOW) > 0) {
         types.push_back("Bow");
     }
+
     if ((in_typecode & ITEM::TYPE::TRINKET) > 0) {
         types.push_back("Trinket");
     }
+
     if ((in_typecode & ITEM::TYPE::OFFHAND) > 0) {
         types.push_back("Offhand");
     }
+
     if ((in_typecode & ITEM::TYPE::ELEMENTAL) > 0) {
         types.push_back("Magic");
         // types.push_back("Elemental");
     }
+
     if ((in_typecode & ITEM::TYPE::DEMONIC) > 0) {
         types.push_back("Demonic");
     }
+
     if ((in_typecode & ITEM::TYPE::ANGELIC) > 0) {
         types.push_back("Angelic");
     }
+
     if ((in_typecode & ITEM::TYPE::SHIELD) > 0) {
         types.push_back("Shield");
     }
+
     if ((in_typecode & ITEM::TYPE::STAFF) > 0) {
         types.push_back("Staff");
-    }    
+    }
+
     if ((in_typecode & ITEM::TYPE::CLAW) > 0) {
         types.push_back("Claw");
     }
+
     if ((in_typecode & ITEM::TYPE::ITEM) > 0) {
         types.push_back("Item");
     }
-    return(types);
+
+    return (types);
 }
 
 std::vector<std::string> wpnNames;
@@ -396,119 +455,156 @@ void makewpnNames() {
 std::vector<std::string> getTilenames(std::vector<short int> in_tilesindex) {
     std::vector<std::string> out;
     short int index;
+
     for (int i = 0; i < in_tilesindex.size(); i++) {
-        index = in_tilesindex[i]/DEFAULT::TILE_DIVISOR;
+        index = in_tilesindex[i] / DEFAULT::TILE_DIVISOR;
         SDL_Log("In tile index: %d", index);
-        switch(index) {
+
+        switch (index) {
             case TILE::PLAIN:
                 out.push_back("Plain");
                 break;
+
             case TILE::BUSH:
                 out.push_back("Bush");
                 break;
+
             case TILE::FOREST:
                 out.push_back("Forest");
                 break;
+
             case TILE::THICKET:
                 out.push_back("Thicket");
                 break;
+
             case TILE::SNAG:
                 out.push_back("Snag");
                 break;
+
             case TILE::BRIDGE:
                 out.push_back("Bridge");
                 break;
+
             case TILE::HOLE:
                 out.push_back("Hole");
                 break;
+
             case TILE::SEA:
                 out.push_back("Sea");
                 break;
+
             case TILE::LAKE:
                 out.push_back("Lake");
                 break;
+
             case TILE::RIVER:
                 out.push_back("River");
                 break;
+
             case TILE::WATERFALL:
                 out.push_back("Waterfall");
                 break;
+
             case TILE::CLIFF:
                 out.push_back("Cliff");
                 break;
+
             case TILE::HILL:
                 out.push_back("Hill");
                 break;
+
             case TILE::MOUNTAIN:
                 out.push_back("Mountain");
                 break;
+
             case TILE::PEAK:
                 out.push_back("Peak");
                 break;
+
             case TILE::CAVE:
                 out.push_back("Cave");
                 break;
+
             case TILE::SAND:
                 out.push_back("Sand");
                 break;
+
             case TILE::WASTELAND:
                 out.push_back("Wasteland");
                 break;
+
             case TILE::ROCK:
                 out.push_back("Rock");
                 break;
+
             case TILE::BONES:
                 out.push_back("Bones");
                 break;
+
             case TILE::FLOOR:
                 out.push_back("Floor");
                 break;
+
             case TILE::PILLAR:
                 out.push_back("Pillar");
                 break;
+
             case TILE::WALL:
                 out.push_back("Wall");
                 break;
+
             case TILE::DOOR:
                 out.push_back("Door");
                 break;
+
             case TILE::THRONE:
                 out.push_back("Throne");
                 break;
+
             case TILE::GATE:
                 out.push_back("Gate");
                 break;
+
             case TILE::FENCE:
                 out.push_back("Fence");
                 break;
+
             case TILE::SHOP:
                 out.push_back("Shop");
                 break;
+
             case TILE::ARMORY:
                 out.push_back("Armory");
                 break;
+
             case TILE::VILLAGE:
                 out.push_back("Village");
                 break;
+
             case TILE::FORT:
                 out.push_back("Fort");
                 break;
+
             case TILE::CASTLE:
                 out.push_back("Castle");
                 break;
+
             case TILE::SNOW:
                 out.push_back("Snow");
                 break;
+
             case TILE::GLACIER:
                 out.push_back("Glacier");
                 break;
+
             case TILE::ICE:
                 out.push_back("Ice");
                 break;
         }
     }
+
     SDL_Log("Tilenames size out:%d", out.size());
-    return(out);
+    return (out);
 }
 
 std::vector<std::string> unitNames;
@@ -626,209 +722,275 @@ extern void makemvtTypes() {
 
 unsigned char mvtType(unsigned char in_class_index) {
     unsigned char mvt_type;
-    switch(in_class_index) {
+
+    switch (in_class_index) {
         case UNIT::CLASS::MERCENARY:
             mvt_type = UNIT::MVT::FOOT_SLOW;
             break;
+
         case UNIT::CLASS::LORD:
             mvt_type = UNIT::MVT::FOOT_SLOW;
             break;
+
         case UNIT::CLASS::DUELIST:
             mvt_type = UNIT::MVT::FOOT_SLOW;
             break;
+
         case UNIT::CLASS::THIEF:
             mvt_type = UNIT::MVT::FOOT_FAST;
             break;
+
         case UNIT::CLASS::PEGASUS_KNIGHT:
             mvt_type = UNIT::MVT::FLIERS;
             break;
+
         case UNIT::CLASS::PIKEMAN:
             mvt_type = UNIT::MVT::FOOT_SLOW;
             break;
+
         case UNIT::CLASS::CAVALIER:
             mvt_type = UNIT::MVT::RIDERS_SLOW;
             break;
+
         case UNIT::CLASS::KNIGHT:
             mvt_type = UNIT::MVT::ARMORS;
             break;
+
         case UNIT::CLASS::BANDIT:
             mvt_type = UNIT::MVT::BANDITS;
             break;
+
         case UNIT::CLASS::CORSAIR:
             mvt_type = UNIT::MVT::PIRATES;
             break;
+
         case UNIT::CLASS::VIKING:
             mvt_type = UNIT::MVT::PIRATES;
             break;
+
         case UNIT::CLASS::PICKPOCKET:
             mvt_type = UNIT::MVT::FOOT_FAST;
             break;
+
         case UNIT::CLASS::FENCER:
             mvt_type = UNIT::MVT::FOOT_SLOW;
             break;
+
         case UNIT::CLASS::MOUSQUETAIRE:
             mvt_type = UNIT::MVT::FOOT_SLOW;
             break;
+
         case UNIT::CLASS::ASSASSIN:
             mvt_type = UNIT::MVT::FOOT_FAST;
             break;
+
         case UNIT::CLASS::MARKSMAN:
             mvt_type = UNIT::MVT::FOOT_SLOW;
-            break;        
+            break;
+
         case UNIT::CLASS::MARKSMAN_RIDER:
             mvt_type = UNIT::MVT::RIDERS_SLOW;
             break;
+
         case UNIT::CLASS::ARCHER:
             mvt_type = UNIT::MVT::FOOT_SLOW;
-            break;        
+            break;
+
         case UNIT::CLASS::ARCHER_RIDER:
             mvt_type = UNIT::MVT::RIDERS_SLOW;
             break;
+
         case UNIT::CLASS::DUKE:
             mvt_type = UNIT::MVT::FOOT_SLOW;
             break;
+
         case UNIT::CLASS::PALADIN:
             mvt_type = UNIT::MVT::RIDERS_FAST;
             break;
+
         case UNIT::CLASS::GENERAL:
             mvt_type = UNIT::MVT::ARMORS;
             break;
+
         case UNIT::CLASS::CLERIC:
             mvt_type = UNIT::MVT::MAGES;
             break;
+
         case UNIT::CLASS::PRIEST:
             mvt_type = UNIT::MVT::MAGES;
             break;
+
         case UNIT::CLASS::MAGE:
             mvt_type = UNIT::MVT::MAGES;
             break;
+
         case UNIT::CLASS::HERO:
             mvt_type = UNIT::MVT::FOOT_SLOW;
             break;
+
         case UNIT::CLASS::RAVAGER:
             mvt_type = UNIT::MVT::BANDITS;
             break;
+
         case UNIT::CLASS::BATTLEMAGE:
             mvt_type = UNIT::MVT::MAGES;
             break;
+
         case UNIT::CLASS::SAGE:
             mvt_type = UNIT::MVT::MAGES;
             break;
+
         case UNIT::CLASS::TROUBADOUR:
             mvt_type = UNIT::MVT::RIDERS_FAST;
             break;
+
         case UNIT::CLASS::ORACLE:
             mvt_type = UNIT::MVT::MAGES;
             break;
+
         case UNIT::CLASS::BISHOP:
             mvt_type = UNIT::MVT::MAGES;
             break;
+
         case UNIT::CLASS::ANGEL:
             mvt_type = UNIT::MVT::FLIERS;
             break;
+
         case UNIT::CLASS::DEMON:
             mvt_type = UNIT::MVT::FOOT_FAST;
             break;
+
         case UNIT::CLASS::DEMONIC_INCARNATE:
             mvt_type = UNIT::MVT::MAGES;
             break;
+
         case UNIT::CLASS::ANGELIC_INCARNATE:
             mvt_type = UNIT::MVT::MAGES;
             break;
     }
-    return(mvt_type);
+
+    return (mvt_type);
 }
 
 unsigned char unitid2army(short unsigned int in_unitid) {
     // only used for unit init. baseArmy
     unsigned char armyid = 0;
-    switch(in_unitid) {
+
+    switch (in_unitid) {
         case UNIT::NAME::ERWIN:
             armyid = UNIT::ARMY::ERWIN;
             break;
+
         case UNIT::NAME::KIARA:
             armyid = UNIT::ARMY::ERWIN;
             break;
+
         case UNIT::NAME::SILOU:
             armyid = UNIT::ARMY::NEUTRAL;
             break;
+
         case UNIT::NAME::SERVIL:
             armyid = UNIT::ARMY::IMPERIAL;
             break;
+
         case UNIT::NAME::PERIGNON:
             armyid = UNIT::ARMY::ERWIN;
             break;
+
         case UNIT::NAME::POET:
             armyid = UNIT::ARMY::NEUTRAL;
             break;
+
         case UNIT::NAME::RELIABLE:
             armyid = UNIT::ARMY::ERWIN;
             break;
+
         case UNIT::NAME::COWARD:
             armyid = UNIT::ARMY::ERWIN;
             break;
+
         case UNIT::NAME::JAIGEN1H:
             armyid = UNIT::ARMY::NEUTRAL;
             break;
+
         case UNIT::NAME::HOTTIE:
             armyid = UNIT::ARMY::ERWIN;
             break;
+
         case UNIT::NAME::ZINEDAN:
             armyid = UNIT::ARMY::BANDITS;
             break;
+
         case UNIT::NAME::ZIDINE:
             armyid = UNIT::ARMY::BANDITS;
             break;
+
         case UNIT::NAME::BANDIT:
             armyid = UNIT::ARMY::BANDITS;
             break;
+
         case UNIT::NAME::DUELIST:
             armyid = UNIT::ARMY::ENEMY;
             break;
+
         case UNIT::NAME::PICKPOCKET:
             armyid = UNIT::ARMY::ENEMY;
             break;
+
         case UNIT::NAME::THIEF:
             armyid = UNIT::ARMY::ENEMY;
             break;
+
         case UNIT::NAME::ASSASSIN:
             armyid = UNIT::ARMY::ENEMY;
             break;
+
         case UNIT::NAME::ARCHER:
             armyid = UNIT::ARMY::ENEMY;
             break;
+
         case UNIT::NAME::MARKSMAN:
             armyid = UNIT::ARMY::ENEMY;
             break;
+
         case UNIT::NAME::MERCENARY:
             armyid = UNIT::ARMY::ENEMY;
             break;
+
         case UNIT::NAME::HERO:
             armyid = UNIT::ARMY::ENEMY;
             break;
+
         case UNIT::NAME::CORSAIR:
             armyid = UNIT::ARMY::ENEMY;
             break;
+
         case UNIT::NAME::VIKING:
             armyid = UNIT::ARMY::ENEMY;
             break;
+
         case UNIT::NAME::RAVAGER:
             armyid = UNIT::ARMY::ENEMY;
             break;
+
         case UNIT::NAME::CAVALIER:
             armyid = UNIT::ARMY::ENEMY;
             break;
+
         case UNIT::NAME::PALADIN:
             armyid = UNIT::ARMY::ENEMY;
             break;
+
         case UNIT::NAME::FENCER:
             armyid = UNIT::ARMY::ENEMY;
             break;
+
         case UNIT::NAME::MOUSQUETAIRE:
             armyid = UNIT::ARMY::ENEMY;
             break;
     }
-    return(armyid);
+
+    return (armyid);
 }
 
 
@@ -881,228 +1043,301 @@ void makeclassNames() {
 
 std::string className(unsigned char in_class_index) {
     std::string class_name;
-    switch(in_class_index) {
+
+    switch (in_class_index) {
         case UNIT::CLASS::MERCENARY:
             class_name = "Mercenary";
             break;
+
         case UNIT::CLASS::LORD:
             class_name = "Lord";
-            break;        
+            break;
+
         case UNIT::CLASS::LORD_RIDER:
             class_name = "Lord rider";
             break;
+
         case UNIT::CLASS::DUELIST:
             class_name = "Duelist";
             break;
+
         case UNIT::CLASS::THIEF:
             class_name = "Thief";
             break;
+
         case UNIT::CLASS::PEGASUS_KNIGHT:
             class_name = "Pegasus knight";
             break;
+
         case UNIT::CLASS::PIKEMAN:
             class_name = "Pikeman";
             break;
+
         case UNIT::CLASS::CAVALIER:
             class_name = "Cavalier";
             break;
+
         case UNIT::CLASS::KNIGHT:
             class_name = "Knight";
             break;
+
         case UNIT::CLASS::BANDIT:
             class_name = "Bandit";
             break;
+
         case UNIT::CLASS::CORSAIR:
             class_name = "Corsair";
             break;
+
         case UNIT::CLASS::VIKING:
             class_name = "Viking";
             break;
+
         case UNIT::CLASS::PICKPOCKET:
             class_name = "Pickpocket";
             break;
+
         case UNIT::CLASS::FENCER:
             class_name = "Fencer";
             break;
+
         case UNIT::CLASS::MOUSQUETAIRE:
             class_name = "Mousquetaire";
             break;
+
         case UNIT::CLASS::ASSASSIN:
             class_name = "Assassin";
             break;
+
         case UNIT::CLASS::MARKSMAN:
             class_name = "Marksman";
-            break;        
+            break;
+
         case UNIT::CLASS::MARKSMAN_RIDER:
             class_name = "Marksman rider";
             break;
+
         case UNIT::CLASS::ARCHER:
             class_name = "Archer";
-            break;        
+            break;
+
         case UNIT::CLASS::ARCHER_RIDER:
             class_name = "Archer rider";
             break;
+
         case UNIT::CLASS::DUKE:
             class_name = "Duke";
             break;
+
         case UNIT::CLASS::DUKE_RIDER:
             class_name = "Duke rider";
             break;
+
         case UNIT::CLASS::PALADIN:
             class_name = "Paladin";
             break;
+
         case UNIT::CLASS::GENERAL:
             class_name = "General";
             break;
+
         case UNIT::CLASS::CLERIC:
             class_name = "Cleric";
             break;
+
         case UNIT::CLASS::PRIEST:
             class_name = "Priest";
             break;
+
         case UNIT::CLASS::MAGE:
             class_name = "Mage";
             break;
+
         case UNIT::CLASS::HERO:
             class_name = "Hero";
             break;
+
         case UNIT::CLASS::RAVAGER:
             class_name = "Ravager";
             break;
+
         case UNIT::CLASS::BATTLEMAGE:
             class_name = "Battlemage";
             break;
+
         case UNIT::CLASS::SAGE:
             class_name = "Sage";
             break;
+
         case UNIT::CLASS::TROUBADOUR:
             class_name = "Troubadour";
             break;
+
         case UNIT::CLASS::ORACLE:
             class_name = "Oracle";
             break;
+
         case UNIT::CLASS::BISHOP:
             class_name = "Bishop";
             break;
+
         case UNIT::CLASS::ANGEL:
             class_name = "Angel";
             break;
+
         case UNIT::CLASS::DEMON:
             class_name = "Demon";
             break;
+
         case UNIT::CLASS::DEMONIC_INCARNATE:
             class_name = "Demonic Incarnate";
             break;
+
         case UNIT::CLASS::ANGELIC_INCARNATE:
             class_name = "Angelic Incarnate";
             break;
     }
-    return(class_name);
+
+    return (class_name);
 }
 
 
 std::vector<std::string> skillNames(unsigned long long int in_skillscode) {
     std::vector<std::string> skill_names;
+
     if ((in_skillscode & UNIT::SKILL::CANTO) > 0) {
         skill_names.push_back("Canto");
     }
+
     if ((in_skillscode & UNIT::SKILL::SKILLED_RIDER) > 0) {
         skill_names.push_back("Skilled rider");
-    }    
+    }
+
     if ((in_skillscode & UNIT::SKILL::SPRINT) > 0) {
         skill_names.push_back("Sprint");
-    } 
+    }
+
     if ((in_skillscode & UNIT::SKILL::SWITCH) > 0) {
         skill_names.push_back("Switch");
-    }   
+    }
+
     if ((in_skillscode & UNIT::SKILL::MOUNTAINWALK) > 0) {
         skill_names.push_back("Mountainwalk");
-    }    
+    }
+
     if ((in_skillscode & UNIT::SKILL::WATERWALK) > 0) {
         skill_names.push_back("Waterwalk");
     }
+
     if ((in_skillscode & UNIT::SKILL::CRIT_KILLS) > 0) {
         skill_names.push_back("CritKill");
     }
+
     if ((in_skillscode & UNIT::SKILL::DISMEMBER) > 0) {
         skill_names.push_back("Dismember");
     }
+
     if ((in_skillscode & UNIT::SKILL::ATK_RANGE_P1) > 0) {
         skill_names.push_back("Range+1");
     }
+
     if ((in_skillscode & UNIT::SKILL::DIVINE_SHIELD) > 0) {
         skill_names.push_back("Divine Shield");
     }
+
     if ((in_skillscode & UNIT::SKILL::NO_CRIT) > 0) {
         skill_names.push_back("No crit");
     }
+
     if ((in_skillscode & UNIT::SKILL::NO_COUNTER) > 0) {
         skill_names.push_back("No counter");
     }
+
     if ((in_skillscode & UNIT::SKILL::MAX_DESPAIR) > 0) {
         skill_names.push_back("Maxima of Despair");
     }
+
     if ((in_skillscode & UNIT::SKILL::TUNNELING) > 0) {
         skill_names.push_back("Tunneling");
     }
+
     if ((in_skillscode & UNIT::SKILL::SCOUTING) > 0) {
         skill_names.push_back("Scouting");
     }
+
     if ((in_skillscode & UNIT::SKILL::ASSASSINATE) > 0) {
         skill_names.push_back("Assassinate");
     }
+
     if ((in_skillscode & UNIT::SKILL::LOCKPICK) > 0) {
         skill_names.push_back("Lockpick");
     }
+
     if ((in_skillscode & UNIT::SKILL::NO_LOCKPICK) > 0) {
         skill_names.push_back("Pick");
     }
+
     if ((in_skillscode & UNIT::SKILL::IMMUNE_MAGIC) > 0) {
         skill_names.push_back("Immune to magic");
     }
+
     if ((in_skillscode & UNIT::SKILL::IMMUNE_ELEMENTAL) > 0) {
         skill_names.push_back("Immune to elemental");
     }
+
     if ((in_skillscode & UNIT::SKILL::IMMUNE_DEMONIC) > 0) {
         skill_names.push_back("Immune to demonic");
     }
+
     if ((in_skillscode & UNIT::SKILL::IMMUNE_ANGELIC) > 0) {
         skill_names.push_back("Immune to angelic");
     }
+
     if ((in_skillscode & UNIT::SKILL::LIFESTEAL_RN) > 0) {
         skill_names.push_back("Sol");
     }
+
     if ((in_skillscode & UNIT::SKILL::INFUSE) > 0) {
         skill_names.push_back("Infuse");
     }
+
     if ((in_skillscode & UNIT::SKILL::DOUBLE_EXP) > 0) {
         skill_names.push_back("Double EXP");
     }
+
     if ((in_skillscode & UNIT::SKILL::AMBIDEXTRY) > 0) {
         skill_names.push_back("Ambidextry");
     }
+
     if ((in_skillscode & UNIT::SKILL::TWO_HAND_STYLE) > 0) {
         skill_names.push_back("Two-hand Style");
     }
+
     if ((in_skillscode & UNIT::SKILL::PIERCE_RN) > 0) {
         skill_names.push_back("Luna");
     }
+
     if ((in_skillscode & UNIT::SKILL::COUNTER) > 0) {
         skill_names.push_back("Counter");
     }
+
     if ((in_skillscode & UNIT::SKILL::THRUST_SWORD_BONUS) > 0) {
         skill_names.push_back("Thrust sword bonus");
     }
+
     if ((in_skillscode & UNIT::SKILL::SHIELD_BONUS) > 0) {
         skill_names.push_back("Shield bonus");
     }
+
     if ((in_skillscode & UNIT::SKILL::OFFHAND_BONUS) > 0) {
         skill_names.push_back("Offhand bonus");
     }
+
     if ((in_skillscode & UNIT::SKILL::BOW_BONUS) > 0) {
         skill_names.push_back("Bow bonus");
     }
-    return(skill_names);
+
+    return (skill_names);
 }
 
 std::vector<short unsigned int> equippableCodes;
@@ -1114,8 +1349,8 @@ void makeEquippableCodes() {
     equippableCodes.push_back(ITEM::TYPE::SWORD + ITEM::TYPE::LANCE + ITEM::TYPE::SHIELD + ITEM::TYPE::OFFHAND); //DUKE_RIDER
     equippableCodes.push_back(ITEM::TYPE::BOW); //ARCHER
     equippableCodes.push_back(ITEM::TYPE::BOW); //ARCHER_RIDER
-    equippableCodes.push_back(ITEM::TYPE::SWORD + ITEM::TYPE::OFFHAND + ITEM::TYPE::BOW); 
-    equippableCodes.push_back(ITEM::TYPE::SWORD + ITEM::TYPE::OFFHAND + ITEM::TYPE::BOW); 
+    equippableCodes.push_back(ITEM::TYPE::SWORD + ITEM::TYPE::OFFHAND + ITEM::TYPE::BOW);
+    equippableCodes.push_back(ITEM::TYPE::SWORD + ITEM::TYPE::OFFHAND + ITEM::TYPE::BOW);
     equippableCodes.push_back(ITEM::TYPE::ANGELIC + ITEM::TYPE::SWORD + ITEM::TYPE::LANCE + ITEM::TYPE::SHIELD);
     equippableCodes.push_back(ITEM::TYPE::DEMONIC + ITEM::TYPE::CLAW + ITEM::TYPE::AXE);
     equippableCodes.push_back(ITEM::TYPE::LANCE + ITEM::TYPE::SHIELD);
@@ -1123,10 +1358,10 @@ void makeEquippableCodes() {
     equippableCodes.push_back(ITEM::TYPE::DEMONIC + ITEM::TYPE::TRINKET); //DEMONIC_INCARNATE
     equippableCodes.push_back(ITEM::TYPE::OFFHAND + ITEM::TYPE::SWORD); //FENCER
     equippableCodes.push_back(ITEM::TYPE::LANCE + ITEM::TYPE::SHIELD); //DUELIST
-    equippableCodes.push_back(ITEM::TYPE::SWORD + ITEM::TYPE::OFFHAND + ITEM::TYPE::BOW); //MOUSQUETAIRE 
+    equippableCodes.push_back(ITEM::TYPE::SWORD + ITEM::TYPE::OFFHAND + ITEM::TYPE::BOW); //MOUSQUETAIRE
     equippableCodes.push_back(ITEM::TYPE::OFFHAND + ITEM::TYPE::SWORD); //PICKPOCKET
     equippableCodes.push_back(ITEM::TYPE::LANCE + ITEM::TYPE::SHIELD); // THIEF
-    equippableCodes.push_back(ITEM::TYPE::SWORD + ITEM::TYPE::OFFHAND + ITEM::TYPE::BOW); //ASSASSIN 
+    equippableCodes.push_back(ITEM::TYPE::SWORD + ITEM::TYPE::OFFHAND + ITEM::TYPE::BOW); //ASSASSIN
     equippableCodes.push_back(ITEM::TYPE::SHIELD + ITEM::TYPE::SWORD + ITEM::TYPE::OFFHAND); //MERCERNARY
     equippableCodes.push_back(ITEM::TYPE::AXE + ITEM::TYPE::SWORD + ITEM::TYPE::SHIELD + ITEM::TYPE::OFFHAND); //HERO
     equippableCodes.push_back(ITEM::TYPE::SHIELD + ITEM::TYPE::OFFHAND + ITEM::TYPE::AXE); // CORSAIR

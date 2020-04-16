@@ -1,7 +1,7 @@
 #include "tile.hpp"
 #include "stb_sprintf.h"
 
-Tile::Tile() { 
+Tile::Tile() {
     setXMLElement("Tile");
 }
 
@@ -9,10 +9,10 @@ Tile::~Tile() {
 
 }
 
-Tile::Tile(const short int in_id, const char* in_name, const Movement_cost in_cost, const Tile_stats in_stats, const bool in_inside) : Tile() {
-	name = in_name;
+Tile::Tile(const short int in_id, const char * in_name, const Movement_cost in_cost, const Tile_stats in_stats, const bool in_inside) : Tile() {
+    name = in_name;
     id = in_id;
-	cost_struct = in_cost;
+    cost_struct = in_cost;
     makeMvtCostarray();
     stats = in_stats;
     inside = in_inside;
@@ -32,30 +32,30 @@ void Tile::makeMvtCostarray() {
 }
 
 unsigned char * Tile::getCost() {
-	return(cost_array);
+    return (cost_array);
 }
 
 Movement_cost Tile::getCoststruct() {
-	return(cost_struct);
+    return (cost_struct);
 }
 
 std::string Tile::getName() {
-	return(name);
+    return (name);
 }
 
 Tile_stats Tile::getStats() {
-	return(stats);
+    return (stats);
 }
 
 bool Tile::isInside() {
-    return(inside);
+    return (inside);
 }
 
 bool Tile::isOutside() {
-    return(!inside);
+    return (!inside);
 }
 short int Tile::getid() {
-    return(id);
+    return (id);
 }
 
 void Tile::setInside(const bool in_inside) {
@@ -64,20 +64,26 @@ void Tile::setInside(const bool in_inside) {
 
 void Tile::readXML(tinyxml2::XMLElement * in_pTile) {
     tinyxml2::XMLElement * ptemp;
-   
+
     id = (unsigned short int)in_pTile->IntAttribute("id");
 
     ptemp = in_pTile->FirstChildElement("Name");
-    if (!ptemp) {SDL_Log("Cannot get Name element");}   
+
+    if (!ptemp) {SDL_Log("Cannot get Name element");}
+
     name = ptemp->GetText();
 
     ptemp = in_pTile->FirstChildElement("MvtCost");
-    if (!ptemp) {SDL_Log("Cannot get Name element");}   
+
+    if (!ptemp) {SDL_Log("Cannot get Name element");}
+
     readXML_mvtcost(ptemp, &cost_struct);
     makeMvtCostarray();
 
     ptemp = in_pTile->FirstChildElement("Stats");
-    if (!ptemp) {SDL_Log("Cannot get Name element");}   
+
+    if (!ptemp) {SDL_Log("Cannot get Name element");}
+
     readXML_stats(ptemp, &stats);
 }
 
@@ -102,11 +108,13 @@ void Tile::write(const char * filename, const char * mode) {
     FILE * fp;
     fp = fopen(filename, mode);
     fprintf(fp, "%s \n", name.c_str());
+
     if (inside) {
         fprintf(fp, "%s \n", "Inside");
     } else {
         fprintf(fp, "%s \n", "Outside");
     }
+
     fprintf(fp, "Stats, Dodge, PProtection, MProtection, Heal \n");
     fprintf(fp, "Stats,\t\t%d,\t%d,\t%d,\t%d\n", stats.dodge, stats.Pprot, stats.Mprot, stats.heal);
     fprintf(fp, "\n");
@@ -119,8 +127,10 @@ void baseTiles(std::unordered_map<int, Tile> * in_tiles, const std::vector<short
     Movement_cost temp_cost;
     Tile_stats temp_stats;
     int index;
+
     for (short unsigned int i = 0; i < toload.size(); i++) {
-        index = toload[i]/DEFAULT::TILE_DIVISOR;
+        index = toload[i] / DEFAULT::TILE_DIVISOR;
+
         switch (index) {
             case TILE::PLAIN: {
                 temp_cost = {1, 1, 1, 1, 1, 1, 1, 1, 1};
@@ -129,247 +139,282 @@ void baseTiles(std::unordered_map<int, Tile> * in_tiles, const std::vector<short
                 in_tiles->emplace(index, temp_tile);
                 break;
             }
+
             case TILE::BUSH: {
                 temp_cost = {2, 1, 2, 3, 2, 1, 3, 2, 2};
                 temp_stats = {15, 0, 2, 0};
                 temp_tile = Tile(TILE::BUSH, "Bush", temp_cost, temp_stats, false);
                 in_tiles->emplace(index, temp_tile);
                 break;
-             }
-             case TILE::FOREST: {
+            }
+
+            case TILE::FOREST: {
                 temp_cost = {3, 2, 3, 4, 3, 1, 3, 3, 3};
                 temp_stats = {15, 0, 2, 0};
                 temp_tile = Tile(TILE::FOREST, "Forest", temp_cost, temp_stats, false);
                 in_tiles->emplace(index, temp_tile);
-                break; 
-             }
-             case TILE::THICKET: {
+                break;
+            }
+
+            case TILE::THICKET: {
                 temp_cost = {0, 0, 0, 0, 0, 1, 0, 0, 0};
                 temp_stats = {20, 0, 3, 0};
                 temp_tile = Tile(TILE::THICKET, "Thicket", temp_cost, temp_stats, false);
                 in_tiles->emplace(index, temp_tile);
-                break; 
-             }
-             case TILE::SNAG: {
+                break;
+            }
+
+            case TILE::SNAG: {
                 temp_cost = {0, 0, 0, 0, 0, 1, 0, 0, 0};
                 temp_stats = {15, 0, 2, 0};
                 temp_tile = Tile(TILE::SNAG, "Snag", temp_cost, temp_stats, false);
                 in_tiles->emplace(index, temp_tile);
-                break; 
-             }
-             case TILE::BRIDGE: {
+                break;
+            }
+
+            case TILE::BRIDGE: {
                 temp_cost = {1, 1, 1, 1, 1, 1, 1, 1, 1};
                 temp_stats = {15, 0, 2, 0};
                 temp_tile = Tile(TILE::BRIDGE, "Bridge", temp_cost, temp_stats, false);
                 in_tiles->emplace(index, temp_tile);
-                break; 
-             }
-             case TILE::HOLE: {
+                break;
+            }
+
+            case TILE::HOLE: {
                 temp_cost = {1, 1, 1, 1, 1, 1, 1, 1, 1};
                 temp_stats = {15, 0, 2, 0};
                 temp_tile = Tile(TILE::HOLE, "Hole", temp_cost, temp_stats, false);
                 in_tiles->emplace(index, temp_tile);
-                break; 
-             }
-             case TILE::SEA: {
+                break;
+            }
+
+            case TILE::SEA: {
                 temp_cost = {0, 0, 0, 0, 0, 1, 0, 2, 0};
                 temp_stats = {15, 0, 2, 0};
                 temp_tile = Tile(TILE::SEA, "Sea", temp_cost, temp_stats, false);
                 in_tiles->emplace(index, temp_tile);
-                break; 
-             }
-             case TILE::LAKE: {
+                break;
+            }
+
+            case TILE::LAKE: {
                 temp_cost = {0, 0, 0, 0, 0, 1, 0, 3, 0};
                 temp_stats = {15, 0, 2, 0};
                 temp_tile = Tile(TILE::LAKE, "Lake", temp_cost, temp_stats, false);
                 in_tiles->emplace(index, temp_tile);
-                break; 
-             }
-             case TILE::RIVER: {
+                break;
+            }
+
+            case TILE::RIVER: {
                 temp_cost = {5, 4, 5, 0, 0, 1, 0, 2, 4};
                 temp_stats = {15, 0, 2, 0};
                 temp_tile = Tile(TILE::RIVER, "River", temp_cost, temp_stats, false);
                 in_tiles->emplace(index, temp_tile);
-                break; 
-             }
-             case TILE::WATERFALL: {
+                break;
+            }
+
+            case TILE::WATERFALL: {
                 temp_cost = {0, 0, 0, 0, 0, 1, 0, 0, 0};
                 temp_stats = {15, 0, 2, 0};
                 temp_tile = Tile(TILE::WATERFALL, "Waterfall", temp_cost, temp_stats, false);
                 in_tiles->emplace(index, temp_tile);
-                break; 
-             }
-             case TILE::CLIFF: {
+                break;
+            }
+
+            case TILE::CLIFF: {
                 temp_cost = {0, 0, 0, 0, 0, 1, 0, 0, 0};
                 temp_stats = {15, 0, 2, 0};
                 temp_tile = Tile(TILE::CLIFF, "cliff", temp_cost, temp_stats, false);
                 in_tiles->emplace(index, temp_tile);
-                break; 
-             }
-             case TILE::HILL: {
+                break;
+            }
+
+            case TILE::HILL: {
                 temp_cost = {3, 2, 3, 4, 3, 1, 4, 2, 2};
                 temp_stats = {15, 0, 2, 0};
                 temp_tile = Tile(TILE::HILL, "Hill", temp_cost, temp_stats, false);
                 in_tiles->emplace(index, temp_tile);
-                break; 
-             }
-             case TILE::MOUNTAIN: {
+                break;
+            }
+
+            case TILE::MOUNTAIN: {
                 temp_cost = {4, 3, 4, 0, 4, 1, 0, 3, 3};
                 temp_stats = {25, 0, 3, 0};
                 temp_tile = Tile(TILE::MOUNTAIN, "Mountain", temp_cost, temp_stats, false);
                 in_tiles->emplace(index, temp_tile);
                 break;
-             }
-             case TILE::PEAK: {
+            }
+
+            case TILE::PEAK: {
                 temp_cost = {0, 5, 0, 0, 0, 1, 0, 5, 5};
                 temp_stats = {30, 0, 4, 0};
                 temp_tile = Tile(TILE::PEAK, "Peak", temp_cost, temp_stats, false);
                 in_tiles->emplace(index, temp_tile);
-                break; 
-             }
-             case TILE::CAVE: {
+                break;
+            }
+
+            case TILE::CAVE: {
                 temp_cost = {4, 3, 4, 0, 4, 1, 0, 3, 3};
                 temp_stats = {20, 0, 2, 0};
                 temp_tile = Tile(TILE::CAVE, "Cave", temp_cost, temp_stats, false);
                 in_tiles->emplace(index, temp_tile);
-                break; 
-             }
-             case TILE::SAND: {
+                break;
+            }
+
+            case TILE::SAND: {
                 temp_cost = {3, 2, 1, 4, 3, 1, 3, 2, 2};
                 temp_stats = {0, 0, 0, 0};
                 temp_tile = Tile(TILE::SAND, "Sand", temp_cost, temp_stats, false);
                 in_tiles->emplace(index, temp_tile);
-                break; 
+                break;
             }
+
             case TILE::WASTELAND: {
                 temp_cost = {3, 2, 1, 4, 3, 1, 3, 2, 2};
                 temp_stats = {0, 0, 0, 0};
                 temp_tile = Tile(TILE::WASTELAND, "Wasteland", temp_cost, temp_stats, false);
                 in_tiles->emplace(index, temp_tile);
-                break; 
+                break;
             }
+
             case TILE::ROCK: {
                 temp_cost = {0, 0, 0, 0, 0, 1, 0, 3, 3};
                 temp_stats = {5, 0, 2, 0};
                 temp_tile = Tile(TILE::ROCK, "Rock", temp_cost, temp_stats, false);
                 in_tiles->emplace(index, temp_tile);
-                break; 
+                break;
             }
+
             case TILE::BONES: {
                 temp_cost = {0, 0, 0, 0, 0, 1, 0, 0, 0};
                 temp_stats = {0, 0, 0, 0};
                 temp_tile = Tile(TILE::BONES, "Bones", temp_cost, temp_stats, false);
                 in_tiles->emplace(index, temp_tile);
-                break; 
+                break;
             }
+
             case TILE::FLOOR: {
                 temp_cost = {1, 1, 1, 1, 1, 1, 1, 1, 1};
                 temp_stats = {0, 0, 0, 0};
                 temp_tile = Tile(TILE::FLOOR, "Floor", temp_cost, temp_stats, true);
                 in_tiles->emplace(index, temp_tile);
                 break;
-                }
+            }
+
             case TILE::PILLAR: {
                 temp_cost = {2, 2, 2, 3, 3, 1, 3, 2, 2};
                 temp_stats = {10, 1, 10, 0};
                 temp_tile = Tile(TILE::PILLAR, "Pillar", temp_cost, temp_stats, true);
                 in_tiles->emplace(index, temp_tile);
-                break; 
+                break;
             }
+
             case TILE::WALL: {
                 temp_cost = {0, 0, 0, 0, 0, 1, 0, 0, 0};
                 temp_stats = {0, 0, 0, 0};
                 temp_tile = Tile(TILE::WALL, "Wall", temp_cost, temp_stats, true);
                 in_tiles->emplace(index, temp_tile);
-                break; 
+                break;
             }
+
             case TILE::DOOR: {
                 temp_cost = {0, 0, 0, 0, 0, 1, 0, 0, 0};
                 temp_stats = {0, 0, 0, 0};
                 temp_tile = Tile(TILE::DOOR, "Door", temp_cost, temp_stats, true);
                 in_tiles->emplace(index, temp_tile);
-                break; 
+                break;
             }
+
             case TILE::THRONE: {
                 temp_cost = {0, 0, 0, 0, 0, 1, 0, 0, 0};
                 temp_stats = {20, 2, 15, 0};
                 temp_tile = Tile(TILE::THRONE, "Throne", temp_cost, temp_stats, true);
                 in_tiles->emplace(index, temp_tile);
-                break; 
+                break;
             }
+
             case TILE::GATE: {
                 temp_cost = {0, 0, 0, 0, 0, 1, 0, 0, 0};
                 temp_stats = {10, 1, 10, 0};
                 temp_tile = Tile(TILE::GATE, "Gate", temp_cost, temp_stats, false);
                 in_tiles->emplace(index, temp_tile);
-                break; 
+                break;
             }
+
             case TILE::FENCE: {
                 temp_cost = {0, 0, 0, 0, 0, 1, 0, 0, 0};
                 temp_stats = {0, 0, 0, 0};
                 temp_tile = Tile(TILE::FENCE, "Fence", temp_cost, temp_stats, false);
                 in_tiles->emplace(index, temp_tile);
-                break; 
+                break;
             }
+
             case TILE::SHOP: {
                 temp_cost = {1, 1, 1, 1, 1, 1, 1, 1, 1};
                 temp_stats = {10, 1, 10, 0};
                 temp_tile = Tile(TILE::SHOP, "Shop", temp_cost, temp_stats, false);
                 in_tiles->emplace(index, temp_tile);
-                break; 
+                break;
             }
+
             case TILE::ARMORY: {
                 temp_cost = {1, 1, 1, 1, 1, 1, 1, 1, 1};
                 temp_stats = {15, 0, 2, 0};
                 temp_tile = Tile(TILE::ARMORY, "Armory", temp_cost, temp_stats, false);
                 in_tiles->emplace(index, temp_tile);
-                break; 
+                break;
             }
+
             case TILE::VILLAGE: {
                 temp_cost = {1, 1, 1, 1, 1, 1, 1, 1, 1};
                 temp_stats = {15, 0, 2, 0};
                 temp_tile = Tile(TILE::VILLAGE, "Village", temp_cost, temp_stats, false);
                 in_tiles->emplace(index, temp_tile);
-                break; 
+                break;
             }
+
             case TILE::FORT: {
                 temp_cost = {2, 2, 2, 2, 2, 1, 2, 2, 2};
                 temp_stats = {10, 2, 10, 0};
                 temp_tile = Tile(TILE::FORT, "Fort", temp_cost, temp_stats, false);
                 in_tiles->emplace(index, temp_tile);
-                break; 
+                break;
             }
+
             case TILE::CASTLE: {
                 temp_cost = {0, 0, 0, 0, 0, 1, 0, 0, 0};
                 temp_stats = {0, 0, 0, 0};
                 temp_tile = Tile(TILE::CASTLE, "Castle", temp_cost, temp_stats, false);
                 in_tiles->emplace(index, temp_tile);
-                break; 
+                break;
             }
+
             case TILE::SNOW: {
                 temp_cost = {2, 2, 2, 3, 2, 1, 2, 2, 2};
                 temp_stats = {0, 0, 0, 0};
                 temp_tile = Tile(TILE::SNOW, "Snow", temp_cost, temp_stats, false);
                 in_tiles->emplace(index, temp_tile);
-                break; 
-            }            
+                break;
+            }
+
             case TILE::GLACIER: {
                 temp_cost = {4, 3, 4, 0, 0, 1, 0, 3, 3};
                 temp_stats = {0, 0, 0, 0};
                 temp_tile = Tile(TILE::GLACIER, "Glacier", temp_cost, temp_stats, false);
                 in_tiles->emplace(index, temp_tile);
-                break; 
+                break;
             }
+
             default: {
-                break; 
+                break;
             }
         }
+
         SDL_Log("loaded tile: %s, %d", temp_tile.getName().c_str(), temp_tile.getid());
     }
 }
 
 // void baseTiles(std::unordered_map<int, Tile> * in_tiles) {
-// 	SDL_Log("Loading all base tiles\n");
+//  SDL_Log("Loading all base tiles\n");
 //     // Fliers always have 1 movement because they dismount inside.
 //     Tile temp_tile;
 //     // Mvt_types: foot_slow, foot_fast, mages, riders_slow, riders_fast, fliers, armors, pirates, bandits;
@@ -521,144 +566,145 @@ void baseTiles(std::unordered_map<int, Tile> * in_tiles, const std::vector<short
 
 std::vector<short int> testTiles() {
     std::vector<short int> temp_vector = {TILE::PLAIN * DEFAULT::TILE_DIVISOR + 0, TILE::FOREST * DEFAULT::TILE_DIVISOR + 0, TILE::SEA * DEFAULT::TILE_DIVISOR + 0, TILE::HILL * DEFAULT::TILE_DIVISOR + 0};
-    return(temp_vector);
+    return (temp_vector);
 }
 
 std::vector<short int> chap1Tiles() {
     std::vector<short int> temp_vector = {TILE::PLAIN * DEFAULT::TILE_DIVISOR + 0, TILE::FOREST * DEFAULT::TILE_DIVISOR + 0, TILE::SEA * DEFAULT::TILE_DIVISOR + 0, TILE::HILL * DEFAULT::TILE_DIVISOR + 0};
-    return(temp_vector);
+    return (temp_vector);
 }
 
 std::vector<short int> chap2Tiles() {
     std::vector<short int> temp_vector = {TILE::PLAIN * DEFAULT::TILE_DIVISOR + 0, TILE::FOREST * DEFAULT::TILE_DIVISOR + 0, TILE::SEA * DEFAULT::TILE_DIVISOR + 0, TILE::HILL * DEFAULT::TILE_DIVISOR + 0};
-    return(temp_vector);
+    return (temp_vector);
 }
 
 std::vector<short int> chap3Tiles() {
     std::vector<short int> temp_vector = {TILE::PLAIN * DEFAULT::TILE_DIVISOR + 0, TILE::FOREST * DEFAULT::TILE_DIVISOR + 0, TILE::SEA * DEFAULT::TILE_DIVISOR + 0, TILE::HILL * DEFAULT::TILE_DIVISOR + 0};
-    return(temp_vector);
+    return (temp_vector);
 }
 
 std::vector<short int> chap4Tiles() {
     std::vector<short int> temp_vector = {TILE::PLAIN * DEFAULT::TILE_DIVISOR + 0, TILE::FOREST * DEFAULT::TILE_DIVISOR + 0, TILE::SEA * DEFAULT::TILE_DIVISOR + 0, TILE::HILL * DEFAULT::TILE_DIVISOR + 0};
-    return(temp_vector);
+    return (temp_vector);
 }
 
 std::vector<short int> chap5Tiles() {
     std::vector<short int> temp_vector = {TILE::PLAIN * DEFAULT::TILE_DIVISOR + 0, TILE::FOREST * DEFAULT::TILE_DIVISOR + 0, TILE::SEA * DEFAULT::TILE_DIVISOR + 0, TILE::HILL * DEFAULT::TILE_DIVISOR + 0};
-    return(temp_vector);
+    return (temp_vector);
 }
 
 std::vector<short int> chap6Tiles() {
     std::vector<short int> temp_vector = {TILE::PLAIN * DEFAULT::TILE_DIVISOR + 0, TILE::FOREST * DEFAULT::TILE_DIVISOR + 0, TILE::SEA * DEFAULT::TILE_DIVISOR + 0, TILE::HILL * DEFAULT::TILE_DIVISOR + 0};
-    return(temp_vector);
+    return (temp_vector);
 }
 
 std::vector<short int> chap7Tiles() {
     std::vector<short int> temp_vector = {TILE::PLAIN * DEFAULT::TILE_DIVISOR + 0, TILE::FOREST * DEFAULT::TILE_DIVISOR + 0, TILE::SEA * DEFAULT::TILE_DIVISOR + 0, TILE::HILL * DEFAULT::TILE_DIVISOR + 0};
-    return(temp_vector);
+    return (temp_vector);
 }
 
 std::vector<short int> chap8Tiles() {
     std::vector<short int> temp_vector = {TILE::PLAIN * DEFAULT::TILE_DIVISOR + 0, TILE::FOREST * DEFAULT::TILE_DIVISOR + 0, TILE::SEA * DEFAULT::TILE_DIVISOR + 0, TILE::HILL * DEFAULT::TILE_DIVISOR + 0};
-    return(temp_vector);
+    return (temp_vector);
 }
 
 std::vector<short int> chap9Tiles() {
     std::vector<short int> temp_vector = {TILE::PLAIN * DEFAULT::TILE_DIVISOR + 0, TILE::FOREST * DEFAULT::TILE_DIVISOR + 0, TILE::SEA * DEFAULT::TILE_DIVISOR + 0, TILE::HILL * DEFAULT::TILE_DIVISOR + 0};
-    return(temp_vector);
+    return (temp_vector);
 }
 
 std::vector<short int> chap10Tiles() {
     std::vector<short int> temp_vector = {TILE::PLAIN * DEFAULT::TILE_DIVISOR + 0, TILE::FOREST * DEFAULT::TILE_DIVISOR + 0, TILE::SEA * DEFAULT::TILE_DIVISOR + 0, TILE::HILL * DEFAULT::TILE_DIVISOR + 0};
-    return(temp_vector);
+    return (temp_vector);
 }
 
 std::vector<short int> chap11Tiles() {
     std::vector<short int> temp_vector = {TILE::PLAIN * DEFAULT::TILE_DIVISOR + 0, TILE::FOREST * DEFAULT::TILE_DIVISOR + 0, TILE::SEA * DEFAULT::TILE_DIVISOR + 0, TILE::HILL * DEFAULT::TILE_DIVISOR + 0};
-    return(temp_vector);
+    return (temp_vector);
 }
 
 std::vector<short int> chap12Tiles() {
     std::vector<short int> temp_vector = {TILE::PLAIN * DEFAULT::TILE_DIVISOR + 0, TILE::FOREST * DEFAULT::TILE_DIVISOR + 0, TILE::SEA * DEFAULT::TILE_DIVISOR + 0, TILE::HILL * DEFAULT::TILE_DIVISOR + 0};
-    return(temp_vector);
+    return (temp_vector);
 }
 
 std::vector<short int> chap13Tiles() {
     std::vector<short int> temp_vector = {TILE::PLAIN * DEFAULT::TILE_DIVISOR + 0, TILE::FOREST * DEFAULT::TILE_DIVISOR + 0, TILE::SEA * DEFAULT::TILE_DIVISOR + 0, TILE::HILL * DEFAULT::TILE_DIVISOR + 0};
-    return(temp_vector);
+    return (temp_vector);
 }
 
 std::vector<short int> chap14Tiles() {
     std::vector<short int> temp_vector = {TILE::PLAIN * DEFAULT::TILE_DIVISOR + 0, TILE::FOREST * DEFAULT::TILE_DIVISOR + 0, TILE::SEA * DEFAULT::TILE_DIVISOR + 0, TILE::HILL * DEFAULT::TILE_DIVISOR + 0};
-    return(temp_vector);
+    return (temp_vector);
 }
 
 std::vector<short int> chap15Tiles() {
     std::vector<short int> temp_vector = {TILE::PLAIN * DEFAULT::TILE_DIVISOR + 0, TILE::FOREST * DEFAULT::TILE_DIVISOR + 0, TILE::SEA * DEFAULT::TILE_DIVISOR + 0, TILE::HILL * DEFAULT::TILE_DIVISOR + 0};
-    return(temp_vector);
+    return (temp_vector);
 }
 
 std::vector<short int> chap16Tiles() {
     std::vector<short int> temp_vector = {TILE::PLAIN * DEFAULT::TILE_DIVISOR + 0, TILE::FOREST * DEFAULT::TILE_DIVISOR + 0, TILE::SEA * DEFAULT::TILE_DIVISOR + 0, TILE::HILL * DEFAULT::TILE_DIVISOR + 0};
-    return(temp_vector);
+    return (temp_vector);
 }
 
 std::vector<short int> chap17Tiles() {
     std::vector<short int> temp_vector = {TILE::PLAIN * DEFAULT::TILE_DIVISOR + 0, TILE::FOREST * DEFAULT::TILE_DIVISOR + 0, TILE::SEA * DEFAULT::TILE_DIVISOR + 0, TILE::HILL * DEFAULT::TILE_DIVISOR + 0};
-    return(temp_vector);
+    return (temp_vector);
 }
 
 std::vector<short int> chap18Tiles() {
     std::vector<short int> temp_vector = {TILE::PLAIN * DEFAULT::TILE_DIVISOR + 0, TILE::FOREST * DEFAULT::TILE_DIVISOR + 0, TILE::SEA * DEFAULT::TILE_DIVISOR + 0, TILE::HILL * DEFAULT::TILE_DIVISOR + 0};
-    return(temp_vector);
+    return (temp_vector);
 }
 
 std::vector<short int> chap19Tiles() {
     std::vector<short int> temp_vector = {TILE::PLAIN * DEFAULT::TILE_DIVISOR + 0, TILE::FOREST * DEFAULT::TILE_DIVISOR + 0, TILE::SEA * DEFAULT::TILE_DIVISOR + 0, TILE::HILL * DEFAULT::TILE_DIVISOR + 0};
-    return(temp_vector);
+    return (temp_vector);
 }
 
 std::vector<short int> chap20Tiles() {
     std::vector<short int> temp_vector = {TILE::PLAIN * DEFAULT::TILE_DIVISOR + 0, TILE::FOREST * DEFAULT::TILE_DIVISOR + 0, TILE::SEA * DEFAULT::TILE_DIVISOR + 0, TILE::HILL * DEFAULT::TILE_DIVISOR + 0};
-    return(temp_vector);
+    return (temp_vector);
 }
 
 std::vector<short int> chap21Tiles() {
     std::vector<short int> temp_vector = {TILE::PLAIN * DEFAULT::TILE_DIVISOR + 0, TILE::FOREST * DEFAULT::TILE_DIVISOR + 0, TILE::SEA * DEFAULT::TILE_DIVISOR + 0, TILE::HILL * DEFAULT::TILE_DIVISOR + 0};
-    return(temp_vector);
+    return (temp_vector);
 }
 
 std::vector<short int> chap22Tiles() {
     std::vector<short int> temp_vector = {TILE::PLAIN * DEFAULT::TILE_DIVISOR + 0, TILE::FOREST * DEFAULT::TILE_DIVISOR + 0, TILE::SEA * DEFAULT::TILE_DIVISOR + 0, TILE::HILL * DEFAULT::TILE_DIVISOR + 0};
-    return(temp_vector);
+    return (temp_vector);
 }
 
 std::vector<short int> chap23Tiles() {
     std::vector<short int> temp_vector = {TILE::PLAIN * DEFAULT::TILE_DIVISOR + 0, TILE::FOREST * DEFAULT::TILE_DIVISOR + 0, TILE::SEA * DEFAULT::TILE_DIVISOR + 0, TILE::HILL * DEFAULT::TILE_DIVISOR + 0};
-    return(temp_vector);
+    return (temp_vector);
 }
 
 std::vector<short int> chap24Tiles() {
     std::vector<short int> temp_vector = {TILE::PLAIN * DEFAULT::TILE_DIVISOR + 0, TILE::FOREST * DEFAULT::TILE_DIVISOR + 0, TILE::SEA * DEFAULT::TILE_DIVISOR + 0, TILE::HILL * DEFAULT::TILE_DIVISOR + 0};
-    return(temp_vector);
+    return (temp_vector);
 }
 
 std::vector<short int> chap25Tiles() {
     std::vector<short int> temp_vector = {TILE::PLAIN * DEFAULT::TILE_DIVISOR + 0, TILE::FOREST * DEFAULT::TILE_DIVISOR + 0, TILE::SEA * DEFAULT::TILE_DIVISOR + 0, TILE::HILL * DEFAULT::TILE_DIVISOR + 0};
-    return(temp_vector);
+    return (temp_vector);
 }
 
 std::vector<short int> gaiden1Tiles() {
     std::vector<short int> temp_vector = {TILE::PLAIN * DEFAULT::TILE_DIVISOR + 0, TILE::FOREST * DEFAULT::TILE_DIVISOR + 0, TILE::SEA * DEFAULT::TILE_DIVISOR + 0, TILE::HILL * DEFAULT::TILE_DIVISOR + 0};
-    return(temp_vector);
+    return (temp_vector);
 }
 
 std::vector<short int> (*chapTiles[40])() = {testTiles, chap1Tiles, chap2Tiles, chap3Tiles, chap4Tiles,
-    chap5Tiles, chap6Tiles, chap7Tiles, chap8Tiles, chap9Tiles, chap10Tiles,
-    chap11Tiles, chap12Tiles, chap13Tiles, chap14Tiles, chap15Tiles, chap16Tiles,
-    chap17Tiles, chap18Tiles, chap19Tiles, chap20Tiles, chap21Tiles, chap22Tiles,
-    chap23Tiles, chap24Tiles, chap25Tiles, gaiden1Tiles};
+                                             chap5Tiles, chap6Tiles, chap7Tiles, chap8Tiles, chap9Tiles, chap10Tiles,
+                                             chap11Tiles, chap12Tiles, chap13Tiles, chap14Tiles, chap15Tiles, chap16Tiles,
+                                             chap17Tiles, chap18Tiles, chap19Tiles, chap20Tiles, chap21Tiles, chap22Tiles,
+                                             chap23Tiles, chap24Tiles, chap25Tiles, gaiden1Tiles
+                                            };
 
 void testXMLTiles() {
     SDL_Log("Testing Weapon xml writing and reading\n");

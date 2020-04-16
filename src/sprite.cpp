@@ -83,10 +83,10 @@ void Sprite::setSlidetype(unsigned char in_slidetype, short unsigned int * in_ti
     tilesize[1] = in_tilesize[1];
 
     switch (slidetype) {
-    case SLIDETYPE::GEOMETRIC:
-        setSrcrect(tilesize[0] * 2, tilesize[1] * 2); // Manually entered from cursor png size.
-        setDestrect(tilesize[0] * 2, tilesize[1] * 2);
-        break;
+        case SLIDETYPE::GEOMETRIC:
+            setSrcrect(tilesize[0] * 2, tilesize[1] * 2); // Manually entered from cursor png size.
+            setDestrect(tilesize[0] * 2, tilesize[1] * 2);
+            break;
     }
 }
 

@@ -14,20 +14,20 @@ Position::Position(short int * position) {
 }
 
 Position::Position(short int in_x, short int in_y,
-                  short int xmin, short int xmax,
-                  short int ymin, short int ymax)
+                   short int xmin, short int xmax,
+                   short int ymin, short int ymax)
     : Position::Position(in_x, in_y) {
     setBounds(xmin, xmax, ymin, ymax);
 }
 
 Position::Position(short int in_x, short int in_y,
-                  short int in_bounds[4])
+                   short int in_bounds[4])
     : Position::Position(in_x, in_y) {
     setBounds(in_bounds);
 }
 
 Position::Position(short int in_x, short int in_y,
-                  std::vector<short int> in_bounds)
+                   std::vector<short int> in_bounds)
     : Position::Position(in_x, in_y) {
     setBounds(in_bounds);
 }
