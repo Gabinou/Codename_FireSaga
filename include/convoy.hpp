@@ -15,10 +15,11 @@
 class Convoy : public XML_IO {
 private:
     unsigned int bank = 0;
+    unsigned char  booksnum = 0;
     Quantity quantity;
     bool full = false;
 
-    Inventory_item swords[DEFAULT::CONVOY_SIZE],
+    Inventory_item books[DEFAULT::BOOKS_NUM], swords[DEFAULT::CONVOY_SIZE],
                    lances[DEFAULT::CONVOY_SIZE], axes[DEFAULT::CONVOY_SIZE],
                    bows[DEFAULT::CONVOY_SIZE], trinkets[DEFAULT::CONVOY_SIZE],
                    offhands[DEFAULT::CONVOY_SIZE], elemental[DEFAULT::CONVOY_SIZE],
