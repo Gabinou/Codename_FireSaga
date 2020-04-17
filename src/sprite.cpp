@@ -86,16 +86,24 @@ unsigned char Sprite::getSlidetype() {
 
 void Sprite::setSlidetype(unsigned char in_slidetype, short unsigned int * in_tilesize) {
     slidetype = in_slidetype;
+
+
+
+}
+
+void setTilesize(short unsigned int in_tilesize) {
     tilesize[0] = in_tilesize[0];
     tilesize[1] = in_tilesize[1];
-
-    switch (slidetype) {
-        case SLIDETYPE::GEOMETRIC:
-            setSrcrect(tilesize[0] * 2, tilesize[1] * 2); // Manually entered from cursor png size.
-            setDestrect(tilesize[0] * 2, tilesize[1] * 2);
-            break;
+    if (animated) {
+        switch (slidetype) {
+            case SLIDETYPE::GEOMETRIC:
+                setSrcrect(tilesize[0] * 2, tilesize[1] * 2); // Manually entered from cursor png size.
+                setDestrect(tilesize[0] * 2, tilesize[1] * 2);
+                break;
+        }
     }
 }
+
 
 void Sprite::init(short int * in_position) {
     slidepos[0] = objectivepos[0] = (int)in_position[0] * tilesize[0] - destrect.w / 4;

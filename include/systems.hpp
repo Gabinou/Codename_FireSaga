@@ -85,6 +85,16 @@ public:
                     }
                 }
 
+                if ((!ent.has_component<KeyboardController>()) && (!ent.has_component<GamepadController>())) {
+                    if (tilesize[0] == 0 && tilesize[1] == 0) { //move on the pixelspace
+                        slidepos[0] = (int)position->getPos()[0];
+                        slidepos[1] = (int)position->getPos()[1];
+                    } else { //move on the map.
+                        slidepos[0] = (int)(position->getPos()[0] * tilesize[0]);
+                        slidepos[1] = (int)(position->getPos()[1] * tilesize[1]);
+                    }
+                }
+
                 entityx::ComponentHandle<KeyboardController> keyboard = ent.component<KeyboardController>();
 
                 if (keyboard) {

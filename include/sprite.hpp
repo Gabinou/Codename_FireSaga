@@ -58,6 +58,8 @@ public:
     void setSlidepos(short int * in_slidepos);
     void setObjpos(short int * in_objectivepos);
 
+    void setTilesize(short unsigned int in_tilesize);
+
     unsigned char getSlidetype();
     void setSlidetype(unsigned char in_slidetype, short unsigned int * in_tilesize);
     void setDestrectpos(short int * in_position);

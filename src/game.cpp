@@ -370,6 +370,7 @@ void Game::setState(entityx::Entity setter, short unsigned int new_state) {
 
                 case GAME::STATE::MAP:
                     hideMenu(GAME::STATE::UNITMENU);
+                    changeCursor(new_state);
                     break;
             }
 
@@ -429,18 +430,24 @@ void Game::unloadMap() {
 
 void Game::changeCursor(const short unsigned int new_state) {
     SDL_Log("Changing cursor");
+    SDL_Rect temprect;
 
     switch (new_state) {
         case GAME::STATE::MAP:
+            cursorx.component<Sprite>()->animate();
+            cursorx.component<Sprite>()->setTexture("..//assets//mapcursors.png");
+            // cursorx.component<Sprite>()->init(cursorx.component<Position>()->getPos());
+            // cursorx.component<Sprite>()->setSrcrect(mapx->getTilesize()[0], mapx->getTilesize()[1]);
             cursorx.component<Sprite>()->setSlidetype(SLIDETYPE::GEOMETRIC, mapx->getTilesize());
-            cursorx.component<Position>()->setBounds(mapx->getBounds());
             cursorx.component<Sprite>()->init(cursorx.component<Position>()->getPos());
             break;
 
         case GAME::STATE::UNITMENU:
             SDL_Log("Changed Cursor to unitmenu");
+            temprect = {0, 0, 16, 16}; //x,y,w,h
             cursorx.component<Sprite>()->still();
-            cursorx.component<Sprite>()->setSrcrect(16, 16);
+            cursorx.component<Sprite>()->setSrcrect(temprect);
+            cursorx.component<Sprite>()->setDestrect(temprect);
             // cursorx.component<Sprite>()->setDestrect(16, 16);
             cursorx.component<Sprite>()->setTexture("..//assets//menucursor.png");
 
@@ -453,6 +460,7 @@ void Game::changeCursor(const short unsigned int new_state) {
 
 void Game::loadCursor() {
     // Map should be loaded before I think.
+    SDL_Rect temprect;
 
     if (cursorx.valid()) {
         cursorx.destroy();
@@ -471,9 +479,10 @@ void Game::loadCursor() {
     switch (state) {
         case GAME::STATE::MAP:
             cursorx.assign<Position>(6, 6);
-            // cursorx.assign<Sprite>("..//assets//mapcursors.png", 10, 50);
-            cursorx.assign<Sprite>("..//assets//menucursor.png");
-            cursorx.component<Sprite>()->still();
+            cursorx.assign<Sprite>("..//assets//mapcursors.png", 10, 50);
+            // cursorx.assign<Sprite>("..//assets//menucursor.png");
+            // cursorx.component<Sprite>()->still();
+
             cursorx.component<Sprite>()->setSlidetype(SLIDETYPE::GEOMETRIC, mapx->getTilesize());
             cursorx.component<Position>()->setBounds(mapx->getBounds());
             cursorx.component<Sprite>()->init(cursorx.component<Position>()->getPos());
