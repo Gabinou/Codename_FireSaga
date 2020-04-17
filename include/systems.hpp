@@ -47,7 +47,7 @@ public:
             map->draw();
         }
 
-        // RENDERING NOTE: First laded, last animated.
+        // RENDERING NOTE: First loaded, last animated.
         // -> load cursor first to render it over everything else.
         for (entityx::Entity ent : es.entities_with_components<Sprite, Position>()) {
             entityx::ComponentHandle<Sprite> sprite = ent.component<Sprite>();
