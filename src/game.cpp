@@ -435,9 +435,10 @@ void Game::setCursorstate(const short unsigned int new_state) {
     switch (new_state) {
         case GAME::STATE::MAP:
             SDL_Log("Changed Cursor to Map");
+            cursorx.component<Position>()->setPos(6, 6);
+            cursorx.component<Sprite>()->animate();
             cursorx.component<Sprite>()->setTexture("..//assets//mapcursors.png");
             cursorx.component<Sprite>()->setAnimation(10, 50);
-            cursorx.component<Sprite>()->animate();
             cursorx.component<Sprite>()->setTilesize(mapx->getTilesize());
             cursorx.component<Sprite>()->setSlidetype(SLIDETYPE::GEOMETRIC);
             cursorx.component<Sprite>()->init(cursorx.component<Position>()->getPos());
