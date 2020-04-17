@@ -452,13 +452,14 @@ void Game::setCursorstate(const short unsigned int new_state) {
                 cursorx.component<Sprite>()->still();
                 cursorx.component<Sprite>()->setSrcrect(temprect);
                 cursorx.component<Sprite>()->setDestrect(temprect);
-                // cursorx.component<Sprite>()->setDestrect(16, 16);
                 cursorx.component<Sprite>()->setTexture("..//assets//menucursor.png");
-                // if (unitmenux.valid()) {
-                // unitmenupos = unitmenux.component<Position>()->getPos();
-                // }
-                // short int menubounds[4] = {unitmenupos[0], unitmenupos[0], unitmenupos[1], (short int)(unitmenupos[1] + 1)};
-                // cursorx.component<Position>()->setBounds(menubounds);
+
+                if (unitmenux.valid()) {
+                    unitmenupos = unitmenux.component<Position>()->getPos();
+                }
+
+                short int menubounds[4] = {unitmenupos[0], unitmenupos[0], unitmenupos[1], (short int)(unitmenupos[1] + 1)};
+                cursorx.component<Position>()->setBounds(menubounds);
                 // cursorx.component<Sprite>()->init(cursorx.component<Position>()->getPos());
                 break;
         }
@@ -466,8 +467,6 @@ void Game::setCursorstate(const short unsigned int new_state) {
 }
 
 void Game::loadCursor() {
-    // Map should be loaded before I think.
-
     unloadCursor();
 
     cursorx = entities.create();
@@ -481,7 +480,7 @@ void Game::loadCursor() {
         cursorx.assign<GamepadController>();
     }
 
-    setCursorstate(GAME::STATE::MAP);
+    setCursorstate(state);
 }
 
 void Game::unloadCursor() {

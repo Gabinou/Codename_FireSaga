@@ -4,7 +4,6 @@
 #include <SDL2/SDL.h>
 #include <queue>
 #include "map.hpp"
-// #include "game.hpp"
 #include "sprite.hpp"
 #include "events.hpp"
 #include "text.hpp"
