@@ -21,7 +21,7 @@ protected:
     short int objectivepos[2];
     short int slidepos[2];
     short int slideint = 0; // for slide_type = "geometric"
-    short unsigned int tilesize[2];
+    short unsigned int tilesize[2] = {32, 32};
     float slidefactors[2] = {2, 1.025}; // for slide_type = "geometric"
 
     bool visible;
@@ -58,10 +58,11 @@ public:
     void setSlidepos(short int * in_slidepos);
     void setObjpos(short int * in_objectivepos);
 
-    void setTilesize(short unsigned int in_tilesize);
+    void setTilesize(short unsigned int * in_tilesize);
+    void animatedRects();
 
     unsigned char getSlidetype();
-    void setSlidetype(unsigned char in_slidetype, short unsigned int * in_tilesize);
+    void setSlidetype(unsigned char in_slidetype);
     void setDestrectpos(short int * in_position);
     void setTexture(const char * in_asset_name);
 

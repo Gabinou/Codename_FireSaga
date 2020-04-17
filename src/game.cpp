@@ -438,7 +438,8 @@ void Game::changeCursor(const short unsigned int new_state) {
             cursorx.component<Sprite>()->setTexture("..//assets//mapcursors.png");
             // cursorx.component<Sprite>()->init(cursorx.component<Position>()->getPos());
             // cursorx.component<Sprite>()->setSrcrect(mapx->getTilesize()[0], mapx->getTilesize()[1]);
-            cursorx.component<Sprite>()->setSlidetype(SLIDETYPE::GEOMETRIC, mapx->getTilesize());
+            cursorx.component<Sprite>()->setTilesize(mapx->getTilesize());
+            cursorx.component<Sprite>()->setSlidetype(SLIDETYPE::GEOMETRIC);
             cursorx.component<Sprite>()->init(cursorx.component<Position>()->getPos());
             break;
 
@@ -483,8 +484,8 @@ void Game::loadCursor() {
             // cursorx.assign<Sprite>("..//assets//menucursor.png");
             // cursorx.component<Sprite>()->still();
 
-            cursorx.component<Sprite>()->setSlidetype(SLIDETYPE::GEOMETRIC, mapx->getTilesize());
-            cursorx.component<Position>()->setBounds(mapx->getBounds());
+            cursorx.component<Sprite>()->setTilesize(mapx->getTilesize());
+            cursorx.component<Sprite>()->setSlidetype(SLIDETYPE::GEOMETRIC);
             cursorx.component<Sprite>()->init(cursorx.component<Position>()->getPos());
             break;
 

@@ -84,23 +84,29 @@ unsigned char Sprite::getSlidetype() {
     return (slidetype);
 }
 
-void Sprite::setSlidetype(unsigned char in_slidetype, short unsigned int * in_tilesize) {
+void Sprite::setSlidetype(unsigned char in_slidetype) {
     slidetype = in_slidetype;
 
-
-
+    if (animated) {
+        animatedRects();
+    }
 }
 
-void setTilesize(short unsigned int in_tilesize) {
+void Sprite::animatedRects() {
+    switch (slidetype) {
+        case SLIDETYPE::GEOMETRIC:
+            setSrcrect(tilesize[0] * 2, tilesize[1] * 2); // Manually entered from cursor png size.
+            setDestrect(tilesize[0] * 2, tilesize[1] * 2);
+            break;
+    }
+}
+
+void Sprite::setTilesize(short unsigned int * in_tilesize) {
     tilesize[0] = in_tilesize[0];
     tilesize[1] = in_tilesize[1];
+
     if (animated) {
-        switch (slidetype) {
-            case SLIDETYPE::GEOMETRIC:
-                setSrcrect(tilesize[0] * 2, tilesize[1] * 2); // Manually entered from cursor png size.
-                setDestrect(tilesize[0] * 2, tilesize[1] * 2);
-                break;
-        }
+        animatedRects();
     }
 }
 
