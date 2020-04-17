@@ -443,6 +443,7 @@ void Game::setCursorstate(const short unsigned int new_state) {
                 cursorx.component<Sprite>()->setAnimation(10, 50);
                 cursorx.component<Sprite>()->setTilesize(mapx->getTilesize());
                 cursorx.component<Sprite>()->setSlidetype(SLIDETYPE::GEOMETRIC);
+                cursorx.component<Position>()->setBounds(mapx->getBounds());
                 break;
 
             case GAME::STATE::UNITMENU:
