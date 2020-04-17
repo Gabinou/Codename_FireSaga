@@ -397,10 +397,6 @@ short unsigned int Game::getState() {
     return (state);
 }
 
-// template <typename T> void Game::loadTiles(std::vector<T> in_tiles) {
-//     loaded_tiles = baseTiles(in_tiles);
-// }
-
 void Game::loadMap(const int in_map_index) {
     SDL_Log("Loading Map index: %d \n", in_map_index);
 
@@ -440,23 +436,33 @@ void Game::loadCursor() {
     cursorx.assign<KeyboardController>();
     cursorx.assign<GamepadController>();
 
+    if (SDL_NumJoysticks() < 1) {
+        SDL_Log("No joysticks connected.\n");
+    } else {
+        //     cursor.addComponent<GamepadController>(this, mapx);
+    }
+
     switch (state) {
         case GAME::STATE::MAP:
             cursorx.assign<Position>(6, 6);
-
-            if (SDL_NumJoysticks() < 1) {
-                SDL_Log("No joysticks connected.\n");
-            } else {
-                //     cursor.addComponent<GamepadController>(this, mapx);
-            }
-
-            cursorx.assign<Sprite>("..//assets//cursors.png", 10, 50);
+            cursorx.assign<Sprite>("..//assets//mapcursors.png", 10, 50);
             cursorx.component<Sprite>()->setSlidetype(SLIDETYPE::GEOMETRIC, mapx->getTilesize());
             cursorx.component<Position>()->setBounds(mapx->getBounds());
             cursorx.component<Sprite>()->init(cursorx.component<Position>()->getPos());
             break;
 
         case GAME::STATE::UNITMENU:
+            cursorx.assign<Sprite>("..//assets//menucursor.png");
+            short int * unitmenupos;
+
+            if (unitmenux.valid()) {
+                unitmenupos = unitmenux.component<Position>()->getPos();
+            }
+
+            short int menubounds[4] = {unitmenupos[0], unitmenupos[0], unitmenupos[1], (short int)(unitmenupos[1] + 1)};
+            cursorx.assign<Position>(unitmenupos[0], unitmenupos[1]);
+            cursorx.component<Position>()->setBounds(menubounds);
+            cursorx.component<Sprite>()->init(cursorx.component<Position>()->getPos());
             break;
 
     }

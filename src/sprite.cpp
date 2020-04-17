@@ -2,7 +2,6 @@
 
 Sprite::Sprite(const char * in_asset_name) {
     visible = true;
-    asset_name = in_asset_name;
     setTexture(in_asset_name);
 }
 
@@ -101,6 +100,7 @@ void Sprite::setDestrectpos(short int * in_position) {
 }
 
 void Sprite::setTexture(const char * in_asset_name) {
+    asset_name = in_asset_name;
     texture = loadTexture(Game::renderer, in_asset_name);
 }
 

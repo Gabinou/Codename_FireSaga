@@ -37,6 +37,23 @@ void Position::setBounds(short int xmin, short int xmax, short int ymin, short i
     bounds[1] = xmax;
     bounds[2] = ymin;
     bounds[3] = ymax;
+
+    if (position[0] < bounds[0]) {
+        position[0] = bounds[0];
+    }
+
+    if (position[0] > bounds[1]) {
+        position[0] = bounds[1];
+    }
+
+    if (position[1] < bounds[2]) {
+        position[1] = bounds[2];
+    }
+
+    if (position[1] > bounds[3]) {
+        position[1] = bounds[3];
+    }
+
 }
 
 void Position::setBounds(short int in_bounds[4]) {
