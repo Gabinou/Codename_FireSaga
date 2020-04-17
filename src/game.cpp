@@ -432,34 +432,36 @@ void Game::setCursorstate(const short unsigned int new_state) {
     SDL_Log("Changing cursor");
     SDL_Rect temprect;
 
-    switch (new_state) {
-        case GAME::STATE::MAP:
-            SDL_Log("Changed Cursor to Map");
-            cursorx.component<Position>()->setPos(6, 6);
-            cursorx.component<Sprite>()->animate();
-            cursorx.component<Sprite>()->setTexture("..//assets//mapcursors.png");
-            cursorx.component<Sprite>()->setAnimation(10, 50);
-            cursorx.component<Sprite>()->setTilesize(mapx->getTilesize());
-            cursorx.component<Sprite>()->setSlidetype(SLIDETYPE::GEOMETRIC);
-            cursorx.component<Sprite>()->init(cursorx.component<Position>()->getPos());
-            break;
+    if (cursorx.valid()) {
+        switch (new_state) {
+            case GAME::STATE::MAP:
+                SDL_Log("Changed Cursor to Map");
+                cursorx.component<Position>()->setPos(6, 6);
+                cursorx.component<Sprite>()->init(cursorx.component<Position>()->getPos());
+                cursorx.component<Sprite>()->animate();
+                cursorx.component<Sprite>()->setTexture("..//assets//mapcursors.png");
+                cursorx.component<Sprite>()->setAnimation(10, 50);
+                cursorx.component<Sprite>()->setTilesize(mapx->getTilesize());
+                cursorx.component<Sprite>()->setSlidetype(SLIDETYPE::GEOMETRIC);
+                break;
 
-        case GAME::STATE::UNITMENU:
-            SDL_Log("Changed Cursor to unitmenu");
-            temprect = {0, 0, 16, 16}; //x,y,w,h
-            short int * unitmenupos;
-            cursorx.component<Sprite>()->still();
-            cursorx.component<Sprite>()->setSrcrect(temprect);
-            cursorx.component<Sprite>()->setDestrect(temprect);
-            // cursorx.component<Sprite>()->setDestrect(16, 16);
-            cursorx.component<Sprite>()->setTexture("..//assets//menucursor.png");
-            // if (unitmenux.valid()) {
-            // unitmenupos = unitmenux.component<Position>()->getPos();
-            // }
-            // short int menubounds[4] = {unitmenupos[0], unitmenupos[0], unitmenupos[1], (short int)(unitmenupos[1] + 1)};
-            // cursorx.component<Position>()->setBounds(menubounds);
-            // cursorx.component<Sprite>()->init(cursorx.component<Position>()->getPos());
-            break;
+            case GAME::STATE::UNITMENU:
+                SDL_Log("Changed Cursor to unitmenu");
+                temprect = {0, 0, 16, 16}; //x,y,w,h
+                short int * unitmenupos;
+                cursorx.component<Sprite>()->still();
+                cursorx.component<Sprite>()->setSrcrect(temprect);
+                cursorx.component<Sprite>()->setDestrect(temprect);
+                // cursorx.component<Sprite>()->setDestrect(16, 16);
+                cursorx.component<Sprite>()->setTexture("..//assets//menucursor.png");
+                // if (unitmenux.valid()) {
+                // unitmenupos = unitmenux.component<Position>()->getPos();
+                // }
+                // short int menubounds[4] = {unitmenupos[0], unitmenupos[0], unitmenupos[1], (short int)(unitmenupos[1] + 1)};
+                // cursorx.component<Position>()->setBounds(menubounds);
+                // cursorx.component<Sprite>()->init(cursorx.component<Position>()->getPos());
+                break;
+        }
     }
 }
 

@@ -1,7 +1,10 @@
 #include "sprite.hpp"
 
+Sprite::Sprite() {
+
+}
+
 Sprite::Sprite(const char * in_asset_name) {
-    visible = true;
     setTexture(in_asset_name);
 }
 
@@ -127,6 +130,7 @@ void Sprite::setTexture(const char * in_asset_name) {
 }
 
 void Sprite::setAnimation(int inFrames, int inSpeed) {
+    animated = true;
     frames = inFrames;
     speed = inSpeed;
 }

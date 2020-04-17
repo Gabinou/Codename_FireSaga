@@ -24,13 +24,13 @@ protected:
     short unsigned int tilesize[2] = {32, 32};
     float slidefactors[2] = {2, 1.025}; // for slide_type = "geometric"
 
-    bool visible;
+    bool visible = true;
     bool animated = false;
     std::string asset_name;
     unsigned char ss_looping = LOOPING::PINGPONG; //ss: spritesheet
     unsigned char slidetype = 0;
 public:
-    Sprite() = default;
+    Sprite();
     Sprite(const char * in_asset_name);
     Sprite(const char * in_asset_name, int in_picsize[2]);
     Sprite(const char * in_asset_name, int inFrames, int inSpeed);
