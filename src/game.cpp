@@ -342,7 +342,7 @@ void Game::setState(entityx::Entity setter, short unsigned int new_state) {
                     mapx->moveUnit(old_position[0], old_position[1], new_position[0], new_position[1]);
                     unitmenux.component<Position>()->setPos(new_position[0] * settings.tilesize[0], new_position[1] * settings.tilesize[1]);
                     selectedpos->setPos(new_position); // move at the end, cause new and old_position are pointers!
-                    changeCursor(new_state);
+                    setCursorstate(new_state);
 
                 }
                 break;
@@ -370,7 +370,7 @@ void Game::setState(entityx::Entity setter, short unsigned int new_state) {
 
                 case GAME::STATE::MAP:
                     hideMenu(GAME::STATE::UNITMENU);
-                    changeCursor(new_state);
+                    setCursorstate(new_state);
                     break;
             }
 
@@ -428,16 +428,16 @@ void Game::unloadMap() {
     }
 }
 
-void Game::changeCursor(const short unsigned int new_state) {
+void Game::setCursorstate(const short unsigned int new_state) {
     SDL_Log("Changing cursor");
     SDL_Rect temprect;
 
     switch (new_state) {
         case GAME::STATE::MAP:
-            cursorx.component<Sprite>()->animate();
+            SDL_Log("Changed Cursor to Map");
             cursorx.component<Sprite>()->setTexture("..//assets//mapcursors.png");
-            // cursorx.component<Sprite>()->init(cursorx.component<Position>()->getPos());
-            // cursorx.component<Sprite>()->setSrcrect(mapx->getTilesize()[0], mapx->getTilesize()[1]);
+            cursorx.component<Sprite>()->setAnimation(10, 50);
+            cursorx.component<Sprite>()->animate();
             cursorx.component<Sprite>()->setTilesize(mapx->getTilesize());
             cursorx.component<Sprite>()->setSlidetype(SLIDETYPE::GEOMETRIC);
             cursorx.component<Sprite>()->init(cursorx.component<Position>()->getPos());
@@ -446,68 +446,45 @@ void Game::changeCursor(const short unsigned int new_state) {
         case GAME::STATE::UNITMENU:
             SDL_Log("Changed Cursor to unitmenu");
             temprect = {0, 0, 16, 16}; //x,y,w,h
+            short int * unitmenupos;
             cursorx.component<Sprite>()->still();
             cursorx.component<Sprite>()->setSrcrect(temprect);
             cursorx.component<Sprite>()->setDestrect(temprect);
             // cursorx.component<Sprite>()->setDestrect(16, 16);
             cursorx.component<Sprite>()->setTexture("..//assets//menucursor.png");
-
+            // if (unitmenux.valid()) {
+            // unitmenupos = unitmenux.component<Position>()->getPos();
+            // }
             // short int menubounds[4] = {unitmenupos[0], unitmenupos[0], unitmenupos[1], (short int)(unitmenupos[1] + 1)};
-            // cursorx.assign<Position>(unitmenupos[0], unitmenupos[1]);
             // cursorx.component<Position>()->setBounds(menubounds);
+            // cursorx.component<Sprite>()->init(cursorx.component<Position>()->getPos());
             break;
     }
 }
 
 void Game::loadCursor() {
     // Map should be loaded before I think.
-    SDL_Rect temprect;
 
-    if (cursorx.valid()) {
-        cursorx.destroy();
-    }
+    unloadCursor();
 
     cursorx = entities.create();
     cursorx.assign<KeyboardController>();
-    cursorx.assign<GamepadController>();
+    cursorx.assign<Position>();
+    cursorx.assign<Sprite>();
 
     if (SDL_NumJoysticks() < 1) {
         SDL_Log("No joysticks connected.\n");
     } else {
-        //     cursor.addComponent<GamepadController>(this, mapx);
+        cursorx.assign<GamepadController>();
     }
 
-    switch (state) {
-        case GAME::STATE::MAP:
-            cursorx.assign<Position>(6, 6);
-            cursorx.assign<Sprite>("..//assets//mapcursors.png", 10, 50);
-            // cursorx.assign<Sprite>("..//assets//menucursor.png");
-            // cursorx.component<Sprite>()->still();
-
-            cursorx.component<Sprite>()->setTilesize(mapx->getTilesize());
-            cursorx.component<Sprite>()->setSlidetype(SLIDETYPE::GEOMETRIC);
-            cursorx.component<Sprite>()->init(cursorx.component<Position>()->getPos());
-            break;
-
-        case GAME::STATE::UNITMENU:
-            cursorx.assign<Sprite>("..//assets//menucursor.png");
-            short int * unitmenupos;
-
-            if (unitmenux.valid()) {
-                unitmenupos = unitmenux.component<Position>()->getPos();
-            }
-
-            short int menubounds[4] = {unitmenupos[0], unitmenupos[0], unitmenupos[1], (short int)(unitmenupos[1] + 1)};
-            cursorx.assign<Position>(unitmenupos[0], unitmenupos[1]);
-            cursorx.component<Position>()->setBounds(menubounds);
-            cursorx.component<Sprite>()->init(cursorx.component<Position>()->getPos());
-            break;
-
-    }
+    setCursorstate(GAME::STATE::MAP);
 }
 
 void Game::unloadCursor() {
-    cursorx.destroy();
+    if (cursorx.valid()) {
+        cursorx.destroy();
+    }
 }
 
 
