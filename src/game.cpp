@@ -340,7 +340,7 @@ void Game::setState(entityx::Entity setter, short unsigned int new_state) {
                     }
 
                     mapx->moveUnit(old_position[0], old_position[1], new_position[0], new_position[1]);
-                    unitmenux.component<Position>()->setPos(new_position[0] * settings.tilesize[0], new_position[1] * settings.tilesize[1]);
+                    unitmenux.component<Position>()->setPos((new_position[0] + 1) * settings.tilesize[0], new_position[1] * settings.tilesize[1]);
                     selectedpos->setPos(new_position); // move at the end, cause new and old_position are pointers!
                     setCursorstate(new_state);
 

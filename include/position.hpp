@@ -8,6 +8,7 @@
 class Position {
 private:
     bool updatable = true;
+    bool tilemap = true;
     short int position[2] = {0};
     short int bounds[4] = {0, 255, 0, 255}; //xmin, xmax, ymin, ymax
 public:

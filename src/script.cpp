@@ -262,4 +262,52 @@ void baseBooks() {
     book.addPage(page);
 
     book = Book("Angelic and Demonic Possession", ITEM::NAME::BOOKPOSSESSION);
+    book.setAuthor("Twinborn");
+
+    page.paragraphs.clear();
+    page.title = "Foreword";
+    page.paragraphs.push_back("I dedicate this book all magicians who, like me, has been lied to by the School of Magic. How presumptuous were the fathers of Magic, to name the discipline so, implicitely declaring their field to be complete and all-emcompassing. We know today that their Magic is in reality Elemental. A single branch among three branches of Magic. There probably exists more, and if they do I will find them.");
+    page.paragraphs.push_back("I was the first to use the chaotic and harmonious energies around us. Later, the possessed thought it impossible to use more than one branch of magic, and to reverse possession. They doubted I even existed, and doubted I could even do it. If you doubt, come find me. I can dive deep into what idiots call possession and come back unscathed. They lose their humanities and become lower, almost like beasts.");
+    page.paragraphs.push_back("Stop doubting me, if you wish to use any kind of magic. I can use them all. I will show you how.");
+    book.addPage(page);
+
+    page.paragraphs.clear();
+    page.title = "Harmony and disorder";
+    page.paragraphs.push_back("We swim in a sea of mixed chaos and order. Some days I feel like walking is like swimming thourgh molasses, other times I feel like burning my house. Sometimes, I feel like writing a book... You can feel this as the winds of magic blow through you. You don't know it, but your body does. If you listen to it, you can learn to feel the thickness of the magic that surrounds you.");
+    page.paragraphs.push_back("Stuff we can see, we can also touch, move it around, or even destroy it. We can touch the things we see. Magic is the same. Before learning to touch it, you must see it. It is hard to find something in the dark, even in your own room. I doubt you could find it. Magic is the same. You won't find it if you can't feel it. Then, you can see how it changes when you touch it, if it gets stronger or weaker. And after that maybe you can use it to kill someone... Or write spells that can be use by idiots.");
+    page.paragraphs.push_back("This is why people think using angelic or demonic leads to possession. Spells make it too easy on stupid people. Reading is much easier than feeling magic. You can't know what demonic does to you if you can't feel demonic at all. And most 'possessed' can't. You can feel them sliding in, see them and even hear them falling. Everything about them changes!");
+    book.addPage(page);
+
+    page.paragraphs.clear();
+    page.title = "Where is magic";
+    page.paragraphs.push_back("It's not hard to where angelic or demonic wind accumulates. A cemetary. A castle, a church, a brothel. A fresh dug mass grave, a library, a drunkard's house... In all these places do angelic and demonic energies live. If you want to feel Elemental magic, go outside.");
+    page.paragraphs.push_back("In a place where you know a lot of energy lives... Maybe even in a person! You should make use of someone like that as much as possible. In their presence, practice feeling it. Listen to your body, feel it in your guts. Feel the winds change direction, the magic getting more or less thick. Your body can feel it, you just need to listen.");
+    book.addPage(page);
+
+    page.paragraphs.clear();
+    page.title = "Feeling the magic";
+    page.paragraphs.push_back("At first, you will need to focus to just be able to feel the magic. Don't worry, it's like a muscle. The more you use it, the stronger it gets. I will become easy, almost natural. You'll be able to feel magic all the time, even while working or being focused on something else.");
+    page.paragraphs.push_back("Once you can feel the magic surrounding you, you can start taking notes on the general patterns. In this city, chaos reigns. You can even use this sense to feel major changes happening, before you can hear about them. This is also why mages flee castle towns days weeks or even months before a siege. Have you ever heard of many mages being stuck in sieges? No. You hear of how armies being sieged are lacking mages. This is why.");
+    page.paragraphs.push_back("This is why even if you have no talent in magic, you should still learn to feel the magic. This is a very useful ability that everone can learn. You can feel magic before you can hear, touch, or even see. Everyone benefits.");
+    book.addPage(page);
+
+    page.paragraphs.clear();
+    page.title = "Touching the magic";
+    page.paragraphs.push_back("If you get bored of only feeling the magic, reach out and touch the magic. You can flap your arms like a chicken and make wind. Magic wind can be influenced by you exactly like that. Contrarily to wind though, magic is influenced by thoughts themselves. The harder you focus, the more powerful your influence becomes.");
+    page.paragraphs.push_back("once you can feel and touch magic, you can force it to take shape in the physical world in wasy that are useful to you. The classic example is the Angelic light spear, which you can throw at demons to pierce their heart. Very useful! Very simple. Accessible to all.");
+    book.addPage(page);
+
+    page.paragraphs.clear();
+    page.title = "Writing magic spells.";
+    page.paragraphs.push_back("Do not write magic spells.");
+    page.paragraphs.push_back("Angelic, demonic or elemental. Do not write any magic spells!");
+    page.paragraphs.push_back("Written spells can get in the hands of stupid people. Spells in your mind can't.");
+    book.addPage(page);
+        
+
+    page.paragraphs.clear();
+    page.title = "Gaussian Roll";
+    page.paragraphs.push_back("");
+    book.addPage(page);
+
 }
