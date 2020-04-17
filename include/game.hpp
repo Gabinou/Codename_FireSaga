@@ -83,6 +83,7 @@ public:
     void unloadUnits(std::vector<short int> to_unload);
     void loadMapArrivals();
     void loadCursor();
+    void changeCursor(const short unsigned int new_state);
     void unloadCursor();
     template <typename T> void loadTiles(std::vector<T> in_tiles);
 

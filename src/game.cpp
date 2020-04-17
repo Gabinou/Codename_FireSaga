@@ -342,6 +342,8 @@ void Game::setState(entityx::Entity setter, short unsigned int new_state) {
                     mapx->moveUnit(old_position[0], old_position[1], new_position[0], new_position[1]);
                     unitmenux.component<Position>()->setPos(new_position[0] * settings.tilesize[0], new_position[1] * settings.tilesize[1]);
                     selectedpos->setPos(new_position); // move at the end, cause new and old_position are pointers!
+                    changeCursor(new_state);
+
                 }
                 break;
 
@@ -422,6 +424,31 @@ void Game::unloadMap() {
         mapEntx.destroy();
     } else {
         SDL_Log("Failed to unloadMap. Was mapx deleted previously?");
+    }
+}
+
+void Game::changeCursor(const short unsigned int new_state) {
+    SDL_Log("Changing cursor");
+
+    switch (new_state) {
+        case GAME::STATE::MAP:
+            cursorx.component<Sprite>()->setSlidetype(SLIDETYPE::GEOMETRIC, mapx->getTilesize());
+            cursorx.component<Position>()->setBounds(mapx->getBounds());
+            cursorx.component<Sprite>()->init(cursorx.component<Position>()->getPos());
+            break;
+
+        case GAME::STATE::UNITMENU:
+            SDL_Log("Changed Cursor to unitmenu");
+            cursorx.component<Sprite>()->setTexture("..//assets//menucursor.png");
+            cursorx.component<Sprite>()->still();
+            cursorx.component<Sprite>()->setTexture("..//assets//menucursor.png");
+            cursorx.component<Sprite>()->setSrcrect(16, 16);
+            cursorx.component<Sprite>()->setDestrect(16, 16);
+
+            // short int menubounds[4] = {unitmenupos[0], unitmenupos[0], unitmenupos[1], (short int)(unitmenupos[1] + 1)};
+            // cursorx.assign<Position>(unitmenupos[0], unitmenupos[1]);
+            // cursorx.component<Position>()->setBounds(menubounds);
+            break;
     }
 }
 

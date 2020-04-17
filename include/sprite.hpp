@@ -43,6 +43,8 @@ public:
 
     void hide();
     void show();
+    void animate();
+    void still();
     bool isAnimated();
     bool isVisible();
 

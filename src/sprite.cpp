@@ -30,6 +30,14 @@ void Sprite::hide() {
     visible = false;
 }
 
+void Sprite::animate() {
+    animated = true;
+}
+
+void Sprite::still() {
+    animated = false;
+}
+
 bool Sprite::isAnimated() {
     return (animated);
 }
