@@ -282,20 +282,20 @@ void baseBooks() {
 
     page.paragraphs.clear();
     page.title = "Where is magic";
-    page.paragraphs.push_back("It's not hard to where angelic or demonic wind accumulates. A cemetary. A castle, a church, a brothel. A fresh dug mass grave, a library, a drunkard's house... In all these places do angelic and demonic energies live. If you want to feel Elemental magic, go outside.");
-    page.paragraphs.push_back("In a place where you know a lot of energy lives... Maybe even in a person! You should make use of someone like that as much as possible. In their presence, practice feeling it. Listen to your body, feel it in your guts. Feel the winds change direction, the magic getting more or less thick. Your body can feel it, you just need to listen.");
+    page.paragraphs.push_back("It's not hard to know where angelic or demonic wind accumulates. A cemetary. A castle, a church, a brothel. A fresh dug mass grave, a library, a drunkard's house... In all these places do angelic and demonic energies live. Maybe even in a person! You should make use of someone like that as much as possible.  If you want to feel Elemental magic, go outside.");
+    page.paragraphs.push_back("In a place where you know a lot of magic lives... Close to an object or person in which magic resides... Listen to your body, feel it in your guts, in your heart. Feel the winds change direction, the magic getting more or less thick. Your body can feel it, you just need to listen. It always flow through you, and around you.");
     book.addPage(page);
 
     page.paragraphs.clear();
     page.title = "Feeling the magic";
-    page.paragraphs.push_back("At first, you will need to focus to just be able to feel the magic. Don't worry, it's like a muscle. The more you use it, the stronger it gets. I will become easy, almost natural. You'll be able to feel magic all the time, even while working or being focused on something else.");
-    page.paragraphs.push_back("Once you can feel the magic surrounding you, you can start taking notes on the general patterns. In this city, chaos reigns. You can even use this sense to feel major changes happening, before you can hear about them. This is also why mages flee castle towns days weeks or even months before a siege. Have you ever heard of many mages being stuck in a siege? No. You hear of how there are almost no mages in armies under a siege. This is the reason why.");
-    page.paragraphs.push_back("This is also why even if you have no talent in magic, you should still learn to feel the magic. This is a very useful ability that everone can learn. You can feel magic before you can hear, touch, or even see. Everyone benefits. It can be used in many ways.");
+    page.paragraphs.push_back("At first, you will need to focus to just be able to feel the magic. Don't worry, it's like a muscle. The more you use it, the stronger it gets. It helps to clear your thoughts, and to focus on your senses. Your smell, your taste, your hearing, the surrounding heat and cold, and especially your sense of balance. The feeling of magic is closely tied to your own sense of balance. Once you feel where down and up are, you will start feeling the magic energies around you.");
+    page.paragraphs.push_back("Practice. It will become easy, almost natural. You'll be able to feel magic all the time, even while working or being focused on something else. Once you can feel the magic surrounding you, you can start taking notes on the general patterns. In this city, chaos reigns. You can even use this sense to feel major changes happening, before you can hear about them. This is also why mages flee castle towns days weeks or even months before a siege. Have you ever heard of many mages being stuck in a siege? No. You hear of how there are never enough mages in armies during a siege. This is the reason why.");
+    page.paragraphs.push_back("This is also why even if you have no talent in magic, you should still learn to feel the magic. This is a very useful ability that everyone can learn. You can feel magic before you can hear, touch, or even see. Everyone benefits. It can be used in many ways.");
     book.addPage(page);
 
     page.paragraphs.clear();
     page.title = "Touching the magic";
-    page.paragraphs.push_back("If you get bored of only feeling the magic, reach out and touch the magic. You can flap your arms like a chicken and make wind. Magic wind can be influenced by you exactly like that. Contrarily to wind though, magic is also influenced by your thoughts. The harder you focus, the more powerful your influence becomes.");
+    page.paragraphs.push_back("If you get bored of only feeling the magic, reach out and touch the magic. You can flap your arms like a chicken and make wind. Magic can be influenced by you exactly like that. Contrarily to wind though, magic is also influenced by your thoughts. The harder you focus, the more powerful your influence becomes.");
     page.paragraphs.push_back("Once you can feel and touch magic, you can force it to take shape in the physical world in wasy that are useful to you. The classic example is the Angelic Light spear, which you can throw at demons to pierce their heart. Very useful! Very simple. Accessible to all.");
     book.addPage(page);
 
