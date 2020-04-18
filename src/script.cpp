@@ -298,8 +298,9 @@ void baseBooks() {
     book.addPage(page);
 
     page.paragraphs.clear();
-    page.title = "Casting 'spells'.";
-    page.paragraphs.push_back("");
+    page.title = "Casting spells.";
+    page.paragraphs.push_back("Do not cast spells written by others. You can perfectly cast spells without them, of even create your own. That requires a deep understand of magic, which is difficult to get: hard work over many years of training. Spells can be recited by newly-born idiots.");
+    page.paragraphs.push_back("Written spells make it easy to blast enemies without understanding magic. Spells are weapons of war, not tools of the student of Magic. I think even war mages should learn to create their own spells. Military mages disagree with me, sometimes very violently. They have their very convincing stupid reasons, I'm sure.");
     book.addPage(page);    
 
     page.paragraphs.clear();
@@ -328,6 +329,13 @@ void baseBooks() {
     page.paragraphs.push_back("Your body will react quite quickly to dramatic changes. For your first time, you should unbalance yourself very slowly, in a couple hours. The more you practice, the shorter time it will take you to completely change from a 'possessed' to a full Demon, all the way back to human all over again.");
     page.paragraphs.push_back("Before diving, you should understand fully the balance in you. And when you dive, make sure to Remember your balance. Remember your balance! The feel of it, the shape of it, it's flow and direction. That way, you will never be lost. Remember your balance! Even in the most demonic of places, incarnating the most evil Demon King himself, remember your balance! Remember who you are! Only then will you be able to make your way back.");
     book.addPage(page);
+
+    page.paragraphs.clear();
+    page.title = "Creating new spells from nothing";
+    page.paragraphs.push_back("I have been asked many times: 'How is there so many spells? Just use magic to kill people!'. This is wrong. There are many weapons. All with the objective of hurting or killing people. Some cut, some crush, some stab, some crit... Some are better at cutting then others. Some weapons are made to be thrown, some can be thrown but will not fly true. The same metal can be forged into completely different weapons by blacksmiths of different skill.");
+    page.paragraphs.push_back("The same is true of magic. The strength of the spells depends not only on the skill of the caster, but on the spellforger. Nothing is easy. Spellcasting isn't easy and neither is spellforging. But both skills are required for a pupil to truly become a Mage.");
+    book.addPage(page);
+
 
     page.paragraphs.clear();
     page.title = "Gaussian Roll";
