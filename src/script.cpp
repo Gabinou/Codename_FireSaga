@@ -338,6 +338,19 @@ void baseBooks() {
 
 
     page.paragraphs.clear();
+    page.title = "From mage to sage.";
+    page.paragraphs.push_back("Who knows how to where wisdom lives and how to acquire it? I did not find it at the School of Magic, even though they can teach you some very useful tricks. If any Mage finds a reliable source of Wisdom, tell me.");
+    book.addPage(page);    
+
+
+    page.paragraphs.clear();
+    page.title = "The Purpose of Magic";
+    page.paragraphs.push_back("This book is a results of years of experimentation, of hard study and of asking questions to myself, people around me, even the trees and rivers. I have not yet found all my answers, but the Angelic and Demonic set my life on a new course of discovery. Now, I want to share my knowledge with as many people as possible.");
+    page.paragraphs.push_back("Magic has a purpose, in this world. I do not understand it yet. And I wish to recruit you in my quest to discover the Purpose of Magic. Come find me, if you wish to help me on this quest. Everyone knows my name, now...");
+    book.addPage(page);
+
+
+    page.paragraphs.clear();
     page.title = "Gaussian Roll";
     page.paragraphs.push_back("");
     book.addPage(page);
