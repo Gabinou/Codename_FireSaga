@@ -296,32 +296,32 @@ void baseBooks() {
     page.paragraphs.clear();
     page.title = "Touching the magic";
     page.paragraphs.push_back("If you get bored of only feeling the magic, reach out and touch the magic. You can flap your arms like a chicken and make wind. Magic can be influenced by you exactly like that. Contrarily to wind though, magic is also influenced by your thoughts. The harder you focus, the more powerful your influence becomes.");
-    page.paragraphs.push_back("Once you can feel and touch magic, you can force it to take shape in the physical world in wasy that are useful to you. The classic example is the Angelic Light spear, which you can throw at demons to pierce their heart. Very useful! Very simple. Accessible to all.");
+    page.paragraphs.push_back("Once you can feel and touch magic, you can force it to take shape in the physical world in ways that are useful to you. The classic example is the Angelic Light spear, which you can throw at demons to pierce their heart. Very useful! Very simple. Accessible to all.");
     book.addPage(page);
 
     page.paragraphs.clear();
     page.title = "Casting spells.";
-    page.paragraphs.push_back("Do not cast spells written by others. You can perfectly cast spells without them, of even create your own. That requires a deep understand of magic, which is difficult to get: hard work over many years of training. Spells can be recited by newly-born idiots.");
-    page.paragraphs.push_back("Written spells make it easy to blast enemies without understanding magic. Spells are weapons of war, not tools of the student of Magic. I think even war mages should learn to create their own spells. Military mages disagree with me, sometimes very violently. They have their very convincing stupid reasons, I'm sure.");
+    page.paragraphs.push_back("Do not cast spells written by others. You can perfectly cast spells without them, of even create your own. That requires a deep understand of magic, which is difficult to get: hard work over many years of training. It will make you a better Mage. Spells can be recited by newborn idiots.");
+    page.paragraphs.push_back("Written spells make it easy to blast enemies without understanding magic. Spells are weapons of war, not tools of the student of Magic.Though I think even war mages should learn to create their own spells. Military mages disagree with me, sometimes very violently. They have their own very convincing stupid reasons.");
     book.addPage(page);    
 
     page.paragraphs.clear();
     page.title = "Writing magic spells.";
     page.paragraphs.push_back("Do not write magic spells.");
     page.paragraphs.push_back("Angelic, demonic or elemental. Do not write any magic spells!");
-    page.paragraphs.push_back("Written spells can get in the hands of stupid people. Spells in your mind can't.");
+    page.paragraphs.push_back("Written spells can get in the hands of stupid people. Spells in your mind can't be stolen or used by anyone else.");
     book.addPage(page);
         
     page.paragraphs.clear();
     page.title = "What is possession?";
-    page.paragraphs.push_back("You can hear many magic users talk about possession. 'He became possessed by the demonic energies'. That is a horrible way to say in_title. Demonic energies do not randomly concentrate themselves in a body. A human does not naturally get rid of almost all of it's harmonious and elemental energies. The people do it, and keep it that way. Whether they realize it or not, this is what they are doing.");
-    page.paragraphs.push_back("The bodies of the 'possessed' are simply adjusting themselves to an incredible amount of demonic energies. A frail human body cannot contain so much ill will. Only the body of a Demon can. The 'possessed' are just transforming into Demons. Some people think it is slow. But it can take only a few moments up to a few weeks to become a Demon. Many poisons take much more time to kill you. Ills can take root for many years before rising to the surface. But demonic energies act on the body almost instantly.");
+    page.paragraphs.push_back("You can hear many magic users talk about possession. 'He became possessed by the demonic energies'. 'He turned into a demon and devoured her!' That is a horrible way to say it. Demonic energies do not randomly concentrate themselves in a body. A human does not naturally get rid of almost all of it's harmonious and elemental energies. The people do it, and keep it that way. Whether they realize it or not, this is what they are doing.");
+    page.paragraphs.push_back("The bodies of the 'possessed' are simply adjusting themselves to an incredible amount of demonic energies. A frail human body cannot contain so much ill will. Only the body of a Demon can. The 'possessed' are just transforming into Demons. Some people think it is slow. But it can take only only a few moments to become a Demon, if you are used to it. For novices, it might take weeks. Many poisons take much more time to kill you. Ills can take root for many years before rising to the surface. But demonic energies act on the heart and body almost instantly.");
     book.addPage(page);
 
     page.paragraphs.clear();
     page.title = "Reverting possession";
-    page.paragraphs.push_back("Stopping the transformation is rather simple. Magic energies fill up our bodies in balance. To stop the transformation, you must find your own point of balance. Then, you have to gather your missing energies and get rid of your excess magics. Finding places that are full of your missing energies and have a lack of your excess magic can help with that.");
-    // Implicit-> need to feel all three types of magic + how to manipulate them willingly 3 types of magic! No wonder people fall into the trap of so-called possession. They can almost always manipulate willingly only one type of magic, at best.
+    page.paragraphs.push_back("Stopping the transformation is rather simple. Magic energies normally fill up our bodies in balance. To stop the transformation, you must go back to your original point of balance. Finding places that are full of your missing energies and have a lack of your excesses can help with that.");
+    // Implicit-> need to feel all three types of magic + how to manipulate them willingly 3 types of magic! No wonder people fall into the trap of so-called possession. They can almost always willingly manipulate only one type of magic, at best.
 
     book.addPage(page);    
 
