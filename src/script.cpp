@@ -327,15 +327,17 @@ void baseBooks() {
 
     page.paragraphs.clear();
     page.title = "Transforming at will";
-    page.paragraphs.push_back("It is easy to feel the balance in normal humans, and that Angels barely contain any demonic or elemental energy. It is easy to see that to transform into a Demon, an Angel or an Elemental, you must destroy your internal magic balance. Or at least, accumulate enough demonic energy for you to lean very hard in only one direction.");
+    page.paragraphs.push_back("It is easy to feel the balance in normal humans. It is also easy to notice Angels barely contain any demonic or elemental energy. To transform into a Demon, an Angel or an Elemental, you must destroy your internal magic balance. Or at least, accumulate enough magic for you to lean very hard in only one direction.");
     page.paragraphs.push_back("Your body will react quite quickly to dramatic changes. For your first time, you should unbalance yourself very slowly, in a couple hours. The more you practice, the shorter time it will take you to completely change from a 'possessed' to a full Demon, all the way back to human all over again.");
-    page.paragraphs.push_back("Before diving, you should understand fully the balance in you. And when you dive, make sure to Remember your balance. Remember your balance! The feel of it, the shape of it, it's flow and direction. That way, you will never be lost. Remember your balance! Even in the most demonic of places, incarnating the most evil Demon King himself, remember your balance! Remember who you are! Only then will you be able to make your way back.");
+    page.paragraphs.push_back("Before diving, you should fully understand the original balance in you. And when you dive, make sure to Remember your balance. Remember your balance! The feel of it, the shape of it, it's flow and direction. That way, you will never be lost. Remember your balance! Even in the most demonic of places, incarnating the most evil Demon King himself, remember your balance! Remember who you are! Only then will you be able to make your way back.");
     book.addPage(page);
 
     page.paragraphs.clear();
     page.title = "Creating new spells from nothing";
-    page.paragraphs.push_back("I have been asked many times: 'How is there so many spells? Just use magic to kill people!'. This is wrong. There are many weapons. All with the objective of hurting or killing people. Some cut, some crush, some stab, some crit... Some are better at cutting then others. Some weapons are made to be thrown, some can be thrown but will not fly true. The same metal can be forged into completely different weapons by blacksmiths of different skill.");
+    page.paragraphs.push_back("I have been asked many times: 'How is there so many spells? Just use magic to kill people!'. This is wrong.");
+    page.paragraphs.push_back("There are many weapons. All with the objective of hurting or killing people. Some cut, some crush, some stab, some crit... Some are better at cutting then others. Some weapons are made to be thrown, some can be thrown but will not fly true. The same metal can be forged into completely different weapons by blacksmiths of different skill.");
     page.paragraphs.push_back("The same is true of magic. The strength of the spells depends not only on the skill of the caster, but on the spellforger. Nothing is easy. Spellcasting isn't easy and neither is spellforging. But both skills are required for a pupil to truly become a Mage.");
+    page.paragraphs.push_back("I will not tell you how to spellforge. There is a way, but you should embark on it yourself. Maybe I will write a book on spellforging, for Mages that already started forging. For later.");
     book.addPage(page);
 
 
@@ -347,7 +349,7 @@ void baseBooks() {
 
     page.paragraphs.clear();
     page.title = "The Purpose of Magic";
-    page.paragraphs.push_back("This book is a results of years of experimentation, of hard study and of asking questions to myself, people around me, even the trees and rivers. I have not yet found all my answers, but the Angelic and Demonic set my life on a new course of discovery. Now, I want to share my knowledge with as many people as possible.");
+    page.paragraphs.push_back("This book is a results of years of experimentation, of hard study and of asking questions to myself, people around me, even the trees and rivers. I have not yet found all my answers, but the Angelic and Demonic energies set my life on a new course of discovery. Now, I want to share my knowledge with as many people as possible.");
     page.paragraphs.push_back("Magic has a purpose, in this world. I do not understand it yet. And I wish to recruit you in my quest to discover the Purpose of Magic. Come find me, if you wish to help me on this quest. Everyone knows my name, now...");
     book.addPage(page);
 
