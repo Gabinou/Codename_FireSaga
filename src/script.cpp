@@ -234,8 +234,8 @@ void baseBooks() {
     page.title = "The Cosmic RNG is Discrete and Uniform";
     page.paragraphs.push_back("Let us now take a moment to define important properties of the Cosmic RNG. We specifically wish to highlight two:");
     page.paragraphs.push_back("1-The random numbers are Discrete. This means that the numbers the Goddess gives are whole integers: 0, 1, 2... up to 99. This is in opposition to continuous random numbers, for example human height is a continuous random number expressed as a length in meters. Continuous random numvers can take any decimal value, for example 1.45.");
-    page.paragraphs.push_back("2-The RNs are Uniform, between 0 and 99. This means thay all numbers between these bounds have equal likelihood to be ordained. In the Cosmic RNG's case, it means that all numbers have an equal 1/100, 1% chance of being anointed. For a discrete RNG, these values are known as the probability mass function (PMF) of the distribution. An uniform distributions PMF, like that of the Cosmic RNG, is very simple, since all possibilities are equality likely.")
-    page.paragraphs.push_back("We write the PMF of a uniform discrete distribution so: P(X = x_i) = 1/n. Or read aloud, the probability P that the next RN noted X is equal to a certain RN noted x_i, is equal to one over the total number of possible values, noted n. In our case, n is 100.")
+    page.paragraphs.push_back("2-The RNs are Uniform, between 0 and 99. This means thay all numbers between these bounds have equal likelihood to be ordained. In the Cosmic RNG's case, it means that all numbers have an equal 1/100, 1% chance of being anointed. For a discrete RNG, these values are known as the probability mass function (PMF) of the distribution. An uniform distributions PMF, like that of the Cosmic RNG, is very simple, since all possibilities are equality likely.");
+    page.paragraphs.push_back("We write the PMF of a uniform discrete distribution so: P(X = x_i) = 1/n. Or read aloud, the probability P that the next RN noted X is equal to a certain RN noted x_i, is equal to one over the total number of possible values, noted n. In our case, n is 100.");
     page.paragraphs.push_back("These are all properties are all that is required to mathematically derive useful values later on.");
     book.addPage(page);
 
@@ -253,7 +253,6 @@ void baseBooks() {
     page.paragraphs.push_back("In truth, humans are rather mediocre at judging chance. We all tend to overestimate high chance events and underestimate low chance events.");
     page.paragraphs.push_back("Gambling houses routinely swindle the public by exploiting this. The odds of winning are so astronomically low as to be impossible to grasped by the peasantry or aristocracy alike.");
     page.paragraphs.push_back("Laymen may also mistakenly believe that regular patterns are random, while random patterns are orderly! Those of little faith regularly cry out 'The RNG is busted!' or 'What is going on? The RNG is broken!' when witnessing events ordained by the Goddess. No, my dear unbeliever, the Cosmic RNG is working just as Her Divine Will commands! It is your lack of faith that makes you see order in the pseudo-chaos created by the Background RNG.");
-    takeItem
     book.addPage(page);
 
     page.paragraphs.clear();
