@@ -202,6 +202,28 @@ void baseBooks() {
 
     book = Book("Weapons of the World", ITEM::NAME::BOOKWEAPONS);
     book.setAuthor("Member of the Guild of blacksmiths?.");
+    Weapon_stats wpn_stats;
+    std::string temp_str;
+
+    for (int i = ITEM::NAME::WOODEN_SWORD; i < ITEM::NAME::CROSS; i++) {
+        wpn_stats = all_weapons[i].getStats();
+        page.title = wpnNames[i];
+        page.paragraphs.clear();
+        temp_str = stats2str(wpn_stats);
+        page.paragraphs.push_back("Stats");
+        page.paragraphs.push_back(temp_str);
+        page.paragraphs.push_back("Bonus/Malus");
+        page.paragraphs.push_back("");
+        page.paragraphs.push_back("Effects");
+        page.paragraphs.push_back("");
+        page.paragraphs.push_back("Users");
+        page.paragraphs.push_back("");
+        page.paragraphs.push_back("Types");
+        page.paragraphs.push_back("");
+        page.paragraphs.push_back("Description");
+        page.paragraphs.push_back(all_weapons[i].getDescription());
+        book.addPage(page);
+    }
 
     book = Book("Magic: The Definitive Guide", ITEM::NAME::BOOKELEMENTAL);
     book.setAuthor("Ancestor of the gifted brothers.");
@@ -297,15 +319,18 @@ void baseBooks() {
 
     book = Book("Growth & Potential", ITEM::NAME::BOOKGROWTHS);
     book.setAuthor("Scribe in Erwin's army.");
+    Unit_stats temp_stats;
 
-    for (int i = UNIT::NAME::ERWIN; i < UNIT::NAME::PC_END; i++) {
-        page.paragraphs.clear();
-        page.title = unitNames[i];
-        page.paragraphs.push_back("Growths:");
-        page.paragraphs.push_back("Caps:");
-        page.paragraphs.push_back("");
-        book.addPage(page);
-    }
+    // for (int i = UNIT::NAME::ERWIN; i < UNIT::NAME::PC_END; i++) {
+    //     page.paragraphs.clear();
+    //     page.title = unitNames[i];
+    //     temp_stats = units[i].getStats();
+    //     stats2str(temp_stats)
+    //     page.paragraphs.push_back("Growths:");
+    //     page.paragraphs.push_back("Caps:");
+    //     page.paragraphs.push_back("");
+    //     book.addPage(page);
+    // }
 
     book = Book("Angelic and Demonic Possession", ITEM::NAME::BOOKPOSSESSION);
     book.setAuthor("Twinborn");

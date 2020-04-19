@@ -41,9 +41,6 @@ int main(int argc, char * argv[]) {
     // testXMLWeapons();
     // writeallXMLWeapons();
 
-
-
-
     // SDL_Log("Loading base units.");
     // all_units = baseUnits();
     // SDL_Log("Testing units: %s \n", all_units[UNIT::NAME::SILOU].getName().c_str());
