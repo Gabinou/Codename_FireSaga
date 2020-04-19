@@ -243,7 +243,7 @@ void baseBooks() {
     page.title = "Single and Double Roll";
     page.paragraphs.push_back("Two pages ago, we mentionned that 'if the hit rate is greater than the next Random Number (RN), the hit will land'. That is only true if we live in a Single Roll world. Unfortunately, we live in a Double Roll world. So was ordained Above.");
     page.paragraphs.push_back("In a Double Roll universe, two RNs are averaged together, then compared to the Hit rate. If the hit rate is higher than the average of two RNs, the hit lands. The Goddess chose the double Roll for its simplicity, and to reward the skillful.");
-page.paragraphs.push_back("An unfortunate side-effect of this universal constant is that the less skilled are punished. Above a hit rate of 50%, Double Roll increase the likelihood of a hit, but under 50\% decreases it instead. 'To everyone who has, more shall be given; but from those who does not have, everything shall be taken away.'");
+page.paragraphs.push_back("An unfortunate side-effect of this universal constant is that the less skilled are punished. Above a hit rate of 50%, Double Roll increase the likelihood of a hit, but under 50\% decreases it instead. 'To everyone who has, more shall be given; but from those who do not have, everything shall be taken away.'");
 page.paragraphs.push_back("The actual True hit probabilities will be derived later, using the properties of the Cosmic RNG defined in the previous page.");
     book.addPage(page);
 
@@ -257,13 +257,34 @@ page.paragraphs.push_back("The actual True hit probabilities will be derived lat
     book.addPage(page);
 
     page.paragraphs.clear();
-    page.title = "Double Roll: True rates";
-    page.paragraphs.push_back("Using the previously mentionned rules, we can derive the true chance that a hit occurs in a Double Roll world using the Hit Rates.");
-    page.paragraphs.push_back("In truth, what needs to be computed is the chance that the average of two numbers given by the Cosmic RNG is lower than the Hit rate. In this case the derivation can be understood clearly with some examples:");
-    page.paragraphs.push_back("There is only one combination of two RNs tgat can be averafed to 0, 0 and 0. The next possible average value is 1/2,with two possibilities, 0-1 and 1-0. This mrans that 1/2 is twice as likely to be observed as 0 when two uniform RNs are averaged! ");
-    page.paragraphs.push_back("Similarly, the next possiblw average value, 1, has three possibilities, 0-2, 2-0, and 1-1. This makes 1 thrice as likely to be observed compared to 0 in a double roll world! " );
+    page.title = "Double Roll: PMF and CDF.";
+    page.paragraphs.push_back("To derive the true Hit rates in a Double roll World, what needs to be computed is the chance that the average of two numbers given by the Cosmic RNG is lower than the Hit rate. In mathemagical terms, we can write it so: P(X<x_i), the probability that the random variable X, which is an average of two RNs produced by the Cosmic RNG, is lower than a certain x_i, being the hit rate in the present case. In Mathemagics, we call the P(X<x_i) the Cumulative Distribution Function (CDF). Then, the True rates are simply the values obtained by the CDF. This function is closely linked to the previously mentionned Probability Mass Function (PMF).");
+    page.paragraphs.push_back("To obtain the CDF from the PMF, you just need the cumulative sum of the PMF. Mathemagically, to find P(X < 3), you need to add P(X = 2), P(X = 1), P(X = 0). For example, in a Single Roll universe the Hit rate is equal to the True hit. This is because we find P(X < 3) = 3% because P(X = 2) = P(X = 1) = P(X = 0) = 1/100. In a Double Roll world, it is less easy to derive the CDF from the PMF. We show the first step in this derivation: determining the probability mass function of the average of two RN.");
     book.addPage(page);
 
+    page.paragraphs.clear();
+    page.title = "Double Roll: Deriving the PMF";
+    page.paragraphs.push_back("As was mentionned in the previous page, the True Hit rate in a Double roll universe is simply the CDF, which can be computed using the PMF, the chances of individual event occurance. Using the previously mentionned properties of the Cosmic RNG, we can derive the probabilities that a value is obtained by averaging two RNs. In total, there is 100x100 = 10000 possible combinations of two RNs ordained by the RNG. The derivation can be understood clearly with few examples:");
+    page.paragraphs.push_back("If the hit rate is 1, there is only a single combination of two RNs that can be averaged to 0: 0-0. This means that the probability P(X=0), for X the average of two RNs, is equal to 1/10000. The next possible average value is 1/2, with two possibilities, 0-1 and 1-0. This means that 1/2 is twice as likely to be observed as 0 when two uniform RNs are averaged! Note that averaging two RNGs increase the resolution so to speak. Instead of the possible values being 0,1,2.. . they are now 0, 0.5, 1, 1.5... ");
+    page.paragraphs.push_back("Anyhow, the next possible hit rate is 2, there are more average values that need to be taken into account: the number of possibilities that average to 1 and 1.5. 1, can be obtained by three combinations of two RNGs: 0-2, 2-0, and 1-1. This makes 1 thrice as likely to be observed compared to 0 in a double roll world! Similarly, 1.5 can be obtained by 4 combinations of two RNGs: 0-3, 2-1, 1-2, 3-0. The pattern is clear! Each averaged value has a 1/10000 more chance to be ordained by the Goddess in a Double Roll world!" );
+    page.paragraphs.push_back("The same reasoning can be applied until we get to the value with maximal probability to be averaged: 49.5. There are 100 possible ways to average to RNs to be equal to 49.5: 0-99, 1-98, 2-97... 98-1, 99-0. Then there is a 100/10000 or 1% chance of obtaining 49.5 when averaging two RNs. The chances of obtaning the average 50 then starts decreasing, because there are only 99 possible combinations: 1-99, 2-98...1-99. The probability of two RNs being averaged then decreases until we reach 99, which can only be ordained by the combination 99-99, with a probability 1/10000." );
+    page.paragraphs.push_back("Then, the PMF of the average of two RNs outputted by the uniform RNG has this structure: Average values can take values 0, 0.5, 1, 1.5... 99. The increment is the 0.5, or the base step of the original RNGs divided by the number of RN being averaged. The change of obtaining 0 is 0.01%, 0.5 is 0.02%, increasing linearly until 49.5 at 1%, decreasing similarly at 50 to 0.99%, down to 0.01% at 99. ");
+    book.addPage(page);
+
+
+    page.paragraphs.clear();
+    page.title = "Double Roll: Computing the True hits";
+    page.paragraphs.clear();
+    page.paragraphs.push_back("So, if the hit rate is 1, there are only two averages that are below it: 0 and 1/2. The total probability of these two averages occuring is the sum of 1/10000 and 2/10000. Which gives the true chance of hitting in a Double Roll world when the Hit Rate is 1 to be 3/10000 or 0.03%." );
+    page.paragraphs.push_back("So this means that the probability that the average of two RNs is lower than 2 to be: 1/10000+2/10000+3/10000+4/10000 which is 10/10000 or 0.10%." );
+    page.title = "Gaussian Roll";
+    page.paragraphs.push_back("");
+    book.addPage(page);    
+
+    page.paragraphs.clear();
+    page.title = "True hits Table.";
+    page.paragraphs.push_back("");
+    book.addPage(page);    
 
     page.paragraphs.clear();
     page.title = "Gaussian Roll";
