@@ -297,10 +297,12 @@ void baseBooks() {
     book.addPage(page);
 
     book = Book("Growth & Potential", ITEM::NAME::BOOKGROWTHS);
-    book.setAuthor("");
+    book.setAuthor("Scribe in Erwin's army.");
 
     page.paragraphs.clear();
-    page.title = "Gaussian Roll";
+    page.title = "Erwin";
+    page.paragraphs.push_back("Growths:");
+    page.paragraphs.push_back("Caps:");
     page.paragraphs.push_back("");
     book.addPage(page);
 
