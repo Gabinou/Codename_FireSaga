@@ -603,7 +603,7 @@ std::vector<std::string> getTilenames(std::vector<short int> in_tilesindex) {
         }
     }
 
-    SDL_Log("Tilenames size out:%d", out.size());
+    // SDL_Log("Tilenames size out:%d", out.size());
     return (out);
 }
 

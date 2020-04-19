@@ -270,7 +270,6 @@ void baseBooks() {
     page.paragraphs.push_back("Then, the PMF of the average of two RNs outputted by the uniform RNG has this structure: Average values can take values 0, 0.5, 1, 1.5... 99. The increment is the 0.5, or the base step of the original RNGs divided by the number of RN being averaged. The change of obtaining 0 is 0.01%, 0.5 is 0.02%, increasing linearly until 49.5 at 1%, decreasing similarly at 50 to 0.99%, down to 0.01% at 99. ");
     book.addPage(page);
 
-
     page.paragraphs.clear();
     page.title = "Double Roll: Computing the True hits";
     page.paragraphs.clear();
@@ -285,7 +284,7 @@ void baseBooks() {
 
     page.paragraphs.clear();
     page.title = "Conclusion";
-    page.paragraphs.push_back("Thank you for reading this book. As the reader has no doubt realized, this book is intented for war Mages and other military personnel that wish to understand the flow of War better. Still, we hope all readers can renew their fate in the Goddess' Tapestry, through the shining light of Mathemagics.");
+    page.paragraphs.push_back("Thank you for reading this book. As the reader has no doubt realized, this book is intented for war Mages and other military personnel that wish to understand the flow of War better. A clear understanding of the chances of hits occuring, of critical hits landing helps everyone. We hope all readers can renew their fate in the Goddess' Tapestry, through the shining light of Mathemagics.");
     book.addPage(page);
 
     book = Book("Love blooms on the Battlefield", ITEM::NAME::BOOKLOVE);
@@ -299,12 +298,14 @@ void baseBooks() {
     book = Book("Growth & Potential", ITEM::NAME::BOOKGROWTHS);
     book.setAuthor("Scribe in Erwin's army.");
 
-    page.paragraphs.clear();
-    page.title = "Erwin";
-    page.paragraphs.push_back("Growths:");
-    page.paragraphs.push_back("Caps:");
-    page.paragraphs.push_back("");
-    book.addPage(page);
+    for (int i = UNIT::NAME::ERWIN; i < UNIT::NAME::PC_END; i++) {
+        page.paragraphs.clear();
+        page.title = unitNames[i];
+        page.paragraphs.push_back("Growths:");
+        page.paragraphs.push_back("Caps:");
+        page.paragraphs.push_back("");
+        book.addPage(page);
+    }
 
     book = Book("Angelic and Demonic Possession", ITEM::NAME::BOOKPOSSESSION);
     book.setAuthor("Twinborn");
