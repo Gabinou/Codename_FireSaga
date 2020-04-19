@@ -74,6 +74,14 @@ short int * Position::getBounds() {
     return (bounds);
 }
 
+bool Position::isonTilemap() {
+    return (onTilemap);
+}
+
+void Position::setTilemap(bool in_tilemap) {
+    onTilemap = in_tilemap;
+}
+
 void Position::setUpdatable(bool in_updatable) {
     updatable = in_updatable;
 }

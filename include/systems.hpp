@@ -85,7 +85,7 @@ public:
                 }
 
                 if ((!ent.has_component<KeyboardController>()) && (!ent.has_component<GamepadController>())) {
-                    if (tilesize[0] == 0 && tilesize[1] == 0) { //move on the pixelspace
+                    if (!position->isonTilemap()) { //move on the pixelspace
                         slidepos[0] = (int)position->getPos()[0];
                         slidepos[1] = (int)position->getPos()[1];
                     } else { //move on the map.
@@ -305,11 +305,11 @@ public:
                 pressed_button.push_back(keyboardInputMap.accept);
                 short int toset = -1;
                 entityx::Entity setter;
-                entityx::ComponentHandle<Unit> unitontile = unitmap[position->getPos()[0]][position->getPos()[1]];
                 unsigned int frames_button = keyboard->getHeldbutton();
 
                 if ((game->getState() == GAME::STATE::MAP) && (frames_button == 1)) {
                     SDL_Log("cursor Position, %d %d \n", position->getPos()[0], position->getPos()[1]);
+                    entityx::ComponentHandle<Unit> unitontile = unitmap[position->getPos()[0]][position->getPos()[1]];
 
                     if (unitontile) {
                         toset = GAME::STATE::UNITMOVE;
@@ -404,11 +404,11 @@ public:
                 pressed_button.push_back(gamepadInputMap.accept);
                 short int toset = -1;
                 entityx::Entity setter;
-                entityx::ComponentHandle<Unit> unitontile = unitmap[position->getPos()[0]][position->getPos()[1]];
                 unsigned int frames_button = gamepad->getHeldbutton();
 
                 if ((game->getState() == GAME::STATE::MAP) && (frames_button == 1)) {
                     SDL_Log("cursor Position, %d %d \n", position->getPos()[0], position->getPos()[1]);
+                    entityx::ComponentHandle<Unit> unitontile = unitmap[position->getPos()[0]][position->getPos()[1]];
 
                     if (unitontile) {
                         toset = GAME::STATE::UNITMOVE;
