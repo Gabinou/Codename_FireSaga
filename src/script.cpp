@@ -208,8 +208,8 @@ void baseBooks() {
     book = Book("Deep and Arcane Mathemagics", ITEM::NAME::BOOKMATHEMAGICS);
     book.setAuthor("Ancestor of the gifted brothers.");
     page.title = "Introduction to Mathemagics";
-    page.paragraphs.push_back("This world is governed by randomness. All soldiers realize this fact: nothing is certain. Taking but a single swing of a sword means to take a risk, to bet on your skills against your opponent's capacity to dodge.");
-    page.paragraphs.push_back("A novice enemy may very well carry the Goddess's favor and evade all attacks. While you, reader no doubt skilled in the arts of war, might only earn her scorn and receive a swift death at the point of a spear.");
+    page.paragraphs.push_back("This world is governed by randomness. Mages, soldiers and mathemagicians all realize this fact: nothing is certain. Taking but a single swing of a sword means to take a risk, to bet on your skills against your opponent's capacity to dodge.");
+    page.paragraphs.push_back("A novice enemy may very well carry the Goddess's favor and evade all attacks. While you, reader no doubt skilled in the arts of war, might only earn her scorn and receive a swift, painful death at the point of a spear.");
     page.paragraphs.push_back("Such is the tapestry She weaves... May She have mercy on all. Blasphemers say She is a capricious Goddess, that her judgements are cruel, unfair and arbitrary. Those of weak faith may yet be convinced already. But the tapestry of the world is never woven carelessly. Rules guide randomness.");
     page.paragraphs.push_back("Mathemagics is the study these rules. We Mathemagicians believe that to fully understand the rules of randomness brings us closer to the Goddess. It has taken much work to test these theories and compile all these equations. We write them all here so that the curious might benefit from a ascending into the realm of arcane Mathemagics.");
     std::vector<std::string> paragraphs;
@@ -219,7 +219,7 @@ void baseBooks() {
     page.title = "In our world, Random Events are all Independent";
     page.paragraphs.push_back("Random events have a certain chance of occuring, generally noted in percents (%). For example, a simple coin has a 50\% chance of landing on its face. Flipping the coin once has no influence on the future coin flips. As such, we call these independent random events.");
     page.paragraphs.push_back("These constrast directly with dependent events. For example, drawing cards. Imagine a standard 52 card deck, from which I draw a Jack of Diamond. The chance of me drawing next a Jack of Diamond is zero, while the chance of me drawing any other card from the deck is increased slightly (unless of course, I put the Jack of Diamond back in the deck.)");
-    page.paragraphs.push_back("All of the chance events related to war in this world are independent. Having dodged an attack does not increase (nor decrease!) the likelihood of dodging the next attack.");
+    page.paragraphs.push_back("All of the chance events in this world are independent. Having dodged an attack does not increase (nor decrease!) the likelihood of dodging the next attack.");
     book.addPage(page);
 
     page.paragraphs.clear();
@@ -229,22 +229,22 @@ void baseBooks() {
     page.paragraphs.push_back("Random numbers are created using a pseudo-random number generator called the Mersenne Twister. Pseudo-random numbers are generated via an algorithm that makes use of Mersenne Primes. The generator is always set to the same state upon creation (first startup). Its state is updated everytime a RN is generated. Knowing the state of the Mersenne Twister, one can perfectly predict the will of the Goddess.");
     page.paragraphs.push_back("Interpretation of the words is beyond this humble mathemagician. What even are pseudo-random numbers? How do they compare to 'truly' random numbers? Those are questions better left for the Metamagicians. Note that all Oracles strongly discourage finding the internal state of the Cosmic RNG, so as not, as they say 'diminish Creation'. We Mathemagicians agree.");
     book.addPage(page);
-    
+
     page.paragraphs.clear();
-    page.title = "The Cosmic RNG is discrete and uniform";
+    page.title = "The Cosmic RNG is Discrete and Uniform";
     page.paragraphs.push_back("Let us now take a moment to define important properties of the Cosmic RNG. We specifically wish to highlight two:");
-    page.paragraphs.push_back("1-The random numbers are discrete. This means that the numbers the Goddess gives are whole integers: 0, 1, 2... up to 99. This is in opposition to continuous random numbers, for example human height is a continuous random number expressed as a length in meters. Continuous random numvers can take any decimal value, for example 1.45.");
-    page.paragraphs.push_back("2-The RNs are uniform, between 0 and 99. This means thay all numbers between these bounds have equal likelihood to be ordained. In the Cosmic RNG's case, it means that all numbers have an equal 1/100, 1% chance of being anointed. For a discrete RNG, these values are known as the probability mass function (PMF) of the distribution. An uniform distributions PMF, like that of the Cosmic RNG, is very simple, since all possibilities are equality likely.") 
-    page.paragraphs.push_back("We write the PMF of a uniform discrete distribution so: P(X = x_i) = 1/n. Or read aloud, the probability P that the next RN noted X is equal to a certain RN noted x_i, is equal to one over the total number of possible values, noted n. In our case, n is 100.") 
+    page.paragraphs.push_back("1-The random numbers are Discrete. This means that the numbers the Goddess gives are whole integers: 0, 1, 2... up to 99. This is in opposition to continuous random numbers, for example human height is a continuous random number expressed as a length in meters. Continuous random numvers can take any decimal value, for example 1.45.");
+    page.paragraphs.push_back("2-The RNs are Uniform, between 0 and 99. This means thay all numbers between these bounds have equal likelihood to be ordained. In the Cosmic RNG's case, it means that all numbers have an equal 1/100, 1% chance of being anointed. For a discrete RNG, these values are known as the probability mass function (PMF) of the distribution. An uniform distributions PMF, like that of the Cosmic RNG, is very simple, since all possibilities are equality likely.")
+    page.paragraphs.push_back("We write the PMF of a uniform discrete distribution so: P(X = x_i) = 1/n. Or read aloud, the probability P that the next RN noted X is equal to a certain RN noted x_i, is equal to one over the total number of possible values, noted n. In our case, n is 100.")
     page.paragraphs.push_back("These are all properties are all that is required to mathematically derive useful values later on.");
     book.addPage(page);
- 
+
     page.paragraphs.clear();
     page.title = "Single and Double Roll";
-    page.paragraphs.push_back("Two pages ago, we mentionned that 'if the hit rate is greater than the next Random Number (RN), the hit will land'. That is only true if we live in a Single Roll world. Unfortunately, we live in a Double Roll world. So was ordained Above.");
+    page.paragraphs.push_back("Two pages ago, we mentionned that 'if the hit rate is greater than the next Random Number (RN), the hit will land'. That is only true if we live in a Single Roll world. In reality, Creation is Double Roll. So was ordained Above.");
     page.paragraphs.push_back("In a Double Roll universe, two RNs are averaged together, then compared to the Hit rate. If the hit rate is higher than the average of two RNs, the hit lands. The Goddess chose the double Roll for its simplicity, and to reward the skillful.");
-page.paragraphs.push_back("An unfortunate side-effect of this universal constant is that the less skilled are punished. Above a hit rate of 50%, Double Roll increase the likelihood of a hit, but under 50\% decreases it instead. 'To everyone who has, more shall be given; but from those who do not have, everything shall be taken away.'");
-page.paragraphs.push_back("The actual True hit probabilities will be derived later, using the properties of the Cosmic RNG defined in the previous page.");
+    page.paragraphs.push_back("An unfortunate side-effect of this universal constant is that the less skilled are punished. Above a hit rate of 50%, Double Roll increase the likelihood of a hit, but under 50\% decreases it instead. 'To everyone who has, more shall be given; but from those who do not have, everything shall be taken away.'");
+    page.paragraphs.push_back("The actual True hit probabilities will be derived later, using the properties of the Cosmic RNG defined in the previous page.");
     book.addPage(page);
 
     page.paragraphs.clear();
@@ -252,22 +252,22 @@ page.paragraphs.push_back("The actual True hit probabilities will be derived lat
     page.paragraphs.push_back("As mentionned in the previous page, the goddess has woven for us a Double Roll world. We wish to expand on the effects and probable cause of this divine decision.");
     page.paragraphs.push_back("In truth, humans are rather mediocre at judging chance. We all tend to overestimate high chance events and underestimate low chance events.");
     page.paragraphs.push_back("Gambling houses routinely swindle the public by exploiting this. The odds of winning are so astronomically low as to be impossible to grasped by the peasantry or aristocracy alike.");
-    page.paragraphs.push_back("Laymen may also mistakenly believe that regular patterns are random, while random patterns are orderly! Those of little faith regularly cry out 'The RNG is busted!' when witnessing events ordained by the Goddess. No, my dear unbeliever, the Cosmic RNG is working just as her divine will commands! It is your lack of faith that makes you see order in the pseudo-chaos created by the Background RNG.");
-    takeItem 
+    page.paragraphs.push_back("Laymen may also mistakenly believe that regular patterns are random, while random patterns are orderly! Those of little faith regularly cry out 'The RNG is busted!' or 'What is going on? The RNG is broken!' when witnessing events ordained by the Goddess. No, my dear unbeliever, the Cosmic RNG is working just as Her Divine Will commands! It is your lack of faith that makes you see order in the pseudo-chaos created by the Background RNG.");
+    takeItem
     book.addPage(page);
 
     page.paragraphs.clear();
     page.title = "Double Roll: PMF and CDF.";
-    page.paragraphs.push_back("To derive the true Hit rates in a Double roll World, what needs to be computed is the chance that the average of two numbers given by the Cosmic RNG is lower than the Hit rate. In mathemagical terms, we can write it so: P(X<x_i), the probability that the random variable X, which is an average of two RNs produced by the Cosmic RNG, is lower than a certain x_i, being the hit rate in the present case. In Mathemagics, we call the P(X<x_i) the Cumulative Distribution Function (CDF). Then, the True rates are simply the values obtained by the CDF. This function is closely linked to the previously mentionned Probability Mass Function (PMF).");
-    page.paragraphs.push_back("To obtain the CDF from the PMF, you just need the cumulative sum of the PMF. Mathemagically, to find P(X < 3), you need to add P(X = 2), P(X = 1), P(X = 0). For example, in a Single Roll universe the Hit rate is equal to the True hit. This is because we find P(X < 3) = 3% because P(X = 2) = P(X = 1) = P(X = 0) = 1/100. In a Double Roll world, it is less easy to derive the CDF from the PMF. We show the first step in this derivation: determining the probability mass function of the average of two RN.");
+    page.paragraphs.push_back("To derive the true Hit rates in a Double roll World, what needs to be computed is the chance that the average of two numbers given by the Cosmic RNG is lower than the Hit rate. In mathemagical terms, we can write it so: P(X<x_i), the probability that the random variable X, which is an average of two RNs produced by the Cosmic RNG, is lower than a certain x_i, being the Hit Rate in the present case. In Mathemagics, we call the P(X<x_i) the Cumulative Distribution Function (CDF). Then, the True rates are simply the values obtained by the CDF. This function is closely linked to the previously mentionned Probability Mass Function (PMF).");
+    page.paragraphs.push_back("To obtain the CDF from the PMF, you just need the cumulative sum of the PMF. Mathemagically, to find P(X < 3), you need to add P(X = 2), P(X = 1), P(X = 0). For example, in a Single Roll universe the Hit rate is equal to the True hit. This is because we find P(X < 3) = 3% because P(X = 2) = P(X = 1) = P(X = 0) = 1/100. In a Double Roll world, True Hit is not equal to the Hit Rate. It is also less simple to derive the CDF from the PMF. We show the first step in this derivation on the next page: determining the probability mass function (PMF) of the average of two RN.");
     book.addPage(page);
 
     page.paragraphs.clear();
     page.title = "Double Roll: Deriving the PMF";
-    page.paragraphs.push_back("As was mentionned in the previous page, the True Hit rate in a Double roll universe is simply the CDF, which can be computed using the PMF, the chances of individual event occurance. Using the previously mentionned properties of the Cosmic RNG, we can derive the probabilities that a value is obtained by averaging two RNs. In total, there is 100x100 = 10000 possible combinations of two RNs ordained by the RNG. The derivation can be understood clearly with few examples:");
-    page.paragraphs.push_back("If the hit rate is 1, there is only a single combination of two RNs that can be averaged to 0: 0-0. This means that the probability P(X=0), for X the average of two RNs, is equal to 1/10000. The next possible average value is 1/2, with two possibilities, 0-1 and 1-0. This means that 1/2 is twice as likely to be observed as 0 when two uniform RNs are averaged! Note that averaging two RNGs increase the resolution so to speak. Instead of the possible values being 0,1,2.. . they are now 0, 0.5, 1, 1.5... ");
-    page.paragraphs.push_back("Anyhow, the next possible hit rate is 2, there are more average values that need to be taken into account: the number of possibilities that average to 1 and 1.5. 1, can be obtained by three combinations of two RNGs: 0-2, 2-0, and 1-1. This makes 1 thrice as likely to be observed compared to 0 in a double roll world! Similarly, 1.5 can be obtained by 4 combinations of two RNGs: 0-3, 2-1, 1-2, 3-0. The pattern is clear! Each averaged value has a 1/10000 more chance to be ordained by the Goddess in a Double Roll world!" );
-    page.paragraphs.push_back("The same reasoning can be applied until we get to the value with maximal probability to be averaged: 49.5. There are 100 possible ways to average to RNs to be equal to 49.5: 0-99, 1-98, 2-97... 98-1, 99-0. Then there is a 100/10000 or 1% chance of obtaining 49.5 when averaging two RNs. The chances of obtaning the average 50 then starts decreasing, because there are only 99 possible combinations: 1-99, 2-98...1-99. The probability of two RNs being averaged then decreases until we reach 99, which can only be ordained by the combination 99-99, with a probability 1/10000." );
+    page.paragraphs.push_back("As was mentionned in the previous page, the True Hit rate in a Double roll universe is simply the CDF, which can be computed using the PMF, the chances of individual event occurance. Using the previously mentionned properties of the Cosmic RNG, we can derive the probabilities that a value is obtained by averaging two RNs. In total, there is 100x100 = 10000 possible combinations of two RNs ordained by the RNG. The derivation can be understood clearly with few examples.");
+    page.paragraphs.push_back("There is only a single combination of two RNs that can be averaged to 0: 0-0. This means that the probability P(X=0), for X the average of two RNs, is equal to 1/10000. The next possible average value is 1/2, with two possibilities, 0-1 and 1-0. This means that 1/2 is twice as likely to be observed as 0 when two uniform RNs are averaged! Note that averaging two RNGs increase the resolution so to speak. Instead of the possible values being 0,1,2.. . they are now 0, 0.5, 1, 1.5... ");
+    page.paragraphs.push_back("Anyhow, the next possible hit rate is 2, there are more average values that need to be taken into account: the number of possibilities that average to 1 and 1.5. 1, can be obtained by three combinations of two RNGs: 0-2, 2-0, and 1-1. This makes 1 thrice as likely to be observed compared to 0 in a Double Roll world! Similarly, 1.5 can be obtained by 4 combinations of two RNGs: 0-3, 2-1, 1-2, 3-0. The pattern is clear! Each averaged value has a 1/10000 more chance to be ordained by the Goddess in a Double Roll world! Until a maximal value of chance is obtained in the middle of the interval");
+    page.paragraphs.push_back("The same reasoning can be applied until we get to the value with maximal probability to be averaged: 49.5. There are 100 possible ways to average to RNs to be equal to 49.5: 0-99, 1-98, 2-97... 98-1, 99-0. This leads to  a 100/10000 or 1% chance of obtaining 49.5 when averaging two RNs. The chances of obtaining the average 50 then starts decreasing, because there are only 99 possible combinations: 1-99, 2-98...99-1. The probability of two RNs being averaged then decreases until we reach 99, which can only be ordained by the combination 99-99, with a probability 1/10000.");
     page.paragraphs.push_back("Then, the PMF of the average of two RNs outputted by the uniform RNG has this structure: Average values can take values 0, 0.5, 1, 1.5... 99. The increment is the 0.5, or the base step of the original RNGs divided by the number of RN being averaged. The change of obtaining 0 is 0.01%, 0.5 is 0.02%, increasing linearly until 49.5 at 1%, decreasing similarly at 50 to 0.99%, down to 0.01% at 99. ");
     book.addPage(page);
 
@@ -275,20 +275,18 @@ page.paragraphs.push_back("The actual True hit probabilities will be derived lat
     page.paragraphs.clear();
     page.title = "Double Roll: Computing the True hits";
     page.paragraphs.clear();
-    page.paragraphs.push_back("So, if the hit rate is 1, there are only two averages that are below it: 0 and 1/2. The total probability of these two averages occuring is the sum of 1/10000 and 2/10000. Which gives the true chance of hitting in a Double Roll world when the Hit Rate is 1 to be 3/10000 or 0.03%." );
-    page.paragraphs.push_back("So this means that the probability that the average of two RNs is lower than 2 to be: 1/10000+2/10000+3/10000+4/10000 which is 10/10000 or 0.10%." );
-    page.title = "Gaussian Roll";
-    page.paragraphs.push_back("");
-    book.addPage(page);    
+    page.paragraphs.push_back("It is trivial to derive the True Hits, or CDF, now that we have the PMF. We simply need to calculate the value P(X < x_i), which is the sum of all values of the PMF below the Hit rate x_i. For example, if your hit rate is 3, True hit is P(X < 3) = P(X = 0) + P(X = 0.5) + P(X = 1) + P(X = 1.5) + P(X = 2) + P(X = 2.5) = 0.01\% + 0.02\% + 0.03\% + 0.04\% + 0.05\% + 0.06% = 0.21\%");
+    page.paragraphs.push_back("This is the reasoning behind computing the True Hit, or the PDF, using the PMF. The table of Hit Rate to True Hit rates can be found on the following page.");
+    book.addPage(page);
 
     page.paragraphs.clear();
-    page.title = "True hits Table.";
+    page.title = "True Hit Table.";
     page.paragraphs.push_back("");
-    book.addPage(page);    
+    book.addPage(page);
 
     page.paragraphs.clear();
-    page.title = "Gaussian Roll";
-    page.paragraphs.push_back("");
+    page.title = "Conclusion";
+    page.paragraphs.push_back("Thank you for reading this book. As the reader has no doubt realized, this book is intented for war Mages and other military personnel that wish to understand the flow of War better. Still, we hope all readers can renew their fate in the Goddess' Tapestry, through the shining light of Mathemagics.");
     book.addPage(page);
 
     book = Book("Love blooms on the Battlefield", ITEM::NAME::BOOKLOVE);
@@ -349,7 +347,7 @@ page.paragraphs.push_back("The actual True hit probabilities will be derived lat
     page.title = "Casting spells.";
     page.paragraphs.push_back("Do not cast spells written by others. You can perfectly cast spells without them, of even create your own. That requires a deep understand of magic, which is difficult to get: hard work over many years of training. It will make you a better Mage. Spells can be recited by newborn idiots.");
     page.paragraphs.push_back("Written spells make it easy to blast enemies without understanding magic. Spells are weapons of war, not tools of the student of Magic.Though I think even war mages should learn to create their own spells. Military mages disagree with me, sometimes very violently. They have their own very convincing stupid reasons.");
-    book.addPage(page);    
+    book.addPage(page);
 
     page.paragraphs.clear();
     page.title = "Writing magic spells.";
@@ -357,7 +355,7 @@ page.paragraphs.push_back("The actual True hit probabilities will be derived lat
     page.paragraphs.push_back("Angelic, demonic or elemental. Do not write any magic spells!");
     page.paragraphs.push_back("Written spells can get in the hands of stupid people. Spells in your mind can't be stolen or used by anyone else.");
     book.addPage(page);
-        
+
     page.paragraphs.clear();
     page.title = "What is possession?";
     page.paragraphs.push_back("You can hear many magic users talk about possession. 'He became possessed by the demonic energies'. 'He turned into a demon and devoured her!' That is a horrible way to say it. Demonic energies do not randomly concentrate themselves in a body. A human does not naturally get rid of almost all of it's harmonious and elemental energies. The people do it, and keep it that way. Whether they realize it or not, this is what they are doing.");
@@ -369,7 +367,7 @@ page.paragraphs.push_back("The actual True hit probabilities will be derived lat
     page.paragraphs.push_back("Stopping the transformation is rather simple. Magic energies normally fill up our bodies in balance. To stop the transformation, you must go back to your original point of balance. Finding places that are full of your missing energies and have a lack of your excesses can help with that.");
     // Implicit-> need to feel all three types of magic + how to manipulate them willingly 3 types of magic! No wonder people fall into the trap of so-called possession. They can almost always willingly manipulate only one type of magic, at best.
 
-    book.addPage(page);    
+    book.addPage(page);
 
     page.paragraphs.clear();
     page.title = "Transforming at will";
@@ -390,7 +388,7 @@ page.paragraphs.push_back("The actual True hit probabilities will be derived lat
     page.paragraphs.clear();
     page.title = "From mage to sage.";
     page.paragraphs.push_back("Who knows how to where wisdom lives and how to acquire it? I did not find it at the School of Magic, even though they can teach you some very useful tricks. If any Mage finds a reliable source of Wisdom, tell me.");
-    book.addPage(page);    
+    book.addPage(page);
 
 
     page.paragraphs.clear();
