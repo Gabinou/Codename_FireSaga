@@ -178,47 +178,47 @@ void Game::setState(entityx::Entity setter, short unsigned int new_state) {
 
                 case GAME::STATE::UNITMOVE: {
                     SDL_Log("Changing to unitmove\n");
-                    std::vector<std::vector<short int>> costmap;
-                    std::vector<std::vector<short int>> movemapp;
-                    std::vector<std::vector<short int>> attackmapp;
-                    entityx::ComponentHandle<Position> cursorpos; // because setter should be the cursor.
-                    entityx::ComponentHandle<Unit> unitcomp;
-                    short unsigned int * start;
-                    short unsigned int unit_move;
-                    short unsigned int current_unit_id;
-                    unsigned char unitmvttype;
-                    unsigned char * range;
+                    // std::vector<std::vector<short int>> costmap;
+                    // std::vector<std::vector<short int>> movemapp;
+                    // std::vector<std::vector<short int>> attackmapp;
+                    // entityx::ComponentHandle<Position> cursorpos; // because setter should be the cursor.
+                    // entityx::ComponentHandle<Unit> unitcomp;
+                    // short unsigned int * start;
+                    // short unsigned int unit_move;
+                    // short unsigned int current_unit_id;
+                    // unsigned char unitmvttype;
+                    // unsigned char * range;
 
-                    cursorpos = setter.component<Position>();
-                    unitcomp = setter.component<Unit>();
-                    selected = unitcomp.entity();
+                    // cursorpos = setter.component<Position>();
+                    // unitcomp = setter.component<Unit>();
+                    // selected = unitcomp.entity();
 
-                    if (cursorpos) {
-                        start = (short unsigned int *)cursorpos->getPos();
-                    } else {
-                        SDL_Log("Could not get cursor position component");
-                    }
+                    // if (cursorpos) {
+                    //     start = (short unsigned int *)cursorpos->getPos();
+                    // } else {
+                    //     SDL_Log("Could not get cursor position component");
+                    // }
 
-                    if (unitcomp) {
-                        unit_move = unitcomp->getStats().move;
-                        unitmvttype = unitcomp->getMvttype();
-                        range = unitcomp->getRange();
-                    } else {
-                        SDL_Log("Could not get unit component");
-                    }
+                    // if (unitcomp) {
+                    //     unit_move = unitcomp->getStats().move;
+                    //     unitmvttype = unitcomp->getMvttype();
+                    //     range = unitcomp->getRange();
+                    // } else {
+                    //     SDL_Log("Could not get unit component");
+                    // }
 
-                    SDL_Log("start: %d %d", start[0], start[1]);
-                    SDL_Log("unitmove: %d", unit_move);
+                    // SDL_Log("start: %d %d", start[0], start[1]);
+                    // SDL_Log("unitmove: %d", unit_move);
 
-                    costmap = mapx->makeMvtCostmap(unitmvttype);
+                    // costmap = mapx->makeMvtCostmap(unitmvttype);
 
-                    movemapp = movemap(costmap, start, unit_move, "matrix");
-                    mapx->setOverlay(MAP::OVERLAY::MOVE, movemapp);
+                    // movemapp = movemap(costmap, start, unit_move, "matrix");
+                    // mapx->setOverlay(MAP::OVERLAY::MOVE, movemapp);
 
-                    attackmapp = attackmap(movemapp, start, unit_move, range, "matrix");
-                    mapx->setOverlay(MAP::OVERLAY::ATTACK, attackmapp);
+                    // attackmapp = attackmap(movemapp, start, unit_move, range, "matrix");
+                    // mapx->setOverlay(MAP::OVERLAY::ATTACK, attackmapp);
 
-                    mapx->showOverlay();
+                    // mapx->showOverlay();
 
                 }
                 break;
