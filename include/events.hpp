@@ -11,6 +11,21 @@ struct beginTurnEvent {
     //Game? or AI ender.
 };
 
+struct selectPC {
+    selectPC(entityx::Entity cursor) : cursor(cursor) {}
+    entityx::Entity cursor;
+};
+
+struct selectNPC {
+    selectNPC(entityx::Entity cursor) : cursor(cursor) {}
+    entityx::Entity cursor;
+};
+
+struct moveUnit {
+    moveUnit(entityx::Entity cursor) : cursor(cursor) {}
+    entityx::Entity cursor;
+};
+
 struct inputAccept {
     inputAccept(entityx::ComponentHandle<KeyboardController> keyboard) : keyboard(keyboard) {}
     inputAccept(entityx::ComponentHandle<GamepadController> gamepad) : gamepad(gamepad) {}
@@ -108,5 +123,8 @@ struct enterVillageEvent {
     enterVillageEvent(entityx::Entity guest, entityx::Entity village) : guest(guest), village(village) {}
     entityx::Entity guest, village;
 };
+
+
+
 
 #endif /* EVENTS_HPP */
