@@ -12,23 +12,52 @@ struct beginTurnEvent {
 };
 
 struct inputAccept {
-    // inputAccept(entityx::Entity cursor) : cursor(cursor) {}
     inputAccept(entityx::ComponentHandle<KeyboardController> keyboard) : keyboard(keyboard) {}
     inputAccept(entityx::ComponentHandle<GamepadController> gamepad) : gamepad(gamepad) {}
-    // entityx::Entity cursor;
     entityx::ComponentHandle<KeyboardController> keyboard;
     entityx::ComponentHandle<GamepadController> gamepad;
-
 };
 
 struct inputCancel {
-    // inputCancel(entityx::Entity cursor) : cursor(cursor) {}
     inputCancel(entityx::ComponentHandle<KeyboardController> keyboard) : keyboard(keyboard) {}
     inputCancel(entityx::ComponentHandle<GamepadController> gamepad) : gamepad(gamepad) {}
-    // entityx::Entity cursor;
     entityx::ComponentHandle<KeyboardController> keyboard;
     entityx::ComponentHandle<GamepadController> gamepad;
+};
 
+struct inputMenuRight {
+    inputMenuRight(entityx::ComponentHandle<KeyboardController> keyboard) : keyboard(keyboard) {}
+    inputMenuRight(entityx::ComponentHandle<GamepadController> gamepad) : gamepad(gamepad) {}
+    entityx::ComponentHandle<KeyboardController> keyboard;
+    entityx::ComponentHandle<GamepadController> gamepad;
+};
+
+struct inputMenuLeft {
+    inputMenuLeft(entityx::ComponentHandle<KeyboardController> keyboard) : keyboard(keyboard) {}
+    inputMenuLeft(entityx::ComponentHandle<GamepadController> gamepad) : gamepad(gamepad) {}
+    entityx::ComponentHandle<KeyboardController> keyboard;
+    entityx::ComponentHandle<GamepadController> gamepad;
+};
+
+struct inputMinimap {
+    inputMinimap(entityx::ComponentHandle<KeyboardController> keyboard) : keyboard(keyboard) {}
+    inputMinimap(entityx::ComponentHandle<GamepadController> gamepad) : gamepad(gamepad) {}
+    entityx::ComponentHandle<KeyboardController> keyboard;
+    entityx::ComponentHandle<GamepadController> gamepad;
+};
+
+struct inputFaster {
+    inputFaster(entityx::ComponentHandle<KeyboardController> keyboard) : keyboard(keyboard) {}
+    inputFaster(entityx::ComponentHandle<GamepadController> gamepad) : gamepad(gamepad) {}
+    entityx::ComponentHandle<KeyboardController> keyboard;
+    entityx::ComponentHandle<GamepadController> gamepad;
+};
+
+struct inputPause {
+    inputPause(entityx::ComponentHandle<KeyboardController> keyboard) : keyboard(keyboard) {}
+    inputPause(entityx::ComponentHandle<GamepadController> gamepad) : gamepad(gamepad) {}
+    entityx::ComponentHandle<KeyboardController> keyboard;
+    entityx::ComponentHandle<GamepadController> gamepad;
 };
 
 struct endTurnEvent {

@@ -273,10 +273,10 @@ public:
     void configure(entityx::EventManager & event_manager) {
         event_manager.subscribe<inputAccept>(*this);
         event_manager.subscribe<inputCancel>(*this);
-        // event_manager.subscribe<inputMenuRight>(*this);
-        // event_manager.subscribe<inputMenuLeft>(*this);
-        // event_manager.subscribe<inputMinimap>(*this);
-        // event_manager.subscribe<inputFaster>(*this);
+        event_manager.subscribe<inputMenuRight>(*this);
+        event_manager.subscribe<inputMenuLeft>(*this);
+        event_manager.subscribe<inputMinimap>(*this);
+        event_manager.subscribe<inputFaster>(*this);
         // event_manager.subscribe<inputPause>(*this);
     }
 
@@ -448,40 +448,13 @@ public:
                 // SDL_Log("Gamepad pressed accept.");
                 pressed_button.push_back(gamepadInputMap.accept);
                 events.emit<inputAccept>(gamepad);
-
-                // short int toset = -1;
-                // entityx::Entity setter;
-                // unsigned int frames_button = gamepad->getHeldbutton();
-
-                // if ((game->getState() == GAME::STATE::MAP) && (frames_button == 1)) {
-                //     SDL_Log("cursor Position, %d %d \n", position->getPos()[0], position->getPos()[1]);
-                //     entityx::ComponentHandle<Unit> unitontile = unitmap[position->getPos()[0]][position->getPos()[1]];
-
-                //     if (unitontile) {
-                //         toset = GAME::STATE::UNITMOVE;
-                //         setter = unitontile.entity();
-                //     } else {
-                //         toset = GAME::STATE::OPTIONS;
-                //         setter = ent;
-                //     }
-
-                //     if (toset != -1) {
-                //         game->setState(setter, toset);
-                //     }
-                // } else if ((game->getState() == GAME::STATE::UNITMOVE) && (frames_button == 1)) {
-                //     game->setState(ent, GAME::STATE::UNITMENU);
-                // }
             }
 
 
             if (gamepad->isPressed(gamepadInputMap.cancel)) {
                 pressed_button.push_back(gamepadInputMap.cancel);
+                events.emit<inputCancel>(gamepad);
 
-                if ((game->getState() == GAME::STATE::UNITMENU) ||
-                        (game->getState() == GAME::STATE::OPTIONS) ||
-                        (game->getState() == GAME::STATE::UNITMOVE)) {
-                    game->setState(ent, GAME::STATE::MAP);
-                }
             }
 
             gamepad->check_move(pressed_move);
