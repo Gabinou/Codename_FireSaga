@@ -400,6 +400,10 @@ short unsigned int Game::getState() {
     return (state);
 }
 
+entityx::ComponentHandle<Map> Game::getMap() {
+    return (mapx);
+}
+
 void Game::loadMap(const int in_map_index) {
     SDL_Log("Loading Map index: %d \n", in_map_index);
 
@@ -595,7 +599,7 @@ void Game::init(const char * title, int xpos, int ypos, int width, int height, b
 
     systems.add<RenderSystemx>(renderer);
     systems.add<ControlSystemx>(this);
-    systems.add<UnitSystemx>();
+    systems.add<UnitSystemx>(this);
     systems.configure();
     state = GAME::STATE::MAP;
 };

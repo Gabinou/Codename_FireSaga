@@ -75,6 +75,7 @@ public:
     ~Game();
 
     void init(const char * title, int xpos, int ypos, int width, int height, bool fullscreen);
+    entityx::ComponentHandle<Map> getMap();
     void loadMap(const int in_map_index);
     void unloadMap();
     void loadUnitEntities(std::vector<short unsigned int> names, std::vector<std::vector<int>> positions_list);

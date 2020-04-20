@@ -34,9 +34,13 @@ public:
 
 class UnitSystemx: public entityx::System<UnitSystemx>, public entityx::Receiver<UnitSystemx> {
 private:
-
+    Game * game;
+    entityx::ComponentHandle<Map> mapx;
 public:
     UnitSystemx();
+    UnitSystemx(Game * in_game);
+
+    void updatemap();
     void configure(entityx::EventManager & event_manager);
     void receive(const beginTurnEvent & begin);
     void receive(const endTurnEvent & end);

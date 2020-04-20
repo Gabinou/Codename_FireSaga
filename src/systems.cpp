@@ -187,12 +187,61 @@ UnitSystemx::UnitSystemx() {
 
 }
 
+UnitSystemx::UnitSystemx(Game * in_game) {
+    game = in_game;
+    updatemap();
+}
+
+void UnitSystemx::updatemap() {
+    mapx = game->getMap();
+}
+
+
 void UnitSystemx::configure(entityx::EventManager & event_manager) {
     event_manager.subscribe<unitMove>(*this);
 }
 
 void UnitSystemx::receive(const unitMove & move) {
     SDL_Log("Unitmove event received.");
+    std::vector<std::vector<short int>> costmap;
+    std::vector<std::vector<short int>> movemapp;
+    std::vector<std::vector<short int>> attackmapp;
+    entityx::Entity cursor = move.cursor;
+    entityx::ComponentHandle<Position> cursorpos = cursor.component<Position>();
+    entityx::ComponentHandle<Unit> unit = move.unit;
+    entityx::Entity selected = unit.entity();
+    short unsigned int * start;
+    short unsigned int unit_move;
+    short unsigned int current_unit_id;
+    unsigned char unitmvttype;
+    unsigned char * range;
+
+    //                 if (cursorpos) {
+    //                     start = (short unsigned int *)cursorpos->getPos();
+    //                 } else {
+    //                     SDL_Log("Could not get cursor position component");
+    //                 }
+
+    //                 if (unitcomp) {
+    //                     unit_move = unitcomp->getStats().move;
+    //                     unitmvttype = unitcomp->getMvttype();
+    //                     range = unitcomp->getRange();
+    //                 } else {
+    //                     SDL_Log("Could not get unit component");
+    //                 }
+
+    //                 SDL_Log("start: %d %d", start[0], start[1]);
+    //                 SDL_Log("unitmove: %d", unit_move);
+
+    //                 costmap = mapx->makeMvtCostmap(unitmvttype);
+
+    //                 movemapp = movemap(costmap, start, unit_move, "matrix");
+    //                 mapx->setOverlay(MAP::OVERLAY::MOVE, movemapp);
+
+    //                 attackmapp = attackmap(movemapp, start, unit_move, range, "matrix");
+    //                 mapx->setOverlay(MAP::OVERLAY::ATTACK, attackmapp);
+
+    //                 mapx->showOverlay();
 }
 
 void UnitSystemx::update(entityx::EntityManager & es, entityx::EventManager & events, entityx::TimeDelta dt) {
