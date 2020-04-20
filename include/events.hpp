@@ -2,6 +2,8 @@
 #define EVENTS_HPP
 
 #include <entityx/entityx.h>
+#include "keyboardcontroller.hpp"
+#include "gamepadcontroller.hpp"
 
 struct beginTurnEvent {
     beginTurnEvent(entityx::Entity beginner) : beginner(beginner) {}
@@ -10,8 +12,13 @@ struct beginTurnEvent {
 };
 
 struct inputAccept {
-    inputAccept(entityx::Entity cursor) : cursor(cursor) {}
-    entityx::Entity cursor;
+    // inputAccept(entityx::Entity cursor) : cursor(cursor) {}
+    inputAccept(entityx::ComponentHandle<KeyboardController> keyboard) : keyboard(keyboard) {}
+    inputAccept(entityx::ComponentHandle<GamepadController> gamepad) : gamepad(gamepad) {}
+    // entityx::Entity cursor;
+    entityx::ComponentHandle<KeyboardController> keyboard;
+    entityx::ComponentHandle<GamepadController> gamepad;
+
 };
 
 struct inputCancel {
