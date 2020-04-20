@@ -164,6 +164,9 @@ public:
 
         SDL_RenderPresent(renderer);
     }
+    void receive(const inputAccept & accept) {
+        SDL_Log("Received inputAccept.")
+    }
 };
 
 class UnitSystemx: public entityx::System<UnitSystemx>, public entityx::Receiver<UnitSystemx> {
@@ -270,6 +273,10 @@ public:
         gamepadInputMap = game->getGamepadInputMap();
     }
 
+    void configure(entityx::EventManager & event_manager) {
+        event_manager.subscribe<inputAccept>(*this);
+    }
+
     void update(entityx::EntityManager & es, entityx::EventManager & events, entityx::TimeDelta dt) override {
 
         for (entityx::Entity ent : es.entities_with_components<Map>()) {
@@ -303,6 +310,8 @@ public:
             if (keyboard->is_pressed(kb_state, keyboardInputMap.accept)) {
                 // SDL_Log("Keyboard pressed accept.");
                 pressed_button.push_back(keyboardInputMap.accept);
+                SDL_Log("Emitting inputAccept event");
+                events.emit<inputAccept>(ent);
                 short int toset = -1;
                 entityx::Entity setter;
                 unsigned int frames_button = keyboard->getHeldbutton();

@@ -198,7 +198,19 @@ void baseBooks() {
     Book book;
 
     book = Book("Basics of Army Management", ITEM::NAME::BOOKBASICS);
+    //Unnecessary i think.
     book.setAuthor("Ancestor of Erwin?");
+
+    page.paragraphs.clear();
+    page.title = "Knights on the field";
+    page.paragraphs.push_back("In serving your King properly, there cones a tine where a Knight may be required to march out and fight battles in the field. This handbook intends to properly guide even the most liwly od squires into capable knights. ");
+    book.addPage(page);
+
+    page.paragraphs.clear();
+    page.title = "Knights on the field";
+    page.paragraphs.push_back("");
+    book.addPage(page);
+
 
     book = Book("Weapons of the World", ITEM::NAME::BOOKWEAPONS);
     book.setAuthor("Member of the Guild of blacksmiths?.");
