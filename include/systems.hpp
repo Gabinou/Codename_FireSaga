@@ -281,7 +281,17 @@ public:
     }
 
     void receive(const inputCancel & cancel) {
-        entityx::Entity canceller = cancel.cursor;
+        entityx::ComponentHandle<KeyboardController> keyboard = cancel.keyboard;
+        entityx::ComponentHandle<GamepadController> gamepad = cancel.gamepad;
+        entityx::Entity canceller;
+
+        if (keyboard) {
+            canceller = keyboard.entity();
+        }
+
+        if (gamepad) {
+            canceller = gamepad.entity();
+        }
 
         if ((game->getState() == GAME::STATE::UNITMENU) ||
                 (game->getState() == GAME::STATE::OPTIONS) ||
@@ -310,11 +320,6 @@ public:
         }
 
         position = accepter.component<Position>();
-
-        if ((!keyboard) && (!gamepad)) {
-            SDL_Log("No keyboard or Gamepad found in received inputAccept");
-        }
-
 
         if ((game->getState() == GAME::STATE::MAP) && (frames_button == 1)) {
             SDL_Log("accepter Position, %d %d \n", position->getPos()[0], position->getPos()[1]);
@@ -375,7 +380,7 @@ public:
 
             if (keyboard->is_pressed(kb_state, keyboardInputMap.cancel)) {
                 pressed_button.push_back(keyboardInputMap.cancel);
-                events.emit<inputCancel>(ent);
+                events.emit<inputCancel>(keyboard);
             }
 
             keyboard->check_move(pressed_move);

@@ -22,38 +22,13 @@ struct inputAccept {
 };
 
 struct inputCancel {
-    inputCancel(entityx::Entity cursor) : cursor(cursor) {}
-    entityx::Entity cursor;
-};
+    // inputCancel(entityx::Entity cursor) : cursor(cursor) {}
+    inputCancel(entityx::ComponentHandle<KeyboardController> keyboard) : keyboard(keyboard) {}
+    inputCancel(entityx::ComponentHandle<GamepadController> gamepad) : gamepad(gamepad) {}
+    // entityx::Entity cursor;
+    entityx::ComponentHandle<KeyboardController> keyboard;
+    entityx::ComponentHandle<GamepadController> gamepad;
 
-struct inputStats {
-    inputStats(entityx::Entity cursor) : cursor(cursor) {}
-    entityx::Entity cursor;
-};
-
-struct inputMenuRight {
-    inputMenuRight(entityx::Entity cursor) : cursor(cursor) {}
-    entityx::Entity cursor;
-};
-
-struct inputMenuLeft {
-    inputMenuLeft(entityx::Entity cursor) : cursor(cursor) {}
-    entityx::Entity cursor;
-};
-
-struct inputMinimap {
-    inputMinimap(entityx::Entity cursor) : cursor(cursor) {}
-    entityx::Entity cursor;
-};
-
-struct inputFaster {
-    inputFaster(entityx::Entity cursor) : cursor(cursor) {}
-    entityx::Entity cursor;
-};
-
-struct inputPause {
-    inputPause(entityx::Entity cursor) : cursor(cursor) {}
-    entityx::Entity cursor;
 };
 
 struct endTurnEvent {
