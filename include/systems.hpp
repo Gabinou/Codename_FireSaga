@@ -294,18 +294,23 @@ public:
         short int toset = -1;
         entityx::Entity setter;
         // entityx::Entity accepter = accept.cursor;
-        // entityx::ComponentHandle<Position> position = accepter.component<Position>();
+        entityx::ComponentHandle<Position> position;
         entityx::ComponentHandle<KeyboardController> keyboard = accept.keyboard;
         entityx::ComponentHandle<GamepadController> gamepad = accept.gamepad;
+        entityx::Entity cursor;
         unsigned int frames_button = 0;
 
         if (keyboard) {
             frames_button = keyboard->getHeldbutton();
+            cursor = keyboard.entity();
         }
 
         if (gamepad) {
             frames_button = gamepad->getHeldbutton();
+            cursor = gamepad.entity();
         }
+
+        position = cursor.component<Position>();
 
         if ((!keyboard) && (!gamepad)) {
             SDL_Log("No keyboard or Gamepad found in received inputAccept");
@@ -321,11 +326,11 @@ public:
                 setter = unitontile.entity();
             } else {
                 toset = GAME::STATE::OPTIONS;
-                setter = accepter;
+                setter = cursor;
             }
         } else if ((game->getState() == GAME::STATE::UNITMOVE) && (frames_button == 1)) {
             toset = GAME::STATE::UNITMENU;
-            setter = accepter;
+            setter = cursor;
         }
 
         if (toset != -1) {
@@ -371,7 +376,7 @@ public:
 
             if (keyboard->is_pressed(kb_state, keyboardInputMap.cancel)) {
                 pressed_button.push_back(keyboardInputMap.cancel);
-                events.emit<inputCancel>(keyboard);
+                events.emit<inputCancel>(ent);
             }
 
             keyboard->check_move(pressed_move);
