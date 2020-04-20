@@ -276,6 +276,36 @@ public:
 
     void receive(const inputAccept & accept) {
         SDL_Log("Received inputAccept.");
+        short int toset = -1;
+        entityx::Entity setter;
+        entityx::Entity accepter = accept.cursor;
+        entityx::ComponentHandle<Position> position = accepter.component<Position>();
+        entityx::ComponentHandle<KeyboardController> keyboard = accepter.component<KeyboardController>();
+        // entityx::ComponentHandle<KeyboardController> gamepad = accepter.component<KeyboardController>();
+
+        if (keyboard) {
+            unsigned int frames_button = keyboard->getHeldbutton();
+
+            if ((game->getState() == GAME::STATE::MAP) && (frames_button == 1)) {
+                SDL_Log("cursor Position, %d %d \n", position->getPos()[0], position->getPos()[1]);
+                entityx::ComponentHandle<Unit> unitontile = unitmap[position->getPos()[0]][position->getPos()[1]];
+
+                if (unitontile) {
+                    toset = GAME::STATE::UNITMOVE;
+                    setter = unitontile.entity();
+                } else {
+                    toset = GAME::STATE::OPTIONS;
+                    setter = accepter;
+                }
+            } else if ((game->getState() == GAME::STATE::UNITMOVE) && (frames_button == 1)) {
+                toset = GAME::STATE::UNITMENU;
+                setter = accepter;
+            }
+
+            if (toset != -1) {
+                game->setState(setter, toset);
+            }
+        }
     }
 
     void update(entityx::EntityManager & es, entityx::EventManager & events, entityx::TimeDelta dt) override {
@@ -313,29 +343,29 @@ public:
                 pressed_button.push_back(keyboardInputMap.accept);
                 SDL_Log("Emitting inputAccept event");
                 events.emit<inputAccept>(ent);
-                short int toset = -1;
-                entityx::Entity setter;
-                unsigned int frames_button = keyboard->getHeldbutton();
+                // short int toset = -1;
+                // entityx::Entity setter;
+                // unsigned int frames_button = keyboard->getHeldbutton();
 
-                if ((game->getState() == GAME::STATE::MAP) && (frames_button == 1)) {
-                    SDL_Log("cursor Position, %d %d \n", position->getPos()[0], position->getPos()[1]);
-                    entityx::ComponentHandle<Unit> unitontile = unitmap[position->getPos()[0]][position->getPos()[1]];
+                // if ((game->getState() == GAME::STATE::MAP) && (frames_button == 1)) {
+                //     SDL_Log("cursor Position, %d %d \n", position->getPos()[0], position->getPos()[1]);
+                //     entityx::ComponentHandle<Unit> unitontile = unitmap[position->getPos()[0]][position->getPos()[1]];
 
-                    if (unitontile) {
-                        toset = GAME::STATE::UNITMOVE;
-                        setter = unitontile.entity();
-                    } else {
-                        toset = GAME::STATE::OPTIONS;
-                        setter = ent;
-                    }
-                } else if ((game->getState() == GAME::STATE::UNITMOVE) && (frames_button == 1)) {
-                    toset = GAME::STATE::UNITMENU;
-                    setter = ent;
-                }
+                //     if (unitontile) {
+                //         toset = GAME::STATE::UNITMOVE;
+                //         setter = unitontile.entity();
+                //     } else {
+                //         toset = GAME::STATE::OPTIONS;
+                //         setter = ent;
+                //     }
+                // } else if ((game->getState() == GAME::STATE::UNITMOVE) && (frames_button == 1)) {
+                //     toset = GAME::STATE::UNITMENU;
+                //     setter = ent;
+                // }
 
-                if (toset != -1) {
-                    game->setState(setter, toset);
-                }
+                // if (toset != -1) {
+                //     game->setState(setter, toset);
+                // }
             }
 
             if (keyboard->is_pressed(kb_state, keyboardInputMap.cancel)) {
