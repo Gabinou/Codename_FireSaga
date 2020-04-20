@@ -49,16 +49,6 @@ struct inputPause {
     entityx::Entity cursor;
 };
 
-struct inputCancels {
-    inputCancels(entityx::Entity cursor) : cursor(cursor) {}
-    entityx::Entity cursor;
-};
-
-struct inputCancels {
-    inputCancels(entityx::Entity cursor) : cursor(cursor) {}
-    entityx::Entity cursor;
-};
-
 struct endTurnEvent {
     endTurnEvent(entityx::Entity ender) : ender(ender) {}
     entityx::Entity ender;

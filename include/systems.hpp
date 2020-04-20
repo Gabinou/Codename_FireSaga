@@ -164,9 +164,6 @@ public:
 
         SDL_RenderPresent(renderer);
     }
-    void receive(const inputAccept & accept) {
-        SDL_Log("Received inputAccept.")
-    }
 };
 
 class UnitSystemx: public entityx::System<UnitSystemx>, public entityx::Receiver<UnitSystemx> {
@@ -249,7 +246,7 @@ public:
     }
 };
 
-class ControlSystemx: public entityx::System<ControlSystemx> {
+class ControlSystemx: public entityx::System<ControlSystemx>, public entityx::Receiver<ControlSystemx> {
 private:
     short unsigned int * tilesize;
     SDL_Rect srcrect;
@@ -275,6 +272,10 @@ public:
 
     void configure(entityx::EventManager & event_manager) {
         event_manager.subscribe<inputAccept>(*this);
+    }
+
+    void receive(const inputAccept & accept) {
+        SDL_Log("Received inputAccept.");
     }
 
     void update(entityx::EntityManager & es, entityx::EventManager & events, entityx::TimeDelta dt) override {
