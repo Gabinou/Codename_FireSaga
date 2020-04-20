@@ -72,6 +72,7 @@ private:
     Game * game;
     KeyboardInputMap keyboardInputMap;
     GamepadInputMap gamepadInputMap;
+    entityx::EventManager * event_manager;
     std::vector<std::vector<entityx::ComponentHandle<Unit>>> unitmap;
     struct Candidate {
         entityx::Entity ent;
@@ -81,7 +82,7 @@ public:
     ControlSystemx();
     ControlSystemx(Game * in_game);
 
-    void configure(entityx::EventManager & event_manager);
+    void configure(entityx::EventManager & in_events);
 
     void receive(const inputMenuRight & menuright);
     void receive(const inputMenuLeft & menuleft);

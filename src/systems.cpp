@@ -192,7 +192,7 @@ void UnitSystemx::configure(entityx::EventManager & event_manager) {
 }
 
 void UnitSystemx::receive(const unitMove & move) {
-
+    SDL_Log("Unitmove event received.");
 }
 
 void UnitSystemx::update(entityx::EntityManager & es, entityx::EventManager & events, entityx::TimeDelta dt) {
@@ -236,14 +236,15 @@ ControlSystemx::ControlSystemx(Game * in_game) {
     gamepadInputMap = game->getGamepadInputMap();
 }
 
-void ControlSystemx::configure(entityx::EventManager & event_manager) {
-    event_manager.subscribe<inputAccept>(*this);
-    event_manager.subscribe<inputCancel>(*this);
-    event_manager.subscribe<inputMenuRight>(*this);
-    event_manager.subscribe<inputMenuLeft>(*this);
-    event_manager.subscribe<inputMinimap>(*this);
-    event_manager.subscribe<inputFaster>(*this);
-    event_manager.subscribe<inputPause>(*this);
+void ControlSystemx::configure(entityx::EventManager & in_events) {
+    event_manager = &in_events;
+    event_manager->subscribe<inputAccept>(*this);
+    event_manager->subscribe<inputCancel>(*this);
+    event_manager->subscribe<inputMenuRight>(*this);
+    event_manager->subscribe<inputMenuLeft>(*this);
+    event_manager->subscribe<inputMinimap>(*this);
+    event_manager->subscribe<inputFaster>(*this);
+    event_manager->subscribe<inputPause>(*this);
 }
 
 void ControlSystemx::receive(const inputMenuRight & menuright) {
@@ -314,6 +315,7 @@ void ControlSystemx::receive(const inputAccept & accept) {
         if (unitontile) {
             toset = GAME::STATE::UNITMOVE;
             setter = unitontile.entity();
+            event_manager->emit<unitMove>(accepter);
         } else {
             toset = GAME::STATE::OPTIONS;
             setter = accepter;
