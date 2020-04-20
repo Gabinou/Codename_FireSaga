@@ -28,6 +28,12 @@ struct unitMove {
     entityx::ComponentHandle<Unit> unit;
 };
 
+struct unitMenu {
+    unitMenu(entityx::Entity cursor, entityx::ComponentHandle<Unit> unit) : cursor(cursor), unit(unit) {}
+    entityx::Entity cursor;
+    entityx::ComponentHandle<Unit> unit;
+};
+
 struct inputAccept {
     inputAccept(entityx::ComponentHandle<KeyboardController> keyboard) : keyboard(keyboard) {}
     inputAccept(entityx::ComponentHandle<GamepadController> gamepad) : gamepad(gamepad) {}

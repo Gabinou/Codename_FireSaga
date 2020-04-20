@@ -15,6 +15,7 @@ class RenderSystemx: public entityx::System<RenderSystemx>, public entityx::Rece
 private:
     SDL_Renderer * renderer = NULL;
     short unsigned int * tilesize;
+    entityx::ComponentHandle<Map> map;
 public:
     RenderSystemx();
     RenderSystemx(SDL_Renderer * in_renderer);
@@ -36,11 +37,15 @@ class UnitSystemx: public entityx::System<UnitSystemx>, public entityx::Receiver
 private:
     Game * game;
     entityx::ComponentHandle<Map> mapx;
+    entityx::Entity unitmenux;
 public:
     UnitSystemx();
     UnitSystemx(Game * in_game);
 
-    void updatemap();
+    void makeUnitmenu(entityx::Entity & setter);
+    void updateMap();
+    void setMap(entityx::ComponentHandle<Map> in_map);
+
     void configure(entityx::EventManager & event_manager);
     void receive(const beginTurnEvent & begin);
     void receive(const endTurnEvent & end);
@@ -49,6 +54,7 @@ public:
     void receive(const unitWaitEvent & wait);
     void receive(const unitRefreshEvent & refreshes);
     void receive(const unitMove & move);
+    void receive(const unitMenu & menu);
     void update(entityx::EntityManager & es, entityx::EventManager & events, entityx::TimeDelta dt) override;
 };
 

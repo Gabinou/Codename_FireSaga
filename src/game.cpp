@@ -303,46 +303,46 @@ void Game::setState(entityx::Entity setter, short unsigned int new_state) {
             switch (new_state) {
                 case GAME::STATE::UNITMENU: {
                     SDL_Log("Changing to unitmenu\n");
-                    mapx->hideOverlay();
+                    // mapx->hideOverlay();
 
-                    if (unitmenux.valid()) {
-                        showMenu(GAME::STATE::UNITMENU);
-                    } else {
-                        makeUnitmenu(setter);
-                    }
+                    // if (unitmenux.valid()) {
+                    //     showMenu(GAME::STATE::UNITMENU);
+                    // } else {
+                    //     makeUnitmenu(setter);
+                    // }
 
-                    short int * new_position;
-                    short int * old_position;
+                    // short int * new_position;
+                    // short int * old_position;
 
-                    entityx::ComponentHandle<Position> setterpos;
-                    entityx::ComponentHandle<Position> selectedpos;
-                    entityx::ComponentHandle<Unit> unitcomp;
-                    setterpos = setter.component<Position>();
+                    // entityx::ComponentHandle<Position> setterpos;
+                    // entityx::ComponentHandle<Position> selectedpos;
+                    // entityx::ComponentHandle<Unit> unitcomp;
+                    // setterpos = setter.component<Position>();
 
-                    if (selected.valid()) {
-                        selectedpos = selected.component<Position>();
+                    // if (selected.valid()) {
+                    //     selectedpos = selected.component<Position>();
 
-                        if (selectedpos) {
-                            old_position = selectedpos->getPos();
-                            // SDL_Log("Old position %d, %d \n", old_position[0], old_position[1]);
-                        } else {
-                            SDL_Log("Could not get selectedx unit component");
-                        }
-                    } else {
-                        SDL_Log("Could not get selected entity");
-                    }
+                    //     if (selectedpos) {
+                    //         old_position = selectedpos->getPos();
+                    //         // SDL_Log("Old position %d, %d \n", old_position[0], old_position[1]);
+                    //     } else {
+                    //         SDL_Log("Could not get selectedx unit component");
+                    //     }
+                    // } else {
+                    //     SDL_Log("Could not get selected entity");
+                    // }
 
-                    if (setterpos) {
-                        new_position = setterpos->getPos();
-                        // SDL_Log("New position %d, %d \n", new_position[0], new_position[1]);
-                    } else {
-                        SDL_Log("Could not get setter(unit) position component");
-                    }
+                    // if (setterpos) {
+                    //     new_position = setterpos->getPos();
+                    //     // SDL_Log("New position %d, %d \n", new_position[0], new_position[1]);
+                    // } else {
+                    //     SDL_Log("Could not get setter(unit) position component");
+                    // }
 
-                    mapx->moveUnit(old_position[0], old_position[1], new_position[0], new_position[1]);
-                    unitmenux.component<Position>()->setPos((new_position[0] + 1) * settings.tilesize[0], new_position[1] * settings.tilesize[1]);
-                    selectedpos->setPos(new_position); // move at the end, cause new and old_position are pointers!
-                    setCursorstate(new_state);
+                    // mapx->moveUnit(old_position[0], old_position[1], new_position[0], new_position[1]);
+                    // unitmenux.component<Position>()->setPos((new_position[0] + 1) * settings.tilesize[0], new_position[1] * settings.tilesize[1]);
+                    // selectedpos->setPos(new_position); // move at the end, cause new and old_position are pointers!
+                    // setCursorstate(new_state);
 
                 }
                 break;
@@ -417,6 +417,7 @@ void Game::loadMap(const int in_map_index) {
         mapx->setArrivals(mapArrivals[in_map_index]());
         mapx->setArrivalEquipments(arrivalEquipments[in_map_index]());
         systems.system<RenderSystemx>()->setMap(mapx);
+        systems.system<UnitSystemx>()->updateMap();
     } else {
         SDL_Log("Failed to loadMap. Was mapx deleted previously?");
     }
