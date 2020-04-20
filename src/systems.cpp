@@ -179,7 +179,7 @@ void RenderSystemx::receive(const unitWaitEvent & wait) {
 
 }
 
-void receive(const unitRefreshEvent & refreshes) {
+void RenderSystemx::receive(const unitRefreshEvent & refresh) {
 
 }
 
