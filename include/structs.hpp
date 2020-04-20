@@ -178,11 +178,11 @@ struct KeyboardInputMap {
 
     std::vector<SDL_Scancode> accept{SDL_SCANCODE_SPACE};
     std::vector<SDL_Scancode> cancel{SDL_SCANCODE_BACKSPACE};
-    std::vector<SDL_Scancode> stats{};
-    std::vector<SDL_Scancode> menu_right{}; // Switches between units of same affilition, when in 'map' states.
-    std::vector<SDL_Scancode> menu_left{}; // Switches between units of same affilition, when in 'map' states.
-    std::vector<SDL_Scancode> minimap{}; // Same controls as when in map state.
-    std::vector<SDL_Scancode> faster{}; // Toggle or Hold?
+    std::vector<SDL_Scancode> stats{SDL_SCANCODE_Q};
+    std::vector<SDL_Scancode> menu_right{SDL_SCANCODE_Q}; // Switches between units of same affilition, when in 'map' states.
+    std::vector<SDL_Scancode> menu_left{SDL_SCANCODE_E}; // Switches between units of same affilition, when in 'map' states.
+    std::vector<SDL_Scancode> minimap{SDL_SCANCODE_R}; // Same controls as when in map state.
+    std::vector<SDL_Scancode> faster{SDL_SCANCODE_TAB}; // Toggle or Hold?
     std::vector<SDL_Scancode> pause{SDL_SCANCODE_RETURN};
 };
 

@@ -277,7 +277,23 @@ public:
         event_manager.subscribe<inputMenuLeft>(*this);
         event_manager.subscribe<inputMinimap>(*this);
         event_manager.subscribe<inputFaster>(*this);
-        // event_manager.subscribe<inputPause>(*this);
+        event_manager.subscribe<inputPause>(*this);
+    }
+
+    void receive(const inputMenuRight & cancel) {
+
+    }
+    void receive(const inputMenuLeft & cancel) {
+
+    }
+    void receive(const inputMinimap & cancel) {
+
+    }
+    void receive(const inputFaster & cancel) {
+
+    }
+    void receive(const inputPause & cancel) {
+
     }
 
     void receive(const inputCancel & cancel) {
