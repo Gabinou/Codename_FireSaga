@@ -3,6 +3,7 @@
 
 #include <entityx/entityx.h>
 #include "keyboardcontroller.hpp"
+// #include "structs.hpp"
 #include "gamepadcontroller.hpp"
 
 struct beginTurnEvent {
@@ -22,8 +23,9 @@ struct selectNPC {
 };
 
 struct unitMove {
-    unitMove(entityx::Entity cursor) : cursor(cursor) {}
+    unitMove(entityx::Entity cursor, entityx::ComponentHandle<Unit> unit) : cursor(cursor), unit(unit) {}
     entityx::Entity cursor;
+    entityx::ComponentHandle<Unit> unit;
 };
 
 struct inputAccept {

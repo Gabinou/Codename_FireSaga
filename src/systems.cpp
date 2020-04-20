@@ -315,7 +315,7 @@ void ControlSystemx::receive(const inputAccept & accept) {
         if (unitontile) {
             toset = GAME::STATE::UNITMOVE;
             setter = unitontile.entity();
-            event_manager->emit<unitMove>(accepter);
+            event_manager->emit<unitMove>(accepter, unitontile);
         } else {
             toset = GAME::STATE::OPTIONS;
             setter = accepter;
