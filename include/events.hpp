@@ -21,8 +21,8 @@ struct selectNPC {
     entityx::Entity cursor;
 };
 
-struct moveUnit {
-    moveUnit(entityx::Entity cursor) : cursor(cursor) {}
+struct unitMove {
+    unitMove(entityx::Entity cursor) : cursor(cursor) {}
     entityx::Entity cursor;
 };
 

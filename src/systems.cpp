@@ -183,6 +183,22 @@ void RenderSystemx::receive(const unitRefreshEvent & refresh) {
 
 }
 
+UnitSystemx::UnitSystemx() {
+
+}
+
+void UnitSystemx::configure(entityx::EventManager & event_manager) {
+    event_manager.subscribe<unitMove>(*this);
+}
+
+void UnitSystemx::receive(const unitMove & move) {
+
+}
+
+void UnitSystemx::update(entityx::EntityManager & es, entityx::EventManager & events, entityx::TimeDelta dt) {
+
+}
+
 TurnSystemx::TurnSystemx() {
 
 }

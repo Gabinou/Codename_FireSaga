@@ -36,6 +36,7 @@ class UnitSystemx: public entityx::System<UnitSystemx>, public entityx::Receiver
 private:
 
 public:
+    UnitSystemx();
     void configure(entityx::EventManager & event_manager);
     void receive(const beginTurnEvent & begin);
     void receive(const endTurnEvent & end);
@@ -43,6 +44,8 @@ public:
     void receive(const unitDieEvent & death);
     void receive(const unitWaitEvent & wait);
     void receive(const unitRefreshEvent & refreshes);
+    void receive(const unitMove & move);
+    void update(entityx::EntityManager & es, entityx::EventManager & events, entityx::TimeDelta dt) override;
 };
 
 class TurnSystemx: public entityx::System<TurnSystemx>, public entityx::Receiver<TurnSystemx> {
