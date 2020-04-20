@@ -272,10 +272,19 @@ public:
 
     void configure(entityx::EventManager & event_manager) {
         event_manager.subscribe<inputAccept>(*this);
+        event_manager.subscribe<inputCancel>(*this);
+        event_manager.subscribe<inputMenuRight>(*this);
+        event_manager.subscribe<inputMenuLeft>(*this);
+        event_manager.subscribe<inputMinimap>(*this);
+        event_manager.subscribe<inputFaster>(*this);
+        event_manager.subscribe<inputPause>(*this);
+    }
+
+    void receive(const inputCancel & cancel) {
+    
     }
 
     void receive(const inputAccept & accept) {
-        SDL_Log("Received inputAccept.");
         short int toset = -1;
         entityx::Entity setter;
         entityx::Entity accepter = accept.cursor;
@@ -341,31 +350,7 @@ public:
             if (keyboard->is_pressed(kb_state, keyboardInputMap.accept)) {
                 // SDL_Log("Keyboard pressed accept.");
                 pressed_button.push_back(keyboardInputMap.accept);
-                SDL_Log("Emitting inputAccept event");
                 events.emit<inputAccept>(ent);
-                // short int toset = -1;
-                // entityx::Entity setter;
-                // unsigned int frames_button = keyboard->getHeldbutton();
-
-                // if ((game->getState() == GAME::STATE::MAP) && (frames_button == 1)) {
-                //     SDL_Log("cursor Position, %d %d \n", position->getPos()[0], position->getPos()[1]);
-                //     entityx::ComponentHandle<Unit> unitontile = unitmap[position->getPos()[0]][position->getPos()[1]];
-
-                //     if (unitontile) {
-                //         toset = GAME::STATE::UNITMOVE;
-                //         setter = unitontile.entity();
-                //     } else {
-                //         toset = GAME::STATE::OPTIONS;
-                //         setter = ent;
-                //     }
-                // } else if ((game->getState() == GAME::STATE::UNITMOVE) && (frames_button == 1)) {
-                //     toset = GAME::STATE::UNITMENU;
-                //     setter = ent;
-                // }
-
-                // if (toset != -1) {
-                //     game->setState(setter, toset);
-                // }
             }
 
             if (keyboard->is_pressed(kb_state, keyboardInputMap.cancel)) {
