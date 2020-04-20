@@ -293,24 +293,23 @@ public:
     void receive(const inputAccept & accept) {
         short int toset = -1;
         entityx::Entity setter;
-        // entityx::Entity accepter = accept.cursor;
         entityx::ComponentHandle<Position> position;
         entityx::ComponentHandle<KeyboardController> keyboard = accept.keyboard;
         entityx::ComponentHandle<GamepadController> gamepad = accept.gamepad;
-        entityx::Entity cursor;
+        entityx::Entity accepter;
         unsigned int frames_button = 0;
 
         if (keyboard) {
             frames_button = keyboard->getHeldbutton();
-            cursor = keyboard.entity();
+            accepter = keyboard.entity();
         }
 
         if (gamepad) {
             frames_button = gamepad->getHeldbutton();
-            cursor = gamepad.entity();
+            accepter = gamepad.entity();
         }
 
-        position = cursor.component<Position>();
+        position = accepter.component<Position>();
 
         if ((!keyboard) && (!gamepad)) {
             SDL_Log("No keyboard or Gamepad found in received inputAccept");
@@ -318,7 +317,7 @@ public:
 
 
         if ((game->getState() == GAME::STATE::MAP) && (frames_button == 1)) {
-            SDL_Log("cursor Position, %d %d \n", position->getPos()[0], position->getPos()[1]);
+            SDL_Log("accepter Position, %d %d \n", position->getPos()[0], position->getPos()[1]);
             entityx::ComponentHandle<Unit> unitontile = unitmap[position->getPos()[0]][position->getPos()[1]];
 
             if (unitontile) {
@@ -326,11 +325,11 @@ public:
                 setter = unitontile.entity();
             } else {
                 toset = GAME::STATE::OPTIONS;
-                setter = cursor;
+                setter = accepter;
             }
         } else if ((game->getState() == GAME::STATE::UNITMOVE) && (frames_button == 1)) {
             toset = GAME::STATE::UNITMENU;
-            setter = cursor;
+            setter = accepter;
         }
 
         if (toset != -1) {
