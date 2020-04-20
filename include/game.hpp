@@ -21,7 +21,7 @@
 #include <vector>
 #include <unordered_map>
 
-class Game : public entityx::EntityX {
+class Game : public entityx::EntityX, public entityx::Receiver<Game> {
 
 private:
 
@@ -117,6 +117,7 @@ public:
     void testXMLMap();
 
     bool running();
+    void configure(entityx::EventManager & event_manager);
     void update(entityx::TimeDelta dt);
 };
 

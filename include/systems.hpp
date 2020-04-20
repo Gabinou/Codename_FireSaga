@@ -280,19 +280,23 @@ public:
         event_manager.subscribe<inputPause>(*this);
     }
 
-    void receive(const inputMenuRight & cancel) {
+    void receive(const inputMenuRight & menuright) {
 
     }
-    void receive(const inputMenuLeft & cancel) {
+
+    void receive(const inputMenuLeft & menuleft) {
 
     }
-    void receive(const inputMinimap & cancel) {
+
+    void receive(const inputMinimap & minimap) {
 
     }
-    void receive(const inputFaster & cancel) {
+
+    void receive(const inputFaster & faster) {
 
     }
-    void receive(const inputPause & cancel) {
+
+    void receive(const inputPause & pause) {
 
     }
 

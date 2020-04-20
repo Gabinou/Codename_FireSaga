@@ -736,6 +736,10 @@ bool Game::running() {
     return (isRunning);
 }
 
+void configure(entityx::EventManager & event_manager) {
+
+}
+
 void Game::update(entityx::TimeDelta dt) {
     // systems.update_all(dt);
     systems.update<ControlSystemx>(dt);
