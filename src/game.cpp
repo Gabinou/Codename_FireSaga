@@ -270,7 +270,7 @@ void Game::setState(entityx::Entity setter, short unsigned int new_state) {
 
                 case GAME::STATE::MAP:
                     hideMenu(GAME::STATE::UNITMENU);
-                    setCursorstate(new_state);
+                    // setCursorstate(new_state);
                     break;
             }
 
