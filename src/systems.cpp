@@ -408,7 +408,6 @@ void ControlSystemx::receive(const inputCancel & cancel) {
 
 void ControlSystemx::receive(const inputAccept & accept) {
     short int toset = -1;
-    entityx::Entity setter;
     entityx::ComponentHandle<Position> position;
     entityx::ComponentHandle<KeyboardController> keyboard = accept.keyboard;
     entityx::ComponentHandle<GamepadController> gamepad = accept.gamepad;
@@ -433,20 +432,17 @@ void ControlSystemx::receive(const inputAccept & accept) {
 
         if (unitontile) {
             toset = GAME::STATE::UNITMOVE;
-            setter = unitontile.entity();
             event_manager->emit<unitMove>(accepter, unitontile);
         } else {
             toset = GAME::STATE::OPTIONS;
-            setter = accepter;
         }
     } else if ((game->getState() == GAME::STATE::UNITMOVE) && (frames_button == 1)) {
         toset = GAME::STATE::UNITMENU;
-        setter = accepter;
         event_manager->emit<unitMenu>(accepter);
     }
 
     if (toset != -1) {
-        game->setState(setter, toset);
+        game->setState(accepter, toset);
     }
 
 }
