@@ -283,7 +283,7 @@ void UnitSystemx::receive(const unitMenu & menu) {
     mapx->moveUnit(old_position[0], old_position[1], new_position[0], new_position[1]);
     unitmenux.component<Position>()->setPos((new_position[0] + 1) * settings->tilesize[0], new_position[1] * settings->tilesize[1]);
     selectedpos->setPos(new_position); // move at the end, cause new and old_position are pointers!
-    // setCursorstate(new_state);
+    game->setCursorstate(GAME::STATE::UNITMENU);
 }
 
 void UnitSystemx::receive(const unitMove & move) {
@@ -338,6 +338,8 @@ void UnitSystemx::receive(const unitMap & map) {
     if ((game->getState() == GAME::STATE::UNITMENU) ||
             (game->getState() == GAME::STATE::OPTIONS)) {
         hideMenu(GAME::STATE::UNITMENU);
+        game->setCursorstate(GAME::STATE::MAP);
+
     }
 }
 
