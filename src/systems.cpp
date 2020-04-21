@@ -217,6 +217,7 @@ void UnitSystemx::updateMap() {
 void UnitSystemx::configure(entityx::EventManager & event_manager) {
     event_manager.subscribe<unitMove>(*this);
     event_manager.subscribe<unitMenu>(*this);
+    event_manager.subscribe<unitMap>(*this);
 }
 
 void UnitSystemx::makeUnitmenu(entityx::Entity & setter) {
@@ -328,28 +329,14 @@ void UnitSystemx::receive(const unitMove & move) {
     mapx->showOverlay();
 }
 
-void UnitSystemx::receive(const inputCancel & cancel) {
+void UnitSystemx::receive(const unitMap & map) {
     SDL_Log("UnitSystemx received inputCancel event");
-    entityx::ComponentHandle<KeyboardController> keyboard = cancel.keyboard;
-    entityx::ComponentHandle<GamepadController> gamepad = cancel.gamepad;
-    entityx::Entity canceller;
-
-    if (keyboard) {
-        canceller = keyboard.entity();
-    }
-
-    if (gamepad) {
-        canceller = gamepad.entity();
-    }
 
     if ((game->getState() == GAME::STATE::UNITMENU) ||
-            (game->getState() == GAME::STATE::OPTIONS) ||
-            (game->getState() == GAME::STATE::UNITMOVE)) {
+            (game->getState() == GAME::STATE::OPTIONS)) {
         hideMenu(GAME::STATE::UNITMENU);
-        game->setState(canceller, GAME::STATE::MAP);
     }
 }
-
 
 void UnitSystemx::update(entityx::EntityManager & es, entityx::EventManager & events, entityx::TimeDelta dt) {
 
@@ -424,8 +411,27 @@ void ControlSystemx::receive(const inputPause & pause) {
 }
 
 void ControlSystemx::receive(const inputCancel & cancel) {
+    SDL_Log("UnitSystemx received inputCancel event");
+    entityx::ComponentHandle<KeyboardController> keyboard = cancel.keyboard;
+    entityx::ComponentHandle<GamepadController> gamepad = cancel.gamepad;
+    entityx::Entity canceller;
 
+    if (keyboard) {
+        canceller = keyboard.entity();
+    }
+
+    if (gamepad) {
+        canceller = gamepad.entity();
+    }
+
+    if ((game->getState() == GAME::STATE::UNITMENU) ||
+            (game->getState() == GAME::STATE::OPTIONS) ||
+            (game->getState() == GAME::STATE::UNITMOVE)) {
+        event_manager->emit<unitMap>(canceller);
+        game->setState(canceller, GAME::STATE::MAP);
+    }
 }
+
 
 void ControlSystemx::receive(const inputAccept & accept) {
     short int toset = -1;
