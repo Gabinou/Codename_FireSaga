@@ -232,7 +232,6 @@ void Game::setCursorstate(const short unsigned int new_state) {
 
                 if (unitmenux.valid()) {
                     unitmenupos = unitmenux.component<Position>()->getPos();
-
                     linespace = unitmenux.component<Text>()->getLinespacing();
                 }
 
@@ -244,7 +243,7 @@ void Game::setCursorstate(const short unsigned int new_state) {
                 menubounds[3] = (short int)(unitmenupos[1] * temp_tilesize[1] / linespace + 1);
                 SDL_Log("Settings bounds.");
                 cursorx.component<Position>()->setBounds(menubounds);
-                // systems.system<RenderSystemx>()->setLinespace(linespace);
+                systems.system<RenderSystemx>()->setLinespace(linespace);
                 break;
         }
     }

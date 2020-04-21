@@ -228,7 +228,6 @@ void UnitSystemx::receive(const unitMenu & menu) {
 
     entityx::Entity cursor = menu.cursor;
     entityx::ComponentHandle<Position> cursorpos = cursor.component<Position>();
-    SDL_Log("Going into the if.");
 
     if (unitmenux->valid()) {
         unitmenux->component<Sprite>()->show();
