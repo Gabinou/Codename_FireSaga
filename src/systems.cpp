@@ -84,11 +84,13 @@ void RenderSystemx::update(entityx::EntityManager & es, entityx::EventManager & 
             }
 
             if ((!ent.has_component<KeyboardController>()) && (!ent.has_component<GamepadController>())) {
+                // This is for NOT CURSOR.
                 if (!position->isonTilemap()) { //move on the menu space
-                    scalefactor[0] = linespace;
-                    scalefactor[1] = linespace;
+                    scalefactor[0] = 1;
+                    scalefactor[1] = 1;
                 }
 
+                SDL_Log("Moving on the tilemap");
                 slidepos[0] = (int)(position->getPos()[0] * scalefactor[0]);
                 slidepos[1] = (int)(position->getPos()[1] * scalefactor[1]);
             }

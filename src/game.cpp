@@ -209,7 +209,7 @@ void Game::setCursorstate(const short unsigned int new_state) {
         switch (new_state) {
             case GAME::STATE::MAP:
                 SDL_Log("Changed Cursor to Map");
-                cursorx.component<Position>()->setPos(6, 6);
+                cursorx.component<Position>()->setPos(6, 6); // Change to last cursor position.
                 cursorx.component<Sprite>()->init(cursorx.component<Position>()->getPos());
                 cursorx.component<Sprite>()->animate();
                 cursorx.component<Sprite>()->setTexture("..//assets//mapcursors.png");
@@ -217,6 +217,7 @@ void Game::setCursorstate(const short unsigned int new_state) {
                 cursorx.component<Sprite>()->setTilesize(mapx->getTilesize());
                 cursorx.component<Sprite>()->setSlidetype(SLIDETYPE::GEOMETRIC);
                 cursorx.component<Position>()->setBounds(mapx->getBounds());
+                cursorx.component<Position>()->setonTilemap(true);
                 systems.system<RenderSystemx>()->setTilesize(temp_tilesize[0], temp_tilesize[1]);
                 break;
 
@@ -235,14 +236,16 @@ void Game::setCursorstate(const short unsigned int new_state) {
                     linespace = unitmenux.component<Text>()->getLinespacing();
                 }
 
-
                 short int menubounds[4];
-                menubounds[0] = unitmenupos[0] * temp_tilesize[0] / linespace;
-                menubounds[1] = unitmenupos[0] * temp_tilesize[0] / linespace;
-                menubounds[2] = unitmenupos[1] * temp_tilesize[1] / linespace;
-                menubounds[3] = (short int)(unitmenupos[1] * temp_tilesize[1] / linespace + 1);
-                SDL_Log("Settings bounds.");
+                menubounds[0] = unitmenupos[0] / linespace;
+                menubounds[1] = unitmenupos[0] / linespace;
+                menubounds[2] = unitmenupos[1] / linespace;
+                menubounds[3] = (short int)(unitmenupos[1] / linespace + 2);
+
+                SDL_Log("linespace %d.", linespace);
+                SDL_Log("Settings bounds %d %d %d %d.", menubounds[0], menubounds[1], menubounds[2], menubounds[3]);
                 cursorx.component<Position>()->setBounds(menubounds);
+                cursorx.component<Position>()->setonTilemap(false);
                 systems.system<RenderSystemx>()->setLinespace(linespace);
                 break;
         }
