@@ -123,18 +123,6 @@ void Game::makeFPSEntity() {
     settings.FPS.entity.component<Text>()->setRects(settings.FPS.pos.x, settings.FPS.pos.y);
 }
 
-void Game::killMenu(short unsigned int index) {
-    unitmenux.destroy();
-}
-void Game::hideMenu(short unsigned int index) {
-    unitmenux.component<Sprite>()->hide();
-    unitmenux.component<Text>()->hide();
-}
-void Game::showMenu(short unsigned int index) {
-    unitmenux.component<Sprite>()->show();
-    unitmenux.component<Text>()->show();
-}
-
 short unsigned int Game::getState() {
     return (state);
 }
@@ -198,13 +186,14 @@ void Game::setCursorstate(const short unsigned int new_state) {
                 SDL_Log("Changed Cursor to unitmenu");
                 temprect = {0, 0, 16, 16}; //x,y,w,h
                 short int * unitmenupos;
-                short int linespace;
+                short int linespace = 1;
                 cursorx.component<Sprite>()->still();
                 cursorx.component<Sprite>()->setSrcrect(temprect);
                 cursorx.component<Sprite>()->setDestrect(temprect);
                 cursorx.component<Sprite>()->setTexture("..//assets//menucursor.png");
 
                 if (unitmenux.valid()) {
+                    if ()
                     unitmenupos = unitmenux.component<Position>()->getPos();
                     linespace = unitmenux.component<Text>()->getLinespacing();
                 }
@@ -215,8 +204,9 @@ void Game::setCursorstate(const short unsigned int new_state) {
                 menubounds[1] = unitmenupos[0] * temp_tilesize[0] / linespace;
                 menubounds[2] = unitmenupos[1] * temp_tilesize[1] / linespace;
                 menubounds[3] = (short int)(unitmenupos[1] * temp_tilesize[1] / linespace + 1);
+                SDL_Log("Settings bounds.");
                 cursorx.component<Position>()->setBounds(menubounds);
-                systems.system<RenderSystemx>()->setLinespace(linespace);
+                // systems.system<RenderSystemx>()->setLinespace(linespace);
                 break;
         }
     }
