@@ -45,7 +45,6 @@ private:
     void killMenu(short unsigned int index);
     void hideMenu(short unsigned int index);
     void showMenu(short unsigned int index);
-    void makeUnitmenu(entityx::Entity & setting_entity);
 
     //TO BE IMPLEMENTED:
     void makeDefendermenu(entityx::Entity & setting_entity);

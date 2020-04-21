@@ -123,25 +123,6 @@ void Game::makeFPSEntity() {
     settings.FPS.entity.component<Text>()->setRects(settings.FPS.pos.x, settings.FPS.pos.y);
 }
 
-void Game::makeUnitmenu(entityx::Entity & setter) {
-    SDL_Log("Making unit menu\n");
-    unitmenux = entities.create();
-    unitmenux.assign<Position>();
-    unitmenux.component<Position>()->setBounds(0, 2000, 0, 2000);
-    unitmenux.component<Position>()->setPos(
-        (int)(setter.component<Position>()->getPos()[0] * settings.tilesize[0]),
-        (int)(setter.component<Position>()->getPos()[1] * settings.tilesize[1])
-    );
-    SDL_Log("Unitmenu setter position %d %d\n", setter.component<Position>()->getPos()[0], setter.component<Position>()->getPos()[1]);
-    SDL_Log("Unitmenu position %d %d\n", unitmenux.component<Position>()->getPos()[0], unitmenux.component<Position>()->getPos()[1]);
-
-    SDL_Color black = {255, 255, 255};
-    unitmenux.assign<Sprite>("..//assets//textbox.png", (int []) {128, 128});
-    // I think the menu textures should be loaded elsewhere when initted or first called. Then, should be only unloaded after a while.
-    //Not loaded and unloaded after EACH CALL.
-    unitmenux.assign<Text>(settings.fontsize, std::vector<std::string> {"Attack", "Wait"}, black);
-}
-
 void Game::killMenu(short unsigned int index) {
     unitmenux.destroy();
 }
@@ -178,47 +159,6 @@ void Game::setState(entityx::Entity setter, short unsigned int new_state) {
 
                 case GAME::STATE::UNITMOVE: {
                     SDL_Log("Changing to unitmove\n");
-                    // std::vector<std::vector<short int>> costmap;
-                    // std::vector<std::vector<short int>> movemapp;
-                    // std::vector<std::vector<short int>> attackmapp;
-                    // entityx::ComponentHandle<Position> cursorpos; // because setter should be the cursor.
-                    // entityx::ComponentHandle<Unit> unitcomp;
-                    // short unsigned int * start;
-                    // short unsigned int unit_move;
-                    // short unsigned int current_unit_id;
-                    // unsigned char unitmvttype;
-                    // unsigned char * range;
-
-                    // cursorpos = setter.component<Position>();
-                    // unitcomp = setter.component<Unit>();
-                    // selected = unitcomp.entity();
-
-                    // if (cursorpos) {
-                    //     start = (short unsigned int *)cursorpos->getPos();
-                    // } else {
-                    //     SDL_Log("Could not get cursor position component");
-                    // }
-
-                    // if (unitcomp) {
-                    //     unit_move = unitcomp->getStats().move;
-                    //     unitmvttype = unitcomp->getMvttype();
-                    //     range = unitcomp->getRange();
-                    // } else {
-                    //     SDL_Log("Could not get unit component");
-                    // }
-
-                    // SDL_Log("start: %d %d", start[0], start[1]);
-                    // SDL_Log("unitmove: %d", unit_move);
-
-                    // costmap = mapx->makeMvtCostmap(unitmvttype);
-
-                    // movemapp = movemap(costmap, start, unit_move, "matrix");
-                    // mapx->setOverlay(MAP::OVERLAY::MOVE, movemapp);
-
-                    // attackmapp = attackmap(movemapp, start, unit_move, range, "matrix");
-                    // mapx->setOverlay(MAP::OVERLAY::ATTACK, attackmapp);
-
-                    // mapx->showOverlay();
 
                 }
                 break;
@@ -303,46 +243,6 @@ void Game::setState(entityx::Entity setter, short unsigned int new_state) {
             switch (new_state) {
                 case GAME::STATE::UNITMENU: {
                     SDL_Log("Changing to unitmenu\n");
-                    // mapx->hideOverlay();
-
-                    // if (unitmenux.valid()) {
-                    //     showMenu(GAME::STATE::UNITMENU);
-                    // } else {
-                    //     makeUnitmenu(setter);
-                    // }
-
-                    // short int * new_position;
-                    // short int * old_position;
-
-                    // entityx::ComponentHandle<Position> setterpos;
-                    // entityx::ComponentHandle<Position> selectedpos;
-                    // entityx::ComponentHandle<Unit> unitcomp;
-                    // setterpos = setter.component<Position>();
-
-                    // if (selected.valid()) {
-                    //     selectedpos = selected.component<Position>();
-
-                    //     if (selectedpos) {
-                    //         old_position = selectedpos->getPos();
-                    //         // SDL_Log("Old position %d, %d \n", old_position[0], old_position[1]);
-                    //     } else {
-                    //         SDL_Log("Could not get selectedx unit component");
-                    //     }
-                    // } else {
-                    //     SDL_Log("Could not get selected entity");
-                    // }
-
-                    // if (setterpos) {
-                    //     new_position = setterpos->getPos();
-                    //     // SDL_Log("New position %d, %d \n", new_position[0], new_position[1]);
-                    // } else {
-                    //     SDL_Log("Could not get setter(unit) position component");
-                    // }
-
-                    // mapx->moveUnit(old_position[0], old_position[1], new_position[0], new_position[1]);
-                    // unitmenux.component<Position>()->setPos((new_position[0] + 1) * settings.tilesize[0], new_position[1] * settings.tilesize[1]);
-                    // selectedpos->setPos(new_position); // move at the end, cause new and old_position are pointers!
-                    // setCursorstate(new_state);
 
                 }
                 break;
