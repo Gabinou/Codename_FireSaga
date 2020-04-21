@@ -137,7 +137,11 @@ void Game::showMenu(short unsigned int index) {
     unitmenux.component<Text>()->show();
 }
 
-entityx::Entity * Game::makeUnitmenu(entityx::Entity & setter) {
+entityx::Entity * Game::getUnitmenu() {
+    return (&unitmenux);
+}
+
+void Game::makeUnitmenu(entityx::Entity & setter) {
     SDL_Log("Making unit menu\n");
     unitmenux = entities.create();
     unitmenux.assign<Position>();
@@ -155,7 +159,6 @@ entityx::Entity * Game::makeUnitmenu(entityx::Entity & setter) {
     // I think the menu textures should be loaded elsewhere when initted or first called. Then, should be only unloaded after a while.
     //Not loaded and unloaded after EACH CALL.
     unitmenux.assign<Text>(settings.fontsize, std::vector<std::string> {"Attack", "Wait"}, white);
-    return (&unitmenux);
 }
 
 short unsigned int Game::getState() {

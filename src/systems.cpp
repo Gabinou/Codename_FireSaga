@@ -205,6 +205,7 @@ UnitSystemx::UnitSystemx(Game * in_game, entityx::EntityManager * in_entity_mana
     game = in_game;
     entity_manager = in_entity_manager;
     settings = game->getSettings();
+    unitmenux = game->getUnitmenu();
     updateMap();
 }
 
@@ -227,12 +228,13 @@ void UnitSystemx::receive(const unitMenu & menu) {
 
     entityx::Entity cursor = menu.cursor;
     entityx::ComponentHandle<Position> cursorpos = cursor.component<Position>();
+    SDL_Log("Going into the if.");
 
     if (unitmenux->valid()) {
         unitmenux->component<Sprite>()->show();
         unitmenux->component<Text>()->show();
     } else {
-        unitmenux = game->makeUnitmenu(cursor);
+        game->makeUnitmenu(cursor);
     }
 
     short int * new_position;
