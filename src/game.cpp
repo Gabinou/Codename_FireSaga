@@ -176,6 +176,9 @@ void Game::setCursorstate(const short unsigned int new_state) {
     SDL_Log("Changing cursor");
     SDL_Rect temprect;
 
+    short unsigned int * temp_tilesize;
+    temp_tilesize = mapx->getTilesize();
+
     if (cursorx.valid()) {
         switch (new_state) {
             case GAME::STATE::MAP:
@@ -188,8 +191,6 @@ void Game::setCursorstate(const short unsigned int new_state) {
                 cursorx.component<Sprite>()->setTilesize(mapx->getTilesize());
                 cursorx.component<Sprite>()->setSlidetype(SLIDETYPE::GEOMETRIC);
                 cursorx.component<Position>()->setBounds(mapx->getBounds());
-                short unsigned int * temp_tilesize;
-                temp_tilesize = mapx->getTilesize();
                 systems.system<RenderSystemx>()->setTilesize(temp_tilesize[0], temp_tilesize[1]);
                 break;
 
@@ -197,6 +198,7 @@ void Game::setCursorstate(const short unsigned int new_state) {
                 SDL_Log("Changed Cursor to unitmenu");
                 temprect = {0, 0, 16, 16}; //x,y,w,h
                 short int * unitmenupos;
+                short int linespace;
                 cursorx.component<Sprite>()->still();
                 cursorx.component<Sprite>()->setSrcrect(temprect);
                 cursorx.component<Sprite>()->setDestrect(temprect);
@@ -204,11 +206,17 @@ void Game::setCursorstate(const short unsigned int new_state) {
 
                 if (unitmenux.valid()) {
                     unitmenupos = unitmenux.component<Position>()->getPos();
+                    linespace = unitmenux.component<Text>()->getLinespacing();
                 }
 
-                short int menubounds[4] = {unitmenupos[0], unitmenupos[0], unitmenupos[1], (short int)(unitmenupos[1] + 1)};
-                // short int linespace = unitmenux.component<Text>()->getLinespacing();
-                // systems.system<RenderSystemx>()->setTilesize(linespace, linespace);
+
+                short int menubounds[4];
+                menubounds[0] = unitmenupos[0] * temp_tilesize[0] / linespace;
+                menubounds[1] = unitmenupos[0] * temp_tilesize[0] / linespace;
+                menubounds[2] = unitmenupos[1] * temp_tilesize[1] / linespace;
+                menubounds[3] = (short int)(unitmenupos[1] * temp_tilesize[1] / linespace + 1);
+                cursorx.component<Position>()->setBounds(menubounds);
+                systems.system<RenderSystemx>()->setLinespace(linespace);
                 break;
         }
     }

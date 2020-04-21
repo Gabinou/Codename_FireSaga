@@ -29,6 +29,11 @@ void RenderSystemx::setTilesize(const short int unsigned width, const short int 
     tilesize[1] = height;
 }
 
+void RenderSystemx::setLinespace(const short int unsigned in_linespace) {
+    linespace = in_linespace;
+}
+
+
 void RenderSystemx::update(entityx::EntityManager & es, entityx::EventManager & events, entityx::TimeDelta dt) {
     SDL_RenderClear(renderer);
 
@@ -55,6 +60,9 @@ void RenderSystemx::update(entityx::EntityManager & es, entityx::EventManager & 
             unsigned char slidetype = sprite->getSlidetype();
             short int slideint = sprite->getSlideint();
             float * slidefactors = sprite->getSlidefactors();
+            short int scalefactor[2];
+            scalefactor[0] = tilesize[0];
+            scalefactor[1] = tilesize[1];
 
             if (sprite->isAnimated()) { //looping sprites.
                 unsigned char looping = sprite->getSs_looping();
@@ -76,13 +84,13 @@ void RenderSystemx::update(entityx::EntityManager & es, entityx::EventManager & 
             }
 
             if ((!ent.has_component<KeyboardController>()) && (!ent.has_component<GamepadController>())) {
-                if (!position->isonTilemap()) { //move on the pixelspace
-                    slidepos[0] = (int)position->getPos()[0];
-                    slidepos[1] = (int)position->getPos()[1];
-                } else { //move on the map.
-                    slidepos[0] = (int)(position->getPos()[0] * tilesize[0]);
-                    slidepos[1] = (int)(position->getPos()[1] * tilesize[1]);
+                if (!position->isonTilemap()) { //move on the menu space
+                    scalefactor[0] = linespace;
+                    scalefactor[1] = linespace;
                 }
+
+                slidepos[0] = (int)(position->getPos()[0] * scalefactor[0]);
+                slidepos[1] = (int)(position->getPos()[1] * scalefactor[1]);
             }
 
             entityx::ComponentHandle<KeyboardController> keyboard = ent.component<KeyboardController>();
@@ -99,8 +107,8 @@ void RenderSystemx::update(entityx::EntityManager & es, entityx::EventManager & 
             }
 
             if (slidetype == SLIDETYPE::GEOMETRIC) { //for cursor mvt on map.
-                objectivepos[0] = (int)position->getPos()[0] * (tilesize[0]) - destrect.w / 4;
-                objectivepos[1] = (int)position->getPos()[1] * (tilesize[1]) - destrect.h / 4;
+                objectivepos[0] = (int)position->getPos()[0] * (scalefactor[0]) - destrect.w / 4;
+                objectivepos[1] = (int)position->getPos()[1] * (scalefactor[1]) - destrect.h / 4;
 
                 if ((gp_held > 25) || (kb_held > 25))  {
                     slideint = 1;
