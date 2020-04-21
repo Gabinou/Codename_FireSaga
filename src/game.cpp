@@ -188,6 +188,9 @@ void Game::setCursorstate(const short unsigned int new_state) {
                 cursorx.component<Sprite>()->setTilesize(mapx->getTilesize());
                 cursorx.component<Sprite>()->setSlidetype(SLIDETYPE::GEOMETRIC);
                 cursorx.component<Position>()->setBounds(mapx->getBounds());
+                short unsigned int * temp_tilesize;
+                temp_tilesize = mapx->getTilesize();
+                systems.system<RenderSystemx>()->setTilesize(temp_tilesize[0], temp_tilesize[1]);
                 break;
 
             case GAME::STATE::UNITMENU:
@@ -204,8 +207,8 @@ void Game::setCursorstate(const short unsigned int new_state) {
                 }
 
                 short int menubounds[4] = {unitmenupos[0], unitmenupos[0], unitmenupos[1], (short int)(unitmenupos[1] + 1)};
-                cursorx.component<Position>()->setBounds(menubounds);
-                // cursorx.component<Sprite>()->init(cursorx.component<Position>()->getPos());
+                // short int linespace = unitmenux.component<Text>()->getLinespacing();
+                // systems.system<RenderSystemx>()->setTilesize(linespace, linespace);
                 break;
         }
     }

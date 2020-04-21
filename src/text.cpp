@@ -4,7 +4,7 @@ Text::Text() {
 
 };
 
-Text::Text(int in_fontsize, std::vector<std::string> in_text, std::vector<SDL_Color> in_textColor) {
+Text::Text(short int in_fontsize, std::vector<std::string> in_text, std::vector<SDL_Color> in_textColor) {
     text_lines = in_text;
     textColor = in_textColor;
 
@@ -19,7 +19,7 @@ Text::Text(int in_fontsize, std::vector<std::string> in_text, std::vector<SDL_Co
     setFontsize(in_fontsize);
 }
 
-Text::Text(int in_fontsize, std::vector<std::string> in_text, SDL_Color in_textColor) {
+Text::Text(short int in_fontsize, std::vector<std::string> in_text, SDL_Color in_textColor) {
     text_lines = in_text;
     textColor.push_back(in_textColor);
 
@@ -30,16 +30,16 @@ Text::Text(int in_fontsize, std::vector<std::string> in_text, SDL_Color in_textC
     setFontsize(in_fontsize);
 }
 
-Text::Text(int in_fontsize, std::string in_text, SDL_Color in_textColor) {
+Text::Text(short int in_fontsize, std::string in_text, SDL_Color in_textColor) {
     text_lines.push_back(in_text);
     textColor.push_back(in_textColor);
     addTextTexture(in_text, in_textColor);
     setFontsize(in_fontsize);
 }
 
-void Text::setFontsize(int in_fontsize) {
+void Text::setFontsize(short int in_fontsize) {
     fontsize = in_fontsize;
-    linespacing = (int)(fontsize * sizefactor[0] * spacingfactor);
+    linespacing = (short int)(fontsize * sizefactor[0] * spacingfactor);
 }
 
 void Text::show() {
@@ -62,8 +62,12 @@ void Text::setSizefactor(float in_factor[2]) {
     sizefactor[1] = in_factor[1];
 }
 
-void Text::setLinespacing(int in_spacing) {
+void Text::setLinespacing(short int in_spacing) {
     linespacing = in_spacing;
+}
+
+short int Text::getLinespacing() {
+    return (linespacing);
 }
 
 void Text::setText(std::string in_text) {
@@ -87,7 +91,7 @@ void Text::addTextTexture(std::string in_text, SDL_Color in_textColor) {
     destrects.push_back(SDL_Rect{});
 }
 
-void Text::removeTexture(unsigned int index) {
+void Text::removeTexture(short int index) {
     if (index == -1) {
         textures.pop_back();
     } else {
@@ -95,7 +99,7 @@ void Text::removeTexture(unsigned int index) {
     }
 }
 
-void Text::removeTextures(unsigned int index) {
+void Text::removeTextures(short int index) {
     textures.clear();
 }
 

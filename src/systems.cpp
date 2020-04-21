@@ -24,6 +24,11 @@ void RenderSystemx::setMap(entityx::ComponentHandle<Map> in_map) {
     tilesize = map->getTilesize();
 }
 
+void RenderSystemx::setTilesize(const short int unsigned width, const short int unsigned height) {
+    tilesize[0] = width;
+    tilesize[1] = height;
+}
+
 void RenderSystemx::update(entityx::EntityManager & es, entityx::EventManager & events, entityx::TimeDelta dt) {
     SDL_RenderClear(renderer);
 

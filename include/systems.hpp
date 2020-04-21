@@ -22,6 +22,7 @@ public:
 
     void setRenderer(SDL_Renderer * in_renderer);
     void setMap(entityx::ComponentHandle<Map> in_map);
+    void setTilesize(const short int unsigned width, const short int unsigned height);
 
     void configure(entityx::EventManager & event_manager);
     void receive(const beginTurnEvent & begin);
