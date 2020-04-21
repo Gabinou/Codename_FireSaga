@@ -188,8 +188,9 @@ UnitSystemx::UnitSystemx() {
 
 }
 
-UnitSystemx::UnitSystemx(Game * in_game) {
+UnitSystemx::UnitSystemx(Game * in_game, entityx::EntityManager * in_entity_manager) {
     game = in_game;
+    entity_manager = in_entity_manager;
     settings = game->getSettings();
     updateMap();
 }
@@ -206,21 +207,22 @@ void UnitSystemx::configure(entityx::EventManager & event_manager) {
 
 void UnitSystemx::makeUnitmenu(entityx::Entity & setter) {
     SDL_Log("Making unit menu\n");
-    // unitmenux = entities.create();
+    unitmenux = entity_manager->create();
     unitmenux.assign<Position>();
     unitmenux.component<Position>()->setBounds(0, 2000, 0, 2000);
-    // unitmenux.component<Position>()->setPos(
-    //     (int)(setter.component<Position>()->getPos()[0] * settings.tilesize[0]),
-    //     (int)(setter.component<Position>()->getPos()[1] * settings.tilesize[1])
-    // );
+    unitmenux.component<Position>()->setonTilemap(false);
+    unitmenux.component<Position>()->setPos(
+        (int)(setter.component<Position>()->getPos()[0] * settings->tilesize[0]),
+        (int)(setter.component<Position>()->getPos()[1] * settings->tilesize[1])
+    );
     SDL_Log("Unitmenu setter position %d %d\n", setter.component<Position>()->getPos()[0], setter.component<Position>()->getPos()[1]);
     SDL_Log("Unitmenu position %d %d\n", unitmenux.component<Position>()->getPos()[0], unitmenux.component<Position>()->getPos()[1]);
 
-    SDL_Color black = {255, 255, 255};
+    SDL_Color white = {255, 255, 255};
     unitmenux.assign<Sprite>("..//assets//textbox.png", (int []) {128, 128});
     // I think the menu textures should be loaded elsewhere when initted or first called. Then, should be only unloaded after a while.
     //Not loaded and unloaded after EACH CALL.
-    // unitmenux.assign<Text>(settings.fontsize, std::vector<std::string> {"Attack", "Wait"}, black);
+    unitmenux.assign<Text>(settings->fontsize, std::vector<std::string> {"Attack", "Wait"}, white);
 }
 
 void UnitSystemx::receive(const unitMenu & menu) {
@@ -229,8 +231,6 @@ void UnitSystemx::receive(const unitMenu & menu) {
 
     entityx::Entity cursor = menu.cursor;
     entityx::ComponentHandle<Position> cursorpos = cursor.component<Position>();
-    entityx::ComponentHandle<Unit> unit = menu.unit;
-    entityx::Entity selected = unit.entity();
 
     if (unitmenux.valid()) {
         unitmenux.component<Sprite>()->show();
@@ -239,37 +239,35 @@ void UnitSystemx::receive(const unitMenu & menu) {
         makeUnitmenu(cursor);
     }
 
-    // short int * new_position;
-    // short int * old_position;
+    short int * new_position;
+    short int * old_position;
 
-    // entityx::ComponentHandle<Position> setterpos;
-    // entityx::ComponentHandle<Position> selectedpos;
-    // entityx::ComponentHandle<Unit> unitcomp;
-    // setterpos = setter.component<Position>();
+    entityx::ComponentHandle<Position> selectedpos;
 
-    // if (selected.valid()) {
-    //     selectedpos = selected.component<Position>();
+    if (selected.valid()) {
+        selectedpos = selected.component<Position>();
 
-    //     if (selectedpos) {
-    //         old_position = selectedpos->getPos();
-    //         // SDL_Log("Old position %d, %d \n", old_position[0], old_position[1]);
-    //     } else {
-    //         SDL_Log("Could not get selectedx unit component");
-    //     }
-    // } else {
-    //     SDL_Log("Could not get selected entity");
-    // }
+        if (selectedpos) {
+            old_position = selectedpos->getPos();
+            SDL_Log("Old position %d, %d \n", old_position[0], old_position[1]);
+        } else {
+            SDL_Log("Could not get selectedx unit component");
+        }
 
-    // if (setterpos) {
-    //     new_position = setterpos->getPos();
-    //     // SDL_Log("New position %d, %d \n", new_position[0], new_position[1]);
-    // } else {
-    //     SDL_Log("Could not get setter(unit) position component");
-    // }
+    } else {
+        SDL_Log("Could not get selected entity");
+    }
 
-    // mapx->moveUnit(old_position[0], old_position[1], new_position[0], new_position[1]);
-    // unitmenux.component<Position>()->setPos((new_position[0] + 1) * settings.tilesize[0], new_position[1] * settings.tilesize[1]);
-    // selectedpos->setPos(new_position); // move at the end, cause new and old_position are pointers!
+    if (cursorpos) {
+        new_position = cursorpos->getPos();
+        SDL_Log("New position %d, %d \n", new_position[0], new_position[1]);
+    } else {
+        SDL_Log("Could not get setter(unit) position component");
+    }
+
+    mapx->moveUnit(old_position[0], old_position[1], new_position[0], new_position[1]);
+    unitmenux.component<Position>()->setPos((new_position[0] + 1) * settings->tilesize[0], new_position[1] * settings->tilesize[1]);
+    selectedpos->setPos(new_position); // move at the end, cause new and old_position are pointers!
     // setCursorstate(new_state);
 }
 
@@ -281,7 +279,7 @@ void UnitSystemx::receive(const unitMove & move) {
     entityx::Entity cursor = move.cursor;
     entityx::ComponentHandle<Position> cursorpos = cursor.component<Position>();
     entityx::ComponentHandle<Unit> unit = move.unit;
-    entityx::Entity selected = unit.entity();
+    selected = unit.entity();
     short unsigned int * start;
     short unsigned int unit_move;
     short unsigned int current_unit_id;
@@ -444,6 +442,7 @@ void ControlSystemx::receive(const inputAccept & accept) {
     } else if ((game->getState() == GAME::STATE::UNITMOVE) && (frames_button == 1)) {
         toset = GAME::STATE::UNITMENU;
         setter = accepter;
+        event_manager->emit<unitMenu>(accepter);
     }
 
     if (toset != -1) {

@@ -29,9 +29,8 @@ struct unitMove {
 };
 
 struct unitMenu {
-    unitMenu(entityx::Entity cursor, entityx::ComponentHandle<Unit> unit) : cursor(cursor), unit(unit) {}
+    unitMenu(entityx::Entity cursor) : cursor(cursor) {}
     entityx::Entity cursor;
-    entityx::ComponentHandle<Unit> unit;
 };
 
 struct inputAccept {

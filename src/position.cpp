@@ -78,7 +78,7 @@ bool Position::isonTilemap() {
     return (onTilemap);
 }
 
-void Position::setTilemap(bool in_tilemap) {
+void Position::setonTilemap(bool in_tilemap) {
     onTilemap = in_tilemap;
 }
 

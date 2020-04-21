@@ -38,10 +38,12 @@ private:
     Game * game;
     Settings * settings;
     entityx::ComponentHandle<Map> mapx;
+    entityx::EntityManager * entity_manager;
     entityx::Entity unitmenux;
+    entityx::Entity selected; // Cursor can select other things than units? Shops? doors? other things?
 public:
     UnitSystemx();
-    UnitSystemx(Game * in_game);
+    UnitSystemx(Game * in_game, entityx::EntityManager * in_entity_manager);
 
     void makeUnitmenu(entityx::Entity & setter);
     void updateMap();

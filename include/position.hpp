@@ -28,7 +28,7 @@ public:
     bool isUpdatable();
 
     bool isonTilemap();
-    void setTilemap(bool in_tilemap);
+    void setonTilemap(bool in_tilemap);
 
     void setPos(short int * in_pos);
     void setPos(short int in_x, short int in_y);
