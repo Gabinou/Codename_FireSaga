@@ -27,8 +27,8 @@ private:
 
     entityx::Entity mapEntx;
     entityx::Entity cursorx;
-    entityx::Entity unitmenux;
     entityx::ComponentHandle<Map> mapx;
+    entityx::Entity unitmenux;
     entityx::Entity selected; // Cursor can select other things than units? Shops? doors? other things?
 
     Narrative narrative;
@@ -40,11 +40,6 @@ private:
     tinymt32_t tinymt;
     Convoy convoy;
 
-    void moveUnit(entityx::Entity & cursor);
-
-    void killMenu(short unsigned int index);
-    void hideMenu(short unsigned int index);
-    void showMenu(short unsigned int index);
 
     //TO BE IMPLEMENTED:
     void makeDefendermenu(entityx::Entity & setting_entity);
@@ -86,6 +81,12 @@ public:
     void setCursorstate(const short unsigned int new_state);
     void unloadCursor();
     template <typename T> void loadTiles(std::vector<T> in_tiles);
+    void moveUnit(entityx::Entity & cursor);
+
+    entityx::Entity * makeUnitmenu(entityx::Entity & setter);
+    void killMenu(short unsigned int index);
+    void hideMenu(short unsigned int index);
+    void showMenu(short unsigned int index);
 
     void handleEvents();
     void update();
@@ -97,6 +98,7 @@ public:
     bool * checkHitCrit(int hit_rate, int crit_rate, short unsigned int mode = GAME::RN::GAUSSIAN);
 
     void makeFPSEntity();
+
 
     Settings * getSettings();
     void setSettings(Settings);

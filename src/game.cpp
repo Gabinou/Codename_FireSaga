@@ -123,6 +123,41 @@ void Game::makeFPSEntity() {
     settings.FPS.entity.component<Text>()->setRects(settings.FPS.pos.x, settings.FPS.pos.y);
 }
 
+void Game::killMenu(short unsigned int index) {
+    unitmenux.destroy();
+}
+
+void Game::hideMenu(short unsigned int index) {
+    unitmenux.component<Sprite>()->hide();
+    unitmenux.component<Text>()->hide();
+}
+
+void Game::showMenu(short unsigned int index) {
+    unitmenux.component<Sprite>()->show();
+    unitmenux.component<Text>()->show();
+}
+
+entityx::Entity * Game::makeUnitmenu(entityx::Entity & setter) {
+    SDL_Log("Making unit menu\n");
+    unitmenux = entities.create();
+    unitmenux.assign<Position>();
+    unitmenux.component<Position>()->setBounds(0, 2000, 0, 2000);
+    unitmenux.component<Position>()->setonTilemap(false);
+    unitmenux.component<Position>()->setPos(
+        (int)(setter.component<Position>()->getPos()[0] * settings.tilesize[0]),
+        (int)(setter.component<Position>()->getPos()[1] * settings.tilesize[1])
+    );
+    SDL_Log("Unitmenu setter position %d %d\n", setter.component<Position>()->getPos()[0], setter.component<Position>()->getPos()[1]);
+    SDL_Log("Unitmenu position %d %d\n", unitmenux.component<Position>()->getPos()[0], unitmenux.component<Position>()->getPos()[1]);
+
+    SDL_Color white = {255, 255, 255};
+    unitmenux.assign<Sprite>("..//assets//textbox.png", (int []) {128, 128});
+    // I think the menu textures should be loaded elsewhere when initted or first called. Then, should be only unloaded after a while.
+    //Not loaded and unloaded after EACH CALL.
+    unitmenux.assign<Text>(settings.fontsize, std::vector<std::string> {"Attack", "Wait"}, white);
+    return (&unitmenux);
+}
+
 short unsigned int Game::getState() {
     return (state);
 }
@@ -193,8 +228,8 @@ void Game::setCursorstate(const short unsigned int new_state) {
                 cursorx.component<Sprite>()->setTexture("..//assets//menucursor.png");
 
                 if (unitmenux.valid()) {
-                    if ()
                     unitmenupos = unitmenux.component<Position>()->getPos();
+
                     linespace = unitmenux.component<Text>()->getLinespacing();
                 }
 

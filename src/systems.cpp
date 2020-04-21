@@ -208,20 +208,6 @@ UnitSystemx::UnitSystemx(Game * in_game, entityx::EntityManager * in_entity_mana
     updateMap();
 }
 
-void UnitSystemx::killMenu(short unsigned int index) {
-    unitmenux.destroy();
-}
-
-void UnitSystemx::hideMenu(short unsigned int index) {
-    unitmenux.component<Sprite>()->hide();
-    unitmenux.component<Text>()->hide();
-}
-
-void UnitSystemx::showMenu(short unsigned int index) {
-    unitmenux.component<Sprite>()->show();
-    unitmenux.component<Text>()->show();
-}
-
 void UnitSystemx::updateMap() {
     mapx = game->getMap();
 }
@@ -233,25 +219,7 @@ void UnitSystemx::configure(entityx::EventManager & event_manager) {
     event_manager.subscribe<unitMap>(*this);
 }
 
-void UnitSystemx::makeUnitmenu(entityx::Entity & setter) {
-    SDL_Log("Making unit menu\n");
-    unitmenux = entity_manager->create();
-    unitmenux.assign<Position>();
-    unitmenux.component<Position>()->setBounds(0, 2000, 0, 2000);
-    unitmenux.component<Position>()->setonTilemap(false);
-    unitmenux.component<Position>()->setPos(
-        (int)(setter.component<Position>()->getPos()[0] * settings->tilesize[0]),
-        (int)(setter.component<Position>()->getPos()[1] * settings->tilesize[1])
-    );
-    SDL_Log("Unitmenu setter position %d %d\n", setter.component<Position>()->getPos()[0], setter.component<Position>()->getPos()[1]);
-    SDL_Log("Unitmenu position %d %d\n", unitmenux.component<Position>()->getPos()[0], unitmenux.component<Position>()->getPos()[1]);
 
-    SDL_Color white = {255, 255, 255};
-    unitmenux.assign<Sprite>("..//assets//textbox.png", (int []) {128, 128});
-    // I think the menu textures should be loaded elsewhere when initted or first called. Then, should be only unloaded after a while.
-    //Not loaded and unloaded after EACH CALL.
-    unitmenux.assign<Text>(settings->fontsize, std::vector<std::string> {"Attack", "Wait"}, white);
-}
 
 void UnitSystemx::receive(const unitMenu & menu) {
     SDL_Log("Unitmenu event received.");
@@ -260,11 +228,11 @@ void UnitSystemx::receive(const unitMenu & menu) {
     entityx::Entity cursor = menu.cursor;
     entityx::ComponentHandle<Position> cursorpos = cursor.component<Position>();
 
-    if (unitmenux.valid()) {
-        unitmenux.component<Sprite>()->show();
-        unitmenux.component<Text>()->show();
+    if (unitmenux->valid()) {
+        unitmenux->component<Sprite>()->show();
+        unitmenux->component<Text>()->show();
     } else {
-        makeUnitmenu(cursor);
+        unitmenux = game->makeUnitmenu(cursor);
     }
 
     short int * new_position;
@@ -294,7 +262,7 @@ void UnitSystemx::receive(const unitMenu & menu) {
     }
 
     mapx->moveUnit(old_position[0], old_position[1], new_position[0], new_position[1]);
-    unitmenux.component<Position>()->setPos((new_position[0] + 1) * settings->tilesize[0], new_position[1] * settings->tilesize[1]);
+    unitmenux->component<Position>()->setPos((new_position[0] + 1) * settings->tilesize[0], new_position[1] * settings->tilesize[1]);
     selectedpos->setPos(new_position); // move at the end, cause new and old_position are pointers!
     game->setCursorstate(GAME::STATE::UNITMENU);
 }
@@ -350,7 +318,7 @@ void UnitSystemx::receive(const unitMap & map) {
 
     if ((game->getState() == GAME::STATE::UNITMENU) ||
             (game->getState() == GAME::STATE::OPTIONS)) {
-        hideMenu(GAME::STATE::UNITMENU);
+        game->hideMenu(GAME::STATE::UNITMENU);
         game->setCursorstate(GAME::STATE::MAP);
 
     }

@@ -42,7 +42,7 @@ private:
     Settings * settings;
     entityx::ComponentHandle<Map> mapx;
     entityx::EntityManager * entity_manager;
-    entityx::Entity unitmenux;
+    entityx::Entity * unitmenux;
     entityx::Entity selected; // Cursor can select other things than units? Shops? doors? other things?
 public:
     UnitSystemx();
