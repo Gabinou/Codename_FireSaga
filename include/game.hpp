@@ -106,7 +106,6 @@ public:
     GamepadInputMap getGamepadInputMap();
     void setGamepadInputMap(const GamepadInputMap in_gpmap);
 
-    void setState(entityx::Entity in_entity, short unsigned int new_state);
     void setState(const short unsigned int new_state);
     short unsigned int getState();
 

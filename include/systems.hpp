@@ -45,6 +45,9 @@ public:
     UnitSystemx();
     UnitSystemx(Game * in_game, entityx::EntityManager * in_entity_manager);
 
+    void killMenu(short unsigned int index);
+    void hideMenu(short unsigned int index);
+    void showMenu(short unsigned int index);
     void makeUnitmenu(entityx::Entity & setter);
     void updateMap();
     void setMap(entityx::ComponentHandle<Map> in_map);
@@ -58,6 +61,7 @@ public:
     void receive(const unitRefreshEvent & refreshes);
     void receive(const unitMove & move);
     void receive(const unitMenu & menu);
+    void receive(const unitMap & map);
     void update(entityx::EntityManager & es, entityx::EventManager & events, entityx::TimeDelta dt) override;
 };
 
