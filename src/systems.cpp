@@ -332,6 +332,10 @@ void UnitSystemx::receive(const unitMove & move) {
 void UnitSystemx::receive(const unitMap & map) {
     SDL_Log("UnitSystemx received inputCancel event");
 
+    if ((game->getState() == GAME::STATE::UNITMOVE)) {
+        mapx->hideOverlay();
+    }
+
     if ((game->getState() == GAME::STATE::UNITMENU) ||
             (game->getState() == GAME::STATE::OPTIONS)) {
         hideMenu(GAME::STATE::UNITMENU);
@@ -428,7 +432,7 @@ void ControlSystemx::receive(const inputCancel & cancel) {
             (game->getState() == GAME::STATE::OPTIONS) ||
             (game->getState() == GAME::STATE::UNITMOVE)) {
         event_manager->emit<unitMap>(canceller);
-        game->setState(canceller, GAME::STATE::MAP);
+        game->setState(GAME::STATE::MAP);
     }
 }
 
@@ -469,7 +473,7 @@ void ControlSystemx::receive(const inputAccept & accept) {
     }
 
     if (toset != -1) {
-        game->setState(accepter, toset);
+        game->setState(toset);
     }
 
 }
