@@ -330,7 +330,6 @@ void UnitSystemx::receive(const unitMove & move) {
 }
 
 void UnitSystemx::receive(const unitMap & map) {
-    SDL_Log("UnitSystemx received inputCancel event");
 
     if ((game->getState() == GAME::STATE::UNITMOVE)) {
         mapx->hideOverlay();
@@ -415,7 +414,6 @@ void ControlSystemx::receive(const inputPause & pause) {
 }
 
 void ControlSystemx::receive(const inputCancel & cancel) {
-    SDL_Log("UnitSystemx received inputCancel event");
     entityx::ComponentHandle<KeyboardController> keyboard = cancel.keyboard;
     entityx::ComponentHandle<GamepadController> gamepad = cancel.gamepad;
     entityx::Entity canceller;
