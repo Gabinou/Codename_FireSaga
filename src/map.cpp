@@ -426,8 +426,8 @@ void Map::loadTilemap(const short unsigned int in_map_index) {
 
 void Map::postTilemap() {
     loadTiletextures();
-    bounds[1] = tilemap.size();
-    bounds[3] = tilemap[0].size();
+    bounds[1] = tilemap[0].size();
+    bounds[3] = tilemap.size();
     std::vector<std::vector<entityx::ComponentHandle<Unit>>> tempunit(bounds[1], std::vector<entityx::ComponentHandle<Unit>>(bounds[3]));
     unitmap = tempunit;
 }
