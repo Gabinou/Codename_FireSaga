@@ -190,6 +190,7 @@ UnitSystemx::UnitSystemx() {
 
 UnitSystemx::UnitSystemx(Game * in_game) {
     game = in_game;
+    settings = game->getSettings();
     updateMap();
 }
 

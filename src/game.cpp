@@ -21,8 +21,8 @@ Game::Game() {
 
 Game::~Game() {}
 
-Settings Game::getSettings() {
-    return (settings);
+Settings * Game::getSettings() {
+    return (&settings);
 }
 
 void Game::setSettings(Settings in_settings) {

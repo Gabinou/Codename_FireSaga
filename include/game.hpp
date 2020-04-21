@@ -99,7 +99,7 @@ public:
 
     void makeFPSEntity();
 
-    Settings getSettings();
+    Settings * getSettings();
     void setSettings(Settings);
 
     KeyboardInputMap getKeyboardInputMap();

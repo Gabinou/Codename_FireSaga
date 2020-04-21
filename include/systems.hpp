@@ -36,6 +36,7 @@ public:
 class UnitSystemx: public entityx::System<UnitSystemx>, public entityx::Receiver<UnitSystemx> {
 private:
     Game * game;
+    Settings * settings;
     entityx::ComponentHandle<Map> mapx;
     entityx::Entity unitmenux;
 public:
