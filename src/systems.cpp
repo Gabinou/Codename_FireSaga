@@ -358,30 +358,31 @@ void UnitSystemx::update(entityx::EntityManager & es, entityx::EventManager & ev
 
 }
 
-TurnSystemx::TurnSystemx() {
+MapSystemx::MapSystemx() {
 
 }
 
-void TurnSystemx::addArmy(unsigned char in_army) {
+void MapSystemx::addArmy(unsigned char in_army) {
     armies.push(in_army);
 }
 
-void TurnSystemx::configure(entityx::EventManager & event_manager) {
-    event_manager.subscribe<beginTurnEvent>(*this);
-    event_manager.subscribe<endTurnEvent>(*this);
+void MapSystemx::configure(entityx::EventManager & event_manager) {
+    // event_manager.subscribe<beginTurnEvent>(*this);
+    // event_manager.subscribe<endTurnEvent>(*this);
+    event_manager.subscribe<mapMenu>(*this);
 }
 
-void TurnSystemx::receive(const beginTurnEvent & begin) {
+void MapSystemx::receive(const beginTurnEvent & begin) {
     SDL_Log("Received a beginTurnEvent from...");
 }
 
-void TurnSystemx::receive(const endTurnEvent & end) {
+void MapSystemx::receive(const endTurnEvent & end) {
     SDL_Log("Received a endTurnEvent from...");
     armies.push(armies.front());
     armies.pop();
 }
 
-void TurnSystemx::update(entityx::EntityManager & es, entityx::EventManager & events, entityx::TimeDelta dt) {
+void MapSystemx::update(entityx::EntityManager & es, entityx::EventManager & events, entityx::TimeDelta dt) {
     entityx::ComponentHandle<Unit> unit;
 }
 
@@ -475,9 +476,9 @@ void ControlSystemx::receive(const inputAccept & accept) {
         if (unitontile) {
             toset = GAME::STATE::UNITMOVE;
             event_manager->emit<unitSelect>(accepter, unitontile);
-            // event_manager->emit<unitMove>(accepter, unitontile);
         } else {
             toset = GAME::STATE::OPTIONS;
+            event_manager->emit<mapMenu>(accepter);
         }
     } else if ((game->getState() == GAME::STATE::UNITMOVE) && (frames_button == 1)) {
         toset = GAME::STATE::UNITMENU;

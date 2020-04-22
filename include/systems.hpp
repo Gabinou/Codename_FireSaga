@@ -70,18 +70,19 @@ public:
     void update(entityx::EntityManager & es, entityx::EventManager & events, entityx::TimeDelta dt) override;
 };
 
-class TurnSystemx: public entityx::System<TurnSystemx>, public entityx::Receiver<TurnSystemx> {
+class MapSystemx: public entityx::System<MapSystemx>, public entityx::Receiver<MapSystemx> {
 private:
     std::queue<unsigned char> armies;
-
 public:
-    explicit TurnSystemx();
+    explicit MapSystemx();
 
     void addArmy(unsigned char in_army);
+    void addArmies(std::vector<unsigned char> in_armies);
 
     void configure(entityx::EventManager & event_manager);
-    void receive(const beginTurnEvent & begin);
-    void receive(const endTurnEvent & end);
+    // void receive(const beginTurnEvent & begin);
+    // void receive(const endTurnEvent & end);
+    void receive(const mapMenu & end);
 
     void update(entityx::EntityManager & es, entityx::EventManager & events, entityx::TimeDelta dt) override;
 };
