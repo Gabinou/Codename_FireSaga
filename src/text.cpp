@@ -4,37 +4,37 @@ Text::Text() {
 
 };
 
-Text::Text(short int in_fontsize, std::vector<std::string> in_text, std::vector<SDL_Color> in_textColor) {
+
+Text::Text(short int in_fontsize) {
+    setFontsize(in_fontsize);
+}
+
+Text::Text(short int in_fontsize, std::vector<std::string> in_text, std::vector<SDL_Color> in_textColor) : Text(in_fontsize) {
     text_lines = in_text;
     textColor = in_textColor;
 
     for (int i = 0; i < in_text.size(); i++) {
         if (in_textColor.size() == 1) {
-            addTextTexture(in_text[i], in_textColor[0]);
+            addTextTexture(in_text[i], textColor[0]);
         } else {
-            addTextTexture(in_text[i], in_textColor[i]);
+            addTextTexture(in_text[i], textColor[i]);
         }
     }
-
-    setFontsize(in_fontsize);
 }
 
-Text::Text(short int in_fontsize, std::vector<std::string> in_text, SDL_Color in_textColor) {
+Text::Text(short int in_fontsize, std::vector<std::string> in_text, SDL_Color in_textColor) : Text(in_fontsize) {
     text_lines = in_text;
     textColor.push_back(in_textColor);
 
     for (int i = 0; i < in_text.size(); i++) {
-        addTextTexture(in_text[i], in_textColor);
+        addTextTexture(in_text[i], textColor[0]);
     }
-
-    setFontsize(in_fontsize);
 }
 
-Text::Text(short int in_fontsize, std::string in_text, SDL_Color in_textColor) {
+Text::Text(short int in_fontsize, std::string in_text, SDL_Color in_textColor) : Text(in_fontsize) {
     text_lines.push_back(in_text);
     textColor.push_back(in_textColor);
-    addTextTexture(in_text, in_textColor);
-    setFontsize(in_fontsize);
+    addTextTexture(in_text, textColor[0]);
 }
 
 void Text::setFontsize(short int in_fontsize) {

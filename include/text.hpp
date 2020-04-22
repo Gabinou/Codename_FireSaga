@@ -42,7 +42,11 @@ public:
     void setLinespacing(short int in_spacing);
     short int getLinespacing();
 
+    void setColor(std::vector<SDL_Color> in_textColor);
+    void setColor(SDL_Color in_textColor);
+
     void setText(std::string in_text);
+    void setText(std::vector<std::string> in_text);
 
     std::vector<SDL_Texture *> getTextures();
     void addTextTexture(std::string in_text, SDL_Color in_textColor);
