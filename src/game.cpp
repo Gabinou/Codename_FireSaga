@@ -159,10 +159,15 @@ entityx::Entity * Game::getUnitmenu() {
 void Game::makeMenu(unsigned char in_menu_index) {
     // I think the menu textures should be loaded elsewhere when initted or first called. Then, should be only unloaded after a while.
     // Not loaded and unloaded after EACH CALL.
+    if (!cursorx.valid()) {
+        menus[in_menu_index] = entities.destroy();    
+    }
     menus[in_menu_index] = entities.create();
     menus[in_menu_index].assign<Position>();
     menus[in_menu_index].assign<Sprite>();
-    menus[in_menu_index].assign<Text>();
+    // menus[MENU::UNIT].component<Sprite>()->hide();
+    menus[in_menu_index].assign<Text>(settings.fontsize, std::vector<std::string> {"Attack", "Wait"}, white);
+    menus[in_menu_index].component<Text>()->hide();
     SDL_Color white = {255, 255, 255};
 
     switch (in_menu_index) {
@@ -170,13 +175,9 @@ void Game::makeMenu(unsigned char in_menu_index) {
             SDL_Log("Making unit menu\n");
             menus[in_menu_index].component<Position>()->setBounds(0, 2000, 0, 2000);
             menus[in_menu_index].component<Position>()->setonTilemap(false);
-            // menus[in_menu_index].assign<Sprite>("..//assets//textbox.png", (int []) {128, 128});
             menus[in_menu_index].component<Sprite>()->setTexture("..//assets//textbox.png");
             menus[in_menu_index].component<Sprite>()->setSrcrect(128, 128);
             menus[in_menu_index].component<Sprite>()->setDestrect(128, 128);
-            // menus[MENU::UNIT].component<Sprite>()->hide();
-            menus[in_menu_index].assign<Text>(settings.fontsize, std::vector<std::string> {"Attack", "Wait"}, white);
-            menus[in_menu_index].component<Text>()->hide();
             break;
 
         case MENU::MAP:
