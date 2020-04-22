@@ -235,8 +235,19 @@ void UnitSystemx::configure(entityx::EventManager & events) {
 void UnitSystemx::receive(const unitSelect & select) {
     entityx::ComponentHandle<Unit> unit = select.unit;
 
-    if (unit->getArmy() == UNIT::ARMY::ERWIN) {
-        event_manager->emit<unitMove>(select.cursor, select.unit);
+    switch (unit->getArmy()) {
+        case UNIT::ARMY::FRIENDLY:
+        case UNIT::ARMY::ERWIN:
+        case UNIT::ARMY::FREE_MILITIA:
+            event_manager->emit<unitMove>(select.cursor, select.unit);
+            break;
+        case UNIT::ARMY::ENEMY:
+        case UNIT::ARMY::BANDITS:
+        case UNIT::ARMY::KEWAC:
+            break;
+        case UNIT::ARMY::NEUTRAL:
+        case UNIT::ARMY::ENEMY:
+            break;
     }
 }
 
