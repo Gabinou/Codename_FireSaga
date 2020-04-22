@@ -245,6 +245,7 @@ void Game::setCursorstate(const short unsigned int new_state) {
                 SDL_Log("linespace %d.", linespace);
                 SDL_Log("Settings bounds %d %d %d %d.", menubounds[0], menubounds[1], menubounds[2], menubounds[3]);
                 cursorx.component<Position>()->setBounds(menubounds);
+                cursorx.component<Position>()->setPos(menubounds[0], menubounds[2]);
                 cursorx.component<Position>()->setonTilemap(false);
                 systems.system<RenderSystemx>()->setLinespace(linespace);
                 break;

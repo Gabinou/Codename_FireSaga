@@ -87,10 +87,9 @@ void RenderSystemx::update(entityx::EntityManager & es, entityx::EventManager & 
                 // This is for NOT CURSOR.
                 if (!position->isonTilemap()) { //move on the menu space
                     scalefactor[0] = 1;
-                    scalefactor[1] = 1;
+                    scalefactor[1] = 1 ;
                 }
 
-                SDL_Log("Moving on the tilemap");
                 slidepos[0] = (int)(position->getPos()[0] * scalefactor[0]);
                 slidepos[1] = (int)(position->getPos()[1] * scalefactor[1]);
             }
@@ -108,27 +107,34 @@ void RenderSystemx::update(entityx::EntityManager & es, entityx::EventManager & 
                 gp_held = gamepad->getHeldmove();
             }
 
-            if (slidetype == SLIDETYPE::GEOMETRIC) { //for cursor mvt on map.
-                objectivepos[0] = (int)position->getPos()[0] * (scalefactor[0]) - destrect.w / 4;
-                objectivepos[1] = (int)position->getPos()[1] * (scalefactor[1]) - destrect.h / 4;
-
-                if ((gp_held > 25) || (kb_held > 25))  {
-                    slideint = 1;
+            if ((gamepad) || (keyboard)) {
+                if (!position->isonTilemap()) { //move on the menu space
+                    scalefactor[0] = linespace;
+                    scalefactor[1] = linespace;
                 }
 
-                if (objectivepos[0] != slidepos[0]) {
-                    slidepos[0] += geometricslide((objectivepos[0] - slidepos[0]), slidefactors[slideint]);
-                }
+                if (slidetype == SLIDETYPE::GEOMETRIC) { //for cursor mvt on map.
+                    objectivepos[0] = (int)position->getPos()[0] * (scalefactor[0]) - destrect.w / 4;
+                    objectivepos[1] = (int)position->getPos()[1] * (scalefactor[1]) - destrect.h / 4;
 
-                if (objectivepos[1] != slidepos[1]) {
-                    slidepos[1] += geometricslide((objectivepos[1] - slidepos[1]), slidefactors[slideint]);
-                }
+                    if ((gp_held > 25) || (kb_held > 25))  {
+                        slideint = 1;
+                    }
 
-                if ((objectivepos[0] == slidepos[0]) && (objectivepos[1] == slidepos[1])) {
-                    position->setUpdatable(true);
-                    slideint = 0;
-                } else {
-                    position->setUpdatable(false);
+                    if (objectivepos[0] != slidepos[0]) {
+                        slidepos[0] += geometricslide((objectivepos[0] - slidepos[0]), slidefactors[slideint]);
+                    }
+
+                    if (objectivepos[1] != slidepos[1]) {
+                        slidepos[1] += geometricslide((objectivepos[1] - slidepos[1]), slidefactors[slideint]);
+                    }
+
+                    if ((objectivepos[0] == slidepos[0]) && (objectivepos[1] == slidepos[1])) {
+                        position->setUpdatable(true);
+                        slideint = 0;
+                    } else {
+                        position->setUpdatable(false);
+                    }
                 }
             }
 
