@@ -210,6 +210,7 @@ UnitSystemx::UnitSystemx() {
 }
 
 UnitSystemx::UnitSystemx(Game * in_game) {
+    SDL_Log("Adding Unitsystem.");
     game = in_game;
     settings = game->getSettings();
     unitmenux = game->getUnitmenu();
@@ -228,8 +229,6 @@ void UnitSystemx::configure(entityx::EventManager & events) {
     events.subscribe<unitMenu>(*this);
     events.subscribe<unitMap>(*this);
 }
-
-
 
 void UnitSystemx::receive(const unitSelect & select) {
     entityx::ComponentHandle<Unit> unit = select.unit;
@@ -360,6 +359,7 @@ void UnitSystemx::update(entityx::EntityManager & es, entityx::EventManager & ev
 }
 
 MapSystemx::MapSystemx() {
+    SDL_Log("Adding Mapsystemx.");
 
 }
 
@@ -396,6 +396,7 @@ ControlSystemx::ControlSystemx() {
 }
 
 ControlSystemx::ControlSystemx(Game * in_game) {
+    SDL_Log("Adding Controlsystem.");
     game = in_game;
     keyboardInputMap = game->getKeyboardInputMap();
     gamepadInputMap = game->getGamepadInputMap();

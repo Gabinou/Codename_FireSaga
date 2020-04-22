@@ -50,7 +50,7 @@ public:
     void makeTextures();
     void addTextTexture(std::string in_text, SDL_Color in_text_color);
     void removeTexture(short int index = -1);
-    void removeTextures(short int index = -1);
+    void removeTextures();
     void wraptext();
 
     void setRects(short int * in_position);

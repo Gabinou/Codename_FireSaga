@@ -90,7 +90,7 @@ void Text::removeTexture(short int index) {
     }
 }
 
-void Text::removeTextures(short int index) {
+void Text::removeTextures() {
     textures.clear();
 }
 

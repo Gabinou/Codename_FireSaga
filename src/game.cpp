@@ -114,6 +114,7 @@ void Game::fight(Unit * attacker, Unit * defender) {
 }
 
 void Game::makeFPSEntity() {
+    SDL_Log("Making FPS entity");
     settings.FPS.entity = entities.create();
     settings.FPS.entity.assign<Position>();
     settings.FPS.entity.component<Position>()->setBounds(0, settings.res.x, 0, settings.res.y);
@@ -122,6 +123,7 @@ void Game::makeFPSEntity() {
     settings.FPS.entity.component<Text>()->setText("60");
     settings.FPS.entity.component<Text>()->setColor(settings.FPS.textcolor);
     settings.FPS.entity.component<Text>()->setSizefactor(settings.FPS.sizefactor);
+    settings.FPS.entity.component<Text>()->makeTextures();
     settings.FPS.entity.component<Text>()->setRects(settings.FPS.pos.x, settings.FPS.pos.y);
 }
 
@@ -159,11 +161,7 @@ entityx::Entity * Game::getUnitmenu() {
 }
 
 void Game::makeMenu(unsigned char in_menu_index) {
-    // I think the menu textures should be loaded elsewhere when initted or first called. Then, should be only unloaded after a while.
-    // Not loaded and unloaded after EACH CALL.
-    if (!cursorx.valid()) {
-        menus[in_menu_index].destroy();
-    }
+    SDL_Log("Making Menu");
 
     menus[in_menu_index] = entities.create();
     menus[in_menu_index].assign<Position>();
@@ -172,6 +170,7 @@ void Game::makeMenu(unsigned char in_menu_index) {
     menus[in_menu_index].assign<Sprite>();
     // menus[MENU::UNIT].component<Sprite>()->hide();
     SDL_Color white = {255, 255, 255};
+    SDL_Log("Until here");
     menus[in_menu_index].assign<Text>(settings.fontsize);
     menus[in_menu_index].component<Text>()->setColor(white);
     menus[in_menu_index].component<Text>()->hide();
@@ -183,6 +182,7 @@ void Game::makeMenu(unsigned char in_menu_index) {
             menus[in_menu_index].component<Sprite>()->setSrcrect(128, 128);
             menus[in_menu_index].component<Sprite>()->setDestrect(128, 128);
             menus[in_menu_index].component<Text>()->setText(std::vector<std::string> {"Attack", "Items", "Wait"});
+            menus[in_menu_index].component<Text>()->makeTextures();
             break;
 
         case MENU::MAP:
