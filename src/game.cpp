@@ -125,21 +125,16 @@ void Game::makeFPSEntity() {
 
 void Game::killMenu(short unsigned int index) {
     menus[index].destroy();
-    // unitmenux.destroy();
 }
 
 void Game::hideMenu(short unsigned int index) {
     menus[index].component<Sprite>()->hide();
     menus[index].component<Text>()->hide();
-    // unitmenux.component<Sprite>()->;
-    // unitmenux.component<Text>()->hide();
 }
 
 void Game::showMenu(short unsigned int index) {
     menus[index].component<Text>()->show();
     menus[index].component<Sprite>()->show();
-    // unitmenux.component<Sprite>()->show();
-    // unitmenux.component<Text>()->show();
 }
 
 entityx::Entity * Game::getMenu(unsigned char in_menu_index) {
@@ -158,7 +153,6 @@ entityx::Entity * Game::getMenu(unsigned char in_menu_index) {
 }
 
 entityx::Entity * Game::getUnitmenu() {
-    // return (&unitmenux);
     return (&menus[MENU::UNIT]);
 }
 

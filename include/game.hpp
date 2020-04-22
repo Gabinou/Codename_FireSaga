@@ -29,7 +29,6 @@ private:
     entityx::Entity cursorx;
     entityx::ComponentHandle<Map> mapx;
     std::unordered_map<unsigned char, entityx::Entity> menus;
-    entityx::Entity unitmenux;
     entityx::Entity selected; // Cursor can select other things than units? Shops? doors? other things?
 
     Narrative narrative;
