@@ -118,7 +118,9 @@ void Game::makeFPSEntity() {
     settings.FPS.entity.assign<Position>();
     settings.FPS.entity.component<Position>()->setBounds(0, settings.res.x, 0, settings.res.y);
     settings.FPS.entity.component<Position>()->setPos(settings.FPS.pos.x, settings.FPS.pos.y);
-    settings.FPS.entity.assign<Text>(settings.fontsize, "60", settings.FPS.textcolor);
+    settings.FPS.entity.assign<Text>(settings.fontsize);
+    settings.FPS.entity.component<Text>()->setText("60");
+    settings.FPS.entity.component<Text>()->setColor(settings.FPS.textcolor);
     settings.FPS.entity.component<Text>()->setSizefactor(settings.FPS.sizefactor);
     settings.FPS.entity.component<Text>()->setRects(settings.FPS.pos.x, settings.FPS.pos.y);
 }
@@ -160,17 +162,19 @@ void Game::makeMenu(unsigned char in_menu_index) {
     // I think the menu textures should be loaded elsewhere when initted or first called. Then, should be only unloaded after a while.
     // Not loaded and unloaded after EACH CALL.
     if (!cursorx.valid()) {
-        menus[in_menu_index] = entities.destroy();    
+        menus[in_menu_index].destroy();
     }
+
     menus[in_menu_index] = entities.create();
     menus[in_menu_index].assign<Position>();
     menus[in_menu_index].component<Position>()->setonTilemap(false);
     menus[in_menu_index].component<Position>()->setBounds(0, 2000, 0, 2000);
     menus[in_menu_index].assign<Sprite>();
     // menus[MENU::UNIT].component<Sprite>()->hide();
-    menus[in_menu_index].assign<Text>(settings.fontsize, std::vector<std::string> {"Attack", "Items", "Wait"}, white);
-    menus[in_menu_index].component<Text>()->hide();
     SDL_Color white = {255, 255, 255};
+    menus[in_menu_index].assign<Text>(settings.fontsize);
+    menus[in_menu_index].component<Text>()->setColor(white);
+    menus[in_menu_index].component<Text>()->hide();
 
     switch (in_menu_index) {
         case MENU::UNIT:
@@ -178,6 +182,7 @@ void Game::makeMenu(unsigned char in_menu_index) {
             menus[in_menu_index].component<Sprite>()->setTexture("..//assets//textbox.png");
             menus[in_menu_index].component<Sprite>()->setSrcrect(128, 128);
             menus[in_menu_index].component<Sprite>()->setDestrect(128, 128);
+            menus[in_menu_index].component<Text>()->setText(std::vector<std::string> {"Attack", "Items", "Wait"});
             break;
 
         case MENU::MAP:

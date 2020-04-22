@@ -4,37 +4,8 @@ Text::Text() {
 
 };
 
-
 Text::Text(short int in_fontsize) {
     setFontsize(in_fontsize);
-}
-
-Text::Text(short int in_fontsize, std::vector<std::string> in_text, std::vector<SDL_Color> in_textColor) : Text(in_fontsize) {
-    text_lines = in_text;
-    textColor = in_textColor;
-
-    for (int i = 0; i < in_text.size(); i++) {
-        if (in_textColor.size() == 1) {
-            addTextTexture(in_text[i], textColor[0]);
-        } else {
-            addTextTexture(in_text[i], textColor[i]);
-        }
-    }
-}
-
-Text::Text(short int in_fontsize, std::vector<std::string> in_text, SDL_Color in_textColor) : Text(in_fontsize) {
-    text_lines = in_text;
-    textColor.push_back(in_textColor);
-
-    for (int i = 0; i < in_text.size(); i++) {
-        addTextTexture(in_text[i], textColor[0]);
-    }
-}
-
-Text::Text(short int in_fontsize, std::string in_text, SDL_Color in_textColor) : Text(in_fontsize) {
-    text_lines.push_back(in_text);
-    textColor.push_back(in_textColor);
-    addTextTexture(in_text, textColor[0]);
 }
 
 void Text::setFontsize(short int in_fontsize) {
@@ -70,23 +41,43 @@ short int Text::getLinespacing() {
     return (linespacing);
 }
 
-void Text::setText(std::string in_text) {
-    if (text_lines.size() == 0) {
-        text_lines.push_back(in_text);
-    } else {
-        text_lines[0] = in_text;
-    }
+void Text::setColor(std::vector<SDL_Color> in_text_color) {
+    text_color = in_text_color;
+}
 
-    removeTexture();
-    addTextTexture(in_text, textColor[0]);
+void Text::setColor(SDL_Color in_text_color) {
+    text_color.clear();
+    text_color.push_back(in_text_color);
+}
+
+void Text::setText(std::vector<std::string> in_text) {
+    text_lines = in_text;
+}
+
+void Text::setText(std::string in_text) {
+    text_lines.clear();
+    text_lines.push_back(in_text);
 }
 
 std::vector<SDL_Texture *> Text::getTextures() {
     return (textures);
 }
 
-void Text::addTextTexture(std::string in_text, SDL_Color in_textColor) {
-    textures.push_back(textToTexture(Game::renderer, in_text, in_textColor, Game::font));
+void Text::makeTextures() {
+    removeTextures();
+
+    for (int i = 0; i < text_lines.size(); i++) {
+        if (text_color.size() == 1) {
+            addTextTexture(text_lines[i], text_color[0]);
+        } else {
+            addTextTexture(text_lines[i], text_color[i]);
+        }
+    }
+}
+
+
+void Text::addTextTexture(std::string in_text, SDL_Color in_text_color) {
+    textures.push_back(textToTexture(Game::renderer, in_text, in_text_color, Game::font));
     srcrects.push_back(SDL_Rect{});
     destrects.push_back(SDL_Rect{});
 }

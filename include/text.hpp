@@ -13,9 +13,9 @@ class Text {
 private:
     std::vector<SDL_Texture *> textures;
     std::vector<std::string> text_lines;
+    std::vector<SDL_Color> text_color;
     std::vector<SDL_Rect> srcrects; // background always first?
     std::vector<SDL_Rect> destrects; // background always first?
-    std::vector<SDL_Color> textColor;
 
     short int linespacing = 10;
     short int padding[4] = {10, 10, 10, 10}; //html style: up right down left
@@ -27,9 +27,7 @@ private:
 
 public:
     Text();
-    Text(short int in_fontsize, std::string in_text, SDL_Color in_textColor);
-    Text(short int in_fontsize, std::vector<std::string> in_text, SDL_Color in_textColor);
-    Text(short int in_fontsize, std::vector<std::string> in_text, std::vector<SDL_Color> in_textColor);
+    Text(short int in_fontsize);
 
     void setFontsize(short int in_fontsize);
 
@@ -42,14 +40,15 @@ public:
     void setLinespacing(short int in_spacing);
     short int getLinespacing();
 
-    void setColor(std::vector<SDL_Color> in_textColor);
-    void setColor(SDL_Color in_textColor);
+    void setColor(std::vector<SDL_Color> in_text_color);
+    void setColor(SDL_Color in_text_color);
 
     void setText(std::string in_text);
     void setText(std::vector<std::string> in_text);
 
     std::vector<SDL_Texture *> getTextures();
-    void addTextTexture(std::string in_text, SDL_Color in_textColor);
+    void makeTextures();
+    void addTextTexture(std::string in_text, SDL_Color in_text_color);
     void removeTexture(short int index = -1);
     void removeTextures(short int index = -1);
     void wraptext();
