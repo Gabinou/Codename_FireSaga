@@ -317,9 +317,6 @@ void Game::loadUnits(unsigned char in_chap) {
     // Not necessary. I think would be better to load the party from a savefile or something.
     std::vector<short int> toload = baseParties[in_chap]();
     baseUnits(&units, toload);
-    SDL_Log("in Loadunits %s %d ", units[UNIT::NAME::SILOU].getName().c_str(), units[UNIT::NAME::SILOU].getArmy());
-    SDL_Log("in Loadunits %s %d ", units[UNIT::NAME::ERWIN].getName().c_str(), units[UNIT::NAME::ERWIN].getArmy());
-    SDL_Log("in Loadunits %s %d ", units[UNIT::NAME::RELIABLE].getName().c_str(), units[UNIT::NAME::RELIABLE].getArmy());
 }
 
 void Game::loadUnits(std::vector<short int> toload) {

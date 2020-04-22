@@ -954,6 +954,7 @@ void baseUnits(std::unordered_map<int, Unit> * in_units, std::vector<short int> 
                 temp_unit.addEquipment(temp_wpn);
                 temp_supports = {UNIT::NAME::KIARA};
                 temp_unit.setSupports(temp_supports);
+                in_units->erase(index);
                 in_units->insert({index, temp_unit});
                 break;
 
@@ -965,6 +966,7 @@ void baseUnits(std::unordered_map<int, Unit> * in_units, std::vector<short int> 
                 temp = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
                 temp_unit.setGrowths(temp);
                 temp_unit.setBaseExp(100);
+                in_units->erase(index);
                 in_units->insert({index, temp_unit});
                 break;
 
@@ -976,6 +978,7 @@ void baseUnits(std::unordered_map<int, Unit> * in_units, std::vector<short int> 
                 temp = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
                 temp_unit.setGrowths(temp);
                 temp_unit.setBaseExp(200);
+                in_units->erase(index);
                 in_units->insert({index, temp_unit});
                 break;
 
@@ -987,6 +990,7 @@ void baseUnits(std::unordered_map<int, Unit> * in_units, std::vector<short int> 
                 temp = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
                 temp_unit.setGrowths(temp);
                 temp_unit.setBaseExp(2200);
+                in_units->erase(index);
                 in_units->insert({index, temp_unit});
                 break;
 
@@ -998,6 +1002,7 @@ void baseUnits(std::unordered_map<int, Unit> * in_units, std::vector<short int> 
                 temp = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
                 temp_unit.setGrowths(temp);
                 temp_unit.setBaseExp(100);
+                in_units->erase(index);
                 in_units->insert({index, temp_unit});
                 break;
 
@@ -1009,6 +1014,7 @@ void baseUnits(std::unordered_map<int, Unit> * in_units, std::vector<short int> 
                 temp = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
                 temp_unit.setGrowths(temp);
                 temp_unit.setBaseExp(2200);
+                in_units->erase(index);
                 in_units->insert({index, temp_unit});
                 break;
 
@@ -1020,6 +1026,7 @@ void baseUnits(std::unordered_map<int, Unit> * in_units, std::vector<short int> 
                 temp = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
                 temp_unit.setGrowths(temp);
                 temp_unit.setBaseExp(500);
+                in_units->erase(index);
                 in_units->insert({index, temp_unit});
                 break;
 
@@ -1031,6 +1038,7 @@ void baseUnits(std::unordered_map<int, Unit> * in_units, std::vector<short int> 
                 temp = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
                 temp_unit.setGrowths(temp);
                 temp_unit.setBaseExp(1200);
+                in_units->erase(index);
                 in_units->insert({index, temp_unit});
                 break;
 
@@ -1042,6 +1050,7 @@ void baseUnits(std::unordered_map<int, Unit> * in_units, std::vector<short int> 
                 temp = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
                 temp_unit.setGrowths(temp);
                 temp_unit.setBaseExp(400);
+                in_units->erase(index);
                 in_units->insert({index, temp_unit});
                 break;
 
@@ -1071,6 +1080,7 @@ void baseUnits(std::unordered_map<int, Unit> * in_units, std::vector<short int> 
                 temp_unit.setGrowths(temp);
                 temp_unit.setBaseExp(0);
                 temp_unit.setEquipped(temp_equipped);
+                in_units->erase(index);
                 in_units->insert({index, temp_unit});
                 break;
 
@@ -1082,6 +1092,7 @@ void baseUnits(std::unordered_map<int, Unit> * in_units, std::vector<short int> 
                 temp = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
                 temp_unit.setGrowths(temp);
                 temp_unit.setBaseExp(0);
+                in_units->erase(index);
                 in_units->insert({index, temp_unit});
                 break;
 
@@ -1093,6 +1104,7 @@ void baseUnits(std::unordered_map<int, Unit> * in_units, std::vector<short int> 
                 temp = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
                 temp_unit.setGrowths(temp);
                 temp_unit.setBaseExp(0);
+                in_units->erase(index);
                 in_units->insert({index, temp_unit});
                 break;
 
@@ -1104,6 +1116,7 @@ void baseUnits(std::unordered_map<int, Unit> * in_units, std::vector<short int> 
                 temp = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
                 temp_unit.setGrowths(temp);
                 temp_unit.setBaseExp(0);
+                in_units->erase(index);
                 in_units->insert({index, temp_unit});
                 break;
 
@@ -1115,6 +1128,7 @@ void baseUnits(std::unordered_map<int, Unit> * in_units, std::vector<short int> 
                 temp = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
                 temp_unit.setGrowths(temp);
                 temp_unit.setBaseExp(0);
+                in_units->erase(index);
                 in_units->insert({index, temp_unit});
                 break;
 
@@ -1126,6 +1140,7 @@ void baseUnits(std::unordered_map<int, Unit> * in_units, std::vector<short int> 
                 temp = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
                 temp_unit.setGrowths(temp);
                 temp_unit.setBaseExp(0);
+                in_units->erase(index);
                 in_units->insert({index, temp_unit});
                 break;
 
@@ -1137,6 +1152,7 @@ void baseUnits(std::unordered_map<int, Unit> * in_units, std::vector<short int> 
                 temp = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
                 temp_unit.setGrowths(temp);
                 temp_unit.setBaseExp(0);
+                in_units->erase(index);
                 in_units->insert({index, temp_unit});
                 break;
 
@@ -1148,6 +1164,7 @@ void baseUnits(std::unordered_map<int, Unit> * in_units, std::vector<short int> 
                 temp = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
                 temp_unit.setGrowths(temp);
                 temp_unit.setBaseExp(0);
+                in_units->erase(index);
                 in_units->insert({index, temp_unit});
                 break;
 
@@ -1159,6 +1176,7 @@ void baseUnits(std::unordered_map<int, Unit> * in_units, std::vector<short int> 
                 temp = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
                 temp_unit.setGrowths(temp);
                 temp_unit.setBaseExp(0);
+                in_units->erase(index);
                 in_units->insert({index, temp_unit});
                 break;
 
@@ -1170,6 +1188,7 @@ void baseUnits(std::unordered_map<int, Unit> * in_units, std::vector<short int> 
                 temp = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
                 temp_unit.setGrowths(temp);
                 temp_unit.setBaseExp(0);
+                in_units->erase(index);
                 in_units->insert({index, temp_unit});
                 break;
 
@@ -1181,6 +1200,7 @@ void baseUnits(std::unordered_map<int, Unit> * in_units, std::vector<short int> 
                 temp = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
                 temp_unit.setGrowths(temp);
                 temp_unit.setBaseExp(0);
+                in_units->erase(index);
                 in_units->insert({index, temp_unit});
                 break;
 
@@ -1192,6 +1212,7 @@ void baseUnits(std::unordered_map<int, Unit> * in_units, std::vector<short int> 
                 temp = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
                 temp_unit.setGrowths(temp);
                 temp_unit.setBaseExp(0);
+                in_units->erase(index);
                 in_units->insert({index, temp_unit});
                 break;
 
@@ -1203,6 +1224,7 @@ void baseUnits(std::unordered_map<int, Unit> * in_units, std::vector<short int> 
                 temp = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
                 temp_unit.setGrowths(temp);
                 temp_unit.setBaseExp(0);
+                in_units->erase(index);
                 in_units->insert({index, temp_unit});
                 break;
 
@@ -1214,6 +1236,7 @@ void baseUnits(std::unordered_map<int, Unit> * in_units, std::vector<short int> 
                 temp = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
                 temp_unit.setGrowths(temp);
                 temp_unit.setBaseExp(0);
+                in_units->erase(index);
                 in_units->insert({index, temp_unit});
                 break;
 
@@ -1225,6 +1248,7 @@ void baseUnits(std::unordered_map<int, Unit> * in_units, std::vector<short int> 
                 temp = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
                 temp_unit.setGrowths(temp);
                 temp_unit.setBaseExp(0);
+                in_units->erase(index);
                 in_units->insert({index, temp_unit});
                 break;
 
@@ -1236,6 +1260,7 @@ void baseUnits(std::unordered_map<int, Unit> * in_units, std::vector<short int> 
                 temp = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
                 temp_unit.setGrowths(temp);
                 temp_unit.setBaseExp(0);
+                in_units->erase(index);
                 in_units->insert({index, temp_unit});
                 break;
         }

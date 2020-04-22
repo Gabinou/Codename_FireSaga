@@ -234,12 +234,8 @@ void UnitSystemx::configure(entityx::EventManager & events) {
 
 void UnitSystemx::receive(const unitSelect & select) {
     entityx::ComponentHandle<Unit> unit = select.unit;
-    SDL_Log("in unitSelect %s", unit->getName().c_str());
-    SDL_Log("in unitSelect %d", unit->getArmy());
-    SDL_Log("in unitSelect %d", UNIT::ARMY::ERWIN);
 
     if (unit->getArmy() == UNIT::ARMY::ERWIN) {
-        SDL_Log("emitting unitMove");
         event_manager->emit<unitMove>(select.cursor, select.unit);
     }
 }
