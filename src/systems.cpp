@@ -241,7 +241,7 @@ void UnitSystemx::receive(const unitMenu & menu) {
         unitmenux->component<Sprite>()->show();
         unitmenux->component<Text>()->show();
     } else {
-        game->makeUnitmenu(cursor);
+        game->makeUnitmenu();
     }
 
     short int * new_position;

@@ -141,24 +141,19 @@ entityx::Entity * Game::getUnitmenu() {
     return (&unitmenux);
 }
 
-void Game::makeUnitmenu(entityx::Entity & setter) {
+void Game::makeUnitmenu() {
     SDL_Log("Making unit menu\n");
     unitmenux = entities.create();
     unitmenux.assign<Position>();
     unitmenux.component<Position>()->setBounds(0, 2000, 0, 2000);
     unitmenux.component<Position>()->setonTilemap(false);
-    unitmenux.component<Position>()->setPos(
-        (int)(setter.component<Position>()->getPos()[0] * settings.tilesize[0]),
-        (int)(setter.component<Position>()->getPos()[1] * settings.tilesize[1])
-    );
-    SDL_Log("Unitmenu setter position %d %d\n", setter.component<Position>()->getPos()[0], setter.component<Position>()->getPos()[1]);
-    SDL_Log("Unitmenu position %d %d\n", unitmenux.component<Position>()->getPos()[0], unitmenux.component<Position>()->getPos()[1]);
-
     SDL_Color white = {255, 255, 255};
     unitmenux.assign<Sprite>("..//assets//textbox.png", (int []) {128, 128});
     // I think the menu textures should be loaded elsewhere when initted or first called. Then, should be only unloaded after a while.
     //Not loaded and unloaded after EACH CALL.
+    unitmenux.component<Sprite>()->hide();
     unitmenux.assign<Text>(settings.fontsize, std::vector<std::string> {"Attack", "Wait"}, white);
+    unitmenux.component<Text>()->hide();
 }
 
 short unsigned int Game::getState() {
@@ -209,7 +204,6 @@ void Game::setCursorstate(const short unsigned int new_state) {
         switch (new_state) {
             case GAME::STATE::MAP:
                 SDL_Log("Changed Cursor to Map");
-                cursorx.component<Position>()->setPos(6, 6); // Change to last cursor position.
                 cursorx.component<Sprite>()->init(cursorx.component<Position>()->getPos());
                 cursorx.component<Sprite>()->animate();
                 cursorx.component<Sprite>()->setTexture("..//assets//mapcursors.png");
@@ -218,6 +212,7 @@ void Game::setCursorstate(const short unsigned int new_state) {
                 cursorx.component<Sprite>()->setSlidetype(SLIDETYPE::GEOMETRIC);
                 cursorx.component<Position>()->setBounds(mapx->getBounds());
                 cursorx.component<Position>()->setonTilemap(true);
+                cursorx.component<Position>()->setPos(6, 6); // Change to last cursor position.
                 systems.system<RenderSystemx>()->setTilesize(temp_tilesize[0], temp_tilesize[1]);
                 break;
 
@@ -239,7 +234,7 @@ void Game::setCursorstate(const short unsigned int new_state) {
                 short int menubounds[4];
                 menubounds[0] = unitmenupos[0] / linespace;
                 menubounds[1] = unitmenupos[0] / linespace;
-                menubounds[2] = unitmenupos[1] / linespace;
+                menubounds[2] = (short int)(unitmenupos[1] / linespace + 1);
                 menubounds[3] = (short int)(unitmenupos[1] / linespace + 2);
 
                 SDL_Log("linespace %d.", linespace);

@@ -75,6 +75,7 @@ int main(int argc, char * argv[]) {
     std::vector<std::vector<int>> positions_list = {{6, 6}};
     firesaga->loadUnitEntities(unit_inds, positions_list);
 
+    firesaga->makeUnitmenu();
     firesaga->loadCursor();
 
     firesaga->loadMapArrivals();

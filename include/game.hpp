@@ -83,7 +83,7 @@ public:
     template <typename T> void loadTiles(std::vector<T> in_tiles);
     void moveUnit(entityx::Entity & cursor);
 
-    void makeUnitmenu(entityx::Entity & setter);
+    void makeUnitmenu();
     entityx::Entity * getUnitmenu();
     void killMenu(short unsigned int index);
     void hideMenu(short unsigned int index);
