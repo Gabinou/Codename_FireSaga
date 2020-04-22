@@ -76,9 +76,10 @@ int main(int argc, char * argv[]) {
     firesaga->loadUnitEntities(unit_inds, positions_list);
 
     firesaga->makeUnitmenu();
+
     firesaga->loadCursor();
 
-    firesaga->loadMapArrivals();
+    // firesaga->loadMapArrivals();
 
     // SDL_Log("Testing game save XML");
     // firesaga->saveXML(1);

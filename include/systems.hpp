@@ -42,6 +42,7 @@ private:
     Settings * settings;
     entityx::ComponentHandle<Map> mapx;
     entityx::EntityManager * entity_manager;
+    entityx::EventManager * event_manager;
     entityx::Entity * unitmenux;
     entityx::Entity selected; // Cursor can select other things than units? Shops? doors? other things?
 public:
@@ -62,6 +63,7 @@ public:
     void receive(const unitDieEvent & death);
     void receive(const unitWaitEvent & wait);
     void receive(const unitRefreshEvent & refreshes);
+    void receive(const unitSelect & selected);
     void receive(const unitMove & move);
     void receive(const unitMenu & menu);
     void receive(const unitMap & map);

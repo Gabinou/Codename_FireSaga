@@ -151,7 +151,7 @@ void Game::makeUnitmenu() {
     unitmenux.assign<Sprite>("..//assets//textbox.png", (int []) {128, 128});
     // I think the menu textures should be loaded elsewhere when initted or first called. Then, should be only unloaded after a while.
     //Not loaded and unloaded after EACH CALL.
-    unitmenux.component<Sprite>()->hide();
+    // unitmenux.component<Sprite>()->hide();
     unitmenux.assign<Text>(settings.fontsize, std::vector<std::string> {"Attack", "Wait"}, white);
     unitmenux.component<Text>()->hide();
 }
@@ -275,12 +275,11 @@ void Game::unloadCursor() {
 void Game::loadUnitEntities(std::vector<short unsigned int> unit_inds, std::vector<std::vector<int>> positions_list) {
     SDL_Log("Loading Units\n");
     std::string asset_name;
-    Unit Utemp;
     entityx::Entity Uent;
 
     for (int i = 0; i < unit_inds.size(); i++) {
-        Utemp = units[unit_inds[i]];
-        asset_name = "..//assets//" +  Utemp.getName() + ".png";
+        asset_name = "..//assets//" + units[unit_inds[i]].getName() + ".png";
+        SDL_Log("army of %s: %d ", units[unit_inds[i]].getName().c_str(), units[unit_inds[i]].getArmy());
         Uent = entities.create();
         Uent.assign<Unit>(units[unit_inds[i]]);
         Uent.assign<Position>(positions_list[i][0], positions_list[i][1]);
@@ -318,6 +317,9 @@ void Game::loadUnits(unsigned char in_chap) {
     // Not necessary. I think would be better to load the party from a savefile or something.
     std::vector<short int> toload = baseParties[in_chap]();
     baseUnits(&units, toload);
+    SDL_Log("in Loadunits %s %d ", units[UNIT::NAME::SILOU].getName().c_str(), units[UNIT::NAME::SILOU].getArmy());
+    SDL_Log("in Loadunits %s %d ", units[UNIT::NAME::ERWIN].getName().c_str(), units[UNIT::NAME::ERWIN].getArmy());
+    SDL_Log("in Loadunits %s %d ", units[UNIT::NAME::RELIABLE].getName().c_str(), units[UNIT::NAME::RELIABLE].getArmy());
 }
 
 void Game::loadUnits(std::vector<short int> toload) {

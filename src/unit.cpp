@@ -28,6 +28,7 @@ Unit::Unit(const Unit & obj)  {
     setClassind(obj.class_index);
     setEquipment(obj.equipment);
     setSkills(obj.skills);
+    setArmy(obj.army);
     setSupports(obj.supports);
     exp = obj.exp;
     base_exp = obj.base_exp;
@@ -45,7 +46,7 @@ void Unit::setSex(const bool in_sex) {
 void Unit::setid(const unsigned short int in_id) {
     id = in_id;
     name = unitNames[in_id];
-    setArmy(unitid2army(id));
+    // setArmy(unitid2army(id));
 }
 
 unsigned short int Unit::getid() {
@@ -933,6 +934,7 @@ void baseUnits(std::unordered_map<int, Unit> * in_units, std::vector<short int> 
 
     for (short unsigned int i = 0; i < toload.size(); i++) {
         index = toload[i];
+        temp_unit = Unit();
 
         switch (index) {
             case UNIT::NAME::ERWIN:
@@ -952,8 +954,9 @@ void baseUnits(std::unordered_map<int, Unit> * in_units, std::vector<short int> 
                 temp_unit.addEquipment(temp_wpn);
                 temp_supports = {UNIT::NAME::KIARA};
                 temp_unit.setSupports(temp_supports);
-                in_units->emplace(index, temp_unit);
+                in_units->insert({index, temp_unit});
                 break;
+
             case UNIT::NAME::RELIABLE:
                 temp = {18,  6,  2,  7,  7,   7,  4,  5,  6, 7};
                 temp_unit = Unit(UNIT::NAME::RELIABLE, UNIT::CLASS::CAVALIER, temp, UNIT::SEX::M);
@@ -962,8 +965,9 @@ void baseUnits(std::unordered_map<int, Unit> * in_units, std::vector<short int> 
                 temp = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
                 temp_unit.setGrowths(temp);
                 temp_unit.setBaseExp(100);
-                in_units->emplace(index, temp_unit);
+                in_units->insert({index, temp_unit});
                 break;
+
             case UNIT::NAME::COWARD:
                 temp = {19,  6,  2,  7,  7,   7,  4,  5,  6,  7};
                 temp_unit = Unit(UNIT::NAME::COWARD, UNIT::CLASS::CAVALIER, temp, UNIT::SEX::M);
@@ -972,8 +976,9 @@ void baseUnits(std::unordered_map<int, Unit> * in_units, std::vector<short int> 
                 temp = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
                 temp_unit.setGrowths(temp);
                 temp_unit.setBaseExp(200);
-                in_units->emplace(index, temp_unit);
+                in_units->insert({index, temp_unit});
                 break;
+
             case UNIT::NAME::JAIGEN1H:
                 temp = {20,  6,  2,  7,  7,   7,  4,  5,  6,  6};
                 temp_unit = Unit(UNIT::NAME::JAIGEN1H, UNIT::CLASS::MOUSQUETAIRE, temp, UNIT::SEX::M);
@@ -982,8 +987,9 @@ void baseUnits(std::unordered_map<int, Unit> * in_units, std::vector<short int> 
                 temp = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
                 temp_unit.setGrowths(temp);
                 temp_unit.setBaseExp(2200);
-                in_units->emplace(index, temp_unit);
+                in_units->insert({index, temp_unit});
                 break;
+
             case UNIT::NAME::KIARA:
                 temp = {14,  6,  2,  7,  7,   7,  4,  5,  6,  5};
                 temp_unit = Unit(UNIT::NAME::KIARA, UNIT::CLASS::CLERIC, temp, UNIT::SEX::F);
@@ -992,8 +998,9 @@ void baseUnits(std::unordered_map<int, Unit> * in_units, std::vector<short int> 
                 temp = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
                 temp_unit.setGrowths(temp);
                 temp_unit.setBaseExp(100);
-                in_units->emplace(index, temp_unit);
+                in_units->insert({index, temp_unit});
                 break;
+
             case UNIT::NAME::HOTTIE:
                 temp = {16,  6,  2,  7,  7,   7,  4,  5,  6,  6};
                 temp_unit = Unit(UNIT::NAME::HOTTIE, UNIT::CLASS::PICKPOCKET, temp, UNIT::SEX::M);
@@ -1002,8 +1009,9 @@ void baseUnits(std::unordered_map<int, Unit> * in_units, std::vector<short int> 
                 temp = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
                 temp_unit.setGrowths(temp);
                 temp_unit.setBaseExp(2200);
-                in_units->emplace(index, temp_unit);
+                in_units->insert({index, temp_unit});
                 break;
+
             case UNIT::NAME::SERVIL:
                 temp = {22,  4,  5,  7,  6,   8,  4,  6,  5, 5}; // 4 or 5?
                 temp_unit = Unit(UNIT::NAME::SERVIL, UNIT::CLASS::KNIGHT, temp, UNIT::SEX::M);
@@ -1012,8 +1020,9 @@ void baseUnits(std::unordered_map<int, Unit> * in_units, std::vector<short int> 
                 temp = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
                 temp_unit.setGrowths(temp);
                 temp_unit.setBaseExp(500);
-                in_units->emplace(index, temp_unit);
+                in_units->insert({index, temp_unit});
                 break;
+
             case UNIT::NAME::PERIGNON:
                 temp = {34,  4,  5,  7,  6,   8,  4,  6,  5, 5};
                 temp_unit = Unit(UNIT::NAME::PERIGNON, UNIT::CLASS::MAGE, temp, UNIT::SEX::M);
@@ -1022,8 +1031,9 @@ void baseUnits(std::unordered_map<int, Unit> * in_units, std::vector<short int> 
                 temp = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
                 temp_unit.setGrowths(temp);
                 temp_unit.setBaseExp(1200);
-                in_units->emplace(index, temp_unit);
+                in_units->insert({index, temp_unit});
                 break;
+
             case UNIT::NAME::POET:
                 temp = {15,  4,  5,  7,  6,   8,  4,  6,  5, 5};
                 temp_unit = Unit(UNIT::NAME::POET, UNIT::CLASS::MAGE, temp, UNIT::SEX::M);
@@ -1032,8 +1042,9 @@ void baseUnits(std::unordered_map<int, Unit> * in_units, std::vector<short int> 
                 temp = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
                 temp_unit.setGrowths(temp);
                 temp_unit.setBaseExp(400);
-                in_units->emplace(index, temp_unit);
+                in_units->insert({index, temp_unit});
                 break;
+
             case UNIT::NAME::SILOU:
                 //hp,str,mag,agi,dex,luck,def,res,con,move,prof
                 temp = {15,  4,  5,  7,  6,   8,  4,  6,  5,  5,  6};
@@ -1045,8 +1056,12 @@ void baseUnits(std::unordered_map<int, Unit> * in_units, std::vector<short int> 
                 temp_unit.setBaseExp(400);
                 temp_wpn.id = ITEM::NAME::BALL_LIGHTNING;
                 temp_unit.addEquipment(temp_wpn);
-                in_units->emplace(index, temp_unit);
+                SDL_Log("Setting Silou's army to %d", UNIT::ARMY::ERWIN);
+                temp_unit.setArmy(UNIT::ARMY::ERWIN);
+                in_units->erase(index);
+                in_units->insert({index, temp_unit});
                 break;
+
             case UNIT::NAME::BANDIT:
                 temp = {15,  4,  5,  7,  6,   8,  4,  6,  5, 5};
                 temp_unit = Unit(UNIT::NAME::BANDIT, UNIT::CLASS::BANDIT, temp, 1);
@@ -1056,8 +1071,9 @@ void baseUnits(std::unordered_map<int, Unit> * in_units, std::vector<short int> 
                 temp_unit.setGrowths(temp);
                 temp_unit.setBaseExp(0);
                 temp_unit.setEquipped(temp_equipped);
-                in_units->emplace(index, temp_unit);
+                in_units->insert({index, temp_unit});
                 break;
+
             case UNIT::NAME::DUELIST:
                 temp = {15,  4,  5,  7,  6,   8,  4,  6,  5, 5};
                 temp_unit = Unit(UNIT::NAME::DUELIST, UNIT::CLASS::DUELIST, temp, UNIT::SEX::M);
@@ -1066,8 +1082,9 @@ void baseUnits(std::unordered_map<int, Unit> * in_units, std::vector<short int> 
                 temp = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
                 temp_unit.setGrowths(temp);
                 temp_unit.setBaseExp(0);
-                in_units->emplace(index, temp_unit);
+                in_units->insert({index, temp_unit});
                 break;
+
             case UNIT::NAME::PICKPOCKET:
                 temp = {15,  4,  5,  7,  6,   8,  4,  6,  5, 5};
                 temp_unit = Unit(UNIT::NAME::PICKPOCKET, UNIT::CLASS::PICKPOCKET, temp, UNIT::SEX::M);
@@ -1076,8 +1093,9 @@ void baseUnits(std::unordered_map<int, Unit> * in_units, std::vector<short int> 
                 temp = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
                 temp_unit.setGrowths(temp);
                 temp_unit.setBaseExp(0);
-                in_units->emplace(index, temp_unit);
+                in_units->insert({index, temp_unit});
                 break;
+
             case UNIT::NAME::THIEF:
                 temp = {15,  4,  5,  7,  6,   8,  4,  6,  5, 5};
                 temp_unit = Unit(UNIT::NAME::THIEF, UNIT::CLASS::THIEF, temp, UNIT::SEX::M);
@@ -1086,8 +1104,9 @@ void baseUnits(std::unordered_map<int, Unit> * in_units, std::vector<short int> 
                 temp = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
                 temp_unit.setGrowths(temp);
                 temp_unit.setBaseExp(0);
-                in_units->emplace(index, temp_unit);
+                in_units->insert({index, temp_unit});
                 break;
+
             case UNIT::NAME::ASSASSIN:
                 temp = {15,  4,  5,  7,  6,   8,  4,  6,  5, 5};
                 temp_unit = Unit(UNIT::NAME::ASSASSIN, UNIT::CLASS::ASSASSIN, temp, UNIT::SEX::M);
@@ -1096,8 +1115,9 @@ void baseUnits(std::unordered_map<int, Unit> * in_units, std::vector<short int> 
                 temp = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
                 temp_unit.setGrowths(temp);
                 temp_unit.setBaseExp(0);
-                in_units->emplace(index, temp_unit);
+                in_units->insert({index, temp_unit});
                 break;
+
             case UNIT::NAME::ARCHER:
                 temp = {15,  4,  5,  7,  6,   8,  4,  6,  5, 5};
                 temp_unit = Unit(UNIT::NAME::ARCHER, UNIT::CLASS::ARCHER, temp, UNIT::SEX::M);
@@ -1106,8 +1126,9 @@ void baseUnits(std::unordered_map<int, Unit> * in_units, std::vector<short int> 
                 temp = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
                 temp_unit.setGrowths(temp);
                 temp_unit.setBaseExp(0);
-                in_units->emplace(index, temp_unit);
+                in_units->insert({index, temp_unit});
                 break;
+
             case UNIT::NAME::MARKSMAN:
                 temp = {15,  4,  5,  7,  6,   8,  4,  6,  5, 5};
                 temp_unit = Unit(UNIT::NAME::MARKSMAN, UNIT::CLASS::MARKSMAN, temp, UNIT::SEX::M);
@@ -1116,8 +1137,9 @@ void baseUnits(std::unordered_map<int, Unit> * in_units, std::vector<short int> 
                 temp = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
                 temp_unit.setGrowths(temp);
                 temp_unit.setBaseExp(0);
-                in_units->emplace(index, temp_unit);
+                in_units->insert({index, temp_unit});
                 break;
+
             case UNIT::NAME::MERCENARY:
                 temp = {15,  4,  5,  7,  6,   8,  4,  6,  5, 5};
                 temp_unit = Unit(UNIT::NAME::MERCENARY, UNIT::CLASS::MERCENARY, temp, UNIT::SEX::M);
@@ -1126,8 +1148,9 @@ void baseUnits(std::unordered_map<int, Unit> * in_units, std::vector<short int> 
                 temp = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
                 temp_unit.setGrowths(temp);
                 temp_unit.setBaseExp(0);
-                in_units->emplace(index, temp_unit);
+                in_units->insert({index, temp_unit});
                 break;
+
             case UNIT::NAME::HERO:
                 temp = {15,  4,  5,  7,  6,   8,  4,  6,  5, 5};
                 temp_unit = Unit(UNIT::NAME::HERO, UNIT::CLASS::HERO, temp, UNIT::SEX::M);
@@ -1136,8 +1159,9 @@ void baseUnits(std::unordered_map<int, Unit> * in_units, std::vector<short int> 
                 temp = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
                 temp_unit.setGrowths(temp);
                 temp_unit.setBaseExp(0);
-                in_units->emplace(index, temp_unit);
+                in_units->insert({index, temp_unit});
                 break;
+
             case UNIT::NAME::CORSAIR:
                 temp = {15,  4,  5,  7,  6,   8,  4,  6,  5, 5};
                 temp_unit = Unit(UNIT::NAME::CORSAIR, UNIT::CLASS::CORSAIR, temp, UNIT::SEX::M);
@@ -1146,8 +1170,9 @@ void baseUnits(std::unordered_map<int, Unit> * in_units, std::vector<short int> 
                 temp = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
                 temp_unit.setGrowths(temp);
                 temp_unit.setBaseExp(0);
-                in_units->emplace(index, temp_unit);
+                in_units->insert({index, temp_unit});
                 break;
+
             case UNIT::NAME::VIKING:
                 temp = {15,  4,  5,  7,  6,   8,  4,  6,  5, 5};
                 temp_unit = Unit(UNIT::NAME::VIKING, UNIT::CLASS::VIKING, temp, UNIT::SEX::M);
@@ -1156,8 +1181,9 @@ void baseUnits(std::unordered_map<int, Unit> * in_units, std::vector<short int> 
                 temp = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
                 temp_unit.setGrowths(temp);
                 temp_unit.setBaseExp(0);
-                in_units->emplace(index, temp_unit);
+                in_units->insert({index, temp_unit});
                 break;
+
             case UNIT::NAME::RAVAGER:
                 temp = {15,  4,  5,  7,  6,   8,  4,  6,  5, 5};
                 temp_unit = Unit(UNIT::NAME::RAVAGER, UNIT::CLASS::RAVAGER, temp, UNIT::SEX::M);
@@ -1166,8 +1192,9 @@ void baseUnits(std::unordered_map<int, Unit> * in_units, std::vector<short int> 
                 temp = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
                 temp_unit.setGrowths(temp);
                 temp_unit.setBaseExp(0);
-                in_units->emplace(index, temp_unit);
+                in_units->insert({index, temp_unit});
                 break;
+
             case UNIT::NAME::CAVALIER:
                 temp = {15,  4,  5,  7,  6,   8,  4,  6,  5, 5};
                 temp_unit = Unit(UNIT::NAME::CAVALIER, UNIT::CLASS::CAVALIER, temp, UNIT::SEX::M);
@@ -1176,8 +1203,9 @@ void baseUnits(std::unordered_map<int, Unit> * in_units, std::vector<short int> 
                 temp = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
                 temp_unit.setGrowths(temp);
                 temp_unit.setBaseExp(0);
-                in_units->emplace(index, temp_unit);
+                in_units->insert({index, temp_unit});
                 break;
+
             case UNIT::NAME::PALADIN:
                 temp = {15,  4,  5,  7,  6,   8,  4,  6,  5, 5};
                 temp_unit = Unit(UNIT::NAME::PALADIN, UNIT::CLASS::PALADIN, temp, UNIT::SEX::M);
@@ -1186,8 +1214,9 @@ void baseUnits(std::unordered_map<int, Unit> * in_units, std::vector<short int> 
                 temp = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
                 temp_unit.setGrowths(temp);
                 temp_unit.setBaseExp(0);
-                in_units->emplace(index, temp_unit);
+                in_units->insert({index, temp_unit});
                 break;
+
             case UNIT::NAME::FENCER:
                 temp = {15,  4,  5,  7,  6,   8,  4,  6,  5, 5};
                 temp_unit = Unit(UNIT::NAME::FENCER, UNIT::CLASS::FENCER, temp, UNIT::SEX::M);
@@ -1196,8 +1225,9 @@ void baseUnits(std::unordered_map<int, Unit> * in_units, std::vector<short int> 
                 temp = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
                 temp_unit.setGrowths(temp);
                 temp_unit.setBaseExp(0);
-                in_units->emplace(index, temp_unit);
+                in_units->insert({index, temp_unit});
                 break;
+
             case UNIT::NAME::MOUSQUETAIRE:
                 temp = {15,  4,  5,  7,  6,   8,  4,  6,  5, 5};
                 temp_unit = Unit(UNIT::NAME::MOUSQUETAIRE, UNIT::CLASS::MOUSQUETAIRE, temp, UNIT::SEX::M);
@@ -1206,7 +1236,7 @@ void baseUnits(std::unordered_map<int, Unit> * in_units, std::vector<short int> 
                 temp = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
                 temp_unit.setGrowths(temp);
                 temp_unit.setBaseExp(0);
-                in_units->emplace(index, temp_unit);
+                in_units->insert({index, temp_unit});
                 break;
         }
     }

@@ -222,13 +222,27 @@ void UnitSystemx::updateMap() {
 }
 
 
-void UnitSystemx::configure(entityx::EventManager & event_manager) {
-    event_manager.subscribe<unitMove>(*this);
-    event_manager.subscribe<unitMenu>(*this);
-    event_manager.subscribe<unitMap>(*this);
+void UnitSystemx::configure(entityx::EventManager & events) {
+    event_manager = &events;
+    events.subscribe<unitSelect>(*this);
+    events.subscribe<unitMove>(*this);
+    events.subscribe<unitMenu>(*this);
+    events.subscribe<unitMap>(*this);
 }
 
 
+
+void UnitSystemx::receive(const unitSelect & select) {
+    entityx::ComponentHandle<Unit> unit = select.unit;
+    SDL_Log("in unitSelect %s", unit->getName().c_str());
+    SDL_Log("in unitSelect %d", unit->getArmy());
+    SDL_Log("in unitSelect %d", UNIT::ARMY::ERWIN);
+
+    if (unit->getArmy() == UNIT::ARMY::ERWIN) {
+        SDL_Log("emitting unitMove");
+        event_manager->emit<unitMove>(select.cursor, select.unit);
+    }
+}
 
 void UnitSystemx::receive(const unitMenu & menu) {
     SDL_Log("Unitmenu event received.");
@@ -453,7 +467,8 @@ void ControlSystemx::receive(const inputAccept & accept) {
 
         if (unitontile) {
             toset = GAME::STATE::UNITMOVE;
-            event_manager->emit<unitMove>(accepter, unitontile);
+            event_manager->emit<unitSelect>(accepter, unitontile);
+            // event_manager->emit<unitMove>(accepter, unitontile);
         } else {
             toset = GAME::STATE::OPTIONS;
         }
