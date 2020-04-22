@@ -78,6 +78,7 @@ public:
     void makeMapmenu();
     void makeUnitmenu();
     void makeMenu(unsigned char in_menu_index);
+    entityx::Entity * getMenu(unsigned char in_menu_index);
     entityx::Entity * getUnitmenu();
     void killMenu(short unsigned int index);
     void hideMenu(short unsigned int index);

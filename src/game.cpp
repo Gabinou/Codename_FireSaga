@@ -124,21 +124,42 @@ void Game::makeFPSEntity() {
 }
 
 void Game::killMenu(short unsigned int index) {
-    unitmenux.destroy();
+    menus[index].destroy();
+    // unitmenux.destroy();
 }
 
 void Game::hideMenu(short unsigned int index) {
-    unitmenux.component<Sprite>()->hide();
-    unitmenux.component<Text>()->hide();
+    menus[index].component<Sprite>()->hide();
+    menus[index].component<Text>()->hide();
+    // unitmenux.component<Sprite>()->;
+    // unitmenux.component<Text>()->hide();
 }
 
 void Game::showMenu(short unsigned int index) {
-    unitmenux.component<Sprite>()->show();
-    unitmenux.component<Text>()->show();
+    menus[index].component<Text>()->show();
+    menus[index].component<Sprite>()->show();
+    // unitmenux.component<Sprite>()->show();
+    // unitmenux.component<Text>()->show();
+}
+
+entityx::Entity * Game::getMenu(unsigned char in_menu_index) {
+    entityx::Entity * out;
+
+    switch (in_menu_index) {
+        case MENU::UNIT:
+            out = getUnitmenu();
+            break;
+
+        case MENU::MAP:
+            break;
+    }
+
+    return (out);
 }
 
 entityx::Entity * Game::getUnitmenu() {
-    return (&unitmenux);
+    // return (&unitmenux);
+    return (&menus[MENU::UNIT]);
 }
 
 void Game::makeMenu(unsigned char in_menu_index) {
@@ -157,17 +178,17 @@ void Game::makeMapmenu() {
 
 void Game::makeUnitmenu() {
     SDL_Log("Making unit menu\n");
-    unitmenux = entities.create();
-    unitmenux.assign<Position>();
-    unitmenux.component<Position>()->setBounds(0, 2000, 0, 2000);
-    unitmenux.component<Position>()->setonTilemap(false);
+    menus[MENU::UNIT] = entities.create();
+    menus[MENU::UNIT].assign<Position>();
+    menus[MENU::UNIT].component<Position>()->setBounds(0, 2000, 0, 2000);
+    menus[MENU::UNIT].component<Position>()->setonTilemap(false);
     SDL_Color white = {255, 255, 255};
-    unitmenux.assign<Sprite>("..//assets//textbox.png", (int []) {128, 128});
+    menus[MENU::UNIT].assign<Sprite>("..//assets//textbox.png", (int []) {128, 128});
     // I think the menu textures should be loaded elsewhere when initted or first called. Then, should be only unloaded after a while.
     //Not loaded and unloaded after EACH CALL.
-    // unitmenux.component<Sprite>()->hide();
-    unitmenux.assign<Text>(settings.fontsize, std::vector<std::string> {"Attack", "Wait"}, white);
-    unitmenux.component<Text>()->hide();
+    // menus[MENU::UNIT].component<Sprite>()->hide();
+    menus[MENU::UNIT].assign<Text>(settings.fontsize, std::vector<std::string> {"Attack", "Wait"}, white);
+    menus[MENU::UNIT].component<Text>()->hide();
 }
 
 short unsigned int Game::getState() {
@@ -240,9 +261,9 @@ void Game::setCursorstate(const short unsigned int new_state) {
                 cursorx.component<Sprite>()->setDestrect(temprect);
                 cursorx.component<Sprite>()->setTexture("..//assets//menucursor.png");
 
-                if (unitmenux.valid()) {
-                    unitmenupos = unitmenux.component<Position>()->getPos();
-                    linespace = unitmenux.component<Text>()->getLinespacing();
+                if (menus[MENU::UNIT].valid()) {
+                    unitmenupos = menus[MENU::UNIT].component<Position>()->getPos();
+                    linespace = menus[MENU::UNIT].component<Text>()->getLinespacing();
                 }
 
                 short int menubounds[4];
@@ -250,9 +271,6 @@ void Game::setCursorstate(const short unsigned int new_state) {
                 menubounds[1] = unitmenupos[0] / linespace;
                 menubounds[2] = (short int)(unitmenupos[1] / linespace + 2);
                 menubounds[3] = (short int)(unitmenupos[1] / linespace + 3);
-
-                SDL_Log("linespace %d.", linespace);
-                SDL_Log("Settings bounds %d %d %d %d.", menubounds[0], menubounds[1], menubounds[2], menubounds[3]);
                 cursorx.component<Position>()->setBounds(menubounds);
                 cursorx.component<Position>()->setPos(menubounds[0], menubounds[2]);
                 cursorx.component<Position>()->setonTilemap(false);
