@@ -27,8 +27,8 @@ public:
     void setLinespace(const short int unsigned in_linespace);
 
     void configure(entityx::EventManager & event_manager);
-    void receive(const beginTurnEvent & begin);
-    void receive(const endTurnEvent & end);
+    void receive(const turnBegin & begin);
+    void receive(const turnEnd & end);
     void receive(const unitHealEvent & heal);
     void receive(const unitDieEvent & death);
     void receive(const unitWaitEvent & wait);
@@ -57,8 +57,8 @@ public:
     void setMap(entityx::ComponentHandle<Map> in_map);
 
     void configure(entityx::EventManager & event_manager);
-    void receive(const beginTurnEvent & begin);
-    void receive(const endTurnEvent & end);
+    void receive(const turnBegin & begin);
+    void receive(const turnEnd & end);
     void receive(const unitHealEvent & heal);
     void receive(const unitDieEvent & death);
     void receive(const unitWaitEvent & wait);
@@ -80,8 +80,8 @@ public:
     void addArmies(std::vector<unsigned char> in_armies);
 
     void configure(entityx::EventManager & event_manager);
-    // void receive(const beginTurnEvent & begin);
-    // void receive(const endTurnEvent & end);
+    void receive(const turnBegin & begin);
+    void receive(const turnEnd & end);
     void receive(const mapMenu & end);
 
     void update(entityx::EntityManager & es, entityx::EventManager & events, entityx::TimeDelta dt) override;

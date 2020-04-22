@@ -173,19 +173,19 @@ void RenderSystemx::update(entityx::EntityManager & es, entityx::EventManager & 
 }
 
 void RenderSystemx::configure(entityx::EventManager & event_manager) {
-    event_manager.subscribe<beginTurnEvent>(*this);
-    event_manager.subscribe<endTurnEvent>(*this);
+    event_manager.subscribe<turnBegin>(*this);
+    event_manager.subscribe<turnEnd>(*this);
     event_manager.subscribe<unitHealEvent>(*this);
     event_manager.subscribe<unitWaitEvent>(*this);
     event_manager.subscribe<unitDieEvent>(*this);
     event_manager.subscribe<unitRefreshEvent>(*this);
 }
 
-void RenderSystemx::receive(const beginTurnEvent & begin) {
+void RenderSystemx::receive(const turnBegin & begin) {
 
 }
 
-void RenderSystemx::receive(const endTurnEvent & end) {
+void RenderSystemx::receive(const turnEnd & end) {
 
 }
 
@@ -241,12 +241,14 @@ void UnitSystemx::receive(const unitSelect & select) {
         case UNIT::ARMY::FREE_MILITIA:
             event_manager->emit<unitMove>(select.cursor, select.unit);
             break;
+
         case UNIT::ARMY::ENEMY:
         case UNIT::ARMY::BANDITS:
         case UNIT::ARMY::KEWAC:
             break;
+
         case UNIT::ARMY::NEUTRAL:
-        case UNIT::ARMY::ENEMY:
+        case UNIT::ARMY::IMPERIAL:
             break;
     }
 }
@@ -367,17 +369,21 @@ void MapSystemx::addArmy(unsigned char in_army) {
 }
 
 void MapSystemx::configure(entityx::EventManager & event_manager) {
-    // event_manager.subscribe<beginTurnEvent>(*this);
-    // event_manager.subscribe<endTurnEvent>(*this);
+    event_manager.subscribe<turnBegin>(*this);
+    event_manager.subscribe<turnEnd>(*this);
     event_manager.subscribe<mapMenu>(*this);
 }
 
-void MapSystemx::receive(const beginTurnEvent & begin) {
-    SDL_Log("Received a beginTurnEvent from...");
+void MapSystemx::receive(const mapMenu & menu) {
+    SDL_Log("Received a mapMenu from...");
 }
 
-void MapSystemx::receive(const endTurnEvent & end) {
-    SDL_Log("Received a endTurnEvent from...");
+void MapSystemx::receive(const turnBegin & begin) {
+    SDL_Log("Received a turnBegin from...");
+}
+
+void MapSystemx::receive(const turnEnd & end) {
+    SDL_Log("Received a turnEnd from...");
     armies.push(armies.front());
     armies.pop();
 }
@@ -535,11 +541,11 @@ void ControlSystemx::update(entityx::EntityManager & es, entityx::EventManager &
         keyboard->check_button(pressed_button);
 
         if (false) {
-            events.emit<beginTurnEvent>(ent);
+            events.emit<turnBegin>(ent);
         }
 
         if (false) {
-            events.emit<endTurnEvent>(ent);
+            events.emit<turnEnd>(ent);
         }
     }
 
@@ -609,11 +615,11 @@ void ControlSystemx::update(entityx::EntityManager & es, entityx::EventManager &
         gamepad->check_button(pressed_button);
 
         if (false) {
-            events.emit<beginTurnEvent>(ent);
+            events.emit<turnBegin>(ent);
         }
 
         if (false) {
-            events.emit<endTurnEvent>(ent);
+            events.emit<turnEnd>(ent);
         }
     }
 }

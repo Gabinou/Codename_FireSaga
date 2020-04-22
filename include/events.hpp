@@ -6,8 +6,8 @@
 // #include "structs.hpp"
 #include "gamepadcontroller.hpp"
 
-struct beginTurnEvent {
-    beginTurnEvent(entityx::Entity beginner) : beginner(beginner) {}
+struct turnBegin {
+    turnBegin(entityx::Entity beginner) : beginner(beginner) {}
     entityx::Entity beginner;
     //Game? or AI ender.
 };
@@ -98,8 +98,8 @@ struct inputPause {
     entityx::ComponentHandle<GamepadController> gamepad;
 };
 
-struct endTurnEvent {
-    endTurnEvent(entityx::Entity ender) : ender(ender) {}
+struct turnEnd {
+    turnEnd(entityx::Entity ender) : ender(ender) {}
     entityx::Entity ender;
     //Player cursor or AI ender.
 };
