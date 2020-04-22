@@ -27,6 +27,12 @@ enum SLIDETYPES {
 };
 }
 
+namespace MENU {
+enum MENUS {
+    UNIT = 1,
+    MAP,
+};
+}
 namespace ITEM {
 namespace NAME {
 enum NAMES {

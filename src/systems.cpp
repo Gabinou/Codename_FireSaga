@@ -209,9 +209,8 @@ UnitSystemx::UnitSystemx() {
 
 }
 
-UnitSystemx::UnitSystemx(Game * in_game, entityx::EntityManager * in_entity_manager) {
+UnitSystemx::UnitSystemx(Game * in_game) {
     game = in_game;
-    entity_manager = in_entity_manager;
     settings = game->getSettings();
     unitmenux = game->getUnitmenu();
     updateMap();

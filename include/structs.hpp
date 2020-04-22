@@ -6,7 +6,6 @@
 #include <entityx/entityx.h>
 #include "enums.hpp"
 
-
 struct Tile_stats {
     char dodge;
     char Pprot;

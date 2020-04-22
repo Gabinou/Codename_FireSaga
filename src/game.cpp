@@ -16,7 +16,7 @@ TTF_Font * Game::font = NULL;
 // Manager Game::manager;
 
 Game::Game() {
-    menus.resize(GAME::STATE::END);
+
 }
 
 Game::~Game() {}
@@ -141,6 +141,20 @@ entityx::Entity * Game::getUnitmenu() {
     return (&unitmenux);
 }
 
+void Game::makeMenu(unsigned char in_menu_index) {
+    switch (in_menu_index) {
+        case MENU::UNIT:
+            break;
+
+        case MENU::MAP:
+            break;
+    }
+}
+
+void Game::makeMapmenu() {
+
+}
+
 void Game::makeUnitmenu() {
     SDL_Log("Making unit menu\n");
     unitmenux = entities.create();
@@ -234,8 +248,8 @@ void Game::setCursorstate(const short unsigned int new_state) {
                 short int menubounds[4];
                 menubounds[0] = unitmenupos[0] / linespace;
                 menubounds[1] = unitmenupos[0] / linespace;
-                menubounds[2] = (short int)(unitmenupos[1] / linespace + 1);
-                menubounds[3] = (short int)(unitmenupos[1] / linespace + 2);
+                menubounds[2] = (short int)(unitmenupos[1] / linespace + 2);
+                menubounds[3] = (short int)(unitmenupos[1] / linespace + 3);
 
                 SDL_Log("linespace %d.", linespace);
                 SDL_Log("Settings bounds %d %d %d %d.", menubounds[0], menubounds[1], menubounds[2], menubounds[3]);
@@ -279,7 +293,6 @@ void Game::loadUnitEntities(std::vector<short unsigned int> unit_inds, std::vect
 
     for (int i = 0; i < unit_inds.size(); i++) {
         asset_name = "..//assets//" + units[unit_inds[i]].getName() + ".png";
-        SDL_Log("army of %s: %d ", units[unit_inds[i]].getName().c_str(), units[unit_inds[i]].getArmy());
         Uent = entities.create();
         Uent.assign<Unit>(units[unit_inds[i]]);
         Uent.assign<Position>(positions_list[i][0], positions_list[i][1]);
@@ -375,7 +388,7 @@ void Game::init(const char * title, int xpos, int ypos, int width, int height, b
 
     systems.add<RenderSystemx>(renderer);
     systems.add<ControlSystemx>(this);
-    systems.add<UnitSystemx>(this, &entities);
+    systems.add<UnitSystemx>(this);
     systems.configure();
     state = GAME::STATE::MAP;
 };

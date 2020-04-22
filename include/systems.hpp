@@ -41,13 +41,12 @@ private:
     Game * game;
     Settings * settings;
     entityx::ComponentHandle<Map> mapx;
-    entityx::EntityManager * entity_manager;
     entityx::EventManager * event_manager;
     entityx::Entity * unitmenux;
     entityx::Entity selected; // Cursor can select other things than units? Shops? doors? other things?
 public:
     UnitSystemx();
-    UnitSystemx(Game * in_game, entityx::EntityManager * in_entity_manager);
+    UnitSystemx(Game * in_game);
 
     void killMenu(short unsigned int index);
     void hideMenu(short unsigned int index);
@@ -73,6 +72,7 @@ public:
 class MapSystemx: public entityx::System<MapSystemx>, public entityx::Receiver<MapSystemx> {
 private:
     std::queue<unsigned char> armies;
+    entityx::Entity * mapmenux;
 public:
     explicit MapSystemx();
 

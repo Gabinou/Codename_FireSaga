@@ -28,6 +28,7 @@ private:
     entityx::Entity mapEntx;
     entityx::Entity cursorx;
     entityx::ComponentHandle<Map> mapx;
+    std::unordered_map<unsigned char, entityx::Entity> menus;
     entityx::Entity unitmenux;
     entityx::Entity selected; // Cursor can select other things than units? Shops? doors? other things?
 
@@ -40,17 +41,8 @@ private:
     tinymt32_t tinymt;
     Convoy convoy;
 
-
-    //TO BE IMPLEMENTED:
-    void makeDefendermenu(entityx::Entity & setting_entity);
-    void makeWeaponmenu(entityx::Entity & setting_entity);
-    void makeOptionsmenu(entityx::Entity & setting_entity);
-    void makeSmallmap(entityx::Entity & setting_entity);
-    void makeCombatWindow(Unit * ally, Unit * enemy);
-
     short unsigned int state;
 
-    std::vector<int> menus;
     std::stack<int> unit_entities;
     bool isRunning;
     SDL_Event event;
@@ -83,7 +75,9 @@ public:
     template <typename T> void loadTiles(std::vector<T> in_tiles);
     void moveUnit(entityx::Entity & cursor);
 
+    void makeMapmenu();
     void makeUnitmenu();
+    void makeMenu(unsigned char in_menu_index);
     entityx::Entity * getUnitmenu();
     void killMenu(short unsigned int index);
     void hideMenu(short unsigned int index);
