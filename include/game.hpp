@@ -74,8 +74,6 @@ public:
     template <typename T> void loadTiles(std::vector<T> in_tiles);
     void moveUnit(entityx::Entity & cursor);
 
-    void makeMapmenu();
-    void makeUnitmenu();
     void makeMenu(unsigned char in_menu_index);
     entityx::Entity * getMenu(unsigned char in_menu_index);
     entityx::Entity * getUnitmenu();

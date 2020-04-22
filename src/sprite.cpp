@@ -9,10 +9,8 @@ Sprite::Sprite(const char * in_asset_name) {
 }
 
 Sprite::Sprite(const char * in_asset_name, int in_picsize[2]) : Sprite(in_asset_name)  {
-    srcrect.w = in_picsize[0];
-    srcrect.h = in_picsize[1];
-    destrect.w = in_picsize[0];
-    destrect.h = in_picsize[1];
+    setSrcrect(in_picsize[0], in_picsize[1]);
+    setDestrect(in_picsize[0], in_picsize[1]);
 }
 
 Sprite::Sprite(const char * in_asset_name, int inFrames, int inSpeed) : Sprite(in_asset_name) {
