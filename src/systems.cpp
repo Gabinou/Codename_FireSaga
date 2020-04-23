@@ -33,12 +33,74 @@ void RenderSystemx::setLinespace(const short int unsigned in_linespace) {
     linespace = in_linespace;
 }
 
-void RenderSystemx::slideSprites(const unsigned char in_looping, SDL_Rect * srcrect, short int speed, short int frames) {
+void RenderSystemx::slideSprites(entityx::Entity in_ent, short int * slidepos, short int * objectivepos) {
+    int kb_held = 0;
+    int gp_held = 0;
+    entityx::ComponentHandle<GamepadController> gamepad = ent.component<GamepadController>();
+    entityx::ComponentHandle<KeyboardController> keyboard = ent.component<KeyboardController>();
+    entityx::ComponentHandle<Position> position = ent.component<Position>();
+    short int slideint = sprite->getSlideint();
+    float * slidefactors = sprite->getSlidefactors();
+    short int scalefactor[2];
+    scalefactor[0] = tilesize[0];
+    scalefactor[1] = tilesize[1];
 
+    if (keyboard) {
+        kb_held = keyboard->getHeldmove();
+    }
+
+    if (gamepad) {
+        // SDL_Log("Rendering Gamepad Controller.");
+        gp_held = gamepad->getHeldmove();
+    }
+
+    if ((!keyboard) && (!keyboard)) {
+        // This is for NOT CURSOR.
+        if (!position->isonTilemap()) { //move on the menu space
+            scalefactor[0] = 1;
+            scalefactor[1] = 1 ;
+        }
+
+        slidepos[0] = (int)(position->getPos()[0] * scalefactor[0]);
+        slidepos[1] = (int)(position->getPos()[1] * scalefactor[1]);
+    } else {
+        if (!position->isonTilemap()) { //move on the menu space
+            scalefactor[0] = linespace;
+            scalefactor[1] = linespace;
+        }
+        switch (in_slidetype) {
+            case SLIDETYPE::GEOMETRIC: //for cursor mvt on map.
+                objectivepos[0] = (int)position->getPos()[0] * (scalefactor[0]) - destrect.w / 4;
+                objectivepos[1] = (int)position->getPos()[1] * (scalefactor[1]) - destrect.h / 4;
+
+                if ((gp_held > 25) || (kb_held > 25))  {
+                    slideint = 1;
+                }
+
+                if (objectivepos[0] != slidepos[0]) {
+                    slidepos[0] += geometricslide((objectivepos[0] - slidepos[0]), slidefactors[slideint]);
+                }
+
+                if (objectivepos[1] != slidepos[1]) {
+                    slidepos[1] += geometricslide((objectivepos[1] - slidepos[1]), slidefactors[slideint]);
+                }
+
+                if ((objectivepos[0] == slidepos[0]) && (objectivepos[1] == slidepos[1])) {
+                    position->setUpdatable(true);
+                    slideint = 0;
+                } else {
+                    position->setUpdatable(false);
+                }
+                break;
+            }
+        }
 }
 
-void RenderSystemx::loopSprites(const unsigned char in_looping, SDL_Rect * srcrect, short int speed, short int frames) {
-        
+SDL_Rect RenderSystemx::loopSprites(entityx::ComponentHandle<Sprite> in_sprite) {
+    short int frames = sprite->getFrames();
+    short int speed = sprite->getSpeed();
+    SDL_Rect srcrect = sprite->getSrcrect();
+
     switch (in_looping) {
         case LOOPING::PINGPONG:
             srcrect.x = srcrect.w * pingpong(static_cast<int>(SDL_GetTicks() / speed), frames, 0);
@@ -53,10 +115,13 @@ void RenderSystemx::loopSprites(const unsigned char in_looping, SDL_Rect * srcre
             srcrect.x = srcrect.w * (frames - static_cast<int>((SDL_GetTicks() / speed) % frames));
             break;
     }
+    return(srcrect);
 }
 
 
 void RenderSystemx::setLinespace(const short int unsigned in_linespace) {
+
+}
 
 void RenderSystemx::update(entityx::EntityManager & es, entityx::EventManager & events, entityx::TimeDelta dt) {
     SDL_RenderClear(renderer);
@@ -71,38 +136,25 @@ void RenderSystemx::update(entityx::EntityManager & es, entityx::EventManager & 
         entityx::ComponentHandle<Position> position = ent.component<Position>();
 
         if (!ent.has_component<Text>()) {
-            short int frames = sprite->getFrames();
-            short int speed = sprite->getSpeed();
+            // short int frames = sprite->getFrames();
+            // short int speed = sprite->getSpeed();
             short int * slidepos = sprite->getSlidepos();
             short int * objectivepos = sprite->getObjpos();
             SDL_Rect srcrect = sprite->getSrcrect();
             SDL_Rect destrect = sprite->getDestrect();
-            unsigned char slidetype = sprite->getSlidetype();
-            short int slideint = sprite->getSlideint();
-            float * slidefactors = sprite->getSlidefactors();
-            short int scalefactor[2];
-            scalefactor[0] = tilesize[0];
-            scalefactor[1] = tilesize[1];
+            // unsigned char slidetype = sprite->getSlidetype();
+            // short int slideint = sprite->getSlideint();
+            // float * slidefactors = sprite->getSlidefactors();
+            // short int scalefactor[2];
+            // scalefactor[0] = tilesize[0];
+            // scalefactor[1] = tilesize[1];
 
             if (sprite->isAnimated()) { //looping sprites.
                 unsigned char looping = sprite->getSs_looping();
-                loopSprites(looping, srcrect, speed, frames)
+                srcrect = loopSprites(sprite);
             }
 
-            if ((!ent.has_component<KeyboardController>()) && (!ent.has_component<GamepadController>())) {
-                // This is for NOT CURSOR.
-                if (!position->isonTilemap()) { //move on the menu space
-                    scalefactor[0] = 1;
-                    scalefactor[1] = 1 ;
-                }
-
-                slidepos[0] = (int)(position->getPos()[0] * scalefactor[0]);
-                slidepos[1] = (int)(position->getPos()[1] * scalefactor[1]);
-            }
-
-            // if (slidetype == "vector") { //for unit mvt on map.
-
-            // }
+            slideSprites(ent, slidepos, objectivepos);
 
             destrect.x = slidepos[0];
             destrect.y = slidepos[1];
@@ -134,51 +186,17 @@ void RenderSystemx::update(entityx::EntityManager & es, entityx::EventManager & 
 
     for (entityx::Entity ent : es.entities_with_components<KeyboardController>()) {
         entityx::ComponentHandle<KeyboardController> keyboard = ent.component<KeyboardController>();
-        int kb_held = 0;
-        int gp_held = 0;
+        entityx::ComponentHandle<Sprite> sprite = ent.component<Sprite>();
 
-        if (keyboard) {
-            kb_held = keyboard->getHeldmove();
+
+        if (sprite->isAnimated()) { //looping sprites.
+            unsigned char looping = sprite->getSs_looping();
+            srcrect = loopSprites(sprite);
         }
 
-        entityx::ComponentHandle<GamepadController> gamepad = ent.component<GamepadController>();
+        slideSprites(ent, slidepos, objectivepos);
 
-        if (gamepad) {
-            // SDL_Log("Rendering Gamepad Controller.");
-            gp_held = gamepad->getHeldmove();
-        }
-
-        if (!position->isonTilemap()) { //move on the menu space
-            scalefactor[0] = linespace;
-            scalefactor[1] = linespace;
-        }
-
-        switch (slidetype) {
-            case SLIDETYPE::GEOMETRIC: //for cursor mvt on map.
-                objectivepos[0] = (int)position->getPos()[0] * (scalefactor[0]) - destrect.w / 4;
-                objectivepos[1] = (int)position->getPos()[1] * (scalefactor[1]) - destrect.h / 4;
-
-                if ((gp_held > 25) || (kb_held > 25))  {
-                    slideint = 1;
-                }
-
-                if (objectivepos[0] != slidepos[0]) {
-                    slidepos[0] += geometricslide((objectivepos[0] - slidepos[0]), slidefactors[slideint]);
-                }
-
-                if (objectivepos[1] != slidepos[1]) {
-                    slidepos[1] += geometricslide((objectivepos[1] - slidepos[1]), slidefactors[slideint]);
-                }
-
-                if ((objectivepos[0] == slidepos[0]) && (objectivepos[1] == slidepos[1])) {
-                    position->setUpdatable(true);
-                    slideint = 0;
-                } else {
-                    position->setUpdatable(false);
-                }
-                break;
-        }
-    }
+        slideSprites(sprite);
     
     SDL_RenderPresent(renderer);
 }
