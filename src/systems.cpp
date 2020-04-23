@@ -321,7 +321,21 @@ void UnitSystemx::makeUnitmenuoptions(entityx::Entity in_ent) {
     entityx::ComponentHandle<Unit> bottom;
     entityx::ComponentHandle<Unit> right;
     entityx::ComponentHandle<Unit> left;
+    short int * bounds = mapx->getBounds();
     std::vector<std::vector<entityx::ComponentHandle<Unit>>> unitmap = mapx->getUnitmap();
+    if ((unitpos[1] + 1) < bounds[3]) {
+        top = unitmap[unitpos[1] + 1][unitpos[0]];
+    }
+    if ((unitpos[1] - 1) > bounds[2]) {
+        bottom = unitmap[unitpos[1] - 1][unitpos[0]];
+    }
+    if ((unitpos[0] - 1) > bounds[0]) {
+        left = unitmap[unitpos[1]][unitpos[0] - 1];
+    }
+    if ((unitpos[0] + 1) < bounds[1]) {
+        left = unitmap[unitpos[1]][unitpos[0] + 1];
+    }
+
 }
 
 
