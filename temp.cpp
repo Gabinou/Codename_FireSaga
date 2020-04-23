@@ -1,326 +1,624 @@
-#include "map.hpp"
 
-Map::Map() {
-    initVars();
-    overlay_mode = MAP::OVERLAY::MOVE + MAP::OVERLAY::ATTACK;
+#include "systems.hpp"
+
+void RenderSystemx::setRenderer(SDL_Renderer * in_renderer) {
+    if (in_renderer) {
+        SDL_Log("Added renderer to renderSystemx");
+        renderer = in_renderer;
+    } else {
+        SDL_Log("In renderer is null");
+    }
 }
 
-Map::~Map() {
-    
+RenderSystemx::RenderSystemx() {
+
 }
 
-Map::Map(const short unsigned int width, const short unsigned int height) : Map() {
-    setTilesize(width, height);
-    srcrect.w = destrect.w = width;
-    srcrect.h = destrect.h = height;
+RenderSystemx::RenderSystemx(SDL_Renderer * in_renderer) {
+    setRenderer(in_renderer);
 }
 
-void Map::setTilesize(const short int unsigned width, const short int unsigned height) {
+void RenderSystemx::setMap(entityx::ComponentHandle<Map> in_map) {
+    //Make into Settilemap.
+    map = in_map;
+    tilesize = map->getTilesize();
+}
+
+void RenderSystemx::setTilesize(const short int unsigned width, const short int unsigned height) {
     tilesize[0] = width;
     tilesize[1] = height;
 }
 
-short unsigned int * Map::getTilesize() const {
-    return ((short unsigned int *)tilesize);
+void RenderSystemx::setLinespace(const short int unsigned in_linespace) {
+    linespace = in_linespace;
 }
 
-void Map::setTile(const short unsigned int x, const short unsigned int y, Entity * in_entity) {
-    entitymap[x][y] = in_entity;
-}
 
-void Map::removeTile(const short unsigned int x, const short unsigned int y) {
-    entitymap[x][y] = nullptr;
-}
+void RenderSystemx::update(entityx::EntityManager & es, entityx::EventManager & events, entityx::TimeDelta dt) {
+    SDL_RenderClear(renderer);
 
-void Map::setArrivalEquipments(const std::vector<std::vector<Inventory_item>> in_arrival_equipments) {
-    arrival_equipments = in_arrival_equipments;
-}
-
-std::vector<std::vector<Inventory_item>> Map::getArrivalEquipments() {
-    return(arrival_equipments);
-}
-
-void Map::setArrivals(const std::vector<Map_arrival> in_arrivals) {
-    map_arrivals = in_arrivals;
-}
-
-void Map::addArrival(const Map_arrival in_arrival) {
-    map_arrivals.push_back(in_arrival);
-}
-
-void Map::removeMapArrival(const unsigned char index) {
-    loaded_map_arrivals.push_back(map_arrivals[index]);
-    map_arrivals.erase(map_arrivals.begin() + index);
-}
-
-std::vector<Map_arrival> Map::getArrivals() {
-    return(map_arrivals);
-}
-
-std::vector<std::vector<short int>> Map::makeMvtCostmap(const unsigned char unitmovetype) {
-    // SDL_Log("Making MvtCostmap");
-    short int tile_ind = 0;
-    std::vector<std::vector<short int>> costmap((short int)tilemap.size(), std::vector<short int> ((short int)tilemap[0].size()));
-    for (short int row = 0; row < tilemap.size(); row++) {
-        for (short int col = 0; col < tilemap[row].size(); col++) {
-            tile_ind = tilemap[row][col]/DEFAULT::TILE_DIVISOR;
-            costmap[row][col] = tiles[tile_ind].getCost()[unitmovetype];
-        }
+    for (entityx::Entity ent : es.entities_with_components<Map>()) {
+        entityx::ComponentHandle<Map> map = ent.component<Map>();
+        map->draw();
     }
-    return(costmap);
-}
-void Map::loadTiles(const int in_map_index) {
-    tilesasset_ind = chapTiles[in_map_index]();
-    baseTiles(&tiles, tilesasset_ind);
-}
 
-void Map::loadTiles(std::vector<short int> to_load) {
-    tilesasset_ind = to_load;
-    baseTiles(&tiles, tilesasset_ind);
-}
+    for (entityx::Entity ent : es.entities_with_components<Sprite, Position>()) {
+        entityx::ComponentHandle<Sprite> sprite = ent.component<Sprite>();
+        entityx::ComponentHandle<Position> position = ent.component<Position>();
 
-void Map::unloadTiles(std::vector<short int> to_unload) {
-    for (int i = 0; i < to_unload.size(); i++) {
-        tiles.erase(to_unload[i]);
-    }
-}
+        if (!ent.has_component<Text>()) {
+            int kb_held = 0;
+            int gp_held = 0;
+            short int frames = sprite->getFrames();
+            short int speed = sprite->getSpeed();
+            short int * slidepos = sprite->getSlidepos();
+            short int * objectivepos = sprite->getObjpos();
+            SDL_Rect srcrect = sprite->getSrcrect();
+            SDL_Rect destrect = sprite->getDestrect();
+            unsigned char slidetype = sprite->getSlidetype();
+            short int slideint = sprite->getSlideint();
+            float * slidefactors = sprite->getSlidefactors();
+            short int scalefactor[2];
+            scalefactor[0] = tilesize[0];
+            scalefactor[1] = tilesize[1];
 
-std::vector<std::vector<short int>> Map::getTilemap(){
-    return(tilemap);
-}
+            if (sprite->isAnimated()) { //looping sprites.
+                unsigned char looping = sprite->getSs_looping();
 
-void Map::setTilemap(const std::vector<std::vector<short int>> in_tilemap){
-    tilemap = in_tilemap;
-}
+                switch (looping) {
+                    case LOOPING::PINGPONG:
+                        srcrect.x = srcrect.w * pingpong(static_cast<int>(SDL_GetTicks() / speed), frames, 0);
+                        break;
 
-unsigned char Map::getTurn() {
-    return(turn);
-}
+                    case LOOPING::LINEAR:
+                    case LOOPING::DIRECT:
+                        srcrect.x = srcrect.w * static_cast<int>((SDL_GetTicks() / speed) % frames);
+                        break;
 
-void Map::moveTile(const short unsigned int x, const short unsigned int y, const short unsigned int new_x, const short unsigned int new_y) {
-    entitymap[new_x][new_y] = entitymap[x][y];
-    entitymap[x][y] = nullptr;
-}
-
-Entity * Map::getTile(const short unsigned int x, const short unsigned int y) {
-    return(entitymap[x][y]);
-}
-
-void Map::setRenderer(SDL_Renderer * in_renderer){
-    renderer = in_renderer;
-    loadOverlays();
-}
-
-void Map::loadTiletextures() {
-    short unsigned int tile_ind;
-    std::string texturename;
-    for (short unsigned int i = 0; i < tilesasset_ind.size(); i++) {
-        tile_ind = (tilesasset_ind[i]/DEFAULT::TILE_DIVISOR);
-        texturename = "..//assets//" + tiles[tile_ind].getName() + "_" + std::to_string(tilesasset_ind[i]) + ".png";
-        textures[tilesasset_ind[i]] = loadTexture(renderer, texturename.c_str());
-    }
-}
-
-void Map::loadOverlays() {
-    SDL_Log("Loading Map overlays");
-    overlays[0] = loadTexture(renderer, "tile_overlay_move.png", true);
-    overlays[1] = loadTexture(renderer, "tile_overlay_attack.png", true);
-    overlays[2] = loadTexture(renderer, "tile_overlay_heal.png", true);
-}
-
-void Map::loadDanger() {
-    SDL_Log("Loading Map dangerzone");
-    dangers[0] = loadTexture(renderer, "..//assets//danger.png", false);
-    // dangers[1] = loadTexture("..//assets//danger_grid.png");
-}
-
-void Map::loadGrid() {
-}
-
-void Map::addDanger(const std::vector<std::vector<short int>> in_danger) {
-    dangeroverlay = matrix_plus(dangeroverlay, in_danger);
-}
-
-void Map::subDanger(const std::vector<std::vector<short int>> in_danger) {
-    dangeroverlay = matrix_plus(dangeroverlay, in_danger, -1);
-}
-
-void Map::setOverlaymode(const unsigned char in_mode) {
-    char message[DEFAULT::BUFFER_SIZE];
-    sprintf(message, "Set Map ovelay mode: %d", in_mode);
-    SDL_Log(message);
-    overlay_mode = in_mode;
-}
-
-void Map::setDangermode(const unsigned char in_mode) {
-    danger_mode = in_mode;
-}
-
-void Map::showDanger(){
-    show_danger = true;
-}
-
-void Map::hideDanger(){
-    show_overlay = false;
-}
-
-void Map::showOverlay(){
-    show_overlay = true;
-}
-
-void Map::hideOverlay(){
-    show_overlay = false;
-}
-
-void Map::initVars() {
-    srcrect.x = srcrect.y = 0;
-    destrect.x = destrect.y = 0;
-    setTilesize(DEFAULT::TILESIZE, DEFAULT::TILESIZE);
-    srcrect.w = destrect.w = DEFAULT::TILESIZE;
-    srcrect.h = destrect.h = DEFAULT::TILESIZE;
-    std::vector<std::vector<Entity *>> temp(DEFAULT::LINE_LENGTH, std::vector<Entity*>(DEFAULT::LINE_LENGTH));
-    entitymap = temp;
-}
-
-void Map::makeEntitymap(const short unsigned int row_size, const short unsigned int col_size){
-    if (!made_entitymap) {
-        std::vector<std::vector<Entity *>> temp(row_size, std::vector<Entity*>(col_size));
-        entitymap = temp;
-        for (short unsigned int col = 0; col < entitymap.size(); col++) {
-            for (short unsigned int row = 0; row < entitymap[0].size(); row++) {
-                entitymap[col][row] =  static_cast<Entity*>(nullptr);
+                    case LOOPING::REVERSE:
+                        srcrect.x = srcrect.w * (frames - static_cast<int>((SDL_GetTicks() / speed) % frames));
+                        break;
+                }
             }
-        }
-    }
-    made_entitymap = true;
-}
 
-std::vector<std::vector<Entity *>> Map::getEntitymap() {
-    return(entitymap);
-}
-
-void Map::loadTilemap(const std::string filename) {
-    tilemap = readcsv_vec<short int>(filename.c_str(), 1);
-    postTilemap();
-}
-
-void Map::loadTilemap(const short unsigned int in_map_index) {
-    tilemap = chapTilemaps[in_map_index]();
-    postTilemap();
-}
-
-void Map::postTilemap() {
-    loadTiletextures();
-    short unsigned int col_size = tilemap.size();
-    short unsigned int row_size = tilemap[0].size();
-    makeEntitymap(row_size, col_size);
-}
-
-unsigned char Map::getnumArrivals() {
-    return(num_enemies);
-}
-
-unsigned short int Map::getBoss() {
-    return(boss);
-}
-
-bool Map::getBossDeath() {
-    return(bossdied);
-}
-
-bool Map::getSeized() {
-    return(bossdied);
-}
-
-std::vector<unsigned short int> Map::getEssentials() {
-    return(essentials);
-}
-
-void Map::setOverlay(const unsigned char in_mode, const std::vector<std::vector<short int>> in_map) {
-    if ((in_mode & MAP::OVERLAY::HEAL) > 0) {
-        healoverlay = in_map;
-    }
-    if ((in_mode & MAP::OVERLAY::ATTACK) > 0) {
-        attackoverlay = in_map;
-    } 
-    if ((in_mode & MAP::OVERLAY::MOVE) > 0) {
-        moveoverlay = in_map;
-    } 
-}
-
-void Map::clearOverlays() {
-    attackoverlay.clear();
-    moveoverlay.clear();
-    healoverlay.clear();
-    overlay_mode = 0;
-}
-
-void Map::drawMap() {
-    int tile_ind = 0;
-    for (int row = 0; row < tilemap.size(); row++) {// This loop cache friendly.
-        for (int col = 0; col < tilemap[row].size(); col++) {
-            tile_ind = tilemap[row][col];
-            destrect.x = (col + 1) * tilesize[0];
-            destrect.y = (row + 1) * tilesize[1];
-            SDL_RenderCopy(renderer, textures[tile_ind], &srcrect, &destrect);
-
-            if (show_overlay) {
-                if (((overlay_mode & MAP::OVERLAY::MOVE) > 0) && (overlays[0] != NULL)) {
-                    if (moveoverlay[row][col] == 1) {
-                        SDL_RenderCopy(renderer, overlays[0], &srcrect, &destrect);
-                    }
+            if ((!ent.has_component<KeyboardController>()) && (!ent.has_component<GamepadController>())) {
+                // This is for NOT CURSOR.
+                if (!position->isonTilemap()) { //move on the menu space
+                    scalefactor[0] = 1;
+                    scalefactor[1] = 1 ;
                 }
-                if (((overlay_mode & MAP::OVERLAY::ATTACK) > 0)  && (overlays[1] != NULL)) {
-                    if (attackoverlay[row][col] == 1) {
-                        SDL_RenderCopy(renderer, overlays[1], &srcrect, &destrect);
-                    }
+
+                slidepos[0] = (int)(position->getPos()[0] * scalefactor[0]);
+                slidepos[1] = (int)(position->getPos()[1] * scalefactor[1]);
+            }
+
+            entityx::ComponentHandle<KeyboardController> keyboard = ent.component<KeyboardController>();
+
+            if (keyboard) {
+                kb_held = keyboard->getHeldmove();
+            }
+
+            entityx::ComponentHandle<GamepadController> gamepad = ent.component<GamepadController>();
+
+            if (gamepad) {
+                // SDL_Log("Rendering Gamepad Controller.");
+                gp_held = gamepad->getHeldmove();
+            }
+
+            if ((gamepad) || (keyboard)) {
+                if (!position->isonTilemap()) { //move on the menu space
+                    scalefactor[0] = linespace;
+                    scalefactor[1] = linespace;
                 }
-                if (((overlay_mode & MAP::OVERLAY::HEAL) > 0) && (overlays[2] != NULL)) {
-                    if (healoverlay[row][col] == 1) {
-                        SDL_RenderCopy(renderer, overlays[2], &srcrect, &destrect);
+
+                if (slidetype == SLIDETYPE::GEOMETRIC) { //for cursor mvt on map.
+                    objectivepos[0] = (int)position->getPos()[0] * (scalefactor[0]) - destrect.w / 4;
+                    objectivepos[1] = (int)position->getPos()[1] * (scalefactor[1]) - destrect.h / 4;
+
+                    if ((gp_held > 25) || (kb_held > 25))  {
+                        slideint = 1;
+                    }
+
+                    if (objectivepos[0] != slidepos[0]) {
+                        slidepos[0] += geometricslide((objectivepos[0] - slidepos[0]), slidefactors[slideint]);
+                    }
+
+                    if (objectivepos[1] != slidepos[1]) {
+                        slidepos[1] += geometricslide((objectivepos[1] - slidepos[1]), slidefactors[slideint]);
+                    }
+
+                    if ((objectivepos[0] == slidepos[0]) && (objectivepos[1] == slidepos[1])) {
+                        position->setUpdatable(true);
+                        slideint = 0;
+                    } else {
+                        position->setUpdatable(false);
                     }
                 }
             }
 
-            if (show_danger) {
-                if (dangeroverlay[row][col] > 1) {
-                    SDL_RenderCopy(renderer, dangers[0], &srcrect, &destrect);
-                }
-            }
+            // if (slidetype == "vector") { //for unit mvt on map.
+
+            // }
+
+            destrect.x = slidepos[0];
+            destrect.y = slidepos[1];
+
+            sprite->setSlidepos(slidepos);
+            sprite->setObjpos(objectivepos);
+            sprite->setSrcrect(srcrect);
+            sprite->setDestrect(destrect);
+            sprite->draw();
+        }
+
+    }
+
+    for (entityx::Entity ent : es.entities_with_components<Text, Position>()) {
+        entityx::ComponentHandle<Position> position = ent.component<Position>();
+        entityx::ComponentHandle<Text> text = ent.component<Text>();
+        short int * pos = position->getPos();
+        // SDL_Log("unit menu position: %d %d", position[0], position[1]);
+
+        if (ent.has_component<Sprite>()) {
+            ent.component<Sprite>()->setDestrectpos(pos);
+            ent.component<Sprite>()->draw();
+        }
+
+        text->setRects(pos);
+        text->draw();
+    }
+
+    SDL_RenderPresent(renderer);
+}
+
+void RenderSystemx::configure(entityx::EventManager & event_manager) {
+    event_manager.subscribe<turnBegin>(*this);
+    event_manager.subscribe<turnEnd>(*this);
+    event_manager.subscribe<unitHealEvent>(*this);
+    event_manager.subscribe<unitWaitEvent>(*this);
+    event_manager.subscribe<unitDieEvent>(*this);
+    event_manager.subscribe<unitRefreshEvent>(*this);
+}
+
+void RenderSystemx::receive(const turnBegin & begin) {
+
+}
+
+void RenderSystemx::receive(const turnEnd & end) {
+
+}
+
+void RenderSystemx::receive(const unitHealEvent & heal) {
+
+}
+
+void RenderSystemx::receive(const unitDieEvent & death) {
+
+}
+
+void RenderSystemx::receive(const unitWaitEvent & wait) {
+
+}
+
+void RenderSystemx::receive(const unitRefreshEvent & refresh) {
+
+}
+
+UnitSystemx::UnitSystemx() {
+
+}
+
+UnitSystemx::UnitSystemx(Game * in_game) {
+    SDL_Log("Adding Unitsystem.");
+    game = in_game;
+    settings = game->getSettings();
+    unitmenux = game->getUnitmenu();
+    updateMap();
+}
+
+void UnitSystemx::updateMap() {
+    mapx = game->getMap();
+}
+
+
+void UnitSystemx::configure(entityx::EventManager & events) {
+    event_manager = &events;
+    events.subscribe<unitSelect>(*this);
+    events.subscribe<unitMove>(*this);
+    events.subscribe<unitMenu>(*this);
+    events.subscribe<unitMap>(*this);
+}
+
+void UnitSystemx::receive(const unitSelect & select) {
+    entityx::ComponentHandle<Unit> unit = select.unit;
+
+    switch (unit->getArmy()) {
+        case UNIT::ARMY::FRIENDLY:
+        case UNIT::ARMY::ERWIN:
+        case UNIT::ARMY::FREE_MILITIA:
+            event_manager->emit<unitMove>(select.cursor, select.unit);
+            break;
+
+        case UNIT::ARMY::ENEMY:
+        case UNIT::ARMY::BANDITS:
+        case UNIT::ARMY::KEWAC:
+            break;
+
+        case UNIT::ARMY::NEUTRAL:
+        case UNIT::ARMY::IMPERIAL:
+            break;
+    }
+}
+
+void UnitSystemx::receive(const unitMenu & menu) {
+    SDL_Log("Unitmenu event received.");
+    mapx->hideOverlay();
+
+    entityx::Entity cursor = menu.cursor;
+    entityx::ComponentHandle<Position> cursorpos = cursor.component<Position>();
+
+    if (unitmenux->valid()) {
+        unitmenux->component<Sprite>()->show();
+        unitmenux->component<Text>()->show();
+    } else {
+        game->makeMenu(MENU::UNIT);
+    }
+
+    short int * new_position;
+    short int * old_position;
+
+    entityx::ComponentHandle<Position> selectedpos;
+
+    if (selected.valid()) {
+        selectedpos = selected.component<Position>();
+
+        if (selectedpos) {
+            old_position = selectedpos->getPos();
+            SDL_Log("Old position %d, %d \n", old_position[0], old_position[1]);
+        } else {
+            SDL_Log("Could not get selectedx unit component");
+        }
+
+    } else {
+        SDL_Log("Could not get selected entity");
+    }
+
+    if (cursorpos) {
+        new_position = cursorpos->getPos();
+        SDL_Log("New position %d, %d \n", new_position[0], new_position[1]);
+    } else {
+        SDL_Log("Could not get setter(unit) position component");
+    }
+
+    mapx->moveUnit(old_position[0], old_position[1], new_position[0], new_position[1]);
+    unitmenux->component<Position>()->setPos((new_position[0] + 1) * settings->tilesize[0], new_position[1] * settings->tilesize[1]);
+    selectedpos->setPos(new_position); // move at the end, cause new and old_position are pointers!
+    game->setCursorstate(GAME::STATE::UNITMENU);
+}
+
+void UnitSystemx::receive(const unitMove & move) {
+    SDL_Log("Unitmove event received.");
+    std::vector<std::vector<short int>> costmap;
+    std::vector<std::vector<short int>> movemapp;
+    std::vector<std::vector<short int>> attackmapp;
+    entityx::Entity cursor = move.cursor;
+    entityx::ComponentHandle<Position> cursorpos = cursor.component<Position>();
+    entityx::ComponentHandle<Unit> unit = move.unit;
+    selected = unit.entity();
+    short unsigned int * start;
+    short unsigned int unit_move;
+    short unsigned int current_unit_id;
+    unsigned char unitmvttype;
+    unsigned char * range;
+
+    if (cursorpos) {
+        start = (short unsigned int *)cursorpos->getPos();
+    } else {
+        SDL_Log("Could not get cursor position component");
+    }
+
+    if (unit) {
+        unit_move = unit->getStats().move;
+        unitmvttype = unit->getMvttype();
+        range = unit->getRange();
+    } else {
+        SDL_Log("Could not get unit component");
+    }
+
+    SDL_Log("start: %d %d", start[0], start[1]);
+    SDL_Log("unitmove: %d", unit_move);
+
+    costmap = mapx->makeMvtCostmap(unitmvttype);
+
+    movemapp = movemap(costmap, start, unit_move, "matrix");
+    mapx->setOverlay(MAP::OVERLAY::MOVE, movemapp);
+
+    attackmapp = attackmap(movemapp, start, unit_move, range, "matrix");
+    mapx->setOverlay(MAP::OVERLAY::ATTACK, attackmapp);
+
+    mapx->showOverlay();
+}
+
+void UnitSystemx::receive(const unitMap & map) {
+
+    if ((game->getState() == GAME::STATE::UNITMOVE)) {
+        mapx->hideOverlay();
+    }
+
+    if ((game->getState() == GAME::STATE::UNITMENU) ||
+            (game->getState() == GAME::STATE::OPTIONS)) {
+        game->hideMenu(GAME::STATE::UNITMENU);
+        game->setCursorstate(GAME::STATE::MAP);
+
+    }
+}
+
+void UnitSystemx::update(entityx::EntityManager & es, entityx::EventManager & events, entityx::TimeDelta dt) {
+
+}
+
+MapSystemx::MapSystemx() {
+    SDL_Log("Adding Mapsystemx.");
+
+}
+
+void MapSystemx::addArmy(unsigned char in_army) {
+    armies.push(in_army);
+}
+
+void MapSystemx::configure(entityx::EventManager & event_manager) {
+    event_manager.subscribe<turnBegin>(*this);
+    event_manager.subscribe<turnEnd>(*this);
+    event_manager.subscribe<mapMenu>(*this);
+}
+
+void MapSystemx::receive(const mapMenu & menu) {
+    SDL_Log("Received a mapMenu from...");
+}
+
+void MapSystemx::receive(const turnBegin & begin) {
+    SDL_Log("Received a turnBegin from...");
+}
+
+void MapSystemx::receive(const turnEnd & end) {
+    SDL_Log("Received a turnEnd from...");
+    armies.push(armies.front());
+    armies.pop();
+}
+
+void MapSystemx::update(entityx::EntityManager & es, entityx::EventManager & events, entityx::TimeDelta dt) {
+    entityx::ComponentHandle<Unit> unit;
+}
+
+ControlSystemx::ControlSystemx() {
+
+}
+
+ControlSystemx::ControlSystemx(Game * in_game) {
+    SDL_Log("Adding Controlsystem.");
+    game = in_game;
+    keyboardInputMap = game->getKeyboardInputMap();
+    gamepadInputMap = game->getGamepadInputMap();
+}
+
+void ControlSystemx::configure(entityx::EventManager & in_events) {
+    event_manager = &in_events;
+    event_manager->subscribe<inputAccept>(*this);
+    event_manager->subscribe<inputCancel>(*this);
+    event_manager->subscribe<inputMenuRight>(*this);
+    event_manager->subscribe<inputMenuLeft>(*this);
+    event_manager->subscribe<inputMinimap>(*this);
+    event_manager->subscribe<inputFaster>(*this);
+    event_manager->subscribe<inputPause>(*this);
+}
+
+void ControlSystemx::receive(const inputMenuRight & menuright) {
+
+}
+
+void ControlSystemx::receive(const inputMenuLeft & menuleft) {
+
+}
+
+void ControlSystemx::receive(const inputMinimap & minimap) {
+
+}
+
+void ControlSystemx::receive(const inputFaster & faster) {
+
+}
+
+void ControlSystemx::receive(const inputPause & pause) {
+
+}
+
+void ControlSystemx::receive(const inputCancel & cancel) {
+    entityx::ComponentHandle<KeyboardController> keyboard = cancel.keyboard;
+    entityx::ComponentHandle<GamepadController> gamepad = cancel.gamepad;
+    entityx::Entity canceller;
+
+    if (keyboard) {
+        canceller = keyboard.entity();
+    }
+
+    if (gamepad) {
+        canceller = gamepad.entity();
+    }
+
+    if ((game->getState() == GAME::STATE::UNITMENU) ||
+            (game->getState() == GAME::STATE::OPTIONS) ||
+            (game->getState() == GAME::STATE::UNITMOVE)) {
+        event_manager->emit<unitMap>(canceller);
+        game->setState(GAME::STATE::MAP);
+    }
+}
+
+
+void ControlSystemx::receive(const inputAccept & accept) {
+    short int toset = -1;
+    entityx::ComponentHandle<Position> position;
+    entityx::ComponentHandle<KeyboardController> keyboard = accept.keyboard;
+    entityx::ComponentHandle<GamepadController> gamepad = accept.gamepad;
+    entityx::Entity accepter;
+    unsigned int frames_button = 0;
+
+    if (keyboard) {
+        frames_button = keyboard->getHeldbutton();
+        accepter = keyboard.entity();
+    }
+
+    if (gamepad) {
+        frames_button = gamepad->getHeldbutton();
+        accepter = gamepad.entity();
+    }
+
+    position = accepter.component<Position>();
+
+    if ((game->getState() == GAME::STATE::MAP) && (frames_button == 1)) {
+        SDL_Log("accepter Position, %d %d \n", position->getPos()[0], position->getPos()[1]);
+        entityx::ComponentHandle<Unit> unitontile = unitmap[position->getPos()[0]][position->getPos()[1]];
+
+        if (unitontile) {
+            toset = GAME::STATE::UNITMOVE;
+            event_manager->emit<unitSelect>(accepter, unitontile);
+        } else {
+            toset = GAME::STATE::OPTIONS;
+            event_manager->emit<mapMenu>(accepter);
+        }
+    } else if ((game->getState() == GAME::STATE::UNITMOVE) && (frames_button == 1)) {
+        toset = GAME::STATE::UNITMENU;
+        event_manager->emit<unitMenu>(accepter);
+    }
+
+    if (toset != -1) {
+        game->setState(toset);
+    }
+
+}
+
+void ControlSystemx::update(entityx::EntityManager & es, entityx::EventManager & events, entityx::TimeDelta dt) {
+
+    for (entityx::Entity ent : es.entities_with_components<Map>()) {
+        unitmap = ent.component<Map>()->getUnitmap();
+    }
+
+    for (entityx::Entity ent : es.entities_with_components<KeyboardController, Position>()) {
+        entityx::ComponentHandle<Position> position = ent.component<Position>();
+        entityx::ComponentHandle<KeyboardController> keyboard = ent.component<KeyboardController>();
+
+        const Uint8 * kb_state = SDL_GetKeyboardState(NULL);
+        std::vector<std::vector<SDL_Scancode>> pressed_move{};
+        std::vector<std::vector<SDL_Scancode>> pressed_button{};
+
+        if (keyboard->is_pressed(kb_state, keyboardInputMap.moveup) && !keyboard->is_pressed(kb_state, keyboardInputMap.movedown)) {
+            position->addPos(0, -1);
+            pressed_move.push_back(keyboardInputMap.moveup);
+        } else if (!keyboard->is_pressed(kb_state, keyboardInputMap.moveup) && keyboard->is_pressed(kb_state, keyboardInputMap.movedown)) {
+            position->addPos(0, 1);
+            pressed_move.push_back(keyboardInputMap.movedown);
+        }
+
+        if (!keyboard->is_pressed(kb_state, keyboardInputMap.moveright) && keyboard->is_pressed(kb_state, keyboardInputMap.moveleft)) {
+            position->addPos(-1, 0);
+            pressed_move.push_back(keyboardInputMap.moveleft);
+        } else if (keyboard->is_pressed(kb_state, keyboardInputMap.moveright) && !keyboard->is_pressed(kb_state, keyboardInputMap.moveleft)) {
+            position->addPos(1, 0);
+            pressed_move.push_back(keyboardInputMap.moveright);
+        }
+
+        if (keyboard->is_pressed(kb_state, keyboardInputMap.accept)) {
+            pressed_button.push_back(keyboardInputMap.accept);
+            events.emit<inputAccept>(keyboard);
+        }
+
+        if (keyboard->is_pressed(kb_state, keyboardInputMap.cancel)) {
+            pressed_button.push_back(keyboardInputMap.cancel);
+            events.emit<inputCancel>(keyboard);
+        }
+
+        keyboard->check_move(pressed_move);
+        keyboard->check_button(pressed_button);
+
+        if (false) {
+            events.emit<turnBegin>(ent);
+        }
+
+        if (false) {
+            events.emit<turnEnd>(ent);
+        }
+    }
+
+    for (entityx::Entity ent : es.entities_with_components<KeyboardController, Position>()) {
+        entityx::ComponentHandle<Position> position = ent.component<Position>();
+        entityx::ComponentHandle<GamepadController> gamepad = ent.component<GamepadController>();
+
+        SDL_GameController * controller = gamepad->getController();
+        Sint16 mainxaxis = SDL_GameControllerGetAxis(controller, gamepadInputMap.mainxaxis[0]);
+        Sint16 mainyaxis = SDL_GameControllerGetAxis(controller, gamepadInputMap.mainyaxis[0]);
+        Sint16 secondxaxis = SDL_GameControllerGetAxis(controller, gamepadInputMap.secondxaxis[0]);
+        Sint16 secondyaxis = SDL_GameControllerGetAxis(controller, gamepadInputMap.secondyaxis[0]);
+        std::vector<short unsigned int> pressed_move{};
+        std::vector<std::vector<SDL_GameControllerButton>> pressed_button{};
+        int joystick_dead_zone = gamepad->getDeadzone();
+        unsigned int frames_button = gamepad->getHeldbutton();
+
+        if ((mainxaxis > joystick_dead_zone) || (secondxaxis > joystick_dead_zone)) {
+            position->addPos(1, 0);
+            pressed_move.push_back(GAME::BUTTON::RIGHT);
+        } else if ((mainxaxis < -joystick_dead_zone) || (secondxaxis < -joystick_dead_zone)) {
+            position->addPos(-1, 0);
+            pressed_move.push_back(GAME::BUTTON::LEFT);
+        }
+
+        if ((mainyaxis > joystick_dead_zone) || (secondyaxis > joystick_dead_zone)) {
+            position->addPos(0, 1);
+            pressed_move.push_back(GAME::BUTTON::UP);
+        } else if ((mainyaxis < -joystick_dead_zone) || (secondyaxis < -joystick_dead_zone))  {
+            position->addPos(0, -1);
+            pressed_move.push_back(GAME::BUTTON::DOWN);
+        }
+
+        if (gamepad->isPressed(gamepadInputMap.moveright)) {
+            position->addPos(1, 0);
+            pressed_move.push_back(GAME::BUTTON::RIGHT);
+        } else if (gamepad->isPressed(gamepadInputMap.moveleft)) {
+            position->addPos(-1, 0);
+            pressed_move.push_back(GAME::BUTTON::LEFT);
+        }
+
+        if (gamepad->isPressed(gamepadInputMap.moveup)) {
+            position->addPos(0, -1);
+            pressed_move.push_back(GAME::BUTTON::UP);
+        } else if (gamepad->isPressed(gamepadInputMap.movedown)) {
+            position->addPos(0, 1);
+            pressed_move.push_back(GAME::BUTTON::DOWN);
+        }
+
+        short unsigned int toset = -1;
+        entityx::Entity setter;
+
+        if (gamepad->isPressed(gamepadInputMap.accept)) {
+            // SDL_Log("Gamepad pressed accept.");
+            pressed_button.push_back(gamepadInputMap.accept);
+            events.emit<inputAccept>(gamepad);
+        }
+
+
+        if (gamepad->isPressed(gamepadInputMap.cancel)) {
+            pressed_button.push_back(gamepadInputMap.cancel);
+            events.emit<inputCancel>(gamepad);
+
+        }
+
+        gamepad->check_move(pressed_move);
+        gamepad->check_button(pressed_button);
+
+        if (false) {
+            events.emit<turnBegin>(ent);
+        }
+
+        if (false) {
+            events.emit<turnEnd>(ent);
         }
     }
 }
 
-std::vector<std::vector<short int>> testTilemap(){
-    std::vector<std::vector<short int>> tilemap = { 
-        {100, 100, 100, 100, 100, 100, 200, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 300, 300, 300, 300, 300, 100, 100, 100},
-        {100, 100, 100, 100, 100, 100, 200, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 300, 300, 300, 300, 300, 100, 100, 100},
-        {100, 100, 100, 100, 100, 100, 200, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 300, 300, 300, 300, 300, 100, 100, 100},
-        {100, 100, 100, 100, 100, 100, 200, 200, 100, 100, 100, 100, 100, 100, 100, 100, 100, 300, 300, 300, 300, 300, 100, 100, 100},
-        {100, 100, 100, 100, 100, 100, 100, 200, 100, 100, 100, 100, 100, 100, 100, 100, 100, 300, 300, 300, 300, 300, 100, 100, 100},
-        {100, 100, 100, 100, 100, 100, 100, 200, 200, 100, 100, 100, 100, 100, 100, 100, 100, 300, 300, 300, 300, 100, 100, 100, 100},
-        {100, 100, 100, 100, 100, 100, 100, 100, 200, 100, 100, 100, 100, 100, 100, 100, 100, 300, 300, 300, 100, 300, 100, 100, 100},
-        {100, 100, 100, 100, 100, 100, 100, 100, 200, 100, 100, 100, 100, 100, 100, 100, 100, 300, 300, 100, 100, 100, 100, 100, 100},
-        {100, 100, 100, 100, 100, 100, 100, 100, 200, 200, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100},
-        {100, 100, 100, 100, 100, 100, 100, 100, 200, 200, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 120, 100, 100, 100, 100},
-        {100, 100, 100, 100, 100, 100, 100, 100, 100, 200, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 120, 120, 100, 100, 100},
-        {100, 100, 100, 100, 100, 100, 100, 100, 100, 200, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100},
-        {100, 100, 100, 100, 100, 100, 100, 100, 100, 200, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 120, 100, 100, 100},
-        {100, 100, 100, 100, 100, 100, 100, 100, 100, 300, 100, 100, 100, 100, 100, 100, 100, 100, 100, 120, 120, 120, 100, 100, 100},
-        {100, 100, 100, 100, 100, 100, 100, 100, 100, 200, 100, 100, 100, 100, 100, 100, 100, 100, 100, 120, 100, 100, 100, 100, 100},
-        {100, 100, 100, 100, 100, 100, 100, 100, 100, 200, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100},
-        {100, 100, 100, 100, 100, 100, 100, 100, 100, 200, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100},
-        {100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100},
-        {100, 100, 100, 100, 100, 100, 100, 100, 100, 200, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100},
-        {100, 100, 100, 100, 100, 100, 100, 100, 100, 200, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100}
-    };
-    return(tilemap);
-}
-
-std::vector<short unsigned int> testArrivalinds(){
-    std::vector<short unsigned int> enemies = {UNIT::NAME::SILOU};
-    return(enemies);
-}
-
-std::vector<std::vector<short int>> (*chapTilemaps[40])() = {testTilemap,};
-std::vector<short unsigned int> (*chapArrivalinds[40])() = {testArrivalinds,};

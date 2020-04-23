@@ -36,12 +36,16 @@ void RenderSystemx::setLinespace(const short int unsigned in_linespace) {
 void RenderSystemx::slideSprites(entityx::Entity in_ent, short int * slidepos, short int * objectivepos) {
     int kb_held = 0;
     int gp_held = 0;
-    entityx::ComponentHandle<GamepadController> gamepad = ent.component<GamepadController>();
-    entityx::ComponentHandle<KeyboardController> keyboard = ent.component<KeyboardController>();
-    entityx::ComponentHandle<Position> position = ent.component<Position>();
+    entityx::ComponentHandle<GamepadController> gamepad = in_ent.component<GamepadController>();
+    entityx::ComponentHandle<KeyboardController> keyboard = in_ent.component<KeyboardController>();
+    entityx::ComponentHandle<Sprite> sprite = in_ent.component<Sprite>();
+    entityx::ComponentHandle<Position> position = in_ent.component<Position>();
     short int slideint = sprite->getSlideint();
+    unsigned char slidetype = sprite->getSlidetype();
     float * slidefactors = sprite->getSlidefactors();
     short int scalefactor[2];
+    SDL_Rect destrect = sprite->getDestrect();
+
     scalefactor[0] = tilesize[0];
     scalefactor[1] = tilesize[1];
 
@@ -68,7 +72,8 @@ void RenderSystemx::slideSprites(entityx::Entity in_ent, short int * slidepos, s
             scalefactor[0] = linespace;
             scalefactor[1] = linespace;
         }
-        switch (in_slidetype) {
+
+        switch (slidetype) {
             case SLIDETYPE::GEOMETRIC: //for cursor mvt on map.
                 objectivepos[0] = (int)position->getPos()[0] * (scalefactor[0]) - destrect.w / 4;
                 objectivepos[1] = (int)position->getPos()[1] * (scalefactor[1]) - destrect.h / 4;
@@ -91,17 +96,19 @@ void RenderSystemx::slideSprites(entityx::Entity in_ent, short int * slidepos, s
                 } else {
                     position->setUpdatable(false);
                 }
+
                 break;
-            }
         }
+    }
 }
 
 SDL_Rect RenderSystemx::loopSprites(entityx::ComponentHandle<Sprite> in_sprite) {
-    short int frames = sprite->getFrames();
-    short int speed = sprite->getSpeed();
-    SDL_Rect srcrect = sprite->getSrcrect();
+    short int frames = in_sprite->getFrames();
+    short int speed = in_sprite->getSpeed();
+    SDL_Rect srcrect = in_sprite->getSrcrect();
+    unsigned char looping = in_sprite->getSs_looping();
 
-    switch (in_looping) {
+    switch (looping) {
         case LOOPING::PINGPONG:
             srcrect.x = srcrect.w * pingpong(static_cast<int>(SDL_GetTicks() / speed), frames, 0);
             break;
@@ -115,12 +122,8 @@ SDL_Rect RenderSystemx::loopSprites(entityx::ComponentHandle<Sprite> in_sprite) 
             srcrect.x = srcrect.w * (frames - static_cast<int>((SDL_GetTicks() / speed) % frames));
             break;
     }
-    return(srcrect);
-}
 
-
-void RenderSystemx::setLinespace(const short int unsigned in_linespace) {
-
+    return (srcrect);
 }
 
 void RenderSystemx::update(entityx::EntityManager & es, entityx::EventManager & events, entityx::TimeDelta dt) {
@@ -133,24 +136,14 @@ void RenderSystemx::update(entityx::EntityManager & es, entityx::EventManager & 
 
     for (entityx::Entity ent : es.entities_with_components<Sprite, Position>()) {
         entityx::ComponentHandle<Sprite> sprite = ent.component<Sprite>();
-        entityx::ComponentHandle<Position> position = ent.component<Position>();
 
         if (!ent.has_component<Text>()) {
-            // short int frames = sprite->getFrames();
-            // short int speed = sprite->getSpeed();
             short int * slidepos = sprite->getSlidepos();
             short int * objectivepos = sprite->getObjpos();
             SDL_Rect srcrect = sprite->getSrcrect();
             SDL_Rect destrect = sprite->getDestrect();
-            // unsigned char slidetype = sprite->getSlidetype();
-            // short int slideint = sprite->getSlideint();
-            // float * slidefactors = sprite->getSlidefactors();
-            // short int scalefactor[2];
-            // scalefactor[0] = tilesize[0];
-            // scalefactor[1] = tilesize[1];
 
             if (sprite->isAnimated()) { //looping sprites.
-                unsigned char looping = sprite->getSs_looping();
                 srcrect = loopSprites(sprite);
             }
 
@@ -185,19 +178,29 @@ void RenderSystemx::update(entityx::EntityManager & es, entityx::EventManager & 
     }
 
     for (entityx::Entity ent : es.entities_with_components<KeyboardController>()) {
-        entityx::ComponentHandle<KeyboardController> keyboard = ent.component<KeyboardController>();
         entityx::ComponentHandle<Sprite> sprite = ent.component<Sprite>();
 
+        short int * slidepos = sprite->getSlidepos();
+        short int * objectivepos = sprite->getObjpos();
+        SDL_Rect srcrect = sprite->getSrcrect();
+        SDL_Rect destrect = sprite->getDestrect();
 
         if (sprite->isAnimated()) { //looping sprites.
-            unsigned char looping = sprite->getSs_looping();
             srcrect = loopSprites(sprite);
         }
 
         slideSprites(ent, slidepos, objectivepos);
 
-        slideSprites(sprite);
-    
+        destrect.x = slidepos[0];
+        destrect.y = slidepos[1];
+
+        sprite->setSlidepos(slidepos);
+        sprite->setObjpos(objectivepos);
+        sprite->setSrcrect(srcrect);
+        sprite->setDestrect(destrect);
+        sprite->draw();
+    }
+
     SDL_RenderPresent(renderer);
 }
 

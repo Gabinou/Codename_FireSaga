@@ -25,7 +25,9 @@ public:
     void setMap(entityx::ComponentHandle<Map> in_map);
     void setTilesize(const short int unsigned width, const short int unsigned height);
     void setLinespace(const short int unsigned in_linespace);
-    void loopSprites(const unsigned char in_looping, SDL_Rect * srcrect, short int speed, short int frames);
+    SDL_Rect loopSprites(entityx::ComponentHandle<Sprite> in_sprite);
+    void slideSprites(entityx::Entity in_ent, short int * slidepos, short int * objectivepos);
+
 
     void configure(entityx::EventManager & event_manager);
     void receive(const turnBegin & begin);
