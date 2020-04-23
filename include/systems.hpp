@@ -26,7 +26,7 @@ public:
     void setTilesize(const short int unsigned width, const short int unsigned height);
     void setLinespace(const short int unsigned in_linespace);
     SDL_Rect loopSprites(entityx::ComponentHandle<Sprite> in_sprite);
-    void slideSprites(entityx::Entity in_ent, short int * slidepos, short int * objectivepos);
+    void slideSprites(entityx::Entity * in_ent, short int * slidepos, short int * objectivepos);
 
 
     void configure(entityx::EventManager & event_manager);

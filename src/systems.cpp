@@ -33,13 +33,13 @@ void RenderSystemx::setLinespace(const short int unsigned in_linespace) {
     linespace = in_linespace;
 }
 
-void RenderSystemx::slideSprites(entityx::Entity in_ent, short int * slidepos, short int * objectivepos) {
+void RenderSystemx::slideSprites(entityx::Entity * in_ent, short int * slidepos, short int * objectivepos) {
     int kb_held = 0;
     int gp_held = 0;
-    entityx::ComponentHandle<GamepadController> gamepad = in_ent.component<GamepadController>();
-    entityx::ComponentHandle<KeyboardController> keyboard = in_ent.component<KeyboardController>();
-    entityx::ComponentHandle<Sprite> sprite = in_ent.component<Sprite>();
-    entityx::ComponentHandle<Position> position = in_ent.component<Position>();
+    entityx::ComponentHandle<GamepadController> gamepad = in_ent->component<GamepadController>();
+    entityx::ComponentHandle<KeyboardController> keyboard = in_ent->component<KeyboardController>();
+    entityx::ComponentHandle<Sprite> sprite = in_ent->component<Sprite>();
+    entityx::ComponentHandle<Position> position = in_ent->component<Position>();
     short int slideint = sprite->getSlideint();
     unsigned char slidetype = sprite->getSlidetype();
     float * slidefactors = sprite->getSlidefactors();
@@ -58,7 +58,7 @@ void RenderSystemx::slideSprites(entityx::Entity in_ent, short int * slidepos, s
         gp_held = gamepad->getHeldmove();
     }
 
-    if ((!keyboard) && (!keyboard)) {
+    if ((!keyboard) && (!gamepad)) {
         // This is for NOT CURSOR.
         if (!position->isonTilemap()) { //move on the menu space
             scalefactor[0] = 1;
@@ -147,7 +147,7 @@ void RenderSystemx::update(entityx::EntityManager & es, entityx::EventManager & 
                 srcrect = loopSprites(sprite);
             }
 
-            slideSprites(ent, slidepos, objectivepos);
+            slideSprites(&ent, slidepos, objectivepos);
 
             destrect.x = slidepos[0];
             destrect.y = slidepos[1];
@@ -189,7 +189,7 @@ void RenderSystemx::update(entityx::EntityManager & es, entityx::EventManager & 
             srcrect = loopSprites(sprite);
         }
 
-        slideSprites(ent, slidepos, objectivepos);
+        slideSprites(&ent, slidepos, objectivepos);
 
         destrect.x = slidepos[0];
         destrect.y = slidepos[1];
