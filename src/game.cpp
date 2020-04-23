@@ -245,8 +245,8 @@ void Game::setCursorstate(const short unsigned int new_state) {
                 cursorx.component<Sprite>()->setTilesize(mapx->getTilesize());
                 cursorx.component<Sprite>()->setSlidetype(SLIDETYPE::GEOMETRIC);
                 cursorx.component<Position>()->setBounds(mapx->getBounds());
+                cursorx.component<Position>()->setPos(cursor_lastpos); // Change to last cursor position.
                 cursorx.component<Position>()->setonTilemap(true);
-                cursorx.component<Position>()->setPos(6, 6); // Change to last cursor position.
                 systems.system<RenderSystemx>()->setTilesize(temp_tilesize[0], temp_tilesize[1]);
                 break;
 
@@ -270,6 +270,8 @@ void Game::setCursorstate(const short unsigned int new_state) {
                 menubounds[1] = unitmenupos[0] / linespace;
                 menubounds[2] = (short int)(unitmenupos[1] / linespace + 2);
                 menubounds[3] = (short int)(unitmenupos[1] / linespace + 3);
+                cursor_lastpos[0] = cursorx.component<Position>()->getPos()[0];
+                cursor_lastpos[1] = cursorx.component<Position>()->getPos()[1];
                 cursorx.component<Position>()->setBounds(menubounds);
                 cursorx.component<Position>()->setPos(menubounds[0], menubounds[2]);
                 cursorx.component<Position>()->setonTilemap(false);
