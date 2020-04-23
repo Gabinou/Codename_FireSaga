@@ -260,6 +260,7 @@ void UnitSystemx::configure(entityx::EventManager & events) {
     events.subscribe<unitDanger>(*this);
     events.subscribe<unitMove>(*this);
     events.subscribe<unitMenu>(*this);
+    events.subscribe<unitmenuSelect>(*this);
     events.subscribe<unitMap>(*this);
 }
 
@@ -289,12 +290,25 @@ void UnitSystemx::receive(const unitSelect & select) {
     }
 }
 
+void UnitSystemx::receive(const unitmenuSelect & select) {
+    SDL_Log("unitmenuSelect event received");
+    entityx::Entity cursor = select.cursor;
+    entityx::ComponentHandle<Position> position = cursor.component<Position>();
+    short int * cursorpos = position->getPos();
+    short int * cursorbounds = position->getBounds();
+    unsigned char menuind = cursorpos[1] - cursorbounds[2];
+
+    SDL_Log("menuind: %d ", menuind);
+    // game->getMenuoptions;
+    // switch()
+}
+
 void UnitSystemx::receive(const unitDanger & danger) {
 
 }
 
 void UnitSystemx::receive(const unitMenu & menu) {
-    SDL_Log("Unitmenu event received.");
+    SDL_Log("unitMenu event received");
     mapx->hideOverlay();
 
     entityx::Entity cursor = menu.cursor;
@@ -543,6 +557,13 @@ void ControlSystemx::receive(const inputAccept & accept) {
                 newstate = GAME::STATE::UNITMENU;
                 event_manager->emit<unitMenu>(accepter);
                 break;
+
+            case GAME::STATE::UNITMENU:
+
+                event_manager->emit<unitmenuSelect>(accepter);
+                break;
+
+
         }
     }
 

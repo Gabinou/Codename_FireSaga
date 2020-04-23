@@ -71,6 +71,7 @@ public:
     void receive(const unitMenu & menu);
     void receive(const unitMap & map);
     void receive(const unitDanger & danger);
+    void receive(const unitmenuSelect & select);
 
     void update(entityx::EntityManager & es, entityx::EventManager & events, entityx::TimeDelta dt) override;
 };

@@ -55,6 +55,11 @@ struct unitMap {
     entityx::Entity cursor;
 };
 
+struct unitmenuSelect {
+    unitmenuSelect(entityx::Entity cursor) : cursor(cursor) {}
+    entityx::Entity cursor;
+};
+
 struct inputAccept {
     inputAccept(entityx::ComponentHandle<KeyboardController> keyboard) : keyboard(keyboard) {}
     inputAccept(entityx::ComponentHandle<GamepadController> gamepad) : gamepad(gamepad) {}
