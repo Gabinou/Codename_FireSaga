@@ -345,7 +345,7 @@ void UnitSystemx::makeUnitmenuoptions(entityx::Entity in_ent) {
         right = unitmap[unitpos[1]][unitpos[0] + 1];
     }
 
-    if (tilemap[unitpos[1]][unitpos[0]] / DEFAULT::TILE_DIVISOR == THRONE) {
+    if (tilemap[unitpos[1]][unitpos[0]] / DEFAULT::TILE_DIVISOR == TILE::THRONE) {
         if (unit->getid() ==  UNIT::NAME::ERWIN) {
             options.push_back(UNIT::MENU::SEIZE);
         }
