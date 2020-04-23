@@ -327,6 +327,7 @@ void UnitSystemx::makeUnitmenuoptions(entityx::Entity in_ent) {
     unsigned char army;
     short int * bounds = mapx->getBounds();
     std::vector<std::vector<entityx::ComponentHandle<Unit>>> unitmap = mapx->getUnitmap();
+    std::vector<std::vector<short int>> tilemap = mapx->getTilemap();
 
     if ((unitpos[1] + 1) < bounds[3]) {
         top = unitmap[unitpos[1] + 1][unitpos[0]];
@@ -342,6 +343,12 @@ void UnitSystemx::makeUnitmenuoptions(entityx::Entity in_ent) {
 
     if ((unitpos[0] + 1) < bounds[1]) {
         right = unitmap[unitpos[1]][unitpos[0] + 1];
+    }
+
+    if (tilemap[unitpos[1]][unitpos[0]] / DEFAULT::TILE_DIVISOR == THRONE) {
+        if (unit->getid() ==  UNIT::NAME::ERWIN) {
+            options.push_back(UNIT::MENU::SEIZE);
+        }
     }
 
     if (left) {

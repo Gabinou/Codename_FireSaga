@@ -343,6 +343,7 @@ enum OPTIONS {
     ITEMS = 0,
     RESCUE,
     SEIZE,
+    ESCAPE,
     ATTACK,
     TRADE,
     TALK,
