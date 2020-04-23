@@ -283,6 +283,7 @@ void UnitSystemx::receive(const unitSelect & select) {
             event_manager->emit<unitDanger>(select.cursor, select.unit);
             break;
     }
+
     if (newstate > 0) {
         game->setState(newstate);
     }
@@ -520,23 +521,29 @@ void ControlSystemx::receive(const inputAccept & accept) {
     position = accepter.component<Position>();
     cursor_pos[0] = position->getPos()[0];
     cursor_pos[1] = position->getPos()[1];
+    entityx::ComponentHandle<Unit> unitontile;
 
-    if ((game->getState() == GAME::STATE::MAP) && (frames_button == 1)) {
-        SDL_Log("accepter Position, %d %d \n", cursor_pos[0], cursor_pos[1]);
+    if (frames_button == 1) {
+        switch (game->getState()) {
+            case GAME::STATE::MAP:
+                SDL_Log("accepter Position, %d %d \n", cursor_pos[0], cursor_pos[1]);
+                game->setCursorlastpos(cursor_pos[0], cursor_pos[1]);
+                unitontile = unitmap[cursor_pos[0]][cursor_pos[1]];
 
-        game->setCursorlastpos(cursor_pos[0], cursor_pos[1]);
+                if (unitontile) {
+                    event_manager->emit<unitSelect>(accepter, unitontile);
+                } else {
+                    newstate = GAME::STATE::MAPMENU;
+                    event_manager->emit<mapMenu>(accepter);
+                }
 
-        entityx::ComponentHandle<Unit> unitontile = unitmap[cursor_pos[0]][cursor_pos[1]];
+                break;
 
-        if (unitontile) {
-            event_manager->emit<unitSelect>(accepter, unitontile);
-        } else {
-            newstate = GAME::STATE::MAPMENU;
-            event_manager->emit<mapMenu>(accepter);
+            case GAME::STATE::UNITMOVE:
+                newstate = GAME::STATE::UNITMENU;
+                event_manager->emit<unitMenu>(accepter);
+                break;
         }
-    } else if ((game->getState() == GAME::STATE::UNITMOVE) && (frames_button == 1)) {
-        newstate = GAME::STATE::UNITMENU;
-        event_manager->emit<unitMenu>(accepter);
     }
 
     if (newstate != -1) {

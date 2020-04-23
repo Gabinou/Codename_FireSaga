@@ -24,7 +24,6 @@
 class Game : public entityx::EntityX, public entityx::Receiver<Game> {
 
 private:
-
     entityx::Entity mapEntx;
     entityx::Entity cursorx;
     short int cursor_lastpos[2] = {1, 1};
@@ -32,7 +31,6 @@ private:
     std::unordered_map<unsigned char, entityx::Entity> menus;
     std::unordered_map<unsigned char, std::vector<unsigned char>> menuoptions;
     entityx::Entity selected; // Cursor can select other things than units? Shops? doors? other things?
-
     Narrative narrative;
 
     KeyboardInputMap keyboardInputMap;
@@ -55,7 +53,6 @@ private:
 
 public:
     static SDL_Renderer * renderer;
-    // static Manager manager;
     static TTF_Font * font;
 
     Game();
@@ -77,6 +74,7 @@ public:
     template <typename T> void loadTiles(std::vector<T> in_tiles);
     void moveUnit(entityx::Entity & cursor);
 
+    void setMenuoptions(unsigned char, std::vector<unsigned char>);
     void makeMenu(unsigned char in_menu_index);
     entityx::Entity * getMenu(unsigned char in_menu_index);
     entityx::Entity * getUnitmenu();

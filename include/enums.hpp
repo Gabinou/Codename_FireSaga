@@ -340,11 +340,11 @@ enum CLASSES {
 }
 namespace MENU {
 enum OPTIONS {
-    ITEMS = 0;
-    RESCUE;
-    ATTACK;
-    TRADE;
-    WAIT;
+    ITEMS = 0,
+    RESCUE,
+    ATTACK,
+    TRADE,
+    WAIT,
 };
 }
 namespace TYPE {
