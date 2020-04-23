@@ -314,6 +314,9 @@ void UnitSystemx::makeUnitmenuoptions(entityx::Entity in_ent) {
     //   If friendly rescueable -> RESCUE
     // If adjacent is talkeable -> TALK.
     //   Always: ITEMS, WAIT.
+    std::vector<unsigned char> options;
+    std::vector<unsigned char> topush;
+    options.push_back(MENU::ITEMS);
     entityx::ComponentHandle<Unit> unit = in_ent.component<Unit>();
     entityx::ComponentHandle<Position> position = in_ent.component<Position>();
     short int * unitpos = position->getPos();
@@ -321,6 +324,7 @@ void UnitSystemx::makeUnitmenuoptions(entityx::Entity in_ent) {
     entityx::ComponentHandle<Unit> bottom;
     entityx::ComponentHandle<Unit> right;
     entityx::ComponentHandle<Unit> left;
+    unsigned char army;
     short int * bounds = mapx->getBounds();
     std::vector<std::vector<entityx::ComponentHandle<Unit>>> unitmap = mapx->getUnitmap();
     if ((unitpos[1] + 1) < bounds[3]) {
@@ -333,8 +337,28 @@ void UnitSystemx::makeUnitmenuoptions(entityx::Entity in_ent) {
         left = unitmap[unitpos[1]][unitpos[0] - 1];
     }
     if ((unitpos[0] + 1) < bounds[1]) {
-        left = unitmap[unitpos[1]][unitpos[0] + 1];
+        right = unitmap[unitpos[1]][unitpos[0] + 1];
     }
+
+    if (left) {
+        army = left.getArmy();
+        switch(army) {
+            case UNIT::ARMY::FRIENDLY:
+            case UNIT::ARMY::ERWIN:
+            case UNIT::ARMY::FREE_MILITIA:
+                options.push_back(MENU::ITEMS);
+
+                break;
+
+            case UNIT::ARMY::ENEMY:
+            case UNIT::ARMY::BANDITS:
+            case UNIT::ARMY::KEWAC:
+            case UNIT::ARMY::NEUTRAL:
+            case UNIT::ARMY::IMPERIAL:
+                break;
+        }
+    }   
+    options.push_back(MENU::WAIT);
 
 }
 
