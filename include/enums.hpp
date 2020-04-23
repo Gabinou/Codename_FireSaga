@@ -344,6 +344,7 @@ enum OPTIONS {
     RESCUE,
     ATTACK,
     TRADE,
+    TALK,
     WAIT,
 };
 }

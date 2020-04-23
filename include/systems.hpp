@@ -55,7 +55,7 @@ public:
     void killMenu(short unsigned int index);
     void hideMenu(short unsigned int index);
     void showMenu(short unsigned int index);
-    void makeUnitmenu(entityx::Entity & setter);
+    void makeUnitmenuoptions(entityx::Entity in_ent);
     void updateMap();
     void setMap(entityx::ComponentHandle<Map> in_map);
 

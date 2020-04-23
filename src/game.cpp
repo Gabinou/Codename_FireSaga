@@ -216,6 +216,16 @@ void Game::loadMap(const int in_map_index) {
         SDL_Log("Failed to loadMap. Was mapx deleted previously?");
     }
 }
+
+std::vector<unsigned char> Game::getMenuoptions(unsigned char in_menu_index) {
+    return (menuoptions[in_menu_index]);
+}
+
+void Game::setMenuoptions(unsigned char in_menu_index, std::vector<unsigned char> in_options) {
+    menuoptions[in_menu_index] = in_options;
+}
+
+
 void Game::setCursorlastpos(const short int x, const short int y) {
     cursor_lastpos[0] = x;
     cursor_lastpos[1] = y;

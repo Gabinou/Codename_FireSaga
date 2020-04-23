@@ -307,6 +307,24 @@ void UnitSystemx::receive(const unitDanger & danger) {
 
 }
 
+void UnitSystemx::makeUnitmenuoptions(entityx::Entity in_ent) {
+    //CONDITIONS:
+    // If enemy adjacent -> ATTACK
+    // If friendly adjacent -> TRADE
+    //   If friendly rescueable -> RESCUE
+    // If adjacent is talkeable -> TALK.
+    //   Always: ITEMS, WAIT.
+    entityx::ComponentHandle<Unit> unit = in_ent.component<Unit>();
+    entityx::ComponentHandle<Position> position = in_ent.component<Position>();
+    short int * unitpos = position->getPos();
+    entityx::ComponentHandle<Unit> top;
+    entityx::ComponentHandle<Unit> bottom;
+    entityx::ComponentHandle<Unit> right;
+    entityx::ComponentHandle<Unit> left;
+    std::vector<std::vector<entityx::ComponentHandle<Unit>>> unitmap = mapx->getUnitmap();
+}
+
+
 void UnitSystemx::receive(const unitMenu & menu) {
     SDL_Log("unitMenu event received");
     mapx->hideOverlay();
