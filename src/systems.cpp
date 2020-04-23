@@ -500,6 +500,7 @@ void ControlSystemx::receive(const inputAccept & accept) {
     entityx::ComponentHandle<GamepadController> gamepad = accept.gamepad;
     entityx::Entity accepter;
     unsigned int frames_button = 0;
+    short int cursor_pos[2];
 
     if (keyboard) {
         frames_button = keyboard->getHeldbutton();
@@ -512,10 +513,15 @@ void ControlSystemx::receive(const inputAccept & accept) {
     }
 
     position = accepter.component<Position>();
+    cursor_pos[0] = position->getPos()[0];
+    cursor_pos[1] = position->getPos()[1];
 
     if ((game->getState() == GAME::STATE::MAP) && (frames_button == 1)) {
-        SDL_Log("accepter Position, %d %d \n", position->getPos()[0], position->getPos()[1]);
-        entityx::ComponentHandle<Unit> unitontile = unitmap[position->getPos()[0]][position->getPos()[1]];
+        SDL_Log("accepter Position, %d %d \n", cursor_pos[0], cursor_pos[1]);
+
+        game->setCursorlastpos(cursor_pos[0], cursor_pos[1]);
+
+        entityx::ComponentHandle<Unit> unitontile = unitmap[cursor_pos[0]][cursor_pos[1]];
 
         if (unitontile) {
             toset = GAME::STATE::UNITMOVE;

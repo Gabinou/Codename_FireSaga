@@ -71,6 +71,7 @@ public:
     void loadMapArrivals();
     void loadCursor();
     void setCursorstate(const short unsigned int new_state);
+    void setCursorlastpos(const short int x, const short int y);
     void unloadCursor();
     template <typename T> void loadTiles(std::vector<T> in_tiles);
     void moveUnit(entityx::Entity & cursor);

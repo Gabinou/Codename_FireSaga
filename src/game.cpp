@@ -216,6 +216,10 @@ void Game::loadMap(const int in_map_index) {
         SDL_Log("Failed to loadMap. Was mapx deleted previously?");
     }
 }
+void Game::setCursorlastpos(const short int x, const short int y) {
+    cursor_lastpos[0] = x;
+    cursor_lastpos[1] = y;
+}
 
 void Game::unloadMap() {
     SDL_Log("Unloading Map");
