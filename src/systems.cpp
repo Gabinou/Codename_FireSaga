@@ -34,12 +34,12 @@ void RenderSystemx::setLinespace(const short int unsigned in_linespace) {
 }
 
 void RenderSystemx::slideSprites(entityx::Entity * in_ent, short int * slidepos, short int * objectivepos) {
-    int kb_held = 0;
-    int gp_held = 0;
     entityx::ComponentHandle<GamepadController> gamepad = in_ent->component<GamepadController>();
     entityx::ComponentHandle<KeyboardController> keyboard = in_ent->component<KeyboardController>();
     entityx::ComponentHandle<Sprite> sprite = in_ent->component<Sprite>();
     entityx::ComponentHandle<Position> position = in_ent->component<Position>();
+    short int kb_held = 0;
+    short int gp_held = 0;
     short int slideint = sprite->getSlideint();
     unsigned char slidetype = sprite->getSlidetype();
     float * slidefactors = sprite->getSlidefactors();
@@ -373,6 +373,7 @@ void UnitSystemx::receive(const unitMove & move) {
 }
 
 void UnitSystemx::receive(const unitMap & map) {
+    SDL_Log("Received unitMap event");
 
     if ((game->getState() == GAME::STATE::UNITMOVE)) {
         mapx->hideOverlay();
@@ -380,7 +381,7 @@ void UnitSystemx::receive(const unitMap & map) {
 
     if ((game->getState() == GAME::STATE::UNITMENU) ||
             (game->getState() == GAME::STATE::OPTIONS)) {
-        game->hideMenu(GAME::STATE::UNITMENU);
+        game->hideMenu(MENU::UNIT);
         game->setCursorstate(GAME::STATE::MAP);
 
     }
@@ -466,6 +467,7 @@ void ControlSystemx::receive(const inputPause & pause) {
 }
 
 void ControlSystemx::receive(const inputCancel & cancel) {
+    SDL_Log("Received inputCancel event");
     entityx::ComponentHandle<KeyboardController> keyboard = cancel.keyboard;
     entityx::ComponentHandle<GamepadController> gamepad = cancel.gamepad;
     entityx::Entity canceller;

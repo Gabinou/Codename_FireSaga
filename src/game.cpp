@@ -132,6 +132,7 @@ void Game::killMenu(short unsigned int index) {
 }
 
 void Game::hideMenu(short unsigned int index) {
+    SDL_Log("Hiding Menu %d", index);
     menus[index].component<Sprite>()->hide();
     menus[index].component<Text>()->hide();
 }
