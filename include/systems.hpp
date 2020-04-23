@@ -46,6 +46,7 @@ private:
     entityx::ComponentHandle<Map> mapx;
     entityx::EventManager * event_manager;
     entityx::Entity * unitmenux;
+    std::vector<unsigned char> * unitmenuoptions;
     entityx::Entity selected; // Cursor can select other things than units? Shops? doors? other things?
 public:
     UnitSystemx();

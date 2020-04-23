@@ -264,6 +264,7 @@ void UnitSystemx::configure(entityx::EventManager & events) {
 }
 
 void UnitSystemx::receive(const unitSelect & select) {
+    short int newstate = -1;
     entityx::ComponentHandle<Unit> unit = select.unit;
 
     switch (unit->getArmy()) {
@@ -271,6 +272,7 @@ void UnitSystemx::receive(const unitSelect & select) {
         case UNIT::ARMY::ERWIN:
         case UNIT::ARMY::FREE_MILITIA:
             event_manager->emit<unitMove>(select.cursor, select.unit);
+            newstate = GAME::STATE::UNITMOVE;
             break;
 
         case UNIT::ARMY::ENEMY:
@@ -280,6 +282,9 @@ void UnitSystemx::receive(const unitSelect & select) {
         case UNIT::ARMY::IMPERIAL:
             event_manager->emit<unitDanger>(select.cursor, select.unit);
             break;
+    }
+    if (newstate > 0) {
+        game->setState(newstate);
     }
 }
 
@@ -494,7 +499,7 @@ void ControlSystemx::receive(const inputCancel & cancel) {
 
 
 void ControlSystemx::receive(const inputAccept & accept) {
-    short int toset = -1;
+    short int newstate = -1;
     entityx::ComponentHandle<Position> position;
     entityx::ComponentHandle<KeyboardController> keyboard = accept.keyboard;
     entityx::ComponentHandle<GamepadController> gamepad = accept.gamepad;
@@ -524,19 +529,18 @@ void ControlSystemx::receive(const inputAccept & accept) {
         entityx::ComponentHandle<Unit> unitontile = unitmap[cursor_pos[0]][cursor_pos[1]];
 
         if (unitontile) {
-            toset = GAME::STATE::UNITMOVE;
             event_manager->emit<unitSelect>(accepter, unitontile);
         } else {
-            toset = GAME::STATE::OPTIONS;
+            newstate = GAME::STATE::MAPMENU;
             event_manager->emit<mapMenu>(accepter);
         }
     } else if ((game->getState() == GAME::STATE::UNITMOVE) && (frames_button == 1)) {
-        toset = GAME::STATE::UNITMENU;
+        newstate = GAME::STATE::UNITMENU;
         event_manager->emit<unitMenu>(accepter);
     }
 
-    if (toset != -1) {
-        game->setState(toset);
+    if (newstate != -1) {
+        game->setState(newstate);
     }
 
 }
@@ -639,7 +643,7 @@ void ControlSystemx::update(entityx::EntityManager & es, entityx::EventManager &
             pressed_move.push_back(GAME::BUTTON::DOWN);
         }
 
-        short unsigned int toset = -1;
+        short unsigned int newstate = -1;
         entityx::Entity setter;
 
         if (gamepad->isPressed(gamepadInputMap.accept)) {

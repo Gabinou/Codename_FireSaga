@@ -338,6 +338,15 @@ enum CLASSES {
     END
 };
 }
+namespace MENU {
+enum OPTIONS {
+    ITEMS = 0;
+    RESCUE;
+    ATTACK;
+    TRADE;
+    WAIT;
+};
+}
 namespace TYPE {
 enum TYPES {
     HUMAN = 0x0001,
@@ -567,6 +576,7 @@ enum STATES {
     STATS,
     MINIMAP,
     MAP,
+    MAPMENU,
     UNITMENU,
     UNITMOVE,
     CUTSCENE,
