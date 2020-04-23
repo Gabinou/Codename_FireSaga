@@ -342,6 +342,7 @@ namespace MENU {
 enum OPTIONS {
     ITEMS = 0,
     RESCUE,
+    SEIZE,
     ATTACK,
     TRADE,
     TALK,

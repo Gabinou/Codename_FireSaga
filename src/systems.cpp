@@ -316,7 +316,7 @@ void UnitSystemx::makeUnitmenuoptions(entityx::Entity in_ent) {
     //   Always: ITEMS, WAIT.
     std::vector<unsigned char> options;
     std::vector<unsigned char> topush;
-    options.push_back(MENU::ITEMS);
+    options.push_back(UNIT::MENU::ITEMS);
     entityx::ComponentHandle<Unit> unit = in_ent.component<Unit>();
     entityx::ComponentHandle<Position> position = in_ent.component<Position>();
     short int * unitpos = position->getPos();
@@ -327,26 +327,32 @@ void UnitSystemx::makeUnitmenuoptions(entityx::Entity in_ent) {
     unsigned char army;
     short int * bounds = mapx->getBounds();
     std::vector<std::vector<entityx::ComponentHandle<Unit>>> unitmap = mapx->getUnitmap();
+
     if ((unitpos[1] + 1) < bounds[3]) {
         top = unitmap[unitpos[1] + 1][unitpos[0]];
     }
+
     if ((unitpos[1] - 1) > bounds[2]) {
         bottom = unitmap[unitpos[1] - 1][unitpos[0]];
     }
+
     if ((unitpos[0] - 1) > bounds[0]) {
         left = unitmap[unitpos[1]][unitpos[0] - 1];
     }
+
     if ((unitpos[0] + 1) < bounds[1]) {
         right = unitmap[unitpos[1]][unitpos[0] + 1];
     }
 
     if (left) {
-        army = left.getArmy();
-        switch(army) {
+        army = left->getArmy();
+
+        switch (army) {
             case UNIT::ARMY::FRIENDLY:
             case UNIT::ARMY::ERWIN:
             case UNIT::ARMY::FREE_MILITIA:
-                options.push_back(MENU::ITEMS);
+                options.push_back(UNIT::MENU::TRADE);
+                options.push_back(UNIT::MENU::RESCUE);
 
                 break;
 
@@ -355,11 +361,13 @@ void UnitSystemx::makeUnitmenuoptions(entityx::Entity in_ent) {
             case UNIT::ARMY::KEWAC:
             case UNIT::ARMY::NEUTRAL:
             case UNIT::ARMY::IMPERIAL:
+                options.push_back(UNIT::MENU::ATTACK);
                 break;
         }
-    }   
-    options.push_back(MENU::WAIT);
+    }
 
+    options.push_back(UNIT::MENU::WAIT);
+    std::sort(options.begin(), options.end());
 }
 
 
