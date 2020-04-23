@@ -308,12 +308,7 @@ void UnitSystemx::receive(const unitDanger & danger) {
 }
 
 void UnitSystemx::makeUnitmenuoptions(entityx::Entity in_ent) {
-    //CONDITIONS:
-    // If enemy adjacent -> ATTACK
-    // If friendly adjacent -> TRADE
-    //   If friendly rescueable -> RESCUE
-    // If adjacent is talkeable -> TALK.
-    //   Always: ITEMS, WAIT.
+    SDL_Log("Building unitmenu options");
     std::vector<unsigned char> options;
     std::vector<unsigned char> topush;
     options.push_back(UNIT::MENU::ITEMS);
@@ -375,6 +370,7 @@ void UnitSystemx::makeUnitmenuoptions(entityx::Entity in_ent) {
 
     options.push_back(UNIT::MENU::WAIT);
     std::sort(options.begin(), options.end());
+    game->setMenuoptions(MENU::UNIT, options);
 }
 
 
