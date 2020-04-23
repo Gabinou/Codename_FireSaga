@@ -170,7 +170,6 @@ void Game::makeMenu(unsigned char in_menu_index) {
     menus[in_menu_index].assign<Sprite>();
     // menus[MENU::UNIT].component<Sprite>()->hide();
     SDL_Color white = {255, 255, 255};
-    SDL_Log("Until here");
     menus[in_menu_index].assign<Text>(settings.fontsize);
     menus[in_menu_index].component<Text>()->setColor(white);
     menus[in_menu_index].component<Text>()->hide();
