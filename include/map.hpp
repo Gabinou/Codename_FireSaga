@@ -113,8 +113,10 @@ public:
     void setDangermode(const unsigned char in_mode);
     void showDanger();
     void hideDanger();
+    void switchDanger();
     void addDanger(const std::vector<std::vector<short int>> in_danger);
-    void subDanger(const std::vector<std::vector<short int>> in_danger);
+    void subDanger(const std::vector<std::vector<short int>> in_danger); // I think these are not necessary.
+    void setDanger(const std::vector<std::vector<short int>> in_danger);
 
     unsigned short int getBoss();
     bool getBossDeath();

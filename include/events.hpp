@@ -39,6 +39,12 @@ struct unitMove {
     entityx::ComponentHandle<Unit> unit;
 };
 
+struct unitDanger {
+    unitDanger(entityx::Entity cursor, entityx::ComponentHandle<Unit> unit) : cursor(cursor), unit(unit) {}
+    entityx::Entity cursor;
+    entityx::ComponentHandle<Unit> unit;
+};
+
 struct unitMenu {
     unitMenu(entityx::Entity cursor) : cursor(cursor) {}
     entityx::Entity cursor;

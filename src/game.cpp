@@ -169,7 +169,7 @@ void Game::makeMenu(unsigned char in_menu_index) {
     menus[in_menu_index].component<Position>()->setonTilemap(false);
     menus[in_menu_index].component<Position>()->setBounds(0, 2000, 0, 2000);
     menus[in_menu_index].assign<Sprite>();
-    // menus[MENU::UNIT].component<Sprite>()->hide();
+    menus[MENU::UNIT].component<Sprite>()->hide();
     SDL_Color white = {255, 255, 255};
     menus[in_menu_index].assign<Text>(settings.fontsize);
     menus[in_menu_index].component<Text>()->setColor(white);

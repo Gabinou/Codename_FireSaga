@@ -28,7 +28,6 @@ public:
     SDL_Rect loopSprites(entityx::ComponentHandle<Sprite> in_sprite);
     void slideSprites(entityx::Entity * in_ent, short int * slidepos, short int * objectivepos);
 
-
     void configure(entityx::EventManager & event_manager);
     void receive(const turnBegin & begin);
     void receive(const turnEnd & end);
@@ -36,6 +35,7 @@ public:
     void receive(const unitDieEvent & death);
     void receive(const unitWaitEvent & wait);
     void receive(const unitRefreshEvent & refresh);
+
     void update(entityx::EntityManager & es, entityx::EventManager & events, entityx::TimeDelta dt) override;
 };
 
@@ -69,6 +69,8 @@ public:
     void receive(const unitMove & move);
     void receive(const unitMenu & menu);
     void receive(const unitMap & map);
+    void receive(const unitDanger & danger);
+
     void update(entityx::EntityManager & es, entityx::EventManager & events, entityx::TimeDelta dt) override;
 };
 

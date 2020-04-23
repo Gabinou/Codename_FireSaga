@@ -381,11 +381,16 @@ void Map::loadGrid() {
 }
 
 void Map::addDanger(const std::vector<std::vector<short int>> in_danger) {
+    // Adding and subbing wont work. Need to recompute everytime I think.
     dangeroverlay = matrix_plus(dangeroverlay, in_danger);
 }
 
 void Map::subDanger(const std::vector<std::vector<short int>> in_danger) {
     dangeroverlay = matrix_plus(dangeroverlay, in_danger, -1);
+}
+
+void Map::setDanger(const std::vector<std::vector<short int>> in_danger) {
+    dangeroverlay = in_danger;
 }
 
 void Map::setOverlaymode(const unsigned char in_mode) {
@@ -401,6 +406,10 @@ void Map::setDangermode(const unsigned char in_mode) {
 
 void Map::showDanger() {
     show_danger = true;
+}
+
+void Map::switchDanger() {
+    show_danger = !show_danger;
 }
 
 void Map::hideDanger() {

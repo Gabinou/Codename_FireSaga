@@ -257,6 +257,7 @@ void UnitSystemx::updateMap() {
 void UnitSystemx::configure(entityx::EventManager & events) {
     event_manager = &events;
     events.subscribe<unitSelect>(*this);
+    events.subscribe<unitDanger>(*this);
     events.subscribe<unitMove>(*this);
     events.subscribe<unitMenu>(*this);
     events.subscribe<unitMap>(*this);
@@ -275,12 +276,15 @@ void UnitSystemx::receive(const unitSelect & select) {
         case UNIT::ARMY::ENEMY:
         case UNIT::ARMY::BANDITS:
         case UNIT::ARMY::KEWAC:
-            break;
-
         case UNIT::ARMY::NEUTRAL:
         case UNIT::ARMY::IMPERIAL:
+            event_manager->emit<unitDanger>(select.cursor, select.unit);
             break;
     }
+}
+
+void UnitSystemx::receive(const unitDanger & danger) {
+
 }
 
 void UnitSystemx::receive(const unitMenu & menu) {
@@ -330,7 +334,7 @@ void UnitSystemx::receive(const unitMenu & menu) {
 }
 
 void UnitSystemx::receive(const unitMove & move) {
-    SDL_Log("Unitmove event received.");
+    SDL_Log("Received unitMove event");
     std::vector<std::vector<short int>> costmap;
     std::vector<std::vector<short int>> movemapp;
     std::vector<std::vector<short int>> attackmapp;
