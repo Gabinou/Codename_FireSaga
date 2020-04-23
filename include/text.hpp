@@ -43,6 +43,7 @@ public:
     void setColor(std::vector<SDL_Color> in_text_color);
     void setColor(SDL_Color in_text_color);
 
+    void setText(const char * in_text);
     void setText(std::string in_text);
     void setText(std::vector<std::string> in_text);
 

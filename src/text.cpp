@@ -54,6 +54,11 @@ void Text::setText(std::vector<std::string> in_text) {
     text_lines = in_text;
 }
 
+void Text::setText(const char * in_text) {
+    text_lines.clear();
+    text_lines.push_back(std::string(in_text));
+}
+
 void Text::setText(std::string in_text) {
     text_lines.clear();
     text_lines.push_back(in_text);

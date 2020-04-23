@@ -115,6 +115,7 @@ int main(int argc, char * argv[]) {
             if (firesaga->getSettings()->FPS.held == 4) {
                 sprintf(buffer, "%.1f", firesaga->getSettings()->FPS.current);
                 firesaga->getSettings()->FPS.entity.component<Text>()->setText(buffer);
+                firesaga->getSettings()->FPS.entity.component<Text>()->makeTextures();
                 temp_settings = *firesaga->getSettings();
                 temp_settings.FPS.held = 0;
                 firesaga->setSettings(temp_settings);
