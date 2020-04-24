@@ -223,7 +223,13 @@ void Game::makeMenu(unsigned char in_menu_index) {
             menus[MENU::UNIT].component<Sprite>()->setTexture("..//assets//textbox.png");
             menus[MENU::UNIT].component<Sprite>()->setSrcrect(128, 128);
             menus[MENU::UNIT].component<Sprite>()->setDestrect(128, 128);
-            menus[MENU::UNIT].component<Text>()->setText(menuoptions2str(menuoptions[MENU::UNIT]));
+
+            if (menuoptions.find(MENU::UNIT) != menuoptions.end()) {
+                menus[MENU::UNIT].component<Text>()->setText(menuoptions2str(menuoptions[MENU::UNIT]));
+            } else {
+                menus[MENU::UNIT].component<Text>()->setText({"Default", "Items", "Attack", "Wait"});
+            }
+
             menus[MENU::UNIT].component<Text>()->makeTextures();
             break;
 

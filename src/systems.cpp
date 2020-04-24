@@ -316,12 +316,11 @@ void UnitSystemx::receive(const unitMenu & menu) {
 
     game->makeUnitmenuoptions(cursor);
 
-    if (unitmenux->valid()) {
-        unitmenux->component<Sprite>()->show();
-        unitmenux->component<Text>()->show();
-    } else {
+    if (!unitmenux->valid()) {
         game->makeMenu(MENU::UNIT);
     }
+
+    game->showMenu(MENU::UNIT);
 
     short int * new_position;
     short int * old_position;
