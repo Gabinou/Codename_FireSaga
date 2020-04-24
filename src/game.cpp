@@ -270,13 +270,14 @@ void Game::makeUnitmenuoptions() {
         bottom = mapx->getUnit(cursor_lastpos[0], cursor_lastpos[1] - 1);
     }
 
+    if ((cursor_lastpos[0] + 1) < bounds[1]) {
+        right = mapx->getUnit(cursor_lastpos[0] + 1, cursor_lastpos[1]);
+    }
+
     if ((cursor_lastpos[0] - 1) > bounds[0]) {
         left = mapx->getUnit(cursor_lastpos[0] - 1, cursor_lastpos[1]);
     }
 
-    if ((cursor_lastpos[0] + 1) < bounds[1]) {
-        right = mapx->getUnit(cursor_lastpos[0] + 1, cursor_lastpos[1]);
-    }
 
     if (tilemap[cursor_lastpos[0]][cursor_lastpos[1]] / DEFAULT::TILE_DIVISOR == TILE::THRONE) {
         if (unit->getid() ==  UNIT::NAME::ERWIN) {
@@ -289,6 +290,8 @@ void Game::makeUnitmenuoptions() {
     for (short int i = 0; i < units_around.size(); i++) {
         if (units_around[i]) {
             army = units_around[i]->getArmy();
+            SDL_Log("Unit_around: %s", unit->getName().c_str());
+            SDL_Log("Unit_around: %s", unit->getArmyName().c_str());
 
             switch (army) {
                 case UNIT::ARMY::FRIENDLY:
@@ -296,7 +299,6 @@ void Game::makeUnitmenuoptions() {
                 case UNIT::ARMY::FREE_MILITIA:
                     options.push_back(UNIT::MENU::TRADE);
                     options.push_back(UNIT::MENU::RESCUE);
-
                     break;
 
                 case UNIT::ARMY::ENEMY:
@@ -473,6 +475,13 @@ void Game::loadMapArrivals() {
         for (int i = 0; i < map_arrivals.size(); i++) {
             if (map_arrivals[i].turn == currentturn) {
                 asset_name = "..//assets//horse.png";
+
+                if (units.find(map_arrivals[i].id) == units.end()) {
+                    SDL_Log("unloaded units loading.");
+                    loadUnits(std::vector<short int> {map_arrivals[i].id});
+                    SDL_Log("Loaded: %s.", units[map_arrivals[i].id].getName().c_str());
+                }
+
                 Uent = entities.create();
                 Uent.assign<Position>(map_arrivals[i].position.x, map_arrivals[i].position.y);
                 Uent.assign<Sprite>(asset_name.c_str());
