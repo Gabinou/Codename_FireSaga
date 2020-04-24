@@ -55,7 +55,6 @@ public:
     void killMenu(short unsigned int index);
     void hideMenu(short unsigned int index);
     void showMenu(short unsigned int index);
-    void makeUnitmenuoptions(entityx::Entity in_ent);
     void updateMap();
     void setMap(entityx::ComponentHandle<Map> in_map);
 
@@ -111,9 +110,10 @@ private:
 public:
     ControlSystemx();
     ControlSystemx(Game * in_game);
+    unsigned int getHeldbutton(entityx::ComponentHandle<KeyboardController> keyboard, entityx::ComponentHandle<GamepadController> gamepad);
+    entityx::Entity getInputent(entityx::ComponentHandle<KeyboardController> keyboard, entityx::ComponentHandle<GamepadController> gamepad);
 
     void configure(entityx::EventManager & in_events);
-
     void receive(const inputMenuRight & menuright);
     void receive(const inputMenuLeft & menuleft);
     void receive(const inputMinimap & minimap);

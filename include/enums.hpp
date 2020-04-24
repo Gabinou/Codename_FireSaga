@@ -341,12 +341,12 @@ enum CLASSES {
 namespace MENU {
 enum OPTIONS {
     ITEMS = 0,
+    TALK,
     RESCUE,
     SEIZE,
     ESCAPE,
     ATTACK,
     TRADE,
-    TALK,
     WAIT,
 };
 }

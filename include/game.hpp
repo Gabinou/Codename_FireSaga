@@ -26,7 +26,7 @@ class Game : public entityx::EntityX, public entityx::Receiver<Game> {
 private:
     entityx::Entity mapEntx;
     entityx::Entity cursorx;
-    short int cursor_lastpos[2] = {1, 1};
+    short int cursor_lastpos[2] = {6, 6};
     entityx::ComponentHandle<Map> mapx;
     std::unordered_map<unsigned char, entityx::Entity> menus;
     std::unordered_map<unsigned char, std::vector<unsigned char>> menuoptions;
@@ -74,7 +74,9 @@ public:
     template <typename T> void loadTiles(std::vector<T> in_tiles);
     void moveUnit(entityx::Entity & cursor);
 
+    std::vector<std::string> menuoptions2str(std::vector<unsigned char> in_options);
     std::vector<unsigned char> getMenuoptions(unsigned char in_menu_index);
+    void makeUnitmenuoptions(entityx::Entity in_ent);
     void setMenuoptions(unsigned char in_menu_index, std::vector<unsigned char> in_options);
     void makeMenu(unsigned char in_menu_index);
     entityx::Entity * getMenu(unsigned char in_menu_index);
