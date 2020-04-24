@@ -1067,7 +1067,7 @@ void baseUnits(std::unordered_map<int, Unit> * in_units, std::vector<short int> 
                 temp_unit.addEquipment(temp_wpn);
                 temp_unit.setArmy(UNIT::ARMY::ERWIN);
                 in_units->erase(index);
-                in_units->insert({index, temp_unit});
+                in_units->emplace(index, temp_unit);
                 break;
 
             case UNIT::NAME::BANDIT:

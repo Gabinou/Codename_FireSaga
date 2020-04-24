@@ -290,8 +290,8 @@ void Game::makeUnitmenuoptions() {
     for (short int i = 0; i < units_around.size(); i++) {
         if (units_around[i]) {
             army = units_around[i]->getArmy();
-            SDL_Log("Unit_around: %s", unit->getName().c_str());
-            SDL_Log("Unit_around: %s", unit->getArmyName().c_str());
+            SDL_Log("Unit_around: %s", units_around[i]->getName().c_str());
+            SDL_Log("Army: %s", units_around[i]->getArmyName().c_str());
 
             switch (army) {
                 case UNIT::ARMY::FRIENDLY:
@@ -477,15 +477,16 @@ void Game::loadMapArrivals() {
                 asset_name = "..//assets//horse.png";
 
                 if (units.find(map_arrivals[i].id) == units.end()) {
-                    SDL_Log("unloaded units loading.");
+                    SDL_Log("unloaded units loading %d", map_arrivals[i].id);
                     loadUnits(std::vector<short int> {map_arrivals[i].id});
-                    SDL_Log("Loaded: %s.", units[map_arrivals[i].id].getName().c_str());
+                    SDL_Log("Loaded: %s", units[map_arrivals[i].id].getName().c_str());
                 }
 
                 Uent = entities.create();
                 Uent.assign<Position>(map_arrivals[i].position.x, map_arrivals[i].position.y);
                 Uent.assign<Sprite>(asset_name.c_str());
                 Uent.assign<Unit>(units[map_arrivals[i].id]);
+                SDL_Log("Arrival position: %d %d", map_arrivals[i].position.x, map_arrivals[i].position.y);
                 mapx->putUnit(map_arrivals[i].position.x, map_arrivals[i].position.y, Uent.component<Unit>());
             }
         }
