@@ -161,7 +161,7 @@ entityx::Entity * Game::getUnitmenu() {
     return (&menus[MENU::UNIT]);
 }
 
-std::vector<std::string> menuoptions2str(std::vector<unsigned char> in_options) {
+std::vector<std::string> Game::menuoptions2str(std::vector<unsigned char> in_options) {
     std::vector<std::string> out;
 
     for (short int i = 0; i < in_options.size(); i++) {
