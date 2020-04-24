@@ -190,6 +190,72 @@ void Game::makeMenu(unsigned char in_menu_index) {
     }
 }
 
+void Game::makeUnitmenuoptions(entityx::Entity in_ent) {
+    SDL_Log("Building unitmenu options");
+    std::vector<unsigned char> options;
+    options.push_back(UNIT::MENU::ITEMS);
+
+    entityx::ComponentHandle<Unit> unit = in_ent.component<Unit>();
+    entityx::ComponentHandle<Position> position = in_ent.component<Position>();
+    short int * unitpos = position->getPos();
+    entityx::ComponentHandle<Unit> top;
+    entityx::ComponentHandle<Unit> bottom;
+    entityx::ComponentHandle<Unit> right;
+    entityx::ComponentHandle<Unit> left;
+    unsigned char army;
+    short int * bounds = mapx->getBounds();
+    std::vector<std::vector<entityx::ComponentHandle<Unit>>> unitmap = mapx->getUnitmap();
+    std::vector<std::vector<short int>> tilemap = mapx->getTilemap();
+
+    if ((unitpos[1] + 1) < bounds[3]) {
+        top = unitmap[unitpos[1] + 1][unitpos[0]];
+    }
+
+    if ((unitpos[1] - 1) > bounds[2]) {
+        bottom = unitmap[unitpos[1] - 1][unitpos[0]];
+    }
+
+    if ((unitpos[0] - 1) > bounds[0]) {
+        left = unitmap[unitpos[1]][unitpos[0] - 1];
+    }
+
+    if ((unitpos[0] + 1) < bounds[1]) {
+        right = unitmap[unitpos[1]][unitpos[0] + 1];
+    }
+
+    if (tilemap[unitpos[1]][unitpos[0]] / DEFAULT::TILE_DIVISOR == TILE::THRONE) {
+        if (unit->getid() ==  UNIT::NAME::ERWIN) {
+            options.push_back(UNIT::MENU::SEIZE);
+        }
+    }
+
+    if (left) {
+        army = left->getArmy();
+
+        switch (army) {
+            case UNIT::ARMY::FRIENDLY:
+            case UNIT::ARMY::ERWIN:
+            case UNIT::ARMY::FREE_MILITIA:
+                options.push_back(UNIT::MENU::TRADE);
+                options.push_back(UNIT::MENU::RESCUE);
+
+                break;
+
+            case UNIT::ARMY::ENEMY:
+            case UNIT::ARMY::BANDITS:
+            case UNIT::ARMY::KEWAC:
+            case UNIT::ARMY::NEUTRAL:
+            case UNIT::ARMY::IMPERIAL:
+                options.push_back(UNIT::MENU::ATTACK);
+                break;
+        }
+    }
+
+    options.push_back(UNIT::MENU::WAIT);
+    std::sort(options.begin(), options.end());
+    menuoptions[MENU::UNIT] = options;
+}
+
 short unsigned int Game::getState() {
     return (state);
 }
