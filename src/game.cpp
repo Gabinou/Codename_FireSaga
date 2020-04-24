@@ -251,8 +251,8 @@ void Game::makeUnitmenuoptions() {
     entityx::ComponentHandle<Unit> left;
     unsigned char army;
     short int * bounds = mapx->getBounds();
-    std::vector<std::vector<entityx::ComponentHandle<Unit>>> unitmap = mapx->getUnitmap();
-    unit = unitmap[cursor_lastpos[0]][cursor_lastpos[1]];
+    unit = mapx->getUnit(cursor_lastpos[0], cursor_lastpos[1]);
+    SDL_Log("last position: %d %d", cursor_lastpos[0], cursor_lastpos[1]);
 
     if (unit) {
         SDL_Log("Moved unit (making menu options: %s", unit->getName().c_str());
@@ -263,19 +263,19 @@ void Game::makeUnitmenuoptions() {
     std::vector<std::vector<short int>> tilemap = mapx->getTilemap();
 
     if ((cursor_lastpos[1] + 1) < bounds[3]) {
-        top = unitmap[cursor_lastpos[0]][cursor_lastpos[1] + 1];
+        top = mapx->getUnit(cursor_lastpos[0], cursor_lastpos[1] + 1);
     }
 
     if ((cursor_lastpos[1] - 1) > bounds[2]) {
-        bottom = unitmap[cursor_lastpos[0]][cursor_lastpos[1] - 1];
+        bottom = mapx->getUnit(cursor_lastpos[0], cursor_lastpos[1] - 1);
     }
 
     if ((cursor_lastpos[0] - 1) > bounds[0]) {
-        left = unitmap[cursor_lastpos[0] - 1][cursor_lastpos[1]];
+        left = mapx->getUnit(cursor_lastpos[0] - 1, cursor_lastpos[1]);
     }
 
     if ((cursor_lastpos[0] + 1) < bounds[1]) {
-        right = unitmap[cursor_lastpos[0] + 1][cursor_lastpos[1]];
+        right = mapx->getUnit(cursor_lastpos[0] + 1, cursor_lastpos[1]);
     }
 
     if (tilemap[cursor_lastpos[0]][cursor_lastpos[1]] / DEFAULT::TILE_DIVISOR == TILE::THRONE) {
@@ -307,6 +307,8 @@ void Game::makeUnitmenuoptions() {
                     options.push_back(UNIT::MENU::ATTACK);
                     break;
             }
+        } else {
+            SDL_Log("No unit around");
         }
     }
 
@@ -466,17 +468,16 @@ void Game::loadMapArrivals() {
         std::vector<Map_arrival> map_arrivals = mapx->getArrivals();
         unsigned short int currentturn = mapx->getTurn();
         std::string asset_name;
-        Unit Utemp;
         entityx::Entity Uent;
 
         for (int i = 0; i < map_arrivals.size(); i++) {
             if (map_arrivals[i].turn == currentturn) {
-                Utemp = units[map_arrivals[i].id];
                 asset_name = "..//assets//horse.png";
-                // asset_name = "..//assets//" +  Utemp.getName() + ".png";
                 Uent = entities.create();
                 Uent.assign<Position>(map_arrivals[i].position.x, map_arrivals[i].position.y);
                 Uent.assign<Sprite>(asset_name.c_str());
+                Uent.assign<Unit>(units[map_arrivals[i].id]);
+                mapx->putUnit(map_arrivals[i].position.x, map_arrivals[i].position.y, Uent.component<Unit>());
             }
         }
     } else {

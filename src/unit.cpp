@@ -1065,7 +1065,6 @@ void baseUnits(std::unordered_map<int, Unit> * in_units, std::vector<short int> 
                 temp_unit.setBaseExp(400);
                 temp_wpn.id = ITEM::NAME::BALL_LIGHTNING;
                 temp_unit.addEquipment(temp_wpn);
-                SDL_Log("Setting Silou's army to %d", UNIT::ARMY::ERWIN);
                 temp_unit.setArmy(UNIT::ARMY::ERWIN);
                 in_units->erase(index);
                 in_units->insert({index, temp_unit});
@@ -1080,6 +1079,7 @@ void baseUnits(std::unordered_map<int, Unit> * in_units, std::vector<short int> 
                 temp_unit.setGrowths(temp);
                 temp_unit.setBaseExp(0);
                 temp_unit.setEquipped(temp_equipped);
+                temp_unit.setArmy(UNIT::ARMY::ENEMY);
                 in_units->erase(index);
                 in_units->insert({index, temp_unit});
                 break;
