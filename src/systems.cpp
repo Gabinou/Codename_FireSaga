@@ -265,6 +265,7 @@ void UnitSystemx::configure(entityx::EventManager & events) {
 }
 
 void UnitSystemx::receive(const unitSelect & select) {
+    SDL_Log("unitSelect event received");
     short int newstate = -1;
     entityx::ComponentHandle<Unit> unit = select.unit;
 
@@ -495,50 +496,67 @@ void ControlSystemx::receive(const inputCancel & cancel) {
     SDL_Log("Received inputCancel event");
     entityx::ComponentHandle<KeyboardController> keyboard = cancel.keyboard;
     entityx::ComponentHandle<GamepadController> gamepad = cancel.gamepad;
-    entityx::Entity canceller;
+    entityx::Entity canceller = getInputent(keyboard, gamepad);
+    unsigned int frames_button = getHeldbutton(canceller);
 
-    if (keyboard) {
-        canceller = keyboard.entity();
-    }
-
-    if (gamepad) {
-        canceller = gamepad.entity();
-    }
-
-    if ((game->getState() == GAME::STATE::UNITMENU) ||
-            (game->getState() == GAME::STATE::OPTIONS) ||
-            (game->getState() == GAME::STATE::UNITMOVE)) {
-        event_manager->emit<unitMap>(canceller);
-        game->setState(GAME::STATE::MAP);
+    if (frames_button == 1) {
+        if ((game->getState() == GAME::STATE::UNITMENU) ||
+                (game->getState() == GAME::STATE::OPTIONS) ||
+                (game->getState() == GAME::STATE::UNITMOVE)) {
+            event_manager->emit<unitMap>(canceller);
+            game->setState(GAME::STATE::MAP);
+        }
     }
 }
 
+entityx::Entity ControlSystemx::getInputent(entityx::ComponentHandle<KeyboardController> keyboard, entityx::ComponentHandle<GamepadController> gamepad) {
+    entityx::Entity inputter;
 
-void ControlSystemx::receive(const inputAccept & accept) {
-    short int newstate = -1;
-    entityx::ComponentHandle<Position> position;
-    entityx::ComponentHandle<KeyboardController> keyboard = accept.keyboard;
-    entityx::ComponentHandle<GamepadController> gamepad = accept.gamepad;
-    entityx::Entity accepter;
+    if (gamepad) {
+        inputter = gamepad.entity();
+    }
+
+    if (keyboard) {
+        inputter = keyboard.entity();
+    }
+
+    return (inputter);
+}
+
+unsigned int ControlSystemx::getHeldbutton(entityx::Entity in_ent) {
+    entityx::ComponentHandle<KeyboardController> keyboard = in_ent.component<KeyboardController>();
+    entityx::ComponentHandle<GamepadController> gamepad = in_ent.component<GamepadController>();
     unsigned int frames_button = 0;
-    short int cursor_pos[2];
 
     if (keyboard) {
         frames_button = keyboard->getHeldbutton();
-        accepter = keyboard.entity();
     }
 
     if (gamepad) {
         frames_button = gamepad->getHeldbutton();
-        accepter = gamepad.entity();
     }
 
-    position = accepter.component<Position>();
-    cursor_pos[0] = position->getPos()[0];
-    cursor_pos[1] = position->getPos()[1];
-    entityx::ComponentHandle<Unit> unitontile;
+    return (frames_button);
+}
+
+
+void ControlSystemx::receive(const inputAccept & accept) {
+    SDL_Log("Received inputAccept event");
+    entityx::ComponentHandle<KeyboardController> keyboard = accept.keyboard;
+    entityx::ComponentHandle<GamepadController> gamepad = accept.gamepad;
+    entityx::Entity accepter = getInputent(keyboard, gamepad);
+    unsigned int frames_button = getHeldbutton(accepter);
+
+    SDL_Log("frames_button: %d", frames_button);
 
     if (frames_button == 1) {
+        short int newstate = -1;
+        short int cursor_pos[2];
+        entityx::ComponentHandle<Position> position = accepter.component<Position>();
+        cursor_pos[0] = position->getPos()[0];
+        cursor_pos[1] = position->getPos()[1];
+        entityx::ComponentHandle<Unit> unitontile;
+
         switch (game->getState()) {
             case GAME::STATE::MAP:
                 SDL_Log("accepter Position, %d %d \n", cursor_pos[0], cursor_pos[1]);
@@ -563,15 +581,12 @@ void ControlSystemx::receive(const inputAccept & accept) {
 
                 event_manager->emit<unitmenuSelect>(accepter);
                 break;
+        }
 
-
+        if (newstate != -1) {
+            game->setState(newstate);
         }
     }
-
-    if (newstate != -1) {
-        game->setState(newstate);
-    }
-
 }
 
 void ControlSystemx::update(entityx::EntityManager & es, entityx::EventManager & events, entityx::TimeDelta dt) {
