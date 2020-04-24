@@ -252,7 +252,7 @@ void Game::makeUnitmenuoptions() {
     unsigned char army;
     short int * bounds = mapx->getBounds();
     std::vector<std::vector<entityx::ComponentHandle<Unit>>> unitmap = mapx->getUnitmap();
-    unit = unitmap[cursor_lastpos[1]][cursor_lastpos[0]];
+    unit = unitmap[cursor_lastpos[0]][cursor_lastpos[1]];
 
     if (unit) {
         SDL_Log("Moved unit (making menu options: %s", unit->getName().c_str());
@@ -263,46 +263,50 @@ void Game::makeUnitmenuoptions() {
     std::vector<std::vector<short int>> tilemap = mapx->getTilemap();
 
     if ((cursor_lastpos[1] + 1) < bounds[3]) {
-        top = unitmap[cursor_lastpos[1] + 1][cursor_lastpos[0]];
+        top = unitmap[cursor_lastpos[0]][cursor_lastpos[1] + 1];
     }
 
     if ((cursor_lastpos[1] - 1) > bounds[2]) {
-        bottom = unitmap[cursor_lastpos[1] - 1][cursor_lastpos[0]];
+        bottom = unitmap[cursor_lastpos[0]][cursor_lastpos[1] - 1];
     }
 
     if ((cursor_lastpos[0] - 1) > bounds[0]) {
-        left = unitmap[cursor_lastpos[1]][cursor_lastpos[0] - 1];
+        left = unitmap[cursor_lastpos[0] - 1][cursor_lastpos[1]];
     }
 
     if ((cursor_lastpos[0] + 1) < bounds[1]) {
-        right = unitmap[cursor_lastpos[1]][cursor_lastpos[0] + 1];
+        right = unitmap[cursor_lastpos[0] + 1][cursor_lastpos[1]];
     }
 
-    if (tilemap[cursor_lastpos[1]][cursor_lastpos[0]] / DEFAULT::TILE_DIVISOR == TILE::THRONE) {
+    if (tilemap[cursor_lastpos[0]][cursor_lastpos[1]] / DEFAULT::TILE_DIVISOR == TILE::THRONE) {
         if (unit->getid() ==  UNIT::NAME::ERWIN) {
             options.push_back(UNIT::MENU::SEIZE);
         }
     }
 
-    if (left) {
-        army = left->getArmy();
+    std::vector<entityx::ComponentHandle<Unit>> units_around = {top, right, bottom, left};
 
-        switch (army) {
-            case UNIT::ARMY::FRIENDLY:
-            case UNIT::ARMY::ERWIN:
-            case UNIT::ARMY::FREE_MILITIA:
-                options.push_back(UNIT::MENU::TRADE);
-                options.push_back(UNIT::MENU::RESCUE);
+    for (short int i = 0; i < units_around.size(); i++) {
+        if (units_around[i]) {
+            army = units_around[i]->getArmy();
 
-                break;
+            switch (army) {
+                case UNIT::ARMY::FRIENDLY:
+                case UNIT::ARMY::ERWIN:
+                case UNIT::ARMY::FREE_MILITIA:
+                    options.push_back(UNIT::MENU::TRADE);
+                    options.push_back(UNIT::MENU::RESCUE);
 
-            case UNIT::ARMY::ENEMY:
-            case UNIT::ARMY::BANDITS:
-            case UNIT::ARMY::KEWAC:
-            case UNIT::ARMY::NEUTRAL:
-            case UNIT::ARMY::IMPERIAL:
-                options.push_back(UNIT::MENU::ATTACK);
-                break;
+                    break;
+
+                case UNIT::ARMY::ENEMY:
+                case UNIT::ARMY::BANDITS:
+                case UNIT::ARMY::KEWAC:
+                case UNIT::ARMY::NEUTRAL:
+                case UNIT::ARMY::IMPERIAL:
+                    options.push_back(UNIT::MENU::ATTACK);
+                    break;
+            }
         }
     }
 
