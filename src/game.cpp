@@ -238,14 +238,13 @@ void Game::makeMenu(unsigned char in_menu_index) {
     }
 }
 
-void Game::makeUnitmenuoptions(entityx::Entity in_ent) {
+void Game::makeUnitmenuoptions() {
     SDL_Log("Building unitmenu options");
     std::vector<unsigned char> options;
     options.push_back(UNIT::MENU::ITEMS);
 
-    entityx::ComponentHandle<Unit> unit = in_ent.component<Unit>();
-    entityx::ComponentHandle<Position> position = in_ent.component<Position>();
-    short int * unitpos = position->getPos();
+    entityx::ComponentHandle<Unit> unit;
+
     entityx::ComponentHandle<Unit> top;
     entityx::ComponentHandle<Unit> bottom;
     entityx::ComponentHandle<Unit> right;
@@ -253,25 +252,33 @@ void Game::makeUnitmenuoptions(entityx::Entity in_ent) {
     unsigned char army;
     short int * bounds = mapx->getBounds();
     std::vector<std::vector<entityx::ComponentHandle<Unit>>> unitmap = mapx->getUnitmap();
+    unit = unitmap[cursor_lastpos[1]][cursor_lastpos[0]];
+
+    if (unit) {
+        SDL_Log("Moved unit (making menu options: %s", unit->getName().c_str());
+    } else {
+        SDL_Log("Not unit");
+    }
+
     std::vector<std::vector<short int>> tilemap = mapx->getTilemap();
 
-    if ((unitpos[1] + 1) < bounds[3]) {
-        top = unitmap[unitpos[1] + 1][unitpos[0]];
+    if ((cursor_lastpos[1] + 1) < bounds[3]) {
+        top = unitmap[cursor_lastpos[1] + 1][cursor_lastpos[0]];
     }
 
-    if ((unitpos[1] - 1) > bounds[2]) {
-        bottom = unitmap[unitpos[1] - 1][unitpos[0]];
+    if ((cursor_lastpos[1] - 1) > bounds[2]) {
+        bottom = unitmap[cursor_lastpos[1] - 1][cursor_lastpos[0]];
     }
 
-    if ((unitpos[0] - 1) > bounds[0]) {
-        left = unitmap[unitpos[1]][unitpos[0] - 1];
+    if ((cursor_lastpos[0] - 1) > bounds[0]) {
+        left = unitmap[cursor_lastpos[1]][cursor_lastpos[0] - 1];
     }
 
-    if ((unitpos[0] + 1) < bounds[1]) {
-        right = unitmap[unitpos[1]][unitpos[0] + 1];
+    if ((cursor_lastpos[0] + 1) < bounds[1]) {
+        right = unitmap[cursor_lastpos[1]][cursor_lastpos[0] + 1];
     }
 
-    if (tilemap[unitpos[1]][unitpos[0]] / DEFAULT::TILE_DIVISOR == TILE::THRONE) {
+    if (tilemap[cursor_lastpos[1]][cursor_lastpos[0]] / DEFAULT::TILE_DIVISOR == TILE::THRONE) {
         if (unit->getid() ==  UNIT::NAME::ERWIN) {
             options.push_back(UNIT::MENU::SEIZE);
         }

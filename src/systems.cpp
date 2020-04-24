@@ -315,14 +315,6 @@ void UnitSystemx::receive(const unitMenu & menu) {
     entityx::Entity cursor = menu.cursor;
     entityx::ComponentHandle<Position> cursorpos = cursor.component<Position>();
 
-    game->makeUnitmenuoptions(cursor);
-
-    if (!unitmenux->valid()) {
-        game->makeMenu(MENU::UNIT);
-    }
-
-    game->showMenu(MENU::UNIT);
-
     short int * new_position;
     short int * old_position;
 
@@ -350,9 +342,17 @@ void UnitSystemx::receive(const unitMenu & menu) {
     }
 
     mapx->moveUnit(old_position[0], old_position[1], new_position[0], new_position[1]);
-    unitmenux->component<Position>()->setPos((new_position[0] + 1) * settings->tilesize[0], new_position[1] * settings->tilesize[1]);
     selectedpos->setPos(new_position); // move at the end, cause new and old_position are pointers!
     game->setCursorstate(GAME::STATE::UNITMENU);
+
+    game->makeUnitmenuoptions();
+
+    if (!unitmenux->valid()) {
+        game->makeMenu(MENU::UNIT);
+        unitmenux->component<Position>()->setPos((new_position[0] + 1) * settings->tilesize[0], new_position[1] * settings->tilesize[1]);
+        game->showMenu(MENU::UNIT);
+    }
+
 }
 
 void UnitSystemx::receive(const unitMove & move) {
@@ -493,7 +493,7 @@ void ControlSystemx::receive(const inputPause & pause) {
 }
 
 void ControlSystemx::receive(const inputCancel & cancel) {
-    SDL_Log("Received inputCancel event");
+    // SDL_Log("Received inputCancel event");
     entityx::ComponentHandle<KeyboardController> keyboard = cancel.keyboard;
     entityx::ComponentHandle<GamepadController> gamepad = cancel.gamepad;
     Controllers controllers = {keyboard, gamepad};
@@ -501,11 +501,14 @@ void ControlSystemx::receive(const inputCancel & cancel) {
     unsigned int frames_button = getHeldbutton(controllers);
 
     if (frames_button == 1) {
-        if ((game->getState() == GAME::STATE::UNITMENU) ||
-                (game->getState() == GAME::STATE::OPTIONS) ||
-                (game->getState() == GAME::STATE::UNITMOVE)) {
-            event_manager->emit<unitMap>(canceller);
-            game->setState(GAME::STATE::MAP);
+        switch (game->getState()) {
+            case GAME::STATE::UNITMENU:
+            case GAME::STATE::OPTIONS:
+            case GAME::STATE::MAPMENU:
+            case GAME::STATE::UNITMOVE:
+                event_manager->emit<unitMap>(canceller);
+                game->setState(GAME::STATE::MAP);
+                break;
         }
     }
 }
@@ -540,14 +543,12 @@ unsigned int ControlSystemx::getHeldbutton(Controllers in_controllers) {
 
 
 void ControlSystemx::receive(const inputAccept & accept) {
-    SDL_Log("Received inputAccept event");
+    // SDL_Log("Received inputAccept event");
     entityx::ComponentHandle<KeyboardController> keyboard = accept.keyboard;
     entityx::ComponentHandle<GamepadController> gamepad = accept.gamepad;
     Controllers controllers = {keyboard, gamepad};
     entityx::Entity accepter = getInputent(controllers);
     unsigned int frames_button = getHeldbutton(controllers);
-
-    SDL_Log("frames_button: %d", frames_button);
 
     if (frames_button == 1) {
         short int newstate = -1;
