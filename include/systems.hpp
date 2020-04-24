@@ -11,6 +11,11 @@
 #include "gamepadcontroller.hpp"
 #include <entityx/entityx.h>
 
+struct Controllers {
+    entityx::ComponentHandle<KeyboardController> keyboard;
+    entityx::ComponentHandle<GamepadController> gamepad;
+};
+
 class RenderSystemx: public entityx::System<RenderSystemx>, public entityx::Receiver<RenderSystemx> {
 private:
     SDL_Renderer * renderer = NULL;
@@ -110,8 +115,8 @@ private:
 public:
     ControlSystemx();
     ControlSystemx(Game * in_game);
-    unsigned int getHeldbutton(entityx::ComponentHandle<KeyboardController> keyboard, entityx::ComponentHandle<GamepadController> gamepad);
-    entityx::Entity getInputent(entityx::ComponentHandle<KeyboardController> keyboard, entityx::ComponentHandle<GamepadController> gamepad);
+    unsigned int getHeldbutton(Controllers in_controllers);
+    entityx::Entity getInputent(Controllers in_controllers);
 
     void configure(entityx::EventManager & in_events);
     void receive(const inputMenuRight & menuright);

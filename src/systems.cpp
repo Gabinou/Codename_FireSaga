@@ -496,8 +496,9 @@ void ControlSystemx::receive(const inputCancel & cancel) {
     SDL_Log("Received inputCancel event");
     entityx::ComponentHandle<KeyboardController> keyboard = cancel.keyboard;
     entityx::ComponentHandle<GamepadController> gamepad = cancel.gamepad;
-    entityx::Entity canceller = getInputent(keyboard, gamepad);
-    unsigned int frames_button = getHeldbutton(keyboard, gamepad);
+    Controllers controllers = {keyboard, gamepad};
+    entityx::Entity canceller = getInputent(controllers);
+    unsigned int frames_button = getHeldbutton(controllers);
 
     if (frames_button == 1) {
         if ((game->getState() == GAME::STATE::UNITMENU) ||
@@ -509,29 +510,29 @@ void ControlSystemx::receive(const inputCancel & cancel) {
     }
 }
 
-entityx::Entity ControlSystemx::getInputent(entityx::ComponentHandle<KeyboardController> keyboard, entityx::ComponentHandle<GamepadController> gamepad) {
+entityx::Entity ControlSystemx::getInputent(Controllers in_controllers) {
     entityx::Entity inputter;
 
-    if (gamepad) {
-        inputter = gamepad.entity();
+    if (in_controllers.gamepad) {
+        inputter = in_controllers.gamepad.entity();
     }
 
-    if (keyboard) {
-        inputter = keyboard.entity();
+    if (in_controllers.keyboard) {
+        inputter = in_controllers.keyboard.entity();
     }
 
     return (inputter);
 }
 
-unsigned int ControlSystemx::getHeldbutton(entityx::ComponentHandle<KeyboardController> keyboard, entityx::ComponentHandle<GamepadController> gamepad) {
+unsigned int ControlSystemx::getHeldbutton(Controllers in_controllers) {
     unsigned int frames_button = 0;
 
-    if (keyboard) {
-        frames_button = keyboard->getHeldbutton();
+    if (in_controllers.keyboard) {
+        frames_button = in_controllers.keyboard->getHeldbutton();
     }
 
-    if (gamepad) {
-        frames_button = gamepad->getHeldbutton();
+    if (in_controllers.gamepad) {
+        frames_button = in_controllers.gamepad->getHeldbutton();
     }
 
     return (frames_button);
@@ -542,8 +543,9 @@ void ControlSystemx::receive(const inputAccept & accept) {
     SDL_Log("Received inputAccept event");
     entityx::ComponentHandle<KeyboardController> keyboard = accept.keyboard;
     entityx::ComponentHandle<GamepadController> gamepad = accept.gamepad;
-    entityx::Entity accepter = getInputent(keyboard, gamepad);
-    unsigned int frames_button = getHeldbutton(keyboard, gamepad);
+    Controllers controllers = {keyboard, gamepad};
+    entityx::Entity accepter = getInputent(controllers);
+    unsigned int frames_button = getHeldbutton(controllers);
 
     SDL_Log("frames_button: %d", frames_button);
 
