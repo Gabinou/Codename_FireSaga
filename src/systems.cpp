@@ -314,7 +314,7 @@ void UnitSystemx::receive(const unitMenu & menu) {
     entityx::Entity cursor = menu.cursor;
     entityx::ComponentHandle<Position> cursorpos = cursor.component<Position>();
 
-    makeUnitmenuoptions
+    game->makeUnitmenuoptions(cursor);
 
     if (unitmenux->valid()) {
         unitmenux->component<Sprite>()->show();

@@ -161,9 +161,51 @@ entityx::Entity * Game::getUnitmenu() {
     return (&menus[MENU::UNIT]);
 }
 
+std::vector<std::string> menuoptions2str(std::vector<unsigned char> in_options) {
+    std::vector<std::string> out;
+
+    for (short int i = 0; i < in_options.size(); i++) {
+        switch (in_options[i]) {
+            case UNIT::MENU::ITEMS:
+                out.push_back("Items");
+                break;
+
+            case UNIT::MENU::TALK:
+                out.push_back("Talk");
+                break;
+
+            case UNIT::MENU::RESCUE:
+                out.push_back("Rescue");
+                break;
+
+            case UNIT::MENU::SEIZE:
+                out.push_back("Seize");
+                break;
+
+            case UNIT::MENU::ESCAPE:
+                out.push_back("Escape");
+                break;
+
+            case UNIT::MENU::ATTACK:
+                out.push_back("Attack");
+                break;
+
+            case UNIT::MENU::TRADE:
+                out.push_back("Trade");
+                break;
+
+            case UNIT::MENU::WAIT:
+                out.push_back("Wait");
+                break;
+        }
+    }
+
+    return (out);
+}
+
+
 void Game::makeMenu(unsigned char in_menu_index) {
     SDL_Log("Making Menu");
-
     menus[in_menu_index] = entities.create();
     menus[in_menu_index].assign<Position>();
     menus[in_menu_index].component<Position>()->setonTilemap(false);
@@ -178,11 +220,11 @@ void Game::makeMenu(unsigned char in_menu_index) {
     switch (in_menu_index) {
         case MENU::UNIT:
             SDL_Log("Making unit menu\n");
-            menus[in_menu_index].component<Sprite>()->setTexture("..//assets//textbox.png");
-            menus[in_menu_index].component<Sprite>()->setSrcrect(128, 128);
-            menus[in_menu_index].component<Sprite>()->setDestrect(128, 128);
-            menus[in_menu_index].component<Text>()->setText(std::vector<std::string> {"Attack", "Items", "Wait"});
-            menus[in_menu_index].component<Text>()->makeTextures();
+            menus[MENU::UNIT].component<Sprite>()->setTexture("..//assets//textbox.png");
+            menus[MENU::UNIT].component<Sprite>()->setSrcrect(128, 128);
+            menus[MENU::UNIT].component<Sprite>()->setDestrect(128, 128);
+            menus[MENU::UNIT].component<Text>()->setText(menuoptions2str(menuoptions[MENU::UNIT]));
+            menus[MENU::UNIT].component<Text>()->makeTextures();
             break;
 
         case MENU::MAP:
