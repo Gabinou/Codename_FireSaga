@@ -134,18 +134,25 @@ void Game::makeFPSEntity() {
 }
 
 void Game::killMenu(short unsigned int index) {
-    menus[index].destroy();
+    if (menus[index].valid()) {
+        menus[index].destroy();
+    }
 }
 
 void Game::hideMenu(short unsigned int index) {
     SDL_Log("Hiding Menu %d", index);
-    menus[index].component<Sprite>()->hide();
-    menus[index].component<Text>()->hide();
+
+    if (menus[index].valid()) {
+        menus[index].component<Sprite>()->hide();
+        menus[index].component<Text>()->hide();
+    }
 }
 
 void Game::showMenu(short unsigned int index) {
-    menus[index].component<Text>()->show();
-    menus[index].component<Sprite>()->show();
+    if (menus[index].valid()) {
+        menus[index].component<Text>()->show();
+        menus[index].component<Sprite>()->show();
+    }
 }
 
 entityx::Entity * Game::getMenu(unsigned char in_menu_index) {
