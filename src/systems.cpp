@@ -114,24 +114,28 @@ void RenderSystemx::slideSprites(entityx::Entity * in_ent, short int * slidepos,
 }
 
 SDL_Rect RenderSystemx::loopSprites(entityx::ComponentHandle<Sprite> in_sprite) {
-    short int frames = in_sprite->getFrames();
-    short int speed = in_sprite->getSpeed();
-    SDL_Rect srcrect = in_sprite->getSrcrect();
-    unsigned char looping = in_sprite->getSs_looping();
+    SDL_Rect srcrect;
 
-    switch (looping) {
-        case LOOPING::PINGPONG:
-            srcrect.x = srcrect.w * pingpong(static_cast<int>(SDL_GetTicks() / speed), frames, 0);
-            break;
+    if (in_sprite) {
+        short int frames = in_sprite->getFrames();
+        short int speed = in_sprite->getSpeed();
+        srcrect = in_sprite->getSrcrect();
+        unsigned char looping = in_sprite->getSs_looping();
 
-        case LOOPING::LINEAR:
-        case LOOPING::DIRECT:
-            srcrect.x = srcrect.w * static_cast<int>((SDL_GetTicks() / speed) % frames);
-            break;
+        switch (looping) {
+            case LOOPING::PINGPONG:
+                srcrect.x = srcrect.w * pingpong(static_cast<int>(SDL_GetTicks() / speed), frames, 0);
+                break;
 
-        case LOOPING::REVERSE:
-            srcrect.x = srcrect.w * (frames - static_cast<int>((SDL_GetTicks() / speed) % frames));
-            break;
+            case LOOPING::LINEAR:
+            case LOOPING::DIRECT:
+                srcrect.x = srcrect.w * static_cast<int>((SDL_GetTicks() / speed) % frames);
+                break;
+
+            case LOOPING::REVERSE:
+                srcrect.x = srcrect.w * (frames - static_cast<int>((SDL_GetTicks() / speed) % frames));
+                break;
+        }
     }
 
     return (srcrect);

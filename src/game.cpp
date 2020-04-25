@@ -115,6 +115,12 @@ void Game::fight(Unit * attacker, Unit * defender) {
 
 void Game::makeFPSEntity() {
     SDL_Log("Making FPS entity");
+
+    if (settings.FPS.entity.valid()) {
+        SDL_Log("Destroying old FPS entity");
+        settings.FPS.entity.destroy();
+    }
+
     settings.FPS.entity = entities.create();
     settings.FPS.entity.assign<Position>();
     settings.FPS.entity.component<Position>()->setBounds(0, settings.res.x, 0, settings.res.y);
