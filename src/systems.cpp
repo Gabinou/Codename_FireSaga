@@ -6,7 +6,7 @@ void RenderSystemx::setRenderer(SDL_Renderer * in_renderer) {
         SDL_Log("Added renderer to renderSystemx");
         renderer = in_renderer;
     } else {
-        SDL_Log("In renderer is null");
+        SDL_Log("RenderSystemx: Renderer is invalid");
     }
 }
 
@@ -20,8 +20,13 @@ RenderSystemx::RenderSystemx(SDL_Renderer * in_renderer) {
 
 void RenderSystemx::setMap(entityx::ComponentHandle<Map> in_map) {
     //Make into Settilemap.
-    map = in_map;
-    tilesize = map->getTilesize();
+    if (in_map) {
+        map = in_map;
+        tilesize = map->getTilesize();
+    }
+    else {
+        SDL_Log("RenderSystemx: Map Handle is invalid");
+    } 
 }
 
 void RenderSystemx::setTilesize(const short int unsigned width, const short int unsigned height) {

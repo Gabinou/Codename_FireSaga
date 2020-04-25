@@ -2,7 +2,7 @@
 #include "position.hpp"
 #include "sprite.hpp"
 
-Map::Map() { // Delegated constructor is called BEFORE.
+Map::Map() {
     srcrect.x = srcrect.y = 0;
     destrect.x = destrect.y = 0;
     setTilesize(DEFAULT::TILESIZE, DEFAULT::TILESIZE);
