@@ -23,10 +23,9 @@ void RenderSystemx::setMap(entityx::ComponentHandle<Map> in_map) {
     if (in_map) {
         map = in_map;
         tilesize = map->getTilesize();
-    }
-    else {
+    } else {
         SDL_Log("RenderSystemx: Map Handle is invalid");
-    } 
+    }
 }
 
 void RenderSystemx::setTilesize(const short int unsigned width, const short int unsigned height) {
@@ -39,71 +38,78 @@ void RenderSystemx::setLinespace(const short int unsigned in_linespace) {
 }
 
 void RenderSystemx::slideSprites(entityx::Entity * in_ent, short int * slidepos, short int * objectivepos) {
-    entityx::ComponentHandle<GamepadController> gamepad = in_ent->component<GamepadController>();
-    entityx::ComponentHandle<KeyboardController> keyboard = in_ent->component<KeyboardController>();
-    entityx::ComponentHandle<Sprite> sprite = in_ent->component<Sprite>();
-    entityx::ComponentHandle<Position> position = in_ent->component<Position>();
-    short int kb_held = 0;
-    short int gp_held = 0;
-    short int slideint = sprite->getSlideint();
-    unsigned char slidetype = sprite->getSlidetype();
-    float * slidefactors = sprite->getSlidefactors();
-    short int scalefactor[2];
-    SDL_Rect destrect = sprite->getDestrect();
+    entityx::ComponentHandle<GamepadController> gamepad;
+    entityx::ComponentHandle<KeyboardController> keyboard;
+    entityx::ComponentHandle<Sprite> sprite;
+    entityx::ComponentHandle<Position> position;
 
-    scalefactor[0] = tilesize[0];
-    scalefactor[1] = tilesize[1];
+    if (in_ent->valid()) {
+        gamepad = in_ent->component<GamepadController>();
+        keyboard = in_ent->component<KeyboardController>();
+        sprite = in_ent->component<Sprite>();
+        position = in_ent->component<Position>();
+        short int kb_held = 0;
+        short int gp_held = 0;
+        short int slideint = sprite->getSlideint();
+        unsigned char slidetype = sprite->getSlidetype();
+        float * slidefactors = sprite->getSlidefactors();
+        short int scalefactor[2];
+        SDL_Rect destrect = sprite->getDestrect();
 
-    if (keyboard) {
-        kb_held = keyboard->getHeldmove();
-    }
+        scalefactor[0] = tilesize[0];
+        scalefactor[1] = tilesize[1];
 
-    if (gamepad) {
-        // SDL_Log("Rendering Gamepad Controller.");
-        gp_held = gamepad->getHeldmove();
-    }
-
-    if ((!keyboard) && (!gamepad)) {
-        // This is for NOT CURSOR.
-        if (!position->isonTilemap()) { //move on the menu space
-            scalefactor[0] = 1;
-            scalefactor[1] = 1 ;
+        if (keyboard) {
+            kb_held = keyboard->getHeldmove();
         }
 
-        slidepos[0] = (int)(position->getPos()[0] * scalefactor[0]);
-        slidepos[1] = (int)(position->getPos()[1] * scalefactor[1]);
+        if (gamepad) {
+            gp_held = gamepad->getHeldmove();
+        }
+
+        if ((!keyboard) && (!gamepad)) {
+            if (!position->isonTilemap()) { //move on the menu space
+                scalefactor[0] = 1;
+                scalefactor[1] = 1 ;
+            }
+
+            slidepos[0] = (int)(position->getPos()[0] * scalefactor[0]);
+            slidepos[1] = (int)(position->getPos()[1] * scalefactor[1]);
+        } else {
+            if (!position->isonTilemap()) { //move on the menu space
+                scalefactor[0] = linespace;
+                scalefactor[1] = linespace;
+            }
+
+            switch (slidetype) {
+                case SLIDETYPE::GEOMETRIC: //for cursor mvt on map.
+                    objectivepos[0] = (int)position->getPos()[0] * (scalefactor[0]) - destrect.w / 4;
+                    objectivepos[1] = (int)position->getPos()[1] * (scalefactor[1]) - destrect.h / 4;
+
+                    if ((gp_held > 25) || (kb_held > 25))  {
+                        slideint = 1;
+                    }
+
+                    if (objectivepos[0] != slidepos[0]) {
+                        slidepos[0] += geometricslide((objectivepos[0] - slidepos[0]), slidefactors[slideint]);
+                    }
+
+                    if (objectivepos[1] != slidepos[1]) {
+                        slidepos[1] += geometricslide((objectivepos[1] - slidepos[1]), slidefactors[slideint]);
+                    }
+
+                    if ((objectivepos[0] == slidepos[0]) && (objectivepos[1] == slidepos[1])) {
+                        position->setUpdatable(true);
+                        slideint = 0;
+                    } else {
+                        position->setUpdatable(false);
+                    }
+
+                    break;
+            }
+        }
     } else {
-        if (!position->isonTilemap()) { //move on the menu space
-            scalefactor[0] = linespace;
-            scalefactor[1] = linespace;
-        }
-
-        switch (slidetype) {
-            case SLIDETYPE::GEOMETRIC: //for cursor mvt on map.
-                objectivepos[0] = (int)position->getPos()[0] * (scalefactor[0]) - destrect.w / 4;
-                objectivepos[1] = (int)position->getPos()[1] * (scalefactor[1]) - destrect.h / 4;
-
-                if ((gp_held > 25) || (kb_held > 25))  {
-                    slideint = 1;
-                }
-
-                if (objectivepos[0] != slidepos[0]) {
-                    slidepos[0] += geometricslide((objectivepos[0] - slidepos[0]), slidefactors[slideint]);
-                }
-
-                if (objectivepos[1] != slidepos[1]) {
-                    slidepos[1] += geometricslide((objectivepos[1] - slidepos[1]), slidefactors[slideint]);
-                }
-
-                if ((objectivepos[0] == slidepos[0]) && (objectivepos[1] == slidepos[1])) {
-                    position->setUpdatable(true);
-                    slideint = 0;
-                } else {
-                    position->setUpdatable(false);
-                }
-
-                break;
-        }
+        SDL_Log("slideSprites: Entity is invalid");
     }
 }
 
