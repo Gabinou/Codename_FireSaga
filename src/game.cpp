@@ -453,6 +453,7 @@ void Game::loadCursor() {
     if (SDL_NumJoysticks() < 1) {
         SDL_Log("No joysticks connected.\n");
     } else {
+        SDL_Log("Is the joystick supported by the game controller interface? %d.\n", SDL_IsGameController(0));
         cursorx.assign<GamepadController>();
     }
 
@@ -492,11 +493,11 @@ void Game::loadMapArrivals() {
 
         for (int i = 0; i < map_arrivals.size(); i++) {
             if (map_arrivals[i].turn == currentturn) {
-                asset_name = "..//assets//horse.png";
 
                 if (units.find(map_arrivals[i].id) == units.end()) {
                     SDL_Log("unloaded units loading %d", map_arrivals[i].id);
                     loadUnits(std::vector<short int> {map_arrivals[i].id});
+                    asset_name = "..//assets//" + units[map_arrivals[i].id].getName() + ".png";
                     SDL_Log("Loaded: %s", units[map_arrivals[i].id].getName().c_str());
                 }
 
