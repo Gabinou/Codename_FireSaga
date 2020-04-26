@@ -267,12 +267,77 @@ void UnitSystemx::updateMap() {
 void UnitSystemx::configure(entityx::EventManager & events) {
     event_manager = &events;
     events.subscribe<unitSelect>(*this);
+    events.subscribe<unitDeselect>(*this);
     events.subscribe<unitDanger>(*this);
     events.subscribe<unitMove>(*this);
     events.subscribe<unitMenu>(*this);
     events.subscribe<unitmenuSelect>(*this);
     events.subscribe<unitMap>(*this);
 }
+
+void UnitSystemx::receive(const unitDeselect & deselect) {
+    SDL_Log("unitDeselect event received");
+    short int newstate = -1;
+    entityx::ComponentHandle<Unit> unit = deselect.unit;
+    entityx::Entity cursor = deselect.cursor;
+
+    switch (unit->getArmy()) {
+        case UNIT::ARMY::FRIENDLY:
+        case UNIT::ARMY::ERWIN:
+        case UNIT::ARMY::FREE_MILITIA:
+            // event_manager->emit<unitMove>(cursor, deselect.unit);
+            // newstate = GAME::STATE::UNITMOVE;
+            break;
+
+        case UNIT::ARMY::ENEMY:
+        case UNIT::ARMY::BANDITS:
+        case UNIT::ARMY::KEWAC:
+        case UNIT::ARMY::NEUTRAL:
+        case UNIT::ARMY::IMPERIAL:
+            std::vector<std::vector<short int>> costmapp;
+            std::vector<std::vector<short int>> movemapp;
+            std::vector<std::vector<short int>> attackmapp;
+            std::vector<std::vector<short int>> dangermapp;
+            short unsigned int unit_move;
+            short unsigned int * start;
+            unsigned char unitmvttype;
+            unsigned char * range;
+
+            entityx::ComponentHandle<Unit> unit = unit;
+            entityx::ComponentHandle<Position> cursorpos = cursor.component<Position>();
+
+            if (cursorpos) {
+                start = (short unsigned int *)cursorpos->getPos();
+            } else {
+                SDL_Log("Could not get cursor position component");
+            }
+
+            if (unit) {
+                unit_move = unit->getStats().move;
+                unitmvttype = unit->getMvttype();
+                range = unit->getRange();
+            } else {
+                SDL_Log("Could not get unit component");
+            }
+
+            costmapp = mapx->makeMvtCostmap(unitmvttype);
+            movemapp = movemap(costmapp, start, unit_move, "matrix");
+            attackmapp = attackmap(movemapp, start, unit_move, range, "matrix");
+            dangermapp = matrix_plus(attackmapp, movemapp);
+
+            if (unit->isDanger()) {
+                mapx->subDanger(dangermapp);
+                unit->hideDanger();
+            }
+
+            break;
+    }
+
+    if (newstate > 0) {
+        game->setState(newstate);
+    }
+}
+
 
 void UnitSystemx::receive(const unitSelect & select) {
     SDL_Log("unitSelect event received");

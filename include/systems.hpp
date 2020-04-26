@@ -71,6 +71,7 @@ public:
     void receive(const unitWaitEvent & wait);
     void receive(const unitRefreshEvent & refreshes);
     void receive(const unitSelect & selected);
+    void receive(const unitDeselect & selected);
     void receive(const unitMove & move);
     void receive(const unitMenu & menu);
     void receive(const unitMap & map);
