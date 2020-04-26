@@ -107,6 +107,7 @@ private:
     KeyboardInputMap keyboardInputMap;
     GamepadInputMap gamepadInputMap;
     entityx::EventManager * event_manager;
+    bool firstmove = false;
     std::vector<std::vector<entityx::ComponentHandle<Unit>>> unitmap;
     struct Candidate {
         entityx::Entity ent;

@@ -38,16 +38,11 @@ void RenderSystemx::setLinespace(const short int unsigned in_linespace) {
 }
 
 void RenderSystemx::slideSprites(entityx::Entity * in_ent, short int * slidepos, short int * objectivepos) {
-    entityx::ComponentHandle<GamepadController> gamepad;
-    entityx::ComponentHandle<KeyboardController> keyboard;
-    entityx::ComponentHandle<Sprite> sprite;
-    entityx::ComponentHandle<Position> position;
-
     if (in_ent->valid()) {
-        gamepad = in_ent->component<GamepadController>();
-        keyboard = in_ent->component<KeyboardController>();
-        sprite = in_ent->component<Sprite>();
-        position = in_ent->component<Position>();
+        entityx::ComponentHandle<GamepadController> gamepad = in_ent->component<GamepadController>();
+        entityx::ComponentHandle<KeyboardController> keyboard = in_ent->component<KeyboardController>();
+        entityx::ComponentHandle<Sprite> sprite = in_ent->component<Sprite>();
+        entityx::ComponentHandle<Position> position = in_ent->component<Position>();
         short int kb_held = 0;
         short int gp_held = 0;
         short int slideint = sprite->getSlideint();
@@ -660,7 +655,7 @@ void ControlSystemx::update(entityx::EntityManager & es, entityx::EventManager &
         }
     }
 
-    for (entityx::Entity ent : es.entities_with_components<KeyboardController, Position>()) {
+    for (entityx::Entity ent : es.entities_with_components<GamepadController, Position>()) {
         entityx::ComponentHandle<Position> position = ent.component<Position>();
         entityx::ComponentHandle<GamepadController> gamepad = ent.component<GamepadController>();
 
