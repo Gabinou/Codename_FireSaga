@@ -93,7 +93,7 @@ void RenderSystemx::slideSprites(entityx::Entity * in_ent, short int * slidepos,
                         slidepos[1] += geometricslide((objectivepos[1] - slidepos[1]), slidefactors[slideint]);
                     }
 
-                    if ((objectivepos[0] == slidepos[0]) && (objectivepos[1] == slidepos[1]) && ((kb_held > 25) || (kb_held < 2))) {
+                    if ((objectivepos[0] == slidepos[0]) && (objectivepos[1] == slidepos[1]) && ((kb_held > DEFAULT::CURSOR_PAUSE) || (kb_held < 2)) && ((gp_held > DEFAULT::CURSOR_PAUSE) || (gp_held < 2))) {
                         position->setUpdatable(true);
                         slideint = 0;
                     } else {
