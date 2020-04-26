@@ -19,7 +19,6 @@ RenderSystemx::RenderSystemx(SDL_Renderer * in_renderer) {
 }
 
 void RenderSystemx::setMap(entityx::ComponentHandle<Map> in_map) {
-    //Make into Settilemap.
     if (in_map) {
         map = in_map;
         tilesize = map->getTilesize();
@@ -153,7 +152,7 @@ void RenderSystemx::update(entityx::EntityManager & es, entityx::EventManager & 
             SDL_Rect srcrect = sprite->getSrcrect();
             SDL_Rect destrect = sprite->getDestrect();
 
-            if (sprite->isAnimated()) { //looping sprites.
+            if (sprite->isAnimated()) {
                 srcrect = loopSprites(sprite);
             }
 
@@ -374,8 +373,6 @@ void UnitSystemx::receive(const unitmenuSelect & select) {
     unsigned char menuind = cursorpos[1] - cursorbounds[2];
 
     SDL_Log("menuind: %d ", menuind);
-    // game->getMenuoptions;
-    // switch()
 }
 
 void UnitSystemx::receive(const unitDanger & danger) {
@@ -462,7 +459,7 @@ void UnitSystemx::receive(const unitMenu & menu) {
     }
 
     mapx->moveUnit(old_position[0], old_position[1], new_position[0], new_position[1]);
-    selectedpos->setPos(new_position); // move at the end, cause new and old_position are pointers!
+    selectedpos->setPos(new_position);
     game->setCursorlastpos(new_position[0], new_position[1]);
 
     game->makeUnitmenuoptions();
