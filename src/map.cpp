@@ -347,6 +347,7 @@ void Map::setRenderer(SDL_Renderer * in_renderer) {
     }
 
     loadOverlays();
+    loadDanger();
 }
 
 void Map::setManager(entityx::EntityManager * in_manager) {
@@ -373,7 +374,7 @@ void Map::loadOverlays() {
 
 void Map::loadDanger() {
     SDL_Log("Loading Map dangerzone");
-    dangers[0] = loadTexture(renderer, "..//assets//danger.png", false);
+    dangers[0] = loadTexture(renderer, "tile_overlay_danger.png", false);
     // dangers[1] = loadTexture("..//assets//danger_grid.png");
 }
 
