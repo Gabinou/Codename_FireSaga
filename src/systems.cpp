@@ -303,7 +303,6 @@ void UnitSystemx::receive(const unitDeselect & deselect) {
             unsigned char unitmvttype;
             unsigned char * range;
 
-            entityx::ComponentHandle<Unit> unit = unit;
             entityx::ComponentHandle<Position> cursorpos = cursor.component<Position>();
 
             if (cursorpos) {
