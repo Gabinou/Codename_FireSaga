@@ -315,6 +315,7 @@ void UnitSystemx::receive(const unitmenuSelect & select) {
 }
 
 void UnitSystemx::receive(const unitDanger & danger) {
+    SDL_Log("unitDanger event received");
     std::vector<std::vector<short int>> costmapp;
     std::vector<std::vector<short int>> movemapp;
     std::vector<std::vector<short int>> attackmapp;
@@ -342,13 +343,20 @@ void UnitSystemx::receive(const unitDanger & danger) {
         SDL_Log("Could not get unit component");
     }
 
+    SDL_Log("Until here");
+
     costmapp = mapx->makeMvtCostmap(unitmvttype);
 
     movemapp = movemap(costmapp, start, unit_move, "matrix");
     attackmapp = attackmap(movemapp, start, unit_move, range, "matrix");
     dangermapp = matrix_plus(attackmapp, movemapp);
-    mapx->setDanger(dangermapp);
-    mapx->showDanger();
+
+    if (!mapx->isDanger()) {
+        mapx->setDanger(dangermapp);
+        mapx->showDanger();
+    } else {
+        mapx->addDanger(dangermapp);
+    }
 }
 
 void UnitSystemx::receive(const unitMenu & menu) {

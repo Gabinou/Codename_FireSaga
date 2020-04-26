@@ -374,7 +374,7 @@ void Map::loadOverlays() {
 
 void Map::loadDanger() {
     SDL_Log("Loading Map dangerzone");
-    dangers[0] = loadTexture(renderer, "tile_overlay_danger.png", false);
+    dangers[0] = loadTexture(renderer, "..//assets//tile_overlay_danger.png", false);
     // dangers[1] = loadTexture("..//assets//danger_grid.png");
 }
 
@@ -408,13 +408,16 @@ void Map::setDangermode(const unsigned char in_mode) {
 void Map::showDanger() {
     show_danger = true;
 }
+bool Map::isDanger() {
+    return (show_danger);
+}
 
 void Map::switchDanger() {
     show_danger = !show_danger;
 }
 
 void Map::hideDanger() {
-    show_overlay = false;
+    show_danger = false;
 }
 
 void Map::showOverlay() {
@@ -519,7 +522,7 @@ void Map::draw() {
             }
 
             if (show_danger) {
-                if (dangeroverlay[row][col] > 1) {
+                if (dangeroverlay[row][col] > 0) {
                     SDL_RenderCopy(renderer, dangers[0], &srcrect, &destrect);
                 }
             }

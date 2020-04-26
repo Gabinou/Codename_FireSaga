@@ -249,15 +249,19 @@ unsigned char * Unit::getRange() const {
     static unsigned char range[2] = {0, 0};
 
     if (equipped.left >= 0) {
-        unsigned char * temp = all_weapons[equipment[equipped.left].id].getStats().range;
-        range[0] = temp[0];
-        range[1] = temp[1];
+        if (equipment[equipped.left].id > 0) {
+            unsigned char * temp = all_weapons[equipment[equipped.left].id].getStats().range;
+            range[0] = temp[0];
+            range[1] = temp[1];
+        }
     }
 
     if (equipped.right >= 0) {
-        unsigned char * temp = all_weapons[equipment[equipped.right].id].getStats().range;
-        range[0] = std::min(temp[0], range[0]);
-        range[1] = std::max(temp[1], range[1]);
+        if (equipment[equipped.right].id > 0) {
+            unsigned char * temp = all_weapons[equipment[equipped.right].id].getStats().range;
+            range[0] = std::min(temp[0], range[0]);
+            range[1] = std::max(temp[1], range[1]);
+        }
     }
 
     if ((equipped.left < 0) && (equipped.right < 0)) {
@@ -1088,7 +1092,9 @@ void baseUnits(std::unordered_map<int, Unit> * in_units, std::vector<short int> 
                 temp = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
                 temp_unit.setGrowths(temp);
                 temp_unit.setBaseExp(0);
-                temp_unit.setEquipped(temp_equipped);
+                temp_wpn.id = ITEM::NAME::IRON_AXE;
+                temp_unit.addEquipment(temp_wpn);
+                temp_unit.equipsR(0);
                 temp_unit.setArmy(UNIT::ARMY::ENEMY);
                 in_units->erase(index);
                 in_units->insert({index, temp_unit});

@@ -114,6 +114,7 @@ public:
     void showDanger();
     void hideDanger();
     void switchDanger();
+    bool isDanger();
     void addDanger(const std::vector<std::vector<short int>> in_danger);
     void subDanger(const std::vector<std::vector<short int>> in_danger); // I think these are not necessary.
     void setDanger(const std::vector<std::vector<short int>> in_danger);
