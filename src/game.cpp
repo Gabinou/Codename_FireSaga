@@ -528,7 +528,6 @@ void Game::loadMapArrivals() {
 }
 
 void Game::loadUnits(unsigned char in_chap) {
-    // Not necessary. I think would be better to load the party from a savefile or something.
     std::vector<short int> toload = baseParties[in_chap]();
     baseUnits(&units, toload);
 }
@@ -736,15 +735,13 @@ void configure(entityx::EventManager & event_manager) {
 }
 
 void Game::update(entityx::TimeDelta dt) {
-    // systems.update_all(dt);
     systems.update<ControlSystemx>(dt);
     systems.update<RenderSystemx>(dt);
 }
 
 void Game::testXMLMap() {
     SDL_Log("Testing Map xml writing and reading\n");
-    // Must be run when units are in memory.
-    Map map(32, 32); // mapx is a pointer
+    Map map(32, 32);
     map.loadTiles(0);
     map.loadTilemap(0);
     map.setArrivals(mapArrivals[0]());
