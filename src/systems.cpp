@@ -617,7 +617,7 @@ void ControlSystemx::receive(const inputPause & pause) {
 }
 
 void ControlSystemx::receive(const inputCancel & cancel) {
-    // SDL_Log("Received inputCancel event");
+    SDL_Log("Received inputCancel event");
     entityx::ComponentHandle<KeyboardController> keyboard = cancel.keyboard;
     entityx::ComponentHandle<GamepadController> gamepad = cancel.gamepad;
     Controllers controllers = {keyboard, gamepad};
@@ -628,9 +628,9 @@ void ControlSystemx::receive(const inputCancel & cancel) {
 
     if (frames_button == 1) {
         short int cursor_pos[2];
-        unitontile = unitmap[cursor_pos[0]][cursor_pos[1]];
         cursor_pos[0] = position->getPos()[0];
         cursor_pos[1] = position->getPos()[1];
+        unitontile = unitmap[cursor_pos[0]][cursor_pos[1]];
 
         switch (game->getState()) {
             case GAME::STATE::UNITMENU:
@@ -642,8 +642,12 @@ void ControlSystemx::receive(const inputCancel & cancel) {
                 break;
 
             case GAME::STATE::MAP:
+                SDL_Log("GameState is map");
+
                 if (unitontile) {
                     event_manager->emit<unitDeselect>(canceller, unitontile);
+                } else {
+                    SDL_Log("No unit on tile.");
                 }
 
                 break;
