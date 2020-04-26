@@ -315,7 +315,40 @@ void UnitSystemx::receive(const unitmenuSelect & select) {
 }
 
 void UnitSystemx::receive(const unitDanger & danger) {
+    std::vector<std::vector<short int>> costmapp;
+    std::vector<std::vector<short int>> movemapp;
+    std::vector<std::vector<short int>> attackmapp;
+    std::vector<std::vector<short int>> dangermapp;
+    short unsigned int unit_move;
+    short unsigned int * start;
+    unsigned char unitmvttype;
+    unsigned char * range;
 
+    entityx::ComponentHandle<Unit> unit = danger.unit;
+    entityx::Entity cursor = danger.cursor;
+    entityx::ComponentHandle<Position> cursorpos = cursor.component<Position>();
+
+    if (cursorpos) {
+        start = (short unsigned int *)cursorpos->getPos();
+    } else {
+        SDL_Log("Could not get cursor position component");
+    }
+
+    if (unit) {
+        unit_move = unit->getStats().move;
+        unitmvttype = unit->getMvttype();
+        range = unit->getRange();
+    } else {
+        SDL_Log("Could not get unit component");
+    }
+
+    costmapp = mapx->makeMvtCostmap(unitmvttype);
+
+    movemapp = movemap(costmapp, start, unit_move, "matrix");
+    attackmapp = attackmap(movemapp, start, unit_move, range, "matrix");
+    dangermapp = matrix_plus(attackmapp, movemapp);
+    mapx->setDanger(dangermapp);
+    mapx->showDanger();
 }
 
 void UnitSystemx::receive(const unitMenu & menu) {
@@ -370,7 +403,7 @@ void UnitSystemx::receive(const unitMenu & menu) {
 
 void UnitSystemx::receive(const unitMove & move) {
     SDL_Log("Received unitMove event");
-    std::vector<std::vector<short int>> costmap;
+    std::vector<std::vector<short int>> costmapp;
     std::vector<std::vector<short int>> movemapp;
     std::vector<std::vector<short int>> attackmapp;
     entityx::Entity cursor = move.cursor;
@@ -400,9 +433,9 @@ void UnitSystemx::receive(const unitMove & move) {
     SDL_Log("start: %d %d", start[0], start[1]);
     SDL_Log("unitmove: %d", unit_move);
 
-    costmap = mapx->makeMvtCostmap(unitmvttype);
+    costmapp = mapx->makeMvtCostmap(unitmvttype);
 
-    movemapp = movemap(costmap, start, unit_move, "matrix");
+    movemapp = movemap(costmapp, start, unit_move, "matrix");
     mapx->setOverlay(MAP::OVERLAY::MOVE, movemapp);
 
     attackmapp = attackmap(movemapp, start, unit_move, range, "matrix");
