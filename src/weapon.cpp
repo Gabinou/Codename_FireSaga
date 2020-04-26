@@ -1443,7 +1443,6 @@ void baseWeapons() {
     temp_wpn.setDescription("Large tower shield imbued with angelic properties. Surprisingly light and effective against magic attacks.");
     all_weapons[ITEM::NAME::DIVINE_PROTECTOR] = temp_wpn;
 
-    // Daggers get ridiculously low hit cause they are short and stubby!!!! Kitchen knife is the only exception.
     temp_wpn_stats = {2, 0, 10, 0, 10, 0, 5, 21, 16, {1, 1}, {1}, 0, 1000, 0};
     temp_wpn = Weapon(ITEM::TYPE::OFFHAND, temp_wpn_stats, ITEM::NAME::WRISTBLADE);
     temp_wpn.setDescription("Blade generally strapped to the weak forearm. Used by assassins to increase crit potential.");

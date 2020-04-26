@@ -175,7 +175,7 @@ entityx::Entity * Game::getUnitmenu() {
 
 std::vector<std::string> Game::menuoptions2str(std::vector<unsigned char> in_options) {
     std::vector<std::string> out;
-
+    // THIS SHOULD BE AN UTILITY.
     for (short int i = 0; i < in_options.size(); i++) {
         switch (in_options[i]) {
             case UNIT::MENU::ITEMS:
@@ -555,8 +555,7 @@ void Game::init(const char * title, int xpos, int ypos, int width, int height, b
         exit(2);
     }
 
-    Game::font = TTF_OpenFont("../fonts/arial.ttf", settings.fontsize); // Size translates to pixel size?
-    //The srcrect does not change size with font pointsize.
+    Game::font = TTF_OpenFont("../fonts/arial.ttf", settings.fontsize);
 
     if (Game::font == NULL) {
         SDL_Log("Failed to load lazy font! SDL_ttf Error: %s\n", TTF_GetError());

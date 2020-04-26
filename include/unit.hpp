@@ -20,8 +20,6 @@ private:
     Unit_state state;
 
     Support supports[DEFAULT::SUPPORTS_MAX];
-    // short int supports[DEFAULT::SUPPORTS_MAX];
-    // char support_levels[DEFAULT::SUPPORTS_MAX];
 
     Unit_stats base_stats = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
     Unit_stats bonus_stats = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
@@ -53,13 +51,13 @@ private:
     std::string sex_name = "";
     std::vector<std::string> skill_names;
 
-    Equipped equipped; // these are indices. -1 means no equipment.
+    Equipped equipped; // indices. -1 -> no equipment.
     Inventory_item equipment[DEFAULT::EQUIPMENT_SIZE], weapons[DEFAULT::WEAPONS_SIZE], items[DEFAULT::ITEMS_SIZE];
 
 public:
     Unit();
     Unit(const unsigned short int in_id, const unsigned char in_class_index, const Unit_stats in_bases, const bool in_sex);
-    Unit(const Unit & obj); // copy constructor
+    Unit(const Unit & obj);
 
     void setSupports(std::vector<short int> in_supports);
     void setSupports(const Support in_supports[DEFAULT::SUPPORTS_MAX]);

@@ -30,7 +30,6 @@ private:
     entityx::ComponentHandle<Map> mapx;
     std::unordered_map<unsigned char, entityx::Entity> menus;
     std::unordered_map<unsigned char, std::vector<unsigned char>> menuoptions;
-    entityx::Entity selected; // Cursor can select other things than units? Shops? doors? other things?
     Narrative narrative;
 
     KeyboardInputMap keyboardInputMap;

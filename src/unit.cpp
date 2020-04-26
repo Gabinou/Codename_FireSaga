@@ -1389,14 +1389,13 @@ std::vector<Map_arrival> chapTestArrivals() {
 }
 
 std::vector<std::vector<Inventory_item>> chapTestEquipments() {
-    //Default equipped is 0R, 1L.
     std::vector<std::vector<Inventory_item>> out;
     std::vector<Inventory_item> temp_equipment;
     Inventory_item temp_item;
 
-    temp_item.id = ITEM::NAME::IRON_AXE; //Rhand by default
+    temp_item.id = ITEM::NAME::IRON_AXE;
     temp_equipment.push_back(temp_item);
-    temp_item.id = ITEM::NAME::WOODEN_SHIELD; //Lhand by default
+    temp_item.id = ITEM::NAME::WOODEN_SHIELD;
     temp_equipment.push_back(temp_item);
     out.push_back(temp_equipment);
     temp_equipment.clear();
