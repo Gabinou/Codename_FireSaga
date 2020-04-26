@@ -75,6 +75,7 @@ void Unit::removeEquipment(unsigned char in_index) {
 void Unit::addEquipment(Inventory_item in_item) {
     for (short unsigned int i = 0; i < DEFAULT::EQUIPMENT_SIZE; i++) {
         if (equipment[i].id == -1) {
+            SDL_Log("Equipped");
             equipment[i] = in_item;
             break;
         }
@@ -247,26 +248,28 @@ unsigned char * Unit::getRange() const {
     SDL_Log("Computing unit range\n");
     static unsigned char range[2] = {0, 0};
 
-    if (equipped.left > 0) {
+    if (equipped.left >= 0) {
         unsigned char * temp = all_weapons[equipment[equipped.left].id].getStats().range;
         range[0] = temp[0];
         range[1] = temp[1];
     }
 
-    if (equipped.right > 0) {
+    if (equipped.right >= 0) {
+        SDL_Log("Right weapon.");
         unsigned char * temp = all_weapons[equipment[equipped.right].id].getStats().range;
         range[0] = std::min(temp[0], range[0]);
         range[1] = std::max(temp[1], range[1]);
     }
 
-    if ((equipped.left < 0) && (equipped.right < 0)) {
-        range[0] = 0;
-        range[1] = 0;
-    }
+    // if ((equipped.left < 0) && (equipped.right < 0)) {
+    //     range[0] = 0;
+    //     range[1] = 0;
+    // }
 
     // range[0] = 5;
     // range[1] = 10;
-
+    SDL_Log("Equipped: %d %d", equipped.right, equipped.left);
+    SDL_Log("Range: %d %d", range[0], range[1]);
     return (range);
 }
 
@@ -1076,6 +1079,7 @@ void baseUnits(std::unordered_map<int, Unit> * in_units, std::vector<short int> 
                 temp_unit.setBaseExp(400);
                 temp_wpn.id = ITEM::NAME::BALL_LIGHTNING;
                 temp_unit.addEquipment(temp_wpn);
+                temp_unit.equipsR(0);
                 temp_unit.setArmy(UNIT::ARMY::ERWIN);
                 in_units->erase(index);
                 in_units->insert({index, temp_unit});
