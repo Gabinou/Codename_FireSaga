@@ -264,8 +264,8 @@ unsigned char * Unit::getRange() const {
         range[1] = 0;
     }
 
-    range[0] = 5;
-    range[1] = 10;
+    // range[0] = 5;
+    // range[1] = 10;
 
     return (range);
 }
@@ -967,6 +967,8 @@ void baseUnits(std::unordered_map<int, Unit> * in_units, std::vector<short int> 
                 temp = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
                 temp_unit.setGrowths(temp);
                 temp_unit.setBaseExp(100);
+                temp_wpn.id = ITEM::NAME::IRON_LANCE;
+                temp_unit.addEquipment(temp_wpn);
                 temp_unit.setArmy(UNIT::ARMY::ERWIN);
                 in_units->erase(index);
                 in_units->insert({index, temp_unit});
