@@ -13,7 +13,6 @@
 
 SDL_Renderer * Game::renderer = nullptr;
 TTF_Font * Game::font = NULL;
-// Manager Game::manager;
 
 Game::Game() {
 
@@ -364,7 +363,7 @@ void Game::loadMap(const int in_map_index) {
 
     if (!mapx) {
         mapEntx = entities.create();
-        mapEntx.assign<Map>(settings.tilesize[0], settings.tilesize[1]); // mapx is a pointer
+        mapEntx.assign<Map>(settings.tilesize[0], settings.tilesize[1]);
         mapx = mapEntx.component<Map>();
         mapx->loadTiles(in_map_index);
         mapx->setRenderer(renderer);
@@ -420,7 +419,7 @@ void Game::setCursorstate(const short unsigned int new_state) {
                 cursorx.component<Sprite>()->setTilesize(mapx->getTilesize());
                 cursorx.component<Sprite>()->setSlidetype(SLIDETYPE::GEOMETRIC);
                 cursorx.component<Position>()->setBounds(mapx->getBounds());
-                cursorx.component<Position>()->setPos(cursor_lastpos); // Change to last cursor position.
+                cursorx.component<Position>()->setPos(cursor_lastpos);
                 cursorx.component<Position>()->setonTilemap(true);
                 systems.system<RenderSystemx>()->setTilesize(temp_tilesize[0], temp_tilesize[1]);
                 break;
