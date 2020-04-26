@@ -375,14 +375,12 @@ void Map::loadOverlays() {
 void Map::loadDanger() {
     SDL_Log("Loading Map dangerzone");
     dangers[0] = loadTexture(renderer, "..//assets//tile_overlay_danger.png", false);
-    // dangers[1] = loadTexture("..//assets//danger_grid.png");
 }
 
 void Map::loadGrid() {
 }
 
 void Map::addDanger(const std::vector<std::vector<short int>> in_danger) {
-    // Adding and subbing wont work. Need to recompute everytime I think.
     dangeroverlay = matrix_plus(dangeroverlay, in_danger);
 }
 

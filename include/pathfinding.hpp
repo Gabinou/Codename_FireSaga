@@ -15,7 +15,6 @@ extern std::vector<std::vector<int>> A_star(std::vector<std::vector<int>> map, i
 
 template <typename T>
 void plot2Dvec(std::vector<std::vector<T>> vec) {
-    //Don't know how to pass array that at least do not have 1D known before hand
     for (short unsigned int i = 0; i < vec.size(); i++) {
         for (short unsigned int j = 0; j < vec[i].size(); j++) {
             printf("%d ", vec[i][j]);
@@ -26,7 +25,7 @@ void plot2Dvec(std::vector<std::vector<T>> vec) {
 }
 
 template <typename T> extern std::vector<std::vector<T>> attackmap(std::vector<std::vector<T>> movemap, short unsigned int start[], short unsigned int move, unsigned char range[2], std::string mode = "matrix") {
-    // Using the movemap to computes all attackable tiles.
+    // Using the movemap to compute all attackable tiles.
     // EXCLUDING moveable tiles.
     std::vector<std::vector<T>> attackmap;
     std::vector<std::vector<T>> movelist;
@@ -126,7 +125,6 @@ template <typename T> extern std::vector<std::vector<T>> attackmap(std::vector<s
 template <typename T> extern std::vector<std::vector<T>> movemap(std::vector<std::vector<T>> map, short unsigned int start[], short unsigned int move, std::string mode = "matrix") {
     // Using the map, computes all moveable tiles.
     // outputs either a list of points, or a map of 1 and zeros.
-    // Both outputs are 2D vectors.
     struct node {
         T x;
         T y;
