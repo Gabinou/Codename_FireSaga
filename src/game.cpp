@@ -217,8 +217,28 @@ std::vector<std::string> Game::menuoptions2str(std::vector<unsigned char> in_opt
 }
 
 
+void Game::updateMenu(unsigned char in_menu_index) {
+    SDL_Log("Updating menu: %d", in_menu_index);
+
+    if (menus[in_menu_index].valid()) {
+        switch (in_menu_index) {
+            case MENU::UNIT:
+                if (menuoptions.find(MENU::UNIT) != menuoptions.end()) {
+                    menus[MENU::UNIT].component<Text>()->setText(menuoptions2str(menuoptions[MENU::UNIT]));
+                } else {
+                    menus[MENU::UNIT].component<Text>()->setText({"Default", "Items", "Attack", "Wait"});
+                }
+
+                menus[MENU::UNIT].component<Text>()->makeTextures();
+        }
+    } else {
+        SDL_Log("Menu %d is invalid", in_menu_index);
+    }
+}
+
+
 void Game::makeMenu(unsigned char in_menu_index) {
-    SDL_Log("Making Menu");
+    SDL_Log("Making menu: %d", in_menu_index);
 
     if (menus[in_menu_index].valid()) {
         menus[in_menu_index].destroy();
@@ -241,14 +261,7 @@ void Game::makeMenu(unsigned char in_menu_index) {
             menus[MENU::UNIT].component<Sprite>()->setTexture("..//assets//textbox.png");
             menus[MENU::UNIT].component<Sprite>()->setSrcrect(128, 128);
             menus[MENU::UNIT].component<Sprite>()->setDestrect(128, 128);
-
-            if (menuoptions.find(MENU::UNIT) != menuoptions.end()) {
-                menus[MENU::UNIT].component<Text>()->setText(menuoptions2str(menuoptions[MENU::UNIT]));
-            } else {
-                menus[MENU::UNIT].component<Text>()->setText({"Default", "Items", "Attack", "Wait"});
-            }
-
-            menus[MENU::UNIT].component<Text>()->makeTextures();
+            updateMenu(MENU::UNIT);
             break;
 
         case MENU::MAP:
