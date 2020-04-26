@@ -33,6 +33,12 @@ struct unitSelect {
     entityx::ComponentHandle<Unit> unit;
 };
 
+struct unitDeselect {
+    unitDeselect(entityx::Entity cursor, entityx::ComponentHandle<Unit> unit) : cursor(cursor), unit(unit) {}
+    entityx::Entity cursor;
+    entityx::ComponentHandle<Unit> unit;
+};
+
 struct unitMove {
     unitMove(entityx::Entity cursor, entityx::ComponentHandle<Unit> unit) : cursor(cursor), unit(unit) {}
     entityx::Entity cursor;

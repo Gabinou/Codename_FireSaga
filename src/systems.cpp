@@ -557,9 +557,16 @@ void ControlSystemx::receive(const inputCancel & cancel) {
     entityx::ComponentHandle<GamepadController> gamepad = cancel.gamepad;
     Controllers controllers = {keyboard, gamepad};
     entityx::Entity canceller = getInputent(controllers);
+    entityx::ComponentHandle<Position> position = canceller.component<Position>();
+    entityx::ComponentHandle<Unit> unitontile;
     unsigned int frames_button = getHeldbutton(controllers);
 
     if (frames_button == 1) {
+        short int cursor_pos[2];
+        unitontile = unitmap[cursor_pos[0]][cursor_pos[1]];
+        cursor_pos[0] = position->getPos()[0];
+        cursor_pos[1] = position->getPos()[1];
+
         switch (game->getState()) {
             case GAME::STATE::UNITMENU:
             case GAME::STATE::OPTIONS:
@@ -567,6 +574,13 @@ void ControlSystemx::receive(const inputCancel & cancel) {
             case GAME::STATE::UNITMOVE:
                 event_manager->emit<unitMap>(canceller);
                 game->setState(GAME::STATE::MAP);
+                break;
+
+            case GAME::STATE::MAP:
+                if (unitontile) {
+                    event_manager->emit<unitDeselect>(canceller, unitontile);
+                }
+
                 break;
         }
     }
