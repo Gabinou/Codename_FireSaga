@@ -364,10 +364,10 @@ void UnitSystemx::receive(const unitMenu & menu) {
 
     if (!unitmenux->valid()) {
         game->makeMenu(MENU::UNIT);
-        unitmenux->component<Position>()->setPos((new_position[0] + 1) * settings->tilesize[0], new_position[1] * settings->tilesize[1]);
-        game->showMenu(MENU::UNIT);
     }
 
+    unitmenux->component<Position>()->setPos((new_position[0] + 1) * settings->tilesize[0], new_position[1] * settings->tilesize[1]);
+    game->showMenu(MENU::UNIT);
     game->setCursorstate(GAME::STATE::UNITMENU);
 }
 

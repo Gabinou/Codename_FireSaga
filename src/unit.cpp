@@ -255,21 +255,16 @@ unsigned char * Unit::getRange() const {
     }
 
     if (equipped.right >= 0) {
-        SDL_Log("Right weapon.");
         unsigned char * temp = all_weapons[equipment[equipped.right].id].getStats().range;
         range[0] = std::min(temp[0], range[0]);
         range[1] = std::max(temp[1], range[1]);
     }
 
-    // if ((equipped.left < 0) && (equipped.right < 0)) {
-    //     range[0] = 0;
-    //     range[1] = 0;
-    // }
+    if ((equipped.left < 0) && (equipped.right < 0)) {
+        range[0] = 0;
+        range[1] = 0;
+    }
 
-    // range[0] = 5;
-    // range[1] = 10;
-    SDL_Log("Equipped: %d %d", equipped.right, equipped.left);
-    SDL_Log("Range: %d %d", range[0], range[1]);
     return (range);
 }
 
