@@ -44,7 +44,8 @@ private:
     unsigned char current_hp = 0;
     char current_speed = 0;
 
-    bool sex = false; // 0:F, 1:M
+    bool sex = false; // 0:F, 1:M. eg. hasPenis.
+    bool show_danger = false;
 
     std::string name = "";
     std::string class_name = "";
@@ -67,6 +68,10 @@ public:
 
     void setSex(const bool in_sex);
     bool getSex();
+
+    bool isDanger();
+    void showDanger();
+    void hideDanger();
 
     unsigned char getMvttype();
     unsigned char getClassind();

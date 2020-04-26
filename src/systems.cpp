@@ -343,19 +343,24 @@ void UnitSystemx::receive(const unitDanger & danger) {
         SDL_Log("Could not get unit component");
     }
 
-    SDL_Log("Until here");
-
     costmapp = mapx->makeMvtCostmap(unitmvttype);
-
     movemapp = movemap(costmapp, start, unit_move, "matrix");
     attackmapp = attackmap(movemapp, start, unit_move, range, "matrix");
     dangermapp = matrix_plus(attackmapp, movemapp);
 
-    if (!mapx->isDanger()) {
-        mapx->setDanger(dangermapp);
-        mapx->showDanger();
+
+    if (!unit->isDanger()) {
+        if (!mapx->isDanger()) {
+            mapx->setDanger(dangermapp);
+            mapx->showDanger();
+        } else {
+            mapx->addDanger(dangermapp);
+        }
+
+        unit->showDanger();
     } else {
-        mapx->addDanger(dangermapp);
+        mapx->subDanger(dangermapp);
+        unit->hideDanger();
     }
 }
 

@@ -134,6 +134,17 @@ void Unit::setClassind(unsigned char in_class_index) {
     equippable = equippableCodes[class_index];
 }
 
+bool Unit::isDanger() {
+    return (show_danger);
+}
+
+void Unit::showDanger() {
+    show_danger = true;
+}
+
+void Unit::hideDanger() {
+    show_danger = false;
+}
 
 void Unit::supportUp(short int in_id) {
     int i = 0;
