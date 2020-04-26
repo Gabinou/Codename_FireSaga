@@ -261,12 +261,13 @@ void Game::makeMenu(unsigned char in_menu_index) {
             menus[MENU::UNIT].component<Sprite>()->setTexture("..//assets//textbox.png");
             menus[MENU::UNIT].component<Sprite>()->setSrcrect(128, 128);
             menus[MENU::UNIT].component<Sprite>()->setDestrect(128, 128);
-            updateMenu(MENU::UNIT);
             break;
 
         case MENU::MAP:
             break;
     }
+
+    updateMenu(in_menu_index);
 }
 
 void Game::makeUnitmenuoptions() {
@@ -442,8 +443,8 @@ void Game::setCursorstate(const short unsigned int new_state) {
                 short int menubounds[4];
                 menubounds[0] = unitmenupos[0] / linespace;
                 menubounds[1] = unitmenupos[0] / linespace;
-                menubounds[2] = (short int)(unitmenupos[1] / linespace + 2);
-                menubounds[3] = (short int)(unitmenupos[1] / linespace + 3);
+                menubounds[2] = (short int)(unitmenupos[1] / linespace + 1);
+                menubounds[3] = (short int)(unitmenupos[1] / linespace + menuoptions[MENU::UNIT].size());
                 cursor_lastpos[0] = cursorx.component<Position>()->getPos()[0];
                 cursor_lastpos[1] = cursorx.component<Position>()->getPos()[1];
                 cursorx.component<Position>()->setBounds(menubounds);
