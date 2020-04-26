@@ -17,8 +17,7 @@ int geometricslide(int distance, float geo_factor) {
     int sign = sgn(distance);
     int out = sign * std::max(sign * (int)(distance / geo_factor), 1);
     return (out);
-    // std::abs() possible instead of sign*distance,
-    // but this is more elegant.
+    // sign*distance more elegant than std::abs()
 }
 
 void printarr(int arr[], int size) {

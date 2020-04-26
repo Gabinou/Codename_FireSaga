@@ -96,7 +96,7 @@ void Sprite::setSlidetype(unsigned char in_slidetype) {
 void Sprite::animatedRects() {
     switch (slidetype) {
         case SLIDETYPE::GEOMETRIC:
-            setSrcrect(tilesize[0] * 2, tilesize[1] * 2); // Manually entered from cursor png size.
+            setSrcrect(tilesize[0] * 2, tilesize[1] * 2);
             setDestrect(tilesize[0] * 2, tilesize[1] * 2);
             break;
     }

@@ -28,7 +28,6 @@ void Tile::makeMvtCostarray() {
     cost_array[UNIT::MVT::ARMORS] = cost_struct.armors;
     cost_array[UNIT::MVT::PIRATES] = cost_struct.pirates;
     cost_array[UNIT::MVT::BANDITS] = cost_struct.bandits;
-    // SDL_Log("Made cost array: %d %d ", UNIT::MVT::FOOT_SLOW, cost_array[UNIT::MVT::FOOT_SLOW]);
 }
 
 unsigned char * Tile::getCost() {
@@ -64,26 +63,17 @@ void Tile::setInside(const bool in_inside) {
 
 void Tile::readXML(tinyxml2::XMLElement * in_pTile) {
     tinyxml2::XMLElement * ptemp;
-
     id = (unsigned short int)in_pTile->IntAttribute("id");
-
     ptemp = in_pTile->FirstChildElement("Name");
-
     if (!ptemp) {SDL_Log("Cannot get Name element");}
-
     name = ptemp->GetText();
 
     ptemp = in_pTile->FirstChildElement("MvtCost");
-
     if (!ptemp) {SDL_Log("Cannot get Name element");}
-
     readXML_mvtcost(ptemp, &cost_struct);
     makeMvtCostarray();
-
     ptemp = in_pTile->FirstChildElement("Stats");
-
     if (!ptemp) {SDL_Log("Cannot get Name element");}
-
     readXML_stats(ptemp, &stats);
 }
 
