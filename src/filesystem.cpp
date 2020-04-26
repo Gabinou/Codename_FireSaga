@@ -208,14 +208,14 @@ SDL_Texture * textToTexture(SDL_Renderer * in_renderer, std::string textureText,
     if (textsurface == NULL) {
         SDL_Log("Unable to render text surface! SDL_ttf Error: %s\n", TTF_GetError());
     } else {
-        //Create texture from surface pixels
+
         texture = SDL_CreateTextureFromSurface(in_renderer, textsurface);
 
         if (texture == NULL) {
             SDL_Log("Unable to create texture from rendered text! SDL Error: %s\n", SDL_GetError());
         }
 
-        SDL_FreeSurface(textsurface); //Get rid of old surface
+        SDL_FreeSurface(textsurface);
     }
 
     return (texture);
@@ -224,7 +224,7 @@ SDL_Texture * textToTexture(SDL_Renderer * in_renderer, std::string textureText,
 void writeText(SDL_Renderer * in_renderer, int in_fontsize, int in_position[2], float in_sizefactor[2], std::string in_text, SDL_Color in_color, TTF_Font * in_font) {
     std::string text = "FPS";
     SDL_Texture * texture = textToTexture(in_renderer, text, in_color, in_font);
-    SDL_Rect srcrect, destrect; // background always first?
+    SDL_Rect srcrect, destrect;
     srcrect.x = srcrect.y = 0;
     destrect.x = in_position[0];
     destrect.y = in_position[1];
@@ -783,7 +783,6 @@ void XML_IO::writeXML(tinyxml2::XMLDocument * in_doc, tinyxml2::XMLElement * in_
 
 void XML_IO::writeXML(const char * filename, const bool append) {
     SDL_Log("writeXML %s to: %s\n", xmlElement.c_str(), filename);
-    // How to write files so that it is modifiable by randos?
     PHYSFS_file * fp;
     tinyxml2::XMLDocument xmlDoc;
 

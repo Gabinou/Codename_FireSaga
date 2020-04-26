@@ -17,7 +17,6 @@
 
 Game * firesaga = nullptr;
 Settings temp_settings;
-// SDL_Renderer * renderer = nullptr;
 
 int main(int argc, char * argv[]) {
     fclose(fopen(LOGFILE, "w"));

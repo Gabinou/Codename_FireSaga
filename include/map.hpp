@@ -41,7 +41,7 @@ private:
     unsigned char num_friendlies = 0;
     unsigned char num_neutral = 0;
     unsigned char num_enemies = 0;
-    unsigned char turn = 0; // Automatic loss if turn 255?
+    unsigned char turn = 0; // Automatic loss if turn 255.
     unsigned char chapter = 0;
 
     std::vector<Map_arrival> map_arrivals;
@@ -116,7 +116,7 @@ public:
     void switchDanger();
     bool isDanger();
     void addDanger(const std::vector<std::vector<short int>> in_danger);
-    void subDanger(const std::vector<std::vector<short int>> in_danger); // I think these are not necessary.
+    void subDanger(const std::vector<std::vector<short int>> in_danger);
     void setDanger(const std::vector<std::vector<short int>> in_danger);
 
     unsigned short int getBoss();

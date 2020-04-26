@@ -175,6 +175,7 @@ entityx::Entity * Game::getUnitmenu() {
 
 std::vector<std::string> Game::menuoptions2str(std::vector<unsigned char> in_options) {
     std::vector<std::string> out;
+
     // THIS SHOULD BE AN UTILITY.
     for (short int i = 0; i < in_options.size(); i++) {
         switch (in_options[i]) {

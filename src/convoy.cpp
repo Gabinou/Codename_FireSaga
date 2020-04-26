@@ -266,8 +266,6 @@ void Convoy::sortused(int wpntype) {
 
     vecid = getStats(wpntype, ITEM::STAT::ID);
     vecusesleft = getStats(wpntype, ITEM::STAT::USES_LEFT);
-    // int arrusesleft[DEFAULT::CONVOY_SIZE];
-    // std::copy(vecusesleft.begin(), vecusesleft.end(), arrusesleft);
     int * arrusesleft = &vecusesleft[0];
 
     uniqueids = cppuniques(vecid);
@@ -348,7 +346,7 @@ Inventory_item * Convoy::getItems(int wpntype) {
         case ITEM::TYPE::ITEM:
             memcpy(temp, items, sizeof(temp));
             break;
-
+3
         case ITEM::TYPE::BOOK:
             memcpy(temp, books, sizeof(temp));
             break;
