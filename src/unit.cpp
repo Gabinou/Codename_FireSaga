@@ -1374,6 +1374,12 @@ std::vector<Map_arrival> chapTestArrivals() {
     temp.levelups = 0;
     out.push_back(temp);
 
+    temp.id = UNIT::NAME::BANDIT;
+    temp.turn = 0;
+    temp.position = {12, 4};
+    temp.levelups = 0;
+    out.push_back(temp);
+
     temp.id = UNIT::NAME::RELIABLE;
     temp.turn = 0;
     temp.position = {20, 12};

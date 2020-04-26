@@ -81,7 +81,7 @@ void RenderSystemx::slideSprites(entityx::Entity * in_ent, short int * slidepos,
                     objectivepos[0] = (int)position->getPos()[0] * (scalefactor[0]) - destrect.w / 4;
                     objectivepos[1] = (int)position->getPos()[1] * (scalefactor[1]) - destrect.h / 4;
 
-                    if ((gp_held > 25) || (kb_held > 25))  {
+                    if ((gp_held > DEFAULT::CURSOR_FAST) || (kb_held > DEFAULT::CURSOR_FAST))  {
                         slideint = 1;
                     }
 

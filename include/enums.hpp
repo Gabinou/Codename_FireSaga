@@ -15,6 +15,7 @@ enum DEFAULTS {
     MAXPATH = 90,
     CHAP_NUMBER = 40,
     CURSOR_PAUSE = 14,
+    CURSOR_FAST = 60,
     BUFFER_SIZE = 128,
     SUPPORTS_MAX = 7,
     BOOKS_NUM = 10,
