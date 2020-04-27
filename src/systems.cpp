@@ -11,7 +11,8 @@ void RenderSystemx::setRenderer(SDL_Renderer * in_renderer) {
 }
 
 RenderSystemx::RenderSystemx() {
-
+    offset[0] = DEFAULT::TILEMAP_XOFFSET;
+    offset[1] = DEFAULT::TILEMAP_YOFFSET;
 }
 
 RenderSystemx::RenderSystemx(SDL_Renderer * in_renderer) {

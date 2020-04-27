@@ -22,6 +22,7 @@ private:
     SDL_Renderer * renderer = NULL;
     short unsigned int * tilesize;
     short unsigned int linespace;
+    short int offset[2];
     entityx::ComponentHandle<Map> map;
 public:
     RenderSystemx();
