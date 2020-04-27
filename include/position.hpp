@@ -11,6 +11,7 @@ private:
     bool onTilemap = true;
     short int position[2] = {0};
     short int bounds[4] = {0, 255, 0, 255}; //xmin, xmax, ymin, ymax
+    short int offset[2] = {0, 0}; //xmin, xmax, ymin, ymax
 public:
     Position();
     Position(short int in_x, short int in_y);
@@ -23,6 +24,10 @@ public:
     void setBounds(short int in_bounds[4]);
     void setBounds(std::vector<short int> in_bounds);
     short int * getBounds();
+
+    void setOffset(short int in_offset[2]);
+    void setOffset(short int xoffset, short int yoffset);
+    short int * getOffset();
 
     void setUpdatable(bool in_updatable);
     bool isUpdatable();
