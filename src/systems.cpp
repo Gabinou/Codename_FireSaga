@@ -262,7 +262,6 @@ void UnitSystemx::updateMap() {
     mapx = game->getMap();
 }
 
-
 void UnitSystemx::configure(entityx::EventManager & events) {
     event_manager = &events;
     events.subscribe<unitSelect>(*this);
