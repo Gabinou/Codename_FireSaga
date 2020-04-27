@@ -33,10 +33,10 @@ Position::Position(short int in_x, short int in_y,
 }
 
 void Position::setBounds(short int xmin, short int xmax, short int ymin, short int ymax) {
-    bounds[0] = xmin;
-    bounds[1] = xmax;
-    bounds[2] = ymin;
-    bounds[3] = ymax;
+    bounds[0] = xmin + offset[0];
+    bounds[1] = xmax + offset[0];
+    bounds[2] = ymin + offset[1];
+    bounds[3] = ymax + offset[1];
 
     if (position[0] < bounds[0]) {
         position[0] = bounds[0];
@@ -56,6 +56,16 @@ void Position::setBounds(short int xmin, short int xmax, short int ymin, short i
 
 }
 
+void Position::setOffset(short int xoffset, short int yoffset) {
+    offset[0] = xoffset;
+    offset[1] = yoffset;
+}
+
+void Position::setOffset(short int in_offset[2]) {
+    offset[0] = in_offset[0];
+    offset[1] = in_offset[1];
+}
+
 void Position::setBounds(short int in_bounds[4]) {
     bounds[0] = in_bounds[0];
     bounds[1] = in_bounds[1];
@@ -72,6 +82,10 @@ void Position::setBounds(std::vector<short int> in_bounds) {
 
 short int * Position::getBounds() {
     return (bounds);
+}
+
+short int * Position::getOffset() {
+    return (offset);
 }
 
 bool Position::isonTilemap() {
@@ -95,19 +109,33 @@ void Position::setPos(short int * in_pos) {
 }
 
 void Position::setPos(short int in_x, short int in_y) {
+    short int newx = in_x + offset[0];
+    short int newy = in_y + offset[1];
+
     if (updatable) {
-        if ((in_x >= bounds[0]) && (in_x <= bounds[1])) {
-            position[0] = in_x;
+        if ((newx >= bounds[0]) && (newx <= bounds[1])) {
+            position[0] = newx;
         }
 
-        if ((in_y >= bounds[2]) && (in_y <= bounds[3])) {
-            position[1] = in_y;
+        if ((newy >= bounds[2]) && (newy <= bounds[3])) {
+            position[1] = newy;
         }
     }
 }
 
 void Position::addPos(short int move_x, short int move_y) {
-    setPos((move_x + position[0]), (move_y + position[1]));
+    short int newx = move_x + position[0];
+    short int newy = move_y + position[1];
+
+    if (updatable) {
+        if ((newx >= bounds[0]) && (newx <= bounds[1])) {
+            position[0] = newx;
+        }
+
+        if ((newy >= bounds[2]) && (newy <= bounds[3])) {
+            position[1] = newy;
+        }
+    }
 }
 
 short int * Position::getPos() {

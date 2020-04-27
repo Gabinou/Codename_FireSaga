@@ -420,10 +420,11 @@ void Game::setCursorstate(const short unsigned int new_state) {
                 cursorx.component<Sprite>()->setAnimation(10, 50);
                 cursorx.component<Sprite>()->setTilesize(mapx->getTilesize());
                 cursorx.component<Sprite>()->setSlidetype(SLIDETYPE::GEOMETRIC);
-                bounds = mapx->getBounds();
+                // bounds = mapx->getBounds();
                 // SDL_Log("bounds: %d %d %d %d", bounds[0], bounds[1], bounds[2], bounds[3]);
                 // bounds[0] += DEFAULT::TILEMAP_XOFFSET;
                 // bounds[2] += DEFAULT::TILEMAP_YOFFSET;
+                cursorx.component<Position>()->setOffset(DEFAULT::TILEMAP_XOFFSET, DEFAULT::TILEMAP_YOFFSET);
                 cursorx.component<Position>()->setBounds(mapx->getBounds());
                 cursorx.component<Position>()->setPos(cursor_lastpos);
                 cursorx.component<Position>()->setonTilemap(true);
@@ -495,7 +496,9 @@ void Game::loadUnitEntities(std::vector<short unsigned int> unit_inds, std::vect
         asset_name = "..//assets//" + units[unit_inds[i]].getName() + ".png";
         Uent = entities.create();
         Uent.assign<Unit>(units[unit_inds[i]]);
-        Uent.assign<Position>(positions_list[i][0], positions_list[i][1]);
+        Uent.assign<Position>();
+        Uent.component<Position>()->setOffset(DEFAULT::TILEMAP_XOFFSET, DEFAULT::TILEMAP_YOFFSET);
+        Uent.component<Position>()->setPos(positions_list[i][0], positions_list[i][1]);
         Uent.assign<Sprite>(asset_name.c_str());
         mapx->putUnit(positions_list[i][0], positions_list[i][1], Uent.component<Unit>());
     }

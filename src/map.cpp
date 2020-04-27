@@ -315,6 +315,7 @@ std::vector<std::vector<short int>> Map::makeMvtCostmap(entityx::ComponentHandle
                 if (!isFriendly(ontile_army, army)) {
                     SDL_Log("isFriendly?:");
                     costmap[row][col] = 0;
+                    SDL_Log("untilhere?:");
                 }
             }
         }
@@ -452,10 +453,10 @@ void Map::loadTilemap(const short unsigned int in_map_index) {
 
 void Map::postTilemap() {
     loadTiletextures();
-    bounds[0] = DEFAULT::TILEMAP_XOFFSET;
-    bounds[1] = tilemap[0].size() + DEFAULT::TILEMAP_XOFFSET;
-    bounds[2] = DEFAULT::TILEMAP_YOFFSET;
-    bounds[3] = tilemap.size() + DEFAULT::TILEMAP_YOFFSET;
+    bounds[0] = 0;
+    bounds[1] = tilemap[0].size();
+    bounds[2] = 0;
+    bounds[3] = tilemap.size();
     // arr2D[y][x] == arr2D[row][col]
     // tilemap.size() -> row -> y
     // tilemap[0].size() -> col -> x
