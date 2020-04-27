@@ -124,6 +124,7 @@ public:
     void receive(const inputMenuLeft & menuleft);
     void receive(const inputMinimap & minimap);
     void receive(const inputFaster & faster);
+    void receive(const cursorMoved & moved);
     void receive(const inputPause & pause);
     void receive(const inputCancel & cancel);
     void receive(const inputAccept & accept);

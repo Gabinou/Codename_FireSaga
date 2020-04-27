@@ -346,7 +346,7 @@ void UnitSystemx::receive(const unitSelect & select) {
         case UNIT::ARMY::FRIENDLY:
         case UNIT::ARMY::ERWIN:
         case UNIT::ARMY::FREE_MILITIA:
-            event_manager->emit<unitMove>(select.cursor, select.unit);
+            // event_manager->emit<unitMove>(select.cursor, select.unit)
             newstate = GAME::STATE::UNITMOVE;
             break;
 
@@ -588,6 +588,7 @@ void ControlSystemx::configure(entityx::EventManager & in_events) {
     event_manager->subscribe<inputMenuRight>(*this);
     event_manager->subscribe<inputMenuLeft>(*this);
     event_manager->subscribe<inputMinimap>(*this);
+    event_manager->subscribe<cursorMoved>(*this);
     event_manager->subscribe<inputFaster>(*this);
     event_manager->subscribe<inputPause>(*this);
 }
@@ -679,6 +680,28 @@ unsigned int ControlSystemx::getHeldbutton(Controllers in_controllers) {
     return (frames_button);
 }
 
+void ControlSystemx::receive(const cursorMoved & moved) {
+    SDL_Log("Received cursorMoved event");
+    entityx::ComponentHandle<Unit> unitontile;
+    entityx::Entity cursor = moved.cursor;
+    entityx::ComponentHandle<Position> position = cursor.component<Position>();
+    short int cursor_pos[2];
+
+    switch (game->getState()) {
+        case GAME::STATE::MAP:
+            cursor_pos[0] = position->getPos()[0];
+            cursor_pos[1] = position->getPos()[1];
+            unitontile = unitmap[cursor_pos[0]][cursor_pos[1]];
+
+            if (unitontile) {
+                // event_manager->emit<unitHover>(cursor, unitontile);
+                event_manager->emit<unitMove>(cursor, unitontile);
+
+            }
+
+            break;
+    }
+}
 
 void ControlSystemx::receive(const inputAccept & accept) {
     // SDL_Log("Received inputAccept event");
@@ -731,13 +754,16 @@ void ControlSystemx::receive(const inputAccept & accept) {
 void ControlSystemx::update(entityx::EntityManager & es, entityx::EventManager & events, entityx::TimeDelta dt) {
     char to_move[2] = {0, 0};
     entityx::ComponentHandle<Position> position;
+    entityx::Entity cursorent;
 
     for (entityx::Entity ent : es.entities_with_components<Map>()) {
         unitmap = ent.component<Map>()->getUnitmap();
     }
 
     for (entityx::Entity ent : es.entities_with_components<KeyboardController, Position>()) {
-        entityx::ComponentHandle<Position> unitontile;
+        if (!cursorent.valid()) {
+            cursorent = ent;
+        }
 
         if (!position) {
             position = ent.component<Position>();
@@ -788,13 +814,15 @@ void ControlSystemx::update(entityx::EntityManager & es, entityx::EventManager &
     }
 
     for (entityx::Entity ent : es.entities_with_components<GamepadController, Position>()) {
-        // entityx::ComponentHandle<Position> positio
+        if (!cursorent.valid()) {
+            cursorent = ent;
+        }
+
         if (!position) {
             position = ent.component<Position>();
         }
 
         entityx::ComponentHandle<GamepadController> gamepad = ent.component<GamepadController>();
-
         SDL_GameController * controller = gamepad->getController();
         Sint16 mainxaxis = SDL_GameControllerGetAxis(controller, gamepadInputMap.mainxaxis[0]);
         Sint16 mainyaxis = SDL_GameControllerGetAxis(controller, gamepadInputMap.mainyaxis[0]);
@@ -806,42 +834,34 @@ void ControlSystemx::update(entityx::EntityManager & es, entityx::EventManager &
         unsigned int frames_button = gamepad->getHeldbutton();
 
         if ((mainxaxis > joystick_dead_zone) || (secondxaxis > joystick_dead_zone)) {
-            // position->addPos(1, 0);
             to_move[0] = 1;
             pressed_move.push_back(GAME::BUTTON::RIGHT);
         } else if ((mainxaxis < -joystick_dead_zone) || (secondxaxis < -joystick_dead_zone)) {
-            // position->addPos(-1, 0);
             to_move[0] = -1;
             pressed_move.push_back(GAME::BUTTON::LEFT);
         }
 
         if ((mainyaxis > joystick_dead_zone) || (secondyaxis > joystick_dead_zone)) {
-            // position->addPos(0, 1);
             to_move[1] = 1;
             pressed_move.push_back(GAME::BUTTON::UP);
         } else if ((mainyaxis < -joystick_dead_zone) || (secondyaxis < -joystick_dead_zone))  {
             to_move[1] = -1;
-            // position->addPos(0, -1);
             pressed_move.push_back(GAME::BUTTON::DOWN);
         }
 
         if (gamepad->isPressed(gamepadInputMap.moveright)) {
-            // position->addPos(1, 0);
             to_move[0] = 1;
             pressed_move.push_back(GAME::BUTTON::RIGHT);
         } else if (gamepad->isPressed(gamepadInputMap.moveleft)) {
             to_move[0] = -1;
-            // position->addPos(-1, 0);
             pressed_move.push_back(GAME::BUTTON::LEFT);
         }
 
         if (gamepad->isPressed(gamepadInputMap.moveup)) {
-            // position->addPos(0, -1);
             to_move[1] = -1;
             pressed_move.push_back(GAME::BUTTON::UP);
         } else if (gamepad->isPressed(gamepadInputMap.movedown)) {
             to_move[1] = 1;
-            // position->addPos(0, 1);
             pressed_move.push_back(GAME::BUTTON::DOWN);
         }
 
@@ -872,12 +892,11 @@ void ControlSystemx::update(entityx::EntityManager & es, entityx::EventManager &
             events.emit<turnEnd>(ent);
         }
 
-        if ((to_move[0] != 0) || (to_move[1] != 0)) {
-            position->addPos(to_move[0], to_move[1]);
-            events.emit<cursorMoved>(ent);
-        }
-
     }
 
+    if ((to_move[0] != 0) || (to_move[1] != 0)) {
+        position->addPos(to_move[0], to_move[1]);
+        events.emit<cursorMoved>(cursorent);
+    }
 }
 
