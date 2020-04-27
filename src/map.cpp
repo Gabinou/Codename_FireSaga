@@ -254,18 +254,18 @@ short unsigned int * Map::getTilesize() const {
 }
 
 void Map::putUnit(const short unsigned int x, const short unsigned int y, entityx::ComponentHandle<Unit> in_unit) {
-    unitmap[y + offset[1]][x + offset[0]] = in_unit;// unitmap[row][col]
+    unitmap[y][x] = in_unit;// unitmap[row][col]
 }
 
 entityx::ComponentHandle<Unit> Map::getUnit(const short unsigned int x, const short unsigned int y) {
-    return (unitmap[y + offset[1]][x + offset[0]]);
+    return (unitmap[y][x]);
 }
 
 void Map::moveUnit(const short unsigned int x, const short unsigned int y, const short unsigned int new_x, const short unsigned int new_y) {
     SDL_Log("Move Unit %d %d %d %d", x, y, new_x, new_y);
-    entityx::ComponentHandle<Unit> buffer = unitmap[new_y + offset[1]][new_x + offset[0]];
-    unitmap[new_y + offset[1]][new_x + offset[0]] = unitmap[y + offset[1]][x + offset[0]];
-    unitmap[y + offset[1]][x + offset[0]] = buffer;
+    entityx::ComponentHandle<Unit> buffer = unitmap[new_y][new_x];
+    unitmap[new_y][new_x] = unitmap[y][x];
+    unitmap[y][x] = buffer;
 }
 
 void Map::setArrivalEquipments(const std::vector<std::vector<Inventory_item>> in_arrival_equipments) {

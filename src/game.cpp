@@ -492,6 +492,7 @@ void Game::loadUnitEntities(std::vector<short unsigned int> unit_inds, std::vect
     SDL_Log("Loading Units\n");
     std::string asset_name;
     entityx::Entity Uent;
+    short int * tilemap_pos;
 
     for (int i = 0; i < unit_inds.size(); i++) {
         asset_name = "..//assets//" + units[unit_inds[i]].getName() + ".png";
@@ -500,8 +501,9 @@ void Game::loadUnitEntities(std::vector<short unsigned int> unit_inds, std::vect
         Uent.assign<Position>();
         Uent.component<Position>()->setOffset(DEFAULT::TILEMAP_XOFFSET, DEFAULT::TILEMAP_YOFFSET);
         Uent.component<Position>()->setPos(positions_list[i][0], positions_list[i][1]);
+        tilemap_pos = Uent.component<Position>()->getPos();
         Uent.assign<Sprite>(asset_name.c_str());
-        mapx->putUnit(positions_list[i][0], positions_list[i][1], Uent.component<Unit>());
+        mapx->putUnit(tilemap_pos[0], tilemap_pos[1], Uent.component<Unit>());
     }
 }
 
@@ -513,6 +515,7 @@ void Game::loadMapArrivals() {
         unsigned short int currentturn = mapx->getTurn();
         std::string asset_name;
         entityx::Entity Uent;
+        short int * tilemap_pos;
 
         for (int i = 0; i < map_arrivals.size(); i++) {
             if (map_arrivals[i].turn == currentturn) {
@@ -532,7 +535,8 @@ void Game::loadMapArrivals() {
                 Uent.assign<Sprite>(asset_name.c_str());
                 Uent.assign<Unit>(units[map_arrivals[i].id]);
                 SDL_Log("Arrival position: %d %d", map_arrivals[i].position.x, map_arrivals[i].position.y);
-                mapx->putUnit(map_arrivals[i].position.x, map_arrivals[i].position.y, Uent.component<Unit>());
+                tilemap_pos = Uent.component<Position>()->getPos();
+                mapx->putUnit(tilemap_pos[0], tilemap_pos[1], Uent.component<Unit>());
             }
         }
     } else {
