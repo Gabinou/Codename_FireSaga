@@ -696,8 +696,8 @@ void ControlSystemx::receive(const cursorMoved & moved) {
 
     switch (game->getState()) {
         case GAME::STATE::MAP:
-            cursor_pos[0] = position->getPos()[0];
-            cursor_pos[1] = position->getPos()[1];
+            cursor_pos[0] = position->getPos()[0] - position->getOffset()[0];
+            cursor_pos[1] = position->getPos()[1] - position->getOffset()[1];
             unitontile = unitmap[cursor_pos[1]][cursor_pos[0]];
 
             if (unitontile) {
