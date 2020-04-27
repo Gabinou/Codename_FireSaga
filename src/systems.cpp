@@ -634,8 +634,8 @@ void ControlSystemx::receive(const inputCancel & cancel) {
 
     if (frames_button == 1) {
         short int cursor_pos[2];
-        cursor_pos[0] = position->getPos()[0];
-        cursor_pos[1] = position->getPos()[1];
+        cursor_pos[0] = position->getPos()[0] - position->getOffset()[0];
+        cursor_pos[1] = position->getPos()[1] - position->getOffset()[1];
         unitontile = unitmap[cursor_pos[1]][cursor_pos[0]];
 
         switch (game->getState()) {

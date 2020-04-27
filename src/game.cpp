@@ -452,8 +452,8 @@ void Game::setCursorstate(const short unsigned int new_state) {
                 menubounds[1] = unitmenupos[0] / linespace;
                 menubounds[2] = (short int)(unitmenupos[1] / linespace + 1);
                 menubounds[3] = (short int)(unitmenupos[1] / linespace + menuoptions[MENU::UNIT].size());
-                cursor_lastpos[0] = cursorx.component<Position>()->getPos()[0];
-                cursor_lastpos[1] = cursorx.component<Position>()->getPos()[1];
+                cursor_lastpos[0] = cursorx.component<Position>()->getPos()[0] - cursorx.component<Position>()->getOffset()[0];
+                cursor_lastpos[1] = cursorx.component<Position>()->getPos()[1] - cursorx.component<Position>()->getOffset()[1];
                 cursorx.component<Position>()->setBounds(menubounds);
                 cursorx.component<Position>()->setPos(menubounds[0], menubounds[2]);
                 cursorx.component<Position>()->setonTilemap(false);
