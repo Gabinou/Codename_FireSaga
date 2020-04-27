@@ -254,18 +254,18 @@ short unsigned int * Map::getTilesize() const {
 }
 
 void Map::putUnit(const short unsigned int x, const short unsigned int y, entityx::ComponentHandle<Unit> in_unit) {
-    unitmap[y][x] = in_unit;// unitmap[row][col]
+    unitmap[y + offset[1]][x + offset[0]] = in_unit;// unitmap[row][col]
 }
 
 entityx::ComponentHandle<Unit> Map::getUnit(const short unsigned int x, const short unsigned int y) {
-    return (unitmap[y][x]);
+    return (unitmap[y + offset[1]][x + offset[0]]);
 }
 
 void Map::moveUnit(const short unsigned int x, const short unsigned int y, const short unsigned int new_x, const short unsigned int new_y) {
     SDL_Log("Move Unit %d %d %d %d", x, y, new_x, new_y);
-    entityx::ComponentHandle<Unit> buffer = unitmap[new_y][new_x];
-    unitmap[new_y][new_x] = unitmap[y][x];
-    unitmap[y][x] = buffer;
+    entityx::ComponentHandle<Unit> buffer = unitmap[new_y + offset[1]][new_x + offset[0]];
+    unitmap[new_y + offset[1]][new_x + offset[0]] = unitmap[y + offset[1]][x + offset[0]];
+    unitmap[y + offset[1]][x + offset[0]] = buffer;
 }
 
 void Map::setArrivalEquipments(const std::vector<std::vector<Inventory_item>> in_arrival_equipments) {
@@ -445,6 +445,21 @@ void Map::hideOverlay() {
 std::vector<std::vector<entityx::ComponentHandle<Unit>>> Map::getUnitmap() {
     return (unitmap);
 }
+
+void Map::setOffset(short int xoffset, short int yoffset) {
+    offset[0] = xoffset;
+    offset[1] = yoffset;
+}
+
+void Map::setOffset(short int in_offset[2]) {
+    offset[0] = in_offset[0];
+    offset[1] = in_offset[1];
+}
+
+short int * Map::getOffset() {
+    return (offset);
+}
+
 
 void Map::loadTilemap(const short unsigned int in_map_index) {
     tilemap = chapTilemaps[in_map_index]();

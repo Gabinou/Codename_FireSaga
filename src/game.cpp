@@ -368,6 +368,7 @@ void Game::loadMap(const int in_map_index) {
         mapx = mapEntx.component<Map>();
         mapx->loadTiles(in_map_index);
         mapx->setRenderer(renderer);
+        mapx->setOffset(DEFAULT::TILEMAP_XOFFSET, DEFAULT::TILEMAP_YOFFSET);
         mapx->loadTilemap(in_map_index);
         mapx->setArrivals(mapArrivals[in_map_index]());
         mapx->setArrivalEquipments(arrivalEquipments[in_map_index]());

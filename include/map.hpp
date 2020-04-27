@@ -38,6 +38,7 @@ private:
     std::vector<std::string> tilenames;
 
     short int bounds[4] = {0, 255, 0, 255}; //rowmin, rowmax, colmin, colmax
+    short int offset[2] = {0, 0};
     unsigned char num_friendlies = 0;
     unsigned char num_neutral = 0;
     unsigned char num_enemies = 0;
@@ -96,6 +97,10 @@ public:
     void setOverlaymode(const unsigned char in_mode);
     void showOverlay();
     void hideOverlay();
+
+    void setOffset(short int in_offset[2]);
+    void setOffset(short int xoffset, short int yoffset);
+    short int * getOffset();
 
     void loadGrid();
     void showGrid();
