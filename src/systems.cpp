@@ -489,12 +489,14 @@ void UnitSystemx::receive(const unitMove & move) {
     entityx::ComponentHandle<Unit> unit = move.unit;
     selected = unit.entity();
     short unsigned int * start;
+    short unsigned int * offset;
     short unsigned int unit_move;
     short unsigned int current_unit_id;
     unsigned char * range;
 
     if (cursorpos) {
         start = (short unsigned int *)cursorpos->getPos();
+        offset = (short unsigned int *)cursorpos->getOffset();
     } else {
         SDL_Log("Could not get cursor position component");
     }
@@ -506,6 +508,8 @@ void UnitSystemx::receive(const unitMove & move) {
         SDL_Log("Could not get unit component");
     }
 
+    start[0] -= offset[0];
+    start[1] -= offset[1];
     SDL_Log("start: %d %d", start[0], start[1]);
     SDL_Log("unitmove: %d", unit_move);
 
