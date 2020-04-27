@@ -452,9 +452,11 @@ void Map::loadTilemap(const short unsigned int in_map_index) {
 
 void Map::postTilemap() {
     loadTiletextures();
-    bounds[3] = tilemap[0].size();
+    bounds[0] = DEFAULT::TILEMAP_XOFFSET;
     bounds[1] = tilemap.size();
-    std::vector<std::vector<entityx::ComponentHandle<Unit>>> tempunit(bounds[1], std::vector<entityx::ComponentHandle<Unit>>(bounds[3]));
+    bounds[2] = DEFAULT::TILEMAP_YOFFSET;
+    bounds[3] = tilemap[0].size();
+    std::vector<std::vector<entityx::ComponentHandle<Unit>>> tempunit(bounds[1] - bounds[0], std::vector<entityx::ComponentHandle<Unit>>(bounds[3] - bounds[2]));
     unitmap = tempunit;
 }
 
@@ -510,8 +512,8 @@ void Map::draw() {
     for (int row = 0; row < tilemap.size(); row++) {// This loop cache friendly.
         for (int col = 0; col < tilemap[row].size(); col++) {
             tile_ind = tilemap[row][col];
-            destrect.x = (col + 1) * tilesize[0];
-            destrect.y = (row + 1) * tilesize[1];
+            destrect.x = (col + DEFAULT::TILEMAP_XOFFSET) * tilesize[0];
+            destrect.y = (row + DEFAULT::TILEMAP_YOFFSET) * tilesize[1];
             SDL_RenderCopy(renderer, textures[tile_ind], &srcrect, &destrect);
 
             if (show_overlay) {
