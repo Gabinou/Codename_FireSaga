@@ -735,27 +735,34 @@ void ControlSystemx::update(entityx::EntityManager & es, entityx::EventManager &
     }
 
     for (entityx::Entity ent : es.entities_with_components<KeyboardController, Position>()) {
+        entityx::ComponentHandle<Position> unitontile;
         entityx::ComponentHandle<Position> position = ent.component<Position>();
         entityx::ComponentHandle<KeyboardController> keyboard = ent.component<KeyboardController>();
+        char to_move[2] = {0, 0};
 
         const Uint8 * kb_state = SDL_GetKeyboardState(NULL);
         std::vector<std::vector<SDL_Scancode>> pressed_move{};
         std::vector<std::vector<SDL_Scancode>> pressed_button{};
 
         if (keyboard->is_pressed(kb_state, keyboardInputMap.moveup) && !keyboard->is_pressed(kb_state, keyboardInputMap.movedown)) {
-            position->addPos(0, -1);
+            to_move[1] -= 1;
             pressed_move.push_back(keyboardInputMap.moveup);
         } else if (!keyboard->is_pressed(kb_state, keyboardInputMap.moveup) && keyboard->is_pressed(kb_state, keyboardInputMap.movedown)) {
-            position->addPos(0, 1);
+            to_move[1] += 1;
             pressed_move.push_back(keyboardInputMap.movedown);
         }
 
         if (!keyboard->is_pressed(kb_state, keyboardInputMap.moveright) && keyboard->is_pressed(kb_state, keyboardInputMap.moveleft)) {
-            position->addPos(-1, 0);
+            to_move[0] -= 1;
             pressed_move.push_back(keyboardInputMap.moveleft);
         } else if (keyboard->is_pressed(kb_state, keyboardInputMap.moveright) && !keyboard->is_pressed(kb_state, keyboardInputMap.moveleft)) {
-            position->addPos(1, 0);
+            to_move[0] += 1;
             pressed_move.push_back(keyboardInputMap.moveright);
+        }
+
+        if ((to_move[0] != 0) || (to_move[1] != 0)) {
+            position->addPos(to_move[0], to_move[1]);
+            events.emit<cursorMoved>(ent);
         }
 
         if (keyboard->is_pressed(kb_state, keyboardInputMap.accept)) {

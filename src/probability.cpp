@@ -70,5 +70,5 @@ unsigned int Uuint32_openBSD(tinymt32_t & tinymt, unsigned int max, unsigned int
     return (min + (x % max));
 }
 
-// References: 
+// References:
 // [1]: Fast Random Integer Generation in an Interval

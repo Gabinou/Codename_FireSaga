@@ -65,15 +65,21 @@ void Tile::readXML(tinyxml2::XMLElement * in_pTile) {
     tinyxml2::XMLElement * ptemp;
     id = (unsigned short int)in_pTile->IntAttribute("id");
     ptemp = in_pTile->FirstChildElement("Name");
+
     if (!ptemp) {SDL_Log("Cannot get Name element");}
+
     name = ptemp->GetText();
 
     ptemp = in_pTile->FirstChildElement("MvtCost");
+
     if (!ptemp) {SDL_Log("Cannot get Name element");}
+
     readXML_mvtcost(ptemp, &cost_struct);
     makeMvtCostarray();
     ptemp = in_pTile->FirstChildElement("Stats");
+
     if (!ptemp) {SDL_Log("Cannot get Name element");}
+
     readXML_stats(ptemp, &stats);
 }
 

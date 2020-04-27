@@ -346,7 +346,7 @@ Inventory_item * Convoy::getItems(int wpntype) {
         case ITEM::TYPE::ITEM:
             memcpy(temp, items, sizeof(temp));
             break;
-3
+
         case ITEM::TYPE::BOOK:
             memcpy(temp, books, sizeof(temp));
             break;
