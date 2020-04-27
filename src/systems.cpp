@@ -78,8 +78,8 @@ void RenderSystemx::slideSprites(entityx::Entity * in_ent, short int * slidepos,
 
             switch (slidetype) {
                 case SLIDETYPE::GEOMETRIC: //for cursor mvt on map.
-                    objectivepos[0] = (int)position->getPos()[0] * (scalefactor[0]) - destrect.w / 4;
-                    objectivepos[1] = (int)position->getPos()[1] * (scalefactor[1]) - destrect.h / 4;
+                    objectivepos[0] = (int)(position->getPos()[0] + offset[0]) * (scalefactor[0]) - destrect.w / 4;
+                    objectivepos[1] = (int)(position->getPos()[1] + offset[1]) * (scalefactor[1]) - destrect.h / 4;
 
                     if ((gp_held > DEFAULT::CURSOR_FAST) || (kb_held > DEFAULT::CURSOR_FAST))  {
                         slideint = 1;
