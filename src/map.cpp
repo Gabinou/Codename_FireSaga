@@ -463,6 +463,7 @@ void Map::postTilemap() {
     unitmap = tempunit;
     SDL_Log("unitmap size: %d %d", unitmap[0].size(), unitmap.size());
     SDL_Log("tilemap size: %d %d", tilemap[0].size(), tilemap.size());
+    SDL_Log("bounds: %d %d %d %d", bounds[0], bounds[1], bounds[2], bounds[3]);
 }
 
 short int * Map::getBounds() {
