@@ -269,6 +269,7 @@ void UnitSystemx::configure(entityx::EventManager & events) {
     events.subscribe<unitDeselect>(*this);
     events.subscribe<unitDanger>(*this);
     events.subscribe<unitMove>(*this);
+    events.subscribe<unitNomove>(*this);
     events.subscribe<unitMenu>(*this);
     events.subscribe<unitmenuSelect>(*this);
     events.subscribe<unitMap>(*this);
@@ -475,8 +476,13 @@ void UnitSystemx::receive(const unitMenu & menu) {
     game->setCursorstate(GAME::STATE::UNITMENU);
 }
 
+void UnitSystemx::receive(const unitNomove & nomove) {
+    // SDL_Log("Received unitNomove event");
+    mapx->hideOverlay();
+}
+
 void UnitSystemx::receive(const unitMove & move) {
-    SDL_Log("Received unitMove event");
+    // SDL_Log("Received unitMove event");
     std::vector<std::vector<short int>> costmapp;
     std::vector<std::vector<short int>> movemapp;
     std::vector<std::vector<short int>> attackmapp;
@@ -681,7 +687,7 @@ unsigned int ControlSystemx::getHeldbutton(Controllers in_controllers) {
 }
 
 void ControlSystemx::receive(const cursorMoved & moved) {
-    SDL_Log("Received cursorMoved event");
+    // SDL_Log("Received cursorMoved event");
     entityx::ComponentHandle<Unit> unitontile;
     entityx::Entity cursor = moved.cursor;
     entityx::ComponentHandle<Position> position = cursor.component<Position>();
@@ -696,7 +702,8 @@ void ControlSystemx::receive(const cursorMoved & moved) {
             if (unitontile) {
                 // event_manager->emit<unitHover>(cursor, unitontile);
                 event_manager->emit<unitMove>(cursor, unitontile);
-
+            } else {
+                event_manager->emit<unitNomove>(cursor);
             }
 
             break;

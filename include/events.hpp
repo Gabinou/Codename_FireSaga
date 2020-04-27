@@ -32,12 +32,6 @@ struct cursorMoved {
     entityx::Entity cursor;
 };
 
-struct unitHover {
-    unitHover(entityx::Entity cursor, entityx::ComponentHandle<Unit> unit) : cursor(cursor), unit(unit) {}
-    entityx::Entity cursor;
-    entityx::ComponentHandle<Unit> unit;
-};
-
 struct unitSelect {
     unitSelect(entityx::Entity cursor, entityx::ComponentHandle<Unit> unit) : cursor(cursor), unit(unit) {}
     entityx::Entity cursor;
@@ -48,6 +42,11 @@ struct unitDeselect {
     unitDeselect(entityx::Entity cursor, entityx::ComponentHandle<Unit> unit) : cursor(cursor), unit(unit) {}
     entityx::Entity cursor;
     entityx::ComponentHandle<Unit> unit;
+};
+
+struct unitNomove {
+    unitNomove(entityx::Entity cursor) : cursor(cursor) {}
+    entityx::Entity cursor;
 };
 
 struct unitMove {

@@ -53,6 +53,7 @@ private:
     entityx::Entity * unitmenux;
     std::vector<unsigned char> * unitmenuoptions;
     entityx::Entity selected;
+    entityx::Entity hovered;
 public:
     UnitSystemx();
     UnitSystemx(Game * in_game);
@@ -73,6 +74,7 @@ public:
     void receive(const unitSelect & selected);
     void receive(const unitDeselect & selected);
     void receive(const unitMove & move);
+    void receive(const unitNomove & move);
     void receive(const unitMenu & menu);
     void receive(const unitMap & map);
     void receive(const unitDanger & danger);
