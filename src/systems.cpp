@@ -301,13 +301,14 @@ void UnitSystemx::receive(const unitDeselect & deselect) {
             std::vector<std::vector<short int>> attackmapp;
             std::vector<std::vector<short int>> dangermapp;
             short unsigned int unit_move;
-            short unsigned int * start;
+            short unsigned int start[2];
             unsigned char * range;
 
             entityx::ComponentHandle<Position> cursorpos = cursor.component<Position>();
 
             if (cursorpos) {
-                start = (short unsigned int *)cursorpos->getPos();
+                start[0] = cursorpos->getPos()[0] - cursorpos->getOffset()[0];
+                start[1] = cursorpos->getPos()[1] - cursorpos->getOffset()[1];
             } else {
                 SDL_Log("Could not get cursor position component");
             }
@@ -383,7 +384,7 @@ void UnitSystemx::receive(const unitDanger & danger) {
     std::vector<std::vector<short int>> attackmapp;
     std::vector<std::vector<short int>> dangermapp;
     short unsigned int unit_move;
-    short unsigned int * start;
+    short unsigned int start[2];
     unsigned char * range;
 
     entityx::ComponentHandle<Unit> unit = danger.unit;
@@ -391,7 +392,8 @@ void UnitSystemx::receive(const unitDanger & danger) {
     entityx::ComponentHandle<Position> cursorpos = cursor.component<Position>();
 
     if (cursorpos) {
-        start = (short unsigned int *)cursorpos->getPos();
+        start[0] = cursorpos->getPos()[0] - cursorpos->getOffset()[0];
+        start[1] = cursorpos->getPos()[1] - cursorpos->getOffset()[1];
     } else {
         SDL_Log("Could not get cursor position component");
     }
