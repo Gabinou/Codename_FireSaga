@@ -300,7 +300,6 @@ void UnitSystemx::receive(const unitDeselect & deselect) {
             std::vector<std::vector<short int>> dangermapp;
             short unsigned int unit_move;
             short unsigned int * start;
-            unsigned char unitmvttype;
             unsigned char * range;
 
             entityx::ComponentHandle<Position> cursorpos = cursor.component<Position>();
@@ -313,13 +312,12 @@ void UnitSystemx::receive(const unitDeselect & deselect) {
 
             if (unit) {
                 unit_move = unit->getStats().move;
-                unitmvttype = unit->getMvttype();
                 range = unit->getRange();
             } else {
                 SDL_Log("Could not get unit component");
             }
 
-            costmapp = mapx->makeMvtCostmap(unitmvttype);
+            costmapp = mapx->makeMvtCostmap(unit);
             movemapp = movemap(costmapp, start, unit_move, "matrix");
             attackmapp = attackmap(movemapp, start, unit_move, range, "matrix");
             dangermapp = matrix_plus(attackmapp, movemapp);
@@ -384,7 +382,6 @@ void UnitSystemx::receive(const unitDanger & danger) {
     std::vector<std::vector<short int>> dangermapp;
     short unsigned int unit_move;
     short unsigned int * start;
-    unsigned char unitmvttype;
     unsigned char * range;
 
     entityx::ComponentHandle<Unit> unit = danger.unit;
@@ -399,13 +396,12 @@ void UnitSystemx::receive(const unitDanger & danger) {
 
     if (unit) {
         unit_move = unit->getStats().move;
-        unitmvttype = unit->getMvttype();
         range = unit->getRange();
     } else {
         SDL_Log("Could not get unit component");
     }
 
-    costmapp = mapx->makeMvtCostmap(unitmvttype);
+    costmapp = mapx->makeMvtCostmap(unit);
     movemapp = movemap(costmapp, start, unit_move, "matrix");
     attackmapp = attackmap(movemapp, start, unit_move, range, "matrix");
     dangermapp = matrix_plus(attackmapp, movemapp);
@@ -493,7 +489,6 @@ void UnitSystemx::receive(const unitMove & move) {
     short unsigned int * start;
     short unsigned int unit_move;
     short unsigned int current_unit_id;
-    unsigned char unitmvttype;
     unsigned char * range;
 
     if (cursorpos) {
@@ -504,7 +499,6 @@ void UnitSystemx::receive(const unitMove & move) {
 
     if (unit) {
         unit_move = unit->getStats().move;
-        unitmvttype = unit->getMvttype();
         range = unit->getRange();
     } else {
         SDL_Log("Could not get unit component");
@@ -513,7 +507,7 @@ void UnitSystemx::receive(const unitMove & move) {
     SDL_Log("start: %d %d", start[0], start[1]);
     SDL_Log("unitmove: %d", unit_move);
 
-    costmapp = mapx->makeMvtCostmap(unitmvttype);
+    costmapp = mapx->makeMvtCostmap(unit);
 
     movemapp = movemap(costmapp, start, unit_move, "matrix");
     mapx->setOverlay(MAP::OVERLAY::MOVE, movemapp);

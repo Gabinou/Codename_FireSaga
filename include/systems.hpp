@@ -17,6 +17,7 @@ struct Controllers {
 };
 
 class RenderSystemx: public entityx::System<RenderSystemx>, public entityx::Receiver<RenderSystemx> {
+    // I think the rendering system needs a way to buffer/transition animations. So that everything doesn't just appear suddenly.
 private:
     SDL_Renderer * renderer = NULL;
     short unsigned int * tilesize;

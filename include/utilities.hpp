@@ -41,6 +41,8 @@ extern void makeEquippableCodes();
 extern std::vector<std::string> armyNames;
 extern void makeArmyNames();
 
+extern bool isFriendly(const unsigned char army1, const unsigned char army2);
+
 extern void loadUtilities();
 
 extern void printarr(int arr[], int size);

@@ -20,6 +20,62 @@ int geometricslide(int distance, float geo_factor) {
     // sign*distance more elegant than std::abs()
 }
 
+bool isFriendly(const unsigned char army1, const unsigned char army2) {
+    bool out = false;
+
+    if (army1 ==  army2) {
+        out = true;
+    }
+
+    switch (army1) {
+        case UNIT::ARMY::FRIENDLY:
+        case UNIT::ARMY::NEUTRAL:
+        case UNIT::ARMY::ERWIN:
+        case UNIT::ARMY::FREE_MILITIA:
+            switch (army2) {
+                case UNIT::ARMY::FRIENDLY:
+                case UNIT::ARMY::NEUTRAL:
+                case UNIT::ARMY::ERWIN:
+                case UNIT::ARMY::FREE_MILITIA:
+                    out = true;
+                    break;
+
+                case UNIT::ARMY::ENEMY:
+                case UNIT::ARMY::IMPERIAL:
+                case UNIT::ARMY::THEOCRACY:
+                case UNIT::ARMY::VOLDAN:
+                    out = false;
+                    break;
+            }
+
+            break;
+
+        case UNIT::ARMY::ENEMY:
+        case UNIT::ARMY::IMPERIAL:
+        case UNIT::ARMY::THEOCRACY:
+        case UNIT::ARMY::VOLDAN:
+            switch (army2) {
+                case UNIT::ARMY::FRIENDLY:
+                case UNIT::ARMY::NEUTRAL:
+                case UNIT::ARMY::ERWIN:
+                case UNIT::ARMY::FREE_MILITIA:
+                    out = false;
+                    break;
+
+                case UNIT::ARMY::ENEMY:
+                case UNIT::ARMY::IMPERIAL:
+                case UNIT::ARMY::THEOCRACY:
+                case UNIT::ARMY::VOLDAN:
+                    out = true;
+                    break;
+            }
+
+            break;
+    }
+
+    return (out);
+}
+
 void printarr(int arr[], int size) {
     SDL_Log("Array:\n");
 

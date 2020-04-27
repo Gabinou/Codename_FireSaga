@@ -293,15 +293,28 @@ std::vector<Map_arrival> Map::getArrivals() {
     return (map_arrivals);
 }
 
-std::vector<std::vector<short int>> Map::makeMvtCostmap(const unsigned char unitmovetype) {
+std::vector<std::vector<short int>> Map::makeMvtCostmap(entityx::ComponentHandle<Unit> in_unit) {
     // SDL_Log("Making MvtCostmap");
     short int tile_ind = 0;
     std::vector<std::vector<short int>> costmap((short int)tilemap.size(), std::vector<short int> ((short int)tilemap[0].size()));
+    unsigned char unitmovetype = in_unit->getMvttype();
+    unsigned char army = in_unit->getArmy();
+    unsigned char ontile_army;
+    entityx::ComponentHandle<Unit> unitontile;
 
     for (short int row = 0; row < tilemap.size(); row++) {
         for (short int col = 0; col < tilemap[row].size(); col++) {
             tile_ind = tilemap[row][col] / DEFAULT::TILE_DIVISOR;
+            unitontile = unitmap[col][row];
             costmap[row][col] = tiles[tile_ind].getCost()[unitmovetype];
+
+            if (unitontile) {
+                ontile_army = unitontile->getArmy();
+
+                if (isFriendly(ontile_army, army)) {
+                    costmap[row][col] = 0;
+                }
+            }
         }
     }
 

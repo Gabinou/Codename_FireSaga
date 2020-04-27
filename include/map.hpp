@@ -73,7 +73,7 @@ public:
     void postTilemap();
     std::vector<std::vector<short int>> getTilemap();
     void setTilemap(const std::vector<std::vector<short int>> in_tilemap);
-    std::vector<std::vector<short int>> makeMvtCostmap(const unsigned char unitmovetype);
+    std::vector<std::vector<short int>> makeMvtCostmap(entityx::ComponentHandle<Unit> in_unit);
     void setTilesize(const short int unsigned width, const short int unsigned height);
     short unsigned int * getTilesize() const;
 
