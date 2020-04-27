@@ -431,8 +431,8 @@ void UnitSystemx::receive(const unitMenu & menu) {
     entityx::Entity cursor = menu.cursor;
     entityx::ComponentHandle<Position> cursorpos = cursor.component<Position>();
 
-    short int * new_position;
-    short int * old_position;
+    short int new_position[2];
+    short int old_position[2];
 
     entityx::ComponentHandle<Position> selectedpos;
 
@@ -440,7 +440,8 @@ void UnitSystemx::receive(const unitMenu & menu) {
         selectedpos = selected.component<Position>();
 
         if (selectedpos) {
-            old_position = selectedpos->getPos();
+            old_position[0] = selectedpos->getPos()[0] - selectedpos->getOffset()[0];
+            old_position[1] = selectedpos->getPos()[1] - selectedpos->getOffset()[1];
             SDL_Log("Old position %d, %d \n", old_position[0], old_position[1]);
         } else {
             SDL_Log("Could not get selectedx unit component");
@@ -451,7 +452,8 @@ void UnitSystemx::receive(const unitMenu & menu) {
     }
 
     if (cursorpos) {
-        new_position = cursorpos->getPos();
+        new_position[0] = cursorpos->getPos()[0] - selectedpos->getOffset()[0];
+        new_position[1] = cursorpos->getPos()[1] - selectedpos->getOffset()[1];
         SDL_Log("New position %d, %d \n", new_position[0], new_position[1]);
     } else {
         SDL_Log("Could not get setter(unit) position component");
@@ -723,8 +725,8 @@ void ControlSystemx::receive(const inputAccept & accept) {
         short int newstate = -1;
         short int cursor_pos[2];
         entityx::ComponentHandle<Position> position = accepter.component<Position>();
-        cursor_pos[0] = position->getPos()[0];
-        cursor_pos[1] = position->getPos()[1];
+        cursor_pos[0] = position->getPos()[0] - position->getOffset()[0];
+        cursor_pos[1] = position->getPos()[1] - position->getOffset()[1];
         entityx::ComponentHandle<Unit> unitontile;
 
         switch (game->getState()) {

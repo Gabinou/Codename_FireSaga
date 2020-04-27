@@ -525,7 +525,6 @@ void Game::loadMapArrivals() {
                 }
 
                 Uent = entities.create();
-                // Uent.assign<Position>(map_arrivals[i].position.x, map_arrivals[i].position.y);
                 Uent.assign<Position>();
                 Uent.component<Position>()->setOffset(DEFAULT::TILEMAP_XOFFSET, DEFAULT::TILEMAP_YOFFSET);
                 Uent.component<Position>()->setPos(map_arrivals[i].position.x, map_arrivals[i].position.y);
