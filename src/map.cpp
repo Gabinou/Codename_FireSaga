@@ -254,18 +254,18 @@ short unsigned int * Map::getTilesize() const {
 }
 
 void Map::putUnit(const short unsigned int x, const short unsigned int y, entityx::ComponentHandle<Unit> in_unit) {
-    unitmap[x][y] = in_unit;
+    unitmap[y][x] = in_unit;// unitmap[row][col]
 }
 
 entityx::ComponentHandle<Unit> Map::getUnit(const short unsigned int x, const short unsigned int y) {
-    return (unitmap[x][y]);
+    return (unitmap[y][x]);
 }
 
 void Map::moveUnit(const short unsigned int x, const short unsigned int y, const short unsigned int new_x, const short unsigned int new_y) {
     SDL_Log("Move Unit %d %d %d %d", x, y, new_x, new_y);
-    entityx::ComponentHandle<Unit> buffer = unitmap[new_x][new_y];
-    unitmap[new_x][new_y] = unitmap[x][y];
-    unitmap[x][y] = buffer;
+    entityx::ComponentHandle<Unit> buffer = unitmap[new_y][new_x];
+    unitmap[new_y][new_x] = unitmap[y][x];
+    unitmap[y][x] = buffer;
 }
 
 void Map::setArrivalEquipments(const std::vector<std::vector<Inventory_item>> in_arrival_equipments) {
@@ -294,7 +294,7 @@ std::vector<Map_arrival> Map::getArrivals() {
 }
 
 std::vector<std::vector<short int>> Map::makeMvtCostmap(entityx::ComponentHandle<Unit> in_unit) {
-    // SDL_Log("Making MvtCostmap");
+    SDL_Log("Making MvtCostmap");
     short int tile_ind = 0;
     std::vector<std::vector<short int>> costmap((short int)tilemap.size(), std::vector<short int> ((short int)tilemap[0].size()));
     unsigned char unitmovetype = in_unit->getMvttype();
@@ -305,13 +305,15 @@ std::vector<std::vector<short int>> Map::makeMvtCostmap(entityx::ComponentHandle
     for (short int row = 0; row < tilemap.size(); row++) {
         for (short int col = 0; col < tilemap[row].size(); col++) {
             tile_ind = tilemap[row][col] / DEFAULT::TILE_DIVISOR;
-            unitontile = unitmap[col][row];
+            unitontile = unitmap[row][col];
             costmap[row][col] = tiles[tile_ind].getCost()[unitmovetype];
 
             if (unitontile) {
+                SDL_Log("Unit on tile: %d %d", col, row);
                 ontile_army = unitontile->getArmy();
 
-                if (isFriendly(ontile_army, army)) {
+                if (!isFriendly(ontile_army, army)) {
+                    SDL_Log("isFriendly?:");
                     costmap[row][col] = 0;
                 }
             }
@@ -450,8 +452,8 @@ void Map::loadTilemap(const short unsigned int in_map_index) {
 
 void Map::postTilemap() {
     loadTiletextures();
-    bounds[1] = tilemap[0].size();
-    bounds[3] = tilemap.size();
+    bounds[3] = tilemap[0].size();
+    bounds[1] = tilemap.size();
     std::vector<std::vector<entityx::ComponentHandle<Unit>>> tempunit(bounds[1], std::vector<entityx::ComponentHandle<Unit>>(bounds[3]));
     unitmap = tempunit;
 }

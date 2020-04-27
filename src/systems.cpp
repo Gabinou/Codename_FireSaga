@@ -627,7 +627,7 @@ void ControlSystemx::receive(const inputCancel & cancel) {
         short int cursor_pos[2];
         cursor_pos[0] = position->getPos()[0];
         cursor_pos[1] = position->getPos()[1];
-        unitontile = unitmap[cursor_pos[0]][cursor_pos[1]];
+        unitontile = unitmap[cursor_pos[1]][cursor_pos[0]];
 
         switch (game->getState()) {
             case GAME::STATE::UNITMENU:
@@ -691,7 +691,7 @@ void ControlSystemx::receive(const cursorMoved & moved) {
         case GAME::STATE::MAP:
             cursor_pos[0] = position->getPos()[0];
             cursor_pos[1] = position->getPos()[1];
-            unitontile = unitmap[cursor_pos[0]][cursor_pos[1]];
+            unitontile = unitmap[cursor_pos[1]][cursor_pos[0]];
 
             if (unitontile) {
                 // event_manager->emit<unitHover>(cursor, unitontile);
@@ -724,7 +724,7 @@ void ControlSystemx::receive(const inputAccept & accept) {
             case GAME::STATE::MAP:
                 SDL_Log("accepter Position, %d %d \n", cursor_pos[0], cursor_pos[1]);
                 game->setCursorlastpos(cursor_pos[0], cursor_pos[1]);
-                unitontile = unitmap[cursor_pos[0]][cursor_pos[1]];
+                unitontile = unitmap[cursor_pos[1]][cursor_pos[0]];
 
                 if (unitontile) {
                     event_manager->emit<unitSelect>(accepter, unitontile);
