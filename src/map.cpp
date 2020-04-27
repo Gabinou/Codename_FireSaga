@@ -453,10 +453,13 @@ void Map::loadTilemap(const short unsigned int in_map_index) {
 void Map::postTilemap() {
     loadTiletextures();
     bounds[0] = DEFAULT::TILEMAP_XOFFSET;
-    bounds[1] = tilemap.size();
+    bounds[1] = tilemap[0].size();
     bounds[2] = DEFAULT::TILEMAP_YOFFSET;
-    bounds[3] = tilemap[0].size();
-    std::vector<std::vector<entityx::ComponentHandle<Unit>>> tempunit(bounds[1] - bounds[0], std::vector<entityx::ComponentHandle<Unit>>(bounds[3] - bounds[2]));
+    bounds[3] = tilemap.size();
+    // arr2D[y][x] == arr2D[row][col]
+    // tilemap.size() -> row -> y
+    // tilemap[0].size() -> col -> x
+    std::vector<std::vector<entityx::ComponentHandle<Unit>>> tempunit(bounds[3] - bounds[2], std::vector<entityx::ComponentHandle<Unit>>(bounds[1] - bounds[0]));
     unitmap = tempunit;
 }
 
