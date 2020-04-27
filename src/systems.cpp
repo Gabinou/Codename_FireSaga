@@ -190,6 +190,8 @@ void RenderSystemx::update(entityx::EntityManager & es, entityx::EventManager & 
     for (entityx::Entity ent : es.entities_with_components<KeyboardController>()) {
         entityx::ComponentHandle<Sprite> sprite = ent.component<Sprite>();
 
+        // SDL_Log("Rendering Cursor");
+
         short int * slidepos = sprite->getSlidepos();
         short int * objectivepos = sprite->getObjpos();
         SDL_Rect srcrect = sprite->getSrcrect();

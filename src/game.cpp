@@ -407,7 +407,7 @@ void Game::setCursorstate(const short unsigned int new_state) {
     SDL_Rect temprect;
 
     short unsigned int * temp_tilesize;
-    // short int * bounds;
+    short int * bounds;
     temp_tilesize = mapx->getTilesize();
 
     if (cursorx.valid()) {
@@ -420,7 +420,8 @@ void Game::setCursorstate(const short unsigned int new_state) {
                 cursorx.component<Sprite>()->setAnimation(10, 50);
                 cursorx.component<Sprite>()->setTilesize(mapx->getTilesize());
                 cursorx.component<Sprite>()->setSlidetype(SLIDETYPE::GEOMETRIC);
-                // bounds = mapx->getBounds();
+                bounds = mapx->getBounds();
+                // SDL_Log("bounds: %d %d %d %d", bounds[0], bounds[1], bounds[2], bounds[3]);
                 // bounds[0] += DEFAULT::TILEMAP_XOFFSET;
                 // bounds[2] += DEFAULT::TILEMAP_YOFFSET;
                 cursorx.component<Position>()->setBounds(mapx->getBounds());
