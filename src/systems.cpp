@@ -490,6 +490,7 @@ void UnitSystemx::receive(const unitMove & move) {
     selected = unit.entity();
     short unsigned int * start;
     short unsigned int * offset;
+    short unsigned int nooffset[2];
     short unsigned int unit_move;
     short unsigned int current_unit_id;
     unsigned char * range;
@@ -508,17 +509,17 @@ void UnitSystemx::receive(const unitMove & move) {
         SDL_Log("Could not get unit component");
     }
 
-    start[0] -= offset[0];
-    start[1] -= offset[1];
-    SDL_Log("start: %d %d", start[0], start[1]);
+    nooffset[0] = start[0] - offset[0];
+    nooffset[1] = start[1] - offset[1];
+    SDL_Log("nooffset: %d %d", nooffset[0], nooffset[1]);
     SDL_Log("unitmove: %d", unit_move);
 
     costmapp = mapx->makeMvtCostmap(unit);
 
-    movemapp = movemap(costmapp, start, unit_move, "matrix");
+    movemapp = movemap(costmapp, nooffset, unit_move, "matrix");
     mapx->setOverlay(MAP::OVERLAY::MOVE, movemapp);
 
-    attackmapp = attackmap(movemapp, start, unit_move, range, "matrix");
+    attackmapp = attackmap(movemapp, nooffset, unit_move, range, "matrix");
     mapx->setOverlay(MAP::OVERLAY::ATTACK, attackmapp);
 
     mapx->showOverlay();
