@@ -36,6 +36,8 @@ file(GLOB tinyXML2_SRC "third_party/tinyxml2/*.cpp")
 file(GLOB LODE_SRC "third_party/LodePNG/*.cpp")
 file(GLOB_RECURSE ENTITYX_SRC "third_party/entityx/*.cc")
 
+set (CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR})
+
 add_subdirectory (src)
 
 enable_testing ()
