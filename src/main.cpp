@@ -19,42 +19,43 @@ Game * firesaga = nullptr;
 Settings temp_settings;
 
 int main(int argc, char * argv[]) {
-    fclose(fopen(LOGFILE, "w"));
-    SDL_LogSetOutputFunction(&FILESYSTEM::log, NULL);
-    SDL_Log("Starting project codename FireSaga\n");
+    freopen("log.txt", "w+", stdout);
+    // fclose(fopen(LOGFILE, "w"));
+    // printfSetOutputFunction(&FILESYSTEM::log, NULL);
+    printf("Starting project codename FireSaga\n");
 
-    SDL_Log("Initializing utilities\n");
+    printf("Initializing utilities\n");
     loadUtilities();
 
-    SDL_Log("Initializing Filesystem\n");
+    printf("Initializing Filesystem\n");
     char * buildDir = SDL_GetBasePath();
     FILESYSTEM::init(0, buildDir, buildDir);
 
-    SDL_Log("Initializing TinyMT\n");
+    printf("Initializing TinyMT\n");
     init_tinyMT();
 
-    SDL_Log("Loading base weapons.");
+    printf("Loading base weapons.");
     baseWeapons();
 
-    // SDL_Log("Testing weapon: %s\n", all_weapons[ITEM::NAME::WOODEN_SWORD].getName().c_str());
+    // printf("Testing weapon: %s\n", all_weapons[ITEM::NAME::WOODEN_SWORD].getName().c_str());
     // testXMLWeapons();
     // writeallXMLWeapons();
 
-    // SDL_Log("Loading base units.");
+    // printf("Loading base units.");
     // all_units = baseUnits();
-    // SDL_Log("Testing units: %s \n", all_units[UNIT::NAME::SILOU].getName().c_str());
+    // printf("Testing units: %s \n", all_units[UNIT::NAME::SILOU].getName().c_str());
     // testXMLUnits();
     // testXMLTiles();
 
     firesaga = new Game();
     firesaga->loadUnits(0);
-    // SDL_Log("Testing game load->save XML");
+    // printf("Testing game load->save XML");
     // firesaga->loadXML(1);
     // firesaga->saveXML(2);
     // getchar();
 
 
-    SDL_Log("Initiating game\n");
+    printf("Initiating game\n");
     temp_settings = *firesaga->getSettings();
     temp_settings.FPS.show = true;
     temp_settings.fontsize = 28;
@@ -62,10 +63,10 @@ int main(int argc, char * argv[]) {
     firesaga->init("FireSaga", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, firesaga->getSettings()->res.x, firesaga->getSettings()->res.y, false);
     firesaga->makeFPSEntity();
 
-    // SDL_Log("Testing convoy\n");
+    // printf("Testing convoy\n");
     // testConvoy();
 
-    // SDL_Log("Testing map writing.");
+    // printf("Testing map writing.");
     // firesaga->testXMLMap();
 
     firesaga->loadMap(0);
@@ -78,7 +79,7 @@ int main(int argc, char * argv[]) {
 
     firesaga->loadMapArrivals();
 
-    // SDL_Log("Testing game save XML");
+    // printf("Testing game save XML");
     // firesaga->saveXML(1);
     // firesaga->copySaveXML(1, 2);
     // firesaga->copySaveXML(2, 3);
@@ -87,7 +88,7 @@ int main(int argc, char * argv[]) {
     std::chrono::system_clock::time_point frame_start, frame_end, frame_middle;
     int frame_time;
     char buffer[15];
-    SDL_Log("Starting main game loop\n");
+    printf("Starting main game loop\n");
 
     while (firesaga->running()) {
         frame_start = std::chrono::high_resolution_clock::now();

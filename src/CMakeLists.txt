@@ -7,4 +7,4 @@ ADD_LIBRARY(tinyMT-static STATIC ${tinyMT_SRC})
 ADD_LIBRARY(tinyXML2-static STATIC ${tinyXML2_SRC})
 ADD_LIBRARY(entityx-static STATIC ${ENTITYX_SRC})
 
-target_link_libraries(${PROJECT_NAME} ${SDL2_LIBRARY} LodePNG-static physfs-static tinyMT-static tinyXML2-static entityx-static -O2 -lmingw32 -lSDL2main -lSDL2 -lSDL2_image -lSDL2_ttf)
+target_link_libraries(${PROJECT_NAME} ${SDL2_LIBRARY} LodePNG-static physfs-static tinyMT-static tinyXML2-static entityx-static -O2 -lmingw32 -lSDL2main -lSDL2 -lSDL2_image -lSDL2_ttf -mwindows)

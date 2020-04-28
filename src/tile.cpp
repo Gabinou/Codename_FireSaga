@@ -66,19 +66,19 @@ void Tile::readXML(tinyxml2::XMLElement * in_pTile) {
     id = (unsigned short int)in_pTile->IntAttribute("id");
     ptemp = in_pTile->FirstChildElement("Name");
 
-    if (!ptemp) {SDL_Log("Cannot get Name element");}
+    if (!ptemp) {printf("Cannot get Name element");}
 
     name = ptemp->GetText();
 
     ptemp = in_pTile->FirstChildElement("MvtCost");
 
-    if (!ptemp) {SDL_Log("Cannot get Name element");}
+    if (!ptemp) {printf("Cannot get Name element");}
 
     readXML_mvtcost(ptemp, &cost_struct);
     makeMvtCostarray();
     ptemp = in_pTile->FirstChildElement("Stats");
 
-    if (!ptemp) {SDL_Log("Cannot get Name element");}
+    if (!ptemp) {printf("Cannot get Name element");}
 
     readXML_stats(ptemp, &stats);
 }
@@ -118,7 +118,7 @@ void Tile::write(const char * filename, const char * mode) {
 }
 
 void baseTiles(std::unordered_map<int, Tile> * in_tiles, const std::vector<short int> toload) {
-    SDL_Log("Loading base tiles\n");
+    printf("Loading base tiles\n");
     Tile temp_tile;
     Movement_cost temp_cost;
     Tile_stats temp_stats;
@@ -405,12 +405,12 @@ void baseTiles(std::unordered_map<int, Tile> * in_tiles, const std::vector<short
             }
         }
 
-        SDL_Log("loaded tile: %s, %d", temp_tile.getName().c_str(), temp_tile.getid());
+        printf("loaded tile: %s, %d", temp_tile.getName().c_str(), temp_tile.getid());
     }
 }
 
 // void baseTiles(std::unordered_map<int, Tile> * in_tiles) {
-//  SDL_Log("Loading all base tiles\n");
+//  printf("Loading all base tiles\n");
 //     // Fliers always have 1 movement because they dismount inside.
 //     Tile temp_tile;
 //     // Mvt_types: foot_slow, foot_fast, mages, riders_slow, riders_fast, fliers, armors, pirates, bandits;
@@ -703,7 +703,7 @@ std::vector<short int> (*chapTiles[40])() = {testTiles, chap1Tiles, chap2Tiles, 
                                             };
 
 void testXMLTiles() {
-    SDL_Log("Testing Weapon xml writing and reading\n");
+    printf("Testing Weapon xml writing and reading\n");
     Tile temp_tile;
     Tile_stats temp_tile_stats;
     Movement_cost temp_cost;

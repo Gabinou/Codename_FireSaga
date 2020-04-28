@@ -23,14 +23,14 @@ int mkdir(char * path, int mode) {
 
 namespace FILESYSTEM {
 
-void log(void * userdata, int category, SDL_LogPriority priority, const char * message) {
-    FILE * logf = fopen(LOGFILE, "a");
-    fprintf(logf, message);
-    fprintf(logf, "\n");
-    fclose(logf);
-    printf(message);
-    printf("\n");
-}
+// void log(void * userdata, int category, printfPriority priority, const char * message) {
+//     FILE * logf = fopen(LOGFILE, "a");
+//     fprintf(logf, message);
+//     fprintf(logf, "\n");
+//     fclose(logf);
+//     printf(message);
+//     printf("\n");
+// }
 
 int init(char * argvZero, char * baseDir, char * assetsPath) {
     char output[DEFAULT::MAXPATH];
@@ -54,14 +54,14 @@ int init(char * argvZero, char * baseDir, char * assetsPath) {
     /* Mount our base user directory */
     PHYSFS_mount(output, NULL, 1);
     PHYSFS_setWriteDir(output);
-    SDL_Log("Base directory: %s\n", output);
+    printf("Base directory: %s\n", output);
 
     /* Create save directory */
     strcpy(saveDir, output);
     strcat(saveDir, "saves");
     strcat(saveDir, PHYSFS_getDirSeparator());
     // mkdir(saveDir, 0777);
-    SDL_Log("Save directory: %s\n", saveDir);
+    printf("Save directory: %s\n", saveDir);
 
     if (assetsPath) {
         strcpy(output, assetsPath);
@@ -71,20 +71,20 @@ int init(char * argvZero, char * baseDir, char * assetsPath) {
         strcat(output, "\\assets.binou");
     }
 
-    SDL_Log("Path to assets: %s\n", output);
+    printf("Path to assets: %s\n", output);
 
     if (!PHYSFS_mount(output, NULL, 1)) {
-        SDL_Log("Missing assets.binou\n");
+        printf("Missing assets.binou\n");
         SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_ERROR, "Missing assets.binou", "Missing assets.binou", NULL);
         return 0;
     }
 
     strcpy(output, baseDir);
     strcat(output, "\\gamecontrollerdb.txt");
-    SDL_Log("Path to gamecontrollerdb: %s\n", output);
+    printf("Path to gamecontrollerdb: %s\n", output);
 
     if (SDL_GameControllerAddMappingsFromFile(output) < 0) {
-        SDL_Log("gamecontrollerdb.txt not found!\n");
+        printf("gamecontrollerdb.txt not found!\n");
     }
 
     return 1;
@@ -171,14 +171,14 @@ SDL_Surface * ZIP_loadSurface(const char * filename, bool noBlend = true, bool n
 
         return optimizedImage;
     } else {
-        SDL_Log("Image not found: %s\n", filename);
+        printf("Image not found: %s\n", filename);
         return NULL;
     }
 }
 
 SDL_Texture * loadTexture(SDL_Renderer * in_renderer, const char * filename, const bool ZIP) {
     SDL_Surface * tempsurface;
-    SDL_Log("LoadTexture: %s\n", filename);
+    printf("LoadTexture: %s\n", filename);
 
     if (ZIP) {
         tempsurface = ZIP_loadSurface(filename); // How fast is this?
@@ -187,13 +187,13 @@ SDL_Texture * loadTexture(SDL_Renderer * in_renderer, const char * filename, con
     }
 
     if (tempsurface == NULL) {
-        SDL_Log("loadTexture. IMG_Load error: %s\n", IMG_GetError());
+        printf("loadTexture. IMG_Load error: %s\n", IMG_GetError());
     }
 
     SDL_Texture * texture = SDL_CreateTextureFromSurface(in_renderer, tempsurface);
 
     if (texture == NULL) {
-        SDL_Log("CreateTextureFromSurface failed: %s\n", SDL_GetError());
+        printf("CreateTextureFromSurface failed: %s\n", SDL_GetError());
     }
 
     return (texture);
@@ -206,13 +206,13 @@ SDL_Texture * textToTexture(SDL_Renderer * in_renderer, std::string textureText,
     SDL_Texture * texture;
 
     if (textsurface == NULL) {
-        SDL_Log("Unable to render text surface! SDL_ttf Error: %s\n", TTF_GetError());
+        printf("Unable to render text surface! SDL_ttf Error: %s\n", TTF_GetError());
     } else {
 
         texture = SDL_CreateTextureFromSurface(in_renderer, textsurface);
 
         if (texture == NULL) {
-            SDL_Log("Unable to create texture from rendered text! SDL Error: %s\n", SDL_GetError());
+            printf("Unable to create texture from rendered text! SDL Error: %s\n", SDL_GetError());
         }
 
         SDL_FreeSurface(textsurface);
@@ -243,7 +243,7 @@ void printXMLDoc(PHYSFS_file * in_fp, tinyxml2::XMLDocument * in_doc) {
     stbsp_sprintf(longbuffer, printer.CStr());
 
     if (!PHYSFS_setBuffer(in_fp, printer.CStrSize())) {
-        SDL_Log("PHYSFS_setBuffer failed");
+        printf("PHYSFS_setBuffer failed");
     } else {
         PHYSFS_writeBytes(in_fp, longbuffer, printer.CStrSize());
     }
@@ -743,7 +743,7 @@ int parseXML(const char * filename, tinyxml2::XMLDocument * in_doc) {
     fp = PHYSFS_openRead(filename);
 
     if (!fp) {
-        SDL_Log("Failed to open %s for xml parsing.", filename);
+        printf("Failed to open %s for xml parsing.", filename);
         return (-1);
     }
 
@@ -753,7 +753,7 @@ int parseXML(const char * filename, tinyxml2::XMLDocument * in_doc) {
     PHYSFS_close(fp);
 
     if (in_doc->Parse(filebuffer, filelen) != 0) {
-        SDL_Log("Failed to parseXML %s", filename);
+        printf("Failed to parseXML %s", filename);
         return (-1);
     }
 
@@ -761,13 +761,13 @@ int parseXML(const char * filename, tinyxml2::XMLDocument * in_doc) {
 }
 
 void XML_IO::readXML(const char * filename) {
-    SDL_Log("readXML file: %s", filename);
+    printf("readXML file: %s", filename);
     tinyxml2::XMLDocument xmlDoc;
     parseXML(filename, &xmlDoc);
     tinyxml2::XMLElement * pEle = xmlDoc.FirstChildElement(xmlElement.c_str());
 
     if (!pEle) {
-        SDL_Log("Cannot get %s element", xmlElement.c_str());
+        printf("Cannot get %s element", xmlElement.c_str());
     } else {
         readXML(pEle);
     }
@@ -782,7 +782,7 @@ void XML_IO::writeXML(tinyxml2::XMLDocument * in_doc, tinyxml2::XMLElement * in_
 }
 
 void XML_IO::writeXML(const char * filename, const bool append) {
-    SDL_Log("writeXML %s to: %s\n", xmlElement.c_str(), filename);
+    printf("writeXML %s to: %s\n", xmlElement.c_str(), filename);
     PHYSFS_file * fp;
     tinyxml2::XMLDocument xmlDoc;
 
@@ -794,7 +794,7 @@ void XML_IO::writeXML(const char * filename, const bool append) {
     }
 
     if (!fp) {
-        SDL_Log("Could not open %s for %s writing\n", filename, xmlElement.c_str());
+        printf("Could not open %s for %s writing\n", filename, xmlElement.c_str());
     } else {
         tinyxml2::XMLElement * pEle = xmlDoc.NewElement(xmlElement.c_str());
         xmlDoc.InsertEndChild(pEle);

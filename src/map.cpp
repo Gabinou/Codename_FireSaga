@@ -27,7 +27,7 @@ void Map::readXML(tinyxml2::XMLElement * in_pMap) {
     int buffint;
     tinyxml2::XMLElement * ptemp;
 
-    SDL_Log("XMLElement: %s", getXMLElement().c_str());
+    printf("XMLElement: %s", getXMLElement().c_str());
 
     chapter = (unsigned short int)in_pMap->IntAttribute("chapter");
     tinyxml2::XMLElement * pTiles = in_pMap->FirstChildElement("Tiles");
@@ -45,12 +45,12 @@ void Map::readXML(tinyxml2::XMLElement * in_pMap) {
             pTile = pTile->NextSiblingElement("Tile");
         }
     } else {
-        SDL_Log("Cannot get Tiles element");
+        printf("Cannot get Tiles element");
     }
 
     tinyxml2::XMLElement * pBounds = in_pMap->FirstChildElement("Bounds");
 
-    if (!pBounds) {SDL_Log("Cannot get Bounds element");}
+    if (!pBounds) {printf("Cannot get Bounds element");}
 
     ptemp = pBounds->FirstChildElement("row_max");
     ptemp->QueryIntText(&buffint);
@@ -168,7 +168,7 @@ void Map::writeXML(tinyxml2::XMLDocument * in_doc, tinyxml2::XMLElement * in_pMa
             pName->SetText(tilenames[i].c_str());
         }
     } else {
-        SDL_Log("Not the same number of tilenames as tileindex.");
+        printf("Not the same number of tilenames as tileindex.");
     }
 
     tinyxml2::XMLElement * pBounds = in_doc->NewElement("Bounds");
@@ -200,7 +200,7 @@ void Map::writeXML(tinyxml2::XMLDocument * in_doc, tinyxml2::XMLElement * in_pMa
             }
         }
     } else {
-        SDL_Log("Problem with tilemap size");
+        printf("Problem with tilemap size");
     }
 
     tinyxml2::XMLElement * pArrivals = in_doc->NewElement("Arrivals");
@@ -240,7 +240,7 @@ void Map::writeXML(tinyxml2::XMLDocument * in_doc, tinyxml2::XMLElement * in_pMa
             }
         }
     } else {
-        SDL_Log("Problem with unitmap bounds");
+        printf("Problem with unitmap bounds");
     }
 }
 
@@ -262,7 +262,7 @@ entityx::ComponentHandle<Unit> Map::getUnit(const short unsigned int x, const sh
 }
 
 void Map::moveUnit(const short unsigned int x, const short unsigned int y, const short unsigned int new_x, const short unsigned int new_y) {
-    SDL_Log("Move Unit %d %d %d %d", x, y, new_x, new_y);
+    printf("Move Unit %d %d %d %d", x, y, new_x, new_y);
     entityx::ComponentHandle<Unit> buffer = unitmap[new_y][new_x];
     unitmap[new_y][new_x] = unitmap[y][x];
     unitmap[y][x] = buffer;
@@ -294,7 +294,7 @@ std::vector<Map_arrival> Map::getArrivals() {
 }
 
 std::vector<std::vector<short int>> Map::makeMvtCostmap(entityx::ComponentHandle<Unit> in_unit) {
-    SDL_Log("Making MvtCostmap");
+    printf("Making MvtCostmap");
     short int tile_ind = 0;
     std::vector<std::vector<short int>> costmap((short int)tilemap.size(), std::vector<short int> ((short int)tilemap[0].size()));
     unsigned char unitmovetype = in_unit->getMvttype();
@@ -309,13 +309,13 @@ std::vector<std::vector<short int>> Map::makeMvtCostmap(entityx::ComponentHandle
             costmap[row][col] = tiles[tile_ind].getCost()[unitmovetype];
 
             if (unitontile) {
-                SDL_Log("Unit on tile: %d %d", col, row);
+                printf("Unit on tile: %d %d", col, row);
                 ontile_army = unitontile->getArmy();
 
                 if (!isFriendly(ontile_army, army)) {
-                    SDL_Log("isFriendly?:");
+                    printf("isFriendly?:");
                     costmap[row][col] = 0;
-                    SDL_Log("untilhere?:");
+                    printf("untilhere?:");
                 }
             }
         }
@@ -354,12 +354,12 @@ unsigned char Map::getTurn() {
 }
 
 void Map::setRenderer(SDL_Renderer * in_renderer) {
-    SDL_Log("Setting Map renderer");
+    printf("Setting Map renderer");
 
     if (in_renderer) {
         renderer = in_renderer;
     } else {
-        SDL_Log("Could not set map renderer");
+        printf("Could not set map renderer");
     }
 
     loadOverlays();
@@ -382,14 +382,14 @@ void Map::loadTiletextures() {
 }
 
 void Map::loadOverlays() {
-    SDL_Log("Loading Map overlays");
+    printf("Loading Map overlays");
     overlays[0] = loadTexture(renderer, "tile_overlay_move.png", true);
     overlays[1] = loadTexture(renderer, "tile_overlay_attack.png", true);
     overlays[2] = loadTexture(renderer, "tile_overlay_heal.png", true);
 }
 
 void Map::loadDanger() {
-    SDL_Log("Loading Map dangerzone");
+    printf("Loading Map dangerzone");
     dangers[0] = loadTexture(renderer, "..//assets//tile_overlay_danger.png", false);
 }
 
@@ -411,7 +411,7 @@ void Map::setDanger(const std::vector<std::vector<short int>> in_danger) {
 void Map::setOverlaymode(const unsigned char in_mode) {
     char message[DEFAULT::BUFFER_SIZE];
     sprintf(message, "Set Map ovelay mode: %d", in_mode);
-    SDL_Log(message);
+    printf(message);
     overlay_mode = in_mode;
 }
 
@@ -474,9 +474,9 @@ void Map::postTilemap() {
     bounds[3] = tilemap.size() - 1 + DEFAULT::TILEMAP_YOFFSET;
     std::vector<std::vector<entityx::ComponentHandle<Unit>>> tempunit(tilemap.size(), std::vector<entityx::ComponentHandle<Unit>>(tilemap[0].size()));
     unitmap = tempunit;
-    SDL_Log("unitmap size: %d %d", unitmap[0].size(), unitmap.size());
-    SDL_Log("tilemap size: %d %d", tilemap[0].size(), tilemap.size());
-    SDL_Log("bounds: %d %d %d %d", bounds[0], bounds[1], bounds[2], bounds[3]);
+    printf("unitmap size: %d %d", unitmap[0].size(), unitmap.size());
+    printf("tilemap size: %d %d", tilemap[0].size(), tilemap.size());
+    printf("bounds: %d %d %d %d", bounds[0], bounds[1], bounds[2], bounds[3]);
 }
 
 short int * Map::getBounds() {
@@ -525,7 +525,7 @@ void Map::clearOverlays() {
 }
 
 void Map::draw() {
-    // SDL_Log("Drawing Map");
+    // printf("Drawing Map");
     int tile_ind = 0;
 
     for (int row = 0; row < tilemap.size(); row++) {// This loop cache friendly.

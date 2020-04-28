@@ -77,7 +77,7 @@ bool * Game::checkHitCrit(int hit_rate, int crit_rate, short unsigned int mode) 
 }
 
 void Game::attack(Unit * attacker, Unit * defender) {
-    SDL_Log("%s attacks %s\n", attacker->getName().c_str(), defender->getName().c_str());
+    printf("%s attacks %s\n", attacker->getName().c_str(), defender->getName().c_str());
     Combat_stats attacker_stats = attacker->getCombatStats();
     Combat_stats defender_stats = defender->getCombatStats();
     bool * hitcrit;
@@ -92,7 +92,7 @@ void Game::attack(Unit * attacker, Unit * defender) {
 }
 
 void Game::fight(Unit * attacker, Unit * defender) {
-    SDL_Log("%s fights %s\n", attacker->getName().c_str(), defender->getName().c_str());
+    printf("%s fights %s\n", attacker->getName().c_str(), defender->getName().c_str());
     bool defender_doubles;
     bool attacker_doubles = attacker->canDouble(defender);
     bool defender_retaliates = defender->canRetaliate(attacker);
@@ -113,10 +113,10 @@ void Game::fight(Unit * attacker, Unit * defender) {
 }
 
 void Game::makeFPSEntity() {
-    SDL_Log("Making FPS entity");
+    printf("Making FPS entity");
 
     if (settings.FPS.entity.valid()) {
-        SDL_Log("Destroying old FPS entity");
+        printf("Destroying old FPS entity");
         settings.FPS.entity.destroy();
     }
 
@@ -139,7 +139,7 @@ void Game::killMenu(short unsigned int index) {
 }
 
 void Game::hideMenu(short unsigned int index) {
-    SDL_Log("Hiding Menu %d", index);
+    printf("Hiding Menu %d", index);
 
     if (menus[index].valid()) {
         menus[index].component<Sprite>()->hide();
@@ -218,7 +218,7 @@ std::vector<std::string> Game::menuoptions2str(std::vector<unsigned char> in_opt
 
 
 void Game::updateMenu(unsigned char in_menu_index) {
-    SDL_Log("Updating menu: %d", in_menu_index);
+    printf("Updating menu: %d", in_menu_index);
 
     if (menus[in_menu_index].valid()) {
         switch (in_menu_index) {
@@ -232,13 +232,13 @@ void Game::updateMenu(unsigned char in_menu_index) {
                 menus[MENU::UNIT].component<Text>()->makeTextures();
         }
     } else {
-        SDL_Log("Menu %d is invalid", in_menu_index);
+        printf("Menu %d is invalid", in_menu_index);
     }
 }
 
 
 void Game::makeMenu(unsigned char in_menu_index) {
-    SDL_Log("Making menu: %d", in_menu_index);
+    printf("Making menu: %d", in_menu_index);
 
     if (menus[in_menu_index].valid()) {
         menus[in_menu_index].destroy();
@@ -257,7 +257,7 @@ void Game::makeMenu(unsigned char in_menu_index) {
 
     switch (in_menu_index) {
         case MENU::UNIT:
-            SDL_Log("Making unit menu\n");
+            printf("Making unit menu\n");
             menus[MENU::UNIT].component<Sprite>()->setTexture("..//assets//textbox.png");
             menus[MENU::UNIT].component<Sprite>()->setSrcrect(128, 128);
             menus[MENU::UNIT].component<Sprite>()->setDestrect(128, 128);
@@ -271,7 +271,7 @@ void Game::makeMenu(unsigned char in_menu_index) {
 }
 
 void Game::makeUnitmenuoptions() {
-    SDL_Log("Building unitmenu options");
+    printf("Building unitmenu options");
     std::vector<unsigned char> options;
     options.push_back(UNIT::MENU::ITEMS);
 
@@ -284,10 +284,10 @@ void Game::makeUnitmenuoptions() {
     unsigned char army;
     short int * bounds = mapx->getBounds();
     unit = mapx->getUnit(cursor_lastpos[0], cursor_lastpos[1]);
-    SDL_Log("last position: %d %d", cursor_lastpos[0], cursor_lastpos[1]);
+    printf("last position: %d %d", cursor_lastpos[0], cursor_lastpos[1]);
 
     if (unit) {
-        SDL_Log("Making Menuoptions for: %s", unit->getName().c_str());
+        printf("Making Menuoptions for: %s", unit->getName().c_str());
 
         std::vector<std::vector<short int>> tilemap = mapx->getTilemap();
 
@@ -319,8 +319,8 @@ void Game::makeUnitmenuoptions() {
         for (short int i = 0; i < units_around.size(); i++) {
             if (units_around[i]) {
                 army = units_around[i]->getArmy();
-                SDL_Log("Unit_around: %s", units_around[i]->getName().c_str());
-                SDL_Log("Army: %s", units_around[i]->getArmyName().c_str());
+                printf("Unit_around: %s", units_around[i]->getName().c_str());
+                printf("Army: %s", units_around[i]->getArmyName().c_str());
 
                 switch (army) {
                     case UNIT::ARMY::FRIENDLY:
@@ -339,7 +339,7 @@ void Game::makeUnitmenuoptions() {
                         break;
                 }
             } else {
-                SDL_Log("No unit around");
+                printf("No unit around");
             }
         }
 
@@ -347,7 +347,7 @@ void Game::makeUnitmenuoptions() {
         std::sort(options.begin(), options.end());
         menuoptions[MENU::UNIT] = options;
     } else {
-        SDL_Log("Menuoptions: Unit not found.");
+        printf("Menuoptions: Unit not found.");
     }
 }
 
@@ -360,7 +360,7 @@ entityx::ComponentHandle<Map> Game::getMap() {
 }
 
 void Game::loadMap(const int in_map_index) {
-    SDL_Log("Loading Map index: %d \n", in_map_index);
+    printf("Loading Map index: %d \n", in_map_index);
 
     if (!mapx) {
         mapEntx = entities.create();
@@ -375,7 +375,7 @@ void Game::loadMap(const int in_map_index) {
         systems.system<RenderSystemx>()->setMap(mapx);
         systems.system<UnitSystemx>()->updateMap();
     } else {
-        SDL_Log("Failed to loadMap. Was mapx deleted previously?");
+        printf("Failed to loadMap. Was mapx deleted previously?");
     }
 }
 
@@ -394,17 +394,17 @@ void Game::setCursorlastpos(const short int x, const short int y) {
 }
 
 void Game::unloadMap() {
-    SDL_Log("Unloading Map");
+    printf("Unloading Map");
 
     if (mapx) {
         mapEntx.destroy();
     } else {
-        SDL_Log("Failed to unloadMap. Was mapx deleted previously?");
+        printf("Failed to unloadMap. Was mapx deleted previously?");
     }
 }
 
 void Game::setCursorstate(const short unsigned int new_state) {
-    SDL_Log("Changing cursor");
+    printf("Changing cursor");
     SDL_Rect temprect;
 
     short unsigned int * temp_tilesize;
@@ -414,7 +414,7 @@ void Game::setCursorstate(const short unsigned int new_state) {
     if (cursorx.valid()) {
         switch (new_state) {
             case GAME::STATE::MAP:
-                SDL_Log("Changed Cursor to Map");
+                printf("Changed Cursor to Map");
                 cursorx.component<Sprite>()->init(cursorx.component<Position>()->getPos());
                 cursorx.component<Sprite>()->animate();
                 cursorx.component<Sprite>()->setTexture("..//assets//mapcursors.png");
@@ -422,7 +422,7 @@ void Game::setCursorstate(const short unsigned int new_state) {
                 cursorx.component<Sprite>()->setTilesize(mapx->getTilesize());
                 cursorx.component<Sprite>()->setSlidetype(SLIDETYPE::GEOMETRIC);
                 // bounds = mapx->getBounds();
-                // SDL_Log("bounds: %d %d %d %d", bounds[0], bounds[1], bounds[2], bounds[3]);
+                // printf("bounds: %d %d %d %d", bounds[0], bounds[1], bounds[2], bounds[3]);
                 // bounds[0] += DEFAULT::TILEMAP_XOFFSET;
                 // bounds[2] += DEFAULT::TILEMAP_YOFFSET;
                 cursorx.component<Position>()->setOffset(DEFAULT::TILEMAP_XOFFSET, DEFAULT::TILEMAP_YOFFSET);
@@ -434,7 +434,7 @@ void Game::setCursorstate(const short unsigned int new_state) {
                 break;
 
             case GAME::STATE::UNITMENU:
-                SDL_Log("Changed Cursor to unitmenu");
+                printf("Changed Cursor to unitmenu");
                 temprect = {0, 0, 16, 16}; //x,y,w,h
                 short int * unitmenupos;
                 short int linespace = 1;
@@ -473,9 +473,9 @@ void Game::loadCursor() {
     cursorx.assign<Sprite>();
 
     if (SDL_NumJoysticks() < 1) {
-        SDL_Log("No joysticks connected.\n");
+        printf("No joysticks connected.\n");
     } else {
-        SDL_Log("Is the joystick supported by the game controller interface? %d.\n", SDL_IsGameController(0));
+        printf("Is the joystick supported by the game controller interface? %d.\n", SDL_IsGameController(0));
         cursorx.assign<GamepadController>();
     }
 
@@ -490,7 +490,7 @@ void Game::unloadCursor() {
 
 
 void Game::loadUnitEntities(std::vector<short unsigned int> unit_inds, std::vector<std::vector<int>> positions_list) {
-    SDL_Log("Loading Units\n");
+    printf("Loading Units\n");
     std::string asset_name;
     entityx::Entity Uent;
 
@@ -507,7 +507,7 @@ void Game::loadUnitEntities(std::vector<short unsigned int> unit_inds, std::vect
 }
 
 void Game::loadMapArrivals() {
-    SDL_Log("Loading map arrivals.\n");
+    printf("Loading map arrivals.\n");
 
     if (mapx) {
         std::vector<Map_arrival> map_arrivals = mapx->getArrivals();
@@ -519,10 +519,10 @@ void Game::loadMapArrivals() {
             if (map_arrivals[i].turn == currentturn) {
 
                 if (units.find(map_arrivals[i].id) == units.end()) {
-                    SDL_Log("unloaded units loading %d", map_arrivals[i].id);
+                    printf("unloaded units loading %d", map_arrivals[i].id);
                     loadUnits(std::vector<short int> {map_arrivals[i].id});
                     asset_name = "..//assets//" + units[map_arrivals[i].id].getName() + ".png";
-                    SDL_Log("Loaded: %s", units[map_arrivals[i].id].getName().c_str());
+                    printf("Loaded: %s", units[map_arrivals[i].id].getName().c_str());
                 }
 
                 Uent = entities.create();
@@ -531,12 +531,12 @@ void Game::loadMapArrivals() {
                 Uent.component<Position>()->setPos(map_arrivals[i].position.x, map_arrivals[i].position.y);
                 Uent.assign<Sprite>(asset_name.c_str());
                 Uent.assign<Unit>(units[map_arrivals[i].id]);
-                SDL_Log("Arrival position: %d %d", map_arrivals[i].position.x, map_arrivals[i].position.y);
+                printf("Arrival position: %d %d", map_arrivals[i].position.x, map_arrivals[i].position.y);
                 mapx->putUnit(map_arrivals[i].position.x, map_arrivals[i].position.y, Uent.component<Unit>());
             }
         }
     } else {
-        SDL_Log("Failed to loadMapArrivals.");
+        printf("Failed to loadMapArrivals.");
     }
 }
 
@@ -564,33 +564,33 @@ void Game::init(const char * title, int xpos, int ypos, int width, int height, b
     }
 
     if (TTF_Init() == -1) {
-        SDL_Log("TTF_Init: %s\n", TTF_GetError());
+        printf("TTF_Init: %s\n", TTF_GetError());
         exit(2);
     }
 
     Game::font = TTF_OpenFont("../fonts/arial.ttf", settings.fontsize);
 
     if (Game::font == NULL) {
-        SDL_Log("Failed to load lazy font! SDL_ttf Error: %s\n", TTF_GetError());
+        printf("Failed to load lazy font! SDL_ttf Error: %s\n", TTF_GetError());
     }
 
     if (SDL_Init(SDL_INIT_EVERYTHING) == 0) {
-        SDL_Log("SDL subsystems initialized.\n");
+        printf("SDL subsystems initialized.\n");
         window = SDL_CreateWindow(title, xpos, ypos, width, height, flags);
 
         if (window) {
-            SDL_Log("Window created\n");
+            printf("Window created\n");
         }
 
         if (TTF_Init() == -1) {
-            SDL_Log("SDL_ttf could not initialize! SDL_ttf Error: %s\n", TTF_GetError());
+            printf("SDL_ttf could not initialize! SDL_ttf Error: %s\n", TTF_GetError());
         }
 
         renderer = SDL_CreateRenderer(window, -1, 0);
 
         if (renderer) {
             SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
-            SDL_Log("Renderer created\n");
+            printf("Renderer created\n");
         }
 
         isRunning = true;
@@ -609,11 +609,11 @@ void Game::loadXML(const short int save_ind) {
     char filename[DEFAULT::BUFFER_SIZE];
 
     if (!PHYSFS_exists(SAVE_FOLDER)) {
-        SDL_Log("Could not find 'saves' folder!");
+        printf("Could not find 'saves' folder!");
     }
 
     stbsp_snprintf(filename, DEFAULT::BUFFER_SIZE, "saves//save%04d.bsav", save_ind);
-    SDL_Log("saveXML Game to: %s\n", filename);
+    printf("saveXML Game to: %s\n", filename);
 
     PHYSFS_file * fp = PHYSFS_openRead(filename);
     tinyxml2::XMLDocument xmlDoc;
@@ -639,13 +639,13 @@ void Game::loadXML(const short int save_ind) {
 
 void Game::copySaveXML(const short int from_ind, const short int to_ind) {
     if (!PHYSFS_exists(SAVE_FOLDER)) {
-        SDL_Log("Could not find save folder!");
+        printf("Could not find save folder!");
     } else {
         char filenameto[DEFAULT::BUFFER_SIZE];
         char filenamefrom[DEFAULT::BUFFER_SIZE];
         stbsp_snprintf(filenamefrom, DEFAULT::BUFFER_SIZE, "saves//save%04d.bsav", from_ind);
         stbsp_snprintf(filenameto, DEFAULT::BUFFER_SIZE, "saves//save%04d.bsav", to_ind);
-        SDL_Log("copy SaveXML Game from %s to %s\n", filenamefrom, filenameto);
+        printf("copy SaveXML Game from %s to %s\n", filenamefrom, filenameto);
         PHYSFS_file * pfrom = PHYSFS_openRead(filenamefrom);
         PHYSFS_file * pto = PHYSFS_openWrite(filenameto);
         int len = PHYSFS_fileLength(pfrom);
@@ -659,11 +659,11 @@ void Game::copySaveXML(const short int from_ind, const short int to_ind) {
 
 void Game::deleteSaveXML(const short int save_ind) {
     if (!PHYSFS_exists(SAVE_FOLDER)) {
-        SDL_Log("Could not find save folder!");
+        printf("Could not find save folder!");
     } else {
         char filename[DEFAULT::BUFFER_SIZE];
         stbsp_snprintf(filename, DEFAULT::BUFFER_SIZE, "saves//save%04d.bsav", save_ind);
-        SDL_Log("Deleting Game: %s\n", filename);
+        printf("Deleting Game: %s\n", filename);
         PHYSFS_delete(filename);
     }
 }
@@ -676,7 +676,7 @@ void Game::saveXML(const short int save_ind) {
     }
 
     stbsp_snprintf(filename, DEFAULT::BUFFER_SIZE, "saves//save%04d.bsav", save_ind);
-    SDL_Log("saveXML Game to: %s\n", filename);
+    printf("saveXML Game to: %s\n", filename);
     PHYSFS_delete(filename);
     PHYSFS_file * fp = PHYSFS_openWrite(filename);
 
@@ -735,7 +735,7 @@ void Game::clean() {
     SDL_DestroyWindow(window);
     SDL_DestroyRenderer(renderer);
     SDL_Quit();
-    SDL_Log("Game cleanded.");
+    printf("Game cleanded.");
     SDL_Delay(5000);
 }
 bool Game::running() {
@@ -752,7 +752,7 @@ void Game::update(entityx::TimeDelta dt) {
 }
 
 void Game::testXMLMap() {
-    SDL_Log("Testing Map xml writing and reading\n");
+    printf("Testing Map xml writing and reading\n");
     Map map(32, 32);
     map.loadTiles(0);
     map.loadTilemap(0);

@@ -75,7 +75,7 @@ void Unit::removeEquipment(unsigned char in_index) {
 void Unit::addEquipment(Inventory_item in_item) {
     for (short unsigned int i = 0; i < DEFAULT::EQUIPMENT_SIZE; i++) {
         if (equipment[i].id == -1) {
-            SDL_Log("Equipped");
+            printf("Equipped");
             equipment[i] = in_item;
             break;
         }
@@ -94,7 +94,7 @@ void Unit::setEquipment(std::vector<Inventory_item> in_equipment) {
             equipment[i] = in_equipment[i];
         }
     } else {
-        SDL_Log("Unit in_equipment is too large.");
+        printf("Unit in_equipment is too large.");
     }
 }
 
@@ -154,7 +154,7 @@ void Unit::supportUp(short int in_id) {
     }
 
     if (i == DEFAULT::SUPPORTS_MAX) {
-        SDL_Log("Could not find support of index %d", in_id);
+        printf("Could not find support of index %d", in_id);
     }
 
     supports[i].level += 1;
@@ -256,7 +256,7 @@ unsigned short int Unit::getExp() const {
 unsigned char * Unit::getRange() const {
     // DESIGN QUESTION: what about equipping only an offhand? Should offhand have ranges?
     // Can you attack with only offhand weapons? how to treat their hit rate?
-    SDL_Log("Computing unit range\n");
+    printf("Computing unit range\n");
     static unsigned char range[2] = {0, 0};
 
     if (equipped.left >= 0) {
@@ -672,7 +672,7 @@ char Unit::speed() {
 }
 
 void Unit::readXML(tinyxml2::XMLElement * in_pUnit) {
-    SDL_Log("Reading Unit element.");
+    printf("Reading Unit element.");
     const char * buffer;
     unsigned int bufint;
     tinyxml2::XMLElement * ptemp;
@@ -680,68 +680,68 @@ void Unit::readXML(tinyxml2::XMLElement * in_pUnit) {
     id = (unsigned short int)in_pUnit->IntAttribute("id");
     ptemp = in_pUnit->FirstChildElement("Name");
 
-    if (!ptemp) {SDL_Log("Cannot get Name element");}
+    if (!ptemp) {printf("Cannot get Name element");}
 
     name = ptemp->GetText();
     ptemp = in_pUnit->FirstChildElement("Sex");
 
-    if (!ptemp) {SDL_Log("Cannot get Sex element");}
+    if (!ptemp) {printf("Cannot get Sex element");}
 
     ptemp->QueryBoolText(&sex);
     ptemp = in_pUnit->FirstChildElement("SkillsCode");
 
-    if (!ptemp) {SDL_Log("Cannot get SkillsCode element");}
+    if (!ptemp) {printf("Cannot get SkillsCode element");}
 
     buffer = ptemp->GetText();
     // skills = strtoull(buffer, NULL, 16);
     sscanf(buffer, "%llx", &skills);
     ptemp = in_pUnit->FirstChildElement("BaseExp");
 
-    if (!ptemp) {SDL_Log("Cannot get BaseExp element");}
+    if (!ptemp) {printf("Cannot get BaseExp element");}
 
     ptemp->QueryUnsignedText(&bufint);
     base_exp = (unsigned short int)bufint;
     ptemp = in_pUnit->FirstChildElement("Exp");
 
-    if (!ptemp) {SDL_Log("Cannot get Exp element");}
+    if (!ptemp) {printf("Cannot get Exp element");}
 
     ptemp->QueryUnsignedText(&bufint);
     exp = (unsigned short int)bufint;
     ptemp = in_pUnit->FirstChildElement("Class");
 
-    if (!ptemp) {SDL_Log("Cannot get Class element");}
+    if (!ptemp) {printf("Cannot get Class element");}
 
     class_index = (unsigned char)ptemp->IntAttribute("id");;
     ptemp = in_pUnit->FirstChildElement("Stats");
 
-    if (!ptemp) {SDL_Log("Cannot get Stats element");}
+    if (!ptemp) {printf("Cannot get Stats element");}
 
     readXML_stats(ptemp, &current_stats);
     ptemp = in_pUnit->FirstChildElement("Growths");
 
-    if (!ptemp) {SDL_Log("Cannot get Growths element");}
+    if (!ptemp) {printf("Cannot get Growths element");}
 
     readXML_stats(ptemp, &growths);
     ptemp = in_pUnit->FirstChildElement("Caps");
 
-    if (!ptemp) {SDL_Log("Cannot get Caps element");}
+    if (!ptemp) {printf("Cannot get Caps element");}
 
     readXML_stats(ptemp, &caps_stats);
     ptemp = in_pUnit->FirstChildElement("Bases");
 
-    if (!ptemp) {SDL_Log("Cannot get Bases element");}
+    if (!ptemp) {printf("Cannot get Bases element");}
 
     readXML_stats(ptemp, &base_stats);
     ptemp = in_pUnit->FirstChildElement("Equipment");
 
-    if (!ptemp) {SDL_Log("Cannot get Equipment element");}
+    if (!ptemp) {printf("Cannot get Equipment element");}
 
     readXML_items(ptemp, equipment);
 
     tinyxml2::XMLElement * pLevelUps = in_pUnit->FirstChildElement("LevelUps");
 
     if (!pLevelUps) {
-        SDL_Log("Cannot get levelUps element");
+        printf("Cannot get levelUps element");
     } else {
         ptemp = pLevelUps->FirstChildElement("LevelUp");
         Unit_stats temp_stats = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
@@ -905,7 +905,7 @@ void Unit::write(const char * filename, const bool append) {
 }
 
 void testXMLUnits() {
-    SDL_Log("Testing Unit xml writing and reading\n");
+    printf("Testing Unit xml writing and reading\n");
     Unit temp_unit;
     Unit_stats temp;
     Inventory_item temp_wpn;

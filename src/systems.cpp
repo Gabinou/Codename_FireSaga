@@ -3,10 +3,10 @@
 
 void RenderSystemx::setRenderer(SDL_Renderer * in_renderer) {
     if (in_renderer) {
-        SDL_Log("Added renderer to renderSystemx");
+        printf("Added renderer to renderSystemx");
         renderer = in_renderer;
     } else {
-        SDL_Log("RenderSystemx: Renderer is invalid");
+        printf("RenderSystemx: Renderer is invalid");
     }
 }
 
@@ -24,7 +24,7 @@ void RenderSystemx::setMap(entityx::ComponentHandle<Map> in_map) {
         map = in_map;
         tilesize = map->getTilesize();
     } else {
-        SDL_Log("RenderSystemx: Map Handle is invalid");
+        printf("RenderSystemx: Map Handle is invalid");
     }
 }
 
@@ -104,7 +104,7 @@ void RenderSystemx::slideSprites(entityx::Entity * in_ent, short int * slidepos,
             }
         }
     } else {
-        SDL_Log("slideSprites: Entity is invalid");
+        printf("slideSprites: Entity is invalid");
     }
 }
 
@@ -174,7 +174,7 @@ void RenderSystemx::update(entityx::EntityManager & es, entityx::EventManager & 
         entityx::ComponentHandle<Position> position = ent.component<Position>();
         entityx::ComponentHandle<Text> text = ent.component<Text>();
         short int * pos = position->getPos();
-        // SDL_Log("unit menu position: %d %d", position[0], position[1]);
+        // printf("unit menu position: %d %d", position[0], position[1]);
 
         if (ent.has_component<Sprite>()) {
             ent.component<Sprite>()->setDestrectpos(pos);
@@ -188,7 +188,7 @@ void RenderSystemx::update(entityx::EntityManager & es, entityx::EventManager & 
     for (entityx::Entity ent : es.entities_with_components<KeyboardController>()) {
         entityx::ComponentHandle<Sprite> sprite = ent.component<Sprite>();
 
-        // SDL_Log("Rendering Cursor");
+        // printf("Rendering Cursor");
 
         short int * slidepos = sprite->getSlidepos();
         short int * objectivepos = sprite->getObjpos();
@@ -252,7 +252,7 @@ UnitSystemx::UnitSystemx() {
 }
 
 UnitSystemx::UnitSystemx(Game * in_game) {
-    SDL_Log("Adding Unitsystem.");
+    printf("Adding Unitsystem.");
     game = in_game;
     settings = game->getSettings();
     unitmenux = game->getUnitmenu();
@@ -276,7 +276,7 @@ void UnitSystemx::configure(entityx::EventManager & events) {
 }
 
 void UnitSystemx::receive(const unitDeselect & deselect) {
-    SDL_Log("unitDeselect event received");
+    printf("unitDeselect event received");
     short int newstate = -1;
     entityx::ComponentHandle<Unit> unit = deselect.unit;
     entityx::Entity cursor = deselect.cursor;
@@ -308,14 +308,14 @@ void UnitSystemx::receive(const unitDeselect & deselect) {
                 start[0] = cursorpos->getPos()[0] - cursorpos->getOffset()[0];
                 start[1] = cursorpos->getPos()[1] - cursorpos->getOffset()[1];
             } else {
-                SDL_Log("Could not get cursor position component");
+                printf("Could not get cursor position component");
             }
 
             if (unit) {
                 unit_move = unit->getStats().move;
                 range = unit->getRange();
             } else {
-                SDL_Log("Could not get unit component");
+                printf("Could not get unit component");
             }
 
             costmapp = mapx->makeMvtCostmap(unit);
@@ -338,7 +338,7 @@ void UnitSystemx::receive(const unitDeselect & deselect) {
 
 
 void UnitSystemx::receive(const unitSelect & select) {
-    SDL_Log("unitSelect event received");
+    printf("unitSelect event received");
     short int newstate = -1;
     entityx::ComponentHandle<Unit> unit = select.unit;
 
@@ -365,18 +365,18 @@ void UnitSystemx::receive(const unitSelect & select) {
 }
 
 void UnitSystemx::receive(const unitmenuSelect & select) {
-    SDL_Log("unitmenuSelect event received");
+    printf("unitmenuSelect event received");
     entityx::Entity cursor = select.cursor;
     entityx::ComponentHandle<Position> position = cursor.component<Position>();
     short int * cursorpos = position->getPos();
     short int * cursorbounds = position->getBounds();
     unsigned char menuind = cursorpos[1] - cursorbounds[2];
 
-    SDL_Log("menuind: %d ", menuind);
+    printf("menuind: %d ", menuind);
 }
 
 void UnitSystemx::receive(const unitDanger & danger) {
-    SDL_Log("unitDanger event received");
+    printf("unitDanger event received");
     std::vector<std::vector<short int>> costmapp;
     std::vector<std::vector<short int>> movemapp;
     std::vector<std::vector<short int>> attackmapp;
@@ -393,14 +393,14 @@ void UnitSystemx::receive(const unitDanger & danger) {
         start[0] = cursorpos->getPos()[0] - cursorpos->getOffset()[0];
         start[1] = cursorpos->getPos()[1] - cursorpos->getOffset()[1];
     } else {
-        SDL_Log("Could not get cursor position component");
+        printf("Could not get cursor position component");
     }
 
     if (unit) {
         unit_move = unit->getStats().move;
         range = unit->getRange();
     } else {
-        SDL_Log("Could not get unit component");
+        printf("Could not get unit component");
     }
 
     costmapp = mapx->makeMvtCostmap(unit);
@@ -425,7 +425,7 @@ void UnitSystemx::receive(const unitDanger & danger) {
 }
 
 void UnitSystemx::receive(const unitMenu & menu) {
-    SDL_Log("unitMenu event received");
+    printf("unitMenu event received");
     mapx->hideOverlay();
 
     entityx::Entity cursor = menu.cursor;
@@ -442,21 +442,21 @@ void UnitSystemx::receive(const unitMenu & menu) {
         if (selectedpos) {
             old_position[0] = selectedpos->getPos()[0] - selectedpos->getOffset()[0];
             old_position[1] = selectedpos->getPos()[1] - selectedpos->getOffset()[1];
-            SDL_Log("Old position %d, %d \n", old_position[0], old_position[1]);
+            printf("Old position %d, %d \n", old_position[0], old_position[1]);
         } else {
-            SDL_Log("Could not get selectedx unit component");
+            printf("Could not get selectedx unit component");
         }
 
     } else {
-        SDL_Log("Could not get selected entity");
+        printf("Could not get selected entity");
     }
 
     if (cursorpos) {
         new_position[0] = cursorpos->getPos()[0] - selectedpos->getOffset()[0];
         new_position[1] = cursorpos->getPos()[1] - selectedpos->getOffset()[1];
-        SDL_Log("New position %d, %d \n", new_position[0], new_position[1]);
+        printf("New position %d, %d \n", new_position[0], new_position[1]);
     } else {
-        SDL_Log("Could not get setter(unit) position component");
+        printf("Could not get setter(unit) position component");
     }
 
     mapx->moveUnit(old_position[0], old_position[1], new_position[0], new_position[1]);
@@ -477,12 +477,12 @@ void UnitSystemx::receive(const unitMenu & menu) {
 }
 
 void UnitSystemx::receive(const unitNomove & nomove) {
-    // SDL_Log("Received unitNomove event");
+    // printf("Received unitNomove event");
     mapx->hideOverlay();
 }
 
 void UnitSystemx::receive(const unitMove & move) {
-    // SDL_Log("Received unitMove event");
+    // printf("Received unitMove event");
     std::vector<std::vector<short int>> costmapp;
     std::vector<std::vector<short int>> movemapp;
     std::vector<std::vector<short int>> attackmapp;
@@ -501,20 +501,20 @@ void UnitSystemx::receive(const unitMove & move) {
         start = (short unsigned int *)cursorpos->getPos();
         offset = (short unsigned int *)cursorpos->getOffset();
     } else {
-        SDL_Log("Could not get cursor position component");
+        printf("Could not get cursor position component");
     }
 
     if (unit) {
         unit_move = unit->getStats().move;
         range = unit->getRange();
     } else {
-        SDL_Log("Could not get unit component");
+        printf("Could not get unit component");
     }
 
     nooffset[0] = start[0] - offset[0];
     nooffset[1] = start[1] - offset[1];
-    SDL_Log("nooffset: %d %d", nooffset[0], nooffset[1]);
-    SDL_Log("unitmove: %d", unit_move);
+    printf("nooffset: %d %d", nooffset[0], nooffset[1]);
+    printf("unitmove: %d", unit_move);
 
     costmapp = mapx->makeMvtCostmap(unit);
 
@@ -528,7 +528,7 @@ void UnitSystemx::receive(const unitMove & move) {
 }
 
 void UnitSystemx::receive(const unitMap & map) {
-    SDL_Log("Received unitMap event");
+    printf("Received unitMap event");
 
     if ((game->getState() == GAME::STATE::UNITMOVE)) {
         mapx->hideOverlay();
@@ -547,7 +547,7 @@ void UnitSystemx::update(entityx::EntityManager & es, entityx::EventManager & ev
 }
 
 MapSystemx::MapSystemx() {
-    SDL_Log("Adding Mapsystemx.");
+    printf("Adding Mapsystemx.");
 
 }
 
@@ -562,15 +562,15 @@ void MapSystemx::configure(entityx::EventManager & event_manager) {
 }
 
 void MapSystemx::receive(const mapMenu & menu) {
-    SDL_Log("Received a mapMenu from...");
+    printf("Received a mapMenu from...");
 }
 
 void MapSystemx::receive(const turnBegin & begin) {
-    SDL_Log("Received a turnBegin from...");
+    printf("Received a turnBegin from...");
 }
 
 void MapSystemx::receive(const turnEnd & end) {
-    SDL_Log("Received a turnEnd from...");
+    printf("Received a turnEnd from...");
     armies.push(armies.front());
     armies.pop();
 }
@@ -584,7 +584,7 @@ ControlSystemx::ControlSystemx() {
 }
 
 ControlSystemx::ControlSystemx(Game * in_game) {
-    SDL_Log("Adding Controlsystem.");
+    printf("Adding Controlsystem.");
     game = in_game;
     keyboardInputMap = game->getKeyboardInputMap();
     gamepadInputMap = game->getGamepadInputMap();
@@ -623,7 +623,7 @@ void ControlSystemx::receive(const inputPause & pause) {
 }
 
 void ControlSystemx::receive(const inputCancel & cancel) {
-    SDL_Log("Received inputCancel event");
+    printf("Received inputCancel event");
     entityx::ComponentHandle<KeyboardController> keyboard = cancel.keyboard;
     entityx::ComponentHandle<GamepadController> gamepad = cancel.gamepad;
     Controllers controllers = {keyboard, gamepad};
@@ -648,12 +648,12 @@ void ControlSystemx::receive(const inputCancel & cancel) {
                 break;
 
             case GAME::STATE::MAP:
-                SDL_Log("GameState is map");
+                printf("GameState is map");
 
                 if (unitontile) {
                     event_manager->emit<unitDeselect>(canceller, unitontile);
                 } else {
-                    SDL_Log("No unit on tile.");
+                    printf("No unit on tile.");
                 }
 
                 break;
@@ -690,7 +690,7 @@ unsigned int ControlSystemx::getHeldbutton(Controllers in_controllers) {
 }
 
 void ControlSystemx::receive(const cursorMoved & moved) {
-    // SDL_Log("Received cursorMoved event");
+    // printf("Received cursorMoved event");
     entityx::ComponentHandle<Unit> unitontile;
     entityx::Entity cursor = moved.cursor;
     entityx::ComponentHandle<Position> position = cursor.component<Position>();
@@ -714,7 +714,7 @@ void ControlSystemx::receive(const cursorMoved & moved) {
 }
 
 void ControlSystemx::receive(const inputAccept & accept) {
-    // SDL_Log("Received inputAccept event");
+    // printf("Received inputAccept event");
     entityx::ComponentHandle<KeyboardController> keyboard = accept.keyboard;
     entityx::ComponentHandle<GamepadController> gamepad = accept.gamepad;
     Controllers controllers = {keyboard, gamepad};
@@ -731,7 +731,7 @@ void ControlSystemx::receive(const inputAccept & accept) {
 
         switch (game->getState()) {
             case GAME::STATE::MAP:
-                SDL_Log("accepter Position, %d %d \n", cursor_pos[0], cursor_pos[1]);
+                printf("accepter Position, %d %d \n", cursor_pos[0], cursor_pos[1]);
                 game->setCursorlastpos(cursor_pos[0], cursor_pos[1]);
                 unitontile = unitmap[cursor_pos[1]][cursor_pos[0]];
 
@@ -879,7 +879,7 @@ void ControlSystemx::update(entityx::EntityManager & es, entityx::EventManager &
         entityx::Entity setter;
 
         if (gamepad->isPressed(gamepadInputMap.accept)) {
-            // SDL_Log("Gamepad pressed accept.");
+            // printf("Gamepad pressed accept.");
             pressed_button.push_back(gamepadInputMap.accept);
             events.emit<inputAccept>(gamepad);
         }

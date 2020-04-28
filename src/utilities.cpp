@@ -77,18 +77,18 @@ bool isFriendly(const unsigned char army1, const unsigned char army2) {
 }
 
 void printarr(int arr[], int size) {
-    SDL_Log("Array:\n");
+    printf("Array:\n");
 
     for (int i = 0; i < size; i++) {
-        SDL_Log("%d\n", arr[i]);
+        printf("%d\n", arr[i]);
     }
 }
 
 void printvec(std::vector<int> vec) {
-    SDL_Log("Vector:\n");
+    printf("Vector:\n");
 
     for (int i = 0; i < vec.size(); i++) {
-        SDL_Log("%d\n", vec[i]);
+        printf("%d\n", vec[i]);
     }
 }
 
@@ -513,7 +513,7 @@ std::vector<std::string> getTilenames(std::vector<short int> in_tilesindex) {
 
     for (int i = 0; i < in_tilesindex.size(); i++) {
         index = in_tilesindex[i] / DEFAULT::TILE_DIVISOR;
-        SDL_Log("In tile index: %d", index);
+        printf("In tile index: %d", index);
 
         switch (index) {
             case TILE::PLAIN:
@@ -658,7 +658,7 @@ std::vector<std::string> getTilenames(std::vector<short int> in_tilesindex) {
         }
     }
 
-    // SDL_Log("Tilenames size out:%d", out.size());
+    // printf("Tilenames size out:%d", out.size());
     return (out);
 }
 
