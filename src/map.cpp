@@ -469,12 +469,9 @@ void Map::loadTilemap(const short unsigned int in_map_index) {
 void Map::postTilemap() {
     loadTiletextures();
     bounds[0] = DEFAULT::TILEMAP_XOFFSET;
-    bounds[1] = tilemap[0].size();
+    bounds[1] = tilemap[0].size() - 1 + DEFAULT::TILEMAP_XOFFSET;
     bounds[2] = DEFAULT::TILEMAP_YOFFSET;
-    bounds[3] = tilemap.size();
-    // arr2D[y][x] == arr2D[row][col]
-    // tilemap.size() -> row -> y
-    // tilemap[0].size() -> col -> x
+    bounds[3] = tilemap.size() - 1 + DEFAULT::TILEMAP_YOFFSET;
     std::vector<std::vector<entityx::ComponentHandle<Unit>>> tempunit(tilemap.size(), std::vector<entityx::ComponentHandle<Unit>>(tilemap[0].size()));
     unitmap = tempunit;
     SDL_Log("unitmap size: %d %d", unitmap[0].size(), unitmap.size());

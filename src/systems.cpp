@@ -168,8 +168,6 @@ void RenderSystemx::update(entityx::EntityManager & es, entityx::EventManager & 
             sprite->setDestrect(destrect);
             sprite->draw();
         }
-
-
     }
 
     for (entityx::Entity ent : es.entities_with_components<Text, Position>()) {

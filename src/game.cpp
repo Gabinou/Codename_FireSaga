@@ -430,6 +430,7 @@ void Game::setCursorstate(const short unsigned int new_state) {
                 cursorx.component<Position>()->setPos(cursor_lastpos);
                 cursorx.component<Position>()->setonTilemap(true);
                 systems.system<RenderSystemx>()->setTilesize(temp_tilesize[0], temp_tilesize[1]);
+                // events.emit<cursorMoved>(cursorx);
                 break;
 
             case GAME::STATE::UNITMENU:
