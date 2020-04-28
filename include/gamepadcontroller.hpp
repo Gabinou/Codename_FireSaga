@@ -85,9 +85,6 @@ public:
             frames_button = 0;
         }
     }
-
 };
-
-
 
 #endif /* GAMEPADCONTROLLER_HPP */
