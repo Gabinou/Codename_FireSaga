@@ -11,8 +11,6 @@ endif()
 
 project("CodenameFireSaga")
 
-find_package(SDL2 REQUIRED)
-
 include_directories(
 	include
 	third_party
@@ -38,12 +36,9 @@ file(GLOB tinyXML2_SRC "third_party/tinyxml2/*.cpp")
 file(GLOB LODE_SRC "third_party/LodePNG/*.cpp")
 file(GLOB_RECURSE ENTITYX_SRC "third_party/entityx/*.cc")
 
-add_executable(${PROJECT_NAME} ${FSM_SRC})
+add_subdirectory (src)
 
-ADD_LIBRARY(physfs-static STATIC ${PFS_SRC})
-ADD_LIBRARY(LodePNG-static STATIC ${LODE_SRC})
-ADD_LIBRARY(tinyMT-static STATIC ${tinyMT_SRC})
-ADD_LIBRARY(tinyXML2-static STATIC ${tinyXML2_SRC})
-ADD_LIBRARY(entityx-static STATIC ${ENTITYX_SRC})
+enable_testing ()
+add_subdirectory (test)
+add_test (${PROJECT_NAME} MyTest COMMAND Test)
 
-target_link_libraries(${PROJECT_NAME} ${SDL2_LIBRARY} LodePNG-static physfs-static tinyMT-static tinyXML2-static entityx-static -O2 -lmingw32 -lSDL2main -lSDL2 -lSDL2_image -lSDL2_ttf)

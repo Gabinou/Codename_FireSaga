@@ -14,7 +14,6 @@
 #include "weapon.hpp"
 #include "unit.hpp"
 #include "convoy.hpp"
-#include "minctest.h"
 
 Game * firesaga = nullptr;
 Settings temp_settings;
