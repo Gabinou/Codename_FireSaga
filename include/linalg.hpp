@@ -7,7 +7,16 @@
 #include <cmath>
 #include <algorithm>
 
-extern std::vector<std::vector<int>> list2matrix(std::vector<std::vector<int>> list);
+template <typename T> extern std::vector<std::vector <T>> list2matrix(std::vector<std::vector<T>> list, T col, T row) {
+    std::vector<std::vector <T>> matrix(col, std::vector<T> (row, 0));
+
+    for (T ind = 0; ind < list.size(); ind++) {
+        matrix[list[ind][0]][list[ind][1]] = 1;
+    }
+
+    return (matrix);
+}
+
 
 template <typename T> extern void plot2Dvector(std::vector<std::vector<T>> matrix) {
     for (short unsigned int i = 0; i < matrix.size(); i++) {
