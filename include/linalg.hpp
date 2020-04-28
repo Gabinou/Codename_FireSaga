@@ -5,6 +5,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <cmath>
+#include <algorithm>
 
 extern std::vector<std::vector<int>> list2matrix(std::vector<std::vector<int>> list);
 
@@ -38,6 +39,7 @@ template <typename T> extern std::vector<T> unique2D(std::vector<std::vector<T>>
         }
     }
 
+    std::sort(uniques.begin(), uniques.end());
     return (uniques);
 }
 
