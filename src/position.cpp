@@ -129,14 +129,48 @@ void Position::addPos(short int move_x, short int move_y) {
 }
 
 void Position::newPos(short int newx, short int newy) {
+
     if (updatable) {
+        if (periodic) {
+            while (newx < bounds[0]) {
+                newx += bounds[1] - bounds[0] + 1;
+            }
+
+            while (newy < bounds[2]) {
+                newy += bounds[3] - bounds[2] + 1;
+            }
+
+            newx = newx % (bounds[1] + 1);
+            newy = newy % (bounds[3] + 1);
+            // printf("%d %d\n", newx, newy);
+        }
+
         if ((newx >= bounds[0]) && (newx <= bounds[1])) {
             position[0] = newx;
+        } else {
+            if (newx < bounds[0]) {
+                position[0] = bounds[0];
+            }
+
+            if (newx > bounds[1]) {
+                position[0] = bounds[1];
+            }
         }
 
         if ((newy >= bounds[2]) && (newy <= bounds[3])) {
             position[1] = newy;
+        } else {
+            if (newy < bounds[2]) {
+                position[1] = bounds[2];
+            }
+
+            if (newy > bounds[3]) {
+                position[1] = bounds[3];
+            }
         }
+
+
+
     }
 }
 

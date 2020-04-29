@@ -4,6 +4,7 @@
 #include "game.hpp"
 #include "utilities.hpp"
 #include "SDL2/SDL.h"
+#include <functional>
 
 class Position {
 private:
