@@ -7,7 +7,7 @@ int main(int argc, char * argv[]) {
     printf("Running tests\n");
 
     lrun("Test_linalg", test_linalg);
-    lrun("Test_pathfinding", test_pathfinding);
+    lrun("Test_pathfinding ", test_pathfinding);
     lresults();
     return (lfails != 0);
 }

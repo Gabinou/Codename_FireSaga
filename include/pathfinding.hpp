@@ -113,7 +113,7 @@ template <typename T> extern std::vector<std::vector<T>> attackmap(std::vector<s
     return (attackmap);
 }
 
-template <typename T> extern std::vector<std::vector<T>> movemap(std::vector<std::vector<T>> map, short unsigned int start[], short unsigned int move, std::string mode = "matrix") {
+template <typename T> extern std::vector<std::vector<T>> movemap(std::vector<std::vector<T>> costmap, short unsigned int start[], short unsigned int move, std::string mode = "matrix") {
     // Using the map, computes all moveable tiles.
     // outputs either a list of points, or a map of 1 and zeros.
     struct node {
@@ -124,7 +124,7 @@ template <typename T> extern std::vector<std::vector<T>> movemap(std::vector<std
     std::vector<std::vector<T>> movemap;
 
     if (mode == "matrix") {
-        movemap = map;
+        movemap = costmap;
 
         for (int i = 0; i < movemap.size(); i++) {
             std::fill(movemap[i].begin(), movemap[i].end(), 0);
@@ -156,11 +156,11 @@ template <typename T> extern std::vector<std::vector<T>> movemap(std::vector<std
         // (i-j)/2 == 1 when (i+j)/2 == 0 and vice versa.
         for (int i = 0; i < 2; i++) {
             for (int j = 0; j < 2; j++) {
-                neighbor.x = std::min(std::max(current.x + ((index[i] + index[j]) / 2), 0), T(map[0].size()) - 1);
-                neighbor.y = std::min(std::max(current.y + ((index[i] - index[j]) / 2), 0), T(map.size()) - 1);
-                neighbor.distance = current.distance + map[neighbor.y][neighbor.x];
+                neighbor.x = std::min(std::max(current.x + ((index[i] + index[j]) / 2), 0), T(costmap[0].size()) - 1);
+                neighbor.y = std::min(std::max(current.y + ((index[i] - index[j]) / 2), 0), T(costmap.size()) - 1);
+                neighbor.distance = current.distance + costmap[neighbor.y][neighbor.x];
 
-                if ((neighbor.distance <= move) && (map[neighbor.y][neighbor.x] > 0)) {
+                if ((neighbor.distance <= move) && (costmap[neighbor.y][neighbor.x] > 0)) {
                     bool inclosed = false;
 
                     for (int k = 0; k < closed.size(); k++) {
