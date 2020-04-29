@@ -26,7 +26,6 @@ double h_euclidean(int start[], int end[]) {
     return (std::sqrt(pow(start[0] - end[0], 2.0) + pow(start[1] - end[1], 2.0)));
 }
 
-
 int find_row(int start[], std::vector<std::vector<int>> list) {
     int row;
 
