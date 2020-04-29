@@ -88,6 +88,14 @@ short int * Position::getOffset() {
     return (offset);
 }
 
+bool Position::isPeriodic() {
+    return (periodic);
+}
+
+void Position::setPeriodic(bool in_periodic) {
+    periodic = in_periodic;
+}
+
 bool Position::isonTilemap() {
     return (onTilemap);
 }
@@ -111,22 +119,16 @@ void Position::setPos(short int * in_pos) {
 void Position::setPos(short int in_x, short int in_y) {
     short int newx = in_x + offset[0];
     short int newy = in_y + offset[1];
-
-    if (updatable) {
-        if ((newx >= bounds[0]) && (newx <= bounds[1])) {
-            position[0] = newx;
-        }
-
-        if ((newy >= bounds[2]) && (newy <= bounds[3])) {
-            position[1] = newy;
-        }
-    }
+    newPos(newx, newy);
 }
 
 void Position::addPos(short int move_x, short int move_y) {
     short int newx = move_x + position[0];
     short int newy = move_y + position[1];
+    newPos(newx, newy);
+}
 
+void Position::newPos(short int newx, short int newy) {
     if (updatable) {
         if ((newx >= bounds[0]) && (newx <= bounds[1])) {
             position[0] = newx;
@@ -137,6 +139,7 @@ void Position::addPos(short int move_x, short int move_y) {
         }
     }
 }
+
 
 short int * Position::getPos() {
     return (position);

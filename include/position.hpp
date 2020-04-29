@@ -9,9 +9,11 @@ class Position {
 private:
     bool updatable = true;
     bool onTilemap = true;
+    bool periodic = false;
     short int position[2] = {0};
     short int bounds[4] = {0, 255, 0, 255}; //xmin, xmax, ymin, ymax
     short int offset[2] = {0, 0}; //xmin, xmax, ymin, ymax
+    void newPos(short int newx, short int newy);
 public:
     Position();
     Position(short int in_x, short int in_y);
@@ -31,6 +33,9 @@ public:
 
     void setUpdatable(bool in_updatable);
     bool isUpdatable();
+
+    bool isPeriodic();
+    void setPeriodic(bool in_periodic);
 
     bool isonTilemap();
     void setonTilemap(bool in_tilemap);

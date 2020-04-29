@@ -9,7 +9,6 @@ int out;
 int geo_factor;
 int distance;
 
-
 void test_utilities() {
     current = 0;
     upper1 = 3;
@@ -29,7 +28,7 @@ void test_utilities() {
     lok(distance == 1);
     distance = geometricslide(distance);
     lok(distance == 1);
-    
+
     geo_factor = 3;
     distance = 243;
     distance = geometricslide(distance, geo_factor);
