@@ -120,6 +120,7 @@ SDL_Rect RenderSystemx::loopSprites(entityx::ComponentHandle<Sprite> in_sprite) 
         switch (looping) {
             case LOOPING::PINGPONG:
                 srcrect.x = srcrect.w * pingpong(static_cast<int>(SDL_GetTicks() / speed), frames, 0);
+                printf("pingpong: %d %d\n", static_cast<int>(SDL_GetTicks() / speed), pingpong(static_cast<int>(SDL_GetTicks() / speed), frames, 0));
                 break;
 
             case LOOPING::LINEAR:

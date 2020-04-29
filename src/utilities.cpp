@@ -2,7 +2,7 @@
 #include "game.hpp"
 
 int pingpong(int current, int upper, int lower) {
-    // Returns "pingpong" index.
+    // Returns "pingpong" index. upper is excluded.
     // modulo: x % 2 = 0,1,2,0,1,2,0...for x++
     // pingpong(x, 2, 0) = 0,1,2,1,0,1,2... for x++
     int mod_factor = (2 * (upper - lower) - 2);
@@ -74,22 +74,6 @@ bool isFriendly(const unsigned char army1, const unsigned char army2) {
     }
 
     return (out);
-}
-
-void printarr(int arr[], int size) {
-    printf("Array:\n");
-
-    for (int i = 0; i < size; i++) {
-        printf("%d\n", arr[i]);
-    }
-}
-
-void printvec(std::vector<int> vec) {
-    printf("Vector:\n");
-
-    for (int i = 0; i < vec.size(); i++) {
-        printf("%d\n", vec[i]);
-    }
 }
 
 std::vector<int> cppwhere(int tofind, std::vector<int> vec) {

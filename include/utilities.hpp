@@ -1,5 +1,5 @@
-#ifndef SHARED_HPP
-#define SHARED_HPP
+#ifndef UTILITIES_HPP
+#define UTILITIES_HPP
 
 #include "enums.hpp"
 #include "structs.hpp"
@@ -45,9 +45,6 @@ extern bool isFriendly(const unsigned char army1, const unsigned char army2);
 
 extern void loadUtilities();
 
-extern void printarr(int arr[], int size);
-extern void printvec(std::vector<int> vec);
-
 template <typename T>
 extern std::vector<T> cpprange(T ind1, T ind2) {
     std::vector<T> out;
@@ -64,4 +61,4 @@ extern std::vector<int> cppuniques(std::vector<int> vec);
 // extern void heal(Unit * in_unit, unsigned char heal);
 // extern * (Unit) makeheal(Weapon in_weapon);
 
-#endif /* SHARED_HPP */
+#endif /* UTILITIES_HPP */

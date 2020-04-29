@@ -2,23 +2,23 @@
 #include "pathfinding.hpp"
 #include "linalg.hpp"
 
-short unsigned int temp_move;
-short unsigned int temp_start[2];
-unsigned char temp_range[2];
-std::vector<std::vector<short int>> temp_position;
-std::vector<std::vector<short int>> temp_costmap;
-std::vector<std::vector<short int>> temp_attackmap;
-std::vector<std::vector<short int>> temp_movemap;
+short unsigned int move;
+short unsigned int start[2];
+unsigned char range[2];
+std::vector<std::vector<short int>> position;
+std::vector<std::vector<short int>> costmapp;
+std::vector<std::vector<short int>> attackmapp;
+std::vector<std::vector<short int>> movemapp;
 
 void test_pathfinding() {
-    temp_move = 5;
-    temp_range[0] = 1;
-    temp_range[1] = 2;
-    temp_start[0] = 10;
-    temp_start[1] = 6;
+    move = 5;
+    range[0] = 1;
+    range[1] = 2;
+    start[0] = 10;
+    start[1] = 6;
 
 
-    temp_costmap = {
+    costmapp = {
         {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1},
         {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1},
         {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1},
@@ -42,7 +42,7 @@ void test_pathfinding() {
         {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1}
     };
 
-    temp_movemap = {
+    movemapp = {
         {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
         {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
         {0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
@@ -66,7 +66,7 @@ void test_pathfinding() {
         {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}
 
     };
-    temp_attackmap = {
+    attackmapp = {
         {0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
         {0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
         {0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
@@ -89,10 +89,10 @@ void test_pathfinding() {
         {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
         {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}
     };    
-    lok(movemap(temp_costmap, temp_start, temp_move) == temp_movemap);
-    lok(attackmap(movemap(temp_costmap, temp_start, temp_move), temp_start, temp_move, temp_range) == temp_attackmap);
+    lok(movemap(costmapp, start, move) == movemapp);
+    lok(attackmap(movemap(costmapp, start, move), start, move, range) == attackmapp);
 
-    temp_costmap = {
+    costmapp = {
         {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1},
         {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1},
         {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1},
@@ -116,7 +116,7 @@ void test_pathfinding() {
         {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1}
     };
 
-    temp_movemap = {
+    movemapp = {
         {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
         {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
         {0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
@@ -139,7 +139,7 @@ void test_pathfinding() {
         {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
         {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}
     };
-    temp_attackmap = {
+    attackmapp = {
         {0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
         {0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
         {0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
@@ -163,6 +163,6 @@ void test_pathfinding() {
         {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}
     };
 
-    lok(movemap(temp_costmap, temp_start, temp_move) == temp_movemap);
-    lok(attackmap(movemap(temp_costmap, temp_start, temp_move), temp_start, temp_move, temp_range) == temp_attackmap);
+    lok(movemap(costmapp, start, move) == movemapp);
+    lok(attackmap(movemap(costmapp, start, move), start, move, range) == attackmapp);
 }
