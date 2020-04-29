@@ -9,7 +9,6 @@
 
 extern int h_manhattan(int start[], int end[]);
 extern double h_euclidean(int start[], int end[]);
-extern void plot2Darray(int array[][10], int imax, int jmax);
 
 extern std::vector<std::vector<int>> A_star(std::vector<std::vector<int>> map, int start[], int end[], std::string mode = "matrix");
 

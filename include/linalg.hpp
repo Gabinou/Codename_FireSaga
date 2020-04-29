@@ -18,10 +18,22 @@ template <typename T> extern std::vector<std::vector <T>> list2matrix(std::vecto
 }
 
 template <typename T> extern void plot2Dvec(std::vector<std::vector<T>> vec) {
-    for (short unsigned int i = 0; i < vec.size(); i++) {
-        for (short unsigned int j = 0; j < vec[i].size(); j++) {
+    for (T i = 0; i < vec.size(); i++) {
+        for (T j = 0; j < vec[i].size(); j++) {
             printf("%d ", vec[i][j]);
         }
+
+        printf("\n");
+    }
+}
+
+template <typename T> extern void plot2Darray(T array[][10], T imax, T jmax) {
+    //Don't know how to pass array that at least do not have 1D known before hand
+    for (T i = 0; i < imax; i++) {
+        for (T j = 0; j < jmax; j++) {
+            printf("%d ", array[i][j]);
+        }
+
         printf("\n");
     }
 }
