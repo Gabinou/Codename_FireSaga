@@ -761,7 +761,7 @@ int parseXML(const char * filename, tinyxml2::XMLDocument * in_doc) {
 }
 
 void XML_IO::readXML(const char * filename) {
-    printf("readXML file: %s", filename);
+    // printf("readXML file: %s", filename);
     tinyxml2::XMLDocument xmlDoc;
     parseXML(filename, &xmlDoc);
     tinyxml2::XMLElement * pEle = xmlDoc.FirstChildElement(xmlElement.c_str());
@@ -782,7 +782,7 @@ void XML_IO::writeXML(tinyxml2::XMLDocument * in_doc, tinyxml2::XMLElement * in_
 }
 
 void XML_IO::writeXML(const char * filename, const bool append) {
-    printf("writeXML %s to: %s\n", xmlElement.c_str(), filename);
+    // printf("writeXML %s to: %s\n", xmlElement.c_str(), filename);
     PHYSFS_file * fp;
     tinyxml2::XMLDocument xmlDoc;
 
