@@ -1,3 +1,4 @@
+#include "minctest.h"
 #include "linalg.hpp"
 
 std::vector<short int> temp1D1;
@@ -163,3 +164,13 @@ void test_linalg() {
     };
     lok(unique2D(temp2D1) == temp1D1);
 }
+
+
+// int main(int argc, char * argv[]) {
+//     freopen("test_results.txt", "w+", stdout);
+//     printf("Running tests\n");
+
+//     lrun("Test_linalg", test_linalg);
+//     lresults();
+//     return (lfails != 0);
+// }

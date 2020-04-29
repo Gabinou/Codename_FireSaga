@@ -17,16 +17,15 @@ template <typename T> extern std::vector<std::vector <T>> list2matrix(std::vecto
     return (matrix);
 }
 
-
-template <typename T> extern void plot2Dvector(std::vector<std::vector<T>> matrix) {
-    for (short unsigned int i = 0; i < matrix.size(); i++) {
-        for (short unsigned int j = 0; j < matrix[i].size(); j++) {
-            printf("%d ", matrix[i][j]);
+template <typename T> extern void plot2Dvec(std::vector<std::vector<T>> vec) {
+    for (short unsigned int i = 0; i < vec.size(); i++) {
+        for (short unsigned int j = 0; j < vec[i].size(); j++) {
+            printf("%d ", vec[i][j]);
         }
-
         printf("\n");
     }
 }
+
 
 template <typename T> extern std::vector<T> unique2D(std::vector<std::vector<T>> matrix) {
     std::vector<T> uniques;

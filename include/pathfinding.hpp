@@ -13,17 +13,6 @@ extern void plot2Darray(int array[][10], int imax, int jmax);
 
 extern std::vector<std::vector<int>> A_star(std::vector<std::vector<int>> map, int start[], int end[], std::string mode = "matrix");
 
-template <typename T>
-void plot2Dvec(std::vector<std::vector<T>> vec) {
-    for (short unsigned int i = 0; i < vec.size(); i++) {
-        for (short unsigned int j = 0; j < vec[i].size(); j++) {
-            printf("%d ", vec[i][j]);
-        }
-
-        printf("\n");
-    }
-}
-
 template <typename T> extern std::vector<std::vector<T>> attackmap(std::vector<std::vector<T>> movemap, short unsigned int start[], short unsigned int move, unsigned char range[2], std::string mode = "matrix") {
     // Using the movemap to compute all attackable tiles.
     // EXCLUDING moveable tiles.
