@@ -40,8 +40,7 @@ void test_tile() {
     lok(tile1.isInside() == true);
     // tile1.writeXML("tile_test.xml");
 
-    // tile2 = Tile();
+    tile2 = Tile();
     // tile2.readXML("tile_test.xml");
     // tile2.writeXML("tile_rewrite.xml");
-
 }

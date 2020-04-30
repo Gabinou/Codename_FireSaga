@@ -6,7 +6,7 @@
 #include "test_tile.hpp"
 
 int main(int argc, char * argv[]) {
-    freopen("test_results.txt", "w+", stdout);
+    // freopen("test_results.txt", "w+", stdout);
     printf("Running tests\n");
 
     lrun("Test_linalg", test_linalg);
@@ -15,6 +15,8 @@ int main(int argc, char * argv[]) {
     lrun("Test_position ", test_position);
     lrun("Test_tile ", test_tile);
     lresults();
+
+    test_XMLtile();
     // getchar();
     return (lfails != 0);
 }
