@@ -6,6 +6,8 @@
 #include "test_tile.hpp"
 #include "test_map.hpp"
 #include "test_unit.hpp"
+#include "test_probability.hpp"
+#include "test_filesystem.hpp"
 
 int main(int argc, char * argv[]) {
     freopen("test_results.txt", "w+", stdout);
@@ -32,6 +34,8 @@ int main(int argc, char * argv[]) {
     lrun("Test_tile ", test_tile);
     lrun("Test_map ", test_map);
     lrun("Test_unit ", test_unit);
+    lrun("test_probability ", test_probability);
+    lrun("test_filesystem ", test_filesystem);
     lresults();
 
     return (lfails != 0);
