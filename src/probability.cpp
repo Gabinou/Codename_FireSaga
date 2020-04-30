@@ -13,7 +13,7 @@ void init_tinyMT(tinymt32_t & tinymt) {
     tinymt.mat1 = 1990;
     tinymt.mat2 = 5;
     tinymt.tmat = 8;
-    tinymt32_init(&tinymt, 29);
+    tinymt32_init(&tinymt, 777);
 }
 
 bool single_roll(const unsigned char RN, const unsigned char hit) {
