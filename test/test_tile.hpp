@@ -38,9 +38,12 @@ void test_tile() {
     lok(out_tile_stats.Mprot == in_tile_stats.Mprot);
     lok(out_tile_stats.heal == in_tile_stats.heal);
     lok(tile1.isInside() == true);
-    // tile1.writeXML("tile_test.xml");
+    tile1.writeXML("tile_test.xml");
 
     tile2 = Tile();
     // tile2.readXML("tile_test.xml");
     // tile2.writeXML("tile_rewrite.xml");
+
+    // test_XMLtile();
+
 }

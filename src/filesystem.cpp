@@ -23,7 +23,7 @@ int mkdir(char * path, int mode) {
 
 namespace FILESYSTEM {
 
-void log(void * userdata, int category, printfPriority priority, const char * message) {
+void log(void * userdata, int category, SDL_LogPriority priority, const char * message) {
     FILE * logf = fopen(LOGFILE, "a");
     fprintf(logf, message);
     fprintf(logf, "\n");

@@ -17,7 +17,6 @@ int main(int argc, char * argv[]) {
     lrun("Test_tile ", test_tile);
     lresults();
 
-    test_XMLtile();
     // getchar();
     return (lfails != 0);
 }

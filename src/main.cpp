@@ -45,7 +45,7 @@ int main(int argc, char * argv[]) {
     // all_units = baseUnits();
     // SDL_Log("Testing units: %s \n", all_units[UNIT::NAME::SILOU].getName().c_str());
     // testXMLUnits();
-    // testXMLTiles();
+    test_XMLtile();
 
     firesaga = new Game();
     firesaga->loadUnits(0);
