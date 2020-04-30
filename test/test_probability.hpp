@@ -2,6 +2,8 @@
 #include "probability.hpp"
 
 void test_probability() {
+	// Actually testing the box-muller transform, the tinyMT is a little more involved.
+	// NOt done here because FUCK THAT.
 	tinymt32_t tinyMT1;
 	tinymt32_t tinyMT2;
 

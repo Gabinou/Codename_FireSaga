@@ -1,4 +1,13 @@
-// Code créé par Gabriel Taillon
+/*--------------------------------------------------------------------------------
+* |           Average Bear Games                                                 |
+* |        _         _                    Available on....                       |
+* |       ( \_.---._/ )                                                          |
+* |        \  .   .  /       ,''',                                               |
+* |         |  (@)  |       (*****)                                              |
+* |         \   ᆺ  /  		 \   /                                               |
+* |          '-._.-'         |   |                                               |
+* |        Made by Gabriel Taillon                                               |
+* --------------------------------------------------------------------------------*/
 #include <entityx/entityx.h>
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
