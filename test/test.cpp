@@ -4,6 +4,7 @@
 #include "test_utilities.hpp"
 #include "test_position.hpp"
 #include "test_tile.hpp"
+#include "tile.hpp"
 
 int main(int argc, char * argv[]) {
     // freopen("test_results.txt", "w+", stdout);
