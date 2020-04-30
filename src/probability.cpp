@@ -38,13 +38,13 @@ unsigned char * boxmuller(const unsigned char RN_U[2], const float avg, const fl
     if (RN_U[0] == 0) {
         RNreal_U[0] = 0.00001;
     } else {
-        RNreal_U[0] = ((float)RN_U[0]) / 100.;
+        RNreal_U[0] = ((float)RN_U[0]) / RN_MAX;
     }
 
     if (RN_U[1] == 0) {
         RNreal_U[1] = 0.00001;
     } else {
-        RNreal_U[1] = ((float)RN_U[1]) / 100.;
+        RNreal_U[1] = ((float)RN_U[1]) / RN_MAX;
     }
 
     float term1 = sqrt(-2 *  log(RNreal_U[0]));

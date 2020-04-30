@@ -14,5 +14,7 @@ void test_probability() {
 	lok(!double_roll(100, 100, 90));
 	lok(!double_roll(80, 100, 90));
 	lok(getURN(tinyMT1) == getURN(tinyMT2));
-
+	for (short unsigned int i = 0; i < 10000; i++) {
+		lok((getURN(tinyMT1) < 100) && (getURN(tinyMT1) >= 0));
+	}
 }
