@@ -701,12 +701,18 @@ void Unit::readXML(tinyxml2::XMLElement * in_pUnit) {
 
     ptemp->QueryUnsignedText(&bufint);
     base_exp = (unsigned short int)bufint;
+
+    ptemp = in_pUnit->FirstChildElement("CurrentHP");
+    ptemp->QueryUnsignedText(&bufint);
+    current_hp = (unsigned char)bufint;
+
     ptemp = in_pUnit->FirstChildElement("Exp");
 
     if (!ptemp) {SDL_Log("Cannot get Exp element");}
 
     ptemp->QueryUnsignedText(&bufint);
     exp = (unsigned short int)bufint;
+
     ptemp = in_pUnit->FirstChildElement("Class");
 
     if (!ptemp) {SDL_Log("Cannot get Class element");}
@@ -720,6 +726,7 @@ void Unit::readXML(tinyxml2::XMLElement * in_pUnit) {
     ptemp = in_pUnit->FirstChildElement("Growths");
 
     if (!ptemp) {SDL_Log("Cannot get Growths element");}
+
 
     readXML_stats(ptemp, &growths);
     ptemp = in_pUnit->FirstChildElement("Caps");

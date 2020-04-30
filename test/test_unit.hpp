@@ -22,6 +22,8 @@ void test_unit() {
     in_stats_wpn.id = ITEM::NAME::POT_LID;
     unit1.addEquipment(in_stats_wpn);
     out_stats = unit1.getStats();
+    lok(unit1.getName() == "Erwin");
+    lok(unit1.getSex() == 1);
     lok(in_stats.hp == out_stats.hp);
     lok(in_stats.str == out_stats.str);
     lok(in_stats.mag == out_stats.mag);
@@ -46,7 +48,6 @@ void test_unit() {
     lok(in_growths.move == out_growths.move);
     lok(in_growths.prof == out_growths.prof);
 
-
     unit1.levelUp();
     unit1.levelUp();
     out_stats = unit1.getBases();    
@@ -60,8 +61,19 @@ void test_unit() {
     lok(in_stats.res == out_stats.res);
     lok(in_stats.con == out_stats.con);
     lok(in_stats.move == out_stats.move);
-    lok(in_stats.prof == out_stats.prof);
-
+    lok(in_stats.prof == out_stats.prof);    
+    out_stats = unit1.getStats();    
+    lok(in_stats.hp >= out_stats.hp);
+    lok(in_stats.str >= out_stats.str);
+    lok(in_stats.mag >= out_stats.mag);
+    lok(in_stats.agi >= out_stats.agi);
+    lok(in_stats.dex >= out_stats.dex);
+    lok(in_stats.luck >= out_stats.luck);
+    lok(in_stats.def >= out_stats.def);
+    lok(in_stats.res >= out_stats.res);
+    lok(in_stats.con >= out_stats.con);
+    lok(in_stats.move >= out_stats.move);
+    lok(in_stats.prof >= out_stats.prof);
 
     unit1.writeXML("unit_test.xml");
     unit1.writeXML("unit_test.binou");
@@ -69,9 +81,10 @@ void test_unit() {
     unit2.readXML("unit_test.xml");
     unit2.writeXML("unit_rewrite.xml");
     unit3 = Unit();
-    unit3.readXML("unit_test.xml;");
+    unit3.readXML("unit_test.binou");
     unit3.writeXML("unit_rewrite.binou");
 
+    lok(fequal("unit_test.xml", "unit_test.binou"));
     lok(fequal("unit_test.xml", "unit_rewrite.xml"));
     lok(fequal("unit_test.binou", "unit_rewrite.binou"));
 
