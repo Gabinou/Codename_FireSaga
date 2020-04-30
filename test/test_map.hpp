@@ -3,6 +3,6 @@
 
 void test_map() {
 
-    lok(fequal("test_results.txt", "test_results.txt"));
+    // lok(fequal("test_results.txt", "test_results.txt"));
 
 }

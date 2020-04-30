@@ -904,38 +904,6 @@ void Unit::write(const char * filename, const bool append) {
     PHYSFS_close(fp);
 }
 
-void testXMLUnits() {
-    SDL_Log("Testing Unit xml writing and reading\n");
-    Unit temp_unit;
-    Unit_stats temp;
-    Inventory_item temp_wpn;
-
-    temp = {17,  6,  2,  7,  7,   7,  4,  5,  6, 5};
-    temp_unit = Unit(UNIT::NAME::ERWIN, UNIT::CLASS::MERCENARY, temp, UNIT::SEX::M);
-    temp = {48, 14, 25, 32, 34,  28, 19, 40, 15, 0};
-    temp_unit.setCaps(temp);
-    temp = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
-    temp_unit.setGrowths(temp);
-    temp_unit.setBaseExp(0);
-    temp_unit.levelUp();
-    temp_unit.levelUp();
-    temp_wpn.id = ITEM::NAME::FLEURET;
-    temp_wpn.id = ITEM::NAME::FLEURET;
-    temp_unit.addEquipment(temp_wpn);
-    temp_wpn.id = ITEM::NAME::KITCHEN_KNIFE;
-    temp_unit.addEquipment(temp_wpn);
-    temp_wpn.id = ITEM::NAME::POT_LID;
-    temp_unit.addEquipment(temp_wpn);
-    temp_unit.writeXML("unit_test.xml");
-    temp_unit.writeXML("unit_test.binou");
-    temp_unit = Unit();
-    temp_unit.readXML("unit_test.xml");
-    temp_unit.writeXML("unit_rewrite.xml");
-    temp_unit = Unit();
-    temp_unit.readXML("unit_test.binou");
-    temp_unit.writeXML("unit_rewrite.binou");
-}
-
 void baseUnits(std::unordered_map<int, Unit> * in_units, std::vector<short int> toload) {
     SDL_Log("Making base units \n");
     Unit temp_unit;
