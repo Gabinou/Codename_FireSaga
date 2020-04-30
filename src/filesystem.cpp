@@ -28,8 +28,8 @@ void log(void * userdata, int category, SDL_LogPriority priority, const char * m
     fprintf(logf, message);
     fprintf(logf, "\n");
     fclose(logf);
-    SDL_Log(message);
-    SDL_Log("\n");
+    printf(message);
+    printf("\n");
 }
 
 int init(char * argvZero, char * baseDir, char * assetsPath) {
