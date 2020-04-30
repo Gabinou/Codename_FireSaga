@@ -7,12 +7,18 @@
 #include "unit.hpp"
 #include <string>
 #include <vector>
+// #ifndef STB_SPRINTF_IMPLEMENTATION
+// #define STB_SPRINTF_IMPLEMENTATION
+#include "stb_sprintf.h"
+// #endif /* STB_SPRINTF_IMPLEMENTATION */
+
 
 #define LEN(arr) ((unsigned int) (sizeof (arr) / sizeof (arr)[0]))
 
 template <typename T> int sgn(T val) {
     return (T(0) < val) - (val < T(0));
 }
+
 
 extern int geometricslide(int distance, float geo_factor = 2);
 extern int pingpong(int current, int upper, int lower = 0);
@@ -23,6 +29,7 @@ extern std::vector<std::string> wpnEffects(long unsigned int in_effect);
 extern std::vector<std::string> unitTypes(unsigned short int in_typecode);
 extern std::vector<std::string> wpnTypes(short unsigned int in_typecode);
 extern unsigned char unitid2army(short unsigned int in_unitid);
+extern std::string stats2str(Unit_stats in_stats);
 
 extern std::vector<std::string> getTilenames(std::vector<short int> in_tilesindex);
 extern std::vector<std::string> unitNames;
