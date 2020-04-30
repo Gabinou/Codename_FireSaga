@@ -159,7 +159,6 @@ public:
 
     void use(int in_ind);
 
-    void write(const char * filename, const bool append = false);
     using XML_IO::writeXML;
     using XML_IO::readXML;
     void writeXML(tinyxml2::XMLDocument * in_doc, tinyxml2::XMLElement * in_pUnit);
