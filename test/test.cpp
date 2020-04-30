@@ -9,9 +9,20 @@
 
 int main(int argc, char * argv[]) {
     freopen("test_results.txt", "w+", stdout);
-    printf("Initializing Filesystem\n");
+
+    SDL_Log("Initializing utilities\n");
+    loadUtilities();
+
+    SDL_Log("Initializing Filesystem\n");
     char * buildDir = SDL_GetBasePath();
     FILESYSTEM::init(0, buildDir, buildDir);
+
+    SDL_Log("Initializing TinyMT\n");
+    init_tinyMT();
+
+    SDL_Log("Loading base weapons.");
+    baseWeapons();
+
 
     printf("Running tests\n");
     lrun("Test_linalg", test_linalg);
