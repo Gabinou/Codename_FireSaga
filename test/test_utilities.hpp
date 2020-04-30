@@ -1,15 +1,15 @@
 #include "minctest.h"
 #include "utilities.hpp"
 
-int current;
-int upper1;
-int upper2;
-int lower;
-int out;
-int geo_factor;
-int distance;
-
 void test_utilities() {
+    int current;
+    int upper1;
+    int upper2;
+    int lower;
+    int out;
+    int geo_factor;
+    int distance;
+    
     current = 0;
     upper1 = 3;
     upper2 = 6;
@@ -86,5 +86,7 @@ void test_utilities() {
     out = pingpong(current, upper2);
     lok(out == 4);
     
+
+    lok(fequal("test_results.txt", "test_results.txt"));
 
 }

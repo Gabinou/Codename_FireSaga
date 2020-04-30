@@ -12,7 +12,6 @@ int main(int argc, char * argv[]) {
     FILESYSTEM::init(0, buildDir, buildDir);
 
     printf("Running tests\n");
-
     lrun("Test_linalg", test_linalg);
     lrun("Test_pathfinding ", test_pathfinding);
     lrun("Test_utilities ", test_utilities);

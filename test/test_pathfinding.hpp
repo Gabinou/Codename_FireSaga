@@ -2,21 +2,20 @@
 #include "pathfinding.hpp"
 #include "linalg.hpp"
 
-short unsigned int move;
-short unsigned int start[2];
-unsigned char range[2];
-std::vector<std::vector<short int>> position;
-std::vector<std::vector<short int>> costmapp;
-std::vector<std::vector<short int>> attackmapp;
-std::vector<std::vector<short int>> movemapp;
-
 void test_pathfinding() {
+    short unsigned int move;
+    short unsigned int start[2];
+    unsigned char range[2];
+    std::vector<std::vector<short int>> position;
+    std::vector<std::vector<short int>> costmapp;
+    std::vector<std::vector<short int>> attackmapp;
+    std::vector<std::vector<short int>> movemapp;
+
     move = 5;
     range[0] = 1;
     range[1] = 2;
     start[0] = 10;
     start[1] = 6;
-
 
     costmapp = {
         {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1},

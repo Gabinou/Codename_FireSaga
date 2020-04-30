@@ -1,12 +1,12 @@
 #include "minctest.h"
 #include "linalg.hpp"
 
-std::vector<short int> temp1D1;
-std::vector<std::vector<short int>> temp2D1;
-std::vector<std::vector<short int>> temp2D2;
-std::vector<std::vector<short int>> temp2D3;
-
 void test_linalg() {
+    std::vector<short int> temp1D1;
+    std::vector<std::vector<short int>> temp2D1;
+    std::vector<std::vector<short int>> temp2D2;
+    std::vector<std::vector<short int>> temp2D3;
+    
     temp2D1 = {
         {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1},
         {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1},

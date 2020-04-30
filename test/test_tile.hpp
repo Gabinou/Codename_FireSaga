@@ -1,5 +1,6 @@
 #include "minctest.h"
 #include "tile.hpp"
+#include "utilities.hpp"
 
 void test_tile() {
     Tile tile1;
@@ -43,5 +44,28 @@ void test_tile() {
     tile2 = Tile();
     tile2.readXML("tile_test.xml");
     tile2.writeXML("tile_rewrite.xml");
+
+    lok(fequal("tile_test.xml", "tile_rewrite.xml"));
+    lok(tile1.getName() == tile2.getName());
+    lok(tile1.getid() == tile2.getid());
+    cost_array = tile1.getCost();
+    out_cost = tile1.getCoststruct();
+    in_cost = tile2.getCoststruct();
+    out_tile_stats = tile1.getStats();
+    in_tile_stats = tile2.getStats();
+    lok(in_cost.foot_slow == out_cost.foot_slow);
+    lok(in_cost.foot_fast == out_cost.foot_fast);
+    lok(in_cost.mages == out_cost.mages);
+    lok(in_cost.riders_slow == out_cost.riders_slow);
+    lok(in_cost.riders_fast == out_cost.riders_fast);
+    lok(in_cost.fliers == out_cost.fliers);
+    lok(in_cost.armors == out_cost.armors);
+    lok(in_cost.pirates == out_cost.pirates);
+    lok(in_cost.bandits == out_cost.bandits);
+    lok(out_tile_stats.dodge == in_tile_stats.dodge);
+    lok(out_tile_stats.Pprot == in_tile_stats.Pprot);
+    lok(out_tile_stats.Mprot == in_tile_stats.Mprot);
+    lok(out_tile_stats.heal == in_tile_stats.heal);
+
 
 }

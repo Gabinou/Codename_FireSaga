@@ -11,6 +11,47 @@ int pingpong(int current, int upper, int lower) {
     return (std::min(term1, term2) + lower);
 }
 
+bool fequal(const char * filename1, const char * filename2) {
+    bool out = false;
+    PHYSFS_file * fp1;
+    fp1 = PHYSFS_openRead(filename1);
+
+    if (!fp1) {
+        SDL_Log("Failed to open %s.", filename1);
+        return (out);
+    }
+
+    PHYSFS_file * fp2;
+    fp2 = PHYSFS_openRead(filename2);
+
+    if (!fp2) {
+        SDL_Log("Failed to open %s.", filename2);
+        return (out);
+    }
+
+    unsigned int filelen1 = PHYSFS_fileLength(fp1);
+    unsigned int filelen2 = PHYSFS_fileLength(fp2);
+    char filebuffer1[filelen1];
+    char filebuffer2[filelen2];
+    PHYSFS_readBytes(fp1, filebuffer1, filelen1);
+    PHYSFS_readBytes(fp2, filebuffer2, filelen2);
+    PHYSFS_close(fp1);
+    PHYSFS_close(fp2);
+
+    if (filelen1 == filelen2) {
+        out = true;
+
+        for (int i = 0; i < filelen1; i++) {
+            if (filebuffer1[i] != filebuffer2[i]) {
+                out = false;
+            }
+        }
+    }
+
+    return (out);
+}
+
+
 int geometricslide(int distance, float geo_factor) {
     // Returns geometrically decreasing indices.
     // Ex: distance/geo_factor -> distance/geo_factor**2 -> distance/geo_factor**3

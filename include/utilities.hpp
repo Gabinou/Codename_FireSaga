@@ -16,6 +16,7 @@ template <typename T> int sgn(T val) {
 
 extern int geometricslide(int distance, float geo_factor = 2);
 extern int pingpong(int current, int upper, int lower = 0);
+extern bool fequal(const char * filename1, const char * filename2);
 
 extern std::vector<std::string> skillNames(unsigned long long int in_skillscode);
 extern std::vector<std::string> wpnEffects(long unsigned int in_effect);
