@@ -165,8 +165,6 @@ public:
     void readXML(tinyxml2::XMLElement * in_pUnit);
 };
 
-extern std::string stats2str(Unit_stats in_stats);
-
 extern void baseUnits(std::unordered_map<int, Unit> * in_units);
 extern void baseUnits(std::unordered_map<int, Unit> * in_units, std::vector<short int> toload);
 
