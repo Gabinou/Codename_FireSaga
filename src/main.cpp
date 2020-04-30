@@ -19,9 +19,9 @@ Game * firesaga = nullptr;
 Settings temp_settings;
 
 int main(int argc, char * argv[]) {
-    freopen("log.txt", "w+", stdout);
-    // fclose(fopen(LOGFILE, "w"));
-    // printfSetOutputFunction(&FILESYSTEM::log, NULL);
+    // freopen("log.txt", "w+", stdout);
+    fclose(fopen(LOGFILE, "w"));
+    SDL_LogSetOutputFunction(&FILESYSTEM::log, NULL);
     SDL_Log("Starting project codename FireSaga\n");
 
     SDL_Log("Initializing utilities\n");
@@ -45,7 +45,7 @@ int main(int argc, char * argv[]) {
     // all_units = baseUnits();
     // SDL_Log("Testing units: %s \n", all_units[UNIT::NAME::SILOU].getName().c_str());
     // testXMLUnits();
-    test_XMLtile();
+    // test_XMLtile();
 
     firesaga = new Game();
     firesaga->loadUnits(0);

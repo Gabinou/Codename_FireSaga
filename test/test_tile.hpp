@@ -38,7 +38,7 @@ void test_tile() {
     lok(out_tile_stats.Mprot == in_tile_stats.Mprot);
     lok(out_tile_stats.heal == in_tile_stats.heal);
     lok(tile1.isInside() == true);
-    tile1.writeXML("tile_test.xml");
+    // tile1.writeXML("tile_test.xml");
 
     tile2 = Tile();
     // tile2.readXML("tile_test.xml");
@@ -46,4 +46,25 @@ void test_tile() {
 
     // test_XMLtile();
 
+}
+
+void test_XMLtile() {
+    printf("in XML\n");
+    Tile tile1;
+    Tile tile2;
+    Tile_stats in_tile_stats, out_tile_stats;
+    Movement_cost in_cost, out_cost;
+    unsigned char * cost_array;
+    in_tile_stats = {3, 0, 80, 0, };
+    in_cost = {2, 2, 2, 3, 3, 1, 3, 2, 2};
+    tile1 = Tile(TILE::THRONE, "Throne", in_cost, in_tile_stats, true);
+    printf("in XML\n");
+    tile1.writeXML("tile_test.xml");
+    printf("in XML\n");
+
+    tile2 = Tile();
+    tile2.readXML("tile_test.xml");
+    printf("in XML\n");
+    tile2.writeXML("tile_rewrite.xml");
+    printf("in XML\n");
 }
