@@ -129,7 +129,7 @@ int Convoy::partition(int arr[], int low, int high, int wpntype) {
 
 void Convoy::deposit(Inventory_item in_item) {
     if (!full) {
-        // printf("Depositing: %d", in_item.id);
+        // SDL_Log("Depositing: %d", in_item.id);
         short unsigned int wpntypecode = all_weapons[in_item.id].getType();
 
         if ((wpntypecode & ITEM::TYPE::SWORD) > 0) {
@@ -219,7 +219,7 @@ void Convoy::deposit(Inventory_item in_item) {
 DEPOSIT_END:
         isFull();
     } else {
-        printf("Convoy is full");
+        SDL_Log("Convoy is full");
     }
 }
 
@@ -234,11 +234,11 @@ void Convoy::isFull() {
 void Convoy::printContents(int wpntype) {
     Inventory_item * tempitems = getItems(wpntype);
     int tempqty = getQuantity(wpntype);
-    printf("Quantity: %d \nArray:\n", tempqty);
+    SDL_Log("Quantity: %d \nArray:\n", tempqty);
 
     for (int i = 0; i < tempqty; i++) {
         if (tempitems[i].id > 0) {
-            printf("%d: %s", i, all_weapons[tempitems[i].id].getName().c_str());
+            SDL_Log("%d: %s", i, all_weapons[tempitems[i].id].getName().c_str());
         }
     }
 }
@@ -248,17 +248,17 @@ void Convoy::printStats(int wpntype, int stattype) {
     int tempqty = getQuantity(wpntype);
     std::string statname = statNames[stattype];
     std::vector<int> vecstats = getStats(wpntype, stattype);
-    printf("Quantity: %d \n%s \t Wpn \n", tempqty, statname.c_str());
+    SDL_Log("Quantity: %d \n%s \t Wpn \n", tempqty, statname.c_str());
 
     for (int i = 0; i < tempqty; i++) {
         if (tempitems[i].id > 0) {
-            printf("%d \t %s", vecstats[i], all_weapons[tempitems[i].id].getName().c_str());
+            SDL_Log("%d \t %s", vecstats[i], all_weapons[tempitems[i].id].getName().c_str());
         }
     }
 }
 
 void Convoy::sortused(int wpntype) {
-    printf("In sortused");
+    SDL_Log("In sortused");
     std::vector<int> vecid;
     std::vector<int> vecusesleft;
     std::vector<int> vecwhere;
@@ -563,11 +563,11 @@ std::vector<int> Convoy::getStats(int wpntype, int stattype) {
 Inventory_item Convoy::withdraw(int in_index, int wpntype) {
     Inventory_item temp;
     Inventory_item empty;
-    printf("Withdraw. Index: %d", in_index);
+    SDL_Log("Withdraw. Index: %d", in_index);
 
     switch (wpntype) {
         case ITEM::TYPE::SWORD:
-            printf("Withdrawing a sword");
+            SDL_Log("Withdrawing a sword");
             temp = swords[in_index];
             swapWpn(wpntype, in_index, quantity.swords);
             swords[quantity.swords] = empty;
@@ -679,7 +679,7 @@ void Convoy::readXML(tinyxml2::XMLElement * in_pConvoy) {
         currentitems = getItems(i);
         ptemp = in_pConvoy->FirstChildElement(names[0].c_str());
 
-        if (!ptemp) {printf("Cannot get %s element", names[0].c_str());}
+        if (!ptemp) {SDL_Log("Cannot get %s element", names[0].c_str());}
 
         readXML_items(ptemp, tempitems);
 
@@ -738,7 +738,7 @@ void testConvoyfull() {
 }
 
 void testConvoysortused() {
-    printf("Testing Convoy sorting for stats and uses abilities");
+    SDL_Log("Testing Convoy sorting for stats and uses abilities");
     Convoy test_convoy;
     Inventory_item temp;
     temp.id = ITEM::NAME::WOODEN_SWORD;
@@ -782,17 +782,17 @@ void testConvoysortused() {
     test_convoy.deposit(temp);
     temp.id = ITEM::NAME::STEEL_SWORD;
     test_convoy.deposit(temp);
-    printf("SWORD: Base Convoy Order.");
+    SDL_Log("SWORD: Base Convoy Order.");
     test_convoy.printContents(ITEM::TYPE::SWORD);
     test_convoy.printStats(ITEM::TYPE::SWORD, ITEM::STAT::USES_LEFT);
-    printf("Sorting swords according to Pmight");
+    SDL_Log("Sorting swords according to Pmight");
     test_convoy.sortStats(ITEM::TYPE::SWORD, ITEM::STAT::PMIGHT);
     test_convoy.sort(ITEM::TYPE::SWORD, ITEM::STAT::PMIGHT);
     test_convoy.printStats(ITEM::TYPE::SWORD, ITEM::STAT::USES_LEFT);
 }
 
 void testConvoyWriteXML() {
-    printf("Testing Convoy for writeXML abilities.");
+    SDL_Log("Testing Convoy for writeXML abilities.");
     Convoy test_convoy;
     Inventory_item temp;
     temp.id = ITEM::NAME::WOODEN_SWORD;
@@ -864,7 +864,7 @@ void testConvoyWriteXML() {
 }
 
 void testConvoysortStats() {
-    printf("Testing Convoy for stat sorting abilities");
+    SDL_Log("Testing Convoy for stat sorting abilities");
     Convoy test_convoy;
     Inventory_item temp;
     temp.id = ITEM::NAME::WOODEN_SWORD;
@@ -929,75 +929,75 @@ void testConvoysortStats() {
     temp.id = ITEM::NAME::SPEAR;
     test_convoy.deposit(temp);
 
-    printf("SWORD: Base Convoy Order.");
+    SDL_Log("SWORD: Base Convoy Order.");
     test_convoy.printContents(ITEM::TYPE::SWORD);
-    printf("Sorting swords according to Pmight");
+    SDL_Log("Sorting swords according to Pmight");
     test_convoy.sortStats(ITEM::TYPE::SWORD, ITEM::STAT::PMIGHT);
     test_convoy.printStats(ITEM::TYPE::SWORD, ITEM::STAT::PMIGHT);
-    printf("Sorting swords according to Mmight");
+    SDL_Log("Sorting swords according to Mmight");
     test_convoy.sortStats(ITEM::TYPE::SWORD, ITEM::STAT::MMIGHT);
     test_convoy.printStats(ITEM::TYPE::SWORD, ITEM::STAT::MMIGHT);
-    printf("Sorting swords according to hit");
+    SDL_Log("Sorting swords according to hit");
     test_convoy.sortStats(ITEM::TYPE::SWORD, ITEM::STAT::HIT);
     test_convoy.printStats(ITEM::TYPE::SWORD, ITEM::STAT::HIT);
-    printf("Sorting swords according to dodge");
+    SDL_Log("Sorting swords according to dodge");
     test_convoy.sortStats(ITEM::TYPE::SWORD, ITEM::STAT::DODGE);
     test_convoy.printStats(ITEM::TYPE::SWORD, ITEM::STAT::DODGE);
-    printf("Sorting swords according to crit");
+    SDL_Log("Sorting swords according to crit");
     test_convoy.sortStats(ITEM::TYPE::SWORD, ITEM::STAT::CRIT);
     test_convoy.printStats(ITEM::TYPE::SWORD, ITEM::STAT::CRIT);
-    printf("Sorting swords according to favor");
+    SDL_Log("Sorting swords according to favor");
     test_convoy.sortStats(ITEM::TYPE::SWORD, ITEM::STAT::FAVOR);
     test_convoy.printStats(ITEM::TYPE::SWORD, ITEM::STAT::FAVOR);
-    printf("Sorting swords according to weight");
+    SDL_Log("Sorting swords according to weight");
     test_convoy.sortStats(ITEM::TYPE::SWORD, ITEM::STAT::WGT);
     test_convoy.printStats(ITEM::TYPE::SWORD, ITEM::STAT::WGT);
-    printf("Sorting swords according to uses");
+    SDL_Log("Sorting swords according to uses");
     test_convoy.sortStats(ITEM::TYPE::SWORD, ITEM::STAT::USES);
     test_convoy.printStats(ITEM::TYPE::SWORD, ITEM::STAT::USES);
-    printf("Sorting swords according to proficiency");
+    SDL_Log("Sorting swords according to proficiency");
     test_convoy.sortStats(ITEM::TYPE::SWORD, ITEM::STAT::PROF);
     test_convoy.printStats(ITEM::TYPE::SWORD, ITEM::STAT::PROF);
-    printf("Sorting swords according to price");
+    SDL_Log("Sorting swords according to price");
     test_convoy.sortStats(ITEM::TYPE::SWORD, ITEM::STAT::PRICE);
     test_convoy.printStats(ITEM::TYPE::SWORD, ITEM::STAT::PRICE);
 
-    printf("LANCE: Base Convoy Order.");
+    SDL_Log("LANCE: Base Convoy Order.");
     test_convoy.printContents(ITEM::TYPE::LANCE);
-    printf("Sorting lances according to Pmight");
+    SDL_Log("Sorting lances according to Pmight");
     test_convoy.sortStats(ITEM::TYPE::LANCE, ITEM::STAT::PMIGHT);
     test_convoy.printStats(ITEM::TYPE::LANCE, ITEM::STAT::PMIGHT);
-    printf("Sorting lances according to Mmight");
+    SDL_Log("Sorting lances according to Mmight");
     test_convoy.sortStats(ITEM::TYPE::LANCE, ITEM::STAT::MMIGHT);
     test_convoy.printStats(ITEM::TYPE::LANCE, ITEM::STAT::MMIGHT);
-    printf("Sorting lances according to hit");
+    SDL_Log("Sorting lances according to hit");
     test_convoy.sortStats(ITEM::TYPE::LANCE, ITEM::STAT::HIT);
     test_convoy.printStats(ITEM::TYPE::LANCE, ITEM::STAT::HIT);
-    printf("Sorting lances according to dodge");
+    SDL_Log("Sorting lances according to dodge");
     test_convoy.sortStats(ITEM::TYPE::LANCE, ITEM::STAT::DODGE);
     test_convoy.printStats(ITEM::TYPE::LANCE, ITEM::STAT::DODGE);
-    printf("Sorting lances according to crit");
+    SDL_Log("Sorting lances according to crit");
     test_convoy.sortStats(ITEM::TYPE::LANCE, ITEM::STAT::CRIT);
     test_convoy.printStats(ITEM::TYPE::LANCE, ITEM::STAT::CRIT);
-    printf("Sorting lances according to favor");
+    SDL_Log("Sorting lances according to favor");
     test_convoy.sortStats(ITEM::TYPE::LANCE, ITEM::STAT::FAVOR);
     test_convoy.printStats(ITEM::TYPE::LANCE, ITEM::STAT::FAVOR);
-    printf("Sorting lances according to weight");
+    SDL_Log("Sorting lances according to weight");
     test_convoy.sortStats(ITEM::TYPE::LANCE, ITEM::STAT::WGT);
     test_convoy.printStats(ITEM::TYPE::LANCE, ITEM::STAT::WGT);
-    printf("Sorting lances according to uses");
+    SDL_Log("Sorting lances according to uses");
     test_convoy.sortStats(ITEM::TYPE::LANCE, ITEM::STAT::USES);
     test_convoy.printStats(ITEM::TYPE::LANCE, ITEM::STAT::USES);
-    printf("Sorting lances according to proficiency");
+    SDL_Log("Sorting lances according to proficiency");
     test_convoy.sortStats(ITEM::TYPE::LANCE, ITEM::STAT::PROF);
     test_convoy.printStats(ITEM::TYPE::LANCE, ITEM::STAT::PROF);
-    printf("Sorting lances according to minimum range");
+    SDL_Log("Sorting lances according to minimum range");
     test_convoy.sortStats(ITEM::TYPE::LANCE, ITEM::STAT::RANGEMIN);
     test_convoy.printStats(ITEM::TYPE::LANCE, ITEM::STAT::RANGEMIN);
-    printf("Sorting lances according to maximum range");
+    SDL_Log("Sorting lances according to maximum range");
     test_convoy.sortStats(ITEM::TYPE::LANCE, ITEM::STAT::RANGEMAX);
     test_convoy.printStats(ITEM::TYPE::LANCE, ITEM::STAT::RANGEMAX);
-    printf("Sorting lances according to price");
+    SDL_Log("Sorting lances according to price");
     test_convoy.sortStats(ITEM::TYPE::LANCE, ITEM::STAT::PRICE);
     test_convoy.printStats(ITEM::TYPE::LANCE, ITEM::STAT::PRICE);
 }

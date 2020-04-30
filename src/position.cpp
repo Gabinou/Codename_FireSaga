@@ -142,7 +142,7 @@ void Position::newPos(short int newx, short int newy) {
 
             newx = newx % (bounds[1] + 1);
             newy = newy % (bounds[3] + 1);
-            // printf("%d %d\n", newx, newy);
+            // SDL_Log("%d %d\n", newx, newy);
         }
 
         if ((newx >= bounds[0]) && (newx <= bounds[1])) {

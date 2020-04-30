@@ -78,7 +78,7 @@ public:
     }
 
     virtual void draw() {
-        // printf("Is visible? %d\n", visible == true);
+        // SDL_Log("Is visible? %d\n", visible == true);
         if (visible) {
             SDL_RenderCopy(Game::renderer, texture, &srcrects[0], &destrects[0]);
         }

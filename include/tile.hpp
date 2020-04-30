@@ -40,7 +40,7 @@ public:
     void readXML(tinyxml2::XMLElement * in_pTile);
 };
 
-void testXMLTiles();
+void test_XMLtile();
 void baseTiles(std::unordered_map<int, Tile> * in_tiles, std::vector<short int> toload);
 
 extern std::vector<Tile> all_tiles;

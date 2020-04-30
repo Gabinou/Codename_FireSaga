@@ -95,49 +95,49 @@ void Weapon::readXML(tinyxml2::XMLElement * in_pWpn) {
 
     ptemp = in_pWpn->FirstChildElement("Name");
 
-    if (!ptemp) {printf("Cannot get Name element");}
+    if (!ptemp) {SDL_Log("Cannot get Name element");}
 
     name = ptemp->GetText();
 
     ptemp = in_pWpn->FirstChildElement("Name");
 
-    if (!ptemp) {printf("Cannot get Name element");}
+    if (!ptemp) {SDL_Log("Cannot get Name element");}
 
     name = ptemp->GetText();
     id = (unsigned short int)in_pWpn->IntAttribute("id");
     ptemp = in_pWpn->FirstChildElement("Description");
 
-    if (!ptemp) {printf("Cannot get Description element");}
+    if (!ptemp) {SDL_Log("Cannot get Description element");}
 
     description = ptemp->GetText();
     ptemp = in_pWpn->FirstChildElement("Bonus");
 
-    if (!ptemp) {printf("Cannot get Bonus element");}
+    if (!ptemp) {SDL_Log("Cannot get Bonus element");}
 
     readXML_stats(ptemp, &bonus_stats);
     ptemp = in_pWpn->FirstChildElement("Malus");
 
-    if (!ptemp) {printf("Cannot get Malus element");}
+    if (!ptemp) {SDL_Log("Cannot get Malus element");}
 
     readXML_stats(ptemp, &malus_stats);
     ptemp = in_pWpn->FirstChildElement("Types");
 
-    if (!ptemp) {printf("Cannot get Types element");}
+    if (!ptemp) {SDL_Log("Cannot get Types element");}
 
     type = (unsigned short int)ptemp->IntAttribute("id");
     ptemp = in_pWpn->FirstChildElement("Effectives");
 
-    if (!ptemp) {printf("Cannot get Effectives element");}
+    if (!ptemp) {SDL_Log("Cannot get Effectives element");}
 
     effective = (unsigned short int)ptemp->IntAttribute("id");
     ptemp = in_pWpn->FirstChildElement("Effects");
 
-    if (!ptemp) {printf("Cannot get Effects element");}
+    if (!ptemp) {SDL_Log("Cannot get Effects element");}
 
     effect = (long unsigned int)ptemp->IntAttribute("id");
     ptemp = in_pWpn->FirstChildElement("Stats");
 
-    if (!ptemp) {printf("Cannot get Stats element");}
+    if (!ptemp) {SDL_Log("Cannot get Stats element");}
 
     readXML_stats(ptemp, &stats);
 }
@@ -239,7 +239,7 @@ std::vector<Weapon> all_weapons(ITEM::NAME::END);
 std::vector<Weapon> loaded_weapons;
 
 void testXMLWeapons() {
-    printf("Testing Weapon xml writing and reading\n");
+    SDL_Log("Testing Weapon xml writing and reading\n");
     Weapon temp_wpn;
     Weapon_stats temp_wpn_stats;
     // Pmight, Mmight, hit, dodge, crit, favor, wgt, uses, wpnlvl, range, hand, dmg_type, price
@@ -254,7 +254,7 @@ void testXMLWeapons() {
 }
 
 void writeallXMLWeapons() {
-    printf("Writinga all Weapon in an xml\n");
+    SDL_Log("Writinga all Weapon in an xml\n");
     PHYSFS_delete("all_weapons.xml");
 
     for (int i = 1; i < ITEM::NAME::END; i++) {
@@ -263,7 +263,7 @@ void writeallXMLWeapons() {
 }
 
 std::vector<Weapon> baseWeapons(std::vector<short int> toload) {
-    printf("Making some base weapons");
+    SDL_Log("Making some base weapons");
     Weapon temp_wpn;
     Weapon_stats temp_wpn_stats;
     std::vector<Weapon> wpn_out;
@@ -1081,7 +1081,7 @@ std::vector<Weapon> baseWeapons(std::vector<short int> toload) {
 }
 
 void baseWeapons() {
-    printf("Making all base weapons");
+    SDL_Log("Making all base weapons");
     Weapon temp_wpn;
     Weapon_stats temp_wpn_stats;
     // Pmight, Mmight, hit, dodge, crit, favor, wgt, uses, wpnlvl, range, hand, dmg_type, price

@@ -497,7 +497,7 @@ std::vector<std::string> getTilenames(std::vector<short int> in_tilesindex) {
 
     for (int i = 0; i < in_tilesindex.size(); i++) {
         index = in_tilesindex[i] / DEFAULT::TILE_DIVISOR;
-        printf("In tile index: %d", index);
+        SDL_Log("In tile index: %d", index);
 
         switch (index) {
             case TILE::PLAIN:
@@ -642,7 +642,7 @@ std::vector<std::string> getTilenames(std::vector<short int> in_tilesindex) {
         }
     }
 
-    // printf("Tilenames size out:%d", out.size());
+    // SDL_Log("Tilenames size out:%d", out.size());
     return (out);
 }
 

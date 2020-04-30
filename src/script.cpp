@@ -95,7 +95,7 @@ std::vector<bool> happened;
 Script(*scriptChapter[15])();
 
 void baseNarrativeState() {
-    // printf("Establishing base narrative state.\n");
+    // SDL_Log("Establishing base narrative state.\n");
     // died[UNIT::ERWIN] =  false;
     // died[UNIT::KIARA] =  false;
     // died["Reliable"] =  false;
@@ -113,13 +113,13 @@ void baseNarrativeState() {
 }
 
 void baseScript() {
-    printf("Making base script\n");
+    SDL_Log("Making base script\n");
     Dialog_line temp_line;
     std::vector<Dialog_line> temp_lines;
     Scene temp_scene;
     Script temp_script;
 
-    // printf("done");
+    // SDL_Log("done");
 
     // temp_script = Script();
     // temp_scene.setID(1);
@@ -130,7 +130,7 @@ void baseScript() {
     // // all_scripts.push_back(temp_script);
     // // temp_lines.clear();
 
-    // printf("REALLY done");
+    // SDL_Log("REALLY done");
     // Script Supports;
     // temp_scene.setID("Erwin_Kiara_C");
     // temp_lines.push_back({1, UNIT::ERWIN, "the line2"});

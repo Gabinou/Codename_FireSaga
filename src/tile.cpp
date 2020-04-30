@@ -66,19 +66,19 @@ void Tile::readXML(tinyxml2::XMLElement * in_pTile) {
     id = (unsigned short int)in_pTile->IntAttribute("id");
     ptemp = in_pTile->FirstChildElement("Name");
 
-    if (!ptemp) {printf("Cannot get Name element");}
+    if (!ptemp) {SDL_Log("Cannot get Name element");}
 
     name = ptemp->GetText();
 
     ptemp = in_pTile->FirstChildElement("MvtCost");
 
-    if (!ptemp) {printf("Cannot get Name element");}
+    if (!ptemp) {SDL_Log("Cannot get Name element");}
 
     readXML_mvtcost(ptemp, &cost_struct);
     makeMvtCostarray();
     ptemp = in_pTile->FirstChildElement("Stats");
 
-    if (!ptemp) {printf("Cannot get Name element");}
+    if (!ptemp) {SDL_Log("Cannot get Name element");}
 
     readXML_stats(ptemp, &stats);
 }
@@ -118,7 +118,7 @@ void Tile::write(const char * filename, const char * mode) {
 }
 
 void baseTiles(std::unordered_map<int, Tile> * in_tiles, const std::vector<short int> toload) {
-    printf("Loading base tiles\n");
+    SDL_Log("Loading base tiles\n");
     Tile temp_tile;
     Movement_cost temp_cost;
     Tile_stats temp_stats;
@@ -405,12 +405,12 @@ void baseTiles(std::unordered_map<int, Tile> * in_tiles, const std::vector<short
             }
         }
 
-        printf("loaded tile: %s, %d", temp_tile.getName().c_str(), temp_tile.getid());
+        SDL_Log("loaded tile: %s, %d", temp_tile.getName().c_str(), temp_tile.getid());
     }
 }
 
 // void baseTiles(std::unordered_map<int, Tile> * in_tiles) {
-//  printf("Loading all base tiles\n");
+//  SDL_Log("Loading all base tiles\n");
 //     // Fliers always have 1 movement because they dismount inside.
 //     Tile temp_tile;
 //     // Mvt_types: foot_slow, foot_fast, mages, riders_slow, riders_fast, fliers, armors, pirates, bandits;
@@ -701,3 +701,20 @@ std::vector<short int> (*chapTiles[40])() = {testTiles, chap1Tiles, chap2Tiles, 
                                              chap17Tiles, chap18Tiles, chap19Tiles, chap20Tiles, chap21Tiles, chap22Tiles,
                                              chap23Tiles, chap24Tiles, chap25Tiles, gaiden1Tiles
                                             };
+
+void test_XMLtile() {
+    printf("in XML\n");
+    Tile tile1;
+    Tile tile2;
+    Tile_stats in_tile_stats, out_tile_stats;
+    Movement_cost in_cost, out_cost;
+    unsigned char * cost_array;
+    in_tile_stats = {3, 0, 80, 0, };
+    in_cost = {2, 2, 2, 3, 3, 1, 3, 2, 2};
+    tile1 = Tile(TILE::THRONE, "Throne", in_cost, in_tile_stats, true);
+    tile1.writeXML("tile_test.xml");
+
+    tile2 = Tile();
+    tile2.readXML("tile_test.xml");
+    tile2.writeXML("tile_rewrite.xml");
+}
