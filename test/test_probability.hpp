@@ -2,9 +2,17 @@
 #include "probability.hpp"
 
 void test_probability() {
-	tinymt32_t tinyMT;
+	tinymt32_t tinyMT1;
+	tinymt32_t tinyMT2;
 
-	init_tinyMT(tinyMT);
-    // lok(fequal("test_results.txt", "test_results.txt"));
+	init_tinyMT(tinyMT1);
+	init_tinyMT(tinyMT2);
+	lok(single_roll(10, 90));
+	lok(!single_roll(99, 90));
+	lok(!single_roll(90, 90));
+	lok(double_roll(10, 100, 90));
+	lok(!double_roll(100, 100, 90));
+	lok(!double_roll(80, 100, 90));
+	lok(getURN(tinyMT1) == getURN(tinyMT2));
 
 }

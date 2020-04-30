@@ -5,7 +5,7 @@
 #include "tinymt32.h"
 
 #define TWOPOWER32 0x100000000
-#define RN_MAX 99
+#define RN_MAX 100
 #define RN_MIN 0
 
 extern tinymt32_t tinyMT;
