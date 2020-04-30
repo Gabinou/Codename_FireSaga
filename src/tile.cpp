@@ -701,24 +701,3 @@ std::vector<short int> (*chapTiles[40])() = {testTiles, chap1Tiles, chap2Tiles, 
                                              chap17Tiles, chap18Tiles, chap19Tiles, chap20Tiles, chap21Tiles, chap22Tiles,
                                              chap23Tiles, chap24Tiles, chap25Tiles, gaiden1Tiles
                                             };
-
-// void test_XMLtile() {
-//     printf("in XML\n");
-//     Tile tile1;
-//     Tile tile2;
-//     Tile_stats in_tile_stats, out_tile_stats;
-//     Movement_cost in_cost, out_cost;
-//     unsigned char * cost_array;
-//     in_tile_stats = {3, 0, 80, 0, };
-//     in_cost = {2, 2, 2, 3, 3, 1, 3, 2, 2};
-//     tile1 = Tile(TILE::THRONE, "Throne", in_cost, in_tile_stats, true);
-//     printf("in XML\n");
-//     tile1.writeXML("tile_test.xml");
-//     printf("in XML\n");
-
-//     tile2 = Tile();
-//     tile2.readXML("tile_test.xml");
-//     printf("in XML\n");
-//     tile2.writeXML("tile_rewrite.xml");
-//     printf("in XML\n");
-// }
