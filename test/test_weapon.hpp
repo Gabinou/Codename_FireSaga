@@ -5,6 +5,7 @@ void test_weapon() {
     Weapon wpn1, wpn2;
     Weapon_stats in_wpn_stats, out_wpn_stats;
     Unit_stats zero_stats = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
+    Unit_stats out_stats;
 
     long unsigned int in_effect;
     bool in_sellable = false;
@@ -43,8 +44,30 @@ void test_weapon() {
     lok(wpn1.getEffect() == in_effect);
     lok(wpn1.getType() == in_type);
     lok(wpn1.isSellable() == in_sellable);
-    lok(wpn1.getBonus() == zero_stats);
-    lok(wpn1.getMalus() == zero_stats);
+    out_stats = wpn1.getBonus();
+    lok(zero_stats.hp == out_stats.hp);
+    lok(zero_stats.str == out_stats.str);
+    lok(zero_stats.mag == out_stats.mag);
+    lok(zero_stats.agi == out_stats.agi);
+    lok(zero_stats.dex == out_stats.dex);
+    lok(zero_stats.luck == out_stats.luck);
+    lok(zero_stats.def == out_stats.def);
+    lok(zero_stats.res == out_stats.res);
+    lok(zero_stats.con == out_stats.con);
+    lok(zero_stats.move == out_stats.move);
+    lok(zero_stats.prof == out_stats.prof);    
+    out_stats = wpn1.getMalus();
+    lok(zero_stats.hp == out_stats.hp);
+    lok(zero_stats.str == out_stats.str);
+    lok(zero_stats.mag == out_stats.mag);
+    lok(zero_stats.agi == out_stats.agi);
+    lok(zero_stats.dex == out_stats.dex);
+    lok(zero_stats.luck == out_stats.luck);
+    lok(zero_stats.def == out_stats.def);
+    lok(zero_stats.res == out_stats.res);
+    lok(zero_stats.con == out_stats.con);
+    lok(zero_stats.move == out_stats.move);
+    lok(zero_stats.prof == out_stats.prof);    
 
     wpn1.writeXML("weapon_test.xml");
 
@@ -75,8 +98,30 @@ void test_weapon() {
     lok(wpn2.getEffect() == in_effect);
     lok(wpn2.getType() == in_type);
     lok(wpn2.isSellable() == in_sellable);
-    lok(wpn2.getBonus() == zero_stats);
-    lok(wpn2.getMalus() == zero_stats);
+    out_stats = wpn2.getBonus();
+    lok(zero_stats.hp == out_stats.hp);
+    lok(zero_stats.str == out_stats.str);
+    lok(zero_stats.mag == out_stats.mag);
+    lok(zero_stats.agi == out_stats.agi);
+    lok(zero_stats.dex == out_stats.dex);
+    lok(zero_stats.luck == out_stats.luck);
+    lok(zero_stats.def == out_stats.def);
+    lok(zero_stats.res == out_stats.res);
+    lok(zero_stats.con == out_stats.con);
+    lok(zero_stats.move == out_stats.move);
+    lok(zero_stats.prof == out_stats.prof);    
+    out_stats = wpn2.getMalus();
+    lok(zero_stats.hp == out_stats.hp);
+    lok(zero_stats.str == out_stats.str);
+    lok(zero_stats.mag == out_stats.mag);
+    lok(zero_stats.agi == out_stats.agi);
+    lok(zero_stats.dex == out_stats.dex);
+    lok(zero_stats.luck == out_stats.luck);
+    lok(zero_stats.def == out_stats.def);
+    lok(zero_stats.res == out_stats.res);
+    lok(zero_stats.con == out_stats.con);
+    lok(zero_stats.move == out_stats.move);
+    lok(zero_stats.prof == out_stats.prof);
 
     wpn2.writeXML("weapon_rewrite.xml");
     lok(fequal("weapon_test.xml", "weapon_rewrite.xml"));
