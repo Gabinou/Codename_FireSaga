@@ -22,7 +22,7 @@ private:
     short unsigned int effective = 0; // is a unit type.
     std::string name = "";
     std::string description = "";
-    unsigned short int id = 0; // 0 means empty.                      
+    unsigned short int id = 0; // 0 means empty.
     short int use_effect = -1;
     std::vector<unsigned short int> users; // item only usable by users. empty = everyone
     char infused = -1; // >0 means weapon was already infused/is a magic weapon.
@@ -63,8 +63,6 @@ public:
     void writeXML(tinyxml2::XMLDocument * in_doc, tinyxml2::XMLElement * in_pWpn);
     void readXML(tinyxml2::XMLElement * in_pWpn);
 };
-
-extern std::string stats2str(Weapon_stats in_stats);
 
 extern std::vector<Weapon> all_weapons;
 extern std::vector<Weapon> loaded_weapons;

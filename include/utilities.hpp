@@ -29,6 +29,7 @@ extern std::vector<std::string> unitTypes(unsigned short int in_typecode);
 extern std::vector<std::string> wpnTypes(short unsigned int in_typecode);
 extern unsigned char unitid2army(short unsigned int in_unitid);
 extern std::string stats2str(Unit_stats in_stats);
+extern std::string stats2str(Weapon_stats in_stats);
 
 extern std::vector<std::string> getTilenames(std::vector<short int> in_tilesindex);
 extern std::vector<std::string> unitNames;
