@@ -10,6 +10,10 @@
 #include "utilities.hpp"
 #include "string.h"
 #include <string>
+// #ifndef STB_SPRINTF_IMPLEMENTATION //Why no need?
+// #define STB_SPRINTF_IMPLEMENTATION
+#include "stb_sprintf.h"
+//#endif /* STB_SPRINTF_IMPLEMENTATION */
 
 class Weapon : public XML_IO {
 private:
@@ -17,7 +21,7 @@ private:
     // Pmight, Mmight, hit, dodge, crit, favor, wgt, uses, prof, range, hand, dmg_type, cost, heal
     Unit_stats bonus_stats = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
     Unit_stats malus_stats = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
-    
+
     unsigned short int id = 0; // 0 means empty.
     long unsigned int effect = 0;
     short unsigned int type = 0;
@@ -25,7 +29,7 @@ private:
     short int use_effect = -1;
     char infused = -1; // >0 means weapon was already infused/is a magic weapon.
     bool sellable = true;
-    
+
     std::vector<unsigned short int> users; // item only usable by users. empty = everyone
     std::string name = "";
     std::string description = "";
@@ -50,13 +54,10 @@ public:
     void setUser();
     short unsigned int getType();
     void setType(short unsigned int in_type);
-
     void infuse(unsigned char in_mag);
     bool canInfuse();
-
     std::vector<unsigned short int> getUsers();
     void setUsers(std::vector<unsigned short int> in_users);
-
     bool isSellable();
     void setSellable(bool in_sellable);
 
