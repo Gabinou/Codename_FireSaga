@@ -5,6 +5,7 @@ void test_weapon() {
     Weapon wpn1, wpn2;
     Weapon_stats in_wpn_stats, out_wpn_stats;
     long unsigned int in_effect;
+    bool in_sellable = false;
     short unsigned int in_type = ITEM::TYPE::SWORD + ITEM::TYPE::LANCE;
     in_effect = ITEM::EFFECT::KILL1P + ITEM::EFFECT::BRAVE2X + ITEM::EFFECT::BREAK_SHIELD;
     // Pmight, Mmight, hit, dodge, crit, favor, wgt, uses, wpnlvl, range, hand, dmg_type, price
@@ -14,6 +15,7 @@ void test_weapon() {
     std::string out_description;
     wpn1.setDescription(in_description);
     wpn1.setEffect(in_effect);
+    wpn1.setSellable(in_sellable);
     
     out_wpn_stats = wpn1.getStats();                              
     lok(in_wpn_stats.Pmight == out_wpn_stats.Pmight);
@@ -38,6 +40,7 @@ void test_weapon() {
     lok(wpn1.getName() == "Wooden sword");
     lok(wpn1.getEffect() == in_effect);
     lok(wpn1.getType() == in_type);
+    lok(wpn1.isSellable() == in_sellable);
 
     wpn1.writeXML("weapon_test.xml");
 
@@ -67,6 +70,7 @@ void test_weapon() {
     lok(wpn2.getName() == "Wooden sword");
     lok(wpn2.getEffect() == in_effect);
     lok(wpn2.getType() == in_type);
+    lok(wpn2.isSellable() == in_sellable);
 
     wpn2.writeXML("weapon_rewrite.xml");
     lok(fequal("weapon_test.xml", "weapon_rewrite.xml"));

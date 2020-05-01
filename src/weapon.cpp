@@ -41,11 +41,11 @@ Unit_stats Weapon::getBonus() {
     return (bonus_stats);
 }
 
-bool isSellable() {
+bool Weapon::isSellable() {
     return (sellable);
 }
 
-void setSellable(bool in_sellable) {
+void Weapon::setSellable(bool in_sellable) {
     sellable = in_sellable;
 }
 
@@ -107,11 +107,12 @@ void Weapon::readXML(tinyxml2::XMLElement * in_pWpn) {
 
     name = ptemp->GetText();
 
-    ptemp = in_pWpn->FirstChildElement("Name");
+    ptemp = in_pWpn->FirstChildElement("Sellable");
 
-    if (!ptemp) {SDL_Log("Cannot get Name element");}
+    if (!ptemp) {SDL_Log("Cannot get Sellable element");}
 
-    name = ptemp->GetText();
+    sellable = ptemp->BoolText();
+
     id = (unsigned short int)in_pWpn->IntAttribute("id");
     ptemp = in_pWpn->FirstChildElement("Description");
 
@@ -123,6 +124,7 @@ void Weapon::readXML(tinyxml2::XMLElement * in_pWpn) {
     if (!ptemp) {SDL_Log("Cannot get Bonus element");}
 
     readXML_stats(ptemp, &bonus_stats);
+
     ptemp = in_pWpn->FirstChildElement("Malus");
 
     if (!ptemp) {SDL_Log("Cannot get Malus element");}
@@ -172,6 +174,10 @@ void Weapon::writeXML(tinyxml2::XMLDocument * in_doc, tinyxml2::XMLElement * in_
     tinyxml2::XMLElement * pMalus = in_doc->NewElement("Malus");
     in_pWpn->InsertEndChild(pMalus);
     writeXML_stats(in_doc, pMalus, &malus_stats);
+
+    tinyxml2::XMLElement * pSellable = in_doc->NewElement("Sellable");
+    in_pWpn->InsertEndChild(pSellable);
+    pSellable->SetText(sellable);
 
     tinyxml2::XMLElement * pEffectives = in_doc->NewElement("Effectives");
     in_pWpn->InsertEndChild(pEffectives);
