@@ -60,6 +60,11 @@ void Weapon::infuse(unsigned char in_mag) {
     }
 }
 
+char Weapon::getInfused() {
+    return (infused);
+}
+
+
 bool Weapon::canInfuse() {
     bool out;
 
@@ -196,7 +201,11 @@ void Weapon::writeXML(tinyxml2::XMLDocument * in_doc, tinyxml2::XMLElement * in_
 
     tinyxml2::XMLElement * pSellable = in_doc->NewElement("Sellable");
     in_pWpn->InsertEndChild(pSellable);
-    pSellable->SetText(sellable);
+    pSellable->SetText(sellable);    
+
+    tinyxml2::XMLElement * pInfused = in_doc->NewElement("Infused");
+    in_pWpn->InsertEndChild(pInfused);
+    pInfused->SetText(infused);
 
     tinyxml2::XMLElement * pEffectives = in_doc->NewElement("Effectives");
     in_pWpn->InsertEndChild(pEffectives);
