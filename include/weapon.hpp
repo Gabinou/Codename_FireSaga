@@ -22,9 +22,9 @@ private:
     short unsigned int effective = 0; // is a unit type.
     std::string name = "";
     std::string description = "";
-    unsigned short int id = 0; // 0 means empty.
+    unsigned short int id = 0; // 0 means empty.                      
     short int use_effect = -1;
-    short int user_id = -1;
+    std::vector<unsigned short int> users; // item only usable by users. empty = everyone
     char infused = -1; // >0 means weapon was already infused/is a magic weapon.
     bool sellable = true;
 public:
@@ -45,16 +45,19 @@ public:
     std::string getDescription();
     void setName(std::string in_name);
     std::string getName();
+    void setUser();
     short unsigned int getType();
     void setType(short unsigned int in_type);
 
     void infuse(unsigned char in_mag);
     bool canInfuse();
 
+    std::vector<unsigned short int> getUsers();
+    void setUsers(std::vector<unsigned short int> in_users);
+
     bool isSellable();
     void setSellable(bool in_sellable);
 
-    void write(const char * filename, const char * mode = "a");
     using XML_IO::writeXML;
     using XML_IO::readXML;
     void writeXML(tinyxml2::XMLDocument * in_doc, tinyxml2::XMLElement * in_pWpn);

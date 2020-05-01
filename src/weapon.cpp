@@ -49,6 +49,14 @@ void Weapon::setSellable(bool in_sellable) {
     sellable = in_sellable;
 }
 
+std::vector<unsigned short int> Weapon::getUsers() {
+    return(users);
+}
+
+void Weapon::setUsers(std::vector<unsigned short int> in_users) {
+    users = in_users;
+}
+
 void Weapon::infuse(unsigned char in_mag) {
     if (infused < 0) {
         infused = in_mag;
@@ -231,38 +239,6 @@ void Weapon::writeXML(tinyxml2::XMLDocument * in_doc, tinyxml2::XMLElement * in_
     }
 
     pEffects->SetAttribute("id", (uint64_t) effect);
-}
-
-void Weapon::write(const char * filename, const char * mode) {
-    FILE * fp;
-    fp = fopen(filename, mode);
-    fprintf(fp, "%s \n", name.c_str());
-    std::vector<std::string> wpn_types = wpnTypes(type);
-
-    for (short unsigned int i = 0; i < wpn_types.size(); i++) {
-        fprintf(fp, "%s \n", wpn_types[i].c_str());
-    }
-
-    fprintf(fp, "%d", type);
-    fprintf(fp, "\n");
-    fprintf(fp, "%s \n", description.c_str());
-    fprintf(fp, "%d \n", effect);
-    fprintf(fp, "%d \n", effective);
-
-    if (stats.dmg_type) {
-        fprintf(fp, "Damage type: %s \n", "Magic");
-    } else {
-        fprintf(fp, "Damage type: %s \n", "Physical");
-    }
-
-    // Handedness variable sucks and is hard to print.
-    fprintf(fp, "Stats, PMight, MMight, Hit, Dodge, Crit, Favor, Weight, Proficiency, Range min, Range max, Price\n");
-    fprintf(fp, "Stats,\t\t%d,\t%d,\t%d,\t%d,\t%d,\t%d,\t%d,\t%d,\t%d,\t%d,\t%d\n", stats.Pmight, stats.Mmight, stats.combat.hit, stats.combat.dodge, stats.combat.crit, stats.combat.favor, stats.prof, stats.uses, stats.wgt, stats.price);
-    fprintf(fp, "Units Stats, HP, Str, Mag, Skl, Spd, Luck, Def, Res, Con, Move\n");
-    fprintf(fp, "Unit Malus,\t\t%d,\t%d,\t%d,\t%d,\t%d,\t%d,\t%d,\t%d,\t%d,\t%d,\t%d\n", malus_stats.hp, malus_stats.str, malus_stats.mag, malus_stats.dex, malus_stats.agi, malus_stats.luck, malus_stats.def, malus_stats.res, malus_stats.con, malus_stats.move, malus_stats.prof);
-    fprintf(fp, "Unit Bonus,\t\t%d,\t%d,\t%d,\t%d,\t%d,\t%d,\t%d,\t%d,\t%d,\t%d,\t%d\n", bonus_stats.hp, bonus_stats.str, bonus_stats.mag, bonus_stats.dex, bonus_stats.agi, bonus_stats.luck, bonus_stats.def, bonus_stats.res, bonus_stats.con, bonus_stats.move, bonus_stats.prof);
-    fprintf(fp, "\n");
-    fclose(fp);
 }
 
 std::vector<Weapon> all_weapons(ITEM::NAME::END);
