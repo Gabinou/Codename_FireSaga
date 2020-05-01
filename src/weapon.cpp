@@ -137,6 +137,12 @@ void Weapon::readXML(tinyxml2::XMLElement * in_pWpn) {
 
     sellable = ptemp->BoolText();
 
+    ptemp = in_pWpn->FirstChildElement("Infused");
+
+    if (!ptemp) {SDL_Log("Cannot get Infused element");}
+
+    infused = ptemp->IntText();
+
     id = (unsigned short int)in_pWpn->IntAttribute("id");
     ptemp = in_pWpn->FirstChildElement("Description");
 
@@ -201,7 +207,7 @@ void Weapon::writeXML(tinyxml2::XMLDocument * in_doc, tinyxml2::XMLElement * in_
 
     tinyxml2::XMLElement * pSellable = in_doc->NewElement("Sellable");
     in_pWpn->InsertEndChild(pSellable);
-    pSellable->SetText(sellable);    
+    pSellable->SetText(sellable);
 
     tinyxml2::XMLElement * pInfused = in_doc->NewElement("Infused");
     in_pWpn->InsertEndChild(pInfused);
