@@ -52,15 +52,20 @@ void Weapon::setUsers(std::vector<unsigned short int> in_users) {
     users = in_users;
 }
 
-void Weapon::infuse(unsigned char in_mag) {
+void Weapon::infuse(unsigned char in_mag, unsigned short int in_type) {
     if (infused < 0) {
-        infused = in_mag;
+        if (((in_type & ITEM::TYPE::ELEMENTAL) > 0) || ((in_type & ITEM::TYPE::ANGELIC) > 0) || ((in_type & ITEM::TYPE::DEMONIC) > 0)) {
+            infused.power = in_mag;
+            infused.type = in_type;
+        } else {
+            SDL_Log("Cannot infuse weapon with weapon type otehr than Elemental, Demonic or Angelic.");
+        }
     } else {
         SDL_Log("Weapon is already infused/is a magic Weapon. Cannot infuse again.");
     }
 }
 
-char Weapon::getInfused() {
+Infusion Weapon::getInfused() {
     return (infused);
 }
 

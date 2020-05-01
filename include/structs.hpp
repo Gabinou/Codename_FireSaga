@@ -88,10 +88,17 @@ struct Combat_stats {
     // char speed;
 };
 
+struct Infusion {
+    char power = -1; // >0 means weapon was already infused/is a magic weapon.
+    short unsigned int type = 0;
+};
+
 struct Point {
     short unsigned int x;
     short unsigned int y;
 };
+
+
 
 struct Weapon_stats {
     unsigned char Pmight; //Physical might Pprot for shields.

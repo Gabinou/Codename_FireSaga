@@ -27,8 +27,8 @@ private:
     short unsigned int type = 0;
     short unsigned int effective = 0; // is a unit type.
     short int use_effect = -1;
-    char infused = -1; // >0 means weapon was already infused/is a magic weapon.
-    // I think infusion shoulw also have a magic type: Elemental/Angelic/Demonic
+    Infusion infused;
+
     bool sellable = true;
 
     std::vector<unsigned short int> users; // item only usable by users. empty = everyone
@@ -55,8 +55,8 @@ public:
     void setUser();
     short unsigned int getType();
     void setType(short unsigned int in_type);
-    void infuse(unsigned char in_mag);
-    char getInfused();
+    void infuse(unsigned char in_mag, short unsigned int in_type);
+    Infusion getInfused();
     bool canInfuse();
 
     std::vector<unsigned short int> getUsers();
