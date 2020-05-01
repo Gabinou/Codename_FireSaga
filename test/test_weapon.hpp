@@ -8,7 +8,7 @@ void test_weapon() {
     Unit_stats out_stats;
     Infusion out_infusion;
     short int infuse = 5;
-    short unsigned int infuse_type = ;
+    short unsigned int infuse_type = ITEM::TYPE::ELEMENTAL;
     long unsigned int in_effect;
     bool in_sellable = false;
     short unsigned int in_type = ITEM::TYPE::SWORD + ITEM::TYPE::LANCE;
@@ -23,7 +23,7 @@ void test_weapon() {
     wpn1.setBonus(in_stats);
     wpn1.setMalus(in_stats);
     wpn1.setSellable(in_sellable);
-    wpn1.infuse(infuse);
+    wpn1.infuse(infuse, infuse_type);
     
     out_wpn_stats = wpn1.getStats();                              
     lok(in_wpn_stats.Pmight == out_wpn_stats.Pmight);

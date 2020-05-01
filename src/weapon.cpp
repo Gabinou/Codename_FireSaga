@@ -53,7 +53,7 @@ void Weapon::setUsers(std::vector<unsigned short int> in_users) {
 }
 
 void Weapon::infuse(unsigned char in_mag, unsigned short int in_type) {
-    if (infused < 0) {
+    if (infused.power < 0) {
         if (((in_type & ITEM::TYPE::ELEMENTAL) > 0) || ((in_type & ITEM::TYPE::ANGELIC) > 0) || ((in_type & ITEM::TYPE::DEMONIC) > 0)) {
             infused.power = in_mag;
             infused.type = in_type;
@@ -73,7 +73,7 @@ Infusion Weapon::getInfused() {
 bool Weapon::canInfuse() {
     bool out;
 
-    if (infused < 0) {
+    if (infused.power < 0) {
         out = true;
     } else {
         out = false;
@@ -129,6 +129,7 @@ void Weapon::setType(short unsigned int in_type) {
 
 void Weapon::readXML(tinyxml2::XMLElement * in_pWpn) {
     tinyxml2::XMLElement * ptemp;
+    tinyxml2::XMLElement * ptemp2;
 
     ptemp = in_pWpn->FirstChildElement("Name");
 
@@ -146,7 +147,17 @@ void Weapon::readXML(tinyxml2::XMLElement * in_pWpn) {
 
     if (!ptemp) {SDL_Log("Cannot get Infused element");}
 
-    infused = ptemp->IntText();
+    ptemp2 = ptemp->FirstChildElement("Power");
+
+    if (!ptemp) {SDL_Log("Cannot get Power element");}
+
+    infused.power = ptemp2->IntText();
+
+    ptemp2 = ptemp->FirstChildElement("Type");
+
+    if (!ptemp) {SDL_Log("Cannot get Type element");}
+
+    infused.type = ptemp2->IntText();
 
     id = (unsigned short int)in_pWpn->IntAttribute("id");
     ptemp = in_pWpn->FirstChildElement("Description");
@@ -216,7 +227,11 @@ void Weapon::writeXML(tinyxml2::XMLDocument * in_doc, tinyxml2::XMLElement * in_
 
     tinyxml2::XMLElement * pInfused = in_doc->NewElement("Infused");
     in_pWpn->InsertEndChild(pInfused);
-    pInfused->SetText(infused);
+    tinyxml2::XMLElement * pPower = in_doc->NewElement("Power");
+    pInfused->InsertEndChild(pPower);
+    pPower->SetText(infused.power);
+    tinyxml2::XMLElement * piType = in_doc->NewElement("Type");
+    piType->SetText(infused.type);
 
     tinyxml2::XMLElement * pEffectives = in_doc->NewElement("Effectives");
     in_pWpn->InsertEndChild(pEffectives);
