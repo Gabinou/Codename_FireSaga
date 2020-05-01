@@ -8,6 +8,7 @@
 #include "test_unit.hpp"
 #include "test_probability.hpp"
 #include "test_filesystem.hpp"
+#include "test_weapon.hpp"
 
 int main(int argc, char * argv[]) {
     freopen("test_results.txt", "w+", stdout);
@@ -25,17 +26,17 @@ int main(int argc, char * argv[]) {
     SDL_Log("Loading base weapons.");
     baseWeapons();
 
-
     printf("Running tests\n");
-    lrun("Test_linalg", test_linalg);
-    lrun("Test_pathfinding ", test_pathfinding);
-    lrun("Test_utilities ", test_utilities);
-    lrun("Test_position ", test_position);
-    lrun("Test_tile ", test_tile);
-    lrun("Test_map ", test_map);
-    lrun("Test_unit ", test_unit);
-    lrun("test_probability ", test_probability);
-    lrun("test_filesystem ", test_filesystem);
+    lrun("linalg", test_linalg);
+    lrun("Pathfinding ", test_pathfinding);
+    lrun("Utilities ", test_utilities);
+    lrun("Position ", test_position);
+    lrun("Tile ", test_tile);
+    lrun("Map ", test_map);
+    lrun("Unit ", test_unit);
+    lrun("Weapon ", test_weapon);
+    lrun("Probability ", test_probability);
+    lrun("Filesystem ", test_filesystem);
     lresults();
 
     return (lfails != 0);

@@ -238,21 +238,6 @@ void Weapon::write(const char * filename, const char * mode) {
 std::vector<Weapon> all_weapons(ITEM::NAME::END);
 std::vector<Weapon> loaded_weapons;
 
-void testXMLWeapons() {
-    SDL_Log("Testing Weapon xml writing and reading\n");
-    Weapon temp_wpn;
-    Weapon_stats temp_wpn_stats;
-    // Pmight, Mmight, hit, dodge, crit, favor, wgt, uses, wpnlvl, range, hand, dmg_type, price
-    temp_wpn_stats = {3, 0, 80, 0, 0, 0, 3, 30, 2, {1, 1}, {1, 2}, 0, 1000, 0};
-    temp_wpn = Weapon(ITEM::TYPE::SWORD, temp_wpn_stats, ITEM::NAME::WOODEN_SWORD);
-    temp_wpn.setDescription("Practice sword, made of wood. It's crushing blows are still deadly.");
-    temp_wpn.writeXML("weapon_test.xml");
-
-    temp_wpn = Weapon();
-    temp_wpn.readXML("weapon_test.xml");
-    temp_wpn.writeXML("weapon_rewrite.xml");
-}
-
 void writeallXMLWeapons() {
     SDL_Log("Writinga all Weapon in an xml\n");
     PHYSFS_delete("all_weapons.xml");
