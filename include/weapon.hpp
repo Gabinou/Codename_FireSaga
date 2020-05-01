@@ -26,7 +26,7 @@ private:
     short int use_effect = -1;
     short int user_id = -1;
     char infused = -1;
-    bool sellable;
+    bool sellable = true;
 public:
     Weapon();
     Weapon(short unsigned int in_type, Weapon_stats in_stats, unsigned char in_id);
@@ -43,11 +43,14 @@ public:
     short unsigned int getEffective();
     void setDescription(std::string in_description);
     std::string getDescription();
-    void  setName(std::string in_name);
+    void setName(std::string in_name);
     std::string getName();
     short unsigned int getType();
     void setType(short unsigned int in_type);
     void infuse(unsigned char in_mag);
+
+    bool isSellable();
+    void setSellable(bool in_sellable);
 
     void write(const char * filename, const char * mode = "a");
     using XML_IO::writeXML;

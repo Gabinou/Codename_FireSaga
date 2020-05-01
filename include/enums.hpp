@@ -289,7 +289,6 @@ enum EFFECTS {
     CAPTURE = 0x04000000,
     HALF_DMG = 0x08000000,
     BREAK_SHIELD = 0x10000000,
-    // -> Should be 32bit int.
 };
 }
 }

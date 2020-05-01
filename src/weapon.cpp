@@ -41,6 +41,14 @@ Unit_stats Weapon::getBonus() {
     return (bonus_stats);
 }
 
+bool isSellable() {
+    return (sellable);
+}
+
+void setSellable(bool in_sellable) {
+    sellable = in_sellable;
+}
+
 void Weapon::infuse(unsigned char in_mag) {
     infused = in_mag;
 }
