@@ -17,16 +17,18 @@ private:
     // Pmight, Mmight, hit, dodge, crit, favor, wgt, uses, prof, range, hand, dmg_type, cost, heal
     Unit_stats bonus_stats = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
     Unit_stats malus_stats = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
+    
+    unsigned short int id = 0; // 0 means empty.
     long unsigned int effect = 0;
     short unsigned int type = 0;
     short unsigned int effective = 0; // is a unit type.
-    std::string name = "";
-    std::string description = "";
-    unsigned short int id = 0; // 0 means empty.
     short int use_effect = -1;
-    std::vector<unsigned short int> users; // item only usable by users. empty = everyone
     char infused = -1; // >0 means weapon was already infused/is a magic weapon.
     bool sellable = true;
+    
+    std::vector<unsigned short int> users; // item only usable by users. empty = everyone
+    std::string name = "";
+    std::string description = "";
 public:
     Weapon();
     Weapon(short unsigned int in_type, Weapon_stats in_stats, unsigned char in_id);
