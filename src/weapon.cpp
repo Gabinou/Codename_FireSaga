@@ -50,7 +50,23 @@ void Weapon::setSellable(bool in_sellable) {
 }
 
 void Weapon::infuse(unsigned char in_mag) {
-    infused = in_mag;
+    if (infused < 0) {
+        infused = in_mag;
+    } else {
+        SDL_Log("Weapon is already infused/is a magic Weapon. Cannot infuse again.");
+    }
+}
+
+bool Weapon::canInfuse() {
+    bool out;
+
+    if (infused < 0) {
+        out = true;
+    } else {
+        out = false;
+    }
+
+    return (out);
 }
 
 void Weapon::setEffect(long unsigned int in_effect) {

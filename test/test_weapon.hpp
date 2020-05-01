@@ -4,6 +4,8 @@
 void test_weapon() {
     Weapon wpn1, wpn2;
     Weapon_stats in_wpn_stats, out_wpn_stats;
+    Unit_stats zero_stats = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
+
     long unsigned int in_effect;
     bool in_sellable = false;
     short unsigned int in_type = ITEM::TYPE::SWORD + ITEM::TYPE::LANCE;
@@ -41,6 +43,8 @@ void test_weapon() {
     lok(wpn1.getEffect() == in_effect);
     lok(wpn1.getType() == in_type);
     lok(wpn1.isSellable() == in_sellable);
+    lok(wpn1.getBonus() == zero_stats);
+    lok(wpn1.getMalus() == zero_stats);
 
     wpn1.writeXML("weapon_test.xml");
 
@@ -71,6 +75,8 @@ void test_weapon() {
     lok(wpn2.getEffect() == in_effect);
     lok(wpn2.getType() == in_type);
     lok(wpn2.isSellable() == in_sellable);
+    lok(wpn2.getBonus() == zero_stats);
+    lok(wpn2.getMalus() == zero_stats);
 
     wpn2.writeXML("weapon_rewrite.xml");
     lok(fequal("weapon_test.xml", "weapon_rewrite.xml"));

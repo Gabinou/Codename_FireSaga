@@ -25,7 +25,7 @@ private:
     unsigned short int id = 0; // 0 means empty.
     short int use_effect = -1;
     short int user_id = -1;
-    char infused = -1;
+    char infused = -1; // >0 means weapon was already infused/is a magic weapon.
     bool sellable = true;
 public:
     Weapon();
@@ -47,7 +47,9 @@ public:
     std::string getName();
     short unsigned int getType();
     void setType(short unsigned int in_type);
+
     void infuse(unsigned char in_mag);
+    bool canInfuse();
 
     bool isSellable();
     void setSellable(bool in_sellable);
