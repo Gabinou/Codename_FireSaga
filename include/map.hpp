@@ -147,6 +147,9 @@ public:
 
 extern std::vector<std::vector<short int>> (*chapTilemaps[40])();
 extern std::vector<short unsigned int> (*chapArrivalinds[40])();
+extern std::vector<short int> (*baseParties[CHAPTER::CHAP1 - CHAPTER::TEST + 1])();
+extern std::vector<std::vector<Inventory_item>> (*arrivalEquipments[CHAPTER::END - CHAPTER::TEST + 1])();
+extern std::vector<Map_arrival> (*mapArrivals[CHAPTER::END - CHAPTER::TEST + 1])();
 
 std::vector<short unsigned int> testArrivals();
 std::vector<std::vector<short int>> testTilemap();

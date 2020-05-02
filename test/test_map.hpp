@@ -9,31 +9,32 @@ void test_map() {
     map.loadTiles(0);
     map.loadTilemap(0);
     map.setArrivals(mapArrivals[0]());
+    
     map.setArrivalEquipments(arrivalEquipments[0]());
-    Unit unit;
+    Unit unit1, unit2;
     Unit_stats in_stats, out_stats;
     Unit_stats in_caps, out_caps;
     Unit_stats in_growths, out_growths;
     Inventory_item in_wpn, out_wpn;
+    short int in_exp, out_exp;
     in_stats = {15,  4,  5,  7,  6,   8,  4,  6,  5,  5,  6};
-    unit = Unit(UNIT::NAME::SILOU, UNIT::CLASS::MAGE, in_stats, UNIT::SEX::F);
+    unit1 = Unit(UNIT::NAME::SILOU, UNIT::CLASS::MAGE, in_stats, UNIT::SEX::F);
     in_caps = {48, 14, 25, 32, 34, 28, 19, 40, 15};
-    unit.setCaps(in_caps);
+    unit1.setCaps(in_caps);
     in_growths = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
-    unit.setGrowths(in_growths);
-    unit.setBaseExp(400);
+    unit1.setGrowths(in_growths);
+    in_exp = 400;
+    unit1.setBaseExp(in_exp);
     in_wpn.id = ITEM::NAME::BALL_LIGHTNING;
-    unit.addEquipment(in_wpn);
+    unit1.addEquipment(in_wpn);
 
     std::string asset_name;
-    asset_name = "..//assets//" +  unit.getName() + ".png";
+    asset_name = "..//assets//" +  unit1.getName() + ".png";
     entityx::Entity Uent = ex.entities.create();;
-    Uent.assign<Unit>(unit);
+    Uent.assign<Unit>(unit1);
     Uent.assign<Position>(6, 6);
     Uent.assign<Sprite>(asset_name.c_str());
     map.putUnit(6, 6, Uent.component<Unit>());
-
-
 
 
     map.writeXML("map_test.xml");

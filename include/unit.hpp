@@ -172,10 +172,6 @@ extern void writeUnits_PC(const char * filename);
 extern void writeUnits_NPC(const char * filename);
 extern void writeAllUnits(const char * filename);
 
-extern std::vector<short int> (*baseParties[CHAPTER::CHAP1 - CHAPTER::TEST + 1])();
-extern std::vector<Map_arrival> (*mapArrivals[CHAPTER::END - CHAPTER::TEST + 1])();
-extern std::vector<std::vector<Inventory_item>> (*arrivalEquipments[CHAPTER::END - CHAPTER::TEST + 1])();
-
 void testXMLUnits();
 void baseEnemyUnits();
 
