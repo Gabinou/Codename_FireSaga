@@ -30,6 +30,7 @@ void Map::readXML(tinyxml2::XMLElement * in_pMap) {
     SDL_Log("XMLElement: %s", getXMLElement().c_str());
 
     chapter = (unsigned short int)in_pMap->IntAttribute("chapter");
+
     tinyxml2::XMLElement * pTiles = in_pMap->FirstChildElement("Tiles");
     tinyxml2::XMLElement * pTile;
     tilenames.clear();
@@ -50,79 +51,112 @@ void Map::readXML(tinyxml2::XMLElement * in_pMap) {
 
     tinyxml2::XMLElement * pBounds = in_pMap->FirstChildElement("Bounds");
 
-    if (!pBounds) {SDL_Log("Cannot get Bounds element");}
+    if (!pBounds) {
+        SDL_Log("Cannot get Bounds element");
+    } else {
+        ptemp = pBounds->FirstChildElement("row_max");
 
-    ptemp = pBounds->FirstChildElement("row_max");
-    ptemp->QueryIntText(&buffint);
-    bounds[1] = buffint;
-    ptemp = pBounds->FirstChildElement("col_max");
-    ptemp->QueryIntText(&buffint);
-    bounds[3] = buffint;
+        if (!ptemp) {
+            SDL_Log("Cannot get row_max element");
+        } else {
+            ptemp->QueryIntText(&buffint);
+            bounds[1] = buffint;
+        }
+
+        ptemp = pBounds->FirstChildElement("col_max");
+
+        if (!ptemp) {
+            SDL_Log("Cannot get col_max element");
+        } else {
+            ptemp->QueryIntText(&buffint);
+            bounds[3] = buffint;
+        }
+
+    }
 
     tilemap.clear();
 
     tinyxml2::XMLElement * pTilemap = in_pMap->FirstChildElement("Tilemap");
-    tinyxml2::XMLElement * pRow = pTilemap->FirstChildElement("Row");
-    tinyxml2::XMLElement * pCol;
-    int tempcol;
-    int temprow;
-    tilemap.clear();
-    std::vector<short int> tempvec;
 
-    while (pRow) {
-        pCol = pRow->FirstChildElement("Col");
-        temprow = pRow->IntAttribute("row");
-        tempvec.clear();
+    if (!pTilemap) {
+        SDL_Log("Cannot get tilemap element");
+    } else {
+        tinyxml2::XMLElement * pRow = pTilemap->FirstChildElement("Row");
+        tinyxml2::XMLElement * pCol;
+        int tempcol;
+        int temprow;
+        std::vector<short int> tempvec;
 
-        while (pCol) {
-            pCol->QueryIntText(&buffint);
-            tempcol = pCol->IntAttribute("col");
-            tempvec.push_back(buffint);
-            pCol = pCol->NextSiblingElement("Col");
+        while (pRow) {
+            pCol = pRow->FirstChildElement("Col");
+            temprow = pRow->IntAttribute("row");
+            tempvec.clear();
+
+            while (pCol) {
+                pCol->QueryIntText(&buffint);
+                tempcol = pCol->IntAttribute("col");
+                tempvec.push_back(buffint);
+                pCol = pCol->NextSiblingElement("Col");
+            }
+
+            tilemap.push_back(tempvec);
+            pRow = pRow->NextSiblingElement("Row");
         }
-
-        tilemap.push_back(tempvec);
-        pRow = pRow->NextSiblingElement("Row");
     }
 
     tinyxml2::XMLElement * pArrivals = in_pMap->FirstChildElement("Arrivals");
-    tinyxml2::XMLElement * pArrival = pArrivals->FirstChildElement("Arrival");
-    Map_arrival temp_arrival;
 
-    while (pArrival) {
-        readXML_arrival(pArrival, &temp_arrival);
-        map_arrivals.push_back(temp_arrival);
-        pArrival = pArrival->NextSiblingElement("Arrival");
+    if (!pArrivals) {
+        SDL_Log("Cannot get Arrivals element");
+    } else {
+        tinyxml2::XMLElement * pArrival = pArrivals->FirstChildElement("Arrival");
+        Map_arrival temp_arrival;
+
+        while (pArrival) {
+            readXML_arrival(pArrival, &temp_arrival);
+            map_arrivals.push_back(temp_arrival);
+            pArrival = pArrival->NextSiblingElement("Arrival");
+        }
     }
 
     tinyxml2::XMLElement * pArrivalEqs = in_pMap->FirstChildElement("ArrivalEqs");
-    tinyxml2::XMLElement * pArrivalEq = pArrivalEqs->FirstChildElement("ArrivalEq");
-    arrival_equipments.clear();
-    std::vector<Inventory_item> tempeq;
 
-    while (pArrivalEq) {
-        readXML_items(pArrivalEq, &tempeq);
-        arrival_equipments.push_back(tempeq);
-        pArrivalEq = pArrivalEq->NextSiblingElement("ArrivalEq");
+    if (!pArrivalEqs) {
+        SDL_Log("Cannot get Arrivals element");
+    } else {
+        tinyxml2::XMLElement * pArrivalEq = pArrivalEqs->FirstChildElement("ArrivalEq");
+        arrival_equipments.clear();
+        std::vector<Inventory_item> tempeq;
+
+        while (pArrivalEq) {
+            readXML_items(pArrivalEq, &tempeq);
+            arrival_equipments.push_back(tempeq);
+            pArrivalEq = pArrivalEq->NextSiblingElement("ArrivalEq");
+        }
     }
 
     clearUnitmap();
     std::vector<std::vector<entityx::ComponentHandle<Unit>>> tempunitmap(bounds[1], std::vector<entityx::ComponentHandle<Unit>>(bounds[3]));
     unitmap = tempunitmap;
     tinyxml2::XMLElement * pUnitmap = in_pMap->FirstChildElement("Unitmap");
-    tinyxml2::XMLElement * pOnMap = pUnitmap->FirstChildElement("OnMap");
-    Unit tempunit;
-    entityx::Entity tempUent;
 
-    while (pOnMap) {
-        tempunit.readXML(pOnMap);
-        tempUent = manager->create();
-        tempUent.assign<Unit>(tempunit);
+    if (!pUnitmap) {
+        SDL_Log("Cannot get Unitmap element");
+    } else {
+        tinyxml2::XMLElement * pOnMap = pUnitmap->FirstChildElement("OnMap");
+        Unit tempunit;
+        entityx::Entity tempUent;
 
-        tempUent.assign<Position>(pOnMap->IntAttribute("row"), pOnMap->IntAttribute("col"));
-        unitmap[pOnMap->IntAttribute("row")][pOnMap->IntAttribute("col")] = tempUent.component<Unit>();
+        while (pOnMap) {
+            tempunit.readXML(pOnMap);
+            tempUent = manager->create();
+            tempUent.assign<Unit>(tempunit);
 
-        pOnMap = pOnMap->NextSiblingElement("OnMap");
+            tempUent.assign<Position>(pOnMap->IntAttribute("row"), pOnMap->IntAttribute("col"));
+            unitmap[pOnMap->IntAttribute("row")][pOnMap->IntAttribute("col")] = tempUent.component<Unit>();
+
+            pOnMap = pOnMap->NextSiblingElement("OnMap");
+        }
     }
 
 }
