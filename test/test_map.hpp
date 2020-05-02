@@ -150,7 +150,6 @@ void test_map() {
         lok(false);
     }
 
-
     map.writeXML("map_test.xml");
 
     Map test;
