@@ -358,6 +358,14 @@ std::vector<std::vector<short int>> Map::makeMvtCostmap(entityx::ComponentHandle
 
     return (costmap);
 }
+
+std::unordered_map<int, Tile> getTiles() {
+    return(tiles);
+}
+std::vector<short int> getTilesindex() {
+    return(tilesindex);
+}
+
 void Map::loadTiles(const int in_map_index) {
     tilesindex = chapTiles[in_map_index]();
     tilenames = getTilenames(tilesindex);

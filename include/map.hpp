@@ -68,6 +68,8 @@ public:
     void loadTiles(const int in_map_index);
     void loadTiles(std::vector<short int> to_load);
     void unloadTiles(std::vector<short int> to_unload);
+    std::unordered_map<int, Tile> getTiles();
+    std::vector<short int> getTilesindex();
 
     void loadTilemap(const std::string filename);
     void loadTilemap(const short unsigned int in_map_index);

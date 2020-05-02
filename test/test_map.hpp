@@ -6,7 +6,11 @@
 void test_map() {
 	entityx::EntityX ex;
     Map map(32, 32);
+    std::vector<short int> in_tiles, out_tiles;
+    in_tiles = chapTiles[0]();
     map.loadTiles(0);
+	std::vector<std::vector<short int>> in_tilemap, out_tilemap;
+	in_tilemap = testTilemap();
     map.loadTilemap(0);
     std::vector<Map_arrival> in_arrivals, out_arrivals;
     std::vector<std::vector<Inventory_item>> in_arrivalequipments, out_arrivalequipments;
