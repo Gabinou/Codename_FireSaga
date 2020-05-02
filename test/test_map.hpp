@@ -8,9 +8,12 @@ void test_map() {
     Map map(32, 32);
     map.loadTiles(0);
     map.loadTilemap(0);
-    map.setArrivals(mapArrivals[0]());
-    
-    map.setArrivalEquipments(arrivalEquipments[0]());
+    std::vector<Map_arrival> in_arrivals, out_arrivals;
+    std::vector<std::vector<Inventory_item>> in_arrivalequipments, out_arrivalequipments;
+    in_arrivals = mapArrivals[0]();
+    in_arrivalequipments = arrivalEquipments[0]();
+    map.setArrivals(in_arrivals);
+    map.setArrivalEquipments(in_arrivalequipments);
     Unit unit1, unit2;
     Unit_stats in_stats, out_stats;
     Unit_stats in_caps, out_caps;
