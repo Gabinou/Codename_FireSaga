@@ -621,10 +621,14 @@ void Game::loadXML(const short int save_ind) {
     tinyxml2::XMLElement * ptemp;
 
     ptemp = xmlDoc.FirstChildElement("Convoy");
-    convoy.readXML(ptemp);
+
+    if (!ptemp) {
+        SDL_Log("Cannot access element Convoy.");
+    } else {
+        convoy.readXML(ptemp);
+    }
 
     ptemp = xmlDoc.FirstChildElement("Unit");
-
     unsigned short int id;
 
     while (ptemp) {
