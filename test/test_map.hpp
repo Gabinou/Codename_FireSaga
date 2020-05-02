@@ -81,6 +81,34 @@ void test_map() {
     Uent1.assign<Sprite>(asset_name.c_str());
     map.putUnit(6, 6, Uent1.component<Unit>());
     unithandle1 = map.getUnit(6, 6);
+    out_stats = unithandle1->getStats();
+
+
+    lok(unit1.getName() == "Silou");
+    lok(unit1.getSex() == 0);
+    lok(in_stats.hp == out_stats.hp);
+    lok(in_stats.str == out_stats.str);
+    lok(in_stats.mag == out_stats.mag);
+    lok(in_stats.agi == out_stats.agi);
+    lok(in_stats.dex == out_stats.dex);
+    lok(in_stats.luck == out_stats.luck);
+    lok(in_stats.def == out_stats.def);
+    lok(in_stats.res == out_stats.res);
+    lok(in_stats.con == out_stats.con);
+    lok(in_stats.move == out_stats.move);
+    lok(in_stats.prof == out_stats.prof);
+    out_growths = unithandle1->getGrowths();
+    lok(in_growths.hp == out_growths.hp);
+    lok(in_growths.str == out_growths.str);
+    lok(in_growths.mag == out_growths.mag);
+    lok(in_growths.agi == out_growths.agi);
+    lok(in_growths.dex == out_growths.dex);
+    lok(in_growths.luck == out_growths.luck);
+    lok(in_growths.def == out_growths.def);
+    lok(in_growths.res == out_growths.res);
+    lok(in_growths.con == out_growths.con);
+    lok(in_growths.move == out_growths.move);
+    lok(in_growths.prof == out_growths.prof);
 
     map.writeXML("map_test.xml");
 
