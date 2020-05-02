@@ -71,7 +71,6 @@ void testConvoysortused() {
 }
 
 void testConvoyWriteXML() {
-    SDL_Log("Testing Convoy for writeXML abilities.");
     Convoy convoy;
     Inventory_item temp;
     temp.id = ITEM::NAME::WOODEN_SWORD;

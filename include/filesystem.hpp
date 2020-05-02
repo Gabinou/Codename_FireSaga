@@ -47,7 +47,6 @@ extern void writeXML_items(tinyxml2::XMLDocument * in_doc, tinyxml2::XMLElement 
 extern void writeXML_items(tinyxml2::XMLDocument * in_doc, tinyxml2::XMLElement * in_pItems, std::vector<Inventory_item> in_items);
 extern void readXML_arrival(tinyxml2::XMLElement * in_pArrival, Map_arrival * in_arrival);
 extern void writeXML_arrival(tinyxml2::XMLDocument * in_doc, tinyxml2::XMLElement * in_pArrival, Map_arrival * in_arrival);
-
 extern void printXMLDoc(PHYSFS_file * in_fp, tinyxml2::XMLDocument * in_doc);
 extern int parseXML(const char * filename, tinyxml2::XMLDocument * in_doc);
 

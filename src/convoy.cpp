@@ -719,7 +719,6 @@ void Convoy::writeXML(tinyxml2::XMLDocument * in_doc, tinyxml2::XMLElement * in_
     int i = 1;
 
     while (i < ITEM::TYPE::END) {
-        SDL_Log("Until here");
         names = wpnTypes(i);
         quantity = getQuantity(i);
         tempitem = getItems(i);

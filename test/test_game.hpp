@@ -2,6 +2,47 @@
 #include "game.hpp"
 
 void test_game() {
+    Game * testgame1 = nullptr;
+    Settings temp_settings;
 
+    testgame1 = new Game();
+    testgame1->loadUnits(0);
 
+    temp_settings = *testgame1->getSettings();
+    temp_settings.FPS.show = true;
+    temp_settings.fontsize = 28;
+    testgame1->setSettings(temp_settings);
+    testgame1->init("testgame1", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, testgame1->getSettings()->res.x, testgame1->getSettings()->res.y, false);
+    // testgame1->makeFPSEntity();
+
+    // testgame1->loadMap(0);
+
+    // std::vector<short unsigned int> unit_inds = {UNIT::NAME::SILOU};
+    // std::vector<std::vector<int>> positions_list = {{6, 6}};
+    // testgame1->loadUnitEntities(unit_inds, positions_list);
+
+    // testgame1->loadCursor();
+
+    // testgame1->loadMapArrivals();
+
+    testgame1->saveXML(1);
+    lok(PHYSFS_exists("saves//save0001.bsav") > 0);
+    testgame1->copySaveXML(1, 2);
+    lok(PHYSFS_exists("saves//save0002.bsav") > 0);
+    lok(fequal("saves//save0002.bsav", "saves//save0001.bsav"));
+    testgame1->copySaveXML(2, 3);
+    lok(PHYSFS_exists("saves//save0003.bsav") > 0);
+    lok(fequal("saves//save0002.bsav", "saves//save0003.bsav"));
+    lok(fequal("saves//save0001.bsav", "saves//save0003.bsav"));
+    testgame1->deleteSaveXML(2);
+    lok(PHYSFS_exists("saves//save0002.bsav") == 0);
+    testgame1->clean();
+
+    Game * testgame2 = nullptr;
+    testgame2 = new Game();
+    testgame2->loadXML(1);
+    testgame2->saveXML(2);
+    lok(PHYSFS_exists("saves//save0002.bsav") > 0);
+    lok(fequal("saves//save0001.bsav", "saves//save0002.bsav"));
+    testgame2->clean();
 }

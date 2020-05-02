@@ -51,11 +51,6 @@ int main(int argc, char * argv[]) {
 
     firesaga = new Game();
     firesaga->loadUnits(0);
-    // SDL_Log("Testing game load->save XML");
-    // firesaga->loadXML(1);
-    // firesaga->saveXML(2);
-    // getchar();
-
 
     SDL_Log("Initiating game\n");
     temp_settings = *firesaga->getSettings();
@@ -74,12 +69,6 @@ int main(int argc, char * argv[]) {
     firesaga->loadCursor();
 
     firesaga->loadMapArrivals();
-
-    // SDL_Log("Testing game save XML");
-    // firesaga->saveXML(1);
-    // firesaga->copySaveXML(1, 2);
-    // firesaga->copySaveXML(2, 3);
-    // firesaga->deleteSaveXML(2);
 
     std::chrono::system_clock::time_point frame_start, frame_end, frame_middle;
     int frame_time;

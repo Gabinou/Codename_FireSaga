@@ -2,7 +2,6 @@
 #include "filesystem.hpp"
 
 void test_filesystem() {
-
-    // lok(fequal("test_results.txt", "test_results.txt"));
-
+    // XML realted files are not necessary to test.
+    // actually, many functions in filesystem have no need to be tested...
 }
