@@ -74,12 +74,13 @@ void test_map() {
 
     std::string asset_name;
     asset_name = "..//assets//" +  unit1.getName() + ".png";
-    entityx::Entity Uent = ex.entities.create();;
-    Uent.assign<Unit>(unit1);
-    Uent.assign<Position>(6, 6);
-    Uent.assign<Sprite>(asset_name.c_str());
-    map.putUnit(6, 6, Uent.component<Unit>());
-
+    entityx::Entity Uent1 = ex.entities.create();
+    entityx::ComponentHandle<Unit> unithandle1;
+    Uent1.assign<Unit>(unit1);
+    Uent1.assign<Position>(6, 6);
+    Uent1.assign<Sprite>(asset_name.c_str());
+    map.putUnit(6, 6, Uent1.component<Unit>());
+    unithandle1 = map.getUnit(6, 6);
 
     map.writeXML("map_test.xml");
 
