@@ -79,6 +79,7 @@ void test_unit() {
     unit1.writeXML("unit_test.binou");
     unit2 = Unit();
     unit2.readXML("unit_test.xml");
+    unit2.readXML("tile_test.xml");
     unit2.writeXML("unit_rewrite.xml");
     unit3 = Unit();
     unit3.readXML("unit_test.binou");
