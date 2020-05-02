@@ -9,6 +9,8 @@ void test_map() {
     std::vector<short int> in_tilesindex, out_tilesindex;
     in_tilesindex = chapTiles[0]();
     map.loadTiles(0);
+    out_tilesindex = map.getTilesindex();
+    lok(in_tilesindex == out_tilesindex);
 	std::vector<std::vector<short int>> in_tilemap, out_tilemap;
 	in_tilemap = testTilemap();
     map.loadTilemap(0);
@@ -20,6 +22,17 @@ void test_map() {
     in_arrivals = mapArrivals[0]();
     in_arrivalequipments = arrivalEquipments[0]();
     map.setArrivals(in_arrivals);
+    out_arrivals = map.getArrivals();
+    if (out_arrivals.size() == in_arrivals.size()) {
+    	lok(true);
+	    for (short int i = 0; i < in_arrivals.size(); i++) {
+		    lok(in_arrivals[i].turn == out_arrivals[i].turn);
+		    lok(in_arrivals[i].levelups == out_arrivals[i].levelups);
+		    lok(in_arrivals[i].id == out_arrivals[i].id);
+		    lok(in_arrivals[i].position.x == out_arrivals[i].position.x);
+		    lok(in_arrivals[i].position.y == out_arrivals[i].position.y);
+		}
+    }
     map.setArrivalEquipments(in_arrivalequipments);
     Unit unit1, unit2;
     Unit_stats in_stats, out_stats;
