@@ -231,7 +231,8 @@ void Weapon::writeXML(tinyxml2::XMLDocument * in_doc, tinyxml2::XMLElement * in_
     pInfused->InsertEndChild(pPower);
     pPower->SetText(infused.power);
     tinyxml2::XMLElement * piType = in_doc->NewElement("Type");
-    piType->SetText(infused.type);
+    pInfused->InsertEndChild(piType);
+    pInfused->SetText(infused.type);
 
     tinyxml2::XMLElement * pEffectives = in_doc->NewElement("Effectives");
     in_pWpn->InsertEndChild(pEffectives);

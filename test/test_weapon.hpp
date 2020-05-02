@@ -7,8 +7,8 @@ void test_weapon() {
     Weapon_stats in_wpn_stats, out_wpn_stats;
     Unit_stats in_stats = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11};
     Unit_stats out_stats;
-    // Infusion out_infusion;
-    // short int infuse = 5;
+    Infusion out_infusion;
+    short int infuse = 5;
     short unsigned int infuse_type = ITEM::TYPE::ELEMENTAL;
     long unsigned int in_effect;
     bool in_sellable = false;
@@ -24,7 +24,7 @@ void test_weapon() {
     wpn1.setBonus(in_stats);
     wpn1.setMalus(in_stats);
     wpn1.setSellable(in_sellable);
-    // wpn1.infuse(infuse, infuse_type);
+    wpn1.infuse(infuse, infuse_type);
     
     out_wpn_stats = wpn1.getStats();                              
     lok(in_wpn_stats.Pmight == out_wpn_stats.Pmight);
@@ -50,9 +50,9 @@ void test_weapon() {
     lok(wpn1.getEffect() == in_effect);
     lok(wpn1.getType() == in_type);
     lok(wpn1.isSellable() == in_sellable);
-    // out_infusion = wpn1.getInfused(); 
-    // lok(out_infusion.power == infuse);
-    // lok(out_infusion.type == infuse_type);
+    out_infusion = wpn1.getInfused(); 
+    lok(out_infusion.power == infuse);
+    lok(out_infusion.type == infuse_type);
     out_stats = wpn1.getBonus();
     lok(in_stats.hp == out_stats.hp);
     lok(in_stats.str == out_stats.str);
