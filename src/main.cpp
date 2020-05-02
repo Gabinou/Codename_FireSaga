@@ -1,4 +1,4 @@
-/*-------------------------------------------------------------------
+/*--------------------------------------------------------------------
 * |           Average Bear Games                                     |
 * |        _         _                    Available on....           |
 * |       ( \_.---._/ )                                              |
@@ -7,7 +7,7 @@
 * |         \   ᆺ  /        \   /                                   |
 * |          '-._.-'         |   |                                   |
 * |        Made by Gabriel Taillon                                   |
-* -------------------------------------------------------------------*/
+* --------------------------------------------------------------------*/
 #include <entityx/entityx.h>
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
@@ -36,19 +36,20 @@ int main(int argc, char * argv[]) {
     SDL_Log("Initializing utilities\n");
     loadUtilities();
 
-    SDL_Log("Initializing Filesystem\n");
+    SDL_Log("Initializing filesystem\n");
     char * buildDir = SDL_GetBasePath();
     FILESYSTEM::init(0, buildDir, buildDir);
 
-    SDL_Log("Initializing TinyMT\n");
+    SDL_Log("Initializing TinyMT RNG\n");
     init_tinyMT();
 
-    SDL_Log("Loading base weapons.");
+    SDL_Log("Loading base weapons");
     baseWeapons();
 
     // SDL_Log("Loading base units.");
     // all_units = baseUnits();
 
+    SDL_Log("Creating game\n");
     firesaga = new Game();
     firesaga->loadUnits(0);
 
@@ -65,9 +66,7 @@ int main(int argc, char * argv[]) {
     std::vector<short unsigned int> unit_inds = {UNIT::NAME::SILOU};
     std::vector<std::vector<int>> positions_list = {{6, 6}};
     firesaga->loadUnitEntities(unit_inds, positions_list);
-
     firesaga->loadCursor();
-
     firesaga->loadMapArrivals();
 
     std::chrono::system_clock::time_point frame_start, frame_end, frame_middle;

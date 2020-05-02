@@ -11,6 +11,8 @@
 #include "test_weapon.hpp"
 #include "test_convoy.hpp"
 #include "test_game.hpp"
+#include "test_sprite.hpp"
+#include "test_text.hpp"
 
 int main(int argc, char * argv[]) {
     freopen("test_results.txt", "w+", stdout);
@@ -29,18 +31,20 @@ int main(int argc, char * argv[]) {
     baseWeapons();
 
     printf("Running tests\n");
-    lrun("linalg", test_linalg);
-    lrun("Pathfinding ", test_pathfinding);
-    lrun("Utilities ", test_utilities);
-    lrun("Position ", test_position);
-    lrun("Tile ", test_tile);
-    lrun("Map ", test_map);
-    lrun("Unit ", test_unit);
-    lrun("Weapon ", test_weapon);
-    lrun("Probability ", test_probability);
-    lrun("Filesystem ", test_filesystem);
     lrun("Convoy ", test_convoy);
+    lrun("Filesystem ", test_filesystem);
     lrun("Game ", test_game);
+    lrun("linalg", test_linalg);
+    lrun("Map ", test_map);
+    lrun("Pathfinding ", test_pathfinding);
+    lrun("Position ", test_position);
+    lrun("Probability ", test_probability);
+    lrun("Sprite ", test_sprite);
+    lrun("Text ", test_text);
+    lrun("Tile ", test_tile);
+    lrun("Unit ", test_unit);
+    lrun("Utilities ", test_utilities);
+    lrun("Weapon ", test_weapon);
     lresults();
 
     return (lfails != 0);
