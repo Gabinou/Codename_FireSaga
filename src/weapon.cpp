@@ -133,69 +133,98 @@ void Weapon::readXML(tinyxml2::XMLElement * in_pWpn) {
 
     ptemp = in_pWpn->FirstChildElement("Name");
 
-    if (!ptemp) {SDL_Log("Cannot get Name element");}
-
-    name = ptemp->GetText();
+    if (!ptemp) {
+        SDL_Log("Cannot get Name element");
+    } else {
+        name = ptemp->GetText();
+    }
 
     ptemp = in_pWpn->FirstChildElement("Sellable");
 
-    if (!ptemp) {SDL_Log("Cannot get Sellable element");}
-
-    sellable = ptemp->BoolText();
+    if (!ptemp) {
+        SDL_Log("Cannot get Sellable element");
+    } else {
+        sellable = ptemp->BoolText();
+    }
 
     ptemp = in_pWpn->FirstChildElement("Infused");
 
-    if (!ptemp) {SDL_Log("Cannot get Infused element");}
+    if (!ptemp) {
+        SDL_Log("Cannot get Infused element");
+    } else {
+        ptemp2 = ptemp->FirstChildElement("Power");
+    }
 
-    ptemp2 = ptemp->FirstChildElement("Power");
-
-    if (!ptemp) {SDL_Log("Cannot get Power element");}
-
-    infused.power = ptemp2->IntText();
+    if (!ptemp) {
+        SDL_Log("Cannot get Power element");
+    } else {
+        infused.power = ptemp2->IntText();
+    }
 
     ptemp2 = ptemp->FirstChildElement("Type");
 
-    if (!ptemp) {SDL_Log("Cannot get Type element");}
-
-    infused.type = ptemp2->IntText();
+    if (!ptemp) {
+        SDL_Log("Cannot get Type element");
+    } else {
+        infused.type = ptemp2->IntText();
+    }
 
     id = (unsigned short int)in_pWpn->IntAttribute("id");
     ptemp = in_pWpn->FirstChildElement("Description");
 
-    if (!ptemp) {SDL_Log("Cannot get Description element");}
+    if (!ptemp) {
+        SDL_Log("Cannot get Description element");
+    } else {
+        description = ptemp->GetText();
+    }
 
-    description = ptemp->GetText();
     ptemp = in_pWpn->FirstChildElement("Bonus");
 
-    if (!ptemp) {SDL_Log("Cannot get Bonus element");}
-
-    readXML_stats(ptemp, &bonus_stats);
+    if (!ptemp) {
+        SDL_Log("Cannot get Bonus element");
+    } else {
+        readXML_stats(ptemp, &bonus_stats);
+    }
 
     ptemp = in_pWpn->FirstChildElement("Malus");
 
-    if (!ptemp) {SDL_Log("Cannot get Malus element");}
+    if (!ptemp) {
+        SDL_Log("Cannot get Malus element");
+    } else {
+        readXML_stats(ptemp, &malus_stats);
+    }
 
-    readXML_stats(ptemp, &malus_stats);
     ptemp = in_pWpn->FirstChildElement("Types");
 
-    if (!ptemp) {SDL_Log("Cannot get Types element");}
+    if (!ptemp) {
+        SDL_Log("Cannot get Types element");
+    } else {
+        type = (unsigned short int)ptemp->IntAttribute("id");
+    }
 
-    type = (unsigned short int)ptemp->IntAttribute("id");
     ptemp = in_pWpn->FirstChildElement("Effectives");
 
-    if (!ptemp) {SDL_Log("Cannot get Effectives element");}
+    if (!ptemp) {
+        SDL_Log("Cannot get Effectives element");
+    } else {
+        effective = (unsigned short int)ptemp->IntAttribute("id");
+    }
 
-    effective = (unsigned short int)ptemp->IntAttribute("id");
     ptemp = in_pWpn->FirstChildElement("Effects");
 
-    if (!ptemp) {SDL_Log("Cannot get Effects element");}
+    if (!ptemp) {
+        SDL_Log("Cannot get Effects element");
+    } else {
+        effect = (long unsigned int)ptemp->IntAttribute("id");
+    }
 
-    effect = (long unsigned int)ptemp->IntAttribute("id");
     ptemp = in_pWpn->FirstChildElement("Stats");
 
-    if (!ptemp) {SDL_Log("Cannot get Stats element");}
-
-    readXML_stats(ptemp, &stats);
+    if (!ptemp) {
+        SDL_Log("Cannot get Stats element");
+    } else {
+        readXML_stats(ptemp, &stats);
+    }
 }
 
 void Weapon::writeXML(tinyxml2::XMLDocument * in_doc, tinyxml2::XMLElement * in_pWpn) {

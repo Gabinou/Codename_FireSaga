@@ -81,6 +81,7 @@ void test_weapon() {
     wpn1.writeXML("weapon_test.xml");
 
     wpn2 = Weapon();
+    wpn2.readXML("tile_test.xml");
     wpn2.readXML("weapon_test.xml");
 
     out_wpn_stats = wpn2.getStats();
