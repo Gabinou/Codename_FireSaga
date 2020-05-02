@@ -50,7 +50,7 @@ void test_unit() {
 
     unit1.levelUp();
     unit1.levelUp();
-    out_stats = unit1.getBases();    
+    out_stats = unit1.getBases();
     lok(in_stats.hp == out_stats.hp);
     lok(in_stats.str == out_stats.str);
     lok(in_stats.mag == out_stats.mag);
@@ -61,8 +61,8 @@ void test_unit() {
     lok(in_stats.res == out_stats.res);
     lok(in_stats.con == out_stats.con);
     lok(in_stats.move == out_stats.move);
-    lok(in_stats.prof == out_stats.prof);    
-    out_stats = unit1.getStats();    
+    lok(in_stats.prof == out_stats.prof);
+    out_stats = unit1.getStats();
     lok(in_stats.hp >= out_stats.hp);
     lok(in_stats.str >= out_stats.str);
     lok(in_stats.mag >= out_stats.mag);

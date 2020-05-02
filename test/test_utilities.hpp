@@ -9,7 +9,7 @@ void test_utilities() {
     int out;
     int geo_factor;
     int distance;
-    
+
     current = 0;
     upper1 = 3;
     upper2 = 6;
@@ -43,13 +43,13 @@ void test_utilities() {
     lok(distance == 1);
     distance = geometricslide(distance, geo_factor);
     lok(distance == 1);
-    
+
 
     out = pingpong(current, upper1);
     lok(out == 0);
     out = pingpong(current, upper2);
     lok(out == 0);
-    
+
     current++;
     out = pingpong(current, upper1);
     lok(out == 1);
@@ -73,7 +73,7 @@ void test_utilities() {
     lok(out == 0);
     out = pingpong(current, upper2);
     lok(out == 4);
-    
+
     current++;
     out = pingpong(current, upper1);
     lok(out == 1);
@@ -85,7 +85,7 @@ void test_utilities() {
     lok(out == 2);
     out = pingpong(current, upper2);
     lok(out == 4);
-    
+
 
     lok(fequal("test_results.txt", "test_results.txt"));
 

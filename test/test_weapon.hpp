@@ -25,8 +25,8 @@ void test_weapon() {
     wpn1.setMalus(in_stats);
     wpn1.setSellable(in_sellable);
     wpn1.infuse(infuse, infuse_type);
-    
-    out_wpn_stats = wpn1.getStats();                              
+
+    out_wpn_stats = wpn1.getStats();
     lok(in_wpn_stats.Pmight == out_wpn_stats.Pmight);
     lok(in_wpn_stats.Mmight == out_wpn_stats.Mmight);
     lok(in_wpn_stats.combat.hit == out_wpn_stats.combat.hit);
@@ -50,7 +50,7 @@ void test_weapon() {
     lok(wpn1.getEffect() == in_effect);
     lok(wpn1.getType() == in_type);
     lok(wpn1.isSellable() == in_sellable);
-    out_infusion = wpn1.getInfused(); 
+    out_infusion = wpn1.getInfused();
     lok(out_infusion.power == infuse);
     lok(out_infusion.type == infuse_type);
     out_stats = wpn1.getBonus();
@@ -64,7 +64,7 @@ void test_weapon() {
     lok(in_stats.res == out_stats.res);
     lok(in_stats.con == out_stats.con);
     lok(in_stats.move == out_stats.move);
-    lok(in_stats.prof == out_stats.prof);    
+    lok(in_stats.prof == out_stats.prof);
     out_stats = wpn1.getMalus();
     lok(in_stats.hp == out_stats.hp);
     lok(in_stats.str == out_stats.str);
@@ -76,7 +76,7 @@ void test_weapon() {
     lok(in_stats.res == out_stats.res);
     lok(in_stats.con == out_stats.con);
     lok(in_stats.move == out_stats.move);
-    lok(in_stats.prof == out_stats.prof);    
+    lok(in_stats.prof == out_stats.prof);
 
     wpn1.writeXML("weapon_test.xml");
 
@@ -108,7 +108,7 @@ void test_weapon() {
     lok(wpn2.getEffect() == in_effect);
     lok(wpn2.getType() == in_type);
     lok(wpn2.isSellable() == in_sellable);
-    out_infusion = wpn2.getInfused(); 
+    out_infusion = wpn2.getInfused();
     lok(out_infusion.power == infuse);
     lok(out_infusion.type == infuse_type);
     out_stats = wpn2.getBonus();
@@ -122,7 +122,7 @@ void test_weapon() {
     lok(in_stats.res == out_stats.res);
     lok(in_stats.con == out_stats.con);
     lok(in_stats.move == out_stats.move);
-    lok(in_stats.prof == out_stats.prof);    
+    lok(in_stats.prof == out_stats.prof);
     out_stats = wpn2.getMalus();
     lok(in_stats.hp == out_stats.hp);
     lok(in_stats.str == out_stats.str);

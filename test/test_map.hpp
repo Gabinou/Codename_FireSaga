@@ -4,15 +4,15 @@
 #include <entityx/entityx.h>
 
 void test_map() {
-	entityx::EntityX ex;
+    entityx::EntityX ex;
     Map map(32, 32);
     std::vector<short int> in_tilesindex, out_tilesindex;
     in_tilesindex = chapTiles[0]();
     map.loadTiles(0);
     out_tilesindex = map.getTilesindex();
     lok(in_tilesindex == out_tilesindex);
-	std::vector<std::vector<short int>> in_tilemap, out_tilemap;
-	in_tilemap = testTilemap();
+    std::vector<std::vector<short int>> in_tilemap, out_tilemap;
+    in_tilemap = testTilemap();
     map.loadTilemap(0);
     out_tilemap = map.getTilemap();
     lok(in_tilemap == out_tilemap);
@@ -23,31 +23,38 @@ void test_map() {
     in_arrivalequipments = arrivalEquipments[0]();
     map.setArrivals(in_arrivals);
     out_arrivals = map.getArrivals();
+
     if (out_arrivals.size() == in_arrivals.size()) {
-    	lok(true);
-	    for (short int i = 0; i < in_arrivals.size(); i++) {
-		    lok(in_arrivals[i].turn == out_arrivals[i].turn);
-		    lok(in_arrivals[i].levelups == out_arrivals[i].levelups);
-		    lok(in_arrivals[i].id == out_arrivals[i].id);
-		    lok(in_arrivals[i].position.x == out_arrivals[i].position.x);
-		    lok(in_arrivals[i].position.y == out_arrivals[i].position.y);
-		}
+        lok(true);
+
+        for (short int i = 0; i < in_arrivals.size(); i++) {
+            lok(in_arrivals[i].turn == out_arrivals[i].turn);
+            lok(in_arrivals[i].levelups == out_arrivals[i].levelups);
+            lok(in_arrivals[i].id == out_arrivals[i].id);
+            lok(in_arrivals[i].position.x == out_arrivals[i].position.x);
+            lok(in_arrivals[i].position.y == out_arrivals[i].position.y);
+        }
     }
+
     map.setArrivalEquipments(in_arrivalequipments);
     out_arrivalequipments = map.getArrivalEquipments();
+
     if (out_arrivalequipments.size() == out_arrivalequipments.size()) {
-    	lok(true);
-	 //    for (short int i = 0; i < out_arrivalequipments.size(); i++) {
-		//     if (out_arrivalequipments[i].size() == out_arrivalequipments[i].size()) {
-		// 	    for (short int j = 0; j < out_arrivalequipments[j].size(); i++) {
-		// 	    	lok(true);
-		// 		    lok(out_arrivalequipments[i][j].id == in_arrivalequipments[i][j].id);
-		// 		    lok(out_arrivalequipments[i][j].used == in_arrivalequipments[i][j].used);
-		// 		    lok(out_arrivalequipments[i][j].infused == in_arrivalequipments[i][j].infused);
-		// 		}
-		//     }
-		// }
+        lok(true);
+
+        for (short int i = 0; i < out_arrivalequipments.size(); i++) {
+            if (out_arrivalequipments[i].size() == out_arrivalequipments[i].size()) {
+                lok(true);
+
+                for (short int j = 0; j < out_arrivalequipments[i].size(); j++) {
+                    lok(out_arrivalequipments[i][j].id == in_arrivalequipments[i][j].id);
+                    lok(out_arrivalequipments[i][j].used == in_arrivalequipments[i][j].used);
+                    lok(out_arrivalequipments[i][j].infused == in_arrivalequipments[i][j].infused);
+                }
+            }
+        }
     }
+
     Unit unit1, unit2;
     Unit_stats in_stats, out_stats;
     Unit_stats in_caps, out_caps;
