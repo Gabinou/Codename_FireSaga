@@ -43,6 +43,7 @@ struct Quantity {
     unsigned char staffs = 0;
     unsigned char claws = 0;
     unsigned char items = 0;
+    unsigned char books = 0;
 };
 
 struct Narrative {

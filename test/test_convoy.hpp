@@ -138,7 +138,7 @@ void testConvoyWriteXML() {
     test_convoy.deposit(temp);
     temp.id = ITEM::NAME::SPEAR;
     test_convoy.deposit(temp);
-    test_convoy.writeXML("convoy_test.xml");
+    test_convoy.writeXML("convoy_test.xml", false);
 
     // Convoy test_convoy2;
     // test_convoy2.readXML("convoy_test.xml");

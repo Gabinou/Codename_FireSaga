@@ -398,6 +398,10 @@ std::vector<std::string> wpnTypes(short unsigned int in_typecode) {
         types.push_back("Item");
     }
 
+    if ((in_typecode & ITEM::TYPE::BOOK) > 0) {
+        types.push_back("Book");
+    }
+
     return (types);
 }
 

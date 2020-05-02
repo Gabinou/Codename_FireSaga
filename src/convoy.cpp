@@ -97,6 +97,12 @@ void Convoy::swapWpn(int wpntype, int ind1, int ind2) {
             items[ind1] = items[ind2];
             items[ind2] = buffer;
             break;
+
+        case ITEM::TYPE::BOOK:
+            buffer = items[ind1];
+            items[ind1] = items[ind2];
+            items[ind2] = buffer;
+            break;
     }
 }
 
@@ -409,6 +415,10 @@ void Convoy::setItems(int wpntype, Inventory_item * in_items) {
         case ITEM::TYPE::ITEM:
             memcpy(items, in_items, sizeof(items));
             break;
+
+        case ITEM::TYPE::BOOK:
+            memcpy(books, in_items, sizeof(books));
+            break;
     }
 }
 
@@ -470,6 +480,10 @@ int Convoy::getQuantity(int wpntype) {
 
         case ITEM::TYPE::ITEM:
             temp = quantity.items;
+            break;
+
+        case ITEM::TYPE::BOOK:
+            temp = booksnum;
             break;
     }
 
@@ -704,6 +718,7 @@ void Convoy::writeXML(tinyxml2::XMLDocument * in_doc, tinyxml2::XMLElement * in_
     int i = 1;
 
     while (i < ITEM::TYPE::END) {
+        SDL_Log("Until here");
         names = wpnTypes(i);
         quantity = getQuantity(i);
         tempitem = getItems(i);
