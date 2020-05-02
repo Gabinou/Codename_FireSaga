@@ -1,7 +1,6 @@
 #include "minctest.h"
 #include "convoy.hpp"
 
-
 void testConvoyfull() {
     Convoy convoy;
     Inventory_item temp;
@@ -21,7 +20,6 @@ void testConvoyfull() {
 }
 
 void testConvoysortused() {
-    SDL_Log("Testing Convoy sorting for stats and uses abilities");
     Convoy convoy;
     Inventory_item temp;
     temp.id = ITEM::NAME::WOODEN_SWORD;
@@ -65,10 +63,8 @@ void testConvoysortused() {
     convoy.deposit(temp);
     temp.id = ITEM::NAME::STEEL_SWORD;
     convoy.deposit(temp);
-    SDL_Log("SWORD: Base Convoy Order.");
     convoy.printContents(ITEM::TYPE::SWORD);
     convoy.printStats(ITEM::TYPE::SWORD, ITEM::STAT::USES_LEFT);
-    SDL_Log("Sorting swords according to Pmight");
     convoy.sortStats(ITEM::TYPE::SWORD, ITEM::STAT::PMIGHT);
     convoy.sort(ITEM::TYPE::SWORD, ITEM::STAT::PMIGHT);
     convoy.printStats(ITEM::TYPE::SWORD, ITEM::STAT::USES_LEFT);
@@ -144,10 +140,10 @@ void testConvoyWriteXML() {
     Convoy convoy2;
     convoy2.readXML("convoy_test.xml");
     convoy2.writeXML("convoy_rewrite.xml");
+    lok(fequal("convoy_rewrite.xml", "convoy_test.xml"));
 }
 
 void testConvoysortStats() {
-    SDL_Log("Testing Convoy for stat sorting abilities");
     Convoy convoy;
     Inventory_item temp;
     temp.id = ITEM::NAME::WOODEN_SWORD;
