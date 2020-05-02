@@ -76,9 +76,10 @@ public:
     void postTilemap();
     std::vector<std::vector<short int>> getTilemap();
     void setTilemap(const std::vector<std::vector<short int>> in_tilemap);
-    std::vector<std::vector<short int>> makeMvtCostmap(entityx::ComponentHandle<Unit> in_unit);
     void setTilesize(const short int unsigned width, const short int unsigned height);
     short unsigned int * getTilesize() const;
+
+    std::vector<std::vector<short int>> makeMvtCostmap(entityx::ComponentHandle<Unit> in_unit);
 
     void setManager(entityx::EntityManager * in_manager);
     void setRenderer(SDL_Renderer * in_renderer);
