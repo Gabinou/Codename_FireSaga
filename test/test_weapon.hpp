@@ -108,9 +108,9 @@ void test_weapon() {
     lok(wpn2.getEffect() == in_effect);
     lok(wpn2.getType() == in_type);
     lok(wpn2.isSellable() == in_sellable);
-    // out_infusion = wpn2.getInfused(); 
-    // lok(out_infusion.power == infuse);
-    // lok(out_infusion.type == infuse_type);
+    out_infusion = wpn2.getInfused(); 
+    lok(out_infusion.power == infuse);
+    lok(out_infusion.type == infuse_type);
     out_stats = wpn2.getBonus();
     lok(in_stats.hp == out_stats.hp);
     lok(in_stats.str == out_stats.str);
