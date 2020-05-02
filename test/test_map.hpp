@@ -85,8 +85,8 @@ void test_map() {
     if (unithandle1) {
         out_stats = unithandle1->getStats();
         lok(true);
-        lok(unit1.getName() == "Silou");
-        lok(unit1.getSex() == 0);
+        lok(unithandle1->getName() == "Silou");
+        lok(unithandle1->getSex() == 0);
         lok(in_stats.hp == out_stats.hp);
         lok(in_stats.str == out_stats.str);
         lok(in_stats.mag == out_stats.mag);
@@ -117,13 +117,12 @@ void test_map() {
     map.moveUnit(6, 6, 7, 7);
     unithandle1 = map.getUnit(6, 6);
     unithandle2 = map.getUnit(7, 7);
-    lok(!unithandle1);
 
     if (unithandle2) {
-        out_stats = unithandle2->getStats();
         lok(true);
-        lok(unit1.getName() == "Silou");
-        lok(unit1.getSex() == 0);
+        out_stats = unithandle2->getStats();
+        lok(unithandle2->getName() == "Silou");
+        lok(unithandle2->getSex() == 0);
         lok(in_stats.hp == out_stats.hp);
         lok(in_stats.str == out_stats.str);
         lok(in_stats.mag == out_stats.mag);
@@ -135,7 +134,7 @@ void test_map() {
         lok(in_stats.con == out_stats.con);
         lok(in_stats.move == out_stats.move);
         lok(in_stats.prof == out_stats.prof);
-        out_growths = unithandle1->getGrowths();
+        out_growths = unithandle2->getGrowths();
         lok(in_growths.hp == out_growths.hp);
         lok(in_growths.str == out_growths.str);
         lok(in_growths.mag == out_growths.mag);
