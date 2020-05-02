@@ -34,6 +34,20 @@ void test_map() {
 		}
     }
     map.setArrivalEquipments(in_arrivalequipments);
+    out_arrivalequipments = map.getArrivalEquipments();
+    if (out_arrivalequipments.size() == out_arrivalequipments.size()) {
+    	lok(true);
+	    for (short int i = 0; i < out_arrivalequipments.size(); i++) {
+		    if (out_arrivalequipments[i].size() == out_arrivalequipments[i].size()) {
+			    for (short int j = 0; j < out_arrivalequipments[j].size(); i++) {
+			    	lok(true);
+				    lok(out_arrivalequipments[i][j].id == in_arrivalequipments[i][j].id);
+				    lok(out_arrivalequipments[i][j].used == in_arrivalequipments[i][j].used);
+				    lok(out_arrivalequipments[i][j].infused == in_arrivalequipments[i][j].infused);
+				}
+		    }
+		}
+    }
     Unit unit1, unit2;
     Unit_stats in_stats, out_stats;
     Unit_stats in_caps, out_caps;
