@@ -65,9 +65,6 @@ int main(int argc, char * argv[]) {
     firesaga->init("FireSaga", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, firesaga->getSettings()->res.x, firesaga->getSettings()->res.y, false);
     firesaga->makeFPSEntity();
 
-    // SDL_Log("Testing convoy\n");
-    // testConvoy();
-
     firesaga->loadMap(0);
 
     std::vector<short unsigned int> unit_inds = {UNIT::NAME::SILOU};

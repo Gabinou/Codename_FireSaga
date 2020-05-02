@@ -229,12 +229,13 @@ DEPOSIT_END:
     }
 }
 
-void Convoy::isFull() {
+bool Convoy::isFull() {
     int sum = quantity.swords + quantity.lances + quantity.axes +
               quantity.bows + quantity.trinkets + quantity.offhands + quantity.elemental +
               quantity.demonic + quantity.angelic + quantity.shields +
               quantity.staffs + quantity.claws + quantity.items;
     full = (sum >= DEFAULT::CONVOY_SIZE);
+    return (full);
 }
 
 void Convoy::printContents(int wpntype) {

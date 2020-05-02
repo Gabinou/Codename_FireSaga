@@ -43,7 +43,7 @@ public:
     void sortused(int wpntype);
     void sort(int wpntype, int stattype);
 
-    void isFull();
+    bool isFull();
     int getQuantity(int wpntype);
     Quantity getQuantity();
     std::vector<int> getStats(int wpntype, int stattype);
