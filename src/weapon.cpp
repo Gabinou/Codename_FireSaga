@@ -153,19 +153,13 @@ void Weapon::readXML(tinyxml2::XMLElement * in_pWpn) {
         SDL_Log("Cannot get Infused element");
     } else {
         ptemp2 = ptemp->FirstChildElement("Power");
+        infused.power = ptemp2->IntText();
     }
 
     if (!ptemp) {
         SDL_Log("Cannot get Power element");
     } else {
-        infused.power = ptemp2->IntText();
-    }
-
-    ptemp2 = ptemp->FirstChildElement("Type");
-
-    if (!ptemp) {
-        SDL_Log("Cannot get Type element");
-    } else {
+        ptemp2 = ptemp->FirstChildElement("Type");
         infused.type = ptemp2->IntText();
     }
 
@@ -261,7 +255,7 @@ void Weapon::writeXML(tinyxml2::XMLDocument * in_doc, tinyxml2::XMLElement * in_
     pPower->SetText(infused.power);
     tinyxml2::XMLElement * piType = in_doc->NewElement("Type");
     pInfused->InsertEndChild(piType);
-    pInfused->SetText(infused.type);
+    piType->SetText(infused.type);
 
     tinyxml2::XMLElement * pEffectives = in_doc->NewElement("Effectives");
     in_pWpn->InsertEndChild(pEffectives);
