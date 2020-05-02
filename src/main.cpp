@@ -68,9 +68,6 @@ int main(int argc, char * argv[]) {
     // SDL_Log("Testing convoy\n");
     // testConvoy();
 
-    // SDL_Log("Testing map writing.");
-    // firesaga->testXMLMap();
-
     firesaga->loadMap(0);
 
     std::vector<short unsigned int> unit_inds = {UNIT::NAME::SILOU};

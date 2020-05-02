@@ -9,6 +9,7 @@
 #include "test_probability.hpp"
 #include "test_filesystem.hpp"
 #include "test_weapon.hpp"
+#include "test_convoy.hpp"
 
 int main(int argc, char * argv[]) {
     freopen("test_results.txt", "w+", stdout);
@@ -37,6 +38,7 @@ int main(int argc, char * argv[]) {
     lrun("Weapon ", test_weapon);
     lrun("Probability ", test_probability);
     lrun("Filesystem ", test_filesystem);
+    lrun("Convoy ", test_convoy);
     lresults();
 
     return (lfails != 0);

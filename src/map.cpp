@@ -238,10 +238,11 @@ void Map::writeXML(tinyxml2::XMLDocument * in_doc, tinyxml2::XMLElement * in_pMa
     }
 
     tinyxml2::XMLElement * pArrivals = in_doc->NewElement("Arrivals");
-    tinyxml2::XMLElement * pArrival = in_doc->NewElement("Arrival");
+    tinyxml2::XMLElement * pArrival;
     in_pMap->InsertEndChild(pArrivals);
 
     for (int i = 0; i < map_arrivals.size(); i++) {
+        pArrival = in_doc->NewElement("Arrival");
         pArrivals->InsertEndChild(pArrival);
         writeXML_arrival(in_doc, pArrival, &map_arrivals[i]);
     }

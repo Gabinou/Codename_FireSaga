@@ -112,7 +112,6 @@ public:
     void deleteSaveXML(const short int delete_ind);
     void copySaveXML(const short int from_ind, const short int to_ind);
     void loadXML(const short int save_ind);
-    void testXMLMap();
 
     bool running();
     void configure(entityx::EventManager & event_manager);
