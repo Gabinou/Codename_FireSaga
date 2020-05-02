@@ -20,7 +20,6 @@ int mkdir(char * path, int mode) {
 #include <dirent.h>
 #endif
 
-
 namespace FILESYSTEM {
 
 void log(void * userdata, int category, SDL_LogPriority priority, const char * message) {

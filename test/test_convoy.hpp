@@ -1,12 +1,6 @@
 #include "minctest.h"
 #include "convoy.hpp"
 
-void test_convoy() {
-    testConvoyfull();
-    testConvoysortStats();
-    // testConvoyWriteXML();
-    testConvoysortused();
-}
 
 void testConvoyfull() {
     Convoy test_convoy;
@@ -146,9 +140,9 @@ void testConvoyWriteXML() {
     test_convoy.deposit(temp);
     test_convoy.writeXML("convoy_test.xml");
 
-    Convoy test_convoy2;
-    test_convoy2.readXML("convoy_test.xml");
-    test_convoy2.writeXML("convoy_rewrite.xml");
+    // Convoy test_convoy2;
+    // test_convoy2.readXML("convoy_test.xml");
+    // test_convoy2.writeXML("convoy_rewrite.xml");
 }
 
 void testConvoysortStats() {
@@ -288,4 +282,11 @@ void testConvoysortStats() {
     SDL_Log("Sorting lances according to price");
     test_convoy.sortStats(ITEM::TYPE::LANCE, ITEM::STAT::PRICE);
     test_convoy.printStats(ITEM::TYPE::LANCE, ITEM::STAT::PRICE);
+}
+
+void test_convoy() {
+    testConvoyfull();
+    testConvoysortStats();
+    testConvoyWriteXML();
+    testConvoysortused();
 }

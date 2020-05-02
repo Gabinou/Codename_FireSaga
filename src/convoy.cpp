@@ -671,8 +671,8 @@ void Convoy::readXML(tinyxml2::XMLElement * in_pConvoy) {
     Inventory_item * currentitems;
     Inventory_item empty;
     tinyxml2::XMLElement * ptemp;
-    int i = 1;
-    int j;
+    short int i = 1;
+    short int j;
 
     while (i < ITEM::TYPE::END) {
         names = wpnTypes(i);
@@ -690,9 +690,9 @@ void Convoy::readXML(tinyxml2::XMLElement * in_pConvoy) {
                 tempitems[j] = empty;
                 j++;
             }
-
-            i *= 2;
         }
+
+        i *= 2;
     }
 }
 
