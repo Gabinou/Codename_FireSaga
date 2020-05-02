@@ -71,6 +71,7 @@ void Tile::readXML(tinyxml2::XMLElement * in_pTile) {
     } else {
         name = ptemp->GetText();
     }
+
     ptemp = in_pTile->FirstChildElement("MvtCost");
 
     if (!ptemp) {

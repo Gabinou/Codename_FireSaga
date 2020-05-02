@@ -680,70 +680,106 @@ void Unit::readXML(tinyxml2::XMLElement * in_pUnit) {
     id = (unsigned short int)in_pUnit->IntAttribute("id");
     ptemp = in_pUnit->FirstChildElement("Name");
 
-    if (!ptemp) {SDL_Log("Cannot get Name element");}
+    if (!ptemp) {
+        SDL_Log("Cannot get Name element");
+    } else {
+        name = ptemp->GetText();
+    }
 
-    name = ptemp->GetText();
     ptemp = in_pUnit->FirstChildElement("Sex");
 
-    if (!ptemp) {SDL_Log("Cannot get Sex element");}
+    if (!ptemp) {
+        SDL_Log("Cannot get Sex element");
+    } else {
+        ptemp->QueryBoolText(&sex);
+    }
 
-    ptemp->QueryBoolText(&sex);
     ptemp = in_pUnit->FirstChildElement("SkillsCode");
 
-    if (!ptemp) {SDL_Log("Cannot get SkillsCode element");}
+    if (!ptemp) {
+        SDL_Log("Cannot get SkillsCode element");
+    } else {
+        buffer = ptemp->GetText();
+        sscanf(buffer, "%llx", &skills);
+    }
 
-    buffer = ptemp->GetText();
-    // skills = strtoull(buffer, NULL, 16);
-    sscanf(buffer, "%llx", &skills);
     ptemp = in_pUnit->FirstChildElement("BaseExp");
 
-    if (!ptemp) {SDL_Log("Cannot get BaseExp element");}
+    if (!ptemp) {
+        SDL_Log("Cannot get BaseExp element");
+    } else {
+        ptemp->QueryUnsignedText(&bufint);
+        base_exp = (unsigned short int)bufint;
+    }
 
-    ptemp->QueryUnsignedText(&bufint);
-    base_exp = (unsigned short int)bufint;
 
     ptemp = in_pUnit->FirstChildElement("CurrentHP");
-    ptemp->QueryUnsignedText(&bufint);
-    current_hp = (unsigned char)bufint;
+
+    if (!ptemp) {
+        SDL_Log("Cannot get CurrentHP element");
+    } else {
+        ptemp->QueryUnsignedText(&bufint);
+        current_hp = (unsigned char)bufint;
+    }
 
     ptemp = in_pUnit->FirstChildElement("Exp");
 
-    if (!ptemp) {SDL_Log("Cannot get Exp element");}
+    if (!ptemp) {
+        SDL_Log("Cannot get Exp element");
+    } else {
+        ptemp->QueryUnsignedText(&bufint);
+        exp = (unsigned short int)bufint;
+    }
 
-    ptemp->QueryUnsignedText(&bufint);
-    exp = (unsigned short int)bufint;
 
     ptemp = in_pUnit->FirstChildElement("Class");
 
-    if (!ptemp) {SDL_Log("Cannot get Class element");}
+    if (!ptemp) {
+        SDL_Log("Cannot get Class element");
+    } else {
+        class_index = (unsigned char)ptemp->IntAttribute("id");;
+    }
 
-    class_index = (unsigned char)ptemp->IntAttribute("id");;
     ptemp = in_pUnit->FirstChildElement("Stats");
 
-    if (!ptemp) {SDL_Log("Cannot get Stats element");}
+    if (!ptemp) {
+        SDL_Log("Cannot get Stats element");
+    } else {
+        readXML_stats(ptemp, &current_stats);
+    }
 
-    readXML_stats(ptemp, &current_stats);
     ptemp = in_pUnit->FirstChildElement("Growths");
 
-    if (!ptemp) {SDL_Log("Cannot get Growths element");}
+    if (!ptemp) {
+        SDL_Log("Cannot get Growths element");
+    } else {
+        readXML_stats(ptemp, &growths);
+    }
 
 
-    readXML_stats(ptemp, &growths);
     ptemp = in_pUnit->FirstChildElement("Caps");
 
-    if (!ptemp) {SDL_Log("Cannot get Caps element");}
+    if (!ptemp) {
+        SDL_Log("Cannot get Caps element");
+    } else {
+        readXML_stats(ptemp, &caps_stats);
+    }
 
-    readXML_stats(ptemp, &caps_stats);
     ptemp = in_pUnit->FirstChildElement("Bases");
 
-    if (!ptemp) {SDL_Log("Cannot get Bases element");}
+    if (!ptemp) {
+        SDL_Log("Cannot get Bases element");
+    } else {
+        readXML_stats(ptemp, &base_stats);
+    }
 
-    readXML_stats(ptemp, &base_stats);
     ptemp = in_pUnit->FirstChildElement("Equipment");
 
-    if (!ptemp) {SDL_Log("Cannot get Equipment element");}
-
-    readXML_items(ptemp, equipment);
+    if (!ptemp) {
+        SDL_Log("Cannot get Equipment element");
+    } else {
+        readXML_items(ptemp, equipment);
+    }
 
     tinyxml2::XMLElement * pLevelUps = in_pUnit->FirstChildElement("LevelUps");
 
