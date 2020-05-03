@@ -71,8 +71,9 @@ struct unitMap {
 };
 
 struct unitmenuSelect {
-    unitmenuSelect(entityx::Entity cursor) : cursor(cursor) {}
+    unitmenuSelect(entityx::Entity cursor, entityx::ComponentHandle<Unit> unit) : cursor(cursor), unit(unit) {}
     entityx::Entity cursor;
+    entityx::ComponentHandle<Unit> unit;
 };
 
 struct inputAccept {
@@ -147,9 +148,10 @@ struct unitRefreshEvent {
     entityx::Entity refresher;
 };
 
-struct unitWaitEvent {
-    unitWaitEvent(entityx::Entity ender) : ender(ender) {}
-    entityx::Entity ender;
+struct unitWait {
+    unitWait(entityx::Entity cursor, entityx::ComponentHandle<Unit> unit) : cursor(cursor), unit(unit) {}
+    entityx::Entity cursor;
+    entityx::ComponentHandle<Unit> unit;
 };
 
 struct unitHealEvent {

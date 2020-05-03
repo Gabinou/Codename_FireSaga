@@ -40,7 +40,7 @@ public:
     void receive(const turnEnd & end);
     void receive(const unitHealEvent & heal);
     void receive(const unitDieEvent & death);
-    void receive(const unitWaitEvent & wait);
+    void receive(const unitWait & wait);
     void receive(const unitRefreshEvent & refresh);
 
     void update(entityx::EntityManager & es, entityx::EventManager & events, entityx::TimeDelta dt) override;
@@ -71,7 +71,7 @@ public:
     void receive(const turnEnd & end);
     void receive(const unitHealEvent & heal);
     void receive(const unitDieEvent & death);
-    void receive(const unitWaitEvent & wait);
+    void receive(const unitWait & wait);
     void receive(const unitRefreshEvent & refreshes);
     void receive(const unitSelect & selected);
     void receive(const unitDeselect & selected);

@@ -218,7 +218,7 @@ void RenderSystemx::configure(entityx::EventManager & event_manager) {
     event_manager.subscribe<turnBegin>(*this);
     event_manager.subscribe<turnEnd>(*this);
     event_manager.subscribe<unitHealEvent>(*this);
-    event_manager.subscribe<unitWaitEvent>(*this);
+    event_manager.subscribe<unitWait>(*this);
     event_manager.subscribe<unitDieEvent>(*this);
     event_manager.subscribe<unitRefreshEvent>(*this);
 }
@@ -239,7 +239,7 @@ void RenderSystemx::receive(const unitDieEvent & death) {
 
 }
 
-void RenderSystemx::receive(const unitWaitEvent & wait) {
+void RenderSystemx::receive(const unitWait & wait) {
 
 }
 
@@ -367,7 +367,9 @@ void UnitSystemx::receive(const unitSelect & select) {
 void UnitSystemx::receive(const unitmenuSelect & select) {
     SDL_Log("unitmenuSelect event received");
     entityx::Entity cursor = select.cursor;
+    entityx::ComponentHandle<Unit> unit = select.unit;
     entityx::ComponentHandle<Position> position = cursor.component<Position>();
+
     short int * cursorpos = position->getPos();
     short int * cursorbounds = position->getBounds();
     unsigned char menuind = cursorpos[1] - cursorbounds[2];
@@ -375,32 +377,35 @@ void UnitSystemx::receive(const unitmenuSelect & select) {
     SDL_Log("menuind: %d ", menuind);
     unitmenuoptions = game->getMenuoptions(MENU::UNIT);
 
-    SDL_Log("menuind: %d ", menuind);
+    if (unit) {
+        switch (unitmenuoptions[menuind]) {
+            case UNIT::MENU::ITEMS:
+                break;
 
-    switch (unitmenuoptions[menuind]) {
-        case UNIT::MENU::ITEMS:
-            break;
+            case UNIT::MENU::TALK:
+                break;
 
-        case UNIT::MENU::TALK:
-            break;
+            case UNIT::MENU::RESCUE:
+                break;
 
-        case UNIT::MENU::RESCUE:
-            break;
+            case UNIT::MENU::SEIZE:
+                break;
 
-        case UNIT::MENU::SEIZE:
-            break;
+            case UNIT::MENU::ESCAPE:
+                break;
 
-        case UNIT::MENU::ESCAPE:
-            break;
+            case UNIT::MENU::ATTACK:
+                break;
 
-        case UNIT::MENU::ATTACK:
-            break;
+            case UNIT::MENU::TRADE:
+                break;
 
-        case UNIT::MENU::TRADE:
-            break;
-
-        case UNIT::MENU::WAIT:
-            break;
+            case UNIT::MENU::WAIT:
+                event_manager->emit<unitWait>(cursor, unit);
+                break;
+        }
+    } else {
+        SDL_Log("unitmenuSelect: could not get unit");
     }
 
 }
@@ -781,7 +786,7 @@ void ControlSystemx::receive(const inputAccept & accept) {
 
             case GAME::STATE::UNITMENU:
 
-                event_manager->emit<unitmenuSelect>(accepter);
+                event_manager->emit<unitmenuSelect>(accepter, unitontile);
                 break;
         }
 
