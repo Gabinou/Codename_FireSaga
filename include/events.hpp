@@ -3,7 +3,6 @@
 
 #include <entityx/entityx.h>
 #include "keyboardcontroller.hpp"
-// #include "structs.hpp"
 #include "gamepadcontroller.hpp"
 
 struct turnBegin {

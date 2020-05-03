@@ -349,6 +349,9 @@ enum OPTIONS {
     SEIZE,
     ESCAPE,
     ATTACK,
+    SHOP,
+    ARMORY,
+    VILLAGE,
     TRADE,
     WAIT,
 };

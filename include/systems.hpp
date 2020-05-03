@@ -53,7 +53,7 @@ private:
     entityx::ComponentHandle<Map> mapx;
     entityx::EventManager * event_manager;
     entityx::Entity * unitmenux;
-    std::vector<unsigned char> * unitmenuoptions;
+    std::vector<unsigned char> unitmenuoptions;
     entityx::Entity selected;
     entityx::Entity hovered;
 public:

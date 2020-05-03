@@ -120,7 +120,6 @@ SDL_Rect RenderSystemx::loopSprites(entityx::ComponentHandle<Sprite> in_sprite) 
         switch (looping) {
             case LOOPING::PINGPONG:
                 srcrect.x = srcrect.w * pingpong(static_cast<int>(SDL_GetTicks() / speed), frames, 0);
-                SDL_Log("pingpong: %d %d\n", static_cast<int>(SDL_GetTicks() / speed), pingpong(static_cast<int>(SDL_GetTicks() / speed), frames, 0));
                 break;
 
             case LOOPING::LINEAR:
@@ -374,6 +373,36 @@ void UnitSystemx::receive(const unitmenuSelect & select) {
     unsigned char menuind = cursorpos[1] - cursorbounds[2];
 
     SDL_Log("menuind: %d ", menuind);
+    unitmenuoptions = game->getMenuoptions(MENU::UNIT);
+
+    SDL_Log("menuind: %d ", menuind);
+
+    switch (unitmenuoptions[menuind]) {
+        case UNIT::MENU::ITEMS:
+            break;
+
+        case UNIT::MENU::TALK:
+            break;
+
+        case UNIT::MENU::RESCUE:
+            break;
+
+        case UNIT::MENU::SEIZE:
+            break;
+
+        case UNIT::MENU::ESCAPE:
+            break;
+
+        case UNIT::MENU::ATTACK:
+            break;
+
+        case UNIT::MENU::TRADE:
+            break;
+
+        case UNIT::MENU::WAIT:
+            break;
+    }
+
 }
 
 void UnitSystemx::receive(const unitDanger & danger) {
