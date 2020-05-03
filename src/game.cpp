@@ -429,6 +429,7 @@ void Game::setCursorstate(const short unsigned int new_state) {
                 cursorx.component<Position>()->setBounds(mapx->getBounds());
                 cursorx.component<Position>()->setPos(cursor_lastpos);
                 cursorx.component<Position>()->setonTilemap(true);
+                cursorx.component<Position>()->setPeriodic(false);
                 systems.system<RenderSystemx>()->setTilesize(temp_tilesize[0], temp_tilesize[1]);
                 // events.emit<cursorMoved>(cursorx);
                 break;
@@ -458,6 +459,7 @@ void Game::setCursorstate(const short unsigned int new_state) {
                 cursorx.component<Position>()->setBounds(menubounds);
                 cursorx.component<Position>()->setPos(menubounds[0], menubounds[2]);
                 cursorx.component<Position>()->setonTilemap(false);
+                cursorx.component<Position>()->setPeriodic(true);
                 systems.system<RenderSystemx>()->setLinespace(linespace);
                 break;
         }
