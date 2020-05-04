@@ -131,8 +131,8 @@ struct turnEnd {
     //Player cursor or AI ender.
 };
 
-struct seizeEvent {
-    seizeEvent(entityx::Entity victor) : victor(victor) {}
+struct unitSeize {
+    unitSeize(entityx::Entity victor) : victor(victor) {}
     entityx::Entity victor;
     //unit.
 };
@@ -143,8 +143,8 @@ struct gameOver {
 };
 
 
-struct unitRefreshEvent {
-    unitRefreshEvent(entityx::Entity refresher) : refresher(refresher) {}
+struct unitRefresh {
+    unitRefresh(entityx::Entity refresher) : refresher(refresher) {}
     entityx::Entity refresher;
 };
 
@@ -154,24 +154,29 @@ struct unitWait {
     entityx::ComponentHandle<Unit> unit;
 };
 
-struct unitHealEvent {
+struct unitHeal {
     //Should those be Component hanldes?
-    unitHealEvent(entityx::Entity healer, entityx::Entity patient) : healer(healer), patient(patient) {}
+    unitHeal(entityx::Entity healer, entityx::Entity patient) : healer(healer), patient(patient) {}
     entityx::Entity healer, patient;
 };
 
-struct unitDieEvent {
-    unitDieEvent(entityx::Entity victim, entityx::Entity killer) : killer(killer), victim(victim) {}
+struct unitDie {
+    unitDie(entityx::Entity victim, entityx::Entity killer) : killer(killer), victim(victim) {}
     entityx::Entity killer, victim;
 };
 
-struct enterShopEvent {
-    enterShopEvent(entityx::Entity guest, entityx::Entity shop) : guest(guest), shop(shop) {}
+struct enterShop {
+    enterShop(entityx::Entity guest, entityx::Entity shop) : guest(guest), shop(shop) {}
     entityx::Entity guest, shop;
 };
 
-struct enterVillageEvent {
-    enterVillageEvent(entityx::Entity guest, entityx::Entity village) : guest(guest), village(village) {}
+struct enterArmory {
+    enterArmory(entityx::Entity guest, entityx::Entity shop) : guest(guest), shop(shop) {}
+    entityx::Entity guest, shop;
+};
+
+struct enterVillage {
+    enterVillage(entityx::Entity guest, entityx::Entity village) : guest(guest), village(village) {}
     entityx::Entity guest, village;
 };
 

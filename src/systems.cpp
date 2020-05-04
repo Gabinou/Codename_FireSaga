@@ -217,10 +217,10 @@ void RenderSystemx::update(entityx::EntityManager & es, entityx::EventManager & 
 void RenderSystemx::configure(entityx::EventManager & event_manager) {
     event_manager.subscribe<turnBegin>(*this);
     event_manager.subscribe<turnEnd>(*this);
-    event_manager.subscribe<unitHealEvent>(*this);
+    event_manager.subscribe<unitHeal>(*this);
     event_manager.subscribe<unitWait>(*this);
-    event_manager.subscribe<unitDieEvent>(*this);
-    event_manager.subscribe<unitRefreshEvent>(*this);
+    event_manager.subscribe<unitDie>(*this);
+    event_manager.subscribe<unitRefresh>(*this);
 }
 
 void RenderSystemx::receive(const turnBegin & begin) {
@@ -231,11 +231,11 @@ void RenderSystemx::receive(const turnEnd & end) {
 
 }
 
-void RenderSystemx::receive(const unitHealEvent & heal) {
+void RenderSystemx::receive(const unitHeal & heal) {
 
 }
 
-void RenderSystemx::receive(const unitDieEvent & death) {
+void RenderSystemx::receive(const unitDie & death) {
 
 }
 
@@ -243,7 +243,7 @@ void RenderSystemx::receive(const unitWait & wait) {
 
 }
 
-void RenderSystemx::receive(const unitRefreshEvent & refresh) {
+void RenderSystemx::receive(const unitRefresh & refresh) {
 
 }
 

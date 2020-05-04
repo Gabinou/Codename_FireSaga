@@ -38,10 +38,10 @@ public:
     void configure(entityx::EventManager & event_manager);
     void receive(const turnBegin & begin);
     void receive(const turnEnd & end);
-    void receive(const unitHealEvent & heal);
-    void receive(const unitDieEvent & death);
+    void receive(const unitHeal & heal);
+    void receive(const unitDie & death);
     void receive(const unitWait & wait);
-    void receive(const unitRefreshEvent & refresh);
+    void receive(const unitRefresh & refresh);
 
     void update(entityx::EntityManager & es, entityx::EventManager & events, entityx::TimeDelta dt) override;
 };
@@ -69,10 +69,10 @@ public:
     void configure(entityx::EventManager & event_manager);
     void receive(const turnBegin & begin);
     void receive(const turnEnd & end);
-    void receive(const unitHealEvent & heal);
-    void receive(const unitDieEvent & death);
+    void receive(const unitHeal & heal);
+    void receive(const unitDie & death);
     void receive(const unitWait & wait);
-    void receive(const unitRefreshEvent & refreshes);
+    void receive(const unitRefresh & refreshes);
     void receive(const unitSelect & selected);
     void receive(const unitDeselect & selected);
     void receive(const unitMove & move);
