@@ -44,6 +44,7 @@ private:
 
     bool sex = false; // 0:F, 1:M. eg. hasPenis.
     bool show_danger = false;
+    bool waits;
 
     std::string name = "";
     std::string class_name = "";

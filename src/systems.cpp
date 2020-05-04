@@ -273,7 +273,6 @@ void UnitSystemx::configure(entityx::EventManager & events) {
     events.subscribe<unitMenu>(*this);
     events.subscribe<unitmenuSelect>(*this);
     events.subscribe<unitMap>(*this);
-
     events.subscribe<unitWait>(*this);
     events.subscribe<unitTalk>(*this);
     events.subscribe<unitRescue>(*this);
@@ -787,8 +786,8 @@ void ControlSystemx::receive(const cursorMoved & moved) {
             unitontile = unitmap[cursor_pos[1]][cursor_pos[0]];
 
             if (unitontile) {
-                // event_manager->emit<unitHover>(cursor, unitontile);
-                event_manager->emit<unitMove>(cursor, unitontile);
+                event_manager->emit<unitHover>(cursor, unitontile);
+                // event_manager->emit<unitMove>(cursor, unitontile);
             } else {
                 event_manager->emit<unitNomove>(cursor);
             }
@@ -826,6 +825,11 @@ void ControlSystemx::receive(const inputAccept & accept) {
                     event_manager->emit<mapMenu>(accepter);
                 }
 
+                break;
+
+            case GAME::STATE::UNITHOVER:
+                newstate = GAME::STATE::UNITMOVE;
+                event_manager->emit<unitMove>(select.cursor, select.unit)
                 break;
 
             case GAME::STATE::UNITMOVE:

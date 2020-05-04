@@ -606,6 +606,7 @@ enum STATES {
     CONVERSATION,
     BATTLE,
     ATTACK,
+    UNITHOVER,
     INTROVIDEO,
     END,
 };
