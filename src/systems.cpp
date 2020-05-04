@@ -380,24 +380,35 @@ void UnitSystemx::receive(const unitmenuSelect & select) {
     if (unit) {
         switch (unitmenuoptions[menuind]) {
             case UNIT::MENU::ITEMS:
+                event_manager->emit<unitItems>(cursor, unit);
                 break;
 
             case UNIT::MENU::TALK:
+                event_manager->emit<unitTalk>(cursor, unit);
                 break;
 
             case UNIT::MENU::RESCUE:
+                event_manager->emit<unitRescue>(cursor, unit);
                 break;
 
             case UNIT::MENU::SEIZE:
+                event_manager->emit<unitSeize>(unit);
                 break;
 
             case UNIT::MENU::ESCAPE:
+                event_manager->emit<unitEscape>(cursor, unit);
                 break;
 
             case UNIT::MENU::ATTACK:
+                event_manager->emit<unitAttack>(cursor, unit);
                 break;
 
             case UNIT::MENU::TRADE:
+                event_manager->emit<unitTrade>(cursor, unit);
+                break;
+
+            case UNIT::MENU::STAFF:
+                event_manager->emit<unitStaff>(cursor, unit);
                 break;
 
             case UNIT::MENU::WAIT:

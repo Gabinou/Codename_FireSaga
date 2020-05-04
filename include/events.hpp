@@ -132,9 +132,8 @@ struct turnEnd {
 };
 
 struct unitSeize {
-    unitSeize(entityx::Entity victor) : victor(victor) {}
-    entityx::Entity victor;
-    //unit.
+    unitSeize(entityx::ComponentHandle<Unit> victor) : victor(victor) {}
+    entityx::ComponentHandle<Unit> victor;
 };
 
 struct gameOver {
@@ -150,6 +149,48 @@ struct unitRefresh {
 
 struct unitWait {
     unitWait(entityx::Entity cursor, entityx::ComponentHandle<Unit> unit) : cursor(cursor), unit(unit) {}
+    entityx::Entity cursor;
+    entityx::ComponentHandle<Unit> unit;
+};
+
+struct unitTalk {
+    unitTalk(entityx::Entity cursor, entityx::ComponentHandle<Unit> unit) : cursor(cursor), unit(unit) {}
+    entityx::Entity cursor;
+    entityx::ComponentHandle<Unit> unit;
+};
+
+struct unitRescue {
+    unitRescue(entityx::Entity cursor, entityx::ComponentHandle<Unit> unit) : cursor(cursor), unit(unit) {}
+    entityx::Entity cursor;
+    entityx::ComponentHandle<Unit> unit;
+};
+
+struct unitAttack {
+    unitAttack(entityx::Entity cursor, entityx::ComponentHandle<Unit> unit) : cursor(cursor), unit(unit) {}
+    entityx::Entity cursor;
+    entityx::ComponentHandle<Unit> unit;
+};
+
+struct unitTrade {
+    unitTrade(entityx::Entity cursor, entityx::ComponentHandle<Unit> unit) : cursor(cursor), unit(unit) {}
+    entityx::Entity cursor;
+    entityx::ComponentHandle<Unit> unit;
+};
+
+struct unitEscape {
+    unitEscape(entityx::Entity cursor, entityx::ComponentHandle<Unit> unit) : cursor(cursor), unit(unit) {}
+    entityx::Entity cursor;
+    entityx::ComponentHandle<Unit> unit;
+};
+
+struct unitStaff {
+    unitStaff(entityx::Entity cursor, entityx::ComponentHandle<Unit> unit) : cursor(cursor), unit(unit) {}
+    entityx::Entity cursor;
+    entityx::ComponentHandle<Unit> unit;
+};
+
+struct unitItems {
+    unitItems(entityx::Entity cursor, entityx::ComponentHandle<Unit> unit) : cursor(cursor), unit(unit) {}
     entityx::Entity cursor;
     entityx::ComponentHandle<Unit> unit;
 };

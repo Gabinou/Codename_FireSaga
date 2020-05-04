@@ -353,6 +353,7 @@ enum OPTIONS {
     ARMORY,
     VILLAGE,
     TRADE,
+    STAFF,
     WAIT,
 };
 }
