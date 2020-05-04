@@ -73,6 +73,13 @@ public:
     void receive(const unitDie & death);
     void receive(const unitWait & wait);
     void receive(const unitRefresh & refreshes);
+    void receive(const unitTalk & talk);
+    void receive(const unitRescue & rescue);
+    void receive(const unitAttack & attack);
+    void receive(const unitTrade & trade);
+    void receive(const unitEscape & escape);
+    void receive(const unitStaff & staff);
+    void receive(const unitItems & item);
     void receive(const unitSelect & selected);
     void receive(const unitDeselect & selected);
     void receive(const unitMove & move);

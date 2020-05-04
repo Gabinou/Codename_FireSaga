@@ -273,7 +273,45 @@ void UnitSystemx::configure(entityx::EventManager & events) {
     events.subscribe<unitMenu>(*this);
     events.subscribe<unitmenuSelect>(*this);
     events.subscribe<unitMap>(*this);
+
+    events.subscribe<unitWait>(*this);
+    events.subscribe<unitTalk>(*this);
+    events.subscribe<unitRescue>(*this);
+    events.subscribe<unitAttack>(*this);
+    events.subscribe<unitTrade>(*this);
+    events.subscribe<unitEscape>(*this);
+    events.subscribe<unitItems>(*this);
 }
+
+void UnitSystemx::receive(const unitWait & wait) {
+
+}
+
+void UnitSystemx::receive(const unitTalk & talk) {
+
+}
+
+void UnitSystemx::receive(const unitRescue & rescue) {
+
+}
+
+void UnitSystemx::receive(const unitAttack & attack) {
+
+}
+
+void UnitSystemx::receive(const unitTrade & trade) {
+
+}
+
+void UnitSystemx::receive(const unitEscape & Escape) {
+
+}
+
+void UnitSystemx::receive(const unitItems & Items) {
+
+}
+
+
 
 void UnitSystemx::receive(const unitDeselect & deselect) {
     SDL_Log("unitDeselect event received");
