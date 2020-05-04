@@ -347,38 +347,45 @@ void UnitSystemx::receive(const unitDeselect & deselect) {
         // event_manager->emit<unitMove>(cursor, deselect.unit);
         // newstate = GAME::STATE::UNITMOVE;
     } else {
-        std::vector<std::vector<short int>> costmapp;
-        std::vector<std::vector<short int>> movemapp;
-        std::vector<std::vector<short int>> attackmapp;
-        std::vector<std::vector<short int>> dangermapp;
-        short unsigned int unit_move;
-        short unsigned int start[2];
-        unsigned char * range;
+        switch (game->getState()) {
+            case GAME::STATE::UNITMOVE:
+                if (unit->isDanger()) {
+                    std::vector<std::vector<short int>> costmapp;
+                    std::vector<std::vector<short int>> movemapp;
+                    std::vector<std::vector<short int>> attackmapp;
+                    std::vector<std::vector<short int>> dangermapp;
+                    short unsigned int unit_move;
+                    short unsigned int start[2];
+                    unsigned char * range;
 
-        entityx::ComponentHandle<Position> cursorpos = cursor.component<Position>();
+                    entityx::ComponentHandle<Position> cursorpos = cursor.component<Position>();
 
-        if (cursorpos) {
-            start[0] = cursorpos->getPos()[0] - cursorpos->getOffset()[0];
-            start[1] = cursorpos->getPos()[1] - cursorpos->getOffset()[1];
-        } else {
-            SDL_Log("Could not get cursor position component");
-        }
+                    if (cursorpos) {
+                        start[0] = cursorpos->getPos()[0] - cursorpos->getOffset()[0];
+                        start[1] = cursorpos->getPos()[1] - cursorpos->getOffset()[1];
+                    } else {
+                        SDL_Log("Could not get cursor position component");
+                    }
 
-        if (unit) {
-            unit_move = unit->getStats().move;
-            range = unit->getRange();
-        } else {
-            SDL_Log("Could not get unit component");
-        }
+                    if (unit) {
+                        unit_move = unit->getStats().move;
+                        range = unit->getRange();
+                    } else {
+                        SDL_Log("Could not get unit component");
+                    }
 
-        costmapp = mapx->makeMvtCostmap(unit);
-        movemapp = movemap(costmapp, start, unit_move, "matrix");
-        attackmapp = attackmap(movemapp, start, unit_move, range, "matrix");
-        dangermapp = matrix_plus(attackmapp, movemapp);
+                    costmapp = mapx->makeMvtCostmap(unit);
+                    movemapp = movemap(costmapp, start, unit_move, "matrix");
+                    attackmapp = attackmap(movemapp, start, unit_move, range, "matrix");
+                    dangermapp = matrix_plus(attackmapp, movemapp);
 
-        if (unit->isDanger()) {
-            mapx->subDanger(dangermapp);
-            unit->hideDanger();
+                    mapx->subDanger(dangermapp);
+                    unit->hideDanger();
+                } else {
+                    event_manager->emit<unitNomove>(cursor);
+                }
+
+                break;
         }
     }
 
@@ -394,13 +401,13 @@ void UnitSystemx::receive(const unitSelect & select) {
     entityx::ComponentHandle<Unit> unit = select.unit;
 
     if (isPC(unit->getArmy())) {
-        event_manager->emit<unitMove>(select.cursor, select.unit);
+        event_manager->emit<unitMove>(select.cursor, unit);
         newstate = GAME::STATE::UNITMOVE;
     } else {
         if (game->getState() == GAME::STATE::UNITMOVE) {
-            event_manager->emit<unitDanger>(select.cursor, select.unit);
+            event_manager->emit<unitDanger>(select.cursor, unit);
         } else {
-            event_manager->emit<unitMove>(select.cursor, select.unit);
+            event_manager->emit<unitMove>(select.cursor, unit);
             newstate = GAME::STATE::UNITMOVE;
         }
     }
@@ -796,21 +803,14 @@ void ControlSystemx::receive(const cursorMoved & moved) {
     cursor_pos[1] = position->getPos()[1] - position->getOffset()[1];
     previous_pos[0] = cursor_pos[0] - move.x;
     previous_pos[1] = cursor_pos[1] - move.y;
-    unitprevioustile = unitmap[previous_pos[0]][previous_pos[1]];
-
-    SDL_Log("Unitprevioustile?: %d %d", previous_pos[0], previous_pos[1]);
+    unitprevioustile = unitmap[previous_pos[1]][previous_pos[0]];
 
     if (unitprevioustile) {
         event_manager->emit<unitDehover>(cursor, unitprevioustile);
     }
 
     switch (game->getState()) {
-        case GAME::STATE::UNITMOVE:
-
-
         case GAME::STATE::MAP:
-            // cursor_pos[0] = position->getPos()[0] - position->getOffset()[0];
-            // cursor_pos[1] = position->getPos()[1] - position->getOffset()[1];
             unitontile = unitmap[cursor_pos[1]][cursor_pos[0]];
 
             if (unitontile) {
