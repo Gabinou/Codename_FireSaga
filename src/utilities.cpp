@@ -84,6 +84,7 @@ bool isPC(const unsigned char army) {
         case UNIT::ARMY::ERWIN:
         case UNIT::ARMY::FREE_MILITIA:
             out = true;
+            break;
 
         case UNIT::ARMY::ENEMY:
         case UNIT::ARMY::IMPERIAL:

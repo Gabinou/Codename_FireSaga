@@ -294,6 +294,11 @@ void UnitSystemx::receive(const unitDehover & dehover) {
 
     } else {
         event_manager->emit<unitNomove>(cursor);
+        newstate = GAME::STATE::MAP;
+    }
+
+    if (newstate > 0) {
+        game->setState(newstate);
     }
 }
 
@@ -786,22 +791,24 @@ void ControlSystemx::receive(const cursorMoved & moved) {
     Point previous = moved.previous;
     short int cursor_pos[2];
     short int newstate = -1;
-
+    cursor_pos[0] = position->getPos()[0] - position->getOffset()[0];
+    cursor_pos[1] = position->getPos()[1] - position->getOffset()[1];
+    SDL_Log("Current tile: %d %d", cursor_pos[0], cursor_pos[1]);
+    SDL_Log("Previous tile: %d %d", previous.x, previous.y);
 
     switch (game->getState()) {
 
         case GAME::STATE::UNITMOVE:
+            SDL_Log("Is there a unit on previous tile?");
             unitprevioustile = unitmap[previous.y][previous.x];
 
             if (unitprevioustile) {
                 event_manager->emit<unitDehover>(cursor, unitprevioustile);
-                newstate = GAME::STATE::MAP;
+                // newstate = GAME::STATE::MAP;
             }
 
 
         case GAME::STATE::MAP:
-            cursor_pos[1] = position->getPos()[1] - position->getOffset()[1];
-            cursor_pos[0] = position->getPos()[0] - position->getOffset()[0];
             unitontile = unitmap[cursor_pos[1]][cursor_pos[0]];
 
             if (unitontile) {
