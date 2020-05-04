@@ -269,7 +269,6 @@ void UnitSystemx::configure(entityx::EventManager & events) {
     events.subscribe<unitDeselect>(*this);
     events.subscribe<unitDanger>(*this);
     events.subscribe<unitMove>(*this);
-    events.subscribe<unitNomove>(*this);
     events.subscribe<unitMenu>(*this);
     events.subscribe<unitmenuSelect>(*this);
     events.subscribe<unitMap>(*this);
@@ -294,7 +293,7 @@ void UnitSystemx::receive(const unitDehover & dehover) {
     if (isPC(unit->getArmy())) {
 
     } else {
-        event_manager->emit<unitNomove>(cursor);
+        event_manager->emit<unitMap>(cursor);
         newstate = GAME::STATE::MAP;
     }
 
@@ -344,7 +343,7 @@ void UnitSystemx::receive(const unitDeselect & deselect) {
 
 
     if (isPC(unit->getArmy())) {
-        // event_manager->emit<unitMove>(cursor, deselect.unit);
+        event_manager->emit<unitMap>(cursor, deselect.unit);
         // newstate = GAME::STATE::UNITMOVE;
     } else {
         switch (game->getState()) {
@@ -352,7 +351,7 @@ void UnitSystemx::receive(const unitDeselect & deselect) {
                 if (unit->isDanger()) {
                     event_manager->emit<unitDanger>(cursor, unit);
                 } else {
-                    event_manager->emit<unitNomove>(cursor);
+                    event_manager->emit<unitMap>(cursor);
                     newstate = GAME::STATE::MAP;
                 }
 
@@ -544,11 +543,6 @@ void UnitSystemx::receive(const unitMenu & menu) {
     unitmenux->component<Position>()->setPos((new_position[0] + 1) * settings->tilesize[0], new_position[1] * settings->tilesize[1]);
     game->showMenu(MENU::UNIT);
     game->setCursorstate(GAME::STATE::UNITMENU);
-}
-
-void UnitSystemx::receive(const unitNomove & nomove) {
-    // SDL_Log("Received unitNomove event");
-    mapx->hideOverlay();
 }
 
 void UnitSystemx::receive(const unitMove & move) {
