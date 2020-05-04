@@ -27,8 +27,9 @@ struct mapMenu {
 };
 
 struct cursorMoved {
-    cursorMoved(entityx::Entity cursor) : cursor(cursor) {}
+    cursorMoved(entityx::Entity cursor, Point to_move) : cursor(cursor), to_move(to_move) {}
     entityx::Entity cursor;
+    Point to_move;
 };
 
 struct unitSelect {
@@ -56,6 +57,12 @@ struct unitMove {
 
 struct unitHover {
     unitHover(entityx::Entity cursor, entityx::ComponentHandle<Unit> unit) : cursor(cursor), unit(unit) {}
+    entityx::Entity cursor;
+    entityx::ComponentHandle<Unit> unit;
+};
+
+struct unitDehover {
+    unitDehover(entityx::Entity cursor, entityx::ComponentHandle<Unit> unit) : cursor(cursor), unit(unit) {}
     entityx::Entity cursor;
     entityx::ComponentHandle<Unit> unit;
 };

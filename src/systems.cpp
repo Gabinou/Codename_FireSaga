@@ -273,6 +273,8 @@ void UnitSystemx::configure(entityx::EventManager & events) {
     events.subscribe<unitMenu>(*this);
     events.subscribe<unitmenuSelect>(*this);
     events.subscribe<unitMap>(*this);
+    events.subscribe<unitHover>(*this);
+    events.subscribe<unitDehover>(*this);
     events.subscribe<unitWait>(*this);
     events.subscribe<unitTalk>(*this);
     events.subscribe<unitRescue>(*this);
@@ -280,6 +282,24 @@ void UnitSystemx::configure(entityx::EventManager & events) {
     events.subscribe<unitTrade>(*this);
     events.subscribe<unitEscape>(*this);
     events.subscribe<unitItems>(*this);
+}
+
+void UnitSystemx::receive(const unitDehover & dehover) {
+    SDL_Log("unitDehover event received");
+    short int newstate = -1;
+    entityx::ComponentHandle<Unit> unit = dehover.unit;
+    entityx::Entity cursor = dehover.cursor;
+
+
+    if (isPC(unit->getArmy())) {
+
+    } else {
+        event_manager->emit<unitNomove>(cursor);
+    }
+}
+
+void UnitSystemx::receive(const unitHover & hover) {
+
 }
 
 void UnitSystemx::receive(const unitWait & wait) {
@@ -318,54 +338,44 @@ void UnitSystemx::receive(const unitDeselect & deselect) {
     entityx::ComponentHandle<Unit> unit = deselect.unit;
     entityx::Entity cursor = deselect.cursor;
 
-    switch (unit->getArmy()) {
-        case UNIT::ARMY::FRIENDLY:
-        case UNIT::ARMY::ERWIN:
-        case UNIT::ARMY::FREE_MILITIA:
-            // event_manager->emit<unitMove>(cursor, deselect.unit);
-            // newstate = GAME::STATE::UNITMOVE;
-            break;
 
-        case UNIT::ARMY::ENEMY:
-        case UNIT::ARMY::BANDITS:
-        case UNIT::ARMY::KEWAC:
-        case UNIT::ARMY::NEUTRAL:
-        case UNIT::ARMY::IMPERIAL:
-            std::vector<std::vector<short int>> costmapp;
-            std::vector<std::vector<short int>> movemapp;
-            std::vector<std::vector<short int>> attackmapp;
-            std::vector<std::vector<short int>> dangermapp;
-            short unsigned int unit_move;
-            short unsigned int start[2];
-            unsigned char * range;
+    if (isPC(unit->getArmy())) {
+        // event_manager->emit<unitMove>(cursor, deselect.unit);
+        // newstate = GAME::STATE::UNITMOVE;
+    } else {
+        std::vector<std::vector<short int>> costmapp;
+        std::vector<std::vector<short int>> movemapp;
+        std::vector<std::vector<short int>> attackmapp;
+        std::vector<std::vector<short int>> dangermapp;
+        short unsigned int unit_move;
+        short unsigned int start[2];
+        unsigned char * range;
 
-            entityx::ComponentHandle<Position> cursorpos = cursor.component<Position>();
+        entityx::ComponentHandle<Position> cursorpos = cursor.component<Position>();
 
-            if (cursorpos) {
-                start[0] = cursorpos->getPos()[0] - cursorpos->getOffset()[0];
-                start[1] = cursorpos->getPos()[1] - cursorpos->getOffset()[1];
-            } else {
-                SDL_Log("Could not get cursor position component");
-            }
+        if (cursorpos) {
+            start[0] = cursorpos->getPos()[0] - cursorpos->getOffset()[0];
+            start[1] = cursorpos->getPos()[1] - cursorpos->getOffset()[1];
+        } else {
+            SDL_Log("Could not get cursor position component");
+        }
 
-            if (unit) {
-                unit_move = unit->getStats().move;
-                range = unit->getRange();
-            } else {
-                SDL_Log("Could not get unit component");
-            }
+        if (unit) {
+            unit_move = unit->getStats().move;
+            range = unit->getRange();
+        } else {
+            SDL_Log("Could not get unit component");
+        }
 
-            costmapp = mapx->makeMvtCostmap(unit);
-            movemapp = movemap(costmapp, start, unit_move, "matrix");
-            attackmapp = attackmap(movemapp, start, unit_move, range, "matrix");
-            dangermapp = matrix_plus(attackmapp, movemapp);
+        costmapp = mapx->makeMvtCostmap(unit);
+        movemapp = movemap(costmapp, start, unit_move, "matrix");
+        attackmapp = attackmap(movemapp, start, unit_move, range, "matrix");
+        dangermapp = matrix_plus(attackmapp, movemapp);
 
-            if (unit->isDanger()) {
-                mapx->subDanger(dangermapp);
-                unit->hideDanger();
-            }
-
-            break;
+        if (unit->isDanger()) {
+            mapx->subDanger(dangermapp);
+            unit->hideDanger();
+        }
     }
 
     if (newstate > 0) {
@@ -379,21 +389,16 @@ void UnitSystemx::receive(const unitSelect & select) {
     short int newstate = -1;
     entityx::ComponentHandle<Unit> unit = select.unit;
 
-    switch (unit->getArmy()) {
-        case UNIT::ARMY::FRIENDLY:
-        case UNIT::ARMY::ERWIN:
-        case UNIT::ARMY::FREE_MILITIA:
-            // event_manager->emit<unitMove>(select.cursor, select.unit)
-            newstate = GAME::STATE::UNITMOVE;
-            break;
-
-        case UNIT::ARMY::ENEMY:
-        case UNIT::ARMY::BANDITS:
-        case UNIT::ARMY::KEWAC:
-        case UNIT::ARMY::NEUTRAL:
-        case UNIT::ARMY::IMPERIAL:
+    if (isPC(unit->getArmy())) {
+        event_manager->emit<unitMove>(select.cursor, select.unit);
+        newstate = GAME::STATE::UNITMOVE;
+    } else {
+        if (game->getState() == GAME::STATE::UNITMOVE) {
             event_manager->emit<unitDanger>(select.cursor, select.unit);
-            break;
+        } else {
+            event_manager->emit<unitMove>(select.cursor, select.unit);
+            newstate = GAME::STATE::UNITMOVE;
+        }
     }
 
     if (newstate > 0) {
@@ -775,21 +780,30 @@ unsigned int ControlSystemx::getHeldbutton(Controllers in_controllers) {
 void ControlSystemx::receive(const cursorMoved & moved) {
     // SDL_Log("Received cursorMoved event");
     entityx::ComponentHandle<Unit> unitontile;
+    entityx::ComponentHandle<Unit> unitprevioustile;
     entityx::Entity cursor = moved.cursor;
     entityx::ComponentHandle<Position> position = cursor.component<Position>();
     short int cursor_pos[2];
 
     switch (game->getState()) {
+        case GAME::STATE::UNITMOVE:
+            unitprevioustile = unitmap[cursor_pos[1] - moved.to_move.x][cursor_pos[0]  - moved.to_move.y];
+
+            if (unitprevioustile) {
+                event_manager->emit<unitDehover>(cursor, unitprevioustile);
+            }
+
         case GAME::STATE::MAP:
             cursor_pos[0] = position->getPos()[0] - position->getOffset()[0];
             cursor_pos[1] = position->getPos()[1] - position->getOffset()[1];
             unitontile = unitmap[cursor_pos[1]][cursor_pos[0]];
 
+
             if (unitontile) {
                 event_manager->emit<unitHover>(cursor, unitontile);
                 // event_manager->emit<unitMove>(cursor, unitontile);
             } else {
-                event_manager->emit<unitNomove>(cursor);
+                // event_manager->emit<unitNomove>(cursor);
             }
 
             break;
@@ -819,6 +833,7 @@ void ControlSystemx::receive(const inputAccept & accept) {
                 unitontile = unitmap[cursor_pos[1]][cursor_pos[0]];
 
                 if (unitontile) {
+                    selected = unitontile;
                     event_manager->emit<unitSelect>(accepter, unitontile);
                 } else {
                     newstate = GAME::STATE::MAPMENU;
@@ -827,14 +842,14 @@ void ControlSystemx::receive(const inputAccept & accept) {
 
                 break;
 
-            case GAME::STATE::UNITHOVER:
-                newstate = GAME::STATE::UNITMOVE;
-                event_manager->emit<unitMove>(select.cursor, select.unit)
-                break;
-
             case GAME::STATE::UNITMOVE:
-                newstate = GAME::STATE::UNITMENU;
-                event_manager->emit<unitMenu>(accepter);
+                if (isPC(selected->getArmy())) {
+                    newstate = GAME::STATE::UNITMENU;
+                    event_manager->emit<unitMenu>(accepter);
+                } else {
+                    event_manager->emit<unitDanger>(accepter, selected);
+                }
+
                 break;
 
             case GAME::STATE::UNITMENU:
@@ -994,7 +1009,10 @@ void ControlSystemx::update(entityx::EntityManager & es, entityx::EventManager &
 
     if ((to_move[0] != 0) || (to_move[1] != 0)) {
         position->addPos(to_move[0], to_move[1]);
-        events.emit<cursorMoved>(cursorent);
+        Point point;
+        point.x = to_move[0];
+        point.y = to_move[1];
+        events.emit<cursorMoved>(cursorent, point);
     }
 }
 

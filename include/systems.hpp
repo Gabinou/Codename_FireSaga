@@ -80,6 +80,8 @@ public:
     void receive(const unitEscape & escape);
     void receive(const unitStaff & staff);
     void receive(const unitItems & item);
+    void receive(const unitHover & hover);
+    void receive(const unitDehover & dehover);
     void receive(const unitSelect & selected);
     void receive(const unitDeselect & selected);
     void receive(const unitMove & move);
@@ -120,10 +122,8 @@ private:
     GamepadInputMap gamepadInputMap;
     entityx::EventManager * event_manager;
     std::vector<std::vector<entityx::ComponentHandle<Unit>>> unitmap;
-    struct Candidate {
-        entityx::Entity ent;
-    };
-    std::vector<Candidate> candidates;
+    entityx::ComponentHandle<Unit> selected;
+
 public:
     ControlSystemx();
     ControlSystemx(Game * in_game);

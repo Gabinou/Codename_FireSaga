@@ -348,9 +348,7 @@ std::vector<std::vector<short int>> Map::makeMvtCostmap(entityx::ComponentHandle
                 ontile_army = unitontile->getArmy();
 
                 if (!isFriendly(ontile_army, army)) {
-                    SDL_Log("isFriendly?:");
                     costmap[row][col] = 0;
-                    SDL_Log("untilhere?:");
                 }
             }
         }

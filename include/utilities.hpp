@@ -50,6 +50,7 @@ extern std::vector<std::string> armyNames;
 extern void makeArmyNames();
 
 extern bool isFriendly(const unsigned char army1, const unsigned char army2);
+extern bool isPC(const unsigned char army);
 
 extern void loadUtilities();
 

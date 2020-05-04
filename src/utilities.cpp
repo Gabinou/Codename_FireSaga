@@ -75,6 +75,27 @@ int geometricslide(int distance, float geo_factor) {
     // sign*distance more elegant than std::abs()
 }
 
+bool isPC(const unsigned char army) {
+    bool out = false;
+
+    switch (army) {
+        case UNIT::ARMY::FRIENDLY:
+        case UNIT::ARMY::NEUTRAL:
+        case UNIT::ARMY::ERWIN:
+        case UNIT::ARMY::FREE_MILITIA:
+            out = true;
+
+        case UNIT::ARMY::ENEMY:
+        case UNIT::ARMY::IMPERIAL:
+        case UNIT::ARMY::THEOCRACY:
+        case UNIT::ARMY::VOLDAN:
+            out = false;
+            break;
+    }
+
+    return (out);
+}
+
 bool isFriendly(const unsigned char army1, const unsigned char army2) {
     bool out = false;
 
