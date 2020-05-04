@@ -297,11 +297,14 @@ void UnitSystemx::receive(const unitDehover & dehover) {
 }
 
 void UnitSystemx::receive(const unitHover & hover) {
-    SDL_Log("unitHover event received");
+    SDL_Log("Received unitHover event");
 }
 
 void UnitSystemx::receive(const unitWait & wait) {
-
+    SDL_Log("Received unitWait event");
+    entityx::ComponentHandle<Unit> unit = wait.unit;
+    unit->wait();
+    event_manager->emit<unitMap>(wait.cursor);
 }
 
 void UnitSystemx::receive(const unitTalk & talk) {
@@ -320,12 +323,16 @@ void UnitSystemx::receive(const unitTrade & trade) {
 
 }
 
-void UnitSystemx::receive(const unitEscape & Escape) {
+void UnitSystemx::receive(const unitEscape & escape) {
 
 }
 
-void UnitSystemx::receive(const unitItems & Items) {
-
+void UnitSystemx::receive(const unitItems & items) {
+    SDL_Log("unitItems event received");
+    entityx::ComponentHandle<Unit> unit = items.unit;
+    // event_manager->emit<itemMenu>(wait.cursor);
+    unit->wait();
+    event_manager->emit<unitMap>(items.cursor);
 }
 
 void UnitSystemx::receive(const unitDeselect & deselect) {
@@ -383,8 +390,9 @@ void UnitSystemx::receive(const unitmenuSelect & select) {
     short int * cursorbounds = position->getBounds();
     unsigned char menuind = cursorpos[1] - cursorbounds[2];
 
-    SDL_Log("menuind: %d ", menuind);
     unitmenuoptions = game->getMenuoptions(MENU::UNIT);
+    SDL_Log("menuind: %d ", menuind);
+    SDL_Log("unitmenuoptions[menuind]: %d ", unitmenuoptions[menuind]);
 
     if (unit) {
         switch (unitmenuoptions[menuind]) {
@@ -824,12 +832,12 @@ void ControlSystemx::receive(const inputAccept & accept) {
         cursor_pos[0] = position->getPos()[0] - position->getOffset()[0];
         cursor_pos[1] = position->getPos()[1] - position->getOffset()[1];
         entityx::ComponentHandle<Unit> unitontile;
+        game->setCursorlastpos(cursor_pos[0], cursor_pos[1]);
+        unitontile = unitmap[cursor_pos[1]][cursor_pos[0]];
 
         switch (game->getState()) {
             case GAME::STATE::MAP:
                 SDL_Log("accepter Position, %d %d \n", cursor_pos[0], cursor_pos[1]);
-                game->setCursorlastpos(cursor_pos[0], cursor_pos[1]);
-                unitontile = unitmap[cursor_pos[1]][cursor_pos[0]];
 
                 if (unitontile) {
                     selected = unitontile;
@@ -852,8 +860,7 @@ void ControlSystemx::receive(const inputAccept & accept) {
                 break;
 
             case GAME::STATE::UNITMENU:
-
-                event_manager->emit<unitmenuSelect>(accepter, unitontile);
+                event_manager->emit<unitmenuSelect>(accepter, selected);
                 break;
         }
 
@@ -1010,7 +1017,6 @@ void ControlSystemx::update(entityx::EntityManager & es, entityx::EventManager &
         Point move;
         move.x = to_move[0];
         move.y = to_move[1];
-        SDL_Log("to_move: %d %d", to_move[0], to_move[1]);
         position->addPos(to_move[0], to_move[1]);
         events.emit<cursorMoved>(cursorent, move);
     }
