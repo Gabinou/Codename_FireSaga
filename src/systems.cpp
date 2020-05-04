@@ -308,23 +308,42 @@ void UnitSystemx::receive(const unitWait & wait) {
 }
 
 void UnitSystemx::receive(const unitTalk & talk) {
-
+    SDL_Log("unitTalk event received");
+    entityx::ComponentHandle<Unit> unit = talk.unit;
+    // event_manager->emit<talkMenu>(wait.cursor);
+    unit->wait();
+    event_manager->emit<unitMap>(talk.cursor);
 }
 
 void UnitSystemx::receive(const unitRescue & rescue) {
-
+    SDL_Log("unitRescue event received");
+    entityx::ComponentHandle<Unit> unit = rescue.unit;
+    // event_manager->emit<rescueMenu>(wait.cursor);
+    unit->wait();
+    event_manager->emit<unitMap>(rescue.cursor);
 }
 
 void UnitSystemx::receive(const unitAttack & attack) {
-
+    SDL_Log("unitAttack event received");
+    entityx::ComponentHandle<Unit> unit = attack.unit;
+    // event_manager->emit<attackMenu>(wait.cursor);
+    unit->wait();
+    event_manager->emit<unitMap>(attack.cursor);
 }
 
 void UnitSystemx::receive(const unitTrade & trade) {
-
+    SDL_Log("unitTrade event received");
+    entityx::ComponentHandle<Unit> unit = trade.unit;
+    // event_manager->emit<tradeMenu>(wait.cursor);
+    unit->wait();
+    event_manager->emit<unitMap>(trade.cursor);
 }
 
 void UnitSystemx::receive(const unitEscape & escape) {
-
+    SDL_Log("unitEscape event received");
+    entityx::ComponentHandle<Unit> unit = escape.unit;
+    unit->wait();
+    event_manager->emit<unitMap>(escape.cursor);
 }
 
 void UnitSystemx::receive(const unitItems & items) {
@@ -339,7 +358,6 @@ void UnitSystemx::receive(const unitDeselect & deselect) {
     SDL_Log("unitDeselect event received");
     entityx::ComponentHandle<Unit> unit = deselect.unit;
     entityx::Entity cursor = deselect.cursor;
-
 
     if (isPC(unit->getArmy())) {
         event_manager->emit<unitMap>(cursor);
