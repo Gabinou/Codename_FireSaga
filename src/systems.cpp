@@ -350,37 +350,7 @@ void UnitSystemx::receive(const unitDeselect & deselect) {
         switch (game->getState()) {
             case GAME::STATE::UNITMOVE:
                 if (unit->isDanger()) {
-                    std::vector<std::vector<short int>> costmapp;
-                    std::vector<std::vector<short int>> movemapp;
-                    std::vector<std::vector<short int>> attackmapp;
-                    std::vector<std::vector<short int>> dangermapp;
-                    short unsigned int unit_move;
-                    short unsigned int start[2];
-                    unsigned char * range;
-
-                    entityx::ComponentHandle<Position> cursorpos = cursor.component<Position>();
-
-                    if (cursorpos) {
-                        start[0] = cursorpos->getPos()[0] - cursorpos->getOffset()[0];
-                        start[1] = cursorpos->getPos()[1] - cursorpos->getOffset()[1];
-                    } else {
-                        SDL_Log("Could not get cursor position component");
-                    }
-
-                    if (unit) {
-                        unit_move = unit->getStats().move;
-                        range = unit->getRange();
-                    } else {
-                        SDL_Log("Could not get unit component");
-                    }
-
-                    costmapp = mapx->makeMvtCostmap(unit);
-                    movemapp = movemap(costmapp, start, unit_move, "matrix");
-                    attackmapp = attackmap(movemapp, start, unit_move, range, "matrix");
-                    dangermapp = matrix_plus(attackmapp, movemapp);
-
-                    mapx->subDanger(dangermapp);
-                    unit->hideDanger();
+                    event_manager->emit<unitDanger>(cursor, unit);
                 } else {
                     event_manager->emit<unitNomove>(cursor);
                 }
