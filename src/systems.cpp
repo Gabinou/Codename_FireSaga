@@ -353,6 +353,7 @@ void UnitSystemx::receive(const unitDeselect & deselect) {
                     event_manager->emit<unitDanger>(cursor, unit);
                 } else {
                     event_manager->emit<unitNomove>(cursor);
+                    newstate = GAME::STATE::MAP;
                 }
 
                 break;
@@ -723,6 +724,12 @@ void ControlSystemx::receive(const inputCancel & cancel) {
                 break;
 
             case GAME::STATE::MAP:
+                if (unitontile) {
+                    if (unitontile->isDanger()) {
+                        event_manager->emit<unitDanger>(canceller, unitontile);
+                    }
+
+                }
 
 
                 break;
