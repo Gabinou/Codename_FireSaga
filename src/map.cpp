@@ -288,8 +288,13 @@ short unsigned int * Map::getTilesize() const {
     return ((short unsigned int *)tilesize);
 }
 
+std::vector<entityx::ComponentHandle<Unit>> Map::getUnits(unsigned char  in_army) {
+    return (allunits[in_army]);
+}
+
 void Map::putUnit(const short unsigned int x, const short unsigned int y, entityx::ComponentHandle<Unit> in_unit) {
     unitmap[y][x] = in_unit;// unitmap[row][col]
+    allunits[in_unit->getArmy()].push_back(in_unit);
 }
 
 entityx::ComponentHandle<Unit> Map::getUnit(const short unsigned int x, const short unsigned int y) {

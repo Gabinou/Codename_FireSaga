@@ -21,8 +21,8 @@ RenderSystemx::RenderSystemx(SDL_Renderer * in_renderer) {
 
 void RenderSystemx::setMap(entityx::ComponentHandle<Map> in_map) {
     if (in_map) {
-        map = in_map;
-        tilesize = map->getTilesize();
+        mapx = in_map;
+        tilesize = mapx->getTilesize();
     } else {
         SDL_Log("RenderSystemx: Map Handle is invalid");
     }
@@ -77,7 +77,7 @@ void RenderSystemx::slideSprites(entityx::Entity * in_ent, short int * slidepos,
             }
 
             switch (slidetype) {
-                case SLIDETYPE::GEOMETRIC: //for cursor mvt on map.
+                case SLIDETYPE::GEOMETRIC: //for cursor mvt on mapx.
                     objectivepos[0] = (int)(position->getPos()[0]) * (scalefactor[0]) - destrect.w / 4;
                     objectivepos[1] = (int)(position->getPos()[1]) * (scalefactor[1]) - destrect.h / 4;
 
@@ -140,8 +140,8 @@ void RenderSystemx::update(entityx::EntityManager & es, entityx::EventManager & 
     SDL_RenderClear(renderer);
 
     for (entityx::Entity ent : es.entities_with_components<Map>()) {
-        entityx::ComponentHandle<Map> map = ent.component<Map>();
-        map->draw();
+        entityx::ComponentHandle<Map> mapx = ent.component<Map>();
+        mapx->draw();
     }
 
     for (entityx::Entity ent : es.entities_with_components<Sprite, Position>()) {
@@ -298,7 +298,6 @@ void UnitSystemx::receive(const unitDehover & dehover) {
 
 void UnitSystemx::receive(const unitHover & hover) {
     SDL_Log("unitHover event received");
-    // hovered = hover.unit;
 }
 
 void UnitSystemx::receive(const unitWait & wait) {
@@ -583,7 +582,6 @@ void UnitSystemx::receive(const unitMap & map) {
 
     if ((game->getState() == GAME::STATE::UNITMOVE)) {
         mapx->hideOverlay();
-
     }
 
     if ((game->getState() == GAME::STATE::UNITMENU) ||
@@ -600,9 +598,28 @@ void UnitSystemx::update(entityx::EntityManager & es, entityx::EventManager & ev
 }
 
 MapSystemx::MapSystemx() {
-    SDL_Log("Adding Mapsystemx.");
-
 }
+
+MapSystemx::MapSystemx(Game * in_game) {
+    SDL_Log("Adding Mapsystemx.");
+    game = in_game;
+    updateMap();
+}
+
+
+void MapSystemx::updateMap() {
+    mapx = game->getMap();
+}
+
+void MapSystemx::setMap(entityx::ComponentHandle<Map> in_map) {
+    if (in_map) {
+        mapx = in_map;
+        // tilesize = mapx->getTilesize();
+    } else {
+        SDL_Log("RenderSystemx: Map Handle is invalid");
+    }
+}
+
 
 void MapSystemx::addArmy(unsigned char in_army) {
     armies.push(in_army);
@@ -611,15 +628,11 @@ void MapSystemx::addArmy(unsigned char in_army) {
 void MapSystemx::configure(entityx::EventManager & event_manager) {
     event_manager.subscribe<turnBegin>(*this);
     event_manager.subscribe<turnEnd>(*this);
-    event_manager.subscribe<mapMenu>(*this);
-}
-
-void MapSystemx::receive(const mapMenu & menu) {
-    SDL_Log("Received a mapMenu from...");
 }
 
 void MapSystemx::receive(const turnBegin & begin) {
     SDL_Log("Received a turnBegin from...");
+    //
 }
 
 void MapSystemx::receive(const turnEnd & end) {

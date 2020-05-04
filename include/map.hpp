@@ -50,6 +50,7 @@ private:
     std::vector<std::vector<Inventory_item>> arrival_equipments;
 
     std::vector<Point> starting_positions;
+    std::unordered_map<unsigned char, std::vector<entityx::ComponentHandle<Unit>>> allunits;
     std::vector<std::vector<entityx::ComponentHandle<Unit>>> unitmap;
     std::vector<unsigned short int> essentials = {UNIT::NAME::ERWIN};
     unsigned short int boss;
@@ -88,7 +89,9 @@ public:
     std::vector<std::vector<entityx::ComponentHandle<Unit>>> getUnitmap();
     void clearUnitmap();
 
+
     void putUnit(const short unsigned int x, const short unsigned int y, entityx::ComponentHandle<Unit> in_unit);
+    std::vector<entityx::ComponentHandle<Unit>> getUnits(unsigned char in_army);
     entityx::ComponentHandle<Unit> getUnit(const short unsigned int x, const short unsigned int y);
     void moveUnit(const short unsigned int x, const short unsigned int y, const short unsigned int new_x, const short unsigned int new_y);
 

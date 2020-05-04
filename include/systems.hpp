@@ -23,7 +23,7 @@ private:
     short unsigned int * tilesize;
     short unsigned int linespace;
     short int offset[2];
-    entityx::ComponentHandle<Map> map;
+    entityx::ComponentHandle<Map> mapx;
 public:
     RenderSystemx();
     RenderSystemx(SDL_Renderer * in_renderer);
@@ -94,18 +94,23 @@ public:
 
 class MapSystemx: public entityx::System<MapSystemx>, public entityx::Receiver<MapSystemx> {
 private:
+    Game * game;
     std::queue<unsigned char> armies;
+    entityx::ComponentHandle<Map> mapx;
     entityx::Entity * mapmenux;
 public:
-    explicit MapSystemx();
+    MapSystemx();
+    MapSystemx(Game * in_game);
 
     void addArmy(unsigned char in_army);
     void addArmies(std::vector<unsigned char> in_armies);
+    void updateMap();
+    void setMap(entityx::ComponentHandle<Map> in_map);
+    void switchControl(unsigned char in_army);
 
     void configure(entityx::EventManager & event_manager);
     void receive(const turnBegin & begin);
     void receive(const turnEnd & end);
-    void receive(const mapMenu & end);
 
     void update(entityx::EntityManager & es, entityx::EventManager & events, entityx::TimeDelta dt) override;
 };

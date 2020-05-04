@@ -603,6 +603,7 @@ void Game::init(const char * title, int xpos, int ypos, int width, int height, b
     systems.add<RenderSystemx>(renderer);
     systems.add<ControlSystemx>(this);
     systems.add<UnitSystemx>(this);
+    systems.add<MapSystemx>(this);
     systems.configure();
     state = GAME::STATE::MAP;
 };
