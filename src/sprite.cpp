@@ -133,6 +133,15 @@ void Sprite::setAnimation(int inFrames, int inSpeed) {
     speed = inSpeed;
 }
 
+void Sprite::darken() {
+    SDL_SetTextureColorMod(texture, 64, 64, 64);
+}
+
+void Sprite::lighten() {
+    SDL_SetTextureColorMod(texture, 255, 255, 255);
+}
+
+
 short int Sprite::getSlideint() {
     return (slideint);
 }

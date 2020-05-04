@@ -61,6 +61,9 @@ public:
     void setTilesize(short unsigned int * in_tilesize);
     void animatedRects();
 
+    void darken();
+    void lighten();
+
     unsigned char getSlidetype();
     void setSlidetype(unsigned char in_slidetype);
     void setDestrectpos(short int * in_position);

@@ -303,7 +303,10 @@ void UnitSystemx::receive(const unitHover & hover) {
 void UnitSystemx::receive(const unitWait & wait) {
     SDL_Log("Received unitWait event");
     entityx::ComponentHandle<Unit> unit = wait.unit;
+    entityx::Entity ent = unit.entity();
+    entityx::ComponentHandle<Sprite> sprite = ent.component<Sprite>();
     unit->wait();
+    sprite->darken();
     event_manager->emit<unitMap>(wait.cursor);
 }
 
