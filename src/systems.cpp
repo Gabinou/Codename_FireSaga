@@ -783,21 +783,26 @@ void ControlSystemx::receive(const cursorMoved & moved) {
     entityx::ComponentHandle<Unit> unitprevioustile;
     entityx::Entity cursor = moved.cursor;
     entityx::ComponentHandle<Position> position = cursor.component<Position>();
+    Point previous = moved.previous;
     short int cursor_pos[2];
+    short int newstate = -1;
+
 
     switch (game->getState()) {
+
         case GAME::STATE::UNITMOVE:
-            unitprevioustile = unitmap[cursor_pos[1] - moved.to_move.x][cursor_pos[0]  - moved.to_move.y];
+            unitprevioustile = unitmap[previous.y][previous.x];
 
             if (unitprevioustile) {
                 event_manager->emit<unitDehover>(cursor, unitprevioustile);
+                newstate = GAME::STATE::MAP;
             }
 
-        case GAME::STATE::MAP:
-            cursor_pos[0] = position->getPos()[0] - position->getOffset()[0];
-            cursor_pos[1] = position->getPos()[1] - position->getOffset()[1];
-            unitontile = unitmap[cursor_pos[1]][cursor_pos[0]];
 
+        case GAME::STATE::MAP:
+            cursor_pos[1] = position->getPos()[1] - position->getOffset()[1];
+            cursor_pos[0] = position->getPos()[0] - position->getOffset()[0];
+            unitontile = unitmap[cursor_pos[1]][cursor_pos[0]];
 
             if (unitontile) {
                 event_manager->emit<unitHover>(cursor, unitontile);
@@ -807,6 +812,10 @@ void ControlSystemx::receive(const cursorMoved & moved) {
             }
 
             break;
+    }
+
+    if (newstate != -1) {
+        game->setState(newstate);
     }
 }
 
@@ -1008,10 +1017,10 @@ void ControlSystemx::update(entityx::EntityManager & es, entityx::EventManager &
     }
 
     if ((to_move[0] != 0) || (to_move[1] != 0)) {
-        position->addPos(to_move[0], to_move[1]);
         Point point;
-        point.x = to_move[0];
-        point.y = to_move[1];
+        point.x = position->getPos()[0];
+        point.y = position->getPos()[1];
+        position->addPos(to_move[0], to_move[1]);
         events.emit<cursorMoved>(cursorent, point);
     }
 }

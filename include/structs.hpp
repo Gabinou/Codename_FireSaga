@@ -99,8 +99,6 @@ struct Point {
     short unsigned int y;
 };
 
-
-
 struct Weapon_stats {
     unsigned char Pmight; //Physical might Pprot for shields.
     unsigned char Mmight; //Magic might. Mprot for shields.
