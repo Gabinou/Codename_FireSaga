@@ -241,6 +241,18 @@ void Unit::getsHealed(const unsigned char healing) {
     current_hp = std::min((short int)(current_hp + healing), (short int) current_stats.hp);
 }
 
+bool Unit::isWaiting() {
+    return (waits);
+}
+
+void Unit::wait() {
+    waits = true;
+}
+
+void Unit::refresh() {
+    waits = false;
+}
+
 unsigned char Unit::getHp() const {
     return (current_hp);
 }

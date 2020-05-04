@@ -288,7 +288,7 @@ short unsigned int * Map::getTilesize() const {
     return ((short unsigned int *)tilesize);
 }
 
-std::vector<entityx::ComponentHandle<Unit>> Map::getUnits(unsigned char  in_army) {
+std::vector<entityx::ComponentHandle<Unit>> Map::getUnits(unsigned char in_army) {
     return (allunits[in_army]);
 }
 

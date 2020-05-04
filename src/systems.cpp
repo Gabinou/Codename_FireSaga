@@ -641,6 +641,15 @@ void MapSystemx::receive(const turnEnd & end) {
     armies.pop();
 }
 
+void MapSystemx::refreshUnits(unsigned char in_army) {
+    std::vector<entityx::ComponentHandle<Unit>> units = mapx->getUnits(in_army);
+
+    for (short i = 0; i < units.size(); i++) {
+        units[i]->refresh();
+    }
+}
+
+
 void MapSystemx::update(entityx::EntityManager & es, entityx::EventManager & events, entityx::TimeDelta dt) {
     entityx::ComponentHandle<Unit> unit;
 }

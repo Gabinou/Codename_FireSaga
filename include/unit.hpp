@@ -156,6 +156,9 @@ public:
     bool dmgType();
     char speed();
 
+    bool isWaiting();
+    void refresh();
+    void wait();
     void dies();
 
     void use(int in_ind);
