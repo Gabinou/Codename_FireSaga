@@ -27,9 +27,9 @@ struct mapMenu {
 };
 
 struct cursorMoved {
-    cursorMoved(entityx::Entity cursor, Point previous) : cursor(cursor), previous(previous) {}
+    cursorMoved(entityx::Entity cursor, Point move) : cursor(cursor), move(move) {}
     entityx::Entity cursor;
-    Point previous;
+    Point move;
 };
 
 struct unitSelect {

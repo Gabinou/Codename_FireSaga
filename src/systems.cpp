@@ -287,8 +287,9 @@ void UnitSystemx::configure(entityx::EventManager & events) {
 void UnitSystemx::receive(const unitDehover & dehover) {
     SDL_Log("unitDehover event received");
     short int newstate = -1;
-    entityx::ComponentHandle<Unit> unit = dehover.unit;
+
     entityx::Entity cursor = dehover.cursor;
+    entityx::ComponentHandle<Unit> unit = dehover.unit;
 
     if (isPC(unit->getArmy())) {
 
@@ -304,7 +305,7 @@ void UnitSystemx::receive(const unitDehover & dehover) {
 
 void UnitSystemx::receive(const unitHover & hover) {
     SDL_Log("unitHover event received");
-
+    // hovered = hover.unit;
 }
 
 void UnitSystemx::receive(const unitWait & wait) {
@@ -334,8 +335,6 @@ void UnitSystemx::receive(const unitEscape & Escape) {
 void UnitSystemx::receive(const unitItems & Items) {
 
 }
-
-
 
 void UnitSystemx::receive(const unitDeselect & deselect) {
     SDL_Log("unitDeselect event received");
@@ -787,28 +786,31 @@ void ControlSystemx::receive(const cursorMoved & moved) {
     entityx::ComponentHandle<Unit> unitontile;
     entityx::ComponentHandle<Unit> unitprevioustile;
     entityx::Entity cursor = moved.cursor;
+    Point move = moved.move;
     entityx::ComponentHandle<Position> position = cursor.component<Position>();
-    Point previous = moved.previous;
     short int cursor_pos[2];
+    short int previous_pos[2];
     short int newstate = -1;
+
     cursor_pos[0] = position->getPos()[0] - position->getOffset()[0];
     cursor_pos[1] = position->getPos()[1] - position->getOffset()[1];
-    SDL_Log("Current tile: %d %d", cursor_pos[0], cursor_pos[1]);
-    SDL_Log("Previous tile: %d %d", previous.x, previous.y);
+    previous_pos[0] = cursor_pos[0] - move.x;
+    previous_pos[1] = cursor_pos[1] - move.y;
+    unitprevioustile = unitmap[previous_pos[0]][previous_pos[1]];
+
+    SDL_Log("Unitprevioustile?: %d %d", previous_pos[0], previous_pos[1]);
+
+    if (unitprevioustile) {
+        event_manager->emit<unitDehover>(cursor, unitprevioustile);
+    }
 
     switch (game->getState()) {
-
         case GAME::STATE::UNITMOVE:
-            SDL_Log("Is there a unit on previous tile?");
-            unitprevioustile = unitmap[previous.y][previous.x];
-
-            if (unitprevioustile) {
-                event_manager->emit<unitDehover>(cursor, unitprevioustile);
-                // newstate = GAME::STATE::MAP;
-            }
 
 
         case GAME::STATE::MAP:
+            // cursor_pos[0] = position->getPos()[0] - position->getOffset()[0];
+            // cursor_pos[1] = position->getPos()[1] - position->getOffset()[1];
             unitontile = unitmap[cursor_pos[1]][cursor_pos[0]];
 
             if (unitontile) {
@@ -1024,11 +1026,12 @@ void ControlSystemx::update(entityx::EntityManager & es, entityx::EventManager &
     }
 
     if ((to_move[0] != 0) || (to_move[1] != 0)) {
-        Point point;
-        point.x = position->getPos()[0];
-        point.y = position->getPos()[1];
+        Point move;
+        move.x = to_move[0];
+        move.y = to_move[1];
+        SDL_Log("to_move: %d %d", to_move[0], to_move[1]);
         position->addPos(to_move[0], to_move[1]);
-        events.emit<cursorMoved>(cursorent, point);
+        events.emit<cursorMoved>(cursorent, move);
     }
 }
 

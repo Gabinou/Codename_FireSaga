@@ -55,7 +55,6 @@ private:
     entityx::Entity * unitmenux;
     std::vector<unsigned char> unitmenuoptions;
     entityx::Entity selected;
-    entityx::Entity hovered;
 public:
     UnitSystemx();
     UnitSystemx(Game * in_game);
