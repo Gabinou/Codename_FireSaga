@@ -712,18 +712,18 @@ void ControlSystemx::receive(const inputCancel & cancel) {
             case GAME::STATE::OPTIONS:
             case GAME::STATE::MAPMENU:
             case GAME::STATE::UNITMOVE:
-                event_manager->emit<unitMap>(canceller);
-                game->setState(GAME::STATE::MAP);
-                break;
-
-            case GAME::STATE::MAP:
-                SDL_Log("GameState is map");
-
                 if (unitontile) {
                     event_manager->emit<unitDeselect>(canceller, unitontile);
                 } else {
                     SDL_Log("No unit on tile.");
+                    event_manager->emit<unitMap>(canceller);
+                    game->setState(GAME::STATE::MAP);
                 }
+
+                break;
+
+            case GAME::STATE::MAP:
+
 
                 break;
         }
