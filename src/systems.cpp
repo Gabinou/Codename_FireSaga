@@ -285,7 +285,6 @@ void UnitSystemx::configure(entityx::EventManager & events) {
 
 void UnitSystemx::receive(const unitDehover & dehover) {
     SDL_Log("unitDehover event received");
-    short int newstate = -1;
 
     entityx::Entity cursor = dehover.cursor;
     entityx::ComponentHandle<Unit> unit = dehover.unit;
@@ -294,11 +293,6 @@ void UnitSystemx::receive(const unitDehover & dehover) {
 
     } else {
         event_manager->emit<unitMap>(cursor);
-        newstate = GAME::STATE::MAP;
-    }
-
-    if (newstate > 0) {
-        game->setState(newstate);
     }
 }
 
@@ -337,14 +331,12 @@ void UnitSystemx::receive(const unitItems & Items) {
 
 void UnitSystemx::receive(const unitDeselect & deselect) {
     SDL_Log("unitDeselect event received");
-    short int newstate = -1;
     entityx::ComponentHandle<Unit> unit = deselect.unit;
     entityx::Entity cursor = deselect.cursor;
 
 
     if (isPC(unit->getArmy())) {
-        event_manager->emit<unitMap>(cursor, deselect.unit);
-        // newstate = GAME::STATE::UNITMOVE;
+        event_manager->emit<unitMap>(cursor);
     } else {
         switch (game->getState()) {
             case GAME::STATE::UNITMOVE:
@@ -352,15 +344,10 @@ void UnitSystemx::receive(const unitDeselect & deselect) {
                     event_manager->emit<unitDanger>(cursor, unit);
                 } else {
                     event_manager->emit<unitMap>(cursor);
-                    newstate = GAME::STATE::MAP;
                 }
 
                 break;
         }
-    }
-
-    if (newstate > 0) {
-        game->setState(newstate);
     }
 }
 
@@ -596,14 +583,16 @@ void UnitSystemx::receive(const unitMap & map) {
 
     if ((game->getState() == GAME::STATE::UNITMOVE)) {
         mapx->hideOverlay();
+
     }
 
     if ((game->getState() == GAME::STATE::UNITMENU) ||
             (game->getState() == GAME::STATE::OPTIONS)) {
         game->hideMenu(MENU::UNIT);
         game->setCursorstate(GAME::STATE::MAP);
-
     }
+
+    game->setState(GAME::STATE::MAP);
 }
 
 void UnitSystemx::update(entityx::EntityManager & es, entityx::EventManager & events, entityx::TimeDelta dt) {
@@ -712,7 +701,6 @@ void ControlSystemx::receive(const inputCancel & cancel) {
                 } else {
                     SDL_Log("No unit on tile.");
                     event_manager->emit<unitMap>(canceller);
-                    game->setState(GAME::STATE::MAP);
                 }
 
                 break;
