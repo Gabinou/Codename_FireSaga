@@ -290,7 +290,6 @@ void UnitSystemx::receive(const unitDehover & dehover) {
     entityx::ComponentHandle<Unit> unit = dehover.unit;
     entityx::Entity cursor = dehover.cursor;
 
-
     if (isPC(unit->getArmy())) {
 
     } else {
@@ -299,6 +298,7 @@ void UnitSystemx::receive(const unitDehover & dehover) {
 }
 
 void UnitSystemx::receive(const unitHover & hover) {
+    SDL_Log("unitHover event received");
 
 }
 
@@ -778,7 +778,7 @@ unsigned int ControlSystemx::getHeldbutton(Controllers in_controllers) {
 }
 
 void ControlSystemx::receive(const cursorMoved & moved) {
-    // SDL_Log("Received cursorMoved event");
+    SDL_Log("Received cursorMoved event");
     entityx::ComponentHandle<Unit> unitontile;
     entityx::ComponentHandle<Unit> unitprevioustile;
     entityx::Entity cursor = moved.cursor;
