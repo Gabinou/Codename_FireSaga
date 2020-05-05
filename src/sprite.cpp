@@ -134,7 +134,7 @@ void Sprite::setAnimation(int inFrames, int inSpeed) {
 }
 
 void Sprite::darken() {
-    SDL_SetTextureColorMod(texture, 64, 64, 64);
+    SDL_SetTextureColorMod(texture, 128, 128, 128);
 }
 
 void Sprite::lighten() {

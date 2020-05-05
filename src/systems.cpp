@@ -815,13 +815,15 @@ void ControlSystemx::receive(const cursorMoved & moved) {
     previous_pos[1] = cursor_pos[1] - move.y;
     unitprevioustile = unitmap[previous_pos[1]][previous_pos[0]];
 
-    if (unitprevioustile) {
-        event_manager->emit<unitDehover>(cursor, unitprevioustile);
-    }
+
 
     switch (game->getState()) {
         case GAME::STATE::MAP:
             unitontile = unitmap[cursor_pos[1]][cursor_pos[0]];
+
+            if (unitprevioustile) {
+                event_manager->emit<unitDehover>(cursor, unitprevioustile);
+            }
 
             if (unitontile) {
                 event_manager->emit<unitHover>(cursor, unitontile);
