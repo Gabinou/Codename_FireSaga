@@ -50,7 +50,8 @@ private:
     std::vector<std::vector<Inventory_item>> arrival_equipments;
 
     std::vector<Point> starting_positions;
-    std::unordered_map<unsigned char, std::vector<entityx::ComponentHandle<Unit>>> allunits;
+    std::vector<unsigned char> armies_onfield;
+    std::unordered_map<unsigned char, std::vector<entityx::ComponentHandle<Unit>>> units_onfield;
     std::vector<std::vector<entityx::ComponentHandle<Unit>>> unitmap;
     std::vector<unsigned short int> essentials = {UNIT::NAME::ERWIN};
     unsigned short int boss;

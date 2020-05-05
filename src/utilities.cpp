@@ -271,34 +271,6 @@ bool isFriendly(const unsigned char army1, const unsigned char army2) {
     return (out);
 }
 
-std::vector<int> cppwhere(int tofind, std::vector<int> vec) {
-    std::vector<int> found_inds;
-
-    for (int i = 0; i < vec.size(); i++) {
-        if (vec[i] == tofind) {
-            found_inds.push_back(i);
-        }
-    }
-
-    return (found_inds);
-}
-
-std::vector<int> cppuniques(std::vector<int> vec) {
-    std::vector<int> uniques;
-    std::vector<int> inuniques;
-    uniques.push_back(vec[0]);
-
-    for (int i = 1; i < vec.size(); i++) {
-        inuniques = cppwhere(vec[i], uniques);
-
-        if (inuniques.size() == 0) {
-            uniques.push_back(vec[i]);
-        }
-    }
-
-    return (uniques);
-}
-
 std::vector<std::string> unitTypes(unsigned short int in_typecode) {
     std::vector<std::string> names;
 

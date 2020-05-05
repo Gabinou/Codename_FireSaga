@@ -608,6 +608,11 @@ void Game::init(const char * title, int xpos, int ypos, int width, int height, b
     state = GAME::STATE::MAP;
 };
 
+void Game::startTurns() {
+
+}
+
+
 void Game::loadXML(const short int save_ind) {
     char filename[DEFAULT::BUFFER_SIZE];
 

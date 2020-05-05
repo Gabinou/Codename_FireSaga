@@ -68,6 +68,7 @@ int main(int argc, char * argv[]) {
     firesaga->loadUnitEntities(unit_inds, positions_list);
     firesaga->loadCursor();
     firesaga->loadMapArrivals();
+    firesaga->startTurns();
 
     std::chrono::system_clock::time_point frame_start, frame_end, frame_middle;
     int frame_time;

@@ -370,14 +370,14 @@ enum TYPES {
 namespace ARMY {
 enum ARMIES {
     FRIENDLY = 1,
-    ENEMY,
+    ERWIN,
+    FREE_MILITIA,
     NEUTRAL,
     IMPERIAL,
     VOLDAN,
     KEWAC,
+    ENEMY,
     THEOCRACY,
-    FREE_MILITIA,
-    ERWIN,
     BANDITS,
 };
 }

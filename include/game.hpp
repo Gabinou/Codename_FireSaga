@@ -85,6 +85,8 @@ public:
     void hideMenu(short unsigned int index);
     void showMenu(short unsigned int index);
 
+    void startTurns();
+
     void handleEvents();
     void update();
     void render();

@@ -65,9 +65,45 @@ extern std::vector<T> cpprange(T ind1, T ind2) {
 
     return (out);
 }
-extern std::vector<int> cppwhere(int tofind, std::vector<int> vec);
-extern std::vector<int> cppuniques(std::vector<int> vec);
+template <typename T> extern std::vector<T> cppwhere(T tofind, std::vector<T> vec) {
+    std::vector<T> found_inds;
 
+    for (short unsigned int i = 0; i < vec.size(); i++) {
+        if (vec[i] == tofind) {
+            found_inds.push_back(i);
+        }
+    }
+
+    return (found_inds);
+}
+
+template <typename T> extern bool cppisin(T tofind, std::vector<T> vec) {
+    bool out = false;
+
+    for (short unsigned int i = 0; i < vec.size(); i++) {
+        if (vec[i] == tofind) {
+            out = true;
+        }
+    }
+
+    return (out);
+}
+
+template <typename T> extern std::vector<T> cppuniques(std::vector<T> vec) {
+    std::vector<T> uniques;
+    std::vector<T> inuniques;
+    uniques.push_back(vec[0]);
+
+    for (short unsigned int i = 1; i < vec.size(); i++) {
+        inuniques = cppwhere(vec[i], uniques);
+
+        if (inuniques.size() == 0) {
+            uniques.push_back(vec[i]);
+        }
+    }
+
+    return (uniques);
+}
 // extern void heal(Unit * in_unit, unsigned char heal);
 // extern * (Unit) makeheal(Weapon in_weapon);
 
