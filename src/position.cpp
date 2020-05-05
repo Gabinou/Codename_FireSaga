@@ -133,20 +133,23 @@ bool Position::newPos(short int newx, short int newy) {
 
     if (updatable) {
         if (periodic) {
-            while (newx < bounds[0]) {
+            SDL_Log("Current: %d %d\n", position[0], position[1]);
+            SDL_Log("Before: %d %d\n", newx, newy);
+
+            while (newx <= bounds[0]) {
                 newx += bounds[1] - bounds[0] + 1;
             }
 
-            while (newy < bounds[2]) {
+            while (newy <= bounds[2]) {
                 newy += bounds[3] - bounds[2] + 1;
             }
 
-            newx = newx % (bounds[1] + 1);
-            newy = newy % (bounds[3] + 1);
-            // SDL_Log("%d %d\n", newx, newy);
+            newx = (newx + 1) % (bounds[1] - bounds[0] + 1) + bounds[0];
+            newy = (newy + 1) % (bounds[3] - bounds[2] + 1) + bounds[2];
+            SDL_Log("After: %d %d\n", newx, newy);
         }
 
-        if ((newx > bounds[0]) && (newx < bounds[1]) && (position[0] != newx)) {
+        if ((newx > bounds[0]) || (newx < bounds[1]) && (position[0] != newx)) {
             position[0] = newx;
             moved = true;
         } else {
@@ -159,7 +162,7 @@ bool Position::newPos(short int newx, short int newy) {
             }
         }
 
-        if ((newy > bounds[2]) && (newy < bounds[3]) && (position[1] != newy)) {
+        if ((newy > bounds[2]) || (newy < bounds[3]) && (position[1] != newy)) {
             position[1] = newy;
             moved = true;
         } else {

@@ -808,17 +808,16 @@ void ControlSystemx::receive(const cursorMoved & moved) {
     short int cursor_pos[2];
     short int previous_pos[2];
     short int newstate = -1;
-
     cursor_pos[0] = position->getPos()[0] - position->getOffset()[0];
     cursor_pos[1] = position->getPos()[1] - position->getOffset()[1];
-    previous_pos[0] = cursor_pos[0] - move.x;
-    previous_pos[1] = cursor_pos[1] - move.y;
-    unitprevioustile = unitmap[previous_pos[1]][previous_pos[0]];
-
 
 
     switch (game->getState()) {
         case GAME::STATE::UNITMOVE:
+            previous_pos[0] = cursor_pos[0] - move.x;
+            previous_pos[1] = cursor_pos[1] - move.y;
+            unitprevioustile = unitmap[previous_pos[1]][previous_pos[0]];
+
             if (!isPC(selected->getArmy())) {
                 if (unitprevioustile) {
                     event_manager->emit<unitDehover>(cursor, unitprevioustile);
@@ -845,7 +844,7 @@ void ControlSystemx::receive(const cursorMoved & moved) {
 }
 
 void ControlSystemx::receive(const inputAccept & accept) {
-    // SDL_Log("Received inputAccept event");
+    SDL_Log("Received inputAccept event");
     entityx::ComponentHandle<KeyboardController> keyboard = accept.keyboard;
     entityx::ComponentHandle<GamepadController> gamepad = accept.gamepad;
     Controllers controllers = {keyboard, gamepad};
