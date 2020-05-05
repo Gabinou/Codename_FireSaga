@@ -818,12 +818,16 @@ void ControlSystemx::receive(const cursorMoved & moved) {
 
 
     switch (game->getState()) {
+        case GAME::STATE::UNITMOVE:
+            if (!isPC(selected->getArmy())) {
+                if (unitprevioustile) {
+                    event_manager->emit<unitDehover>(cursor, unitprevioustile);
+                }
+            }
+
         case GAME::STATE::MAP:
             unitontile = unitmap[cursor_pos[1]][cursor_pos[0]];
 
-            if (unitprevioustile) {
-                event_manager->emit<unitDehover>(cursor, unitprevioustile);
-            }
 
             if (unitontile) {
                 event_manager->emit<unitHover>(cursor, unitontile);
