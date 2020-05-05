@@ -275,12 +275,43 @@ void UnitSystemx::configure(entityx::EventManager & events) {
     events.subscribe<unitHover>(*this);
     events.subscribe<unitDehover>(*this);
     events.subscribe<unitWait>(*this);
+    events.subscribe<unitReturn>(*this);
     events.subscribe<unitTalk>(*this);
     events.subscribe<unitRescue>(*this);
     events.subscribe<unitAttack>(*this);
     events.subscribe<unitTrade>(*this);
     events.subscribe<unitEscape>(*this);
     events.subscribe<unitItems>(*this);
+}
+
+void UnitSystemx::receive(const unitReturn & Return) {
+    SDL_Log("Received unitReturn event");
+    mapx->hideOverlay();
+
+    entityx::Entity cursor = Return.cursor;
+    entityx::ComponentHandle<Position> cursor_position = cursor.component<Position>();
+
+    short int new_position[2];
+
+    entityx::ComponentHandle<Position> toreturn_position;
+    entityx::ComponentHandle<Unit> unit = Return.unit;
+    entityx::Entity toreturn = unit.entity();
+
+    if (toreturn.valid()) {
+        toreturn_position = toreturn.component<Position>();
+
+        if (toreturn_position) {
+            new_position[0] = toreturn_position->getPos()[0] - toreturn_position->getOffset()[0];
+            new_position[1] = toreturn_position->getPos()[1] - toreturn_position->getOffset()[1];
+            SDL_Log("Old position %d, %d \n", old_position[0], old_position[1]);
+        } else {
+            SDL_Log("Could not get returning unit's position component");
+        }
+    } else {
+        SDL_Log("Could not get selected entity");
+    }
+
+    mapx->moveUnit(new_position[0], new_position[1], old_position[0], old_position[1]);
 }
 
 void UnitSystemx::receive(const unitDehover & dehover) {
@@ -516,7 +547,6 @@ void UnitSystemx::receive(const unitMenu & menu) {
     entityx::ComponentHandle<Position> cursorpos = cursor.component<Position>();
 
     short int new_position[2];
-    short int old_position[2];
 
     entityx::ComponentHandle<Position> selectedpos;
 
@@ -744,8 +774,17 @@ void ControlSystemx::receive(const inputCancel & cancel) {
 
         switch (game->getState()) {
             case GAME::STATE::UNITMENU:
+                // mapx->moveUnit(old_position[0], old_position[1], new_position[0], new_position[1]);
+                event_manager->emit<unitReturn>(canceller, selected);
+                event_manager->emit<unitMap>(canceller);
+                break;
+
             case GAME::STATE::OPTIONS:
+                break;
+
             case GAME::STATE::MAPMENU:
+                break;
+
             case GAME::STATE::UNITMOVE:
                 if (unitontile) {
                     event_manager->emit<unitDeselect>(canceller, unitontile);

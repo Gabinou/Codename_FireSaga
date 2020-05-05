@@ -44,9 +44,10 @@ struct unitDeselect {
     entityx::ComponentHandle<Unit> unit;
 };
 
-struct unitNomove {
-    unitNomove(entityx::Entity cursor) : cursor(cursor) {}
+struct unitReturn {
+    unitReturn(entityx::Entity cursor, entityx::ComponentHandle<Unit> unit) : cursor(cursor), unit(unit) {}
     entityx::Entity cursor;
+    entityx::ComponentHandle<Unit> unit;
 };
 
 struct unitMove {

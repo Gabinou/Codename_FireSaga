@@ -53,6 +53,7 @@ private:
     entityx::ComponentHandle<Map> mapx;
     entityx::EventManager * event_manager;
     entityx::Entity * unitmenux;
+    short int old_position[2];
     std::vector<unsigned char> unitmenuoptions;
     entityx::Entity selected;
 public:
@@ -81,6 +82,7 @@ public:
     void receive(const unitItems & item);
     void receive(const unitHover & hover);
     void receive(const unitDehover & dehover);
+    void receive(const unitReturn & Return);
     void receive(const unitSelect & selected);
     void receive(const unitDeselect & selected);
     void receive(const unitMove & move);
