@@ -14,7 +14,7 @@ private:
     short int position[2] = {0};
     short int bounds[4] = {0, 255, 0, 255}; //xmin, xmax, ymin, ymax
     short int offset[2] = {0, 0}; //xmin, xmax, ymin, ymax
-    void newPos(short int newx, short int newy);
+    bool newPos(short int newx, short int newy);
 public:
     Position();
     Position(short int in_x, short int in_y);
@@ -41,9 +41,9 @@ public:
     bool isonTilemap();
     void setonTilemap(bool in_tilemap);
 
-    void setPos(short int * in_pos);
-    void setPos(short int in_x, short int in_y);
-    void addPos(short int move_x, short int move_y);
+    bool setPos(short int * in_pos);
+    bool setPos(short int in_x, short int in_y);
+    bool addPos(short int move_x, short int move_y);
     short int * getPos();
 };
 

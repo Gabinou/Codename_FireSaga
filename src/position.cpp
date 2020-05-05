@@ -112,23 +112,24 @@ bool Position::isUpdatable() {
     return (updatable);
 }
 
-void Position::setPos(short int * in_pos) {
-    setPos(in_pos[0], in_pos[1]);
+bool Position::setPos(short int * in_pos) {
+    return (setPos(in_pos[0], in_pos[1]));
 }
 
-void Position::setPos(short int in_x, short int in_y) {
+bool Position::setPos(short int in_x, short int in_y) {
     short int newx = in_x + offset[0];
     short int newy = in_y + offset[1];
-    newPos(newx, newy);
+    return (newPos(newx, newy));
 }
 
-void Position::addPos(short int move_x, short int move_y) {
+bool Position::addPos(short int move_x, short int move_y) {
     short int newx = move_x + position[0];
     short int newy = move_y + position[1];
-    newPos(newx, newy);
+    return (newPos(newx, newy));
 }
 
-void Position::newPos(short int newx, short int newy) {
+bool Position::newPos(short int newx, short int newy) {
+    bool moved = false;
 
     if (updatable) {
         if (periodic) {
@@ -145,33 +146,34 @@ void Position::newPos(short int newx, short int newy) {
             // SDL_Log("%d %d\n", newx, newy);
         }
 
-        if ((newx >= bounds[0]) && (newx <= bounds[1])) {
+        if ((newx > bounds[0]) && (newx < bounds[1]) && (position[0] != newx)) {
             position[0] = newx;
+            moved = true;
         } else {
-            if (newx < bounds[0]) {
+            if (newx <= bounds[0]) {
                 position[0] = bounds[0];
             }
 
-            if (newx > bounds[1]) {
+            if (newx >= bounds[1]) {
                 position[0] = bounds[1];
             }
         }
 
-        if ((newy >= bounds[2]) && (newy <= bounds[3])) {
+        if ((newy > bounds[2]) && (newy < bounds[3]) && (position[1] != newy)) {
             position[1] = newy;
+            moved = true;
         } else {
-            if (newy < bounds[2]) {
+            if (newy <= bounds[2]) {
                 position[1] = bounds[2];
             }
 
-            if (newy > bounds[3]) {
+            if (newy >= bounds[3]) {
                 position[1] = bounds[3];
             }
         }
-
-
-
     }
+
+    return (moved);
 }
 
 

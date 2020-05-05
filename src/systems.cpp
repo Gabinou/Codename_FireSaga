@@ -1034,12 +1034,14 @@ void ControlSystemx::update(entityx::EntityManager & es, entityx::EventManager &
 
     }
 
-    if ((to_move[0] != 0) || (to_move[1] != 0)) {
+    if (((to_move[0] != 0) || (to_move[1] != 0)) && (position->isUpdatable())) {
         Point move;
         move.x = to_move[0];
         move.y = to_move[1];
-        position->addPos(to_move[0], to_move[1]);
-        events.emit<cursorMoved>(cursorent, move);
+
+        if (position->addPos(to_move[0], to_move[1])) {
+            events.emit<cursorMoved>(cursorent, move);
+        }
     }
 }
 
