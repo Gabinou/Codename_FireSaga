@@ -850,7 +850,6 @@ void ControlSystemx::receive(const cursorMoved & moved) {
     cursor_pos[0] = position->getPos()[0] - position->getOffset()[0];
     cursor_pos[1] = position->getPos()[1] - position->getOffset()[1];
 
-
     switch (game->getState()) {
         case GAME::STATE::UNITMOVE:
             previous_pos[0] = cursor_pos[0] - move.x;
@@ -891,50 +890,47 @@ void ControlSystemx::receive(const inputAccept & accept) {
     entityx::ComponentHandle<GamepadController> gamepad = accept.gamepad;
     Controllers controllers = {keyboard, gamepad};
     entityx::Entity accepter = getInputent(controllers);
-    unsigned int frames_button = getHeldbutton(controllers);
+    short int newstate = -1;
+    short int cursor_pos[2];
+    entityx::ComponentHandle<Position> position = accepter.component<Position>();
+    cursor_pos[0] = position->getPos()[0] - position->getOffset()[0];
+    cursor_pos[1] = position->getPos()[1] - position->getOffset()[1];
 
-    if (frames_button == 1) {
-        short int newstate = -1;
-        short int cursor_pos[2];
-        entityx::ComponentHandle<Position> position = accepter.component<Position>();
-        cursor_pos[0] = position->getPos()[0] - position->getOffset()[0];
-        cursor_pos[1] = position->getPos()[1] - position->getOffset()[1];
-        entityx::ComponentHandle<Unit> unitontile;
-        game->setCursorlastpos(cursor_pos[0], cursor_pos[1]);
-        unitontile = unitmap[cursor_pos[1]][cursor_pos[0]];
 
-        switch (game->getState()) {
-            case GAME::STATE::MAP:
-                SDL_Log("accepter Position, %d %d \n", cursor_pos[0], cursor_pos[1]);
+    switch (game->getState()) {
+        case GAME::STATE::MAP:
+            SDL_Log("accepter Position, %d %d \n", cursor_pos[0], cursor_pos[1]);
+            entityx::ComponentHandle<Unit> unitontile;
+            unitontile = unitmap[cursor_pos[1]][cursor_pos[0]];
+            game->setCursorlastpos(cursor_pos[0], cursor_pos[1]);
 
-                if (unitontile) {
-                    selected = unitontile;
-                    event_manager->emit<unitSelect>(accepter, unitontile);
-                } else {
-                    newstate = GAME::STATE::MAPMENU;
-                    event_manager->emit<mapMenu>(accepter);
-                }
+            if (unitontile) {
+                selected = unitontile;
+                event_manager->emit<unitSelect>(accepter, unitontile);
+            } else {
+                newstate = GAME::STATE::MAPMENU;
+                event_manager->emit<mapMenu>(accepter);
+            }
 
-                break;
+            break;
 
-            case GAME::STATE::UNITMOVE:
-                if (isPC(selected->getArmy())) {
-                    newstate = GAME::STATE::UNITMENU;
-                    event_manager->emit<unitMenu>(accepter);
-                } else {
-                    event_manager->emit<unitDanger>(accepter, selected);
-                }
+        case GAME::STATE::UNITMOVE:
+            if (isPC(selected->getArmy())) {
+                newstate = GAME::STATE::UNITMENU;
+                event_manager->emit<unitMenu>(accepter);
+            } else {
+                event_manager->emit<unitDanger>(accepter, selected);
+            }
 
-                break;
+            break;
 
-            case GAME::STATE::UNITMENU:
-                event_manager->emit<unitmenuSelect>(accepter, selected);
-                break;
-        }
+        case GAME::STATE::UNITMENU:
+            event_manager->emit<unitmenuSelect>(accepter, selected);
+            break;
+    }
 
-        if (newstate != -1) {
-            game->setState(newstate);
-        }
+    if (newstate != -1) {
+        game->setState(newstate);
     }
 }
 
