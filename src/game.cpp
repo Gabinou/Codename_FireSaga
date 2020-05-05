@@ -216,7 +216,6 @@ std::vector<std::string> Game::menuoptions2str(std::vector<unsigned char> in_opt
     return (out);
 }
 
-
 void Game::updateMenu(unsigned char in_menu_index) {
     SDL_Log("Updating menu: %d", in_menu_index);
 
