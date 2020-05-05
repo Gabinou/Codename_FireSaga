@@ -89,4 +89,38 @@ void test_utilities() {
 
     lok(fequal("test_results.txt", "test_results.txt"));
 
+
+    int arrtest1[5] = {3, 4, 5, 1, 2};
+    quicksort(arrtest1, 0, 4);
+    lok(arrtest1[0] == 1);
+    lok(arrtest1[1] == 2);
+    lok(arrtest1[2] == 3);
+    lok(arrtest1[3] == 4);
+    lok(arrtest1[4] == 5);
+
+    short unsigned int arrtest2[5] = {3, 4, 5, 1, 2};
+    short unsigned int high = 4;
+    short unsigned int low = 0;
+    quicksort(arrtest2, low, high);
+    lok(arrtest2[0] == 1);
+    lok(arrtest2[1] == 2);
+    lok(arrtest2[2] == 3);
+    lok(arrtest2[3] == 4);
+    lok(arrtest2[4] == 5);
+
+    // std::vector<int> vectest1 = {3, 4, 5, 1, 2};
+    // cppquicksort(vectest1, 0, 4);
+    // lok(vectest1[0] == 1);
+    // lok(vectest1[1] == 2);
+    // lok(vectest1[2] == 3);
+    // lok(vectest1[3] == 4);
+    // lok(vectest1[4] == 5);
+
+    // std::vector<short unsigned int> vectest2 = {3, 4, 5, 1, 2};
+    // cppquicksort(vectest2, 0, 4);
+    // lok(vectest2[0] == 1);
+    // lok(vectest2[1] == 2);
+    // lok(vectest2[2] == 3);
+    // lok(vectest2[3] == 4);
+    // lok(vectest2[4] == 5);
 }

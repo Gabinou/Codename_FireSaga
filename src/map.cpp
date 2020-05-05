@@ -300,7 +300,7 @@ void Map::putUnit(const short unsigned int x, const short unsigned int y, entity
         armies_onfield.push_back(army);
     }
 
-    units_onfield[army#].push_back(in_unit);
+    units_onfield[army].push_back(in_unit);
 }
 
 entityx::ComponentHandle<Unit> Map::getUnit(const short unsigned int x, const short unsigned int y) {

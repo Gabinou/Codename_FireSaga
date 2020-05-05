@@ -374,10 +374,10 @@ enum ARMIES {
     FREE_MILITIA,
     NEUTRAL,
     IMPERIAL,
+    THEOCRACY,
     VOLDAN,
     KEWAC,
     ENEMY,
-    THEOCRACY,
     BANDITS,
 };
 }

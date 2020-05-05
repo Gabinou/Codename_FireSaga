@@ -59,7 +59,7 @@ template <typename T>
 extern std::vector<T> cpprange(T ind1, T ind2) {
     std::vector<T> out;
 
-    for (int i = ind1; i < ind2; i++) {
+    for (T i = ind1; i < ind2; i++) {
         out.push_back(i);
     }
 
@@ -94,7 +94,7 @@ template <typename T> extern std::vector<T> cppuniques(std::vector<T> vec) {
     std::vector<T> inuniques;
     uniques.push_back(vec[0]);
 
-    for (short unsigned int i = 1; i < vec.size(); i++) {
+    for (T i = 1; i < vec.size(); i++) {
         inuniques = cppwhere(vec[i], uniques);
 
         if (inuniques.size() == 0) {
@@ -105,29 +105,6 @@ template <typename T> extern std::vector<T> cppuniques(std::vector<T> vec) {
     return (uniques);
 }
 
-template <typename T> extern void quicksort(T arr[], T low, T high) {
-    T pi;
-    if (low < high) {
-        pi = partition(arr, low, high);
-        quicksort(arr, low, pi - 1);
-        quicksort(arr, pi + 1, high);
-    }
-}
-
-template <typename T> extern void partition(T arr[], T low, T high) {
-    T pivot = arr[high];
-    T i = low - 1;
-
-    for (int j = low; j < high; j++) {
-        if (arr[j] < pivot) {
-            i++;
-            swap(arr, i, j);
-        }
-    }
-    swap(arr, i + 1, high);
-    return (i + 1);
-}
-
 template <typename T> extern void swap(T arr[], T ind1, T ind2) {
     T buffer;
     buffer = arr[ind1];
@@ -135,6 +112,64 @@ template <typename T> extern void swap(T arr[], T ind1, T ind2) {
     arr[ind2] = buffer;
 }
 
+template <typename T> extern T partition(T arr[], T low, T high) {
+    T pivot = arr[high];
+    T i = low - 1;
+
+    for (T j = low; j < high; j++) {
+        if (arr[j] < pivot) {
+            i++;
+            swap(arr, i, j);
+        }
+    }
+
+    swap(arr, T(i + 1), high);
+    return (i + 1);
+}
+
+template <typename T> extern void quicksort(T arr[], T low, T high) {
+    T pi;
+
+    if (low < high) {
+        pi = partition(arr, low, high);
+        quicksort(arr, low, T(pi - 1));
+        quicksort(arr, T(pi + 1), high);
+    }
+}
+
+template <typename T> extern void cppswap(std::vector<T> & vec, T ind1, T ind2) {
+    T buffer;
+    buffer = vec[ind1];
+    vec[ind1] = vec[ind2];
+    vec[ind2] = buffer;
+}
+
+template <typename T> extern T cppartition(std::vector<T> & vec, T low, T high) {
+    T pivot = vec[high];
+    T i = low - 1;
+
+    for (T j = low; j < high; j++) {
+        if (vec[j] < pivot) {
+            i++;
+            cppswap(vec, i, j);
+        }
+    }
+
+    cppswap(vec, i + 1, high);
+    return (i + 1);
+}
+
+template <typename T> extern std::vector<T> cppquicksort(std::vector<T> & vec, T low = 0, T high = 1) {
+    T pi;
+    low = 0;
+    high = vec.size();
+
+    if (low < high) {
+        pi = cppartition(vec, low, high);
+        cppquicksort(vec, low, pi - 1);
+        cppquicksort(vec, pi + 1, high);
+    }
+}
 // extern void heal(Unit * in_unit, unsigned char heal);
 // extern * (Unit) makeheal(Weapon in_weapon);
 
