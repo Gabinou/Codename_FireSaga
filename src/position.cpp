@@ -125,6 +125,7 @@ bool Position::setPos(short int in_x, short int in_y) {
 bool Position::addPos(short int move_x, short int move_y) {
     short int newx = move_x + position[0];
     short int newy = move_y + position[1];
+    SDL_Log("to_move: %d %d\n", move_x, move_y);
     return (newPos(newx, newy));
 }
 
@@ -132,9 +133,10 @@ bool Position::newPos(short int newx, short int newy) {
     bool moved = false;
 
     if (updatable) {
+        SDL_Log("Current: %d %d\n", position[0], position[1]);
+        SDL_Log("Before: %d %d\n", newx, newy);
+
         if (periodic) {
-            SDL_Log("Current: %d %d\n", position[0], position[1]);
-            SDL_Log("Before: %d %d\n", newx, newy);
 
             while (newx <= bounds[0]) {
                 newx += bounds[1] - bounds[0] + 1;
@@ -144,12 +146,13 @@ bool Position::newPos(short int newx, short int newy) {
                 newy += bounds[3] - bounds[2] + 1;
             }
 
-            newx = (newx + 1) % (bounds[1] - bounds[0] + 1) + bounds[0];
-            newy = (newy + 1) % (bounds[3] - bounds[2] + 1) + bounds[2];
+            newx = (newx - 1) % (bounds[1] - bounds[0] + 1) + bounds[0];
+            newy = (newy - 1) % (bounds[3] - bounds[2] + 1) + bounds[2];
+            // Python % is modulo. C/C++ % is remainder.
             SDL_Log("After: %d %d\n", newx, newy);
         }
 
-        if ((newx > bounds[0]) || (newx < bounds[1]) && (position[0] != newx)) {
+        if ((newx > bounds[0]) && (newx < bounds[1]) && (position[0] != newx)) {
             position[0] = newx;
             moved = true;
         } else {
@@ -162,7 +165,7 @@ bool Position::newPos(short int newx, short int newy) {
             }
         }
 
-        if ((newy > bounds[2]) || (newy < bounds[3]) && (position[1] != newy)) {
+        if ((newy > bounds[2]) && (newy < bounds[3]) && (position[1] != newy)) {
             position[1] = newy;
             moved = true;
         } else {
