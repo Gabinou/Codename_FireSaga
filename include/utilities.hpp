@@ -159,7 +159,7 @@ template <typename T> extern T cppartition(std::vector<T> & vec, T low, T high) 
     return (i + 1);
 }
 
-template <typename T> extern std::vector<T> cppquicksort(std::vector<T> & vec, T low = 0, T high = 1) {
+template <typename T> extern void cppquicksort(std::vector<T> & vec, T low = 0, T high = 1) {
     T pi;
     low = 0;
     high = vec.size();
