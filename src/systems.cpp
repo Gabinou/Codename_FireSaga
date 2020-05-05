@@ -764,48 +764,47 @@ void ControlSystemx::receive(const inputCancel & cancel) {
     entityx::Entity canceller = getInputent(controllers);
     entityx::ComponentHandle<Position> position = canceller.component<Position>();
     entityx::ComponentHandle<Unit> unitontile;
-    unsigned int frames_button = getHeldbutton(controllers);
+    short int cursor_pos[2];
+    cursor_pos[0] = position->getPos()[0] - position->getOffset()[0];
+    cursor_pos[1] = position->getPos()[1] - position->getOffset()[1];
 
-    if (frames_button == 1) {
-        short int cursor_pos[2];
-        cursor_pos[0] = position->getPos()[0] - position->getOffset()[0];
-        cursor_pos[1] = position->getPos()[1] - position->getOffset()[1];
-        unitontile = unitmap[cursor_pos[1]][cursor_pos[0]];
+    switch (game->getState()) {
+        case GAME::STATE::UNITMENU:
+            // mapx->moveUnit(old_position[0], old_position[1], new_position[0], new_position[1]);
+            event_manager->emit<unitReturn>(canceller, selected);
+            event_manager->emit<unitMap>(canceller);
+            break;
 
-        switch (game->getState()) {
-            case GAME::STATE::UNITMENU:
-                // mapx->moveUnit(old_position[0], old_position[1], new_position[0], new_position[1]);
-                event_manager->emit<unitReturn>(canceller, selected);
+        case GAME::STATE::OPTIONS:
+            break;
+
+        case GAME::STATE::MAPMENU:
+            break;
+
+        case GAME::STATE::UNITMOVE:
+            unitontile = unitmap[cursor_pos[1]][cursor_pos[0]];
+
+            if (unitontile) {
+                event_manager->emit<unitDeselect>(canceller, unitontile);
+            } else {
+                SDL_Log("No unit on tile.");
                 event_manager->emit<unitMap>(canceller);
-                break;
+            }
 
-            case GAME::STATE::OPTIONS:
-                break;
+            break;
 
-            case GAME::STATE::MAPMENU:
-                break;
+        case GAME::STATE::MAP:
+            unitontile = unitmap[cursor_pos[1]][cursor_pos[0]];
 
-            case GAME::STATE::UNITMOVE:
-                if (unitontile) {
-                    event_manager->emit<unitDeselect>(canceller, unitontile);
-                } else {
-                    SDL_Log("No unit on tile.");
-                    event_manager->emit<unitMap>(canceller);
+            if (unitontile) {
+                if (unitontile->isDanger()) {
+                    event_manager->emit<unitDanger>(canceller, unitontile);
                 }
 
-                break;
-
-            case GAME::STATE::MAP:
-                if (unitontile) {
-                    if (unitontile->isDanger()) {
-                        event_manager->emit<unitDanger>(canceller, unitontile);
-                    }
-
-                }
+            }
 
 
-                break;
-        }
+            break;
     }
 }
 
@@ -890,17 +889,16 @@ void ControlSystemx::receive(const inputAccept & accept) {
     entityx::ComponentHandle<GamepadController> gamepad = accept.gamepad;
     Controllers controllers = {keyboard, gamepad};
     entityx::Entity accepter = getInputent(controllers);
+    entityx::ComponentHandle<Unit> unitontile;
     short int newstate = -1;
     short int cursor_pos[2];
     entityx::ComponentHandle<Position> position = accepter.component<Position>();
     cursor_pos[0] = position->getPos()[0] - position->getOffset()[0];
     cursor_pos[1] = position->getPos()[1] - position->getOffset()[1];
 
-
     switch (game->getState()) {
         case GAME::STATE::MAP:
             SDL_Log("accepter Position, %d %d \n", cursor_pos[0], cursor_pos[1]);
-            entityx::ComponentHandle<Unit> unitontile;
             unitontile = unitmap[cursor_pos[1]][cursor_pos[0]];
             game->setCursorlastpos(cursor_pos[0], cursor_pos[1]);
 
