@@ -312,6 +312,7 @@ void UnitSystemx::receive(const unitReturn & Return) {
     }
 
     mapx->moveUnit(new_position[0], new_position[1], old_position[0], old_position[1]);
+    toreturn_position->setPos(old_position);
 }
 
 void UnitSystemx::receive(const unitDehover & dehover) {
@@ -770,15 +771,15 @@ void ControlSystemx::receive(const inputCancel & cancel) {
 
     switch (game->getState()) {
         case GAME::STATE::UNITMENU:
-            // mapx->moveUnit(old_position[0], old_position[1], new_position[0], new_position[1]);
-            event_manager->emit<unitReturn>(canceller, selected);
-            event_manager->emit<unitMap>(canceller);
-            break;
-
-        case GAME::STATE::OPTIONS:
-            break;
-
         case GAME::STATE::MAPMENU:
+        case GAME::STATE::OPTIONS:
+
+            // mapx->moveUnit(old_position[0], old_position[1], new_position[0], new_position[1]);
+            if (selected) {
+                event_manager->emit<unitReturn>(canceller, selected);
+            }
+
+            event_manager->emit<unitMap>(canceller);
             break;
 
         case GAME::STATE::UNITMOVE:
