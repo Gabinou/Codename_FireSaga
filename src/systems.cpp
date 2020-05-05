@@ -827,7 +827,6 @@ void ControlSystemx::receive(const cursorMoved & moved) {
         case GAME::STATE::MAP:
             unitontile = unitmap[cursor_pos[1]][cursor_pos[0]];
 
-
             if (unitontile) {
                 event_manager->emit<unitHover>(cursor, unitontile);
                 // event_manager->emit<unitMove>(cursor, unitontile);
