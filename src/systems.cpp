@@ -1021,14 +1021,19 @@ void ControlSystemx::update(entityx::EntityManager & es, entityx::EventManager &
         if (gamepad->isPressed(gamepadInputMap.accept)) {
             // SDL_Log("Gamepad pressed accept.");
             pressed_button.push_back(gamepadInputMap.accept);
-            events.emit<inputAccept>(gamepad);
+
+            if (gamepad->getHeldbutton() == 1) {
+                events.emit<inputAccept>(gamepad);
+            }
         }
 
 
         if (gamepad->isPressed(gamepadInputMap.cancel)) {
             pressed_button.push_back(gamepadInputMap.cancel);
-            events.emit<inputCancel>(gamepad);
 
+            if (gamepad->getHeldbutton() == 1) {
+                events.emit<inputCancel>(gamepad);
+            }
         }
 
         gamepad->check_move(pressed_move);
