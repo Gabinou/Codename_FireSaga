@@ -297,10 +297,10 @@ void Map::putUnit(const short unsigned int x, const short unsigned int y, entity
     unsigned char army = in_unit->getArmy();
 
     if (!cppisin(army, armies_onfield)) {
-        armies_onfield.push_back();
+        armies_onfield.push_back(army);
     }
 
-    units_onfield[].push_back(in_unit);
+    units_onfield[army#].push_back(in_unit);
 }
 
 entityx::ComponentHandle<Unit> Map::getUnit(const short unsigned int x, const short unsigned int y) {

@@ -104,6 +104,37 @@ template <typename T> extern std::vector<T> cppuniques(std::vector<T> vec) {
 
     return (uniques);
 }
+
+template <typename T> extern void quicksort(T arr[], T low, T high) {
+    T pi;
+    if (low < high) {
+        pi = partition(arr, low, high);
+        quicksort(arr, low, pi - 1);
+        quicksort(arr, pi + 1, high);
+    }
+}
+
+template <typename T> extern void partition(T arr[], T low, T high) {
+    T pivot = arr[high];
+    T i = low - 1;
+
+    for (int j = low; j < high; j++) {
+        if (arr[j] < pivot) {
+            i++;
+            swap(arr, i, j);
+        }
+    }
+    swap(arr, i + 1, high);
+    return (i + 1);
+}
+
+template <typename T> extern void swap(T arr[], T ind1, T ind2) {
+    T buffer;
+    buffer = arr[ind1];
+    arr[ind1] = arr[ind2];
+    arr[ind2] = buffer;
+}
+
 // extern void heal(Unit * in_unit, unsigned char heal);
 // extern * (Unit) makeheal(Weapon in_weapon);
 
