@@ -937,12 +937,18 @@ void ControlSystemx::update(entityx::EntityManager & es, entityx::EventManager &
 
         if (keyboard->is_pressed(kb_state, keyboardInputMap.accept)) {
             pressed_button.push_back(keyboardInputMap.accept);
-            events.emit<inputAccept>(keyboard);
+
+            if (keyboard->getHeldbutton() == 1) {
+                events.emit<inputAccept>(keyboard);
+            }
         }
 
         if (keyboard->is_pressed(kb_state, keyboardInputMap.cancel)) {
             pressed_button.push_back(keyboardInputMap.cancel);
-            events.emit<inputCancel>(keyboard);
+
+            if (keyboard->getHeldbutton() == 1) {
+                events.emit<inputCancel>(keyboard);
+            }
         }
 
         keyboard->check_move(pressed_move);
