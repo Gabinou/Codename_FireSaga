@@ -7,6 +7,15 @@
 #include <cmath>
 #include <algorithm>
 
+
+
+
+
+// template <typename T> operator modulo(T divisor, T dividend) {
+//     return ()
+// }
+
+
 template <typename T> extern std::vector<std::vector <T>> list2matrix(std::vector<std::vector<T>> list, T col, T row) {
     std::vector<std::vector <T>> matrix(col, std::vector<T> (row, 0));
 

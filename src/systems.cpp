@@ -838,7 +838,7 @@ unsigned int ControlSystemx::getHeldbutton(Controllers in_controllers) {
 }
 
 void ControlSystemx::receive(const cursorMoved & moved) {
-    SDL_Log("Received cursorMoved event");
+    // SDL_Log("Received cursorMoved event");
     entityx::ComponentHandle<Unit> unitontile;
     entityx::ComponentHandle<Unit> unitprevioustile;
     entityx::Entity cursor = moved.cursor;
@@ -861,6 +861,8 @@ void ControlSystemx::receive(const cursorMoved & moved) {
                     event_manager->emit<unitDehover>(cursor, unitprevioustile);
                 }
             }
+
+            break;
 
         case GAME::STATE::MAP:
             previous_pos[0] = cursor_pos[0] - move.x;
