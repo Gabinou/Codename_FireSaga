@@ -51,6 +51,124 @@ bool fequal(const char * filename1, const char * filename2) {
     return (out);
 }
 
+std::string gamestate2str(short unsigned int in_state) {
+    std::string out;
+
+    switch (in_state) {
+        case GAME::STATE::PAUSE:
+            out = "Pause";
+            break;
+
+        case GAME::STATE::STATS:
+            out = "Stats";
+            break;
+
+        case GAME::STATE::MINIMAP:
+            out = "Minimap";
+            break;
+
+        case GAME::STATE::MAP:
+            out = "Map";
+            break;
+
+        case GAME::STATE::MAPMENU:
+            out = "Mapmenu";
+            break;
+
+        case GAME::STATE::UNITMENU:
+            out = "Unitmenu";
+            break;
+
+        case GAME::STATE::UNITMOVE:
+            out = "Unitmove";
+            break;
+
+        case GAME::STATE::CUTSCENE:
+            out = "Cutscene";
+            break;
+
+        case GAME::STATE::NEXTTURN:
+            out = "Nextturn";
+            break;
+
+        case GAME::STATE::OPTIONS:
+            out = "Options";
+            break;
+
+        case GAME::STATE::STARTMENU:
+            out = "Start menu";
+            break;
+
+        case GAME::STATE::EQUIPMENT:
+            out = "Equipment";
+            break;
+
+        case GAME::STATE::SOUNDROOM:
+            out = "Soundroom";
+            break;
+
+        case GAME::STATE::SAVES:
+            out = "Saves";
+            break;
+
+        case GAME::STATE::STORAGE:
+            out = "Storage";
+            break;
+
+        case GAME::STATE::FORGE:
+            out = "Forge";
+            break;
+
+        case GAME::STATE::BONUSEXP:
+            out = "BonusExp";
+            break;
+
+        case GAME::STATE::PLACEMENT:
+            out = "Placement";
+            break;
+
+        case GAME::STATE::PREPARATION:
+            out = "Preparation";
+            break;
+
+        case GAME::STATE::CHOOSEUNITS:
+            out = "Choose units";
+            break;
+
+        case GAME::STATE::ITEMS:
+            out = "Items";
+            break;
+
+        case GAME::STATE::TRADE:
+            out = "Trade";
+            break;
+
+        case GAME::STATE::CONVERSATION:
+            out = "Conversation";
+            break;
+
+        case GAME::STATE::BATTLE:
+            out = "Battle";
+            break;
+
+        case GAME::STATE::ATTACK:
+            out = "Attack";
+            break;
+
+        case GAME::STATE::UNITHOVER:
+            out = "Unithover";
+            break;
+
+        case GAME::STATE::INTROVIDEO:
+            out = "Introvideo";
+            break;
+    }
+
+    return (out);
+
+}
+
+
 std::string stats2str(Unit_stats in_stats) {
     char buffer[DEFAULT::BUFFER_SIZE];
     stbsp_sprintf(buffer, "%02d %02d %02d %02d %02d %02d %02d %02d %02d %02d %02d", in_stats.hp, in_stats.str, in_stats.mag, in_stats.agi, in_stats.dex, in_stats.luck, in_stats.def, in_stats.res, in_stats.con, in_stats.move, in_stats.prof);

@@ -457,7 +457,7 @@ void Game::setCursorstate(const short unsigned int new_state) {
                 cursor_lastpos[1] = cursorx.component<Position>()->getPos()[1] - cursorx.component<Position>()->getOffset()[1];
                 SDL_Log("Menubounds: %d %d %d %d", menubounds[0], menubounds[1], menubounds[2], menubounds[3]);
                 cursorx.component<Position>()->setBounds(menubounds);
-                cursorx.component<Position>()->setPos(menubounds[0], menubounds[2]);
+                cursorx.component<Position>()->setPos(menubounds[0] - 1, menubounds[2]);
                 cursorx.component<Position>()->setonTilemap(false);
                 cursorx.component<Position>()->setPeriodic(true);
                 systems.system<RenderSystemx>()->setLinespace(linespace);
@@ -710,6 +710,7 @@ void Game::saveXML(const short int save_ind) {
 
 void Game::setState(const short unsigned int new_state) {
     state = new_state;
+    SDL_Log("New game state: %s", gamestate2str(state).c_str());
 }
 
 KeyboardInputMap Game::getKeyboardInputMap() {
