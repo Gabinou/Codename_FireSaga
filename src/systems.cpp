@@ -284,7 +284,7 @@ void UnitSystemx::configure(entityx::EventManager & events) {
 }
 
 void UnitSystemx::receive(const unitDehover & dehover) {
-    SDL_Log("unitDehover event received");
+    SDL_Log("Received unitDehover event");
 
     entityx::Entity cursor = dehover.cursor;
     entityx::ComponentHandle<Unit> unit = dehover.unit;
@@ -825,13 +825,17 @@ void ControlSystemx::receive(const cursorMoved & moved) {
             }
 
         case GAME::STATE::MAP:
+            previous_pos[0] = cursor_pos[0] - move.x;
+            previous_pos[1] = cursor_pos[1] - move.y;
+            unitprevioustile = unitmap[previous_pos[1]][previous_pos[0]];
             unitontile = unitmap[cursor_pos[1]][cursor_pos[0]];
+
+            if (unitprevioustile) {
+                event_manager->emit<unitDehover>(cursor, unitprevioustile);
+            }
 
             if (unitontile) {
                 event_manager->emit<unitHover>(cursor, unitontile);
-                // event_manager->emit<unitMove>(cursor, unitontile);
-            } else {
-                // event_manager->emit<unitNomove>(cursor);
             }
 
             break;
