@@ -317,10 +317,12 @@ void MenuSystemx::receive(const mapMenu & menu) {
         SDL_Log("Selected entity is invalid.");
     }
 
+    game->makeMenuoptions(MENU::MAP);
+
     if (!mapmenu->valid()) {
         game->makeMenu(MENU::MAP);
     } else {
-        game->updateMenu(MENU::MAP);
+        game->makeMenutext(MENU::MAP);
     }
 
     if (cursorpos) {
@@ -382,7 +384,7 @@ void MenuSystemx::receive(const unitMenu & menu) {
     if (!unitmenu->valid()) {
         game->makeMenu(MENU::UNIT);
     } else {
-        game->updateMenu(MENU::UNIT);
+        game->makeMenutext(MENU::UNIT);
     }
 
     unitmenu->component<Position>()->setPos((new_position[0] + 1) * settings->tilesize[0], new_position[1] * settings->tilesize[1]);
@@ -406,39 +408,39 @@ void MenuSystemx::receive(const unitmenuSelect & select) {
 
     if (unit) {
         switch (unitmenuoptions[menuind]) {
-            case UNIT::MENU::ITEMS:
+            case MENU::OPTION::ITEMS:
                 event_manager->emit<unitItems>(cursor, unit);
                 break;
 
-            case UNIT::MENU::TALK:
+            case MENU::OPTION::TALK:
                 event_manager->emit<unitTalk>(cursor, unit);
                 break;
 
-            case UNIT::MENU::RESCUE:
+            case MENU::OPTION::RESCUE:
                 event_manager->emit<unitRescue>(cursor, unit);
                 break;
 
-            case UNIT::MENU::SEIZE:
+            case MENU::OPTION::SEIZE:
                 event_manager->emit<unitSeize>(unit);
                 break;
 
-            case UNIT::MENU::ESCAPE:
+            case MENU::OPTION::ESCAPE:
                 event_manager->emit<unitEscape>(cursor, unit);
                 break;
 
-            case UNIT::MENU::ATTACK:
+            case MENU::OPTION::ATTACK:
                 event_manager->emit<unitAttack>(cursor, unit);
                 break;
 
-            case UNIT::MENU::TRADE:
+            case MENU::OPTION::TRADE:
                 event_manager->emit<unitTrade>(cursor, unit);
                 break;
 
-            case UNIT::MENU::STAFF:
+            case MENU::OPTION::STAFF:
                 event_manager->emit<unitStaff>(cursor, unit);
                 break;
 
-            case UNIT::MENU::WAIT:
+            case MENU::OPTION::WAIT:
                 event_manager->emit<unitWait>(cursor, unit);
                 break;
         }

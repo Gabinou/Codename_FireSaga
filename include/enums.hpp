@@ -36,6 +36,29 @@ enum MENUS {
     UNIT = 1,
     MAP,
 };
+namespace OPTION {
+enum OPTIONS {
+    ITEMS = 0,
+    TALK,
+    RESCUE,
+    SEIZE,
+    ESCAPE,
+    ATTACK,
+    SHOP,
+    ARMORY,
+    VILLAGE,
+    CONVOY,
+    TRADE,
+    STAFF,
+    MAP,
+    WAIT,
+    UNITS,
+    ENEMIES,
+    ENDTURN,
+    OPTIONS,
+    CONDITIONS,
+};
+}
 }
 namespace ITEM {
 namespace NAME {
@@ -339,23 +362,6 @@ enum CLASSES {
     GODDESS,
     TWINBORN,
     END
-};
-}
-namespace MENU {
-enum OPTIONS {
-    ITEMS = 0,
-    TALK,
-    RESCUE,
-    SEIZE,
-    ESCAPE,
-    ATTACK,
-    SHOP,
-    ARMORY,
-    VILLAGE,
-    TRADE,
-    STAFF,
-    MAP,
-    WAIT,
 };
 }
 namespace TYPE {

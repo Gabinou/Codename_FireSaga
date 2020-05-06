@@ -175,35 +175,35 @@ std::vector<std::string> Game::menuoptions2str(std::vector<unsigned char> in_opt
     // THIS SHOULD BE AN UTILITY.
     for (short int i = 0; i < in_options.size(); i++) {
         switch (in_options[i]) {
-            case UNIT::MENU::ITEMS:
+            case MENU::OPTION::ITEMS:
                 out.push_back("Items");
                 break;
 
-            case UNIT::MENU::TALK:
+            case MENU::OPTION::TALK:
                 out.push_back("Talk");
                 break;
 
-            case UNIT::MENU::RESCUE:
+            case MENU::OPTION::RESCUE:
                 out.push_back("Rescue");
                 break;
 
-            case UNIT::MENU::SEIZE:
+            case MENU::OPTION::SEIZE:
                 out.push_back("Seize");
                 break;
 
-            case UNIT::MENU::ESCAPE:
+            case MENU::OPTION::ESCAPE:
                 out.push_back("Escape");
                 break;
 
-            case UNIT::MENU::ATTACK:
+            case MENU::OPTION::ATTACK:
                 out.push_back("Attack");
                 break;
 
-            case UNIT::MENU::TRADE:
+            case MENU::OPTION::TRADE:
                 out.push_back("Trade");
                 break;
 
-            case UNIT::MENU::WAIT:
+            case MENU::OPTION::WAIT:
                 out.push_back("Wait");
                 break;
         }
@@ -212,7 +212,7 @@ std::vector<std::string> Game::menuoptions2str(std::vector<unsigned char> in_opt
     return (out);
 }
 
-void Game::updateMenu(unsigned char in_menu_index) {
+void Game::makeMenutext(unsigned char in_menu_index) {
     SDL_Log("Updating menu: %d", in_menu_index);
 
     if (menus[in_menu_index].valid()) {
@@ -270,7 +270,7 @@ void Game::makeMenu(unsigned char in_menu_index) {
             break;
     }
 
-    updateMenu(in_menu_index);
+    makeMenutext(in_menu_index);
 }
 
 void Game::makeMenuoptions(unsigned char in_menu_index) {
@@ -287,7 +287,7 @@ void Game::makeMenuoptions(unsigned char in_menu_index) {
 
     switch (in_menu_index) {
         case MENU::UNIT:
-            options.push_back(UNIT::MENU::ITEMS);
+            options.push_back(MENU::OPTION::ITEMS);
             bounds = mapx->getBounds();
             unit = mapx->getUnit(cursor_lastpos[0], cursor_lastpos[1]);
             SDL_Log("last position: %d %d", cursor_lastpos[0], cursor_lastpos[1]);
@@ -315,7 +315,7 @@ void Game::makeMenuoptions(unsigned char in_menu_index) {
 
                 if (tilemap[cursor_lastpos[0]][cursor_lastpos[1]] / DEFAULT::TILE_DIVISOR == TILE::THRONE) {
                     if (unit->getid() ==  UNIT::NAME::ERWIN) {
-                        options.push_back(UNIT::MENU::SEIZE);
+                        options.push_back(MENU::OPTION::SEIZE);
                     }
                 }
 
@@ -331,8 +331,8 @@ void Game::makeMenuoptions(unsigned char in_menu_index) {
                             case UNIT::ARMY::FRIENDLY:
                             case UNIT::ARMY::ERWIN:
                             case UNIT::ARMY::FREE_MILITIA:
-                                options.push_back(UNIT::MENU::TRADE);
-                                options.push_back(UNIT::MENU::RESCUE);
+                                options.push_back(MENU::OPTION::TRADE);
+                                options.push_back(MENU::OPTION::RESCUE);
                                 break;
 
                             case UNIT::ARMY::ENEMY:
@@ -340,7 +340,7 @@ void Game::makeMenuoptions(unsigned char in_menu_index) {
                             case UNIT::ARMY::KEWAC:
                             case UNIT::ARMY::NEUTRAL:
                             case UNIT::ARMY::IMPERIAL:
-                                options.push_back(UNIT::MENU::ATTACK);
+                                options.push_back(MENU::OPTION::ATTACK);
                                 break;
                         }
                     } else {
@@ -348,7 +348,7 @@ void Game::makeMenuoptions(unsigned char in_menu_index) {
                     }
                 }
 
-                options.push_back(UNIT::MENU::WAIT);
+                options.push_back(MENU::OPTION::WAIT);
                 std::sort(options.begin(), options.end());
                 menuoptions[MENU::UNIT] = options;
             } else {
@@ -358,6 +358,12 @@ void Game::makeMenuoptions(unsigned char in_menu_index) {
             break;
 
         case MENU::MAP:
+            options.push_back(MENU::OPTION::UNITS);
+            options.push_back(MENU::OPTION::ENEMIES);
+            options.push_back(MENU::OPTION::ITEMS);
+            options.push_back(MENU::OPTION::CONDITIONS);
+            options.push_back(MENU::OPTION::OPTIONS);
+            options.push_back(MENU::OPTION::ENDTURN);
             break;
     }
 }
