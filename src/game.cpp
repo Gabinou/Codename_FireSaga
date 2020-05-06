@@ -225,6 +225,10 @@ void Game::updateMenu(unsigned char in_menu_index) {
                 }
 
                 menus[MENU::UNIT].component<Text>()->makeTextures();
+                break;
+
+            case MENU::MAP:
+                break;
         }
     } else {
         SDL_Log("Menu %d is invalid", in_menu_index);
@@ -261,92 +265,100 @@ void Game::makeMenu(unsigned char in_menu_index) {
         case MENU::MAP:
             SDL_Log("Making map menu\n");
             menus[MENU::MAP].component<Sprite>()->setTexture("..//assets//textbox.png");
-            menus[MENU::UNIT].component<Sprite>()->setSrcrect(128, 128);
-            menus[MENU::UNIT].component<Sprite>()->setDestrect(128, 128);
+            menus[MENU::MAP].component<Sprite>()->setSrcrect(128, 128);
+            menus[MENU::MAP].component<Sprite>()->setDestrect(128, 128);
             break;
     }
 
     updateMenu(in_menu_index);
 }
 
-void Game::makeUnitmenuoptions() {
+void Game::makeMenuoptions(unsigned char in_menu_index) {
     SDL_Log("Building unitmenu options");
     std::vector<unsigned char> options;
-    options.push_back(UNIT::MENU::ITEMS);
 
     entityx::ComponentHandle<Unit> unit;
-
     entityx::ComponentHandle<Unit> top;
     entityx::ComponentHandle<Unit> bottom;
     entityx::ComponentHandle<Unit> right;
     entityx::ComponentHandle<Unit> left;
+    short int * bounds;
     unsigned char army;
-    short int * bounds = mapx->getBounds();
-    unit = mapx->getUnit(cursor_lastpos[0], cursor_lastpos[1]);
-    SDL_Log("last position: %d %d", cursor_lastpos[0], cursor_lastpos[1]);
 
-    if (unit) {
-        SDL_Log("Making Menuoptions for: %s", unit->getName().c_str());
+    switch (in_menu_index) {
+        case MENU::UNIT:
+            options.push_back(UNIT::MENU::ITEMS);
+            bounds = mapx->getBounds();
+            unit = mapx->getUnit(cursor_lastpos[0], cursor_lastpos[1]);
+            SDL_Log("last position: %d %d", cursor_lastpos[0], cursor_lastpos[1]);
 
-        std::vector<std::vector<short int>> tilemap = mapx->getTilemap();
+            if (unit) {
+                SDL_Log("Making Menuoptions for: %s", unit->getName().c_str());
 
-        if ((cursor_lastpos[1] + 1) < bounds[3]) {
-            top = mapx->getUnit(cursor_lastpos[0], cursor_lastpos[1] + 1);
-        }
+                std::vector<std::vector<short int>> tilemap = mapx->getTilemap();
 
-        if ((cursor_lastpos[1] - 1) > bounds[2]) {
-            bottom = mapx->getUnit(cursor_lastpos[0], cursor_lastpos[1] - 1);
-        }
-
-        if ((cursor_lastpos[0] + 1) < bounds[1]) {
-            right = mapx->getUnit(cursor_lastpos[0] + 1, cursor_lastpos[1]);
-        }
-
-        if ((cursor_lastpos[0] - 1) > bounds[0]) {
-            left = mapx->getUnit(cursor_lastpos[0] - 1, cursor_lastpos[1]);
-        }
-
-
-        if (tilemap[cursor_lastpos[0]][cursor_lastpos[1]] / DEFAULT::TILE_DIVISOR == TILE::THRONE) {
-            if (unit->getid() ==  UNIT::NAME::ERWIN) {
-                options.push_back(UNIT::MENU::SEIZE);
-            }
-        }
-
-        std::vector<entityx::ComponentHandle<Unit>> units_around = {top, right, bottom, left};
-
-        for (short int i = 0; i < units_around.size(); i++) {
-            if (units_around[i]) {
-                army = units_around[i]->getArmy();
-                SDL_Log("Unit_around: %s", units_around[i]->getName().c_str());
-                SDL_Log("Army: %s", units_around[i]->getArmyName().c_str());
-
-                switch (army) {
-                    case UNIT::ARMY::FRIENDLY:
-                    case UNIT::ARMY::ERWIN:
-                    case UNIT::ARMY::FREE_MILITIA:
-                        options.push_back(UNIT::MENU::TRADE);
-                        options.push_back(UNIT::MENU::RESCUE);
-                        break;
-
-                    case UNIT::ARMY::ENEMY:
-                    case UNIT::ARMY::BANDITS:
-                    case UNIT::ARMY::KEWAC:
-                    case UNIT::ARMY::NEUTRAL:
-                    case UNIT::ARMY::IMPERIAL:
-                        options.push_back(UNIT::MENU::ATTACK);
-                        break;
+                if ((cursor_lastpos[1] + 1) < bounds[3]) {
+                    top = mapx->getUnit(cursor_lastpos[0], cursor_lastpos[1] + 1);
                 }
-            } else {
-                SDL_Log("No unit around");
-            }
-        }
 
-        options.push_back(UNIT::MENU::WAIT);
-        std::sort(options.begin(), options.end());
-        menuoptions[MENU::UNIT] = options;
-    } else {
-        SDL_Log("Menuoptions: Unit not found.");
+                if ((cursor_lastpos[1] - 1) > bounds[2]) {
+                    bottom = mapx->getUnit(cursor_lastpos[0], cursor_lastpos[1] - 1);
+                }
+
+                if ((cursor_lastpos[0] + 1) < bounds[1]) {
+                    right = mapx->getUnit(cursor_lastpos[0] + 1, cursor_lastpos[1]);
+                }
+
+                if ((cursor_lastpos[0] - 1) > bounds[0]) {
+                    left = mapx->getUnit(cursor_lastpos[0] - 1, cursor_lastpos[1]);
+                }
+
+                if (tilemap[cursor_lastpos[0]][cursor_lastpos[1]] / DEFAULT::TILE_DIVISOR == TILE::THRONE) {
+                    if (unit->getid() ==  UNIT::NAME::ERWIN) {
+                        options.push_back(UNIT::MENU::SEIZE);
+                    }
+                }
+
+                std::vector<entityx::ComponentHandle<Unit>> units_around = {top, right, bottom, left};
+
+                for (short int i = 0; i < units_around.size(); i++) {
+                    if (units_around[i]) {
+                        army = units_around[i]->getArmy();
+                        SDL_Log("Unit_around: %s", units_around[i]->getName().c_str());
+                        SDL_Log("Army: %s", units_around[i]->getArmyName().c_str());
+
+                        switch (army) {
+                            case UNIT::ARMY::FRIENDLY:
+                            case UNIT::ARMY::ERWIN:
+                            case UNIT::ARMY::FREE_MILITIA:
+                                options.push_back(UNIT::MENU::TRADE);
+                                options.push_back(UNIT::MENU::RESCUE);
+                                break;
+
+                            case UNIT::ARMY::ENEMY:
+                            case UNIT::ARMY::BANDITS:
+                            case UNIT::ARMY::KEWAC:
+                            case UNIT::ARMY::NEUTRAL:
+                            case UNIT::ARMY::IMPERIAL:
+                                options.push_back(UNIT::MENU::ATTACK);
+                                break;
+                        }
+                    } else {
+                        SDL_Log("No unit around");
+                    }
+                }
+
+                options.push_back(UNIT::MENU::WAIT);
+                std::sort(options.begin(), options.end());
+                menuoptions[MENU::UNIT] = options;
+            } else {
+                SDL_Log("Menuoptions: Unit not found.");
+            }
+
+            break;
+
+        case MENU::MAP:
+            break;
     }
 }
 

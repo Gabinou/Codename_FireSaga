@@ -75,7 +75,7 @@ public:
 
     std::vector<std::string> menuoptions2str(std::vector<unsigned char> in_options);
     std::vector<unsigned char> getMenuoptions(unsigned char in_menu_index);
-    void makeUnitmenuoptions();
+    void makeMenuoptions(unsigned char in_menu_index);
     void setMenuoptions(unsigned char in_menu_index, std::vector<unsigned char> in_options);
     void updateMenu(unsigned char in_menu_index);
     void makeMenu(unsigned char in_menu_index);

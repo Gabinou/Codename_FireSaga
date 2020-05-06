@@ -140,7 +140,6 @@ public:
 class ControlSystemx: public entityx::System<ControlSystemx>, public entityx::Receiver<ControlSystemx> {
 private:
     Game * game;
-    short unsigned int * tilesize;
     KeyboardInputMap keyboardInputMap;
     GamepadInputMap gamepadInputMap;
     entityx::EventManager * event_manager;

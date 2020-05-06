@@ -354,6 +354,7 @@ enum OPTIONS {
     VILLAGE,
     TRADE,
     STAFF,
+    MAP,
     WAIT,
 };
 }
