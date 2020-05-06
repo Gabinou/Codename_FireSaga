@@ -53,10 +53,10 @@ enum OPTIONS {
     MAP,
     WAIT,
     UNITS,
-    ENEMIES,
+    ENEMYUNITS,
     ENDTURN,
     OPTIONS,
-    CONDITIONS,
+    OBJECTIVES,
 };
 }
 }

@@ -199,12 +199,56 @@ std::vector<std::string> Game::menuoptions2str(std::vector<unsigned char> in_opt
                 out.push_back("Attack");
                 break;
 
+            case MENU::OPTION::SHOP:
+                out.push_back("Shop");
+                break;
+
+            case MENU::OPTION::ARMORY:
+                out.push_back("Armory");
+                break;
+
+            case MENU::OPTION::VILLAGE:
+                out.push_back("Village");
+                break;
+
+            case MENU::OPTION::CONVOY:
+                out.push_back("Convoy");
+                break;
+
             case MENU::OPTION::TRADE:
                 out.push_back("Trade");
                 break;
 
+            case MENU::OPTION::STAFF:
+                out.push_back("Staff");
+                break;
+
+            case MENU::OPTION::MAP:
+                out.push_back("Map");
+                break;
+
             case MENU::OPTION::WAIT:
                 out.push_back("Wait");
+                break;
+
+            case MENU::OPTION::UNITS:
+                out.push_back("Units");
+                break;
+
+            case MENU::OPTION::ENEMYUNITS:
+                out.push_back("Enemy Units");
+                break;
+
+            case MENU::OPTION::ENDTURN:
+                out.push_back("End Turn");
+                break;
+
+            case MENU::OPTION::OPTIONS:
+                out.push_back("Options");
+                break;
+
+            case MENU::OPTION::OBJECTIVES:
+                out.push_back("Objectives");
                 break;
         }
     }
