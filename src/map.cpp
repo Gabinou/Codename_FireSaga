@@ -289,6 +289,7 @@ short unsigned int * Map::getTilesize() const {
 }
 
 std::vector<entityx::ComponentHandle<Unit>> Map::getUnits(unsigned char in_army) {
+    SDL_Log("Map in getUnits");
     return (units_onfield[in_army]);
 }
 

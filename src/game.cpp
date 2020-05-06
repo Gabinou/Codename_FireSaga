@@ -373,6 +373,7 @@ void Game::loadMap(const int in_map_index) {
         mapx->setArrivalEquipments(arrivalEquipments[in_map_index]());
         systems.system<RenderSystemx>()->setMap(mapx);
         systems.system<UnitSystemx>()->updateMap();
+        systems.system<MapSystemx>()->updateMap();
     } else {
         SDL_Log("Failed to loadMap. Was mapx deleted previously?");
     }

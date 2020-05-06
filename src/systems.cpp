@@ -701,8 +701,8 @@ void MapSystemx::configure(entityx::EventManager & in_events) {
 
 void MapSystemx::receive(const turnBegin & begin) {
     SDL_Log("Received turnBegin event");
-    refreshUnits(armies.front());
     switchControl(armies.front());
+    refreshUnits(armies.front());
 }
 
 void MapSystemx::receive(const turnEnd & end) {
@@ -713,6 +713,8 @@ void MapSystemx::receive(const turnEnd & end) {
 }
 
 void MapSystemx::switchControl(unsigned char in_army) {
+    SDL_Log("switching control to army: %d", in_army);
+
     if (isPC(in_army)) {
         game->setState(GAME::STATE::MAP);
     } else {
@@ -723,7 +725,10 @@ void MapSystemx::switchControl(unsigned char in_army) {
 }
 
 void MapSystemx::refreshUnits(unsigned char in_army) {
+    SDL_Log("Refreshing units");
     std::vector<entityx::ComponentHandle<Unit>> units = mapx->getUnits(in_army);
+
+    SDL_Log("units size: %d", units.size());
 
     for (short i = 0; i < units.size(); i++) {
         units[i]->refresh();
