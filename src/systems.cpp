@@ -256,7 +256,6 @@ MenuSystemx::MenuSystemx() {
 MenuSystemx::MenuSystemx(Game * in_game) {
     SDL_Log("Adding Menusystem");
     game = in_game;
-    unitmenux = game->getMenu(MENU::UNIT);
     settings = game->getSettings();
     updateMap();
 }
@@ -315,6 +314,7 @@ void MenuSystemx::receive(const unitMenu & menu) {
 
     entityx::Entity cursor = menu.cursor;
     entityx::ComponentHandle<Position> cursorpos = cursor.component<Position>();
+    entityx::Entity * unitmenux = game->getMenu(MENU::UNIT);
 
     short int new_position[2];
 
