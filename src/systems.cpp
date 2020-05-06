@@ -429,7 +429,6 @@ UnitSystemx::UnitSystemx(Game * in_game) {
     SDL_Log("Adding Unitsystem");
     game = in_game;
     settings = game->getSettings();
-    unitmenux = game->getMenu(MENU::UNIT);
     updateMap();
 }
 

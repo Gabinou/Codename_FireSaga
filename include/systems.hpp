@@ -53,7 +53,6 @@ private:
     Settings * settings;
     entityx::ComponentHandle<Map> mapx;
     entityx::EventManager * event_manager;
-    entityx::Entity * unitmenux;
     short int old_position[2];
     std::vector<unsigned char> unitmenuoptions;
     entityx::Entity selected;
