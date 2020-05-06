@@ -318,7 +318,7 @@ void Game::makeMenu(unsigned char in_menu_index) {
 }
 
 void Game::makeMenuoptions(unsigned char in_menu_index) {
-    SDL_Log("Building unitmenu options");
+    SDL_Log("Making Menu options");
     std::vector<unsigned char> options;
 
     entityx::ComponentHandle<Unit> unit;
@@ -393,8 +393,6 @@ void Game::makeMenuoptions(unsigned char in_menu_index) {
                 }
 
                 options.push_back(MENU::OPTION::WAIT);
-                std::sort(options.begin(), options.end());
-                menuoptions[MENU::UNIT] = options;
             } else {
                 SDL_Log("Menuoptions: Unit not found.");
             }
@@ -403,13 +401,16 @@ void Game::makeMenuoptions(unsigned char in_menu_index) {
 
         case MENU::MAP:
             options.push_back(MENU::OPTION::UNITS);
-            options.push_back(MENU::OPTION::ENEMIES);
+            options.push_back(MENU::OPTION::ENEMYUNITS);
             options.push_back(MENU::OPTION::ITEMS);
-            options.push_back(MENU::OPTION::CONDITIONS);
+            options.push_back(MENU::OPTION::OBJECTIVES);
             options.push_back(MENU::OPTION::OPTIONS);
             options.push_back(MENU::OPTION::ENDTURN);
             break;
     }
+
+    std::sort(options.begin(), options.end());
+    menuoptions[in_menu_index] = options;
 }
 
 short unsigned int Game::getState() {
