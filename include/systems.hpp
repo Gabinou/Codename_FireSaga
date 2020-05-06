@@ -50,7 +50,6 @@ public:
 class UnitSystemx: public entityx::System<UnitSystemx>, public entityx::Receiver<UnitSystemx> {
 private:
     Game * game;
-    Settings * settings;
     entityx::ComponentHandle<Map> mapx;
     entityx::EventManager * event_manager;
     short int old_position[2];
@@ -116,15 +115,15 @@ public:
     void update(entityx::EntityManager & es, entityx::EventManager & events, entityx::TimeDelta dt) override;
 };
 
-class MapSystemx: public entityx::System<MapSystemx>, public entityx::Receiver<MapSystemx> {
+class TurnSystemx: public entityx::System<TurnSystemx>, public entityx::Receiver<TurnSystemx> {
 private:
     Game * game;
     std::queue<unsigned char> armies;
     entityx::ComponentHandle<Map> mapx;
     entityx::EventManager * event_manager;
 public:
-    MapSystemx();
-    MapSystemx(Game * in_game);
+    TurnSystemx();
+    TurnSystemx(Game * in_game);
 
     void addArmy(unsigned char in_army);
     void addArmies(std::vector<unsigned char> in_armies);

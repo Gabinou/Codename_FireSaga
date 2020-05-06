@@ -428,7 +428,6 @@ UnitSystemx::UnitSystemx() {
 UnitSystemx::UnitSystemx(Game * in_game) {
     SDL_Log("Adding Unitsystem");
     game = in_game;
-    settings = game->getSettings();
     updateMap();
 }
 
@@ -704,21 +703,21 @@ void UnitSystemx::update(entityx::EntityManager & es, entityx::EventManager & ev
 
 }
 
-MapSystemx::MapSystemx() {
+TurnSystemx::TurnSystemx() {
 }
 
-MapSystemx::MapSystemx(Game * in_game) {
-    SDL_Log("Adding Mapsystemx.");
+TurnSystemx::TurnSystemx(Game * in_game) {
+    SDL_Log("Adding TurnSystemx.");
     game = in_game;
     updateMap();
 }
 
 
-void MapSystemx::updateMap() {
+void TurnSystemx::updateMap() {
     mapx = game->getMap();
 }
 
-void MapSystemx::setMap(entityx::ComponentHandle<Map> in_map) {
+void TurnSystemx::setMap(entityx::ComponentHandle<Map> in_map) {
     if (in_map) {
         mapx = in_map;
         // tilesize = mapx->getTilesize();
@@ -728,36 +727,36 @@ void MapSystemx::setMap(entityx::ComponentHandle<Map> in_map) {
 }
 
 
-void MapSystemx::addArmies(std::vector<unsigned char> in_armies) {
+void TurnSystemx::addArmies(std::vector<unsigned char> in_armies) {
     for (short int i = 0; i < in_armies.size(); i++) {
         armies.push(in_armies[i]);
     }
 }
 
-void MapSystemx::addArmy(unsigned char in_army) {
+void TurnSystemx::addArmy(unsigned char in_army) {
     armies.push(in_army);
 }
 
-void MapSystemx::configure(entityx::EventManager & in_events) {
+void TurnSystemx::configure(entityx::EventManager & in_events) {
     event_manager = &in_events;
     event_manager->subscribe<turnBegin>(*this);
     event_manager->subscribe<turnEnd>(*this);
 }
 
-void MapSystemx::receive(const turnBegin & begin) {
+void TurnSystemx::receive(const turnBegin & begin) {
     SDL_Log("Received turnBegin event");
     switchControl(armies.front());
     refreshUnits(armies.front());
 }
 
-void MapSystemx::receive(const turnEnd & end) {
+void TurnSystemx::receive(const turnEnd & end) {
     SDL_Log("Received turnEnd event");
     armies.push(armies.front());
     armies.pop();
     event_manager->emit<turnBegin>();
 }
 
-void MapSystemx::switchControl(unsigned char in_army) {
+void TurnSystemx::switchControl(unsigned char in_army) {
     SDL_Log("switching control to army: %d", in_army);
 
     if (isPC(in_army)) {
@@ -769,7 +768,7 @@ void MapSystemx::switchControl(unsigned char in_army) {
 
 }
 
-void MapSystemx::refreshUnits(unsigned char in_army) {
+void TurnSystemx::refreshUnits(unsigned char in_army) {
     SDL_Log("Refreshing units");
     std::vector<entityx::ComponentHandle<Unit>> units = mapx->getUnits(in_army);
 
@@ -781,7 +780,7 @@ void MapSystemx::refreshUnits(unsigned char in_army) {
 }
 
 
-void MapSystemx::update(entityx::EntityManager & es, entityx::EventManager & events, entityx::TimeDelta dt) {
+void TurnSystemx::update(entityx::EntityManager & es, entityx::EventManager & events, entityx::TimeDelta dt) {
     entityx::ComponentHandle<Unit> unit;
 }
 

@@ -373,7 +373,7 @@ void Game::loadMap(const int in_map_index) {
         mapx->setArrivalEquipments(arrivalEquipments[in_map_index]());
         systems.system<RenderSystemx>()->setMap(mapx);
         systems.system<UnitSystemx>()->updateMap();
-        systems.system<MapSystemx>()->updateMap();
+        systems.system<TurnSystemx>()->updateMap();
         systems.system<MenuSystemx>()->updateMap();
     } else {
         SDL_Log("Failed to loadMap. Was mapx deleted previously?");
@@ -605,7 +605,7 @@ void Game::init(const char * title, int xpos, int ypos, int width, int height, b
     systems.add<RenderSystemx>(renderer);
     systems.add<ControlSystemx>(this);
     systems.add<UnitSystemx>(this);
-    systems.add<MapSystemx>(this);
+    systems.add<TurnSystemx>(this);
     systems.add<MenuSystemx>(this);
     systems.configure();
     // state = GAME::STATE::MAP;
@@ -615,7 +615,7 @@ void Game::startTurnSystem() {
     std::vector<unsigned char> armies = mapx->getArmies();
 
     if (armies.size() > 0) {
-        systems.system<MapSystemx>()->addArmies(armies);
+        systems.system<TurnSystemx>()->addArmies(armies);
     } else {
         SDL_Log("No armies loaded on the current map.");
     }
