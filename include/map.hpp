@@ -91,6 +91,8 @@ public:
     void clearUnitmap();
 
 
+    void addArmy(unsigned char in_army);
+    std::vector<unsigned char> getArmies();
     void putUnit(const short unsigned int x, const short unsigned int y, entityx::ComponentHandle<Unit> in_unit);
     std::vector<entityx::ComponentHandle<Unit>> getUnits(unsigned char in_army);
     entityx::ComponentHandle<Unit> getUnit(const short unsigned int x, const short unsigned int y);

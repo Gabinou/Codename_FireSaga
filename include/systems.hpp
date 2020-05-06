@@ -99,6 +99,7 @@ private:
     Game * game;
     std::queue<unsigned char> armies;
     entityx::ComponentHandle<Map> mapx;
+    entityx::EventManager * event_manager;
     entityx::Entity * mapmenux;
 public:
     MapSystemx();

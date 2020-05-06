@@ -108,19 +108,19 @@ void test_utilities() {
     lok(arrtest2[3] == 4);
     lok(arrtest2[4] == 5);
 
-    std::vector<int> vectest1 = {3, 4, 5, 1, 2};
+    std::vector<int> vectest1 = {3, 4, 5, -1, 2};
     cppquicksort(vectest1, 0, 4);
-    lok(vectest1[0] == 1);
+    lok(vectest1[0] == -1);
     lok(vectest1[1] == 2);
     lok(vectest1[2] == 3);
     lok(vectest1[3] == 4);
     lok(vectest1[4] == 5);
 
-    // std::vector<short unsigned int> vectest2 = {3, 4, 5, 1, 2};
-    // cppquicksort(vectest2, 0, 4);
-    // lok(vectest2[0] == 1);
-    // lok(vectest2[1] == 2);
-    // lok(vectest2[2] == 3);
-    // lok(vectest2[3] == 4);
-    // lok(vectest2[4] == 5);
+    std::vector<short unsigned int> vectest2 = {3, 4, 5, 1, 2};
+    cppquicksort(vectest2, low, high);
+    lok(vectest2[0] == 1);
+    lok(vectest2[1] == 2);
+    lok(vectest2[2] == 3);
+    lok(vectest2[3] == 4);
+    lok(vectest2[4] == 5);
 }

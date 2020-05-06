@@ -292,14 +292,20 @@ std::vector<entityx::ComponentHandle<Unit>> Map::getUnits(unsigned char in_army)
     return (units_onfield[in_army]);
 }
 
+std::vector<unsigned char> Map::getArmies() {
+    return (armies_onfield);
+}
+
+void Map::addArmy(const unsigned char in_army) {
+    if (!cppisin(in_army, armies_onfield)) {
+        armies_onfield.push_back(in_army);
+    }
+
+}
 void Map::putUnit(const short unsigned int x, const short unsigned int y, entityx::ComponentHandle<Unit> in_unit) {
     unitmap[y][x] = in_unit;// unitmap[row][col]
     unsigned char army = in_unit->getArmy();
-
-    if (!cppisin(army, armies_onfield)) {
-        armies_onfield.push_back(army);
-    }
-
+    addArmy(army);
     units_onfield[army].push_back(in_unit);
 }
 

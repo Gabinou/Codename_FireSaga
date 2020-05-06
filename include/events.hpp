@@ -6,9 +6,11 @@
 #include "gamepadcontroller.hpp"
 
 struct turnBegin {
-    turnBegin(entityx::Entity beginner) : beginner(beginner) {}
-    entityx::Entity beginner;
-    //Game? or AI ender.
+    turnBegin() : {}
+};
+
+struct turnEnd {
+    turnEnd() : {}
 };
 
 struct selectPC {
@@ -139,11 +141,6 @@ struct inputPause {
     entityx::ComponentHandle<GamepadController> gamepad;
 };
 
-struct turnEnd {
-    turnEnd(entityx::Entity ender) : ender(ender) {}
-    entityx::Entity ender;
-    //Player cursor or AI ender.
-};
 
 struct unitSeize {
     unitSeize(entityx::ComponentHandle<Unit> victor) : victor(victor) {}

@@ -66,9 +66,9 @@ int main(int argc, char * argv[]) {
     std::vector<short unsigned int> unit_inds = {UNIT::NAME::SILOU};
     std::vector<std::vector<int>> positions_list = {{6, 6}};
     firesaga->loadUnitEntities(unit_inds, positions_list);
-    firesaga->loadCursor();
     firesaga->loadMapArrivals();
     firesaga->startTurns();
+    firesaga->loadCursor();
 
     std::chrono::system_clock::time_point frame_start, frame_end, frame_middle;
     int frame_time;

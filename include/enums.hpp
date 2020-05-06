@@ -608,6 +608,9 @@ enum STATES {
     BATTLE,
     ATTACK,
     UNITHOVER,
+    TURNEND,
+    TURNBEGIN,
+    ENEMYTURN,
     INTROVIDEO,
     END,
 };
