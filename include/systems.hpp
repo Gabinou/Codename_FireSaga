@@ -95,10 +95,16 @@ public:
     void update(entityx::EntityManager & es, entityx::EventManager & events, entityx::TimeDelta dt) override;
 };
 
-class MenuSystemx: public entityx::System<MenuSystemx>, public entityx::Receiver<MenuSystemx> { 
+class MenuSystemx: public entityx::System<MenuSystemx>, public entityx::Receiver<MenuSystemx> {
 private:
     Game * game;
+    Settings * settings;
     entityx::EventManager * event_manager;
+    entityx::Entity * unitmenux;
+    entityx::Entity * mapmenux;
+    entityx::Entity selected;
+    short int old_position[2];
+    entityx::ComponentHandle<Map> mapx;
     std::vector<unsigned char> unitmenuoptions;
 public:
     MenuSystemx();
@@ -107,12 +113,16 @@ public:
     void killMenu(short unsigned int index);
     void hideMenu(short unsigned int index);
     void showMenu(short unsigned int index);
+    void updateMap();
+    void setMap(entityx::ComponentHandle<Map> in_map);
 
-    void update(entityx::EntityManager & es, entityx::EventManager & events, entityx::TimeDelta dt) override;
     void configure(entityx::EventManager & event_manager);
     void receive(const unitMenu & menu);
+    void receive(const unitSelect & menu);
     void receive(const mapMenu & menu);
-}
+
+    void update(entityx::EntityManager & es, entityx::EventManager & events, entityx::TimeDelta dt) override;
+};
 
 class MapSystemx: public entityx::System<MapSystemx>, public entityx::Receiver<MapSystemx> {
 private:

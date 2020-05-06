@@ -378,6 +378,7 @@ void Game::loadMap(const int in_map_index) {
         systems.system<RenderSystemx>()->setMap(mapx);
         systems.system<UnitSystemx>()->updateMap();
         systems.system<MapSystemx>()->updateMap();
+        systems.system<MenuSystemx>()->updateMap();
     } else {
         SDL_Log("Failed to loadMap. Was mapx deleted previously?");
     }
@@ -609,6 +610,7 @@ void Game::init(const char * title, int xpos, int ypos, int width, int height, b
     systems.add<ControlSystemx>(this);
     systems.add<UnitSystemx>(this);
     systems.add<MapSystemx>(this);
+    systems.add<MenuSystemx>(this);
     systems.configure();
     // state = GAME::STATE::MAP;
 };
@@ -728,8 +730,10 @@ void Game::saveXML(const short int save_ind) {
 }
 
 void Game::setState(const short unsigned int new_state) {
-    state = new_state;
-    SDL_Log("New game state: %s", gamestate2str(state).c_str());
+    if (state != new_state) {
+        state = new_state;
+        SDL_Log("New game state: %s", gamestate2str(state).c_str());
+    }
 }
 
 KeyboardInputMap Game::getKeyboardInputMap() {
