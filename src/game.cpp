@@ -204,11 +204,11 @@ void Game::makeMenu(unsigned char in_menu_index) {
             menus[MENU::UNIT].component<Sprite>()->setDestrect(128, 128);
             break;
 
-        case MENU::MAP:
+        case MENU::MAPMENU:
             SDL_Log("Making map menu\n");
-            menus[MENU::MAP].component<Sprite>()->setTexture("..//assets//textbox.png");
-            menus[MENU::MAP].component<Sprite>()->setSrcrect(128, 128);
-            menus[MENU::MAP].component<Sprite>()->setDestrect(128, 128);
+            menus[MENU::MAPMENU].component<Sprite>()->setTexture("..//assets//textbox.png");
+            menus[MENU::MAPMENU].component<Sprite>()->setSrcrect(128, 128);
+            menus[MENU::MAPMENU].component<Sprite>()->setDestrect(128, 128);
             break;
     }
 
@@ -297,7 +297,7 @@ void Game::makeMenuoptions(unsigned char in_menu_index) {
 
             break;
 
-        case MENU::MAP:
+        case MENU::MAPMENU:
             options.push_back(MENU::OPTION::UNITS);
             options.push_back(MENU::OPTION::ENEMYUNITS);
             options.push_back(MENU::OPTION::ITEMS);
@@ -365,7 +365,7 @@ void Game::unloadMap() {
     }
 }
 
-void Game::setCursorstate(const short unsigned int new_state) {
+void Game::setCursorstate(const unsigned char in_menu) {
     SDL_Log("Changing cursor");
     SDL_Rect temprect;
 
@@ -374,8 +374,8 @@ void Game::setCursorstate(const short unsigned int new_state) {
     temp_tilesize = mapx->getTilesize();
 
     if (cursorx.valid()) {
-        switch (new_state) {
-            case GAME::STATE::MAP:
+        switch (in_menu) {
+            case MENU::MAP:
                 SDL_Log("Changed Cursor to Map");
                 cursorx.component<Sprite>()->init(cursorx.component<Position>()->getPos());
                 cursorx.component<Sprite>()->animate();
@@ -393,29 +393,31 @@ void Game::setCursorstate(const short unsigned int new_state) {
                 cursorx.component<Position>()->setonTilemap(true);
                 cursorx.component<Position>()->setPeriodic(false);
                 systems.system<RenderSystemx>()->setTilesize(temp_tilesize[0], temp_tilesize[1]);
-                // events.emit<cursorMoved>(cursorx);
                 break;
 
-            case GAME::STATE::UNITMENU:
+            case MENU::UNIT:
+                SDL_Log("Changed Cursor to mapmenu");
+
+            case MENU::MAPMENU:
                 SDL_Log("Changed Cursor to unitmenu");
                 temprect = {0, 0, 16, 16}; //x,y,w,h
-                short int * unitmenupos;
+                short int * menupos;
                 short int linespace = 1;
                 cursorx.component<Sprite>()->still();
                 cursorx.component<Sprite>()->setSrcrect(temprect);
                 cursorx.component<Sprite>()->setDestrect(temprect);
                 cursorx.component<Sprite>()->setTexture("..//assets//menucursor.png");
 
-                if (menus[MENU::UNIT].valid()) {
-                    unitmenupos = menus[MENU::UNIT].component<Position>()->getPos();
-                    linespace = menus[MENU::UNIT].component<Text>()->getLinespacing();
+                if (menus[in_menu].valid()) {
+                    menupos = menus[in_menu].component<Position>()->getPos();
+                    linespace = menus[in_menu].component<Text>()->getLinespacing();
                 }
 
                 short int menubounds[4];
-                menubounds[0] = unitmenupos[0] / linespace;
-                menubounds[1] = unitmenupos[0] / linespace;
-                menubounds[2] = (short int)(unitmenupos[1] / linespace + 1);
-                menubounds[3] = (short int)(unitmenupos[1] / linespace + menuoptions[MENU::UNIT].size());
+                menubounds[0] = menupos[0] / linespace;
+                menubounds[1] = menupos[0] / linespace;
+                menubounds[2] = (short int)(menupos[1] / linespace + 1);
+                menubounds[3] = (short int)(menupos[1] / linespace + menuoptions[in_menu].size());
                 cursor_lastpos[0] = cursorx.component<Position>()->getPos()[0] - cursorx.component<Position>()->getOffset()[0];
                 cursor_lastpos[1] = cursorx.component<Position>()->getPos()[1] - cursorx.component<Position>()->getOffset()[1];
                 SDL_Log("Menubounds: %d %d %d %d", menubounds[0], menubounds[1], menubounds[2], menubounds[3]);
@@ -444,7 +446,7 @@ void Game::loadCursor() {
         cursorx.assign<GamepadController>();
     }
 
-    setCursorstate(state);
+    setCursorstate(MENU::MAP);
 }
 
 void Game::unloadCursor() {

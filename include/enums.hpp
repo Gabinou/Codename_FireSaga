@@ -33,8 +33,9 @@ enum SLIDETYPES {
 
 namespace MENU {
 enum MENUS {
-    UNIT = 1,
-    MAP,
+    MAP = 0,
+    UNIT,
+    MAPMENU,
 };
 namespace OPTION {
 enum OPTIONS {

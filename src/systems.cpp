@@ -305,41 +305,30 @@ void MenuSystemx::receive(const unitSelect & select) {
 
 void MenuSystemx::receive(const mapMenu & menu) {
     SDL_Log("Received mapMenu event ");
-    entityx::Entity * mapmenu = game->getMenu(MENU::MAP);
+    entityx::Entity * mapmenu = game->getMenu(MENU::MAPMENU);
     entityx::Entity cursor = menu.cursor;
-    entityx::ComponentHandle<Position> selectedpos;
     entityx::ComponentHandle<Position> cursorpos = cursor.component<Position>();
     short int new_position[2];
 
-    if (selected.valid()) {
-        selectedpos = selected.component<Position>();
-    } else {
-        SDL_Log("Selected entity is invalid.");
-    }
-
-    game->makeMenuoptions(MENU::MAP);
+    game->makeMenuoptions(MENU::MAPMENU);
 
     if (!mapmenu->valid()) {
-        game->makeMenu(MENU::MAP);
+        game->makeMenu(MENU::MAPMENU);
     } else {
-        game->makeMenutext(MENU::MAP);
+        game->makeMenutext(MENU::MAPMENU);
     }
 
     if (cursorpos) {
-        if (selectedpos) {
-            new_position[0] = cursorpos->getPos()[0] - selectedpos->getOffset()[0];
-            new_position[1] = cursorpos->getPos()[1] - selectedpos->getOffset()[1];
-            SDL_Log("New position %d, %d \n", new_position[0], new_position[1]);
-        } else {
-            SDL_Log("Could not get selecte entity's position component");
-        }
+        new_position[0] = cursorpos->getPos()[0] - cursorpos->getOffset()[0];
+        new_position[1] = cursorpos->getPos()[1] - cursorpos->getOffset()[1];
+        SDL_Log("New position %d, %d \n", new_position[0], new_position[1]);
     } else {
         SDL_Log("Could not get setter(unit) position component");
     }
 
     mapmenu->component<Position>()->setPos((new_position[0] + 1) * settings->tilesize[0], new_position[1] * settings->tilesize[1]);
-    game->showMenu(MENU::MAP);
-    game->setCursorstate(GAME::STATE::MAPMENU);
+    game->showMenu(MENU::MAPMENU);
+    game->setCursorstate(MENU::MAPMENU);
 }
 
 
@@ -389,7 +378,7 @@ void MenuSystemx::receive(const unitMenu & menu) {
 
     unitmenu->component<Position>()->setPos((new_position[0] + 1) * settings->tilesize[0], new_position[1] * settings->tilesize[1]);
     game->showMenu(MENU::UNIT);
-    game->setCursorstate(GAME::STATE::UNITMENU);
+    game->setCursorstate(MENU::UNIT);
 }
 
 void MenuSystemx::receive(const unitmenuSelect & select) {
@@ -725,7 +714,7 @@ void UnitSystemx::receive(const unitMap & map) {
     if ((game->getState() == GAME::STATE::UNITMENU) ||
             (game->getState() == GAME::STATE::OPTIONS)) {
         game->hideMenu(MENU::UNIT);
-        game->setCursorstate(GAME::STATE::MAP);
+        game->setCursorstate(MENU::MAP);
     }
 
     game->setState(GAME::STATE::MAP);
