@@ -73,7 +73,6 @@ public:
     template <typename T> void loadTiles(std::vector<T> in_tiles);
     void moveUnit(entityx::Entity & cursor);
 
-    std::vector<std::string> menuoptions2str(std::vector<unsigned char> in_options);
     std::vector<unsigned char> getMenuoptions(unsigned char in_menu_index);
     void makeMenuoptions(unsigned char in_menu_index);
     void setMenuoptions(unsigned char in_menu_index, std::vector<unsigned char> in_options);

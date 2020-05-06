@@ -31,6 +31,7 @@ extern unsigned char unitid2army(short unsigned int in_unitid);
 extern std::string stats2str(Unit_stats in_stats);
 extern std::string stats2str(Weapon_stats in_stats);
 extern std::string gamestate2str(short unsigned int in_state);
+extern std::vector<std::string> menuoptions2str(std::vector<unsigned char> in_options);
 
 extern std::vector<std::string> getTilenames(std::vector<short int> in_tilesindex);
 extern std::vector<std::string> unitNames;
