@@ -610,11 +610,13 @@ void Game::init(const char * title, int xpos, int ypos, int width, int height, b
 
 void Game::startTurnSystem() {
     std::vector<unsigned char> armies = mapx->getArmies();
+
     if (armies.size() > 0) {
-        systems.system<MapSystem>()->addArmies(armies);
+        systems.system<MapSystemx>()->addArmies(armies);
     } else {
         SDL_Log("No armies loaded on the current map.");
     }
+
     state = GAME::STATE::TURNBEGIN;
     events.emit<turnBegin>();
 }

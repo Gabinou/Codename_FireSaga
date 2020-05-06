@@ -214,13 +214,14 @@ void RenderSystemx::update(entityx::EntityManager & es, entityx::EventManager & 
     SDL_RenderPresent(renderer);
 }
 
-void RenderSystemx::configure(entityx::EventManager & event_manager) {
-    event_manager.subscribe<turnBegin>(*this);
-    event_manager.subscribe<turnEnd>(*this);
-    event_manager.subscribe<unitHeal>(*this);
-    event_manager.subscribe<unitWait>(*this);
-    event_manager.subscribe<unitDie>(*this);
-    event_manager.subscribe<unitRefresh>(*this);
+void RenderSystemx::configure(entityx::EventManager & in_events) {
+    event_manager = &in_events;
+    event_manager->subscribe<turnBegin>(*this);
+    event_manager->subscribe<turnEnd>(*this);
+    event_manager->subscribe<unitHeal>(*this);
+    event_manager->subscribe<unitWait>(*this);
+    event_manager->subscribe<unitDie>(*this);
+    event_manager->subscribe<unitRefresh>(*this);
 }
 
 void RenderSystemx::receive(const turnBegin & begin) {
@@ -266,23 +267,23 @@ void UnitSystemx::updateMap() {
 
 void UnitSystemx::configure(entityx::EventManager & in_events) {
     event_manager = &in_events;
-    event_manager.subscribe<unitSelect>(*this);
-    event_manager.subscribe<unitDeselect>(*this);
-    event_manager.subscribe<unitDanger>(*this);
-    event_manager.subscribe<unitMove>(*this);
-    event_manager.subscribe<unitMenu>(*this);
-    event_manager.subscribe<unitmenuSelect>(*this);
-    event_manager.subscribe<unitMap>(*this);
-    event_manager.subscribe<unitHover>(*this);
-    event_manager.subscribe<unitDehover>(*this);
-    event_manager.subscribe<unitWait>(*this);
-    event_manager.subscribe<unitReturn>(*this);
-    event_manager.subscribe<unitTalk>(*this);
-    event_manager.subscribe<unitRescue>(*this);
-    event_manager.subscribe<unitAttack>(*this);
-    event_manager.subscribe<unitTrade>(*this);
-    event_manager.subscribe<unitEscape>(*this);
-    event_manager.subscribe<unitItems>(*this);
+    event_manager->subscribe<unitSelect>(*this);
+    event_manager->subscribe<unitDeselect>(*this);
+    event_manager->subscribe<unitDanger>(*this);
+    event_manager->subscribe<unitMove>(*this);
+    event_manager->subscribe<unitMenu>(*this);
+    event_manager->subscribe<unitmenuSelect>(*this);
+    event_manager->subscribe<unitMap>(*this);
+    event_manager->subscribe<unitHover>(*this);
+    event_manager->subscribe<unitDehover>(*this);
+    event_manager->subscribe<unitWait>(*this);
+    event_manager->subscribe<unitReturn>(*this);
+    event_manager->subscribe<unitTalk>(*this);
+    event_manager->subscribe<unitRescue>(*this);
+    event_manager->subscribe<unitAttack>(*this);
+    event_manager->subscribe<unitTrade>(*this);
+    event_manager->subscribe<unitEscape>(*this);
+    event_manager->subscribe<unitItems>(*this);
 }
 
 void UnitSystemx::receive(const unitReturn & Return) {
@@ -688,29 +689,29 @@ void MapSystemx::addArmy(unsigned char in_army) {
 
 void MapSystemx::configure(entityx::EventManager & in_events) {
     event_manager = &in_events;
-    event_manager.subscribe<turnBegin>(*this);
-    event_manager.subscribe<turnEnd>(*this);
+    event_manager->subscribe<turnBegin>(*this);
+    event_manager->subscribe<turnEnd>(*this);
 }
 
 void MapSystemx::receive(const turnBegin & begin) {
     SDL_Log("Received turnBegin event");
-     refreshUnits(armies.front());
-     switchControl(armies.front());
+    refreshUnits(armies.front());
+    switchControl(armies.front());
 }
 
 void MapSystemx::receive(const turnEnd & end) {
     SDL_Log("Received turnEnd event");
     armies.push(armies.front());
     armies.pop();
-    event_manager.emit<turnBegin>();
+    event_manager->emit<turnBegin>();
 }
 
 void MapSystemx::switchControl(unsigned char in_army) {
-    if(isPc(in_army)) {
+    if (isPC(in_army)) {
         game->setState(GAME::STATE::MAP);
     } else {
         game->setState(GAME::STATE::ENEMYTURN);
-        event_manager.emit<turnBegin>();
+        // event_manager->emit<turnBegin>();
     }
 
 }
@@ -822,6 +823,16 @@ void ControlSystemx::receive(const inputCancel & cancel) {
             break;
     }
 }
+
+void ControlSystemx::AIturn(unsigned char in_army) {
+    if (!isPC(in_army)) {
+        SDL_Log("AIturn: Doing AI things...");
+
+    } else {
+        SDL_Log("AIturn: Army is Player Controlled!");
+    }
+}
+
 
 entityx::Entity ControlSystemx::getInputent(Controllers in_controllers) {
     entityx::Entity inputter;

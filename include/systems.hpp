@@ -23,6 +23,7 @@ private:
     short unsigned int * tilesize;
     short unsigned int linespace;
     short int offset[2];
+    entityx::EventManager * event_manager;
     entityx::ComponentHandle<Map> mapx;
 public:
     RenderSystemx();
@@ -136,6 +137,7 @@ public:
     ControlSystemx(Game * in_game);
     unsigned int getHeldbutton(Controllers in_controllers);
     entityx::Entity getInputent(Controllers in_controllers);
+    void AIturn(unsigned char in_army);
 
     void configure(entityx::EventManager & in_events);
     void receive(const inputMenuRight & menuright);
