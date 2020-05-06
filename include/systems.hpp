@@ -87,10 +87,10 @@ public:
     void receive(const unitSelect & selected);
     void receive(const unitDeselect & selected);
     void receive(const unitMove & move);
-    void receive(const unitMenu & menu);
+    // void receive(const unitMenu & menu);
     void receive(const unitMap & map);
     void receive(const unitDanger & danger);
-    void receive(const unitmenuSelect & select);
+    // void receive(const unitmenuSelect & select);
 
     void update(entityx::EntityManager & es, entityx::EventManager & events, entityx::TimeDelta dt) override;
 };
@@ -110,9 +110,9 @@ public:
     MenuSystemx();
     MenuSystemx(Game * in_game);
 
-    // void killMenu(short unsigned int index);
-    // void hideMenu(short unsigned int index);
-    // void showMenu(short unsigned int index);
+    void killMenu(short unsigned int index);
+    void hideMenu(short unsigned int index);
+    void showMenu(short unsigned int index);
     void updateMap();
     void setMap(entityx::ComponentHandle<Map> in_map);
 
@@ -120,6 +120,7 @@ public:
     void receive(const unitMenu & menu);
     void receive(const unitSelect & menu);
     void receive(const mapMenu & menu);
+    void receive(const unitmenuSelect & select);
 
     void update(entityx::EntityManager & es, entityx::EventManager & events, entityx::TimeDelta dt) override;
 };
