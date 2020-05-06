@@ -155,19 +155,17 @@ template <typename T> extern T cppartition(std::vector<T> & vec, T low, T high) 
         }
     }
 
-    cppswap(vec, i + 1, high);
-    return (i + 1);
+    cppswap(vec, T(i + 1), high);
+    return (T(i + 1));
 }
 
-template <typename T> extern void cppquicksort(std::vector<T> & vec, T low = 0, T high = 1) {
+template <typename T> extern void cppquicksort(std::vector<T> & vec, T low, T high) {
     T pi;
-    low = 0;
-    high = vec.size();
 
     if (low < high) {
         pi = cppartition(vec, low, high);
-        cppquicksort(vec, low, pi - 1);
-        cppquicksort(vec, pi + 1, high);
+        cppquicksort(vec, low, T(pi - 1));
+        cppquicksort(vec, T(pi + 1), high);
     }
 }
 // extern void heal(Unit * in_unit, unsigned char heal);
