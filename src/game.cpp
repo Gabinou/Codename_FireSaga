@@ -263,6 +263,10 @@ void Game::makeMenu(unsigned char in_menu_index) {
             break;
 
         case MENU::MAP:
+            SDL_Log("Making map menu\n");
+            menus[MENU::MAP].component<Sprite>()->setTexture("..//assets//textbox.png");
+            menus[MENU::UNIT].component<Sprite>()->setSrcrect(128, 128);
+            menus[MENU::UNIT].component<Sprite>()->setDestrect(128, 128);
             break;
     }
 
