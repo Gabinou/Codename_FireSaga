@@ -589,80 +589,7 @@ void UnitSystemx::receive(const unitSelect & select) {
     short int newstate = -1;
     entityx::ComponentHandle<Unit> unit = select.unit;
     selected = unit.entity();
-
-    // if (isPC(unit->getArmy())) {
-    //     event_manager->emit<unitMove>(select.cursor, unit);
-    //     newstate = GAME::STATE::UNITMOVE;
-    // } else {
-    //     if (game->getState() == GAME::STATE::UNITMOVE) {
-    //         event_manager->emit<unitDanger>(select.cursor, unit);
-    //     } else {
-    //         event_manager->emit<unitMove>(select.cursor, unit);
-    //         newstate = GAME::STATE::UNITMOVE;
-    //     }
-    // }
-
-    // if (newstate > 0) {
-    //     game->setState(newstate);
-    // }
 }
-
-// void UnitSystemx::receive(const unitmenuSelect & select) {
-//     SDL_Log("unitmenuSelect event received");
-//     entityx::Entity cursor = select.cursor;
-//     entityx::ComponentHandle<Unit> unit = select.unit;
-//     entityx::ComponentHandle<Position> position = cursor.component<Position>();
-
-//     short int * cursorpos = position->getPos();
-//     short int * cursorbounds = position->getBounds();
-//     unsigned char menuind = cursorpos[1] - cursorbounds[2];
-
-//     unitmenuoptions = game->getMenuoptions(MENU::UNIT);
-//     SDL_Log("menuind: %d ", menuind);
-//     SDL_Log("unitmenuoptions[menuind]: %d ", unitmenuoptions[menuind]);
-
-//     if (unit) {
-//         switch (unitmenuoptions[menuind]) {
-//             case UNIT::MENU::ITEMS:
-//                 event_manager->emit<unitItems>(cursor, unit);
-//                 break;
-
-//             case UNIT::MENU::TALK:
-//                 event_manager->emit<unitTalk>(cursor, unit);
-//                 break;
-
-//             case UNIT::MENU::RESCUE:
-//                 event_manager->emit<unitRescue>(cursor, unit);
-//                 break;
-
-//             case UNIT::MENU::SEIZE:
-//                 event_manager->emit<unitSeize>(unit);
-//                 break;
-
-//             case UNIT::MENU::ESCAPE:
-//                 event_manager->emit<unitEscape>(cursor, unit);
-//                 break;
-
-//             case UNIT::MENU::ATTACK:
-//                 event_manager->emit<unitAttack>(cursor, unit);
-//                 break;
-
-//             case UNIT::MENU::TRADE:
-//                 event_manager->emit<unitTrade>(cursor, unit);
-//                 break;
-
-//             case UNIT::MENU::STAFF:
-//                 event_manager->emit<unitStaff>(cursor, unit);
-//                 break;
-
-//             case UNIT::MENU::WAIT:
-//                 event_manager->emit<unitWait>(cursor, unit);
-//                 break;
-//         }
-//     } else {
-//         SDL_Log("unitmenuSelect: could not get unit");
-//     }
-// }
 
 void UnitSystemx::receive(const unitDanger & danger) {
     SDL_Log("unitDanger event received");
@@ -712,57 +639,6 @@ void UnitSystemx::receive(const unitDanger & danger) {
         unit->hideDanger();
     }
 }
-
-// void UnitSystemx::receive(const unitMenu & menu) {
-//     SDL_Log("unitMenu event received");
-//     mapx->hideOverlay();
-
-//     entityx::Entity cursor = menu.cursor;
-//     entityx::ComponentHandle<Position> cursorpos = cursor.component<Position>();
-
-//     short int new_position[2];
-
-//     entityx::ComponentHandle<Position> selectedpos;
-
-//     if (selected.valid()) {
-//         selectedpos = selected.component<Position>();
-
-//         if (selectedpos) {
-//             old_position[0] = selectedpos->getPos()[0] - selectedpos->getOffset()[0];
-//             old_position[1] = selectedpos->getPos()[1] - selectedpos->getOffset()[1];
-//             SDL_Log("Old position %d, %d \n", old_position[0], old_position[1]);
-//         } else {
-//             SDL_Log("Could not get selectedx unit component");
-//         }
-
-//     } else {
-//         SDL_Log("Could not get selected entity");
-//     }
-
-//     if (cursorpos) {
-//         new_position[0] = cursorpos->getPos()[0] - selectedpos->getOffset()[0];
-//         new_position[1] = cursorpos->getPos()[1] - selectedpos->getOffset()[1];
-//         SDL_Log("New position %d, %d \n", new_position[0], new_position[1]);
-//     } else {
-//         SDL_Log("Could not get setter(unit) position component");
-//     }
-
-//     mapx->moveUnit(old_position[0], old_position[1], new_position[0], new_position[1]);
-//     selectedpos->setPos(new_position);
-//     game->setCursorlastpos(new_position[0], new_position[1]);
-
-//     game->makeUnitmenuoptions();
-
-//     if (!unitmenux->valid()) {
-//         game->makeMenu(MENU::UNIT);
-//     } else {
-//         game->updateMenu(MENU::UNIT);
-//     }
-
-//     unitmenux->component<Position>()->setPos((new_position[0] + 1) * settings->tilesize[0], new_position[1] * settings->tilesize[1]);
-//     game->showMenu(MENU::UNIT);
-//     game->setCursorstate(GAME::STATE::UNITMENU);
-// }
 
 void UnitSystemx::receive(const unitMove & move) {
     // SDL_Log("Received unitMove event");
