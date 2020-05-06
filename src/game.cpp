@@ -159,7 +159,7 @@ entityx::Entity * Game::getMenu(unsigned char in_menu_index) {
 
     switch (in_menu_index) {
         case MENU::UNIT:
-            out = getUnitmenu();
+            out = &menus[MENU::UNIT];
             break;
 
         case MENU::MAP:
@@ -167,10 +167,6 @@ entityx::Entity * Game::getMenu(unsigned char in_menu_index) {
     }
 
     return (out);
-}
-
-entityx::Entity * Game::getUnitmenu() {
-    return (&menus[MENU::UNIT]);
 }
 
 std::vector<std::string> Game::menuoptions2str(std::vector<unsigned char> in_options) {

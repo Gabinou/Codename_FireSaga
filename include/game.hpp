@@ -80,7 +80,6 @@ public:
     void updateMenu(unsigned char in_menu_index);
     void makeMenu(unsigned char in_menu_index);
     entityx::Entity * getMenu(unsigned char in_menu_index);
-    entityx::Entity * getUnitmenu();
     void killMenu(short unsigned int index);
     void hideMenu(short unsigned int index);
     void showMenu(short unsigned int index);
