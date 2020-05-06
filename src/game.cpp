@@ -156,16 +156,7 @@ void Game::showMenu(short unsigned int index) {
 
 entityx::Entity * Game::getMenu(unsigned char in_menu_index) {
     entityx::Entity * out;
-
-    switch (in_menu_index) {
-        case MENU::UNIT:
-            out = &menus[MENU::UNIT];
-            break;
-
-        case MENU::MAP:
-            break;
-    }
-
+    out = &menus[in_menu_index];
     return (out);
 }
 
@@ -257,23 +248,17 @@ std::vector<std::string> Game::menuoptions2str(std::vector<unsigned char> in_opt
 }
 
 void Game::makeMenutext(unsigned char in_menu_index) {
-    SDL_Log("Updating menu: %d", in_menu_index);
+    SDL_Log("Making menu text: %d", in_menu_index);
 
     if (menus[in_menu_index].valid()) {
-        switch (in_menu_index) {
-            case MENU::UNIT:
-                if (menuoptions.find(MENU::UNIT) != menuoptions.end()) {
-                    menus[MENU::UNIT].component<Text>()->setText(menuoptions2str(menuoptions[MENU::UNIT]));
-                } else {
-                    menus[MENU::UNIT].component<Text>()->setText({"Default", "Items", "Attack", "Wait"});
-                }
 
-                menus[MENU::UNIT].component<Text>()->makeTextures();
-                break;
-
-            case MENU::MAP:
-                break;
+        if (menuoptions.find(in_menu_index) != menuoptions.end()) {
+            menus[in_menu_index].component<Text>()->setText(menuoptions2str(menuoptions[in_menu_index]));
+        } else {
+            SDL_Log("Menu options are invalid.");
         }
+
+        menus[in_menu_index].component<Text>()->makeTextures();
     } else {
         SDL_Log("Menu %d is invalid", in_menu_index);
     }
@@ -292,7 +277,7 @@ void Game::makeMenu(unsigned char in_menu_index) {
     menus[in_menu_index].component<Position>()->setonTilemap(false);
     menus[in_menu_index].component<Position>()->setBounds(0, 2000, 0, 2000);
     menus[in_menu_index].assign<Sprite>();
-    menus[MENU::UNIT].component<Sprite>()->hide();
+    menus[in_menu_index].component<Sprite>()->hide();
     SDL_Color white = {255, 255, 255};
     menus[in_menu_index].assign<Text>(settings.fontsize);
     menus[in_menu_index].component<Text>()->setColor(white);

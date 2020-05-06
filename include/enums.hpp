@@ -54,9 +54,9 @@ enum OPTIONS {
     WAIT,
     UNITS,
     ENEMYUNITS,
-    ENDTURN,
-    OPTIONS,
     OBJECTIVES,
+    OPTIONS,
+    ENDTURN,
 };
 }
 }
