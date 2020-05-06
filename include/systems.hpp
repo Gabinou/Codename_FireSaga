@@ -110,9 +110,9 @@ public:
     MenuSystemx();
     MenuSystemx(Game * in_game);
 
-    void killMenu(short unsigned int index);
-    void hideMenu(short unsigned int index);
-    void showMenu(short unsigned int index);
+    // void killMenu(short unsigned int index);
+    // void hideMenu(short unsigned int index);
+    // void showMenu(short unsigned int index);
     void updateMap();
     void setMap(entityx::ComponentHandle<Map> in_map);
 

@@ -261,6 +261,13 @@ MenuSystemx::MenuSystemx(Game * in_game) {
     updateMap();
 }
 
+void MenuSystemx::configure(entityx::EventManager & in_events) {
+    event_manager = &in_events;
+    event_manager->subscribe<unitSelect>(*this);
+    event_manager->subscribe<unitMenu>(*this);
+    event_manager->subscribe<mapMenu>(*this);
+}
+
 void MenuSystemx::updateMap() {
     mapx = game->getMap();
 }
