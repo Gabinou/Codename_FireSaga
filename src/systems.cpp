@@ -683,6 +683,12 @@ void MapSystemx::setMap(entityx::ComponentHandle<Map> in_map) {
 }
 
 
+void MapSystemx::addArmies(std::vector<unsigned char> in_armies) {
+    for (short int i = 0; i < in_armies.size(); i++) {
+        armies.push(in_armies[i]);
+    }
+}
+
 void MapSystemx::addArmy(unsigned char in_army) {
     armies.push(in_army);
 }
