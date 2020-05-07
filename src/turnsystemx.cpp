@@ -43,8 +43,8 @@ void TurnSystemx::configure(entityx::EventManager & in_events) {
 
 void TurnSystemx::receive(const turnBegin & begin) {
     SDL_Log("Received turnBegin event");
-    switchControl(armies.front());
     refreshUnits(armies.front());
+    switchControl(armies.front());
 }
 
 void TurnSystemx::receive(const turnEnd & end) {
@@ -59,11 +59,13 @@ void TurnSystemx::switchControl(unsigned char in_army) {
 
     if (isPC(in_army)) {
         game->setState(GAME::STATE::MAP);
+        game->loadCursor();
+        game->setCursorstate(MENU::MAP);
+
     } else {
         game->setState(GAME::STATE::ENEMYTURN);
-        // event_manager->emit<turnBegin>();
+        game->unloadCursor();
     }
-
 }
 
 void TurnSystemx::refreshUnits(unsigned char in_army) {
