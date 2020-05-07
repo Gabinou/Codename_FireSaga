@@ -459,20 +459,20 @@ void Game::unloadCursor() {
 }
 
 
-void Game::loadUnitEntities(std::vector<short unsigned int> unit_inds, std::vector<std::vector<int>> positions_list) {
+void Game::loadMapUnits(std::vector<short unsigned int> in_units, std::vector<std::vector<int>> in_pos_list) {
     SDL_Log("Loading Units\n");
     std::string asset_name;
     entityx::Entity Uent;
 
-    for (int i = 0; i < unit_inds.size(); i++) {
-        asset_name = "..//assets//" + units[unit_inds[i]].getName() + ".png";
+    for (int i = 0; i < in_units.size(); i++) {
+        asset_name = "..//assets//" + units[in_units[i]].getName() + ".png";
         Uent = entities.create();
-        Uent.assign<Unit>(units[unit_inds[i]]);
+        Uent.assign<Unit>(units[in_units[i]]);
         Uent.assign<Position>();
         Uent.component<Position>()->setOffset(DEFAULT::TILEMAP_XOFFSET, DEFAULT::TILEMAP_YOFFSET);
-        Uent.component<Position>()->setPos(positions_list[i][0], positions_list[i][1]);
+        Uent.component<Position>()->setPos(in_pos_list[i][0], in_pos_list[i][1]);
         Uent.assign<Sprite>(asset_name.c_str());
-        mapx->putUnit(positions_list[i][0], positions_list[i][1], Uent.component<Unit>());
+        mapx->putUnit(in_pos_list[i][0], in_pos_list[i][1], Uent.component<Unit>());
     }
 }
 
@@ -490,7 +490,7 @@ void Game::loadMapArrivals() {
 
                 if (units.find(map_arrivals[i].id) == units.end()) {
                     SDL_Log("unloaded units loading %d", map_arrivals[i].id);
-                    loadUnits(std::vector<short int> {map_arrivals[i].id});
+                    makeUnits(std::vector<short int> {map_arrivals[i].id});
                     asset_name = "..//assets//" + units[map_arrivals[i].id].getName() + ".png";
                     SDL_Log("Loaded: %s", units[map_arrivals[i].id].getName().c_str());
                 }
@@ -506,20 +506,20 @@ void Game::loadMapArrivals() {
             }
         }
     } else {
-        SDL_Log("Failed to loadMapArrivals.");
+        SDL_Log("Failed to loadMapArrivals: mapx does not exist");
     }
 }
 
-void Game::loadUnits(unsigned char in_chap) {
+void Game::makeUnits(unsigned char in_chap) {
     std::vector<short int> toload = baseParties[in_chap]();
     baseUnits(&units, toload);
 }
 
-void Game::loadUnits(std::vector<short int> toload) {
+void Game::makeUnits(std::vector<short int> toload) {
     baseUnits(&units, toload);
 }
 
-void Game::unloadUnits(std::vector<short int> to_unload) {
+void Game::unmakeUnits(std::vector<short int> to_unload) {
     for (int i = 0; i < to_unload.size(); i++) {
         units.erase(to_unload[i]);
     }
