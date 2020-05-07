@@ -1,10 +1,13 @@
 #ifndef GAME_HPP
 #define GAME_HPP
 
+#include <stack>
+#include <vector>
+#include <unordered_map>
+#include "entityx/entityx.h"
 #include "SDL2/SDL.h"
 #include "SDL2/SDL_image.h"
 #include "SDL2/SDL_ttf.h"
-#include <entityx/entityx.h>
 #include "enums.hpp"
 #include "structs.hpp"
 #include "map.hpp"
@@ -17,9 +20,6 @@
 #include "linalg.hpp"
 #include "script.hpp"
 #include "probability.hpp"
-#include <stack>
-#include <vector>
-#include <unordered_map>
 
 class Game : public entityx::EntityX, public entityx::Receiver<Game> {
 

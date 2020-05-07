@@ -2,10 +2,10 @@
 #define MENUSYSTEMX_HPP
 
 #include <SDL2/SDL.h>
+#include <entityx/entityx.h>
 #include "map.hpp"
 #include "events.hpp"
 #include "position.hpp"
-#include <entityx/entityx.h>
 
 class MenuSystemx: public entityx::System<MenuSystemx>, public entityx::Receiver<MenuSystemx> {
 private:
