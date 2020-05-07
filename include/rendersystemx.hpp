@@ -7,8 +7,6 @@
 #include "sprite.hpp"
 #include "events.hpp"
 #include "text.hpp"
-#include "keyboardcontroller.hpp"
-#include "gamepadcontroller.hpp"
 #include <entityx/entityx.h>
 
 class RenderSystemx: public entityx::System<RenderSystemx>, public entityx::Receiver<RenderSystemx> {
