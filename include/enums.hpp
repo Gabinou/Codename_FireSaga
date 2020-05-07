@@ -618,7 +618,7 @@ enum STATES {
     UNITHOVER,
     TURNEND,
     TURNBEGIN,
-    ENEMYTURN,
+    NPCTURN,
     INTROVIDEO,
     END,
 };

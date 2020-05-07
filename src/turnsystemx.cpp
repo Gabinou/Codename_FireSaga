@@ -63,7 +63,7 @@ void TurnSystemx::switchControl(unsigned char in_army) {
         game->setCursorstate(MENU::MAP);
 
     } else {
-        game->setState(GAME::STATE::ENEMYTURN);
+        game->setState(GAME::STATE::NPCTURN);
         game->unloadCursor();
     }
 }

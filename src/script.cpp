@@ -253,10 +253,13 @@ void baseBooks() {
     book.setAuthor("Ancestor of the gifted brothers.");
 
 
-    book = Book("Deep and Arcane Mathemagics", ITEM::NAME::BOOKMATHEMAGICS);
-    book.setAuthor("Ancestor of the gifted brothers.");
+    book = Book("Celestial Mathemagics", ITEM::NAME::BOOKMATHEMAGICS);
+    // Celestial Mathemagics?
+    //Pierre-Simon, marquis de Laplace-> Il est aisé de voir que... Mentions of the goddess go against the spirit of his books, but I don't really care. I this universe God and the Goddess exist for real.
+    book.setAuthor("Le marquis de Laplace");
     page.title = "Introduction to Mathemagics";
-    page.paragraphs.push_back("This world is governed by randomness. Mages, soldiers and mathemagicians all realize this fact: nothing is certain. Taking but a single swing of a sword means to take a risk, to bet on your skills against your opponent's capacity to dodge.");
+    page.paragraphs.push_back("Il est aisé de voir que...");
+    page.paragraphs.push_back("It is easy to see that this world is governed by randomness. Mages, soldiers and mathemagicians all realize this fact: nothing is certain. Taking but a single swing of a sword means to take a risk, to bet on your skills against your opponent's capacity to dodge.");
     page.paragraphs.push_back("A novice enemy may very well carry the Goddess's favor and evade all attacks. While you, reader no doubt skilled in the arts of war, might only earn her scorn and receive a swift, painful death at the point of a spear.");
     page.paragraphs.push_back("Such is the tapestry She weaves... May She have mercy on us all. Blasphemers say She is a capricious Goddess, that her judgements are cruel, unfair and arbitrary. Those of weak faith may yet be convinced already. But the tapestry of the world is never woven carelessly. Rules guide randomness.");
     page.paragraphs.push_back("Mathemagics is the study of the rules that underline chance. We Mathemagicians believe that to fully understand the rules of randomness brings us closer to the Goddess. It has taken much work to test these theories and compile all these equations. We write them all here so that the curious might benefit from ascending into the realm of arcane Mathemagics.");

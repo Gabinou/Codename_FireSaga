@@ -28,6 +28,10 @@ void ControlSystemx::configure(entityx::EventManager & in_events) {
 void ControlSystemx::receive(const turnBegin & begin) {
     SDL_Log("Received turnBeginEvent.");
 
+    if (game->getState() == GAME::STATE::NPCTURN) {
+
+    }
+
 }
 
 void ControlSystemx::receive(const inputMenuRight & menuright) {
