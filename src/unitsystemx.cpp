@@ -164,6 +164,9 @@ void UnitSystemx::receive(const unitSelect & select) {
     short int newstate = -1;
     entityx::ComponentHandle<Unit> unit = select.unit;
     selected = unit.entity();
+    entityx::ComponentHandle<Position> position = selected.component<Position>();
+    old_position[0] = position->getPos()[0] - position->getOffset()[0];
+    old_position[1] = position->getPos()[1] - position->getOffset()[1];
 }
 
 void UnitSystemx::receive(const unitDanger & danger) {
