@@ -4,11 +4,6 @@
 #include "turnsystemx.hpp"
 #include "rendersystemx.hpp"
 #include "unitsystemx.hpp"
-#include "sprite.hpp"
-#include "position.hpp"
-#include "text.hpp"
-#include "keyboardcontroller.hpp"
-#include "gamepadcontroller.hpp"
 // #ifndef STB_SPRINTF_IMPLEMENTATION
 // #define STB_SPRINTF_IMPLEMENTATION
 #include "stb_sprintf.h"

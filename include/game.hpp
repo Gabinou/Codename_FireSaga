@@ -11,15 +11,17 @@
 #include "enums.hpp"
 #include "structs.hpp"
 #include "map.hpp"
-#include "weapon.hpp"
 #include "utilities.hpp"
 #include "convoy.hpp"
 #include "pathfinding.hpp"
 #include "tile.hpp"
 #include "unit.hpp"
 #include "linalg.hpp"
-#include "script.hpp"
+// #include "script.hpp"
 #include "probability.hpp"
+#include "sprite.hpp"
+#include "keyboardcontroller.hpp"
+#include "gamepadcontroller.hpp"
 
 class Game : public entityx::EntityX, public entityx::Receiver<Game> {
 
@@ -95,7 +97,6 @@ public:
     bool * checkHitCrit(int hit_rate, int crit_rate, short unsigned int mode = GAME::RN::GAUSSIAN);
 
     void makeFPSEntity();
-
 
     Settings * getSettings();
     void setSettings(Settings);
