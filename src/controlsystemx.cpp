@@ -224,6 +224,10 @@ void ControlSystemx::receive(const inputAccept & accept) {
         case GAME::STATE::UNITMENU:
             event_manager->emit<unitmenuSelect>(accepter, selected);
             break;
+
+        case GAME::STATE::MAPMENU:
+            event_manager->emit<mapmenuSelect>(accepter);
+            break;
     }
 
     if (newstate != -1) {
