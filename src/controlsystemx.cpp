@@ -61,7 +61,6 @@ void ControlSystemx::receive(const inputCancel & cancel) {
         case GAME::STATE::MAPMENU:
         case GAME::STATE::OPTIONS:
 
-            // mapx->moveUnit(old_position[0], old_position[1], new_position[0], new_position[1]);
             if (selected) {
                 event_manager->emit<unitReturn>(canceller, selected);
             }

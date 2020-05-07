@@ -2,11 +2,8 @@
 #define CONTROLSYSTEMX_HPP
 
 #include <SDL2/SDL.h>
-#include <queue>
-#include "map.hpp"
-#include "sprite.hpp"
 #include "events.hpp"
-#include "text.hpp"
+#include "position.hpp"
 #include "keyboardcontroller.hpp"
 #include "gamepadcontroller.hpp"
 #include <entityx/entityx.h>
