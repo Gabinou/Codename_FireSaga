@@ -18,6 +18,7 @@ void MenuSystemx::configure(entityx::EventManager & in_events) {
     event_manager->subscribe<unitMenu>(*this);
     event_manager->subscribe<unitmenuSelect>(*this);
     event_manager->subscribe<mapMenu>(*this);
+    event_manager->subscribe<disableMenu>(*this);
     event_manager->subscribe<mapmenuSelect>(*this);
     event_manager->subscribe<return2Map>(*this);
 }
@@ -34,8 +35,14 @@ void MenuSystemx::setMap(entityx::ComponentHandle<Map> in_map) {
     }
 }
 
+void MenuSystemx::receive(const disableMenu & disable) {
+    SDL_Log("Received disableMenu event");
+    game->hideMenu(disable.menuind);
+}
+
+
 void MenuSystemx::receive(const unitSelect & select) {
-    SDL_Log("unitSelect event received");
+    SDL_Log("Received unitSelect event ");
     short int newstate = -1;
     entityx::ComponentHandle<Unit> unit = select.unit;
     selected = unit.entity();
@@ -92,6 +99,7 @@ void MenuSystemx::receive(const mapmenuSelect & select) {
             break;
 
         case MENU::OPTION::ENDTURN:
+            event_manager->emit<disableMenu>(cursor, MENU::MAPMENU);
             event_manager->emit<turnEnd>();
             break;
 
@@ -124,6 +132,7 @@ void MenuSystemx::receive(const mapMenu & menu) {
     mapmenu->component<Position>()->setPos((new_position[0] + 1) * settings->tilesize[0], new_position[1] * settings->tilesize[1]);
     game->showMenu(MENU::MAPMENU);
     game->setCursorstate(MENU::MAPMENU);
+    game->setState(GAME::STATE::MAPMENU);
 }
 
 
@@ -236,18 +245,20 @@ void MenuSystemx::receive(const unitmenuSelect & select) {
 void MenuSystemx::receive(const return2Map & map) {
     SDL_Log("Received return2Map event");
 
+    entityx::Entity cursor = map.cursor;
+
     if ((game->getState() == GAME::STATE::UNITMOVE)) {
         mapx->hideOverlay();
     }
 
     if ((game->getState() == GAME::STATE::MAPMENU)) {
-        game->hideMenu(MENU::MAPMENU);
+        event_manager->emit<disableMenu>(cursor, MENU::MAPMENU);
         game->setCursorstate(MENU::MAP);
     }
 
     if ((game->getState() == GAME::STATE::UNITMENU) ||
             (game->getState() == GAME::STATE::OPTIONS)) {
-        game->hideMenu(MENU::UNIT);
+        event_manager->emit<disableMenu>(cursor, MENU::UNIT);
         game->setCursorstate(MENU::MAP);
     }
 

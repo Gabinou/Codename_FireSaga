@@ -95,6 +95,12 @@ struct unitDehover {
     entityx::ComponentHandle<Unit> unit;
 };
 
+struct disableMenu {
+    disableMenu(entityx::Entity cursor, unsigned char menuind) : cursor(cursor), menuind(menuind) {}
+    entityx::Entity cursor;
+    unsigned char menuind;
+};
+
 struct unitDanger {
     unitDanger(entityx::Entity cursor, entityx::ComponentHandle<Unit> unit) : cursor(cursor), unit(unit) {}
     entityx::Entity cursor;
