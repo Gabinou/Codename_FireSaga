@@ -2,13 +2,10 @@
 #define UNITSYSTEMX_HPP
 
 #include <SDL2/SDL.h>
-#include <queue>
-#include "map.hpp"
-#include "sprite.hpp"
 #include "events.hpp"
-#include "text.hpp"
-#include "keyboardcontroller.hpp"
-#include "gamepadcontroller.hpp"
+#include "map.hpp"
+#include "position.hpp"
+#include "sprite.hpp"
 #include <entityx/entityx.h>
 
 class UnitSystemx: public entityx::System<UnitSystemx>, public entityx::Receiver<UnitSystemx> {
