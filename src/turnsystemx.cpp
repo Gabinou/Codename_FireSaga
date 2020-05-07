@@ -43,8 +43,8 @@ void TurnSystemx::configure(entityx::EventManager & in_events) {
 
 void TurnSystemx::receive(const turnBegin & begin) {
     SDL_Log("Received turnBegin event");
-    refreshUnits(armies.front());
     switchControl(armies.front());
+    refreshUnits(armies.front());
 }
 
 void TurnSystemx::receive(const turnEnd & end) {

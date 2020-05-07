@@ -22,6 +22,12 @@ void ControlSystemx::configure(entityx::EventManager & in_events) {
     event_manager->subscribe<cursorMoved>(*this);
     event_manager->subscribe<inputFaster>(*this);
     event_manager->subscribe<inputPause>(*this);
+    event_manager->subscribe<turnBegin>(*this);
+}
+
+void ControlSystemx::receive(const turnBegin & begin) {
+    SDL_Log("Received turnBeginEvent.");
+
 }
 
 void ControlSystemx::receive(const inputMenuRight & menuright) {
@@ -293,14 +299,6 @@ void ControlSystemx::update(entityx::EntityManager & es, entityx::EventManager &
 
         keyboard->check_move(pressed_move);
         keyboard->check_button(pressed_button);
-
-        if (false) {
-            events.emit<turnBegin>();
-        }
-
-        if (false) {
-            events.emit<turnEnd>();
-        }
     }
 
     for (entityx::Entity ent : es.entities_with_components<GamepadController, Position>()) {
@@ -378,14 +376,6 @@ void ControlSystemx::update(entityx::EntityManager & es, entityx::EventManager &
 
         gamepad->check_move(pressed_move);
         gamepad->check_button(pressed_button);
-
-        if (false) {
-            events.emit<turnBegin>();
-        }
-
-        if (false) {
-            events.emit<turnEnd>();
-        }
 
     }
 
