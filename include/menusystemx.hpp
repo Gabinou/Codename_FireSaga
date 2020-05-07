@@ -1,0 +1,39 @@
+#ifndef MENUSYSTEMX_HPP
+#define MENUSYSTEMX_HPP
+
+#include <SDL2/SDL.h>
+#include <queue>
+#include "map.hpp"
+#include "sprite.hpp"
+#include "events.hpp"
+#include "text.hpp"
+#include "keyboardcontroller.hpp"
+#include "gamepadcontroller.hpp"
+#include <entityx/entityx.h>
+
+class MenuSystemx: public entityx::System<MenuSystemx>, public entityx::Receiver<MenuSystemx> {
+private:
+    Game * game;
+    Settings * settings;
+    entityx::EventManager * event_manager;
+    entityx::Entity selected;
+    short int old_position[2];
+    entityx::ComponentHandle<Map> mapx;
+    std::vector<unsigned char> unitmenuoptions;
+public:
+    MenuSystemx();
+    MenuSystemx(Game * in_game);
+
+    void updateMap();
+    void setMap(entityx::ComponentHandle<Map> in_map);
+
+    void configure(entityx::EventManager & event_manager);
+    void receive(const unitMenu & menu);
+    void receive(const unitSelect & menu);
+    void receive(const mapMenu & menu);
+    void receive(const unitmenuSelect & select);
+
+    void update(entityx::EntityManager & es, entityx::EventManager & events, entityx::TimeDelta dt) override;
+};
+
+#endif /* MENUSYSTEMX_HPP */

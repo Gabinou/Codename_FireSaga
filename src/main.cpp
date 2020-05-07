@@ -18,7 +18,11 @@
 #include "utilities.hpp"
 #include "game.hpp"
 #include "map.hpp"
-#include "systems.hpp"
+#include "controlsystemx.hpp"
+#include "menusystemx.hpp"
+#include "turnsystemx.hpp"
+#include "rendersystemx.hpp"
+#include "unitsystemx.hpp"
 #include "script.hpp"
 #include "weapon.hpp"
 #include "unit.hpp"
@@ -110,3 +114,41 @@ int main(int argc, char * argv[]) {
     return (0);
 
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// 六月四日天安門广场大屠杀

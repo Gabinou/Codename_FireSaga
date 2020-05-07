@@ -1,0 +1,48 @@
+#ifndef CONTROLSYSTEMX_HPP
+#define CONTROLSYSTEMX_HPP
+
+#include <SDL2/SDL.h>
+#include <queue>
+#include "map.hpp"
+#include "sprite.hpp"
+#include "events.hpp"
+#include "text.hpp"
+#include "keyboardcontroller.hpp"
+#include "gamepadcontroller.hpp"
+#include <entityx/entityx.h>
+
+struct Controllers {
+    entityx::ComponentHandle<KeyboardController> keyboard;
+    entityx::ComponentHandle<GamepadController> gamepad;
+};
+
+class ControlSystemx: public entityx::System<ControlSystemx>, public entityx::Receiver<ControlSystemx> {
+private:
+    Game * game;
+    KeyboardInputMap keyboardInputMap;
+    GamepadInputMap gamepadInputMap;
+    entityx::EventManager * event_manager;
+    std::vector<std::vector<entityx::ComponentHandle<Unit>>> unitmap;
+    entityx::ComponentHandle<Unit> selected;
+
+public:
+    ControlSystemx();
+    ControlSystemx(Game * in_game);
+    unsigned int getHeldbutton(Controllers in_controllers);
+    entityx::Entity getInputent(Controllers in_controllers);
+    void AIturn(unsigned char in_army);
+
+    void configure(entityx::EventManager & in_events);
+    void receive(const inputMenuRight & menuright);
+    void receive(const inputMenuLeft & menuleft);
+    void receive(const inputMinimap & minimap);
+    void receive(const inputFaster & faster);
+    void receive(const cursorMoved & moved);
+    void receive(const inputPause & pause);
+    void receive(const inputCancel & cancel);
+    void receive(const inputAccept & accept);
+
+    void update(entityx::EntityManager & es, entityx::EventManager & events, entityx::TimeDelta dt) override;
+};
+
+#endif /* CONTROLSYSTEMX_HPP */
