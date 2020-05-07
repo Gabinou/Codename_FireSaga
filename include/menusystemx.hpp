@@ -2,13 +2,9 @@
 #define MENUSYSTEMX_HPP
 
 #include <SDL2/SDL.h>
-#include <queue>
 #include "map.hpp"
-#include "sprite.hpp"
 #include "events.hpp"
-#include "text.hpp"
-#include "keyboardcontroller.hpp"
-#include "gamepadcontroller.hpp"
+#include "position.hpp"
 #include <entityx/entityx.h>
 
 class MenuSystemx: public entityx::System<MenuSystemx>, public entityx::Receiver<MenuSystemx> {
