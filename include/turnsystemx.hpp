@@ -4,11 +4,7 @@
 #include <SDL2/SDL.h>
 #include <queue>
 #include "map.hpp"
-#include "sprite.hpp"
 #include "events.hpp"
-#include "text.hpp"
-#include "keyboardcontroller.hpp"
-#include "gamepadcontroller.hpp"
 #include <entityx/entityx.h>
 
 class TurnSystemx: public entityx::System<TurnSystemx>, public entityx::Receiver<TurnSystemx> {

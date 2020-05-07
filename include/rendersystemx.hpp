@@ -2,10 +2,9 @@
 #define RENDERSYSTEMX_HPP
 
 #include <SDL2/SDL.h>
-#include <queue>
+#include "events.hpp"
 #include "map.hpp"
 #include "sprite.hpp"
-#include "events.hpp"
 #include "text.hpp"
 #include <entityx/entityx.h>
 
