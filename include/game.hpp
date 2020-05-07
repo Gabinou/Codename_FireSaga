@@ -1,7 +1,6 @@
 #ifndef GAME_HPP
 #define GAME_HPP
 
-#include <stack>
 #include <vector>
 #include <unordered_map>
 #include "entityx/entityx.h"
@@ -17,7 +16,6 @@
 #include "tile.hpp"
 #include "unit.hpp"
 #include "linalg.hpp"
-// #include "script.hpp"
 #include "probability.hpp"
 #include "sprite.hpp"
 #include "keyboardcontroller.hpp"
@@ -43,7 +41,6 @@ private:
 
     short unsigned int state;
 
-    std::stack<int> unit_entities;
     bool isRunning;
     SDL_Event event;
 
@@ -57,9 +54,10 @@ public:
     static TTF_Font * font;
 
     Game();
+    Game(Settings in_settings);
     ~Game();
 
-    void init(const char * title, int xpos, int ypos, int width, int height, bool fullscreen);
+    void init();
     entityx::ComponentHandle<Map> getMap();
     void loadMap(const int in_map_index);
     void unloadMap();

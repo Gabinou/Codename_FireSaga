@@ -37,16 +37,15 @@ int main(int argc, char * argv[]) {
     // SDL_Log("Loading base units.");
     // all_units = baseUnits();
 
-    SDL_Log("Creating game\n");
-    firesaga = new Game();
-    firesaga->loadUnits(0);
-
-    SDL_Log("Initiating game\n");
-    temp_settings = *firesaga->getSettings();
     temp_settings.FPS.show = true;
     temp_settings.fontsize = 28;
-    firesaga->setSettings(temp_settings);
-    firesaga->init("FireSaga", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, firesaga->getSettings()->res.x, firesaga->getSettings()->res.y, false);
+    SDL_Log("Creating game\n");
+    firesaga = new Game(temp_settings);
+    firesaga->loadUnits(0);
+
+    // temp_settings = *firesaga->getSettings();
+    // firesaga->setSettings(temp_settings);
+    // firesaga->init("FireSaga", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, firesaga->getSettings()->res.x, firesaga->getSettings()->res.y, false);
     firesaga->makeFPSEntity();
 
     firesaga->loadMap(0);

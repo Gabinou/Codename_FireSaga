@@ -5,15 +5,13 @@ void test_game() {
     Game * testgame1 = nullptr;
     Settings temp_settings;
 
-    testgame1 = new Game();
-    testgame1->loadUnits(0);
-
-    temp_settings = *testgame1->getSettings();
     temp_settings.FPS.show = true;
     temp_settings.fontsize = 28;
-    testgame1->setSettings(temp_settings);
-    testgame1->init("testgame1", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, testgame1->getSettings()->res.x, testgame1->getSettings()->res.y, false);
-    // testgame1->makeFPSEntity();
+    // testgame1->setSettings(temp_settings);
+    testgame1 = new Game(temp_settings);
+    testgame1->loadUnits(0);
+
+    // temp_settings = *testgame1->getSettings();
 
     // testgame1->loadMap(0);
 

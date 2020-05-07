@@ -16,6 +16,11 @@ Game::Game() {
 
 }
 
+Game::Game(Settings in_settings) {
+    setSettings(in_settings);
+    init();
+}
+
 Game::~Game() {}
 
 Settings * Game::getSettings() {
@@ -521,10 +526,10 @@ void Game::unloadUnits(std::vector<short int> to_unload) {
 }
 
 
-void Game::init(const char * title, int xpos, int ypos, int width, int height, bool fullscreen) {
+void Game::init() {
     int flags = 0;
 
-    if (fullscreen) {
+    if (settings.fullscreen) {
         flags = SDL_WINDOW_FULLSCREEN;
     }
 
@@ -541,7 +546,7 @@ void Game::init(const char * title, int xpos, int ypos, int width, int height, b
 
     if (SDL_Init(SDL_INIT_EVERYTHING) == 0) {
         SDL_Log("SDL subsystems initialized.\n");
-        window = SDL_CreateWindow(title, xpos, ypos, width, height, flags);
+        window = SDL_CreateWindow(settings.title, settings.pos.x, settings.pos.y, settings.res.x, settings.res.x, flags);
 
         if (window) {
             SDL_Log("Window created\n");
@@ -569,8 +574,8 @@ void Game::init(const char * title, int xpos, int ypos, int width, int height, b
     systems.add<TurnSystemx>(this);
     systems.add<MenuSystemx>(this);
     systems.configure();
-    // state = GAME::STATE::MAP;
-};
+
+}
 
 void Game::startTurnSystem() {
     std::vector<unsigned char> armies = mapx->getArmies();

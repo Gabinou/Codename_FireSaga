@@ -99,6 +99,11 @@ struct Point {
     short unsigned int y;
 };
 
+struct Point_int {
+    int x;
+    int y;
+};
+
 struct Weapon_stats {
     unsigned char Pmight; //Physical might Pprot for shields.
     unsigned char Mmight; //Magic might. Mprot for shields.
@@ -168,8 +173,11 @@ struct Fps {
 };
 
 struct Settings {
-    Point res = {1000, 1000};
+    char title[DEFAULT::BUFFER_SIZE] = "Codename:Firesaga";
+    Point res = {1000, 1000}; //resolution
+    Point_int pos = {SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED};
     unsigned char fontsize = 28;
+    bool fullscreen = false;
     Fps FPS;
     unsigned short int tilesize[2] = {DEFAULT::TILESIZE, DEFAULT::TILESIZE};
 };
