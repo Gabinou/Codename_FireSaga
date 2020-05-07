@@ -21,9 +21,6 @@ void UnitSystemx::configure(entityx::EventManager & in_events) {
     event_manager->subscribe<unitDeselect>(*this);
     event_manager->subscribe<unitDanger>(*this);
     event_manager->subscribe<unitMove>(*this);
-    // event_manager->subscribe<unitMenu>(*this);
-    // event_manager->subscribe<unitmenuSelect>(*this);
-    event_manager->subscribe<unitMap>(*this);
     event_manager->subscribe<unitHover>(*this);
     event_manager->subscribe<unitDehover>(*this);
     event_manager->subscribe<unitWait>(*this);
@@ -76,7 +73,7 @@ void UnitSystemx::receive(const unitDehover & dehover) {
     if (isPC(unit->getArmy())) {
 
     } else {
-        event_manager->emit<unitMap>(cursor);
+        event_manager->emit<return2Map>(cursor);
     }
 }
 
@@ -91,7 +88,7 @@ void UnitSystemx::receive(const unitWait & wait) {
     entityx::ComponentHandle<Sprite> sprite = ent.component<Sprite>();
     unit->wait();
     sprite->darken();
-    event_manager->emit<unitMap>(wait.cursor);
+    event_manager->emit<return2Map>(wait.cursor);
 }
 
 void UnitSystemx::receive(const unitTalk & talk) {
@@ -99,7 +96,7 @@ void UnitSystemx::receive(const unitTalk & talk) {
     entityx::ComponentHandle<Unit> unit = talk.unit;
     // event_manager->emit<talkMenu>(wait.cursor);
     unit->wait();
-    event_manager->emit<unitMap>(talk.cursor);
+    event_manager->emit<return2Map>(talk.cursor);
 }
 
 void UnitSystemx::receive(const unitRescue & rescue) {
@@ -107,7 +104,7 @@ void UnitSystemx::receive(const unitRescue & rescue) {
     entityx::ComponentHandle<Unit> unit = rescue.unit;
     // event_manager->emit<rescueMenu>(wait.cursor);
     unit->wait();
-    event_manager->emit<unitMap>(rescue.cursor);
+    event_manager->emit<return2Map>(rescue.cursor);
 }
 
 void UnitSystemx::receive(const unitAttack & attack) {
@@ -115,7 +112,7 @@ void UnitSystemx::receive(const unitAttack & attack) {
     entityx::ComponentHandle<Unit> unit = attack.unit;
     // event_manager->emit<attackMenu>(wait.cursor);
     unit->wait();
-    event_manager->emit<unitMap>(attack.cursor);
+    event_manager->emit<return2Map>(attack.cursor);
 }
 
 void UnitSystemx::receive(const unitTrade & trade) {
@@ -123,14 +120,14 @@ void UnitSystemx::receive(const unitTrade & trade) {
     entityx::ComponentHandle<Unit> unit = trade.unit;
     // event_manager->emit<tradeMenu>(wait.cursor);
     unit->wait();
-    event_manager->emit<unitMap>(trade.cursor);
+    event_manager->emit<return2Map>(trade.cursor);
 }
 
 void UnitSystemx::receive(const unitEscape & escape) {
     SDL_Log("unitEscape event received");
     entityx::ComponentHandle<Unit> unit = escape.unit;
     unit->wait();
-    event_manager->emit<unitMap>(escape.cursor);
+    event_manager->emit<return2Map>(escape.cursor);
 }
 
 void UnitSystemx::receive(const unitItems & items) {
@@ -138,7 +135,7 @@ void UnitSystemx::receive(const unitItems & items) {
     entityx::ComponentHandle<Unit> unit = items.unit;
     // event_manager->emit<itemMenu>(wait.cursor);
     unit->wait();
-    event_manager->emit<unitMap>(items.cursor);
+    event_manager->emit<return2Map>(items.cursor);
 }
 
 void UnitSystemx::receive(const unitDeselect & deselect) {
@@ -147,14 +144,14 @@ void UnitSystemx::receive(const unitDeselect & deselect) {
     entityx::Entity cursor = deselect.cursor;
 
     if (isPC(unit->getArmy())) {
-        event_manager->emit<unitMap>(cursor);
+        event_manager->emit<return2Map>(cursor);
     } else {
         switch (game->getState()) {
             case GAME::STATE::UNITMOVE:
                 if (unit->isDanger()) {
                     event_manager->emit<unitDanger>(cursor, unit);
                 } else {
-                    event_manager->emit<unitMap>(cursor);
+                    event_manager->emit<return2Map>(cursor);
                 }
 
                 break;
@@ -261,22 +258,6 @@ void UnitSystemx::receive(const unitMove & move) {
     mapx->setOverlay(MAP::OVERLAY::ATTACK, attackmapp);
 
     mapx->showOverlay();
-}
-
-void UnitSystemx::receive(const unitMap & map) {
-    SDL_Log("Received unitMap event");
-
-    if ((game->getState() == GAME::STATE::UNITMOVE)) {
-        mapx->hideOverlay();
-    }
-
-    if ((game->getState() == GAME::STATE::UNITMENU) ||
-            (game->getState() == GAME::STATE::OPTIONS)) {
-        game->hideMenu(MENU::UNIT);
-        game->setCursorstate(MENU::MAP);
-    }
-
-    game->setState(GAME::STATE::MAP);
 }
 
 void UnitSystemx::update(entityx::EntityManager & es, entityx::EventManager & events, entityx::TimeDelta dt) {

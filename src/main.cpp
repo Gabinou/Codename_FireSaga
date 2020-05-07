@@ -34,9 +34,6 @@ int main(int argc, char * argv[]) {
     SDL_Log("Loading base weapons");
     baseWeapons();
 
-    // SDL_Log("Loading base units.");
-    // all_units = baseUnits();
-
     settings.FPS.show = true;
     settings.fontsize = 28;
     SDL_Log("Creating game\n");

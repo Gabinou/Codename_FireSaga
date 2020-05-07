@@ -28,6 +28,7 @@ public:
     void receive(const unitSelect & menu);
     void receive(const mapMenu & menu);
     void receive(const unitmenuSelect & select);
+    void receive(const return2Map & map);
 
     void update(entityx::EntityManager & es, entityx::EventManager & events, entityx::TimeDelta dt) override;
 };

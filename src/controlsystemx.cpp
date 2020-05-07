@@ -65,7 +65,7 @@ void ControlSystemx::receive(const inputCancel & cancel) {
                 event_manager->emit<unitReturn>(canceller, selected);
             }
 
-            event_manager->emit<unitMap>(canceller);
+            event_manager->emit<return2Map>(canceller);
             break;
 
         case GAME::STATE::UNITMOVE:
@@ -75,7 +75,7 @@ void ControlSystemx::receive(const inputCancel & cancel) {
                 event_manager->emit<unitDeselect>(canceller, unitontile);
             } else {
                 SDL_Log("No unit on tile.");
-                event_manager->emit<unitMap>(canceller);
+                event_manager->emit<return2Map>(canceller);
             }
 
             break;

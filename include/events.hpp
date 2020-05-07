@@ -81,8 +81,8 @@ struct unitMenu {
     entityx::Entity cursor;
 };
 
-struct unitMap {
-    unitMap(entityx::Entity cursor) : cursor(cursor) {}
+struct return2Map {
+    return2Map(entityx::Entity cursor) : cursor(cursor) {}
     entityx::Entity cursor;
 };
 

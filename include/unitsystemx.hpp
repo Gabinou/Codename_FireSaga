@@ -43,7 +43,7 @@ public:
     void receive(const unitSelect & selected);
     void receive(const unitDeselect & selected);
     void receive(const unitMove & move);
-    void receive(const unitMap & map);
+    // void receive(const return2Map & map);
     void receive(const unitDanger & danger);
 
     void update(entityx::EntityManager & es, entityx::EventManager & events, entityx::TimeDelta dt) override;

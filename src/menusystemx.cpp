@@ -18,6 +18,7 @@ void MenuSystemx::configure(entityx::EventManager & in_events) {
     event_manager->subscribe<unitMenu>(*this);
     event_manager->subscribe<unitmenuSelect>(*this);
     event_manager->subscribe<mapMenu>(*this);
+    event_manager->subscribe<return2Map>(*this);
 }
 
 void MenuSystemx::updateMap() {
@@ -188,6 +189,27 @@ void MenuSystemx::receive(const unitmenuSelect & select) {
     } else {
         SDL_Log("unitmenuSelect: could not get unit");
     }
+}
+
+void MenuSystemx::receive(const return2Map & map) {
+    SDL_Log("Received return2Map event");
+
+    if ((game->getState() == GAME::STATE::UNITMOVE)) {
+        mapx->hideOverlay();
+    }
+
+    if ((game->getState() == GAME::STATE::MAPMENU)) {
+        game->hideMenu(MENU::MAPMENU);
+        game->setCursorstate(MENU::MAP);
+    }
+
+    if ((game->getState() == GAME::STATE::UNITMENU) ||
+            (game->getState() == GAME::STATE::OPTIONS)) {
+        game->hideMenu(MENU::UNIT);
+        game->setCursorstate(MENU::MAP);
+    }
+
+    game->setState(GAME::STATE::MAP);
 }
 
 void MenuSystemx::update(entityx::EntityManager & es, entityx::EventManager & events, entityx::TimeDelta dt) {
