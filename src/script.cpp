@@ -369,7 +369,7 @@ void baseBooks() {
     //     book.addPage(page);
     // }
 
-    book = Book("Angelic and Demonic Possession", ITEM::NAME::BOOKPOSSESSION);
+    book = Book("Angelic and Demonic Magics", ITEM::NAME::BOOKPOSSESSION);
     book.setAuthor("Laplace the Second");
 
     page.paragraphs.clear();
