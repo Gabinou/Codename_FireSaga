@@ -370,59 +370,59 @@ void baseBooks() {
     // }
 
     book = Book("Angelic and Demonic Possession", ITEM::NAME::BOOKPOSSESSION);
-    book.setAuthor("Twinborn");
+    book.setAuthor("Laplace the Second");
 
     page.paragraphs.clear();
     page.title = "Foreword";
     page.paragraphs.push_back("I dedicate this book all magicians who, like me, has been lied to by the School of Magic. The fathers of Magic thought that the only magic that existed is the one that they wielded. We know today that their Magic is Elemental: a single branch of magic. I discovered there exists Angelic and Demonic magic. If more magic types exist, I will find them.");
-    page.paragraphs.push_back("I was the first to use the chaotic and harmonious energies around us. Later, the possessed thought it was impossible to use more than one branch of magic, or to reverse possession. Some still doubt today that I even exist. If you doubt, come find me. I can dive deep into what idiots call possession and come back. They lose their humanities and become lower, almost like beasts.");
-    page.paragraphs.push_back("Listen to me, if you wish to learn to use any kind of magic. I can use them all. I will show you how.");
+    page.paragraphs.push_back("I was the first to use the chaotic and harmonious energies around us. Later, the possessed thought it was impossible to use more than one branch of magic, or to reverse what they named 'possession'. Some still doubt today that I even exist. If you doubt, come find me at my Dual School of Order&Chaos. I can dive deep into what idiots call possession and come back. They lose their humanities and become lower, almost like beasts.");
+    page.paragraphs.push_back("Listen to me, if you wish to learn to use any kind of magic. I can use all magics. I will show you how.");
     book.addPage(page);
 
     page.paragraphs.clear();
     page.title = "Harmony and disorder";
-    page.paragraphs.push_back("We swim in a sea of mixed chaos and order. Some days I feel like walking is like swimming through molasses, other times I feel like burning my house. Sometimes, I feel inspired enough to write a book... You can feel this as the winds of magic blow through you. You don't know it, but your body does. It changes your mood, lifts your spirit or crushes your soul. If you listen to it, you can learn to feel the thickness and flow of the magic that surrounds you.");
-    page.paragraphs.push_back("Everything we can see, we can also touch, move it around, or even destroy it. We can touch the things we see. Magic is the same. Before learning to touch it, you must see it. It is hard to find something in the dark, even in your own room. I doubt you could find anything in true darkness. Magic is the same. You won't find it if you can't feel it. This is the first step.");
+    page.paragraphs.push_back("We swim in a sea of mixed chaos and order. Some days I feel like walking is like swimming through molasses, other times I feel I want to burn my house down out of rage. Sometimes, I feel inspired enough to write a book... You can feel this as the winds of magic blow through you. You don't know it, but your body does. It changes your mood, lifts your spirit or crushes your soul. If you listen to it, you can learn to feel the thickness and flow of the magic that surrounds you.");
+    page.paragraphs.push_back("Everything we can see, we can also touch, move it around, or even destroy it. We can touch the things we see. Magic is the same. Before learning to touch it, you must see it. It is hard to find something in the dark, even in your own room. I doubt you could find anything in true darkness. Magic is exactly the same. You won't find it if you can't feel it. This is the first step.");
     page.paragraphs.push_back("When you can feel it, you will be able to see how it changes when you touch it, if it gets stronger or weaker. And after that maybe you can use it to kill someone... Or write spells that can be used by idiots.");
-    page.paragraphs.push_back("This is why people think using angelic or demonic leads to possession. Spells make it too easy on stupid people. Reading a spell is much easier than forging it. No need to feel the flow of magic in you or around you. You can't know what demonic does to you if you can't feel demonic at all. And most 'possessed' can't. I have seen many people become possessed. You can feel them sliding in, way before you can see them falling. Everything about them changes! Their angelic thoughts change their inner balance completely, dropping into a vicious circle. A large amount of inner Angelic energies encourage angelic type thoughts. Angelic thoughts attract more angelic energy to yourself. Down, down, down it goes, until the person disappears inside the Angel.");
+    page.paragraphs.push_back("This is why people think using angelic or demonic leads to possession. Spells make it too easy on stupid people. Reading a spell is much easier than forging it. No need to feel the flow of magic in you or around you. You can't know what demonic energy does to you if you can't feel it at all. And most 'possessed' can't. I have seen many people become possessed. You can feel the magic filling their body, way before you can see it with your eyes. Everything about them changes! Their angelic thoughts change their inner balance completely, dropping into a vicious circle. A large amount of inner Angelic energies encourage angelic thoughts. Angelic thoughts attract more angelic energy. Down, down, down it goes, until the person disappears inside the Angel.");
     page.paragraphs.push_back("Keep reading if you don't want this to happen to you.");
     book.addPage(page);
 
     page.paragraphs.clear();
     page.title = "Where does Magic live?";
-    page.paragraphs.push_back("It's not hard to know where angelic or demonic wind accumulates. A cemetary. A castle, a church, a brothel. A fresh dug mass grave, a library, a drunkard's house... In all these places do angelic and demonic energies live. Maybe even in a person! You should make use of someone like that as much as possible.  If you want to feel Elemental magic, go outside.");
-    page.paragraphs.push_back("In a place where you know a lot of magic lives... Close to an object or person in which magic resides... Listen to your body, feel it in your guts, in your heart. Feel the winds change direction, the magic getting more or less thick. Your body can feel it, you just need to listen. It always flow through you, and around you.");
+    page.paragraphs.push_back("It's not hard to know where angelic or demonic wind accumulates. A cemetary. A castle, a church, a brothel. A fresh dug mass grave, a library, a drunkard's house... In all these places do angelic and demonic energies live. Maybe even in a person! You should make use of someone like that as much as possible. If you want to feel Elemental magic, go outside.");
+    page.paragraphs.push_back("In a place where you know a lot of magic lives... Close to an object or person in which magic resides... Listen to your body, feel it in your guts, in your heart. Feel the winds change direction, the magic getting more or less thick. Your body can feel it, you just need to listen. It always flow through you and around you.");
     book.addPage(page);
 
     page.paragraphs.clear();
     page.title = "Feeling the magic";
     page.paragraphs.push_back("At first, you will need to focus to just be able to feel the magic. Don't worry, it's like a muscle. The more you use it, the stronger it gets. It helps to clear your thoughts, and to focus on your senses. Your smell, your taste, your hearing, the surrounding heat and cold, and especially your sense of balance. The feeling of magic is closely tied to your own sense of balance. Once you feel where down and up are, you will start feeling the magic energies around you.");
     page.paragraphs.push_back("Practice. It will become easy, almost natural. You'll be able to feel magic all the time, even while working or being focused on something else. Once you can feel the magic surrounding you, you can start taking notes on the general patterns. In this city, chaos reigns. You can even use this sense to feel major changes happening, before you can hear about them. This is also why mages flee castle towns days weeks or even months before a siege. Have you ever heard of many mages being stuck in a siege? No. You hear of how there are never enough mages in armies during a siege. This is the reason why.");
-    page.paragraphs.push_back("This is also why even if you have no talent in magic, you should still learn to feel the magic. This is a very useful ability that everyone can learn. You can feel magic before you can hear, touch, or even see. Everyone benefits. It can be used in many ways.");
+    page.paragraphs.push_back("This is also why even if you have no talent in magic, you should still learn to feel the magic. This is a very useful ability that everyone can learn. You can feel magic before you can hear, touch, or even see. Everyone benefits form feeling magic. It can be used in many ways.");
     book.addPage(page);
 
     page.paragraphs.clear();
     page.title = "Touching the magic";
     page.paragraphs.push_back("If you get bored of only feeling the magic, reach out and touch the magic. You can flap your arms like a chicken and make wind. Magic can be influenced by you exactly like that. Contrarily to wind though, magic is also influenced by your thoughts. The harder you focus, the more powerful your influence becomes.");
-    page.paragraphs.push_back("Once you can feel and touch magic, you can force it to take shape in the physical world in ways that are useful to you. The classic example is the Angelic Light spear, which you can throw at demons to pierce their heart. Very useful! Very simple. Accessible to all.");
+    page.paragraphs.push_back("Once you can feel and touch magic, you can force it to take shape in the physical world in ways that are useful to you. The classic example is the Angelic Light spear, which you can throw at demons to pierce their heart. Very useful! Very simple. Accessible to all. Practice making magic into many kinfs of useful shapes and sizes.");
     book.addPage(page);
 
     page.paragraphs.clear();
     page.title = "Casting spells.";
     page.paragraphs.push_back("Do not cast spells written by others. You can perfectly cast spells without them, of even create your own. That requires a deep understand of magic, which is difficult to get: hard work over many years of training. It will make you a better Mage. Spells can be recited by newborn idiots.");
-    page.paragraphs.push_back("Written spells make it easy to blast enemies without understanding magic. Spells are weapons of war, not tools of the student of Magic.Though I think even war mages should learn to create their own spells. Military mages disagree with me, sometimes very violently. They have their own very convincing stupid reasons.");
+    page.paragraphs.push_back("Written spells make it easy to blast enemies without understanding magic. Spells are weapons of war, not tools of the student of Magic. Though I think even war mages should learn to create their own spells. Military mages disagree with me, sometimes very violently. They have their own very convincing stupid reasons.");
     book.addPage(page);
 
     page.paragraphs.clear();
     page.title = "Writing magic spells.";
     page.paragraphs.push_back("Do not write magic spells.");
     page.paragraphs.push_back("Angelic, demonic or elemental. Do not write any magic spells!");
-    page.paragraphs.push_back("Written spells can get in the hands of stupid people. Spells in your mind can't be stolen or used by anyone else.");
+    page.paragraphs.push_back("Written spells can get in the hands of idiots. Spells in your mind can't be stolen or used by anyone else.");
     book.addPage(page);
 
     page.paragraphs.clear();
     page.title = "What is possession?";
-    page.paragraphs.push_back("You can hear many magic users talk about possession. 'He became possessed by the demonic energies'. 'He turned into a demon and devoured her!' That is a horrible way to say it. Demonic energies do not randomly concentrate themselves in a body. A human does not naturally get rid of almost all of it's harmonious and elemental energies. The people do it, and keep it that way. Whether they realize it or not, this is what they are doing.");
+    page.paragraphs.push_back("You can hear many magic users talk about possession. 'He became possessed by the demonic energies'. 'He turned into a demon and devoured her!' That is a horrible way to explain it. Demonic energies do not randomly concentrate themselves in a body. A human does not naturally get rid of almost all of it's harmonious and elemental energies. The people do it, and keep it that way. Whether they realize it or not, this is what they are doing.");
     page.paragraphs.push_back("The bodies of the 'possessed' are simply adjusting themselves to an incredible amount of demonic energies. A frail human body cannot contain so much ill will. Only the body of a Demon can. The 'possessed' are just transforming into Demons. Some people think it is slow. But it can take only only a few moments to become a Demon, if you are used to it. For novices, it might take weeks. Many poisons take much more time to kill you. Ills can take root for many years before rising to the surface. But demonic energies act on the heart and body almost instantly.");
     book.addPage(page);
 
@@ -437,13 +437,13 @@ void baseBooks() {
     page.title = "Transforming at will";
     page.paragraphs.push_back("It is easy to feel the balance in normal humans. It is also easy to notice Angels barely contain any demonic or elemental energy. To transform into a Demon, an Angel or an Elemental, you must destroy your internal magic balance. Or at least, accumulate enough magic for you to lean very hard in only one direction.");
     page.paragraphs.push_back("Your body will react quite quickly to dramatic changes. For your first time, you should unbalance yourself very slowly, in a couple hours. The more you practice, the shorter time it will take you to completely change from a 'possessed' to a full Demon, all the way back to human all over again.");
-    page.paragraphs.push_back("Before diving, you should fully understand the original balance in you. And when you dive, make sure to Remember your balance. Remember your balance! The feel of it, the shape of it, it's flow and direction. That way, you will never be lost. Remember your balance! Even in the most demonic of places, incarnating the most evil Demon King himself, remember your balance! Remember who you are! Only then will you be able to make your way back.");
+    page.paragraphs.push_back("Before diving, you should fully understand the original balance in you. And when you dive, make sure to Remember your balance. Remember your balance! The feel of it, the shape of it, it's flow and direction. That way, you will never be lost. Remember your balance! Even in the most demonic of places, incarnating the most evil Demon, remember your balance! Remember who you are! Only then will you be able to make your way back.");
     book.addPage(page);
 
     page.paragraphs.clear();
     page.title = "Creating new spells from nothing";
     page.paragraphs.push_back("I have been asked many times: 'How is there so many spells? Just use magic to kill people!'. This is wrong.");
-    page.paragraphs.push_back("There are many weapons. All with the objective of hurting or killing people. Some cut, some crush, some stab, some crit... Some are better at cutting then others. Some weapons are made to be thrown, some can be thrown but will not fly true. The same metal can be forged into completely different weapons by blacksmiths of different skill.");
+    page.paragraphs.push_back("There are many weapons. All with the objective of hurting or killing people. Some cut, some crush, some stab, some increase your critical hit chance... Some are better at cutting then others. Some weapons are made to be thrown, some can be thrown but will not fly true. The same metal can be forged into completely different weapons by blacksmiths of different skill.");
     page.paragraphs.push_back("The same is true of magic. The strength of the spells depends not only on the skill of the caster, but on the spellforger. Nothing is easy. Spellcasting isn't easy and neither is spellforging. But both skills are required for a pupil to truly become a Mage.");
     page.paragraphs.push_back("I will not tell you how to spellforge. There is a way, but you should embark on it yourself. Maybe I will write a book on spellforging, for Mages that already started forging. For later.");
     book.addPage(page);
