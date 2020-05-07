@@ -7,11 +7,8 @@ void test_game() {
 
     temp_settings.FPS.show = true;
     temp_settings.fontsize = 28;
-    // testgame1->setSettings(temp_settings);
     testgame1 = new Game(temp_settings);
     testgame1->loadUnits(0);
-
-    // temp_settings = *testgame1->getSettings();
 
     // testgame1->loadMap(0);
 
