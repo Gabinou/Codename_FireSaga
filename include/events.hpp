@@ -23,6 +23,31 @@ struct selectNPC {
     entityx::Entity cursor;
 };
 
+struct objectivesMenu {
+    objectivesMenu(entityx::Entity cursor) : cursor(cursor) {}
+    entityx::Entity cursor;
+};
+
+struct unitsMenu {
+    unitsMenu(entityx::Entity cursor) : cursor(cursor) {}
+    entityx::Entity cursor;
+};
+
+struct enemyunitsMenu {
+    enemyunitsMenu(entityx::Entity cursor) : cursor(cursor) {}
+    entityx::Entity cursor;
+};
+
+struct optionsMenu {
+    optionsMenu(entityx::Entity cursor) : cursor(cursor) {}
+    entityx::Entity cursor;
+};
+
+struct itemsMenu {
+    itemsMenu(entityx::Entity cursor) : cursor(cursor) {}
+    entityx::Entity cursor;
+};
+
 struct mapMenu {
     mapMenu(entityx::Entity cursor) : cursor(cursor) {}
     entityx::Entity cursor;
@@ -90,6 +115,11 @@ struct unitmenuSelect {
     unitmenuSelect(entityx::Entity cursor, entityx::ComponentHandle<Unit> unit) : cursor(cursor), unit(unit) {}
     entityx::Entity cursor;
     entityx::ComponentHandle<Unit> unit;
+};
+
+struct mapmenuSelect {
+    mapmenuSelect(entityx::Entity cursor) : cursor(cursor) {}
+    entityx::Entity cursor;
 };
 
 struct inputAccept {

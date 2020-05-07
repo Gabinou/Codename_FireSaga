@@ -15,7 +15,6 @@ private:
     entityx::Entity selected;
     short int old_position[2];
     entityx::ComponentHandle<Map> mapx;
-    std::vector<unsigned char> unitmenuoptions;
 public:
     MenuSystemx();
     MenuSystemx(Game * in_game);
@@ -26,8 +25,9 @@ public:
     void configure(entityx::EventManager & event_manager);
     void receive(const unitMenu & menu);
     void receive(const unitSelect & menu);
-    void receive(const mapMenu & menu);
     void receive(const unitmenuSelect & select);
+    void receive(const mapMenu & menu);
+    void receive(const mapmenuSelect & menu);
     void receive(const return2Map & map);
 
     void update(entityx::EntityManager & es, entityx::EventManager & events, entityx::TimeDelta dt) override;

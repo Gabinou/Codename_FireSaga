@@ -18,6 +18,7 @@ void MenuSystemx::configure(entityx::EventManager & in_events) {
     event_manager->subscribe<unitMenu>(*this);
     event_manager->subscribe<unitmenuSelect>(*this);
     event_manager->subscribe<mapMenu>(*this);
+    event_manager->subscribe<mapmenuSelect>(*this);
     event_manager->subscribe<return2Map>(*this);
 }
 
@@ -53,6 +54,47 @@ void MenuSystemx::receive(const unitSelect & select) {
 
     if (newstate > 0) {
         game->setState(newstate);
+    }
+}
+
+void MenuSystemx::receive(const mapmenuSelect & select) {
+    SDL_Log("Received mapmenuSelect event ");
+    entityx::Entity cursor = select.cursor;
+    entityx::ComponentHandle<Position> position = cursor.component<Position>();
+
+    short int * cursorpos = position->getPos();
+    short int * cursorbounds = position->getBounds();
+    unsigned char menuind = cursorpos[1] - cursorbounds[2];
+    std::vector<unsigned char> mapmenuoptions = game->getMenuoptions(MENU::MAPMENU);
+
+    SDL_Log("menuind: %d ", menuind);
+    SDL_Log("unitmenuoptions[menuind]: %d ", mapmenuoptions[menuind]);
+
+    switch (mapmenuoptions[menuind]) {
+        case MENU::OPTION::OBJECTIVES:
+            event_manager->emit<objectivesMenu>(cursor);
+            break;
+
+        case MENU::OPTION::UNITS:
+            event_manager->emit<unitsMenu>(cursor);
+            break;
+
+        case MENU::OPTION::ENEMYUNITS:
+            event_manager->emit<enemyunitsMenu>(cursor);
+            break;
+
+        case MENU::OPTION::OPTIONS:
+            event_manager->emit<optionsMenu>(cursor);
+            break;
+
+        case MENU::OPTION::ITEMS:
+            event_manager->emit<itemsMenu>(cursor);
+            break;
+
+        case MENU::OPTION::ENDTURN:
+            event_manager->emit<turnEnd>();
+            break;
+
     }
 }
 
@@ -144,7 +186,7 @@ void MenuSystemx::receive(const unitmenuSelect & select) {
     short int * cursorbounds = position->getBounds();
     unsigned char menuind = cursorpos[1] - cursorbounds[2];
 
-    unitmenuoptions = game->getMenuoptions(MENU::UNIT);
+    std::vector<unsigned char> unitmenuoptions = game->getMenuoptions(MENU::UNIT);
     SDL_Log("menuind: %d ", menuind);
     SDL_Log("unitmenuoptions[menuind]: %d ", unitmenuoptions[menuind]);
 
