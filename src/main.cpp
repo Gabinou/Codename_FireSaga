@@ -8,19 +8,9 @@
 * |          '-._.-'         |   |                                   |
 * |        Made by Gabriel Taillon                                   |
 * --------------------------------------------------------------------*/
-#include <entityx/entityx.h>
-#include <SDL2/SDL.h>
-#include <SDL2/SDL_image.h>
 #include <chrono>
-#include <iostream>
 #include "text.hpp"
-#include "filesystem.hpp"
-#include "utilities.hpp"
 #include "game.hpp"
-#include "script.hpp"
-#include "weapon.hpp"
-#include "unit.hpp"
-#include "convoy.hpp"
 
 Game * firesaga = nullptr;
 Settings temp_settings;
