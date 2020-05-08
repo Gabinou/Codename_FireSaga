@@ -199,7 +199,8 @@ void Game::makeTurntransition() {
 }
 
 void setTurntransitiontext(unsigned char in_army) {
-    
+    transition.component<Text>()->setText(armyNames[in_army]);
+
 }
 
 
