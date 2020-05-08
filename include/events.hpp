@@ -95,6 +95,16 @@ struct unitDehover {
     entityx::ComponentHandle<Unit> unit;
 };
 
+struct switchControl {
+    switchControl(unsigned char army) : army(army) {}
+    unsigned char army;
+};
+
+struct refreshUnits {
+    refreshUnits(unsigned char army) : army(army) {}
+    unsigned char army;
+};
+
 struct disableMenu {
     disableMenu(entityx::Entity cursor, unsigned char menuind) : cursor(cursor), menuind(menuind) {}
     entityx::Entity cursor;

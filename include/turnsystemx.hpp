@@ -21,8 +21,8 @@ public:
     void addArmies(std::vector<unsigned char> in_armies);
     void updateMap();
     void setMap(entityx::ComponentHandle<Map> in_map);
-    void switchControl(unsigned char in_army);
-    void refreshUnits(unsigned char in_army);
+    // void switchControl(unsigned char in_army);
+    // void refreshUnits(unsigned char in_army);
 
     void configure(entityx::EventManager & event_manager);
     void receive(const turnBegin & begin);

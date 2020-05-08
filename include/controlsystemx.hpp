@@ -39,6 +39,7 @@ public:
     void receive(const inputCancel & cancel);
     void receive(const inputAccept & accept);
     void receive(const turnBegin & begin);
+    void receive(const switchControl & Switch);
 
     void update(entityx::EntityManager & es, entityx::EventManager & events, entityx::TimeDelta dt) override;
 };

@@ -23,15 +23,31 @@ void ControlSystemx::configure(entityx::EventManager & in_events) {
     event_manager->subscribe<inputFaster>(*this);
     event_manager->subscribe<inputPause>(*this);
     event_manager->subscribe<turnBegin>(*this);
+    event_manager->subscribe<switchControl>(*this);
 }
 
 void ControlSystemx::receive(const turnBegin & begin) {
-    SDL_Log("Received turnBeginEvent.");
+    SDL_Log("Received turnBegin event.");
 
     if (game->getState() == GAME::STATE::NPCTURN) {
 
     }
 
+}
+
+void ControlSystemx::receive(const switchControl & Switch) {
+    SDL_Log("Received switchControl event.");
+    unsigned char army = Switch.army;
+
+    if (isPC(army)) {
+        game->setState(GAME::STATE::MAP);
+        game->loadCursor();
+        game->setCursorstate(MENU::MAP);
+
+    } else {
+        game->setState(GAME::STATE::NPCTURN);
+        game->unloadCursor();
+    }
 }
 
 void ControlSystemx::receive(const inputMenuRight & menuright) {

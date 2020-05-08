@@ -31,6 +31,7 @@ void UnitSystemx::configure(entityx::EventManager & in_events) {
     event_manager->subscribe<unitTrade>(*this);
     event_manager->subscribe<unitEscape>(*this);
     event_manager->subscribe<unitItems>(*this);
+    event_manager->subscribe<refreshUnits>(*this);
 }
 
 void UnitSystemx::receive(const unitReturn & Return) {
@@ -62,6 +63,18 @@ void UnitSystemx::receive(const unitReturn & Return) {
 
     mapx->moveUnit(new_position[0], new_position[1], old_position[0], old_position[1]);
     toreturn_position->setPos(old_position);
+}
+
+void UnitSystemx::receive(const refreshUnits & refresh) {
+    SDL_Log("Received refreshUnits events");
+    unsigned char army = refresh.army;
+    std::vector<entityx::ComponentHandle<Unit>> units = mapx->getUnits(army);
+
+    SDL_Log("units size: %d", units.size());
+
+    for (short i = 0; i < units.size(); i++) {
+        units[i]->refresh();
+    }
 }
 
 void UnitSystemx::receive(const unitDehover & dehover) {

@@ -43,8 +43,8 @@ void TurnSystemx::configure(entityx::EventManager & in_events) {
 
 void TurnSystemx::receive(const turnBegin & begin) {
     SDL_Log("Received turnBegin event");
-    switchControl(armies.front());
-    refreshUnits(armies.front());
+    event_manager->emit<refreshUnits>(armies.front());
+    event_manager->emit<switchControl>(armies.front());
 }
 
 void TurnSystemx::receive(const turnEnd & end) {
@@ -53,32 +53,6 @@ void TurnSystemx::receive(const turnEnd & end) {
     armies.pop();
     event_manager->emit<turnBegin>();
 }
-
-void TurnSystemx::switchControl(unsigned char in_army) {
-    SDL_Log("switching control to army: %d", in_army);
-
-    if (isPC(in_army)) {
-        game->setState(GAME::STATE::MAP);
-        game->loadCursor();
-        game->setCursorstate(MENU::MAP);
-
-    } else {
-        game->setState(GAME::STATE::NPCTURN);
-        game->unloadCursor();
-    }
-}
-
-void TurnSystemx::refreshUnits(unsigned char in_army) {
-    SDL_Log("Refreshing units");
-    std::vector<entityx::ComponentHandle<Unit>> units = mapx->getUnits(in_army);
-
-    SDL_Log("units size: %d", units.size());
-
-    for (short i = 0; i < units.size(); i++) {
-        units[i]->refresh();
-    }
-}
-
 
 void TurnSystemx::update(entityx::EntityManager & es, entityx::EventManager & events, entityx::TimeDelta dt) {
     entityx::ComponentHandle<Unit> unit;

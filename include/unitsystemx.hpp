@@ -44,6 +44,7 @@ public:
     void receive(const unitDeselect & selected);
     void receive(const unitMove & move);
     void receive(const unitDanger & danger);
+    void receive(const refreshUnits & refresh);
 
     void update(entityx::EntityManager & es, entityx::EventManager & events, entityx::TimeDelta dt) override;
 };
