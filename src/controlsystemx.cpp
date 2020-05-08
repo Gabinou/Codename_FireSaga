@@ -28,9 +28,10 @@ void ControlSystemx::configure(entityx::EventManager & in_events) {
 
 void ControlSystemx::receive(const turnBegin & begin) {
     SDL_Log("Received turnBegin event.");
+    unsigned char army = begin.army;
 
     if (game->getState() == GAME::STATE::NPCTURN) {
-
+        AIturn(army);
     }
 
 }

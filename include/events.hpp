@@ -6,11 +6,13 @@
 #include "gamepadcontroller.hpp"
 
 struct turnBegin {
-    turnBegin() {}
+    turnBegin(unsigned char army) : army(army) {}
+    unsigned char army;
 };
 
 struct turnEnd {
     turnEnd() {}
+
 };
 
 struct selectPC {

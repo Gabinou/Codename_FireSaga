@@ -587,7 +587,7 @@ void Game::startTurnSystem() {
     }
 
     state = GAME::STATE::TURNBEGIN;
-    events.emit<turnBegin>();
+    events.emit<turnBegin>(systems.system<TurnSystemx>()->getArmyfront());
 }
 
 

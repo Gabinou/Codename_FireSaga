@@ -24,6 +24,9 @@ void TurnSystemx::setMap(entityx::ComponentHandle<Map> in_map) {
     }
 }
 
+unsigned char TurnSystemx::getArmyfront() {
+    return (armies.front());
+}
 
 void TurnSystemx::addArmies(std::vector<unsigned char> in_armies) {
     for (short int i = 0; i < in_armies.size(); i++) {
@@ -51,7 +54,7 @@ void TurnSystemx::receive(const turnEnd & end) {
     SDL_Log("Received turnEnd event");
     armies.push(armies.front());
     armies.pop();
-    event_manager->emit<turnBegin>();
+    event_manager->emit<turnBegin>(armies.front());
 }
 
 void TurnSystemx::update(entityx::EntityManager & es, entityx::EventManager & events, entityx::TimeDelta dt) {
