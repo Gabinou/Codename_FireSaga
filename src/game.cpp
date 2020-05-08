@@ -187,15 +187,21 @@ void Game::makeTurntransition() {
     }
 
     transition = entities.create();
-    menus[in_menu_index].assign<Position>();
-    menus[in_menu_index].assign<Sprite>();
-    menus[in_menu_index].component<Sprite>()->hide();
+    transition.assign<Position>();
+    transition.assign<Sprite>();
+    transition.component<Sprite>()->hide();
     SDL_Color white = {255, 255, 255};
-    menus[in_menu_index].assign<Text>(settings.fontsize);
-    menus[in_menu_index].component<Text>()->hide();
-    menus[MENU::UNIT].component<Sprite>()->setSrcrect(128, 128);
-    menus[MENU::UNIT].component<Sprite>()->setDestrect(128, 128);
+    transition.assign<Text>(settings.fontsize);
+    transition.component<Text>()->hide();
+    // transition.component<Sprite>()->setTexture("..//assets//textbox.png");
+    // transition.component<Sprite>()->setSrcrect(128, 128);
+    // transition.component<Sprite>()->setDestrect(128, 128);
 }
+
+void setTurntransitiontext(unsigned char in_army) {
+    
+}
+
 
 void Game::makeMenu(unsigned char in_menu_index) {
     SDL_Log("Making menu: %d", in_menu_index);
