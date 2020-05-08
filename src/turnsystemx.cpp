@@ -2,6 +2,7 @@
 #include "turnsystemx.hpp"
 
 TurnSystemx::TurnSystemx() {
+
 }
 
 TurnSystemx::TurnSystemx(Game * in_game) {
@@ -9,7 +10,6 @@ TurnSystemx::TurnSystemx(Game * in_game) {
     game = in_game;
     updateMap();
 }
-
 
 void TurnSystemx::updateMap() {
     mapx = game->getMap();
@@ -58,5 +58,9 @@ void TurnSystemx::receive(const turnEnd & end) {
 }
 
 void TurnSystemx::update(entityx::EntityManager & es, entityx::EventManager & events, entityx::TimeDelta dt) {
-    entityx::ComponentHandle<Unit> unit;
+    // entityx::ComponentHandle<Unit> unit;
+    if (check_frames) {
+        frames++;
+    }
+
 }

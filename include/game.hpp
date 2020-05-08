@@ -72,6 +72,8 @@ public:
     void unloadCursor();
     template <typename T> void loadTiles(std::vector<T> in_tiles);
     void moveUnit(entityx::Entity & cursor);
+    void makeTurntransition();
+
 
     std::vector<unsigned char> getMenuoptions(unsigned char in_menu_index);
     void makeMenuoptions(unsigned char in_menu_index);

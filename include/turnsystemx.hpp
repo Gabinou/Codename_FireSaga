@@ -13,6 +13,9 @@ private:
     std::queue<unsigned char> armies;
     entityx::ComponentHandle<Map> mapx;
     entityx::EventManager * event_manager;
+    entityx::Entity * transition;
+    bool check_frames = false;
+    short unsigned int frames = 0;
 public:
     TurnSystemx();
     TurnSystemx(Game * in_game);

@@ -180,6 +180,22 @@ void Game::makeMenutext(unsigned char in_menu_index) {
     }
 }
 
+void Game::makeTurntransition() {
+    
+    if (transition.valid()) {
+        transition.destroy();
+    }
+
+    transition = entities.create();
+    menus[in_menu_index].assign<Position>();
+    menus[in_menu_index].assign<Sprite>();
+    menus[in_menu_index].component<Sprite>()->hide();
+    SDL_Color white = {255, 255, 255};
+    menus[in_menu_index].assign<Text>(settings.fontsize);
+    menus[in_menu_index].component<Text>()->hide();
+    menus[MENU::UNIT].component<Sprite>()->setSrcrect(128, 128);
+    menus[MENU::UNIT].component<Sprite>()->setDestrect(128, 128);
+}
 
 void Game::makeMenu(unsigned char in_menu_index) {
     SDL_Log("Making menu: %d", in_menu_index);
@@ -741,6 +757,7 @@ void configure(entityx::EventManager & event_manager) {
 
 void Game::update(entityx::TimeDelta dt) {
     systems.update<ControlSystemx>(dt);
+    systems.update<TurnSystemx>(dt);
     systems.update<RenderSystemx>(dt);
 }
 

@@ -125,6 +125,7 @@ void ControlSystemx::receive(const inputCancel & cancel) {
 void ControlSystemx::AIturn(unsigned char in_army) {
     if (!isPC(in_army)) {
         SDL_Log("AIturn: Doing AI things...");
+        event_manager->emit<turnEnd>();
 
     } else {
         SDL_Log("AIturn: Army is Player Controlled!");
