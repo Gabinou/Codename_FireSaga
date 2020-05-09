@@ -13,6 +13,7 @@ class RenderSystemx: public entityx::System<RenderSystemx>, public entityx::Rece
 private:
     Game * game;
     SDL_Renderer * renderer = NULL;
+    entityx::Entity transition;
     short unsigned int * tilesize;
     short unsigned int linespace;
     short int offset[2];

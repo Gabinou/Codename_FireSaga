@@ -149,11 +149,9 @@ void RenderSystemx::update(entityx::EntityManager & es, entityx::EventManager & 
     frame_count++;
 
     if ((last_update >= 0.5) && (game->getSettings()->FPS.show)) {
-        // Settings * settings = game->getSettings();
-        // const float current = last_update / frame_count;
-        // settings->FPS.current  = current;
+        Settings * settings = game->getSettings();
+        const float current = last_update / frame_count;
         // game->setSettings(settings);
-        // // stbsp_sprintf(longbuffer, printer.CStr());
         // stbsp_sprintf(buffer, "%.1f", game->getSettings()->FPS.current);
         // game->getSettings()->FPS.entity.component<Text>()->setText(buffer);
         // game->getSettings()->FPS.entity.component<Text>()->makeTextures();

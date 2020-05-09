@@ -79,6 +79,29 @@ bool * Game::checkHitCrit(int hit_rate, int crit_rate, short unsigned int mode) 
     return (hitcrit);
 }
 
+void Game::makeTurntransition() {
+
+    if (transition.valid()) {
+        transition.destroy();
+    }
+
+    transition = entities.create();
+    transition.assign<Position>();
+    transition.assign<Sprite>();
+    transition.component<Sprite>()->hide();
+    SDL_Color white = {255, 255, 255};
+    transition.assign<Text>(settings.fontsize);
+    transition.component<Text>()->hide();
+    // transition.component<Sprite>()->setTexture("..//assets//textbox.png");
+    // transition.component<Sprite>()->setSrcrect(128, 128);
+    // transition.component<Sprite>()->setDestrect(128, 128);
+}
+
+void Game::setTurntransitiontext(unsigned char in_army) {
+    transition.component<Text>()->setText(armyNames[in_army]);
+
+}
+
 void Game::attack(Unit * attacker, Unit * defender) {
     SDL_Log("%s attacks %s\n", attacker->getName().c_str(), defender->getName().c_str());
     Combat_stats attacker_stats = attacker->getCombatStats();
@@ -179,30 +202,6 @@ void Game::makeMenutext(unsigned char in_menu_index) {
         SDL_Log("Menu %d is invalid", in_menu_index);
     }
 }
-
-void Game::makeTurntransition() {
-
-    if (transition.valid()) {
-        transition.destroy();
-    }
-
-    transition = entities.create();
-    transition.assign<Position>();
-    transition.assign<Sprite>();
-    transition.component<Sprite>()->hide();
-    SDL_Color white = {255, 255, 255};
-    transition.assign<Text>(settings.fontsize);
-    transition.component<Text>()->hide();
-    // transition.component<Sprite>()->setTexture("..//assets//textbox.png");
-    // transition.component<Sprite>()->setSrcrect(128, 128);
-    // transition.component<Sprite>()->setDestrect(128, 128);
-}
-
-void Game::setTurntransitiontext(unsigned char in_army) {
-    transition.component<Text>()->setText(armyNames[in_army]);
-
-}
-
 
 void Game::makeMenu(unsigned char in_menu_index) {
     SDL_Log("Making menu: %d", in_menu_index);

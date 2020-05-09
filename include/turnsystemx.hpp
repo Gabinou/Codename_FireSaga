@@ -13,13 +13,15 @@ private:
     std::queue<unsigned char> armies;
     entityx::ComponentHandle<Map> mapx;
     entityx::EventManager * event_manager;
-    entityx::Entity * transition;
+    entityx::Entity transition;
     bool check_frames = false;
     short unsigned int frames = 0;
 public:
     TurnSystemx();
     TurnSystemx(Game * in_game);
 
+    void makeTurntransition();
+    void setTurntransitiontext(unsigned char in_army);
     void addArmy(unsigned char in_army);
     void addArmies(std::vector<unsigned char> in_armies);
     unsigned char getArmyfront();
