@@ -109,7 +109,7 @@ void RenderSystemx::slideSprites(entityx::Entity * in_ent, short int * slidepos,
 
                     if ((objectivepos[0] == slidepos[0]) && (objectivepos[1] == slidepos[1])) {
                         position->setUpdatable(true);
-                        slideint = 0;
+                        // slideint = 0;
                         cursor_wait = 0.;
                     } else {
                         position->setUpdatable(false);
