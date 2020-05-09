@@ -69,6 +69,13 @@ void RenderSystemx::slideSprites(entityx::Entity * in_ent, short int * slidepos,
             gp_held = gamepad->getHeldmove();
         }
 
+        if ((kb_held > cursor_fasttime) || (gp_held > cursor_fasttime)) {
+            slide_step = 0.05; // fast
+            // SDL_Log("fast");
+        } else {
+            slide_step = 0.1; // slow
+        }
+
         if ((!keyboard) && (!gamepad)) {
             if (!position->isonTilemap()) { //move on the menu space
                 scalefactor[0] = 1;
@@ -88,16 +95,9 @@ void RenderSystemx::slideSprites(entityx::Entity * in_ent, short int * slidepos,
                     objectivepos[0] = (int)(position->getPos()[0]) * (scalefactor[0]) - destrect.w / 4;
                     objectivepos[1] = (int)(position->getPos()[1]) * (scalefactor[1]) - destrect.h / 4;
 
-                    // if ((gp_held > cursor_fasttime) || (kb_held > cursor_fasttime))  {
-                    //     slideint = 1;
-                    //     // slideint = 1;
-                    //     // SDL_Log("GOING FAST");
-                    // }
-
                     if (slide_wait > slide_step) {
                         if (objectivepos[0] != slidepos[0]) {
                             slidepos[0] += geometricslide((objectivepos[0] - slidepos[0]), slidefactors[0]);
-                            SDL_Log("Called");
                         }
 
                         if (objectivepos[1] != slidepos[1]) {
@@ -107,17 +107,12 @@ void RenderSystemx::slideSprites(entityx::Entity * in_ent, short int * slidepos,
                         slide_wait = 0.;
                     }
 
-                    // } else {
-                    //     slide_wait += dt;
-                    // }
-
-                    if ((objectivepos[0] == slidepos[0]) && (objectivepos[1] == slidepos[1]) && ((cursor_wait > cursor_deadtime))) {
+                    if ((objectivepos[0] == slidepos[0]) && (objectivepos[1] == slidepos[1])) {
                         position->setUpdatable(true);
                         slideint = 0;
                         cursor_wait = 0.;
                     } else {
                         position->setUpdatable(false);
-                        // cursor_wait += dt;
                     }
 
                     break;
@@ -237,7 +232,11 @@ void RenderSystemx::update(entityx::EntityManager & es, entityx::EventManager & 
 
         slide_wait += dt;
         cursor_wait += dt;
+
+        // if (cursor_fasttime > cursor_deadtime) {
+        // cursor_wait = 0.;
         slideSprites(&ent, slidepos, objectivepos, dt);
+        // }
 
         destrect.x = slidepos[0];
         destrect.y = slidepos[1];

@@ -63,6 +63,7 @@ int main(int argc, char * argv[]) {
 
         if ((elapsedSeconds * cap < 1) || (elapsedSeconds == 0)) {
             elapsedSeconds = 1. / (float)cap;
+            // SDL_Log("cap: %d", cap);
         }
 
         // SDL_Log("elapsedSeconds: %.3f", elapsedSeconds);
