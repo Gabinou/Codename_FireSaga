@@ -94,9 +94,10 @@ void RenderSystemx::slideSprites(entityx::Entity * in_ent, short int * slidepos,
                     //     // SDL_Log("GOING FAST");
                     // }
 
-                    if (slide_wait > slide_time) {
+                    if (slide_wait > slide_step) {
                         if (objectivepos[0] != slidepos[0]) {
                             slidepos[0] += geometricslide((objectivepos[0] - slidepos[0]), slidefactors[0]);
+                            SDL_Log("Called");
                         }
 
                         if (objectivepos[1] != slidepos[1]) {
