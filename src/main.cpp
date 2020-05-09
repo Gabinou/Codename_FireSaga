@@ -49,21 +49,17 @@ int main(int argc, char * argv[]) {
     firesaga->startTurnSystem();
     firesaga->loadCursor();
 
-    SDL_Log("Starting main game loop\n");
-
     float currentTime;
     float elapsedSeconds;
     short unsigned int cap = firesaga->getSettings()->FPS.cap;
     int delay;
+    SDL_Log("Starting main game loop\n");
 
     while (firesaga->running()) {
         elapsedSeconds = ((float)SDL_GetTicks() - currentTime) / 1000.;
 
-        // SDL_Log("elapsedSeconds: %.3f", elapsedSeconds);
-
         if ((elapsedSeconds * cap < 1.) || (elapsedSeconds == 0)) {
             delay = int ((1. / cap - elapsedSeconds) * 1000);
-            // SDL_Log("Delay: %d ms", delay);
             SDL_Delay(delay);
             elapsedSeconds = 1. / (float)cap;
         }
@@ -75,7 +71,6 @@ int main(int argc, char * argv[]) {
 
     firesaga->clean();
     return (0);
-
 }
 
 
