@@ -52,7 +52,7 @@ void RenderSystemx::slideSprites(entityx::Entity * in_ent, short int * slidepos,
         entityx::ComponentHandle<Position> position = in_ent->component<Position>();
         short int kb_held = 0;
         short int gp_held = 0;
-        short int slideint = sprite->getSlideint();
+        short int slide_int = sprite->getSlideint();
         unsigned char slidetype = sprite->getSlidetype();
         float * slidefactors = sprite->getSlidefactors();
         short int scalefactor[2];
@@ -67,16 +67,6 @@ void RenderSystemx::slideSprites(entityx::Entity * in_ent, short int * slidepos,
 
         if (gamepad) {
             gp_held = gamepad->getHeldmove();
-        }
-
-        if ((kb_held > cursor_fasttime) || (gp_held > cursor_fasttime)) {
-            slide_step = 0.000; // fast
-            // SDL_Log("fast");
-            slideint = 1;
-
-        } else {
-            slideint = 0;
-            slide_step = 0.01; // slow
         }
 
         if ((!keyboard) && (!gamepad)) {
@@ -95,16 +85,22 @@ void RenderSystemx::slideSprites(entityx::Entity * in_ent, short int * slidepos,
 
             switch (slidetype) {
                 case SLIDETYPE::GEOMETRIC: //for cursor mvt on mapx.
+                    if ((kb_held > cursor_fasttime) || (gp_held > cursor_fasttime)) {
+                        slide_int = 1;
+                    } else {
+                        slide_int = 0;
+                    }
+
                     objectivepos[0] = (int)(position->getPos()[0]) * (scalefactor[0]) - destrect.w / 4;
                     objectivepos[1] = (int)(position->getPos()[1]) * (scalefactor[1]) - destrect.h / 4;
 
                     if (slide_wait > slide_step) {
                         if (objectivepos[0] != slidepos[0]) {
-                            slidepos[0] += geometricslide((objectivepos[0] - slidepos[0]), slidefactors[slideint]);
+                            slidepos[0] += geometricslide((objectivepos[0] - slidepos[0]), slidefactors[slide_int]);
                         }
 
                         if (objectivepos[1] != slidepos[1]) {
-                            slidepos[1] += geometricslide((objectivepos[1] - slidepos[1]), slidefactors[slideint]);
+                            slidepos[1] += geometricslide((objectivepos[1] - slidepos[1]), slidefactors[slide_int]);
                         }
 
                         slide_wait = 0.;
@@ -112,7 +108,6 @@ void RenderSystemx::slideSprites(entityx::Entity * in_ent, short int * slidepos,
 
                     if ((objectivepos[0] == slidepos[0]) && (objectivepos[1] == slidepos[1])) {
                         position->setUpdatable(true);
-                        cursor_wait = 0.;
                     } else {
                         position->setUpdatable(false);
                     }
@@ -219,11 +214,6 @@ void RenderSystemx::update(entityx::EntityManager & es, entityx::EventManager & 
     }
 
     slide_wait += dt;
-    cursor_wait += dt;
-    // SDL_Log("cursor_wait: %.6f", cursor_wait);
-
-    // if (cursor_wait > cursor_deadtime) {
-    // SDL_Log("in");
 
     for (entityx::Entity ent : es.entities_with_components<KeyboardController>()) {
         entityx::ComponentHandle<Sprite> sprite = ent.component<Sprite>();
@@ -251,9 +241,6 @@ void RenderSystemx::update(entityx::EntityManager & es, entityx::EventManager & 
         sprite->setDestrect(destrect);
         sprite->draw();
     }
-
-    // cursor_wait = 0.;
-    // }
 
     SDL_RenderPresent(renderer);
 }
