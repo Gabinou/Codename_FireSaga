@@ -44,7 +44,7 @@ void RenderSystemx::setLinespace(const short int unsigned in_linespace) {
     linespace = in_linespace;
 }
 
-void RenderSystemx::slideSprites(entityx::Entity * in_ent, short int * slidepos, short int * objectivepos) {
+void RenderSystemx::slideSprites(entityx::Entity * in_ent, short int * slidepos, short int * objectivepos, double dt) {
     if (in_ent->valid()) {
         entityx::ComponentHandle<GamepadController> gamepad = in_ent->component<GamepadController>();
         entityx::ComponentHandle<KeyboardController> keyboard = in_ent->component<KeyboardController>();
@@ -88,23 +88,35 @@ void RenderSystemx::slideSprites(entityx::Entity * in_ent, short int * slidepos,
                     objectivepos[0] = (int)(position->getPos()[0]) * (scalefactor[0]) - destrect.w / 4;
                     objectivepos[1] = (int)(position->getPos()[1]) * (scalefactor[1]) - destrect.h / 4;
 
-                    if ((gp_held > DEFAULT::CURSOR_FAST) || (kb_held > DEFAULT::CURSOR_FAST))  {
-                        slideint = 1;
+                    // if ((gp_held > cursor_fasttime) || (kb_held > cursor_fasttime))  {
+                    //     slideint = 1;
+                    //     // slideint = 1;
+                    //     // SDL_Log("GOING FAST");
+                    // }
+
+                    if (slide_wait > slide_time) {
+                        if (objectivepos[0] != slidepos[0]) {
+                            slidepos[0] += geometricslide((objectivepos[0] - slidepos[0]), slidefactors[0]);
+                        }
+
+                        if (objectivepos[1] != slidepos[1]) {
+                            slidepos[1] += geometricslide((objectivepos[1] - slidepos[1]), slidefactors[0]);
+                        }
+
+                        slide_wait = 0.;
                     }
 
-                    if (objectivepos[0] != slidepos[0]) {
-                        slidepos[0] += geometricslide((objectivepos[0] - slidepos[0]), slidefactors[slideint]);
-                    }
+                    // } else {
+                    //     slide_wait += dt;
+                    // }
 
-                    if (objectivepos[1] != slidepos[1]) {
-                        slidepos[1] += geometricslide((objectivepos[1] - slidepos[1]), slidefactors[slideint]);
-                    }
-
-                    if ((objectivepos[0] == slidepos[0]) && (objectivepos[1] == slidepos[1]) && ((kb_held > DEFAULT::CURSOR_PAUSE) || (kb_held < 2)) && ((gp_held > DEFAULT::CURSOR_PAUSE) || (gp_held < 2))) {
+                    if ((objectivepos[0] == slidepos[0]) && (objectivepos[1] == slidepos[1]) && ((cursor_wait > cursor_deadtime))) {
                         position->setUpdatable(true);
                         slideint = 0;
+                        cursor_wait = 0.;
                     } else {
                         position->setUpdatable(false);
+                        // cursor_wait += dt;
                     }
 
                     break;
@@ -180,7 +192,7 @@ void RenderSystemx::update(entityx::EntityManager & es, entityx::EventManager & 
                 srcrect = loopSprites(sprite);
             }
 
-            slideSprites(&ent, slidepos, objectivepos);
+            slideSprites(&ent, slidepos, objectivepos, dt);
 
             destrect.x = slidepos[0];
             destrect.y = slidepos[1];
@@ -208,8 +220,6 @@ void RenderSystemx::update(entityx::EntityManager & es, entityx::EventManager & 
         text->draw();
     }
 
-    cursor_wait += dt;
-
     for (entityx::Entity ent : es.entities_with_components<KeyboardController>()) {
         entityx::ComponentHandle<Sprite> sprite = ent.component<Sprite>();
 
@@ -224,11 +234,9 @@ void RenderSystemx::update(entityx::EntityManager & es, entityx::EventManager & 
             srcrect = loopSprites(sprite);
         }
 
-
-        if (cursor_wait > cursor_deadtime) {
-            slideSprites(&ent, slidepos, objectivepos);
-            cursor_wait = 0.;
-        }
+        slide_wait += dt;
+        cursor_wait += dt;
+        slideSprites(&ent, slidepos, objectivepos, dt);
 
         destrect.x = slidepos[0];
         destrect.y = slidepos[1];

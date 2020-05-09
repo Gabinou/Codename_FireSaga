@@ -21,7 +21,10 @@ private:
     entityx::ComponentHandle<Map> mapx;
     double frame_count = 0.;
     double last_update = 0.;
-    float cursor_deadtime = 1.;
+    float slide_time = 0.15;
+    float slide_wait = 0;
+    float cursor_deadtime = 0.5;
+    float cursor_fasttime = 1.5;
     float cursor_wait = 0.;
 public:
     RenderSystemx();
@@ -32,7 +35,7 @@ public:
     void setTilesize(const short int unsigned width, const short int unsigned height);
     void setLinespace(const short int unsigned in_linespace);
     SDL_Rect loopSprites(entityx::ComponentHandle<Sprite> in_sprite);
-    void slideSprites(entityx::Entity * in_ent, short int * slidepos, short int * objectivepos);
+    void slideSprites(entityx::Entity * in_ent, short int * slidepos, short int * objectivepos, double dt);
 
     void configure(entityx::EventManager & event_manager);
     void receive(const turnBegin & begin);
