@@ -15,7 +15,6 @@ Game * firesaga = nullptr;
 Settings settings;
 
 int main(int argc, char * argv[]) {
-    // freopen("log.txt", "w+", stdout);
     fclose(fopen(LOGFILE, "w"));
     SDL_LogSetOutputFunction(&FILESYSTEM::log, NULL);
     SDL_Log("Starting project codename FireSaga\n");
@@ -33,9 +32,10 @@ int main(int argc, char * argv[]) {
     SDL_Log("Loading base weapons");
     baseWeapons();
 
-    settings.FPS.show = false;
+    settings.FPS.show = true;
     settings.fontsize = 28;
-    settings.FPS.cap = 120;
+    settings.FPS.cap = 60;
+
     SDL_Log("Creating game\n");
     firesaga = new Game(settings);
     firesaga->makeUnits(0);
