@@ -48,26 +48,18 @@ int main(int argc, char * argv[]) {
     firesaga->startTurnSystem();
     firesaga->loadCursor();
 
-    // std::chrono::system_clock::time_point frame_start, frame_end;
-    // int frame_time;
-    // char buffer[15];
     SDL_Log("Starting main game loop\n");
 
-    float lastTime = 0.;
-    float currentTime = 0.;
+    float lastTime = (float)SDL_GetTicks();
+    float currentTime = (float)SDL_GetTicks();
     float elapsedSeconds;
-    // unsigned int lastTime = 0, currentTime;
 
     while (firesaga->running()) {
         firesaga->handleEvents();
-        // frame_start = std::chrono::high_resolution_clock::now();
         currentTime = (float)SDL_GetTicks();
-        // elapsedSeconds = std::chrono::duration_cast<std::chrono::duration<float>>(frame_start - frame_end).count();
         elapsedSeconds = (currentTime - lastTime) / 1000.;
         SDL_Log("elapsedSeconds: %.3f", elapsedSeconds);
-        // SDL_Log("elapsedms: %d", );
         firesaga->update(elapsedSeconds);
-        // frame_end = std::chrono::high_resolution_clock::now();
         lastTime = (float)SDL_GetTicks();
     }
 
