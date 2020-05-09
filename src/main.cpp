@@ -51,14 +51,12 @@ int main(int argc, char * argv[]) {
 
     SDL_Log("Starting main game loop\n");
 
-    float lastTime = (float)SDL_GetTicks();
-    float currentTime = (float)SDL_GetTicks();
+    float currentTime;
     float elapsedSeconds;
     short unsigned int cap = firesaga->getSettings()->FPS.cap;
     int delay;
 
     while (firesaga->running()) {
-        // currentTime = ;
         elapsedSeconds = ((float)SDL_GetTicks() - currentTime) / 1000.;
 
         // SDL_Log("elapsedSeconds: %.3f", elapsedSeconds);
