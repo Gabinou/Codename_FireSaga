@@ -26,6 +26,9 @@ class Game : public entityx::EntityX, public entityx::Receiver<Game> {
 private:
     entityx::Entity mapEntx;
     entityx::Entity cursorx;
+    entityx::Entity transition;
+    entityx::Entity fps;
+
     short int cursor_lastpos[2] = {6, 6};
     entityx::ComponentHandle<Map> mapx;
     std::unordered_map<unsigned char, entityx::Entity> menus;

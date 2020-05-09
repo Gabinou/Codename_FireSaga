@@ -11,15 +11,18 @@
 class RenderSystemx: public entityx::System<RenderSystemx>, public entityx::Receiver<RenderSystemx> {
     // I think the rendering system needs a way to buffer/transition animations. So that everything doesn't just appear suddenly.
 private:
+    Game * game;
     SDL_Renderer * renderer = NULL;
     short unsigned int * tilesize;
     short unsigned int linespace;
     short int offset[2];
     entityx::EventManager * event_manager;
     entityx::ComponentHandle<Map> mapx;
+    double frame_count = 0.0;
+    double last_update = 0.0;
 public:
     RenderSystemx();
-    RenderSystemx(SDL_Renderer * in_renderer);
+    RenderSystemx(SDL_Renderer * in_renderer, Game * in_game);
 
     void setRenderer(SDL_Renderer * in_renderer);
     void setMap(entityx::ComponentHandle<Map> in_map);

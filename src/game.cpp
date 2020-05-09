@@ -181,7 +181,7 @@ void Game::makeMenutext(unsigned char in_menu_index) {
 }
 
 void Game::makeTurntransition() {
-    
+
     if (transition.valid()) {
         transition.destroy();
     }
@@ -198,7 +198,7 @@ void Game::makeTurntransition() {
     // transition.component<Sprite>()->setDestrect(128, 128);
 }
 
-void setTurntransitiontext(unsigned char in_army) {
+void Game::setTurntransitiontext(unsigned char in_army) {
     transition.component<Text>()->setText(armyNames[in_army]);
 
 }
@@ -591,7 +591,7 @@ void Game::init() {
         isRunning = false;
     }
 
-    systems.add<RenderSystemx>(renderer);
+    systems.add<RenderSystemx>(renderer, this);
     systems.add<ControlSystemx>(this);
     systems.add<UnitSystemx>(this);
     systems.add<TurnSystemx>(this);

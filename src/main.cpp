@@ -8,7 +8,6 @@
 * |          '-._.-'         |   |                                   |
 * |        Made by Gabriel Taillon                                   |
 * --------------------------------------------------------------------*/
-#include <chrono>
 #include "text.hpp"
 #include "game.hpp"
 
@@ -49,40 +48,27 @@ int main(int argc, char * argv[]) {
     firesaga->startTurnSystem();
     firesaga->loadCursor();
 
-    std::chrono::system_clock::time_point frame_start, frame_end, frame_middle;
-    int frame_time;
-    char buffer[15];
+    // std::chrono::system_clock::time_point frame_start, frame_end;
+    // int frame_time;
+    // char buffer[15];
     SDL_Log("Starting main game loop\n");
 
+    float lastTime = 0.;
+    float currentTime = 0.;
+    float elapsedSeconds;
+    // unsigned int lastTime = 0, currentTime;
+
     while (firesaga->running()) {
-        frame_start = std::chrono::high_resolution_clock::now();
         firesaga->handleEvents();
-        firesaga->update(0.001);
-        frame_middle = std::chrono::high_resolution_clock::now();
-
-        frame_time = (int)(std::chrono::duration_cast<std::chrono::nanoseconds>(frame_middle - frame_start).count() / 1E6);
-
-        if (firesaga->getSettings()->FPS.frame_delay > frame_time) {
-            SDL_Delay(firesaga->getSettings()->FPS.frame_delay - frame_time);
-        }
-
-        frame_end = std::chrono::high_resolution_clock::now();
-
-        if (firesaga->getSettings()->FPS.show) {
-            settings = *firesaga->getSettings();
-            settings.FPS.current = (1E9 / std::chrono::duration_cast<std::chrono::nanoseconds>(frame_end - frame_start).count());
-            settings.FPS.held++;
-            firesaga->setSettings(settings);
-
-            if (firesaga->getSettings()->FPS.held == 4) {
-                sprintf(buffer, "%.1f", firesaga->getSettings()->FPS.current);
-                firesaga->getSettings()->FPS.entity.component<Text>()->setText(buffer);
-                firesaga->getSettings()->FPS.entity.component<Text>()->makeTextures();
-                settings = *firesaga->getSettings();
-                settings.FPS.held = 0;
-                firesaga->setSettings(settings);
-            }
-        }
+        // frame_start = std::chrono::high_resolution_clock::now();
+        currentTime = (float)SDL_GetTicks();
+        // elapsedSeconds = std::chrono::duration_cast<std::chrono::duration<float>>(frame_start - frame_end).count();
+        elapsedSeconds = (currentTime - lastTime) / 1000.;
+        SDL_Log("elapsedSeconds: %.3f", elapsedSeconds);
+        // SDL_Log("elapsedms: %d", );
+        firesaga->update(elapsedSeconds);
+        // frame_end = std::chrono::high_resolution_clock::now();
+        lastTime = (float)SDL_GetTicks();
     }
 
     firesaga->clean();

@@ -1,5 +1,10 @@
 
 #include "rendersystemx.hpp"
+// #ifndef STB_SPRINTF_IMPLEMENTATION
+// #define STB_SPRINTF_IMPLEMENTATION
+#include "stb_sprintf.h"
+// #endif /* STB_SPRINTF_IMPLEMENTATION */
+
 
 void RenderSystemx::setRenderer(SDL_Renderer * in_renderer) {
     if (in_renderer) {
@@ -15,8 +20,9 @@ RenderSystemx::RenderSystemx() {
     offset[1] = DEFAULT::TILEMAP_YOFFSET;
 }
 
-RenderSystemx::RenderSystemx(SDL_Renderer * in_renderer) {
+RenderSystemx::RenderSystemx(SDL_Renderer * in_renderer, Game * in_game) {
     setRenderer(in_renderer);
+    game = in_game;
 }
 
 void RenderSystemx::setMap(entityx::ComponentHandle<Map> in_map) {
@@ -138,6 +144,20 @@ SDL_Rect RenderSystemx::loopSprites(entityx::ComponentHandle<Sprite> in_sprite) 
 
 void RenderSystemx::update(entityx::EntityManager & es, entityx::EventManager & events, entityx::TimeDelta dt) {
     SDL_RenderClear(renderer);
+
+    last_update += dt;
+    frame_count++;
+
+    if ((last_update >= 0.5) && (game->getSettings()->FPS.show)) {
+        // Settings * settings = game->getSettings();
+        // const float current = last_update / frame_count;
+        // settings->FPS.current  = current;
+        // game->setSettings(settings);
+        // // stbsp_sprintf(longbuffer, printer.CStr());
+        // stbsp_sprintf(buffer, "%.1f", game->getSettings()->FPS.current);
+        // game->getSettings()->FPS.entity.component<Text>()->setText(buffer);
+        // game->getSettings()->FPS.entity.component<Text>()->makeTextures();
+    }
 
     for (entityx::Entity ent : es.entities_with_components<Map>()) {
         entityx::ComponentHandle<Map> mapx = ent.component<Map>();
