@@ -72,7 +72,7 @@ void RenderSystemx::slideSprites(entityx::Entity * in_ent, short int * slidepos,
         if ((!keyboard) && (!gamepad)) {
             if (!position->isonTilemap()) { //move on the menu space
                 scalefactor[0] = 1;
-                scalefactor[1] = 1 ;
+                scalefactor[1] = 1;
             }
 
             slidepos[0] = (int)(position->getPos()[0] * scalefactor[0]);
@@ -145,10 +145,10 @@ SDL_Rect RenderSystemx::loopSprites(entityx::ComponentHandle<Sprite> in_sprite) 
 
 void RenderSystemx::update(entityx::EntityManager & es, entityx::EventManager & events, entityx::TimeDelta dt) {
     SDL_RenderClear(renderer);
+    last_update += dt;
+    frame_count++;
 
     if (game->getSettings()->FPS.show) {
-        last_update += dt;
-        frame_count++;
 
         if (last_update >= 0.5) {
             Settings * settings = game->getSettings();
@@ -208,6 +208,8 @@ void RenderSystemx::update(entityx::EntityManager & es, entityx::EventManager & 
         text->draw();
     }
 
+    cursor_wait += dt;
+
     for (entityx::Entity ent : es.entities_with_components<KeyboardController>()) {
         entityx::ComponentHandle<Sprite> sprite = ent.component<Sprite>();
 
@@ -222,7 +224,11 @@ void RenderSystemx::update(entityx::EntityManager & es, entityx::EventManager & 
             srcrect = loopSprites(sprite);
         }
 
-        slideSprites(&ent, slidepos, objectivepos);
+
+        if (cursor_wait > cursor_deadtime) {
+            slideSprites(&ent, slidepos, objectivepos);
+            cursor_wait = 0.;
+        }
 
         destrect.x = slidepos[0];
         destrect.y = slidepos[1];

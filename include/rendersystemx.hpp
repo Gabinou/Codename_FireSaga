@@ -21,6 +21,8 @@ private:
     entityx::ComponentHandle<Map> mapx;
     double frame_count = 0.;
     double last_update = 0.;
+    float cursor_deadtime = 1.;
+    float cursor_wait = 0.;
 public:
     RenderSystemx();
     RenderSystemx(SDL_Renderer * in_renderer, Game * in_game);

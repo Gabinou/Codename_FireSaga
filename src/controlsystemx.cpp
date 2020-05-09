@@ -269,7 +269,6 @@ void ControlSystemx::update(entityx::EntityManager & es, entityx::EventManager &
     entityx::Entity cursorent;
     last_update += dt;
 
-
     for (entityx::Entity ent : es.entities_with_components<Map>()) {
         unitmap = ent.component<Map>()->getUnitmap();
     }
