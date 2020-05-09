@@ -118,21 +118,21 @@ void Game::fight(Unit * attacker, Unit * defender) {
 void Game::makeFPSEntity() {
     SDL_Log("Making FPS entity");
 
-    if (settings.FPS.entity.valid()) {
+    if (fps.valid()) {
         SDL_Log("Destroying old FPS entity");
-        settings.FPS.entity.destroy();
+        fps.destroy();
     }
 
-    settings.FPS.entity = entities.create();
-    settings.FPS.entity.assign<Position>();
-    settings.FPS.entity.component<Position>()->setBounds(0, settings.res.x, 0, settings.res.y);
-    settings.FPS.entity.component<Position>()->setPos(settings.FPS.pos.x, settings.FPS.pos.y);
-    settings.FPS.entity.assign<Text>(settings.fontsize);
-    settings.FPS.entity.component<Text>()->setText("60");
-    settings.FPS.entity.component<Text>()->setColor(settings.FPS.textcolor);
-    settings.FPS.entity.component<Text>()->setSizefactor(settings.FPS.sizefactor);
-    settings.FPS.entity.component<Text>()->makeTextures();
-    settings.FPS.entity.component<Text>()->setRects(settings.FPS.pos.x, settings.FPS.pos.y);
+    fps = entities.create();
+    fps.assign<Position>();
+    fps.component<Position>()->setBounds(0, settings.res.x, 0, settings.res.y);
+    fps.component<Position>()->setPos(settings.FPS.pos.x, settings.FPS.pos.y);
+    fps.assign<Text>(settings.fontsize);
+    fps.component<Text>()->setText("60");
+    fps.component<Text>()->setColor(settings.FPS.textcolor);
+    fps.component<Text>()->setSizefactor(settings.FPS.sizefactor);
+    fps.component<Text>()->makeTextures();
+    fps.component<Text>()->setRects(settings.FPS.pos.x, settings.FPS.pos.y);
 }
 
 void Game::killMenu(short unsigned int index) {

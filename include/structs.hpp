@@ -169,7 +169,7 @@ struct Fps {
     unsigned char frame_delay = 1000 / cap;
     SDL_Color textcolor = {0, 0, 0};
     float current = 60.0;
-    entityx::Entity entity;
+    // entityx::Entity entity;
 };
 
 struct Settings {
