@@ -35,7 +35,7 @@ int main(int argc, char * argv[]) {
 
     settings.FPS.show = false;
     settings.fontsize = 28;
-    settings.FPS.cap = 120;
+    settings.FPS.cap = 60;
     SDL_Log("Creating game\n");
     firesaga = new Game(settings);
     firesaga->makeUnits(0);
@@ -55,20 +55,24 @@ int main(int argc, char * argv[]) {
     float currentTime = (float)SDL_GetTicks();
     float elapsedSeconds;
     short unsigned int cap = firesaga->getSettings()->FPS.cap;
+    int delay;
 
     while (firesaga->running()) {
-        firesaga->handleEvents();
-        currentTime = (float)SDL_GetTicks();
-        elapsedSeconds = (currentTime - lastTime) / 1000.;
-
-        if ((elapsedSeconds * cap < 1) || (elapsedSeconds == 0)) {
-            elapsedSeconds = 1. / (float)cap;
-            // SDL_Log("cap: %d", cap);
-        }
+        // currentTime = ;
+        elapsedSeconds = ((float)SDL_GetTicks() - currentTime) / 1000.;
 
         // SDL_Log("elapsedSeconds: %.3f", elapsedSeconds);
+
+        if ((elapsedSeconds * cap < 1.) || (elapsedSeconds == 0)) {
+            delay = int ((1. / cap - elapsedSeconds) * 1000);
+            // SDL_Log("Delay: %d ms", delay);
+            SDL_Delay(delay);
+            elapsedSeconds = 1. / (float)cap;
+        }
+
+        currentTime = (float)SDL_GetTicks();
+        firesaga->handleEvents();
         firesaga->update(elapsedSeconds);
-        lastTime = (float)SDL_GetTicks();
     }
 
     firesaga->clean();

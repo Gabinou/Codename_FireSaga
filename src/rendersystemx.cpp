@@ -70,10 +70,9 @@ void RenderSystemx::slideSprites(entityx::Entity * in_ent, short int * slidepos,
         }
 
         if ((kb_held > cursor_fasttime) || (gp_held > cursor_fasttime)) {
-            slide_step = 0.05; // fast
-            // SDL_Log("fast");
+            slide_step = 0.005; // fast
         } else {
-            slide_step = 0.1; // slow
+            slide_step = 0.01; // slow
         }
 
         if ((!keyboard) && (!gamepad)) {
@@ -176,9 +175,9 @@ void RenderSystemx::update(entityx::EntityManager & es, entityx::EventManager & 
     }
 
     for (entityx::Entity ent : es.entities_with_components<Sprite, Position>()) {
-        entityx::ComponentHandle<Sprite> sprite = ent.component<Sprite>();
 
-        if (!ent.has_component<Text>()) {
+        if (!ent.has_component<Text>() && !ent.has_component<KeyboardController>() && !ent.has_component<GamepadController>()) {
+            entityx::ComponentHandle<Sprite> sprite = ent.component<Sprite>();
             short int * slidepos = sprite->getSlidepos();
             short int * objectivepos = sprite->getObjpos();
             SDL_Rect srcrect = sprite->getSrcrect();
@@ -216,6 +215,13 @@ void RenderSystemx::update(entityx::EntityManager & es, entityx::EventManager & 
         text->draw();
     }
 
+    slide_wait += dt;
+    cursor_wait += dt;
+    // SDL_Log("cursor_wait: %.6f", cursor_wait);
+
+    // if (cursor_wait > cursor_deadtime) {
+    // SDL_Log("in");
+
     for (entityx::Entity ent : es.entities_with_components<KeyboardController>()) {
         entityx::ComponentHandle<Sprite> sprite = ent.component<Sprite>();
 
@@ -230,13 +236,8 @@ void RenderSystemx::update(entityx::EntityManager & es, entityx::EventManager & 
             srcrect = loopSprites(sprite);
         }
 
-        slide_wait += dt;
-        cursor_wait += dt;
 
-        // if (cursor_fasttime > cursor_deadtime) {
-        // cursor_wait = 0.;
         slideSprites(&ent, slidepos, objectivepos, dt);
-        // }
 
         destrect.x = slidepos[0];
         destrect.y = slidepos[1];
@@ -247,6 +248,9 @@ void RenderSystemx::update(entityx::EntityManager & es, entityx::EventManager & 
         sprite->setDestrect(destrect);
         sprite->draw();
     }
+
+    // cursor_wait = 0.;
+    // }
 
     SDL_RenderPresent(renderer);
 }
