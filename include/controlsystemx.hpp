@@ -21,7 +21,7 @@ private:
     entityx::EventManager * event_manager;
     std::vector<std::vector<entityx::ComponentHandle<Unit>>> unitmap;
     entityx::ComponentHandle<Unit> selected;
-
+    double last_update = 0.;
 public:
     ControlSystemx();
     ControlSystemx(Game * in_game);

@@ -146,18 +146,20 @@ SDL_Rect RenderSystemx::loopSprites(entityx::ComponentHandle<Sprite> in_sprite) 
 void RenderSystemx::update(entityx::EntityManager & es, entityx::EventManager & events, entityx::TimeDelta dt) {
     SDL_RenderClear(renderer);
 
-    last_update += dt;
-    frame_count++;
-    char buffer[DEFAULT::BUFFER_SIZE];
+    if (game->getSettings()->FPS.show) {
+        last_update += dt;
+        frame_count++;
 
-    if ((last_update >= 0.5) && (game->getSettings()->FPS.show)) {
-        Settings * settings = game->getSettings();
-        const float current = frame_count / last_update;
-        stbsp_sprintf(buffer, "%.1f", current);
-        fps->component<Text>()->setText(buffer);
-        fps->component<Text>()->makeTextures();
-        last_update = 0.;
-        frame_count = 0.;
+        if (last_update >= 0.5) {
+            Settings * settings = game->getSettings();
+            const float current = frame_count / last_update;
+            char buffer[DEFAULT::BUFFER_SIZE];
+            stbsp_sprintf(buffer, "%.1f", current);
+            fps->component<Text>()->setText(buffer);
+            fps->component<Text>()->makeTextures();
+            last_update = 0.;
+            frame_count = 0.;
+        }
     }
 
     for (entityx::Entity ent : es.entities_with_components<Map>()) {
