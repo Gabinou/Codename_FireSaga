@@ -164,11 +164,7 @@ struct Fps {
     bool show = false;
     float sizefactor[2] = {0.5, 0.5};
     unsigned char cap = 60;
-    unsigned char hold = 4;
-    unsigned char held = 0;
-    unsigned char frame_delay = 1000 / cap;
     SDL_Color textcolor = {0, 0, 0};
-    float current = 60.0;
 };
 
 struct Settings {

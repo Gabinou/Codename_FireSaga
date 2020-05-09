@@ -23,6 +23,7 @@ RenderSystemx::RenderSystemx() {
 RenderSystemx::RenderSystemx(SDL_Renderer * in_renderer, Game * in_game) {
     setRenderer(in_renderer);
     game = in_game;
+    fps = in_game->getFPS();
 }
 
 void RenderSystemx::setMap(entityx::ComponentHandle<Map> in_map) {
@@ -147,14 +148,20 @@ void RenderSystemx::update(entityx::EntityManager & es, entityx::EventManager & 
 
     last_update += dt;
     frame_count++;
+    char buffer[DEFAULT::BUFFER_SIZE];
+
+    SDL_Log("Not yet updating FPS");
 
     if ((last_update >= 0.5) && (game->getSettings()->FPS.show)) {
+        SDL_Log("Updating FPS");
         Settings * settings = game->getSettings();
-        const float current = last_update / frame_count;
-        // game->setSettings(settings);
-        // stbsp_sprintf(buffer, "%.1f", game->getSettings()->FPS.current);
-        // game->getSettings()->FPS.entity.component<Text>()->setText(buffer);
-        // game->getSettings()->FPS.entity.component<Text>()->makeTextures();
+        SDL_Log("last_update: %.4f frame_count: %f", last_update, frame_count);
+        const float current = frame_count / last_update;
+        stbsp_sprintf(buffer, "%.1f", current);
+        fps->component<Text>()->setText(buffer);
+        fps->component<Text>()->makeTextures();
+        last_update = 0.;
+        frame_count = 0.;
     }
 
     for (entityx::Entity ent : es.entities_with_components<Map>()) {

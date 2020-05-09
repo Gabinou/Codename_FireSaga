@@ -138,7 +138,11 @@ void Game::fight(Unit * attacker, Unit * defender) {
     }
 }
 
-void Game::makeFPSEntity() {
+entityx::Entity * Game::getFPS() {
+    return (&fps);
+}
+
+void Game::makeFPS() {
     SDL_Log("Making FPS entity");
 
     if (fps.valid()) {

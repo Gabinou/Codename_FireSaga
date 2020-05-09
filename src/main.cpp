@@ -38,7 +38,7 @@ int main(int argc, char * argv[]) {
     SDL_Log("Creating game\n");
     firesaga = new Game(settings);
     firesaga->makeUnits(0);
-    firesaga->makeFPSEntity();
+    firesaga->makeFPS();
     firesaga->loadMap(0);
 
     std::vector<short unsigned int> unit_inds = {UNIT::NAME::SILOU};
@@ -53,11 +53,17 @@ int main(int argc, char * argv[]) {
     float lastTime = (float)SDL_GetTicks();
     float currentTime = (float)SDL_GetTicks();
     float elapsedSeconds;
+    short unsigned int cap = firesaga->getSettings()->FPS.cap;
 
     while (firesaga->running()) {
         firesaga->handleEvents();
         currentTime = (float)SDL_GetTicks();
         elapsedSeconds = (currentTime - lastTime) / 1000.;
+
+        if ((elapsedSeconds * cap < 1) || (elapsedSeconds == 0)) {
+            elapsedSeconds = 1. / (float)cap;
+        }
+
         // SDL_Log("elapsedSeconds: %.3f", elapsedSeconds);
         firesaga->update(elapsedSeconds);
         lastTime = (float)SDL_GetTicks();

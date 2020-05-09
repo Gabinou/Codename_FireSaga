@@ -13,14 +13,14 @@ class RenderSystemx: public entityx::System<RenderSystemx>, public entityx::Rece
 private:
     Game * game;
     SDL_Renderer * renderer = NULL;
-    entityx::Entity transition;
+    entityx::Entity * fps;
     short unsigned int * tilesize;
     short unsigned int linespace;
     short int offset[2];
     entityx::EventManager * event_manager;
     entityx::ComponentHandle<Map> mapx;
-    double frame_count = 0.0;
-    double last_update = 0.0;
+    double frame_count = 0.;
+    double last_update = 0.;
 public:
     RenderSystemx();
     RenderSystemx(SDL_Renderer * in_renderer, Game * in_game);

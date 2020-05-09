@@ -99,7 +99,8 @@ public:
     bool checkRate(int crit_rate, short unsigned int mode = 2);
     bool * checkHitCrit(int hit_rate, int crit_rate, short unsigned int mode = GAME::RN::GAUSSIAN);
 
-    void makeFPSEntity();
+    void makeFPS();
+    entityx::Entity * getFPS();
 
     Settings * getSettings();
     void setSettings(Settings);
