@@ -33,7 +33,7 @@ int main(int argc, char * argv[]) {
     SDL_Log("Loading base weapons");
     baseWeapons();
 
-    settings.FPS.show = true;
+    settings.FPS.show = false;
     settings.fontsize = 28;
     settings.FPS.cap = 120;
     SDL_Log("Creating game\n");

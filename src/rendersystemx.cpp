@@ -150,12 +150,8 @@ void RenderSystemx::update(entityx::EntityManager & es, entityx::EventManager & 
     frame_count++;
     char buffer[DEFAULT::BUFFER_SIZE];
 
-    SDL_Log("Not yet updating FPS");
-
     if ((last_update >= 0.5) && (game->getSettings()->FPS.show)) {
-        SDL_Log("Updating FPS");
         Settings * settings = game->getSettings();
-        SDL_Log("last_update: %.4f frame_count: %f", last_update, frame_count);
         const float current = frame_count / last_update;
         stbsp_sprintf(buffer, "%.1f", current);
         fps->component<Text>()->setText(buffer);

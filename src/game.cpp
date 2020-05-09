@@ -160,6 +160,11 @@ void Game::makeFPS() {
     fps.component<Text>()->setSizefactor(settings.FPS.sizefactor);
     fps.component<Text>()->makeTextures();
     fps.component<Text>()->setRects(settings.FPS.pos.x, settings.FPS.pos.y);
+
+    if (!settings.FPS.show) {
+        // fps.component<Sprite>()->hide();
+        fps.component<Text>()->hide();
+    }
 }
 
 void Game::killMenu(short unsigned int index) {
