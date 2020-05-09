@@ -35,7 +35,7 @@ int main(int argc, char * argv[]) {
 
     settings.FPS.show = false;
     settings.fontsize = 28;
-    settings.FPS.cap = 60;
+    settings.FPS.cap = 120;
     SDL_Log("Creating game\n");
     firesaga = new Game(settings);
     firesaga->makeUnits(0);

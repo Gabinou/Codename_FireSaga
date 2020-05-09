@@ -69,11 +69,12 @@ void RenderSystemx::slideSprites(entityx::Entity * in_ent, short int * slidepos,
             gp_held = gamepad->getHeldmove();
         }
 
-        if ((kb_held > cursor_fasttime) || (gp_held > cursor_fasttime)) {
-            slide_step = 0.005; // fast
-        } else {
-            slide_step = 0.01; // slow
-        }
+        // if ((kb_held > cursor_fasttime) || (gp_held > cursor_fasttime)) {
+        //     slide_step = 0; // fast
+        //     SDL_Log("fast");
+        // } else {
+        //     slide_step = 0.01; // slow
+        // }
 
         if ((!keyboard) && (!gamepad)) {
             if (!position->isonTilemap()) { //move on the menu space
