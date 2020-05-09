@@ -21,10 +21,12 @@ private:
     entityx::ComponentHandle<Map> mapx;
     double frame_count = 0.;
     double last_update = 0.;
-    float slide_step = 0.01; // slow
+    // float slide_step = 0.0025; // fast
+    // float slide_step = 0.0025; // slow
+    float slide_step;
     float slide_wait = 0;
     float cursor_deadtime = 1.5;
-    float cursor_fasttime = 0.5;
+    float cursor_fasttime = 0.2;
     float cursor_wait = 0.;
 public:
     RenderSystemx();

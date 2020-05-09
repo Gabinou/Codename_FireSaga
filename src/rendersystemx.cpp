@@ -69,12 +69,15 @@ void RenderSystemx::slideSprites(entityx::Entity * in_ent, short int * slidepos,
             gp_held = gamepad->getHeldmove();
         }
 
-        // if ((kb_held > cursor_fasttime) || (gp_held > cursor_fasttime)) {
-        //     slide_step = 0; // fast
-        //     SDL_Log("fast");
-        // } else {
-        //     slide_step = 0.01; // slow
-        // }
+        if ((kb_held > cursor_fasttime) || (gp_held > cursor_fasttime)) {
+            slide_step = 0.000; // fast
+            // SDL_Log("fast");
+            slideint = 1;
+
+        } else {
+            slideint = 0;
+            slide_step = 0.01; // slow
+        }
 
         if ((!keyboard) && (!gamepad)) {
             if (!position->isonTilemap()) { //move on the menu space
@@ -97,11 +100,11 @@ void RenderSystemx::slideSprites(entityx::Entity * in_ent, short int * slidepos,
 
                     if (slide_wait > slide_step) {
                         if (objectivepos[0] != slidepos[0]) {
-                            slidepos[0] += geometricslide((objectivepos[0] - slidepos[0]), slidefactors[0]);
+                            slidepos[0] += geometricslide((objectivepos[0] - slidepos[0]), slidefactors[slideint]);
                         }
 
                         if (objectivepos[1] != slidepos[1]) {
-                            slidepos[1] += geometricslide((objectivepos[1] - slidepos[1]), slidefactors[0]);
+                            slidepos[1] += geometricslide((objectivepos[1] - slidepos[1]), slidefactors[slideint]);
                         }
 
                         slide_wait = 0.;
@@ -109,7 +112,6 @@ void RenderSystemx::slideSprites(entityx::Entity * in_ent, short int * slidepos,
 
                     if ((objectivepos[0] == slidepos[0]) && (objectivepos[1] == slidepos[1])) {
                         position->setUpdatable(true);
-                        // slideint = 0;
                         cursor_wait = 0.;
                     } else {
                         position->setUpdatable(false);
