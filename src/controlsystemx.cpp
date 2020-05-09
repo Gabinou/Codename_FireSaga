@@ -308,7 +308,7 @@ void ControlSystemx::update(entityx::EntityManager & es, entityx::EventManager &
         if (keyboard->is_pressed(kb_state, keyboardInputMap.accept)) {
             pressed_button.push_back(keyboardInputMap.accept);
 
-            if (keyboard->getHeldbutton() == 1) {
+            if (keyboard->getHeldbutton() > min_held) {
                 events.emit<inputAccept>(keyboard);
             }
         }
@@ -316,13 +316,13 @@ void ControlSystemx::update(entityx::EntityManager & es, entityx::EventManager &
         if (keyboard->is_pressed(kb_state, keyboardInputMap.cancel)) {
             pressed_button.push_back(keyboardInputMap.cancel);
 
-            if (keyboard->getHeldbutton() == 1) {
+            if (keyboard->getHeldbutton() > min_held) {
                 events.emit<inputCancel>(keyboard);
             }
         }
 
-        keyboard->check_move(pressed_move);
-        keyboard->check_button(pressed_button);
+        keyboard->check_move(pressed_move, dt);
+        keyboard->check_button(pressed_button, dt);
     }
 
     for (entityx::Entity ent : es.entities_with_components<GamepadController, Position>()) {
@@ -384,7 +384,7 @@ void ControlSystemx::update(entityx::EntityManager & es, entityx::EventManager &
             // SDL_Log("Gamepad pressed accept.");
             pressed_button.push_back(gamepadInputMap.accept);
 
-            if (gamepad->getHeldbutton() == 1) {
+            if (gamepad->getHeldbutton() > min_held) {
                 events.emit<inputAccept>(gamepad);
             }
         }
@@ -393,13 +393,13 @@ void ControlSystemx::update(entityx::EntityManager & es, entityx::EventManager &
         if (gamepad->isPressed(gamepadInputMap.cancel)) {
             pressed_button.push_back(gamepadInputMap.cancel);
 
-            if (gamepad->getHeldbutton() == 1) {
+            if (gamepad->getHeldbutton() > min_held) {
                 events.emit<inputCancel>(gamepad);
             }
         }
 
-        gamepad->check_move(pressed_move);
-        gamepad->check_button(pressed_button);
+        gamepad->check_move(pressed_move, dt);
+        gamepad->check_button(pressed_button, dt);
 
     }
 

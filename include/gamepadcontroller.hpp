@@ -13,8 +13,11 @@ private:
     int joystick_dead_zone = 8000;
     std::vector<short unsigned int> held_move;
     std::vector<std::vector<SDL_GameControllerButton>> held_button;
-    unsigned int frames_move = 0;
-    unsigned int frames_button = 0;
+    // unsigned int frames_move = 0;
+    // unsigned int frames_button = 0;
+    double time_button = 0.;
+    double time_move = 0.;
+
 public:
     GamepadController() {
         init();
@@ -32,12 +35,12 @@ public:
         inputmap = in_inputmap;
     }
 
-    unsigned int getHeldmove() {
-        return (frames_move);
+    double getHeldmove() {
+        return (time_move);
     }
 
-    unsigned int getHeldbutton() {
-        return (frames_button);
+    double getHeldbutton() {
+        return (time_button);
     }
 
     bool isPressed(std::vector<SDL_GameControllerButton> in_map) {
@@ -68,21 +71,26 @@ public:
         }
     }
 
-    void check_move(std::vector<short unsigned int> pressed_move) {
-        if ((held_move == pressed_move) && (!pressed_move.empty())) {
-            frames_move++;
+    void check_move(std::vector<short unsigned int> in_pressed, double dt) {
+        if ((held_move == in_pressed) && (!in_pressed.empty())) {
+            // frames_move++;
+            time_move += dt;
         } else {
-            held_move = pressed_move;
-            frames_move = 0;
+            held_move = in_pressed;
+
+            // frames_move = 0;
+            time_move = 0.;
         }
     }
 
-    void check_button(std::vector<std::vector<SDL_GameControllerButton>> pressed_button) {
-        if ((held_button == pressed_button) && (!pressed_button.empty())) {
-            frames_button++;
+    void check_button(std::vector<std::vector<SDL_GameControllerButton>> in_pressed, double dt) {
+        if ((held_button == in_pressed) && (!in_pressed.empty())) {
+            // frames_button++;
+            time_button += dt;
         } else {
-            held_button = pressed_button;
-            frames_button = 0;
+            held_button = in_pressed;
+            time_button = 0.;
+            // frames_button = 0;
         }
     }
 };
