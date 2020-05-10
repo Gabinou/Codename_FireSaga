@@ -42,11 +42,14 @@ public:
         return (inputmap);
     }
 
-    void setPos(short int in_x, short int in_y) {
+    void setPixelPos(short int in_x, short int in_y) {
         pixel_pos.x = in_x;
         pixel_pos.y = in_y;
-        // tilemap_pos.x = ;
-        // tilemap_pos.y = ;
+    }
+
+    void setTilemapPos(short int in_x, short int in_y) {
+        tilemap_pos.x = in_x;
+        tilemap_pos.y = in_y;
     }
 
     void setInputMap(MouseInputMap in_inputmap) {
