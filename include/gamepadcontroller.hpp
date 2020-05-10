@@ -68,7 +68,7 @@ public:
             }
         }
 
-        SDL_Log("controller_indices size: %d", controller_indices.size());
+        // SDL_Log("controller_indices size: %d", controller_indices.size());
         controller = NULL;
         setController(0);
     }
@@ -78,7 +78,7 @@ public:
 
         if (SDL_IsGameController(in_joystick)) {
             controller_indices.push_back(in_joystick);
-            SDL_Log("Added controller %d", controller_indices[controller_indices.size() - 1]);
+            // SDL_Log("Added controller %d", controller_indices[controller_indices.size() - 1]);
 
             if (!controller) {
                 controller = SDL_GameControllerOpen(in_joystick);

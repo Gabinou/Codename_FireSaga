@@ -739,6 +739,12 @@ void Game::handleEvents() {
     SDL_PollEvent(&event);
 
     switch (event.type) {
+        case SDL_AUDIODEVICEADDED:
+            break;
+
+        case SDL_AUDIODEVICEREMOVED:
+            break;
+
         case SDL_CONTROLLERDEVICEADDED:
             SDL_Log("Handling SDL_CONTROLLERDEVICEADDED event");
 

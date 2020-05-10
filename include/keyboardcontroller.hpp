@@ -1,5 +1,5 @@
-#ifndef KEYBOARDCONTROL_HPP
-#define KEYBOARDCONTROL_HPP
+#ifndef KEYBOARDCONTROLLER_HPP
+#define KEYBOARDCONTROLLER_HPP
 
 #include "map.hpp"
 #include "utilities.hpp"
@@ -59,4 +59,4 @@ public:
     }
 };
 
-#endif /* KEYBOARDCONTROL_HPP */
+#endif /* KEYBOARDCONTROLLER_HPP */
