@@ -473,13 +473,6 @@ void Game::loadCursor() {
     cursorx.assign<GamepadController>();
     cursorx.assign<Position>();
     cursorx.assign<Sprite>();
-
-    // if (SDL_NumJoysticks() < 1) {
-    // SDL_Log("No joysticks connected.\n");
-    // } else {
-    // SDL_Log("Is the joystick supported by the game controller interface? %d.\n", SDL_IsGameController(0));
-    // }
-
     setCursorstate(MENU::MAP);
 }
 

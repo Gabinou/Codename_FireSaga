@@ -18,7 +18,6 @@ private:
     double time_move = 0.;
 public:
     GamepadController() {
-        // init();
     }
 
     short int getDeadzone() {
@@ -51,6 +50,11 @@ public:
         return (false);
     }
 
+    void setController(int in_index) {
+        controller = SDL_GameControllerOpen(controller_indices[in_index]);
+
+    }
+
     void removeController(int in_joystick) {
         for (int i = 0; i < controller_indices.size(); i++) {
             if (controller_indices[i] == in_joystick) {
@@ -59,6 +63,9 @@ public:
                 controller = NULL;
                 break;
             }
+        }
+        if (controller_indices.size() > 0) {
+            setController(0);
         }
     }
 
@@ -85,22 +92,6 @@ public:
     SDL_GameController * getController() {
         return (controller);
     }
-
-    // void init()  {
-    //     for (int joystick_index = 0; joystick_index < SDL_NumJoysticks(); ++joystick_index) {
-    //         if (SDL_IsGameController(joystick_index)) {
-    //             controller_indices.push_back(joystick_index);
-    //             controller = SDL_GameControllerOpen(joystick_index);
-
-    //             if (controller) {
-    //                 SDL_Log("Opened gamecontroller %d: ", joystick_index);
-    //                 break;
-    //             } else {
-    //                 SDL_Log("Could not open gamecontroller %i: %s\n", joystick_index, SDL_GetError());
-    //             }
-    //         }
-    //     }
-    // }
 
     void check_move(std::vector<short unsigned int> in_pressed, double dt) {
         if ((held_move == in_pressed) && (!in_pressed.empty())) {
