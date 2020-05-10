@@ -38,7 +38,7 @@ private:
     std::vector<std::string> tilenames;
 
     short int bounds[4] = {0, 255, 0, 255}; //rowmin, rowmax, colmin, colmax
-    short int offset[2] = {0, 0};
+    short int offset[2] = {DEFAULT::TILEMAP_XOFFSET, DEFAULT::TILEMAP_YOFFSET};
     unsigned char num_friendlies = 0;
     unsigned char num_neutral = 0;
     unsigned char num_enemies = 0;
@@ -72,6 +72,8 @@ public:
     void unloadTiles(std::vector<short int> to_unload);
     std::unordered_map<int, Tile> getTiles();
     std::vector<short int> getTilesindex();
+
+    Point pixel2tile(short int pixel_x, short int pixel_y);
 
     void loadTilemap(const std::string filename);
     void loadTilemap(const short unsigned int in_map_index);

@@ -5,7 +5,19 @@
 
 void test_map() {
     entityx::EntityX ex;
-    Map map(32, 32);
+    tilesize = 32;
+    Map map(tilesize, tilesize);
+
+    Point tiles_pos;
+    tiles_pos = map.pixel2tile(tilesize - 4, tilesize - 4);
+    lok(tiles_pos.x == 0);
+    lok(tiles_pos.y == 0);
+
+    tiles_pos = map.pixel2tile(tilesize + 4, tilesize + 4);
+    lok(tiles_pos.x == 0);
+    lok(tiles_pos.y == 0);
+
+
     std::vector<short int> in_tilesindex, out_tilesindex;
     in_tilesindex = chapTiles[0]();
     map.loadTiles(0);
@@ -16,6 +28,9 @@ void test_map() {
     map.loadTilemap(0);
     out_tilemap = map.getTilemap();
     lok(in_tilemap == out_tilemap);
+
+
+
 
     std::vector<Map_arrival> in_arrivals, out_arrivals;
     std::vector<std::vector<Inventory_item>> in_arrivalequipments, out_arrivalequipments;

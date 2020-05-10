@@ -743,10 +743,20 @@ void Game::handleEvents() {
     switch (event.type) {
         case SDL_MOUSEBUTTONDOWN:
         case SDL_MOUSEBUTTONUP:
-            if (event.type != previous_mouse) {
-                if (cursorx.valid()) {
-                    entityx::ComponentHandle<MouseController> mouse = cursorx.component<MouseController>();
+            if (event.button.windowID == SDL_GetWindowID(window)) {
+                entityx::ComponentHandle<MouseController> mouse;
 
+                if (cursorx.valid()) {
+                    mouse = cursorx.component<MouseController>();
+                } else {
+                    SDL_Log("cursorx is not valid");
+                }
+
+                if (mouse) {
+                    mouse->setPos(event.button.x, event.button.y);
+                }
+
+                if (event.type != previous_mouse) {
                     if (mouse) {
                         if (event.button.state == SDL_PRESSED) {
                             mouse->addHeld(event.button.button);
@@ -756,8 +766,6 @@ void Game::handleEvents() {
                     } else {
                         SDL_Log("cursor has no MouseController component");
                     }
-                } else {
-                    SDL_Log("cursorx is not valid");
                 }
 
                 previous_mouse = event.type;

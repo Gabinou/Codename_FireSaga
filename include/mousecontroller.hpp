@@ -14,6 +14,7 @@ private:
     Point pixel_pos;
     Point tilemap_pos;
 
+
 public:
 
     void removeHeld(unsigned char in_button) {
@@ -39,6 +40,13 @@ public:
 
     MouseInputMap getInputMap() {
         return (inputmap);
+    }
+
+    void setPos(short int in_x, short int in_y) {
+        pixel_pos.x = in_x;
+        pixel_pos.y = in_y;
+        // tilemap_pos.x = ;
+        // tilemap_pos.y = ;
     }
 
     void setInputMap(MouseInputMap in_inputmap) {

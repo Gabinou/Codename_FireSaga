@@ -527,10 +527,10 @@ void Map::loadTilemap(const short unsigned int in_map_index) {
 
 void Map::postTilemap() {
     loadTiletextures();
-    bounds[0] = DEFAULT::TILEMAP_XOFFSET;
-    bounds[1] = tilemap[0].size() - 1 + DEFAULT::TILEMAP_XOFFSET;
-    bounds[2] = DEFAULT::TILEMAP_YOFFSET;
-    bounds[3] = tilemap.size() - 1 + DEFAULT::TILEMAP_YOFFSET;
+    bounds[0] = offset[0];
+    bounds[1] = tilemap[0].size() - 1 + offset[0];
+    bounds[2] = offset[1];
+    bounds[3] = tilemap.size() - 1 + offset[1];
     std::vector<std::vector<entityx::ComponentHandle<Unit>>> tempunit(tilemap.size(), std::vector<entityx::ComponentHandle<Unit>>(tilemap[0].size()));
     unitmap = tempunit;
     SDL_Log("unitmap size: %d %d", unitmap[0].size(), unitmap.size());
@@ -583,6 +583,13 @@ void Map::clearOverlays() {
     overlay_mode = 0;
 }
 
+Point Map::pixel2tile(short int pixel_x, short int pixel_y) {
+    Point tile_pos;
+    tile_pos.x = std::min((int)bounds[1], std::max((int)bounds[0], pixel_x / tilesize[0] - offset[0]));
+    tile_pos.y = std::min((int)bounds[3], std::max((int)bounds[2], pixel_y / tilesize[1] - offset[1]));
+    return (tile_pos);
+}
+
 void Map::draw() {
     // SDL_Log("Drawing Map");
     int tile_ind = 0;
@@ -590,8 +597,8 @@ void Map::draw() {
     for (int row = 0; row < tilemap.size(); row++) {// This loop cache friendly.
         for (int col = 0; col < tilemap[row].size(); col++) {
             tile_ind = tilemap[row][col];
-            destrect.x = (col + DEFAULT::TILEMAP_XOFFSET) * tilesize[0];
-            destrect.y = (row + DEFAULT::TILEMAP_YOFFSET) * tilesize[1];
+            destrect.x = (col + offset[0]) * tilesize[0];
+            destrect.y = (row + offset[1]) * tilesize[1];
             SDL_RenderCopy(renderer, textures[tile_ind], &srcrect, &destrect);
 
             if (show_overlay) {
