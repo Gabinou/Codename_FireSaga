@@ -181,6 +181,12 @@ struct Settings {
 struct MouseInputMap {
     std::vector<unsigned char> accept{SDL_BUTTON_LEFT};
     std::vector<unsigned char> cancel{SDL_BUTTON_RIGHT};
+    std::vector<unsigned char> pause{SDL_BUTTON_MIDDLE};
+    std::vector<unsigned char> stats{};
+    std::vector<unsigned char> menu_right{};
+    std::vector<unsigned char> menu_left{};
+    std::vector<unsigned char> minimap{};
+    std::vector<unsigned char> faster{};
 
 };
 

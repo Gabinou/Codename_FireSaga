@@ -61,13 +61,15 @@ public:
 
     void removeController() {
         SDL_Log("Removing controller");
+        std::vector<int> temp = controller_indices;
 
         for (int i = 0; i < controller_indices.size(); i++) {
             if (!SDL_IsGameController(controller_indices[i])) {
-                controller_indices.erase(controller_indices.begin() + i);
+                temp.erase(temp.begin() + i - controller_indices.size() + temp.size());
             }
         }
 
+        controller_indices = temp;
         // SDL_Log("controller_indices size: %d", controller_indices.size());
         controller = NULL;
         setController(0);

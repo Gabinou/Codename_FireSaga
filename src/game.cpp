@@ -741,6 +741,20 @@ void Game::handleEvents() {
     SDL_PollEvent(&event);
 
     switch (event.type) {
+        case SDL_MOUSEBUTTONDOWN:
+        case SDL_MOUSEBUTTONUP:
+            if (cursorx.valid()) {
+                entityx::ComponentHandle<MouseController> mouse = cursorx.component<MouseController>();
+
+                if (mouse) {
+                    mouse->mouseEvent(event.button);
+                } else {
+                    SDL_Log("cursor has no MouseController component");
+                }
+            }
+
+            break;
+
         case SDL_AUDIODEVICEADDED:
             break;
 
@@ -756,7 +770,7 @@ void Game::handleEvents() {
                 if (gamepad) {
                     gamepad->addController(event.cdevice.which);
                 } else {
-                    SDL_Log("cursorx has no gamepadcontroller component");
+                    SDL_Log("cursorx has no GamepadController component");
                 }
             } else {
                 SDL_Log("cursorx is not valid");
@@ -773,7 +787,7 @@ void Game::handleEvents() {
                 if (gamepad) {
                     gamepad->removeController();
                 } else {
-                    SDL_Log("cursorx has no gamepadcontroller component");
+                    SDL_Log("cursorx has no GamepadController component");
                 }
             } else {
                 SDL_Log("cursorx is not valid");
