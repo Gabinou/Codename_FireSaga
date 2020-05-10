@@ -18,7 +18,7 @@ private:
     double time_move = 0.;
 public:
     GamepadController() {
-        init();
+        // init();
     }
 
     short int getDeadzone() {
@@ -63,6 +63,8 @@ public:
     }
 
     void addController(int in_joystick) {
+        SDL_Log("Adding controller %d", in_joystick);
+
         if (SDL_IsGameController(in_joystick)) {
             controller_indices.push_back(in_joystick);
 
@@ -84,21 +86,21 @@ public:
         return (controller);
     }
 
-    void init()  {
-        for (int joystick_index = 0; joystick_index < SDL_NumJoysticks(); ++joystick_index) {
-            if (SDL_IsGameController(joystick_index)) {
-                controller_indices.push_back(joystick_index);
-                controller = SDL_GameControllerOpen(joystick_index);
+    // void init()  {
+    //     for (int joystick_index = 0; joystick_index < SDL_NumJoysticks(); ++joystick_index) {
+    //         if (SDL_IsGameController(joystick_index)) {
+    //             controller_indices.push_back(joystick_index);
+    //             controller = SDL_GameControllerOpen(joystick_index);
 
-                if (controller) {
-                    SDL_Log("Opened gamecontroller %d: ", joystick_index);
-                    break;
-                } else {
-                    SDL_Log("Could not open gamecontroller %i: %s\n", joystick_index, SDL_GetError());
-                }
-            }
-        }
-    }
+    //             if (controller) {
+    //                 SDL_Log("Opened gamecontroller %d: ", joystick_index);
+    //                 break;
+    //             } else {
+    //                 SDL_Log("Could not open gamecontroller %i: %s\n", joystick_index, SDL_GetError());
+    //             }
+    //         }
+    //     }
+    // }
 
     void check_move(std::vector<short unsigned int> in_pressed, double dt) {
         if ((held_move == in_pressed) && (!in_pressed.empty())) {
