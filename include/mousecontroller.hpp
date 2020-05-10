@@ -16,28 +16,24 @@ private:
 
 public:
 
-    void mouseEvent(SDL_MouseButtonEvent in_event) {
-        switch (in_event.type) {
-            case SDL_MOUSEBUTTONDOWN:
-                addHeld(in_event.button);
-                break;
-
-            case SDL_MOUSEBUTTONUP:
-                removeHeld(in_event.button);
-                break;
-        }
-    }
-
     void removeHeld(unsigned char in_button) {
-        // for (short int i = 0; held_button.size(); i++) {
-        //     if (held_button[i] == in_button) {
-        //         held_button.re
-        //     }
-        // }
+        std::vector<unsigned char> temp = held_button;
+
+        for (short int i = 0; i < held_button.size(); i++) {
+            if (held_button[i] == in_button) {
+                temp.erase(temp.begin() + i + temp.size() - held_button.size());
+                // temp.erase(temp.begin() + i - controller_indices.size() + temp.size());
+
+            }
+        }
+
+        held_button = temp;
     }
 
     void addHeld(unsigned char in_button) {
-        held_button.push_back(in_button);
+        if (!cppisin(in_button, held_button)) {
+            held_button.push_back(in_button);
+        }
     }
 
     MouseInputMap getInputMap() {
