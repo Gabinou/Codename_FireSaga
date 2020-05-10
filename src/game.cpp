@@ -748,7 +748,7 @@ void Game::handleEvents() {
                 if (gamepad) {
                     gamepad->addController(event.cdevice.which);
                 } else {
-                    SDL_Log("cursorx has no gamepadcontroller");
+                    SDL_Log("cursorx has no gamepadcontroller component");
                 }
             } else {
                 SDL_Log("cursorx is not valid");
@@ -760,7 +760,15 @@ void Game::handleEvents() {
             SDL_Log("Handling SDL_CONTROLLERDEVICEREMOVED event");
 
             if (cursorx.valid()) {
-                cursorx.component<GamepadController>()->removeController(event.cdevice.which);
+                entityx::ComponentHandle<GamepadController> gamepad = cursorx.component<GamepadController>();
+
+                if (gamepad) {
+                    gamepad->removeController();
+                } else {
+                    SDL_Log("cursorx has no gamepadcontroller component");
+                }
+            } else {
+                SDL_Log("cursorx is not valid");
             }
 
             break;

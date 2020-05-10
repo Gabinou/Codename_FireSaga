@@ -6,11 +6,14 @@
 #include "utilities.hpp"
 #include <vector>
 
+// TEST: how does the game deal with multiple controllers plugging and unplugging?
+
 class GamepadController {
 private:
     SDL_GameController * controller = NULL;
     GamepadInputMap inputmap;
     std::vector<int> controller_indices; // joystick indices that are supported by the game controller interface
+    // used controller should always be zero.
     short int joystick_deadzone = 8000;
     std::vector<short unsigned int> held_move;
     std::vector<std::vector<SDL_GameControllerButton>> held_button;
@@ -51,23 +54,23 @@ public:
     }
 
     void setController(int in_index) {
-        controller = SDL_GameControllerOpen(controller_indices[in_index]);
-
+        if (controller_indices.size() > 0) {
+            controller = SDL_GameControllerOpen(controller_indices[in_index]);
+        }
     }
 
-    void removeController(int in_joystick) {
+    void removeController() {
+        SDL_Log("Removing controller");
+
         for (int i = 0; i < controller_indices.size(); i++) {
-            if (controller_indices[i] == in_joystick) {
-                SDL_Log("Removing controller %d at indice %d", controller_indices[i], i);
+            if (!SDL_IsGameController(controller_indices[i])) {
                 controller_indices.erase(controller_indices.begin() + i);
-                controller = NULL;
-                break;
             }
         }
 
-        if (controller_indices.size() > 0) {
-            setController(0);
-        }
+        SDL_Log("controller_indices size: %d", controller_indices.size());
+        controller = NULL;
+        setController(0);
     }
 
     void addController(int in_joystick) {
@@ -75,11 +78,12 @@ public:
 
         if (SDL_IsGameController(in_joystick)) {
             controller_indices.push_back(in_joystick);
+            SDL_Log("Added controller %d", controller_indices[controller_indices.size() - 1]);
 
             if (!controller) {
                 controller = SDL_GameControllerOpen(in_joystick);
 
-                if (controller) {
+                if (!controller) {
                     SDL_Log("Could not add gamecontroller %i: %s\n", in_joystick, SDL_GetError());
                 }
             } else {
