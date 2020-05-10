@@ -585,8 +585,8 @@ void Map::clearOverlays() {
 
 Point Map::pixel2tile(short int pixel_x, short int pixel_y) {
     Point tile_pos;
-    tile_pos.x = std::min((int)bounds[1], std::max((int)bounds[0], pixel_x / tilesize[0] - offset[0]));
-    tile_pos.y = std::min((int)bounds[3], std::max((int)bounds[2], pixel_y / tilesize[1] - offset[1]));
+    tile_pos.x = std::min((int)(bounds[1] - offset[0]), std::max((int)(bounds[0] - offset[0]), pixel_x / tilesize[0] - offset[0]));
+    tile_pos.y = std::min((int)(bounds[3] - offset[1]), std::max((int)(bounds[2] - offset[1]), pixel_y / tilesize[1] - offset[1]));
     return (tile_pos);
 }
 

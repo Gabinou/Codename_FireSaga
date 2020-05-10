@@ -5,18 +5,8 @@
 
 void test_map() {
     entityx::EntityX ex;
-    tilesize = 32;
+    short int tilesize = 32;
     Map map(tilesize, tilesize);
-
-    Point tiles_pos;
-    tiles_pos = map.pixel2tile(tilesize - 4, tilesize - 4);
-    lok(tiles_pos.x == 0);
-    lok(tiles_pos.y == 0);
-
-    tiles_pos = map.pixel2tile(tilesize + 4, tilesize + 4);
-    lok(tiles_pos.x == 0);
-    lok(tiles_pos.y == 0);
-
 
     std::vector<short int> in_tilesindex, out_tilesindex;
     in_tilesindex = chapTiles[0]();
@@ -29,8 +19,25 @@ void test_map() {
     out_tilemap = map.getTilemap();
     lok(in_tilemap == out_tilemap);
 
+    lok(map.getOffset()[0] == 1);
+    lok(map.getOffset()[1] == 1);
 
+    Point tiles_pos;
+    tiles_pos = map.pixel2tile(tilesize - 4, tilesize - 4);
+    lok(tiles_pos.y == 0);
+    lok(tiles_pos.y == 0);
 
+    tiles_pos = map.pixel2tile(tilesize + 4, tilesize + 4);
+    lok(tiles_pos.x == 0);
+    lok(tiles_pos.y == 0);
+
+    tiles_pos = map.pixel2tile(tilesize * 2 + 4, tilesize * 2 + 4);
+    lok(tiles_pos.x == 1);
+    lok(tiles_pos.y == 1);
+
+    tiles_pos = map.pixel2tile(tilesize * 100 + 4, tilesize * 100 + 4);
+    lok(tiles_pos.x == (map.getBounds()[1] - map.getOffset()[0]));
+    lok(tiles_pos.y == (map.getBounds()[3] - map.getOffset()[1]));
 
     std::vector<Map_arrival> in_arrivals, out_arrivals;
     std::vector<std::vector<Inventory_item>> in_arrivalequipments, out_arrivalequipments;
