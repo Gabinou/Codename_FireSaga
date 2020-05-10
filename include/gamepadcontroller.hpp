@@ -56,6 +56,7 @@ public:
             if (controller_indices[i] == in_joystick) {
                 SDL_Log("Removing controller %d at indice %d", controller_indices[i], i);
                 controller_indices.erase(controller_indices.begin() + i);
+                controller = NULL;
                 break;
             }
         }
@@ -67,8 +68,12 @@ public:
 
             if (!controller) {
                 controller = SDL_GameControllerOpen(in_joystick);
+
+                if (controller) {
+                    SDL_Log("Could not add gamecontroller %i: %s\n", in_joystick, SDL_GetError());
+                }
             } else {
-                SDL_Log("Could not open gamecontroller %i: %s\n", in_joystick, SDL_GetError());
+                SDL_Log("Controller already exists.");
             }
         } else {
             SDL_Log("in_joystick %d is not supported by the game controller interface ", in_joystick);
