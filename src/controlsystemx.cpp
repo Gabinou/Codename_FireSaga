@@ -278,6 +278,18 @@ void ControlSystemx::update(entityx::EntityManager & es, entityx::EventManager &
             cursorent = ent;
         }
 
+        entityx::ComponentHandle<MouseController> mouse = ent.component<MouseController>();
+        SDL_Log("Timeheld: %.6f", mouse->getHeldbutton());
+        mouse->check_button(dt);
+
+    }
+
+
+    for (entityx::Entity ent : es.entities_with_components<KeyboardController, Position>()) {
+        if (!cursorent.valid()) {
+            cursorent = ent;
+        }
+
         if (!position) {
             position = ent.component<Position>();
         }

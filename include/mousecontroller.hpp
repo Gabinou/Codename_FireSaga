@@ -22,18 +22,19 @@ public:
         for (short int i = 0; i < held_button.size(); i++) {
             if (held_button[i] == in_button) {
                 temp.erase(temp.begin() + i + temp.size() - held_button.size());
-                // temp.erase(temp.begin() + i - controller_indices.size() + temp.size());
-
             }
         }
 
         held_button = temp;
+        time_button = 0.;
     }
 
     void addHeld(unsigned char in_button) {
         if (!cppisin(in_button, held_button)) {
             held_button.push_back(in_button);
         }
+
+        time_button = 0.;
     }
 
     MouseInputMap getInputMap() {
@@ -48,11 +49,10 @@ public:
         return (time_button);
     }
 
-    void check_button(std::vector<unsigned char> in_pressed, double dt) {
-        if ((held_button == in_pressed) && (!in_pressed.empty())) {
+    void check_button(double dt) {
+        if (!held_button.empty()) {
             time_button += dt;
         } else {
-            held_button = in_pressed;
             time_button = 0.;
         }
     }
