@@ -64,6 +64,7 @@ public:
                 break;
             }
         }
+
         if (controller_indices.size() > 0) {
             setController(0);
         }
