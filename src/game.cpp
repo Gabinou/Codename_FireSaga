@@ -471,6 +471,8 @@ void Game::loadCursor() {
     cursorx = entities.create();
     cursorx.assign<KeyboardController>();
     cursorx.assign<GamepadController>();
+    cursorx.assign<MouseController>();
+    cursorx.assign<TouchpadController>();
     cursorx.assign<Position>();
     cursorx.assign<Sprite>();
     setCursorstate(MENU::MAP);

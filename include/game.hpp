@@ -20,6 +20,8 @@
 #include "sprite.hpp"
 #include "keyboardcontroller.hpp"
 #include "gamepadcontroller.hpp"
+#include "mousecontroller.hpp"
+#include "touchpadcontroller.hpp"
 
 class Game : public entityx::EntityX, public entityx::Receiver<Game> {
 

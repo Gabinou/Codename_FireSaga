@@ -178,6 +178,12 @@ struct Settings {
 };
 
 
+struct MouseInputMap {
+    std::vector<unsigned char> accept{SDL_BUTTON_LEFT};
+    std::vector<unsigned char> cancel{SDL_BUTTON_RIGHT};
+
+};
+
 struct KeyboardInputMap {
     std::vector<SDL_Scancode> moveright{SDL_SCANCODE_RIGHT, SDL_SCANCODE_D, SDL_SCANCODE_L};
     std::vector<SDL_Scancode> moveup{SDL_SCANCODE_W, SDL_SCANCODE_UP, SDL_SCANCODE_I};
