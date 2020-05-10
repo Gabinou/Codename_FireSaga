@@ -10,7 +10,8 @@ class GamepadController {
 private:
     SDL_GameController * controller = NULL;
     GamepadInputMap inputmap;
-    int joystick_dead_zone = 8000;
+    std::vector<int> controller_indices; // joystick indices that are supported by the game controller interface
+    short int joystick_deadzone = 8000;
     std::vector<short unsigned int> held_move;
     std::vector<std::vector<SDL_GameControllerButton>> held_button;
     double time_button = 0.;
@@ -20,8 +21,8 @@ public:
         init();
     }
 
-    int getDeadzone() {
-        return (joystick_dead_zone);
+    short int getDeadzone() {
+        return (joystick_deadzone);
     }
 
     GamepadInputMap getInputMap() {
@@ -50,19 +51,45 @@ public:
         return (false);
     }
 
+    void removeController(int in_joystick) {
+        for (int i = 0; i < controller_indices.size(); i++) {
+            if (controller_indices[i] == in_joystick) {
+                SDL_Log("Removing controller %d at indice %d", controller_indices[i], i);
+                controller_indices.erase(controller_indices.begin() + i);
+                break;
+            }
+        }
+    }
+
+    void addController(int in_joystick) {
+        if (SDL_IsGameController(in_joystick)) {
+            controller_indices.push_back(in_joystick);
+
+            if (!controller) {
+                controller = SDL_GameControllerOpen(in_joystick);
+            } else {
+                SDL_Log("Could not open gamecontroller %i: %s\n", in_joystick, SDL_GetError());
+            }
+        } else {
+            SDL_Log("in_joystick %d is not supported by the game controller interface ", in_joystick);
+        }
+    }
+
     SDL_GameController * getController() {
         return (controller);
     }
 
     void init()  {
-        for (int i = 0; i < SDL_NumJoysticks(); ++i) {
-            if (SDL_IsGameController(i)) {
-                controller = SDL_GameControllerOpen(i);
+        for (int joystick_index = 0; joystick_index < SDL_NumJoysticks(); ++joystick_index) {
+            if (SDL_IsGameController(joystick_index)) {
+                controller_indices.push_back(joystick_index);
+                controller = SDL_GameControllerOpen(joystick_index);
 
                 if (controller) {
+                    SDL_Log("Opened gamecontroller %d: ", joystick_index);
                     break;
                 } else {
-                    fprintf(stderr, "Could not open gamecontroller %i: %s\n", i, SDL_GetError());
+                    SDL_Log("Could not open gamecontroller %i: %s\n", joystick_index, SDL_GetError());
                 }
             }
         }

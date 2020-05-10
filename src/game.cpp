@@ -746,7 +746,26 @@ void Game::handleEvents() {
     SDL_PollEvent(&event);
 
     switch (event.type) {
+        case SDL_CONTROLLERDEVICEADDED:
+            SDL_Log("Handling SDL_CONTROLLERDEVICEADDED event");
+
+            if (cursorx) {
+                cursorx.component<GamepadController>()->addController(event.cdevice.which);
+            }
+
+            break;
+
+        case SDL_CONTROLLERDEVICEREMOVED:
+            SDL_Log("Handling SDL_CONTROLLERDEVICEREMOVED event");
+
+            if (cursorx) {
+                cursorx.component<GamepadController>()->removeController(event.cdevice.which);
+            }
+
+            break;
+
         case SDL_QUIT:
+            SDL_Log("Handling SDL_QUIT event");
             isRunning = false;
             break;
 
