@@ -50,8 +50,8 @@ void RenderSystemx::slideSprites(entityx::Entity * in_ent, short int * slidepos,
         entityx::ComponentHandle<KeyboardController> keyboard = in_ent->component<KeyboardController>();
         entityx::ComponentHandle<Sprite> sprite = in_ent->component<Sprite>();
         entityx::ComponentHandle<Position> position = in_ent->component<Position>();
-        short int kb_held = 0;
-        short int gp_held = 0;
+        double kb_held = 0.;
+        double gp_held = 0.;
         short int slide_int = sprite->getSlideint();
         unsigned char slidetype = sprite->getSlidetype();
         float * slidefactors = sprite->getSlidefactors();
@@ -87,6 +87,8 @@ void RenderSystemx::slideSprites(entityx::Entity * in_ent, short int * slidepos,
                 case SLIDETYPE::GEOMETRIC: //for cursor mvt on mapx.
                     if ((kb_held > cursor_fasttime) || (gp_held > cursor_fasttime)) {
                         slide_int = 1;
+                        // SDL_Log("fast %.6f", cursor_fasttime);
+                        // SDL_Log("kb_held: %.6f, gp_held: %.6f", gp_held, kb_held);
                     } else {
                         slide_int = 0;
                     }

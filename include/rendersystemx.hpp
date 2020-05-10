@@ -23,7 +23,7 @@ private:
     double last_update = 0.;
     float slide_step = 0.01;
     float slide_wait = 0;
-    float cursor_fasttime = 0.2;
+    float cursor_fasttime = 0.1;
 public:
     RenderSystemx();
     RenderSystemx(SDL_Renderer * in_renderer, Game * in_game);

@@ -399,7 +399,6 @@ void ControlSystemx::update(entityx::EntityManager & es, entityx::EventManager &
 
         gamepad->check_move(pressed_move, dt);
         gamepad->check_button(pressed_button, dt);
-
     }
 
     if (((to_move[0] != 0) || (to_move[1] != 0)) && (position->isUpdatable())) {
