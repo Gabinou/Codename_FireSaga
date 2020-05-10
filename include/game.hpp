@@ -44,6 +44,8 @@ private:
     tinymt32_t tinymt;
     Convoy convoy;
 
+    unsigned int previous_mouse;
+
     short unsigned int state;
 
     bool isRunning;
