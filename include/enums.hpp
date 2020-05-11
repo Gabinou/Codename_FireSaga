@@ -22,6 +22,15 @@ enum DEFAULTS {
 };
 }
 
+namespace MOUSE {
+enum MOUSES {
+    ACCEPT = 1,
+    NOACCEPT,
+    FOLLOW,
+    TELEPORT,
+};
+}
+
 namespace SLIDETYPE {
 enum SLIDETYPES {
     GEOMETRIC = 1,

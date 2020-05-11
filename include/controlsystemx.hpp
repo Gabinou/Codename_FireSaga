@@ -16,7 +16,8 @@ struct Controllers {
 
 class ControlSystemx: public entityx::System<ControlSystemx>, public entityx::Receiver<ControlSystemx> {
 private:
-    Game * game;
+    Game * game = nullptr;
+    Settings * settings;
     entityx::ComponentHandle<Map> mapx;
     KeyboardInputMap keyboardInputMap;
     GamepadInputMap gamepadInputMap;
@@ -34,6 +35,7 @@ public:
     ControlSystemx();
     ControlSystemx(Game * in_game);
     void updateMap();
+    void updateSettings();
 
     unsigned int getHeldbutton(Controllers in_controllers);
     entityx::Entity getInputent(Controllers in_controllers);

@@ -167,6 +167,11 @@ struct Fps {
     SDL_Color textcolor = {0, 0, 0};
 };
 
+struct Mouse {
+    unsigned char onhold = MOUSE::ACCEPT;
+    unsigned char move = MOUSE::FOLLOW;
+};
+
 struct Settings {
     char title[DEFAULT::BUFFER_SIZE] = "Codename:Firesaga";
     Point res = {1000, 1000}; //resolution
@@ -174,6 +179,7 @@ struct Settings {
     unsigned char fontsize = 28;
     bool fullscreen = false;
     Fps FPS;
+    Mouse mouse;
     unsigned short int tilesize[2] = {DEFAULT::TILESIZE, DEFAULT::TILESIZE};
 };
 

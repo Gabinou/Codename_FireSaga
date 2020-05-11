@@ -11,11 +11,20 @@ ControlSystemx::ControlSystemx(Game * in_game) {
     keyboardInputMap = game->getKeyboardInputMap();
     gamepadInputMap = game->getGamepadInputMap();
     mouseInputMap = game->getMouseInputMap();
+    updateSettings();
     updateMap();
 }
 
+void ControlSystemx::updateSettings() {
+    if (game != nullptr) {
+        settings = game->getSettings();
+    }
+}
+
 void ControlSystemx::updateMap() {
-    mapx = game->getMap();
+    if (game != nullptr) {
+        mapx = game->getMap();
+    }
 }
 
 void ControlSystemx::configure(entityx::EventManager & in_events) {
@@ -299,25 +308,27 @@ void ControlSystemx::update(entityx::EntityManager & es, entityx::EventManager &
 
         entityx::ComponentHandle<MouseController> mouse = ent.component<MouseController>();
 
+        if (mouse->isPressed(mouseInputMap.cancel)) {
+            if (mouse->getHeldbutton() > min_held) {
+                // if ((mouse_pos.x == cursor_pos[0]) && (mouse_pos.y == cursor_pos[1])) {
+                if (!blockInput) {
+                    events.emit<inputCancel>(mouse);
+                }
+
+                // }
+            }
+        }
+
         switch (game->getState()) {
             case GAME::STATE::UNITMOVE:
             case GAME::STATE::MAP:
+
                 if (mapx) {
                     Point mouse_pos = mouse->getTilemapPos();
                     short int cursor_pos[2];
                     cursor_pos[0] = position->getPos()[0] - position->getOffset()[0];
                     cursor_pos[1] = position->getPos()[1] - position->getOffset()[1];
 
-                    if (mouse->isPressed(mouseInputMap.cancel)) {
-                        if (mouse->getHeldbutton() > min_held) {
-                            if ((mouse_pos.x == cursor_pos[0]) && (mouse_pos.y == cursor_pos[1])) {
-
-                                if (!blockInput) {
-                                    events.emit<inputCancel>(mouse);
-                                }
-                            }
-                        }
-                    }
 
                     if (mouse->isPressed(mouseInputMap.accept)) {
                         if (mouse->getHeldbutton() > min_held) {
@@ -337,9 +348,14 @@ void ControlSystemx::update(entityx::EntityManager & es, entityx::EventManager &
                                 to_move[1] = -1;
                             }
 
+                            if ((to_move[0] != 0) || (to_move[1] != 0)) {
+                                blockInput = true;
+                            }
+
                             if ((mouse_pos.x == cursor_pos[0]) && (mouse_pos.y == cursor_pos[1])) {
                                 if (!blockInput) {
                                     events.emit<inputAccept>(mouse);
+
                                 }
                             }
 
