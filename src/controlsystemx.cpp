@@ -122,6 +122,7 @@ void ControlSystemx::receive(const inputCancel & cancel) {
                 }
 
             }
+
             break;
     }
 
@@ -319,7 +320,7 @@ void ControlSystemx::update(entityx::EntityManager & es, entityx::EventManager &
                 }
             }
         }
-        
+
         mouse->check_button(dt);
         mouse_held = mouse->getHeldbutton();
     }
@@ -444,7 +445,6 @@ void ControlSystemx::update(entityx::EntityManager & es, entityx::EventManager &
                 }
             }
         }
-
 
         if (gamepad->isPressed(gamepadInputMap.cancel)) {
             pressed_button.push_back(gamepadInputMap.cancel);
