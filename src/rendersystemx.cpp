@@ -244,6 +244,10 @@ void RenderSystemx::update(entityx::EntityManager & es, entityx::EventManager & 
         sprite->draw();
     }
 
+    for (entityx::Entity ent : es.entities_with_components<KeyboardController>()) {
+
+    }
+
     SDL_RenderPresent(renderer);
 }
 

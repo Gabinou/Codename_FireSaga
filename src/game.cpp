@@ -400,6 +400,8 @@ void Game::unloadMap() {
     }
 }
 
+
+
 void Game::setCursorstate(const unsigned char in_menu) {
     SDL_Log("Changing cursor");
     SDL_Rect temprect;
@@ -466,13 +468,28 @@ void Game::setCursorstate(const unsigned char in_menu) {
     }
 }
 
+void Game::loadMouse() {
+    unloadMouse();
+    mousex = entities.create();
+    mousex.assign<MouseController>();
+    mousex.assign<Position>();
+    mousex.assign<Sprite>();
+    mousex.component<Sprite>()->setTexture("..//assets//mousecursor.png");
+
+}
+
+void Game::unloadMouse() {
+    if (mousex.valid()) {
+        mousex.destroy();
+    }
+}
+
 void Game::loadCursor() {
     unloadCursor();
 
     cursorx = entities.create();
     cursorx.assign<KeyboardController>();
     cursorx.assign<GamepadController>();
-    cursorx.assign<MouseController>();
     cursorx.assign<TouchpadController>();
     cursorx.assign<Position>();
     cursorx.assign<Sprite>();
@@ -754,9 +771,9 @@ void Game::handleEvents() {
         case SDL_MOUSEBUTTONUP:
             if (event.button.windowID == SDL_GetWindowID(window)) {
 
-                if (cursorx.valid()) {
+                if (mousex.valid()) {
                     entityx::ComponentHandle<MouseController> mouse;
-                    mouse = cursorx.component<MouseController>();
+                    mouse = mousex.component<MouseController>();
 
                     if (mouse) {
                         // SDL_Log("event pos: %d %d", event.button.x, event.button.y);

@@ -22,6 +22,7 @@ int main(int argc, char * argv[]) {
     SDL_Log("Initializing utilities\n");
     loadUtilities();
 
+
     SDL_Log("Initializing filesystem\n");
     char * buildDir = SDL_GetBasePath();
     FILESYSTEM::init(0, buildDir, buildDir);
@@ -31,6 +32,7 @@ int main(int argc, char * argv[]) {
 
     SDL_Log("Loading base weapons");
     baseWeapons();
+
 
     settings.FPS.show = true;
     settings.fontsize = 28;
@@ -54,6 +56,7 @@ int main(int argc, char * argv[]) {
     short unsigned int cap = firesaga->getSettings()->FPS.cap;
     int delay;
     SDL_Log("Starting main game loop\n");
+    SDL_ShowCursor(SDL_DISABLE);
 
     while (firesaga->running()) {
         elapsedSeconds = ((float)SDL_GetTicks() - currentTime) / 1000.;

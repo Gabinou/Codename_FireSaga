@@ -28,6 +28,7 @@ class Game : public entityx::EntityX, public entityx::Receiver<Game> {
 private:
     entityx::Entity mapEntx;
     entityx::Entity cursorx;
+    entityx::Entity mousex;
     entityx::Entity transition;
     entityx::Entity fps;
 
@@ -75,9 +76,12 @@ public:
     void unmakeUnits(std::vector<short int> to_unload);
     void loadMapArrivals();
     void loadCursor();
+    void unloadCursor();
+    void loadMouse();
+    void unloadMouse();
+
     void setCursorstate(const unsigned char in_menu);
     void setCursorlastpos(const short int x, const short int y);
-    void unloadCursor();
     template <typename T> void loadTiles(std::vector<T> in_tiles);
     void moveUnit(entityx::Entity & cursor);
     void makeTurntransition();

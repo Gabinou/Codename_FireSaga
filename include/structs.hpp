@@ -170,7 +170,7 @@ struct Fps {
 struct Mouse {
     unsigned char onhold = MOUSE::ACCEPT;
     unsigned char move = MOUSE::FOLLOW;
-    unsigned char type = MOUSE::SECONDCURSOR;
+    unsigned char type = MOUSE::REPLACESCURSOR;
 };
 
 struct Settings {

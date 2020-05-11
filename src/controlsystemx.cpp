@@ -317,6 +317,29 @@ void ControlSystemx::update(entityx::EntityManager & es, entityx::EventManager &
 
         switch (settings->mouse.type) {
             case MOUSE::REPLACESCURSOR:
+                if (mapx) {
+                    Point mouse_pos = mouse->getTilemapPos();
+                    short int cursor_pos[2];
+                    cursor_pos[0] = position->getPos()[0] - position->getOffset()[0];
+                    cursor_pos[1] = position->getPos()[1] - position->getOffset()[1];
+
+                    if (mouse_pos.x > cursor_pos[0]) {
+                        to_move[0] = 1;
+                    }
+
+                    if (mouse_pos.x < cursor_pos[0]) {
+                        to_move[0] = -1;
+                    }
+
+                    if (mouse_pos.y > cursor_pos[1]) {
+                        to_move[1] = 1;
+                    }
+
+                    if (mouse_pos.y < cursor_pos[1]) {
+                        to_move[1] = -1;
+                    }
+                }
+
                 break;
 
             case MOUSE::SECONDCURSOR:
@@ -330,7 +353,6 @@ void ControlSystemx::update(entityx::EntityManager & es, entityx::EventManager &
                             short int cursor_pos[2];
                             cursor_pos[0] = position->getPos()[0] - position->getOffset()[0];
                             cursor_pos[1] = position->getPos()[1] - position->getOffset()[1];
-
 
                             if (mouse->isPressed(mouseInputMap.accept)) {
                                 if (mouse->getHeldbutton() > min_held) {
