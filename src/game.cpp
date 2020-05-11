@@ -486,7 +486,6 @@ void Game::unloadMouse() {
 
 void Game::loadCursor() {
     unloadCursor();
-
     cursorx = entities.create();
     cursorx.assign<KeyboardController>();
     cursorx.assign<GamepadController>();

@@ -50,6 +50,7 @@ int main(int argc, char * argv[]) {
     firesaga->loadMapArrivals();
     firesaga->startTurnSystem();
     firesaga->loadCursor();
+    firesaga->loadMouse();
 
     float currentTime;
     float elapsedSeconds;
