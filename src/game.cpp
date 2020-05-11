@@ -742,26 +742,6 @@ void Game::handleEvents() {
     SDL_PollEvent(&event);
 
     switch (event.type) {
-        case SDL_MOUSEMOTION:
-            if (event.motion.windowID == SDL_GetWindowID(window)) {
-                if (cursorx.valid()) {
-                    entityx::ComponentHandle<MouseController> mouse;
-                    mouse = cursorx.component<MouseController>();
-
-                    if (mouse) {
-                        // SDL_Log("event pos: %d %d", event.motion.x, event.motion.y);
-                        mouse->setPixelPos(event.motion.x, event.motion.y);
-
-                        if (mapx) {
-                            mouse->setTilemapPos(mapx->pixel2tile(event.motion.x, event.motion.y));
-                        }
-                    } else {
-                        SDL_Log("cursor has no MouseController component");
-                    }
-                } else {
-                    SDL_Log("cursorx is not valid");
-                }
-            }
 
         case SDL_MOUSEBUTTONDOWN:
         case SDL_MOUSEBUTTONUP:
@@ -772,7 +752,7 @@ void Game::handleEvents() {
                     mouse = cursorx.component<MouseController>();
 
                     if (mouse) {
-                        SDL_Log("event pos: %d %d", event.button.x, event.button.y);
+                        // SDL_Log("event pos: %d %d", event.button.x, event.button.y);
                         mouse->setPixelPos(event.button.x, event.button.y);
 
                         if (mapx) {
@@ -795,6 +775,29 @@ void Game::handleEvents() {
                     SDL_Log("cursorx is not valid");
                 }
 
+            }
+
+            break;
+
+        case SDL_MOUSEMOTION:
+            if (event.motion.windowID == SDL_GetWindowID(window)) {
+                if (cursorx.valid()) {
+                    entityx::ComponentHandle<MouseController> mouse;
+                    mouse = cursorx.component<MouseController>();
+
+                    if (mouse) {
+                        // SDL_Log("event pos: %d %d", event.motion.x, event.motion.y);
+                        mouse->setPixelPos(event.motion.x, event.motion.y);
+
+                        if (mapx) {
+                            mouse->setTilemapPos(mapx->pixel2tile(event.motion.x, event.motion.y));
+                        }
+                    } else {
+                        SDL_Log("cursor has no MouseController component");
+                    }
+                } else {
+                    SDL_Log("cursorx is not valid");
+                }
             }
 
             break;
