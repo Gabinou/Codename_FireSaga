@@ -26,6 +26,9 @@ private:
     double last_update = 0.;
     float min_held = 0.05;
     bool blockInput = false;
+    double gp_held = 0.;
+    double kb_held = 0.;
+    double mouse_held = 0.;
 public:
     ControlSystemx();
     ControlSystemx(Game * in_game);

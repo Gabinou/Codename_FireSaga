@@ -127,7 +127,7 @@ void ControlSystemx::receive(const inputCancel & cancel) {
             break;
     }
 
-    blockInput = false;
+    blockInput = true;
 }
 
 void ControlSystemx::AIturn(unsigned char in_army) {
@@ -270,7 +270,7 @@ void ControlSystemx::receive(const inputAccept & accept) {
         game->setState(newstate);
     }
 
-    blockInput = false;
+    blockInput = true;
 }
 
 void ControlSystemx::update(entityx::EntityManager & es, entityx::EventManager & events, entityx::TimeDelta dt) {
@@ -278,10 +278,6 @@ void ControlSystemx::update(entityx::EntityManager & es, entityx::EventManager &
     entityx::ComponentHandle<Position> position;
     entityx::Entity cursorent;
     // last_update += dt;
-    double gp_held = 0.;
-    double kb_held = 0.;
-    double mouse_held = 0.;
-
 
     for (entityx::Entity ent : es.entities_with_components<Map>()) {
         unitmap = ent.component<Map>()->getUnitmap();
@@ -329,6 +325,7 @@ void ControlSystemx::update(entityx::EntityManager & es, entityx::EventManager &
 
         // SDL_Log("Timeheld: %.6f", mouse->getHeldbutton());
         mouse->check_button(dt);
+        mouse_held = mouse->getHeldbutton();
     }
 
     for (entityx::Entity ent : es.entities_with_components<KeyboardController, Position>()) {
@@ -384,6 +381,7 @@ void ControlSystemx::update(entityx::EntityManager & es, entityx::EventManager &
 
         keyboard->check_move(pressed_move, dt);
         keyboard->check_button(pressed_button, dt);
+        kb_held = keyboard->getHeldbutton();
     }
 
     for (entityx::Entity ent : es.entities_with_components<GamepadController, Position>()) {
@@ -464,6 +462,7 @@ void ControlSystemx::update(entityx::EntityManager & es, entityx::EventManager &
 
         gamepad->check_move(pressed_move, dt);
         gamepad->check_button(pressed_button, dt);
+        gp_held = gamepad->getHeldbutton();
     }
 
     if ((kb_held == 0.) && (gp_held == 0.)  && (mouse_held == 0.)) {
