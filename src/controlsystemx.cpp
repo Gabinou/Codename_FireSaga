@@ -126,6 +126,7 @@ void ControlSystemx::receive(const inputCancel & cancel) {
 
             break;
     }
+    blockInput = false;
 }
 
 void ControlSystemx::AIturn(unsigned char in_army) {
@@ -231,7 +232,7 @@ void ControlSystemx::receive(const inputAccept & accept) {
 
     switch (game->getState()) {
         case GAME::STATE::MAP:
-            SDL_Log("accepter Position, %d %d \n", cursor_pos[0], cursor_pos[1]);
+            // SDL_Log("accepter Position, %d %d \n", cursor_pos[0], cursor_pos[1]);
             unitontile = unitmap[cursor_pos[1]][cursor_pos[0]];
             game->setCursorlastpos(cursor_pos[0], cursor_pos[1]);
 
@@ -267,6 +268,8 @@ void ControlSystemx::receive(const inputAccept & accept) {
     if (newstate != -1) {
         game->setState(newstate);
     }
+    
+    blockInput = false;
 }
 
 void ControlSystemx::update(entityx::EntityManager & es, entityx::EventManager & events, entityx::TimeDelta dt) {
@@ -430,7 +433,6 @@ void ControlSystemx::update(entityx::EntityManager & es, entityx::EventManager &
         entityx::Entity setter;
 
         if (gamepad->isPressed(gamepadInputMap.accept)) {
-            // SDL_Log("Gamepad pressed accept.");
             pressed_button.push_back(gamepadInputMap.accept);
 
             if (gamepad->getHeldbutton() > min_held) {

@@ -143,8 +143,10 @@ struct mapmenuSelect {
 struct inputAccept {
     inputAccept(entityx::ComponentHandle<KeyboardController> keyboard) : keyboard(keyboard) {}
     inputAccept(entityx::ComponentHandle<GamepadController> gamepad) : gamepad(gamepad) {}
+    inputAccept(entityx::ComponentHandle<MouseController> mouse) : mouse(mouse) {}
     entityx::ComponentHandle<KeyboardController> keyboard;
     entityx::ComponentHandle<GamepadController> gamepad;
+    entityx::ComponentHandle<MouseController> mouse;
 };
 
 struct inputCancel {

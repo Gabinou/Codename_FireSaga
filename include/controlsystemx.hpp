@@ -25,6 +25,7 @@ private:
     entityx::ComponentHandle<Unit> selected;
     double last_update = 0.;
     float min_held = 0.05;
+    bool blockInput = false;
 public:
     ControlSystemx();
     ControlSystemx(Game * in_game);
