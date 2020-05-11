@@ -44,13 +44,15 @@ public:
     }
 
     bool isPressed(std::vector<SDL_GameControllerButton> in_map) {
+        bool out = false;
+
         for (int i = 0; i < in_map.size(); ++i) {
             if (SDL_GameControllerGetButton(controller, in_map[i])) {
-                return (true);
+                out = true;
             }
         }
 
-        return (false);
+        return (out);
     }
 
     void setController(int in_index) {

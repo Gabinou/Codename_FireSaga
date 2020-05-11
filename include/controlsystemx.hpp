@@ -19,6 +19,7 @@ private:
     entityx::ComponentHandle<Map> mapx;
     KeyboardInputMap keyboardInputMap;
     GamepadInputMap gamepadInputMap;
+    MouseInputMap mouseInputMap;
     entityx::EventManager * event_manager;
     std::vector<std::vector<entityx::ComponentHandle<Unit>>> unitmap;
     entityx::ComponentHandle<Unit> selected;

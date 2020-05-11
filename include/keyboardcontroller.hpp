@@ -49,13 +49,15 @@ public:
     }
 
     bool is_pressed(const Uint8 * state_array, std::vector<SDL_Scancode> to_find) {
+        bool out = false;
+
         for (auto it = std::begin(to_find); it != std::end(to_find); ++it) {
             if (state_array[*it]) {
-                return (true);
+                out = true;
             }
         }
 
-        return (false);
+        return (out);
     }
 };
 

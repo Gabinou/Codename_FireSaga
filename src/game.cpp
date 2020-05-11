@@ -738,6 +738,13 @@ void Game::setGamepadInputMap(GamepadInputMap in_gamepadInputMap) {
     gamepadInputMap = in_gamepadInputMap;
 }
 
+MouseInputMap Game::getMouseInputMap() {
+    return (mouseInputMap);
+}
+void Game::setMouseInputMap(MouseInputMap in_mouseInputMap) {
+    mouseInputMap = in_mouseInputMap;
+}
+
 void Game::handleEvents() {
     SDL_PollEvent(&event);
 

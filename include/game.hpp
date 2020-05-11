@@ -39,6 +39,7 @@ private:
 
     KeyboardInputMap keyboardInputMap;
     GamepadInputMap gamepadInputMap;
+    MouseInputMap mouseInputMap;
     SDL_Window * window;
     Settings settings;
     tinymt32_t tinymt;
@@ -113,6 +114,8 @@ public:
     void setKeyboardInputMap(const KeyboardInputMap in_keyboardInputMap);
     GamepadInputMap getGamepadInputMap();
     void setGamepadInputMap(const GamepadInputMap in_gpmap);
+    MouseInputMap getMouseInputMap();
+    void setMouseInputMap(const MouseInputMap in_gpmap);
 
     void setState(const short unsigned int new_state);
     short unsigned int getState();

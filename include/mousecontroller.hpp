@@ -84,6 +84,18 @@ public:
         }
     }
 
+    bool isPressed(std::vector<unsigned char> in_map) {
+        bool out = false;
+
+        for (short int i = 0; i < in_map.size(); i++) {
+            if (cppisin(in_map[i], held_button)) {
+                out = true;
+            }
+        }
+
+        return (out);
+    }
+
 };
 
 #endif /* MOUSECONTROLLER_HPP */
