@@ -296,6 +296,7 @@ void ControlSystemx::update(entityx::EntityManager & es, entityx::EventManager &
                 short int cursor_pos[2];
                 cursor_pos[0] = position->getPos()[0] - position->getOffset()[0];
                 cursor_pos[1] = position->getPos()[1] - position->getOffset()[1];
+                // SDL_Log("cursor_pos: %d %d", cursor_pos[0], cursor_pos[1]);
 
                 if (mouse_pos.x > cursor_pos[0]) {
                     to_move[0] = 1;

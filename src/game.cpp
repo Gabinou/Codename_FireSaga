@@ -370,6 +370,7 @@ void Game::loadMap(const int in_map_index) {
         systems.system<UnitSystemx>()->updateMap();
         systems.system<TurnSystemx>()->updateMap();
         systems.system<MenuSystemx>()->updateMap();
+        systems.system<ControlSystemx>()->updateMap();
     } else {
         SDL_Log("Failed to loadMap. Was mapx deleted previously?");
     }
@@ -741,36 +742,59 @@ void Game::handleEvents() {
     SDL_PollEvent(&event);
 
     switch (event.type) {
+        case SDL_MOUSEMOTION:
+            if (event.motion.windowID == SDL_GetWindowID(window)) {
+                if (cursorx.valid()) {
+                    entityx::ComponentHandle<MouseController> mouse;
+                    mouse = cursorx.component<MouseController>();
+
+                    if (mouse) {
+                        // SDL_Log("event pos: %d %d", event.motion.x, event.motion.y);
+                        mouse->setPixelPos(event.motion.x, event.motion.y);
+
+                        if (mapx) {
+                            mouse->setTilemapPos(mapx->pixel2tile(event.motion.x, event.motion.y));
+                        }
+                    } else {
+                        SDL_Log("cursor has no MouseController component");
+                    }
+                } else {
+                    SDL_Log("cursorx is not valid");
+                }
+            }
+
         case SDL_MOUSEBUTTONDOWN:
         case SDL_MOUSEBUTTONUP:
             if (event.button.windowID == SDL_GetWindowID(window)) {
-                entityx::ComponentHandle<MouseController> mouse;
 
                 if (cursorx.valid()) {
+                    entityx::ComponentHandle<MouseController> mouse;
                     mouse = cursorx.component<MouseController>();
+
+                    if (mouse) {
+                        SDL_Log("event pos: %d %d", event.button.x, event.button.y);
+                        mouse->setPixelPos(event.button.x, event.button.y);
+
+                        if (mapx) {
+                            mouse->setTilemapPos(mapx->pixel2tile(event.button.x, event.button.y));
+                        }
+
+                        if (event.type != previous_mouse) {
+                            if (event.button.state == SDL_PRESSED) {
+                                mouse->addHeld(event.button.button);
+                            } else {
+                                mouse->removeHeld(event.button.button);
+                            }
+                        }
+                    } else {
+                        SDL_Log("cursor has no MouseController component");
+                    }
+
+                    previous_mouse = event.type;
                 } else {
                     SDL_Log("cursorx is not valid");
                 }
 
-                if (mouse) {
-                    mouse->setPixelPos(event.button.x, event.button.y);
-
-                    if (mapx) {
-                        mouse->setTilemapPos(mapx->pixel2tile(event.button.x, event.button.y));
-                    }
-
-                    if (event.type != previous_mouse) {
-                        if (event.button.state == SDL_PRESSED) {
-                            mouse->addHeld(event.button.button);
-                        } else {
-                            mouse->removeHeld(event.button.button);
-                        }
-                    }
-                } else {
-                    SDL_Log("cursor has no MouseController component");
-                }
-
-                previous_mouse = event.type;
             }
 
             break;
