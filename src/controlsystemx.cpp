@@ -361,7 +361,9 @@ void ControlSystemx::update(entityx::EntityManager & es, entityx::EventManager &
             pressed_button.push_back(keyboardInputMap.accept);
 
             if (keyboard->getHeldbutton() > min_held) {
-                events.emit<inputAccept>(keyboard);
+                if (!blockInput) {
+                   events.emit<inputAccept>(keyboard);
+                }
             }
         }
 
@@ -369,7 +371,9 @@ void ControlSystemx::update(entityx::EntityManager & es, entityx::EventManager &
             pressed_button.push_back(keyboardInputMap.cancel);
 
             if (keyboard->getHeldbutton() > min_held) {
-                events.emit<inputCancel>(keyboard);
+                if (!blockInput) {
+                    events.emit<inputCancel>(keyboard);
+                }
             }
         }
 
@@ -436,7 +440,9 @@ void ControlSystemx::update(entityx::EntityManager & es, entityx::EventManager &
             pressed_button.push_back(gamepadInputMap.accept);
 
             if (gamepad->getHeldbutton() > min_held) {
-                events.emit<inputAccept>(gamepad);
+                if (!blockInput) {
+                    events.emit<inputAccept>(gamepad);
+                }
             }
         }
 
@@ -445,7 +451,9 @@ void ControlSystemx::update(entityx::EntityManager & es, entityx::EventManager &
             pressed_button.push_back(gamepadInputMap.cancel);
 
             if (gamepad->getHeldbutton() > min_held) {
-                events.emit<inputCancel>(gamepad);
+                if (!blockInput) {
+                    events.emit<inputCancel>(gamepad);
+                }
             }
         }
 
