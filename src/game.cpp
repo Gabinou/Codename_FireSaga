@@ -802,10 +802,14 @@ void Game::handleEvents() {
             break;
 
         case SDL_MOUSEMOTION:
-            if (event.motion.windowID == SDL_GetWindowID(window)) {
-                if (mousex.valid()) {
-                    entityx::ComponentHandle<MouseController> mouse;
-                    mouse = mousex.component<MouseController>();
+            if (mousex.valid()) {
+                entityx::ComponentHandle<MouseController> mouse;
+                entityx::ComponentHandle<Sprite> sprite;
+                mouse = mousex.component<MouseController>();
+                sprite = mousex.component<Sprite>();
+                sprite->show();
+
+                if (event.motion.windowID == SDL_GetWindowID(window)) {
 
                     if (mouse) {
                         // SDL_Log("event pos: %d %d", event.motion.x, event.motion.y);
@@ -818,8 +822,11 @@ void Game::handleEvents() {
                         SDL_Log("cursor has no MouseController component");
                     }
                 } else {
-                    SDL_Log("cursorx is not valid");
+                    sprite->hide();
                 }
+
+            } else {
+                SDL_Log("cursorx is not valid");
             }
 
             break;
