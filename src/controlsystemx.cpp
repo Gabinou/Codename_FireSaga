@@ -81,7 +81,8 @@ void ControlSystemx::receive(const inputCancel & cancel) {
     SDL_Log("Received inputCancel event");
     entityx::ComponentHandle<KeyboardController> keyboard = cancel.keyboard;
     entityx::ComponentHandle<GamepadController> gamepad = cancel.gamepad;
-    Controllers controllers = {keyboard, gamepad};
+    entityx::ComponentHandle<MouseController> mouse = cancel.mouse;
+    Controllers controllers = {keyboard, gamepad, mouse};
     entityx::Entity canceller = getInputent(controllers);
     entityx::ComponentHandle<Position> position = canceller.component<Position>();
     entityx::ComponentHandle<Unit> unitontile;
@@ -149,6 +150,10 @@ entityx::Entity ControlSystemx::getInputent(Controllers in_controllers) {
 
     if (in_controllers.keyboard) {
         inputter = in_controllers.keyboard.entity();
+    }
+
+    if (in_controllers.mouse) {
+        inputter = in_controllers.mouse.entity();
     }
 
     return (inputter);
@@ -221,7 +226,8 @@ void ControlSystemx::receive(const inputAccept & accept) {
     SDL_Log("Received inputAccept event");
     entityx::ComponentHandle<KeyboardController> keyboard = accept.keyboard;
     entityx::ComponentHandle<GamepadController> gamepad = accept.gamepad;
-    Controllers controllers = {keyboard, gamepad};
+    entityx::ComponentHandle<MouseController> mouse = accept.mouse;
+    Controllers controllers = {keyboard, gamepad, mouse};
     entityx::Entity accepter = getInputent(controllers);
     entityx::ComponentHandle<Unit> unitontile;
     short int newstate = -1;
@@ -293,32 +299,57 @@ void ControlSystemx::update(entityx::EntityManager & es, entityx::EventManager &
 
         entityx::ComponentHandle<MouseController> mouse = ent.component<MouseController>();
 
-        if (mouse->isPressed(mouseInputMap.accept)) {
-            if (mouse->getHeldbutton() > min_held) {
+        switch (game->getState()) {
+            case GAME::STATE::UNITMOVE:
+            case GAME::STATE::MAP:
                 if (mapx) {
                     Point mouse_pos = mouse->getTilemapPos();
                     short int cursor_pos[2];
                     cursor_pos[0] = position->getPos()[0] - position->getOffset()[0];
                     cursor_pos[1] = position->getPos()[1] - position->getOffset()[1];
 
-                    if (mouse_pos.x > cursor_pos[0]) {
-                        to_move[0] = 1;
+                    if (mouse->isPressed(mouseInputMap.cancel)) {
+                        if (mouse->getHeldbutton() > min_held) {
+                            if ((mouse_pos.x == cursor_pos[0]) && (mouse_pos.y == cursor_pos[1])) {
+
+                                if (!blockInput) {
+                                    events.emit<inputCancel>(mouse);
+                                }
+                            }
+                        }
                     }
 
-                    if (mouse_pos.x < cursor_pos[0]) {
-                        to_move[0] = -1;
-                    }
+                    if (mouse->isPressed(mouseInputMap.accept)) {
+                        if (mouse->getHeldbutton() > min_held) {
+                            if (mouse_pos.x > cursor_pos[0]) {
+                                to_move[0] = 1;
+                            }
 
-                    if (mouse_pos.y > cursor_pos[1]) {
-                        to_move[1] = 1;
-                    }
+                            if (mouse_pos.x < cursor_pos[0]) {
+                                to_move[0] = -1;
+                            }
 
-                    if (mouse_pos.y < cursor_pos[1]) {
-                        to_move[1] = -1;
-                    }
+                            if (mouse_pos.y > cursor_pos[1]) {
+                                to_move[1] = 1;
+                            }
 
+                            if (mouse_pos.y < cursor_pos[1]) {
+                                to_move[1] = -1;
+                            }
+
+                            if ((mouse_pos.x == cursor_pos[0]) && (mouse_pos.y == cursor_pos[1])) {
+                                if (!blockInput) {
+                                    events.emit<inputAccept>(mouse);
+                                }
+                            }
+
+                        }
+                    }
+                } else {
+                    SDL_Log("No mapx in ControleSystem");
                 }
-            }
+
+                break;
         }
 
         mouse->check_button(dt);

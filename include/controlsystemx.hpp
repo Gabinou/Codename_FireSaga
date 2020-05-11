@@ -11,6 +11,7 @@
 struct Controllers {
     entityx::ComponentHandle<KeyboardController> keyboard;
     entityx::ComponentHandle<GamepadController> gamepad;
+    entityx::ComponentHandle<MouseController> mouse;
 };
 
 class ControlSystemx: public entityx::System<ControlSystemx>, public entityx::Receiver<ControlSystemx> {

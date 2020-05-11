@@ -152,7 +152,9 @@ struct inputAccept {
 struct inputCancel {
     inputCancel(entityx::ComponentHandle<KeyboardController> keyboard) : keyboard(keyboard) {}
     inputCancel(entityx::ComponentHandle<GamepadController> gamepad) : gamepad(gamepad) {}
+    inputCancel(entityx::ComponentHandle<MouseController> mouse) : mouse(mouse) {}
     entityx::ComponentHandle<KeyboardController> keyboard;
+    entityx::ComponentHandle<MouseController> mouse;
     entityx::ComponentHandle<GamepadController> gamepad;
 };
 
