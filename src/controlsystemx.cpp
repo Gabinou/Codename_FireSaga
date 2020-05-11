@@ -126,6 +126,7 @@ void ControlSystemx::receive(const inputCancel & cancel) {
 
             break;
     }
+
     blockInput = false;
 }
 
@@ -268,7 +269,7 @@ void ControlSystemx::receive(const inputAccept & accept) {
     if (newstate != -1) {
         game->setState(newstate);
     }
-    
+
     blockInput = false;
 }
 
@@ -276,7 +277,11 @@ void ControlSystemx::update(entityx::EntityManager & es, entityx::EventManager &
     char to_move[2] = {0, 0};
     entityx::ComponentHandle<Position> position;
     entityx::Entity cursorent;
-    last_update += dt;
+    // last_update += dt;
+    double gp_held = 0.;
+    double kb_held = 0.;
+    double mouse_held = 0.;
+
 
     for (entityx::Entity ent : es.entities_with_components<Map>()) {
         unitmap = ent.component<Map>()->getUnitmap();
@@ -362,7 +367,7 @@ void ControlSystemx::update(entityx::EntityManager & es, entityx::EventManager &
 
             if (keyboard->getHeldbutton() > min_held) {
                 if (!blockInput) {
-                   events.emit<inputAccept>(keyboard);
+                    events.emit<inputAccept>(keyboard);
                 }
             }
         }
@@ -459,6 +464,10 @@ void ControlSystemx::update(entityx::EntityManager & es, entityx::EventManager &
 
         gamepad->check_move(pressed_move, dt);
         gamepad->check_button(pressed_button, dt);
+    }
+
+    if ((kb_held == 0.) && (gp_held == 0.)  && (mouse_held == 0.)) {
+        blockInput = false;
     }
 
     if (((to_move[0] != 0) || (to_move[1] != 0)) && (position->isUpdatable())) {
