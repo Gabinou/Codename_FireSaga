@@ -45,6 +45,11 @@ public:
     void setPixelPos(short int in_x, short int in_y) {
         pixel_pos.x = in_x;
         pixel_pos.y = in_y;
+    }    
+
+    void setPixelPos(Point in_point) {
+        pixel_pos.x = in_point.x;
+        pixel_pos.y = in_point.y;
     }
 
     void setTilemapPos(short int in_x, short int in_y) {

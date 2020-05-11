@@ -754,6 +754,9 @@ void Game::handleEvents() {
 
                 if (mouse) {
                     mouse->setPos(event.button.x, event.button.y);
+                    if (mapx) {
+                        mouse->setPos(event.button.x, event.button.y);
+                    }
                 }
 
                 if (event.type != previous_mouse) {
