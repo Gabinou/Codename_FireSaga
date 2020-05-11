@@ -25,7 +25,6 @@ private:
     entityx::EventManager * event_manager;
     std::vector<std::vector<entityx::ComponentHandle<Unit>>> unitmap;
     entityx::ComponentHandle<Unit> selected;
-    double last_update = 0.;
     float min_held = 0.05;
     bool blockInput = false;
     double gp_held = 0.;
