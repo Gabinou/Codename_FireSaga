@@ -28,6 +28,8 @@ enum MOUSES {
     NOACCEPT,
     FOLLOW,
     TELEPORT,
+    FAKECURSOR,
+    REPLACESCURSOR,
 };
 }
 
