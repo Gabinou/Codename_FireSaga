@@ -804,9 +804,9 @@ void Game::handleEvents() {
 
         case SDL_MOUSEMOTION:
             if (event.motion.windowID == SDL_GetWindowID(window)) {
-                if (cursorx.valid()) {
+                if (mousex.valid()) {
                     entityx::ComponentHandle<MouseController> mouse;
-                    mouse = cursorx.component<MouseController>();
+                    mouse = mousex.component<MouseController>();
 
                     if (mouse) {
                         // SDL_Log("event pos: %d %d", event.motion.x, event.motion.y);
