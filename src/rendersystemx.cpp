@@ -176,7 +176,7 @@ void RenderSystemx::update(entityx::EntityManager & es, entityx::EventManager & 
 
     for (entityx::Entity ent : es.entities_with_components<Sprite, Position>()) {
 
-        if (!ent.has_component<Text>() && !ent.has_component<KeyboardController>() && !ent.has_component<GamepadController>()) {
+        if (!ent.has_component<Text>() && !ent.has_component<KeyboardController>() && !ent.has_component<GamepadController>() && !ent.has_component<MouseController>()) {
             entityx::ComponentHandle<Sprite> sprite = ent.component<Sprite>();
             short int * slidepos = sprite->getSlidepos();
             short int * objectivepos = sprite->getObjpos();
@@ -231,7 +231,6 @@ void RenderSystemx::update(entityx::EntityManager & es, entityx::EventManager & 
             srcrect = loopSprites(sprite);
         }
 
-
         slideSprites(&ent, slidepos, objectivepos, dt);
 
         destrect.x = slidepos[0];
@@ -244,8 +243,19 @@ void RenderSystemx::update(entityx::EntityManager & es, entityx::EventManager & 
         sprite->draw();
     }
 
-    for (entityx::Entity ent : es.entities_with_components<KeyboardController>()) {
+    for (entityx::Entity ent : es.entities_with_components<MouseController>()) {
+        entityx::ComponentHandle<Sprite> sprite = ent.component<Sprite>();
+        entityx::ComponentHandle<MouseController> mouse = ent.component<MouseController>();
 
+        if ((sprite) && (mouse)) {
+            if ()
+            SDL_Rect destrect = sprite->getDestrect();
+            Point pos = mouse->getPixelPos();
+            destrect.x = pos.x;
+            destrect.y = pos.y;
+            sprite->setDestrect(destrect);
+            sprite->draw();
+        }
     }
 
     SDL_RenderPresent(renderer);

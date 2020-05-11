@@ -472,7 +472,6 @@ void Game::loadMouse() {
     unloadMouse();
     mousex = entities.create();
     mousex.assign<MouseController>();
-    mousex.assign<Position>();
     mousex.assign<Sprite>();
     mousex.component<Sprite>()->setTexture("..//assets//mousecursor.png");
 
