@@ -583,6 +583,10 @@ void Map::clearOverlays() {
     overlay_mode = 0;
 }
 
+Point Map::pixel2tile(Point in_point) {
+    return (pixel2tile(in_point.x, in_point.y));
+}
+
 Point Map::pixel2tile(short int pixel_x, short int pixel_y) {
     Point tile_pos;
     tile_pos.x = std::min((int)(bounds[1] - offset[0]), std::max((int)(bounds[0] - offset[0]), pixel_x / tilesize[0] - offset[0]));

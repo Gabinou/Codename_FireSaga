@@ -753,22 +753,21 @@ void Game::handleEvents() {
                 }
 
                 if (mouse) {
-                    mouse->setPos(event.button.x, event.button.y);
-                    if (mapx) {
-                        mouse->setPos(event.button.x, event.button.y);
-                    }
-                }
+                    mouse->setPixelPos(event.button.x, event.button.y);
 
-                if (event.type != previous_mouse) {
-                    if (mouse) {
+                    if (mapx) {
+                        mouse->setTilemapPos(mapx->pixel2tile(event.button.x, event.button.y));
+                    }
+
+                    if (event.type != previous_mouse) {
                         if (event.button.state == SDL_PRESSED) {
                             mouse->addHeld(event.button.button);
                         } else {
                             mouse->removeHeld(event.button.button);
                         }
-                    } else {
-                        SDL_Log("cursor has no MouseController component");
                     }
+                } else {
+                    SDL_Log("cursor has no MouseController component");
                 }
 
                 previous_mouse = event.type;

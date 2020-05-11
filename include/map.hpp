@@ -73,6 +73,7 @@ public:
     std::unordered_map<int, Tile> getTiles();
     std::vector<short int> getTilesindex();
 
+    Point pixel2tile(Point in_point);
     Point pixel2tile(short int pixel_x, short int pixel_y);
 
     void loadTilemap(const std::string filename);

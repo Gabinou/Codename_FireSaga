@@ -283,6 +283,7 @@ void ControlSystemx::update(entityx::EntityManager & es, entityx::EventManager &
         if (mouse->getHeldbutton() > min_held) {
 
         }
+
         // SDL_Log("Timeheld: %.6f", mouse->getHeldbutton());
         mouse->check_button(dt);
     }
