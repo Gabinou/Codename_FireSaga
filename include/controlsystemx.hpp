@@ -2,11 +2,11 @@
 #define CONTROLSYSTEMX_HPP
 
 #include <SDL2/SDL.h>
+#include <entityx/entityx.h>
 #include "events.hpp"
 #include "position.hpp"
 #include "keyboardcontroller.hpp"
 #include "gamepadcontroller.hpp"
-#include <entityx/entityx.h>
 
 struct Controllers {
     entityx::ComponentHandle<KeyboardController> keyboard;
@@ -16,6 +16,7 @@ struct Controllers {
 class ControlSystemx: public entityx::System<ControlSystemx>, public entityx::Receiver<ControlSystemx> {
 private:
     Game * game;
+    entityx::ComponentHandle<Map> mapx;
     KeyboardInputMap keyboardInputMap;
     GamepadInputMap gamepadInputMap;
     entityx::EventManager * event_manager;
@@ -26,6 +27,8 @@ private:
 public:
     ControlSystemx();
     ControlSystemx(Game * in_game);
+    void updateMap();
+
     unsigned int getHeldbutton(Controllers in_controllers);
     entityx::Entity getInputent(Controllers in_controllers);
     void AIturn(unsigned char in_army);

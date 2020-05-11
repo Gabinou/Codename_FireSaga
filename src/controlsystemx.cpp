@@ -10,6 +10,11 @@ ControlSystemx::ControlSystemx(Game * in_game) {
     game = in_game;
     keyboardInputMap = game->getKeyboardInputMap();
     gamepadInputMap = game->getGamepadInputMap();
+    updateMap();
+}
+
+void ControlSystemx::updateMap() {
+    mapx = game->getMap();
 }
 
 void ControlSystemx::configure(entityx::EventManager & in_events) {
@@ -273,15 +278,42 @@ void ControlSystemx::update(entityx::EntityManager & es, entityx::EventManager &
         unitmap = ent.component<Map>()->getUnitmap();
     }
 
-    for (entityx::Entity ent : es.entities_with_components<KeyboardController, Position>()) {
+    for (entityx::Entity ent : es.entities_with_components<MouseController, Position>()) {
         if (!cursorent.valid()) {
             cursorent = ent;
         }
 
+        if (!position) {
+            position = ent.component<Position>();
+        }
+
         entityx::ComponentHandle<MouseController> mouse = ent.component<MouseController>();
 
-        if (mouse->getHeldbutton() > min_held) {
 
+        if (mouse->getHeldbutton() > min_held) {
+            if (mapx) {
+                Point mouse_pos = mouse->getTilemapPos();
+                short int cursor_pos[2];
+                cursor_pos[0] = position->getPos()[0] - position->getOffset()[0];
+                cursor_pos[1] = position->getPos()[1] - position->getOffset()[1];
+
+                if (mouse_pos.x > cursor_pos[0]) {
+                    to_move[0] = 1;
+                }
+
+                if (mouse_pos.x < cursor_pos[0]) {
+                    to_move[0] = -1;
+                }
+
+                if (mouse_pos.y > cursor_pos[1]) {
+                    to_move[1] = 1;
+                }
+
+                if (mouse_pos.y < cursor_pos[1]) {
+                    to_move[1] = -1;
+                }
+
+            }
         }
 
         // SDL_Log("Timeheld: %.6f", mouse->getHeldbutton());
