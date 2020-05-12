@@ -153,7 +153,10 @@ void Game::makeFPS() {
     fps = entities.create();
     fps.assign<Position>();
     fps.component<Position>()->setonTilemap(false);
+    SDL_Log("FPS bounds: %d %d %d %d", 0, settings.res.x, 0, settings.res.y);
     fps.component<Position>()->setBounds(0, settings.res.x, 0, settings.res.y);
+    SDL_Log("FPS bounds: %d %d %d %d", 0, settings.res.x, 0, settings.res.y);
+
     fps.component<Position>()->setPos(settings.FPS.pos.x, settings.FPS.pos.y);
     fps.assign<Text>(settings.fontsize);
     fps.component<Text>()->setText("60");
@@ -428,6 +431,7 @@ void Game::setCursorstate(const unsigned char in_menu) {
                 cursorx.component<Position>()->setOffset(DEFAULT::TILEMAP_XOFFSET, DEFAULT::TILEMAP_YOFFSET);
                 cursorx.component<Position>()->setBounds(mapx->getBounds());
                 cursorx.component<Position>()->setPos(cursor_lastpos);
+                SDL_Log("cursor_lastpos: %d %d", cursor_lastpos.x, cursor_lastpos.y);
                 cursorx.component<Position>()->setonTilemap(true);
                 cursorx.component<Position>()->setPeriodic(false);
                 systems.system<RenderSystemx>()->setTilesize(temp_tilesize[0], temp_tilesize[1]);

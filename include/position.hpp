@@ -11,11 +11,11 @@ private:
     bool updatable = true;
     bool onTilemap = true;
     bool periodic = false;
-    Point pixel_pos;
-    Point tilemap_pos;
-    Point offset;
-    Point boundsmin;
-    Point boundsmax;
+    Point pixel_pos = {1, 1};
+    Point tilemap_pos = {1, 1};
+    Point offset = {1, 1};
+    Point boundsmin = {0, 100};
+    Point boundsmax = {0, 100};
     Point * position = nullptr;
     // short int position[2] = {0};
     short int bounds[4]; //xmin, xmax, ymin, ymax
