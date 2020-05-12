@@ -221,9 +221,9 @@ void ControlSystemx::receive(const cursorMoved & moved) {
             SDL_Log("previous_pos: %d %d", previous_pos.x, previous_pos.y);
             SDL_Log("current_pos: %d %d", current_pos.x, current_pos.y);
             SDL_Log("move: %d %d", move.x, move.y);
-            SDL_Log("unitmap size:", unitmap.size(), unitmap[0].size());
-            unitprevioustile = unitmap[previous_pos.y][previous_pos.x];
-            unitontile = unitmap[current_pos.y][cursor_pos.x];
+            SDL_Log("unitmap size: %d %d", unitmap.size(), unitmap[0].size());
+            unitprevioustile = unitmap[previous_pos.y - 1][previous_pos.x - 1];
+            unitontile = unitmap[current_pos.y - 1][cursor_pos.x - 1];
             SDL_Log("Until here");
 
             if (unitprevioustile) {
@@ -308,10 +308,7 @@ void ControlSystemx::update(entityx::EntityManager & es, entityx::EventManager &
     entityx::Entity cursorent;
 
     for (entityx::Entity ent : es.entities_with_components<Map>()) {
-        SDL_Log("ControlSystemx: getting unitmap");
         unitmap = ent.component<Map>()->getUnitmap();
-        SDL_Log("unitmap size:", unitmap.size(), unitmap[0].size());
-
     }
 
     for (entityx::Entity ent : es.entities_with_components<KeyboardController, Position>()) {
