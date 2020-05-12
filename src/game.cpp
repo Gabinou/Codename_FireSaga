@@ -465,7 +465,7 @@ void Game::setCursorstate(const unsigned char in_menu) {
                 cursorx.component<Position>()->setonTilemap(false);
                 cursorx.component<Position>()->setPeriodic(true);
                 cursorx.component<Position>()->setBounds(menubounds);
-                cursorx.component<Position>()->setPos(menubounds[0] - 1, menubounds[2]);
+                cursorx.component<Position>()->setPos(menubounds[0] - 1, menubounds[2] + 1);
                 short int * outbounds = cursorx.component<Position>()->getBounds();
                 SDL_Log("outbounds: %d %d %d %d", outbounds[0], outbounds[1], outbounds[2], outbounds[3]);
                 systems.system<RenderSystemx>()->setLinespace(linespace);

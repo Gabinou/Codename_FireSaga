@@ -191,7 +191,7 @@ bool Position::newPos(short int newx, short int newy) {
                 newy += boundsmax.y - boundsmin.y + 1;
             }
 
-            while (newy > boundsmin.y) {
+            while (newy > boundsmax.y) {
                 newy -= boundsmax.y - boundsmin.y + 1;
             }
 
@@ -200,6 +200,7 @@ bool Position::newPos(short int newx, short int newy) {
             // Python % is modulo. C/C++ % is remainder.
         }
 
+        SDL_Log("Newx: %d %d", newx, newy);
 
         if ((newx > boundsmin.x) && (newx < boundsmax.x) && (position->x != newx)) {
             position->x = newx;
