@@ -468,8 +468,7 @@ void ControlSystemx::update(entityx::EntityManager & es, entityx::EventManager &
         switch (settings->mouse.type) {
             case MOUSE::REPLACESCURSOR:
                 if (mapx) {
-                    Point mouse_pos = mouse->getTilemapPos();
-                    Point mouse_pos_tilemap = mapx->pixel2tile(mouse_pos);
+                    Point mouse_pos_tilemap = mapx->pixel2tile(mouse_position->getPixelPos());
                     Point current_pos;
                     Point cursor_pos = cursor_position->getPos();
                     Point offset = cursor_position->getOffset();
@@ -502,8 +501,7 @@ void ControlSystemx::update(entityx::EntityManager & es, entityx::EventManager &
                     case GAME::STATE::MAP:
 
                         if (mapx) {
-                            Point mouse_pos = mouse->getPixelPos();
-                            Point mouse_pos_tilemap = mapx->pixel2tile(mouse_pos);
+                            Point mouse_pos_tilemap = mapx->pixel2tile(mouse_position->getPixelPos());
                             Point current_pos;
                             Point cursor_pos = cursor_position->getPos();
                             Point offset = cursor_position->getOffset();
@@ -512,6 +510,7 @@ void ControlSystemx::update(entityx::EntityManager & es, entityx::EventManager &
 
                             if (mouse->isPressed(mouseInputMap.accept)) {
                                 if (mouse->getHeldbutton() > min_held) {
+
                                     if (mouse_pos_tilemap.x > current_pos.x) {
                                         cursor_move.x = 1;
                                     }
@@ -532,7 +531,7 @@ void ControlSystemx::update(entityx::EntityManager & es, entityx::EventManager &
                                         blockInput = true;
                                     }
 
-                                    if ((mouse_pos.x == current_pos.x) && (mouse_pos.y == current_pos.y)) {
+                                    if ((mouse_pos_tilemap.x == current_pos.x) && (mouse_pos_tilemap.y == current_pos.y)) {
                                         if (!blockInput) {
                                             events.emit<inputAccept>(mouse);
 

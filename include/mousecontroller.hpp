@@ -11,8 +11,6 @@ private:
     MouseInputMap inputmap;
     std::vector<unsigned char> held_button;
     double time_button = 0.;
-    Point pixel_pos;
-    Point tilemap_pos;
 public:
 
     void removeHeld(unsigned char in_button) {
@@ -38,34 +36,6 @@ public:
 
     MouseInputMap getInputMap() {
         return (inputmap);
-    }
-
-    Point getPixelPos() {
-        return (pixel_pos);
-    }
-
-    Point getTilemapPos() {
-        return (tilemap_pos);
-    }
-
-    void setPixelPos(short int in_x, short int in_y) {
-        pixel_pos.x = in_x;
-        pixel_pos.y = in_y;
-    }
-
-    void setPixelPos(Point in_point) {
-        pixel_pos.x = in_point.x;
-        pixel_pos.y = in_point.y;
-    }
-
-    void setTilemapPos(short int in_x, short int in_y) {
-        tilemap_pos.x = in_x;
-        tilemap_pos.y = in_y;
-    }
-
-    void setTilemapPos(Point in_point) {
-        tilemap_pos.x = in_point.x;
-        tilemap_pos.y = in_point.y;
     }
 
     void setInputMap(MouseInputMap in_inputmap) {

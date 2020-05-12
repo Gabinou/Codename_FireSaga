@@ -479,6 +479,9 @@ void Game::loadMouse() {
     mousex = entities.create();
     mousex.assign<MouseController>();
     mousex.assign<Position>();
+    entityx::ComponentHandle<Position> position = mousex.component<Position>();
+    position->setonTilemap(false);
+    position->setBounds(0, 2000, 0, 2000);
     mousex.assign<Sprite>();
     mousex.component<Sprite>()->setTexture("..//assets//mousecursor.png");
 
@@ -794,8 +797,6 @@ void Game::handleEvents() {
                     entityx::ComponentHandle<Position> position;
                     mouse = mousex.component<MouseController>();
                     position = mousex.component<Position>();
-                    position->setonTilemap(false);
-                    position->setBounds(0, 2000, 0, 2000);
 
                     if (mouse) {
                         // SDL_Log("event pos: %d %d", event.button.x, event.button.y);
@@ -840,11 +841,13 @@ void Game::handleEvents() {
                 if (event.motion.windowID == SDL_GetWindowID(window)) {
 
                     if (mouse) {
-                        // SDL_Log("event pos: %d %d", event.motion.x, event.motion.y);
+                        // SDL_Log("Mouse motion event pos: %d %d", event.motion.x, event.motion.y);
                         position->setPixelPos(event.motion.x, event.motion.y);
 
                         if (mapx) {
-                            position->setTilemapPos(mapx->pixel2tile(event.motion.x, event.motion.y));
+                            Point tilemap_pos = mapx->pixel2tile(event.motion.x, event.motion.y);
+                            // SDL_Log("Mouse motion tilemap pos: %d %d", tilemap_pos.x, tilemap_pos.y);
+                            position->setTilemapPos(tilemap_pos);
                         }
                     } else {
                         SDL_Log("cursor has no MouseController component");
