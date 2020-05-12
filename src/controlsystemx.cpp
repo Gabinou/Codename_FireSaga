@@ -185,7 +185,7 @@ unsigned int ControlSystemx::getHeldbutton(Controllers in_controllers) {
 }
 
 void ControlSystemx::receive(const cursorMoved & moved) {
-    // SDL_Log("Received cursorMoved event");
+    SDL_Log("Received cursorMoved event");
     entityx::ComponentHandle<Unit> unitontile;
     entityx::ComponentHandle<Unit> unitprevioustile;
     entityx::Entity cursor = moved.cursor;
@@ -198,6 +198,8 @@ void ControlSystemx::receive(const cursorMoved & moved) {
     Point offset = position->getOffset();
     current_pos.x = cursor_pos.x - offset.x;
     current_pos.y = cursor_pos.y - offset.y;
+    SDL_Log("current_pos: %d %d", current_pos.x, current_pos.y);
+    SDL_Log("move: %d %d", move.x, move.y);
 
     switch (game->getState()) {
         case GAME::STATE::UNITMOVE:
@@ -216,8 +218,13 @@ void ControlSystemx::receive(const cursorMoved & moved) {
         case GAME::STATE::MAP:
             previous_pos.x = current_pos.x - move.x;
             previous_pos.y = current_pos.y - move.y;
+            SDL_Log("previous_pos: %d %d", previous_pos.x, previous_pos.y);
+            SDL_Log("current_pos: %d %d", current_pos.x, current_pos.y);
+            SDL_Log("move: %d %d", move.x, move.y);
+            SDL_Log("unitmap size:", unitmap.size(), unitmap[0].size());
             unitprevioustile = unitmap[previous_pos.y][previous_pos.x];
             unitontile = unitmap[current_pos.y][cursor_pos.x];
+            SDL_Log("Until here");
 
             if (unitprevioustile) {
                 event_manager->emit<unitDehover>(cursor, unitprevioustile);
@@ -233,6 +240,7 @@ void ControlSystemx::receive(const cursorMoved & moved) {
     if (newstate != -1) {
         game->setState(newstate);
     }
+
 }
 
 void ControlSystemx::receive(const inputAccept & accept) {
@@ -300,7 +308,10 @@ void ControlSystemx::update(entityx::EntityManager & es, entityx::EventManager &
     entityx::Entity cursorent;
 
     for (entityx::Entity ent : es.entities_with_components<Map>()) {
+        SDL_Log("ControlSystemx: getting unitmap");
         unitmap = ent.component<Map>()->getUnitmap();
+        SDL_Log("unitmap size:", unitmap.size(), unitmap[0].size());
+
     }
 
     for (entityx::Entity ent : es.entities_with_components<KeyboardController, Position>()) {

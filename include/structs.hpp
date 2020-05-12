@@ -95,8 +95,8 @@ struct Infusion {
 };
 
 struct Point {
-    short unsigned int x;
-    short unsigned int y;
+    short int x;
+    short int y;
 };
 
 struct Point_int {

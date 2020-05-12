@@ -40,32 +40,27 @@ Position::Position(short int in_x, short int in_y,
 
 void Position::replaceInbounds() {
     if (position != nullptr) {
-        if (position->x < boundsmin.x) {
-            position->x = boundsmin.x;
+        if (position->x <= boundsmin.x) {
+            position->x = boundsmin.x - offset.x;
         }
 
-        if (position->x > boundsmax.x) {
-            position->x = boundsmax.x;
+        if (position->x >= boundsmax.x) {
+            position->x = boundsmax.x - offset.x;
         }
 
-        if (position->y < boundsmin.y) {
-            position->y = boundsmin.y;
+        if (position->y <= boundsmin.y) {
+            position->y = boundsmin.y - offset.y;
         }
 
-        if (position->y > boundsmax.y) {
-            position->y = boundsmax.y;
+        if (position->y >= boundsmax.y) {
+            position->y = boundsmax.y - offset.y;
         }
     }
 }
 
 void Position::setBounds(Point in_boundsmin, Point in_boundsmax) {
-    boundsmin.x = in_boundsmin.x;
-    boundsmax.x = in_boundsmax.x;
-    boundsmin.y = in_boundsmin.y;
-    boundsmax.y = in_boundsmax.y;
-    replaceInbounds();
+    setBounds(in_boundsmin.x, in_boundsmax.x, in_boundsmin.y, in_boundsmax.x);
 }
-
 
 void Position::setBounds(short int xmin, short int xmax, short int ymin, short int ymax) {
     boundsmin.x = xmin + offset.x;
@@ -76,19 +71,11 @@ void Position::setBounds(short int xmin, short int xmax, short int ymin, short i
 }
 
 void Position::setBounds(short int in_bounds[4]) {
-    boundsmin.x = in_bounds[0];
-    boundsmax.x = in_bounds[1];
-    boundsmin.y = in_bounds[2];
-    boundsmax.y = in_bounds[3];
-    replaceInbounds();
+    setBounds(in_bounds[0], in_bounds[1], in_bounds[2], in_bounds[3]);
 }
 
 void Position::setBounds(std::vector<short int> in_bounds) {
-    boundsmin.x = in_bounds[0];
-    boundsmax.x = in_bounds[1];
-    boundsmin.x = in_bounds[2];
-    boundsmax.x = in_bounds[3];
-    replaceInbounds();
+    setBounds(in_bounds[0], in_bounds[1], in_bounds[2], in_bounds[3]);
 }
 
 void Position::setOffset(Point in_offset) {

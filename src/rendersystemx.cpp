@@ -51,6 +51,7 @@ void RenderSystemx::slideSprites(entityx::Entity * in_ent, short int * slidepos,
         entityx::ComponentHandle<Sprite> sprite = in_ent->component<Sprite>();
         entityx::ComponentHandle<Position> position = in_ent->component<Position>();
         Point cursor_pos;
+        Point offset;
         double kb_held = 0.;
         double gp_held = 0.;
         short int slide_int = sprite->getSlideint();
@@ -77,8 +78,9 @@ void RenderSystemx::slideSprites(entityx::Entity * in_ent, short int * slidepos,
             }
 
             cursor_pos = position->getPos();
-            slidepos[0] = (int)(cursor_pos.x * scalefactor[0]);
-            slidepos[1] = (int)(cursor_pos.y * scalefactor[1]);
+            offset = position->getOffset();
+            slidepos[0] = (int)((cursor_pos.x - offset.x) * scalefactor[0]);
+            slidepos[1] = (int)((cursor_pos.y - offset.y) * scalefactor[1]);
         } else {
             if (!position->isonTilemap()) { //move on the menu space
                 scalefactor[0] = linespace;
@@ -96,8 +98,9 @@ void RenderSystemx::slideSprites(entityx::Entity * in_ent, short int * slidepos,
                     }
 
                     cursor_pos = position->getPos();
-                    objectivepos[0] = (int)(cursor_pos.x) * (scalefactor[0]) - destrect.w / 4;
-                    objectivepos[1] = (int)(cursor_pos.y) * (scalefactor[1]) - destrect.h / 4;
+                    offset = position->getOffset();
+                    objectivepos[0] = (int)(cursor_pos.x - offset.x) * (scalefactor[0]) - destrect.w / 4;
+                    objectivepos[1] = (int)(cursor_pos.y - offset.y) * (scalefactor[1]) - destrect.h / 4;
 
                     if (slide_wait > slide_step) {
                         if (objectivepos[0] != slidepos[0]) {

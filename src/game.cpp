@@ -152,6 +152,7 @@ void Game::makeFPS() {
 
     fps = entities.create();
     fps.assign<Position>();
+    fps.component<Position>()->setonTilemap(false);
     fps.component<Position>()->setBounds(0, settings.res.x, 0, settings.res.y);
     fps.component<Position>()->setPos(settings.FPS.pos.x, settings.FPS.pos.y);
     fps.assign<Text>(settings.fontsize);
@@ -492,7 +493,7 @@ void Game::loadCursor() {
     cursorx.assign<KeyboardController>();
     cursorx.assign<GamepadController>();
     cursorx.assign<TouchpadController>();
-    cursorx.assign<Position>();
+    cursorx.assign<Position>(6, 6);
     cursorx.assign<Sprite>();
     setCursorstate(MENU::MAP);
 }
@@ -796,9 +797,11 @@ void Game::handleEvents() {
                     }
 
                     previous_mouse = event.type;
-                } else {
-                    SDL_Log("cursorx is not valid");
                 }
+
+                // } else {
+                //     SDL_Log("mousex is not valid");
+                // }
 
             }
 
@@ -827,10 +830,11 @@ void Game::handleEvents() {
                 } else {
                     sprite->hide();
                 }
-
-            } else {
-                SDL_Log("cursorx is not valid");
             }
+
+            // } else {
+            //     SDL_Log("mousex is not valid");
+            // }
 
             break;
 
