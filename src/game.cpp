@@ -791,14 +791,16 @@ void Game::handleEvents() {
 
                 if (mousex.valid()) {
                     entityx::ComponentHandle<MouseController> mouse;
+                    entityx::ComponentHandle<Position> position;
                     mouse = mousex.component<MouseController>();
+                    position = mousex.component<Position>();
 
                     if (mouse) {
                         // SDL_Log("event pos: %d %d", event.button.x, event.button.y);
-                        mouse->setPixelPos(event.button.x, event.button.y);
+                        position->setPixelPos(event.button.x, event.button.y);
 
                         if (mapx) {
-                            mouse->setTilemapPos(mapx->pixel2tile(event.button.x, event.button.y));
+                            position->setTilemapPos(mapx->pixel2tile(event.button.x, event.button.y));
                         }
 
                         if (event.type != previous_mouse) {
@@ -827,6 +829,8 @@ void Game::handleEvents() {
             if (mousex.valid()) {
                 entityx::ComponentHandle<MouseController> mouse;
                 entityx::ComponentHandle<Sprite> sprite;
+                entityx::ComponentHandle<Position> position;
+                position = mousex.component<Position>();
                 mouse = mousex.component<MouseController>();
                 sprite = mousex.component<Sprite>();
                 sprite->show();
@@ -835,10 +839,10 @@ void Game::handleEvents() {
 
                     if (mouse) {
                         // SDL_Log("event pos: %d %d", event.motion.x, event.motion.y);
-                        mouse->setPixelPos(event.motion.x, event.motion.y);
+                        position->setPixelPos(event.motion.x, event.motion.y);
 
                         if (mapx) {
-                            mouse->setTilemapPos(mapx->pixel2tile(event.motion.x, event.motion.y));
+                            position->setTilemapPos(mapx->pixel2tile(event.motion.x, event.motion.y));
                         }
                     } else {
                         SDL_Log("cursor has no MouseController component");

@@ -54,6 +54,10 @@ public:
     bool isonTilemap();
     void setonTilemap(bool in_tilemap);
 
+    bool setTilemapPos(Point in_pos);
+    bool setTilemapPos(short int in_x, short int in_y);
+    bool setPixelPos(Point in_pos);
+    bool setPixelPos(short int in_x, short int in_y);
     bool setPos(Point * in_pos);
     bool setPos(Point in_pos);
     bool setPos(short int * in_pos);

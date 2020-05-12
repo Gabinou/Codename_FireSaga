@@ -138,6 +138,30 @@ bool Position::isUpdatable() {
     return (updatable);
 }
 
+bool Position::setTilemapPos(Point in_pos) {
+    return (setTilemapPos(in_pos.x, in_pos.y));
+}
+
+bool Position::setTilemapPos(short int in_x, short int in_y) {
+    bool out;
+    position = &tilemap_pos;
+    out = setPos(in_x, in_y);
+    whichPos();
+    return (out);
+}
+
+bool Position::setPixelPos(Point in_pos) {
+    return (setPixelPos(in_pos.x, in_pos.y));
+}
+
+bool Position::setPixelPos(short int in_x, short int in_y) {
+    bool out;
+    position = &pixel_pos;
+    out = setPos(in_x, in_y);
+    whichPos();
+    return (out);
+}
+
 bool Position::setPos(Point * in_pos) {
     return (setPos(in_pos->x, in_pos->y));
 }
