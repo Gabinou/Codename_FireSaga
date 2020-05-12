@@ -265,31 +265,31 @@ void Game::makeMenuoptions(unsigned char in_menu_index) {
         case MENU::UNIT:
             options.push_back(MENU::OPTION::ITEMS);
             bounds = mapx->getBounds();
-            unit = mapx->getUnit(cursor_lastpos[0], cursor_lastpos[1]);
-            SDL_Log("last position: %d %d", cursor_lastpos[0], cursor_lastpos[1]);
+            unit = mapx->getUnit(cursor_lastpos.x, cursor_lastpos.y);
+            SDL_Log("last position: %d %d", cursor_lastpos.x, cursor_lastpos.y);
 
             if (unit) {
                 SDL_Log("Making Menuoptions for: %s", unit->getName().c_str());
 
                 std::vector<std::vector<short int>> tilemap = mapx->getTilemap();
 
-                if ((cursor_lastpos[1] + 1) < bounds[3]) {
-                    top = mapx->getUnit(cursor_lastpos[0], cursor_lastpos[1] + 1);
+                if ((cursor_lastpos.y + 1) < bounds[3]) {
+                    top = mapx->getUnit(cursor_lastpos.x, cursor_lastpos.y + 1);
                 }
 
-                if ((cursor_lastpos[1] - 1) > bounds[2]) {
-                    bottom = mapx->getUnit(cursor_lastpos[0], cursor_lastpos[1] - 1);
+                if ((cursor_lastpos.y - 1) > bounds[2]) {
+                    bottom = mapx->getUnit(cursor_lastpos.x, cursor_lastpos.y - 1);
                 }
 
-                if ((cursor_lastpos[0] + 1) < bounds[1]) {
-                    right = mapx->getUnit(cursor_lastpos[0] + 1, cursor_lastpos[1]);
+                if ((cursor_lastpos.x + 1) < bounds[1]) {
+                    right = mapx->getUnit(cursor_lastpos.x + 1, cursor_lastpos.y);
                 }
 
-                if ((cursor_lastpos[0] - 1) > bounds[0]) {
-                    left = mapx->getUnit(cursor_lastpos[0] - 1, cursor_lastpos[1]);
+                if ((cursor_lastpos.x - 1) > bounds[0]) {
+                    left = mapx->getUnit(cursor_lastpos.x - 1, cursor_lastpos.y);
                 }
 
-                if (tilemap[cursor_lastpos[0]][cursor_lastpos[1]] / DEFAULT::TILE_DIVISOR == TILE::THRONE) {
+                if (tilemap[cursor_lastpos.x][cursor_lastpos.y] / DEFAULT::TILE_DIVISOR == TILE::THRONE) {
                     if (unit->getid() ==  UNIT::NAME::ERWIN) {
                         options.push_back(MENU::OPTION::SEIZE);
                     }
@@ -386,8 +386,8 @@ void Game::setMenuoptions(unsigned char in_menu_index, std::vector<unsigned char
 
 
 void Game::setCursorlastpos(const short int x, const short int y) {
-    cursor_lastpos[0] = x;
-    cursor_lastpos[1] = y;
+    cursor_lastpos.x = x;
+    cursor_lastpos.y = y;
 }
 
 void Game::unloadMap() {
@@ -438,7 +438,7 @@ void Game::setCursorstate(const unsigned char in_menu) {
             case MENU::MAPMENU:
                 SDL_Log("Changed Cursor to unitmenu");
                 temprect = {0, 0, 16, 16}; //x,y,w,h
-                short int * menupos;
+                Point menupos;
                 short int linespace = 1;
                 cursorx.component<Sprite>()->still();
                 cursorx.component<Sprite>()->setSrcrect(temprect);
@@ -451,12 +451,14 @@ void Game::setCursorstate(const unsigned char in_menu) {
                 }
 
                 short int menubounds[4];
-                menubounds[0] = menupos[0] / linespace;
-                menubounds[1] = menupos[0] / linespace;
-                menubounds[2] = (short int)(menupos[1] / linespace + 1);
-                menubounds[3] = (short int)(menupos[1] / linespace + menuoptions[in_menu].size());
-                cursor_lastpos[0] = cursorx.component<Position>()->getPos()[0] - cursorx.component<Position>()->getOffset()[0];
-                cursor_lastpos[1] = cursorx.component<Position>()->getPos()[1] - cursorx.component<Position>()->getOffset()[1];
+                menubounds[0] = menupos.x / linespace;
+                menubounds[1] = menupos.x / linespace;
+                menubounds[2] = (short int)(menupos.y / linespace + 1);
+                menubounds[3] = (short int)(menupos.y / linespace + menuoptions[in_menu].size());
+                Point pos = cursorx.component<Position>()->getPos();
+                Point offset = cursorx.component<Position>()->getOffset();
+                cursor_lastpos.x = pos.x - offset.x;
+                cursor_lastpos.y = pos.y - offset.y;
                 SDL_Log("Menubounds: %d %d %d %d", menubounds[0], menubounds[1], menubounds[2], menubounds[3]);
                 cursorx.component<Position>()->setBounds(menubounds);
                 cursorx.component<Position>()->setPos(menubounds[0] - 1, menubounds[2]);
