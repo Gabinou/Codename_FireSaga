@@ -51,6 +51,7 @@ void RenderSystemx::slideSprites(entityx::Entity * in_ent, short int * slidepos,
         entityx::ComponentHandle<Sprite> sprite = in_ent->component<Sprite>();
         entityx::ComponentHandle<Position> position = in_ent->component<Position>();
         Point cursor_pos;
+        Point unit_pos;
         Point offset;
         double kb_held = 0.;
         double gp_held = 0.;
@@ -77,10 +78,11 @@ void RenderSystemx::slideSprites(entityx::Entity * in_ent, short int * slidepos,
                 scalefactor[1] = 1;
             }
 
-            cursor_pos = position->getPos();
+            unit_pos = position->getPos();
             offset = position->getOffset();
-            slidepos[0] = (int)((cursor_pos.x) * scalefactor[0]);
-            slidepos[1] = (int)((cursor_pos.y) * scalefactor[1]);
+            // SDL_Log("cursor_pos %d %d", unit_pos.x, unit_pos.y);
+            slidepos[0] = (int)(unit_pos.x * scalefactor[0]);
+            slidepos[1] = (int)(unit_pos.y * scalefactor[1]);
         } else {
             if (!position->isonTilemap()) { //move on the menu space
                 scalefactor[0] = linespace;

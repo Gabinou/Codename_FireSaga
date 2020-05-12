@@ -516,6 +516,9 @@ void Game::loadMapUnits(std::vector<short unsigned int> in_units, std::vector<st
         Uent = entities.create();
         Uent.assign<Unit>(units[in_units[i]]);
         Uent.assign<Position>();
+        Uent.component<Position>()->setonTilemap(true);
+        short int * bounds = mapx->getBounds();
+        Uent.component<Position>()->setBounds(bounds);
         Uent.component<Position>()->setOffset(DEFAULT::TILEMAP_XOFFSET, DEFAULT::TILEMAP_YOFFSET);
         Uent.component<Position>()->setPos(in_pos_list[i][0], in_pos_list[i][1]);
         Uent.assign<Sprite>(asset_name.c_str());
