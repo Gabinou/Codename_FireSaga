@@ -206,11 +206,11 @@ bool Position::newPos(short int newx, short int newy) {
             position->x = newx;
             moved = true;
         } else {
-            if (newx < boundsmin.x) {
+            if (newx <= boundsmin.x) {
                 position->x = boundsmin.x;
             }
 
-            if (newx > boundsmax.x) {
+            if (newx >= boundsmax.x) {
                 position->x = boundsmax.x;
             }
         }
@@ -219,11 +219,11 @@ bool Position::newPos(short int newx, short int newy) {
             position->y = newy;
             moved = true;
         } else {
-            if (newy < boundsmin.y) {
+            if (newy <= boundsmin.y) {
                 position->y = boundsmin.y;
             }
 
-            if (newy > boundsmax.y) {
+            if (newy >= boundsmax.y) {
                 position->y = boundsmax.y;
             }
         }
