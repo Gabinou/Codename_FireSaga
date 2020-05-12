@@ -18,7 +18,7 @@ private:
     entityx::ComponentHandle<Map> mapx;
     short unsigned int * tilesize;
     short unsigned int linespace;
-    short int offset[2];
+    Point offset;
     double frame_count = 0.;
     double last_update = 0.;
     float slide_step = 0.01;

@@ -16,8 +16,8 @@ void RenderSystemx::setRenderer(SDL_Renderer * in_renderer) {
 }
 
 RenderSystemx::RenderSystemx() {
-    offset[0] = DEFAULT::TILEMAP_XOFFSET;
-    offset[1] = DEFAULT::TILEMAP_YOFFSET;
+    offset.x = DEFAULT::TILEMAP_XOFFSET;
+    offset.y = DEFAULT::TILEMAP_YOFFSET;
 }
 
 RenderSystemx::RenderSystemx(SDL_Renderer * in_renderer, Game * in_game) {
@@ -50,6 +50,7 @@ void RenderSystemx::slideSprites(entityx::Entity * in_ent, short int * slidepos,
         entityx::ComponentHandle<KeyboardController> keyboard = in_ent->component<KeyboardController>();
         entityx::ComponentHandle<Sprite> sprite = in_ent->component<Sprite>();
         entityx::ComponentHandle<Position> position = in_ent->component<Position>();
+        Point cursor_pos;
         double kb_held = 0.;
         double gp_held = 0.;
         short int slide_int = sprite->getSlideint();
@@ -75,8 +76,9 @@ void RenderSystemx::slideSprites(entityx::Entity * in_ent, short int * slidepos,
                 scalefactor[1] = 1;
             }
 
-            slidepos[0] = (int)(position->getPos()[0] * scalefactor[0]);
-            slidepos[1] = (int)(position->getPos()[1] * scalefactor[1]);
+            cursor_pos = position->getPos();
+            slidepos[0] = (int)(cursor_pos.x * scalefactor[0]);
+            slidepos[1] = (int)(cursor_pos.y * scalefactor[1]);
         } else {
             if (!position->isonTilemap()) { //move on the menu space
                 scalefactor[0] = linespace;
@@ -93,8 +95,9 @@ void RenderSystemx::slideSprites(entityx::Entity * in_ent, short int * slidepos,
                         slide_int = 0;
                     }
 
-                    objectivepos[0] = (int)(position->getPos()[0]) * (scalefactor[0]) - destrect.w / 4;
-                    objectivepos[1] = (int)(position->getPos()[1]) * (scalefactor[1]) - destrect.h / 4;
+                    cursor_pos = position->getPos();
+                    objectivepos[0] = (int)(cursor_pos.x) * (scalefactor[0]) - destrect.w / 4;
+                    objectivepos[1] = (int)(cursor_pos.y) * (scalefactor[1]) - destrect.h / 4;
 
                     if (slide_wait > slide_step) {
                         if (objectivepos[0] != slidepos[0]) {
@@ -203,7 +206,7 @@ void RenderSystemx::update(entityx::EntityManager & es, entityx::EventManager & 
     for (entityx::Entity ent : es.entities_with_components<Text, Position>()) {
         entityx::ComponentHandle<Position> position = ent.component<Position>();
         entityx::ComponentHandle<Text> text = ent.component<Text>();
-        short int * pos = position->getPos();
+        Point pos = position->getPos();
         // SDL_Log("unit menu position: %d %d", position[0], position[1]);
 
         if (ent.has_component<Sprite>()) {

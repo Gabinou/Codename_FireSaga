@@ -122,6 +122,11 @@ void Sprite::setDestrectpos(short int * in_position) {
     destrect.y = in_position[1];
 }
 
+void Sprite::setDestrectpos(Point in_position) {
+    destrect.x = in_position.x;
+    destrect.y = in_position.y;
+}
+
 void Sprite::setTexture(const char * in_asset_name) {
     asset_name = in_asset_name;
     texture = loadTexture(Game::renderer, in_asset_name);

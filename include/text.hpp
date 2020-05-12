@@ -55,6 +55,7 @@ public:
     void wraptext();
 
     void setRects(short int * in_position);
+    void setRects(Point in_position);
     void setRects(short int x, short int y);
 
     void draw();

@@ -67,6 +67,7 @@ public:
     unsigned char getSlidetype();
     void setSlidetype(unsigned char in_slidetype);
     void setDestrectpos(short int * in_position);
+    void setDestrectpos(Point in_position);
     void setTexture(const char * in_asset_name);
 
     void setAnimation(int inFrames, int inSpeed) ;
