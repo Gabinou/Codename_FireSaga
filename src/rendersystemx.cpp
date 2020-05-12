@@ -254,12 +254,13 @@ void RenderSystemx::update(entityx::EntityManager & es, entityx::EventManager & 
     for (entityx::Entity ent : es.entities_with_components<MouseController>()) {
         entityx::ComponentHandle<Sprite> sprite = ent.component<Sprite>();
         entityx::ComponentHandle<MouseController> mouse = ent.component<MouseController>();
+        entityx::ComponentHandle<Position> position = ent.component<Position>();
 
-        if ((sprite) && (mouse)) {
+        if ((sprite) && (mouse) && (position)) {
             // if ()
             // {  }
             SDL_Rect destrect = sprite->getDestrect();
-            Point pos = mouse->getPixelPos();
+            Point pos = position->getPixelPos();
             destrect.x = pos.x;
             destrect.y = pos.y;
             sprite->setDestrect(destrect);

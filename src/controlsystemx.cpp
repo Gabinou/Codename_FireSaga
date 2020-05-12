@@ -303,20 +303,21 @@ void ControlSystemx::receive(const inputAccept & accept) {
 
 void ControlSystemx::update(entityx::EntityManager & es, entityx::EventManager & events, entityx::TimeDelta dt) {
     char to_move[2] = {0, 0};
-    entityx::ComponentHandle<Position> position;
-    entityx::Entity cursorent;
+    entityx::ComponentHandle<Position> cursor_position;
+    entityx::ComponentHandle<Position> mouse_position;
+    entityx::Entity cursor_ent;
 
     for (entityx::Entity ent : es.entities_with_components<Map>()) {
         unitmap = ent.component<Map>()->getUnitmap();
     }
 
     for (entityx::Entity ent : es.entities_with_components<KeyboardController, Position>()) {
-        if (!cursorent.valid()) {
-            cursorent = ent;
+        if (!cursor_ent.valid()) {
+            cursor_ent = ent;
         }
 
-        if (!position) {
-            position = ent.component<Position>();
+        if (!cursor_position) {
+            cursor_position = ent.component<Position>();
         }
 
         entityx::ComponentHandle<KeyboardController> keyboard = ent.component<KeyboardController>();
@@ -367,12 +368,12 @@ void ControlSystemx::update(entityx::EntityManager & es, entityx::EventManager &
     }
 
     for (entityx::Entity ent : es.entities_with_components<GamepadController, Position>()) {
-        if (!cursorent.valid()) {
-            cursorent = ent;
+        if (!cursor_ent.valid()) {
+            cursor_ent = ent;
         }
 
-        if (!position) {
-            position = ent.component<Position>();
+        if (!cursor_position) {
+            cursor_position = ent.component<Position>();
         }
 
         entityx::ComponentHandle<GamepadController> gamepad = ent.component<GamepadController>();
@@ -447,8 +448,12 @@ void ControlSystemx::update(entityx::EntityManager & es, entityx::EventManager &
     }
 
     for (entityx::Entity ent : es.entities_with_components<MouseController>()) {
+        if (!mouse_position) {
+            mouse_position = ent.component<Position>();
+        }
 
         entityx::ComponentHandle<MouseController> mouse = ent.component<MouseController>();
+
 
         if (mouse->isPressed(mouseInputMap.cancel)) {
             if (mouse->getHeldbutton() > min_held) {
@@ -463,8 +468,8 @@ void ControlSystemx::update(entityx::EntityManager & es, entityx::EventManager &
                 if (mapx) {
                     Point mouse_pos = mouse->getTilemapPos();
                     Point current_pos;
-                    Point cursor_pos = position->getPos();
-                    Point offset = position->getOffset();
+                    Point cursor_pos = cursor_position->getPos();
+                    Point offset = cursor_position->getOffset();
                     current_pos.x = cursor_pos.x - offset.x;
                     current_pos.y = cursor_pos.y - offset.y;
 
@@ -496,8 +501,8 @@ void ControlSystemx::update(entityx::EntityManager & es, entityx::EventManager &
                         if (mapx) {
                             Point mouse_pos = mouse->getTilemapPos();
                             Point current_pos;
-                            Point cursor_pos = position->getPos();
-                            Point offset = position->getOffset();
+                            Point cursor_pos = cursor_position->getPos();
+                            Point offset = cursor_position->getOffset();
                             current_pos.x = cursor_pos.x - offset.x;
                             current_pos.y = cursor_pos.y - offset.y;
 
@@ -542,6 +547,7 @@ void ControlSystemx::update(entityx::EntityManager & es, entityx::EventManager &
                 break;
         }
 
+        mouse_position->addPos(to_move[0], to_move[1]);
         mouse->check_button(dt);
         mouse_held = mouse->getHeldbutton();
     }
@@ -551,14 +557,17 @@ void ControlSystemx::update(entityx::EntityManager & es, entityx::EventManager &
         blockInput = false;
     }
 
-    if (((to_move[0] != 0) || (to_move[1] != 0)) && (position->isUpdatable())) {
-        Point move;
-        move.x = to_move[0];
-        move.y = to_move[1];
+    if (cursor_position) {
+        if (((to_move[0] != 0) || (to_move[1] != 0)) && (cursor_position->isUpdatable())) {
+            Point move;
+            move.x = to_move[0];
+            move.y = to_move[1];
 
-        if (position->addPos(to_move[0], to_move[1])) {
-            events.emit<cursorMoved>(cursorent, move);
+            if (cursor_position->addPos(move.x, move.y)) {
+                events.emit<cursorMoved>(cursor_ent, move);
+            }
         }
     }
+
 }
 

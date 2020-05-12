@@ -794,6 +794,8 @@ void Game::handleEvents() {
                     entityx::ComponentHandle<Position> position;
                     mouse = mousex.component<MouseController>();
                     position = mousex.component<Position>();
+                    position->setonTilemap(false);
+                    position->setBounds(0, 2000, 0, 2000);
 
                     if (mouse) {
                         // SDL_Log("event pos: %d %d", event.button.x, event.button.y);

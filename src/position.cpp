@@ -196,8 +196,6 @@ void Position::whichPos() {
 
 bool Position::newPos(short int newx, short int newy) {
     bool moved = false;
-    SDL_Log("Newx: %d %d", newx, newy);
-    // SDL_Log("bounds: %d %d %d %d", boundsmin.x, boundsmax.x, boundsmin.y, boundsmax.y);
 
     if (updatable) {
         if (periodic) {
@@ -223,8 +221,6 @@ bool Position::newPos(short int newx, short int newy) {
             // newy = (newy - 1) % (boundsmax.y - boundsmin.y + 1) + boundsmin.y;
             // Python % is modulo. C/C++ % is remainder.
         }
-
-        SDL_Log("Newx: %d %d", newx, newy);
 
         if ((newx > boundsmin.x) && (newx < boundsmax.x) && (position->x != newx)) {
             position->x = newx;
@@ -253,7 +249,6 @@ bool Position::newPos(short int newx, short int newy) {
         }
     }
 
-    SDL_Log("position: %d %d", position->x, position->y);
     return (moved);
 }
 
