@@ -18,10 +18,11 @@ private:
     Point boundsmax;
     Point * position = nullptr;
     // short int position[2] = {0};
-    // short int bounds[4] = {0, 255, 0, 255}; //xmin, xmax, ymin, ymax
+    short int bounds[4]; //xmin, xmax, ymin, ymax
     // short int offset[2] = {0, 0};
     bool newPos(short int newx, short int newy);
     void replaceInbounds();
+    void whichPos();
 public:
     Position();
     Position(short int in_x, short int in_y);
@@ -35,12 +36,14 @@ public:
     void setBounds(short int in_bounds[4]);
     void setBounds(std::vector<short int> in_bounds);
     short int * getBounds();
+    Point getBoundsmin();
+    Point getBoundsmax();
 
     void setOffset(short int in_offset[2]);
     void setOffset(Point in_offset);
 
     void setOffset(short int xoffset, short int yoffset);
-    short int * getOffset();
+    Point getOffset();
 
     void setUpdatable(bool in_updatable);
     bool isUpdatable();
@@ -56,7 +59,7 @@ public:
     bool setPos(short int * in_pos);
     bool setPos(short int in_x, short int in_y);
     bool addPos(short int move_x, short int move_y);
-    short int * getPos();
+    Point * getPos();
 };
 
 #endif /* POSITION_HPP */

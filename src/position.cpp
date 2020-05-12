@@ -3,14 +3,17 @@
 
 Position::Position() {
     whichPos();
+    setPos(0, 0);
 }
 
 Position::Position(short int in_x, short int in_y) {
+    whichPos();
     setPos(in_x, in_y);
 }
 
 Position::Position(short int * position) {
-    setPos(position->x, position->y);
+    whichPos();
+    setPos(position[0], position[1]);
 }
 
 Position::Position(short int in_x, short int in_y,
@@ -32,7 +35,7 @@ Position::Position(short int in_x, short int in_y,
     setBounds(in_bounds);
 }
 
-void replaceInbounds() {
+void Position::replaceInbounds() {
     if (position != nullptr) {
         if (position->x < boundsmin.x) {
             position->x = boundsmin.x;
@@ -70,18 +73,18 @@ void Position::setBounds(short int xmin, short int xmax, short int ymin, short i
 }
 
 void Position::setBounds(short int in_bounds[4]) {
-    boundsmin.x = in_boundsmin.x;
-    boundsmax.x = in_boundsmax.x;
-    boundsmin.y = in_boundsmin.y;
-    boundsmax.y = in_boundsmax.y;
+    boundsmin.x = in_bounds[0];
+    boundsmax.x = in_bounds[1];
+    boundsmin.y = in_bounds[2];
+    boundsmax.y = in_bounds[3];
     replaceInbounds();
 }
 
 void Position::setBounds(std::vector<short int> in_bounds) {
-    boundsmin.x = in_boundsmin.x;
-    boundsmax.x = in_boundsmax.x;
-    boundsmin.x = in_boundsmin.y;
-    boundsmax.x = in_boundsmax.y;
+    boundsmin.x = in_bounds[0];
+    boundsmax.x = in_bounds[1];
+    boundsmin.x = in_bounds[2];
+    boundsmax.x = in_bounds[3];
     replaceInbounds();
 }
 
@@ -100,11 +103,23 @@ void Position::setOffset(short int in_offset[2]) {
     offset.y = in_offset[1];
 }
 
+Point Position::getBoundsmin() {
+    return (boundsmin);
+}
+
+Point Position::getBoundsmax() {
+    return (boundsmax);
+}
+
 short int * Position::getBounds() {
+    bounds[0] = boundsmin.x;
+    bounds[1] = boundsmax.x;
+    bounds[2] = boundsmin.y;
+    bounds[3] = boundsmax.y;
     return (bounds);
 }
 
-short int * Position::getOffset() {
+Point Position::getOffset() {
     return (offset);
 }
 
@@ -134,11 +149,11 @@ bool Position::isUpdatable() {
 }
 
 bool Position::setPos(Point * in_pos) {
-    setPos(in_pos->x, in_pos->y);
+    return (setPos(in_pos->x, in_pos->y));
 }
 
 bool Position::setPos(Point in_pos) {
-    setPos(in_pos.x, in_pos.y);
+    return (setPos(in_pos.x, in_pos.y));
 }
 
 bool Position::setPos(short int * in_pos) {
@@ -157,13 +172,14 @@ bool Position::addPos(short int move_x, short int move_y) {
     return (newPos(newx, newy));
 }
 
-void whichPos() {
+void Position::whichPos() {
     Point * position;
+
     if (onTilemap) {
         position = &tilemap_pos;
     } else {
         position = &pixel_pos;
-    }  
+    }
 }
 
 bool Position::newPos(short int newx, short int newy) {
@@ -194,7 +210,7 @@ bool Position::newPos(short int newx, short int newy) {
         }
 
 
-        if ((newx > boundsmin.x) && (newx < boundsmax.x) && (position.x != newx)) {
+        if ((newx > boundsmin.x) && (newx < boundsmax.x) && (position->x != newx)) {
             position->x = newx;
             moved = true;
         } else {
