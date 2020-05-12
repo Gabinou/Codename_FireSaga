@@ -490,6 +490,17 @@ void ControlSystemx::update(entityx::EntityManager & es, entityx::EventManager &
                     if (mouse_pos_tilemap.y < current_pos.y) {
                         cursor_move.y = -1;
                     }
+
+                    if (mouse->isPressed(mouseInputMap.accept)) {
+                        if (mouse->getHeldbutton() > min_held) {
+                            if ((mouse_pos_tilemap.x == current_pos.x) && (mouse_pos_tilemap.y == current_pos.y)) {
+                                if (!blockInput) {
+                                    events.emit<inputAccept>(mouse);
+
+                                }
+                            }
+                        }
+                    }
                 }
 
                 break;
