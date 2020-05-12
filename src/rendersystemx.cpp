@@ -79,8 +79,8 @@ void RenderSystemx::slideSprites(entityx::Entity * in_ent, short int * slidepos,
 
             cursor_pos = position->getPos();
             offset = position->getOffset();
-            slidepos[0] = (int)((cursor_pos.x - offset.x) * scalefactor[0]);
-            slidepos[1] = (int)((cursor_pos.y - offset.y) * scalefactor[1]);
+            slidepos[0] = (int)((cursor_pos.x) * scalefactor[0]);
+            slidepos[1] = (int)((cursor_pos.y) * scalefactor[1]);
         } else {
             if (!position->isonTilemap()) { //move on the menu space
                 scalefactor[0] = linespace;
@@ -99,8 +99,8 @@ void RenderSystemx::slideSprites(entityx::Entity * in_ent, short int * slidepos,
 
                     cursor_pos = position->getPos();
                     offset = position->getOffset();
-                    objectivepos[0] = (int)(cursor_pos.x - offset.x) * (scalefactor[0]) - destrect.w / 4;
-                    objectivepos[1] = (int)(cursor_pos.y - offset.y) * (scalefactor[1]) - destrect.h / 4;
+                    objectivepos[0] = (int)(cursor_pos.x) * (scalefactor[0]) - destrect.w / 4;
+                    objectivepos[1] = (int)(cursor_pos.y) * (scalefactor[1]) - destrect.h / 4;
 
                     if (slide_wait > slide_step) {
                         if (objectivepos[0] != slidepos[0]) {

@@ -40,20 +40,20 @@ Position::Position(short int in_x, short int in_y,
 
 void Position::replaceInbounds() {
     if (position != nullptr) {
-        if (position->x <= boundsmin.x) {
-            position->x = boundsmin.x - offset.x;
+        if (position->x < boundsmin.x) {
+            position->x = boundsmin.x;
         }
 
-        if (position->x >= boundsmax.x) {
-            position->x = boundsmax.x - offset.x;
+        if (position->x > boundsmax.x) {
+            position->x = boundsmax.x;
         }
 
-        if (position->y <= boundsmin.y) {
-            position->y = boundsmin.y - offset.y;
+        if (position->y < boundsmin.y) {
+            position->y = boundsmin.y;
         }
 
-        if (position->y >= boundsmax.y) {
-            position->y = boundsmax.y - offset.y;
+        if (position->y > boundsmax.y) {
+            position->y = boundsmax.y;
         }
     }
 }
