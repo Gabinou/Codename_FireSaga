@@ -196,10 +196,14 @@ void ControlSystemx::receive(const cursorMoved & moved) {
     Point current_pos;
     Point cursor_pos = position->getPos();
     Point offset = position->getOffset();
+    short int * bounds = position->getBounds();
     current_pos.x = cursor_pos.x - offset.x;
     current_pos.y = cursor_pos.y - offset.y;
-    SDL_Log("current_pos: %d %d", current_pos.x, current_pos.y);
-    SDL_Log("move: %d %d", move.x, move.y);
+    // SDL_Log("cursor_pos: %d %d", cursor_pos.x, cursor_pos.y);
+    // SDL_Log("current_pos: %d %d", current_pos.x, current_pos.y);
+    // SDL_Log("move: %d %d", move.x, move.y);
+    // SDL_Log("offset: %d %d", offset.x, offset.y);
+    // SDL_Log("bounds: %d %d %d %d", bounds[0], bounds[1], bounds[2], bounds[3]);
 
     switch (game->getState()) {
         case GAME::STATE::UNITMOVE:
@@ -218,13 +222,14 @@ void ControlSystemx::receive(const cursorMoved & moved) {
         case GAME::STATE::MAP:
             previous_pos.x = current_pos.x - move.x;
             previous_pos.y = current_pos.y - move.y;
-            SDL_Log("previous_pos: %d %d", previous_pos.x, previous_pos.y);
-            SDL_Log("current_pos: %d %d", current_pos.x, current_pos.y);
-            SDL_Log("move: %d %d", move.x, move.y);
-            SDL_Log("unitmap size: %d %d", unitmap.size(), unitmap[0].size());
-            unitprevioustile = unitmap[previous_pos.y - 1][previous_pos.x - 1];
-            unitontile = unitmap[current_pos.y - 1][cursor_pos.x - 1];
-            SDL_Log("Until here");
+            // SDL_Log("previous_pos: %d %d", previous_pos.x, previous_pos.y);
+            // SDL_Log("current_pos: %d %d", current_pos.x, current_pos.y);
+            // SDL_Log("move: %d %d", move.x, move.y);
+            // SDL_Log("unitmap size: %d %d", unitmap.size(), unitmap[0].size());
+            unitprevioustile = unitmap[previous_pos.y][previous_pos.x];
+            unitontile = unitmap[current_pos.y][cursor_pos.x];
+
+            // SDL_Log("Until here");
 
             if (unitprevioustile) {
                 event_manager->emit<unitDehover>(cursor, unitprevioustile);
