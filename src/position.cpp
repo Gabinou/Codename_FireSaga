@@ -63,10 +63,10 @@ void Position::setBounds(Point in_boundsmin, Point in_boundsmax) {
 }
 
 void Position::setBounds(short int xmin, short int xmax, short int ymin, short int ymax) {
-    boundsmin.x = xmin + offset.x;
-    boundsmax.x = xmax + offset.x;
-    boundsmin.y = ymin + offset.y;
-    boundsmax.y = ymax + offset.y;
+    boundsmin.x = xmin;
+    boundsmax.x = xmax;
+    boundsmin.y = ymin;
+    boundsmax.y = ymax;
     replaceInbounds();
 }
 

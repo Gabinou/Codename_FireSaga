@@ -153,10 +153,7 @@ void Game::makeFPS() {
     fps = entities.create();
     fps.assign<Position>();
     fps.component<Position>()->setonTilemap(false);
-    SDL_Log("FPS bounds: %d %d %d %d", 0, settings.res.x, 0, settings.res.y);
     fps.component<Position>()->setBounds(0, settings.res.x, 0, settings.res.y);
-    SDL_Log("FPS bounds: %d %d %d %d", 0, settings.res.x, 0, settings.res.y);
-
     fps.component<Position>()->setPos(settings.FPS.pos.x, settings.FPS.pos.y);
     fps.assign<Text>(settings.fontsize);
     fps.component<Text>()->setText("60");
