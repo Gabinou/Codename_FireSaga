@@ -59,7 +59,9 @@ public:
     bool setPos(short int * in_pos);
     bool setPos(short int in_x, short int in_y);
     bool addPos(short int move_x, short int move_y);
-    Point * getPos();
+    Point getPos();
+    Point getTilemapPos();
+    Point getPixelPos();
 };
 
 #endif /* POSITION_HPP */

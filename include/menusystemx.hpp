@@ -13,7 +13,7 @@ private:
     Settings * settings;
     entityx::EventManager * event_manager;
     entityx::Entity selected;
-    short int old_position[2];
+    Point old_position;
     entityx::ComponentHandle<Map> mapx;
 public:
     MenuSystemx();

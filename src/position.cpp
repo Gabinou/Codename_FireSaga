@@ -241,14 +241,14 @@ bool Position::newPos(short int newx, short int newy) {
 }
 
 
-Point * Position::getPos() {
-    return (position);
+Point Position::getPos() {
+    return (*position);
 }
 
-Point getTilemapPos() {
+Point Position::getTilemapPos() {
     return (tilemap_pos);
 }
 
-Point getPixelPos() {
+Point Position::getPixelPos() {
     return (pixel_pos);
 }
