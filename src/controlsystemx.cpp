@@ -467,25 +467,26 @@ void ControlSystemx::update(entityx::EntityManager & es, entityx::EventManager &
             case MOUSE::REPLACESCURSOR:
                 if (mapx) {
                     Point mouse_pos = mouse->getTilemapPos();
+                    Point mouse_pos_tilemap = mapx->pixel2tile(mouse_pos);
                     Point current_pos;
                     Point cursor_pos = cursor_position->getPos();
                     Point offset = cursor_position->getOffset();
                     current_pos.x = cursor_pos.x - offset.x;
                     current_pos.y = cursor_pos.y - offset.y;
 
-                    if (mouse_pos.x > current_pos.x) {
+                    if (mouse_pos_tilemap.x > current_pos.x) {
                         to_move[0] = 1;
                     }
 
-                    if (mouse_pos.x < current_pos.x) {
+                    if (mouse_pos_tilemap.x < current_pos.x) {
                         to_move[0] = -1;
                     }
 
-                    if (mouse_pos.y > current_pos.y) {
+                    if (mouse_pos_tilemap.y > current_pos.y) {
                         to_move[1] = 1;
                     }
 
-                    if (mouse_pos.y < current_pos.y) {
+                    if (mouse_pos_tilemap.y < current_pos.y) {
                         to_move[1] = -1;
                     }
                 }
@@ -499,7 +500,8 @@ void ControlSystemx::update(entityx::EntityManager & es, entityx::EventManager &
                     case GAME::STATE::MAP:
 
                         if (mapx) {
-                            Point mouse_pos = mouse->getTilemapPos();
+                            Point mouse_pos = mouse->getPixelPos();
+                            Point mouse_pos_tilemap = mapx->pixel2tile(mouse_pos);
                             Point current_pos;
                             Point cursor_pos = cursor_position->getPos();
                             Point offset = cursor_position->getOffset();
@@ -508,19 +510,19 @@ void ControlSystemx::update(entityx::EntityManager & es, entityx::EventManager &
 
                             if (mouse->isPressed(mouseInputMap.accept)) {
                                 if (mouse->getHeldbutton() > min_held) {
-                                    if (mouse_pos.x > current_pos.x) {
+                                    if (mouse_pos_tilemap.x > current_pos.x) {
                                         to_move[0] = 1;
                                     }
 
-                                    if (mouse_pos.x < current_pos.x) {
+                                    if (mouse_pos_tilemap.x < current_pos.x) {
                                         to_move[0] = -1;
                                     }
 
-                                    if (mouse_pos.y > current_pos.y) {
+                                    if (mouse_pos_tilemap.y > current_pos.y) {
                                         to_move[1] = 1;
                                     }
 
-                                    if (mouse_pos.y < current_pos.y) {
+                                    if (mouse_pos_tilemap.y < current_pos.y) {
                                         to_move[1] = -1;
                                     }
 
