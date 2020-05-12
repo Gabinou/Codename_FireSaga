@@ -63,10 +63,10 @@ void Position::setBounds(Point in_boundsmin, Point in_boundsmax) {
 }
 
 void Position::setBounds(short int xmin, short int xmax, short int ymin, short int ymax) {
-    boundsmin.x = xmin;
-    boundsmax.x = xmax;
-    boundsmin.y = ymin;
-    boundsmax.y = ymax;
+    boundsmin.x = xmin + offset.x;
+    boundsmax.x = xmax + offset.x;
+    boundsmin.y = ymin + offset.y;
+    boundsmax.y = ymax + offset.y;
     replaceInbounds();
 }
 
@@ -173,7 +173,7 @@ void Position::whichPos() {
 bool Position::newPos(short int newx, short int newy) {
     bool moved = false;
     SDL_Log("Newx: %d %d", newx, newy);
-    SDL_Log("bounds: %d %d %d %d", boundsmin.x, boundsmax.x, boundsmin.y, boundsmax.y);
+    // SDL_Log("bounds: %d %d %d %d", boundsmin.x, boundsmax.x, boundsmin.y, boundsmax.y);
 
     if (updatable) {
         if (periodic) {
@@ -213,7 +213,7 @@ bool Position::newPos(short int newx, short int newy) {
             }
         }
 
-        if ((newy > boundsmin.y) && (newy < boundsmax.y) && (position->x != newy)) {
+        if ((newy > boundsmin.y) && (newy < boundsmax.y) && (position->y != newy)) {
             position->y = newy;
             moved = true;
         } else {
