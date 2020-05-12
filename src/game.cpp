@@ -435,10 +435,10 @@ void Game::setCursorstate(const unsigned char in_menu) {
                 break;
 
             case MENU::UNIT:
-                SDL_Log("Changed Cursor to mapmenu");
+                SDL_Log("Changed Cursor to unitmenu");
 
             case MENU::MAPMENU:
-                SDL_Log("Changed Cursor to unitmenu");
+                SDL_Log("Changed Cursor to mapmenu");
                 temprect = {0, 0, 16, 16}; //x,y,w,h
                 Point menupos;
                 short int linespace = 1;
@@ -462,10 +462,12 @@ void Game::setCursorstate(const unsigned char in_menu) {
                 cursor_lastpos.x = pos.x - offset.x;
                 cursor_lastpos.y = pos.y - offset.y;
                 SDL_Log("Menubounds: %d %d %d %d", menubounds[0], menubounds[1], menubounds[2], menubounds[3]);
-                cursorx.component<Position>()->setBounds(menubounds);
-                cursorx.component<Position>()->setPos(menubounds[0] - 1, menubounds[2]);
                 cursorx.component<Position>()->setonTilemap(false);
                 cursorx.component<Position>()->setPeriodic(true);
+                cursorx.component<Position>()->setBounds(menubounds);
+                cursorx.component<Position>()->setPos(menubounds[0] - 1, menubounds[2]);
+                short int * outbounds = cursorx.component<Position>()->getBounds();
+                SDL_Log("outbounds: %d %d %d %d", outbounds[0], outbounds[1], outbounds[2], outbounds[3]);
                 systems.system<RenderSystemx>()->setLinespace(linespace);
                 break;
         }
