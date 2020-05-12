@@ -36,6 +36,7 @@ public:
     Sprite(const char * in_asset_name, int inFrames, int inSpeed);
 
     void init(short int * in_position);
+    void init(Point in_position);
 
     SDL_Texture * getTexture();
 

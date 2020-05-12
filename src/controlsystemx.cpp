@@ -192,12 +192,8 @@ void ControlSystemx::receive(const cursorMoved & moved) {
     Point move = moved.move;
     entityx::ComponentHandle<Position> position = cursor.component<Position>();
     short int newstate = -1;
-    Point cursor_pos;
     Point previous_pos;
     Point current_pos;
-    Point cursor_pos;
-    Point offset;
-
     Point cursor_pos = position->getPos();
     Point offset = position->getOffset();
     current_pos.x = cursor_pos.x - offset.x;
@@ -247,9 +243,8 @@ void ControlSystemx::receive(const inputAccept & accept) {
     Controllers controllers = {keyboard, gamepad, mouse};
     entityx::Entity accepter = getInputent(controllers);
     entityx::ComponentHandle<Unit> unitontile;
-    short int newstate = -1;
-    short int cursor_pos[2];
     entityx::ComponentHandle<Position> position = accepter.component<Position>();
+    short int newstate = -1;
 
     Point current_pos;
     Point cursor_pos = position->getPos();
