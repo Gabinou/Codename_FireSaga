@@ -11,9 +11,14 @@ private:
     bool updatable = true;
     bool onTilemap = true;
     bool periodic = false;
+    Point pixel_pos;
+    Point tilemap_pos;
+    Point tilemap_offset;
+    Point boundsx;
+    Point boundsy;
     short int position[2] = {0};
     short int bounds[4] = {0, 255, 0, 255}; //xmin, xmax, ymin, ymax
-    short int offset[2] = {0, 0}; //xmin, xmax, ymin, ymax
+    short int offset[2] = {0, 0};
     bool newPos(short int newx, short int newy);
 public:
     Position();
