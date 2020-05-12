@@ -508,21 +508,27 @@ void Game::unloadCursor() {
 
 void Game::loadMapUnits(std::vector<short unsigned int> in_units, std::vector<std::vector<int>> in_pos_list) {
     SDL_Log("Loading Units\n");
-    std::string asset_name;
-    entityx::Entity Uent;
 
-    for (int i = 0; i < in_units.size(); i++) {
-        asset_name = "..//assets//" + units[in_units[i]].getName() + ".png";
-        Uent = entities.create();
-        Uent.assign<Unit>(units[in_units[i]]);
-        Uent.assign<Position>();
-        Uent.component<Position>()->setonTilemap(true);
-        short int * bounds = mapx->getBounds();
-        Uent.component<Position>()->setBounds(bounds);
-        Uent.component<Position>()->setOffset(DEFAULT::TILEMAP_XOFFSET, DEFAULT::TILEMAP_YOFFSET);
-        Uent.component<Position>()->setPos(in_pos_list[i][0], in_pos_list[i][1]);
-        Uent.assign<Sprite>(asset_name.c_str());
-        mapx->putUnit(in_pos_list[i][0], in_pos_list[i][1], Uent.component<Unit>());
+    if (mapx) {
+        std::string asset_name;
+        entityx::Entity Uent;
+        short int * bounds;
+
+        for (int i = 0; i < in_units.size(); i++) {
+            asset_name = "..//assets//" + units[in_units[i]].getName() + ".png";
+            Uent = entities.create();
+            Uent.assign<Unit>(units[in_units[i]]);
+            Uent.assign<Position>();
+            Uent.component<Position>()->setonTilemap(true);
+            bounds = mapx->getBounds();
+            Uent.component<Position>()->setBounds(bounds);
+            Uent.component<Position>()->setOffset(DEFAULT::TILEMAP_XOFFSET, DEFAULT::TILEMAP_YOFFSET);
+            Uent.component<Position>()->setPos(in_pos_list[i][0], in_pos_list[i][1]);
+            Uent.assign<Sprite>(asset_name.c_str());
+            mapx->putUnit(in_pos_list[i][0], in_pos_list[i][1], Uent.component<Unit>());
+        }
+    } else {
+        SDL_Log("No map to load unit on.");
     }
 }
 
@@ -534,6 +540,7 @@ void Game::loadMapArrivals() {
         unsigned short int currentturn = mapx->getTurn();
         std::string asset_name;
         entityx::Entity Uent;
+        short int * bounds;
 
         for (int i = 0; i < map_arrivals.size(); i++) {
             if (map_arrivals[i].turn == currentturn) {
@@ -547,6 +554,9 @@ void Game::loadMapArrivals() {
 
                 Uent = entities.create();
                 Uent.assign<Position>();
+                Uent.component<Position>()->setonTilemap(true);
+                bounds = mapx->getBounds();
+                Uent.component<Position>()->setBounds(bounds);
                 Uent.component<Position>()->setOffset(DEFAULT::TILEMAP_XOFFSET, DEFAULT::TILEMAP_YOFFSET);
                 Uent.component<Position>()->setPos(map_arrivals[i].position.x, map_arrivals[i].position.y);
                 Uent.assign<Sprite>(asset_name.c_str());
