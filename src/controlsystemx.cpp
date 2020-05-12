@@ -222,22 +222,28 @@ void ControlSystemx::receive(const cursorMoved & moved) {
         case GAME::STATE::MAP:
             previous_pos.x = current_pos.x - move.x;
             previous_pos.y = current_pos.y - move.y;
-            // SDL_Log("previous_pos: %d %d", previous_pos.x, previous_pos.y);
-            // SDL_Log("current_pos: %d %d", current_pos.x, current_pos.y);
+            SDL_Log("previous_pos: %d %d", previous_pos.x, previous_pos.y);
+            SDL_Log("current_pos: %d %d", current_pos.x, current_pos.y);
             // SDL_Log("move: %d %d", move.x, move.y);
-            // SDL_Log("unitmap size: %d %d", unitmap.size(), unitmap[0].size());
+            SDL_Log("unitmap size: %d %d", unitmap.size(), unitmap[0].size());
             unitprevioustile = unitmap[previous_pos.y][previous_pos.x];
-            unitontile = unitmap[current_pos.y][cursor_pos.x];
+            unitontile = unitmap[current_pos.y][current_pos.x];
 
-            // SDL_Log("Until here");
+            SDL_Log("Until here1");
 
             if (unitprevioustile) {
+                SDL_Log("Until here2");
                 event_manager->emit<unitDehover>(cursor, unitprevioustile);
             }
 
+            SDL_Log("Until here3");
+
             if (unitontile) {
+                SDL_Log("Until here4");
                 event_manager->emit<unitHover>(cursor, unitontile);
             }
+
+            SDL_Log("Until here5");
 
             break;
     }
