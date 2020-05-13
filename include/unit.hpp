@@ -10,7 +10,7 @@
 #include "tinyxml2.h"
 #include "utilities.hpp"
 
-class Unit : public XML_IO {
+class Unit : public XML_IO, JSON_IO {
 private:
     Weapon_stats temp_wpn;
     Weapon_stats right_wpn;
@@ -162,6 +162,11 @@ public:
     void dies();
 
     void use(int in_ind);
+
+    using JSON_IO::writeJSON;
+    using JSON_IO::readJSON;
+    void readJSON(cJSON * in_json);
+    void writeJSON(const char * filename, const bool append);
 
     using XML_IO::writeXML;
     using XML_IO::readXML;

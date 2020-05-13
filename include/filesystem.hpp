@@ -10,7 +10,6 @@
 #include <unordered_map>
 #include "physfs.h"
 #include "cjson.h"
-// #include "cjson/cJSON.h"
 #include "LodePNG.h"
 #include "structs.hpp"
 #include "enums.hpp"
@@ -68,8 +67,8 @@ public:
 };
 
 class JSON_IO {
-
 private:
+
 public:
     virtual void writeJSON(cJSON * in_json);
     virtual void readJSON(cJSON * in_json);

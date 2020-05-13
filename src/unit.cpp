@@ -816,6 +816,14 @@ void Unit::readXML(tinyxml2::XMLElement * in_pUnit) {
     speed();
 }
 
+void Unit::readJSON(cJSON * in_json) {
+
+}
+
+void Unit::writeJSON(const char * filename, const bool append) {
+
+}
+
 void Unit::writeXML(tinyxml2::XMLDocument * in_doc, tinyxml2::XMLElement * in_pUnit) {
     char buffer[DEFAULT::BUFFER_SIZE];
 
