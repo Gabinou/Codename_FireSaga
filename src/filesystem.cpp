@@ -736,6 +736,36 @@ void writeXML_stats(tinyxml2::XMLDocument * in_doc, tinyxml2::XMLElement * in_pS
     pheal->SetText(in_stats->heal);
 }
 
+void printJSON(PHYSFS_file * in_fp, cJSON * in_json) {
+    char * string = cJSON_Print(in_json);
+    unsigned long int length = strlen(string);
+
+    if (!PHYSFS_setBuffer(in_fp, length)) {
+        SDL_Log("PHYSFS_setBuffer failed");
+    } else {
+        PHYSFS_writeBytes(in_fp, string, length);
+    }
+}
+
+
+int parseJSON(const char * filename, cJSON * in_json) {
+    PHYSFS_file * fp;
+    fp = PHYSFS_openRead(filename);
+
+    if (!fp) {
+        SDL_Log("Failed to open %s for xml parsing.", filename);
+        return (-1);
+    }
+
+    unsigned int filelen = PHYSFS_fileLength(fp);
+    char filebuffer[filelen];
+    PHYSFS_readBytes(fp, filebuffer, filelen);
+    PHYSFS_close(fp);
+
+    in_json = cJSON_ParseWithLength(filebuffer, filelen);
+    return (0);
+}
+
 
 int parseXML(const char * filename, tinyxml2::XMLDocument * in_doc) {
     PHYSFS_file * fp;
@@ -759,6 +789,22 @@ int parseXML(const char * filename, tinyxml2::XMLDocument * in_doc) {
     return (0);
 }
 
+void JSON_IO::readJSON(const char * filename) {
+    // SDL_Log("readXML file: %s", filename);
+    cJSON * json = NULL;
+    parseJSON(filename, json);
+
+    if (json != NULL) {
+        SDL_Log("Cannot get parse json file.");
+    } else {
+        readJSON(json);
+    }
+}
+
+void JSON_IO::readJSON(cJSON * in_json) {
+
+}
+
 void XML_IO::readXML(const char * filename) {
     // SDL_Log("readXML file: %s", filename);
     tinyxml2::XMLDocument xmlDoc;
@@ -779,6 +825,30 @@ void XML_IO::readXML(tinyxml2::XMLElement * in_pEle) {
 void XML_IO::writeXML(tinyxml2::XMLDocument * in_doc, tinyxml2::XMLElement * in_pEle) {
 
 }
+
+void JSON_IO::writeJSON(cJSON * in_json) {
+
+}
+
+void JSON_IO::writeJSON(const char * filename, const bool append) {
+    PHYSFS_file * fp;
+    cJSON * json;
+
+    if (append) {
+        fp = PHYSFS_openAppend(filename);
+    } else {
+        fp = PHYSFS_openWrite(filename);
+    }
+
+    if (!fp) {
+        SDL_Log("Could not open %s for writing\n", filename);
+    } else {
+        writeJSON(json);
+        printJSON(fp, json);
+        PHYSFS_close(fp);
+    }
+}
+
 
 void XML_IO::writeXML(const char * filename, const bool append) {
     // SDL_Log("writeXML %s to: %s\n", xmlElement.c_str(), filename);

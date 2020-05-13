@@ -10,6 +10,7 @@
 #include <unordered_map>
 #include "physfs.h"
 #include "cjson.h"
+// #include "cjson/cJSON.h"
 #include "LodePNG.h"
 #include "structs.hpp"
 #include "enums.hpp"
@@ -51,6 +52,9 @@ extern void writeXML_arrival(tinyxml2::XMLDocument * in_doc, tinyxml2::XMLElemen
 extern void printXMLDoc(PHYSFS_file * in_fp, tinyxml2::XMLDocument * in_doc);
 extern int parseXML(const char * filename, tinyxml2::XMLDocument * in_doc);
 
+extern void printJSON(PHYSFS_file * in_fp, cJSON * in_json);
+extern int parseJSON(const char * filename, cJSON * in_json);
+
 class XML_IO {
 private:
     std::string xmlElement = "";
@@ -67,6 +71,10 @@ class JSON_IO {
 
 private:
 public:
+    virtual void writeJSON(cJSON * in_json);
+    virtual void readJSON(cJSON * in_json);
+    void writeJSON(const char * filename, const bool append);
+    void readJSON(const char * filename);
 };
 
 #endif /* FILESYSTEM_HPP */
