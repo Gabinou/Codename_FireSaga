@@ -824,13 +824,19 @@ void writeXML_stats(tinyxml2::XMLDocument * in_doc, tinyxml2::XMLElement * in_pS
 }
 
 void printJSON(PHYSFS_file * in_fp, cJSON * in_json) {
-    char * string = cJSON_Print(in_json);
-    unsigned long int length = strlen(string);
+    char * buffer = NULL;
+    unsigned long int length = 512;
+
+    do {
+        length += 512;
+        buffer = NULL;
+        SDL_Log("%d", length);
+    } while (!cJSON_PrintPreallocated(in_json, buffer, length, true) && (length < 65536));
 
     if (!PHYSFS_setBuffer(in_fp, length)) {
         SDL_Log("PHYSFS_setBuffer failed");
     } else {
-        PHYSFS_writeBytes(in_fp, string, length);
+        PHYSFS_writeBytes(in_fp, buffer, length);
     }
 }
 
@@ -918,8 +924,11 @@ void JSON_IO::writeJSON(cJSON * in_json) {
 }
 
 void JSON_IO::writeJSON(const char * filename, const bool append) {
+    SDL_Log("Writing Json to %s:", filename);
+
     PHYSFS_file * fp = NULL;
     cJSON * json = NULL;
+    SDL_Log("json==NULL%d", json == NULL);
 
     if (append) {
         fp = PHYSFS_openAppend(filename);
@@ -931,6 +940,7 @@ void JSON_IO::writeJSON(const char * filename, const bool append) {
         SDL_Log("Could not open %s for writing\n", filename);
     } else {
         writeJSON(json);
+        SDL_Log("Id: %d", cJSON_GetObjectItemCaseSensitive(json, "id"));
         printJSON(fp, json);
         PHYSFS_close(fp);
     }

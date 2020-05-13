@@ -22,7 +22,6 @@ int main(int argc, char * argv[]) {
     SDL_Log("Initializing utilities\n");
     loadUtilities();
 
-
     SDL_Log("Initializing filesystem\n");
     char * buildDir = SDL_GetBasePath();
     FILESYSTEM::init(0, buildDir, buildDir);
@@ -32,7 +31,6 @@ int main(int argc, char * argv[]) {
 
     SDL_Log("Loading base weapons");
     baseWeapons();
-
 
     settings.FPS.show = true;
     settings.fontsize = 28;

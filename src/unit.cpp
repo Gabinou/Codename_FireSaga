@@ -821,8 +821,7 @@ void Unit::readJSON(cJSON * in_json) {
 }
 
 void Unit::writeJSON(cJSON * in_json) {
-
-    if (in_json != NULL) {
+    if (in_json == NULL) {
         in_json = cJSON_CreateObject();
     } else {
         SDL_Log("unit: in_json is not null");
@@ -850,8 +849,10 @@ void Unit::writeJSON(cJSON * in_json) {
 
     cJSON_AddItemToObject(in_json, "unit", unit);
 
+    writeJSON_stats(currentstats, &current_stats);
+    cJSON_AddItemToObject(in_json, "Stats", currentstats);
 
-    growths = cJSON_CreateArray();
+    // growths = cJSON_CreateArray();
 }
 
 void Unit::writeXML(tinyxml2::XMLDocument * in_doc, tinyxml2::XMLElement * in_pUnit) {

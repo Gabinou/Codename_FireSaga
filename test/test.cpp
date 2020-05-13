@@ -31,20 +31,20 @@ int main(int argc, char * argv[]) {
     baseWeapons();
 
     printf("Running tests\n");
-    lrun("Convoy ", test_convoy);
-    lrun("Filesystem ", test_filesystem);
-    lrun("Game ", test_game);
-    lrun("linalg", test_linalg);
-    lrun("Map ", test_map);
-    lrun("Pathfinding ", test_pathfinding);
-    lrun("Position ", test_position);
-    lrun("Probability ", test_probability);
-    lrun("Sprite ", test_sprite);
-    lrun("Text ", test_text);
-    lrun("Tile ", test_tile);
+    // lrun("Convoy ", test_convoy);
+    // lrun("Filesystem ", test_filesystem);
+    // lrun("Game ", test_game);
+    // lrun("linalg", test_linalg);
+    // lrun("Map ", test_map);
+    // lrun("Pathfinding ", test_pathfinding);
+    // lrun("Position ", test_position);
+    // lrun("Probability ", test_probability);
+    // lrun("Sprite ", test_sprite);
+    // lrun("Text ", test_text);
+    // lrun("Tile ", test_tile);
     lrun("Unit ", test_unit);
-    lrun("Utilities ", test_utilities);
-    lrun("Weapon ", test_weapon);
+    // lrun("Utilities ", test_utilities);
+    // lrun("Weapon ", test_weapon);
     lresults();
 
     return (lfails != 0);
