@@ -111,15 +111,24 @@ void Sprite::setTilesize(short unsigned int * in_tilesize) {
     }
 }
 
-
 void Sprite::init(short int * in_position) {
     slidepos[0] = objectivepos[0] = (int)in_position[0] * tilesize[0] - destrect.w / 4;
     slidepos[1] = objectivepos[1] = (int)in_position[1] * tilesize[1] - destrect.h / 4;
 }
 
+void Sprite::init(Point in_position) {
+    slidepos[0] = objectivepos[0] = (int)in_position.x * tilesize[0] - destrect.w / 4;
+    slidepos[1] = objectivepos[1] = (int)in_position.y * tilesize[1] - destrect.h / 4;
+}
+
 void Sprite::setDestrectpos(short int * in_position) {
     destrect.x = in_position[0];
     destrect.y = in_position[1];
+}
+
+void Sprite::setDestrectpos(Point in_position) {
+    destrect.x = in_position.x;
+    destrect.y = in_position.y;
 }
 
 void Sprite::setTexture(const char * in_asset_name) {

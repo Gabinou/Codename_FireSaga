@@ -152,6 +152,7 @@ void Game::makeFPS() {
 
     fps = entities.create();
     fps.assign<Position>();
+    fps.component<Position>()->setonTilemap(false);
     fps.component<Position>()->setBounds(0, settings.res.x, 0, settings.res.y);
     fps.component<Position>()->setPos(settings.FPS.pos.x, settings.FPS.pos.y);
     fps.assign<Text>(settings.fontsize);
@@ -265,31 +266,31 @@ void Game::makeMenuoptions(unsigned char in_menu_index) {
         case MENU::UNIT:
             options.push_back(MENU::OPTION::ITEMS);
             bounds = mapx->getBounds();
-            unit = mapx->getUnit(cursor_lastpos[0], cursor_lastpos[1]);
-            SDL_Log("last position: %d %d", cursor_lastpos[0], cursor_lastpos[1]);
+            unit = mapx->getUnit(cursor_lastpos.x, cursor_lastpos.y);
+            SDL_Log("last position: %d %d", cursor_lastpos.x, cursor_lastpos.y);
 
             if (unit) {
                 SDL_Log("Making Menuoptions for: %s", unit->getName().c_str());
 
                 std::vector<std::vector<short int>> tilemap = mapx->getTilemap();
 
-                if ((cursor_lastpos[1] + 1) < bounds[3]) {
-                    top = mapx->getUnit(cursor_lastpos[0], cursor_lastpos[1] + 1);
+                if ((cursor_lastpos.y + 1) < bounds[3]) {
+                    top = mapx->getUnit(cursor_lastpos.x, cursor_lastpos.y + 1);
                 }
 
-                if ((cursor_lastpos[1] - 1) > bounds[2]) {
-                    bottom = mapx->getUnit(cursor_lastpos[0], cursor_lastpos[1] - 1);
+                if ((cursor_lastpos.y - 1) > bounds[2]) {
+                    bottom = mapx->getUnit(cursor_lastpos.x, cursor_lastpos.y - 1);
                 }
 
-                if ((cursor_lastpos[0] + 1) < bounds[1]) {
-                    right = mapx->getUnit(cursor_lastpos[0] + 1, cursor_lastpos[1]);
+                if ((cursor_lastpos.x + 1) < bounds[1]) {
+                    right = mapx->getUnit(cursor_lastpos.x + 1, cursor_lastpos.y);
                 }
 
-                if ((cursor_lastpos[0] - 1) > bounds[0]) {
-                    left = mapx->getUnit(cursor_lastpos[0] - 1, cursor_lastpos[1]);
+                if ((cursor_lastpos.x - 1) > bounds[0]) {
+                    left = mapx->getUnit(cursor_lastpos.x - 1, cursor_lastpos.y);
                 }
 
-                if (tilemap[cursor_lastpos[0]][cursor_lastpos[1]] / DEFAULT::TILE_DIVISOR == TILE::THRONE) {
+                if (tilemap[cursor_lastpos.x][cursor_lastpos.y] / DEFAULT::TILE_DIVISOR == TILE::THRONE) {
                     if (unit->getid() ==  UNIT::NAME::ERWIN) {
                         options.push_back(MENU::OPTION::SEIZE);
                     }
@@ -386,8 +387,8 @@ void Game::setMenuoptions(unsigned char in_menu_index, std::vector<unsigned char
 
 
 void Game::setCursorlastpos(const short int x, const short int y) {
-    cursor_lastpos[0] = x;
-    cursor_lastpos[1] = y;
+    cursor_lastpos.x = x;
+    cursor_lastpos.y = y;
 }
 
 void Game::unloadMap() {
@@ -427,18 +428,19 @@ void Game::setCursorstate(const unsigned char in_menu) {
                 cursorx.component<Position>()->setOffset(DEFAULT::TILEMAP_XOFFSET, DEFAULT::TILEMAP_YOFFSET);
                 cursorx.component<Position>()->setBounds(mapx->getBounds());
                 cursorx.component<Position>()->setPos(cursor_lastpos);
+                SDL_Log("cursor_lastpos: %d %d", cursor_lastpos.x, cursor_lastpos.y);
                 cursorx.component<Position>()->setonTilemap(true);
                 cursorx.component<Position>()->setPeriodic(false);
                 systems.system<RenderSystemx>()->setTilesize(temp_tilesize[0], temp_tilesize[1]);
                 break;
 
             case MENU::UNIT:
-                SDL_Log("Changed Cursor to mapmenu");
+                SDL_Log("Changed Cursor to unitmenu");
 
             case MENU::MAPMENU:
-                SDL_Log("Changed Cursor to unitmenu");
+                SDL_Log("Changed Cursor to mapmenu");
                 temprect = {0, 0, 16, 16}; //x,y,w,h
-                short int * menupos;
+                Point menupos;
                 short int linespace = 1;
                 cursorx.component<Sprite>()->still();
                 cursorx.component<Sprite>()->setSrcrect(temprect);
@@ -451,17 +453,21 @@ void Game::setCursorstate(const unsigned char in_menu) {
                 }
 
                 short int menubounds[4];
-                menubounds[0] = menupos[0] / linespace;
-                menubounds[1] = menupos[0] / linespace;
-                menubounds[2] = (short int)(menupos[1] / linespace + 1);
-                menubounds[3] = (short int)(menupos[1] / linespace + menuoptions[in_menu].size());
-                cursor_lastpos[0] = cursorx.component<Position>()->getPos()[0] - cursorx.component<Position>()->getOffset()[0];
-                cursor_lastpos[1] = cursorx.component<Position>()->getPos()[1] - cursorx.component<Position>()->getOffset()[1];
+                menubounds[0] = menupos.x / linespace;
+                menubounds[1] = menupos.x / linespace;
+                menubounds[2] = (short int)(menupos.y / linespace + 1);
+                menubounds[3] = (short int)(menupos.y / linespace + menuoptions[in_menu].size());
+                Point pos = cursorx.component<Position>()->getPos();
+                Point offset = cursorx.component<Position>()->getOffset();
+                cursor_lastpos.x = pos.x - offset.x;
+                cursor_lastpos.y = pos.y - offset.y;
                 SDL_Log("Menubounds: %d %d %d %d", menubounds[0], menubounds[1], menubounds[2], menubounds[3]);
-                cursorx.component<Position>()->setBounds(menubounds);
-                cursorx.component<Position>()->setPos(menubounds[0] - 1, menubounds[2]);
                 cursorx.component<Position>()->setonTilemap(false);
                 cursorx.component<Position>()->setPeriodic(true);
+                cursorx.component<Position>()->setBounds(menubounds);
+                cursorx.component<Position>()->setPos(menubounds[0] - 1, menubounds[2] + 1);
+                short int * outbounds = cursorx.component<Position>()->getBounds();
+                SDL_Log("outbounds: %d %d %d %d", outbounds[0], outbounds[1], outbounds[2], outbounds[3]);
                 systems.system<RenderSystemx>()->setLinespace(linespace);
                 break;
         }
@@ -473,6 +479,9 @@ void Game::loadMouse() {
     mousex = entities.create();
     mousex.assign<MouseController>();
     mousex.assign<Position>();
+    entityx::ComponentHandle<Position> position = mousex.component<Position>();
+    position->setonTilemap(false);
+    position->setBounds(0, 2000, 0, 2000);
     mousex.assign<Sprite>();
     mousex.component<Sprite>()->setTexture("..//assets//mousecursor.png");
 
@@ -490,7 +499,7 @@ void Game::loadCursor() {
     cursorx.assign<KeyboardController>();
     cursorx.assign<GamepadController>();
     cursorx.assign<TouchpadController>();
-    cursorx.assign<Position>();
+    cursorx.assign<Position>(6, 6);
     cursorx.assign<Sprite>();
     setCursorstate(MENU::MAP);
 }
@@ -504,18 +513,27 @@ void Game::unloadCursor() {
 
 void Game::loadMapUnits(std::vector<short unsigned int> in_units, std::vector<std::vector<int>> in_pos_list) {
     SDL_Log("Loading Units\n");
-    std::string asset_name;
-    entityx::Entity Uent;
 
-    for (int i = 0; i < in_units.size(); i++) {
-        asset_name = "..//assets//" + units[in_units[i]].getName() + ".png";
-        Uent = entities.create();
-        Uent.assign<Unit>(units[in_units[i]]);
-        Uent.assign<Position>();
-        Uent.component<Position>()->setOffset(DEFAULT::TILEMAP_XOFFSET, DEFAULT::TILEMAP_YOFFSET);
-        Uent.component<Position>()->setPos(in_pos_list[i][0], in_pos_list[i][1]);
-        Uent.assign<Sprite>(asset_name.c_str());
-        mapx->putUnit(in_pos_list[i][0], in_pos_list[i][1], Uent.component<Unit>());
+    if (mapx) {
+        std::string asset_name;
+        entityx::Entity Uent;
+        short int * bounds;
+
+        for (int i = 0; i < in_units.size(); i++) {
+            asset_name = "..//assets//" + units[in_units[i]].getName() + ".png";
+            Uent = entities.create();
+            Uent.assign<Unit>(units[in_units[i]]);
+            Uent.assign<Position>();
+            Uent.component<Position>()->setonTilemap(true);
+            bounds = mapx->getBounds();
+            Uent.component<Position>()->setBounds(bounds);
+            Uent.component<Position>()->setOffset(DEFAULT::TILEMAP_XOFFSET, DEFAULT::TILEMAP_YOFFSET);
+            Uent.component<Position>()->setPos(in_pos_list[i][0], in_pos_list[i][1]);
+            Uent.assign<Sprite>(asset_name.c_str());
+            mapx->putUnit(in_pos_list[i][0], in_pos_list[i][1], Uent.component<Unit>());
+        }
+    } else {
+        SDL_Log("No map to load unit on.");
     }
 }
 
@@ -527,6 +545,7 @@ void Game::loadMapArrivals() {
         unsigned short int currentturn = mapx->getTurn();
         std::string asset_name;
         entityx::Entity Uent;
+        short int * bounds;
 
         for (int i = 0; i < map_arrivals.size(); i++) {
             if (map_arrivals[i].turn == currentturn) {
@@ -540,6 +559,9 @@ void Game::loadMapArrivals() {
 
                 Uent = entities.create();
                 Uent.assign<Position>();
+                Uent.component<Position>()->setonTilemap(true);
+                bounds = mapx->getBounds();
+                Uent.component<Position>()->setBounds(bounds);
                 Uent.component<Position>()->setOffset(DEFAULT::TILEMAP_XOFFSET, DEFAULT::TILEMAP_YOFFSET);
                 Uent.component<Position>()->setPos(map_arrivals[i].position.x, map_arrivals[i].position.y);
                 Uent.assign<Sprite>(asset_name.c_str());
@@ -772,14 +794,16 @@ void Game::handleEvents() {
 
                 if (mousex.valid()) {
                     entityx::ComponentHandle<MouseController> mouse;
+                    entityx::ComponentHandle<Position> position;
                     mouse = mousex.component<MouseController>();
+                    position = mousex.component<Position>();
 
                     if (mouse) {
                         // SDL_Log("event pos: %d %d", event.button.x, event.button.y);
-                        mouse->setPixelPos(event.button.x, event.button.y);
+                        position->setPixelPos(event.button.x, event.button.y);
 
                         if (mapx) {
-                            mouse->setTilemapPos(mapx->pixel2tile(event.button.x, event.button.y));
+                            position->setTilemapPos(mapx->pixel2tile(event.button.x, event.button.y));
                         }
 
                         if (event.type != previous_mouse) {
@@ -794,9 +818,11 @@ void Game::handleEvents() {
                     }
 
                     previous_mouse = event.type;
-                } else {
-                    SDL_Log("cursorx is not valid");
                 }
+
+                // } else {
+                //     SDL_Log("mousex is not valid");
+                // }
 
             }
 
@@ -806,6 +832,8 @@ void Game::handleEvents() {
             if (mousex.valid()) {
                 entityx::ComponentHandle<MouseController> mouse;
                 entityx::ComponentHandle<Sprite> sprite;
+                entityx::ComponentHandle<Position> position;
+                position = mousex.component<Position>();
                 mouse = mousex.component<MouseController>();
                 sprite = mousex.component<Sprite>();
                 sprite->show();
@@ -813,11 +841,13 @@ void Game::handleEvents() {
                 if (event.motion.windowID == SDL_GetWindowID(window)) {
 
                     if (mouse) {
-                        // SDL_Log("event pos: %d %d", event.motion.x, event.motion.y);
-                        mouse->setPixelPos(event.motion.x, event.motion.y);
+                        // SDL_Log("Mouse motion event pos: %d %d", event.motion.x, event.motion.y);
+                        position->setPixelPos(event.motion.x, event.motion.y);
 
                         if (mapx) {
-                            mouse->setTilemapPos(mapx->pixel2tile(event.motion.x, event.motion.y));
+                            Point tilemap_pos = mapx->pixel2tile(event.motion.x, event.motion.y);
+                            // SDL_Log("Mouse motion tilemap pos: %d %d", tilemap_pos.x, tilemap_pos.y);
+                            position->setTilemapPos(tilemap_pos);
                         }
                     } else {
                         SDL_Log("cursor has no MouseController component");
@@ -825,10 +855,11 @@ void Game::handleEvents() {
                 } else {
                     sprite->hide();
                 }
-
-            } else {
-                SDL_Log("cursorx is not valid");
             }
+
+            // } else {
+            //     SDL_Log("mousex is not valid");
+            // }
 
             break;
 

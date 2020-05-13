@@ -41,7 +41,7 @@ void UnitSystemx::receive(const unitReturn & Return) {
     entityx::Entity cursor = Return.cursor;
     entityx::ComponentHandle<Position> cursor_position = cursor.component<Position>();
 
-    short int new_position[2];
+    Point new_position;
 
     entityx::ComponentHandle<Position> toreturn_position;
     entityx::ComponentHandle<Unit> unit = Return.unit;
@@ -51,9 +51,11 @@ void UnitSystemx::receive(const unitReturn & Return) {
         toreturn_position = toreturn.component<Position>();
 
         if (toreturn_position) {
-            new_position[0] = toreturn_position->getPos()[0] - toreturn_position->getOffset()[0];
-            new_position[1] = toreturn_position->getPos()[1] - toreturn_position->getOffset()[1];
-            SDL_Log("Old position %d, %d \n", old_position[0], old_position[1]);
+            Point pos = toreturn_position->getTilemapPos();
+            Point offset = toreturn_position->getOffset();
+            new_position.x = pos.x - offset.x;
+            new_position.y = pos.y - offset.x;
+            SDL_Log("Old position %d, %d \n", old_position.x, old_position.y);
         } else {
             SDL_Log("Could not get returning unit's position component");
         }
@@ -61,7 +63,7 @@ void UnitSystemx::receive(const unitReturn & Return) {
         SDL_Log("Could not get selected entity");
     }
 
-    mapx->moveUnit(new_position[0], new_position[1], old_position[0], old_position[1]);
+    mapx->moveUnit(new_position.x, new_position.y, old_position.x, old_position.y);
     toreturn_position->setPos(old_position);
 }
 
@@ -178,8 +180,10 @@ void UnitSystemx::receive(const unitSelect & select) {
     entityx::ComponentHandle<Unit> unit = select.unit;
     selected = unit.entity();
     entityx::ComponentHandle<Position> position = selected.component<Position>();
-    old_position[0] = position->getPos()[0] - position->getOffset()[0];
-    old_position[1] = position->getPos()[1] - position->getOffset()[1];
+    Point pos = position->getTilemapPos();
+    Point offset = position->getOffset();
+    old_position.x = pos.x - offset.x;
+    old_position.y = pos.y - offset.y;
 }
 
 void UnitSystemx::receive(const unitDanger & danger) {
@@ -194,11 +198,13 @@ void UnitSystemx::receive(const unitDanger & danger) {
 
     entityx::ComponentHandle<Unit> unit = danger.unit;
     entityx::Entity cursor = danger.cursor;
-    entityx::ComponentHandle<Position> cursorpos = cursor.component<Position>();
+    entityx::ComponentHandle<Position> cursor_position = cursor.component<Position>();
 
-    if (cursorpos) {
-        start[0] = cursorpos->getPos()[0] - cursorpos->getOffset()[0];
-        start[1] = cursorpos->getPos()[1] - cursorpos->getOffset()[1];
+    if (cursor_position) {
+        Point cursorpos = cursor_position->getTilemapPos();
+        Point offset = cursor_position->getOffset();
+        start[0] = cursorpos.x - offset.x;
+        start[1] = cursorpos.y - offset.y;
     } else {
         SDL_Log("Could not get cursor position component");
     }
@@ -211,6 +217,7 @@ void UnitSystemx::receive(const unitDanger & danger) {
     }
 
     costmapp = mapx->makeMvtCostmap(unit);
+    SDL_Log("Until here");
     movemapp = movemap(costmapp, start, unit_move, "matrix");
     attackmapp = attackmap(movemapp, start, unit_move, range, "matrix");
     dangermapp = matrix_plus(attackmapp, movemapp);
@@ -239,16 +246,18 @@ void UnitSystemx::receive(const unitMove & move) {
     entityx::Entity cursor = move.cursor;
     entityx::ComponentHandle<Position> cursorpos = cursor.component<Position>();
     entityx::ComponentHandle<Unit> unit = move.unit;
-    short unsigned int * start;
-    short unsigned int * offset;
+    Point start;
+    Point offset;
     short unsigned int nooffset[2];
     short unsigned int unit_move;
     short unsigned int current_unit_id;
     unsigned char * range;
 
     if (cursorpos) {
-        start = (short unsigned int *)cursorpos->getPos();
-        offset = (short unsigned int *)cursorpos->getOffset();
+        start = cursorpos->getTilemapPos();
+        offset = cursorpos->getOffset();
+        nooffset[0] = start.x - offset.x;
+        nooffset[1] = start.y - offset.y;
     } else {
         SDL_Log("Could not get cursor position component");
     }
@@ -260,8 +269,6 @@ void UnitSystemx::receive(const unitMove & move) {
         SDL_Log("Could not get unit component");
     }
 
-    nooffset[0] = start[0] - offset[0];
-    nooffset[1] = start[1] - offset[1];
     SDL_Log("nooffset: %d %d", nooffset[0], nooffset[1]);
     SDL_Log("unitmove: %d", unit_move);
 

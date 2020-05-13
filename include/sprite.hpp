@@ -36,6 +36,7 @@ public:
     Sprite(const char * in_asset_name, int inFrames, int inSpeed);
 
     void init(short int * in_position);
+    void init(Point in_position);
 
     SDL_Texture * getTexture();
 
@@ -67,6 +68,7 @@ public:
     unsigned char getSlidetype();
     void setSlidetype(unsigned char in_slidetype);
     void setDestrectpos(short int * in_position);
+    void setDestrectpos(Point in_position);
     void setTexture(const char * in_asset_name);
 
     void setAnimation(int inFrames, int inSpeed) ;

@@ -103,6 +103,10 @@ void Text::wraptext() {
     // Should wrap text inside the background texture and pâdding.
 }
 
+void Text::setRects(Point in_position) {
+    setRects(in_position.x, in_position.y);
+}
+
 void Text::setRects(short int * in_position) {
     setRects(in_position[0], in_position[1]);
 }

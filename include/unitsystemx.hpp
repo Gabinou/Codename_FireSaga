@@ -13,7 +13,7 @@ private:
     Game * game;
     entityx::ComponentHandle<Map> mapx;
     entityx::EventManager * event_manager;
-    short int old_position[2];
+    Point old_position;
     std::vector<unsigned char> unitmenuoptions;
     entityx::Entity selected;
 public:
