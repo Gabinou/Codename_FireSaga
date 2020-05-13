@@ -254,7 +254,7 @@ void UnitSystemx::receive(const unitMove & move) {
     unsigned char * range;
 
     if (cursorpos) {
-        start = cursorpos->getPos();
+        start = cursorpos->getTilemapPos();
         offset = cursorpos->getOffset();
         nooffset[0] = start.x - offset.x;
         nooffset[1] = start.y - offset.y;
