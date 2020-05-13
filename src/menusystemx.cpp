@@ -102,7 +102,6 @@ void MenuSystemx::receive(const mapmenuSelect & select) {
             event_manager->emit<disableMenu>(cursor, MENU::MAPMENU);
             event_manager->emit<turnEnd>();
             break;
-
     }
 }
 
