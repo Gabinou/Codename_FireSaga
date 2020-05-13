@@ -9,6 +9,7 @@
 #include <stdlib.h>
 #include <unordered_map>
 #include "physfs.h"
+#include "cjson.h"
 #include "LodePNG.h"
 #include "structs.hpp"
 #include "enums.hpp"

@@ -26,6 +26,7 @@ include_directories(
 	third_party/entityx/deps
 	third_party/entityx/3rdparty
 	third_party/minctest
+	third_party/cJson
 	${SDL2_INCLUDE_DIR}
 )
 
@@ -34,6 +35,7 @@ file(GLOB PFS_SRC "third_party/physfs/*.c")
 file(GLOB tinyMT_SRC "third_party/tinymt/*.c")
 file(GLOB tinyXML2_SRC "third_party/tinyxml2/*.cpp")
 file(GLOB LODE_SRC "third_party/LodePNG/*.cpp")
+file(GLOB CJSON_SRC "third_party/cJson/*.c")
 file(GLOB_RECURSE ENTITYX_SRC "third_party/entityx/*.cc")
 
 set (CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR})
