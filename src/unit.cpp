@@ -848,7 +848,6 @@ void Unit::writeJSON(cJSON * in_json) {
     }
 
     cJSON_AddItemToObject(in_json, "unit", unit);
-
     writeJSON_stats(currentstats, &current_stats);
     cJSON_AddItemToObject(in_json, "Stats", currentstats);
 
