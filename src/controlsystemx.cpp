@@ -254,7 +254,7 @@ void ControlSystemx::receive(const inputAccept & accept) {
     short int newstate = -1;
 
     Point current_pos;
-    Point cursor_pos = position->getPos();
+    Point cursor_pos = position->getTilemapPos();
     Point offset = position->getOffset();
     current_pos.x = cursor_pos.x - offset.x;
     current_pos.y = cursor_pos.y - offset.y;

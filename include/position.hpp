@@ -17,9 +17,7 @@ private:
     Point boundsmin = {0, 100};
     Point boundsmax = {0, 100};
     Point * position = nullptr;
-    // short int position[2] = {0};
     short int bounds[4]; //xmin, xmax, ymin, ymax
-    // short int offset[2] = {0, 0};
     bool newPos(short int newx, short int newy);
     void replaceInbounds();
     void whichPos();

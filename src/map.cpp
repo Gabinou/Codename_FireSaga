@@ -362,7 +362,7 @@ std::vector<std::vector<short int>> Map::makeMvtCostmap(entityx::ComponentHandle
             costmap[row][col] = tiles[tile_ind].getCost()[unitmovetype];
 
             if (unitontile) {
-                SDL_Log("Unit on tile: %d %d", col, row);
+                // SDL_Log("Unit on tile: %d %d", col, row);
                 ontile_army = unitontile->getArmy();
 
                 if (!isFriendly(ontile_army, army)) {

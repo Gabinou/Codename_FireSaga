@@ -217,6 +217,7 @@ void UnitSystemx::receive(const unitDanger & danger) {
     }
 
     costmapp = mapx->makeMvtCostmap(unit);
+    SDL_Log("Until here");
     movemapp = movemap(costmapp, start, unit_move, "matrix");
     attackmapp = attackmap(movemapp, start, unit_move, range, "matrix");
     dangermapp = matrix_plus(attackmapp, movemapp);
