@@ -2,7 +2,7 @@
 #include "unit.hpp"
 
 void test_unit() {
-    Unit unit1, unit2, unit3;
+    Unit unit1, unit2, unit3, unit4, unit5;
     Unit_stats in_stats, out_stats;
     Unit_stats in_caps, out_caps;
     Unit_stats in_growths, out_growths;
@@ -79,7 +79,6 @@ void test_unit() {
     unit1.writeXML("unit_test.binou");
     unit2 = Unit();
     unit2.readXML("unit_test.xml");
-    unit2.readXML("tile_test.xml");
     unit2.writeXML("unit_rewrite.xml");
     unit3 = Unit();
     unit3.readXML("unit_test.binou");
@@ -88,5 +87,18 @@ void test_unit() {
     lok(fequal("unit_test.xml", "unit_test.binou"));
     lok(fequal("unit_test.xml", "unit_rewrite.xml"));
     lok(fequal("unit_test.binou", "unit_rewrite.binou"));
+
+    unit1.writeJSON("unit_test.json");
+    unit1.writeJSON("unit_testj.binou");
+    unit4 = Unit();
+    unit4.readJSON("unit_test.json");
+    unit4.writeJSON("unit_rewrite.json");
+    unit5 = Unit();
+    unit5.readJSON("unit_testj.binou");
+    unit5.writeJSON("unit_rewritej.binou");
+
+    lok(fequal("unit_test.json", "unit_testj.binou"));
+    lok(fequal("unit_test.json", "unit_rewrite.json"));
+    lok(fequal("unit_testj.binou", "unit_rewritej.binou"));
 
 }

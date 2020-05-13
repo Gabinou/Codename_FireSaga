@@ -820,7 +820,7 @@ void Unit::readJSON(cJSON * in_json) {
 
 }
 
-void Unit::writeJSON(const char * filename, const bool append) {
+void Unit::writeJSON(cJSON * in_json) {
 
 }
 

@@ -166,7 +166,7 @@ public:
     using JSON_IO::writeJSON;
     using JSON_IO::readJSON;
     void readJSON(cJSON * in_json);
-    void writeJSON(const char * filename, const bool append);
+    void writeJSON(cJSON * in_json);
 
     using XML_IO::writeXML;
     using XML_IO::readXML;

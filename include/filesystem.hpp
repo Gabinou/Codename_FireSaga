@@ -72,7 +72,7 @@ private:
 public:
     virtual void writeJSON(cJSON * in_json);
     virtual void readJSON(cJSON * in_json);
-    void writeJSON(const char * filename, const bool append);
+    void writeJSON(const char * filename, const bool append = false);
     void readJSON(const char * filename);
 };
 
