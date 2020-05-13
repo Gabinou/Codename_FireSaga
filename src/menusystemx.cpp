@@ -69,7 +69,7 @@ void MenuSystemx::receive(const mapmenuSelect & select) {
     entityx::Entity cursor = select.cursor;
     entityx::ComponentHandle<Position> position = cursor.component<Position>();
 
-    Point cursorpos = position->getPos();
+    Point cursorpos = position->getTilemapPos();
     short int * cursorbounds = position->getBounds();
     unsigned char menuind = cursorpos.y - cursorbounds[2];
     std::vector<unsigned char> mapmenuoptions = game->getMenuoptions(MENU::MAPMENU);
@@ -122,7 +122,7 @@ void MenuSystemx::receive(const mapMenu & menu) {
     }
 
     if (position) {
-        Point cursorpos = position->getPos();
+        Point cursorpos = position->getTilemapPos();
         Point offset = position->getOffset();
         new_position.x = cursorpos.x - offset.x;
         new_position.y = cursorpos.y - offset.y;
@@ -152,7 +152,7 @@ void MenuSystemx::receive(const unitMenu & menu) {
         selected_position = selected.component<Position>();
 
         if (selected_position) {
-            Point selectedpos = selected_position->getPos();
+            Point selectedpos = selected_position->getTilemapPos();
             Point offset = selected_position->getOffset();
             old_position.x = selectedpos.x - offset.x;
             old_position.y = selectedpos.y - offset.y;
@@ -165,7 +165,7 @@ void MenuSystemx::receive(const unitMenu & menu) {
     }
 
     if (cursor_position) {
-        Point cursorpos = cursor_position->getPos();
+        Point cursorpos = cursor_position->getTilemapPos();
         Point offset = cursor_position->getOffset();
         new_position.x = cursorpos.x - offset.x;
         new_position.y = cursorpos.y - offset.y;
@@ -197,7 +197,7 @@ void MenuSystemx::receive(const unitmenuSelect & select) {
     entityx::ComponentHandle<Unit> unit = select.unit;
     entityx::ComponentHandle<Position> position = cursor.component<Position>();
 
-    Point cursorpos = position->getPos();
+    Point cursorpos = position->getTilemapPos();
     short int * cursorbounds = position->getBounds();
     unsigned char menuind = cursorpos.y - cursorbounds[2];
 

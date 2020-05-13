@@ -95,7 +95,7 @@ void ControlSystemx::receive(const inputCancel & cancel) {
     entityx::Entity canceller = getInputent(controllers);
     entityx::ComponentHandle<Position> position = canceller.component<Position>();
     entityx::ComponentHandle<Unit> unitontile;
-    Point cursor_pos = position->getPos();
+    Point cursor_pos = position->getTilemapPos();
     Point offset = position->getOffset();
     Point new_pos;
     new_pos.x = cursor_pos.x - offset.x;

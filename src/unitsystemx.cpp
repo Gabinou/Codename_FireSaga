@@ -51,7 +51,7 @@ void UnitSystemx::receive(const unitReturn & Return) {
         toreturn_position = toreturn.component<Position>();
 
         if (toreturn_position) {
-            Point pos = toreturn_position->getPos();
+            Point pos = toreturn_position->getTilemapPos();
             Point offset = toreturn_position->getOffset();
             new_position.x = pos.x - offset.x;
             new_position.y = pos.y - offset.x;
@@ -180,7 +180,7 @@ void UnitSystemx::receive(const unitSelect & select) {
     entityx::ComponentHandle<Unit> unit = select.unit;
     selected = unit.entity();
     entityx::ComponentHandle<Position> position = selected.component<Position>();
-    Point pos = position->getPos();
+    Point pos = position->getTilemapPos();
     Point offset = position->getOffset();
     old_position.x = pos.x - offset.x;
     old_position.y = pos.y - offset.y;
@@ -201,7 +201,7 @@ void UnitSystemx::receive(const unitDanger & danger) {
     entityx::ComponentHandle<Position> cursor_position = cursor.component<Position>();
 
     if (cursor_position) {
-        Point cursorpos = cursor_position->getPos();
+        Point cursorpos = cursor_position->getTilemapPos();
         Point offset = cursor_position->getOffset();
         start[0] = cursorpos.x - offset.x;
         start[1] = cursorpos.y - offset.y;
