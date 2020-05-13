@@ -285,10 +285,10 @@ void readXML_stats(tinyxml2::XMLElement * in_pStats, Weapon_stats * in_stats) {
     ptemp = in_pStats->FirstChildElement("maxrange");
     ptemp->QueryUnsignedText(&buffint);
     in_stats->range[1] = (unsigned char)buffint;
-    ptemp = in_pStats->FirstChildElement("hand");
+    ptemp = in_pStats->FirstChildElement("minhand");
     ptemp->QueryUnsignedText(&buffint);
     in_stats->hand[0] = (unsigned char)buffint;
-    ptemp = in_pStats->LastChildElement("hand");
+    ptemp = in_pStats->FirstChildElement("maxhand");
     ptemp->QueryUnsignedText(&buffint);
     in_stats->hand[1] = (unsigned char)buffint;
     ptemp = in_pStats->FirstChildElement("dmg_type");
@@ -426,6 +426,93 @@ void writeXML_narrative(tinyxml2::XMLDocument * in_doc, tinyxml2::XMLElement * i
     }
 }
 
+void writeJSON_stats(cJSON * in_json, Unit_stats * in_stats) {
+    cJSON * php = NULL;
+    cJSON * pstr = NULL;
+    cJSON * pmag = NULL;
+    cJSON * pagi = NULL;
+    cJSON * pdex = NULL;
+    cJSON * pluck = NULL;
+    cJSON * pdef = NULL;
+    cJSON * pres = NULL;
+    cJSON * pcon = NULL;
+    cJSON * pmove = NULL;
+    cJSON * pprof = NULL;
+    php = cJSON_CreateNumber(in_stats->hp);
+    pstr = cJSON_CreateNumber(in_stats->str);
+    pmag = cJSON_CreateNumber(in_stats->mag);
+    pagi = cJSON_CreateNumber(in_stats->agi);
+    pdex = cJSON_CreateNumber(in_stats->dex);
+    pluck = cJSON_CreateNumber(in_stats->luck);
+    pdef = cJSON_CreateNumber(in_stats->def);
+    pres = cJSON_CreateNumber(in_stats->res);
+    pcon = cJSON_CreateNumber(in_stats->con);
+    pmove = cJSON_CreateNumber(in_stats->move);
+    pprof = cJSON_CreateNumber(in_stats->prof);
+    cJSON_AddItemToObject(in_json, "hp", php);
+    cJSON_AddItemToObject(in_json, "str", pstr);
+    cJSON_AddItemToObject(in_json, "mag", pmag);
+    cJSON_AddItemToObject(in_json, "agi", pagi);
+    cJSON_AddItemToObject(in_json, "dex", pdex);
+    cJSON_AddItemToObject(in_json, "luck", pluck);
+    cJSON_AddItemToObject(in_json, "def", pdef);
+    cJSON_AddItemToObject(in_json, "res", pres);
+    cJSON_AddItemToObject(in_json, "con", pcon);
+    cJSON_AddItemToObject(in_json, "move", pmove);
+    cJSON_AddItemToObject(in_json, "prof", pprof);
+}
+
+void writeJSON_stats(cJSON * in_json, Weapon_stats * in_stats) {
+    cJSON * pPmight = NULL;
+    cJSON * pMmight = NULL;
+    cJSON * phit = NULL;
+    cJSON * pdodge = NULL;
+    cJSON * pcrit = NULL;
+    cJSON * pfavor = NULL;
+    cJSON * pwgt = NULL;
+    cJSON * puses =  NULL;
+    cJSON * pprof =  NULL;
+    cJSON * pminrange =  NULL;
+    cJSON * pmaxrange =  NULL;
+    cJSON * pminhand =  NULL;
+    cJSON * pmaxhand =  NULL;
+    cJSON * pdmg_type =  NULL;
+    cJSON * pprice =  NULL;
+    cJSON * pheal =  NULL;
+    pPmight = cJSON_CreateNumber(in_stats->Pmight);
+    pMmight = cJSON_CreateNumber(in_stats->Mmight);
+    phit = cJSON_CreateNumber(in_stats->combat.hit);
+    pdodge = cJSON_CreateNumber(in_stats->combat.dodge);
+    pcrit = cJSON_CreateNumber(in_stats->combat.crit);
+    pfavor = cJSON_CreateNumber(in_stats->combat.favor);
+    pwgt = cJSON_CreateNumber(in_stats->wgt);
+    puses = cJSON_CreateNumber(in_stats->uses);
+    pprof = cJSON_CreateNumber(in_stats->prof);
+    pminrange = cJSON_CreateNumber(in_stats->range[0]);
+    pmaxrange = cJSON_CreateNumber(in_stats->range[1]);
+    pminhand = cJSON_CreateNumber(in_stats->hand[0]);
+    pmaxhand = cJSON_CreateNumber(in_stats->hand[1]);
+    pdmg_type = cJSON_CreateNumber(in_stats->dmg_type);
+    pprice = cJSON_CreateNumber(in_stats->price);
+    pheal = cJSON_CreateNumber(in_stats->heal);
+    cJSON_AddItemToObject(in_json, "Pmight", pPmight);
+    cJSON_AddItemToObject(in_json, "Mmight", pMmight);
+    cJSON_AddItemToObject(in_json, "hit", phit);
+    cJSON_AddItemToObject(in_json, "dodge", pdodge);
+    cJSON_AddItemToObject(in_json, "crit", pcrit);
+    cJSON_AddItemToObject(in_json, "favor", pfavor);
+    cJSON_AddItemToObject(in_json, "wgt", pwgt);
+    cJSON_AddItemToObject(in_json, "uses", puses);
+    cJSON_AddItemToObject(in_json, "prof", pprof);
+    cJSON_AddItemToObject(in_json, "minrange", pminrange);
+    cJSON_AddItemToObject(in_json, "maxrange", pmaxrange);
+    cJSON_AddItemToObject(in_json, "minhand", pminhand);
+    cJSON_AddItemToObject(in_json, "maxhand", pmaxhand);
+    cJSON_AddItemToObject(in_json, "dmg_type", pdmg_type);
+    cJSON_AddItemToObject(in_json, "price", pprice);
+    cJSON_AddItemToObject(in_json, "heal", pheal);
+}
+
 void writeXML_stats(tinyxml2::XMLDocument * in_doc, tinyxml2::XMLElement * in_pStats, Weapon_stats * in_stats) {
     // Pmight, Mmight, hit, dodge, crit, favor, wgt, uses, prof, range, hand, dmg_type, cost
     tinyxml2::XMLElement * pPmight = in_doc->NewElement("Pmight");
@@ -439,8 +526,8 @@ void writeXML_stats(tinyxml2::XMLDocument * in_doc, tinyxml2::XMLElement * in_pS
     tinyxml2::XMLElement * pprof = in_doc->NewElement("prof");
     tinyxml2::XMLElement * pminrange = in_doc->NewElement("minrange");
     tinyxml2::XMLElement * pmaxrange = in_doc->NewElement("maxrange");
-    tinyxml2::XMLElement * phand1 = in_doc->NewElement("hand");
-    tinyxml2::XMLElement * phand2 = in_doc->NewElement("hand");
+    tinyxml2::XMLElement * phand1 = in_doc->NewElement("minhand");
+    tinyxml2::XMLElement * phand2 = in_doc->NewElement("maxhand");
     tinyxml2::XMLElement * pdmg_type = in_doc->NewElement("dmg_type");
     tinyxml2::XMLElement * pprice = in_doc->NewElement("price");
     tinyxml2::XMLElement * pheal = in_doc->NewElement("heal");
@@ -831,8 +918,8 @@ void JSON_IO::writeJSON(cJSON * in_json) {
 }
 
 void JSON_IO::writeJSON(const char * filename, const bool append) {
-    PHYSFS_file * fp;
-    cJSON * json;
+    PHYSFS_file * fp = NULL;
+    cJSON * json = NULL;
 
     if (append) {
         fp = PHYSFS_openAppend(filename);

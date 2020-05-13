@@ -822,6 +822,36 @@ void Unit::readJSON(cJSON * in_json) {
 
 void Unit::writeJSON(cJSON * in_json) {
 
+    if (in_json != NULL) {
+        in_json = cJSON_CreateObject();
+    } else {
+        SDL_Log("unit: in_json is not null");
+    }
+
+    cJSON * unit = NULL;
+    cJSON * stats = NULL;
+    cJSON * currentstats = NULL;
+    cJSON * growths = NULL;
+    cJSON * caps = NULL;
+    cJSON * bases = NULL;
+    cJSON * exp = NULL;
+    cJSON * name = NULL;
+    cJSON * sex = NULL;
+    cJSON * baseExp = NULL;
+    cJSON * Levelups = NULL;
+    cJSON * currentHP = NULL;
+    cJSON * skills = NULL;
+
+    unit = cJSON_CreateNumber(id);
+
+    if (unit == NULL) {
+
+    }
+
+    cJSON_AddItemToObject(in_json, "unit", unit);
+
+
+    growths = cJSON_CreateArray();
 }
 
 void Unit::writeXML(tinyxml2::XMLDocument * in_doc, tinyxml2::XMLElement * in_pUnit) {
