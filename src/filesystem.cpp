@@ -825,8 +825,9 @@ void writeXML_stats(tinyxml2::XMLDocument * in_doc, tinyxml2::XMLElement * in_pS
 
 void printJSON(PHYSFS_file * in_fp, cJSON * in_json) {
     char * buffer = NULL;
-    unsigned long int length = 512;
     buffer = cJSON_Print(in_json);
+    unsigned long int length = strlen(buffer);
+    // SDL_Log("size of buffer: %d", );
     // do {
     //     length += 512;
     //     buffer = NULL;
