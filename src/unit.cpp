@@ -817,41 +817,40 @@ void Unit::readXML(tinyxml2::XMLElement * in_pUnit) {
 }
 
 void Unit::readJSON(cJSON * in_json) {
+    // cJSON * unit = cJSON_GetObjectItemCaseSensitive(json, "unit");
+    // SDL_Log("Id: %d", cJSON_GetNumberValue(unit));
+    // SDL_Log("Id: %d", unit->valueint);
+    // SDL_Log("Id: %d", cJSON_GetObjectItemCaseSensitive(json, "unit")->valueint);
 
 }
 
 void Unit::writeJSON(cJSON * in_json) {
-    cJSON * unit = NULL;
-    cJSON * stats = NULL;
-    cJSON * currentstats = NULL;
-    cJSON * growths = NULL;
-    cJSON * caps = NULL;
-    cJSON * bases = NULL;
-    cJSON * exp = NULL;
-    cJSON * name = NULL;
-    cJSON * sex = NULL;
-    cJSON * baseExp = NULL;
-    cJSON * Levelups = NULL;
-    cJSON * currentHP = NULL;
-    cJSON * skills = NULL;
+    if (in_json != NULL) {
 
-    unit = cJSON_CreateNumber(id);
+        cJSON * stats = NULL;
+        cJSON * currentstats = NULL;
+        cJSON * growths = NULL;
+        cJSON * caps = NULL;
+        cJSON * bases = NULL;
+        cJSON * exp = NULL;
+        cJSON * sex = NULL;
+        cJSON * baseExp = NULL;
+        cJSON * Levelups = NULL;
+        cJSON * currentHP = NULL;
+        cJSON * skills = NULL;
 
-    if (unit == NULL) {
+        cJSON * unit = cJSON_CreateObject();
+        cJSON * jid = cJSON_CreateNumber(id);
+        cJSON * jname = cJSON_CreateString(name.c_str());
 
+        cJSON_AddItemToObject(unit, "id", jid);
+        cJSON_AddItemToObject(unit, "name", jname);
+        cJSON_AddItemToObject(in_json, "unit", unit);
+
+        // growths = cJSON_CreateArray();
     } else {
-        SDL_Log("Id in unit: %d", id);
-        SDL_Log("Id in unit: %d", cJSON_GetNumberValue(unit));
+        SDL_Log("in_json is not NULL");
     }
-
-    cJSON_AddItemToObject(in_json, "unit", unit);
-    SDL_Log("Id in unit: %d", cJSON_GetNumberValue(unit));
-    SDL_Log("Id in unit: %d", cJSON_GetObjectItemCaseSensitive(in_json, "unit")->valuedouble);
-    SDL_Log("Id in unit: %d", cJSON_GetObjectItemCaseSensitive(in_json, "unit")->valueint);
-    writeJSON_stats(currentstats, &current_stats);
-    cJSON_AddItemToObject(in_json, "Stats", currentstats);
-
-    // growths = cJSON_CreateArray();
 }
 
 void Unit::writeXML(tinyxml2::XMLDocument * in_doc, tinyxml2::XMLElement * in_pUnit) {

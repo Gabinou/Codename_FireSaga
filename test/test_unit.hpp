@@ -87,7 +87,7 @@ void test_unit() {
     lok(fequal("unit_test.xml", "unit_test.binou"));
     lok(fequal("unit_test.xml", "unit_rewrite.xml"));
     lok(fequal("unit_test.binou", "unit_rewrite.binou"));
-    SDL_Log("FROM HERE");
+
     unit1.writeJSON("unit_test.json");
     unit1.writeJSON("unit_testj.binou");
     // unit4 = Unit();

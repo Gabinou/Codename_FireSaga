@@ -827,12 +827,6 @@ void printJSON(PHYSFS_file * in_fp, cJSON * in_json) {
     char * buffer = NULL;
     buffer = cJSON_Print(in_json);
     unsigned long int length = strlen(buffer);
-    // SDL_Log("size of buffer: %d", );
-    // do {
-    //     length += 512;
-    //     buffer = NULL;
-    //     SDL_Log("%d", length);
-    // } while (!cJSON_PrintPreallocated(in_json, buffer, length, true) && (length < 65536));
 
     if (!PHYSFS_setBuffer(in_fp, length)) {
         SDL_Log("PHYSFS_setBuffer failed");
@@ -941,13 +935,9 @@ void JSON_IO::writeJSON(const char * filename, const bool append) {
         SDL_Log("Could not open %s for writing\n", filename);
     } else {
         writeJSON(json);
-        cJSON * unit = cJSON_GetObjectItemCaseSensitive(json, "unit");
-        SDL_Log("Id: %d", cJSON_GetNumberValue(unit));
-        SDL_Log("Id: %d", unit->valueint);
-        SDL_Log("Id: %d", cJSON_GetObjectItemCaseSensitive(json, "unit")->valueint);
-
         printJSON(fp, json);
         PHYSFS_close(fp);
+        cJSON_Delete(json);
     }
 }
 
