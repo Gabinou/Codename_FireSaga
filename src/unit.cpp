@@ -821,12 +821,6 @@ void Unit::readJSON(cJSON * in_json) {
 }
 
 void Unit::writeJSON(cJSON * in_json) {
-    if (in_json == NULL) {
-        in_json = cJSON_CreateObject();
-    } else {
-        SDL_Log("unit: in_json is not null");
-    }
-
     cJSON * unit = NULL;
     cJSON * stats = NULL;
     cJSON * currentstats = NULL;
@@ -845,9 +839,15 @@ void Unit::writeJSON(cJSON * in_json) {
 
     if (unit == NULL) {
 
+    } else {
+        SDL_Log("Id in unit: %d", id);
+        SDL_Log("Id in unit: %d", cJSON_GetNumberValue(unit));
     }
 
     cJSON_AddItemToObject(in_json, "unit", unit);
+    SDL_Log("Id in unit: %d", cJSON_GetNumberValue(unit));
+    SDL_Log("Id in unit: %d", cJSON_GetObjectItemCaseSensitive(in_json, "unit")->valuedouble);
+    SDL_Log("Id in unit: %d", cJSON_GetObjectItemCaseSensitive(in_json, "unit")->valueint);
     writeJSON_stats(currentstats, &current_stats);
     cJSON_AddItemToObject(in_json, "Stats", currentstats);
 

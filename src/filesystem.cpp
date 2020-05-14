@@ -826,12 +826,12 @@ void writeXML_stats(tinyxml2::XMLDocument * in_doc, tinyxml2::XMLElement * in_pS
 void printJSON(PHYSFS_file * in_fp, cJSON * in_json) {
     char * buffer = NULL;
     unsigned long int length = 512;
-
-    do {
-        length += 512;
-        buffer = NULL;
-        // SDL_Log("%d", length);
-    } while (!cJSON_PrintPreallocated(in_json, buffer, length, true) && (length < 65536));
+    buffer = cJSON_Print(in_json);
+    // do {
+    //     length += 512;
+    //     buffer = NULL;
+    //     SDL_Log("%d", length);
+    // } while (!cJSON_PrintPreallocated(in_json, buffer, length, true) && (length < 65536));
 
     if (!PHYSFS_setBuffer(in_fp, length)) {
         SDL_Log("PHYSFS_setBuffer failed");
@@ -927,8 +927,8 @@ void JSON_IO::writeJSON(const char * filename, const bool append) {
     SDL_Log("Writing Json to %s:", filename);
 
     PHYSFS_file * fp = NULL;
-    cJSON * json = NULL;
-    SDL_Log("json==NULL%d", json == NULL);
+    cJSON * json = cJSON_CreateObject();
+    // SDL_Log("json==NULL%d", json == NULL);
 
     if (append) {
         fp = PHYSFS_openAppend(filename);
@@ -941,7 +941,10 @@ void JSON_IO::writeJSON(const char * filename, const bool append) {
     } else {
         writeJSON(json);
         cJSON * unit = cJSON_GetObjectItemCaseSensitive(json, "unit");
-        SDL_Log("Id: %d", cJSON_GetNumberValue(json));
+        SDL_Log("Id: %d", cJSON_GetNumberValue(unit));
+        SDL_Log("Id: %d", unit->valueint);
+        SDL_Log("Id: %d", cJSON_GetObjectItemCaseSensitive(json, "unit")->valueint);
+
         printJSON(fp, json);
         PHYSFS_close(fp);
     }

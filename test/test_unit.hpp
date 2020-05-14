@@ -9,7 +9,7 @@ void test_unit() {
     Inventory_item in_stats_wpn, out_stats_wpn;
 
     in_stats = {17,  6,  2,  7,  7,   7,  4,  5,  6, 5};
-    unit1 = Unit(UNIT::NAME::ERWIN, UNIT::CLASS::MERCENARY, in_stats, UNIT::SEX::M);
+    unit1 = Unit(UNIT::NAME::SILOU, UNIT::CLASS::MERCENARY, in_stats, UNIT::SEX::M);
     in_caps = {48, 14, 25, 32, 34,  28, 19, 40, 15, 0};
     unit1.setCaps(in_stats);
     in_growths = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
@@ -87,7 +87,7 @@ void test_unit() {
     lok(fequal("unit_test.xml", "unit_test.binou"));
     lok(fequal("unit_test.xml", "unit_rewrite.xml"));
     lok(fequal("unit_test.binou", "unit_rewrite.binou"));
-
+    SDL_Log("FROM HERE");
     unit1.writeJSON("unit_test.json");
     unit1.writeJSON("unit_testj.binou");
     // unit4 = Unit();
