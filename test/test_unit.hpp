@@ -92,7 +92,7 @@ void test_unit() {
     unit1.writeJSON("unit_testj.binou");
     unit4 = Unit();
     unit4.readJSON("unit_test.json");
-    // unit4.writeJSON("unit_rewrite.json");
+    unit4.writeJSON("unit_rewrite.json");
     // unit5 = Unit();
     // unit5.readJSON("unit_testj.binou");
     // unit5.writeJSON("unit_rewritej.binou");

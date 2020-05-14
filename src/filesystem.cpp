@@ -639,23 +639,33 @@ void writeXML_stats(tinyxml2::XMLDocument * in_doc, tinyxml2::XMLElement * in_pS
     pprof->SetText(in_stats->prof);
 }
 
+void readJSON_stats(cJSON * in_jitem, Inventory_item * in_item) {
+    cJSON * j = cJSON_GetObjectItem(in_jitem, "");
+    cJSON * j = cJSON_GetObjectItem(in_jstats, "");
+    cJSON * j = cJSON_GetObjectItem(in_jstats, "");
+    cJSON * j = cJSON_GetObjectItem(in_jstats, "");
+    cJSON * j = cJSON_GetObjectItem(in_jstats, "");
+    cJSON * j = cJSON_GetObjectItem(in_jstats, "");
+
+}
+
 void readJSON_stats(cJSON * in_jstats, Weapon_stats * in_stats) {
-    cJSON * jPmight = cJSON_GetObjectItem(in_jstats, "");
-    cJSON * jMmight = cJSON_GetObjectItem(in_jstats, "");
-    cJSON * jhit = cJSON_GetObjectItem(in_jstats, "");
-    cJSON * jdodge = cJSON_GetObjectItem(in_jstats, "");
-    cJSON * jcrit = cJSON_GetObjectItem(in_jstats, "");
-    cJSON * jfavor = cJSON_GetObjectItem(in_jstats, "");
-    cJSON * jwgt = cJSON_GetObjectItem(in_jstats, "");
-    cJSON * juses = cJSON_GetObjectItem(in_jstats, "");
-    cJSON * jprof = cJSON_GetObjectItem(in_jstats, "");
-    cJSON * jminrange = cJSON_GetObjectItem(in_jstats, "");
-    cJSON * jmaxrange = cJSON_GetObjectItem(in_jstats, "");
-    cJSON * jminhand = cJSON_GetObjectItem(in_jstats, "");
-    cJSON * jmaxhand = cJSON_GetObjectItem(in_jstats, "");
-    cJSON * jdmg_type = cJSON_GetObjectItem(in_jstats, "");
-    cJSON * jprice = cJSON_GetObjectItem(in_jstats, "");
-    cJSON * jheal = cJSON_GetObjectItem(in_jstats, "");
+    cJSON * jPmight = cJSON_GetObjectItem(in_jstats, "Pmight");
+    cJSON * jMmight = cJSON_GetObjectItem(in_jstats, "Mmight");
+    cJSON * jhit = cJSON_GetObjectItem(in_jstats, "hit");
+    cJSON * jdodge = cJSON_GetObjectItem(in_jstats, "dodge");
+    cJSON * jcrit = cJSON_GetObjectItem(in_jstats, "crit");
+    cJSON * jfavor = cJSON_GetObjectItem(in_jstats, "favor");
+    cJSON * jwgt = cJSON_GetObjectItem(in_jstats, "wgt");
+    cJSON * juses = cJSON_GetObjectItem(in_jstats, "uses");
+    cJSON * jprof = cJSON_GetObjectItem(in_jstats, "prof");
+    cJSON * jminrange = cJSON_GetObjectItem(in_jstats, "minrange");
+    cJSON * jmaxrange = cJSON_GetObjectItem(in_jstats, "maxrange");
+    cJSON * jminhand = cJSON_GetObjectItem(in_jstats, "minhand");
+    cJSON * jmaxhand = cJSON_GetObjectItem(in_jstats, "maxhand");
+    cJSON * jdmg_type = cJSON_GetObjectItem(in_jstats, "dmg_type");
+    cJSON * jprice = cJSON_GetObjectItem(in_jstats, "price");
+    cJSON * jheal = cJSON_GetObjectItem(in_jstats, "heal");
 
     in_stats->Pmight = cJSON_GetNumberValue(jPmight);
     in_stats->Mmight = cJSON_GetNumberValue(jMmight);

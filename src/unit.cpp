@@ -829,7 +829,7 @@ void Unit::readJSON(cJSON * in_json) {
     cJSON * jcurrent_stats = cJSON_GetObjectItemCaseSensitive(junit, "Stats");
     cJSON * jcaps_stats = cJSON_GetObjectItemCaseSensitive(junit, "Caps");
     cJSON * jgrowths = cJSON_GetObjectItemCaseSensitive(junit, "Growths");
-    cJSON * jlevelops = cJSON_GetObjectItemCaseSensitive(junit, "Level-ups");
+    cJSON * jlevelups = cJSON_GetObjectItemCaseSensitive(junit, "Level-ups");
     cJSON * jitems = cJSON_GetObjectItemCaseSensitive(junit, "Items");
 
     id = cJSON_GetNumberValue(jid);
@@ -840,6 +840,31 @@ void Unit::readJSON(cJSON * in_json) {
     exp = cJSON_GetNumberValue(jexp);
     current_hp = cJSON_GetNumberValue(jcurrent_hp);
     class_name = cJSON_GetStringValue(jclass);
+    readJSON_stats(jcurrent_stats, &current_stats);
+    readJSON_stats(jcaps_stats, &caps_stats);
+    readJSON_stats(jgrowths, &growths);
+
+    cJSON * jlevelup = cJSON_GetObjectItemCaseSensitive(jlevelups, "Level-ups");
+    Unit_stats temp_ustats;
+
+    while (jlevelup != NULL) {
+        readJSON_stats(jlevelup, &temp_ustats);
+        grown_stats.push_back(temp_ustats);
+        jlevelup = cJSON_GetObjectItemCaseSensitive(jlevelups, "Level-ups");
+    };
+
+    cJSON * jitem = cJSON_GetObjectItemCaseSensitive(jitems, "Item");
+
+    Inventory_item temp_wstats;
+
+    int i = 0;
+
+    while ((jitem != NULL) && (i < DEFAULT::EQUIPMENT_SIZE)) {
+        readJSON_stats(jitem, &temp_wstats);
+        equipment[i] = temp_wstats;
+        jitem = cJSON_GetObjectItemCaseSensitive(jitems, "Item");
+        i++;
+    };
 }
 
 void Unit::writeJSON(cJSON * in_json) {
