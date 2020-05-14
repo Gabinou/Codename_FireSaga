@@ -127,6 +127,72 @@ void Weapon::setType(short unsigned int in_type) {
     type = in_type;
 }
 
+void Weapon::readJSON(cJSON * in_json) {
+
+}
+
+void Weapon::writeJSON(cJSON * in_json) {
+    if (in_json != NULL) {
+        cJSON * jwpn = cJSON_CreateObject();
+        cJSON_AddItemToObject(in_json, "weapon", jwpn);
+
+        cJSON * jid = cJSON_CreateNumber(id);
+        cJSON * jwpnstats = cJSON_CreateObject();
+        writeJSON_stats(jwpnstats, &stats);
+        cJSON * jbonus = cJSON_CreateObject();
+        writeJSON_stats(jbonus, &bonus_stats);
+        cJSON * jmalus = cJSON_CreateObject();
+        writeJSON_stats(jmalus, &malus_stats);
+        cJSON * jsellable = cJSON_CreateBool(sellable);
+        cJSON * jinfused = cJSON_CreateObject();
+        cJSON * jpower = cJSON_CreateNumber(infused.power);
+        cJSON * jtype = cJSON_CreateNumber(infused.type);
+        cJSON_AddItemToObject(jinfused, "Power", jpower);
+        cJSON_AddItemToObject(jinfused, "Type", jtype);
+
+        cJSON * jeffective = cJSON_CreateNumber(effective);
+
+        cJSON * jusers = cJSON_CreateObject();
+        cJSON * juserid = NULL;
+
+        for (short int i = 0; i < users.size() ; i++) {
+            juserid = cJSON_CreateNumber(users[i]);
+            cJSON_AddItemToObject(jusers, "id", juserid);
+        }
+
+        cJSON * jeffects = cJSON_CreateObject();
+        cJSON * jeffect = NULL;
+        jeffect = cJSON_CreateNumber(effect);
+        cJSON_AddItemToObject(jeffect, "id", jeffect);
+
+        for (int i = 0; i < effects.size(); i++) {
+            jeffect = cJSON_CreateString(effects[i].c_str());
+            cJSON_AddItemToObject(jeffects, "Effect", jeffect);
+        }
+
+        cJSON * jtypes = cJSON_CreateObject();
+        cJSON * jtype = NULL;
+        jtype = cJSON_CreateNumber(type);
+        cJSON_AddItemToObject(jtype, "id", jtype);
+        std::vector<std::string> types = wpnTypes(type);
+
+        for (int i = 0; i < types.size(); i++) {
+            jtype = cJSON_CreateString(types[i].c_str());
+            cJSON_AddItemToObject(jtypes, "Type", jtype);
+        }
+
+        cJSON_AddItemToObject(jwpn, "id", jid);
+        cJSON_AddItemToObject(jwpn, "Stats", jwpnstats);
+        cJSON_AddItemToObject(jwpn, "Bonus", jbonus);
+        cJSON_AddItemToObject(jwpn, "Malus", jmalus);
+        cJSON_AddItemToObject(jwpn, "Infused", jinfused);
+        cJSON_AddItemToObject(jwpn, "Effective", jeffective);
+        cJSON_AddItemToObject(jwpn, "Sellable", jsellable);
+        cJSON_AddItemToObject(jwpn, "Effects", jeffects);
+        cJSON_AddItemToObject(jwpn, "Type", jtype);
+    }
+}
+
 void Weapon::readXML(tinyxml2::XMLElement * in_pWpn) {
     tinyxml2::XMLElement * ptemp;
     tinyxml2::XMLElement * ptemp2;

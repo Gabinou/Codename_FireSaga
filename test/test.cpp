@@ -42,9 +42,9 @@ int main(int argc, char * argv[]) {
     // lrun("Sprite ", test_sprite);
     // lrun("Text ", test_text);
     // lrun("Tile ", test_tile);
-    lrun("Unit ", test_unit);
+    // lrun("Unit ", test_unit);
     // lrun("Utilities ", test_utilities);
-    // lrun("Weapon ", test_weapon);
+    lrun("Weapon ", test_weapon);
     lresults();
 
     return (lfails != 0);

@@ -15,7 +15,7 @@
 #include "stb_sprintf.h"
 //#endif /* STB_SPRINTF_IMPLEMENTATION */
 
-class Weapon : public XML_IO {
+class Weapon : public XML_IO, JSON_IO {
 private:
     Weapon_stats stats = {0, 0, 0, 0, 0, 0, 0, 0, 0, {0, 0}, {0, 0}, 0, 0};
     // Pmight, Mmight, hit, dodge, crit, favor, wgt, uses, prof, range, hand, dmg_type, cost, heal
@@ -63,6 +63,11 @@ public:
     void setUsers(std::vector<unsigned short int> in_users);
     bool isSellable();
     void setSellable(bool in_sellable);
+
+    using JSON_IO::writeJSON;
+    using JSON_IO::readJSON;
+    void readJSON(cJSON * in_json);
+    void writeJSON(cJSON * in_json);
 
     using XML_IO::writeXML;
     using XML_IO::readXML;
