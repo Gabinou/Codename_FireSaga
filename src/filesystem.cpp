@@ -672,6 +672,7 @@ void writeJSON_items(cJSON * in_jitems, Inventory_item * in_items, int size) {
             jinfused = cJSON_CreateNumber(-1);
         }
 
+        cJSON_AddItemToObject(jitem, "name", jname);
         cJSON_AddItemToObject(jitem, "Infused", jinfused);
         cJSON_AddItemToObject(jitem, "id", jid);
         cJSON_AddItemToObject(jitem, "used", jused);
@@ -682,7 +683,6 @@ void writeJSON_items(cJSON * in_jitems, Inventory_item * in_items, int size) {
             jname = cJSON_CreateString("Empty");
         }
 
-        cJSON_AddItemToObject(jitem, "name", jname);
         cJSON_AddItemToObject(in_jitems, "Item", jitem);
     }
 }
