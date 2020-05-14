@@ -58,7 +58,7 @@ extern void writeJSON_items(cJSON * in_jitems, Inventory_item * in_equipment, in
 extern void writeJSON_stats(cJSON * in_jstats, Weapon_stats * in_stats);
 extern void writeJSON_stats(cJSON * in_jstats, Unit_stats * in_stats);
 extern void printJSON(PHYSFS_file * in_fp, cJSON * in_json);
-extern int parseJSON(const char * filename, cJSON * in_json);
+extern cJSON * parseJSON(const char * filename);
 
 class XML_IO {
 private:

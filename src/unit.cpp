@@ -817,7 +817,22 @@ void Unit::readXML(tinyxml2::XMLElement * in_pUnit) {
 }
 
 void Unit::readJSON(cJSON * in_json) {
-    // cJSON * unit = cJSON_GetObjectItemCaseSensitive(json, "unit");
+    SDL_Log("Really reading JSON file");
+    cJSON * junit = cJSON_GetObjectItemCaseSensitive(in_json, "unit");
+    SDL_Log("id: %d", cJSON_HasObjectItem(junit, "id"));
+    SDL_Log("name: %d", cJSON_HasObjectItem(junit, "name"));
+    SDL_Log("name: %d", cJSON_HasObjectItem(junit, "Name"));
+    SDL_Log("sex: %d", cJSON_HasObjectItem(junit, "Sex"));
+    cJSON * jid = cJSON_GetObjectItemCaseSensitive(junit, "id");
+    // id = jid->valuedouble; DOES NOT WORK
+    id = cJSON_GetNumberValue(jid);
+    SDL_Log("id: %d", id);
+    cJSON * jname = cJSON_GetObjectItemCaseSensitive(junit, "Name");
+
+    SDL_Log("name: %s", cJSON_GetStringValue(jname));
+    SDL_Log("name: %s", jname->valuestring);
+    // name = tempstr;
+
     // SDL_Log("Id: %d", cJSON_GetNumberValue(unit));
     // SDL_Log("Id: %d", unit->valueint);
     // SDL_Log("Id: %d", cJSON_GetObjectItemCaseSensitive(json, "unit")->valueint);

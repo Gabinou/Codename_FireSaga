@@ -884,22 +884,25 @@ void printJSON(PHYSFS_file * in_fp, cJSON * in_json) {
 }
 
 
-int parseJSON(const char * filename, cJSON * in_json) {
+cJSON * parseJSON(const char * filename) {
+    SDL_Log("Parsing JSON file %s", filename);
     PHYSFS_file * fp;
     fp = PHYSFS_openRead(filename);
+    cJSON * json = NULL;
 
     if (!fp) {
         SDL_Log("Failed to open %s for xml parsing.", filename);
-        return (-1);
     }
 
     unsigned int filelen = PHYSFS_fileLength(fp);
+    // SDL_Log("filelen: %d", filelen);
     char filebuffer[filelen];
     PHYSFS_readBytes(fp, filebuffer, filelen);
     PHYSFS_close(fp);
 
-    in_json = cJSON_ParseWithLength(filebuffer, filelen);
-    return (0);
+    json = cJSON_ParseWithLength(filebuffer, filelen);
+    // SDL_Log("in_json: %d", (in_json == NULL));
+    return (json);
 }
 
 
@@ -926,11 +929,10 @@ int parseXML(const char * filename, tinyxml2::XMLDocument * in_doc) {
 }
 
 void JSON_IO::readJSON(const char * filename) {
-    // SDL_Log("readXML file: %s", filename);
-    cJSON * json = NULL;
-    parseJSON(filename, json);
+    SDL_Log("readJSON file: %s", filename);
+    cJSON * json = parseJSON(filename);
 
-    if (json != NULL) {
+    if (json == NULL) {
         SDL_Log("Cannot get parse json file.");
     } else {
         readJSON(json);
