@@ -79,10 +79,13 @@ void test_weapon() {
     lok(in_stats.prof == out_stats.prof);
 
     wpn1.writeXML("weapon_test.xml");
+    wpn1.writeJSON("weapon_test.json");
 
     wpn2 = Weapon();
     wpn2.readXML("tile_test.xml");
+    wpn2.readJSON("tile_test.json");
     wpn2.readXML("weapon_test.xml");
+    wpn2.readJSON("weapon_test.json");
 
     out_wpn_stats = wpn2.getStats();
     lok(in_wpn_stats.Pmight == out_wpn_stats.Pmight);
@@ -136,6 +139,7 @@ void test_weapon() {
     lok(in_stats.move == out_stats.move);
     lok(in_stats.prof == out_stats.prof);
 
-    wpn2.writeXML("weapon_rewrite.xml");
+    wpn2.writeXML("weapon_rewrite.json");
     lok(fequal("weapon_test.xml", "weapon_rewrite.xml"));
+    lok(fequal("weapon_test.json", "weapon_rewrite.json"));
 }

@@ -164,6 +164,7 @@ void Weapon::writeJSON(cJSON * in_json) {
         cJSON * jeffect = NULL;
         jeffect = cJSON_CreateNumber(effect);
         cJSON_AddItemToObject(jeffect, "id", jeffect);
+        std::vector<std::string> effects = wpnEffects(effect);
 
         for (int i = 0; i < effects.size(); i++) {
             jeffect = cJSON_CreateString(effects[i].c_str());
@@ -171,14 +172,14 @@ void Weapon::writeJSON(cJSON * in_json) {
         }
 
         cJSON * jtypes = cJSON_CreateObject();
-        cJSON * jtype = NULL;
-        jtype = cJSON_CreateNumber(type);
-        cJSON_AddItemToObject(jtype, "id", jtype);
+        cJSON * jtype2 = NULL;
+        jtype2 = cJSON_CreateNumber(type);
+        cJSON_AddItemToObject(jtypes, "id", jtype2);
         std::vector<std::string> types = wpnTypes(type);
 
         for (int i = 0; i < types.size(); i++) {
-            jtype = cJSON_CreateString(types[i].c_str());
-            cJSON_AddItemToObject(jtypes, "Type", jtype);
+            jtype2 = cJSON_CreateString(types[i].c_str());
+            cJSON_AddItemToObject(jtypes, "Type", jtype2);
         }
 
         cJSON_AddItemToObject(jwpn, "id", jid);
@@ -189,7 +190,7 @@ void Weapon::writeJSON(cJSON * in_json) {
         cJSON_AddItemToObject(jwpn, "Effective", jeffective);
         cJSON_AddItemToObject(jwpn, "Sellable", jsellable);
         cJSON_AddItemToObject(jwpn, "Effects", jeffects);
-        cJSON_AddItemToObject(jwpn, "Type", jtype);
+        cJSON_AddItemToObject(jwpn, "Types", jtypes);
     }
 }
 
