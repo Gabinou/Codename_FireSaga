@@ -639,15 +639,24 @@ void writeXML_stats(tinyxml2::XMLDocument * in_doc, tinyxml2::XMLElement * in_pS
     pprof->SetText(in_stats->prof);
 }
 
+void readJSON_items(cJSON * in_jitems, std::vector<Inventory_item> * in_items) {
+
+}
+
+void readJSON_items(cJSON * in_jitems, Inventory_item * in_equipment) {
+
+    cJSON * jname = cJSON_GetObjectItemCaseSensitive(in_jitems, "name");
+}
+
 void writeJSON_items(cJSON * in_jitems, std::vector<Inventory_item> in_items) {
     writeJSON_items(in_jitems, in_items.data(), in_items.size());
 }
-
 
 void writeJSON_items(cJSON * in_jitems, Inventory_item * in_items, int size) {
     cJSON * jitem = NULL;
     cJSON * jused = NULL;
     cJSON * jid = NULL;
+    cJSON * jname = NULL;
     cJSON * jwpnname = NULL;
     cJSON * jinfused = NULL;
     char buffer[DEFAULT::BUFFER_SIZE];
@@ -664,15 +673,17 @@ void writeJSON_items(cJSON * in_jitems, Inventory_item * in_items, int size) {
         }
 
         cJSON_AddItemToObject(jitem, "Infused", jinfused);
-
         cJSON_AddItemToObject(jitem, "id", jid);
         cJSON_AddItemToObject(jitem, "used", jused);
 
         if (in_items[i].id > 0) {
-            cJSON_AddItemToObject(in_jitems, all_weapons[in_items[i].id].getName().c_str(), jitem);
+            jname = cJSON_CreateString(all_weapons[in_items[i].id].getName().c_str());
         } else {
-            cJSON_AddItemToObject(in_jitems, "Empty", jitem);
+            jname = cJSON_CreateString("Empty");
         }
+
+        cJSON_AddItemToObject(jitem, "name", jname);
+        cJSON_AddItemToObject(in_jitems, "Item", jitem);
     }
 }
 
