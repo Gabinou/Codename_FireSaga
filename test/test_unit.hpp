@@ -11,7 +11,7 @@ void test_unit() {
     in_stats = {17,  6,  2,  7,  7,   7,  4,  5,  6, 5};
     unit1 = Unit(UNIT::NAME::SILOU, UNIT::CLASS::MERCENARY, in_stats, UNIT::SEX::M);
     in_caps = {48, 14, 25, 32, 34,  28, 19, 40, 15, 0};
-    unit1.setCaps(in_stats);
+    unit1.setCaps(in_caps);
     in_growths = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
     unit1.setGrowths(in_growths);
     unit1.setBaseExp(0);
@@ -22,7 +22,7 @@ void test_unit() {
     in_stats_wpn.id = ITEM::NAME::POT_LID;
     unit1.addEquipment(in_stats_wpn);
     out_stats = unit1.getStats();
-    lok(unit1.getName() == "Erwin");
+    lok(unit1.getName() == "Silou");
     lok(unit1.getSex() == 1);
     lok(in_stats.hp == out_stats.hp);
     lok(in_stats.str == out_stats.str);

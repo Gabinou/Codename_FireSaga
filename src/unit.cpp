@@ -827,25 +827,39 @@ void Unit::readJSON(cJSON * in_json) {
 void Unit::writeJSON(cJSON * in_json) {
     if (in_json != NULL) {
 
-        cJSON * stats = NULL;
-        cJSON * currentstats = NULL;
-        cJSON * growths = NULL;
-        cJSON * caps = NULL;
-        cJSON * bases = NULL;
-        cJSON * exp = NULL;
-        cJSON * sex = NULL;
-        cJSON * baseExp = NULL;
-        cJSON * Levelups = NULL;
-        cJSON * currentHP = NULL;
-        cJSON * skills = NULL;
-
         cJSON * unit = cJSON_CreateObject();
+        cJSON_AddItemToObject(in_json, "unit", unit);
+
         cJSON * jid = cJSON_CreateNumber(id);
+        cJSON * jsex = cJSON_CreateBool(sex);
         cJSON * jname = cJSON_CreateString(name.c_str());
+        cJSON * jcurrent_stats = cJSON_CreateObject();
+        writeJSON_stats(jcurrent_stats, &current_stats);
+        cJSON * jcaps_stats = cJSON_CreateObject();
+        writeJSON_stats(jcaps_stats, &caps_stats);
+        cJSON * jbase_stats = cJSON_CreateObject();
+        writeJSON_stats(jbase_stats, &base_stats);
+        cJSON * jgrowths = cJSON_CreateObject();
+        writeJSON_stats(jgrowths, &growths);
+        cJSON * jgrown = cJSON_CreateObject();
+        cJSON * jlevelup = NULL;
+        char level[2];
+
+        for (short int i = 0; i < grown_stats.size(); i++) {
+            jlevelup = cJSON_CreateObject();
+            writeJSON_stats(jlevelup, &grown_stats[i]);
+            stbsp_sprintf(level, "%2d", i - base_exp / 100 + 2);
+            // +2 -> +1 start at lvl1, +1 cause you level to level 2
+            cJSON_AddItemToObject(jgrown, level, jlevelup);
+        }
 
         cJSON_AddItemToObject(unit, "id", jid);
         cJSON_AddItemToObject(unit, "name", jname);
-        cJSON_AddItemToObject(in_json, "unit", unit);
+        cJSON_AddItemToObject(unit, "sex", jsex);
+        cJSON_AddItemToObject(unit, "Stats", jcurrent_stats);
+        cJSON_AddItemToObject(unit, "Caps", jcaps_stats);
+        cJSON_AddItemToObject(unit, "Level-ups", jgrown);
+        cJSON_AddItemToObject(unit, "Growths", jgrowths);
 
         // growths = cJSON_CreateArray();
     } else {
