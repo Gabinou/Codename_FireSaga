@@ -659,14 +659,21 @@ void writeJSON_items(cJSON * in_jitems, Inventory_item * in_items, int size) {
 
         if (in_items[i].infused > 0) {
             jinfused = cJSON_CreateNumber(in_items[i].infused);
-            cJSON_AddItemToObject(jitem, "Infused", jinfused);
+        } else {
+            jinfused = cJSON_CreateNumber(-1);
         }
+
+        cJSON_AddItemToObject(jitem, "Infused", jinfused);
 
         cJSON_AddItemToObject(jitem, "id", jid);
         cJSON_AddItemToObject(jitem, "used", jused);
-        cJSON_AddItemToObject(in_jitems, all_weapons[in_items[i].id].getName().c_str(), jitem);
-    }
 
+        if (in_items[i].id > 0) {
+            cJSON_AddItemToObject(in_jitems, all_weapons[in_items[i].id].getName().c_str(), jitem);
+        } else {
+            cJSON_AddItemToObject(in_jitems, "Empty", jitem);
+        }
+    }
 }
 
 void writeXML_items(tinyxml2::XMLDocument * in_doc, tinyxml2::XMLElement * in_pItems, std::vector<Inventory_item> in_items) {
