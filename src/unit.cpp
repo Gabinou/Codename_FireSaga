@@ -847,18 +847,7 @@ void Unit::writeJSON(cJSON * in_json) {
         writeJSON_stats(jgrowths, &growths);
         cJSON * jgrown = cJSON_CreateObject();
         cJSON * jlevel = NULL;
-        cJSON * jlevelup;
-        char level[2];
-
-        for (short int i = 0; i < grown_stats.size(); i++) {
-            jlevelup = cJSON_CreateObject();
-            stbsp_sprintf(level, "%2d", i - base_exp / 100 + 2);
-            jlevel = cJSON_CreateString(level);
-            cJSON_AddItemToObject(jlevelup, "level", jlevel);
-            // writeJSON_stats(jlevelup, &grown_stats[i]);
-            cJSON_AddItemToObject(jgrown, "Level-up", jlevelup);
-            // +2 -> +1 start at lvl1, +1 cause you level to level 2
-        }
+        cJSON * jlevelup = NULL;
 
         cJSON_AddItemToObject(junit, "level", jlevel);
         cJSON_AddItemToObject(junit, "id", jid);
@@ -870,8 +859,18 @@ void Unit::writeJSON(cJSON * in_json) {
         cJSON_AddItemToObject(junit, "Class", jclass);
         cJSON_AddItemToObject(junit, "Stats", jcurrent_stats);
         cJSON_AddItemToObject(junit, "Caps", jcaps_stats);
-        cJSON_AddItemToObject(junit, "Level-ups", jgrown);
         cJSON_AddItemToObject(junit, "Growths", jgrowths);
+        cJSON_AddItemToObject(junit, "Level-ups", jgrown);
+
+        for (short int i = 0; i < grown_stats.size(); i++) {
+            jlevelup = cJSON_CreateObject();
+            jlevel = cJSON_CreateNumber(i - base_exp / 100 + 2);
+            cJSON_AddItemToObject(jlevelup, "level", jlevel);
+            writeJSON_stats(jlevelup, &grown_stats[i]);
+            cJSON_AddItemToObject(jgrown, "Level-up", jlevelup);
+            // +2 -> +1 start at lvl1, +1 cause you level to level 2
+        }
+
 
         cJSON * jitems = cJSON_CreateObject();
         writeJSON_items(jitems, equipment, DEFAULT::EQUIPMENT_SIZE);
