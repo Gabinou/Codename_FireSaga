@@ -844,25 +844,25 @@ void Unit::readJSON(cJSON * in_json) {
     readJSON_stats(jcaps_stats, &caps_stats);
     readJSON_stats(jgrowths, &growths);
 
-    cJSON * jlevelup = cJSON_GetObjectItemCaseSensitive(jlevelups, "Level-ups");
+    cJSON * jlevelup = cJSON_GetObjectItemCaseSensitive(jlevelups, "Level-up");
     Unit_stats temp_ustats;
 
     while (jlevelup != NULL) {
         readJSON_stats(jlevelup, &temp_ustats);
         grown_stats.push_back(temp_ustats);
-        jlevelup = cJSON_GetObjectItemCaseSensitive(jlevelups, "Level-ups");
+        jlevelup = jlevelup->next;
     };
 
     cJSON * jitem = cJSON_GetObjectItemCaseSensitive(jitems, "Item");
 
-    Inventory_item temp_wstats;
+    Inventory_item temp_item;
 
     int i = 0;
 
     while ((jitem != NULL) && (i < DEFAULT::EQUIPMENT_SIZE)) {
-        readJSON_stats(jitem, &temp_wstats);
-        equipment[i] = temp_wstats;
-        jitem = cJSON_GetObjectItemCaseSensitive(jitems, "Item");
+        readJSON_item(jitem, &temp_item);
+        equipment[i] = temp_item;
+        jitem = jitem->next;
         i++;
     };
 }

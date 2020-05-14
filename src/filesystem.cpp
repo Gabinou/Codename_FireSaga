@@ -639,14 +639,14 @@ void writeXML_stats(tinyxml2::XMLDocument * in_doc, tinyxml2::XMLElement * in_pS
     pprof->SetText(in_stats->prof);
 }
 
-void readJSON_stats(cJSON * in_jitem, Inventory_item * in_item) {
-    cJSON * j = cJSON_GetObjectItem(in_jitem, "");
-    cJSON * j = cJSON_GetObjectItem(in_jstats, "");
-    cJSON * j = cJSON_GetObjectItem(in_jstats, "");
-    cJSON * j = cJSON_GetObjectItem(in_jstats, "");
-    cJSON * j = cJSON_GetObjectItem(in_jstats, "");
-    cJSON * j = cJSON_GetObjectItem(in_jstats, "");
+void readJSON_item(cJSON * in_jitem, Inventory_item * in_item) {
+    cJSON * jinfused = cJSON_GetObjectItem(in_jitem, "Infused");
+    cJSON * jid = cJSON_GetObjectItem(in_jitem, "id");
+    cJSON * jused = cJSON_GetObjectItem(in_jitem, "used");
 
+    in_item->id = cJSON_GetNumberValue(jid);
+    in_item->used = cJSON_GetNumberValue(jused);
+    in_item->infused = cJSON_GetNumberValue(jinfused);
 }
 
 void readJSON_stats(cJSON * in_jstats, Weapon_stats * in_stats) {
@@ -708,16 +708,6 @@ void readJSON_stats(cJSON * in_jstats, Unit_stats * in_stats) {
     in_stats->con = cJSON_GetNumberValue(jcon);
     in_stats->move = cJSON_GetNumberValue(jmove);
     in_stats->prof = cJSON_GetNumberValue(jprof);
-}
-
-
-void readJSON_items(cJSON * in_jitems, std::vector<Inventory_item> * in_items) {
-
-}
-
-void readJSON_items(cJSON * in_jitems, Inventory_item * in_equipment) {
-
-    cJSON * jname = cJSON_GetObjectItemCaseSensitive(in_jitems, "name");
 }
 
 void writeJSON_items(cJSON * in_jitems, std::vector<Inventory_item> in_items) {

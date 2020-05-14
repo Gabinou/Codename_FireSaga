@@ -53,9 +53,7 @@ extern int parseXML(const char * filename, tinyxml2::XMLDocument * in_doc);
 
 extern void readJSON_stats(cJSON * in_jstats, Unit_stats * in_stats);
 extern void readJSON_stats(cJSON * in_jstats, Weapon_stats * in_stats);
-
-extern void readJSON_items(cJSON * in_jitems, std::vector<Inventory_item> in_items);
-extern void readJSON_items(cJSON * in_jitems, Inventory_item * in_equipment, int size);
+extern void readJSON_item(cJSON * in_jitem, Inventory_item * in_item);
 extern void writeJSON_items(cJSON * in_jitems, std::vector<Inventory_item> in_items);
 extern void writeJSON_items(cJSON * in_jitems, Inventory_item * in_equipment, int size);
 extern void writeJSON_stats(cJSON * in_jstats, Weapon_stats * in_stats);
