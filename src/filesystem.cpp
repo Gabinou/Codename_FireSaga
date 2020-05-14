@@ -426,7 +426,7 @@ void writeXML_narrative(tinyxml2::XMLDocument * in_doc, tinyxml2::XMLElement * i
     }
 }
 
-void writeJSON_stats(cJSON * in_json, Unit_stats * in_stats) {
+void writeJSON_stats(cJSON * in_jstats, Unit_stats * in_stats) {
     cJSON * php = NULL;
     cJSON * pstr = NULL;
     cJSON * pmag = NULL;
@@ -449,20 +449,20 @@ void writeJSON_stats(cJSON * in_json, Unit_stats * in_stats) {
     pcon = cJSON_CreateNumber(in_stats->con);
     pmove = cJSON_CreateNumber(in_stats->move);
     pprof = cJSON_CreateNumber(in_stats->prof);
-    cJSON_AddItemToObject(in_json, "hp", php);
-    cJSON_AddItemToObject(in_json, "str", pstr);
-    cJSON_AddItemToObject(in_json, "mag", pmag);
-    cJSON_AddItemToObject(in_json, "agi", pagi);
-    cJSON_AddItemToObject(in_json, "dex", pdex);
-    cJSON_AddItemToObject(in_json, "luck", pluck);
-    cJSON_AddItemToObject(in_json, "def", pdef);
-    cJSON_AddItemToObject(in_json, "res", pres);
-    cJSON_AddItemToObject(in_json, "con", pcon);
-    cJSON_AddItemToObject(in_json, "move", pmove);
-    cJSON_AddItemToObject(in_json, "prof", pprof);
+    cJSON_AddItemToObject(in_jstats, "hp", php);
+    cJSON_AddItemToObject(in_jstats, "str", pstr);
+    cJSON_AddItemToObject(in_jstats, "mag", pmag);
+    cJSON_AddItemToObject(in_jstats, "agi", pagi);
+    cJSON_AddItemToObject(in_jstats, "dex", pdex);
+    cJSON_AddItemToObject(in_jstats, "luck", pluck);
+    cJSON_AddItemToObject(in_jstats, "def", pdef);
+    cJSON_AddItemToObject(in_jstats, "res", pres);
+    cJSON_AddItemToObject(in_jstats, "con", pcon);
+    cJSON_AddItemToObject(in_jstats, "move", pmove);
+    cJSON_AddItemToObject(in_jstats, "prof", pprof);
 }
 
-void writeJSON_stats(cJSON * in_json, Weapon_stats * in_stats) {
+void writeJSON_stats(cJSON * in_jstats, Weapon_stats * in_stats) {
     cJSON * pPmight = NULL;
     cJSON * pMmight = NULL;
     cJSON * phit = NULL;
@@ -495,22 +495,22 @@ void writeJSON_stats(cJSON * in_json, Weapon_stats * in_stats) {
     pdmg_type = cJSON_CreateNumber(in_stats->dmg_type);
     pprice = cJSON_CreateNumber(in_stats->price);
     pheal = cJSON_CreateNumber(in_stats->heal);
-    cJSON_AddItemToObject(in_json, "Pmight", pPmight);
-    cJSON_AddItemToObject(in_json, "Mmight", pMmight);
-    cJSON_AddItemToObject(in_json, "hit", phit);
-    cJSON_AddItemToObject(in_json, "dodge", pdodge);
-    cJSON_AddItemToObject(in_json, "crit", pcrit);
-    cJSON_AddItemToObject(in_json, "favor", pfavor);
-    cJSON_AddItemToObject(in_json, "wgt", pwgt);
-    cJSON_AddItemToObject(in_json, "uses", puses);
-    cJSON_AddItemToObject(in_json, "prof", pprof);
-    cJSON_AddItemToObject(in_json, "minrange", pminrange);
-    cJSON_AddItemToObject(in_json, "maxrange", pmaxrange);
-    cJSON_AddItemToObject(in_json, "minhand", pminhand);
-    cJSON_AddItemToObject(in_json, "maxhand", pmaxhand);
-    cJSON_AddItemToObject(in_json, "dmg_type", pdmg_type);
-    cJSON_AddItemToObject(in_json, "price", pprice);
-    cJSON_AddItemToObject(in_json, "heal", pheal);
+    cJSON_AddItemToObject(in_jstats, "Pmight", pPmight);
+    cJSON_AddItemToObject(in_jstats, "Mmight", pMmight);
+    cJSON_AddItemToObject(in_jstats, "hit", phit);
+    cJSON_AddItemToObject(in_jstats, "dodge", pdodge);
+    cJSON_AddItemToObject(in_jstats, "crit", pcrit);
+    cJSON_AddItemToObject(in_jstats, "favor", pfavor);
+    cJSON_AddItemToObject(in_jstats, "wgt", pwgt);
+    cJSON_AddItemToObject(in_jstats, "uses", puses);
+    cJSON_AddItemToObject(in_jstats, "prof", pprof);
+    cJSON_AddItemToObject(in_jstats, "minrange", pminrange);
+    cJSON_AddItemToObject(in_jstats, "maxrange", pmaxrange);
+    cJSON_AddItemToObject(in_jstats, "minhand", pminhand);
+    cJSON_AddItemToObject(in_jstats, "maxhand", pmaxhand);
+    cJSON_AddItemToObject(in_jstats, "dmg_type", pdmg_type);
+    cJSON_AddItemToObject(in_jstats, "price", pprice);
+    cJSON_AddItemToObject(in_jstats, "heal", pheal);
 }
 
 void writeXML_stats(tinyxml2::XMLDocument * in_doc, tinyxml2::XMLElement * in_pStats, Weapon_stats * in_stats) {
@@ -637,6 +637,36 @@ void writeXML_stats(tinyxml2::XMLDocument * in_doc, tinyxml2::XMLElement * in_pS
     pcon->SetText(in_stats->con);
     pmove->SetText(in_stats->move);
     pprof->SetText(in_stats->prof);
+}
+
+void writeJSON_items(cJSON * in_jitems, std::vector<Inventory_item> in_items) {
+    writeJSON_items(in_jitems, in_items.data(), in_items.size());
+}
+
+
+void writeJSON_items(cJSON * in_jitems, Inventory_item * in_items, int size) {
+    cJSON * jitem = NULL;
+    cJSON * jused = NULL;
+    cJSON * jid = NULL;
+    cJSON * jwpnname = NULL;
+    cJSON * jinfused = NULL;
+    char buffer[DEFAULT::BUFFER_SIZE];
+
+    for (int i = 0; i < size; i++) {
+        jitem = cJSON_CreateObject();
+        jid = cJSON_CreateNumber(in_items[i].id);
+        jused = cJSON_CreateNumber(in_items[i].used);
+
+        if (in_items[i].infused > 0) {
+            jinfused = cJSON_CreateNumber(in_items[i].infused);
+            cJSON_AddItemToObject(jitem, "Infused", jinfused);
+        }
+
+        cJSON_AddItemToObject(jitem, "id", jid);
+        cJSON_AddItemToObject(jitem, "used", jused);
+        cJSON_AddItemToObject(in_jitems, all_weapons[in_items[i].id].getName().c_str(), jitem);
+    }
+
 }
 
 void writeXML_items(tinyxml2::XMLDocument * in_doc, tinyxml2::XMLElement * in_pItems, std::vector<Inventory_item> in_items) {

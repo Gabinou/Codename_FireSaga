@@ -827,12 +827,16 @@ void Unit::readJSON(cJSON * in_json) {
 void Unit::writeJSON(cJSON * in_json) {
     if (in_json != NULL) {
 
-        cJSON * unit = cJSON_CreateObject();
-        cJSON_AddItemToObject(in_json, "unit", unit);
+        cJSON * junit = cJSON_CreateObject();
+        cJSON_AddItemToObject(in_json, "unit", junit);
 
         cJSON * jid = cJSON_CreateNumber(id);
+        cJSON * jexp = cJSON_CreateNumber(base_exp);
+        cJSON * jbase_exp = cJSON_CreateNumber(exp);
+        cJSON * jcurrent_hp = cJSON_CreateNumber(current_hp);
         cJSON * jsex = cJSON_CreateBool(sex);
         cJSON * jname = cJSON_CreateString(name.c_str());
+        cJSON * jclass = cJSON_CreateString(class_name.c_str());
         cJSON * jcurrent_stats = cJSON_CreateObject();
         writeJSON_stats(jcurrent_stats, &current_stats);
         cJSON * jcaps_stats = cJSON_CreateObject();
@@ -853,15 +857,23 @@ void Unit::writeJSON(cJSON * in_json) {
             cJSON_AddItemToObject(jgrown, level, jlevelup);
         }
 
-        cJSON_AddItemToObject(unit, "id", jid);
-        cJSON_AddItemToObject(unit, "name", jname);
-        cJSON_AddItemToObject(unit, "sex", jsex);
-        cJSON_AddItemToObject(unit, "Stats", jcurrent_stats);
-        cJSON_AddItemToObject(unit, "Caps", jcaps_stats);
-        cJSON_AddItemToObject(unit, "Level-ups", jgrown);
-        cJSON_AddItemToObject(unit, "Growths", jgrowths);
+        cJSON_AddItemToObject(junit, "id", jid);
+        cJSON_AddItemToObject(junit, "Name", jname);
+        cJSON_AddItemToObject(junit, "Sex", jsex);
+        cJSON_AddItemToObject(junit, "BaseExp", jbase_exp);
+        cJSON_AddItemToObject(junit, "Exp", jexp);
+        cJSON_AddItemToObject(junit, "CurrentHP", jcurrent_hp);
+        cJSON_AddItemToObject(junit, "Class", jclass);
+        cJSON_AddItemToObject(junit, "Stats", jcurrent_stats);
+        cJSON_AddItemToObject(junit, "Caps", jcaps_stats);
+        cJSON_AddItemToObject(junit, "Level-ups", jgrown);
+        cJSON_AddItemToObject(junit, "Growths", jgrowths);
 
-        // growths = cJSON_CreateArray();
+        cJSON * jitems = cJSON_CreateObject();
+        writeJSON_items(jitems, equipment, DEFAULT::EQUIPMENT_SIZE);
+
+        cJSON_AddItemToObject(junit, "Items", jitems);
+
     } else {
         SDL_Log("in_json is not NULL");
     }

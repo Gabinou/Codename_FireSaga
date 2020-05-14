@@ -46,13 +46,17 @@ extern void readXML_items(tinyxml2::XMLElement * in_pEquipment, Inventory_item *
 extern void readXML_items(tinyxml2::XMLElement * in_pEquipment, std::vector<Inventory_item> * equipment);
 extern void writeXML_items(tinyxml2::XMLDocument * in_doc, tinyxml2::XMLElement * in_pEquipment, Inventory_item * in_equipment, int size);
 extern void writeXML_items(tinyxml2::XMLDocument * in_doc, tinyxml2::XMLElement * in_pItems, std::vector<Inventory_item> in_items);
+
+
 extern void readXML_arrival(tinyxml2::XMLElement * in_pArrival, Map_arrival * in_arrival);
 extern void writeXML_arrival(tinyxml2::XMLDocument * in_doc, tinyxml2::XMLElement * in_pArrival, Map_arrival * in_arrival);
 extern void printXMLDoc(PHYSFS_file * in_fp, tinyxml2::XMLDocument * in_doc);
 extern int parseXML(const char * filename, tinyxml2::XMLDocument * in_doc);
 
-extern void writeJSON_stats(cJSON * in_json, Weapon_stats * in_stats);
-extern void writeJSON_stats(cJSON * in_json, Unit_stats * in_stats);
+extern void writeJSON_items(cJSON * in_jitems, std::vector<Inventory_item> in_items);
+extern void writeJSON_items(cJSON * in_jitems, Inventory_item * in_equipment, int size);
+extern void writeJSON_stats(cJSON * in_jstats, Weapon_stats * in_stats);
+extern void writeJSON_stats(cJSON * in_jstats, Unit_stats * in_stats);
 extern void printJSON(PHYSFS_file * in_fp, cJSON * in_json);
 extern int parseJSON(const char * filename, cJSON * in_json);
 
