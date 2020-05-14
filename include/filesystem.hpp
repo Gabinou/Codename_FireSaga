@@ -51,6 +51,9 @@ extern void writeXML_arrival(tinyxml2::XMLDocument * in_doc, tinyxml2::XMLElemen
 extern void printXMLDoc(PHYSFS_file * in_fp, tinyxml2::XMLDocument * in_doc);
 extern int parseXML(const char * filename, tinyxml2::XMLDocument * in_doc);
 
+extern void readJSON_stats(cJSON * in_jstats, Unit_stats * in_stats);
+extern void readJSON_stats(cJSON * in_jstats, Weapon_stats * in_stats);
+
 extern void readJSON_items(cJSON * in_jitems, std::vector<Inventory_item> in_items);
 extern void readJSON_items(cJSON * in_jitems, Inventory_item * in_equipment, int size);
 extern void writeJSON_items(cJSON * in_jitems, std::vector<Inventory_item> in_items);

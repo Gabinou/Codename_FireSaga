@@ -639,6 +639,68 @@ void writeXML_stats(tinyxml2::XMLDocument * in_doc, tinyxml2::XMLElement * in_pS
     pprof->SetText(in_stats->prof);
 }
 
+void readJSON_stats(cJSON * in_jstats, Weapon_stats * in_stats) {
+    cJSON * jPmight = cJSON_GetObjectItem(in_jstats, "");
+    cJSON * jMmight = cJSON_GetObjectItem(in_jstats, "");
+    cJSON * jhit = cJSON_GetObjectItem(in_jstats, "");
+    cJSON * jdodge = cJSON_GetObjectItem(in_jstats, "");
+    cJSON * jcrit = cJSON_GetObjectItem(in_jstats, "");
+    cJSON * jfavor = cJSON_GetObjectItem(in_jstats, "");
+    cJSON * jwgt = cJSON_GetObjectItem(in_jstats, "");
+    cJSON * juses = cJSON_GetObjectItem(in_jstats, "");
+    cJSON * jprof = cJSON_GetObjectItem(in_jstats, "");
+    cJSON * jminrange = cJSON_GetObjectItem(in_jstats, "");
+    cJSON * jmaxrange = cJSON_GetObjectItem(in_jstats, "");
+    cJSON * jminhand = cJSON_GetObjectItem(in_jstats, "");
+    cJSON * jmaxhand = cJSON_GetObjectItem(in_jstats, "");
+    cJSON * jdmg_type = cJSON_GetObjectItem(in_jstats, "");
+    cJSON * jprice = cJSON_GetObjectItem(in_jstats, "");
+    cJSON * jheal = cJSON_GetObjectItem(in_jstats, "");
+
+    in_stats->Pmight = cJSON_GetNumberValue(jPmight);
+    in_stats->Mmight = cJSON_GetNumberValue(jMmight);
+    in_stats->combat.hit = cJSON_GetNumberValue(jhit);
+    in_stats->combat.dodge = cJSON_GetNumberValue(jdodge);
+    in_stats->combat.crit = cJSON_GetNumberValue(jcrit);
+    in_stats->combat.favor = cJSON_GetNumberValue(jfavor);
+    in_stats->wgt = cJSON_GetNumberValue(jwgt);
+    in_stats->uses = cJSON_GetNumberValue(juses);
+    in_stats->prof = cJSON_GetNumberValue(jprof);
+    in_stats->range[0] = cJSON_GetNumberValue(jminrange);
+    in_stats->range[1] = cJSON_GetNumberValue(jmaxrange);
+    in_stats->hand[0] = cJSON_GetNumberValue(jminhand);
+    in_stats->hand[1] = cJSON_GetNumberValue(jmaxhand);
+    in_stats->dmg_type = cJSON_GetNumberValue(jdmg_type);
+    in_stats->price = cJSON_GetNumberValue(jprice);
+    in_stats->heal = cJSON_GetNumberValue(jheal);
+}
+
+void readJSON_stats(cJSON * in_jstats, Unit_stats * in_stats) {
+    cJSON * jhp = cJSON_GetObjectItem(in_jstats, "hp");
+    cJSON * jstr = cJSON_GetObjectItem(in_jstats, "str");
+    cJSON * jmag = cJSON_GetObjectItem(in_jstats, "mag");
+    cJSON * jagi = cJSON_GetObjectItem(in_jstats, "agi");
+    cJSON * jdex = cJSON_GetObjectItem(in_jstats, "dex");
+    cJSON * jluck = cJSON_GetObjectItem(in_jstats, "luck");
+    cJSON * jdef = cJSON_GetObjectItem(in_jstats, "def");
+    cJSON * jres = cJSON_GetObjectItem(in_jstats, "res");
+    cJSON * jcon = cJSON_GetObjectItem(in_jstats, "con");
+    cJSON * jmove = cJSON_GetObjectItem(in_jstats, "move");
+    cJSON * jprof = cJSON_GetObjectItem(in_jstats, "prof");
+    in_stats->hp = cJSON_GetNumberValue(jhp);
+    in_stats->str = cJSON_GetNumberValue(jstr);
+    in_stats->mag = cJSON_GetNumberValue(jmag);
+    in_stats->agi = cJSON_GetNumberValue(jagi);
+    in_stats->dex = cJSON_GetNumberValue(jdex);
+    in_stats->luck = cJSON_GetNumberValue(jluck);
+    in_stats->def = cJSON_GetNumberValue(jdef);
+    in_stats->res = cJSON_GetNumberValue(jres);
+    in_stats->con = cJSON_GetNumberValue(jcon);
+    in_stats->move = cJSON_GetNumberValue(jmove);
+    in_stats->prof = cJSON_GetNumberValue(jprof);
+}
+
+
 void readJSON_items(cJSON * in_jitems, std::vector<Inventory_item> * in_items) {
 
 }
