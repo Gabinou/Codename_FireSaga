@@ -817,26 +817,29 @@ void Unit::readXML(tinyxml2::XMLElement * in_pUnit) {
 }
 
 void Unit::readJSON(cJSON * in_json) {
-    SDL_Log("Really reading JSON file");
+    // SDL_Log("Really reading JSON file");
     cJSON * junit = cJSON_GetObjectItemCaseSensitive(in_json, "unit");
-    SDL_Log("id: %d", cJSON_HasObjectItem(junit, "id"));
-    SDL_Log("name: %d", cJSON_HasObjectItem(junit, "name"));
-    SDL_Log("name: %d", cJSON_HasObjectItem(junit, "Name"));
-    SDL_Log("sex: %d", cJSON_HasObjectItem(junit, "Sex"));
     cJSON * jid = cJSON_GetObjectItemCaseSensitive(junit, "id");
-    // id = jid->valuedouble; DOES NOT WORK
-    id = cJSON_GetNumberValue(jid);
-    SDL_Log("id: %d", id);
     cJSON * jname = cJSON_GetObjectItemCaseSensitive(junit, "Name");
+    cJSON * jsex = cJSON_GetObjectItemCaseSensitive(junit, "Sex");
+    cJSON * jbase_exp = cJSON_GetObjectItemCaseSensitive(junit, "BaseExp");
+    cJSON * jexp = cJSON_GetObjectItemCaseSensitive(junit, "Exp");
+    cJSON * jcurrent_hp = cJSON_GetObjectItemCaseSensitive(junit, "CurrentHP");
+    cJSON * jclass = cJSON_GetObjectItemCaseSensitive(junit, "Class");
+    cJSON * jcurrent_stats = cJSON_GetObjectItemCaseSensitive(junit, "Stats");
+    cJSON * jcaps_stats = cJSON_GetObjectItemCaseSensitive(junit, "Caps");
+    cJSON * jgrowths = cJSON_GetObjectItemCaseSensitive(junit, "Growths");
+    cJSON * jlevelops = cJSON_GetObjectItemCaseSensitive(junit, "Level-ups");
+    cJSON * jitems = cJSON_GetObjectItemCaseSensitive(junit, "Items");
 
-    SDL_Log("name: %s", cJSON_GetStringValue(jname));
-    SDL_Log("name: %s", jname->valuestring);
-    // name = tempstr;
-
-    // SDL_Log("Id: %d", cJSON_GetNumberValue(unit));
-    // SDL_Log("Id: %d", unit->valueint);
-    // SDL_Log("Id: %d", cJSON_GetObjectItemCaseSensitive(json, "unit")->valueint);
-
+    id = cJSON_GetNumberValue(jid);
+    name = cJSON_GetStringValue(jname);
+    // SDL_Log("name: %s", name.c_str());
+    sex = cJSON_IsTrue(jsex);
+    base_exp = cJSON_GetNumberValue(jbase_exp);
+    exp = cJSON_GetNumberValue(jexp);
+    current_hp = cJSON_GetNumberValue(jcurrent_hp);
+    class_name = cJSON_GetStringValue(jclass);
 }
 
 void Unit::writeJSON(cJSON * in_json) {
