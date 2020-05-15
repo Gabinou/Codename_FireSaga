@@ -40,6 +40,7 @@ void test_tile() {
     lok(out_tile_stats.heal == in_tile_stats.heal);
     lok(tile1.isInside() == true);
     tile1.writeXML("tile_test.xml");
+    tile1.writeJSON("tile_test.json");
 
     tile2 = Tile();
     tile2.readXML("tile_test.xml");
