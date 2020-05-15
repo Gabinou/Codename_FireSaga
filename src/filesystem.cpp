@@ -426,6 +426,28 @@ void writeXML_narrative(tinyxml2::XMLDocument * in_doc, tinyxml2::XMLElement * i
     }
 }
 
+void readJSON_mvtcost(cJSON * in_jcost, Movement_cost * in_cost) {
+    cJSON * jfoot_slow = cJSON_GetObjectItem(in_jcost, "foot_slow");
+    cJSON * jfoot_fast = cJSON_GetObjectItem(in_jcost, "foot_fast");
+    cJSON * jmages = cJSON_GetObjectItem(in_jcost, "mages");
+    cJSON * jriders_slow = cJSON_GetObjectItem(in_jcost, "riders_slow");
+    cJSON * jriders_fast = cJSON_GetObjectItem(in_jcost, "riders_fast");
+    cJSON * jfliers = cJSON_GetObjectItem(in_jcost, "fliers");
+    cJSON * jarmors = cJSON_GetObjectItem(in_jcost, "armors");
+    cJSON * jpirates = cJSON_GetObjectItem(in_jcost, "pirates");
+    cJSON * jbandits = cJSON_GetObjectItem(in_jcost, "bandits");
+
+    in_cost->foot_slow = cJSON_GetNumberValue(jfoot_slow);
+    in_cost->foot_fast = cJSON_GetNumberValue(jfoot_fast);
+    in_cost->mages = cJSON_GetNumberValue(jmages);
+    in_cost->riders_slow = cJSON_GetNumberValue(jriders_slow);
+    in_cost->riders_fast = cJSON_GetNumberValue(jriders_fast);
+    in_cost->fliers = cJSON_GetNumberValue(jfliers);
+    in_cost->armors = cJSON_GetNumberValue(jarmors);
+    in_cost->pirates = cJSON_GetNumberValue(jpirates);
+    in_cost->bandits = cJSON_GetNumberValue(jbandits);
+}
+
 void writeJSON_mvtcost(cJSON * in_jcost, Movement_cost * in_cost) {
     cJSON * jfoot_slow = cJSON_CreateNumber(in_cost->foot_slow);
     cJSON * jfoot_fast = cJSON_CreateNumber(in_cost->foot_fast);
@@ -456,7 +478,7 @@ void readJSON_stats(cJSON * in_jstats, Tile_stats * in_stats) {
     in_stats->dodge = cJSON_GetNumberValue(jdodge);
     in_stats->Pprot = cJSON_GetNumberValue(jPprot);
     in_stats->Mprot = cJSON_GetNumberValue(jMprot);
-    in_stats->heal = cJSON_GetNumberValue(jheal);
+    in_stats->heal = cJSON_GetNumberValue(jHeal);
 }
 
 void writeJSON_stats(cJSON * in_jstats, Tile_stats * in_stats) {
