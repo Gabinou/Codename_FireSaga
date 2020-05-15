@@ -136,6 +136,8 @@ void Weapon::writeJSON(cJSON * in_json) {
         cJSON * jwpn = cJSON_CreateObject();
         cJSON_AddItemToObject(in_json, "weapon", jwpn);
 
+        cJSON * jname = cJSON_CreateString(name.c_str());
+        cJSON * jdescription = cJSON_CreateString(description.c_str());
         cJSON * jid = cJSON_CreateNumber(id);
         cJSON * jwpnstats = cJSON_CreateObject();
         writeJSON_stats(jwpnstats, &stats);
@@ -163,7 +165,7 @@ void Weapon::writeJSON(cJSON * in_json) {
         cJSON * jeffects = cJSON_CreateObject();
         cJSON * jeffect = NULL;
         jeffect = cJSON_CreateNumber(effect);
-        cJSON_AddItemToObject(jeffect, "id", jeffect);
+        cJSON_AddItemToObject(jeffects, "id", jeffect);
         std::vector<std::string> effects = wpnEffects(effect);
 
         for (int i = 0; i < effects.size(); i++) {
@@ -182,7 +184,9 @@ void Weapon::writeJSON(cJSON * in_json) {
             cJSON_AddItemToObject(jtypes, "Type", jtype2);
         }
 
+        cJSON_AddItemToObject(jwpn, "Name", jname);
         cJSON_AddItemToObject(jwpn, "id", jid);
+        cJSON_AddItemToObject(jwpn, "Description", jdescription);
         cJSON_AddItemToObject(jwpn, "Stats", jwpnstats);
         cJSON_AddItemToObject(jwpn, "Bonus", jbonus);
         cJSON_AddItemToObject(jwpn, "Malus", jmalus);

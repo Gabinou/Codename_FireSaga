@@ -82,8 +82,6 @@ void test_weapon() {
     wpn1.writeJSON("weapon_test.json");
 
     wpn2 = Weapon();
-    wpn2.readXML("tile_test.xml");
-    wpn2.readJSON("tile_test.json");
     wpn2.readXML("weapon_test.xml");
     wpn2.readJSON("weapon_test.json");
 
