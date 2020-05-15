@@ -817,7 +817,6 @@ void Unit::readXML(tinyxml2::XMLElement * in_pUnit) {
 }
 
 void Unit::readJSON(cJSON * in_json) {
-    // SDL_Log("Really reading JSON file");
     cJSON * junit = cJSON_GetObjectItemCaseSensitive(in_json, "unit");
     cJSON * jid = cJSON_GetObjectItemCaseSensitive(junit, "id");
     cJSON * jname = cJSON_GetObjectItemCaseSensitive(junit, "Name");
@@ -832,9 +831,8 @@ void Unit::readJSON(cJSON * in_json) {
     cJSON * jlevelups = cJSON_GetObjectItemCaseSensitive(junit, "Level-ups");
     cJSON * jitems = cJSON_GetObjectItemCaseSensitive(junit, "Items");
 
-    id = cJSON_GetNumberValue(jid);
+    id = cJSON_GetNumberValue(jid); //returns 0 if junit is NULL
     name = cJSON_GetStringValue(jname);
-    // SDL_Log("name: %s", name.c_str());
     sex = cJSON_IsTrue(jsex);
     base_exp = cJSON_GetNumberValue(jbase_exp);
     exp = cJSON_GetNumberValue(jexp);
