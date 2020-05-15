@@ -141,9 +141,9 @@ void Weapon::readJSON(cJSON * in_json) {
     cJSON * jeffective = cJSON_GetObjectItemCaseSensitive(jwpn, "Effective");
     cJSON * jsellable = cJSON_GetObjectItemCaseSensitive(jwpn, "Sellable");
     cJSON * jeffects = cJSON_GetObjectItemCaseSensitive(jwpn, "Effects");
-    cJSON * jeffect = cJSON_GetObjectItemCaseSensitive(jeffect, "id");
+    cJSON * jeffect = cJSON_GetObjectItemCaseSensitive(jeffects, "id");
     cJSON * jtypes = cJSON_GetObjectItemCaseSensitive(jwpn, "Types");
-    cJSON * jtypeid = cJSON_GetObjectItemCaseSensitive(jwpn, "Types");
+    cJSON * jtypeid = cJSON_GetObjectItemCaseSensitive(jtypes, "id");
 
     id = cJSON_GetNumberValue(jid); //returns 0 if junit is NULL
     name = cJSON_GetStringValue(jname);
@@ -153,14 +153,17 @@ void Weapon::readJSON(cJSON * in_json) {
     }
 
     description = cJSON_GetStringValue(jdescription);
-    // readJSON_stats(jstats, &stats);
-    // readJSON_stats(jbonus_stats, &bonus_stats);
-    // readJSON_stats(jmalus_stats, &malus_stats);
-    // readJSON_stats(jinfused, &malus_stats);
-    // infused.power = cJSON_GetNumberValue(jpower);
-    // infused.type = cJSON_GetNumberValue(jitype);
-    // effect = cJSON_GetNumberValue(jeffect);
-    // type = cJSON_GetNumberValue(jtypeid);
+    readJSON_stats(jstats, &stats);
+    readJSON_stats(jbonus_stats, &bonus_stats);
+    readJSON_stats(jmalus_stats, &malus_stats);
+    readJSON_stats(jinfused, &malus_stats);
+    infused.power = cJSON_GetNumberValue(jpower);
+    infused.type = cJSON_GetNumberValue(jitype);
+    effect = cJSON_GetNumberValue(jeffect);
+    effective = cJSON_GetNumberValue(jeffective);
+    type = cJSON_GetNumberValue(jtypeid);
+    sellable = cJSON_IsTrue(jsellable);
+
 }
 
 void Weapon::writeJSON(cJSON * in_json) {
