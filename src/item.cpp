@@ -11,22 +11,12 @@ void Item::writeJSON(cJSON * in_json) {
         cJSON_AddItemToObject(in_json, "item", jitem);
 
         cJSON * jname = cJSON_CreateString(name.c_str());
-        // cJSON * jdescription = cJSON_CreateString(description.c_str());
         cJSON * jid = cJSON_CreateNumber(id);
-        // cJSON * jitemstats = cJSON_CreateObject();
-        // writeJSON_stats(jitemstats, &stats);
         cJSON * jbonus = cJSON_CreateObject();
         writeJSON_stats(jbonus, &bonus_stats);
         cJSON * jmalus = cJSON_CreateObject();
         writeJSON_stats(jmalus, &malus_stats);
         cJSON * jsellable = cJSON_CreateBool(sellable);
-        // cJSON * jinfused = cJSON_CreateObject();
-        // cJSON * jpower = cJSON_CreateNumber(infused.power);
-        // cJSON * jtype = cJSON_CreateNumber(infused.type);
-        // cJSON_AddItemToObject(jinfused, "Power", jpower);
-        // cJSON_AddItemToObject(jinfused, "Type", jtype);
-
-        // cJSON * jeffective = cJSON_CreateNumber(effective);
 
         cJSON * jusers = cJSON_CreateObject();
         cJSON * juserid = NULL;
@@ -61,11 +51,8 @@ void Item::writeJSON(cJSON * in_json) {
         cJSON_AddItemToObject(jitem, "Name", jname);
         cJSON_AddItemToObject(jitem, "id", jid);
         cJSON_AddStringToObject(jitem, "Description", description.c_str());
-        // cJSON_AddItemToObject(jitem, "Stats", jitemstats);
         cJSON_AddItemToObject(jitem, "Bonus", jbonus);
         cJSON_AddItemToObject(jitem, "Malus", jmalus);
-        // cJSON_AddItemToObject(jitem, "Infused", jinfused);
-        // cJSON_AddItemToObject(jitem, "Effective", jeffective);
         cJSON_AddItemToObject(jitem, "Sellable", jsellable);
         cJSON_AddItemToObject(jitem, "Effects", jeffects);
         cJSON_AddItemToObject(jitem, "Types", jtypes);

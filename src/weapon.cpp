@@ -58,21 +58,21 @@ short unsigned int Weapon::getEffective() {
 }
 
 void Weapon::readJSON(cJSON * in_json) {
-    cJSON * jwpn = cJSON_GetObjectItemCaseSensitive(in_json, "weapon");
-    cJSON * jname = cJSON_GetObjectItemCaseSensitive(jwpn, "Name");
-    cJSON * jid = cJSON_GetObjectItemCaseSensitive(jwpn, "id");
-    cJSON * jdescription = cJSON_GetObjectItemCaseSensitive(jwpn, "Description");
-    cJSON * jstats = cJSON_GetObjectItemCaseSensitive(jwpn, "Stats");
-    cJSON * jbonus_stats = cJSON_GetObjectItemCaseSensitive(jwpn, "Bonus");
-    cJSON * jmalus_stats = cJSON_GetObjectItemCaseSensitive(jwpn, "Malus");
-    cJSON * jinfused = cJSON_GetObjectItemCaseSensitive(jwpn, "Infused");
+    cJSON * jitem = cJSON_GetObjectItemCaseSensitive(in_json, "item");
+    cJSON * jname = cJSON_GetObjectItemCaseSensitive(jitem, "Name");
+    cJSON * jid = cJSON_GetObjectItemCaseSensitive(jitem, "id");
+    cJSON * jdescription = cJSON_GetObjectItemCaseSensitive(jitem, "Description");
+    cJSON * jstats = cJSON_GetObjectItemCaseSensitive(jitem, "Stats");
+    cJSON * jbonus_stats = cJSON_GetObjectItemCaseSensitive(jitem, "Bonus");
+    cJSON * jmalus_stats = cJSON_GetObjectItemCaseSensitive(jitem, "Malus");
+    cJSON * jinfused = cJSON_GetObjectItemCaseSensitive(jitem, "Infused");
     cJSON * jpower = cJSON_GetObjectItemCaseSensitive(jinfused, "Power");
     cJSON * jitype = cJSON_GetObjectItemCaseSensitive(jinfused, "Type");
-    cJSON * jeffective = cJSON_GetObjectItemCaseSensitive(jwpn, "Effective");
-    cJSON * jsellable = cJSON_GetObjectItemCaseSensitive(jwpn, "Sellable");
-    cJSON * jeffects = cJSON_GetObjectItemCaseSensitive(jwpn, "Effects");
+    cJSON * jeffective = cJSON_GetObjectItemCaseSensitive(jitem, "Effective");
+    cJSON * jsellable = cJSON_GetObjectItemCaseSensitive(jitem, "Sellable");
+    cJSON * jeffects = cJSON_GetObjectItemCaseSensitive(jitem, "Effects");
     cJSON * jeffect = cJSON_GetObjectItemCaseSensitive(jeffects, "id");
-    cJSON * jtypes = cJSON_GetObjectItemCaseSensitive(jwpn, "Types");
+    cJSON * jtypes = cJSON_GetObjectItemCaseSensitive(jitem, "Types");
     cJSON * jtypeid = cJSON_GetObjectItemCaseSensitive(jtypes, "id");
 
     id = cJSON_GetNumberValue(jid); //returns 0 if junit is NULL
@@ -97,68 +97,20 @@ void Weapon::readJSON(cJSON * in_json) {
 
 void Weapon::writeJSON(cJSON * in_json) {
     if (in_json != NULL) {
-        cJSON * jwpn = cJSON_CreateObject();
-        cJSON_AddItemToObject(in_json, "weapon", jwpn);
+        Item::writeJSON(in_json);
 
-        cJSON * jname = cJSON_CreateString(name.c_str());
-        // cJSON * jdescription = cJSON_CreateString(description.c_str());
-        cJSON * jid = cJSON_CreateNumber(id);
-        cJSON * jwpnstats = cJSON_CreateObject();
-        writeJSON_stats(jwpnstats, &stats);
-        cJSON * jbonus = cJSON_CreateObject();
-        writeJSON_stats(jbonus, &bonus_stats);
-        cJSON * jmalus = cJSON_CreateObject();
-        writeJSON_stats(jmalus, &malus_stats);
-        cJSON * jsellable = cJSON_CreateBool(sellable);
+        cJSON * jitem = cJSON_GetObjectItemCaseSensitive(in_json, "item");
+        cJSON * jitemstats = cJSON_CreateObject();
         cJSON * jinfused = cJSON_CreateObject();
         cJSON * jpower = cJSON_CreateNumber(infused.power);
         cJSON * jtype = cJSON_CreateNumber(infused.type);
-        cJSON_AddItemToObject(jinfused, "Power", jpower);
-        cJSON_AddItemToObject(jinfused, "Type", jtype);
-
         cJSON * jeffective = cJSON_CreateNumber(effective);
 
-        cJSON * jusers = cJSON_CreateObject();
-        cJSON * juserid = NULL;
-
-        for (short int i = 0; i < users.size() ; i++) {
-            juserid = cJSON_CreateNumber(users[i]);
-            cJSON_AddItemToObject(jusers, "id", juserid);
-        }
-
-        cJSON * jeffects = cJSON_CreateObject();
-        cJSON * jeffect = NULL;
-        jeffect = cJSON_CreateNumber(effect);
-        cJSON_AddItemToObject(jeffects, "id", jeffect);
-        std::vector<std::string> effects = wpnEffects(effect);
-
-        for (int i = 0; i < effects.size(); i++) {
-            jeffect = cJSON_CreateString(effects[i].c_str());
-            cJSON_AddItemToObject(jeffects, "Effect", jeffect);
-        }
-
-        cJSON * jtypes = cJSON_CreateObject();
-        cJSON * jtype2 = NULL;
-        jtype2 = cJSON_CreateNumber(type);
-        cJSON_AddItemToObject(jtypes, "id", jtype2);
-        std::vector<std::string> types = wpnTypes(type);
-
-        for (int i = 0; i < types.size(); i++) {
-            jtype2 = cJSON_CreateString(types[i].c_str());
-            cJSON_AddItemToObject(jtypes, "Type", jtype2);
-        }
-
-        cJSON_AddItemToObject(jwpn, "Name", jname);
-        cJSON_AddItemToObject(jwpn, "id", jid);
-        cJSON_AddStringToObject(jwpn, "Description", description.c_str());
-        cJSON_AddItemToObject(jwpn, "Stats", jwpnstats);
-        cJSON_AddItemToObject(jwpn, "Bonus", jbonus);
-        cJSON_AddItemToObject(jwpn, "Malus", jmalus);
-        cJSON_AddItemToObject(jwpn, "Infused", jinfused);
-        cJSON_AddItemToObject(jwpn, "Effective", jeffective);
-        cJSON_AddItemToObject(jwpn, "Sellable", jsellable);
-        cJSON_AddItemToObject(jwpn, "Effects", jeffects);
-        cJSON_AddItemToObject(jwpn, "Types", jtypes);
+        writeJSON_stats(jitemstats, &stats);
+        cJSON_AddItemToObject(jinfused, "Power", jpower);
+        cJSON_AddItemToObject(jinfused, "Type", jtype);
+        cJSON_AddItemToObject(jitem, "Stats", jitemstats);
+        cJSON_AddItemToObject(jitem, "Infused", jinfused);
     }
 }
 
