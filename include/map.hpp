@@ -12,7 +12,7 @@
 #include "linalg.hpp"
 #include <unordered_map>
 
-class Map : public XML_IO {
+class Map : public XML_IO, JSON_IO {
 private:
     entityx::EntityManager * manager;
 
@@ -39,7 +39,7 @@ private:
     std::vector<std::string> tilenames;
 
     short int bounds[4] = {0, 255, 0, 255}; //rowmin, rowmax, colmin, colmax
-    short int offset[2] = {DEFAULT::TILEMAP_XOFFSET, DEFAULT::TILEMAP_YOFFSET};
+    short int offset[2] = {DEFAULT::TILEMAP_XOFFSET, DEFAULT::TILEMAP_YOFFSET}; //  isnt offset[0] juste bounds[0]? offset[2] == bounds[1]?
     unsigned char num_friendlies = 0;
     unsigned char num_neutral = 0;
     unsigned char num_enemies = 0;
@@ -150,6 +150,11 @@ public:
 
     void defeat();
     void victory();
+
+    using JSON_IO::writeJSON;
+    using JSON_IO::readJSON;
+    void readJSON(cJSON * in_json);
+    void writeJSON(cJSON * in_json);
 
     using XML_IO::writeXML;
     using XML_IO::readXML;

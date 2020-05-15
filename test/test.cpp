@@ -37,13 +37,13 @@ int main(int argc, char * argv[]) {
     // lrun("Game ", test_game);
     // lrun("linalg", test_linalg);
     // lrun("Item", test_item);
-    // lrun("Map ", test_map);
+    lrun("Map ", test_map);
     // lrun("Pathfinding ", test_pathfinding);
     // lrun("Position ", test_position);
     // lrun("Probability ", test_probability);
     // lrun("Sprite ", test_sprite);
     // lrun("Text ", test_text);
-    lrun("Tile ", test_tile);
+    // lrun("Tile ", test_tile);
     // lrun("Unit ", test_unit);
     // lrun("Utilities ", test_utilities);
     // lrun("Weapon ", test_weapon);

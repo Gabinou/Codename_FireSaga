@@ -16,6 +16,77 @@ Map::~Map() {
 
 }
 
+void Map::readJSON(cJSON * in_json) {
+
+}
+
+void Map::writeJSON(cJSON * in_json) {
+    SDL_Log("Writing map");
+
+    if (in_json != NULL) {
+        cJSON * jmap = cJSON_CreateObject();
+        cJSON_AddItemToObject(in_json, "map", jmap);
+        cJSON * jchapter = cJSON_CreateNumber(chapter);
+        cJSON_AddItemToObject(jmap, "chapter", jchapter);
+        cJSON * jtiles = cJSON_CreateObject();
+        cJSON_AddItemToObject(jmap, "tiles", jtiles);
+        cJSON * jtile;
+        cJSON * jtilename;
+        cJSON * jtileid;
+
+        if (tilesindex.size() == tilenames.size()) {
+            for (int i = 0; i < tilesindex.size(); i++) {
+                jtile = cJSON_CreateObject();
+                jtilename = cJSON_CreateString(tilenames[i].c_str());
+
+                if (tilesindex[i] >= 100) {
+                    jtileid = cJSON_CreateNumber(tilesindex[i] / DEFAULT::TILE_DIVISOR);
+                } else {
+                    jtileid = cJSON_CreateNumber(tilesindex[i]);
+                }
+
+                cJSON_AddItemToObject(jtile, "id", jtileid);
+                cJSON_AddItemToObject(jtilename, "name", jtilename);
+                cJSON_AddItemToObject(jtiles, "tile", jtile);
+            }
+        } else {
+            SDL_Log("Not the same number of tilenames as tileindex.");
+        }
+
+        SDL_Log("Until here");
+
+        cJSON * jarrival;
+        cJSON * jarrivals = cJSON_CreateObject();
+        cJSON_AddItemToObject(jmap, "Arrivals", jarrivals);
+
+        for (int i = 0; i < map_arrivals.size(); i++) {
+            jarrival = cJSON_CreateObject();
+            writeJSON_arrival(jarrival, &map_arrivals[i]);
+            cJSON_AddItemToObject(jarrivals, "Arrival", jarrival);
+        }
+
+        SDL_Log("Until here");
+
+        cJSON * jbounds = cJSON_CreateObject();
+        cJSON * jrow_min = cJSON_CreateNumber(bounds[0]);
+        cJSON * jrow_max = cJSON_CreateNumber(bounds[1]);
+        cJSON * jcol_min = cJSON_CreateNumber(bounds[2]);
+        cJSON * jcol_max = cJSON_CreateNumber(bounds[3]);
+        cJSON_AddItemToObject(jbounds, "row_min", jrow_min);
+        cJSON_AddItemToObject(jbounds, "row_max", jrow_max);
+        cJSON_AddItemToObject(jbounds, "col_min", jcol_min);
+        cJSON_AddItemToObject(jbounds, "col_max", jcol_max);
+        cJSON_AddItemToObject(jmap, "Bounds", jbounds);
+        cJSON * joffset = cJSON_CreateObject();
+        cJSON * joffset_row = cJSON_CreateNumber(offset[0]);
+        cJSON * joffset_col = cJSON_CreateNumber(offset[1]);
+        cJSON_AddItemToObject(joffset, "offset_row", joffset_row);
+        cJSON_AddItemToObject(joffset, "offset_col", joffset_col);
+        cJSON_AddItemToObject(jmap, "Offset", jbounds);
+        SDL_Log("Until here END");
+    }
+}
+
 Map::Map(const short unsigned int width, const short unsigned int height) : Map() {
     setTilesize(width, height);
     srcrect.w = destrect.w = width;

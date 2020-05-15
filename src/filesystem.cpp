@@ -481,6 +481,23 @@ void readJSON_stats(cJSON * in_jstats, Tile_stats * in_stats) {
     in_stats->heal = cJSON_GetNumberValue(jHeal);
 }
 
+void writeJSON_arrival(cJSON * in_jarrival, Map_arrival * in_arrival) {
+    cJSON * jid = cJSON_CreateNumber(in_arrival->id);
+    cJSON * jturn = cJSON_CreateNumber(in_arrival->turn);
+    cJSON * jlevelups = cJSON_CreateNumber(in_arrival->levelups);
+    cJSON * jposition = cJSON_CreateObject();
+    cJSON * jrow = cJSON_CreateNumber(in_arrival->position.x);
+    cJSON * jcol = cJSON_CreateNumber(in_arrival->position.y);
+
+    cJSON_AddItemToObject(jposition, "row", jrow);
+    cJSON_AddItemToObject(jposition, "col", jcol);
+    cJSON_AddItemToObject(in_jarrival, "id", jid);
+    cJSON_AddItemToObject(in_jarrival, "levelups", jlevelups);
+    cJSON_AddItemToObject(in_jarrival, "turn", jturn);
+    cJSON_AddItemToObject(in_jarrival, "Position", jposition);
+}
+
+
 void writeJSON_stats(cJSON * in_jstats, Tile_stats * in_stats) {
     cJSON * jdodge = cJSON_CreateNumber(in_stats->dodge);
     cJSON * jPprot = cJSON_CreateNumber(in_stats->Pprot);

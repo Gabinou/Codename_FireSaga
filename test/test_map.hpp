@@ -173,6 +173,8 @@ void test_map() {
     }
 
     map.writeXML("map_test.xml");
+    map.writeJSON("map_test.json");
+    SDL_Log("Finished writing JSON");
 
     Map test;
     test.setManager(&ex.entities);

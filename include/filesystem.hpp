@@ -56,6 +56,7 @@ extern void readJSON_stats(cJSON * in_jstats, Tile_stats * in_stats);
 extern void readJSON_stats(cJSON * in_jstats, Unit_stats * in_stats);
 extern void readJSON_stats(cJSON * in_jstats, Weapon_stats * in_stats);
 extern void readJSON_item(cJSON * in_jitem, Inventory_item * in_item);
+extern void writeJSON_arrival(cJSON * in_jitems, Map_arrival * in_arrival);
 extern void writeJSON_items(cJSON * in_jitems, std::vector<Inventory_item> in_items);
 extern void writeJSON_items(cJSON * in_jitems, Inventory_item * in_equipment, int size);
 extern void writeJSON_stats(cJSON * in_jstats, Weapon_stats * in_stats);
