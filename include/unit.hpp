@@ -3,6 +3,7 @@
 
 #include "filesystem.hpp"
 #include "enums.hpp"
+#include "item.hpp"
 #include "weapon.hpp"
 #include "linalg.hpp"
 #include "probability.hpp"

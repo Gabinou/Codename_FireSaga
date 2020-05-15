@@ -8,6 +8,8 @@
 #include "SDL2/SDL_image.h"
 #include "SDL2/SDL_ttf.h"
 #include "enums.hpp"
+#include "item.hpp"
+#include "weapon.hpp"
 #include "structs.hpp"
 #include "map.hpp"
 #include "utilities.hpp"

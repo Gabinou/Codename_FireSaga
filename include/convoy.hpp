@@ -7,6 +7,7 @@
 #include "physfs.h"
 #include "tinyxml2.h"
 #include "utilities.hpp"
+#include "item.hpp"
 #include "weapon.hpp"
 #include "string.h"
 #include <string>

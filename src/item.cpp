@@ -79,15 +79,19 @@ void Item::setDescription(std::string in_description) {
 std::string Item::getDescription() {
     return (description);
 }
+
 std::string Item::getName() {
     return (name);
 }
+
 void Item::setName(std::string in_name) {
     name = in_name;
 }
+
 short unsigned int Item::getType() {
     return (type);
 }
+
 void Item::setType(short unsigned int in_type) {
     type = in_type;
 }

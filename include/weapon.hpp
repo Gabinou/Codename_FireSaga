@@ -2,6 +2,8 @@
 #define WEAPON_HPP
 
 #include "item.hpp"
+#include "utilities.hpp"
+#include "filesystem.hpp"
 // #ifndef STB_SPRINTF_IMPLEMENTATION //Why no need?
 // #define STB_SPRINTF_IMPLEMENTATION
 #include "stb_sprintf.h"

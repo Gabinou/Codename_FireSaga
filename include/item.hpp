@@ -4,10 +4,8 @@
 #include "enums.hpp"
 #include "structs.hpp"
 #include "physfs.h"
-#include "unit.hpp"
 #include "tinyxml2.h"
 #include "filesystem.hpp"
-#include "utilities.hpp"
 #include "string.h"
 #include <string>
 // #ifndef STB_SPRINTF_IMPLEMENTATION //Why no need?
