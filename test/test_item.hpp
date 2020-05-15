@@ -4,20 +4,13 @@
 
 void test_item() {
     Item item1, item2, item3;
-    // Weapon wpn1, wpn2, wpn3;
-    // Weapon_stats in_wpn_stats, out_wpn_stats;
-    // Unit_stats in_stats = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11};
-    // Unit_stats out_stats;
-    // Infusion out_infusion;
-    // short int infuse = 5;
-    // short unsigned int infuse_type = ITEM::TYPE::ELEMENTAL;
-    // long unsigned int in_effect;
-    // bool in_sellable = false;
-    // short unsigned int in_type = ITEM::TYPE::SWORD + ITEM::TYPE::LANCE;
-    // in_effect = ITEM::EFFECT::KILL1P + ITEM::EFFECT::BRAVE2X + ITEM::EFFECT::BREAK_SHIELD;
-    // // Pmight, Mmight, hit, dodge, crit, favor, wgt, uses, wpnlvl, range, hand, dmg_type, price
-    // in_wpn_stats = {3, 0, 80, 0, 0, 0, 3, 30, 2, {1, 1}, {1, 2}, 0, 1000, 0};
-    // wpn1 = Weapon(in_type, in_wpn_stats, ITEM::NAME::WOODEN_SWORD);
+    Unit_stats in_stats = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11};
+    Unit_stats out_stats;
+    long unsigned int in_effect;
+    bool in_sellable = false;
+    short unsigned int in_type = ITEM::TYPE::SWORD + ITEM::TYPE::LANCE;
+    in_effect = ITEM::EFFECT::KILL1P + ITEM::EFFECT::BRAVE2X + ITEM::EFFECT::BREAK_SHIELD;
+    wpn1 = Weapon(in_type, in_wpn_stats, ITEM::NAME::WOODEN_SWORD);
     // std::string in_description = "Practice sword, made of wood. It's crushing blows are still deadly.";
     // std::string out_description;
     // wpn1.setDescription(in_description);

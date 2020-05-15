@@ -5,6 +5,12 @@ Item::Item() {
 
 }
 
+Item::Item(short unsigned int in_type, unsigned char in_id) : Item() {
+    name = wpnNames[in_id];
+    type = in_type;
+    id = in_id;
+}
+
 void Item::writeJSON(cJSON * in_json) {
     if (in_json != NULL) {
         cJSON * jitem = cJSON_CreateObject();

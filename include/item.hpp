@@ -31,7 +31,7 @@ protected:
     std::string description = "";
 public:
     Item();
-    Item(short unsigned int in_type, Weapon_stats in_stats, unsigned char in_id);
+    Item(short unsigned int in_type, unsigned char in_id);
 
     std::vector<unsigned short int> getUsers();
     void setUsers(std::vector<unsigned short int> in_users);
