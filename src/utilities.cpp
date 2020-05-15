@@ -692,8 +692,8 @@ void makeitemNames() {
     itemNames.push_back("Master shield");
     itemNames.push_back("Goddess's hand");
     itemNames.push_back("Ancile");
-    itemNames.push_back("Rock plate");
-    itemNames.push_back("Obsidian plate");
+    itemNames.push_back("Boulder");
+    itemNames.push_back("Obsidian slab");
     itemNames.push_back("Marble plate shield");
     itemNames.push_back("Divine protector");
 

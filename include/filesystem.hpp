@@ -58,6 +58,8 @@ extern void writeJSON_items(cJSON * in_jitems, std::vector<Inventory_item> in_it
 extern void writeJSON_items(cJSON * in_jitems, Inventory_item * in_equipment, int size);
 extern void writeJSON_stats(cJSON * in_jstats, Weapon_stats * in_stats);
 extern void writeJSON_stats(cJSON * in_jstats, Unit_stats * in_stats);
+extern void writeJSON_stats(cJSON * in_jstats, Tile_stats * in_stats);
+extern void writeJSON_mvtcost(cJSON * in_jcost, Movement_cost * in_cost);
 extern void printJSON(PHYSFS_file * in_fp, cJSON * in_json);
 extern cJSON * parseJSON(const char * filename);
 

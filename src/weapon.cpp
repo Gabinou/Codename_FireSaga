@@ -790,17 +790,17 @@ std::vector<Weapon> baseWeapons(std::vector<short int> toload) {
                 temp_wpn.setDescription("Shield of the ancient god of war.");
                 wpn_out[ITEM::NAME::ANCILE] = temp_wpn;
                 break;
-            case ITEM::NAME::ROCK_PLATE:
+            case ITEM::NAME::BOULDER:
                 temp_wpn_stats = {15, 0, 0, 10, 0, 2, 13, 19, 12, {1, 1}, {1}, 0, 0, 0};
-                temp_wpn = Weapon(ITEM::TYPE::SHIELD, temp_wpn_stats, ITEM::NAME::ROCK_PLATE);
+                temp_wpn = Weapon(ITEM::TYPE::SHIELD, temp_wpn_stats, ITEM::NAME::BOULDER);
                 temp_wpn.setDescription("Almost a raw boulder. The powerful and dumb demon's favorite.");
-                wpn_out[ITEM::NAME::ROCK_PLATE] = temp_wpn;
+                wpn_out[ITEM::NAME::BOULDER] = temp_wpn;
                 break;
-            case ITEM::NAME::OBSIDIAN_PLATE:
+            case ITEM::NAME::OBSIDIAN_SLAB:
                 temp_wpn_stats = {15, 0, 0, 10, 0, 2, 13, 19, 12, {1, 1}, {1}, 0, 1, 0};
-                temp_wpn = Weapon(ITEM::TYPE::SHIELD, temp_wpn_stats, ITEM::NAME::OBSIDIAN_PLATE);
+                temp_wpn = Weapon(ITEM::TYPE::SHIELD, temp_wpn_stats, ITEM::NAME::OBSIDIAN_SLAB);
                 temp_wpn.setDescription("Rock melted by demon-breath, then recystallized into a more demon-claw friendly shape. Even harder than rock, but more brittle.");
-                wpn_out[ITEM::NAME::OBSIDIAN_PLATE] = temp_wpn;
+                wpn_out[ITEM::NAME::OBSIDIAN_SLAB] = temp_wpn;
                 break;
             case ITEM::NAME::MARBLE_PLATE_SHIELD:
                 temp_wpn_stats = {15, 0, 0, 10, 0, 2, 13, 19, 12, {1, 1}, {1}, 0, 3000, 0};

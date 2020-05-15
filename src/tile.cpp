@@ -91,6 +91,22 @@ void Tile::readXML(tinyxml2::XMLElement * in_pTile) {
 
 }
 
+
+void Tile::writeJSON(cJSON * in_json) {
+    if (in_json != NULL) {
+        cJSON * jtile = cJSON_CreateObject(in_json, "tile");
+        cJSON * jtilestats = cJSON_CreateObject();
+        cJSON * jname = cJSON_CreateString(name.c_str());
+        cJSON * jid = cJSON_CreateNumber(id);
+
+        writeJSON_stats(jtilestats, &stats);
+        cJSON_AddItemToObject(jtile, "Power", jpower);
+        cJSON_AddItemToObject(jtile, "Stats", jtilestats);
+        cJSON_AddItemToObject(jtile, "id", jid);
+        cJSON_AddItemToObject(jtile, "", j);
+    }
+}
+
 void Tile::writeXML(tinyxml2::XMLDocument * in_doc, tinyxml2::XMLElement * in_pTile) {
     in_pTile->SetAttribute("id", id);
     in_pTile->SetAttribute("inside", inside);
@@ -106,23 +122,6 @@ void Tile::writeXML(tinyxml2::XMLDocument * in_doc, tinyxml2::XMLElement * in_pT
     tinyxml2::XMLElement * pStats = in_doc->NewElement("Stats");
     in_pTile->InsertEndChild(pStats);
     writeXML_stats(in_doc, pStats, &stats);
-}
-
-void Tile::write(const char * filename, const char * mode) {
-    FILE * fp;
-    fp = fopen(filename, mode);
-    fprintf(fp, "%s \n", name.c_str());
-
-    if (inside) {
-        fprintf(fp, "%s \n", "Inside");
-    } else {
-        fprintf(fp, "%s \n", "Outside");
-    }
-
-    fprintf(fp, "Stats, Dodge, PProtection, MProtection, Heal \n");
-    fprintf(fp, "Stats,\t\t%d,\t%d,\t%d,\t%d\n", stats.dodge, stats.Pprot, stats.Mprot, stats.heal);
-    fprintf(fp, "\n");
-    fclose(fp);
 }
 
 void baseTiles(std::unordered_map<int, Tile> * in_tiles, const std::vector<short int> toload) {

@@ -7,7 +7,7 @@
 #include "tinyxml2.h"
 #include "filesystem.hpp"
 
-class Tile : public XML_IO {
+class Tile : public XML_IO, JSON_IO {
 private:
     Movement_cost cost_struct;
     unsigned char cost_array[UNIT::MVT::END];
@@ -33,7 +33,11 @@ public:
 
     void makeMvtCostarray();
 
-    void write(const char * filename, const char * mode = "a");
+    using JSON_IO::writeJSON;
+    using JSON_IO::readJSON;
+    void readJSON(cJSON * in_json);
+    void writeJSON(cJSON * in_json);
+
     using XML_IO::writeXML;
     using XML_IO::readXML;
     void writeXML(tinyxml2::XMLDocument * in_doc, tinyxml2::XMLElement * in_pTile);

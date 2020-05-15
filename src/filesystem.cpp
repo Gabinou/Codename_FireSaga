@@ -426,6 +426,39 @@ void writeXML_narrative(tinyxml2::XMLDocument * in_doc, tinyxml2::XMLElement * i
     }
 }
 
+void writeJSON_mvtcost(cJSON * in_jcost, Movement_cost * in_cost) {
+    cJSON * jfoot_slow = cJSON_CreateNumber(in_cost->foot_slow);
+    cJSON * jfoot_fast = cJSON_CreateNumber(in_cost->foot_fast);
+    cJSON * jmages = cJSON_CreateNumber(in_cost->mages);
+    cJSON * jriders_slow = cJSON_CreateNumber(in_cost->riders_slow);
+    cJSON * jriders_fast = cJSON_CreateNumber(in_cost->riders_fast);
+    cJSON * jfliers = cJSON_CreateNumber(in_cost->fliers);
+    cJSON * jarmors = cJSON_CreateNumber(in_cost->armors);
+    cJSON * jpirates = cJSON_CreateNumber(in_cost->pirates);
+    cJSON * jbandits = cJSON_CreateNumber(in_cost->bandits);
+    cJSON_AddItemToObject(in_jcost, "foot_slow", jfoot_slow);
+    cJSON_AddItemToObject(in_jcost, "foot_fast", jfoot_fast);
+    cJSON_AddItemToObject(in_jcost, "mages", jmages);
+    cJSON_AddItemToObject(in_jcost, "fliers", jfliers);
+    cJSON_AddItemToObject(in_jcost, "riders_slow", jriders_slow);
+    cJSON_AddItemToObject(in_jcost, "riders_fast", jriders_fast);
+    cJSON_AddItemToObject(in_jcost, "armors", jarmors);
+    cJSON_AddItemToObject(in_jcost, "pirates", jpirates);
+    cJSON_AddItemToObject(in_jcost, "bandits", jbandits);
+}
+
+void writeJSON_stats(cJSON * in_jstats, Tile_stats * in_stats) {
+    cJSON * jdodge = cJSON_CreateNumber(in_stats->dodge);
+    cJSON * jPprot = cJSON_CreateNumber(in_stats->Pprot);
+    cJSON * jMprot = cJSON_CreateNumber(in_stats->Mprot);
+    cJSON * jheal = cJSON_CreateNumber(in_stats->heal);
+    cJSON_AddItemToObject(in_jstats, "Dodge", jdodge);
+    cJSON_AddItemToObject(in_jstats, "Pprot", jPprot);
+    cJSON_AddItemToObject(in_jstats, "Mprot", jMprot);
+    cJSON_AddItemToObject(in_jstats, "Heal", jheal);
+}
+
+
 void writeJSON_stats(cJSON * in_jstats, Unit_stats * in_stats) {
     cJSON * php = NULL;
     cJSON * pstr = NULL;
@@ -866,7 +899,6 @@ void writeXML_mvtcost(tinyxml2::XMLDocument * in_doc, tinyxml2::XMLElement * in_
 }
 
 void readXML_mvtcost(tinyxml2::XMLElement * in_pCost, Movement_cost * in_cost) {
-
     int buffint;
 
     tinyxml2::XMLElement * pfoot_slow = in_pCost->FirstChildElement("foot_slow");
