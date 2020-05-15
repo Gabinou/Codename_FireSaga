@@ -447,6 +447,18 @@ void writeJSON_mvtcost(cJSON * in_jcost, Movement_cost * in_cost) {
     cJSON_AddItemToObject(in_jcost, "bandits", jbandits);
 }
 
+void readJSON_stats(cJSON * in_jstats, Tile_stats * in_stats) {
+    cJSON * jdodge = cJSON_GetObjectItem(in_jstats, "Dodge");
+    cJSON * jPprot = cJSON_GetObjectItem(in_jstats, "Pprot");
+    cJSON * jMprot = cJSON_GetObjectItem(in_jstats, "Mprot");
+    cJSON * jHeal = cJSON_GetObjectItem(in_jstats, "Heal");
+
+    in_stats->dodge = cJSON_GetNumberValue(jdodge);
+    in_stats->Pprot = cJSON_GetNumberValue(jPprot);
+    in_stats->Mprot = cJSON_GetNumberValue(jMprot);
+    in_stats->heal = cJSON_GetNumberValue(jheal);
+}
+
 void writeJSON_stats(cJSON * in_jstats, Tile_stats * in_stats) {
     cJSON * jdodge = cJSON_CreateNumber(in_stats->dodge);
     cJSON * jPprot = cJSON_CreateNumber(in_stats->Pprot);
@@ -604,7 +616,6 @@ void readXML_arrival(tinyxml2::XMLElement * in_pArrival, Map_arrival * in_arriva
     tinyxml2::XMLElement * pTurn = in_pArrival->FirstChildElement("Turn");
     tinyxml2::XMLElement * plevelups = in_pArrival->FirstChildElement("levelups");
     tinyxml2::XMLElement * pPosition = in_pArrival->FirstChildElement("Position");
-
 
     pTurn->QueryUnsignedText(&buffint);
     in_arrival->turn = buffint;

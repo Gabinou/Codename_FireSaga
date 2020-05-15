@@ -92,7 +92,11 @@ void Tile::readXML(tinyxml2::XMLElement * in_pTile) {
 }
 
 void Tile::readJSON(cJSON * in_json) {
+    cJSON * jitem = cJSON_GetObjectItemCaseSensitive(in_json, "item");
+    cJSON * jstats = cJSON_GetObjectItemCaseSensitive(in_json, "Stats");
 
+    description = cJSON_GetStringValue(jdescription);
+    readJSON_stats(jstats, &stats);
 }
 
 void Tile::writeJSON(cJSON * in_json) {
