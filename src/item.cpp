@@ -6,7 +6,70 @@ Item::Item() {
 }
 
 void Item::writeJSON(cJSON * in_json) {
+    if (in_json != NULL) {
+        cJSON * jitem = cJSON_CreateObject();
+        cJSON_AddItemToObject(in_json, "item", jitem);
 
+        cJSON * jname = cJSON_CreateString(name.c_str());
+        // cJSON * jdescription = cJSON_CreateString(description.c_str());
+        cJSON * jid = cJSON_CreateNumber(id);
+        // cJSON * jitemstats = cJSON_CreateObject();
+        // writeJSON_stats(jitemstats, &stats);
+        cJSON * jbonus = cJSON_CreateObject();
+        writeJSON_stats(jbonus, &bonus_stats);
+        cJSON * jmalus = cJSON_CreateObject();
+        writeJSON_stats(jmalus, &malus_stats);
+        cJSON * jsellable = cJSON_CreateBool(sellable);
+        // cJSON * jinfused = cJSON_CreateObject();
+        // cJSON * jpower = cJSON_CreateNumber(infused.power);
+        // cJSON * jtype = cJSON_CreateNumber(infused.type);
+        // cJSON_AddItemToObject(jinfused, "Power", jpower);
+        // cJSON_AddItemToObject(jinfused, "Type", jtype);
+
+        // cJSON * jeffective = cJSON_CreateNumber(effective);
+
+        cJSON * jusers = cJSON_CreateObject();
+        cJSON * juserid = NULL;
+
+        for (short int i = 0; i < users.size() ; i++) {
+            juserid = cJSON_CreateNumber(users[i]);
+            cJSON_AddItemToObject(jusers, "id", juserid);
+        }
+
+        cJSON * jeffects = cJSON_CreateObject();
+        cJSON * jeffect = NULL;
+        jeffect = cJSON_CreateNumber(effect);
+        cJSON_AddItemToObject(jeffects, "id", jeffect);
+        std::vector<std::string> effects = wpnEffects(effect);
+
+        for (int i = 0; i < effects.size(); i++) {
+            jeffect = cJSON_CreateString(effects[i].c_str());
+            cJSON_AddItemToObject(jeffects, "Effect", jeffect);
+        }
+
+        cJSON * jtypes = cJSON_CreateObject();
+        cJSON * jtype2 = NULL;
+        jtype2 = cJSON_CreateNumber(type);
+        cJSON_AddItemToObject(jtypes, "id", jtype2);
+        std::vector<std::string> types = wpnTypes(type);
+
+        for (int i = 0; i < types.size(); i++) {
+            jtype2 = cJSON_CreateString(types[i].c_str());
+            cJSON_AddItemToObject(jtypes, "Type", jtype2);
+        }
+
+        cJSON_AddItemToObject(jitem, "Name", jname);
+        cJSON_AddItemToObject(jitem, "id", jid);
+        cJSON_AddStringToObject(jitem, "Description", description.c_str());
+        // cJSON_AddItemToObject(jitem, "Stats", jitemstats);
+        cJSON_AddItemToObject(jitem, "Bonus", jbonus);
+        cJSON_AddItemToObject(jitem, "Malus", jmalus);
+        // cJSON_AddItemToObject(jitem, "Infused", jinfused);
+        // cJSON_AddItemToObject(jitem, "Effective", jeffective);
+        cJSON_AddItemToObject(jitem, "Sellable", jsellable);
+        cJSON_AddItemToObject(jitem, "Effects", jeffects);
+        cJSON_AddItemToObject(jitem, "Types", jtypes);
+    }
 }
 
 void Item::readJSON(cJSON * in_json) {

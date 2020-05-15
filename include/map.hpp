@@ -8,6 +8,7 @@
 #include "utilities.hpp"
 #include "filesystem.hpp"
 #include "tile.hpp"
+#include "unit.hpp"
 #include "linalg.hpp"
 #include <unordered_map>
 
