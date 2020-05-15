@@ -29,10 +29,6 @@ Unit_stats Item::getMalus() {
     return (malus_stats);
 }
 
-void Weapon::setStats(Weapon_stats in_stats) {
-    stats = in_stats;
-}
-
 void Item::setBonus(Unit_stats in_bonus) {
     bonus_stats = in_bonus;
 }
