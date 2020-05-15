@@ -129,21 +129,21 @@ void Weapon::setType(short unsigned int in_type) {
 
 void Weapon::readJSON(cJSON * in_json) {
     cJSON * jwpn = cJSON_GetObjectItemCaseSensitive(in_json, "weapon");
-    cJSON * jname = cJSON_GetObjectItemCaseSensitive(in_json, "Name");
-    cJSON * jid = cJSON_GetObjectItemCaseSensitive(in_json, "id");
-    cJSON * jdescription = cJSON_GetObjectItemCaseSensitive(in_json, "Description");
-    cJSON * jstats = cJSON_GetObjectItemCaseSensitive(in_json, "Stats");
-    cJSON * jbonus_stats = cJSON_GetObjectItemCaseSensitive(in_json, "Bonus");
-    cJSON * jmalus_stats = cJSON_GetObjectItemCaseSensitive(in_json, "Malus");
-    cJSON * jinfused = cJSON_GetObjectItemCaseSensitive(in_json, "Infused");
+    cJSON * jname = cJSON_GetObjectItemCaseSensitive(jwpn, "Name");
+    cJSON * jid = cJSON_GetObjectItemCaseSensitive(jwpn, "id");
+    cJSON * jdescription = cJSON_GetObjectItemCaseSensitive(jwpn, "Description");
+    cJSON * jstats = cJSON_GetObjectItemCaseSensitive(jwpn, "Stats");
+    cJSON * jbonus_stats = cJSON_GetObjectItemCaseSensitive(jwpn, "Bonus");
+    cJSON * jmalus_stats = cJSON_GetObjectItemCaseSensitive(jwpn, "Malus");
+    cJSON * jinfused = cJSON_GetObjectItemCaseSensitive(jwpn, "Infused");
     cJSON * jpower = cJSON_GetObjectItemCaseSensitive(jinfused, "Power");
     cJSON * jitype = cJSON_GetObjectItemCaseSensitive(jinfused, "Type");
-    cJSON * jeffective = cJSON_GetObjectItemCaseSensitive(in_json, "Effective");
-    cJSON * jsellable = cJSON_GetObjectItemCaseSensitive(in_json, "Sellable");
-    cJSON * jeffects = cJSON_GetObjectItemCaseSensitive(in_json, "Effects");
+    cJSON * jeffective = cJSON_GetObjectItemCaseSensitive(jwpn, "Effective");
+    cJSON * jsellable = cJSON_GetObjectItemCaseSensitive(jwpn, "Sellable");
+    cJSON * jeffects = cJSON_GetObjectItemCaseSensitive(jwpn, "Effects");
     cJSON * jeffect = cJSON_GetObjectItemCaseSensitive(jeffect, "id");
-    cJSON * jtypes = cJSON_GetObjectItemCaseSensitive(in_json, "Types");
-    cJSON * jtypeid = cJSON_GetObjectItemCaseSensitive(in_json, "Types");
+    cJSON * jtypes = cJSON_GetObjectItemCaseSensitive(jwpn, "Types");
+    cJSON * jtypeid = cJSON_GetObjectItemCaseSensitive(jwpn, "Types");
 
     id = cJSON_GetNumberValue(jid); //returns 0 if junit is NULL
     name = cJSON_GetStringValue(jname);
@@ -153,14 +153,14 @@ void Weapon::readJSON(cJSON * in_json) {
     }
 
     description = cJSON_GetStringValue(jdescription);
-    readJSON_stats(jstats, &stats);
-    readJSON_stats(jbonus_stats, &bonus_stats);
-    readJSON_stats(jmalus_stats, &malus_stats);
-    readJSON_stats(jinfused, &malus_stats);
-    infused.power = cJSON_GetNumberValue(jpower);
-    infused.type = cJSON_GetNumberValue(jitype);
-    effect = cJSON_GetNumberValue(jeffect);
-    type = cJSON_GetNumberValue(jtypeid);
+    // readJSON_stats(jstats, &stats);
+    // readJSON_stats(jbonus_stats, &bonus_stats);
+    // readJSON_stats(jmalus_stats, &malus_stats);
+    // readJSON_stats(jinfused, &malus_stats);
+    // infused.power = cJSON_GetNumberValue(jpower);
+    // infused.type = cJSON_GetNumberValue(jitype);
+    // effect = cJSON_GetNumberValue(jeffect);
+    // type = cJSON_GetNumberValue(jtypeid);
 }
 
 void Weapon::writeJSON(cJSON * in_json) {
@@ -169,7 +169,7 @@ void Weapon::writeJSON(cJSON * in_json) {
         cJSON_AddItemToObject(in_json, "weapon", jwpn);
 
         cJSON * jname = cJSON_CreateString(name.c_str());
-        cJSON * jdescription = cJSON_CreateString(description.c_str());
+        // cJSON * jdescription = cJSON_CreateString(description.c_str());
         cJSON * jid = cJSON_CreateNumber(id);
         cJSON * jwpnstats = cJSON_CreateObject();
         writeJSON_stats(jwpnstats, &stats);
@@ -218,7 +218,7 @@ void Weapon::writeJSON(cJSON * in_json) {
 
         cJSON_AddItemToObject(jwpn, "Name", jname);
         cJSON_AddItemToObject(jwpn, "id", jid);
-        cJSON_AddItemToObject(jwpn, "Description", jdescription);
+        cJSON_AddStringToObject(jwpn, "Description", description.c_str());
         cJSON_AddItemToObject(jwpn, "Stats", jwpnstats);
         cJSON_AddItemToObject(jwpn, "Bonus", jbonus);
         cJSON_AddItemToObject(jwpn, "Malus", jmalus);
