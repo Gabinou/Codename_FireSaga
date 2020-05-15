@@ -174,11 +174,14 @@ void test_map() {
 
     map.writeXML("map_test.xml");
     map.writeJSON("map_test.json");
-    SDL_Log("Finished writing JSON");
 
-    Map test;
-    test.setManager(&ex.entities);
-    test.readXML("map_test.xml");
-    test.writeXML("map_rewrite.xml");
+    Map test1, test2;
+    test1.setManager(&ex.entities);
+    test1.readXML("map_test.xml");
+    test1.writeXML("map_rewrite.xml");
     lok(fequal("map_test.xml", "map_rewrite.xml"));
+    test2.setManager(&ex.entities);
+    test2.readJSON("map_test.json");
+    test2.writeJSON("map_rewrite.json");
+    lok(fequal("map_test.json", "map_rewrite.json"));
 }

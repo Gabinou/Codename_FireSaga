@@ -17,12 +17,54 @@ Map::~Map() {
 }
 
 void Map::readJSON(cJSON * in_json) {
+    cJSON * jmap = cJSON_GetObjectItem(in_json, "map");
+    cJSON * jchapter = cJSON_GetObjectItem(jmap, "chapter");
+    cJSON * jarrivals = cJSON_GetObjectItem(jmap, "Arrivals");
+    cJSON * jbounds = cJSON_GetObjectItem(jmap, "Bounds");
+    cJSON * joffset = cJSON_GetObjectItem(jmap, "Offset");
+    cJSON * jtiles = cJSON_GetObjectItem(jmap, "tiles");
 
+    cJSON * jtile = cJSON_GetObjectItem(jtiles, "tile");
+    cJSON * jid;
+    cJSON * jtilename;
+    tilesname.clear();
+    tilesindex.clear();
+    while (jtile != NULL) {
+        jtileid = cJSON_GetObjectItem(jtile, "id");
+        jtilename = cJSON_GetObjectItem(jtile, "name");
+        tilesindex.push_back(cJSON_GetNumberValue(jid));
+        tilesname.push_back(cJSON_GetStringValue(jtilename));
+        jtile = jtile->next;
+    }
+
+    cJSON * jarrival = cJSON_GetObjectItem(arrivals, "arrival");
+    cJSON * jlevelups;
+    cJSON * jturn;
+    cJSON * jposition;
+    cJSON * jrow, jcol;
+    Map_arrival temp_arrival;
+    map_arrivals.clear();
+    while (jarrival != NULL) {
+        temp_arrival = Map_arrival();
+        jid = cJSON_GetObjectItem(jarrival, "id");
+        jlevelups = cJSON_GetObjectItem(jarrival, "levelups");
+        jturn = cJSON_GetObjectItem(jarrival, "turn");
+        jposition = cJSON_GetObjectItem(jarrival, "position");
+        jrow = cJSON_GetObjectItem(jposition, "row");
+        jcol = cJSON_GetObjectItem(jposition, "col");
+        temp_arrival.turn = cJSON_GetNumberValue(jturn);
+        temp_arrival.id = cJSON_GetNumberValue(jid);
+        temp_arrival.levelups = cJSON_GetNumberValue(jlevelups);
+        temp_arrival.position.x = cJSON_GetNumberValue(jrow);
+        temp_arrival.position.y = cJSON_GetNumberValue(jcol);
+        map_arrivals.push_back(temp_arrival);
+        jarrival = jarrival->next;
+    }
+
+    id = cJSON_GetNumberValue(jid); //returns 0 if junit is NULL
 }
 
 void Map::writeJSON(cJSON * in_json) {
-    SDL_Log("Writing map");
-
     if (in_json != NULL) {
         cJSON * jmap = cJSON_CreateObject();
         cJSON_AddItemToObject(in_json, "map", jmap);
@@ -46,14 +88,13 @@ void Map::writeJSON(cJSON * in_json) {
                 }
 
                 cJSON_AddItemToObject(jtile, "id", jtileid);
-                cJSON_AddItemToObject(jtilename, "name", jtilename);
+                cJSON_AddItemToObject(jtile, "name", jtilename);
                 cJSON_AddItemToObject(jtiles, "tile", jtile);
             }
         } else {
             SDL_Log("Not the same number of tilenames as tileindex.");
         }
 
-        // SDL_Log("Until here");
         cJSON * jarrival;
         cJSON * jarrivals = cJSON_CreateObject();
         cJSON_AddItemToObject(jmap, "Arrivals", jarrivals);
@@ -63,8 +104,6 @@ void Map::writeJSON(cJSON * in_json) {
             writeJSON_arrival(jarrival, &map_arrivals[i]);
             cJSON_AddItemToObject(jarrivals, "Arrival", jarrival);
         }
-
-        // SDL_Log("Until here");
 
         cJSON * jbounds = cJSON_CreateObject();
         cJSON * jrow_min = cJSON_CreateNumber(bounds[0]);
@@ -82,7 +121,6 @@ void Map::writeJSON(cJSON * in_json) {
         cJSON_AddItemToObject(joffset, "offset_row", joffset_row);
         cJSON_AddItemToObject(joffset, "offset_col", joffset_col);
         cJSON_AddItemToObject(jmap, "Offset", joffset);
-        // SDL_Log("Until here END");
     }
 }
 
