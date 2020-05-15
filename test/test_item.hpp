@@ -55,8 +55,8 @@ void test_item() {
 
     // item2 = item();
     // item2.readXML("item_test.xml");
-    item3 = Item();
-    item3.readJSON("item_test.json");
+    item2 = Item();
+    item2.readJSON("item_test.json");
 
     out_description = item2.getDescription();
     lok(in_description == out_description);
@@ -90,7 +90,7 @@ void test_item() {
     lok(in_stats.prof == out_stats.prof);
 
     // item2.writeXML("item_rewrite.xml");
-    item3.writeJSON("item_rewrite.json");
+    item2.writeJSON("item_rewrite.json");
     // lok(fequal("item_test.xml", "item_rewrite.xml"));
     lok(fequal("item_test.json", "item_rewrite.json"));
 }

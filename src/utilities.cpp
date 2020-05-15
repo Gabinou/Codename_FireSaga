@@ -633,6 +633,7 @@ void makeitemNames() {
     itemNames.push_back("Raw Iron Slab");
     itemNames.push_back("Kirito");
     itemNames.push_back("Killy");
+
     itemNames.push_back("Pitchfork");
     itemNames.push_back("Fighting stick");
     itemNames.push_back("Iron lance");
@@ -649,6 +650,7 @@ void makeitemNames() {
     itemNames.push_back("Gungnir");
     itemNames.push_back("Achilles");
     itemNames.push_back("Tonbokiri");
+
     itemNames.push_back("Iron axe");
     itemNames.push_back("Steel axe");
     itemNames.push_back("Damas axe");
@@ -664,6 +666,7 @@ void makeitemNames() {
     itemNames.push_back("Battleaxe");
     itemNames.push_back("Vidyu");
     itemNames.push_back("Hephaestus");
+
     itemNames.push_back("Adapted Crossbow");
     itemNames.push_back("Repeatable Crossbow");
     itemNames.push_back("Crossbow");
@@ -675,6 +678,7 @@ void makeitemNames() {
     itemNames.push_back("Apollo");
     itemNames.push_back("Artemis");
     itemNames.push_back("Pinaka");
+
     itemNames.push_back("Adapted shield");
     itemNames.push_back("Pot lid");
     itemNames.push_back("Wooden shield");
@@ -692,6 +696,7 @@ void makeitemNames() {
     itemNames.push_back("Obsidian plate");
     itemNames.push_back("Marble plate shield");
     itemNames.push_back("Divine protector");
+
     itemNames.push_back("Wristblade");
     itemNames.push_back("Shield hook");
     itemNames.push_back("Retractable wristblade");
@@ -707,6 +712,7 @@ void makeitemNames() {
     itemNames.push_back("Carnwennan");
     itemNames.push_back("Flintlock");
     itemNames.push_back("Cibo");
+
     itemNames.push_back("Shrunken head");
     itemNames.push_back("Crystal");
     itemNames.push_back("Glass orb");
@@ -718,6 +724,7 @@ void makeitemNames() {
     itemNames.push_back("Vial of light");
     itemNames.push_back("Maiden's handkerchief");
     itemNames.push_back("War Horn");
+
     itemNames.push_back("Ball lightning");
     itemNames.push_back("Icicle");
     itemNames.push_back("Volcano");
@@ -727,19 +734,23 @@ void makeitemNames() {
     itemNames.push_back("God's forge fire");
     itemNames.push_back("Fingolfin");
     itemNames.push_back("Mithrandir");
+
     itemNames.push_back("Void");
     itemNames.push_back("Nether");
     itemNames.push_back("Downfall");
     itemNames.push_back("Consume");
     itemNames.push_back("Putrify");
     itemNames.push_back("Glaurung");
+    itemNames.push_back("Morgoth");
     itemNames.push_back("Gothmog");
     itemNames.push_back("Fatalis");
+
     itemNames.push_back("Heal");
     itemNames.push_back("Remedy");
     itemNames.push_back("Renew");
     itemNames.push_back("Wish");
     itemNames.push_back("Pray");
+
     itemNames.push_back("Salve");
     itemNames.push_back("Panacea");
     itemNames.push_back("Healing Potion");
