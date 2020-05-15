@@ -100,7 +100,6 @@ void Tile::writeJSON(cJSON * in_json) {
         cJSON * jtile = cJSON_CreateObject();
         cJSON * jtilestats = cJSON_CreateObject();
         cJSON * jcost = cJSON_CreateObject();
-        cJSON * jinside = cJSON_CreateBool(inside);
         cJSON * jname = cJSON_CreateString(name.c_str());
         cJSON * jid = cJSON_CreateNumber(id);
 
@@ -109,9 +108,8 @@ void Tile::writeJSON(cJSON * in_json) {
 
         cJSON_AddItemToObject(jtile, "Name", jname);
         cJSON_AddItemToObject(jtile, "id", jid);
-        cJSON_AddItemToObject(jtile, "inside", jinside);
+        cJSON_AddBoolToObject(jtile, "inside", inside);
         cJSON_AddItemToObject(jtile, "Stats", jtilestats);
-        cJSON_AddItemToObject(jtile, "id", jid);
         cJSON_AddItemToObject(jtile, "MvtCost", jcost);
         cJSON_AddItemToObject(in_json, "tile", jtile);
     }

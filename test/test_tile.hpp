@@ -47,6 +47,7 @@ void test_tile() {
     tile2.writeXML("tile_rewrite.xml");
 
     lok(fequal("tile_test.xml", "tile_rewrite.xml"));
+    lok(fequal("tile_test.json", "tile_rewrite.json"));
     lok(tile1.getName() == tile2.getName());
     lok(tile1.getid() == tile2.getid());
     cost_array = tile1.getCost();
