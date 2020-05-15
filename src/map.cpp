@@ -20,30 +20,31 @@ void Map::readJSON(cJSON * in_json) {
     cJSON * jmap = cJSON_GetObjectItem(in_json, "map");
     cJSON * jchapter = cJSON_GetObjectItem(jmap, "chapter");
     cJSON * jarrivals = cJSON_GetObjectItem(jmap, "Arrivals");
-    cJSON * jbounds = cJSON_GetObjectItem(jmap, "Bounds");
-    cJSON * joffset = cJSON_GetObjectItem(jmap, "Offset");
     cJSON * jtiles = cJSON_GetObjectItem(jmap, "tiles");
 
     cJSON * jtile = cJSON_GetObjectItem(jtiles, "tile");
     cJSON * jid;
     cJSON * jtilename;
-    tilesname.clear();
+    tilenames.clear();
     tilesindex.clear();
+
     while (jtile != NULL) {
-        jtileid = cJSON_GetObjectItem(jtile, "id");
+        jid = cJSON_GetObjectItem(jtile, "id");
         jtilename = cJSON_GetObjectItem(jtile, "name");
         tilesindex.push_back(cJSON_GetNumberValue(jid));
-        tilesname.push_back(cJSON_GetStringValue(jtilename));
+        tilenames.push_back(cJSON_GetStringValue(jtilename));
         jtile = jtile->next;
     }
 
-    cJSON * jarrival = cJSON_GetObjectItem(arrivals, "arrival");
+    cJSON * jarrival = cJSON_GetObjectItem(jarrivals, "arrival");
     cJSON * jlevelups;
     cJSON * jturn;
     cJSON * jposition;
-    cJSON * jrow, jcol;
+    cJSON * jrow;
+    cJSON * jcol;
     Map_arrival temp_arrival;
     map_arrivals.clear();
+
     while (jarrival != NULL) {
         temp_arrival = Map_arrival();
         jid = cJSON_GetObjectItem(jarrival, "id");
@@ -61,7 +62,22 @@ void Map::readJSON(cJSON * in_json) {
         jarrival = jarrival->next;
     }
 
-    id = cJSON_GetNumberValue(jid); //returns 0 if junit is NULL
+    cJSON * jbounds = cJSON_GetObjectItem(jmap, "Bounds");
+    cJSON * jrow_min = cJSON_GetObjectItem(jbounds, "row_min");
+    cJSON * jrow_max = cJSON_GetObjectItem(jbounds, "row_max");
+    cJSON * jcol_min = cJSON_GetObjectItem(jbounds, "col_min");
+    cJSON * jcol_max = cJSON_GetObjectItem(jbounds, "col_max");
+    bounds[0] = cJSON_GetNumberValue(jrow_min);
+    bounds[1] = cJSON_GetNumberValue(jrow_max);
+    bounds[2] = cJSON_GetNumberValue(jcol_min);
+    bounds[3] = cJSON_GetNumberValue(jcol_max);
+
+    cJSON * joffset = cJSON_GetObjectItem(jmap, "Offset");
+    cJSON * joffset_row = cJSON_GetObjectItem(joffset, "offset_row");
+    cJSON * joffset_col = cJSON_GetObjectItem(joffset, "offset_col");
+    offset[0] = cJSON_GetNumberValue(jrow_min);
+    offset[1] = cJSON_GetNumberValue(jrow_min);
+
 }
 
 void Map::writeJSON(cJSON * in_json) {
