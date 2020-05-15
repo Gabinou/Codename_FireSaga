@@ -3,7 +3,7 @@
 #include "structs.hpp"
 
 void test_weapon() {
-    Weapon wpn1, wpn2;
+    Weapon wpn1, wpn2, wpn3;
     Weapon_stats in_wpn_stats, out_wpn_stats;
     Unit_stats in_stats = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11};
     Unit_stats out_stats;
@@ -83,7 +83,8 @@ void test_weapon() {
 
     wpn2 = Weapon();
     wpn2.readXML("weapon_test.xml");
-    wpn2.readJSON("weapon_test.json");
+    wpn3 = Weapon();
+    wpn3.readJSON("weapon_test.json");
 
     out_wpn_stats = wpn2.getStats();
     lok(in_wpn_stats.Pmight == out_wpn_stats.Pmight);
@@ -137,7 +138,8 @@ void test_weapon() {
     lok(in_stats.move == out_stats.move);
     lok(in_stats.prof == out_stats.prof);
 
-    wpn2.writeXML("weapon_rewrite.json");
+    wpn2.writeXML("weapon_rewrite.xml");
+    wpn3.writeJSON("weapon_rewrite.json");
     lok(fequal("weapon_test.xml", "weapon_rewrite.xml"));
     lok(fequal("weapon_test.json", "weapon_rewrite.json"));
 }
