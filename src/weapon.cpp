@@ -156,7 +156,6 @@ void Weapon::readJSON(cJSON * in_json) {
     readJSON_stats(jstats, &stats);
     readJSON_stats(jbonus_stats, &bonus_stats);
     readJSON_stats(jmalus_stats, &malus_stats);
-    readJSON_stats(jinfused, &malus_stats);
     infused.power = cJSON_GetNumberValue(jpower);
     infused.type = cJSON_GetNumberValue(jitype);
     effect = cJSON_GetNumberValue(jeffect);
