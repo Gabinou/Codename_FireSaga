@@ -3,7 +3,6 @@
 
 Weapon::Weapon() {
     setXMLElement("Weapon");
-
 }
 
 Weapon::Weapon(short unsigned int in_type, Weapon_stats in_stats, unsigned char in_id) : Weapon() {
