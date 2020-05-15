@@ -70,22 +70,8 @@ public:
 class Weapon : public Item {
 private:
     Weapon_stats stats = {0, 0, 0, 0, 0, 0, 0, 0, 0, {0, 0}, {0, 0}, 0, 0};
-    // Pmight, Mmight, hit, dodge, crit, favor, wgt, uses, prof, range, hand, dmg_type, cost, heal
-    // Unit_stats bonus_stats = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
-    // Unit_stats malus_stats = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
-
-    // unsigned short int id = 0; // 0 means empty.
-    // long unsigned int effect = 0;
-    // short unsigned int type = 0;
-    // short int use_effect = -1;
     short unsigned int effective = 0; // is a unit type.
     Infusion infused;
-
-    // bool sellable = true;
-
-    // std::vector<unsigned short int> users; // item only usable by users. empty = everyone
-    // std::string name = "";
-    // std::string description = "";
 public:
     Weapon();
     Weapon(short unsigned int in_type, Weapon_stats in_stats, unsigned char in_id);
@@ -98,23 +84,6 @@ public:
     bool canInfuse();
     void setEffective(short unsigned int in_effective);
     short unsigned int getEffective();
-    // void setBonus(Unit_stats in_bonus);
-    // Unit_stats getBonus();
-    // void setMalus(Unit_stats in_malus);
-    // Unit_stats getMalus();
-    // void setEffect(long unsigned int in_effect);
-    // long unsigned int getEffect();
-    // void setDescription(std::string in_description);
-    // std::string getDescription();
-    // void setName(std::string in_name);
-    // std::string getName();
-    // void setUser();
-    // short unsigned int getType();
-    // void setType(short unsigned int in_type);
-    // std::vector<unsigned short int> getUsers();
-    // void setUsers(std::vector<unsigned short int> in_users);
-    // bool isSellable();
-    // void setSellable(bool in_sellable);
 
     using Item::writeJSON;
     using Item::readJSON;
