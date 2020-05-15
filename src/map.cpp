@@ -53,8 +53,7 @@ void Map::writeJSON(cJSON * in_json) {
             SDL_Log("Not the same number of tilenames as tileindex.");
         }
 
-        SDL_Log("Until here");
-
+        // SDL_Log("Until here");
         cJSON * jarrival;
         cJSON * jarrivals = cJSON_CreateObject();
         cJSON_AddItemToObject(jmap, "Arrivals", jarrivals);
@@ -65,7 +64,7 @@ void Map::writeJSON(cJSON * in_json) {
             cJSON_AddItemToObject(jarrivals, "Arrival", jarrival);
         }
 
-        SDL_Log("Until here");
+        // SDL_Log("Until here");
 
         cJSON * jbounds = cJSON_CreateObject();
         cJSON * jrow_min = cJSON_CreateNumber(bounds[0]);
@@ -82,8 +81,8 @@ void Map::writeJSON(cJSON * in_json) {
         cJSON * joffset_col = cJSON_CreateNumber(offset[1]);
         cJSON_AddItemToObject(joffset, "offset_row", joffset_row);
         cJSON_AddItemToObject(joffset, "offset_col", joffset_col);
-        cJSON_AddItemToObject(jmap, "Offset", jbounds);
-        SDL_Log("Until here END");
+        cJSON_AddItemToObject(jmap, "Offset", joffset);
+        // SDL_Log("Until here END");
     }
 }
 
