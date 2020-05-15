@@ -34,8 +34,8 @@ extern std::vector<std::string> menuoptions2str(std::vector<unsigned char> in_op
 extern std::vector<std::string> getTilenames(std::vector<short int> in_tilesindex);
 extern std::vector<std::string> unitNames;
 extern void makeunitNames();
-extern std::vector<std::string> wpnNames;
-extern void makewpnNames();
+extern std::vector<std::string> itemNames;
+extern void makeitemNames();
 extern std::vector<std::string> statNames;
 extern void makestatNames();
 extern std::vector<std::string> sexNames;

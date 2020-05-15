@@ -6,7 +6,7 @@ Item::Item() {
 }
 
 Item::Item(short unsigned int in_type, unsigned char in_id) : Item() {
-    name = wpnNames[in_id];
+    name = itemNames[in_id];
     type = in_type;
     id = in_id;
 }
@@ -82,7 +82,7 @@ void Item::readJSON(cJSON * in_json) {
     name = cJSON_GetStringValue(jname);
 
     if (id > 0) {
-        name = wpnNames[id];
+        name = itemNames[id];
     }
 
     description = cJSON_GetStringValue(jdescription);

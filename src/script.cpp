@@ -222,7 +222,7 @@ void baseBooks() {
 
     for (int i = ITEM::NAME::WOODEN_SWORD; i < ITEM::NAME::CROSS; i++) {
         wpn_stats = all_weapons[i].getStats();
-        page.title = wpnNames[i];
+        page.title = itemNames[i];
         page.paragraphs.clear();
         temp_str = stats2str(wpn_stats);
         page.paragraphs.push_back("Stats");

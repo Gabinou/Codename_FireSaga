@@ -1,18 +1,19 @@
 #include "minctest.h"
-#include "test_linalg.hpp"
-#include "test_pathfinding.hpp"
-#include "test_utilities.hpp"
-#include "test_position.hpp"
-#include "test_tile.hpp"
-#include "test_map.hpp"
-#include "test_unit.hpp"
-#include "test_probability.hpp"
-#include "test_filesystem.hpp"
-#include "test_weapon.hpp"
 #include "test_convoy.hpp"
+#include "test_filesystem.hpp"
 #include "test_game.hpp"
+#include "test_linalg.hpp"
+#include "test_item.hpp"
+#include "test_map.hpp"
+#include "test_pathfinding.hpp"
+#include "test_probability.hpp"
+#include "test_position.hpp"
 #include "test_sprite.hpp"
 #include "test_text.hpp"
+#include "test_tile.hpp"
+#include "test_unit.hpp"
+#include "test_utilities.hpp"
+#include "test_weapon.hpp"
 
 int main(int argc, char * argv[]) {
     freopen("test_results.txt", "w+", stdout);
@@ -35,6 +36,7 @@ int main(int argc, char * argv[]) {
     // lrun("Filesystem ", test_filesystem);
     // lrun("Game ", test_game);
     // lrun("linalg", test_linalg);
+    lrun("Item", test_item);
     // lrun("Map ", test_map);
     // lrun("Pathfinding ", test_pathfinding);
     // lrun("Position ", test_position);

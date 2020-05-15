@@ -7,7 +7,7 @@ Weapon::Weapon() {
 
 Weapon::Weapon(short unsigned int in_type, Weapon_stats in_stats, unsigned char in_id) : Weapon() {
     stats = in_stats;
-    name = wpnNames[in_id];
+    name = itemNames[in_id];
     type = in_type;
     id = in_id;
 }
