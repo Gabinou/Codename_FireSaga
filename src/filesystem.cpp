@@ -458,7 +458,6 @@ void writeJSON_stats(cJSON * in_jstats, Tile_stats * in_stats) {
     cJSON_AddItemToObject(in_jstats, "Heal", jheal);
 }
 
-
 void writeJSON_stats(cJSON * in_jstats, Unit_stats * in_stats) {
     cJSON * php = NULL;
     cJSON * pstr = NULL;

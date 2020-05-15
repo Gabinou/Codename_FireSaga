@@ -94,16 +94,22 @@ void Tile::readXML(tinyxml2::XMLElement * in_pTile) {
 
 void Tile::writeJSON(cJSON * in_json) {
     if (in_json != NULL) {
-        cJSON * jtile = cJSON_CreateObject(in_json, "tile");
+        cJSON * jtile = cJSON_CreateObject();
+        cJSON * jinside = cJSON_CreateBool(inside);
         cJSON * jtilestats = cJSON_CreateObject();
         cJSON * jname = cJSON_CreateString(name.c_str());
         cJSON * jid = cJSON_CreateNumber(id);
+        cJSON * jcost = cJSON_CreateObject();
 
+        writeJSON_mvtcost(in_jcost, cost_struct);
         writeJSON_stats(jtilestats, &stats);
-        cJSON_AddItemToObject(jtile, "Power", jpower);
+
+        cJSON_AddItemToObject(jtile, "Name", jname);
+        cJSON_AddItemToObject(jtile, "id", jid);
+        cJSON_AddItemToObject(jtile, "inside", jinside);
         cJSON_AddItemToObject(jtile, "Stats", jtilestats);
         cJSON_AddItemToObject(jtile, "id", jid);
-        cJSON_AddItemToObject(jtile, "", j);
+        cJSON_AddItemToObject(jtile, "MvtCost", jcost);
     }
 }
 
