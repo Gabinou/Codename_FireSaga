@@ -21,9 +21,14 @@ int main(int argc, char * argv[]) {
     SDL_Log("Initializing utilities\n");
     loadUtilities();
 
-    SDL_Log("Initializing Filesystem\n");
+    SDL_Log("Initializing filesystem\n");
     char * buildDir = SDL_GetBasePath();
-    FILESYSTEM::init(0, buildDir, buildDir);
+    char * assetsDir = strdup(buildDir);
+    char * srcDir = strdup(buildDir);
+    path_removefolder(assetsDir);
+    path_removefolder(srcDir);
+    strncat(assetsDir, "assets\\", 6);
+    FILESYSTEM::init(0, srcDir, assetsDir);
 
     SDL_Log("Initializing TinyMT\n");
     init_tinyMT();

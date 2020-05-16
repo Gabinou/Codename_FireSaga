@@ -89,31 +89,6 @@ int init(char * argvZero, char * baseDir, char * assetsPath) {
     return 1;
 }
 
-char * path_removefolder(char * path) {
-    char * temp;
-    strcpy(temp, path);
-    temp[strlen(temp) - 1] = '\0';
-    char * folder = strrchr(temp, '\\') + 1;
-    temp[strlen(temp) - strlen(folder)] = '\0';
-    return (temp);
-}
-
-char * path_topfolder(char * path) {
-    char * temp;
-    strcpy(temp, path);
-    temp[strlen(temp) - 1] = '\0';
-    char * folder = strrchr(temp, '\\') + 1;
-    return (folder);
-}
-
-const char * fextension(const char * filename) {
-    const char * dot = strrchr(filename, '.');
-
-    if (!dot || dot == filename) { return ""; }
-
-    return dot + 1;
-}
-
 void loadFileToMemory(const char * name, unsigned char ** mem, size_t * len, bool addnull) {
     PHYSFS_File * physfs_file = PHYSFS_openRead(name);
 
@@ -1189,4 +1164,26 @@ void XML_IO::setXMLElement(std::string in_xmlElement) {
 
 std::string XML_IO::getXMLElement() {
     return (xmlElement);
+}
+
+void path_removefolder(char * path) {
+    path[strlen(path) - 1] = '\0';
+    char * folder = strrchr(path, '\\') + 1;
+    path[strlen(path) - strlen(folder)] = '\0';
+}
+
+char * path_topfolder(char * path) {
+    char * temp;
+    strcpy(temp, path);
+    temp[strlen(temp) - 1] = '\0';
+    char * folder = strrchr(temp, '\\') + 1;
+    return (folder);
+}
+
+const char * fextension(const char * filename) {
+    const char * dot = strrchr(filename, '.');
+
+    if (!dot || dot == filename) { return ""; }
+
+    return dot + 1;
 }
