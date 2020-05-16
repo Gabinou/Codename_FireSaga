@@ -4,6 +4,7 @@
 #include "enums.hpp"
 #include "structs.hpp"
 #include <entityx/entityx.h>
+#include <entityx/entityx.h>
 #include "SDL2/SDL.h"
 #include "utilities.hpp"
 #include "filesystem.hpp"
@@ -12,7 +13,9 @@
 #include "linalg.hpp"
 #include <unordered_map>
 
-class Map : public XML_IO, JSON_IO {
+// idea for events: map should be an emitter of events, and receiver also.
+
+class Map : public XML_IO, JSON_IO, public entityx::Receiver<Map> {
 private:
     entityx::EntityManager * manager;
 
