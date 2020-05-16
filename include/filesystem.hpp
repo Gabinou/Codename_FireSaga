@@ -67,6 +67,8 @@ extern void printJSON(PHYSFS_file * in_fp, cJSON * in_json);
 extern cJSON * parseJSON(const char * filename);
 
 extern const char * fextension(const char * filename);
+extern char * path_removefolder(char * path);
+extern char * path_topfolder(char * path);
 
 class XML_IO {
 private:

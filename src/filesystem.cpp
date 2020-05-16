@@ -89,6 +89,23 @@ int init(char * argvZero, char * baseDir, char * assetsPath) {
     return 1;
 }
 
+char * path_removefolder(char * path) {
+    char * temp;
+    strcpy(temp, path);
+    temp[strlen(temp) - 1] = '\0';
+    char * folder = strrchr(temp, '\\') + 1;
+    temp[strlen(temp) - strlen(folder)] = '\0';
+    return (temp);
+}
+
+char * path_topfolder(char * path) {
+    char * temp;
+    strcpy(temp, path);
+    temp[strlen(temp) - 1] = '\0';
+    char * folder = strrchr(temp, '\\') + 1;
+    return (folder);
+}
+
 const char * fextension(const char * filename) {
     const char * dot = strrchr(filename, '.');
 

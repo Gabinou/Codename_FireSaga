@@ -24,6 +24,15 @@ int main(int argc, char * argv[]) {
 
     SDL_Log("Initializing filesystem\n");
     char * buildDir = SDL_GetBasePath();
+    char * assetsDir = path_removefolder(buildDir);
+    // assetsDir[strlen(buildDir) - 1] = '\0';
+    // char * folder = strrchr(assetsDir, '\\') + 1;
+    // assetsDir[strlen(assetsDir) - strlen(folder)] = '\0';
+
+    // strncpy(assetsDir, ;
+    // std::string assetsDir = strrchr(strrchr(buildDir, '\\'), '\\') + 1;
+    // char * assetsDir = "C:\Users\HPinours\Sync\Programming\Cpp\FireSagaMaker\assets\";
+    SDL_Log("assetsDir: %s", assetsDir);
     FILESYSTEM::init(0, buildDir, buildDir);
 
     SDL_Log("Initializing TinyMT RNG\n");
