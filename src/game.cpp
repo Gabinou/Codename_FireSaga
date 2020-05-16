@@ -363,10 +363,10 @@ void Game::loadMap(const int in_map_index) {
         mapx = mapEntx.component<Map>();
         mapx->setRenderer(renderer);
         // std::string filename;
-
         // if (in_map_index == 0) {
         //     filename = "..//maps/map_test.json";
         // }
+        // mapx->readJSON(filename);
 
         mapx->loadTiles(in_map_index);
         mapx->setOffset(DEFAULT::TILEMAP_XOFFSET, DEFAULT::TILEMAP_YOFFSET);
@@ -374,7 +374,6 @@ void Game::loadMap(const int in_map_index) {
         mapx->setArrivals(mapArrivals[in_map_index]());
         mapx->setArrivalEquipments(arrivalEquipments[in_map_index]());
         mapx->setArrivalEquipments(arrivalEquipments[in_map_index]());
-        // mapx->readJSON(filename);
         systems.system<RenderSystemx>()->setMap(mapx);
         systems.system<UnitSystemx>()->updateMap();
         systems.system<TurnSystemx>()->updateMap();
