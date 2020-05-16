@@ -683,7 +683,6 @@ void Convoy::spend(int out_money) {
 void Convoy::readXML(tinyxml2::XMLElement * in_pConvoy) {
     std::vector<std::string> names;
     Inventory_item tempitems[DEFAULT::CONVOY_SIZE];
-    Inventory_item * currentitems;
     Inventory_item empty;
     tinyxml2::XMLElement * ptemp;
     short int i = 1;
@@ -691,7 +690,6 @@ void Convoy::readXML(tinyxml2::XMLElement * in_pConvoy) {
 
     while (i < ITEM::TYPE::END) {
         names = wpnTypes(i);
-        currentitems = getItems(i);
         ptemp = in_pConvoy->FirstChildElement(names[0].c_str());
 
         if (!ptemp) {
@@ -727,4 +725,67 @@ void Convoy::writeXML(tinyxml2::XMLDocument * in_doc, tinyxml2::XMLElement * in_
         writeXML_items(in_doc, ptemp, tempitem, quantity);
         i *= 2;
     }
+}
+
+
+void Convoy::readJSON(cJSON * in_json) {
+    std::vector<std::string> names;
+    Inventory_item tempitem;
+    Inventory_item empty;
+    cJSON * jconvoy = cJSON_GetObjectItem(in_json, "Convoy");
+    cJSON * jitem = NULL;
+    cJSON * jtype = NULL;
+    short int i = 1;
+
+    while (i < ITEM::TYPE::END) {
+        names = wpnTypes(i);
+
+        jtype = cJSON_GetObjectItem(jconvoy, names[0].c_str());
+
+        if (jtype ==  NULL) {
+            SDL_Log("Cannot get %s element", names[0].c_str());
+        } else {
+
+
+
+
+            jitem = cJSON_GetObjectItem(jtype, "Item");
+
+            while (jitem != NULL) {
+                readJSON_item(jitem, &tempitem);
+
+                if (tempitem.id > 0) {
+                    deposit(tempitem);
+                }
+
+                tempitem = empty;
+                jitem = jitem->next;
+            }
+        }
+
+        i *= 2;
+    }
+}
+
+void Convoy::writeJSON(cJSON * in_json) {
+    cJSON * jconvoy = cJSON_CreateObject();
+    cJSON * jitems = NULL;
+    Inventory_item * tempitem;
+    std::vector<std::string> names;
+    int quantity;
+    int i = 1;
+
+    while (i < ITEM::TYPE::END) {
+        jitems = cJSON_CreateObject();
+        names = wpnTypes(i);
+        quantity = getQuantity(i);
+        tempitem = getItems(i);
+        writeJSON_items(jitems, tempitem, quantity);
+        cJSON_AddItemToObject(jconvoy, names[0].c_str(), jitems);
+        i *= 2;
+
+    }
+
+    cJSON_AddItemToObject(in_json, "Convoy", jconvoy);
+
 }

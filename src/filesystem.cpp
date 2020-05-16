@@ -89,6 +89,14 @@ int init(char * argvZero, char * baseDir, char * assetsPath) {
     return 1;
 }
 
+const char * fextension(const char * filename) {
+    const char * dot = strrchr(filename, '.');
+
+    if (!dot || dot == filename) { return ""; }
+
+    return dot + 1;
+}
+
 void loadFileToMemory(const char * name, unsigned char ** mem, size_t * len, bool addnull) {
     PHYSFS_File * physfs_file = PHYSFS_openRead(name);
 

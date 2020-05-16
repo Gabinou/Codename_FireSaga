@@ -70,7 +70,7 @@ void testConvoysortused() {
     convoy.printStats(ITEM::TYPE::SWORD, ITEM::STAT::USES_LEFT);
 }
 
-void testConvoyWriteXML() {
+void testConvoyWriteRead() {
     Convoy convoy;
     Inventory_item temp;
     temp.id = ITEM::NAME::WOODEN_SWORD;
@@ -135,11 +135,15 @@ void testConvoyWriteXML() {
     temp.id = ITEM::NAME::SPEAR;
     convoy.deposit(temp);
     convoy.writeXML("convoy_test.xml", false);
+    convoy.writeJSON("convoy_test.json", false);
 
-    Convoy convoy2;
+    Convoy convoy2, convoy3;
     convoy2.readXML("convoy_test.xml");
     convoy2.writeXML("convoy_rewrite.xml");
     lok(fequal("convoy_rewrite.xml", "convoy_test.xml"));
+    convoy3.readJSON("convoy_test.json");
+    convoy3.writeJSON("convoy_rewrite.json");
+    lok(fequal("convoy_rewrite.json", "convoy_test.json"));
 }
 
 void testConvoysortStats() {
@@ -283,6 +287,6 @@ void testConvoysortStats() {
 void test_convoy() {
     testConvoyfull();
     testConvoysortStats();
-    testConvoyWriteXML();
+    testConvoyWriteRead();
     testConvoysortused();
 }

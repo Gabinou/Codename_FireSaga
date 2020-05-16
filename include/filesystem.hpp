@@ -66,6 +66,8 @@ extern void writeJSON_mvtcost(cJSON * in_jcost, Movement_cost * in_cost);
 extern void printJSON(PHYSFS_file * in_fp, cJSON * in_json);
 extern cJSON * parseJSON(const char * filename);
 
+extern const char * fextension(const char * filename);
+
 class XML_IO {
 private:
     std::string xmlElement = "";

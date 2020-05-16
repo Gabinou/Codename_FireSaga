@@ -13,7 +13,7 @@
 #include <string>
 #include <algorithm>
 
-class Convoy : public XML_IO {
+class Convoy : public XML_IO, JSON_IO {
 private:
     unsigned int bank = 0;
     unsigned char  booksnum = 0;
@@ -54,7 +54,11 @@ public:
     void printContents(int wpntype); // Useless?
     void printStats(int wpntype, int stattype);
 
-    void write(const char * filename, const char * mode = "a");
+    using JSON_IO::writeJSON;
+    using JSON_IO::readJSON;
+    void readJSON(cJSON * in_json);
+    void writeJSON(cJSON * in_json);
+
     using XML_IO::writeXML;
     using XML_IO::readXML;
     void writeXML(tinyxml2::XMLDocument * in_doc, tinyxml2::XMLElement * in_pConvoy);
