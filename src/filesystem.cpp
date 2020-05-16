@@ -448,6 +448,26 @@ void readJSON_mvtcost(cJSON * in_jcost, Movement_cost * in_cost) {
     in_cost->bandits = cJSON_GetNumberValue(jbandits);
 }
 
+void writeJSON_tilemap(cJSON * in_jtilemap, std::vector<std::vector<short int>> in_tilemap) {
+    cJSON * jrow;
+    cJSON * jnum;
+    char rowname[8];
+
+    jrow = cJSON_CreateArray();
+
+    for (int row = 0; row < in_tilemap.size(); row++) {// This loop cache friendly.
+        jrow = cJSON_CreateArray();
+
+        for (int col = 0; col < in_tilemap[row].size(); col++) {
+            jnum = cJSON_CreateNumber(in_tilemap[row][col]);
+            cJSON_AddItemToArray(jrow, jnum);
+        }
+
+        stbsp_sprintf(rowname, "row %d", row);
+        cJSON_AddItemToObject(in_jtilemap, rowname, jrow);
+    }
+}
+
 void writeJSON_mvtcost(cJSON * in_jcost, Movement_cost * in_cost) {
     cJSON * jfoot_slow = cJSON_CreateNumber(in_cost->foot_slow);
     cJSON * jfoot_fast = cJSON_CreateNumber(in_cost->foot_fast);

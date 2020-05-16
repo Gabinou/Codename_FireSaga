@@ -137,6 +137,9 @@ void Map::writeJSON(cJSON * in_json) {
         cJSON_AddItemToObject(joffset, "offset_row", joffset_row);
         cJSON_AddItemToObject(joffset, "offset_col", joffset_col);
         cJSON_AddItemToObject(jmap, "Offset", joffset);
+        cJSON * jtilemap = cJSON_CreateObject();
+        writeJSON_tilemap(jtilemap, tilemap);
+        cJSON_AddItemToObject(jmap, "tilemap", jtilemap);
     }
 }
 
