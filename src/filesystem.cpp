@@ -448,6 +448,30 @@ void readJSON_mvtcost(cJSON * in_jcost, Movement_cost * in_cost) {
     in_cost->bandits = cJSON_GetNumberValue(jbandits);
 }
 
+std::vector<std::vector<short int>> readJSON_tilemap(cJSON * in_jtilemap) {
+    std::vector<std::vector<short int>> out;
+    std::vector<short int> row_temp;
+    short int rownum = 0;
+    char rowname[8];
+
+    cJSON * jrow;
+    cJSON * jnum;
+
+    while (jrow != NULL) {
+        stbsp_sprintf(rowname, "row %d", rownum);
+        jrow = cJSON_GetObjectItem(in_jtilemap, rowname);
+        jrow = jrow->next;
+        row_temp.clear();
+        cJSON_ArrayForEach(jnum, jrow) {
+            row_temp.push_back(cJSON_GetNumberValue(jnum));
+        }
+        out.push_back(row_temp);
+        rownum++;
+    }
+
+    return (out);
+}
+
 void writeJSON_tilemap(cJSON * in_jtilemap, std::vector<std::vector<short int>> in_tilemap) {
     cJSON * jrow;
     cJSON * jnum;

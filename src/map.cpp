@@ -96,6 +96,9 @@ void Map::readJSON(cJSON * in_json) {
     offset[0] = cJSON_GetNumberValue(jrow_min);
     offset[1] = cJSON_GetNumberValue(jrow_min);
 
+    cJSON * jtilemap = cJSON_GetObjectItem(jmap, "tilemap");
+    tilemap = readJSON_tilemap(jtilemap);
+
 }
 
 void Map::writeJSON(cJSON * in_json) {
