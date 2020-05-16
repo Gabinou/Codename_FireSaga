@@ -25,7 +25,7 @@ int main(int argc, char * argv[]) {
     SDL_Log("Initializing filesystem\n");
     char * buildDir = SDL_GetBasePath();
     char * assetsDir = strdup(buildDir);
-    char * srcDir = strdup(buildDir);
+    char * srcDir = strdup(buildDir); // srcDir, future home of release.exe
     path_removefolder(assetsDir);
     path_removefolder(srcDir);
     strncat(assetsDir, "assets\\", 6);
