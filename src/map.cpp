@@ -111,14 +111,23 @@ void Map::writeJSON(cJSON * in_json) {
             SDL_Log("Not the same number of tilenames as tileindex.");
         }
 
-        cJSON * jarrival;
-        cJSON * jarrivals = cJSON_CreateObject();
-        cJSON_AddItemToObject(jmap, "Arrivals", jarrivals);
+        if (map_arrivals.size() == arrival_equipments.size()) {
+            cJSON * jarrival;
+            cJSON * jarrivals = cJSON_CreateObject();
+            cJSON * jarrivaleq;
+            cJSON_AddItemToObject(jmap, "Arrivals", jarrivals);
 
-        for (int i = 0; i < map_arrivals.size(); i++) {
-            jarrival = cJSON_CreateObject();
-            writeJSON_arrival(jarrival, &map_arrivals[i]);
-            cJSON_AddItemToObject(jarrivals, "Arrival", jarrival);
+            for (int i = 0; i < map_arrivals.size(); i++) {
+                jarrival = cJSON_CreateObject();
+                jarrivaleq = cJSON_CreateObject();
+                writeJSON_arrival(jarrival, &map_arrivals[i]);
+                writeJSON_items(jarrivaleq, arrival_equipments[i]);
+                cJSON_AddItemToObject(jarrival, "Equipment", jarrivaleq);
+                cJSON_AddItemToObject(jarrivals, "Arrival", jarrival);
+            }
+
+        } else {
+            SDL_Log("Different numbers of arrivals to arrival_equipments");
         }
 
         cJSON * jbounds = cJSON_CreateObject();
@@ -835,6 +844,18 @@ std::vector<std::vector<Inventory_item>> chapTestEquipments() {
     std::vector<Inventory_item> temp_equipment;
     Inventory_item temp_item;
 
+    temp_item.id = ITEM::NAME::IRON_AXE;
+    temp_equipment.push_back(temp_item);
+    temp_item.id = ITEM::NAME::WOODEN_SHIELD;
+    temp_equipment.push_back(temp_item);
+    out.push_back(temp_equipment);
+    temp_equipment.clear();
+    temp_item.id = ITEM::NAME::IRON_AXE;
+    temp_equipment.push_back(temp_item);
+    temp_item.id = ITEM::NAME::WOODEN_SHIELD;
+    temp_equipment.push_back(temp_item);
+    out.push_back(temp_equipment);
+    temp_equipment.clear();
     temp_item.id = ITEM::NAME::IRON_AXE;
     temp_equipment.push_back(temp_item);
     temp_item.id = ITEM::NAME::WOODEN_SHIELD;

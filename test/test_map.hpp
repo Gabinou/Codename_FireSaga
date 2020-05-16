@@ -3,48 +3,24 @@
 #include "sprite.hpp"
 #include <entityx/entityx.h>
 
-void test_map() {
-    entityx::EntityX ex;
-    short int tilesize = 32;
-    Map map(tilesize, tilesize);
-
+void aremapsequal(Map map1, Map map2) {
     std::vector<short int> in_tilesindex, out_tilesindex;
-    in_tilesindex = chapTiles[0]();
-    map.loadTiles(0);
-    out_tilesindex = map.getTilesindex();
+    in_tilesindex = map1.getTilesindex();
+    out_tilesindex = map2.getTilesindex();
     lok(in_tilesindex == out_tilesindex);
+
     std::vector<std::vector<short int>> in_tilemap, out_tilemap;
-    in_tilemap = testTilemap();
-    map.loadTilemap(0);
-    out_tilemap = map.getTilemap();
+    in_tilemap = map1.getTilemap();
+    out_tilemap = map2.getTilemap();
     lok(in_tilemap == out_tilemap);
 
-    lok(map.getOffset()[0] == 1);
-    lok(map.getOffset()[1] == 1);
-
-    Point tiles_pos;
-    tiles_pos = map.pixel2tile(tilesize - 4, tilesize - 4);
-    lok(tiles_pos.y == 0);
-    lok(tiles_pos.y == 0);
-
-    tiles_pos = map.pixel2tile(tilesize + 4, tilesize + 4);
-    lok(tiles_pos.x == 0);
-    lok(tiles_pos.y == 0);
-
-    tiles_pos = map.pixel2tile(tilesize * 2 + 4, tilesize * 2 + 4);
-    lok(tiles_pos.x == 1);
-    lok(tiles_pos.y == 1);
-
-    tiles_pos = map.pixel2tile(tilesize * 100 + 4, tilesize * 100 + 4);
-    lok(tiles_pos.x == (map.getBounds()[1] - map.getOffset()[0]));
-    lok(tiles_pos.y == (map.getBounds()[3] - map.getOffset()[1]));
+    lok(map1.getOffset()[0] == map2.getOffset()[0]);
+    lok(map1.getOffset()[1] == map2.getOffset()[1]);
 
     std::vector<Map_arrival> in_arrivals, out_arrivals;
     std::vector<std::vector<Inventory_item>> in_arrivalequipments, out_arrivalequipments;
-    in_arrivals = mapArrivals[0]();
-    in_arrivalequipments = arrivalEquipments[0]();
-    map.setArrivals(in_arrivals);
-    out_arrivals = map.getArrivals();
+    in_arrivals = map1.getArrivals();
+    out_arrivals = map2.getArrivals();
 
     if (out_arrivals.size() == in_arrivals.size()) {
         lok(true);
@@ -58,14 +34,94 @@ void test_map() {
         }
     }
 
-    map.setArrivalEquipments(in_arrivalequipments);
-    out_arrivalequipments = map.getArrivalEquipments();
+    in_arrivalequipments = map1.getArrivalEquipments();
+    out_arrivalequipments = map2.getArrivalEquipments();
 
-    if (out_arrivalequipments.size() == out_arrivalequipments.size()) {
+    if (out_arrivalequipments.size() == in_arrivalequipments.size()) {
         lok(true);
 
         for (short int i = 0; i < out_arrivalequipments.size(); i++) {
-            if (out_arrivalequipments[i].size() == out_arrivalequipments[i].size()) {
+            if (out_arrivalequipments[i].size() == in_arrivalequipments[i].size()) {
+                lok(true);
+
+                for (short int j = 0; j < out_arrivalequipments[i].size(); j++) {
+                    lok(out_arrivalequipments[i][j].id == in_arrivalequipments[i][j].id);
+                    lok(out_arrivalequipments[i][j].used == in_arrivalequipments[i][j].used);
+                    lok(out_arrivalequipments[i][j].infused == in_arrivalequipments[i][j].infused);
+                }
+            }
+        }
+    }
+}
+
+
+void test_map() {
+    entityx::EntityX ex;
+    short int tilesize = 32;
+    Map map1(tilesize, tilesize);
+    Map map2, map3;
+
+    std::vector<short int> in_tilesindex, out_tilesindex;
+    in_tilesindex = chapTiles[0]();
+    map1.loadTiles(0);
+    out_tilesindex = map1.getTilesindex();
+    lok(in_tilesindex == out_tilesindex);
+    std::vector<std::vector<short int>> in_tilemap, out_tilemap;
+    in_tilemap = testTilemap();
+    map1.loadTilemap(0);
+    out_tilemap = map1.getTilemap();
+    lok(in_tilemap == out_tilemap);
+
+    lok(map1.getOffset()[0] == 1);
+    lok(map1.getOffset()[1] == 1);
+
+    Point tiles_pos;
+    tiles_pos = map1.pixel2tile(tilesize - 4, tilesize - 4);
+    lok(tiles_pos.x == 0);
+    lok(tiles_pos.y == 0);
+
+    tiles_pos = map1.pixel2tile(tilesize + 4, tilesize + 4);
+    lok(tiles_pos.x == 0);
+    lok(tiles_pos.y == 0);
+
+    tiles_pos = map1.pixel2tile(tilesize * 2 + 4, tilesize * 2 + 4);
+    lok(tiles_pos.x == 1);
+    lok(tiles_pos.y == 1);
+
+    tiles_pos = map1.pixel2tile(tilesize * 100 + 4, tilesize * 100 + 4);
+    lok(tiles_pos.x == (map1.getBounds()[1] - map1.getOffset()[0]));
+    lok(tiles_pos.y == (map1.getBounds()[3] - map1.getOffset()[1]));
+
+    std::vector<Map_arrival> in_arrivals, out_arrivals;
+    std::vector<std::vector<Inventory_item>> in_arrivalequipments, out_arrivalequipments;
+    in_arrivals = mapArrivals[0]();
+    in_arrivalequipments = arrivalEquipments[0]();
+    lok(in_arrivalequipments.size() == in_arrivals.size());
+
+    map1.setArrivals(in_arrivals);
+    out_arrivals = map1.getArrivals();
+
+    if (out_arrivals.size() == in_arrivals.size()) {
+        lok(true);
+
+        for (short int i = 0; i < in_arrivals.size(); i++) {
+            lok(in_arrivals[i].turn == out_arrivals[i].turn);
+            lok(in_arrivals[i].levelups == out_arrivals[i].levelups);
+            lok(in_arrivals[i].id == out_arrivals[i].id);
+            lok(in_arrivals[i].position.x == out_arrivals[i].position.x);
+            lok(in_arrivals[i].position.y == out_arrivals[i].position.y);
+        }
+    }
+
+    map1.setArrivalEquipments(in_arrivalequipments);
+
+    out_arrivalequipments = map1.getArrivalEquipments();
+
+    if (out_arrivalequipments.size() == in_arrivalequipments.size()) {
+        lok(true);
+
+        for (short int i = 0; i < out_arrivalequipments.size(); i++) {
+            if (out_arrivalequipments[i].size() == in_arrivalequipments[i].size()) {
                 lok(true);
 
                 for (short int j = 0; j < out_arrivalequipments[i].size(); j++) {
@@ -101,8 +157,8 @@ void test_map() {
     Uent1.assign<Unit>(unit1);
     Uent1.assign<Position>(6, 6);
     Uent1.assign<Sprite>(asset_name.c_str());
-    map.putUnit(6, 6, Uent1.component<Unit>());
-    unithandle1 = map.getUnit(6, 6);
+    map1.putUnit(6, 6, Uent1.component<Unit>());
+    unithandle1 = map1.getUnit(6, 6);
 
     if (unithandle1) {
         out_stats = unithandle1->getStats();
@@ -136,9 +192,9 @@ void test_map() {
         lok(false);
     }
 
-    map.moveUnit(6, 6, 7, 7);
-    unithandle1 = map.getUnit(6, 6);
-    unithandle2 = map.getUnit(7, 7);
+    map1.moveUnit(6, 6, 7, 7);
+    unithandle1 = map1.getUnit(6, 6);
+    unithandle2 = map1.getUnit(7, 7);
 
     if (unithandle2) {
         lok(true);
@@ -172,16 +228,19 @@ void test_map() {
         lok(false);
     }
 
-    map.writeXML("map_test.xml");
-    map.writeJSON("map_test.json");
+    map1.writeXML("map_test.xml");
+    map1.writeJSON("map_test.json");
 
-    Map test1, test2;
-    test1.setManager(&ex.entities);
-    test1.readXML("map_test.xml");
-    test1.writeXML("map_rewrite.xml");
+    map2.setManager(&ex.entities);
+    map2.readXML("map_test.xml");
+    map2.writeXML("map_rewrite.xml");
     lok(fequal("map_test.xml", "map_rewrite.xml"));
-    test2.setManager(&ex.entities);
-    test2.readJSON("map_test.json");
-    test2.writeJSON("map_rewrite.json");
+    map3.setManager(&ex.entities);
+    map3.readJSON("map_test.json");
+    map3.writeJSON("map_rewrite.json");
     lok(fequal("map_test.json", "map_rewrite.json"));
+
+    aremapsequal(map1, map2);
+    aremapsequal(map2, map3);
+    aremapsequal(map1, map3);
 }
