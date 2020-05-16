@@ -42,8 +42,13 @@ void Map::readJSON(cJSON * in_json) {
     cJSON * jposition;
     cJSON * jrow;
     cJSON * jcol;
+    cJSON * jequipment;
+    cJSON * jitem;
     Map_arrival temp_arrival;
     map_arrivals.clear();
+    arrival_equipments.clear();
+    Inventory_item temp_item;
+    std::vector<Inventory_item> arrival_equipment;
 
     while (jarrival != NULL) {
         temp_arrival = Map_arrival();
@@ -59,6 +64,19 @@ void Map::readJSON(cJSON * in_json) {
         temp_arrival.position.x = cJSON_GetNumberValue(jrow);
         temp_arrival.position.y = cJSON_GetNumberValue(jcol);
         map_arrivals.push_back(temp_arrival);
+
+        jequipment = cJSON_GetObjectItem(jarrival, "Equipment");
+        jitem = cJSON_GetObjectItem(jequipment, "Equipment");
+        arrival_equipment.clear();
+
+        while (jitem != NULL) {
+            temp_item = Inventory_item();
+            readJSON_item(jitem, &temp_item);
+            arrival_equipment.push_back(temp_item);
+            jitem = jitem->next;
+        }
+
+        arrival_equipments.push_back(arrival_equipment);
         jarrival = jarrival->next;
     }
 
