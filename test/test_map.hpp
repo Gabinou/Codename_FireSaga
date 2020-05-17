@@ -7,12 +7,34 @@ void aremapsequal(Map map1, Map map2) {
     std::vector<short int> in_tilesindex, out_tilesindex;
     in_tilesindex = map1.getTilesindex();
     out_tilesindex = map2.getTilesindex();
-    lok(in_tilesindex == out_tilesindex);
+
+    if (out_tilesindex.size() == in_tilesindex.size()) {
+        for (short int i = 0; i < in_tilesindex.size(); i++) {
+            SDL_Log("%d %d", in_tilesindex[i], out_tilesindex[i]);
+            lok(in_tilesindex[i] == out_tilesindex[i]);
+        }
+    } else {
+        lok(false);
+    }
 
     std::vector<std::vector<short int>> in_tilemap, out_tilemap;
     in_tilemap = map1.getTilemap();
     out_tilemap = map2.getTilemap();
-    lok(in_tilemap == out_tilemap);
+
+    if (in_tilemap.size() == out_tilemap.size()) {
+        for (int row = 0; row < in_tilemap.size(); row++) {// This loop cache friendly.
+            if (in_tilemap[row].size() == out_tilemap[row].size()) {
+
+                for (int col = 0; col < in_tilemap[row].size(); col++) {
+                    lok(in_tilemap[row][col] == out_tilemap[row][col]);
+                }
+            } else {
+                lok(false);
+            }
+        }
+    } else {
+        lok(false);
+    }
 
     lok(map1.getOffset()[0] == map2.getOffset()[0]);
     lok(map1.getOffset()[1] == map2.getOffset()[1]);

@@ -31,7 +31,7 @@ void Map::readJSON(cJSON * in_json) {
     while (jtile != NULL) {
         jid = cJSON_GetObjectItem(jtile, "id");
         jtilename = cJSON_GetObjectItem(jtile, "name");
-        tilesindex.push_back(cJSON_GetNumberValue(jid));
+        tilesindex.push_back(cJSON_GetNumberValue(jid) * DEFAULT::TILE_DIVISOR);
         tilenames.push_back(cJSON_GetStringValue(jtilename));
         jtile = jtile->next;
     }
@@ -197,7 +197,7 @@ void Map::readXML(tinyxml2::XMLElement * in_pMap) {
         pTile = pTiles->FirstChildElement("Tile");
 
         while (pTile) {
-            tilesindex.push_back(pTile->IntAttribute("id"));
+            tilesindex.push_back(pTile->IntAttribute("id") * DEFAULT::TILE_DIVISOR);
             ptemp = pTile->FirstChildElement("Name");
             tilenames.push_back(ptemp->GetText());
             pTile = pTile->NextSiblingElement("Tile");
