@@ -66,7 +66,7 @@ void Map::readJSON(cJSON * in_json) {
         map_arrivals.push_back(temp_arrival);
 
         jequipment = cJSON_GetObjectItem(jarrival, "Equipment");
-        jitem = cJSON_GetObjectItem(jequipment, "Equipment");
+        jitem = cJSON_GetObjectItem(jequipment, "Item");
         arrival_equipment.clear();
 
         while (jitem != NULL) {
