@@ -16,7 +16,7 @@
 #include "test_weapon.hpp"
 
 int main(int argc, char * argv[]) {
-    freopen("test_results.txt", "w+", stdout);
+    freopen("build//test_results.txt", "w+", stdout);
 
     SDL_Log("Initializing utilities\n");
     loadUtilities();

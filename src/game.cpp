@@ -747,7 +747,6 @@ void Game::loadJSON(const short int save_ind) {
     } else {
         char filename[DEFAULT::BUFFER_SIZE] = SAVE_FOLDER;
         char temp[DEFAULT::BUFFER_SIZE];
-        stbsp_snprintf(filename, DEFAULT::BUFFER_SIZE, SAVE_FOLDER);
         stbsp_snprintf(temp, DEFAULT::BUFFER_SIZE, "//save%04d.bsav", save_ind);
         strcat(filename, temp);
         cJSON * json = parseJSON(filename);
@@ -777,7 +776,6 @@ void Game::saveJSON(const short int save_ind) {
 
     char filename[DEFAULT::BUFFER_SIZE] = SAVE_FOLDER;
     char temp[DEFAULT::BUFFER_SIZE];
-    stbsp_snprintf(filename, DEFAULT::BUFFER_SIZE, SAVE_FOLDER);
     stbsp_snprintf(temp, DEFAULT::BUFFER_SIZE, "//save%04d.bsav", save_ind);
     strcat(filename, temp);
     SDL_Log("saveJSON Game to: %s\n", filename);
@@ -812,7 +810,7 @@ void Game::saveXML(const short int save_ind) {
 
     char filename[DEFAULT::BUFFER_SIZE] = SAVE_FOLDER;
     char temp[DEFAULT::BUFFER_SIZE];
-    stbsp_snprintf(filename, DEFAULT::BUFFER_SIZE, SAVE_FOLDER);
+    // stbsp_snprintf(filename, DEFAULT::BUFFER_SIZE, SAVE_FOLDER);
     stbsp_snprintf(temp, DEFAULT::BUFFER_SIZE, "//save%04d.bsav", save_ind);
     strcat(filename, temp);
     SDL_Log("saveXML Game to: %s\n", filename);

@@ -47,4 +47,11 @@ void test_game() {
 
     testgame1->saveJSON(5);
     lok(PHYSFS_exists("saves//save0005.bsav") > 0);
+    Game * testgame3 = nullptr;
+    testgame3 = new Game();
+    testgame3->loadJSON(5);
+    testgame3->saveJSON(6);
+    lok(PHYSFS_exists("saves//save0006.bsav") > 0);
+    lok(fequal("saves//save0005.bsav", "saves//save0006.bsav"));
+    testgame3->clean();
 }
