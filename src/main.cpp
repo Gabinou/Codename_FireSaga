@@ -15,9 +15,11 @@ Game * firesaga = nullptr;
 Settings settings;
 
 int main(int argc, char * argv[]) {
+    SDL_Log("Starting project codename FireSaga\n");
+
+    SDL_Log("Setting log\n");
     fclose(fopen(LOGFILE, "w"));
     SDL_LogSetOutputFunction(&FILESYSTEM::log, NULL);
-    SDL_Log("Starting project codename FireSaga\n");
 
     SDL_Log("Initializing utilities\n");
     loadUtilities();
@@ -38,10 +40,8 @@ int main(int argc, char * argv[]) {
     baseWeapons();
 
     settings.FPS.show = true;
-    settings.fontsize = 28;
-    settings.FPS.cap = 60;
 
-    SDL_Log("Creating game\n");
+    SDL_Log("Creating game object\n");
     firesaga = new Game(settings);
     firesaga->makeUnits(0);
     firesaga->makeFPS();
