@@ -131,6 +131,11 @@ public:
     void copySaveXML(const short int from_ind, const short int to_ind);
     void loadXML(const short int save_ind);
 
+    void saveJSON(const short int save_ind);
+    void deleteSaveJSON(const short int delete_ind);
+    void copySaveJSON(const short int from_ind, const short int to_ind);
+    void loadJSON(const short int save_ind);
+
     bool running();
     void configure(entityx::EventManager & event_manager);
     void update(entityx::TimeDelta dt);

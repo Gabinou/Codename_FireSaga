@@ -381,6 +381,49 @@ void readXML_narrative(tinyxml2::XMLElement * in_pNarrative, Narrative * in_stat
     readXML_narrativeUnits(pUnit, in_state->recruited);
 }
 
+void writeJSON_narrative(cJSON * in_json, Narrative * in_state) {
+    cJSON * jnarrative = cJSON_CreateObject();
+    cJSON_AddItemToObject(in_json, "Narrative", jnarrative);
+    cJSON * jdeath = cJSON_CreateObject();
+    cJSON_AddItemToObject(jnarrative, "Death", jdeath);
+    cJSON * jrecruited = cJSON_CreateObject();
+    cJSON * jname;
+    cJSON * junit;
+    cJSON * jid;
+    cJSON * jrecruited;
+    cJSON * jchapter = cJSON_CreateNumber(in_stats->chapter);
+    cJSON_AddItemToObject(jnarrative, "Chapter", jchapter);
+
+    bool buffbool;
+    std::string name;
+    char buffer[DEFAULT::BUFFER_SIZE];
+
+    for (unsigned int i = UNIT::NAME::ERWIN; i < UNIT::NAME::NPC_END; i++) {
+        name = unitNames[i];
+        buffbool = in_state->death[i - UNIT::NAME::ERWIN];
+        junit = cJSON_CreateObject();
+        jid = cJSON_CreateNumber(i);
+        jname = cJSON_CreateString(name.c_str());
+
+        if (i < UNIT::NAME::PC_END) {
+    //         buffbool = in_state->recruited[i - UNIT::NAME::ERWIN];
+    //         ptemp1 = in_doc->NewElement("Unit");
+    //         ptemp2 = in_doc->NewElement("Recruited");
+    //         ptemp3 = in_doc->NewElement("Name");
+    //         precruited->InsertEndChild(ptemp1);
+    //         ptemp1->InsertEndChild(ptemp3);
+    //         ptemp1->InsertEndChild(ptemp2);
+    //         ptemp2->SetText(buffbool);
+    //         ptemp3->SetText(name.c_str());
+    //         ptemp1->SetAttribute("id", i);
+        } else {
+            jdeath = cJSON_CreateObject();
+
+        }
+    }
+
+}
+
 void writeXML_narrative(tinyxml2::XMLDocument * in_doc, tinyxml2::XMLElement * in_pNarrative, Narrative * in_state) {
     tinyxml2::XMLElement * pdeath = in_doc->NewElement("Death");
     tinyxml2::XMLElement * precruited = in_doc->NewElement("Recruited");

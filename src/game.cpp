@@ -730,6 +730,29 @@ void Game::deleteSaveXML(const short int save_ind) {
     }
 }
 
+void Game::saveJSON(const short int save_ind) {
+
+    if (!PHYSFS_exists(SAVE_FOLDER)) {
+        PHYSFS_mkdir(SAVE_FOLDER);
+    }
+
+    char filename[DEFAULT::BUFFER_SIZE];
+    stbsp_snprintf(filename, DEFAULT::BUFFER_SIZE, SAVE_FOLDER, save_ind);
+    strcat(filename, "//save%04d.bsav");
+    SDL_Log("saveXML Game to: %s\n", filename);
+    PHYSFS_delete(filename);
+    PHYSFS_file * fp = PHYSFS_openWrite(filename);
+
+    if (!fp) {
+        SDL_Log("Could not open %s for writing\n", filename);
+    } else {
+        cJSON * json = cJSON_CreateObject();
+        printJSON(fp, json);
+        PHYSFS_close(fp);
+        cJSON_Delete(json);
+    }
+}
+
 void Game::saveXML(const short int save_ind) {
     char filename[DEFAULT::BUFFER_SIZE];
 
