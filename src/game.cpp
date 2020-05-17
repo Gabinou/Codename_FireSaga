@@ -699,14 +699,22 @@ void Game::loadXML(const short int save_ind) {
     ptemp = xmlDoc.FirstChildElement("Narrative");
 }
 
-void Game::copySaveXML(const short int from_ind, const short int to_ind) {
-    if (!PHYSFS_exists(SAVE_FOLDER)) {
-        SDL_Log("Could not find save folder!");
-    } else {
+void Game::copySave(const short int from_ind, const short int to_ind) {
+        if (!PHYSFS_exists(SAVE_FOLDER)) {
+            SDL_Log("Could not find save folder!");
+        } else {
+                if (!PHYSFS_exists(SAVE_FOLDER)) {
+            PHYSFS_mkdir(SAVE_FOLDER);
+        }
+
         char filenameto[DEFAULT::BUFFER_SIZE];
         char filenamefrom[DEFAULT::BUFFER_SIZE];
-        stbsp_snprintf(filenamefrom, DEFAULT::BUFFER_SIZE, "saves//save%04d.bsav", from_ind);
-        stbsp_snprintf(filenameto, DEFAULT::BUFFER_SIZE, "saves//save%04d.bsav", to_ind);
+        char tempto[DEFAULT::BUFFER_SIZE];
+        char tempfrom[DEFAULT::BUFFER_SIZE];
+        stbsp_snprintf(tempto, DEFAULT::BUFFER_SIZE, "//save%04d.bsav", from_ind);
+        stbsp_snprintf(tempfrom, DEFAULT::BUFFER_SIZE, "//save%04d.bsav", to_ind);
+        strcat(filenameto, tempto);
+        strcat(filenamefrom, tempfrom);
         SDL_Log("copy SaveXML Game from %s to %s\n", filenamefrom, filenameto);
         PHYSFS_file * pfrom = PHYSFS_openRead(filenamefrom);
         PHYSFS_file * pto = PHYSFS_openWrite(filenameto);
@@ -719,16 +727,19 @@ void Game::copySaveXML(const short int from_ind, const short int to_ind) {
     }
 }
 
-void Game::deleteSaveXML(const short int save_ind) {
+void Game::deleteSave(const short int save_ind) {
     if (!PHYSFS_exists(SAVE_FOLDER)) {
         SDL_Log("Could not find save folder!");
     } else {
         char filename[DEFAULT::BUFFER_SIZE];
-        stbsp_snprintf(filename, DEFAULT::BUFFER_SIZE, "saves//save%04d.bsav", save_ind);
+        char temp[DEFAULT::BUFFER_SIZE];
+        stbsp_snprintf(temp, DEFAULT::BUFFER_SIZE, "//save%04d.bsav", save_ind);
+        strcat(filename, temp);
         SDL_Log("Deleting Game: %s\n", filename);
         PHYSFS_delete(filename);
     }
 }
+void loadJSON(const short int save_ind);
 
 void Game::saveJSON(const short int save_ind) {
 

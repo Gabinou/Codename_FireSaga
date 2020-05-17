@@ -126,14 +126,12 @@ public:
     void setState(const short unsigned int new_state);
     short unsigned int getState();
 
+    void deleteSave(const short int delete_ind);
+    void copySave(const short int from_ind, const short int to_ind);
     void saveXML(const short int save_ind);
-    void deleteSaveXML(const short int delete_ind);
-    void copySaveXML(const short int from_ind, const short int to_ind);
     void loadXML(const short int save_ind);
 
     void saveJSON(const short int save_ind);
-    void deleteSaveJSON(const short int delete_ind);
-    void copySaveJSON(const short int from_ind, const short int to_ind);
     void loadJSON(const short int save_ind);
 
     bool running();
