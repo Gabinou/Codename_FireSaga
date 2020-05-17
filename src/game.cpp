@@ -747,6 +747,19 @@ void Game::saveJSON(const short int save_ind) {
         SDL_Log("Could not open %s for writing\n", filename);
     } else {
         cJSON * json = cJSON_CreateObject();
+        writeJSON_narrative(json, &narrative);
+        cJSON * jparty = cJSON_CreateObject();
+        cJSON * junit;
+
+        for (auto it = units.begin(); it != units.end(); it++) {
+            junit = cJSON_CreateObject()
+                    it->second.writeJSON(junit);
+            cJSON_AddItemToObject(jparty, "Party", junit);
+        }
+
+        cJSON_AddItemToObject(json, "party", jparty);
+        cJSON * jparty = cJSON_CreateObject();
+        convoy.writeJSON(in_json);
         printJSON(fp, json);
         PHYSFS_close(fp);
         cJSON_Delete(json);
