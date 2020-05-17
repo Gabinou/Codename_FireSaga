@@ -381,6 +381,23 @@ void readXML_narrative(tinyxml2::XMLElement * in_pNarrative, Narrative * in_stat
     readXML_narrativeUnits(pUnit, in_state->recruited);
 }
 
+void readJSON_narrative(cJSON * in_jnarrative, Narrative * in_state) {
+    cJSON * jchapter = cJSON_GetObjectItem(in_jnarrative, "Chapter");
+    cJSON * jdeaths = cJSON_GetObjectItem(in_jnarrative, "Deaths");
+    cJSON * jrecruited = cJSON_GetObjectItem(in_jnarrative, "Recruited");
+    in_state->chapter = cJSON_GetNumberValue(jchapter);
+    cJSON * junit = cJSON_GetObjectItem(in_jnarrative, "Unit");
+    cJSON * jdeath;
+    short int i = UNIT::NAME::ERWIN;
+
+    while (junit != NULL) {
+        in_state->death[i] = cJSON_IsTrue();
+        junit = junit->next;
+        i++
+    }
+}
+
+
 void writeJSON_narrative(cJSON * in_json, Narrative * in_state) {
     cJSON * jnarrative = cJSON_CreateObject();
     cJSON_AddItemToObject(in_json, "Narrative", jnarrative);
@@ -403,15 +420,6 @@ void writeJSON_narrative(cJSON * in_json, Narrative * in_state) {
 
     for (unsigned int i = UNIT::NAME::ERWIN; i < UNIT::NAME::NPC_END; i++) {
         name = unitNames[i];
-        buffbool = in_state->death[i - UNIT::NAME::ERWIN];
-        junit1 = cJSON_CreateObject();
-        jid = cJSON_CreateNumber(i);
-        jisdead = cJSON_CreateBool(buffbool);
-        jname = cJSON_CreateString(name.c_str());
-        cJSON_AddItemToObject(jdeath, "Unit", junit1);
-        cJSON_AddItemToObject(junit1, "id", jid);
-        cJSON_AddItemToObject(junit1, "Name", jname);
-        cJSON_AddItemToObject(junit1, "Died", jisdead);
 
         if (i < UNIT::NAME::PC_END) {
             buffbool = in_state->recruited[i - UNIT::NAME::ERWIN];
@@ -423,6 +431,17 @@ void writeJSON_narrative(cJSON * in_json, Narrative * in_state) {
             cJSON_AddItemToObject(junit2, "Name", jname);
             cJSON_AddItemToObject(junit2, "Recruited", jisrecruited);
         }
+
+        buffbool = in_state->death[i - UNIT::NAME::ERWIN];
+        junit1 = cJSON_CreateObject();
+        jid = cJSON_CreateNumber(i);
+        jisdead = cJSON_CreateBool(buffbool);
+        jname = cJSON_CreateString(name.c_str());
+        cJSON_AddItemToObject(jdeath, "Unit", junit1);
+        cJSON_AddItemToObject(junit1, "id", jid);
+        cJSON_AddItemToObject(junit1, "Name", jname);
+        cJSON_AddItemToObject(junit1, "Died", jisdead);
+
 
     }
 }

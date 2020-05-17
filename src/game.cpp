@@ -739,7 +739,19 @@ void Game::deleteSave(const short int save_ind) {
         PHYSFS_delete(filename);
     }
 }
-void loadJSON(const short int save_ind);
+void loadJSON(const short int save_ind) {
+    if (!PHYSFS_exists(SAVE_FOLDER)) {
+        SDL_Log("Could not find save folder!");
+    } else {
+        SDL_Log("readJSON file: %s", filename);
+        cJSON * json = parseJSON(filename);
+        cJSON * jnarrative = cJSON_GetObjectItem(json, "Narrative");
+
+        cJSON * jparty = cJSON_GetObjectItem(json, "Party");
+        cJSON * jconvoy = cJSON_GetObjectItem(json, "Convoy");
+
+    }
+}
 
 void Game::saveJSON(const short int save_ind) {
 
