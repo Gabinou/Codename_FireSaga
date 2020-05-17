@@ -760,8 +760,8 @@ void Game::loadJSON(const short int save_ind) {
 
         while (junit != NULL) {
             temp_unit = Unit();
-            temp_unit.readJSON(junit);
-            party[temp_unit.getid()] = temp_unit;
+            //     temp_unit.readJSON(junit);
+            //     party[temp_unit.getid()] = temp_unit;
             junit = junit->next;
         }
 

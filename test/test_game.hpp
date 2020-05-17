@@ -37,13 +37,13 @@ void test_game() {
     lok(PHYSFS_exists("saves//save0002.bsav") == 0);
     testgame1->clean();
 
-    Game * testgame2 = nullptr;
-    testgame2 = new Game();
-    testgame2->loadXML(1);
-    testgame2->saveXML(2);
-    lok(PHYSFS_exists("saves//save0002.bsav") > 0);
-    lok(fequal("saves//save0001.bsav", "saves//save0002.bsav"));
-    testgame2->clean();
+    // Game * testgame2 = nullptr;
+    // testgame2 = new Game();
+    // testgame2->loadXML(1);
+    // testgame2->saveXML(2);
+    // lok(PHYSFS_exists("saves//save0002.bsav") > 0);
+    // lok(fequal("saves//save0001.bsav", "saves//save0002.bsav"));
+    // testgame2->clean();
 
     testgame1->saveJSON(5);
     lok(PHYSFS_exists("saves//save0005.bsav") > 0);
