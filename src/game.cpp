@@ -737,8 +737,10 @@ void Game::saveJSON(const short int save_ind) {
     }
 
     char filename[DEFAULT::BUFFER_SIZE];
-    stbsp_snprintf(filename, DEFAULT::BUFFER_SIZE, SAVE_FOLDER, save_ind);
-    strcat(filename, "//save%04d.bsav");
+    char temp[DEFAULT::BUFFER_SIZE];
+    stbsp_snprintf(filename, DEFAULT::BUFFER_SIZE, SAVE_FOLDER);
+    stbsp_snprintf(temp, DEFAULT::BUFFER_SIZE, "//save%04d.bsav", save_ind);
+    strcat(filename, temp);
     SDL_Log("saveXML Game to: %s\n", filename);
     PHYSFS_delete(filename);
     PHYSFS_file * fp = PHYSFS_openWrite(filename);
@@ -752,14 +754,12 @@ void Game::saveJSON(const short int save_ind) {
         cJSON * junit;
 
         for (auto it = units.begin(); it != units.end(); it++) {
-            junit = cJSON_CreateObject()
-                    it->second.writeJSON(junit);
-            cJSON_AddItemToObject(jparty, "Party", junit);
+            junit = cJSON_CreateObject();
+            it->second.writeJSON(jparty);
         }
 
-        cJSON_AddItemToObject(json, "party", jparty);
-        cJSON * jparty = cJSON_CreateObject();
-        convoy.writeJSON(in_json);
+        cJSON_AddItemToObject(json, "Party", jparty);
+        convoy.writeJSON(json);
         printJSON(fp, json);
         PHYSFS_close(fp);
         cJSON_Delete(json);

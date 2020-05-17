@@ -44,4 +44,7 @@ void test_game() {
     lok(PHYSFS_exists("saves//save0002.bsav") > 0);
     lok(fequal("saves//save0001.bsav", "saves//save0002.bsav"));
     testgame2->clean();
+
+    testgame1->saveJSON(5);
+    lok(PHYSFS_exists("saves//save0005.bsav") > 0);
 }
