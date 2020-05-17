@@ -700,10 +700,10 @@ void Game::loadXML(const short int save_ind) {
 }
 
 void Game::copySave(const short int from_ind, const short int to_ind) {
+    if (!PHYSFS_exists(SAVE_FOLDER)) {
+        SDL_Log("Could not find save folder!");
+    } else {
         if (!PHYSFS_exists(SAVE_FOLDER)) {
-            SDL_Log("Could not find save folder!");
-        } else {
-                if (!PHYSFS_exists(SAVE_FOLDER)) {
             PHYSFS_mkdir(SAVE_FOLDER);
         }
 

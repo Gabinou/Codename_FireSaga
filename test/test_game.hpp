@@ -26,14 +26,14 @@ void test_game() {
 
     testgame1->saveXML(1);
     lok(PHYSFS_exists("saves//save0001.bsav") > 0);
-    testgame1->copySaveXML(1, 2);
+    testgame1->copySave(1, 2);
     lok(PHYSFS_exists("saves//save0002.bsav") > 0);
     lok(fequal("saves//save0002.bsav", "saves//save0001.bsav"));
-    testgame1->copySaveXML(2, 3);
+    testgame1->copySave(2, 3);
     lok(PHYSFS_exists("saves//save0003.bsav") > 0);
     lok(fequal("saves//save0002.bsav", "saves//save0003.bsav"));
     lok(fequal("saves//save0001.bsav", "saves//save0003.bsav"));
-    testgame1->deleteSaveXML(2);
+    testgame1->deleteSave(2);
     lok(PHYSFS_exists("saves//save0002.bsav") == 0);
     testgame1->clean();
 
