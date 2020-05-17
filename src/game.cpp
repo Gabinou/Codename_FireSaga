@@ -769,7 +769,7 @@ void Game::saveJSON(const short int save_ind) {
     stbsp_snprintf(filename, DEFAULT::BUFFER_SIZE, SAVE_FOLDER);
     stbsp_snprintf(temp, DEFAULT::BUFFER_SIZE, "//save%04d.bsav", save_ind);
     strcat(filename, temp);
-    SDL_Log("saveXML Game to: %s\n", filename);
+    SDL_Log("saveJSON Game to: %s\n", filename);
     PHYSFS_delete(filename);
     PHYSFS_file * fp = PHYSFS_openWrite(filename);
 
@@ -777,7 +777,9 @@ void Game::saveJSON(const short int save_ind) {
         SDL_Log("Could not open %s for writing\n", filename);
     } else {
         cJSON * json = cJSON_CreateObject();
+        SDL_Log("Until here");
         writeJSON_narrative(json, &narrative);
+        SDL_Log("Until here");
         cJSON * jparty = cJSON_CreateObject();
         cJSON * junit;
 

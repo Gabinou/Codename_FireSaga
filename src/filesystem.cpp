@@ -398,7 +398,6 @@ void readJSON_narrative(cJSON * in_jnarrative, Narrative * in_state) {
     }
 }
 
-
 void writeJSON_narrative(cJSON * in_json, Narrative * in_state) {
     cJSON * jnarrative = cJSON_CreateObject();
     cJSON_AddItemToObject(in_json, "Narrative", jnarrative);
@@ -424,6 +423,7 @@ void writeJSON_narrative(cJSON * in_json, Narrative * in_state) {
 
         if (i < UNIT::NAME::PC_END) {
             buffbool = in_state->recruited[i - UNIT::NAME::ERWIN];
+            jid = cJSON_CreateNumber(i);
             jname = cJSON_CreateString(name.c_str());
             junit2 = cJSON_CreateObject();
             jisrecruited = cJSON_CreateBool(buffbool);
@@ -442,10 +442,9 @@ void writeJSON_narrative(cJSON * in_json, Narrative * in_state) {
         cJSON_AddItemToObject(junit1, "id", jid);
         cJSON_AddItemToObject(junit1, "Name", jname);
         cJSON_AddItemToObject(junit1, "Died", jisdead);
-
-
     }
 }
+
 void writeXML_narrative(tinyxml2::XMLDocument * in_doc, tinyxml2::XMLElement * in_pNarrative, Narrative * in_state) {
     tinyxml2::XMLElement * pdeath = in_doc->NewElement("Death");
     tinyxml2::XMLElement * precruited = in_doc->NewElement("Recruited");
