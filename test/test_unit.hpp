@@ -74,31 +74,35 @@ void test_unit() {
     lok(in_stats.con >= out_stats.con);
     lok(in_stats.move >= out_stats.move);
     lok(in_stats.prof >= out_stats.prof);
+    
+    if (PHYSFS_stat("saves", nullptr) == 0) {
+        PHYSFS_mkdir("saves");
+    } 
 
-    unit1.writeXML("unit_test.xml");
-    unit1.writeXML("unit_test.binou");
+    unit1.writeXML("saves//unit_test.xml");
+    unit1.writeXML("saves//unit_test.binou");
     unit2 = Unit();
-    unit2.readXML("unit_test.xml");
-    unit2.writeXML("unit_rewrite.xml");
+    unit2.readXML("saves//unit_test.xml");
+    unit2.writeXML("saves//unit_rewrite.xml");
     unit3 = Unit();
-    unit3.readXML("unit_test.binou");
-    unit3.writeXML("unit_rewrite.binou");
+    unit3.readXML("saves//unit_test.binou");
+    unit3.writeXML("saves//unit_rewrite.binou");
 
-    lok(fequal("unit_test.xml", "unit_test.binou"));
-    lok(fequal("unit_test.xml", "unit_rewrite.xml"));
-    lok(fequal("unit_test.binou", "unit_rewrite.binou"));
+    lok(fequal("saves//unit_test.xml", "saves//unit_test.binou"));
+    lok(fequal("saves//unit_test.xml", "saves//unit_rewrite.xml"));
+    lok(fequal("saves//unit_test.binou", "saves//unit_rewrite.binou"));
 
-    unit1.writeJSON("unit_test.json");
-    unit1.writeJSON("unit_testj.binou");
+    unit1.writeJSON("saves//unit_test.json");
+    unit1.writeJSON("saves//unit_testj.binou");
     unit4 = Unit();
-    unit4.readJSON("unit_test.json");
-    unit4.writeJSON("unit_rewrite.json");
+    unit4.readJSON("saves//unit_test.json");
+    unit4.writeJSON("saves//unit_rewrite.json");
     unit5 = Unit();
-    unit5.readJSON("unit_testj.binou");
-    unit5.writeJSON("unit_rewritej.binou");
+    unit5.readJSON("saves//unit_testj.binou");
+    unit5.writeJSON("saves//unit_rewritej.binou");
 
-    lok(fequal("unit_test.json", "unit_testj.binou"));
-    lok(fequal("unit_test.json", "unit_rewrite.json"));
-    lok(fequal("unit_testj.binou", "unit_rewritej.binou"));
+    lok(fequal("saves//unit_test.json", "saves//unit_testj.binou"));
+    lok(fequal("saves//unit_test.json", "saves//unit_rewrite.json"));
+    lok(fequal("saves//unit_testj.binou", "saves//unit_rewritej.binou"));
 
 }

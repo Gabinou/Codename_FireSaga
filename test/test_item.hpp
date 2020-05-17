@@ -3,6 +3,11 @@
 #include "structs.hpp"
 
 void test_item() {
+
+    if (PHYSFS_stat("saves", nullptr) == 0) {
+        PHYSFS_mkdir("saves");
+    } 
+
     Item item1, item2, item3;
     Unit_stats in_stats = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11};
     Unit_stats out_stats;
@@ -51,12 +56,12 @@ void test_item() {
     lok(in_stats.prof == out_stats.prof);
 
     // item1.writeXML("item_test.xml");
-    item1.writeJSON("item_test.json");
+    item1.writeJSON("saves//item_test.json");
 
     // item2 = item();
-    // item2.readXML("item_test.xml");
+    // item2.readXML("saves//item_test.xml");
     item2 = Item();
-    item2.readJSON("item_test.json");
+    item2.readJSON("saves//item_test.json");
 
     out_description = item2.getDescription();
     lok(in_description == out_description);
@@ -89,8 +94,6 @@ void test_item() {
     lok(in_stats.move == out_stats.move);
     lok(in_stats.prof == out_stats.prof);
 
-    // item2.writeXML("item_rewrite.xml");
-    item2.writeJSON("item_rewrite.json");
-    // lok(fequal("item_test.xml", "item_rewrite.xml"));
-    lok(fequal("item_test.json", "item_rewrite.json"));
+    item2.writeJSON("saves//item_rewrite.json");
+    lok(fequal("saves//item_test.json", "saves//item_rewrite.json"));
 }

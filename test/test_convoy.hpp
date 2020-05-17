@@ -134,16 +134,21 @@ void testConvoyWriteRead() {
     convoy.deposit(temp);
     temp.id = ITEM::NAME::SPEAR;
     convoy.deposit(temp);
-    convoy.writeXML("convoy_test.xml", false);
-    convoy.writeJSON("convoy_test.json", false);
+
+    if (PHYSFS_stat("saves", nullptr) == 0) {
+        PHYSFS_mkdir("saves");
+    } 
+    
+    convoy.writeXML("saves//convoy_test.xml", false);
+    convoy.writeJSON("saves//convoy_test.json", false);
 
     Convoy convoy2, convoy3;
-    convoy2.readXML("convoy_test.xml");
-    convoy2.writeXML("convoy_rewrite.xml");
-    lok(fequal("convoy_rewrite.xml", "convoy_test.xml"));
-    convoy3.readJSON("convoy_test.json");
-    convoy3.writeJSON("convoy_rewrite.json");
-    lok(fequal("convoy_rewrite.json", "convoy_test.json"));
+    convoy2.readXML("saves//convoy_test.xml");
+    convoy2.writeXML("saves//convoy_rewrite.xml");
+    lok(fequal("saves//convoy_rewrite.xml", "saves//convoy_test.xml"));
+    convoy3.readJSON("saves//convoy_test.json");
+    convoy3.writeJSON("saves//convoy_rewrite.json");
+    lok(fequal("saves//convoy_rewrite.json", "saves//convoy_test.json"));
 }
 
 void testConvoysortStats() {

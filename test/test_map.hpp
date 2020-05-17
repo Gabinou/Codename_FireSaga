@@ -228,17 +228,21 @@ void test_map() {
         lok(false);
     }
 
-    map1.writeXML("map_test.xml");
-    map1.writeJSON("map_test.json");
+    if (PHYSFS_stat("saves", nullptr) == 0) {
+        PHYSFS_mkdir("saves");
+    }
+
+    map1.writeXML("saves//map_test.xml");
+    map1.writeJSON("saves//map_test.json");
 
     map2.setManager(&ex.entities);
-    map2.readXML("map_test.xml");
-    map2.writeXML("map_rewrite.xml");
-    lok(fequal("map_test.xml", "map_rewrite.xml"));
+    map2.readXML("saves//map_test.xml");
+    map2.writeXML("saves//map_rewrite.xml");
+    lok(fequal("saves//map_test.xml", "saves//map_rewrite.xml"));
     map3.setManager(&ex.entities);
-    map3.readJSON("map_test.json");
-    map3.writeJSON("map_rewrite.json");
-    lok(fequal("map_test.json", "map_rewrite.json"));
+    map3.readJSON("saves//map_test.json");
+    map3.writeJSON("saves//map_rewrite.json");
+    lok(fequal("saves//map_test.json", "saves//map_rewrite.json"));
 
     aremapsequal(map1, map2);
     aremapsequal(map2, map3);

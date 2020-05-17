@@ -54,13 +54,13 @@ int main(int argc, char * argv[]) {
     firesaga->startTurnSystem();
     firesaga->loadCursor();
     firesaga->loadMouse();
+    SDL_ShowCursor(SDL_DISABLE); // for default cursor.
 
     float currentTime;
     float elapsedSeconds;
     short unsigned int cap = firesaga->getSettings()->FPS.cap;
     int delay;
     SDL_Log("Starting main game loop\n");
-    SDL_ShowCursor(SDL_DISABLE);
 
     while (firesaga->running()) {
         elapsedSeconds = ((float)SDL_GetTicks() - currentTime) / 1000.;

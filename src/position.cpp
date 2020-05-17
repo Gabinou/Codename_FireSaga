@@ -199,7 +199,7 @@ bool Position::newPos(short int newx, short int newy) {
 
     if (updatable) {
         if (periodic) {
-            SDL_Log("Periodic.");
+            // SDL_Log("Periodic.");
 
             while (newx < boundsmin.x) {
                 newx += boundsmax.x - boundsmin.x + 1;

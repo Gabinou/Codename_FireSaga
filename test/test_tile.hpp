@@ -3,6 +3,10 @@
 #include "utilities.hpp"
 
 void test_tile() {
+    if (PHYSFS_stat("saves", nullptr) == 0) {
+        PHYSFS_mkdir("saves");
+    } 
+    
     Tile tile1, tile2, tile3;
     Tile_stats in_tile_stats, out_tile_stats;
     Movement_cost in_cost, out_cost;
@@ -38,19 +42,19 @@ void test_tile() {
     lok(out_tile_stats.Mprot == in_tile_stats.Mprot);
     lok(out_tile_stats.heal == in_tile_stats.heal);
     lok(tile1.isInside() == true);
-    tile1.writeXML("tile_test.xml");
-    tile1.writeJSON("tile_test.json");
+    tile1.writeXML("saves//tile_test.xml");
+    tile1.writeJSON("saves//tile_test.json");
 
     tile2 = Tile();
-    tile2.readXML("tile_test.xml");
-    tile2.writeXML("tile_rewrite.xml");
+    tile2.readXML("saves//tile_test.xml");
+    tile2.writeXML("saves//tile_rewrite.xml");
 
     tile3 = Tile();
-    tile3.readJSON("tile_test.json");
-    tile3.writeJSON("tile_rewrite.json");
+    tile3.readJSON("saves//tile_test.json");
+    tile3.writeJSON("saves//tile_rewrite.json");
 
-    lok(fequal("tile_test.xml", "tile_rewrite.xml"));
-    lok(fequal("tile_test.json", "tile_rewrite.json"));
+    lok(fequal("saves//tile_test.xml", "saves//tile_rewrite.xml"));
+    lok(fequal("saves//tile_test.json", "saves//tile_rewrite.json"));
     lok(tile1.getName() == tile2.getName());
     lok(tile1.getid() == tile2.getid());
     lok(tile1.getName() == tile3.getName());
