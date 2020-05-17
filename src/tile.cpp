@@ -2,7 +2,7 @@
 #include "stb_sprintf.h"
 
 Tile::Tile() {
-    setXMLElement("Tile");
+    setElement("Tile");
 }
 
 Tile::~Tile() {
@@ -91,13 +91,12 @@ void Tile::readXML(tinyxml2::XMLElement * in_pTile) {
 
 }
 
-void Tile::readJSON(cJSON * in_json) {
-    cJSON * jtile = cJSON_GetObjectItemCaseSensitive(in_json, "tile");
-    cJSON * jname = cJSON_GetObjectItemCaseSensitive(jtile, "Name");
-    cJSON * jid = cJSON_GetObjectItemCaseSensitive(jtile, "id");
-    cJSON * jinside = cJSON_GetObjectItemCaseSensitive(jtile, "inside");
-    cJSON * jstats = cJSON_GetObjectItemCaseSensitive(jtile, "Stats");
-    cJSON * jmvtcost = cJSON_GetObjectItemCaseSensitive(jtile, "MvtCost");
+void Tile::readJSON(cJSON * in_jtile) {
+    cJSON * jname = cJSON_GetObjectItemCaseSensitive(in_jtile, "Name");
+    cJSON * jid = cJSON_GetObjectItemCaseSensitive(in_jtile, "id");
+    cJSON * jinside = cJSON_GetObjectItemCaseSensitive(in_jtile, "inside");
+    cJSON * jstats = cJSON_GetObjectItemCaseSensitive(in_jtile, "Stats");
+    cJSON * jmvtcost = cJSON_GetObjectItemCaseSensitive(in_jtile, "MvtCost");
 
     id = cJSON_GetNumberValue(jid);
     name = cJSON_GetStringValue(jname);

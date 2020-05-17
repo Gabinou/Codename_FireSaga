@@ -1195,11 +1195,18 @@ int parseXML(const char * filename, tinyxml2::XMLDocument * in_doc) {
 void JSON_IO::readJSON(const char * filename) {
     SDL_Log("readJSON file: %s", filename);
     cJSON * json = parseJSON(filename);
+    if (json != NULL) {
+        if (element != "") {
+            cJSON * jelement = cJSON_GetObjectItem(jmap, element.c_str());
 
-    if (json == NULL) {
-        SDL_Log("Cannot get parse json file.");
+            if (jelement == NULL) {
+                SDL_Log("Cannot parse json file");
+            } else {
+                readJSON(jelement);
+            }
+        }
     } else {
-        readJSON(json);
+            SDL_Log("JSON element not set");
     }
 }
 
@@ -1279,12 +1286,12 @@ void XML_IO::writeXML(const char * filename, const bool append) {
     }
 }
 
-void XML_IO::setXMLElement(std::string in_xmlElement) {
-    xmlElement = in_xmlElement;
+void BASE_IO::setElement(std::string in_Element) {
+    element = in_Element;
 }
 
-std::string XML_IO::getXMLElement() {
-    return (xmlElement);
+std::string BASE_IO::getElement() {
+    return (Element);
 }
 
 void path_removefolder(char * path) {
