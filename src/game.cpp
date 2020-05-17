@@ -703,27 +703,28 @@ void Game::copySave(const short int from_ind, const short int to_ind) {
     if (!PHYSFS_exists(SAVE_FOLDER)) {
         SDL_Log("Could not find save folder!");
     } else {
-        if (!PHYSFS_exists(SAVE_FOLDER)) {
-            PHYSFS_mkdir(SAVE_FOLDER);
-        }
-
-        char filenameto[DEFAULT::BUFFER_SIZE];
-        char filenamefrom[DEFAULT::BUFFER_SIZE];
+        char filenameto[DEFAULT::BUFFER_SIZE] = SAVE_FOLDER;
+        char filenamefrom[DEFAULT::BUFFER_SIZE] = SAVE_FOLDER;
         char tempto[DEFAULT::BUFFER_SIZE];
         char tempfrom[DEFAULT::BUFFER_SIZE];
-        stbsp_snprintf(tempto, DEFAULT::BUFFER_SIZE, "//save%04d.bsav", from_ind);
-        stbsp_snprintf(tempfrom, DEFAULT::BUFFER_SIZE, "//save%04d.bsav", to_ind);
+        stbsp_snprintf(tempto, DEFAULT::BUFFER_SIZE, "//save%04d.bsav", to_ind);
+        stbsp_snprintf(tempfrom, DEFAULT::BUFFER_SIZE, "//save%04d.bsav", from_ind);
         strcat(filenameto, tempto);
         strcat(filenamefrom, tempfrom);
         SDL_Log("copy SaveXML Game from %s to %s\n", filenamefrom, filenameto);
         PHYSFS_file * pfrom = PHYSFS_openRead(filenamefrom);
-        PHYSFS_file * pto = PHYSFS_openWrite(filenameto);
-        int len = PHYSFS_fileLength(pfrom);
-        char longbuffer[len];
-        PHYSFS_readBytes(pfrom, longbuffer, len);
-        PHYSFS_writeBytes(pto, longbuffer, len);
-        PHYSFS_close(pfrom);
-        PHYSFS_close(pto);
+
+        if (pfrom != NULL) {
+            PHYSFS_file * pto = PHYSFS_openWrite(filenameto);
+            int len = PHYSFS_fileLength(pfrom);
+            char longbuffer[len];
+            PHYSFS_readBytes(pfrom, longbuffer, len);
+            PHYSFS_writeBytes(pto, longbuffer, len);
+            PHYSFS_close(pfrom);
+            PHYSFS_close(pto);
+        } else {
+            SDL_Log("Could not open %s", filenamefrom);
+        }
     }
 }
 
@@ -731,7 +732,7 @@ void Game::deleteSave(const short int save_ind) {
     if (!PHYSFS_exists(SAVE_FOLDER)) {
         SDL_Log("Could not find save folder!");
     } else {
-        char filename[DEFAULT::BUFFER_SIZE];
+        char filename[DEFAULT::BUFFER_SIZE] = SAVE_FOLDER;
         char temp[DEFAULT::BUFFER_SIZE];
         stbsp_snprintf(temp, DEFAULT::BUFFER_SIZE, "//save%04d.bsav", save_ind);
         strcat(filename, temp);
@@ -743,7 +744,11 @@ void loadJSON(const short int save_ind) {
     if (!PHYSFS_exists(SAVE_FOLDER)) {
         SDL_Log("Could not find save folder!");
     } else {
-        SDL_Log("readJSON file: %s", filename);
+        char filename[DEFAULT::BUFFER_SIZE] = SAVE_FOLDER;
+        char temp[DEFAULT::BUFFER_SIZE];
+        stbsp_snprintf(filename, DEFAULT::BUFFER_SIZE, SAVE_FOLDER);
+        stbsp_snprintf(temp, DEFAULT::BUFFER_SIZE, "//save%04d.bsav", save_ind);
+        strcat(filename, temp);
         cJSON * json = parseJSON(filename);
         cJSON * jnarrative = cJSON_GetObjectItem(json, "Narrative");
 
@@ -759,7 +764,7 @@ void Game::saveJSON(const short int save_ind) {
         PHYSFS_mkdir(SAVE_FOLDER);
     }
 
-    char filename[DEFAULT::BUFFER_SIZE];
+    char filename[DEFAULT::BUFFER_SIZE] = SAVE_FOLDER;
     char temp[DEFAULT::BUFFER_SIZE];
     stbsp_snprintf(filename, DEFAULT::BUFFER_SIZE, SAVE_FOLDER);
     stbsp_snprintf(temp, DEFAULT::BUFFER_SIZE, "//save%04d.bsav", save_ind);
@@ -790,13 +795,15 @@ void Game::saveJSON(const short int save_ind) {
 }
 
 void Game::saveXML(const short int save_ind) {
-    char filename[DEFAULT::BUFFER_SIZE];
-
     if (!PHYSFS_exists(SAVE_FOLDER)) {
         PHYSFS_mkdir(SAVE_FOLDER);
     }
 
-    stbsp_snprintf(filename, DEFAULT::BUFFER_SIZE, "saves//save%04d.bsav", save_ind);
+    char filename[DEFAULT::BUFFER_SIZE] = SAVE_FOLDER;
+    char temp[DEFAULT::BUFFER_SIZE];
+    stbsp_snprintf(filename, DEFAULT::BUFFER_SIZE, SAVE_FOLDER);
+    stbsp_snprintf(temp, DEFAULT::BUFFER_SIZE, "//save%04d.bsav", save_ind);
+    strcat(filename, temp);
     SDL_Log("saveXML Game to: %s\n", filename);
     PHYSFS_delete(filename);
     PHYSFS_file * fp = PHYSFS_openWrite(filename);

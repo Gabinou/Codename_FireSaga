@@ -388,12 +388,13 @@ void readJSON_narrative(cJSON * in_jnarrative, Narrative * in_state) {
     in_state->chapter = cJSON_GetNumberValue(jchapter);
     cJSON * junit = cJSON_GetObjectItem(in_jnarrative, "Unit");
     cJSON * jdeath;
+    cJSON * jdied;
     short int i = UNIT::NAME::ERWIN;
 
     while (junit != NULL) {
-        in_state->death[i] = cJSON_IsTrue();
+        in_state->death[i] = cJSON_IsTrue(jdied);
         junit = junit->next;
-        i++
+        i++;
     }
 }
 
