@@ -10,7 +10,7 @@ void aremapsequal(Map map1, Map map2) {
 
     if (out_tilesindex.size() == in_tilesindex.size()) {
         for (short int i = 0; i < in_tilesindex.size(); i++) {
-            SDL_Log("%d %d", in_tilesindex[i], out_tilesindex[i]);
+            // SDL_Log("%d %d", in_tilesindex[i], out_tilesindex[i]);
             lok(in_tilesindex[i] == out_tilesindex[i]);
         }
     } else {
@@ -20,6 +20,7 @@ void aremapsequal(Map map1, Map map2) {
     std::vector<std::vector<short int>> in_tilemap, out_tilemap;
     in_tilemap = map1.getTilemap();
     out_tilemap = map2.getTilemap();
+    // SDL_Log("%d %d", out_tilemap.size(), in_tilemap.size());
 
     if (in_tilemap.size() == out_tilemap.size()) {
         for (int row = 0; row < in_tilemap.size(); row++) {// This loop cache friendly.
@@ -266,7 +267,7 @@ void test_map() {
     map3.writeJSON("saves//map_rewrite.json");
     lok(fequal("saves//map_test.json", "saves//map_rewrite.json"));
 
-    aremapsequal(map1, map2);
-    aremapsequal(map2, map3);
+    // aremapsequal(map1, map2); // XML will not be used.
+    // aremapsequal(map2, map3);
     aremapsequal(map1, map3);
 }
