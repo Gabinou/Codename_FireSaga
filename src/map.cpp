@@ -9,18 +9,17 @@ Map::Map() {
     srcrect.w = destrect.w = DEFAULT::TILESIZE;
     srcrect.h = destrect.h = DEFAULT::TILESIZE;
     overlay_mode = MAP::OVERLAY::MOVE + MAP::OVERLAY::ATTACK;
-    setXMLElement("Map");
+    setElement("Map");
 }
 
 Map::~Map() {
 
 }
 
-void Map::readJSON(cJSON * in_json) {
-    cJSON * jmap = cJSON_GetObjectItem(in_json, "map");
-    cJSON * jchapter = cJSON_GetObjectItem(jmap, "chapter");
-    cJSON * jarrivals = cJSON_GetObjectItem(jmap, "Arrivals");
-    cJSON * jtiles = cJSON_GetObjectItem(jmap, "tiles");
+void Map::readJSON(cJSON * in_jmap) {
+    cJSON * jchapter = cJSON_GetObjectItem(in_jmap, "chapter");
+    cJSON * jarrivals = cJSON_GetObjectItem(in_jmap, "Arrivals");
+    cJSON * jtiles = cJSON_GetObjectItem(in_jmap, "tiles");
 
     cJSON * jtile = cJSON_GetObjectItem(jtiles, "tile");
     cJSON * jid;
@@ -80,7 +79,7 @@ void Map::readJSON(cJSON * in_json) {
         jarrival = jarrival->next;
     }
 
-    cJSON * jbounds = cJSON_GetObjectItem(jmap, "Bounds");
+    cJSON * jbounds = cJSON_GetObjectItem(in_jmap, "Bounds");
     cJSON * jrow_min = cJSON_GetObjectItem(jbounds, "row_min");
     cJSON * jrow_max = cJSON_GetObjectItem(jbounds, "row_max");
     cJSON * jcol_min = cJSON_GetObjectItem(jbounds, "col_min");
@@ -90,13 +89,13 @@ void Map::readJSON(cJSON * in_json) {
     bounds[2] = cJSON_GetNumberValue(jcol_min);
     bounds[3] = cJSON_GetNumberValue(jcol_max);
 
-    cJSON * joffset = cJSON_GetObjectItem(jmap, "Offset");
+    cJSON * joffset = cJSON_GetObjectItem(in_jmap, "Offset");
     cJSON * joffset_row = cJSON_GetObjectItem(joffset, "offset_row");
     cJSON * joffset_col = cJSON_GetObjectItem(joffset, "offset_col");
     offset[0] = cJSON_GetNumberValue(jrow_min);
     offset[1] = cJSON_GetNumberValue(jrow_min);
 
-    cJSON * jtilemap = cJSON_GetObjectItem(jmap, "tilemap");
+    cJSON * jtilemap = cJSON_GetObjectItem(in_jmap, "tilemap");
     tilemap = readJSON_tilemap(jtilemap);
 
 }

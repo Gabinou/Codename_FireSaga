@@ -6,7 +6,7 @@
 //#endif /* STB_SPRINTF_IMPLEMENTATION */
 
 Convoy::Convoy() {
-    setXMLElement("Convoy");
+    setElement("Convoy");
 }
 
 void Convoy::swap(int arr[], int ind1, int ind2) {
