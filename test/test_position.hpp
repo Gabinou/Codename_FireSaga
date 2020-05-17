@@ -6,6 +6,9 @@ void test_position() {
     Position position;
     Point pos;
 
+    position.setonTilemap(false);
+    position.setOffset(0, 0);
+    position.setBounds(0, 100, 0, 100);
     position.setPos(1, 1);
     pos = position.getPos();
     lok(pos.x == 1);

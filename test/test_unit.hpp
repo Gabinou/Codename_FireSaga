@@ -74,10 +74,10 @@ void test_unit() {
     lok(in_stats.con >= out_stats.con);
     lok(in_stats.move >= out_stats.move);
     lok(in_stats.prof >= out_stats.prof);
-    
+
     if (PHYSFS_stat("saves", nullptr) == 0) {
         PHYSFS_mkdir("saves");
-    } 
+    }
 
     unit1.writeXML("saves//unit_test.xml");
     unit1.writeXML("saves//unit_test.binou");

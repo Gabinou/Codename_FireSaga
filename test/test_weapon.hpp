@@ -78,13 +78,17 @@ void test_weapon() {
     lok(in_stats.move == out_stats.move);
     lok(in_stats.prof == out_stats.prof);
 
-    wpn1.writeXML("weapon_test.xml");
-    wpn1.writeJSON("weapon_test.json");
+    if (PHYSFS_stat("saves", nullptr) == 0) {
+        PHYSFS_mkdir("saves");
+    }
+
+    wpn1.writeXML("saves//weapon_test.xml");
+    wpn1.writeJSON("saves//weapon_test.json");
 
     wpn2 = Weapon();
-    wpn2.readXML("weapon_test.xml");
+    wpn2.readXML("saves//weapon_test.xml");
     wpn3 = Weapon();
-    wpn3.readJSON("weapon_test.json");
+    wpn3.readJSON("saves//weapon_test.json");
 
     out_wpn_stats = wpn2.getStats();
     lok(in_wpn_stats.Pmight == out_wpn_stats.Pmight);
@@ -138,8 +142,8 @@ void test_weapon() {
     lok(in_stats.move == out_stats.move);
     lok(in_stats.prof == out_stats.prof);
 
-    wpn2.writeXML("weapon_rewrite.xml");
-    wpn3.writeJSON("weapon_rewrite.json");
-    lok(fequal("weapon_test.xml", "weapon_rewrite.xml"));
-    lok(fequal("weapon_test.json", "weapon_rewrite.json"));
+    wpn2.writeXML("saves//weapon_rewrite.xml");
+    wpn3.writeJSON("saves//weapon_rewrite.json");
+    lok(fequal("saves//weapon_test.xml", "saves//weapon_rewrite.xml"));
+    lok(fequal("saves//weapon_test.json", "saves//weapon_rewrite.json"));
 }

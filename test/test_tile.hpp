@@ -5,8 +5,8 @@
 void test_tile() {
     if (PHYSFS_stat("saves", nullptr) == 0) {
         PHYSFS_mkdir("saves");
-    } 
-    
+    }
+
     Tile tile1, tile2, tile3;
     Tile_stats in_tile_stats, out_tile_stats;
     Movement_cost in_cost, out_cost;

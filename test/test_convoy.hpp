@@ -137,8 +137,8 @@ void testConvoyWriteRead() {
 
     if (PHYSFS_stat("saves", nullptr) == 0) {
         PHYSFS_mkdir("saves");
-    } 
-    
+    }
+
     convoy.writeXML("saves//convoy_test.xml", false);
     convoy.writeJSON("saves//convoy_test.json", false);
 

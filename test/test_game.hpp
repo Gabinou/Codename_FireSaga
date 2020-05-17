@@ -22,7 +22,7 @@ void test_game() {
 
     if (PHYSFS_stat("saves", nullptr) == 0) {
         PHYSFS_mkdir("saves");
-    } 
+    }
 
     testgame1->saveXML(1);
     lok(PHYSFS_exists("saves//save0001.bsav") > 0);

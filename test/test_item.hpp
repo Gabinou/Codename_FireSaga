@@ -6,7 +6,7 @@ void test_item() {
 
     if (PHYSFS_stat("saves", nullptr) == 0) {
         PHYSFS_mkdir("saves");
-    } 
+    }
 
     Item item1, item2, item3;
     Unit_stats in_stats = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11};

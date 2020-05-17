@@ -86,9 +86,11 @@ void test_utilities() {
     out = pingpong(current, upper2);
     lok(out == 4);
 
+    if (PHYSFS_stat("saves", nullptr) == 0) {
+        PHYSFS_mkdir("saves");
+    }
 
-    lok(fequal("test_results.txt", "test_results.txt"));
-
+    lok(fequal("build//test_results.txt", "build//test_results.txt"));
 
     int arrtest1[5] = {3, 4, 5, 1, 2};
     quicksort(arrtest1, 0, 4);
