@@ -51,7 +51,6 @@ extern void writeXML_arrival(tinyxml2::XMLDocument * in_doc, tinyxml2::XMLElemen
 extern void printXMLDoc(PHYSFS_file * in_fp, tinyxml2::XMLDocument * in_doc);
 extern int parseXML(const char * filename, tinyxml2::XMLDocument * in_doc);
 
-
 extern void readJSON_mvtcost(cJSON * in_jcost, Movement_cost * in_cost);
 extern void readJSON_stats(cJSON * in_jstats, Tile_stats * in_stats);
 extern void readJSON_stats(cJSON * in_jstats, Unit_stats * in_stats);

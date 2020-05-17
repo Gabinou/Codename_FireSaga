@@ -55,7 +55,6 @@ private:
     bool isRunning;
     SDL_Event event;
 
-    std::unordered_map<int, Unit> units;
     std::unordered_map<int, Unit> party;
     std::unordered_map<int, Unit> enemies;
     std::unordered_map<int, Weapon> weapons;

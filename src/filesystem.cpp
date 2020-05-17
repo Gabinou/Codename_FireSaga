@@ -381,18 +381,29 @@ void readXML_narrative(tinyxml2::XMLElement * in_pNarrative, Narrative * in_stat
     readXML_narrativeUnits(pUnit, in_state->recruited);
 }
 
-void readJSON_narrative(cJSON * in_jnarrative, Narrative * in_state) {
-    cJSON * jchapter = cJSON_GetObjectItem(in_jnarrative, "Chapter");
-    cJSON * jdeaths = cJSON_GetObjectItem(in_jnarrative, "Deaths");
-    cJSON * jrecruited = cJSON_GetObjectItem(in_jnarrative, "Recruited");
+void readJSON_narrative(cJSON * in_json, Narrative * in_state) {
+    cJSON * jnarrative = cJSON_GetObjectItem(in_json, "Narrative");
+    cJSON * jchapter = cJSON_GetObjectItem(jnarrative, "Chapter");
+    cJSON * jdeaths = cJSON_GetObjectItem(jnarrative, "Deaths");
+    cJSON * jrecruited = cJSON_GetObjectItem(jnarrative, "Recruited");
     in_state->chapter = cJSON_GetNumberValue(jchapter);
-    cJSON * junit = cJSON_GetObjectItem(in_jnarrative, "Unit");
     cJSON * jdeath;
     cJSON * jdied;
     short int i = UNIT::NAME::ERWIN;
 
+    cJSON * junit = cJSON_GetObjectItem(jdeaths, "Unit");
+
     while (junit != NULL) {
         in_state->death[i] = cJSON_IsTrue(jdied);
+        junit = junit->next;
+        i++;
+    }
+
+    i = UNIT::NAME::ERWIN;
+    junit = cJSON_GetObjectItem(jrecruited, "Unit");
+
+    while (junit != NULL) {
+        in_state->recruited[i] = cJSON_IsTrue(jdied);
         junit = junit->next;
         i++;
     }

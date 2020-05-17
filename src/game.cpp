@@ -519,7 +519,7 @@ void Game::unloadCursor() {
 
 
 void Game::loadMapUnits(std::vector<short unsigned int> in_units, std::vector<std::vector<int>> in_pos_list) {
-    SDL_Log("Loading Units\n");
+    SDL_Log("Loading party\n");
 
     if (mapx) {
         std::string asset_name;
@@ -527,9 +527,9 @@ void Game::loadMapUnits(std::vector<short unsigned int> in_units, std::vector<st
         short int * bounds;
 
         for (int i = 0; i < in_units.size(); i++) {
-            asset_name = "..//assets//" + units[in_units[i]].getName() + ".png";
+            asset_name = "..//assets//" + party[in_units[i]].getName() + ".png";
             Uent = entities.create();
-            Uent.assign<Unit>(units[in_units[i]]);
+            Uent.assign<Unit>(party[in_units[i]]);
             Uent.assign<Position>();
             Uent.component<Position>()->setonTilemap(true);
             bounds = mapx->getBounds();
@@ -557,11 +557,11 @@ void Game::loadMapArrivals() {
         for (int i = 0; i < map_arrivals.size(); i++) {
             if (map_arrivals[i].turn == currentturn) {
 
-                if (units.find(map_arrivals[i].id) == units.end()) {
-                    SDL_Log("unloaded units loading %d", map_arrivals[i].id);
+                if (party.find(map_arrivals[i].id) == party.end()) {
+                    SDL_Log("unloaded party loading %d", map_arrivals[i].id);
                     makeUnits(std::vector<short int> {map_arrivals[i].id});
-                    asset_name = "..//assets//" + units[map_arrivals[i].id].getName() + ".png";
-                    SDL_Log("Loaded: %s", units[map_arrivals[i].id].getName().c_str());
+                    asset_name = "..//assets//" + party[map_arrivals[i].id].getName() + ".png";
+                    SDL_Log("Loaded: %s", party[map_arrivals[i].id].getName().c_str());
                 }
 
                 Uent = entities.create();
@@ -572,7 +572,7 @@ void Game::loadMapArrivals() {
                 Uent.component<Position>()->setOffset(DEFAULT::TILEMAP_XOFFSET, DEFAULT::TILEMAP_YOFFSET);
                 Uent.component<Position>()->setPos(map_arrivals[i].position.x, map_arrivals[i].position.y);
                 Uent.assign<Sprite>(asset_name.c_str());
-                Uent.assign<Unit>(units[map_arrivals[i].id]);
+                Uent.assign<Unit>(party[map_arrivals[i].id]);
                 SDL_Log("Arrival position: %d %d", map_arrivals[i].position.x, map_arrivals[i].position.y);
                 mapx->putUnit(map_arrivals[i].position.x, map_arrivals[i].position.y, Uent.component<Unit>());
             }
@@ -584,16 +584,16 @@ void Game::loadMapArrivals() {
 
 void Game::makeUnits(unsigned char in_chap) {
     std::vector<short int> toload = baseParties[in_chap]();
-    baseUnits(&units, toload);
+    baseUnits(&party, toload);
 }
 
 void Game::makeUnits(std::vector<short int> toload) {
-    baseUnits(&units, toload);
+    baseUnits(&party, toload);
 }
 
 void Game::unmakeUnits(std::vector<short int> to_unload) {
     for (int i = 0; i < to_unload.size(); i++) {
-        units.erase(to_unload[i]);
+        party.erase(to_unload[i]);
     }
 }
 
@@ -691,8 +691,8 @@ void Game::loadXML(const short int save_ind) {
 
     while (ptemp) {
         id = (unsigned short int)ptemp->IntAttribute("id");
-        units[id] = Unit();
-        units[id].readXML(ptemp);
+        party[id] = Unit();
+        party[id].readXML(ptemp);
         ptemp = xmlDoc.NextSiblingElement("Unit");
     }
 
@@ -740,7 +740,8 @@ void Game::deleteSave(const short int save_ind) {
         PHYSFS_delete(filename);
     }
 }
-void loadJSON(const short int save_ind) {
+
+void Game::loadJSON(const short int save_ind) {
     if (!PHYSFS_exists(SAVE_FOLDER)) {
         SDL_Log("Could not find save folder!");
     } else {
@@ -750,10 +751,20 @@ void loadJSON(const short int save_ind) {
         stbsp_snprintf(temp, DEFAULT::BUFFER_SIZE, "//save%04d.bsav", save_ind);
         strcat(filename, temp);
         cJSON * json = parseJSON(filename);
-        cJSON * jnarrative = cJSON_GetObjectItem(json, "Narrative");
+        readJSON_narrative(json, &narrative);
+        convoy.writeJSON(json);
 
         cJSON * jparty = cJSON_GetObjectItem(json, "Party");
-        cJSON * jconvoy = cJSON_GetObjectItem(json, "Convoy");
+        party.clear();
+        cJSON * junit = cJSON_GetObjectItem(jparty, "Unit");
+        Unit temp_unit;
+
+        while (junit != NULL) {
+            temp_unit = Unit();
+            temp_unit.readJSON(junit);
+            party[temp_unit.getid()] = temp_unit;
+            junit = junit->next;
+        }
 
     }
 }
@@ -777,13 +788,11 @@ void Game::saveJSON(const short int save_ind) {
         SDL_Log("Could not open %s for writing\n", filename);
     } else {
         cJSON * json = cJSON_CreateObject();
-        SDL_Log("Until here");
         writeJSON_narrative(json, &narrative);
-        SDL_Log("Until here");
         cJSON * jparty = cJSON_CreateObject();
         cJSON * junit;
 
-        for (auto it = units.begin(); it != units.end(); it++) {
+        for (auto it = party.begin(); it != party.end(); it++) {
             junit = cJSON_CreateObject();
             it->second.writeJSON(jparty);
         }
@@ -818,7 +827,7 @@ void Game::saveXML(const short int save_ind) {
 
     tinyxml2::XMLElement * ptemp;
 
-    for (auto it = units.begin(); it != units.end(); it++) {
+    for (auto it = party.begin(); it != party.end(); it++) {
         ptemp = xmlDoc.NewElement("Unit");
         it->second.writeXML(&xmlDoc, ptemp);
         xmlDoc.InsertEndChild(ptemp);
