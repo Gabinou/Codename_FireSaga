@@ -385,12 +385,14 @@ void writeJSON_narrative(cJSON * in_json, Narrative * in_state) {
     cJSON * jnarrative = cJSON_CreateObject();
     cJSON_AddItemToObject(in_json, "Narrative", jnarrative);
     cJSON * jdeath = cJSON_CreateObject();
-    cJSON_AddItemToObject(jnarrative, "Death", jdeath);
     cJSON * jrecruited = cJSON_CreateObject();
+    cJSON * jisdead;
+    cJSON * jisrecruited;
     cJSON * jname;
     cJSON * junit;
     cJSON * jid;
-    cJSON * jrecruited;
+    cJSON_AddItemToObject(jnarrative, "Death", jdeath);
+    cJSON_AddItemToObject(jnarrative, "Recruited", jrecruited);
     cJSON * jchapter = cJSON_CreateNumber(in_stats->chapter);
     cJSON_AddItemToObject(jnarrative, "Chapter", jchapter);
 
@@ -401,25 +403,26 @@ void writeJSON_narrative(cJSON * in_json, Narrative * in_state) {
     for (unsigned int i = UNIT::NAME::ERWIN; i < UNIT::NAME::NPC_END; i++) {
         name = unitNames[i];
         buffbool = in_state->death[i - UNIT::NAME::ERWIN];
+        jdeath = cJSON_CreateObject();
         junit = cJSON_CreateObject();
         jid = cJSON_CreateNumber(i);
+        jisdead = cJSON_CreateBool(buffbool);
         jname = cJSON_CreateString(name.c_str());
+        cJSON_AddItemToObject(jdeath, "Unit", junit);
+        cJSON_AddItemToObject(junit, "id", jid);
+        cJSON_AddItemToObject(junit, "Name", jname);
+        cJSON_AddItemToObject(junit, "Died", jisdead);
 
         if (i < UNIT::NAME::PC_END) {
-    //         buffbool = in_state->recruited[i - UNIT::NAME::ERWIN];
-    //         ptemp1 = in_doc->NewElement("Unit");
-    //         ptemp2 = in_doc->NewElement("Recruited");
-    //         ptemp3 = in_doc->NewElement("Name");
-    //         precruited->InsertEndChild(ptemp1);
-    //         ptemp1->InsertEndChild(ptemp3);
-    //         ptemp1->InsertEndChild(ptemp2);
-    //         ptemp2->SetText(buffbool);
-    //         ptemp3->SetText(name.c_str());
-    //         ptemp1->SetAttribute("id", i);
-        } else {
-            jdeath = cJSON_CreateObject();
-
-        }
+            cJSON_AddItemToObject(junit, "Recruited", jrecruited);
+            buffbool = in_state->recruited[i - UNIT::NAME::ERWIN];
+            jname = cJSON_CreateString(name.c_str());
+            junit = cJSON_CreateObject();
+            jisrecruited = cJSON_CreateBool(buffbool);
+            cJSON_AddItemToObject(jrecruited, "Unit", junit);
+            cJSON_AddItemToObject(junit, "id", jid);
+            cJSON_AddItemToObject(junit, "Name", jname);
+            cJSON_AddItemToObject(junit, "Recruited", jisrecruited);
     }
 
 }
