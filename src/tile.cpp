@@ -2,7 +2,8 @@
 #include "stb_sprintf.h"
 
 Tile::Tile() {
-    setElement("Tile");
+    setXMLElement("Tile");
+    setJSONElement("Tile");
 }
 
 Tile::~Tile() {

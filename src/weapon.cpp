@@ -2,7 +2,8 @@
 #include "weapon.hpp"
 
 Weapon::Weapon() {
-    setElement("Weapon");
+    setJSONElement("Item");
+    setXMLElement("Weapon");
 }
 
 Weapon::Weapon(short unsigned int in_type, Weapon_stats in_stats, unsigned char in_id) : Weapon() {
@@ -89,8 +90,8 @@ void Weapon::writeJSON(cJSON * in_jwpn) {
         writeJSON_stats(jitemstats, &stats);
         cJSON_AddItemToObject(jinfused, "Power", jpower);
         cJSON_AddItemToObject(jinfused, "Type", jtype);
-        cJSON_AddItemToObject(jitem, "Stats", jitemstats);
-        cJSON_AddItemToObject(jitem, "Infused", jinfused);
+        cJSON_AddItemToObject(in_jwpn, "Stats", jitemstats);
+        cJSON_AddItemToObject(in_jwpn, "Infused", jinfused);
     } else  {
         SDL_Log("in_jwpn is NULL");
     }

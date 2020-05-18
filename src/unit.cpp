@@ -5,7 +5,8 @@
 #endif /* STB_SPRINTF_IMPLEMENTATION */
 
 Unit::Unit() {
-    setElement("Unit");
+    setXMLElement("Unit");
+    setJSONElement("Unit");
     equipsR(0);
     equipsL(1);
 }

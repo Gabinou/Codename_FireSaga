@@ -9,7 +9,8 @@ Map::Map() {
     srcrect.w = destrect.w = DEFAULT::TILESIZE;
     srcrect.h = destrect.h = DEFAULT::TILESIZE;
     overlay_mode = MAP::OVERLAY::MOVE + MAP::OVERLAY::ATTACK;
-    setElement("Map");
+    setJSONElement("Map");
+    setXMLElement("Map");
 }
 
 Map::~Map() {

@@ -1197,8 +1197,8 @@ void JSON_IO::readJSON(const char * filename) {
     cJSON * json = parseJSON(filename);
 
     if (json != NULL) {
-        if (element != "") {
-            cJSON * jelement = cJSON_GetObjectItem(jelement, element.c_str());
+        if (JSONelement != "") {
+            cJSON * jelement = cJSON_GetObjectItem(jelement, JSONelement.c_str());
 
             if (jelement == NULL) {
                 SDL_Log("Cannot get json element");
@@ -1222,10 +1222,10 @@ void XML_IO::readXML(const char * filename) {
     // SDL_Log("readXML file: %s", filename);
     tinyxml2::XMLDocument xmlDoc;
     parseXML(filename, &xmlDoc);
-    tinyxml2::XMLElement * pEle = xmlDoc.FirstChildElement(element.c_str());
+    tinyxml2::XMLElement * pEle = xmlDoc.FirstChildElement(XMLelement.c_str());
 
     if (!pEle) {
-        SDL_Log("Cannot get %s element", element.c_str());
+        SDL_Log("Cannot get %s element", XMLelement.c_str());
     } else {
         readXML(pEle);
     }
@@ -1249,7 +1249,7 @@ void JSON_IO::writeJSON(const char * filename, const bool append) {
     PHYSFS_file * fp = NULL;
     cJSON * json = cJSON_CreateObject();
 
-    if (element !=  "") {
+    if (JSONelement !=  "") {
         cJSON * jelement = cJSON_CreateObject();
 
         // SDL_Log("json==NULL%d", json == NULL);
@@ -1263,7 +1263,7 @@ void JSON_IO::writeJSON(const char * filename, const bool append) {
             SDL_Log("Could not open %s for writing\n", filename);
         } else {
             writeJSON(jelement);
-            cJSON_AddItemToObject(json, element.c_str(), jelement);
+            cJSON_AddItemToObject(json, JSONelement.c_str(), jelement);
 
             printJSON(fp, json);
             PHYSFS_close(fp);
@@ -1288,9 +1288,9 @@ void XML_IO::writeXML(const char * filename, const bool append) {
     }
 
     if (!fp) {
-        SDL_Log("Could not open %s for %s writing\n", filename, element.c_str());
+        SDL_Log("Could not open %s for %s writing\n", filename, XMLelement.c_str());
     } else {
-        tinyxml2::XMLElement * pEle = xmlDoc.NewElement(element.c_str());
+        tinyxml2::XMLElement * pEle = xmlDoc.NewElement(XMLelement.c_str());
         xmlDoc.InsertEndChild(pEle);
         writeXML(&xmlDoc, pEle);
         printXMLDoc(fp, &xmlDoc);
@@ -1298,12 +1298,20 @@ void XML_IO::writeXML(const char * filename, const bool append) {
     }
 }
 
-void BASE_IO::setElement(std::string in_Element) {
-    element = in_Element;
+void XML_IO::setElement(std::string in_Element) {
+    XMLelement = in_Element;
+}
+
+std::string XML_IO::getXMLElement() {
+    return (XMLelement);
+}
+
+void JSON_IO::setElement(std::string in_Element) {
+    JSONelement = in_Element;
 }
 
 std::string BASE_IO::getElement() {
-    return (element);
+    return (JSONelement);
 }
 
 void path_removefolder(char * path) {

@@ -74,28 +74,24 @@ extern const char * fextension(const char * filename);
 extern void  path_removefolder(char * path);
 extern char * path_topfolder(char * path);
 
-
-
-
-class BASE_IO {
+class XML_IO {
 protected:
-    std::string element = "";
+    std::string XMLelement = "";
 public:
-    void setElement(std::string in_Element);
-    std::string getElement();
-};
-
-
-class XML_IO: virtual public BASE_IO {
-public:
+    void setXMLElement(std::string in_Element);
+    std::string getXMLElement();
     void writeXML(const char * filename, const bool append = false);
     void readXML(const char * filename);
     virtual void readXML(tinyxml2::XMLElement * in_pEle);
     virtual void writeXML(tinyxml2::XMLDocument * in_doc, tinyxml2::XMLElement * in_pEle);
 };
 
-class JSON_IO: virtual public BASE_IO {
+class JSON_IO {
+protected:
+    std::string JSONelement = "";
 public:
+    void setJSONElement(std::string in_Element);
+    std::string getJSONElement();
     virtual void writeJSON(cJSON * in_json);
     virtual void readJSON(cJSON * in_json);
     void writeJSON(const char * filename, const bool append = false);
