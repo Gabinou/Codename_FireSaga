@@ -7,7 +7,7 @@
 #include "tinyxml2.h"
 #include "filesystem.hpp"
 
-class Tile : public XML_IO, JSON_IO, BASE_IO {
+class Tile : public XML_IO, JSON_IO {
 private:
     Movement_cost cost_struct;
     unsigned char cost_array[UNIT::MVT::END];

@@ -15,7 +15,7 @@
 
 // idea for events: map should be an emitter of events, and receiver also.
 
-class Map : public XML_IO, JSON_IO, BASE_IO, entityx::Receiver<Map> {
+class Map : public XML_IO, JSON_IO, entityx::Receiver<Map> {
 private:
     entityx::EntityManager * manager;
 

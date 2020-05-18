@@ -86,7 +86,7 @@ public:
 };
 
 
-class XML_IOL: public BASE_IO {
+class XML_IO: virtual public BASE_IO {
 public:
     void writeXML(const char * filename, const bool append = false);
     void readXML(const char * filename);
@@ -94,7 +94,7 @@ public:
     virtual void writeXML(tinyxml2::XMLDocument * in_doc, tinyxml2::XMLElement * in_pEle);
 };
 
-class JSON_IO: public BASE_IO {
+class JSON_IO: virtual public BASE_IO {
 public:
     virtual void writeJSON(cJSON * in_json);
     virtual void readJSON(cJSON * in_json);

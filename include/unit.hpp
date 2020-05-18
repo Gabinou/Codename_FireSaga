@@ -11,7 +11,7 @@
 #include "tinyxml2.h"
 #include "utilities.hpp"
 
-class Unit : public XML_IO, JSON_IO, BASE_IO {
+class Unit : public XML_IO, JSON_IO {
 private:
     Weapon_stats temp_wpn;
     Weapon_stats right_wpn;
