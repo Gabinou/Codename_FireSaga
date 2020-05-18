@@ -121,6 +121,21 @@ void Map::writeJSON(cJSON * in_jmap) {
     if (in_jmap != NULL) {
         cJSON * jchapter = cJSON_CreateNumber(chapter);
         cJSON_AddItemToObject(in_jmap, "chapter", jchapter);
+        cJSON * jstartingpositions = cJSON_CreateObject();
+        cJSON_AddItemToObject(in_jmap, "StartingPositions", jstartingpositions);
+        cJSON * jstartingpos;
+        cJSON * jstartingposx;
+        cJSON * jstartingposy;
+
+        for (short int i = 0; i < starting_positions.size(); i++) {
+            jstartingpos = cJSON_CreateObject();
+            cJSON_AddItemToObject(jstartingpositions, "Position", jstartingpos);
+            jstartingposx = cJSON_CreateNumber(starting_positions[i].x);
+            jstartingposy = cJSON_CreateNumber(starting_positions[i].y);
+            cJSON_AddItemToObject(jstartingpos, "x", jstartingposx);
+            cJSON_AddItemToObject(jstartingpos, "y", jstartingposy);
+        }
+
         cJSON * jtiles = cJSON_CreateObject();
         cJSON_AddItemToObject(in_jmap, "tiles", jtiles);
         cJSON * jtile;
@@ -148,8 +163,8 @@ void Map::writeJSON(cJSON * in_jmap) {
 
         if (map_arrivals.size() == arrival_equipments.size()) {
             cJSON * jarrival;
-            cJSON * jarrivals = cJSON_CreateObject();
             cJSON * jarrivaleq;
+            cJSON * jarrivals = cJSON_CreateObject();
             cJSON_AddItemToObject(in_jmap, "Arrivals", jarrivals);
 
             for (int i = 0; i < map_arrivals.size(); i++) {
