@@ -17,6 +17,18 @@ Map::~Map() {
 
 }
 
+std::vector<Point> Map::getStartingpos() {
+    return (starting_positions);
+}
+
+void Map::setStartingpos(std::vector<Point> in_positions) {
+    starting_positions = in_positions;
+}
+
+void Map::addStartingpos(Point in_position) {
+    starting_positions.push_back(in_position);
+}
+
 void Map::readJSON(cJSON * in_jmap) {
     if (in_jmap != NULL) {
 

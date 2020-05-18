@@ -760,7 +760,6 @@ void Game::loadJSON(const short int save_ind) {
         cJSON * json = parseJSON(filename);
         readJSON_narrative(json, &narrative);
 
-
         cJSON * jconvoy = cJSON_GetObjectItem(json, "Convoy");
         convoy.readJSON(jconvoy);
         cJSON * jparty = cJSON_GetObjectItem(json, "Party");

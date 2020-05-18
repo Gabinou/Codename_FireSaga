@@ -97,6 +97,9 @@ public:
     std::vector<std::vector<entityx::ComponentHandle<Unit>>> getUnitmap();
     void clearUnitmap();
 
+    std::vector<Point> getStartingpos();
+    void setStartingpos(std::vector<Point> in_positions);
+    void addStartingpos(Point in_position);
 
     void addArmy(unsigned char in_army);
     std::vector<unsigned char> getArmies();
