@@ -40,6 +40,8 @@ int init(char * argvZero, char * baseDir, char * assetsPath) {
     PHYSFS_init(argvZero);
     PHYSFS_permitSymbolicLinks(1);
 
+    PHYSFS_setSaneConfig("AvgBear", "CodenameFiresaga", "", 0, 0);
+
     /* Determine the OS user directory */
     if (baseDir && strlen(baseDir) > 0) {
         strcpy(output, baseDir);
