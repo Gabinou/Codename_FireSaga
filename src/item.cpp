@@ -2,7 +2,8 @@
 #include "item.hpp"
 
 Item::Item() {
-
+    setXMLElement("Item");
+    setJSONElement("Item");
 }
 
 Item::Item(short unsigned int in_type, unsigned char in_id) : Item() {

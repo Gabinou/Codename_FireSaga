@@ -188,7 +188,7 @@ void Map::readXML(tinyxml2::XMLElement * in_pMap) {
     int buffint;
     tinyxml2::XMLElement * ptemp;
 
-    SDL_Log("XMLElement: %s", getElement().c_str());
+    SDL_Log("XMLElement: %s", getXMLElement().c_str());
 
     chapter = (unsigned short int)in_pMap->IntAttribute("chapter");
 

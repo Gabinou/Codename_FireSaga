@@ -1198,10 +1198,10 @@ void JSON_IO::readJSON(const char * filename) {
 
     if (json != NULL) {
         if (JSONelement != "") {
-            cJSON * jelement = cJSON_GetObjectItem(jelement, JSONelement.c_str());
+            cJSON * jelement = cJSON_GetObjectItem(json, JSONelement.c_str());
 
             if (jelement == NULL) {
-                SDL_Log("Cannot get json element");
+                SDL_Log("Cannot get json element %s"), JSONelement.c_str();
             } else {
                 readJSON(jelement);
             }
@@ -1298,7 +1298,7 @@ void XML_IO::writeXML(const char * filename, const bool append) {
     }
 }
 
-void XML_IO::setElement(std::string in_Element) {
+void XML_IO::setXMLElement(std::string in_Element) {
     XMLelement = in_Element;
 }
 
@@ -1306,11 +1306,11 @@ std::string XML_IO::getXMLElement() {
     return (XMLelement);
 }
 
-void JSON_IO::setElement(std::string in_Element) {
+void JSON_IO::setJSONElement(std::string in_Element) {
     JSONelement = in_Element;
 }
 
-std::string BASE_IO::getElement() {
+std::string JSON_IO::getJSONElement() {
     return (JSONelement);
 }
 

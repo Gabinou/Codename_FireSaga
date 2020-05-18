@@ -3,7 +3,7 @@
 
 Weapon::Weapon() {
     setJSONElement("Item");
-    setXMLElement("Weapon");
+    setXMLElement("Item");
 }
 
 Weapon::Weapon(short unsigned int in_type, Weapon_stats in_stats, unsigned char in_id) : Weapon() {
