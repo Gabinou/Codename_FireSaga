@@ -865,7 +865,7 @@ void Unit::readJSON(cJSON * in_junit) {
 }
 
 void Unit::writeJSON(cJSON * in_junit) {
-    if (in_json != NULL) {
+    if (in_junit != NULL) {
 
         cJSON * jid = cJSON_CreateNumber(id);
         cJSON * jexp = cJSON_CreateNumber(base_exp);

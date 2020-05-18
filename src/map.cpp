@@ -99,13 +99,13 @@ void Map::readJSON(cJSON * in_jmap) {
 
         cJSON * jtilemap = cJSON_GetObjectItem(in_jmap, "tilemap");
         tilemap = readJSON_tilemap(jtilemap);
-    } else  {
+    } else {
         SDL_Log("in_jmap is NULL");
     }
 }
 
 void Map::writeJSON(cJSON * in_jmap) {
-    if (in_json != NULL) {
+    if (in_jmap != NULL) {
         cJSON * jchapter = cJSON_CreateNumber(chapter);
         cJSON_AddItemToObject(in_jmap, "chapter", jchapter);
         cJSON * jtiles = cJSON_CreateObject();
@@ -171,6 +171,8 @@ void Map::writeJSON(cJSON * in_jmap) {
         cJSON * jtilemap = cJSON_CreateObject();
         writeJSON_tilemap(jtilemap, tilemap);
         cJSON_AddItemToObject(in_jmap, "tilemap", jtilemap);
+    } else {
+        SDL_Log("in_jmap is NULL");
     }
 }
 
@@ -185,7 +187,7 @@ void Map::readXML(tinyxml2::XMLElement * in_pMap) {
     int buffint;
     tinyxml2::XMLElement * ptemp;
 
-    SDL_Log("XMLElement: %s", getXMLElement().c_str());
+    SDL_Log("XMLElement: %s", getElement().c_str());
 
     chapter = (unsigned short int)in_pMap->IntAttribute("chapter");
 

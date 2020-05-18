@@ -14,7 +14,7 @@
 #include "stb_sprintf.h"
 //#endif /* STB_SPRINTF_IMPLEMENTATION */
 
-class Item : public XML_IO, JSON_IO {
+class Item : public XML_IO, JSON_IO, BASE_IO {
 protected:
     Unit_stats bonus_stats = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
     Unit_stats malus_stats = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};

@@ -729,61 +729,63 @@ void Convoy::writeXML(tinyxml2::XMLDocument * in_doc, tinyxml2::XMLElement * in_
 
 
 void Convoy::readJSON(cJSON * in_jconvoy) {
-    std::vector<std::string> names;
-    Inventory_item tempitem;
-    Inventory_item empty;
-    cJSON * jitem = NULL;
-    cJSON * jtype = NULL;
-    short int i = 1;
+    if (in_jconvoy != NULL) {
+        std::vector<std::string> names;
+        Inventory_item tempitem;
+        Inventory_item empty;
+        cJSON * jitem = NULL;
+        cJSON * jtype = NULL;
+        short int i = 1;
 
-    while (i < ITEM::TYPE::END) {
-        names = wpnTypes(i);
+        while (i < ITEM::TYPE::END) {
+            names = wpnTypes(i);
 
-        jtype = cJSON_GetObjectItem(in_jconvoy, names[0].c_str());
+            jtype = cJSON_GetObjectItem(in_jconvoy, names[0].c_str());
 
-        if (jtype ==  NULL) {
-            SDL_Log("Cannot get %s element", names[0].c_str());
-        } else {
+            if (jtype ==  NULL) {
+                SDL_Log("Cannot get %s element", names[0].c_str());
+            } else {
 
+                jitem = cJSON_GetObjectItem(jtype, "Item");
 
+                while (jitem != NULL) {
+                    readJSON_item(jitem, &tempitem);
 
+                    if (tempitem.id > 0) {
+                        deposit(tempitem);
+                    }
 
-            jitem = cJSON_GetObjectItem(jtype, "Item");
-
-            while (jitem != NULL) {
-                readJSON_item(jitem, &tempitem);
-
-                if (tempitem.id > 0) {
-                    deposit(tempitem);
+                    tempitem = empty;
+                    jitem = jitem->next;
                 }
-
-                tempitem = empty;
-                jitem = jitem->next;
             }
-        }
 
-        i *= 2;
+            i *= 2;
+        }
+    } else {
+        SDL_Log("in_jconvoy is NULL");
     }
 }
 
 void Convoy::writeJSON(cJSON * in_jconvoy) {
-    cJSON * jitems = NULL;
-    Inventory_item * tempitem;
-    std::vector<std::string> names;
-    int quantity;
-    int i = 1;
+    if (in_jconvoy != NULL) {
+        cJSON * jitems = NULL;
+        Inventory_item * tempitem;
+        std::vector<std::string> names;
+        int quantity;
+        int i = 1;
 
-    while (i < ITEM::TYPE::END) {
-        jitems = cJSON_CreateObject();
-        names = wpnTypes(i);
-        quantity = getQuantity(i);
-        tempitem = getItems(i);
-        writeJSON_items(jitems, tempitem, quantity);
-        cJSON_AddItemToObject(in_jconvoy, names[0].c_str(), jitems);
-        i *= 2;
+        while (i < ITEM::TYPE::END) {
+            jitems = cJSON_CreateObject();
+            names = wpnTypes(i);
+            quantity = getQuantity(i);
+            tempitem = getItems(i);
+            writeJSON_items(jitems, tempitem, quantity);
+            cJSON_AddItemToObject(in_jconvoy, names[0].c_str(), jitems);
+            i *= 2;
 
+        }
+    } else {
+        SDL_Log("in_jconvoy is NULL");
     }
-
-    cJSON_AddItemToObject(in_json, "Convoy", jconvoy);
-
 }

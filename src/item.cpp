@@ -52,45 +52,48 @@ void Item::writeJSON(cJSON * in_jitem) {
             cJSON_AddItemToObject(jtypes, "Type", jtype2);
         }
 
-        cJSON_AddItemToObject(jitem, "Name", jname);
-        cJSON_AddItemToObject(jitem, "id", jid);
-        cJSON_AddStringToObject(jitem, "Description", description.c_str());
-        cJSON_AddItemToObject(jitem, "Bonus", jbonus);
-        cJSON_AddItemToObject(jitem, "Malus", jmalus);
-        cJSON_AddItemToObject(jitem, "Sellable", jsellable);
-        cJSON_AddItemToObject(jitem, "Effects", jeffects);
-        cJSON_AddItemToObject(jitem, "Types", jtypes);
+        cJSON_AddItemToObject(in_jitem, "Name", jname);
+        cJSON_AddItemToObject(in_jitem, "id", jid);
+        cJSON_AddStringToObject(in_jitem, "Description", description.c_str());
+        cJSON_AddItemToObject(in_jitem, "Bonus", jbonus);
+        cJSON_AddItemToObject(in_jitem, "Malus", jmalus);
+        cJSON_AddItemToObject(in_jitem, "Sellable", jsellable);
+        cJSON_AddItemToObject(in_jitem, "Effects", jeffects);
+        cJSON_AddItemToObject(in_jitem, "Types", jtypes);
     } else {
         SDL_Log("in_jitem is NULL");
     }
 }
 
-void Item::readJSON(cJSON * in_json) {
-    cJSON * jitem = cJSON_GetObjectItemCaseSensitive(in_json, "item");
-    cJSON * jname = cJSON_GetObjectItemCaseSensitive(jitem, "Name");
-    cJSON * jid = cJSON_GetObjectItemCaseSensitive(jitem, "id");
-    cJSON * jdescription = cJSON_GetObjectItemCaseSensitive(jitem, "Description");
-    cJSON * jbonus_stats = cJSON_GetObjectItemCaseSensitive(jitem, "Bonus");
-    cJSON * jmalus_stats = cJSON_GetObjectItemCaseSensitive(jitem, "Malus");
-    cJSON * jsellable = cJSON_GetObjectItemCaseSensitive(jitem, "Sellable");
-    cJSON * jeffects = cJSON_GetObjectItemCaseSensitive(jitem, "Effects");
-    cJSON * jeffect = cJSON_GetObjectItemCaseSensitive(jeffects, "id");
-    cJSON * jtypes = cJSON_GetObjectItemCaseSensitive(jitem, "Types");
-    cJSON * jtypeid = cJSON_GetObjectItemCaseSensitive(jtypes, "id");
+void Item::readJSON(cJSON * in_jitem) {
+    if (in_jitem != NULL) {
+        cJSON * jname = cJSON_GetObjectItemCaseSensitive(in_jitem, "Name");
+        cJSON * jid = cJSON_GetObjectItemCaseSensitive(in_jitem, "id");
+        cJSON * jdescription = cJSON_GetObjectItemCaseSensitive(in_jitem, "Description");
+        cJSON * jbonus_stats = cJSON_GetObjectItemCaseSensitive(in_jitem, "Bonus");
+        cJSON * jmalus_stats = cJSON_GetObjectItemCaseSensitive(in_jitem, "Malus");
+        cJSON * jsellable = cJSON_GetObjectItemCaseSensitive(in_jitem, "Sellable");
+        cJSON * jeffects = cJSON_GetObjectItemCaseSensitive(in_jitem, "Effects");
+        cJSON * jeffect = cJSON_GetObjectItemCaseSensitive(jeffects, "id");
+        cJSON * jtypes = cJSON_GetObjectItemCaseSensitive(in_jitem, "Types");
+        cJSON * jtypeid = cJSON_GetObjectItemCaseSensitive(jtypes, "id");
 
-    id = cJSON_GetNumberValue(jid); //returns 0 if junit is NULL
-    name = cJSON_GetStringValue(jname);
+        id = cJSON_GetNumberValue(jid); //returns 0 if junit is NULL
+        name = cJSON_GetStringValue(jname);
 
-    if (id > 0) {
-        name = itemNames[id];
+        if (id > 0) {
+            name = itemNames[id];
+        }
+
+        description = cJSON_GetStringValue(jdescription);
+        readJSON_stats(jbonus_stats, &bonus_stats);
+        readJSON_stats(jmalus_stats, &malus_stats);
+        effect = cJSON_GetNumberValue(jeffect);
+        type = cJSON_GetNumberValue(jtypeid);
+        sellable = cJSON_IsTrue(jsellable);
+    } else {
+        SDL_Log("in_jitem is NULL");
     }
-
-    description = cJSON_GetStringValue(jdescription);
-    readJSON_stats(jbonus_stats, &bonus_stats);
-    readJSON_stats(jmalus_stats, &malus_stats);
-    effect = cJSON_GetNumberValue(jeffect);
-    type = cJSON_GetNumberValue(jtypeid);
-    sellable = cJSON_IsTrue(jsellable);
 }
 
 void Item::writeXML(tinyxml2::XMLDocument * in_doc, tinyxml2::XMLElement * in_pItem) {

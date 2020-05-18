@@ -103,7 +103,7 @@ void Tile::readJSON(cJSON * in_jtile) {
         name = cJSON_GetStringValue(jname);
         readJSON_stats(jstats, &stats);
         inside = cJSON_IsTrue(jinside);
-        writeJSON_mvtcost(in_json, &cost_struct);
+        writeJSON_mvtcost(in_jtile, &cost_struct);
 
     } else  {
         SDL_Log("in_jtile is NULL");
@@ -118,14 +118,13 @@ void Tile::writeJSON(cJSON * in_jtile) {
         cJSON * jid = cJSON_CreateNumber(id);
 
         writeJSON_mvtcost(jcost, &cost_struct);
-        writeJSON_stats(in_jtilestats, &stats);
+        writeJSON_stats(jtilestats, &stats);
 
         cJSON_AddItemToObject(in_jtile, "Name", jname);
         cJSON_AddItemToObject(in_jtile, "id", jid);
         cJSON_AddBoolToObject(in_jtile, "inside", inside);
         cJSON_AddItemToObject(in_jtile, "Stats", jtilestats);
         cJSON_AddItemToObject(in_jtile, "MvtCost", jcost);
-        cJSON_AddItemToObject(in_json, "tile", jtile);
     } else  {
         SDL_Log("in_jtile is NULL");
     }

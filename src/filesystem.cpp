@@ -1222,10 +1222,10 @@ void XML_IO::readXML(const char * filename) {
     // SDL_Log("readXML file: %s", filename);
     tinyxml2::XMLDocument xmlDoc;
     parseXML(filename, &xmlDoc);
-    tinyxml2::XMLElement * pEle = xmlDoc.FirstChildElement(xmlElement.c_str());
+    tinyxml2::XMLElement * pEle = xmlDoc.FirstChildElement(element.c_str());
 
     if (!pEle) {
-        SDL_Log("Cannot get %s element", xmlElement.c_str());
+        SDL_Log("Cannot get %s element", element.c_str());
     } else {
         readXML(pEle);
     }
@@ -1270,13 +1270,13 @@ void JSON_IO::writeJSON(const char * filename, const bool append) {
             cJSON_Delete(json);
         }
     }   else {
-        SDL_Log("JSON element not set")
+        SDL_Log("JSON element not set");
     }
 }
 
 
 void XML_IO::writeXML(const char * filename, const bool append) {
-    // SDL_Log("writeXML %s to: %s\n", xmlElement.c_str(), filename);
+    // SDL_Log("writeXML %s to: %s\n", element.c_str(), filename);
     PHYSFS_file * fp;
     tinyxml2::XMLDocument xmlDoc;
 
@@ -1288,9 +1288,9 @@ void XML_IO::writeXML(const char * filename, const bool append) {
     }
 
     if (!fp) {
-        SDL_Log("Could not open %s for %s writing\n", filename, xmlElement.c_str());
+        SDL_Log("Could not open %s for %s writing\n", filename, element.c_str());
     } else {
-        tinyxml2::XMLElement * pEle = xmlDoc.NewElement(xmlElement.c_str());
+        tinyxml2::XMLElement * pEle = xmlDoc.NewElement(element.c_str());
         xmlDoc.InsertEndChild(pEle);
         writeXML(&xmlDoc, pEle);
         printXMLDoc(fp, &xmlDoc);
@@ -1303,7 +1303,7 @@ void BASE_IO::setElement(std::string in_Element) {
 }
 
 std::string BASE_IO::getElement() {
-    return (Element);
+    return (element);
 }
 
 void path_removefolder(char * path) {

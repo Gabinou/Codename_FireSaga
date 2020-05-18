@@ -83,10 +83,10 @@ protected:
 public:
     void setElement(std::string in_Element);
     std::string getElement();
-}
+};
 
 
-class XML_IO: public BASE_IO {
+class XML_IOL: public BASE_IO {
 public:
     void writeXML(const char * filename, const bool append = false);
     void readXML(const char * filename);

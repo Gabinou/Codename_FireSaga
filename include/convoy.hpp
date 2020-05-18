@@ -13,7 +13,7 @@
 #include <string>
 #include <algorithm>
 
-class Convoy : public XML_IO, JSON_IO {
+class Convoy : public XML_IO, JSON_IO, BASE_IO {
 private:
     unsigned int bank = 0;
     unsigned char  booksnum = 0;
