@@ -663,6 +663,14 @@ void Game::startTurnSystem() {
 }
 
 
+void Game::setConvoy(Convoy in_convoy) {
+    convoy = in_convoy;
+}
+
+Convoy Game::getConvoy() {
+    return (convoy);
+}
+
 void Game::loadXML(const short int save_ind) {
     char filename[DEFAULT::BUFFER_SIZE];
 
@@ -751,8 +759,10 @@ void Game::loadJSON(const short int save_ind) {
         strcat(filename, temp);
         cJSON * json = parseJSON(filename);
         readJSON_narrative(json, &narrative);
-        convoy.writeJSON(json);
 
+
+        cJSON * jconvoy = cJSON_GetObjectItem(json, "Convoy");
+        convoy.readJSON(jconvoy);
         cJSON * jparty = cJSON_GetObjectItem(json, "Party");
         party.clear();
         cJSON * junit = cJSON_GetObjectItem(jparty, "Unit");
@@ -760,8 +770,8 @@ void Game::loadJSON(const short int save_ind) {
 
         while (junit != NULL) {
             temp_unit = Unit();
-            //     temp_unit.readJSON(junit);
-            //     party[temp_unit.getid()] = temp_unit;
+            temp_unit.readJSON(junit);
+            party[temp_unit.getid()] = temp_unit;
             junit = junit->next;
         }
 
@@ -788,6 +798,7 @@ void Game::saveJSON(const short int save_ind) {
         cJSON * json = cJSON_CreateObject();
         writeJSON_narrative(json, &narrative);
         cJSON * jparty = cJSON_CreateObject();
+        cJSON * jconvoy = cJSON_CreateObject();
         cJSON * junit;
 
         for (auto it = party.begin(); it != party.end(); it++) {
@@ -796,7 +807,8 @@ void Game::saveJSON(const short int save_ind) {
         }
 
         cJSON_AddItemToObject(json, "Party", jparty);
-        convoy.writeJSON(json);
+        convoy.writeJSON(jconvoy);
+        cJSON_AddItemToObject(json, "Convoy", jconvoy);
         printJSON(fp, json);
         PHYSFS_close(fp);
         cJSON_Delete(json);

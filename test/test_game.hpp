@@ -1,6 +1,73 @@
 #include "minctest.h"
 #include "game.hpp"
 
+Convoy makeConvoy() {
+    Convoy convoy;
+    Inventory_item temp;
+    temp.id = ITEM::NAME::WOODEN_SWORD;
+    convoy.deposit(temp);
+    temp.id = ITEM::NAME::KITCHEN_KNIFE;
+    convoy.deposit(temp);
+    temp.id = ITEM::NAME::WRATH_SWORD;
+    convoy.deposit(temp);
+    temp.id = ITEM::NAME::FLEURET;
+    convoy.deposit(temp);
+    temp.id = ITEM::NAME::DAMAS_SWORD;
+    convoy.deposit(temp);
+    temp.id = ITEM::NAME::DAMAS_SWORD;
+    convoy.deposit(temp);
+    temp.id = ITEM::NAME::WOODEN_SWORD;
+    convoy.deposit(temp);
+    temp.id = ITEM::NAME::WOODEN_SWORD;
+    convoy.deposit(temp);
+    temp.id = ITEM::NAME::IRON_SWORD;
+    convoy.deposit(temp);
+    temp.id = ITEM::NAME::STEEL_SWORD;
+    convoy.deposit(temp);
+    temp.id = ITEM::NAME::DAMAS_SWORD;
+    convoy.deposit(temp);
+    temp.id = ITEM::NAME::ESPADON;
+    convoy.deposit(temp);
+    temp.id = ITEM::NAME::EXSANGUE;
+    convoy.deposit(temp);
+    temp.id = ITEM::NAME::SECUNDUS;
+    convoy.deposit(temp);
+    temp.id = ITEM::NAME::FAUCHON;
+    convoy.deposit(temp);
+    temp.id = ITEM::NAME::SABER;
+    convoy.deposit(temp);
+    temp.id = ITEM::NAME::GALATINE;
+    convoy.deposit(temp);
+    temp.id = ITEM::NAME::HAUTECLAIRE;
+    convoy.deposit(temp);
+    temp.id = ITEM::NAME::BROADSWORD;
+    convoy.deposit(temp);
+    temp.id = ITEM::NAME::MERCIFUL_BLADE;
+    convoy.deposit(temp);
+
+    temp.id = ITEM::NAME::DAMAS_LANCE;
+    convoy.deposit(temp);
+    temp.id = ITEM::NAME::ACHILLES;
+    convoy.deposit(temp);
+    temp.id = ITEM::NAME::VEL;
+    convoy.deposit(temp);
+    temp.id = ITEM::NAME::IRON_LANCE;
+    convoy.deposit(temp);
+    temp.id = ITEM::NAME::TONBOKIRI;
+    convoy.deposit(temp);
+    temp.id = ITEM::NAME::DAMAS_LANCE;
+    convoy.deposit(temp);
+    temp.id = ITEM::NAME::WRATH_LANCE;
+    convoy.deposit(temp);
+    temp.id = ITEM::NAME::WRATH_LANCE;
+    convoy.deposit(temp);
+    temp.id = ITEM::NAME::TRIDENT;
+    convoy.deposit(temp);
+    temp.id = ITEM::NAME::SPEAR;
+    convoy.deposit(temp);
+    return (convoy);
+}
+
 void test_game() {
     Game * testgame1 = nullptr;
     Settings temp_settings;
@@ -9,7 +76,8 @@ void test_game() {
     temp_settings.fontsize = 28;
     testgame1 = new Game(temp_settings);
     testgame1->makeUnits(0);
-
+    Convoy convoy = makeConvoy();
+    testgame1->setConvoy(convoy);
     // testgame1->loadMap(0);
 
     // std::vector<short unsigned int> unit_inds = {UNIT::NAME::SILOU};

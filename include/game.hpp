@@ -81,6 +81,9 @@ public:
     void loadMouse();
     void unloadMouse();
 
+    void setConvoy(Convoy in_convoy);
+    Convoy getConvoy();
+
     void setCursorstate(const unsigned char in_menu);
     void setCursorlastpos(const short int x, const short int y);
     template <typename T> void loadTiles(std::vector<T> in_tiles);
