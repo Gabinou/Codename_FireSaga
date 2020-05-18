@@ -119,7 +119,7 @@ void Map::readJSON(cJSON * in_jmap) {
 
 void Map::writeJSON(cJSON * in_jmap) {
     if (in_jmap != NULL) {
-        cJSON * jchapter = cJSON_CreateNtingumber(chapter);
+        cJSON * jchapter = cJSON_CreateNumber(chapter);
         cJSON_AddItemToObject(in_jmap, "chapter", jchapter);
         cJSON * jstartingpositions = cJSON_CreateObject();
         cJSON_AddItemToObject(in_jmap, "StartingPositions", jstartingpositions);
@@ -868,8 +868,9 @@ std::vector<short int> baseParty() {
     return (out);
 }
 
-std::vector<Map_arrival> chapTestStartingPos() {
-
+std::vector<Point> chapTestStartingPos() {
+    std::vector<Point> out;
+    return (out);
 }
 
 std::vector<Map_arrival> chapTestArrivals() {
@@ -922,6 +923,6 @@ std::vector<std::vector<Inventory_item>> chapTestEquipments() {
 }
 
 std::vector<Map_arrival> (*mapArrivals[CHAPTER::END - CHAPTER::TEST + 1])() = {chapTestArrivals};
-std::vector<Point> (*mapStartingPos[CHAPTER::END - CHAPTER::TEST + 1])() = {chapTestArrivals};
+std::vector<Point> (*mapStartingPos[CHAPTER::END - CHAPTER::TEST + 1])() = {chapTestStartingPos};
 std::vector<short int> (*baseParties[CHAPTER::CHAP1 - CHAPTER::TEST + 1])() = {testParty, baseParty};
 std::vector<std::vector<Inventory_item>> (*arrivalEquipments[CHAPTER::END - CHAPTER::TEST + 1])() = {chapTestEquipments};

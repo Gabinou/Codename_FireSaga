@@ -40,7 +40,8 @@ int init(char * argvZero, char * baseDir, char * assetsPath) {
     PHYSFS_init(argvZero);
     PHYSFS_permitSymbolicLinks(1);
 
-    PHYSFS_setSaneConfig("AvgBear", "CodenameFiresaga", "", 0, 0);
+    PHYSFS_setSaneConfig("AvgBear", "CodenameFiresaga", "bsa", 0, 0);
+    // bsar: bear strategic archive
 
     /* Determine the OS user directory */
     if (baseDir && strlen(baseDir) > 0) {
