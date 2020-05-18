@@ -2,7 +2,7 @@
 #include "weapon.hpp"
 
 Weapon::Weapon() {
-    setXMLElement("Weapon");
+    setElement("Weapon");
 }
 
 Weapon::Weapon(short unsigned int in_type, Weapon_stats in_stats, unsigned char in_id) : Weapon() {
@@ -57,27 +57,29 @@ short unsigned int Weapon::getEffective() {
     return (effective);
 }
 
-void Weapon::readJSON(cJSON * in_json) {
-    Item::readJSON(in_json);
+void Weapon::readJSON(cJSON * in_jwpn) {
+    if (in_jwpn != NULL) {
+        Item::readJSON(in_jwpn);
 
-    cJSON * jitem = cJSON_GetObjectItemCaseSensitive(in_json, "item");
-    cJSON * jstats = cJSON_GetObjectItemCaseSensitive(jitem, "Stats");
-    cJSON * jinfused = cJSON_GetObjectItemCaseSensitive(jitem, "Infused");
-    cJSON * jpower = cJSON_GetObjectItemCaseSensitive(jinfused, "Power");
-    cJSON * jitype = cJSON_GetObjectItemCaseSensitive(jinfused, "Type");
-    cJSON * jeffective = cJSON_GetObjectItemCaseSensitive(jitem, "Effective");
+        cJSON * jstats = cJSON_GetObjectItemCaseSensitive(in_jwpn, "Stats");
+        cJSON * jinfused = cJSON_GetObjectItemCaseSensitive(in_jwpn, "Infused");
+        cJSON * jpower = cJSON_GetObjectItemCaseSensitive(jinfused, "Power");
+        cJSON * jitype = cJSON_GetObjectItemCaseSensitive(jinfused, "Type");
+        cJSON * jeffective = cJSON_GetObjectItemCaseSensitive(in_jwpn, "Effective");
 
-    readJSON_stats(jstats, &stats);
-    infused.power = cJSON_GetNumberValue(jpower);
-    infused.type = cJSON_GetNumberValue(jitype);
-    effective = cJSON_GetNumberValue(jeffective);
+        readJSON_stats(jstats, &stats);
+        infused.power = cJSON_GetNumberValue(jpower);
+        infused.type = cJSON_GetNumberValue(jitype);
+        effective = cJSON_GetNumberValue(jeffective);
+    } else  {
+        SDL_Log("in_jwpn is NULL");
+    }
 }
 
-void Weapon::writeJSON(cJSON * in_json) {
-    if (in_json != NULL) {
-        Item::writeJSON(in_json);
+void Weapon::writeJSON(cJSON * in_jwpn) {
+    if (in_jwpn != NULL) {
+        Item::writeJSON(in_jwpn);
 
-        cJSON * jitem = cJSON_GetObjectItemCaseSensitive(in_json, "item");
         cJSON * jitemstats = cJSON_CreateObject();
         cJSON * jinfused = cJSON_CreateObject();
         cJSON * jpower = cJSON_CreateNumber(infused.power);
@@ -89,6 +91,8 @@ void Weapon::writeJSON(cJSON * in_json) {
         cJSON_AddItemToObject(jinfused, "Type", jtype);
         cJSON_AddItemToObject(jitem, "Stats", jitemstats);
         cJSON_AddItemToObject(jitem, "Infused", jinfused);
+    } else  {
+        SDL_Log("in_jwpn is NULL");
     }
 }
 

@@ -17,97 +17,99 @@ Map::~Map() {
 }
 
 void Map::readJSON(cJSON * in_jmap) {
-    cJSON * jchapter = cJSON_GetObjectItem(in_jmap, "chapter");
-    cJSON * jarrivals = cJSON_GetObjectItem(in_jmap, "Arrivals");
-    cJSON * jtiles = cJSON_GetObjectItem(in_jmap, "tiles");
+    if (in_jmap != NULL) {
 
-    cJSON * jtile = cJSON_GetObjectItem(jtiles, "tile");
-    cJSON * jid;
-    cJSON * jtilename;
-    tilenames.clear();
-    tilesindex.clear();
+        cJSON * jchapter = cJSON_GetObjectItem(in_jmap, "chapter");
+        cJSON * jarrivals = cJSON_GetObjectItem(in_jmap, "Arrivals");
+        cJSON * jtiles = cJSON_GetObjectItem(in_jmap, "tiles");
 
-    while (jtile != NULL) {
-        jid = cJSON_GetObjectItem(jtile, "id");
-        jtilename = cJSON_GetObjectItem(jtile, "name");
-        tilesindex.push_back(cJSON_GetNumberValue(jid) * DEFAULT::TILE_DIVISOR);
-        tilenames.push_back(cJSON_GetStringValue(jtilename));
-        jtile = jtile->next;
-    }
+        cJSON * jtile = cJSON_GetObjectItem(jtiles, "tile");
+        cJSON * jid;
+        cJSON * jtilename;
+        tilenames.clear();
+        tilesindex.clear();
 
-    cJSON * jarrival = cJSON_GetObjectItem(jarrivals, "arrival");
-    cJSON * jlevelups;
-    cJSON * jturn;
-    cJSON * jposition;
-    cJSON * jrow;
-    cJSON * jcol;
-    cJSON * jequipment;
-    cJSON * jitem;
-    Map_arrival temp_arrival;
-    map_arrivals.clear();
-    arrival_equipments.clear();
-    Inventory_item temp_item;
-    std::vector<Inventory_item> arrival_equipment;
-
-    while (jarrival != NULL) {
-        temp_arrival = Map_arrival();
-        jid = cJSON_GetObjectItem(jarrival, "id");
-        jlevelups = cJSON_GetObjectItem(jarrival, "levelups");
-        jturn = cJSON_GetObjectItem(jarrival, "turn");
-        jposition = cJSON_GetObjectItem(jarrival, "position");
-        jrow = cJSON_GetObjectItem(jposition, "row");
-        jcol = cJSON_GetObjectItem(jposition, "col");
-        temp_arrival.turn = cJSON_GetNumberValue(jturn);
-        temp_arrival.id = cJSON_GetNumberValue(jid);
-        temp_arrival.levelups = cJSON_GetNumberValue(jlevelups);
-        temp_arrival.position.x = cJSON_GetNumberValue(jrow);
-        temp_arrival.position.y = cJSON_GetNumberValue(jcol);
-        map_arrivals.push_back(temp_arrival);
-
-        jequipment = cJSON_GetObjectItem(jarrival, "Equipment");
-        jitem = cJSON_GetObjectItem(jequipment, "Item");
-        arrival_equipment.clear();
-
-        while (jitem != NULL) {
-            temp_item = Inventory_item();
-            readJSON_item(jitem, &temp_item);
-            arrival_equipment.push_back(temp_item);
-            jitem = jitem->next;
+        while (jtile != NULL) {
+            jid = cJSON_GetObjectItem(jtile, "id");
+            jtilename = cJSON_GetObjectItem(jtile, "name");
+            tilesindex.push_back(cJSON_GetNumberValue(jid) * DEFAULT::TILE_DIVISOR);
+            tilenames.push_back(cJSON_GetStringValue(jtilename));
+            jtile = jtile->next;
         }
 
-        arrival_equipments.push_back(arrival_equipment);
-        jarrival = jarrival->next;
+        cJSON * jarrival = cJSON_GetObjectItem(jarrivals, "arrival");
+        cJSON * jlevelups;
+        cJSON * jturn;
+        cJSON * jposition;
+        cJSON * jrow;
+        cJSON * jcol;
+        cJSON * jequipment;
+        cJSON * jitem;
+        Map_arrival temp_arrival;
+        map_arrivals.clear();
+        arrival_equipments.clear();
+        Inventory_item temp_item;
+        std::vector<Inventory_item> arrival_equipment;
+
+        while (jarrival != NULL) {
+            temp_arrival = Map_arrival();
+            jid = cJSON_GetObjectItem(jarrival, "id");
+            jlevelups = cJSON_GetObjectItem(jarrival, "levelups");
+            jturn = cJSON_GetObjectItem(jarrival, "turn");
+            jposition = cJSON_GetObjectItem(jarrival, "position");
+            jrow = cJSON_GetObjectItem(jposition, "row");
+            jcol = cJSON_GetObjectItem(jposition, "col");
+            temp_arrival.turn = cJSON_GetNumberValue(jturn);
+            temp_arrival.id = cJSON_GetNumberValue(jid);
+            temp_arrival.levelups = cJSON_GetNumberValue(jlevelups);
+            temp_arrival.position.x = cJSON_GetNumberValue(jrow);
+            temp_arrival.position.y = cJSON_GetNumberValue(jcol);
+            map_arrivals.push_back(temp_arrival);
+
+            jequipment = cJSON_GetObjectItem(jarrival, "Equipment");
+            jitem = cJSON_GetObjectItem(jequipment, "Item");
+            arrival_equipment.clear();
+
+            while (jitem != NULL) {
+                temp_item = Inventory_item();
+                readJSON_item(jitem, &temp_item);
+                arrival_equipment.push_back(temp_item);
+                jitem = jitem->next;
+            }
+
+            arrival_equipments.push_back(arrival_equipment);
+            jarrival = jarrival->next;
+        }
+
+        cJSON * jbounds = cJSON_GetObjectItem(in_jmap, "Bounds");
+        cJSON * jrow_min = cJSON_GetObjectItem(jbounds, "row_min");
+        cJSON * jrow_max = cJSON_GetObjectItem(jbounds, "row_max");
+        cJSON * jcol_min = cJSON_GetObjectItem(jbounds, "col_min");
+        cJSON * jcol_max = cJSON_GetObjectItem(jbounds, "col_max");
+        bounds[0] = cJSON_GetNumberValue(jrow_min);
+        bounds[1] = cJSON_GetNumberValue(jrow_max);
+        bounds[2] = cJSON_GetNumberValue(jcol_min);
+        bounds[3] = cJSON_GetNumberValue(jcol_max);
+
+        cJSON * joffset = cJSON_GetObjectItem(in_jmap, "Offset");
+        cJSON * joffset_row = cJSON_GetObjectItem(joffset, "offset_row");
+        cJSON * joffset_col = cJSON_GetObjectItem(joffset, "offset_col");
+        offset[0] = cJSON_GetNumberValue(jrow_min);
+        offset[1] = cJSON_GetNumberValue(jrow_min);
+
+        cJSON * jtilemap = cJSON_GetObjectItem(in_jmap, "tilemap");
+        tilemap = readJSON_tilemap(jtilemap);
+    } else  {
+        SDL_Log("in_jmap is NULL");
     }
-
-    cJSON * jbounds = cJSON_GetObjectItem(in_jmap, "Bounds");
-    cJSON * jrow_min = cJSON_GetObjectItem(jbounds, "row_min");
-    cJSON * jrow_max = cJSON_GetObjectItem(jbounds, "row_max");
-    cJSON * jcol_min = cJSON_GetObjectItem(jbounds, "col_min");
-    cJSON * jcol_max = cJSON_GetObjectItem(jbounds, "col_max");
-    bounds[0] = cJSON_GetNumberValue(jrow_min);
-    bounds[1] = cJSON_GetNumberValue(jrow_max);
-    bounds[2] = cJSON_GetNumberValue(jcol_min);
-    bounds[3] = cJSON_GetNumberValue(jcol_max);
-
-    cJSON * joffset = cJSON_GetObjectItem(in_jmap, "Offset");
-    cJSON * joffset_row = cJSON_GetObjectItem(joffset, "offset_row");
-    cJSON * joffset_col = cJSON_GetObjectItem(joffset, "offset_col");
-    offset[0] = cJSON_GetNumberValue(jrow_min);
-    offset[1] = cJSON_GetNumberValue(jrow_min);
-
-    cJSON * jtilemap = cJSON_GetObjectItem(in_jmap, "tilemap");
-    tilemap = readJSON_tilemap(jtilemap);
-
 }
 
-void Map::writeJSON(cJSON * in_json) {
+void Map::writeJSON(cJSON * in_jmap) {
     if (in_json != NULL) {
-        cJSON * jmap = cJSON_CreateObject();
-        cJSON_AddItemToObject(in_json, "map", jmap);
         cJSON * jchapter = cJSON_CreateNumber(chapter);
-        cJSON_AddItemToObject(jmap, "chapter", jchapter);
+        cJSON_AddItemToObject(in_jmap, "chapter", jchapter);
         cJSON * jtiles = cJSON_CreateObject();
-        cJSON_AddItemToObject(jmap, "tiles", jtiles);
+        cJSON_AddItemToObject(in_jmap, "tiles", jtiles);
         cJSON * jtile;
         cJSON * jtilename;
         cJSON * jtileid;
@@ -135,7 +137,7 @@ void Map::writeJSON(cJSON * in_json) {
             cJSON * jarrival;
             cJSON * jarrivals = cJSON_CreateObject();
             cJSON * jarrivaleq;
-            cJSON_AddItemToObject(jmap, "Arrivals", jarrivals);
+            cJSON_AddItemToObject(in_jmap, "Arrivals", jarrivals);
 
             for (int i = 0; i < map_arrivals.size(); i++) {
                 jarrival = cJSON_CreateObject();
@@ -159,16 +161,16 @@ void Map::writeJSON(cJSON * in_json) {
         cJSON_AddItemToObject(jbounds, "row_max", jrow_max);
         cJSON_AddItemToObject(jbounds, "col_min", jcol_min);
         cJSON_AddItemToObject(jbounds, "col_max", jcol_max);
-        cJSON_AddItemToObject(jmap, "Bounds", jbounds);
+        cJSON_AddItemToObject(in_jmap, "Bounds", jbounds);
         cJSON * joffset = cJSON_CreateObject();
         cJSON * joffset_row = cJSON_CreateNumber(offset[0]);
         cJSON * joffset_col = cJSON_CreateNumber(offset[1]);
         cJSON_AddItemToObject(joffset, "offset_row", joffset_row);
         cJSON_AddItemToObject(joffset, "offset_col", joffset_col);
-        cJSON_AddItemToObject(jmap, "Offset", joffset);
+        cJSON_AddItemToObject(in_jmap, "Offset", joffset);
         cJSON * jtilemap = cJSON_CreateObject();
         writeJSON_tilemap(jtilemap, tilemap);
-        cJSON_AddItemToObject(jmap, "tilemap", jtilemap);
+        cJSON_AddItemToObject(in_jmap, "tilemap", jtilemap);
     }
 }
 

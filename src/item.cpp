@@ -11,10 +11,8 @@ Item::Item(short unsigned int in_type, unsigned char in_id) : Item() {
     id = in_id;
 }
 
-void Item::writeJSON(cJSON * in_json) {
-    if (in_json != NULL) {
-        cJSON * jitem = cJSON_CreateObject();
-        cJSON_AddItemToObject(in_json, "item", jitem);
+void Item::writeJSON(cJSON * in_jitem) {
+    if (in_jitem != NULL) {
 
         cJSON * jname = cJSON_CreateString(name.c_str());
         cJSON * jid = cJSON_CreateNumber(id);
@@ -62,6 +60,8 @@ void Item::writeJSON(cJSON * in_json) {
         cJSON_AddItemToObject(jitem, "Sellable", jsellable);
         cJSON_AddItemToObject(jitem, "Effects", jeffects);
         cJSON_AddItemToObject(jitem, "Types", jtypes);
+    } else {
+        SDL_Log("in_jitem is NULL");
     }
 }
 

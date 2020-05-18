@@ -92,36 +92,42 @@ void Tile::readXML(tinyxml2::XMLElement * in_pTile) {
 }
 
 void Tile::readJSON(cJSON * in_jtile) {
-    cJSON * jname = cJSON_GetObjectItemCaseSensitive(in_jtile, "Name");
-    cJSON * jid = cJSON_GetObjectItemCaseSensitive(in_jtile, "id");
-    cJSON * jinside = cJSON_GetObjectItemCaseSensitive(in_jtile, "inside");
-    cJSON * jstats = cJSON_GetObjectItemCaseSensitive(in_jtile, "Stats");
-    cJSON * jmvtcost = cJSON_GetObjectItemCaseSensitive(in_jtile, "MvtCost");
+    if (in_jtile != NULL) {
+        cJSON * jname = cJSON_GetObjectItemCaseSensitive(in_jtile, "Name");
+        cJSON * jid = cJSON_GetObjectItemCaseSensitive(in_jtile, "id");
+        cJSON * jinside = cJSON_GetObjectItemCaseSensitive(in_jtile, "inside");
+        cJSON * jstats = cJSON_GetObjectItemCaseSensitive(in_jtile, "Stats");
+        cJSON * jmvtcost = cJSON_GetObjectItemCaseSensitive(in_jtile, "MvtCost");
 
-    id = cJSON_GetNumberValue(jid);
-    name = cJSON_GetStringValue(jname);
-    readJSON_stats(jstats, &stats);
-    inside = cJSON_IsTrue(jinside);
-    writeJSON_mvtcost(in_json, &cost_struct);
+        id = cJSON_GetNumberValue(jid);
+        name = cJSON_GetStringValue(jname);
+        readJSON_stats(jstats, &stats);
+        inside = cJSON_IsTrue(jinside);
+        writeJSON_mvtcost(in_json, &cost_struct);
+
+    } else  {
+        SDL_Log("in_jtile is NULL");
+    }
 }
 
-void Tile::writeJSON(cJSON * in_json) {
-    if (in_json != NULL) {
-        cJSON * jtile = cJSON_CreateObject();
+void Tile::writeJSON(cJSON * in_jtile) {
+    if (in_jtile != NULL) {
         cJSON * jtilestats = cJSON_CreateObject();
         cJSON * jcost = cJSON_CreateObject();
         cJSON * jname = cJSON_CreateString(name.c_str());
         cJSON * jid = cJSON_CreateNumber(id);
 
         writeJSON_mvtcost(jcost, &cost_struct);
-        writeJSON_stats(jtilestats, &stats);
+        writeJSON_stats(in_jtilestats, &stats);
 
-        cJSON_AddItemToObject(jtile, "Name", jname);
-        cJSON_AddItemToObject(jtile, "id", jid);
-        cJSON_AddBoolToObject(jtile, "inside", inside);
-        cJSON_AddItemToObject(jtile, "Stats", jtilestats);
-        cJSON_AddItemToObject(jtile, "MvtCost", jcost);
+        cJSON_AddItemToObject(in_jtile, "Name", jname);
+        cJSON_AddItemToObject(in_jtile, "id", jid);
+        cJSON_AddBoolToObject(in_jtile, "inside", inside);
+        cJSON_AddItemToObject(in_jtile, "Stats", jtilestats);
+        cJSON_AddItemToObject(in_jtile, "MvtCost", jcost);
         cJSON_AddItemToObject(in_json, "tile", jtile);
+    } else  {
+        SDL_Log("in_jtile is NULL");
     }
 }
 

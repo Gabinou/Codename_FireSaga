@@ -728,11 +728,10 @@ void Convoy::writeXML(tinyxml2::XMLDocument * in_doc, tinyxml2::XMLElement * in_
 }
 
 
-void Convoy::readJSON(cJSON * in_json) {
+void Convoy::readJSON(cJSON * in_jconvoy) {
     std::vector<std::string> names;
     Inventory_item tempitem;
     Inventory_item empty;
-    cJSON * jconvoy = cJSON_GetObjectItem(in_json, "Convoy");
     cJSON * jitem = NULL;
     cJSON * jtype = NULL;
     short int i = 1;
@@ -740,7 +739,7 @@ void Convoy::readJSON(cJSON * in_json) {
     while (i < ITEM::TYPE::END) {
         names = wpnTypes(i);
 
-        jtype = cJSON_GetObjectItem(jconvoy, names[0].c_str());
+        jtype = cJSON_GetObjectItem(in_jconvoy, names[0].c_str());
 
         if (jtype ==  NULL) {
             SDL_Log("Cannot get %s element", names[0].c_str());
@@ -767,8 +766,7 @@ void Convoy::readJSON(cJSON * in_json) {
     }
 }
 
-void Convoy::writeJSON(cJSON * in_json) {
-    cJSON * jconvoy = cJSON_CreateObject();
+void Convoy::writeJSON(cJSON * in_jconvoy) {
     cJSON * jitems = NULL;
     Inventory_item * tempitem;
     std::vector<std::string> names;
@@ -781,7 +779,7 @@ void Convoy::writeJSON(cJSON * in_json) {
         quantity = getQuantity(i);
         tempitem = getItems(i);
         writeJSON_items(jitems, tempitem, quantity);
-        cJSON_AddItemToObject(jconvoy, names[0].c_str(), jitems);
+        cJSON_AddItemToObject(in_jconvoy, names[0].c_str(), jitems);
         i *= 2;
 
     }

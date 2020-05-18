@@ -5,7 +5,7 @@
 #endif /* STB_SPRINTF_IMPLEMENTATION */
 
 Unit::Unit() {
-    setXMLElement("Unit");
+    setElement("Unit");
     equipsR(0);
     equipsL(1);
 }
@@ -816,20 +816,19 @@ void Unit::readXML(tinyxml2::XMLElement * in_pUnit) {
     speed();
 }
 
-void Unit::readJSON(cJSON * in_json) {
-    cJSON * junit = cJSON_GetObjectItemCaseSensitive(in_json, "unit");
-    cJSON * jid = cJSON_GetObjectItemCaseSensitive(junit, "id");
-    cJSON * jname = cJSON_GetObjectItemCaseSensitive(junit, "Name");
-    cJSON * jsex = cJSON_GetObjectItemCaseSensitive(junit, "Sex");
-    cJSON * jbase_exp = cJSON_GetObjectItemCaseSensitive(junit, "BaseExp");
-    cJSON * jexp = cJSON_GetObjectItemCaseSensitive(junit, "Exp");
-    cJSON * jcurrent_hp = cJSON_GetObjectItemCaseSensitive(junit, "CurrentHP");
-    cJSON * jclass = cJSON_GetObjectItemCaseSensitive(junit, "Class");
-    cJSON * jcurrent_stats = cJSON_GetObjectItemCaseSensitive(junit, "Stats");
-    cJSON * jcaps_stats = cJSON_GetObjectItemCaseSensitive(junit, "Caps");
-    cJSON * jgrowths = cJSON_GetObjectItemCaseSensitive(junit, "Growths");
-    cJSON * jlevelups = cJSON_GetObjectItemCaseSensitive(junit, "Level-ups");
-    cJSON * jitems = cJSON_GetObjectItemCaseSensitive(junit, "Items");
+void Unit::readJSON(cJSON * in_junit) {
+    cJSON * jid = cJSON_GetObjectItemCaseSensitive(in_junit, "id");
+    cJSON * jname = cJSON_GetObjectItemCaseSensitive(in_junit, "Name");
+    cJSON * jsex = cJSON_GetObjectItemCaseSensitive(in_junit, "Sex");
+    cJSON * jbase_exp = cJSON_GetObjectItemCaseSensitive(in_junit, "BaseExp");
+    cJSON * jexp = cJSON_GetObjectItemCaseSensitive(in_junit, "Exp");
+    cJSON * jcurrent_hp = cJSON_GetObjectItemCaseSensitive(in_junit, "CurrentHP");
+    cJSON * jclass = cJSON_GetObjectItemCaseSensitive(in_junit, "Class");
+    cJSON * jcurrent_stats = cJSON_GetObjectItemCaseSensitive(in_junit, "Stats");
+    cJSON * jcaps_stats = cJSON_GetObjectItemCaseSensitive(in_junit, "Caps");
+    cJSON * jgrowths = cJSON_GetObjectItemCaseSensitive(in_junit, "Growths");
+    cJSON * jlevelups = cJSON_GetObjectItemCaseSensitive(in_junit, "Level-ups");
+    cJSON * jitems = cJSON_GetObjectItemCaseSensitive(in_junit, "Items");
 
     id = cJSON_GetNumberValue(jid); //returns 0 if junit is NULL
     name = cJSON_GetStringValue(jname);
@@ -865,11 +864,8 @@ void Unit::readJSON(cJSON * in_json) {
     };
 }
 
-void Unit::writeJSON(cJSON * in_json) {
+void Unit::writeJSON(cJSON * in_junit) {
     if (in_json != NULL) {
-
-        cJSON * junit = cJSON_CreateObject();
-        cJSON_AddItemToObject(in_json, "unit", junit);
 
         cJSON * jid = cJSON_CreateNumber(id);
         cJSON * jexp = cJSON_CreateNumber(base_exp);
@@ -890,18 +886,18 @@ void Unit::writeJSON(cJSON * in_json) {
         cJSON * jlevel = NULL;
         cJSON * jlevelup = NULL;
 
-        cJSON_AddItemToObject(junit, "level", jlevel);
-        cJSON_AddItemToObject(junit, "id", jid);
-        cJSON_AddItemToObject(junit, "Name", jname);
-        cJSON_AddItemToObject(junit, "Sex", jsex);
-        cJSON_AddItemToObject(junit, "BaseExp", jbase_exp);
-        cJSON_AddItemToObject(junit, "Exp", jexp);
-        cJSON_AddItemToObject(junit, "CurrentHP", jcurrent_hp);
-        cJSON_AddItemToObject(junit, "Class", jclass);
-        cJSON_AddItemToObject(junit, "Stats", jcurrent_stats);
-        cJSON_AddItemToObject(junit, "Caps", jcaps_stats);
-        cJSON_AddItemToObject(junit, "Growths", jgrowths);
-        cJSON_AddItemToObject(junit, "Level-ups", jgrown);
+        cJSON_AddItemToObject(in_junit, "level", jlevel);
+        cJSON_AddItemToObject(in_junit, "id", jid);
+        cJSON_AddItemToObject(in_junit, "Name", jname);
+        cJSON_AddItemToObject(in_junit, "Sex", jsex);
+        cJSON_AddItemToObject(in_junit, "BaseExp", jbase_exp);
+        cJSON_AddItemToObject(in_junit, "Exp", jexp);
+        cJSON_AddItemToObject(in_junit, "CurrentHP", jcurrent_hp);
+        cJSON_AddItemToObject(in_junit, "Class", jclass);
+        cJSON_AddItemToObject(in_junit, "Stats", jcurrent_stats);
+        cJSON_AddItemToObject(in_junit, "Caps", jcaps_stats);
+        cJSON_AddItemToObject(in_junit, "Growths", jgrowths);
+        cJSON_AddItemToObject(in_junit, "Level-ups", jgrown);
 
         for (short int i = 0; i < grown_stats.size(); i++) {
             jlevelup = cJSON_CreateObject();
@@ -916,7 +912,7 @@ void Unit::writeJSON(cJSON * in_json) {
         cJSON * jitems = cJSON_CreateObject();
         writeJSON_items(jitems, equipment, DEFAULT::EQUIPMENT_SIZE);
 
-        cJSON_AddItemToObject(junit, "Items", jitems);
+        cJSON_AddItemToObject(in_junit, "Items", jitems);
 
     } else {
         SDL_Log("in_json is not NULL");

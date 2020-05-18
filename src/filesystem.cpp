@@ -1195,18 +1195,22 @@ int parseXML(const char * filename, tinyxml2::XMLDocument * in_doc) {
 void JSON_IO::readJSON(const char * filename) {
     SDL_Log("readJSON file: %s", filename);
     cJSON * json = parseJSON(filename);
+
     if (json != NULL) {
         if (element != "") {
-            cJSON * jelement = cJSON_GetObjectItem(jmap, element.c_str());
+            cJSON * jelement = cJSON_GetObjectItem(jelement, element.c_str());
 
             if (jelement == NULL) {
-                SDL_Log("Cannot parse json file");
+                SDL_Log("Cannot get json element");
             } else {
                 readJSON(jelement);
             }
+        } else {
+            SDL_Log("JSON element not set");
         }
     } else {
-            SDL_Log("JSON element not set");
+        SDL_Log("Cannot parse JSON file");
+
     }
 }
 
@@ -1244,21 +1248,29 @@ void JSON_IO::writeJSON(const char * filename, const bool append) {
 
     PHYSFS_file * fp = NULL;
     cJSON * json = cJSON_CreateObject();
-    // SDL_Log("json==NULL%d", json == NULL);
 
-    if (append) {
-        fp = PHYSFS_openAppend(filename);
-    } else {
-        fp = PHYSFS_openWrite(filename);
-    }
+    if (element !=  "") {
+        cJSON * jelement = cJSON_CreateObject();
 
-    if (!fp) {
-        SDL_Log("Could not open %s for writing\n", filename);
-    } else {
-        writeJSON(json);
-        printJSON(fp, json);
-        PHYSFS_close(fp);
-        cJSON_Delete(json);
+        // SDL_Log("json==NULL%d", json == NULL);
+        if (append) {
+            fp = PHYSFS_openAppend(filename);
+        } else {
+            fp = PHYSFS_openWrite(filename);
+        }
+
+        if (!fp) {
+            SDL_Log("Could not open %s for writing\n", filename);
+        } else {
+            writeJSON(jelement);
+            cJSON_AddItemToObject(json, element.c_str(), jelement);
+
+            printJSON(fp, json);
+            PHYSFS_close(fp);
+            cJSON_Delete(json);
+        }
+    }   else {
+        SDL_Log("JSON element not set")
     }
 }
 
