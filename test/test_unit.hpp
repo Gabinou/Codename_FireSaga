@@ -412,9 +412,6 @@ void writeAllUnits(const char * filename) {
     writeUnits_NPC(filename);
 }
 
-
-
-
 void test_unit() {
     Unit unit1, unit2, unit3, unit4, unit5;
     Unit_stats in_stats, out_stats;

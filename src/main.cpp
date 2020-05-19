@@ -40,19 +40,6 @@ int main(int argc, char * argv[]) {
     baseWeapons();
     settings.FPS.show = true;
 
-    std::unordered_map<int, Unit> in_units;
-    std::vector<short int> temp_toload = {0};
-    std::string filename;
-
-    for (short unsigned int i = UNIT::NAME::ERWIN; i < UNIT::NAME::NPC_END; i++) {
-        temp_toload[0] = i;
-        baseUnits(&in_units, temp_toload);
-        filename = unitNames[i] + ".json";
-        in_units[i].writeJSON(filename.c_str());
-    }
-
-    getchar();
-
     SDL_Log("Creating game object\n");
     firesaga = new Game(settings);
     firesaga->makeFPS();

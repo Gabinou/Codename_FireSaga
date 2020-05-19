@@ -589,7 +589,16 @@ void Game::initParty() {
 }
 
 void Game::makeUnits(std::vector<short int> toload) {
-    baseUnits(&party, toload);
+    // baseUnits(&party, toload);
+    // std::unordered_map<int, Unit> in_units;
+    std::string filename;
+
+    for (short unsigned int i = 0; i < toload.size(); i++) {
+        // temp_toload[0] = i;
+        // baseUnits(&in_units, temp_toload);
+        filename = "..//units//" + unitNames[toload[i]] + ".json";
+        party[toload[i]].readJSON(filename.c_str());
+    }
 }
 
 void Game::unmakeUnits(std::vector<short int> to_unload) {
