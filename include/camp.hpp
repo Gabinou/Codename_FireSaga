@@ -14,6 +14,7 @@ private:
     std::unordered_map<short int, Unit> party;
     std::unordered_map<short unsigned int, char> previous_job;
     std::unordered_map<short unsigned int, char> priority_job;
+    std::unordered_map<short unsigned int, std::vector<char>> forbidden_job;
     std::queue<unsigned char> job_queue;
 
     std::vector<short unsigned int> party_stack;
@@ -43,14 +44,6 @@ public:
     void makeJobQueue();
     void makeJobNumbers();
     void assignJobs();
-    void addLibrarian(unsigned short int in_unit);
-    void addCook(unsigned short int in_unit);
-    void addGuard(unsigned short int in_unit);
-    void addScribe(unsigned short int in_unit);
-    void addStablehand(unsigned short int in_unit);
-    void addStoragemaster(unsigned short int in_unit);
-    void addAssistant(unsigned short int in_unit);
-    void addClergymen(unsigned short int in_unit);
 
     // using XML_IO::writeXML;
     // using XML_IO::readXML;

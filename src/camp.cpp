@@ -138,6 +138,7 @@ void Camp::assignJobs() {
                 case UNIT::NAME::ERWIN:
                 case UNIT::NAME::KIARA:
                 case UNIT::NAME::SILOU:
+                    jobs[job_queue.front()] = unit_ind;
                     break;
 
                 case UNIT::NAME::SERVIL:
