@@ -93,6 +93,7 @@ int init(char * argvZero, char * baseDir, char * assetsPath) {
 }
 
 void loadFileToMemory(const char * name, unsigned char ** mem, size_t * len, bool addnull) {
+    SDL_Log("Loading %s to memory", name);
     PHYSFS_File * physfs_file = PHYSFS_openRead(name);
 
     if (physfs_file == NULL) {

@@ -234,14 +234,14 @@ void Game::makeMenu(unsigned char in_menu_index) {
     switch (in_menu_index) {
         case MENU::UNIT:
             SDL_Log("Making unit menu\n");
-            menus[MENU::UNIT].component<Sprite>()->setTexture("assets//textbox.png");
+            menus[MENU::UNIT].component<Sprite>()->setTexture("..//assets//textbox.png");
             menus[MENU::UNIT].component<Sprite>()->setSrcrect(128, 128);
             menus[MENU::UNIT].component<Sprite>()->setDestrect(128, 128);
             break;
 
         case MENU::MAPMENU:
             SDL_Log("Making map menu\n");
-            menus[MENU::MAPMENU].component<Sprite>()->setTexture("assets//textbox.png");
+            menus[MENU::MAPMENU].component<Sprite>()->setTexture("..//assets//textbox.png");
             menus[MENU::MAPMENU].component<Sprite>()->setSrcrect(128, 128);
             menus[MENU::MAPMENU].component<Sprite>()->setDestrect(128, 128);
             break;
@@ -426,7 +426,7 @@ void Game::setCursorstate(const unsigned char in_menu) {
                 SDL_Log("Changed Cursor to Map");
                 cursorx.component<Sprite>()->init(cursorx.component<Position>()->getPos());
                 cursorx.component<Sprite>()->animate();
-                cursorx.component<Sprite>()->setTexture("assets//mapcursors.png");
+                cursorx.component<Sprite>()->setTexture("..//assets//mapcursors.png");
                 cursorx.component<Sprite>()->setAnimation(10, 50);
                 cursorx.component<Sprite>()->setTilesize(mapx->getTilesize());
                 cursorx.component<Sprite>()->setSlidetype(SLIDETYPE::GEOMETRIC);
@@ -454,7 +454,7 @@ void Game::setCursorstate(const unsigned char in_menu) {
                 cursorx.component<Sprite>()->still();
                 cursorx.component<Sprite>()->setSrcrect(temprect);
                 cursorx.component<Sprite>()->setDestrect(temprect);
-                cursorx.component<Sprite>()->setTexture("assets//menucursor.png");
+                cursorx.component<Sprite>()->setTexture("..//assets//menucursor.png");
 
                 if (menus[in_menu].valid()) {
                     menupos = menus[in_menu].component<Position>()->getPos();
