@@ -6,6 +6,7 @@ Camp::Camp() {
     for (int i = 0; i < UNIT::NAME::PC_END; i++) {
         previous_job[i] = -1;
         priority_job[i] = -1;
+        forbidden_job[i] = -1;
     }
 }
 

@@ -14,7 +14,7 @@ private:
     std::unordered_map<short int, Unit> party;
     std::unordered_map<short unsigned int, char> previous_job;
     std::unordered_map<short unsigned int, char> priority_job;
-    std::unordered_map<short unsigned int, std::vector<char>> forbidden_job;
+    std::unordered_map<short unsigned int, char> forbidden_job;
     std::queue<unsigned char> job_queue;
 
     std::vector<short unsigned int> party_stack;
