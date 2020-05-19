@@ -529,7 +529,7 @@ void Game::loadMapUnits(std::vector<short int> in_units, std::vector<std::vector
         short int * bounds;
 
         for (int i = 0; i < in_units.size(); i++) {
-            asset_name = "assets//" + party[in_units[i]].getName() + ".png";
+            asset_name = "..//assets//" + party[in_units[i]].getName() + ".png";
             Uent = entities.create();
             Uent.assign<Unit>(party[in_units[i]]);
             Uent.assign<Position>();
@@ -562,7 +562,7 @@ void Game::loadMapArrivals() {
                 if (party.find(map_arrivals[i].id) == party.end()) {
                     SDL_Log("unloaded party loading %d", map_arrivals[i].id);
                     makeUnits(std::vector<short int> {map_arrivals[i].id});
-                    asset_name = "assets//" + party[map_arrivals[i].id].getName() + ".png";
+                    asset_name = "..//assets//" + party[map_arrivals[i].id].getName() + ".png";
                     SDL_Log("Loaded: %s", party[map_arrivals[i].id].getName().c_str());
                 }
 
@@ -598,7 +598,6 @@ void Game::unmakeUnits(std::vector<short int> to_unload) {
         party.erase(to_unload[i]);
     }
 }
-
 
 void Game::init() {
     int flags = 0;
