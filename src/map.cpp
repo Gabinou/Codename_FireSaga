@@ -75,7 +75,6 @@ void Map::readJSON(cJSON * in_jmap) {
             jtile = jtile->next;
         }
 
-        // baseTiles(&tiles, tilesindex);
         loadTilesJSON();
         cJSON * jarrival = cJSON_GetObjectItem(jarrivals, "arrival");
         cJSON * jlevelups;
@@ -602,7 +601,6 @@ std::vector<short int> Map::getTilesindex() {
 void Map::loadTiles(std::vector<short int> to_load) {
     tilesindex = to_load;
     tilenames = getTilenames(tilesindex);
-    // baseTiles(&tiles, tilesindex);
     loadTilesJSON();
 }
 
