@@ -12,7 +12,7 @@ class Camp {
 private:
     Game * game;
     std::unordered_map<short int, Unit> party;
-    std::vector<short int> party_stack;
+    std::vector<short unsigned int> party_stack;
     // Job priority: cook > stablehand > guard > clergymen > scribe > assistant
     std::vector<short unsigned int> librarians;
     std::vector<short unsigned int> cooks;

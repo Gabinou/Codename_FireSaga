@@ -22,7 +22,7 @@ void Camp::makePartyStack() {
             if (getURN() > 49) {
                 party_stack.push_back(member.first);
             } else {
-                // party_stack.emplace((short int)0, member.first);
+                party_stack.insert(party_stack.begin(), member.second.getid());
             }
         } else {
             SDL_Log("Party member's id is not the same as unordered map index");
