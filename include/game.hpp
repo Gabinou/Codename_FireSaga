@@ -50,7 +50,7 @@ private:
     Convoy convoy;
 
     unsigned int previous_mouse;
-    unsigned char chapter;
+    char chapter = -1;
 
     short unsigned int state;
 
@@ -70,8 +70,8 @@ public:
     ~Game();
 
     void init();
-    void setChapter(unsigned char in_chapter);
-    unsigned char getChapter();
+    void setChapter(char in_chapter);
+    char getChapter();
     entityx::ComponentHandle<Map> getMap();
     void loadMap(const int in_map_index);
     void unloadMap();

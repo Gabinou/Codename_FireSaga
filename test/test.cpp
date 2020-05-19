@@ -1,4 +1,5 @@
 #include "minctest.h"
+#include "test_camp.hpp"
 #include "test_convoy.hpp"
 #include "test_filesystem.hpp"
 #include "test_game.hpp"
@@ -37,6 +38,7 @@ int main(int argc, char * argv[]) {
     baseWeapons();
 
     printf("Running tests\n");
+    lrun("Camp ", test_camp);
     lrun("Convoy ", test_convoy);
     lrun("Filesystem ", test_filesystem);
     lrun("Game ", test_game);

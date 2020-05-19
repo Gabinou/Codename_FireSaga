@@ -11,7 +11,6 @@
 class Camp {
 
 private:
-    Game * game;
     std::unordered_map<short int, Unit> party;
     std::unordered_map<short unsigned int, char> previous_job;
     std::unordered_map<short unsigned int, char> priority_job;
@@ -31,14 +30,14 @@ private:
     // + 1 -> item shop merchant traveling with you.
     std::vector<unsigned char> optimal;
     short int party_size;
-
+    char chapter = -1;
 
 public:
     Camp();
     ~Camp();
 
-    void setGame(Game * in_game);
-    void updateParty();
+    void setChapter(char in_chapter);
+    void setParty(std::unordered_map<short int, Unit> in_party);
     void makePartyStack();
 
     void makeJobQueue();

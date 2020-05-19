@@ -7,17 +7,65 @@ Camp::Camp() {
         previous_job[i] = -1;
         priority_job[i] = -1;
     }
-
-    priority_job[UNIT::NAME::KIARA] = CAMPJOB::CLERGYMAN;
 }
 
 Camp::~Camp() {
 
 }
 
-void Camp::setGame(Game * in_game) {
-    game = in_game;
-};
+void Camp::setChapter(char in_chapter) {
+    chapter = in_chapter;
+
+    switch(chapter) {
+        case 0:
+            priority_job[UNIT::NAME::KIARA] = CAMPJOB::CLERGYMAN;
+            break;
+        case 1:
+            break;
+        case 2:
+            break;
+        case 3:
+            break;
+        case 4:
+            break;
+        case 5:
+            break;
+        case 6:
+            break;
+        case 7:
+            break;
+        case 8:
+            break;
+        case 9:
+            break;
+        case 10:
+            break;
+        case 11:
+            break;
+        case 12:
+            break;
+        case 13:
+            break;
+        case 14:
+            break;
+        case 15:
+            break;
+        case 16:
+            break;
+        case 17:
+            break;
+        case 18:
+            break;
+        case 19:
+            break;
+        case 20:
+            break;
+        case 21:
+            break;
+    }
+
+}
+
 
 void Camp::makePartyStack() {
     party_stack.clear();
@@ -53,8 +101,8 @@ void Camp::makeJobQueue() {
 }
 
 
-void Camp::updateParty() {
-    party = game->getParty();
+void Camp::setParty(std::unordered_map<short int, Unit> in_party) {
+    party = in_party;
 }
 
 void Camp::assignJobs() {
@@ -103,13 +151,13 @@ void Camp::makeJobNumbers() {
     optimal[6] = std::min((unsigned char)max[6], (unsigned char)std::max((unsigned char)floor(fracs[6] * party_size), (unsigned char)1));
     optimal[7] = std::min((unsigned char)max[7], (unsigned char)floor(fracs[0] * party_size));
 
-    if (game->getChapter() < 10) {
+    if (chapter < 10) {
         optimal[3] = 0;
     } else {
         optimal[3] = 1;
     }
 
-    if (game->getChapter() < 10) {
+    if (chapter < 10) {
         optimal[5] = 0;
     } else {
         optimal[5] = 1;
