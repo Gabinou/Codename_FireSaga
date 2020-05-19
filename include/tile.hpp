@@ -44,6 +44,6 @@ public:
     void readXML(tinyxml2::XMLElement * in_pTile);
 };
 
-void baseTiles(std::unordered_map<short int, Tile> * in_tiles, std::vector<short int> toload);
+// void baseTiles(std::unordered_map<short int, Tile> * in_tiles, std::vector<short int> toload);
 
 #endif /* TILE_HPP */

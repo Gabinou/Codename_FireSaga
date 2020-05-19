@@ -602,7 +602,8 @@ std::vector<short int> Map::getTilesindex() {
 void Map::loadTiles(std::vector<short int> to_load) {
     tilesindex = to_load;
     tilenames = getTilenames(tilesindex);
-    baseTiles(&tiles, tilesindex);
+    // baseTiles(&tiles, tilesindex);
+    loadTilesJSON();
 }
 
 void Map::unloadTiles(std::vector<short int> to_unload) {
