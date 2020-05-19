@@ -76,7 +76,7 @@ void test_game() {
     temp_settings.fontsize = 28;
     testgame1 = new Game(temp_settings);
     std::vector<short int> unit_inds = {UNIT::NAME::SILOU};
-    testgame1->makeUnits(unit_inds);
+    testgame1->loadUnits(unit_inds);
     Convoy convoy = makeConvoy();
     testgame1->setConvoy(convoy);
     // testgame1->loadMap(0);

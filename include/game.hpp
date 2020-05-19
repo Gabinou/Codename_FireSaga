@@ -73,8 +73,8 @@ public:
     void unloadMap();
     void loadMapUnits(std::vector<short int> in_units, std::vector<std::vector<int>> in_pos_list);
     void initParty();
-    void makeUnits(std::vector<short int> to_load);
-    void unmakeUnits(std::vector<short int> to_unload);
+    void loadUnits(std::vector<short int> to_load);
+    void unloadUnits(std::vector<short int> to_unload);
     void loadMapArrivals();
     void loadCursor();
     void unloadCursor();

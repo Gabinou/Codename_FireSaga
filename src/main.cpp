@@ -46,7 +46,7 @@ int main(int argc, char * argv[]) {
     firesaga->loadMap(0);
 
     std::vector<short int> unit_inds = {UNIT::NAME::SILOU};
-    firesaga->makeUnits(unit_inds);
+    firesaga->loadUnits(unit_inds);
     std::vector<std::vector<int>> positions_list = {{6, 6}};
     firesaga->loadMapUnits(unit_inds, positions_list);
     firesaga->loadMapArrivals();

@@ -561,7 +561,7 @@ void Game::loadMapArrivals() {
 
                 if (party.find(map_arrivals[i].id) == party.end()) {
                     SDL_Log("unloaded party loading %d", map_arrivals[i].id);
-                    makeUnits(std::vector<short int> {map_arrivals[i].id});
+                    loadUnits(std::vector<short int> {map_arrivals[i].id});
                     asset_name = "..//assets//" + party[map_arrivals[i].id].getName() + ".png";
                     SDL_Log("Loaded: %s", party[map_arrivals[i].id].getName().c_str());
                 }
@@ -585,23 +585,19 @@ void Game::loadMapArrivals() {
 }
 
 void Game::initParty() {
-    makeUnits(init_party);
+    loadUnits(init_party);
 }
 
-void Game::makeUnits(std::vector<short int> toload) {
-    // baseUnits(&party, toload);
-    // std::unordered_map<int, Unit> in_units;
+void Game::loadUnits(std::vector<short int> toload) {
     std::string filename;
 
     for (short unsigned int i = 0; i < toload.size(); i++) {
-        // temp_toload[0] = i;
-        // baseUnits(&in_units, temp_toload);
         filename = "units//" + unitNames[toload[i]] + ".json";
         party[toload[i]].readJSON(filename.c_str());
     }
 }
 
-void Game::unmakeUnits(std::vector<short int> to_unload) {
+void Game::unloadUnits(std::vector<short int> to_unload) {
     for (int i = 0; i < to_unload.size(); i++) {
         party.erase(to_unload[i]);
     }
