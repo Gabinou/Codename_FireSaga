@@ -52,10 +52,13 @@ void Camp::assignJobs() {
 
     int jobnum = 0;
     bool jobfound = false;
+    short int unit_ind;
 
     while (party_stack.size() > 0) {
+        unit_ind = party_stack[party_stack.size() - 1];
+
         while ((jobnum < 8) && (!jobfound)) {
-            switch (in_unit) {
+            switch (unit_ind) {
                 case UNIT::NAME::ERWIN:
                 case UNIT::NAME::KIARA:
                 case UNIT::NAME::SILOU:
@@ -76,6 +79,8 @@ void Camp::assignJobs() {
             jobnum++;
         }
 
+        jobnum = 0;
+        party_stack.pop_back();
     }
 }
 
