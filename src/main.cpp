@@ -43,11 +43,11 @@ int main(int argc, char * argv[]) {
 
     SDL_Log("Creating game object\n");
     firesaga = new Game(settings);
-    firesaga->makeUnits(0);
     firesaga->makeFPS();
     firesaga->loadMap(0);
 
-    std::vector<short unsigned int> unit_inds = {UNIT::NAME::SILOU};
+    std::vector<short int> unit_inds = {UNIT::NAME::SILOU};
+    firesaga->makeUnits(unit_inds);
     std::vector<std::vector<int>> positions_list = {{6, 6}};
     firesaga->loadMapUnits(unit_inds, positions_list);
     firesaga->loadMapArrivals();

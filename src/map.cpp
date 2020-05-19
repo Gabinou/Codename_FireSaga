@@ -114,6 +114,8 @@ void Map::readJSON(cJSON * in_jmap) {
 
         cJSON * jtilemap = cJSON_GetObjectItem(in_jmap, "tilemap");
         tilemap = readJSON_tilemap(jtilemap);
+        postTilemap();
+
     } else {
         SDL_Log("in_jmap is NULL");
     }
@@ -704,10 +706,10 @@ short int * Map::getOffset() {
 }
 
 
-void Map::loadTilemap(const short unsigned int in_map_index) {
-    tilemap = chapTilemaps[in_map_index]();
-    postTilemap();
-}
+// void Map::loadTilemap(const short unsigned int in_map_index) {
+//     // tilemap = chapTilemaps[in_map_index]();
+//     postTilemap();
+// }
 
 void Map::postTilemap() {
     loadTiletextures();
@@ -818,107 +820,8 @@ void Map::draw() {
     }
 }
 
-std::vector<std::vector<short int>> testTilemap() {
-    std::vector<std::vector<short int>> tilemap = {
-        {100, 100, 100, 100, 100, 100, 200, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 300, 300, 300, 300, 300, 100, 100, 100},
-        {100, 100, 100, 100, 100, 100, 200, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 300, 300, 300, 300, 300, 100, 100, 100},
-        {100, 100, 100, 100, 100, 100, 200, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 300, 300, 300, 300, 300, 100, 100, 100},
-        {100, 100, 100, 100, 100, 100, 200, 200, 100, 100, 100, 100, 100, 100, 100, 100, 100, 300, 300, 300, 300, 300, 100, 100, 100},
-        {100, 100, 100, 100, 100, 100, 100, 200, 100, 100, 100, 100, 100, 100, 100, 100, 100, 300, 300, 300, 300, 300, 100, 100, 100},
-        {100, 100, 100, 100, 100, 100, 100, 200, 200, 100, 100, 100, 100, 100, 100, 100, 100, 300, 300, 300, 300, 100, 100, 100, 100},
-        {100, 100, 100, 100, 100, 100, 100, 100, 200, 100, 100, 100, 100, 100, 100, 100, 100, 300, 300, 300, 100, 300, 100, 100, 100},
-        {100, 100, 100, 100, 100, 100, 100, 100, 200, 100, 100, 100, 100, 100, 100, 100, 100, 300, 300, 100, 100, 100, 100, 100, 100},
-        {100, 100, 100, 100, 100, 100, 100, 100, 200, 200, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100},
-        {100, 100, 100, 100, 100, 100, 100, 100, 200, 200, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 120, 100, 100, 100, 100},
-        {100, 100, 100, 100, 100, 100, 100, 100, 100, 200, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 120, 120, 100, 100, 100},
-        {100, 100, 100, 100, 100, 100, 100, 100, 100, 200, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100},
-        {100, 100, 100, 100, 100, 100, 100, 100, 100, 200, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 120, 100, 100, 100},
-        {100, 100, 100, 100, 100, 100, 100, 100, 100, 300, 100, 100, 100, 100, 100, 100, 100, 100, 100, 120, 120, 120, 100, 100, 100},
-        {100, 100, 100, 100, 100, 100, 100, 100, 100, 200, 100, 100, 100, 100, 100, 100, 100, 100, 100, 120, 100, 100, 100, 100, 100},
-        {100, 100, 100, 100, 100, 100, 100, 100, 100, 200, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100},
-        {100, 100, 100, 100, 100, 100, 100, 100, 100, 200, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100},
-        {100, 100, 100, 100, 100, 100, 100, 100, 100, 200, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100},
-        {100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100},
-        {100, 100, 100, 100, 100, 100, 100, 100, 100, 200, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100},
-        {100, 100, 100, 100, 100, 100, 100, 100, 100, 200, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100}
-    };
-    return (tilemap);
-}
-
-std::vector<short unsigned int> testArrivalinds() {
-    std::vector<short unsigned int> enemies = {UNIT::NAME::SILOU};
-    return (enemies);
-}
-
-std::vector<std::vector<short int>> (*chapTilemaps[40])() = {testTilemap,};
-std::vector<short unsigned int> (*chapArrivalinds[40])() = {testArrivalinds,};
-
-std::vector<short int> testParty() {
-    // shouLdn't those be arrivals instead?
-    std::vector<short int> out = {UNIT::NAME::SILOU};
-    return (out);
-}
-
+std::vector<std::string> mapNames = {"map_test.json"};
 std::vector<short int> baseParty() {
     std::vector<short int> out = {UNIT::NAME::ERWIN, UNIT::NAME::KIARA};
     return (out);
 }
-
-std::vector<Point> chapTestStartingPos() {
-    std::vector<Point> out;
-    return (out);
-}
-
-std::vector<Map_arrival> chapTestArrivals() {
-    std::vector<Map_arrival> out;
-    Map_arrival temp;
-    temp.id = UNIT::NAME::BANDIT;
-    temp.turn = 0;
-    temp.position = {6, 10};
-    temp.levelups = 0;
-    out.push_back(temp);
-
-    temp.id = UNIT::NAME::BANDIT;
-    temp.turn = 0;
-    temp.position = {12, 4};
-    temp.levelups = 0;
-    out.push_back(temp);
-
-    temp.id = UNIT::NAME::RELIABLE;
-    temp.turn = 0;
-    temp.position = {20, 12};
-    temp.levelups = 0;
-    out.push_back(temp);
-    return (out);
-}
-
-std::vector<std::vector<Inventory_item>> chapTestEquipments() {
-    std::vector<std::vector<Inventory_item>> out;
-    std::vector<Inventory_item> temp_equipment;
-    Inventory_item temp_item;
-
-    temp_item.id = ITEM::NAME::IRON_AXE;
-    temp_equipment.push_back(temp_item);
-    temp_item.id = ITEM::NAME::WOODEN_SHIELD;
-    temp_equipment.push_back(temp_item);
-    out.push_back(temp_equipment);
-    temp_equipment.clear();
-    temp_item.id = ITEM::NAME::IRON_AXE;
-    temp_equipment.push_back(temp_item);
-    temp_item.id = ITEM::NAME::WOODEN_SHIELD;
-    temp_equipment.push_back(temp_item);
-    out.push_back(temp_equipment);
-    temp_equipment.clear();
-    temp_item.id = ITEM::NAME::IRON_AXE;
-    temp_equipment.push_back(temp_item);
-    temp_item.id = ITEM::NAME::WOODEN_SHIELD;
-    temp_equipment.push_back(temp_item);
-    out.push_back(temp_equipment);
-    temp_equipment.clear();
-    return (out);
-}
-
-std::vector<Map_arrival> (*mapArrivals[CHAPTER::END - CHAPTER::TEST + 1])() = {chapTestArrivals};
-std::vector<Point> (*mapStartingPos[CHAPTER::END - CHAPTER::TEST + 1])() = {chapTestStartingPos};
-std::vector<short int> (*baseParties[CHAPTER::CHAP1 - CHAPTER::TEST + 1])() = {testParty, baseParty};
-std::vector<std::vector<Inventory_item>> (*arrivalEquipments[CHAPTER::END - CHAPTER::TEST + 1])() = {chapTestEquipments};

@@ -362,18 +362,20 @@ void Game::loadMap(const int in_map_index) {
         mapEntx.assign<Map>(settings.tilesize[0], settings.tilesize[1]);
         mapx = mapEntx.component<Map>();
         mapx->setRenderer(renderer);
-        // std::string filename;
-        // if (in_map_index == 0) {
-        //     filename = "..//maps/map_test.json";
-        // }
-        // mapx->readJSON(filename);
+        std::string filename;
 
-        mapx->loadTiles(in_map_index);
-        mapx->setOffset(DEFAULT::TILEMAP_XOFFSET, DEFAULT::TILEMAP_YOFFSET);
-        mapx->loadTilemap(in_map_index);
-        mapx->setArrivals(mapArrivals[in_map_index]());
-        mapx->setArrivalEquipments(arrivalEquipments[in_map_index]());
-        mapx->setArrivalEquipments(arrivalEquipments[in_map_index]());
+        if (in_map_index == 0) {
+            filename = "..//maps/map_test.json";
+        }
+
+        mapx->readJSON(filename.c_str());
+
+        // mapx->loadTiles();
+        // mapx->setOffset(DEFAULT::TILEMAP_XOFFSET, DEFAULT::TILEMAP_YOFFSET);
+        // mapx->loadTilemap(in_map_index);
+        // mapx->setArrivals(mapArrivals[in_map_index]());
+        // mapx->setArrivalEquipments(arrivalEquipments[in_map_index]());
+        // mapx->setArrivalEquipments(arrivalEquipments[in_map_index]());
         systems.system<RenderSystemx>()->setMap(mapx);
         systems.system<UnitSystemx>()->updateMap();
         systems.system<TurnSystemx>()->updateMap();
@@ -518,7 +520,7 @@ void Game::unloadCursor() {
 }
 
 
-void Game::loadMapUnits(std::vector<short unsigned int> in_units, std::vector<std::vector<int>> in_pos_list) {
+void Game::loadMapUnits(std::vector<short int> in_units, std::vector<std::vector<int>> in_pos_list) {
     SDL_Log("Loading party\n");
 
     if (mapx) {
@@ -582,10 +584,10 @@ void Game::loadMapArrivals() {
     }
 }
 
-void Game::makeUnits(unsigned char in_chap) {
-    std::vector<short int> toload = baseParties[in_chap]();
-    baseUnits(&party, toload);
-}
+// void Game::makeUnits(unsigned char in_chap) {
+//     std::vector<short int> toload = baseParties[in_chap]();
+//     baseUnits(&party, toload);
+// }
 
 void Game::makeUnits(std::vector<short int> toload) {
     baseUnits(&party, toload);
