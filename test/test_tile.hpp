@@ -14,7 +14,7 @@ void writeTilesJSON() {
         if (temp_tiles[i].getid() == i) {
             SDL_Log("True %d, %d", i, temp_toload[0]);
             filename = temp_tiles[i].getName() + ".json";
-            temp_tiles[i].writeJSON(filename, );
+            temp_tiles[i].writeJSON(filename.c_str(), false);
         } else {
             SDL_Log("False %d, %d", i, temp_toload[0]);
         }
