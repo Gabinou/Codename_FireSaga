@@ -71,7 +71,7 @@ public:
     entityx::ComponentHandle<Map> getMap();
     void loadMap(const int in_map_index);
     void unloadMap();
-    void loadMapUnits(std::vector<short int> in_units, std::vector<std::vector<int>> in_pos_list);
+    void putUnitsonMap(std::vector<short int> in_units, std::vector<std::vector<int>> in_pos_list);
     void initParty();
     void loadUnits(std::vector<short int> to_load);
     void unloadUnits(std::vector<short int> to_unload);

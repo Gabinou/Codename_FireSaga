@@ -48,7 +48,7 @@ int main(int argc, char * argv[]) {
     std::vector<short int> unit_inds = {UNIT::NAME::SILOU};
     firesaga->loadUnits(unit_inds);
     std::vector<std::vector<int>> positions_list = {{6, 6}};
-    firesaga->loadMapUnits(unit_inds, positions_list);
+    firesaga->putUnitsonMap(unit_inds, positions_list);
     firesaga->loadMapArrivals();
     firesaga->startTurnSystem();
     firesaga->loadCursor();
