@@ -6,56 +6,34 @@
 #include "unit.hpp"
 #include "game.hpp"
 #include <math.h>
+#include <queue>
 
 class Camp {
 
 private:
     Game * game;
     std::unordered_map<short int, Unit> party;
+    std::unordered_map<short unsigned int, short unsigned int> previous_job;
+    std::queue<unsigned char> job_queue;
+
     std::vector<short unsigned int> party_stack;
     // Job priority: cook > stablehand > guard > clergymen > scribe > assistant
-    std::vector<short unsigned int> librarians;
-    std::vector<short unsigned int> cooks;
-    std::vector<short unsigned int> guards;
-    std::vector<short unsigned int> scribe;
-    std::vector<short unsigned int> stablehands;
-    std::vector<short unsigned int> assistant; // Kiara?
-    std::vector<short unsigned int> clergymen;
-    std::vector<short unsigned int> storagemaster;
-
-    float frac_librarians = 0.1;
-    float frac_cooks = 0.1;
-    float frac_guards = 0.2;
-    float frac_stablehands = 0.1;
-    float frac_clergymen = 0.15;
-    float frac_storagemaster = 0.1;
+    // librarian, cook, guard, scribe, stablehand, asssitant, clergyman, storagemaster.
+    std::vector<std::vector<short unsigned int>> jobs;
     // max_librarians should be floor(0.1 x Max army)
     // guards is twice that.
-    unsigned char max_librarians = 4;
-    unsigned char max_cooks = 4;
-    unsigned char max_guards = 8;
-    unsigned char max_scribe = 1;
-    unsigned char max_stablehands = 4;
-    unsigned char max_assistant = 1;
-    unsigned char max_clergymen = 4;
-    unsigned char max_storagemaster = 4;
-
-    short int optimal_librarians;
-    short int optimal_cooks;
-    short int optimal_guards;
-    short int optimal_stablehands;
-    short int optimal_storagemaster;
-    short int optimal_clergymen;
-    short int optimal_scribe;
-    short int optimal_assistant;
-    short int party_size;
-
-    short unsigned int current_unit = UNIT::NAME::ERWIN;
-
+    std::vector<float> fracs = {0.1, 0.1, 0.2, 0, 0.1, 0, 0.15, 0.1};
+    std::vector<unsigned char> max = {4, 4, 8, 1, 4, 1, 4, 4};
     // 30 jobs.
     // + 1 -> Erwin is the leader.
     // + 1 -> armory merchant traveling with you.
     // + 1 -> item shop merchant traveling with you.
+    std::vector<unsigned char> optimal;
+    short int party_size;
+
+    short unsigned int current_job = UNIT::NAME::ERWIN;
+    short unsigned int current_unit = UNIT::NAME::ERWIN;
+
 public:
     Camp();
     ~Camp();
@@ -64,6 +42,7 @@ public:
     void updateParty();
     void makePartyStack();
 
+    void makeJobQueue();
     void makeJobNumbers();
     void fillJobs();
     void addLibrarian(unsigned short int in_unit);

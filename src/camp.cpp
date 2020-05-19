@@ -18,16 +18,29 @@ void Camp::makePartyStack() {
     party_stack.clear();
 
     for (auto member : party) {
-        if (member.first == member.second.getid()) {
+        if ((member.first == member.second.getid()) && (member.first != UNIT::NAME::ERWIN)) {
             if (getURN() > 49) {
                 party_stack.push_back(member.first);
             } else {
-                party_stack.insert(party_stack.begin(), member.second.getid());
+                party_stack.insert(party_stack.begin(), member.first);
             }
         } else {
             SDL_Log("Party member's id is not the same as unordered map index");
         }
     }
+}
+
+void Camp::makeJobQueue() {
+    std::queue<unsigned char> empty;
+    std::swap(job_queue, empty);
+    job_queue.push(CAMPJOB::LIBRARIAN);
+    job_queue.push(CAMPJOB::COOK);
+    job_queue.push(CAMPJOB::GUARD);
+    job_queue.push(CAMPJOB::SCRIBE);
+    job_queue.push(CAMPJOB::STABLEHAND);
+    job_queue.push(CAMPJOB::ASSISTANT);
+    job_queue.push(CAMPJOB::CLERGYMAN);
+    job_queue.push(CAMPJOB::STORAGEMASTER);
 }
 
 
@@ -53,51 +66,26 @@ void Camp::addLibrarian(unsigned short int in_unit) {
     }
 }
 
-// void Camp::addCook(unsigned short int in_unit) {
-// }
-// void Camp::addGuard(unsigned short int in_unit) {
-// }
-// void Camp::addScribe(unsigned short int in_unit) {
-// }
-// void Camp::addStablehand(unsigned short int in_unit) {
-// }
-// void Camp::addStoragemaster(unsigned short int in_unit) {
-// }
-// void Camp::addAssistant(unsigned short int in_unit) {
-// }
-// void Camp::addClergymen(unsigned short int in_unit) {
-// }
-// void Camp::fillJobs() {
-
-
-//     // librarians.reserve();
-//     // cooks.reserve();
-//     // guards.reserve();
-//     // stablehands.reserve();
-//     // storagemaster.reserve();
-//     // clergymen.reserve();
-// }
-
 void Camp::makeJobNumbers() {
     party_size = party.size();
 
-    optimal_librarians = std::min((unsigned char)max_librarians, (unsigned char)floor(frac_librarians * party_size));
-    optimal_cooks = std::min((unsigned char)max_cooks, (unsigned char)std::max((unsigned char)floor(frac_cooks * party_size), (unsigned char)1));
-    optimal_guards = std::min((unsigned char)max_guards, (unsigned char)std::max((unsigned char)floor(frac_guards * party_size), (unsigned char)1));
-    optimal_stablehands = std::min((unsigned char)max_stablehands, (unsigned char)std::max((unsigned char)floor(frac_stablehands * party_size), (unsigned char)1));
-    optimal_storagemaster = std::min((unsigned char)max_storagemaster, (unsigned char)std::max((unsigned char)floor(frac_storagemaster * party_size), (unsigned char)1));
-    optimal_clergymen = std::min((unsigned char)max_clergymen, (unsigned char)floor(frac_clergymen * party_size));
+    optimal[0] = std::min((unsigned char)max[0], (unsigned char)floor(fracs[0] * party_size));
+    optimal[1] = std::min((unsigned char)max[1], (unsigned char)std::max((unsigned char)floor(fracs[1] * party_size), (unsigned char)1));
+    optimal[2] = std::min((unsigned char)max[2], (unsigned char)std::max((unsigned char)floor(fracs[2] * party_size), (unsigned char)1));
+    optimal[4] = std::min((unsigned char)max[4], (unsigned char)std::max((unsigned char)floor(fracs[4] * party_size), (unsigned char)1));
+    optimal[6] = std::min((unsigned char)max[6], (unsigned char)std::max((unsigned char)floor(fracs[6] * party_size), (unsigned char)1));
+    optimal[7] = std::min((unsigned char)max[7], (unsigned char)floor(fracs[0] * party_size));
 
     if (game->getChapter() < 10) {
-        optimal_assistant = 0;
+        optimal[3] = 0;
     } else {
-        optimal_assistant = 1;
+        optimal[3] = 1;
     }
 
     if (game->getChapter() < 10) {
-        optimal_assistant = 0;
+        optimal[5] = 0;
     } else {
-        optimal_assistant = 1;
+        optimal[5] = 1;
     }
 
 

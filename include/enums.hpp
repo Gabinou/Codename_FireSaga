@@ -326,7 +326,18 @@ enum EFFECTS {
 };
 }
 }
-
+namespace CAMPJOB {
+enum CAMPJOBS {
+    LIBRARIAN = 0,
+    COOK,
+    GUARD,
+    SCRIBE,
+    STABLEHAND,
+    ASSISTANT,
+    CLERGYMAN,
+    STORAGEMASTER
+};
+}
 namespace UNIT {
 namespace CLASS {
 enum CLASSES {
