@@ -29,6 +29,30 @@ void Map::addStartingpos(Point in_position) {
     starting_positions.push_back(in_position);
 }
 
+void Map::loadTilesJSON() {
+    if (tilesindex.size() == tilenames.size()) {
+        short int index;
+        Tile temp_tile;
+        std::string filename;
+
+        for (short int i = 0; i < tilenames.size(); i++) {
+            if (tilesindex[i] > DEFAULT::TILE_MAX) {
+                index = tilesindex[i] / DEFAULT::TILE_DIVISOR;
+            } else {
+                index = tilesindex[i];
+            }
+
+            filename = "..//tiles//" + tilenames[i] + ".json";
+            temp_tile.readJSON(filename.c_str());
+            tiles[index] = temp_tile;
+        }
+
+
+    } else {
+        SDL_Log("map: different number of tilenames to tileindex");
+    }
+}
+
 void Map::readJSON(cJSON * in_jmap) {
     if (in_jmap != NULL) {
 
@@ -46,12 +70,13 @@ void Map::readJSON(cJSON * in_jmap) {
             jid = cJSON_GetObjectItem(jtile, "id");
             jtilename = cJSON_GetObjectItem(jtile, "name");
             tilesindex.push_back(cJSON_GetNumberValue(jid) * DEFAULT::TILE_DIVISOR);
+            SDL_Log("Read Tilesindex %d", tilesindex[tilesindex.size() - 1]);
             tilenames.push_back(cJSON_GetStringValue(jtilename));
             jtile = jtile->next;
         }
 
-        baseTiles(&tiles, tilesindex);
-
+        // baseTiles(&tiles, tilesindex);
+        loadTilesJSON();
         cJSON * jarrival = cJSON_GetObjectItem(jarrivals, "arrival");
         cJSON * jlevelups;
         cJSON * jturn;

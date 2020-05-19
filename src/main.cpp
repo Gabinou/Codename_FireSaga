@@ -38,21 +38,6 @@ int main(int argc, char * argv[]) {
 
     SDL_Log("Loading base weapons");
     baseWeapons();
-
-    std::unordered_map<short int, Tile> temp_tiles;
-    std::vector<short int> temp_toload = {0};
-
-    for (int i = 10; i < TILE::ICE; i++) {
-        temp_toload[0] = i;
-        baseTiles(&temp_tiles, temp_toload);
-
-        if (temp_tiles[i].getid() == i) {
-            temp_tiles[i].writeJSON("tiles.json", true);
-        }
-    }
-
-    getchar();
-
     settings.FPS.show = true;
 
     SDL_Log("Creating game object\n");

@@ -156,7 +156,11 @@ void baseTiles(std::unordered_map<short int, Tile> * in_tiles, const std::vector
     int index;
 
     for (short unsigned int i = 0; i < toload.size(); i++) {
-        index = toload[i] / DEFAULT::TILE_DIVISOR;
+        if (toload[i] > DEFAULT::TILE_MAX) {
+            index = toload[i] / DEFAULT::TILE_DIVISOR;
+        } else {
+            index = toload[i];
+        }
 
         switch (index) {
             case TILE::PLAIN: {

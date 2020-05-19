@@ -73,6 +73,7 @@ public:
 
     void loadTiles(const int in_map_index);
     void loadTiles(std::vector<short int> to_load);
+    void loadTilesJSON();
     void unloadTiles(std::vector<short int> to_unload);
     std::unordered_map<short int, Tile> getTiles();
     std::vector<short int> getTilesindex();
