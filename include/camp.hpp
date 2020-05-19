@@ -13,7 +13,8 @@ class Camp {
 private:
     Game * game;
     std::unordered_map<short int, Unit> party;
-    std::unordered_map<short unsigned int, short unsigned int> previous_job;
+    std::unordered_map<short unsigned int, char> previous_job;
+    std::unordered_map<short unsigned int, char> priority_job;
     std::queue<unsigned char> job_queue;
 
     std::vector<short unsigned int> party_stack;
@@ -31,8 +32,6 @@ private:
     std::vector<unsigned char> optimal;
     short int party_size;
 
-    short unsigned int current_job = UNIT::NAME::ERWIN;
-    short unsigned int current_unit = UNIT::NAME::ERWIN;
 
 public:
     Camp();

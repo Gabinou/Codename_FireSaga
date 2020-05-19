@@ -3,7 +3,12 @@
 #include "stb_sprintf.h"
 
 Camp::Camp() {
+    for (int i = 0; i < UNIT::NAME::PC_END; i++) {
+        previous_job[i] = -1;
+        priority_job[i] = -1;
+    }
 
+    priority_job[UNIT::NAME::KIARA] = CAMPJOB::CLERGYMAN;
 }
 
 Camp::~Camp() {
@@ -19,10 +24,14 @@ void Camp::makePartyStack() {
 
     for (auto member : party) {
         if ((member.first == member.second.getid()) && (member.first != UNIT::NAME::ERWIN)) {
-            if (getURN() > 49) {
-                party_stack.push_back(member.first);
+            if (priority_job[member.first] > -1) {
+                jobs[priority_job[member.first]].push_back(member.first);
             } else {
-                party_stack.insert(party_stack.begin(), member.first);
+                if (getURN() > 49) {
+                    party_stack.push_back(member.first);
+                } else {
+                    party_stack.insert(party_stack.begin(), member.first);
+                }
             }
         } else {
             SDL_Log("Party member's id is not the same as unordered map index");
