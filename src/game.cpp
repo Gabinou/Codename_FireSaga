@@ -1011,6 +1011,10 @@ void Game::handleEvents() {
     }
 }
 
+std::unordered_map<short int, Unit> Game::getParty() {
+    return (party);
+}
+
 void Game::clean() {
     SDL_DestroyWindow(window);
     SDL_DestroyRenderer(renderer);

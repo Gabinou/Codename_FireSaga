@@ -55,9 +55,9 @@ private:
     bool isRunning;
     SDL_Event event;
 
-    std::unordered_map<int, Unit> party;
-    std::unordered_map<int, Unit> enemies;
-    std::unordered_map<int, Weapon> weapons;
+    std::unordered_map<short int, Unit> party;
+    std::unordered_map<short int, Unit> enemies;
+    std::unordered_map<short int, Weapon> weapons;
 
 public:
     static SDL_Renderer * renderer;
@@ -80,6 +80,8 @@ public:
     void unloadCursor();
     void loadMouse();
     void unloadMouse();
+
+    std::unordered_map<short int, Unit> getParty();
 
     void setConvoy(Convoy in_convoy);
     Convoy getConvoy();

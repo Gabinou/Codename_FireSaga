@@ -920,7 +920,7 @@ void Unit::writeJSON(cJSON * in_junit) {
     }
 }
 
-void Unit::isLiterate() {
+bool Unit::isLiterate() {
     return (literate);
 }
 
