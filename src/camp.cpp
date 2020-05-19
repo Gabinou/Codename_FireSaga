@@ -1,4 +1,5 @@
 #include "camp.hpp"
+#include "probability.hpp"
 #include "stb_sprintf.h"
 
 Camp::Camp() {
@@ -13,22 +14,69 @@ void Camp::setGame(Game * in_game) {
     game = in_game;
 };
 
+void Camp::makePartyStack() {
+    party_stack.clear();
+
+    for (auto member : party) {
+        if (member.first == member.second.getid()) {
+            if (getURN() > 49) {
+                party_stack.push_back(member.first);
+            } else {
+                // party_stack.emplace((short int)0, member.first);
+            }
+        } else {
+            SDL_Log("Party member's id is not the same as unordered map index");
+        }
+    }
+}
+
+
 void Camp::updateParty() {
     party = game->getParty();
 }
 
 void Camp::addLibrarian(unsigned short int in_unit) {
+    switch (in_unit) {
+        case UNIT::NAME::ERWIN:
+        case UNIT::NAME::KIARA:
+        case UNIT::NAME::SILOU:
+            break;
 
+        case UNIT::NAME::SERVIL:
+        case UNIT::NAME::PERIGNON:
+        case UNIT::NAME::POET:
+        case UNIT::NAME::RELIABLE:
+        case UNIT::NAME::COWARD:
+        case UNIT::NAME::JAIGEN1H:
+        case UNIT::NAME::HOTTIE:
+            break;
+    }
 }
 
-void Camp::fillJobs() {
-    // librarians.reserve();
-    // cooks.reserve();
-    // guards.reserve();
-    // stablehands.reserve();
-    // storagemaster.reserve();
-    // clergymen.reserve();
-}
+// void Camp::addCook(unsigned short int in_unit) {
+// }
+// void Camp::addGuard(unsigned short int in_unit) {
+// }
+// void Camp::addScribe(unsigned short int in_unit) {
+// }
+// void Camp::addStablehand(unsigned short int in_unit) {
+// }
+// void Camp::addStoragemaster(unsigned short int in_unit) {
+// }
+// void Camp::addAssistant(unsigned short int in_unit) {
+// }
+// void Camp::addClergymen(unsigned short int in_unit) {
+// }
+// void Camp::fillJobs() {
+
+
+//     // librarians.reserve();
+//     // cooks.reserve();
+//     // guards.reserve();
+//     // stablehands.reserve();
+//     // storagemaster.reserve();
+//     // clergymen.reserve();
+// }
 
 void Camp::makeJobNumbers() {
     party_size = party.size();

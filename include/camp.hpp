@@ -12,6 +12,7 @@ class Camp {
 private:
     Game * game;
     std::unordered_map<short int, Unit> party;
+    std::vector<short int> party_stack;
     // Job priority: cook > stablehand > guard > clergymen > scribe > assistant
     std::vector<short unsigned int> librarians;
     std::vector<short unsigned int> cooks;
@@ -61,9 +62,18 @@ public:
 
     void setGame(Game * in_game);
     void updateParty();
+    void makePartyStack();
+
     void makeJobNumbers();
     void fillJobs();
     void addLibrarian(unsigned short int in_unit);
+    void addCook(unsigned short int in_unit);
+    void addGuard(unsigned short int in_unit);
+    void addScribe(unsigned short int in_unit);
+    void addStablehand(unsigned short int in_unit);
+    void addStoragemaster(unsigned short int in_unit);
+    void addAssistant(unsigned short int in_unit);
+    void addClergymen(unsigned short int in_unit);
 
     // using XML_IO::writeXML;
     // using XML_IO::readXML;
