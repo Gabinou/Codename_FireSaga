@@ -520,7 +520,7 @@ void Game::unloadCursor() {
 }
 
 
-void Game::putUnitsonMap(std::vector<short int> in_units, std::vector<std::vector<int>> in_pos_list) {
+void Game::putPConMap(std::vector<short int> in_units, std::vector<std::vector<int>> in_pos_list) {
     SDL_Log("Loading party\n");
 
     if (mapx) {

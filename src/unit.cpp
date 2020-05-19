@@ -920,6 +920,14 @@ void Unit::writeJSON(cJSON * in_junit) {
     }
 }
 
+void Unit::isLiterate() {
+    return (literate);
+}
+
+void Unit::setLiteracy(bool in_literacy) {
+    literate = in_literacy;
+}
+
 void Unit::writeXML(tinyxml2::XMLDocument * in_doc, tinyxml2::XMLElement * in_pUnit) {
     char buffer[DEFAULT::BUFFER_SIZE];
 

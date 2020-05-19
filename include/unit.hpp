@@ -44,6 +44,7 @@ private:
     char current_speed = 0;
 
     bool sex = false; // 0:F, 1:M. eg. hasPenis.
+    bool literate = false; // Reading/writing for scribe job.
     bool show_danger = false;
     bool waits;
 
@@ -72,6 +73,9 @@ public:
     bool isDanger();
     void showDanger();
     void hideDanger();
+
+    void setLiteracy(bool in_literacy);
+    bool isLiterate();
 
     unsigned char getMvttype();
     unsigned char getClassind();
