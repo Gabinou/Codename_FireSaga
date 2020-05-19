@@ -1252,6 +1252,7 @@ void JSON_IO::writeJSON(const char * filename, const bool append) {
 
     PHYSFS_file * fp = NULL;
     cJSON * json = cJSON_CreateObject();
+    SDL_Log("JSON element: %s", JSONelement.c_str());
 
     if (JSONelement !=  "") {
         cJSON * jelement = cJSON_CreateObject();

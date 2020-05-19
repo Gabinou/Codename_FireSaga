@@ -1,6 +1,420 @@
 #include "minctest.h"
 #include "unit.hpp"
 
+void baseUnits(std::unordered_map<int, Unit> * in_units, std::vector<short int> toload) {
+    SDL_Log("Making base units \n");
+    Unit temp_unit;
+    Unit_stats temp;
+    Inventory_item temp_wpn;
+    std::vector<short int> temp_supports;
+    Equipped temp_equipped;
+    int index;
+
+    for (short unsigned int i = 0; i < toload.size(); i++) {
+        index = toload[i];
+        temp_unit = Unit();
+
+        switch (index) {
+            case UNIT::NAME::ERWIN:
+                //hp,str,mag,agi,dex,luck,def,res,con,move,prof
+                temp = {17,  6,  2,  7,  7,   7,  4,  5,  6, 5, 4};
+                temp_unit = Unit(UNIT::NAME::ERWIN, UNIT::CLASS::MERCENARY, temp, UNIT::SEX::M);
+                temp = {48, 14, 25, 32, 34,  28, 19, 40, 15, 7, 20};
+                temp_unit.setCaps(temp);
+                temp = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
+                temp_unit.setGrowths(temp);
+                temp_unit.setBaseExp(0);
+                temp_wpn.id = ITEM::NAME::FLEURET;
+                temp_unit.addEquipment(temp_wpn);
+                temp_wpn.id = ITEM::NAME::KITCHEN_KNIFE;
+                temp_unit.addEquipment(temp_wpn);
+                temp_wpn.id = ITEM::NAME::POT_LID;
+                temp_unit.addEquipment(temp_wpn);
+                temp_supports = {UNIT::NAME::KIARA};
+                temp_unit.setSupports(temp_supports);
+                temp_unit.setArmy(UNIT::ARMY::ERWIN);
+                in_units->erase(index);
+                in_units->insert({index, temp_unit});
+                break;
+
+            case UNIT::NAME::RELIABLE:
+                temp = {18,  6,  2,  7,  7,   7,  4,  5,  6, 7};
+                temp_unit = Unit(UNIT::NAME::RELIABLE, UNIT::CLASS::CAVALIER, temp, UNIT::SEX::M);
+                temp = {48, 14, 25, 32, 34,  28, 19, 40, 15};
+                temp_unit.setCaps(temp);
+                temp = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
+                temp_unit.setGrowths(temp);
+                temp_unit.setBaseExp(100);
+                temp_wpn.id = ITEM::NAME::IRON_LANCE;
+                temp_unit.addEquipment(temp_wpn);
+                temp_unit.setArmy(UNIT::ARMY::ERWIN);
+                in_units->erase(index);
+                in_units->insert({index, temp_unit});
+                break;
+
+            case UNIT::NAME::COWARD:
+                temp = {19,  6,  2,  7,  7,   7,  4,  5,  6,  7};
+                temp_unit = Unit(UNIT::NAME::COWARD, UNIT::CLASS::CAVALIER, temp, UNIT::SEX::M);
+                temp = {48, 14, 25, 32, 34,  28, 19, 40, 15};
+                temp_unit.setCaps(temp);
+                temp = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
+                temp_unit.setGrowths(temp);
+                temp_unit.setBaseExp(200);
+                temp_unit.setArmy(UNIT::ARMY::ERWIN);
+                in_units->erase(index);
+                in_units->insert({index, temp_unit});
+                break;
+
+            case UNIT::NAME::JAIGEN1H:
+                temp = {20,  6,  2,  7,  7,   7,  4,  5,  6,  6};
+                temp_unit = Unit(UNIT::NAME::JAIGEN1H, UNIT::CLASS::MOUSQUETAIRE, temp, UNIT::SEX::M);
+                temp = {48, 14, 25, 32, 34,  28, 19, 40, 15};
+                temp_unit.setCaps(temp);
+                temp = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
+                temp_unit.setGrowths(temp);
+                temp_unit.setBaseExp(2200);
+                temp_unit.setArmy(UNIT::ARMY::ERWIN);
+                in_units->erase(index);
+                in_units->insert({index, temp_unit});
+                break;
+
+            case UNIT::NAME::KIARA:
+                temp = {14,  6,  2,  7,  7,   7,  4,  5,  6,  5};
+                temp_unit = Unit(UNIT::NAME::KIARA, UNIT::CLASS::CLERIC, temp, UNIT::SEX::F);
+                temp = {48, 14, 25, 32, 34,  28, 19, 40, 15};
+                temp_unit.setCaps(temp);
+                temp = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
+                temp_unit.setGrowths(temp);
+                temp_unit.setBaseExp(100);
+                temp_unit.setArmy(UNIT::ARMY::ERWIN);
+                in_units->erase(index);
+                in_units->insert({index, temp_unit});
+                break;
+
+            case UNIT::NAME::HOTTIE:
+                temp = {16,  6,  2,  7,  7,   7,  4,  5,  6,  6};
+                temp_unit = Unit(UNIT::NAME::HOTTIE, UNIT::CLASS::PICKPOCKET, temp, UNIT::SEX::M);
+                temp = {48, 14, 25, 32, 34,  28, 19, 40, 15};
+                temp_unit.setCaps(temp);
+                temp = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
+                temp_unit.setGrowths(temp);
+                temp_unit.setBaseExp(2200);
+                temp_unit.setArmy(UNIT::ARMY::ERWIN);
+                in_units->erase(index);
+                in_units->insert({index, temp_unit});
+                break;
+
+            case UNIT::NAME::SERVIL:
+                temp = {22,  4,  5,  7,  6,   8,  4,  6,  5, 5}; // 4 or 5?
+                temp_unit = Unit(UNIT::NAME::SERVIL, UNIT::CLASS::KNIGHT, temp, UNIT::SEX::M);
+                temp = {48, 14, 25, 32, 34,  28, 19, 40, 15};
+                temp_unit.setCaps(temp);
+                temp = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
+                temp_unit.setGrowths(temp);
+                temp_unit.setBaseExp(500);
+                temp_unit.setArmy(UNIT::ARMY::ERWIN);
+                in_units->erase(index);
+                in_units->insert({index, temp_unit});
+                break;
+
+            case UNIT::NAME::PERIGNON:
+                temp = {34,  4,  5,  7,  6,   8,  4,  6,  5, 5};
+                temp_unit = Unit(UNIT::NAME::PERIGNON, UNIT::CLASS::MAGE, temp, UNIT::SEX::M);
+                temp = {48, 14, 25, 32, 34,  28, 19, 40, 15};
+                temp_unit.setCaps(temp);
+                temp = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
+                temp_unit.setGrowths(temp);
+                temp_unit.setBaseExp(1200);
+                temp_unit.setArmy(UNIT::ARMY::ERWIN);
+                in_units->erase(index);
+                in_units->insert({index, temp_unit});
+                break;
+
+            case UNIT::NAME::POET:
+                temp = {15,  4,  5,  7,  6,   8,  4,  6,  5, 5};
+                temp_unit = Unit(UNIT::NAME::POET, UNIT::CLASS::MAGE, temp, UNIT::SEX::M);
+                temp = {48, 14, 25, 32, 34,  28, 19, 40, 15};
+                temp_unit.setCaps(temp);
+                temp = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
+                temp_unit.setGrowths(temp);
+                temp_unit.setBaseExp(400);
+                temp_unit.setArmy(UNIT::ARMY::ERWIN);
+                in_units->erase(index);
+                in_units->insert({index, temp_unit});
+                break;
+
+            case UNIT::NAME::SILOU:
+                //hp,str,mag,agi,dex,luck,def,res,con,move,prof
+                temp = {15,  4,  5,  7,  6,   8,  4,  6,  5,  5,  6};
+                temp_unit = Unit(UNIT::NAME::SILOU, UNIT::CLASS::MAGE, temp, UNIT::SEX::F);
+                temp = {48, 14, 25, 32, 34,  28, 19, 40, 15};
+                temp_unit.setCaps(temp);
+                temp = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
+                temp_unit.setGrowths(temp);
+                temp_unit.setBaseExp(400);
+                temp_wpn.id = ITEM::NAME::BALL_LIGHTNING;
+                temp_unit.addEquipment(temp_wpn);
+                temp_unit.equipsR(0);
+                temp_unit.setArmy(UNIT::ARMY::ERWIN);
+                in_units->erase(index);
+                in_units->insert({index, temp_unit});
+                break;
+
+            case UNIT::NAME::BANDIT:
+                temp = {15,  4,  5,  7,  6,   8,  4,  6,  5, 5};
+                temp_unit = Unit(UNIT::NAME::BANDIT, UNIT::CLASS::BANDIT, temp, 1);
+                temp = {48, 14, 25, 32, 34,  28, 19, 40, 15};
+                temp_unit.setCaps(temp);
+                temp = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
+                temp_unit.setGrowths(temp);
+                temp_unit.setBaseExp(0);
+                temp_wpn.id = ITEM::NAME::IRON_AXE;
+                temp_unit.addEquipment(temp_wpn);
+                temp_unit.equipsR(0);
+                temp_unit.setArmy(UNIT::ARMY::ENEMY);
+                in_units->erase(index);
+                in_units->insert({index, temp_unit});
+                break;
+
+            case UNIT::NAME::DUELIST:
+                temp = {15,  4,  5,  7,  6,   8,  4,  6,  5, 5};
+                temp_unit = Unit(UNIT::NAME::DUELIST, UNIT::CLASS::DUELIST, temp, UNIT::SEX::M);
+                temp = {48, 14, 25, 32, 34,  28, 19, 40, 15};
+                temp_unit.setCaps(temp);
+                temp = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
+                temp_unit.setGrowths(temp);
+                temp_unit.setBaseExp(0);
+                temp_unit.setArmy(UNIT::ARMY::ENEMY);
+                in_units->erase(index);
+                in_units->insert({index, temp_unit});
+                break;
+
+            case UNIT::NAME::PICKPOCKET:
+                temp = {15,  4,  5,  7,  6,   8,  4,  6,  5, 5};
+                temp_unit = Unit(UNIT::NAME::PICKPOCKET, UNIT::CLASS::PICKPOCKET, temp, UNIT::SEX::M);
+                temp = {48, 14, 25, 32, 34,  28, 19, 40, 15};
+                temp_unit.setCaps(temp);
+                temp = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
+                temp_unit.setGrowths(temp);
+                temp_unit.setBaseExp(0);
+                temp_unit.setArmy(UNIT::ARMY::ENEMY);
+                in_units->erase(index);
+                in_units->insert({index, temp_unit});
+                break;
+
+            case UNIT::NAME::THIEF:
+                temp = {15,  4,  5,  7,  6,   8,  4,  6,  5, 5};
+                temp_unit = Unit(UNIT::NAME::THIEF, UNIT::CLASS::THIEF, temp, UNIT::SEX::M);
+                temp = {48, 14, 25, 32, 34,  28, 19, 40, 15};
+                temp_unit.setCaps(temp);
+                temp = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
+                temp_unit.setGrowths(temp);
+                temp_unit.setBaseExp(0);
+                temp_unit.setArmy(UNIT::ARMY::ENEMY);
+                in_units->erase(index);
+                in_units->insert({index, temp_unit});
+                break;
+
+            case UNIT::NAME::ASSASSIN:
+                temp = {15,  4,  5,  7,  6,   8,  4,  6,  5, 5};
+                temp_unit = Unit(UNIT::NAME::ASSASSIN, UNIT::CLASS::ASSASSIN, temp, UNIT::SEX::M);
+                temp = {48, 14, 25, 32, 34,  28, 19, 40, 15};
+                temp_unit.setCaps(temp);
+                temp = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
+                temp_unit.setGrowths(temp);
+                temp_unit.setBaseExp(0);
+                temp_unit.setArmy(UNIT::ARMY::ENEMY);
+                in_units->erase(index);
+                in_units->insert({index, temp_unit});
+                break;
+
+            case UNIT::NAME::ARCHER:
+                temp = {15,  4,  5,  7,  6,   8,  4,  6,  5, 5};
+                temp_unit = Unit(UNIT::NAME::ARCHER, UNIT::CLASS::ARCHER, temp, UNIT::SEX::M);
+                temp = {48, 14, 25, 32, 34,  28, 19, 40, 15};
+                temp_unit.setCaps(temp);
+                temp = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
+                temp_unit.setGrowths(temp);
+                temp_unit.setBaseExp(0);
+                temp_unit.setArmy(UNIT::ARMY::ENEMY);
+                in_units->erase(index);
+                in_units->insert({index, temp_unit});
+                break;
+
+            case UNIT::NAME::MARKSMAN:
+                temp = {15,  4,  5,  7,  6,   8,  4,  6,  5, 5};
+                temp_unit = Unit(UNIT::NAME::MARKSMAN, UNIT::CLASS::MARKSMAN, temp, UNIT::SEX::M);
+                temp = {48, 14, 25, 32, 34,  28, 19, 40, 15};
+                temp_unit.setCaps(temp);
+                temp = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
+                temp_unit.setGrowths(temp);
+                temp_unit.setBaseExp(0);
+                temp_unit.setArmy(UNIT::ARMY::ENEMY);
+                in_units->erase(index);
+                in_units->insert({index, temp_unit});
+                break;
+
+            case UNIT::NAME::MERCENARY:
+                temp = {15,  4,  5,  7,  6,   8,  4,  6,  5, 5};
+                temp_unit = Unit(UNIT::NAME::MERCENARY, UNIT::CLASS::MERCENARY, temp, UNIT::SEX::M);
+                temp = {48, 14, 25, 32, 34,  28, 19, 40, 15};
+                temp_unit.setCaps(temp);
+                temp = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
+                temp_unit.setGrowths(temp);
+                temp_unit.setBaseExp(0);
+                temp_unit.setArmy(UNIT::ARMY::ENEMY);
+                in_units->erase(index);
+                in_units->insert({index, temp_unit});
+                break;
+
+            case UNIT::NAME::HERO:
+                temp = {15,  4,  5,  7,  6,   8,  4,  6,  5, 5};
+                temp_unit = Unit(UNIT::NAME::HERO, UNIT::CLASS::HERO, temp, UNIT::SEX::M);
+                temp = {48, 14, 25, 32, 34,  28, 19, 40, 15};
+                temp_unit.setCaps(temp);
+                temp = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
+                temp_unit.setGrowths(temp);
+                temp_unit.setBaseExp(0);
+                temp_unit.setArmy(UNIT::ARMY::ENEMY);
+                in_units->erase(index);
+                in_units->insert({index, temp_unit});
+                break;
+
+            case UNIT::NAME::CORSAIR:
+                temp = {15,  4,  5,  7,  6,   8,  4,  6,  5, 5};
+                temp_unit = Unit(UNIT::NAME::CORSAIR, UNIT::CLASS::CORSAIR, temp, UNIT::SEX::M);
+                temp = {48, 14, 25, 32, 34,  28, 19, 40, 15};
+                temp_unit.setCaps(temp);
+                temp = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
+                temp_unit.setGrowths(temp);
+                temp_unit.setBaseExp(0);
+                temp_unit.setArmy(UNIT::ARMY::ENEMY);
+                in_units->erase(index);
+                in_units->insert({index, temp_unit});
+                break;
+
+            case UNIT::NAME::VIKING:
+                temp = {15,  4,  5,  7,  6,   8,  4,  6,  5, 5};
+                temp_unit = Unit(UNIT::NAME::VIKING, UNIT::CLASS::VIKING, temp, UNIT::SEX::M);
+                temp = {48, 14, 25, 32, 34,  28, 19, 40, 15};
+                temp_unit.setCaps(temp);
+                temp = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
+                temp_unit.setGrowths(temp);
+                temp_unit.setBaseExp(0);
+                temp_unit.setArmy(UNIT::ARMY::ENEMY);
+                in_units->erase(index);
+                in_units->insert({index, temp_unit});
+                break;
+
+            case UNIT::NAME::RAVAGER:
+                temp = {15,  4,  5,  7,  6,   8,  4,  6,  5, 5};
+                temp_unit = Unit(UNIT::NAME::RAVAGER, UNIT::CLASS::RAVAGER, temp, UNIT::SEX::M);
+                temp = {48, 14, 25, 32, 34,  28, 19, 40, 15};
+                temp_unit.setCaps(temp);
+                temp = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
+                temp_unit.setGrowths(temp);
+                temp_unit.setBaseExp(0);
+                temp_unit.setArmy(UNIT::ARMY::ENEMY);
+                in_units->erase(index);
+                in_units->insert({index, temp_unit});
+                break;
+
+            case UNIT::NAME::CAVALIER:
+                temp = {15,  4,  5,  7,  6,   8,  4,  6,  5, 5};
+                temp_unit = Unit(UNIT::NAME::CAVALIER, UNIT::CLASS::CAVALIER, temp, UNIT::SEX::M);
+                temp = {48, 14, 25, 32, 34,  28, 19, 40, 15};
+                temp_unit.setCaps(temp);
+                temp = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
+                temp_unit.setGrowths(temp);
+                temp_unit.setBaseExp(0);
+                temp_unit.setArmy(UNIT::ARMY::ENEMY);
+                in_units->erase(index);
+                in_units->insert({index, temp_unit});
+                break;
+
+            case UNIT::NAME::PALADIN:
+                temp = {15,  4,  5,  7,  6,   8,  4,  6,  5, 5};
+                temp_unit = Unit(UNIT::NAME::PALADIN, UNIT::CLASS::PALADIN, temp, UNIT::SEX::M);
+                temp = {48, 14, 25, 32, 34,  28, 19, 40, 15};
+                temp_unit.setCaps(temp);
+                temp = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
+                temp_unit.setGrowths(temp);
+                temp_unit.setBaseExp(0);
+                temp_unit.setArmy(UNIT::ARMY::ENEMY);
+                in_units->erase(index);
+                in_units->insert({index, temp_unit});
+                break;
+
+            case UNIT::NAME::FENCER:
+                temp = {15,  4,  5,  7,  6,   8,  4,  6,  5, 5};
+                temp_unit = Unit(UNIT::NAME::FENCER, UNIT::CLASS::FENCER, temp, UNIT::SEX::M);
+                temp = {48, 14, 25, 32, 34,  28, 19, 40, 15};
+                temp_unit.setCaps(temp);
+                temp = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
+                temp_unit.setGrowths(temp);
+                temp_unit.setBaseExp(0);
+                temp_unit.setArmy(UNIT::ARMY::ENEMY);
+                in_units->erase(index);
+                in_units->insert({index, temp_unit});
+                break;
+
+            case UNIT::NAME::MOUSQUETAIRE:
+                temp = {15,  4,  5,  7,  6,   8,  4,  6,  5, 5};
+                temp_unit = Unit(UNIT::NAME::MOUSQUETAIRE, UNIT::CLASS::MOUSQUETAIRE, temp, UNIT::SEX::M);
+                temp = {48, 14, 25, 32, 34,  28, 19, 40, 15};
+                temp_unit.setCaps(temp);
+                temp = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
+                temp_unit.setGrowths(temp);
+                temp_unit.setBaseExp(0);
+                temp_unit.setArmy(UNIT::ARMY::ENEMY);
+                in_units->erase(index);
+                in_units->insert({index, temp_unit});
+                break;
+        }
+    }
+}
+
+void baseUnits(std::unordered_map<int, Unit> * in_units) {
+    SDL_Log("Making all base units \n");
+    std::unordered_map<int, Unit> temp_units;
+    std::vector<short int> toload = cpprange((short int)UNIT::NAME::ERWIN, (short int)(UNIT::NAME::PC_END - 1));
+    baseUnits(in_units, toload);
+}
+
+void writeUnits_NPC(const char * filename) {
+    Unit Utemp;
+    std::unordered_map<int, Unit> units;
+    std::vector<short int> temp_int = {0};
+
+    for (int i = UNIT::NAME::PC_END; i < UNIT::NAME::NPC_END; i++) {
+        temp_int[0] = i;
+        baseUnits(&units, temp_int);
+        Utemp = units[i];
+        Utemp.writeXML(filename, true);
+    }
+}
+
+void writeUnits_PC(const char * filename) {
+    Unit Utemp;
+    std::unordered_map<int, Unit> units;
+    std::vector<short int> temp_int = {0};
+
+    for (int i = UNIT::NAME::ERWIN; i < UNIT::NAME::PC_END; i++) {
+        temp_int[0] = i;
+        baseUnits(&units, temp_int);
+        Utemp = units[i];
+        Utemp.writeXML(filename, true);
+    }
+}
+
+void writeAllUnits(const char * filename) {
+    writeUnits_PC(filename);
+    writeUnits_NPC(filename);
+}
+
+
+
+
 void test_unit() {
     Unit unit1, unit2, unit3, unit4, unit5;
     Unit_stats in_stats, out_stats;

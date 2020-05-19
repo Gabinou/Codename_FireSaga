@@ -177,14 +177,4 @@ public:
 
 extern std::vector<short int> init_party;
 
-extern void baseUnits(std::unordered_map<int, Unit> * in_units);
-extern void baseUnits(std::unordered_map<int, Unit> * in_units, std::vector<short int> toload);
-
-extern void writeUnits_PC(const char * filename);
-extern void writeUnits_NPC(const char * filename);
-extern void writeAllUnits(const char * filename);
-
-void testXMLUnits();
-void baseEnemyUnits();
-
 #endif /* UNIT_HPP */
