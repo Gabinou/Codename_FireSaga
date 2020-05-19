@@ -52,7 +52,7 @@ void Game::setChapter(unsigned char in_chapter) {
 }
 
 unsigned char Game::getChapter() {
-    return(chapter);
+    return (chapter);
 }
 
 

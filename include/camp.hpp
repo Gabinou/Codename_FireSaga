@@ -12,17 +12,17 @@ class Camp {
 private:
     Game * game;
     std::unordered_map<short int, Unit> party;
-    // Job priority: cook > stablehand > guard > clergymen > scribe > assistant 
-    std::vector librarians;
-    std::vector cooks;
-    std::vector guards;
-    std::vector scribe;
-    std::vector stablehands;
-    std::vector assistant; // Kiara?
-    std::vector clergymen;
-    std::vector storagemaster;
+    // Job priority: cook > stablehand > guard > clergymen > scribe > assistant
+    std::vector<short unsigned int> librarians;
+    std::vector<short unsigned int> cooks;
+    std::vector<short unsigned int> guards;
+    std::vector<short unsigned int> scribe;
+    std::vector<short unsigned int> stablehands;
+    std::vector<short unsigned int> assistant; // Kiara?
+    std::vector<short unsigned int> clergymen;
+    std::vector<short unsigned int> storagemaster;
 
-    float frac_librarian = 0.1;
+    float frac_librarians = 0.1;
     float frac_cooks = 0.1;
     float frac_guards = 0.2;
     float frac_stablehands = 0.1;
@@ -49,8 +49,9 @@ private:
     short int optimal_assistant;
     short int party_size;
 
+    short unsigned int current_unit = UNIT::NAME::ERWIN;
 
-    // 30 jobs. 
+    // 30 jobs.
     // + 1 -> Erwin is the leader.
     // + 1 -> armory merchant traveling with you.
     // + 1 -> item shop merchant traveling with you.
@@ -62,6 +63,8 @@ public:
     void updateParty();
     void makeJobNumbers();
     void fillJobs();
+    void addLibrarian(unsigned short int in_unit);
+
     // using XML_IO::writeXML;
     // using XML_IO::readXML;
     // void writeXML(tinyxml2::XMLDocument * in_doc, tinyxml2::XMLElement * in_pTile);

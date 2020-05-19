@@ -17,6 +17,10 @@ void Camp::updateParty() {
     party = game->getParty();
 }
 
+void Camp::addLibrarian(unsigned short int in_unit) {
+
+}
+
 void Camp::fillJobs() {
     // librarians.reserve();
     // cooks.reserve();
@@ -24,7 +28,7 @@ void Camp::fillJobs() {
     // stablehands.reserve();
     // storagemaster.reserve();
     // clergymen.reserve();
-}  
+}
 
 void Camp::makeJobNumbers() {
     party_size = party.size();
@@ -35,7 +39,7 @@ void Camp::makeJobNumbers() {
     optimal_stablehands = std::min(max_stablehands, std::max(floor(frac_stablehands * party_size), 1));
     optimal_storagemaster = std::min(max_storagemaster, std::max(floor(frac_storagemaster * party_size), 1));
     optimal_clergymen = std::min(max_clergymen, floor(frac_clergymen * party_size));
-    
+
     if (game->getChapter() < 10) {
         optimal_assistant = 0;
     } else {
