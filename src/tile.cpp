@@ -148,7 +148,7 @@ void Tile::writeXML(tinyxml2::XMLDocument * in_doc, tinyxml2::XMLElement * in_pT
     writeXML_stats(in_doc, pStats, &stats);
 }
 
-void baseTiles(std::unordered_map<int, Tile> * in_tiles, const std::vector<short int> toload) {
+void baseTiles(std::unordered_map<short int, Tile> * in_tiles, const std::vector<short int> toload) {
     SDL_Log("Loading base tiles\n");
     Tile temp_tile;
     Movement_cost temp_cost;

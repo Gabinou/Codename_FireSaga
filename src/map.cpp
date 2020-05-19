@@ -567,7 +567,7 @@ std::vector<std::vector<short int>> Map::makeMvtCostmap(entityx::ComponentHandle
     return (costmap);
 }
 
-std::unordered_map<int, Tile> Map::getTiles() {
+std::unordered_map<short int, Tile> Map::getTiles() {
     return (tiles);
 }
 std::vector<short int> Map::getTilesindex() {
