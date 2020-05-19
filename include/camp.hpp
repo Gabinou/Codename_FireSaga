@@ -13,7 +13,14 @@ class Camp {
 private:
     Game * game;
     std::unordered_map<short int, Unit> party;
-
+    // Job priority: cook > stablehand > guard > clergymen >
+    std::vector librarians;
+    std::vector cooks;
+    std::vector guards;
+    std::vector scribe;
+    std::vector stablehands;
+    std::vector assistant; // Kiara?
+    std::vector clergymen;
 public:
     Camp();
     ~Camp();

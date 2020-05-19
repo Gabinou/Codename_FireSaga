@@ -17,3 +17,6 @@ void Camp::updateParty() {
     party = game->getParty();
 }
 
+void Camp::makeJobNumbers() {
+
+}
