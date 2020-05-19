@@ -45,7 +45,10 @@ int main(int argc, char * argv[]) {
     for (int i = 10; i < TILE::ICE; i++) {
         temp_toload[0] = i;
         baseTiles(&temp_tiles, temp_toload);
-        temp_tiles[i].writeJSON("tiles.json", true);
+
+        if (temp_tiles[i].getid() == i) {
+            temp_tiles[i].writeJSON("tiles.json", true);
+        }
     }
 
     getchar();

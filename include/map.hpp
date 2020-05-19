@@ -37,7 +37,7 @@ private:
     unsigned char danger_mode = 0;
 
     std::vector<std::vector<short int>> tilemap;
-    std::unordered_map<int, Tile> tiles;
+    std::unordered_map<short int, Tile> tiles;
     std::vector<short int> tilesindex;
     std::vector<std::string> tilenames;
 
@@ -74,14 +74,14 @@ public:
     void loadTiles(const int in_map_index);
     void loadTiles(std::vector<short int> to_load);
     void unloadTiles(std::vector<short int> to_unload);
-    std::unordered_map<int, Tile> getTiles();
+    std::unordered_map<short int, Tile> getTiles();
     std::vector<short int> getTilesindex();
 
     Point pixel2tile(Point in_point);
     Point pixel2tile(short int pixel_x, short int pixel_y);
 
     void loadTilemap(const std::string filename);
-    void loadTilemap(const short unsigned int in_map_index);
+    // void loadTilemap(const short unsigned int in_map_index);
     void postTilemap();
     std::vector<std::vector<short int>> getTilemap();
     void setTilemap(const std::vector<std::vector<short int>> in_tilemap);
@@ -169,37 +169,7 @@ public:
 
 };
 
-extern std::vector<std::vector<short int>> (*chapTilemaps[40])();
-extern std::vector<short unsigned int> (*chapArrivalinds[40])();
-extern std::vector<short int> (*baseParties[CHAPTER::CHAP1 - CHAPTER::TEST + 1])();
-extern std::vector<std::vector<Inventory_item>> (*arrivalEquipments[CHAPTER::END - CHAPTER::TEST + 1])();
-extern std::vector<Map_arrival> (*mapArrivals[CHAPTER::END - CHAPTER::TEST + 1])();
-
-std::vector<short unsigned int> testArrivals();
-std::vector<std::vector<short int>> testTilemap();
-std::vector<std::vector<short int>> chap2Tilemap();
-std::vector<std::vector<short int>> chap3Tilemap();
-std::vector<std::vector<short int>> chap4Tilemap();
-std::vector<std::vector<short int>> chap5Tilemap();
-std::vector<std::vector<short int>> chap6Tilemap();
-std::vector<std::vector<short int>> chap7Tilemap();
-std::vector<std::vector<short int>> chap8Tilemap();
-std::vector<std::vector<short int>> chap9Tilemap();
-std::vector<std::vector<short int>> chap10Tilemap();
-std::vector<std::vector<short int>> chap11Tilemap();
-std::vector<std::vector<short int>> chap12Tilemap();
-std::vector<std::vector<short int>> chap13Tilemap();
-std::vector<std::vector<short int>> chap14Tilemap();
-std::vector<std::vector<short int>> chap15Tilemap();
-std::vector<std::vector<short int>> chap16Tilemap();
-std::vector<std::vector<short int>> chap17Tilemap();
-std::vector<std::vector<short int>> chap18Tilemap();
-std::vector<std::vector<short int>> chap19Tilemap();
-std::vector<std::vector<short int>> chap20Tilemap();
-std::vector<std::vector<short int>> chap21Tilemap();
-std::vector<std::vector<short int>> chap22Tilemap();
-std::vector<std::vector<short int>> chap23Tilemap();
-std::vector<std::vector<short int>> chap24Tilemap();
-std::vector<std::vector<short int>> chap25Tilemap();
+extern std::vector<std::string> mapNames;
+extern std::vector<short int> baseParty();
 
 #endif /* MAP_HPP */

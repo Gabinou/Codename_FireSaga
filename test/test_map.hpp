@@ -77,6 +77,92 @@ void aremapsequal(Map map1, Map map2) {
     }
 }
 
+std::vector<short int> testTiles() {
+    std::vector<short int> temp_vector = {TILE::PLAIN * DEFAULT::TILE_DIVISOR + 0, TILE::FOREST * DEFAULT::TILE_DIVISOR + 0, TILE::SEA * DEFAULT::TILE_DIVISOR + 0, TILE::HILL * DEFAULT::TILE_DIVISOR + 0};
+    return (temp_vector);
+}
+
+
+std::vector<Map_arrival> chapTestArrivals() {
+    std::vector<Map_arrival> out;
+    Map_arrival temp;
+    temp.id = UNIT::NAME::BANDIT;
+    temp.turn = 0;
+    temp.position = {6, 10};
+    temp.levelups = 0;
+    out.push_back(temp);
+
+    temp.id = UNIT::NAME::BANDIT;
+    temp.turn = 0;
+    temp.position = {12, 4};
+    temp.levelups = 0;
+    out.push_back(temp);
+
+    temp.id = UNIT::NAME::RELIABLE;
+    temp.turn = 0;
+    temp.position = {20, 12};
+    temp.levelups = 0;
+    out.push_back(temp);
+    return (out);
+}
+
+std::vector<Point> chapTestStartingPos() {
+    std::vector<Point> out;
+    return (out);
+}
+
+std::vector<std::vector<Inventory_item>> chapTestEquipments() {
+    std::vector<std::vector<Inventory_item>> out;
+    std::vector<Inventory_item> temp_equipment;
+    Inventory_item temp_item;
+
+    temp_item.id = ITEM::NAME::IRON_AXE;
+    temp_equipment.push_back(temp_item);
+    temp_item.id = ITEM::NAME::WOODEN_SHIELD;
+    temp_equipment.push_back(temp_item);
+    out.push_back(temp_equipment);
+    temp_equipment.clear();
+    temp_item.id = ITEM::NAME::IRON_AXE;
+    temp_equipment.push_back(temp_item);
+    temp_item.id = ITEM::NAME::WOODEN_SHIELD;
+    temp_equipment.push_back(temp_item);
+    out.push_back(temp_equipment);
+    temp_equipment.clear();
+    temp_item.id = ITEM::NAME::IRON_AXE;
+    temp_equipment.push_back(temp_item);
+    temp_item.id = ITEM::NAME::WOODEN_SHIELD;
+    temp_equipment.push_back(temp_item);
+    out.push_back(temp_equipment);
+    temp_equipment.clear();
+    return (out);
+}
+
+std::vector<std::vector<short int>> testTilemap() {
+    std::vector<std::vector<short int>> tilemap = {
+        {100, 100, 100, 100, 100, 100, 200, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 300, 300, 300, 300, 300, 100, 100, 100},
+        {100, 100, 100, 100, 100, 100, 200, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 300, 300, 300, 300, 300, 100, 100, 100},
+        {100, 100, 100, 100, 100, 100, 200, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 300, 300, 300, 300, 300, 100, 100, 100},
+        {100, 100, 100, 100, 100, 100, 200, 200, 100, 100, 100, 100, 100, 100, 100, 100, 100, 300, 300, 300, 300, 300, 100, 100, 100},
+        {100, 100, 100, 100, 100, 100, 100, 200, 100, 100, 100, 100, 100, 100, 100, 100, 100, 300, 300, 300, 300, 300, 100, 100, 100},
+        {100, 100, 100, 100, 100, 100, 100, 200, 200, 100, 100, 100, 100, 100, 100, 100, 100, 300, 300, 300, 300, 100, 100, 100, 100},
+        {100, 100, 100, 100, 100, 100, 100, 100, 200, 100, 100, 100, 100, 100, 100, 100, 100, 300, 300, 300, 100, 300, 100, 100, 100},
+        {100, 100, 100, 100, 100, 100, 100, 100, 200, 100, 100, 100, 100, 100, 100, 100, 100, 300, 300, 100, 100, 100, 100, 100, 100},
+        {100, 100, 100, 100, 100, 100, 100, 100, 200, 200, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100},
+        {100, 100, 100, 100, 100, 100, 100, 100, 200, 200, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 120, 100, 100, 100, 100},
+        {100, 100, 100, 100, 100, 100, 100, 100, 100, 200, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 120, 120, 100, 100, 100},
+        {100, 100, 100, 100, 100, 100, 100, 100, 100, 200, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100},
+        {100, 100, 100, 100, 100, 100, 100, 100, 100, 200, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 120, 100, 100, 100},
+        {100, 100, 100, 100, 100, 100, 100, 100, 100, 300, 100, 100, 100, 100, 100, 100, 100, 100, 100, 120, 120, 120, 100, 100, 100},
+        {100, 100, 100, 100, 100, 100, 100, 100, 100, 200, 100, 100, 100, 100, 100, 100, 100, 100, 100, 120, 100, 100, 100, 100, 100},
+        {100, 100, 100, 100, 100, 100, 100, 100, 100, 200, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100},
+        {100, 100, 100, 100, 100, 100, 100, 100, 100, 200, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100},
+        {100, 100, 100, 100, 100, 100, 100, 100, 100, 200, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100},
+        {100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100},
+        {100, 100, 100, 100, 100, 100, 100, 100, 100, 200, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100},
+        {100, 100, 100, 100, 100, 100, 100, 100, 100, 200, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100}
+    };
+    return (tilemap);
+}
 
 void test_map() {
     entityx::EntityX ex;
@@ -84,9 +170,11 @@ void test_map() {
     Map map1(tilesize, tilesize);
     Map map2, map3;
 
+    std::vector<Point> in_startingpositions, out_startingpositions;
+    Point temp = {0, 1};
     std::vector<short int> in_tilesindex, out_tilesindex;
-    in_tilesindex = chapTiles[0]();
-    map1.loadTiles(0);
+    in_tilesindex = testTiles();
+    map1.loadTiles(in_tilesindex);
     out_tilesindex = map1.getTilesindex();
     lok(in_tilesindex == out_tilesindex);
     std::vector<std::vector<short int>> in_tilemap, out_tilemap;
@@ -117,8 +205,8 @@ void test_map() {
 
     std::vector<Map_arrival> in_arrivals, out_arrivals;
     std::vector<std::vector<Inventory_item>> in_arrivalequipments, out_arrivalequipments;
-    in_arrivals = mapArrivals[0]();
-    in_arrivalequipments = arrivalEquipments[0]();
+    in_arrivals = chapTestArrivals();
+    in_arrivalequipments = chapTestEquipments();
     lok(in_arrivalequipments.size() == in_arrivals.size());
 
     map1.setArrivals(in_arrivals);
