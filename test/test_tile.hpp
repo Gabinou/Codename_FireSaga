@@ -2,6 +2,25 @@
 #include "tile.hpp"
 #include "utilities.hpp"
 
+void writeTilesJSON() {
+    std::unordered_map<short int, Tile> temp_tiles;
+    std::vector<short int> temp_toload = {0};
+    std::string filename;
+
+    for (short int i = 10; i < TILE::ICE; i++) {
+        temp_toload[0] = i;
+        baseTiles(&temp_tiles, temp_toload);
+
+        if (temp_tiles[i].getid() == i) {
+            SDL_Log("True %d, %d", i, temp_toload[0]);
+            filename = temp_tiles[i].getName() + ".json";
+            temp_tiles[i].writeJSON(filename, );
+        } else {
+            SDL_Log("False %d, %d", i, temp_toload[0]);
+        }
+    }
+}
+
 void test_tile() {
     if (PHYSFS_stat("saves", nullptr) == 0) {
         PHYSFS_mkdir("saves");
