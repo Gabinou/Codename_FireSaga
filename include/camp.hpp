@@ -44,7 +44,7 @@ public:
 
     void makeJobQueue();
     void makeJobNumbers();
-    void fillJobs();
+    void assignJobs();
     void addLibrarian(unsigned short int in_unit);
     void addCook(unsigned short int in_unit);
     void addGuard(unsigned short int in_unit);

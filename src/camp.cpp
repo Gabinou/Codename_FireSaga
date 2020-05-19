@@ -48,21 +48,34 @@ void Camp::updateParty() {
     party = game->getParty();
 }
 
-void Camp::addLibrarian(unsigned short int in_unit) {
-    switch (in_unit) {
-        case UNIT::NAME::ERWIN:
-        case UNIT::NAME::KIARA:
-        case UNIT::NAME::SILOU:
-            break;
+void Camp::assignJobs() {
 
-        case UNIT::NAME::SERVIL:
-        case UNIT::NAME::PERIGNON:
-        case UNIT::NAME::POET:
-        case UNIT::NAME::RELIABLE:
-        case UNIT::NAME::COWARD:
-        case UNIT::NAME::JAIGEN1H:
-        case UNIT::NAME::HOTTIE:
-            break;
+    int jobnum = 0;
+    bool jobfound = false;
+
+    while (party_stack.size() > 0) {
+        while ((jobnum < 8) && (!jobfound)) {
+            switch (in_unit) {
+                case UNIT::NAME::ERWIN:
+                case UNIT::NAME::KIARA:
+                case UNIT::NAME::SILOU:
+                    break;
+
+                case UNIT::NAME::SERVIL:
+                case UNIT::NAME::PERIGNON:
+                case UNIT::NAME::POET:
+                case UNIT::NAME::RELIABLE:
+                case UNIT::NAME::COWARD:
+                case UNIT::NAME::JAIGEN1H:
+                case UNIT::NAME::HOTTIE:
+                    break;
+            }
+
+            job_queue.push(job_queue.front());
+            job_queue.pop();
+            jobnum++;
+        }
+
     }
 }
 
