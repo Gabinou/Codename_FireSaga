@@ -40,6 +40,7 @@ private:
     std::unordered_map<unsigned char, std::vector<unsigned char>> menuoptions;
     Narrative narrative;
 
+
     KeyboardInputMap keyboardInputMap;
     GamepadInputMap gamepadInputMap;
     MouseInputMap mouseInputMap;
@@ -49,6 +50,7 @@ private:
     Convoy convoy;
 
     unsigned int previous_mouse;
+    unsigned char chapter;
 
     short unsigned int state;
 
@@ -68,6 +70,8 @@ public:
     ~Game();
 
     void init();
+    void setChapter(unsigned char in_chapter);
+    unsigned char getChapter();
     entityx::ComponentHandle<Map> getMap();
     void loadMap(const int in_map_index);
     void unloadMap();

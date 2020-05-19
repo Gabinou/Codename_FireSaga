@@ -5,8 +5,10 @@
 #include "enums.hpp"
 #include "unit.hpp"
 #include "game.hpp"
+#include <math.h>
 
 class Camp {
+
 private:
     Game * game;
     std::unordered_map<short int, Unit> party;
@@ -19,6 +21,7 @@ private:
     std::vector assistant; // Kiara?
     std::vector clergymen;
     std::vector storagemaster;
+
     float frac_librarian = 0.1;
     float frac_cooks = 0.1;
     float frac_guards = 0.2;
@@ -35,6 +38,18 @@ private:
     unsigned char max_assistant = 1;
     unsigned char max_clergymen = 4;
     unsigned char max_storagemaster = 4;
+
+    short int optimal_librarians;
+    short int optimal_cooks;
+    short int optimal_guards;
+    short int optimal_stablehands;
+    short int optimal_storagemaster;
+    short int optimal_clergymen;
+    short int optimal_scribe;
+    short int optimal_assistant;
+    short int party_size;
+
+
     // 30 jobs. 
     // + 1 -> Erwin is the leader.
     // + 1 -> armory merchant traveling with you.
@@ -46,6 +61,7 @@ public:
     void setGame(Game * in_game);
     void updateParty();
     void makeJobNumbers();
+    void fillJobs();
     // using XML_IO::writeXML;
     // using XML_IO::readXML;
     // void writeXML(tinyxml2::XMLDocument * in_doc, tinyxml2::XMLElement * in_pTile);

@@ -47,6 +47,15 @@ bool Game::checkRate(int rate, short unsigned int mode) {
     return (hit);
 }
 
+void Game::setChapter(unsigned char in_chapter) {
+    chapter = in_chapter;
+}
+
+unsigned char Game::getChapter() {
+    return(chapter);
+}
+
+
 bool * Game::checkHitCrit(int hit_rate, int crit_rate, short unsigned int mode) {
     static bool hitcrit[2];
 
