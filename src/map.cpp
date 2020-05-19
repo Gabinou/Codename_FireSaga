@@ -42,7 +42,7 @@ void Map::loadTilesJSON() {
                 index = tilesindex[i];
             }
 
-            filename = "..//tiles//" + tilenames[i] + ".json";
+            filename = "tiles//" + tilenames[i] + ".json";
             temp_tile.readJSON(filename.c_str());
             tiles[index] = temp_tile;
         }
