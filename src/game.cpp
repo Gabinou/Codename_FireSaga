@@ -596,7 +596,7 @@ void Game::makeUnits(std::vector<short int> toload) {
     for (short unsigned int i = 0; i < toload.size(); i++) {
         // temp_toload[0] = i;
         // baseUnits(&in_units, temp_toload);
-        filename = "..//units//" + unitNames[toload[i]] + ".json";
+        filename = "units//" + unitNames[toload[i]] + ".json";
         party[toload[i]].readJSON(filename.c_str());
     }
 }
