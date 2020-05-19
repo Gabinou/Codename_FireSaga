@@ -1372,6 +1372,8 @@ void baseUnits(std::unordered_map<int, Unit> * in_units, std::vector<short int> 
     }
 }
 
+std::vector<short int> init_party = {UNIT::NAME::ERWIN, UNIT::NAME::KIARA};
+
 void baseUnits(std::unordered_map<int, Unit> * in_units) {
     SDL_Log("Making all base units \n");
     std::unordered_map<int, Unit> temp_units;

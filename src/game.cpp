@@ -584,10 +584,9 @@ void Game::loadMapArrivals() {
     }
 }
 
-// void Game::makeUnits(unsigned char in_chap) {
-//     std::vector<short int> toload = baseParties[in_chap]();
-//     baseUnits(&party, toload);
-// }
+void Game::initParty() {
+    makeUnits(init_party);
+}
 
 void Game::makeUnits(std::vector<short int> toload) {
     baseUnits(&party, toload);
