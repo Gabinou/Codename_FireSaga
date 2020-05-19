@@ -92,7 +92,7 @@ void Game::makeTurntransition() {
     SDL_Color white = {255, 255, 255};
     transition.assign<Text>(settings.fontsize);
     transition.component<Text>()->hide();
-    // transition.component<Sprite>()->setTexture("..//assets//textbox.png");
+    // transition.component<Sprite>()->setTexture("assets//textbox.png");
     // transition.component<Sprite>()->setSrcrect(128, 128);
     // transition.component<Sprite>()->setDestrect(128, 128);
 }
@@ -234,14 +234,14 @@ void Game::makeMenu(unsigned char in_menu_index) {
     switch (in_menu_index) {
         case MENU::UNIT:
             SDL_Log("Making unit menu\n");
-            menus[MENU::UNIT].component<Sprite>()->setTexture("..//assets//textbox.png");
+            menus[MENU::UNIT].component<Sprite>()->setTexture("assets//textbox.png");
             menus[MENU::UNIT].component<Sprite>()->setSrcrect(128, 128);
             menus[MENU::UNIT].component<Sprite>()->setDestrect(128, 128);
             break;
 
         case MENU::MAPMENU:
             SDL_Log("Making map menu\n");
-            menus[MENU::MAPMENU].component<Sprite>()->setTexture("..//assets//textbox.png");
+            menus[MENU::MAPMENU].component<Sprite>()->setTexture("assets//textbox.png");
             menus[MENU::MAPMENU].component<Sprite>()->setSrcrect(128, 128);
             menus[MENU::MAPMENU].component<Sprite>()->setDestrect(128, 128);
             break;
@@ -365,7 +365,7 @@ void Game::loadMap(const int in_map_index) {
         std::string filename;
 
         if (in_map_index == 0) {
-            filename = "..//maps/map_test.json";
+            filename = "maps//map_test.json";
         }
 
         mapx->readJSON(filename.c_str());
@@ -426,7 +426,7 @@ void Game::setCursorstate(const unsigned char in_menu) {
                 SDL_Log("Changed Cursor to Map");
                 cursorx.component<Sprite>()->init(cursorx.component<Position>()->getPos());
                 cursorx.component<Sprite>()->animate();
-                cursorx.component<Sprite>()->setTexture("..//assets//mapcursors.png");
+                cursorx.component<Sprite>()->setTexture("assets//mapcursors.png");
                 cursorx.component<Sprite>()->setAnimation(10, 50);
                 cursorx.component<Sprite>()->setTilesize(mapx->getTilesize());
                 cursorx.component<Sprite>()->setSlidetype(SLIDETYPE::GEOMETRIC);
@@ -454,7 +454,7 @@ void Game::setCursorstate(const unsigned char in_menu) {
                 cursorx.component<Sprite>()->still();
                 cursorx.component<Sprite>()->setSrcrect(temprect);
                 cursorx.component<Sprite>()->setDestrect(temprect);
-                cursorx.component<Sprite>()->setTexture("..//assets//menucursor.png");
+                cursorx.component<Sprite>()->setTexture("assets//menucursor.png");
 
                 if (menus[in_menu].valid()) {
                     menupos = menus[in_menu].component<Position>()->getPos();
@@ -492,7 +492,7 @@ void Game::loadMouse() {
     position->setonTilemap(false);
     position->setBounds(0, 2000, 0, 2000);
     mousex.assign<Sprite>();
-    mousex.component<Sprite>()->setTexture("..//assets//mousecursor.png");
+    mousex.component<Sprite>()->setTexture("assets//mousecursor.png");
 
 }
 
@@ -529,7 +529,7 @@ void Game::loadMapUnits(std::vector<short int> in_units, std::vector<std::vector
         short int * bounds;
 
         for (int i = 0; i < in_units.size(); i++) {
-            asset_name = "..//assets//" + party[in_units[i]].getName() + ".png";
+            asset_name = "assets//" + party[in_units[i]].getName() + ".png";
             Uent = entities.create();
             Uent.assign<Unit>(party[in_units[i]]);
             Uent.assign<Position>();
@@ -562,7 +562,7 @@ void Game::loadMapArrivals() {
                 if (party.find(map_arrivals[i].id) == party.end()) {
                     SDL_Log("unloaded party loading %d", map_arrivals[i].id);
                     makeUnits(std::vector<short int> {map_arrivals[i].id});
-                    asset_name = "..//assets//" + party[map_arrivals[i].id].getName() + ".png";
+                    asset_name = "assets//" + party[map_arrivals[i].id].getName() + ".png";
                     SDL_Log("Loaded: %s", party[map_arrivals[i].id].getName().c_str());
                 }
 

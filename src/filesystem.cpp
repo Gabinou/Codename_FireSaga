@@ -1158,7 +1158,7 @@ cJSON * parseJSON(const char * filename) {
     cJSON * json = NULL;
 
     if (!fp) {
-        SDL_Log("Failed to open %s for xml parsing.", filename);
+        SDL_Log("Failed to open %s for JSON parsing.", filename);
     }
 
     unsigned int filelen = PHYSFS_fileLength(fp);
@@ -1178,7 +1178,7 @@ int parseXML(const char * filename, tinyxml2::XMLDocument * in_doc) {
     fp = PHYSFS_openRead(filename);
 
     if (!fp) {
-        SDL_Log("Failed to open %s for xml parsing.", filename);
+        SDL_Log("Failed to open %s for XML parsing.", filename);
         return (-1);
     }
 
@@ -1188,7 +1188,7 @@ int parseXML(const char * filename, tinyxml2::XMLDocument * in_doc) {
     PHYSFS_close(fp);
 
     if (in_doc->Parse(filebuffer, filelen) != 0) {
-        SDL_Log("Failed to parseXML %s", filename);
+        SDL_Log("Failed to parse XML %s", filename);
         return (-1);
     }
 
@@ -1204,7 +1204,7 @@ void JSON_IO::readJSON(const char * filename) {
             cJSON * jelement = cJSON_GetObjectItem(json, JSONelement.c_str());
 
             if (jelement == NULL) {
-                SDL_Log("Cannot get json element %s"), JSONelement.c_str();
+                SDL_Log("Cannot get JSON element %s"), JSONelement.c_str();
             } else {
                 readJSON(jelement);
             }
@@ -1212,7 +1212,7 @@ void JSON_IO::readJSON(const char * filename) {
             SDL_Log("JSON element not set");
         }
     } else {
-        SDL_Log("Cannot parse JSON file");
+        SDL_Log("Cannot parse JSON file %s", filename);
 
     }
 }
