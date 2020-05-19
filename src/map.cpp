@@ -50,6 +50,8 @@ void Map::readJSON(cJSON * in_jmap) {
             jtile = jtile->next;
         }
 
+        baseTiles(&tiles, tilesindex);
+
         cJSON * jarrival = cJSON_GetObjectItem(jarrivals, "arrival");
         cJSON * jlevelups;
         cJSON * jturn;
@@ -568,12 +570,6 @@ std::unordered_map<int, Tile> Map::getTiles() {
 }
 std::vector<short int> Map::getTilesindex() {
     return (tilesindex);
-}
-
-void Map::loadTiles(const int in_map_index) {
-    tilesindex = chapTiles[in_map_index]();
-    tilenames = getTilenames(tilesindex);
-    baseTiles(&tiles, tilesindex);
 }
 
 void Map::loadTiles(std::vector<short int> to_load) {
