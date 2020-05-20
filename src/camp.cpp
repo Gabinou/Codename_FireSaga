@@ -15,7 +15,7 @@ Camp::~Camp() {
 }
 
 void Camp::plusChapter() {
-
+    chapter++;
 }
 
 void Camp::setChapter(char in_chapter) {
@@ -87,6 +87,14 @@ void Camp::setChapter(char in_chapter) {
         case 21:
             break;
     }
+}
+
+void Camp::setpriorityJob(short unsigned int in_unit, char in_job) {
+    priority_job[in_unit] = in_job;
+}
+
+void Camp::setforbiddenJob(short unsigned int in_unit, char in_job) {
+    forbidden_job[in_unit] = in_job;
 }
 
 void Camp::makePartyStack() {
