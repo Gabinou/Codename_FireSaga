@@ -28,5 +28,5 @@ void test_camp() {
     test_camp.setParty(test_party1);
 
     std::vector<std::vector<short unsigned int>> temp_jobs = test_camp.getJobs();
-
+    printJobs(temp_jobs);
 }
