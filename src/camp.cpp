@@ -110,14 +110,15 @@ void Camp::makePartyStack() {
 void Camp::makeJobQueue() {
     std::queue<unsigned char> empty;
     std::swap(job_queue, empty);
-    job_queue.push(CAMPJOB::LIBRARIAN);
+    // Job priority: cook > stablehand > guard > storagemaster > clergymen > librarian > scribe > assistant
     job_queue.push(CAMPJOB::COOK);
-    job_queue.push(CAMPJOB::GUARD);
-    job_queue.push(CAMPJOB::SCRIBE);
     job_queue.push(CAMPJOB::STABLEHAND);
-    job_queue.push(CAMPJOB::ASSISTANT);
-    job_queue.push(CAMPJOB::CLERGYMAN);
+    job_queue.push(CAMPJOB::GUARD);
     job_queue.push(CAMPJOB::STORAGEMASTER);
+    job_queue.push(CAMPJOB::CLERGYMAN);
+    job_queue.push(CAMPJOB::LIBRARIAN);
+    job_queue.push(CAMPJOB::SCRIBE);
+    job_queue.push(CAMPJOB::ASSISTANT);
 }
 
 
@@ -135,22 +136,22 @@ void Camp::assignJobs() {
         unit_ind = party_stack[party_stack.size() - 1];
 
         while ((jobnum < 8) && (!jobfound)) {
-            switch (unit_ind) {
-                case UNIT::NAME::ERWIN:
-                case UNIT::NAME::KIARA:
-                case UNIT::NAME::SILOU:
-                    jobs[job_queue.front()] = unit_ind;
-                    break;
+            // switch (unit_ind) {
+            //     case UNIT::NAME::ERWIN:
+            //     case UNIT::NAME::KIARA:
+            //     case UNIT::NAME::SILOU:
+            //         jobs[job_queue.front()] = unit_ind;
+            //         break;
 
-                case UNIT::NAME::SERVIL:
-                case UNIT::NAME::PERIGNON:
-                case UNIT::NAME::POET:
-                case UNIT::NAME::RELIABLE:
-                case UNIT::NAME::COWARD:
-                case UNIT::NAME::JAIGEN1H:
-                case UNIT::NAME::HOTTIE:
-                    break;
-            }
+            //     case UNIT::NAME::SERVIL:
+            //     case UNIT::NAME::PERIGNON:
+            //     case UNIT::NAME::POET:
+            //     case UNIT::NAME::RELIABLE:
+            //     case UNIT::NAME::COWARD:
+            //     case UNIT::NAME::JAIGEN1H:
+            //     case UNIT::NAME::HOTTIE:
+            //         break;
+            // }
 
             job_queue.push(job_queue.front());
             job_queue.pop();
