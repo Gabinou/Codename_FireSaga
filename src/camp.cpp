@@ -7,8 +7,6 @@ Camp::Camp() {
         previous_job[i] = -1;
         priority_job[i] = -1;
         forbidden_job[i] = -1;
-        jobs[i] = -1;
-
     }
 }
 
@@ -128,14 +126,39 @@ void Camp::setParty(std::unordered_map<short int, Unit> in_party) {
     party = in_party;
 }
 
+bool Camp::checkJobs() {
+    bool out = false;
+
+    if (jobs.size() == max.size()) {
+        int num_filled = 0;
+
+        for (short int i = 0; i < jobs.size();) {
+            if (jobs[i].size() >= max[i]) {
+                num_filled++;
+
+            }
+        }
+
+        out = (num_filled == 8);
+    } else {
+        SDL_Log("number of jobs and max is not the same");
+
+    }
+
+    return (out);
+}
+
 void Camp::assignJobs() {
 
     short int unit_ind;
+    jobs.clear();
 
     while (party_stack.size() > 0) {
         unit_ind = party_stack[party_stack.size() - 1];
-        
-        if (jobs[job_queue.front()] >= max[job_queue.front()]) {
+
+
+
+        if (jobs[job_queue.front()].size() >= max[job_queue.front()]) {
             job_queue.push(job_queue.front());
             job_queue.pop();
             continue;
@@ -146,7 +169,8 @@ void Camp::assignJobs() {
             job_queue.pop();
             continue;
         }
-        jobs[unit_ind] = job_queue.front();
+
+        jobs[job_queue.front()].push_back(unit_ind);
         party_stack.pop_back();
         job_queue.push(job_queue.front());
         job_queue.pop();
