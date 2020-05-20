@@ -1194,14 +1194,17 @@ unsigned char unitid2army(short unsigned int in_unitid) {
 
     switch (in_unitid) {
         case UNIT::NAME::ERWIN:
-            armyid = UNIT::ARMY::ERWIN;
-            break;
-
         case UNIT::NAME::KIARA:
+        case UNIT::NAME::PERIGNON:
+        case UNIT::NAME::SEBASTIAN:
+        case UNIT::NAME::MICHAEL:
+        case UNIT::NAME::PIROU:
             armyid = UNIT::ARMY::ERWIN;
             break;
 
         case UNIT::NAME::SILOU:
+        case UNIT::NAME::CHASSE:
+        case UNIT::NAME::LAUZON:
             armyid = UNIT::ARMY::NEUTRAL;
             break;
 
@@ -1209,98 +1212,26 @@ unsigned char unitid2army(short unsigned int in_unitid) {
             armyid = UNIT::ARMY::IMPERIAL;
             break;
 
-        case UNIT::NAME::PERIGNON:
-            armyid = UNIT::ARMY::ERWIN;
-            break;
-
-        case UNIT::NAME::POET:
-            armyid = UNIT::ARMY::NEUTRAL;
-            break;
-
-        case UNIT::NAME::RELIABLE:
-            armyid = UNIT::ARMY::ERWIN;
-            break;
-
-        case UNIT::NAME::COWARD:
-            armyid = UNIT::ARMY::ERWIN;
-            break;
-
-        case UNIT::NAME::JAIGEN1H:
-            armyid = UNIT::ARMY::NEUTRAL;
-            break;
-
-        case UNIT::NAME::HOTTIE:
-            armyid = UNIT::ARMY::ERWIN;
-            break;
-
         case UNIT::NAME::ZINEDAN:
-            armyid = UNIT::ARMY::BANDITS;
-            break;
-
         case UNIT::NAME::ZIDINE:
-            armyid = UNIT::ARMY::BANDITS;
-            break;
-
         case UNIT::NAME::BANDIT:
             armyid = UNIT::ARMY::BANDITS;
             break;
 
         case UNIT::NAME::DUELIST:
-            armyid = UNIT::ARMY::ENEMY;
-            break;
-
-        case UNIT::NAME::PICKPOCKET:
-            armyid = UNIT::ARMY::ENEMY;
-            break;
-
         case UNIT::NAME::THIEF:
-            armyid = UNIT::ARMY::ENEMY;
-            break;
-
+        case UNIT::NAME::PICKPOCKET:
         case UNIT::NAME::ASSASSIN:
-            armyid = UNIT::ARMY::ENEMY;
-            break;
-
         case UNIT::NAME::ARCHER:
-            armyid = UNIT::ARMY::ENEMY;
-            break;
-
         case UNIT::NAME::MARKSMAN:
-            armyid = UNIT::ARMY::ENEMY;
-            break;
-
         case UNIT::NAME::MERCENARY:
-            armyid = UNIT::ARMY::ENEMY;
-            break;
-
         case UNIT::NAME::HERO:
-            armyid = UNIT::ARMY::ENEMY;
-            break;
-
         case UNIT::NAME::CORSAIR:
-            armyid = UNIT::ARMY::ENEMY;
-            break;
-
         case UNIT::NAME::VIKING:
-            armyid = UNIT::ARMY::ENEMY;
-            break;
-
         case UNIT::NAME::RAVAGER:
-            armyid = UNIT::ARMY::ENEMY;
-            break;
-
         case UNIT::NAME::CAVALIER:
-            armyid = UNIT::ARMY::ENEMY;
-            break;
-
         case UNIT::NAME::PALADIN:
-            armyid = UNIT::ARMY::ENEMY;
-            break;
-
         case UNIT::NAME::FENCER:
-            armyid = UNIT::ARMY::ENEMY;
-            break;
-
         case UNIT::NAME::MOUSQUETAIRE:
             armyid = UNIT::ARMY::ENEMY;
             break;
