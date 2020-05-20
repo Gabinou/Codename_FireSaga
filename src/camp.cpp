@@ -100,15 +100,15 @@ void Camp::setforbiddenJob(short unsigned int in_unit, char in_job) {
 void Camp::makePartyStack() {
     party_stack.clear();
 
-    for (auto member : party) {
-        if ((member.first == member.second.getid()) && (member.first != UNIT::NAME::ERWIN)) {
-            if (priority_job[member.first] > -1) {
-                jobs[priority_job[member.first]].push_back(member.first);
+    for (short int i = 0; i < party.size(); i++) {
+        if (party[i] != UNIT::NAME::ERWIN) {
+            if (priority_job[party[i]] > -1) {
+                jobs[priority_job[party[i]]].push_back(party[i]);
             } else {
                 if (getURN() > 49) {
-                    party_stack.push_back(member.first);
+                    party_stack.push_back(party[i]);
                 } else {
-                    party_stack.insert(party_stack.begin(), member.first);
+                    party_stack.insert(party_stack.begin(), party[i]);
                 }
             }
         } else {
