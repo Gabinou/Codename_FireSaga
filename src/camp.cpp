@@ -166,6 +166,9 @@ bool Camp::checkJobs() {
 }
 
 void Camp::assignJobs() {
+    makeJobNumbers();
+    makeJobQueue();
+    makePartyStack();
 
     short int unit_ind;
     jobs.clear();

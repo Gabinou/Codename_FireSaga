@@ -46,6 +46,8 @@ public:
     bool checkJobs();
     void clearJobs();
 
+
+
     void setpriorityJob(short unsigned int in_unit, char in_job);
     void setforbiddenJob(short unsigned int in_unit, char in_job);
 

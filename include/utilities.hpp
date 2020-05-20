@@ -37,6 +37,7 @@ extern void makeunitNames();
 extern std::vector<std::string> itemNames;
 extern void makeitemNames();
 extern std::vector<std::string> statNames;
+extern std::vector<std::string> jobNames;
 extern void makestatNames();
 extern std::vector<std::string> sexNames;
 extern void makesexNames();
