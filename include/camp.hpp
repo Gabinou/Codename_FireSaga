@@ -9,18 +9,16 @@
 #include <queue>
 
 class Camp {
-
 private:
-    std::unordered_map<short int, Unit> party;
-    std::unordered_map<short unsigned int, char> previous_job;
-    std::unordered_map<short unsigned int, char> priority_job;
-    std::unordered_map<short unsigned int, char> forbidden_job;
+    std::vector<short unsigned int> party;
+    std::vector<short unsigned int> party_stack;
+    std::vector<char> previous_job;
+    std::vector<char> priority_job;
+    std::vector<char> forbidden_job;
+    std::vector<std::vector<short unsigned int>> jobs;
     std::queue<unsigned char> job_queue;
 
-    std::vector<short unsigned int> party_stack;
-    // Job priority: cook > stablehand > guard > clergymen > scribe > assistant
     // librarian, cook, guard, scribe, stablehand, asssitant, clergyman, storagemaster.
-    std::vector<std::vector<short unsigned int>> jobs;
     // max_librarians should be floor(0.1 x Max army)
     // guards is twice that.
     std::vector<float> fracs = {0.1, 0.1, 0.2, 0, 0.1, 0, 0.15, 0.1};
@@ -37,13 +35,22 @@ public:
     Camp();
     ~Camp();
 
+    void plusChapter();
     void setChapter(char in_chapter);
-    void setParty(std::unordered_map<short int, Unit> in_party);
+    void setParty(std::vector<short unsigned int> in_party);
     void makePartyStack();
 
     void makeJobQueue();
     void makeJobNumbers();
     void assignJobs();
+    bool checkJobs();
+    void clearJobs();
+
+    void setpriorityJob(short unsigned int in_unit, char in_job);
+    void setforbiddenJob(short unsigned int in_unit, char in_job);
+
+    std::vector<std::vector<short unsigned int>> getJobs();
+    std::queue<unsigned char> getJobqueue();
 
     // using XML_IO::writeXML;
     // using XML_IO::readXML;
