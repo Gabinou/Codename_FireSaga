@@ -95,7 +95,7 @@ void Camp::makePartyStack() {
     for (auto member : party) {
         if ((member.first == member.second.getid()) && (member.first != UNIT::NAME::ERWIN)) {
             if (priority_job[member.first] > -1) {
-                jobs[priority_job[member.first]] = member.first;
+                jobs[priority_job[member.first]].push_back(member.first);
             } else {
                 if (getURN() > 49) {
                     party_stack.push_back(member.first);
@@ -134,12 +134,18 @@ void Camp::assignJobs() {
 
     while (party_stack.size() > 0) {
         unit_ind = party_stack[party_stack.size() - 1];
+        
+        if (jobs[job_queue.front()] >= max[job_queue.front()]) {
+            job_queue.push(job_queue.front());
+            job_queue.pop();
+            continue;
+        }
 
         if (forbidden_job[unit_ind] == job_queue.front()) {
             job_queue.push(job_queue.front());
             job_queue.pop();
+            continue;
         }
-
         jobs[unit_ind] = job_queue.front();
         party_stack.pop_back();
         job_queue.push(job_queue.front());
