@@ -7,7 +7,7 @@ void test_camp() {
     std::vector<short unsigned int> test_party1 = {UNIT::NAME::ERWIN,
                                                    UNIT::NAME::KIARA,
                                                   };
-    std::vector<short unsigned int> test_party1 = {UNIT::NAME::ERWIN,
+    std::vector<short unsigned int> test_party2 = {UNIT::NAME::ERWIN,
                                                    UNIT::NAME::KIARA, UNIT::NAME::SILOU, UNIT::NAME::PIROU, UNIT::NAME::SERVIL,
                                                    UNIT::NAME::PERIGNON, UNIT::NAME::LAUZON, UNIT::NAME::NICOLE, UNIT::NAME::OTTO,
                                                    UNIT::NAME::SEBASTIAN, UNIT::NAME::MICHAEL, UNIT::NAME::CHASSE, UNIT::NAME::PIERRE,

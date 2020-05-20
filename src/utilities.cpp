@@ -1199,12 +1199,22 @@ unsigned char unitid2army(short unsigned int in_unitid) {
         case UNIT::NAME::SEBASTIAN:
         case UNIT::NAME::MICHAEL:
         case UNIT::NAME::PIROU:
+        case UNIT::NAME::SIMON:
+        case UNIT::NAME::MELLY:
+        case UNIT::NAME::TEKAK:
             armyid = UNIT::ARMY::ERWIN;
             break;
 
         case UNIT::NAME::SILOU:
         case UNIT::NAME::CHASSE:
         case UNIT::NAME::LAUZON:
+        case UNIT::NAME::OTTO:
+        case UNIT::NAME::NICOLE:
+        case UNIT::NAME::PIERRE:
+        case UNIT::NAME::RAYAN:
+        case UNIT::NAME::TEHARON:
+        case UNIT::NAME::EUGENE:
+        case UNIT::NAME::LUCRECE:
             armyid = UNIT::ARMY::NEUTRAL;
             break;
 

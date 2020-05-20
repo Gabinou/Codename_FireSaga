@@ -37,9 +37,9 @@ void baseUnits(std::unordered_map<int, Unit> * in_units, std::vector<short int> 
                 in_units->insert({index, temp_unit});
                 break;
 
-            case UNIT::NAME::RELIABLE:
+            case UNIT::NAME::SEBASTIAN:
                 temp = {18,  6,  2,  7,  7,   7,  4,  5,  6, 7};
-                temp_unit = Unit(UNIT::NAME::RELIABLE, UNIT::CLASS::CAVALIER, temp, UNIT::SEX::M);
+                temp_unit = Unit(UNIT::NAME::SEBASTIAN, UNIT::CLASS::CAVALIER, temp, UNIT::SEX::M);
                 temp = {48, 14, 25, 32, 34,  28, 19, 40, 15};
                 temp_unit.setCaps(temp);
                 temp = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
@@ -52,9 +52,9 @@ void baseUnits(std::unordered_map<int, Unit> * in_units, std::vector<short int> 
                 in_units->insert({index, temp_unit});
                 break;
 
-            case UNIT::NAME::COWARD:
+            case UNIT::NAME::MICHAEL:
                 temp = {19,  6,  2,  7,  7,   7,  4,  5,  6,  7};
-                temp_unit = Unit(UNIT::NAME::COWARD, UNIT::CLASS::CAVALIER, temp, UNIT::SEX::M);
+                temp_unit = Unit(UNIT::NAME::MICHAEL, UNIT::CLASS::CAVALIER, temp, UNIT::SEX::M);
                 temp = {48, 14, 25, 32, 34,  28, 19, 40, 15};
                 temp_unit.setCaps(temp);
                 temp = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
@@ -65,9 +65,9 @@ void baseUnits(std::unordered_map<int, Unit> * in_units, std::vector<short int> 
                 in_units->insert({index, temp_unit});
                 break;
 
-            case UNIT::NAME::JAIGEN1H:
+            case UNIT::NAME::CHASSE:
                 temp = {20,  6,  2,  7,  7,   7,  4,  5,  6,  6};
-                temp_unit = Unit(UNIT::NAME::JAIGEN1H, UNIT::CLASS::MOUSQUETAIRE, temp, UNIT::SEX::M);
+                temp_unit = Unit(UNIT::NAME::CHASSE, UNIT::CLASS::MOUSQUETAIRE, temp, UNIT::SEX::M);
                 temp = {48, 14, 25, 32, 34,  28, 19, 40, 15};
                 temp_unit.setCaps(temp);
                 temp = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
@@ -91,9 +91,9 @@ void baseUnits(std::unordered_map<int, Unit> * in_units, std::vector<short int> 
                 in_units->insert({index, temp_unit});
                 break;
 
-            case UNIT::NAME::HOTTIE:
+            case UNIT::NAME::PIROU:
                 temp = {16,  6,  2,  7,  7,   7,  4,  5,  6,  6};
-                temp_unit = Unit(UNIT::NAME::HOTTIE, UNIT::CLASS::PICKPOCKET, temp, UNIT::SEX::M);
+                temp_unit = Unit(UNIT::NAME::PIROU, UNIT::CLASS::PICKPOCKET, temp, UNIT::SEX::M);
                 temp = {48, 14, 25, 32, 34,  28, 19, 40, 15};
                 temp_unit.setCaps(temp);
                 temp = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
@@ -130,9 +130,9 @@ void baseUnits(std::unordered_map<int, Unit> * in_units, std::vector<short int> 
                 in_units->insert({index, temp_unit});
                 break;
 
-            case UNIT::NAME::POET:
+            case UNIT::NAME::LAUZON:
                 temp = {15,  4,  5,  7,  6,   8,  4,  6,  5, 5};
-                temp_unit = Unit(UNIT::NAME::POET, UNIT::CLASS::MAGE, temp, UNIT::SEX::M);
+                temp_unit = Unit(UNIT::NAME::LAUZON, UNIT::CLASS::MAGE, temp, UNIT::SEX::M);
                 temp = {48, 14, 25, 32, 34,  28, 19, 40, 15};
                 temp_unit.setCaps(temp);
                 temp = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
