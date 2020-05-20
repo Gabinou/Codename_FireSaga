@@ -156,8 +156,6 @@ void Camp::assignJobs() {
     while (party_stack.size() > 0) {
         unit_ind = party_stack[party_stack.size() - 1];
 
-
-
         if (jobs[job_queue.front()].size() >= max[job_queue.front()]) {
             job_queue.push(job_queue.front());
             job_queue.pop();
@@ -171,6 +169,11 @@ void Camp::assignJobs() {
         }
 
         jobs[job_queue.front()].push_back(unit_ind);
+
+        if (checkJobs()) {
+            break;
+        }
+
         party_stack.pop_back();
         job_queue.push(job_queue.front());
         job_queue.pop();
