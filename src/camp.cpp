@@ -14,6 +14,10 @@ Camp::~Camp() {
 
 }
 
+void Camp::plusChapter() {
+
+}
+
 void Camp::setChapter(char in_chapter) {
     chapter = in_chapter;
 
@@ -83,9 +87,7 @@ void Camp::setChapter(char in_chapter) {
         case 21:
             break;
     }
-
 }
-
 
 void Camp::makePartyStack() {
     party_stack.clear();
@@ -126,13 +128,21 @@ void Camp::setParty(std::unordered_map<short int, Unit> in_party) {
     party = in_party;
 }
 
+void Camp::clearJobs() {
+    for (short int job = 0; job < jobs.size(); job++) {
+        for (short int worker = 0; worker < jobs[job].size(); worker++) {
+            previous_job[jobs[job][worker]] = job;
+        }
+    }
+}
+
 bool Camp::checkJobs() {
     bool out = false;
 
     if (jobs.size() == max.size()) {
         int num_filled = 0;
 
-        for (short int i = 0; i < jobs.size();) {
+        for (short int i = 0; i < jobs.size(); i++) {
             if (jobs[i].size() >= max[i]) {
                 num_filled++;
 
