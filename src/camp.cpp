@@ -147,11 +147,11 @@ void Camp::clearJobs() {
 bool Camp::checkJobs() {
     bool out = false;
 
-    if (jobs.size() == max.size()) {
+    if (jobs.size() == optimal.size()) {
         int num_filled = 0;
 
         for (short int i = 0; i < jobs.size(); i++) {
-            if (jobs[i].size() >= max[i]) {
+            if (jobs[i].size() >= optimal[i]) {
                 num_filled++;
 
             }
@@ -159,8 +159,7 @@ bool Camp::checkJobs() {
 
         out = (num_filled == 8);
     } else {
-        SDL_Log("number of jobs and max is not the same");
-
+        SDL_Log("number of jobs and optimal is not the same");
     }
 
     return (out);
