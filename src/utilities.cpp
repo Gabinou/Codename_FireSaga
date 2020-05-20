@@ -940,6 +940,7 @@ void makeunitNames() {
     unitNames.push_back("");
     unitNames.push_back("Zinedan");
     unitNames.push_back("Zidine");
+    unitNames.push_back("Sawisk");
     unitNames.push_back("Bandit");
     unitNames.push_back("Duelist");
     unitNames.push_back("Pickpocket");
