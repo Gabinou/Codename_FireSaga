@@ -7,6 +7,8 @@ Camp::Camp() {
         previous_job[i] = -1;
         priority_job[i] = -1;
         forbidden_job[i] = -1;
+        jobs[i] = -1;
+
     }
 }
 
@@ -93,7 +95,7 @@ void Camp::makePartyStack() {
     for (auto member : party) {
         if ((member.first == member.second.getid()) && (member.first != UNIT::NAME::ERWIN)) {
             if (priority_job[member.first] > -1) {
-                jobs[priority_job[member.first]].push_back(member.first);
+                jobs[priority_job[member.first]] = member.first;
             } else {
                 if (getURN() > 49) {
                     party_stack.push_back(member.first);
@@ -128,38 +130,20 @@ void Camp::setParty(std::unordered_map<short int, Unit> in_party) {
 
 void Camp::assignJobs() {
 
-    int jobnum = 0;
-    bool jobfound = false;
     short int unit_ind;
 
     while (party_stack.size() > 0) {
         unit_ind = party_stack[party_stack.size() - 1];
 
-        while ((jobnum < 8) && (!jobfound)) {
-            // switch (unit_ind) {
-            //     case UNIT::NAME::ERWIN:
-            //     case UNIT::NAME::KIARA:
-            //     case UNIT::NAME::SILOU:
-            //         jobs[job_queue.front()] = unit_ind;
-            //         break;
-
-            //     case UNIT::NAME::SERVIL:
-            //     case UNIT::NAME::PERIGNON:
-            //     case UNIT::NAME::POET:
-            //     case UNIT::NAME::RELIABLE:
-            //     case UNIT::NAME::COWARD:
-            //     case UNIT::NAME::JAIGEN1H:
-            //     case UNIT::NAME::HOTTIE:
-            //         break;
-            // }
-
+        if (forbidden_job[unit_ind] == job_queue.front()) {
             job_queue.push(job_queue.front());
             job_queue.pop();
-            jobnum++;
         }
 
-        jobnum = 0;
+        jobs[unit_ind] = job_queue.front();
         party_stack.pop_back();
+        job_queue.push(job_queue.front());
+        job_queue.pop();
     }
 }
 
