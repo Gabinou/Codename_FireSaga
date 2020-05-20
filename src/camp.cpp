@@ -117,6 +117,11 @@ void Camp::makePartyStack() {
     }
 }
 
+std::vector<std::vector<short unsigned int>> Camp::getJobs() {
+    return (jobs);
+}
+
+
 void Camp::makeJobQueue() {
     std::queue<unsigned char> empty;
     std::swap(job_queue, empty);

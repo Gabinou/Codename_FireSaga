@@ -2,7 +2,7 @@
 #include "camp.hpp"
 
 void printJobs(std::vector<std::vector<short unsigned int>> in_jobs) {
-    for (int job = 0; job < in_jobs.size(); jop++) {
+    for (int job = 0; job < in_jobs.size(); job++) {
         SDL_Log("Job: %s", jobNames[job].c_str());
 
         for (int worker = 0; worker < in_jobs[job].size(); worker++) {
@@ -28,7 +28,5 @@ void test_camp() {
     test_camp.setParty(test_party1);
 
     std::vector<std::vector<short unsigned int>> temp_jobs = test_camp.getJobs();
-
-    SDL_Log
 
 }

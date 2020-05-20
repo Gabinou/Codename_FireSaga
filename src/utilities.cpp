@@ -916,7 +916,7 @@ std::vector<std::string> getTilenames(std::vector<short int> in_tilesindex) {
 std::vector<std::string> jobNames {"Librarian",
     "Cook", "Guard", "Scribe", "Stablehand",
     "Assistant", "Clergyman", "Storage master"
-}
+};
 
 std::vector<std::string> unitNames;
 void makeunitNames() {
