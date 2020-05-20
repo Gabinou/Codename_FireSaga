@@ -132,7 +132,7 @@ void Camp::makeJobQueue() {
 }
 
 
-void Camp::setParty(std::unordered_map<short int, Unit> in_party) {
+void Camp::setParty(std::vector<short unsigned int> in_party) {
     party = in_party;
 }
 
@@ -173,7 +173,7 @@ void Camp::assignJobs() {
     while (party_stack.size() > 0) {
         unit_ind = party_stack[party_stack.size() - 1];
 
-        if (jobs[job_queue.front()].size() >= max[job_queue.front()]) {
+        if (jobs[job_queue.front()].size() >= optimal[job_queue.front()]) {
             job_queue.push(job_queue.front());
             job_queue.pop();
             continue;
