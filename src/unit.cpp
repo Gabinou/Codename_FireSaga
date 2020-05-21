@@ -35,7 +35,9 @@ void Unit::copyUnit(const Unit & obj) {
     setStats(obj.current_stats);
     setGrowths(obj.growths);
     setCaps(obj.caps_stats);
+    SDL_Log("Setclass ind");
     setClassind(obj.class_index);
+    SDL_Log("was set ");
     setEquipment(obj.equipment);
     setSkills(obj.skills);
     setArmy(obj.army);
@@ -139,7 +141,7 @@ char Unit::getClassind() {
 }
 
 void Unit::setClassind(char in_class_index) {
-    if (in_class_index >= UNIT::CLASS::END) {
+    if ((in_class_index > 0) && (in_class_index < UNIT::CLASS::END)) {
         class_index = in_class_index;
         mvt_type = mvtTypes[class_index];
         class_name = classNames[class_index];
