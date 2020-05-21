@@ -571,13 +571,6 @@ void Game::loadMapArrivals() {
 
         for (int i = 0; i < map_arrivals.size(); i++) {
             if (map_arrivals[i].turn == currentturn) {
-
-                // if (party.find(map_arrivals[i].id) == party.end()) {
-                // SDL_Log("unloaded party loading %d", map_arrivals[i].id);
-                // loadUnits(std::vector<short int> {map_arrivals[i].id});
-                // SDL_Log("Loaded: %d %s", map_arrivals[i].id, party[map_arrivals[i].id].getName().c_str());
-                // }
-
                 Uent = entities.create();
                 Uent.assign<Position>();
                 Uent.component<Position>()->setonTilemap(true);
@@ -588,8 +581,6 @@ void Game::loadMapArrivals() {
                 asset_name = "..//assets//" + unitNames[map_arrivals[i].id] + ".png";
                 Uent.assign<Sprite>(asset_name.c_str());
                 Uent.assign<Unit>();
-
-
                 Uent.component<Unit>()->setWeapons(&weapons);
                 unit_name = "units//" + unitNames[map_arrivals[i].id] + ".json";
                 Uent.component<Unit>()->readJSON(unit_name.c_str());
