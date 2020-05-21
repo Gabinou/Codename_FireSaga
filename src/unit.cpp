@@ -481,7 +481,8 @@ void Unit::checkWeapon(short int in_id) {
         SDL_Log("Loading weapon %d %s", in_id, filename.c_str());
         temp_wpn.readJSON(filename.c_str());
         // weapons->insert(temp_wpn, in_id);
-        // weapons->insert(in_id, temp_wpn);
+        // weapons->at(in_id)., temp_wpn);
+        weapons->at(in_id).readJSON(filename.c_str());
     }
 }
 
