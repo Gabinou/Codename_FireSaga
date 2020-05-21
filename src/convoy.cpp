@@ -782,7 +782,7 @@ void Convoy::readJSON(cJSON * in_jconvoy) {
 
         while (i < ITEM::TYPE::END) {
             names = wpnTypes(i);
-
+            SDL_Log("Getting JSON element: %d %s", i, names[0].c_str());
             jtype = cJSON_GetObjectItem(in_jconvoy, names[0].c_str());
 
             if (jtype ==  NULL) {
