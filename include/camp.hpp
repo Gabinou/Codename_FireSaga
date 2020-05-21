@@ -6,9 +6,10 @@
 #include "unit.hpp"
 #include "game.hpp"
 #include <math.h>
+#include "filesystem.hpp"
 #include <queue>
 
-class Camp {
+class Camp: public JSON_IO {
 private:
     std::vector<short unsigned int> party;
     std::vector<short unsigned int> party_stack;
@@ -25,6 +26,7 @@ private:
     std::vector<unsigned char> max = {4, 4, 8, 1, 4, 1, 4, 4};
     // 30 jobs.
     // + 1 -> Erwin is the leader.
+    // + 2/3 -> War council members? Pérignon/Chassé/ Pierre et Simon Laplace.?
     // + 1 -> armory merchant traveling with you.
     // + 1 -> item shop merchant traveling with you.
     std::vector<unsigned char> optimal;
@@ -46,18 +48,16 @@ public:
     bool checkJobs();
     void clearJobs();
 
-
-
     void setpriorityJob(short unsigned int in_unit, char in_job);
     void setforbiddenJob(short unsigned int in_unit, char in_job);
 
     std::vector<std::vector<short unsigned int>> getJobs();
     std::queue<unsigned char> getJobqueue();
 
-    // using XML_IO::writeXML;
-    // using XML_IO::readXML;
-    // void writeXML(tinyxml2::XMLDocument * in_doc, tinyxml2::XMLElement * in_pTile);
-    // void readXML(tinyxml2::XMLElement * in_pTile);
+    using JSON_IO::writeJSON;
+    using JSON_IO::readJSON;
+    void readJSON(cJSON * in_json);
+    void writeJSON(cJSON * in_json);
 };
 
 #endif /* CAMP_HPP */

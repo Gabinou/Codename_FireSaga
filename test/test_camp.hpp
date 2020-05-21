@@ -24,7 +24,7 @@ void test_camp() {
                                                    UNIT::NAME::TEKAK, UNIT::NAME::LUCRECE,
                                                   };
 
-    // Camp test_camp; // CRASHES.
+    Camp test_camp;
     // test_camp.setParty(test_party1);
 
     // std::vector<std::vector<short unsigned int>> temp_jobs = test_camp.getJobs();

@@ -4,9 +4,9 @@
 
 Camp::Camp() {
     for (int i = 0; i < UNIT::NAME::PC_END; i++) {
-        previous_job[i] = -1;
-        priority_job[i] = -1;
-        forbidden_job[i] = -1;
+        previous_job.push_back(-1);
+        priority_job.push_back(-1);
+        forbidden_job.push_back(-1);
     }
 }
 
@@ -16,6 +16,20 @@ Camp::~Camp() {
 
 void Camp::plusChapter() {
     chapter++;
+}
+
+void Camp::writeJSON(cJSON * in_jcamp) {
+    if (in_jcamp != NULL) {
+        cJSON * jid = cJSON_CreateNumber(id);
+
+        cJSON_AddItemToObject(in_junit, "level", jlevel);
+    }
+}
+
+void Camp::readJSON(cJSON * in_jcamp) {
+    cJSON * jid = cJSON_GetObjectItemCaseSensitive(in_junit, "id");
+
+    id = cJSON_GetNumberValue(jid); //returns 0 if junit is NULL
 }
 
 void Camp::setChapter(char in_chapter) {
