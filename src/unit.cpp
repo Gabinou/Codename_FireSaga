@@ -28,17 +28,29 @@ void Unit::init() {
 }
 
 void Unit::copyUnit(const Unit & obj) {
+    SDL_Log("Copying Unit");
     setSex(obj.sex);
+    SDL_Log("set sex");
     setid(obj.id);
+    SDL_Log("set id");
     setBases(obj.base_stats);
+    SDL_Log("set bae");
     setStats(obj.current_stats);
+    SDL_Log("set stats");
     setGrowths(obj.growths);
+    SDL_Log("set gro");
     setCaps(obj.caps_stats);
+    SDL_Log("set caps %d ", obj.class_index);
     setClassind(obj.class_index);
+    SDL_Log("set classind");
     setEquipment(obj.equipment);
+    SDL_Log("set equi");
     setSkills(obj.skills);
+    SDL_Log("set skill");
     setArmy(obj.army);
+    SDL_Log("set army");
     setSupports(obj.supports);
+    SDL_Log("set supports");
     exp = obj.exp;
     base_exp = obj.base_exp;
     init();
@@ -138,10 +150,15 @@ char Unit::getClassind() {
 }
 
 void Unit::setClassind(char in_class_index) {
+    SDL_Log("Setting class index");
     class_index = in_class_index;
     mvt_type = mvtTypes[class_index];
+    SDL_Log("mvtype");
+    SDL_Log("%d", class_index);
     class_name = classNames[class_index];
+    SDL_Log("class_name");
     equippable = equippableCodes[class_index];
+    SDL_Log("equippable");
 }
 
 bool Unit::isDanger() {

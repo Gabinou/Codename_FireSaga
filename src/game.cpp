@@ -530,7 +530,7 @@ void Game::unloadCursor() {
 
 
 void Game::putPConMap(std::vector<short int> in_units, std::vector<std::vector<int>> in_pos_list) {
-    SDL_Log("Loading party\n");
+    SDL_Log("Loading party to map\n");
 
     if (mapx) {
         std::string asset_name;
@@ -539,10 +539,14 @@ void Game::putPConMap(std::vector<short int> in_units, std::vector<std::vector<i
 
         for (int i = 0; i < in_units.size(); i++) {
             asset_name = "..//assets//" + party[in_units[i]].getName() + ".png";
+            SDL_Log("Loading unit %s", asset_name.c_str());
             Uent = entities.create();
             Uent.assign<Unit>();
+            SDL_Log("Until here");
             Uent.component<Unit>()->setWeapons(&weapons);
+            SDL_Log("set weapons");
             Uent.component<Unit>()->copyUnit(party[in_units[i]]);
+            SDL_Log("copy unit");
             Uent.assign<Position>();
             Uent.component<Position>()->setonTilemap(true);
             bounds = mapx->getBounds();

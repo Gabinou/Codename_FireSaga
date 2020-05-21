@@ -36,9 +36,9 @@ private:
     unsigned short int id;
     unsigned short int base_exp = 0;
     unsigned short int entity;
-    unsigned char class_index;
-    unsigned char mvt_type;
-    unsigned char army = 1;
+    char class_index;
+    char mvt_type;
+    char army = 1;
 
     unsigned char current_hp = 0;
     char current_speed = 0;
