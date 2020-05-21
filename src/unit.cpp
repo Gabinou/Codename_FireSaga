@@ -32,12 +32,12 @@ void Unit::copyUnit(const Unit & obj) {
     setSex(obj.sex);
     setid(obj.id);
     setBases(obj.base_stats);
+    SDL_Log("move: %d", obj.current_stats.move);
     setStats(obj.current_stats);
+    SDL_Log("move: %d", current_stats.move);
     setGrowths(obj.growths);
     setCaps(obj.caps_stats);
-    SDL_Log("Setclass ind");
     setClassind(obj.class_index);
-    SDL_Log("was set ");
     setEquipment(obj.equipment);
     setSkills(obj.skills);
     setArmy(obj.army);
@@ -483,6 +483,7 @@ void Unit::setBases(const Unit_stats in_stats) {
     current_stats = in_stats;
     current_hp = base_stats.hp;
 }
+
 Unit_stats Unit::getBases() {
     return (base_stats);
 }

@@ -249,7 +249,7 @@ void UnitSystemx::receive(const unitMove & move) {
     Point start;
     Point offset;
     short unsigned int nooffset[2];
-    short unsigned int unit_move;
+    short int unit_move;
     short unsigned int current_unit_id;
     unsigned char * range;
 
@@ -269,8 +269,9 @@ void UnitSystemx::receive(const unitMove & move) {
         SDL_Log("Could not get unit component");
     }
 
+    SDL_Log("unitname: %s", unit->getName().c_str());
     SDL_Log("nooffset: %d %d", nooffset[0], nooffset[1]);
-    SDL_Log("unitmove: %d", unit_move);
+    SDL_Log("unitmove: %d %d", unit_move, unit->getStats().move);
 
     costmapp = mapx->makeMvtCostmap(unit);
 
