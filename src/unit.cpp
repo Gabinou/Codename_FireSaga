@@ -890,7 +890,6 @@ void Unit::readJSON(cJSON * in_junit) {
     cJSON * jbase_exp = cJSON_GetObjectItemCaseSensitive(in_junit, "BaseExp");
     cJSON * jexp = cJSON_GetObjectItemCaseSensitive(in_junit, "Exp");
     cJSON * jcurrent_hp = cJSON_GetObjectItemCaseSensitive(in_junit, "CurrentHP");
-    cJSON * jclass = cJSON_GetObjectItemCaseSensitive(in_junit, "Class");
     cJSON * jclass_index = cJSON_GetObjectItemCaseSensitive(in_junit, "Class Index");
     cJSON * jcurrent_stats = cJSON_GetObjectItemCaseSensitive(in_junit, "Stats");
     cJSON * jcaps_stats = cJSON_GetObjectItemCaseSensitive(in_junit, "Caps");
@@ -904,8 +903,7 @@ void Unit::readJSON(cJSON * in_junit) {
     base_exp = cJSON_GetNumberValue(jbase_exp);
     exp = cJSON_GetNumberValue(jexp);
     current_hp = cJSON_GetNumberValue(jcurrent_hp);
-    class_name = cJSON_GetStringValue(jclass);
-    class_index = cJSON_GetNumberValue(jclass_index);
+    setClassind(cJSON_GetNumberValue(jclass_index));
     readJSON_stats(jcurrent_stats, &current_stats);
     readJSON_stats(jcaps_stats, &caps_stats);
     readJSON_stats(jgrowths, &growths);
@@ -943,6 +941,7 @@ void Unit::writeJSON(cJSON * in_junit) {
         cJSON * jsex = cJSON_CreateBool(sex);
         cJSON * jname = cJSON_CreateString(name.c_str());
         cJSON * jclass = cJSON_CreateString(class_name.c_str());
+        cJSON * jclass_index = cJSON_CreateNumber(class_index);
         cJSON * jcurrent_stats = cJSON_CreateObject();
         writeJSON_stats(jcurrent_stats, &current_stats);
         cJSON * jcaps_stats = cJSON_CreateObject();
@@ -963,6 +962,7 @@ void Unit::writeJSON(cJSON * in_junit) {
         cJSON_AddItemToObject(in_junit, "Exp", jexp);
         cJSON_AddItemToObject(in_junit, "CurrentHP", jcurrent_hp);
         cJSON_AddItemToObject(in_junit, "Class", jclass);
+        cJSON_AddItemToObject(in_junit, "Class Index", jclass_index);
         cJSON_AddItemToObject(in_junit, "Stats", jcurrent_stats);
         cJSON_AddItemToObject(in_junit, "Caps", jcaps_stats);
         cJSON_AddItemToObject(in_junit, "Growths", jgrowths);
