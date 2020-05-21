@@ -81,8 +81,6 @@ public:
     Point pixel2tile(Point in_point);
     Point pixel2tile(short int pixel_x, short int pixel_y);
 
-    void loadTilemap(const std::string filename);
-    // void loadTilemap(const short unsigned int in_map_index);
     void postTilemap();
     std::vector<std::vector<short int>> getTilemap();
     void setTilemap(const std::vector<std::vector<short int>> in_tilemap);

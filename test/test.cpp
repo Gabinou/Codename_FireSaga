@@ -36,12 +36,12 @@ int main(int argc, char * argv[]) {
     SDL_Log("Running tests\n");
     printf("Running tests\n");
     lrun("Camp ", test_camp);
-    lrun("Convoy ", test_convoy); //CRASHES
+    lrun("Convoy ", test_convoy);
     lrun("Filesystem ", test_filesystem);
     // lrun("Game ", test_game);
     lrun("linalg", test_linalg);
     lrun("Item", test_item);
-    // lrun("Map ", test_map); //CRASHES.
+    lrun("Map ", test_map); //CRASHES.
     lrun("Pathfinding ", test_pathfinding);
     lrun("Position ", test_position);
     lrun("Probability ", test_probability);

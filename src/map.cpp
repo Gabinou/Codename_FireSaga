@@ -733,12 +733,6 @@ short int * Map::getOffset() {
     return (offset);
 }
 
-
-// void Map::loadTilemap(const short unsigned int in_map_index) {
-//     // tilemap = chapTilemaps[in_map_index]();
-//     postTilemap();
-// }
-
 void Map::postTilemap() {
     loadTiletextures();
     bounds[0] = offset[0];
