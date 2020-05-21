@@ -11,7 +11,7 @@ Unit::Unit() {
     equipsL(1);
 }
 
-Unit::Unit(const unsigned short int in_id, const unsigned char in_class_index,  const Unit_stats in_bases, const bool in_sex) : Unit() {
+Unit::Unit(const short int in_id, const char in_class_index,  const Unit_stats in_bases, const bool in_sex) : Unit() {
     setBases(in_bases);
     setStats(in_bases);
     setid(in_id);
@@ -44,13 +44,13 @@ void Unit::setSex(const bool in_sex) {
     sex_name = sexNames[sex];
 }
 
-void Unit::setid(const unsigned short int in_id) {
+void Unit::setid(const short int in_id) {
     id = in_id;
     name = unitNames[in_id];
     // setArmy(unitid2army(id));
 }
 
-unsigned short int Unit::getid() {
+short int Unit::getid() {
     return (id);
 }
 
@@ -68,7 +68,7 @@ void Unit::setSkills(unsigned long long int in_skills) {
 }
 
 
-void Unit::removeEquipment(unsigned char in_index) {
+void Unit::removeEquipment(char in_index) {
     Inventory_item empty;
     equipment[in_index] = empty;
 }
@@ -116,19 +116,19 @@ void Unit::setEquipped(Equipped in_equipped) {
     equipped = in_equipped;
 }
 
-short unsigned int Unit::getEquippable() {
+short int Unit::getEquippable() {
     return (equippable);
 }
 
-unsigned char Unit::getMvttype() {
+char Unit::getMvttype() {
     return (mvt_type);
 }
 
-unsigned char Unit::getClassind() {
+char Unit::getClassind() {
     return (class_index);
 }
 
-void Unit::setClassind(unsigned char in_class_index) {
+void Unit::setClassind(char in_class_index) {
     class_index = in_class_index;
     mvt_type = mvtTypes[class_index];
     class_name = classNames[class_index];
@@ -175,13 +175,13 @@ void Unit::setSupports(std::vector<short int> in_supports) {
     }
 }
 
-void Unit::equipsL(const unsigned char index) {
+void Unit::equipsL(const char index) {
     if (equipment[index].id > 0) {
         equipped.left = index;
     }
 }
 
-void Unit::equipsR(const unsigned char index) {
+void Unit::equipsR(const char index) {
     if (equipment[index].id > 0) {
         equipped.right = index;
     }
@@ -195,7 +195,7 @@ void Unit::unequipsR() {
     equipped.right = -1;
 }
 
-void Unit::equips(const short unsigned int index, const bool hand) {
+void Unit::equips(const short int index, const bool hand) {
     if (equipment[index].id > 0) {
         if (hand) {
             equipped.left = index;
@@ -258,11 +258,11 @@ unsigned char Unit::getHp() const {
     return (current_hp);
 }
 
-unsigned short int Unit::getLvl() const {
+short int Unit::getLvl() const {
     return (ceil(current_hp / 100));
 }
 
-unsigned short int Unit::getExp() const {
+short int Unit::getExp() const {
     return (exp);
 }
 
@@ -274,7 +274,7 @@ unsigned char * Unit::getRange() const {
 
     if (equipped.left >= 0) {
         if (equipment[equipped.left].id > 0) {
-            unsigned char * temp = weapons[equipment[equipped.left].id].getStats().range;
+            unsigned char * temp = weapons->at(equipment[equipped.left].id).getStats().range;
             range[0] = temp[0];
             range[1] = temp[1];
         }
@@ -282,7 +282,7 @@ unsigned char * Unit::getRange() const {
 
     if (equipped.right >= 0) {
         if (equipment[equipped.right].id > 0) {
-            unsigned char * temp = weapons[equipment[equipped.right].id].getStats().range;
+            unsigned char * temp = weapons->at(equipment[equipped.right].id).getStats().range;
             range[0] = std::min(temp[0], range[0]);
             range[1] = std::max(temp[1], range[1]);
         }
@@ -473,20 +473,20 @@ Unit_stats Unit::getGrowths() {
     return (growths);
 }
 
-void checkWeapon(unsigned short int in_id) {
-    if (weapons.find(in_id) == weapons.end()) {
+void Unit::checkWeapon(short int in_id) {
+    if (weapons->find(in_id) == weapons->end()) {
         Weapon temp_wpn;
         std::string filename;
-        filename = "..//items//" + itemName[in_id] + ".json";
+        filename = "..//items//" + itemNames[in_id] + ".json";
         SDL_Log("Loading weapon %d %s", in_id, filename.c_str());
         temp_wpn.readJSON(filename.c_str());
-        weapons[i] = temp_wpn;
+        weapons->insert(in_id, temp_wpn);
     }
 }
 
-bool Unit::canEquip(unsigned short int in_id) {
+bool Unit::canEquip(short int in_id) {
     checkWeapon(in_id);
-    short unsigned int wpntypecode = weapons[in_id].getType();
+    short unsigned int wpntypecode = weapons->at(in_id).getType();
     return (((equippable & wpntypecode) > 0));
 }
 
@@ -494,12 +494,12 @@ bool Unit::canAttack() {
     // THIS FUNCTION needs to be updated with the fact that some weapons can have multiple types. -> typecodes
     bool out;
     struct wpntypecodes {
-        unsigned short int left;
-        unsigned short int right;
+        short int left;
+        short int right;
     } wpntypecodes;
 
     if (equipped.left > 0) {
-        wpntypecodes.left = all_weapons[equipment[equipped.left].id].getType();
+        wpntypecodes.left = weapons->at(equipment[equipped.left].id).getType();
 
         if ((wpntypecodes.left != ITEM::TYPE::SHIELD)  & (wpntypecodes.left != ITEM::TYPE::TRINKET) & (wpntypecodes.left != ITEM::TYPE::STAFF)) {
             out = true;
@@ -507,7 +507,7 @@ bool Unit::canAttack() {
     }
 
     if (equipped.right > 0) {
-        wpntypecodes.right = all_weapons[equipment[equipped.right].id].getType();
+        wpntypecodes.right = weapons->at(equipment[equipped.right].id).getType();
 
         if ((wpntypecodes.right != ITEM::TYPE::SHIELD)  & (wpntypecodes.right != ITEM::TYPE::TRINKET) & (wpntypecodes.right != ITEM::TYPE::STAFF)) {
             out = true;
@@ -529,19 +529,19 @@ bool Unit::canAttack() {
 //     } wpntypes;
 //     bool out = false;
 
-//     wpntypes.left = all_weapons[equipment[equipped.left].name].getType();
-//     wpntypes.right = all_weapons[equipment[equipped.right].name].getType();
+//     wpntypes.left = weapons->at(equipment[equipped.left].name).getType();
+//     wpntypes.right = weapons->at(equipment[equipped.right].name).getType();
 
 
 //     if ((wpntypes.right.empty()) & (wpntypes.right.empty()) ) {
 
 //     }
 //     if ((wpntypes.left != "shield") & (wpntypes.left != "trinket")  & (wpntypes.left != "staff")) {
-//         dmg_types.left = all_weapons[equipment[equipped.left].name].getStats().dmg_type;
+//         dmg_types.left = weapons->at(equipment[equipped.left].name).getStats().dmg_type;
 //     }
 
 //     if (wpntypes.right != "shield") & (wpntypes.left != "trinket")  & (wpntypes.left != "staff") {
-//         dmg_types.right = all_weapons[equipment[equipped.right].name].getStats().dmg_type;
+//         dmg_types.right = weapons->at(equipment[equipped.right].name).getStats().dmg_type;
 //     }
 
 //     // Classes who can have different weapons in both hands.
@@ -584,23 +584,23 @@ unsigned char Unit::totalDef(bool dmg_type) {
     unsigned char total_def = 0;
     // if (dmg_type){
     //     total_def += current_stats.res;
-    //     total_def += all_weapons[equipment[equipped.left].name].getBonus().res;
-    //     total_def += all_weapons[equipment[equipped.right].name].getBonus().res;
-    //     if (all_weapons[equipment[equipped.right].name].getType() == "shield") {
-    //         total_def += all_weapons[equipment[equipped.right].name].getStats().Mmight;
+    //     total_def += weapons->at(equipment[equipped.left].name].getBonus().res;
+    //     total_def += weapons->at(equipment[equipped.right].name].getBonus().res;
+    //     if (weapons->at(equipment[equipped.right].name).getType() == "shield") {
+    //         total_def += weapons->at(equipment[equipped.right].name).getStats().Mmight;
     //     }
-    //     if (all_weapons[equipment[equipped.left].name].getType() == "shield") {
-    //         total_def += all_weapons[equipment[equipped.left].name].getStats().Mmight;
+    //     if (weapons->at(equipment[equipped.left].name).getType() == "shield") {
+    //         total_def += weapons->at(equipment[equipped.left].name).getStats().Mmight;
     //     }
     // } else {
     //     total_def += current_stats.def;
-    //     total_def += all_weapons[equipment[equipped.left].name].getBonus().def;
-    //     total_def += all_weapons[equipment[equipped.right].name].getBonus().def;
-    //     if (all_weapons[equipment[equipped.right].name].getType() == "shield") {
-    //         total_def += all_weapons[equipment[equipped.right].name].getStats().Pmight;
+    //     total_def += weapons->at(equipment[equipped.left].name].getBonus().def;
+    //     total_def += weapons->at(equipment[equipped.right].name].getBonus().def;
+    //     if (weapons->at(equipment[equipped.right].name).getType() == "shield") {
+    //         total_def += weapons->at(equipment[equipped.right].name).getStats().Pmight;
     //     }
-    //     if (all_weapons[equipment[equipped.left].name].getType() == "shield") {
-    //         total_def += all_weapons[equipment[equipped.left].name].getStats().Pmight;
+    //     if (weapons->at(equipment[equipped.left].name).getType() == "shield") {
+    //         total_def += weapons->at(equipment[equipped.left].name).getStats().Pmight;
     //     }
     // }
     return (total_def);

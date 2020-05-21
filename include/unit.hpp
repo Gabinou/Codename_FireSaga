@@ -61,7 +61,7 @@ private:
 
 public:
     Unit();
-    Unit(const unsigned short int in_id, const unsigned char in_class_index, const Unit_stats in_bases, const bool in_sex);
+    Unit(const short int in_id, const char in_class_index, const Unit_stats in_bases, const bool in_sex);
     Unit(const Unit & obj);
 
     void setSupports(std::vector<short int> in_supports);
@@ -73,6 +73,7 @@ public:
     bool getSex();
 
     void setWeapons(std::unordered_map<short int, Weapon> * in_weapons);
+    void checkWeapon(short int in_id);
 
     bool isDanger();
     void showDanger();
