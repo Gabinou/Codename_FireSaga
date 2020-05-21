@@ -266,7 +266,7 @@ short int Unit::getExp() const {
     return (exp);
 }
 
-unsigned char * Unit::getRange() const {
+unsigned char * Unit::getRange() {
     // DESIGN QUESTION: what about equipping only an offhand? Should offhand have ranges?
     // Can you attack with only offhand weapons? how to treat their hit rate?
     SDL_Log("Computing unit range\n");
@@ -274,6 +274,7 @@ unsigned char * Unit::getRange() const {
 
     if (equipped.left >= 0) {
         if (equipment[equipped.left].id > 0) {
+            checkWeapon(equipment[equipped.left].id);
             unsigned char * temp = weapons->at(equipment[equipped.left].id).getStats().range;
             range[0] = temp[0];
             range[1] = temp[1];
@@ -282,6 +283,7 @@ unsigned char * Unit::getRange() const {
 
     if (equipped.right >= 0) {
         if (equipment[equipped.right].id > 0) {
+            checkWeapon(equipment[equipped.right].id);
             unsigned char * temp = weapons->at(equipment[equipped.right].id).getStats().range;
             range[0] = std::min(temp[0], range[0]);
             range[1] = std::max(temp[1], range[1]);
@@ -497,6 +499,7 @@ bool Unit::canAttack() {
     } wpntypecodes;
 
     if (equipped.left > 0) {
+        checkWeapon(equipment[equipped.left].id);
         wpntypecodes.left = weapons->at(equipment[equipped.left].id).getType();
 
         if ((wpntypecodes.left != ITEM::TYPE::SHIELD)  & (wpntypecodes.left != ITEM::TYPE::TRINKET) & (wpntypecodes.left != ITEM::TYPE::STAFF)) {
@@ -505,6 +508,7 @@ bool Unit::canAttack() {
     }
 
     if (equipped.right > 0) {
+        checkWeapon(equipment[equipped.right].id);
         wpntypecodes.right = weapons->at(equipment[equipped.right].id).getType();
 
         if ((wpntypecodes.right != ITEM::TYPE::SHIELD)  & (wpntypecodes.right != ITEM::TYPE::TRINKET) & (wpntypecodes.right != ITEM::TYPE::STAFF)) {

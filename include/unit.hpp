@@ -106,7 +106,7 @@ public:
     void giveItem(Inventory_item * out_array, const short int in_index, const short int out_index);
     void dropItem(const short int in_index);
 
-    unsigned char * getRange() const;
+    unsigned char * getRange();
 
     void setEntity(const short int in_index);
     int getEntity();
