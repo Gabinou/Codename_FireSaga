@@ -35,17 +35,11 @@ void Unit::copyUnit(const Unit & obj) {
     setStats(obj.current_stats);
     setGrowths(obj.growths);
     setCaps(obj.caps_stats);
-    SDL_Log("set caps %d ", obj.class_index);
     setClassind(obj.class_index);
-    SDL_Log("set classind");
     setEquipment(obj.equipment);
-    SDL_Log("set equi");
     setSkills(obj.skills);
-    SDL_Log("set skill");
     setArmy(obj.army);
-    SDL_Log("set army");
     setSupports(obj.supports);
-    SDL_Log("set supports");
     exp = obj.exp;
     base_exp = obj.base_exp;
     init();
