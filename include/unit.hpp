@@ -54,6 +54,8 @@ private:
     std::string sex_name = "";
     std::vector<std::string> skill_names;
 
+    std::unordered_map<short int, Weapon> * weapons;
+
     Equipped equipped; // indices. -1 -> no equipment.
     Inventory_item equipment[DEFAULT::EQUIPMENT_SIZE], weapons[DEFAULT::WEAPONS_SIZE], items[DEFAULT::ITEMS_SIZE];
 
@@ -69,6 +71,8 @@ public:
 
     void setSex(const bool in_sex);
     bool getSex();
+
+    void setWeapons(std::unordered_map<short int, Weapon> * in_weapons);
 
     bool isDanger();
     void showDanger();

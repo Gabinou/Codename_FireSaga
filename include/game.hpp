@@ -107,6 +107,9 @@ public:
     void hideMenu(short unsigned int index);
     void showMenu(short unsigned int index);
 
+    void loadItem(short unsigned int in_item);
+    void loadItems(std::vector<short unsigned int> in_items);
+
     void startTurnSystem();
 
     void handleEvents();

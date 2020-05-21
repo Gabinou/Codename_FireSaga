@@ -274,7 +274,7 @@ unsigned char * Unit::getRange() const {
 
     if (equipped.left >= 0) {
         if (equipment[equipped.left].id > 0) {
-            unsigned char * temp = all_weapons[equipment[equipped.left].id].getStats().range;
+            unsigned char * temp = weapons[equipment[equipped.left].id].getStats().range;
             range[0] = temp[0];
             range[1] = temp[1];
         }
@@ -282,7 +282,7 @@ unsigned char * Unit::getRange() const {
 
     if (equipped.right >= 0) {
         if (equipment[equipped.right].id > 0) {
-            unsigned char * temp = all_weapons[equipment[equipped.right].id].getStats().range;
+            unsigned char * temp = weapons[equipment[equipped.right].id].getStats().range;
             range[0] = std::min(temp[0], range[0]);
             range[1] = std::max(temp[1], range[1]);
         }
@@ -473,8 +473,20 @@ Unit_stats Unit::getGrowths() {
     return (growths);
 }
 
+void checkWeapon(unsigned short int in_id) {
+    if (weapons.find(in_id) == weapons.end()) {
+        Weapon temp_wpn;
+        std::string filename;
+        filename = "..//items//" + itemName[in_id] + ".json";
+        SDL_Log("Loading weapon %d %s", in_id, filename.c_str());
+        temp_wpn.readJSON(filename.c_str());
+        weapons[i] = temp_wpn;
+    }
+}
+
 bool Unit::canEquip(unsigned short int in_id) {
-    short unsigned int wpntypecode = all_weapons[in_id].getType();
+    checkWeapon(in_id);
+    short unsigned int wpntypecode = weapons[in_id].getType();
     return (((equippable & wpntypecode) > 0));
 }
 
@@ -562,6 +574,11 @@ unsigned char Unit::totalMight(bool dmg_type) {
 
     return (total_might);
 }
+
+void Unit::setWeapons(std::unordered_map<short int, Weapon> * in_weapons) {
+    weapons = in_weapons;
+}
+
 
 unsigned char Unit::totalDef(bool dmg_type) {
     unsigned char total_def = 0;
