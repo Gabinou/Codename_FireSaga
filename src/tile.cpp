@@ -104,7 +104,10 @@ void Tile::readJSON(cJSON * in_jtile) {
         name = cJSON_GetStringValue(jname);
         readJSON_stats(jstats, &stats);
         inside = cJSON_IsTrue(jinside);
-        writeJSON_mvtcost(in_jtile, &cost_struct);
+        readJSON_mvtcost(jmvtcost, &cost_struct);
+        makeMvtCostarray();
+        SDL_Log("Tile cost: %d", cost_array[3]);
+        SDL_Log("Tile cost: %d", cost_struct.fliers);
 
     } else  {
         SDL_Log("in_jtile is NULL");

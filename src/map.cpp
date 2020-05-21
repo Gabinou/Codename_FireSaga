@@ -566,23 +566,29 @@ std::vector<std::vector<short int>> Map::makeMvtCostmap(entityx::ComponentHandle
     SDL_Log("Making MvtCostmap");
     short int tile_ind = 0;
     std::vector<std::vector<short int>> costmap((short int)tilemap.size(), std::vector<short int> ((short int)tilemap[0].size()));
-    unsigned char unitmovetype = in_unit->getMvttype();
+    char unitmovetype = in_unit->getMvttype();
     unsigned char army = in_unit->getArmy();
     unsigned char ontile_army;
     entityx::ComponentHandle<Unit> unitontile;
+    SDL_Log("unitmovetype: %d", unitmovetype);
+    SDL_Log("army: %d", army);
 
-    for (short int row = 0; row < tilemap.size(); row++) {
-        for (short int col = 0; col < tilemap[row].size(); col++) {
-            tile_ind = tilemap[row][col] / DEFAULT::TILE_DIVISOR;
-            unitontile = unitmap[row][col];
-            costmap[row][col] = tiles[tile_ind].getCost()[unitmovetype];
+    if (unitmovetype > 0) {
+        for (short int row = 0; row < tilemap.size(); row++) {
+            for (short int col = 0; col < tilemap[row].size(); col++) {
+                tile_ind = tilemap[row][col] / DEFAULT::TILE_DIVISOR;
+                // SDL_Log("tile_ind: %d", tile_ind);
 
-            if (unitontile) {
-                // SDL_Log("Unit on tile: %d %d", col, row);
-                ontile_army = unitontile->getArmy();
+                unitontile = unitmap[row][col];
+                costmap[row][col] = tiles[tile_ind].getCost()[unitmovetype];
 
-                if (!isFriendly(ontile_army, army)) {
-                    costmap[row][col] = 0;
+                if (unitontile) {
+                    // SDL_Log("Unit on tile: %d %d", col, row);
+                    ontile_army = unitontile->getArmy();
+
+                    if (!isFriendly(ontile_army, army)) {
+                        costmap[row][col] = 0;
+                    }
                 }
             }
         }
