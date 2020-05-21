@@ -281,22 +281,26 @@ unsigned char * Unit::getRange() {
     SDL_Log("Computing unit range\n");
     static unsigned char range[2] = {0, 0};
 
-    if (equipped.left >= 0) {
-        if (equipment[equipped.left].id > 0) {
-            checkWeapon(equipment[equipped.left].id);
-            unsigned char * temp = weapons->at(equipment[equipped.left].id).getStats().range;
-            range[0] = temp[0];
-            range[1] = temp[1];
+    if (weapons != NULL) {
+        if (equipped.left >= 0) {
+            if (equipment[equipped.left].id > 0) {
+                checkWeapon(equipment[equipped.left].id);
+                unsigned char * temp = weapons->at(equipment[equipped.left].id).getStats().range;
+                range[0] = temp[0];
+                range[1] = temp[1];
+            }
         }
-    }
 
-    if (equipped.right >= 0) {
-        if (equipment[equipped.right].id > 0) {
-            checkWeapon(equipment[equipped.right].id);
-            unsigned char * temp = weapons->at(equipment[equipped.right].id).getStats().range;
-            range[0] = std::min(temp[0], range[0]);
-            range[1] = std::max(temp[1], range[1]);
+        if (equipped.right >= 0) {
+            if (equipment[equipped.right].id > 0) {
+                checkWeapon(equipment[equipped.right].id);
+                unsigned char * temp = weapons->at(equipment[equipped.right].id).getStats().range;
+                range[0] = std::min(temp[0], range[0]);
+                range[1] = std::max(temp[1], range[1]);
+            }
         }
+    } else {
+        SDL_Log("weapons pointer is NULL");
     }
 
     if ((equipped.left < 0) && (equipped.right < 0)) {
@@ -485,18 +489,31 @@ Unit_stats Unit::getGrowths() {
 }
 
 void Unit::checkWeapon(short int in_id) {
-    if (weapons->find(in_id) == weapons->end()) {
-        std::string filename;
-        filename = "..//items//" + itemNames[in_id] + ".json";
-        SDL_Log("Loading weapon %d %s", in_id, filename.c_str());
-        weapons->at(in_id).readJSON(filename.c_str());
+    if (weapons != NULL) {
+        if (weapons->find(in_id) == weapons->end()) {
+            std::string filename;
+            filename = "..//items//" + itemNames[in_id] + ".json";
+            SDL_Log("Loading weapon %d %s", in_id, filename.c_str());
+            weapons->at(in_id).readJSON(filename.c_str());
+        }
+    } else {
+        SDL_Log("weapons pointer is NULL");
     }
 }
 
 bool Unit::canEquip(short int in_id) {
     checkWeapon(in_id);
-    short unsigned int wpntypecode = weapons->at(in_id).getType();
-    return (((equippable & wpntypecode) > 0));
+    short unsigned int wpntypecode;
+    bool out = false;
+
+    if (weapons != NULL) {
+        wpntypecode = weapons->at(in_id).getType();
+        out = ((equippable & wpntypecode) > 0);
+    } else {
+        SDL_Log("weapons pointer is NULL");
+    }
+
+    return (out);
 }
 
 bool Unit::canAttack() {
@@ -507,22 +524,26 @@ bool Unit::canAttack() {
         short int right;
     } wpntypecodes;
 
-    if (equipped.left > 0) {
-        checkWeapon(equipment[equipped.left].id);
-        wpntypecodes.left = weapons->at(equipment[equipped.left].id).getType();
+    if (weapons != NULL) {
+        if (equipped.left > 0) {
+            checkWeapon(equipment[equipped.left].id);
+            wpntypecodes.left = weapons->at(equipment[equipped.left].id).getType();
 
-        if ((wpntypecodes.left != ITEM::TYPE::SHIELD)  & (wpntypecodes.left != ITEM::TYPE::TRINKET) & (wpntypecodes.left != ITEM::TYPE::STAFF)) {
-            out = true;
+            if ((wpntypecodes.left != ITEM::TYPE::SHIELD)  & (wpntypecodes.left != ITEM::TYPE::TRINKET) & (wpntypecodes.left != ITEM::TYPE::STAFF)) {
+                out = true;
+            }
         }
-    }
 
-    if (equipped.right > 0) {
-        checkWeapon(equipment[equipped.right].id);
-        wpntypecodes.right = weapons->at(equipment[equipped.right].id).getType();
+        if (equipped.right > 0) {
+            checkWeapon(equipment[equipped.right].id);
+            wpntypecodes.right = weapons->at(equipment[equipped.right].id).getType();
 
-        if ((wpntypecodes.right != ITEM::TYPE::SHIELD)  & (wpntypecodes.right != ITEM::TYPE::TRINKET) & (wpntypecodes.right != ITEM::TYPE::STAFF)) {
-            out = true;
+            if ((wpntypecodes.right != ITEM::TYPE::SHIELD)  & (wpntypecodes.right != ITEM::TYPE::TRINKET) & (wpntypecodes.right != ITEM::TYPE::STAFF)) {
+                out = true;
+            }
         }
+    } else {
+        SDL_Log("weapons pointer is NULL");
     }
 
     return (out);
