@@ -271,7 +271,7 @@ void UnitSystemx::receive(const unitMove & move) {
 
     SDL_Log("unitname: %s", unit->getName().c_str());
     SDL_Log("nooffset: %d %d", nooffset[0], nooffset[1]);
-    SDL_Log("unitmove: %d %d", unit_move, unit->getStats().move);
+    SDL_Log("unitmove: %d", unit_move);
 
     costmapp = mapx->makeMvtCostmap(unit);
 

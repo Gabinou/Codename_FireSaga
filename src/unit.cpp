@@ -480,7 +480,6 @@ Unit_stats Unit::getStats() {
 
 void Unit::setBases(const Unit_stats in_stats) {
     base_stats = in_stats;
-    current_stats = in_stats;
     current_hp = base_stats.hp;
 }
 

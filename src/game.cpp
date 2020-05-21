@@ -419,8 +419,6 @@ void Game::unloadMap() {
     }
 }
 
-
-
 void Game::setCursorstate(const unsigned char in_menu) {
     SDL_Log("Changing cursor");
     SDL_Rect temprect;
@@ -544,6 +542,7 @@ void Game::putPConMap(std::vector<short int> in_units, std::vector<std::vector<i
             Uent.assign<Unit>();
             Uent.component<Unit>()->setWeapons(&weapons);
             Uent.component<Unit>()->copyUnit(party[in_units[i]]);
+            SDL_Log("Copied move : %d", Uent.component<Unit>()->getStats().move);
             Uent.assign<Position>();
             Uent.component<Position>()->setonTilemap(true);
             bounds = mapx->getBounds();
