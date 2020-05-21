@@ -778,11 +778,10 @@ void Convoy::readJSON(cJSON * in_jconvoy) {
         Inventory_item empty;
         cJSON * jitem = NULL;
         cJSON * jtype = NULL;
-        short int i = 1;
+        short int i = 0x0001;
 
         while (i < ITEM::TYPE::END) {
             names = wpnTypes(i);
-            SDL_Log("Getting JSON element: %d %s", i, names[0].c_str());
             jtype = cJSON_GetObjectItem(in_jconvoy, names[0].c_str());
 
             if (jtype ==  NULL) {

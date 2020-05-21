@@ -147,8 +147,11 @@ void testConvoyWriteRead() {
 
     convoy.writeXML("saves//convoy_test.xml", false);
     convoy.writeJSON("saves//convoy_test.json", false);
-
+    std::unordered_map<short int, Weapon> weapons2;
+    std::unordered_map<short int, Weapon> weapons3;
     Convoy convoy2, convoy3;
+    convoy2.setWeapons(&weapons2);
+    convoy3.setWeapons(&weapons3);
     convoy2.readXML("saves//convoy_test.xml");
     convoy2.writeXML("saves//convoy_rewrite.xml");
     // lok(fequal("saves//convoy_rewrite.xml", "saves//convoy_test.xml"));
