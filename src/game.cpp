@@ -540,7 +540,9 @@ void Game::putPConMap(std::vector<short int> in_units, std::vector<std::vector<i
         for (int i = 0; i < in_units.size(); i++) {
             asset_name = "..//assets//" + party[in_units[i]].getName() + ".png";
             Uent = entities.create();
-            Uent.assign<Unit>(party[in_units[i]]);
+            Uent.assign<Unit>();
+            Uent.component<Unit>()->setWeapons(&weapons);
+            Uent.component<Unit>()->copyUnit(party[in_units[i]]);
             Uent.assign<Position>();
             Uent.component<Position>()->setonTilemap(true);
             bounds = mapx->getBounds();

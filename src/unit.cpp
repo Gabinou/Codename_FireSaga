@@ -27,7 +27,7 @@ void Unit::init() {
     equipsL(1);
 }
 
-Unit::copyUnit(const Unit obj) {
+void Unit::copyUnit(const Unit & obj) {
     setSex(obj.sex);
     setid(obj.id);
     setBases(obj.base_stats);

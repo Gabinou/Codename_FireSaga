@@ -65,7 +65,7 @@ public:
     Unit(const Unit & obj);
 
     void init();
-    void copyUnit(const Unit obj);
+    void copyUnit(const Unit & obj);
 
     void setSupports(std::vector<short int> in_supports);
     void setSupports(const Support in_supports[DEFAULT::SUPPORTS_MAX]);
