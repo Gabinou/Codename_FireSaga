@@ -274,6 +274,7 @@ void UnitSystemx::receive(const unitMove & move) {
     SDL_Log("unitmove: %d", unit_move);
 
     costmapp = mapx->makeMvtCostmap(unit);
+    plot2Dvec(costmapp);
 
     movemapp = movemap(costmapp, nooffset, unit_move, "matrix");
     plot2Dvec(movemapp);
