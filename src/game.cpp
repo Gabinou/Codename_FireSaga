@@ -564,18 +564,19 @@ void Game::loadMapArrivals() {
         std::vector<Map_arrival> map_arrivals = mapx->getArrivals();
         unsigned short int currentturn = mapx->getTurn();
         std::string asset_name;
+        std::string unit_name;
         entityx::Entity Uent;
         short int * bounds;
         Unit temp_unit;
+
         for (int i = 0; i < map_arrivals.size(); i++) {
             if (map_arrivals[i].turn == currentturn) {
 
-                if (party.find(map_arrivals[i].id) == party.end()) {
-                    SDL_Log("unloaded party loading %d", map_arrivals[i].id);
-                    loadUnits(std::vector<short int> {map_arrivals[i].id});
-                    asset_name = "..//assets//" + party[map_arrivals[i].id].getName() + ".png";
-                    SDL_Log("Loaded: %d %s", map_arrivals[i].id, party[map_arrivals[i].id].getName().c_str());
-                }
+                // if (party.find(map_arrivals[i].id) == party.end()) {
+                // SDL_Log("unloaded party loading %d", map_arrivals[i].id);
+                // loadUnits(std::vector<short int> {map_arrivals[i].id});
+                // SDL_Log("Loaded: %d %s", map_arrivals[i].id, party[map_arrivals[i].id].getName().c_str());
+                // }
 
                 Uent = entities.create();
                 Uent.assign<Position>();
@@ -584,11 +585,14 @@ void Game::loadMapArrivals() {
                 Uent.component<Position>()->setBounds(bounds);
                 Uent.component<Position>()->setOffset(DEFAULT::TILEMAP_XOFFSET, DEFAULT::TILEMAP_YOFFSET);
                 Uent.component<Position>()->setPos(map_arrivals[i].position.x, map_arrivals[i].position.y);
+                asset_name = "..//assets//" + unitNames[map_arrivals[i].id] + ".png";
                 Uent.assign<Sprite>(asset_name.c_str());
                 Uent.assign<Unit>();
 
-                
+
                 Uent.component<Unit>()->setWeapons(&weapons);
+                unit_name = "units//" + unitNames[map_arrivals[i].id] + ".json";
+                Uent.component<Unit>()->readJSON(unit_name.c_str());
                 SDL_Log("Arrival position: %d %d", map_arrivals[i].position.x, map_arrivals[i].position.y);
                 mapx->putUnit(map_arrivals[i].position.x, map_arrivals[i].position.y, Uent.component<Unit>());
             }
@@ -609,11 +613,10 @@ void Game::loadUnits(std::vector<short int> toload) {
     for (short unsigned int i = 0; i < toload.size(); i++) {
         filename = "units//" + unitNames[toload[i]] + ".json";
         temp_unit.readJSON(filename.c_str());
-        switch(temp_unit.getArmy()) {
-                case UNIT::ARMY::ERWIN:
-                    party[toload[i]].copyUnit(temp_unit);
-                    break;
-        } 
+
+        if ((toload[i] > 0) && (toload[i] < UNIT::NAME::PC_END)) {
+            party[toload[i]].copyUnit(temp_unit);
+        }
     }
 }
 
