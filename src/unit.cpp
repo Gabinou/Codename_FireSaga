@@ -891,6 +891,7 @@ void Unit::readJSON(cJSON * in_junit) {
     cJSON * jexp = cJSON_GetObjectItemCaseSensitive(in_junit, "Exp");
     cJSON * jcurrent_hp = cJSON_GetObjectItemCaseSensitive(in_junit, "CurrentHP");
     cJSON * jclass = cJSON_GetObjectItemCaseSensitive(in_junit, "Class");
+    cJSON * jclass_index = cJSON_GetObjectItemCaseSensitive(in_junit, "Class Index");
     cJSON * jcurrent_stats = cJSON_GetObjectItemCaseSensitive(in_junit, "Stats");
     cJSON * jcaps_stats = cJSON_GetObjectItemCaseSensitive(in_junit, "Caps");
     cJSON * jgrowths = cJSON_GetObjectItemCaseSensitive(in_junit, "Growths");
@@ -904,6 +905,7 @@ void Unit::readJSON(cJSON * in_junit) {
     exp = cJSON_GetNumberValue(jexp);
     current_hp = cJSON_GetNumberValue(jcurrent_hp);
     class_name = cJSON_GetStringValue(jclass);
+    class_index = cJSON_GetNumberValue(jclass_index);
     readJSON_stats(jcurrent_stats, &current_stats);
     readJSON_stats(jcaps_stats, &caps_stats);
     readJSON_stats(jgrowths, &growths);
