@@ -244,6 +244,7 @@ void test_map() {
         }
     }
 
+    std::unordered_map<short int, Weapon> weapons;
     Unit unit1, unit2;
     Unit_stats in_stats, out_stats;
     Unit_stats in_caps, out_caps;
@@ -252,6 +253,7 @@ void test_map() {
     short int in_exp, out_exp;
     in_stats = {15,  4,  5,  7,  6,   8,  4,  6,  5,  5,  6};
     unit1 = Unit(UNIT::NAME::SILOU, UNIT::CLASS::MAGE, in_stats, UNIT::SEX::F);
+    unit1.setWeapons(&weapons);
     in_caps = {48, 14, 25, 32, 34, 28, 19, 40, 15};
     unit1.setCaps(in_caps);
     in_growths = {60, 50, 20, 60, 70,  40, 30, 20,  10, 0};
@@ -263,10 +265,18 @@ void test_map() {
 
     entityx::Entity Uent1 = ex.entities.create();
     entityx::ComponentHandle<Unit> unithandle1, unithandle2;
-    Uent1.assign<Unit>(unit1);
+    Uent1.assign<Unit>();
+    Uent1.component<Unit>()->setWeapons(&weapons);
+    SDL_Log("UNTILE HERE");
+    Uent1.component<Unit>()->copyUnit(unit1);
+    SDL_Log("UNTILE HERE");
     Uent1.assign<Position>(6, 6);
-    map1.putUnit(6, 6, Uent1.component<Unit>());
+    SDL_Log("UNTILE HERE");
+    unithandle1 = Uent1.component<Unit>();
+    map1.putUnit(6, 6, unithandle1);
+    SDL_Log("UNTILE HERE");
     unithandle1 = map1.getUnit(6, 6);
+    SDL_Log("UNTILE HERE");
 
     if (unithandle1) {
         out_stats = unithandle1->getStats();
