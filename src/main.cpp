@@ -37,7 +37,21 @@ int main(int argc, char * argv[]) {
     init_tinyMT();
 
     SDL_Log("Loading base weapons");
-    baseWeapons();
+    // baseWeapons();
+
+    std::vector<short int> toload = {0};
+    std::vector<Weapon> temp_weapon;
+    std::string filename;
+
+    for (short int i = ITEM::NAME::WOODEN_SWORD; i < ITEM::NAME::FATALIS; i++) {
+        toload[0] = i;
+        temp_weapon = baseWeapons(toload);
+        filename = temp_weapon[i].getName() + ".json";
+        temp_weapon[i].writeJSON(filename.c_str());
+    }
+
+    getchar();
+
     settings.FPS.show = true;
 
     SDL_Log("Creating game object\n");

@@ -286,6 +286,7 @@ std::vector<Weapon> baseWeapons(std::vector<short int> toload) {
     short unsigned int index;
 
     for (short unsigned int i = 0; i < toload.size(); i++) {
+        SDL_Log("Weapon: %d %s", i, itemNames[i].c_str());
         index = toload[i];
 
         switch (index) {
