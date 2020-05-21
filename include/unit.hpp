@@ -82,11 +82,11 @@ public:
     void setLiteracy(bool in_literacy);
     bool isLiterate();
 
-    unsigned char getMvttype();
-    unsigned char getClassind();
-    void setClassind(unsigned char in_class_ind);
+    char getMvttype();
+    char getClassind();
+    void setClassind(char in_class_ind);
 
-    short unsigned int getEquippable();
+    short int getEquippable();
     void equipsL(const unsigned char index);
     void equipsR(const unsigned char index);
     void unequipsR();
@@ -100,7 +100,7 @@ public:
     std::vector<Inventory_item> getEquipment();
     void addEquipment(Inventory_item in_item);
     void switchEquipment(Inventory_item in_equipment, const short int ind1, const short int ind2);
-    void removeEquipment(unsigned char in_index);
+    void removeEquipment(char in_index);
 
     void takeItem(Inventory_item * out_array, const short int in_index, const short int out_index);
     void giveItem(Inventory_item * out_array, const short int in_index, const short int out_index);
@@ -111,8 +111,8 @@ public:
     void setEntity(const short int in_index);
     int getEntity();
 
-    void setid(const unsigned short int in_id);
-    unsigned short int getid();
+    void setid(const short int in_id);
+    short int getid();
 
     unsigned short int getExp() const;
     unsigned short int getLvl() const;
