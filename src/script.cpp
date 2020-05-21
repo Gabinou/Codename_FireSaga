@@ -220,34 +220,34 @@ void baseBooks() {
     std::string unit_stats_labels = "HP, Str, Mag, Skl, Spd, Luck, Def, Res, Con, Move";
     std::string wpn_stats_labels = "Pmight, Mmight, hit, dodge, crit, favor, wgt, uses, wpnlvl, range, hand, dmg_type, price";
 
-    for (int i = ITEM::NAME::WOODEN_SWORD; i < ITEM::NAME::CROSS; i++) {
-        wpn_stats = all_weapons[i].getStats();
-        page.title = itemNames[i];
-        page.paragraphs.clear();
-        temp_str = stats2str(wpn_stats);
-        page.paragraphs.push_back("Stats");
-        page.paragraphs.push_back(wpn_stats_labels);
-        page.paragraphs.push_back(temp_str);
-        page.paragraphs.push_back("Bonus");
-        unit_stats = all_weapons[i].getBonus();
-        temp_str = stats2str(unit_stats);
-        page.paragraphs.push_back(unit_stats_labels);
-        page.paragraphs.push_back(temp_str);
-        page.paragraphs.push_back("Malus");
-        unit_stats = all_weapons[i].getMalus();
-        temp_str = stats2str(unit_stats);
-        page.paragraphs.push_back(unit_stats_labels);
-        page.paragraphs.push_back(temp_str);
-        page.paragraphs.push_back("Effects");
-        page.paragraphs.push_back("");
-        page.paragraphs.push_back("Users:");
-        page.paragraphs.push_back("");
-        page.paragraphs.push_back("Type:");
-        page.paragraphs.push_back("");
-        page.paragraphs.push_back("Description");
-        page.paragraphs.push_back(all_weapons[i].getDescription());
-        book.addPage(page);
-    }
+    // for (int i = ITEM::NAME::WOODEN_SWORD; i < ITEM::NAME::CROSS; i++) {
+    //     wpn_stats = all_weapons[i].getStats();
+    //     page.title = itemNames[i];
+    //     page.paragraphs.clear();
+    //     temp_str = stats2str(wpn_stats);
+    //     page.paragraphs.push_back("Stats");
+    //     page.paragraphs.push_back(wpn_stats_labels);
+    //     page.paragraphs.push_back(temp_str);
+    //     page.paragraphs.push_back("Bonus");
+    //     unit_stats = all_weapons[i].getBonus();
+    //     temp_str = stats2str(unit_stats);
+    //     page.paragraphs.push_back(unit_stats_labels);
+    //     page.paragraphs.push_back(temp_str);
+    //     page.paragraphs.push_back("Malus");
+    //     unit_stats = all_weapons[i].getMalus();
+    //     temp_str = stats2str(unit_stats);
+    //     page.paragraphs.push_back(unit_stats_labels);
+    //     page.paragraphs.push_back(temp_str);
+    //     page.paragraphs.push_back("Effects");
+    //     page.paragraphs.push_back("");
+    //     page.paragraphs.push_back("Users:");
+    //     page.paragraphs.push_back("");
+    //     page.paragraphs.push_back("Type:");
+    //     page.paragraphs.push_back("");
+    //     page.paragraphs.push_back("Description");
+    //     page.paragraphs.push_back(all_weapons[i].getDescription());
+    //     book.addPage(page);
+    // }
 
     book = Book("Magic: The Definitive Guide", ITEM::NAME::BOOKELEMENTAL);
     book.setAuthor("Ancestor of the gifted brothers.");

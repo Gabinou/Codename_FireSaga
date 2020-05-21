@@ -925,7 +925,6 @@ void writeJSON_items(cJSON * in_jitems, Inventory_item * in_items, int size) {
     cJSON * jitem = NULL;
     cJSON * jused = NULL;
     cJSON * jid = NULL;
-    cJSON * jname = NULL;
     cJSON * jwpnname = NULL;
     cJSON * jinfused = NULL;
     char buffer[DEFAULT::BUFFER_SIZE];
@@ -941,17 +940,9 @@ void writeJSON_items(cJSON * in_jitems, Inventory_item * in_items, int size) {
             jinfused = cJSON_CreateNumber(-1);
         }
 
-        cJSON_AddItemToObject(jitem, "name", jname);
         cJSON_AddItemToObject(jitem, "Infused", jinfused);
         cJSON_AddItemToObject(jitem, "id", jid);
         cJSON_AddItemToObject(jitem, "used", jused);
-
-        if (in_items[i].id > 0) {
-            jname = cJSON_CreateString(all_weapons[in_items[i].id].getName().c_str());
-        } else {
-            jname = cJSON_CreateString("Empty");
-        }
-
         cJSON_AddItemToObject(in_jitems, "Item", jitem);
     }
 }
@@ -963,7 +954,6 @@ void writeXML_items(tinyxml2::XMLDocument * in_doc, tinyxml2::XMLElement * in_pI
 void writeXML_items(tinyxml2::XMLDocument * in_doc, tinyxml2::XMLElement * in_pItems, Inventory_item * in_items, int size) {
     tinyxml2::XMLElement * pItem;
     tinyxml2::XMLElement * pUsed;
-    tinyxml2::XMLElement * pwpnName;
     tinyxml2::XMLElement * pInfused;
     char buffer[DEFAULT::BUFFER_SIZE];
 
@@ -975,21 +965,12 @@ void writeXML_items(tinyxml2::XMLDocument * in_doc, tinyxml2::XMLElement * in_pI
         stbsp_sprintf(buffer, "%d", in_items[i].used);
         pUsed->SetText(buffer);
         pItem->InsertEndChild(pUsed);
-        pwpnName = in_doc->NewElement("Name");
 
         if (in_items[i].infused > 0) {
             pInfused = in_doc->NewElement("Infused");
             pItem->InsertEndChild(pInfused);
             pInfused->SetText(in_items[i].infused);
         }
-
-        if (in_items[i].id > 0) {
-            pwpnName->SetText(all_weapons[in_items[i].id].getName().c_str());
-        } else {
-            pwpnName->SetText("Empty");
-        }
-
-        pItem->InsertFirstChild(pwpnName);
     }
 }
 

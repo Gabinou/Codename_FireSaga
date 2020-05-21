@@ -57,7 +57,7 @@ private:
     std::unordered_map<short int, Weapon> * weapons;
 
     Equipped equipped; // indices. -1 -> no equipment.
-    Inventory_item equipment[DEFAULT::EQUIPMENT_SIZE], weapons[DEFAULT::WEAPONS_SIZE], items[DEFAULT::ITEMS_SIZE];
+    Inventory_item equipment[DEFAULT::EQUIPMENT_SIZE];
 
 public:
     Unit();
