@@ -179,7 +179,7 @@ void test_map() {
     lok(in_tilesindex == out_tilesindex);
     std::vector<std::vector<short int>> in_tilemap, out_tilemap;
     in_tilemap = testTilemap();
-    map1.loadTilemap(0);
+    map1.setTilemap(in_tilemap);
     out_tilemap = map1.getTilemap();
     lok(in_tilemap == out_tilemap);
 
@@ -261,13 +261,10 @@ void test_map() {
     in_wpn.id = ITEM::NAME::BALL_LIGHTNING;
     unit1.addEquipment(in_wpn);
 
-    std::string asset_name;
-    asset_name = "..//assets//" +  unit1.getName() + ".png";
     entityx::Entity Uent1 = ex.entities.create();
     entityx::ComponentHandle<Unit> unithandle1, unithandle2;
     Uent1.assign<Unit>(unit1);
     Uent1.assign<Position>(6, 6);
-    Uent1.assign<Sprite>(asset_name.c_str());
     map1.putUnit(6, 6, Uent1.component<Unit>());
     unithandle1 = map1.getUnit(6, 6);
 
@@ -343,7 +340,7 @@ void test_map() {
         PHYSFS_mkdir("saves");
     }
 
-    map1.writeXML("saves//map_test.xml");
+    // map1.writeXML("saves//map_test.xml");
     map1.writeJSON("saves//map_test.json");
 
     // map2.setManager(&ex.entities);
