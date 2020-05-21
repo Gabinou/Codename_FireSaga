@@ -823,7 +823,8 @@ void Game::saveJSON(const short int save_ind) {
 
         for (auto it = party.begin(); it != party.end(); it++) {
             junit = cJSON_CreateObject();
-            it->second.writeJSON(jparty);
+            it->second.writeJSON(junit);
+            cJSON_AddItemToObject(jparty, "Unit", junit);
         }
 
         cJSON_AddItemToObject(json, "Party", jparty);
