@@ -570,8 +570,6 @@ std::vector<std::vector<short int>> Map::makeMvtCostmap(entityx::ComponentHandle
     unsigned char army = in_unit->getArmy();
     unsigned char ontile_army;
     entityx::ComponentHandle<Unit> unitontile;
-    SDL_Log("unitmovetype: %d", unitmovetype);
-    SDL_Log("army: %d", army);
 
     if (unitmovetype > 0) {
         for (short int row = 0; row < tilemap.size(); row++) {

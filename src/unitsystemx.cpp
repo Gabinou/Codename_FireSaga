@@ -274,10 +274,8 @@ void UnitSystemx::receive(const unitMove & move) {
     SDL_Log("unitmove: %d", unit_move);
 
     costmapp = mapx->makeMvtCostmap(unit);
-    plot2Dvec(costmapp);
 
     movemapp = movemap(costmapp, nooffset, unit_move, "matrix");
-    plot2Dvec(movemapp);
     mapx->setOverlay(MAP::OVERLAY::MOVE, movemapp);
 
     attackmapp = attackmap(movemapp, nooffset, unit_move, range, "matrix");
