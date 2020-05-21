@@ -91,7 +91,7 @@ public:
     void equipsR(const unsigned char index);
     void unequipsR();
     void unequipsL();
-    void equips(const unsigned short int index, const bool hand = true);
+    void equips(const short int index, const bool hand = true);
     void unequips(const bool hand = true);
     void setEquipped(Equipped in_equipped);
     void setEquipment(std::vector<Inventory_item> in_equipment);
@@ -114,8 +114,8 @@ public:
     void setid(const short int in_id);
     short int getid();
 
-    unsigned short int getExp() const;
-    unsigned short int getLvl() const;
+    short int getExp() const;
+    short int getLvl() const;
     void setBaseExp(const unsigned short int in_exp);
     void gainExp(const unsigned short int in_exp);
 
@@ -153,7 +153,7 @@ public:
     bool canRetaliate(Unit * enemy) const;
     bool canDouble(Unit * enemy);
     bool canAttack();
-    bool canEquip(const short unsigned int in_id);
+    bool canEquip(const short int in_id);
 
     void combatStats();
     Combat_stats getCombatStats();

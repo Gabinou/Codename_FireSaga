@@ -175,13 +175,13 @@ void Unit::setSupports(std::vector<short int> in_supports) {
     }
 }
 
-void Unit::equipsL(const char index) {
+void Unit::equipsL(const unsigned char index) {
     if (equipment[index].id > 0) {
         equipped.left = index;
     }
 }
 
-void Unit::equipsR(const char index) {
+void Unit::equipsR(const unsigned char index) {
     if (equipment[index].id > 0) {
         equipped.right = index;
     }
@@ -480,7 +480,8 @@ void Unit::checkWeapon(short int in_id) {
         filename = "..//items//" + itemNames[in_id] + ".json";
         SDL_Log("Loading weapon %d %s", in_id, filename.c_str());
         temp_wpn.readJSON(filename.c_str());
-        weapons->insert(in_id, temp_wpn);
+        // weapons->insert(temp_wpn, in_id);
+        // weapons->insert(in_id, temp_wpn);
     }
 }
 
