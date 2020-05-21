@@ -267,7 +267,6 @@ void Convoy::printStats(int wpntype, int stattype) {
     SDL_Log("Quantity: %d \n%s \t Wpn \n", tempqty, statname.c_str());
 
     if (weapons != NULL) {
-
         for (int i = 0; i < tempqty; i++) {
             if (tempitems[i].id > 0) {
                 SDL_Log("%d \t %s", vecstats[i], weapons->at(tempitems[i].id).getName().c_str());
@@ -381,11 +380,15 @@ void Convoy::setWeapons(std::unordered_map<short int, Weapon> * in_weapons) {
 }
 
 void Convoy::checkWeapon(short int in_id) {
-    if (weapons->find(in_id) == weapons->end()) {
-        std::string filename;
-        filename = "..//items//" + itemNames[in_id] + ".json";
-        SDL_Log("Loading weapon %d %s", in_id, filename.c_str());
-        weapons->at(in_id).readJSON(filename.c_str());
+    if (weapons != NULL) {
+        if (weapons->find(in_id) == weapons->end()) {
+            std::string filename;
+            filename = "..//items//" + itemNames[in_id] + ".json";
+            SDL_Log("Loading weapon %d %s", in_id, filename.c_str());
+            weapons->at(in_id).readJSON(filename.c_str());
+        }
+    } else {
+        SDL_Log("weapons pointer is NULL");
     }
 }
 
@@ -523,80 +526,86 @@ std::vector<int> Convoy::getStats(int wpntype, int stattype) {
     std::vector<int> vecstats;
     Inventory_item * temp = getItems(wpntype);
 
-    for (int i = 0; i < tempqty; i++) {
-        switch (stattype) {
-            case ITEM::STAT::ID:
-                vecstats.push_back(temp[i].id);
-                break;
+    if (weapons != NULL) {
 
-            case ITEM::STAT::PMIGHT:
-                vecstats.push_back(weapons->at(temp[i].id).getStats().Pmight);
-                break;
+        for (int i = 0; i < tempqty; i++) {
+            switch (stattype) {
+                case ITEM::STAT::ID:
+                    vecstats.push_back(temp[i].id);
+                    break;
 
-            case ITEM::STAT::MMIGHT:
-                vecstats.push_back(weapons->at(temp[i].id).getStats().Mmight);
-                break;
+                case ITEM::STAT::PMIGHT:
+                    vecstats.push_back(weapons->at(temp[i].id).getStats().Pmight);
+                    break;
 
-            case ITEM::STAT::HIT:
-                vecstats.push_back(weapons->at(temp[i].id).getStats().combat.hit);
-                break;
+                case ITEM::STAT::MMIGHT:
+                    vecstats.push_back(weapons->at(temp[i].id).getStats().Mmight);
+                    break;
 
-            case ITEM::STAT::DODGE:
-                vecstats.push_back(weapons->at(temp[i].id).getStats().combat.dodge);
-                break;
+                case ITEM::STAT::HIT:
+                    vecstats.push_back(weapons->at(temp[i].id).getStats().combat.hit);
+                    break;
 
-            case ITEM::STAT::CRIT:
-                vecstats.push_back(weapons->at(temp[i].id).getStats().combat.crit);
-                break;
+                case ITEM::STAT::DODGE:
+                    vecstats.push_back(weapons->at(temp[i].id).getStats().combat.dodge);
+                    break;
 
-            case ITEM::STAT::FAVOR:
-                vecstats.push_back(weapons->at(temp[i].id).getStats().combat.favor);
-                break;
+                case ITEM::STAT::CRIT:
+                    vecstats.push_back(weapons->at(temp[i].id).getStats().combat.crit);
+                    break;
 
-            case ITEM::STAT::WGT:
-                vecstats.push_back(weapons->at(temp[i].id).getStats().wgt);
-                break;
+                case ITEM::STAT::FAVOR:
+                    vecstats.push_back(weapons->at(temp[i].id).getStats().combat.favor);
+                    break;
 
-            case ITEM::STAT::USES:
-                vecstats.push_back(weapons->at(temp[i].id).getStats().uses);
-                break;
+                case ITEM::STAT::WGT:
+                    vecstats.push_back(weapons->at(temp[i].id).getStats().wgt);
+                    break;
 
-            case ITEM::STAT::USES_LEFT:
-                vecstats.push_back(weapons->at(temp[i].id).getStats().uses - temp[i].used);
-                break;
+                case ITEM::STAT::USES:
+                    vecstats.push_back(weapons->at(temp[i].id).getStats().uses);
+                    break;
 
-            case ITEM::STAT::USED:
-                vecstats.push_back(temp[i].used);
-                break;
+                case ITEM::STAT::USES_LEFT:
+                    vecstats.push_back(weapons->at(temp[i].id).getStats().uses - temp[i].used);
+                    break;
 
-            case ITEM::STAT::PROF:
-                vecstats.push_back(weapons->at(temp[i].id).getStats().prof);
-                break;
+                case ITEM::STAT::USED:
+                    vecstats.push_back(temp[i].used);
+                    break;
 
-            case ITEM::STAT::RANGEMIN:
-                vecstats.push_back(weapons->at(temp[i].id).getStats().range[0]);
-                break;
+                case ITEM::STAT::PROF:
+                    vecstats.push_back(weapons->at(temp[i].id).getStats().prof);
+                    break;
 
-            case ITEM::STAT::RANGEMAX:
-                vecstats.push_back(weapons->at(temp[i].id).getStats().range[1]);
-                break;
+                case ITEM::STAT::RANGEMIN:
+                    vecstats.push_back(weapons->at(temp[i].id).getStats().range[0]);
+                    break;
 
-            case ITEM::STAT::HANDLEFT:
-                vecstats.push_back(weapons->at(temp[i].id).getStats().hand[0]);
-                break;
+                case ITEM::STAT::RANGEMAX:
+                    vecstats.push_back(weapons->at(temp[i].id).getStats().range[1]);
+                    break;
 
-            case ITEM::STAT::HANDRIGHT:
-                vecstats.push_back(weapons->at(temp[i].id).getStats().hand[1]);
-                break;
+                case ITEM::STAT::HANDLEFT:
+                    vecstats.push_back(weapons->at(temp[i].id).getStats().hand[0]);
+                    break;
 
-            case ITEM::STAT::PRICE:
-                vecstats.push_back(weapons->at(temp[i].id).getStats().price);
-                break;
+                case ITEM::STAT::HANDRIGHT:
+                    vecstats.push_back(weapons->at(temp[i].id).getStats().hand[1]);
+                    break;
 
-            case ITEM::STAT::HEAL:
-                vecstats.push_back(weapons->at(temp[i].id).getStats().heal);
-                break;
+                case ITEM::STAT::PRICE:
+                    vecstats.push_back(weapons->at(temp[i].id).getStats().price);
+                    break;
+
+                case ITEM::STAT::HEAL:
+                    vecstats.push_back(weapons->at(temp[i].id).getStats().heal);
+                    break;
+            }
         }
+    } else {
+        SDL_Log("weapons pointer is NULL");
+
     }
 
     return (vecstats);
