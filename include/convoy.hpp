@@ -19,7 +19,7 @@ private:
     unsigned char  booksnum = 0;
     Quantity quantity;
     bool full = false;
-    std::unordered_map<short int, Weapon> * weapons;
+    std::unordered_map<short int, Weapon> * weapons = NULL;
 
     Inventory_item books[DEFAULT::BOOKS_NUM], swords[DEFAULT::CONVOY_SIZE],
                    lances[DEFAULT::CONVOY_SIZE], axes[DEFAULT::CONVOY_SIZE],

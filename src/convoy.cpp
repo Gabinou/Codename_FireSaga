@@ -137,94 +137,98 @@ int Convoy::partition(int arr[], int low, int high, int wpntype) {
 void Convoy::deposit(Inventory_item in_item) {
     if (!full) {
         // SDL_Log("Depositing: %d", in_item.id);
-        short unsigned int wpntypecode = weapons->at(in_item.id).getType();
+        if (weapons != NULL) {
+            short unsigned int wpntypecode = weapons->at(in_item.id).getType();
 
-        if ((wpntypecode & ITEM::TYPE::SWORD) > 0) {
-            swords[quantity.swords] = in_item;
-            quantity.swords += 1;
-            goto DEPOSIT_END;
-        }
+            if ((wpntypecode & ITEM::TYPE::SWORD) > 0) {
+                swords[quantity.swords] = in_item;
+                quantity.swords += 1;
+                goto DEPOSIT_END;
+            }
 
-        if ((wpntypecode & ITEM::TYPE::LANCE) > 0) {
-            lances[quantity.lances] = in_item;
-            quantity.lances += 1;
-            goto DEPOSIT_END;
-        }
+            if ((wpntypecode & ITEM::TYPE::LANCE) > 0) {
+                lances[quantity.lances] = in_item;
+                quantity.lances += 1;
+                goto DEPOSIT_END;
+            }
 
-        if ((wpntypecode & ITEM::TYPE::AXE) > 0) {
-            axes[quantity.axes] = in_item;
-            quantity.axes += 1;
-            goto DEPOSIT_END;
-        }
+            if ((wpntypecode & ITEM::TYPE::AXE) > 0) {
+                axes[quantity.axes] = in_item;
+                quantity.axes += 1;
+                goto DEPOSIT_END;
+            }
 
-        if ((wpntypecode & ITEM::TYPE::BOW) > 0) {
-            bows[quantity.bows] = in_item;
-            quantity.bows += 1;
-            goto DEPOSIT_END;
-        }
+            if ((wpntypecode & ITEM::TYPE::BOW) > 0) {
+                bows[quantity.bows] = in_item;
+                quantity.bows += 1;
+                goto DEPOSIT_END;
+            }
 
-        if ((wpntypecode & ITEM::TYPE::TRINKET) > 0) {
-            trinkets[quantity.trinkets] = in_item;
-            quantity.trinkets += 1;
-            goto DEPOSIT_END;
-        }
+            if ((wpntypecode & ITEM::TYPE::TRINKET) > 0) {
+                trinkets[quantity.trinkets] = in_item;
+                quantity.trinkets += 1;
+                goto DEPOSIT_END;
+            }
 
-        if ((wpntypecode & ITEM::TYPE::OFFHAND) > 0) {
-            offhands[quantity.offhands] = in_item;
-            quantity.offhands += 1;
-            goto DEPOSIT_END;
-        }
+            if ((wpntypecode & ITEM::TYPE::OFFHAND) > 0) {
+                offhands[quantity.offhands] = in_item;
+                quantity.offhands += 1;
+                goto DEPOSIT_END;
+            }
 
-        if ((wpntypecode & ITEM::TYPE::ELEMENTAL) > 0) {
-            elemental[quantity.elemental] = in_item;
-            quantity.elemental += 1;
-            goto DEPOSIT_END;
-        }
+            if ((wpntypecode & ITEM::TYPE::ELEMENTAL) > 0) {
+                elemental[quantity.elemental] = in_item;
+                quantity.elemental += 1;
+                goto DEPOSIT_END;
+            }
 
-        if ((wpntypecode & ITEM::TYPE::DEMONIC) > 0) {
-            demonic[quantity.demonic] = in_item;
-            quantity.demonic += 1;
-            goto DEPOSIT_END;
-        }
+            if ((wpntypecode & ITEM::TYPE::DEMONIC) > 0) {
+                demonic[quantity.demonic] = in_item;
+                quantity.demonic += 1;
+                goto DEPOSIT_END;
+            }
 
-        if ((wpntypecode & ITEM::TYPE::ANGELIC) > 0) {
-            angelic[quantity.angelic] = in_item;
-            quantity.angelic += 1;
-            goto DEPOSIT_END;
-        }
+            if ((wpntypecode & ITEM::TYPE::ANGELIC) > 0) {
+                angelic[quantity.angelic] = in_item;
+                quantity.angelic += 1;
+                goto DEPOSIT_END;
+            }
 
-        if ((wpntypecode & ITEM::TYPE::SHIELD) > 0) {
-            shields[quantity.shields] = in_item;
-            quantity.shields += 1;
-            goto DEPOSIT_END;
-        }
+            if ((wpntypecode & ITEM::TYPE::SHIELD) > 0) {
+                shields[quantity.shields] = in_item;
+                quantity.shields += 1;
+                goto DEPOSIT_END;
+            }
 
-        if ((wpntypecode & ITEM::TYPE::STAFF) > 0) {
-            staffs[quantity.staffs] = in_item;
-            quantity.staffs += 1;
-            goto DEPOSIT_END;
-        }
+            if ((wpntypecode & ITEM::TYPE::STAFF) > 0) {
+                staffs[quantity.staffs] = in_item;
+                quantity.staffs += 1;
+                goto DEPOSIT_END;
+            }
 
-        if ((wpntypecode & ITEM::TYPE::CLAW) > 0) {
-            claws[quantity.claws] = in_item;
-            quantity.claws += 1;
-            goto DEPOSIT_END;
-        }
+            if ((wpntypecode & ITEM::TYPE::CLAW) > 0) {
+                claws[quantity.claws] = in_item;
+                quantity.claws += 1;
+                goto DEPOSIT_END;
+            }
 
-        if ((wpntypecode & ITEM::TYPE::ITEM) > 0) {
-            items[quantity.items] = in_item;
-            quantity.items += 1;
-            goto DEPOSIT_END;
-        }
+            if ((wpntypecode & ITEM::TYPE::ITEM) > 0) {
+                items[quantity.items] = in_item;
+                quantity.items += 1;
+                goto DEPOSIT_END;
+            }
 
-        if ((wpntypecode & ITEM::TYPE::BOOK) > 0) {
-            books[booksnum] = in_item;
-            booksnum += 1;
-            goto DEPOSIT_END;
-        }
+            if ((wpntypecode & ITEM::TYPE::BOOK) > 0) {
+                books[booksnum] = in_item;
+                booksnum += 1;
+                goto DEPOSIT_END;
+            }
 
 DEPOSIT_END:
-        isFull();
+            isFull();
+        } else {
+            SDL_Log("weapons pointer is null");
+        }
     } else {
         SDL_Log("Convoy is full");
     }
@@ -244,10 +248,14 @@ void Convoy::printContents(int wpntype) {
     int tempqty = getQuantity(wpntype);
     SDL_Log("Quantity: %d \nArray:\n", tempqty);
 
-    for (int i = 0; i < tempqty; i++) {
-        if (tempitems[i].id > 0) {
-            SDL_Log("%d: %s", i, weapons->at(tempitems[i].id).getName().c_str());
+    if (weapons != NULL) {
+        for (int i = 0; i < tempqty; i++) {
+            if (tempitems[i].id > 0) {
+                SDL_Log("%d: %s", i, weapons->at(tempitems[i].id).getName().c_str());
+            }
         }
+    } else {
+        SDL_Log("weapons pointer is NULL");
     }
 }
 
@@ -258,10 +266,15 @@ void Convoy::printStats(int wpntype, int stattype) {
     std::vector<int> vecstats = getStats(wpntype, stattype);
     SDL_Log("Quantity: %d \n%s \t Wpn \n", tempqty, statname.c_str());
 
-    for (int i = 0; i < tempqty; i++) {
-        if (tempitems[i].id > 0) {
-            SDL_Log("%d \t %s", vecstats[i], weapons->at(tempitems[i].id).getName().c_str());
+    if (weapons != NULL) {
+
+        for (int i = 0; i < tempqty; i++) {
+            if (tempitems[i].id > 0) {
+                SDL_Log("%d \t %s", vecstats[i], weapons->at(tempitems[i].id).getName().c_str());
+            }
         }
+    } else {
+        SDL_Log("weapons pointer is NULL");
     }
 }
 

@@ -783,6 +783,7 @@ void Game::loadJSON(const short int save_ind) {
 
         cJSON * jconvoy = cJSON_GetObjectItem(json, "Convoy");
         convoy.readJSON(jconvoy);
+        convoy.setWeapons(&weapons);
         cJSON * jparty = cJSON_GetObjectItem(json, "Party");
         party.clear();
         cJSON * junit = cJSON_GetObjectItem(jparty, "Unit");
