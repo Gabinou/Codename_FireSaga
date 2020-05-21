@@ -367,6 +367,14 @@ void Convoy::setWeapons(std::unordered_map<short int, Weapon> * in_weapons) {
     weapons = in_weapons;
 }
 
+void Convoy::checkWeapon(short int in_id) {
+    if (weapons->find(in_id) == weapons->end()) {
+        std::string filename;
+        filename = "..//items//" + itemNames[in_id] + ".json";
+        SDL_Log("Loading weapon %d %s", in_id, filename.c_str());
+        weapons->at(in_id).readJSON(filename.c_str());
+    }
+}
 
 void Convoy::setItems(int wpntype, Inventory_item * in_items) {
     // Does not work.

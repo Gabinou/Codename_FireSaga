@@ -36,7 +36,6 @@ public:
     void earn(int in_money);
     void spend(int out_money);
 
-
     void quicksort(int arr[], int low, int high, int wpntype);
     int partition(int arr[], int low, int high, int wpntype);
     void swap(int arr[], int ind1, int ind2);
@@ -53,6 +52,7 @@ public:
     Inventory_item * getItems(int wpntype);
     void setItems(int wpntype, Inventory_item * in_items);
     void setWeapons(std::unordered_map<short int, Weapon> * in_weapons);
+    void checkWeapon(short int in_id);
 
     void printContents(int wpntype); // Useless?
     void printStats(int wpntype, int stattype);
