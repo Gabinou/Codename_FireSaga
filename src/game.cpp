@@ -574,7 +574,7 @@ void Game::loadMapArrivals() {
                     SDL_Log("unloaded party loading %d", map_arrivals[i].id);
                     loadUnits(std::vector<short int> {map_arrivals[i].id});
                     asset_name = "..//assets//" + party[map_arrivals[i].id].getName() + ".png";
-                    SDL_Log("Loaded: %s", party[map_arrivals[i].id].getName().c_str());
+                    SDL_Log("Loaded: %d %s", map_arrivals[i].id, party[map_arrivals[i].id].getName().c_str());
                 }
 
                 Uent = entities.create();
@@ -602,10 +602,16 @@ void Game::initParty() {
 
 void Game::loadUnits(std::vector<short int> toload) {
     std::string filename;
+    Unit temp_unit;
 
     for (short unsigned int i = 0; i < toload.size(); i++) {
         filename = "units//" + unitNames[toload[i]] + ".json";
-        party[toload[i]].readJSON(filename.c_str());
+        temp_unit.readJSON(filename.c_str());
+        switch(temp_unit.getArmy()) {
+                case UNIT::ARMY::ERWIN:
+                    party[toload[i]].copyUnit(temp_unit);
+                    break;
+        } 
     }
 }
 

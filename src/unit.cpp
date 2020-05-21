@@ -32,9 +32,7 @@ void Unit::copyUnit(const Unit & obj) {
     setSex(obj.sex);
     setid(obj.id);
     setBases(obj.base_stats);
-    SDL_Log("move: %d", obj.current_stats.move);
     setStats(obj.current_stats);
-    SDL_Log("move: %d", current_stats.move);
     setGrowths(obj.growths);
     setCaps(obj.caps_stats);
     setClassind(obj.class_index);
@@ -44,7 +42,6 @@ void Unit::copyUnit(const Unit & obj) {
     setSupports(obj.supports);
     exp = obj.exp;
     base_exp = obj.base_exp;
-    init();
 }
 
 bool Unit::getSex() {
@@ -59,6 +56,7 @@ void Unit::setSex(const bool in_sex) {
 void Unit::setid(const short int in_id) {
     id = in_id;
     name = unitNames[in_id];
+    SDL_Log("id: %d, name: %s", id, name.c_str());
     // setArmy(unitid2army(id));
 }
 
