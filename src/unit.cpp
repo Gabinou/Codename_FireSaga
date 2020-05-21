@@ -499,9 +499,14 @@ void Unit::checkWeapon(short int in_id) {
     if (weapons != NULL) {
         if (weapons->find(in_id) == weapons->end()) {
             std::string filename;
-            filename = "..//items//" + itemNames[in_id] + ".json";
+            filename = "items//" + itemNames[in_id] + ".json";
             SDL_Log("Loading weapon %d %s", in_id, filename.c_str());
-            weapons->at(in_id).readJSON(filename.c_str());
+            Weapon temp_weapon;
+            temp_weapon.readJSON(filename.c_str());
+            SDL_Log("weapon loaded");
+            // weapons->at(in_id).readJSON(filename.c_str()); // this line does not work.
+            weapons->emplace(in_id, temp_weapon); // this line does not work.
+            SDL_Log("weapon set");
         }
     } else {
         SDL_Log("weapons pointer is NULL");
