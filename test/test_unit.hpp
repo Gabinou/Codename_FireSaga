@@ -474,17 +474,17 @@ void test_unit() {
     lok(in_stats.move == out_stats.move);
     lok(in_stats.prof == out_stats.prof);
     out_stats = unit1.getStats();
-    lok(in_stats.hp >= out_stats.hp);
-    lok(in_stats.str >= out_stats.str);
-    lok(in_stats.mag >= out_stats.mag);
-    lok(in_stats.agi >= out_stats.agi);
-    lok(in_stats.dex >= out_stats.dex);
-    lok(in_stats.luck >= out_stats.luck);
-    lok(in_stats.def >= out_stats.def);
-    lok(in_stats.res >= out_stats.res);
-    lok(in_stats.con >= out_stats.con);
-    lok(in_stats.move >= out_stats.move);
-    lok(in_stats.prof >= out_stats.prof);
+    lok(in_stats.hp <= out_stats.hp);
+    lok(in_stats.str <= out_stats.str);
+    lok(in_stats.mag <= out_stats.mag);
+    lok(in_stats.agi <= out_stats.agi);
+    lok(in_stats.dex <= out_stats.dex);
+    lok(in_stats.luck <= out_stats.luck);
+    lok(in_stats.def <= out_stats.def);
+    lok(in_stats.res <= out_stats.res);
+    lok(in_stats.con <= out_stats.con);
+    lok(in_stats.move <= out_stats.move);
+    lok(in_stats.prof <= out_stats.prof);
 
     if (PHYSFS_stat("saves", nullptr) == 0) {
         PHYSFS_mkdir("saves");

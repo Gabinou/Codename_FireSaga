@@ -885,6 +885,7 @@ void Unit::readJSON(cJSON * in_junit) {
     cJSON * jcurrent_hp = cJSON_GetObjectItemCaseSensitive(in_junit, "CurrentHP");
     cJSON * jclass_index = cJSON_GetObjectItemCaseSensitive(in_junit, "Class Index");
     cJSON * jcurrent_stats = cJSON_GetObjectItemCaseSensitive(in_junit, "Stats");
+    cJSON * jbase_stats = cJSON_GetObjectItemCaseSensitive(in_junit, "Bases");
     cJSON * jcaps_stats = cJSON_GetObjectItemCaseSensitive(in_junit, "Caps");
     cJSON * jgrowths = cJSON_GetObjectItemCaseSensitive(in_junit, "Growths");
     cJSON * jlevelups = cJSON_GetObjectItemCaseSensitive(in_junit, "Level-ups");
@@ -899,6 +900,7 @@ void Unit::readJSON(cJSON * in_junit) {
     setClassind(cJSON_GetNumberValue(jclass_index));
     readJSON_stats(jcurrent_stats, &current_stats);
     readJSON_stats(jcaps_stats, &caps_stats);
+    readJSON_stats(jbase_stats, &base_stats);
     readJSON_stats(jgrowths, &growths);
 
     cJSON * jlevelup = cJSON_GetObjectItemCaseSensitive(jlevelups, "Level-up");
@@ -958,6 +960,7 @@ void Unit::writeJSON(cJSON * in_junit) {
         cJSON_AddItemToObject(in_junit, "Class Index", jclass_index);
         cJSON_AddItemToObject(in_junit, "Stats", jcurrent_stats);
         cJSON_AddItemToObject(in_junit, "Caps", jcaps_stats);
+        cJSON_AddItemToObject(in_junit, "Bases", jbase_stats);
         cJSON_AddItemToObject(in_junit, "Growths", jgrowths);
         cJSON_AddItemToObject(in_junit, "Level-ups", jgrown);
 
