@@ -5,10 +5,7 @@
 #endif /* STB_SPRINTF_IMPLEMENTATION */
 
 Unit::Unit() {
-    setXMLElement("Unit");
-    setJSONElement("Unit");
-    equipsR(0);
-    equipsL(1);
+    init();
 }
 
 Unit::Unit(const short int in_id, const char in_class_index,  const Unit_stats in_bases, const bool in_sex) : Unit() {
@@ -20,6 +17,17 @@ Unit::Unit(const short int in_id, const char in_class_index,  const Unit_stats i
 }
 
 Unit::Unit(const Unit & obj) : Unit()  {
+    copyUnit(obj);
+}
+
+void Unit::init() {
+    setXMLElement("Unit");
+    setJSONElement("Unit");
+    equipsR(0);
+    equipsL(1);
+}
+
+Unit::copyUnit(const Unit obj) {
     setSex(obj.sex);
     setid(obj.id);
     setBases(obj.base_stats);
@@ -33,6 +41,7 @@ Unit::Unit(const Unit & obj) : Unit()  {
     setSupports(obj.supports);
     exp = obj.exp;
     base_exp = obj.base_exp;
+    init();
 }
 
 bool Unit::getSex() {

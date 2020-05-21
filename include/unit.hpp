@@ -64,6 +64,9 @@ public:
     Unit(const short int in_id, const char in_class_index, const Unit_stats in_bases, const bool in_sex);
     Unit(const Unit & obj);
 
+    void init();
+    void copyUnit(const Unit obj);
+
     void setSupports(std::vector<short int> in_supports);
     void setSupports(const Support in_supports[DEFAULT::SUPPORTS_MAX]);
     Support * getSupports();
