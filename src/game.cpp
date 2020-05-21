@@ -584,6 +584,7 @@ void Game::loadMapArrivals() {
                 Uent.component<Position>()->setPos(map_arrivals[i].position.x, map_arrivals[i].position.y);
                 Uent.assign<Sprite>(asset_name.c_str());
                 Uent.assign<Unit>(party[map_arrivals[i].id]);
+                Uent.component<Unit>()->setWeapons(&weapons);
                 SDL_Log("Arrival position: %d %d", map_arrivals[i].position.x, map_arrivals[i].position.y);
                 mapx->putUnit(map_arrivals[i].position.x, map_arrivals[i].position.y, Uent.component<Unit>());
             }

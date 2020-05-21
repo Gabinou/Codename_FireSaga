@@ -475,13 +475,9 @@ Unit_stats Unit::getGrowths() {
 
 void Unit::checkWeapon(short int in_id) {
     if (weapons->find(in_id) == weapons->end()) {
-        Weapon temp_wpn;
         std::string filename;
         filename = "..//items//" + itemNames[in_id] + ".json";
         SDL_Log("Loading weapon %d %s", in_id, filename.c_str());
-        temp_wpn.readJSON(filename.c_str());
-        // weapons->insert(temp_wpn, in_id);
-        // weapons->at(in_id)., temp_wpn);
         weapons->at(in_id).readJSON(filename.c_str());
     }
 }
