@@ -3,7 +3,7 @@
 #include "stb_sprintf.h"
 
 Camp::Camp() {
-    for (int i = 0; i < UNIT::NAME::PC_END; i++) {
+    for (short int i = 0; i < UNIT::NAME::PC_END; i++) {
         previous_job.push_back(-1);
         priority_job.push_back(-1);
         forbidden_job.push_back(-1);
@@ -20,9 +20,17 @@ void Camp::plusChapter() {
 
 void Camp::writeJSON(cJSON * in_jcamp) {
     if (in_jcamp != NULL) {
-        cJSON * jid = cJSON_CreateNumber(id);
-
-        cJSON_AddItemToObject(in_junit, "level", jlevel);
+        cJSON * jpriority = cJSON_CreateArray();
+        cJSON * jprevious = cJSON_CreateArray();
+        cJSON * jforbidden = cJSON_CreateArray();
+        for (short int i = 0; i < UNIT::NAME::PC_END; i++) { 
+            cJSON_AddItemToArray(jpriority, priority_job[i]);
+            cJSON_AddItemToArray(jprevious, previous_job[i]);
+            cJSON_AddItemToArray(jforbidden, forbidden_job[i]);
+        }
+        cJSON_AddItemToObject(in_jcamp, "Priority job", jpriority);
+        cJSON_AddItemToObject(in_jcamp, "Previous job", jprevious);
+        cJSON_AddItemToObject(in_jcamp, "Forbidden job", jforbidden);
     }
 }
 
