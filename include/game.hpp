@@ -58,8 +58,6 @@ private:
     SDL_Event event;
 
     std::unordered_map<short int, Unit> party;
-    std::unordered_map<short int, Unit> enemies;
-    std::unordered_map<short int, Unit> neutral;
     std::unordered_map<short int, Weapon> weapons;
 
 public:

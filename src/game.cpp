@@ -566,7 +566,7 @@ void Game::loadMapArrivals() {
         std::string asset_name;
         entityx::Entity Uent;
         short int * bounds;
-
+        Unit temp_unit;
         for (int i = 0; i < map_arrivals.size(); i++) {
             if (map_arrivals[i].turn == currentturn) {
 
@@ -585,7 +585,9 @@ void Game::loadMapArrivals() {
                 Uent.component<Position>()->setOffset(DEFAULT::TILEMAP_XOFFSET, DEFAULT::TILEMAP_YOFFSET);
                 Uent.component<Position>()->setPos(map_arrivals[i].position.x, map_arrivals[i].position.y);
                 Uent.assign<Sprite>(asset_name.c_str());
-                Uent.assign<Unit>(party[map_arrivals[i].id]);
+                Uent.assign<Unit>();
+
+                
                 Uent.component<Unit>()->setWeapons(&weapons);
                 SDL_Log("Arrival position: %d %d", map_arrivals[i].position.x, map_arrivals[i].position.y);
                 mapx->putUnit(map_arrivals[i].position.x, map_arrivals[i].position.y, Uent.component<Unit>());
