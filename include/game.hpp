@@ -40,7 +40,6 @@ private:
     std::unordered_map<unsigned char, std::vector<unsigned char>> menuoptions;
     Narrative narrative;
 
-
     KeyboardInputMap keyboardInputMap;
     GamepadInputMap gamepadInputMap;
     MouseInputMap mouseInputMap;
