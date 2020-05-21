@@ -34,8 +34,8 @@ int main(int argc, char * argv[]) {
     SDL_Log("Initializing TinyMT\n");
     init_tinyMT();
 
-    SDL_Log("Loading base weapons.");
-    baseWeapons();
+    // SDL_Log("Loading base weapons.");
+    // baseWeapons();
 
     printf("Running tests\n");
     lrun("Camp ", test_camp);

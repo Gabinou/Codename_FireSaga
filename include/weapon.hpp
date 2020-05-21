@@ -38,11 +38,4 @@ public:
     void readXML(tinyxml2::XMLElement * in_pWpn);
 };
 
-extern std::vector<Weapon> all_weapons;
-extern std::vector<Weapon> loaded_weapons;
-
-void baseWeapons();
-void writeallXMLWeapons();
-std::vector<Weapon> baseWeapons(std::vector<short int> toload);
-
 #endif /* WEAPON_HPP */
