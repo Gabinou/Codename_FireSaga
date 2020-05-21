@@ -30,15 +30,10 @@ void Unit::init() {
 void Unit::copyUnit(const Unit & obj) {
     SDL_Log("Copying Unit");
     setSex(obj.sex);
-    SDL_Log("set sex");
     setid(obj.id);
-    SDL_Log("set id");
     setBases(obj.base_stats);
-    SDL_Log("set bae");
     setStats(obj.current_stats);
-    SDL_Log("set stats");
     setGrowths(obj.growths);
-    SDL_Log("set gro");
     setCaps(obj.caps_stats);
     SDL_Log("set caps %d ", obj.class_index);
     setClassind(obj.class_index);
@@ -150,15 +145,14 @@ char Unit::getClassind() {
 }
 
 void Unit::setClassind(char in_class_index) {
-    SDL_Log("Setting class index");
-    class_index = in_class_index;
-    mvt_type = mvtTypes[class_index];
-    SDL_Log("mvtype");
-    SDL_Log("%d", class_index);
-    class_name = classNames[class_index];
-    SDL_Log("class_name");
-    equippable = equippableCodes[class_index];
-    SDL_Log("equippable");
+    if (in_class_index >= UNIT::CLASS::END) {
+        class_index = in_class_index;
+        mvt_type = mvtTypes[class_index];
+        class_name = classNames[class_index];
+        equippable = equippableCodes[class_index];
+    } else {
+        SDL_Log("Unit class_index is invalid");
+    }
 }
 
 bool Unit::isDanger() {

@@ -383,7 +383,7 @@ enum CLASSES {
     KNIGHT = 40,
     GODDESS = 41,
     TWINBORN = 42,
-    END
+    END = 43,
 };
 }
 namespace TYPE {
