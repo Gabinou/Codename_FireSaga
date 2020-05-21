@@ -686,6 +686,7 @@ void Game::startTurnSystem() {
 
 void Game::setConvoy(Convoy in_convoy) {
     convoy = in_convoy;
+    convoy.setWeapons(&weapons);
 }
 
 Convoy Game::getConvoy() {
