@@ -195,8 +195,6 @@ void Camp::makePartyStack() {
                     party_stack.insert(party_stack.begin(), party[i]);
                 }
             }
-        } else {
-            SDL_Log("Party member's id is not the same as unordered map index");
         }
     }
 }
@@ -260,6 +258,7 @@ void Camp::assignJobs() {
 
     while (party_stack.size() > 0) {
         unit_ind = party_stack[party_stack.size() - 1];
+        SDL_Log("Stacking unit %d, %s", unit_ind, unitNames[unit_ind].c_str());
 
         if (jobs[job_queue.front()].size() >= optimal_jobs[job_queue.front()]) {
             job_queue.push(job_queue.front());
@@ -282,6 +281,8 @@ void Camp::assignJobs() {
         party_stack.pop_back();
         job_queue.push(job_queue.front());
         job_queue.pop();
+        SDL_Log("job_queue size %d", job_queue.size());
+        SDL_Log("party_stack size %d", party_stack.size());
     }
 }
 

@@ -82,6 +82,7 @@ void test_camp() {
     lok(test_camp1.getPartyStack().size() == (in_party1.size() - 2));
     // -2 for kiara AND erwin. priority jobs don't get added in the stack.
 
+    test_camp1.assignJobs();
     std::vector<std::vector<short unsigned int>> out_jobs;
     out_jobs = test_camp1.getJobs();
     lok(out_jobs[CAMPJOB::LIBRARIAN].size() == 0);
@@ -140,15 +141,22 @@ void test_camp() {
     lok(test_camp2.getPartyStack().size() == (in_party2.size() - 2));
     // -2 for kiara AND erwin. priority jobs don't get added in the stack.
 
-    out_jobs = test_camp1.getJobs();
-    lok(out_jobs[CAMPJOB::LIBRARIAN].size() == 1);
-    lok(out_jobs[CAMPJOB::COOK].size() == 1);
-    lok(out_jobs[CAMPJOB::GUARD].size() == 3);
-    lok(out_jobs[CAMPJOB::SCRIBE].size() == 0);
-    lok(out_jobs[CAMPJOB::STABLEHAND].size() == 1);
-    lok(out_jobs[CAMPJOB::ASSISTANT].size() == 0);
-    lok(out_jobs[CAMPJOB::CLERGYMAN].size() == 2);
-    lok(out_jobs[CAMPJOB::STORAGEMASTER].size() == 1);
+    test_camp2.assignJobs();
+    out_jobs = test_camp2.getJobs();
+    SDL_Log("out_jobs: %d %d", out_jobs[CAMPJOB::LIBRARIAN].size(), out_optimal[CAMPJOB::LIBRARIAN]);
+    SDL_Log("out_jobs: %d %d", out_jobs[CAMPJOB::COOK].size(), out_optimal[CAMPJOB::COOK]);
+    SDL_Log("out_jobs: %d %d", out_jobs[CAMPJOB::GUARD].size(), out_optimal[CAMPJOB::GUARD]);
+    // SDL_Log("out_jobs: %d %d", out_jobs[CAMPJOB::].size(), out_optimal[CAMPJOB::]);
+    // SDL_Log("out_jobs: %d %d", out_jobs[CAMPJOB::].size(), out_optimal[CAMPJOB::]);
+    // SDL_Log("out_jobs: %d %d", out_jobs[CAMPJOB::].size(), out_optimal[CAMPJOB::]);
+    lok(out_jobs[CAMPJOB::LIBRARIAN].size() == out_optimal[CAMPJOB::LIBRARIAN]);
+    lok(out_jobs[CAMPJOB::COOK].size() == out_optimal[CAMPJOB::COOK]);
+    lok(out_jobs[CAMPJOB::GUARD].size() == out_optimal[CAMPJOB::GUARD]);
+    lok(out_jobs[CAMPJOB::SCRIBE].size() == out_optimal[CAMPJOB::SCRIBE]);
+    lok(out_jobs[CAMPJOB::STABLEHAND].size() == out_optimal[CAMPJOB::STABLEHAND]);
+    lok(out_jobs[CAMPJOB::ASSISTANT].size() == out_optimal[CAMPJOB::ASSISTANT]);
+    lok(out_jobs[CAMPJOB::CLERGYMAN].size() == out_optimal[CAMPJOB::CLERGYMAN]);
+    lok(out_jobs[CAMPJOB::STORAGEMASTER].size() == out_optimal[CAMPJOB::STORAGEMASTER]);
 
     // if (out_jobs[CAMPJOB::CLERGYMAN].size() == 1) {
     //     lok(out_jobs[CAMPJOB::CLERGYMAN][0] == UNIT::NAME::KIARA);
