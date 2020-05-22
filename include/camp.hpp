@@ -13,6 +13,7 @@ class Camp: public JSON_IO {
 private:
     std::vector<short unsigned int> party;
     std::vector<short unsigned int> party_stack;
+    std::vector<short unsigned int> exclusions = {UNIT::NAME::ERWIN};
     std::vector<char> previous_jobs;
     std::vector<char> priority_jobs;
     std::vector<char> forbidden_jobs;
@@ -20,8 +21,6 @@ private:
     std::queue<unsigned char> job_queue;
 
     // librarian, cook, guard, scribe, stablehand, asssitant, clergyman, storagemaster.
-    // max_librarians should be floor(0.1 x Max army)
-    // guards is twice that.
     std::vector<float> fracs = {0.1, 0.1, 0.2, 0, 0.1, 0, 0.15, 0.1};
     std::vector<unsigned char> max_jobs = {4, 4, 8, 1, 4, 1, 4, 4};
     // 30 jobs.
@@ -32,6 +31,7 @@ private:
     std::vector<unsigned char> optimal_jobs;
     short int party_size;
     char chapter = -1;
+    void checkChapter();
 
 public:
     Camp();
@@ -50,6 +50,8 @@ public:
     bool checkJobs();
     void clearJobs();
 
+    void addExclusion(short unsigned int in_unit);
+    std::vector<short unsigned int> getExclusions();
     void setpriorityJob(short unsigned int in_unit, char in_job);
     std::vector<char> getpriorityJobs();
     void setforbiddenJob(short unsigned int in_unit, char in_job);

@@ -22,6 +22,8 @@ std::vector<short unsigned int> Camp::getParty() {
 
 void Camp::plusChapter() {
     chapter++;
+    checkChapter();
+
 }
 
 void Camp::writeJSON(cJSON * in_jcamp) {
@@ -82,8 +84,16 @@ void Camp::readJSON(cJSON * in_jcamp) {
     }
 }
 
-void Camp::setChapter(char in_chapter) {
-    chapter = in_chapter;
+std::vector<short unsigned int> Camp::getExclusions() {
+    return (exclusions);
+}
+
+void Camp::addExclusion(short unsigned int in_unit) {
+    exclusions.push_back(in_unit);
+}
+
+
+void Camp::checkChapter() {
 
     switch (chapter) {
         case 0:
@@ -153,6 +163,12 @@ void Camp::setChapter(char in_chapter) {
     }
 }
 
+
+void Camp::setChapter(char in_chapter) {
+    chapter = in_chapter;
+    checkChapter();
+}
+
 void Camp::setpriorityJob(short unsigned int in_unit, char in_job) {
     priority_jobs[in_unit] = in_job;
 }
@@ -185,7 +201,7 @@ void Camp::makePartyStack() {
     party_stack.clear();
 
     for (short int i = 0; i < party.size(); i++) {
-        if (party[i] != UNIT::NAME::ERWIN) {
+        if (!cppisin(party[i], exclusions)) {
             if (priority_jobs[party[i]] > -1) {
                 jobs[priority_jobs[party[i]]].push_back(party[i]);
             } else {
