@@ -170,7 +170,9 @@ void test_camp() {
     out_party3 = test_camp3.getParty();
     lok(out_party3 == in_party3);
 
-    out_priorityjobs = test_camp2.getpriorityJobs();
+    test_camp3.setforbiddenJob(UNIT::NAME::NICOLE, CAMPJOB::LIBRARIAN);
+
+    out_priorityjobs = test_camp3.getpriorityJobs();
     lok(out_priorityjobs[UNIT::NAME::KIARA] == CAMPJOB::CLERGYMAN);
 
     test_camp3.makeJobQueue();
@@ -225,12 +227,12 @@ void test_camp() {
     lok(out_jobs[CAMPJOB::CLERGYMAN].size() == out_optimal[CAMPJOB::CLERGYMAN]);
     lok(out_jobs[CAMPJOB::STORAGEMASTER].size() == out_optimal[CAMPJOB::STORAGEMASTER]);
 
-    lok(out_jobs[CAMPJOB::LIBRARIAN][0] == UNIT::NAME::NICOLE);
-    lok(out_jobs[CAMPJOB::COOK][0] == UNIT::NAME::LAUZON);
+    lok(out_jobs[CAMPJOB::LIBRARIAN][0] == UNIT::NAME::SILOU);
+    lok(out_jobs[CAMPJOB::COOK][0] == UNIT::NAME::NICOLE);
     lok(out_jobs[CAMPJOB::GUARD][0] == UNIT::NAME::LUCRECE);
-    lok(out_jobs[CAMPJOB::GUARD][1] == UNIT::NAME::SILOU);
+    lok(out_jobs[CAMPJOB::GUARD][1] == UNIT::NAME::PERIGNON);
     lok(out_jobs[CAMPJOB::GUARD][2] == UNIT::NAME::PIROU);
-    lok(out_jobs[CAMPJOB::STABLEHAND][0] == UNIT::NAME::PERIGNON);
+    lok(out_jobs[CAMPJOB::STABLEHAND][0] == UNIT::NAME::LAUZON);
     lok(out_jobs[CAMPJOB::CLERGYMAN][0] == UNIT::NAME::KIARA);
     lok(out_jobs[CAMPJOB::CLERGYMAN][1] == UNIT::NAME::SEBASTIAN);
     lok(out_jobs[CAMPJOB::STORAGEMASTER][0] == UNIT::NAME::SIMON);
