@@ -143,12 +143,7 @@ void test_camp() {
 
     test_camp2.assignJobs();
     out_jobs = test_camp2.getJobs();
-    SDL_Log("out_jobs: %d %d", out_jobs[CAMPJOB::LIBRARIAN].size(), out_optimal[CAMPJOB::LIBRARIAN]);
-    SDL_Log("out_jobs: %d %d", out_jobs[CAMPJOB::COOK].size(), out_optimal[CAMPJOB::COOK]);
-    SDL_Log("out_jobs: %d %d", out_jobs[CAMPJOB::GUARD].size(), out_optimal[CAMPJOB::GUARD]);
-    // SDL_Log("out_jobs: %d %d", out_jobs[CAMPJOB::].size(), out_optimal[CAMPJOB::]);
-    // SDL_Log("out_jobs: %d %d", out_jobs[CAMPJOB::].size(), out_optimal[CAMPJOB::]);
-    // SDL_Log("out_jobs: %d %d", out_jobs[CAMPJOB::].size(), out_optimal[CAMPJOB::]);
+    printJobs(out_jobs);
     lok(out_jobs[CAMPJOB::LIBRARIAN].size() == out_optimal[CAMPJOB::LIBRARIAN]);
     lok(out_jobs[CAMPJOB::COOK].size() == out_optimal[CAMPJOB::COOK]);
     lok(out_jobs[CAMPJOB::GUARD].size() == out_optimal[CAMPJOB::GUARD]);
@@ -158,10 +153,20 @@ void test_camp() {
     lok(out_jobs[CAMPJOB::CLERGYMAN].size() == out_optimal[CAMPJOB::CLERGYMAN]);
     lok(out_jobs[CAMPJOB::STORAGEMASTER].size() == out_optimal[CAMPJOB::STORAGEMASTER]);
 
+    lok(out_jobs[CAMPJOB::LIBRARIAN][0] == UNIT::NAME::SEBASTIAN);
+    lok(out_jobs[CAMPJOB::COOK][0] == UNIT::NAME::LUCRECE);
+    lok(out_jobs[CAMPJOB::GUARD][0] == UNIT::NAME::SIMON);
+    lok(out_jobs[CAMPJOB::GUARD][1] == UNIT::NAME::OTTO);
+    lok(out_jobs[CAMPJOB::GUARD][2] == UNIT::NAME::LAUZON);
+    lok(out_jobs[CAMPJOB::STABLEHAND][0] == UNIT::NAME::TEKAK);
+    lok(out_jobs[CAMPJOB::CLERGYMAN][0] == UNIT::NAME::KIARA);
+    lok(out_jobs[CAMPJOB::CLERGYMAN][1] == UNIT::NAME::MICHAEL);
+    lok(out_jobs[CAMPJOB::STORAGEMASTER][0] == UNIT::NAME::CHASSE);
+
+
     // if (out_jobs[CAMPJOB::CLERGYMAN].size() == 1) {
     //     lok(out_jobs[CAMPJOB::CLERGYMAN][0] == UNIT::NAME::KIARA);
     // }
-
 
     // test_camp1.assignJobs();
 }
