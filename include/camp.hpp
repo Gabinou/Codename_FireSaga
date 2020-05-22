@@ -42,6 +42,7 @@ public:
     void setParty(std::vector<short unsigned int> in_party);
     std::vector<short unsigned int> getParty();
     void makePartyStack();
+    std::vector<short unsigned int> getPartyStack();
 
     void makeJobQueue();
     void makeJobNumbers();

@@ -79,6 +79,7 @@ void test_camp() {
 
     test_camp1.clearJobs();
     test_camp1.makePartyStack();
+    lok(test_camp1.getPartyStack().size() == (in_party1.size() - 2));
     std::vector<std::vector<short unsigned int>> out_jobs;
     out_jobs = test_camp1.getJobs();
     lok(out_jobs[CAMPJOB::LIBRARIAN].size() == 0);
@@ -93,7 +94,6 @@ void test_camp() {
     if (out_jobs[CAMPJOB::CLERGYMAN].size() == 1) {
         lok(out_jobs[CAMPJOB::CLERGYMAN][0] == UNIT::NAME::KIARA);
     }
-
 
     test_camp2.setParty(in_party2);
     std::vector<short unsigned int> out_party2;
@@ -132,8 +132,9 @@ void test_camp() {
     lok(out_optimal[CAMPJOB::CLERGYMAN] == 2);
     lok(out_optimal[CAMPJOB::STORAGEMASTER] == 1);
 
-    // test_camp2.clearJobs();
-    // test_camp2.makePartyStack();
+    test_camp2.clearJobs();
+    test_camp2.makePartyStack();
+    lok(test_camp2.getPartyStack().size() == (in_party2.size() - 19));
     // std::vector<std::vector<short unsigned int>> out_jobs;
     // out_jobs = test_camp1.getJobs();
     // lok(out_jobs[CAMPJOB::LIBRARIAN].size() == 0);

@@ -177,6 +177,9 @@ std::vector<char> Camp::getpreviousJobs() {
     return (forbidden_jobs);
 }
 
+std::vector<short unsigned int> Camp::getPartyStack() {
+    return (party_stack);
+}
 
 void Camp::makePartyStack() {
     party_stack.clear();
