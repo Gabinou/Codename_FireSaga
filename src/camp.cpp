@@ -8,6 +8,8 @@ Camp::Camp() {
         priority_jobs.push_back(-1);
         forbidden_jobs.push_back(-1);
     }
+
+    setChapter(1);
 }
 
 Camp::~Camp() {

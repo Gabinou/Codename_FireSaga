@@ -42,7 +42,7 @@ void test_camp() {
     lok(out_party1 == in_party1);
 
     std::vector<char> out_priorityjobs;
-    test_camp1.setpriorityJob(UNIT::NAME::KIARA, CAMPJOB::CLERGYMAN);
+    // test_camp1.setpriorityJob(UNIT::NAME::KIARA, CAMPJOB::CLERGYMAN);
     out_priorityjobs = test_camp1.getpriorityJobs();
     lok(out_priorityjobs[UNIT::NAME::KIARA] == CAMPJOB::CLERGYMAN);
 
