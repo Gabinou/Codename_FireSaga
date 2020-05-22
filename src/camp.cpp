@@ -221,10 +221,11 @@ void Camp::setParty(std::vector<short unsigned int> in_party) {
 }
 
 void Camp::clearJobs() {
-    for (short int job = 0; job < jobs.size(); job++) {
-        for (short int worker = 0; worker < jobs[job].size(); worker++) {
-            priority_jobs[jobs[job][worker]] = job;
-        }
+    jobs.clear();
+    jobs.resize(CAMPJOB::STORAGEMASTER + 1);
+
+    for (int i = 0; i < jobs.size(); ++i) {
+        jobs[i].clear();
     }
 }
 
@@ -251,7 +252,6 @@ bool Camp::checkJobs() {
 
 void Camp::assignJobs() {
     short int unit_ind;
-    jobs.clear();
 
     while (party_stack.size() > 0) {
         unit_ind = party_stack[party_stack.size() - 1];
