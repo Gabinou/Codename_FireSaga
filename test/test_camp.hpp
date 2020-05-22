@@ -80,6 +80,8 @@ void test_camp() {
     test_camp1.clearJobs();
     test_camp1.makePartyStack();
     lok(test_camp1.getPartyStack().size() == (in_party1.size() - 2));
+    // -2 for kiara AND erwin. priority jobs don't get added in the stack.
+
     std::vector<std::vector<short unsigned int>> out_jobs;
     out_jobs = test_camp1.getJobs();
     lok(out_jobs[CAMPJOB::LIBRARIAN].size() == 0);
@@ -134,17 +136,19 @@ void test_camp() {
 
     test_camp2.clearJobs();
     test_camp2.makePartyStack();
-    lok(test_camp2.getPartyStack().size() == (in_party2.size() - 19));
-    // std::vector<std::vector<short unsigned int>> out_jobs;
-    // out_jobs = test_camp1.getJobs();
-    // lok(out_jobs[CAMPJOB::LIBRARIAN].size() == 0);
-    // lok(out_jobs[CAMPJOB::COOK].size() == 0);
-    // lok(out_jobs[CAMPJOB::GUARD].size() == 0);
-    // lok(out_jobs[CAMPJOB::SCRIBE].size() == 0);
-    // lok(out_jobs[CAMPJOB::STABLEHAND].size() == 0);
-    // lok(out_jobs[CAMPJOB::ASSISTANT].size() == 0);
-    // lok(out_jobs[CAMPJOB::CLERGYMAN].size() == 1);
-    // lok(out_jobs[CAMPJOB::STORAGEMASTER].size() == 0);
+    SDL_Log("party stack size: %d", test_camp2.getPartyStack().size());
+    lok(test_camp2.getPartyStack().size() == (in_party2.size() - 2));
+    // -2 for kiara AND erwin. priority jobs don't get added in the stack.
+
+    out_jobs = test_camp1.getJobs();
+    lok(out_jobs[CAMPJOB::LIBRARIAN].size() == 1);
+    lok(out_jobs[CAMPJOB::COOK].size() == 1);
+    lok(out_jobs[CAMPJOB::GUARD].size() == 3);
+    lok(out_jobs[CAMPJOB::SCRIBE].size() == 0);
+    lok(out_jobs[CAMPJOB::STABLEHAND].size() == 1);
+    lok(out_jobs[CAMPJOB::ASSISTANT].size() == 0);
+    lok(out_jobs[CAMPJOB::CLERGYMAN].size() == 2);
+    lok(out_jobs[CAMPJOB::STORAGEMASTER].size() == 1);
 
     // if (out_jobs[CAMPJOB::CLERGYMAN].size() == 1) {
     //     lok(out_jobs[CAMPJOB::CLERGYMAN][0] == UNIT::NAME::KIARA);
