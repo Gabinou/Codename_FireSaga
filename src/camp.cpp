@@ -23,11 +23,18 @@ void Camp::writeJSON(cJSON * in_jcamp) {
         cJSON * jpriority = cJSON_CreateArray();
         cJSON * jprevious = cJSON_CreateArray();
         cJSON * jforbidden = cJSON_CreateArray();
-        for (short int i = 0; i < UNIT::NAME::PC_END; i++) { 
-            cJSON_AddItemToArray(jpriority, priority_job[i]);
-            cJSON_AddItemToArray(jprevious, previous_job[i]);
-            cJSON_AddItemToArray(jforbidden, forbidden_job[i]);
+
+        cJSON * temp;
+
+        for (short int i = 0; i < UNIT::NAME::PC_END; i++) {
+            temp = cJSON_CreateNumber(priority_job[i]);
+            cJSON_AddItemToArray(jpriority, temp);
+            temp = cJSON_CreateNumber(previous_job[i]);
+            cJSON_AddItemToArray(jprevious, temp);
+            temp = cJSON_CreateNumber(forbidden_job[i]);
+            cJSON_AddItemToArray(jforbidden, temp);
         }
+
         cJSON_AddItemToObject(in_jcamp, "Priority job", jpriority);
         cJSON_AddItemToObject(in_jcamp, "Previous job", jprevious);
         cJSON_AddItemToObject(in_jcamp, "Forbidden job", jforbidden);
@@ -35,9 +42,38 @@ void Camp::writeJSON(cJSON * in_jcamp) {
 }
 
 void Camp::readJSON(cJSON * in_jcamp) {
-    cJSON * jid = cJSON_GetObjectItemCaseSensitive(in_junit, "id");
+    cJSON * jprevious = cJSON_GetObjectItemCaseSensitive(in_jcamp, "Previous job");
+    cJSON * jforbidden = cJSON_GetObjectItemCaseSensitive(in_jcamp, "Forbidden job");
+    cJSON * jpriority = cJSON_GetObjectItemCaseSensitive(in_jcamp, "Priority job");
+    int previous_size = cJSON_GetArraySize(jprevious);
+    int forbidden_size = cJSON_GetArraySize(jforbidden);
+    int priority_size = cJSON_GetArraySize(jpriority);
 
-    id = cJSON_GetNumberValue(jid); //returns 0 if junit is NULL
+    if (previous_size != UNIT::NAME::PC_END) {
+        SDL_Log("Previous job array size is incorrect");
+    }
+
+    if (forbidden_size != UNIT::NAME::PC_END) {
+        SDL_Log("Forbidden job array size is incorrect");
+    }
+
+    if (priority_size != UNIT::NAME::PC_END) {
+        SDL_Log("Priority job array size is incorrect");
+    }
+
+    previous_job.clear();
+    priority_job.clear();
+    forbidden_job.clear();
+    cJSON * jtemp;
+
+    for (short int i = 0; i < UNIT::NAME::PC_END; i++) {
+        jtemp = cJSON_GetArrayItem(jprevious, i);
+        previous_job.push_back(cJSON_GetNumberValue(jtemp));
+        jtemp = cJSON_GetArrayItem(jpriority, i);
+        priority_job.push_back(cJSON_GetNumberValue(jtemp));
+        jtemp = cJSON_GetArrayItem(jforbidden, i);
+        forbidden_job.push_back(cJSON_GetNumberValue(jtemp));
+    }
 }
 
 void Camp::setChapter(char in_chapter) {

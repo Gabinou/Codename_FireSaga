@@ -13,6 +13,7 @@ void printJobs(std::vector<std::vector<short unsigned int>> in_jobs) {
 
 
 void test_camp() {
+    SDL_Log("test_camp");
     std::vector<short unsigned int> test_party1 = {UNIT::NAME::ERWIN,
                                                    UNIT::NAME::KIARA,
                                                   };
