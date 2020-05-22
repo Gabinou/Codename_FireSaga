@@ -2,6 +2,7 @@
 #include "linalg.hpp"
 
 void test_linalg() {
+    SDL_Log("test_linalg");
     std::vector<short int> temp1D1;
     std::vector<std::vector<short int>> temp2D1;
     std::vector<std::vector<short int>> temp2D2;

@@ -413,6 +413,7 @@ void writeAllUnits(const char * filename) {
 }
 
 void test_unit() {
+    SDL_Log("test_unit");
     Unit unit1, unit2, unit3, unit4, unit5;
     Unit_stats in_stats, out_stats;
     Unit_stats in_caps, out_caps;

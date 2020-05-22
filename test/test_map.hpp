@@ -165,6 +165,7 @@ std::vector<std::vector<short int>> testTilemap() {
 }
 
 void test_map() {
+    SDL_Log("test_map");
     entityx::EntityX ex;
     short int tilesize = 32;
     Map map1(tilesize, tilesize);

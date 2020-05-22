@@ -301,7 +301,7 @@ void testConvoysortStats() {
 }
 
 void test_convoy() {
-    SDL_Log("test_cconvoy");
+    SDL_Log("test_convoy");
     testConvoyfull();
     testConvoysortStats();
     testConvoyWriteRead();

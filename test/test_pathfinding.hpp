@@ -3,6 +3,7 @@
 #include "linalg.hpp"
 
 void test_pathfinding() {
+    SDL_Log("test_pathfinding");
     short unsigned int move;
     short unsigned int start[2];
     unsigned char range[2];

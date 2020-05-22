@@ -2,7 +2,7 @@
 #include "position.hpp"
 
 void test_position() {
-
+    SDL_Log("test_position");
     Position position;
     Point pos;
 

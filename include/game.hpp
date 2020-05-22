@@ -82,6 +82,7 @@ public:
     void unloadCursor();
     void loadMouse();
     void unloadMouse();
+    std::unordered_map<short int, Weapon> * getWeapons();
 
     std::unordered_map<short int, Unit> getParty();
 

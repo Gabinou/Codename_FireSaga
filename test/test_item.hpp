@@ -3,6 +3,7 @@
 #include "structs.hpp"
 
 void test_item() {
+    SDL_Log("test_item");
 
     if (PHYSFS_stat("saves", nullptr) == 0) {
         PHYSFS_mkdir("saves");

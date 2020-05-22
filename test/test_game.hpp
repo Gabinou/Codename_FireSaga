@@ -1,8 +1,21 @@
 #include "minctest.h"
 #include "game.hpp"
 
-Convoy makeConvoy() {
+void test_game() {
+    SDL_Log("test_game");
+    Game * testgame1 = nullptr;
+    Settings temp_settings;
+
+    temp_settings.FPS.show = true;
+    temp_settings.fontsize = 28;
+    testgame1 = new Game(temp_settings);
+    std::vector<short int> unit_inds = {UNIT::NAME::SILOU};
+    testgame1->loadUnits(unit_inds);
+
+
     Convoy convoy;
+    convoy.setWeapons(testgame1->getWeapons());
+
     Inventory_item temp;
     temp.id = ITEM::NAME::WOODEN_SWORD;
     convoy.deposit(temp);
@@ -65,19 +78,7 @@ Convoy makeConvoy() {
     convoy.deposit(temp);
     temp.id = ITEM::NAME::SPEAR;
     convoy.deposit(temp);
-    return (convoy);
-}
 
-void test_game() {
-    Game * testgame1 = nullptr;
-    Settings temp_settings;
-
-    temp_settings.FPS.show = true;
-    temp_settings.fontsize = 28;
-    testgame1 = new Game(temp_settings);
-    std::vector<short int> unit_inds = {UNIT::NAME::SILOU};
-    testgame1->loadUnits(unit_inds);
-    Convoy convoy = makeConvoy();
     testgame1->setConvoy(convoy);
     // testgame1->loadMap(0);
 

@@ -2,6 +2,7 @@
 #include "utilities.hpp"
 
 void test_utilities() {
+    SDL_Log("test_utilities");
     int current;
     int upper1;
     int upper2;

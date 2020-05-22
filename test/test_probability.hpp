@@ -2,6 +2,7 @@
 #include "probability.hpp"
 
 void test_probability() {
+    SDL_Log("test_probability");
     // Actually testing the box-muller transform, the tinyMT is a little more involved.
     // NOt done here because FUCK THAT.
     tinymt32_t tinyMT1;

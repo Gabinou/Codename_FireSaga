@@ -13,10 +13,10 @@ SDL_Renderer * Game::renderer = nullptr;
 TTF_Font * Game::font = NULL;
 
 Game::Game() {
-
+    convoy.setWeapons(&weapons);
 }
 
-Game::Game(Settings in_settings) {
+Game::Game(Settings in_settings) : Game() {
     setSettings(in_settings);
     init();
 }
@@ -897,6 +897,11 @@ MouseInputMap Game::getMouseInputMap() {
 void Game::setMouseInputMap(MouseInputMap in_mouseInputMap) {
     mouseInputMap = in_mouseInputMap;
 }
+
+std::unordered_map<short int, Weapon> * Game::getWeapons() {
+    return (&weapons);
+}
+
 
 void Game::handleEvents() {
     SDL_PollEvent(&event);

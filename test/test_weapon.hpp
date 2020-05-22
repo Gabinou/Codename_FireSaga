@@ -847,6 +847,7 @@ void baseWeapons() {
 
 
 void test_weapon() {
+    SDL_Log("test_weapon");
     Weapon wpn1, wpn2, wpn3;
     Weapon_stats in_wpn_stats, out_wpn_stats;
     Unit_stats in_stats = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11};

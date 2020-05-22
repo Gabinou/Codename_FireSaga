@@ -319,6 +319,8 @@ void writeTilesJSON() {
 }
 
 void test_tile() {
+    SDL_Log("test_tile");
+
     if (PHYSFS_stat("saves", nullptr) == 0) {
         PHYSFS_mkdir("saves");
     }
