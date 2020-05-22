@@ -250,10 +250,6 @@ bool Camp::checkJobs() {
 }
 
 void Camp::assignJobs() {
-    makeJobNumbers();
-    makeJobQueue();
-    makePartyStack();
-
     short int unit_ind;
     jobs.clear();
 
@@ -284,26 +280,32 @@ void Camp::assignJobs() {
     }
 }
 
+std::queue<unsigned char> Camp::getJobqueue() {
+    return (job_queue);
+}
+
+
 void Camp::makeJobNumbers() {
     party_size = party.size();
-
-    optimal[0] = std::min((unsigned char)max[0], (unsigned char)floor(fracs[0] * party_size));
-    optimal[1] = std::min((unsigned char)max[1], (unsigned char)std::max((unsigned char)floor(fracs[1] * party_size), (unsigned char)1));
-    optimal[2] = std::min((unsigned char)max[2], (unsigned char)std::max((unsigned char)floor(fracs[2] * party_size), (unsigned char)1));
-    optimal[4] = std::min((unsigned char)max[4], (unsigned char)std::max((unsigned char)floor(fracs[4] * party_size), (unsigned char)1));
-    optimal[6] = std::min((unsigned char)max[6], (unsigned char)std::max((unsigned char)floor(fracs[6] * party_size), (unsigned char)1));
-    optimal[7] = std::min((unsigned char)max[7], (unsigned char)floor(fracs[0] * party_size));
+    optimal.clear();
+    optimal.reserve(CAMPJOB::STORAGEMASTER + 1);
+    optimal[CAMPJOB::LIBRARIAN] = std::min((unsigned char)max[CAMPJOB::LIBRARIAN], (unsigned char)floor(fracs[CAMPJOB::LIBRARIAN] * party_size));
+    optimal[CAMPJOB::COOK] = std::min((unsigned char)max[CAMPJOB::COOK], (unsigned char)std::max((unsigned char)floor(fracs[CAMPJOB::COOK] * party_size), (unsigned char)1));
+    optimal[CAMPJOB::GUARD] = std::min((unsigned char)max[CAMPJOB::GUARD], (unsigned char)std::max((unsigned char)floor(fracs[CAMPJOB::GUARD] * party_size), (unsigned char)1));
+    optimal[CAMPJOB::STABLEHAND] = std::min((unsigned char)max[CAMPJOB::STABLEHAND], (unsigned char)std::max((unsigned char)floor(fracs[CAMPJOB::STABLEHAND] * party_size), (unsigned char)1));
+    optimal[CAMPJOB::CLERGYMAN] = std::min((unsigned char)max[CAMPJOB::CLERGYMAN], (unsigned char)std::max((unsigned char)floor(fracs[CAMPJOB::CLERGYMAN] * party_size), (unsigned char)1));
+    optimal[CAMPJOB::STORAGEMASTER] = std::min((unsigned char)max[CAMPJOB::STORAGEMASTER], (unsigned char)floor(fracs[0] * party_size));
 
     if (chapter < 10) {
-        optimal[3] = 0;
+        optimal[CAMPJOB::SCRIBE] = 0;
     } else {
-        optimal[3] = 1;
+        optimal[CAMPJOB::SCRIBE] = 1;
     }
 
     if (chapter < 10) {
-        optimal[5] = 0;
+        optimal[CAMPJOB::ASSISTANT] = 0;
     } else {
-        optimal[5] = 1;
+        optimal[CAMPJOB::ASSISTANT] = 1;
     }
 
 

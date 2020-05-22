@@ -42,6 +42,33 @@ void test_camp() {
     std::vector<short unsigned int> out_party1;
     out_party1 = test_camp1.getParty();
     lok(out_party1 == in_party1);
-    // std::vector<std::vector<short unsigned int>> temp_jobs = test_camp.getJobs();
-    // printJobs(temp_jobs);
+
+    std::vector<char> out_priorityjobs;
+    test_camp1.setpriorityJob(UNIT::NAME::KIARA, CAMPJOB::CLERGYMAN);
+    out_priorityjobs = test_camp1.getpriorityJobs();
+    lok(out_priorityjobs[UNIT::NAME::KIARA] == CAMPJOB::CLERGYMAN);
+
+    std::queue<unsigned char> out_queue;
+    test_camp1.makeJobQueue();
+    out_queue = test_camp1.getJobqueue();
+    lok(out_queue.front() == CAMPJOB::COOK);
+    out_queue.pop();
+    lok(out_queue.front() == CAMPJOB::STABLEHAND);
+    out_queue.pop();
+    lok(out_queue.front() == CAMPJOB::GUARD);
+    out_queue.pop();
+    lok(out_queue.front() == CAMPJOB::STORAGEMASTER);
+    out_queue.pop();
+    lok(out_queue.front() == CAMPJOB::CLERGYMAN);
+    out_queue.pop();
+    lok(out_queue.front() == CAMPJOB::LIBRARIAN);
+    out_queue.pop();
+    lok(out_queue.front() == CAMPJOB::SCRIBE);
+    out_queue.pop();
+    lok(out_queue.front() == CAMPJOB::ASSISTANT);
+
+    // std::vector<std::vector<short unsigned int>> out_jobs;
+    // test_camp1.assignJobs();
+    // out_jobs = test_camp1.getJobs();
+    // lok(out_jobs[CAMPJOB::CLERGYMAN][0] == UNIT::NAME::KIARA);
 }

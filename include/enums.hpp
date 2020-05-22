@@ -329,13 +329,13 @@ enum EFFECTS {
 namespace CAMPJOB {
 enum CAMPJOBS {
     LIBRARIAN = 0,
-    COOK,
-    GUARD,
-    SCRIBE,
-    STABLEHAND,
-    ASSISTANT,
-    CLERGYMAN,
-    STORAGEMASTER
+    COOK = 1,
+    GUARD = 2,
+    SCRIBE = 3,
+    STABLEHAND = 4,
+    ASSISTANT = 5,
+    CLERGYMAN = 6,
+    STORAGEMASTER = 7,
 };
 }
 namespace UNIT {
