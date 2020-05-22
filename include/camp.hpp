@@ -4,8 +4,7 @@
 #include "structs.hpp"
 #include "enums.hpp"
 #include "unit.hpp"
-#include "game.hpp"
-#include <math.h>
+// #include <math.h>
 #include "filesystem.hpp"
 #include <queue>
 

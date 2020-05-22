@@ -691,6 +691,14 @@ Convoy Game::getConvoy() {
     return (convoy);
 }
 
+void Game::setCamp(Camp in_camp) {
+    camp = in_camp;
+}
+
+Camp Game::getCamp() {
+    return (camp);
+}
+
 void Game::loadXML(const short int save_ind) {
     char filename[DEFAULT::BUFFER_SIZE];
 

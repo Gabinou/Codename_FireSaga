@@ -14,6 +14,7 @@
 #include "map.hpp"
 #include "utilities.hpp"
 #include "convoy.hpp"
+#include "camp.hpp"
 #include "pathfinding.hpp"
 #include "tile.hpp"
 #include "unit.hpp"
@@ -47,6 +48,7 @@ private:
     Settings settings;
     tinymt32_t tinymt;
     Convoy convoy;
+    Camp camp;
 
     unsigned int previous_mouse;
     char chapter = -1;
@@ -86,6 +88,8 @@ public:
 
     std::unordered_map<short int, Unit> getParty();
 
+    void setCamp(Camp in_camp);
+    Camp getCamp();
     void setConvoy(Convoy in_convoy);
     Convoy getConvoy();
 

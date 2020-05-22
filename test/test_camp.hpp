@@ -12,7 +12,6 @@ void printJobs(std::vector<std::vector<short unsigned int>> in_jobs) {
     }
 }
 
-
 void test_camp() {
     SDL_Log("test_camp");
     std::vector<short unsigned int> in_party1 = {UNIT::NAME::ERWIN,
@@ -164,7 +163,6 @@ void test_camp() {
     lok(out_jobs[CAMPJOB::CLERGYMAN][1] == UNIT::NAME::MICHAEL);
     lok(out_jobs[CAMPJOB::STORAGEMASTER][0] == UNIT::NAME::CHASSE);
 
-
     test_camp3.setParty(in_party2);
     std::vector<short unsigned int> out_party3;
     out_party3 = test_camp3.getParty();
@@ -204,7 +202,6 @@ void test_camp() {
     lok(out_optimal[CAMPJOB::CLERGYMAN] == 2);
     lok(out_optimal[CAMPJOB::STORAGEMASTER] == 1);
 
-
     test_camp3.clearJobs();
     test_camp3.makePartyStack();
     SDL_Log("party stack size: %d", test_camp3.getPartyStack().size());
@@ -236,7 +233,6 @@ void test_camp() {
     lok(out_jobs[CAMPJOB::CLERGYMAN][0] == UNIT::NAME::KIARA);
     lok(out_jobs[CAMPJOB::CLERGYMAN][1] == UNIT::NAME::SEBASTIAN);
     lok(out_jobs[CAMPJOB::STORAGEMASTER][0] == UNIT::NAME::SIMON);
-
 
     test_camp3.clearJobs();
     test_camp3.addExclusion(UNIT::NAME::SILOU);
