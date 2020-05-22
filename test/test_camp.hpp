@@ -67,6 +67,19 @@ void test_camp() {
     out_queue.pop();
     lok(out_queue.front() == CAMPJOB::ASSISTANT);
 
+    std::vector<unsigned char> out_optimal;
+    test_camp1.makeJobNumbers();
+    out_optimal = test_camp1.getOptimaljobs();
+    lok(out_optimal[CAMPJOB::LIBRARIAN] == 0);
+    lok(out_optimal[CAMPJOB::COOK] == 0);
+    lok(out_optimal[CAMPJOB::GUARD] == 0);
+    lok(out_optimal[CAMPJOB::SCRIBE] == 0);
+    lok(out_optimal[CAMPJOB::STABLEHAND] == 0);
+    lok(out_optimal[CAMPJOB::ASSISTANT] == 0);
+    lok(out_optimal[CAMPJOB::CLERGYMAN] == 0);
+    lok(out_optimal[CAMPJOB::STORAGEMASTER] == 0);
+
+
     // std::vector<std::vector<short unsigned int>> out_jobs;
     // test_camp1.assignJobs();
     // out_jobs = test_camp1.getJobs();

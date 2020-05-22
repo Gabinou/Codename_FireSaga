@@ -231,11 +231,11 @@ void Camp::clearJobs() {
 bool Camp::checkJobs() {
     bool out = false;
 
-    if (jobs.size() == optimal.size()) {
+    if (jobs.size() == optimal_jobs.size()) {
         int num_filled = 0;
 
         for (short int i = 0; i < jobs.size(); i++) {
-            if (jobs[i].size() >= optimal[i]) {
+            if (jobs[i].size() >= optimal_jobs[i]) {
                 num_filled++;
 
             }
@@ -243,7 +243,7 @@ bool Camp::checkJobs() {
 
         out = (num_filled == 8);
     } else {
-        SDL_Log("number of jobs and optimal is not the same");
+        SDL_Log("number of jobs and optimal_jobs is not the same");
     }
 
     return (out);
@@ -256,7 +256,7 @@ void Camp::assignJobs() {
     while (party_stack.size() > 0) {
         unit_ind = party_stack[party_stack.size() - 1];
 
-        if (jobs[job_queue.front()].size() >= optimal[job_queue.front()]) {
+        if (jobs[job_queue.front()].size() >= optimal_jobs[job_queue.front()]) {
             job_queue.push(job_queue.front());
             job_queue.pop();
             continue;
@@ -284,28 +284,32 @@ std::queue<unsigned char> Camp::getJobqueue() {
     return (job_queue);
 }
 
+std::vector<unsigned char> Camp::getOptimaljobs() {
+    return (optimal_jobs);
+}
+
 
 void Camp::makeJobNumbers() {
     party_size = party.size();
-    optimal.clear();
-    optimal.reserve(CAMPJOB::STORAGEMASTER + 1);
-    optimal[CAMPJOB::LIBRARIAN] = std::min((unsigned char)max[CAMPJOB::LIBRARIAN], (unsigned char)floor(fracs[CAMPJOB::LIBRARIAN] * party_size));
-    optimal[CAMPJOB::COOK] = std::min((unsigned char)max[CAMPJOB::COOK], (unsigned char)std::max((unsigned char)floor(fracs[CAMPJOB::COOK] * party_size), (unsigned char)1));
-    optimal[CAMPJOB::GUARD] = std::min((unsigned char)max[CAMPJOB::GUARD], (unsigned char)std::max((unsigned char)floor(fracs[CAMPJOB::GUARD] * party_size), (unsigned char)1));
-    optimal[CAMPJOB::STABLEHAND] = std::min((unsigned char)max[CAMPJOB::STABLEHAND], (unsigned char)std::max((unsigned char)floor(fracs[CAMPJOB::STABLEHAND] * party_size), (unsigned char)1));
-    optimal[CAMPJOB::CLERGYMAN] = std::min((unsigned char)max[CAMPJOB::CLERGYMAN], (unsigned char)std::max((unsigned char)floor(fracs[CAMPJOB::CLERGYMAN] * party_size), (unsigned char)1));
-    optimal[CAMPJOB::STORAGEMASTER] = std::min((unsigned char)max[CAMPJOB::STORAGEMASTER], (unsigned char)floor(fracs[0] * party_size));
+    optimal_jobs.clear();
+    optimal_jobs.resize(CAMPJOB::STORAGEMASTER + 1);
+    optimal_jobs[CAMPJOB::LIBRARIAN] = std::min((unsigned char)max_jobs[CAMPJOB::LIBRARIAN], (unsigned char)floor(fracs[CAMPJOB::LIBRARIAN] * party_size));
+    optimal_jobs[CAMPJOB::COOK] = std::min((unsigned char)max_jobs[CAMPJOB::COOK], (unsigned char)std::max((unsigned char)floor(fracs[CAMPJOB::COOK] * party_size), (unsigned char)1));
+    optimal_jobs[CAMPJOB::GUARD] = std::min((unsigned char)max_jobs[CAMPJOB::GUARD], (unsigned char)std::max((unsigned char)floor(fracs[CAMPJOB::GUARD] * party_size), (unsigned char)1));
+    optimal_jobs[CAMPJOB::STABLEHAND] = std::min((unsigned char)max_jobs[CAMPJOB::STABLEHAND], (unsigned char)std::max((unsigned char)floor(fracs[CAMPJOB::STABLEHAND] * party_size), (unsigned char)1));
+    optimal_jobs[CAMPJOB::CLERGYMAN] = std::min((unsigned char)max_jobs[CAMPJOB::CLERGYMAN], (unsigned char)std::max((unsigned char)floor(fracs[CAMPJOB::CLERGYMAN] * party_size), (unsigned char)1));
+    optimal_jobs[CAMPJOB::STORAGEMASTER] = std::min((unsigned char)max_jobs[CAMPJOB::STORAGEMASTER], (unsigned char)floor(fracs[0] * party_size));
 
     if (chapter < 10) {
-        optimal[CAMPJOB::SCRIBE] = 0;
+        optimal_jobs[CAMPJOB::SCRIBE] = 0;
     } else {
-        optimal[CAMPJOB::SCRIBE] = 1;
+        optimal_jobs[CAMPJOB::SCRIBE] = 1;
     }
 
     if (chapter < 10) {
-        optimal[CAMPJOB::ASSISTANT] = 0;
+        optimal_jobs[CAMPJOB::ASSISTANT] = 0;
     } else {
-        optimal[CAMPJOB::ASSISTANT] = 1;
+        optimal_jobs[CAMPJOB::ASSISTANT] = 1;
     }
 
 

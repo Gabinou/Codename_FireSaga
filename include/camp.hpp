@@ -23,13 +23,13 @@ private:
     // max_librarians should be floor(0.1 x Max army)
     // guards is twice that.
     std::vector<float> fracs = {0.1, 0.1, 0.2, 0, 0.1, 0, 0.15, 0.1};
-    std::vector<unsigned char> max = {4, 4, 8, 1, 4, 1, 4, 4};
+    std::vector<unsigned char> max_jobs = {4, 4, 8, 1, 4, 1, 4, 4};
     // 30 jobs.
     // + 1 -> Erwin is the leader.
     // + 2/3 -> War council members? Pérignon/Chassé/ Pierre et Simon Laplace.?
     // + 1 -> armory merchant traveling with you.
     // + 1 -> item shop merchant traveling with you.
-    std::vector<unsigned char> optimal;
+    std::vector<unsigned char> optimal_jobs;
     short int party_size;
     char chapter = -1;
 
@@ -58,6 +58,7 @@ public:
 
     std::vector<std::vector<short unsigned int>> getJobs();
     std::queue<unsigned char> getJobqueue();
+    std::vector<unsigned char> getOptimaljobs();
 
     using JSON_IO::writeJSON;
     using JSON_IO::readJSON;
