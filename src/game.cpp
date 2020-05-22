@@ -503,6 +503,24 @@ void Game::loadMouse() {
 
 }
 
+void Game::enableMouse() {
+    ismouse = true;
+
+    if (mousex.valid()) {
+        entityx::ComponentHandle<Sprite> sprite = mousex.component<Sprite>();
+        sprite->show();
+    }
+}
+
+void Game::disableMouse() {
+    ismouse = false;
+
+    if (mousex.valid()) {
+        entityx::ComponentHandle<Sprite> sprite = mousex.component<Sprite>();
+        sprite->show();
+    }
+}
+
 void Game::unloadMouse() {
     if (mousex.valid()) {
         mousex.destroy();

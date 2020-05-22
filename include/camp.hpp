@@ -23,7 +23,7 @@ private:
     std::vector<unsigned char> max_jobs = {4, 4, 8, 1, 4, 1, 4, 4};
     // 30 jobs.
     // + 1 -> Erwin is the leader.
-    // + 2/3 -> War council members? Pérignon/Chassé/ Pierre et Simon Laplace.? 
+    // + 2/3 -> War council members? Pérignon/Chassé/ Pierre et Simon Laplace.?
     // War council members should still have tasks.
     // + 1 -> armory merchant traveling with you.
     // + 1 -> item shop merchant traveling with you.

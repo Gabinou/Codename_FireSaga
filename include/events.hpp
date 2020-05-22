@@ -12,7 +12,14 @@ struct turnBegin {
 
 struct turnEnd {
     turnEnd() {}
+};
 
+struct disableMouse {
+    disableMouse() {}
+};
+
+struct enableMouse {
+    enableMouse() {}
 };
 
 struct selectPC {

@@ -39,16 +39,27 @@ void ControlSystemx::configure(entityx::EventManager & in_events) {
     event_manager->subscribe<inputPause>(*this);
     event_manager->subscribe<turnBegin>(*this);
     event_manager->subscribe<switchControl>(*this);
+    event_manager->subscribe<enableMouse>(*this);
+    event_manager->subscribe<disableMouse>(*this);
+}
+
+void ControlSystemx::receive(const disableMouse & disableM) {
+    SDL_Log("Received disableMouse event");
+    game->disableMouse();
+}
+
+void ControlSystemx::receive(const enableMouse & enableM) {
+    SDL_Log("Received enableMouse event");
+    game->enableMouse();
 }
 
 void ControlSystemx::receive(const turnBegin & begin) {
-    SDL_Log("Received turnBegin event.");
+    SDL_Log("Received turnBegin event");
     unsigned char army = begin.army;
 
     if (game->getState() == GAME::STATE::NPCTURN) {
         AIturn(army);
     }
-
 }
 
 void ControlSystemx::receive(const switchControl & Switch) {
@@ -150,7 +161,6 @@ void ControlSystemx::AIturn(unsigned char in_army) {
         SDL_Log("AIturn: Army is Player Controlled!");
     }
 }
-
 
 entityx::Entity ControlSystemx::getInputent(Controllers in_controllers) {
     entityx::Entity inputter;

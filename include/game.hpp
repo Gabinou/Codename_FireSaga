@@ -44,6 +44,9 @@ private:
     KeyboardInputMap keyboardInputMap;
     GamepadInputMap gamepadInputMap;
     MouseInputMap mouseInputMap;
+
+    bool ismouse = false;
+
     SDL_Window * window;
     Settings settings;
     tinymt32_t tinymt;
@@ -84,6 +87,8 @@ public:
     void unloadCursor();
     void loadMouse();
     void unloadMouse();
+    void enableMouse();
+    void disableMouse();
     std::unordered_map<short int, Weapon> * getWeapons();
 
     std::unordered_map<short int, Unit> getParty();
