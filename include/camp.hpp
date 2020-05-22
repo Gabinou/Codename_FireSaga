@@ -13,9 +13,9 @@ class Camp: public JSON_IO {
 private:
     std::vector<short unsigned int> party;
     std::vector<short unsigned int> party_stack;
-    std::vector<char> previous_job;
-    std::vector<char> priority_job;
-    std::vector<char> forbidden_job;
+    std::vector<char> previous_jobs;
+    std::vector<char> priority_jobs;
+    std::vector<char> forbidden_jobs;
     std::vector<std::vector<short unsigned int>> jobs;
     std::queue<unsigned char> job_queue;
 
@@ -50,7 +50,11 @@ public:
     void clearJobs();
 
     void setpriorityJob(short unsigned int in_unit, char in_job);
+    std::vector<char> getpriorityJobs();
     void setforbiddenJob(short unsigned int in_unit, char in_job);
+    std::vector<char> getforbiddenJobs();
+    void setpreviousJob(short unsigned int in_unit, char in_job);
+    std::vector<char> getpreviousJobs();
 
     std::vector<std::vector<short unsigned int>> getJobs();
     std::queue<unsigned char> getJobqueue();

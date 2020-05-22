@@ -4,9 +4,9 @@
 
 Camp::Camp() {
     for (short int i = 0; i < UNIT::NAME::PC_END; i++) {
-        previous_job.push_back(-1);
-        priority_job.push_back(-1);
-        forbidden_job.push_back(-1);
+        priority_jobs.push_back(-1);
+        priority_jobs.push_back(-1);
+        forbidden_jobs.push_back(-1);
     }
 }
 
@@ -31,11 +31,11 @@ void Camp::writeJSON(cJSON * in_jcamp) {
         cJSON * temp;
 
         for (short int i = 0; i < UNIT::NAME::PC_END; i++) {
-            temp = cJSON_CreateNumber(priority_job[i]);
+            temp = cJSON_CreateNumber(priority_jobs[i]);
             cJSON_AddItemToArray(jpriority, temp);
-            temp = cJSON_CreateNumber(previous_job[i]);
+            temp = cJSON_CreateNumber(priority_jobs[i]);
             cJSON_AddItemToArray(jprevious, temp);
-            temp = cJSON_CreateNumber(forbidden_job[i]);
+            temp = cJSON_CreateNumber(forbidden_jobs[i]);
             cJSON_AddItemToArray(jforbidden, temp);
         }
 
@@ -65,18 +65,18 @@ void Camp::readJSON(cJSON * in_jcamp) {
         SDL_Log("Priority job array size is incorrect");
     }
 
-    previous_job.clear();
-    priority_job.clear();
-    forbidden_job.clear();
+    priority_jobs.clear();
+    priority_jobs.clear();
+    forbidden_jobs.clear();
     cJSON * jtemp;
 
     for (short int i = 0; i < UNIT::NAME::PC_END; i++) {
         jtemp = cJSON_GetArrayItem(jprevious, i);
-        previous_job.push_back(cJSON_GetNumberValue(jtemp));
+        priority_jobs.push_back(cJSON_GetNumberValue(jtemp));
         jtemp = cJSON_GetArrayItem(jpriority, i);
-        priority_job.push_back(cJSON_GetNumberValue(jtemp));
+        priority_jobs.push_back(cJSON_GetNumberValue(jtemp));
         jtemp = cJSON_GetArrayItem(jforbidden, i);
-        forbidden_job.push_back(cJSON_GetNumberValue(jtemp));
+        forbidden_jobs.push_back(cJSON_GetNumberValue(jtemp));
     }
 }
 
@@ -86,7 +86,7 @@ void Camp::setChapter(char in_chapter) {
     switch (chapter) {
         case 0:
         case 1:
-            priority_job[UNIT::NAME::KIARA] = CAMPJOB::CLERGYMAN;
+            priority_jobs[UNIT::NAME::KIARA] = CAMPJOB::CLERGYMAN;
             break;
 
         case 2:
@@ -152,20 +152,37 @@ void Camp::setChapter(char in_chapter) {
 }
 
 void Camp::setpriorityJob(short unsigned int in_unit, char in_job) {
-    priority_job[in_unit] = in_job;
+    priority_jobs[in_unit] = in_job;
 }
 
 void Camp::setforbiddenJob(short unsigned int in_unit, char in_job) {
-    forbidden_job[in_unit] = in_job;
+    forbidden_jobs[in_unit] = in_job;
 }
+
+void Camp::setpreviousJob(short unsigned int in_unit, char in_job) {
+    previous_jobs[in_unit] = in_job;
+}
+
+std::vector<char> Camp::getforbiddenJobs() {
+    return (forbidden_jobs);
+}
+
+std::vector<char> Camp::getpriorityJobs() {
+    return (priority_jobs);
+}
+
+std::vector<char> Camp::getpreviousJobs() {
+    return (forbidden_jobs);
+}
+
 
 void Camp::makePartyStack() {
     party_stack.clear();
 
     for (short int i = 0; i < party.size(); i++) {
         if (party[i] != UNIT::NAME::ERWIN) {
-            if (priority_job[party[i]] > -1) {
-                jobs[priority_job[party[i]]].push_back(party[i]);
+            if (priority_jobs[party[i]] > -1) {
+                jobs[priority_jobs[party[i]]].push_back(party[i]);
             } else {
                 if (getURN() > 49) {
                     party_stack.push_back(party[i]);
@@ -206,7 +223,7 @@ void Camp::setParty(std::vector<short unsigned int> in_party) {
 void Camp::clearJobs() {
     for (short int job = 0; job < jobs.size(); job++) {
         for (short int worker = 0; worker < jobs[job].size(); worker++) {
-            previous_job[jobs[job][worker]] = job;
+            priority_jobs[jobs[job][worker]] = job;
         }
     }
 }
@@ -249,7 +266,7 @@ void Camp::assignJobs() {
             continue;
         }
 
-        if (forbidden_job[unit_ind] == job_queue.front()) {
+        if (forbidden_jobs[unit_ind] == job_queue.front()) {
             job_queue.push(job_queue.front());
             job_queue.pop();
             continue;
