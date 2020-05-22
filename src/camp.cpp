@@ -14,6 +14,10 @@ Camp::~Camp() {
 
 }
 
+std::vector<short unsigned int> Camp::getParty() {
+    return (party);
+}
+
 void Camp::plusChapter() {
     chapter++;
 }

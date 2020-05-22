@@ -1,5 +1,6 @@
 #include "minctest.h"
 #include "camp.hpp"
+#include "structs.hpp"
 
 void printJobs(std::vector<std::vector<short unsigned int>> in_jobs) {
     for (int job = 0; job < in_jobs.size(); job++) {
@@ -14,20 +15,33 @@ void printJobs(std::vector<std::vector<short unsigned int>> in_jobs) {
 
 void test_camp() {
     SDL_Log("test_camp");
-    std::vector<short unsigned int> test_party1 = {UNIT::NAME::ERWIN,
-                                                   UNIT::NAME::KIARA,
-                                                  };
-    std::vector<short unsigned int> test_party2 = {UNIT::NAME::ERWIN,
-                                                   UNIT::NAME::KIARA, UNIT::NAME::SILOU, UNIT::NAME::PIROU, UNIT::NAME::SERVIL,
-                                                   UNIT::NAME::PERIGNON, UNIT::NAME::LAUZON, UNIT::NAME::NICOLE, UNIT::NAME::OTTO,
-                                                   UNIT::NAME::SEBASTIAN, UNIT::NAME::MICHAEL, UNIT::NAME::CHASSE, UNIT::NAME::PIERRE,
-                                                   UNIT::NAME::MELLY, UNIT::NAME::SIMON, UNIT::NAME::EUGENE, UNIT::NAME::TEHARON,
-                                                   UNIT::NAME::TEKAK, UNIT::NAME::LUCRECE,
-                                                  };
+    std::vector<short unsigned int> in_party1 = {UNIT::NAME::ERWIN,
+                                                 UNIT::NAME::KIARA,
+                                                };
+    std::vector<short unsigned int> in_party2 = {UNIT::NAME::ERWIN,
+                                                 UNIT::NAME::KIARA, UNIT::NAME::SILOU, UNIT::NAME::PIROU, UNIT::NAME::SERVIL,
+                                                 UNIT::NAME::PERIGNON, UNIT::NAME::LAUZON, UNIT::NAME::NICOLE, UNIT::NAME::OTTO,
+                                                 UNIT::NAME::SEBASTIAN, UNIT::NAME::MICHAEL, UNIT::NAME::CHASSE, UNIT::NAME::PIERRE,
+                                                 UNIT::NAME::MELLY, UNIT::NAME::SIMON, UNIT::NAME::EUGENE, UNIT::NAME::TEHARON,
+                                                 UNIT::NAME::TEKAK, UNIT::NAME::LUCRECE,
+                                                };
+    std::vector<char> previous_job;
+    std::vector<char> priority_job;
+    std::vector<char> forbidden_job;
 
-    Camp test_camp;
-    // test_camp.setParty(test_party1);
+    for (short int i = 0; i < UNIT::NAME::PC_END; i++) {
+        previous_job.push_back(-1);
+        priority_job.push_back(-1);
+        forbidden_job.push_back(-1);
+    }
 
+
+
+    Camp test_camp1, test_camp2;
+    test_camp1.setParty(in_party1);
+    std::vector<short unsigned int> out_party1;
+    out_party1 = test_camp1.getParty();
+    lok(out_party1 == in_party1);
     // std::vector<std::vector<short unsigned int>> temp_jobs = test_camp.getJobs();
     // printJobs(temp_jobs);
 }

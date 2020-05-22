@@ -40,6 +40,7 @@ public:
     void plusChapter();
     void setChapter(char in_chapter);
     void setParty(std::vector<short unsigned int> in_party);
+    std::vector<short unsigned int> getParty();
     void makePartyStack();
 
     void makeJobQueue();
