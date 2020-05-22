@@ -236,4 +236,38 @@ void test_camp() {
     lok(out_jobs[CAMPJOB::CLERGYMAN][0] == UNIT::NAME::KIARA);
     lok(out_jobs[CAMPJOB::CLERGYMAN][1] == UNIT::NAME::SEBASTIAN);
     lok(out_jobs[CAMPJOB::STORAGEMASTER][0] == UNIT::NAME::SIMON);
+
+
+    test_camp3.clearJobs();
+    test_camp3.addExclusion(UNIT::NAME::SILOU);
+    test_camp3.makePartyStack();
+    SDL_Log("party stack size: %d", test_camp3.getPartyStack().size());
+    lok(test_camp3.getPartyStack().size() == (in_party3.size() - 3));
+    // -3 for kiara AND erwin AND exclusion. priority jobs don't get added in the stack.
+
+    test_camp3.assignJobs();
+    test_camp3.clearJobs();
+    test_camp3.makePartyStack();
+    test_camp3.assignJobs();
+    out_jobs = test_camp3.getJobs();
+    printJobs(out_jobs);
+
+    lok(out_jobs[CAMPJOB::LIBRARIAN].size() == out_optimal[CAMPJOB::LIBRARIAN]);
+    lok(out_jobs[CAMPJOB::COOK].size() == out_optimal[CAMPJOB::COOK]);
+    lok(out_jobs[CAMPJOB::GUARD].size() == out_optimal[CAMPJOB::GUARD]);
+    lok(out_jobs[CAMPJOB::SCRIBE].size() == out_optimal[CAMPJOB::SCRIBE]);
+    lok(out_jobs[CAMPJOB::STABLEHAND].size() == out_optimal[CAMPJOB::STABLEHAND]);
+    lok(out_jobs[CAMPJOB::ASSISTANT].size() == out_optimal[CAMPJOB::ASSISTANT]);
+    lok(out_jobs[CAMPJOB::CLERGYMAN].size() == out_optimal[CAMPJOB::CLERGYMAN]);
+    lok(out_jobs[CAMPJOB::STORAGEMASTER].size() == out_optimal[CAMPJOB::STORAGEMASTER]);
+
+    lok(out_jobs[CAMPJOB::LIBRARIAN][0] == UNIT::NAME::PIERRE);
+    lok(out_jobs[CAMPJOB::COOK][0] == UNIT::NAME::CHASSE);
+    lok(out_jobs[CAMPJOB::GUARD][0] == UNIT::NAME::LUCRECE);
+    lok(out_jobs[CAMPJOB::GUARD][1] == UNIT::NAME::LAUZON);
+    lok(out_jobs[CAMPJOB::GUARD][2] == UNIT::NAME::PERIGNON);
+    lok(out_jobs[CAMPJOB::STABLEHAND][0] == UNIT::NAME::OTTO);
+    lok(out_jobs[CAMPJOB::CLERGYMAN][0] == UNIT::NAME::KIARA);
+    lok(out_jobs[CAMPJOB::CLERGYMAN][1] == UNIT::NAME::SIMON);
+    lok(out_jobs[CAMPJOB::STORAGEMASTER][0] == UNIT::NAME::TEKAK);
 }
