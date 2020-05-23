@@ -998,10 +998,6 @@ void Game::handleEvents() {
                     position = mousex.component<Position>();
                     mouse = mousex.component<MouseController>();
                     sprite = mousex.component<Sprite>();
-
-
-
-
                     if (mouse) {
                         // SDL_Log("Mouse motion event pos: %d %d", event.motion.x, event.motion.y);
                         position->setPixelPos(event.motion.x, event.motion.y);

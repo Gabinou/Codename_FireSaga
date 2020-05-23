@@ -8,6 +8,10 @@
 * |          '-._.-'         |   |                                   |
 * |        Made by Gabriel Taillon                                   |
 * --------------------------------------------------------------------*/
+// #define SDL_MAIN_HANDLED
+// #include <SDL2/SDL.h>
+// #include <SDL2/SDL_image.h>
+// #include <SDL2/SDL_ttf.h>
 #include "text.hpp"
 #include "game.hpp"
 
