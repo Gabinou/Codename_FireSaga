@@ -981,9 +981,12 @@ void Game::handleEvents() {
 
         case SDL_MOUSEMOTION: // received even if there is no motion.
             if ((event.motion.windowID == SDL_GetWindowID(window)) &&
-                    (event.motion.xrel > 0) || (event.motion.yrel > 0)) {
+                    (event.motion.xrel != 0) || (event.motion.yrel != 0)) {
+                SDL_Log("Mouse motion event rel: %d %d", event.motion.xrel, event.motion.yrel);
+                SDL_Log("Mouse motion event pos: %d %d", event.motion.x, event.motion.y);
+
                 if (!ismouse) {
-                    SDL_Log("Mouse motions sends enable mouse.");
+                    SDL_Log("Mouse motions sends enable mouse. %d %d", event.motion.xrel, event.motion.yrel);
                     events.emit<enableMouse>();
                     // sprite->show();
                 }
