@@ -87,8 +87,9 @@ public:
     void unloadCursor();
     void loadMouse();
     void unloadMouse();
-    void enableMouse();
-    void disableMouse();
+    void enableMousex();
+    void disableMousex();
+    bool isMouse();
     std::unordered_map<short int, Weapon> * getWeapons();
 
     std::unordered_map<short int, Unit> getParty();

@@ -25,11 +25,13 @@ private:
     entityx::EventManager * event_manager;
     std::vector<std::vector<entityx::ComponentHandle<Unit>>> unitmap;
     entityx::ComponentHandle<Unit> selected;
-    float min_held = 0.05;
+    float min_held = 0.05f;
+    float mouse_idletime = 0.0f;
+    float mouse_disabletime = 0.5f;
     bool blockInput = false;
-    double gp_held = 0.;
-    double kb_held = 0.;
-    double mouse_held = 0.;
+    double gp_held = 0.0f;
+    double kb_held = 0.0f;
+    double mouse_held = 0.0f;
 public:
     ControlSystemx();
     ControlSystemx(Game * in_game);
