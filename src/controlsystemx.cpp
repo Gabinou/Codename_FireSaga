@@ -118,6 +118,12 @@ void ControlSystemx::receive(const inputCancel & cancel) {
 
     if ((cancel.mouse) && (!game->isMouse())) {
         event_manager->emit<enableMouse>();
+        event_manager->emit<disableCursor>();
+    }
+
+    if ((cancel.keyboard) || (cancel.gamepad) && (!game->isCursor())) {
+        event_manager->emit<disableMouse>();
+        event_manager->emit<enableCursor>();
     }
 
     Controllers controllers = {keyboard, gamepad, mouse};
@@ -279,6 +285,12 @@ void ControlSystemx::receive(const inputAccept & accept) {
 
     if ((accept.mouse) && (!game->isMouse())) {
         event_manager->emit<enableMouse>();
+        event_manager->emit<disableCursor>();
+    }
+
+    if ((accept.keyboard) || (accept.gamepad) && (!game->isCursor())) {
+        event_manager->emit<disableMouse>();
+        event_manager->emit<enableCursor>();
     }
 
     entityx::ComponentHandle<Unit> unitontile;
