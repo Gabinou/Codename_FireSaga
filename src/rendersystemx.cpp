@@ -227,40 +227,41 @@ void RenderSystemx::update(entityx::EntityManager & es, entityx::EventManager & 
 
     slide_wait += dt;
 
-    for (entityx::Entity ent : es.entities_with_components<KeyboardController>()) {
+    for (entityx::Entity ent : es.entities_with_components<KeyboardController, Sprite>()) {
         entityx::ComponentHandle<Sprite> sprite = ent.component<Sprite>();
 
-        // SDL_Log("Rendering Cursor");
+        if (sprite->isVisible()) {
+            // SDL_Log("Rendering Cursor");
 
-        short int * slidepos = sprite->getSlidepos();
-        short int * objectivepos = sprite->getObjpos();
-        SDL_Rect srcrect = sprite->getSrcrect();
-        SDL_Rect destrect = sprite->getDestrect();
+            short int * slidepos = sprite->getSlidepos();
+            short int * objectivepos = sprite->getObjpos();
+            SDL_Rect srcrect = sprite->getSrcrect();
+            SDL_Rect destrect = sprite->getDestrect();
 
-        if (sprite->isAnimated()) { //looping sprites.
-            srcrect = loopSprites(sprite);
+            if (sprite->isAnimated()) { //looping sprites.
+                srcrect = loopSprites(sprite);
+            }
+
+            slideSprites(&ent, slidepos, objectivepos, dt);
+
+            destrect.x = slidepos[0];
+            destrect.y = slidepos[1];
+
+            sprite->setSlidepos(slidepos);
+            sprite->setObjpos(objectivepos);
+            sprite->setSrcrect(srcrect);
+            sprite->setDestrect(destrect);
+            sprite->draw();
         }
-
-        slideSprites(&ent, slidepos, objectivepos, dt);
-
-        destrect.x = slidepos[0];
-        destrect.y = slidepos[1];
-
-        sprite->setSlidepos(slidepos);
-        sprite->setObjpos(objectivepos);
-        sprite->setSrcrect(srcrect);
-        sprite->setDestrect(destrect);
-        sprite->draw();
     }
 
-    for (entityx::Entity ent : es.entities_with_components<MouseController>()) {
+    for (entityx::Entity ent : es.entities_with_components<MouseController, Sprite, Position>()) {
         entityx::ComponentHandle<Sprite> sprite = ent.component<Sprite>();
         entityx::ComponentHandle<MouseController> mouse = ent.component<MouseController>();
         entityx::ComponentHandle<Position> position = ent.component<Position>();
 
-        if ((sprite) && (mouse) && (position)) {
-            // if ()
-            // {  }
+        if (sprite->isVisible()) {
+
             SDL_Rect destrect = sprite->getDestrect();
             Point pos = position->getPixelPos();
             destrect.x = pos.x;
