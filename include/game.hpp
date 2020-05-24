@@ -36,6 +36,7 @@ private:
     entityx::Entity fps;
 
     Point cursor_lastpos = {6, 6};
+    Point mouse_lastpos = {0, 0};
     entityx::ComponentHandle<Map> mapx;
     std::unordered_map<unsigned char, entityx::Entity> menus;
     std::unordered_map<unsigned char, std::vector<unsigned char>> menuoptions;

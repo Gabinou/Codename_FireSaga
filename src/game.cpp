@@ -980,39 +980,42 @@ void Game::handleEvents() {
             break;
 
         case SDL_MOUSEMOTION: // received even if there is no motion.
-            if ((event.motion.windowID == SDL_GetWindowID(window)) &&
-                    (event.motion.xrel != 0) || (event.motion.yrel != 0)) {
-                SDL_Log("Mouse motion event rel: %d %d", event.motion.xrel, event.motion.yrel);
-                SDL_Log("Mouse motion event pos: %d %d", event.motion.x, event.motion.y);
+            if (event.motion.windowID == SDL_GetWindowID(window)) {
+                // this is cause event.motion.xrel does not work
+                mouse_lastpos.x = event.motion.x;
+                mouse_lastpos.y = event.motion.y;
 
-                if (!ismouse) {
-                    SDL_Log("Mouse motions sends enable mouse. %d %d", event.motion.xrel, event.motion.yrel);
-                    events.emit<enableMouse>();
-                    // sprite->show();
-                }
+                // SDL_Log("Mouse motion event rel: %d %d", event.motion.xrel, event.motion.yrel);
+                // SDL_Log("Mouse motion event pos: %d %d", event.motion.x, event.motion.y);
 
-                if (mousex.valid()) {
-                    entityx::ComponentHandle<MouseController> mouse;
-                    entityx::ComponentHandle<Sprite> sprite;
-                    entityx::ComponentHandle<Position> position;
-                    position = mousex.component<Position>();
-                    mouse = mousex.component<MouseController>();
-                    sprite = mousex.component<Sprite>();
-                    if (mouse) {
-                        // SDL_Log("Mouse motion event pos: %d %d", event.motion.x, event.motion.y);
-                        position->setPixelPos(event.motion.x, event.motion.y);
+                if ((event.motion.x != mouse_lastpos.y) || (event.motion.x != mouse_lastpos.y)) {
+                    if (!ismouse) {
+                        events.emit<enableMouse>();
+                    }
 
-                        if (mapx) {
-                            Point tilemap_pos = mapx->pixel2tile(event.motion.x, event.motion.y);
-                            // SDL_Log("Mouse motion tilemap pos: %d %d", tilemap_pos.x, tilemap_pos.y);
-                            position->setTilemapPos(tilemap_pos);
+                    if (mousex.valid()) {
+                        entityx::ComponentHandle<MouseController> mouse;
+                        entityx::ComponentHandle<Sprite> sprite;
+                        entityx::ComponentHandle<Position> position;
+                        position = mousex.component<Position>();
+                        mouse = mousex.component<MouseController>();
+                        sprite = mousex.component<Sprite>();
+
+                        if (mouse) {
+                            // SDL_Log("Mouse motion event pos: %d %d", event.motion.x, event.motion.y);
+                            position->setPixelPos(event.motion.x, event.motion.y);
+
+                            if (mapx) {
+                                Point tilemap_pos = mapx->pixel2tile(event.motion.x, event.motion.y);
+                                // SDL_Log("Mouse motion tilemap pos: %d %d", tilemap_pos.x, tilemap_pos.y);
+                                position->setTilemapPos(tilemap_pos);
+                            }
+                        } else {
+                            SDL_Log("cursor has no MouseController component");
                         }
                     } else {
-                        SDL_Log("cursor has no MouseController component");
+                        events.emit<disableMouse>();
                     }
-                } else {
-                    events.emit<disableMouse>();
-                    // sprite->hide();
                 }
             }
 
