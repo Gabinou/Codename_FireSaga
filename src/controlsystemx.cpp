@@ -492,58 +492,60 @@ void ControlSystemx::update(entityx::EntityManager & es, entityx::EventManager &
             }
 
             entityx::ComponentHandle<MouseController> mouse = ent.component<MouseController>();
-            bool mouse_idle = true;
+            // bool mouse_idle = true;
 
             if (mouse->isPressed(mouseInputMap.cancel)) {
                 if (mouse->getHeldbutton() > min_held) {
                     if (!blockInput) {
                         events.emit<inputCancel>(mouse);
-                        mouse_idle = false;
+                        // mouse_idle = false;
                     }
                 }
             }
 
             // switch (settings->mouse.type) {
             //     case MOUSE::REPLACESCURSOR:
-            if (mapx) {
-                Point mouse_pos_tilemap = mapx->pixel2tile(mouse_position->getPixelPos());
-                // Point current_pos;
-                // Point cursor_pos = cursor_position->getPos();
-                // Point offset = cursor_position->getOffset();
-                // current_pos.x = cursor_pos.x - offset.x;
-                // current_pos.y = cursor_pos.y - offset.y;
+            // if (mapx) {
+            // Point mouse_pos_tilemap = mapx->pixel2tile(mouse_position->getPixelPos());
+            // Point current_pos;
+            // Point cursor_pos = cursor_position->getPos();
+            // Point offset = cursor_position->getOffset();
+            // current_pos.x = cursor_pos.x - offset.x;
+            // current_pos.y = cursor_pos.y - offset.y;
 
-                // if (mouse_pos_tilemap.x > current_pos.x) {
-                //     // cursor_move.x = 1;
-                //     mouse_idle = false;
-                // }
+            // if (mouse_pos_tilemap.x > current_pos.x) {
+            //     // cursor_move.x = 1;
+            //     mouse_idle = false;
+            // }
 
-                // if (mouse_pos_tilemap.x < current_pos.x) {
-                //     // cursor_move.x = -1;
-                //     mouse_idle = false;
-                // }
+            // if (mouse_pos_tilemap.x < current_pos.x) {
+            //     // cursor_move.x = -1;
+            //     mouse_idle = false;
+            // }
 
-                // if (mouse_pos_tilemap.y > current_pos.y) {
-                //     cursor_move.y = 1;
-                //     mouse_idle = false;
-                // }
+            // if (mouse_pos_tilemap.y > current_pos.y) {
+            //     cursor_move.y = 1;
+            //     mouse_idle = false;
+            // }
 
-                // if (mouse_pos_tilemap.y < current_pos.y) {
-                //     cursor_move.y = -1;
-                //     mouse_idle = false;
-                // }
+            // if (mouse_pos_tilemap.y < current_pos.y) {
+            //     cursor_move.y = -1;
+            //     mouse_idle = false;
+            // }
 
-                if (mouse->isPressed(mouseInputMap.accept)) {
-                    if (mouse->getHeldbutton() > min_held) {
-                        // if ((mouse_pos_tilemap.x == current_pos.x) && (mouse_pos_tilemap.y == current_pos.y)) {
-                            if (!blockInput) {
-                                events.emit<inputAccept>(mouse);
-                                mouse_idle = false;
-                            }
-                        // }
+            if (mouse->isPressed(mouseInputMap.accept)) {
+                if (mouse->getHeldbutton() > min_held) {
+                    // if ((mouse_pos_tilemap.x == current_pos.x) && (mouse_pos_tilemap.y == current_pos.y)) {
+                    if (!blockInput) {
+                        events.emit<inputAccept>(mouse);
+                        // mouse_idle = false;
                     }
+
+                    // }
                 }
             }
+
+            // }
 
             // break;
 
@@ -610,13 +612,13 @@ void ControlSystemx::update(entityx::EntityManager & es, entityx::EventManager &
             mouse->check_button(dt);
             mouse_held = mouse->getHeldbutton();
 
-            if (mouse_idle) {
-                mouse_idletime += dt;
+            // if (mouse_idle) {
+            //     mouse_idletime += dt;
 
-                if (mouse_idletime > mouse_disabletime) {
-                    event_manager->emit<disableMouse>();
-                }
-            }
+            //     if (mouse_idletime > mouse_disabletime) {
+            //         event_manager->emit<disableMouse>();
+            //     }
+            // }
         }
     }
 

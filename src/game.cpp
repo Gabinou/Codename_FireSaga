@@ -1025,7 +1025,6 @@ void Game::handleEvents() {
                     if (!ismouse) {
                         events.emit<enableMouse>();
                         events.emit<disableCursor>();
-
                     }
 
                     if (mousex.valid()) {
