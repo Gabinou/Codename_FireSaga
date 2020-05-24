@@ -341,149 +341,151 @@ void ControlSystemx::update(entityx::EntityManager & es, entityx::EventManager &
     entityx::ComponentHandle<Position> cursor_position;
     entityx::ComponentHandle<Position> mouse_position;
     entityx::Entity cursor_ent;
+    bool cursor_toenable = false;
 
     for (entityx::Entity ent : es.entities_with_components<Map>()) {
         unitmap = ent.component<Map>()->getUnitmap();
     }
 
-    if (game->isCursor()) {
+    // if (game->isCursor()) {
 
-        for (entityx::Entity ent : es.entities_with_components<KeyboardController, Position>()) {
-            if (!cursor_ent.valid()) {
-                cursor_ent = ent;
-            }
-
-            if (!cursor_position) {
-                cursor_position = ent.component<Position>();
-            }
-
-            entityx::ComponentHandle<KeyboardController> keyboard = ent.component<KeyboardController>();
-
-            const Uint8 * kb_state = SDL_GetKeyboardState(NULL);
-            std::vector<std::vector<SDL_Scancode>> pressed_move{};
-            std::vector<std::vector<SDL_Scancode>> pressed_button{};
-
-            if (keyboard->is_pressed(kb_state, keyboardInputMap.moveup) && !keyboard->is_pressed(kb_state, keyboardInputMap.movedown)) {
-                cursor_move.y = -1;
-                pressed_move.push_back(keyboardInputMap.moveup);
-            } else if (!keyboard->is_pressed(kb_state, keyboardInputMap.moveup) && keyboard->is_pressed(kb_state, keyboardInputMap.movedown)) {
-                cursor_move.y = 1;
-                pressed_move.push_back(keyboardInputMap.movedown);
-            }
-
-            if (!keyboard->is_pressed(kb_state, keyboardInputMap.moveright) && keyboard->is_pressed(kb_state, keyboardInputMap.moveleft)) {
-                cursor_move.x = -1;
-                pressed_move.push_back(keyboardInputMap.moveleft);
-            } else if (keyboard->is_pressed(kb_state, keyboardInputMap.moveright) && !keyboard->is_pressed(kb_state, keyboardInputMap.moveleft)) {
-                cursor_move.x = 1;
-                pressed_move.push_back(keyboardInputMap.moveright);
-            }
-
-            if (keyboard->is_pressed(kb_state, keyboardInputMap.accept)) {
-                pressed_button.push_back(keyboardInputMap.accept);
-
-                if (keyboard->getHeldbutton() > min_held) {
-                    if (!blockInput) {
-                        events.emit<inputAccept>(keyboard);
-                    }
-                }
-            }
-
-            if (keyboard->is_pressed(kb_state, keyboardInputMap.cancel)) {
-                pressed_button.push_back(keyboardInputMap.cancel);
-
-                if (keyboard->getHeldbutton() > min_held) {
-                    if (!blockInput) {
-                        events.emit<inputCancel>(keyboard);
-                    }
-                }
-            }
-
-            keyboard->check_move(pressed_move, dt);
-            keyboard->check_button(pressed_button, dt);
-            kb_held = keyboard->getHeldbutton();
+    for (entityx::Entity ent : es.entities_with_components<KeyboardController, Position>()) {
+        if (!cursor_ent.valid()) {
+            cursor_ent = ent;
         }
 
-        for (entityx::Entity ent : es.entities_with_components<GamepadController, Position>()) {
-            if (!cursor_ent.valid()) {
-                cursor_ent = ent;
-            }
-
-            if (!cursor_position) {
-                cursor_position = ent.component<Position>();
-            }
-
-            entityx::ComponentHandle<GamepadController> gamepad = ent.component<GamepadController>();
-            SDL_GameController * controller = gamepad->getController();
-            Sint16 mainxaxis = SDL_GameControllerGetAxis(controller, gamepadInputMap.mainxaxis[0]);
-            Sint16 mainyaxis = SDL_GameControllerGetAxis(controller, gamepadInputMap.mainyaxis[0]);
-            Sint16 secondxaxis = SDL_GameControllerGetAxis(controller, gamepadInputMap.secondxaxis[0]);
-            Sint16 secondyaxis = SDL_GameControllerGetAxis(controller, gamepadInputMap.secondyaxis[0]);
-            std::vector<short unsigned int> pressed_move{};
-            std::vector<std::vector<SDL_GameControllerButton>> pressed_button{};
-            int joystick_dead_zone = gamepad->getDeadzone();
-            unsigned int frames_button = gamepad->getHeldbutton();
-
-            if ((mainxaxis > joystick_dead_zone) || (secondxaxis > joystick_dead_zone)) {
-                cursor_move.x = 1;
-                pressed_move.push_back(GAME::BUTTON::RIGHT);
-            } else if ((mainxaxis < -joystick_dead_zone) || (secondxaxis < -joystick_dead_zone)) {
-                cursor_move.x = -1;
-                pressed_move.push_back(GAME::BUTTON::LEFT);
-            }
-
-            if ((mainyaxis > joystick_dead_zone) || (secondyaxis > joystick_dead_zone)) {
-                cursor_move.y = 1;
-                pressed_move.push_back(GAME::BUTTON::UP);
-            } else if ((mainyaxis < -joystick_dead_zone) || (secondyaxis < -joystick_dead_zone))  {
-                cursor_move.y = -1;
-                pressed_move.push_back(GAME::BUTTON::DOWN);
-            }
-
-            if (gamepad->isPressed(gamepadInputMap.moveright)) {
-                cursor_move.x = 1;
-                pressed_move.push_back(GAME::BUTTON::RIGHT);
-            } else if (gamepad->isPressed(gamepadInputMap.moveleft)) {
-                cursor_move.x = -1;
-                pressed_move.push_back(GAME::BUTTON::LEFT);
-            }
-
-            if (gamepad->isPressed(gamepadInputMap.moveup)) {
-                cursor_move.y = -1;
-                pressed_move.push_back(GAME::BUTTON::UP);
-            } else if (gamepad->isPressed(gamepadInputMap.movedown)) {
-                cursor_move.y = 1;
-                pressed_move.push_back(GAME::BUTTON::DOWN);
-            }
-
-            short unsigned int newstate = -1;
-            entityx::Entity setter;
-
-            if (gamepad->isPressed(gamepadInputMap.accept)) {
-                pressed_button.push_back(gamepadInputMap.accept);
-
-                if (gamepad->getHeldbutton() > min_held) {
-                    if (!blockInput) {
-                        events.emit<inputAccept>(gamepad);
-                    }
-                }
-            }
-
-            if (gamepad->isPressed(gamepadInputMap.cancel)) {
-                pressed_button.push_back(gamepadInputMap.cancel);
-
-                if (gamepad->getHeldbutton() > min_held) {
-                    if (!blockInput) {
-                        events.emit<inputCancel>(gamepad);
-                    }
-                }
-            }
-
-            gamepad->check_move(pressed_move, dt);
-            gamepad->check_button(pressed_button, dt);
-            gp_held = gamepad->getHeldbutton();
+        if (!cursor_position) {
+            cursor_position = ent.component<Position>();
         }
+
+        entityx::ComponentHandle<KeyboardController> keyboard = ent.component<KeyboardController>();
+
+        const Uint8 * kb_state = SDL_GetKeyboardState(NULL);
+        std::vector<std::vector<SDL_Scancode>> pressed_move{};
+        std::vector<std::vector<SDL_Scancode>> pressed_button{};
+
+        if (keyboard->is_pressed(kb_state, keyboardInputMap.moveup) && !keyboard->is_pressed(kb_state, keyboardInputMap.movedown)) {
+            cursor_move.y = -1;
+            pressed_move.push_back(keyboardInputMap.moveup);
+        } else if (!keyboard->is_pressed(kb_state, keyboardInputMap.moveup) && keyboard->is_pressed(kb_state, keyboardInputMap.movedown)) {
+            cursor_move.y = 1;
+            pressed_move.push_back(keyboardInputMap.movedown);
+        }
+
+        if (!keyboard->is_pressed(kb_state, keyboardInputMap.moveright) && keyboard->is_pressed(kb_state, keyboardInputMap.moveleft)) {
+            cursor_move.x = -1;
+            pressed_move.push_back(keyboardInputMap.moveleft);
+        } else if (keyboard->is_pressed(kb_state, keyboardInputMap.moveright) && !keyboard->is_pressed(kb_state, keyboardInputMap.moveleft)) {
+            cursor_move.x = 1;
+            pressed_move.push_back(keyboardInputMap.moveright);
+        }
+
+        if (keyboard->is_pressed(kb_state, keyboardInputMap.accept)) {
+            pressed_button.push_back(keyboardInputMap.accept);
+
+            if (keyboard->getHeldbutton() > min_held) {
+                if (!blockInput) {
+                    events.emit<inputAccept>(keyboard);
+                }
+            }
+        }
+
+        if (keyboard->is_pressed(kb_state, keyboardInputMap.cancel)) {
+            pressed_button.push_back(keyboardInputMap.cancel);
+
+            if (keyboard->getHeldbutton() > min_held) {
+                if (!blockInput) {
+                    events.emit<inputCancel>(keyboard);
+                }
+            }
+        }
+
+        keyboard->check_move(pressed_move, dt);
+        keyboard->check_button(pressed_button, dt);
+        kb_held = keyboard->getHeldbutton();
     }
+
+    for (entityx::Entity ent : es.entities_with_components<GamepadController, Position>()) {
+        if (!cursor_ent.valid()) {
+            cursor_ent = ent;
+        }
+
+        if (!cursor_position) {
+            cursor_position = ent.component<Position>();
+        }
+
+        entityx::ComponentHandle<GamepadController> gamepad = ent.component<GamepadController>();
+        SDL_GameController * controller = gamepad->getController();
+        Sint16 mainxaxis = SDL_GameControllerGetAxis(controller, gamepadInputMap.mainxaxis[0]);
+        Sint16 mainyaxis = SDL_GameControllerGetAxis(controller, gamepadInputMap.mainyaxis[0]);
+        Sint16 secondxaxis = SDL_GameControllerGetAxis(controller, gamepadInputMap.secondxaxis[0]);
+        Sint16 secondyaxis = SDL_GameControllerGetAxis(controller, gamepadInputMap.secondyaxis[0]);
+        std::vector<short unsigned int> pressed_move{};
+        std::vector<std::vector<SDL_GameControllerButton>> pressed_button{};
+        int joystick_dead_zone = gamepad->getDeadzone();
+        unsigned int frames_button = gamepad->getHeldbutton();
+
+        if ((mainxaxis > joystick_dead_zone) || (secondxaxis > joystick_dead_zone)) {
+            cursor_move.x = 1;
+            pressed_move.push_back(GAME::BUTTON::RIGHT);
+        } else if ((mainxaxis < -joystick_dead_zone) || (secondxaxis < -joystick_dead_zone)) {
+            cursor_move.x = -1;
+            pressed_move.push_back(GAME::BUTTON::LEFT);
+        }
+
+        if ((mainyaxis > joystick_dead_zone) || (secondyaxis > joystick_dead_zone)) {
+            cursor_move.y = 1;
+            pressed_move.push_back(GAME::BUTTON::UP);
+        } else if ((mainyaxis < -joystick_dead_zone) || (secondyaxis < -joystick_dead_zone))  {
+            cursor_move.y = -1;
+            pressed_move.push_back(GAME::BUTTON::DOWN);
+        }
+
+        if (gamepad->isPressed(gamepadInputMap.moveright)) {
+            cursor_move.x = 1;
+            pressed_move.push_back(GAME::BUTTON::RIGHT);
+        } else if (gamepad->isPressed(gamepadInputMap.moveleft)) {
+            cursor_move.x = -1;
+            pressed_move.push_back(GAME::BUTTON::LEFT);
+        }
+
+        if (gamepad->isPressed(gamepadInputMap.moveup)) {
+            cursor_move.y = -1;
+            pressed_move.push_back(GAME::BUTTON::UP);
+        } else if (gamepad->isPressed(gamepadInputMap.movedown)) {
+            cursor_move.y = 1;
+            pressed_move.push_back(GAME::BUTTON::DOWN);
+        }
+
+        short unsigned int newstate = -1;
+        entityx::Entity setter;
+
+        if (gamepad->isPressed(gamepadInputMap.accept)) {
+            pressed_button.push_back(gamepadInputMap.accept);
+
+            if (gamepad->getHeldbutton() > min_held) {
+                if (!blockInput) {
+                    events.emit<inputAccept>(gamepad);
+                }
+            }
+        }
+
+        if (gamepad->isPressed(gamepadInputMap.cancel)) {
+            pressed_button.push_back(gamepadInputMap.cancel);
+
+            if (gamepad->getHeldbutton() > min_held) {
+                if (!blockInput) {
+                    events.emit<inputCancel>(gamepad);
+                }
+            }
+        }
+
+        gamepad->check_move(pressed_move, dt);
+        gamepad->check_button(pressed_button, dt);
+        gp_held = gamepad->getHeldbutton();
+    }
+
+    // }
 
     if (game->isMouse()) {
         for (entityx::Entity ent : es.entities_with_components<MouseController>()) {
@@ -635,9 +637,13 @@ void ControlSystemx::update(entityx::EntityManager & es, entityx::EventManager &
 
     if (cursor_position) {
         if (((cursor_move.x != 0) || (cursor_move.y != 0)) && (cursor_position->isUpdatable())) {
-
-            if (cursor_position->addPos(cursor_move.x, cursor_move.y)) {
-                events.emit<cursorMoved>(cursor_ent, cursor_move);
+            if (!game->isCursor()) {
+                events.emit<enableCursor>();
+                events.emit<disableMouse>();
+            } else {
+                if (cursor_position->addPos(cursor_move.x, cursor_move.y)) {
+                    events.emit<cursorMoved>(cursor_ent, cursor_move);
+                }
             }
         }
     }
