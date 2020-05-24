@@ -22,6 +22,14 @@ struct enableMouse {
     enableMouse() {}
 };
 
+struct disableCursor {
+    disableCursor() {}
+};
+
+struct enableCursor {
+    enableCursor() {}
+};
+
 struct selectPC {
     selectPC(entityx::Entity cursor) : cursor(cursor) {}
     entityx::Entity cursor;

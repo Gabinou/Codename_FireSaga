@@ -47,6 +47,7 @@ private:
     MouseInputMap mouseInputMap;
 
     bool ismouse = false;
+    bool iscursor = true;
 
     SDL_Window * window;
     Settings settings;
@@ -86,6 +87,10 @@ public:
     void loadMapArrivals();
     void loadCursor();
     void unloadCursor();
+    void enableCursorx();
+    void disableCursorx();
+    bool isCursor();
+
     void loadMouse();
     void unloadMouse();
     void enableMousex();

@@ -549,6 +549,28 @@ void Game::unloadCursor() {
     }
 }
 
+void Game::enableCursorx() {
+    ismouse = true;
+
+    if (cursorx.valid()) {
+        entityx::ComponentHandle<Sprite> sprite = cursorx.component<Sprite>();
+        sprite->show();
+    }
+}
+
+void Game::disableCursorx() {
+    ismouse = false;
+
+    if (cursorx.valid()) {
+        entityx::ComponentHandle<Sprite> sprite = cursorx.component<Sprite>();
+        sprite->hide();
+    }
+}
+
+bool Game::isCursor() {
+    return (iscursor);
+}
+
 
 void Game::putPConMap(std::vector<short int> in_units, std::vector<std::vector<int>> in_pos_list) {
     SDL_Log("Loading party to map\n");
@@ -990,6 +1012,7 @@ void Game::handleEvents() {
                 if ((event.motion.x != mouse_lastpos.x) || (event.motion.y != mouse_lastpos.y)) {
                     if (!ismouse) {
                         events.emit<enableMouse>();
+                        events.emit<disableCursor>();
                     }
 
                     if (mousex.valid()) {
