@@ -641,6 +641,7 @@ void Game::loadMapArrivals() {
                 Uent.component<Unit>()->setWeapons(&weapons);
                 unit_name = "units//" + unitNames[map_arrivals[i].id] + ".json";
                 Uent.component<Unit>()->readJSON(unit_name.c_str());
+                Uent.component<Unit>()->setArmy(map_arrivals[i].army);
                 SDL_Log("Arrival position: %d %d", map_arrivals[i].position.x, map_arrivals[i].position.y);
                 mapx->putUnit(map_arrivals[i].position.x, map_arrivals[i].position.y, Uent.component<Unit>());
             }

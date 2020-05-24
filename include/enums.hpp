@@ -399,15 +399,15 @@ enum TYPES {
 namespace ARMY {
 enum ARMIES {
     FRIENDLY = 1,
-    ERWIN,
-    FREE_MILITIA,
-    NEUTRAL,
-    IMPERIAL,
-    THEOCRACY,
-    VOLDAN,
-    KEWAC,
-    ENEMY,
-    BANDITS,
+    ERWIN = 2,
+    FREE_MILITIA = 3,
+    NEUTRAL = 4,
+    IMPERIAL = 5,
+    THEOCRACY = 6,
+    VOLDAN = 7,
+    KEWAC = 8,
+    ENEMY = 9,
+    BANDITS = 10,
 };
 }
 namespace NAME {

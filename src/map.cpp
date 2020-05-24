@@ -80,6 +80,7 @@ void Map::readJSON(cJSON * in_jmap) {
         cJSON * jlevelups;
         cJSON * jturn;
         cJSON * jposition;
+        cJSON * jarmy;
         cJSON * jrow;
         cJSON * jcol;
         cJSON * jequipment;
@@ -93,6 +94,7 @@ void Map::readJSON(cJSON * in_jmap) {
         while (jarrival != NULL) {
             temp_arrival = Map_arrival();
             jid = cJSON_GetObjectItem(jarrival, "id");
+            jarmy = cJSON_GetObjectItem(jarrival, "army");
             jlevelups = cJSON_GetObjectItem(jarrival, "levelups");
             jturn = cJSON_GetObjectItem(jarrival, "turn");
             jposition = cJSON_GetObjectItem(jarrival, "position");
@@ -100,6 +102,7 @@ void Map::readJSON(cJSON * in_jmap) {
             jcol = cJSON_GetObjectItem(jposition, "col");
             temp_arrival.turn = cJSON_GetNumberValue(jturn);
             temp_arrival.id = cJSON_GetNumberValue(jid);
+            temp_arrival.army = cJSON_GetNumberValue(jarmy);
             temp_arrival.levelups = cJSON_GetNumberValue(jlevelups);
             temp_arrival.position.x = cJSON_GetNumberValue(jrow);
             temp_arrival.position.y = cJSON_GetNumberValue(jcol);
