@@ -334,7 +334,7 @@ void ControlSystemx::receive(const inputAccept & accept) {
 }
 
 void ControlSystemx::update(entityx::EntityManager & es, entityx::EventManager & events, entityx::TimeDelta dt) {
-    SDL_Log("updating control system");
+    // SDL_Log("updating control system");
     char to_move[2] = {0, 0};
     Point cursor_move = {0, 0};
     Point mouse_move = {0, 0};
@@ -625,13 +625,13 @@ void ControlSystemx::update(entityx::EntityManager & es, entityx::EventManager &
 // }
 
 
-    SDL_Log("here");
+    // SDL_Log("here");
 
     if ((kb_held == 0.) && (gp_held == 0.)  && (mouse_held == 0.)) {
         blockInput = false;
     }
 
-    SDL_Log("or here");
+    // SDL_Log("or here");
 
     if (cursor_position) {
         if (((cursor_move.x != 0) || (cursor_move.y != 0)) && (cursor_position->isUpdatable())) {
@@ -642,7 +642,7 @@ void ControlSystemx::update(entityx::EntityManager & es, entityx::EventManager &
         }
     }
 
-    SDL_Log("Control system update end");
+    // SDL_Log("Control system update end");
 
 }
 
