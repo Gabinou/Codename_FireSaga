@@ -211,18 +211,21 @@ void RenderSystemx::update(entityx::EntityManager & es, entityx::EventManager & 
     }
 
     for (entityx::Entity ent : es.entities_with_components<Text, Position>()) {
-        entityx::ComponentHandle<Position> position = ent.component<Position>();
         entityx::ComponentHandle<Text> text = ent.component<Text>();
-        Point pos = position->getPos();
-        // SDL_Log("unit menu position: %d %d", position[0], position[1]);
+        entityx::ComponentHandle<Position> position = ent.component<Position>();
 
-        if (ent.has_component<Sprite>()) {
-            ent.component<Sprite>()->setDestrectpos(pos);
-            ent.component<Sprite>()->draw();
+        if (text->isVisible()) {
+            Point pos = position->getPos();
+            // SDL_Log("unit menu position: %d %d", position[0], position[1]);
+
+            if (ent.has_component<Sprite>()) {
+                ent.component<Sprite>()->setDestrectpos(pos);
+                ent.component<Sprite>()->draw();
+            }
+
+            text->setRects(pos);
+            text->draw();
         }
-
-        text->setRects(pos);
-        text->draw();
     }
 
     slide_wait += dt;
