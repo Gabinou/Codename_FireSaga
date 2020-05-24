@@ -513,7 +513,10 @@ void Game::enableMousex() {
 
     if (mousex.valid()) {
         entityx::ComponentHandle<Sprite> sprite = mousex.component<Sprite>();
-        sprite->show();
+
+        if (sprite) {
+            sprite->show();
+        }
     }
 }
 
@@ -522,7 +525,10 @@ void Game::disableMousex() {
 
     if (mousex.valid()) {
         entityx::ComponentHandle<Sprite> sprite = mousex.component<Sprite>();
-        sprite->hide();
+
+        if (sprite) {
+            sprite->hide();
+        }
     }
 }
 
@@ -554,7 +560,10 @@ void Game::enableCursorx() {
 
     if (cursorx.valid()) {
         entityx::ComponentHandle<Sprite> sprite = cursorx.component<Sprite>();
-        sprite->show();
+
+        if (sprite) {
+            sprite->show();
+        }
     }
 }
 
@@ -563,7 +572,10 @@ void Game::disableCursorx() {
 
     if (cursorx.valid()) {
         entityx::ComponentHandle<Sprite> sprite = cursorx.component<Sprite>();
-        sprite->hide();
+
+        if (sprite) {
+            sprite->hide();
+        }
     }
 }
 
@@ -1013,15 +1025,17 @@ void Game::handleEvents() {
                     if (!ismouse) {
                         events.emit<enableMouse>();
                         events.emit<disableCursor>();
+
                     }
 
                     if (mousex.valid()) {
-                        entityx::ComponentHandle<Sprite> sprite;
+                        SDL_Log("until here");
                         entityx::ComponentHandle<Position> position;
                         position = mousex.component<Position>();
-                        sprite = mousex.component<Sprite>();
 
-                        position->setPixelPos(event.motion.x, event.motion.y);
+                        if (position) {
+                            position->setPixelPos(event.motion.x, event.motion.y);
+                        }
 
                         if (mapx) {
                             Point tilemap_pos = mapx->pixel2tile(event.motion.x, event.motion.y);
@@ -1039,6 +1053,7 @@ void Game::handleEvents() {
 
                 mouse_lastpos.x = event.motion.x;
                 mouse_lastpos.y = event.motion.y;
+                SDL_Log("until here");
             }
 
             break;

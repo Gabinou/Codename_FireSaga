@@ -183,28 +183,30 @@ void RenderSystemx::update(entityx::EntityManager & es, entityx::EventManager & 
     }
 
     for (entityx::Entity ent : es.entities_with_components<Sprite, Position>()) {
+        entityx::ComponentHandle<Sprite> sprite = ent.component<Sprite>();
 
-        if (!ent.has_component<Text>() && !ent.has_component<KeyboardController>() && !ent.has_component<GamepadController>() && !ent.has_component<MouseController>()) {
-            entityx::ComponentHandle<Sprite> sprite = ent.component<Sprite>();
-            short int * slidepos = sprite->getSlidepos();
-            short int * objectivepos = sprite->getObjpos();
-            SDL_Rect srcrect = sprite->getSrcrect();
-            SDL_Rect destrect = sprite->getDestrect();
+        if (sprite->isVisible()) {
+            if (!ent.has_component<Text>() && !ent.has_component<KeyboardController>() && !ent.has_component<GamepadController>() && !ent.has_component<MouseController>()) {
+                short int * slidepos = sprite->getSlidepos();
+                short int * objectivepos = sprite->getObjpos();
+                SDL_Rect srcrect = sprite->getSrcrect();
+                SDL_Rect destrect = sprite->getDestrect();
 
-            if (sprite->isAnimated()) {
-                srcrect = loopSprites(sprite);
+                if (sprite->isAnimated()) {
+                    srcrect = loopSprites(sprite);
+                }
+
+                slideSprites(&ent, slidepos, objectivepos, dt);
+
+                destrect.x = slidepos[0];
+                destrect.y = slidepos[1];
+
+                sprite->setSlidepos(slidepos);
+                sprite->setObjpos(objectivepos);
+                sprite->setSrcrect(srcrect);
+                sprite->setDestrect(destrect);
+                sprite->draw();
             }
-
-            slideSprites(&ent, slidepos, objectivepos, dt);
-
-            destrect.x = slidepos[0];
-            destrect.y = slidepos[1];
-
-            sprite->setSlidepos(slidepos);
-            sprite->setObjpos(objectivepos);
-            sprite->setSrcrect(srcrect);
-            sprite->setDestrect(destrect);
-            sprite->draw();
         }
     }
 
