@@ -182,7 +182,5 @@ SDL_Rect Sprite::getDestrect() {
 }
 
 void Sprite::draw() {
-    // if (visible) {
     SDL_RenderCopy(Game::renderer, texture, &srcrect, &destrect);
-    // }
 }

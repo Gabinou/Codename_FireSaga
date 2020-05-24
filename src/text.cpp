@@ -134,10 +134,7 @@ void Text::setRects(short int x, short int y) {
 
 void Text::draw() {
     // Find a way to draw text letter by letter, word by word, etc. for future script.
-    // if (visible) {
     for (int i = 0; i < textures.size(); i++) {
         SDL_RenderCopy(Game::renderer, textures[i], &srcrects[i], &destrects[i]);
     }
-
-    // }
 }
