@@ -347,8 +347,6 @@ void ControlSystemx::update(entityx::EntityManager & es, entityx::EventManager &
         unitmap = ent.component<Map>()->getUnitmap();
     }
 
-    // if (game->isCursor()) {
-
     for (entityx::Entity ent : es.entities_with_components<KeyboardController, Position>()) {
         if (!cursor_ent.valid()) {
             cursor_ent = ent;
@@ -485,8 +483,6 @@ void ControlSystemx::update(entityx::EntityManager & es, entityx::EventManager &
         gp_held = gamepad->getHeldbutton();
     }
 
-    // }
-
     if (game->isMouse()) {
         for (entityx::Entity ent : es.entities_with_components<MouseController>()) {
             if (!mouse_position) {
@@ -494,146 +490,32 @@ void ControlSystemx::update(entityx::EntityManager & es, entityx::EventManager &
             }
 
             entityx::ComponentHandle<MouseController> mouse = ent.component<MouseController>();
-            // bool mouse_idle = true;
 
             if (mouse->isPressed(mouseInputMap.cancel)) {
                 if (mouse->getHeldbutton() > min_held) {
                     if (!blockInput) {
                         events.emit<inputCancel>(mouse);
-                        // mouse_idle = false;
                     }
                 }
             }
-
-            // switch (settings->mouse.type) {
-            //     case MOUSE::REPLACESCURSOR:
-            // if (mapx) {
-            // Point mouse_pos_tilemap = mapx->pixel2tile(mouse_position->getPixelPos());
-            // Point current_pos;
-            // Point cursor_pos = cursor_position->getPos();
-            // Point offset = cursor_position->getOffset();
-            // current_pos.x = cursor_pos.x - offset.x;
-            // current_pos.y = cursor_pos.y - offset.y;
-
-            // if (mouse_pos_tilemap.x > current_pos.x) {
-            //     // cursor_move.x = 1;
-            //     mouse_idle = false;
-            // }
-
-            // if (mouse_pos_tilemap.x < current_pos.x) {
-            //     // cursor_move.x = -1;
-            //     mouse_idle = false;
-            // }
-
-            // if (mouse_pos_tilemap.y > current_pos.y) {
-            //     cursor_move.y = 1;
-            //     mouse_idle = false;
-            // }
-
-            // if (mouse_pos_tilemap.y < current_pos.y) {
-            //     cursor_move.y = -1;
-            //     mouse_idle = false;
-            // }
 
             if (mouse->isPressed(mouseInputMap.accept)) {
                 if (mouse->getHeldbutton() > min_held) {
-                    // if ((mouse_pos_tilemap.x == current_pos.x) && (mouse_pos_tilemap.y == current_pos.y)) {
                     if (!blockInput) {
                         events.emit<inputAccept>(mouse);
-                        // mouse_idle = false;
                     }
-
-                    // }
                 }
             }
-
-            // }
-
-            // break;
-
-            // case MOUSE::SECONDCURSOR:
-
-            //     switch (game->getState()) {
-            //         case GAME::STATE::UNITMOVE:
-            //         case GAME::STATE::MAP:
-
-            //             if (mapx) {
-            //                 Point mouse_pos_tilemap = mapx->pixel2tile(mouse_position->getPixelPos());
-            //                 Point current_pos;
-            //                 Point cursor_pos = cursor_position->getPos();
-            //                 Point offset = cursor_position->getOffset();
-            //                 current_pos.x = cursor_pos.x - offset.x;
-            //                 current_pos.y = cursor_pos.y - offset.y;
-
-            //                 if (mouse->isPressed(mouseInputMap.accept)) {
-            //                     if (mouse->getHeldbutton() > min_held) {
-
-            //                         if (mouse_pos_tilemap.x > current_pos.x) {
-            //                             cursor_move.x = 1;
-            //                             mouse_idle = false;
-            //                         }
-
-            //                         if (mouse_pos_tilemap.x < current_pos.x) {
-            //                             cursor_move.x = -1;
-            //                             mouse_idle = false;
-            //                         }
-
-            //                         if (mouse_pos_tilemap.y > current_pos.y) {
-            //                             cursor_move.y = 1;
-            //                             mouse_idle = false;
-            //                         }
-
-            //                         if (mouse_pos_tilemap.y < current_pos.y) {
-            //                             cursor_move.y = -1;
-            //                             mouse_idle = false;
-            //                         }
-
-            //                         if ((to_move[0] != 0) || (to_move[1] != 0)) {
-            //                             blockInput = true;
-            //                         }
-
-            //                         if ((mouse_pos_tilemap.x == current_pos.x) && (mouse_pos_tilemap.y == current_pos.y)) {
-            //                             if (!blockInput) {
-            //                                 events.emit<inputAccept>(mouse);
-            //                                 mouse_idle = false;
-
-            //                             }
-            //                         }
-
-            //                     }
-            //                 }
-            //             } else {
-            //                 SDL_Log("No mapx in ControlSystem");
-            //             }
-
-            //             break;
-            // }
-
-            // break;
 
             mouse->check_button(dt);
             mouse_held = mouse->getHeldbutton();
 
-            // if (mouse_idle) {
-            //     mouse_idletime += dt;
-
-            //     if (mouse_idletime > mouse_disabletime) {
-            //         event_manager->emit<disableMouse>();
-            //     }
-            // }
         }
     }
-
-// }
-
-
-    // SDL_Log("here");
 
     if ((kb_held == 0.) && (gp_held == 0.)  && (mouse_held == 0.)) {
         blockInput = false;
     }
-
-    // SDL_Log("or here");
 
     if (cursor_position) {
         if (((cursor_move.x != 0) || (cursor_move.y != 0)) && (cursor_position->isUpdatable())) {
@@ -647,8 +529,5 @@ void ControlSystemx::update(entityx::EntityManager & es, entityx::EventManager &
             }
         }
     }
-
-    // SDL_Log("Control system update end");
-
 }
 
