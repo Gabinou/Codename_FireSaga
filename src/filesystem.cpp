@@ -612,8 +612,8 @@ void readJSON_arrival(cJSON * in_jarrival, Map_arrival * in_arrival) {
     cJSON * jlevelups = cJSON_GetObjectItem(in_jarrival, "levelups");
     cJSON * jturn = cJSON_GetObjectItem(in_jarrival, "turn");
     cJSON * jposition = cJSON_GetObjectItem(in_jarrival, "position");
-    cJSON * jrow = cJSON_GetObjectItem(in_jarrival, "row");
-    cJSON * jcol = cJSON_GetObjectItem(in_jarrival, "col");
+    cJSON * jrow = cJSON_GetObjectItem(jposition, "row");
+    cJSON * jcol = cJSON_GetObjectItem(jposition, "col");
 
     in_arrival->turn = cJSON_GetNumberValue(jturn);
     in_arrival->id = cJSON_GetNumberValue(jid);

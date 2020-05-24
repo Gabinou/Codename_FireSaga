@@ -505,15 +505,10 @@ void Map::addArmy(const unsigned char in_army) {
 
 }
 void Map::putUnit(const short unsigned int x, const short unsigned int y, entityx::ComponentHandle<Unit> in_unit) {
-    SDL_Log("UNTIL HER");
     unitmap[y][x] = in_unit;// unitmap[row][col]
-    SDL_Log("UNTIL HER");
     unsigned char army = in_unit->getArmy();
-    SDL_Log("UNTIL HER");
     addArmy(army);
-    SDL_Log("UNTIL HER");
     units_onfield[army].push_back(in_unit);
-    SDL_Log("UNTIL HER");
 }
 
 entityx::ComponentHandle<Unit> Map::getUnit(const short unsigned int x, const short unsigned int y) {
