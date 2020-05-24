@@ -550,7 +550,7 @@ void Game::unloadCursor() {
 }
 
 void Game::enableCursorx() {
-    ismouse = true;
+    iscursor = true;
 
     if (cursorx.valid()) {
         entityx::ComponentHandle<Sprite> sprite = cursorx.component<Sprite>();
@@ -559,7 +559,7 @@ void Game::enableCursorx() {
 }
 
 void Game::disableCursorx() {
-    ismouse = false;
+    iscursor = false;
 
     if (cursorx.valid()) {
         entityx::ComponentHandle<Sprite> sprite = cursorx.component<Sprite>();
