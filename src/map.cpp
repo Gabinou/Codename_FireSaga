@@ -77,12 +77,6 @@ void Map::readJSON(cJSON * in_jmap) {
 
         loadTilesJSON();
         cJSON * jarrival = cJSON_GetObjectItem(jarrivals, "arrival");
-        cJSON * jlevelups;
-        cJSON * jturn;
-        cJSON * jposition;
-        cJSON * jarmy;
-        cJSON * jrow;
-        cJSON * jcol;
         cJSON * jequipment;
         cJSON * jitem;
         Map_arrival temp_arrival;
@@ -93,19 +87,7 @@ void Map::readJSON(cJSON * in_jmap) {
 
         while (jarrival != NULL) {
             temp_arrival = Map_arrival();
-            jid = cJSON_GetObjectItem(jarrival, "id");
-            jarmy = cJSON_GetObjectItem(jarrival, "army");
-            jlevelups = cJSON_GetObjectItem(jarrival, "levelups");
-            jturn = cJSON_GetObjectItem(jarrival, "turn");
-            jposition = cJSON_GetObjectItem(jarrival, "position");
-            jrow = cJSON_GetObjectItem(jposition, "row");
-            jcol = cJSON_GetObjectItem(jposition, "col");
-            temp_arrival.turn = cJSON_GetNumberValue(jturn);
-            temp_arrival.id = cJSON_GetNumberValue(jid);
-            temp_arrival.army = cJSON_GetNumberValue(jarmy);
-            temp_arrival.levelups = cJSON_GetNumberValue(jlevelups);
-            temp_arrival.position.x = cJSON_GetNumberValue(jrow);
-            temp_arrival.position.y = cJSON_GetNumberValue(jcol);
+            readJSON_arrival(jarrival, &temp_arrival);
             map_arrivals.push_back(temp_arrival);
 
             jequipment = cJSON_GetObjectItem(jarrival, "Equipment");

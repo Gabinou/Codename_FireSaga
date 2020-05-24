@@ -606,9 +606,28 @@ void readJSON_stats(cJSON * in_jstats, Tile_stats * in_stats) {
     in_stats->heal = cJSON_GetNumberValue(jHeal);
 }
 
+void readJSON_arrival(cJSON * in_jarrival, Map_arrival * in_arrival) {
+    cJSON * jid = cJSON_GetObjectItem(in_jarrival, "id");
+    cJSON * jarmy = cJSON_GetObjectItem(in_jarrival, "army");
+    cJSON * jlevelups = cJSON_GetObjectItem(in_jarrival, "levelups");
+    cJSON * jturn = cJSON_GetObjectItem(in_jarrival, "turn");
+    cJSON * jposition = cJSON_GetObjectItem(in_jarrival, "position");
+    cJSON * jrow = cJSON_GetObjectItem(in_jarrival, "row");
+    cJSON * jcol = cJSON_GetObjectItem(in_jarrival, "col");
+
+    in_arrival->turn = cJSON_GetNumberValue(jturn);
+    in_arrival->id = cJSON_GetNumberValue(jid);
+    in_arrival->army = cJSON_GetNumberValue(jarmy);
+    in_arrival->levelups = cJSON_GetNumberValue(jlevelups);
+    in_arrival->position.x = cJSON_GetNumberValue(jrow);
+    in_arrival->position.y = cJSON_GetNumberValue(jcol);
+}
+
+
 void writeJSON_arrival(cJSON * in_jarrival, Map_arrival * in_arrival) {
     cJSON * jid = cJSON_CreateNumber(in_arrival->id);
     cJSON * jturn = cJSON_CreateNumber(in_arrival->turn);
+    cJSON * jarmy = cJSON_CreateNumber(in_arrival->army);
     cJSON * jlevelups = cJSON_CreateNumber(in_arrival->levelups);
     cJSON * jposition = cJSON_CreateObject();
     cJSON * jrow = cJSON_CreateNumber(in_arrival->position.x);
@@ -617,6 +636,7 @@ void writeJSON_arrival(cJSON * in_jarrival, Map_arrival * in_arrival) {
     cJSON_AddItemToObject(jposition, "row", jrow);
     cJSON_AddItemToObject(jposition, "col", jcol);
     cJSON_AddItemToObject(in_jarrival, "id", jid);
+    cJSON_AddItemToObject(in_jarrival, "army", jarmy);
     cJSON_AddItemToObject(in_jarrival, "levelups", jlevelups);
     cJSON_AddItemToObject(in_jarrival, "turn", jturn);
     cJSON_AddItemToObject(in_jarrival, "Position", jposition);
