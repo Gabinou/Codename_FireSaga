@@ -1028,7 +1028,7 @@ void Game::handleEvents() {
                     }
 
                     if (mousex.valid()) {
-                        SDL_Log("until here");
+                        // SDL_Log("until here");
                         entityx::ComponentHandle<Position> position;
                         position = mousex.component<Position>();
 
@@ -1052,7 +1052,7 @@ void Game::handleEvents() {
 
                 mouse_lastpos.x = event.motion.x;
                 mouse_lastpos.y = event.motion.y;
-                SDL_Log("until here");
+                // SDL_Log("until here");
             }
 
             break;
