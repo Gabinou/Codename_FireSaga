@@ -984,8 +984,8 @@ void Game::handleEvents() {
                 // this is cause event.motion.xrel does not work
 
                 // SDL_Log("Mouse motion event rel: %d %d", event.motion.xrel, event.motion.yrel);
-                SDL_Log("Mouse motion event pos: %d %d", event.motion.x, event.motion.y);
-                SDL_Log("Mouse last position: %d %d", mouse_lastpos.x, mouse_lastpos.y);
+                // SDL_Log("Mouse motion event pos: %d %d", event.motion.x, event.motion.y);
+                // SDL_Log("Mouse last position: %d %d", mouse_lastpos.x, mouse_lastpos.y);
 
                 if ((event.motion.x != mouse_lastpos.x) || (event.motion.y != mouse_lastpos.y)) {
                     if (!ismouse) {
@@ -993,20 +993,15 @@ void Game::handleEvents() {
                     }
 
                     if (mousex.valid()) {
-                        // entityx::ComponentHandle<MouseController> mouse;
                         entityx::ComponentHandle<Sprite> sprite;
                         entityx::ComponentHandle<Position> position;
                         position = mousex.component<Position>();
-                        // mouse = mousex.component<MouseController>();
                         sprite = mousex.component<Sprite>();
 
-                        // if (mouse) {
-                        // SDL_Log("Mouse motion event pos: %d %d", event.motion.x, event.motion.y);
                         position->setPixelPos(event.motion.x, event.motion.y);
 
                         if (mapx) {
                             Point tilemap_pos = mapx->pixel2tile(event.motion.x, event.motion.y);
-                            // SDL_Log("Mouse motion tilemap pos: %d %d", tilemap_pos.x, tilemap_pos.y);
                             position->setTilemapPos(tilemap_pos);
                         }
 
