@@ -49,19 +49,22 @@ int main(int argc, char * argv[]) {
     firesaga->initSystems();
     firesaga->makeFPS();
     firesaga->loadCursor();
+    firesaga->loadMouse();
 
     SDL_Log("Loading in test Map\n");
     firesaga->loadMap(0);
     firesaga->updateSystems();
     firesaga->setCursorstate(MENU::MAP);
-    firesaga->startTurnSystem();
 
+    SDL_Log("Loading in test party\n");
     std::vector<short int> unit_inds = {UNIT::NAME::SILOU};
     firesaga->loadUnits(unit_inds);
     std::vector<std::vector<int>> positions_list = {{6, 6}};
     firesaga->putPConMap(unit_inds, positions_list);
+    SDL_Log("Loading in arrivals\n");
     firesaga->loadMapArrivals();
-    firesaga->loadMouse();
+    SDL_Log("Starting turn system.\n");
+    firesaga->startTurnSystem();
 
     float currentTime;
     float elapsedSeconds;
