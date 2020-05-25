@@ -44,6 +44,7 @@ int main(int argc, char * argv[]) {
 
     SDL_Log("Creating game object\n");
     firesaga = new Game(settings);
+    firesaga->init();
     firesaga->initSystems();
     firesaga->makeFPS();
     firesaga->loadMap(0);
