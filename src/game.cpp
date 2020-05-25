@@ -532,6 +532,8 @@ void Game::loadCursor() {
 }
 
 void Game::unloadCursor() {
+    SDL_Log("Unloading cursor");
+
     if (cursorx.valid()) {
         cursorx.destroy();
     }
