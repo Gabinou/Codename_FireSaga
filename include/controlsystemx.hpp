@@ -25,7 +25,7 @@ private:
     entityx::EventManager * event_manager;
     std::vector<std::vector<entityx::ComponentHandle<Unit>>> unitmap;
     entityx::ComponentHandle<Unit> selected;
-    float min_held = 0.05f;
+    float min_held = 0.03f;
     float mouse_idletime = 0.0f;
     float mouse_disabletime = 0.5f;
     bool blockInput = false;
