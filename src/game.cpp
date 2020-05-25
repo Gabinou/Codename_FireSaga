@@ -378,18 +378,6 @@ void Game::loadMap(const int in_map_index) {
         }
 
         mapx->readJSON(filename.c_str());
-
-        // mapx->loadTiles();
-        // mapx->setOffset(DEFAULT::TILEMAP_XOFFSET, DEFAULT::TILEMAP_YOFFSET);
-        // mapx->loadTilemap(in_map_index);
-        // mapx->setArrivals(mapArrivals[in_map_index]());
-        // mapx->setArrivalEquipments(arrivalEquipments[in_map_index]());
-        // mapx->setArrivalEquipments(arrivalEquipments[in_map_index]());
-        systems.system<RenderSystemx>()->setMap(mapx);
-        systems.system<UnitSystemx>()->updateMap();
-        systems.system<TurnSystemx>()->updateMap();
-        systems.system<MenuSystemx>()->updateMap();
-        systems.system<ControlSystemx>()->updateMap();
     } else {
         SDL_Log("Failed to loadMap. Was mapx deleted previously?");
     }
@@ -728,14 +716,25 @@ void Game::init() {
     } else {
         isrunning = false;
     }
+}
 
+void Game::initSystems() {
     systems.add<RenderSystemx>(renderer, this);
     systems.add<ControlSystemx>(this);
     systems.add<UnitSystemx>(this);
     systems.add<TurnSystemx>(this);
     systems.add<MenuSystemx>(this);
     systems.configure();
+}
 
+void Game::updateSystems() {
+    systems.system<RenderSystemx>()->setMap(mapx);
+    systems.system<UnitSystemx>()->updateMap();
+    systems.system<TurnSystemx>()->updateMap();
+    systems.system<MenuSystemx>()->updateMap();
+    systems.system<ControlSystemx>()->updateGame();
+    systems.system<ControlSystemx>()->updateMap();
+    systems.system<ControlSystemx>()->updateSettings();
 }
 
 void Game::startTurnSystem() {
@@ -993,7 +992,7 @@ bool Game::isRunning() {
     return (isrunning);
 }
 
-void Game::isRunning() {
+void Game::stopRunning() {
     isrunning = false;
 }
 

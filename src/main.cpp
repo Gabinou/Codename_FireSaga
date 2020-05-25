@@ -44,6 +44,7 @@ int main(int argc, char * argv[]) {
 
     SDL_Log("Creating game object\n");
     firesaga = new Game(settings);
+    firesaga->initSystems();
     firesaga->makeFPS();
     firesaga->loadMap(0);
 
@@ -55,6 +56,7 @@ int main(int argc, char * argv[]) {
     firesaga->startTurnSystem();
     firesaga->loadCursor();
     firesaga->loadMouse();
+    firesaga->updateSystems();
     SDL_ShowCursor(SDL_DISABLE); // for default cursor.
 
     float currentTime;

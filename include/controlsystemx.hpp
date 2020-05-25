@@ -46,6 +46,7 @@ public:
     ControlSystemx();
     ControlSystemx(Game * in_game);
     void setGame(Game * in_game);
+    void updateGame();
     void updateMap();
     void updateSettings();
 

@@ -12,14 +12,15 @@ ControlSystemx::ControlSystemx(Game * in_game) {
 
 void ControlSystemx::setGame(Game * in_game) {
     game = in_game;
+}
+
+void ControlSystemx::updateGame() {
     keyboardInputMap = game->getKeyboardInputMap();
     gamepadInputMap = game->getGamepadInputMap();
     mouseInputMap = game->getMouseInputMap();
     cursorx = game->getMousex();
     mousex = game->getCursorx();
     window = game->getWindow();
-    updateSettings();
-    updateMap();
 }
 
 void ControlSystemx::updateSettings() {

@@ -88,6 +88,9 @@ public:
     void disableCursorx();
     bool isCursor();
 
+    void initSystems();
+    void updateSystems();
+
     SDL_Window * getWindow();
 
     void loadMouse();
