@@ -47,7 +47,7 @@ public:
     ControlSystemx(Game * in_game);
     void setGame(Game * in_game);
     void updateGame();
-    void updateMap();
+    void setMapfromGame();
     void updateSettings();
 
     unsigned int getHeldbutton(Controllers in_controllers);

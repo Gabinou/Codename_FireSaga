@@ -29,7 +29,7 @@ void ControlSystemx::updateSettings() {
     }
 }
 
-void ControlSystemx::updateMap() {
+void ControlSystemx::setMapfromGame() {
     if (game != nullptr) {
         mapx = game->getMap();
     }

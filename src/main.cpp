@@ -53,10 +53,10 @@ int main(int argc, char * argv[]) {
     std::vector<std::vector<int>> positions_list = {{6, 6}};
     firesaga->putPConMap(unit_inds, positions_list);
     firesaga->loadMapArrivals();
-    firesaga->startTurnSystem();
     firesaga->loadCursor();
     firesaga->loadMouse();
     firesaga->updateSystems();
+    firesaga->startTurnSystem();
     SDL_ShowCursor(SDL_DISABLE); // for default cursor.
 
     float currentTime;
