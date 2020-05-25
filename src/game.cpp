@@ -993,6 +993,10 @@ bool Game::isRunning() {
     return (isrunning);
 }
 
+void Game::isRunning() {
+    isrunning = false;
+}
+
 void Game::clean() {
     SDL_DestroyWindow(window);
     SDL_DestroyRenderer(renderer);

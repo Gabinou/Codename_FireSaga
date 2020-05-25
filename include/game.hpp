@@ -59,7 +59,6 @@ private:
 
     short unsigned int state;
 
-
     std::unordered_map<short int, Unit> party;
     std::unordered_map<short int, Weapon> weapons;
 
@@ -100,7 +99,7 @@ public:
     std::unordered_map<short int, Weapon> * getWeapons();
 
     bool isRunning();
-    bool stopRunning();
+    void stopRunning();
 
     std::unordered_map<short int, Unit> getParty();
 
