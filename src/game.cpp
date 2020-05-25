@@ -523,6 +523,8 @@ void Game::unloadMouse() {
 
 void Game::loadCursor() {
     unloadCursor();
+    SDL_Log("Loading cursor");
+
     cursorx = entities.create();
     cursorx.assign<KeyboardController>();
     cursorx.assign<GamepadController>();
@@ -532,6 +534,8 @@ void Game::loadCursor() {
 }
 
 void Game::unloadCursor() {
+    SDL_Log("Unloading cursor");
+
     if (cursorx.valid()) {
         cursorx.destroy();
     }

@@ -20,7 +20,9 @@ void ControlSystemx::updateGame() {
     mouseInputMap = game->getMouseInputMap();
     mousex = game->getMousex();
     cursorx = game->getCursorx();
+    SDL_Log("Updating game");
     window = game->getWindow();
+    SDL_Log("Cusrorx: valid? %d", cursorx->valid());
 }
 
 void ControlSystemx::updateSettings() {
@@ -94,7 +96,7 @@ void ControlSystemx::receive(const switchControl & Switch) {
 
     } else {
         game->setState(GAME::STATE::NPCTURN);
-        game->unloadCursor();
+        // game->unloadCursor();
     }
 }
 
