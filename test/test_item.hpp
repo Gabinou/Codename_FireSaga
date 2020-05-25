@@ -97,4 +97,6 @@ void test_item() {
 
     item2.writeJSON("saves//item_rewrite.json");
     lok(fequal("saves//item_test.json", "saves//item_rewrite.json"));
+    lok(PHYSFS_exists("saves//item_rewrite.json"));
+    lok(PHYSFS_exists("saves//item_test.json"));
 }

@@ -373,6 +373,10 @@ void test_tile() {
 
     lok(fequal("saves//tile_test.xml", "saves//tile_rewrite.xml"));
     lok(fequal("saves//tile_test.json", "saves//tile_rewrite.json"));
+    lok(PHYSFS_exists("saves//tile_rewrite.json"));
+    lok(PHYSFS_exists("saves//tile_test.json"));
+    lok(PHYSFS_exists("saves//tile_rewrite.xml"));
+    lok(PHYSFS_exists("saves//tile_test.xml"));
     lok(tile1.getName() == tile2.getName());
     lok(tile1.getid() == tile2.getid());
     lok(tile1.getName() == tile3.getName());

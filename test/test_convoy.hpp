@@ -158,6 +158,8 @@ void testConvoyWriteRead() {
     convoy3.readJSON("saves//convoy_test.json");
     convoy3.writeJSON("saves//convoy_rewrite.json");
     lok(fequal("saves//convoy_rewrite.json", "saves//convoy_test.json"));
+    lok(PHYSFS_exists("saves//convoy_rewrite.json"));
+    lok(PHYSFS_exists("saves//convoy_test.json"));
 }
 
 void testConvoysortStats() {

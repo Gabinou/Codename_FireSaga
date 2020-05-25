@@ -75,7 +75,7 @@ void Camp::readJSON(cJSON * in_jcamp) {
 
     for (short int i = 0; i < UNIT::NAME::PC_END; i++) {
         jtemp = cJSON_GetArrayItem(jprevious, i);
-        priority_jobs.push_back(cJSON_GetNumberValue(jtemp));
+        previous_jobs.push_back(cJSON_GetNumberValue(jtemp));
         jtemp = cJSON_GetArrayItem(jpriority, i);
         priority_jobs.push_back(cJSON_GetNumberValue(jtemp));
         jtemp = cJSON_GetArrayItem(jforbidden, i);

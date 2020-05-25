@@ -268,16 +268,11 @@ void test_map() {
     entityx::ComponentHandle<Unit> unithandle1, unithandle2;
     Uent1.assign<Unit>();
     Uent1.component<Unit>()->setWeapons(&weapons);
-    SDL_Log("UNTILE HERE");
     Uent1.component<Unit>()->copyUnit(unit1);
-    SDL_Log("UNTILE HERE");
     Uent1.assign<Position>(6, 6);
-    SDL_Log("UNTILE HERE");
     unithandle1 = Uent1.component<Unit>();
     map1.putUnit(6, 6, unithandle1);
-    SDL_Log("UNTILE HERE");
     unithandle1 = map1.getUnit(6, 6);
-    SDL_Log("UNTILE HERE");
 
     if (unithandle1) {
         out_stats = unithandle1->getStats();
@@ -362,7 +357,8 @@ void test_map() {
     map3.readJSON("saves//map_test.json");
     map3.writeJSON("saves//map_rewrite.json");
     lok(fequal("saves//map_test.json", "saves//map_rewrite.json"));
-
+    lok(PHYSFS_exists("saves//map_rewrite.json"));
+    lok(PHYSFS_exists("saves//map_test.json"));
     // aremapsequal(map1, map2); // XML will not be used.
     // aremapsequal(map2, map3);
     aremapsequal(map1, map3);
