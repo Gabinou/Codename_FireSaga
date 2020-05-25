@@ -705,8 +705,6 @@ void Game::init() {
             SDL_Log("SDL_ttf could not initialize! SDL_ttf Error: %s\n", TTF_GetError());
         }
 
-        renderer = SDL_CreateRenderer(window, -1, 0);
-
         if (renderer) {
             SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
             SDL_Log("Renderer created\n");
@@ -723,6 +721,7 @@ void Game::initSystems() {
     systems.add<ControlSystemx>(this);
     systems.add<UnitSystemx>(this);
     systems.add<TurnSystemx>(this);
+    systems.add<MenuSystemx>(this);
     systems.add<MenuSystemx>(this);
     systems.configure();
 }

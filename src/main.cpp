@@ -47,6 +47,8 @@ int main(int argc, char * argv[]) {
     firesaga->initSystems();
     firesaga->makeFPS();
     firesaga->loadMap(0);
+    firesaga->updateSystems();
+    firesaga->startTurnSystem();
 
     std::vector<short int> unit_inds = {UNIT::NAME::SILOU};
     firesaga->loadUnits(unit_inds);
@@ -55,8 +57,6 @@ int main(int argc, char * argv[]) {
     firesaga->loadMapArrivals();
     firesaga->loadCursor();
     firesaga->loadMouse();
-    firesaga->updateSystems();
-    firesaga->startTurnSystem();
     SDL_ShowCursor(SDL_DISABLE); // for default cursor.
 
     float currentTime;
