@@ -61,7 +61,6 @@ private:
     short unsigned int state;
 
     bool isRunning;
-    SDL_Event event;
 
     std::unordered_map<short int, Unit> party;
     std::unordered_map<short int, Weapon> weapons;
@@ -127,7 +126,7 @@ public:
 
     void startTurnSystem();
 
-    void handleEvents();
+    void SDL_update();
     void update();
     void render();
     void clean();

@@ -72,7 +72,7 @@ int main(int argc, char * argv[]) {
             elapsedSeconds = 1. / (float)cap;
         }
 
-        firesaga->handleEvents();
+        firesaga->SDL_update();
         currentTime = (float)SDL_GetTicks();
         firesaga->update(elapsedSeconds);
     }

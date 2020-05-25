@@ -59,6 +59,7 @@ public:
     void receive(const enableCursor & enableC);
     void receive(const switchControl & Switch);
 
+    void SDL_update();
     void update(entityx::EntityManager & es, entityx::EventManager & events, entityx::TimeDelta dt) override;
 };
 

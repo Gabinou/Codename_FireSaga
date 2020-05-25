@@ -974,142 +974,145 @@ std::unordered_map<short int, Weapon> * Game::getWeapons() {
 }
 
 
-void Game::handleEvents() {
-    SDL_PollEvent(&event);
+void Game::SDL_update() {
+    SDL_Event event;
 
-    switch (event.type) {
+    while (SDL_PollEvent(&event)) {
 
-        case SDL_MOUSEBUTTONDOWN:
-        case SDL_MOUSEBUTTONUP:
-            if (event.button.windowID == SDL_GetWindowID(window)) {
+        switch (event.type) {
 
-                if (mousex.valid()) {
-                    entityx::ComponentHandle<MouseController> mouse;
-                    entityx::ComponentHandle<Position> position;
-                    mouse = mousex.component<MouseController>();
-                    position = mousex.component<Position>();
-
-                    if (mouse) {
-                        // SDL_Log("event pos: %d %d", event.button.x, event.button.y);
-                        position->setPixelPos(event.button.x, event.button.y);
-
-                        if (mapx) {
-                            position->setTilemapPos(mapx->pixel2tile(event.button.x, event.button.y));
-                        }
-
-                        if (event.type != previous_mouse) {
-                            if (event.button.state == SDL_PRESSED) {
-                                mouse->addHeld(event.button.button);
-                            } else {
-                                mouse->removeHeld(event.button.button);
-                            }
-                        }
-                    } else {
-                        SDL_Log("cursor has no MouseController component");
-                    }
-
-                    previous_mouse = event.type;
-                }
-
-                // } else {
-                //     SDL_Log("mousex is not valid");
-                // }
-
-            }
-
-            break;
-
-        case SDL_MOUSEMOTION: // received even if there is no motion.
-            if (event.motion.windowID == SDL_GetWindowID(window)) {
-                // this is cause event.motion.xrel does not work
-
-                // SDL_Log("Mouse motion event rel: %d %d", event.motion.xrel, event.motion.yrel);
-                // SDL_Log("Mouse motion event pos: %d %d", event.motion.x, event.motion.y);
-                // SDL_Log("Mouse last position: %d %d", mouse_lastpos.x, mouse_lastpos.y);
-
-                if ((event.motion.x != mouse_lastpos.x) || (event.motion.y != mouse_lastpos.y)) {
-                    if (!ismouse) {
-                        events.emit<enableMouse>();
-                        events.emit<disableCursor>();
-                    }
+            case SDL_MOUSEBUTTONDOWN:
+            case SDL_MOUSEBUTTONUP:
+                if (event.button.windowID == SDL_GetWindowID(window)) {
 
                     if (mousex.valid()) {
-                        // SDL_Log("until here");
+                        entityx::ComponentHandle<MouseController> mouse;
                         entityx::ComponentHandle<Position> position;
+                        mouse = mousex.component<MouseController>();
                         position = mousex.component<Position>();
 
-                        if (position) {
-                            position->setPixelPos(event.motion.x, event.motion.y);
+                        if (mouse) {
+                            // SDL_Log("event pos: %d %d", event.button.x, event.button.y);
+                            position->setPixelPos(event.button.x, event.button.y);
+
+                            if (mapx) {
+                                position->setTilemapPos(mapx->pixel2tile(event.button.x, event.button.y));
+                            }
+
+                            if (event.type != previous_mouse) {
+                                if (event.button.state == SDL_PRESSED) {
+                                    mouse->addHeld(event.button.button);
+                                } else {
+                                    mouse->removeHeld(event.button.button);
+                                }
+                            }
+                        } else {
+                            SDL_Log("cursor has no MouseController component");
                         }
 
-                        if (mapx) {
-                            Point tilemap_pos = mapx->pixel2tile(event.motion.x, event.motion.y);
-                            position->setTilemapPos(tilemap_pos);
-                        }
-
-                        // } else {
-                        //     SDL_Log("cursor has no MouseController component");
-                        // }
+                        previous_mouse = event.type;
                     }
 
                     // } else {
-                    //     events.emit<disableMouse>();
+                    //     SDL_Log("mousex is not valid");
+                    // }
+
                 }
 
-                mouse_lastpos.x = event.motion.x;
-                mouse_lastpos.y = event.motion.y;
-                // SDL_Log("until here");
-            }
+                break;
 
-            break;
+            case SDL_MOUSEMOTION: // received even if there is no motion.
+                if (event.motion.windowID == SDL_GetWindowID(window)) {
+                    // this is cause event.motion.xrel does not work
 
-        case SDL_AUDIODEVICEADDED:
-            break;
+                    // SDL_Log("Mouse motion event rel: %d %d", event.motion.xrel, event.motion.yrel);
+                    // SDL_Log("Mouse motion event pos: %d %d", event.motion.x, event.motion.y);
+                    // SDL_Log("Mouse last position: %d %d", mouse_lastpos.x, mouse_lastpos.y);
 
-        case SDL_AUDIODEVICEREMOVED:
-            break;
+                    if ((event.motion.x != mouse_lastpos.x) || (event.motion.y != mouse_lastpos.y)) {
+                        if (!ismouse) {
+                            events.emit<enableMouse>();
+                            events.emit<disableCursor>();
+                        }
 
-        case SDL_CONTROLLERDEVICEADDED:
-            SDL_Log("Handling SDL_CONTROLLERDEVICEADDED event");
+                        if (mousex.valid()) {
+                            // SDL_Log("until here");
+                            entityx::ComponentHandle<Position> position;
+                            position = mousex.component<Position>();
 
-            if (cursorx.valid()) {
-                entityx::ComponentHandle<GamepadController> gamepad = cursorx.component<GamepadController>();
+                            if (position) {
+                                position->setPixelPos(event.motion.x, event.motion.y);
+                            }
 
-                if (gamepad) {
-                    gamepad->addController(event.cdevice.which);
+                            if (mapx) {
+                                Point tilemap_pos = mapx->pixel2tile(event.motion.x, event.motion.y);
+                                position->setTilemapPos(tilemap_pos);
+                            }
+
+                            // } else {
+                            //     SDL_Log("cursor has no MouseController component");
+                            // }
+                        }
+
+                        // } else {
+                        //     events.emit<disableMouse>();
+                    }
+
+                    mouse_lastpos.x = event.motion.x;
+                    mouse_lastpos.y = event.motion.y;
+                    // SDL_Log("until here");
+                }
+
+                break;
+
+            case SDL_AUDIODEVICEADDED:
+                break;
+
+            case SDL_AUDIODEVICEREMOVED:
+                break;
+
+            case SDL_CONTROLLERDEVICEADDED:
+                SDL_Log("Handling SDL_CONTROLLERDEVICEADDED event");
+
+                if (cursorx.valid()) {
+                    entityx::ComponentHandle<GamepadController> gamepad = cursorx.component<GamepadController>();
+
+                    if (gamepad) {
+                        gamepad->addController(event.cdevice.which);
+                    } else {
+                        SDL_Log("cursorx has no GamepadController component");
+                    }
                 } else {
-                    SDL_Log("cursorx has no GamepadController component");
+                    SDL_Log("cursorx is not valid");
                 }
-            } else {
-                SDL_Log("cursorx is not valid");
-            }
 
-            break;
+                break;
 
-        case SDL_CONTROLLERDEVICEREMOVED:
-            SDL_Log("Handling SDL_CONTROLLERDEVICEREMOVED event");
+            case SDL_CONTROLLERDEVICEREMOVED:
+                SDL_Log("Handling SDL_CONTROLLERDEVICEREMOVED event");
 
-            if (cursorx.valid()) {
-                entityx::ComponentHandle<GamepadController> gamepad = cursorx.component<GamepadController>();
+                if (cursorx.valid()) {
+                    entityx::ComponentHandle<GamepadController> gamepad = cursorx.component<GamepadController>();
 
-                if (gamepad) {
-                    gamepad->removeController();
+                    if (gamepad) {
+                        gamepad->removeController();
+                    } else {
+                        SDL_Log("cursorx has no GamepadController component");
+                    }
                 } else {
-                    SDL_Log("cursorx has no GamepadController component");
+                    SDL_Log("cursorx is not valid");
                 }
-            } else {
-                SDL_Log("cursorx is not valid");
-            }
 
-            break;
+                break;
 
-        case SDL_QUIT:
-            SDL_Log("Handling SDL_QUIT event");
-            isRunning = false;
-            break;
+            case SDL_QUIT:
+                SDL_Log("Handling SDL_QUIT event");
+                isRunning = false;
+                break;
 
-        default:
-            break;
+            default:
+                break;
+        }
     }
 }
 
