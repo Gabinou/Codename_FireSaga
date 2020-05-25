@@ -63,7 +63,7 @@ int main(int argc, char * argv[]) {
     int delay;
     SDL_Log("Starting main game loop\n");
 
-    while (firesaga->running()) {
+    while (firesaga->isRunning()) {
         elapsedSeconds = ((float)SDL_GetTicks() - currentTime) / 1000.;
 
         if ((elapsedSeconds * cap < 1.) || (elapsedSeconds == 0)) {
@@ -72,7 +72,6 @@ int main(int argc, char * argv[]) {
             elapsedSeconds = 1. / (float)cap;
         }
 
-        firesaga->SDL_update();
         currentTime = (float)SDL_GetTicks();
         firesaga->update(elapsedSeconds);
     }

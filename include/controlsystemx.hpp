@@ -17,14 +17,21 @@ struct Controllers {
 class ControlSystemx: public entityx::System<ControlSystemx>, public entityx::Receiver<ControlSystemx> {
 private:
     Game * game = nullptr;
+    entityx::Entity * cursorx;
+    entityx::Entity * mousex;
+    SDL_Window * window;
+
     Settings * settings;
+    entityx::EventManager * event_manager;
     entityx::ComponentHandle<Map> mapx;
+    entityx::ComponentHandle<Unit> selected;
+
     KeyboardInputMap keyboardInputMap;
     GamepadInputMap gamepadInputMap;
     MouseInputMap mouseInputMap;
-    entityx::EventManager * event_manager;
+
     std::vector<std::vector<entityx::ComponentHandle<Unit>>> unitmap;
-    entityx::ComponentHandle<Unit> selected;
+
     float min_held = 0.0f;
     float mouse_idletime = 0.0f;
     float mouse_disabletime = 0.5f;
@@ -32,10 +39,13 @@ private:
     double gp_held = 0.0f;
     double kb_held = 0.0f;
     double mouse_held = 0.0f;
+    unsigned int previous_mouse;
+    Point mouse_lastpos = {0, 0};
 
 public:
     ControlSystemx();
     ControlSystemx(Game * in_game);
+    void setGame(Game * in_game);
     void updateMap();
     void updateSettings();
 
@@ -59,6 +69,7 @@ public:
     void receive(const enableCursor & enableC);
     void receive(const switchControl & Switch);
 
+    void SDL_update();
     void update(entityx::EntityManager & es, entityx::EventManager & events, entityx::TimeDelta dt) override;
 };
 

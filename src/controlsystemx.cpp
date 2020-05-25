@@ -7,10 +7,17 @@ ControlSystemx::ControlSystemx() {
 
 ControlSystemx::ControlSystemx(Game * in_game) {
     SDL_Log("Adding Controlsystem.");
+    setGame(in_game);
+}
+
+void ControlSystemx::setGame(Game * in_game) {
     game = in_game;
     keyboardInputMap = game->getKeyboardInputMap();
     gamepadInputMap = game->getGamepadInputMap();
     mouseInputMap = game->getMouseInputMap();
+    cursorx = game->getMousex();
+    mousex = game->getCursorx();
+    window = game->getWindow();
     updateSettings();
     updateMap();
 }
@@ -345,8 +352,152 @@ void ControlSystemx::receive(const inputAccept & accept) {
     blockInput = true;
 }
 
+void ControlSystemx::SDL_update() {
+    SDL_Event event;
+
+    while (SDL_PollEvent(&event)) {
+
+        switch (event.type) {
+
+            case SDL_MOUSEBUTTONDOWN:
+            case SDL_MOUSEBUTTONUP:
+                if (event.button.windowID == SDL_GetWindowID(window)) {
+
+                    if (mousex->valid()) {
+                        entityx::ComponentHandle<MouseController> mouse;
+                        entityx::ComponentHandle<Position> position;
+                        mouse = mousex->component<MouseController>();
+                        position = mousex->component<Position>();
+
+                        if (mouse) {
+                            // SDL_Log("event pos: %d %d", event.button.x, event.button.y);
+                            position->setPixelPos(event.button.x, event.button.y);
+
+                            if (mapx) {
+                                position->setTilemapPos(mapx->pixel2tile(event.button.x, event.button.y));
+                            }
+
+                            if (event.type != previous_mouse) {
+                                if (event.button.state == SDL_PRESSED) {
+                                    mouse->addHeld(event.button.button);
+                                } else {
+                                    mouse->removeHeld(event.button.button);
+                                }
+                            }
+                        } else {
+                            SDL_Log("cursor has no MouseController component");
+                        }
+
+                        previous_mouse = event.type;
+                    }
+
+                    // } else {
+                    //     SDL_Log("mousex is not valid");
+                    // }
+
+                }
+
+                break;
+
+            case SDL_MOUSEMOTION: // received even if there is no motion.
+                if (event.motion.windowID == SDL_GetWindowID(window)) {
+                    // this is cause event.motion.xrel does not work
+
+                    // SDL_Log("Mouse motion event rel: %d %d", event.motion.xrel, event.motion.yrel);
+                    // SDL_Log("Mouse motion event pos: %d %d", event.motion.x, event.motion.y);
+                    // SDL_Log("Mouse last position: %d %d", mouse_lastpos.x, mouse_lastpos.y);
+
+                    if ((event.motion.x != mouse_lastpos.x) || (event.motion.y != mouse_lastpos.y)) {
+                        if (!game->isMouse()) {
+                            event_manager->emit<enableMouse>();
+                            event_manager->emit<disableCursor>();
+                        }
+
+                        if (mousex->valid()) {
+                            // SDL_Log("until here");
+                            entityx::ComponentHandle<Position> position;
+                            position = mousex->component<Position>();
+
+                            if (position) {
+                                position->setPixelPos(event.motion.x, event.motion.y);
+                            }
+
+                            if (mapx) {
+                                Point tilemap_pos = mapx->pixel2tile(event.motion.x, event.motion.y);
+                                position->setTilemapPos(tilemap_pos);
+                            }
+
+                            // } else {
+                            //     SDL_Log("cursor has no MouseController component");
+                            // }
+                        }
+
+                        // } else {
+                        //     event_manager->emit<disableMouse>();
+                    }
+
+                    mouse_lastpos.x = event.motion.x;
+                    mouse_lastpos.y = event.motion.y;
+                    // SDL_Log("until here");
+                }
+
+                break;
+
+            case SDL_AUDIODEVICEADDED:
+                break;
+
+            case SDL_AUDIODEVICEREMOVED:
+                break;
+
+            case SDL_CONTROLLERDEVICEADDED:
+                SDL_Log("Handling SDL_CONTROLLERDEVICEADDED event");
+
+                if (cursorx->valid()) {
+                    entityx::ComponentHandle<GamepadController> gamepad = cursorx->component<GamepadController>();
+
+                    if (gamepad) {
+                        gamepad->addController(event.cdevice.which);
+                    } else {
+                        SDL_Log("cursorx has no GamepadController component");
+                    }
+                } else {
+                    SDL_Log("cursorx is not valid");
+                }
+
+                break;
+
+            case SDL_CONTROLLERDEVICEREMOVED:
+                SDL_Log("Handling SDL_CONTROLLERDEVICEREMOVED event");
+
+                if (cursorx->valid()) {
+                    entityx::ComponentHandle<GamepadController> gamepad = cursorx->component<GamepadController>();
+
+                    if (gamepad) {
+                        gamepad->removeController();
+                    } else {
+                        SDL_Log("cursorx has no GamepadController component");
+                    }
+                } else {
+                    SDL_Log("cursorx is not valid");
+                }
+
+                break;
+
+            case SDL_QUIT:
+                SDL_Log("Handling SDL_QUIT event");
+                game->stopRunning();
+                break;
+
+            default:
+                break;
+        }
+    }
+}
+
+
 void ControlSystemx::update(entityx::EntityManager & es, entityx::EventManager & events, entityx::TimeDelta dt) {
     // SDL_Log("updating control system");
+    SDL_update();
     char to_move[2] = {0, 0};
     Point cursor_move = {0, 0};
     Point mouse_move = {0, 0};
@@ -395,7 +546,7 @@ void ControlSystemx::update(entityx::EntityManager & es, entityx::EventManager &
 
             if (keyboard->getHeldbutton() > min_held) {
                 if (!blockInput) {
-                    events.emit<inputAccept>(keyboard);
+                    event_manager->emit<inputAccept>(keyboard);
                 }
             }
         }
@@ -405,7 +556,7 @@ void ControlSystemx::update(entityx::EntityManager & es, entityx::EventManager &
 
             if (keyboard->getHeldbutton() > min_held) {
                 if (!blockInput) {
-                    events.emit<inputCancel>(keyboard);
+                    event_manager->emit<inputCancel>(keyboard);
                 }
             }
         }
@@ -475,7 +626,7 @@ void ControlSystemx::update(entityx::EntityManager & es, entityx::EventManager &
 
             if (gamepad->getHeldbutton() > min_held) {
                 if (!blockInput) {
-                    events.emit<inputAccept>(gamepad);
+                    event_manager->emit<inputAccept>(gamepad);
                 }
             }
         }
@@ -485,7 +636,7 @@ void ControlSystemx::update(entityx::EntityManager & es, entityx::EventManager &
 
             if (gamepad->getHeldbutton() > min_held) {
                 if (!blockInput) {
-                    events.emit<inputCancel>(gamepad);
+                    event_manager->emit<inputCancel>(gamepad);
                 }
             }
         }
@@ -506,7 +657,7 @@ void ControlSystemx::update(entityx::EntityManager & es, entityx::EventManager &
             if (mouse->isPressed(mouseInputMap.cancel)) {
                 if (mouse->getHeldbutton() > min_held) {
                     if (!blockInput) {
-                        events.emit<inputCancel>(mouse);
+                        event_manager->emit<inputCancel>(mouse);
                     }
                 }
             }
@@ -514,7 +665,7 @@ void ControlSystemx::update(entityx::EntityManager & es, entityx::EventManager &
             if (mouse->isPressed(mouseInputMap.accept)) {
                 if (mouse->getHeldbutton() > min_held) {
                     if (!blockInput) {
-                        events.emit<inputAccept>(mouse);
+                        event_manager->emit<inputAccept>(mouse);
                     }
                 }
             }
@@ -532,11 +683,11 @@ void ControlSystemx::update(entityx::EntityManager & es, entityx::EventManager &
     if (cursor_position) {
         if (((cursor_move.x != 0) || (cursor_move.y != 0)) && (cursor_position->isUpdatable())) {
             if (!game->isCursor()) {
-                events.emit<enableCursor>();
-                events.emit<disableMouse>();
+                event_manager->emit<enableCursor>();
+                event_manager->emit<disableMouse>();
             } else {
                 if (cursor_position->addPos(cursor_move.x, cursor_move.y)) {
-                    events.emit<cursorMoved>(cursor_ent, cursor_move);
+                    event_manager->emit<cursorMoved>(cursor_ent, cursor_move);
                 }
             }
         }

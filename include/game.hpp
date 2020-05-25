@@ -36,7 +36,6 @@ private:
     entityx::Entity fps;
 
     Point cursor_lastpos = {6, 6};
-    Point mouse_lastpos = {0, 0};
     entityx::ComponentHandle<Map> mapx;
     std::unordered_map<unsigned char, entityx::Entity> menus;
     std::unordered_map<unsigned char, std::vector<unsigned char>> menuoptions;
@@ -48,6 +47,7 @@ private:
 
     bool ismouse = false;
     bool iscursor = true;
+    bool isrunning;
 
     SDL_Window * window;
     Settings settings;
@@ -55,12 +55,10 @@ private:
     Convoy convoy;
     Camp camp;
 
-    unsigned int previous_mouse;
     char chapter = -1;
 
     short unsigned int state;
 
-    bool isRunning;
 
     std::unordered_map<short int, Unit> party;
     std::unordered_map<short int, Weapon> weapons;
@@ -87,15 +85,22 @@ public:
     void loadCursor();
     void unloadCursor();
     void enableCursorx();
+    entityx::Entity * getCursorx();
     void disableCursorx();
     bool isCursor();
+
+    SDL_Window * getWindow();
 
     void loadMouse();
     void unloadMouse();
     void enableMousex();
     void disableMousex();
+    entityx::Entity * getMousex();
     bool isMouse();
     std::unordered_map<short int, Weapon> * getWeapons();
+
+    bool isRunning();
+    bool stopRunning();
 
     std::unordered_map<short int, Unit> getParty();
 
@@ -126,7 +131,7 @@ public:
 
     void startTurnSystem();
 
-    void SDL_update();
+    // void SDL_update();
     void update();
     void render();
     void clean();
@@ -159,7 +164,6 @@ public:
     void saveJSON(const short int save_ind);
     void loadJSON(const short int save_ind);
 
-    bool running();
     void configure(entityx::EventManager & event_manager);
     void update(entityx::TimeDelta dt);
 };

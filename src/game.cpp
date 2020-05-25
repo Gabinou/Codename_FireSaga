@@ -567,6 +567,14 @@ void Game::enableCursorx() {
     }
 }
 
+entityx::Entity * Game::getCursorx() {
+    return (&cursorx);
+}
+
+entityx::Entity * Game::getMousex() {
+    return (&mousex);
+}
+
 void Game::disableCursorx() {
     iscursor = false;
 
@@ -675,6 +683,10 @@ void Game::unloadUnits(std::vector<short int> to_unload) {
     }
 }
 
+SDL_Window * Game::getWindow() {
+    return (window);
+}
+
 void Game::init() {
     int flags = 0;
 
@@ -712,9 +724,9 @@ void Game::init() {
             SDL_Log("Renderer created\n");
         }
 
-        isRunning = true;
+        isrunning = true;
     } else {
-        isRunning = false;
+        isrunning = false;
     }
 
     systems.add<RenderSystemx>(renderer, this);
@@ -973,151 +985,12 @@ std::unordered_map<short int, Weapon> * Game::getWeapons() {
     return (&weapons);
 }
 
-
-void Game::SDL_update() {
-    SDL_Event event;
-
-    while (SDL_PollEvent(&event)) {
-
-        switch (event.type) {
-
-            case SDL_MOUSEBUTTONDOWN:
-            case SDL_MOUSEBUTTONUP:
-                if (event.button.windowID == SDL_GetWindowID(window)) {
-
-                    if (mousex.valid()) {
-                        entityx::ComponentHandle<MouseController> mouse;
-                        entityx::ComponentHandle<Position> position;
-                        mouse = mousex.component<MouseController>();
-                        position = mousex.component<Position>();
-
-                        if (mouse) {
-                            // SDL_Log("event pos: %d %d", event.button.x, event.button.y);
-                            position->setPixelPos(event.button.x, event.button.y);
-
-                            if (mapx) {
-                                position->setTilemapPos(mapx->pixel2tile(event.button.x, event.button.y));
-                            }
-
-                            if (event.type != previous_mouse) {
-                                if (event.button.state == SDL_PRESSED) {
-                                    mouse->addHeld(event.button.button);
-                                } else {
-                                    mouse->removeHeld(event.button.button);
-                                }
-                            }
-                        } else {
-                            SDL_Log("cursor has no MouseController component");
-                        }
-
-                        previous_mouse = event.type;
-                    }
-
-                    // } else {
-                    //     SDL_Log("mousex is not valid");
-                    // }
-
-                }
-
-                break;
-
-            case SDL_MOUSEMOTION: // received even if there is no motion.
-                if (event.motion.windowID == SDL_GetWindowID(window)) {
-                    // this is cause event.motion.xrel does not work
-
-                    // SDL_Log("Mouse motion event rel: %d %d", event.motion.xrel, event.motion.yrel);
-                    // SDL_Log("Mouse motion event pos: %d %d", event.motion.x, event.motion.y);
-                    // SDL_Log("Mouse last position: %d %d", mouse_lastpos.x, mouse_lastpos.y);
-
-                    if ((event.motion.x != mouse_lastpos.x) || (event.motion.y != mouse_lastpos.y)) {
-                        if (!ismouse) {
-                            events.emit<enableMouse>();
-                            events.emit<disableCursor>();
-                        }
-
-                        if (mousex.valid()) {
-                            // SDL_Log("until here");
-                            entityx::ComponentHandle<Position> position;
-                            position = mousex.component<Position>();
-
-                            if (position) {
-                                position->setPixelPos(event.motion.x, event.motion.y);
-                            }
-
-                            if (mapx) {
-                                Point tilemap_pos = mapx->pixel2tile(event.motion.x, event.motion.y);
-                                position->setTilemapPos(tilemap_pos);
-                            }
-
-                            // } else {
-                            //     SDL_Log("cursor has no MouseController component");
-                            // }
-                        }
-
-                        // } else {
-                        //     events.emit<disableMouse>();
-                    }
-
-                    mouse_lastpos.x = event.motion.x;
-                    mouse_lastpos.y = event.motion.y;
-                    // SDL_Log("until here");
-                }
-
-                break;
-
-            case SDL_AUDIODEVICEADDED:
-                break;
-
-            case SDL_AUDIODEVICEREMOVED:
-                break;
-
-            case SDL_CONTROLLERDEVICEADDED:
-                SDL_Log("Handling SDL_CONTROLLERDEVICEADDED event");
-
-                if (cursorx.valid()) {
-                    entityx::ComponentHandle<GamepadController> gamepad = cursorx.component<GamepadController>();
-
-                    if (gamepad) {
-                        gamepad->addController(event.cdevice.which);
-                    } else {
-                        SDL_Log("cursorx has no GamepadController component");
-                    }
-                } else {
-                    SDL_Log("cursorx is not valid");
-                }
-
-                break;
-
-            case SDL_CONTROLLERDEVICEREMOVED:
-                SDL_Log("Handling SDL_CONTROLLERDEVICEREMOVED event");
-
-                if (cursorx.valid()) {
-                    entityx::ComponentHandle<GamepadController> gamepad = cursorx.component<GamepadController>();
-
-                    if (gamepad) {
-                        gamepad->removeController();
-                    } else {
-                        SDL_Log("cursorx has no GamepadController component");
-                    }
-                } else {
-                    SDL_Log("cursorx is not valid");
-                }
-
-                break;
-
-            case SDL_QUIT:
-                SDL_Log("Handling SDL_QUIT event");
-                isRunning = false;
-                break;
-
-            default:
-                break;
-        }
-    }
-}
-
 std::unordered_map<short int, Unit> Game::getParty() {
     return (party);
+}
+
+bool Game::isRunning() {
+    return (isrunning);
 }
 
 void Game::clean() {
@@ -1126,9 +999,6 @@ void Game::clean() {
     SDL_Quit();
     SDL_Log("Game cleanded.");
     SDL_Delay(5000);
-}
-bool Game::running() {
-    return (isRunning);
 }
 
 void Game::update(entityx::TimeDelta dt) {
