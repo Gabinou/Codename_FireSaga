@@ -8,10 +8,6 @@
 * |          '-._.-'         |   |                                   |
 * |        Made by Gabriel Taillon                                   |
 * --------------------------------------------------------------------*/
-// #define SDL_MAIN_HANDLED
-// #include <SDL2/SDL.h>
-// #include <SDL2/SDL_image.h>
-// #include <SDL2/SDL_ttf.h>
 #include "text.hpp"
 #include "game.hpp"
 
@@ -63,14 +59,16 @@ int main(int argc, char * argv[]) {
     firesaga->putPConMap(unit_inds, positions_list);
     SDL_Log("Loading in arrivals\n");
     firesaga->loadMapArrivals();
+
     SDL_Log("Starting turn system.\n");
     firesaga->startTurnSystem();
 
+
+    SDL_Log("Starting main game loop\n");
     float currentTime;
     float elapsedSeconds;
     short unsigned int cap = firesaga->getSettings()->FPS.cap;
     int delay;
-    SDL_Log("Starting main game loop\n");
 
     while (firesaga->isRunning()) {
         elapsedSeconds = ((float)SDL_GetTicks() - currentTime) / 1000.;
