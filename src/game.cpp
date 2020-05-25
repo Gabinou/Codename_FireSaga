@@ -485,9 +485,7 @@ void Game::loadMouse() {
     position->setBounds(0, 2000, 0, 2000);
     mousex.assign<Sprite>();
     mousex.component<Sprite>()->setTexture("..//assets//mousecursor.png");
-
 }
-
 
 bool Game::isMouse() {
     return (ismouse);
