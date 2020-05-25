@@ -623,7 +623,6 @@ void readJSON_arrival(cJSON * in_jarrival, Map_arrival * in_arrival) {
     in_arrival->position.y = cJSON_GetNumberValue(jcol);
 }
 
-
 void writeJSON_arrival(cJSON * in_jarrival, Map_arrival * in_arrival) {
     cJSON * jid = cJSON_CreateNumber(in_arrival->id);
     cJSON * jturn = cJSON_CreateNumber(in_arrival->turn);

@@ -851,6 +851,8 @@ void Game::loadJSON(const short int save_ind) {
         convoy.setWeapons(&weapons);
         cJSON * jparty = cJSON_GetObjectItem(json, "Party");
         party.clear();
+        cJSON * jcamp = cJSON_GetObjectItem(json, "Camp");
+        camp.readJSON(jcamp);
         cJSON * junit = cJSON_GetObjectItem(jparty, "Unit");
         Unit temp_unit;
 
@@ -885,6 +887,7 @@ void Game::saveJSON(const short int save_ind) {
         writeJSON_narrative(json, &narrative);
         cJSON * jparty = cJSON_CreateObject();
         cJSON * jconvoy = cJSON_CreateObject();
+        cJSON * jcamp = cJSON_CreateObject();
         cJSON * junit;
 
         for (auto it = party.begin(); it != party.end(); it++) {
@@ -895,6 +898,8 @@ void Game::saveJSON(const short int save_ind) {
 
         cJSON_AddItemToObject(json, "Party", jparty);
         convoy.writeJSON(jconvoy);
+        cJSON_AddItemToObject(json, "Camp", jcamp);
+        camp.writeJSON(jcamp);
         cJSON_AddItemToObject(json, "Convoy", jconvoy);
         printJSON(fp, json);
         PHYSFS_close(fp);

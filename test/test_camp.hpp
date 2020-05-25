@@ -35,7 +35,7 @@ void test_camp() {
         forbidden_job.push_back(-1);
     }
 
-    Camp test_camp1, test_camp2, test_camp3;
+    Camp test_camp1, test_camp2, test_camp3, test_camp4;
 
     test_camp1.setParty(in_party1);
     std::vector<short unsigned int> out_party1;
@@ -266,4 +266,11 @@ void test_camp() {
     lok(out_jobs[CAMPJOB::CLERGYMAN][0] == UNIT::NAME::KIARA);
     lok(out_jobs[CAMPJOB::CLERGYMAN][1] == UNIT::NAME::SIMON);
     lok(out_jobs[CAMPJOB::STORAGEMASTER][0] == UNIT::NAME::TEKAK);
+
+    test_camp3.writeJSON("saves//camp_test.json");
+    lok(PHYSFS_exists("saves//camp_test.json") > 0);
+    test_camp4.readJSON("saves//camp_test.json");
+    test_camp4.writeJSON("saves//camp_rewrite.json");
+    lok(PHYSFS_exists("saves//camp_rewrite.json") > 0);
+    lok(fequal("saves//camp_rewrite.json", "saves//camp_test.json"));
 }

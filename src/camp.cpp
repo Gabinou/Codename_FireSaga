@@ -9,6 +9,7 @@ Camp::Camp() {
         forbidden_jobs.push_back(-1);
     }
 
+    setJSONElement("Camp");
     setChapter(1);
 }
 
@@ -23,7 +24,6 @@ std::vector<short unsigned int> Camp::getParty() {
 void Camp::plusChapter() {
     chapter++;
     checkChapter();
-
 }
 
 void Camp::writeJSON(cJSON * in_jcamp) {
@@ -31,7 +31,6 @@ void Camp::writeJSON(cJSON * in_jcamp) {
         cJSON * jpriority = cJSON_CreateArray();
         cJSON * jprevious = cJSON_CreateArray();
         cJSON * jforbidden = cJSON_CreateArray();
-
         cJSON * temp;
 
         for (short int i = 0; i < UNIT::NAME::PC_END; i++) {
