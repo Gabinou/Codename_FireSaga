@@ -695,18 +695,19 @@ void Game::init() {
     if (SDL_Init(SDL_INIT_EVERYTHING) == 0) {
         SDL_Log("SDL subsystems initialized.\n");
         window = SDL_CreateWindow(settings.title, settings.pos.x, settings.pos.y, settings.res.x, settings.res.x, flags);
-        renderer = SDL_CreateRenderer(window, );
+
         if (window) {
             SDL_Log("Window created\n");
+            renderer = SDL_CreateRenderer(window, -1, 0);
+
+            if (renderer) {
+                SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
+                SDL_Log("Renderer created\n");
+            }
         }
 
         if (TTF_Init() == -1) {
             SDL_Log("SDL_ttf could not initialize! SDL_ttf Error: %s\n", TTF_GetError());
-        }
-
-        if (renderer) {
-            SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
-            SDL_Log("Renderer created\n");
         }
 
         isrunning = true;
