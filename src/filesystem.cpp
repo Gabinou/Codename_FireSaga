@@ -532,9 +532,8 @@ std::vector<std::vector<short int>> readJSON_tilemap(cJSON * in_jtilemap) {
     std::vector<short int> row_temp;
     short int rownum = 0;
     char rowname[8];
-    cJSON * jrow;
+    cJSON * jrow = cJSON_GetObjectItem(in_jtilemap, "row 0");
     cJSON * jnum;
-    jrow = cJSON_GetObjectItem(in_jtilemap, "row 0");
 
     while (jrow != NULL) {
         row_temp.clear();
@@ -552,11 +551,9 @@ std::vector<std::vector<short int>> readJSON_tilemap(cJSON * in_jtilemap) {
 }
 
 void writeJSON_tilemap(cJSON * in_jtilemap, std::vector<std::vector<short int>> in_tilemap) {
-    cJSON * jrow;
+    cJSON * jrow = cJSON_CreateArray();
     cJSON * jnum;
     char rowname[8];
-
-    jrow = cJSON_CreateArray();
 
     for (int row = 0; row < in_tilemap.size(); row++) {// This loop cache friendly.
         jrow = cJSON_CreateArray();
@@ -581,6 +578,7 @@ void writeJSON_mvtcost(cJSON * in_jcost, Movement_cost * in_cost) {
     cJSON * jarmors = cJSON_CreateNumber(in_cost->armors);
     cJSON * jpirates = cJSON_CreateNumber(in_cost->pirates);
     cJSON * jbandits = cJSON_CreateNumber(in_cost->bandits);
+
     cJSON_AddItemToObject(in_jcost, "foot_slow", jfoot_slow);
     cJSON_AddItemToObject(in_jcost, "foot_fast", jfoot_fast);
     cJSON_AddItemToObject(in_jcost, "mages", jmages);
