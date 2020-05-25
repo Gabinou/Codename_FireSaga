@@ -18,8 +18,8 @@ void ControlSystemx::updateGame() {
     keyboardInputMap = game->getKeyboardInputMap();
     gamepadInputMap = game->getGamepadInputMap();
     mouseInputMap = game->getMouseInputMap();
-    cursorx = game->getMousex();
-    mousex = game->getCursorx();
+    mousex = game->getMousex();
+    cursorx = game->getCursorx();
     window = game->getWindow();
 }
 

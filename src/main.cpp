@@ -20,7 +20,6 @@ Settings settings;
 
 int main(int argc, char * argv[]) {
     SDL_Log("Starting project codename FireSaga\n");
-    SDL_ShowCursor(SDL_DISABLE); // for default cursor.
 
     SDL_Log("Setting log\n");
     fclose(fopen(LOGFILE, "w"));
@@ -46,6 +45,7 @@ int main(int argc, char * argv[]) {
     SDL_Log("Creating game object\n");
     firesaga = new Game(settings);
     firesaga->init();
+    SDL_ShowCursor(SDL_DISABLE); // for default cursor.
     firesaga->initSystems();
     firesaga->makeFPS();
     firesaga->loadCursor();
