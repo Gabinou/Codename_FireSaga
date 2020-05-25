@@ -428,18 +428,11 @@ void ControlSystemx::SDL_update() {
                                 position->setTilemapPos(tilemap_pos);
                             }
 
-                            // } else {
-                            //     SDL_Log("cursor has no MouseController component");
-                            // }
                         }
-
-                        // } else {
-                        //     event_manager->emit<disableMouse>();
                     }
 
                     mouse_lastpos.x = event.motion.x;
                     mouse_lastpos.y = event.motion.y;
-                    // SDL_Log("until here");
                 }
 
                 break;

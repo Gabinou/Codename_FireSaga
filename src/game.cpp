@@ -726,8 +726,8 @@ void Game::updateSystems() {
     systems.system<UnitSystemx>()->updateMap();
     systems.system<TurnSystemx>()->updateMap();
     systems.system<MenuSystemx>()->updateMap();
-    systems.system<ControlSystemx>()->updateGame();
     systems.system<ControlSystemx>()->setMapfromGame();
+    systems.system<ControlSystemx>()->updateGame();
     systems.system<ControlSystemx>()->updateSettings();
 }
 

@@ -532,10 +532,8 @@ std::vector<std::vector<short int>> readJSON_tilemap(cJSON * in_jtilemap) {
     std::vector<short int> row_temp;
     short int rownum = 0;
     char rowname[8];
-
     cJSON * jrow;
     cJSON * jnum;
-
     jrow = cJSON_GetObjectItem(in_jtilemap, "row 0");
 
     while (jrow != NULL) {
@@ -546,7 +544,7 @@ std::vector<std::vector<short int>> readJSON_tilemap(cJSON * in_jtilemap) {
         out.push_back(row_temp);
         rownum++;
         stbsp_sprintf(rowname, "row %d", rownum);
-        SDL_Log("rowname %s", rowname);
+        // SDL_Log("rowname %s", rowname);
         jrow = cJSON_GetObjectItem(in_jtilemap, rowname);
     }
 
