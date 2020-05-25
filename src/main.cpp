@@ -20,6 +20,7 @@ Settings settings;
 
 int main(int argc, char * argv[]) {
     SDL_Log("Starting project codename FireSaga\n");
+    SDL_ShowCursor(SDL_DISABLE); // for default cursor.
 
     SDL_Log("Setting log\n");
     fclose(fopen(LOGFILE, "w"));
@@ -47,6 +48,9 @@ int main(int argc, char * argv[]) {
     firesaga->init();
     firesaga->initSystems();
     firesaga->makeFPS();
+    firesaga->loadCursor();
+
+    SDL_Log("Loading in test Map\n");
     firesaga->loadMap(0);
     firesaga->updateSystems();
     firesaga->startTurnSystem();
@@ -56,9 +60,8 @@ int main(int argc, char * argv[]) {
     std::vector<std::vector<int>> positions_list = {{6, 6}};
     firesaga->putPConMap(unit_inds, positions_list);
     firesaga->loadMapArrivals();
-    firesaga->loadCursor();
     firesaga->loadMouse();
-    SDL_ShowCursor(SDL_DISABLE); // for default cursor.
+    firesaga->setCursorstate(MENU::MAP);
 
     float currentTime;
     float elapsedSeconds;

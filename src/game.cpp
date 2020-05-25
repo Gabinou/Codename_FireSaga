@@ -426,8 +426,6 @@ void Game::setCursorstate(const unsigned char in_menu) {
                 cursorx.component<Sprite>()->setSlidetype(SLIDETYPE::GEOMETRIC);
                 bounds = mapx->getBounds();
                 SDL_Log("bounds: %d %d %d %d", bounds[0], bounds[1], bounds[2], bounds[3]);
-                // bounds[0] += DEFAULT::TILEMAP_XOFFSET;
-                // bounds[2] += DEFAULT::TILEMAP_YOFFSET;
                 cursorx.component<Position>()->setOffset(DEFAULT::TILEMAP_XOFFSET, DEFAULT::TILEMAP_YOFFSET);
                 cursorx.component<Position>()->setBounds(mapx->getBounds());
                 cursorx.component<Position>()->setPos(cursor_lastpos);
@@ -533,7 +531,6 @@ void Game::loadCursor() {
     cursorx.assign<TouchpadController>();
     cursorx.assign<Position>(6, 6);
     cursorx.assign<Sprite>();
-    setCursorstate(MENU::MAP);
 }
 
 void Game::unloadCursor() {
