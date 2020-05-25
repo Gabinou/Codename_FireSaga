@@ -53,6 +53,7 @@ int main(int argc, char * argv[]) {
     SDL_Log("Loading in test Map\n");
     firesaga->loadMap(0);
     firesaga->updateSystems();
+    firesaga->setCursorstate(MENU::MAP);
     firesaga->startTurnSystem();
 
     std::vector<short int> unit_inds = {UNIT::NAME::SILOU};
@@ -61,7 +62,6 @@ int main(int argc, char * argv[]) {
     firesaga->putPConMap(unit_inds, positions_list);
     firesaga->loadMapArrivals();
     firesaga->loadMouse();
-    firesaga->setCursorstate(MENU::MAP);
 
     float currentTime;
     float elapsedSeconds;
