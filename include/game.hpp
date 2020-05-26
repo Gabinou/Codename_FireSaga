@@ -71,6 +71,9 @@ public:
     ~Game();
 
     void init();
+    void initSystems();
+    void updateSystems();
+
     void setChapter(char in_chapter);
     char getChapter();
     entityx::ComponentHandle<Map> getMap();
@@ -88,8 +91,6 @@ public:
     void disableCursorx();
     bool isCursor();
 
-    void initSystems();
-    void updateSystems();
 
     SDL_Window * getWindow();
 

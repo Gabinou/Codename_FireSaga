@@ -37,8 +37,9 @@ int main(int argc, char * argv[]) {
     init_tinyMT();
 
     SDL_Log("Creating game object\n");
-    firesaga = new Game(settings);
-    // firesaga = new Game();
+    // firesaga = new Game(settings);
+    firesaga = new Game();
+    firesaga->setSettings(settings);
     firesaga->init();
     SDL_ShowCursor(SDL_DISABLE); // for default cursor.
     firesaga->initSystems();
@@ -67,7 +68,7 @@ int main(int argc, char * argv[]) {
     float currentTime;
     float elapsedSeconds;
     short unsigned int cap = firesaga->getSettings()->FPS.cap;
-    SDL_Log("gotten cap: %d", cap);
+    // SDL_Log("gotten cap: %d", cap);
     int delay;
 
     while (firesaga->isRunning()) {
