@@ -71,21 +71,15 @@ int main(int argc, char * argv[]) {
     while (firesaga->isRunning()) {
         elapsedTime_ms = SDL_GetTicks() - currentTime_ms;
 
-        // SDL_Log("elapsedTime_ms: %d ", elapsedTime_ms);
-        // SDL_Log("currentTime_ms: %d ", currentTime_ms);
-
         if ((elapsedTime_ms * cap_s < 1000) || (elapsedTime_ms == 0)) {
             delay = 1000 / cap_s - elapsedTime_ms;
-            // SDL_Log("delay: %d ", delay);
             SDL_Delay(delay);
         }
 
         updateTime_s = 1.0f / cap_s;
-        // SDL_Log("updateTime_s: %f ", updateTime_s);
 
         currentTime_ms = SDL_GetTicks();
         firesaga->update(updateTime_s);
-        // getchar();
     }
 
     firesaga->clean();
