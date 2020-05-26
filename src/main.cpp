@@ -54,6 +54,7 @@ int main(int argc, char * argv[]) {
     firesaga->loadUnits(unit_inds);
     std::vector<std::vector<int>> positions_list = {{6, 6}};
     firesaga->putPConMap(unit_inds, positions_list);
+
     SDL_Log("Loading in arrivals\n");
     firesaga->loadMapArrivals();
 
@@ -64,7 +65,6 @@ int main(int argc, char * argv[]) {
     unsigned int currentTime_ms = SDL_GetTicks();
     unsigned int elapsedTime_ms = 0;
     float updateTime_s = 0.0f;
-
     short unsigned int cap_s = firesaga->getSettings()->FPS.cap;
     unsigned int delay = 0;
 

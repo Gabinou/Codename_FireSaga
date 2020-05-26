@@ -204,14 +204,6 @@ entityx::Entity * Game::getMenu(unsigned char in_menu_index) {
     return (out);
 }
 
-// Menu hierarchy.
-// Menus should be entities with
-// Menu Entity? Object?
-//  ->Button Entity?
-//      -> Text Component
-//      -> Sprite Component
-
-
 void Game::makeMenutext(unsigned char in_menu_index) {
     SDL_Log("Making menu text: %d", in_menu_index);
 

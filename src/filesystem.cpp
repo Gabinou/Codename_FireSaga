@@ -1237,7 +1237,6 @@ void JSON_IO::writeJSON(const char * filename, const bool append) {
     if (JSONelement !=  "") {
         cJSON * jelement = cJSON_CreateObject();
 
-        // SDL_Log("json==NULL%d", json == NULL);
         if (append) {
             fp = PHYSFS_openAppend(filename);
         } else {

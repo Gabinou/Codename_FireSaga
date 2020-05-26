@@ -6,8 +6,6 @@
 #include "utilities.hpp"
 #include <vector>
 
-// TEST: how does the game deal with multiple controllers plugging and unplugging?
-
 class GamepadController {
 private:
     SDL_GameController * controller = NULL;
