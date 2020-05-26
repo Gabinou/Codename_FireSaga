@@ -479,6 +479,21 @@ void ControlSystemx::SDL_update() {
 
                 break;
 
+            case SDL_CONTROLLERBUTTONDOWN: //This event does not repeat every frame pressed.
+                if (cursorx->valid()) {
+                    entityx::ComponentHandle<GamepadController> gamepad = cursorx->component<GamepadController>();
+
+                    if (gamepad) {
+                        GamepadInputMap inputmap = gamepad->getInputMap();
+
+                        if (event.cbutton.button == inputmap.new_accept) {
+                            event_manager->emit<inputAccept>(gamepad);
+                        }
+                    }
+                }
+
+                break;
+
             case SDL_QUIT:
                 SDL_Log("Handling SDL_QUIT event");
                 game->stopRunning();
@@ -489,7 +504,6 @@ void ControlSystemx::SDL_update() {
         }
     }
 }
-
 
 void ControlSystemx::update(entityx::EntityManager & es, entityx::EventManager & events, entityx::TimeDelta dt) {
     // SDL_Log("updating control system");

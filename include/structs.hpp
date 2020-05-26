@@ -228,6 +228,7 @@ struct GamepadInputMap {
     std::vector<SDL_GameControllerButton> moveleft{SDL_CONTROLLER_BUTTON_DPAD_LEFT};
 
     std::vector<SDL_GameControllerButton> accept{SDL_CONTROLLER_BUTTON_A};
+    SDL_GameControllerButton new_accept = SDL_CONTROLLER_BUTTON_A;
     std::vector<SDL_GameControllerButton> cancel{SDL_CONTROLLER_BUTTON_B};
     std::vector<SDL_GameControllerButton> stats{SDL_CONTROLLER_BUTTON_X};
     std::vector<SDL_GameControllerButton> menu_right{SDL_CONTROLLER_BUTTON_RIGHTSHOULDER};
