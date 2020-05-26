@@ -49,7 +49,6 @@ public:
     void setMapfromGame();
     void updateSettings();
 
-    unsigned int getHeldbutton(Controllers in_controllers);
     entityx::Entity getInputent(Controllers in_controllers);
     void AIturn(unsigned char in_army);
 

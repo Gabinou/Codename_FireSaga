@@ -1214,10 +1214,6 @@ void JSON_IO::readJSON(const char * filename) {
     }
 }
 
-void JSON_IO::readJSON(cJSON * in_json) {
-
-}
-
 void XML_IO::readXML(const char * filename) {
     // SDL_Log("readXML file: %s", filename);
     tinyxml2::XMLDocument xmlDoc;
@@ -1229,18 +1225,6 @@ void XML_IO::readXML(const char * filename) {
     } else {
         readXML(pEle);
     }
-}
-
-void XML_IO::readXML(tinyxml2::XMLElement * in_pEle) {
-
-}
-
-void XML_IO::writeXML(tinyxml2::XMLDocument * in_doc, tinyxml2::XMLElement * in_pEle) {
-
-}
-
-void JSON_IO::writeJSON(cJSON * in_json) {
-
 }
 
 void JSON_IO::writeJSON(const char * filename, const bool append) {

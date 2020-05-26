@@ -83,8 +83,8 @@ public:
     std::string getXMLElement();
     void writeXML(const char * filename, const bool append = false);
     void readXML(const char * filename);
-    virtual void readXML(tinyxml2::XMLElement * in_pEle);
-    virtual void writeXML(tinyxml2::XMLDocument * in_doc, tinyxml2::XMLElement * in_pEle);
+    virtual void readXML(tinyxml2::XMLElement * in_pEle) = 0;
+    virtual void writeXML(tinyxml2::XMLDocument * in_doc, tinyxml2::XMLElement * in_pEle) = 0;
 };
 
 class JSON_IO {
@@ -93,8 +93,8 @@ protected:
 public:
     void setJSONElement(std::string in_Element);
     std::string getJSONElement();
-    virtual void writeJSON(cJSON * in_json);
-    virtual void readJSON(cJSON * in_json);
+    virtual void writeJSON(cJSON * in_json) = 0;
+    virtual void readJSON(cJSON * in_json) = 0;
     void writeJSON(const char * filename, const bool append = false);
     void readJSON(const char * filename);
 };
