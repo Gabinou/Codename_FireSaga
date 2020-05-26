@@ -1,10 +1,7 @@
 #ifndef MOUSECONTROLLER_HPP
 #define MOUSECONTROLLER_HPP
 
-#include "game.hpp"
-#include "map.hpp"
-#include "utilities.hpp"
-#include <vector>
+#include "structs.hpp"
 
 class MouseController {
 private:
