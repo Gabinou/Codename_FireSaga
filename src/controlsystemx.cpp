@@ -617,15 +617,15 @@ void ControlSystemx::update(entityx::EntityManager & es, entityx::EventManager &
         short unsigned int newstate = -1;
         entityx::Entity setter;
 
-        if (gamepad->isPressed(gamepadInputMap.accept)) {
-            pressed_button.push_back(gamepadInputMap.accept);
+        // if (gamepad->isPressed(gamepadInputMap.accept)) {
+        //     pressed_button.push_back(gamepadInputMap.accept);
 
-            if (gamepad->getHeldbutton() > min_held) {
-                if (!blockInput) {
-                    event_manager->emit<inputAccept>(gamepad);
-                }
-            }
-        }
+        //     if (gamepad->getHeldbutton() > min_held) {
+        //         if (!blockInput) {
+        //             event_manager->emit<inputAccept>(gamepad);
+        //         }
+        //     }
+        // }
 
         if (gamepad->isPressed(gamepadInputMap.cancel)) {
             pressed_button.push_back(gamepadInputMap.cancel);
