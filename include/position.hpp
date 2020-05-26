@@ -14,13 +14,19 @@ private:
     Point pixel_pos = {1, 1};
     Point tilemap_pos = {1, 1};
     Point offset = {1, 1};
-    Point boundsmin = {0, 100};
-    Point boundsmax = {0, 100};
+    
+    Point pixel_boundsmin = {0, 100};
+    Point pixel_boundsmax = {0, 100};
+    Point tilemap_boundsmin = {0, 100};
+    Point tilemap_boundsmax = {0, 100};
+
     Point * position = nullptr;
+    Point * boundsmin = nullptr;
+    Point * boundsmax = nullptr;
     short int bounds[4]; //xmin, xmax, ymin, ymax
     bool newPos(short int newx, short int newy);
     void replaceInbounds();
-    void whichPos();
+    void whichSpace();
 public:
     Position();
     Position(short int in_x, short int in_y);

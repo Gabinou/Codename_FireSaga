@@ -2,17 +2,17 @@
 #include "position.hpp"
 
 Position::Position() {
-    whichPos();
+    whichSpace();
     setPos(0, 0);
 }
 
 Position::Position(short int in_x, short int in_y) {
-    whichPos();
+    whichSpace();
     setPos(in_x, in_y);
 }
 
 Position::Position(short int * position) {
-    whichPos();
+    whichSpace();
     setPos(position[0], position[1]);
 }
 
@@ -20,53 +20,53 @@ Position::Position(short int in_x, short int in_y,
                    short int xmin, short int xmax,
                    short int ymin, short int ymax)
     : Position::Position(in_x, in_y) {
-    whichPos();
+    whichSpace();
     setBounds(xmin, xmax, ymin, ymax);
 }
 
 Position::Position(short int in_x, short int in_y,
                    short int in_bounds[4])
     : Position::Position(in_x, in_y) {
-    whichPos();
+    whichSpace();
     setBounds(in_bounds);
 }
 
 Position::Position(short int in_x, short int in_y,
                    std::vector<short int> in_bounds)
     : Position::Position(in_x, in_y) {
-    whichPos();
+    whichSpace();
     setBounds(in_bounds);
 }
 
 void Position::replaceInbounds() {
     if (position != nullptr) {
-        if (position->x < boundsmin.x) {
-            position->x = boundsmin.x;
+        if (position->x < boundsmin->x) {
+            position->x = boundsmin->x;
         }
 
-        if (position->x > boundsmax.x) {
-            position->x = boundsmax.x;
+        if (position->x > boundsmax->x) {
+            position->x = boundsmax->x;
         }
 
-        if (position->y < boundsmin.y) {
-            position->y = boundsmin.y;
+        if (position->y < boundsmin->y) {
+            position->y = boundsmin->y;
         }
 
-        if (position->y > boundsmax.y) {
-            position->y = boundsmax.y;
+        if (position->y > boundsmax->y) {
+            position->y = boundsmax->y;
         }
     }
 }
 
 void Position::setBounds(Point in_boundsmin, Point in_boundsmax) {
-    setBounds(in_boundsmin.x, in_boundsmax.x, in_boundsmin.y, in_boundsmax.x);
+    setBounds(in_boundsmin->x, in_boundsmax->x, in_boundsmin->y, in_boundsmax->x);
 }
 
 void Position::setBounds(short int xmin, short int xmax, short int ymin, short int ymax) {
-    boundsmin.x = xmin;
-    boundsmax.x = xmax;
-    boundsmin.y = ymin;
-    boundsmax.y = ymax;
+    boundsmin->x = xmin;
+    boundsmax->x = xmax;
+    boundsmin->y = ymin;
+    boundsmax->y = ymax;
     replaceInbounds();
 }
 
@@ -102,10 +102,10 @@ Point Position::getBoundsmax() {
 }
 
 short int * Position::getBounds() {
-    bounds[0] = boundsmin.x;
-    bounds[1] = boundsmax.x;
-    bounds[2] = boundsmin.y;
-    bounds[3] = boundsmax.y;
+    bounds[0] = boundsmin->x;
+    bounds[1] = boundsmax->x;
+    bounds[2] = boundsmin->y;
+    bounds[3] = boundsmax->y;
     return (bounds);
 }
 
@@ -127,7 +127,7 @@ bool Position::isonTilemap() {
 
 void Position::setonTilemap(bool in_tilemap) {
     onTilemap = in_tilemap;
-    whichPos();
+    whichSpace();
 }
 
 void Position::setUpdatable(bool in_updatable) {
@@ -146,7 +146,7 @@ bool Position::setTilemapPos(short int in_x, short int in_y) {
     bool out;
     position = &tilemap_pos;
     out = setPos(in_x, in_y);
-    whichPos();
+    whichSpace();
     return (out);
 }
 
@@ -158,7 +158,7 @@ bool Position::setPixelPos(short int in_x, short int in_y) {
     bool out;
     position = &pixel_pos;
     out = setPos(in_x, in_y);
-    whichPos();
+    whichSpace();
     return (out);
 }
 
@@ -186,11 +186,15 @@ bool Position::addPos(short int move_x, short int move_y) {
     return (newPos(newx, newy));
 }
 
-void Position::whichPos() {
+void Position::whichSpace() {
     if (onTilemap) {
         position = &tilemap_pos;
+        boundsmin = &tilemap_boundsmin;
+        boundsmax = &tilemap_boundsmax;
     } else {
         position = &pixel_pos;
+        boundsmin = &pixel_boundsmin;
+        boundsmax = &pixel_boundsmax;
     }
 }
 
@@ -201,50 +205,50 @@ bool Position::newPos(short int newx, short int newy) {
         if (periodic) {
             // SDL_Log("Periodic.");
 
-            while (newx < boundsmin.x) {
-                newx += boundsmax.x - boundsmin.x + 1;
+            while (newx < boundsmin->x) {
+                newx += boundsmax->x - boundsmin->x + 1;
             }
 
-            while (newx > boundsmax.x) {
-                newx -= boundsmax.x - boundsmin.x + 1;
+            while (newx > boundsmax->x) {
+                newx -= boundsmax->x - boundsmin->x + 1;
             }
 
-            while (newy < boundsmin.y) {
-                newy += boundsmax.y - boundsmin.y + 1;
+            while (newy < boundsmin->y) {
+                newy += boundsmax->y - boundsmin->y + 1;
             }
 
-            while (newy > boundsmax.y) {
-                newy -= boundsmax.y - boundsmin.y + 1;
+            while (newy > boundsmax->y) {
+                newy -= boundsmax->y - boundsmin->y + 1;
             }
 
-            // newx = (newx - 1) % (boundsmax.x - boundsmin.x + 1) + boundsmin.x; // don't know why these don't work.
-            // newy = (newy - 1) % (boundsmax.y - boundsmin.y + 1) + boundsmin.y;
+            // newx = (newx - 1) % (boundsmax->x - boundsmin->x + 1) + boundsmin->x; // don't know why these don't work.
+            // newy = (newy - 1) % (boundsmax->y - boundsmin->y + 1) + boundsmin->y;
             // Python % is modulo. C/C++ % is remainder.
         }
 
-        if ((newx > boundsmin.x) && (newx < boundsmax.x) && (position->x != newx)) {
+        if ((newx > boundsmin->x) && (newx < boundsmax->x) && (position->x != newx)) {
             position->x = newx;
             moved = true;
         } else {
-            if (newx <= boundsmin.x) {
-                position->x = boundsmin.x;
+            if (newx <= boundsmin->x) {
+                position->x = boundsmin->x;
             }
 
-            if (newx >= boundsmax.x) {
-                position->x = boundsmax.x;
+            if (newx >= boundsmax->x) {
+                position->x = boundsmax->x;
             }
         }
 
-        if ((newy > boundsmin.y) && (newy < boundsmax.y) && (position->y != newy)) {
+        if ((newy > boundsmin->y) && (newy < boundsmax->y) && (position->y != newy)) {
             position->y = newy;
             moved = true;
         } else {
-            if (newy <= boundsmin.y) {
-                position->y = boundsmin.y;
+            if (newy <= boundsmin->y) {
+                position->y = boundsmin->y;
             }
 
-            if (newy >= boundsmax.y) {
-                position->y = boundsmax.y;
+            if (newy >= boundsmax->y) {
+                position->y = boundsmax->y;
             }
         }
     }

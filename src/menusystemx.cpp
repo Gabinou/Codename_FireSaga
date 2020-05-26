@@ -200,6 +200,8 @@ void MenuSystemx::receive(const unitmenuSelect & select) {
     unsigned char menuind = cursorpos.y - cursorbounds[2];
 
     std::vector<unsigned char> unitmenuoptions = game->getMenuoptions(MENU::UNIT);
+    SDL_Log("cursorpos: %d %d", cursorpos.x, cursorpos.y);
+    SDL_Log("cursorbounds: %d %d %d %d", cursorbounds[0], cursorbounds[1], cursorbounds[2], cursorbounds[3]);
     SDL_Log("menuind: %d ", menuind);
     SDL_Log("unitmenuoptions[menuind]: %d ", unitmenuoptions[menuind]);
 
