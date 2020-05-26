@@ -17,7 +17,6 @@ private:
     short int joystick_deadzone = 8000;
     std::vector<short unsigned int> held_move;
     std::vector<std::vector<SDL_GameControllerButton>> held_button;
-    // double time_button = 0.;
     double time_move = 0.;
 public:
     GamepadController() {
@@ -38,10 +37,6 @@ public:
     double getHeldmove() {
         return (time_move);
     }
-
-    // double getHeldbutton() {
-    //     return (time_button);
-    // }
 
     bool isPressed(std::vector<SDL_GameControllerButton> in_map) {
         bool out = false;
@@ -111,14 +106,6 @@ public:
         }
     }
 
-    // void check_button(std::vector<std::vector<SDL_GameControllerButton>> in_pressed, double dt) {
-    //     if ((held_button == in_pressed) && (!in_pressed.empty())) {
-    //         time_button += dt;
-    //     } else {
-    //         held_button = in_pressed;
-    //         time_button = 0.;
-    //     }
-    // }
 };
 
 #endif /* GAMEPADCONTROLLER_HPP */

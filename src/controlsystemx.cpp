@@ -382,9 +382,15 @@ void ControlSystemx::SDL_update() {
 
                             if (event.type != previous_mouse) {
                                 if (event.button.state == SDL_PRESSED) {
-                                    mouse->addHeld(event.button.button);
-                                } else {
-                                    mouse->removeHeld(event.button.button);
+                                    MouseInputMap inputmap = mouse->getInputMap();
+
+                                    if (cppisin((unsigned char) event.button.button, inputmap.cancel)) {
+                                        event_manager->emit<inputCancel>(mouse);
+                                    }
+
+                                    if (cppisin((unsigned char) event.button.button, inputmap.accept)) {
+                                        event_manager->emit<inputAccept>(mouse);
+                                    }
                                 }
                             }
                         } else {
@@ -639,36 +645,37 @@ void ControlSystemx::update(entityx::EntityManager & es, entityx::EventManager &
         gamepad->check_move(pressed_move, dt);
     }
 
-    if (game->isMouse()) {
-        for (entityx::Entity ent : es.entities_with_components<MouseController>()) {
-            if (!mouse_position) {
-                mouse_position = ent.component<Position>();
-            }
+    // if (game->isMouse()) {
+    //     for (entityx::Entity ent : es.entities_with_components<MouseController>()) {
+    //         if (!mouse_position) {
+    //             mouse_position = ent.component<Position>();
+    //         }
 
-            entityx::ComponentHandle<MouseController> mouse = ent.component<MouseController>();
+    //         entityx::ComponentHandle<MouseController> mouse = ent.component<MouseController>();
 
-            if (mouse->isPressed(mouseInputMap.cancel)) {
-                if (mouse->getHeldbutton() > min_held) {
-                    if (!blockInput) {
-                        event_manager->emit<inputCancel>(mouse);
-                    }
-                }
-            }
+    //         // if (mouse->isPressed(mouseInputMap.cancel)) {
+    //         //     if (mouse->getHeldbutton() > min_held) {
+    //         //         if (!blockInput) {
+    //         //             event_manager->emit<inputCancel>(mouse);
+    //         //         }
+    //         //     }
+    //         // }
 
-            if (mouse->isPressed(mouseInputMap.accept)) {
-                if (mouse->getHeldbutton() > min_held) {
-                    if (!blockInput) {
-                        event_manager->emit<inputAccept>(mouse);
-                    }
-                }
-            }
+    //         // if (mouse->isPressed(mouseInputMap.accept)) {
+    //         //     if (mouse->getHeldbutton() > min_held) {
+    //         //         if (!blockInput) {
+    //         //             event_manager->emit<inputAccept>(mouse);
+    //         //         }
+    //         //     }
+    //         // }
 
-            mouse->check_button(dt);
-            mouse_held = mouse->getHeldbutton();
-        }
-    }
+    //         mouse->check_button(dt);
+    //         mouse_held = mouse->getHeldbutton();
+    //     }
+    // }
 
-    if ((kb_held == 0.) && (mouse_held == 0.)) {
+    // if ((kb_held == 0.) && (mouse_held == 0.)) {
+    if (kb_held == 0.) {
         blockInput = false;
     }
 
