@@ -13,8 +13,6 @@
 #include "linalg.hpp"
 #include <unordered_map>
 
-// idea for events: map should be an emitter of events, and receiver also.
-
 class Map : public XML_IO, JSON_IO, entityx::Receiver<Map> {
 private:
     entityx::EntityManager * manager;
@@ -78,8 +76,10 @@ public:
     std::unordered_map<short int, Tile> getTiles();
     std::vector<short int> getTilesindex();
 
-    Point pixel2tile(Point in_point);
-    Point pixel2tile(short int pixel_x, short int pixel_y);
+    Point pixel2tilemap(Point in_point);
+    Point pixel2tilemap(short int pixel_x, short int pixel_y);
+    Point tilemap2pixel(Point in_point);
+    Point tilemap2pixel(short int pixel_x, short int pixel_y);
 
     void postTilemap();
     std::vector<std::vector<short int>> getTilemap();
