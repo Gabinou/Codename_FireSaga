@@ -12,6 +12,7 @@
 #include "game.hpp"
 
 Game * firesaga = nullptr;
+Settings settings;
 
 int main(int argc, char * argv[]) {
     SDL_Log("Starting project codename FireSaga\n");
@@ -36,7 +37,8 @@ int main(int argc, char * argv[]) {
     init_tinyMT();
 
     SDL_Log("Creating game object\n");
-    firesaga = new Game();
+    firesaga = new Game(settings);
+    // firesaga = new Game();
     firesaga->init();
     SDL_ShowCursor(SDL_DISABLE); // for default cursor.
     firesaga->initSystems();
@@ -65,6 +67,7 @@ int main(int argc, char * argv[]) {
     float currentTime;
     float elapsedSeconds;
     short unsigned int cap = firesaga->getSettings()->FPS.cap;
+    SDL_Log("gotten cap: %d", cap);
     int delay;
 
     while (firesaga->isRunning()) {
