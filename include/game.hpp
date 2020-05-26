@@ -50,7 +50,7 @@ private:
     bool isrunning;
 
     SDL_Window * window;
-    Settings settings;
+    Settings settings = Settings();
     tinymt32_t tinymt;
     Convoy convoy;
     Camp camp;
