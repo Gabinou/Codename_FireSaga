@@ -11,10 +11,10 @@ private:
     bool updatable = true;
     bool onTilemap = true;
     bool periodic = false;
+
     Point pixel_pos = {1, 1};
     Point tilemap_pos = {1, 1};
     Point offset = {1, 1};
-    
     Point pixel_boundsmin = {0, 100};
     Point pixel_boundsmax = {0, 100};
     Point tilemap_boundsmin = {0, 100};
@@ -24,6 +24,7 @@ private:
     Point * boundsmin = nullptr;
     Point * boundsmax = nullptr;
     short int bounds[4]; //xmin, xmax, ymin, ymax
+
     bool newPos(short int newx, short int newy);
     void replaceInbounds();
     void whichSpace();
@@ -40,8 +41,6 @@ public:
     void setBounds(short int in_bounds[4]);
     void setBounds(std::vector<short int> in_bounds);
     short int * getBounds();
-    Point getBoundsmin();
-    Point getBoundsmax();
 
     void setOffset(short int in_offset[2]);
     void setOffset(Point in_offset);
