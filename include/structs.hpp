@@ -204,6 +204,7 @@ struct KeyboardInputMap {
     std::vector<SDL_Scancode> moveleft{SDL_SCANCODE_A, SDL_SCANCODE_LEFT, SDL_SCANCODE_J};
 
     std::vector<SDL_Scancode> accept{SDL_SCANCODE_SPACE};
+    SDL_Scancode new_accept = SDL_SCANCODE_SPACE;
     std::vector<SDL_Scancode> cancel{SDL_SCANCODE_BACKSPACE};
     std::vector<SDL_Scancode> stats{SDL_SCANCODE_Q};
     std::vector<SDL_Scancode> menu_right{SDL_SCANCODE_Q}; // Switches between units of same affilition, when in 'map' states.
@@ -226,6 +227,9 @@ struct GamepadInputMap {
     std::vector<SDL_GameControllerButton> moveup{SDL_CONTROLLER_BUTTON_DPAD_UP};
     std::vector<SDL_GameControllerButton> movedown{SDL_CONTROLLER_BUTTON_DPAD_DOWN};
     std::vector<SDL_GameControllerButton> moveleft{SDL_CONTROLLER_BUTTON_DPAD_LEFT};
+
+
+
 
     SDL_GameControllerButton accept = SDL_CONTROLLER_BUTTON_A;
     SDL_GameControllerButton cancel = SDL_CONTROLLER_BUTTON_B;

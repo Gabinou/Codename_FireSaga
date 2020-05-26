@@ -36,7 +36,6 @@ private:
     float mouse_idletime = 0.0f;
     float mouse_disabletime = 0.5f;
     bool blockInput = false;
-    double gp_held = 0.0f;
     double kb_held = 0.0f;
     double mouse_held = 0.0f;
     unsigned int previous_mouse;

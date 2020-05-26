@@ -362,7 +362,7 @@ void ControlSystemx::SDL_update() {
 
         switch (event.type) {
 
-            case SDL_MOUSEBUTTONDOWN:
+            case SDL_MOUSEBUTTONDOWN: // these events REPEAT every frame.
             case SDL_MOUSEBUTTONUP:
                 if (event.button.windowID == SDL_GetWindowID(window)) {
 
@@ -479,7 +479,11 @@ void ControlSystemx::SDL_update() {
 
                 break;
 
-            case SDL_CONTROLLERBUTTONDOWN: //This event does not repeat every frame pressed.
+            case SDL_KEYDOWN: //This event REPEATS every frame pressed.
+
+                break;
+
+            case SDL_CONTROLLERBUTTONDOWN: //This event DOES NOT repeat ever frame pressed
                 if (cursorx->valid()) {
                     entityx::ComponentHandle<GamepadController> gamepad = cursorx->component<GamepadController>();
 
@@ -633,32 +637,7 @@ void ControlSystemx::update(entityx::EntityManager & es, entityx::EventManager &
             pressed_move.push_back(GAME::BUTTON::DOWN);
         }
 
-        short unsigned int newstate = -1;
-        entityx::Entity setter;
-
-        // if (gamepad->isPressed(gamepadInputMap.accept)) {
-        //     pressed_button.push_back(gamepadInputMap.accept);
-
-        //     if (gamepad->getHeldbutton() > min_held) {
-        //         if (!blockInput) {
-        //             event_manager->emit<inputAccept>(gamepad);
-        //         }
-        //     }
-        // }
-
-        // if (gamepad->isPressed(gamepadInputMap.cancel)) {
-        //     pressed_button.push_back(gamepadInputMap.cancel);
-
-        //     if (gamepad->getHeldbutton() > min_held) {
-        //         if (!blockInput) {
-        //             event_manager->emit<inputCancel>(gamepad);
-        //         }
-        //     }
-        // }
-
         gamepad->check_move(pressed_move, dt);
-        // gamepad->check_button(pressed_button, dt);
-        // gp_held = gamepad->getHeldbutton();
     }
 
     if (game->isMouse()) {
@@ -687,11 +666,9 @@ void ControlSystemx::update(entityx::EntityManager & es, entityx::EventManager &
 
             mouse->check_button(dt);
             mouse_held = mouse->getHeldbutton();
-
         }
     }
 
-    // if ((kb_held == 0.) && (gp_held == 0.)  && (mouse_held == 0.)) {
     if ((kb_held == 0.) && (mouse_held == 0.)) {
         blockInput = false;
     }
