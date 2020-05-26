@@ -61,27 +61,30 @@ int main(int argc, char * argv[]) {
     firesaga->startTurnSystem();
 
     SDL_Log("Starting main game loop\n");
-    unsigned int currentTime = SDL_GetTicks();
-    unsigned int elapsedTime = 0;
-    short unsigned int cap = firesaga->getSettings()->FPS.cap;
-    // SDL_Log("gotten cap: %d", cap);
+    unsigned int currentTime_ms = SDL_GetTicks();
+    unsigned int elapsedTime_ms = 0;
+    float updateTime_s = 0.0f;
+
+    short unsigned int cap_s = firesaga->getSettings()->FPS.cap;
     unsigned int delay = 0;
 
     while (firesaga->isRunning()) {
-        elapsedTime = SDL_GetTicks() - currentTime;
+        elapsedTime_ms = SDL_GetTicks() - currentTime_ms;
 
-        SDL_Log("elapsedTime: %d ", elapsedTime);
-        SDL_Log("currentTime: %d ", currentTime);
+        SDL_Log("elapsedTime_ms: %d ", elapsedTime_ms);
+        SDL_Log("currentTime_ms: %d ", currentTime_ms);
 
-        if ((elapsedTime * cap < 1000) || (elapsedTime == 0)) {
-            delay = 1000 / cap - elapsedTime;
+        if ((elapsedTime_ms * cap_s < 1000) || (elapsedTime_ms == 0)) {
+            delay = 1000 / cap_s - elapsedTime_ms;
             SDL_Log("delay: %d ", delay);
             SDL_Delay(delay);
-            elapsedTime = 1000 / cap;
         }
 
-        currentTime = SDL_GetTicks();
-        firesaga->update(elapsedTime);
+        updateTime_s = 1.0f / cap_s;
+        SDL_Log("updateTime_s: %f ", updateTime_s);
+
+        currentTime_ms = SDL_GetTicks();
+        firesaga->update(elapsedTime_ms);
         // getchar();
     }
 
