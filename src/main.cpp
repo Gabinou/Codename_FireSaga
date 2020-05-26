@@ -12,7 +12,6 @@
 #include "game.hpp"
 
 Game * firesaga = nullptr;
-Settings settings;
 
 int main(int argc, char * argv[]) {
     SDL_Log("Starting project codename FireSaga\n");
@@ -36,10 +35,8 @@ int main(int argc, char * argv[]) {
     SDL_Log("Initializing TinyMT RNG\n");
     init_tinyMT();
 
-    settings.FPS.show = true;
-
     SDL_Log("Creating game object\n");
-    firesaga = new Game(settings);
+    firesaga = new Game();
     firesaga->init();
     SDL_ShowCursor(SDL_DISABLE); // for default cursor.
     firesaga->initSystems();

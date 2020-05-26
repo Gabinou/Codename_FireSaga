@@ -40,7 +40,6 @@ void MenuSystemx::receive(const disableMenu & disable) {
     game->hideMenu(disable.menuind);
 }
 
-
 void MenuSystemx::receive(const unitSelect & select) {
     SDL_Log("Received unitSelect event ");
     short int newstate = -1;

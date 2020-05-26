@@ -162,7 +162,7 @@ struct Movement_cost {
 
 struct Fps {
     Point pos = {750, 0};
-    bool show = false;
+    bool show = true;
     float sizefactor[2] = {0.5, 0.5};
     unsigned char cap = 60;
     SDL_Color textcolor = {0, 0, 0};
