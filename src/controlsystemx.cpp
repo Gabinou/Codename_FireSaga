@@ -214,19 +214,19 @@ entityx::Entity ControlSystemx::getInputent(Controllers in_controllers) {
     return (inputter);
 }
 
-unsigned int ControlSystemx::getHeldbutton(Controllers in_controllers) {
-    unsigned int frames_button = 0;
+// unsigned int ControlSystemx::getHeldbutton(Controllers in_controllers) {
+//     unsigned int frames_button = 0;
 
-    if (in_controllers.keyboard) {
-        frames_button = in_controllers.keyboard->getHeldbutton();
-    }
+//     if (in_controllers.keyboard) {
+//         frames_button = in_controllers.keyboard->getHeldbutton();
+//     }
 
-    if (in_controllers.gamepad) {
-        frames_button = in_controllers.gamepad->getHeldbutton();
-    }
+//     if (in_controllers.gamepad) {
+//         frames_button = in_controllers.gamepad->getHeldbutton();
+//     }
 
-    return (frames_button);
-}
+//     return (frames_button);
+// }
 
 void ControlSystemx::receive(const cursorMoved & moved) {
     SDL_Log("Received cursorMoved event");
@@ -490,14 +490,13 @@ void ControlSystemx::SDL_update() {
                     if (gamepad) {
                         GamepadInputMap inputmap = gamepad->getInputMap();
 
-                        if (event.cbutton.button == inputmap.cancel) {
+                        if (cppisin((SDL_GameControllerButton) event.cbutton.button, inputmap.cancel)) {
                             event_manager->emit<inputCancel>(gamepad);
                         }
 
-                        if (event.cbutton.button == inputmap.accept) {
+                        if (cppisin((SDL_GameControllerButton) event.cbutton.button, inputmap.accept)) {
                             event_manager->emit<inputAccept>(gamepad);
                         }
-
                     }
                 }
 
@@ -603,7 +602,7 @@ void ControlSystemx::update(entityx::EntityManager & es, entityx::EventManager &
         std::vector<short unsigned int> pressed_move{};
         std::vector<std::vector<SDL_GameControllerButton>> pressed_button{};
         int joystick_dead_zone = gamepad->getDeadzone();
-        unsigned int frames_button = gamepad->getHeldbutton();
+        // unsigned int frames_button = gamepad->getHeldbutton();
 
         if ((mainxaxis > joystick_dead_zone) || (secondxaxis > joystick_dead_zone)) {
             cursor_move.x = 1;
