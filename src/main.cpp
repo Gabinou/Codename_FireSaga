@@ -39,7 +39,7 @@ int main(int argc, char * argv[]) {
     SDL_Log("Creating game object\n");
     // firesaga = new Game(settings);
     firesaga = new Game();
-    firesaga->setSettings(settings);
+    // firesaga->setSettings(settings);
     firesaga->init();
     SDL_ShowCursor(SDL_DISABLE); // for default cursor.
     firesaga->initSystems();

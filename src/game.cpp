@@ -13,11 +13,11 @@ SDL_Renderer * Game::renderer = nullptr;
 TTF_Font * Game::font = NULL;
 
 Game::Game() {
-    convoy.setWeapons(&weapons);
 }
 
-Game::Game(Settings in_settings) : Game() {
-    setSettings(in_settings);
+// Game::Game(Settings in_settings) : Game() {
+Game::Game(Settings in_settings) {
+    // setSettings(in_settings);
 }
 
 Game::~Game() {}
@@ -711,6 +711,8 @@ void Game::init() {
     } else {
         isrunning = false;
     }
+
+    convoy.setWeapons(&weapons);
 }
 
 void Game::initSystems() {
