@@ -486,8 +486,12 @@ void ControlSystemx::SDL_update() {
                     if (gamepad) {
                         GamepadInputMap inputmap = gamepad->getInputMap();
 
-                        if (event.cbutton.button == inputmap.new_accept) {
+                        if (event.cbutton.button == inputmap.accept) {
                             event_manager->emit<inputAccept>(gamepad);
+                        }
+
+                        if (event.cbutton.button == inputmap.cancel) {
+                            event_manager->emit<inputCancel>(gamepad);
                         }
                     }
                 }
@@ -641,19 +645,19 @@ void ControlSystemx::update(entityx::EntityManager & es, entityx::EventManager &
         //     }
         // }
 
-        if (gamepad->isPressed(gamepadInputMap.cancel)) {
-            pressed_button.push_back(gamepadInputMap.cancel);
+        // if (gamepad->isPressed(gamepadInputMap.cancel)) {
+        //     pressed_button.push_back(gamepadInputMap.cancel);
 
-            if (gamepad->getHeldbutton() > min_held) {
-                if (!blockInput) {
-                    event_manager->emit<inputCancel>(gamepad);
-                }
-            }
-        }
+        //     if (gamepad->getHeldbutton() > min_held) {
+        //         if (!blockInput) {
+        //             event_manager->emit<inputCancel>(gamepad);
+        //         }
+        //     }
+        // }
 
         gamepad->check_move(pressed_move, dt);
-        gamepad->check_button(pressed_button, dt);
-        gp_held = gamepad->getHeldbutton();
+        // gamepad->check_button(pressed_button, dt);
+        // gp_held = gamepad->getHeldbutton();
     }
 
     if (game->isMouse()) {
@@ -686,7 +690,8 @@ void ControlSystemx::update(entityx::EntityManager & es, entityx::EventManager &
         }
     }
 
-    if ((kb_held == 0.) && (gp_held == 0.)  && (mouse_held == 0.)) {
+    // if ((kb_held == 0.) && (gp_held == 0.)  && (mouse_held == 0.)) {
+    if ((kb_held == 0.) && (mouse_held == 0.)) {
         blockInput = false;
     }
 
