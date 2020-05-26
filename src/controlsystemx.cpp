@@ -486,13 +486,14 @@ void ControlSystemx::SDL_update() {
                     if (gamepad) {
                         GamepadInputMap inputmap = gamepad->getInputMap();
 
+                        if (event.cbutton.button == inputmap.cancel) {
+                            event_manager->emit<inputCancel>(gamepad);
+                        }
+
                         if (event.cbutton.button == inputmap.accept) {
                             event_manager->emit<inputAccept>(gamepad);
                         }
 
-                        if (event.cbutton.button == inputmap.cancel) {
-                            event_manager->emit<inputCancel>(gamepad);
-                        }
                     }
                 }
 
