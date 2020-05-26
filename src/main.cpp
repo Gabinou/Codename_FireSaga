@@ -8,9 +8,7 @@
 * |          '-._.-'         |   |                                   |
 * |        Made by Gabriel Taillon                                   |
 * --------------------------------------------------------------------*/
-#include "text.hpp"
 #include "game.hpp"
-
 Game * firesaga = nullptr;
 
 int main(int argc, char * argv[]) {

@@ -91,7 +91,6 @@ public:
     void disableCursorx();
     bool isCursor();
 
-
     SDL_Window * getWindow();
 
     void loadMouse();
@@ -134,9 +133,7 @@ public:
 
     void startTurnSystem();
 
-    // void SDL_update();
     void update();
-    void render();
     void clean();
     void fight(Unit * attacker, Unit * defender);
     void attack(Unit * attacker, Unit * defender);

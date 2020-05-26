@@ -4,7 +4,6 @@
 #include "game.hpp"
 #include "map.hpp"
 #include "utilities.hpp"
-#include <vector>
 
 class GamepadController {
 private:
