@@ -41,7 +41,7 @@ int main(int argc, char * argv[]) {
     firesaga = new Game();
     // firesaga->setSettings(settings);
     firesaga->init();
-    SDL_ShowCursor(SDL_DISABLE); // for default cursor.
+    // SDL_ShowCursor(SDL_DISABLE); // for default cursor.
     firesaga->initSystems();
     firesaga->makeFPS();
     firesaga->loadCursor();
@@ -63,19 +63,23 @@ int main(int argc, char * argv[]) {
     SDL_Log("Starting turn system.\n");
     firesaga->startTurnSystem();
 
-
     SDL_Log("Starting main game loop\n");
-    float currentTime;
-    float elapsedSeconds;
+    float currentTime = 0.0f;
+    float elapsedSeconds = 0.0f;
     short unsigned int cap = firesaga->getSettings()->FPS.cap;
     // SDL_Log("gotten cap: %d", cap);
-    int delay;
+    int delay = 0;
 
     while (firesaga->isRunning()) {
         elapsedSeconds = ((float)SDL_GetTicks() - currentTime) / 1000.;
 
+        SDL_Log("cap: %d ", cap);
+        SDL_Log("elapsedSeconds: %d ", elapsedSeconds);
+        SDL_Log("delay: %d ", delay);
+
         if ((elapsedSeconds * cap < 1.) || (elapsedSeconds == 0)) {
             delay = int ((1. / cap - elapsedSeconds) * 1000);
+            SDL_Log("delay: %d ", delay);
             SDL_Delay(delay);
             elapsedSeconds = 1. / (float)cap;
         }
