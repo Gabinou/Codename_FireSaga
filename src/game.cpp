@@ -396,6 +396,20 @@ void Game::setCursorlastpos(const short int x, const short int y) {
     cursor_lastpos.y = y;
 }
 
+void loadHighlight() {
+
+}
+
+void unloadHighlight() {
+    SDL_Log("Unloading Highlight");
+
+    if (highlight) {
+        mapEntx.destroy();
+    } else {
+        SDL_Log("Failed to unloadMap. Was mapx deleted previously?");
+    }
+}
+
 void Game::unloadMap() {
     SDL_Log("Unloading Map");
 

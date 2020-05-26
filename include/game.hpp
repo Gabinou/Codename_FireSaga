@@ -33,6 +33,8 @@ private:
     entityx::Entity cursorx;
     entityx::Entity mousex;
     entityx::Entity transition;
+    entityx::Entity highlight;
+    entityx::Entity shadow;
     entityx::Entity fps;
 
     Point cursor_lastpos = {6, 6};
@@ -84,6 +86,10 @@ public:
     void loadUnits(std::vector<short int> to_load);
     void unloadUnits(std::vector<short int> to_unload);
     void loadMapArrivals();
+
+    void loadHighlight();
+    void unloadHighlight();
+
     void loadCursor();
     void unloadCursor();
     void enableCursorx();
