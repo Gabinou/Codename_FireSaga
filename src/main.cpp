@@ -12,7 +12,6 @@
 #include "game.hpp"
 
 Game * firesaga = nullptr;
-Settings settings;
 
 int main(int argc, char * argv[]) {
     SDL_Log("Starting project codename FireSaga\n");
@@ -37,11 +36,9 @@ int main(int argc, char * argv[]) {
     init_tinyMT();
 
     SDL_Log("Creating game object\n");
-    // firesaga = new Game(settings);
     firesaga = new Game();
-    // firesaga->setSettings(settings);
     firesaga->init();
-    // SDL_ShowCursor(SDL_DISABLE); // for default cursor.
+    SDL_ShowCursor(SDL_DISABLE); // for default cursor.
     firesaga->initSystems();
     firesaga->makeFPS();
     firesaga->loadCursor();
@@ -64,28 +61,28 @@ int main(int argc, char * argv[]) {
     firesaga->startTurnSystem();
 
     SDL_Log("Starting main game loop\n");
-    float currentTime = 0.0f;
-    float elapsedSeconds = 0.0f;
+    unsigned int currentTime = SDL_GetTicks();
+    unsigned int elapsedTime = 0;
     short unsigned int cap = firesaga->getSettings()->FPS.cap;
     // SDL_Log("gotten cap: %d", cap);
-    int delay = 0;
+    unsigned int delay = 0;
 
     while (firesaga->isRunning()) {
-        elapsedSeconds = ((float)SDL_GetTicks() - currentTime) / 1000.;
+        elapsedTime = SDL_GetTicks() - currentTime;
 
-        SDL_Log("cap: %d ", cap);
-        SDL_Log("elapsedSeconds: %d ", elapsedSeconds);
-        SDL_Log("delay: %d ", delay);
+        SDL_Log("elapsedTime: %d ", elapsedTime);
+        SDL_Log("currentTime: %d ", currentTime);
 
-        if ((elapsedSeconds * cap < 1.) || (elapsedSeconds == 0)) {
-            delay = int ((1. / cap - elapsedSeconds) * 1000);
+        if ((elapsedTime * cap < 1000) || (elapsedTime == 0)) {
+            delay = 1000 / cap - elapsedTime;
             SDL_Log("delay: %d ", delay);
             SDL_Delay(delay);
-            elapsedSeconds = 1. / (float)cap;
+            elapsedTime = 1000 / cap;
         }
 
-        currentTime = (float)SDL_GetTicks();
-        firesaga->update(elapsedSeconds);
+        currentTime = SDL_GetTicks();
+        firesaga->update(elapsedTime);
+        // getchar();
     }
 
     firesaga->clean();
