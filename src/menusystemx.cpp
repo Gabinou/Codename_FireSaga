@@ -254,7 +254,7 @@ void MenuSystemx::receive(const menuSelect & select) {
                     break;
 
                 default:
-                    SDL_Log("menu not found.");
+                    SDL_Log("menu not found");
             }
     }
 }

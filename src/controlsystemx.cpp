@@ -182,6 +182,9 @@ void ControlSystemx::receive(const inputCancel & cancel) {
             }
 
             break;
+
+        default:
+            SDL_Log("game state is invalid");
     }
 
     blockInput = true;
@@ -265,6 +268,9 @@ void ControlSystemx::receive(const cursorMoved & moved) {
             }
 
             break;
+
+        default:
+            SDL_Log("game state is invalid");
     }
 
     if (newstate != -1) {
