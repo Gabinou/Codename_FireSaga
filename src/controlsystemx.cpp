@@ -299,9 +299,9 @@ void ControlSystemx::receive(const inputAccept & accept) {
 
     switch (game->getState()) {
         case GAME::STATE::MAP:
-            // SDL_Log("accepter Position, %d %d \n", selector_pos[0], selector_pos[1]);
             selector_pos = position->getTilemapPos();
             offset = position->getOffset();
+            SDL_Log("accepter Position, %d %d \n", selector_pos.x, selector_pos.y);
             current_pos.x = selector_pos.x - offset.x;
             current_pos.y = selector_pos.y - offset.y;
             unitontile = unitmap[current_pos.y][current_pos.x];
@@ -380,11 +380,17 @@ void ControlSystemx::SDL_update() {
                         position = mousex->component<Position>();
 
                         if (mouse) {
-                            // SDL_Log("event pos: %d %d", event.button.x, event.button.y);
+                            SDL_Log("event pos: %d %d", event.button.x, event.button.y);
                             position->setPixelPos(event.button.x, event.button.y);
 
                             if (mapx) {
+                                SDL_Log("mapxx is valid");
+                                SDL_Log("scale: %f %f", position->getScale()[0], position->getScale()[1]);
                                 position->setTilemapPos(position->pixel2tilemap(event.button.x, event.button.y));
+                                Point tilemap_pos = position->getTilemapPos();
+                                Point pixel_pos = position->getPixelPos();
+                                SDL_Log("tilemap_position: %d %d", tilemap_pos.x, tilemap_pos.y);
+                                SDL_Log("pixel_position: %d %d", pixel_pos.x, pixel_pos.y);
                             }
 
                             if (event.type != previous_mouse) {
