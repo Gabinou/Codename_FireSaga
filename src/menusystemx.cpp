@@ -48,13 +48,13 @@ void MenuSystemx::receive(const unitSelect & select) {
     selected = unit.entity();
 
     if (isPC(unit->getArmy())) {
-        event_manager->emit<unitMove>(select.cursor, unit);
+        event_manager->emit<unitMove>(select.selector, unit);
         newstate = GAME::STATE::UNITMOVE;
     } else {
         if (game->getState() == GAME::STATE::UNITMOVE) {
-            event_manager->emit<unitDanger>(select.cursor, unit);
+            event_manager->emit<unitDanger>(select.selector, unit);
         } else {
-            event_manager->emit<unitMove>(select.cursor, unit);
+            event_manager->emit<unitMove>(select.selector, unit);
             newstate = GAME::STATE::UNITMOVE;
         }
     }
@@ -67,8 +67,8 @@ void MenuSystemx::receive(const unitSelect & select) {
 void MenuSystemx::receive(const mapMenu & menu) {
     SDL_Log("Received mapMenu event ");
     entityx::Entity * mapmenu = game->getMenu(MENU::MAPMENU);
-    entityx::Entity cursor = menu.cursor;
-    entityx::ComponentHandle<Position> position = cursor.component<Position>();
+    entityx::Entity selector = menu.selector;
+    entityx::ComponentHandle<Position> position = selector.component<Position>();
     Point new_position;
 
     game->makeMenuoptions(MENU::MAPMENU);
@@ -100,9 +100,9 @@ void MenuSystemx::receive(const unitMenu & menu) {
     SDL_Log("Received unitMenu event ");
     mapx->hideOverlay();
 
-    entityx::Entity cursor = menu.cursor;
+    entityx::Entity selector = menu.selector;
     entityx::ComponentHandle<Position> selected_position;
-    entityx::ComponentHandle<Position> cursor_position = cursor.component<Position>();
+    entityx::ComponentHandle<Position> cursor_position = selector.component<Position>();
     entityx::Entity * unitmenu = game->getMenu(MENU::UNIT);
     Point new_position;
 
@@ -240,14 +240,14 @@ void MenuSystemx::receive(const menuSelect & select) {
                 default:
                     SDL_Log("menu not found.");
             }
-
     }
+}
 
 
 // void MenuSystemx::receive(const mapmenuSelect & select) {
 //     SDL_Log("Received mapmenuSelect event ");
-//     entityx::Entity cursor = select.cursor;
-//     entityx::ComponentHandle<Position> position = cursor.component<Position>();
+//     entityx::Entity selector = select.selector;
+//     entityx::ComponentHandle<Position> position = selector.component<Position>();
 
 //     Point cursorpos = position->getTilemapPos();
 //     short int * cursorbounds = position->getTilemapBounds();
@@ -261,27 +261,27 @@ void MenuSystemx::receive(const menuSelect & select) {
 
 //     switch (mapmenuoptions[menuind]) {
 //         case MENU::OPTION::OBJECTIVES:
-//             event_manager->emit<objectivesMenu>(cursor);
+//             event_manager->emit<objectivesMenu>(selector);
 //             break;
 
 //         case MENU::OPTION::UNITS:
-//             event_manager->emit<unitsMenu>(cursor);
+//             event_manager->emit<unitsMenu>(selector);
 //             break;
 
 //         case MENU::OPTION::ENEMYUNITS:
-//             event_manager->emit<enemyunitsMenu>(cursor);
+//             event_manager->emit<enemyunitsMenu>(selector);
 //             break;
 
 //         case MENU::OPTION::OPTIONS:
-//             event_manager->emit<optionsMenu>(cursor);
+//             event_manager->emit<optionsMenu>(selector);
 //             break;
 
 //         case MENU::OPTION::ITEMS:
-//             event_manager->emit<itemsMenu>(cursor);
+//             event_manager->emit<itemsMenu>(selector);
 //             break;
 
 //         case MENU::OPTION::ENDTURN:
-//             event_manager->emit<disableMenu>(cursor, MENU::MAPMENU);
+//             event_manager->emit<disableMenu>(selector, MENU::MAPMENU);
 //             event_manager->emit<turnEnd>();
 //             break;
 //     }
@@ -289,9 +289,9 @@ void MenuSystemx::receive(const menuSelect & select) {
 
 // void MenuSystemx::receive(const unitmenuSelect & select) {
 //     SDL_Log("unitmenuSelect event received");
-//     entityx::Entity cursor = select.cursor;
+//     entityx::Entity selector = select.selector;
 //     entityx::ComponentHandle<Unit> unit = select.unit;
-//     entityx::ComponentHandle<Position> position = cursor.component<Position>();
+//     entityx::ComponentHandle<Position> position = selector.component<Position>();
 
 //     Point cursorpos = position->getTilemapPos();
 //     short int * cursorbounds = position->getBounds();
@@ -306,15 +306,15 @@ void MenuSystemx::receive(const menuSelect & select) {
 //     if (unit) {
 //         switch (unitmenuoptions[menuind]) {
 //             case MENU::OPTION::ITEMS:
-//                 event_manager->emit<unitItems>(cursor, unit);
+//                 event_manager->emit<unitItems>(selector, unit);
 //                 break;
 
 //             case MENU::OPTION::TALK:
-//                 event_manager->emit<unitTalk>(cursor, unit);
+//                 event_manager->emit<unitTalk>(selector, unit);
 //                 break;
 
 //             case MENU::OPTION::RESCUE:
-//                 event_manager->emit<unitRescue>(cursor, unit);
+//                 event_manager->emit<unitRescue>(selector, unit);
 //                 break;
 
 //             case MENU::OPTION::SEIZE:
@@ -322,23 +322,23 @@ void MenuSystemx::receive(const menuSelect & select) {
 //                 break;
 
 //             case MENU::OPTION::ESCAPE:
-//                 event_manager->emit<unitEscape>(cursor, unit);
+//                 event_manager->emit<unitEscape>(selector, unit);
 //                 break;
 
 //             case MENU::OPTION::ATTACK:
-//                 event_manager->emit<unitAttack>(cursor, unit);
+//                 event_manager->emit<unitAttack>(selector, unit);
 //                 break;
 
 //             case MENU::OPTION::TRADE:
-//                 event_manager->emit<unitTrade>(cursor, unit);
+//                 event_manager->emit<unitTrade>(selector, unit);
 //                 break;
 
 //             case MENU::OPTION::STAFF:
-//                 event_manager->emit<unitStaff>(cursor, unit);
+//                 event_manager->emit<unitStaff>(selector, unit);
 //                 break;
 
 //             case MENU::OPTION::WAIT:
-//                 event_manager->emit<unitWait>(cursor, unit);
+//                 event_manager->emit<unitWait>(selector, unit);
 //                 break;
 //         }
 //     } else {
@@ -346,29 +346,29 @@ void MenuSystemx::receive(const menuSelect & select) {
 //     }
 // }
 
-    void MenuSystemx::receive(const return2Map & map) {
-        SDL_Log("Received return2Map event");
+void MenuSystemx::receive(const return2Map & map) {
+    SDL_Log("Received return2Map event");
 
-        entityx::Entity cursor = map.cursor;
+    entityx::Entity selector = map.selector;
 
-        if ((game->getState() == GAME::STATE::UNITMOVE)) {
-            mapx->hideOverlay();
-        }
-
-        if ((game->getState() == GAME::STATE::MAPMENU)) {
-            event_manager->emit<disableMenu>(cursor, MENU::MAPMENU);
-            game->setCursorstate(MENU::MAP);
-        }
-
-        if ((game->getState() == GAME::STATE::UNITMENU) ||
-                (game->getState() == GAME::STATE::OPTIONS)) {
-            event_manager->emit<disableMenu>(cursor, MENU::UNIT);
-            game->setCursorstate(MENU::MAP);
-        }
-
-        game->setState(GAME::STATE::MAP);
+    if ((game->getState() == GAME::STATE::UNITMOVE)) {
+        mapx->hideOverlay();
     }
 
-    void MenuSystemx::update(entityx::EntityManager & es, entityx::EventManager & events, entityx::TimeDelta dt) {
-
+    if ((game->getState() == GAME::STATE::MAPMENU)) {
+        event_manager->emit<disableMenu>(selector, MENU::MAPMENU);
+        game->setCursorstate(MENU::MAP);
     }
+
+    if ((game->getState() == GAME::STATE::UNITMENU) ||
+            (game->getState() == GAME::STATE::OPTIONS)) {
+        event_manager->emit<disableMenu>(selector, MENU::UNIT);
+        game->setCursorstate(MENU::MAP);
+    }
+
+    game->setState(GAME::STATE::MAP);
+}
+
+void MenuSystemx::update(entityx::EntityManager & es, entityx::EventManager & events, entityx::TimeDelta dt) {
+
+}

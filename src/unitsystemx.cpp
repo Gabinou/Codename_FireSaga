@@ -38,8 +38,8 @@ void UnitSystemx::receive(const unitReturn & Return) {
     SDL_Log("Received unitReturn event");
     mapx->hideOverlay();
 
-    entityx::Entity cursor = Return.cursor;
-    entityx::ComponentHandle<Position> cursor_position = cursor.component<Position>();
+    entityx::Entity selector = Return.selector;
+    entityx::ComponentHandle<Position> cursor_position = selector.component<Position>();
 
     Point new_position;
 
@@ -103,70 +103,70 @@ void UnitSystemx::receive(const unitWait & wait) {
     entityx::ComponentHandle<Sprite> sprite = ent.component<Sprite>();
     unit->wait();
     sprite->darken();
-    event_manager->emit<return2Map>(wait.cursor);
+    event_manager->emit<return2Map>(wait.selector);
 }
 
 void UnitSystemx::receive(const unitTalk & talk) {
     SDL_Log("unitTalk event received");
     entityx::ComponentHandle<Unit> unit = talk.unit;
-    // event_manager->emit<talkMenu>(wait.cursor);
+    // event_manager->emit<talkMenu>(wait.selector);
     unit->wait();
-    event_manager->emit<return2Map>(talk.cursor);
+    event_manager->emit<return2Map>(talk.selector);
 }
 
 void UnitSystemx::receive(const unitRescue & rescue) {
     SDL_Log("unitRescue event received");
     entityx::ComponentHandle<Unit> unit = rescue.unit;
-    // event_manager->emit<rescueMenu>(wait.cursor);
+    // event_manager->emit<rescueMenu>(wait.selector);
     unit->wait();
-    event_manager->emit<return2Map>(rescue.cursor);
+    event_manager->emit<return2Map>(rescue.selector);
 }
 
 void UnitSystemx::receive(const unitAttack & attack) {
     SDL_Log("unitAttack event received");
     entityx::ComponentHandle<Unit> unit = attack.unit;
-    // event_manager->emit<attackMenu>(wait.cursor);
+    // event_manager->emit<attackMenu>(wait.selector);
     unit->wait();
-    event_manager->emit<return2Map>(attack.cursor);
+    event_manager->emit<return2Map>(attack.selector);
 }
 
 void UnitSystemx::receive(const unitTrade & trade) {
     SDL_Log("unitTrade event received");
     entityx::ComponentHandle<Unit> unit = trade.unit;
-    // event_manager->emit<tradeMenu>(wait.cursor);
+    // event_manager->emit<tradeMenu>(wait.selector);
     unit->wait();
-    event_manager->emit<return2Map>(trade.cursor);
+    event_manager->emit<return2Map>(trade.selector);
 }
 
 void UnitSystemx::receive(const unitEscape & escape) {
     SDL_Log("unitEscape event received");
     entityx::ComponentHandle<Unit> unit = escape.unit;
     unit->wait();
-    event_manager->emit<return2Map>(escape.cursor);
+    event_manager->emit<return2Map>(escape.selector);
 }
 
 void UnitSystemx::receive(const unitItems & items) {
     SDL_Log("unitItems event received");
     entityx::ComponentHandle<Unit> unit = items.unit;
-    // event_manager->emit<itemMenu>(wait.cursor);
+    // event_manager->emit<itemMenu>(wait.selector);
     unit->wait();
-    event_manager->emit<return2Map>(items.cursor);
+    event_manager->emit<return2Map>(items.selector);
 }
 
 void UnitSystemx::receive(const unitDeselect & deselect) {
     SDL_Log("unitDeselect event received");
     entityx::ComponentHandle<Unit> unit = deselect.unit;
-    entityx::Entity cursor = deselect.cursor;
+    entityx::Entity selector = deselect.selector;
 
     if (isPC(unit->getArmy())) {
-        event_manager->emit<return2Map>(cursor);
+        event_manager->emit<return2Map>(selector);
     } else {
         switch (game->getState()) {
             case GAME::STATE::UNITMOVE:
                 if (unit->isDanger()) {
-                    event_manager->emit<unitDanger>(cursor, unit);
+                    event_manager->emit<unitDanger>(selector, unit);
                 } else {
-                    event_manager->emit<return2Map>(cursor);
+                    event_manager->emit<return2Map>(selector);
                 }
 
                 break;
@@ -197,8 +197,8 @@ void UnitSystemx::receive(const unitDanger & danger) {
     unsigned char * range;
 
     entityx::ComponentHandle<Unit> unit = danger.unit;
-    entityx::Entity cursor = danger.cursor;
-    entityx::ComponentHandle<Position> cursor_position = cursor.component<Position>();
+    entityx::Entity selector = danger.selector;
+    entityx::ComponentHandle<Position> cursor_position = selector.component<Position>();
 
     if (cursor_position) {
         Point cursorpos = cursor_position->getTilemapPos();
@@ -206,7 +206,7 @@ void UnitSystemx::receive(const unitDanger & danger) {
         start[0] = cursorpos.x - offset.x;
         start[1] = cursorpos.y - offset.y;
     } else {
-        SDL_Log("Could not get cursor position component");
+        SDL_Log("Could not get selector position component");
     }
 
     if (unit) {
@@ -243,8 +243,8 @@ void UnitSystemx::receive(const unitMove & move) {
     std::vector<std::vector<short int>> costmapp;
     std::vector<std::vector<short int>> movemapp;
     std::vector<std::vector<short int>> attackmapp;
-    entityx::Entity cursor = move.cursor;
-    entityx::ComponentHandle<Position> cursorpos = cursor.component<Position>();
+    entityx::Entity selector = move.selector;
+    entityx::ComponentHandle<Position> cursorpos = selector.component<Position>();
     entityx::ComponentHandle<Unit> unit = move.unit;
     Point start;
     Point offset;
@@ -259,7 +259,7 @@ void UnitSystemx::receive(const unitMove & move) {
         nooffset[0] = start.x - offset.x;
         nooffset[1] = start.y - offset.y;
     } else {
-        SDL_Log("Could not get cursor position component");
+        SDL_Log("Could not get selector position component");
     }
 
     if (unit) {

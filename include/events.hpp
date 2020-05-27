@@ -71,8 +71,8 @@ struct mapMenu {
 };
 
 struct cursorMoved {
-    cursorMoved(entityx::Entity selector, Point move) : selector(selector), move(move) {}
-    entityx::Entity selector;
+    cursorMoved(entityx::Entity cursor, Point move) : cursor(cursor), move(move) {}
+    entityx::Entity cursor;
     Point move;
 };
 
