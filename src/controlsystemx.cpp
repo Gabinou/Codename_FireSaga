@@ -301,7 +301,7 @@ void ControlSystemx::receive(const inputAccept & accept) {
         case GAME::STATE::MAP:
             selector_pos = position->getTilemapPos();
             offset = position->getOffset();
-            SDL_Log("accepter Position, %d %d \n", selector_pos.x, selector_pos.y);
+            // SDL_Log("accepter Position, %d %d \n", selector_pos.x, selector_pos.y);
             current_pos.x = selector_pos.x - offset.x;
             current_pos.y = selector_pos.y - offset.y;
             unitontile = unitmap[current_pos.y][current_pos.x];
@@ -330,19 +330,18 @@ void ControlSystemx::receive(const inputAccept & accept) {
         case GAME::STATE::UNITMENU:
 
             if (mouse) {
-                // SDL_Log("Current pos: %d %d", current_pos.x, current_pos.y);
-                // entityx::Entity * cursorx = game->getCursorx();
-                // // entityx::Entity mouse_ent = mouse.entity();
-                // entityx::ComponentHandle<Position> position = cursorx->component<Position>();
-                // short int * bounds = position->getTilemapBounds();
-                // Point pos = position->getTilemapPos();
-                // SDL_Log("Bounds: %d %d %d %d", bounds[0], bounds[1], bounds[2], bounds[3]);
+                entityx::Entity * cursorx = game->getCursorx();
+                entityx::ComponentHandle<Position> cursor_position = cursorx->component<Position>();
+                short int * bounds = cursor_position->getTilemapBounds();
+                current_pos = position->getTilemapPos();
+                SDL_Log("Bounds: %d %d %d %d", bounds[0], bounds[1], bounds[2], bounds[3]);
+                SDL_Log("Clicked pos: %d %d", current_pos.x, current_pos.y);
 
-                // if ((pos.x > bounds[0]) && (pos.x < bounds[1]) && (pos.y > bounds[2]) && (pos.y < bounds[3])) {
+                if ((pos.x > bounds[0]) && (pos.x < bounds[1]) && (pos.y > bounds[2]) && (pos.y < bounds[3])) {
 
-                // } else {
+                } else {
 
-                // }
+                }
 
             } else {
                 event_manager->emit<menuSelect>(accepter, MENU::UNIT, selected);
