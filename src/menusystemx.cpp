@@ -17,6 +17,7 @@ void MenuSystemx::configure(entityx::EventManager & in_events) {
     event_manager->subscribe<unitSelect>(*this);
     event_manager->subscribe<unitMenu>(*this);
     event_manager->subscribe<unitmenuSelect>(*this);
+    event_manager->subscribe<menuSelect>(*this);
     event_manager->subscribe<mapMenu>(*this);
     event_manager->subscribe<disableMenu>(*this);
     event_manager->subscribe<mapmenuSelect>(*this);
@@ -156,7 +157,7 @@ void MenuSystemx::receive(const menuSelect & select) {
     entityx::ComponentHandle<Unit> unit = select.unit;
     std::vector<unsigned char> menuoptions = game->getMenuoptions(menu);
 
-    if (menu) {
+    switch (menu) {
         case MENU::UNIT:
             break;
 

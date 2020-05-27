@@ -124,9 +124,9 @@ public:
     void makeTurntransition();
     void setTurntransitiontext(char in_army);
 
-    std::vector<char> getMenuoptions(char in_menu_index);
+    std::vector<unsigned char> getMenuoptions(char in_menu_index);
     void makeMenuoptions(char in_menu_index);
-    void setMenuoptions(char in_menu_index, std::vector<char> in_options);
+    void setMenuoptions(char in_menu_index, std::vector<unsigned char> in_options);
     void makeMenutext(char in_menu_index);
     void makeMenu(char in_menu_index);
     entityx::Entity * getMenu(char in_menu_index);

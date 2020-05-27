@@ -158,7 +158,7 @@ struct mapmenuSelect {
 struct menuSelect {
     menuSelect(entityx::Entity selector, char menu) : selector(selector), menu(menu) {}
     menuSelect(entityx::Entity selector, char menu, entityx::ComponentHandle<Unit> unit) : selector(selector), menu(menu), unit(unit) {}
-    entityx::Entity cursor;
+    entityx::Entity selector;
     entityx::ComponentHandle<Unit> unit;
     char menu;
 };

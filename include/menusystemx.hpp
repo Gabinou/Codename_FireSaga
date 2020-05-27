@@ -26,6 +26,7 @@ public:
     void receive(const unitMenu & menu);
     void receive(const unitSelect & menu);
     void receive(const unitmenuSelect & select);
+    void receive(const menuSelect & select);
     void receive(const mapMenu & menu);
     void receive(const disableMenu & disable);
     void receive(const mapmenuSelect & menu);

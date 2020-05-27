@@ -32,20 +32,21 @@ void Game::setSettings(Settings in_settings) {
 
 bool Game::checkRate(int rate, short int mode) {
     bool hit;
-    if (move> 0) {
 
-    if (mode == GAME::RN::SINGLE) {
-        hit = (getURN(tinymt) < rate);
-        return (hit);
+    if (mode > 0) {
+
+        if (mode == GAME::RN::SINGLE) {
+            hit = (getURN(tinymt) < rate);
+            return (hit);
+        }
+
+        if (mode == GAME::RN::DOUBLE) {
+            hit = (((getURN(tinymt) + getURN(tinymt)) / 2) < rate);
+            return (hit);
+        }
+    } else {
+        SDL_Log("mode is invalid");
     }
-
-    if (mode == GAME::RN::DOUBLE) {
-        hit = (((getURN(tinymt) + getURN(tinymt)) / 2) < rate);
-        return (hit);
-    } 
-} else {
-    SDL_Log("mode is invalid");
-}
 
     return (hit);
 }
@@ -196,195 +197,201 @@ void Game::killMenu(short int index) {
 
 void Game::hideMenu(short int index) {
     SDL_Log("Hiding Menu %d", index);
+
     if (index > 0) {
-    if (menus[index].valid()) {
-        menus[index].component<Sprite>()->hide();
-        menus[index].component<Text>()->hide();
-    }
-        } else {
+        if (menus[index].valid()) {
+            menus[index].component<Sprite>()->hide();
+            menus[index].component<Text>()->hide();
+        }
+    } else {
         SDL_Log("menu index is invalid");
     }
 }
 
 void Game::showMenu(short int index) {
-        if (index > 0) {
-    if (menus[index].valid()) {
-        menus[index].component<Text>()->show();
-        menus[index].component<Sprite>()->show();
-    }
-            } else {
+    if (index > 0) {
+        if (menus[index].valid()) {
+            menus[index].component<Text>()->show();
+            menus[index].component<Sprite>()->show();
+        }
+    } else {
         SDL_Log("menu index is invalid");
     }
 }
 
 entityx::Entity * Game::getMenu(char in_menu_index) {
     entityx::Entity * out;
-        if (index > 0) {
-    out = &menus[in_menu_index];
+
+    if (in_menu_index > 0) {
+        out = &menus[in_menu_index];
     } else {
         SDL_Log("menu index is invalid");
     }
+
     return (out);
 }
 
 void Game::makeMenutext(char in_menu_index) {
     SDL_Log("Making menu text: %d", in_menu_index);
-        if (index > 0) {
 
-    if (menus[in_menu_index].valid()) {
+    if (in_menu_index > 0) {
 
-        if (menuoptions.find(in_menu_index) != menuoptions.end()) {
-            menus[in_menu_index].component<Text>()->setText(menuoptions2str(menuoptions[in_menu_index]));
+        if (menus[in_menu_index].valid()) {
+
+            if (menuoptions.find(in_menu_index) != menuoptions.end()) {
+                menus[in_menu_index].component<Text>()->setText(menuoptions2str(menuoptions[in_menu_index]));
+            } else {
+                SDL_Log("Menu options are invalid.");
+            }
+
+            menus[in_menu_index].component<Text>()->makeTextures();
         } else {
-            SDL_Log("Menu options are invalid.");
+            SDL_Log("Menu %d is invalid", in_menu_index);
         }
-
-        menus[in_menu_index].component<Text>()->makeTextures();
     } else {
-        SDL_Log("Menu %d is invalid", in_menu_index);
-    }
-        } else {
         SDL_Log("menu index is invalid");
     }
 }
 
 void Game::makeMenu(char in_menu_index) {
     SDL_Log("Making menu: %d", in_menu_index);
-        if (index > 0) {
 
-    if (menus[in_menu_index].valid()) {
-        menus[in_menu_index].destroy();
-    }
+    if (in_menu_index > 0) {
 
-    menus[in_menu_index] = entities.create();
-    menus[in_menu_index].assign<Position>();
-    menus[in_menu_index].component<Position>()->setonTilemap(false);
-    menus[in_menu_index].component<Position>()->setBounds(0, 2000, 0, 2000);
-    menus[in_menu_index].assign<Sprite>();
-    menus[in_menu_index].component<Sprite>()->hide();
-    SDL_Color white = {255, 255, 255};
-    menus[in_menu_index].assign<Text>(settings.fontsize);
-    menus[in_menu_index].component<Text>()->setColor(white);
-    menus[in_menu_index].component<Text>()->hide();
+        if (menus[in_menu_index].valid()) {
+            menus[in_menu_index].destroy();
+        }
 
-    switch (in_menu_index) {
-        case MENU::UNIT:
-            SDL_Log("Making unit menu\n");
-            menus[MENU::UNIT].component<Sprite>()->setTexture("..//assets//textbox.png");
-            menus[MENU::UNIT].component<Sprite>()->setSrcrect(128, 128);
-            menus[MENU::UNIT].component<Sprite>()->setDestrect(128, 128);
-            break;
+        menus[in_menu_index] = entities.create();
+        menus[in_menu_index].assign<Position>();
+        menus[in_menu_index].component<Position>()->setonTilemap(false);
+        menus[in_menu_index].component<Position>()->setBounds(0, 2000, 0, 2000);
+        menus[in_menu_index].assign<Sprite>();
+        menus[in_menu_index].component<Sprite>()->hide();
+        SDL_Color white = {255, 255, 255};
+        menus[in_menu_index].assign<Text>(settings.fontsize);
+        menus[in_menu_index].component<Text>()->setColor(white);
+        menus[in_menu_index].component<Text>()->hide();
 
-        case MENU::MAPMENU:
-            SDL_Log("Making map menu\n");
-            menus[MENU::MAPMENU].component<Sprite>()->setTexture("..//assets//textbox.png");
-            menus[MENU::MAPMENU].component<Sprite>()->setSrcrect(128, 128);
-            menus[MENU::MAPMENU].component<Sprite>()->setDestrect(128, 128);
-            break;
-    }
+        switch (in_menu_index) {
+            case MENU::UNIT:
+                SDL_Log("Making unit menu\n");
+                menus[MENU::UNIT].component<Sprite>()->setTexture("..//assets//textbox.png");
+                menus[MENU::UNIT].component<Sprite>()->setSrcrect(128, 128);
+                menus[MENU::UNIT].component<Sprite>()->setDestrect(128, 128);
+                break;
 
-    makeMenutext(in_menu_index);
-            } else {
+            case MENU::MAPMENU:
+                SDL_Log("Making map menu\n");
+                menus[MENU::MAPMENU].component<Sprite>()->setTexture("..//assets//textbox.png");
+                menus[MENU::MAPMENU].component<Sprite>()->setSrcrect(128, 128);
+                menus[MENU::MAPMENU].component<Sprite>()->setDestrect(128, 128);
+                break;
+        }
+
+        makeMenutext(in_menu_index);
+    } else {
         SDL_Log("menu index is invalid");
     }
 }
 
 void Game::makeMenuoptions(char in_menu_index) {
     SDL_Log("Making Menu options");
-        if (index > 0) {
-    std::vector<unsigned char> options;
 
-    entityx::ComponentHandle<Unit> unit;
-    entityx::ComponentHandle<Unit> top;
-    entityx::ComponentHandle<Unit> bottom;
-    entityx::ComponentHandle<Unit> right;
-    entityx::ComponentHandle<Unit> left;
-    short int * bounds;
-    unsigned char army;
+    if (in_menu_index > 0) {
+        std::vector<unsigned char> options;
 
-    switch (in_menu_index) {
-        case MENU::UNIT:
-            options.push_back(MENU::OPTION::ITEMS);
-            bounds = mapx->getBounds();
-            unit = mapx->getUnit(cursor_lastpos.x, cursor_lastpos.y);
-            SDL_Log("last position: %d %d", cursor_lastpos.x, cursor_lastpos.y);
+        entityx::ComponentHandle<Unit> unit;
+        entityx::ComponentHandle<Unit> top;
+        entityx::ComponentHandle<Unit> bottom;
+        entityx::ComponentHandle<Unit> right;
+        entityx::ComponentHandle<Unit> left;
+        short int * bounds;
+        unsigned char army;
 
-            if (unit) {
-                SDL_Log("Making Menuoptions for: %s", unit->getName().c_str());
+        switch (in_menu_index) {
+            case MENU::UNIT:
+                options.push_back(MENU::OPTION::ITEMS);
+                bounds = mapx->getBounds();
+                unit = mapx->getUnit(cursor_lastpos.x, cursor_lastpos.y);
+                SDL_Log("last position: %d %d", cursor_lastpos.x, cursor_lastpos.y);
 
-                std::vector<std::vector<short int>> tilemap = mapx->getTilemap();
+                if (unit) {
+                    SDL_Log("Making Menuoptions for: %s", unit->getName().c_str());
 
-                if ((cursor_lastpos.y + 1) < bounds[3]) {
-                    top = mapx->getUnit(cursor_lastpos.x, cursor_lastpos.y + 1);
-                }
+                    std::vector<std::vector<short int>> tilemap = mapx->getTilemap();
 
-                if ((cursor_lastpos.y - 1) > bounds[2]) {
-                    bottom = mapx->getUnit(cursor_lastpos.x, cursor_lastpos.y - 1);
-                }
-
-                if ((cursor_lastpos.x + 1) < bounds[1]) {
-                    right = mapx->getUnit(cursor_lastpos.x + 1, cursor_lastpos.y);
-                }
-
-                if ((cursor_lastpos.x - 1) > bounds[0]) {
-                    left = mapx->getUnit(cursor_lastpos.x - 1, cursor_lastpos.y);
-                }
-
-                if (tilemap[cursor_lastpos.x][cursor_lastpos.y] / DEFAULT::TILE_DIVISOR == TILE::THRONE) {
-                    if (unit->getid() ==  UNIT::NAME::ERWIN) {
-                        options.push_back(MENU::OPTION::SEIZE);
+                    if ((cursor_lastpos.y + 1) < bounds[3]) {
+                        top = mapx->getUnit(cursor_lastpos.x, cursor_lastpos.y + 1);
                     }
-                }
 
-                std::vector<entityx::ComponentHandle<Unit>> units_around = {top, right, bottom, left};
+                    if ((cursor_lastpos.y - 1) > bounds[2]) {
+                        bottom = mapx->getUnit(cursor_lastpos.x, cursor_lastpos.y - 1);
+                    }
 
-                for (short int i = 0; i < units_around.size(); i++) {
-                    if (units_around[i]) {
-                        army = units_around[i]->getArmy();
-                        SDL_Log("Unit_around: %s", units_around[i]->getName().c_str());
-                        SDL_Log("Army: %s", units_around[i]->getArmyName().c_str());
+                    if ((cursor_lastpos.x + 1) < bounds[1]) {
+                        right = mapx->getUnit(cursor_lastpos.x + 1, cursor_lastpos.y);
+                    }
 
-                        switch (army) {
-                            case UNIT::ARMY::FRIENDLY:
-                            case UNIT::ARMY::ERWIN:
-                            case UNIT::ARMY::FREE_MILITIA:
-                                options.push_back(MENU::OPTION::TRADE);
-                                options.push_back(MENU::OPTION::RESCUE);
-                                break;
+                    if ((cursor_lastpos.x - 1) > bounds[0]) {
+                        left = mapx->getUnit(cursor_lastpos.x - 1, cursor_lastpos.y);
+                    }
 
-                            case UNIT::ARMY::ENEMY:
-                            case UNIT::ARMY::BANDITS:
-                            case UNIT::ARMY::KEWAC:
-                            case UNIT::ARMY::NEUTRAL:
-                            case UNIT::ARMY::IMPERIAL:
-                                options.push_back(MENU::OPTION::ATTACK);
-                                break;
+                    if (tilemap[cursor_lastpos.x][cursor_lastpos.y] / DEFAULT::TILE_DIVISOR == TILE::THRONE) {
+                        if (unit->getid() ==  UNIT::NAME::ERWIN) {
+                            options.push_back(MENU::OPTION::SEIZE);
                         }
-                    } else {
-                        SDL_Log("No unit around");
                     }
+
+                    std::vector<entityx::ComponentHandle<Unit>> units_around = {top, right, bottom, left};
+
+                    for (short int i = 0; i < units_around.size(); i++) {
+                        if (units_around[i]) {
+                            army = units_around[i]->getArmy();
+                            SDL_Log("Unit_around: %s", units_around[i]->getName().c_str());
+                            SDL_Log("Army: %s", units_around[i]->getArmyName().c_str());
+
+                            switch (army) {
+                                case UNIT::ARMY::FRIENDLY:
+                                case UNIT::ARMY::ERWIN:
+                                case UNIT::ARMY::FREE_MILITIA:
+                                    options.push_back(MENU::OPTION::TRADE);
+                                    options.push_back(MENU::OPTION::RESCUE);
+                                    break;
+
+                                case UNIT::ARMY::ENEMY:
+                                case UNIT::ARMY::BANDITS:
+                                case UNIT::ARMY::KEWAC:
+                                case UNIT::ARMY::NEUTRAL:
+                                case UNIT::ARMY::IMPERIAL:
+                                    options.push_back(MENU::OPTION::ATTACK);
+                                    break;
+                            }
+                        } else {
+                            SDL_Log("No unit around");
+                        }
+                    }
+
+                    options.push_back(MENU::OPTION::WAIT);
+                } else {
+                    SDL_Log("Menuoptions: Unit not found.");
                 }
 
-                options.push_back(MENU::OPTION::WAIT);
-            } else {
-                SDL_Log("Menuoptions: Unit not found.");
-            }
+                break;
 
-            break;
+            case MENU::MAPMENU:
+                options.push_back(MENU::OPTION::UNITS);
+                options.push_back(MENU::OPTION::ENEMYUNITS);
+                options.push_back(MENU::OPTION::ITEMS);
+                options.push_back(MENU::OPTION::OBJECTIVES);
+                options.push_back(MENU::OPTION::OPTIONS);
+                options.push_back(MENU::OPTION::ENDTURN);
+                break;
+        }
 
-        case MENU::MAPMENU:
-            options.push_back(MENU::OPTION::UNITS);
-            options.push_back(MENU::OPTION::ENEMYUNITS);
-            options.push_back(MENU::OPTION::ITEMS);
-            options.push_back(MENU::OPTION::OBJECTIVES);
-            options.push_back(MENU::OPTION::OPTIONS);
-            options.push_back(MENU::OPTION::ENDTURN);
-            break;
-    }
-
-    std::sort(options.begin(), options.end());
-    menuoptions[in_menu_index] = options;
-                } else {
+        std::sort(options.begin(), options.end());
+        menuoptions[in_menu_index] = options;
+    } else {
         SDL_Log("menu index is invalid");
     }
 }
@@ -418,17 +425,21 @@ void Game::loadMap(const int in_map_index) {
 }
 
 std::vector<unsigned char> Game::getMenuoptions(char in_menu_index) {
-    if (in_menu_index > 0 ) {
-    return (menuoptions[in_menu_index]);
-            } else {
+    std::vector<unsigned char> out;
+
+    if (in_menu_index > 0) {
+        out = menuoptions[in_menu_index];
+    } else {
         SDL_Log("menu index is invalid");
     }
+
+    return (out);
 }
 
-void Game::setMenuoptions(char in_menu_index, std::vector<char> in_options) {
-    if (in_menu_index > 0 ) {
-    menuoptions[in_menu_index] = in_options;
-                } else {
+void Game::setMenuoptions(char in_menu_index, std::vector<unsigned char> in_options) {
+    if (in_menu_index > 0) {
+        menuoptions[in_menu_index] = in_options;
+    } else {
         SDL_Log("menu index is invalid");
     }
 }
@@ -465,76 +476,77 @@ void Game::unloadMap() {
 
 void Game::setCursorstate(const char in_menu) {
     SDL_Log("Changing cursor to state %d", in_menu);
-    if (in_menu > 0 ) {
 
-    SDL_Rect temprect;
+    if (in_menu > 0) {
 
-    short unsigned int * temp_tilesize;
-    short int * bounds;
-    temp_tilesize = mapx->getTilesize();
+        SDL_Rect temprect;
 
-    if (cursorx.valid()) {
-        switch (in_menu) {
-            case MENU::MAP:
-                SDL_Log("Changed Cursor to Map");
-                cursorx.component<Sprite>()->init(cursorx.component<Position>()->getPos());
-                cursorx.component<Sprite>()->animate();
-                cursorx.component<Sprite>()->setTexture("..//assets//mapcursors.png");
-                cursorx.component<Sprite>()->setAnimation(10, 50);
-                cursorx.component<Sprite>()->setTilesize(mapx->getTilesize());
-                cursorx.component<Sprite>()->setSlidetype(SLIDETYPE::GEOMETRIC);
-                bounds = mapx->getBounds();
-                SDL_Log("bounds: %d %d %d %d", bounds[0], bounds[1], bounds[2], bounds[3]);
-                cursorx.component<Position>()->setOffset(DEFAULT::TILEMAP_XOFFSET, DEFAULT::TILEMAP_YOFFSET);
-                cursorx.component<Position>()->setBounds(mapx->getBounds());
-                cursorx.component<Position>()->setPos(cursor_lastpos);
-                SDL_Log("cursor_lastpos: %d %d", cursor_lastpos.x, cursor_lastpos.y);
-                cursorx.component<Position>()->setonTilemap(true);
-                cursorx.component<Position>()->setPeriodic(false);
-                systems.system<RenderSystemx>()->setTilesize(temp_tilesize[0], temp_tilesize[1]);
-                break;
+        short unsigned int * temp_tilesize;
+        short int * bounds;
+        temp_tilesize = mapx->getTilesize();
 
-            case MENU::UNIT:
-                SDL_Log("Changed Cursor to unitmenu");
+        if (cursorx.valid()) {
+            switch (in_menu) {
+                case MENU::MAP:
+                    SDL_Log("Changed Cursor to Map");
+                    cursorx.component<Sprite>()->init(cursorx.component<Position>()->getPos());
+                    cursorx.component<Sprite>()->animate();
+                    cursorx.component<Sprite>()->setTexture("..//assets//mapcursors.png");
+                    cursorx.component<Sprite>()->setAnimation(10, 50);
+                    cursorx.component<Sprite>()->setTilesize(mapx->getTilesize());
+                    cursorx.component<Sprite>()->setSlidetype(SLIDETYPE::GEOMETRIC);
+                    bounds = mapx->getBounds();
+                    SDL_Log("bounds: %d %d %d %d", bounds[0], bounds[1], bounds[2], bounds[3]);
+                    cursorx.component<Position>()->setOffset(DEFAULT::TILEMAP_XOFFSET, DEFAULT::TILEMAP_YOFFSET);
+                    cursorx.component<Position>()->setBounds(mapx->getBounds());
+                    cursorx.component<Position>()->setPos(cursor_lastpos);
+                    SDL_Log("cursor_lastpos: %d %d", cursor_lastpos.x, cursor_lastpos.y);
+                    cursorx.component<Position>()->setonTilemap(true);
+                    cursorx.component<Position>()->setPeriodic(false);
+                    systems.system<RenderSystemx>()->setTilesize(temp_tilesize[0], temp_tilesize[1]);
+                    break;
 
-            case MENU::MAPMENU:
-                SDL_Log("Changed Cursor to mapmenu");
-                temprect = {0, 0, 16, 16}; //x,y,w,h
-                Point menupos;
-                short int linespace = 1;
-                cursorx.component<Sprite>()->still();
-                cursorx.component<Sprite>()->setSrcrect(temprect);
-                cursorx.component<Sprite>()->setDestrect(temprect);
-                cursorx.component<Sprite>()->setTexture("..//assets//menucursor.png");
+                case MENU::UNIT:
+                    SDL_Log("Changed Cursor to unitmenu");
 
-                if (menus[in_menu].valid()) {
-                    menupos = menus[in_menu].component<Position>()->getPos();
-                    linespace = menus[in_menu].component<Text>()->getLinespacing();
-                }
+                case MENU::MAPMENU:
+                    SDL_Log("Changed Cursor to mapmenu");
+                    temprect = {0, 0, 16, 16}; //x,y,w,h
+                    Point menupos;
+                    short int linespace = 1;
+                    cursorx.component<Sprite>()->still();
+                    cursorx.component<Sprite>()->setSrcrect(temprect);
+                    cursorx.component<Sprite>()->setDestrect(temprect);
+                    cursorx.component<Sprite>()->setTexture("..//assets//menucursor.png");
 
-                short int menubounds[4];
-                menubounds[0] = menupos.x / linespace;
-                menubounds[1] = menupos.x / linespace;
-                menubounds[2] = (short int)(menupos.y / linespace + 1);
-                menubounds[3] = (short int)(menupos.y / linespace + menuoptions[in_menu].size());
-                Point pos = cursorx.component<Position>()->getPos();
-                Point offset = cursorx.component<Position>()->getOffset();
-                cursor_lastpos.x = pos.x - offset.x;
-                cursor_lastpos.y = pos.y - offset.y;
-                SDL_Log("Menubounds: %d %d %d %d", menubounds[0], menubounds[1], menubounds[2], menubounds[3]);
-                cursorx.component<Position>()->setonTilemap(false);
-                cursorx.component<Position>()->setPeriodic(true);
-                cursorx.component<Position>()->setBounds(menubounds);
-                cursorx.component<Position>()->setPos(menubounds[0] - 1, menubounds[2] + 1);
-                short int * outbounds = cursorx.component<Position>()->getBounds();
-                SDL_Log("outbounds: %d %d %d %d", outbounds[0], outbounds[1], outbounds[2], outbounds[3]);
-                systems.system<RenderSystemx>()->setLinespace(linespace);
-                break;
+                    if (menus[in_menu].valid()) {
+                        menupos = menus[in_menu].component<Position>()->getPos();
+                        linespace = menus[in_menu].component<Text>()->getLinespacing();
+                    }
+
+                    short int menubounds[4];
+                    menubounds[0] = menupos.x / linespace;
+                    menubounds[1] = menupos.x / linespace;
+                    menubounds[2] = (short int)(menupos.y / linespace + 1);
+                    menubounds[3] = (short int)(menupos.y / linespace + menuoptions[in_menu].size());
+                    Point pos = cursorx.component<Position>()->getPos();
+                    Point offset = cursorx.component<Position>()->getOffset();
+                    cursor_lastpos.x = pos.x - offset.x;
+                    cursor_lastpos.y = pos.y - offset.y;
+                    SDL_Log("Menubounds: %d %d %d %d", menubounds[0], menubounds[1], menubounds[2], menubounds[3]);
+                    cursorx.component<Position>()->setonTilemap(false);
+                    cursorx.component<Position>()->setPeriodic(true);
+                    cursorx.component<Position>()->setBounds(menubounds);
+                    cursorx.component<Position>()->setPos(menubounds[0] - 1, menubounds[2] + 1);
+                    short int * outbounds = cursorx.component<Position>()->getBounds();
+                    SDL_Log("outbounds: %d %d %d %d", outbounds[0], outbounds[1], outbounds[2], outbounds[3]);
+                    systems.system<RenderSystemx>()->setLinespace(linespace);
+                    break;
+            }
         }
-    }
-} else {
+    } else {
         SDL_Log("in_menu is invalid");
-}
+    }
 }
 
 void Game::loadMouse() {
@@ -1016,13 +1028,13 @@ void Game::saveXML(const short int save_ind) {
 void Game::setState(const short int new_state) {
     if (new_state > 0) {
 
-    if (state != new_state) {
-        state = new_state;
-        SDL_Log("New game state: %s", gamestate2str(state).c_str());
-    }
-} else {
+        if (state != new_state) {
+            state = new_state;
+            SDL_Log("New game state: %s", gamestate2str(state).c_str());
+        }
+    } else {
         SDL_Log("new state is invalid");
-}
+    }
 }
 
 KeyboardInputMap Game::getKeyboardInputMap() {
