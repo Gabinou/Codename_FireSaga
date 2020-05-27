@@ -93,6 +93,28 @@ void Position::setOffset(short int in_offset[2]) {
     offset.y = in_offset[1];
 }
 
+Point position::tilemap2pixel(Point in_point) {
+    return (tilemap2pixel(in_point.x, in_point.y));
+}
+
+Point Position::tilemap2pixel(short int tilemap_x, short int tilemap_y) {
+    Point pixel_pos;
+    pixel_pos.x = tilemap_x * (scale[0] + offset.x);
+    pixel_pos.y = tilemap_y * (scale[1] + offset.y);
+    return (pixel_pos);
+}
+
+Point Position::pixel2tilemap(Point in_point) {
+    return (pixel2tilemap(in_point.x, in_point.y));
+}
+
+Point Position::pixel2tilemap(short int pixel_x, short int pixel_y) {
+    Point tile_pos;
+    tile_pos.x = std::min((int)(boundsmin.y - offset.x), std::max((int)(boundsmin.x - offset.x), pixel_x / scale[0] - offset.x));
+    tile_pos.y = std::min((int)(boundsmax.y - offset.y), std::max((int)(boundsmin.y - offset.y), pixel_y / scale[1] - offset.y));
+    return (tile_pos);
+}
+
 short int * Position::getTilemapBounds() {
     bounds[0] = tilemap_boundsmin.x;
     bounds[1] = tilemap_boundsmax.x;

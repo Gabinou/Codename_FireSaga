@@ -77,6 +77,11 @@ public:
     Point getPos();
     Point getTilemapPos();
     Point getPixelPos();
+
+    Point tilemap2pixel(Point in_point);
+    Point tilemap2pixel(short int tilemap_x, short int tilemap_y);
+    Point pixel2tilemap(Point in_point);
+    Point pixel2tilemap(short int pixel_x, short int pixel_y);
 };
 
 #endif /* POSITION_HPP */

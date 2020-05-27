@@ -154,6 +154,7 @@ void MenuSystemx::receive(const menuSelect & select) {
     unsigned char menuind;
     entityx::ComponentHandle<Unit> unit = select.unit;
     entityx::ComponentHandle<Position> position = selector.component<Position>();
+
     Point selected;
     Point offset;
     Point boundsmin;
@@ -164,11 +165,11 @@ void MenuSystemx::receive(const menuSelect & select) {
     offset = position->getOffset();
     boundsmin = position->getBoundsmin();
     boundsmax = position->getBoundsmax();
-    SDL_Log("Boundsmin: %d %d", boundsmin.x, boundsmin.y);
-    SDL_Log("Boundsmax: %d %d", boundsmax.x, boundsmax.y);
-    SDL_Log("Selected: %d %d", selected.x, selected.y);
-    SDL_Log("offset: %d %d", offset.x, offset.y);
-    SDL_Log("onTilemap: %d", position->isonTilemap());
+    // SDL_Log("Boundsmin: %d %d", boundsmin.x, boundsmin.y);
+    // SDL_Log("Boundsmax: %d %d", boundsmax.x, boundsmax.y);
+    // SDL_Log("Selected: %d %d", selected.x, selected.y);
+    // SDL_Log("offset: %d %d", offset.x, offset.y);
+    // SDL_Log("onTilemap: %d", position->isonTilemap());
 
     if (!position->isonTilemap()) {
         selected = mapx->pixel2tilemap(selected);
@@ -177,10 +178,10 @@ void MenuSystemx::receive(const menuSelect & select) {
         // boundsmax = mapx->pixel2tilemap(boundsmax);
     }
 
-    SDL_Log("Boundsmin: %d %d", boundsmin.x, boundsmin.y);
-    SDL_Log("Boundsmax: %d %d", boundsmax.x, boundsmax.y);
-    SDL_Log("Selected: %d %d", selected.x, selected.y);
-    SDL_Log("offset: %d %d", offset.x, offset.y);
+    // SDL_Log("Boundsmin: %d %d", boundsmin.x, boundsmin.y);
+    // SDL_Log("Boundsmax: %d %d", boundsmax.x, boundsmax.y);
+    // SDL_Log("Selected: %d %d", selected.x, selected.y);
+    // SDL_Log("offset: %d %d", offset.x, offset.y);
 
     menuind = selected.y - boundsmin.y;
     unsigned char menuoption = menuoptions[menuind];
