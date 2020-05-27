@@ -130,12 +130,12 @@ public:
     void makeMenutext(char in_menu_index);
     void makeMenu(char in_menu_index);
     entityx::Entity * getMenu(char in_menu_index);
-    void killMenu(short unsigned int index);
-    void hideMenu(short unsigned int index);
-    void showMenu(short unsigned int index);
+    void killMenu(short int index);
+    void hideMenu(short int index);
+    void showMenu(short int index);
 
-    void loadItem(short unsigned int in_item);
-    void loadItems(std::vector<short unsigned int> in_items);
+    void loadItem(short int in_item);
+    void loadItems(std::vector<short int> in_items);
 
     void startTurnSystem();
 
@@ -143,8 +143,8 @@ public:
     void clean();
     void fight(Unit * attacker, Unit * defender);
     void attack(Unit * attacker, Unit * defender);
-    bool checkRate(int crit_rate, short unsigned int mode = 2);
-    bool * checkHitCrit(int hit_rate, int crit_rate, short unsigned int mode = GAME::RN::GAUSSIAN);
+    bool checkRate(int crit_rate, short int mode = 2);
+    bool * checkHitCrit(int hit_rate, int crit_rate, short int mode = GAME::RN::GAUSSIAN);
 
     void makeFPS();
     entityx::Entity * getFPS();
@@ -159,7 +159,7 @@ public:
     MouseInputMap getMouseInputMap();
     void setMouseInputMap(const MouseInputMap in_gpmap);
 
-    void setState(const short unsigned int new_state);
+    void setState(const short int new_state);
     short unsigned int getState();
 
     void deleteSave(const short int delete_ind);

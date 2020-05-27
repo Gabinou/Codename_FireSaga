@@ -30,8 +30,9 @@ void Game::setSettings(Settings in_settings) {
     settings = in_settings;
 }
 
-bool Game::checkRate(int rate, short unsigned int mode) {
+bool Game::checkRate(int rate, short int mode) {
     bool hit;
+    if (move> 0) {
 
     if (mode == GAME::RN::SINGLE) {
         hit = (getURN(tinymt) < rate);
@@ -41,7 +42,10 @@ bool Game::checkRate(int rate, short unsigned int mode) {
     if (mode == GAME::RN::DOUBLE) {
         hit = (((getURN(tinymt) + getURN(tinymt)) / 2) < rate);
         return (hit);
-    }
+    } 
+} else {
+    SDL_Log("mode is invalid");
+}
 
     return (hit);
 }
@@ -55,7 +59,7 @@ char Game::getChapter() {
 }
 
 
-bool * Game::checkHitCrit(int hit_rate, int crit_rate, short unsigned int mode) {
+bool * Game::checkHitCrit(int hit_rate, int crit_rate, short int mode) {
     static bool hitcrit[2];
 
     if (mode == GAME::RN::SINGLE) {
@@ -105,8 +109,12 @@ void Game::makeTurntransition() {
     // transition.component<Sprite>()->setDestrect(128, 128);
 }
 
-void Game::setTurntransitiontext(unsigned char in_army) {
-    transition.component<Text>()->setText(armyNames[in_army]);
+void Game::setTurntransitiontext(char in_army) {
+    if (in_army > 0) {
+        transition.component<Text>()->setText(armyNames[in_army]);
+    } else {
+        SDL_Log("in_army is invalid");
+    }
 
 }
 
@@ -176,36 +184,52 @@ void Game::makeFPS() {
     }
 }
 
-void Game::killMenu(short unsigned int index) {
-    if (menus[index].valid()) {
-        menus[index].destroy();
+void Game::killMenu(short int index) {
+    if (index > 0) {
+        if (menus[index].valid()) {
+            menus[index].destroy();
+        }
+    } else {
+        SDL_Log("menu index is invalid");
     }
 }
 
-void Game::hideMenu(short unsigned int index) {
+void Game::hideMenu(short int index) {
     SDL_Log("Hiding Menu %d", index);
-
+    if (index > 0) {
     if (menus[index].valid()) {
         menus[index].component<Sprite>()->hide();
         menus[index].component<Text>()->hide();
     }
+        } else {
+        SDL_Log("menu index is invalid");
+    }
 }
 
-void Game::showMenu(short unsigned int index) {
+void Game::showMenu(short int index) {
+        if (index > 0) {
     if (menus[index].valid()) {
         menus[index].component<Text>()->show();
         menus[index].component<Sprite>()->show();
     }
+            } else {
+        SDL_Log("menu index is invalid");
+    }
 }
 
-entityx::Entity * Game::getMenu(unsigned char in_menu_index) {
+entityx::Entity * Game::getMenu(char in_menu_index) {
     entityx::Entity * out;
+        if (index > 0) {
     out = &menus[in_menu_index];
+    } else {
+        SDL_Log("menu index is invalid");
+    }
     return (out);
 }
 
-void Game::makeMenutext(unsigned char in_menu_index) {
+void Game::makeMenutext(char in_menu_index) {
     SDL_Log("Making menu text: %d", in_menu_index);
+        if (index > 0) {
 
     if (menus[in_menu_index].valid()) {
 
@@ -219,10 +243,14 @@ void Game::makeMenutext(unsigned char in_menu_index) {
     } else {
         SDL_Log("Menu %d is invalid", in_menu_index);
     }
+        } else {
+        SDL_Log("menu index is invalid");
+    }
 }
 
-void Game::makeMenu(unsigned char in_menu_index) {
+void Game::makeMenu(char in_menu_index) {
     SDL_Log("Making menu: %d", in_menu_index);
+        if (index > 0) {
 
     if (menus[in_menu_index].valid()) {
         menus[in_menu_index].destroy();
@@ -256,10 +284,14 @@ void Game::makeMenu(unsigned char in_menu_index) {
     }
 
     makeMenutext(in_menu_index);
+            } else {
+        SDL_Log("menu index is invalid");
+    }
 }
 
-void Game::makeMenuoptions(unsigned char in_menu_index) {
+void Game::makeMenuoptions(char in_menu_index) {
     SDL_Log("Making Menu options");
+        if (index > 0) {
     std::vector<unsigned char> options;
 
     entityx::ComponentHandle<Unit> unit;
@@ -352,6 +384,9 @@ void Game::makeMenuoptions(unsigned char in_menu_index) {
 
     std::sort(options.begin(), options.end());
     menuoptions[in_menu_index] = options;
+                } else {
+        SDL_Log("menu index is invalid");
+    }
 }
 
 short unsigned int Game::getState() {
@@ -382,12 +417,20 @@ void Game::loadMap(const int in_map_index) {
     }
 }
 
-std::vector<unsigned char> Game::getMenuoptions(unsigned char in_menu_index) {
+std::vector<unsigned char> Game::getMenuoptions(char in_menu_index) {
+    if (in_menu_index > 0 ) {
     return (menuoptions[in_menu_index]);
+            } else {
+        SDL_Log("menu index is invalid");
+    }
 }
 
-void Game::setMenuoptions(unsigned char in_menu_index, std::vector<unsigned char> in_options) {
+void Game::setMenuoptions(char in_menu_index, std::vector<char> in_options) {
+    if (in_menu_index > 0 ) {
     menuoptions[in_menu_index] = in_options;
+                } else {
+        SDL_Log("menu index is invalid");
+    }
 }
 
 
@@ -420,8 +463,10 @@ void Game::unloadMap() {
     }
 }
 
-void Game::setCursorstate(const unsigned char in_menu) {
-    SDL_Log("Changing cursor");
+void Game::setCursorstate(const char in_menu) {
+    SDL_Log("Changing cursor to state %d", in_menu);
+    if (in_menu > 0 ) {
+
     SDL_Rect temprect;
 
     short unsigned int * temp_tilesize;
@@ -487,6 +532,9 @@ void Game::setCursorstate(const unsigned char in_menu) {
                 break;
         }
     }
+} else {
+        SDL_Log("in_menu is invalid");
+}
 }
 
 void Game::loadMouse() {
@@ -965,11 +1013,16 @@ void Game::saveXML(const short int save_ind) {
     PHYSFS_close(fp);
 }
 
-void Game::setState(const short unsigned int new_state) {
+void Game::setState(const short int new_state) {
+    if (new_state > 0) {
+
     if (state != new_state) {
         state = new_state;
         SDL_Log("New game state: %s", gamestate2str(state).c_str());
     }
+} else {
+        SDL_Log("new state is invalid");
+}
 }
 
 KeyboardInputMap Game::getKeyboardInputMap() {
