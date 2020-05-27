@@ -40,9 +40,9 @@ void RenderSystemx::setTilesize(const short int unsigned width, const short int 
     tilesize[1] = height;
 }
 
-void RenderSystemx::setLinespace(const short int unsigned in_linespace) {
-    linespace = in_linespace;
-}
+// void RenderSystemx::setLinespace(const short int unsigned in_linespace) {
+//     linespace = in_linespace;
+// }
 
 void RenderSystemx::slideSprites(entityx::Entity * in_ent, short int * slidepos, short int * objectivepos, double dt) {
     if (in_ent->valid()) {
@@ -58,11 +58,17 @@ void RenderSystemx::slideSprites(entityx::Entity * in_ent, short int * slidepos,
         short int slide_int = sprite->getSlideint();
         unsigned char slidetype = sprite->getSlidetype();
         float * slidefactors = sprite->getSlidefactors();
-        short int scalefactor[2];
+        float scalefactor[2];
+
         SDL_Rect destrect = sprite->getDestrect();
 
-        scalefactor[0] = tilesize[0];
-        scalefactor[1] = tilesize[1];
+        if (!position->isonTilemap()) { //move on the menu space
+            scalefactor[0] = 1.0f;
+            scalefactor[1] = 1.0f;
+        } else {
+            scalefactor[0] = position->getScale()[0];
+            scalefactor[1] = position->getScale()[1];
+        }
 
         if (keyboard) {
             kb_held = keyboard->getHeldmove();
@@ -73,10 +79,6 @@ void RenderSystemx::slideSprites(entityx::Entity * in_ent, short int * slidepos,
         }
 
         if ((!keyboard) && (!gamepad)) {
-            if (!position->isonTilemap()) { //move on the menu space
-                scalefactor[0] = 1;
-                scalefactor[1] = 1;
-            }
 
             unit_pos = position->getPos();
             offset = position->getOffset();
@@ -84,10 +86,10 @@ void RenderSystemx::slideSprites(entityx::Entity * in_ent, short int * slidepos,
             slidepos[0] = (int)(unit_pos.x * scalefactor[0]);
             slidepos[1] = (int)(unit_pos.y * scalefactor[1]);
         } else {
-            if (!position->isonTilemap()) { //move on the menu space
-                scalefactor[0] = linespace;
-                scalefactor[1] = linespace;
-            }
+            // if (!position->isonTilemap()) { //move on the menu space
+            //     scalefactor[0] = linespace;
+            //     scalefactor[1] = linespace;
+            // }
 
             switch (slidetype) {
                 case SLIDETYPE::GEOMETRIC: //for cursor mvt on mapx.

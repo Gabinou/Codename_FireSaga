@@ -500,6 +500,7 @@ void Game::setCursorstate(const char in_menu) {
                     cursorx.component<Position>()->setOffset(DEFAULT::TILEMAP_XOFFSET, DEFAULT::TILEMAP_YOFFSET);
                     cursorx.component<Position>()->setBounds(mapx->getBounds());
                     cursorx.component<Position>()->setPos(cursor_lastpos);
+                    cursorx.component<Position>()->setScale((float)mapx->getTilesize()[0], (float)mapx->getTilesize()[1]);
                     SDL_Log("cursor_lastpos: %d %d", cursor_lastpos.x, cursor_lastpos.y);
                     cursorx.component<Position>()->setonTilemap(true);
                     cursorx.component<Position>()->setPeriodic(false);
@@ -538,9 +539,11 @@ void Game::setCursorstate(const char in_menu) {
                     cursorx.component<Position>()->setPeriodic(true);
                     cursorx.component<Position>()->setBounds(menubounds);
                     cursorx.component<Position>()->setPos(menubounds[0] - 1, menubounds[2] + 1);
+
+                    cursorx.component<Position>()->setScale((float)linespace, (float)linespace);
                     short int * outbounds = cursorx.component<Position>()->getBounds();
                     SDL_Log("outbounds: %d %d %d %d", outbounds[0], outbounds[1], outbounds[2], outbounds[3]);
-                    systems.system<RenderSystemx>()->setLinespace(linespace);
+                    // systems.system<RenderSystemx>()->setLinespace(linespace);
                     break;
             }
         }
