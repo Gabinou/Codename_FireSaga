@@ -296,6 +296,8 @@ void ControlSystemx::receive(const inputAccept & accept) {
     Point current_pos;
     Point selector_pos;
     Point offset;
+    short int menuwidth = 7;
+
 
     switch (game->getState()) {
         case GAME::STATE::MAP:
@@ -334,9 +336,9 @@ void ControlSystemx::receive(const inputAccept & accept) {
                 entityx::ComponentHandle<Position> cursor_position = cursorx->component<Position>();
                 short int * bounds = cursor_position->getTilemapBounds();
                 current_pos = position->getTilemapPos();
+
                 // SDL_Log("Bounds: %d %d %d %d", bounds[0], bounds[1], bounds[2], bounds[3]);
                 // SDL_Log("Clicked pos: %d %d", current_pos.x, current_pos.y);
-                short int menuwidth = 7;
 
                 if ((current_pos.x >= bounds[0]) && (current_pos.x <= (bounds[1] + menuwidth)) && (current_pos.y >= bounds[2]) && (current_pos.y <= bounds[3])) {
                     event_manager->emit<menuSelect>(accepter, MENU::UNIT, selected);
@@ -353,6 +355,10 @@ void ControlSystemx::receive(const inputAccept & accept) {
         case GAME::STATE::MAPMENU:
             event_manager->emit<menuSelect>(accepter, MENU::MAPMENU);
             break;
+
+        default:
+            SDL_Log("game state is invalid.");
+
     }
 
     if (newstate != -1) {
