@@ -93,6 +93,22 @@ void Position::setOffset(short int in_offset[2]) {
     offset.y = in_offset[1];
 }
 
+short int * Position::getTilemapBounds() {
+    bounds[0] = tilemap_boundsmin.x;
+    bounds[1] = tilemap_boundsmax.x;
+    bounds[2] = tilemap_boundsmin.y;
+    bounds[3] = tilemap_boundsmax.y;
+    return (bounds);
+}
+
+short int * Position::getPixelBounds() {
+    bounds[0] = pixel_boundsmin.x;
+    bounds[1] = pixel_boundsmax.x;
+    bounds[2] = pixel_boundsmin.y;
+    bounds[3] = pixel_boundsmax.y;
+    return (bounds);
+}
+
 short int * Position::getBounds() {
     bounds[0] = boundsmin->x;
     bounds[1] = boundsmax->x;

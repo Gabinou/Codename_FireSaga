@@ -73,7 +73,7 @@ void MenuSystemx::receive(const mapmenuSelect & select) {
     unsigned char menuind = cursorpos.y - cursorbounds[2];
     std::vector<unsigned char> mapmenuoptions = game->getMenuoptions(MENU::MAPMENU);
 
-    SDL_Log("menuind: %d ", menuind);
+    SDL_Log("cursorpos: %d ", menuind);
     SDL_Log("menuind: %d ", menuind);
     SDL_Log("unitmenuoptions[menuind]: %d ", mapmenuoptions[menuind]);
 

@@ -41,6 +41,8 @@ public:
     void setBounds(short int in_bounds[4]);
     void setBounds(std::vector<short int> in_bounds);
     short int * getBounds();
+    short int * getTilemapBounds();
+    short int * getPixelBounds();
 
     void setOffset(short int in_offset[2]);
     void setOffset(Point in_offset);
