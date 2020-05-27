@@ -16,11 +16,11 @@ void MenuSystemx::configure(entityx::EventManager & in_events) {
     event_manager = &in_events;
     event_manager->subscribe<unitSelect>(*this);
     event_manager->subscribe<unitMenu>(*this);
-    event_manager->subscribe<unitmenuSelect>(*this);
+    // event_manager->subscribe<unitmenuSelect>(*this);
+    // event_manager->subscribe<mapmenuSelect>(*this);
     event_manager->subscribe<menuSelect>(*this);
     event_manager->subscribe<mapMenu>(*this);
     event_manager->subscribe<disableMenu>(*this);
-    event_manager->subscribe<mapmenuSelect>(*this);
     event_manager->subscribe<return2Map>(*this);
 }
 
@@ -159,85 +159,89 @@ void MenuSystemx::receive(const menuSelect & select) {
     unsigned char menuind;
 
     unsigned char menuoption = menuoptions[menuind];
+
     switch (menu) {
         case MENU::UNIT:
             if (unit) {
-        switch (menuoption) {
-            case MENU::OPTION::ITEMS:
-                event_manager->emit<unitItems>(selector, unit);
-                break;
+                switch (menuoption) {
+                    case MENU::OPTION::ITEMS:
+                        event_manager->emit<unitItems>(selector, unit);
+                        break;
 
-            case MENU::OPTION::TALK:
-                event_manager->emit<unitTalk>(selector, unit);
-                break;
+                    case MENU::OPTION::TALK:
+                        event_manager->emit<unitTalk>(selector, unit);
+                        break;
 
-            case MENU::OPTION::RESCUE:
-                event_manager->emit<unitRescue>(selector, unit);
-                break;
+                    case MENU::OPTION::RESCUE:
+                        event_manager->emit<unitRescue>(selector, unit);
+                        break;
 
-            case MENU::OPTION::SEIZE:
-                event_manager->emit<unitSeize>(unit);
-                break;
+                    case MENU::OPTION::SEIZE:
+                        event_manager->emit<unitSeize>(unit);
+                        break;
 
-            case MENU::OPTION::ESCAPE:
-                event_manager->emit<unitEscape>(selector, unit);
-                break;
+                    case MENU::OPTION::ESCAPE:
+                        event_manager->emit<unitEscape>(selector, unit);
+                        break;
 
-            case MENU::OPTION::ATTACK:
-                event_manager->emit<unitAttack>(selector, unit);
-                break;
+                    case MENU::OPTION::ATTACK:
+                        event_manager->emit<unitAttack>(selector, unit);
+                        break;
 
-            case MENU::OPTION::TRADE:
-                event_manager->emit<unitTrade>(selector, unit);
-                break;
+                    case MENU::OPTION::TRADE:
+                        event_manager->emit<unitTrade>(selector, unit);
+                        break;
 
-            case MENU::OPTION::STAFF:
-                event_manager->emit<unitStaff>(selector, unit);
-                break;
+                    case MENU::OPTION::STAFF:
+                        event_manager->emit<unitStaff>(selector, unit);
+                        break;
 
-            case MENU::OPTION::WAIT:
-                event_manager->emit<unitWait>(selector, unit);
-                break;
-        }
-    } else {
-        SDL_Log("menuSelect: could not get unit");
-    }
+                    case MENU::OPTION::WAIT:
+                        event_manager->emit<unitWait>(selector, unit);
+                        break;
+                }
+            } else {
+                SDL_Log("menuSelect: could not get unit");
+            }
+
             break;
-            switch(menuoption) {
-        case MENU::MAPMENU:
+
             switch (menuoption) {
-                case MENU::OPTION::OBJECTIVES:
-                    event_manager->emit<objectivesMenu>(selector);
+                case MENU::MAPMENU:
+                    switch (menuoption) {
+                        case MENU::OPTION::OBJECTIVES:
+                            event_manager->emit<objectivesMenu>(selector);
+                            break;
+
+                        case MENU::OPTION::UNITS:
+                            event_manager->emit<unitsMenu>(selector);
+                            break;
+
+                        case MENU::OPTION::ENEMYUNITS:
+                            event_manager->emit<enemyunitsMenu>(selector);
+                            break;
+
+                        case MENU::OPTION::OPTIONS:
+                            event_manager->emit<optionsMenu>(selector);
+                            break;
+
+                        case MENU::OPTION::ITEMS:
+                            event_manager->emit<itemsMenu>(selector);
+                            break;
+
+                        case MENU::OPTION::ENDTURN:
+                            event_manager->emit<disableMenu>(selector, MENU::MAPMENU);
+                            event_manager->emit<turnEnd>();
+                            break;
+                    }
+
                     break;
 
-                case MENU::OPTION::UNITS:
-                    event_manager->emit<unitsMenu>(selector);
-                    break;
+                default:
+                    SDL_Log("menu not found.");
+            }
 
-                case MENU::OPTION::ENEMYUNITS:
-                    event_manager->emit<enemyunitsMenu>(selector);
-                    break;
-
-                case MENU::OPTION::OPTIONS:
-                    event_manager->emit<optionsMenu>(selector);
-                    break;
-
-                case MENU::OPTION::ITEMS:
-                    event_manager->emit<itemsMenu>(selector);
-                    break;
-
-                case MENU::OPTION::ENDTURN:
-                    event_manager->emit<disableMenu>(selector, MENU::MAPMENU);
-                    event_manager->emit<turnEnd>();
-            break;
     }
-            break;
-
-        default:
-            SDL_Log("menu not found.");
-    }
-
-}
 
 
 // void MenuSystemx::receive(const mapmenuSelect & select) {
@@ -342,29 +346,29 @@ void MenuSystemx::receive(const menuSelect & select) {
 //     }
 // }
 
-void MenuSystemx::receive(const return2Map & map) {
-    SDL_Log("Received return2Map event");
+    void MenuSystemx::receive(const return2Map & map) {
+        SDL_Log("Received return2Map event");
 
-    entityx::Entity cursor = map.cursor;
+        entityx::Entity cursor = map.cursor;
 
-    if ((game->getState() == GAME::STATE::UNITMOVE)) {
-        mapx->hideOverlay();
+        if ((game->getState() == GAME::STATE::UNITMOVE)) {
+            mapx->hideOverlay();
+        }
+
+        if ((game->getState() == GAME::STATE::MAPMENU)) {
+            event_manager->emit<disableMenu>(cursor, MENU::MAPMENU);
+            game->setCursorstate(MENU::MAP);
+        }
+
+        if ((game->getState() == GAME::STATE::UNITMENU) ||
+                (game->getState() == GAME::STATE::OPTIONS)) {
+            event_manager->emit<disableMenu>(cursor, MENU::UNIT);
+            game->setCursorstate(MENU::MAP);
+        }
+
+        game->setState(GAME::STATE::MAP);
     }
 
-    if ((game->getState() == GAME::STATE::MAPMENU)) {
-        event_manager->emit<disableMenu>(cursor, MENU::MAPMENU);
-        game->setCursorstate(MENU::MAP);
+    void MenuSystemx::update(entityx::EntityManager & es, entityx::EventManager & events, entityx::TimeDelta dt) {
+
     }
-
-    if ((game->getState() == GAME::STATE::UNITMENU) ||
-            (game->getState() == GAME::STATE::OPTIONS)) {
-        event_manager->emit<disableMenu>(cursor, MENU::UNIT);
-        game->setCursorstate(MENU::MAP);
-    }
-
-    game->setState(GAME::STATE::MAP);
-}
-
-void MenuSystemx::update(entityx::EntityManager & es, entityx::EventManager & events, entityx::TimeDelta dt) {
-
-}

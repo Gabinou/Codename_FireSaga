@@ -326,11 +326,11 @@ void ControlSystemx::receive(const inputAccept & accept) {
             break;
 
         case GAME::STATE::UNITMENU:
-            event_manager->emit<unitmenuSelect>(accepter, selected);
+            event_manager->emit<menuSelect>(accepter, MENU::UNIT, selected);
             break;
 
         case GAME::STATE::MAPMENU:
-            event_manager->emit<mapmenuSelect>(accepter);
+            event_manager->emit<menuSelect>(accepter, MENU::MAPMENU);
             break;
     }
 

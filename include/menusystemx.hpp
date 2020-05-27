@@ -25,11 +25,11 @@ public:
     void configure(entityx::EventManager & event_manager);
     void receive(const unitMenu & menu);
     void receive(const unitSelect & menu);
-    void receive(const unitmenuSelect & select);
     void receive(const menuSelect & select);
     void receive(const mapMenu & menu);
     void receive(const disableMenu & disable);
-    void receive(const mapmenuSelect & menu);
+    // void receive(const unitmenuSelect & select);
+    // void receive(const mapmenuSelect & menu);
     void receive(const return2Map & map);
 
     void update(entityx::EntityManager & es, entityx::EventManager & events, entityx::TimeDelta dt) override;
