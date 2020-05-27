@@ -292,14 +292,15 @@ void ControlSystemx::receive(const inputAccept & accept) {
     entityx::ComponentHandle<Unit> unitontile;
     entityx::ComponentHandle<Position> position = accepter.component<Position>();
     short int newstate = -1;
-
+    Point current_pos;
+    Point selector_pos;
+    Point offset;
 
     switch (game->getState()) {
         case GAME::STATE::MAP:
             // SDL_Log("accepter Position, %d %d \n", selector_pos[0], selector_pos[1]);
-            Point current_pos;
-            Point selector_pos = position->getTilemapPos();
-            Point offset = position->getOffset();
+            selector_pos = position->getTilemapPos();
+            offset = position->getOffset();
             current_pos.x = selector_pos.x - offset.x;
             current_pos.y = selector_pos.y - offset.y;
             unitontile = unitmap[current_pos.y][current_pos.x];
@@ -328,19 +329,20 @@ void ControlSystemx::receive(const inputAccept & accept) {
         case GAME::STATE::UNITMENU:
 
             if (mouse) {
-                SDL_Log("Current pos: %d %d", current_pos.x, current_pos.y);
-                entityx::Entity * cursorx = game->getCursorx();
-                // entityx::Entity mouse_ent = mouse.entity();
-                entityx::ComponentHandle<Position> position = cursorx->component<Position>();
-                short int * bounds = position->getTilemapBounds();
-                Point pos = position->getTilemapPos();
-                SDL_Log("Bounds: %d %d %d %d", bounds[0], bounds[1], bounds[2], bounds[3]);
+                // SDL_Log("Current pos: %d %d", current_pos.x, current_pos.y);
+                // entityx::Entity * cursorx = game->getCursorx();
+                // // entityx::Entity mouse_ent = mouse.entity();
+                // entityx::ComponentHandle<Position> position = cursorx->component<Position>();
+                // short int * bounds = position->getTilemapBounds();
+                // Point pos = position->getTilemapPos();
+                // SDL_Log("Bounds: %d %d %d %d", bounds[0], bounds[1], bounds[2], bounds[3]);
 
-                if ((pos.x > bounds[0]) && (pos.x < bounds[1]) && (pos.y > bounds[2]) && (pos.y < bounds[3])) {
+                // if ((pos.x > bounds[0]) && (pos.x < bounds[1]) && (pos.y > bounds[2]) && (pos.y < bounds[3])) {
 
-                } else {
+                // } else {
 
-                }
+                // }
+
             } else {
                 event_manager->emit<menuSelect>(accepter, MENU::UNIT, selected);
             }
