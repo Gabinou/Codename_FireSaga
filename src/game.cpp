@@ -692,7 +692,8 @@ void Game::loadMapArrivals() {
         std::string asset_name;
         std::string unit_name;
         entityx::Entity Uent;
-        short int * bounds;
+        short int * bounds = mapx->getBounds();
+        short int * tilesize = mapx->getBounds();
         Unit temp_unit;
 
         for (int i = 0; i < map_arrivals.size(); i++) {
@@ -700,7 +701,7 @@ void Game::loadMapArrivals() {
                 Uent = entities.create();
                 Uent.assign<Position>();
                 Uent.component<Position>()->setonTilemap(true);
-                bounds = mapx->getBounds();
+                Uent.component<Position>()->setScale((float)tilesize[0], (float)tilesize[1]);
                 Uent.component<Position>()->setBounds(bounds);
                 Uent.component<Position>()->setOffset(DEFAULT::TILEMAP_XOFFSET, DEFAULT::TILEMAP_YOFFSET);
                 Uent.component<Position>()->setPos(map_arrivals[i].position.x, map_arrivals[i].position.y);
