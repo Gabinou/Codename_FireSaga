@@ -93,6 +93,7 @@ void ControlSystemx::receive(const switchControl & Switch) {
         game->setState(GAME::STATE::MAP);
         game->loadCursor();
         game->setCursorstate(MENU::MAP);
+        game->setMousestate(MENU::MAP);
 
     } else {
         game->setState(GAME::STATE::NPCTURN);
