@@ -160,13 +160,15 @@ void MenuSystemx::receive(const menuSelect & select) {
     Point selected;
     Point offset;
     short int * bounds;
+    entityx::Entity * cursorx = game->getCursorx();
+    entityx::ComponentHandle<Position> cursorx_position = cursorx->component<Position>();
     std::vector<unsigned char> menuoptions = game->getMenuoptions(menu);
 
     selected = position->getTilemapPos();
     offset = position->getOffset();
-    bounds = position->getTilemapBounds();
+    bounds = cursorx_position->getTilemapBounds();
     // SDL_Log("Boundsmin: %d %d", boundsmin.x, boundsmin.y);
-    // SDL_Log("Boundsmax: %d %d", boundsmax.x, boundsmax.y);
+    SDL_Log("Bounds: %d %d %d %d", bounds[0], bounds[1], bounds[2], bounds[3]);
     SDL_Log("Selected: %d %d", selected.x, selected.y);
     // SDL_Log("offset: %d %d", offset.x, offset.y);
     // SDL_Log("onTilemap: %d", position->isonTilemap());
