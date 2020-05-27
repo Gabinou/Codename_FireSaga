@@ -658,26 +658,26 @@ void Game::putPConMap(std::vector<short int> in_units, std::vector<std::vector<i
 
     if (mapx) {
         std::string asset_name;
-        entityx::Entity Uent;
+        entityx::Entity temp_unit_ent;
         short int * bounds = mapx->getBounds();
         short unsigned int * tilesize = mapx->getTilesize();
 
         for (int i = 0; i < in_units.size(); i++) {
             asset_name = "..//assets//" + party[in_units[i]].getName() + ".png";
             SDL_Log("Loading unit %s", asset_name.c_str());
-            Uent = entities.create();
-            Uent.assign<Unit>();
-            Uent.component<Unit>()->setWeapons(&weapons);
-            Uent.component<Unit>()->copyUnit(party[in_units[i]]);
-            SDL_Log("Copied move : %d", Uent.component<Unit>()->getStats().move);
-            Uent.assign<Position>();
-            Uent.component<Position>()->setonTilemap(true);
-            Uent.component<Position>()->setBounds(bounds);
-            Uent.component<Position>()->setScale((float)tilesize[0], (float)tilesize[1]);
-            Uent.component<Position>()->setOffset(DEFAULT::TILEMAP_XOFFSET, DEFAULT::TILEMAP_YOFFSET);
-            Uent.component<Position>()->setPos(in_pos_list[i][0], in_pos_list[i][1]);
-            Uent.assign<Sprite>(asset_name.c_str());
-            mapx->putUnit(in_pos_list[i][0], in_pos_list[i][1], Uent.component<Unit>());
+            temp_unit_ent = entities.create();
+            temp_unit_ent.assign<Unit>();
+            temp_unit_ent.component<Unit>()->setWeapons(&weapons);
+            temp_unit_ent.component<Unit>()->copyUnit(party[in_units[i]]);
+            SDL_Log("Copied move : %d", temp_unit_ent.component<Unit>()->getStats().move);
+            temp_unit_ent.assign<Position>();
+            temp_unit_ent.component<Position>()->setonTilemap(true);
+            temp_unit_ent.component<Position>()->setBounds(bounds);
+            temp_unit_ent.component<Position>()->setScale((float)tilesize[0], (float)tilesize[1]);
+            temp_unit_ent.component<Position>()->setOffset(DEFAULT::TILEMAP_XOFFSET, DEFAULT::TILEMAP_YOFFSET);
+            temp_unit_ent.component<Position>()->setPos(in_pos_list[i][0], in_pos_list[i][1]);
+            temp_unit_ent.assign<Sprite>(asset_name.c_str());
+            mapx->putUnit(in_pos_list[i][0], in_pos_list[i][1], temp_unit_ent.component<Unit>());
         }
     } else {
         SDL_Log("No map to load unit on.");
@@ -692,29 +692,28 @@ void Game::loadMapArrivals() {
         unsigned short int currentturn = mapx->getTurn();
         std::string asset_name;
         std::string unit_name;
-        entityx::Entity Uent;
+        entityx::Entity temp_unit_ent;
         short int * bounds = mapx->getBounds();
         short unsigned int * tilesize = mapx->getTilesize();
-        Unit temp_unit;
 
         for (int i = 0; i < map_arrivals.size(); i++) {
             if (map_arrivals[i].turn == currentturn) {
-                Uent = entities.create();
-                Uent.assign<Position>();
-                Uent.component<Position>()->setonTilemap(true);
-                Uent.component<Position>()->setScale((float)tilesize[0], (float)tilesize[1]);
-                Uent.component<Position>()->setBounds(bounds);
-                Uent.component<Position>()->setOffset(DEFAULT::TILEMAP_XOFFSET, DEFAULT::TILEMAP_YOFFSET);
-                Uent.component<Position>()->setPos(map_arrivals[i].position.x, map_arrivals[i].position.y);
+                temp_unit_ent = entities.create();
+                temp_unit_ent.assign<Position>();
+                temp_unit_ent.component<Position>()->setonTilemap(true);
+                temp_unit_ent.component<Position>()->setScale((float)tilesize[0], (float)tilesize[1]);
+                temp_unit_ent.component<Position>()->setBounds(bounds);
+                temp_unit_ent.component<Position>()->setOffset(DEFAULT::TILEMAP_XOFFSET, DEFAULT::TILEMAP_YOFFSET);
+                temp_unit_ent.component<Position>()->setPos(map_arrivals[i].position.x, map_arrivals[i].position.y);
                 asset_name = "..//assets//" + unitNames[map_arrivals[i].id] + ".png";
-                Uent.assign<Sprite>(asset_name.c_str());
-                Uent.assign<Unit>();
-                Uent.component<Unit>()->setWeapons(&weapons);
+                temp_unit_ent.assign<Sprite>(asset_name.c_str());
+                temp_unit_ent.assign<Unit>();
+                temp_unit_ent.component<Unit>()->setWeapons(&weapons);
                 unit_name = "units//" + unitNames[map_arrivals[i].id] + ".json";
-                Uent.component<Unit>()->readJSON(unit_name.c_str());
-                Uent.component<Unit>()->setArmy(map_arrivals[i].army);
+                temp_unit_ent.component<Unit>()->readJSON(unit_name.c_str());
+                temp_unit_ent.component<Unit>()->setArmy(map_arrivals[i].army);
                 SDL_Log("Arrival position: %d %d", map_arrivals[i].position.x, map_arrivals[i].position.y);
-                mapx->putUnit(map_arrivals[i].position.x, map_arrivals[i].position.y, Uent.component<Unit>());
+                mapx->putUnit(map_arrivals[i].position.x, map_arrivals[i].position.y, temp_unit_ent.component<Unit>());
             }
         }
     } else {
