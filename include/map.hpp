@@ -76,11 +76,6 @@ public:
     std::unordered_map<short int, Tile> getTiles();
     std::vector<short int> getTilesindex();
 
-    // Point pixel2tilemap(Point in_point);
-    // Point pixel2tilemap(short int pixel_x, short int pixel_y);
-    // Point tilemap2pixel(Point in_point);
-    // Point tilemap2pixel(short int pixel_x, short int pixel_y);
-
     void postTilemap();
     std::vector<std::vector<short int>> getTilemap();
     void setTilemap(const std::vector<std::vector<short int>> in_tilemap);

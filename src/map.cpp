@@ -777,28 +777,6 @@ void Map::clearOverlays() {
     overlay_mode = 0;
 }
 
-// Point Map::tilemap2pixel(Point in_point) {
-//     return (tilemap2pixel(in_point.x, in_point.y));
-// }
-
-// Point Map::tilemap2pixel(short int tilemap_x, short int tilemap_y) {
-//     Point pixel_pos;
-//     pixel_pos.x = tilemap_x * (tilesize[0] + offset[0]);
-//     pixel_pos.y = tilemap_y * (tilesize[1] + offset[1]);
-//     return (pixel_pos);
-// }
-
-// Point Map::pixel2tilemap(Point in_point) {
-//     return (pixel2tilemap(in_point.x, in_point.y));
-// }
-
-// Point Map::pixel2tilemap(short int pixel_x, short int pixel_y) {
-//     Point tile_pos;
-//     tile_pos.x = std::min((int)(bounds[1] - offset[0]), std::max((int)(bounds[0] - offset[0]), pixel_x / tilesize[0] - offset[0]));
-//     tile_pos.y = std::min((int)(bounds[3] - offset[1]), std::max((int)(bounds[2] - offset[1]), pixel_y / tilesize[1] - offset[1]));
-//     return (tile_pos);
-// }
-
 void Map::draw() {
     // SDL_Log("Drawing Map");
     int tile_ind = 0;
