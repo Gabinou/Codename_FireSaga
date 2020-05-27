@@ -53,6 +53,9 @@ public:
     void setOffset(short int xoffset, short int yoffset);
     Point getOffset();
 
+    float * getScale();
+    void setScale(float in_x, float in_y);
+
     void setUpdatable(bool in_updatable);
     bool isUpdatable();
 

@@ -194,6 +194,15 @@ bool Position::addPos(short int move_x, short int move_y) {
     return (newPos(newx, newy));
 }
 
+float * Position::getScale() {
+    return (scale);
+}
+
+void Position::setScale(float in_x, float in_y) {
+    scale[0] = in_x;
+    scale[1] = in_y;
+}
+
 void Position::whichSpace() {
     if (onTilemap) {
         position = &tilemap_pos;
