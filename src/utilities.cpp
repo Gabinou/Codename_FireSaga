@@ -131,6 +131,9 @@ std::vector<std::string> menuoptions2str(std::vector<unsigned char> in_options) 
             case MENU::OPTION::OBJECTIVES:
                 out.push_back("Objectives");
                 break;
+
+            default:
+                SDL_Log("option is invalid");
         }
     }
 
@@ -248,6 +251,9 @@ std::string gamestate2str(short unsigned int in_state) {
         case GAME::STATE::INTROVIDEO:
             out = "Introvideo";
             break;
+
+        default:
+            SDL_Log("gamestate is invalid");
     }
 
     return (out);
@@ -296,6 +302,9 @@ bool isPC(const unsigned char army) {
         case UNIT::ARMY::VOLDAN:
             out = false;
             break;
+
+        default:
+            SDL_Log("army is invalid");
     }
 
     return (out);
@@ -327,6 +336,9 @@ bool isFriendly(const unsigned char army1, const unsigned char army2) {
                 case UNIT::ARMY::VOLDAN:
                     out = false;
                     break;
+
+                default:
+                    SDL_Log("army2 is invalid");
             }
 
             break;
@@ -349,9 +361,15 @@ bool isFriendly(const unsigned char army1, const unsigned char army2) {
                 case UNIT::ARMY::VOLDAN:
                     out = true;
                     break;
+
+                default:
+                    SDL_Log("army2 is invalid");
             }
 
             break;
+
+        default:
+            SDL_Log("army1 is invalid");
     }
 
     return (out);
@@ -907,6 +925,9 @@ std::vector<std::string> getTilenames(std::vector<short int> in_tilesindex) {
             case TILE::ICE:
                 out.push_back("Ice");
                 break;
+
+            default:
+                SDL_Log("tile is invalid");
         }
     }
 
@@ -1188,6 +1209,9 @@ unsigned char mvtType(unsigned char in_class_index) {
         case UNIT::CLASS::ANGELIC_INCARNATE:
             mvt_type = UNIT::MVT::MAGES;
             break;
+
+        default:
+            SDL_Log("class index is invalid");
     }
 
     return (mvt_type);
@@ -1250,6 +1274,9 @@ unsigned char unitid2army(short unsigned int in_unitid) {
         case UNIT::NAME::MOUSQUETAIRE:
             armyid = UNIT::ARMY::ENEMY;
             break;
+
+        default:
+            SDL_Log("unit id is invalid");
     }
 
     return (armyid);
@@ -1458,6 +1485,9 @@ std::string className(unsigned char in_class_index) {
         case UNIT::CLASS::ANGELIC_INCARNATE:
             class_name = "Angelic Incarnate";
             break;
+
+        default:
+            SDL_Log("unit class is invalid");
     }
 
     return (class_name);

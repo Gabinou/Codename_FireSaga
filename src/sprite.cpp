@@ -99,6 +99,9 @@ void Sprite::animatedRects() {
             setSrcrect(tilesize[0] * 2, tilesize[1] * 2);
             setDestrect(tilesize[0] * 2, tilesize[1] * 2);
             break;
+
+        default:
+            SDL_Log("slidetype is invalid");
     }
 }
 

@@ -125,6 +125,9 @@ void RenderSystemx::slideSprites(entityx::Entity * in_ent, short int * slidepos,
                     }
 
                     break;
+
+                default:
+                    SDL_Log("slidetype is invalid");
             }
         }
     } else {
@@ -154,6 +157,9 @@ SDL_Rect RenderSystemx::loopSprites(entityx::ComponentHandle<Sprite> in_sprite) 
             case LOOPING::REVERSE:
                 srcrect.x = srcrect.w * (frames - static_cast<int>((SDL_GetTicks() / speed) % frames));
                 break;
+
+            default:
+                SDL_Log("looping is invalid");
         }
     }
 

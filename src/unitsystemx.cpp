@@ -170,6 +170,9 @@ void UnitSystemx::receive(const unitDeselect & deselect) {
                 }
 
                 break;
+
+            default:
+                SDL_Log("gamestate is invalid");
         }
     }
 }
