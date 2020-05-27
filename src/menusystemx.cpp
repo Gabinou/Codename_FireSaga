@@ -215,6 +215,10 @@ void MenuSystemx::receive(const menuSelect & select) {
                     case MENU::OPTION::WAIT:
                         event_manager->emit<unitWait>(selector, unit);
                         break;
+
+                    default:
+                        SDL_Log("menuoption is invalid");
+
                 }
             } else {
                 SDL_Log("menuSelect: could not get unit");
@@ -249,6 +253,10 @@ void MenuSystemx::receive(const menuSelect & select) {
                             event_manager->emit<disableMenu>(selector, MENU::MAPMENU);
                             event_manager->emit<turnEnd>();
                             break;
+
+                        default:
+                            SDL_Log("menuoption is invalid");
+
                     }
 
                     break;
