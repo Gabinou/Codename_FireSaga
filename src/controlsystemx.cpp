@@ -384,13 +384,14 @@ void ControlSystemx::SDL_update() {
                             position->setPixelPos(event.button.x, event.button.y);
 
                             if (mapx) {
-                                SDL_Log("mapxx is valid");
-                                SDL_Log("scale: %f %f", position->getScale()[0], position->getScale()[1]);
-                                position->setTilemapPos(position->pixel2tilemap(event.button.x, event.button.y));
-                                Point tilemap_pos = position->getTilemapPos();
-                                Point pixel_pos = position->getPixelPos();
-                                SDL_Log("tilemap_position: %d %d", tilemap_pos.x, tilemap_pos.y);
-                                SDL_Log("pixel_position: %d %d", pixel_pos.x, pixel_pos.y);
+                                // SDL_Log("mapxx is valid");
+                                // SDL_Log("scale: %f %f", position->getScale()[0], position->getScale()[1]);
+                                Point tilemap_pos = position->pixel2tilemap(event.button.x, event.button.y);
+                                position->setTilemapPos(tilemap_pos);
+                                // Point tilemap_pos2 = position->getTilemapPos();
+                                // SDL_Log("tilemap_position: %d %d", tilemap_pos.x, tilemap_pos.y);
+                                // SDL_Log("tilemap_position2: %d %d", tilemap_pos2.x, tilemap_pos2.y);
+                                // SDL_Log("pixel_position: %d %d", pixel_pos.x, pixel_pos.y);
                             }
 
                             if (event.type != previous_mouse) {

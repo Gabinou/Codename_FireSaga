@@ -110,8 +110,12 @@ Point Position::pixel2tilemap(Point in_point) {
 
 Point Position::pixel2tilemap(short int pixel_x, short int pixel_y) {
     Point tile_pos;
-    tile_pos.x = std::min((int)(tilemap_boundsmax.x - offset.x), std::max((int)(tilemap_boundsmin.x - offset.x), (int)(pixel_x / scale[0] - offset.x)));
-    tile_pos.y = std::min((int)(tilemap_boundsmax.y - offset.y), std::max((int)(tilemap_boundsmin.y - offset.y), (int)(pixel_y / scale[1] - offset.y)));
+    tile_pos.x = (int)(pixel_x / scale[0]) - offset.x;
+    tile_pos.y = (int)(pixel_y / scale[1]) - offset.y;
+    // SDL_Log("tilemap_boundsmin: %d %d", tilemap_boundsmin.x, tilemap_boundsmin.y);
+    // SDL_Log("tilemap_boundsmax: %d %d", tilemap_boundsmax.x, tilemap_boundsmax.y);
+    // SDL_Log("POSITION: tilepos: %d %d", (int)(pixel_x / scale[0]), (int)(pixel_y / scale[1]));
+    // SDL_Log("POSITION: tilepos: %d %d", tile_pos.x, tile_pos.y);
     return (tile_pos);
 }
 
