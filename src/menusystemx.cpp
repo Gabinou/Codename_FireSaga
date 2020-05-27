@@ -156,12 +156,81 @@ void MenuSystemx::receive(const menuSelect & select) {
     char menu = select.menu;
     entityx::ComponentHandle<Unit> unit = select.unit;
     std::vector<unsigned char> menuoptions = game->getMenuoptions(menu);
+    unsigned char menuind;
 
+    unsigned char menuoption = menuoptions[menuind];
     switch (menu) {
         case MENU::UNIT:
-            break;
+            if (unit) {
+        switch (menuoption) {
+            case MENU::OPTION::ITEMS:
+                event_manager->emit<unitItems>(selector, unit);
+                break;
 
+            case MENU::OPTION::TALK:
+                event_manager->emit<unitTalk>(selector, unit);
+                break;
+
+            case MENU::OPTION::RESCUE:
+                event_manager->emit<unitRescue>(selector, unit);
+                break;
+
+            case MENU::OPTION::SEIZE:
+                event_manager->emit<unitSeize>(unit);
+                break;
+
+            case MENU::OPTION::ESCAPE:
+                event_manager->emit<unitEscape>(selector, unit);
+                break;
+
+            case MENU::OPTION::ATTACK:
+                event_manager->emit<unitAttack>(selector, unit);
+                break;
+
+            case MENU::OPTION::TRADE:
+                event_manager->emit<unitTrade>(selector, unit);
+                break;
+
+            case MENU::OPTION::STAFF:
+                event_manager->emit<unitStaff>(selector, unit);
+                break;
+
+            case MENU::OPTION::WAIT:
+                event_manager->emit<unitWait>(selector, unit);
+                break;
+        }
+    } else {
+        SDL_Log("menuSelect: could not get unit");
+    }
+            break;
+            switch(menuoption) {
         case MENU::MAPMENU:
+            switch (menuoption) {
+                case MENU::OPTION::OBJECTIVES:
+                    event_manager->emit<objectivesMenu>(selector);
+                    break;
+
+                case MENU::OPTION::UNITS:
+                    event_manager->emit<unitsMenu>(selector);
+                    break;
+
+                case MENU::OPTION::ENEMYUNITS:
+                    event_manager->emit<enemyunitsMenu>(selector);
+                    break;
+
+                case MENU::OPTION::OPTIONS:
+                    event_manager->emit<optionsMenu>(selector);
+                    break;
+
+                case MENU::OPTION::ITEMS:
+                    event_manager->emit<itemsMenu>(selector);
+                    break;
+
+                case MENU::OPTION::ENDTURN:
+                    event_manager->emit<disableMenu>(selector, MENU::MAPMENU);
+                    event_manager->emit<turnEnd>();
+            break;
+    }
             break;
 
         default:
@@ -171,107 +240,107 @@ void MenuSystemx::receive(const menuSelect & select) {
 }
 
 
-void MenuSystemx::receive(const mapmenuSelect & select) {
-    SDL_Log("Received mapmenuSelect event ");
-    entityx::Entity cursor = select.cursor;
-    entityx::ComponentHandle<Position> position = cursor.component<Position>();
+// void MenuSystemx::receive(const mapmenuSelect & select) {
+//     SDL_Log("Received mapmenuSelect event ");
+//     entityx::Entity cursor = select.cursor;
+//     entityx::ComponentHandle<Position> position = cursor.component<Position>();
 
-    Point cursorpos = position->getTilemapPos();
-    short int * cursorbounds = position->getTilemapBounds();
-    unsigned char menuind = cursorpos.y - cursorbounds[2];
-    std::vector<unsigned char> mapmenuoptions = game->getMenuoptions(MENU::MAPMENU);
+//     Point cursorpos = position->getTilemapPos();
+//     short int * cursorbounds = position->getTilemapBounds();
+//     unsigned char menuind = cursorpos.y - cursorbounds[2];
+//     std::vector<unsigned char> mapmenuoptions = game->getMenuoptions(MENU::MAPMENU);
 
-    SDL_Log("cursorpos: %d %d", cursorpos.x, cursorpos.y);
-    SDL_Log("cursorbounds: %d %d %d %d", cursorbounds[0], cursorbounds[1], cursorbounds[2], cursorbounds[3]);
-    SDL_Log("menuind: %d ", menuind);
-    SDL_Log("unitmenuoptions[menuind]: %d ", mapmenuoptions[menuind]);
+//     SDL_Log("cursorpos: %d %d", cursorpos.x, cursorpos.y);
+//     SDL_Log("cursorbounds: %d %d %d %d", cursorbounds[0], cursorbounds[1], cursorbounds[2], cursorbounds[3]);
+//     SDL_Log("menuind: %d ", menuind);
+//     SDL_Log("unitmenuoptions[menuind]: %d ", mapmenuoptions[menuind]);
 
-    switch (mapmenuoptions[menuind]) {
-        case MENU::OPTION::OBJECTIVES:
-            event_manager->emit<objectivesMenu>(cursor);
-            break;
+//     switch (mapmenuoptions[menuind]) {
+//         case MENU::OPTION::OBJECTIVES:
+//             event_manager->emit<objectivesMenu>(cursor);
+//             break;
 
-        case MENU::OPTION::UNITS:
-            event_manager->emit<unitsMenu>(cursor);
-            break;
+//         case MENU::OPTION::UNITS:
+//             event_manager->emit<unitsMenu>(cursor);
+//             break;
 
-        case MENU::OPTION::ENEMYUNITS:
-            event_manager->emit<enemyunitsMenu>(cursor);
-            break;
+//         case MENU::OPTION::ENEMYUNITS:
+//             event_manager->emit<enemyunitsMenu>(cursor);
+//             break;
 
-        case MENU::OPTION::OPTIONS:
-            event_manager->emit<optionsMenu>(cursor);
-            break;
+//         case MENU::OPTION::OPTIONS:
+//             event_manager->emit<optionsMenu>(cursor);
+//             break;
 
-        case MENU::OPTION::ITEMS:
-            event_manager->emit<itemsMenu>(cursor);
-            break;
+//         case MENU::OPTION::ITEMS:
+//             event_manager->emit<itemsMenu>(cursor);
+//             break;
 
-        case MENU::OPTION::ENDTURN:
-            event_manager->emit<disableMenu>(cursor, MENU::MAPMENU);
-            event_manager->emit<turnEnd>();
-            break;
-    }
-}
+//         case MENU::OPTION::ENDTURN:
+//             event_manager->emit<disableMenu>(cursor, MENU::MAPMENU);
+//             event_manager->emit<turnEnd>();
+//             break;
+//     }
+// }
 
-void MenuSystemx::receive(const unitmenuSelect & select) {
-    SDL_Log("unitmenuSelect event received");
-    entityx::Entity cursor = select.cursor;
-    entityx::ComponentHandle<Unit> unit = select.unit;
-    entityx::ComponentHandle<Position> position = cursor.component<Position>();
+// void MenuSystemx::receive(const unitmenuSelect & select) {
+//     SDL_Log("unitmenuSelect event received");
+//     entityx::Entity cursor = select.cursor;
+//     entityx::ComponentHandle<Unit> unit = select.unit;
+//     entityx::ComponentHandle<Position> position = cursor.component<Position>();
 
-    Point cursorpos = position->getTilemapPos();
-    short int * cursorbounds = position->getBounds();
-    unsigned char menuind = cursorpos.y - cursorbounds[2];
+//     Point cursorpos = position->getTilemapPos();
+//     short int * cursorbounds = position->getBounds();
+//     unsigned char menuind = cursorpos.y - cursorbounds[2];
 
-    std::vector<unsigned char> unitmenuoptions = game->getMenuoptions(MENU::UNIT);
-    SDL_Log("cursorpos: %d %d", cursorpos.x, cursorpos.y);
-    SDL_Log("cursorbounds: %d %d %d %d", cursorbounds[0], cursorbounds[1], cursorbounds[2], cursorbounds[3]);
-    SDL_Log("menuind: %d ", menuind);
-    SDL_Log("unitmenuoptions[menuind]: %d ", unitmenuoptions[menuind]);
+//     std::vector<unsigned char> unitmenuoptions = game->getMenuoptions(MENU::UNIT);
+//     SDL_Log("cursorpos: %d %d", cursorpos.x, cursorpos.y);
+//     SDL_Log("cursorbounds: %d %d %d %d", cursorbounds[0], cursorbounds[1], cursorbounds[2], cursorbounds[3]);
+//     SDL_Log("menuind: %d ", menuind);
+//     SDL_Log("unitmenuoptions[menuind]: %d ", unitmenuoptions[menuind]);
 
-    if (unit) {
-        switch (unitmenuoptions[menuind]) {
-            case MENU::OPTION::ITEMS:
-                event_manager->emit<unitItems>(cursor, unit);
-                break;
+//     if (unit) {
+//         switch (unitmenuoptions[menuind]) {
+//             case MENU::OPTION::ITEMS:
+//                 event_manager->emit<unitItems>(cursor, unit);
+//                 break;
 
-            case MENU::OPTION::TALK:
-                event_manager->emit<unitTalk>(cursor, unit);
-                break;
+//             case MENU::OPTION::TALK:
+//                 event_manager->emit<unitTalk>(cursor, unit);
+//                 break;
 
-            case MENU::OPTION::RESCUE:
-                event_manager->emit<unitRescue>(cursor, unit);
-                break;
+//             case MENU::OPTION::RESCUE:
+//                 event_manager->emit<unitRescue>(cursor, unit);
+//                 break;
 
-            case MENU::OPTION::SEIZE:
-                event_manager->emit<unitSeize>(unit);
-                break;
+//             case MENU::OPTION::SEIZE:
+//                 event_manager->emit<unitSeize>(unit);
+//                 break;
 
-            case MENU::OPTION::ESCAPE:
-                event_manager->emit<unitEscape>(cursor, unit);
-                break;
+//             case MENU::OPTION::ESCAPE:
+//                 event_manager->emit<unitEscape>(cursor, unit);
+//                 break;
 
-            case MENU::OPTION::ATTACK:
-                event_manager->emit<unitAttack>(cursor, unit);
-                break;
+//             case MENU::OPTION::ATTACK:
+//                 event_manager->emit<unitAttack>(cursor, unit);
+//                 break;
 
-            case MENU::OPTION::TRADE:
-                event_manager->emit<unitTrade>(cursor, unit);
-                break;
+//             case MENU::OPTION::TRADE:
+//                 event_manager->emit<unitTrade>(cursor, unit);
+//                 break;
 
-            case MENU::OPTION::STAFF:
-                event_manager->emit<unitStaff>(cursor, unit);
-                break;
+//             case MENU::OPTION::STAFF:
+//                 event_manager->emit<unitStaff>(cursor, unit);
+//                 break;
 
-            case MENU::OPTION::WAIT:
-                event_manager->emit<unitWait>(cursor, unit);
-                break;
-        }
-    } else {
-        SDL_Log("unitmenuSelect: could not get unit");
-    }
-}
+//             case MENU::OPTION::WAIT:
+//                 event_manager->emit<unitWait>(cursor, unit);
+//                 break;
+//         }
+//     } else {
+//         SDL_Log("unitmenuSelect: could not get unit");
+//     }
+// }
 
 void MenuSystemx::receive(const return2Map & map) {
     SDL_Log("Received return2Map event");

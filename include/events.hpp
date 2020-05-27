@@ -31,72 +31,72 @@ struct enableCursor {
 };
 
 struct selectPC {
-    selectPC(entityx::Entity cursor) : cursor(cursor) {}
-    entityx::Entity cursor;
+    selectPC(entityx::Entity selector) : selector(selector) {}
+    entityx::Entity selector;
 };
 
 struct selectNPC {
-    selectNPC(entityx::Entity cursor) : cursor(cursor) {}
-    entityx::Entity cursor;
+    selectNPC(entityx::Entity selector) : selector(selector) {}
+    entityx::Entity selector;
 };
 
 struct objectivesMenu {
-    objectivesMenu(entityx::Entity cursor) : cursor(cursor) {}
-    entityx::Entity cursor;
+    objectivesMenu(entityx::Entity selector) : selector(selector) {}
+    entityx::Entity selector;
 };
 
 struct unitsMenu {
-    unitsMenu(entityx::Entity cursor) : cursor(cursor) {}
-    entityx::Entity cursor;
+    unitsMenu(entityx::Entity selector) : selector(selector) {}
+    entityx::Entity selector;
 };
 
 struct enemyunitsMenu {
-    enemyunitsMenu(entityx::Entity cursor) : cursor(cursor) {}
-    entityx::Entity cursor;
+    enemyunitsMenu(entityx::Entity selector) : selector(selector) {}
+    entityx::Entity selector;
 };
 
 struct optionsMenu {
-    optionsMenu(entityx::Entity cursor) : cursor(cursor) {}
-    entityx::Entity cursor;
+    optionsMenu(entityx::Entity selector) : selector(selector) {}
+    entityx::Entity selector;
 };
 
 struct itemsMenu {
-    itemsMenu(entityx::Entity cursor) : cursor(cursor) {}
-    entityx::Entity cursor;
+    itemsMenu(entityx::Entity selector) : selector(selector) {}
+    entityx::Entity selector;
 };
 
 struct mapMenu {
-    mapMenu(entityx::Entity cursor) : cursor(cursor) {}
-    entityx::Entity cursor;
+    mapMenu(entityx::Entity selector) : selector(selector) {}
+    entityx::Entity selector;
 };
 
 struct cursorMoved {
-    cursorMoved(entityx::Entity cursor, Point move) : cursor(cursor), move(move) {}
-    entityx::Entity cursor;
+    cursorMoved(entityx::Entity selector, Point move) : selector(selector), move(move) {}
+    entityx::Entity selector;
     Point move;
 };
 
 struct unitSelect {
-    unitSelect(entityx::Entity cursor, entityx::ComponentHandle<Unit> unit) : cursor(cursor), unit(unit) {}
-    entityx::Entity cursor;
+    unitSelect(entityx::Entity selector, entityx::ComponentHandle<Unit> unit) : selector(selector), unit(unit) {}
+    entityx::Entity selector;
     entityx::ComponentHandle<Unit> unit;
 };
 
 struct unitDeselect {
-    unitDeselect(entityx::Entity cursor, entityx::ComponentHandle<Unit> unit) : cursor(cursor), unit(unit) {}
-    entityx::Entity cursor;
+    unitDeselect(entityx::Entity selector, entityx::ComponentHandle<Unit> unit) : selector(selector), unit(unit) {}
+    entityx::Entity selector;
     entityx::ComponentHandle<Unit> unit;
 };
 
 struct unitReturn {
-    unitReturn(entityx::Entity cursor, entityx::ComponentHandle<Unit> unit) : cursor(cursor), unit(unit) {}
-    entityx::Entity cursor;
+    unitReturn(entityx::Entity selector, entityx::ComponentHandle<Unit> unit) : selector(selector), unit(unit) {}
+    entityx::Entity selector;
     entityx::ComponentHandle<Unit> unit;
 };
 
 struct unitMove {
-    unitMove(entityx::Entity cursor, entityx::ComponentHandle<Unit> unit) : cursor(cursor), unit(unit) {}
-    entityx::Entity cursor;
+    unitMove(entityx::Entity selector, entityx::ComponentHandle<Unit> unit) : selector(selector), unit(unit) {}
+    entityx::Entity selector;
     entityx::ComponentHandle<Unit> unit;
 };
 
@@ -123,37 +123,37 @@ struct refreshUnits {
 };
 
 struct disableMenu {
-    disableMenu(entityx::Entity cursor, unsigned char menuind) : cursor(cursor), menuind(menuind) {}
-    entityx::Entity cursor;
+    disableMenu(entityx::Entity selector, unsigned char menuind) : selector(selector), menuind(menuind) {}
+    entityx::Entity selector;
     unsigned char menuind;
 };
 
 struct unitDanger {
-    unitDanger(entityx::Entity cursor, entityx::ComponentHandle<Unit> unit) : cursor(cursor), unit(unit) {}
-    entityx::Entity cursor;
+    unitDanger(entityx::Entity selector, entityx::ComponentHandle<Unit> unit) : selector(selector), unit(unit) {}
+    entityx::Entity selector;
     entityx::ComponentHandle<Unit> unit;
 };
 
 struct unitMenu {
-    unitMenu(entityx::Entity cursor) : cursor(cursor) {}
-    entityx::Entity cursor;
+    unitMenu(entityx::Entity selector) : selector(selector) {}
+    entityx::Entity selector;
 };
 
 struct return2Map {
-    return2Map(entityx::Entity cursor) : cursor(cursor) {}
-    entityx::Entity cursor;
+    return2Map(entityx::Entity selector) : selector(selector) {}
+    entityx::Entity selector;
 };
 
-struct unitmenuSelect {
-    unitmenuSelect(entityx::Entity cursor, entityx::ComponentHandle<Unit> unit) : cursor(cursor), unit(unit) {}
-    entityx::Entity cursor;
-    entityx::ComponentHandle<Unit> unit;
-};
+// struct unitmenuSelect {
+//     unitmenuSelect(entityx::Entity cursor, entityx::ComponentHandle<Unit> unit) : cursor(cursor), unit(unit) {}
+//     entityx::Entity cursor;
+//     entityx::ComponentHandle<Unit> unit;
+// };
 
-struct mapmenuSelect {
-    mapmenuSelect(entityx::Entity cursor) : cursor(cursor) {}
-    entityx::Entity cursor;
-};
+// struct mapmenuSelect {
+//     mapmenuSelect(entityx::Entity cursor) : cursor(cursor) {}
+//     entityx::Entity cursor;
+// };
 
 struct menuSelect {
     menuSelect(entityx::Entity selector, char menu) : selector(selector), menu(menu) {}
@@ -234,50 +234,50 @@ struct unitRefresh {
 };
 
 struct unitWait {
-    unitWait(entityx::Entity cursor, entityx::ComponentHandle<Unit> unit) : cursor(cursor), unit(unit) {}
-    entityx::Entity cursor;
+    unitWait(entityx::Entity selector, entityx::ComponentHandle<Unit> unit) : selector(selector), unit(unit) {}
+    entityx::Entity selector;
     entityx::ComponentHandle<Unit> unit;
 };
 
 struct unitTalk {
-    unitTalk(entityx::Entity cursor, entityx::ComponentHandle<Unit> unit) : cursor(cursor), unit(unit) {}
-    entityx::Entity cursor;
+    unitTalk(entityx::Entity selector, entityx::ComponentHandle<Unit> unit) : selector(selector), unit(unit) {}
+    entityx::Entity selector;
     entityx::ComponentHandle<Unit> unit;
 };
 
 struct unitRescue {
-    unitRescue(entityx::Entity cursor, entityx::ComponentHandle<Unit> unit) : cursor(cursor), unit(unit) {}
-    entityx::Entity cursor;
+    unitRescue(entityx::Entity selector, entityx::ComponentHandle<Unit> unit) : selector(selector), unit(unit) {}
+    entityx::Entity selector;
     entityx::ComponentHandle<Unit> unit;
 };
 
 struct unitAttack {
-    unitAttack(entityx::Entity cursor, entityx::ComponentHandle<Unit> unit) : cursor(cursor), unit(unit) {}
-    entityx::Entity cursor;
+    unitAttack(entityx::Entity selector, entityx::ComponentHandle<Unit> unit) : selector(selector), unit(unit) {}
+    entityx::Entity selector;
     entityx::ComponentHandle<Unit> unit;
 };
 
 struct unitTrade {
-    unitTrade(entityx::Entity cursor, entityx::ComponentHandle<Unit> unit) : cursor(cursor), unit(unit) {}
-    entityx::Entity cursor;
+    unitTrade(entityx::Entity selector, entityx::ComponentHandle<Unit> unit) : selector(selector), unit(unit) {}
+    entityx::Entity selector;
     entityx::ComponentHandle<Unit> unit;
 };
 
 struct unitEscape {
-    unitEscape(entityx::Entity cursor, entityx::ComponentHandle<Unit> unit) : cursor(cursor), unit(unit) {}
-    entityx::Entity cursor;
+    unitEscape(entityx::Entity selector, entityx::ComponentHandle<Unit> unit) : selector(selector), unit(unit) {}
+    entityx::Entity selector;
     entityx::ComponentHandle<Unit> unit;
 };
 
 struct unitStaff {
-    unitStaff(entityx::Entity cursor, entityx::ComponentHandle<Unit> unit) : cursor(cursor), unit(unit) {}
-    entityx::Entity cursor;
+    unitStaff(entityx::Entity selector, entityx::ComponentHandle<Unit> unit) : selector(selector), unit(unit) {}
+    entityx::Entity selector;
     entityx::ComponentHandle<Unit> unit;
 };
 
 struct unitItems {
-    unitItems(entityx::Entity cursor, entityx::ComponentHandle<Unit> unit) : cursor(cursor), unit(unit) {}
-    entityx::Entity cursor;
+    unitItems(entityx::Entity selector, entityx::ComponentHandle<Unit> unit) : selector(selector), unit(unit) {}
+    entityx::Entity selector;
     entityx::ComponentHandle<Unit> unit;
 };
 
