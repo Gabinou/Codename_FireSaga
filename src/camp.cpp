@@ -159,6 +159,9 @@ void Camp::checkChapter() {
 
         case 21:
             break;
+
+        default:
+            SDL_Log("in_chapter is invalid");
     }
 }
 

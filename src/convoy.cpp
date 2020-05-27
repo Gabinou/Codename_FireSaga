@@ -104,6 +104,9 @@ void Convoy::swapWpn(int wpntype, int ind1, int ind2) {
             items[ind1] = items[ind2];
             items[ind2] = buffer;
             break;
+
+        default:
+            SDL_Log("wpntype is invalid");
     }
 }
 
@@ -372,6 +375,9 @@ Inventory_item * Convoy::getItems(int wpntype) {
         case ITEM::TYPE::BOOK:
             memcpy(temp, books, sizeof(temp));
             break;
+
+        default:
+            SDL_Log("wpntype is invalid");
     }
 
     return (temp);
@@ -457,6 +463,9 @@ void Convoy::setItems(int wpntype, Inventory_item * in_items) {
         case ITEM::TYPE::BOOK:
             memcpy(books, in_items, sizeof(books));
             break;
+
+        default:
+            SDL_Log("wpntype is invalid");
     }
 }
 
@@ -523,6 +532,9 @@ int Convoy::getQuantity(int wpntype) {
         case ITEM::TYPE::BOOK:
             temp = booksnum;
             break;
+
+        default:
+            SDL_Log("wpntype is invalid");
     }
 
     return (temp);
@@ -608,6 +620,9 @@ std::vector<int> Convoy::getStats(int wpntype, int stattype) {
                 case ITEM::STAT::HEAL:
                     vecstats.push_back(weapons->at(temp[i].id).getStats().heal);
                     break;
+
+                default:
+                    SDL_Log("stat type is invalid");
             }
         }
     } else {
@@ -709,6 +724,9 @@ Inventory_item Convoy::withdraw(int in_index, int wpntype) {
             books[in_index] = empty;
             booksnum -= 1;
             break;
+
+        default:
+            SDL_Log("wpntype is invalid");
     }
 
     isFull();
