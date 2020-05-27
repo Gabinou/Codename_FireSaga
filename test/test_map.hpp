@@ -187,23 +187,6 @@ void test_map() {
     lok(map1.getOffset()[0] == 1);
     lok(map1.getOffset()[1] == 1);
 
-    Point tiles_pos;
-    tiles_pos = map1.pixel2tilemap(tilesize - 4, tilesize - 4);
-    lok(tiles_pos.x == 0);
-    lok(tiles_pos.y == 0);
-
-    tiles_pos = map1.pixel2tilemap(tilesize + 4, tilesize + 4);
-    lok(tiles_pos.x == 0);
-    lok(tiles_pos.y == 0);
-
-    tiles_pos = map1.pixel2tilemap(tilesize * 2 + 4, tilesize * 2 + 4);
-    lok(tiles_pos.x == 1);
-    lok(tiles_pos.y == 1);
-
-    tiles_pos = map1.pixel2tilemap(tilesize * 100 + 4, tilesize * 100 + 4);
-    lok(tiles_pos.x == (map1.getBounds()[1] - map1.getOffset()[0]));
-    lok(tiles_pos.y == (map1.getBounds()[3] - map1.getOffset()[1]));
-
     std::vector<Map_arrival> in_arrivals, out_arrivals;
     std::vector<std::vector<Inventory_item>> in_arrivalequipments, out_arrivalequipments;
     in_arrivals = chapTestArrivals();

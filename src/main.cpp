@@ -46,6 +46,7 @@ int main(int argc, char * argv[]) {
     firesaga->loadMap(0);
     firesaga->updateSystems();
     firesaga->setCursorstate(MENU::MAP);
+    firesaga->setMousestate(MENU::MAP);
 
     SDL_Log("Loading in test party\n");
     std::vector<short int> unit_inds = {UNIT::NAME::SILOU};

@@ -106,6 +106,7 @@ public:
     entityx::Entity * getMousex();
     bool isMouse();
     std::unordered_map<short int, Weapon> * getWeapons();
+    void setMousestate(const char in_menu);
 
     bool isRunning();
     void stopRunning();

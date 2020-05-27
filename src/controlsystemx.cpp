@@ -383,7 +383,7 @@ void ControlSystemx::SDL_update() {
                             position->setPixelPos(event.button.x, event.button.y);
 
                             if (mapx) {
-                                position->setTilemapPos(mapx->pixel2tilemap(event.button.x, event.button.y));
+                                position->setTilemapPos(position->pixel2tilemap(event.button.x, event.button.y));
                             }
 
                             if (event.type != previous_mouse) {
@@ -447,7 +447,7 @@ void ControlSystemx::SDL_update() {
                             }
 
                             if (mapx) {
-                                Point tilemap_pos = mapx->pixel2tilemap(event.motion.x, event.motion.y);
+                                Point tilemap_pos = position->pixel2tilemap(event.motion.x, event.motion.y);
                                 position->setTilemapPos(tilemap_pos);
                             }
 

@@ -92,4 +92,26 @@ void test_position() {
     pos = position.getPos();
     lok(pos.x == 9);
     lok(pos.y == 9);
+
+    Point tiles_pos;
+    Position position2;
+    short int tilesize = 32;
+    position2.setScale(tilesize, tilesize);
+    tiles_pos = position2.pixel2tilemap(tilesize - 4, tilesize - 4);
+    lok(tiles_pos.x == 0);
+    lok(tiles_pos.y == 0);
+
+    tiles_pos = position2.pixel2tilemap(tilesize + 4, tilesize + 4);
+    lok(tiles_pos.x == 0);
+    lok(tiles_pos.y == 0);
+
+    tiles_pos = position2.pixel2tilemap(tilesize * 2 + 4, tilesize * 2 + 4);
+    lok(tiles_pos.x == 1);
+    lok(tiles_pos.y == 1);
+
+    tiles_pos = position2.pixel2tilemap(tilesize * 100 + 4, tilesize * 100 + 4);
+    lok(tiles_pos.x == (position2.getBounds()[1] - position2.getOffset().x));
+    lok(tiles_pos.y == (position2.getBounds()[3] - position2.getOffset().y));
+
+
 }

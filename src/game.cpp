@@ -474,6 +474,37 @@ void Game::unloadMap() {
     }
 }
 
+void Game::setMousestate(const char in_menu) {
+    SDL_Log("Changing mouse to state %d", in_menu);
+
+    if (in_menu >= 0) {
+
+        short unsigned int * temp_tilesize;
+        short int * bounds;
+        temp_tilesize = mapx->getTilesize();
+
+        if (mousex.valid()) {
+            switch (in_menu) {
+                case MENU::MAP:
+                    mousex.component<Position>()->setScale(temp_tilesize[0], temp_tilesize[1]);
+                    break;
+
+                case MENU::MAPMENU:
+                case MENU::UNIT:
+                    short int linespace = 1;
+
+                    if (menus[in_menu].valid()) {
+                        linespace = menus[in_menu].component<Text>()->getLinespacing();
+                    }
+
+                    mousex.component<Position>()->setScale(linespace, linespace);
+                    break;
+            }
+        }
+    }
+}
+
+
 void Game::setCursorstate(const char in_menu) {
     SDL_Log("Changing cursor to state %d", in_menu);
 
