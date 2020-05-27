@@ -949,7 +949,6 @@ void Game::loadJSON(const short int save_ind) {
             party[temp_unit.getid()] = temp_unit;
             junit = junit->next;
         }
-
     }
 }
 
@@ -1044,12 +1043,15 @@ void Game::setState(const short int new_state) {
 KeyboardInputMap Game::getKeyboardInputMap() {
     return (keyboardInputMap);
 }
+
 void Game::setKeyboardInputMap(KeyboardInputMap in_keyboardInputMap) {
     keyboardInputMap = in_keyboardInputMap;
 }
+
 GamepadInputMap Game::getGamepadInputMap() {
     return (gamepadInputMap);
 }
+
 void Game::setGamepadInputMap(GamepadInputMap in_gamepadInputMap) {
     gamepadInputMap = in_gamepadInputMap;
 }
