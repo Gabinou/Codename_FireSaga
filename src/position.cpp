@@ -269,6 +269,14 @@ Point Position::getPos() {
     return (*position);
 }
 
+Point Position::getBoundsmin() {
+    return (*boundsmin);
+}
+
+Point Position::getBoundsmax() {
+    return (*boundsmax);
+}
+
 Point Position::getTilemapPos() {
     return (tilemap_pos);
 }

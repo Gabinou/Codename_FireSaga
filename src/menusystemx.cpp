@@ -147,16 +147,46 @@ void MenuSystemx::receive(const unitMenu & menu) {
     game->setCursorstate(MENU::UNIT);
 }
 
-
 void MenuSystemx::receive(const menuSelect & select) {
     SDL_Log("Received menuSelect event ");
     entityx::Entity selector = select.selector;
     char menu = select.menu;
-    entityx::ComponentHandle<Unit> unit = select.unit;
-    std::vector<unsigned char> menuoptions = game->getMenuoptions(menu);
     unsigned char menuind;
+    entityx::ComponentHandle<Unit> unit = select.unit;
+    entityx::ComponentHandle<Position> position = selector.component<Position>();
+    Point selected;
+    Point offset;
+    Point boundsmin;
+    Point boundsmax;
+    std::vector<unsigned char> menuoptions = game->getMenuoptions(menu);
 
+    selected = position->getPos();
+    offset = position->getOffset();
+    boundsmin = position->getBoundsmin();
+    boundsmax = position->getBoundsmax();
+    SDL_Log("Boundsmin: %d %d", boundsmin.x, boundsmin.y);
+    SDL_Log("Boundsmax: %d %d", boundsmax.x, boundsmax.y);
+    SDL_Log("Selected: %d %d", selected.x, selected.y);
+    SDL_Log("offset: %d %d", offset.x, offset.y);
+    SDL_Log("onTilemap: %d", position->isonTilemap());
+
+    if (!position->isonTilemap()) {
+        selected = mapx->pixel2tilemap(selected);
+        offset = mapx->pixel2tilemap(offset);
+        boundsmin = mapx->pixel2tilemap(boundsmin);
+        // boundsmax = mapx->pixel2tilemap(boundsmax);
+    }
+
+    SDL_Log("Boundsmin: %d %d", boundsmin.x, boundsmin.y);
+    SDL_Log("Boundsmax: %d %d", boundsmax.x, boundsmax.y);
+    SDL_Log("Selected: %d %d", selected.x, selected.y);
+    SDL_Log("offset: %d %d", offset.x, offset.y);
+
+    menuind = selected.y - offset.y - boundsmin.y;
     unsigned char menuoption = menuoptions[menuind];
+
+    SDL_Log("menuind: %d", menuind);
+    SDL_Log("Menuoption: %d", menuoption);
 
     switch (menu) {
         case MENU::UNIT:

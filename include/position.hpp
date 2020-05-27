@@ -23,6 +23,7 @@ private:
     Point * position = nullptr;
     Point * boundsmin = nullptr;
     Point * boundsmax = nullptr;
+    float scale[2] = {0.0f, 0.0f};
     short int bounds[4]; //xmin, xmax, ymin, ymax
 
     bool newPos(short int newx, short int newy);
@@ -41,6 +42,8 @@ public:
     void setBounds(short int in_bounds[4]);
     void setBounds(std::vector<short int> in_bounds);
     short int * getBounds();
+    Point getBoundsmin();
+    Point getBoundsmax();
     short int * getTilemapBounds();
     short int * getPixelBounds();
 

@@ -477,7 +477,7 @@ void Game::unloadMap() {
 void Game::setCursorstate(const char in_menu) {
     SDL_Log("Changing cursor to state %d", in_menu);
 
-    if (in_menu > 0) {
+    if (in_menu >= 0) {
 
         SDL_Rect temprect;
 
@@ -534,7 +534,7 @@ void Game::setCursorstate(const char in_menu) {
                     cursor_lastpos.x = pos.x - offset.x;
                     cursor_lastpos.y = pos.y - offset.y;
                     SDL_Log("Menubounds: %d %d %d %d", menubounds[0], menubounds[1], menubounds[2], menubounds[3]);
-                    cursorx.component<Position>()->setonTilemap(false);
+                    cursorx.component<Position>()->setonTilemap(true);
                     cursorx.component<Position>()->setPeriodic(true);
                     cursorx.component<Position>()->setBounds(menubounds);
                     cursorx.component<Position>()->setPos(menubounds[0] - 1, menubounds[2] + 1);
