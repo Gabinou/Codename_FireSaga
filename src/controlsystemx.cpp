@@ -396,6 +396,15 @@ void ControlSystemx::SDL_update() {
 
             case SDL_MOUSEMOTION: // received even if there is no motion.
                 if (event.motion.windowID == SDL_GetWindowID(window)) {
+                    // SDL_Log("WindowID: %d %d", event.motion.windowID, SDL_GetWindowID(window));
+                    entityx::ComponentHandle<Sprite> sprite = mousex->component<Sprite>();
+
+                    if (sprite) {
+                        if (!sprite->isVisible()) {
+                            sprite->show();
+                        }
+                    }
+
                     // this is cause event.motion.xrel does not work
 
                     // SDL_Log("Mouse motion event rel: %d %d", event.motion.xrel, event.motion.yrel);
@@ -427,6 +436,15 @@ void ControlSystemx::SDL_update() {
 
                     mouse_lastpos.x = event.motion.x;
                     mouse_lastpos.y = event.motion.y;
+                } else {
+                    SDL_Log("Mouse exits");
+                    entityx::ComponentHandle<Sprite> sprite = mousex->component<Sprite>();
+
+                    if (sprite) {
+                        sprite->hide();
+                        SDL_Log("Mouse sprite hidden");
+                    }
+
                 }
 
                 break;

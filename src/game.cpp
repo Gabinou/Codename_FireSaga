@@ -559,7 +559,7 @@ void Game::loadMouse() {
     mousex.assign<Position>();
     entityx::ComponentHandle<Position> position = mousex.component<Position>();
     position->setonTilemap(false);
-    position->setBounds(0, 2000, 0, 2000);
+    position->setBounds(-1000, 2000, -1000, 2000);
     mousex.assign<Sprite>();
     mousex.component<Sprite>()->setTexture("..//assets//mousecursor.png");
 }

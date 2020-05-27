@@ -182,7 +182,7 @@ void MenuSystemx::receive(const menuSelect & select) {
     SDL_Log("Selected: %d %d", selected.x, selected.y);
     SDL_Log("offset: %d %d", offset.x, offset.y);
 
-    menuind = selected.y - offset.y - boundsmin.y;
+    menuind = selected.y - boundsmin.y;
     unsigned char menuoption = menuoptions[menuind];
 
     SDL_Log("menuind: %d", menuind);
