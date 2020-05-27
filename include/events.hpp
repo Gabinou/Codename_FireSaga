@@ -155,6 +155,14 @@ struct mapmenuSelect {
     entityx::Entity cursor;
 };
 
+struct menuSelect {
+    menuSelect(entityx::Entity selector, char menu) : selector(selector), menu(menu) {}
+    menuSelect(entityx::Entity selector, char menu, entityx::ComponentHandle<Unit> unit) : selector(selector), menu(menu), unit(unit) {}
+    entityx::Entity cursor;
+    entityx::ComponentHandle<Unit> unit;
+    char menu;
+};
+
 struct inputAccept {
     inputAccept(entityx::ComponentHandle<KeyboardController> keyboard) : keyboard(keyboard) {}
     inputAccept(entityx::ComponentHandle<GamepadController> gamepad) : gamepad(gamepad) {}
