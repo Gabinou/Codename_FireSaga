@@ -74,6 +74,7 @@ void MenuSystemx::receive(const mapmenuSelect & select) {
     std::vector<unsigned char> mapmenuoptions = game->getMenuoptions(MENU::MAPMENU);
 
     SDL_Log("menuind: %d ", menuind);
+    SDL_Log("menuind: %d ", menuind);
     SDL_Log("unitmenuoptions[menuind]: %d ", mapmenuoptions[menuind]);
 
     switch (mapmenuoptions[menuind]) {
