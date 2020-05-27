@@ -167,29 +167,14 @@ void MenuSystemx::receive(const menuSelect & select) {
     selected = position->getTilemapPos();
     offset = position->getOffset();
     bounds = cursorx_position->getTilemapBounds();
-    // SDL_Log("Boundsmin: %d %d", boundsmin.x, boundsmin.y);
-    SDL_Log("Bounds: %d %d %d %d", bounds[0], bounds[1], bounds[2], bounds[3]);
-    SDL_Log("Selected: %d %d", selected.x, selected.y);
-    // SDL_Log("offset: %d %d", offset.x, offset.y);
-    // SDL_Log("onTilemap: %d", position->isonTilemap());
-
-    // if (!position->isonTilemap()) {
-    //     selected = position->pixel2tilemap(selected);
-    //     offset = position->pixel2tilemap(offset);
-    //     boundsmin = mapx->pixel2tilemap(boundsmin);
-    //     // boundsmax = mapx->pixel2tilemap(boundsmax);
-    // }
-
-    // SDL_Log("Boundsmin: %d %d", boundsmin.x, boundsmin.y);
-    // SDL_Log("Boundsmax: %d %d", boundsmax.x, boundsmax.y);
+    // SDL_Log("Bounds: %d %d %d %d", bounds[0], bounds[1], bounds[2], bounds[3]);
     // SDL_Log("Selected: %d %d", selected.x, selected.y);
-    // SDL_Log("offset: %d %d", offset.x, offset.y);
 
     menuind = selected.y - bounds[2];
     unsigned char menuoption = menuoptions[menuind];
 
-    SDL_Log("menuind: %d", menuind);
-    SDL_Log("Menuoption: %d", menuoption);
+    // SDL_Log("menuind: %d", menuind);
+    // SDL_Log("Menuoption: %d", menuoption);
 
     switch (menu) {
         case MENU::UNIT:
