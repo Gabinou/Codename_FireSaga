@@ -69,11 +69,12 @@ void MenuSystemx::receive(const mapmenuSelect & select) {
     entityx::ComponentHandle<Position> position = cursor.component<Position>();
 
     Point cursorpos = position->getTilemapPos();
-    short int * cursorbounds = position->getBounds();
+    short int * cursorbounds = position->getTilemapBounds();
     unsigned char menuind = cursorpos.y - cursorbounds[2];
     std::vector<unsigned char> mapmenuoptions = game->getMenuoptions(MENU::MAPMENU);
 
-    SDL_Log("cursorpos: %d ", menuind);
+    SDL_Log("cursorpos: %d %d", cursorpos.x, cursorpos.y);
+    SDL_Log("cursorbounds: %d %d %d %d", cursorbounds[0], cursorbounds[1], cursorbounds[2], cursorbounds[3]);
     SDL_Log("menuind: %d ", menuind);
     SDL_Log("unitmenuoptions[menuind]: %d ", mapmenuoptions[menuind]);
 
