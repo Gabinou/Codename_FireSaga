@@ -659,7 +659,8 @@ void Game::putPConMap(std::vector<short int> in_units, std::vector<std::vector<i
     if (mapx) {
         std::string asset_name;
         entityx::Entity Uent;
-        short int * bounds;
+        short int * bounds = mapx->getBounds();
+        short unsigned int * tilesize = mapx->getTilesize();
 
         for (int i = 0; i < in_units.size(); i++) {
             asset_name = "..//assets//" + party[in_units[i]].getName() + ".png";
@@ -671,8 +672,8 @@ void Game::putPConMap(std::vector<short int> in_units, std::vector<std::vector<i
             SDL_Log("Copied move : %d", Uent.component<Unit>()->getStats().move);
             Uent.assign<Position>();
             Uent.component<Position>()->setonTilemap(true);
-            bounds = mapx->getBounds();
             Uent.component<Position>()->setBounds(bounds);
+            Uent.component<Position>()->setScale((float)tilesize[0], (float)tilesize[1]);
             Uent.component<Position>()->setOffset(DEFAULT::TILEMAP_XOFFSET, DEFAULT::TILEMAP_YOFFSET);
             Uent.component<Position>()->setPos(in_pos_list[i][0], in_pos_list[i][1]);
             Uent.assign<Sprite>(asset_name.c_str());
