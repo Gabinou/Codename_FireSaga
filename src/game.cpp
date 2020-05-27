@@ -694,7 +694,7 @@ void Game::loadMapArrivals() {
         std::string unit_name;
         entityx::Entity Uent;
         short int * bounds = mapx->getBounds();
-        short int * tilesize = mapx->getBounds();
+        short unsigned int * tilesize = mapx->getTilesize();
         Unit temp_unit;
 
         for (int i = 0; i < map_arrivals.size(); i++) {
