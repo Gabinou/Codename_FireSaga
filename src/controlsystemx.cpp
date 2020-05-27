@@ -380,18 +380,12 @@ void ControlSystemx::SDL_update() {
                         position = mousex->component<Position>();
 
                         if (mouse) {
-                            SDL_Log("event pos: %d %d", event.button.x, event.button.y);
+                            // SDL_Log("event pos: %d %d", event.button.x, event.button.y);
                             position->setPixelPos(event.button.x, event.button.y);
 
                             if (mapx) {
-                                // SDL_Log("mapxx is valid");
-                                // SDL_Log("scale: %f %f", position->getScale()[0], position->getScale()[1]);
                                 Point tilemap_pos = position->pixel2tilemap(event.button.x, event.button.y);
                                 position->setTilemapPos(tilemap_pos);
-                                // Point tilemap_pos2 = position->getTilemapPos();
-                                // SDL_Log("tilemap_position: %d %d", tilemap_pos.x, tilemap_pos.y);
-                                // SDL_Log("tilemap_position2: %d %d", tilemap_pos2.x, tilemap_pos2.y);
-                                // SDL_Log("pixel_position: %d %d", pixel_pos.x, pixel_pos.y);
                             }
 
                             if (event.type != previous_mouse) {
@@ -464,15 +458,6 @@ void ControlSystemx::SDL_update() {
 
                     mouse_lastpos.x = event.motion.x;
                     mouse_lastpos.y = event.motion.y;
-                } else {
-                    SDL_Log("Mouse exits");
-                    entityx::ComponentHandle<Sprite> sprite = mousex->component<Sprite>();
-
-                    if (sprite) {
-                        sprite->hide();
-                        SDL_Log("Mouse sprite hidden");
-                    }
-
                 }
 
                 break;
