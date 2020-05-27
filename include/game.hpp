@@ -117,19 +117,19 @@ public:
     void setConvoy(Convoy in_convoy);
     Convoy getConvoy();
 
-    void setCursorstate(const unsigned char in_menu);
+    void setCursorstate(const char in_menu);
     void setCursorlastpos(const short int x, const short int y);
     template <typename T> void loadTiles(std::vector<T> in_tiles);
     void moveUnit(entityx::Entity & cursor);
     void makeTurntransition();
-    void setTurntransitiontext(unsigned char in_army);
+    void setTurntransitiontext(char in_army);
 
-    std::vector<unsigned char> getMenuoptions(unsigned char in_menu_index);
-    void makeMenuoptions(unsigned char in_menu_index);
-    void setMenuoptions(unsigned char in_menu_index, std::vector<unsigned char> in_options);
-    void makeMenutext(unsigned char in_menu_index);
-    void makeMenu(unsigned char in_menu_index);
-    entityx::Entity * getMenu(unsigned char in_menu_index);
+    std::vector<char> getMenuoptions(char in_menu_index);
+    void makeMenuoptions(char in_menu_index);
+    void setMenuoptions(char in_menu_index, std::vector<char> in_options);
+    void makeMenutext(char in_menu_index);
+    void makeMenu(char in_menu_index);
+    entityx::Entity * getMenu(char in_menu_index);
     void killMenu(short unsigned int index);
     void hideMenu(short unsigned int index);
     void showMenu(short unsigned int index);

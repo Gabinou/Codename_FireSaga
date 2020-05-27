@@ -154,11 +154,12 @@ void MenuSystemx::receive(const menuSelect & select) {
     entityx::Entity selector = select.selector;
     char menu = select.menu;
     entityx::ComponentHandle<Unit> unit = select.unit;
+    std::vector<unsigned char> menuoptions = game->getMenuoptions(menu);
 
     if (menu) {
         case MENU::UNIT:
             break;
-            
+
         case MENU::MAPMENU:
             break;
 
