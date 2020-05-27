@@ -219,11 +219,11 @@ void Game::showMenu(short int index) {
     }
 }
 
-entityx::Entity * Game::getMenu(char in_menu_index) {
+entityx::Entity * Game::getMenu(char in_menu) {
     entityx::Entity * out;
 
-    if (in_menu_index > 0) {
-        out = &menus[in_menu_index];
+    if (in_menu > 0) {
+        out = &menus[in_menu];
     } else {
         SDL_Log("menu index is invalid");
     }
@@ -231,49 +231,49 @@ entityx::Entity * Game::getMenu(char in_menu_index) {
     return (out);
 }
 
-void Game::makeMenutext(char in_menu_index) {
-    SDL_Log("Making menu text: %d", in_menu_index);
+void Game::makeMenutext(char in_menu) {
+    SDL_Log("Making menu text: %d", in_menu);
 
-    if (in_menu_index > 0) {
+    if (in_menu > 0) {
 
-        if (menus[in_menu_index].valid()) {
+        if (menus[in_menu].valid()) {
 
-            if (menuoptions.find(in_menu_index) != menuoptions.end()) {
-                menus[in_menu_index].component<Text>()->setText(menuoptions2str(menuoptions[in_menu_index]));
+            if (menuoptions.find(in_menu) != menuoptions.end()) {
+                menus[in_menu].component<Text>()->setText(menuoptions2str(menuoptions[in_menu]));
             } else {
                 SDL_Log("Menu options are invalid.");
             }
 
-            menus[in_menu_index].component<Text>()->makeTextures();
+            menus[in_menu].component<Text>()->makeTextures();
         } else {
-            SDL_Log("Menu %d is invalid", in_menu_index);
+            SDL_Log("Menu %d is invalid", in_menu);
         }
     } else {
         SDL_Log("menu index is invalid");
     }
 }
 
-void Game::makeMenu(char in_menu_index) {
-    SDL_Log("Making menu: %d", in_menu_index);
+void Game::makeMenu(char in_menu) {
+    SDL_Log("Making menu: %d", in_menu);
 
-    if (in_menu_index > 0) {
+    if (in_menu > 0) {
 
-        if (menus[in_menu_index].valid()) {
-            menus[in_menu_index].destroy();
+        if (menus[in_menu].valid()) {
+            menus[in_menu].destroy();
         }
 
-        menus[in_menu_index] = entities.create();
-        menus[in_menu_index].assign<Position>();
-        menus[in_menu_index].component<Position>()->setonTilemap(false);
-        menus[in_menu_index].component<Position>()->setBounds(0, 2000, 0, 2000);
-        menus[in_menu_index].assign<Sprite>();
-        menus[in_menu_index].component<Sprite>()->hide();
+        menus[in_menu] = entities.create();
+        menus[in_menu].assign<Position>();
+        menus[in_menu].component<Position>()->setonTilemap(false);
+        menus[in_menu].component<Position>()->setBounds(0, 2000, 0, 2000);
+        menus[in_menu].assign<Sprite>();
+        menus[in_menu].component<Sprite>()->hide();
         SDL_Color white = {255, 255, 255};
-        menus[in_menu_index].assign<Text>(settings.fontsize);
-        menus[in_menu_index].component<Text>()->setColor(white);
-        menus[in_menu_index].component<Text>()->hide();
+        menus[in_menu].assign<Text>(settings.fontsize);
+        menus[in_menu].component<Text>()->setColor(white);
+        menus[in_menu].component<Text>()->hide();
 
-        switch (in_menu_index) {
+        switch (in_menu) {
             case MENU::UNIT:
                 SDL_Log("Making unit menu\n");
                 menus[MENU::UNIT].component<Sprite>()->setTexture("..//assets//textbox.png");
@@ -287,18 +287,22 @@ void Game::makeMenu(char in_menu_index) {
                 menus[MENU::MAPMENU].component<Sprite>()->setSrcrect(128, 128);
                 menus[MENU::MAPMENU].component<Sprite>()->setDestrect(128, 128);
                 break;
+
+            default:
+                SDL_Log("in_menu is invalid");
+
         }
 
-        makeMenutext(in_menu_index);
+        makeMenutext(in_menu);
     } else {
         SDL_Log("menu index is invalid");
     }
 }
 
-void Game::makeMenuoptions(char in_menu_index) {
+void Game::makeMenuoptions(char in_menu) {
     SDL_Log("Making Menu options");
 
-    if (in_menu_index > 0) {
+    if (in_menu > 0) {
         std::vector<unsigned char> options;
 
         entityx::ComponentHandle<Unit> unit;
@@ -309,7 +313,7 @@ void Game::makeMenuoptions(char in_menu_index) {
         short int * bounds;
         unsigned char army;
 
-        switch (in_menu_index) {
+        switch (in_menu) {
             case MENU::UNIT:
                 options.push_back(MENU::OPTION::ITEMS);
                 bounds = mapx->getBounds();
@@ -366,6 +370,9 @@ void Game::makeMenuoptions(char in_menu_index) {
                                 case UNIT::ARMY::IMPERIAL:
                                     options.push_back(MENU::OPTION::ATTACK);
                                     break;
+
+                                default:
+                                    SDL_Log("army is invalid");
                             }
                         } else {
                             SDL_Log("No unit around");
@@ -387,10 +394,13 @@ void Game::makeMenuoptions(char in_menu_index) {
                 options.push_back(MENU::OPTION::OPTIONS);
                 options.push_back(MENU::OPTION::ENDTURN);
                 break;
+
+            default:
+                SDL_Log("in_menu is invalid");
         }
 
         std::sort(options.begin(), options.end());
-        menuoptions[in_menu_index] = options;
+        menuoptions[in_menu] = options;
     } else {
         SDL_Log("menu index is invalid");
     }
@@ -424,11 +434,11 @@ void Game::loadMap(const int in_map_index) {
     }
 }
 
-std::vector<unsigned char> Game::getMenuoptions(char in_menu_index) {
+std::vector<unsigned char> Game::getMenuoptions(char in_menu) {
     std::vector<unsigned char> out;
 
-    if (in_menu_index > 0) {
-        out = menuoptions[in_menu_index];
+    if (in_menu > 0) {
+        out = menuoptions[in_menu];
     } else {
         SDL_Log("menu index is invalid");
     }
@@ -436,9 +446,9 @@ std::vector<unsigned char> Game::getMenuoptions(char in_menu_index) {
     return (out);
 }
 
-void Game::setMenuoptions(char in_menu_index, std::vector<unsigned char> in_options) {
-    if (in_menu_index > 0) {
-        menuoptions[in_menu_index] = in_options;
+void Game::setMenuoptions(char in_menu, std::vector<unsigned char> in_options) {
+    if (in_menu > 0) {
+        menuoptions[in_menu] = in_options;
     } else {
         SDL_Log("menu index is invalid");
     }
@@ -482,6 +492,7 @@ void Game::setMousestate(const char in_menu) {
         short unsigned int * temp_tilesize;
         short int * bounds;
         temp_tilesize = mapx->getTilesize();
+        short int linespace;
 
         if (mousex.valid()) {
             switch (in_menu) {
@@ -491,7 +502,7 @@ void Game::setMousestate(const char in_menu) {
 
                 case MENU::MAPMENU:
                 case MENU::UNIT:
-                    short int linespace = 1;
+                    linespace = 1;
 
                     if (menus[in_menu].valid()) {
                         linespace = menus[in_menu].component<Text>()->getLinespacing();
@@ -499,6 +510,9 @@ void Game::setMousestate(const char in_menu) {
 
                     mousex.component<Position>()->setScale(linespace, linespace);
                     break;
+
+                default:
+                    SDL_Log("in_menu is invalid");
             }
         }
     }
@@ -515,6 +529,11 @@ void Game::setCursorstate(const char in_menu) {
         short unsigned int * temp_tilesize;
         short int * bounds;
         temp_tilesize = mapx->getTilesize();
+        short int linespace;
+        short int menubounds[4];
+        short int * outbounds;
+        Point pos;
+        Point offset;
 
         if (cursorx.valid()) {
             switch (in_menu) {
@@ -545,7 +564,7 @@ void Game::setCursorstate(const char in_menu) {
                     SDL_Log("Changed Cursor to mapmenu");
                     temprect = {0, 0, 16, 16}; //x,y,w,h
                     Point menupos;
-                    short int linespace = 1;
+                    linespace = 1;
                     cursorx.component<Sprite>()->still();
                     cursorx.component<Sprite>()->setSrcrect(temprect);
                     cursorx.component<Sprite>()->setDestrect(temprect);
@@ -556,13 +575,12 @@ void Game::setCursorstate(const char in_menu) {
                         linespace = menus[in_menu].component<Text>()->getLinespacing();
                     }
 
-                    short int menubounds[4];
                     menubounds[0] = menupos.x / linespace;
                     menubounds[1] = menupos.x / linespace;
                     menubounds[2] = (short int)(menupos.y / linespace + 1);
                     menubounds[3] = (short int)(menupos.y / linespace + menuoptions[in_menu].size());
-                    Point pos = cursorx.component<Position>()->getPos();
-                    Point offset = cursorx.component<Position>()->getOffset();
+                    pos = cursorx.component<Position>()->getPos();
+                    offset = cursorx.component<Position>()->getOffset();
                     cursor_lastpos.x = pos.x - offset.x;
                     cursor_lastpos.y = pos.y - offset.y;
                     SDL_Log("Menubounds: %d %d %d %d", menubounds[0], menubounds[1], menubounds[2], menubounds[3]);
@@ -572,10 +590,13 @@ void Game::setCursorstate(const char in_menu) {
                     cursorx.component<Position>()->setPos(menubounds[0] - 1, menubounds[2] + 1);
 
                     cursorx.component<Position>()->setScale((float)linespace, (float)linespace);
-                    short int * outbounds = cursorx.component<Position>()->getBounds();
+                    outbounds = cursorx.component<Position>()->getBounds();
                     SDL_Log("outbounds: %d %d %d %d", outbounds[0], outbounds[1], outbounds[2], outbounds[3]);
                     // systems.system<RenderSystemx>()->setLinespace(linespace);
                     break;
+
+                default:
+                    SDL_Log("in_menu is invalid");
             }
         }
     } else {

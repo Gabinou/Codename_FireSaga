@@ -446,7 +446,6 @@ void ControlSystemx::SDL_update() {
                         }
 
                         if (mousex->valid()) {
-                            // SDL_Log("until here");
                             entityx::ComponentHandle<Position> position;
                             position = mousex->component<Position>();
 
