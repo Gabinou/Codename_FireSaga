@@ -167,7 +167,7 @@ void MenuSystemx::receive(const menuSelect & select) {
     bounds = position->getTilemapBounds();
     // SDL_Log("Boundsmin: %d %d", boundsmin.x, boundsmin.y);
     // SDL_Log("Boundsmax: %d %d", boundsmax.x, boundsmax.y);
-    // SDL_Log("Selected: %d %d", selected.x, selected.y);
+    SDL_Log("Selected: %d %d", selected.x, selected.y);
     // SDL_Log("offset: %d %d", offset.x, offset.y);
     // SDL_Log("onTilemap: %d", position->isonTilemap());
 

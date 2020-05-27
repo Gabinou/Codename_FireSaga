@@ -336,11 +336,12 @@ void ControlSystemx::receive(const inputAccept & accept) {
                 current_pos = position->getTilemapPos();
                 SDL_Log("Bounds: %d %d %d %d", bounds[0], bounds[1], bounds[2], bounds[3]);
                 SDL_Log("Clicked pos: %d %d", current_pos.x, current_pos.y);
+                short int menuwidth = 7;
 
-                if ((pos.x > bounds[0]) && (pos.x < bounds[1]) && (pos.y > bounds[2]) && (pos.y < bounds[3])) {
-
+                if ((current_pos.x >= bounds[0]) && (current_pos.x <= (bounds[1] + menuwidth)) && (current_pos.y >= bounds[2]) && (current_pos.y <= bounds[3])) {
+                    event_manager->emit<menuSelect>(accepter, MENU::UNIT, selected);
                 } else {
-
+                    event_manager->emit<return2Map>(accepter);
                 }
 
             } else {
