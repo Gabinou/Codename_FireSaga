@@ -401,7 +401,6 @@ void readJSON_line(cJSON * in_jline, Dialog_line * in_line) {
     in_line->speaker = cJSON_GetNumberValue(jspeaker);
     cJSON * jlinestr = cJSON_GetObjectItem(in_jline, "linestring");
     in_line->line = cJSON_GetStringValue(jlinestr);
-
 }
 
 void readJSON_narrative(cJSON * in_jnarrative, Narrative * in_state) {
