@@ -28,13 +28,23 @@ std::vector<short unsigned int> Scene::getParticipants() {
 }
 
 void Scene::readJSON(cJSON * in_jscene) {
-    // cJSON * jline = cJSON_GetObjectItem(jdeaths, "Unit");
+    cJSON * jline_group = cJSON_GetObjectItem(in_jscene, "LineGroup");
+    cJSON * jline = cJSON_GetObjectItem(jline_group, "Line");
+    std::vector<Dialog_line> temp_lines;
+    Dialog_line temp_line;
 
-    // while (junit != NULL) {
-    //     in_state->death[i] = cJSON_IsTrue(jdied);
-    //     junit = junit->next;
-    //     i++;
-    // }
+    while (jline_group != NULL) {
+        while (jline != NULL) {
+            readJSON_line(jline, &temp_line);
+            temp_lines.push_back(temp_line);
+            jline = jline->next;
+        }
+
+        raw_lines.push_back(temp_lines);
+        temp_lines.clear();
+        jline_group = jline_group->next;
+    }
+
 }
 
 void Scene::writeJSON(cJSON * in_jscene) {
@@ -43,12 +53,14 @@ void Scene::writeJSON(cJSON * in_jscene) {
 
     for (short int i = 0; raw_lines.size(); i++) {
         jline_group = cJSON_CreateObject();
+
         for (short int j = 0; raw_lines[i].size(); j++) {
             jline = cJSON_CreateObject();
-            writeJSON_line(raw_lines[i][j]);
+            writeJSON_line(jline, &raw_lines[i][j]);
             cJSON_AddItemToObject(jline_group, "Line", jline);
         }
-    cJSON_AddItemToObject(in_jscene, "LineGroup", jline_group);
+
+        cJSON_AddItemToObject(in_jscene, "LineGroup", jline_group);
     }
 
 }
@@ -58,7 +70,7 @@ void Scene::setNarrative(Narrative in_narrative) {
 }
 
 Narrative Scene::getNarrative() {
-
+    return (narrative);
 }
 
 void makeLines();

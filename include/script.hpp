@@ -13,8 +13,7 @@ private:
     std::string title;
     std::string author;
     unsigned short int id;
-    sellable = false;
-
+    bool sellable = false;
 public:
     Book();
     Book(std::string in_title, unsigned short int in_id);
@@ -34,14 +33,14 @@ private:
     short unsigned int id;
     std::vector<Dialog_line> lines;
     Narrative narrative;
-    std::vector<<Dialog_line>> raw_lines;
+    std::vector<std::vector<Dialog_line>> raw_lines;
     std::vector<short unsigned int> participants;
     std::vector<short unsigned int> all_lines_id;
     char current_line = -1;
 public:
     Scene();
     void addLine(Dialog_line in_line);
-    
+
     void setNarrative(Narrative in_narrative);
     Narrative getNarrative();
 
