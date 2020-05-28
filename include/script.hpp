@@ -34,21 +34,28 @@ class Scene : public JSON_IO {
 private:
     short unsigned int id;
     std::vector<Dialog_line> lines;
+    Narrative narrative;
+    std::vector<<Dialog_line>> raw_lines;
     std::vector<short unsigned int> participants;
     std::vector<short unsigned int> all_lines_id;
     char current_line = -1;
 public:
-    void (*builder)(Scene);
     Scene();
     Scene(const short unsigned int in_id);
     Scene(const std::vector<Dialog_line> in_lines, const std::vector<short unsigned int> in_lines_id);
     void addLine(const Dialog_line in_line);
     void addLines(const std::vector<Dialog_line> in_lines);
+    
+    void setNarrative(Narrative in_narrative);
+    Narrative getNarrative();
+
     Dialog_line getLine(const short unsigned int in_id);
     Dialog_line nextLine();
-    short unsigned int  getID();
+
+    short unsigned int getID();
     void setID(const short unsigned int in_id);
     void setParticipants(const std::vector<short unsigned int> in_participants);
+    void addParticipant(const short unsigned int in_participant);
     std::vector<short unsigned int> getParticipants();
 
     using JSON_IO::writeJSON;
