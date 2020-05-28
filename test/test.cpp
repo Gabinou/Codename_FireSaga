@@ -10,6 +10,7 @@
 #include "test_probability.hpp"
 #include "test_position.hpp"
 #include "test_sprite.hpp"
+#include "test_script.hpp"
 #include "test_text.hpp"
 #include "test_tile.hpp"
 #include "test_unit.hpp"
@@ -35,22 +36,23 @@ int main(int argc, char * argv[]) {
 
     SDL_Log("Running tests\n");
     printf("Running tests\n");
-    lrun("Camp ", test_camp);
-    lrun("Convoy ", test_convoy);
-    lrun("Filesystem ", test_filesystem);
-    lrun("Game ", test_game);
-    lrun("linalg", test_linalg);
-    lrun("Item", test_item);
-    lrun("Map ", test_map);
-    lrun("Pathfinding ", test_pathfinding);
-    lrun("Position ", test_position);
-    lrun("Probability ", test_probability);
-    lrun("Sprite ", test_sprite);
-    lrun("Text ", test_text);
-    lrun("Tile ", test_tile);
-    lrun("Unit ", test_unit);
-    lrun("Utilities ", test_utilities);
-    lrun("Weapon ", test_weapon);
+    // lrun("Camp ", test_camp);
+    // lrun("Convoy ", test_convoy);
+    // lrun("Filesystem ", test_filesystem);
+    // lrun("Game ", test_game);
+    // lrun("linalg", test_linalg);
+    // lrun("Item", test_item);
+    // lrun("Map ", test_map);
+    // lrun("Pathfinding ", test_pathfinding);
+    // lrun("Position ", test_position);
+    // lrun("Probability ", test_probability);
+    // lrun("Sprite ", test_sprite);
+    lrun("Script ", test_script);
+    // lrun("Text ", test_text);
+    // lrun("Tile ", test_tile);
+    // lrun("Unit ", test_unit);
+    // lrun("Utilities ", test_utilities);
+    // lrun("Weapon ", test_weapon);
     lresults();
     fclose(stdout);
     return (lfails != 0);
