@@ -28,10 +28,28 @@ std::vector<short unsigned int> Scene::getParticipants() {
 }
 
 void Scene::readJSON(cJSON * in_jscene) {
+    // cJSON * jline = cJSON_GetObjectItem(jdeaths, "Unit");
 
+    // while (junit != NULL) {
+    //     in_state->death[i] = cJSON_IsTrue(jdied);
+    //     junit = junit->next;
+    //     i++;
+    // }
 }
 
 void Scene::writeJSON(cJSON * in_jscene) {
+    cJSON * jline_group;
+    cJSON * jline;
+
+    for (short int i = 0; raw_lines.size(); i++) {
+        jline_group = cJSON_CreateObject();
+        for (short int j = 0; raw_lines[i].size(); j++) {
+            jline = cJSON_CreateObject();
+            writeJSON_line(raw_lines[i][j]);
+            cJSON_AddItemToObject(jline_group, "Line", jline);
+        }
+    cJSON_AddItemToObject(in_jscene, "LineGroup", jline_group);
+    }
 
 }
 

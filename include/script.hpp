@@ -12,8 +12,8 @@ private:
     std::vector<Page> pages;
     std::string title;
     std::string author;
-
     unsigned short int id;
+    sellable = false;
 
 public:
     Book();
@@ -28,7 +28,6 @@ public:
 };
 
 extern void baseBooks();
-extern void testXML_books();
 
 class Scene : public JSON_IO {
 private:
@@ -53,7 +52,7 @@ public:
 
     short unsigned int getID();
     void setID(const short unsigned int in_id);
-    
+
     void setParticipants(const std::vector<short unsigned int> in_participants);
     void addParticipant(const short unsigned int in_participant);
     std::vector<short unsigned int> getParticipants();
