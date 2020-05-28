@@ -49,6 +49,8 @@ public:
     void setNarrative(Narrative in_narrative);
     Narrative getNarrative();
 
+    void makeLines();
+
     Dialog_line getLine(const short unsigned int in_id);
     Dialog_line nextLine();
 

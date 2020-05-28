@@ -52,7 +52,6 @@ extern void printXMLDoc(PHYSFS_file * in_fp, tinyxml2::XMLDocument * in_doc);
 extern int parseXML(const char * filename, tinyxml2::XMLDocument * in_doc);
 
 extern void readJSON_mvtcost(cJSON * in_jcost, Movement_cost * in_cost);
-extern void readJSON_scene(cJSON * in_jline, Scene * in_line);
 extern void readJSON_line(cJSON * in_jline, Dialog_line * in_line);
 extern void readJSON_stats(cJSON * in_jstats, Tile_stats * in_stats);
 extern void readJSON_stats(cJSON * in_jstats, Unit_stats * in_stats);
@@ -61,7 +60,6 @@ extern void readJSON_item(cJSON * in_jitem, Inventory_item * in_item);
 extern std::vector<std::vector<short int>> readJSON_tilemap(cJSON * in_jtilemap);
 extern void readJSON_narrative(cJSON * in_jnarrative, Narrative * in_state);
 extern void readJSON_arrival(cJSON * in_jarrival, Map_arrival * in_arrival);
-extern void writeJSON_scene(cJSON * in_jline, Scene * in_line);
 extern void writeJSON_arrival(cJSON * in_jarrival, Map_arrival * in_arrival);
 extern void writeJSON_tilemap(cJSON * in_jtilemap, std::vector<std::vector<short int>> in_tilemap);
 extern void writeJSON_line(cJSON * in_jline, Dialog_line * in_line);
