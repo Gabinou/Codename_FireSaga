@@ -3,6 +3,7 @@
 
 #include <string>
 #include "enums.hpp"
+#include "filesystem.hpp"
 #include "unit.hpp"
 #include "structs.hpp"
 
@@ -29,7 +30,7 @@ public:
 extern void baseBooks();
 extern void testXML_books();
 
-class Scene {
+class Scene : public JSON_IO {
 private:
     short unsigned int id;
     std::vector<Dialog_line> lines;
@@ -37,6 +38,7 @@ private:
     std::vector<short unsigned int> all_lines_id;
     char current_line = -1;
 public:
+    void (*builder)(Scene);
     Scene();
     Scene(const short unsigned int in_id);
     Scene(const std::vector<Dialog_line> in_lines, const std::vector<short unsigned int> in_lines_id);
@@ -48,21 +50,26 @@ public:
     void setID(const short unsigned int in_id);
     void setParticipants(const std::vector<short unsigned int> in_participants);
     std::vector<short unsigned int> getParticipants();
+
+    using JSON_IO::writeJSON;
+    using JSON_IO::readJSON;
+    void readJSON(cJSON * in_json);
+    void writeJSON(cJSON * in_json);
 };
 
-class Script {
-private:
-    short unsigned int  id;
-    std::vector<short unsigned int> scenes_id;
-    std::vector<Scene> scenes;
-public:
-    Script();
-    short unsigned int getID();
-    Scene getScene(const short unsigned int scene_id);
-    void addScene(Scene in_scene);
-};
+// class Script {
+// private:
+//     short unsigned int  id;
+//     std::vector<short unsigned int> scenes_id;
+//     std::vector<Scene> scenes;
+// public:
+//     Script();
+//     short unsigned int getID();
+//     Scene getScene(const short unsigned int scene_id);
+//     void addScene(Scene in_scene);
+// };
 
-extern std::vector<Script> all_scripts;
+// extern std::vector<Script> all_scripts;
 //For narrative purposes.
 extern std::vector<bool> died;
 extern std::vector<bool> promoted;
@@ -79,6 +86,13 @@ enum SCENES {
 
 };
 }
+// Scenes should contain a narrative state builder.
+//Function takes scene as input and check which lines.
+// Each line also contains a narrative object?
+// 2D vector of possible lines. Choose which ones by comparing with narrative state.
+// Default line at 0. if game_state == line_state, scene takes the line.
+// Or maybe line should also have narrative comparer function, that checks a specific variable? or something?
+
 namespace LINE {
 enum LINES {
 

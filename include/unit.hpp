@@ -178,8 +178,8 @@ public:
 
     using JSON_IO::writeJSON;
     using JSON_IO::readJSON;
-    void readJSON(cJSON * in_json);
-    void writeJSON(cJSON * in_json);
+    void readJSON(cJSON * in_junit);
+    void writeJSON(cJSON * in_junit);
 
     using XML_IO::writeXML;
     using XML_IO::readXML;

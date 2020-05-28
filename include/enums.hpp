@@ -620,6 +620,12 @@ enum RNS {
 };
 }
 
+namespace SCENE {
+enum SCENES {
+    CHAPTER1INTRO = 1;
+};
+}
+
 namespace STATE {
 enum STATES {
     PAUSE = 1,
