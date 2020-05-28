@@ -7,24 +7,6 @@ Scene::Scene() {
 
 }
 
-Scene::Scene(const short unsigned int in_id) {
-    id = in_id;
-}
-
-Scene::Scene(const std::vector<Dialog_line> in_lines, const std::vector<short unsigned int> in_lines_id) {
-    lines = in_lines;
-    all_lines_id = in_lines_id;
-}
-
-Dialog_line Scene::getLine(const short unsigned int in_id) {
-    return (lines[in_id]);
-}
-
-Dialog_line Scene::nextLine() {
-    current_line++;
-    return (lines[all_lines_id[current_line]]);
-}
-
 short unsigned int Scene::getID() {
     return (id);
 }
@@ -33,16 +15,12 @@ void Scene::setID(short unsigned int in_id) {
     id = in_id;
 }
 
-// void Scene::addLine(const Dialog_line in_line) {
-//     // lines[in_line.id] = in_line;
-// }
+void Scene::addLine(const Dialog_line in_line) {
+    // lines[in_line.id] = in_line;
+}
 
-// void Scene::addLines(const std::vector<Dialog_line> in_lines) {
-//     // lines = in_lines;
-// }
-
-void Scene::setParticipants(const std::vector<short unsigned int> in_participants) {
-    participants = in_participants;
+void Scene::addParticipant(const short unsigned int in_participant) {
+    // participants = in_participants;
 }
 
 std::vector<short unsigned int> Scene::getParticipants() {
@@ -57,21 +35,17 @@ void Scene::writeJSON(cJSON * in_jscene) {
 
 }
 
-// Script::Script() {
+void Scene::setNarrative(Narrative in_narrative) {
 
-// }
+}
 
-// Scene Script::getScene(const short unsigned int scene_id) {
-//     return (scenes[scene_id]);
-// }
+Narrative Scene::getNarrative() {
 
-// void Script::addScene(Scene in_scene) {
-//     scenes[in_scene.getID()] = in_scene;
-// }
+}
 
-// short unsigned int Script::getID() {
-//     return (id);
-// }
+void makeLines();
+
+
 
 Book::Book() {
 

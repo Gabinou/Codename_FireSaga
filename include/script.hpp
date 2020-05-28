@@ -41,10 +41,7 @@ private:
     char current_line = -1;
 public:
     Scene();
-    Scene(const short unsigned int in_id);
-    Scene(const std::vector<Dialog_line> in_lines, const std::vector<short unsigned int> in_lines_id);
-    void addLine(const Dialog_line in_line);
-    void addLines(const std::vector<Dialog_line> in_lines);
+    void addLine(Dialog_line in_line);
     
     void setNarrative(Narrative in_narrative);
     Narrative getNarrative();
@@ -56,6 +53,7 @@ public:
 
     short unsigned int getID();
     void setID(const short unsigned int in_id);
+    
     void setParticipants(const std::vector<short unsigned int> in_participants);
     void addParticipant(const short unsigned int in_participant);
     std::vector<short unsigned int> getParticipants();
