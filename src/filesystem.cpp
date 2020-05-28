@@ -385,16 +385,33 @@ void readXML_narrative(tinyxml2::XMLElement * in_pNarrative, Narrative * in_stat
     readXML_narrativeUnits(pUnit, in_state->recruited);
 }
 
-void readJSON_narrative(cJSON * in_json, Narrative * in_state) {
-    cJSON * jnarrative = cJSON_GetObjectItem(in_json, "Narrative");
-    cJSON * jchapter = cJSON_GetObjectItem(jnarrative, "Chapter");
-    cJSON * jdeaths = cJSON_GetObjectItem(jnarrative, "Deaths");
-    cJSON * jrecruited = cJSON_GetObjectItem(jnarrative, "Recruited");
+void writeJSON_line(cJSON * in_jline, Dialog_line * in_line) {
+    cJSON * jnarrative = cJSON_CreateObject();
+    writeJSON_narrative(jnarrative, &in_line->narrative);
+    cJSON * jspeaker = cJSON_CreateNumber(in_line->speaker);
+    cJSON_AddItemToObject(in_jline, "Speaker", jspeaker);
+    cJSON * jlinestr = cJSON_CreateString(in_line->line.c_str());
+    cJSON_AddItemToObject(in_jline, "linestring", jlinestr);
+}
+
+void readJSON_line(cJSON * in_jline, Dialog_line * in_line) {
+    cJSON * jnarrative = cJSON_GetObjectItem(in_jline, "Narrative");
+    readJSON_narrative(jnarrative, &in_line->narrative);
+    cJSON * jspeaker = cJSON_GetObjectItem(in_jline, "Speaker");
+    in_line->speaker = cJSON_GetNumberValue(jspeaker);
+    cJSON * jlinestr = cJSON_GetObjectItem(in_jline, "linestring");
+    in_line->line = cJSON_GetStringValue(jlinestr);
+
+}
+
+void readJSON_narrative(cJSON * in_jnarrative, Narrative * in_state) {
+    cJSON * jchapter = cJSON_GetObjectItem(in_jnarrative, "Chapter");
+    cJSON * jdeaths = cJSON_GetObjectItem(in_jnarrative, "Deaths");
+    cJSON * jrecruited = cJSON_GetObjectItem(in_jnarrative, "Recruited");
     in_state->chapter = cJSON_GetNumberValue(jchapter);
     cJSON * jdeath;
     cJSON * jdied;
     short int i = UNIT::NAME::ERWIN;
-
     cJSON * junit = cJSON_GetObjectItem(jdeaths, "Unit");
 
     while (junit != NULL) {
@@ -413,9 +430,7 @@ void readJSON_narrative(cJSON * in_json, Narrative * in_state) {
     }
 }
 
-void writeJSON_narrative(cJSON * in_json, Narrative * in_state) {
-    cJSON * jnarrative = cJSON_CreateObject();
-    cJSON_AddItemToObject(in_json, "Narrative", jnarrative);
+void writeJSON_narrative(cJSON * in_jnarrative, Narrative * in_state) {
     cJSON * jdeath = cJSON_CreateObject();
     cJSON * jrecruited = cJSON_CreateObject();
     cJSON * jisdead;
@@ -425,9 +440,9 @@ void writeJSON_narrative(cJSON * in_json, Narrative * in_state) {
     cJSON * junit2;
     cJSON * jid;
     cJSON * jchapter = cJSON_CreateNumber(in_state->chapter);
-    cJSON_AddItemToObject(jnarrative, "Chapter", jchapter);
-    cJSON_AddItemToObject(jnarrative, "Deaths", jdeath);
-    cJSON_AddItemToObject(jnarrative, "Recruited", jrecruited);
+    cJSON_AddItemToObject(in_jnarrative, "Chapter", jchapter);
+    cJSON_AddItemToObject(in_jnarrative, "Deaths", jdeath);
+    cJSON_AddItemToObject(in_jnarrative, "Recruited", jrecruited);
 
     bool buffbool;
     std::string name;

@@ -67,8 +67,6 @@ struct Unit_stats {
 };
 
 struct Dialog_line {
-    // How to make the line dynamic?
-    // unsigned short int id;
     Narrative narrative;
     short int speaker;
     std::string line;
