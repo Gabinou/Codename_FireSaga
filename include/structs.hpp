@@ -46,6 +46,12 @@ struct Quantity {
     unsigned char books = 0;
 };
 
+struct Condition {
+    short int unitid;
+    bool dead;
+    bool recruited;
+};
+
 struct Narrative {
     bool death[UNIT::NAME::NPC_END - UNIT::NAME::ERWIN] = {0};
     bool recruited[UNIT::NAME::PC_END - UNIT::NAME::ERWIN] = {0};
@@ -67,7 +73,8 @@ struct Unit_stats {
 };
 
 struct Dialog_line {
-    Narrative narrative;
+    std::vector<Condition> conditions;
+    std::vector<char> chapters;
     short int speaker;
     std::string line;
 };

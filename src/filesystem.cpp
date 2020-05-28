@@ -386,17 +386,52 @@ void readXML_narrative(tinyxml2::XMLElement * in_pNarrative, Narrative * in_stat
 }
 
 void writeJSON_line(cJSON * in_jline, Dialog_line * in_line) {
-    cJSON * jnarrative = cJSON_CreateObject();
-    writeJSON_narrative(jnarrative, &in_line->narrative);
+    cJSON * jconditions = cJSON_CreateObject();
+    cJSON * jcondition;
+    cJSON * jid;
+    cJSON * jdead;
+    cJSON * jrecruited;
+    cJSON_AddItemToObject(in_jline, "Conditions", jconditions);
+
+    for (short int i = 0; i < in_line->conditions.size(); i++) {
+        jcondition = cJSON_CreateObject();
+        jdead = cJSON_CreateBool(in_line->conditions[i].dead);
+        jrecruited = cJSON_CreateBool(in_line->conditions[i].recruited);
+        jid = cJSON_CreateNumber(in_line->conditions[i].unitid);
+        cJSON_AddItemToObject(jcondition, "Unit id", jid);
+        cJSON_AddItemToObject(jcondition, "Dead", jdead);
+        cJSON_AddItemToObject(jcondition, "Recruited", jrecruited);
+        cJSON_AddItemToObject(jconditions, "Condition", jcondition);
+    }
+
     cJSON * jspeaker = cJSON_CreateNumber(in_line->speaker);
     cJSON_AddItemToObject(in_jline, "Speaker", jspeaker);
+    cJSON_AddItemToObject(in_jline, "Conditions", jconditions);
     cJSON * jlinestr = cJSON_CreateString(in_line->line.c_str());
     cJSON_AddItemToObject(in_jline, "linestring", jlinestr);
 }
 
 void readJSON_line(cJSON * in_jline, Dialog_line * in_line) {
-    cJSON * jnarrative = cJSON_GetObjectItem(in_jline, "Narrative");
-    readJSON_narrative(jnarrative, &in_line->narrative);
+    // cJSON * jnarrative = cJSON_GetObjectItem(in_jline, "Narrative");
+    // readJSON_narrative(jnarrative, &in_line->narrative);
+    cJSON * jconditions = cJSON_GetObjectItem(in_jline, "Conditions");
+    cJSON * jcondition = cJSON_GetObjectItem(jconditions, "Condition");
+    cJSON * jid;
+    cJSON * jdead;
+    cJSON * jrecruited;
+    Condition temp_cond;
+
+    while (jcondition != NULL) {
+        jid = cJSON_GetObjectItem(jcondition, "Unit id");
+        jdead = cJSON_GetObjectItem(jcondition, "Dead");
+        jrecruited = cJSON_GetObjectItem(jcondition, "Recruited");
+
+        temp_cond.dead = cJSON_IsTrue(jdead);
+        temp_cond.recruited = cJSON_IsTrue(jrecruited);
+        temp_cond.unitid = cJSON_GetNumberValue(jid);
+        in_line->conditions.push_back(temp_cond);
+    }
+
     cJSON * jspeaker = cJSON_GetObjectItem(in_jline, "Speaker");
     in_line->speaker = cJSON_GetNumberValue(jspeaker);
     cJSON * jlinestr = cJSON_GetObjectItem(in_jline, "linestring");
