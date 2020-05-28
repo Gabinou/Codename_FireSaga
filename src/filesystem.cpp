@@ -442,7 +442,6 @@ void writeJSON_narrative(cJSON * in_jnarrative, Narrative * in_state) {
     cJSON_AddItemToObject(in_jnarrative, "Chapter", jchapter);
     cJSON_AddItemToObject(in_jnarrative, "Deaths", jdeath);
     cJSON_AddItemToObject(in_jnarrative, "Recruited", jrecruited);
-
     bool buffbool;
     std::string name;
     char buffer[DEFAULT::BUFFER_SIZE];
