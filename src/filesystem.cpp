@@ -415,21 +415,24 @@ void readJSON_line(cJSON * in_jline, Dialog_line * in_line) {
     // cJSON * jnarrative = cJSON_GetObjectItem(in_jline, "Narrative");
     // readJSON_narrative(jnarrative, &in_line->narrative);
     cJSON * jconditions = cJSON_GetObjectItem(in_jline, "Conditions");
-    cJSON * jcondition = cJSON_GetObjectItem(jconditions, "Condition");
     cJSON * jid;
     cJSON * jdead;
     cJSON * jrecruited;
     Condition temp_cond;
+    in_line->conditions.clear();
 
-    while (jcondition != NULL) {
-        jid = cJSON_GetObjectItem(jcondition, "Unit id");
-        jdead = cJSON_GetObjectItem(jcondition, "Dead");
-        jrecruited = cJSON_GetObjectItem(jcondition, "Recruited");
+    if (jconditions != NULL) {
+        cJSON * jcondition = cJSON_GetObjectItem(jconditions, "Condition");
 
-        temp_cond.dead = cJSON_IsTrue(jdead);
-        temp_cond.recruited = cJSON_IsTrue(jrecruited);
-        temp_cond.unitid = cJSON_GetNumberValue(jid);
-        in_line->conditions.push_back(temp_cond);
+        while (jcondition != NULL) {
+            jid = cJSON_GetObjectItem(jcondition, "Unit id");
+            jdead = cJSON_GetObjectItem(jcondition, "Dead");
+            jrecruited = cJSON_GetObjectItem(jcondition, "Recruited");
+            temp_cond.dead = cJSON_IsTrue(jdead);
+            temp_cond.recruited = cJSON_IsTrue(jrecruited);
+            temp_cond.unitid = cJSON_GetNumberValue(jid);
+            in_line->conditions.push_back(temp_cond);
+        }
     }
 
     cJSON * jspeaker = cJSON_GetObjectItem(in_jline, "Speaker");
