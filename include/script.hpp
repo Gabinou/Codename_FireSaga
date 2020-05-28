@@ -53,8 +53,8 @@ public:
 
     using JSON_IO::writeJSON;
     using JSON_IO::readJSON;
-    void readJSON(cJSON * in_json);
-    void writeJSON(cJSON * in_json);
+    void readJSON(cJSON * in_jscene);
+    void writeJSON(cJSON * in_jscene);
 };
 
 // class Script {
@@ -74,29 +74,18 @@ public:
 extern std::vector<bool> died;
 extern std::vector<bool> promoted;
 extern std::vector<bool> happened;
-extern Script(*scriptChapter[15])();
-void baseScript();
+// extern Script(*scriptChapter[15])();
+// void baseScript();
 void baseNarrativeState();
 
 extern std::string stats2str(Weapon_stats in_stats);
 extern struct Page unit2page(Unit in_unit);
 
-namespace SCENE {
-enum SCENES {
-
-};
-}
 // Scenes should contain a narrative state builder.
 //Function takes scene as input and check which lines.
 // Each line also contains a narrative object?
 // 2D vector of possible lines. Choose which ones by comparing with narrative state.
 // Default line at 0. if game_state == line_state, scene takes the line.
 // Or maybe line should also have narrative comparer function, that checks a specific variable? or something?
-
-namespace LINE {
-enum LINES {
-
-};
-}
 
 #endif /* SCRIPT_HPP */

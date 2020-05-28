@@ -622,7 +622,7 @@ enum RNS {
 
 namespace SCENE {
 enum SCENES {
-    CHAPTER1INTRO = 1;
+    CHAPTER1INTRO = 1,
 };
 }
 
