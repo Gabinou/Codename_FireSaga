@@ -36,19 +36,21 @@ private:
     Narrative * narrative = NULL;
     std::vector<short unsigned int> participants;
     std::vector<short unsigned int> all_lines_id;
-    char current_line = -1;
+    short int current_line = -1;
 public:
     Scene();
     void addLine(Dialog_line in_line);
     Dialog_line chooseLine(std::vector<Dialog_line> raw_line);
+    void makeLines();
 
     void setNarrative(Narrative * in_narrative);
     Narrative * getNarrative();
 
-    void makeLines();
 
-    Dialog_line getLine(const short unsigned int in_id);
-    Dialog_line nextLine();
+    std::vector<std::vector<Dialog_line>> getRawLines();
+    std::vector<Dialog_line> getLines();
+    std::string nextLine();
+    void restartScene();
 
     short unsigned int getID();
     void setID(const short unsigned int in_id);
