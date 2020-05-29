@@ -4,7 +4,7 @@
 #include "stb_sprintf.h"
 // #endif // STB_SPRINTF_IMPLEMENTATION
 Scene::Scene() {
-
+    setJSONElement("Scene");
 }
 
 short unsigned int Scene::getID() {
@@ -48,7 +48,6 @@ Dialog_line Scene::chooseLine(std::vector<Dialog_line> raw_line) {
                 break;
             }
         }
-
     }
 
     out.conditions = raw_line[found_ind].conditions;
@@ -77,12 +76,12 @@ void Scene::makeLines() {
 }
 
 void Scene::readJSON(cJSON * in_jscene) {
-    cJSON * jline_group = cJSON_GetObjectItem(in_jscene, "LineGroup");
-    cJSON * jline = cJSON_GetObjectItem(jline_group, "Line");
+    cJSON * jlines = cJSON_GetObjectItem(in_jscene, "Lines");
+    cJSON * jline = cJSON_GetObjectItem(jlines, "Line");
     std::vector<Dialog_line> temp_lines;
     Dialog_line temp_line;
 
-    while (jline_group != NULL) {
+    while (jlines != NULL) {
         while (jline != NULL) {
             readJSON_line(jline, &temp_line);
             temp_lines.push_back(temp_line);
@@ -91,25 +90,25 @@ void Scene::readJSON(cJSON * in_jscene) {
 
         raw_lines.push_back(temp_lines);
         temp_lines.clear();
-        jline_group = jline_group->next;
+        jlines = jlines->next;
     }
 
 }
 
 void Scene::writeJSON(cJSON * in_jscene) {
-    cJSON * jline_group;
+    cJSON * jlines;
     cJSON * jline;
 
     for (short int i = 0; raw_lines.size(); i++) {
-        jline_group = cJSON_CreateObject();
+        jlines = cJSON_CreateObject();
 
         for (short int j = 0; raw_lines[i].size(); j++) {
             jline = cJSON_CreateObject();
             writeJSON_line(jline, &raw_lines[i][j]);
-            cJSON_AddItemToObject(jline_group, "Line", jline);
+            cJSON_AddItemToObject(jlines, "Line", jline);
         }
 
-        cJSON_AddItemToObject(in_jscene, "LineGroup", jline_group);
+        cJSON_AddItemToObject(in_jscene, "Lines", jlines);
     }
 
 }
