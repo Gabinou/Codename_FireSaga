@@ -513,6 +513,9 @@ void test_unit() {
     unit5.readJSON("saves//unit_testj.binou");
     unit5.writeJSON("saves//unit_rewritej.binou");
 
+    lok(PHYSFS_exists("saves//unit_test.json") != 0);
+    lok(PHYSFS_exists("saves//unit_rewrite.json") != 0);
+    lok(PHYSFS_exists("saves//unit_rewritej.binou") != 0);
     lok(fequal("saves//unit_test.json", "saves//unit_testj.binou"));
     lok(fequal("saves//unit_test.json", "saves//unit_rewrite.json"));
     lok(fequal("saves//unit_testj.binou", "saves//unit_rewritej.binou"));

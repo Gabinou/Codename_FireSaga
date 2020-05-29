@@ -27,6 +27,28 @@ std::vector<short unsigned int> Scene::getParticipants() {
     return (participants);
 }
 
+Dialog_line chooseLine(std::vector<Dialog_line>) {
+
+}
+
+
+void makeLines() {
+    if (narrative != NULL) {
+        lines.clear();
+        for (short int i = 0; i < raw_lines.size(); i++) {
+            if (raw_lines[i].size() == 1) {
+                lines.push_back(raw_lines[i][0])
+            } else {
+                lines.push_back(chooseLine(raw_lines[i]));
+            }
+
+        }
+
+    } else {
+        SDL_Log("narrative is null");
+    }
+}
+
 void Scene::readJSON(cJSON * in_jscene) {
     cJSON * jline_group = cJSON_GetObjectItem(in_jscene, "LineGroup");
     cJSON * jline = cJSON_GetObjectItem(jline_group, "Line");
@@ -65,11 +87,11 @@ void Scene::writeJSON(cJSON * in_jscene) {
 
 }
 
-void Scene::setNarrative(Narrative in_narrative) {
-
+void Scene::setNarrative(Narrative * in_narrative) {
+    narrative = in_narrative;
 }
 
-Narrative Scene::getNarrative() {
+Narrative * Scene::getNarrative() {
     return (narrative);
 }
 

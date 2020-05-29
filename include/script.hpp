@@ -32,8 +32,8 @@ class Scene : public JSON_IO {
 private:
     short unsigned int id;
     std::vector<Dialog_line> lines;
-    Narrative narrative;
     std::vector<std::vector<Dialog_line>> raw_lines;
+    Narrative * narrative = NULL;
     std::vector<short unsigned int> participants;
     std::vector<short unsigned int> all_lines_id;
     char current_line = -1;
@@ -41,8 +41,8 @@ public:
     Scene();
     void addLine(Dialog_line in_line);
 
-    void setNarrative(Narrative in_narrative);
-    Narrative getNarrative();
+    void setNarrative(Narrative * in_narrative);
+    Narrative * getNarrative();
 
     void makeLines();
 
