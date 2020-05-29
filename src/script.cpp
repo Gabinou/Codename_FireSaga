@@ -27,14 +27,41 @@ std::vector<short unsigned int> Scene::getParticipants() {
     return (participants);
 }
 
-Dialog_line chooseLine(std::vector<Dialog_line>) {
+Dialog_line Scene::chooseLine(std::vector<Dialog_line> raw_line) {
+    // Chooses the first line that satisfies all conditions.
+    // -> Put the lines with conditions all include in the conditions of another line AFTER.
+    Dialog_line out;
+    short int found_ind = 0;
 
+    if (raw_line.size() != 1) {
+        bool found = false;
+        short int id;
+
+        for (short int i = 1; i < raw_line.size(); i++) {
+            for (short int j = 0; j < raw_line[i].conditions.size(); j++) {
+                id = raw_line[i].conditions[j].unitid;
+                found = (narrative->death[id] == raw_line[i].conditions[j].death) && (narrative->recruited[id] == raw_line[i].conditions[j].recruited);
+            }
+
+            if (found) {
+                found_ind = i;
+                break;
+            }
+        }
+
+    }
+
+    out.conditions = raw_line[found_ind].conditions;
+    out.chapters = raw_line[found_ind].chapters;
+    out.speaker = raw_line[found_ind].speaker;
+    out.line = raw_line[found_ind].line;
+    return (out);
 }
 
-
-void makeLines() {
+void Scene::makeLines() {
     if (narrative != NULL) {
         lines.clear();
+
         for (short int i = 0; i < raw_lines.size(); i++) {
             if (raw_lines[i].size() == 1) {
                 lines.push_back(raw_lines[i][0])
