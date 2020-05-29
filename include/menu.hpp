@@ -7,7 +7,11 @@
 #include "tinyxml2.h"
 #include "filesystem.hpp"
 
-class BUTTON : public JSON_IO {
+class Clickable {
+private:
+    Point topleft;
+    Point bottomright ;
+public:
 
 }
 
