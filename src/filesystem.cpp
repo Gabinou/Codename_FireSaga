@@ -391,7 +391,6 @@ void writeJSON_line(cJSON * in_jline, Dialog_line * in_line) {
     cJSON * jid;
     cJSON * jdead;
     cJSON * jrecruited;
-    cJSON_AddItemToObject(in_jline, "Conditions", jconditions);
 
     for (short int i = 0; i < in_line->conditions.size(); i++) {
         jcondition = cJSON_CreateObject();
@@ -404,11 +403,11 @@ void writeJSON_line(cJSON * in_jline, Dialog_line * in_line) {
         cJSON_AddItemToObject(jconditions, "Condition", jcondition);
     }
 
+    cJSON_AddItemToObject(in_jline, "Conditions", jconditions);
     cJSON * jspeaker = cJSON_CreateNumber(in_line->speaker);
     cJSON_AddItemToObject(in_jline, "Speaker", jspeaker);
-    cJSON_AddItemToObject(in_jline, "Conditions", jconditions);
     cJSON * jlinestr = cJSON_CreateString(in_line->line.c_str());
-    cJSON_AddItemToObject(in_jline, "linestring", jlinestr);
+    cJSON_AddItemToObject(in_jline, "Linestr", jlinestr);
 }
 
 void readJSON_line(cJSON * in_jline, Dialog_line * in_line) {
@@ -432,12 +431,13 @@ void readJSON_line(cJSON * in_jline, Dialog_line * in_line) {
             temp_cond.recruited = cJSON_IsTrue(jrecruited);
             temp_cond.unitid = cJSON_GetNumberValue(jid);
             in_line->conditions.push_back(temp_cond);
+            jcondition = jcondition->next;
         }
     }
 
     cJSON * jspeaker = cJSON_GetObjectItem(in_jline, "Speaker");
     in_line->speaker = cJSON_GetNumberValue(jspeaker);
-    cJSON * jlinestr = cJSON_GetObjectItem(in_jline, "linestring");
+    cJSON * jlinestr = cJSON_GetObjectItem(in_jline, "Linestr");
     in_line->line = cJSON_GetStringValue(jlinestr);
 }
 

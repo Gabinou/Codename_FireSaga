@@ -76,12 +76,15 @@ void Scene::makeLines() {
 }
 
 void Scene::readJSON(cJSON * in_jscene) {
+    SDL_Log("reading scene");
     cJSON * jlines = cJSON_GetObjectItem(in_jscene, "Lines");
-    cJSON * jline = cJSON_GetObjectItem(jlines, "Line");
+    cJSON * jline;
     std::vector<Dialog_line> temp_lines;
     Dialog_line temp_line;
 
     while (jlines != NULL) {
+        jline = cJSON_GetObjectItem(jlines, "Line");
+
         while (jline != NULL) {
             readJSON_line(jline, &temp_line);
             temp_lines.push_back(temp_line);
@@ -92,17 +95,18 @@ void Scene::readJSON(cJSON * in_jscene) {
         temp_lines.clear();
         jlines = jlines->next;
     }
-
 }
 
 void Scene::writeJSON(cJSON * in_jscene) {
     cJSON * jlines;
     cJSON * jline;
 
-    for (short int i = 0; raw_lines.size(); i++) {
+    for (short int i = 0; i < raw_lines.size(); i++) {
+        SDL_Log("%d", i);
         jlines = cJSON_CreateObject();
 
-        for (short int j = 0; raw_lines[i].size(); j++) {
+        for (short int j = 0; j < raw_lines[i].size(); j++) {
+            SDL_Log("%d", j);
             jline = cJSON_CreateObject();
             writeJSON_line(jline, &raw_lines[i][j]);
             cJSON_AddItemToObject(jlines, "Line", jline);

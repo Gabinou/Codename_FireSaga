@@ -6,6 +6,7 @@ void test_script() {
     Scene scene1, scene2, scene3;
     Narrative narr1, narr2, narr3;
     scene1.readJSON("scenes//scene_test.json");
+    SDL_Log("read scene");
     lok(PHYSFS_exists("scenes//scene_test.json") != 0);
 
 
