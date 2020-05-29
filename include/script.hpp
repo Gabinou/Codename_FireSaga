@@ -5,6 +5,7 @@
 #include "enums.hpp"
 #include "filesystem.hpp"
 #include "unit.hpp"
+#include "utilities.hpp"
 #include "structs.hpp"
 
 class Book {
@@ -39,43 +40,29 @@ private:
     short int current_line = -1;
 public:
     Scene();
-    void addLine(Dialog_line in_line);
     Dialog_line chooseLine(std::vector<Dialog_line> raw_line);
     void makeLines();
+    void makeParticipants(); // AFTER lines is made.
+    void setParticipants(const std::vector<short unsigned int> in_participants);
+    std::vector<short unsigned int> getParticipants();
 
     void setNarrative(Narrative * in_narrative);
     Narrative * getNarrative();
 
-
     std::vector<std::vector<Dialog_line>> getRawLines();
     std::vector<Dialog_line> getLines();
-    std::string nextLine();
+    Dialog_line nextLine();
     void restartScene();
 
     short unsigned int getID();
     void setID(const short unsigned int in_id);
 
-    void setParticipants(const std::vector<short unsigned int> in_participants);
-    void addParticipant(const short unsigned int in_participant);
-    std::vector<short unsigned int> getParticipants();
 
     using JSON_IO::writeJSON;
     using JSON_IO::readJSON;
     void readJSON(cJSON * in_jscene);
     void writeJSON(cJSON * in_jscene);
 };
-
-// class Script {
-// private:
-//     short unsigned int  id;
-//     std::vector<short unsigned int> scenes_id;
-//     std::vector<Scene> scenes;
-// public:
-//     Script();
-//     short unsigned int getID();
-//     Scene getScene(const short unsigned int scene_id);
-//     void addScene(Scene in_scene);
-// };
 
 // extern std::vector<Script> all_scripts;
 //For narrative purposes.

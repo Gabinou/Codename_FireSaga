@@ -15,12 +15,17 @@ void Scene::setID(short unsigned int in_id) {
     id = in_id;
 }
 
-void Scene::addLine(const Dialog_line in_line) {
-    // lines[in_line.id] = in_line;
-}
+void Scene::makeParticipants() {
+    short unsigned int unitid;
+    participants.clear();
 
-void Scene::addParticipant(const short unsigned int in_participant) {
-    // participants = in_participants;
+    for (short int i = 0; i < lines.size(); i++) {
+        unitid = lines[i].speaker;
+
+        if (!cppisin(unitid, participants)) {
+            participants.push_back(unitid);
+        }
+    }
 }
 
 std::vector<short unsigned int> Scene::getParticipants() {
@@ -73,6 +78,34 @@ void Scene::makeLines() {
     } else {
         SDL_Log("narrative is null");
     }
+}
+
+std::vector<std::vector<Dialog_line>> Scene::getRawLines() {
+    return (raw_lines);
+}
+
+std::vector<Dialog_line> Scene::getLines() {
+    return (lines);
+}
+
+void Scene::restartScene() {
+    current_line = -1;
+}
+
+Dialog_line Scene::nextLine() {
+    current_line++;
+    Dialog_line out;
+
+    if ((current_line >= 0) && (current_line < lines.size())) {
+        out.conditions = lines[current_line].conditions;
+        out.chapters = lines[current_line].chapters;
+        out.speaker = lines[current_line].speaker;
+        out.line = lines[current_line].line;
+    } else {
+        SDL_Log("current_line is invalid");
+    }
+
+    return (out);
 }
 
 void Scene::readJSON(cJSON * in_jscene) {
