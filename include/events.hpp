@@ -307,7 +307,11 @@ struct enterVillage {
     entityx::Entity guest, village;
 };
 
-
+namespace EVENTID {
+enum EVENTID {
+    UNITATTACK,
+};
+}
 
 
 #endif /* EVENTS_HPP */
