@@ -40,7 +40,7 @@ Dialog_line Scene::chooseLine(std::vector<Dialog_line> raw_line) {
         for (short int i = 1; i < raw_line.size(); i++) {
             for (short int j = 0; j < raw_line[i].conditions.size(); j++) {
                 id = raw_line[i].conditions[j].unitid;
-                found = (narrative->death[id] == raw_line[i].conditions[j].death) && (narrative->recruited[id] == raw_line[i].conditions[j].recruited);
+                found = ((narrative->death[id] == raw_line[i].conditions[j].dead) && (narrative->recruited[id] == raw_line[i].conditions[j].recruited));
             }
 
             if (found) {
@@ -64,7 +64,7 @@ void Scene::makeLines() {
 
         for (short int i = 0; i < raw_lines.size(); i++) {
             if (raw_lines[i].size() == 1) {
-                lines.push_back(raw_lines[i][0])
+                lines.push_back(raw_lines[i][0]);
             } else {
                 lines.push_back(chooseLine(raw_lines[i]));
             }

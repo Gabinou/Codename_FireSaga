@@ -40,6 +40,7 @@ private:
 public:
     Scene();
     void addLine(Dialog_line in_line);
+    Dialog_line chooseLine(std::vector<Dialog_line> raw_line);
 
     void setNarrative(Narrative * in_narrative);
     Narrative * getNarrative();
