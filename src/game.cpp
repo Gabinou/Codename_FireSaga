@@ -264,8 +264,12 @@ void Game::killButtons() {
 entityx::Entity Game::makeButton(char in_menu_option) {
     entityx::Entity temp = entities.create();
     temp.assign<Position>();
+    temp.component<Position>()->setonTilemap(false);
+    temp.component<Position>()->setBounds(0, 2000, 0, 2000);
     temp.assign<Sprite>();
     temp.assign<Text>();
+    temp.component<Text>()->setColor(white);
+    temp.component<Text>()->hide();
 
     switch (in_menu_option) {
         case MENU::OPTION::ITEMS:
@@ -345,7 +349,6 @@ entityx::Entity Game::makeButton(char in_menu_option) {
             break;
     }
 
-
     return (temp);
 }
 
@@ -370,13 +373,12 @@ void Game::makeButtons(char in_menu, Point menu_pos) {
         if (menustring.size() == menuoptions.size()) {
             for (short int i = 0; i < menustring.size(); i++) {
                 buttons.push_back(makeButton(menuoptions[in_menu][i]));
+                buttons[i].component<Text>()->setText(menustring[i]);
             }
         } else {
             SDL_Log("Not the same number of menu options as menu strings");
         }
-
     }
-
 }
 
 
