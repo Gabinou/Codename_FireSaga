@@ -21,6 +21,11 @@ int main(int argc, char * argv[]) {
     SDL_Log("Initializing utilities\n");
     loadUtilities();
 
+    // Clickable test;
+    // test.setEvent(&unitWait);
+
+    // getchar();
+
     SDL_Log("Initializing filesystem\n");
     char * buildDir = SDL_GetBasePath();
     char * assetsDir = strdup(buildDir);
