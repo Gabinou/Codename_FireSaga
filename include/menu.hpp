@@ -27,11 +27,12 @@ public:
     }
 };
 
-class Buttons {
+class Entity_Container {
 private:
     std::vector<entityx::Entity> buttons;
 public:
-    void addButton(entityx::Entity in_button);
+    Entity_Container();
+    void addEntity(entityx::Entity in_button);
 };
 
 #endif /* MENU_HPP */
