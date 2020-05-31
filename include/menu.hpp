@@ -25,6 +25,16 @@ public:
     void setEventManager(entityx::EventManager * in_event_manager) {
         event_manager = in_event_manager;
     }
+
+    void setArea(Point in_rect) {
+        rect.x = in_rect.x;
+        rect.y = in_rect.y;
+    }
+
+    void setArea(short int width, short int height) {
+        rect.x = width;
+        rect.y = height;
+    }
 };
 
 class Entity_Container {
