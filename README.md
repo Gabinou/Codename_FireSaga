@@ -25,9 +25,9 @@ The game is available to play for anyone that wishes to compile the game from so
 ### Platforms
 - Windows
 	Codename:Firesaga is developped on/native to Windows.
-- Linux
+- Linux:
 	Not yet supported
-- Mac
+- Mac:
 	Not yet supported
 
 ### Pre-requisites
