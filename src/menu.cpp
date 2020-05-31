@@ -1,16 +1,12 @@
 
 #include "menu.hpp"
 
-// void Clickable::click(entityx::Entity mouse) {
+entityx::ComponentHandle<Unit> getUnit() {
+	return(unit);
+}
 
-// void Clickable::click(entityx::Entity mouse) {
+void Clickable::setUnit(entityx::ComponentHandle<Unit> in_unit) {
+	unit = in_unit;
+}
 
-// switch (eventID) {
-//     case EVENTID::UNITATTACK:
-//         event_manager->emit<unitAttack>(mouse, unit);
-//         break;
-// }
-// EMIT_EVENT(event_name.c_str());
-// event_manager->emit<event_name>(mouse, unit);
-
-// }
+void Clickable::setEvent(void * event);
