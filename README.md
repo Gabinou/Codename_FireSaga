@@ -19,15 +19,15 @@ This game is created using the [Simple DirectMedia Layer (SDL)](https://www.libs
 ## Compiling from source
 The game is available to play for anyone that wishes to compile the game from source. Source code is available from:
 
--[GitLab](https://gitlab.com/Gabinou/firesagamaker) 
--[GitHub](https://github.com/Gabinou/FireSaga) 
+- [GitLab](https://gitlab.com/Gabinou/firesagamaker) 
+- [GitHub](https://github.com/Gabinou/FireSaga) 
 
 ### Platforms
--Windows
+- Windows
 	Codename:Firesaga is developped on/native to Windows.
--Linux
+- Linux
 	Not yet supported
--Mac
+- Mac
 	Not yet supported
 
 ### Pre-requisites
