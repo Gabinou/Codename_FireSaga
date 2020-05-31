@@ -4,6 +4,7 @@
 #include <entityx/entityx.h>
 #include "keyboardcontroller.hpp"
 #include "gamepadcontroller.hpp"
+#include "mousecontroller.hpp"
 
 struct turnBegin {
     turnBegin(unsigned char army) : army(army) {}

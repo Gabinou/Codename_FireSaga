@@ -21,6 +21,7 @@
 #include "linalg.hpp"
 #include "probability.hpp"
 #include "sprite.hpp"
+#include "menu.hpp"
 #include "keyboardcontroller.hpp"
 #include "gamepadcontroller.hpp"
 #include "mousecontroller.hpp"
