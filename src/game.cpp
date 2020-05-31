@@ -843,6 +843,16 @@ void Game::init() {
     }
 
     convoy.setWeapons(&weapons);
+
+    Clickable test_button;
+    entityx::Entity test_selector;
+    entityx::ComponentHandle<Unit> test_unit;
+    unitWait testwait(test_selector, test_unit);
+    test_button.setEvent(&testwait);
+    test_button.setEventManager(&events);
+    test_button.click(test_selector, &testwait);
+
+    getchar();
 }
 
 void Game::initSystems() {
