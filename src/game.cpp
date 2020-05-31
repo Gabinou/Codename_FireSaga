@@ -253,6 +253,41 @@ void Game::makeMenutext(char in_menu) {
     }
 }
 
+void Game::killButtons() {
+    for (short int i = 0; i < buttons.size(); i++) {
+        buttons[i].destroy();
+    }
+
+    buttons.clear();
+}
+
+void Game::makeButtons(char in_menu) {
+    SDL_Log("Making buttons: %d", in_menu);
+
+    if (in_menu > 0) {
+        entityx::Entity temp;
+        std::vector<std::string> menustring;
+        killButtons();
+
+        if (menuoptions.find(in_menu) != menuoptions.end()) {
+            menustring = menuoptions2str(menuoptions[in_menu]);
+        } else {
+            SDL_Log("Menu options are invalid.");
+        }
+
+        if (menustring.size() == menuoptions.size()) {
+            for (short int i = 0; i < menustring.size(); i++) {
+                temp = entities.create();
+            }
+        } else {
+            SDL_Log("Not the same number of menu options as menu strings");
+        }
+
+    }
+
+}
+
+
 void Game::makeMenu(char in_menu) {
     SDL_Log("Making menu: %d", in_menu);
 

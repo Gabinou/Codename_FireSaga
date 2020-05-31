@@ -41,6 +41,7 @@ private:
     Point cursor_lastpos = {6, 6};
     entityx::ComponentHandle<Map> mapx;
     std::unordered_map<unsigned char, entityx::Entity> menus;
+    std::vector<entityx::Entity> buttons;
     std::unordered_map<unsigned char, std::vector<unsigned char>> menuoptions;
     Narrative narrative;
 
@@ -131,6 +132,8 @@ public:
     void setMenuoptions(char in_menu_index, std::vector<unsigned char> in_options);
     void makeMenutext(char in_menu_index);
     void makeMenu(char in_menu_index);
+    void makeButtons(char in_menu_index);
+    void killButtons();
     entityx::Entity * getMenu(char in_menu_index);
     void killMenu(short int index);
     void hideMenu(short int index);
