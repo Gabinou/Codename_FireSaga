@@ -261,6 +261,94 @@ void Game::killButtons() {
     buttons.clear();
 }
 
+entityx::Entity Game::makeButton(char in_menu_option) {
+    entityx::Entity temp = entities.create();
+    temp.assign<Position>();
+    temp.assign<Sprite>();
+    temp.assign<Text>();
+
+    switch (in_menu_option) {
+        case MENU::OPTION::ITEMS:
+            temp.assign<Clickable<unitWait>>();
+            break;
+
+        case MENU::OPTION::TALK:
+            temp.assign<Clickable<unitItems>>();
+            break;
+
+        case MENU::OPTION::RESCUE:
+            temp.assign<Clickable<unitRescue>>();
+            break;
+
+        case MENU::OPTION::SEIZE:
+            temp.assign<Clickable<unitSeize>>();
+            break;
+
+        case MENU::OPTION::ESCAPE:
+            temp.assign<Clickable<unitEscape>>();
+            break;
+
+        case MENU::OPTION::ATTACK:
+            temp.assign<Clickable<unitAttack>>();
+            break;
+
+        case MENU::OPTION::SHOP:
+            temp.assign<Clickable<enterShop>>();
+            break;
+
+        case MENU::OPTION::ARMORY:
+            temp.assign<Clickable<enterArmory>>();
+            break;
+
+        case MENU::OPTION::VILLAGE:
+            temp.assign<Clickable<enterVillage>>();
+            break;
+
+        case MENU::OPTION::CONVOY:
+            temp.assign<Clickable<checkConvoy>>();
+            break;
+
+        case MENU::OPTION::TRADE:
+            temp.assign<Clickable<unitTrade>>();
+            break;
+
+        case MENU::OPTION::STAFF:
+            temp.assign<Clickable<unitStaff>>();
+            break;
+
+        case MENU::OPTION::MAP:
+            temp.assign<Clickable<checkMap>>();
+            break;
+
+        case MENU::OPTION::WAIT:
+            temp.assign<Clickable<unitWait>>();
+            break;
+
+        case MENU::OPTION::UNITS:
+            temp.assign<Clickable<unitsMenu>>();
+            break;
+
+        case MENU::OPTION::ENEMYUNITS:
+            temp.assign<Clickable<enemyunitsMenu>>();
+            break;
+
+        case MENU::OPTION::OBJECTIVES:
+            temp.assign<Clickable<objectivesMenu>>();
+            break;
+
+        case MENU::OPTION::OPTIONS:
+            temp.assign<Clickable<optionsMenu>>();
+            break;
+
+        case MENU::OPTION::ENDTURN:
+            temp.assign<Clickable<endTurn>>();
+            break;
+    }
+
+
+    return (temp);
+}
+
 void Game::makeButtons(char in_menu) {
     SDL_Log("Making buttons: %d", in_menu);
 
@@ -277,7 +365,7 @@ void Game::makeButtons(char in_menu) {
 
         if (menustring.size() == menuoptions.size()) {
             for (short int i = 0; i < menustring.size(); i++) {
-                temp = entities.create();
+                buttons.push_back(makeButton(menuoptions[in_menu][i]));
             }
         } else {
             SDL_Log("Not the same number of menu options as menu strings");
@@ -879,13 +967,13 @@ void Game::init() {
 
     convoy.setWeapons(&weapons);
 
-    entityx::Entity test_selector;
-    entityx::ComponentHandle<Unit> test_unit;
-    Clickable<unitWait> test_button;
-    test_button.setEventManager(&events);
-    test_button.click(test_selector, test_unit);
+    // entityx::Entity test_selector;
+    // entityx::ComponentHandle<Unit> test_unit;
+    // Clickable<unitWait> test_button;
+    // test_button.setEventManager(&events);
+    // test_button.click(test_selector, test_unit);
 
-    getchar();
+    // getchar();
 }
 
 void Game::initSystems() {

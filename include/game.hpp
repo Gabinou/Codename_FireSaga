@@ -133,6 +133,7 @@ public:
     void makeMenutext(char in_menu_index);
     void makeMenu(char in_menu_index);
     void makeButtons(char in_menu_index);
+    entityx::Entity makeButton(char in_menu_option);
     void killButtons();
     entityx::Entity * getMenu(char in_menu_index);
     void killMenu(short int index);

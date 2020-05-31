@@ -303,6 +303,19 @@ struct enterArmory {
     entityx::Entity guest, shop;
 };
 
+struct checkConvoy {
+    checkConvoy(entityx::Entity guest) : guest(guest) {}
+    entityx::Entity guest;
+};
+
+struct checkMap {
+    checkMap() {}
+};
+
+struct endTurn {
+    endTurn() {}
+};
+
 struct enterVillage {
     enterVillage(entityx::Entity guest, entityx::Entity village) : guest(guest), village(village) {}
     entityx::Entity guest, village;
