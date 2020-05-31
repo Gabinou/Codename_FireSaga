@@ -22,27 +22,28 @@ The game is available to play for anyone that wishes to compile the game from so
 	 -[GitHub](https://github.com/Gabinou/FireSaga) 
 
 ### Platforms
-	-Windows
-		Codename:Firesaga is developped on/native to Windows.
-	-Linux
-		Untested
-	-Mac
-		Untested
+-Windows
+	Codename:Firesaga is developped on/native to Windows.
+-Linux
+	Not yet supported
+-Mac
+	Not yet supported
+
 ### Pre-requisites
-	- [CMake](https://cmake.org/download/) build system
-	- [Ninja](https://ninja-build.org/) build system
-	- [Simple Direct Media Layer (SDL)](https://www.libsdl.org/download-2.0.php)
-	- [GCC](https://gcc.gnu.org/install/binaries.html) compiler suite
+- [CMake](https://cmake.org/download/) build system
+- [Ninja](https://ninja-build.org/) build system
+- [Simple Direct Media Layer (SDL)](https://www.libsdl.org/download-2.0.php)
+- [GCC](https://gcc.gnu.org/install/binaries.html) compiler suite
 
 ### Basic compilation instructions
-	1. Get the source code, and put in in a directory such as ```C:\firesaga``` 
-	2. Create a ```build``` folder in the source code directory
-	3. On the command-line/shell/bash, enter the ```build``` directory and run the commands:
-	```
-	cmake -G "Ninja" ..
-	ninja
-	```
-This should successfully create an executable file
+1. Get the source code, and put in in a directory such as `C:\firesaga` 
+2. Create a `build` folder in the source code directory
+3. On the command-line/shell/bash, enter the `build` directory and run the commands:
+```
+cmake -G "Ninja" ..
+ninja
+```
+This should successfully create an executable file, ready for play.
 
 ## Credits
 :copyright: Average Bear Games. 
