@@ -11,21 +11,15 @@ template<typename T> class Clickable {
 private:
     Point rect; //.x is width, .y is height
     entityx::EventManager * event_manager;
-    entityx::ComponentHandle<Unit> unit;
-    typedef T event;
 public:
     Clickable() {}
 
-    void click(entityx::Entity mouse) {
-        SDL_Log("Clicking");
-        event_manager->emit<T>(mouse, unit);
+    //overload for all input cases manually
+    void click(entityx::Entity in_entity, entityx::ComponentHandle<Unit> in_unit) {
+        event_manager->emit<T>(in_entity, in_unit);
     }
-
-    void setUnit(entityx::ComponentHandle<Unit> in_unit) {
-        unit = in_unit;
-    }
-    entityx::ComponentHandle<Unit> getUnit() {
-        return (unit);
+    void click(entityx::Entity in_entity1, entityx::Entity in_entity2) {
+        event_manager->emit<T>(in_entity1, in_entity2);
     }
 
     void setEventManager(entityx::EventManager * in_event_manager) {

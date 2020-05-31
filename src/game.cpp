@@ -846,11 +846,9 @@ void Game::init() {
 
     entityx::Entity test_selector;
     entityx::ComponentHandle<Unit> test_unit;
-    // unitWait testwait(test_selector, test_unit);
     Clickable<unitWait> test_button;
     test_button.setEventManager(&events);
-    // test_button.getEvent();
-    test_button.click(test_selector);
+    test_button.click(test_selector, test_unit);
 
     getchar();
 }
