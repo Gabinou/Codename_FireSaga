@@ -349,7 +349,11 @@ entityx::Entity Game::makeButton(char in_menu_option) {
     return (temp);
 }
 
-void Game::makeButtons(char in_menu) {
+std::vector<entityx::Entity> Game::getButtons() {
+    return (buttons);
+}
+
+void Game::makeButtons(char in_menu, Point menu_pos) {
     SDL_Log("Making buttons: %d", in_menu);
 
     if (in_menu > 0) {

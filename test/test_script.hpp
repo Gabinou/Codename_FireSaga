@@ -19,8 +19,6 @@ void test_script() {
     lok(strcmp(scene1.nextLine().line.c_str(), "!!!") == 0);
     lok(strcmp(scene1.nextLine().line.c_str(), "sniff") == 0);
 
-
-
     scene1.writeJSON("scenes//scene_rewrite.json");
     lok(PHYSFS_exists("scenes//scene_rewrite.json") != 0);
     lok(fequal("scenes//scene_rewrite.json", "scenes//scene_test.json"));

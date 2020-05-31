@@ -132,9 +132,10 @@ public:
     void setMenuoptions(char in_menu_index, std::vector<unsigned char> in_options);
     void makeMenutext(char in_menu_index);
     void makeMenu(char in_menu_index);
-    void makeButtons(char in_menu_index);
+    void makeButtons(char in_menu_index, Point menu_pos);
     entityx::Entity makeButton(char in_menu_option);
     void killButtons();
+    std::vector<entityx::Entity> getButtons();
     entityx::Entity * getMenu(char in_menu_index);
     void killMenu(short int index);
     void hideMenu(short int index);
