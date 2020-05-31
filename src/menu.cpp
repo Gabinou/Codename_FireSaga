@@ -7,5 +7,5 @@ void Clickable::click(entityx::Entity mouse) {
     //         event_manager->emit<unitAttack>(mouse, unit);
     //         break;
     // }
-    event_manager->emit<*event>(mouse, unit)
+    EMIT_EVENT(unitWait);
 }
