@@ -21,10 +21,14 @@ int main(int argc, char * argv[]) {
     SDL_Log("Initializing utilities\n");
     loadUtilities();
 
-    // Clickable test;
-    // test.setEvent(&unitWait);
+    Clickable test_button;
+    entityx::Entity test_selector;
+    entityx::ComponentHandle<Unit> test_unit;
+    unitWait testwait(test_selector, test_unit);
+    test_button.setEvent(&testwait);
+    test_button.click(test_selector, &testwait);
 
-    // getchar();
+    getchar();
 
     SDL_Log("Initializing filesystem\n");
     char * buildDir = SDL_GetBasePath();
