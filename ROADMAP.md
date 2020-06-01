@@ -4,7 +4,7 @@
 
 ## Design considerations
 	
-	More details on my thoughts are available on the (developpment blog)[https://averagebear.game.blog/]:
+	More details on my thoughts are available on the (development blog)[https://averagebear.game.blog/]:
 	- Dictatorial veto:
 		1. Permadeath (No exceptions)
 		2. No Phoenix/Casual mode
@@ -26,7 +26,8 @@
 		- Carry stuff in your hands to free up inventory space
 		- Cavaliers need one hand on bridle
 	- Questionable features:
-		- Automatic game save + deletion of previous save after every move? After every chapter?
+		- Forcible IronMan
+		Automatic game save + deletion of previous save after every move? After every chapter?
 
 ## Short-term
 	- Turn system
