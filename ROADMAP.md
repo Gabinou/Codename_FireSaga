@@ -15,7 +15,7 @@ These features will not make it in my game, and it's final.
 
 - Linear, chapter-based
 	- Army movement on the world map only if it makes narrative sense
-	- Unlockable certain story Events on world-map
+	- Certain story Events unlockable on world-map
 	- Side stories
 	- Enemy encounters on world Map are rare
 - Items

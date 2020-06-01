@@ -268,6 +268,7 @@ entityx::Entity Game::makeButton(char in_menu_option) {
     temp.component<Position>()->setBounds(0, 2000, 0, 2000);
     temp.assign<Sprite>();
     temp.assign<Text>();
+    SDL_Color white = {255, 255, 255};
     temp.component<Text>()->setColor(white);
     temp.component<Text>()->hide();
 
