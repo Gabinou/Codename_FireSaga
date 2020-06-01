@@ -4,7 +4,7 @@
 
 ## Design considerations
 	
-More details on my thoughts are available on the (development blog)[https://averagebear.game.blog/]:
+More details on my thoughts are available on the [development blog](https://averagebear.game.blog/):
 - Dictatorial veto:
 	1. Permadeath (No exceptions)
 	2. No Phoenix/Casual mode
@@ -86,14 +86,14 @@ In no particular order:
 	2. Sounds
 	3. Songs
 - Art
-	0. Art style
-	1. Unit concepts
-	2. Unit portraits
-	3. Map units
-	4. Tiles (0.0.1)
-	5. Custom Mouse (1.0)
-	6. Title Screen
-	7. World Map
+	1. Art style
+	2. Unit concepts
+	3. Unit portraits
+	4. Map units
+	5. Tiles (0.0.1)
+	6. Custom Mouse (1.0)
+	7. Title Screen
+	8. World Map
 - Gameplay systems
 	1. Convoy (1.0)
 	2. Camp (1.0)
@@ -110,8 +110,6 @@ In no particular order:
 - Playable on PC (Windows/Mac/Linux) 
 - Playable on smartphones (iOS/Android)
 - Playable on consoles?
-
-## Additional notes
 
 ## Credits
 :copyright: Average Bear Games, made by Gabriel Taillon
