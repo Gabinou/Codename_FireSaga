@@ -53,10 +53,9 @@ This should successfully create an executable file, ready for play.
 
 ## Licensing
 
-The source code is made available under the Aseprite [End-User Licence Agreemend (EULA)](https://gitlab.com/Gabinou/firesagamaker/-/blob/master/ROADMAP.md).
+The source code is made available under the Aseprite [End-User Licence Agreemend (EULA)](https://gitlab.com/Gabinou/firesagamaker/-/blob/master/EULA.txt).
 
 Third-Party software is distributed according to its individual licence, available in the [licences](https://gitlab.com/Gabinou/firesagamaker/-/blob/master/licenses) directory.
-
 
 ## Credits
 :copyright: Average Bear Games, made by Gabriel Taillon
