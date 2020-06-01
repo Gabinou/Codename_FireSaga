@@ -1,7 +1,7 @@
 
 # Contributing
 
-All code contributions are welcome. Making any contribution implies your agreement with the [Contributor Licence](https://github.com/Gabinou/Codename_FireSaga/blob/master/cl.md) derived from the [Aseprite Contributor License Agreement](https://github.com/aseprite/sourcecode/blob/master/cla.md).
+All code contributions are welcome. Making any contribution implies your agreement with the [Contributor Licence](https://gitlab.com/Gabinou/firesagamaker/-/blob/master/ROADMAP.md) derived from the [Aseprite Contributor License Agreement](https://github.com/aseprite/sourcecode/blob/master/cla.md).
 
 Code you write should contain the least amount of comments possible. Code should be self-documenting, to avoid writing additional documentation. Contributors should use expressive variable names that fit the style of the existing codebase. 
 

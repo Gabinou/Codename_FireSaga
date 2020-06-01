@@ -51,5 +51,10 @@ ninja
 ```
 This should successfully create an executable file, ready for play.
 
+## Licensing
+
+The source code is made available under the Aseprite [End-User Licence Agreemend (EULA)](https://gitlab.com/Gabinou/firesagamaker/-/blob/master/ROADMAP.md).
+
+
 ## Credits
 :copyright: Average Bear Games, made by Gabriel Taillon

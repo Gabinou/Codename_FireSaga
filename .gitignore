@@ -11,4 +11,5 @@ html/*
 latex/*
 build/*
 plots/*
+licenses/*.txt
 makefile
