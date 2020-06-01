@@ -51,6 +51,8 @@ ninja
 ```
 This should successfully create an executable file, ready for play.
 
+Note: Without the assets directory, the game will compile but most likely will crash upon execution. I am working on more error catching functions to prevent this. I may also start distributing the assets...
+
 ## Licensing
 
 The source code is made available under the Aseprite [End-User Licence Agreemend (EULA)](https://gitlab.com/Gabinou/firesagamaker/-/blob/master/EULA.txt).
