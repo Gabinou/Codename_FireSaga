@@ -4,6 +4,7 @@
 !*.h
 !*.c
 !.gitignore
+!*.md
 !CmakeLists.txt
 
 html/*
