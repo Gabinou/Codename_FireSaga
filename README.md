@@ -8,7 +8,7 @@ This is the source code for a Strategy RPG game strongly inspired by Fire Emblem
 
 There is a [game development blog](https://averagebear.game.blog/).
 
-The game is available for sale at...
+<!-- The game is available for sale at... -->
 
 For now, the game assets are not available on GitHub/GitLab. They will be made available later.
 
