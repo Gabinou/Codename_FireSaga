@@ -28,10 +28,18 @@ These features will not make it in my game, and it's final.
 	- Carry stuff in your hands to free up inventory space
 	- Cavaliers need one hand on bridle
 - Questionable features:
-	- Forcible IronMan
-	Automatic game save + deletion of previous save after every move? After every chapter?
+	- IronMan Mode
+
+	Automatic game save + deletion of previous save after every move? After every chapter? Game Over deletes your savefile?
+
+	- Forcible IronMan Mode
+
+	Force player into IronMan mode
 
 ## Short-term
+
+In no particular order:
+
 - Turn system
 	1. AI for enemy attacks
 	2. Switching between armies (0.1)
@@ -101,7 +109,7 @@ These features will not make it in my game, and it's final.
 	
 - Playable on PC (Windows/Mac/Linux) 
 - Playable on smartphones (iOS/Android)
-- Playable on smartphones (iOS/Android)
+- Playable on consoles?
 
 ## Additional notes
 

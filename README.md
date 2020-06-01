@@ -29,6 +29,11 @@ The game is available to play for anyone that wishes to compile the game from so
 	Not yet supported
 - Mac:
 	Not yet supported
+- iOS:
+	Not yet supported
+- Android:
+	Not yet supported
+
 
 ### Pre-requisites
 - [CMake](https://cmake.org/download/) build system
