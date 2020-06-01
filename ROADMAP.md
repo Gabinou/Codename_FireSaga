@@ -9,7 +9,8 @@ More details on my thoughts are available on the [development blog](https://aver
 	1. Permadeath (No exceptions)
 	2. No Phoenix/Casual mode
 	3. No Ambush spawns
-
+	4. NO DRAGONS
+	
 These features will not make it in my game, and it's final.
 
 - Linear, chapter-based
