@@ -6,10 +6,10 @@
 !.gitignore
 !*.md
 !CmakeLists.txt
+!licenses/*
 
 html/*
 latex/*
 build/*
 plots/*
-licenses/*.txt
 makefile
