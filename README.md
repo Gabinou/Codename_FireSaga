@@ -34,7 +34,6 @@ The game is available to play for anyone that wishes to compile the game from so
 - Android:
 	Not yet supported
 
-
 ### Pre-requisites
 - [CMake](https://cmake.org/download/) build system
 - [Ninja](https://ninja-build.org/) build system
