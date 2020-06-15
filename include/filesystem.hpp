@@ -5,7 +5,7 @@
 #include <stdio.h>
 #include <string>
 #include <cstring>
-#include <cstring>
+#include <cstdint>
 #include <stdlib.h>
 #include <unordered_map>
 #include "physfs.h"
@@ -64,6 +64,7 @@ extern void writeJSON_arrival(cJSON * in_jarrival, Map_arrival * in_arrival);
 extern void writeJSON_tilemap(cJSON * in_jtilemap, std::vector<std::vector<short int>> in_tilemap);
 extern void writeJSON_line(cJSON * in_jline, Dialog_line * in_line);
 extern void writeJSON_narrative(cJSON * in_jnarrative, Narrative * in_state);
+extern void writeJSON_seed(cJSON * in_jnarrative, Narrative * in_state);
 extern void writeJSON_items(cJSON * in_jitems, std::vector<Inventory_item> in_items);
 extern void writeJSON_items(cJSON * in_jitems, Inventory_item * in_equipment, int size);
 extern void writeJSON_stats(cJSON * in_jstats, Weapon_stats * in_stats);

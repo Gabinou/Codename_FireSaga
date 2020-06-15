@@ -36,12 +36,12 @@ bool Game::checkRate(int rate, short int mode) {
     if (mode > 0) {
 
         if (mode == GAME::RN::SINGLE) {
-            hit = (getURN(tinymt) < rate);
+            hit = (getURN(tinymt32) < rate);
             return (hit);
         }
 
         if (mode == GAME::RN::DOUBLE) {
-            hit = (((getURN(tinymt) + getURN(tinymt)) / 2) < rate);
+            hit = (((getURN(tinymt32) + getURN(tinymt32)) / 2) < rate);
             return (hit);
         }
     } else {
@@ -64,21 +64,21 @@ bool * Game::checkHitCrit(int hit_rate, int crit_rate, short int mode) {
     static bool hitcrit[2];
 
     if (mode == GAME::RN::SINGLE) {
-        hitcrit[0] = (getURN(tinymt) < hit_rate);
-        hitcrit[1] = (getURN(tinymt) < crit_rate);
+        hitcrit[0] = (getURN(tinymt32) < hit_rate);
+        hitcrit[1] = (getURN(tinymt32) < crit_rate);
         return (hitcrit);
     }
 
     if (mode == GAME::RN::DOUBLE) {
-        hitcrit[0] = (((getURN(tinymt) + getURN(tinymt)) / 2) < hit_rate);
-        hitcrit[1] = (((getURN(tinymt) + getURN(tinymt)) / 2) < crit_rate);
+        hitcrit[0] = (((getURN(tinymt32) + getURN(tinymt32)) / 2) < hit_rate);
+        hitcrit[1] = (((getURN(tinymt32) + getURN(tinymt32)) / 2) < crit_rate);
         return (hitcrit);
     }
 
     if (mode == GAME::RN::GAUSSIAN) {
         unsigned char * RNs;
-        RNs[0] = getURN(tinymt);
-        RNs[1] = getURN(tinymt);
+        RNs[0] = getURN(tinymt32);
+        RNs[1] = getURN(tinymt32);
         RNs = boxmuller(RNs);
         hitcrit[0] = (RNs[0] < hit_rate);
         hitcrit[1] = (RNs[1] < crit_rate);
@@ -1164,7 +1164,20 @@ void Game::saveJSON(const short int save_ind) {
         cJSON * jparty = cJSON_CreateObject();
         cJSON * jconvoy = cJSON_CreateObject();
         cJSON * jcamp = cJSON_CreateObject();
+        cJSON * jRN = cJSON_CreateObject();
         cJSON * junit;
+
+
+        cJSON * jRN = cJSON_CreateArray();
+        cJSON * jtemp;
+        jtemp = cJSON_CreateNumber(tinymt32.status[0]);
+        cJSON_AddItemToArray(jRN, jtemp);
+        jtemp = cJSON_CreateNumber(tinymt32.status[1]);
+        cJSON_AddItemToArray(jRN, jtemp);
+        jtemp = cJSON_CreateNumber(tinymt32.status[2]);
+        cJSON_AddItemToArray(jRN, jtemp);
+        jtemp = cJSON_CreateNumber(tinymt32.status[3]);
+        cJSON_AddItemToArray(jRN, jtemp);
 
         for (auto it = party.begin(); it != party.end(); it++) {
             junit = cJSON_CreateObject();
@@ -1172,6 +1185,7 @@ void Game::saveJSON(const short int save_ind) {
             cJSON_AddItemToObject(jparty, "Unit", junit);
         }
 
+        cJSON_AddToObject(json, "RN", jRN);
         cJSON_AddItemToObject(json, "Party", jparty);
         convoy.writeJSON(jconvoy);
         cJSON_AddItemToObject(json, "Camp", jcamp);
