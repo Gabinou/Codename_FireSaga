@@ -10,7 +10,6 @@
 #include "stb_sprintf.h"
 // #endif /* STB_SPRINTF_IMPLEMENTATION */
 
-
 #define LEN(arr) ((unsigned int) (sizeof (arr) / sizeof (arr)[0]))
 
 template <typename T> int sgn(T val) {

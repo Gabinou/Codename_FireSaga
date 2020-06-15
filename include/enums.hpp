@@ -29,8 +29,6 @@ enum MOUSES {
     NOACCEPT,
     FOLLOW,
     TELEPORT,
-    SECONDCURSOR,
-    REPLACESCURSOR,
 };
 }
 
@@ -75,7 +73,7 @@ namespace ITEM {
 namespace NAME {
 enum NAMES {
     WOODEN_SWORD = 1,
-    KITCHEN_KNIFE = 2,
+    KITCHEN_KNIFE = 2, // Maybe should be Sword AND offhand?
     WRATH_SWORD = 3,
     FLEURET = 4,
     RAPIERE = 5,
@@ -101,6 +99,8 @@ enum NAMES {
     RAW_IRON_SLAB = 25,
     KIRITO = 26,
     KILLY = 27,
+    // War scythe: lance and sword
+    // Morning-star: sword and axe
 
     PITCHFORK = 28,
     FIGHTING_STICK = 29,
@@ -108,7 +108,7 @@ enum NAMES {
     WRATH_LANCE = 31,
     STEEL_LANCE = 32,
     DAMAS_LANCE = 33,
-    HEAVY_SPEAR = 34,
+    HEAVY_SPEAR = 34, // Square spike lance? Bodkin lance?
     TRIDENT = 35,
     MERCIFUL_LANCE = 36,
     JAVELIN = 37,
@@ -165,23 +165,22 @@ enum NAMES {
     MARBLE_PLATE_SHIELD = 85,
     DIVINE_PROTECTOR = 86,
 
-    WRISTBLADE = 87,
+    WRISTBLADE = 87, // Why? how to draw?
     SHIELD_HOOK = 88,
-    RETRACTABLE_WRISTBLADE = 89,
+    RETRACTABLE_WRISTBLADE = 89, // Why? how to draw?
     MAIN_GAUCHE = 90,
     SWORDBREAKER = 91,
     TRIDENT_DAGGER = 92,
     TANTOU = 93,
-    KODACHI = 94,
-    DAGUE = 95,
+    KODACHI = 94, // too similar to tantou and wakizashi
+    DAGUE = 95, // too similar to main gauche
     WAKIZASHI = 96,
     BRAQUEMARD = 97,
     MISERICORDE = 98,
     CARNWENNAN = 99,
     FLINTLOCK = 100,
-    CIBO = 101,
-
-    SHRUNKEN_HEAD = 102,
+    CIBO = 101, // very tall white dagger
+    SHRUNKEN_HEAD = 102, //-> human Skull.
     CRYSTAL = 103,
     GLASS_ORB = 104,
     HUMAN_FEMUR = 105,
@@ -192,6 +191,7 @@ enum NAMES {
     VIAL_OF_LIGHT = 110,
     MAIDENS_HANDKERCHIEF = 111,
     WAR_HORN = 112,
+    // THROWING_DAGGERS
 
     BALL_LIGHTNING = 113,
     ICICLE = 114,

@@ -635,7 +635,7 @@ void Map::loadTiletextures() {
 
     for (short unsigned int i = 0; i < tilesindex.size(); i++) {
         tile_ind = (tilesindex[i] / DEFAULT::TILE_DIVISOR);
-        texturename = "..//assets//" + tiles[tile_ind].getName() + "_" + std::to_string(tilesindex[i]) + ".png";
+        texturename = "..//assets//Tiles//" + tiles[tile_ind].getName() + "_" + std::to_string(tilesindex[i]) + ".png";
         textures[tilesindex[i]] = loadTexture(renderer, texturename.c_str());
     }
 }
@@ -649,7 +649,7 @@ void Map::loadOverlays() {
 
 void Map::loadDanger() {
     SDL_Log("Loading Map dangerzone");
-    dangers[0] = loadTexture(renderer, "..//assets//tile_overlay_danger.png", false);
+    dangers[0] = loadTexture(renderer, "..//assets//Tiles//tile_overlay_danger.png", false);
 }
 
 void Map::loadGrid() {

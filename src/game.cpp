@@ -105,7 +105,7 @@ void Game::makeTurntransition() {
     SDL_Color white = {255, 255, 255};
     transition.assign<Text>(settings.fontsize);
     transition.component<Text>()->hide();
-    // transition.component<Sprite>()->setTexture("assets//textbox.png");
+    // transition.component<Sprite>()->setTexture("assets//GUI//textbox.png");
     // transition.component<Sprite>()->setSrcrect(128, 128);
     // transition.component<Sprite>()->setDestrect(128, 128);
 }
@@ -406,14 +406,14 @@ void Game::makeMenu(char in_menu) {
         switch (in_menu) {
             case MENU::UNIT:
                 SDL_Log("Making unit menu\n");
-                menus[MENU::UNIT].component<Sprite>()->setTexture("..//assets//textbox.png");
+                menus[MENU::UNIT].component<Sprite>()->setTexture("..//assets//GUI//textbox.png");
                 menus[MENU::UNIT].component<Sprite>()->setSrcrect(128, 128);
                 menus[MENU::UNIT].component<Sprite>()->setDestrect(128, 128);
                 break;
 
             case MENU::MAPMENU:
                 SDL_Log("Making map menu\n");
-                menus[MENU::MAPMENU].component<Sprite>()->setTexture("..//assets//textbox.png");
+                menus[MENU::MAPMENU].component<Sprite>()->setTexture("..//assets//GUI//textbox.png");
                 menus[MENU::MAPMENU].component<Sprite>()->setSrcrect(128, 128);
                 menus[MENU::MAPMENU].component<Sprite>()->setDestrect(128, 128);
                 break;
@@ -671,7 +671,7 @@ void Game::setCursorstate(const char in_menu) {
                     SDL_Log("Changed Cursor to Map");
                     cursorx.component<Sprite>()->init(cursorx.component<Position>()->getPos());
                     cursorx.component<Sprite>()->animate();
-                    cursorx.component<Sprite>()->setTexture("..//assets//mapcursors.png");
+                    cursorx.component<Sprite>()->setTexture("..//assets//GUI//mapcursors.png");
                     cursorx.component<Sprite>()->setAnimation(10, 50);
                     cursorx.component<Sprite>()->setTilesize(mapx->getTilesize());
                     cursorx.component<Sprite>()->setSlidetype(SLIDETYPE::GEOMETRIC);
@@ -698,7 +698,7 @@ void Game::setCursorstate(const char in_menu) {
                     cursorx.component<Sprite>()->still();
                     cursorx.component<Sprite>()->setSrcrect(temprect);
                     cursorx.component<Sprite>()->setDestrect(temprect);
-                    cursorx.component<Sprite>()->setTexture("..//assets//menucursor.png");
+                    cursorx.component<Sprite>()->setTexture("..//assets//GUI//menucursor.png");
 
                     if (menus[in_menu].valid()) {
                         menupos = menus[in_menu].component<Position>()->getPos();
@@ -743,7 +743,7 @@ void Game::loadMouse() {
     position->setonTilemap(false);
     position->setBounds(-1000, 2000, -1000, 2000);
     mousex.assign<Sprite>();
-    mousex.component<Sprite>()->setTexture("..//assets//mousecursor.png");
+    mousex.component<Sprite>()->setTexture("..//assets//GUI//mousecursor.png");
 }
 
 bool Game::isMouse() {
@@ -845,7 +845,7 @@ void Game::putPConMap(std::vector<short int> in_units, std::vector<std::vector<i
         short unsigned int * tilesize = mapx->getTilesize();
 
         for (int i = 0; i < in_units.size(); i++) {
-            asset_name = "..//assets//" + party[in_units[i]].getName() + ".png";
+            asset_name = "..//assets//Units//" + party[in_units[i]].getName() + ".png";
             SDL_Log("Loading unit %s", asset_name.c_str());
             temp_unit_ent = entities.create();
             temp_unit_ent.assign<Unit>();
@@ -887,7 +887,7 @@ void Game::loadMapArrivals() {
                 temp_unit_ent.component<Position>()->setBounds(bounds);
                 temp_unit_ent.component<Position>()->setOffset(DEFAULT::TILEMAP_XOFFSET, DEFAULT::TILEMAP_YOFFSET);
                 temp_unit_ent.component<Position>()->setPos(map_arrivals[i].position.x, map_arrivals[i].position.y);
-                asset_name = "..//assets//" + unitNames[map_arrivals[i].id] + ".png";
+                asset_name = "..//assets//Units//" + unitNames[map_arrivals[i].id] + ".png";
                 temp_unit_ent.assign<Sprite>(asset_name.c_str());
                 temp_unit_ent.assign<Unit>();
                 temp_unit_ent.component<Unit>()->setWeapons(&weapons);
