@@ -1123,6 +1123,16 @@ void Game::loadJSON(const short int save_ind) {
         cJSON * json = parseJSON(filename);
         readJSON_narrative(json, &narrative);
 
+        cJSON * jRN = cJSON_GetObjectItem(json, "RN");
+        cJSON * jelement;
+        int i = 0;
+        cJSON_ArrayForEach(jRN, jelement) {
+            if ((i >= 0) && (i < 4)) {
+                tinymt32.status[i] = cJSON_GetNumberValue(jelement);
+                i++;
+            }
+        }
+
         cJSON * jconvoy = cJSON_GetObjectItem(json, "Convoy");
         convoy.readJSON(jconvoy);
         convoy.setWeapons(&weapons);
@@ -1164,9 +1174,7 @@ void Game::saveJSON(const short int save_ind) {
         cJSON * jparty = cJSON_CreateObject();
         cJSON * jconvoy = cJSON_CreateObject();
         cJSON * jcamp = cJSON_CreateObject();
-        cJSON * jRN = cJSON_CreateObject();
         cJSON * junit;
-
 
         cJSON * jRN = cJSON_CreateArray();
         cJSON * jtemp;
@@ -1185,7 +1193,7 @@ void Game::saveJSON(const short int save_ind) {
             cJSON_AddItemToObject(jparty, "Unit", junit);
         }
 
-        cJSON_AddToObject(json, "RN", jRN);
+        cJSON_AddItemToObject(json, "RN status", jRN);
         cJSON_AddItemToObject(json, "Party", jparty);
         convoy.writeJSON(jconvoy);
         cJSON_AddItemToObject(json, "Camp", jcamp);

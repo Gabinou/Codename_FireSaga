@@ -55,7 +55,7 @@ private:
 
     SDL_Window * window;
     Settings settings;
-    tinymt3232_t tinymt32;
+    tinymt32_t tinymt32;
     Convoy convoy;
     Camp camp;
 
