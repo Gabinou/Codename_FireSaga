@@ -1131,10 +1131,19 @@ void Game::loadJSON(const short int save_ind) {
         cJSON * json = parseJSON(filename);
         readJSON_narrative(json, &narrative);
 
-        cJSON * jRN = cJSON_GetObjectItem(json, "RN status");
+        cJSON * jRN = cJSON_GetObjectItem(json, "RN");
+        cJSON * jRN_status = cJSON_GetObjectItem(jRN, "Status");
+        cJSON * jRN_mat1 = cJSON_GetObjectItem(jRN, "mat1");
+        cJSON * jRN_mat2 = cJSON_GetObjectItem(jRN, "mat2");
+        cJSON * jRN_tmat = cJSON_GetObjectItem(jRN, "tmat");
+
+        tinymt32.mat1 = cJSON_GetNumberValue(jRN_mat1);
+        tinymt32.mat2 = cJSON_GetNumberValue(jRN_mat2);
+        tinymt32.tmat = cJSON_GetNumberValue(jRN_tmat);
+
         cJSON * jelement;
         int i = 0;
-        cJSON_ArrayForEach(jelement, jRN) {
+        cJSON_ArrayForEach(jelement, jRN_status) {
             if ((i >= 0) && (i < 4)) {
                 tinymt32.status[i] = cJSON_GetNumberValue(jelement);
                 i++;
@@ -1184,18 +1193,22 @@ void Game::saveJSON(const short int save_ind) {
         cJSON * jcamp = cJSON_CreateObject();
         cJSON * junit;
 
-        cJSON * jRN = cJSON_CreateArray();
+        cJSON * jRN = cJSON_CreateObject();
+        cJSON * jRN_status = cJSON_CreateArray();
+        cJSON * jRN_mat1 = cJSON_CreateNumber(tinymt32.mat1);
+        cJSON * jRN_mat2 = cJSON_CreateNumber(tinymt32.mat2);
+        cJSON * jRN_tmat = cJSON_CreateNumber(tinymt32.tmat);
         cJSON * jtemp;
         // SDL_Log("RnStatus[0] %d", tinymt32.status[0]);
 
         jtemp = cJSON_CreateNumber(tinymt32.status[0]);
-        cJSON_AddItemToArray(jRN, jtemp);
+        cJSON_AddItemToArray(jRN_status, jtemp);
         jtemp = cJSON_CreateNumber(tinymt32.status[1]);
-        cJSON_AddItemToArray(jRN, jtemp);
+        cJSON_AddItemToArray(jRN_status, jtemp);
         jtemp = cJSON_CreateNumber(tinymt32.status[2]);
-        cJSON_AddItemToArray(jRN, jtemp);
+        cJSON_AddItemToArray(jRN_status, jtemp);
         jtemp = cJSON_CreateNumber(tinymt32.status[3]);
-        cJSON_AddItemToArray(jRN, jtemp);
+        cJSON_AddItemToArray(jRN_status, jtemp);
 
         for (auto it = party.begin(); it != party.end(); it++) {
             junit = cJSON_CreateObject();
@@ -1203,7 +1216,11 @@ void Game::saveJSON(const short int save_ind) {
             cJSON_AddItemToObject(jparty, "Unit", junit);
         }
 
-        cJSON_AddItemToObject(json, "RN status", jRN);
+        cJSON_AddItemToObject(jRN, "Status", jRN_status);
+        cJSON_AddItemToObject(jRN, "mat1", jRN_mat1);
+        cJSON_AddItemToObject(jRN, "mat2", jRN_mat2);
+        cJSON_AddItemToObject(jRN, "tmat", jRN_tmat);
+        cJSON_AddItemToObject(json, "RN", jRN);
         cJSON_AddItemToObject(json, "Party", jparty);
         convoy.writeJSON(jconvoy);
         cJSON_AddItemToObject(json, "Camp", jcamp);
