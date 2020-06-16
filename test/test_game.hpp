@@ -137,6 +137,5 @@ void test_game() {
         lok(test_RN1 == test_RN3);
     }
 
-
     testgame3->clean();
 }
