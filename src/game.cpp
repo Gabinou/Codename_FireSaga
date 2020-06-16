@@ -1131,10 +1131,10 @@ void Game::loadJSON(const short int save_ind) {
         cJSON * json = parseJSON(filename);
         readJSON_narrative(json, &narrative);
 
-        cJSON * jRN = cJSON_GetObjectItem(json, "RN");
+        cJSON * jRN = cJSON_GetObjectItem(json, "RN status");
         cJSON * jelement;
         int i = 0;
-        cJSON_ArrayForEach(jRN, jelement) {
+        cJSON_ArrayForEach(jelement, jRN) {
             if ((i >= 0) && (i < 4)) {
                 tinymt32.status[i] = cJSON_GetNumberValue(jelement);
                 i++;
