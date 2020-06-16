@@ -5,12 +5,12 @@ void test_game() {
     SDL_Log("test_game");
     Game * testgame1 = nullptr;
     Settings temp_settings;
-
     temp_settings.FPS.show = true;
     temp_settings.fontsize = 28;
     testgame1 = new Game(temp_settings);
     std::vector<short int> unit_inds = {UNIT::NAME::SILOU};
     testgame1->loadUnits(unit_inds);
+    init_tinyMT(testgame1->getTinymt32());
 
 
     Convoy convoy;

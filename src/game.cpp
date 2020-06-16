@@ -20,7 +20,15 @@ Game::Game(Settings in_settings) {
     // setSettings(in_settings);
 }
 
-Game::~Game() {}
+Game::~Game() {
+
+}
+
+tinymt32_t & Game::getTinymt32() {
+    return (tinymt32);
+}
+
+
 
 Settings * Game::getSettings() {
     return (&settings);

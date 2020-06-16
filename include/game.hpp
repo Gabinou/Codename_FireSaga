@@ -78,6 +78,8 @@ public:
     void initSystems();
     void updateSystems();
 
+    tinymt32_t & getTinymt32();
+
     void setChapter(char in_chapter);
     char getChapter();
     entityx::ComponentHandle<Map> getMap();

@@ -30,11 +30,11 @@ int main(int argc, char * argv[]) {
     strncat(assetsDir, "assets\\", 6);
     FILESYSTEM::init(0, srcDir, assetsDir);
 
-    SDL_Log("Initializing TinyMT RNG\n");
-    init_tinyMT();
 
     SDL_Log("Creating game object\n");
     firesaga = new Game();
+    SDL_Log("Initializing TinyMT RNG\n");
+    init_tinyMT(firesaga->getTinymt32());
     firesaga->init();
     SDL_ShowCursor(SDL_DISABLE); // for default cursor.
     firesaga->initSystems();
