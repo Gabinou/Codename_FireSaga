@@ -4,6 +4,8 @@
 void test_game() {
     SDL_Log("test_game");
     Game * testgame1 = nullptr;
+    std::vector<unsigned char> test_RN1, test_RN3;
+
     Settings temp_settings;
     temp_settings.FPS.show = true;
     temp_settings.fontsize = 28;
@@ -107,6 +109,7 @@ void test_game() {
     lok(PHYSFS_exists("saves//save0002.bsav") == 0);
     testgame1->clean();
 
+
     // Game * testgame2 = nullptr;
     // testgame2 = new Game();
     // testgame2->loadXML(1);
@@ -123,5 +126,16 @@ void test_game() {
     testgame3->saveJSON(6);
     lok(PHYSFS_exists("saves//save0006.bsav") > 0);
     lok(fequal("saves//save0005.bsav", "saves//save0006.bsav"));
+
+    for (int i = 0; i < 10; i++) {
+        test_RN1.push_back(testgame1->getURN());
+        test_RN3.push_back(testgame3->getURN());
+        printf("RN: %u %u\n", test_RN1[i], test_RN3[i]);
+        lok(test_RN1[i] == test_RN3[i]);
+    }
+
+
+
+
     testgame3->clean();
 }
