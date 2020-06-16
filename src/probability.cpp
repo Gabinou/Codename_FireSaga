@@ -1,5 +1,6 @@
 
 #include "probability.hpp"
+#include <cstdio>
 
 // GLOSSARY:
 // RN: Random number

@@ -44,12 +44,12 @@ bool Game::checkRate(int rate, short int mode) {
     if (mode > 0) {
 
         if (mode == GAME::RN::SINGLE) {
-            hit = (getURN(tinymt32) < rate);
+            hit = (getURN() < rate);
             return (hit);
         }
 
         if (mode == GAME::RN::DOUBLE) {
-            hit = (((getURN(tinymt32) + getURN(tinymt32)) / 2) < rate);
+            hit = (((getURN() + getURN()) / 2) < rate);
             return (hit);
         }
     } else {
@@ -72,21 +72,21 @@ bool * Game::checkHitCrit(int hit_rate, int crit_rate, short int mode) {
     static bool hitcrit[2];
 
     if (mode == GAME::RN::SINGLE) {
-        hitcrit[0] = (getURN(tinymt32) < hit_rate);
-        hitcrit[1] = (getURN(tinymt32) < crit_rate);
+        hitcrit[0] = (getURN() < hit_rate);
+        hitcrit[1] = (getURN() < crit_rate);
         return (hitcrit);
     }
 
     if (mode == GAME::RN::DOUBLE) {
-        hitcrit[0] = (((getURN(tinymt32) + getURN(tinymt32)) / 2) < hit_rate);
-        hitcrit[1] = (((getURN(tinymt32) + getURN(tinymt32)) / 2) < crit_rate);
+        hitcrit[0] = (((getURN() + getURN()) / 2) < hit_rate);
+        hitcrit[1] = (((getURN() + getURN()) / 2) < crit_rate);
         return (hitcrit);
     }
 
     if (mode == GAME::RN::GAUSSIAN) {
         unsigned char * RNs;
-        RNs[0] = getURN(tinymt32);
-        RNs[1] = getURN(tinymt32);
+        RNs[0] = getURN();
+        RNs[1] = getURN();
         RNs = boxmuller(RNs);
         hitcrit[0] = (RNs[0] < hit_rate);
         hitcrit[1] = (RNs[1] < crit_rate);
@@ -1186,6 +1186,8 @@ void Game::saveJSON(const short int save_ind) {
 
         cJSON * jRN = cJSON_CreateArray();
         cJSON * jtemp;
+        // SDL_Log("RnStatus[0] %d", tinymt32.status[0]);
+
         jtemp = cJSON_CreateNumber(tinymt32.status[0]);
         cJSON_AddItemToArray(jRN, jtemp);
         jtemp = cJSON_CreateNumber(tinymt32.status[1]);
@@ -1259,6 +1261,11 @@ void Game::setState(const short int new_state) {
         SDL_Log("new state is invalid");
     }
 }
+
+unsigned char Game::getURN() {
+    return (Uuint32_openBSD(tinymt32, RN_MAX, RN_MIN));
+}
+
 
 KeyboardInputMap Game::getKeyboardInputMap() {
     return (keyboardInputMap);

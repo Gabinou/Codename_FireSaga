@@ -74,6 +74,8 @@ public:
     Game(Settings in_settings);
     ~Game();
 
+    unsigned char getURN();
+
     void init();
     void initSystems();
     void updateSystems();
