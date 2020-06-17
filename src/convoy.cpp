@@ -391,61 +391,61 @@ void Convoy::clear() {
     weapons->clear();
     Inventory_item empty;
 
-    // for (int i = 0; i < quantity.swords; i++) {
-    //     swords[i] = empty;
-    // }
+    for (int i = 0; i < quantity.swords; i++) {
+        swords[i] = empty;
+    }
 
-    // for (int i = 0; i < quantity.lances; i++) {
-    //     lances[i] = empty;
-    // }
+    for (int i = 0; i < quantity.lances; i++) {
+        lances[i] = empty;
+    }
 
-    // for (int i = 0; i < quantity.axes; i++) {
-    //     axes[i] = empty;
-    // }
+    for (int i = 0; i < quantity.axes; i++) {
+        axes[i] = empty;
+    }
 
-    // for (int i = 0; i < quantity.bows; i++) {
-    //     bows[i] = empty;
-    // }
+    for (int i = 0; i < quantity.bows; i++) {
+        bows[i] = empty;
+    }
 
-    // for (int i = 0; i < quantity.trinkets; i++) {
-    //     trinkets[i] = empty;
-    // }
+    for (int i = 0; i < quantity.trinkets; i++) {
+        trinkets[i] = empty;
+    }
 
-    // for (int i = 0; i < quantity.offhands; i++) {
-    //     offhands[i] = empty;
-    // }
+    for (int i = 0; i < quantity.offhands; i++) {
+        offhands[i] = empty;
+    }
 
-    // for (int i = 0; i < quantity.elemental; i++) {
-    //     elemental[i] = empty;
-    // }
+    for (int i = 0; i < quantity.elemental; i++) {
+        elemental[i] = empty;
+    }
 
-    // for (int i = 0; i < quantity.demonic; i++) {
-    //     demonic[i] = empty;
-    // }
+    for (int i = 0; i < quantity.demonic; i++) {
+        demonic[i] = empty;
+    }
 
-    // for (int i = 0; i < quantity.angelic; i++) {
-    //     angelic[i] = empty;
-    // }
+    for (int i = 0; i < quantity.angelic; i++) {
+        angelic[i] = empty;
+    }
 
-    // for (int i = 0; i < quantity.shields; i++) {
-    //     shields[i] = empty;
-    // }
+    for (int i = 0; i < quantity.shields; i++) {
+        shields[i] = empty;
+    }
 
-    // for (int i = 0; i < quantity.staffs; i++) {
-    //     staffs[i] = empty;
-    // }
+    for (int i = 0; i < quantity.staffs; i++) {
+        staffs[i] = empty;
+    }
 
-    // for (int i = 0; i < quantity.claws; i++) {
-    //     claws[i] = empty;
-    // }
+    for (int i = 0; i < quantity.claws; i++) {
+        claws[i] = empty;
+    }
 
-    // for (int i = 0; i < quantity.items; i++) {
-    //     items[i] = empty;
-    // }
+    for (int i = 0; i < quantity.items; i++) {
+        items[i] = empty;
+    }
 
-    // for (int i = 0; i < booksnum; i++) {
-    //     books[i] = empty;
-    // }
+    for (int i = 0; i < booksnum; i++) {
+        books[i] = empty;
+    }
 
     quantity.swords = 0;
     quantity.lances = 0;
