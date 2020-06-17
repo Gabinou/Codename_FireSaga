@@ -19,7 +19,7 @@ private:
     unsigned char  booksnum = 0;
     Quantity quantity;
     bool full = false;
-    std::unordered_map<short int, Weapon> * weapons = NULL;
+    std::unordered_map<short int, Weapon> * weapons = new std::unordered_map<short int, Weapon>;
 
     Inventory_item books[DEFAULT::BOOKS_NUM], swords[DEFAULT::CONVOY_SIZE],
                    lances[DEFAULT::CONVOY_SIZE], axes[DEFAULT::CONVOY_SIZE],
@@ -56,6 +56,8 @@ public:
 
     void printContents(int wpntype); // Useless?
     void printStats(int wpntype, int stattype);
+
+    void clear();
 
     using JSON_IO::writeJSON;
     using JSON_IO::readJSON;

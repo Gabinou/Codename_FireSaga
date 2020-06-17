@@ -387,6 +387,82 @@ void Convoy::setWeapons(std::unordered_map<short int, Weapon> * in_weapons) {
     weapons = in_weapons;
 }
 
+void Convoy::clear() {
+    weapons->clear();
+    Inventory_item empty;
+
+    // for (int i = 0; i < quantity.swords; i++) {
+    //     swords[i] = empty;
+    // }
+
+    // for (int i = 0; i < quantity.lances; i++) {
+    //     lances[i] = empty;
+    // }
+
+    // for (int i = 0; i < quantity.axes; i++) {
+    //     axes[i] = empty;
+    // }
+
+    // for (int i = 0; i < quantity.bows; i++) {
+    //     bows[i] = empty;
+    // }
+
+    // for (int i = 0; i < quantity.trinkets; i++) {
+    //     trinkets[i] = empty;
+    // }
+
+    // for (int i = 0; i < quantity.offhands; i++) {
+    //     offhands[i] = empty;
+    // }
+
+    // for (int i = 0; i < quantity.elemental; i++) {
+    //     elemental[i] = empty;
+    // }
+
+    // for (int i = 0; i < quantity.demonic; i++) {
+    //     demonic[i] = empty;
+    // }
+
+    // for (int i = 0; i < quantity.angelic; i++) {
+    //     angelic[i] = empty;
+    // }
+
+    // for (int i = 0; i < quantity.shields; i++) {
+    //     shields[i] = empty;
+    // }
+
+    // for (int i = 0; i < quantity.staffs; i++) {
+    //     staffs[i] = empty;
+    // }
+
+    // for (int i = 0; i < quantity.claws; i++) {
+    //     claws[i] = empty;
+    // }
+
+    // for (int i = 0; i < quantity.items; i++) {
+    //     items[i] = empty;
+    // }
+
+    // for (int i = 0; i < booksnum; i++) {
+    //     books[i] = empty;
+    // }
+
+    quantity.swords = 0;
+    quantity.lances = 0;
+    quantity.axes = 0;
+    quantity.bows = 0;
+    quantity.trinkets = 0;
+    quantity.offhands = 0;
+    quantity.elemental = 0;
+    quantity.demonic = 0;
+    quantity.angelic = 0;
+    quantity.shields = 0;
+    quantity.staffs = 0;
+    quantity.claws = 0;
+    quantity.items = 0;
+    booksnum = 0;
+}
+
 void Convoy::checkWeapon(short int in_id) {
     if (weapons != NULL) {
         if (weapons->find(in_id) == weapons->end()) {
