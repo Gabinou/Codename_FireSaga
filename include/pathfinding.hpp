@@ -4,23 +4,24 @@
 #include <string>
 #include <vector>
 #include <cmath>
+#include <cstdint>
 // #include "linalg.hpp"
 #include <SDL2/SDL.h>
 
-extern int h_manhattan(int start[], int end[]);
-extern int h_manhattan(std::vector<int> start, std::vector<int> end);
-extern int h_manhattan(std::vector<int> start, int end[]);
-extern int h_manhattan(int start, std::vector<int> end[]);
-extern double h_euclidean(int start[], int end[]);
+extern int32_t h_manhattan(int32_t start[], int32_t end[]);
+extern int32_t h_manhattan(std::vector<int32_t> start, std::vector<int32_t> end);
+extern int32_t h_manhattan(std::vector<int32_t> start, int32_t end[]);
+extern int32_t h_manhattan(int32_t start, std::vector<int32_t> end[]);
+extern int64_t h_euclidean(int32_t start[], int32_t end[]);
 
-extern std::vector<std::vector<int>> A_star(std::vector<std::vector<int>> map, int start[], int end[], std::string mode = "matrix");
+extern std::vector<std::vector<int32_t>> A_star(std::vector<std::vector<int32_t>> map, int32_t start[], int32_t end[], std::string mode = "matrix");
 
-template <typename T> extern std::vector<std::vector<T>> attackmap(std::vector<std::vector<T>> movemap, short unsigned int start[], short unsigned int move, unsigned char range[2], std::string mode = "matrix") {
+template <typename T> extern std::vector<std::vector<T>> attackmap(std::vector<std::vector<T>> movemap, uint32_t start[], uint32_t move, uint8_t range[2], std::string mode = "matrix") {
     // Using the movemap to compute all attackable tiles.
     // EXCLUDING moveable tiles.
     std::vector<std::vector<T>> attackmap;
     std::vector<std::vector<T>> movelist;
-    std::vector<T> temp_point = {0, 0};
+    std::vector<T> temp_point32_t = {0, 0};
     T tempx, tempy;
 
     movelist = matrix2list(movemap);
@@ -28,25 +29,25 @@ template <typename T> extern std::vector<std::vector<T>> attackmap(std::vector<s
     if (mode == "matrix") {
         attackmap = movemap;
 
-        for (int i = 0; i < attackmap.size(); i++) {
+        for (int32_t i = 0; i < attackmap.size(); i++) {
             std::fill(attackmap[i].begin(), attackmap[i].end(), 0);
         }
     }
 
-    for (int i = 0; i < movelist.size(); i++) {
-        for (int rangex = 0; rangex <= range[1]; rangex++) {
-            int miny = std::max(0, range[0] - rangex);
-            int maxy = std::max(range[1] - rangex, 0);
+    for (int32_t i = 0; i < movelist.size(); i++) {
+        for (int32_t rangex = 0; rangex <= range[1]; rangex++) {
+            int32_t miny = std::max(0, range[0] - rangex);
+            int32_t maxy = std::max(range[1] - rangex, 0);
 
-            for (int rangey = miny; rangey <= maxy; rangey++) {
-                tempx = std::min(movelist[i][1] + rangex, (int)(movemap[0].size() - 1));
-                tempy = std::min(movelist[i][0] + rangey, (int)(movemap.size() - 1));
+            for (int32_t rangey = miny; rangey <= maxy; rangey++) {
+                tempx = std::min(movelist[i][1] + rangex, (int32_t)(movemap[0].size() - 1));
+                tempy = std::min(movelist[i][0] + rangey, (int32_t)(movemap.size() - 1));
 
-                if ((tempx < (int)movemap[0].size()) && (tempy < (int)movemap.size())) {
+                if ((tempx < (int32_t)movemap[0].size()) && (tempy < (int32_t)movemap.size())) {
                     if (movemap[tempy][tempx] == 0) {
                         if (mode == "list") {
-                            temp_point = {tempx, tempy};
-                            attackmap.push_back(temp_point);
+                            temp_point32_t = {tempx, tempy};
+                            attackmap.push_back(temp_point32_t);
                         }
 
                         if (mode == "matrix") {
@@ -56,13 +57,13 @@ template <typename T> extern std::vector<std::vector<T>> attackmap(std::vector<s
                 }
 
                 tempx = std::max(movelist[i][1] - rangex, 0);
-                tempy = std::min(movelist[i][0] + rangey, (int)(movemap.size() - 1));
+                tempy = std::min(movelist[i][0] + rangey, (int32_t)(movemap.size() - 1));
 
-                if ((tempx >= 0) && (tempy < (int)movemap.size())) {
+                if ((tempx >= 0) && (tempy < (int32_t)movemap.size())) {
                     if (movemap[tempy][tempx] == 0) {
                         if (mode == "list") {
-                            temp_point = {tempx, tempy};
-                            attackmap.push_back(temp_point);
+                            temp_point32_t = {tempx, tempy};
+                            attackmap.push_back(temp_point32_t);
                         }
 
                         if (mode == "matrix") {
@@ -71,14 +72,14 @@ template <typename T> extern std::vector<std::vector<T>> attackmap(std::vector<s
                     }
                 }
 
-                tempx = std::min(movelist[i][1] + rangex, (int)(movemap[0].size() - 1));
+                tempx = std::min(movelist[i][1] + rangex, (int32_t)(movemap[0].size() - 1));
                 tempy = std::max(movelist[i][0] - rangey, 0);
 
-                if ((tempx < (int)movemap[0].size()) && (tempy >= 0)) {
+                if ((tempx < (int32_t)movemap[0].size()) && (tempy >= 0)) {
                     if (movemap[tempy][tempx] == 0) {
                         if (mode == "list") {
-                            temp_point = {tempx, tempy};
-                            attackmap.push_back(temp_point);
+                            temp_point32_t = {tempx, tempy};
+                            attackmap.push_back(temp_point32_t);
                         }
 
                         if (mode == "matrix") {
@@ -93,8 +94,8 @@ template <typename T> extern std::vector<std::vector<T>> attackmap(std::vector<s
                 if ((tempx >= 0) && (tempy >= 0)) {
                     if (movemap[tempy][tempx] == 0) {
                         if (mode == "list") {
-                            temp_point = {tempx, tempy};
-                            attackmap.push_back(temp_point);
+                            temp_point32_t = {tempx, tempy};
+                            attackmap.push_back(temp_point32_t);
                         }
 
                         if (mode == "matrix") {
@@ -113,9 +114,9 @@ template <typename T> extern std::vector<std::vector<T>> attackmap(std::vector<s
     return (attackmap);
 }
 
-template <typename T> extern std::vector<std::vector<T>> movemap(std::vector<std::vector<T>> costmap, short unsigned int start[], short unsigned int move, std::string mode = "matrix") {
+template <typename T> extern std::vector<std::vector<T>> movemap(std::vector<std::vector<T>> costmap, uint32_t start[], uint32_t move, std::string mode = "matrix") {
     // Using the map, computes all moveable tiles.
-    // outputs either a list of points, or a map of 1 and zeros.
+    // outputs either a list of point32_ts, or a map of 1 and zeros.
     struct node {
         T x;
         T y;
@@ -126,7 +127,7 @@ template <typename T> extern std::vector<std::vector<T>> movemap(std::vector<std
     if (mode == "matrix") {
         movemap = costmap;
 
-        for (int i = 0; i < movemap.size(); i++) {
+        for (int32_t i = 0; i < movemap.size(); i++) {
             std::fill(movemap[i].begin(), movemap[i].end(), 0);
         }
     }
@@ -137,7 +138,7 @@ template <typename T> extern std::vector<std::vector<T>> movemap(std::vector<std
     current.y = start[1];
     current.distance = 0;
     open.push_back(current);
-    int index[2] = {-1, 1};
+    int32_t index[2] = {-1, 1};
 
     while (!open.empty()) {
         current = open.back();
@@ -154,8 +155,8 @@ template <typename T> extern std::vector<std::vector<T>> movemap(std::vector<std
 
         // Two next whiles check the 4 neighbors.
         // (i-j)/2 == 1 when (i+j)/2 == 0 and vice versa.
-        for (int i = 0; i < 2; i++) {
-            for (int j = 0; j < 2; j++) {
+        for (int32_t i = 0; i < 2; i++) {
+            for (int32_t j = 0; j < 2; j++) {
                 neighbor.x = std::min(std::max(current.x + ((index[i] + index[j]) / 2), 0), T(costmap[0].size()) - 1);
                 neighbor.y = std::min(std::max(current.y + ((index[i] - index[j]) / 2), 0), T(costmap.size()) - 1);
                 neighbor.distance = current.distance + costmap[neighbor.y][neighbor.x];
@@ -163,7 +164,7 @@ template <typename T> extern std::vector<std::vector<T>> movemap(std::vector<std
                 if ((neighbor.distance <= move) && (costmap[neighbor.y][neighbor.x] > 0)) {
                     bool inclosed = false;
 
-                    for (int k = 0; k < closed.size(); k++) {
+                    for (int32_t k = 0; k < closed.size(); k++) {
                         if ((neighbor.x == closed[k].x) && (neighbor.y == closed[k].y)) {
                             inclosed = true;
 

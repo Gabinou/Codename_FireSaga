@@ -31,7 +31,7 @@ public:
         rect.y = in_rect.y;
     }
 
-    void setArea(short int width, short int height) {
+    void setArea(int16_t width, int16_t height) {
         rect.x = width;
         rect.y = height;
     }

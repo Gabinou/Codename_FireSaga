@@ -1,33 +1,33 @@
 
 #include "pathfinding.hpp"
 
-int h_manhattan(int start[], int end[]) {
+int32_t h_manhattan(int32_t start[], int32_t end[]) {
     // fast. Exact on a grid.
     return (abs(start[0] - end[0]) + abs(start[1] - end[1]));
 }
 
-int h_manhattan(std::vector<int> start, std::vector<int> end) {
+int32_t h_manhattan(std::vector<int32_t> start, std::vector<int32_t> end) {
     // fast. Exact on a grid.
     return (abs(start[0] - end[0]) + abs(start[1] - end[1]));
 }
 
-int h_manhattan(std::vector<int> start, int end[]) {
+int32_t h_manhattan(std::vector<int32_t> start, int32_t end[]) {
     // fast. Exact on a grid.
     return (abs(start[0] - end[0]) + abs(start[1] - end[1]));
 }
 
-int h_manhattan(int start[], std::vector<int> end) {
+int32_t h_manhattan(int32_t start[], std::vector<int32_t> end) {
     // fast. Exact on a grid.
     return (abs(start[0] - end[0]) + abs(start[1] - end[1]));
 }
 
-double h_euclidean(int start[], int end[]) {
+int64_t h_euclidean(int32_t start[], int32_t end[]) {
     // Slower. More accurate.
     return (std::sqrt(pow(start[0] - end[0], 2.0) + pow(start[1] - end[1], 2.0)));
 }
 
-int find_row(int start[], std::vector<std::vector<int>> list) {
-    int row;
+int32_t find_row(int32_t start[], std::vector<std::vector<int32_t>> list) {
+    int32_t row;
 
     for (row = 0; row < list.size(); row++) {
         if ((list[row][0] == start[0]) && (list[row][1] == start[1])) {
@@ -38,8 +38,8 @@ int find_row(int start[], std::vector<std::vector<int>> list) {
     return (-1);
 }
 
-int find_node(int start[], std::vector<std::vector<int>> list) {
-    int row;
+int32_t find_node(int32_t start[], std::vector<std::vector<int32_t>> list) {
+    int32_t row;
 
     for (row = 0; row < list.size(); row++) {
         if ((list[row][0] == start[0]) && (list[row][1] == start[1])) {
@@ -50,25 +50,25 @@ int find_node(int start[], std::vector<std::vector<int>> list) {
     return (-1);
 }
 
-std::vector<std::vector<int>> A_star(std::vector<std::vector<int>> map, int start[], int end[], std::string mode) {
+std::vector<std::vector<int32_t>> A_star(std::vector<std::vector<int32_t>> map, int32_t start[], int32_t end[], std::string mode) {
     // Arrays containing points are arrays:
     // [0-1] = point [2] = f value [3-4] previous point.
-    std::vector<std::vector<int>> openlist;
-    std::vector<std::vector<int>> closedlist;
-    std::vector<int> current;
+    std::vector<std::vector<int32_t>> openlist;
+    std::vector<std::vector<int32_t>> closedlist;
+    std::vector<int32_t> current;
     openlist.push_back({start[0], start[1], 0, 0, 0, 0});
     current = openlist.back();
-    int swap_index;
-    int inclosedlist_index;
-    int inopenlist_index;
-    int cost;
-    int g_neighbor;
-    int h_neighbor;
-    int neighborxp[2];
-    int neighborxm[2];
-    int neighboryp[2];
-    int neighborym[2];
-    int (*neighbors[4])[2];
+    int32_t swap_index;
+    int32_t inclosedlist_index;
+    int32_t inopenlist_index;
+    int32_t cost;
+    int32_t g_neighbor;
+    int32_t h_neighbor;
+    int32_t neighborxp[2];
+    int32_t neighborxm[2];
+    int32_t neighboryp[2];
+    int32_t neighborym[2];
+    int32_t (*neighbors[4])[2];
     SDL_Log("%s\n", mode.c_str());
 
     while (!openlist.empty()) {
@@ -95,7 +95,7 @@ std::vector<std::vector<int>> A_star(std::vector<std::vector<int>> map, int star
         neighbors[2] = &neighboryp;
         neighbors[3] = &neighborym;
 
-        for (int i = 0; i < 4; i++) {
+        for (int32_t i = 0; i < 4; i++) {
             if (map[(*neighbors[i])[0]][(*neighbors[i])[1]] > 0) {
                 inopenlist_index = find_row(*neighbors[i], openlist);
                 inclosedlist_index = find_row(*neighbors[i], closedlist);
@@ -131,13 +131,13 @@ std::vector<std::vector<int>> A_star(std::vector<std::vector<int>> map, int star
         }
     }
 
-    std::vector<std::vector<int>> path;
-    std::vector<std::vector<int>> pathmap;
+    std::vector<std::vector<int32_t>> path;
+    std::vector<std::vector<int32_t>> pathmap;
 
     if (mode == "matrix") {
         pathmap = map;
 
-        for (int i = 0; i < pathmap.size(); i++) {
+        for (int32_t i = 0; i < pathmap.size(); i++) {
             std::fill(pathmap[i].begin(), pathmap[i].end(), 0);
         }
     }
