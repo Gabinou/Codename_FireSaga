@@ -4,13 +4,13 @@
 
 void test_pathfinding() {
     SDL_Log("test_pathfinding");
-    short unsigned int move;
-    short unsigned int start[2];
-    unsigned char range[2];
-    std::vector<std::vector<short int>> position;
-    std::vector<std::vector<short int>> costmapp;
-    std::vector<std::vector<short int>> attackmapp;
-    std::vector<std::vector<short int>> movemapp;
+    uint32_t move;
+    uint32_t start[2];
+    uint8_t range[2];
+    std::vector<std::vector<int16_t>> position;
+    std::vector<std::vector<int16_t>> costmapp;
+    std::vector<std::vector<int16_t>> attackmapp;
+    std::vector<std::vector<int16_t>> movemapp;
 
     move = 5;
     range[0] = 1;
