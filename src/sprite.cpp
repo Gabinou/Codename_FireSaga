@@ -8,12 +8,12 @@ Sprite::Sprite(const char * in_asset_name) {
     setTexture(in_asset_name);
 }
 
-Sprite::Sprite(const char * in_asset_name, int in_picsize[2]) : Sprite(in_asset_name)  {
+Sprite::Sprite(const char * in_asset_name, int32_t in_picsize[2]) : Sprite(in_asset_name)  {
     setSrcrect(in_picsize[0], in_picsize[1]);
     setDestrect(in_picsize[0], in_picsize[1]);
 }
 
-Sprite::Sprite(const char * in_asset_name, int inFrames, int inSpeed) : Sprite(in_asset_name) {
+Sprite::Sprite(const char * in_asset_name, int32_t inFrames, int32_t inSpeed) : Sprite(in_asset_name) {
     animated = true;
     frames = inFrames;
     speed = inSpeed;
@@ -47,15 +47,15 @@ bool Sprite::isVisible() {
     return (visible);
 }
 
-unsigned char Sprite::getSs_looping() {
+uint8_t Sprite::getSs_looping() {
     return (ss_looping);
 }
 
-short int Sprite::getFrames() {
+int16_t Sprite::getFrames() {
     return (frames);
 }
 
-short int Sprite::getSpeed() {
+int16_t Sprite::getSpeed() {
     return (speed);
 }
 
@@ -63,29 +63,29 @@ void Sprite::show() {
     visible = true;
 }
 
-short int * Sprite::getSlidepos() {
+int16_t * Sprite::getSlidepos() {
     return (slidepos);
 }
 
-short int * Sprite::getObjpos() {
+int16_t * Sprite::getObjpos() {
     return (objectivepos);
 }
 
-void Sprite::setSlidepos(short int * in_slidepos) {
+void Sprite::setSlidepos(int16_t * in_slidepos) {
     slidepos[0] = in_slidepos[0];
     slidepos[1] = in_slidepos[1];
 }
 
-void Sprite::setObjpos(short int * in_objectivepos) {
+void Sprite::setObjpos(int16_t * in_objectivepos) {
     objectivepos[0] = in_objectivepos[0];
     objectivepos[1] = in_objectivepos[1];
 }
 
-unsigned char Sprite::getSlidetype() {
+uint8_t Sprite::getSlidetype() {
     return (slidetype);
 }
 
-void Sprite::setSlidetype(unsigned char in_slidetype) {
+void Sprite::setSlidetype(uint8_t in_slidetype) {
     slidetype = in_slidetype;
 
     if (animated) {
@@ -105,7 +105,7 @@ void Sprite::animatedRects() {
     }
 }
 
-void Sprite::setTilesize(short unsigned int * in_tilesize) {
+void Sprite::setTilesize(uint16_t * in_tilesize) {
     tilesize[0] = in_tilesize[0];
     tilesize[1] = in_tilesize[1];
 
@@ -114,17 +114,17 @@ void Sprite::setTilesize(short unsigned int * in_tilesize) {
     }
 }
 
-void Sprite::init(short int * in_position) {
-    slidepos[0] = objectivepos[0] = (int)in_position[0] * tilesize[0] - destrect.w / 4;
-    slidepos[1] = objectivepos[1] = (int)in_position[1] * tilesize[1] - destrect.h / 4;
+void Sprite::init(int16_t * in_position) {
+    slidepos[0] = objectivepos[0] = (int32_t)in_position[0] * tilesize[0] - destrect.w / 4;
+    slidepos[1] = objectivepos[1] = (int32_t)in_position[1] * tilesize[1] - destrect.h / 4;
 }
 
 void Sprite::init(Point in_position) {
-    slidepos[0] = objectivepos[0] = (int)in_position.x * tilesize[0] - destrect.w / 4;
-    slidepos[1] = objectivepos[1] = (int)in_position.y * tilesize[1] - destrect.h / 4;
+    slidepos[0] = objectivepos[0] = (int32_t)in_position.x * tilesize[0] - destrect.w / 4;
+    slidepos[1] = objectivepos[1] = (int32_t)in_position.y * tilesize[1] - destrect.h / 4;
 }
 
-void Sprite::setDestrectpos(short int * in_position) {
+void Sprite::setDestrectpos(int16_t * in_position) {
     destrect.x = in_position[0];
     destrect.y = in_position[1];
 }
@@ -139,7 +139,7 @@ void Sprite::setTexture(const char * in_asset_name) {
     texture = loadTexture(Game::renderer, in_asset_name);
 }
 
-void Sprite::setAnimation(int inFrames, int inSpeed) {
+void Sprite::setAnimation(int32_t inFrames, int32_t inSpeed) {
     animated = true;
     frames = inFrames;
     speed = inSpeed;
@@ -154,7 +154,7 @@ void Sprite::lighten() {
 }
 
 
-short int Sprite::getSlideint() {
+int16_t Sprite::getSlideint() {
     return (slideint);
 }
 
@@ -162,7 +162,7 @@ void Sprite::setSrcrect(SDL_Rect in_rect) {
     srcrect = in_rect;
 }
 
-void Sprite::setSrcrect(int width, int height) {
+void Sprite::setSrcrect(int32_t width, int32_t height) {
     srcrect.w = width;
     srcrect.h = height;
 }
@@ -171,7 +171,7 @@ void Sprite::setDestrect(SDL_Rect in_rect) {
     destrect = in_rect;
 }
 
-void Sprite::setDestrect(int width, int height) {
+void Sprite::setDestrect(int32_t width, int32_t height) {
     destrect.w = width;
     destrect.h = height;
 }

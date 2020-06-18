@@ -195,8 +195,8 @@ void UnitSystemx::receive(const unitDanger & danger) {
     std::vector<std::vector<int16_t>> movemapp;
     std::vector<std::vector<int16_t>> attackmapp;
     std::vector<std::vector<int16_t>> dangermapp;
-    uint16_t unit_move;
-    uint16_t start[2];
+    uint32_t unit_move;
+    uint32_t start[2];
     uint8_t * range;
 
     entityx::ComponentHandle<Unit> unit = danger.unit;
@@ -251,9 +251,9 @@ void UnitSystemx::receive(const unitMove & move) {
     entityx::ComponentHandle<Unit> unit = move.unit;
     Point start;
     Point offset;
-    uint16_t nooffset[2];
-    int16_t unit_move;
-    uint16_t current_unit_id;
+    uint32_t nooffset[2];
+    uint32_t unit_move;
+    uint32_t current_unit_id;
     uint8_t * range;
 
     if (cursorpos) {

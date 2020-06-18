@@ -17,25 +17,25 @@ protected:
     SDL_Rect destrect = {0, 0, 32, 32}; //x,y,w,h
     SDL_Texture * texture;
 
-    short int frames = 10, speed = 50;
-    short int objectivepos[2];
-    short int slidepos[2];
-    short int slideint = 0; // for slide_type = "geometric"
-    short unsigned int tilesize[2] = {32, 32};
+    int16_t frames = 10, speed = 50;
+    int16_t objectivepos[2];
+    int16_t slidepos[2];
+    int16_t slideint = 0; // for slide_type = "geometric"
+    uint16_t tilesize[2] = {32, 32};
     float slidefactors[2] = {2, 1.025}; // for slide_type = "geometric"
 
     bool visible = true;
     bool animated = false;
     std::string asset_name;
-    unsigned char ss_looping = LOOPING::PINGPONG; //ss: spritesheet
-    unsigned char slidetype = 0;
+    uint8_t ss_looping = LOOPING::PINGPONG; //ss: spritesheet
+    uint8_t slidetype = 0;
 public:
     Sprite();
     Sprite(const char * in_asset_name);
-    Sprite(const char * in_asset_name, int in_picsize[2]);
-    Sprite(const char * in_asset_name, int inFrames, int inSpeed);
+    Sprite(const char * in_asset_name, int32_t in_picsize[2]);
+    Sprite(const char * in_asset_name, int32_t inFrames, int32_t inSpeed);
 
-    void init(short int * in_position);
+    void init(int16_t * in_position);
     void init(Point in_position);
 
     SDL_Texture * getTexture();
@@ -49,36 +49,36 @@ public:
     bool isAnimated();
     bool isVisible();
 
-    unsigned char getSs_looping();
+    uint8_t getSs_looping();
 
-    short int getFrames();
-    short int getSpeed();
+    int16_t getFrames();
+    int16_t getSpeed();
 
-    short int * getSlidepos();
-    short int * getObjpos();
-    void setSlidepos(short int * in_slidepos);
-    void setObjpos(short int * in_objectivepos);
+    int16_t * getSlidepos();
+    int16_t * getObjpos();
+    void setSlidepos(int16_t * in_slidepos);
+    void setObjpos(int16_t * in_objectivepos);
 
-    void setTilesize(short unsigned int * in_tilesize);
+    void setTilesize(uint16_t * in_tilesize);
     void animatedRects();
 
     void darken();
     void lighten();
 
-    unsigned char getSlidetype();
-    void setSlidetype(unsigned char in_slidetype);
-    void setDestrectpos(short int * in_position);
+    uint8_t getSlidetype();
+    void setSlidetype(uint8_t in_slidetype);
+    void setDestrectpos(int16_t * in_position);
     void setDestrectpos(Point in_position);
     void setTexture(const char * in_asset_name);
 
-    void setAnimation(int inFrames, int inSpeed) ;
+    void setAnimation(int32_t inFrames, int32_t inSpeed) ;
 
-    short int getSlideint();
+    int16_t getSlideint();
 
     void setSrcrect(SDL_Rect in_rect);
-    void setSrcrect(int width, int height);
+    void setSrcrect(int32_t width, int32_t height);
     void setDestrect(SDL_Rect in_rect);
-    void setDestrect(int width, int height);
+    void setDestrect(int32_t width, int32_t height);
 
     SDL_Rect getSrcrect();
     SDL_Rect getDestrect();
