@@ -6,7 +6,7 @@ Weapon::Weapon() {
     setXMLElement("Item");
 }
 
-Weapon::Weapon(short unsigned int in_type, Weapon_stats in_stats, unsigned char in_id) : Weapon() {
+Weapon::Weapon(uint16_t in_type, Weapon_stats in_stats, uint8_t in_id) : Weapon() {
     stats = in_stats;
     name = itemNames[in_id];
     type = in_type;
@@ -21,7 +21,7 @@ void Weapon::setStats(Weapon_stats in_stats) {
     stats = in_stats;
 }
 
-void Weapon::infuse(unsigned char in_mag, unsigned short int in_type) {
+void Weapon::infuse(uint8_t in_mag, uint16_t in_type) {
     if (infused.power < 0) {
         if (((in_type & ITEM::TYPE::ELEMENTAL) > 0) || ((in_type & ITEM::TYPE::ANGELIC) > 0) || ((in_type & ITEM::TYPE::DEMONIC) > 0)) {
             infused.power = in_mag;
@@ -50,11 +50,11 @@ bool Weapon::canInfuse() {
     return (out);
 }
 
-void Weapon::setEffective(short unsigned int in_effective) {
+void Weapon::setEffective(uint16_t in_effective) {
     effective = in_effective;
 }
 
-short unsigned int Weapon::getEffective() {
+uint16_t Weapon::getEffective() {
     return (effective);
 }
 
@@ -133,7 +133,7 @@ void Weapon::readXML(tinyxml2::XMLElement * in_pWpn) {
         infused.type = ptemp2->IntText();
     }
 
-    id = (unsigned short int)in_pWpn->IntAttribute("id");
+    id = (uint16_t)in_pWpn->IntAttribute("id");
     ptemp = in_pWpn->FirstChildElement("Description");
 
     if (!ptemp) {
@@ -163,7 +163,7 @@ void Weapon::readXML(tinyxml2::XMLElement * in_pWpn) {
     if (!ptemp) {
         SDL_Log("Cannot get Types element");
     } else {
-        type = (unsigned short int)ptemp->IntAttribute("id");
+        type = (uint16_t)ptemp->IntAttribute("id");
     }
 
     ptemp = in_pWpn->FirstChildElement("Effectives");
@@ -171,7 +171,7 @@ void Weapon::readXML(tinyxml2::XMLElement * in_pWpn) {
     if (!ptemp) {
         SDL_Log("Cannot get Effectives element");
     } else {
-        effective = (unsigned short int)ptemp->IntAttribute("id");
+        effective = (uint16_t)ptemp->IntAttribute("id");
     }
 
     ptemp = in_pWpn->FirstChildElement("Effects");

@@ -4,6 +4,7 @@
 #include "item.hpp"
 #include "utilities.hpp"
 #include "filesystem.hpp"
+#include <cstdint>
 // #ifndef STB_SPRINTF_IMPLEMENTATION //Why no need?
 // #define STB_SPRINTF_IMPLEMENTATION
 #include "stb_sprintf.h"
@@ -12,20 +13,20 @@
 class Weapon : public Item {
 private:
     Weapon_stats stats = {0, 0, 0, 0, 0, 0, 0, 0, 0, {0, 0}, {0, 0}, 0, 0};
-    short unsigned int effective = 0; // is a unit type.
+    uint16_t effective = 0; // is a unit type.
     Infusion infused;
 public:
     Weapon();
-    Weapon(short unsigned int in_type, Weapon_stats in_stats, unsigned char in_id);
+    Weapon(uint16_t in_type, Weapon_stats in_stats, uint8_t in_id);
 
     void setStats(Weapon_stats in_stats);
     Weapon_stats getStats();
 
-    void infuse(unsigned char in_mag, short unsigned int in_type);
+    void infuse(uint8_t in_mag, uint16_t in_type);
     Infusion getInfused();
     bool canInfuse();
-    void setEffective(short unsigned int in_effective);
-    short unsigned int getEffective();
+    void setEffective(uint16_t in_effective);
+    uint16_t getEffective();
 
     using Item::writeJSON;
     using Item::readJSON;
