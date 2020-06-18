@@ -59,11 +59,11 @@ bool Game::checkRate(int16_t rate, int16_t mode) {
     return (hit);
 }
 
-void Game::setChapter(char in_chapter) {
+void Game::setChapter(int8_t in_chapter) {
     chapter = in_chapter;
 }
 
-char Game::getChapter() {
+int8_t Game::getChapter() {
     return (chapter);
 }
 
@@ -118,7 +118,7 @@ void Game::makeTurntransition() {
     // transition.component<Sprite>()->setDestrect(128, 128);
 }
 
-void Game::setTurntransitiontext(char in_army) {
+void Game::setTurntransitiontext(int8_t in_army) {
     if (in_army > 0) {
         transition.component<Text>()->setText(armyNames[in_army]);
     } else {
@@ -227,7 +227,7 @@ void Game::showMenu(int16_t index) {
     }
 }
 
-entityx::Entity * Game::getMenu(char in_menu) {
+entityx::Entity * Game::getMenu(int8_t in_menu) {
     entityx::Entity * out;
 
     if (in_menu > 0) {
@@ -239,7 +239,7 @@ entityx::Entity * Game::getMenu(char in_menu) {
     return (out);
 }
 
-void Game::makeMenutext(char in_menu) {
+void Game::makeMenutext(int8_t in_menu) {
     SDL_Log("Making menu text: %d", in_menu);
 
     if (in_menu > 0) {
@@ -269,7 +269,7 @@ void Game::killButtons() {
     buttons.clear();
 }
 
-entityx::Entity Game::makeButton(char in_menu_option) {
+entityx::Entity Game::makeButton(int8_t in_menu_option) {
     entityx::Entity temp = entities.create();
     temp.assign<Position>();
     temp.component<Position>()->setonTilemap(false);
@@ -365,7 +365,7 @@ std::vector<entityx::Entity> Game::getButtons() {
     return (buttons);
 }
 
-void Game::makeButtons(char in_menu, Point menu_pos) {
+void Game::makeButtons(int8_t in_menu, Point menu_pos) {
     SDL_Log("Making buttons: %d", in_menu);
 
     if (in_menu > 0) {
@@ -391,7 +391,7 @@ void Game::makeButtons(char in_menu, Point menu_pos) {
 }
 
 
-void Game::makeMenu(char in_menu) {
+void Game::makeMenu(int8_t in_menu) {
     SDL_Log("Making menu: %d", in_menu);
 
     if (in_menu > 0) {
@@ -437,7 +437,7 @@ void Game::makeMenu(char in_menu) {
     }
 }
 
-void Game::makeMenuoptions(char in_menu) {
+void Game::makeMenuoptions(int8_t in_menu) {
     SDL_Log("Making Menu options");
 
     if (in_menu > 0) {
@@ -572,7 +572,7 @@ void Game::loadMap(const int16_t in_map_index) {
     }
 }
 
-std::vector<uint8_t> Game::getMenuoptions(char in_menu) {
+std::vector<uint8_t> Game::getMenuoptions(int8_t in_menu) {
     std::vector<uint8_t> out;
 
     if (in_menu > 0) {
@@ -584,7 +584,7 @@ std::vector<uint8_t> Game::getMenuoptions(char in_menu) {
     return (out);
 }
 
-void Game::setMenuoptions(char in_menu, std::vector<uint8_t> in_options) {
+void Game::setMenuoptions(int8_t in_menu, std::vector<uint8_t> in_options) {
     if (in_menu > 0) {
         menuoptions[in_menu] = in_options;
     } else {
@@ -622,7 +622,7 @@ void Game::unloadMap() {
     }
 }
 
-void Game::setMousestate(const char in_menu) {
+void Game::setMousestate(const int8_t in_menu) {
     SDL_Log("Changing mouse to state %d", in_menu);
 
     if (in_menu >= 0) {
@@ -657,7 +657,7 @@ void Game::setMousestate(const char in_menu) {
 }
 
 
-void Game::setCursorstate(const char in_menu) {
+void Game::setCursorstate(const int8_t in_menu) {
     SDL_Log("Changing cursor to state %d", in_menu);
 
     if (in_menu >= 0) {
@@ -1012,7 +1012,7 @@ void Game::updateSystems() {
 }
 
 void Game::startTurnSystem() {
-    std::vector<uint8_t> armies = mapx->getArmies();
+    std::vector<int8_t> armies = mapx->getArmies();
 
     if (armies.size() > 0) {
         systems.system<TurnSystemx>()->addArmies(armies);

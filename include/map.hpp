@@ -102,12 +102,12 @@ public:
     entityx::ComponentHandle<Unit> getUnit(const uint16_t x, const uint16_t y);
     void moveUnit(const uint16_t x, const uint16_t y, const uint16_t new_x, const uint16_t new_y);
 
-    void setOverlay(const int8_t in_mode, std::vector<std::vector<int16_t>> in_map);
+    void setOverlay(const uint8_t in_mode, std::vector<std::vector<int16_t>> in_map);
     void clearOverlays();
 
-    int8_t getTurn();
+    uint8_t getTurn();
 
-    void setOverlaymode(const int8_t in_mode);
+    void setOverlaymode(const uint8_t in_mode);
     void showOverlay();
     void hideOverlay();
 
@@ -124,11 +124,11 @@ public:
 
     void setArrivals(const std::vector<Map_arrival> in_arrivals);
     void addArrival(const Map_arrival in_arrival);
-    void removeMapArrival(const int8_t index);
+    void removeMapArrival(const uint8_t index);
     std::vector<Map_arrival> getArrivals();
-    int8_t getnumArrivals();
+    uint8_t getnumArrivals();
 
-    void setDangermode(const int8_t in_mode);
+    void setDangermode(const uint8_t in_mode);
     void showDanger();
     void hideDanger();
     void switchDanger();
