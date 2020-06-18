@@ -16,7 +16,7 @@
 template <typename T> extern std::vector<std::vector <T>> list2matrix(std::vector<std::vector<T>> list, T col, T row) {
     std::vector<std::vector <T>> matrix(col, std::vector<T> (row, 0));
 
-    for (short unsigned int ind = 0; ind < list.size(); ind++) {
+    for (int16_t ind = 0; ind < list.size(); ind++) {
         matrix[list[ind][0]][list[ind][1]] = 1;
     }
 
@@ -24,8 +24,8 @@ template <typename T> extern std::vector<std::vector <T>> list2matrix(std::vecto
 }
 
 template <typename T> extern void plot2Dvec(std::vector<std::vector<T>> vec) {
-    for (short unsigned int i = 0; i < vec.size(); i++) {
-        for (short unsigned int j = 0; j < vec[i].size(); j++) {
+    for (int16_t i = 0; i < vec.size(); i++) {
+        for (int16_t j = 0; j < vec[i].size(); j++) {
             printf("%d ", vec[i][j]);
         }
 
@@ -35,8 +35,8 @@ template <typename T> extern void plot2Dvec(std::vector<std::vector<T>> vec) {
 
 template <typename T> extern void plot2Darray(T array[][10], T imax, T jmax) {
     //Don't know how to pass array that at least do not have 1D known before hand
-    for (short unsigned int i = 0; i < imax; i++) {
-        for (short unsigned int j = 0; j < jmax; j++) {
+    for (int16_t i = 0; i < imax; i++) {
+        for (int16_t j = 0; j < jmax; j++) {
             printf("%d ", array[i][j]);
         }
 
@@ -49,11 +49,11 @@ template <typename T> extern std::vector<T> unique2D(std::vector<std::vector<T>>
     std::vector<T> uniques;
     bool found;
 
-    for (short unsigned int i = 0; i < matrix.size(); i++) {
-        for (short unsigned int j = 0; j < matrix[i].size(); j++) {
+    for (int16_t i = 0; i < matrix.size(); i++) {
+        for (int16_t j = 0; j < matrix[i].size(); j++) {
             found = false;
 
-            for (short unsigned int k = 0; k < uniques.size(); k++) {
+            for (int16_t k = 0; k < uniques.size(); k++) {
                 if (uniques[k] == matrix[i][j]) {
                     found = true;
                 }
@@ -73,8 +73,8 @@ template <typename T> extern std::vector<std::vector<T>> matrix_plus(std::vector
     //both matrices should have the same shape
     std::vector<std::vector<T>> out = matrix1;
 
-    for (short unsigned int i = 0; i < out.size(); i++) {
-        for (short unsigned int j = 0; j < out[i].size(); j++) {
+    for (int16_t i = 0; i < out.size(); i++) {
+        for (int16_t j = 0; j < out[i].size(); j++) {
             out[i][j] += sign * matrix2[i][j];
         }
     }
@@ -86,8 +86,8 @@ template <typename T> extern std::vector<std::vector<T>> matrix_or(std::vector<s
     //both matrices should have the same shape
     std::vector<std::vector<T>> out = matrix1;
 
-    for (short unsigned int i = 0; i < out.size(); i++) {
-        for (short unsigned int j = 0; j < out[i].size(); j++) {
+    for (int16_t i = 0; i < out.size(); i++) {
+        for (int16_t j = 0; j < out[i].size(); j++) {
             out[i][j] = out[i][j] || matrix2[i][j];
         }
     }
@@ -99,8 +99,8 @@ template <typename T> extern std::vector<std::vector<T>> matrix_and(std::vector<
     //both matrices should have the same shape
     std::vector<std::vector<T>> out = matrix1;
 
-    for (short unsigned int i = 0; i < out.size(); i++) {
-        for (short unsigned int j = 0; j < out[i].size(); j++) {
+    for (int16_t i = 0; i < out.size(); i++) {
+        for (int16_t j = 0; j < out[i].size(); j++) {
             out[i][j] = out[i][j] && matrix2[i][j];
         }
     }
@@ -111,14 +111,14 @@ template <typename T> extern std::vector<std::vector<T>> matrix_and(std::vector<
 template <typename T> extern std::vector<std::vector<T>> matrix_edges(std::vector<std::vector<T>> matrix) {
     std::vector<std::vector<T>> edges = matrix;
 
-    for (short unsigned int i = 0; i < edges.size(); i++) {
+    for (int16_t i = 0; i < edges.size(); i++) {
         std::fill(edges[i].begin(), edges[i].end(), 0);
     }
 
     bool edge;
 
-    for (short unsigned int i = 0; i < edges.size(); i++) {
-        for (short unsigned int j = 0; j < edges[i].size(); j++) {
+    for (int16_t i = 0; i < edges.size(); i++) {
+        for (int16_t j = 0; j < edges[i].size(); j++) {
             edge = false;
 
             if (i != 0) {

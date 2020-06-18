@@ -8,29 +8,29 @@ class KeyboardController {
 private:
     std::vector<std::vector<SDL_Scancode>> held_button;
     std::vector<std::vector<SDL_Scancode>> held_move;
-    double time_button = 0.;
-    double time_move = 0.;
-    short unsigned int * tilesize;
+    int64_t time_button = 0.;
+    int64_t time_move = 0.;
+    int16_t * tilesize;
 public:
     KeyboardController() = default;
 
-    void setTilesize(short unsigned int * in_tilesize) {
+    void setTilesize(int16_t * in_tilesize) {
         tilesize = in_tilesize;
     }
 
-    short unsigned int * getTilesize() {
+    int16_t * getTilesize() {
         return (tilesize);
     }
 
-    double getHeldmove() {
+    int64_t getHeldmove() {
         return (time_move);
     }
 
-    double getHeldbutton() {
+    int64_t getHeldbutton() {
         return (time_button);
     }
 
-    void check_move(std::vector<std::vector<SDL_Scancode>>in_pressed, double dt) {
+    void check_move(std::vector<std::vector<SDL_Scancode>>in_pressed, int64_t dt) {
         if ((held_move == in_pressed) && (!in_pressed.empty())) {
             time_move += dt;
         } else {
@@ -39,7 +39,7 @@ public:
         }
     }
 
-    void check_button(std::vector<std::vector<SDL_Scancode>>in_pressed, double dt) {
+    void check_button(std::vector<std::vector<SDL_Scancode>>in_pressed, int64_t dt) {
         if ((held_button == in_pressed) && (!in_pressed.empty())) {
             time_button += dt;
         } else {
