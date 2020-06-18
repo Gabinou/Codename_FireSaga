@@ -10,14 +10,14 @@
 #include "stb_sprintf.h"
 // #endif /* STB_SPRINTF_IMPLEMENTATION */
 
-#define LEN(arr) ((unsigned int) (sizeof (arr) / sizeof (arr)[0]))
+#define LEN(arr) ((unsigned int32_t) (sizeof (arr) / sizeof (arr)[0]))
 
-template <typename T> int sgn(T val) {
+template <typename T> int32_t sgn(T val) {
     return (T(0) < val) - (val < T(0));
 }
 
-extern int geometricslide(int distance, float geo_factor = 2);
-extern int pingpong(int current, int upper, int lower = 0);
+extern int32_t geometricslide(int32_t distance, float geo_factor = 2);
+extern int32_t pingpong(int32_t current, int32_t upper, int32_t lower = 0);
 extern bool fequal(const char * filename1, const char * filename2);
 
 extern std::vector<std::string> skillNames(uint64_t in_skillscode);

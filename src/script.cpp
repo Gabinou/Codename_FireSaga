@@ -7,19 +7,19 @@ Scene::Scene() {
     setJSONElement("Scene");
 }
 
-short unsigned int Scene::getID() {
+uint16_t Scene::getID() {
     return (id);
 }
 
-void Scene::setID(short unsigned int in_id) {
+void Scene::setID(uint16_t in_id) {
     id = in_id;
 }
 
 void Scene::makeParticipants() {
-    short unsigned int unitid;
+    uint16_t unitid;
     participants.clear();
 
-    for (short int i = 0; i < lines.size(); i++) {
+    for (int16_t i = 0; i < lines.size(); i++) {
         unitid = lines[i].speaker;
 
         if (!cppisin(unitid, participants)) {
@@ -28,7 +28,7 @@ void Scene::makeParticipants() {
     }
 }
 
-std::vector<short unsigned int> Scene::getParticipants() {
+std::vector<uint16_t> Scene::getParticipants() {
     return (participants);
 }
 
@@ -36,14 +36,14 @@ Dialog_line Scene::chooseLine(std::vector<Dialog_line> raw_line) {
     // Chooses the first line that satisfies all conditions.
     // -> Put the lines with conditions all include in the conditions of another line AFTER.
     Dialog_line out;
-    short int found_ind = 0;
+    int16_t found_ind = 0;
 
     if (raw_line.size() != 1) {
         bool found = false;
-        short int id;
+        int16_t id;
 
-        for (short int i = 1; i < raw_line.size(); i++) {
-            for (short int j = 0; j < raw_line[i].conditions.size(); j++) {
+        for (int16_t i = 1; i < raw_line.size(); i++) {
+            for (int16_t j = 0; j < raw_line[i].conditions.size(); j++) {
                 id = raw_line[i].conditions[j].unitid;
                 found = ((narrative->death[id] == raw_line[i].conditions[j].dead) && (narrative->recruited[id] == raw_line[i].conditions[j].recruited));
             }
@@ -66,7 +66,7 @@ void Scene::makeLines() {
     if (narrative != NULL) {
         lines.clear();
 
-        for (short int i = 0; i < raw_lines.size(); i++) {
+        for (int16_t i = 0; i < raw_lines.size(); i++) {
             if (raw_lines[i].size() == 1) {
                 lines.push_back(raw_lines[i][0]);
             } else {
@@ -133,10 +133,10 @@ void Scene::writeJSON(cJSON * in_jscene) {
     cJSON * jlines;
     cJSON * jline;
 
-    for (short int i = 0; i < raw_lines.size(); i++) {
+    for (int16_t i = 0; i < raw_lines.size(); i++) {
         jlines = cJSON_CreateObject();
 
-        for (short int j = 0; j < raw_lines[i].size(); j++) {
+        for (int16_t j = 0; j < raw_lines[i].size(); j++) {
             jline = cJSON_CreateObject();
             writeJSON_line(jline, &raw_lines[i][j]);
             cJSON_AddItemToObject(jlines, "Line", jline);
@@ -159,12 +159,12 @@ Book::Book() {
 
 }
 
-Book::Book(std::string in_title, unsigned short int in_id) {
+Book::Book(std::string in_title, uint16_t in_id) {
     title = in_title;
     id = in_id;
 }
 
-void Book::setid(unsigned short int in_id) {
+void Book::setid(uint16_t in_id) {
     id = in_id;
 }
 

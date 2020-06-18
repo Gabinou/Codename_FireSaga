@@ -29,7 +29,7 @@ uint8_t TurnSystemx::getArmyfront() {
 }
 
 void TurnSystemx::addArmies(std::vector<uint8_t> in_armies) {
-    for (short int i = 0; i < in_armies.size(); i++) {
+    for (int16_t i = 0; i < in_armies.size(); i++) {
         armies.push(in_armies[i]);
     }
 }

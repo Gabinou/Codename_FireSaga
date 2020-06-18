@@ -23,7 +23,7 @@
 
 namespace FILESYSTEM {
 int32_t init(char * argvZero, char * baseDir, char * assetsPath);
-void loadFileToMemory(const char * name, unsigned char ** mem,
+void loadFileToMemory(const char * name, uint8_t ** mem,
                       size_t * len, bool addnull = false);
 void log(void * userdata, int32_t category, SDL_LogPriority priority, const char * message);
 }

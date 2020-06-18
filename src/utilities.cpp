@@ -1,13 +1,13 @@
 #include "utilities.hpp"
 #include "game.hpp"
 
-int pingpong(int current, int upper, int lower) {
+int32_t pingpong(int32_t current, int32_t upper, int32_t lower) {
     // Returns "pingpong" index. upper is excluded.
     // modulo: x % 2 = 0,1,2,0,1,2,0...for x++
     // pingpong(x, 2, 0) = 0,1,2,1,0,1,2... for x++
-    int mod_factor = (2 * (upper - lower) - 2);
-    int term1 = mod_factor - (current % mod_factor);
-    int term2 = current % mod_factor;
+    int32_t mod_factor = (2 * (upper - lower) - 2);
+    int32_t term1 = mod_factor - (current % mod_factor);
+    int32_t term2 = current % mod_factor;
     return (std::min(term1, term2) + lower);
 }
 
@@ -275,11 +275,11 @@ std::string stats2str(Weapon_stats in_stats) {
 }
 
 
-int geometricslide(int distance, float geo_factor) {
+int32_t geometricslide(int32_t distance, float geo_factor) {
     // Returns geometrically decreasing indices.
     // Ex: distance/geo_factor -> distance/geo_factor**2 -> distance/geo_factor**3
-    int sign = sgn(distance);
-    int out = sign * std::max(sign * (int)(distance / geo_factor), 1);
+    int32_t sign = sgn(distance);
+    int32_t out = sign * std::max(sign * (int32_t)(distance / geo_factor), 1);
     return (out);
     // sign*distance more elegant than std::abs()
 }

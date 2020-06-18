@@ -64,7 +64,7 @@ void Tile::setInside(const bool in_inside) {
 
 void Tile::readXML(tinyxml2::XMLElement * in_pTile) {
     tinyxml2::XMLElement * ptemp;
-    id = (unsigned int16_t)in_pTile->IntAttribute("id");
+    id = (uint16_t)in_pTile->IntAttribute("id");
     ptemp = in_pTile->FirstChildElement("Name");
 
     if (!ptemp) {

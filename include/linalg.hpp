@@ -64,7 +64,7 @@ template <typename T> extern std::vector<T> unique2D(std::vector<std::vector<T>>
     return (uniques);
 }
 
-template <typename T> extern std::vector<std::vector<T>> matrix_plus(std::vector<std::vector<T>> matrix1, std::vector<std::vector<T>> matrix2, short int sign = 1) {
+template <typename T> extern std::vector<std::vector<T>> matrix_plus(std::vector<std::vector<T>> matrix1, std::vector<std::vector<T>> matrix2, int16_t sign = 1) {
     //both matrices should have the same shape
     std::vector<std::vector<T>> out = matrix1;
 

@@ -60,7 +60,6 @@ private:
     Camp camp;
 
     int8_t chapter = -1;
-
     uint16_t state;
 
     std::unordered_map<int16_t, Unit> party;
