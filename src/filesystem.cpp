@@ -92,7 +92,7 @@ int init(char * argvZero, char * baseDir, char * assetsPath) {
     return 1;
 }
 
-void loadFileToMemory(const char * name, unsigned char ** mem, size_t * len, bool addnull) {
+void loadFileToMemory(const char * name, uint8_t ** mem, size_t * len, bool addnull) {
     SDL_Log("Loading %s to memory", name);
     PHYSFS_File * physfs_file = PHYSFS_openRead(name);
 
@@ -107,10 +107,10 @@ void loadFileToMemory(const char * name, unsigned char ** mem, size_t * len, boo
     }
 
     if (addnull) {
-        *mem = (unsigned char *) malloc(length + 1);
+        *mem = (uint8_t *) malloc(length + 1);
         (*mem)[length] = 0;
     } else {
-        *mem = (unsigned char *) malloc(length);
+        *mem = (uint8_t *) malloc(length);
     }
 
     PHYSFS_readBytes(physfs_file, *mem, length);
@@ -122,7 +122,7 @@ void deinit() {
     PHYSFS_deinit();
 }
 
-void freeMemory(unsigned char ** mem) {
+void freeMemory(uint8_t ** mem) {
     free(*mem);
     *mem = NULL;
 }
@@ -132,9 +132,9 @@ SDL_Surface * ZIP_loadSurface(const char * filename, bool noBlend = true, bool n
     SDL_Surface * loadedImage = NULL; //Temporary storage for image
     SDL_Surface * optimizedImage = NULL; //optimized image to be used
 
-    unsigned char * data;
-    unsigned char * fileIn = NULL;
-    unsigned int width, height;
+    uint8_t * data;
+    uint8_t * fileIn = NULL;
+    uint32_t width, height;
     size_t length = 0;
 
     FILESYSTEM::loadFileToMemory(filename, &fileIn, &length);
@@ -254,112 +254,112 @@ void printXMLDoc(PHYSFS_file * in_fp, tinyxml2::XMLDocument * in_doc) {
 
 void readXML_stats(tinyxml2::XMLElement * in_pStats, Weapon_stats * in_stats) {
     tinyxml2::XMLElement * ptemp = in_pStats->FirstChildElement("Pmight");
-    unsigned int buffint;
+    uint32_t buffint;
     ptemp->QueryUnsignedText(&buffint);
-    in_stats->Pmight = (unsigned char)buffint;
+    in_stats->Pmight = (uint8_t)buffint;
 
     ptemp = in_pStats->FirstChildElement("Mmight");
     ptemp->QueryUnsignedText(&buffint);
-    in_stats->Mmight = (unsigned char)buffint;
+    in_stats->Mmight = (uint8_t)buffint;
 
     ptemp = in_pStats->FirstChildElement("hit");
     ptemp->QueryUnsignedText(&buffint);
-    in_stats->combat.hit = (unsigned char)buffint;
+    in_stats->combat.hit = (uint8_t)buffint;
     ptemp = in_pStats->FirstChildElement("dodge");
     ptemp->QueryUnsignedText(&buffint);
-    in_stats->combat.dodge = (unsigned char)buffint;
+    in_stats->combat.dodge = (uint8_t)buffint;
     ptemp = in_pStats->FirstChildElement("crit");
     ptemp->QueryUnsignedText(&buffint);
-    in_stats->combat.crit = (unsigned char)buffint;
+    in_stats->combat.crit = (uint8_t)buffint;
     ptemp = in_pStats->FirstChildElement("favor");
     ptemp->QueryUnsignedText(&buffint);
-    in_stats->combat.favor = (unsigned char)buffint;
+    in_stats->combat.favor = (uint8_t)buffint;
     ptemp = in_pStats->FirstChildElement("wgt");
     ptemp->QueryUnsignedText(&buffint);
-    in_stats->wgt = (unsigned char)buffint;
+    in_stats->wgt = (uint8_t)buffint;
     ptemp = in_pStats->FirstChildElement("uses");
     ptemp->QueryUnsignedText(&buffint);
-    in_stats->uses = (unsigned char)buffint;
+    in_stats->uses = (uint8_t)buffint;
     ptemp = in_pStats->FirstChildElement("prof");
     ptemp->QueryUnsignedText(&buffint);
-    in_stats->prof = (unsigned char)buffint;
+    in_stats->prof = (uint8_t)buffint;
     ptemp = in_pStats->FirstChildElement("minrange");
     ptemp->QueryUnsignedText(&buffint);
-    in_stats->range[0] = (unsigned char)buffint;
+    in_stats->range[0] = (uint8_t)buffint;
     ptemp = in_pStats->FirstChildElement("maxrange");
     ptemp->QueryUnsignedText(&buffint);
-    in_stats->range[1] = (unsigned char)buffint;
+    in_stats->range[1] = (uint8_t)buffint;
     ptemp = in_pStats->FirstChildElement("minhand");
     ptemp->QueryUnsignedText(&buffint);
-    in_stats->hand[0] = (unsigned char)buffint;
+    in_stats->hand[0] = (uint8_t)buffint;
     ptemp = in_pStats->FirstChildElement("maxhand");
     ptemp->QueryUnsignedText(&buffint);
-    in_stats->hand[1] = (unsigned char)buffint;
+    in_stats->hand[1] = (uint8_t)buffint;
     ptemp = in_pStats->FirstChildElement("dmg_type");
     ptemp->QueryBoolText(&in_stats->dmg_type);
     ptemp = in_pStats->FirstChildElement("price");
     ptemp->QueryUnsignedText(&buffint);
-    in_stats->price = (unsigned short int)buffint;
+    in_stats->price = (uint16_t)buffint;
     ptemp = in_pStats->FirstChildElement("heal");
     ptemp->QueryUnsignedText(&buffint);
-    in_stats->heal = (unsigned char)buffint;
+    in_stats->heal = (uint8_t)buffint;
 }
 
 void readXML_stats(tinyxml2::XMLElement * in_pStats, Unit_stats * in_stats) {
     tinyxml2::XMLElement * ptemp = in_pStats->FirstChildElement("hp");
-    unsigned int buffint;
+    uint32_t buffint;
     ptemp->QueryUnsignedText(&buffint);
-    in_stats->hp = (unsigned char)buffint;
+    in_stats->hp = (uint8_t)buffint;
 
     ptemp = in_pStats->FirstChildElement("str");
     ptemp->QueryUnsignedText(&buffint);
-    in_stats->str = (unsigned char)buffint;
+    in_stats->str = (uint8_t)buffint;
 
     ptemp = in_pStats->FirstChildElement("mag");
     ptemp->QueryUnsignedText(&buffint);
-    in_stats->mag = (unsigned char)buffint;
+    in_stats->mag = (uint8_t)buffint;
 
     ptemp = in_pStats->FirstChildElement("agi");
     ptemp->QueryUnsignedText(&buffint);
-    in_stats->agi = (unsigned char)buffint;
+    in_stats->agi = (uint8_t)buffint;
 
     ptemp = in_pStats->FirstChildElement("dex");
     ptemp->QueryUnsignedText(&buffint);
-    in_stats->dex = (unsigned char)buffint;
+    in_stats->dex = (uint8_t)buffint;
 
     ptemp = in_pStats->FirstChildElement("luck");
     ptemp->QueryUnsignedText(&buffint);
-    in_stats->luck = (unsigned char)buffint;
+    in_stats->luck = (uint8_t)buffint;
 
     ptemp = in_pStats->FirstChildElement("def");
     ptemp->QueryUnsignedText(&buffint);
-    in_stats->def = (unsigned char)buffint;
+    in_stats->def = (uint8_t)buffint;
 
     ptemp = in_pStats->FirstChildElement("res");
     ptemp->QueryUnsignedText(&buffint);
-    in_stats->res = (unsigned char)buffint;
+    in_stats->res = (uint8_t)buffint;
 
     ptemp = in_pStats->FirstChildElement("con");
     ptemp->QueryUnsignedText(&buffint);
-    in_stats->con = (unsigned char)buffint;
+    in_stats->con = (uint8_t)buffint;
 
     ptemp = in_pStats->FirstChildElement("move");
     ptemp->QueryUnsignedText(&buffint);
-    in_stats->move = (unsigned char)buffint;
+    in_stats->move = (uint8_t)buffint;
 
     ptemp = in_pStats->FirstChildElement("prof");
     ptemp->QueryUnsignedText(&buffint);
-    in_stats->prof = (unsigned char)buffint;
+    in_stats->prof = (uint8_t)buffint;
 }
 
 void readXML_narrativeUnits(tinyxml2::XMLElement * in_pUnit, bool in_statearr[]) {
-    unsigned int buffint;
+    uint32_t buffint;
     bool buffbool;
-    short unsigned int id;
+    uint16_t id;
     tinyxml2::XMLElement * ptemp;
 
     while (in_pUnit) {
-        id = (unsigned short int)ptemp->IntAttribute("id");
+        id = (uint16_t)ptemp->IntAttribute("id");
         ptemp = in_pUnit->FirstChildElement("Died");
         ptemp->QueryBoolText(&buffbool);
         in_statearr[id] = buffbool;
@@ -368,7 +368,7 @@ void readXML_narrativeUnits(tinyxml2::XMLElement * in_pUnit, bool in_statearr[])
 }
 
 void readXML_narrative(tinyxml2::XMLElement * in_pNarrative, Narrative * in_state) {
-    unsigned int buffint;
+    uint32_t buffint;
     bool buffbool;
 
     tinyxml2::XMLElement * ppc_death = in_pNarrative->FirstChildElement("Death");
@@ -392,7 +392,7 @@ void writeJSON_line(cJSON * in_jline, Dialog_line * in_line) {
     cJSON * jdead;
     cJSON * jrecruited;
 
-    for (short int i = 0; i < in_line->conditions.size(); i++) {
+    for (int16_t i = 0; i < in_line->conditions.size(); i++) {
         jcondition = cJSON_CreateObject();
         jdead = cJSON_CreateBool(in_line->conditions[i].dead);
         jrecruited = cJSON_CreateBool(in_line->conditions[i].recruited);
@@ -448,7 +448,7 @@ void readJSON_narrative(cJSON * in_jnarrative, Narrative * in_state) {
     in_state->chapter = cJSON_GetNumberValue(jchapter);
     cJSON * jdeath;
     cJSON * jdied;
-    short int i = UNIT::NAME::ERWIN;
+    int16_t i = UNIT::NAME::ERWIN;
     cJSON * junit = cJSON_GetObjectItem(jdeaths, "Unit");
 
     while (junit != NULL) {
@@ -484,7 +484,7 @@ void writeJSON_narrative(cJSON * in_jnarrative, Narrative * in_state) {
     std::string name;
     char buffer[DEFAULT::BUFFER_SIZE];
 
-    for (unsigned int i = UNIT::NAME::ERWIN; i < UNIT::NAME::NPC_END; i++) {
+    for (uint32_t i = UNIT::NAME::ERWIN; i < UNIT::NAME::NPC_END; i++) {
         name = unitNames[i];
 
         if (i < UNIT::NAME::PC_END) {
@@ -528,7 +528,7 @@ void writeXML_narrative(tinyxml2::XMLDocument * in_doc, tinyxml2::XMLElement * i
     std::string name;
     char buffer[DEFAULT::BUFFER_SIZE];
 
-    for (unsigned int i = UNIT::NAME::ERWIN; i < UNIT::NAME::NPC_END; i++) {
+    for (uint32_t i = UNIT::NAME::ERWIN; i < UNIT::NAME::NPC_END; i++) {
         name = unitNames[i];
         buffbool = in_state->death[i - UNIT::NAME::ERWIN];
         ptemp1 = in_doc->NewElement("Unit");
@@ -578,10 +578,10 @@ void readJSON_mvtcost(cJSON * in_jcost, Movement_cost * in_cost) {
     in_cost->bandits = cJSON_GetNumberValue(jbandits);
 }
 
-std::vector<std::vector<short int>> readJSON_tilemap(cJSON * in_jtilemap) {
-    std::vector<std::vector<short int>> out;
-    std::vector<short int> row_temp;
-    short int rownum = 0;
+std::vector<std::vector<int16_t>> readJSON_tilemap(cJSON * in_jtilemap) {
+    std::vector<std::vector<int16_t>> out;
+    std::vector<int16_t> row_temp;
+    int16_t rownum = 0;
     char rowname[8];
     cJSON * jrow = cJSON_GetObjectItem(in_jtilemap, "row 0");
     cJSON * jnum;
@@ -601,7 +601,7 @@ std::vector<std::vector<short int>> readJSON_tilemap(cJSON * in_jtilemap) {
     return (out);
 }
 
-void writeJSON_tilemap(cJSON * in_jtilemap, std::vector<std::vector<short int>> in_tilemap) {
+void writeJSON_tilemap(cJSON * in_jtilemap, std::vector<std::vector<int16_t>> in_tilemap) {
     cJSON * jrow = cJSON_CreateArray();
     cJSON * jnum;
     char rowname[8];
@@ -841,7 +841,7 @@ void writeXML_stats(tinyxml2::XMLDocument * in_doc, tinyxml2::XMLElement * in_pS
 }
 
 void readXML_arrival(tinyxml2::XMLElement * in_pArrival, Map_arrival * in_arrival) {
-    unsigned int buffint;
+    uint32_t buffint;
 
     tinyxml2::XMLElement * pTurn = in_pArrival->FirstChildElement("Turn");
     tinyxml2::XMLElement * plevelups = in_pArrival->FirstChildElement("levelups");
@@ -849,11 +849,11 @@ void readXML_arrival(tinyxml2::XMLElement * in_pArrival, Map_arrival * in_arriva
 
     pTurn->QueryUnsignedText(&buffint);
     in_arrival->turn = buffint;
-    in_arrival->position.x = (short int)pPosition->IntAttribute("row");
-    in_arrival->position.y = (short int)pPosition->IntAttribute("col");
+    in_arrival->position.x = (int16_t)pPosition->IntAttribute("row");
+    in_arrival->position.y = (int16_t)pPosition->IntAttribute("col");
     plevelups->QueryUnsignedText(&buffint);
     in_arrival->levelups = buffint;
-    in_arrival->id = (short int)in_pArrival->IntAttribute("unitid");
+    in_arrival->id = (int16_t)in_pArrival->IntAttribute("unitid");
 }
 
 void writeXML_arrival(tinyxml2::XMLDocument * in_doc, tinyxml2::XMLElement * in_pArrival, Map_arrival * in_arrival) {
@@ -1133,24 +1133,24 @@ void readXML_mvtcost(tinyxml2::XMLElement * in_pCost, Movement_cost * in_cost) {
     tinyxml2::XMLElement * pbandits = in_pCost->FirstChildElement("bandits");
 
     pfoot_slow->QueryIntText(&buffint);
-    in_cost->foot_slow = (unsigned char)buffint;
+    in_cost->foot_slow = (uint8_t)buffint;
     pfoot_fast->QueryIntText(&buffint);
-    in_cost->foot_fast = (unsigned char)buffint;
+    in_cost->foot_fast = (uint8_t)buffint;
 
     pmages->QueryIntText(&buffint);
-    in_cost->mages = (unsigned char)buffint;
+    in_cost->mages = (uint8_t)buffint;
     priders_slow->QueryIntText(&buffint);
-    in_cost->riders_slow = (unsigned char)buffint;
+    in_cost->riders_slow = (uint8_t)buffint;
     priders_fast->QueryIntText(&buffint);
-    in_cost->riders_fast = (unsigned char)buffint;
+    in_cost->riders_fast = (uint8_t)buffint;
     pfliers->QueryIntText(&buffint);
-    in_cost->fliers = (unsigned char)buffint;
+    in_cost->fliers = (uint8_t)buffint;
     parmors->QueryIntText(&buffint);
-    in_cost->armors = (unsigned char)buffint;
+    in_cost->armors = (uint8_t)buffint;
     ppirates->QueryIntText(&buffint);
-    in_cost->pirates = (unsigned char)buffint;
+    in_cost->pirates = (uint8_t)buffint;
     pbandits->QueryIntText(&buffint);
-    in_cost->bandits = (unsigned char)buffint;
+    in_cost->bandits = (uint8_t)buffint;
 
 }
 
@@ -1209,7 +1209,7 @@ cJSON * parseJSON(const char * filename) {
         SDL_Log("Failed to open %s for JSON parsing.", filename);
     }
 
-    unsigned int filelen = PHYSFS_fileLength(fp);
+    uint32_t filelen = PHYSFS_fileLength(fp);
     // SDL_Log("filelen: %d", filelen);
     char filebuffer[filelen];
     PHYSFS_readBytes(fp, filebuffer, filelen);
@@ -1230,7 +1230,7 @@ int parseXML(const char * filename, tinyxml2::XMLDocument * in_doc) {
         return (-1);
     }
 
-    unsigned int filelen = PHYSFS_fileLength(fp);
+    uint32_t filelen = PHYSFS_fileLength(fp);
     char filebuffer[filelen];
     PHYSFS_readBytes(fp, filebuffer, filelen);
     PHYSFS_close(fp);

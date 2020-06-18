@@ -22,15 +22,15 @@
 #define LOGFILE "log.txt"
 
 namespace FILESYSTEM {
-int init(char * argvZero, char * baseDir, char * assetsPath);
+int32_t init(char * argvZero, char * baseDir, char * assetsPath);
 void loadFileToMemory(const char * name, unsigned char ** mem,
                       size_t * len, bool addnull = false);
-void log(void * userdata, int category, SDL_LogPriority priority, const char * message);
+void log(void * userdata, int32_t category, SDL_LogPriority priority, const char * message);
 }
-char * getlineFS();
+
 extern SDL_Texture * loadTexture(SDL_Renderer * in_renderer, const char * filename, const bool ZIP = false);
 extern SDL_Texture * textToTexture(SDL_Renderer * in_renderer, std::string textureText, SDL_Color textColor, TTF_Font * in_font);
-extern void writeText(int in_fontsize, int in_position[2], float in_sizefactor[2], std::string in_text, SDL_Color in_color, TTF_Font * in_font, SDL_Renderer * in_renderer);
+extern void writeText(int32_t in_fontsize, int32_t in_position[2], float in_sizefactor[2], std::string in_text, SDL_Color in_color, TTF_Font * in_font, SDL_Renderer * in_renderer);
 
 extern void writeXML_stats(tinyxml2::XMLDocument * in_doc, tinyxml2::XMLElement * in_pStats, Unit_stats * in_stats);
 extern void readXML_stats(tinyxml2::XMLElement * in_pStats, Unit_stats * in_stats);
@@ -44,12 +44,12 @@ extern void writeXML_narrative(tinyxml2::XMLDocument * in_doc, tinyxml2::XMLElem
 extern void readXML_narrative(tinyxml2::XMLElement * in_pNarrative, Narrative * in_state);
 extern void readXML_items(tinyxml2::XMLElement * in_pEquipment, Inventory_item * equipment);
 extern void readXML_items(tinyxml2::XMLElement * in_pEquipment, std::vector<Inventory_item> * equipment);
-extern void writeXML_items(tinyxml2::XMLDocument * in_doc, tinyxml2::XMLElement * in_pEquipment, Inventory_item * in_equipment, int size);
+extern void writeXML_items(tinyxml2::XMLDocument * in_doc, tinyxml2::XMLElement * in_pEquipment, Inventory_item * in_equipment, int32_t size);
 extern void writeXML_items(tinyxml2::XMLDocument * in_doc, tinyxml2::XMLElement * in_pItems, std::vector<Inventory_item> in_items);
 extern void readXML_arrival(tinyxml2::XMLElement * in_pArrival, Map_arrival * in_arrival);
 extern void writeXML_arrival(tinyxml2::XMLDocument * in_doc, tinyxml2::XMLElement * in_pArrival, Map_arrival * in_arrival);
 extern void printXMLDoc(PHYSFS_file * in_fp, tinyxml2::XMLDocument * in_doc);
-extern int parseXML(const char * filename, tinyxml2::XMLDocument * in_doc);
+extern int32_t parseXML(const char * filename, tinyxml2::XMLDocument * in_doc);
 
 extern void readJSON_mvtcost(cJSON * in_jcost, Movement_cost * in_cost);
 extern void readJSON_line(cJSON * in_jline, Dialog_line * in_line);
@@ -57,16 +57,16 @@ extern void readJSON_stats(cJSON * in_jstats, Tile_stats * in_stats);
 extern void readJSON_stats(cJSON * in_jstats, Unit_stats * in_stats);
 extern void readJSON_stats(cJSON * in_jstats, Weapon_stats * in_stats);
 extern void readJSON_item(cJSON * in_jitem, Inventory_item * in_item);
-extern std::vector<std::vector<short int>> readJSON_tilemap(cJSON * in_jtilemap);
+extern std::vector<std::vector<int16_t>> readJSON_tilemap(cJSON * in_jtilemap);
 extern void readJSON_narrative(cJSON * in_jnarrative, Narrative * in_state);
 extern void readJSON_arrival(cJSON * in_jarrival, Map_arrival * in_arrival);
 extern void writeJSON_arrival(cJSON * in_jarrival, Map_arrival * in_arrival);
-extern void writeJSON_tilemap(cJSON * in_jtilemap, std::vector<std::vector<short int>> in_tilemap);
+extern void writeJSON_tilemap(cJSON * in_jtilemap, std::vector<std::vector<int16_t>> in_tilemap);
 extern void writeJSON_line(cJSON * in_jline, Dialog_line * in_line);
 extern void writeJSON_narrative(cJSON * in_jnarrative, Narrative * in_state);
 extern void writeJSON_seed(cJSON * in_jnarrative, Narrative * in_state);
 extern void writeJSON_items(cJSON * in_jitems, std::vector<Inventory_item> in_items);
-extern void writeJSON_items(cJSON * in_jitems, Inventory_item * in_equipment, int size);
+extern void writeJSON_items(cJSON * in_jitems, Inventory_item * in_equipment, int32_t size);
 extern void writeJSON_stats(cJSON * in_jstats, Weapon_stats * in_stats);
 extern void writeJSON_stats(cJSON * in_jstats, Unit_stats * in_stats);
 extern void writeJSON_stats(cJSON * in_jstats, Tile_stats * in_stats);
