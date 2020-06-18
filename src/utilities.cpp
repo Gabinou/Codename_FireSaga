@@ -29,8 +29,8 @@ bool fequal(const char * filename1, const char * filename2) {
         return (out);
     }
 
-    unsigned int filelen1 = PHYSFS_fileLength(fp1);
-    unsigned int filelen2 = PHYSFS_fileLength(fp2);
+    uint32_t filelen1 = PHYSFS_fileLength(fp1);
+    uint32_t filelen2 = PHYSFS_fileLength(fp2);
     char filebuffer1[filelen1];
     char filebuffer2[filelen2];
     PHYSFS_readBytes(fp1, filebuffer1, filelen1);
@@ -41,7 +41,7 @@ bool fequal(const char * filename1, const char * filename2) {
     if (filelen1 == filelen2) {
         out = true;
 
-        for (int i = 0; i < filelen1; i++) {
+        for (uint32_t i = 0; i < filelen1; i++) {
             if (filebuffer1[i] != filebuffer2[i]) {
                 out = false;
             }
@@ -51,10 +51,10 @@ bool fequal(const char * filename1, const char * filename2) {
     return (out);
 }
 
-std::vector<std::string> menuoptions2str(std::vector<unsigned char> in_options) {
+std::vector<std::string> menuoptions2str(std::vector<uint8_t> in_options) {
     std::vector<std::string> out;
 
-    for (short int i = 0; i < in_options.size(); i++) {
+    for (uint16_t i = 0; i < in_options.size(); i++) {
         switch (in_options[i]) {
             case MENU::OPTION::ITEMS:
                 out.push_back("Items");
@@ -140,7 +140,7 @@ std::vector<std::string> menuoptions2str(std::vector<unsigned char> in_options) 
     return (out);
 }
 
-std::string gamestate2str(short unsigned int in_state) {
+std::string gamestate2str(uint16_t in_state) {
     std::string out;
 
     switch (in_state) {
@@ -260,7 +260,6 @@ std::string gamestate2str(short unsigned int in_state) {
 
 }
 
-
 std::string stats2str(Unit_stats in_stats) {
     char buffer[DEFAULT::BUFFER_SIZE];
     stbsp_sprintf(buffer, "%02d %02d %02d %02d %02d %02d %02d %02d %02d %02d %02d", in_stats.hp, in_stats.str, in_stats.mag, in_stats.agi, in_stats.dex, in_stats.luck, in_stats.def, in_stats.res, in_stats.con, in_stats.move, in_stats.prof);
@@ -285,7 +284,7 @@ int geometricslide(int distance, float geo_factor) {
     // sign*distance more elegant than std::abs()
 }
 
-bool isPC(const unsigned char army) {
+bool isPC(const uint8_t army) {
     bool out = false;
 
     switch (army) {
@@ -310,7 +309,7 @@ bool isPC(const unsigned char army) {
     return (out);
 }
 
-bool isFriendly(const unsigned char army1, const unsigned char army2) {
+bool isFriendly(const uint8_t army1, const uint8_t army2) {
     bool out = false;
 
     if (army1 ==  army2) {
@@ -375,7 +374,7 @@ bool isFriendly(const unsigned char army1, const unsigned char army2) {
     return (out);
 }
 
-std::vector<std::string> unitTypes(unsigned short int in_typecode) {
+std::vector<std::string> unitTypes(uint16_t in_typecode) {
     std::vector<std::string> names;
 
     if ((in_typecode & UNIT::TYPE::HUMAN) > 0) {
@@ -405,7 +404,7 @@ std::vector<std::string> unitTypes(unsigned short int in_typecode) {
     return (names);
 }
 
-std::vector<std::string> wpnEffects(long unsigned int in_effect) {
+std::vector<std::string> wpnEffects(uint64_t in_effect) {
     std::vector<std::string> names;
 
     if ((in_effect & ITEM::EFFECT::KILL1P) > 0) {
@@ -558,7 +557,7 @@ void makeArmyNames() {
 }
 
 
-std::vector<std::string> wpnTypes(short unsigned int in_typecode) {
+std::vector<std::string> wpnTypes(uint16_t in_typecode) {
     std::vector<std::string> types;
 
     if ((in_typecode & ITEM::TYPE::SWORD) > 0) {
@@ -777,11 +776,11 @@ void makeitemNames() {
     itemNames.push_back("Cross");
 }
 
-std::vector<std::string> getTilenames(std::vector<short int> in_tilesindex) {
+std::vector<std::string> getTilenames(std::vector<int16_t> in_tilesindex) {
     std::vector<std::string> out;
-    short int index;
+    int16_t index;
 
-    for (int i = 0; i < in_tilesindex.size(); i++) {
+    for (int16_t i = 0; i < in_tilesindex.size(); i++) {
         index = in_tilesindex[i] / DEFAULT::TILE_DIVISOR;
         SDL_Log("In tile index: %d", index);
 
@@ -1014,7 +1013,7 @@ void makesexNames() {
     sexNames.push_back("M");
 }
 
-std::vector<unsigned char> mvtTypes;
+std::vector<uint8_t> mvtTypes;
 extern void makemvtTypes() {
     mvtTypes.push_back(0);
     mvtTypes.push_back(UNIT::MVT::FOOT_SLOW); // LORD
@@ -1062,8 +1061,8 @@ extern void makemvtTypes() {
 
 }
 
-unsigned char mvtType(unsigned char in_class_index) {
-    unsigned char mvt_type;
+uint8_t mvtType(uint8_t in_class_index) {
+    uint8_t mvt_type;
 
     switch (in_class_index) {
         case UNIT::CLASS::MERCENARY:
@@ -1217,9 +1216,9 @@ unsigned char mvtType(unsigned char in_class_index) {
     return (mvt_type);
 }
 
-unsigned char unitid2army(short unsigned int in_unitid) {
+uint8_t unitid2army(uint16_t in_unitid) {
     // only used for unit init. baseArmy
-    unsigned char armyid = 0;
+    uint8_t armyid = 0;
 
     switch (in_unitid) {
         case UNIT::NAME::ERWIN:
@@ -1330,7 +1329,7 @@ void makeclassNames() {
     classNames.push_back("Twinborn");
 }
 
-std::string className(unsigned char in_class_index) {
+std::string className(uint8_t in_class_index) {
     std::string class_name;
 
     switch (in_class_index) {
@@ -1494,7 +1493,7 @@ std::string className(unsigned char in_class_index) {
 }
 
 
-std::vector<std::string> skillNames(unsigned long long int in_skillscode) {
+std::vector<std::string> skillNames(uint64_t in_skillscode) {
     std::vector<std::string> skill_names;
 
     if ((in_skillscode & UNIT::SKILL::CANTO) > 0) {
@@ -1632,7 +1631,7 @@ std::vector<std::string> skillNames(unsigned long long int in_skillscode) {
     return (skill_names);
 }
 
-std::vector<short unsigned int> equippableCodes;
+std::vector<uint16_t> equippableCodes;
 void makeEquippableCodes() {
     equippableCodes.push_back(0);
     equippableCodes.push_back(ITEM::TYPE::LANCE + ITEM::TYPE::SHIELD);

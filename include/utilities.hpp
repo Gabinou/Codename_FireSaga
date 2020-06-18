@@ -20,15 +20,15 @@ extern int geometricslide(int distance, float geo_factor = 2);
 extern int pingpong(int current, int upper, int lower = 0);
 extern bool fequal(const char * filename1, const char * filename2);
 
-extern std::vector<std::string> skillNames(unsigned long long int in_skillscode);
-extern std::vector<std::string> wpnEffects(long unsigned int in_effect);
-extern std::vector<std::string> unitTypes(unsigned short int in_typecode);
-extern std::vector<std::string> wpnTypes(short unsigned int in_typecode);
-extern unsigned char unitid2army(short unsigned int in_unitid);
+extern std::vector<std::string> skillNames(uint64_t in_skillscode);
+extern std::vector<std::string> wpnEffects(uint64_t in_effect);
+extern std::vector<std::string> unitTypes(uint16_t in_typecode);
+extern std::vector<std::string> wpnTypes(uint16_t in_typecode);
+extern uint8_t unitid2army(uint16_t in_unitid);
 extern std::string stats2str(Unit_stats in_stats);
 extern std::string stats2str(Weapon_stats in_stats);
-extern std::string gamestate2str(short unsigned int in_state);
-extern std::vector<std::string> menuoptions2str(std::vector<unsigned char> in_options);
+extern std::string gamestate2str(uint16_t in_state);
+extern std::vector<std::string> menuoptions2str(std::vector<uint8_t> in_options);
 
 extern std::vector<std::string> getTilenames(std::vector<short int> in_tilesindex);
 extern std::vector<std::string> unitNames;
@@ -42,17 +42,27 @@ extern std::vector<std::string> sexNames;
 extern void makesexNames();
 extern std::vector<std::string> classNames;
 extern void makeclassNames();
-extern std::vector<unsigned char> mvtTypes;
+extern std::vector<uint8_t> mvtTypes;
 extern void makemvtTypes();
-extern std::vector<short unsigned int> equippableCodes;
+extern std::vector<uint16_t> equippableCodes;
 extern void makeEquippableCodes();
 extern std::vector<std::string> armyNames;
 extern void makeArmyNames();
 
-extern bool isFriendly(const unsigned char army1, const unsigned char army2);
-extern bool isPC(const unsigned char army);
+extern bool isFriendly(const uint8_t army1, const uint8_t army2);
+extern bool isPC(const uint8_t army);
 
 extern void loadUtilities();
+
+template <typename T>
+extern T cppgeometricslide(T distance, float geo_factor = 2) {
+    // Returns geometrically decreasing indices.
+    // Ex: distance/geo_factor -> distance/geo_factor**2 -> distance/geo_factor**3
+    T sign = sgn(distance);
+    T out = sign * std::max(sign * (T)(distance / geo_factor), 1);
+    return (out);
+    // sign*distance more elegant than std::abs()
+}
 
 template <typename T>
 extern std::vector<T> cpprange(T ind1, T ind2) {
@@ -67,7 +77,7 @@ extern std::vector<T> cpprange(T ind1, T ind2) {
 template <typename T> extern std::vector<T> cppwhere(T tofind, std::vector<T> vec) {
     std::vector<T> found_inds;
 
-    for (short unsigned int i = 0; i < vec.size(); i++) {
+    for (uint16_t i = 0; i < vec.size(); i++) {
         if (vec[i] == tofind) {
             found_inds.push_back(i);
         }
@@ -79,7 +89,7 @@ template <typename T> extern std::vector<T> cppwhere(T tofind, std::vector<T> ve
 template <typename T> extern bool cppisin(T tofind, std::vector<T> vec) {
     bool out = false;
 
-    for (short unsigned int i = 0; i < vec.size(); i++) {
+    for (uint16_t i = 0; i < vec.size(); i++) {
         if (vec[i] == tofind) {
             out = true;
         }
@@ -167,7 +177,7 @@ template <typename T> extern void cppquicksort(std::vector<T> & vec, T low, T hi
         cppquicksort(vec, T(pi + 1), high);
     }
 }
-// extern void heal(Unit * in_unit, unsigned char heal);
+// extern void heal(Unit * in_unit, uint8_t heal);
 // extern * (Unit) makeheal(Weapon in_weapon);
 
 #endif /* UTILITIES_HPP */

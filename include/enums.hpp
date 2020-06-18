@@ -240,7 +240,8 @@ enum NAMES {
 }
 namespace TYPE {
 enum TYPES {
-    // unsigned!!! short int equippable = sword + shield;
+    // uint16_t!
+    // uint16_t equippable = sword + shield;
     // if (type & equippeable) > 0, weapon is equippable.
     SWORD = 0x0001,
     LANCE = 0x0002,
@@ -291,9 +292,7 @@ enum STATS {
 }
 namespace EFFECT {
 enum EFFECTS {
-    // short unsigned int 16 bits->65536
-    // unsigned int 16?32 bits->4,294,967,295
-    // long unsigned int 64 bits
+    // uint64_t
     KILL1P = 0x0001,
     BRAVE2X = 0x0002,
     BRAVE3X = 0x0004,
@@ -459,9 +458,7 @@ enum NAMES {
 }
 namespace SKILL {
 enum SKILLS : unsigned int {
-    // short unsigned int 16 bits->65536
-    // unsigned int 16?32 bits->4,294,967,295
-    // long unsigned int 64 bits
+    // uint64_t
     CANTO = 0x0001,
     SKILLED_RIDER = 0x0002,
     SPRINT = 0x0004,
