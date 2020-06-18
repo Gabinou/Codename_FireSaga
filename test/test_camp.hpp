@@ -2,7 +2,7 @@
 #include "camp.hpp"
 #include "structs.hpp"
 
-void printJobs(std::vector<std::vector<short unsigned int>> in_jobs) {
+void printJobs(std::vector<std::vector<uint16_t>> in_jobs) {
     for (int job = 0; job < in_jobs.size(); job++) {
         SDL_Log("Job: %s", jobNames[job].c_str());
 
@@ -14,20 +14,20 @@ void printJobs(std::vector<std::vector<short unsigned int>> in_jobs) {
 
 void test_camp() {
     SDL_Log("test_camp");
-    std::vector<short unsigned int> in_party1 = {UNIT::NAME::ERWIN,
-                                                 UNIT::NAME::KIARA,
-                                                };
-    std::vector<short unsigned int> in_party2 = {UNIT::NAME::ERWIN,
-                                                 UNIT::NAME::KIARA, UNIT::NAME::SILOU, UNIT::NAME::PIROU, UNIT::NAME::SERVIL,
-                                                 UNIT::NAME::PERIGNON, UNIT::NAME::LAUZON, UNIT::NAME::NICOLE, UNIT::NAME::OTTO,
-                                                 UNIT::NAME::SEBASTIAN, UNIT::NAME::MICHAEL, UNIT::NAME::CHASSE, UNIT::NAME::PIERRE,
-                                                 UNIT::NAME::MELLY, UNIT::NAME::SIMON, UNIT::NAME::EUGENE, UNIT::NAME::TEHARON,
-                                                 UNIT::NAME::TEKAK, UNIT::NAME::LUCRECE,
-                                                }; //19
-    std::vector<short unsigned int> in_party3 = in_party2;
-    std::vector<char> previous_job;
-    std::vector<char> priority_job;
-    std::vector<char> forbidden_job;
+    std::vector<uint16_t> in_party1 = {UNIT::NAME::ERWIN,
+                                       UNIT::NAME::KIARA,
+                                      };
+    std::vector<uint16_t> in_party2 = {UNIT::NAME::ERWIN,
+                                       UNIT::NAME::KIARA, UNIT::NAME::SILOU, UNIT::NAME::PIROU, UNIT::NAME::SERVIL,
+                                       UNIT::NAME::PERIGNON, UNIT::NAME::LAUZON, UNIT::NAME::NICOLE, UNIT::NAME::OTTO,
+                                       UNIT::NAME::SEBASTIAN, UNIT::NAME::MICHAEL, UNIT::NAME::CHASSE, UNIT::NAME::PIERRE,
+                                       UNIT::NAME::MELLY, UNIT::NAME::SIMON, UNIT::NAME::EUGENE, UNIT::NAME::TEHARON,
+                                       UNIT::NAME::TEKAK, UNIT::NAME::LUCRECE,
+                                      }; //19
+    std::vector<uint16_t> in_party3 = in_party2;
+    std::vector<int8_t> previous_job;
+    std::vector<int8_t> priority_job;
+    std::vector<int8_t> forbidden_job;
 
     for (short int i = 0; i < UNIT::NAME::PC_END; i++) {
         previous_job.push_back(-1);
@@ -38,15 +38,15 @@ void test_camp() {
     Camp test_camp1, test_camp2, test_camp3, test_camp4;
 
     test_camp1.setParty(in_party1);
-    std::vector<short unsigned int> out_party1;
+    std::vector<uint16_t> out_party1;
     out_party1 = test_camp1.getParty();
     lok(out_party1 == in_party1);
 
-    std::vector<char> out_priorityjobs;
+    std::vector<int8_t> out_priorityjobs;
     out_priorityjobs = test_camp1.getpriorityJobs();
     lok(out_priorityjobs[UNIT::NAME::KIARA] == CAMPJOB::CLERGYMAN);
 
-    std::queue<unsigned char> out_queue;
+    std::queue<uint8_t> out_queue;
     test_camp1.makeJobQueue();
     out_queue = test_camp1.getJobqueue();
     lok(out_queue.front() == CAMPJOB::COOK);
@@ -65,7 +65,7 @@ void test_camp() {
     out_queue.pop();
     lok(out_queue.front() == CAMPJOB::ASSISTANT);
 
-    std::vector<unsigned char> out_optimal;
+    std::vector<uint8_t> out_optimal;
     test_camp1.makeJobNumbers();
     out_optimal = test_camp1.getOptimaljobs();
     lok(out_optimal[CAMPJOB::LIBRARIAN] == 0);
@@ -83,7 +83,7 @@ void test_camp() {
     // -2 for kiara AND erwin. priority jobs don't get added in the stack.
 
     test_camp1.assignJobs();
-    std::vector<std::vector<short unsigned int>> out_jobs;
+    std::vector<std::vector<uint16_t>> out_jobs;
     out_jobs = test_camp1.getJobs();
     lok(out_jobs[CAMPJOB::LIBRARIAN].size() == 0);
     lok(out_jobs[CAMPJOB::COOK].size() == 0);
@@ -99,7 +99,7 @@ void test_camp() {
     }
 
     test_camp2.setParty(in_party2);
-    std::vector<short unsigned int> out_party2;
+    std::vector<uint16_t> out_party2;
     out_party2 = test_camp2.getParty();
     lok(out_party2 == in_party2);
 
@@ -164,7 +164,7 @@ void test_camp() {
     lok(out_jobs[CAMPJOB::STORAGEMASTER][0] == UNIT::NAME::CHASSE);
 
     test_camp3.setParty(in_party2);
-    std::vector<short unsigned int> out_party3;
+    std::vector<uint16_t> out_party3;
     out_party3 = test_camp3.getParty();
     lok(out_party3 == in_party3);
 

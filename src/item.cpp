@@ -6,7 +6,7 @@ Item::Item() {
     setJSONElement("Item");
 }
 
-Item::Item(short unsigned int in_type, unsigned char in_id) : Item() {
+Item::Item(uint16_t in_type, uint8_t in_id) : Item() {
     name = itemNames[in_id];
     type = in_type;
     id = in_id;
@@ -26,7 +26,7 @@ void Item::writeJSON(cJSON * in_jitem) {
         cJSON * jusers = cJSON_CreateObject();
         cJSON * juserid = NULL;
 
-        for (short int i = 0; i < users.size() ; i++) {
+        for (int16_t i = 0; i < users.size() ; i++) {
             juserid = cJSON_CreateNumber(users[i]);
             cJSON_AddItemToObject(jusers, "id", juserid);
         }
@@ -37,7 +37,7 @@ void Item::writeJSON(cJSON * in_jitem) {
         cJSON_AddItemToObject(jeffects, "id", jeffect);
         std::vector<std::string> effects = wpnEffects(effect);
 
-        for (int i = 0; i < effects.size(); i++) {
+        for (int16_t i = 0; i < effects.size(); i++) {
             jeffect = cJSON_CreateString(effects[i].c_str());
             cJSON_AddItemToObject(jeffects, "Effect", jeffect);
         }
@@ -48,7 +48,7 @@ void Item::writeJSON(cJSON * in_jitem) {
         cJSON_AddItemToObject(jtypes, "id", jtype2);
         std::vector<std::string> types = wpnTypes(type);
 
-        for (int i = 0; i < types.size(); i++) {
+        for (int16_t i = 0; i < types.size(); i++) {
             jtype2 = cJSON_CreateString(types[i].c_str());
             cJSON_AddItemToObject(jtypes, "Type", jtype2);
         }
@@ -128,15 +128,15 @@ void Item::setSellable(bool in_sellable) {
     sellable = in_sellable;
 }
 
-std::vector<unsigned short int> Item::getUsers() {
+std::vector<uint16_t> Item::getUsers() {
     return (users);
 }
 
-void Item::setUsers(std::vector<unsigned short int> in_users) {
+void Item::setUsers(std::vector<uint16_t> in_users) {
     users = in_users;
 }
 
-void Item::setEffect(long unsigned int in_effect) {
+void Item::setEffect(uint64_t in_effect) {
     effect = in_effect;
 
     if ((in_effect & ITEM::EFFECT::USE_HEAL) > 0) {
@@ -152,7 +152,7 @@ void Item::setEffect(long unsigned int in_effect) {
     }
 }
 
-long unsigned int Item::getEffect() {
+uint64_t Item::getEffect() {
     return (effect);
 }
 
@@ -172,11 +172,11 @@ void Item::setName(std::string in_name) {
     name = in_name;
 }
 
-short unsigned int Item::getType() {
+uint16_t Item::getType() {
     return (type);
 }
 
-void Item::setType(short unsigned int in_type) {
+void Item::setType(uint16_t in_type) {
     type = in_type;
 }
 

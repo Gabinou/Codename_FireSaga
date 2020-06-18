@@ -666,7 +666,9 @@ enum STATES {
 namespace CHAPTER {
 enum CHAPTERS {
     TEST = 0,
-    CHAP1,
+    CHAP_1 = 1,
+    CHAP_1GAIDEN = 2,
+    CHAP_2 = 3,
     END,
 };
 }

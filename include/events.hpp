@@ -7,8 +7,8 @@
 #include "mousecontroller.hpp"
 
 struct turnBegin {
-    turnBegin(unsigned char army) : army(army) {}
-    unsigned char army;
+    turnBegin(uint8_t army) : army(army) {}
+    uint8_t army;
 };
 
 struct turnEnd {
@@ -114,19 +114,19 @@ struct unitDehover {
 };
 
 struct switchControl {
-    switchControl(unsigned char army) : army(army) {}
-    unsigned char army;
+    switchControl(uint8_t army) : army(army) {}
+    uint8_t army;
 };
 
 struct refreshUnits {
-    refreshUnits(unsigned char army) : army(army) {}
-    unsigned char army;
+    refreshUnits(uint8_t army) : army(army) {}
+    uint8_t army;
 };
 
 struct disableMenu {
-    disableMenu(entityx::Entity selector, unsigned char menuind) : selector(selector), menuind(menuind) {}
+    disableMenu(entityx::Entity selector, uint8_t menuind) : selector(selector), menuind(menuind) {}
     entityx::Entity selector;
-    unsigned char menuind;
+    uint8_t menuind;
 };
 
 struct unitDanger {
@@ -157,11 +157,11 @@ struct return2Map {
 // };
 
 struct menuSelect {
-    menuSelect(entityx::Entity selector, char menu) : selector(selector), menu(menu) {}
-    menuSelect(entityx::Entity selector, char menu, entityx::ComponentHandle<Unit> unit) : selector(selector), menu(menu), unit(unit) {}
+    menuSelect(entityx::Entity selector, int8_t menu) : selector(selector), menu(menu) {}
+    menuSelect(entityx::Entity selector, int8_t menu, entityx::ComponentHandle<Unit> unit) : selector(selector), menu(menu), unit(unit) {}
     entityx::Entity selector;
     entityx::ComponentHandle<Unit> unit;
-    char menu;
+    int8_t menu;
 };
 
 struct inputAccept {

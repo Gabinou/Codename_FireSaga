@@ -9,17 +9,17 @@ class GamepadController {
 private:
     SDL_GameController * controller = NULL;
     GamepadInputMap inputmap;
-    std::vector<int> controller_indices; // joystick indices that are supported by the game controller interface
+    std::vector<int32_t> controller_indices; // joystick indices that are supported by the game controller interface
     // used controller should always be zero.
-    short int joystick_deadzone = 8000;
-    std::vector<short unsigned int> held_move;
+    int16_t joystick_deadzone = 8000;
+    std::vector<uint16_t> held_move;
     std::vector<std::vector<SDL_GameControllerButton>> held_button;
-    double time_move = 0.;
+    int64_t time_move = 0.;
 public:
     GamepadController() {
     }
 
-    short int getDeadzone() {
+    int16_t getDeadzone() {
         return (joystick_deadzone);
     }
 
@@ -31,14 +31,14 @@ public:
         inputmap = in_inputmap;
     }
 
-    double getHeldmove() {
+    int64_t getHeldmove() {
         return (time_move);
     }
 
     bool isPressed(std::vector<SDL_GameControllerButton> in_map) {
         bool out = false;
 
-        for (int i = 0; i < in_map.size(); ++i) {
+        for (int32_t i = 0; i < in_map.size(); ++i) {
             if (SDL_GameControllerGetButton(controller, in_map[i])) {
                 out = true;
             }
@@ -47,7 +47,7 @@ public:
         return (out);
     }
 
-    void setController(int in_index) {
+    void setController(int32_t in_index) {
         if (controller_indices.size() > 0) {
             controller = SDL_GameControllerOpen(controller_indices[in_index]);
         }
@@ -55,9 +55,9 @@ public:
 
     void removeController() {
         SDL_Log("Removing controller");
-        std::vector<int> temp = controller_indices;
+        std::vector<int32_t> temp = controller_indices;
 
-        for (int i = 0; i < controller_indices.size(); i++) {
+        for (int32_t i = 0; i < controller_indices.size(); i++) {
             if (!SDL_IsGameController(controller_indices[i])) {
                 temp.erase(temp.begin() + i - controller_indices.size() + temp.size());
             }
@@ -69,7 +69,7 @@ public:
         setController(0);
     }
 
-    void addController(int in_joystick) {
+    void addController(int32_t in_joystick) {
         SDL_Log("Adding controller %d", in_joystick);
 
         if (SDL_IsGameController(in_joystick)) {
@@ -94,7 +94,7 @@ public:
         return (controller);
     }
 
-    void check_move(std::vector<short unsigned int> in_pressed, double dt) {
+    void check_move(std::vector<uint16_t> in_pressed, int64_t dt) {
         if ((held_move == in_pressed) && (!in_pressed.empty())) {
             time_move += dt;
         } else {

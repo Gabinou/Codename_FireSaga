@@ -8,7 +8,6 @@
 #include "filesystem.hpp"
 #include "utilities.hpp"
 #include "string.h"
-#include <string>
 // #ifndef STB_SPRINTF_IMPLEMENTATION //Why no need?
 // #define STB_SPRINTF_IMPLEMENTATION
 #include "stb_sprintf.h"
@@ -21,20 +20,20 @@ protected:
 
     bool sellable = true;
     bool equippable = true; // unused by weapons
-    unsigned short int id = 0; // 0 means empty.
-    short unsigned int type = 0;
-    long unsigned int effect = 0;
-    short int use_effect = -1;
+    uint16_t id = 0; // 0 means empty.
+    uint16_t type = 0;
+    uint64_t effect = 0;
+    int16_t use_effect = -1;
 
-    std::vector<unsigned short int> users; // item only usable by users. empty = everyone
+    std::vector<uint16_t> users; // item only usable by users. empty = everyone
     std::string name = "";
     std::string description = "";
 public:
     Item();
-    Item(short unsigned int in_type, unsigned char in_id);
+    Item(uint16_t in_type, uint8_t in_id);
 
-    std::vector<unsigned short int> getUsers();
-    void setUsers(std::vector<unsigned short int> in_users);
+    std::vector<uint16_t> getUsers();
+    void setUsers(std::vector<uint16_t> in_users);
     bool isSellable();
     void setSellable(bool in_sellable);
 
@@ -42,17 +41,17 @@ public:
     Unit_stats getBonus();
     void setMalus(Unit_stats in_malus);
     Unit_stats getMalus();
-    void setEffect(long unsigned int in_effect);
-    long unsigned int getEffect();
-    void setEffective(short unsigned int in_effective);
-    short unsigned int getEffective();
+    void setEffect(uint64_t in_effect);
+    uint64_t getEffect();
+    void setEffective(uint16_t in_effective);
+    uint16_t getEffective();
     void setDescription(std::string in_description);
     std::string getDescription();
     void setName(std::string in_name);
     std::string getName();
     void setUser();
-    short unsigned int getType();
-    void setType(short unsigned int in_type);
+    uint16_t getType();
+    void setType(uint16_t in_type);
 
     using JSON_IO::writeJSON;
     using JSON_IO::readJSON;
@@ -70,6 +69,6 @@ public:
 
 // void baseWeapons();
 // void writeallXMLWeapons();
-// std::vector<Weapon> baseWeapons(std::vector<short int> toload);
+// std::vector<Weapon> baseWeapons(std::vector<int16_t> toload);
 
 #endif /* ITEM_HPP */
