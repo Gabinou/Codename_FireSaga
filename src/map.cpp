@@ -480,7 +480,7 @@ void Map::writeXML(tinyxml2::XMLDocument * in_doc, tinyxml2::XMLElement * in_pMa
     }
 }
 
-void Map::setTilesize(const int16_t unsigned width, const int16_t unsigned height) {
+void Map::setTilesize(const uint16_t width, const uint16_t height) {
     tilesize[0] = width;
     tilesize[1] = height;
 }

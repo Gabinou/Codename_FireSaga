@@ -38,7 +38,7 @@ void Game::setSettings(Settings in_settings) {
     settings = in_settings;
 }
 
-bool Game::checkRate(int rate, short int mode) {
+bool Game::checkRate(int16_t rate, int16_t mode) {
     bool hit;
 
     if (mode > 0) {
@@ -68,7 +68,7 @@ char Game::getChapter() {
 }
 
 
-bool * Game::checkHitCrit(int hit_rate, int crit_rate, short int mode) {
+bool * Game::checkHitCrit(int16_t hit_rate, int16_t crit_rate, int16_t mode) {
     static bool hitcrit[2];
 
     if (mode == GAME::RN::SINGLE) {
@@ -84,7 +84,7 @@ bool * Game::checkHitCrit(int hit_rate, int crit_rate, short int mode) {
     }
 
     if (mode == GAME::RN::GAUSSIAN) {
-        unsigned char * RNs;
+        uint8_t * RNs;
         RNs[0] = getURN();
         RNs[1] = getURN();
         RNs = boxmuller(RNs);
@@ -136,7 +136,7 @@ void Game::attack(Unit * attacker, Unit * defender) {
 
     if (hitcrit[0]) {
         if (hitcrit[1]) {
-            int damage = attacker->totalMight(false) -  defender->totalDef(false);
+            int16_t damage = attacker->totalMight(false) -  defender->totalDef(false);
             defender->takesDamage(damage);
         }
     }
@@ -193,7 +193,7 @@ void Game::makeFPS() {
     }
 }
 
-void Game::killMenu(short int index) {
+void Game::killMenu(int16_t index) {
     if (index > 0) {
         if (menus[index].valid()) {
             menus[index].destroy();
@@ -203,7 +203,7 @@ void Game::killMenu(short int index) {
     }
 }
 
-void Game::hideMenu(short int index) {
+void Game::hideMenu(int16_t index) {
     SDL_Log("Hiding Menu %d", index);
 
     if (index > 0) {
@@ -216,7 +216,7 @@ void Game::hideMenu(short int index) {
     }
 }
 
-void Game::showMenu(short int index) {
+void Game::showMenu(int16_t index) {
     if (index > 0) {
         if (menus[index].valid()) {
             menus[index].component<Text>()->show();
@@ -262,7 +262,7 @@ void Game::makeMenutext(char in_menu) {
 }
 
 void Game::killButtons() {
-    for (short int i = 0; i < buttons.size(); i++) {
+    for (int16_t i = 0; i < buttons.size(); i++) {
         buttons[i].destroy();
     }
 
@@ -380,7 +380,7 @@ void Game::makeButtons(char in_menu, Point menu_pos) {
         }
 
         if (menustring.size() == menuoptions.size()) {
-            for (short int i = 0; i < menustring.size(); i++) {
+            for (int16_t i = 0; i < menustring.size(); i++) {
                 buttons.push_back(makeButton(menuoptions[in_menu][i]));
                 buttons[i].component<Text>()->setText(menustring[i]);
             }
@@ -441,15 +441,15 @@ void Game::makeMenuoptions(char in_menu) {
     SDL_Log("Making Menu options");
 
     if (in_menu > 0) {
-        std::vector<unsigned char> options;
+        std::vector<uint8_t> options;
 
         entityx::ComponentHandle<Unit> unit;
         entityx::ComponentHandle<Unit> top;
         entityx::ComponentHandle<Unit> bottom;
         entityx::ComponentHandle<Unit> right;
         entityx::ComponentHandle<Unit> left;
-        short int * bounds;
-        unsigned char army;
+        int16_t * bounds;
+        uint8_t army;
 
         switch (in_menu) {
             case MENU::UNIT:
@@ -461,7 +461,7 @@ void Game::makeMenuoptions(char in_menu) {
                 if (unit) {
                     SDL_Log("Making Menuoptions for: %s", unit->getName().c_str());
 
-                    std::vector<std::vector<short int>> tilemap = mapx->getTilemap();
+                    std::vector<std::vector<int16_t>> tilemap = mapx->getTilemap();
 
                     if ((cursor_lastpos.y + 1) < bounds[3]) {
                         top = mapx->getUnit(cursor_lastpos.x, cursor_lastpos.y + 1);
@@ -487,7 +487,7 @@ void Game::makeMenuoptions(char in_menu) {
 
                     std::vector<entityx::ComponentHandle<Unit>> units_around = {top, right, bottom, left};
 
-                    for (short int i = 0; i < units_around.size(); i++) {
+                    for (int16_t i = 0; i < units_around.size(); i++) {
                         if (units_around[i]) {
                             army = units_around[i]->getArmy();
                             SDL_Log("Unit_around: %s", units_around[i]->getName().c_str());
@@ -544,7 +544,7 @@ void Game::makeMenuoptions(char in_menu) {
     }
 }
 
-short unsigned int Game::getState() {
+uint16_t Game::getState() {
     return (state);
 }
 
@@ -552,7 +552,7 @@ entityx::ComponentHandle<Map> Game::getMap() {
     return (mapx);
 }
 
-void Game::loadMap(const int in_map_index) {
+void Game::loadMap(const int16_t in_map_index) {
     SDL_Log("Loading Map index: %d \n", in_map_index);
 
     if (!mapx) {
@@ -572,8 +572,8 @@ void Game::loadMap(const int in_map_index) {
     }
 }
 
-std::vector<unsigned char> Game::getMenuoptions(char in_menu) {
-    std::vector<unsigned char> out;
+std::vector<uint8_t> Game::getMenuoptions(char in_menu) {
+    std::vector<uint8_t> out;
 
     if (in_menu > 0) {
         out = menuoptions[in_menu];
@@ -584,7 +584,7 @@ std::vector<unsigned char> Game::getMenuoptions(char in_menu) {
     return (out);
 }
 
-void Game::setMenuoptions(char in_menu, std::vector<unsigned char> in_options) {
+void Game::setMenuoptions(char in_menu, std::vector<uint8_t> in_options) {
     if (in_menu > 0) {
         menuoptions[in_menu] = in_options;
     } else {
@@ -593,7 +593,7 @@ void Game::setMenuoptions(char in_menu, std::vector<unsigned char> in_options) {
 }
 
 
-void Game::setCursorlastpos(const short int x, const short int y) {
+void Game::setCursorlastpos(const int16_t x, const int16_t y) {
     cursor_lastpos.x = x;
     cursor_lastpos.y = y;
 }
@@ -627,10 +627,10 @@ void Game::setMousestate(const char in_menu) {
 
     if (in_menu >= 0) {
 
-        short unsigned int * temp_tilesize;
-        short int * bounds;
+        uint16_t * temp_tilesize;
+        int16_t * bounds;
         temp_tilesize = mapx->getTilesize();
-        short int linespace;
+        int16_t linespace;
 
         if (mousex.valid()) {
             switch (in_menu) {
@@ -664,12 +664,12 @@ void Game::setCursorstate(const char in_menu) {
 
         SDL_Rect temprect;
 
-        short unsigned int * temp_tilesize;
-        short int * bounds;
+        uint16_t * temp_tilesize;
+        int16_t * bounds;
         temp_tilesize = mapx->getTilesize();
-        short int linespace;
-        short int menubounds[4];
-        short int * outbounds;
+        int16_t linespace;
+        int16_t menubounds[4];
+        int16_t * outbounds;
         Point pos;
         Point offset;
 
@@ -715,8 +715,8 @@ void Game::setCursorstate(const char in_menu) {
 
                     menubounds[0] = menupos.x / linespace;
                     menubounds[1] = menupos.x / linespace;
-                    menubounds[2] = (short int)(menupos.y / linespace + 1);
-                    menubounds[3] = (short int)(menupos.y / linespace + menuoptions[in_menu].size());
+                    menubounds[2] = (int16_t)(menupos.y / linespace + 1);
+                    menubounds[3] = (int16_t)(menupos.y / linespace + menuoptions[in_menu].size());
                     pos = cursorx.component<Position>()->getPos();
                     offset = cursorx.component<Position>()->getOffset();
                     cursor_lastpos.x = pos.x - offset.x;
@@ -843,16 +843,16 @@ bool Game::isCursor() {
 }
 
 
-void Game::putPConMap(std::vector<short int> in_units, std::vector<std::vector<int>> in_pos_list) {
+void Game::putPConMap(std::vector<int16_t> in_units, std::vector<std::vector<int16_t>> in_pos_list) {
     SDL_Log("Loading party to map\n");
 
     if (mapx) {
         std::string asset_name;
         entityx::Entity temp_unit_ent;
-        short int * bounds = mapx->getBounds();
-        short unsigned int * tilesize = mapx->getTilesize();
+        int16_t * bounds = mapx->getBounds();
+        uint16_t * tilesize = mapx->getTilesize();
 
-        for (int i = 0; i < in_units.size(); i++) {
+        for (int16_t i = 0; i < in_units.size(); i++) {
             asset_name = "..//assets//Units//" + party[in_units[i]].getName() + ".png";
             SDL_Log("Loading unit %s", asset_name.c_str());
             temp_unit_ent = entities.create();
@@ -879,14 +879,14 @@ void Game::loadMapArrivals() {
 
     if (mapx) {
         std::vector<Map_arrival> map_arrivals = mapx->getArrivals();
-        unsigned short int currentturn = mapx->getTurn();
+        uint16_t currentturn = mapx->getTurn();
         std::string asset_name;
         std::string unit_name;
         entityx::Entity temp_unit_ent;
-        short int * bounds = mapx->getBounds();
-        short unsigned int * tilesize = mapx->getTilesize();
+        int16_t * bounds = mapx->getBounds();
+        uint16_t * tilesize = mapx->getTilesize();
 
-        for (int i = 0; i < map_arrivals.size(); i++) {
+        for (int16_t i = 0; i < map_arrivals.size(); i++) {
             if (map_arrivals[i].turn == currentturn) {
                 temp_unit_ent = entities.create();
                 temp_unit_ent.assign<Position>();
@@ -915,11 +915,11 @@ void Game::initParty() {
     loadUnits(init_party);
 }
 
-void Game::loadUnits(std::vector<short int> toload) {
+void Game::loadUnits(std::vector<int16_t> toload) {
     std::string filename;
     Unit temp_unit;
 
-    for (short unsigned int i = 0; i < toload.size(); i++) {
+    for (uint16_t i = 0; i < toload.size(); i++) {
         filename = "units//" + unitNames[toload[i]] + ".json";
         temp_unit.readJSON(filename.c_str());
 
@@ -929,8 +929,8 @@ void Game::loadUnits(std::vector<short int> toload) {
     }
 }
 
-void Game::unloadUnits(std::vector<short int> to_unload) {
-    for (int i = 0; i < to_unload.size(); i++) {
+void Game::unloadUnits(std::vector<int16_t> to_unload) {
+    for (int16_t i = 0; i < to_unload.size(); i++) {
         party.erase(to_unload[i]);
     }
 }
@@ -940,7 +940,7 @@ SDL_Window * Game::getWindow() {
 }
 
 void Game::init() {
-    int flags = 0;
+    int16_t flags = 0;
 
     if (settings.fullscreen) {
         flags = SDL_WINDOW_FULLSCREEN;
@@ -1012,7 +1012,7 @@ void Game::updateSystems() {
 }
 
 void Game::startTurnSystem() {
-    std::vector<unsigned char> armies = mapx->getArmies();
+    std::vector<uint8_t> armies = mapx->getArmies();
 
     if (armies.size() > 0) {
         systems.system<TurnSystemx>()->addArmies(armies);
@@ -1042,7 +1042,7 @@ Camp Game::getCamp() {
     return (camp);
 }
 
-void Game::loadXML(const short int save_ind) {
+void Game::loadXML(const int16_t save_ind) {
     char filename[DEFAULT::BUFFER_SIZE];
 
     if (!PHYSFS_exists(SAVE_FOLDER)) {
@@ -1066,10 +1066,10 @@ void Game::loadXML(const short int save_ind) {
     }
 
     ptemp = xmlDoc.FirstChildElement("Unit");
-    unsigned short int id;
+    uint16_t id;
 
     while (ptemp) {
-        id = (unsigned short int)ptemp->IntAttribute("id");
+        id = (uint16_t)ptemp->IntAttribute("id");
         party[id] = Unit();
         party[id].readXML(ptemp);
         ptemp = xmlDoc.NextSiblingElement("Unit");
@@ -1078,7 +1078,7 @@ void Game::loadXML(const short int save_ind) {
     ptemp = xmlDoc.FirstChildElement("Narrative");
 }
 
-void Game::copySave(const short int from_ind, const short int to_ind) {
+void Game::copySave(const int16_t from_ind, const int16_t to_ind) {
     if (!PHYSFS_exists(SAVE_FOLDER)) {
         SDL_Log("Could not find save folder!");
     } else {
@@ -1095,7 +1095,7 @@ void Game::copySave(const short int from_ind, const short int to_ind) {
 
         if (pfrom != NULL) {
             PHYSFS_file * pto = PHYSFS_openWrite(filenameto);
-            int len = PHYSFS_fileLength(pfrom);
+            int16_t len = PHYSFS_fileLength(pfrom);
             char longbuffer[len];
             PHYSFS_readBytes(pfrom, longbuffer, len);
             PHYSFS_writeBytes(pto, longbuffer, len);
@@ -1107,7 +1107,7 @@ void Game::copySave(const short int from_ind, const short int to_ind) {
     }
 }
 
-void Game::deleteSave(const short int save_ind) {
+void Game::deleteSave(const int16_t save_ind) {
     if (!PHYSFS_exists(SAVE_FOLDER)) {
         SDL_Log("Could not find save folder!");
     } else {
@@ -1120,7 +1120,7 @@ void Game::deleteSave(const short int save_ind) {
     }
 }
 
-void Game::loadJSON(const short int save_ind) {
+void Game::loadJSON(const int16_t save_ind) {
     if (!PHYSFS_exists(SAVE_FOLDER)) {
         SDL_Log("Could not find save folder!");
     } else {
@@ -1142,7 +1142,7 @@ void Game::loadJSON(const short int save_ind) {
         tinymt32.tmat = cJSON_GetNumberValue(jRN_tmat);
 
         cJSON * jelement;
-        int i = 0;
+        int16_t i = 0;
         cJSON_ArrayForEach(jelement, jRN_status) {
             if ((i >= 0) && (i < 4)) {
                 tinymt32.status[i] = cJSON_GetNumberValue(jelement);
@@ -1170,7 +1170,7 @@ void Game::loadJSON(const short int save_ind) {
     }
 }
 
-void Game::saveJSON(const short int save_ind) {
+void Game::saveJSON(const int16_t save_ind) {
 
     if (!PHYSFS_exists(SAVE_FOLDER)) {
         PHYSFS_mkdir(SAVE_FOLDER);
@@ -1233,7 +1233,7 @@ void Game::saveJSON(const short int save_ind) {
     }
 }
 
-void Game::saveXML(const short int save_ind) {
+void Game::saveXML(const int16_t save_ind) {
     if (!PHYSFS_exists(SAVE_FOLDER)) {
         PHYSFS_mkdir(SAVE_FOLDER);
     }
@@ -1268,7 +1268,7 @@ void Game::saveXML(const short int save_ind) {
     PHYSFS_close(fp);
 }
 
-void Game::setState(const short int new_state) {
+void Game::setState(const int16_t new_state) {
     if (new_state > 0) {
 
         if (state != new_state) {
@@ -1280,7 +1280,7 @@ void Game::setState(const short int new_state) {
     }
 }
 
-unsigned char Game::getURN() {
+uint8_t Game::getURN() {
     return (Uuint32_openBSD(tinymt32, RN_MAX, RN_MIN));
 }
 
@@ -1308,11 +1308,11 @@ void Game::setMouseInputMap(MouseInputMap in_mouseInputMap) {
     mouseInputMap = in_mouseInputMap;
 }
 
-std::unordered_map<short int, Weapon> * Game::getWeapons() {
+std::unordered_map<int16_t, Weapon> * Game::getWeapons() {
     return (&weapons);
 }
 
-std::unordered_map<short int, Unit> Game::getParty() {
+std::unordered_map<int16_t, Unit> Game::getParty() {
     return (party);
 }
 
@@ -1340,9 +1340,9 @@ void Game::update(entityx::TimeDelta dt) {
 
 // loss conditions
 bool essentialDied(Map * in_map, const Narrative * in_narrative) {
-    std::vector<short unsigned int> essentials = in_map->getEssentials();
+    std::vector<uint16_t> essentials = in_map->getEssentials();
 
-    for (int i = 0; i < essentials.size(); i++) {
+    for (int16_t i = 0; i < essentials.size(); i++) {
         if (in_narrative->death[essentials[i]]) {
             return (true);
         }
@@ -1391,18 +1391,18 @@ bool positionCondition(Unit * in_unit, Map_condition * in_mcond) {
         }
     }
 
-    // short int * unitpos = in_unit->getPos();
+    // int16_t * unitpos = in_unit->getPos();
 
-    // if (unitpos[0] < std::max(0, (int)in_mcond->colmin)) {
+    // if (unitpos[0] < std::max(0, (int16_t)in_mcond->colmin)) {
     //     return(false);
     // }
-    // if (unitpos[0] > std::min(255, (int)in_mcond->colmax)) {
+    // if (unitpos[0] > std::min(255, (int16_t)in_mcond->colmax)) {
     //     return(false);
     // }
-    // if (unitpos[1] < std::max(0, (int)in_mcond->rowmin)) {
+    // if (unitpos[1] < std::max(0, (int16_t)in_mcond->rowmin)) {
     //     return(false);
     // }
-    // if (unitpos[1] > std::min(255, (int)in_mcond->rowmax)) {
+    // if (unitpos[1] > std::min(255, (int16_t)in_mcond->rowmax)) {
     //     return(false);
     // }
     return (true);

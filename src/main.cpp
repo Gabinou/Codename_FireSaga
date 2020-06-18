@@ -49,9 +49,9 @@ int main(int argc, char * argv[]) {
     firesaga->setMousestate(MENU::MAP);
 
     SDL_Log("Loading in test party\n");
-    std::vector<short int> unit_inds = {UNIT::NAME::SILOU};
+    std::vector<int16_t> unit_inds = {UNIT::NAME::SILOU};
     firesaga->loadUnits(unit_inds);
-    std::vector<std::vector<int>> positions_list = {{6, 6}};
+    std::vector<std::vector<int16_t>> positions_list = {{6, 6}};
     firesaga->putPConMap(unit_inds, positions_list);
 
     SDL_Log("Loading in arrivals\n");
@@ -61,11 +61,11 @@ int main(int argc, char * argv[]) {
     firesaga->startTurnSystem();
 
     SDL_Log("Starting main game loop\n");
-    unsigned int currentTime_ms = SDL_GetTicks();
-    unsigned int elapsedTime_ms = 0;
+    uint16_t currentTime_ms = SDL_GetTicks();
+    uint16_t elapsedTime_ms = 0;
     float updateTime_s = 0.0f;
-    short unsigned int cap_s = firesaga->getSettings()->FPS.cap;
-    unsigned int delay = 0;
+    uint16_t cap_s = firesaga->getSettings()->FPS.cap;
+    uint16_t delay = 0;
 
     while (firesaga->isRunning()) {
         elapsedTime_ms = SDL_GetTicks() - currentTime_ms;

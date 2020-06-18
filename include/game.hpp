@@ -40,9 +40,9 @@ private:
 
     Point cursor_lastpos = {6, 6};
     entityx::ComponentHandle<Map> mapx;
-    std::unordered_map<unsigned char, entityx::Entity> menus;
+    std::unordered_map<uint8_t, entityx::Entity> menus;
     std::vector<entityx::Entity> buttons;
-    std::unordered_map<unsigned char, std::vector<unsigned char>> menuoptions;
+    std::unordered_map<uint8_t, std::vector<uint8_t>> menuoptions;
     Narrative narrative;
 
     KeyboardInputMap keyboardInputMap;
@@ -59,12 +59,12 @@ private:
     Convoy convoy;
     Camp camp;
 
-    char chapter = -1;
+    int8_t chapter = -1;
 
-    short unsigned int state;
+    uint16_t state;
 
-    std::unordered_map<short int, Unit> party;
-    std::unordered_map<short int, Weapon> weapons;
+    std::unordered_map<int16_t, Unit> party;
+    std::unordered_map<int16_t, Weapon> weapons;
 
 public:
     static SDL_Renderer * renderer;
@@ -74,7 +74,7 @@ public:
     Game(Settings in_settings);
     ~Game();
 
-    unsigned char getURN();
+    uint8_t getURN();
 
     void init();
     void initSystems();
@@ -82,15 +82,15 @@ public:
 
     tinymt32_t & getTinymt32();
 
-    void setChapter(char in_chapter);
-    char getChapter();
+    void setChapter(int8_t in_chapter);
+    int8_t getChapter();
     entityx::ComponentHandle<Map> getMap();
-    void loadMap(const int in_map_index);
+    void loadMap(const int16_t in_map_index);
     void unloadMap();
-    void putPConMap(std::vector<short int> in_units, std::vector<std::vector<int>> in_pos_list);
+    void putPConMap(std::vector<int16_t> in_units, std::vector<std::vector<int16_t>> in_pos_list);
     void initParty();
-    void loadUnits(std::vector<short int> to_load);
-    void unloadUnits(std::vector<short int> to_unload);
+    void loadUnits(std::vector<int16_t> to_load);
+    void unloadUnits(std::vector<int16_t> to_unload);
     void loadMapArrivals();
 
     void loadHighlight();
@@ -111,42 +111,42 @@ public:
     void disableMousex();
     entityx::Entity * getMousex();
     bool isMouse();
-    std::unordered_map<short int, Weapon> * getWeapons();
-    void setMousestate(const char in_menu);
+    std::unordered_map<int16_t, Weapon> * getWeapons();
+    void setMousestate(const int8_t in_menu);
 
     bool isRunning();
     void stopRunning();
 
-    std::unordered_map<short int, Unit> getParty();
+    std::unordered_map<int16_t, Unit> getParty();
 
     void setCamp(Camp in_camp);
     Camp getCamp();
     void setConvoy(Convoy in_convoy);
     Convoy getConvoy();
 
-    void setCursorstate(const char in_menu);
-    void setCursorlastpos(const short int x, const short int y);
+    void setCursorstate(const int8_t in_menu);
+    void setCursorlastpos(const int16_t x, const int16_t y);
     template <typename T> void loadTiles(std::vector<T> in_tiles);
     void moveUnit(entityx::Entity & cursor);
     void makeTurntransition();
-    void setTurntransitiontext(char in_army);
+    void setTurntransitiontext(int8_t in_army);
 
-    std::vector<unsigned char> getMenuoptions(char in_menu_index);
-    void makeMenuoptions(char in_menu_index);
-    void setMenuoptions(char in_menu_index, std::vector<unsigned char> in_options);
-    void makeMenutext(char in_menu_index);
-    void makeMenu(char in_menu_index);
-    void makeButtons(char in_menu_index, Point menu_pos);
-    entityx::Entity makeButton(char in_menu_option);
+    std::vector<uint8_t> getMenuoptions(int8_t in_menu_index);
+    void makeMenuoptions(int8_t in_menu_index);
+    void setMenuoptions(int8_t in_menu_index, std::vector<uint8_t> in_options);
+    void makeMenutext(int8_t in_menu_index);
+    void makeMenu(int8_t in_menu_index);
+    void makeButtons(int8_t in_menu_index, Point menu_pos);
+    entityx::Entity makeButton(int8_t in_menu_option);
     void killButtons();
     std::vector<entityx::Entity> getButtons();
-    entityx::Entity * getMenu(char in_menu_index);
-    void killMenu(short int index);
-    void hideMenu(short int index);
-    void showMenu(short int index);
+    entityx::Entity * getMenu(int8_t in_menu_index);
+    void killMenu(int16_t index);
+    void hideMenu(int16_t index);
+    void showMenu(int16_t index);
 
-    void loadItem(short int in_item);
-    void loadItems(std::vector<short int> in_items);
+    void loadItem(int16_t in_item);
+    void loadItems(std::vector<int16_t> in_items);
 
     void startTurnSystem();
 
@@ -154,8 +154,8 @@ public:
     void clean();
     void fight(Unit * attacker, Unit * defender);
     void attack(Unit * attacker, Unit * defender);
-    bool checkRate(int crit_rate, short int mode = 2);
-    bool * checkHitCrit(int hit_rate, int crit_rate, short int mode = GAME::RN::GAUSSIAN);
+    bool checkRate(int16_t crit_rate, int16_t mode = 2);
+    bool * checkHitCrit(int16_t hit_rate, int16_t crit_rate, int16_t mode = GAME::RN::GAUSSIAN);
 
     void makeFPS();
     entityx::Entity * getFPS();
@@ -170,16 +170,16 @@ public:
     MouseInputMap getMouseInputMap();
     void setMouseInputMap(const MouseInputMap in_gpmap);
 
-    void setState(const short int new_state);
-    short unsigned int getState();
+    void setState(const int16_t new_state);
+    uint16_t getState();
 
-    void deleteSave(const short int delete_ind);
-    void copySave(const short int from_ind, const short int to_ind);
-    void saveXML(const short int save_ind);
-    void loadXML(const short int save_ind);
+    void deleteSave(const int16_t delete_ind);
+    void copySave(const int16_t from_ind, const int16_t to_ind);
+    void saveXML(const int16_t save_ind);
+    void loadXML(const int16_t save_ind);
 
-    void saveJSON(const short int save_ind);
-    void loadJSON(const short int save_ind);
+    void saveJSON(const int16_t save_ind);
+    void loadJSON(const int16_t save_ind);
 
     void configure(entityx::EventManager & event_manager);
     void update(entityx::TimeDelta dt);
