@@ -28,7 +28,7 @@ private:
     // + 1 -> armory merchant traveling with you.
     // + 1 -> item shop merchant traveling with you.
     std::vector<uint8_t> optimal_jobs;
-    short int party_size;
+    int16_t party_size;
     int8_t chapter = -1;
     void checkChapter();
 
