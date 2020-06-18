@@ -19,70 +19,70 @@ private:
 
     SDL_Rect srcrect, destrect;
     SDL_Renderer * renderer = NULL;
-    short unsigned int frames = 10, speed = 50;
-    short unsigned int tilesize[2];
+    uint16_t frames = 10, speed = 50;
+    uint16_t tilesize[2];
 
-    std::unordered_map<short int, SDL_Texture *> textures;
+    std::unordered_map<int16_t, SDL_Texture *> textures;
     std::vector<SDL_Texture *> overlays{NULL, NULL, NULL};
     std::vector<SDL_Texture *> dangers{NULL, NULL};
 
-    std::vector<std::vector<short int>> moveoverlay, attackoverlay, healoverlay;
+    std::vector<std::vector<int16_t>> moveoverlay, attackoverlay, healoverlay;
     bool show_overlay = false;
     bool show_danger = false;
     bool show_grid = false;
-    unsigned char overlay_mode = 0;
-    std::vector<std::vector<short int>> dangeroverlay;
-    unsigned char danger_mode = 0;
+    int8_t overlay_mode = 0;
+    std::vector<std::vector<int16_t>> dangeroverlay;
+    int8_t danger_mode = 0;
 
-    std::vector<std::vector<short int>> tilemap;
-    std::unordered_map<short int, Tile> tiles;
-    std::vector<short int> tilesindex;
+    std::vector<std::vector<int16_t>> tilemap;
+    std::unordered_map<int16_t, Tile> tiles;
+    std::vector<int16_t> tilesindex;
     std::vector<std::string> tilenames;
 
-    short int bounds[4] = {0, 255, 0, 255}; //rowmin, rowmax, colmin, colmax
-    short int offset[2] = {DEFAULT::TILEMAP_XOFFSET, DEFAULT::TILEMAP_YOFFSET}; //  isnt offset[0] juste bounds[0]? offset[2] == bounds[1]?
-    unsigned char num_friendlies = 0;
-    unsigned char num_neutral = 0;
-    unsigned char num_enemies = 0;
-    unsigned char turn = 0; // Automatic loss if turn 255.
-    unsigned char chapter = 0;
+    int16_t bounds[4] = {0, 255, 0, 255}; //rowmin, rowmax, colmin, colmax
+    int16_t offset[2] = {DEFAULT::TILEMAP_XOFFSET, DEFAULT::TILEMAP_YOFFSET}; //  isnt offset[0] juste bounds[0]? offset[2] == bounds[1]?
+    int8_t num_friendlies = 0;
+    int8_t num_neutral = 0;
+    int8_t num_enemies = 0;
+    int8_t turn = 0; // Automatic loss if turn 255.
+    int8_t chapter = 0;
 
     std::vector<Map_arrival> map_arrivals;
     std::vector<Map_arrival> loaded_map_arrivals;
     std::vector<std::vector<Inventory_item>> arrival_equipments;
 
     std::vector<Point> starting_positions;
-    std::vector<unsigned char> armies_onfield;
-    std::unordered_map<unsigned char, std::vector<entityx::ComponentHandle<Unit>>> units_onfield;
+    std::vector<int8_t> armies_onfield;
+    std::unordered_map<int8_t, std::vector<entityx::ComponentHandle<Unit>>> units_onfield;
     std::vector<std::vector<entityx::ComponentHandle<Unit>>> unitmap;
-    std::vector<unsigned short int> essentials = {UNIT::NAME::ERWIN};
-    unsigned short int boss;
+    std::vector<uint16_t> essentials = {UNIT::NAME::ERWIN};
+    uint16_t boss;
     bool bossdied;
     bool seized; // maybe unecessary if turn system.
 
 public:
     Map();
     ~Map();
-    Map(const short unsigned int width, const short unsigned int height);
+    Map(const uint16_t width, const uint16_t height);
 
     void loadTiletextures();
     void loadOverlays();
     void loadDanger();
 
     void loadTiles(const int in_map_index);
-    void loadTiles(std::vector<short int> to_load);
+    void loadTiles(std::vector<int16_t> to_load);
     void loadTilesJSON();
-    void unloadTiles(std::vector<short int> to_unload);
-    std::unordered_map<short int, Tile> getTiles();
-    std::vector<short int> getTilesindex();
+    void unloadTiles(std::vector<int16_t> to_unload);
+    std::unordered_map<int16_t, Tile> getTiles();
+    std::vector<int16_t> getTilesindex();
 
     void postTilemap();
-    std::vector<std::vector<short int>> getTilemap();
-    void setTilemap(const std::vector<std::vector<short int>> in_tilemap);
-    void setTilesize(const short int unsigned width, const short int unsigned height);
-    short unsigned int * getTilesize() const;
+    std::vector<std::vector<int16_t>> getTilemap();
+    void setTilemap(const std::vector<std::vector<int16_t>> in_tilemap);
+    void setTilesize(const uint16_t width, const uint16_t height);
+    uint16_t * getTilesize() const;
 
-    std::vector<std::vector<short int>> makeMvtCostmap(entityx::ComponentHandle<Unit> in_unit);
+    std::vector<std::vector<int16_t>> makeMvtCostmap(entityx::ComponentHandle<Unit> in_unit);
 
     void setManager(entityx::EntityManager * in_manager);
     void setRenderer(SDL_Renderer * in_renderer);
@@ -95,25 +95,25 @@ public:
     void setStartingpos(std::vector<Point> in_positions);
     void addStartingpos(Point in_position);
 
-    void addArmy(unsigned char in_army);
-    std::vector<unsigned char> getArmies();
-    void putUnit(const short unsigned int x, const short unsigned int y, entityx::ComponentHandle<Unit> in_unit);
-    std::vector<entityx::ComponentHandle<Unit>> getUnits(unsigned char in_army);
-    entityx::ComponentHandle<Unit> getUnit(const short unsigned int x, const short unsigned int y);
-    void moveUnit(const short unsigned int x, const short unsigned int y, const short unsigned int new_x, const short unsigned int new_y);
+    void addArmy(int8_t in_army);
+    std::vector<int8_t> getArmies();
+    void putUnit(const uint16_t x, const uint16_t y, entityx::ComponentHandle<Unit> in_unit);
+    std::vector<entityx::ComponentHandle<Unit>> getUnits(int8_t in_army);
+    entityx::ComponentHandle<Unit> getUnit(const uint16_t x, const uint16_t y);
+    void moveUnit(const uint16_t x, const uint16_t y, const uint16_t new_x, const uint16_t new_y);
 
-    void setOverlay(const unsigned char in_mode, std::vector<std::vector<short int>> in_map);
+    void setOverlay(const int8_t in_mode, std::vector<std::vector<int16_t>> in_map);
     void clearOverlays();
 
-    unsigned char getTurn();
+    int8_t getTurn();
 
-    void setOverlaymode(const unsigned char in_mode);
+    void setOverlaymode(const int8_t in_mode);
     void showOverlay();
     void hideOverlay();
 
-    void setOffset(short int in_offset[2]);
-    void setOffset(short int xoffset, short int yoffset);
-    short int * getOffset();
+    void setOffset(int16_t in_offset[2]);
+    void setOffset(int16_t xoffset, int16_t yoffset);
+    int16_t * getOffset();
 
     void loadGrid();
     void showGrid();
@@ -124,25 +124,25 @@ public:
 
     void setArrivals(const std::vector<Map_arrival> in_arrivals);
     void addArrival(const Map_arrival in_arrival);
-    void removeMapArrival(const unsigned char index);
+    void removeMapArrival(const int8_t index);
     std::vector<Map_arrival> getArrivals();
-    unsigned char getnumArrivals();
+    int8_t getnumArrivals();
 
-    void setDangermode(const unsigned char in_mode);
+    void setDangermode(const int8_t in_mode);
     void showDanger();
     void hideDanger();
     void switchDanger();
     bool isDanger();
-    void addDanger(const std::vector<std::vector<short int>> in_danger);
-    void subDanger(const std::vector<std::vector<short int>> in_danger);
-    void setDanger(const std::vector<std::vector<short int>> in_danger);
+    void addDanger(const std::vector<std::vector<int16_t>> in_danger);
+    void subDanger(const std::vector<std::vector<int16_t>> in_danger);
+    void setDanger(const std::vector<std::vector<int16_t>> in_danger);
 
-    unsigned short int getBoss();
+    uint16_t getBoss();
     bool getBossDeath();
     bool getSeized();
-    std::vector<unsigned short int> getEssentials();
+    std::vector<uint16_t> getEssentials();
 
-    short int * getBounds();
+    int16_t * getBounds();
 
     std::vector<bool (*)(Map)> win_conditions;
     std::vector<bool (*)(Map)> sidequests;
@@ -164,6 +164,6 @@ public:
 };
 
 extern std::vector<std::string> mapNames;
-extern std::vector<short int> baseParty();
+extern std::vector<int16_t> baseParty();
 
 #endif /* MAP_HPP */

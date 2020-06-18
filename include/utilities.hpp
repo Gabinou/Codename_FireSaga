@@ -30,7 +30,7 @@ extern std::string stats2str(Weapon_stats in_stats);
 extern std::string gamestate2str(uint16_t in_state);
 extern std::vector<std::string> menuoptions2str(std::vector<uint8_t> in_options);
 
-extern std::vector<std::string> getTilenames(std::vector<short int> in_tilesindex);
+extern std::vector<std::string> getTilenames(std::vector<int16_t> in_tilesindex);
 extern std::vector<std::string> unitNames;
 extern void makeunitNames();
 extern std::vector<std::string> itemNames;
