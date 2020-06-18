@@ -13,17 +13,17 @@ private:
     std::vector<Page> pages;
     std::string title;
     std::string author;
-    unsigned short int id;
+    uint16_t id;
     bool sellable = false;
 public:
     Book();
-    Book(std::string in_title, unsigned short int in_id);
+    Book(std::string in_title, uint16_t in_id);
     void setAuthor(std::string in_author);
     std::string getAuthor();
     void setTitle(std::string in_title);
     std::string getTitle();
-    void setid(unsigned short int in_id);
-    unsigned short int getid();
+    void setid(uint16_t in_id);
+    uint16_t getid();
     void addPage(Page in_page);
 };
 
@@ -31,20 +31,20 @@ extern void baseBooks();
 
 class Scene : public JSON_IO {
 private:
-    short unsigned int id;
+    uint16_t id;
     std::vector<Dialog_line> lines;
     std::vector<std::vector<Dialog_line>> raw_lines;
     Narrative * narrative = NULL;
-    std::vector<short unsigned int> participants;
-    std::vector<short unsigned int> all_lines_id;
-    short int current_line = -1;
+    std::vector<uint16_t> participants;
+    std::vector<uint16_t> all_lines_id;
+    int16_t current_line = -1;
 public:
     Scene();
     Dialog_line chooseLine(std::vector<Dialog_line> raw_line);
     void makeLines();
     void makeParticipants(); // AFTER lines is made.
-    void setParticipants(const std::vector<short unsigned int> in_participants);
-    std::vector<short unsigned int> getParticipants();
+    void setParticipants(const std::vector<uint16_t> in_participants);
+    std::vector<uint16_t> getParticipants();
 
     void setNarrative(Narrative * in_narrative);
     Narrative * getNarrative();
@@ -54,8 +54,8 @@ public:
     Dialog_line nextLine();
     void restartScene();
 
-    short unsigned int getID();
-    void setID(const short unsigned int in_id);
+    uint16_t getID();
+    void setID(const uint16_t in_id);
 
 
     using JSON_IO::writeJSON;

@@ -10,13 +10,13 @@
 
 extern tinymt32_t tinyMT;
 
-extern unsigned char getURN(tinymt32_t & tinymt = tinyMT);
-extern unsigned char * boxmuller(const unsigned char RN_U[2], const float avg = 50., const float std_dev = 20.);
+extern uint8_t getURN(tinymt32_t & tinymt = tinyMT);
+extern uint8_t * boxmuller(const uint8_t RN_U[2], const float avg = 50., const float std_dev = 20.);
 
-extern bool single_roll(const unsigned char RN, const unsigned char hit);
-extern bool double_roll(const unsigned char RN1, const unsigned char RN2, const unsigned char hit);
+extern bool single_roll(const uint8_t RN, const uint8_t hit);
+extern bool double_roll(const uint8_t RN1, const uint8_t RN2, const uint8_t hit);
 
-extern unsigned int Uuint32_openBSD(tinymt32_t & tinymt = tinyMT, unsigned int max = RN_MAX, unsigned int min = RN_MIN);
+extern uint32_t Uuint32_openBSD(tinymt32_t & tinymt = tinyMT, uint32_t max = RN_MAX, uint32_t min = RN_MIN);
 extern void init_tinyMT(tinymt32_t & tinymt = tinyMT);
 
 // REFERENCES

@@ -69,7 +69,7 @@ public:
     void loadOverlays();
     void loadDanger();
 
-    void loadTiles(const int in_map_index);
+    void loadTiles(const int32_t in_map_index);
     void loadTiles(std::vector<int16_t> to_load);
     void loadTilesJSON();
     void unloadTiles(std::vector<int16_t> to_unload);

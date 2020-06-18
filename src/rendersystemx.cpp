@@ -35,16 +35,12 @@ void RenderSystemx::setMap(entityx::ComponentHandle<Map> in_map) {
     }
 }
 
-void RenderSystemx::setTilesize(const short int unsigned width, const short int unsigned height) {
+void RenderSystemx::setTilesize(const uint16_t width, const uint16_t height) {
     tilesize[0] = width;
     tilesize[1] = height;
 }
 
-// void RenderSystemx::setLinespace(const short int unsigned in_linespace) {
-//     linespace = in_linespace;
-// }
-
-void RenderSystemx::slideSprites(entityx::Entity * in_ent, short int * slidepos, short int * objectivepos, double dt) {
+void RenderSystemx::slideSprites(entityx::Entity * in_ent, int16_t * slidepos, int16_t * objectivepos, int64_t dt) {
     if (in_ent->valid()) {
         entityx::ComponentHandle<GamepadController> gamepad = in_ent->component<GamepadController>();
         entityx::ComponentHandle<KeyboardController> keyboard = in_ent->component<KeyboardController>();
@@ -53,10 +49,10 @@ void RenderSystemx::slideSprites(entityx::Entity * in_ent, short int * slidepos,
         Point cursor_pos;
         Point unit_pos;
         Point offset;
-        double kb_held = 0.;
-        double gp_held = 0.;
-        short int slide_int = sprite->getSlideint();
-        unsigned char slidetype = sprite->getSlidetype();
+        int64_t kb_held = 0.;
+        int64_t gp_held = 0.;
+        int16_t slide_int = sprite->getSlideint();
+        uint8_t slidetype = sprite->getSlidetype();
         float * slidefactors = sprite->getSlidefactors();
         float scalefactor[2];
 
@@ -83,8 +79,8 @@ void RenderSystemx::slideSprites(entityx::Entity * in_ent, short int * slidepos,
             unit_pos = position->getPos();
             offset = position->getOffset();
             // SDL_Log("cursor_pos %d %d", unit_pos.x, unit_pos.y);
-            slidepos[0] = (int)(unit_pos.x * scalefactor[0]);
-            slidepos[1] = (int)(unit_pos.y * scalefactor[1]);
+            slidepos[0] = (int16_t)(unit_pos.x * scalefactor[0]);
+            slidepos[1] = (int16_t)(unit_pos.y * scalefactor[1]);
         } else {
             // if (!position->isonTilemap()) { //move on the menu space
             //     scalefactor[0] = linespace;
@@ -103,8 +99,8 @@ void RenderSystemx::slideSprites(entityx::Entity * in_ent, short int * slidepos,
 
                     cursor_pos = position->getPos();
                     offset = position->getOffset();
-                    objectivepos[0] = (int)(cursor_pos.x) * (scalefactor[0]) - destrect.w / 4;
-                    objectivepos[1] = (int)(cursor_pos.y) * (scalefactor[1]) - destrect.h / 4;
+                    objectivepos[0] = (int16_t)(cursor_pos.x) * (scalefactor[0]) - destrect.w / 4;
+                    objectivepos[1] = (int16_t)(cursor_pos.y) * (scalefactor[1]) - destrect.h / 4;
 
                     if (slide_wait > slide_step) {
                         if (objectivepos[0] != slidepos[0]) {
@@ -139,23 +135,23 @@ SDL_Rect RenderSystemx::loopSprites(entityx::ComponentHandle<Sprite> in_sprite) 
     SDL_Rect srcrect;
 
     if (in_sprite) {
-        short int frames = in_sprite->getFrames();
-        short int speed = in_sprite->getSpeed();
+        int16_t frames = in_sprite->getFrames();
+        int16_t speed = in_sprite->getSpeed();
         srcrect = in_sprite->getSrcrect();
-        unsigned char looping = in_sprite->getSs_looping();
+        uint8_t looping = in_sprite->getSs_looping();
 
         switch (looping) {
             case LOOPING::PINGPONG:
-                srcrect.x = srcrect.w * pingpong(static_cast<int>(SDL_GetTicks() / speed), frames, 0);
+                srcrect.x = srcrect.w * pingpong(static_cast<int16_t>(SDL_GetTicks() / speed), frames, 0);
                 break;
 
             case LOOPING::LINEAR:
             case LOOPING::DIRECT:
-                srcrect.x = srcrect.w * static_cast<int>((SDL_GetTicks() / speed) % frames);
+                srcrect.x = srcrect.w * static_cast<int16_t>((SDL_GetTicks() / speed) % frames);
                 break;
 
             case LOOPING::REVERSE:
-                srcrect.x = srcrect.w * (frames - static_cast<int>((SDL_GetTicks() / speed) % frames));
+                srcrect.x = srcrect.w * (frames - static_cast<int16_t>((SDL_GetTicks() / speed) % frames));
                 break;
 
             default:
@@ -195,8 +191,8 @@ void RenderSystemx::update(entityx::EntityManager & es, entityx::EventManager & 
 
         if (sprite->isVisible()) {
             if (!ent.has_component<Text>() && !ent.has_component<KeyboardController>() && !ent.has_component<GamepadController>() && !ent.has_component<MouseController>()) {
-                short int * slidepos = sprite->getSlidepos();
-                short int * objectivepos = sprite->getObjpos();
+                int16_t * slidepos = sprite->getSlidepos();
+                int16_t * objectivepos = sprite->getObjpos();
                 SDL_Rect srcrect = sprite->getSrcrect();
                 SDL_Rect destrect = sprite->getDestrect();
 
@@ -244,8 +240,8 @@ void RenderSystemx::update(entityx::EntityManager & es, entityx::EventManager & 
         if (sprite->isVisible()) {
             // SDL_Log("Rendering Cursor");
 
-            short int * slidepos = sprite->getSlidepos();
-            short int * objectivepos = sprite->getObjpos();
+            int16_t * slidepos = sprite->getSlidepos();
+            int16_t * objectivepos = sprite->getObjpos();
             SDL_Rect srcrect = sprite->getSrcrect();
             SDL_Rect destrect = sprite->getDestrect();
 

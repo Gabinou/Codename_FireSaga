@@ -16,11 +16,11 @@ private:
     entityx::Entity * fps;
     entityx::EventManager * event_manager;
     entityx::ComponentHandle<Map> mapx;
-    short unsigned int * tilesize;
-    // short unsigned int linespace;
+    uint16_t * tilesize;
+    // uint16_t linespace;
     Point offset;
-    double frame_count = 0.;
-    double last_update = 0.;
+    int64_t frame_count = 0.;
+    int64_t last_update = 0.;
     float slide_step = 0.01;
     float slide_wait = 0;
     float cursor_fasttime = 0.35;
@@ -30,10 +30,10 @@ public:
 
     void setRenderer(SDL_Renderer * in_renderer);
     void setMap(entityx::ComponentHandle<Map> in_map);
-    void setTilesize(const short int unsigned width, const short int unsigned height);
-    // void setLinespace(const short int unsigned in_linespace);
+    void setTilesize(const uint16_t width, const uint16_t height);
+    // void setLinespace(const uint16_t in_linespace);
     SDL_Rect loopSprites(entityx::ComponentHandle<Sprite> in_sprite);
-    void slideSprites(entityx::Entity * in_ent, short int * slidepos, short int * objectivepos, double dt);
+    void slideSprites(entityx::Entity * in_ent, int16_t * slidepos, int16_t * objectivepos, int64_t dt);
 
     void configure(entityx::EventManager & event_manager);
     void receive(const turnBegin & begin);
