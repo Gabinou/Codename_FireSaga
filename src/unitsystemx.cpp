@@ -69,12 +69,12 @@ void UnitSystemx::receive(const unitReturn & Return) {
 
 void UnitSystemx::receive(const refreshUnits & refresh) {
     SDL_Log("Received refreshUnits events");
-    unsigned char army = refresh.army;
+    uint8_t army = refresh.army;
     std::vector<entityx::ComponentHandle<Unit>> units = mapx->getUnits(army);
 
     SDL_Log("units size: %d", units.size());
 
-    for (short i = 0; i < units.size(); i++) {
+    for (uint16_t i = 0; i < units.size(); i++) {
         units[i]->refresh();
     }
 }
@@ -179,7 +179,7 @@ void UnitSystemx::receive(const unitDeselect & deselect) {
 
 void UnitSystemx::receive(const unitSelect & select) {
     SDL_Log("unitSelect event received");
-    short int newstate = -1;
+    int16_t newstate = -1;
     entityx::ComponentHandle<Unit> unit = select.unit;
     selected = unit.entity();
     entityx::ComponentHandle<Position> position = selected.component<Position>();
@@ -191,13 +191,13 @@ void UnitSystemx::receive(const unitSelect & select) {
 
 void UnitSystemx::receive(const unitDanger & danger) {
     SDL_Log("unitDanger event received");
-    std::vector<std::vector<short int>> costmapp;
-    std::vector<std::vector<short int>> movemapp;
-    std::vector<std::vector<short int>> attackmapp;
-    std::vector<std::vector<short int>> dangermapp;
-    short unsigned int unit_move;
-    short unsigned int start[2];
-    unsigned char * range;
+    std::vector<std::vector<int16_t>> costmapp;
+    std::vector<std::vector<int16_t>> movemapp;
+    std::vector<std::vector<int16_t>> attackmapp;
+    std::vector<std::vector<int16_t>> dangermapp;
+    uint16_t unit_move;
+    uint16_t start[2];
+    uint8_t * range;
 
     entityx::ComponentHandle<Unit> unit = danger.unit;
     entityx::Entity selector = danger.selector;
@@ -243,18 +243,18 @@ void UnitSystemx::receive(const unitDanger & danger) {
 
 void UnitSystemx::receive(const unitMove & move) {
     // SDL_Log("Received unitMove event");
-    std::vector<std::vector<short int>> costmapp;
-    std::vector<std::vector<short int>> movemapp;
-    std::vector<std::vector<short int>> attackmapp;
+    std::vector<std::vector<int16_t>> costmapp;
+    std::vector<std::vector<int16_t>> movemapp;
+    std::vector<std::vector<int16_t>> attackmapp;
     entityx::Entity selector = move.selector;
     entityx::ComponentHandle<Position> cursorpos = selector.component<Position>();
     entityx::ComponentHandle<Unit> unit = move.unit;
     Point start;
     Point offset;
-    short unsigned int nooffset[2];
-    short int unit_move;
-    short unsigned int current_unit_id;
-    unsigned char * range;
+    uint16_t nooffset[2];
+    int16_t unit_move;
+    uint16_t current_unit_id;
+    uint8_t * range;
 
     if (cursorpos) {
         start = cursorpos->getTilemapPos();

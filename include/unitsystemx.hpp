@@ -14,7 +14,7 @@ private:
     entityx::ComponentHandle<Map> mapx;
     entityx::EventManager * event_manager;
     Point old_position;
-    std::vector<unsigned char> unitmenuoptions;
+    std::vector<uint8_t> unitmenuoptions;
     entityx::Entity selected;
 public:
     UnitSystemx();
