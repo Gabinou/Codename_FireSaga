@@ -494,11 +494,11 @@ std::vector<entityx::ComponentHandle<Unit>> Map::getUnits(int8_t in_army) {
     return (units_onfield[in_army]);
 }
 
-std::vector<int8_t> Map::getArmies() {
+std::vector<uint8_t> Map::getArmies() {
     return (armies_onfield);
 }
 
-void Map::addArmy(const int8_t in_army) {
+void Map::addArmy(const uint8_t in_army) {
     if (!cppisin(in_army, armies_onfield)) {
         armies_onfield.push_back(in_army);
     }

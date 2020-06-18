@@ -52,7 +52,7 @@ private:
     std::vector<std::vector<Inventory_item>> arrival_equipments;
 
     std::vector<Point> starting_positions;
-    std::vector<int8_t> armies_onfield;
+    std::vector<uint8_t> armies_onfield;
     std::unordered_map<int8_t, std::vector<entityx::ComponentHandle<Unit>>> units_onfield;
     std::vector<std::vector<entityx::ComponentHandle<Unit>>> unitmap;
     std::vector<uint16_t> essentials = {UNIT::NAME::ERWIN};
@@ -95,8 +95,8 @@ public:
     void setStartingpos(std::vector<Point> in_positions);
     void addStartingpos(Point in_position);
 
-    void addArmy(int8_t in_army);
-    std::vector<int8_t> getArmies();
+    void addArmy(uint8_t in_army);
+    std::vector<uint8_t> getArmies();
     void putUnit(const uint16_t x, const uint16_t y, entityx::ComponentHandle<Unit> in_unit);
     std::vector<entityx::ComponentHandle<Unit>> getUnits(int8_t in_army);
     entityx::ComponentHandle<Unit> getUnit(const uint16_t x, const uint16_t y);

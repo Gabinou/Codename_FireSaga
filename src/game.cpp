@@ -1012,7 +1012,7 @@ void Game::updateSystems() {
 }
 
 void Game::startTurnSystem() {
-    std::vector<int8_t> armies = mapx->getArmies();
+    std::vector<uint8_t> armies = mapx->getArmies();
 
     if (armies.size() > 0) {
         systems.system<TurnSystemx>()->addArmies(armies);

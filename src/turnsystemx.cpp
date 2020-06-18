@@ -24,17 +24,17 @@ void TurnSystemx::setMap(entityx::ComponentHandle<Map> in_map) {
     }
 }
 
-unsigned char TurnSystemx::getArmyfront() {
+uint8_t TurnSystemx::getArmyfront() {
     return (armies.front());
 }
 
-void TurnSystemx::addArmies(std::vector<unsigned char> in_armies) {
+void TurnSystemx::addArmies(std::vector<uint8_t> in_armies) {
     for (short int i = 0; i < in_armies.size(); i++) {
         armies.push(in_armies[i]);
     }
 }
 
-void TurnSystemx::addArmy(unsigned char in_army) {
+void TurnSystemx::addArmy(uint8_t in_army) {
     armies.push(in_army);
 }
 
