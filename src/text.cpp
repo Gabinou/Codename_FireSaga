@@ -4,13 +4,13 @@ Text::Text() {
 
 };
 
-Text::Text(short int in_fontsize) {
+Text::Text(int16_t in_fontsize) {
     setFontsize(in_fontsize);
 }
 
-void Text::setFontsize(short int in_fontsize) {
+void Text::setFontsize(int16_t in_fontsize) {
     fontsize = in_fontsize;
-    linespacing = (short int)(fontsize * sizefactor[0] * spacingfactor);
+    linespacing = (int16_t)(fontsize * sizefactor[0] * spacingfactor);
 }
 
 void Text::show() {
@@ -34,11 +34,11 @@ void Text::setSizefactor(float in_factor[2]) {
     sizefactor[1] = in_factor[1];
 }
 
-void Text::setLinespacing(short int in_spacing) {
+void Text::setLinespacing(int16_t in_spacing) {
     linespacing = in_spacing;
 }
 
-short int Text::getLinespacing() {
+int16_t Text::getLinespacing() {
     return (linespacing);
 }
 
@@ -88,7 +88,7 @@ void Text::addTextTexture(std::string in_text, SDL_Color in_text_color) {
     destrects.push_back(SDL_Rect{});
 }
 
-void Text::removeTexture(short int index) {
+void Text::removeTexture(int16_t index) {
     if (index == -1) {
         textures.pop_back();
     } else {
@@ -108,11 +108,11 @@ void Text::setRects(Point in_position) {
     setRects(in_position.x, in_position.y);
 }
 
-void Text::setRects(short int * in_position) {
+void Text::setRects(int16_t * in_position) {
     setRects(in_position[0], in_position[1]);
 }
 
-void Text::setRects(short int x, short int y) {
+void Text::setRects(int16_t x, int16_t y) {
     srcrects[0].x = srcrects[0].y = 0;
     destrects[0].x = x + padding[3];
     destrects[0].y = y + padding[0];

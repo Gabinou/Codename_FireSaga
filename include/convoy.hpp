@@ -15,11 +15,11 @@
 
 class Convoy : public XML_IO, JSON_IO {
 private:
-    unsigned int bank = 0;
-    unsigned char  booksnum = 0;
+    uint16_t bank = 0;
+    uint8_t booksnum = 0;
     Quantity quantity;
     bool full = false;
-    std::unordered_map<short int, Weapon> * weapons = new std::unordered_map<short int, Weapon>;
+    std::unordered_map<int16_t, Weapon> * weapons = new std::unordered_map<int16_t, Weapon>;
 
     Inventory_item books[DEFAULT::BOOKS_NUM], swords[DEFAULT::CONVOY_SIZE],
                    lances[DEFAULT::CONVOY_SIZE], axes[DEFAULT::CONVOY_SIZE],
@@ -32,30 +32,30 @@ public:
     Convoy();
 
     void deposit(Inventory_item in_item);
-    Inventory_item withdraw(int index, int type);
-    void earn(int in_money);
-    void spend(int out_money);
+    Inventory_item withdraw(int16_t index, int16_t type);
+    void earn(int16_t in_money);
+    void spend(int16_t out_money);
 
-    void quicksort(int arr[], int low, int high, int wpntype);
-    int partition(int arr[], int low, int high, int wpntype);
-    void swap(int arr[], int ind1, int ind2);
-    void swapWpn(int wpntype, int ind1, int ind2);
+    void quicksort(int16_t arr[], int16_t low, int16_t high, int16_t wpntype);
+    int16_t partition(int16_t arr[], int16_t low, int16_t high, int16_t wpntype);
+    void swap(int16_t arr[], int16_t ind1, int16_t ind2);
+    void swapWpn(int16_t wpntype, int16_t ind1, int16_t ind2);
 
-    void sortStats(int wpntype, int stattype);
-    void sortused(int wpntype);
-    void sort(int wpntype, int stattype);
+    void sortStats(int16_t wpntype, int16_t stattype);
+    void sortused(int16_t wpntype);
+    void sort(int16_t wpntype, int16_t stattype);
 
     bool isFull();
-    int getQuantity(int wpntype);
+    int16_t getQuantity(int16_t wpntype);
     Quantity getQuantity();
-    std::vector<int> getStats(int wpntype, int stattype);
-    Inventory_item * getItems(int wpntype);
-    void setItems(int wpntype, Inventory_item * in_items);
-    void setWeapons(std::unordered_map<short int, Weapon> * in_weapons);
-    void checkWeapon(short int in_id);
+    std::vector<int16_t> getStats(int16_t wpntype, int16_t stattype);
+    Inventory_item * getItems(int16_t wpntype);
+    void setItems(int16_t wpntype, Inventory_item * in_items);
+    void setWeapons(std::unordered_map<int16_t, Weapon> * in_weapons);
+    void checkWeapon(int16_t in_id);
 
-    void printContents(int wpntype); // Useless?
-    void printStats(int wpntype, int stattype);
+    void printContents(int16_t wpntype); // Useless?
+    void printStats(int16_t wpntype, int16_t stattype);
 
     void clear();
 

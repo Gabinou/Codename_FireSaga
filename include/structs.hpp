@@ -7,47 +7,47 @@
 #include "enums.hpp"
 
 struct Tile_stats {
-    char dodge;
-    char Pprot;
-    char Mprot;
-    char heal; // %. Negative means damage.
+    int8_t dodge;
+    int8_t Pprot;
+    int8_t Mprot;
+    int8_t heal; // %. Negative means damage.
 };
 
 struct Unit_state {
     // Number of turns to be in this status. -1 means forever.
-    char poisoned;
-    char sleep;
-    char stone;
+    int8_t poisoned;
+    int8_t sleep;
+    int8_t stone;
 };
 
 struct Map_condition {
-    short int army = -1;
-    short int unit = -1;
-    short int colmin = -1;
-    short int colmax = -1;
-    short int rowmin = -1;
-    short int rowmax = -1;
+    int16_t army = -1;
+    int16_t unit = -1;
+    int16_t colmin = -1;
+    int16_t colmax = -1;
+    int16_t rowmin = -1;
+    int16_t rowmax = -1;
 };
 
 struct Quantity {
-    unsigned char swords = 0;
-    unsigned char lances = 0;
-    unsigned char axes = 0;
-    unsigned char bows = 0;
-    unsigned char trinkets = 0;
-    unsigned char offhands = 0;
-    unsigned char elemental = 0;
-    unsigned char demonic = 0;
-    unsigned char angelic = 0;
-    unsigned char shields = 0;
-    unsigned char staffs = 0;
-    unsigned char claws = 0;
-    unsigned char items = 0;
-    unsigned char books = 0;
+    uint8_t swords = 0;
+    uint8_t lances = 0;
+    uint8_t axes = 0;
+    uint8_t bows = 0;
+    uint8_t trinkets = 0;
+    uint8_t offhands = 0;
+    uint8_t elemental = 0;
+    uint8_t demonic = 0;
+    uint8_t angelic = 0;
+    uint8_t shields = 0;
+    uint8_t staffs = 0;
+    uint8_t claws = 0;
+    uint8_t items = 0;
+    uint8_t books = 0;
 };
 
 struct Condition {
-    short int unitid;
+    int16_t unitid;
     bool dead;
     bool recruited;
 };
@@ -55,27 +55,27 @@ struct Condition {
 struct Narrative {
     bool death[UNIT::NAME::NPC_END - UNIT::NAME::ERWIN] = {0};
     bool recruited[UNIT::NAME::PC_END - UNIT::NAME::ERWIN] = {0};
-    char chapter = 0;
+    int8_t chapter = 0;
 };
 
 struct Unit_stats {
-    unsigned char hp; // hit points
-    unsigned char str; // strength
-    unsigned char mag; // magic
-    unsigned char agi; // agility
-    unsigned char dex; // dexterity
-    unsigned char luck;
-    unsigned char def; // defense
-    unsigned char res; // resistance
-    unsigned char con; // constitution
-    unsigned char move; // movement
-    unsigned char prof; // proficiency
+    uint8_t hp; // hit points
+    uint8_t str; // strength
+    uint8_t mag; // magic
+    uint8_t agi; // agility
+    uint8_t dex; // dexterity
+    uint8_t luck;
+    uint8_t def; // defense
+    uint8_t res; // resistance
+    uint8_t con; // constitution
+    uint8_t move; // movement
+    uint8_t prof; // proficiency
 };
 
 struct Dialog_line {
     std::vector<Condition> conditions;
-    std::vector<char> chapters;
-    short int speaker;
+    std::vector<int8_t> chapters;
+    int16_t speaker;
     std::string line;
 };
 
@@ -88,118 +88,113 @@ struct Page {
 };
 
 struct Combat_stats {
-    unsigned char hit;
-    unsigned char dodge;
-    unsigned char crit;
-    unsigned char favor;
-    // char speed;
+    uint8_t hit;
+    uint8_t dodge;
+    uint8_t crit;
+    uint8_t favor;
+    // int8_t speed;
 };
 
 struct Infusion {
-    char power = -1; // >0 means weapon was already infused/is a magic weapon.
-    short unsigned int type = 0;
+    int8_t power = -1; // >0 means weapon was already infused/is a magic weapon.
+    uint16_t type = 0;
 };
 
 struct Point {
-    short int x;
-    short int y;
-};
-
-struct Point_int {
-    int x;
-    int y;
+    int32_t x;
+    int32_t y;
 };
 
 struct Weapon_stats {
-    unsigned char Pmight; //Physical might Pprot for shields.
-    unsigned char Mmight; //Magic might. Mprot for shields.
+    uint8_t Pmight; //Physical might Pprot for shields.
+    uint8_t Mmight; //Magic might. Mprot for shields.
     Combat_stats combat;
-    unsigned char wgt; // weight
-    unsigned char uses;
-    unsigned char prof; // proficiency
-    unsigned char range[2]; // [min_range, max_range]
-    unsigned char hand[2]; //[1,0], [2,0] or [1,2]
+    uint8_t wgt; // weight
+    uint8_t uses;
+    uint8_t prof; // proficiency
+    uint8_t range[2]; // [min_range, max_range]
+    uint8_t hand[2]; //[1,0], [2,0] or [1,2]
     bool dmg_type; // 0 is physical. 1 magic.
-    unsigned short int price;
-    unsigned char heal;
+    uint16_t price;
+    uint8_t heal;
 };
 
 struct Inventory_item {
-    short int id = -1;
-    unsigned char used = 0;
+    int16_t id = -1;
+    uint8_t used = 0;
     bool highlighted = true;
-    char infused = -1;
+    int8_t infused = -1;
     // item images are highlighted by default.
     // Only dark when in unit inventory and unequippable
 };
 
 struct Equipped {
-    // Index of weapon in inventory of character.
-    char right;
-    char left;
+    // Index of weapon in inventory of int8_tacter.
+    int8_t right;
+    int8_t left;
 };
 
 struct Map_arrival {
-    unsigned char turn;
-    unsigned char levelups;
-    short int army;
-    short int id;
+    uint8_t turn;
+    uint8_t levelups;
+    int16_t army;
+    int16_t id;
     Point position;
 };
 
 struct Support {
-    // std::vector<short int> inds;
-    short int index = -1;
-    char level = -1;
+    // std::vector<int16_t> inds;
+    int16_t index = -1;
+    int8_t level = -1;
 };
 
 struct Movement_cost {
     // i THINK THIS IS USELESS
-    unsigned char foot_slow; // fencer, mousquetaire, duelist, lord, duke, archer, marksman, mercenary, hero, trooper
-    unsigned char foot_fast; // pickpocket thief assassin, demon
-    unsigned char mages; // mage, battlemage, sage, oracle, priest, cleric, bishop, incarnate, possessed
-    unsigned char riders_slow; // cavalier, archer and marksman rider, lord and duke rider.
-    unsigned char riders_fast; // paladin, troubadour
-    unsigned char fliers; // pegasus knight, angel
-    unsigned char armors; // knight, general
-    unsigned char pirates; // Corsair, viking
-    unsigned char bandits; // bandit, ravager
+    uint8_t foot_slow; // fencer, mousquetaire, duelist, lord, duke, archer, marksman, mercenary, hero, trooper
+    uint8_t foot_fast; // pickpocket thief assassin, demon
+    uint8_t mages; // mage, battlemage, sage, oracle, priest, cleric, bishop, incarnate, possessed
+    uint8_t riders_slow; // cavalier, archer and marksman rider, lord and duke rider.
+    uint8_t riders_fast; // paladin, troubadour
+    uint8_t fliers; // pegasus knight, angel
+    uint8_t armors; // knight, general
+    uint8_t pirates; // Corsair, viking
+    uint8_t bandits; // bandit, ravager
 };
 
 struct Fps {
     Point pos = {750, 0};
     bool show = true;
     float sizefactor[2] = {0.5, 0.5};
-    unsigned char cap = 60;
+    uint8_t cap = 60;
     SDL_Color textcolor = {0, 0, 0};
 };
 
 struct Mouse {
-    unsigned char onhold = MOUSE::ACCEPT;
-    unsigned char move = MOUSE::FOLLOW;
+    uint8_t onhold = MOUSE::ACCEPT;
+    uint8_t move = MOUSE::FOLLOW;
 };
 
 struct Settings {
-    char title[DEFAULT::BUFFER_SIZE] = "Codename:Firesaga";
+    int8_t title[DEFAULT::BUFFER_SIZE] = "Codename:Firesaga";
     Point res = {1000, 1000}; //resolution
-    Point_int pos = {SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED};
-    unsigned char fontsize = 28;
+    Point pos = {SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED};
+    uint8_t fontsize = 28;
     bool fullscreen = false;
     Fps FPS;
     Mouse mouse;
-    unsigned short int tilesize[2] = {DEFAULT::TILESIZE, DEFAULT::TILESIZE};
+    uint16_t tilesize[2] = {DEFAULT::TILESIZE, DEFAULT::TILESIZE};
 };
 
 
 struct MouseInputMap {
-    std::vector<unsigned char> accept{SDL_BUTTON_LEFT};
-    std::vector<unsigned char> cancel{SDL_BUTTON_RIGHT};
-    std::vector<unsigned char> pause{SDL_BUTTON_MIDDLE};
-    std::vector<unsigned char> stats{};
-    std::vector<unsigned char> menu_right{};
-    std::vector<unsigned char> menu_left{};
-    std::vector<unsigned char> minimap{};
-    std::vector<unsigned char> faster{};
+    std::vector<uint8_t> accept{SDL_BUTTON_LEFT};
+    std::vector<uint8_t> cancel{SDL_BUTTON_RIGHT};
+    std::vector<uint8_t> pause{SDL_BUTTON_MIDDLE};
+    std::vector<uint8_t> stats{};
+    std::vector<uint8_t> menu_right{};
+    std::vector<uint8_t> menu_left{};
+    std::vector<uint8_t> minimap{};
+    std::vector<uint8_t> faster{};
 
 };
 

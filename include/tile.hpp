@@ -10,8 +10,8 @@
 class Tile : public XML_IO, JSON_IO {
 private:
     Movement_cost cost_struct;
-    unsigned char cost_array[UNIT::MVT::END];
-    short int id;
+    uint8_t cost_array[UNIT::MVT::END];
+    int16_t id;
     bool inside;
     Tile_stats stats;
     std::string name;
@@ -19,12 +19,12 @@ public:
     Tile();
     ~Tile();
 
-    Tile(const short int in_id, const char * in_name, const Movement_cost in_cost, const Tile_stats in_stats, const bool in_inside);
+    Tile(const int16_t in_id, const char * in_name, const Movement_cost in_cost, const Tile_stats in_stats, const bool in_inside);
 
     Movement_cost getCoststruct();
-    unsigned char * getCost();
+    uint8_t * getCost();
     std::string getName();
-    short int getid();
+    int16_t getid();
     Tile_stats getStats();
 
     bool isInside();

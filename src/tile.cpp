@@ -10,7 +10,7 @@ Tile::~Tile() {
 
 }
 
-Tile::Tile(const short int in_id, const char * in_name, const Movement_cost in_cost, const Tile_stats in_stats, const bool in_inside) : Tile() {
+Tile::Tile(const int16_t in_id, const char * in_name, const Movement_cost in_cost, const Tile_stats in_stats, const bool in_inside) : Tile() {
     name = in_name;
     id = in_id;
     cost_struct = in_cost;
@@ -31,7 +31,7 @@ void Tile::makeMvtCostarray() {
     cost_array[UNIT::MVT::BANDITS] = cost_struct.bandits;
 }
 
-unsigned char * Tile::getCost() {
+uint8_t * Tile::getCost() {
     return (cost_array);
 }
 
@@ -54,7 +54,7 @@ bool Tile::isInside() {
 bool Tile::isOutside() {
     return (!inside);
 }
-short int Tile::getid() {
+int16_t Tile::getid() {
     return (id);
 }
 
@@ -64,7 +64,7 @@ void Tile::setInside(const bool in_inside) {
 
 void Tile::readXML(tinyxml2::XMLElement * in_pTile) {
     tinyxml2::XMLElement * ptemp;
-    id = (unsigned short int)in_pTile->IntAttribute("id");
+    id = (unsigned int16_t)in_pTile->IntAttribute("id");
     ptemp = in_pTile->FirstChildElement("Name");
 
     if (!ptemp) {

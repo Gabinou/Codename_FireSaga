@@ -10,14 +10,14 @@ Convoy::Convoy() {
     setJSONElement("Convoy");
 }
 
-void Convoy::swap(int arr[], int ind1, int ind2) {
-    int buffer;
+void Convoy::swap(int16_t arr[], int16_t ind1, int16_t ind2) {
+    int16_t buffer;
     buffer = arr[ind1];
     arr[ind1] = arr[ind2];
     arr[ind2] = buffer;
 }
 
-void Convoy::swapWpn(int wpntype, int ind1, int ind2) {
+void Convoy::swapWpn(int16_t wpntype, int16_t ind1, int16_t ind2) {
     Inventory_item buffer;
 
     switch (wpntype) {
@@ -110,8 +110,8 @@ void Convoy::swapWpn(int wpntype, int ind1, int ind2) {
     }
 }
 
-void Convoy::quicksort(int arr[], int low, int high, int wpntype) {
-    int pi;
+void Convoy::quicksort(int16_t arr[], int16_t low, int16_t high, int16_t wpntype) {
+    int16_t pi;
 
     if (low < high) {
         pi = partition(arr, low, high, wpntype);
@@ -120,11 +120,11 @@ void Convoy::quicksort(int arr[], int low, int high, int wpntype) {
     }
 }
 
-int Convoy::partition(int arr[], int low, int high, int wpntype) {
-    int pivot = arr[high];
-    int i = low - 1;
+int16_t Convoy::partition(int16_t arr[], int16_t low, int16_t high, int16_t wpntype) {
+    int16_t pivot = arr[high];
+    int16_t i = low - 1;
 
-    for (int j = low; j < high; j++) {
+    for (int16_t j = low; j < high; j++) {
         if (arr[j] < pivot) {
             i++;
             swap(arr, i, j);
@@ -143,7 +143,7 @@ void Convoy::deposit(Inventory_item in_item) {
 
         if (weapons != NULL) {
             checkWeapon(in_item.id);
-            short unsigned int wpntypecode = weapons->at(in_item.id).getType();
+            uint16_t wpntypecode = weapons->at(in_item.id).getType();
 
             if ((wpntypecode & ITEM::TYPE::SWORD) > 0) {
                 swords[quantity.swords] = in_item;
@@ -240,21 +240,21 @@ DEPOSIT_END:
 }
 
 bool Convoy::isFull() {
-    int sum = quantity.swords + quantity.lances + quantity.axes +
-              quantity.bows + quantity.trinkets + quantity.offhands + quantity.elemental +
-              quantity.demonic + quantity.angelic + quantity.shields +
-              quantity.staffs + quantity.claws + quantity.items;
+    int16_t sum = quantity.swords + quantity.lances + quantity.axes +
+                  quantity.bows + quantity.trinkets + quantity.offhands + quantity.elemental +
+                  quantity.demonic + quantity.angelic + quantity.shields +
+                  quantity.staffs + quantity.claws + quantity.items;
     full = (sum >= DEFAULT::CONVOY_SIZE);
     return (full);
 }
 
-void Convoy::printContents(int wpntype) {
+void Convoy::printContents(int16_t wpntype) {
     Inventory_item * tempitems = getItems(wpntype);
-    int tempqty = getQuantity(wpntype);
+    int16_t tempqty = getQuantity(wpntype);
     SDL_Log("Quantity: %d \nArray:\n", tempqty);
 
     if (weapons != NULL) {
-        for (int i = 0; i < tempqty; i++) {
+        for (int16_t i = 0; i < tempqty; i++) {
             if (tempitems[i].id > 0) {
                 SDL_Log("%d: %s", i, weapons->at(tempitems[i].id).getName().c_str());
             }
@@ -264,15 +264,15 @@ void Convoy::printContents(int wpntype) {
     }
 }
 
-void Convoy::printStats(int wpntype, int stattype) {
+void Convoy::printStats(int16_t wpntype, int16_t stattype) {
     Inventory_item * tempitems = getItems(wpntype);
-    int tempqty = getQuantity(wpntype);
+    int16_t tempqty = getQuantity(wpntype);
     std::string statname = statNames[stattype];
-    std::vector<int> vecstats = getStats(wpntype, stattype);
+    std::vector<int16_t> vecstats = getStats(wpntype, stattype);
     SDL_Log("Quantity: %d \n%s \t Wpn \n", tempqty, statname.c_str());
 
     if (weapons != NULL) {
-        for (int i = 0; i < tempqty; i++) {
+        for (int16_t i = 0; i < tempqty; i++) {
             if (tempitems[i].id > 0) {
                 SDL_Log("%d \t %s", vecstats[i], weapons->at(tempitems[i].id).getName().c_str());
             }
@@ -282,20 +282,20 @@ void Convoy::printStats(int wpntype, int stattype) {
     }
 }
 
-void Convoy::sortused(int wpntype) {
+void Convoy::sortused(int16_t wpntype) {
     SDL_Log("In sortused");
-    std::vector<int> vecid;
-    std::vector<int> vecusesleft;
-    std::vector<int> vecwhere;
-    std::vector<int> uniqueids;
+    std::vector<int16_t> vecid;
+    std::vector<int16_t> vecusesleft;
+    std::vector<int16_t> vecwhere;
+    std::vector<int16_t> uniqueids;
 
     vecid = getStats(wpntype, ITEM::STAT::ID);
     vecusesleft = getStats(wpntype, ITEM::STAT::USES_LEFT);
-    int * arrusesleft = &vecusesleft[0];
+    int16_t * arrusesleft = &vecusesleft[0];
 
     uniqueids = cppuniques(vecid);
 
-    for (int i = 0; i < uniqueids.size(); i++) {
+    for (int16_t i = 0; i < uniqueids.size(); i++) {
         vecwhere = cppwhere(uniqueids[i], vecid);
 
         if (vecwhere[0] != vecwhere.back()) {
@@ -304,19 +304,19 @@ void Convoy::sortused(int wpntype) {
     }
 }
 
-void Convoy::sortStats(int wpntype, int stattype) {
-    std::vector<int> vecid = getStats(wpntype, stattype);
-    int * arr = &vecid[0];
-    int high = getQuantity(wpntype);
+void Convoy::sortStats(int16_t wpntype, int16_t stattype) {
+    std::vector<int16_t> vecid = getStats(wpntype, stattype);
+    int16_t * arr = &vecid[0];
+    int16_t high = getQuantity(wpntype);
     quicksort(arr, 0, high - 1, wpntype);
 }
 
-void Convoy::sort(int wpntype, int stattype) {
+void Convoy::sort(int16_t wpntype, int16_t stattype) {
     sortStats(wpntype, stattype);
     sortused(wpntype);
 }
 
-Inventory_item * Convoy::getItems(int wpntype) {
+Inventory_item * Convoy::getItems(int16_t wpntype) {
     static Inventory_item temp[DEFAULT::CONVOY_SIZE];
 
     switch (wpntype) {
@@ -383,7 +383,7 @@ Inventory_item * Convoy::getItems(int wpntype) {
     return (temp);
 }
 
-void Convoy::setWeapons(std::unordered_map<short int, Weapon> * in_weapons) {
+void Convoy::setWeapons(std::unordered_map<int16_t, Weapon> * in_weapons) {
     weapons = in_weapons;
 }
 
@@ -391,59 +391,59 @@ void Convoy::clear() {
     weapons->clear();
     Inventory_item empty;
 
-    for (int i = 0; i < quantity.swords; i++) {
+    for (int16_t i = 0; i < quantity.swords; i++) {
         swords[i] = empty;
     }
 
-    for (int i = 0; i < quantity.lances; i++) {
+    for (int16_t i = 0; i < quantity.lances; i++) {
         lances[i] = empty;
     }
 
-    for (int i = 0; i < quantity.axes; i++) {
+    for (int16_t i = 0; i < quantity.axes; i++) {
         axes[i] = empty;
     }
 
-    for (int i = 0; i < quantity.bows; i++) {
+    for (int16_t i = 0; i < quantity.bows; i++) {
         bows[i] = empty;
     }
 
-    for (int i = 0; i < quantity.trinkets; i++) {
+    for (int16_t i = 0; i < quantity.trinkets; i++) {
         trinkets[i] = empty;
     }
 
-    for (int i = 0; i < quantity.offhands; i++) {
+    for (int16_t i = 0; i < quantity.offhands; i++) {
         offhands[i] = empty;
     }
 
-    for (int i = 0; i < quantity.elemental; i++) {
+    for (int16_t i = 0; i < quantity.elemental; i++) {
         elemental[i] = empty;
     }
 
-    for (int i = 0; i < quantity.demonic; i++) {
+    for (int16_t i = 0; i < quantity.demonic; i++) {
         demonic[i] = empty;
     }
 
-    for (int i = 0; i < quantity.angelic; i++) {
+    for (int16_t i = 0; i < quantity.angelic; i++) {
         angelic[i] = empty;
     }
 
-    for (int i = 0; i < quantity.shields; i++) {
+    for (int16_t i = 0; i < quantity.shields; i++) {
         shields[i] = empty;
     }
 
-    for (int i = 0; i < quantity.staffs; i++) {
+    for (int16_t i = 0; i < quantity.staffs; i++) {
         staffs[i] = empty;
     }
 
-    for (int i = 0; i < quantity.claws; i++) {
+    for (int16_t i = 0; i < quantity.claws; i++) {
         claws[i] = empty;
     }
 
-    for (int i = 0; i < quantity.items; i++) {
+    for (int16_t i = 0; i < quantity.items; i++) {
         items[i] = empty;
     }
 
-    for (int i = 0; i < booksnum; i++) {
+    for (int16_t i = 0; i < booksnum; i++) {
         books[i] = empty;
     }
 
@@ -463,7 +463,7 @@ void Convoy::clear() {
     booksnum = 0;
 }
 
-void Convoy::checkWeapon(short int in_id) {
+void Convoy::checkWeapon(int16_t in_id) {
     if (weapons != NULL) {
         if (weapons->find(in_id) == weapons->end()) {
             std::string filename;
@@ -481,7 +481,7 @@ void Convoy::checkWeapon(short int in_id) {
     }
 }
 
-void Convoy::setItems(int wpntype, Inventory_item * in_items) {
+void Convoy::setItems(int16_t wpntype, Inventory_item * in_items) {
     // Does not work.
     switch (wpntype) {
         case ITEM::TYPE::SWORD:
@@ -549,8 +549,8 @@ Quantity Convoy::getQuantity() {
     return (quantity);
 }
 
-int Convoy::getQuantity(int wpntype) {
-    static int temp;
+int16_t Convoy::getQuantity(int16_t wpntype) {
+    static int16_t temp;
 
     switch (wpntype) {
         case ITEM::TYPE::SWORD:
@@ -616,14 +616,14 @@ int Convoy::getQuantity(int wpntype) {
     return (temp);
 }
 
-std::vector<int> Convoy::getStats(int wpntype, int stattype) {
-    int tempqty = getQuantity(wpntype);
-    std::vector<int> vecstats;
+std::vector<int16_t> Convoy::getStats(int16_t wpntype, int16_t stattype) {
+    int16_t tempqty = getQuantity(wpntype);
+    std::vector<int16_t> vecstats;
     Inventory_item * temp = getItems(wpntype);
 
     if (weapons != NULL) {
 
-        for (int i = 0; i < tempqty; i++) {
+        for (int16_t i = 0; i < tempqty; i++) {
             switch (stattype) {
                 case ITEM::STAT::ID:
                     vecstats.push_back(temp[i].id);
@@ -709,7 +709,7 @@ std::vector<int> Convoy::getStats(int wpntype, int stattype) {
     return (vecstats);
 }
 
-Inventory_item Convoy::withdraw(int in_index, int wpntype) {
+Inventory_item Convoy::withdraw(int16_t in_index, int16_t wpntype) {
     Inventory_item temp;
     Inventory_item empty;
     SDL_Log("Withdraw. Index: %d", in_index);
@@ -809,11 +809,11 @@ Inventory_item Convoy::withdraw(int in_index, int wpntype) {
     return (temp);
 }
 
-void Convoy::earn(int in_money) {
+void Convoy::earn(int16_t in_money) {
     bank += in_money;
 }
 
-void Convoy::spend(int out_money) {
+void Convoy::spend(int16_t out_money) {
     bank += out_money;
 }
 
@@ -822,8 +822,8 @@ void Convoy::readXML(tinyxml2::XMLElement * in_pConvoy) {
     Inventory_item tempitems[DEFAULT::CONVOY_SIZE];
     Inventory_item empty;
     tinyxml2::XMLElement * ptemp;
-    short int i = 1;
-    short int j;
+    int16_t i = 1;
+    int16_t j;
 
     while (i < ITEM::TYPE::END) {
         names = wpnTypes(i);
@@ -850,8 +850,8 @@ void Convoy::writeXML(tinyxml2::XMLDocument * in_doc, tinyxml2::XMLElement * in_
     tinyxml2::XMLElement * ptemp;
     std::vector<std::string> names;
     Inventory_item * tempitem;
-    int quantity;
-    int i = 1;
+    int16_t quantity;
+    int16_t i = 1;
 
     while (i < ITEM::TYPE::END) {
         names = wpnTypes(i);
@@ -872,7 +872,7 @@ void Convoy::readJSON(cJSON * in_jconvoy) {
         Inventory_item empty;
         cJSON * jitem = NULL;
         cJSON * jtype = NULL;
-        short int i = 0x0001;
+        int16_t i = 0x0001;
 
         while (i < ITEM::TYPE::END) {
             names = wpnTypes(i);
@@ -908,8 +908,8 @@ void Convoy::writeJSON(cJSON * in_jconvoy) {
         cJSON * jitems = NULL;
         Inventory_item * tempitem;
         std::vector<std::string> names;
-        int quantity;
-        int i = 1;
+        int16_t quantity;
+        int16_t i = 1;
 
         while (i < ITEM::TYPE::END) {
             jitems = cJSON_CreateObject();
