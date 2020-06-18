@@ -30,18 +30,18 @@ private:
     Unit_stats growths = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
 
     std::vector<Unit_stats> grown_stats;
-    unsigned long long int skills = 0;
-    short unsigned int equippable;
-    unsigned short int exp = 0;
-    unsigned short int id;
-    unsigned short int base_exp = 0;
-    unsigned short int entity;
-    char class_index;
-    char mvt_type;
-    char army = 1;
+    uint64_t skills = 0;
+    uint16_t equippable;
+    uint16_t exp = 0;
+    uint16_t id;
+    uint16_t base_exp = 0;
+    uint16_t entity;
+    int8_t class_index;
+    int8_t mvt_type;
+    int8_t army = 1;
 
-    unsigned char current_hp = 0;
-    char current_speed = 0;
+    uint8_t current_hp = 0;
+    int8_t current_speed = 0;
 
     bool sex = false; // 0:F, 1:M. eg. hasPenis.
     bool literate = false; // Reading/writing for scribe job.
@@ -54,29 +54,29 @@ private:
     std::string sex_name = "";
     std::vector<std::string> skill_names;
 
-    std::unordered_map<short int, Weapon> * weapons = NULL;
+    std::unordered_map<int16_t, Weapon> * weapons = NULL;
 
     Equipped equipped; // indices. -1 -> no equipment.
     Inventory_item equipment[DEFAULT::EQUIPMENT_SIZE];
 
 public:
     Unit();
-    Unit(const short int in_id, const char in_class_index, const Unit_stats in_bases, const bool in_sex);
+    Unit(const int16_t in_id, const int8_t in_class_index, const Unit_stats in_bases, const bool in_sex);
     Unit(const Unit & obj);
 
     void init();
     void copyUnit(const Unit & obj);
 
-    void setSupports(std::vector<short int> in_supports);
+    void setSupports(std::vector<int16_t> in_supports);
     void setSupports(const Support in_supports[DEFAULT::SUPPORTS_MAX]);
     Support * getSupports();
-    void supportUp(short int in_id);
+    void supportUp(int16_t in_id);
 
     void setSex(const bool in_sex);
     bool getSex();
 
-    void setWeapons(std::unordered_map<short int, Weapon> * in_weapons);
-    void checkWeapon(short int in_id);
+    void setWeapons(std::unordered_map<int16_t, Weapon> * in_weapons);
+    void checkWeapon(int16_t in_id);
 
     bool isDanger();
     void showDanger();
@@ -85,16 +85,16 @@ public:
     void setLiteracy(bool in_literacy);
     bool isLiterate();
 
-    char getMvttype();
-    char getClassind();
-    void setClassind(char in_class_ind);
+    int8_t getMvttype();
+    int8_t getClassind();
+    void setClassind(int8_t in_class_ind);
 
-    short int getEquippable();
-    void equipsL(const unsigned char index);
-    void equipsR(const unsigned char index);
+    int16_t getEquippable();
+    void equipsL(const uint8_t index);
+    void equipsR(const uint8_t index);
     void unequipsR();
     void unequipsL();
-    void equips(const short int index, const bool hand = true);
+    void equips(const int16_t index, const bool hand = true);
     void unequips(const bool hand = true);
     void setEquipped(Equipped in_equipped);
     void setEquipment(std::vector<Inventory_item> in_equipment);
@@ -102,35 +102,35 @@ public:
 
     std::vector<Inventory_item> getEquipment();
     void addEquipment(Inventory_item in_item);
-    void switchEquipment(Inventory_item in_equipment, const short int ind1, const short int ind2);
-    void removeEquipment(char in_index);
+    void switchEquipment(Inventory_item in_equipment, const int16_t ind1, const int16_t ind2);
+    void removeEquipment(int8_t in_index);
 
-    void takeItem(Inventory_item * out_array, const short int in_index, const short int out_index);
-    void giveItem(Inventory_item * out_array, const short int in_index, const short int out_index);
-    void dropItem(const short int in_index);
+    void takeItem(Inventory_item * out_array, const int16_t in_index, const int16_t out_index);
+    void giveItem(Inventory_item * out_array, const int16_t in_index, const int16_t out_index);
+    void dropItem(const int16_t in_index);
 
-    unsigned char * getRange();
+    uint8_t * getRange();
 
-    void setEntity(const short int in_index);
+    void setEntity(const int16_t in_index);
     int getEntity();
 
-    void setid(const short int in_id);
-    short int getid();
+    void setid(const int16_t in_id);
+    int16_t getid();
 
-    short int getExp() const;
-    short int getLvl() const;
-    void setBaseExp(const unsigned short int in_exp);
-    void gainExp(const unsigned short int in_exp);
+    int16_t getExp() const;
+    int16_t getLvl() const;
+    void setBaseExp(const uint16_t in_exp);
+    void gainExp(const uint16_t in_exp);
 
-    unsigned long long int getSkills();
-    void setSkills(unsigned long long int in_skills);
+    uint64_t getSkills();
+    void setSkills(uint64_t in_skills);
 
     void levelUp();
 
-    unsigned char getHp() const;
-    void setHp(const unsigned char in_hp);
-    void takesDamage(const unsigned char damage);
-    void getsHealed(const unsigned char healing);
+    uint8_t getHp() const;
+    void setHp(const uint8_t in_hp);
+    void takesDamage(const uint8_t damage);
+    void getsHealed(const uint8_t healing);
 
     Unit_stats getBonus();
     void setBonus(const Unit_stats in_stats);
@@ -147,27 +147,27 @@ public:
 
     std::string getName();
     void setName(const std::string in_name);
-    void setName(const char in_name);
+    void setName(const int8_t in_name);
 
-    unsigned char getArmy();
+    uint8_t getArmy();
     std::string getArmyName();
-    void setArmy(const unsigned char in_army);
+    void setArmy(const uint8_t in_army);
 
     bool canRetaliate(Unit * enemy) const;
     bool canDouble(Unit * enemy);
     bool canAttack();
-    bool canEquip(const short int in_id);
+    bool canEquip(const int16_t in_id);
 
     void combatStats();
     Combat_stats getCombatStats();
-    unsigned char hit();
-    unsigned char dodge();
-    unsigned char critical();
-    unsigned char favor();
-    unsigned char totalMight(const bool dmg_type);
-    unsigned char totalDef(const bool dmg_type);
+    uint8_t hit();
+    uint8_t dodge();
+    uint8_t critical();
+    uint8_t favor();
+    uint8_t totalMight(const bool dmg_type);
+    uint8_t totalDef(const bool dmg_type);
     bool dmgType();
-    char speed();
+    int8_t speed();
 
     bool isWaiting();
     void refresh();
@@ -187,6 +187,6 @@ public:
     void readXML(tinyxml2::XMLElement * in_pUnit);
 };
 
-extern std::vector<short int> init_party;
+extern std::vector<int16_t> init_party;
 
 #endif /* UNIT_HPP */

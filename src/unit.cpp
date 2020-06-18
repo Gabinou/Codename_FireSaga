@@ -8,7 +8,7 @@ Unit::Unit() {
     init();
 }
 
-Unit::Unit(const short int in_id, const char in_class_index,  const Unit_stats in_bases, const bool in_sex) : Unit() {
+Unit::Unit(const int16_t in_id, const int8_t in_class_index,  const Unit_stats in_bases, const bool in_sex) : Unit() {
     setBases(in_bases);
     setStats(in_bases);
     setid(in_id);
@@ -53,14 +53,14 @@ void Unit::setSex(const bool in_sex) {
     sex_name = sexNames[sex];
 }
 
-void Unit::setid(const short int in_id) {
+void Unit::setid(const int16_t in_id) {
     id = in_id;
     name = unitNames[in_id];
     SDL_Log("id: %d, name: %s", id, name.c_str());
     // setArmy(unitid2army(id));
 }
 
-short int Unit::getid() {
+int16_t Unit::getid() {
     return (id);
 }
 
@@ -68,23 +68,23 @@ void Unit::use(int in_ind) {
 
 }
 
-unsigned long long int Unit::getSkills() {
+uint64_t Unit::getSkills() {
     return (skills);
 }
 
-void Unit::setSkills(unsigned long long int in_skills) {
+void Unit::setSkills(uint64_t in_skills) {
     skills = in_skills;
     skill_names = skillNames(skills);
 }
 
 
-void Unit::removeEquipment(char in_index) {
+void Unit::removeEquipment(int8_t in_index) {
     Inventory_item empty;
     equipment[in_index] = empty;
 }
 
 void Unit::addEquipment(Inventory_item in_item) {
-    for (short unsigned int i = 0; i < DEFAULT::EQUIPMENT_SIZE; i++) {
+    for (uint16_t i = 0; i < DEFAULT::EQUIPMENT_SIZE; i++) {
         if (equipment[i].id == -1) {
             SDL_Log("Equipped");
             equipment[i] = in_item;
@@ -94,14 +94,14 @@ void Unit::addEquipment(Inventory_item in_item) {
 }
 
 void Unit::setEquipment(const Inventory_item in_equipment[DEFAULT::EQUIPMENT_SIZE]) {
-    for (short unsigned int i = 0; i < DEFAULT::EQUIPMENT_SIZE; i++) {
+    for (uint16_t i = 0; i < DEFAULT::EQUIPMENT_SIZE; i++) {
         equipment[i] = in_equipment[i];
     }
 }
 
 void Unit::setEquipment(std::vector<Inventory_item> in_equipment) {
     if (in_equipment.size() <= DEFAULT::EQUIPMENT_SIZE) {
-        for (short unsigned int i = 0; i < in_equipment.size(); i++) {
+        for (uint16_t i = 0; i < in_equipment.size(); i++) {
             equipment[i] = in_equipment[i];
         }
     } else {
@@ -112,7 +112,7 @@ void Unit::setEquipment(std::vector<Inventory_item> in_equipment) {
 std::vector<Inventory_item> Unit::getEquipment() {
     std::vector<Inventory_item> out;
 
-    for (short unsigned int i = 0; i < DEFAULT::EQUIPMENT_SIZE; i++) {
+    for (uint16_t i = 0; i < DEFAULT::EQUIPMENT_SIZE; i++) {
         if (equipment[i].id > 0) {
             out.push_back(equipment[i]);
         }
@@ -126,19 +126,19 @@ void Unit::setEquipped(Equipped in_equipped) {
     equipped = in_equipped;
 }
 
-short int Unit::getEquippable() {
+int16_t Unit::getEquippable() {
     return (equippable);
 }
 
-char Unit::getMvttype() {
+int8_t Unit::getMvttype() {
     return (mvt_type);
 }
 
-char Unit::getClassind() {
+int8_t Unit::getClassind() {
     return (class_index);
 }
 
-void Unit::setClassind(char in_class_index) {
+void Unit::setClassind(int8_t in_class_index) {
     if ((in_class_index > 0) && (in_class_index < UNIT::CLASS::END)) {
         class_index = in_class_index;
         mvt_type = mvtTypes[class_index];
@@ -161,7 +161,7 @@ void Unit::hideDanger() {
     show_danger = false;
 }
 
-void Unit::supportUp(short int in_id) {
+void Unit::supportUp(int16_t in_id) {
     int i = 0;
 
     while ((supports[i].index = ! in_id) && (i < DEFAULT::SUPPORTS_MAX)) {
@@ -182,20 +182,20 @@ void Unit::setSupports(const Support in_supports[DEFAULT::SUPPORTS_MAX]) {
     }
 }
 
-void Unit::setSupports(std::vector<short int> in_supports) {
+void Unit::setSupports(std::vector<int16_t> in_supports) {
     for (int i = 0; i < in_supports.size(); i++) {
         supports[i].index = in_supports[i];
         supports[i].level = 0;
     }
 }
 
-void Unit::equipsL(const unsigned char index) {
+void Unit::equipsL(const uint8_t index) {
     if (equipment[index].id > 0) {
         equipped.left = index;
     }
 }
 
-void Unit::equipsR(const unsigned char index) {
+void Unit::equipsR(const uint8_t index) {
     if (equipment[index].id > 0) {
         equipped.right = index;
     }
@@ -209,7 +209,7 @@ void Unit::unequipsR() {
     equipped.right = -1;
 }
 
-void Unit::equips(const short int index, const bool hand) {
+void Unit::equips(const int16_t index, const bool hand) {
     if (equipment[index].id > 0) {
         if (hand) {
             equipped.left = index;
@@ -227,33 +227,33 @@ void Unit::unequips(const bool hand) {
     }
 }
 
-void Unit::takeItem(Inventory_item * out_array, short int in_index,  short int out_index) {
+void Unit::takeItem(Inventory_item * out_array, int16_t in_index,  int16_t out_index) {
     equipment[in_index] = out_array[out_index];
     Inventory_item empty;
     out_array[out_index] = empty;
 }
 
-void Unit::giveItem(Inventory_item * out_array, short int in_index,  short int out_index) {
+void Unit::giveItem(Inventory_item * out_array, int16_t in_index,  int16_t out_index) {
     out_array[out_index] = equipment[in_index];
     Inventory_item empty;
     equipment[in_index] = empty;
 }
 
-void Unit::dropItem(short int in_index) {
+void Unit::dropItem(int16_t in_index) {
     Inventory_item empty;
     equipment[in_index] = empty;
 }
 
-void Unit::takesDamage(const unsigned char damage) {
+void Unit::takesDamage(const uint8_t damage) {
     SDL_Log("%s takes %d damage \n", name, damage);
     current_hp = std::max(0, current_hp - damage);
 
     if (current_hp == 0) {dies();};
 }
 
-void Unit::getsHealed(const unsigned char healing) {
+void Unit::getsHealed(const uint8_t healing) {
     SDL_Log("%s gets healed for %d\n", name, healing);
-    current_hp = std::min((short int)(current_hp + healing), (short int) current_stats.hp);
+    current_hp = std::min((int16_t)(current_hp + healing), (int16_t) current_stats.hp);
 }
 
 bool Unit::isWaiting() {
@@ -268,29 +268,29 @@ void Unit::refresh() {
     waits = false;
 }
 
-unsigned char Unit::getHp() const {
+uint8_t Unit::getHp() const {
     return (current_hp);
 }
 
-short int Unit::getLvl() const {
+int16_t Unit::getLvl() const {
     return (ceil(current_hp / 100));
 }
 
-short int Unit::getExp() const {
+int16_t Unit::getExp() const {
     return (exp);
 }
 
-unsigned char * Unit::getRange() {
+uint8_t * Unit::getRange() {
     // DESIGN QUESTION: what about equipping only an offhand? Should offhand have ranges?
     // Can you attack with only offhand weapons? how to treat their hit rate?
     SDL_Log("Computing unit range\n");
-    static unsigned char range[2] = {0, 0};
+    static uint8_t range[2] = {0, 0};
 
     if (weapons != NULL) {
         if (equipped.left >= 0) {
             if (equipment[equipped.left].id > 0) {
                 checkWeapon(equipment[equipped.left].id);
-                unsigned char * temp = weapons->at(equipment[equipped.left].id).getStats().range;
+                uint8_t * temp = weapons->at(equipment[equipped.left].id).getStats().range;
                 range[0] = temp[0];
                 range[1] = temp[1];
             }
@@ -299,7 +299,7 @@ unsigned char * Unit::getRange() {
         if (equipped.right >= 0) {
             if (equipment[equipped.right].id > 0) {
                 checkWeapon(equipment[equipped.right].id);
-                unsigned char * temp = weapons->at(equipment[equipped.right].id).getStats().range;
+                uint8_t * temp = weapons->at(equipment[equipped.right].id).getStats().range;
                 range[0] = std::min(temp[0], range[0]);
                 range[1] = std::max(temp[1], range[1]);
             }
@@ -316,7 +316,7 @@ unsigned char * Unit::getRange() {
     return (range);
 }
 
-void Unit::setEntity(short int in_index) {
+void Unit::setEntity(int16_t in_index) {
     entity = in_index;
 }
 
@@ -324,12 +324,12 @@ int Unit::getEntity() {
     return (entity);
 }
 
-void Unit::setBaseExp(const short unsigned int in_exp) {
+void Unit::setBaseExp(const uint16_t in_exp) {
     exp = in_exp;
     base_exp = in_exp;
 }
 
-void Unit::gainExp(const short unsigned int in_exp) {
+void Unit::gainExp(const uint16_t in_exp) {
     exp += in_exp;
 
     if (((exp % 100) + in_exp) > 100) {
@@ -339,7 +339,7 @@ void Unit::gainExp(const short unsigned int in_exp) {
 }
 
 void Unit::levelUp() {
-    unsigned char prob;
+    uint8_t prob;
     Unit_stats temp_stats = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
 
     temp_stats.hp += (growths.hp / 100);
@@ -435,7 +435,7 @@ void Unit::levelUp() {
     current_stats.prof += temp_stats.prof;
 }
 
-void Unit::setHp(const unsigned char in_hp) {
+void Unit::setHp(const uint8_t in_hp) {
     current_hp = in_hp;
 }
 
@@ -493,7 +493,7 @@ Unit_stats Unit::getGrowths() {
     return (growths);
 }
 
-void Unit::checkWeapon(short int in_id) {
+void Unit::checkWeapon(int16_t in_id) {
     if (weapons != NULL) {
         if (weapons->find(in_id) == weapons->end()) {
             std::string filename;
@@ -511,9 +511,9 @@ void Unit::checkWeapon(short int in_id) {
     }
 }
 
-bool Unit::canEquip(short int in_id) {
+bool Unit::canEquip(int16_t in_id) {
     checkWeapon(in_id);
-    short unsigned int wpntypecode;
+    uint16_t wpntypecode;
     bool out = false;
 
     if (weapons != NULL) {
@@ -530,8 +530,8 @@ bool Unit::canAttack() {
     // THIS FUNCTION needs to be updated with the fact that some weapons can have multiple types. -> typecodes
     bool out;
     struct wpntypecodes {
-        short int left;
-        short int right;
+        int16_t left;
+        int16_t right;
     } wpntypecodes;
 
     if (weapons != NULL) {
@@ -599,10 +599,10 @@ bool Unit::canAttack() {
 //     return(out);
 // }
 
-unsigned char Unit::totalMight(bool dmg_type) {
+uint8_t Unit::totalMight(bool dmg_type) {
     // Damage type is determined by the main weapon of attack.
-    unsigned char unit_power = 0;
-    unsigned char wpn_dmg;
+    uint8_t unit_power = 0;
+    uint8_t wpn_dmg;
 
     if (!dmg_type) { // Physical dmg.
         wpn_dmg = temp_wpn.Pmight;
@@ -612,18 +612,18 @@ unsigned char Unit::totalMight(bool dmg_type) {
         unit_power = current_stats.mag;
     };
 
-    short int total_might = wpn_dmg + unit_power;
+    int16_t total_might = wpn_dmg + unit_power;
 
     return (total_might);
 }
 
-void Unit::setWeapons(std::unordered_map<short int, Weapon> * in_weapons) {
+void Unit::setWeapons(std::unordered_map<int16_t, Weapon> * in_weapons) {
     weapons = in_weapons;
 }
 
 
-unsigned char Unit::totalDef(bool dmg_type) {
-    unsigned char total_def = 0;
+uint8_t Unit::totalDef(bool dmg_type) {
+    uint8_t total_def = 0;
     // if (dmg_type){
     //     total_def += current_stats.res;
     //     total_def += weapons->at(equipment[equipped.left].name].getBonus().res;
@@ -656,7 +656,7 @@ void Unit::setName(const std::string in_name) {
     name = in_name;
 }
 
-void Unit::setName(const char in_name) {
+void Unit::setName(const int8_t in_name) {
     name = in_name;
 }
 
@@ -664,11 +664,11 @@ std::string Unit::getArmyName() {
     return (army_name);
 }
 
-unsigned char Unit::getArmy() {
+uint8_t Unit::getArmy() {
     return (army);
 }
 
-void Unit::setArmy(const unsigned char in_army) {
+void Unit::setArmy(const uint8_t in_army) {
     army = in_army;
     army_name = armyNames[army];
 }
@@ -685,42 +685,42 @@ void Unit::combatStats() {
     speed();
 }
 
-unsigned char Unit::hit() {
+uint8_t Unit::hit() {
     //*DESIGN QUESTION* In vesteria saga, dex*3.
-    unsigned char supports = 0;
-    unsigned char unit_acc = current_stats.dex * 3 + current_stats.luck;
-    unsigned char hit = temp_wpn.combat.hit + unit_acc + supports;
+    uint8_t supports = 0;
+    uint8_t unit_acc = current_stats.dex * 3 + current_stats.luck;
+    uint8_t hit = temp_wpn.combat.hit + unit_acc + supports;
     return (hit);
 }
 
-unsigned char Unit::dodge() {
-    unsigned char supports = 0;
-    unsigned char terrain_dodge = 0;
-    unsigned char unit_dodge = current_stats.dex * 2 + current_stats.luck;
-    unsigned char dodge = terrain_dodge + unit_dodge + supports;
+uint8_t Unit::dodge() {
+    uint8_t supports = 0;
+    uint8_t terrain_dodge = 0;
+    uint8_t unit_dodge = current_stats.dex * 2 + current_stats.luck;
+    uint8_t dodge = terrain_dodge + unit_dodge + supports;
     return (dodge);
 }
 
-unsigned char Unit::critical() {
-    unsigned char supports = 0 ;
-    unsigned char unit_skill = 0;
-    unsigned char critical = temp_wpn.combat.crit + unit_skill + supports;
+uint8_t Unit::critical() {
+    uint8_t supports = 0 ;
+    uint8_t unit_skill = 0;
+    uint8_t critical = temp_wpn.combat.crit + unit_skill + supports;
     return (critical);
 }
 
-unsigned char Unit::favor() {
-    unsigned char supports = 0 ;
-    unsigned char favor = (ceil(current_stats.luck / 2.)) + supports;
+uint8_t Unit::favor() {
+    uint8_t supports = 0 ;
+    uint8_t favor = (ceil(current_stats.luck / 2.)) + supports;
     return (favor);
 }
 
 bool Unit::canRetaliate(Unit * enemy) const {
-    // short int * unit_position;
-    // short int * enemy_position;
+    // int16_t * unit_position;
+    // int16_t * enemy_position;
     // bool retaliates = false;
 
     // enemy_position = enemy->getPos();
-    // unsigned char distance = std::abs(enemy_position[0] - position[0]) + std::abs(enemy_position[1] - position[1]);
+    // uint8_t distance = std::abs(enemy_position[0] - position[0]) + std::abs(enemy_position[1] - position[1]);
 
     // for (int i = 0; i < 3; i++) {
     //     if ((distance >= temp_wpn.range[0]) && (distance <= temp_wpn.range[1])) {
@@ -736,10 +736,10 @@ bool Unit::canDouble(Unit * enemy) {
     return (doubles);
 }
 
-char Unit::speed() {
+int8_t Unit::speed() {
     //*DESIGN QUESTION* What should be the influence of weapons?
     // Average of Con and Str? Con+Str/2?
-    char current_speed = current_stats.agi - temp_wpn.wgt + current_stats.con + current_stats.str / 2;
+    int8_t current_speed = current_stats.agi - temp_wpn.wgt + current_stats.con + current_stats.str / 2;
     return (current_speed);
 }
 
@@ -749,7 +749,7 @@ void Unit::readXML(tinyxml2::XMLElement * in_pUnit) {
     unsigned int bufint;
     tinyxml2::XMLElement * ptemp;
 
-    id = (unsigned short int)in_pUnit->IntAttribute("id");
+    id = (uint16_t)in_pUnit->IntAttribute("id");
     ptemp = in_pUnit->FirstChildElement("Name");
 
     if (!ptemp) {
@@ -781,7 +781,7 @@ void Unit::readXML(tinyxml2::XMLElement * in_pUnit) {
         SDL_Log("Cannot get BaseExp element");
     } else {
         ptemp->QueryUnsignedText(&bufint);
-        base_exp = (unsigned short int)bufint;
+        base_exp = (uint16_t)bufint;
     }
 
 
@@ -791,7 +791,7 @@ void Unit::readXML(tinyxml2::XMLElement * in_pUnit) {
         SDL_Log("Cannot get CurrentHP element");
     } else {
         ptemp->QueryUnsignedText(&bufint);
-        current_hp = (unsigned char)bufint;
+        current_hp = (uint8_t)bufint;
     }
 
     ptemp = in_pUnit->FirstChildElement("Exp");
@@ -800,7 +800,7 @@ void Unit::readXML(tinyxml2::XMLElement * in_pUnit) {
         SDL_Log("Cannot get Exp element");
     } else {
         ptemp->QueryUnsignedText(&bufint);
-        exp = (unsigned short int)bufint;
+        exp = (uint16_t)bufint;
     }
 
 
@@ -809,7 +809,7 @@ void Unit::readXML(tinyxml2::XMLElement * in_pUnit) {
     if (!ptemp) {
         SDL_Log("Cannot get Class element");
     } else {
-        class_index = (unsigned char)ptemp->IntAttribute("id");;
+        class_index = (uint8_t)ptemp->IntAttribute("id");;
     }
 
     ptemp = in_pUnit->FirstChildElement("Stats");
@@ -964,7 +964,7 @@ void Unit::writeJSON(cJSON * in_junit) {
         cJSON_AddItemToObject(in_junit, "Growths", jgrowths);
         cJSON_AddItemToObject(in_junit, "Level-ups", jgrown);
 
-        for (short int i = 0; i < grown_stats.size(); i++) {
+        for (int16_t i = 0; i < grown_stats.size(); i++) {
             jlevelup = cJSON_CreateObject();
             jlevel = cJSON_CreateNumber(i - base_exp / 100 + 2);
             cJSON_AddItemToObject(jlevelup, "level", jlevel);
@@ -1071,4 +1071,4 @@ void Unit::writeXML(tinyxml2::XMLDocument * in_doc, tinyxml2::XMLElement * in_pU
     writeXML_items(in_doc, pEquipment, equipment, DEFAULT::EQUIPMENT_SIZE);
 }
 
-std::vector<short int> init_party = {UNIT::NAME::ERWIN, UNIT::NAME::KIARA};
+std::vector<int16_t> init_party = {UNIT::NAME::ERWIN, UNIT::NAME::KIARA};
