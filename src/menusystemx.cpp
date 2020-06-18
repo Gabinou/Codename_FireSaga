@@ -41,7 +41,7 @@ void MenuSystemx::receive(const disableMenu & disable) {
 
 void MenuSystemx::receive(const unitSelect & select) {
     SDL_Log("Received unitSelect event ");
-    short int newstate = -1;
+    int16_t newstate = -1;
     entityx::ComponentHandle<Unit> unit = select.unit;
     selected = unit.entity();
 
@@ -152,17 +152,17 @@ void MenuSystemx::receive(const unitMenu & menu) {
 void MenuSystemx::receive(const menuSelect & select) {
     SDL_Log("Received menuSelect event ");
     entityx::Entity selector = select.selector;
-    char menu = select.menu;
-    unsigned char menuind;
+    int8_t menu = select.menu;
+    uint8_t menuind;
     entityx::ComponentHandle<Unit> unit = select.unit;
     entityx::ComponentHandle<Position> position = selector.component<Position>();
 
     Point selected;
     Point offset;
-    short int * bounds;
+    int16_t * bounds;
     entityx::Entity * cursorx = game->getCursorx();
     entityx::ComponentHandle<Position> cursorx_position = cursorx->component<Position>();
-    std::vector<unsigned char> menuoptions = game->getMenuoptions(menu);
+    std::vector<uint8_t> menuoptions = game->getMenuoptions(menu);
 
     selected = position->getTilemapPos();
     offset = position->getOffset();
@@ -171,7 +171,7 @@ void MenuSystemx::receive(const menuSelect & select) {
     // SDL_Log("Selected: %d %d", selected.x, selected.y);
 
     menuind = selected.y - bounds[2];
-    unsigned char menuoption = menuoptions[menuind];
+    uint8_t menuoption = menuoptions[menuind];
 
     // SDL_Log("menuind: %d", menuind);
     // SDL_Log("Menuoption: %d", menuoption);
