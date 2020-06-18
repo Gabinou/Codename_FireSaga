@@ -24,33 +24,33 @@ private:
     Point * boundsmin = nullptr;
     Point * boundsmax = nullptr;
     float scale[2] = {0.0f, 0.0f};
-    short int bounds[4]; //xmin, xmax, ymin, ymax
+    int16_t bounds[4]; //xmin, xmax, ymin, ymax
 
-    bool newPos(short int newx, short int newy);
+    bool newPos(int16_t newx, int16_t newy);
     void replaceInbounds();
     void whichSpace();
 public:
     Position();
-    Position(short int in_x, short int in_y);
-    Position(short int * position);
-    Position(short int in_x, short int in_y, short int xmin, short int xmax, short int ymin, short int ymax);
-    Position(short int in_x, short int in_y, short int in_bounds[4]);
-    Position(short int in_x, short int in_y, std::vector<short int> in_bounds);
+    Position(int16_t in_x, int16_t in_y);
+    Position(int16_t * position);
+    Position(int16_t in_x, int16_t in_y, int16_t xmin, int16_t xmax, int16_t ymin, int16_t ymax);
+    Position(int16_t in_x, int16_t in_y, int16_t in_bounds[4]);
+    Position(int16_t in_x, int16_t in_y, std::vector<int16_t> in_bounds);
 
     void setBounds(Point in_boundsmin, Point in_boundsmax);
-    void setBounds(short int xmin, short int xmax, short int ymin, short int ymax);
-    void setBounds(short int in_bounds[4]);
-    void setBounds(std::vector<short int> in_bounds);
-    short int * getBounds();
+    void setBounds(int16_t xmin, int16_t xmax, int16_t ymin, int16_t ymax);
+    void setBounds(int16_t in_bounds[4]);
+    void setBounds(std::vector<int16_t> in_bounds);
+    int16_t * getBounds();
     Point getBoundsmin();
     Point getBoundsmax();
-    short int * getTilemapBounds();
-    short int * getPixelBounds();
+    int16_t * getTilemapBounds();
+    int16_t * getPixelBounds();
 
-    void setOffset(short int in_offset[2]);
+    void setOffset(int16_t in_offset[2]);
     void setOffset(Point in_offset);
 
-    void setOffset(short int xoffset, short int yoffset);
+    void setOffset(int16_t xoffset, int16_t yoffset);
     Point getOffset();
 
     float * getScale();
@@ -66,22 +66,22 @@ public:
     void setonTilemap(bool in_tilemap);
 
     bool setTilemapPos(Point in_pos);
-    bool setTilemapPos(short int in_x, short int in_y);
+    bool setTilemapPos(int16_t in_x, int16_t in_y);
     bool setPixelPos(Point in_pos);
-    bool setPixelPos(short int in_x, short int in_y);
+    bool setPixelPos(int16_t in_x, int16_t in_y);
     bool setPos(Point * in_pos);
     bool setPos(Point in_pos);
-    bool setPos(short int * in_pos);
-    bool setPos(short int in_x, short int in_y);
-    bool addPos(short int move_x, short int move_y);
+    bool setPos(int16_t * in_pos);
+    bool setPos(int16_t in_x, int16_t in_y);
+    bool addPos(int16_t move_x, int16_t move_y);
     Point getPos();
     Point getTilemapPos();
     Point getPixelPos();
 
     Point tilemap2pixel(Point in_point);
-    Point tilemap2pixel(short int tilemap_x, short int tilemap_y);
+    Point tilemap2pixel(int16_t tilemap_x, int16_t tilemap_y);
     Point pixel2tilemap(Point in_point);
-    Point pixel2tilemap(short int pixel_x, short int pixel_y);
+    Point pixel2tilemap(int16_t pixel_x, int16_t pixel_y);
 };
 
 #endif /* POSITION_HPP */

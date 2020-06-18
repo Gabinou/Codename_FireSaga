@@ -36,9 +36,9 @@ private:
     float mouse_idletime = 0.0f;
     float mouse_disabletime = 0.5f;
     bool blockInput = false;
-    double kb_held = 0.0f;
-    double mouse_held = 0.0f;
-    unsigned int previous_mouse;
+    int64_t kb_held = 0.0f;
+    int64_t mouse_held = 0.0f;
+    uint32_t previous_mouse;
     Point mouse_lastpos = {0, 0};
 
 public:
@@ -50,7 +50,7 @@ public:
     void updateSettings();
 
     entityx::Entity getInputent(Controllers in_controllers);
-    void AIturn(unsigned char in_army);
+    void AIturn(uint8_t in_army);
 
     void configure(entityx::EventManager & in_events);
     void receive(const inputMenuRight & menuright);

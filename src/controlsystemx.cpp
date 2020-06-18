@@ -78,7 +78,7 @@ void ControlSystemx::receive(const disableCursor & disableC) {
 
 void ControlSystemx::receive(const turnBegin & begin) {
     SDL_Log("Received turnBegin event");
-    unsigned char army = begin.army;
+    uint8_t army = begin.army;
 
     if (game->getState() == GAME::STATE::NPCTURN) {
         AIturn(army);
@@ -87,7 +87,7 @@ void ControlSystemx::receive(const turnBegin & begin) {
 
 void ControlSystemx::receive(const switchControl & Switch) {
     SDL_Log("Received switchControl event.");
-    unsigned char army = Switch.army;
+    uint8_t army = Switch.army;
 
     if (isPC(army)) {
         game->setState(GAME::STATE::MAP);
@@ -190,7 +190,7 @@ void ControlSystemx::receive(const inputCancel & cancel) {
     blockInput = true;
 }
 
-void ControlSystemx::AIturn(unsigned char in_army) {
+void ControlSystemx::AIturn(uint8_t in_army) {
     if (!isPC(in_army)) {
         SDL_Log("AIturn: Doing AI things...");
         event_manager->emit<turnEnd>();
@@ -225,12 +225,12 @@ void ControlSystemx::receive(const cursorMoved & moved) {
     entityx::Entity cursor = moved.cursor;
     Point move = moved.move;
     entityx::ComponentHandle<Position> position = cursor.component<Position>();
-    short int newstate = -1;
+    uint16_t newstate = -1;
     Point previous_pos;
     Point current_pos;
     Point cursor_pos = position->getPos();
     Point offset = position->getOffset();
-    short int * bounds = position->getBounds();
+    int16_t * bounds = position->getBounds();
     current_pos.x = cursor_pos.x - offset.x;
     current_pos.y = cursor_pos.y - offset.y;
     // SDL_Log("cursor_pos: %d %d", cursor_pos.x, cursor_pos.y);
@@ -298,11 +298,11 @@ void ControlSystemx::receive(const inputAccept & accept) {
 
     entityx::ComponentHandle<Unit> unitontile;
     entityx::ComponentHandle<Position> position = accepter.component<Position>();
-    short int newstate = -1;
+    uint16_t newstate = -1;
     Point current_pos;
     Point selector_pos;
     Point offset;
-    short int menuwidth = 7;
+    uint16_t menuwidth = 7;
 
 
     switch (game->getState()) {
@@ -340,7 +340,7 @@ void ControlSystemx::receive(const inputAccept & accept) {
             if (mouse) {
                 entityx::Entity * cursorx = game->getCursorx();
                 entityx::ComponentHandle<Position> cursor_position = cursorx->component<Position>();
-                short int * bounds = cursor_position->getTilemapBounds();
+                int16_t * bounds = cursor_position->getTilemapBounds();
                 current_pos = position->getTilemapPos();
 
                 // SDL_Log("Bounds: %d %d %d %d", bounds[0], bounds[1], bounds[2], bounds[3]);
@@ -404,11 +404,11 @@ void ControlSystemx::SDL_update() {
                                 if (event.button.state == SDL_PRESSED) {
                                     MouseInputMap inputmap = mouse->getInputMap();
 
-                                    if (cppisin((unsigned char) event.button.button, inputmap.cancel)) {
+                                    if (cppisin((uint8_t) event.button.button, inputmap.cancel)) {
                                         event_manager->emit<inputCancel>(mouse);
                                     }
 
-                                    if (cppisin((unsigned char) event.button.button, inputmap.accept)) {
+                                    if (cppisin((uint8_t) event.button.button, inputmap.accept)) {
                                         event_manager->emit<inputAccept>(mouse);
                                     }
                                 }
@@ -550,7 +550,7 @@ void ControlSystemx::SDL_update() {
 void ControlSystemx::update(entityx::EntityManager & es, entityx::EventManager & events, entityx::TimeDelta dt) {
     // SDL_Log("updating control system");
     SDL_update();
-    char to_move[2] = {0, 0};
+    int8_t to_move[2] = {0, 0};
     Point cursor_move = {0, 0};
     Point mouse_move = {0, 0};
     entityx::ComponentHandle<Position> cursor_position;
@@ -633,9 +633,9 @@ void ControlSystemx::update(entityx::EntityManager & es, entityx::EventManager &
         Sint16 mainyaxis = SDL_GameControllerGetAxis(controller, gamepadInputMap.mainyaxis[0]);
         Sint16 secondxaxis = SDL_GameControllerGetAxis(controller, gamepadInputMap.secondxaxis[0]);
         Sint16 secondyaxis = SDL_GameControllerGetAxis(controller, gamepadInputMap.secondyaxis[0]);
-        std::vector<short unsigned int> pressed_move{};
+        std::vector<uint16_t> pressed_move{};
         std::vector<std::vector<SDL_GameControllerButton>> pressed_button{};
-        int joystick_dead_zone = gamepad->getDeadzone();
+        int32_t joystick_dead_zone = gamepad->getDeadzone();
 
         if ((mainxaxis > joystick_dead_zone) || (secondxaxis > joystick_dead_zone)) {
             cursor_move.x = 1;

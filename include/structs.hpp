@@ -175,7 +175,7 @@ struct Mouse {
 };
 
 struct Settings {
-    int8_t title[DEFAULT::BUFFER_SIZE] = "Codename:Firesaga";
+    char title[DEFAULT::BUFFER_SIZE] = "Codename:Firesaga";
     Point res = {1000, 1000}; //resolution
     Point pos = {SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED};
     uint8_t fontsize = 28;
