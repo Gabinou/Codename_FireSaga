@@ -51,7 +51,7 @@ Source code is available from:
 - [GCC](https://gcc.gnu.org/install/binaries.html) compiler suite
 
 ### Basic compilation instructions
-0, Install all pre-requisites. 
+0. Install all pre-requisites. 
 1. Get the source code, and put in in a directory such as `C:\firesaga` 
 2. Create a `build` folder in the source code directory
 3. On the command-line/shell/bash/cmd.ece/terminal/command prompt, enter the `build` directory and run the commands:
