@@ -54,7 +54,7 @@ Source code is available from:
 0. Install all pre-requisites. 
 1. Get the source code, and put in in a directory such as `C:\firesaga` 
 2. Create a `build` folder in the source code directory
-3. On the command-line/shell/bash/cmd.ece/terminal/command prompt, enter the `build` directory and run the commands:
+3. On the command-line/shell/bash/cmd.exe/terminal/command prompt, enter the `build` directory and run the commands:
 ```
 cmake -G "Ninja" ..
 ninja
