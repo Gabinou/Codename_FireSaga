@@ -13,4 +13,4 @@ astyle --style=java --indent=spaces=4 --indent-switches --break-blocks --pad-ope
 
 Add this line to your build system before the compilation step.
 
-If your idea is terrible, I will reject it. If your idea is good, I will include it and give you credit.
+If your idea is terrible, I will reject it. If your idea is good, I will include it and give you credit. I reserve all rights to reject your code or ban you for online communities for any reason. 

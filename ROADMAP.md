@@ -10,8 +10,9 @@ More details on my thoughts are available on the [development blog](https://aver
 	2. No Phoenix/Casual mode
 	3. No Ambush spawns
 	4. NO DRAGONS
-	
-These features will not make it in my game, and it's final.
+
+Final decision, no discussion. 
+If you want a game with these features go buy FE Fates or make your own. 
 
 - Linear, chapter-based
 	- Army movement on the world map only if it makes narrative sense
@@ -35,7 +36,7 @@ These features will not make it in my game, and it's final.
 
 	- Forcible IronMan Mode
 
-	Force player into IronMan mode
+	Force player into IronMan mode. The game akwats daves, no redis or retries. 
 
 ## Short-term
 
