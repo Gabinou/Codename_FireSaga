@@ -338,71 +338,146 @@ void Unit::levelUp() {
     uint8_t temp_growth;
     Unit_stats temp_stats = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
 
-    prob = getURN();
-    
-    
+    temp_growth = growths.hp;
 
-    if ((prob <= (growths.hp % 100)) && (current_stats.hp < caps_stats.hp)) {
+    while (temp_growth > 100) {
+        temp_stats.hp += 1;
+        temp_growth -= 100;
+    }
+
+    prob = getURN();
+
+    if ((prob <= temp_growth) && (current_stats.hp < caps_stats.hp)) {
         temp_stats.hp += 1;
     }
 
+    temp_growth = growths.str;
+
+    while (temp_growth > 100) {
+        temp_stats.str += 1;
+        temp_growth -= 100;
+    }
+
     prob = getURN();
 
-    if ((prob <= (growths.str % 100)) && (current_stats.str < caps_stats.str)) {
+    if ((prob <= temp_growth) && (current_stats.str < caps_stats.str)) {
         temp_stats.str += 1;
     }
 
+    temp_growth = growths.mag;
+
+    while (temp_growth > 100) {
+        temp_stats.mag += 1;
+        temp_growth;
+    }
+
     prob = getURN();
 
-    if ((prob <= (growths.mag % 100)) && (current_stats.mag < caps_stats.mag)) {
+    if ((prob <= temp_growth) && (current_stats.mag < caps_stats.mag)) {
         temp_stats.mag += 1;
     }
 
+    temp_growth = growths.dex;
+
+    while (temp_growth > 100) {
+        temp_stats.dex += 1;
+        temp_growth;
+    }
+
     prob = getURN();
 
-    if ((prob <= (growths.dex % 100)) && (current_stats.dex < caps_stats.dex)) {
+    if ((prob <= temp_growth) && (current_stats.dex < caps_stats.dex)) {
         temp_stats.dex += 1;
     }
 
+    temp_growth = growths.agi;
+
+    while (temp_growth > 100) {
+        temp_stats.agi += 1;
+        temp_growth;
+    }
+
     prob = getURN();
 
-    if ((prob <= (growths.agi % 100)) && (current_stats.agi < caps_stats.agi)) {
+    if ((prob <= temp_growth) && (current_stats.agi < caps_stats.agi)) {
         temp_stats.agi += 1;
     }
 
+    temp_growth = growths.luck;
+
+    while (temp_growth > 100) {
+        temp_stats.luck += 1;
+        temp_growth;
+    }
+
     prob = getURN();
 
-    if ((prob <= (growths.luck % 100)) && (current_stats.luck < caps_stats.luck)) {
+    if ((prob <= temp_growth) && (current_stats.luck < caps_stats.luck)) {
         temp_stats.luck += 1;
     }
 
+    temp_growth = growths.def;
+
+    while (temp_growth > 100) {
+        temp_stats.def += 1;
+        temp_growth;
+    }
+
     prob = getURN();
 
-    if ((prob <= (growths.def % 100)) && (current_stats.def < caps_stats.def)) {
+    if ((prob <= temp_growth) && (current_stats.def < caps_stats.def)) {
         temp_stats.def += 1;
     }
 
+    temp_growth = growths.res;
+
+    while (temp_growth > 100) {
+        temp_stats.res += 1;
+        temp_growth;
+    }
+
     prob = getURN();
 
-    if ((prob <= (growths.res % 100)) && (current_stats.res < caps_stats.res)) {
+    if ((prob <= temp_growth) && (current_stats.res < caps_stats.res)) {
         temp_stats.res += 1;
     }
 
+    temp_growth = growths.con;
+
+    while (temp_growth > 100) {
+        temp_stats.con += 1;
+        temp_growth;
+    }
+
     prob = getURN();
 
-    if ((prob <= (growths.con % 100)) && (current_stats.con < caps_stats.con)) {
+    if ((prob <= temp_growth) && (current_stats.con < caps_stats.con)) {
         temp_stats.con += 1;
     }
 
-    prob = getURN();
+    temp_growth = growths.prof;
 
-    if ((prob <= (growths.prof % 100)) && (current_stats.prof < caps_stats.prof)) {
+    while (temp_growth > 100) {
         temp_stats.prof += 1;
+        temp_growth;
     }
 
     prob = getURN();
 
-    if ((prob <= (growths.move % 100)) && (current_stats.move < caps_stats.move)) {
+    if ((prob <= temp_growth) && (current_stats.prof < caps_stats.prof)) {
+        temp_stats.prof += 1;
+    }
+
+    temp_growth = growths.move;
+
+    while (temp_growth > 100) {
+        temp_stats.move += 1;
+        temp_growth;
+    }
+
+    prob = getURN();
+
+    if ((prob <= temp_growth) && (current_stats.move < caps_stats.move)) {
         temp_stats.move += 1;
     }
 
