@@ -7,7 +7,6 @@ void baseUnits(std::unordered_map<int, Unit> * in_units, std::vector<short int> 
     Unit_stats temp;
     Inventory_item temp_wpn;
     std::vector<short int> temp_supports;
-    Equipped temp_equipped;
     int index;
 
     for (short unsigned int i = 0; i < toload.size(); i++) {
@@ -154,7 +153,7 @@ void baseUnits(std::unordered_map<int, Unit> * in_units, std::vector<short int> 
                 temp_unit.setBaseExp(400);
                 temp_wpn.id = ITEM::NAME::BALL_LIGHTNING;
                 temp_unit.addEquipment(temp_wpn);
-                temp_unit.equipsR(0);
+                temp_unit.equips(UNIT::HAND::RIGHT);
                 temp_unit.setArmy(UNIT::ARMY::ERWIN);
                 in_units->erase(index);
                 in_units->insert({index, temp_unit});
@@ -170,7 +169,7 @@ void baseUnits(std::unordered_map<int, Unit> * in_units, std::vector<short int> 
                 temp_unit.setBaseExp(0);
                 temp_wpn.id = ITEM::NAME::IRON_AXE;
                 temp_unit.addEquipment(temp_wpn);
-                temp_unit.equipsR(0);
+                temp_unit.equips(UNIT::HAND::RIGHT);
                 temp_unit.setArmy(UNIT::ARMY::ENEMY);
                 in_units->erase(index);
                 in_units->insert({index, temp_unit});

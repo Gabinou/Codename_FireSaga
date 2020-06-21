@@ -56,9 +56,9 @@ private:
 
     std::unordered_map<int16_t, Weapon> * weapons = NULL;
 
-    Equipped equipped; 
-    Hands hands;
-    Inventory_item equipment[DEFAULT::EQUIPMENT_SIZE];
+    int8_t equipped[2] = {-1, -1};
+    bool hands[2] = {true, true};
+    Inventory_item equipment[DEFAULT::EQUIPMENT_SIZE]; // 0 for right hand, 1 for left hand
 
 public:
     Unit();
@@ -91,13 +91,8 @@ public:
     void setClassind(int8_t in_class_ind);
 
     int16_t getEquippable();
-    void equipsL(Inventory_item in_item);
-    void equipsR(Inventory_item in_item);
-    void unequipsR();
-    void unequipsL();
-    void equips(Inventory_item in_item, const bool hand = true);
+    void equips(const bool hand = true, const int8_t to_equip = -1);
     void unequips(const bool hand = true);
-    void setEquipped(Equipped in_equipped);
     void setEquipment(std::vector<Inventory_item> in_equipment);
     void setEquipment(const Inventory_item in_equipment[DEFAULT::EQUIPMENT_SIZE]);
 

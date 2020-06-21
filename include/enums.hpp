@@ -6,7 +6,7 @@
 namespace DEFAULT {
 enum DEFAULTS {
     TILESIZE = 32,
-    EQUIPMENT_SIZE = 4,
+    EQUIPMENT_SIZE = 6,
     WEAPONS_SIZE = 3,
     ITEMS_SIZE = 3,
     CONVOY_SIZE = 200,
@@ -243,7 +243,7 @@ namespace TYPE {
 enum TYPES {
     // uint16_t!
     // uint16_t equippable = sword + shield;
-    // if (type & equippable) > 0,  can equip. 
+    // if (type & equippable) > 0,  can equip.
     SWORD = 0x0001,
     LANCE = 0x0002,
     AXE = 0x0004,
@@ -340,6 +340,12 @@ enum CAMPJOBS {
 };
 }
 namespace UNIT {
+namespace HAND {
+enum HANDS {
+    RIGHT = 0,
+    LEFT = 1,
+};
+}
 namespace CLASS {
 enum CLASSES {
     LORD = 1,

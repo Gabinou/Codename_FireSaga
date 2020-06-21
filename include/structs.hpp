@@ -27,7 +27,7 @@ struct Map_condition {
     int16_t colmax = -1;
     int16_t rowmin = -1;
     int16_t rowmax = -1;
-    //list of points instead? or both? 
+    //list of points instead? or both?
 };
 
 struct Quantity {
@@ -127,16 +127,6 @@ struct Inventory_item {
     int8_t infused = -1;
     // item images are highlighted by default.
     // Only dark when in unit inventory and unequippable
-};
-
-struct Hands {
-    bool right;
-    bool left;
-};
-
-struct Equipped {
-    Inventory_item right;
-    Inventory_item left;
 };
 
 struct Map_arrival {
