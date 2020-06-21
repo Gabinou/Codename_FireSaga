@@ -56,7 +56,8 @@ private:
 
     std::unordered_map<int16_t, Weapon> * weapons = NULL;
 
-    Equipped equipped; // indices. -1 -> no equipment.
+    Equipped equipped; 
+    Hands hands;
     Inventory_item equipment[DEFAULT::EQUIPMENT_SIZE];
 
 public:
@@ -90,11 +91,11 @@ public:
     void setClassind(int8_t in_class_ind);
 
     int16_t getEquippable();
-    void equipsL(const uint8_t index);
-    void equipsR(const uint8_t index);
+    void equipsL(Inventory_item in_item);
+    void equipsR(Inventory_item in_item);
     void unequipsR();
     void unequipsL();
-    void equips(const int16_t index, const bool hand = true);
+    void equips(Inventory_item in_item, const bool hand = true);
     void unequips(const bool hand = true);
     void setEquipped(Equipped in_equipped);
     void setEquipment(std::vector<Inventory_item> in_equipment);

@@ -56,8 +56,7 @@ void Unit::setSex(const bool in_sex) {
 void Unit::setid(const int16_t in_id) {
     id = in_id;
     name = unitNames[in_id];
-    SDL_Log("id: %d, name: %s", id, name.c_str());
-    // setArmy(unitid2army(id));
+    SDL_Log("Unit new id: %d, name: %s", id, name.c_str());
 }
 
 int16_t Unit::getid() {

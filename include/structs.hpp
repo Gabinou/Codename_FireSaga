@@ -14,7 +14,7 @@ struct Tile_stats {
 };
 
 struct Unit_state {
-    // Number of turns to be in this status. -1 means forever.
+    // Number of turns to be in this status. <0 means forever.
     int8_t poisoned;
     int8_t sleep;
     int8_t stone;
@@ -27,6 +27,7 @@ struct Map_condition {
     int16_t colmax = -1;
     int16_t rowmin = -1;
     int16_t rowmax = -1;
+    //list of points instead? or both? 
 };
 
 struct Quantity {
@@ -128,10 +129,14 @@ struct Inventory_item {
     // Only dark when in unit inventory and unequippable
 };
 
+struct Hands {
+    bool right;
+    bool left;
+};
+
 struct Equipped {
-    // Index of weapon in inventory of int8_tacter.
-    int8_t right;
-    int8_t left;
+    Inventory_item right;
+    Inventory_item left;
 };
 
 struct Map_arrival {

@@ -177,7 +177,5 @@ template <typename T> extern void cppquicksort(std::vector<T> & vec, T low, T hi
         cppquicksort(vec, T(pi + 1), high);
     }
 }
-// extern void heal(Unit * in_unit, uint8_t heal);
-// extern * (Unit) makeheal(Weapon in_weapon);
 
 #endif /* UTILITIES_HPP */

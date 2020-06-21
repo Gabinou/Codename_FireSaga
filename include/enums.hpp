@@ -6,7 +6,7 @@
 namespace DEFAULT {
 enum DEFAULTS {
     TILESIZE = 32,
-    EQUIPMENT_SIZE = 7,
+    EQUIPMENT_SIZE = 4,
     WEAPONS_SIZE = 3,
     ITEMS_SIZE = 3,
     CONVOY_SIZE = 200,
@@ -238,11 +238,12 @@ enum NAMES {
     END,
 };
 }
+
 namespace TYPE {
 enum TYPES {
     // uint16_t!
     // uint16_t equippable = sword + shield;
-    // if (type & equippeable) > 0, weapon is equippable.
+    // if (type & equippable) > 0,  can equip. 
     SWORD = 0x0001,
     LANCE = 0x0002,
     AXE = 0x0004,
@@ -258,9 +259,9 @@ enum TYPES {
     ITEM = 0x1000,
     BOOK = 0x2000,
     END = 0x4000,
-
 };
 }
+
 namespace DMG_TYPE {
 enum DMG_TYPES {
     PHYSICAL = false,
