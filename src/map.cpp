@@ -681,7 +681,7 @@ void Map::setDangermode(const uint8_t in_mode) {
 void Map::showDanger() {
     show_danger = true;
 }
-bool Map::isDanger() {
+bool Map::showsDanger() {
     return (show_danger);
 }
 

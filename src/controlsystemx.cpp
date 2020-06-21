@@ -175,7 +175,7 @@ void ControlSystemx::receive(const inputCancel & cancel) {
             unitontile = unitmap[new_pos.y][new_pos.x];
 
             if (unitontile) {
-                if (unitontile->isDanger()) {
+                if (unitontile->showsDanger()) {
                     event_manager->emit<unitDanger>(canceller, unitontile);
                 }
 

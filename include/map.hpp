@@ -132,7 +132,7 @@ public:
     void showDanger();
     void hideDanger();
     void switchDanger();
-    bool isDanger();
+    bool showsDanger();
     void addDanger(const std::vector<std::vector<int16_t>> in_danger);
     void subDanger(const std::vector<std::vector<int16_t>> in_danger);
     void setDanger(const std::vector<std::vector<int16_t>> in_danger);

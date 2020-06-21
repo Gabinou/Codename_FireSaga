@@ -87,9 +87,8 @@ void Unit::removeEquipment(int8_t in_index) {
 }
 
 void Unit::addEquipment(Inventory_item in_item) {
-    for (uint16_t i = 0; i < DEFAULT::EQUIPMENT_SIZE; i++) {
+    for (uint8_t i = 0; i < DEFAULT::EQUIPMENT_SIZE; i++) {
         if (equipment[i].id == -1) {
-            SDL_Log("Equipped");
             equipment[i] = in_item;
             break;
         }
@@ -147,7 +146,7 @@ void Unit::setClassind(int8_t in_class_index) {
     }
 }
 
-bool Unit::isDanger() {
+bool Unit::showsDanger() {
     return (show_danger);
 }
 
@@ -227,8 +226,6 @@ bool * Unit::getHands() {
 int8_t * Unit::getEquipped() {
     return (equipped);
 }
-
-
 
 void Unit::takesDamage(const uint8_t damage) {
     SDL_Log("%s takes %d damage \n", name, damage);

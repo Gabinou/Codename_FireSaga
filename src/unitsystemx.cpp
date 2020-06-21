@@ -163,7 +163,7 @@ void UnitSystemx::receive(const unitDeselect & deselect) {
     } else {
         switch (game->getState()) {
             case GAME::STATE::UNITMOVE:
-                if (unit->isDanger()) {
+                if (unit->showsDanger()) {
                     event_manager->emit<unitDanger>(selector, unit);
                 } else {
                     event_manager->emit<return2Map>(selector);
@@ -226,8 +226,8 @@ void UnitSystemx::receive(const unitDanger & danger) {
     dangermapp = matrix_plus(attackmapp, movemapp);
 
 
-    if (!unit->isDanger()) {
-        if (!mapx->isDanger()) {
+    if (!unit->showsDanger()) {
+        if (!mapx->showsDanger()) {
             mapx->setDanger(dangermapp);
             mapx->showDanger();
         } else {
