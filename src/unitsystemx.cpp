@@ -197,7 +197,7 @@ void UnitSystemx::receive(const unitDanger & danger) {
     std::vector<std::vector<int16_t>> dangermapp;
     uint32_t unit_move;
     uint32_t start[2];
-    uint8_t * range;
+    int8_t * range;
 
     entityx::ComponentHandle<Unit> unit = danger.unit;
     entityx::Entity selector = danger.selector;
@@ -253,7 +253,7 @@ void UnitSystemx::receive(const unitMove & move) {
     uint32_t nooffset[2];
     uint32_t unit_move;
     uint32_t current_unit_id;
-    uint8_t * range;
+    int8_t * range;
 
     if (cursorpos) {
         start = cursorpos->getTilemapPos();

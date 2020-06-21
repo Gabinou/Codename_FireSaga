@@ -13,10 +13,10 @@
 class Weapon : public Item {
 private:
     Weapon_stats stats = {0, 0, 0, 0, 0, 0, 0, 0, 0, {0, 0}, {0, 0}, 0, 0};
-    uint16_t effective = 0; // is a unit type.
+    uint16_t effective = 0; // unit type.
     Infusion infused;
     bool infuseable;
-    bool attackable = false; // Offhands are not attackable: cannot attack, only provides bonus stats.
+    bool attackable = false; // Offhands cannot attack, only bonus
 public:
     Weapon();
     Weapon(uint16_t in_type, Weapon_stats in_stats, uint8_t in_id);

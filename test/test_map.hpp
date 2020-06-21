@@ -245,7 +245,7 @@ void test_map() {
     in_exp = 400;
     unit1.setBaseExp(in_exp);
     in_wpn.id = ITEM::NAME::BALL_LIGHTNING;
-    unit1.addEquipment(in_wpn);
+    unit1.addItem(in_wpn);
 
     entityx::Entity Uent1 = ex.entities.create();
     entityx::ComponentHandle<Unit> unithandle1, unithandle2;

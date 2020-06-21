@@ -24,11 +24,11 @@ void baseUnits(std::unordered_map<int, Unit> * in_units, std::vector<short int> 
                 temp_unit.setGrowths(temp);
                 temp_unit.setBaseExp(0);
                 temp_wpn.id = ITEM::NAME::FLEURET;
-                temp_unit.addEquipment(temp_wpn);
+                temp_unit.addItem(temp_wpn);
                 temp_wpn.id = ITEM::NAME::KITCHEN_KNIFE;
-                temp_unit.addEquipment(temp_wpn);
+                temp_unit.addItem(temp_wpn);
                 temp_wpn.id = ITEM::NAME::POT_LID;
-                temp_unit.addEquipment(temp_wpn);
+                temp_unit.addItem(temp_wpn);
                 temp_supports = {UNIT::NAME::KIARA};
                 temp_unit.setSupports(temp_supports);
                 temp_unit.setArmy(UNIT::ARMY::ERWIN);
@@ -45,7 +45,7 @@ void baseUnits(std::unordered_map<int, Unit> * in_units, std::vector<short int> 
                 temp_unit.setGrowths(temp);
                 temp_unit.setBaseExp(100);
                 temp_wpn.id = ITEM::NAME::IRON_LANCE;
-                temp_unit.addEquipment(temp_wpn);
+                temp_unit.addItem(temp_wpn);
                 temp_unit.setArmy(UNIT::ARMY::ERWIN);
                 in_units->erase(index);
                 in_units->insert({index, temp_unit});
@@ -152,7 +152,7 @@ void baseUnits(std::unordered_map<int, Unit> * in_units, std::vector<short int> 
                 temp_unit.setGrowths(temp);
                 temp_unit.setBaseExp(400);
                 temp_wpn.id = ITEM::NAME::BALL_LIGHTNING;
-                temp_unit.addEquipment(temp_wpn);
+                temp_unit.addItem(temp_wpn);
                 temp_unit.equips(UNIT::HAND::RIGHT);
                 temp_unit.setArmy(UNIT::ARMY::ERWIN);
                 in_units->erase(index);
@@ -168,7 +168,7 @@ void baseUnits(std::unordered_map<int, Unit> * in_units, std::vector<short int> 
                 temp_unit.setGrowths(temp);
                 temp_unit.setBaseExp(0);
                 temp_wpn.id = ITEM::NAME::IRON_AXE;
-                temp_unit.addEquipment(temp_wpn);
+                temp_unit.addItem(temp_wpn);
                 temp_unit.equips(UNIT::HAND::RIGHT);
                 temp_unit.setArmy(UNIT::ARMY::ENEMY);
                 in_units->erase(index);
@@ -427,11 +427,11 @@ void test_unit() {
     unit1.setGrowths(in_growths);
     unit1.setBaseExp(0);
     in_stats_wpn.id = ITEM::NAME::FLEURET;
-    unit1.addEquipment(in_stats_wpn);
+    unit1.addItem(in_stats_wpn);
     in_stats_wpn.id = ITEM::NAME::KITCHEN_KNIFE;
-    unit1.addEquipment(in_stats_wpn);
+    unit1.addItem(in_stats_wpn);
     in_stats_wpn.id = ITEM::NAME::POT_LID;
-    unit1.addEquipment(in_stats_wpn);
+    unit1.addItem(in_stats_wpn);
     out_stats = unit1.getStats();
     lok(unit1.getName() == "Silou");
     lok(unit1.getSex() == 1);

@@ -35,7 +35,6 @@ private:
     uint16_t exp = 0;
     uint16_t id;
     uint16_t base_exp = 0;
-    uint16_t entity;
     int8_t class_index;
     int8_t mvt_type;
     int8_t army = 1;
@@ -56,6 +55,7 @@ private:
 
     std::unordered_map<int16_t, Weapon> * weapons = NULL;
 
+    int8_t range[2] = {-1, -1};
     int8_t equipped[2] = {-1, -1};
     bool hands[2] = {true, true};
     Inventory_item equipment[DEFAULT::EQUIPMENT_SIZE]; // 0 for right hand, 1 for left hand
@@ -97,22 +97,19 @@ public:
     int16_t getEquippable();
     void equips(const bool hand = true, const int8_t to_equip = -1);
     void unequips(const bool hand = true);
+
     void setEquipment(std::vector<Inventory_item> in_equipment);
     void setEquipment(const Inventory_item in_equipment[DEFAULT::EQUIPMENT_SIZE]);
-
     std::vector<Inventory_item> getEquipment();
-    void addEquipment(Inventory_item in_item);
-    void switchEquipment(Inventory_item in_equipment, const int16_t ind1, const int16_t ind2);
-    void removeEquipment(int8_t in_index);
-
+    void addItem(Inventory_item in_item);
+    void moveItem(const int16_t ind1, const int16_t ind2);
+    void removeItem(int8_t in_index);
     void takeItem(Inventory_item * out_array, const int16_t in_index, const int16_t out_index);
     void giveItem(Inventory_item * out_array, const int16_t in_index, const int16_t out_index);
     void dropItem(const int16_t in_index);
 
-    uint8_t * getRange();
-
-    void setEntity(const int16_t in_index);
-    int getEntity();
+    void computeRange();
+    int8_t * getRange();
 
     void setid(const int16_t in_id);
     int16_t getid();

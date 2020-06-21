@@ -113,7 +113,7 @@ struct Weapon_stats {
     uint8_t wgt; // weight
     uint8_t uses;
     uint8_t prof; // proficiency
-    uint8_t range[2]; // [min_range, max_range]
+    int8_t range[2]; // [min_range, max_range]
     uint8_t hand[2]; //[1,0], [2,0] or [1,2]
     bool dmg_type; // 0 is physical. 1 magic.
     uint16_t price;

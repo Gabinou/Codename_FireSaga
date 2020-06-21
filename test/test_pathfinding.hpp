@@ -6,7 +6,7 @@ void test_pathfinding() {
     SDL_Log("test_pathfinding");
     uint32_t move;
     uint32_t start[2];
-    uint8_t range[2];
+    int8_t range[2];
     std::vector<std::vector<int16_t>> position;
     std::vector<std::vector<int16_t>> costmapp;
     std::vector<std::vector<int16_t>> attackmapp;

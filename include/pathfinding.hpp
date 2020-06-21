@@ -16,7 +16,7 @@ extern int64_t h_euclidean(int32_t start[], int32_t end[]);
 
 extern std::vector<std::vector<int32_t>> A_star(std::vector<std::vector<int32_t>> map, int32_t start[], int32_t end[], std::string mode = "matrix");
 
-template <typename T> extern std::vector<std::vector<T>> attackmap(std::vector<std::vector<T>> movemap, uint32_t start[], uint32_t move, uint8_t range[2], std::string mode = "matrix") {
+template <typename T> extern std::vector<std::vector<T>> attackmap(std::vector<std::vector<T>> movemap, uint32_t start[], uint32_t move, int8_t range[2], std::string mode = "matrix") {
     // Using the movemap to compute all attackable tiles.
     // EXCLUDING moveable tiles.
     std::vector<std::vector<T>> attackmap;

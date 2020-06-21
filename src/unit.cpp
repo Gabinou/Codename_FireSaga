@@ -78,22 +78,43 @@ void Unit::setSkills(uint64_t in_skills) {
     for (uint8_t i = 0; skill_names.size(); i++) {
         SDL_Log("Skill name: %s", skill_names[i].c_str());
     }
-
 }
 
+void Unit::moveItem(const int16_t ind1, const int16_t ind2) {
+    Inventory_item buffer = equipment[ind1];
+    equipment[ind1] = equipment[ind2];
+    equipment[ind2] = buffer;
+}
 
-void Unit::removeEquipment(int8_t in_index) {
+void Unit::removeItem(int8_t in_index) {
     Inventory_item empty;
     equipment[in_index] = empty;
 }
 
-void Unit::addEquipment(Inventory_item in_item) {
+void Unit::addItem(Inventory_item in_item) {
     for (uint8_t i = 0; i < DEFAULT::EQUIPMENT_SIZE; i++) {
         if (equipment[i].id == -1) {
             equipment[i] = in_item;
             break;
         }
     }
+}
+
+void Unit::takeItem(Inventory_item * out_array, int16_t in_index, int16_t out_index) {
+    equipment[in_index] = out_array[out_index];
+    Inventory_item empty;
+    out_array[out_index] = empty;
+}
+
+void Unit::giveItem(Inventory_item * out_array, int16_t in_index, int16_t out_index) {
+    out_array[out_index] = equipment[in_index];
+    Inventory_item empty;
+    equipment[in_index] = empty;
+}
+
+void Unit::dropItem(int16_t in_index) {
+    Inventory_item empty;
+    equipment[in_index] = empty;
 }
 
 void Unit::setEquipment(const Inventory_item in_equipment[DEFAULT::EQUIPMENT_SIZE]) {
@@ -204,24 +225,9 @@ void Unit::equips(const bool hand, const int8_t to_equip) {
 }
 
 void Unit::unequips(const bool hand) {
+    range[0] = -1;
+    range[1] = -1;
     equipped[hand] = -1;
-}
-
-void Unit::takeItem(Inventory_item * out_array, int16_t in_index, int16_t out_index) {
-    equipment[in_index] = out_array[out_index];
-    Inventory_item empty;
-    out_array[out_index] = empty;
-}
-
-void Unit::giveItem(Inventory_item * out_array, int16_t in_index, int16_t out_index) {
-    out_array[out_index] = equipment[in_index];
-    Inventory_item empty;
-    equipment[in_index] = empty;
-}
-
-void Unit::dropItem(int16_t in_index) {
-    Inventory_item empty;
-    equipment[in_index] = empty;
 }
 
 bool * Unit::getHands() {
@@ -236,7 +242,7 @@ void Unit::takesDamage(const uint8_t damage) {
     SDL_Log("%s takes %d damage \n", name, damage);
     current_hp = std::max(0, current_hp - damage);
 
-    if (current_hp == 0) {dies();};
+    if (current_hp == 0) { dies(); }
 }
 
 void Unit::getsHealed(const uint8_t healing) {
@@ -268,17 +274,15 @@ int16_t Unit::getExp() const {
     return (exp);
 }
 
-uint8_t * Unit::getRange() {
+void Unit::computeRange() {
     SDL_Log("Computing unit range\n");
-    static uint8_t range[2] = {0, 0};
     Weapon temp_weapon;
-    uint8_t * temp_range;
+    int8_t * temp_range;
 
     if (weapons != NULL) {
         if (equipped[UNIT::HAND::LEFT] >= 0) {
             if (equipment[equipped[UNIT::HAND::LEFT]].id > 0) {
                 temp_weapon = weapons->at(equipment[equipped[UNIT::HAND::LEFT]].id);
-                SDL_Log("Can Attack? %d", temp_weapon.canAttack());
 
                 if (temp_weapon.canAttack()) {
                     temp_range = temp_weapon.getStats().range;
@@ -305,16 +309,14 @@ uint8_t * Unit::getRange() {
         range[0] = 0;
         range[1] = 0;
     }
+}
+
+int8_t * Unit::getRange() {
+    if ((range[0] == -1) || (range[1] == -1)) {
+        computeRange();
+    }
 
     return (range);
-}
-
-void Unit::setEntity(int16_t in_index) {
-    entity = in_index;
-}
-
-int Unit::getEntity() {
-    return (entity);
 }
 
 void Unit::setBaseExp(const uint16_t in_exp) {
@@ -326,27 +328,15 @@ void Unit::gainExp(const uint16_t in_exp) {
     exp += in_exp;
 
     if (((exp % 100) + in_exp) > 100) {
-        // Never should have two level ups at one time.
         levelUp();
+        // Never should have two level ups at one time.
     }
 }
 
 void Unit::levelUp() {
     uint8_t prob;
     Unit_stats temp_stats = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
-
-    temp_stats.hp += (growths.hp / 100);
-    temp_stats.str += (growths.str / 100);
-    temp_stats.mag += (growths.mag / 100);
-    temp_stats.dex += (growths.dex / 100);
-    temp_stats.agi += (growths.agi / 100);
-    temp_stats.luck += (growths.luck / 100);
-    temp_stats.def += (growths.def / 100);
-    temp_stats.res += (growths.res / 100);
-    temp_stats.move += (growths.move / 100);
-    temp_stats.prof += (growths.prof / 100);
-    temp_stats.con += (growths.con / 100);
-
+    
     prob = getURN();
 
     if ((prob <= (growths.hp % 100)) && (current_stats.hp < caps_stats.hp)) {
