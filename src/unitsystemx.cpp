@@ -25,9 +25,12 @@ bool UnitSystemx::canDouble(entityx::Entity attacker_ent, entityx::Entity defend
 }
 
 bool UnitSystemx::canRetaliate(entityx::Entity attacker_ent, entityx::Entity defender_ent) {
-    // int16_t * unit_position;
-    // int16_t * enemy_position;
-    // bool retaliates = false;
+    bool retaliates = false;
+    Point attacker_pos;
+    Point defender_pos;
+    attacker_pos = attacker_ent.component<Position>()->getPos();
+    defender_pos = defender_ent.component<Position>()->getPos();
+
 
     // enemy_position = enemy->getPos();
     // uint8_t distance = std::abs(enemy_position[0] - position[0]) + std::abs(enemy_position[1] - position[1]);
@@ -55,7 +58,7 @@ void UnitSystemx::attack(entityx::Entity attacker_ent, entityx::Entity defender_
     // }
 }
 
-void UnitSystemx::fight(entityx::Entity * attacker_ent, entityx::Entity * defender_ent) {
+void UnitSystemx::fight(entityx::Entity attacker_ent, entityx::Entity defender_ent) {
     // SDL_Log("%s fights %s\n", attacker->getName().c_str(), defender->getName().c_str());
     // bool defender_doubles;
     // bool attacker_doubles = attacker->canDouble(defender);
