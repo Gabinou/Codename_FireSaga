@@ -634,6 +634,12 @@ void Unit::computeDefense() {
             temp_wstats = weapons->at(equipment[equipped[UNIT::HAND::LEFT]].id).getStats();
             defense[ITEM::DMG_TYPE::PHYSICAL] += temp_wstats.Pmight;
             defense[ITEM::DMG_TYPE::MAGICAL] += temp_wstats.Mmight;
+            temp_ustats = weapons->at(equipment[equipped[UNIT::HAND::LEFT]].id).getBonus();
+            defense[ITEM::DMG_TYPE::PHYSICAL] += temp_ustats.def;
+            defense[ITEM::DMG_TYPE::MAGICAL] += temp_ustats.res;
+            temp_ustats = weapons->at(equipment[equipped[UNIT::HAND::LEFT]].id).getMalus();
+            defense[ITEM::DMG_TYPE::PHYSICAL] -= temp_ustats.def;
+            defense[ITEM::DMG_TYPE::MAGICAL] -= temp_ustats.res;
         }
     }
 
@@ -644,8 +650,21 @@ void Unit::computeDefense() {
             temp_wstats = weapons->at(equipment[equipped[UNIT::HAND::RIGHT]].id).getStats();
             defense[ITEM::DMG_TYPE::PHYSICAL] += temp_wstats.Pmight;
             defense[ITEM::DMG_TYPE::MAGICAL] += temp_wstats.Mmight;
+            temp_ustats = weapons->at(equipment[equipped[UNIT::HAND::RIGHT]].id).getBonus();
+            defense[ITEM::DMG_TYPE::PHYSICAL] += temp_ustats.def;
+            defense[ITEM::DMG_TYPE::MAGICAL] += temp_ustats.res;
+            temp_ustats = weapons->at(equipment[equipped[UNIT::HAND::RIGHT]].id).getMalus();
+            defense[ITEM::DMG_TYPE::PHYSICAL] -= temp_ustats.def;
+            defense[ITEM::DMG_TYPE::MAGICAL] -= temp_ustats.res;
         }
     }
+
+    defense[ITEM::DMG_TYPE::PHYSICAL] += current_stats.def;
+    defense[ITEM::DMG_TYPE::MAGICAL] += current_stats.res;
+    defense[ITEM::DMG_TYPE::PHYSICAL] += bonus_stats.def;
+    defense[ITEM::DMG_TYPE::MAGICAL] += bonus_stats.res;
+    defense[ITEM::DMG_TYPE::PHYSICAL] -= malus_stats.def;
+    defense[ITEM::DMG_TYPE::MAGICAL] -= malus_stats.res;
 }
 
 void Unit::computeAttack() {
