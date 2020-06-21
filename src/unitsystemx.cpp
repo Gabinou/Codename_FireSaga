@@ -43,17 +43,23 @@ bool UnitSystemx::canRetaliate(entityx::Entity attacker_ent, entityx::Entity def
 
 void UnitSystemx::attack(entityx::Entity attacker_ent, entityx::Entity defender_ent) {
     // SDL_Log("%s attacks %s\n", attacker->getName().c_str(), defender->getName().c_str());
-    // Combat_stats attacker_stats = attacker->getCombatStats();
-    // Combat_stats defender_stats = defender->getCombatStats();
-    // bool * hitcrit;
-    // hitcrit = game->checkHitCrit((attacker_stats.hit - defender_stats.dodge), (attacker_stats.crit - defender_stats.favor));
+    Combat_stats attacker_stats = attacker_ent.component<Unit>()->getCombatStats();
+    Combat_stats defender_stats = defender_ent.component<Unit>()->getCombatStats();
+    bool * hitcrit;
+    hitcrit = game->checkHitCrit((attacker_stats.hit - defender_stats.dodge), (attacker_stats.crit - defender_stats.favor));
 
-    // if (hitcrit[0]) {
-    //     if (hitcrit[1]) {
-    //         // int16_t damage = attacker->totalMight(false) -  defender->totalDef(false);
-    //         // defender->takesDamage(damage);
-    //     }
-    // }
+    int8_t damage_mag;
+    int8_t damage_phys;
+
+    if (hitcrit[0]) {
+        if (hitcrit[1]) {
+            uint8_t * attacker_attack = attacker_ent.component<Unit>()->getAttack();
+            uint8_t * defender_defense = defender_ent.component<Unit>()->getDefense();
+            damage_phys = std::max(0, attacker_attack[DMG_TYPE::PHYSICAL] - defender_defend[DMG_TYPE::PHYSICAL]);
+            damage_mag = std::max(0, attacker_attack[DMG_TYPE::MAGICAL] - defender_defend[DMG_TYPE::MAGICAL]);
+            defender->takesDamage(damage_phys + damage_mag);
+        }
+    }
 }
 
 void UnitSystemx::fight(entityx::Entity attacker_ent, entityx::Entity defender_ent) {
