@@ -42,7 +42,6 @@ bool UnitSystemx::canRetaliate(entityx::Entity attacker_ent, entityx::Entity def
 }
 
 void UnitSystemx::attack(entityx::Entity attacker_ent, entityx::Entity defender_ent) {
-    // SDL_Log("%s attacks %s\n", attacker->getName().c_str(), defender->getName().c_str());
     Combat_stats attacker_stats = attacker_ent.component<Unit>()->getCombatStats();
     Combat_stats defender_stats = defender_ent.component<Unit>()->getCombatStats();
     bool * hitcrit;
@@ -55,32 +54,31 @@ void UnitSystemx::attack(entityx::Entity attacker_ent, entityx::Entity defender_
         if (hitcrit[1]) {
             uint8_t * attacker_attack = attacker_ent.component<Unit>()->getAttack();
             uint8_t * defender_defense = defender_ent.component<Unit>()->getDefense();
-            damage_phys = std::max(0, attacker_attack[DMG_TYPE::PHYSICAL] - defender_defend[DMG_TYPE::PHYSICAL]);
-            damage_mag = std::max(0, attacker_attack[DMG_TYPE::MAGICAL] - defender_defend[DMG_TYPE::MAGICAL]);
-            defender->takesDamage(damage_phys + damage_mag);
+            damage_phys = std::max(0, attacker_attack[ITEM::DMG_TYPE::PHYSICAL] - defender_defense[ITEM::DMG_TYPE::PHYSICAL]);
+            damage_mag = std::max(0, attacker_attack[ITEM::DMG_TYPE::MAGICAL] - defender_defense[ITEM::DMG_TYPE::MAGICAL]);
+            defender_ent.component<Unit>()->takesDamage(damage_phys + damage_mag);
         }
     }
 }
 
 void UnitSystemx::fight(entityx::Entity attacker_ent, entityx::Entity defender_ent) {
-    // SDL_Log("%s fights %s\n", attacker->getName().c_str(), defender->getName().c_str());
-    // bool defender_doubles;
-    // bool attacker_doubles = attacker->canDouble(defender);
-    // bool defender_retaliates = defender->canRetaliate(attacker);
-    // attack(attacker, defender);
+    bool defender_doubles = canDouble(defender_ent, attacker_ent);
+    bool attacker_doubles = canDouble(attacker_ent, defender_ent);
+    bool defender_retaliates = canRetaliate(attacker_ent, defender_ent);
 
-    // if (defender_retaliates) {
-    //     attack(defender, attacker);
-    //     defender_doubles = defender->canDouble(attacker);
-    // }
+    attack(attacker_ent, defender_ent);
 
-    // if (attacker_doubles) {
-    //     attack(attacker, defender);
-    // }
+    if (defender_retaliates) {
+        attack(attacker_ent, defender_ent);
+    }
 
-    // if (defender_doubles) {
-    //     attack(defender, attacker);
-    // }
+    if (attacker_doubles) {
+        attack(attacker_ent, defender_ent);
+    }
+
+    if (defender_doubles) {
+        attack(attacker_ent, defender_ent);
+    }
 }
 
 
