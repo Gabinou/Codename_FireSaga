@@ -265,35 +265,36 @@ int16_t Unit::getExp() const {
     return (exp);
 }
 
-int16_t Unit::getExp() const {
+uint8_t * Unit::getRange() {
+    SDL_Log("Computing unit range\n");
+    static uint8_t range[2] = {0, 0};
+    Weapon temp_weapon;
+    uint8_t * temp_range;
 
+    if (weapons != NULL) {
+        if (equipped[UNIT::HAND::LEFT] >= 0) {
+            if (equipment[equipped[UNIT::HAND::LEFT]].id > 0) {
+                temp_weapon = weapons->at(equipment[equipped[UNIT::HAND::LEFT]].id);
 
-    uint8_t * Unit::getRange() {
-        SDL_Log("Computing unit range\n");
-        static uint8_t range[2] = {0, 0};
-        Weapon temp_weapon;
-
-        if (weapons != NULL) {
-            if (equipped[UNIT::HAND::LEFT] >= 0) {
-                if (equipment[equipped[UNIT::HAND::LEFT]].id > 0) {
-                    temp_weapon = weapons->at(equipment[equipped[UNIT::HAND::LEFT]].id);
-                    temp_type = weapon.getType();
-                    uint8_t * temp = weapon.getStats().range;
-                    range[0] = temp[0];
-                    range[1] = temp[1];
+                if (temp_weapon.canAttack()) {
+                    temp_range = temp_weapon.getStats().range;
+                    range[0] = temp_range[0];
+                    range[1] = temp_range[1];
                 }
             }
         }
+    }
 
-        if (equipped[UNIT::HAND::RIGHT] >= 0) {
-            if (equipment[equipped[UNIT::HAND::RIGHT]].id > 0) {
-                uint8_t * temp = weapons->at(equipment[equipped[UNIT::HAND::RIGHT]].id).getStats().range;
-                range[0] = std::min(temp[0], range[0]);
-                range[1] = std::max(temp[1], range[1]);
+    if (equipped[UNIT::HAND::RIGHT] >= 0) {
+        if (equipment[equipped[UNIT::HAND::RIGHT]].id > 0) {
+            temp_weapon = weapons->at(equipment[equipped[UNIT::HAND::RIGHT]].id);
+
+            if (temp_weapon.canAttack()) {
+                temp_range = temp_weapon.getStats().range;
+                range[0] = std::min(temp_range[0], range[0]);
+                range[1] = std::max(temp_range[1], range[1]);
             }
         }
-    } else {
-        SDL_Log("weapons pointer is NULL");
     }
 
     if ((equipped[UNIT::HAND::LEFT] < 0) && (equipped[UNIT::HAND::RIGHT] < 0)) {

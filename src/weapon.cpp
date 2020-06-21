@@ -47,7 +47,6 @@ void Weapon::setAttackable() {
             ((type & ITEM::TYPE::DEMONIC) > 0) &&
             ((type & ITEM::TYPE::ANGELIC) > 0) &&
             ((type & ITEM::TYPE::BOW) > 0)) {
-         
         attackable = true;
     }
 }

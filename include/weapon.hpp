@@ -16,7 +16,7 @@ private:
     uint16_t effective = 0; // is a unit type.
     Infusion infused;
     bool infuseable;
-    bool attackable = false;
+    bool attackable = false; // Offhands are not attackable: cannot attack, only provides bonus stats.
 public:
     Weapon();
     Weapon(uint16_t in_type, Weapon_stats in_stats, uint8_t in_id);
