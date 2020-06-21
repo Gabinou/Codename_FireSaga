@@ -851,28 +851,6 @@ uint8_t Unit::favor() {
     return (favor);
 }
 
-bool Unit::canRetaliate(Unit * enemy) const {
-    // int16_t * unit_position;
-    // int16_t * enemy_position;
-    // bool retaliates = false;
-
-    // enemy_position = enemy->getPos();
-    // uint8_t distance = std::abs(enemy_position[0] - position[0]) + std::abs(enemy_position[1] - position[1]);
-
-    // for (int i = 0; i < 3; i++) {
-    //     if ((distance >= temp_wpn.range[0]) && (distance <= temp_wpn.range[1])) {
-    //         retaliates = 1;
-    //     }
-    // }
-    return (false);
-}
-
-bool Unit::canDouble(Unit * enemy) {
-    computeSpeed();
-    bool doubles = ((current_speed - enemy->getSpeed()) > 4);
-    return (doubles);
-}
-
 int8_t Unit::getSpeed() {
     return (current_speed);
 }

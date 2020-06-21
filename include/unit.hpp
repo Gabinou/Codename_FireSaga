@@ -155,8 +155,6 @@ public:
     std::string getArmyName();
     void setArmy(const uint8_t in_army);
 
-    bool canRetaliate(Unit * enemy) const;
-    bool canDouble(Unit * enemy);
     bool canAttack();
     bool canEquip(const int16_t in_id);
 
