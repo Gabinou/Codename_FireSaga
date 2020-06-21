@@ -730,7 +730,7 @@ void Unit::setName(const std::string in_name) {
     name = in_name;
 }
 
-void Unit::setName(const int8_t in_name) {
+void Unit::setName(const char * in_name) {
     name = in_name;
 }
 
@@ -763,6 +763,15 @@ uint8_t Unit::hit() {
     //*DESIGN QUESTION* In vesteria saga, dex*3.
     uint8_t supports = 0;
     uint8_t unit_acc = current_stats.dex * 3 + current_stats.luck;
+
+    Weapon_stats temp_wstats;
+    uint16_t temp_type;
+    uint16_t wpn_acc;
+    if (equipped[UNIT::HAND::LEFT] > 0) {
+        temp_type = weapons->at(equipment[equipped[UNIT::HAND::LEFT]].id).getType();
+
+        if (!((temp_type & ITEM::TYPE::SHIELD) > 0)) {
+
     uint8_t hit = temp_wpn.combat.hit + unit_acc + supports;
     return (hit);
 }

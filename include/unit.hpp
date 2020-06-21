@@ -149,7 +149,7 @@ public:
 
     std::string getName();
     void setName(const std::string in_name);
-    void setName(const int8_t in_name);
+    void setName(const char * in_name);
 
     uint8_t getArmy();
     std::string getArmyName();
