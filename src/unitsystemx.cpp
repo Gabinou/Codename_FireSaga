@@ -30,17 +30,15 @@ bool UnitSystemx::canRetaliate(entityx::Entity attacker_ent, entityx::Entity def
     Point defender_pos;
     attacker_pos = attacker_ent.component<Position>()->getPos();
     defender_pos = defender_ent.component<Position>()->getPos();
+    uint8_t distance = std::abs(defender_pos.x - attacker_pos.x) + std::abs(defender_pos.y - attacker_pos.y);
 
+    int8_t * defender_range = defender_ent.component<Unit>()->getRange();
 
-    // enemy_position = enemy->getPos();
-    // uint8_t distance = std::abs(enemy_position[0] - position[0]) + std::abs(enemy_position[1] - position[1]);
+    if ((distance >= defender_range[0]) && (distance <= defender_range[1])) {
+        retaliates = true;
+    }
 
-    // for (int i = 0; i < 3; i++) {
-    //     if ((distance >= temp_wpn.range[0]) && (distance <= temp_wpn.range[1])) {
-    //         retaliates = 1;
-    //     }
-    // }
-    return (false);
+    return (retaliates);
 }
 
 void UnitSystemx::attack(entityx::Entity attacker_ent, entityx::Entity defender_ent) {
