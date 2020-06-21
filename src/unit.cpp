@@ -196,19 +196,21 @@ void Unit::equips(const bool hand, const int8_t to_equip) {
             }
         }
     }
+
+    checkWeapon(equipment[equipped[hand]].id); // Loads weapons only when equipped, if not previously loaded.
 }
 
 void Unit::unequips(const bool hand) {
     equipped[hand] = -1;
 }
 
-void Unit::takeItem(Inventory_item * out_array, int16_t in_index,  int16_t out_index) {
+void Unit::takeItem(Inventory_item * out_array, int16_t in_index, int16_t out_index) {
     equipment[in_index] = out_array[out_index];
     Inventory_item empty;
     out_array[out_index] = empty;
 }
 
-void Unit::giveItem(Inventory_item * out_array, int16_t in_index,  int16_t out_index) {
+void Unit::giveItem(Inventory_item * out_array, int16_t in_index, int16_t out_index) {
     out_array[out_index] = equipment[in_index];
     Inventory_item empty;
     equipment[in_index] = empty;
@@ -256,32 +258,35 @@ uint8_t Unit::getHp() const {
 }
 
 int16_t Unit::getLvl() const {
-    return (ceil(current_hp / 100));
+    return (ceil(exp / 100) + 1);
 }
 
 int16_t Unit::getExp() const {
     return (exp);
 }
 
-uint8_t * Unit::getRange() {
-    // DESIGN QUESTION: what about equipping only an offhand? Should offhand have ranges?
-    // Can you attack with only offhand weapons? how to treat their hit rate?
-    SDL_Log("Computing unit range\n");
-    static uint8_t range[2] = {0, 0};
+int16_t Unit::getExp() const {
 
-    if (weapons != NULL) {
-        if (equipped[UNIT::HAND::LEFT] >= 0) {
-            if (equipment[equipped[UNIT::HAND::LEFT]].id > 0) {
-                checkWeapon(equipment[equipped[UNIT::HAND::LEFT]].id);
-                uint8_t * temp = weapons->at(equipment[equipped[UNIT::HAND::LEFT]].id).getStats().range;
-                range[0] = temp[0];
-                range[1] = temp[1];
+
+    uint8_t * Unit::getRange() {
+        SDL_Log("Computing unit range\n");
+        static uint8_t range[2] = {0, 0};
+        Weapon temp_weapon;
+
+        if (weapons != NULL) {
+            if (equipped[UNIT::HAND::LEFT] >= 0) {
+                if (equipment[equipped[UNIT::HAND::LEFT]].id > 0) {
+                    temp_weapon = weapons->at(equipment[equipped[UNIT::HAND::LEFT]].id);
+                    temp_type = weapon.getType();
+                    uint8_t * temp = weapon.getStats().range;
+                    range[0] = temp[0];
+                    range[1] = temp[1];
+                }
             }
         }
 
         if (equipped[UNIT::HAND::RIGHT] >= 0) {
             if (equipment[equipped[UNIT::HAND::RIGHT]].id > 0) {
-                checkWeapon(equipment[equipped[UNIT::HAND::RIGHT]].id);
                 uint8_t * temp = weapons->at(equipment[equipped[UNIT::HAND::RIGHT]].id).getStats().range;
                 range[0] = std::min(temp[0], range[0]);
                 range[1] = std::max(temp[1], range[1]);
@@ -495,7 +500,6 @@ void Unit::checkWeapon(int16_t in_id) {
 }
 
 bool Unit::canEquip(int16_t in_id) {
-    checkWeapon(in_id);
     uint16_t wpntypecode;
     bool out = false;
 
@@ -519,7 +523,6 @@ bool Unit::canAttack() {
 
     if (weapons != NULL) {
         if (equipped[UNIT::HAND::LEFT] > 0) {
-            checkWeapon(equipment[equipped[UNIT::HAND::LEFT]].id);
             wpntypecodes.left = weapons->at(equipment[equipped[UNIT::HAND::LEFT]].id).getType();
 
             if ((wpntypecodes.left != ITEM::TYPE::SHIELD)  & (wpntypecodes.left != ITEM::TYPE::TRINKET) & (wpntypecodes.left != ITEM::TYPE::STAFF)) {
@@ -528,7 +531,6 @@ bool Unit::canAttack() {
         }
 
         if (equipped[UNIT::HAND::RIGHT] > 0) {
-            checkWeapon(equipment[equipped[UNIT::HAND::RIGHT]].id);
             wpntypecodes.right = weapons->at(equipment[equipped[UNIT::HAND::RIGHT]].id).getType();
 
             if ((wpntypecodes.right != ITEM::TYPE::SHIELD)  & (wpntypecodes.right != ITEM::TYPE::TRINKET) & (wpntypecodes.right != ITEM::TYPE::STAFF)) {

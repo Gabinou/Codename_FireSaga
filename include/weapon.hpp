@@ -15,6 +15,8 @@ private:
     Weapon_stats stats = {0, 0, 0, 0, 0, 0, 0, 0, 0, {0, 0}, {0, 0}, 0, 0};
     uint16_t effective = 0; // is a unit type.
     Infusion infused;
+    bool infuseable;
+    bool attackable = false;
 public:
     Weapon();
     Weapon(uint16_t in_type, Weapon_stats in_stats, uint8_t in_id);
@@ -22,8 +24,12 @@ public:
     void setStats(Weapon_stats in_stats);
     Weapon_stats getStats();
 
+    void setAttackable();
+    bool canAttack();
+
     void infuse(uint8_t in_mag, uint16_t in_type);
     Infusion getInfused();
+    void setInfuseable(bool in_infuseable);
     bool canInfuse();
     void setEffective(uint16_t in_effective);
     uint16_t getEffective();
