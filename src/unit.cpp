@@ -212,15 +212,17 @@ void Unit::equips(const bool hand, const int8_t to_equip) {
     SDL_Log("hand, equipment id: %d %d", hand, equipment[hand].id);
 
     if (equipment[hand].id > 0) {
-        if (hands[hand]) {
-            if ((to_equip == 0) || (to_equip == 1))  {
-                equipped[hand] = to_equip;
-            } else {
-                equipped[hand] = hand;
+        if (canEquip(equipment[equipped[hand]].id)) {
+            if (hands[hand]) {
+                if ((to_equip == 0) || (to_equip == 1))  {
+                    equipped[hand] = to_equip;
+                } else {
+                    equipped[hand] = hand;
+                }
             }
-        }
 
-        checkWeapon(equipment[equipped[hand]].id); // Loads weapons only when equipped, if not previously loaded.
+            checkWeapon(equipment[equipped[hand]].id); // Loads weapons only when equipped, if not previously loaded.
+        }
     }
 }
 
