@@ -168,8 +168,8 @@ public:
     uint8_t favor();
     void computeAttack();
     void computeDefense();
-    bool dmgType();
-    int8_t speed();
+    int8_t getSpeed();
+    int8_t computeSpeed();
 
     bool isWaiting();
     void refresh();

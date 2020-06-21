@@ -756,11 +756,10 @@ void Unit::combatStats() {
     combat_stats.dodge = dodge();
     combat_stats.crit = critical();
     combat_stats.favor = favor();
-    speed();
+    computeSpeed();
 }
 
 uint8_t Unit::hit() {
-    //*DESIGN QUESTION* In vesteria saga, dex*3.
     uint8_t supports = 0;
     uint8_t unit_acc = current_stats.dex * 3 + current_stats.luck;
     uint16_t temp_type;
@@ -869,15 +868,33 @@ bool Unit::canRetaliate(Unit * enemy) const {
 }
 
 bool Unit::canDouble(Unit * enemy) {
-    speed();
-    bool doubles = ((current_speed - enemy->speed()) > 4);
+    computeSpeed();
+    bool doubles = ((current_speed - enemy->getSpeed()) > 4);
     return (doubles);
 }
 
-int8_t Unit::speed() {
-    //*DESIGN QUESTION* What should be the influence of weapons?
-    // Average of Con and Str? Con+Str/2?
-    int8_t current_speed = current_stats.agi - temp_wpn.wgt + current_stats.con + current_stats.str / 2;
+int8_t Unit::getSpeed() {
+    return (current_speed);
+}
+
+int8_t Unit::computeSpeed() {
+    uint8_t wpn_wgt = 0;
+    uint8_t slowed = 0;
+    Weapon_stats temp_wstats;
+
+    if (equipped[UNIT::HAND::LEFT] > 0) {
+        temp_wstats = weapons->at(equipment[equipped[UNIT::HAND::LEFT]].id).getStats();
+        wpn_wgt += temp_wstats.wgt;
+    }
+
+    if (equipped[UNIT::HAND::RIGHT] > 0) {
+        temp_wstats = weapons->at(equipment[equipped[UNIT::HAND::RIGHT]].id).getStats();
+        wpn_wgt += temp_wstats.wgt;
+    }
+
+    slowed = std::max(0, wpn_wgt - current_stats.con / 2 + current_stats.str / 4);
+
+    int8_t current_speed = current_stats.agi - slowed;
     return (current_speed);
 }
 
@@ -1011,7 +1028,7 @@ void Unit::readXML(tinyxml2::XMLElement * in_pUnit) {
     class_name = classNames[class_index];
     sex_name = sexNames[sex];
     skill_names = skillNames(skills);
-    speed();
+    computeSpeed();
 }
 
 void Unit::readJSON(cJSON * in_junit) {
