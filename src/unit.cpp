@@ -763,37 +763,92 @@ uint8_t Unit::hit() {
     //*DESIGN QUESTION* In vesteria saga, dex*3.
     uint8_t supports = 0;
     uint8_t unit_acc = current_stats.dex * 3 + current_stats.luck;
-
-    Weapon_stats temp_wstats;
     uint16_t temp_type;
-    uint16_t wpn_acc;
+    uint8_t wpn_acc = 0;
+    Weapon_stats temp_wstats;
+
     if (equipped[UNIT::HAND::LEFT] > 0) {
-        temp_type = weapons->at(equipment[equipped[UNIT::HAND::LEFT]].id).getType();
+        temp_wstats = weapons->at(equipment[equipped[UNIT::HAND::LEFT]].id).getStats();
+        wpn_acc += temp_wstats.combat.hit;
+    }
 
-        if (!((temp_type & ITEM::TYPE::SHIELD) > 0)) {
+    if (equipped[UNIT::HAND::RIGHT] > 0) {
+        temp_wstats = weapons->at(equipment[equipped[UNIT::HAND::RIGHT]].id).getStats();
 
-    uint8_t hit = temp_wpn.combat.hit + unit_acc + supports;
+        if (wpn_acc == 0) {
+            wpn_acc += temp_wstats.combat.hit;
+        } else {
+            wpn_acc += temp_wstats.combat.hit;
+            wpn_acc /= 2; // truncates. Effective floor.
+        }
+    }
+
+    uint8_t hit = wpn_acc + unit_acc + supports;
     return (hit);
 }
 
 uint8_t Unit::dodge() {
     uint8_t supports = 0;
-    uint8_t terrain_dodge = 0;
+    uint8_t tile_dodge = 0;
+    uint8_t wpn_dodge = 0;
     uint8_t unit_dodge = current_stats.dex * 2 + current_stats.luck;
-    uint8_t dodge = terrain_dodge + unit_dodge + supports;
+    Weapon_stats temp_wstats;
+
+    if (equipped[UNIT::HAND::LEFT] > 0) {
+        temp_wstats = weapons->at(equipment[equipped[UNIT::HAND::LEFT]].id).getStats();
+        wpn_dodge += temp_wstats.combat.dodge;
+    }
+
+    if (equipped[UNIT::HAND::RIGHT] > 0) {
+        temp_wstats = weapons->at(equipment[equipped[UNIT::HAND::RIGHT]].id).getStats();
+        wpn_dodge += temp_wstats.combat.dodge;
+    }
+
+    uint8_t dodge = tile_dodge + unit_dodge + wpn_dodge + supports;
     return (dodge);
 }
 
 uint8_t Unit::critical() {
     uint8_t supports = 0 ;
-    uint8_t unit_skill = 0;
-    uint8_t critical = temp_wpn.combat.crit + unit_skill + supports;
+    uint8_t unit_crit = 0;
+    uint8_t wpn_crit = 0;
+    Weapon_stats temp_wstats;
+
+    if (equipped[UNIT::HAND::LEFT] > 0) {
+        temp_wstats = weapons->at(equipment[equipped[UNIT::HAND::LEFT]].id).getStats();
+        wpn_crit += temp_wstats.combat.crit;
+    }
+
+    if (equipped[UNIT::HAND::RIGHT] > 0) {
+        temp_wstats = weapons->at(equipment[equipped[UNIT::HAND::RIGHT]].id).getStats();
+        wpn_crit += temp_wstats.combat.crit;
+    }
+
+    unit_crit += current_stats.luck / 4 + current_stats.dex / 4 ;
+
+    uint8_t critical = temp_wpn.combat.crit + unit_crit + wpn_crit + supports;
     return (critical);
 }
 
 uint8_t Unit::favor() {
     uint8_t supports = 0 ;
-    uint8_t favor = (ceil(current_stats.luck / 2.)) + supports;
+    uint8_t wpn_favor = 0;
+    uint8_t unit_favor = 0;
+    Weapon_stats temp_wstats;
+
+    if (equipped[UNIT::HAND::LEFT] > 0) {
+        temp_wstats = weapons->at(equipment[equipped[UNIT::HAND::LEFT]].id).getStats();
+        wpn_favor += temp_wstats.combat.favor;
+    }
+
+    if (equipped[UNIT::HAND::RIGHT] > 0) {
+        temp_wstats = weapons->at(equipment[equipped[UNIT::HAND::RIGHT]].id).getStats();
+        wpn_favor += temp_wstats.combat.favor;
+    }
+
+    unit_favor = current_stats.luck / 2;
+
+    uint8_t favor = unit_favor + wpn_favor + supports;
     return (favor);
 }
 
