@@ -55,6 +55,8 @@ private:
 
     std::unordered_map<int16_t, Weapon> * weapons = NULL;
 
+    int8_t total_attack[2] = {-1, -1};
+    int8_t total_defense[2] = {-1, -1};
     int8_t range[2] = {-1, -1};
     int8_t equipped[2] = {-1, -1};
     bool hands[2] = {true, true};
@@ -161,8 +163,8 @@ public:
     uint8_t dodge();
     uint8_t critical();
     uint8_t favor();
-    uint8_t totalMight(const bool dmg_type);
-    uint8_t totalDef(const bool dmg_type);
+    void computeAttack();
+    void computeDefense();
     bool dmgType();
     int8_t speed();
 

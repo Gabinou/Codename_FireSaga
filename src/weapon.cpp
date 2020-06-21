@@ -23,12 +23,13 @@ void Weapon::setStats(Weapon_stats in_stats) {
 }
 
 void Weapon::infuse(uint8_t in_mag, uint16_t in_type) {
-    if (infused.power < 0) {
+    if ((infused.power < 0) || (stats.Mmight > 0)) {
         if (((in_type & ITEM::TYPE::ELEMENTAL) > 0) || ((in_type & ITEM::TYPE::ANGELIC) > 0) || ((in_type & ITEM::TYPE::DEMONIC) > 0)) {
             infused.power = in_mag;
+            stats.Mmight = in_mag;
             infused.type = in_type;
         } else {
-            SDL_Log("Cannot infuse weapon with weapon type otehr than Elemental, Demonic or Angelic.");
+            SDL_Log("Cannot infuse weapon with weapon type other than Elemental, Demonic or Angelic.");
         }
     } else {
         SDL_Log("Weapon is already infused/is a magic Weapon. Cannot infuse again.");
@@ -50,6 +51,8 @@ void Weapon::attackablefromType() {
             ((type & ITEM::TYPE::ELEMENTAL) > 0) ||
             ((type & ITEM::TYPE::DEMONIC) > 0) ||
             ((type & ITEM::TYPE::ANGELIC) > 0) ||
+            ((type & ITEM::TYPE::OFFHAND) > 0) ||
+            // Offhands are daggers. Different from trinkets.
             ((type & ITEM::TYPE::BOW) > 0)) {
         attackable = true;
     }

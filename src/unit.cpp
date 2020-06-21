@@ -564,7 +564,7 @@ void Unit::checkWeapon(int16_t in_id) {
             weapons->emplace(in_id, temp_weapon);
         }
     } else {
-        SDL_Log("weapons pointer is NULL");
+        SDL_Log("Unit::checkWeapon: weapons pointer is NULL");
     }
 }
 
@@ -575,99 +575,63 @@ bool Unit::canEquip(int16_t in_id) {
         uint16_t wpntypecode = weapons->at(in_id).getType();
         out = ((equippable & wpntypecode) > 0);
     } else {
-        SDL_Log("weapons pointer is NULL");
+        SDL_Log("Unit::canEquip: weapons pointer is NULL");
     }
 
     return (out);
 }
 
 bool Unit::canAttack() {
-    // THIS FUNCTION needs to be updated with the fact that some weapons can have multiple types. -> typecodes
-    bool out;
-    struct wpntypecodes {
-        int16_t left;
-        int16_t right;
-    } wpntypecodes;
+    bool out = false;
 
     if (weapons != NULL) {
-        if (equipped[UNIT::HAND::LEFT] > 0) {
-            wpntypecodes.left = weapons->at(equipment[equipped[UNIT::HAND::LEFT]].id).getType();
+        bool left;
+        bool right;
 
-            if ((wpntypecodes.left != ITEM::TYPE::SHIELD)  & (wpntypecodes.left != ITEM::TYPE::TRINKET) & (wpntypecodes.left != ITEM::TYPE::STAFF)) {
-                out = true;
-            }
+        if (equipped[UNIT::HAND::LEFT] > 0) {
+            left = weapons->at(equipment[equipped[UNIT::HAND::LEFT]].id).canAttack();
         }
 
         if (equipped[UNIT::HAND::RIGHT] > 0) {
-            wpntypecodes.right = weapons->at(equipment[equipped[UNIT::HAND::RIGHT]].id).getType();
-
-            if ((wpntypecodes.right != ITEM::TYPE::SHIELD)  & (wpntypecodes.right != ITEM::TYPE::TRINKET) & (wpntypecodes.right != ITEM::TYPE::STAFF)) {
-                out = true;
-            }
+            right = weapons->at(equipment[equipped[UNIT::HAND::RIGHT]].id).canAttack();
         }
+
+        out = left || right;
     } else {
-        SDL_Log("weapons pointer is NULL");
+        SDL_Log("Unit::canAttack: weapons pointer is NULL");
     }
 
     return (out);
 }
 
-// bool Unit::dmgType() { //Useless?
-//     // Assumes canAttack().
-//     struct Dmg_types{
-//         bool left = false;
-//         bool right = false;
-//     } dmg_types;
-//     struct wpntypes{
-//         std::string left;
-//         std::string right;
-//     } wpntypes;
-//     bool out = false;
+void Unit::computeAttack() {
+    total_attack[DMG_TYPE::PHYSICAL] = 0;
+    total_attack[DMG_TYPE::MAGICAL] = 0;
+    Weapon_stats temp_stats;
+    uint16_t temp_type;
 
-//     wpntypes.left = weapons->at(equipment[equipped[UNIT::HAND::LEFT]].name).getType();
-//     wpntypes.right = weapons->at(equipment[equipped[UNIT::HAND::RIGHT]].name).getType();
+    if (equipped[UNIT::HAND::LEFT] > 0) {
+        temp_type = weapons->at(equipment[equipped[UNIT::HAND::LEFT]].id).getType();
 
+        if (!((temp_type & ITEM::TYPE::SHIELD) > 0)) {
+            temp_stats = weapons->at(equipment[equipped[UNIT::HAND::LEFT]].id).getStats();
+            total_attack[DMG_TYPE::PHYSICAL] += temp_stats.Pmight;
+            total_attack[DMG_TYPE::MAGICAL] += temp_stats.Mmight;
+        }
+    }
 
-//     if ((wpntypes.right.empty()) & (wpntypes.right.empty()) ) {
+    if (equipped[UNIT::HAND::RIGHT] > 0) {
+        temp_type = weapons->at(equipment[equipped[UNIT::HAND::LEFT]].id).getType();
 
-//     }
-//     if ((wpntypes.left != "shield") & (wpntypes.left != "trinket")  & (wpntypes.left != "staff")) {
-//         dmg_types.left = weapons->at(equipment[equipped[UNIT::HAND::LEFT]].name).getStats().dmg_type;
-//     }
+        if (!((temp_type & ITEM::TYPE::SHIELD) > 0)) {
+            temp_stats = weapons->at(equipment[equipped[UNIT::HAND::RIGHT]].id).getStats();
+            total_attack[DMG_TYPE::PHYSICAL] += temp_stats.Pmight;
+            total_attack[DMG_TYPE::MAGICAL] += temp_stats.Mmight;
+        }
+    }
 
-//     if (wpntypes.right != "shield") & (wpntypes.left != "trinket")  & (wpntypes.left != "staff") {
-//         dmg_types.right = weapons->at(equipment[equipped[UNIT::HAND::RIGHT]].name).getStats().dmg_type;
-//     }
-
-//     // Classes who can have different weapons in both hands.
-//     // Battlemage. Angel. Demon.
-//     // The only important case is battlemage attacking with sword and trinket. But since we add all mights... Battlemage infusion should have constant damage output based on mage's magic power.
-//     // Can battlemages give infused weapons to other units? Yes.
-//     if (dmg_types.right != dmg_types.left) {
-
-//     } else {
-//         out = dmg_types.right;
-//     }
-
-//     return(out);
-// }
-
-uint8_t Unit::totalMight(bool dmg_type) {
-    // Damage type is determined by the main weapon of attack.
-    uint8_t unit_power = 0;
-    uint8_t wpn_dmg;
-
-    if (!dmg_type) { // Physical dmg.
-        wpn_dmg = temp_wpn.Pmight;
-        unit_power = current_stats.str;
-    } else { // Magical dmg.
-        wpn_dmg = temp_wpn.Mmight;
-        unit_power = current_stats.mag;
-    };
-
-    int16_t total_might = wpn_dmg + unit_power;
-
-    return (total_might);
+    total_attack[DMG_TYPE::PHYSICAL] += current_stats.str;
+    total_attack[DMG_TYPE::MAGICAL] += current_stats.mag;
 }
 
 void Unit::setWeapons(std::unordered_map<int16_t, Weapon> * in_weapons) {
@@ -678,30 +642,8 @@ std::unordered_map<int16_t, Weapon> * Unit::getWeapons() {
     return (weapons);
 }
 
-uint8_t Unit::totalDef(bool dmg_type) {
-    uint8_t total_def = 0;
-    // if (dmg_type){
-    //     total_def += current_stats.res;
-    //     total_def += weapons->at(equipment[equipped[UNIT::HAND::LEFT]].name].getBonus().res;
-    //     total_def += weapons->at(equipment[equipped[UNIT::HAND::RIGHT]].name].getBonus().res;
-    //     if (weapons->at(equipment[equipped[UNIT::HAND::RIGHT]].name).getType() == "shield") {
-    //         total_def += weapons->at(equipment[equipped[UNIT::HAND::RIGHT]].name).getStats().Mmight;
-    //     }
-    //     if (weapons->at(equipment[equipped[UNIT::HAND::LEFT]].name).getType() == "shield") {
-    //         total_def += weapons->at(equipment[equipped[UNIT::HAND::LEFT]].name).getStats().Mmight;
-    //     }
-    // } else {
-    //     total_def += current_stats.def;
-    //     total_def += weapons->at(equipment[equipped[UNIT::HAND::LEFT]].name].getBonus().def;
-    //     total_def += weapons->at(equipment[equipped[UNIT::HAND::RIGHT]].name].getBonus().def;
-    //     if (weapons->at(equipment[equipped[UNIT::HAND::RIGHT]].name).getType() == "shield") {
-    //         total_def += weapons->at(equipment[equipped[UNIT::HAND::RIGHT]].name).getStats().Pmight;
-    //     }
-    //     if (weapons->at(equipment[equipped[UNIT::HAND::LEFT]].name).getType() == "shield") {
-    //         total_def += weapons->at(equipment[equipped[UNIT::HAND::LEFT]].name).getStats().Pmight;
-    //     }
-    // }
-    return (total_def);
+void Unit::computeDefense(bool dmg_type) {
+
 }
 
 std::string Unit::getName() {
