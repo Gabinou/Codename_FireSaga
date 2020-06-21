@@ -63,10 +63,6 @@ int16_t Unit::getid() {
     return (id);
 }
 
-void Unit::use(int in_ind) {
-
-}
-
 uint64_t Unit::getSkills() {
     return (skills);
 }
@@ -215,6 +211,16 @@ void Unit::dropItem(int16_t in_index) {
     Inventory_item empty;
     equipment[in_index] = empty;
 }
+
+bool * Unit::getHands() {
+    return (hands);
+}
+
+int8_t * Unit::getEquipped() {
+    return (equipped);
+}
+
+
 
 void Unit::takesDamage(const uint8_t damage) {
     SDL_Log("%s takes %d damage \n", name, damage);

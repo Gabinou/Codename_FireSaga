@@ -76,6 +76,9 @@ public:
     void setSex(const bool in_sex);
     bool getSex();
 
+    bool * getHands();
+    int8_t * getEquipped();
+
     void setWeapons(std::unordered_map<int16_t, Weapon> * in_weapons);
     void checkWeapon(int16_t in_id);
 
@@ -169,8 +172,6 @@ public:
     void refresh();
     void wait();
     void dies();
-
-    void use(int in_ind);
 
     using JSON_IO::writeJSON;
     using JSON_IO::readJSON;
