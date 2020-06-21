@@ -901,6 +901,8 @@ void Game::loadMapArrivals() {
                 unit_name = "units//" + unitNames[map_arrivals[i].id] + ".json";
                 temp_unit_ent.component<Unit>()->readJSON(unit_name.c_str());
                 temp_unit_ent.component<Unit>()->setArmy(map_arrivals[i].army);
+                temp_unit_ent.component<Unit>()->equips(UNIT::HAND::RIGHT);
+                temp_unit_ent.component<Unit>()->equips(UNIT::HAND::LEFT);
                 SDL_Log("Arrival position: %d %d", map_arrivals[i].position.x, map_arrivals[i].position.y);
                 mapx->putUnit(map_arrivals[i].position.x, map_arrivals[i].position.y, temp_unit_ent.component<Unit>());
             }
@@ -922,8 +924,6 @@ void Game::loadUnits(std::vector<int16_t> toload) {
         filename = "units//" + unitNames[toload[i]] + ".json";
         temp_unit.setWeapons(&weapons);
         temp_unit.readJSON(filename.c_str());
-        // temp_unit.equips(UNIT::HAND::RIGHT);
-        // temp_unit.equips(UNIT::HAND::LEFT);
 
         if ((toload[i] > 0) && (toload[i] < UNIT::NAME::PC_END)) {
             party[toload[i]].copyUnit(temp_unit);

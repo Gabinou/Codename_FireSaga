@@ -201,8 +201,6 @@ void Unit::equips(const bool hand, const int8_t to_equip) {
 
         checkWeapon(equipment[equipped[hand]].id); // Loads weapons only when equipped, if not previously loaded.
     }
-
-    // SDL_Log("equiopped");
 }
 
 void Unit::unequips(const bool hand) {
