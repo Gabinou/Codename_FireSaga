@@ -3,6 +3,7 @@
 
 #include <SDL2/SDL.h>
 #include "events.hpp"
+#include "enums.hpp"
 #include "map.hpp"
 #include "position.hpp"
 #include "sprite.hpp"
@@ -22,6 +23,10 @@ public:
 
     void updateMap();
     void setMap(entityx::ComponentHandle<Map> in_map);
+    void fight(entityx::Entity attacker_ent, entityx::Entity defender_ent);
+    void attack(entityx::Entity attacker_ent, entityx::Entity defender_ent);
+    bool canDouble(entityx::Entity attacker_ent, entityx::Entity defender_ent);
+    bool canRetaliate(entityx::Entity attacker_ent, entityx::Entity defender_ent);
 
     void configure(entityx::EventManager & event_manager);
     void receive(const turnBegin & begin);

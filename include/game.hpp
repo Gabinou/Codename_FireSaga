@@ -150,8 +150,6 @@ public:
 
     void update();
     void clean();
-    void fight(Unit * attacker, Unit * defender);
-    void attack(Unit * attacker, Unit * defender);
     bool checkRate(int16_t crit_rate, int16_t mode = 2);
     bool * checkHitCrit(int16_t hit_rate, int16_t crit_rate, int16_t mode = GAME::RN::GAUSSIAN);
 

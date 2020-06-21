@@ -127,42 +127,6 @@ void Game::setTurntransitiontext(int8_t in_army) {
 
 }
 
-void Game::attack(Unit * attacker, Unit * defender) {
-    SDL_Log("%s attacks %s\n", attacker->getName().c_str(), defender->getName().c_str());
-    Combat_stats attacker_stats = attacker->getCombatStats();
-    Combat_stats defender_stats = defender->getCombatStats();
-    bool * hitcrit;
-    hitcrit = checkHitCrit((attacker_stats.hit - defender_stats.dodge), (attacker_stats.crit - defender_stats.favor));
-
-    if (hitcrit[0]) {
-        if (hitcrit[1]) {
-            // int16_t damage = attacker->totalMight(false) -  defender->totalDef(false);
-            // defender->takesDamage(damage);
-        }
-    }
-}
-
-void Game::fight(Unit * attacker, Unit * defender) {
-    SDL_Log("%s fights %s\n", attacker->getName().c_str(), defender->getName().c_str());
-    bool defender_doubles;
-    bool attacker_doubles = attacker->canDouble(defender);
-    bool defender_retaliates = defender->canRetaliate(attacker);
-    attack(attacker, defender);
-
-    if (defender_retaliates) {
-        attack(defender, attacker);
-        defender_doubles = defender->canDouble(attacker);
-    }
-
-    if (attacker_doubles) {
-        attack(attacker, defender);
-    }
-
-    if (defender_doubles) {
-        attack(defender, attacker);
-    }
-}
-
 entityx::Entity * Game::getFPS() {
     return (&fps);
 }

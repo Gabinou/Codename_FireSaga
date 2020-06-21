@@ -21,6 +21,7 @@ enum DEFAULTS {
     SUPPORTS_MAX = 7,
     BOOKS_NUM = 10,
     HYAKUPERCENT = 100,
+    DOUBLEHIT_SPEED = 4,
 };
 }
 
