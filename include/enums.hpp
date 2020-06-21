@@ -20,6 +20,7 @@ enum DEFAULTS {
     BUFFER_SIZE = 128,
     SUPPORTS_MAX = 7,
     BOOKS_NUM = 10,
+    HYAKUPERCENT = 100,
 };
 }
 

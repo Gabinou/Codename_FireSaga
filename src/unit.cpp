@@ -267,7 +267,7 @@ uint8_t Unit::getHp() const {
 }
 
 int16_t Unit::getLvl() const {
-    return (ceil(exp / 100) + 1);
+    return (ceil(exp / DEFAULT::HYAKUPERCENT) + 1);
 }
 
 int16_t Unit::getExp() const {
@@ -327,7 +327,7 @@ void Unit::setBaseExp(const uint16_t in_exp) {
 void Unit::gainExp(const uint16_t in_exp) {
     exp += in_exp;
 
-    if (((exp % 100) + in_exp) > 100) {
+    if (((exp % DEFAULT::HYAKUPERCENT) + in_exp) > DEFAULT::HYAKUPERCENT) {
         levelUp();
         // Never should have two level ups at one time.
     }
@@ -340,9 +340,9 @@ void Unit::levelUp() {
 
     temp_growth = growths.hp;
 
-    while (temp_growth > 100) {
+    while (temp_growth > DEFAULT::HYAKUPERCENT) {
         temp_stats.hp += 1;
-        temp_growth -= 100;
+        temp_growth -= DEFAULT::HYAKUPERCENT;
     }
 
     prob = getURN();
@@ -353,9 +353,9 @@ void Unit::levelUp() {
 
     temp_growth = growths.str;
 
-    while (temp_growth > 100) {
+    while (temp_growth > DEFAULT::HYAKUPERCENT) {
         temp_stats.str += 1;
-        temp_growth -= 100;
+        temp_growth -= DEFAULT::HYAKUPERCENT;
     }
 
     prob = getURN();
@@ -366,9 +366,9 @@ void Unit::levelUp() {
 
     temp_growth = growths.mag;
 
-    while (temp_growth > 100) {
+    while (temp_growth > DEFAULT::HYAKUPERCENT) {
         temp_stats.mag += 1;
-        temp_growth;
+        temp_growth -= DEFAULT::HYAKUPERCENT;
     }
 
     prob = getURN();
@@ -379,9 +379,9 @@ void Unit::levelUp() {
 
     temp_growth = growths.dex;
 
-    while (temp_growth > 100) {
+    while (temp_growth > DEFAULT::HYAKUPERCENT) {
         temp_stats.dex += 1;
-        temp_growth;
+        temp_growth -= DEFAULT::HYAKUPERCENT;
     }
 
     prob = getURN();
@@ -392,9 +392,9 @@ void Unit::levelUp() {
 
     temp_growth = growths.agi;
 
-    while (temp_growth > 100) {
+    while (temp_growth > DEFAULT::HYAKUPERCENT) {
         temp_stats.agi += 1;
-        temp_growth;
+        temp_growth -= DEFAULT::HYAKUPERCENT;
     }
 
     prob = getURN();
@@ -405,9 +405,9 @@ void Unit::levelUp() {
 
     temp_growth = growths.luck;
 
-    while (temp_growth > 100) {
+    while (temp_growth > DEFAULT::HYAKUPERCENT) {
         temp_stats.luck += 1;
-        temp_growth;
+        temp_growth -= DEFAULT::HYAKUPERCENT;
     }
 
     prob = getURN();
@@ -418,7 +418,7 @@ void Unit::levelUp() {
 
     temp_growth = growths.def;
 
-    while (temp_growth > 100) {
+    while (temp_growth > DEFAULT::HYAKUPERCENT) {
         temp_stats.def += 1;
         temp_growth;
     }
@@ -431,9 +431,9 @@ void Unit::levelUp() {
 
     temp_growth = growths.res;
 
-    while (temp_growth > 100) {
+    while (temp_growth > DEFAULT::HYAKUPERCENT) {
         temp_stats.res += 1;
-        temp_growth;
+        temp_growth -= DEFAULT::HYAKUPERCENT;
     }
 
     prob = getURN();
@@ -444,9 +444,9 @@ void Unit::levelUp() {
 
     temp_growth = growths.con;
 
-    while (temp_growth > 100) {
+    while (temp_growth > DEFAULT::HYAKUPERCENT) {
         temp_stats.con += 1;
-        temp_growth;
+        temp_growth -= DEFAULT::HYAKUPERCENT;
     }
 
     prob = getURN();
@@ -457,9 +457,9 @@ void Unit::levelUp() {
 
     temp_growth = growths.prof;
 
-    while (temp_growth > 100) {
+    while (temp_growth > DEFAULT::HYAKUPERCENT) {
         temp_stats.prof += 1;
-        temp_growth;
+        temp_growth -= DEFAULT::HYAKUPERCENT;
     }
 
     prob = getURN();
@@ -470,9 +470,9 @@ void Unit::levelUp() {
 
     temp_growth = growths.move;
 
-    while (temp_growth > 100) {
+    while (temp_growth > DEFAULT::HYAKUPERCENT) {
         temp_stats.move += 1;
-        temp_growth;
+        temp_growth -= DEFAULT::HYAKUPERCENT;
     }
 
     prob = getURN();
@@ -557,15 +557,11 @@ Unit_stats Unit::getGrowths() {
 void Unit::checkWeapon(int16_t in_id) {
     if (weapons != NULL) {
         if (weapons->find(in_id) == weapons->end()) {
-            std::string filename;
-            filename = "items//" + itemNames[in_id] + ".json";
+            std::string filename = "items//" + itemNames[in_id] + ".json";
             SDL_Log("Loading weapon %d %s", in_id, filename.c_str());
             Weapon temp_weapon;
             temp_weapon.readJSON(filename.c_str());
-            SDL_Log("weapon loaded");
-            // weapons->at(in_id).readJSON(filename.c_str()); // this line does not work.
-            weapons->emplace(in_id, temp_weapon); // this line does not work.
-            SDL_Log("weapon set");
+            weapons->emplace(in_id, temp_weapon);
         }
     } else {
         SDL_Log("weapons pointer is NULL");
@@ -573,11 +569,10 @@ void Unit::checkWeapon(int16_t in_id) {
 }
 
 bool Unit::canEquip(int16_t in_id) {
-    uint16_t wpntypecode;
     bool out = false;
 
     if (weapons != NULL) {
-        wpntypecode = weapons->at(in_id).getType();
+        uint16_t wpntypecode = weapons->at(in_id).getType();
         out = ((equippable & wpntypecode) > 0);
     } else {
         SDL_Log("weapons pointer is NULL");
@@ -1027,7 +1022,7 @@ void Unit::writeJSON(cJSON * in_junit) {
 
         for (int16_t i = 0; i < grown_stats.size(); i++) {
             jlevelup = cJSON_CreateObject();
-            jlevel = cJSON_CreateNumber(i - base_exp / 100 + 2);
+            jlevel = cJSON_CreateNumber(i - base_exp / DEFAULT::HYAKUPERCENT + 2);
             cJSON_AddItemToObject(jlevelup, "level", jlevel);
             writeJSON_stats(jlevelup, &grown_stats[i]);
             cJSON_AddItemToObject(jgrown, "Level-up", jlevelup);
