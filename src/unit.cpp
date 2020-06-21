@@ -51,6 +51,8 @@ bool Unit::getSex() {
 void Unit::setSex(const bool in_sex) {
     sex = in_sex;
     sex_name = sexNames[sex];
+    SDL_Log("Unit sex id: %d, name: %s", sex, sex_name.c_str());
+
 }
 
 void Unit::setid(const int16_t in_id) {
@@ -70,6 +72,12 @@ uint64_t Unit::getSkills() {
 void Unit::setSkills(uint64_t in_skills) {
     skills = in_skills;
     skill_names = skillNames(skills);
+    SDL_Log("Unit new skills: %lx \n", skills);
+
+    for (uint8_t i = 0; skill_names.size(); i++) {
+        SDL_Log("Skill name: %s", skill_names[i].c_str());
+    }
+
 }
 
 
