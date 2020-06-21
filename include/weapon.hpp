@@ -24,7 +24,8 @@ public:
     void setStats(Weapon_stats in_stats);
     Weapon_stats getStats();
 
-    void setAttackable();
+    void attackablefromType();
+    void setAttackable(bool in_attackable);
     bool canAttack();
 
     void infuse(uint8_t in_mag, uint16_t in_type);

@@ -79,6 +79,7 @@ public:
     bool * getHands();
     int8_t * getEquipped();
 
+    std::unordered_map<int16_t, Weapon> * getWeapons();
     void setWeapons(std::unordered_map<int16_t, Weapon> * in_weapons);
     void checkWeapon(int16_t in_id);
 

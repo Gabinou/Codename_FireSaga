@@ -10,7 +10,7 @@ Weapon::Weapon(uint16_t in_type, Weapon_stats in_stats, uint8_t in_id) : Weapon(
     stats = in_stats;
     name = itemNames[in_id];
     type = in_type;
-    setAttackable();
+    attackablefromType();
     id = in_id;
 }
 
@@ -39,13 +39,17 @@ Infusion Weapon::getInfused() {
     return (infused);
 }
 
-void Weapon::setAttackable() {
-    if (((type & ITEM::TYPE::SWORD) > 0) &&
-            ((type & ITEM::TYPE::LANCE) > 0) &&
-            ((type & ITEM::TYPE::AXE) > 0) &&
-            ((type & ITEM::TYPE::ELEMENTAL) > 0) &&
-            ((type & ITEM::TYPE::DEMONIC) > 0) &&
-            ((type & ITEM::TYPE::ANGELIC) > 0) &&
+void Weapon::setAttackable(bool in_attackable) {
+    attackable = in_attackable;
+}
+
+void Weapon::attackablefromType() {
+    if (((type & ITEM::TYPE::SWORD) > 0) ||
+            ((type & ITEM::TYPE::LANCE) > 0) ||
+            ((type & ITEM::TYPE::AXE) > 0) ||
+            ((type & ITEM::TYPE::ELEMENTAL) > 0) ||
+            ((type & ITEM::TYPE::DEMONIC) > 0) ||
+            ((type & ITEM::TYPE::ANGELIC) > 0) ||
             ((type & ITEM::TYPE::BOW) > 0)) {
         attackable = true;
     }
@@ -93,6 +97,7 @@ void Weapon::readJSON(cJSON * in_jwpn) {
         infused.power = cJSON_GetNumberValue(jpower);
         infused.type = cJSON_GetNumberValue(jitype);
         effective = cJSON_GetNumberValue(jeffective);
+        attackablefromType();
     } else  {
         SDL_Log("in_jwpn is NULL");
     }

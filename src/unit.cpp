@@ -23,8 +23,6 @@ Unit::Unit(const Unit & obj) : Unit()  {
 void Unit::init() {
     setXMLElement("Unit");
     setJSONElement("Unit");
-    equips(UNIT::HAND::RIGHT);
-    equips(UNIT::HAND::LEFT);
 }
 
 void Unit::copyUnit(const Unit & obj) {
@@ -40,6 +38,9 @@ void Unit::copyUnit(const Unit & obj) {
     setSkills(obj.skills);
     setArmy(obj.army);
     setSupports(obj.supports);
+    setWeapons(obj.weapons);
+    equips(UNIT::HAND::RIGHT);
+    equips(UNIT::HAND::LEFT);
     exp = obj.exp;
     base_exp = obj.base_exp;
 }
@@ -187,6 +188,8 @@ void Unit::setSupports(std::vector<int16_t> in_supports) {
 }
 
 void Unit::equips(const bool hand, const int8_t to_equip) {
+    SDL_Log("hand, equipment id: %d %d", hand, equipment[hand].id);
+
     if (equipment[hand].id > 0) {
         if (hands[hand]) {
             if ((to_equip == 0) || (to_equip == 1))  {
@@ -195,9 +198,11 @@ void Unit::equips(const bool hand, const int8_t to_equip) {
                 equipped[hand] = hand;
             }
         }
+
+        checkWeapon(equipment[equipped[hand]].id); // Loads weapons only when equipped, if not previously loaded.
     }
 
-    checkWeapon(equipment[equipped[hand]].id); // Loads weapons only when equipped, if not previously loaded.
+    // SDL_Log("equiopped");
 }
 
 void Unit::unequips(const bool hand) {
@@ -275,6 +280,7 @@ uint8_t * Unit::getRange() {
         if (equipped[UNIT::HAND::LEFT] >= 0) {
             if (equipment[equipped[UNIT::HAND::LEFT]].id > 0) {
                 temp_weapon = weapons->at(equipment[equipped[UNIT::HAND::LEFT]].id);
+                SDL_Log("Can Attack? %d", temp_weapon.canAttack());
 
                 if (temp_weapon.canAttack()) {
                     temp_range = temp_weapon.getStats().range;
@@ -607,6 +613,9 @@ void Unit::setWeapons(std::unordered_map<int16_t, Weapon> * in_weapons) {
     weapons = in_weapons;
 }
 
+std::unordered_map<int16_t, Weapon> * Unit::getWeapons() {
+    return (weapons);
+}
 
 uint8_t Unit::totalDef(bool dmg_type) {
     uint8_t total_def = 0;

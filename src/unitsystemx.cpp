@@ -220,7 +220,6 @@ void UnitSystemx::receive(const unitDanger & danger) {
     }
 
     costmapp = mapx->makeMvtCostmap(unit);
-    SDL_Log("Until here");
     movemapp = movemap(costmapp, start, unit_move, "matrix");
     attackmapp = attackmap(movemapp, start, unit_move, range, "matrix");
     dangermapp = matrix_plus(attackmapp, movemapp);
@@ -275,6 +274,7 @@ void UnitSystemx::receive(const unitMove & move) {
     SDL_Log("unitname: %s", unit->getName().c_str());
     SDL_Log("nooffset: %d %d", nooffset[0], nooffset[1]);
     SDL_Log("unitmove: %d", unit_move);
+    SDL_Log("range: %d %d", range[0], range[1]);
 
     costmapp = mapx->makeMvtCostmap(unit);
 

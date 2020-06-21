@@ -854,12 +854,11 @@ void Game::putPConMap(std::vector<int16_t> in_units, std::vector<std::vector<int
 
         for (int16_t i = 0; i < in_units.size(); i++) {
             asset_name = "..//assets//Units//" + party[in_units[i]].getName() + ".png";
-            SDL_Log("Loading unit %s", asset_name.c_str());
+            SDL_Log("Putting unit %s on map", asset_name.c_str());
             temp_unit_ent = entities.create();
             temp_unit_ent.assign<Unit>();
             temp_unit_ent.component<Unit>()->setWeapons(&weapons);
             temp_unit_ent.component<Unit>()->copyUnit(party[in_units[i]]);
-            SDL_Log("Copied move : %d", temp_unit_ent.component<Unit>()->getStats().move);
             temp_unit_ent.assign<Position>();
             temp_unit_ent.component<Position>()->setonTilemap(true);
             temp_unit_ent.component<Position>()->setBounds(bounds);
@@ -921,7 +920,10 @@ void Game::loadUnits(std::vector<int16_t> toload) {
 
     for (uint16_t i = 0; i < toload.size(); i++) {
         filename = "units//" + unitNames[toload[i]] + ".json";
+        temp_unit.setWeapons(&weapons);
         temp_unit.readJSON(filename.c_str());
+        // temp_unit.equips(UNIT::HAND::RIGHT);
+        // temp_unit.equips(UNIT::HAND::LEFT);
 
         if ((toload[i] > 0) && (toload[i] < UNIT::NAME::PC_END)) {
             party[toload[i]].copyUnit(temp_unit);

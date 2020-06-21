@@ -61,13 +61,12 @@ private:
 
     int8_t chapter = -1;
     uint16_t state;
-
-    std::unordered_map<int16_t, Unit> party;
-    std::unordered_map<int16_t, Weapon> weapons;
-
 public:
     static SDL_Renderer * renderer;
     static TTF_Font * font;
+
+    std::unordered_map<int16_t, Unit> party;
+    std::unordered_map<int16_t, Weapon> weapons;
 
     Game();
     Game(Settings in_settings);
