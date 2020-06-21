@@ -604,19 +604,67 @@ bool Unit::canAttack() {
     return (out);
 }
 
+uint8_t * getAttack() {
+    if ((attack[DMG_TYPE::PHYSICAL] == 0) && (attack[DMG_TYPE::MAGICAL] == 0)) {
+        computeAttack();
+    }
+
+    return (attack);
+}
+
+uint8_t * getDefense() {
+    if ((defense[DMG_TYPE::PHYSICAL] == 0) && (defense[DMG_TYPE::MAGICAL] == 0)) {
+        computeDefense();
+    }
+
+    return (defense);
+}
+
+void Unit::computeDefense() {
+    defense[DMG_TYPE::PHYSICAL] = 0;
+    defense[DMG_TYPE::MAGICAL] = 0;
+
+    if (equipped[UNIT::HAND::LEFT] > 0) {
+        temp_type = weapons->at(equipment[equipped[UNIT::HAND::LEFT]].id).getType();
+
+        if ((temp_type & ITEM::TYPE::SHIELD) > 0) {
+            temp_stats = weapons->at(equipment[equipped[UNIT::HAND::LEFT]].id).getStats();
+            defense[DMG_TYPE::PHYSICAL] += temp_stats.Pmight;
+            defense[DMG_TYPE::MAGICAL] += temp_stats.Mmight;
+        }
+    }
+
+    if (equipped[UNIT::HAND::RIGHT] > 0) {
+        temp_type = weapons->at(equipment[equipped[UNIT::HAND::LEFT]].id).getType();
+
+        if ((temp_type & ITEM::TYPE::SHIELD) > 0) {
+            temp_stats = weapons->at(equipment[equipped[UNIT::HAND::RIGHT]].id).getStats();
+            defense[DMG_TYPE::PHYSICAL] += temp_stats.Pmight;
+            defense[DMG_TYPE::MAGICAL] += temp_stats.Mmight;
+        }
+    }
+}
+
 void Unit::computeAttack() {
-    total_attack[DMG_TYPE::PHYSICAL] = 0;
-    total_attack[DMG_TYPE::MAGICAL] = 0;
-    Weapon_stats temp_stats;
+    attack[DMG_TYPE::PHYSICAL] = 0;
+    attack[DMG_TYPE::MAGICAL] = 0;
+    Weapon_stats temp_wstats;
+    Unit temp_ustats;
     uint16_t temp_type;
 
     if (equipped[UNIT::HAND::LEFT] > 0) {
         temp_type = weapons->at(equipment[equipped[UNIT::HAND::LEFT]].id).getType();
 
         if (!((temp_type & ITEM::TYPE::SHIELD) > 0)) {
-            temp_stats = weapons->at(equipment[equipped[UNIT::HAND::LEFT]].id).getStats();
-            total_attack[DMG_TYPE::PHYSICAL] += temp_stats.Pmight;
-            total_attack[DMG_TYPE::MAGICAL] += temp_stats.Mmight;
+            temp_wstats = weapons->at(equipment[equipped[UNIT::HAND::LEFT]].id).getStats();
+            attack[DMG_TYPE::PHYSICAL] += temp_wstats.Pmight;
+            attack[DMG_TYPE::MAGICAL] += temp_wstats.Mmight;
+            temp_ustats = weapons->at(equipment[equipped[UNIT::HAND::LEFT]].id).getBonus();
+            attack[DMG_TYPE::PHYSICAL] += temp_ustats.str;
+            attack[DMG_TYPE::MAGICAL] += temp_ustats.mag;
+            temp_ustats = weapons->at(equipment[equipped[UNIT::HAND::LEFT]].id).getMalus();
+            attack[DMG_TYPE::PHYSICAL] -= temp_ustats.str;
+            attack[DMG_TYPE::MAGICAL] -= temp_ustats.mag;
         }
     }
 
@@ -625,13 +673,23 @@ void Unit::computeAttack() {
 
         if (!((temp_type & ITEM::TYPE::SHIELD) > 0)) {
             temp_stats = weapons->at(equipment[equipped[UNIT::HAND::RIGHT]].id).getStats();
-            total_attack[DMG_TYPE::PHYSICAL] += temp_stats.Pmight;
-            total_attack[DMG_TYPE::MAGICAL] += temp_stats.Mmight;
+            attack[DMG_TYPE::PHYSICAL] += temp_stats.Pmight;
+            attack[DMG_TYPE::MAGICAL] += temp_stats.Mmight;
+            temp_ustats = weapons->at(equipment[equipped[UNIT::HAND::RIGHT]].id).getBonus();
+            attack[DMG_TYPE::PHYSICAL] += temp_ustats.str;
+            attack[DMG_TYPE::MAGICAL] += temp_ustats.mag;
+            temp_ustats = weapons->at(equipment[equipped[UNIT::HAND::RIGHT]].id).getMalus();
+            attack[DMG_TYPE::PHYSICAL] -= temp_ustats.str;
+            attack[DMG_TYPE::MAGICAL] -= temp_ustats.mag;
         }
     }
 
-    total_attack[DMG_TYPE::PHYSICAL] += current_stats.str;
-    total_attack[DMG_TYPE::MAGICAL] += current_stats.mag;
+    attack[DMG_TYPE::PHYSICAL] += current_stats.str;
+    attack[DMG_TYPE::MAGICAL] += current_stats.mag;
+    attack[DMG_TYPE::PHYSICAL] += bonus_stats.str;
+    attack[DMG_TYPE::MAGICAL] += bonus_stats.mag;
+    attack[DMG_TYPE::PHYSICAL] -= malus_stats.str;
+    attack[DMG_TYPE::MAGICAL] -= malus_stats.mag;
 }
 
 void Unit::setWeapons(std::unordered_map<int16_t, Weapon> * in_weapons) {
@@ -640,10 +698,6 @@ void Unit::setWeapons(std::unordered_map<int16_t, Weapon> * in_weapons) {
 
 std::unordered_map<int16_t, Weapon> * Unit::getWeapons() {
     return (weapons);
-}
-
-void Unit::computeDefense(bool dmg_type) {
-
 }
 
 std::string Unit::getName() {

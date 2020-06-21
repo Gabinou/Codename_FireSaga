@@ -55,8 +55,8 @@ private:
 
     std::unordered_map<int16_t, Weapon> * weapons = NULL;
 
-    int8_t total_attack[2] = {-1, -1};
-    int8_t total_defense[2] = {-1, -1};
+    uint8_t attack[2] = {0, 0};
+    uint8_t defense[2] = {0, 0};
     int8_t range[2] = {-1, -1};
     int8_t equipped[2] = {-1, -1};
     bool hands[2] = {true, true};
@@ -130,6 +130,9 @@ public:
     void setHp(const uint8_t in_hp);
     void takesDamage(const uint8_t damage);
     void getsHealed(const uint8_t healing);
+
+    uint8_t * getAttack();
+    uint8_t * getDefense();
 
     Unit_stats getBonus();
     void setBonus(const Unit_stats in_stats);

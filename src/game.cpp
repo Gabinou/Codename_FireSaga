@@ -136,8 +136,8 @@ void Game::attack(Unit * attacker, Unit * defender) {
 
     if (hitcrit[0]) {
         if (hitcrit[1]) {
-            int16_t damage = attacker->totalMight(false) -  defender->totalDef(false);
-            defender->takesDamage(damage);
+            // int16_t damage = attacker->totalMight(false) -  defender->totalDef(false);
+            // defender->takesDamage(damage);
         }
     }
 }
