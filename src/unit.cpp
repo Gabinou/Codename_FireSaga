@@ -335,9 +335,12 @@ void Unit::gainExp(const uint16_t in_exp) {
 
 void Unit::levelUp() {
     uint8_t prob;
+    uint8_t temp_growth;
     Unit_stats temp_stats = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
-    
+
     prob = getURN();
+    
+    
 
     if ((prob <= (growths.hp % 100)) && (current_stats.hp < caps_stats.hp)) {
         temp_stats.hp += 1;
