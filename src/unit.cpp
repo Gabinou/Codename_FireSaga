@@ -212,7 +212,8 @@ void Unit::equips(const bool hand, const int8_t to_equip) {
     SDL_Log("hand, equipment id: %d %d", hand, equipment[hand].id);
 
     if (equipment[hand].id > 0) {
-        if (canEquip(equipment[equipped[hand]].id)) {
+        checkWeapon(equipment[hand].id);
+        if (canEquip(equipment[hand].id)) {
             if (hands[hand]) {
                 if ((to_equip == 0) || (to_equip == 1))  {
                     equipped[hand] = to_equip;
@@ -221,7 +222,6 @@ void Unit::equips(const bool hand, const int8_t to_equip) {
                 }
             }
 
-            checkWeapon(equipment[equipped[hand]].id); // Loads weapons only when equipped, if not previously loaded.
         }
     }
 }
@@ -557,6 +557,8 @@ Unit_stats Unit::getGrowths() {
 }
 
 void Unit::checkWeapon(int16_t in_id) {
+    SDL_Log("checkWeapon");
+
     if (weapons != NULL) {
         if (weapons->find(in_id) == weapons->end()) {
             std::string filename = "items//" + itemNames[in_id] + ".json";
@@ -571,6 +573,7 @@ void Unit::checkWeapon(int16_t in_id) {
 }
 
 bool Unit::canEquip(int16_t in_id) {
+    SDL_Log("canEquip %d", in_id);
     bool out = false;
 
     if (weapons != NULL) {

@@ -6,7 +6,7 @@ TurnSystemx::TurnSystemx() {
 }
 
 TurnSystemx::TurnSystemx(Game * in_game) {
-    SDL_Log("Adding TurnSystemx.");
+    SDL_Log("Adding TurnSystemx");
     game = in_game;
     updateMap();
 }

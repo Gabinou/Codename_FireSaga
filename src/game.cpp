@@ -838,7 +838,7 @@ void Game::putPConMap(std::vector<int16_t> in_units, std::vector<std::vector<int
 }
 
 void Game::loadMapArrivals() {
-    SDL_Log("Loading map arrivals.\n");
+    SDL_Log("Loading map arrivals\n");
 
     if (mapx) {
         std::vector<Map_arrival> map_arrivals = mapx->getArrivals();
@@ -881,6 +881,7 @@ void Game::initParty() {
 }
 
 void Game::loadUnits(std::vector<int16_t> toload) {
+    SDL_Log("Loading units\n");
     std::string filename;
     Unit temp_unit;
 
