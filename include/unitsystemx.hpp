@@ -16,7 +16,7 @@ private:
     entityx::EventManager * event_manager;
     Point old_position;
     std::vector<uint8_t> unitmenuoptions;
-    entityx::Entity selected;
+    entityx::Entity selected_ent;
 public:
     UnitSystemx();
     UnitSystemx(Game * in_game);
@@ -45,8 +45,9 @@ public:
     void receive(const unitHover & hover);
     void receive(const unitDehover & dehover);
     void receive(const unitReturn & Return);
-    void receive(const unitSelect & selected);
-    void receive(const unitDeselect & selected);
+    void receive(const unitSelect & select);
+    void receive(const defenderSelect & select);
+    void receive(const unitDeselect & select);
     void receive(const unitMove & move);
     void receive(const unitDanger & danger);
     void receive(const refreshUnits & refresh);

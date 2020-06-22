@@ -140,6 +140,19 @@ struct unitMenu {
     entityx::Entity selector;
 };
 
+struct defenderMenu {
+    defenderMenu(entityx::Entity selector, entityx::ComponentHandle<Unit> attacker) : selector(selector), attacker(attacker) {}
+    entityx::Entity selector;
+    entityx::ComponentHandle<Unit> attacker;
+};
+
+struct weaponMenu {
+    weaponMenu(entityx::Entity selector, entityx::ComponentHandle<Unit> attacker, entityx::ComponentHandle<Unit> defender) : selector(selector), attacker(attacker), defender(defender) {}
+    entityx::Entity selector;
+    entityx::ComponentHandle<Unit> attacker;
+    entityx::ComponentHandle<Unit> defender;
+};
+
 struct return2Map {
     return2Map(entityx::Entity selector) : selector(selector) {}
     entityx::Entity selector;

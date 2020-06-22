@@ -16,6 +16,8 @@ void MenuSystemx::configure(entityx::EventManager & in_events) {
     event_manager = &in_events;
     event_manager->subscribe<unitSelect>(*this);
     event_manager->subscribe<unitMenu>(*this);
+    event_manager->subscribe<defenderMenu>(*this);
+    event_manager->subscribe<weaponMenu>(*this);
     event_manager->subscribe<menuSelect>(*this);
     event_manager->subscribe<mapMenu>(*this);
     event_manager->subscribe<disableMenu>(*this);
@@ -37,6 +39,22 @@ void MenuSystemx::setMap(entityx::ComponentHandle<Map> in_map) {
 void MenuSystemx::receive(const disableMenu & disable) {
     SDL_Log("Received disableMenu event");
     game->hideMenu(disable.menuind);
+}
+
+void MenuSystemx::receive(const defenderMenu & menu) {
+    SDL_Log("Received defenderMenu event");
+    // Gets all possible defenders.
+    // Lets you choose between defenders.
+    // Shows attacker/Defender combat stats
+
+}
+
+void MenuSystemx::receive(const weaponMenu & menu) {
+    SDL_Log("Received weaponMenu event");
+    // Lists equipment
+    // Lets Reequip.
+    // Shows combat stats.
+
 }
 
 void MenuSystemx::receive(const unitSelect & select) {

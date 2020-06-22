@@ -83,6 +83,7 @@ void UnitSystemx::configure(entityx::EventManager & in_events) {
     event_manager = &in_events;
     event_manager->subscribe<defenderSelect>(*this);
     event_manager->subscribe<unitSelect>(*this);
+    event_manager->subscribe<defenderSelect>(*this);
     event_manager->subscribe<unitDeselect>(*this);
     event_manager->subscribe<unitDanger>(*this);
     event_manager->subscribe<unitMove>(*this);
@@ -189,18 +190,18 @@ void UnitSystemx::receive(const unitRescue & rescue) {
 
 void UnitSystemx::receive(const unitAttack & attack) {
     SDL_Log("unitAttack event received");
-    entityx::ComponentHandle<Unit> defender = attack.defender;
-    entityx::Entity defender_ent = attack.defender.entity();
+    entityx::ComponentHandle<Unit> attacker = attack.attacker;
+    entityx::Entity attacker_ent = attacker.entity();
     // event_manager->emit<attackMenu>(wait.selector);
-    selected.component<Unit>()->computeSpeed();
 
-    defender->computeSpeed();
-
-    fight(selected, defender_ent);
-
-    selected.component<Unit>()->wait();
-    event_manager->emit<return2Map>(attack.selector);
+    if (selected_ent != attacker_ent) {
+        SDL_Log("Selected unit is not the same as attacker!");
+    } else {
+        selected_ent.component<Unit>()->computeSpeed();
+    }
 }
+
+
 
 void UnitSystemx::receive(const unitTrade & trade) {
     SDL_Log("unitTrade event received");
@@ -249,23 +250,25 @@ void UnitSystemx::receive(const unitDeselect & deselect) {
     }
 }
 
+void UnitSystemx::receive(const defenderSelect & select) {
+    SDL_Log("defenderSelect event received");
+    entityx::ComponentHandle<Unit> defender = select.defender;
+    entityx::Entity defender_ent = defender.entity();
+    fight(selected_ent, defender_ent);
+
+    selected_ent.component<Unit>()->wait();
+    event_manager->emit<return2Map>(select.selector);
+}
+
 void UnitSystemx::receive(const unitSelect & select) {
     SDL_Log("unitSelect event received");
-    int16_t newstate = -1;
     entityx::ComponentHandle<Unit> unit = select.unit;
-    selected = unit.entity();
-    entityx::ComponentHandle<Position> position = selected.component<Position>();
+    selected_ent = unit.entity();
+    entityx::ComponentHandle<Position> position = selected_ent.component<Position>();
     Point pos = position->getTilemapPos();
     Point offset = position->getOffset();
     old_position.x = pos.x - offset.x;
     old_position.y = pos.y - offset.y;
-
-
-    switch (game->getState()) {
-        case GAME::STATE::MAP:
-            break;
-    }
-
 }
 
 void UnitSystemx::receive(const unitDanger & danger) {
