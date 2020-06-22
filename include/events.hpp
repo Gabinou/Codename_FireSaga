@@ -253,15 +253,15 @@ struct unitRescue {
 };
 
 struct defenderSelect {
-    unitAttack(entityx::Entity selector, entityx::ComponentHandle<Unit> unit) : selector(selector), defender(defender) {}
+    defenderSelect(entityx::Entity selector, entityx::ComponentHandle<Unit> defender) : selector(selector) {}
     entityx::Entity selector;
     entityx::ComponentHandle<Unit> defender;
 };
 
 struct unitAttack {
-    unitAttack(entityx::Entity selector, entityx::ComponentHandle<Unit> unit) : selector(selector), defender(defender) {}
+    unitAttack(entityx::Entity selector, entityx::ComponentHandle<Unit> attacker) : selector(selector) {}
     entityx::Entity selector;
-    entityx::ComponentHandle<Unit> defender;
+    entityx::ComponentHandle<Unit> attacker;
 };
 
 struct unitTrade {

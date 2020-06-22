@@ -193,11 +193,11 @@ void UnitSystemx::receive(const unitAttack & attack) {
     entityx::Entity defender_ent = attack.defender.entity();
     // event_manager->emit<attackMenu>(wait.selector);
     selected.component<Unit>()->computeSpeed();
-    
+
     defender->computeSpeed();
-    
+
     fight(selected, defender_ent);
-    
+
     selected.component<Unit>()->wait();
     event_manager->emit<return2Map>(attack.selector);
 }
@@ -259,13 +259,13 @@ void UnitSystemx::receive(const unitSelect & select) {
     Point offset = position->getOffset();
     old_position.x = pos.x - offset.x;
     old_position.y = pos.y - offset.y;
-    
-    
-    switch(gamestate) {
-            case GAME::STATE::MAP:
-                break;
+
+
+    switch (game->getState()) {
+        case GAME::STATE::MAP:
+            break;
     }
-    
+
 }
 
 void UnitSystemx::receive(const unitDanger & danger) {
