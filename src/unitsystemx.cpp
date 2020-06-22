@@ -17,10 +17,7 @@ void UnitSystemx::updateMap() {
 
 
 bool UnitSystemx::canDouble(entityx::Entity attacker_ent, entityx::Entity defender_ent) {
-    bool doubles;
-    attacker_ent.component<Unit>()->computeSpeed();
-    defender_ent.component<Unit>()->computeSpeed();
-    doubles = ((attacker_ent.component<Unit>()->getSpeed() - defender_ent.component<Unit>()->getSpeed()) > DEFAULT::DOUBLEHIT_SPEED);
+    bool doubles = ((attacker_ent.component<Unit>()->getSpeed() - defender_ent.component<Unit>()->getSpeed()) > DEFAULT::DOUBLEHIT_SPEED);
     return (doubles);
 }
 
@@ -84,6 +81,7 @@ void UnitSystemx::fight(entityx::Entity attacker_ent, entityx::Entity defender_e
 
 void UnitSystemx::configure(entityx::EventManager & in_events) {
     event_manager = &in_events;
+    event_manager->subscribe<defenderSelect>(*this);
     event_manager->subscribe<unitSelect>(*this);
     event_manager->subscribe<unitDeselect>(*this);
     event_manager->subscribe<unitDanger>(*this);
@@ -191,9 +189,16 @@ void UnitSystemx::receive(const unitRescue & rescue) {
 
 void UnitSystemx::receive(const unitAttack & attack) {
     SDL_Log("unitAttack event received");
-    entityx::ComponentHandle<Unit> unit = attack.unit;
+    entityx::ComponentHandle<Unit> defender = attack.defender;
+    entityx::Entity defender_ent = attack.defender.entity();
     // event_manager->emit<attackMenu>(wait.selector);
-    unit->wait();
+    selected.component<Unit>()->computeSpeed();
+    
+    defender->computeSpeed();
+    
+    fight(selected, defender_ent);
+    
+    selected.component<Unit>()->wait();
     event_manager->emit<return2Map>(attack.selector);
 }
 
@@ -254,6 +259,13 @@ void UnitSystemx::receive(const unitSelect & select) {
     Point offset = position->getOffset();
     old_position.x = pos.x - offset.x;
     old_position.y = pos.y - offset.y;
+    
+    
+    switch(gamestate) {
+            case GAME::STATE::MAP:
+                break;
+    }
+    
 }
 
 void UnitSystemx::receive(const unitDanger & danger) {
