@@ -213,15 +213,13 @@ void Unit::equips(const bool hand, const int8_t to_equip) {
 
     if (equipment[hand].id > 0) {
         checkWeapon(equipment[hand].id);
-        if (canEquip(equipment[hand].id)) {
-            if (hands[hand]) {
-                if ((to_equip == 0) || (to_equip == 1))  {
-                    equipped[hand] = to_equip;
-                } else {
-                    equipped[hand] = hand;
-                }
-            }
 
+        if ((canEquip(equipment[hand].id)) && (hands[hand])) {
+            if ((to_equip == 0) || (to_equip == 1))  {
+                equipped[hand] = to_equip;
+            } else {
+                equipped[hand] = hand;
+            }
         }
     }
 }
