@@ -17,7 +17,7 @@ private:
     Point old_position;
     std::vector<uint8_t> unitmenuoptions;
     entityx::Entity selected_ent;
-    std::vector<entityx::ComponentHandle<Unit>> defenders;
+    std::vector<entityx::ComponentHandle<Unit>> defenders; // where should defenders live? in the game?
 public:
     UnitSystemx();
     UnitSystemx(Game * in_game);
