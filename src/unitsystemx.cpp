@@ -15,7 +15,6 @@ void UnitSystemx::updateMap() {
     mapx = game->getMap();
 }
 
-
 bool UnitSystemx::canDouble(entityx::Entity attacker_ent, entityx::Entity defender_ent) {
     bool doubles = ((attacker_ent.component<Unit>()->getSpeed() - defender_ent.component<Unit>()->getSpeed()) > DEFAULT::DOUBLEHIT_SPEED);
     return (doubles);
@@ -78,10 +77,13 @@ void UnitSystemx::fight(entityx::Entity attacker_ent, entityx::Entity defender_e
     }
 }
 
+void UnitSystemx::setDefenders(std::vector<entityx::ComponentHandle<Unit>> in_defenders) {
+    defenders = in_defenders;
+}
+
 
 void UnitSystemx::configure(entityx::EventManager & in_events) {
     event_manager = &in_events;
-    event_manager->subscribe<defenderSelect>(*this);
     event_manager->subscribe<unitSelect>(*this);
     event_manager->subscribe<defenderSelect>(*this);
     event_manager->subscribe<unitDeselect>(*this);
@@ -192,16 +194,15 @@ void UnitSystemx::receive(const unitAttack & attack) {
     SDL_Log("unitAttack event received");
     entityx::ComponentHandle<Unit> attacker = attack.attacker;
     entityx::Entity attacker_ent = attacker.entity();
-    // event_manager->emit<attackMenu>(wait.selector);
 
     if (selected_ent != attacker_ent) {
         SDL_Log("Selected unit is not the same as attacker!");
     } else {
         selected_ent.component<Unit>()->computeSpeed();
+        // Option for order? defender->weapon OR weapon->defender?
+        event_manager->emit<defenderMenu>(attack.selector, attacker);
     }
 }
-
-
 
 void UnitSystemx::receive(const unitTrade & trade) {
     SDL_Log("unitTrade event received");
@@ -254,7 +255,7 @@ void UnitSystemx::receive(const defenderSelect & select) {
     SDL_Log("defenderSelect event received");
     entityx::ComponentHandle<Unit> defender = select.defender;
     entityx::Entity defender_ent = defender.entity();
-    fight(selected_ent, defender_ent);
+    // fight(selected_ent, defender_ent);
 
     selected_ent.component<Unit>()->wait();
     event_manager->emit<return2Map>(select.selector);

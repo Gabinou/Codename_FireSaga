@@ -47,6 +47,8 @@ void MenuSystemx::receive(const defenderMenu & menu) {
     // Lets you choose between defenders.
     // Shows attacker/Defender combat stats
 
+    game->makeMenu(MENU::DEFENDER);
+
 }
 
 void MenuSystemx::receive(const weaponMenu & menu) {

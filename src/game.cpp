@@ -401,6 +401,51 @@ void Game::makeMenu(int8_t in_menu) {
     }
 }
 
+std::vector<entityx::ComponentHandle<Unit>> Game::unitsinAttackRange(entityx::Entity in_attacker_ent) {
+    std::vector<entityx::ComponentHandle<Unit>> units_inrange;
+    std::vector<std::vector<int16_t>> costmapp;
+    std::vector<std::vector<int16_t>> movemapp;
+    std::vector<std::vector<int16_t>> attackmapp;
+    std::vector<std::vector<int16_t>> dangermapp;
+    uint32_t unit_move = 0;
+    uint32_t start[2];
+    int8_t * range;
+
+    entityx::ComponentHandle<Unit> attacker = in_attacker_ent.component<Unit>();
+    entityx::ComponentHandle<Position> attacker_position = in_attacker_ent.component<Position>();
+
+    if (attacker_position) {
+        Point attackerpos = attacker_position->getTilemapPos();
+        Point offset = attacker_position->getOffset();
+        start[0] = attackerpos.x - offset.x;
+        start[1] = attackerpos.y - offset.y;
+    } else {
+        SDL_Log("Could not get attacker position component");
+    }
+
+    if (attacker) {
+        range = attacker->getRange();
+    } else {
+        SDL_Log("Could not get attacker component");
+    }
+
+    costmapp = mapx->makeMvtCostmap(attacker);
+    movemapp = movemap(costmapp, start, unit_move, "matrix");
+    attackmapp = attackmap(movemapp, start, unit_move, range, "list");
+    entityx::ComponentHandle<Unit> unitontile;
+
+    for (int8_t i = 0; i < attackmapp.size(); i++) {
+        // SDL_Log("Attacker Attackmap: %d %d", attackmapp[i][0], attackmapp[i][1]);
+        unitontile = mapx->getUnit(attackmapp[i][0], attackmapp[i][1]);
+
+        if (unitontile) {
+            units_inrange.push_back(unitontile);
+        }
+    }
+
+    return (units_inrange);
+}
+
 void Game::makeMenuoptions(int8_t in_menu) {
     SDL_Log("Making Menu options");
 
@@ -427,6 +472,8 @@ void Game::makeMenuoptions(int8_t in_menu) {
 
                     std::vector<std::vector<int16_t>> tilemap = mapx->getTilemap();
 
+                    std::vector<entityx::ComponentHandle<Unit>> units_inrange = unitsinAttackRange(unit.entity());
+
                     if ((cursor_lastpos.y + 1) < bounds[3]) {
                         top = mapx->getUnit(cursor_lastpos.x, cursor_lastpos.y + 1);
                     }
@@ -450,12 +497,44 @@ void Game::makeMenuoptions(int8_t in_menu) {
                     }
 
                     std::vector<entityx::ComponentHandle<Unit>> units_around = {top, right, bottom, left};
+                    std::vector<entityx::ComponentHandle<Unit>> defenders;
+
+                    for (int16_t i = 0; i < units_inrange.size(); i++) {
+                        army = units_inrange[i]->getArmy();
+
+                        // SDL_Log("units_inrange: %s", units_inrange[i]->getName().c_str());
+                        // SDL_Log("Army: %s", units_inrange[i]->getArmyName().c_str());
+
+                        switch (army) {
+                            case UNIT::ARMY::FRIENDLY:
+                            case UNIT::ARMY::ERWIN:
+                            case UNIT::ARMY::FREE_MILITIA:
+                                break;
+
+                            case UNIT::ARMY::ENEMY:
+                            case UNIT::ARMY::BANDITS:
+                            case UNIT::ARMY::KEWAC:
+                            case UNIT::ARMY::NEUTRAL:
+                            case UNIT::ARMY::IMPERIAL:
+                                defenders.push_back(units_inrange[i]);
+                                break;
+
+                            default:
+                                SDL_Log("army is invalid");
+                        }
+                    }
+
+                    if (defenders.size() > 0) {
+                        options.push_back(MENU::OPTION::ATTACK);
+                        systems.system<UnitSystemx>()->setDefenders(defenders);
+                    }
 
                     for (int16_t i = 0; i < units_around.size(); i++) {
                         if (units_around[i]) {
                             army = units_around[i]->getArmy();
-                            SDL_Log("Unit_around: %s", units_around[i]->getName().c_str());
-                            SDL_Log("Army: %s", units_around[i]->getArmyName().c_str());
+
+                            // SDL_Log("units_around: %s", units_around[i]->getName().c_str());
+                            // SDL_Log("Army: %s", units_around[i]->getArmyName().c_str());
 
                             switch (army) {
                                 case UNIT::ARMY::FRIENDLY:
@@ -470,14 +549,13 @@ void Game::makeMenuoptions(int8_t in_menu) {
                                 case UNIT::ARMY::KEWAC:
                                 case UNIT::ARMY::NEUTRAL:
                                 case UNIT::ARMY::IMPERIAL:
-                                    options.push_back(MENU::OPTION::ATTACK);
                                     break;
 
                                 default:
                                     SDL_Log("army is invalid");
                             }
                         } else {
-                            SDL_Log("No unit around");
+                            // SDL_Log("No unit around");
                         }
                     }
 
