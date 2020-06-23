@@ -62,17 +62,6 @@ template <typename T> extern std::vector<std::vector<T>> attackmap(std::vector<s
                     if (movemap[tempy][tempx] == 0) {
                         temp_point32_t = {tempx, tempy};
                         toadd.push_back(temp_point32_t);
-                        // if (mode == "list") {
-                        //     found = cpppointinlist(attackmap, temp_point32_t);
-
-                        //     if (!found) {
-                        //         attackmap.push_back(temp_point32_t);
-                        //     }
-                        // }
-
-                        // if (mode == "matrix") {
-                        //     attackmap[tempy][tempx] = 1;
-                        // }
                     }
                 }
 
@@ -83,18 +72,6 @@ template <typename T> extern std::vector<std::vector<T>> attackmap(std::vector<s
                     if (movemap[tempy][tempx] == 0) {
                         temp_point32_t = {tempx, tempy};
                         toadd.push_back(temp_point32_t);
-                        // if (mode == "list") {
-                        //     temp_point32_t = {tempx, tempy};
-                        //     found = cpppointinlist(attackmap, temp_point32_t);
-
-                        //     if (!found) {
-                        //         attackmap.push_back(temp_point32_t);
-                        //     }
-                        // }
-
-                        // if (mode == "matrix") {
-                        //     attackmap[tempy][tempx] = 1;
-                        // }
                     }
                 }
 
@@ -105,18 +82,6 @@ template <typename T> extern std::vector<std::vector<T>> attackmap(std::vector<s
                     if (movemap[tempy][tempx] == 0) {
                         temp_point32_t = {tempx, tempy};
                         toadd.push_back(temp_point32_t);
-                        // if (mode == "list") {
-                        //     temp_point32_t = {tempx, tempy};
-                        //     found = cpppointinlist(attackmap, temp_point32_t);
-
-                        //     if (!found) {
-                        //         attackmap.push_back(temp_point32_t);
-                        //     }
-                        // }
-
-                        // if (mode == "matrix") {
-                        //     attackmap[tempy][tempx] = 1;
-                        // }
                     }
                 }
 
@@ -127,18 +92,6 @@ template <typename T> extern std::vector<std::vector<T>> attackmap(std::vector<s
                     if (movemap[tempy][tempx] == 0) {
                         temp_point32_t = {tempx, tempy};
                         toadd.push_back(temp_point32_t);
-                        //     if (mode == "list") {
-                        //         temp_point32_t = {tempx, tempy};
-                        //         found = cpppointinlist(attackmap, temp_point32_t);
-
-                        //         if (!found) {
-                        //             attackmap.push_back(temp_point32_t);
-                        //         }
-                        //     }
-
-                        //     if (mode == "matrix") {
-                        //         attackmap[tempy][tempx] = 1;
-                        //     }
                     }
                 }
 
