@@ -46,6 +46,8 @@ enum MENUS {
     MAP = 0,
     UNIT = 1,
     MAPMENU = 2,
+    DEFENDER = 3,
+    WEAPON = 4,
 };
 namespace OPTION {
 enum OPTIONS {

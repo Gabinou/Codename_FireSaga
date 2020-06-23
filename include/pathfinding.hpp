@@ -16,12 +16,26 @@ extern int64_t h_euclidean(int32_t start[], int32_t end[]);
 
 extern std::vector<std::vector<int32_t>> A_star(std::vector<std::vector<int32_t>> map, int32_t start[], int32_t end[], std::string mode = "matrix");
 
+template <typename T> extern bool cpppointinlist(std::vector<std::vector<T>> list, std::vector<T> point) {
+    bool found = false;
+
+    for (int16_t i = 0; i < list.size(); i++) {
+        if ((point[0] == list[i][0]) && (point[1] == list[i][1])) {
+            found = true;
+        }
+    }
+
+    return (found);
+}
+
 template <typename T> extern std::vector<std::vector<T>> attackmap(std::vector<std::vector<T>> movemap, uint32_t start[], uint32_t move, int8_t range[2], std::string mode = "matrix") {
     // Using the movemap to compute all attackable tiles.
     // EXCLUDING moveable tiles.
+    // This function is ugly and bad.
     std::vector<std::vector<T>> attackmap;
     std::vector<std::vector<T>> movelist;
     std::vector<T> temp_point32_t = {0, 0};
+    bool found;
     T tempx, tempy;
 
     movelist = matrix2list(movemap);
@@ -47,7 +61,11 @@ template <typename T> extern std::vector<std::vector<T>> attackmap(std::vector<s
                     if (movemap[tempy][tempx] == 0) {
                         if (mode == "list") {
                             temp_point32_t = {tempx, tempy};
-                            attackmap.push_back(temp_point32_t);
+                            found = cpppointinlist(attackmap, temp_point32_t);
+
+                            if (!found) {
+                                attackmap.push_back(temp_point32_t);
+                            }
                         }
 
                         if (mode == "matrix") {
@@ -63,7 +81,11 @@ template <typename T> extern std::vector<std::vector<T>> attackmap(std::vector<s
                     if (movemap[tempy][tempx] == 0) {
                         if (mode == "list") {
                             temp_point32_t = {tempx, tempy};
-                            attackmap.push_back(temp_point32_t);
+                            found = cpppointinlist(attackmap, temp_point32_t);
+
+                            if (!found) {
+                                attackmap.push_back(temp_point32_t);
+                            }
                         }
 
                         if (mode == "matrix") {
@@ -79,7 +101,11 @@ template <typename T> extern std::vector<std::vector<T>> attackmap(std::vector<s
                     if (movemap[tempy][tempx] == 0) {
                         if (mode == "list") {
                             temp_point32_t = {tempx, tempy};
-                            attackmap.push_back(temp_point32_t);
+                            found = cpppointinlist(attackmap, temp_point32_t);
+
+                            if (!found) {
+                                attackmap.push_back(temp_point32_t);
+                            }
                         }
 
                         if (mode == "matrix") {
@@ -95,7 +121,11 @@ template <typename T> extern std::vector<std::vector<T>> attackmap(std::vector<s
                     if (movemap[tempy][tempx] == 0) {
                         if (mode == "list") {
                             temp_point32_t = {tempx, tempy};
-                            attackmap.push_back(temp_point32_t);
+                            found = cpppointinlist(attackmap, temp_point32_t);
+
+                            if (!found) {
+                                attackmap.push_back(temp_point32_t);
+                            }
                         }
 
                         if (mode == "matrix") {
@@ -105,10 +135,6 @@ template <typename T> extern std::vector<std::vector<T>> attackmap(std::vector<s
                 }
             }
         }
-    }
-
-    if (mode == "list") {
-        // make_uniques
     }
 
     return (attackmap);
