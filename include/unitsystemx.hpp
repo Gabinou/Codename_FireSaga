@@ -17,6 +17,7 @@ private:
     Point old_position;
     std::vector<uint8_t> unitmenuoptions;
     entityx::Entity selected_ent;
+    std::vector<entityx::ComponentHandle<Unit>> defenders;
 public:
     UnitSystemx();
     UnitSystemx(Game * in_game);
@@ -27,6 +28,7 @@ public:
     void attack(entityx::Entity attacker_ent, entityx::Entity defender_ent);
     bool canDouble(entityx::Entity attacker_ent, entityx::Entity defender_ent);
     bool canRetaliate(entityx::Entity attacker_ent, entityx::Entity defender_ent);
+    void setDefenders(std::vector<entityx::ComponentHandle<Unit>> in_defenders);
 
     void configure(entityx::EventManager & event_manager);
     void receive(const turnBegin & begin);

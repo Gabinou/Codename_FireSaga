@@ -91,7 +91,7 @@ public:
     void unloadUnits(std::vector<int16_t> to_unload);
     void loadMapArrivals();
 
-    void findDefenders(entityx::Entity in_attacker_ent);
+    std::vector<entityx::ComponentHandle<Unit>> unitsinAttackRange(entityx::Entity in_attacker_ent);
 
     void loadHighlight();
     void unloadHighlight();
