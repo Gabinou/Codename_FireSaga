@@ -4,7 +4,7 @@
 #include "filesystem.hpp"
 #include "enums.hpp"
 #include "structs.hpp"
-#include "physfs.h"
+#include "physfs/physfs.h"
 #include "tinyxml2.h"
 #include "utilities.hpp"
 #include "item.hpp"
