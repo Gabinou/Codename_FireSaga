@@ -1,0 +1,12 @@
+*.json filter=lfs diff=lfs merge=lfs -text
+*.aseprite filter=lfs diff=lfs merge=lfs -text
+*.png filter=lfs diff=lfs merge=lfs -text
+*.binou filter=lfs diff=lfs merge=lfs -text
+*.bsa filter=lfs diff=lfs merge=lfs -text
+*.ttf filter=lfs diff=lfs merge=lfs -text
+assets/** filter=lfs diff=lfs merge=lfs -text
+maps/** filter=lfs diff=lfs merge=lfs -text
+units/** filter=lfs diff=lfs merge=lfs -text
+tiles/** filter=lfs diff=lfs merge=lfs -text
+saves/** filter=lfs diff=lfs merge=lfs -text
+fonts/** filter=lfs diff=lfs merge=lfs -text
