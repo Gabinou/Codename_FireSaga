@@ -1,3 +1,24 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:507af107d89cdc27a68d986537fe35899d860e45b72e1b3b13a2167740d80ebe
-size 324
+{
+	"Tile":	{
+		"Name":	"Armory",
+		"id":	63,
+		"inside":	false,
+		"Stats":	{
+			"Dodge":	15,
+			"Pprot":	0,
+			"Mprot":	2,
+			"Heal":	0
+		},
+		"MvtCost":	{
+			"foot_slow":	1,
+			"foot_fast":	1,
+			"mages":	1,
+			"fliers":	1,
+			"riders_slow":	1,
+			"riders_fast":	1,
+			"armors":	1,
+			"pirates":	1,
+			"bandits":	1
+		}
+	}
+}

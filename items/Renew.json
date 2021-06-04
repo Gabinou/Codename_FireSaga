@@ -1,3 +1,63 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:acf816e9b9c5267aa57815dcd5e2c7d490f0349d40828725019e4adeb862351c
-size 840
+{
+	"Item":	{
+		"Name":	"Renew",
+		"id":	902,
+		"Description":	"Strongest healing staff.",
+		"Bonus":	{
+			"hp":	0,
+			"str":	0,
+			"mag":	0,
+			"agi":	0,
+			"dex":	0,
+			"luck":	0,
+			"def":	0,
+			"res":	0,
+			"con":	0,
+			"move":	0,
+			"prof":	0
+		},
+		"Malus":	{
+			"hp":	0,
+			"str":	0,
+			"mag":	0,
+			"agi":	0,
+			"dex":	0,
+			"luck":	0,
+			"def":	0,
+			"res":	0,
+			"con":	0,
+			"move":	0,
+			"prof":	0
+		},
+		"Sellable":	true,
+		"Effects":	{
+			"id":	0
+		},
+		"Types":	{
+			"id":	1024,
+			"Type":	"Staff"
+		},
+		"Stats":	{
+			"Pmight":	0,
+			"Mmight":	0,
+			"hit":	0,
+			"dodge":	0,
+			"crit":	0,
+			"favor":	0,
+			"wgt":	14,
+			"uses":	15,
+			"prof":	12,
+			"minrange":	1,
+			"maxrange":	1,
+			"minhand":	1,
+			"maxhand":	2,
+			"dmg_type":	0,
+			"price":	2300,
+			"heal":	30
+		},
+		"Infused":	{
+			"Power":	-1,
+			"Type":	0
+		}
+	}
+}

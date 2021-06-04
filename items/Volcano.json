@@ -1,3 +1,63 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:26e6208991576b57db5a133688e7c7ce2e147972438b7e7f804c61d3e349bbb2
-size 874
+{
+	"Item":	{
+		"Name":	"Volcano",
+		"id":	602,
+		"Description":	"Summons magma spewing mountains from under enemies' feets.",
+		"Bonus":	{
+			"hp":	0,
+			"str":	0,
+			"mag":	0,
+			"agi":	0,
+			"dex":	0,
+			"luck":	0,
+			"def":	0,
+			"res":	0,
+			"con":	0,
+			"move":	0,
+			"prof":	0
+		},
+		"Malus":	{
+			"hp":	0,
+			"str":	0,
+			"mag":	0,
+			"agi":	0,
+			"dex":	0,
+			"luck":	0,
+			"def":	0,
+			"res":	0,
+			"con":	0,
+			"move":	0,
+			"prof":	0
+		},
+		"Sellable":	true,
+		"Effects":	{
+			"id":	0
+		},
+		"Types":	{
+			"id":	64,
+			"Type":	"Magic"
+		},
+		"Stats":	{
+			"Pmight":	0,
+			"Mmight":	14,
+			"hit":	50,
+			"dodge":	0,
+			"crit":	0,
+			"favor":	0,
+			"wgt":	13,
+			"uses":	20,
+			"prof":	7,
+			"minrange":	1,
+			"maxrange":	2,
+			"minhand":	1,
+			"maxhand":	2,
+			"dmg_type":	1,
+			"price":	1000,
+			"heal":	0
+		},
+		"Infused":	{
+			"Power":	-1,
+			"Type":	0
+		}
+	}
+}

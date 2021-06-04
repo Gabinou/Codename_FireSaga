@@ -1,3 +1,63 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:dce025d9f02e4c21ceefe45dabbbeccded331365c3633aadde5130ac2aa7d74f
-size 874
+{
+	"Item":	{
+		"Name":	"Fuujintou",
+		"id":	23,
+		"Description":	"The wind god's sword. Cuts enemies with wind at a distance.",
+		"Bonus":	{
+			"hp":	0,
+			"str":	0,
+			"mag":	0,
+			"agi":	0,
+			"dex":	0,
+			"luck":	0,
+			"def":	0,
+			"res":	0,
+			"con":	0,
+			"move":	0,
+			"prof":	0
+		},
+		"Malus":	{
+			"hp":	0,
+			"str":	0,
+			"mag":	0,
+			"agi":	0,
+			"dex":	0,
+			"luck":	0,
+			"def":	0,
+			"res":	0,
+			"con":	0,
+			"move":	0,
+			"prof":	0
+		},
+		"Sellable":	true,
+		"Effects":	{
+			"id":	0
+		},
+		"Types":	{
+			"id":	1,
+			"Type":	"Sword"
+		},
+		"Stats":	{
+			"Pmight":	7,
+			"Mmight":	0,
+			"hit":	45,
+			"dodge":	0,
+			"crit":	0,
+			"favor":	0,
+			"wgt":	1,
+			"uses":	25,
+			"prof":	11,
+			"minrange":	1,
+			"maxrange":	2,
+			"minhand":	1,
+			"maxhand":	2,
+			"dmg_type":	1,
+			"price":	1640,
+			"heal":	0
+		},
+		"Infused":	{
+			"Power":	-1,
+			"Type":	0
+		}
+	}
+}

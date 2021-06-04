@@ -1,3 +1,63 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:af3daab7be86adaa36d0a37078fd5430aefeede149d2f70330250dee3c3a9e97
-size 849
+{
+	"Item":	{
+		"Name":	"Spear",
+		"id":	111,
+		"Description":	"Strong throwing Lance. Strikes true.",
+		"Bonus":	{
+			"hp":	0,
+			"str":	0,
+			"mag":	0,
+			"agi":	0,
+			"dex":	0,
+			"luck":	0,
+			"def":	0,
+			"res":	0,
+			"con":	0,
+			"move":	0,
+			"prof":	0
+		},
+		"Malus":	{
+			"hp":	0,
+			"str":	0,
+			"mag":	0,
+			"agi":	0,
+			"dex":	0,
+			"luck":	0,
+			"def":	0,
+			"res":	0,
+			"con":	0,
+			"move":	0,
+			"prof":	0
+		},
+		"Sellable":	true,
+		"Effects":	{
+			"id":	0
+		},
+		"Types":	{
+			"id":	2,
+			"Type":	"Lance"
+		},
+		"Stats":	{
+			"Pmight":	9,
+			"Mmight":	0,
+			"hit":	50,
+			"dodge":	0,
+			"crit":	0,
+			"favor":	0,
+			"wgt":	11,
+			"uses":	20,
+			"prof":	11,
+			"minrange":	1,
+			"maxrange":	2,
+			"minhand":	1,
+			"maxhand":	0,
+			"dmg_type":	0,
+			"price":	1300,
+			"heal":	0
+		},
+		"Infused":	{
+			"Power":	-1,
+			"Type":	0
+		}
+	}
+}

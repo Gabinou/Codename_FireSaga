@@ -1,3 +1,63 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:d6178add2f09f01c7a2895e52874102db513cfd29754a64239ca3ff9ebef11dc
-size 818
+{
+	"Item":	{
+		"Name":	"Glaurung",
+		"id":	706,
+		"Description":	"",
+		"Bonus":	{
+			"hp":	0,
+			"str":	0,
+			"mag":	0,
+			"agi":	0,
+			"dex":	0,
+			"luck":	0,
+			"def":	0,
+			"res":	0,
+			"con":	0,
+			"move":	0,
+			"prof":	0
+		},
+		"Malus":	{
+			"hp":	0,
+			"str":	0,
+			"mag":	0,
+			"agi":	0,
+			"dex":	0,
+			"luck":	0,
+			"def":	0,
+			"res":	0,
+			"con":	0,
+			"move":	0,
+			"prof":	0
+		},
+		"Sellable":	true,
+		"Effects":	{
+			"id":	0
+		},
+		"Types":	{
+			"id":	128,
+			"Type":	"Demonic"
+		},
+		"Stats":	{
+			"Pmight":	0,
+			"Mmight":	5,
+			"hit":	70,
+			"dodge":	0,
+			"crit":	0,
+			"favor":	0,
+			"wgt":	5,
+			"uses":	60,
+			"prof":	7,
+			"minrange":	1,
+			"maxrange":	2,
+			"minhand":	1,
+			"maxhand":	2,
+			"dmg_type":	1,
+			"price":	1000,
+			"heal":	0
+		},
+		"Infused":	{
+			"Power":	-1,
+			"Type":	0
+		}
+	}
+}

@@ -1,3 +1,63 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:78b4b9aea0cf36cfab4163a9e695ce0d277b05ffe198a67606ff0d3f52a78328
-size 893
+{
+	"Item":	{
+		"Name":	"Vel",
+		"id":	112,
+		"Description":	"Legendary throwing lance. Said to be able to home in on the heart of your enemies.",
+		"Bonus":	{
+			"hp":	0,
+			"str":	0,
+			"mag":	0,
+			"agi":	0,
+			"dex":	0,
+			"luck":	0,
+			"def":	0,
+			"res":	0,
+			"con":	0,
+			"move":	0,
+			"prof":	0
+		},
+		"Malus":	{
+			"hp":	0,
+			"str":	0,
+			"mag":	0,
+			"agi":	0,
+			"dex":	0,
+			"luck":	0,
+			"def":	0,
+			"res":	0,
+			"con":	0,
+			"move":	0,
+			"prof":	0
+		},
+		"Sellable":	true,
+		"Effects":	{
+			"id":	0
+		},
+		"Types":	{
+			"id":	2,
+			"Type":	"Lance"
+		},
+		"Stats":	{
+			"Pmight":	14,
+			"Mmight":	0,
+			"hit":	60,
+			"dodge":	0,
+			"crit":	0,
+			"favor":	0,
+			"wgt":	9,
+			"uses":	25,
+			"prof":	15,
+			"minrange":	1,
+			"maxrange":	2,
+			"minhand":	1,
+			"maxhand":	2,
+			"dmg_type":	0,
+			"price":	2000,
+			"heal":	0
+		},
+		"Infused":	{
+			"Power":	-1,
+			"Type":	0
+		}
+	}
+}

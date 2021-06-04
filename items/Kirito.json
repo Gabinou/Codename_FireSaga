@@ -1,3 +1,63 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:e725962cb5519a2e39e12eec77093bd46ae23d88d5be803fbf2415be01f0ec3b
-size 841
+{
+	"Item":	{
+		"Name":	"Kirito",
+		"id":	26,
+		"Description":	"Useless sword of a fake swordsman.",
+		"Bonus":	{
+			"hp":	0,
+			"str":	0,
+			"mag":	0,
+			"agi":	0,
+			"dex":	0,
+			"luck":	0,
+			"def":	0,
+			"res":	0,
+			"con":	0,
+			"move":	0,
+			"prof":	0
+		},
+		"Malus":	{
+			"hp":	0,
+			"str":	0,
+			"mag":	0,
+			"agi":	0,
+			"dex":	0,
+			"luck":	0,
+			"def":	0,
+			"res":	0,
+			"con":	0,
+			"move":	0,
+			"prof":	0
+		},
+		"Sellable":	true,
+		"Effects":	{
+			"id":	0
+		},
+		"Types":	{
+			"id":	1,
+			"Type":	"Sword"
+		},
+		"Stats":	{
+			"Pmight":	0,
+			"Mmight":	0,
+			"hit":	0,
+			"dodge":	0,
+			"crit":	0,
+			"favor":	0,
+			"wgt":	0,
+			"uses":	10,
+			"prof":	0,
+			"minrange":	1,
+			"maxrange":	1,
+			"minhand":	1,
+			"maxhand":	2,
+			"dmg_type":	0,
+			"price":	0,
+			"heal":	0
+		},
+		"Infused":	{
+			"Power":	-1,
+			"Type":	0
+		}
+	}
+}

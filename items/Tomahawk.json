@@ -1,3 +1,63 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:961c1a3ba1f8ceeef70a1f387b69b77617b45adb1393345ad7064cd5fc519d1c
-size 890
+{
+	"Item":	{
+		"Name":	"Tomahawk",
+		"id":	205,
+		"Description":	"Smaller, balanced axe, made for throwing. Cheapest option for ranged attacks.",
+		"Bonus":	{
+			"hp":	0,
+			"str":	0,
+			"mag":	0,
+			"agi":	0,
+			"dex":	0,
+			"luck":	0,
+			"def":	0,
+			"res":	0,
+			"con":	0,
+			"move":	0,
+			"prof":	0
+		},
+		"Malus":	{
+			"hp":	0,
+			"str":	0,
+			"mag":	0,
+			"agi":	0,
+			"dex":	0,
+			"luck":	0,
+			"def":	0,
+			"res":	0,
+			"con":	0,
+			"move":	0,
+			"prof":	0
+		},
+		"Sellable":	true,
+		"Effects":	{
+			"id":	0
+		},
+		"Types":	{
+			"id":	4,
+			"Type":	"Axe"
+		},
+		"Stats":	{
+			"Pmight":	10,
+			"Mmight":	0,
+			"hit":	40,
+			"dodge":	0,
+			"crit":	0,
+			"favor":	0,
+			"wgt":	7,
+			"uses":	25,
+			"prof":	10,
+			"minrange":	1,
+			"maxrange":	2,
+			"minhand":	1,
+			"maxhand":	2,
+			"dmg_type":	0,
+			"price":	790,
+			"heal":	0
+		},
+		"Infused":	{
+			"Power":	-1,
+			"Type":	0
+		}
+	}
+}

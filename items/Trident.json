@@ -1,3 +1,63 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:eb10b05668312d5bfa2c68585135bdb12c8a1737a46cb41c62d83f3516abe1c3
-size 829
+{
+	"Item":	{
+		"Name":	"Trident",
+		"id":	107,
+		"Description":	"Fancy pitchfork",
+		"Bonus":	{
+			"hp":	0,
+			"str":	0,
+			"mag":	0,
+			"agi":	0,
+			"dex":	0,
+			"luck":	0,
+			"def":	0,
+			"res":	0,
+			"con":	0,
+			"move":	0,
+			"prof":	0
+		},
+		"Malus":	{
+			"hp":	0,
+			"str":	0,
+			"mag":	0,
+			"agi":	0,
+			"dex":	0,
+			"luck":	0,
+			"def":	0,
+			"res":	0,
+			"con":	0,
+			"move":	0,
+			"prof":	0
+		},
+		"Sellable":	true,
+		"Effects":	{
+			"id":	0
+		},
+		"Types":	{
+			"id":	2,
+			"Type":	"Lance"
+		},
+		"Stats":	{
+			"Pmight":	8,
+			"Mmight":	0,
+			"hit":	90,
+			"dodge":	0,
+			"crit":	0,
+			"favor":	0,
+			"wgt":	8,
+			"uses":	10,
+			"prof":	10,
+			"minrange":	1,
+			"maxrange":	1,
+			"minhand":	1,
+			"maxhand":	2,
+			"dmg_type":	0,
+			"price":	1040,
+			"heal":	0
+		},
+		"Infused":	{
+			"Power":	-1,
+			"Type":	0
+		}
+	}
+}

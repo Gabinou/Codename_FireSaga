@@ -1,3 +1,63 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:beef2d6223cf5d3d71d3555c655f129d9527df257f6997cf40d0d614f9bab45a
-size 861
+{
+	"Item":	{
+		"Name":	"Claw",
+		"id":	1000,
+		"Description":	"Even the most lowly, empty-handed demon is armed.",
+		"Bonus":	{
+			"hp":	0,
+			"str":	0,
+			"mag":	0,
+			"agi":	0,
+			"dex":	0,
+			"luck":	0,
+			"def":	0,
+			"res":	0,
+			"con":	0,
+			"move":	0,
+			"prof":	0
+		},
+		"Malus":	{
+			"hp":	0,
+			"str":	0,
+			"mag":	0,
+			"agi":	0,
+			"dex":	0,
+			"luck":	0,
+			"def":	0,
+			"res":	0,
+			"con":	0,
+			"move":	0,
+			"prof":	0
+		},
+		"Sellable":	true,
+		"Effects":	{
+			"id":	0
+		},
+		"Types":	{
+			"id":	2048,
+			"Type":	"Claw"
+		},
+		"Stats":	{
+			"Pmight":	9,
+			"Mmight":	0,
+			"hit":	50,
+			"dodge":	5,
+			"crit":	0,
+			"favor":	0,
+			"wgt":	6,
+			"uses":	15,
+			"prof":	1,
+			"minrange":	1,
+			"maxrange":	1,
+			"minhand":	1,
+			"maxhand":	2,
+			"dmg_type":	0,
+			"price":	100,
+			"heal":	0
+		},
+		"Infused":	{
+			"Power":	-1,
+			"Type":	0
+		}
+	}
+}

@@ -1,3 +1,63 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:cce27d5f3990e9c49e1d7413ee247bf3eb16461df8489cbf5e767e8c618fd5cf
-size 872
+{
+	"Item":	{
+		"Name":	"Steel sword",
+		"id":	10,
+		"Description":	"Simple straight sword made of steel. Strong and durable.",
+		"Bonus":	{
+			"hp":	0,
+			"str":	0,
+			"mag":	0,
+			"agi":	0,
+			"dex":	0,
+			"luck":	0,
+			"def":	0,
+			"res":	0,
+			"con":	0,
+			"move":	0,
+			"prof":	0
+		},
+		"Malus":	{
+			"hp":	0,
+			"str":	0,
+			"mag":	0,
+			"agi":	0,
+			"dex":	0,
+			"luck":	0,
+			"def":	0,
+			"res":	0,
+			"con":	0,
+			"move":	0,
+			"prof":	0
+		},
+		"Sellable":	true,
+		"Effects":	{
+			"id":	0
+		},
+		"Types":	{
+			"id":	1,
+			"Type":	"Sword"
+		},
+		"Stats":	{
+			"Pmight":	9,
+			"Mmight":	0,
+			"hit":	60,
+			"dodge":	0,
+			"crit":	0,
+			"favor":	0,
+			"wgt":	9,
+			"uses":	30,
+			"prof":	10,
+			"minrange":	1,
+			"maxrange":	1,
+			"minhand":	1,
+			"maxhand":	2,
+			"dmg_type":	0,
+			"price":	650,
+			"heal":	0
+		},
+		"Infused":	{
+			"Power":	-1,
+			"Type":	0
+		}
+	}
+}

@@ -1,3 +1,24 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:c1985c2fcf263f25550a38acb07e552ae5dccc1acf7c4c1739f90873fa784c7c
-size 320
+{
+	"Tile":	{
+		"Name":	"Door",
+		"id":	53,
+		"inside":	true,
+		"Stats":	{
+			"Dodge":	0,
+			"Pprot":	0,
+			"Mprot":	0,
+			"Heal":	0
+		},
+		"MvtCost":	{
+			"foot_slow":	0,
+			"foot_fast":	0,
+			"mages":	0,
+			"fliers":	1,
+			"riders_slow":	0,
+			"riders_fast":	0,
+			"armors":	0,
+			"pirates":	0,
+			"bandits":	0
+		}
+	}
+}
