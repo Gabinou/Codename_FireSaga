@@ -1,24 +1,3 @@
-{
-	"Tile":	{
-		"Name":	"Rock",
-		"id":	42,
-		"inside":	false,
-		"Stats":	{
-			"Dodge":	5,
-			"Pprot":	0,
-			"Mprot":	2,
-			"Heal":	0
-		},
-		"MvtCost":	{
-			"foot_slow":	0,
-			"foot_fast":	0,
-			"mages":	0,
-			"fliers":	1,
-			"riders_slow":	0,
-			"riders_fast":	0,
-			"armors":	0,
-			"pirates":	3,
-			"bandits":	3
-		}
-	}
-}
+version https://git-lfs.github.com/spec/v1
+oid sha256:8e70293772a7380e78f2ae618f8c753b64c5b04fdc93f4a631693b3553d54b40
+size 321
