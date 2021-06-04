@@ -1,3 +1,63 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:105085b8e2a1535f6cd6f0e52950c9881bde6a683d1b5499ee5371b8af4e4595
-size 899
+{
+	"Item":	{
+		"Name":	"Dague",
+		"id":	508,
+		"Description":	"Messenic dagger. Simple and efficient. Beautiful engravings adorn the blade surface. ",
+		"Bonus":	{
+			"hp":	0,
+			"str":	0,
+			"mag":	0,
+			"agi":	0,
+			"dex":	0,
+			"luck":	0,
+			"def":	0,
+			"res":	0,
+			"con":	0,
+			"move":	0,
+			"prof":	0
+		},
+		"Malus":	{
+			"hp":	0,
+			"str":	0,
+			"mag":	0,
+			"agi":	0,
+			"dex":	0,
+			"luck":	0,
+			"def":	0,
+			"res":	0,
+			"con":	0,
+			"move":	0,
+			"prof":	0
+		},
+		"Sellable":	true,
+		"Effects":	{
+			"id":	0
+		},
+		"Types":	{
+			"id":	32,
+			"Type":	"Offhand"
+		},
+		"Stats":	{
+			"Pmight":	4,
+			"Mmight":	0,
+			"hit":	10,
+			"dodge":	0,
+			"crit":	0,
+			"favor":	0,
+			"wgt":	3,
+			"uses":	20,
+			"prof":	10,
+			"minrange":	0,
+			"maxrange":	0,
+			"minhand":	1,
+			"maxhand":	0,
+			"dmg_type":	0,
+			"price":	880,
+			"heal":	0
+		},
+		"Infused":	{
+			"Power":	-1,
+			"Type":	0
+		}
+	}
+}

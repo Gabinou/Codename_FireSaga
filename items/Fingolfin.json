@@ -1,3 +1,63 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:030b701c089dcae96c5c1d9d6614a019339e4cc99bbc36e693da4970a734878c
-size 904
+{
+	"Item":	{
+		"Name":	"Fingolfin",
+		"id":	806,
+		"Description":	"Distilled courage. Strikes at 7 times at darkness's heart. Effective against demons.",
+		"Bonus":	{
+			"hp":	0,
+			"str":	0,
+			"mag":	0,
+			"agi":	0,
+			"dex":	0,
+			"luck":	0,
+			"def":	0,
+			"res":	0,
+			"con":	0,
+			"move":	0,
+			"prof":	0
+		},
+		"Malus":	{
+			"hp":	0,
+			"str":	0,
+			"mag":	0,
+			"agi":	0,
+			"dex":	0,
+			"luck":	0,
+			"def":	0,
+			"res":	0,
+			"con":	0,
+			"move":	0,
+			"prof":	0
+		},
+		"Sellable":	true,
+		"Effects":	{
+			"id":	0
+		},
+		"Types":	{
+			"id":	256,
+			"Type":	"Angelic"
+		},
+		"Stats":	{
+			"Pmight":	0,
+			"Mmight":	11,
+			"hit":	50,
+			"dodge":	0,
+			"crit":	0,
+			"favor":	0,
+			"wgt":	9,
+			"uses":	20,
+			"prof":	7,
+			"minrange":	1,
+			"maxrange":	2,
+			"minhand":	1,
+			"maxhand":	2,
+			"dmg_type":	1,
+			"price":	1000,
+			"heal":	0
+		},
+		"Infused":	{
+			"Power":	-1,
+			"Type":	0
+		}
+	}
+}

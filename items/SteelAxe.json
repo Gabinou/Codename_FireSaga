@@ -1,3 +1,63 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:d96051802482c6197a5881691c08de0b393f16eb0fa0735344e7d8bf5df83ad1
-size 877
+{
+	"Item":	{
+		"Name":	"Steel axe",
+		"id":	201,
+		"Description":	"Steel cutting head on a stick. Stronger. Smart bandits like it.",
+		"Bonus":	{
+			"hp":	0,
+			"str":	0,
+			"mag":	0,
+			"agi":	0,
+			"dex":	0,
+			"luck":	0,
+			"def":	0,
+			"res":	0,
+			"con":	0,
+			"move":	0,
+			"prof":	0
+		},
+		"Malus":	{
+			"hp":	0,
+			"str":	0,
+			"mag":	0,
+			"agi":	0,
+			"dex":	0,
+			"luck":	0,
+			"def":	0,
+			"res":	0,
+			"con":	0,
+			"move":	0,
+			"prof":	0
+		},
+		"Sellable":	true,
+		"Effects":	{
+			"id":	0
+		},
+		"Types":	{
+			"id":	4,
+			"Type":	"Axe"
+		},
+		"Stats":	{
+			"Pmight":	11,
+			"Mmight":	0,
+			"hit":	50,
+			"dodge":	0,
+			"crit":	0,
+			"favor":	0,
+			"wgt":	10,
+			"uses":	35,
+			"prof":	7,
+			"minrange":	1,
+			"maxrange":	1,
+			"minhand":	1,
+			"maxhand":	2,
+			"dmg_type":	0,
+			"price":	720,
+			"heal":	0
+		},
+		"Infused":	{
+			"Power":	-1,
+			"Type":	0
+		}
+	}
+}

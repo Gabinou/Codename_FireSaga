@@ -1,3 +1,24 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:33e49c2fb0299002722135a82e167755877b272f5d879ded4cc6ddf899514587
-size 322
+{
+	"Tile":	{
+		"Name":	"Bush",
+		"id":	11,
+		"inside":	false,
+		"Stats":	{
+			"Dodge":	15,
+			"Pprot":	0,
+			"Mprot":	2,
+			"Heal":	0
+		},
+		"MvtCost":	{
+			"foot_slow":	2,
+			"foot_fast":	1,
+			"mages":	2,
+			"fliers":	1,
+			"riders_slow":	3,
+			"riders_fast":	2,
+			"armors":	3,
+			"pirates":	2,
+			"bandits":	2
+		}
+	}
+}

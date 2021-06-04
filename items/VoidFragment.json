@@ -1,3 +1,63 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:cec6c5454094ed749fea9b9b31fae6f31ce4afd3d1ee7a6ec750780bc5c7d83d
-size 820
+{
+	"Item":	{
+		"Name":	"Void fragment",
+		"id":	519,
+		"Description":	"",
+		"Bonus":	{
+			"hp":	0,
+			"str":	0,
+			"mag":	0,
+			"agi":	0,
+			"dex":	0,
+			"luck":	0,
+			"def":	0,
+			"res":	0,
+			"con":	0,
+			"move":	0,
+			"prof":	0
+		},
+		"Malus":	{
+			"hp":	0,
+			"str":	0,
+			"mag":	0,
+			"agi":	0,
+			"dex":	0,
+			"luck":	0,
+			"def":	0,
+			"res":	0,
+			"con":	0,
+			"move":	0,
+			"prof":	0
+		},
+		"Sellable":	true,
+		"Effects":	{
+			"id":	0
+		},
+		"Types":	{
+			"id":	16,
+			"Type":	"Trinket"
+		},
+		"Stats":	{
+			"Pmight":	7,
+			"Mmight":	0,
+			"hit":	0,
+			"dodge":	0,
+			"crit":	0,
+			"favor":	0,
+			"wgt":	7,
+			"uses":	8,
+			"prof":	5,
+			"minrange":	1,
+			"maxrange":	1,
+			"minhand":	1,
+			"maxhand":	0,
+			"dmg_type":	0,
+			"price":	1000,
+			"heal":	0
+		},
+		"Infused":	{
+			"Power":	-1,
+			"Type":	0
+		}
+	}
+}

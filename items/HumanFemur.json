@@ -1,3 +1,63 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:8ac87560af8a7d129d5b31667a62af15ebb3a582509a3c785c6efe553d45126d
-size 891
+{
+	"Item":	{
+		"Name":	"Human femur",
+		"id":	518,
+		"Description":	"Taken from an ancient tomb. Used by demons to increase their magic power.",
+		"Bonus":	{
+			"hp":	0,
+			"str":	0,
+			"mag":	0,
+			"agi":	0,
+			"dex":	0,
+			"luck":	0,
+			"def":	0,
+			"res":	0,
+			"con":	0,
+			"move":	0,
+			"prof":	0
+		},
+		"Malus":	{
+			"hp":	0,
+			"str":	0,
+			"mag":	0,
+			"agi":	0,
+			"dex":	0,
+			"luck":	0,
+			"def":	0,
+			"res":	0,
+			"con":	0,
+			"move":	0,
+			"prof":	0
+		},
+		"Sellable":	true,
+		"Effects":	{
+			"id":	0
+		},
+		"Types":	{
+			"id":	16,
+			"Type":	"Trinket"
+		},
+		"Stats":	{
+			"Pmight":	7,
+			"Mmight":	0,
+			"hit":	0,
+			"dodge":	0,
+			"crit":	0,
+			"favor":	0,
+			"wgt":	7,
+			"uses":	8,
+			"prof":	5,
+			"minrange":	1,
+			"maxrange":	1,
+			"minhand":	1,
+			"maxhand":	0,
+			"dmg_type":	0,
+			"price":	1000,
+			"heal":	0
+		},
+		"Infused":	{
+			"Power":	-1,
+			"Type":	0
+		}
+	}
+}

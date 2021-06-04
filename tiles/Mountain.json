@@ -1,3 +1,24 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:635c611ef17305e3e42c701ef82eb746248604c0703f0e92925d1ae4dc3e8e22
-size 326
+{
+	"Tile":	{
+		"Name":	"Mountain",
+		"id":	31,
+		"inside":	false,
+		"Stats":	{
+			"Dodge":	25,
+			"Pprot":	0,
+			"Mprot":	3,
+			"Heal":	0
+		},
+		"MvtCost":	{
+			"foot_slow":	4,
+			"foot_fast":	3,
+			"mages":	4,
+			"fliers":	1,
+			"riders_slow":	0,
+			"riders_fast":	4,
+			"armors":	0,
+			"pirates":	3,
+			"bandits":	3
+		}
+	}
+}

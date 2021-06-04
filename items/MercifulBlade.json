@@ -1,3 +1,64 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:c0ca659837b9fad9b75a8a8ce2e4aedf5cb56e77a8497c9375e321c4ba387799
-size 930
+{
+	"Item":	{
+		"Name":	"Merciful blade",
+		"id":	12,
+		"Description":	"Infused with the life-giving tears of the goddess. Cannot reduce enemy HP below 1.",
+		"Bonus":	{
+			"hp":	0,
+			"str":	0,
+			"mag":	0,
+			"agi":	0,
+			"dex":	0,
+			"luck":	0,
+			"def":	0,
+			"res":	0,
+			"con":	0,
+			"move":	0,
+			"prof":	0
+		},
+		"Malus":	{
+			"hp":	0,
+			"str":	0,
+			"mag":	0,
+			"agi":	0,
+			"dex":	0,
+			"luck":	0,
+			"def":	0,
+			"res":	0,
+			"con":	0,
+			"move":	0,
+			"prof":	0
+		},
+		"Sellable":	true,
+		"Effects":	{
+			"id":	33554432,
+			"Effect":	"Spare"
+		},
+		"Types":	{
+			"id":	1,
+			"Type":	"Sword"
+		},
+		"Stats":	{
+			"Pmight":	4,
+			"Mmight":	0,
+			"hit":	70,
+			"dodge":	0,
+			"crit":	0,
+			"favor":	10,
+			"wgt":	6,
+			"uses":	30,
+			"prof":	9,
+			"minrange":	1,
+			"maxrange":	1,
+			"minhand":	1,
+			"maxhand":	2,
+			"dmg_type":	0,
+			"price":	800,
+			"heal":	0
+		},
+		"Infused":	{
+			"Power":	-1,
+			"Type":	0
+		}
+	}
+}

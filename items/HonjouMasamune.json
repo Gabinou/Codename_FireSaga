@@ -1,3 +1,63 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:83d82175d8ca7a71fee85f6706df7e61616f6fe23f8acd7d7213ea68d70403f6
-size 890
+{
+	"Item":	{
+		"Name":	"Honjou masamune",
+		"id":	24,
+		"Description":	"Lost sword made by the most skilled swordsmith of the eastern lands.",
+		"Bonus":	{
+			"hp":	0,
+			"str":	0,
+			"mag":	0,
+			"agi":	0,
+			"dex":	0,
+			"luck":	0,
+			"def":	0,
+			"res":	0,
+			"con":	0,
+			"move":	0,
+			"prof":	0
+		},
+		"Malus":	{
+			"hp":	0,
+			"str":	0,
+			"mag":	0,
+			"agi":	0,
+			"dex":	0,
+			"luck":	0,
+			"def":	0,
+			"res":	0,
+			"con":	0,
+			"move":	0,
+			"prof":	0
+		},
+		"Sellable":	true,
+		"Effects":	{
+			"id":	0
+		},
+		"Types":	{
+			"id":	1,
+			"Type":	"Sword"
+		},
+		"Stats":	{
+			"Pmight":	16,
+			"Mmight":	0,
+			"hit":	60,
+			"dodge":	5,
+			"crit":	5,
+			"favor":	0,
+			"wgt":	7,
+			"uses":	35,
+			"prof":	18,
+			"minrange":	1,
+			"maxrange":	1,
+			"minhand":	1,
+			"maxhand":	2,
+			"dmg_type":	0,
+			"price":	2200,
+			"heal":	0
+		},
+		"Infused":	{
+			"Power":	-1,
+			"Type":	0
+		}
+	}
+}

@@ -1,3 +1,63 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:5c9c17471ea4f8d6d2810615d0334e8f45063607108cb0f9b31cc508d35deea6
-size 896
+{
+	"Item":	{
+		"Name":	"Composite bow",
+		"id":	305,
+		"Description":	"Bow made of laminated wood and animal horn. Very useful for horseback shooting.",
+		"Bonus":	{
+			"hp":	0,
+			"str":	0,
+			"mag":	0,
+			"agi":	0,
+			"dex":	0,
+			"luck":	0,
+			"def":	0,
+			"res":	0,
+			"con":	0,
+			"move":	0,
+			"prof":	0
+		},
+		"Malus":	{
+			"hp":	0,
+			"str":	0,
+			"mag":	0,
+			"agi":	0,
+			"dex":	0,
+			"luck":	0,
+			"def":	0,
+			"res":	0,
+			"con":	0,
+			"move":	0,
+			"prof":	0
+		},
+		"Sellable":	true,
+		"Effects":	{
+			"id":	0
+		},
+		"Types":	{
+			"id":	8,
+			"Type":	"Bow"
+		},
+		"Stats":	{
+			"Pmight":	7,
+			"Mmight":	0,
+			"hit":	80,
+			"dodge":	0,
+			"crit":	0,
+			"favor":	0,
+			"wgt":	5,
+			"uses":	30,
+			"prof":	10,
+			"minrange":	1,
+			"maxrange":	1,
+			"minhand":	1,
+			"maxhand":	0,
+			"dmg_type":	0,
+			"price":	620,
+			"heal":	0
+		},
+		"Infused":	{
+			"Power":	-1,
+			"Type":	0
+		}
+	}
+}

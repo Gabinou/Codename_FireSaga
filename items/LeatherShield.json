@@ -1,3 +1,63 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:6d3a8be2247f4c04e96ce8cd7311a4a1f9907ae6c323e800de0d000b05ccf18c
-size 924
+{
+	"Item":	{
+		"Name":	"Leather shield",
+		"id":	404,
+		"Description":	"Wooden plank lined with leather. Smooth and slippery. Cheap way to redirect weapons away from the body.",
+		"Bonus":	{
+			"hp":	0,
+			"str":	0,
+			"mag":	0,
+			"agi":	0,
+			"dex":	0,
+			"luck":	0,
+			"def":	0,
+			"res":	0,
+			"con":	0,
+			"move":	0,
+			"prof":	0
+		},
+		"Malus":	{
+			"hp":	0,
+			"str":	0,
+			"mag":	0,
+			"agi":	0,
+			"dex":	0,
+			"luck":	0,
+			"def":	0,
+			"res":	0,
+			"con":	0,
+			"move":	0,
+			"prof":	0
+		},
+		"Sellable":	true,
+		"Effects":	{
+			"id":	0
+		},
+		"Types":	{
+			"id":	512,
+			"Type":	"Shield"
+		},
+		"Stats":	{
+			"Pmight":	3,
+			"Mmight":	0,
+			"hit":	0,
+			"dodge":	9,
+			"crit":	0,
+			"favor":	2,
+			"wgt":	4,
+			"uses":	25,
+			"prof":	9,
+			"minrange":	1,
+			"maxrange":	1,
+			"minhand":	1,
+			"maxhand":	0,
+			"dmg_type":	0,
+			"price":	440,
+			"heal":	0
+		},
+		"Infused":	{
+			"Power":	-1,
+			"Type":	0
+		}
+	}
+}

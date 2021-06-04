@@ -1,3 +1,64 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:489e5a792e15ee3e2f6c7158c013e5ef0924ef093a1e693bec0afd21ba226b5d
-size 947
+{
+	"Item":	{
+		"Name":	"Achilles",
+		"id":	114,
+		"Description":	"Legendary throwing spear named after a fearless, immortal hero. Kills instantly if hits enemy's heel (1%).",
+		"Bonus":	{
+			"hp":	0,
+			"str":	0,
+			"mag":	0,
+			"agi":	0,
+			"dex":	0,
+			"luck":	0,
+			"def":	0,
+			"res":	0,
+			"con":	0,
+			"move":	0,
+			"prof":	0
+		},
+		"Malus":	{
+			"hp":	0,
+			"str":	0,
+			"mag":	0,
+			"agi":	0,
+			"dex":	0,
+			"luck":	0,
+			"def":	0,
+			"res":	0,
+			"con":	0,
+			"move":	0,
+			"prof":	0
+		},
+		"Sellable":	true,
+		"Effects":	{
+			"id":	1,
+			"Effect":	"1% kill"
+		},
+		"Types":	{
+			"id":	2,
+			"Type":	"Lance"
+		},
+		"Stats":	{
+			"Pmight":	12,
+			"Mmight":	0,
+			"hit":	70,
+			"dodge":	0,
+			"crit":	0,
+			"favor":	0,
+			"wgt":	10,
+			"uses":	32,
+			"prof":	18,
+			"minrange":	1,
+			"maxrange":	2,
+			"minhand":	1,
+			"maxhand":	2,
+			"dmg_type":	0,
+			"price":	4000,
+			"heal":	0
+		},
+		"Infused":	{
+			"Power":	-1,
+			"Type":	0
+		}
+	}
+}

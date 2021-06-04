@@ -1,3 +1,63 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:422a4cedbc00adc9160761c3675568d5fdc3a362826146ecc6d8c5a0c8400ea7
-size 833
+{
+	"Item":	{
+		"Name":	"Short bow",
+		"id":	303,
+		"Description":	"Simple and light bow.",
+		"Bonus":	{
+			"hp":	0,
+			"str":	0,
+			"mag":	0,
+			"agi":	0,
+			"dex":	0,
+			"luck":	0,
+			"def":	0,
+			"res":	0,
+			"con":	0,
+			"move":	0,
+			"prof":	0
+		},
+		"Malus":	{
+			"hp":	0,
+			"str":	0,
+			"mag":	0,
+			"agi":	0,
+			"dex":	0,
+			"luck":	0,
+			"def":	0,
+			"res":	0,
+			"con":	0,
+			"move":	0,
+			"prof":	0
+		},
+		"Sellable":	true,
+		"Effects":	{
+			"id":	0
+		},
+		"Types":	{
+			"id":	8,
+			"Type":	"Bow"
+		},
+		"Stats":	{
+			"Pmight":	4,
+			"Mmight":	0,
+			"hit":	90,
+			"dodge":	0,
+			"crit":	0,
+			"favor":	0,
+			"wgt":	4,
+			"uses":	35,
+			"prof":	5,
+			"minrange":	1,
+			"maxrange":	2,
+			"minhand":	1,
+			"maxhand":	0,
+			"dmg_type":	0,
+			"price":	400,
+			"heal":	0
+		},
+		"Infused":	{
+			"Power":	-1,
+			"Type":	0
+		}
+	}
+}

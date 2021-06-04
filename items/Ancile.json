@@ -1,3 +1,63 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:44729219ee4a690eb86343da745e50ca19f4eb60b920cac0b635b8241dabe1c4
-size 852
+{
+	"Item":	{
+		"Name":	"Ancile",
+		"id":	412,
+		"Description":	"Shield of the ancient god of war.",
+		"Bonus":	{
+			"hp":	0,
+			"str":	0,
+			"mag":	0,
+			"agi":	0,
+			"dex":	0,
+			"luck":	0,
+			"def":	0,
+			"res":	0,
+			"con":	0,
+			"move":	0,
+			"prof":	0
+		},
+		"Malus":	{
+			"hp":	0,
+			"str":	0,
+			"mag":	0,
+			"agi":	0,
+			"dex":	0,
+			"luck":	0,
+			"def":	0,
+			"res":	0,
+			"con":	0,
+			"move":	0,
+			"prof":	0
+		},
+		"Sellable":	true,
+		"Effects":	{
+			"id":	0
+		},
+		"Types":	{
+			"id":	512,
+			"Type":	"Shield"
+		},
+		"Stats":	{
+			"Pmight":	15,
+			"Mmight":	0,
+			"hit":	0,
+			"dodge":	10,
+			"crit":	0,
+			"favor":	2,
+			"wgt":	13,
+			"uses":	19,
+			"prof":	12,
+			"minrange":	1,
+			"maxrange":	1,
+			"minhand":	1,
+			"maxhand":	0,
+			"dmg_type":	0,
+			"price":	30000,
+			"heal":	0
+		},
+		"Infused":	{
+			"Power":	-1,
+			"Type":	0
+		}
+	}
+}

@@ -1,3 +1,63 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:c78e9f4fa167b787f4ac7a0e0b21aec89a18c37711de68fe32dc54d9fd947d81
-size 861
+{
+	"Item":	{
+		"Name":	"Iron buckler",
+		"id":	406,
+		"Description":	"Small round iron shield. Light, resistant.",
+		"Bonus":	{
+			"hp":	0,
+			"str":	0,
+			"mag":	0,
+			"agi":	0,
+			"dex":	0,
+			"luck":	0,
+			"def":	0,
+			"res":	0,
+			"con":	0,
+			"move":	0,
+			"prof":	0
+		},
+		"Malus":	{
+			"hp":	0,
+			"str":	0,
+			"mag":	0,
+			"agi":	0,
+			"dex":	0,
+			"luck":	0,
+			"def":	0,
+			"res":	0,
+			"con":	0,
+			"move":	0,
+			"prof":	0
+		},
+		"Sellable":	true,
+		"Effects":	{
+			"id":	0
+		},
+		"Types":	{
+			"id":	512,
+			"Type":	"Shield"
+		},
+		"Stats":	{
+			"Pmight":	6,
+			"Mmight":	0,
+			"hit":	0,
+			"dodge":	6,
+			"crit":	0,
+			"favor":	6,
+			"wgt":	6,
+			"uses":	36,
+			"prof":	6,
+			"minrange":	1,
+			"maxrange":	1,
+			"minhand":	1,
+			"maxhand":	0,
+			"dmg_type":	0,
+			"price":	630,
+			"heal":	0
+		},
+		"Infused":	{
+			"Power":	-1,
+			"Type":	0
+		}
+	}
+}
