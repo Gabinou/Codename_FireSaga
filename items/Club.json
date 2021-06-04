@@ -1,3 +1,63 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:95c5ed6e3e2479f24503f3078722d568f38c3a5b9e6d69431581a2468fe8c0c4
-size 883
+{
+	"Item":	{
+		"Name":	"Club",
+		"id":	208,
+		"Description":	"Big and wooden. For when the old-world weapons just aren't quite old enough.",
+		"Bonus":	{
+			"hp":	0,
+			"str":	0,
+			"mag":	0,
+			"agi":	0,
+			"dex":	0,
+			"luck":	0,
+			"def":	0,
+			"res":	0,
+			"con":	0,
+			"move":	0,
+			"prof":	0
+		},
+		"Malus":	{
+			"hp":	0,
+			"str":	0,
+			"mag":	0,
+			"agi":	0,
+			"dex":	0,
+			"luck":	0,
+			"def":	0,
+			"res":	0,
+			"con":	0,
+			"move":	0,
+			"prof":	0
+		},
+		"Sellable":	true,
+		"Effects":	{
+			"id":	0
+		},
+		"Types":	{
+			"id":	4,
+			"Type":	"Axe"
+		},
+		"Stats":	{
+			"Pmight":	9,
+			"Mmight":	0,
+			"hit":	50,
+			"dodge":	5,
+			"crit":	0,
+			"favor":	0,
+			"wgt":	6,
+			"uses":	15,
+			"prof":	1,
+			"minrange":	1,
+			"maxrange":	1,
+			"minhand":	1,
+			"maxhand":	2,
+			"dmg_type":	0,
+			"price":	100,
+			"heal":	0
+		},
+		"Infused":	{
+			"Power":	-1,
+			"Type":	0
+		}
+	}
+}

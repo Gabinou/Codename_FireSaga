@@ -1,3 +1,63 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:83ed22b67795a7f6578ec35357e7e5e65eada31292fd8669eac6aa3aded35148
-size 839
+{
+	"Item":	{
+		"Name":	"Dusk",
+		"id":   803,
+		"Description":	"Your days come to an end.",
+		"Bonus":	{
+			"hp":	0,
+			"str":	0,
+			"mag":	0,
+			"agi":	0,
+			"dex":	0,
+			"luck":	0,
+			"def":	0,
+			"res":	0,
+			"con":	0,
+			"move":	0,
+			"prof":	0
+		},
+		"Malus":	{
+			"hp":	0,
+			"str":	0,
+			"mag":	0,
+			"agi":	0,
+			"dex":	0,
+			"luck":	0,
+			"def":	0,
+			"res":	0,
+			"con":	0,
+			"move":	0,
+			"prof":	0
+		},
+		"Sellable":	true,
+		"Effects":	{
+			"id":	0
+		},
+		"Types":	{
+			"id":	256,
+			"Type":	"Angelic"
+		},
+		"Stats":	{
+			"Pmight":	1,
+			"Mmight":	0,
+			"hit":	0,
+			"dodge":	5,
+			"crit":	0,
+			"favor":	1,
+			"wgt":	2,
+			"uses":	15,
+			"prof":	2,
+			"minrange":	1,
+			"maxrange":	1,
+			"minhand":	1,
+			"maxhand":	0,
+			"dmg_type":	0,
+			"price":	111,
+			"heal":	0
+		},
+		"Infused":	{
+			"Power":	-1,
+			"Type":	0
+		}
+	}
+}

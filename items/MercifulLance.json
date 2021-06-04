@@ -1,3 +1,63 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:cc12d74ecac070b20feaf1c60fad32725223dbf9a31b9d85c49aea45fe6aad2b
-size 901
+{
+	"Item":	{
+		"Name":	"Merciful lance",
+		"id":	108,
+		"Description":	"Infused with the life-giving tears of the goddess. Cannot reduce enemy HP below 1.",
+		"Bonus":	{
+			"hp":	0,
+			"str":	0,
+			"mag":	0,
+			"agi":	0,
+			"dex":	0,
+			"luck":	0,
+			"def":	0,
+			"res":	0,
+			"con":	0,
+			"move":	0,
+			"prof":	0
+		},
+		"Malus":	{
+			"hp":	0,
+			"str":	0,
+			"mag":	0,
+			"agi":	0,
+			"dex":	0,
+			"luck":	0,
+			"def":	0,
+			"res":	0,
+			"con":	0,
+			"move":	0,
+			"prof":	0
+		},
+		"Sellable":	true,
+		"Effects":	{
+			"id":	0
+		},
+		"Types":	{
+			"id":	2,
+			"Type":	"Lance"
+		},
+		"Stats":	{
+			"Pmight":	6,
+			"Mmight":	0,
+			"hit":	70,
+			"dodge":	0,
+			"crit":	0,
+			"favor":	0,
+			"wgt":	7,
+			"uses":	20,
+			"prof":	7,
+			"minrange":	1,
+			"maxrange":	1,
+			"minhand":	1,
+			"maxhand":	2,
+			"dmg_type":	0,
+			"price":	910,
+			"heal":	0
+		},
+		"Infused":	{
+			"Power":	-1,
+			"Type":	0
+		}
+	}
+}

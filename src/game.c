@@ -894,6 +894,8 @@ void Game_init(struct Game * in_game) {
     SDL_Log("Initializing Menu Options\n");
     Menu_Options_init();
 
+    in_game->tnecs_world = tnecs_world_genesis();
+
     in_game->isrunning = true;
     in_game->keyboardInputMap = KeyboardInputMap_default;
     in_game->gamepadInputMap = GamepadInputMap_default;

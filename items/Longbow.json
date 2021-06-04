@@ -1,3 +1,63 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:cf50aa4faf9076fa42424d85c75389fc262d551be04f562eb0dd37ef0b2e4324
-size 853
+{
+	"Item":	{
+		"Name":	"Long bow",
+		"id":	304,
+		"Description":	"Long and heavy bow. Has increased range.",
+		"Bonus":	{
+			"hp":	0,
+			"str":	0,
+			"mag":	0,
+			"agi":	0,
+			"dex":	0,
+			"luck":	0,
+			"def":	0,
+			"res":	0,
+			"con":	0,
+			"move":	0,
+			"prof":	0
+		},
+		"Malus":	{
+			"hp":	0,
+			"str":	0,
+			"mag":	0,
+			"agi":	0,
+			"dex":	0,
+			"luck":	0,
+			"def":	0,
+			"res":	0,
+			"con":	0,
+			"move":	0,
+			"prof":	0
+		},
+		"Sellable":	true,
+		"Effects":	{
+			"id":	0
+		},
+		"Types":	{
+			"id":	8,
+			"Type":	"Bow"
+		},
+		"Stats":	{
+			"Pmight":	8,
+			"Mmight":	0,
+			"hit":	70,
+			"dodge":	0,
+			"crit":	0,
+			"favor":	0,
+			"wgt":	10,
+			"uses":	25,
+			"prof":	11,
+			"minrange":	1,
+			"maxrange":	3,
+			"minhand":	1,
+			"maxhand":	0,
+			"dmg_type":	0,
+			"price":	800,
+			"heal":	0
+		},
+		"Infused":	{
+			"Power":	-1,
+			"Type":	0
+		}
+	}
+}

@@ -1,3 +1,63 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:1ed4f05f2c65946aa88eb66b5d820a8a601f6b026023dd7106e9a2737824bee3
-size 895
+{
+	"Item":	{
+		"Name":	"Wakizashi",
+		"id":	509,
+		"Description":	"Dagger of the warriors of the East. Companion of the uchigatana. Very deadly.",
+		"Bonus":	{
+			"hp":	0,
+			"str":	0,
+			"mag":	0,
+			"agi":	0,
+			"dex":	0,
+			"luck":	0,
+			"def":	0,
+			"res":	0,
+			"con":	0,
+			"move":	0,
+			"prof":	0
+		},
+		"Malus":	{
+			"hp":	0,
+			"str":	0,
+			"mag":	0,
+			"agi":	0,
+			"dex":	0,
+			"luck":	0,
+			"def":	0,
+			"res":	0,
+			"con":	0,
+			"move":	0,
+			"prof":	0
+		},
+		"Sellable":	true,
+		"Effects":	{
+			"id":	0
+		},
+		"Types":	{
+			"id":	32,
+			"Type":	"Offhand"
+		},
+		"Stats":	{
+			"Pmight":	7,
+			"Mmight":	0,
+			"hit":	0,
+			"dodge":	0,
+			"crit":	0,
+			"favor":	0,
+			"wgt":	8,
+			"uses":	10,
+			"prof":	15,
+			"minrange":	1,
+			"maxrange":	1,
+			"minhand":	1,
+			"maxhand":	0,
+			"dmg_type":	0,
+			"price":	1300,
+			"heal":	0
+		},
+		"Infused":	{
+			"Power":	-1,
+			"Type":	0
+		}
+	}
+}

@@ -9,6 +9,7 @@
 #include "weapon.h"
 #include "narrative.h"
 #include "map.h"
+#include "tnecs.h"
 #include "macros.h"
 #include "utilities.h"
 #include "jsonio.h"
@@ -54,8 +55,6 @@ struct uint8_t_hash {
 };
 
 struct Game {
-    // Unaligned size 34072 bytes
-    // Aligned size 34048 bytes
     struct Point cursor_lastpos;
     struct Point mouse_lastpos;
 
@@ -69,6 +68,7 @@ struct Game {
 
     struct Weapons_hash * weapons;
     ecs_world_t * world;
+    tnecs_world_t * tnecs_world;
 
     struct Tiles_hash * tiles_loaded;
     struct Units_hash * units_loaded;

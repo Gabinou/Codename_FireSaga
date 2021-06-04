@@ -1,3 +1,63 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:3546b2cc74b3a5205ffb8720f056b62f63fa97d14eac95ff3fdec1e385029dec
-size 872
+{
+	"Item":	{
+		"Name":	"Iron lance",
+		"id":	102,
+		"Description":	"Sharp iron tip on a wooden stick. Standard military fare.",
+		"Bonus":	{
+			"hp":	0,
+			"str":	0,
+			"mag":	0,
+			"agi":	0,
+			"dex":	0,
+			"luck":	0,
+			"def":	0,
+			"res":	0,
+			"con":	0,
+			"move":	0,
+			"prof":	0
+		},
+		"Malus":	{
+			"hp":	0,
+			"str":	0,
+			"mag":	0,
+			"agi":	0,
+			"dex":	0,
+			"luck":	0,
+			"def":	0,
+			"res":	0,
+			"con":	0,
+			"move":	0,
+			"prof":	0
+		},
+		"Sellable":	true,
+		"Effects":	{
+			"id":	0
+		},
+		"Types":	{
+			"id":	2,
+			"Type":	"Lance"
+		},
+		"Stats":	{
+			"Pmight":	5,
+			"Mmight":	0,
+			"hit":	95,
+			"dodge":	0,
+			"crit":	0,
+			"favor":	0,
+			"wgt":	5,
+			"uses":	40,
+			"prof":	4,
+			"minrange":	1,
+			"maxrange":	1,
+			"minhand":	1,
+			"maxhand":	2,
+			"dmg_type":	0,
+			"price":	520,
+			"heal":	0
+		},
+		"Infused":	{
+			"Power":	-1,
+			"Type":	0
+		}
+	}
+}

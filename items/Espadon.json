@@ -1,3 +1,63 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:d5d901872b1688da23a2c81dc128f406edb6565d74ea68718d93eeb0d0d4af2a
-size 875
+{
+	"Item":	{
+		"Name":	"Espadon",
+		"id":	14,
+		"Description":	"Blade of considerable girth and length. Heavier and stronger.",
+		"Bonus":	{
+			"hp":	0,
+			"str":	0,
+			"mag":	0,
+			"agi":	0,
+			"dex":	0,
+			"luck":	0,
+			"def":	0,
+			"res":	0,
+			"con":	0,
+			"move":	0,
+			"prof":	0
+		},
+		"Malus":	{
+			"hp":	0,
+			"str":	0,
+			"mag":	0,
+			"agi":	0,
+			"dex":	0,
+			"luck":	0,
+			"def":	0,
+			"res":	0,
+			"con":	0,
+			"move":	0,
+			"prof":	0
+		},
+		"Sellable":	true,
+		"Effects":	{
+			"id":	0
+		},
+		"Types":	{
+			"id":	1,
+			"Type":	"Sword"
+		},
+		"Stats":	{
+			"Pmight":	12,
+			"Mmight":	0,
+			"hit":	40,
+			"dodge":	0,
+			"crit":	0,
+			"favor":	0,
+			"wgt":	13,
+			"uses":	20,
+			"prof":	7,
+			"minrange":	1,
+			"maxrange":	1,
+			"minhand":	1,
+			"maxhand":	2,
+			"dmg_type":	0,
+			"price":	1100,
+			"heal":	0
+		},
+		"Infused":	{
+			"Power":	-1,
+			"Type":	0
+		}
+	}
+}

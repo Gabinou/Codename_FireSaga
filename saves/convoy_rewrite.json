@@ -1,3 +1,137 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:2779d0f2f718fc5c02b4ff6d847ddc5902b0fd7815f2ffb472a0438fc64f8537
-size 1748
+{
+	"Convoy":	{
+		"Sword":	{
+			"Item":	{
+				"Infused":	-1,
+				"id":	2,
+				"used":	0
+			},
+			"Item":	{
+				"Infused":	-1,
+				"id":	2,
+				"used":	0
+			},
+			"Item":	{
+				"Infused":	-1,
+				"id":	3,
+				"used":	0
+			},
+			"Item":	{
+				"Infused":	-1,
+				"id":	4,
+				"used":	0
+			},
+			"Item":	{
+				"Infused":	-1,
+				"id":	11,
+				"used":	0
+			},
+			"Item":	{
+				"Infused":	-1,
+				"id":	11,
+				"used":	1
+			},
+			"Item":	{
+				"Infused":	-1,
+				"id":	2,
+				"used":	1
+			},
+			"Item":	{
+				"Infused":	-1,
+				"id":	2,
+				"used":	2
+			},
+			"Item":	{
+				"Infused":	-1,
+				"id":	2,
+				"used":	20
+			},
+			"Item":	{
+				"Infused":	-1,
+				"id":	2,
+				"used":	21
+			},
+			"Item":	{
+				"Infused":	-1,
+				"id":	2,
+				"used":	10
+			},
+			"Item":	{
+				"Infused":	-1,
+				"id":	2,
+				"used":	11
+			},
+			"Item":	{
+				"Infused":	-1,
+				"id":	2,
+				"used":	12
+			},
+			"Item":	{
+				"Infused":	-1,
+				"id":	2,
+				"used":	12
+			},
+			"Item":	{
+				"Infused":	-1,
+				"id":	9,
+				"used":	12
+			}
+		},
+		"Lance":	{
+			"Item":	{
+				"Infused":	-1,
+				"id":	105,
+				"used":	12
+			},
+			"Item":	{
+				"Infused":	-1,
+				"id":	114,
+				"used":	12
+			},
+			"Item":	{
+				"Infused":	-1,
+				"id":	112,
+				"used":	12
+			},
+			"Item":	{
+				"Infused":	-1,
+				"id":	102,
+				"used":	12
+			},
+			"Item":	{
+				"Infused":	-1,
+				"id":	115,
+				"used":	12
+			},
+			"Item":	{
+				"Infused":	-1,
+				"id":	105,
+				"used":	12
+			},
+			"Item":	{
+				"Infused":	-1,
+				"id":	103,
+				"used":	12
+			},
+			"Item":	{
+				"Infused":	-1,
+				"id":	103,
+				"used":	12
+			},
+			"Item":	{
+				"Infused":	-1,
+				"id":	107,
+				"used":	12
+			},
+			"Item":	{
+				"Infused":	-1,
+				"id":	111,
+				"used":	12
+			}
+		},
+		"Axe":	{
+		},
+		"Bow":	{
+		}
+	}
+}

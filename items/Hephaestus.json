@@ -1,3 +1,63 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:13ea9dec4f86a65131c4752e831ba763e801f2f872660d54082312ad542259fb
-size 934
+{
+	"Item":	{
+		"Name":	"Hephaestus",
+		"id":	214,
+		"Description":	"The god's hammer. Used to forge Secundus, the first sword. Basically a vaguely square stone fixed to a wooden handle.",
+		"Bonus":	{
+			"hp":	0,
+			"str":	0,
+			"mag":	0,
+			"agi":	0,
+			"dex":	0,
+			"luck":	0,
+			"def":	0,
+			"res":	0,
+			"con":	0,
+			"move":	0,
+			"prof":	0
+		},
+		"Malus":	{
+			"hp":	0,
+			"str":	0,
+			"mag":	0,
+			"agi":	0,
+			"dex":	0,
+			"luck":	0,
+			"def":	0,
+			"res":	0,
+			"con":	0,
+			"move":	0,
+			"prof":	0
+		},
+		"Sellable":	true,
+		"Effects":	{
+			"id":	0
+		},
+		"Types":	{
+			"id":	4,
+			"Type":	"Axe"
+		},
+		"Stats":	{
+			"Pmight":	19,
+			"Mmight":	0,
+			"hit":	70,
+			"dodge":	0,
+			"crit":	0,
+			"favor":	0,
+			"wgt":	5,
+			"uses":	60,
+			"prof":	20,
+			"minrange":	1,
+			"maxrange":	1,
+			"minhand":	1,
+			"maxhand":	2,
+			"dmg_type":	0,
+			"price":	10000,
+			"heal":	0
+		},
+		"Infused":	{
+			"Power":	-1,
+			"Type":	0
+		}
+	}
+}

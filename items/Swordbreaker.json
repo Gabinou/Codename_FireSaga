@@ -1,3 +1,63 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:8d44b13de302335c394595375d0f5789d134e3bc56f841c9b21f26ee715b67f1
-size 931
+{
+	"Item":	{
+		"Name":	"Swordbreaker",
+		"id":	504,
+		"Description":	"Dagger with slots designed to catch swords. Increases avoid and favor. Rarely does it actually break swords...",
+		"Bonus":	{
+			"hp":	0,
+			"str":	0,
+			"mag":	0,
+			"agi":	0,
+			"dex":	0,
+			"luck":	0,
+			"def":	0,
+			"res":	0,
+			"con":	0,
+			"move":	0,
+			"prof":	0
+		},
+		"Malus":	{
+			"hp":	0,
+			"str":	0,
+			"mag":	0,
+			"agi":	0,
+			"dex":	0,
+			"luck":	0,
+			"def":	0,
+			"res":	0,
+			"con":	0,
+			"move":	0,
+			"prof":	0
+		},
+		"Sellable":	true,
+		"Effects":	{
+			"id":	0
+		},
+		"Types":	{
+			"id":	32,
+			"Type":	"Offhand"
+		},
+		"Stats":	{
+			"Pmight":	2,
+			"Mmight":	0,
+			"hit":	0,
+			"dodge":	22,
+			"crit":	0,
+			"favor":	4,
+			"wgt":	6,
+			"uses":	28,
+			"prof":	12,
+			"minrange":	1,
+			"maxrange":	1,
+			"minhand":	1,
+			"maxhand":	0,
+			"dmg_type":	0,
+			"price":	612,
+			"heal":	0
+		},
+		"Infused":	{
+			"Power":	-1,
+			"Type":	0
+		}
+	}
+}

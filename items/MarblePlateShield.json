@@ -1,3 +1,63 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:4f1f77a41a009017eaa81d00217d2ec6efe0160070d7eac1e3c2d560dc17da13
-size 896
+{
+	"Item":	{
+		"Name":	"Marble plate shield",
+		"id":	415,
+		"Description":	"Kite shield lined in an ornate layer of sculpted marble. Magical.",
+		"Bonus":	{
+			"hp":	0,
+			"str":	0,
+			"mag":	0,
+			"agi":	0,
+			"dex":	0,
+			"luck":	0,
+			"def":	0,
+			"res":	0,
+			"con":	0,
+			"move":	0,
+			"prof":	0
+		},
+		"Malus":	{
+			"hp":	0,
+			"str":	0,
+			"mag":	0,
+			"agi":	0,
+			"dex":	0,
+			"luck":	0,
+			"def":	0,
+			"res":	0,
+			"con":	0,
+			"move":	0,
+			"prof":	0
+		},
+		"Sellable":	true,
+		"Effects":	{
+			"id":	0
+		},
+		"Types":	{
+			"id":	512,
+			"Type":	"Shield"
+		},
+		"Stats":	{
+			"Pmight":	15,
+			"Mmight":	0,
+			"hit":	0,
+			"dodge":	10,
+			"crit":	0,
+			"favor":	2,
+			"wgt":	13,
+			"uses":	19,
+			"prof":	12,
+			"minrange":	1,
+			"maxrange":	1,
+			"minhand":	1,
+			"maxhand":	0,
+			"dmg_type":	0,
+			"price":	3000,
+			"heal":	0
+		},
+		"Infused":	{
+			"Power":	-1,
+			"Type":	0
+		}
+	}
+}

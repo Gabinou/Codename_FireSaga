@@ -1,3 +1,63 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:7e6934e3d59d1e77fe599970010bbb7a1e29f10723df7afd3ec41e644fdc7f93
-size 918
+{
+	"Item":	{
+		"Name":	"Salve",
+		"id":	1100,
+		"Description":	"Crushed medecinal plants, mixed into a healing salve. Can be made in a pinch by an experienced forager.",
+		"Bonus":	{
+			"hp":	0,
+			"str":	0,
+			"mag":	0,
+			"agi":	0,
+			"dex":	0,
+			"luck":	0,
+			"def":	0,
+			"res":	0,
+			"con":	0,
+			"move":	0,
+			"prof":	0
+		},
+		"Malus":	{
+			"hp":	0,
+			"str":	0,
+			"mag":	0,
+			"agi":	0,
+			"dex":	0,
+			"luck":	0,
+			"def":	0,
+			"res":	0,
+			"con":	0,
+			"move":	0,
+			"prof":	0
+		},
+		"Sellable":	true,
+		"Effects":	{
+			"id":	0
+		},
+		"Types":	{
+			"id":	2,
+			"Type":	"Lance"
+		},
+		"Stats":	{
+			"Pmight":	9,
+			"Mmight":	0,
+			"hit":	50,
+			"dodge":	0,
+			"crit":	0,
+			"favor":	0,
+			"wgt":	11,
+			"uses":	20,
+			"prof":	11,
+			"minrange":	1,
+			"maxrange":	2,
+			"minhand":	1,
+			"maxhand":	0,
+			"dmg_type":	0,
+			"price":	1300,
+			"heal":	25
+		},
+		"Infused":	{
+			"Power":	-1,
+			"Type":	0
+		}
+	}
+}

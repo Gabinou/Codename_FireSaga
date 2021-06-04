@@ -1,3 +1,63 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:4b16b10205f2573e51eef476b082595a971f971b1f0b8dee593dcc4ef1e8e83a
-size 855
+{
+	"Item":	{
+		"Name":	"Battleaxe",
+		"id":	212,
+		"Description":	"Double-bladed, comically oversized axe.",
+		"Bonus":	{
+			"hp":	0,
+			"str":	0,
+			"mag":	0,
+			"agi":	0,
+			"dex":	0,
+			"luck":	0,
+			"def":	0,
+			"res":	0,
+			"con":	0,
+			"move":	0,
+			"prof":	0
+		},
+		"Malus":	{
+			"hp":	0,
+			"str":	0,
+			"mag":	0,
+			"agi":	0,
+			"dex":	0,
+			"luck":	0,
+			"def":	0,
+			"res":	0,
+			"con":	0,
+			"move":	0,
+			"prof":	0
+		},
+		"Sellable":	true,
+		"Effects":	{
+			"id":	0
+		},
+		"Types":	{
+			"id":	4,
+			"Type":	"Axe"
+		},
+		"Stats":	{
+			"Pmight":	15,
+			"Mmight":	0,
+			"hit":	45,
+			"dodge":	0,
+			"crit":	0,
+			"favor":	0,
+			"wgt":	14,
+			"uses":	30,
+			"prof":	14,
+			"minrange":	1,
+			"maxrange":	1,
+			"minhand":	1,
+			"maxhand":	2,
+			"dmg_type":	0,
+			"price":	1800,
+			"heal":	0
+		},
+		"Infused":	{
+			"Power":	-1,
+			"Type":	0
+		}
+	}
+}
