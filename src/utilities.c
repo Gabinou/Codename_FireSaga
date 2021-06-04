@@ -467,7 +467,7 @@ void utilities_allNames_Print(const char * foldername) {
     SDL_Log("filename %s", filename);
     fp = fopen(filename, "w+");
     SDL_assert(fp != NULL);
-    for (uint8_t i = MENU_OPTION_START; i < arrlen(menuOptionnames); i++) {
+    for (uint8_t i = MENU_OPTION_START; i < MENU_OPTION_END; i++) {
         fprintf(fp, "%d %s \n", i, menuOptionnames[i]);
     }
     fclose(fp);
@@ -813,7 +813,7 @@ char ** utilities_unitstateNames(uint32_t in_statecode) {
 #define REGISTER_ENUM(x, y, z, i) DARR_PUT(equippableClasscodes, y);
 uint16_t * equippableClasscodes;
 void makeequippableClasscodes() {
-    SDL_Log("utilities_unitstateNames");
+    SDL_Log("makeequippableClasscodes");
     equippableClasscodes = DARR_INIT(uint16_t, UNIT_CLASS_END);
     DARR_LEN(equippableClasscodes) = UNIT_CLASS_END;
     DARR_NUM(equippableClasscodes) = 0;
