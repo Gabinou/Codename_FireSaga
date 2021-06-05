@@ -907,7 +907,7 @@ void Game_init(struct Game * in_game) {
     TNECS_REGISTER_SYSTEM(in_game->tnecs_world, tnecs_drawCursor, Sprite, Position, controllerGamepad, controllerKeyboard);
     TNECS_REGISTER_SYSTEM(in_game->tnecs_world, tnecs_drawMouse, Sprite, Position, controllerMouse);
     TNECS_REGISTER_SYSTEM(in_game->tnecs_world, tnecs_drawMenu, Menu);
-    TNECS_REGISTER_SYSTEM(in_game->tnecs_world, tnecs_drawText, Text, Position, UpdateTimer );
+    TNECS_REGISTER_SYSTEM(in_game->tnecs_world, tnecs_drawText, Text, Position, UpdateTimer);
 
 
     in_game->isrunning = true;
