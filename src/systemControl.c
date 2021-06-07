@@ -7,6 +7,24 @@ int32_t * controller_gamepad;
 int32_t * controller_touchpad;
 int32_t * controller_mouse;
 
+
+void tnecs_controlMouse(tnecs_system_input_t * in_input) {
+
+}
+
+void tnecs_controlKeyboard(tnecs_system_input_t * in_input) {
+
+}
+
+void tnecs_controlGamepad(tnecs_system_input_t * in_input) {
+
+}
+
+void tnecs_controlTouchpad(tnecs_system_input_t * in_input) {
+
+}
+
+
 void controlMalloc() {
     cursor_move = SDL_malloc(sizeof(*cursor_move));
     controller_keyboard = SDL_malloc(sizeof(*controller_keyboard));

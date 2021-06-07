@@ -22,25 +22,25 @@ Now, the Duke of Gaolin tells me to march.")
 REGISTER_LINE(UNIT_NAME_IGNELL,0,0,0,0,0,"
 As far as I\'m concerned, the Emperor himself just changed the plan!")
 REGISTER_LINE(UNIT_NAME_MICHAEL,0,0,0,0,0,"
-To hell with his orders! Our village... ")
+To hell with the Emperor! Our village... ")
 REGISTER_LINE(UNIT_NAME_IGNELL,0,0,0,0,0,"
 Shut your mouth lad, or else I\'ll cut your tongue myself.")
 REGISTER_LINE(UNIT_NAME_MICHAEL,0,0,0,0,0,"
 ...")
 REGISTER_LINE(UNIT_NAME_IGNELL,0,0,0,0,0,"
 Backstabbin\' twats don\'t get to live long in the Imperial Army.")
-REGISTER_LINE(UNIT_NAME_ERWIN,0,0,0,0,0,"
+REGISTER_LINE(UNIT_NAME_Mayor,0,0,0,0,0,"
 We thought you\'d stay here.")
-REGISTER_LINE(UNIT_NAME_ERWIN,0,0,0,0,0,"
-Fight the savages, save us.")
-REGISTER_LINE(UNIT_NAME_ERWIN,0,0,0,0,0,"
+REGISTER_LINE(UNIT_NAME_KIARA,0,0,0,0,0,"
+Won't you fight the savages? Can't you save us?")
+REGISTER_LINE(UNIT_NAME_ERWIN ,0,0,0,0,0,"
  That\'s what the Duke\'s footmen said.")
-REGISTER_LINE(UNIT_NAME_ERWIN,0,0,0,0,0,"
+REGISTER_LINE(UNIT_NAME_SEBASTIAN,0,0,0,0,0,"
  We can\'t defend ourselves!")
-REGISTER_LINE(UNIT_NAME_ERWIN,0,0,0,0,0,"
+REGISTER_LINE(UNIT_NAME_MICHAEL,0,0,0,0,0,"
  Why are you even leaving?")
-REGISTER_LINE(UNIT_NAME_ERWIN,0,0,0,0,0,"
- To go where?")
+REGISTER_LINE(UNIT_NAME_Villager,0,0,0,0,0,"
+ Where are you even going?!")
 REGISTER_LINE(UNIT_NAME_IGNELL,0,0,0,0,0,"
  Frankly, I don\'t know where exactly.")
 REGISTER_LINE(UNIT_NAME_IGNELL,0,0,0,0,0,"
@@ -58,7 +58,7 @@ That lumber is fine werk, just fer us!")
 REGISTER_LINE(UNIT_NAME_RANDO_IMPERIAL,0,0,0,0,0,"
 We can make better livin\' here than in the city!")
 REGISTER_LINE(UNIT_NAME_IGNELL,0,0,0,0,0,"
-Lad, the edge of Gaolin is far from the capital.")
+People, the edge of Gaolin is far from the capital.")
 REGISTER_LINE(UNIT_NAME_IGNELL,0,0,0,0,0,"
 We marched fer days.")
 REGISTER_LINE(UNIT_NAME_IGNELL,0,0,0,0,0,"
@@ -75,12 +75,12 @@ REGISTER_LINE(UNIT_NAME_IGNELL,0,0,0,0,0,"
 First, I\'d planned to build a fence, then...")
 REGISTER_LINE(UNIT_NAME_IGNELL,0,0,0,0,0,"
 But it don\'t matter none, not anymore.")
-REGISTER_LINE(UNIT_NAME_ERWIN,0,0,0,0,0,"
+REGISTER_LINE(UNIT_NAME_FARMER,0,0,0,0,0,"
  The savages steal from our reserve, we won\'t have enough food for winter!")
-REGISTER_LINE(UNIT_NAME_ERWIN,0,0,0,0,0,"
+REGISTER_LINE(UNIT_NAME_girl,0,0,0,0,0,"
  Isn\'t there anything else you can do?")
 REGISTER_LINE(UNIT_NAME_ERWIN,0,0,0,0,0,"
- Leave a few men here?")
+ You could eave a few men here?")
 REGISTER_LINE(UNIT_NAME_IGNELL,0,0,0,0,0,"
 Deserters get hanged, boy.")
 REGISTER_LINE(UNIT_NAME_IGNELL,0,0,0,0,0,"
@@ -90,15 +90,15 @@ I wouldn\'t impose like that on anyone.")
 REGISTER_LINE(UNIT_NAME_IGNELL,0,0,0,0,0,"
 The whole Imperial Division is moving with the Duke of Gaolin.")
 REGISTER_LINE(UNIT_NAME_IGNELL,0,0,0,0,0,"
-Now lad, whatever you plannin\' fightin\' or somethin\' else, nothin\' won\'t help.")
+Now people, whatever you plannin\' fightin\' or somethin\' else, nothin\' won\'t help.")
 REGISTER_LINE(UNIT_NAME_IGNELL,0,0,0,0,0,"
 Don\'t go bawlin\' either broken hearts don\'t stop men marchin\'.")
-REGISTER_LINE(UNIT_NAME_ERWIN, 0,0,0,0,0,"
+REGISTER_LINE(UNIT_NAME_Priest, 0,0,0,0,0,"
 What are we supposed to do now?")
 REGISTER_LINE(UNIT_NAME_IGNELL,0,0,0,0,0,"
-That\'s up to you, lad!")
+That\'s up to you!")
 REGISTER_LINE(UNIT_NAME_IGNELL,0,0,0,0,0,"
-Now leave!")
+Now scram!)
 
 //      REGISTER_LINE(UNIT_NAME_IGNELL,0,0,0,0,0,"
 // Before I ask you boys to leave, I need a favor out of you, lad. ")

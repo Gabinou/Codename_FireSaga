@@ -895,6 +895,20 @@ void Game_init(struct Game * in_game) {
     Menu_Options_init();
 
     in_game->tnecs_world = tnecs_world_genesis();
+    TNECS_REGISTER_COMPONENT(in_game->tnecs_world, Position);
+    TNECS_REGISTER_COMPONENT(in_game->tnecs_world, Sprite);
+    TNECS_REGISTER_COMPONENT(in_game->tnecs_world, controllerGamepad);
+    TNECS_REGISTER_COMPONENT(in_game->tnecs_world, controllerMouse);
+    TNECS_REGISTER_COMPONENT(in_game->tnecs_world, controllerKeyboard);
+    TNECS_REGISTER_COMPONENT(in_game->tnecs_world, controllerTouchpad);
+    TNECS_REGISTER_COMPONENT(in_game->tnecs_world, controllerTouchpad);
+    TNECS_REGISTER_COMPONENT(in_game->tnecs_world, UpdateTimer);
+    TNECS_REGISTER_SYSTEM(in_game->tnecs_world, tnecs_drawSprite, Sprite, Position);
+    TNECS_REGISTER_SYSTEM(in_game->tnecs_world, tnecs_drawCursor, Sprite, Position, controllerGamepad, controllerKeyboard);
+    TNECS_REGISTER_SYSTEM(in_game->tnecs_world, tnecs_drawMouse, Sprite, Position, controllerMouse);
+    TNECS_REGISTER_SYSTEM(in_game->tnecs_world, tnecs_drawMenu, Menu);
+    TNECS_REGISTER_SYSTEM(in_game->tnecs_world, tnecs_drawText, Text, Position, UpdateTimer);
+
 
     in_game->isrunning = true;
     in_game->keyboardInputMap = KeyboardInputMap_default;

@@ -10,7 +10,14 @@
 REGISTER_LINE(UNIT_NAME_MICHAEL, 0,0,0,0,0, They're not coming back.)
 REGISTER_LINE(UNIT_NAME_ERWIN , 0,0,0,0,0, I know.)
 REGISTER_LINE(UNIT_NAME_SEBASTIAN , 0,0,0,0,0, Let's go home now! We gots work to do.)
-REGISTER_LINE(UNIT_NAME_ERWIN , 0,0,0,0,0, No... Everyone is gone. Let's see.)
+REGISTER_LINE(UNIT_NAME_ERWIN , 0,0,0,0,0, No... Everyone is gone. Let's search the house.)
+REGISTER_LINE(UNIT_NAME_ERWIN , 0,0,0,0,0, No... Everyone is gone. Let's search the house.)
+REGISTER_LINE(UNIT_NAME_MuchaelN , 0,0,0,0,0, WHY? )
+REGISTER_LINE(UNIT_NAME_ERWIN , 0,0,0,0,0, Hunor me)
+
+// cutsxene sequencharacter to 
+// cutsxene sequencharacter to 
+REGISTER_LINE(UNIT_NAME_ERWIN , 0,0,0,0,0, LOOK AT THIS!}) 
 
 REGISTER_LINE(UNIT_NAME_SEBASTIAN , 0,0,0,0,0, They've forgotten a sword?)
 REGISTER_LINE(UNIT_NAME_MICHAEL, 0,0,0,0,0, Seb... Imperial armymen wouldn't forget a sword...) 
@@ -31,7 +38,7 @@ REGISTER_LINE(UNIT_NAME_MICHAEL, 0,0,0,0,0,
     Here, Erwin.)
 REGISTER_LINE(UNIT_NAME_ERWIN, 0,0,0,0,0, 
     Thanks. Young brats don\'t get to play with knives!)
-REGISTER_LINE(UNIT_NAME_MICHAEL, 0,0,0,0,0, 
+REGISTER_LINE(UNIT_NAME_MICHAEL, 0,0,0,0,0,
     This isn\'t a knife.)
 REGISTER_LINE(UNIT_NAME_ERWIN, 0,0,0,0,0, 
     It is a knife. A long knife.)
@@ -42,7 +49,8 @@ REGISTER_LINE(UNIT_NAME_ERWIN, 0,0,0,0,0,
 REGISTER_LINE(UNIT_NAME_SEBASTIAN, 0,0,0,0,0, 
     This is the story?)
 REGISTER_LINE(UNIT_NAME_SEBASTIAN, 0,0,0,0,0, 
-    Peasants with knives go to war with dangerous savages?)
+    Peasants with knives? That fight the Kewac?)
+REGISTER_LINE(UNIT_NAME_SEBASTIAN, 0,0,0,0,0, 
 REGISTER_LINE(UNIT_NAME_SEBASTIAN, 0,0,0,0,0, 
     Savages with their demon wolves?)
 REGISTER_LINE(UNIT_NAME_ERWIN, 0,0,0,0,0, 

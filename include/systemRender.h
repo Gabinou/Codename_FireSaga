@@ -11,6 +11,7 @@
 #include "text.h"
 #include "map.h"
 #include "game.h"
+#include "tnecs.h"
 #include "position.h"
 #include "controllerKeyboard.h"
 #include "controllerGamepad.h"
@@ -18,6 +19,12 @@
 #include "controllerTouchpad.h"
 
 // SDL_Renderer * Game_renderer;
+
+extern void tnecs_drawText(tnecs_system_input_t * in_input);
+extern void tnecs_drawSprite(tnecs_system_input_t * in_input);
+extern void tnecs_drawCursor(tnecs_system_input_t * in_input);
+extern void tnecs_drawMouse(tnecs_system_input_t * in_input);
+extern void tnecs_drawMenu(tnecs_system_input_t * in_input);
 
 typedef struct systemRenderModule {
     ECS_DECLARE_ENTITY(drawText);

@@ -1,6 +1,28 @@
 
 #include "systemRender.h"
 
+void tnecs_drawSprite(tnecs_system_input_t * in_input) {
+
+}
+
+void tnecs_drawText(tnecs_system_input_t * in_input) {
+
+}
+
+void tnecs_drawCursor(tnecs_system_input_t * in_input) {
+
+}
+
+void tnecs_drawMouse(tnecs_system_input_t * in_input) {
+
+}
+
+void tnecs_drawMenu(tnecs_system_input_t * in_input) {
+
+}
+
+
+
 void drawSprite(ecs_iter_t * it) {
     ECS_IMPORT(it->world, controllerMouseModule);
     ECS_IMPORT(it->world, controllerGamepadModule);

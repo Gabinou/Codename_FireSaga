@@ -24,6 +24,11 @@ extern int32_t * controller_mouse;
 extern void controlMalloc();
 extern void controlFree();
 
+extern void tnecs_controlMouse(tnecs_system_input_t * in_input);
+extern void tnecs_controlKeyboard(tnecs_system_input_t * in_input);
+extern void tnecs_controlGamepad(tnecs_system_input_t * in_input);
+extern void tnecs_controlTouchpad(tnecs_system_input_t * in_input);
+
 typedef struct systemControlModule {
     ECS_DECLARE_ENTITY(controlMouse);
     ECS_DECLARE_ENTITY(controlKeyboard);
