@@ -18,6 +18,7 @@
 
 assets/references/*
 
+saves/*
 html/*
 latex/*
 build/*
