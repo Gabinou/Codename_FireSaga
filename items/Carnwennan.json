@@ -1,3 +1,63 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:d29cab06c7987ad0d432b7b9d9a7d8172bb206d365c5f7e1579420ffa7ce3148
-size 883
+{
+	"Item":	{
+		"Name":	"Carnwennan",
+		"id":	512,
+		"Description":	"The king's dagger. Has the power to shroud its user in shadow.",
+		"Bonus":	{
+			"hp":	0,
+			"str":	0,
+			"mag":	0,
+			"agi":	0,
+			"dex":	0,
+			"luck":	0,
+			"def":	0,
+			"res":	0,
+			"con":	0,
+			"move":	0,
+			"prof":	0
+		},
+		"Malus":	{
+			"hp":	0,
+			"str":	0,
+			"mag":	0,
+			"agi":	0,
+			"dex":	0,
+			"luck":	0,
+			"def":	0,
+			"res":	0,
+			"con":	0,
+			"move":	0,
+			"prof":	0
+		},
+		"Sellable":	true,
+		"Effects":	{
+			"id":	0
+		},
+		"Types":	{
+			"id":	32,
+			"Type":	"Offhand"
+		},
+		"Stats":	{
+			"Pmight":	8,
+			"Mmight":	0,
+			"hit":	10,
+			"dodge":	10,
+			"crit":	0,
+			"favor":	2,
+			"wgt":	9,
+			"uses":	24,
+			"prof":	17,
+			"minrange":	1,
+			"maxrange":	1,
+			"minhand":	1,
+			"maxhand":	0,
+			"dmg_type":	0,
+			"price":	3312,
+			"heal":	0
+		},
+		"Infused":	{
+			"Power":	-1,
+			"Type":	0
+		}
+	}
+}

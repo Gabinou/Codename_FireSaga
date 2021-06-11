@@ -1,3 +1,63 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:ae942fc56c5dddca4c901ae85902b2ef5f0f96cd73f3f2a7a36126d851a008d9
-size 873
+{
+	"Item":	{
+		"Name":	"Steel buckler",
+		"id":	407,
+		"Description":	"Small round steel shield. Heavier and more resistant.",
+		"Bonus":	{
+			"hp":	0,
+			"str":	0,
+			"mag":	0,
+			"agi":	0,
+			"dex":	0,
+			"luck":	0,
+			"def":	0,
+			"res":	0,
+			"con":	0,
+			"move":	0,
+			"prof":	0
+		},
+		"Malus":	{
+			"hp":	0,
+			"str":	0,
+			"mag":	0,
+			"agi":	0,
+			"dex":	0,
+			"luck":	0,
+			"def":	0,
+			"res":	0,
+			"con":	0,
+			"move":	0,
+			"prof":	0
+		},
+		"Sellable":	true,
+		"Effects":	{
+			"id":	0
+		},
+		"Types":	{
+			"id":	512,
+			"Type":	"Shield"
+		},
+		"Stats":	{
+			"Pmight":	7,
+			"Mmight":	0,
+			"hit":	0,
+			"dodge":	7,
+			"crit":	0,
+			"favor":	7,
+			"wgt":	7,
+			"uses":	37,
+			"prof":	7,
+			"minrange":	1,
+			"maxrange":	1,
+			"minhand":	1,
+			"maxhand":	0,
+			"dmg_type":	0,
+			"price":	940,
+			"heal":	0
+		},
+		"Infused":	{
+			"Power":	-1,
+			"Type":	0
+		}
+	}
+}

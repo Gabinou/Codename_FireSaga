@@ -1,3 +1,24 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:4f1117fe7ec0c2d4d97ba1eac0c4ff4178d18b7b3054f44f430c6f8eeae4249f
-size 324
+{
+	"Tile":	{
+		"Name":	"Glacier",
+		"id":	71,
+		"inside":	false,
+		"Stats":	{
+			"Dodge":	0,
+			"Pprot":	0,
+			"Mprot":	0,
+			"Heal":	0
+		},
+		"MvtCost":	{
+			"foot_slow":	4,
+			"foot_fast":	3,
+			"mages":	4,
+			"fliers":	1,
+			"riders_slow":	0,
+			"riders_fast":	0,
+			"armors":	0,
+			"pirates":	3,
+			"bandits":	3
+		}
+	}
+}

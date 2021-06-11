@@ -1,3 +1,63 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:afb8e181a4452ef9aee654533658248547470fec9d3fb7e126f97b4b913f5a42
-size 914
+{
+	"Item":	{
+		"Name":	"Killy",
+		"id":	26,
+		"Description":	" Incredibly powerful. Works really hard to protect Cibo. Cries when she dies, inevitably, before him.",
+		"Bonus":	{
+			"hp":	0,
+			"str":	0,
+			"mag":	0,
+			"agi":	0,
+			"dex":	0,
+			"luck":	0,
+			"def":	0,
+			"res":	0,
+			"con":	0,
+			"move":	0,
+			"prof":	0
+		},
+		"Malus":	{
+			"hp":	0,
+			"str":	0,
+			"mag":	0,
+			"agi":	0,
+			"dex":	0,
+			"luck":	0,
+			"def":	0,
+			"res":	0,
+			"con":	0,
+			"move":	0,
+			"prof":	0
+		},
+		"Sellable":	false,
+		"Effects":	{
+			"id":	0
+		},
+		"Types":	{
+			"id":	1,
+			"Type":	"Sword"
+		},
+		"Stats":	{
+			"Pmight":	13,
+			"Mmight":	0,
+			"hit":	50,
+			"dodge":	0,
+			"crit":	15,
+			"favor":	10,
+			"wgt":	0,
+			"uses":	100,
+			"prof":	12,
+			"minrange":	1,
+			"maxrange":	1,
+			"minhand":	1,
+			"maxhand":	2,
+			"dmg_type":	0,
+			"price":	0,
+			"heal":	0
+		},
+		"Infused":	{
+			"Power":	-1,
+			"Type":	0
+		}
+	}
+}
