@@ -48,9 +48,9 @@ void tnecs_drawCursor(tnecs_system_input_t * in_input) {
     struct Position * position_ptr = TNECS_COMPONENTS_LIST(in_input, Position);
     struct Sprite * sprite_ptr = TNECS_COMPONENTS_LIST(in_input, Sprite);
     struct controllerKeyboard * keyboard_ptr = TNECS_COMPONENTS_LIST(in_input, controllerKeyboard);
-    struct controllerGamepad * mouse_ptr = TNECS_COMPONENTS_LIST(in_input, controllerGamepad);
+    struct controllerGamepad * gamepad_ptr = TNECS_COMPONENTS_LIST(in_input, controllerGamepad);
     
-    for (uint16_t ent = 0; ent <Mraz in_input->entity_num; ent++) {
+    for (uint16_t ent = 0; ent <in_input->entity_num; ent++) {
         if (sprite_ptr[ent].visible) {
 
             sprite_ptr[ent].objectivepos.x = position_ptr[ent].tilemap_pos.x * position_ptr[ent].scale[0] - sprite_ptr[ent].destrect.w / 4;
@@ -61,10 +61,10 @@ void tnecs_drawCursor(tnecs_system_input_t * in_input) {
                     Sprite_loop(&sprite_ptr[ent]);
                 }
 
-                sprite_ptr[ent].update_timer += it->delta_time;
+                sprite_ptr[ent].update_timer += in_input->delta_t;
                 if (sprite_ptr[ent].update_timer > sprite_ptr[ent].update_wait) {
                     bool slide_int = ((keyboard_ptr[ent].timeheld_move > CURSOR_FASTTIME) || (gamepad_ptr[ent].timeheld_move > CURSOR_FASTTIME));
-                    Sprite_slide(&sprite_ptr[ent], slide_int, it->delta_time);
+                    Sprite_slide(&sprite_ptr[ent], slide_int, in_input->deltat);
                     sprite_ptr[ent].update_timer = 0.0f;
                 }
             }
