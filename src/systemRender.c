@@ -21,10 +21,10 @@ ent_hasgamepad = TNECS_ENTITY_HASCOMPONENT(in_input->world, in_input->world->ent
                         Sprite_loop(&sprite_ptr[ent]);
                     }
 
-                    sprite_ptr[ent].update_timer += it->delta_time;
+                    sprite_ptr[ent].update_timer +=in_input ->deltat;
                     if (sprite_ptr[ent].update_timer > sprite_ptr[ent].update_wait) {
                         bool slide_int = 0;
-                        Sprite_slide(&sprite_ptr[ent], slide_int, it->delta_time);
+                        Sprite_slide(&sprite_ptr[ent], slide_int, in_input->deltat);
                         sprite_ptr[ent].update_timer = 0.0f;
                     }
                 }
