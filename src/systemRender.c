@@ -41,17 +41,49 @@ ent_hasgamepad = TNECS_ENTITY_HASCOMPONENT(in_input->world, in_input->world->ent
 
 void tnecs_drawText(tnecs_system_input_t * in_input) {
 
+    struct Position * position_ptr = TNECS_COMPONENTS_LIST(in_input, Position);
 }
 
 void tnecs_drawCursor(tnecs_system_input_t * in_input) {
+    struct Position * position_ptr = TNECS_COMPONENTS_LIST(in_input, Position);
+    struct Sprite * sprite_ptr = TNECS_COMPONENTS_LIST(in_input, Sprite);
+    struct controllerKeyboard * keyboard_ptr = TNECS_COMPONENTS_LIST(in_input, controllerKeyboard);
+    struct controllerGamepad * mouse_ptr = TNECS_COMPONENTS_LIST(in_input, controllerGamepad);
+    
+    for (uint16_t ent = 0; ent <Mraz in_input->entity_num; ent++) {
+        if (sprite_ptr[ent].visible) {
 
+            sprite_ptr[ent].objectivepos.x = position_ptr[ent].tilemap_pos.x * position_ptr[ent].scale[0] - sprite_ptr[ent].destrect.w / 4;
+            sprite_ptr[ent].objectivepos.y = position_ptr[ent].tilemap_pos.y * position_ptr[ent].scale[1] - sprite_ptr[ent].destrect.h / 4;
+            if (sprite_ptr[ent].update_wait > 0) {
+
+                if (sprite_ptr[ent].animated) {
+                    Sprite_loop(&sprite_ptr[ent]);
+                }
+
+                sprite_ptr[ent].update_timer += it->delta_time;
+                if (sprite_ptr[ent].update_timer > sprite_ptr[ent].update_wait) {
+                    bool slide_int = ((keyboard_ptr[ent].timeheld_move > CURSOR_FASTTIME) || (gamepad_ptr[ent].timeheld_move > CURSOR_FASTTIME));
+                    Sprite_slide(&sprite_ptr[ent], slide_int, it->delta_time);
+                    sprite_ptr[ent].update_timer = 0.0f;
+                }
+            }
+
+            sprite_ptr[ent].destrect.x = sprite_ptr[ent].objectivepos.x + position_ptr[ent].offset_px.x;
+            sprite_ptr[ent].destrect.y = sprite_ptr[ent].objectivepos.y + position_ptr[ent].offset_px.y;
+
+            SDL_RenderCopy(Game_renderer, sprite_ptr[ent].texture, &sprite_ptr[ent].srcrect, &sprite_ptr[ent].destrect);
+        }
+    }
 }
 
 void tnecs_drawMouse(tnecs_system_input_t * in_input) {
+    struct Position * position_ptr = TNECS_COMPONENTS_LIST(in_input, Position);
 
 }
 
 void tnecs_drawMenu(tnecs_system_input_t * in_input) {
+    struct Position * position_ptr = TNECS_COMPONENTS_LIST(in_input, Position);
 
 }
 
