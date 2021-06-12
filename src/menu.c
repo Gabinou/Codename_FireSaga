@@ -276,7 +276,7 @@ struct Point Menu_cursorPos_Compute(struct Menu * in_menu) {
     return (out);
 }
 
-void Menu_Options_Draw(ecs_world_t * in_world, struct Menu * in_menu) {
+void Menu_Options_Draw_tnecs(tnecs_world_t * in_world, struct Menu * in_menu) {
     ECS_IMPORT(in_world, TextModule);
     struct MenuOption cell;
     Text * text_mptr;
@@ -284,6 +284,8 @@ void Menu_Options_Draw(ecs_world_t * in_world, struct Menu * in_menu) {
         for (uint8_t row = 0; row < in_menu->row_num; row++) {
             cell = in_menu->menuoptions[row + in_menu->row_num * col];
             text_mptr = ecs_get_mut(in_world, cell.ent_text, Text, NULL);
+            struct Menu * menu_ptr = TNECS_COMPONENTS_LIST(in_input, Menu);
+
             // SDL_RenderCopy(Game_renderer, in_menu->texture, &srcrect, &destrect);
             Text_Texture_Make(text_mptr);
             Text_Rects_Pos_Set(text_mptr, in_menu->pos.x + col * in_menu->col_widths[col], in_menu->pos.y + row * in_menu->row_height);
