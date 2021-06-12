@@ -95,7 +95,7 @@ void tnecs_drawMenu(tnecs_system_input_t * in_input) {
     for (uint16_t ent = 0; ent < in_input->num_entities; ent++) {
         if (menu_ptr[ent].enabled) {
             Menu_Patches_Draw(&menu_ptr[ent]);
-            Menu_Options_Draw(in_input->world, &menu_ptr[ent]);
+            Menu_Options_Draw_tnecs(in_input->world, &menu_ptr[ent]);
         }
     }
 }
