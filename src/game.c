@@ -197,6 +197,21 @@ ecs_entity_t Game_Menu_Get(struct Game * in_game, int8_t in_menu) {
     return (in_menu_entity);
 }
 
+ecs_entity_t Game_makeButton_tnecs(struct Game * in_game, int8_t in_menu_option) {
+    tnecs_entity_t button = TNECS_ENTITY_CREATE_WCOMPONENTS(in_game->tnecs_world, Position, Text, Sprite);
+    struct Position * position_ptr = TNECS_GET_COMPONENT(in_game->tnecs_world, button, Position);
+    struct Sprite * sprite_ptr = TNECS_GET_COMPONENT(in_game->tnecs_world, button, Sprite);
+    struct Text * text_ptr = TNECS_GET_COMPONENT(in_game->tnecs_world, button, Text);
+
+    position_ptr->onTilemap = true;
+    Position_Bounds_Set(position_ptr, in_game->map_ptr->boundsmin.x, in_game->map_ptr->boundsmax.x, in_game->map_ptr->boundsmin.y, in_game->map_ptr->boundsmax.y);
+
+    SDL_Color white = {255, 255, 255};
+    text_ptr->text_color = white;
+    text_ptr->visible = false;
+    return (button);
+}
+
 ecs_entity_t Game_makeButton(struct Game * in_game, int8_t in_menu_option) {
     ECS_IMPORT(in_game->world, PositionModule);
     ECS_IMPORT(in_game->world, TextModule);
