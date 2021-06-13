@@ -2108,6 +2108,92 @@ void Game_Menu_LocationfromUnit(struct Game * in_game, ecs_entity_t in_menu_enti
     ecs_modified(in_game->world, in_menu_entity, Menu);
 }
 
+void makeContent_MENU_UNIT_ACTION_tnecs(struct Game * in_game, void * data_1, void * data_2) {
+    SDL_Log("makeContent_MENU_UNIT_ACTION_tnecs");
+    tnecs_entity_t menu_entity = in_game->tnecs_menu_loaded[MENU_UNIT_ACTION];
+    struct Position * unit_pos_ptr = NULL;
+    SDL_assert(in_game->selected_unit_entity != 0);
+    SDL_assert(menu_entity != 0);
+    unit_pos_ptr = TNECS_GET_COMPONENT(in_game->tnecs_world, in_game->tnecs_selected_unit_entity, Position);
+    struct Menu * menu_ptr = TNECS_GET_COMPONENT(in_game->tnecs_world, menu_entity, Menu);
+    menu_ptr->col_num = 1;
+    menu_ptr->row_num = 0;
+    arrfree(menu_ptr->menuoptions);
+
+    MenuOption_ITEMS.pad_text = MenuOption_default.pad_text;
+    MenuOption_ITEMS.pad_icon = MenuOption_default.pad_icon;
+    MenuOption_ITEMS.pad_cell = MenuOption_default.pad_cell;
+    Game_menuOptions_Create_tnecs(in_game, &MenuOption_ITEMS.ent_text, menuOptionnames[MENU_OPTION_ITEMS]);
+    arrput(menu_ptr->menuoptions, MenuOption_ITEMS);
+    menu_ptr->row_num++;
+
+    if (in_game->num_traders > 0) {
+        MenuOption_TRADE.pad_text = MenuOption_default.pad_text;
+        MenuOption_TRADE.pad_icon = MenuOption_default.pad_icon;
+        MenuOption_TRADE.pad_cell = MenuOption_default.pad_cell;
+        Game_menuOptions_Create(in_game, &MenuOption_TRADE.ent_text, menuOptionnames[MENU_OPTION_TRADE]);
+        arrput(menu_ptr->menuoptions, MenuOption_TRADE);
+        menu_ptr->row_num++;
+    }
+    bool seize = false;
+    if (seize) {
+        MenuOption_SEIZE.pad_text = MenuOption_default.pad_text;
+        MenuOption_SEIZE.pad_icon = MenuOption_default.pad_icon;
+        MenuOption_SEIZE.pad_cell = MenuOption_default.pad_cell;
+        Game_menuOptions_Create(in_game, &MenuOption_SEIZE.ent_text, menuOptionnames[MENU_OPTION_SEIZE]);
+        arrput(menu_ptr->menuoptions, MenuOption_SEIZE);
+        menu_ptr->row_num++;
+    }
+    if (in_game->num_talkers > 0) {
+        MenuOption_TALK.pad_text = MenuOption_default.pad_text;
+        MenuOption_TALK.pad_icon = MenuOption_default.pad_icon;
+        MenuOption_TALK.pad_cell = MenuOption_default.pad_cell;
+        Game_menuOptions_Create(in_game, &MenuOption_TALK.ent_text, menuOptionnames[MENU_OPTION_TALK]);
+        arrput(menu_ptr->menuoptions, MenuOption_TALK);
+        menu_ptr->row_num++;
+    }
+    if (in_game->num_defenders > 0) {
+        MenuOption_ATTACK.pad_text = MenuOption_default.pad_text;
+        MenuOption_ATTACK.pad_icon = MenuOption_default.pad_icon;
+        MenuOption_ATTACK.pad_cell = MenuOption_default.pad_cell;
+        Game_menuOptions_Create(in_game, &MenuOption_ATTACK.ent_text, menuOptionnames[MENU_OPTION_ATTACK]);
+        arrput(menu_ptr->menuoptions, MenuOption_ATTACK);
+        menu_ptr->row_num++;
+    }
+    if (in_game->num_patients > 0) {
+        MenuOption_STAFF.pad_text = MenuOption_default.pad_text;
+        MenuOption_STAFF.pad_icon = MenuOption_default.pad_icon;
+        MenuOption_STAFF.pad_cell = MenuOption_default.pad_cell;
+        Game_menuOptions_Create(in_game, &MenuOption_STAFF.ent_text, menuOptionnames[MENU_OPTION_STAFF]);
+        arrput(menu_ptr->menuoptions, MenuOption_STAFF);
+        menu_ptr->row_num++;
+    }
+    if (in_game->num_spectators > 0) {
+        MenuOption_DANCE.pad_text = MenuOption_default.pad_text;
+        MenuOption_DANCE.pad_icon = MenuOption_default.pad_icon;
+        MenuOption_DANCE.pad_cell = MenuOption_default.pad_cell;
+        Game_menuOptions_Create(in_game, &MenuOption_DANCE.ent_text, menuOptionnames[MENU_OPTION_DANCE]);
+        arrput(menu_ptr->menuoptions, MenuOption_DANCE);
+        menu_ptr->row_num++;
+    }
+    if (in_game->num_rescuees > 0) {
+        MenuOption_RESCUE.pad_text = MenuOption_default.pad_text;
+        MenuOption_RESCUE.pad_icon = MenuOption_default.pad_icon;
+        MenuOption_RESCUE.pad_cell = MenuOption_default.pad_cell;
+        Game_menuOptions_Create(in_game, &MenuOption_RESCUE.ent_text, menuOptionnames[MENU_OPTION_RESCUE]);
+        arrput(menu_ptr->menuoptions, MenuOption_RESCUE);
+        menu_ptr->row_num++;
+    }
+    MenuOption_WAIT.pad_text = MenuOption_default.pad_text;
+    MenuOption_WAIT.pad_icon = MenuOption_default.pad_icon;
+    MenuOption_WAIT.pad_cell = MenuOption_default.pad_cell;
+    Game_menuOptions_Create(in_game, &MenuOption_WAIT.ent_text, menuOptionnames[MENU_OPTION_WAIT]);
+    arrput(menu_ptr->menuoptions, MenuOption_WAIT);
+    menu_ptr->row_num++;
+
+    Game_Menu_LocationfromUnit_tnecs(in_game, menu_entity, in_game->tnecs_selected_unit_entity);
+}
+
 void makeContent_MENU_UNIT_ACTION(struct Game * in_game, void * data_1, void * data_2) {
     SDL_Log("makeContent_MENU_UNIT_ACTION");
     ECS_IMPORT(in_game->world, PositionModule);
@@ -2197,6 +2283,40 @@ void makeContent_MENU_UNIT_ACTION(struct Game * in_game, void * data_1, void * d
     Game_Menu_LocationfromUnit(in_game, menu_entity, in_game->selected_unit_entity);
 }
 
+
+void makeContent_MENU_UNIT_ITEMS_tnecs(struct Game * in_game, void * data_1, void * data_2) {
+    SDL_Log("makeContent_MENU_UNIT_ITEMS_tnecs");
+
+    struct Menu * menu_ptr = NULL;
+    tnecs_entity_t menu_entity = in_game->tnecs_menu_loaded[MENU_UNIT_ITEMS];
+    struct Unit * unit_ptr = NULL;
+    char item_name [DEFAULT_BUFFER_SIZE];
+
+    SDL_assert(in_game->selected_unit_entity != 0);
+    SDL_assert(menu_entity != 0);
+    unit_ptr = TNECS_GET_COMPONENT(in_game->tnecs_world, in_game->tnecs_selected_unit_entity, Unit);
+    struct Inventory_item * equipment = unit_ptr->_equipment;
+    menu_ptr = TNECS_GET_COMPONENT(in_game->tnecs_world, menu_entity, Menu);
+    menu_ptr->col_num = 1;
+    menu_ptr->row_num = 0;
+    struct MenuOption temp_option;
+    struct Text * text_ptr = NULL;
+    for (uint8_t i = 0; i < DEFAULT_EQUIPMENT_SIZE; i++) {
+        SDL_Log("item number %d", i);
+        if ((equipment[i].id > 0) & (in_game->weapons != NULL)) {
+            SDL_Log("item id %d", equipment[i].id);
+            temp_option = MenuOption_default;
+            strncpy(item_name, hmget(in_game->weapons, equipment[i].id).item->name, sizeof(item_name));
+            Game_menuOptions_Create_tnecs(in_game, &temp_option.ent_text, item_name);
+            text_ptr = TNECS_GET_COMPONENT(in_game->tnecs_world, temp_option.ent_text, Text);
+            strncpy(text_ptr->text_line, item_name, sizeof(text_ptr->text_line));
+            arrput(menu_ptr->menuoptions, temp_option);
+            menu_ptr->row_num++;
+        }
+    }
+    Game_Menu_LocationfromUnit_tnecs(in_game, menu_entity, in_game->selected_unit_entity);
+}
+
 void makeContent_MENU_UNIT_ITEMS(struct Game * in_game, void * data_1, void * data_2) {
     SDL_Log("makeContent_MENU_UNIT_ITEMS");
     ECS_IMPORT(in_game->world, MenuModule);
@@ -2235,6 +2355,14 @@ void makeContent_MENU_UNIT_ITEMS(struct Game * in_game, void * data_1, void * da
     Game_Menu_LocationfromUnit(in_game, menu_entity, in_game->selected_unit_entity);
 }
 
+void makeContent_MENU_COMBAT_FORECAST_tnecs(struct Game * in_game, void * data_1, void * data_2) {
+    SDL_Log("makeContent_MENU_COMBAT_FORECAST_tnecs");
+    tnecs_entity_t menu_entity = in_game->tnecs_menu_loaded[MENU_COMBAT_FORECAST];
+    struct Menu * menu_ptr = TNECS_GET_COMPONENT(in_game->tnecs_world, menu_entity, Menu);
+    tnecs_entity_t * attacker = (tnecs_entity_t *) data_1;
+    tnecs_entity_t * defenders = (tnecs_entity_t *) data_2;
+}
+
 void makeContent_MENU_COMBAT_FORECAST(struct Game * in_game, void * data_1, void * data_2) {
     SDL_Log("makeContent_MENU_COMBAT_FORECAST");
     ECS_IMPORT(in_game->world, MenuModule);
@@ -2245,6 +2373,14 @@ void makeContent_MENU_COMBAT_FORECAST(struct Game * in_game, void * data_1, void
     ecs_modified(in_game->world, menu_entity, Menu);
 }
 
+void makeContent_MENU_COMBAT_FORECAST_CHOOSE_DEFENDERS_tnecs(struct Game * in_game, void * data_1, void * data_2) {
+    SDL_Log("makeContent_MENU_COMBAT_FORECAST_CHOOSE_DEFENDERS_tnecs");
+    tnecs_entity_t menu_entity = in_game->tnecs_menu_loaded[MENU_COMBAT_FORECAST_CHOOSE_DEFENDERS];
+    struct Menu * menu_ptr = TNECS_GET_COMPONENT(in_game->tnecs_world, menu_entity, Menu);
+    ecs_entity_t * attacker = (ecs_entity_t *) data_1;
+    ecs_entity_t * defenders = (ecs_entity_t *) data_2;
+}
+
 void makeContent_MENU_COMBAT_FORECAST_CHOOSE_DEFENDERS(struct Game * in_game, void * data_1, void * data_2) {
     SDL_Log("makeContent_MENU_COMBAT_FORECAST_CHOOSE_DEFENDERS");
     ECS_IMPORT(in_game->world, MenuModule);
@@ -2253,6 +2389,29 @@ void makeContent_MENU_COMBAT_FORECAST_CHOOSE_DEFENDERS(struct Game * in_game, vo
     ecs_entity_t * attacker = (ecs_entity_t *) data_1;
     ecs_entity_t * defenders = (ecs_entity_t *) data_2;
     ecs_modified(in_game->world, menu_entity, Menu);
+}
+
+void makeContent_MENU_COMBAT_FORECAST_CHOOSE_WEAPONS_tnecs(struct Game * in_game, void * data_1, void * data_2) {
+    SDL_Log("makeContent_MENU_COMBAT_FORECAST_CHOOSE_WEAPONS_tnecs");
+    tnecs_entity_t menu_entity = in_game->tnecs_menu_loaded[MENU_COMBAT_FORECAST_CHOOSE_WEAPONS];
+    struct Menu * menu_ptr = TNECS_GET_COMPONENT(in_game->tnecs_world, menu_entity, Menu);
+    Text * text_ptr = NULL;
+    struct MenuOption temp_option;
+    struct Unit * attacker = TNECS_GET_COMPONENT(in_game->tnecs_world, in_game->attacker_ent, Unit);
+    for (uint8_t i = 0; i < DEFAULT_EQUIPMENT_SIZE; i++) {
+        if (attacker->_equipment[i].id != 0) {
+            temp_option = MenuOption_default;
+            TNECS_ADD_COMPONENT(in_game->tnecs_world, temp_option.ent_text, Text);
+            text_ptr = TNECS_GET_COMPONENT(in_game->tnecs_world, temp_option.ent_text, Text);
+
+            if (in_game->weapons != NULL) {
+                // strncpy(in_game, "Last menu on stack was popped", sizeof(in_game->reason));
+                strcpy(text_ptr->text_line, hmget(in_game->weapons, attacker->_equipment[i].id).item->name);
+            }
+            arrput(menu_ptr->menuoptions, temp_option);
+            menu_ptr->row_num++;
+        }
+    }
 }
 
 void makeContent_MENU_COMBAT_FORECAST_CHOOSE_WEAPONS(struct Game * in_game, void * data_1, void * data_2) {
@@ -2282,6 +2441,17 @@ void makeContent_MENU_COMBAT_FORECAST_CHOOSE_WEAPONS(struct Game * in_game, void
     ecs_modified(in_game->world, menu_entity, Menu);
 }
 
+void makeContent_MENU_RESCUE_tnecs(struct Game * in_game, void * data_1, void * data_2) {
+    SDL_Log("makeContent_MENU_RESCUE_tnecs");
+    tnecs_entity_t menu_entity = in_game->tnecs_menu_loaded[MENU_RESCUE];
+    struct Menu * menu_ptr = TNECS_GET_COMPONENT(in_game->tnecs_world, menu_entity, Menu);
+    struct MenuOption temp_option;
+    for (uint8_t i = 0; i < in_game->num_rescuees; i++) {
+        temp_option = MenuOption_default;
+        temp_option.data = & in_game->rescuees_ent[i];
+    }
+}
+
 void makeContent_MENU_RESCUE(struct Game * in_game, void * data_1, void * data_2) {
     SDL_Log("makeContent_MENU_RESCUE");
     ECS_IMPORT(in_game->world, MenuModule);
@@ -2295,6 +2465,12 @@ void makeContent_MENU_RESCUE(struct Game * in_game, void * data_1, void * data_2
     ecs_modified(in_game->world, menu_entity, Menu);
 }
 
+void makeContent_MENU_UNITS_tnecs(struct Game * in_game, void * data_1, void * data_2) {
+    SDL_Log("makeContent_MENU_UNITS_tnecs");
+    tnecs_entity_t menu_entity = in_game->tnecs_menu_loaded[MENU_UNITS];
+    struct Menu * menu_ptr = TNECS_GET_COMPONENT(in_game->tnecs_world, menu_entity, Menu);
+}
+
 void makeContent_MENU_UNITS(struct Game * in_game, void * data_1, void * data_2) {
     SDL_Log("makeContent_MENU_UNITS");
     ECS_IMPORT(in_game->world, MenuModule);
@@ -2303,12 +2479,29 @@ void makeContent_MENU_UNITS(struct Game * in_game, void * data_1, void * data_2)
     ecs_modified(in_game->world, menu_entity, Menu);
 }
 
+void makeContent_MENU_OPTIONS_tnecs(struct Game * in_game, void * data_1, void * data_2) {
+    SDL_Log("makeContent_MENU_OPTIONS_tnecs");
+    tnecs_entity_t menu_entity = in_game->tnecs_menu_loaded[MENU_OPTIONS];
+    struct Menu * menu_ptr = TNECS_GET_COMPONENT(in_game->tnecs_world, menu_entity, Menu);
+}
+
 void makeContent_MENU_OPTIONS(struct Game * in_game, void * data_1, void * data_2) {
     SDL_Log("makeContent_MENU_OPTIONS");
     ECS_IMPORT(in_game->world, MenuModule);
     ecs_entity_t menu_entity = in_game->menu_loaded[MENU_OPTIONS];
     struct Menu * menu_mptr = ecs_get_mut(in_game->world, menu_entity, Menu, NULL);
     ecs_modified(in_game->world, menu_entity, Menu);
+}
+
+void makeContent_MENU_DANCE_tnecs(struct Game * in_game, void * data_1, void * data_2) {
+    SDL_Log("makeContent_MENU_DANCE_tnecs");
+    tnecs_entity_t menu_entity = in_game->tnecs_menu_loaded[MENU_DANCE];
+    struct Menu * menu_ptr = TNECS_GET_COMPONENT(in_game->tnecs_world, menu_entity, Menu);
+    struct MenuOption temp_option;
+    for (uint8_t i = 0; i < in_game->num_spectators; i++) {
+        temp_option = MenuOption_default;
+        temp_option.data = & in_game->spectators_ent[i];
+    }
 }
 
 void makeContent_MENU_DANCE(struct Game * in_game, void * data_1, void * data_2) {
@@ -2323,6 +2516,15 @@ void makeContent_MENU_DANCE(struct Game * in_game, void * data_1, void * data_2)
     }
     ecs_modified(in_game->world, menu_entity, Menu);
 }
+
+void makeContent_MENU_SHOP_tnecs(struct Game * in_game, void * data_1, void * data_2) {
+    SDL_Log("makeContent_MENU_SHOP_tnecs");
+    // Shop can be an armory, an item shop, a Convoy upgrade shop (carpenter?)
+    tnecs_entity_t menu_entity = in_game->tnecs_menu_loaded[MENU_SHOP];
+    struct Menu * menu_ptr = TNECS_GET_COMPONENT(in_game->tnecs_world, menu_entity, Menu);
+    *menu_ptr = Menu_default;
+}
+
 void makeContent_MENU_SHOP(struct Game * in_game, void * data_1, void * data_2) {
     SDL_Log("makeContent_MENU_SHOP");
     // Shop can be an armory, an item shop, a Convoy upgrade shop (carpenter?)
@@ -2332,15 +2534,17 @@ void makeContent_MENU_SHOP(struct Game * in_game, void * data_1, void * data_2) 
     *menu_mptr = Menu_default;
     ecs_modified(in_game->world, menu_entity, Menu);
 }
-// void makeContent_MENU_ARMORY(struct Game * in_game, void * data_1, void * data_2) {
-//     ECS_IMPORT(in_game->world, MenuModule);
-//     ecs_entity_t menu_entity = ecs_new(in_game->world, 0);
-//     ecs_add(in_game->world, menu_entity, Menu);
-//     struct Menu * menu_mptr = ecs_get_mut(in_game->world, menu_entity, Menu, NULL);
-//     *menu_mptr = Menu_default;
-//     ecs_modified(in_game->world, menu_entity, Menu);
-//     return (menu_entity);
-// }
+
+void makeContent_MENU_STAFF_tnecs(struct Game * in_game, void * data_1, void * data_2) {
+    SDL_Log("makeContent_MENU_CONVOY_tnecs");
+    tnecs_entity_t menu_entity = in_game->tnecs_menu_loaded[MENU_STAFF];
+    struct Menu * menu_ptr = TNECS_GET_COMPONENT(in_game->tnecs_world, menu_entity, Menu);
+    struct MenuOption temp_option;
+    for (uint8_t i = 0; i < in_game->num_patients; i++) {
+        temp_option = MenuOption_default;
+        temp_option.data = &in_game->patients_ent[i];
+    }
+}
 
 void makeContent_MENU_STAFF(struct Game * in_game, void * data_1, void * data_2) {
     SDL_Log("makeContent_MENU_CONVOY");
@@ -2355,12 +2559,46 @@ void makeContent_MENU_STAFF(struct Game * in_game, void * data_1, void * data_2)
     }
     ecs_modified(in_game->world, menu_entity, Menu);
 }
+
+void makeContent_MENU_CONVOY_tnecs(struct Game * in_game, void * data_1, void * data_2) {
+    SDL_Log("makeContent_MENU_CONVOY_tnecs");
+    tnecs_entity_t menu_entity = in_game->tnecs_menu_loaded[MENU_CONVOY];
+    struct Menu * menu_ptr = TNECS_GET_COMPONENT(in_game->tnecs_world, menu_entity, Menu);
+}
+
 void makeContent_MENU_CONVOY(struct Game * in_game, void * data_1, void * data_2) {
     SDL_Log("makeContent_MENU_CONVOY");
     ECS_IMPORT(in_game->world, MenuModule);
     ecs_entity_t menu_entity = in_game->menu_loaded[MENU_CONVOY];
     struct Menu * menu_mptr = ecs_get_mut(in_game->world, menu_entity, Menu, NULL);
     ecs_modified(in_game->world, menu_entity, Menu);
+}
+
+void makeContent_MENU_MAP_ACTION_tnecs(struct Game * in_game, void * data_1, void * data_2) {
+    SDL_Log("makeContent_MENU_MAP_ACTION_tnecs");
+    ECS_IMPORT(in_game->world, MenuModule);
+    tnecs_entity_t menu_entity = in_game->tnecs_menu_loaded[MENU_MAP_ACTION];
+    struct Menu * menu_ptr = TNECS_GET_COMPONENT(in_game->tnecs_world, menu_entity, Menu);
+    menu_ptr->col_num = 1;
+    menu_ptr->row_num = 0;
+    arrfree(menu_ptr->menuoptions);
+
+    MenuOption_GLOBAL_RANGE.pad_text = MenuOption_default.pad_text;
+    MenuOption_GLOBAL_RANGE.pad_icon = MenuOption_default.pad_icon;
+    MenuOption_GLOBAL_RANGE.pad_cell = MenuOption_default.pad_cell;
+    Game_menuOptions_Create_tnecs(in_game, &MenuOption_GLOBAL_RANGE.ent_text, menuOptionnames[MENU_OPTION_GLOBAL_RANGE]);
+    arrput(menu_ptr->menuoptions, MenuOption_GLOBAL_RANGE);
+    menu_ptr->row_num++;
+
+    MenuOption_END_TURN.pad_text = MenuOption_default.pad_text;
+    MenuOption_END_TURN.pad_icon = MenuOption_default.pad_icon;
+    MenuOption_END_TURN.pad_cell = MenuOption_default.pad_cell;
+    Game_menuOptions_Create_tnecs(in_game, &MenuOption_END_TURN.ent_text, menuOptionnames[MENU_OPTION_END_TURN]);
+    arrput(menu_ptr->menuoptions, MenuOption_END_TURN);
+    menu_ptr->row_num++;
+
+    Game_Menu_LocationfromCursor_tnecs(in_game, menu_entity);
+
 }
 
 void makeContent_MENU_MAP_ACTION(struct Game * in_game, void * data_1, void * data_2) {
@@ -2391,6 +2629,12 @@ void makeContent_MENU_MAP_ACTION(struct Game * in_game, void * data_1, void * da
 
 }
 
+void makeContent_MENU_TRADE_tnecs(struct Game * in_game, void * data_1, void * data_2) {
+    SDL_Log("makeContent_MENU_TRADE_tnecs");
+    tnecs_entity_t menu_entity = in_game->tnecs_menu_loaded[MENU_TRADE];
+    struct Menu * menu_ptr = TNECS_GET_COMPONENT(in_game->tnecs_world, menu_entity, Menu);
+}
+
 void makeContent_MENU_TRADE(struct Game * in_game, void * data_1, void * data_2) {
     SDL_Log("makeContent_MENU_TRADE");
     ECS_IMPORT(in_game->world, MenuModule);
@@ -2399,12 +2643,29 @@ void makeContent_MENU_TRADE(struct Game * in_game, void * data_1, void * data_2)
     ecs_modified(in_game->world, menu_entity, Menu);
 }
 
+void makeContent_MENU_UNIT_STATS_tnecs(struct Game * in_game, void * data_1, void * data_2) {
+    SDL_Log("makeContent_MENU_UNIT_STATS_tnecs");
+    tnecs_entity_t menu_entity = in_game->tnecs_menu_loaded[MENU_UNIT_STATS];
+    struct Menu * menu_ptr = TNECS_GET_COMPONENT(in_game->tnecs_world, menu_entity, Menu);
+}
+
 void makeContent_MENU_UNIT_STATS(struct Game * in_game, void * data_1, void * data_2) {
     SDL_Log("makeContent_MENU_UNIT_STATS");
     ECS_IMPORT(in_game->world, MenuModule);
     ecs_entity_t menu_entity = in_game->menu_loaded[MENU_UNIT_STATS];
     struct Menu * menu_mptr = ecs_get_mut(in_game->world, menu_entity, Menu, NULL);
     ecs_modified(in_game->world, menu_entity, Menu);
+}
+
+void makeContent_MENU_TALK_tnecs(struct Game * in_game, void * data_1, void * data_2) {
+    SDL_Log("makeContent_MENU_TALK_tnecs");
+    tnecs_entity_t menu_entity = in_game->tnecs_menu_loaded[MENU_TALK];
+    struct Menu * menu_ptr = TNECS_GET_COMPONENT(in_game->tnecs_world, menu_entity, Menu);
+    struct MenuOption temp_option;
+    for (uint8_t i = 0; i < in_game->num_talkers; i++) {
+        temp_option = MenuOption_default;
+        temp_option.data = &in_game->talkers_ent[i];
+    }
 }
 
 void makeContent_MENU_TALK(struct Game * in_game, void * data_1, void * data_2) {
