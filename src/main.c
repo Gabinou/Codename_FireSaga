@@ -98,6 +98,7 @@ int main(int32_t argc, char * argv[]) {
             elapsedTime_ms += delay;
         }
         currentTime_ms = SDL_GetTicks();
+
         SDL_RenderClear(Game_renderer);
         Map_draw(firesaga->map_ptr); // Only one map -> no entity
         // SDL_Log("PROGRESS\n");

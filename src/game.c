@@ -93,16 +93,6 @@ void Game_setTurntransitiontext(struct Game * in_game, int8_t in_army) {
     ecs_modified(in_game->world, in_game->entity_transition, Text);
 }
 
-void FPS_Update(ecs_world_t * in_world, ecs_entity_t in_entity, uint32_t in_frame_count, float in_last_update) {
-    ECS_IMPORT(in_world, TextModule);
-    float current = in_frame_count / in_last_update;
-    Text * text_mptr = ecs_get_mut(in_world, in_entity, Text, NULL);
-    char buffer[DEFAULT_BUFFER_SIZE / 8];
-    stbsp_sprintf(buffer, "%.1f", current);
-    strcpy(text_mptr->text_line, buffer);
-    ecs_modified(in_world, in_entity, Text);
-}
-
 void Game_FPS_Create(struct Game * in_game, float in_update_time) {
     SDL_Log("Making FPS entity");
     ECS_IMPORT(in_game->world, PositionModule);
@@ -116,7 +106,7 @@ void Game_FPS_Create(struct Game * in_game, float in_update_time) {
     in_game->entity_fps = ecs_new(in_game->world, Position);
     SDL_Log("made FPS: %d", in_game->entity_fps);
     ecs_add(in_game->world, in_game->entity_fps, Text);
-    ecs_set_trait(in_game->world, in_game->entity_fps, Text, UpdateTimer, {.update_time = in_update_time, .onUpdate = &onUpdate_Text});
+    ecs_set_trait(in_game->world, in_game->entity_fps, Text, UpdateTimer, {.update_time = in_update_time, .onUpdate = &onUpdate_FPS});
     UpdateTimer * timer_mptr = ecs_get_mut(in_game->world, in_game->entity_fps, UpdateTimer, NULL);
     SDL_Log("timer_mptr->onUpdate is null? %d", (timer_mptr->onUpdate == NULL));
 

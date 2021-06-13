@@ -17,10 +17,16 @@ struct Text Text_default = {
     // .sizefactor = {1.0f, 1.0f}, // height, width
 };
 
-void onUpdate_Text(ecs_world_t * in_world, ecs_entity_t in_entity_fps, uint32_t frame_count, float last_update_s, void * data) {
+void onUpdate_FPS(ecs_world_t * in_world, ecs_entity_t in_entity_fps, uint32_t frame_count, float last_update_s, void * data) {
     ECS_IMPORT(in_world, TextModule);
     Text * fps_text_mptr = ecs_get_mut(in_world, in_entity_fps, Text, NULL);
     snprintf(fps_text_mptr->text_line, sizeof(char) * DEFAULT_BUFFER_SIZE, "%.1f", (frame_count / last_update_s));
+}
+
+void onUpdate_FPS_tnecs(tnecs_world_t * in_world, tnecs_entity_t in_entity_fps, uint32_t frame_count, float last_update_s, void * data) {
+    // ECS_IMPORT(in_world, TextModule);
+    Text * fps_text_ptr = TNECS_GET_COMPONENT(in_world, in_entity_fps, Text);
+    snprintf(fps_text_ptr->text_line, sizeof(char) * DEFAULT_BUFFER_SIZE, "%.1f", (frame_count / last_update_s));
 }
 
 void TextModuleImport(ecs_world_t * in_world) {
