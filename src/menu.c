@@ -70,6 +70,7 @@ struct MenuOption MenuOption_default = {
 #define REGISTER_ENUM(x, y, z) MenuOption_##x.childMenu = y;\
 MenuOption_##x.childEvent = z;
 void Menu_Options_init() {
+    SDL_Log("Menu_Options_init");
 #include "names/menu_options.h"
 }
 #undef REGISTER_ENUM
