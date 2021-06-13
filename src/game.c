@@ -575,6 +575,40 @@ void Game_Map_Destroy(struct Game * in_game) {
     }
 }
 
+void Game_Mouse_State_Set_tnecs(struct Game * in_game, const int8_t in_menu) {
+    SDL_Log("Game_Mouse_State_Set_tnecs %d", in_menu);
+
+    SDL_assert((in_menu > MENU_START) & (in_menu < MENU_END));
+    int16_t * bounds;
+    int16_t linespace;
+    SDL_assert(in_game->entity_mouse != 0);
+    struct Position * mouse_position_ptr = TNECS_GET_COMPONENT(in_game->tnecs_world, in_game->tnecs_entity_mouse, Position);
+    struct Text * mouse_text_ptr = TNECS_GET_COMPONENT(in_game->tnecs_world, in_game->tnecs_entity_mouse, Text);
+
+    switch (in_menu) {
+        // case Gameplay_Map:
+        //     mouse_position_mptr->scale[0] = in_game->settings.tilesize[0];
+        //     mouse_position_mptr->scale[1] = in_game->settings.tilesize[1];
+        //     break;
+
+        // case MENU_Menu_Map:
+        // case MENU_UNIT:
+        //     linespace = 1;
+        //     ecs_entity_t current_menu = hmget(in_game->menus, in_menu);
+        //     if (current_menu != 0) {
+        //         const struct Text * menu_text_ptr = ecs_get(in_game->world, current_menu, Text);
+        //     }
+        //     mouse_position_mptr->scale[0] = linespace;
+        //     mouse_position_mptr->scale[1] = linespace;
+        //     break;
+
+        default:
+            SDL_Log("in_menu is invalid");
+    }
+}
+
+
+
 void Game_Mouse_State_Set(struct Game * in_game, const int8_t in_menu) {
     SDL_Log("Changing mouse to state %d", in_menu);
 
@@ -610,6 +644,41 @@ void Game_Mouse_State_Set(struct Game * in_game, const int8_t in_menu) {
     ecs_modified(in_game->world, in_game->entity_mouse, Text);
     ecs_modified(in_game->world, in_game->entity_mouse, Position);
 }
+
+
+void Game_cursorFocus_onMap_tnecs(struct Game * in_game) {
+    SDL_Log("Game_cursorFocus_onMap_tnecs");
+    SDL_assert(in_game->entity_cursor != 0);
+    struct Sprite * sprite_ptr = TNECS_GET_COMPONENT(in_game->tnecs_world, in_game->tnecs_entity_cursor, Sprite);
+    SDL_assert(sprite_ptr != NULL);
+    // Sprite_Rects_init(sprite_mptr, position_mptr->pixel_pos);
+    sprite_ptr->animated = true;
+    Sprite_Texture_Set(sprite_ptr, ".."DIR_SEPARATOR"assets"DIR_SEPARATOR"GUI"DIR_SEPARATOR"mapcursors.png");
+    sprite_ptr->frames = in_game->settings.cursor.frames;
+    sprite_ptr->speed = in_game->settings.cursor.speed;
+    Sprite_tileSize_Set(sprite_ptr, in_game->settings.tilesize);
+    Sprite_slideType_Set(sprite_ptr, SLIDETYPE_GEOMETRIC);
+
+    struct Position * position_ptr = TNECS_GET_COMPONENT(in_game->tnecs_world, in_game->tnecs_entity_cursor, Position);
+    SDL_assert(position_ptr != NULL);
+    position_ptr->onTilemap = true;
+    if (in_game->map_ptr != NULL) {
+        position_ptr->offset_px.x = in_game->map_ptr->offset_px.x;
+        position_ptr->offset_px.y = in_game->map_ptr->offset_px.y;
+    } else {
+        position_ptr->offset_px.x = DEFAULT_TILEMAP_XOFFSET;
+        position_ptr->offset_px.y = DEFAULT_TILEMAP_YOFFSET;
+    }
+    Map_Bounds_Compute(in_game->map_ptr);
+    Position_Bounds_Set(position_ptr, in_game->map_ptr->boundsmin.x, in_game->map_ptr->boundsmax.x, in_game->map_ptr->boundsmin.y, in_game->map_ptr->boundsmax.y);
+    SDL_Log("%d %d %d %d", in_game->map_ptr->boundsmin.x, in_game->map_ptr->boundsmax.x, in_game->map_ptr->boundsmin.y, in_game->map_ptr->boundsmax.y);
+
+    Position_Pos_Set(position_ptr, in_game->cursor_lastpos.x, in_game->cursor_lastpos.y);
+    position_ptr->scale[0] = (float)in_game->map_ptr->tilesize[0];
+    position_ptr->scale[1] = (float)in_game->map_ptr->tilesize[1];
+    position_ptr->periodic = false;
+}
+
 
 void Game_cursorFocus_onMap(struct Game * in_game) {
     SDL_Log("Game_cursorFocus_onMap");
@@ -647,6 +716,47 @@ void Game_cursorFocus_onMap(struct Game * in_game) {
     position_mptr->periodic = false;
     ecs_modified(in_game->world, in_game->entity_cursor, Position);
 }
+
+
+void Game_cursorFocus_onMenu_tnecs(struct Game * in_game) {
+    // focuses on top of in_game->menu_stack.
+    SDL_Log("Game_cursorFocus_onMenu_tnecs");
+    struct Menu * top_menu = NULL;
+
+    SDL_assert(in_game->menu_stack_num > 0);
+    SDL_assert(in_game->entity_cursor != 0);
+    for (int8_t i = 0; i < in_game->menu_stack_num; i++) {
+        SDL_Log("in_game->menu_stack_num, %d %d", in_game->menu_stack_num, i);
+        top_menu = TNECS_GET_COMPONENT(in_game->tnecs_world, in_game->tnecs_menu_stack[i], Menu);
+        if (top_menu != NULL) {
+            top_menu->enabled = (i == (in_game->menu_stack_num - 1));
+        }
+    }
+
+    SDL_assert(top_menu != NULL);
+    SDL_Log("top_menu->enabled, %d", top_menu->enabled);
+
+    struct Sprite * sprite_ptr = TNECS_GET_COMPONENT(in_game->tnecs_world, in_game->tnecs_entity_cursor, Sprite);
+    SDL_assert(sprite_ptr != NULL);
+    sprite_ptr->animated = false;
+    sprite_ptr->tilesize[0] = top_menu->row_height;
+    sprite_ptr->tilesize[1] = top_menu->col_widths[0];
+
+    struct Position * position_ptr = TNECS_GET_COMPONENT(in_game->tnecs_world, in_game->tnecs_entity_cursor, Position);
+    SDL_assert(position_ptr != NULL);
+    position_ptr->offset_px.x = top_menu->pos.x;
+    position_ptr->offset_px.y = top_menu->pos.y;
+    position_ptr->onTilemap = true;
+    position_ptr->periodic = true;
+    position_ptr->scale[0] = top_menu->col_widths[0];
+    position_ptr->scale[1] = top_menu->row_height;
+    Position_Bounds_Set(position_ptr, 0, top_menu->col_num - 1, 0, top_menu->row_num - 1);
+    Position_Pos_Set(position_ptr, 0, 0);
+
+    position_ptr->offset_px.x = top_menu->pos.x + top_menu->pad_menu.left + top_menu->pad_cell.left;
+    position_ptr->offset_px.y = top_menu->pos.y + top_menu->pad_menu.top + top_menu->pad_menu.bottom + top_menu->pad_cell.top + top_menu->pad_cell.bottom;
+}
+
 
 void Game_cursorFocus_onMenu(struct Game * in_game) {
     // focuses on top of in_game->menu_stack.
@@ -697,7 +807,22 @@ void Game_cursorFocus_onMenu(struct Game * in_game) {
     ecs_modified(in_game->world, in_game->entity_cursor, Position);
 }
 
+void Game_Mouse_Create_tnecs(struct Game * in_game) {
+    SDL_Log("Game_Mouse_Create_tnecs");
+    Game_Mouse_Destroy_tnecs(in_game);
+
+    in_game->entity_mouse = TNECS_ENTITY_CREATE_WCOMPONENTS(in_game->tnecs_world, controllerMouse, Position, Sprite);
+    struct Position * position_ptr = TNECS_GET_COMPONENT(in_game->tnecs_world, in_game->tnecs_entity_mouse, Position);
+    SDL_assert(position_ptr != NULL);
+    Position_Bounds_Set(position_ptr, -1000, 2000, -1000, 2000);
+
+    struct Sprite * sprite_ptr = TNECS_GET_COMPONENT(in_game->tnecs_world, in_game->tnecs_entity_mouse, Sprite);
+    SDL_assert(sprite_ptr != NULL);
+    Sprite_Texture_Set(sprite_ptr, ".."DIR_SEPARATOR"assets"DIR_SEPARATOR"GUI"DIR_SEPARATOR"mousecursor.png");
+}
+
 void Game_Mouse_Create(struct Game * in_game) {
+    SDL_Log("Game_Mouse_Create");
     ECS_IMPORT(in_game->world, controllerMouseModule);
     ECS_IMPORT(in_game->world, PositionModule);
     ECS_IMPORT(in_game->world, SpriteModule);
@@ -719,29 +844,95 @@ void Game_Mouse_Create(struct Game * in_game) {
     ecs_modified(in_game->world, in_game->entity_mouse, Sprite);
 }
 
+void Game_Mouse_Enable_tnecs(struct Game * in_game) {
+    SDL_Log("Game_Mouse_Enable_tnecs");
+    in_game->ismouse = true;
+    SDL_assert(in_game->entity_mouse != 0);
+    struct Sprite * sprite_ptr = TNECS_GET_COMPONENT(in_game->tnecs_world, in_game->tnecs_entity_mouse, Sprite);
+    SDL_assert(sprite_ptr != NULL);
+    sprite_ptr->visible = true;
+}
+
 void Game_Mouse_Enable(struct Game * in_game) {
+    SDL_Log("Game_Mouse_Enable");
     ECS_IMPORT(in_game->world, SpriteModule);
     in_game->ismouse = true;
     SDL_assert(in_game->entity_mouse != 0);
     struct Sprite * sprite_mptr = ecs_get_mut(in_game->world, in_game->entity_mouse, Sprite, NULL);
     SDL_assert(sprite_mptr != NULL);
     sprite_mptr->visible = true;
+    ecs_modified(in_game->world, in_game->entity_mouse, Sprite);
+}
+
+void Game_Mouse_Disable_tnecs(struct Game * in_game) {
+    SDL_Log("Game_Mouse_Disable_tnecs");
+    in_game->ismouse = false;
+    SDL_assert(in_game->entity_mouse != 0);
+    struct Sprite * sprite_ptr = TNECS_GET_COMPONENT(in_game->tnecs_world, in_game->tnecs_entity_mouse, Sprite);
+    SDL_assert(sprite_ptr != NULL);
+    sprite_ptr->visible = false;
 }
 
 void Game_Mouse_Disable(struct Game * in_game) {
+    SDL_Log("Game_Mouse_Disable");
     ECS_IMPORT(in_game->world, SpriteModule);
     in_game->ismouse = false;
     SDL_assert(in_game->entity_mouse != 0);
     struct Sprite * sprite_mptr = ecs_get_mut(in_game->world, in_game->entity_mouse, Sprite, NULL);
     SDL_assert(sprite_mptr != NULL);
     sprite_mptr->visible = false;
+    ecs_modified(in_game->world, in_game->entity_mouse, Sprite);
+}
+
+void Game_Mouse_Destroy_tnecs(struct Game * in_game) {
+    SDL_Log("Game_Mouse_Destroy_tnecs");
+    SDL_assert(in_game->entity_mouse != 0);
+    tnecs_entity_destroy(in_game->tnecs_world, in_game->tnecs_entity_mouse);
 }
 
 void Game_Mouse_Destroy(struct Game * in_game) {
+    SDL_Log("Game_Mouse_Destroy");
     SDL_assert(in_game->entity_mouse != 0);
-    SDL_Log("Destroying Mouse Entity");
     ecs_delete(in_game->world, in_game->entity_mouse);
 }
+
+void Game_Cursor_Create_tnecs(struct Game * in_game) {
+    SDL_Log("Game_Cursor_Create_tnecs");
+    if (in_game->entity_mouse != 0) {
+        Game_Cursor_Destroy(in_game);
+    }
+
+    in_game->tnecs_entity_cursor = TNECS_ENTITY_CREATE_WCOMPONENTS(in_game->tnecs_world, Position, Sprite, controllerKeyboard, controllerGamepad, controllerTouchpad);
+    SDL_assert(in_game->entity_cursor != 0);
+
+    struct controllerKeyboard * keyboard_ptr = TNECS_GET_COMPONENT(in_game->tnecs_world, in_game->tnecs_entity_cursor, controllerKeyboard);
+    SDL_assert(keyboard_ptr != NULL);
+    *keyboard_ptr = controllerKeyboard_default;
+    keyboard_ptr->inputmap = &in_game->keyboardInputMap;
+
+    struct controllerGamepad * gamepad_ptr = TNECS_GET_COMPONENT(in_game->tnecs_world, in_game->tnecs_entity_cursor, controllerGamepad);
+    SDL_assert(gamepad_ptr != NULL);
+    *gamepad_ptr = controllerGamepad_default;
+    gamepad_ptr->inputmap = &in_game->gamepadInputMap;
+
+    struct Sprite * sprite_ptr = TNECS_GET_COMPONENT(in_game->tnecs_world, in_game->tnecs_entity_cursor, Sprite);
+    SDL_assert(sprite_ptr != NULL);
+    *sprite_ptr = Sprite_default;
+    struct Point temp_point;
+    temp_point.x = 6;
+    temp_point.y = 6;
+    sprite_ptr->tilesize[0] = in_game->settings.tilesize[0];
+    sprite_ptr->tilesize[1] = in_game->settings.tilesize[1];
+    Sprite_Rects_init(sprite_ptr, temp_point);
+    sprite_ptr->visible = true;
+    sprite_ptr->animated = true;
+    sprite_ptr->update_wait = CURSOR_SLIDEWAIT;
+
+    struct Position * position_ptr = TNECS_GET_COMPONENT(in_game->tnecs_world, in_game->tnecs_entity_cursor, Position);
+    SDL_assert(position_ptr != NULL);
+    *position_ptr = Position_default;
+}
+
 
 void Game_Cursor_Create(struct Game * in_game) {
     SDL_Log("Game_Cursor_Create");
@@ -794,13 +985,29 @@ void Game_Cursor_Create(struct Game * in_game) {
     ecs_modified(in_game->world, in_game->entity_cursor, Sprite);
 }
 
-void Game_Cursor_Destroy(struct Game * in_game) {
+void Game_Cursor_Destroy_tnecs(struct Game * in_game) {
+    SDL_Log("Game_Cursor_Destroy_tnecs");
     SDL_assert(in_game->entity_cursor != 0);
-    SDL_Log("Destroying Cursor Entity");
+    tnecs_entity_destroy(in_game->tnecs_world, in_game->tnecs_entity_cursor);
+}
+
+void Game_Cursor_Destroy(struct Game * in_game) {
+    SDL_Log("Game_Cursor_Destroy");
+    SDL_assert(in_game->entity_cursor != 0);
     ecs_delete(in_game->world, in_game->entity_cursor);
 }
 
+void Game_Cursor_Enable_tnecs(struct Game * in_game) {
+    SDL_Log("Game_Cursor_Enable_tnecs");
+    in_game->iscursor = true;
+    SDL_assert(in_game->entity_cursor != 0);
+    struct Sprite * sprite_ptr = TNECS_GET_COMPONENT(in_game->tnecs_world, in_game->tnecs_entity_cursor, Sprite);
+    SDL_assert(sprite_ptr != NULL);
+    sprite_ptr->visible = true;
+}
+
 void Game_Cursor_Enable(struct Game * in_game) {
+    SDL_Log("Game_Cursor_Enable");
     ECS_IMPORT(in_game->world, SpriteModule);
     in_game->iscursor = true;
     SDL_assert(in_game->entity_cursor != 0);
@@ -810,7 +1017,18 @@ void Game_Cursor_Enable(struct Game * in_game) {
     ecs_modified(in_game->world, in_game->entity_cursor, Sprite);
 }
 
+void Game_Cursor_Disable_tnecs(struct Game * in_game) {
+    SDL_Log("Game_Cursor_Disable_tnecs");
+    in_game->iscursor = false;
+    SDL_assert(in_game->entity_cursor != 0);
+    struct Sprite * sprite_ptr = TNECS_GET_COMPONENT(in_game->tnecs_world, in_game->tnecs_entity_cursor, Sprite);
+    SDL_assert(sprite_ptr != NULL);
+    sprite_ptr->visible = false;
+}
+
+
 void Game_Cursor_Disable(struct Game * in_game) {
+    SDL_Log("Game_Cursor_Disable");
     ECS_IMPORT(in_game->world, SpriteModule);
     in_game->iscursor = false;
     SDL_assert(in_game->entity_cursor != 0);
@@ -819,6 +1037,54 @@ void Game_Cursor_Disable(struct Game * in_game) {
     sprite_mptr->visible = false;
     ecs_modified(in_game->world, in_game->entity_cursor, Sprite);
 }
+
+
+void Game_putPConMap_tnecs(struct Game * in_game, int16_t * in_units, struct Point * in_pos_list, size_t load_num) {
+    SDL_Log("Game_putPConMap_tnecs\n");
+    // Should be made into two functions:
+    // createUnitEntity and putUnitEntityonMap.
+    // Game_UnitEntity_Create();
+    SDL_assert(in_game->map_ptr != NULL);
+    char filename[DEFAULT_BUFFER_SIZE];
+
+    for (int16_t i = 0; i < load_num; i++) {
+        SDL_Log("Putting unit %s on map", unitNames[in_units[i]]);
+        ecs_entity_t temp_unit_ent = TNECS_ENTITY_CREATE_WCOMPONENTS(in_game->tnecs_world, Unit, Position, Sprite);
+
+        struct Unit * unit_ptr = TNECS_GET_COMPONENT(in_game->tnecs_world, temp_unit_ent, Unit);
+        SDL_assert(unit_ptr != NULL);
+        memcpy(unit_ptr, &Unit_default, sizeof(Unit_default));
+        *unit_ptr = in_game->party[in_units[i]];
+        unit_ptr->weapons = &in_game->weapons;
+
+        struct Position * position_ptr = TNECS_GET_COMPONENT(in_game->tnecs_world, temp_unit_ent, Position);
+        SDL_assert(position_ptr != NULL);
+        memcpy(position_ptr, &Position_default, sizeof(Position_default));
+        position_ptr->onTilemap = true;
+        Map_Bounds_Compute(in_game->map_ptr);
+        Position_Bounds_Set(position_ptr, in_game->map_ptr->boundsmin.x, in_game->map_ptr->boundsmax.x, in_game->map_ptr->boundsmin.y, in_game->map_ptr->boundsmax.y);
+        position_ptr->scale[0] = (float)in_game->settings.tilesize[0];
+        position_ptr->scale[1] = (float)in_game->settings.tilesize[1];
+        position_ptr->offset_px.x = in_game->map_ptr->offset_px.x;
+        position_ptr->offset_px.y = in_game->map_ptr->offset_px.y;
+        Position_Pos_Set(position_ptr, in_pos_list[i].x, in_pos_list[i].y);
+
+        struct Sprite * sprite_ptr = TNECS_GET_COMPONENT(in_game->tnecs_world, temp_unit_ent, Sprite);
+        SDL_assert(sprite_ptr != NULL);
+        memcpy(sprite_ptr, &Sprite_default, sizeof(Sprite_default));
+        strcpy(filename, "");
+        strcat(filename, ".."DIR_SEPARATOR"assets"DIR_SEPARATOR"Units"DIR_SEPARATOR);
+        strcat(filename, unitNames[in_units[i]]);
+        strcat(filename, ".png");
+        Sprite_Rects_init(sprite_ptr, in_pos_list[i]);
+        Sprite_Texture_Set(sprite_ptr, filename);
+        sprite_ptr->visible = true;
+
+        Map_Unit_Put(in_game->map_ptr, in_game->world, in_pos_list[i].x, in_pos_list[i].y, temp_unit_ent);
+        hmput(in_game->ent_unit_loaded, temp_unit_ent, temp_unit_ent);
+    }
+}
+
 
 void Game_putPConMap(struct Game * in_game, int16_t * in_units, struct Point * in_pos_list, size_t load_num) {
     SDL_Log("Game_putPConMap\n");
@@ -872,6 +1138,63 @@ void Game_putPConMap(struct Game * in_game, int16_t * in_units, struct Point * i
         ecs_modified(in_game->world, temp_unit_ent, Unit);
         Map_Unit_Put(in_game->map_ptr, in_game->world, in_pos_list[i].x, in_pos_list[i].y, temp_unit_ent);
         hmput(in_game->ent_unit_loaded, temp_unit_ent, temp_unit_ent);
+    }
+}
+
+
+void Game_mapArrivals_Load_tnecs(struct Game * in_game) {
+    SDL_Log("Game_mapArrivals_Load_tnecs\n");
+
+    SDL_assert(in_game->map_ptr != NULL);
+    char filename[DEFAULT_BUFFER_SIZE];
+    char unitname[DEFAULT_BUFFER_SIZE];
+
+    for (int16_t i = 0; i < in_game->map_ptr->arrivals_num; i++) {
+        if (in_game->map_ptr->arrivals[i].turn == in_game->map_ptr->turn) {
+            ecs_entity_t temp_unit_ent = TNECS_ENTITY_CREATE_WCOMPONENTS(in_game->tnecs_world, Unit, Position, Sprite);
+
+            struct Unit * unit_ptr = TNECS_GET_COMPONENT(in_game->tnecs_world, temp_unit_ent, Unit);
+            SDL_assert(unit_ptr != NULL);
+            memcpy(unit_ptr, &Unit_default, sizeof(Unit_default));
+            unit_ptr->weapons = &in_game->weapons;
+            strcpy(unitname, "");
+            // strcat(unitname, ".."DIR_SEPARATOR"units"DIR_SEPARATOR);
+            SDL_Log("arrival id %d", in_game->map_ptr->arrivals[i].id);
+            strcat(unitname, unitNames[in_game->map_ptr->arrivals[i].id]);
+            strcat(unitname, ".json");
+            readJSON(unitname, unit_ptr);
+            unit_ptr->army = in_game->map_ptr->arrivals[i].army;
+            if (unit_ptr->_equipment[UNIT_HAND_RIGHT].id > 0) {
+                Unit_equips(unit_ptr, UNIT_HAND_RIGHT);
+            }
+            if (unit_ptr->_equipment[UNIT_HAND_LEFT].id > 0) {
+                Unit_equips(unit_ptr, UNIT_HAND_LEFT);
+            }
+
+            struct Position * position_ptr = TNECS_GET_COMPONENT(in_game->tnecs_world, temp_unit_ent, Position);
+            SDL_assert(position_ptr != NULL);
+            memcpy(position_ptr, &Position_default, sizeof(Position_default));
+            position_ptr->onTilemap = true;
+            Position_Bounds_Set(position_ptr, in_game->map_ptr->boundsmin.x, in_game->map_ptr->boundsmax.x, in_game->map_ptr->boundsmin.y, in_game->map_ptr->boundsmax.y);
+            position_ptr->scale[0] = (float)in_game->settings.tilesize[0];
+            position_ptr->scale[1] = (float)in_game->settings.tilesize[1];
+            position_ptr->offset_px.x = in_game->map_ptr->offset_px.x;
+            position_ptr->offset_px.y = in_game->map_ptr->offset_px.y;
+            Position_Pos_Set(position_ptr, in_game->map_ptr->arrivals[i].position.x, in_game->map_ptr->arrivals[i].position.y);
+
+            struct Sprite * sprite_ptr = TNECS_GET_COMPONENT(in_game->tnecs_world, temp_unit_ent, Sprite);
+            SDL_assert(sprite_ptr != NULL);
+            SDL_memcpy(sprite_ptr, &Sprite_default, sizeof(Sprite_default));
+            strcpy(filename, "");
+            strcat(filename, ".."DIR_SEPARATOR"assets"DIR_SEPARATOR"Units"DIR_SEPARATOR);
+            strcat(filename, unitNames[in_game->map_ptr->arrivals[i].id]);
+            strcat(filename, ".png");
+            Sprite_Rects_init(sprite_ptr, in_game->map_ptr->arrivals[i].position);
+            Sprite_Texture_Set(sprite_ptr, filename);
+
+            Map_Unit_Put(in_game->map_ptr, in_game->world, position_ptr->tilemap_pos.x, position_ptr->tilemap_pos.y, temp_unit_ent);
+            hmput(in_game->ent_unit_loaded, temp_unit_ent, temp_unit_ent);
+        }
     }
 }
 
@@ -1603,8 +1926,39 @@ void Game_menuOptions_Update(struct Game * in_game, ecs_entity_t * in_entity, ch
 
 }
 
+void Game_menuOptions_Create_tnecs(struct Game * in_game, ecs_entity_t * in_entity, char * in_name) {
+    SDL_Log("Game_menuOptions_Create_tnecs");
+    if (*in_entity == 0) {
+        *in_entity = TNECS_ENTITY_CREATE_WCOMPONENTS(in_game->tnecs_world, Position, Text, RenderTimer);
+    }
+
+    struct Text * text_ptr = TNECS_GET_COMPONENT(in_game->tnecs_world, *in_entity, Text);
+    SDL_assert(text_ptr !=  NULL);
+    text_ptr->visible = true;
+    text_ptr->fontsize = in_game->settings.fontsize;
+
+    SDL_Color white = {255, 255, 255};
+    text_ptr->text_color = white;
+
+    text_ptr->padding[0] = Text_default.padding[0];
+    text_ptr->padding[1] = Text_default.padding[1];
+    text_ptr->padding[2] = Text_default.padding[2];
+    text_ptr->padding[3] = Text_default.padding[3];
+    text_ptr->fontsize = Text_default.fontsize;
+    text_ptr->spacingfactor = Text_default.spacingfactor;
+
+    text_ptr->text_color = white;
+
+    text_ptr->sizefactor[0] = 1; // height, width
+    text_ptr->sizefactor[1] = 1; // height, width
+
+    strcpy(text_ptr->text_line, in_name);
+    SDL_Log("Menu_option_Line: %s %s", in_name, text_ptr->text_line);
+}
+
 
 void Game_menuOptions_Create(struct Game * in_game, ecs_entity_t * in_entity, char * in_name) {
+    SDL_Log("Game_menuOptions_Create");
     if (*in_entity == 0) {
         *in_entity = ecs_new(in_game->world, 0);
         // ecs_delete(in_game->world, *in_entity);
@@ -1645,6 +1999,32 @@ void Game_menuOptions_Create(struct Game * in_game, ecs_entity_t * in_entity, ch
     ecs_modified(in_game->world, *in_entity, Position);
 }
 
+void Game_Menu_LocationfromCursor_tnecs(struct Game * in_game, ecs_entity_t in_menu_entity) {
+    SDL_Log("Game_Menu_LocationfromCursor_tnecs");
+    struct Menu * menu_ptr = NULL;
+    struct Position * cursor_pos_ptr = NULL;
+
+    SDL_assert(in_game->entity_cursor);
+    SDL_assert(in_menu_entity > 0);
+
+    cursor_pos_ptr = TNECS_GET_COMPONENT(in_game->tnecs_world, in_game->entity_cursor, Position);
+    menu_ptr = TNECS_GET_COMPONENT(in_game->tnecs_world, in_menu_entity, Menu);
+    SDL_assert(menu_ptr != NULL);
+    if (cursor_pos_ptr != NULL) {
+        if (cursor_pos_ptr->onTilemap) {
+            menu_ptr->pos.x = cursor_pos_ptr->tilemap_pos.x * in_game->map_ptr->tilesize[0];
+            menu_ptr->pos.y = cursor_pos_ptr->tilemap_pos.y * in_game->map_ptr->tilesize[0];
+        } else {
+            menu_ptr->pos.x = cursor_pos_ptr->pixel_pos.x;
+            menu_ptr->pos.y = cursor_pos_ptr->pixel_pos.y;
+        }
+    } else {
+        // why this value?
+        menu_ptr->pos.x = in_game->settings.res.x / 2;
+        menu_ptr->pos.y = in_game->settings.res.y / 2;
+    }
+}
+
 void Game_Menu_LocationfromCursor(struct Game * in_game, ecs_entity_t in_menu_entity) {
     SDL_Log("Game_Menu_LocationfromCursor");
     ECS_IMPORT(in_game->world, PositionModule);
@@ -1672,6 +2052,32 @@ void Game_Menu_LocationfromCursor(struct Game * in_game, ecs_entity_t in_menu_en
     }
     ecs_modified(in_game->world, in_menu_entity, Menu);
 }
+
+void Game_Menu_LocationfromUnit_tnecs(struct Game * in_game, ecs_entity_t in_menu_entity, ecs_entity_t in_unit_entity) {
+    SDL_Log("Game_Menu_LocationfromUnit_tnecs");
+    struct Menu * menu_ptr = NULL;
+    struct Position * unit_pos_ptr = NULL;
+
+    SDL_assert(in_unit_entity > 0);
+    SDL_assert(in_menu_entity > 0);
+    unit_pos_ptr = TNECS_GET_COMPONENT(in_game->tnecs_world, in_unit_entity, Position);
+    menu_ptr = TNECS_GET_COMPONENT(in_game->tnecs_world, in_menu_entity, Menu);
+    SDL_assert(menu_ptr != NULL);
+    if (unit_pos_ptr != NULL) {
+        if (unit_pos_ptr->onTilemap) {
+            menu_ptr->pos.x = unit_pos_ptr->tilemap_pos.x * in_game->map_ptr->tilesize[0];
+            menu_ptr->pos.y = unit_pos_ptr->tilemap_pos.y * in_game->map_ptr->tilesize[0];
+        } else {
+            menu_ptr->pos.x = unit_pos_ptr->pixel_pos.x;
+            menu_ptr->pos.y = unit_pos_ptr->pixel_pos.y;
+        }
+    } else {
+        // why this value?
+        menu_ptr->pos.x = in_game->settings.res.x / 2;
+        menu_ptr->pos.y = in_game->settings.res.y / 2;
+    }
+}
+
 
 void Game_Menu_LocationfromUnit(struct Game * in_game, ecs_entity_t in_menu_entity, ecs_entity_t in_unit_entity) {
     SDL_Log("Game_Menu_LocationfromUnit");
@@ -1701,7 +2107,6 @@ void Game_Menu_LocationfromUnit(struct Game * in_game, ecs_entity_t in_menu_enti
 
     ecs_modified(in_game->world, in_menu_entity, Menu);
 }
-
 
 void makeContent_MENU_UNIT_ACTION(struct Game * in_game, void * data_1, void * data_2) {
     SDL_Log("makeContent_MENU_UNIT_ACTION");
