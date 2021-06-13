@@ -10,7 +10,7 @@ extern int_tile_t * Pathfinding_Map_PushPullable(struct Square_Neighbors directi
     SDL_Log("Pathfinding_Map_PushPullable");
     int_tile_t * pushpullablemap = NULL;
     int_tile_t temp_distance;
-    struct Point pushpullable_tile;
+    struct TilePoint pushpullable_tile;
     int_point_t * block_ptr = (int_point_t *)&direction_block;
     int_point_t * pushpullable_ptr = (int_point_t *)&pushpullable;
     switch (mode_output) {

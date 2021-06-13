@@ -103,7 +103,7 @@ void tnecs_drawMenu(tnecs_system_input_t * in_input) {
 void tnecs_drawText(tnecs_system_input_t * in_input) {
     struct Position * position_ptr = TNECS_COMPONENTS_LIST(in_input, Position);
     struct Text * text_ptr = TNECS_COMPONENTS_LIST(in_input, Text);
-    struct UpdateTimer * updatetimer_ptr = TNECS_COMPONENTS_LIST(in_input, UpdateTimer);
+    struct tnecs_UpdateTimer * updatetimer_ptr = TNECS_COMPONENTS_LIST(in_input, tnecs_UpdateTimer);
     for (uint16_t ent = 0; ent < in_input->num_entities; ent++) {
         if ((text_ptr[ent].visible) && (!position_ptr[ent].onTilemap)) {
             struct Point pos = position_ptr[ent].pixel_pos;
