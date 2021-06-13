@@ -182,6 +182,15 @@ void Menu_Rects_Compute(struct Menu * in_menu) {
     in_menu->src_bottom.y = in_menu->patch_pixels.x * 2;
 }
 
+uint16_t Menu_cellsWidths_Compute_tnecs(tnecs_world_t * in_world, struct Menu * in_menu) {
+    SDL_Log("Menu_cellsWidths_Compute_tnecs");
+    for (uint8_t col = 0; col < in_menu->col_num; col++) {
+        for (uint8_t row = 0; row < in_menu->row_num; row++) {
+            SDL_Log("%d %d", row, col);
+            Menu_cellWidth_Compute_tnecs(in_world, in_menu, row, col);
+        }
+    }
+}
 
 uint16_t Menu_cellsWidths_Compute(ecs_world_t * in_world, struct Menu * in_menu) {
     SDL_Log("Menu_cellsWidths_Compute");

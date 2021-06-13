@@ -93,6 +93,47 @@ void Game_setTurntransitiontext(struct Game * in_game, int8_t in_army) {
     ecs_modified(in_game->world, in_game->entity_transition, Text);
 }
 
+void Game_FPS_Create_tnecs(struct Game * in_game, float in_update_time) {
+    if (in_game->tnecs_entity_fps != 0) {
+        tnecs_entity_destroy(in_game->tnecs_world, in_game->tnecs_entity_fps);
+    }
+    in_game->entity_fps = TNECS_ENTITY_CREATE_WCOMPONENTS(in_game->tnecs_world, Position, Text, tnecs_UpdateTimer);
+    struct UpdateTimer * timer_ptr = TNECS_GET_COMPONENT(in_game->tnecs_world, in_game->tnecs_entity_fps, UpdateTimer);
+    SDL_assert(timer_ptr != NULL);
+    timer_ptr->update_time = in_update_time;
+    timer_ptr->onUpdate = &onUpdate_FPS;
+
+    struct Position * position_ptr = TNECS_GET_COMPONENT(in_game->tnecs_world, in_game->tnecs_entity_fps, Position);
+    SDL_assert(position_ptr != NULL);
+    position_ptr->onTilemap = false;
+    position_ptr->offset_px.x = 0;
+    position_ptr->offset_px.y = 0;
+    Position_Bounds_Set(position_ptr, 0, in_game->settings.res.x, 0, in_game->settings.res.y);
+    // SDL_Log("FPS pos: %d %d ",  in_game->settings.FPS.pos.x, in_game->settings.FPS.pos.y);
+    int16_t in_x = in_game->settings.res.x * 0.9f;
+    int16_t in_y = in_game->settings.res.y * 0.01f;
+    Position_Pos_Set(position_ptr, in_x, in_y);
+    // SDL_Log("FPS pos: %d %d ",  position_mptr->pos->x, position_mptr->pos->y);
+    // SDL_Log("FPS offset: %d %d ",  position_mptr->offset.x, position_mptr->offset.y);
+
+    struct Text * text_ptr = TNECS_GET_COMPONENT(in_game->tnecs_world, in_game->tnecs_entity_fps, Text);
+    SDL_assert(text_ptr != NULL);
+    strcpy(text_ptr->text_line, "60.1");
+    text_ptr->padding[0] = Text_default.padding[0];
+    text_ptr->padding[1] = Text_default.padding[1];
+    text_ptr->padding[2] = Text_default.padding[2];
+    text_ptr->padding[3] = Text_default.padding[3];
+    text_ptr->fontsize = Text_default.fontsize;
+    text_ptr->spacingfactor = Text_default.spacingfactor;
+    text_ptr->text_color = in_game->settings.FPS.textcolor;
+    text_ptr->sizefactor[0] = in_game->settings.FPS.sizefactor[0]; // height
+    text_ptr->sizefactor[1] = in_game->settings.FPS.sizefactor[1]; // width
+
+    text_ptr->visible = in_game->settings.FPS.show;
+    Text_Texture_Make(text_ptr);
+}
+
+
 void Game_FPS_Create(struct Game * in_game, float in_update_time) {
     SDL_Log("Making FPS entity");
     ECS_IMPORT(in_game->world, PositionModule);
@@ -107,7 +148,7 @@ void Game_FPS_Create(struct Game * in_game, float in_update_time) {
     SDL_Log("made FPS: %d", in_game->entity_fps);
     ecs_add(in_game->world, in_game->entity_fps, Text);
     ecs_set_trait(in_game->world, in_game->entity_fps, Text, UpdateTimer, {.update_time = in_update_time, .onUpdate = &onUpdate_FPS});
-    UpdateTimer * timer_mptr = ecs_get_mut(in_game->world, in_game->entity_fps, UpdateTimer, NULL);
+    struct UpdateTimer * timer_mptr = ecs_get_mut(in_game->world, in_game->entity_fps, UpdateTimer, NULL);
     SDL_Log("timer_mptr->onUpdate is null? %d", (timer_mptr->onUpdate == NULL));
 
     Position * position_mptr = ecs_get_mut(in_game->world, in_game->entity_fps, Position, NULL);
@@ -143,11 +184,29 @@ void Game_FPS_Create(struct Game * in_game, float in_update_time) {
     ecs_modified(in_game->world, in_game->entity_fps, Position);
 }
 
+void Game_Menu_Disable_Entity_tnecs(struct Game * in_game, ecs_entity_t in_menu_entity) {
+    SDL_Log("Game_Menu_Disable_Entity_tnecs");
+    SDL_assert(in_menu_entity > 0);
+    struct Menu * menu_ptr = TNECS_GET_COMPONENT(in_game->tnecs_world, in_menu_entity, Menu);
+    SDL_assert(menu_ptr != NULL);
+    menu_ptr->enabled = false;
+}
+
+void Game_Menu_Disable_tnecs(struct Game * in_game, int8_t in_menu) {
+    SDL_Log("Game_Menu_Disable %d", in_menu);
+    ECS_IMPORT(in_game->world, MenuModule);
+    SDL_assert((in_menu > MENU_START) & (in_menu < MENU_END));
+    struct Menu * menu_ptr = TNECS_GET_COMPONENT(in_game->tnecs_world, in_game->tnecs_menu_loaded[in_menu], Menu);
+    SDL_assert(menu_ptr != NULL);
+    menu_ptr->enabled = false;
+}
+
 void Game_Menu_Disable_Entity(struct Game * in_game, ecs_entity_t in_menu_entity) {
     SDL_Log("Game_Menu_Disable_Entity");
     ECS_IMPORT(in_game->world, MenuModule);
     SDL_assert(in_menu_entity > 0);
     struct Menu * menu_mptr = ecs_get_mut(in_game->world, in_menu_entity, Menu, NULL);
+    SDL_assert(menu_mptr != NULL);
     menu_mptr->enabled = false;
     ecs_modified(in_game->world, in_menu_entity, Menu);
 }
@@ -233,6 +292,13 @@ ecs_entity_t Game_makeButton(struct Game * in_game, int8_t in_menu_option) {
     return (button);
 }
 
+void Game_Menu_Destroy_tnecs(struct Game * in_game, int8_t in_menu) {
+    ECS_IMPORT(in_game->world, MenuModule);
+    SDL_assert((in_menu > MENU_START) & (in_menu < MENU_END));
+    tnecs_entity_destroy(in_game->tnecs_world, in_game->tnecs_menu_loaded[in_menu]);
+    in_game->tnecs_menu_loaded[in_menu] = 0;
+}
+
 void Game_Menu_Destroy(struct Game * in_game, int8_t in_menu) {
     ECS_IMPORT(in_game->world, MenuModule);
     SDL_assert((in_menu > MENU_START) & (in_menu < MENU_END));
@@ -245,6 +311,20 @@ void Game_menuStack_Push(struct Game * in_game, ecs_entity_t in_menu_entity) {
     SDL_assert(in_menu_entity > 0);
     arrpush(in_game->menu_stack, in_menu_entity);
     in_game->menu_stack_num++;
+}
+
+tnecs_entity_t Game_menuStack_Pop_tnecs(struct Game * in_game, bool destroy) {
+    SDL_Log("Popping top of menu stack");
+    tnecs_entity_t menu_stack_top_entity = arrpop(in_game->tnecs_menu_stack);
+    in_game->menu_stack_num--;
+    SDL_assert(menu_stack_top_entity > 0);
+    if (destroy) {
+        struct Menu * menu_ptr = TNECS_GET_COMPONENT(in_game->tnecs_world, menu_stack_top_entity, Menu);
+        in_game->menu_loaded[menu_ptr->id] = 0;
+        tnecs_entity_destroy(in_game->tnecs_world, menu_stack_top_entity);
+        menu_stack_top_entity = 0;
+    }
+    return (menu_stack_top_entity);
 }
 
 ecs_entity_t Game_menuStack_Pop(struct Game * in_game, bool destroy) {
@@ -260,6 +340,36 @@ ecs_entity_t Game_menuStack_Pop(struct Game * in_game, bool destroy) {
         menu_stack_top_entity = 0;
     }
     return (menu_stack_top_entity);
+}
+
+void Game_Menu_Update_tnecs(struct Game * in_game, int8_t in_menu) {
+    SDL_Log("Updates menu: %d %s", in_menu, menuNames[in_menu]);
+    SDL_assert((in_menu > MENU_START) & (in_menu < MENU_END));
+    if (in_game->menu_loaded[in_menu] == 0) {
+        SDL_Log("menu %d %s is not loaded", in_menu, menuNames[in_menu]);
+    } else {
+        void * data_1 = NULL;
+        void * data_2 = NULL;
+        switch (in_menu) {
+            default:
+                break;
+                // case MENU_UNIT_ITEMS:
+                //     selected_unit_mptr = ecs_get_mut(in_game->world, in_game->selected_unit_entity, Unit, NULL);
+                //     data_1 = selected_unit_mptr->_equipment;
+                //      break;
+        }
+        in_game->menuContentMakers[in_menu](in_game, data_1, data_2);
+        SDL_Log("Outside menuContentMakers");
+        struct Menu * menu_ptr = TNECS_GET_COMPONENT(in_game->tnecs_world, in_game->tnecs_menu_loaded[in_menu], Menu);
+        Menu_Cols_init(menu_ptr);
+        Menu_cellsWidths_Compute_tnecs(in_game->tnecs_world, menu_ptr);
+        Menu_rowHeight_Compute_tnecs(in_game->tnecs_world, menu_ptr);
+        Menu_Width_Compute(menu_ptr);
+        Menu_Height_Compute(menu_ptr);
+        Menu_Patchsize_Compute(menu_ptr);
+        Menu_Rects_Compute(menu_ptr);
+        SDL_Log("Is menu enabled? %d", menu_ptr->enabled);
+    }
 }
 
 void Game_Menu_Update(struct Game * in_game, int8_t in_menu) {
@@ -292,6 +402,22 @@ void Game_Menu_Update(struct Game * in_game, int8_t in_menu) {
         SDL_Log("Is menu enabled? %d", menu_mptr->enabled);
     }
     ecs_modified(in_game->world, in_game->menu_loaded[in_menu], Menu);
+}
+
+void Game_Menu_Create_tnecs(struct Game * in_game, int8_t in_menu) {
+    SDL_Log("Create menu: %s", menuNames[in_menu]);
+    SDL_assert((in_menu > MENU_START) & (in_menu < MENU_END));
+    if (in_game->menu_loaded[in_menu] != 0) {
+        SDL_Log("menu %d is already loaded", in_menu);
+    } else {
+        in_game->tnecs_menu_loaded[in_menu] = TNECS_ENTITY_CREATE_WCOMPONENTS(in_game->tnecs_world, Menu);
+        struct Menu * temp_menu_ptr = TNECS_GET_COMPONENT(in_game->tnecs_world, in_game->tnecs_menu_loaded[in_menu], Menu);
+        *temp_menu_ptr = Menu_default;
+        temp_menu_ptr->texture_9patch = loadTexture(Game_renderer, in_game->filename_menu, false);
+        temp_menu_ptr->font = in_game->menu_font;
+        temp_menu_ptr->id = in_menu;
+    }
+    SDL_Log("in_game->menu_stack_num %d", in_game->menu_stack_num);
 }
 
 void Game_Menu_Create(struct Game * in_game, int8_t in_menu) {
