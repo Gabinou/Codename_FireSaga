@@ -1,24 +1,3 @@
-{
-	"Tile":	{
-		"Name":	"Village",
-		"id":	64,
-		"inside":	false,
-		"Stats":	{
-			"Dodge":	15,
-			"Pprot":	0,
-			"Mprot":	2,
-			"Heal":	0
-		},
-		"MvtCost":	{
-			"foot_slow":	1,
-			"foot_fast":	1,
-			"mages":	1,
-			"fliers":	1,
-			"riders_slow":	1,
-			"riders_fast":	1,
-			"armors":	1,
-			"pirates":	1,
-			"bandits":	1
-		}
-	}
-}
+version https://git-lfs.github.com/spec/v1
+oid sha256:452aa378ebe26e1d4616942c1d42ac16c6a36339749de6711f5c759519576f28
+size 325
