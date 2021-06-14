@@ -12,12 +12,12 @@ struct AI AI_default = {
     .move_type = 1,
 };
 
-void AIModuleImport(ecs_world_t * in_world) {
-    ECS_MODULE(in_world, AIModule);
-    ECS_COMPONENT(in_world, AI);
-    ECS_SET_COMPONENT(AI);
-    ECS_EXPORT_COMPONENT(AI);
-}
+// void AIModuleImport(tnecs_world_t * in_world) {
+//     ECS_MODULE(in_world, AIModule);
+//     ECS_COMPONENT(in_world, AI);
+//     ECS_SET_COMPONENT(AI);
+//     ECS_EXPORT_COMPONENT(AI);
+// }
 
 extern int8_t AI_Forecast_Rating(struct Combat_Forecast in_forecast) {
     int8_t rating = 0;
@@ -70,22 +70,20 @@ extern int8_t AI_Forecast_Rating(struct Combat_Forecast in_forecast) {
     return (rating);
 }
 
-extern ecs_entity_t AI_Target_Heal(ecs_world_t * in_world, ecs_entity_t in_staffWielder, ecs_entity_t * in_possiblePatients, uint8_t num_patients) {
+extern tnecs_entity_t AI_Target_Heal(tnecs_world_t * in_world, tnecs_entity_t in_staffWielder, tnecs_entity_t * in_possiblePatients, uint8_t num_patients) {
     SDL_Log("AI_Target_Heal");
-    ECS_IMPORT(in_world, UnitModule);
-    ECS_IMPORT(in_world, AIModule);
-    const struct AI * temp_ai_ptr;
-    ecs_entity_t out_target = 0;
-    temp_ai_ptr = ecs_get(in_world, in_staffWielder, AI);
+    struct AI * temp_ai_ptr;
+    tnecs_entity_t out_target = 0;
+    temp_ai_ptr = TNECS_GET_COMPONENT(in_world, in_staffWielder, AI);
     if (num_patients > 0) {
-        out_target = entity_isIn(temp_ai_ptr->target_protect, in_possiblePatients, num_patients);
+        out_target = tnecs_entity_isIn(temp_ai_ptr->target_protect, in_possiblePatients, num_patients);
 
         if (out_target == 0) {
             float missing_hp_prop = 0.0f;
             float missing_hp_prop_max = 0.0f;
-            const struct Unit * temp_unit_ptr;
+            struct Unit * temp_unit_ptr;
             for (uint8_t i = 0; i < num_patients; i++) {
-                temp_unit_ptr = ecs_get(in_world, in_possiblePatients[i], Unit);
+                temp_unit_ptr = TNECS_GET_COMPONENT(in_world, in_possiblePatients[i], Unit);
                 missing_hp_prop = 1.0f - ((float)temp_unit_ptr->current_hp / (float)temp_unit_ptr->effective_stats.hp);
                 if (missing_hp_prop > missing_hp_prop_max) {
                     missing_hp_prop_max = missing_hp_prop;
@@ -97,11 +95,10 @@ extern ecs_entity_t AI_Target_Heal(ecs_world_t * in_world, ecs_entity_t in_staff
     return (out_target);
 }
 
-int8_t AI_Silence_Rating(ecs_world_t * in_world, uint8_t in_hit_rate, ecs_entity_t in_enemy_ent) {
-    ECS_IMPORT(in_world, UnitModule);
+int8_t AI_Silence_Rating(tnecs_world_t * in_world, uint8_t in_hit_rate, tnecs_entity_t in_enemy_ent) {
     int8_t rating = 0;
     int8_t rating_buffer;
-    const struct Unit * enemy_ptr = ecs_get(in_world, in_enemy_ent, Unit);
+    struct Unit * enemy_ptr = TNECS_GET_COMPONENT(in_world, in_enemy_ent, Unit);
 
     rating_buffer = equation_AI_Rating_hitRate(in_hit_rate);
     rating = rating > (INT8_MAX - rating_buffer) ? INT8_MAX : rating + rating_buffer;
@@ -127,22 +124,20 @@ int8_t AI_Silence_Rating(ecs_world_t * in_world, uint8_t in_hit_rate, ecs_entity
     return (rating);
 }
 
-ecs_entity_t AI_Target_Silence(ecs_world_t * in_world, ecs_entity_t in_staffWielder, uint8_t * in_hit_rates, ecs_entity_t * in_possibleDefenders, uint8_t num_defender) {
+tnecs_entity_t AI_Target_Silence(tnecs_world_t * in_world, tnecs_entity_t in_staffWielder, uint8_t * in_hit_rates, tnecs_entity_t * in_possibleDefenders, uint8_t num_defender) {
     SDL_Log("AI_Target_Silence");
-    ECS_IMPORT(in_world, UnitModule);
-    ECS_IMPORT(in_world, AIModule);
-    const struct AI * temp_ai_ptr;
+    struct AI * temp_ai_ptr;
     // const struct Unit * temp_unit_ptr;
-    temp_ai_ptr = ecs_get(in_world, in_staffWielder, AI);
-    ecs_entity_t out_target = 0;
+    temp_ai_ptr = TNECS_GET_COMPONENT(in_world, in_staffWielder, AI);
+    tnecs_entity_t out_target = 0;
     if (num_defender > 0) {
-        out_target = entity_isIn(temp_ai_ptr->target_kill, in_possibleDefenders, num_defender);
+        out_target = tnecs_entity_isIn(temp_ai_ptr->target_kill, in_possibleDefenders, num_defender);
         if (out_target == 0) {
             int8_t temp_rating;
             int8_t max_rating = INT8_MIN;
             out_target = in_possibleDefenders[(rand() % num_defender)];
             for (uint8_t i = 0; i < num_defender; i++) {
-                // temp_unit_ptr = ecs_get(in_world, in_possibleDefenders[i], Unit);
+                // temp_unit_ptr = TNECS_GET_COMPONENT(in_world, in_possibleDefenders[i], Unit);
                 temp_rating = AI_Silence_Rating(in_world, in_hit_rates[i], in_possibleDefenders[i]);
                 if (temp_rating > max_rating) {
                     out_target = in_possibleDefenders[i];
@@ -156,22 +151,20 @@ ecs_entity_t AI_Target_Silence(ecs_world_t * in_world, ecs_entity_t in_staffWiel
     return (out_target);
 }
 
-ecs_entity_t AI_Target_Pull(ecs_world_t * in_world, ecs_entity_t in_staffWielder, ecs_entity_t * in_friendlies, uint8_t num_friendly, ecs_entity_t * in_enemies, uint8_t num_enemy) {
+tnecs_entity_t AI_Target_Pull(tnecs_world_t * in_world, tnecs_entity_t in_staffWielder, tnecs_entity_t * in_friendlies, uint8_t num_friendly, tnecs_entity_t * in_enemies, uint8_t num_enemy) {
     SDL_Log("AI_Target_Pull");
-    ECS_IMPORT(in_world, UnitModule);
-    ECS_IMPORT(in_world, AIModule);
-    const struct AI * temp_ai_ptr;
-    const struct Unit * temp_unit_ptr;
-    temp_ai_ptr = ecs_get(in_world, in_staffWielder, AI);
-    ecs_entity_t out_target = 0;
+    struct AI * temp_ai_ptr;
+    struct Unit * temp_unit_ptr;
+    temp_ai_ptr = TNECS_GET_COMPONENT(in_world, in_staffWielder, AI);
+    tnecs_entity_t out_target = 0;
     float missing_hp_prop = 0.0f;
     float missing_hp_prop_max = 0.0f;
     switch (temp_ai_ptr->priority) {
         case AI_PRIORITY_PROTECT:
             if (num_friendly > 0) {
-                out_target = entity_isIn(temp_ai_ptr->target_protect, in_friendlies, num_friendly);
+                out_target = tnecs_entity_isIn(temp_ai_ptr->target_protect, in_friendlies, num_friendly);
                 if (out_target > 0) {
-                    temp_unit_ptr = ecs_get(in_world, out_target, Unit);
+                    temp_unit_ptr = TNECS_GET_COMPONENT(in_world, out_target, Unit);
                     missing_hp_prop = 1.0f - ((float)temp_unit_ptr->current_hp / (float)temp_unit_ptr->effective_stats.hp);
                     if (missing_hp_prop < AI_PULL_FRIENDLY_MISSINGHP) {
                         out_target = 0;
@@ -181,7 +174,7 @@ ecs_entity_t AI_Target_Pull(ecs_world_t * in_world, ecs_entity_t in_staffWielder
             break;
         case AI_PRIORITY_KILL:
             if (num_enemy > 0) {
-                out_target = entity_isIn(temp_ai_ptr->target_kill, in_enemies, num_enemy);
+                out_target = tnecs_entity_isIn(temp_ai_ptr->target_kill, in_enemies, num_enemy);
             }
             break;
     }
@@ -192,7 +185,7 @@ ecs_entity_t AI_Target_Pull(ecs_world_t * in_world, ecs_entity_t in_staffWielder
                 // Pull ally that just attacked. -> AI makes staff pullers go last
 
                 for (uint8_t i = 0; i < num_friendly; i++) {
-                    temp_unit_ptr = ecs_get(in_world, in_friendlies[i], Unit);
+                    temp_unit_ptr = TNECS_GET_COMPONENT(in_world, in_friendlies[i], Unit);
                     missing_hp_prop = 1.0f - ((float)temp_unit_ptr->current_hp / (float)temp_unit_ptr->effective_stats.hp);
                     if (missing_hp_prop > missing_hp_prop_max) {
                         out_target = in_friendlies[i];
@@ -210,25 +203,21 @@ ecs_entity_t AI_Target_Pull(ecs_world_t * in_world, ecs_entity_t in_staffWielder
     return (out_target);
 }
 
-ecs_entity_t AI_Target_Push(ecs_world_t * in_world, ecs_entity_t in_staffWielder, ecs_entity_t * in_friendlies, uint8_t num_friendly, ecs_entity_t * in_enemies, uint8_t num_enemy) {
+tnecs_entity_t AI_Target_Push(tnecs_world_t * in_world, tnecs_entity_t in_staffWielder, tnecs_entity_t * in_friendlies, uint8_t num_friendly, tnecs_entity_t * in_enemies, uint8_t num_enemy) {
     SDL_Log("AI_Target_Push");
-    ECS_IMPORT(in_world, UnitModule);
-    ECS_IMPORT(in_world, AIModule);
-    const struct AI * temp_ai_ptr;
-    const struct Unit * temp_unit_ptr;
-    temp_ai_ptr = ecs_get(in_world, in_staffWielder, AI);
-    ecs_entity_t out_target = 0;
+    struct AI * temp_ai_ptr;
+    struct Unit * temp_unit_ptr;
+    temp_ai_ptr = TNECS_GET_COMPONENT(in_world, in_staffWielder, AI);
+    tnecs_entity_t out_target = 0;
     return (out_target);
 }
 
-ecs_entity_t AI_Target_Attack(ecs_world_t * in_world, ecs_entity_t in_attacker, ecs_entity_t * in_possibleDefenders, struct Combat_Forecast * in_forecasts, uint8_t num_defender) {
-    ECS_IMPORT(in_world, UnitModule);
-    ECS_IMPORT(in_world, AIModule);
-    const struct AI * temp_ai_ptr;
-    temp_ai_ptr = ecs_get(in_world, in_attacker, AI);
-    ecs_entity_t out_target = 0;
+tnecs_entity_t AI_Target_Attack(tnecs_world_t * in_world, tnecs_entity_t in_attacker, tnecs_entity_t * in_possibleDefenders, struct Combat_Forecast * in_forecasts, uint8_t num_defender) {
+    struct AI * temp_ai_ptr;
+    temp_ai_ptr = TNECS_GET_COMPONENT(in_world, in_attacker, AI);
+    tnecs_entity_t out_target = 0;
     if (num_defender > 0) {
-        out_target = entity_isIn(temp_ai_ptr->target_kill, in_possibleDefenders, num_defender);
+        out_target = tnecs_entity_isIn(temp_ai_ptr->target_kill, in_possibleDefenders, num_defender);
 
         if (out_target == 0) {
             int8_t temp_rating;
@@ -249,14 +238,12 @@ ecs_entity_t AI_Target_Attack(ecs_world_t * in_world, ecs_entity_t in_attacker, 
 }
 
 
-struct AI_PushPull_Out AI_PushPull_Friendly_Offensively_Rating(ecs_world_t * in_world, struct Map * in_map, ecs_entity_t in_friendly_ent) {
-    ECS_IMPORT(in_world, UnitModule);
-    ECS_IMPORT(in_world, PositionModule);
+struct AI_PushPull_Out AI_PushPull_Friendly_Offensively_Rating(tnecs_world_t * in_world, struct Map * in_map, tnecs_entity_t in_friendly_ent) {
     int8_t rating = 0;
     int8_t rating_buffer;
-    const struct Unit * friendly_ptr = ecs_get(in_world, in_friendly_ent, Unit);
-    const struct Position * position_ptr = ecs_get(in_world, in_friendly_ent, Position);
-    struct Unit * friendly_mptr = ecs_get_mut(in_world, in_friendly_ent, Unit, NULL);
+    struct Unit * friendly_ptr = TNECS_GET_COMPONENT(in_world, in_friendly_ent, Unit);
+    struct Position * position_ptr = TNECS_GET_COMPONENT(in_world, in_friendly_ent, Position);
+    struct Unit * friendly_mptr = TNECS_GET_COMPONENT(in_world, in_friendly_ent, Unit);
 
     float current_hp_prop = ((float)friendly_ptr->current_hp / (float)friendly_ptr->effective_stats.hp);
 
@@ -284,40 +271,39 @@ struct AI_PushPull_Out AI_PushPull_Friendly_Offensively_Rating(ecs_world_t * in_
     rating_buffer = equation_AI_Rating_Stats(friendly_ptr->effective_stats.dex);
     rating = rating > (INT8_MAX - rating_buffer) ? INT8_MAX : rating + rating_buffer;
 
-    int_tile_t * costmapp_pushpull = Map_Costmap_PushPull_Compute(in_map, in_world, in_friendly_ent);
-    int_tile_t * costmapp_move = Map_Costmap_Movement_Compute(in_map, in_world, in_friendly_ent);
-    int_tile_t * movemapp = Pathfinding_Map_Move(costmapp_move, in_map->row_len, in_map->col_len, position_ptr->tilemap_pos, Unit_computeMove(friendly_mptr), POINTS_MATRIX);
+    // UNTIL MAP IS NOT TNECSED
+    // int_tile_t * costmapp_pushpull = Map_Costmap_PushPull_Compute(in_map, in_world, in_friendly_ent);
+    // int_tile_t * costmapp_move = Map_Costmap_Movement_Compute(in_map, in_world, in_friendly_ent);
+    // int_tile_t * movemapp = Pathfinding_Map_Move(costmapp_move, in_map->row_len, in_map->col_len, position_ptr->tilemap_pos, Unit_computeMove(friendly_mptr), POINTS_MATRIX);
 
-    const struct Position * temp_pos;
-    struct Point * enemy_points = NULL;
-    for (uint8_t i = 0; i < in_map->num_enemies_onfield; i++) {
-        if (in_map->friendlies_onfield[i] > 0) {
-            temp_pos = ecs_get(in_world, in_map->enemies_onfield[i], Position);
-            if (temp_pos != NULL) {
-                arrput(enemy_points, temp_pos->tilemap_pos);
-            }
-        }
-    }
+    // struct Position * temp_pos;
+    // struct Point * enemy_points = NULL;
+    // for (uint8_t i = 0; i < in_map->num_enemies_onfield; i++) {
+    //     if (in_map->friendlies_onfield[i] > 0) {
+    //         temp_pos = TNECS_GET_COMPONENT(in_world, in_map->enemies_onfield[i], Position);
+    //         if (temp_pos != NULL) {
+    //             arrput(enemy_points, temp_pos->tilemap_pos);
+    //         }
+    //     }
+    // }
 
-    int_tile_t * unit_range = Unit_computeRange(friendly_mptr);
-    int_tile_t * gradientmapp_enemy = Pathfinding_Map_unitGradient(costmapp_pushpull, in_map->row_len, in_map->col_len, enemy_points, in_map->num_enemies_onfield);
-    int_tile_t * assailablemapp = Pathfinding_Map_Assailable(movemapp, in_map->row_len, in_map->col_len, position_ptr->tilemap_pos, unit_range, POINTS_MATRIX);
-    int_tile_t * gradientmapp_enemy_masked = matrix_mask_int16_t(gradientmapp_enemy, assailablemapp, in_map->row_len, in_map->col_len);
+    // int_tile_t * unit_range = Unit_computeRange(friendly_mptr);
+    // int_tile_t * gradientmapp_enemy = Pathfinding_Map_unitGradient(costmapp_pushpull, in_map->row_len, in_map->col_len, enemy_points, in_map->num_enemies_onfield);
+    // int_tile_t * assailablemapp = Pathfinding_Map_Assailable(movemapp, in_map->row_len, in_map->col_len, position_ptr->tilemap_pos, unit_range, POINTS_MATRIX);
+    // int_tile_t * gradientmapp_enemy_masked = matrix_mask_int16_t(gradientmapp_enemy, assailablemapp, in_map->row_len, in_map->col_len);
 
-    struct AI_PushPull_Out ai_pushpull_out = AI_PushPull_bestPosition(gradientmapp_enemy_masked, in_map->row_len, in_map->col_len, unit_range[1], position_ptr->tilemap_pos, 1);
-    ai_pushpull_out.rating = ai_pushpull_out.rating > (INT8_MAX - rating) ? INT8_MAX : ai_pushpull_out.rating + rating;
+    // struct AI_PushPull_Out ai_pushpull_out = AI_PushPull_bestPosition(gradientmapp_enemy_masked, in_map->row_len, in_map->col_len, unit_range[1], position_ptr->tilemap_pos, 1);
+    // ai_pushpull_out.rating = ai_pushpull_out.rating > (INT8_MAX - rating) ? INT8_MAX : ai_pushpull_out.rating + rating;
 
-    return (ai_pushpull_out);
+    // return (ai_pushpull_out);
 }
 
-struct AI_PushPull_Out AI_PushPull_Friendly_Defensively_Rating(ecs_world_t * in_world, struct Map * in_map, ecs_entity_t in_friendly_ent) {
-    ECS_IMPORT(in_world, UnitModule);
-    ECS_IMPORT(in_world, PositionModule);
+struct AI_PushPull_Out AI_PushPull_Friendly_Defensively_Rating(tnecs_world_t * in_world, struct Map * in_map, tnecs_entity_t in_friendly_ent) {
     int8_t rating = 0;
     int8_t rating_buffer;
-    const struct Unit * friendly_ptr = ecs_get(in_world, in_friendly_ent, Unit);
-    const struct Position * position_ptr = ecs_get(in_world, in_friendly_ent, Position);
-    struct Unit * friendly_mptr = ecs_get_mut(in_world, in_friendly_ent, Unit, NULL);
+    struct Unit * friendly_ptr = TNECS_GET_COMPONENT(in_world, in_friendly_ent, Unit);
+    struct Position * position_ptr = TNECS_GET_COMPONENT(in_world, in_friendly_ent, Position);
+    struct Unit * friendly_mptr = TNECS_GET_COMPONENT(in_world, in_friendly_ent, Unit);
 
     float missing_hp_prop = 1.0f - ((float)friendly_ptr->current_hp / (float)friendly_ptr->effective_stats.hp);
     rating_buffer = equation_AI_Rating_HPprop(missing_hp_prop);
@@ -329,42 +315,41 @@ struct AI_PushPull_Out AI_PushPull_Friendly_Defensively_Rating(ecs_world_t * in_
     rating_buffer = equation_AI_Rating_Stats(friendly_ptr->effective_stats.def);
     rating = rating < (INT8_MIN + rating_buffer) ? INT8_MIN : rating - rating_buffer;
 
-    int_tile_t * costmapp_pushpull = Map_Costmap_PushPull_Compute(in_map, in_world, in_friendly_ent);
-    int_tile_t * costmapp_move = Map_Costmap_Movement_Compute(in_map, in_world, in_friendly_ent);
-    int_tile_t * movemapp = Pathfinding_Map_Move(costmapp_move, in_map->row_len, in_map->col_len, position_ptr->tilemap_pos, Unit_computeMove(friendly_mptr), POINTS_MATRIX);
+    // int_tile_t * costmapp_pushpull = Map_Costmap_PushPull_Compute(in_map, in_world, in_friendly_ent);
+    // int_tile_t * costmapp_move = Map_Costmap_Movement_Compute(in_map, in_world, in_friendly_ent);
+    // int_tile_t * movemapp = Pathfinding_Map_Move(costmapp_move, in_map->row_len, in_map->col_len, position_ptr->tilemap_pos, Unit_computeMove(friendly_mptr), POINTS_MATRIX);
 
-    const struct Position * temp_pos;
-    struct Point * friendly_points = NULL;
-    for (uint8_t i = 0; i < in_map->num_friendlies_onfield; i++) {
-        if (in_map->friendlies_onfield[i] > 0) {
-            temp_pos = ecs_get(in_world, in_map->friendlies_onfield[i], Position);
-            if (temp_pos != NULL) {
-                arrput(friendly_points, temp_pos->tilemap_pos);
-            }
-        }
-    }
+    // struct Position * temp_pos;
+    // struct Point * friendly_points = NULL;
+    // for (uint8_t i = 0; i < in_map->num_friendlies_onfield; i++) {
+    //     if (in_map->friendlies_onfield[i] > 0) {
+    //         temp_pos = TNECS_GET_COMPONENT(in_world, in_map->friendlies_onfield[i], Position);
+    //         if (temp_pos != NULL) {
+    //             arrput(friendly_points, temp_pos->tilemap_pos);
+    //         }
+    //     }
+    // }
 
-    int_tile_t * unit_range = Unit_computeRange(friendly_mptr);
-    int_tile_t * gradientmapp_friendly = Pathfinding_Map_unitGradient(costmapp_pushpull, in_map->row_len, in_map->col_len, friendly_points, in_map->num_friendlies_onfield);
-    int_tile_t * assailablemapp = Pathfinding_Map_Assailable(movemapp, in_map->row_len, in_map->col_len, position_ptr->tilemap_pos, unit_range, POINTS_MATRIX);
-    int_tile_t * gradientmapp_friendly_masked = matrix_mask_int16_t(gradientmapp_friendly, assailablemapp, in_map->row_len, in_map->col_len);
+    // int_tile_t * unit_range = Unit_computeRange(friendly_mptr);
+    // int_tile_t * gradientmapp_friendly = Pathfinding_Map_unitGradient(costmapp_pushpull, in_map->row_len, in_map->col_len, friendly_points, in_map->num_friendlies_onfield);
+    // int_tile_t * assailablemapp = Pathfinding_Map_Assailable(movemapp, in_map->row_len, in_map->col_len, position_ptr->tilemap_pos, unit_range, POINTS_MATRIX);
+    // int_tile_t * gradientmapp_friendly_masked = matrix_mask_int16_t(gradientmapp_friendly, assailablemapp, in_map->row_len, in_map->col_len);
 
-    struct AI_PushPull_Out ai_pushpull_out = AI_PushPull_bestPosition(gradientmapp_friendly_masked, in_map->row_len, in_map->col_len, unit_range[1], position_ptr->tilemap_pos, -1);
-    ai_pushpull_out.rating = ai_pushpull_out.rating > (INT8_MAX - rating) ? INT8_MAX : ai_pushpull_out.rating + rating;
+    // struct AI_PushPull_Out ai_pushpull_out = AI_PushPull_bestPosition(gradientmapp_friendly_masked, in_map->row_len, in_map->col_len, unit_range[1], position_ptr->tilemap_pos, -1);
+    // ai_pushpull_out.rating = ai_pushpull_out.rating > (INT8_MAX - rating) ? INT8_MAX : ai_pushpull_out.rating + rating;
 
-    return (ai_pushpull_out);
+    // return (ai_pushpull_out);
 }
 
 
-struct AI_PushPull_Out AI_PushPull_Enemy_Defensively_Rating(ecs_world_t * in_world, struct Map * in_map, ecs_entity_t in_enemy_ent) {
-    ECS_IMPORT(in_world, UnitModule);
-    ECS_IMPORT(in_world, PositionModule);
+struct AI_PushPull_Out AI_PushPull_Enemy_Defensively_Rating(tnecs_world_t * in_world, struct Map * in_map, tnecs_entity_t in_enemy_ent) {
+    SDL_Log("AI_PushPull_Enemy_Defensively_Rating");
     int8_t rating = 0;
     int8_t rating_buffer;
 
-    const struct Unit * enemy_ptr = ecs_get(in_world, in_enemy_ent, Unit);
-    const struct Position * position_ptr = ecs_get(in_world, in_enemy_ent, Position);
-    struct Unit * enemy_mptr = ecs_get_mut(in_world, in_enemy_ent, Unit, NULL);
+    struct Unit * enemy_ptr = TNECS_GET_COMPONENT(in_world, in_enemy_ent, Unit);
+    struct Position * position_ptr = TNECS_GET_COMPONENT(in_world, in_enemy_ent, Position);
+    struct Unit * enemy_mptr = TNECS_GET_COMPONENT(in_world, in_enemy_ent, Unit);
 
     float current_hp_prop = 1.0f - ((float)enemy_ptr->current_hp / (float)enemy_ptr->effective_stats.hp);
     rating_buffer = equation_AI_Rating_HPprop(current_hp_prop);
@@ -376,41 +361,39 @@ struct AI_PushPull_Out AI_PushPull_Enemy_Defensively_Rating(ecs_world_t * in_wor
     rating_buffer = equation_AI_Rating_Stats(enemy_ptr->effective_stats.mag);
     rating = rating > (INT8_MAX - rating_buffer) ? INT8_MAX : rating + rating_buffer;
 
-    int_tile_t * costmapp_pushpull = Map_Costmap_PushPull_Compute(in_map, in_world, in_enemy_ent);
-    int_tile_t * costmapp_move = Map_Costmap_Movement_Compute(in_map, in_world, in_enemy_ent);
-    int_tile_t * movemapp = Pathfinding_Map_Move(costmapp_move, in_map->row_len, in_map->col_len, position_ptr->tilemap_pos, Unit_computeMove(enemy_mptr), POINTS_MATRIX);
+    // int_tile_t * costmapp_pushpull = Map_Costmap_PushPull_Compute(in_map, in_world, in_enemy_ent);
+    // int_tile_t * costmapp_move = Map_Costmap_Movement_Compute(in_map, in_world, in_enemy_ent);
+    // int_tile_t * movemapp = Pathfinding_Map_Move(costmapp_move, in_map->row_len, in_map->col_len, position_ptr->tilemap_pos, Unit_computeMove(enemy_mptr), POINTS_MATRIX);
 
-    const struct Position * temp_pos;
-    struct Point * enemy_points = NULL;
-    for (uint8_t i = 0; i < in_map->num_enemies_onfield; i++) {
-        if (in_map->friendlies_onfield[i] > 0) {
-            temp_pos = ecs_get(in_world, in_map->enemies_onfield[i], Position);
-            if (temp_pos != NULL) {
-                arrput(enemy_points, temp_pos->tilemap_pos);
-            }
-        }
-    }
+    // struct Position * temp_pos;
+    // struct Point * enemy_points = NULL;
+    // for (uint8_t i = 0; i < in_map->num_enemies_onfield; i++) {
+    //     if (in_map->friendlies_onfield[i] > 0) {
+    //         temp_pos = TNECS_GET_COMPONENT(in_world, in_map->enemies_onfield[i], Position);
+    //         if (temp_pos != NULL) {
+    //             arrput(enemy_points, temp_pos->tilemap_pos);
+    //         }
+    //     }
+    // }
 
-    int_tile_t * unit_range = Unit_computeRange(enemy_mptr);
-    int_tile_t * gradientmapp_enemy = Pathfinding_Map_unitGradient(costmapp_pushpull, in_map->row_len, in_map->col_len, enemy_points, in_map->num_enemies_onfield);
-    int_tile_t * assailablemapp = Pathfinding_Map_Assailable(movemapp, in_map->row_len, in_map->col_len, position_ptr->tilemap_pos, unit_range, POINTS_MATRIX);
-    int_tile_t * gradientmapp_enemy_masked = matrix_mask_int16_t(gradientmapp_enemy, assailablemapp, in_map->row_len, in_map->col_len);
+    // int_tile_t * unit_range = Unit_computeRange(enemy_mptr);
+    // int_tile_t * gradientmapp_enemy = Pathfinding_Map_unitGradient(costmapp_pushpull, in_map->row_len, in_map->col_len, enemy_points, in_map->num_enemies_onfield);
+    // int_tile_t * assailablemapp = Pathfinding_Map_Assailable(movemapp, in_map->row_len, in_map->col_len, position_ptr->tilemap_pos, unit_range, POINTS_MATRIX);
+    // int_tile_t * gradientmapp_enemy_masked = matrix_mask_int16_t(gradientmapp_enemy, assailablemapp, in_map->row_len, in_map->col_len);
 
-    struct AI_PushPull_Out ai_pushpull_out = AI_PushPull_bestPosition(gradientmapp_enemy_masked, in_map->row_len, in_map->col_len, unit_range[1], position_ptr->tilemap_pos, 1);
-    ai_pushpull_out.rating = ai_pushpull_out.rating > (INT8_MAX - rating) ? INT8_MAX : ai_pushpull_out.rating + rating;
+    // struct AI_PushPull_Out ai_pushpull_out = AI_PushPull_bestPosition(gradientmapp_enemy_masked, in_map->row_len, in_map->col_len, unit_range[1], position_ptr->tilemap_pos, 1);
+    // ai_pushpull_out.rating = ai_pushpull_out.rating > (INT8_MAX - rating) ? INT8_MAX : ai_pushpull_out.rating + rating;
 
-    return (ai_pushpull_out);
+    // return (ai_pushpull_out);
 }
 
-struct AI_PushPull_Out AI_PushPull_Enemy_Offensively_Rating(ecs_world_t * in_world, struct Map * in_map, ecs_entity_t in_enemy_ent) {
-    ECS_IMPORT(in_world, UnitModule);
-    ECS_IMPORT(in_world, PositionModule);
+struct AI_PushPull_Out AI_PushPull_Enemy_Offensively_Rating(tnecs_world_t * in_world, struct Map * in_map, tnecs_entity_t in_enemy_ent) {
     int8_t rating = 0;
     int8_t rating_buffer;
 
-    const struct Unit * enemy_ptr = ecs_get(in_world, in_enemy_ent, Unit);
-    const struct Position * position_ptr = ecs_get(in_world, in_enemy_ent, Position);
-    struct Unit * enemy_mptr = ecs_get_mut(in_world, in_enemy_ent, Unit, NULL);
+    struct Unit * enemy_ptr = TNECS_GET_COMPONENT(in_world, in_enemy_ent, Unit);
+    struct Position * position_ptr = TNECS_GET_COMPONENT(in_world, in_enemy_ent, Position);
+    struct Unit * enemy_mptr = TNECS_GET_COMPONENT(in_world, in_enemy_ent, Unit);
 
     float current_hp_prop = ((float)enemy_ptr->current_hp / (float)enemy_ptr->effective_stats.hp);
     rating_buffer = equation_AI_Rating_HPprop(current_hp_prop);
@@ -422,30 +405,30 @@ struct AI_PushPull_Out AI_PushPull_Enemy_Offensively_Rating(ecs_world_t * in_wor
     rating_buffer = equation_AI_Rating_Stats(enemy_ptr->effective_stats.def);
     rating = rating > (INT8_MAX - rating_buffer) ? INT8_MAX : rating + rating_buffer;
 
-    int_tile_t * costmapp_pushpull = Map_Costmap_PushPull_Compute(in_map, in_world, in_enemy_ent);
-    int_tile_t * costmapp_move = Map_Costmap_Movement_Compute(in_map, in_world, in_enemy_ent);
-    int_tile_t * movemapp = Pathfinding_Map_Move(costmapp_move, in_map->row_len, in_map->col_len, position_ptr->tilemap_pos, Unit_computeMove(enemy_mptr), POINTS_MATRIX);
+    // int_tile_t * costmapp_pushpull = Map_Costmap_PushPull_Compute(in_map, in_world, in_enemy_ent);
+    // int_tile_t * costmapp_move = Map_Costmap_Movement_Compute(in_map, in_world, in_enemy_ent);
+    // int_tile_t * movemapp = Pathfinding_Map_Move(costmapp_move, in_map->row_len, in_map->col_len, position_ptr->tilemap_pos, Unit_computeMove(enemy_mptr), POINTS_MATRIX);
 
-    const struct Position * temp_pos;
-    struct Point * friendly_points = NULL;
-    for (uint8_t i = 0; i < in_map->num_friendlies_onfield; i++) {
-        if (in_map->friendlies_onfield[i] > 0) {
-            temp_pos = ecs_get(in_world, in_map->friendlies_onfield[i], Position);
-            if (temp_pos != NULL) {
-                arrput(friendly_points, temp_pos->tilemap_pos);
-            }
-        }
-    }
+    // struct Position * temp_pos;
+    // struct Point * friendly_points = NULL;
+    // for (uint8_t i = 0; i < in_map->num_friendlies_onfield; i++) {
+    //     if (in_map->friendlies_onfield[i] > 0) {
+    //         temp_pos = TNECS_GET_COMPONENT(in_world, in_map->friendlies_onfield[i], Position);
+    //         if (temp_pos != NULL) {
+    //             arrput(friendly_points, temp_pos->tilemap_pos);
+    //         }
+    //     }
+    // }
 
-    int_tile_t * unit_range = Unit_computeRange(enemy_mptr);
-    int_tile_t * gradientmapp_friendly = Pathfinding_Map_unitGradient(costmapp_pushpull, in_map->row_len, in_map->col_len, friendly_points, in_map->num_friendlies_onfield);
-    int_tile_t * assailablemapp = Pathfinding_Map_Assailable(movemapp, in_map->row_len, in_map->col_len, position_ptr->tilemap_pos, unit_range, POINTS_MATRIX);
-    int_tile_t * gradientmapp_friendly_masked = matrix_mask_int16_t(gradientmapp_friendly, assailablemapp, in_map->row_len, in_map->col_len);
+    // int_tile_t * unit_range = Unit_computeRange(enemy_mptr);
+    // int_tile_t * gradientmapp_friendly = Pathfinding_Map_unitGradient(costmapp_pushpull, in_map->row_len, in_map->col_len, friendly_points, in_map->num_friendlies_onfield);
+    // int_tile_t * assailablemapp = Pathfinding_Map_Assailable(movemapp, in_map->row_len, in_map->col_len, position_ptr->tilemap_pos, unit_range, POINTS_MATRIX);
+    // int_tile_t * gradientmapp_friendly_masked = matrix_mask_int16_t(gradientmapp_friendly, assailablemapp, in_map->row_len, in_map->col_len);
 
-    struct AI_PushPull_Out ai_pushpull_out = AI_PushPull_bestPosition(gradientmapp_friendly_masked, in_map->row_len, in_map->col_len, unit_range[1], position_ptr->tilemap_pos, -1);
-    ai_pushpull_out.rating = ai_pushpull_out.rating > (INT8_MAX - rating) ? INT8_MAX : ai_pushpull_out.rating + rating;
+    // struct AI_PushPull_Out ai_pushpull_out = AI_PushPull_bestPosition(gradientmapp_friendly_masked, in_map->row_len, in_map->col_len, unit_range[1], position_ptr->tilemap_pos, -1);
+    // ai_pushpull_out.rating = ai_pushpull_out.rating > (INT8_MAX - rating) ? INT8_MAX : ai_pushpull_out.rating + rating;
 
-    return (ai_pushpull_out);
+    // return (ai_pushpull_out);
 }
 
 struct AI_PushPull_Out AI_PushPull_bestPosition(int_tile_t * in_gradientmap, size_t row_len, size_t col_len, int_tile_t pushpull_distance, struct Point victim_pos, int8_t sign) {
