@@ -33,6 +33,7 @@ void TextModuleImport(ecs_world_t * in_world);
 extern void Text_Texture_Make(struct Text * in_text);
 extern void Text_Rects_Pos_Set(struct Text * in_text, int16_t x, int16_t y);
 extern void Text_draw(struct Text * in_text);
-extern void onUpdate_Text(ecs_world_t * in_world, ecs_entity_t in_entity_fps, uint32_t frame_count, float last_update, void * data);
+extern void onUpdate_FPS(ecs_world_t * in_world, ecs_entity_t in_entity_fps, uint32_t frame_count, float last_update, void * data);
+extern void onUpdate_FPS_tnecs(tnecs_world_t * in_world, tnecs_entity_t in_entity_fps, uint32_t frame_count, float last_update_s, void * data);
 
 #endif /* TEXT_H */

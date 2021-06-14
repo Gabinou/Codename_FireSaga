@@ -5,6 +5,7 @@
 #include "types.h"
 #include "enums.h"
 #include "flecs.h"
+#include "tnecs.h"
 #include <stdint.h>
 #include <stdbool.h>
 
@@ -186,6 +187,11 @@ struct Node3D {
 
 #define NodeHex Node3D
 #define HexNode Node3D
+
+struct TilePoint {
+    int_tile_t x;
+    int_tile_t y;
+};
 
 extern struct Point {
     int_point_t x;
@@ -463,6 +469,13 @@ typedef struct UpdateTimer {
     uint32_t frame_count;
     void (*onUpdate)(ecs_world_t *, ecs_entity_t, uint32_t, float, void *);
 } UpdateTimer;
+
+typedef struct tnecs_UpdateTimer {
+    float last_update;
+    float update_time; // 0.0f means update one time
+    uint32_t frame_count;
+    void (*onUpdate)(tnecs_world_t *, tnecs_entity_t, uint32_t, float, void *);
+} tnecs_UpdateTimer;
 
 typedef struct RenderTimer {
     float last_render;

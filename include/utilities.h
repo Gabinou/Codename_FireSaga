@@ -10,12 +10,14 @@
 #include "str.h"
 #include "narrative.h"
 #include "flecs.h"
+#include "tnecs.h"
 #include "physfs.h"
 #include "platform.h"
 #include "SDL2/SDL.h"
 #include "stb_ds.h"
 
 extern ecs_entity_t entity_isIn(ecs_entity_t in_ent, ecs_entity_t * in_possible, uint8_t num_possible);
+extern tnecs_entity_t tnecs_entity_isIn(tnecs_entity_t in_ent, tnecs_entity_t * in_possible, size_t num_possible);
 
 extern void utilities_inputFlag_Read(const char in_flag, const char * in_argstr, struct Input_Arguments * in_args);
 extern void utilities_printHelp();

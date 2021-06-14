@@ -145,13 +145,16 @@ void MenuModuleImport(ecs_world_t * in_world);
 
 extern void Menu_Rects_Compute(struct Menu * in_menu);
 extern void Menu_optionRects_Compute(struct Menu * in_menu);
+extern uint16_t Menu_cellWidth_Compute_tnecs(tnecs_world_t * in_world, struct Menu * in_menu, size_t row, size_t col);
 extern uint16_t Menu_cellWidth_Compute(ecs_world_t * in_world, struct Menu * in_menu, size_t row, size_t col);
 extern uint16_t Menu_cellsWidths_Compute(ecs_world_t * in_world, struct Menu * in_menu);
+extern uint16_t Menu_cellsWidths_Compute_tnecs(tnecs_world_t * in_world, struct Menu * in_menu);
 
 extern uint16_t Menu_Width_Compute(struct Menu * in_menu);
 extern uint16_t Menu_Height_Compute(struct Menu * in_menu);
 extern uint16_t Menu_Patchsize_Compute(struct Menu * in_menu);
 extern uint16_t Menu_rowHeight_Compute(ecs_world_t * in_world, struct Menu * in_menu);
+extern uint16_t Menu_rowHeight_Compute_tnecs(tnecs_world_t * in_world, struct Menu * in_menu);
 extern void Menu_Cols_init(struct Menu * in_menu);
 
 extern struct Point Menu_cursorPos_Compute(struct Menu * in_menu);
