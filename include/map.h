@@ -141,7 +141,6 @@ extern void Map_Unit_Move_tnecs(struct Map * in_map, const uint8_t x, const uint
 extern void Map_Unit_Put(struct Map * in_map, ecs_world_t * in_world, const uint8_t col, const uint8_t row, ecs_entity_t in_unit_id);
 extern void Map_Unit_Put_tnecs(struct Map * in_map, tnecs_world_t * in_world, const uint8_t col, const uint8_t row, tnecs_entity_t in_unit_id);
 extern void Map_Unit_Remove_fromPos(struct Map * in_map, const uint8_t col, const uint8_t row);
-extern void Map_Unit_Remove_fromPos_tnecs(struct Map * in_map, const uint8_t col, const uint8_t row);
 extern void Map_Unit_Remove_fromEntity(struct Map * in_map, ecs_world_t * in_world, const ecs_entity_t in_entity);
 extern void Map_Unit_Remove_fromEntity_tnecs(struct Map * in_map, tnecs_world_t * in_world, const tnecs_entity_t in_entity);
 extern void Map_Unit_Remove(struct Map * in_map, const ecs_entity_t in_entity);
