@@ -163,6 +163,7 @@ extern void unloadMenu(uint8_t in_menuind);
 
 extern void Menu_Patches_Draw(struct Menu * in_menu);
 extern void Menu_Options_Draw(ecs_world_t * in_world, struct Menu * in_menu);
+extern void Menu_Options_Draw_tnecs(tnecs_world_t * in_world, struct Menu * in_menu);
 extern void Menu_Options_init();
 
 struct MenuOption * Menu_Weapons_options(struct Unit * in_attacker);
