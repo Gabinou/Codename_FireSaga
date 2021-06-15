@@ -46,7 +46,7 @@ extern SDL_Renderer * Game_renderer;
 
 struct Entity_hash {
     uint8_t key;
-    ecs_entity_t value;
+    tnecs_entity_t value;
 };
 
 struct uint8_t_hash {
@@ -67,8 +67,7 @@ struct Game {
     struct Narrative_Conditions narrative;
 
     struct Weapons_hash * weapons;
-    ecs_world_t * world;
-    tnecs_world_t * tnecs_world;
+    tnecs_world_t * world;
 
     struct Tiles_hash * tiles_loaded;
     struct Units_hash * units_loaded;
@@ -80,31 +79,20 @@ struct Game {
     TTF_Font * menu_font;
     struct Map * map_ptr;
 
-    ecs_entity_t * menu_stack;
-    ecs_entity_t * menu_loaded;
-    tnecs_entity_t * tnecs_menu_stack;
-    tnecs_entity_t * tnecs_menu_loaded;
+    tnecs_entity_t * menu_stack;
+    tnecs_entity_t * menu_loaded;
 
     char filename_menu[DEFAULT_BUFFER_SIZE];
     char reason[DEFAULT_BUFFER_SIZE];
 
-    ecs_entity_t entity_cursor;
-    ecs_entity_t entity_mouse;
-    ecs_entity_t entity_transition;
-    ecs_entity_t entity_highlighted;
-    ecs_entity_t entity_shadowed;
-    ecs_entity_t entity_fps;
-    ecs_entity_t selected_unit_entity;
-    ecs_entity_t entity_unit_hovered;
-
-    tnecs_entity_t tnecs_entity_cursor;
-    tnecs_entity_t tnecs_entity_mouse;
-    tnecs_entity_t tnecs_entity_transition;
-    tnecs_entity_t tnecs_entity_highlighted;
-    tnecs_entity_t tnecs_entity_shadowed;
-    tnecs_entity_t tnecs_entity_fps;
-    tnecs_entity_t tnecs_selected_unit_entity;
-    tnecs_entity_t tnecs_entity_unit_hovered;
+    tnecs_entity_t entity_cursor;
+    tnecs_entity_t entity_mouse;
+    tnecs_entity_t entity_transition;
+    tnecs_entity_t entity_highlighted;
+    tnecs_entity_t entity_shadowed;
+    tnecs_entity_t entity_fps;
+    tnecs_entity_t selected_unit_entity;
+    tnecs_entity_t entity_unit_hovered;
 
     struct Point selected_unit_initial_position;
     struct Point selected_unit_moved_position;
@@ -133,21 +121,13 @@ struct Game {
     struct Convoy convoy;
     // struct Camp camp;
 
-    ecs_entity_t attacker_ent;
-    ecs_entity_t * defenders_ent;
-    ecs_entity_t * spectators_ent;
-    ecs_entity_t * patients_ent;
-    ecs_entity_t * talkers_ent;
-    ecs_entity_t * traders_ent;
-    ecs_entity_t * rescuees_ent;
-
-    tnecs_entity_t tnecs_attacker_ent;
-    tnecs_entity_t * tnecs_defenders_ent;
-    tnecs_entity_t * tnecs_patients_ent;
-    tnecs_entity_t * tnecs_spectators_ent;
-    tnecs_entity_t * tnecs_talkers_ent;
-    tnecs_entity_t * tnecs_traders_ent;
-    tnecs_entity_t * tnecs_rescuees_ent;
+    tnecs_entity_t attacker_ent;
+    tnecs_entity_t * defenders_ent;
+    tnecs_entity_t * spectators_ent;
+    tnecs_entity_t * patients_ent;
+    tnecs_entity_t * talkers_ent;
+    tnecs_entity_t * traders_ent;
+    tnecs_entity_t * rescuees_ent;
 
     uint8_t num_defenders;
     uint8_t num_patients;
@@ -165,8 +145,6 @@ extern void Game_startup(struct Game * in_game, struct Input_Arguments in_args);
 
 extern void Game_FPS_Create(struct Game * in_game, float in_update_time);
 extern void Game_FPS_Destroy(struct Game * in_game);
-extern void Game_FPS_Create_tnecs(struct Game * in_game, float in_update_time);
-extern void Game_FPS_Destroy_tnecs(struct Game * in_game);
 
 extern void Game_Cursor_Create(struct Game * in_game);
 extern void Game_Cursor_Destroy(struct Game * in_game);
@@ -180,26 +158,21 @@ extern void Game_Mouse_Destroy(struct Game * in_game);
 extern void Game_Mouse_Enable(struct Game * in_game);
 extern void Game_Mouse_Disable(struct Game * in_game);
 extern void Game_Mouse_State_Set(struct Game * in_game, const int8_t in_menu);
-extern void Game_Mouse_Create_tnecs(struct Game * in_game);
-extern void Game_Mouse_Destroy_tnecs(struct Game * in_game);
-extern void Game_Mouse_Enable_tnecs(struct Game * in_game);
-extern void Game_Mouse_Disable_tnecs(struct Game * in_game);
-extern void Game_Mouse_State_Set_tnecs(struct Game * in_game, const int8_t in_menu);
 
 extern uint8_t * Game_menuOptions_Get(struct Game * in_game, int8_t in_menu);
-extern void Game_menuOptions_Create(struct Game * in_game, ecs_entity_t * in_entity, char * in_name);
+extern void Game_menuOptions_Create(struct Game * in_game, tnecs_entity_t * in_entity, char * in_name);
 extern void Game_menuText_Create(struct Game * in_game, int8_t in_menu);
 extern bool Game_Menu_init(struct Game * in_game);
 extern void Game_Menu_Create(struct Game * in_game, int8_t in_menu);
 extern void Game_Menu_Update(struct Game * in_game, int8_t in_menu);
 extern void Game_Menu_Enable(struct Game * in_game, int8_t in_menu);
 extern void Game_Menu_Disable(struct Game * in_game, int8_t in_menu);
-extern void Game_Menu_Disable_Entity(struct Game * in_game, ecs_entity_t in_menu_entity);
+extern void Game_Menu_Disable_Entity(struct Game * in_game, tnecs_entity_t in_menu_entity);
 extern void Game_Menu_Destroy(struct Game * in_game, int8_t in_menu);
-extern ecs_entity_t Game_menuStack_Pop(struct Game * in_game, bool destroy);
-extern void Game_menuStack_Push(struct Game * in_game, ecs_entity_t in_menu_entity);
+extern tnecs_entity_t Game_menuStack_Pop(struct Game * in_game, bool destroy);
+extern void Game_menuStack_Push(struct Game * in_game, tnecs_entity_t in_menu_entity);
 
-extern ecs_entity_t Game_Menu_Get(struct Game * in_game, int8_t in_menu);
+extern tnecs_entity_t Game_Menu_Get(struct Game * in_game, int8_t in_menu);
 
 extern void Game_makeTurntransition(struct Game * in_game);
 extern void Game_setTurntransitiontext(struct Game * in_game, int8_t in_army);
@@ -232,16 +205,16 @@ extern void Game_Combat_Outcome(struct Game * in_game, struct Unit * attacker, s
 extern void Game_Combat_Resolves(struct Game * in_game, struct Unit * attacker, struct Unit * defender);
 extern void Game_Combat_Animate(struct Game * in_game, struct Unit * attacker, struct Unit * defender);
 
-extern void Game_getDefenders(struct Game * in_game, ecs_entity_t attacker_ent);
-extern void Game_getAudience(struct Game * in_game, ecs_entity_t moved_ent);
-extern void Game_getTalkers(struct Game * in_game, ecs_entity_t moved_ent);
-extern void Game_getPatients(struct Game * in_game, ecs_entity_t moved_ent);
-extern void Game_getTraders(struct Game * in_game, ecs_entity_t moved_ent);
-extern void Game_getRescuees(struct Game * in_game, ecs_entity_t moved_ent);
-extern void Game_canSeize(struct Game * in_game, ecs_entity_t moved_ent);
-extern void Game_Menu_LocationfromUnit(struct Game * in_game, ecs_entity_t in_menu_entity, ecs_entity_t in_unit_entity);
-extern void Game_Menu_LocationfromCursor(struct Game * in_game, ecs_entity_t in_menu_entity);
-extern void Game_Menu_LocationfromMouse(struct Game * in_game, ecs_entity_t in_menu_entity);
+extern void Game_getDefenders(struct Game * in_game, tnecs_entity_t attacker_ent);
+extern void Game_getAudience(struct Game * in_game, tnecs_entity_t moved_ent);
+extern void Game_getTalkers(struct Game * in_game, tnecs_entity_t moved_ent);
+extern void Game_getPatients(struct Game * in_game, tnecs_entity_t moved_ent);
+extern void Game_getTraders(struct Game * in_game, tnecs_entity_t moved_ent);
+extern void Game_getRescuees(struct Game * in_game, tnecs_entity_t moved_ent);
+extern void Game_canSeize(struct Game * in_game, tnecs_entity_t moved_ent);
+extern void Game_Menu_LocationfromUnit(struct Game * in_game, tnecs_entity_t in_menu_entity, tnecs_entity_t in_unit_entity);
+extern void Game_Menu_LocationfromCursor(struct Game * in_game, tnecs_entity_t in_menu_entity);
+extern void Game_Menu_LocationfromMouse(struct Game * in_game, tnecs_entity_t in_menu_entity);
 
 
 extern void Game_subStateSwitch_onMenupop(struct Game * in_game, int8_t menu_popped);

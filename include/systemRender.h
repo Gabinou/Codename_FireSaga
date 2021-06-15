@@ -26,20 +26,4 @@ extern void tnecs_drawCursor(tnecs_system_input_t * in_input);
 extern void tnecs_drawMouse(tnecs_system_input_t * in_input);
 extern void tnecs_drawMenu(tnecs_system_input_t * in_input);
 
-typedef struct systemRenderModule {
-    ECS_DECLARE_ENTITY(drawText);
-    ECS_DECLARE_ENTITY(drawSprite);
-    ECS_DECLARE_ENTITY(drawCursor);
-    ECS_DECLARE_ENTITY(drawMouse);
-    ECS_DECLARE_ENTITY(drawMenu);
-} systemRenderModule;
-
-void systemRenderModuleImport(ecs_world_t * in_world);
-#define systemRenderModuleImportHandles(handles)\
-    ECS_IMPORT_ENTITY(handles, drawText);\
-    ECS_IMPORT_ENTITY(handles, drawSprite);\
-ECS_IMPORT_ENTITY(handles, drawCursor);\
-ECS_IMPORT_ENTITY(handles, drawMenu);\
-ECS_IMPORT_ENTITY(handles, drawMouse);
-
 #endif /* SYSTEMRENDER_H */

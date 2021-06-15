@@ -463,7 +463,6 @@ void receive_SDL_CONTROLLERDEVICEREMOVED(struct Game * in_game, SDL_Event * in_e
 
         if (gamepad_ptr != NULL) {
             Gamepad_removeController(gamepad_ptr, in_event->cdevice.which);
-            ecs_modified(in_game->tnecs_world, in_game->tnecs_entity_cursor, controllerGamepad);
 
         } else {
             SDL_Log("entity_cursor has no controllerGamepad component");
@@ -482,7 +481,6 @@ void receive_SDL_CONTROLLERDEVICEADDED(struct Game * in_game, SDL_Event * in_eve
 
         if (gamepad_ptr != NULL) {
             Gamepad_addController(gamepad_ptr, in_event->cdevice.which);
-            ecs_modified(in_game->tnecs_world, in_game->tnecs_entity_cursor, controllerGamepad);
 
         } else {
             SDL_Log("entity_cursor has no controllerGamepad component");
@@ -786,7 +784,6 @@ void receive_Cursor_Dehovers_Unit(struct Game * in_game, SDL_Event * in_usereven
             for (uint16_t i = 0; i < arrlen(unit_entitys); i++) {
                 struct Unit * unit_ptr = TNECS_GET_COMPONENT(in_game->tnecs_world, unit_entitys[i], Unit);
                 Unit_refresh(unit_ptr);
-                ecs_modified(in_game->tnecs_world, unit_entitys[i], Unit);
             }
             break;
     }
