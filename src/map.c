@@ -62,6 +62,7 @@ struct Map Map_default = {
     .enemies_onfield = NULL,
     .num_enemies_onfield = 0,
     .unitmap = NULL,
+    .tnecs_unitmap = NULL,
     .essentials = NULL,
     // .boss;
     // .bossdied;
@@ -457,13 +458,13 @@ void Map_Unitmap_Clear_tnecs(struct Map * in_map, tnecs_world_t * in_world) {
     ecs_entity_t temp_unit_ent;
     for (uint16_t row = 0; row < in_map->row_len; row++) {// This loop cache friendly.
         for (uint16_t col = 0; col < in_map->col_len; col++) {
-            temp_unit_ent = in_map->unitmap[row * in_map->col_len + col];
+            temp_unit_ent = in_map->tnecs_unitmap[row * in_map->col_len + col];
             if (temp_unit_ent != 0) {
                 tnecs_entity_destroy(in_world, temp_unit_ent);
             }
         }
     }
-    arrfree(in_map->unitmap);
+    arrfree(in_map->tnecs_unitmap);
 }
 
 void Map_Unitmap_Clear(struct Map * in_map, ecs_world_t * in_world) {
@@ -538,7 +539,7 @@ void Map_Unit_Remove(struct Map * in_map, const ecs_entity_t in_entity) {
 
 void Map_Unit_Remove_fromPos_tnecs(struct Map * in_map, const uint8_t col, const uint8_t row) {
     SDL_Log("Map_Unit_Remove_fromPos_tnecs");
-    SDL_assert(in_map->unitmap != NULL);
+    SDL_assert(in_map->tnecs_unitmap != NULL);
     ecs_entity_t ontile_ent = in_map->tnecs_unitmap[row * in_map->col_len + col];
     in_map->tnecs_unitmap[row * in_map->col_len + col] = 0;
     Map_Unit_Remove_tnecs(in_map, ontile_ent);
@@ -556,7 +557,7 @@ void Map_Unit_Remove_fromPos(struct Map * in_map, const uint8_t col, const uint8
 void Map_Unit_Remove_fromEntity_tnecs(struct Map * in_map, tnecs_world_t * in_world, const tnecs_entity_t in_entity) {
     SDL_Log("Map_Unit_Remove_fromEntity_tnecs");
     // assumes there are no doubles in the _onfield arrays
-    SDL_assert(in_map->unitmap != NULL);
+    SDL_assert(in_map->tnecs_unitmap != NULL);
     struct Position * temp_position = TNECS_GET_COMPONENT(in_world, in_entity, Position);
     tnecs_entity_t ontile_ent = 0;
     if (temp_position->onTilemap) {
@@ -587,8 +588,8 @@ void Map_Unit_Remove_fromEntity(struct Map * in_map, ecs_world_t * in_world, con
 }
 
 void Map_Unit_Put_tnecs(struct Map * in_map, tnecs_world_t * in_world, const uint8_t col, const uint8_t row, tnecs_entity_t in_entity) {
-    SDL_Log("Map_Unit_Put");
-    SDL_assert(in_map->unitmap != NULL);
+    SDL_Log("Map_Unit_Put_tnecs");
+    SDL_assert(in_map->tnecs_unitmap != NULL);
     SDL_assert((row < in_map->row_len) && (col < in_map->col_len));
     in_map->tnecs_unitmap[row * in_map->col_len + col] = in_entity;
     arrput(in_map->units_onfield, in_entity);
@@ -695,7 +696,7 @@ void Map_Unit_Move_tnecs(struct Map * in_map, const uint8_t col, const uint8_t r
     SDL_Log("Move Unit %d %d %d %d", col, row, new_col, new_row);
     SDL_assert(in_map->tnecs_unitmap != NULL);
     SDL_assert((col < in_map->col_len) && (row < in_map->row_len) && (new_col < in_map->col_len) && (new_row < in_map->row_len));
-    in_map->tnecs_unitmap[new_row * in_map->col_len + new_col] = in_map->unitmap[row * in_map->col_len + col];
+    in_map->tnecs_unitmap[new_row * in_map->col_len + new_col] = in_map->tnecs_unitmap[row * in_map->col_len + col];
     in_map->tnecs_unitmap[row * in_map->col_len + col] = 0;
 
 }

@@ -4,7 +4,6 @@
 #include "sprite.h"
 #include "position.h"
 #include "enums.h"
-#include "platform.h"
 #include "tnecs.h"
 #include "stb_ds.h"
 
@@ -111,13 +110,14 @@ int_tile_t * testTilemap(int_tile_t * in_tilemap) {
 void test_map() {
     SDL_Log("test_map");
     utilities_allNames_Load();
+    SDL_Log("tnecs_world_genesis");
     tnecs_world_t * tnecs_world = tnecs_world_genesis();
+    TNECS_REGISTER_COMPONENT(tnecs_world, Unit);
+    TNECS_REGISTER_COMPONENT(tnecs_world, Position);
     lok(strcmp("NULL", tnecs_world->component_names[0]) == 0);
     lok(strcmp("Unit", tnecs_world->component_names[1]) == 0);
     lok(strcmp("Position", tnecs_world->component_names[2]) == 0);
-
-    ECS_IMPORT(temp_world, UnitModule);
-    ECS_IMPORT(temp_world, PositionModule);
+    SDL_Log("tnecs component names work");
 
     short int tilesize = 32;
     struct Map map1;
@@ -133,6 +133,7 @@ void test_map() {
     arrsetcap(map2.items_num, 8);
     map3->items_num = NULL;
     arrsetcap(map3->items_num, 8);
+    SDL_Log("HERE12");
 
     struct Tiles_hash * tiles1 = NULL;
     hmdefault(tiles1, &Tile_default);

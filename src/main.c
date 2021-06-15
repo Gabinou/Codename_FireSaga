@@ -101,9 +101,8 @@ int main(int32_t argc, char * argv[]) {
 
         SDL_RenderClear(Game_renderer);
         Map_draw(firesaga->map_ptr); // Only one map -> no entity
-        // SDL_Log("PROGRESS\n");
         ecs_progress(firesaga->world, updateTime_s);
-        // SDL_Log("PROGRESSAFTER\n");
+        // tnecs_world_step(firesaga->tnecs_world, updateTime_s);
         SDL_RenderPresent(Game_renderer);
         Events_Manage(firesaga);
     }
