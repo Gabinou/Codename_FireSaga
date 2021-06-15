@@ -8,25 +8,18 @@ void (** receivers_arr)(struct Game *, SDL_Event *);
 #include "names/events.h"
 #undef REGISTER_ENUM
 
-ecs_entity_t * data1_entity;
-ecs_entity_t * data2_entity;
-
-tnecs_entity_t * tnecs_data1_entity;
-tnecs_entity_t * tnecs_data2_entity;
+tnecs_entity_t * data1_entity;
+tnecs_entity_t * data2_entity;
 
 void Events_Data_Malloc() {
-    data1_entity = SDL_malloc(sizeof(ecs_entity_t));
-    data2_entity = SDL_malloc(sizeof(ecs_entity_t));
-    tnecs_data1_entity = SDL_malloc(sizeof(tnecs_entity_t));
-    tnecs_data2_entity = SDL_malloc(sizeof(tnecs_entity_t));
+    data1_entity = SDL_malloc(sizeof(tnecs_entity_t));
+    data2_entity = SDL_malloc(sizeof(tnecs_entity_t));
 
 }
 
 void Events_Data_Free() {
     free(data1_entity);
     free(data2_entity);
-    free(tnecs_data1_entity);
-    free(tnecs_data2_entity);
 }
 
 void Event_Emit(uint32_t in_event_type, int32_t in_event_code, void * in_data1, void * in_data2) {
@@ -43,64 +36,51 @@ void Event_Emit(uint32_t in_event_type, int32_t in_event_code, void * in_data1, 
 
 void receive_Map_globalRange_Hide(struct Game * in_game, SDL_Event * in_userevent) {
     SDL_Log("receive_Map_globalRange_Hide");
-    ECS_IMPORT(in_game->world, MenuModule);
-    ECS_IMPORT(in_game->world, controllerGamepadModule);
-    ECS_IMPORT(in_game->world, controllerKeyboardModule);
-    struct Menu * menu_top_mptr = ecs_get_mut(in_game->world, in_game->menu_stack[(in_game->menu_stack_num - 1)], Menu, NULL);
-    struct controllerKeyboard * keyboard_mptr = ecs_get_mut(in_game->world, in_game->entity_cursor, controllerKeyboard, NULL);
-    struct controllerGamepad * gamepad_mptr = ecs_get_mut(in_game->world, in_game->entity_cursor, controllerGamepad, NULL);
-    menu_top_mptr->enabled = true;
+    struct Menu * menu_top_ptr = TNECS_GET_COMPONENT(in_game->tnecs_world, in_game->menu_stack[(in_game->menu_stack_num - 1)], Menu);
+    struct controllerKeyboard * keyboard_ptr = TNECS_GET_COMPONENT(in_game->tnecs_world, in_game->tnecs_entity_cursor, controllerKeyboard);
+    struct controllerGamepad * gamepad_ptr = TNECS_GET_COMPONENT(in_game->tnecs_world, in_game->tnecs_entity_cursor, controllerGamepad);
+    menu_top_ptr->enabled = true;
     in_game->map_ptr->show_globalRange = false;
     in_game->map_ptr->mode_globalRange = 0;
     Game_Cursor_Enable(in_game);
-    gamepad_mptr->block_move = false;
-    keyboard_mptr->block_move = false;
+    gamepad_ptr->block_move = false;
+    keyboard_ptr->block_move = false;
     strncpy(in_game->reason, "global range was hidden", sizeof(in_game->reason));
     Game_subState_Set(in_game, GAME_SUBSTATE_MENU, in_game->reason);
-    ecs_modified(in_game->world, in_game->menu_stack[(in_game->menu_stack_num - 1)], Menu);
-    ecs_modified(in_game->world, in_game->entity_cursor, controllerGamepad);
-    ecs_modified(in_game->world, in_game->entity_cursor, controllerKeyboard);
 }
 
 void receive_Map_globalRange_Show(struct Game * in_game, SDL_Event * in_userevent) {
     SDL_Log("receive_Map_globalRange_Show");
-    ECS_IMPORT(in_game->world, MenuModule);
-    ECS_IMPORT(in_game->world, controllerGamepadModule);
-    ECS_IMPORT(in_game->world, controllerKeyboardModule);
     uint8_t alignment = ALIGNMENT_FRIENDLY;
-    Map_globalRange(in_game->map_ptr, in_game->world, alignment);
+    Map_globalRange(in_game->map_ptr, in_game->tnecs_world, alignment);
     in_game->map_ptr->mode_globalRange = alignment;
-    struct Menu * menu_top_mptr = ecs_get_mut(in_game->world, in_game->menu_stack[(in_game->menu_stack_num - 1)], Menu, NULL);
-    struct controllerKeyboard * keyboard_mptr = ecs_get_mut(in_game->world, in_game->entity_cursor, controllerKeyboard, NULL);
-    struct controllerGamepad * gamepad_mptr = ecs_get_mut(in_game->world, in_game->entity_cursor, controllerGamepad, NULL);
-    menu_top_mptr->enabled = false;
+    struct Menu * menu_top_ptr = TNECS_GET_COMPONENT(in_game->tnecs_world, in_game->menu_stack[(in_game->menu_stack_num - 1)], Menu);
+    struct controllerKeyboard * keyboard_ptr = TNECS_GET_COMPONENT(in_game->tnecs_world, in_game->tnecs_entity_cursor, controllerKeyboard);
+    struct controllerGamepad * gamepad_ptr = TNECS_GET_COMPONENT(in_game->tnecs_world, in_game->tnecs_entity_cursor, controllerGamepad);
+    menu_top_ptr->enabled = false;
     in_game->map_ptr->show_globalRange = true;
-    gamepad_mptr->block_move = true;
-    keyboard_mptr->block_move = true;
+    gamepad_ptr->block_move = true;
+    keyboard_ptr->block_move = true;
     Game_Cursor_Disable(in_game);
     strncpy(in_game->reason, "global range is being shown", sizeof(in_game->reason));
     Game_subState_Set(in_game, GAME_SUBSTATE_MAP_GLOBAL_RANGE, in_game->reason);
-    ecs_modified(in_game->world, in_game->menu_stack[(in_game->menu_stack_num - 1)], Menu);
-    ecs_modified(in_game->world, in_game->entity_cursor, controllerGamepad);
-    ecs_modified(in_game->world, in_game->entity_cursor, controllerKeyboard);
 }
 
 
 void receive_Cursor_Moved(struct Game * in_game, SDL_Event * in_userevent) {
     SDL_Log("receive_Cursor_Moved");
     // struct Point * move  = (struct Point *) in_userevent->user.data1;
-    ECS_IMPORT(in_game->world, PositionModule);
-    ecs_entity_t unit_entity_ontile;
-    ecs_entity_t unit_entity_previoustile;
-    struct Position * cursor_position_mptr = ecs_get_mut(in_game->world, in_game->entity_cursor, Position, NULL);
-    struct Position * selected_position_mptr;
+    tnecs_entity_t unit_entity_ontile;
+    tnecs_entity_t unit_entity_previoustile;
+    struct Position * cursor_position_ptr = TNECS_GET_COMPONENT(in_game->tnecs_world, in_game->tnecs_entity_cursor, Position);
+    struct Position * selected_position_ptr;
     struct Point * cursor_move = (struct Point *) in_userevent->user.data1;
-    // Position_Pos_Add(cursor_position_mptr, cursor_move->x, cursor_move->y);
+    // Position_Pos_Add(cursor_position_ptr, cursor_move->x, cursor_move->y);
     struct Point previous_pos;
-    struct Point current_pos = cursor_position_mptr->tilemap_pos;
-    struct Point offset = cursor_position_mptr->offset_px;
-    struct Point boundsmin = cursor_position_mptr->boundsmin;
-    struct Point boundsmax = cursor_position_mptr->boundsmax;
+    struct Point current_pos = cursor_position_ptr->tilemap_pos;
+    struct Point offset = cursor_position_ptr->offset_px;
+    struct Point boundsmin = cursor_position_ptr->boundsmin;
+    struct Point boundsmax = cursor_position_ptr->boundsmax;
     // current_pos.x = cursor_pos.x - offset.x;
     // current_pos.y = cursor_pos.y - offset.y;
 
@@ -121,9 +101,8 @@ void receive_Cursor_Moved(struct Game * in_game, SDL_Event * in_userevent) {
             switch (in_game->substate) {
                 case GAME_SUBSTATE_MAP_UNIT_MOVES:
                     // Unit follows cursor movement.
-                    selected_position_mptr = ecs_get_mut(in_game->world, in_game->selected_unit_entity, Position, NULL);
-                    Position_Pos_Set(selected_position_mptr,  current_pos.x, current_pos.y);
-                    ecs_modified(in_game->world, in_game->selected_unit_entity, Position);
+                    selected_position_ptr = TNECS_GET_COMPONENT(in_game->tnecs_world, in_game->selected_unit_entity, Position);
+                    Position_Pos_Set(selected_position_ptr,  current_pos.x, current_pos.y);
                     break;
             }
             break;
@@ -132,32 +111,27 @@ void receive_Cursor_Moved(struct Game * in_game, SDL_Event * in_userevent) {
             SDL_Log("receive_Cursor_Moved game state is invalid");
     }
 
-    ecs_modified(in_game->world, in_game->entity_cursor, Position);
 
 }
 
 void receive_Input_Cancel(struct Game * in_game, SDL_Event * in_userevent) {
     SDL_Log("Received Input_Cancel event");
-    ECS_IMPORT(in_game->world, PositionModule);
-    ECS_IMPORT(in_game->world, UnitModule);
-    ECS_IMPORT(in_game->world, MenuModule);
-
     int32_t controller_type = * (int32_t *) in_userevent->user.data1;
-    ecs_entity_t canceller_entity = Events_Controllers_Check(in_game, controller_type);
+    tnecs_entity_t canceller_entity = Events_Controllers_Check(in_game, controller_type);
 
-    ecs_entity_t unit_entity_ontile = 0;
-    ecs_entity_t menu_popped = 0;
+    tnecs_entity_t unit_entity_ontile = 0;
+    tnecs_entity_t menu_popped = 0;
 
-    struct Position * canceller_position_mptr, * selected_position_mptr;
+    struct Position * canceller_position_ptr, * selected_position_ptr;
     const struct Unit * unit_ontile_ptr;
-    struct Menu * menu_popped_mptr = NULL;
+    struct Menu * menu_popped_ptr = NULL;
     struct Point new_pos;
     bool destroy = false;
 
     if (canceller_entity != 0) {
         *data1_entity = canceller_entity;
-        canceller_position_mptr = ecs_get_mut(in_game->world, canceller_entity, Position, NULL);
-        struct Point cursor_pos = canceller_position_mptr->tilemap_pos;
+        canceller_position_ptr = TNECS_GET_COMPONENT(in_game->tnecs_world, canceller_entity, Position);
+        struct Point cursor_pos = canceller_position_ptr->tilemap_pos;
         new_pos.x = cursor_pos.x;
         new_pos.y = cursor_pos.y;
 
@@ -168,7 +142,7 @@ void receive_Input_Cancel(struct Game * in_game, SDL_Event * in_userevent) {
                         unit_entity_ontile = in_game->map_ptr->unitmap[new_pos.y * in_game->map_ptr->col_len + new_pos.x];
 
                         if (unit_entity_ontile != 0) {
-                            unit_ontile_ptr = ecs_get(in_game->world, canceller_entity, Unit);
+                            unit_ontile_ptr = ecs_get(in_game->tnecs_world, canceller_entity, Unit);
                             *data2_entity = unit_entity_ontile;
                             if (utilities_isPC(unit_ontile_ptr->army)) {
 
@@ -185,9 +159,9 @@ void receive_Input_Cancel(struct Game * in_game, SDL_Event * in_userevent) {
                         if (in_game->menu_stack_num > 0) {
                             Game_Menu_Disable_Entity(in_game, in_game->menu_stack[(in_game->menu_stack_num - 1)]);
                             menu_popped = Game_menuStack_Pop(in_game, destroy);
-                            menu_popped_mptr = ecs_get_mut(in_game->world, menu_popped, Menu, NULL);
+                            menu_popped_ptr = TNECS_GET_COMPONENT(in_game->tnecs_world, menu_popped, Menu);
                             SDL_Log("Just before Game_subStateSwitch_onMenupop, in_game->menu_stack_num %d", in_game->menu_stack_num);
-                            Game_subStateSwitch_onMenupop(in_game, menu_popped_mptr->id);
+                            Game_subStateSwitch_onMenupop(in_game, menu_popped_ptr->id);
                             if (in_game->menu_stack_num > 0) {
                                 Game_cursorFocus_onMenu(in_game);
                             } else {
@@ -200,11 +174,10 @@ void receive_Input_Cancel(struct Game * in_game, SDL_Event * in_userevent) {
                     case GAME_SUBSTATE_MAP_UNIT_MOVES:
                         if (in_game->selected_unit_entity != 0) {
                             *data2_entity = in_game->selected_unit_entity;
-                            selected_position_mptr = ecs_get_mut(in_game->world, in_game->selected_unit_entity, Position, NULL);
-                            selected_position_mptr->tilemap_moveable = NULL;
-                            selected_position_mptr->tilemap_row = 0;
-                            selected_position_mptr->tilemap_col = 0;
-                            ecs_modified(in_game->world, in_game->selected_unit_entity, Position);
+                            selected_position_ptr = TNECS_GET_COMPONENT(in_game->tnecs_world, in_game->selected_unit_entity, Position);
+                            selected_position_ptr->tilemap_moveable = NULL;
+                            selected_position_ptr->tilemap_row = 0;
+                            selected_position_ptr->tilemap_col = 0;
                             Event_Emit(SDL_USEREVENT, event_Unit_Return, data1_entity, data2_entity);
                             Event_Emit(SDL_USEREVENT, event_Unit_Deselect, data1_entity, data2_entity);
                         }
@@ -239,8 +212,6 @@ void receive_Input_Cancel(struct Game * in_game, SDL_Event * in_userevent) {
                 break;
         }
     }
-    ecs_modified(in_game->world, canceller_entity, Unit);
-    ecs_modified(in_game->world, canceller_entity, Position);
 }
 
 void receive_Mouse_Disable(struct Game * in_game, SDL_Event * in_Mouse_Disable) {
@@ -276,7 +247,7 @@ void receive_Game_Control_Switch(struct Game * in_game, SDL_Event * in_userevent
 
     if (utilities_isPC(army)) {
         // Game_State_Set(in_game, GAME_STATE_Gameplay_Map);
-        if (in_game->entity_cursor == 0) {
+        if (in_game->tnecs_entity_cursor == 0) {
             Game_Cursor_Create(in_game);
         }
         Game_Cursor_Enable(in_game);
@@ -294,11 +265,9 @@ void receive_Input_Stats(struct Game * in_game, SDL_Event * in_userevent) {
 
 }
 
-ecs_entity_t Events_Controllers_Check(struct Game * in_game, int32_t in_code) {
+tnecs_entity_t Events_Controllers_Check(struct Game * in_game, int32_t in_code) {
     SDL_Log("Events_Controllers_Check");
-    ECS_IMPORT(in_game->world, controllerGamepadModule);
-    ECS_IMPORT(in_game->world, controllerKeyboardModule);
-    ecs_entity_t out_accepter_entity;
+    tnecs_entity_t out_accepter_entity;
     switch (in_code) {
         case CONTROLLER_MOUSE:
             if (!in_game->ismouse) {
@@ -314,13 +283,11 @@ ecs_entity_t Events_Controllers_Check(struct Game * in_game, int32_t in_code) {
                 Event_Emit(SDL_USEREVENT, event_Mouse_Disable, NULL, NULL);
                 Event_Emit(SDL_USEREVENT, event_Cursor_Enable, NULL, NULL);
             }
-            out_accepter_entity = in_game->entity_cursor;
-            struct controllerGamepad * gamepad_ptr = ecs_get_mut(in_game->world, in_game->entity_cursor, controllerGamepad, NULL);
-            struct controllerKeyboard * keyboard_ptr = ecs_get_mut(in_game->world, in_game->entity_cursor, controllerKeyboard, NULL);
+            out_accepter_entity = in_game->tnecs_entity_cursor;
+            struct controllerGamepad * gamepad_ptr = TNECS_GET_COMPONENT(in_game->tnecs_world, in_game->tnecs_entity_cursor, controllerGamepad);
+            struct controllerKeyboard * keyboard_ptr = TNECS_GET_COMPONENT(in_game->tnecs_world, in_game->tnecs_entity_cursor, controllerKeyboard);
             gamepad_ptr->block_buttons = true;
             keyboard_ptr->block_buttons = true;
-            ecs_modified(in_game->world, in_game->entity_cursor, controllerGamepad);
-            ecs_modified(in_game->world, in_game->entity_cursor, controllerKeyboard);
             break;
         default:
             SDL_Log("controller code is invalid.");
@@ -330,11 +297,9 @@ ecs_entity_t Events_Controllers_Check(struct Game * in_game, int32_t in_code) {
 
 void receive_Gameplay_Return2Standby(struct Game * in_game, SDL_Event * in_userevent) {
     SDL_Log("receive_Gameplay_Return2Standby");
-    ECS_IMPORT(in_game->world, PositionModule);
-    ECS_IMPORT(in_game->world, UnitModule);
 
     int32_t controller_type = * (int32_t *) in_userevent->user.data1;
-    ecs_entity_t controller_entity = Events_Controllers_Check(in_game, controller_type);
+    tnecs_entity_t controller_entity = Events_Controllers_Check(in_game, controller_type);
 
     *data1_entity = controller_entity;
 
@@ -367,25 +332,18 @@ void receive_Gameplay_Return2Standby(struct Game * in_game, SDL_Event * in_usere
 
 void receive_Input_Accept(struct Game * in_game, SDL_Event * in_userevent) {
     SDL_Log("receive_Input_Accept");
-    ECS_IMPORT(in_game->world, controllerGamepadModule);
-    ECS_IMPORT(in_game->world, controllerKeyboardModule);
-
     int32_t controller_type = * (int32_t *) in_userevent->user.data1;
-    ecs_entity_t accepter_entity = Events_Controllers_Check(in_game, controller_type);
+    tnecs_entity_t accepter_entity = Events_Controllers_Check(in_game, controller_type);
 
-    ECS_IMPORT(in_game->world, PositionModule);
-    ECS_IMPORT(in_game->world, UnitModule);
-    ECS_IMPORT(in_game->world, MenuModule);
-
-    ecs_entity_t unit_entity_ontile = 0, menu_entity_top = 0;
-    struct Position * accepter_position_mptr, * selected_position_mptr;
+    tnecs_entity_t unit_entity_ontile = 0, menu_entity_top = 0;
+    struct Position * accepter_position_ptr, * selected_position_ptr;
     const struct Unit * accepted_unit_ptr;
     struct Point current_pos;
     struct Point accepter_pos;
     struct Point offset;
     struct MenuOption menuOption_selected;
     uint16_t menuwidth = 7;
-    struct Menu * current_menu_mptr;
+    struct Menu * current_menu_ptr;
     if (accepter_entity != 0) {
         *data1_entity = accepter_entity;
         switch (in_game->state) {
@@ -407,10 +365,10 @@ void receive_Input_Accept(struct Game * in_game, SDL_Event * in_userevent) {
                         Event_Emit(SDL_USEREVENT, event_Gameplay_Return2Standby, in_userevent->user.data1, NULL);
                         break;
                     case GAME_SUBSTATE_STANDBY:
-                        accepter_position_mptr = ecs_get_mut(in_game->world, accepter_entity, Position, NULL);
-                        if (accepter_position_mptr != NULL) {
-                            accepter_pos = accepter_position_mptr->tilemap_pos;
-                            // offset = accepter_position_mptr->offset_px;
+                        accepter_position_ptr = TNECS_GET_COMPONENT(in_game->tnecs_world, accepter_entity, Position);
+                        if (accepter_position_ptr != NULL) {
+                            accepter_pos = accepter_position_ptr->tilemap_pos;
+                            // offset = accepter_position_ptr->offset_px;
                             current_pos.x = accepter_pos.x;
                             current_pos.y = accepter_pos.y;
                             SDL_Log("current_pos: %d %d", current_pos.x, current_pos.y);
@@ -439,12 +397,12 @@ void receive_Input_Accept(struct Game * in_game, SDL_Event * in_userevent) {
 
                     case GAME_SUBSTATE_MAP_UNIT_MOVES:
                         if (in_game->selected_unit_entity != 0) {
-                            accepted_unit_ptr = ecs_get(in_game->world, in_game->selected_unit_entity, Unit);
-                            accepter_position_mptr = ecs_get_mut(in_game->world, accepter_entity, Position, NULL);
-                            selected_position_mptr = ecs_get_mut(in_game->world, in_game->selected_unit_entity, Position, NULL);
+                            accepted_unit_ptr = ecs_get(in_game->tnecs_world, in_game->selected_unit_entity, Unit);
+                            accepter_position_ptr = TNECS_GET_COMPONENT(in_game->tnecs_world, accepter_entity, Position);
+                            selected_position_ptr = TNECS_GET_COMPONENT(in_game->tnecs_world, in_game->selected_unit_entity, Position);
                             if (utilities_isPC(accepted_unit_ptr->army)) {
-                                in_game->selected_unit_moved_position.x = accepter_position_mptr->tilemap_pos.x;
-                                in_game->selected_unit_moved_position.y = accepter_position_mptr->tilemap_pos.y;
+                                in_game->selected_unit_moved_position.x = accepter_position_ptr->tilemap_pos.x;
+                                in_game->selected_unit_moved_position.y = accepter_position_ptr->tilemap_pos.y;
 
                                 if (in_game->menu_loaded[MENU_UNIT_ACTION] == 0) {
                                     Game_Menu_Create(in_game, MENU_UNIT_ACTION);
@@ -456,11 +414,9 @@ void receive_Input_Accept(struct Game * in_game, SDL_Event * in_userevent) {
                                 Game_subState_Set(in_game, GAME_SUBSTATE_MENU, in_game->reason);
 
                                 Map_Unit_Move(in_game->map_ptr, in_game->selected_unit_initial_position.x, in_game->selected_unit_initial_position.y, in_game->selected_unit_moved_position.x, in_game->selected_unit_moved_position.y);
-                                Position_Pos_Set(selected_position_mptr, in_game->selected_unit_moved_position.x, in_game->selected_unit_moved_position.y);
+                                Position_Pos_Set(selected_position_ptr, in_game->selected_unit_moved_position.x, in_game->selected_unit_moved_position.y);
                                 SDL_Log("in_game->selected_unit_moved_position: %d %d", in_game->selected_unit_moved_position.x, in_game->selected_unit_moved_position.y);
                             }
-                            ecs_modified(in_game->world, in_game->selected_unit_entity, Position);
-                            ecs_modified(in_game->world, accepter_entity, Position);
                         } else {
                             Event_Emit(SDL_USEREVENT, event_Gameplay_Return2Standby, data1_entity, NULL);
                         }
@@ -469,7 +425,6 @@ void receive_Input_Accept(struct Game * in_game, SDL_Event * in_userevent) {
                         SDL_Log("game substate is invalid.");
                         Event_Emit(SDL_USEREVENT, event_Gameplay_Return2Standby, NULL, NULL);
                 }
-                ecs_modified(in_game->world, accepter_entity, Unit);
         }
     }
 }
@@ -501,15 +456,14 @@ void receive_SDL_QUIT(struct Game * in_game, SDL_Event * in_event) {
 
 void receive_SDL_CONTROLLERDEVICEREMOVED(struct Game * in_game, SDL_Event * in_event) {
     SDL_Log("receive_SDL_CONTROLLERDEVICEREMOVED");
-    ECS_IMPORT(in_game->world, controllerGamepadModule);
 
-    if (in_game->entity_cursor != 0) {
+    if (in_game->tnecs_entity_cursor != 0) {
 
-        struct controllerGamepad * gamepad_ptr = ecs_get_mut(in_game->world, in_game->entity_cursor, controllerGamepad, NULL);
+        struct controllerGamepad * gamepad_ptr = TNECS_GET_COMPONENT(in_game->tnecs_world, in_game->tnecs_entity_cursor, controllerGamepad);
 
         if (gamepad_ptr != NULL) {
             Gamepad_removeController(gamepad_ptr, in_event->cdevice.which);
-            ecs_modified(in_game->world, in_game->entity_cursor, controllerGamepad);
+            ecs_modified(in_game->tnecs_world, in_game->tnecs_entity_cursor, controllerGamepad);
 
         } else {
             SDL_Log("entity_cursor has no controllerGamepad component");
@@ -522,14 +476,13 @@ void receive_SDL_CONTROLLERDEVICEREMOVED(struct Game * in_game, SDL_Event * in_e
 
 void receive_SDL_CONTROLLERDEVICEADDED(struct Game * in_game, SDL_Event * in_event) {
     SDL_Log("receive_SDL_CONTROLLERDEVICEADDED");
-    ECS_IMPORT(in_game->world, controllerGamepadModule);
 
-    if (in_game->entity_cursor != 0) {
-        struct controllerGamepad * gamepad_ptr = ecs_get_mut(in_game->world, in_game->entity_cursor, controllerGamepad, NULL);
+    if (in_game->tnecs_entity_cursor != 0) {
+        struct controllerGamepad * gamepad_ptr = TNECS_GET_COMPONENT(in_game->tnecs_world, in_game->tnecs_entity_cursor, controllerGamepad);
 
         if (gamepad_ptr != NULL) {
             Gamepad_addController(gamepad_ptr, in_event->cdevice.which);
-            ecs_modified(in_game->world, in_game->entity_cursor, controllerGamepad);
+            ecs_modified(in_game->tnecs_world, in_game->tnecs_entity_cursor, controllerGamepad);
 
         } else {
             SDL_Log("entity_cursor has no controllerGamepad component");
@@ -546,11 +499,9 @@ void receive_SDL_CONTROLLERDEVICEADDED(struct Game * in_game, SDL_Event * in_eve
 void receive_SDL_MOUSEMOTION(struct Game * in_game, SDL_Event * in_event) {
     // SDL_Log("receive_SDL_MOUSEMOTION");
     if (in_event->motion.windowID == SDL_GetWindowID(in_game->window)) {
-        ECS_IMPORT(in_game->world, SpriteModule);
-        ECS_IMPORT(in_game->world, PositionModule);
 
         // SDL_Log("WindowID: %d %d", in_event->motion.windowID, SDL_GetWindowID(in_game->window));
-        struct Sprite * sprite_ptr = ecs_get_mut(in_game->world, in_game->entity_mouse, Sprite, NULL);
+        struct Sprite * sprite_ptr = TNECS_GET_COMPONENT(in_game->tnecs_world, in_game->entity_mouse, Sprite);
         if (sprite_ptr != NULL) {
             sprite_ptr->visible = true;
         }
@@ -567,7 +518,7 @@ void receive_SDL_MOUSEMOTION(struct Game * in_game, SDL_Event * in_event) {
                     Event_Emit(SDL_USEREVENT, event_Cursor_Disable, NULL, NULL);
                 }
 
-                struct Position * position_ptr = ecs_get_mut(in_game->world, in_game->entity_mouse, Position, NULL);
+                struct Position * position_ptr = TNECS_GET_COMPONENT(in_game->tnecs_world, in_game->entity_mouse, Position);
 
                 if (position_ptr != NULL) {
                     Position_PosPixel_Set(position_ptr, in_event->motion.x, in_event->motion.y);
@@ -580,8 +531,6 @@ void receive_SDL_MOUSEMOTION(struct Game * in_game, SDL_Event * in_event) {
 
                 in_game->mouse_lastpos.x = in_event->motion.x;
                 in_game->mouse_lastpos.y = in_event->motion.y;
-                ecs_modified(in_game->world, in_game->entity_mouse, Sprite);
-                ecs_modified(in_game->world, in_game->entity_mouse, Position);
             }
         }
     }
@@ -593,10 +542,8 @@ void receive_SDL_MOUSEBUTTON(struct Game * in_game, SDL_Event * in_event) {
     if (in_event->button.windowID == SDL_GetWindowID(in_game->window)) {
 
         if (in_game->entity_mouse != 0) {
-            ECS_IMPORT(in_game->world, controllerMouseModule);
-            ECS_IMPORT(in_game->world, PositionModule);
-            struct controllerMouse * mouse_ptr = ecs_get_mut(in_game->world, in_game->entity_mouse, controllerMouse, NULL);
-            struct Position * position_ptr = ecs_get_mut(in_game->world, in_game->entity_mouse, Position, NULL);
+            struct controllerMouse * mouse_ptr = TNECS_GET_COMPONENT(in_game->tnecs_world, in_game->entity_mouse, controllerMouse);
+            struct Position * position_ptr = TNECS_GET_COMPONENT(in_game->tnecs_world, in_game->entity_mouse, Position);
 
             if (mouse_ptr != NULL) {
                 // SDL_Log("event pos: %d %d", in_event->button.x, in_event->button.y);
@@ -623,8 +570,6 @@ void receive_SDL_MOUSEBUTTON(struct Game * in_game, SDL_Event * in_event) {
             }
 
             in_game->mouse_previous = mouse_current;
-            ecs_modified(in_game->world, in_game->entity_mouse, controllerMouse);
-            ecs_modified(in_game->world, in_game->entity_mouse, Position);
         }
 
     } else {
@@ -652,23 +597,21 @@ void receive_Unit_Enters_Armory(struct Game * in_game, SDL_Event * in_userevent)
 
 void receive_Unit_Select(struct Game * in_game, SDL_Event * in_userevent) {
     SDL_Log("receive_Unit_Deselect");
-    ECS_IMPORT(in_game->world, UnitModule);
-    ECS_IMPORT(in_game->world, PositionModule);
-    ecs_entity_t * selector_entity = in_userevent->user.data1;
+    tnecs_entity_t * selector_entity = in_userevent->user.data1;
     // Only Unit_Select event puts non-zero in in_game->selected_unit_entity
-    in_game->selected_unit_entity = *((ecs_entity_t *) in_userevent->user.data2);
+    in_game->selected_unit_entity = *((tnecs_entity_t *) in_userevent->user.data2);
 
-    struct Unit * selected_unit_mptr = ecs_get_mut(in_game->world, in_game->selected_unit_entity, Unit, NULL);
-    struct Position * selected_position_mptr = ecs_get_mut(in_game->world, in_game->selected_unit_entity, Position, NULL);
-    in_game->selected_unit_initial_position.x = selected_position_mptr->tilemap_pos.x;
-    in_game->selected_unit_initial_position.y = selected_position_mptr->tilemap_pos.y;
+    struct Unit * selected_unit_ptr = TNECS_GET_COMPONENT(in_game->tnecs_world, in_game->selected_unit_entity, Unit);
+    struct Position * selected_position_ptr = TNECS_GET_COMPONENT(in_game->tnecs_world, in_game->selected_unit_entity, Position);
+    in_game->selected_unit_initial_position.x = selected_position_ptr->tilemap_pos.x;
+    in_game->selected_unit_initial_position.y = selected_position_ptr->tilemap_pos.y;
 
     *data1_entity = *selector_entity;
 
-    if (utilities_isPC(selected_unit_mptr->army)) {
+    if (utilities_isPC(selected_unit_ptr->army)) {
         switch (in_game->substate) {
             case GAME_SUBSTATE_STANDBY:
-                if (selected_unit_mptr->waits) {
+                if (selected_unit_ptr->waits) {
                     if (in_game->menu_loaded[MENU_UNIT_ACTION] == 0) {
                         Game_Menu_Create(in_game, MENU_MAP_ACTION);
                     }
@@ -678,10 +621,9 @@ void receive_Unit_Select(struct Game * in_game, SDL_Event * in_userevent) {
                     strncpy(in_game->reason, "friendly unit was selected but cannot move", sizeof(in_game->reason));
                     Game_subState_Set(in_game, GAME_SUBSTATE_MENU, in_game->reason);
                 } else {
-                    selected_position_mptr->tilemap_moveable = in_game->map_ptr->overlay_move;
-                    selected_position_mptr->tilemap_row = in_game->map_ptr->row_len;
-                    selected_position_mptr->tilemap_col = in_game->map_ptr->col_len;
-                    ecs_modified(in_game->world, in_game->selected_unit_entity, Position);
+                    selected_position_ptr->tilemap_moveable = in_game->map_ptr->overlay_move;
+                    selected_position_ptr->tilemap_row = in_game->map_ptr->row_len;
+                    selected_position_ptr->tilemap_col = in_game->map_ptr->col_len;
                     Event_Emit(SDL_USEREVENT, event_Unit_Moves, data1_entity, data2_entity);
                 }
                 break;
@@ -700,24 +642,19 @@ void receive_Unit_Select(struct Game * in_game, SDL_Event * in_userevent) {
                 break;
         }
     }
-    ecs_modified(in_game->world, *selector_entity, Unit);
-    ecs_modified(in_game->world, in_game->selected_unit_entity, Unit);
-    ecs_modified(in_game->world, in_game->selected_unit_entity, Position);
 }
 
 void receive_Unit_Deselect(struct Game * in_game, SDL_Event * in_userevent) {
     SDL_Log("receive_Unit_Deselect");
-    ECS_IMPORT(in_game->world, UnitModule);
-    ECS_IMPORT(in_game->world, SpriteModule);
-    ecs_entity_t * selector_entity = (ecs_entity_t *) in_userevent->user.data1;
+    tnecs_entity_t * selector_entity = (tnecs_entity_t *) in_userevent->user.data1;
 
     if (in_game->selected_unit_entity > 0) {
-        struct Unit * unit_mptr = ecs_get_mut(in_game->world, in_game->selected_unit_entity, Unit, NULL);
-        if (unit_mptr != NULL) {
-            if (utilities_isPC(unit_mptr->army)) {
+        struct Unit * unit_ptr = TNECS_GET_COMPONENT(in_game->tnecs_world, in_game->selected_unit_entity, Unit);
+        if (unit_ptr != NULL) {
+            if (utilities_isPC(unit_ptr->army)) {
                 in_game->map_ptr->show_overlay = false;
             } else {
-                if (unit_mptr->show_danger) {
+                if (unit_ptr->show_danger) {
                     Event_Emit(SDL_USEREVENT, event_Unit_Danger, selector_entity, &in_game->selected_unit_entity);
                 }
             }
@@ -743,31 +680,28 @@ void receive_Unit_Deselect(struct Game * in_game, SDL_Event * in_userevent) {
     in_game->selected_unit_initial_position.y = -1;
     in_game->selected_unit_moved_position.x = -1;
     in_game->selected_unit_moved_position.y = -1;
-    ecs_modified(in_game->world, in_game->selected_unit_entity, Unit);
 }
 
 void receive_Unit_Return(struct Game * in_game, SDL_Event * in_userevent) {
     SDL_Log("receive_Unit_Return");
     in_game->map_ptr->show_overlay = false;
-    ECS_IMPORT(in_game->world, PositionModule);
-    ECS_IMPORT(in_game->world, UnitModule);
 
-    ecs_entity_t * selector_entity = (ecs_entity_t *)in_userevent->user.data1;
-    ecs_entity_t * returning_unit_entity = (ecs_entity_t *)in_userevent->user.data2;
+    tnecs_entity_t * selector_entity = (tnecs_entity_t *)in_userevent->user.data1;
+    tnecs_entity_t * returning_unit_entity = (tnecs_entity_t *)in_userevent->user.data2;
 
     struct Point new_position;
     struct Position toreturn_position;
 
     if ((selector_entity != 0) && (returning_unit_entity != 0)) {
-        struct Position * selector_position_mptr = ecs_get_mut(in_game->world, *selector_entity, Position, NULL);
-        struct Unit * returning_unit_mptr  = ecs_get_mut(in_game->world, *returning_unit_entity, Unit, NULL);
-        struct Position * returning_position_mptr  = ecs_get_mut(in_game->world, *returning_unit_entity, Position, NULL);
+        struct Position * selector_position_ptr = TNECS_GET_COMPONENT(in_game->tnecs_world, *selector_entity, Position);
+        struct Unit * returning_unit_ptr  = TNECS_GET_COMPONENT(in_game->tnecs_world, *returning_unit_entity, Unit);
+        struct Position * returning_position_ptr  = TNECS_GET_COMPONENT(in_game->tnecs_world, *returning_unit_entity, Position);
 
-        if ((returning_unit_mptr != NULL) && (selector_position_mptr != NULL) && (returning_position_mptr != NULL)) {
+        if ((returning_unit_ptr != NULL) && (selector_position_ptr != NULL) && (returning_position_ptr != NULL)) {
 
             Map_Unit_Move(in_game->map_ptr, in_game->selected_unit_moved_position.x, in_game->selected_unit_moved_position.y, in_game->selected_unit_initial_position.x, in_game->selected_unit_initial_position.y);
 
-            Position_Pos_Set(returning_position_mptr, in_game->selected_unit_initial_position.x, in_game->selected_unit_initial_position.y);
+            Position_Pos_Set(returning_position_ptr, in_game->selected_unit_initial_position.x, in_game->selected_unit_initial_position.y);
 
             in_game->selected_unit_initial_position.x = -1;
             in_game->selected_unit_initial_position.y = -1;
@@ -780,9 +714,6 @@ void receive_Unit_Return(struct Game * in_game, SDL_Event * in_userevent) {
     } else {
         SDL_Log("Could not get selected and selector entities");
     }
-    ecs_modified(in_game->world, *returning_unit_entity, Unit);
-    ecs_modified(in_game->world, *returning_unit_entity, Position);
-    ecs_modified(in_game->world, *selector_entity, Position);
 }
 
 void receive_Unit_Moves(struct Game * in_game, SDL_Event * in_userevent) {
@@ -792,15 +723,12 @@ void receive_Unit_Moves(struct Game * in_game, SDL_Event * in_userevent) {
     int16_t * costmapp = NULL;
     int16_t * movemapp = NULL;
     int16_t * attackmapp = NULL;
-    ECS_IMPORT(in_game->world, PositionModule);
-    ECS_IMPORT(in_game->world, UnitModule);
-
-    ecs_entity_t * selector_entity = in_userevent->user.data1;
+    tnecs_entity_t * selector_entity = in_userevent->user.data1;
 
     if ((*selector_entity != 0) && (in_game->selected_unit_entity != 0)) {
-        struct Position * selector_position_mptr = ecs_get_mut(in_game->world, *selector_entity, Position, NULL);
-        struct Unit * selected_unit_mptr = ecs_get_mut(in_game->world, in_game->selected_unit_entity, Unit, NULL);
-        if ((selector_position_mptr != NULL) && (selected_unit_mptr != NULL)) {
+        struct Position * selector_position_ptr = TNECS_GET_COMPONENT(in_game->tnecs_world, *selector_entity, Position);
+        struct Unit * selected_unit_ptr = TNECS_GET_COMPONENT(in_game->tnecs_world, in_game->selected_unit_entity, Unit);
+        if ((selector_position_ptr != NULL) && (selected_unit_ptr != NULL)) {
 
             struct Point start;
             struct Point offset;
@@ -808,15 +736,15 @@ void receive_Unit_Moves(struct Game * in_game, SDL_Event * in_userevent) {
             uint32_t unit_move;
             int_tile_t * range;
 
-            start = selector_position_mptr->tilemap_pos;
-            // offset = selector_position_mptr->offset_px;
+            start = selector_position_ptr->tilemap_pos;
+            // offset = selector_position_ptr->offset_px;
             nooffset.x = start.x;
             nooffset.y = start.y;
 
-            unit_move = Unit_effectiveStats(selected_unit_mptr).move;
-            range = Unit_computeRange(selected_unit_mptr);
+            unit_move = Unit_effectiveStats(selected_unit_ptr).move;
+            range = Unit_computeRange(selected_unit_ptr);
 
-            costmapp = Map_Costmap_Movement_Compute(in_game->map_ptr, in_game->world, in_game->selected_unit_entity);
+            costmapp = Map_Costmap_Movement_Compute(in_game->map_ptr, in_game->tnecs_world, in_game->selected_unit_entity);
             matrix_print_int16_t(costmapp, in_game->map_ptr->row_len, in_game->map_ptr->col_len);
             movemapp = Pathfinding_Map_Move(costmapp, in_game->map_ptr->row_len, in_game->map_ptr->col_len,  start, unit_move, POINTS_MATRIX);
             matrix_print_int16_t(movemapp, in_game->map_ptr->row_len, in_game->map_ptr->col_len);
@@ -836,8 +764,6 @@ void receive_Unit_Moves(struct Game * in_game, SDL_Event * in_userevent) {
     } else {
         SDL_Log("Could not get selected unit entity or selector entity");
     }
-    ecs_modified(in_game->world, *selector_entity, Position);
-    ecs_modified(in_game->world, in_game->selected_unit_entity, Unit);
 }
 
 void receive_Cursor_Hovers_Unit(struct Game * in_game, SDL_Event * in_userevent) {
@@ -852,16 +778,15 @@ void receive_Cursor_Dehovers_Unit(struct Game * in_game, SDL_Event * in_usereven
     Event_Emit(SDL_USEREVENT, event_Turn_Begin, NULL, NULL);
     uint8_t army = * (uint8_t *)in_userevent->user.data1;
 
-    ecs_entity_t * unit_entitys = Map_Unit_Gets(in_game->map_ptr, in_game->world, army);
+    tnecs_entity_t * unit_entitys = Map_Unit_Gets(in_game->map_ptr, in_game->tnecs_world, army);
 
     // SDL_Log("units size: %d", units.size());
-    ECS_IMPORT(in_game->world, UnitModule);
     switch (in_game->substate) {
         case GAME_SUBSTATE_STANDBY:
             for (uint16_t i = 0; i < arrlen(unit_entitys); i++) {
-                struct Unit * unit_mptr = ecs_get_mut(in_game->world, unit_entitys[i], Unit, NULL);
-                Unit_refresh(unit_mptr);
-                ecs_modified(in_game->world, unit_entitys[i], Unit);
+                struct Unit * unit_ptr = TNECS_GET_COMPONENT(in_game->tnecs_world, unit_entitys[i], Unit);
+                Unit_refresh(unit_ptr);
+                ecs_modified(in_game->tnecs_world, unit_entitys[i], Unit);
             }
             break;
     }
@@ -874,8 +799,6 @@ void receive_Units_Refresh(struct Game * in_game, SDL_Event * in_userevent) {
 
 void receive_Unit_Danger(struct Game * in_game, SDL_Event * in_userevent) {
     SDL_Log("receive_Unit_Danger");
-    ECS_IMPORT(in_game->world, PositionModule);
-    ECS_IMPORT(in_game->world, UnitModule);
     int_tile_t * costmapp = NULL;
     int_tile_t * movemapp = NULL;
     int_tile_t * attackmapp = NULL;
@@ -884,28 +807,28 @@ void receive_Unit_Danger(struct Game * in_game, SDL_Event * in_userevent) {
     struct Point start;
     int_tile_t * range;
 
-    ecs_entity_t * selector_entity = in_userevent->user.data1;
+    tnecs_entity_t * selector_entity = in_userevent->user.data1;
 
     if ((selector_entity != 0) && (in_game->selected_unit_entity != 0)) {
-        struct Position * selector_position_mptr = ecs_get_mut(in_game->world, *selector_entity, Position, NULL);
-        struct Unit * selected_unit_mptr = ecs_get_mut(in_game->world, in_game->selected_unit_entity, Unit, NULL);
-        if ((selector_position_mptr != NULL) && (selected_unit_mptr != NULL)) {
+        struct Position * selector_position_ptr = TNECS_GET_COMPONENT(in_game->tnecs_world, *selector_entity, Position, NULL);
+        struct Unit * selected_unit_ptr = TNECS_GET_COMPONENT(in_game->tnecs_world, in_game->selected_unit_entity, Unit, NULL);
+        if ((selector_position_ptr != NULL) && (selected_unit_ptr != NULL)) {
 
-            struct Point cursorpos = selector_position_mptr->tilemap_pos;
-            // struct Point offset = selector_position_mptr->offset_px;
+            struct Point cursorpos = selector_position_ptr->tilemap_pos;
+            // struct Point offset = selector_position_ptr->offset_px;
             start.x = cursorpos.x;
             start.y = cursorpos.y;
 
-            unit_move = Unit_getStats(selected_unit_mptr).move;
-            range = Unit_computeRange(selected_unit_mptr);
+            unit_move = Unit_getStats(selected_unit_ptr).move;
+            range = Unit_computeRange(selected_unit_ptr);
 
-            costmapp = Map_Costmap_Movement_Compute(in_game->map_ptr, in_game->world, in_game->selected_unit_entity);
+            costmapp = Map_Costmap_Movement_Compute(in_game->map_ptr, in_game->tnecs_world, in_game->selected_unit_entity);
             movemapp = Pathfinding_Map_Move(costmapp, in_game->map_ptr->row_len, in_game->map_ptr->col_len, start, unit_move, POINTS_MATRIX);
             attackmapp = Pathfinding_Map_Attack(movemapp, in_game->map_ptr->row_len, in_game->map_ptr->col_len, unit_move, range, POINTS_MATRIX, MOVETILE_EXCLUDE);
             dangermapp = matrix_plus_int16_t(attackmapp, movemapp, in_game->map_ptr->row_len, in_game->map_ptr->col_len, 1);
 
 
-            if (selected_unit_mptr != NULL) {
+            if (selected_unit_ptr != NULL) {
                 if (!in_game->map_ptr->show_danger) {
                     in_game->map_ptr->overlay_danger = dangermapp;
                     in_game->map_ptr->show_danger = true;
@@ -925,34 +848,26 @@ void receive_Unit_Danger(struct Game * in_game, SDL_Event * in_userevent) {
     } else {
         SDL_Log("Could not get selected unit entity or selector entity");
     }
-
-    ecs_modified(in_game->world, *selector_entity, Position);
-    ecs_modified(in_game->world, in_game->selected_unit_entity, Unit);
 }
 
 void receive_Unit_Dance(struct Game * in_game, SDL_Event * in_userevent) {
     SDL_Log("receive_Unit_Dance");
-
 }
 
 void receive_Menu_Select(struct Game * in_game, SDL_Event * in_userevent) {
     SDL_Log("receive_Menu_Select");
-    ecs_entity_t selector_entity = *(ecs_entity_t *)in_userevent->user.data1;
+    tnecs_entity_t selector_entity = *(tnecs_entity_t *)in_userevent->user.data1;
 
-    ECS_IMPORT(in_game->world, PositionModule);
-    ECS_IMPORT(in_game->world, UnitModule);
-    ECS_IMPORT(in_game->world, MenuModule);
-
-    ecs_entity_t menu_entity_top = 0;
-    struct Position * selector_position_mptr;
+    tnecs_entity_t menu_entity_top = 0;
+    struct Position * selector_position_ptr;
     struct MenuOption menuOption_selected;
-    struct Menu * current_menu_mptr;
+    struct Menu * current_menu_ptr;
 
     if (in_game->menu_stack_num > 0) {
         menu_entity_top = in_game->menu_stack[in_game->menu_stack_num - 1];
-        current_menu_mptr = ecs_get_mut(in_game->world, menu_entity_top, Menu, NULL);
-        selector_position_mptr = ecs_get_mut(in_game->world, selector_entity, Position, NULL);
-        menuOption_selected = current_menu_mptr->menuoptions[selector_position_mptr->tilemap_pos.y + current_menu_mptr->row_num * selector_position_mptr->tilemap_pos.x];
+        current_menu_ptr = TNECS_GET_COMPONENT(in_game->tnecs_world, menu_entity_top, Menu);
+        selector_position_ptr = TNECS_GET_COMPONENT(in_game->tnecs_world, selector_entity, Position);
+        menuOption_selected = current_menu_ptr->menuoptions[selector_position_ptr->tilemap_pos.y + current_menu_ptr->row_num * selector_position_ptr->tilemap_pos.x];
         if (menuOption_selected.childEvent > 0) {
             Event_Emit(SDL_USEREVENT, menuOption_selected.childEvent, menuOption_selected.data1_childEvent, menuOption_selected.data1_childEvent);
         }
@@ -963,9 +878,9 @@ void receive_Menu_Select(struct Game * in_game, SDL_Event * in_userevent) {
             Game_menuStack_Push(in_game, in_game->menu_loaded[menuOption_selected.childMenu]);
             Game_Menu_Update(in_game, menuOption_selected.childMenu);
             Game_cursorFocus_onMenu(in_game);
-            struct Menu * temp_menu_mptr = ecs_get_mut(in_game->world, in_game->menu_loaded[menuOption_selected.childMenu], Menu, NULL);
-            SDL_Log("Menu_select: temp_menu_mptr->id %d", temp_menu_mptr->id);
-            SDL_Log("Menu_select: temp_menu_mptr->enabled %d", temp_menu_mptr->enabled);
+            struct Menu * temp_menu_ptr = TNECS_GET_COMPONENT(in_game->tnecs_world, in_game->menu_loaded[menuOption_selected.childMenu], Menu);
+            SDL_Log("Menu_select: temp_menu_ptr->id %d", temp_menu_ptr->id);
+            SDL_Log("Menu_select: temp_menu_ptr->enabled %d", temp_menu_ptr->enabled);
         }
     }
 
@@ -1013,21 +928,17 @@ void receive_Unit_Refresh(struct Game * in_game, SDL_Event * in_userevent) {
 
 void receive_Unit_Wait(struct Game * in_game, SDL_Event * in_userevent) {
     SDL_Log("receive_Input_Pause");
-    ECS_IMPORT(in_game->world, UnitModule);
-    ECS_IMPORT(in_game->world, SpriteModule);
 
-    ecs_entity_t * selector_entity = (ecs_entity_t *) in_userevent->user.data1;
+    tnecs_entity_t * selector_entity = (tnecs_entity_t *) in_userevent->user.data1;
     if (in_game->selected_unit_entity > 0) {
-        struct Unit * waiting_unit_mptr = ecs_get_mut(in_game->world, in_game->selected_unit_entity, Unit, NULL);
-        struct Sprite * waiting_sprite_mptr = ecs_get_mut(in_game->world, in_game->selected_unit_entity, Sprite, NULL);
-        if (waiting_unit_mptr != NULL) {
-            waiting_unit_mptr->waits = true;
+        struct Unit * waiting_unit_ptr = TNECS_GET_COMPONENT(in_game->tnecs_world, in_game->selected_unit_entity, Unit);
+        struct Sprite * waiting_sprite_ptr = TNECS_GET_COMPONENT(in_game->tnecs_world, in_game->selected_unit_entity, Sprite);
+        if (waiting_unit_ptr != NULL) {
+            waiting_unit_ptr->waits = true;
         }
-        ecs_modified(in_game->world, in_game->selected_unit_entity, Unit);
-        if (waiting_sprite_mptr) {
-            Sprite_darken(waiting_sprite_mptr);
+        if (waiting_sprite_ptr) {
+            Sprite_darken(waiting_sprite_ptr);
         }
-        ecs_modified(in_game->world, in_game->selected_unit_entity, Sprite);
     }
 
     bool destroy = false;
@@ -1042,91 +953,78 @@ void receive_Unit_Wait(struct Game * in_game, SDL_Event * in_userevent) {
 
 void receive_Unit_Talk(struct Game * in_game, SDL_Event * in_userevent) {
     SDL_Log("receive_Unit_Talk");
-    ECS_IMPORT(in_game->world, UnitModule);
-    ecs_entity_t * selector_entity = (ecs_entity_t *) in_userevent->user.data1;
+    tnecs_entity_t * selector_entity = (tnecs_entity_t *) in_userevent->user.data1;
 
     if (in_game->selected_unit_entity > 0) {
-        struct Unit * unit_mptr = ecs_get_mut(in_game->world, in_game->selected_unit_entity, Unit, NULL);
-        if (unit_mptr != NULL) {
-            Unit_wait(unit_mptr);
+        struct Unit * unit_ptr = TNECS_GET_COMPONENT(in_game->tnecs_world, in_game->selected_unit_entity, Unit);
+        if (unit_ptr != NULL) {
+            Unit_wait(unit_ptr);
         }
     }
-    ecs_modified(in_game->world, in_game->selected_unit_entity, Unit);
     Event_Emit(SDL_USEREVENT, event_Gameplay_Return2Standby, selector_entity, NULL);
 }
 
 void receive_Unit_Rescue(struct Game * in_game, SDL_Event * in_userevent) {
     SDL_Log("receive_Unit_Rescue");
-    ECS_IMPORT(in_game->world, UnitModule);
-    ecs_entity_t * selector_entity = (ecs_entity_t *) in_userevent->user.data1;
+    tnecs_entity_t * selector_entity = (tnecs_entity_t *) in_userevent->user.data1;
 
     if (in_game->selected_unit_entity > 0) {
-        struct Unit * unit_mptr = ecs_get_mut(in_game->world, in_game->selected_unit_entity, Unit, NULL);
-        if (unit_mptr != NULL) {
-            Unit_wait(unit_mptr);
+        struct Unit * unit_ptr = TNECS_GET_COMPONENT(in_game->tnecs_world, in_game->selected_unit_entity, Unit);
+        if (unit_ptr != NULL) {
+            Unit_wait(unit_ptr);
         }
     }
-    ecs_modified(in_game->world, in_game->selected_unit_entity, Unit);
     Event_Emit(SDL_USEREVENT, event_Gameplay_Return2Standby, selector_entity, NULL);
 }
 
 void receive_Defender_Select(struct Game * in_game, SDL_Event * in_userevent) {
     SDL_Log("receive_Defender_Select");
-    ECS_IMPORT(in_game->world, UnitModule);
-    ecs_entity_t * selector_entity = (ecs_entity_t *) in_userevent->user.data1;
+    tnecs_entity_t * selector_entity = (tnecs_entity_t *) in_userevent->user.data1;
     if (in_game->selected_unit_entity > 0) {
-        struct Unit * unit_mptr = ecs_get_mut(in_game->world, in_game->selected_unit_entity, Unit, NULL);
-        if (unit_mptr != NULL) {
-            Unit_wait(unit_mptr);
+        struct Unit * unit_ptr = TNECS_GET_COMPONENT(in_game->tnecs_world, in_game->selected_unit_entity, Unit);
+        if (unit_ptr != NULL) {
+            Unit_wait(unit_ptr);
         }
     }
-    ecs_modified(in_game->world, in_game->selected_unit_entity, Unit);
     Event_Emit(SDL_USEREVENT, event_Gameplay_Return2Standby, selector_entity, NULL);
 }
 
 void receive_Unit_Attack(struct Game * in_game, SDL_Event * in_userevent) {
     SDL_Log("receive_Unit_Attack");
-    ECS_IMPORT(in_game->world, UnitModule);
-
-    ecs_entity_t * selector_entity = (ecs_entity_t *) in_userevent->user.data1;
-    ecs_entity_t * unit_entity_attacker = (ecs_entity_t *) in_userevent->user.data2;
+    tnecs_entity_t * selector_entity = (tnecs_entity_t *) in_userevent->user.data1;
+    tnecs_entity_t * unit_entity_attacker = (tnecs_entity_t *) in_userevent->user.data2;
 
     if (*unit_entity_attacker > 0) {
-        struct Unit * attacker_unit_mptr = ecs_get_mut(in_game->world, *unit_entity_attacker, Unit, NULL);
-        if (attacker_unit_mptr != NULL) {
-            Unit_computedStats(attacker_unit_mptr);
+        struct Unit * attacker_unit_ptr = TNECS_GET_COMPONENT(in_game->tnecs_world, *unit_entity_attacker, Unit);
+        if (attacker_unit_ptr != NULL) {
+            Unit_computedStats(attacker_unit_ptr);
         }
     }
     // Option for order? defender->weapon OR weapon->defender?
-    ecs_modified(in_game->world, *unit_entity_attacker, Unit);
 }
 
 void receive_Unit_Trade(struct Game * in_game, SDL_Event * in_userevent) {
     SDL_Log("receive_Unit_Trade");
-    ECS_IMPORT(in_game->world, UnitModule);
-    ecs_entity_t * selector_entity = (ecs_entity_t *) in_userevent->user.data1;
+    tnecs_entity_t * selector_entity = (tnecs_entity_t *) in_userevent->user.data1;
 
     if (in_game->selected_unit_entity > 0) {
-        struct Unit * unit_mptr = ecs_get_mut(in_game->world, in_game->selected_unit_entity, Unit, NULL);
-        if (unit_mptr != NULL) {
-            Unit_wait(unit_mptr);
+        struct Unit * unit_ptr = TNECS_GET_COMPONENT(in_game->tnecs_world, in_game->selected_unit_entity, Unit);
+        if (unit_ptr != NULL) {
+            Unit_wait(unit_ptr);
         }
     }
-    ecs_modified(in_game->world, in_game->selected_unit_entity, Unit);
     Event_Emit(SDL_USEREVENT, event_Gameplay_Return2Standby, selector_entity, NULL);
 }
 void receive_Unit_Escape(struct Game * in_game, SDL_Event * in_userevent) {
     SDL_Log("receive_Unit_Escape");
-    ECS_IMPORT(in_game->world, UnitModule);
-    ecs_entity_t * selector_entity = (ecs_entity_t *) in_userevent->user.data1;
+    tnecs_entity_t * selector_entity = (tnecs_entity_t *) in_userevent->user.data1;
 
     if (in_game->selected_unit_entity > 0) {
-        struct Unit * unit_mptr = ecs_get_mut(in_game->world, in_game->selected_unit_entity, Unit, NULL);
-        if (unit_mptr != NULL) {
-            Unit_wait(unit_mptr);
+        struct Unit * unit_ptr = TNECS_GET_COMPONENT(in_game->tnecs_world, in_game->selected_unit_entity, Unit);
+        if (unit_ptr != NULL) {
+            Unit_wait(unit_ptr);
         }
     }
-    ecs_modified(in_game->world, in_game->selected_unit_entity, Unit);
     Event_Emit(SDL_USEREVENT, event_Gameplay_Return2Standby, selector_entity, NULL);
 }
 
@@ -1137,17 +1035,14 @@ void receive_Unit_Staff(struct Game * in_game, SDL_Event * in_userevent) {
 
 void receive_Unit_Items(struct Game * in_game, SDL_Event * in_userevent) {
     SDL_Log("receive_Unit_Items");
-    ECS_IMPORT(in_game->world, UnitModule);
-    ecs_entity_t * selector_entity = (ecs_entity_t *) in_userevent->user.data1;
+    tnecs_entity_t * selector_entity = (tnecs_entity_t *) in_userevent->user.data1;
 
     if (in_game->selected_unit_entity > 0) {
-        struct Unit * unit_mptr = ecs_get_mut(in_game->world, in_game->selected_unit_entity, Unit, NULL);
-        if (unit_mptr != NULL) {
-            Unit_wait(unit_mptr);
+        struct Unit * unit_ptr = TNECS_GET_COMPONENT(in_game->tnecs_world, in_game->selected_unit_entity, Unit);
+        if (unit_ptr != NULL) {
+            Unit_wait(unit_ptr);
         }
     }
-
-    ecs_modified(in_game->world, in_game->selected_unit_entity, Unit);
     Event_Emit(SDL_USEREVENT, event_Gameplay_Return2Standby, selector_entity, NULL);
 }
 
