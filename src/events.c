@@ -11,14 +11,22 @@ void (** receivers_arr)(struct Game *, SDL_Event *);
 ecs_entity_t * data1_entity;
 ecs_entity_t * data2_entity;
 
+tnecs_entity_t * tnecs_data1_entity;
+tnecs_entity_t * tnecs_data2_entity;
+
 void Events_Data_Malloc() {
     data1_entity = SDL_malloc(sizeof(ecs_entity_t));
     data2_entity = SDL_malloc(sizeof(ecs_entity_t));
+    tnecs_data1_entity = SDL_malloc(sizeof(tnecs_entity_t));
+    tnecs_data2_entity = SDL_malloc(sizeof(tnecs_entity_t));
+
 }
 
 void Events_Data_Free() {
     free(data1_entity);
     free(data2_entity);
+    free(tnecs_data1_entity);
+    free(tnecs_data2_entity);
 }
 
 void Event_Emit(uint32_t in_event_type, int32_t in_event_code, void * in_data1, void * in_data2) {

@@ -18,6 +18,9 @@ struct Game;
 extern ecs_entity_t * data1_entity;
 extern ecs_entity_t * data2_entity;
 
+extern tnecs_entity_t * tnecs_data1_entity;
+extern tnecs_entity_t * tnecs_data2_entity;
+
 extern void Events_Data_Malloc();
 extern void Events_Data_Free();
 
@@ -30,6 +33,7 @@ extern void Event_Emit(uint32_t in_event_type, int32_t in_event_code, void * in_
 extern void Events_Names_Declare();
 extern void Events_Receivers_Declare();
 extern ecs_entity_t Events_Controllers_Check(struct Game * in_game, int32_t in_code);
+extern tnecs_entity_t Events_Controllers_Check_tnecs(struct Game * in_game, int32_t in_code);
 
 
 // SDL_events are all > 0x0FF (255 )

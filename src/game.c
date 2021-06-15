@@ -1588,6 +1588,7 @@ void Game_clean(struct Game * in_game) {
     SDL_DestroyWindow(in_game->window);
     SDL_DestroyRenderer(Game_renderer);
     SDL_Quit();
+    tnecs_world_destroy(in_game->tnecs_world);
     SDL_Log("Game cleaned.");
 }
 
