@@ -173,6 +173,9 @@ void tnecs_world_breath_components(struct tnecs_World * in_world) {
         in_world->num_components_bytype[i] = 0;
     }
     in_world->num_components = TNECS_NULLSHIFT;
+    in_world->component_names[0] = malloc(5);
+    strncpy(in_world->component_names[0], "NULL", 5);
+
 }
 
 void tnecs_world_breath_systems(struct tnecs_World * in_world) {
