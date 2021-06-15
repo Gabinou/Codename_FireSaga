@@ -6,6 +6,7 @@
 #include "enums.h"
 #include "platform.h"
 #include "flecs.h"
+#include "tnecs.h"
 #include "stb_ds.h"
 
 int16_t * testTiles() {
@@ -111,7 +112,14 @@ int_tile_t * testTilemap(int_tile_t * in_tilemap) {
 void test_map() {
     SDL_Log("test_map");
     utilities_allNames_Load();
+    tnecs_world_t * tnecs_world = tnecs_world_genesis();
     ecs_world_t * temp_world = ecs_init();
+    TNECS_REGISTER_COMPONENT(tnecs_world, Unit);
+    TNECS_REGISTER_COMPONENT(tnecs_world, Position);
+    lok(strcmp("NULL", tnecs_world->component_names[0]) == 0);
+    lok(strcmp("Unit", tnecs_world->component_names[1]) == 0);
+    lok(strcmp("Position", tnecs_world->component_names[2]) == 0);
+
     ECS_IMPORT(temp_world, UnitModule);
     ECS_IMPORT(temp_world, PositionModule);
 
@@ -246,13 +254,18 @@ void test_map() {
     struct Unit unit3 = Unit_default;
     struct Unit unit4 = Unit_default;
     ecs_entity_t temp_entity;
+    tnecs_entity_t tnecs_entity;
     temp_entity = ecs_new(temp_world, 0);
+    tnecs_entity = TNECS_ENTITY_CREATE_WCOMPONENTS(tnecs_world, Position, Unit);
+
     ecs_add(temp_world, temp_entity, Position);
     ecs_add(temp_world, temp_entity, Unit);
-    struct Unit * temp_entity_unit_mptr;
+    struct Unit * temp_entity_unit_mptr, tnecs_unit_ptr;
     temp_entity_unit_mptr = ecs_get_mut(temp_world, temp_entity, Unit, NULL);
+    tnecs_unit_ptr = TNECS_GET_COMPONENT(tnecs_world, tnecs_entity, Unit);
+    lok(tnecs_unit_ptr != NULL);
 
-    struct Unit_stats in_stats = {15,  4,  5,  7,  6,   8,  4,  6,  5,  5,  6};
+    struct Unit_stats in_stats = {15,  4,  5,  7,  6,  8,  4,  6,  5,  5,  6};
     struct Unit_stats out_stats = Unit_stats_default;
     struct Unit_stats in_caps = {48, 14, 25, 32, 34, 28, 19, 40, 15};
     struct Unit_stats out_caps = Unit_stats_default;
