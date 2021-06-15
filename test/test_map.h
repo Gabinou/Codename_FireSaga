@@ -5,7 +5,6 @@
 #include "position.h"
 #include "enums.h"
 #include "platform.h"
-#include "flecs.h"
 #include "tnecs.h"
 #include "stb_ds.h"
 
@@ -113,9 +112,6 @@ void test_map() {
     SDL_Log("test_map");
     utilities_allNames_Load();
     tnecs_world_t * tnecs_world = tnecs_world_genesis();
-    ecs_world_t * temp_world = ecs_init();
-    TNECS_REGISTER_COMPONENT(tnecs_world, Unit);
-    TNECS_REGISTER_COMPONENT(tnecs_world, Position);
     lok(strcmp("NULL", tnecs_world->component_names[0]) == 0);
     lok(strcmp("Unit", tnecs_world->component_names[1]) == 0);
     lok(strcmp("Position", tnecs_world->component_names[2]) == 0);
@@ -191,17 +187,6 @@ void test_map() {
     arrsetcap(map1.armies_onfield, 10);
     arrsetcap(map2.armies_onfield, 10);
 
-    map1.unitmap = NULL;
-    map2.unitmap = NULL;
-    arrsetlen(map1.unitmap, MAP_ROW_LEN * MAP_COL_LEN);
-    arrsetlen(map2.unitmap, MAP_ROW_LEN * MAP_COL_LEN);
-    for (uint8_t row = 0; row < MAP_ROW_LEN; row++) {
-        for (uint8_t col = 0; col < MAP_COL_LEN; col++) {
-            map1.unitmap[row * MAP_ROW_LEN + col] = 0;
-            map2.unitmap[row * MAP_ROW_LEN + col] = 0;
-        }
-    }
-
     map1.tnecs_unitmap = NULL;
     map2.tnecs_unitmap = NULL;
     arrsetlen(map1.tnecs_unitmap, MAP_ROW_LEN * MAP_COL_LEN);
@@ -264,15 +249,11 @@ void test_map() {
     struct Unit unit2 = Unit_default;
     struct Unit unit3 = Unit_default;
     struct Unit unit4 = Unit_default;
-    ecs_entity_t temp_entity;
     tnecs_entity_t tnecs_entity;
-    temp_entity = ecs_new(temp_world, 0);
     tnecs_entity = TNECS_ENTITY_CREATE_WCOMPONENTS(tnecs_world, Position, Unit);
 
-    ecs_add(temp_world, temp_entity, Position);
-    ecs_add(temp_world, temp_entity, Unit);
-    struct Unit * temp_entity_unit_mptr, * tnecs_unit_ptr;
-    temp_entity_unit_mptr = ecs_get_mut(temp_world, temp_entity, Unit, NULL);
+    struct Unit * tnecs_unit_ptr;
+    struct Unit * temp_entity_unit_mptr;
     tnecs_unit_ptr = TNECS_GET_COMPONENT(tnecs_world, tnecs_entity, Unit);
     lok(tnecs_unit_ptr != NULL);
 
@@ -286,9 +267,9 @@ void test_map() {
     struct Inventory_item out_wpn = Inventory_item_default;
     int16_t in_exp = 0;
     int16_t out_exp = 0;
-    Unit_setid(temp_entity_unit_mptr, UNIT_NAME_SILOU);
-    Unit_setClassind(temp_entity_unit_mptr, UNIT_CLASS_MAGE);
-    Unit_setSex(temp_entity_unit_mptr, UNIT_SEX_F);
+    Unit_setid(tnecs_unit_ptr, UNIT_NAME_SILOU);
+    Unit_setClassind(tnecs_unit_ptr, UNIT_CLASS_MAGE);
+    Unit_setSex(tnecs_unit_ptr, UNIT_SEX_F);
     tnecs_unit_ptr->base_stats = in_stats;
     tnecs_unit_ptr->current_stats = in_stats;
     tnecs_unit_ptr->caps_stats = in_stats;
@@ -301,7 +282,6 @@ void test_map() {
 
     Unit_Item_Add(tnecs_unit_ptr, in_wpn);
 
-    // Map_Unit_Put(&map1, temp_world, 6, 6, temp_entity);
     Map_Unit_Put_tnecs(&map1, tnecs_world, 6, 6, tnecs_entity);
 
     struct Point position1 = {1, 2};
