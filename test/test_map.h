@@ -202,6 +202,17 @@ void test_map() {
         }
     }
 
+    map1.tnecs_unitmap = NULL;
+    map2.tnecs_unitmap = NULL;
+    arrsetlen(map1.tnecs_unitmap, MAP_ROW_LEN * MAP_COL_LEN);
+    arrsetlen(map2.tnecs_unitmap, MAP_ROW_LEN * MAP_COL_LEN);
+    for (uint8_t row = 0; row < MAP_ROW_LEN; row++) {
+        for (uint8_t col = 0; col < MAP_COL_LEN; col++) {
+            map1.tnecs_unitmap[row * MAP_ROW_LEN + col] = 0;
+            map2.tnecs_unitmap[row * MAP_ROW_LEN + col] = 0;
+        }
+    }
+
     Map_Bounds_Compute(&map1);
 
     lok(map1.offset_px.x == DEFAULT_TILEMAP_XOFFSET);
@@ -260,7 +271,7 @@ void test_map() {
 
     ecs_add(temp_world, temp_entity, Position);
     ecs_add(temp_world, temp_entity, Unit);
-    struct Unit * temp_entity_unit_mptr, tnecs_unit_ptr;
+    struct Unit * temp_entity_unit_mptr, * tnecs_unit_ptr;
     temp_entity_unit_mptr = ecs_get_mut(temp_world, temp_entity, Unit, NULL);
     tnecs_unit_ptr = TNECS_GET_COMPONENT(tnecs_world, tnecs_entity, Unit);
     lok(tnecs_unit_ptr != NULL);
@@ -278,18 +289,20 @@ void test_map() {
     Unit_setid(temp_entity_unit_mptr, UNIT_NAME_SILOU);
     Unit_setClassind(temp_entity_unit_mptr, UNIT_CLASS_MAGE);
     Unit_setSex(temp_entity_unit_mptr, UNIT_SEX_F);
-    temp_entity_unit_mptr->base_stats = in_stats;
-    temp_entity_unit_mptr->current_stats = in_stats;
-    temp_entity_unit_mptr->caps_stats = in_stats;
-    temp_entity_unit_mptr->growths = in_growths;
+    tnecs_unit_ptr->base_stats = in_stats;
+    tnecs_unit_ptr->current_stats = in_stats;
+    tnecs_unit_ptr->caps_stats = in_stats;
+    tnecs_unit_ptr->growths = in_growths;
     in_exp = 400;
-    temp_entity_unit_mptr->exp = in_exp;
-    temp_entity_unit_mptr->base_exp = in_exp;
-    temp_entity_unit_mptr->army = ARMY_ERWIN;
+    tnecs_unit_ptr->exp = in_exp;
+    tnecs_unit_ptr->base_exp = in_exp;
+    tnecs_unit_ptr->army = ARMY_ERWIN;
     in_wpn.id = ITEM_NAME_BALL_LIGHTNING;
-    Unit_Item_Add(temp_entity_unit_mptr, in_wpn);
 
-    Map_Unit_Put(&map1, temp_world, 6, 6, temp_entity);
+    Unit_Item_Add(tnecs_unit_ptr, in_wpn);
+
+    // Map_Unit_Put(&map1, temp_world, 6, 6, temp_entity);
+    Map_Unit_Put_tnecs(&map1, tnecs_world, 6, 6, tnecs_entity);
 
     struct Point position1 = {1, 2};
     struct Point position2 = {3, 4};
