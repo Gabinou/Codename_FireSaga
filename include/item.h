@@ -25,7 +25,7 @@ typedef struct Item {
     bool sellable;
     bool equippable; // unused by weapons
     uint16_t id; // 0 means empty.
-    uint16_t type;
+    int_wpnType_t type;
     uint64_t passive_effect;
     int8_t (* use_effectp)(struct Item *, struct Unit *, struct Unit *);
     uint16_t * users; // item only usable by users. empty = everyone

@@ -169,7 +169,7 @@ extern struct Unit_stats {
 
 struct Infusion {
     int8_t power; // 0 means weapon was already infused/is a magic weapon.
-    uint16_t type;
+    int_wpnType_t type;
 };
 
 struct Node {

@@ -784,6 +784,10 @@ bool Unit_canAttack(struct Unit * attacker, struct Point * attacker_pos, struct 
     return (can);
 }
 
+int_wpnType_t Unit_Equipped_wpnType(struct Unit * in_unit) {
+
+}
+
 uint8_t Unit_computeEffectivefactor(struct Unit * attacker, struct Unit * defender) {
     SDL_assert(attacker);
     SDL_assert(defender);

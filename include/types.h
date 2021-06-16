@@ -3,6 +3,8 @@
 
 #include <stdint.h>
 typedef uint16_t int_unit_t;
+typedef uint16_t int_unitType_t;
+typedef uint16_t int_wpnType_t;
 typedef int32_t int_point_t;
 typedef int16_t int_tile_t;
 typedef uint16_t int_id_t;

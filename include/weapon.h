@@ -12,7 +12,7 @@ typedef struct Weapon {
     uint8_t json_element;
     struct Item * item; // Should be a pointer to an item?
     struct Weapon_stats stats;
-    uint16_t effective; // unit type.
+    int_unitType_t effective;
     struct Infusion infused;
     bool infuseable;
     bool attackable;
