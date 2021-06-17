@@ -12,13 +12,6 @@ struct AI AI_default = {
     .move_type = 1,
 };
 
-// void AIModuleImport(tnecs_world_t * in_world) {
-//     ECS_MODULE(in_world, AIModule);
-//     ECS_COMPONENT(in_world, AI);
-//     ECS_SET_COMPONENT(AI);
-//     ECS_EXPORT_COMPONENT(AI);
-// }
-
 extern int8_t AI_Forecast_Rating(struct Combat_Forecast in_forecast) {
     int8_t rating = 0;
     int8_t rating_buffer;
