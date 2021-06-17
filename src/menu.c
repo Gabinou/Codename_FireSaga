@@ -185,7 +185,7 @@ uint16_t Menu_cellWidth_Compute(tnecs_world_t * in_world, struct Menu * in_menu,
     struct Sprite * icon_sprite_ptr = TNECS_GET_COMPONENT(in_world, cell.ent_icon, Sprite);
     int32_t temp_width;
 
-    // SDL_Log("text_lines: %s", text_mptr->text_line);
+    // SDL_Log("text_lines: %s", text_ptr->text_line);
     SDL_assert(in_menu->font != NULL);
     TTF_SizeUTF8(in_menu->font, text_ptr->text_line, &temp_width, NULL);
     // SDL_Log("TTF_SizeUTF8: %d", temp_width);
@@ -259,17 +259,17 @@ struct Point Menu_cursorPos_Compute(struct Menu * in_menu) {
 
 void Menu_Options_Draw(tnecs_world_t * in_world, struct Menu * in_menu) {
     struct MenuOption cell;
-    Text * text_mptr;
+    Text * text_ptr;
     for (uint8_t col = 0; col < in_menu->col_num; col++) {
         for (uint8_t row = 0; row < in_menu->row_num; row++) {
-            text_mptr  =  TNECS_GET_COMPONENT(in_world, cell.ent_text, Text);
+            text_ptr  =  TNECS_GET_COMPONENT(in_world, cell.ent_text, Text);
             // struct Menu * menu_ptr = TNECS_COMPONENTS_LIST(in_input, Menu);
 
             // SDL_RenderCopy(Game_renderer, in_menu->texture, &srcrect, &destrect);
-            Text_Texture_Make(text_mptr);
-            Text_Rects_Pos_Set(text_mptr, in_menu->pos.x + col * in_menu->col_widths[col], in_menu->pos.y + row * in_menu->row_height);
-            Text_draw(text_mptr);
-            // SDL_Log("text_mptr->text_lines %s", text_mptr->text_line);
+            Text_Texture_Make(text_ptr);
+            Text_Rects_Pos_Set(text_ptr, in_menu->pos.x + col * in_menu->col_widths[col], in_menu->pos.y + row * in_menu->row_height);
+            Text_draw(text_ptr);
+            // SDL_Log("text_ptr->text_lines %s", text_ptr->text_line);
         }
     }
 }
