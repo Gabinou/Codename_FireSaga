@@ -7,7 +7,6 @@
 #include "weapon.h"
 #include "linalg.h"
 #include "jsonio.h"
-#include "flecs.h"
 #include "probability.h"
 #include "physfs.h"
 #include "equations.h"
@@ -124,14 +123,6 @@ struct Units_hash {
     int16_t key;
     struct Unit value;
 };
-
-extern void UnitModuleImport(ecs_world_t * in_world);
-typedef struct UnitModule {
-    ECS_DECLARE_COMPONENT(Unit);
-} UnitModule;
-
-#define UnitModuleImportHandles(handles)\
-    ECS_IMPORT_COMPONENT(handles, Unit);
 
 extern void Unit_init(struct Unit * in_unit);
 

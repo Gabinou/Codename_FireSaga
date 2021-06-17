@@ -8,7 +8,6 @@
 #include "enums.h"
 #include "unit.h"
 #include "linalg.h"
-#include "flecs.h"
 #include "q_math.h"
 #include "narrative.h"
 #include "hexposition.h"

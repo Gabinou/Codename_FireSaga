@@ -7,7 +7,6 @@
 #include "utilities.h"
 #include "string.h"
 #include "structs.h"
-#include "flecs.h"
 // #ifndef STB_SPRINTF_IMPLEMENTATION //Why no need?
 // #define STB_SPRINTF_IMPLEMENTATION
 #include "stb_sprintf.h"
@@ -34,14 +33,6 @@ typedef struct Item {
     char * description;
 } Item;
 extern struct Item Item_default;
-
-typedef struct ItemModule {
-    ECS_DECLARE_COMPONENT(Item);
-} ItemModule;
-
-void ItemModuleImport(ecs_world_t * in_world);
-#define ItemModuleImportHandles(handles)\
-    ECS_IMPORT_COMPONENT(handles, Item);
 
 extern void Item_writeJSON(struct Item * in_item, cJSON * in_jtile);
 extern void Item_readJSON(struct Item * in_item, cJSON * in_jtile);

@@ -634,7 +634,6 @@ void Game_putPConMap(struct Game * in_game, int16_t * in_units, struct Point * i
         sprite_ptr->visible = true;
 
         Map_Unit_Put(in_game->map_ptr, in_game->world, in_pos_list[i].x, in_pos_list[i].y, temp_unit_ent);
-        hmput(in_game->ent_unit_loaded, temp_unit_ent, temp_unit_ent);
     }
 }
 
@@ -689,7 +688,6 @@ void Game_mapArrivals_Load(struct Game * in_game) {
             Sprite_Texture_Set(sprite_ptr, filename);
 
             Map_Unit_Put(in_game->map_ptr, in_game->world, position_ptr->tilemap_pos.x, position_ptr->tilemap_pos.y, temp_unit_ent);
-            hmput(in_game->ent_unit_loaded, temp_unit_ent, temp_unit_ent);
         }
     }
 }

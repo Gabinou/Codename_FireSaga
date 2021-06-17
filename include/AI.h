@@ -6,7 +6,6 @@
 #include "SDL2/SDL.h"
 #include "types.h"
 #include "enums.h"
-#include "flecs.h"
 #include "map.h"
 #include "unit.h"
 #include "linalg.h"
@@ -80,15 +79,6 @@ typedef struct AI {
     uint8_t move_type;
 } AI;
 extern struct AI AI_default;
-
-// extern void AIModuleImport(tnecs_world_t * in_world);
-// typedef struct AIModule {
-//     ECS_DECLARE_COMPONENT(AI);
-// } AIModule;
-
-// #define AIModuleImportHandles(handles)\
-//     ECS_IMPORT_COMPONENT(handles, AI);
-
 
 extern struct Point * Target_Assailable_Positions(tnecs_entity_t in_attacker, tnecs_entity_t in_defender, int_tile_t * in_movemap);
 
