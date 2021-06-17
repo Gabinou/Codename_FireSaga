@@ -47,17 +47,12 @@ struct Game Game_default = {
 };
 
 void Game_makeTurntransition(struct Game * in_game) {
-    ECS_IMPORT(in_game->world, TextModule);
-    ECS_IMPORT(in_game->world, SpriteModule);
-    ECS_IMPORT(in_game->world, PositionModule);
-
+    SDL_Log("Game_makeTurntransition");
     if (in_game->entity_transition != 0) {
-        ecs_delete(in_game->world, in_game->entity_transition);
+        tnecs_entity_destroy(in_game->world, in_game->entity_transition);
     }
 
-    in_game->entity_transition = ecs_new(in_game->world, Position);
-    ecs_add(in_game->world, in_game->entity_transition, Sprite);
-    ecs_add(in_game->world, in_game->entity_transition, Text);
+    in_game->entity_transition = TNECS_ENTITY_CREATE_WCOMPONENTS(in_game->world, Position, Sprite, Text);
 
     struct Sprite * sprite_ptr = TNECS_GET_COMPONENT(in_game->world, in_game->entity_transition, Sprite, NULL);
     if (sprite_ptr != NULL) {
@@ -76,13 +71,10 @@ void Game_makeTurntransition(struct Game * in_game) {
         sprite_ptr->destrect.y = 128;
     }
     // Sprite_Texture_Set(sprite_ptr, "assets//GUI//textbox.png");
-    ecs_modified(in_game->world, in_game->entity_transition, Text);
-    ecs_modified(in_game->world, in_game->entity_transition, Sprite);
-    ecs_modified(in_game->world, in_game->entity_transition, Position);
 }
 
 void Game_setTurntransitiontext(struct Game * in_game, int8_t in_army) {
-    ECS_IMPORT(in_game->world, TextModule);
+    SDL_Log("Game_setTurntransitiontext");
     Text * text_ptr = TNECS_GET_COMPONENT(in_game->world, in_game->entity_transition, Text, NULL);
     if (in_army > 0) {
         strcpy(text_ptr->text_line, armyNames[in_army]);
@@ -90,10 +82,10 @@ void Game_setTurntransitiontext(struct Game * in_game, int8_t in_army) {
         SDL_Log("in_army is invalid. Putting Default text.");
         strcpy(text_ptr->text_line, "Next ");
     }
-    ecs_modified(in_game->world, in_game->entity_transition, Text);
 }
 
 void Game_FPS_Create(struct Game * in_game, float in_update_time) {
+    SDL_Log("Game_FPS_Create");
     if (in_game->tnecs_entity_fps != 0) {
         tnecs_entity_destroy(in_game->world, in_game->tnecs_entity_fps);
     }
@@ -143,7 +135,6 @@ void Game_Menu_Disable_Entity(struct Game * in_game, tnecs_entity_t in_menu_enti
 
 void Game_Menu_Disable(struct Game * in_game, int8_t in_menu) {
     SDL_Log("Game_Menu_Disable %d", in_menu);
-    ECS_IMPORT(in_game->world, MenuModule);
     SDL_assert((in_menu > MENU_START) & (in_menu < MENU_END));
     struct Menu * menu_ptr = TNECS_GET_COMPONENT(in_game->world, in_game->menu_loaded[in_menu], Menu);
     SDL_assert(menu_ptr != NULL);
@@ -152,23 +143,20 @@ void Game_Menu_Disable(struct Game * in_game, int8_t in_menu) {
 
 void Game_Menu_Enable(struct Game * in_game, int8_t in_menu) {
     SDL_Log("Showing Menu %d", in_menu);
-    ECS_IMPORT(in_game->world, TextModule);
-    ECS_IMPORT(in_game->world, SpriteModule);
 
     SDL_assert((in_menu > MENU_START) & (in_menu < MENU_END));
     // if (hmget(in_game->menus, in_menu) != 0) {
-    //     Text * text_ptr = TNECS_GET_COMPONENT(in_game->world, hmget(in_game->menus, in_menu), Text, NULL);
-    //     Sprite * sprite_ptr = TNECS_GET_COMPONENT(in_game->world, hmget(in_game->menus, in_menu), Sprite, NULL);
+    //     Text * text_ptr = TNECS_GET_COMPONENT(in_game->world, hmget(in_game->menus, in_menu), Text);
+    //     Sprite * sprite_ptr = TNECS_GET_COMPONENT(in_game->world, hmget(in_game->menus, in_menu), Sprite);
 
     //     sprite_ptr->visible = false;
     //     text_ptr->visible = false;
 
-    //     ecs_modified(in_game->world, hmget(in_game->menus, in_menu), Sprite);
-    //     ecs_modified(in_game->world, hmget(in_game->menus, in_menu), Text);
     // }
 }
 
 tnecs_entity_t Game_Menu_Get(struct Game * in_game, int8_t in_menu) {
+    SDL_Log("Game_Menu_Get");
     tnecs_entity_t in_menu_entity = 0;
     SDL_assert((in_menu > MENU_START) & (in_menu < MENU_END));
     in_menu_entity = in_game->menu_loaded[in_menu];
@@ -176,6 +164,7 @@ tnecs_entity_t Game_Menu_Get(struct Game * in_game, int8_t in_menu) {
 }
 
 tnecs_entity_t Game_makeButton(struct Game * in_game, int8_t in_menu_option) {
+    SDL_Log("Game_makeButton");
     tnecs_entity_t button = TNECS_ENTITY_CREATE_WCOMPONENTS(in_game->world, Position, Text, Sprite);
     struct Position * position_ptr = TNECS_GET_COMPONENT(in_game->world, button, Position);
     struct Sprite * sprite_ptr = TNECS_GET_COMPONENT(in_game->world, button, Sprite);
@@ -420,7 +409,7 @@ void Game_Mouse_State_Set(struct Game * in_game, const int8_t in_menu) {
         //     linespace = 1;
         //     tnecs_entity_t current_menu = hmget(in_game->menus, in_menu);
         //     if (current_menu != 0) {
-        //         const struct Text * menu_text_ptr = ecs_get(in_game->world, current_menu, Text);
+        //         const struct Text * menu_text_ptr = TNECS_GET_COMPONENT(in_game->world, current_menu, Text);
         //     }
         //     mouse_position_ptr->scale[0] = linespace;
         //     mouse_position_ptr->scale[1] = linespace;
@@ -645,7 +634,6 @@ void Game_putPConMap(struct Game * in_game, int16_t * in_units, struct Point * i
         sprite_ptr->visible = true;
 
         Map_Unit_Put(in_game->map_ptr, in_game->world, in_pos_list[i].x, in_pos_list[i].y, temp_unit_ent);
-        hmput(in_game->ent_unit_loaded, temp_unit_ent, temp_unit_ent);
     }
 }
 
@@ -700,7 +688,6 @@ void Game_mapArrivals_Load(struct Game * in_game) {
             Sprite_Texture_Set(sprite_ptr, filename);
 
             Map_Unit_Put(in_game->map_ptr, in_game->world, position_ptr->tilemap_pos.x, position_ptr->tilemap_pos.y, temp_unit_ent);
-            hmput(in_game->ent_unit_loaded, temp_unit_ent, temp_unit_ent);
         }
     }
 }
@@ -1662,7 +1649,6 @@ void makeContent_MENU_CONVOY(struct Game * in_game, void * data_1, void * data_2
 
 void makeContent_MENU_MAP_ACTION(struct Game * in_game, void * data_1, void * data_2) {
     SDL_Log("makeContent_MENU_MAP_ACTION");
-    ECS_IMPORT(in_game->world, MenuModule);
     tnecs_entity_t menu_entity = in_game->menu_loaded[MENU_MAP_ACTION];
     struct Menu * menu_ptr = TNECS_GET_COMPONENT(in_game->world, menu_entity, Menu);
     menu_ptr->col_num = 1;
@@ -1684,7 +1670,6 @@ void makeContent_MENU_MAP_ACTION(struct Game * in_game, void * data_1, void * da
     menu_ptr->row_num++;
 
     Game_Menu_LocationfromCursor(in_game, menu_entity);
-
 }
 
 void makeContent_MENU_TRADE(struct Game * in_game, void * data_1, void * data_2) {
@@ -1693,13 +1678,11 @@ void makeContent_MENU_TRADE(struct Game * in_game, void * data_1, void * data_2)
     struct Menu * menu_ptr = TNECS_GET_COMPONENT(in_game->world, menu_entity, Menu);
 }
 
-
 void makeContent_MENU_UNIT_STATS(struct Game * in_game, void * data_1, void * data_2) {
     SDL_Log("makeContent_MENU_UNIT_STATS");
     tnecs_entity_t menu_entity = in_game->menu_loaded[MENU_UNIT_STATS];
     struct Menu * menu_ptr = TNECS_GET_COMPONENT(in_game->world, menu_entity, Menu);
 }
-
 
 void makeContent_MENU_TALK(struct Game * in_game, void * data_1, void * data_2) {
     SDL_Log("makeContent_MENU_TALK");
@@ -1711,24 +1694,6 @@ void makeContent_MENU_TALK(struct Game * in_game, void * data_1, void * data_2) 
         temp_option.data = &in_game->talkers_ent[i];
     }
 }
-
-// void makeContent_MENU_Menu_Map(struct Game * in_game, void * data_1, void * data_2) {
-//     ECS_IMPORT(in_game->world, MenuModule);
-//     tnecs_entity_t menu_entity = ecs_new(in_game->world, 0);
-//     ecs_add(in_game->world, menu_entity, Menu);
-//     struct Menu * menu_ptr = TNECS_GET_COMPONENT(in_game->world, menu_entity, Menu, NULL);
-//     *menu_ptr = Menu_default;
-//     ecs_modified(in_game->world, menu_entity, Menu);
-//     return (menu_entity);
-// }
-// void makeContent_MENU_UNITS(struct Game * in_game, void * data_1, void * data_2) {
-//     ECS_IMPORT(in_game->world, MenuModule);
-//     tnecs_entity_t menu_entity = ecs_new(in_game->world, 0);
-//     ecs_add(in_game->world, menu_entity, Menu);
-//     struct Menu * menu_ptr = TNECS_GET_COMPONENT(in_game->world, menu_entity, Menu, NULL);
-//     *menu_ptr = Menu_default;
-//     ecs_modified(in_game->world, menu_entity, Menu);
-// }
 
 bool Game_Menu_init(struct Game * in_game) {
     bool crashed = 0;

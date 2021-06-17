@@ -1,19 +1,5 @@
 #include "menu.h"
 
-void MenuModuleImport(ecs_world_t * in_world) {
-    ECS_MODULE(in_world, MenuModule);
-    ECS_COMPONENT(in_world, Menu);
-    ECS_SET_COMPONENT(Menu);
-    ECS_EXPORT_COMPONENT(Menu);
-}
-
-void HUDModuleImport(ecs_world_t * in_world) {
-    ECS_MODULE(in_world, HUDModule);
-    ECS_COMPONENT(in_world, fillUpBar);
-    ECS_SET_COMPONENT(fillUpBar);
-    ECS_EXPORT_COMPONENT(fillUpBar);
-}
-
 struct fillUpBar fillUpBar_default = {
     // is a component to be icon in MenuOption
     .texture_outside_3patch = NULL,
@@ -182,17 +168,7 @@ void Menu_Rects_Compute(struct Menu * in_menu) {
     in_menu->src_bottom.y = in_menu->patch_pixels.x * 2;
 }
 
-uint16_t Menu_cellsWidths_Compute_tnecs(tnecs_world_t * in_world, struct Menu * in_menu) {
-    SDL_Log("Menu_cellsWidths_Compute_tnecs");
-    for (uint8_t col = 0; col < in_menu->col_num; col++) {
-        for (uint8_t row = 0; row < in_menu->row_num; row++) {
-            SDL_Log("%d %d", row, col);
-            Menu_cellWidth_Compute_tnecs(in_world, in_menu, row, col);
-        }
-    }
-}
-
-uint16_t Menu_cellsWidths_Compute(ecs_world_t * in_world, struct Menu * in_menu) {
+uint16_t Menu_cellsWidths_Compute(tnecs_world_t * in_world, struct Menu * in_menu) {
     SDL_Log("Menu_cellsWidths_Compute");
     for (uint8_t col = 0; col < in_menu->col_num; col++) {
         for (uint8_t row = 0; row < in_menu->row_num; row++) {
@@ -202,14 +178,14 @@ uint16_t Menu_cellsWidths_Compute(ecs_world_t * in_world, struct Menu * in_menu)
     }
 }
 
-uint16_t Menu_cellWidth_Compute_tnecs(tnecs_world_t * in_world, struct Menu * in_menu, size_t row, size_t col) {
-    SDL_Log("Menu_cellWidth_Compute_tnecs");
+uint16_t Menu_cellWidth_Compute(tnecs_world_t * in_world, struct Menu * in_menu, size_t row, size_t col) {
+    SDL_Log("Menu_cellWidth_Compute");
     struct MenuOption cell = in_menu->menuoptions[row + in_menu->row_num * col];
     struct Text * text_ptr = TNECS_GET_COMPONENT(in_world, cell.ent_text, Text);
     struct Sprite * icon_sprite_ptr = TNECS_GET_COMPONENT(in_world, cell.ent_icon, Sprite);
     int32_t temp_width;
 
-    // SDL_Log("text_lines: %s", text_mptr->text_line);
+    // SDL_Log("text_lines: %s", text_ptr->text_line);
     SDL_assert(in_menu->font != NULL);
     TTF_SizeUTF8(in_menu->font, text_ptr->text_line, &temp_width, NULL);
     // SDL_Log("TTF_SizeUTF8: %d", temp_width);
@@ -224,54 +200,13 @@ uint16_t Menu_cellWidth_Compute_tnecs(tnecs_world_t * in_world, struct Menu * in
     if (cell.width > in_menu->col_widths[col]) { in_menu->col_widths[col] = cell.width; }
 }
 
-uint16_t Menu_cellWidth_Compute(ecs_world_t * in_world, struct Menu * in_menu, size_t row, size_t col) {
-    SDL_Log("Menu_cellWidth_Compute");
-    ECS_IMPORT(in_world, TextModule);
-    ECS_IMPORT(in_world, SpriteModule);
-    struct MenuOption cell = in_menu->menuoptions[row + in_menu->row_num * col];
-    struct Text * text_mptr = ecs_get_mut(in_world, cell.ent_text, Text, NULL);
-    struct Sprite * icon_sprite_mptr = ecs_get_mut(in_world, cell.ent_icon, Sprite, NULL);
-    int32_t temp_width;
-
-    // SDL_Log("text_lines: %s", text_mptr->text_line);
-    SDL_assert(in_menu->font != NULL);
-    TTF_SizeUTF8(in_menu->font, text_mptr->text_line, &temp_width, NULL);
-    // SDL_Log("TTF_SizeUTF8: %d", temp_width);
-
-    if (temp_width > in_menu->max_width_cols) { temp_width = in_menu->max_width_cols; }
-
-    int32_t temp_text_width = cell.pad_text.left + cell.pad_text.right + temp_width;
-    int32_t temp_icon_width = icon_sprite_mptr->destrect.w < in_menu->max_width_icon ? icon_sprite_mptr->destrect.w : in_menu->max_width_icon;
-
-    temp_icon_width += cell.pad_icon.left + cell.pad_icon.right;
-    cell.width = temp_icon_width + temp_text_width;
-    if (cell.width > in_menu->col_widths[col]) { in_menu->col_widths[col] = cell.width; }
-    // SDL_Log("Menu_cellWidth_Compute: cell.width: %d", cell.width);
-    // SDL_Log("Menu_cellWidth_Compute: in_menu->col_widths[col]: %d", in_menu->col_widths[col]);
-}
-
-uint16_t Menu_rowHeight_Compute_tnecs(tnecs_world_t * in_world, struct Menu * in_menu) {
-    SDL_Log("Menu_rowHeight_Compute_tnecs");
+uint16_t Menu_rowHeight_Compute(tnecs_world_t * in_world, struct Menu * in_menu) {
+    SDL_Log("Menu_rowHeight_Compute");
     if (in_menu->menuoptions != NULL) {
         struct MenuOption cell = in_menu->menuoptions[0];
         struct Text * text_ptr = TNECS_GET_COMPONENT(in_world, cell.ent_text, Text);
         int32_t temp_height;
         TTF_SizeUTF8(in_menu->font, text_ptr->text_line, NULL, &temp_height);
-        in_menu->row_height = temp_height > INT16_MAX ? INT16_MAX : temp_height;
-    } else {
-        in_menu->row_height = 32;
-    }
-}
-
-
-uint16_t Menu_rowHeight_Compute(ecs_world_t * in_world, struct Menu * in_menu) {
-    SDL_Log("Menu_rowHeight_Compute");
-    ECS_IMPORT(in_world, TextModule);
-    if (in_menu->menuoptions != NULL) {
-        struct MenuOption cell = in_menu->menuoptions[0];
-        Text * text_mptr = ecs_get_mut(in_world, cell.ent_text, Text, NULL);
-        int32_t temp_height;
-        TTF_SizeUTF8(in_menu->font, text_mptr->text_line, NULL, &temp_height);
         in_menu->row_height = temp_height > INT16_MAX ? INT16_MAX : temp_height;
     } else {
         in_menu->row_height = 32;
@@ -322,41 +257,22 @@ struct Point Menu_cursorPos_Compute(struct Menu * in_menu) {
     return (out);
 }
 
-void Menu_Options_Draw_tnecs(tnecs_world_t * in_world, struct Menu * in_menu) {
+void Menu_Options_Draw(tnecs_world_t * in_world, struct Menu * in_menu) {
     struct MenuOption cell;
-    Text * text_mptr;
+    Text * text_ptr;
     for (uint8_t col = 0; col < in_menu->col_num; col++) {
         for (uint8_t row = 0; row < in_menu->row_num; row++) {
-            text_mptr  =  TNECS_GET_COMPONENT(in_world, cell.ent_text, Text);
+            text_ptr  =  TNECS_GET_COMPONENT(in_world, cell.ent_text, Text);
             // struct Menu * menu_ptr = TNECS_COMPONENTS_LIST(in_input, Menu);
 
             // SDL_RenderCopy(Game_renderer, in_menu->texture, &srcrect, &destrect);
-            Text_Texture_Make(text_mptr);
-            Text_Rects_Pos_Set(text_mptr, in_menu->pos.x + col * in_menu->col_widths[col], in_menu->pos.y + row * in_menu->row_height);
-            Text_draw(text_mptr);
-            // SDL_Log("text_mptr->text_lines %s", text_mptr->text_line);
+            Text_Texture_Make(text_ptr);
+            Text_Rects_Pos_Set(text_ptr, in_menu->pos.x + col * in_menu->col_widths[col], in_menu->pos.y + row * in_menu->row_height);
+            Text_draw(text_ptr);
+            // SDL_Log("text_ptr->text_lines %s", text_ptr->text_line);
         }
     }
 }
-
-void Menu_Options_Draw(ecs_world_t * in_world, struct Menu * in_menu) {
-    ECS_IMPORT(in_world, TextModule);
-    struct MenuOption cell;
-    Text * text_mptr;
-    for (uint8_t col = 0; col < in_menu->col_num; col++) {
-        for (uint8_t row = 0; row < in_menu->row_num; row++) {
-            cell = in_menu->menuoptions[row + in_menu->row_num * col];
-            text_mptr = ecs_get_mut(in_world, cell.ent_text, Text, NULL);
-            // SDL_RenderCopy(Game_renderer, in_menu->texture, &srcrect, &destrect);
-            Text_Texture_Make(text_mptr);
-            Text_Rects_Pos_Set(text_mptr, in_menu->pos.x + col * in_menu->col_widths[col], in_menu->pos.y + row * in_menu->row_height);
-            Text_draw(text_mptr);
-            // SDL_Log("text_mptr->text_lines %s", text_mptr->text_line);
-            ecs_modified(in_world, cell.ent_text, Text);
-        }
-    }
-}
-
 
 void Menu_Patches_Draw(struct Menu * in_menu) {
     SDL_Rect destrect;

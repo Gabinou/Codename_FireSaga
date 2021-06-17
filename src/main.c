@@ -17,7 +17,6 @@
 #include "convoy.h"
 #include "filesystem.h"
 #include "SDL2/SDL.h"
-#include "flecs.h"
 #include "game.h"
 #include "str.h"
 #include "scene_includer.h"
@@ -74,13 +73,6 @@ int main(int32_t argc, char * argv[]) {
     *firesaga = Game_default;
     Game_init(firesaga);
 
-    SDL_Log("Initializing ECS\n");
-    firesaga->world = ecs_init();
-    ECS_IMPORT(firesaga->world, systemRenderModule);
-    ECS_IMPORT(firesaga->world, systemControlModule);
-    ECS_IMPORT(firesaga->world, TextModule);
-    ECS_IMPORT(firesaga->world, TraitsModule);
-
     SDL_Log("Initializing TinyMT RNG\n");
     init_tinyMT(&firesaga->tinymt32);
 
@@ -101,13 +93,11 @@ int main(int32_t argc, char * argv[]) {
 
         SDL_RenderClear(Game_renderer);
         Map_draw(firesaga->map_ptr); // Only one map -> no entity
-        ecs_progress(firesaga->world, updateTime_s);
-        // tnecs_world_step(firesaga->tnecs_world, updateTime_s);
+        tnecs_world_step(firesaga->tnecs_world, updateTime_s);
         SDL_RenderPresent(Game_renderer);
         Events_Manage(firesaga);
     }
     Game_clean(firesaga);
-    ecs_fini(firesaga->world);
     SDL_free(firesaga);
     SDL_Delay(5000);
     return (NO_ERROR);

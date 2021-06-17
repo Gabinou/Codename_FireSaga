@@ -30,7 +30,6 @@
 #include "systemRender.h"
 #include "systemControl.h"
 #include "controllerTouchpad.h"
-#include "flecs.h"
 
 //forward declaration
 struct Item;
@@ -41,7 +40,6 @@ void Events_Names_Declare();
 void Events_Receivers_Declare();
 
 extern TTF_Font * Game_font;
-extern ecs_world_t * Game_world;
 extern SDL_Renderer * Game_renderer;
 
 struct Entity_hash {
@@ -99,7 +97,7 @@ struct Game {
 
     struct Unit party[MAX_PARTY_SIZE];
 
-    struct ecs_ent_hash * ent_unit_loaded;
+    tnecs_entity_t * ent_unit_loaded;
     void (**menuContentMakers)(struct Game * in_game, void * data_1, void * data_2);
 
     struct Combat_Outcome_Attack outcome_combat[COMBAT_MAX_ATTACKS];
@@ -216,12 +214,10 @@ extern void Game_Menu_LocationfromUnit(struct Game * in_game, tnecs_entity_t in_
 extern void Game_Menu_LocationfromCursor(struct Game * in_game, tnecs_entity_t in_menu_entity);
 extern void Game_Menu_LocationfromMouse(struct Game * in_game, tnecs_entity_t in_menu_entity);
 
-
 extern void Game_subStateSwitch_onMenupop(struct Game * in_game, int8_t menu_popped);
 
 #define REGISTER_ENUM(x) void makeContent_MENU_##x(struct Game * in_game, void * data_1, void * data_2);
 #include "names/menu.h"
 #undef REGISTER_ENUM
-
 
 #endif /* GAME_H */

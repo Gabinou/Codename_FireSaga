@@ -3,7 +3,6 @@
 
 #include "types.h"
 #include "narrative.h"
-#include "flecs.h"
 
 typedef struct Position {
     bool updatable;
@@ -28,14 +27,6 @@ typedef struct Position {
 } Position;
 
 extern struct Position Position_default;
-
-typedef struct PositionModule {
-    ECS_DECLARE_COMPONENT(Position);
-} PositionModule;
-
-void PositionModuleImport(ecs_world_t * in_world);
-#define PositionModuleImportHandles(handles)\
-    ECS_IMPORT_COMPONENT(handles, Position);
 
 extern void Position_replaceInbounds(struct Position * in_pos);
 // extern void Position_whichSpace(struct Position * in_pos);

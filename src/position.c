@@ -20,12 +20,6 @@ struct Position Position_default = {
     .scale = {1.0f, 1.0f},
 };
 
-void PositionModuleImport(ecs_world_t * in_world) {
-    ECS_MODULE(in_world, PositionModule);
-    ECS_COMPONENT(in_world, Position);
-    ECS_SET_COMPONENT(Position);
-}
-
 void Position_replaceInbounds(struct Position * in_pos) {
     struct Point * pos;
     if (in_pos->onTilemap) {

@@ -3,7 +3,6 @@
 
 #include <stdio.h>
 #include "SDL2/SDL.h"
-// #include "flecs.h"
 #include "tnecs.h"
 #include "enums.h"
 #include "events.h"

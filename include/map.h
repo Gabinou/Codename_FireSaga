@@ -14,7 +14,6 @@
 #include "stb_ds.h"
 #include "filesystem.h"
 #include "tile.h"
-#include "flecs.h"
 #include "tnecs.h"
 #include "unit.h"
 #include "linalg.h"
@@ -88,8 +87,7 @@ typedef struct Map {
     uint8_t num_units_onfield;
 
     int_tile_t * tilemap; // pointer to 2D dynamic array.
-    ecs_entity_t * unitmap; // pointer to 2D dynamic array -> [i*leni + j]
-    tnecs_entity_t * tnecs_unitmap; // pointer to 2D dynamic array -> [i*leni + j]
+    tnecs_entity_t * unitmap; // pointer to 2D dynamic array -> [i*leni + j]
 
     struct Map_arrival * arrivals; // pointer to 1D dynamic array.
     struct Map_arrival * loaded_arrivals; // pointer to 1D dynamic array.
@@ -102,16 +100,13 @@ typedef struct Map {
     uint8_t * items_num;
     uint8_t * armies_onfield;
 
-    ecs_entity_t * units_onfield;
-    tnecs_entity_t * tnecs_units_onfield;
-    ecs_entity_t * friendlies_onfield;
-    tnecs_entity_t * tnecs_friendlies_onfield;
+    tnecs_entity_t * units_onfield;
+    tnecs_entity_t * friendlies_onfield;
 
     struct Point * units_positions_list; // same order as unit_onfield
     uint16_t * essentials;
 
-    ecs_entity_t * enemies_onfield;
-    tnecs_entity_t * tnecs_enemies_onfield;
+    tnecs_entity_t * enemies_onfield;
     struct Point * starting_positions;
 
 } Map;
@@ -137,38 +132,25 @@ extern void Map_tileTextures_Load(struct Map * in_map);
 extern void Map_Tilesize_Set(struct Map * in_map, int16_t width, int16_t height);
 
 extern void Map_Unit_Move(struct Map * in_map, const uint8_t x, const uint8_t y, const uint8_t new_x, const uint8_t new_y);
-extern void Map_Unit_Move_tnecs(struct Map * in_map, const uint8_t x, const uint8_t y, const uint8_t new_x, const uint8_t new_y);
-extern void Map_Unit_Put(struct Map * in_map, ecs_world_t * in_world, const uint8_t col, const uint8_t row, ecs_entity_t in_unit_id);
-extern void Map_Unit_Put_tnecs(struct Map * in_map, tnecs_world_t * in_world, const uint8_t col, const uint8_t row, tnecs_entity_t in_unit_id);
+extern void Map_Unit_Put(struct Map * in_map, tnecs_world_t * in_world, const uint8_t col, const uint8_t row, tnecs_entity_t in_unit_id);
 extern void Map_Unit_Remove_fromPos(struct Map * in_map, const uint8_t col, const uint8_t row);
-extern void Map_Unit_Remove_fromEntity(struct Map * in_map, ecs_world_t * in_world, const ecs_entity_t in_entity);
-extern void Map_Unit_Remove_fromEntity_tnecs(struct Map * in_map, tnecs_world_t * in_world, const tnecs_entity_t in_entity);
-extern void Map_Unit_Remove(struct Map * in_map, const ecs_entity_t in_entity);
-extern void Map_Unit_Remove_tnecs(struct Map * in_map, const tnecs_entity_t in_entity);
+extern void Map_Unit_Remove_fromEntity(struct Map * in_map, tnecs_world_t * in_world, const tnecs_entity_t in_entity);
+extern void Map_Unit_Remove(struct Map * in_map, const tnecs_entity_t in_entity);
 
-extern ecs_entity_t Map_Unit_Get(struct Map * in_map, const uint8_t col, const uint8_t row);
-extern tnecs_entity_t Map_Unit_Get_tnecs(struct Map * in_map, const uint8_t col, const uint8_t row);
-extern ecs_entity_t * Map_Unit_Gets(struct Map * in_map, ecs_world_t * in_world, const uint8_t in_army);
-extern tnecs_entity_t * Map_Unit_Gets_tnecs(struct Map * in_map, tnecs_world_t * in_world, const uint8_t in_army);
+extern tnecs_entity_t Map_Unit_Get(struct Map * in_map, const uint8_t col, const uint8_t row);
+extern tnecs_entity_t * Map_Unit_Gets(struct Map * in_map, tnecs_world_t * in_world, const uint8_t in_army);
 
-extern void Map_Unitmap_Clear(struct Map * in_map, ecs_world_t * in_world);
-extern void Map_Unitmap_Clear_tnecs(struct Map * in_map, tnecs_world_t * in_world);
+extern void Map_Unitmap_Clear(struct Map * in_map, tnecs_world_t * in_world);
 
-extern void Map_globalRange(struct Map * in_map, ecs_world_t * in_world, uint8_t in_alignment);
-extern void Map_globalRange_tnecs(struct Map * in_map, tnecs_world_t * in_world, uint8_t in_alignment);
+extern void Map_globalRange(struct Map * in_map, tnecs_world_t * in_world, uint8_t in_alignment);
 
 extern void Map_Renderer_Set(struct Map * in_map, SDL_Renderer * in_renderer);
-int_tile_t * Map_Costmap_Movement_Compute(struct Map * in_map, ecs_world_t * in_world, ecs_entity_t in_unit_ent);
-int_tile_t * Map_Costmap_Movement_Compute_tnecs(struct Map * in_map, tnecs_world_t * in_world, tnecs_entity_t in_unit_ent);
-int_tile_t * Map_Costmap_PushPull_Compute(struct Map * in_map, ecs_world_t * in_world, ecs_entity_t in_unit_ent);
-int_tile_t * Map_Costmap_PushPull_Compute_tnecs(struct Map * in_map, tnecs_world_t * in_world, tnecs_entity_t in_unit_ent);
+int_tile_t * Map_Costmap_Movement_Compute(struct Map * in_map, tnecs_world_t * in_world, tnecs_entity_t in_unit_ent);
+int_tile_t * Map_Costmap_PushPull_Compute(struct Map * in_map, tnecs_world_t * in_world, tnecs_entity_t in_unit_ent);
 
-extern void Map_Breakable_onBroken(struct Map * in_map, ecs_world_t * in_world, ecs_entity_t in_breakable_ent);
-extern void Map_Breakable_onBroken_tnecs(struct Map * in_map, tnecs_world_t * in_world, tnecs_entity_t in_breakable_ent);
-extern void Map_Door_onOpen(struct Map * in_map, ecs_world_t * in_world, ecs_entity_t in_door_ent);
-extern void Map_Door_onOpen_tnecs(struct Map * in_map, tnecs_world_t * in_world, tnecs_entity_t in_door_ent);
-extern void Map_Chest_onOpen(struct Map * in_map, ecs_world_t * in_world, ecs_entity_t in_chest_ent);
-extern void Map_Chest_onOpen_tnecs(struct Map * in_map, tnecs_world_t * in_world, tnecs_entity_t in_chest_ent);
+extern void Map_Breakable_onBroken(struct Map * in_map, tnecs_world_t * in_world, tnecs_entity_t in_breakable_ent);
+extern void Map_Door_onOpen(struct Map * in_map, tnecs_world_t * in_world, tnecs_entity_t in_door_ent);
+extern void Map_Chest_onOpen(struct Map * in_map, tnecs_world_t * in_world, tnecs_entity_t in_chest_ent);
 
 extern void Map_draw(struct Map * in_map);
 

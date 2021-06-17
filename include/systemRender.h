@@ -7,7 +7,6 @@
 #include "narrative.h"
 #include "map.h"
 #include "sprite.h"
-#include "flecs.h"
 #include "text.h"
 #include "map.h"
 #include "game.h"

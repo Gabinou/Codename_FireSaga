@@ -9,20 +9,9 @@
 
 // sizeof vs strlen -> weird bytes if using strlen
 
-tnecs_entity_t tnecs_entity_isIn(tnecs_entity_t in_ent, tnecs_entity_t * in_possible, size_t num_possible) {
+tnecs_entity_t entity_isIn(tnecs_entity_t in_ent, tnecs_entity_t * in_possible, size_t num_possible) {
     tnecs_entity_t out_ent = 0;
     for (size_t i = 0; i < num_possible; i++) {
-        if (in_ent == in_possible[i]) {
-            out_ent = in_possible[i];
-            break;
-        }
-    }
-    return (out_ent);
-}
-
-ecs_entity_t entity_isIn(ecs_entity_t in_ent, ecs_entity_t * in_possible, uint8_t num_possible) {
-    ecs_entity_t out_ent = 0;
-    for (uint8_t i = 0; i < num_possible; i++) {
         if (in_ent == in_possible[i]) {
             out_ent = in_possible[i];
             break;

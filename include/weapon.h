@@ -24,14 +24,6 @@ struct Weapons_hash {
     struct Weapon value;
 };
 
-typedef struct WeaponModule {
-    ECS_DECLARE_COMPONENT(Weapon);
-} WeaponModule;
-
-void WeaponModuleImport(ecs_world_t * in_world);
-#define WeaponModuleImportHandles(handles)\
-    ECS_IMPORT_COMPONENT(handles, Weapon);
-
 extern bool Weapon_canInfuse(struct Weapon * in_weapon);
 extern void Weapon_Infuse(struct Weapon * in_weapon, uint8_t in_mag, uint16_t in_type);
 extern void Weapon_attackablefromType(struct Weapon * in_weapon);
