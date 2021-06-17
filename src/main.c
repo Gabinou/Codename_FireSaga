@@ -93,7 +93,7 @@ int main(int32_t argc, char * argv[]) {
 
         SDL_RenderClear(Game_renderer);
         Map_draw(firesaga->map_ptr); // Only one map -> no entity
-        tnecs_world_step(firesaga->tnecs_world, updateTime_s);
+        tnecs_world_step(firesaga->world, updateTime_s);
         SDL_RenderPresent(Game_renderer);
         Events_Manage(firesaga);
     }

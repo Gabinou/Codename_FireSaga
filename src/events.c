@@ -37,8 +37,8 @@ void Event_Emit(uint32_t in_event_type, int32_t in_event_code, void * in_data1, 
 void receive_Map_globalRange_Hide(struct Game * in_game, SDL_Event * in_userevent) {
     SDL_Log("receive_Map_globalRange_Hide");
     struct Menu * menu_top_ptr = TNECS_GET_COMPONENT(in_game->world, in_game->menu_stack[(in_game->menu_stack_num - 1)], Menu);
-    struct controllerKeyboard * keyboard_ptr = TNECS_GET_COMPONENT(in_game->world, in_game->tnecs_entity_cursor, controllerKeyboard);
-    struct controllerGamepad * gamepad_ptr = TNECS_GET_COMPONENT(in_game->world, in_game->tnecs_entity_cursor, controllerGamepad);
+    struct controllerKeyboard * keyboard_ptr = TNECS_GET_COMPONENT(in_game->world, in_game->entity_cursor, controllerKeyboard);
+    struct controllerGamepad * gamepad_ptr = TNECS_GET_COMPONENT(in_game->world, in_game->entity_cursor, controllerGamepad);
     menu_top_ptr->enabled = true;
     in_game->map_ptr->show_globalRange = false;
     in_game->map_ptr->mode_globalRange = 0;
@@ -55,8 +55,8 @@ void receive_Map_globalRange_Show(struct Game * in_game, SDL_Event * in_usereven
     Map_globalRange(in_game->map_ptr, in_game->world, alignment);
     in_game->map_ptr->mode_globalRange = alignment;
     struct Menu * menu_top_ptr = TNECS_GET_COMPONENT(in_game->world, in_game->menu_stack[(in_game->menu_stack_num - 1)], Menu);
-    struct controllerKeyboard * keyboard_ptr = TNECS_GET_COMPONENT(in_game->world, in_game->tnecs_entity_cursor, controllerKeyboard);
-    struct controllerGamepad * gamepad_ptr = TNECS_GET_COMPONENT(in_game->world, in_game->tnecs_entity_cursor, controllerGamepad);
+    struct controllerKeyboard * keyboard_ptr = TNECS_GET_COMPONENT(in_game->world, in_game->entity_cursor, controllerKeyboard);
+    struct controllerGamepad * gamepad_ptr = TNECS_GET_COMPONENT(in_game->world, in_game->entity_cursor, controllerGamepad);
     menu_top_ptr->enabled = false;
     in_game->map_ptr->show_globalRange = true;
     gamepad_ptr->block_move = true;
@@ -72,7 +72,7 @@ void receive_Cursor_Moved(struct Game * in_game, SDL_Event * in_userevent) {
     // struct Point * move  = (struct Point *) in_userevent->user.data1;
     tnecs_entity_t unit_entity_ontile;
     tnecs_entity_t unit_entity_previoustile;
-    struct Position * cursor_position_ptr = TNECS_GET_COMPONENT(in_game->world, in_game->tnecs_entity_cursor, Position);
+    struct Position * cursor_position_ptr = TNECS_GET_COMPONENT(in_game->world, in_game->entity_cursor, Position);
     struct Position * selected_position_ptr;
     struct Point * cursor_move = (struct Point *) in_userevent->user.data1;
     // Position_Pos_Add(cursor_position_ptr, cursor_move->x, cursor_move->y);
@@ -247,7 +247,7 @@ void receive_Game_Control_Switch(struct Game * in_game, SDL_Event * in_userevent
 
     if (utilities_isPC(army)) {
         // Game_State_Set(in_game, GAME_STATE_Gameplay_Map);
-        if (in_game->tnecs_entity_cursor == 0) {
+        if (in_game->entity_cursor == 0) {
             Game_Cursor_Create(in_game);
         }
         Game_Cursor_Enable(in_game);
@@ -283,9 +283,9 @@ tnecs_entity_t Events_Controllers_Check(struct Game * in_game, int32_t in_code) 
                 Event_Emit(SDL_USEREVENT, event_Mouse_Disable, NULL, NULL);
                 Event_Emit(SDL_USEREVENT, event_Cursor_Enable, NULL, NULL);
             }
-            out_accepter_entity = in_game->tnecs_entity_cursor;
-            struct controllerGamepad * gamepad_ptr = TNECS_GET_COMPONENT(in_game->world, in_game->tnecs_entity_cursor, controllerGamepad);
-            struct controllerKeyboard * keyboard_ptr = TNECS_GET_COMPONENT(in_game->world, in_game->tnecs_entity_cursor, controllerKeyboard);
+            out_accepter_entity = in_game->entity_cursor;
+            struct controllerGamepad * gamepad_ptr = TNECS_GET_COMPONENT(in_game->world, in_game->entity_cursor, controllerGamepad);
+            struct controllerKeyboard * keyboard_ptr = TNECS_GET_COMPONENT(in_game->world, in_game->entity_cursor, controllerKeyboard);
             gamepad_ptr->block_buttons = true;
             keyboard_ptr->block_buttons = true;
             break;
@@ -457,9 +457,9 @@ void receive_SDL_QUIT(struct Game * in_game, SDL_Event * in_event) {
 void receive_SDL_CONTROLLERDEVICEREMOVED(struct Game * in_game, SDL_Event * in_event) {
     SDL_Log("receive_SDL_CONTROLLERDEVICEREMOVED");
 
-    if (in_game->tnecs_entity_cursor != 0) {
+    if (in_game->entity_cursor != 0) {
 
-        struct controllerGamepad * gamepad_ptr = TNECS_GET_COMPONENT(in_game->world, in_game->tnecs_entity_cursor, controllerGamepad);
+        struct controllerGamepad * gamepad_ptr = TNECS_GET_COMPONENT(in_game->world, in_game->entity_cursor, controllerGamepad);
 
         if (gamepad_ptr != NULL) {
             Gamepad_removeController(gamepad_ptr, in_event->cdevice.which);
@@ -476,8 +476,8 @@ void receive_SDL_CONTROLLERDEVICEREMOVED(struct Game * in_game, SDL_Event * in_e
 void receive_SDL_CONTROLLERDEVICEADDED(struct Game * in_game, SDL_Event * in_event) {
     SDL_Log("receive_SDL_CONTROLLERDEVICEADDED");
 
-    if (in_game->tnecs_entity_cursor != 0) {
-        struct controllerGamepad * gamepad_ptr = TNECS_GET_COMPONENT(in_game->world, in_game->tnecs_entity_cursor, controllerGamepad);
+    if (in_game->entity_cursor != 0) {
+        struct controllerGamepad * gamepad_ptr = TNECS_GET_COMPONENT(in_game->world, in_game->entity_cursor, controllerGamepad);
 
         if (gamepad_ptr != NULL) {
             Gamepad_addController(gamepad_ptr, in_event->cdevice.which);
@@ -807,8 +807,8 @@ void receive_Unit_Danger(struct Game * in_game, SDL_Event * in_userevent) {
     tnecs_entity_t * selector_entity = in_userevent->user.data1;
 
     if ((selector_entity != 0) && (in_game->selected_unit_entity != 0)) {
-        struct Position * selector_position_ptr = TNECS_GET_COMPONENT(in_game->world, *selector_entity, Position, NULL);
-        struct Unit * selected_unit_ptr = TNECS_GET_COMPONENT(in_game->world, in_game->selected_unit_entity, Unit, NULL);
+        struct Position * selector_position_ptr = TNECS_GET_COMPONENT(in_game->world, *selector_entity, Position);
+        struct Unit * selected_unit_ptr = TNECS_GET_COMPONENT(in_game->world, in_game->selected_unit_entity, Unit);
         if ((selector_position_ptr != NULL) && (selected_unit_ptr != NULL)) {
 
             struct Point cursorpos = selector_position_ptr->tilemap_pos;

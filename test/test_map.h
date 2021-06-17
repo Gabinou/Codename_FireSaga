@@ -188,14 +188,14 @@ void test_map() {
     arrsetcap(map1.armies_onfield, 10);
     arrsetcap(map2.armies_onfield, 10);
 
-    map1.tnecs_unitmap = NULL;
-    map2.tnecs_unitmap = NULL;
-    arrsetlen(map1.tnecs_unitmap, MAP_ROW_LEN * MAP_COL_LEN);
-    arrsetlen(map2.tnecs_unitmap, MAP_ROW_LEN * MAP_COL_LEN);
+    map1.unitmap = NULL;
+    map2.unitmap = NULL;
+    arrsetlen(map1.unitmap, MAP_ROW_LEN * MAP_COL_LEN);
+    arrsetlen(map2.unitmap, MAP_ROW_LEN * MAP_COL_LEN);
     for (uint8_t row = 0; row < MAP_ROW_LEN; row++) {
         for (uint8_t col = 0; col < MAP_COL_LEN; col++) {
-            map1.tnecs_unitmap[row * MAP_ROW_LEN + col] = 0;
-            map2.tnecs_unitmap[row * MAP_ROW_LEN + col] = 0;
+            map1.unitmap[row * MAP_ROW_LEN + col] = 0;
+            map2.unitmap[row * MAP_ROW_LEN + col] = 0;
         }
     }
 
@@ -283,7 +283,7 @@ void test_map() {
 
     Unit_Item_Add(tnecs_unit_ptr, in_wpn);
 
-    Map_Unit_Put_tnecs(&map1, tnecs_world, 6, 6, tnecs_entity);
+    Map_Unit_Put(&map1, tnecs_world, 6, 6, tnecs_entity);
 
     struct Point position1 = {1, 2};
     struct Point position2 = {3, 4};

@@ -285,6 +285,6 @@ void controlGamepad(tnecs_system_input_t * in_input) {
     }
 }
 
-void controlTouchpad(ecs_iter_t * it) {
+void controlTouchpad(tnecs_system_input_t * in_input) {
 
 }

@@ -19,10 +19,10 @@
 
 // SDL_Renderer * Game_renderer;
 
-extern void tnecs_drawText(tnecs_system_input_t * in_input);
-extern void tnecs_drawSprite(tnecs_system_input_t * in_input);
-extern void tnecs_drawCursor(tnecs_system_input_t * in_input);
-extern void tnecs_drawMouse(tnecs_system_input_t * in_input);
-extern void tnecs_drawMenu(tnecs_system_input_t * in_input);
+extern void drawText(tnecs_system_input_t * in_input);
+extern void drawSprite(tnecs_system_input_t * in_input);
+extern void drawCursor(tnecs_system_input_t * in_input);
+extern void drawMouse(tnecs_system_input_t * in_input);
+extern void drawMenu(tnecs_system_input_t * in_input);
 
 #endif /* SYSTEMRENDER_H */

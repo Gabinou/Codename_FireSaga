@@ -100,11 +100,11 @@ extern void Map_globalRange(struct Map * in_map, tnecs_world_t * in_world, uint8
 
     switch (in_alignment) {
         case ALIGNMENT_FRIENDLY:
-            unit_entities = in_map->tnecs_friendlies_onfield;
+            unit_entities = in_map->friendlies_onfield;
             num_unit_entities = in_map->num_friendlies_onfield;
             break;
         case ALIGNMENT_ENEMY:
-            unit_entities = in_map->tnecs_enemies_onfield;
+            unit_entities = in_map->enemies_onfield;
             num_unit_entities = in_map->num_enemies_onfield;
             break;
     }
@@ -413,21 +413,21 @@ void Map_addArmy(struct Map * in_map, const uint8_t in_army) {
 
 void Map_Unit_Remove(struct Map * in_map, const tnecs_entity_t in_entity) {
     size_t * found = NULL;
-    if (array_isIn_uint64_t(in_map->tnecs_friendlies_onfield, in_entity, in_map->num_friendlies_onfield)) {
+    if (array_isIn_uint64_t(in_map->friendlies_onfield, in_entity, in_map->num_friendlies_onfield)) {
         found = array_where_uint64_t(in_map->friendlies_onfield, in_entity, in_map->num_friendlies_onfield);
-        arrdel(in_map->tnecs_friendlies_onfield, found[0]);
+        arrdel(in_map->friendlies_onfield, found[0]);
         in_map->num_friendlies_onfield--;
         arrfree(found);
     }
-    if (array_isIn_uint64_t(in_map->tnecs_enemies_onfield, in_entity, in_map->num_enemies_onfield)) {
+    if (array_isIn_uint64_t(in_map->enemies_onfield, in_entity, in_map->num_enemies_onfield)) {
         found = array_where_uint64_t(in_map->enemies_onfield, in_entity, in_map->num_enemies_onfield);
-        arrdel(in_map->tnecs_enemies_onfield, found[0]);
+        arrdel(in_map->enemies_onfield, found[0]);
         in_map->num_enemies_onfield--;
         arrfree(found);
     }
-    if (array_isIn_uint64_t(in_map->tnecs_units_onfield, in_entity, in_map->num_units_onfield)) {
+    if (array_isIn_uint64_t(in_map->units_onfield, in_entity, in_map->num_units_onfield)) {
         found = array_where_uint64_t(in_map->units_onfield, in_entity, in_map->num_units_onfield);
-        arrdel(in_map->tnecs_units_onfield, found[0]);
+        arrdel(in_map->units_onfield, found[0]);
         in_map->num_units_onfield--;
         arrfree(found);
     }
@@ -459,6 +459,7 @@ void Map_Unit_Remove_fromEntity(struct Map * in_map, tnecs_world_t * in_world, c
 
 void Map_Unit_Put(struct Map * in_map, tnecs_world_t * in_world, const uint8_t col, const uint8_t row, tnecs_entity_t in_entity) {
     SDL_Log("Map_Unit_Put");
+    SDL_Log("in_entity %d", in_entity);
     SDL_assert(in_map->unitmap != NULL);
     SDL_assert((row < in_map->row_len) && (col < in_map->col_len));
     in_map->unitmap[row * in_map->col_len + col] = in_entity;

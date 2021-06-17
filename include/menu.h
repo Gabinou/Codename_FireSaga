@@ -145,16 +145,18 @@ extern void loadMenus();
 extern void loadMenu(uint8_t in_menuind);
 extern void unloadMenu(uint8_t in_menuind);
 
+void Menu_Patches_Draw(struct Menu * in_menu);
+
 extern void Menu_Options_Draw(tnecs_world_t * in_world, struct Menu * in_menu);
 extern void Menu_Options_init();
 
 struct MenuOption * Menu_Weapons_options(struct Unit * in_attacker);
 struct MenuOption * menu_staffs_options(struct Unit * in_healer);
-struct MenuOption * menu_defenders_options(ecs_entity_t * defenders, uint8_t num_defenders);
-struct MenuOption * menu_patients_options(ecs_entity_t * patients, uint8_t num_patients);
-struct MenuOption * menu_talkers_options(ecs_entity_t * talkers, uint8_t num_talkers);
-struct MenuOption * menu_traders_options(ecs_entity_t * traders, uint8_t num_traders);
-struct MenuOption * menu_spectators_options(ecs_entity_t * spectators, uint8_t num_spectators);
-struct MenuOption * menu_rescuees_options(ecs_entity_t * rescuees, uint8_t num_rescuees);
+struct MenuOption * menu_defenders_options(tnecs_entity_t * defenders, uint8_t num_defenders);
+struct MenuOption * menu_patients_options(tnecs_entity_t * patients, uint8_t num_patients);
+struct MenuOption * menu_talkers_options(tnecs_entity_t * talkers, uint8_t num_talkers);
+struct MenuOption * menu_traders_options(tnecs_entity_t * traders, uint8_t num_traders);
+struct MenuOption * menu_spectators_options(tnecs_entity_t * spectators, uint8_t num_spectators);
+struct MenuOption * menu_rescuees_options(tnecs_entity_t * rescuees, uint8_t num_rescuees);
 
 #endif /* MENU_H */

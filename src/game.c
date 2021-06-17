@@ -54,16 +54,16 @@ void Game_makeTurntransition(struct Game * in_game) {
 
     in_game->entity_transition = TNECS_ENTITY_CREATE_WCOMPONENTS(in_game->world, Position, Sprite, Text);
 
-    struct Sprite * sprite_ptr = TNECS_GET_COMPONENT(in_game->world, in_game->entity_transition, Sprite, NULL);
+    struct Sprite * sprite_ptr = TNECS_GET_COMPONENT(in_game->world, in_game->entity_transition, Sprite);
     if (sprite_ptr != NULL) {
         sprite_ptr->visible = false;
     }
-    struct Text * text_ptr = TNECS_GET_COMPONENT(in_game->world, in_game->entity_transition, Text, NULL);
+    struct Text * text_ptr = TNECS_GET_COMPONENT(in_game->world, in_game->entity_transition, Text);
     if (text_ptr != NULL) {
         text_ptr->visible = false;
         text_ptr->fontsize = in_game->settings.fontsize;
     }
-    struct Position * position_ptr = TNECS_GET_COMPONENT(in_game->world, in_game->entity_transition, Position, NULL);
+    struct Position * position_ptr = TNECS_GET_COMPONENT(in_game->world, in_game->entity_transition, Position);
     if (sprite_ptr != NULL) {
         sprite_ptr->srcrect.x = 128;
         sprite_ptr->srcrect.y = 128;
@@ -75,7 +75,7 @@ void Game_makeTurntransition(struct Game * in_game) {
 
 void Game_setTurntransitiontext(struct Game * in_game, int8_t in_army) {
     SDL_Log("Game_setTurntransitiontext");
-    Text * text_ptr = TNECS_GET_COMPONENT(in_game->world, in_game->entity_transition, Text, NULL);
+    Text * text_ptr = TNECS_GET_COMPONENT(in_game->world, in_game->entity_transition, Text);
     if (in_army > 0) {
         strcpy(text_ptr->text_line, armyNames[in_army]);
     } else {
@@ -86,16 +86,16 @@ void Game_setTurntransitiontext(struct Game * in_game, int8_t in_army) {
 
 void Game_FPS_Create(struct Game * in_game, float in_update_time) {
     SDL_Log("Game_FPS_Create");
-    if (in_game->tnecs_entity_fps != 0) {
-        tnecs_entity_destroy(in_game->world, in_game->tnecs_entity_fps);
+    if (in_game->entity_fps != 0) {
+        tnecs_entity_destroy(in_game->world, in_game->entity_fps);
     }
     in_game->entity_fps = TNECS_ENTITY_CREATE_WCOMPONENTS(in_game->world, Position, Text, UpdateTimer);
-    struct UpdateTimer * timer_ptr = TNECS_GET_COMPONENT(in_game->world, in_game->tnecs_entity_fps, UpdateTimer);
+    struct UpdateTimer * timer_ptr = TNECS_GET_COMPONENT(in_game->world, in_game->entity_fps, UpdateTimer);
     SDL_assert(timer_ptr != NULL);
     timer_ptr->update_time = in_update_time;
     timer_ptr->onUpdate = &onUpdate_FPS;
 
-    struct Position * position_ptr = TNECS_GET_COMPONENT(in_game->world, in_game->tnecs_entity_fps, Position);
+    struct Position * position_ptr = TNECS_GET_COMPONENT(in_game->world, in_game->entity_fps, Position);
     SDL_assert(position_ptr != NULL);
     position_ptr->onTilemap = false;
     position_ptr->offset_px.x = 0;
@@ -108,7 +108,7 @@ void Game_FPS_Create(struct Game * in_game, float in_update_time) {
     // SDL_Log("FPS pos: %d %d ",  position_ptr->pos->x, position_ptr->pos->y);
     // SDL_Log("FPS offset: %d %d ",  position_ptr->offset.x, position_ptr->offset.y);
 
-    struct Text * text_ptr = TNECS_GET_COMPONENT(in_game->world, in_game->tnecs_entity_fps, Text);
+    struct Text * text_ptr = TNECS_GET_COMPONENT(in_game->world, in_game->entity_fps, Text);
     SDL_assert(text_ptr != NULL);
     strcpy(text_ptr->text_line, "60.1");
     text_ptr->padding[0] = Text_default.padding[0];
@@ -603,6 +603,7 @@ void Game_putPConMap(struct Game * in_game, int16_t * in_units, struct Point * i
     for (int16_t i = 0; i < load_num; i++) {
         SDL_Log("Putting unit %s on map", unitNames[in_units[i]]);
         tnecs_entity_t temp_unit_ent = TNECS_ENTITY_CREATE_WCOMPONENTS(in_game->world, Unit, Position, Sprite);
+        SDL_Log("temp_unit_ent %d", temp_unit_ent);
 
         struct Unit * unit_ptr = TNECS_GET_COMPONENT(in_game->world, temp_unit_ent, Unit);
         SDL_assert(unit_ptr != NULL);
@@ -786,17 +787,18 @@ void Game_init(struct Game * in_game) {
     TNECS_REGISTER_COMPONENT(in_game->world, Sprite);
     TNECS_REGISTER_COMPONENT(in_game->world, Text);
     TNECS_REGISTER_COMPONENT(in_game->world, Menu);
+    TNECS_REGISTER_COMPONENT(in_game->world, Unit);
     TNECS_REGISTER_COMPONENT(in_game->world, controllerGamepad);
     TNECS_REGISTER_COMPONENT(in_game->world, controllerMouse);
     TNECS_REGISTER_COMPONENT(in_game->world, controllerKeyboard);
     TNECS_REGISTER_COMPONENT(in_game->world, controllerTouchpad);
     TNECS_REGISTER_COMPONENT(in_game->world, UpdateTimer);
     SDL_Log("System Registration\n");
-    TNECS_REGISTER_SYSTEM(in_game->world, tnecs_drawSprite, Sprite, Position);
-    TNECS_REGISTER_SYSTEM(in_game->world, tnecs_drawCursor, Sprite, Position, controllerGamepad, controllerKeyboard);
-    TNECS_REGISTER_SYSTEM(in_game->world, tnecs_drawMouse, Sprite, Position, controllerMouse);
-    TNECS_REGISTER_SYSTEM(in_game->world, tnecs_drawMenu, Menu);
-    TNECS_REGISTER_SYSTEM(in_game->world, tnecs_drawText, Text, Position, UpdateTimer);
+    TNECS_REGISTER_SYSTEM(in_game->world, drawSprite, Sprite, Position);
+    TNECS_REGISTER_SYSTEM(in_game->world, drawCursor, Sprite, Position, controllerGamepad, controllerKeyboard);
+    TNECS_REGISTER_SYSTEM(in_game->world, drawMouse, Sprite, Position, controllerMouse);
+    TNECS_REGISTER_SYSTEM(in_game->world, drawMenu, Menu);
+    TNECS_REGISTER_SYSTEM(in_game->world, drawText, Text, Position, UpdateTimer);
 
 
     in_game->isrunning = true;
