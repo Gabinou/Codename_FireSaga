@@ -2,11 +2,13 @@
 #include "systemRender.h"
 
 void drawSprite(tnecs_system_input_t * in_input) {
+    SDL_Log("drawSprite");
     struct Position * position_ptr = TNECS_COMPONENTS_LIST(in_input, Position);
     struct Sprite * sprite_ptr = TNECS_COMPONENTS_LIST(in_input, Sprite);
     bool ent_hasmouse, ent_hasgamepad;
+    SDL_Log("in_input->num_entities %d", in_input->num_entities);
     for (uint16_t ent = 0; ent < in_input->num_entities; ent++) {
-        // SDL_Log("Sprite entity: %d", ent);
+        SDL_Log("Sprite entity: %d", ent);
         ent_hasmouse = TNECS_ENTITY_HASCOMPONENT(in_input->world, in_input->world->entities_bytype[in_input->typeflag_id][ent], controllerMouse);
         ent_hasgamepad = TNECS_ENTITY_HASCOMPONENT(in_input->world, in_input->world->entities_bytype[in_input->typeflag_id][ent], controllerGamepad);
         if ((!ent_hasmouse) && (!ent_hasgamepad)) {

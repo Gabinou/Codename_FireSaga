@@ -795,11 +795,19 @@ void Game_init(struct Game * in_game) {
     TNECS_REGISTER_COMPONENT(in_game->world, UpdateTimer);
     SDL_Log("System Registration\n");
     TNECS_REGISTER_SYSTEM(in_game->world, drawSprite, Sprite, Position);
+    TNECS_REGISTER_SYSTEM(in_game->world, drawSprite, Sprite, Position, Text);
+    TNECS_REGISTER_SYSTEM(in_game->world, drawSprite, Sprite, Position, Unit);
+    TNECS_REGISTER_SYSTEM(in_game->world, drawSprite, Sprite, Position, controllerMouse);
+    TNECS_REGISTER_SYSTEM(in_game->world, drawSprite, Sprite, Position, controllerGamepad);
+    TNECS_REGISTER_SYSTEM(in_game->world, drawSprite, Sprite, Position, controllerGamepad, controllerMouse);
     TNECS_REGISTER_SYSTEM(in_game->world, drawCursor, Sprite, Position, controllerGamepad, controllerKeyboard);
     TNECS_REGISTER_SYSTEM(in_game->world, drawMouse, Sprite, Position, controllerMouse);
     TNECS_REGISTER_SYSTEM(in_game->world, drawMenu, Menu);
     TNECS_REGISTER_SYSTEM(in_game->world, drawText, Text, Position, UpdateTimer);
-
+    TNECS_REGISTER_SYSTEM(in_game->world, controlMouse, Sprite, Position, controllerMouse);
+    TNECS_REGISTER_SYSTEM(in_game->world, controlKeyboard, Position, Sprite, controllerKeyboard);
+    TNECS_REGISTER_SYSTEM(in_game->world, controlGamepad, Position, Sprite, controllerGamepad);
+    TNECS_REGISTER_SYSTEM(in_game->world, controlTouchpad, Position, Sprite, controllerTouchpad);
 
     in_game->isrunning = true;
     in_game->keyboardInputMap = KeyboardInputMap_default;
