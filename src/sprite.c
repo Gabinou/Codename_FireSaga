@@ -20,14 +20,6 @@ struct Sprite Sprite_default = {
     .slidetype = SLIDETYPE_GEOMETRIC,
 };
 
-void SpriteModuleImport(ecs_world_t * in_world) {
-    SDL_Log("SpriteModuleImport");
-    ECS_MODULE(in_world, SpriteModule);
-    ECS_COMPONENT(in_world, Sprite);
-    ECS_SET_COMPONENT(Sprite);
-    ECS_EXPORT_COMPONENT(Sprite);
-}
-
 void Sprite_slideType_Set(struct Sprite * in_sprite, uint8_t in_slidetype) {
     in_sprite->slidetype = in_slidetype;
     SDL_Log("Sprite_slideType_Set");

@@ -18,13 +18,6 @@ struct controllerGamepad controllerGamepad_default = {
     .block_move = 0,
 };
 
-void controllerGamepadModuleImport(ecs_world_t * in_world) {
-    ECS_MODULE(in_world, controllerGamepadModule);
-    ECS_COMPONENT(in_world, controllerGamepad);
-    ECS_SET_COMPONENT(controllerGamepad);
-    ECS_EXPORT_COMPONENT(controllerGamepad);
-}
-
 bool Gamepad_isPressed(struct controllerGamepad * in_gamepad, SDL_GameControllerButton * in_map, size_t mapped_len) {
     bool out = false;
     for (size_t i = 0; i < mapped_len; ++i) {

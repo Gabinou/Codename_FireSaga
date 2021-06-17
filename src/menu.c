@@ -1,19 +1,5 @@
 #include "menu.h"
 
-void MenuModuleImport(ecs_world_t * in_world) {
-    ECS_MODULE(in_world, MenuModule);
-    ECS_COMPONENT(in_world, Menu);
-    ECS_SET_COMPONENT(Menu);
-    ECS_EXPORT_COMPONENT(Menu);
-}
-
-void HUDModuleImport(ecs_world_t * in_world) {
-    ECS_MODULE(in_world, HUDModule);
-    ECS_COMPONENT(in_world, fillUpBar);
-    ECS_SET_COMPONENT(fillUpBar);
-    ECS_EXPORT_COMPONENT(fillUpBar);
-}
-
 struct fillUpBar fillUpBar_default = {
     // is a component to be icon in MenuOption
     .texture_outside_3patch = NULL,

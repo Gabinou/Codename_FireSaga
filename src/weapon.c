@@ -29,13 +29,6 @@ struct Weapon Weapon_default = {
     .attackable = 1,
 };
 
-void WeaponModuleImport(ecs_world_t * in_world) {
-    ECS_MODULE(in_world, WeaponModule);
-    ECS_COMPONENT(in_world, Weapon);
-    ECS_SET_COMPONENT(Weapon);
-    ECS_EXPORT_COMPONENT(Weapon);
-}
-
 void Weapon_Infuse(struct Weapon * in_weapon, uint8_t in_mag, uint16_t in_type) {
     SDL_assert(in_weapon);
     SDL_assert((in_weapon->infused.power <= 0) || (in_weapon->stats.Mmight > 0));

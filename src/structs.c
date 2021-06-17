@@ -287,15 +287,4 @@ struct GamepadInputMap GamepadInputMap_default = {
 };
 
 
-void TraitsModuleImport(ecs_world_t * in_world) {
-    ECS_MODULE(in_world, TraitsModule);
-    ECS_COMPONENT(in_world, UpdateTimer);
-    ECS_SET_COMPONENT(UpdateTimer);
-    ECS_COMPONENT(in_world, RenderTimer);
-    ECS_SET_COMPONENT(RenderTimer);
-}
-
-
-
-
 

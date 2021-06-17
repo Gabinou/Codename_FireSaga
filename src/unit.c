@@ -65,13 +65,6 @@ struct Unit Unit_default = {
     ._equipment = NULL, // 0 for right hand, 1 for left hand
 };
 
-void UnitModuleImport(ecs_world_t * in_world) {
-    ECS_MODULE(in_world, UnitModule);
-    ECS_COMPONENT(in_world, Unit);
-    ECS_SET_COMPONENT(Unit);
-    ECS_EXPORT_COMPONENT(Unit);
-}
-
 void Unit_init(struct Unit * in_unit) {
     SDL_Log("Unit_init");
     SDL_assert(in_unit);

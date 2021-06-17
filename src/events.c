@@ -36,9 +36,9 @@ void Event_Emit(uint32_t in_event_type, int32_t in_event_code, void * in_data1, 
 
 void receive_Map_globalRange_Hide(struct Game * in_game, SDL_Event * in_userevent) {
     SDL_Log("receive_Map_globalRange_Hide");
-    struct Menu * menu_top_ptr = TNECS_GET_COMPONENT(in_game->tnecs_world, in_game->menu_stack[(in_game->menu_stack_num - 1)], Menu);
-    struct controllerKeyboard * keyboard_ptr = TNECS_GET_COMPONENT(in_game->tnecs_world, in_game->tnecs_entity_cursor, controllerKeyboard);
-    struct controllerGamepad * gamepad_ptr = TNECS_GET_COMPONENT(in_game->tnecs_world, in_game->tnecs_entity_cursor, controllerGamepad);
+    struct Menu * menu_top_ptr = TNECS_GET_COMPONENT(in_game->world, in_game->menu_stack[(in_game->menu_stack_num - 1)], Menu);
+    struct controllerKeyboard * keyboard_ptr = TNECS_GET_COMPONENT(in_game->world, in_game->tnecs_entity_cursor, controllerKeyboard);
+    struct controllerGamepad * gamepad_ptr = TNECS_GET_COMPONENT(in_game->world, in_game->tnecs_entity_cursor, controllerGamepad);
     menu_top_ptr->enabled = true;
     in_game->map_ptr->show_globalRange = false;
     in_game->map_ptr->mode_globalRange = 0;
@@ -52,11 +52,11 @@ void receive_Map_globalRange_Hide(struct Game * in_game, SDL_Event * in_usereven
 void receive_Map_globalRange_Show(struct Game * in_game, SDL_Event * in_userevent) {
     SDL_Log("receive_Map_globalRange_Show");
     uint8_t alignment = ALIGNMENT_FRIENDLY;
-    Map_globalRange(in_game->map_ptr, in_game->tnecs_world, alignment);
+    Map_globalRange(in_game->map_ptr, in_game->world, alignment);
     in_game->map_ptr->mode_globalRange = alignment;
-    struct Menu * menu_top_ptr = TNECS_GET_COMPONENT(in_game->tnecs_world, in_game->menu_stack[(in_game->menu_stack_num - 1)], Menu);
-    struct controllerKeyboard * keyboard_ptr = TNECS_GET_COMPONENT(in_game->tnecs_world, in_game->tnecs_entity_cursor, controllerKeyboard);
-    struct controllerGamepad * gamepad_ptr = TNECS_GET_COMPONENT(in_game->tnecs_world, in_game->tnecs_entity_cursor, controllerGamepad);
+    struct Menu * menu_top_ptr = TNECS_GET_COMPONENT(in_game->world, in_game->menu_stack[(in_game->menu_stack_num - 1)], Menu);
+    struct controllerKeyboard * keyboard_ptr = TNECS_GET_COMPONENT(in_game->world, in_game->tnecs_entity_cursor, controllerKeyboard);
+    struct controllerGamepad * gamepad_ptr = TNECS_GET_COMPONENT(in_game->world, in_game->tnecs_entity_cursor, controllerGamepad);
     menu_top_ptr->enabled = false;
     in_game->map_ptr->show_globalRange = true;
     gamepad_ptr->block_move = true;
@@ -72,7 +72,7 @@ void receive_Cursor_Moved(struct Game * in_game, SDL_Event * in_userevent) {
     // struct Point * move  = (struct Point *) in_userevent->user.data1;
     tnecs_entity_t unit_entity_ontile;
     tnecs_entity_t unit_entity_previoustile;
-    struct Position * cursor_position_ptr = TNECS_GET_COMPONENT(in_game->tnecs_world, in_game->tnecs_entity_cursor, Position);
+    struct Position * cursor_position_ptr = TNECS_GET_COMPONENT(in_game->world, in_game->tnecs_entity_cursor, Position);
     struct Position * selected_position_ptr;
     struct Point * cursor_move = (struct Point *) in_userevent->user.data1;
     // Position_Pos_Add(cursor_position_ptr, cursor_move->x, cursor_move->y);
@@ -101,7 +101,7 @@ void receive_Cursor_Moved(struct Game * in_game, SDL_Event * in_userevent) {
             switch (in_game->substate) {
                 case GAME_SUBSTATE_MAP_UNIT_MOVES:
                     // Unit follows cursor movement.
-                    selected_position_ptr = TNECS_GET_COMPONENT(in_game->tnecs_world, in_game->selected_unit_entity, Position);
+                    selected_position_ptr = TNECS_GET_COMPONENT(in_game->world, in_game->selected_unit_entity, Position);
                     Position_Pos_Set(selected_position_ptr,  current_pos.x, current_pos.y);
                     break;
             }
@@ -130,7 +130,7 @@ void receive_Input_Cancel(struct Game * in_game, SDL_Event * in_userevent) {
 
     if (canceller_entity != 0) {
         *data1_entity = canceller_entity;
-        canceller_position_ptr = TNECS_GET_COMPONENT(in_game->tnecs_world, canceller_entity, Position);
+        canceller_position_ptr = TNECS_GET_COMPONENT(in_game->world, canceller_entity, Position);
         struct Point cursor_pos = canceller_position_ptr->tilemap_pos;
         new_pos.x = cursor_pos.x;
         new_pos.y = cursor_pos.y;
@@ -142,7 +142,7 @@ void receive_Input_Cancel(struct Game * in_game, SDL_Event * in_userevent) {
                         unit_entity_ontile = in_game->map_ptr->unitmap[new_pos.y * in_game->map_ptr->col_len + new_pos.x];
 
                         if (unit_entity_ontile != 0) {
-                            unit_ontile_ptr = ecs_get(in_game->tnecs_world, canceller_entity, Unit);
+                            unit_ontile_ptr = TNECS_GET_COMPONENT(in_game->world, canceller_entity, Unit);
                             *data2_entity = unit_entity_ontile;
                             if (utilities_isPC(unit_ontile_ptr->army)) {
 
@@ -159,7 +159,7 @@ void receive_Input_Cancel(struct Game * in_game, SDL_Event * in_userevent) {
                         if (in_game->menu_stack_num > 0) {
                             Game_Menu_Disable_Entity(in_game, in_game->menu_stack[(in_game->menu_stack_num - 1)]);
                             menu_popped = Game_menuStack_Pop(in_game, destroy);
-                            menu_popped_ptr = TNECS_GET_COMPONENT(in_game->tnecs_world, menu_popped, Menu);
+                            menu_popped_ptr = TNECS_GET_COMPONENT(in_game->world, menu_popped, Menu);
                             SDL_Log("Just before Game_subStateSwitch_onMenupop, in_game->menu_stack_num %d", in_game->menu_stack_num);
                             Game_subStateSwitch_onMenupop(in_game, menu_popped_ptr->id);
                             if (in_game->menu_stack_num > 0) {
@@ -174,7 +174,7 @@ void receive_Input_Cancel(struct Game * in_game, SDL_Event * in_userevent) {
                     case GAME_SUBSTATE_MAP_UNIT_MOVES:
                         if (in_game->selected_unit_entity != 0) {
                             *data2_entity = in_game->selected_unit_entity;
-                            selected_position_ptr = TNECS_GET_COMPONENT(in_game->tnecs_world, in_game->selected_unit_entity, Position);
+                            selected_position_ptr = TNECS_GET_COMPONENT(in_game->world, in_game->selected_unit_entity, Position);
                             selected_position_ptr->tilemap_moveable = NULL;
                             selected_position_ptr->tilemap_row = 0;
                             selected_position_ptr->tilemap_col = 0;
@@ -284,8 +284,8 @@ tnecs_entity_t Events_Controllers_Check(struct Game * in_game, int32_t in_code) 
                 Event_Emit(SDL_USEREVENT, event_Cursor_Enable, NULL, NULL);
             }
             out_accepter_entity = in_game->tnecs_entity_cursor;
-            struct controllerGamepad * gamepad_ptr = TNECS_GET_COMPONENT(in_game->tnecs_world, in_game->tnecs_entity_cursor, controllerGamepad);
-            struct controllerKeyboard * keyboard_ptr = TNECS_GET_COMPONENT(in_game->tnecs_world, in_game->tnecs_entity_cursor, controllerKeyboard);
+            struct controllerGamepad * gamepad_ptr = TNECS_GET_COMPONENT(in_game->world, in_game->tnecs_entity_cursor, controllerGamepad);
+            struct controllerKeyboard * keyboard_ptr = TNECS_GET_COMPONENT(in_game->world, in_game->tnecs_entity_cursor, controllerKeyboard);
             gamepad_ptr->block_buttons = true;
             keyboard_ptr->block_buttons = true;
             break;
@@ -365,7 +365,7 @@ void receive_Input_Accept(struct Game * in_game, SDL_Event * in_userevent) {
                         Event_Emit(SDL_USEREVENT, event_Gameplay_Return2Standby, in_userevent->user.data1, NULL);
                         break;
                     case GAME_SUBSTATE_STANDBY:
-                        accepter_position_ptr = TNECS_GET_COMPONENT(in_game->tnecs_world, accepter_entity, Position);
+                        accepter_position_ptr = TNECS_GET_COMPONENT(in_game->world, accepter_entity, Position);
                         if (accepter_position_ptr != NULL) {
                             accepter_pos = accepter_position_ptr->tilemap_pos;
                             // offset = accepter_position_ptr->offset_px;
@@ -397,9 +397,9 @@ void receive_Input_Accept(struct Game * in_game, SDL_Event * in_userevent) {
 
                     case GAME_SUBSTATE_MAP_UNIT_MOVES:
                         if (in_game->selected_unit_entity != 0) {
-                            accepted_unit_ptr = ecs_get(in_game->tnecs_world, in_game->selected_unit_entity, Unit);
-                            accepter_position_ptr = TNECS_GET_COMPONENT(in_game->tnecs_world, accepter_entity, Position);
-                            selected_position_ptr = TNECS_GET_COMPONENT(in_game->tnecs_world, in_game->selected_unit_entity, Position);
+                            accepted_unit_ptr = TNECS_GET_COMPONENT(in_game->world, in_game->selected_unit_entity, Unit);
+                            accepter_position_ptr = TNECS_GET_COMPONENT(in_game->world, accepter_entity, Position);
+                            selected_position_ptr = TNECS_GET_COMPONENT(in_game->world, in_game->selected_unit_entity, Position);
                             if (utilities_isPC(accepted_unit_ptr->army)) {
                                 in_game->selected_unit_moved_position.x = accepter_position_ptr->tilemap_pos.x;
                                 in_game->selected_unit_moved_position.y = accepter_position_ptr->tilemap_pos.y;
@@ -459,7 +459,7 @@ void receive_SDL_CONTROLLERDEVICEREMOVED(struct Game * in_game, SDL_Event * in_e
 
     if (in_game->tnecs_entity_cursor != 0) {
 
-        struct controllerGamepad * gamepad_ptr = TNECS_GET_COMPONENT(in_game->tnecs_world, in_game->tnecs_entity_cursor, controllerGamepad);
+        struct controllerGamepad * gamepad_ptr = TNECS_GET_COMPONENT(in_game->world, in_game->tnecs_entity_cursor, controllerGamepad);
 
         if (gamepad_ptr != NULL) {
             Gamepad_removeController(gamepad_ptr, in_event->cdevice.which);
@@ -477,7 +477,7 @@ void receive_SDL_CONTROLLERDEVICEADDED(struct Game * in_game, SDL_Event * in_eve
     SDL_Log("receive_SDL_CONTROLLERDEVICEADDED");
 
     if (in_game->tnecs_entity_cursor != 0) {
-        struct controllerGamepad * gamepad_ptr = TNECS_GET_COMPONENT(in_game->tnecs_world, in_game->tnecs_entity_cursor, controllerGamepad);
+        struct controllerGamepad * gamepad_ptr = TNECS_GET_COMPONENT(in_game->world, in_game->tnecs_entity_cursor, controllerGamepad);
 
         if (gamepad_ptr != NULL) {
             Gamepad_addController(gamepad_ptr, in_event->cdevice.which);
@@ -499,7 +499,7 @@ void receive_SDL_MOUSEMOTION(struct Game * in_game, SDL_Event * in_event) {
     if (in_event->motion.windowID == SDL_GetWindowID(in_game->window)) {
 
         // SDL_Log("WindowID: %d %d", in_event->motion.windowID, SDL_GetWindowID(in_game->window));
-        struct Sprite * sprite_ptr = TNECS_GET_COMPONENT(in_game->tnecs_world, in_game->entity_mouse, Sprite);
+        struct Sprite * sprite_ptr = TNECS_GET_COMPONENT(in_game->world, in_game->entity_mouse, Sprite);
         if (sprite_ptr != NULL) {
             sprite_ptr->visible = true;
         }
@@ -516,7 +516,7 @@ void receive_SDL_MOUSEMOTION(struct Game * in_game, SDL_Event * in_event) {
                     Event_Emit(SDL_USEREVENT, event_Cursor_Disable, NULL, NULL);
                 }
 
-                struct Position * position_ptr = TNECS_GET_COMPONENT(in_game->tnecs_world, in_game->entity_mouse, Position);
+                struct Position * position_ptr = TNECS_GET_COMPONENT(in_game->world, in_game->entity_mouse, Position);
 
                 if (position_ptr != NULL) {
                     Position_PosPixel_Set(position_ptr, in_event->motion.x, in_event->motion.y);
@@ -540,8 +540,8 @@ void receive_SDL_MOUSEBUTTON(struct Game * in_game, SDL_Event * in_event) {
     if (in_event->button.windowID == SDL_GetWindowID(in_game->window)) {
 
         if (in_game->entity_mouse != 0) {
-            struct controllerMouse * mouse_ptr = TNECS_GET_COMPONENT(in_game->tnecs_world, in_game->entity_mouse, controllerMouse);
-            struct Position * position_ptr = TNECS_GET_COMPONENT(in_game->tnecs_world, in_game->entity_mouse, Position);
+            struct controllerMouse * mouse_ptr = TNECS_GET_COMPONENT(in_game->world, in_game->entity_mouse, controllerMouse);
+            struct Position * position_ptr = TNECS_GET_COMPONENT(in_game->world, in_game->entity_mouse, Position);
 
             if (mouse_ptr != NULL) {
                 // SDL_Log("event pos: %d %d", in_event->button.x, in_event->button.y);
@@ -599,8 +599,8 @@ void receive_Unit_Select(struct Game * in_game, SDL_Event * in_userevent) {
     // Only Unit_Select event puts non-zero in in_game->selected_unit_entity
     in_game->selected_unit_entity = *((tnecs_entity_t *) in_userevent->user.data2);
 
-    struct Unit * selected_unit_ptr = TNECS_GET_COMPONENT(in_game->tnecs_world, in_game->selected_unit_entity, Unit);
-    struct Position * selected_position_ptr = TNECS_GET_COMPONENT(in_game->tnecs_world, in_game->selected_unit_entity, Position);
+    struct Unit * selected_unit_ptr = TNECS_GET_COMPONENT(in_game->world, in_game->selected_unit_entity, Unit);
+    struct Position * selected_position_ptr = TNECS_GET_COMPONENT(in_game->world, in_game->selected_unit_entity, Position);
     in_game->selected_unit_initial_position.x = selected_position_ptr->tilemap_pos.x;
     in_game->selected_unit_initial_position.y = selected_position_ptr->tilemap_pos.y;
 
@@ -647,7 +647,7 @@ void receive_Unit_Deselect(struct Game * in_game, SDL_Event * in_userevent) {
     tnecs_entity_t * selector_entity = (tnecs_entity_t *) in_userevent->user.data1;
 
     if (in_game->selected_unit_entity > 0) {
-        struct Unit * unit_ptr = TNECS_GET_COMPONENT(in_game->tnecs_world, in_game->selected_unit_entity, Unit);
+        struct Unit * unit_ptr = TNECS_GET_COMPONENT(in_game->world, in_game->selected_unit_entity, Unit);
         if (unit_ptr != NULL) {
             if (utilities_isPC(unit_ptr->army)) {
                 in_game->map_ptr->show_overlay = false;
@@ -691,9 +691,9 @@ void receive_Unit_Return(struct Game * in_game, SDL_Event * in_userevent) {
     struct Position toreturn_position;
 
     if ((selector_entity != 0) && (returning_unit_entity != 0)) {
-        struct Position * selector_position_ptr = TNECS_GET_COMPONENT(in_game->tnecs_world, *selector_entity, Position);
-        struct Unit * returning_unit_ptr  = TNECS_GET_COMPONENT(in_game->tnecs_world, *returning_unit_entity, Unit);
-        struct Position * returning_position_ptr  = TNECS_GET_COMPONENT(in_game->tnecs_world, *returning_unit_entity, Position);
+        struct Position * selector_position_ptr = TNECS_GET_COMPONENT(in_game->world, *selector_entity, Position);
+        struct Unit * returning_unit_ptr  = TNECS_GET_COMPONENT(in_game->world, *returning_unit_entity, Unit);
+        struct Position * returning_position_ptr  = TNECS_GET_COMPONENT(in_game->world, *returning_unit_entity, Position);
 
         if ((returning_unit_ptr != NULL) && (selector_position_ptr != NULL) && (returning_position_ptr != NULL)) {
 
@@ -724,8 +724,8 @@ void receive_Unit_Moves(struct Game * in_game, SDL_Event * in_userevent) {
     tnecs_entity_t * selector_entity = in_userevent->user.data1;
 
     if ((*selector_entity != 0) && (in_game->selected_unit_entity != 0)) {
-        struct Position * selector_position_ptr = TNECS_GET_COMPONENT(in_game->tnecs_world, *selector_entity, Position);
-        struct Unit * selected_unit_ptr = TNECS_GET_COMPONENT(in_game->tnecs_world, in_game->selected_unit_entity, Unit);
+        struct Position * selector_position_ptr = TNECS_GET_COMPONENT(in_game->world, *selector_entity, Position);
+        struct Unit * selected_unit_ptr = TNECS_GET_COMPONENT(in_game->world, in_game->selected_unit_entity, Unit);
         if ((selector_position_ptr != NULL) && (selected_unit_ptr != NULL)) {
 
             struct Point start;
@@ -742,7 +742,7 @@ void receive_Unit_Moves(struct Game * in_game, SDL_Event * in_userevent) {
             unit_move = Unit_effectiveStats(selected_unit_ptr).move;
             range = Unit_computeRange(selected_unit_ptr);
 
-            costmapp = Map_Costmap_Movement_Compute(in_game->map_ptr, in_game->tnecs_world, in_game->selected_unit_entity);
+            costmapp = Map_Costmap_Movement_Compute(in_game->map_ptr, in_game->world, in_game->selected_unit_entity);
             matrix_print_int16_t(costmapp, in_game->map_ptr->row_len, in_game->map_ptr->col_len);
             movemapp = Pathfinding_Map_Move(costmapp, in_game->map_ptr->row_len, in_game->map_ptr->col_len,  start, unit_move, POINTS_MATRIX);
             matrix_print_int16_t(movemapp, in_game->map_ptr->row_len, in_game->map_ptr->col_len);
@@ -776,13 +776,13 @@ void receive_Cursor_Dehovers_Unit(struct Game * in_game, SDL_Event * in_usereven
     Event_Emit(SDL_USEREVENT, event_Turn_Begin, NULL, NULL);
     uint8_t army = * (uint8_t *)in_userevent->user.data1;
 
-    tnecs_entity_t * unit_entitys = Map_Unit_Gets(in_game->map_ptr, in_game->tnecs_world, army);
+    tnecs_entity_t * unit_entitys = Map_Unit_Gets(in_game->map_ptr, in_game->world, army);
 
     // SDL_Log("units size: %d", units.size());
     switch (in_game->substate) {
         case GAME_SUBSTATE_STANDBY:
             for (uint16_t i = 0; i < arrlen(unit_entitys); i++) {
-                struct Unit * unit_ptr = TNECS_GET_COMPONENT(in_game->tnecs_world, unit_entitys[i], Unit);
+                struct Unit * unit_ptr = TNECS_GET_COMPONENT(in_game->world, unit_entitys[i], Unit);
                 Unit_refresh(unit_ptr);
             }
             break;
@@ -807,8 +807,8 @@ void receive_Unit_Danger(struct Game * in_game, SDL_Event * in_userevent) {
     tnecs_entity_t * selector_entity = in_userevent->user.data1;
 
     if ((selector_entity != 0) && (in_game->selected_unit_entity != 0)) {
-        struct Position * selector_position_ptr = TNECS_GET_COMPONENT(in_game->tnecs_world, *selector_entity, Position, NULL);
-        struct Unit * selected_unit_ptr = TNECS_GET_COMPONENT(in_game->tnecs_world, in_game->selected_unit_entity, Unit, NULL);
+        struct Position * selector_position_ptr = TNECS_GET_COMPONENT(in_game->world, *selector_entity, Position, NULL);
+        struct Unit * selected_unit_ptr = TNECS_GET_COMPONENT(in_game->world, in_game->selected_unit_entity, Unit, NULL);
         if ((selector_position_ptr != NULL) && (selected_unit_ptr != NULL)) {
 
             struct Point cursorpos = selector_position_ptr->tilemap_pos;
@@ -819,7 +819,7 @@ void receive_Unit_Danger(struct Game * in_game, SDL_Event * in_userevent) {
             unit_move = Unit_getStats(selected_unit_ptr).move;
             range = Unit_computeRange(selected_unit_ptr);
 
-            costmapp = Map_Costmap_Movement_Compute(in_game->map_ptr, in_game->tnecs_world, in_game->selected_unit_entity);
+            costmapp = Map_Costmap_Movement_Compute(in_game->map_ptr, in_game->world, in_game->selected_unit_entity);
             movemapp = Pathfinding_Map_Move(costmapp, in_game->map_ptr->row_len, in_game->map_ptr->col_len, start, unit_move, POINTS_MATRIX);
             attackmapp = Pathfinding_Map_Attack(movemapp, in_game->map_ptr->row_len, in_game->map_ptr->col_len, unit_move, range, POINTS_MATRIX, MOVETILE_EXCLUDE);
             dangermapp = matrix_plus_int16_t(attackmapp, movemapp, in_game->map_ptr->row_len, in_game->map_ptr->col_len, 1);
@@ -862,8 +862,8 @@ void receive_Menu_Select(struct Game * in_game, SDL_Event * in_userevent) {
 
     if (in_game->menu_stack_num > 0) {
         menu_entity_top = in_game->menu_stack[in_game->menu_stack_num - 1];
-        current_menu_ptr = TNECS_GET_COMPONENT(in_game->tnecs_world, menu_entity_top, Menu);
-        selector_position_ptr = TNECS_GET_COMPONENT(in_game->tnecs_world, selector_entity, Position);
+        current_menu_ptr = TNECS_GET_COMPONENT(in_game->world, menu_entity_top, Menu);
+        selector_position_ptr = TNECS_GET_COMPONENT(in_game->world, selector_entity, Position);
         menuOption_selected = current_menu_ptr->menuoptions[selector_position_ptr->tilemap_pos.y + current_menu_ptr->row_num * selector_position_ptr->tilemap_pos.x];
         if (menuOption_selected.childEvent > 0) {
             Event_Emit(SDL_USEREVENT, menuOption_selected.childEvent, menuOption_selected.data1_childEvent, menuOption_selected.data1_childEvent);
@@ -875,7 +875,7 @@ void receive_Menu_Select(struct Game * in_game, SDL_Event * in_userevent) {
             Game_menuStack_Push(in_game, in_game->menu_loaded[menuOption_selected.childMenu]);
             Game_Menu_Update(in_game, menuOption_selected.childMenu);
             Game_cursorFocus_onMenu(in_game);
-            struct Menu * temp_menu_ptr = TNECS_GET_COMPONENT(in_game->tnecs_world, in_game->menu_loaded[menuOption_selected.childMenu], Menu);
+            struct Menu * temp_menu_ptr = TNECS_GET_COMPONENT(in_game->world, in_game->menu_loaded[menuOption_selected.childMenu], Menu);
             SDL_Log("Menu_select: temp_menu_ptr->id %d", temp_menu_ptr->id);
             SDL_Log("Menu_select: temp_menu_ptr->enabled %d", temp_menu_ptr->enabled);
         }
@@ -928,8 +928,8 @@ void receive_Unit_Wait(struct Game * in_game, SDL_Event * in_userevent) {
 
     tnecs_entity_t * selector_entity = (tnecs_entity_t *) in_userevent->user.data1;
     if (in_game->selected_unit_entity > 0) {
-        struct Unit * waiting_unit_ptr = TNECS_GET_COMPONENT(in_game->tnecs_world, in_game->selected_unit_entity, Unit);
-        struct Sprite * waiting_sprite_ptr = TNECS_GET_COMPONENT(in_game->tnecs_world, in_game->selected_unit_entity, Sprite);
+        struct Unit * waiting_unit_ptr = TNECS_GET_COMPONENT(in_game->world, in_game->selected_unit_entity, Unit);
+        struct Sprite * waiting_sprite_ptr = TNECS_GET_COMPONENT(in_game->world, in_game->selected_unit_entity, Sprite);
         if (waiting_unit_ptr != NULL) {
             waiting_unit_ptr->waits = true;
         }
@@ -953,7 +953,7 @@ void receive_Unit_Talk(struct Game * in_game, SDL_Event * in_userevent) {
     tnecs_entity_t * selector_entity = (tnecs_entity_t *) in_userevent->user.data1;
 
     if (in_game->selected_unit_entity > 0) {
-        struct Unit * unit_ptr = TNECS_GET_COMPONENT(in_game->tnecs_world, in_game->selected_unit_entity, Unit);
+        struct Unit * unit_ptr = TNECS_GET_COMPONENT(in_game->world, in_game->selected_unit_entity, Unit);
         if (unit_ptr != NULL) {
             Unit_wait(unit_ptr);
         }
@@ -966,7 +966,7 @@ void receive_Unit_Rescue(struct Game * in_game, SDL_Event * in_userevent) {
     tnecs_entity_t * selector_entity = (tnecs_entity_t *) in_userevent->user.data1;
 
     if (in_game->selected_unit_entity > 0) {
-        struct Unit * unit_ptr = TNECS_GET_COMPONENT(in_game->tnecs_world, in_game->selected_unit_entity, Unit);
+        struct Unit * unit_ptr = TNECS_GET_COMPONENT(in_game->world, in_game->selected_unit_entity, Unit);
         if (unit_ptr != NULL) {
             Unit_wait(unit_ptr);
         }
@@ -978,7 +978,7 @@ void receive_Defender_Select(struct Game * in_game, SDL_Event * in_userevent) {
     SDL_Log("receive_Defender_Select");
     tnecs_entity_t * selector_entity = (tnecs_entity_t *) in_userevent->user.data1;
     if (in_game->selected_unit_entity > 0) {
-        struct Unit * unit_ptr = TNECS_GET_COMPONENT(in_game->tnecs_world, in_game->selected_unit_entity, Unit);
+        struct Unit * unit_ptr = TNECS_GET_COMPONENT(in_game->world, in_game->selected_unit_entity, Unit);
         if (unit_ptr != NULL) {
             Unit_wait(unit_ptr);
         }
@@ -992,7 +992,7 @@ void receive_Unit_Attack(struct Game * in_game, SDL_Event * in_userevent) {
     tnecs_entity_t * unit_entity_attacker = (tnecs_entity_t *) in_userevent->user.data2;
 
     if (*unit_entity_attacker > 0) {
-        struct Unit * attacker_unit_ptr = TNECS_GET_COMPONENT(in_game->tnecs_world, *unit_entity_attacker, Unit);
+        struct Unit * attacker_unit_ptr = TNECS_GET_COMPONENT(in_game->world, *unit_entity_attacker, Unit);
         if (attacker_unit_ptr != NULL) {
             Unit_computedStats(attacker_unit_ptr);
         }
@@ -1005,7 +1005,7 @@ void receive_Unit_Trade(struct Game * in_game, SDL_Event * in_userevent) {
     tnecs_entity_t * selector_entity = (tnecs_entity_t *) in_userevent->user.data1;
 
     if (in_game->selected_unit_entity > 0) {
-        struct Unit * unit_ptr = TNECS_GET_COMPONENT(in_game->tnecs_world, in_game->selected_unit_entity, Unit);
+        struct Unit * unit_ptr = TNECS_GET_COMPONENT(in_game->world, in_game->selected_unit_entity, Unit);
         if (unit_ptr != NULL) {
             Unit_wait(unit_ptr);
         }
@@ -1017,7 +1017,7 @@ void receive_Unit_Escape(struct Game * in_game, SDL_Event * in_userevent) {
     tnecs_entity_t * selector_entity = (tnecs_entity_t *) in_userevent->user.data1;
 
     if (in_game->selected_unit_entity > 0) {
-        struct Unit * unit_ptr = TNECS_GET_COMPONENT(in_game->tnecs_world, in_game->selected_unit_entity, Unit);
+        struct Unit * unit_ptr = TNECS_GET_COMPONENT(in_game->world, in_game->selected_unit_entity, Unit);
         if (unit_ptr != NULL) {
             Unit_wait(unit_ptr);
         }
@@ -1035,7 +1035,7 @@ void receive_Unit_Items(struct Game * in_game, SDL_Event * in_userevent) {
     tnecs_entity_t * selector_entity = (tnecs_entity_t *) in_userevent->user.data1;
 
     if (in_game->selected_unit_entity > 0) {
-        struct Unit * unit_ptr = TNECS_GET_COMPONENT(in_game->tnecs_world, in_game->selected_unit_entity, Unit);
+        struct Unit * unit_ptr = TNECS_GET_COMPONENT(in_game->world, in_game->selected_unit_entity, Unit);
         if (unit_ptr != NULL) {
             Unit_wait(unit_ptr);
         }

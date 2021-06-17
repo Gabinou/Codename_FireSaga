@@ -146,14 +146,12 @@ void Game_Menu_Enable(struct Game * in_game, int8_t in_menu) {
 
     SDL_assert((in_menu > MENU_START) & (in_menu < MENU_END));
     // if (hmget(in_game->menus, in_menu) != 0) {
-    //     Text * text_ptr = TNECS_GET_COMPONENT(in_game->world, hmget(in_game->menus, in_menu), Text, NULL);
-    //     Sprite * sprite_ptr = TNECS_GET_COMPONENT(in_game->world, hmget(in_game->menus, in_menu), Sprite, NULL);
+    //     Text * text_ptr = TNECS_GET_COMPONENT(in_game->world, hmget(in_game->menus, in_menu), Text);
+    //     Sprite * sprite_ptr = TNECS_GET_COMPONENT(in_game->world, hmget(in_game->menus, in_menu), Sprite);
 
     //     sprite_ptr->visible = false;
     //     text_ptr->visible = false;
 
-    //     ecs_modified(in_game->world, hmget(in_game->menus, in_menu), Sprite);
-    //     ecs_modified(in_game->world, hmget(in_game->menus, in_menu), Text);
     // }
 }
 
@@ -411,7 +409,7 @@ void Game_Mouse_State_Set(struct Game * in_game, const int8_t in_menu) {
         //     linespace = 1;
         //     tnecs_entity_t current_menu = hmget(in_game->menus, in_menu);
         //     if (current_menu != 0) {
-        //         const struct Text * menu_text_ptr = ecs_get(in_game->world, current_menu, Text);
+        //         const struct Text * menu_text_ptr = TNECS_GET_COMPONENT(in_game->world, current_menu, Text);
         //     }
         //     mouse_position_ptr->scale[0] = linespace;
         //     mouse_position_ptr->scale[1] = linespace;
