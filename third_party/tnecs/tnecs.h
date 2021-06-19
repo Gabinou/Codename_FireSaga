@@ -186,8 +186,8 @@ struct tnecs_World {
     tnecs_hash_t * system_hashes;                             // [system_id]
     char ** component_names;
     
-    size_t ** supertype_id_bytype;                              // [typeflag_id] 
-    size_t * num_supertype_ids;                                 // [typeflag_id] 
+    size_t ** supertype_id_bytype;                            // [typeflag_id][typeflag_id_order]
+    size_t * num_supertype_ids;                               // [typeflag_id] 
     // bytype arrays are exclusive -> entities unique in components_bytype
     struct tnecs_Components_Array ** components_bytype;       // [typeflag_id][component_order_bytype]
     tnecs_entity_t ** entities_bytype;                        // [typeflag_id][entity_order_bytype]

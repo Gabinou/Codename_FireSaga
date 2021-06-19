@@ -29,10 +29,12 @@ void controlFree() {
 
 
 void controlMouse(tnecs_system_input_t * in_input) {
+    SDL_Log("controlMouse");
 
 }
 
 void controlKeyboard(tnecs_system_input_t * in_input) {
+    SDL_Log("controlKeyboard");
     struct Position * position_ptr = TNECS_COMPONENTS_LIST(in_input, Position);
     struct Sprite * sprite_ptr = TNECS_COMPONENTS_LIST(in_input, Sprite);
     struct controllerKeyboard * keyboard_ptr = TNECS_COMPONENTS_LIST(in_input, controllerKeyboard);
@@ -160,6 +162,7 @@ void controlKeyboard(tnecs_system_input_t * in_input) {
 }
 
 void controlGamepad(tnecs_system_input_t * in_input) {
+    SDL_Log("controlGamepad");
     struct Position * position_ptr = TNECS_COMPONENTS_LIST(in_input, Position);
     struct Sprite * sprite_ptr = TNECS_COMPONENTS_LIST(in_input, Sprite);
     struct controllerGamepad * gamepad_ptr = TNECS_COMPONENTS_LIST(in_input, controllerGamepad);
@@ -286,5 +289,6 @@ void controlGamepad(tnecs_system_input_t * in_input) {
 }
 
 void controlTouchpad(tnecs_system_input_t * in_input) {
+    SDL_Log("controlTouchpad");
 
 }
