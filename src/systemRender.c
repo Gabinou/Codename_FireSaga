@@ -13,10 +13,11 @@ void drawSprite(tnecs_system_input_t * in_input) {
         SDL_Log("Sprite entity: %d", ent);
         SDL_Log("in_input->entity_typeflag_id: %d", in_input->entity_typeflag_id);
 
+        SDL_assert(in_input->world->entities_bytype[in_input->entity_typeflag_id][ent] < in_input->world->len_entities);
         SDL_Log("in_input->world->num_entities_bytype[in_input->entity_typeflag_id]: %d", in_input->world->num_entities_bytype[in_input->entity_typeflag_id]);
         SDL_Log("in_input->world->entities_bytype[in_input->entity_typeflag_id][ent] %d", in_input->world->entities_bytype[in_input->entity_typeflag_id][ent]);
         SDL_Log("in_input->world->entities[in_input->world->entities_bytype[in_input->entity_typeflag_id][ent]] %d", in_input->world->entities[in_input->world->entities_bytype[in_input->entity_typeflag_id][ent]]);
-
+        SDL_assert(in_input->world->entities[in_input->world->entities_bytype[in_input->entity_typeflag_id][ent]] == in_input->world->entities_bytype[in_input->entity_typeflag_id][ent]);
         ent_hasmouse = TNECS_ENTITY_HASCOMPONENT(in_input->world, in_input->world->entities_bytype[in_input->entity_typeflag_id][ent], controllerMouse);
         SDL_Log("ent_hasmouse %d", ent_hasmouse);
         ent_hasgamepad = TNECS_ENTITY_HASCOMPONENT(in_input->world, in_input->world->entities_bytype[in_input->entity_typeflag_id][ent], controllerGamepad);

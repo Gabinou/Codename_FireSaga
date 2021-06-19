@@ -785,14 +785,15 @@ void Game_init(struct Game * in_game) {
     SDL_Log("Components Registration\n");
     TNECS_REGISTER_COMPONENT(in_game->world, Position);
     TNECS_REGISTER_COMPONENT(in_game->world, Sprite);
+    TNECS_REGISTER_COMPONENT(in_game->world, Unit);
     TNECS_REGISTER_COMPONENT(in_game->world, Text);
     TNECS_REGISTER_COMPONENT(in_game->world, Menu);
-    TNECS_REGISTER_COMPONENT(in_game->world, Unit);
     TNECS_REGISTER_COMPONENT(in_game->world, controllerGamepad);
     TNECS_REGISTER_COMPONENT(in_game->world, controllerMouse);
     TNECS_REGISTER_COMPONENT(in_game->world, controllerKeyboard);
     TNECS_REGISTER_COMPONENT(in_game->world, controllerTouchpad);
     TNECS_REGISTER_COMPONENT(in_game->world, UpdateTimer);
+    TNECS_REGISTER_COMPONENT(in_game->world, RenderTimer);
     SDL_Log("System Registration\n");
     TNECS_REGISTER_SYSTEM_WEXCL(in_game->world, drawSprite, 0, Sprite, Position);
     TNECS_REGISTER_SYSTEM_WEXCL(in_game->world, drawCursor, 0, Sprite, Position, controllerGamepad, controllerKeyboard, controllerTouchpad);
