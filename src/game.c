@@ -90,11 +90,13 @@ void Game_FPS_Create(struct Game * in_game, float in_update_time) {
         tnecs_entity_destroy(in_game->world, in_game->entity_fps);
     }
     in_game->entity_fps = TNECS_ENTITY_CREATE_WCOMPONENTS(in_game->world, Position, Text, UpdateTimer);
+    SDL_Log("Get timer");
     struct UpdateTimer * timer_ptr = TNECS_GET_COMPONENT(in_game->world, in_game->entity_fps, UpdateTimer);
     SDL_assert(timer_ptr != NULL);
     timer_ptr->update_time = in_update_time;
     timer_ptr->onUpdate = &onUpdate_FPS;
 
+    SDL_Log("Get position");
     struct Position * position_ptr = TNECS_GET_COMPONENT(in_game->world, in_game->entity_fps, Position);
     SDL_assert(position_ptr != NULL);
     position_ptr->onTilemap = false;
@@ -108,6 +110,7 @@ void Game_FPS_Create(struct Game * in_game, float in_update_time) {
     // SDL_Log("FPS pos: %d %d ",  position_ptr->pos->x, position_ptr->pos->y);
     // SDL_Log("FPS offset: %d %d ",  position_ptr->offset.x, position_ptr->offset.y);
 
+    SDL_Log("Get Text");
     struct Text * text_ptr = TNECS_GET_COMPONENT(in_game->world, in_game->entity_fps, Text);
     SDL_assert(text_ptr != NULL);
     strcpy(text_ptr->text_line, "60.1");
@@ -123,6 +126,7 @@ void Game_FPS_Create(struct Game * in_game, float in_update_time) {
 
     text_ptr->visible = in_game->settings.FPS.show;
     Text_Texture_Make(text_ptr);
+    SDL_assert(in_game->world->entity_typeflags[in_game->entity_fps] == TNECS_COMPONENT_NAMES2TYPEFLAG(in_game->world, UpdateTimer, Position, Text));
 }
 
 void Game_Menu_Disable_Entity(struct Game * in_game, tnecs_entity_t in_menu_entity) {
@@ -602,8 +606,16 @@ void Game_putPConMap(struct Game * in_game, int16_t * in_units, struct Point * i
 
     for (int16_t i = 0; i < load_num; i++) {
         SDL_Log("Putting unit %s on map", unitNames[in_units[i]]);
+
         tnecs_entity_t temp_unit_ent = TNECS_ENTITY_CREATE_WCOMPONENTS(in_game->world, Unit, Position, Sprite);
         SDL_Log("temp_unit_ent %d", temp_unit_ent);
+        SDL_Log("typeflag %d", in_game->world->entity_typeflags[temp_unit_ent]);
+
+        SDL_assert(in_game->world->entities[temp_unit_ent] == temp_unit_ent);
+        SDL_assert(temp_unit_ent);
+        SDL_assert(in_game->world->entities_bytype[tnecs_typeflagid(in_game->world, TNECS_COMPONENT_NAMES2TYPEFLAG(in_game->world, Unit, Position, Sprite))][in_game->world->num_entities_bytype[tnecs_typeflagid(in_game->world, TNECS_COMPONENT_NAMES2TYPEFLAG(in_game->world, Unit, Position, Sprite))] - 1] == temp_unit_ent);
+        SDL_assert(in_game->world->entity_typeflags[temp_unit_ent] == TNECS_COMPONENT_NAMES2TYPEFLAG(in_game->world, Unit, Position, Sprite));
+        // SDL_Log("temp_unit_ent %d", temp_unit_ent);
 
         struct Unit * unit_ptr = TNECS_GET_COMPONENT(in_game->world, temp_unit_ent, Unit);
         SDL_assert(unit_ptr != NULL);
@@ -635,6 +647,7 @@ void Game_putPConMap(struct Game * in_game, int16_t * in_units, struct Point * i
         sprite_ptr->visible = true;
 
         Map_Unit_Put(in_game->map_ptr, in_game->world, in_pos_list[i].x, in_pos_list[i].y, temp_unit_ent);
+        SDL_assert(in_game->world->entities_bytype[tnecs_typeflagid(in_game->world, TNECS_COMPONENT_NAMES2TYPEFLAG(in_game->world, Unit, Position, Sprite))][in_game->world->num_entities_bytype[tnecs_typeflagid(in_game->world, TNECS_COMPONENT_NAMES2TYPEFLAG(in_game->world, Unit, Position, Sprite))] - 1] == temp_unit_ent);
     }
 }
 
@@ -648,17 +661,27 @@ void Game_mapArrivals_Load(struct Game * in_game) {
     for (int16_t i = 0; i < in_game->map_ptr->arrivals_num; i++) {
         if (in_game->map_ptr->arrivals[i].turn == in_game->map_ptr->turn) {
             tnecs_entity_t temp_unit_ent = TNECS_ENTITY_CREATE_WCOMPONENTS(in_game->world, Unit, Position, Sprite);
+            SDL_Log("temp_unit_ent %d", temp_unit_ent);
+            SDL_Log("typeflag %d", in_game->world->entity_typeflags[temp_unit_ent]);
+
+            SDL_assert(in_game->world->entities[temp_unit_ent] == temp_unit_ent);
+            SDL_assert(temp_unit_ent);
+            SDL_assert(in_game->world->entities_bytype[tnecs_typeflagid(in_game->world, TNECS_COMPONENT_NAMES2TYPEFLAG(in_game->world, Unit, Position, Sprite))][in_game->world->num_entities_bytype[tnecs_typeflagid(in_game->world, TNECS_COMPONENT_NAMES2TYPEFLAG(in_game->world, Unit, Position, Sprite))] - 1] == temp_unit_ent);
+            SDL_Log("entity_typeflag %d", in_game->world->entities_bytype[tnecs_typeflagid(in_game->world, TNECS_COMPONENT_NAMES2TYPEFLAG(in_game->world, Unit, Position, Sprite))][in_game->world->num_entities_bytype[tnecs_typeflagid(in_game->world, TNECS_COMPONENT_NAMES2TYPEFLAG(in_game->world, Unit, Position, Sprite))] - 1]);
+            SDL_assert(in_game->world->entity_typeflags[temp_unit_ent] == TNECS_COMPONENT_NAMES2TYPEFLAG(in_game->world, Unit, Position, Sprite));
 
             struct Unit * unit_ptr = TNECS_GET_COMPONENT(in_game->world, temp_unit_ent, Unit);
             SDL_assert(unit_ptr != NULL);
-            memcpy(unit_ptr, &Unit_default, sizeof(Unit_default));
+            // *unit_ptr = Unit_default;
+            SDL_memcpy(unit_ptr, &Unit_default, sizeof(Unit));
             unit_ptr->weapons = &in_game->weapons;
             strcpy(unitname, "");
             // strcat(unitname, ".."DIR_SEPARATOR"units"DIR_SEPARATOR);
             SDL_Log("arrival id %d", in_game->map_ptr->arrivals[i].id);
             strcat(unitname, unitNames[in_game->map_ptr->arrivals[i].id]);
             strcat(unitname, ".json");
-            readJSON(unitname, unit_ptr);
+            readJSON(unitname, unit_ptr); // this line fucks up the world.
+            // SDL_assert(in_game->world->entities_bytype[tnecs_typeflagid(in_game->world, TNECS_COMPONENT_NAMES2TYPEFLAG(in_game->world, Unit, Position, Sprite))][in_game->world->num_entities_bytype[tnecs_typeflagid(in_game->world, TNECS_COMPONENT_NAMES2TYPEFLAG(in_game->world, Unit, Position, Sprite))] - 1] == temp_unit_ent);
             unit_ptr->army = in_game->map_ptr->arrivals[i].army;
             if (unit_ptr->_equipment[UNIT_HAND_RIGHT].id > 0) {
                 Unit_equips(unit_ptr, UNIT_HAND_RIGHT);
@@ -667,9 +690,11 @@ void Game_mapArrivals_Load(struct Game * in_game) {
                 Unit_equips(unit_ptr, UNIT_HAND_LEFT);
             }
 
+
             struct Position * position_ptr = TNECS_GET_COMPONENT(in_game->world, temp_unit_ent, Position);
             SDL_assert(position_ptr != NULL);
-            memcpy(position_ptr, &Position_default, sizeof(Position_default));
+            *position_ptr = Position_default;
+            // SDL_memcpy(position_ptr, &Position_default, sizeof(Position));
             position_ptr->onTilemap = true;
             Position_Bounds_Set(position_ptr, in_game->map_ptr->boundsmin.x, in_game->map_ptr->boundsmax.x, in_game->map_ptr->boundsmin.y, in_game->map_ptr->boundsmax.y);
             position_ptr->scale[0] = (float)in_game->settings.tilesize[0];
@@ -680,17 +705,29 @@ void Game_mapArrivals_Load(struct Game * in_game) {
 
             struct Sprite * sprite_ptr = TNECS_GET_COMPONENT(in_game->world, temp_unit_ent, Sprite);
             SDL_assert(sprite_ptr != NULL);
-            SDL_memcpy(sprite_ptr, &Sprite_default, sizeof(Sprite_default));
+            *sprite_ptr = Sprite_default;
+            // SDL_memcpy(sprite_ptr, &Sprite_default, sizeof(Sprite));
             strcpy(filename, "");
             strcat(filename, ".."DIR_SEPARATOR"assets"DIR_SEPARATOR"Units"DIR_SEPARATOR);
             strcat(filename, unitNames[in_game->map_ptr->arrivals[i].id]);
             strcat(filename, ".png");
             Sprite_Rects_init(sprite_ptr, in_game->map_ptr->arrivals[i].position);
             Sprite_Texture_Set(sprite_ptr, filename);
+            SDL_assert(in_game->world->entity_typeflags[temp_unit_ent] == TNECS_COMPONENT_NAMES2TYPEFLAG(in_game->world, Unit, Position, Sprite));
 
             Map_Unit_Put(in_game->map_ptr, in_game->world, position_ptr->tilemap_pos.x, position_ptr->tilemap_pos.y, temp_unit_ent);
+            SDL_assert(in_game->world->entities_bytype[tnecs_typeflagid(in_game->world, TNECS_COMPONENT_NAMES2TYPEFLAG(in_game->world, Unit, Position, Sprite))][in_game->world->num_entities_bytype[tnecs_typeflagid(in_game->world, TNECS_COMPONENT_NAMES2TYPEFLAG(in_game->world, Unit, Position, Sprite))] - 1] == temp_unit_ent);
+
+            // in_game->world->entities_bytype[tnecs_typeflagid(in_game->world, TNECS_COMPONENT_NAMES2TYPEFLAG(in_game->world, Unit, Position, Sprite))][in_game->world->num_entities_bytype[tnecs_typeflagid(in_game->world, TNECS_COMPONENT_NAMES2TYPEFLAG(in_game->world, Unit, Position, Sprite))] - 1] = temp_unit_ent;
+
         }
     }
+    SDL_Log("Entity with unit position Sprite %d\n", in_game->world->entities_bytype[tnecs_typeflagid(in_game->world, TNECS_COMPONENT_NAMES2TYPEFLAG(in_game->world, Unit, Position, Sprite))][0]);
+    SDL_Log("Entity with unit position Sprite %d\n", in_game->world->entities_bytype[tnecs_typeflagid(in_game->world, TNECS_COMPONENT_NAMES2TYPEFLAG(in_game->world, Unit, Position, Sprite))][1]);
+    SDL_Log("Entity with unit position Sprite %d\n", in_game->world->entities_bytype[tnecs_typeflagid(in_game->world, TNECS_COMPONENT_NAMES2TYPEFLAG(in_game->world, Unit, Position, Sprite))][2]);
+    SDL_Log("Entity with unit position Sprite %d\n", in_game->world->entities_bytype[tnecs_typeflagid(in_game->world, TNECS_COMPONENT_NAMES2TYPEFLAG(in_game->world, Unit, Position, Sprite))][3]);
+    SDL_Log("Entity with unit position Sprite %d\n", in_game->world->entities_bytype[tnecs_typeflagid(in_game->world, TNECS_COMPONENT_NAMES2TYPEFLAG(in_game->world, Unit, Position, Sprite))][4]);
+    SDL_Log("Entity with unit position Sprite %d\n", in_game->world->entities_bytype[tnecs_typeflagid(in_game->world, TNECS_COMPONENT_NAMES2TYPEFLAG(in_game->world, Unit, Position, Sprite))][5]);
 }
 
 void Game_Party_Load(struct Game * in_game, int16_t * unit_ids, size_t load_num) {
@@ -783,17 +820,19 @@ void Game_init(struct Game * in_game) {
     SDL_Log("Genesis of tnecs\n");
     in_game->world = tnecs_world_genesis();
     SDL_Log("Components Registration\n");
-    TNECS_REGISTER_COMPONENT(in_game->world, Position);
-    TNECS_REGISTER_COMPONENT(in_game->world, Sprite);
-    TNECS_REGISTER_COMPONENT(in_game->world, Unit);
-    TNECS_REGISTER_COMPONENT(in_game->world, Text);
-    TNECS_REGISTER_COMPONENT(in_game->world, Menu);
-    TNECS_REGISTER_COMPONENT(in_game->world, controllerGamepad);
-    TNECS_REGISTER_COMPONENT(in_game->world, controllerMouse);
-    TNECS_REGISTER_COMPONENT(in_game->world, controllerKeyboard);
-    TNECS_REGISTER_COMPONENT(in_game->world, controllerTouchpad);
-    TNECS_REGISTER_COMPONENT(in_game->world, UpdateTimer);
-    TNECS_REGISTER_COMPONENT(in_game->world, RenderTimer);
+    TNECS_REGISTER_COMPONENT(in_game->world, Position);             // 1
+    TNECS_REGISTER_COMPONENT(in_game->world, Sprite);               // 2
+    TNECS_REGISTER_COMPONENT(in_game->world, Unit);                 // 4
+    TNECS_REGISTER_COMPONENT(in_game->world, Item);                 // 8
+    TNECS_REGISTER_COMPONENT(in_game->world, Weapon);               // 16
+    TNECS_REGISTER_COMPONENT(in_game->world, Text);                 // 32
+    TNECS_REGISTER_COMPONENT(in_game->world, Menu);                 // 64
+    TNECS_REGISTER_COMPONENT(in_game->world, controllerGamepad);    // 128
+    TNECS_REGISTER_COMPONENT(in_game->world, controllerMouse);      // 256
+    TNECS_REGISTER_COMPONENT(in_game->world, controllerKeyboard);   // 512
+    TNECS_REGISTER_COMPONENT(in_game->world, controllerTouchpad);   // 1024
+    TNECS_REGISTER_COMPONENT(in_game->world, UpdateTimer);          // 2048
+    TNECS_REGISTER_COMPONENT(in_game->world, RenderTimer);          // 5096
     SDL_Log("System Registration\n");
     TNECS_REGISTER_SYSTEM_WEXCL(in_game->world, drawSprite, 0, Sprite, Position);
     TNECS_REGISTER_SYSTEM_WEXCL(in_game->world, drawCursor, 0, Sprite, Position, controllerGamepad, controllerKeyboard, controllerTouchpad);
@@ -846,9 +885,22 @@ void Game_startup(struct Game * in_game, struct Input_Arguments in_args) {
             struct Point temp_point = {.x = 6, .y = 6};
             arrput(positions_list, temp_point);
             Game_putPConMap(in_game, unit_inds, positions_list, 1);
+            SDL_assert(in_game->world->entities_bytype[TNECS_TYPEFLAGID(in_game->world, TNECS_COMPONENT_NAMES2TYPEFLAG(in_game->world, Unit, Position, Sprite))][0]);
+
 
             SDL_Log("Loading in arrivals\n");
             Game_mapArrivals_Load(in_game);
+            SDL_assert(in_game->world->entities_bytype[TNECS_TYPEFLAGID(in_game->world, TNECS_COMPONENT_NAMES2TYPEFLAG(in_game->world, Unit, Position, Sprite))][1]);
+            SDL_assert(in_game->world->entities_bytype[TNECS_TYPEFLAGID(in_game->world, TNECS_COMPONENT_NAMES2TYPEFLAG(in_game->world, Unit, Position, Sprite))][2]);
+            SDL_assert(in_game->world->entities_bytype[TNECS_TYPEFLAGID(in_game->world, TNECS_COMPONENT_NAMES2TYPEFLAG(in_game->world, Unit, Position, Sprite))][3]);
+            SDL_assert(in_game->world->num_entities_bytype[TNECS_TYPEFLAGID(in_game->world, TNECS_COMPONENT_NAMES2TYPEFLAG(in_game->world, Unit, Position, Sprite))] == 4);
+            SDL_Log("Num_Entity with unit position Sprite %d\n", in_game->world->num_entities_bytype[TNECS_TYPEFLAGID(in_game->world, TNECS_COMPONENT_NAMES2TYPEFLAG(in_game->world, Unit, Position, Sprite))]);
+            SDL_Log("Entity with unit position Sprite %d\n", in_game->world->entities_bytype[TNECS_TYPEFLAGID(in_game->world, TNECS_COMPONENT_NAMES2TYPEFLAG(in_game->world, Unit, Position, Sprite))][0]);
+            SDL_Log("Entity with unit position Sprite %d\n", in_game->world->entities_bytype[TNECS_TYPEFLAGID(in_game->world, TNECS_COMPONENT_NAMES2TYPEFLAG(in_game->world, Unit, Position, Sprite))][1]);
+            SDL_Log("Entity with unit position Sprite %d\n", in_game->world->entities_bytype[TNECS_TYPEFLAGID(in_game->world, TNECS_COMPONENT_NAMES2TYPEFLAG(in_game->world, Unit, Position, Sprite))][2]);
+            SDL_Log("Entity with unit position Sprite %d\n", in_game->world->entities_bytype[TNECS_TYPEFLAGID(in_game->world, TNECS_COMPONENT_NAMES2TYPEFLAG(in_game->world, Unit, Position, Sprite))][3]);
+            SDL_Log("Entity with unit position Sprite %d\n", in_game->world->entities_bytype[TNECS_TYPEFLAGID(in_game->world, TNECS_COMPONENT_NAMES2TYPEFLAG(in_game->world, Unit, Position, Sprite))][4]);
+            SDL_Log("Entity with unit position Sprite %d\n", in_game->world->entities_bytype[TNECS_TYPEFLAGID(in_game->world, TNECS_COMPONENT_NAMES2TYPEFLAG(in_game->world, Unit, Position, Sprite))][5]);
             break;
         default:
             SDL_Log("Startup mode is invalid.\n");
@@ -1615,7 +1667,6 @@ void makeContent_MENU_OPTIONS(struct Game * in_game, void * data_1, void * data_
     tnecs_entity_t menu_entity = in_game->menu_loaded[MENU_OPTIONS];
     struct Menu * menu_ptr = TNECS_GET_COMPONENT(in_game->world, menu_entity, Menu);
 }
-
 
 void makeContent_MENU_DANCE(struct Game * in_game, void * data_1, void * data_2) {
     SDL_Log("makeContent_MENU_DANCE");

@@ -11,17 +11,31 @@ void drawSprite(tnecs_system_input_t * in_input) {
     SDL_Log("in_input->num_entities %d", in_input->num_entities);
     for (uint16_t ent = 0; ent < in_input->num_entities; ent++) {
         SDL_Log("Sprite entity: %d", ent);
-        SDL_Log("in_input->entity_typeflag_id: %d", in_input->entity_typeflag_id);
-
+        tnecs_entity_t current_ent = in_input->world->entities_bytype[in_input->entity_typeflag_id][ent];
+        SDL_Log("current_ent %d", current_ent);
         SDL_assert(in_input->world->entities_bytype[in_input->entity_typeflag_id][ent] < in_input->world->len_entities);
         SDL_Log("in_input->world->num_entities_bytype[in_input->entity_typeflag_id]: %d", in_input->world->num_entities_bytype[in_input->entity_typeflag_id]);
-        SDL_Log("in_input->world->entities_bytype[in_input->entity_typeflag_id][ent] %d", in_input->world->entities_bytype[in_input->entity_typeflag_id][ent]);
+        SDL_Log("in_input->world->entity_typeflags[current_ent] %d", in_input->world->entity_typeflags[current_ent]);
+        SDL_Log("tnecs_typeflagid(in_input->world, in_input->world->entity_typeflags[current_ent]) %d", tnecs_typeflagid(in_input->world, in_input->world->entity_typeflags[current_ent]));
+        SDL_Log("in_input->entity_typeflag_id %d", in_input->entity_typeflag_id);
+        SDL_Log("typeflag %d", in_input->world->typeflags[in_input->entity_typeflag_id]);
+
+        SDL_assert(tnecs_typeflagid(in_input->world, in_input->world->entity_typeflags[current_ent]) == in_input->entity_typeflag_id);
+
         SDL_Log("in_input->world->entities[in_input->world->entities_bytype[in_input->entity_typeflag_id][ent]] %d", in_input->world->entities[in_input->world->entities_bytype[in_input->entity_typeflag_id][ent]]);
         SDL_assert(in_input->world->entities[in_input->world->entities_bytype[in_input->entity_typeflag_id][ent]] == in_input->world->entities_bytype[in_input->entity_typeflag_id][ent]);
         ent_hasmouse = TNECS_ENTITY_HASCOMPONENT(in_input->world, in_input->world->entities_bytype[in_input->entity_typeflag_id][ent], controllerMouse);
         SDL_Log("ent_hasmouse %d", ent_hasmouse);
         ent_hasgamepad = TNECS_ENTITY_HASCOMPONENT(in_input->world, in_input->world->entities_bytype[in_input->entity_typeflag_id][ent], controllerGamepad);
         SDL_Log("ent_hasgamepad %d", ent_hasgamepad);
+        SDL_Log("has unit? %d", TNECS_ENTITY_HASCOMPONENT(in_input->world, in_input->world->entities_bytype[in_input->entity_typeflag_id][ent], Unit));
+        SDL_Log("has Position? %d", TNECS_ENTITY_HASCOMPONENT(in_input->world, in_input->world->entities_bytype[in_input->entity_typeflag_id][ent], Position));
+        SDL_Log("has Sprite? %d", TNECS_ENTITY_HASCOMPONENT(in_input->world, in_input->world->entities_bytype[in_input->entity_typeflag_id][ent], Sprite));
+        SDL_Log("has Menu? %d", TNECS_ENTITY_HASCOMPONENT(in_input->world, in_input->world->entities_bytype[in_input->entity_typeflag_id][ent], Menu));
+        SDL_Log("has Text? %d", TNECS_ENTITY_HASCOMPONENT(in_input->world, in_input->world->entities_bytype[in_input->entity_typeflag_id][ent], Text));
+        SDL_Log("has controllerMouse? %d", TNECS_ENTITY_HASCOMPONENT(in_input->world, in_input->world->entities_bytype[in_input->entity_typeflag_id][ent], controllerMouse));
+        SDL_Log("has UpdateTimer? %d", TNECS_ENTITY_HASCOMPONENT(in_input->world, in_input->world->entities_bytype[in_input->entity_typeflag_id][ent], UpdateTimer));
+        SDL_Log("has RenderTimer? %d", TNECS_ENTITY_HASCOMPONENT(in_input->world, in_input->world->entities_bytype[in_input->entity_typeflag_id][ent], RenderTimer));
         if ((!ent_hasmouse) && (!ent_hasgamepad)) {
             SDL_Log("in ");
             if (sprite_ptr[ent].visible) {
