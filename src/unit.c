@@ -668,7 +668,7 @@ void Unit_readJSON(struct Unit * in_unit, cJSON * in_junit) {
     cJSON * jlevelups = cJSON_GetObjectItemCaseSensitive(in_junit, "Level-ups");
     cJSON * jitems = cJSON_GetObjectItemCaseSensitive(in_junit, "Items");
     in_unit->_id = cJSON_GetNumberValue(jid); //returns 0 if junit is NULL
-    strncpy(in_unit->name, cJSON_GetStringValue(jname), strlen(cJSON_GetStringValue(jname)));
+    // strncpy(in_unit->name, cJSON_GetStringValue(jname), strlen(cJSON_GetStringValue(jname)));
     Unit_setSex(in_unit, cJSON_IsTrue(jsex));
     in_unit->base_exp = cJSON_GetNumberValue(jbase_exp);
     in_unit->exp = cJSON_GetNumberValue(jexp);

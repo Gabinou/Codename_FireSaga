@@ -7,7 +7,7 @@ cmake_policy(SET CMP0079 NEW)
 OPTION(ENABLE_WARNINGS "Enable compilation warnings" ON)
 
 if(NOT CMAKE_BUILD_TYPE)
-  set(CMAKE_BUILD_TYPE "Release")
+  set(CMAKE_BUILD_TYPE "Debug")
 endif()
 
 message("CMAKE_C_FLAGS_DEBUG is ${CMAKE_C_FLAGS_DEBUG}")

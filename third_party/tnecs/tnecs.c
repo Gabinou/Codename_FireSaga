@@ -128,19 +128,30 @@ void tnecs_world_step(struct tnecs_World * in_world, tnecs_time_ns_t in_deltat) 
         current_phase = in_world->phases[phase_id];
         if (phase_id == current_phase) {
             for (size_t sorder = 0; sorder < in_world->num_systems_byphase[phase_id]; sorder++) {
+                printf("EXCLUSIVE\n");
                 system_id = in_world->systems_idbyphase[phase_id][sorder];
                 system_typeflag_id = tnecs_typeflagid(in_world, in_world->system_typeflags[system_id]);
+                TNECS_DEBUG_ASSERT(in_world->system_typeflags[system_id] == in_world->typeflags[system_typeflag_id]);
                 current_input.entity_typeflag_id = system_typeflag_id;
                 current_input.num_entities = in_world->num_entities_bytype[current_input.entity_typeflag_id];
                 in_world->systems_torun[in_world->num_systems_torun++] = in_world->systems_byphase[phase_id][sorder];
-                in_world->systems_byphase[phase_id][sorder](&current_input);
+                if (current_input.num_entities) {
+                    in_world->systems_byphase[phase_id][sorder](&current_input);
+                }
                 if (!in_world->system_exclusive[system_id]) {
                     for (size_t tsub = 0; tsub < in_world->num_supertype_ids[system_typeflag_id]; tsub++) {
+                        printf("INCLUSIVE\n");
                         current_input.entity_typeflag_id = in_world->supertype_id_bytype[system_typeflag_id][tsub];
+                        printf("typeflag %d \n", in_world->typeflags[current_input.entity_typeflag_id]);
+
+                        TNECS_DEBUG_ASSERT(in_world->typeflags[current_input.entity_typeflag_id]);
+                        TNECS_DEBUG_ASSERT(in_world->typeflags[current_input.entity_typeflag_id] & in_world->typeflags[system_typeflag_id]);
                         current_input.num_entities = in_world->num_entities_bytype[current_input.entity_typeflag_id];
                         in_world->systems_torun[in_world->num_systems_torun++] = in_world->systems_byphase[phase_id][sorder];
-                        in_world->systems_byphase[phase_id][sorder](&current_input);
+                        if (current_input.num_entities) {
+                            in_world->systems_byphase[phase_id][sorder](&current_input);
                         }
+                    }
                 }
             }
         }
@@ -311,14 +322,15 @@ size_t tnecs_register_typeflag(struct tnecs_World * in_world, size_t num_compone
         }
         // 4- Check supertypes.
         for (size_t i = 1 ; i < in_world->num_typeflags; i++) {
-            in_world->num_supertype_ids[i] = 0;
+                in_world->num_supertype_ids[i] = 0;
             for (size_t j = 1 ; j < (in_world->num_typeflags); j++) {
                 if (i != j) {   
-                    if ((in_world->typeflags[i] & in_world->typeflags[j]) == in_world->typeflags[j]) {
-                        in_world->supertype_id_bytype[j][in_world->num_supertype_ids[j]++] = i;  
+                    if ((in_world->typeflags[i] & in_world->typeflags[j]) == in_world->typeflags[i]) {
+                        in_world->supertype_id_bytype[i][in_world->num_supertype_ids[i]++] = j;  
                     }
                 }
             }
+            TNECS_DEBUG_ASSERT(in_world->supertype_id_bytype[i][in_world->num_supertype_ids[i] - 1]);
         }
     }
     return (typeflag_id);
@@ -445,7 +457,7 @@ void tnecs_entity_add_components(struct tnecs_World * in_world, tnecs_entity_t i
     tnecs_component_t typeflag_new = typeflag_toadd + typeflag_old;
     if (isNew) { tnecs_register_typeflag(in_world, setBits_KnR_uint64_t(typeflag_new), typeflag_new); }
     size_t typeflag_new_id = tnecs_typeflagid(in_world, typeflag_new);
-    tnecs_component_migrate(in_world, in_entity, typeflag_old, typeflag_new);
+    tnecs_component_migrate(in_world, in_entity, typeflag_new);
     tnecs_entitiesbytype_migrate(in_world, in_entity, typeflag_old, typeflag_new);
     TNECS_DEBUG_ASSERT(in_world->entity_typeflags[in_entity] == typeflag_new);
     TNECS_DEBUG_ASSERT(in_world->entities_bytype[typeflag_new_id][in_world->num_entities_bytype[typeflag_new_id] - 1 ] == in_entity);
@@ -459,9 +471,11 @@ void * tnecs_entity_get_component(struct tnecs_World * in_world, tnecs_entity_t 
     tnecs_component_t entity_typeflag = TNECS_ENTITY_TYPEFLAG(in_world, in_entity_id);
     if ((component_flag & entity_typeflag) > 0) {
         size_t typeflag_id = tnecs_typeflagid(in_world, entity_typeflag);
+        TNECS_DEBUG_ASSERT(in_world->typeflags[typeflag_id] == entity_typeflag);
         size_t component_order = tnecs_component_order_bytype(in_world, in_component_id, entity_typeflag);
-        TNECS_DEBUG_ASSERT(component_order <= in_world->num_entities_bytype[typeflag_id]);
+        TNECS_DEBUG_ASSERT(component_order <= in_world->num_components_bytype[typeflag_id]);
         size_t entity_order = in_world->entity_orders[in_entity_id];
+        TNECS_DEBUG_ASSERT(entity_order <= in_world->num_entities_bytype[typeflag_id]);
         size_t bytesize = in_world->component_bytesizes[in_component_id];
         struct tnecs_Components_Array * comp_array = &in_world->components_bytype[typeflag_id][component_order];
         tnecs_byte_t * temp_component_bytesptr = (tnecs_byte_t *)(comp_array->components);
@@ -597,7 +611,7 @@ void tnecs_component_del(struct tnecs_World * in_world, tnecs_entity_t in_entity
     }
 }
 
-bool tnecs_component_migrate(struct tnecs_World * in_world, tnecs_entity_t in_entity, size_t entity_order_new, tnecs_component_t new_typeflag) {
+bool tnecs_component_migrate(struct tnecs_World * in_world, tnecs_entity_t in_entity, tnecs_component_t new_typeflag) {
     TNECS_DEBUG_PRINTF("tnecs_component_migrate \n");
 
     tnecs_component_t old_typeflag = in_world->entity_typeflags[in_entity];
