@@ -406,7 +406,9 @@ enum MENUS {
 
 #define REGISTER_ENUM(x) ERROR_##x,
 enum ERRORS {
-    // NO_ERROR = 0,
+#ifndef NO_ERROR
+    NO_ERROR = 0,
+#endif
     ERROR_START = 0,
 #include "names/errors.h"
     ERROR_END

@@ -462,10 +462,16 @@ void Map_Unit_Put(struct Map * in_map, tnecs_world_t * in_world, const uint8_t c
     SDL_Log("in_entity %d", in_entity);
     SDL_assert(in_map->unitmap != NULL);
     SDL_assert((row < in_map->row_len) && (col < in_map->col_len));
+
+    size_t typeflag_id = tnecs_typeflagid(in_world, in_world->entity_typeflags[in_entity]);
+    SDL_assert(in_world->entities_bytype[typeflag_id][(in_world->num_entities_bytype[typeflag_id] - 1)] == in_entity);
     in_map->unitmap[row * in_map->col_len + col] = in_entity;
     arrput(in_map->units_onfield, in_entity);
     in_map->num_units_onfield++;
     struct Unit * temp_unit = TNECS_GET_COMPONENT(in_world, in_entity, Unit);
+
+
+    SDL_assert(in_world->entities_bytype[typeflag_id][(in_world->num_entities_bytype[typeflag_id] - 1)] == in_entity);
     SDL_assert(temp_unit != NULL);
 
     switch (utilities_army2alignment(temp_unit->army)) {
