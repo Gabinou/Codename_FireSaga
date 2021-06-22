@@ -2,60 +2,32 @@
 #include "systemRender.h"
 
 void drawSprite(tnecs_system_input_t * in_input) {
-    SDL_Log("drawSprite");
+    // SDL_Log("drawSprite");
     struct Position * position_ptr = TNECS_COMPONENTS_LIST(in_input, Position);
-    SDL_Log("got position %d", (position_ptr == NULL));
     struct Sprite * sprite_ptr = TNECS_COMPONENTS_LIST(in_input, Sprite);
-    SDL_Log("got sprite %d", (sprite_ptr == NULL));
     bool ent_hasmouse, ent_hasgamepad;
-    SDL_Log("in_input->num_entities %d", in_input->num_entities);
     for (uint16_t ent = 0; ent < in_input->num_entities; ent++) {
-        SDL_Log("Sprite entity: %d", ent);
         tnecs_entity_t current_ent = in_input->world->entities_bytype[in_input->entity_typeflag_id][ent];
-        SDL_Log("current_ent %d", current_ent);
         SDL_assert(in_input->world->entities_bytype[in_input->entity_typeflag_id][ent] < in_input->world->len_entities);
-        SDL_Log("in_input->world->num_entities_bytype[in_input->entity_typeflag_id]: %d", in_input->world->num_entities_bytype[in_input->entity_typeflag_id]);
-        SDL_Log("in_input->world->entity_typeflags[current_ent] %d", in_input->world->entity_typeflags[current_ent]);
-        SDL_Log("tnecs_typeflagid(in_input->world, in_input->world->entity_typeflags[current_ent]) %d", tnecs_typeflagid(in_input->world, in_input->world->entity_typeflags[current_ent]));
-        SDL_Log("in_input->entity_typeflag_id %d", in_input->entity_typeflag_id);
-        SDL_Log("typeflag %d", in_input->world->typeflags[in_input->entity_typeflag_id]);
-
         SDL_assert(tnecs_typeflagid(in_input->world, in_input->world->entity_typeflags[current_ent]) == in_input->entity_typeflag_id);
 
-        SDL_Log("in_input->world->entities[in_input->world->entities_bytype[in_input->entity_typeflag_id][ent]] %d", in_input->world->entities[in_input->world->entities_bytype[in_input->entity_typeflag_id][ent]]);
         SDL_assert(in_input->world->entities[in_input->world->entities_bytype[in_input->entity_typeflag_id][ent]] == in_input->world->entities_bytype[in_input->entity_typeflag_id][ent]);
         ent_hasmouse = TNECS_ENTITY_HASCOMPONENT(in_input->world, in_input->world->entities_bytype[in_input->entity_typeflag_id][ent], controllerMouse);
-        SDL_Log("ent_hasmouse %d", ent_hasmouse);
         ent_hasgamepad = TNECS_ENTITY_HASCOMPONENT(in_input->world, in_input->world->entities_bytype[in_input->entity_typeflag_id][ent], controllerGamepad);
-        SDL_Log("ent_hasgamepad %d", ent_hasgamepad);
-        SDL_Log("has unit? %d", TNECS_ENTITY_HASCOMPONENT(in_input->world, in_input->world->entities_bytype[in_input->entity_typeflag_id][ent], Unit));
-        SDL_Log("has Position? %d", TNECS_ENTITY_HASCOMPONENT(in_input->world, in_input->world->entities_bytype[in_input->entity_typeflag_id][ent], Position));
-        SDL_Log("has Sprite? %d", TNECS_ENTITY_HASCOMPONENT(in_input->world, in_input->world->entities_bytype[in_input->entity_typeflag_id][ent], Sprite));
-        SDL_Log("has Menu? %d", TNECS_ENTITY_HASCOMPONENT(in_input->world, in_input->world->entities_bytype[in_input->entity_typeflag_id][ent], Menu));
-        SDL_Log("has Text? %d", TNECS_ENTITY_HASCOMPONENT(in_input->world, in_input->world->entities_bytype[in_input->entity_typeflag_id][ent], Text));
-        SDL_Log("has controllerMouse? %d", TNECS_ENTITY_HASCOMPONENT(in_input->world, in_input->world->entities_bytype[in_input->entity_typeflag_id][ent], controllerMouse));
-        SDL_Log("has UpdateTimer? %d", TNECS_ENTITY_HASCOMPONENT(in_input->world, in_input->world->entities_bytype[in_input->entity_typeflag_id][ent], UpdateTimer));
-        SDL_Log("has RenderTimer? %d", TNECS_ENTITY_HASCOMPONENT(in_input->world, in_input->world->entities_bytype[in_input->entity_typeflag_id][ent], RenderTimer));
         if ((!ent_hasmouse) && (!ent_hasgamepad)) {
-            SDL_Log("in ");
             if (sprite_ptr[ent].visible) {
-                SDL_Log("visible ");
 
                 sprite_ptr[ent].objectivepos.x = (int32_t)lround(position_ptr[ent].tilemap_pos.x * position_ptr[ent].scale[0]);
                 sprite_ptr[ent].objectivepos.y = (int32_t)lround(position_ptr[ent].tilemap_pos.y * position_ptr[ent].scale[1]);
-                SDL_Log("objectivepos ");
 
                 if (sprite_ptr[ent].update_wait > 0) {
-                    SDL_Log("waitenough ");
 
                     if (sprite_ptr[ent].animated) {
-                        SDL_Log("animated ");
                         Sprite_loop(&sprite_ptr[ent]);
                     }
 
                     sprite_ptr[ent].update_timer += in_input ->deltat;
                     if (sprite_ptr[ent].update_timer > sprite_ptr[ent].update_wait) {
-                        SDL_Log("isupdate ");
                         bool slide_int = 0;
                         Sprite_slide(&sprite_ptr[ent], slide_int, in_input->deltat);
                         sprite_ptr[ent].update_timer = 0.0f;
@@ -64,19 +36,16 @@ void drawSprite(tnecs_system_input_t * in_input) {
 
                 sprite_ptr[ent].destrect.x = sprite_ptr[ent].objectivepos.x + position_ptr[ent].offset_px.x;
                 sprite_ptr[ent].destrect.y = sprite_ptr[ent].objectivepos.y + position_ptr[ent].offset_px.y;
-                SDL_Log("destrect ");
 
                 SDL_RenderCopy(Game_renderer, sprite_ptr[ent].texture, &sprite_ptr[ent].srcrect, &sprite_ptr[ent].destrect);
-                SDL_Log("Rendered ");
 
             }
         }
     }
-    SDL_Log("Out");
 }
 
 void drawCursor(tnecs_system_input_t * in_input) {
-    SDL_Log("drawCursor");
+    // SDL_Log("drawCursor");
     struct Position * position_ptr = TNECS_COMPONENTS_LIST(in_input, Position);
     struct Sprite * sprite_ptr = TNECS_COMPONENTS_LIST(in_input, Sprite);
     struct controllerKeyboard * keyboard_ptr = TNECS_COMPONENTS_LIST(in_input, controllerKeyboard);
@@ -110,7 +79,7 @@ void drawCursor(tnecs_system_input_t * in_input) {
 }
 
 void drawMouse(tnecs_system_input_t * in_input) {
-    SDL_Log("drawMouse");
+    // SDL_Log("drawMouse");
     struct Position * position_ptr = TNECS_COMPONENTS_LIST(in_input, Position);
     struct Sprite * sprite_ptr = TNECS_COMPONENTS_LIST(in_input, Sprite);
     struct controllerMouse * mouse_ptr = TNECS_COMPONENTS_LIST(in_input, controllerMouse);
@@ -128,7 +97,7 @@ void drawMouse(tnecs_system_input_t * in_input) {
 }
 
 void drawMenu(tnecs_system_input_t * in_input) {
-    SDL_Log("drawMenu");
+    // SDL_Log("drawMenu");
     struct Menu * menu_ptr = TNECS_COMPONENTS_LIST(in_input, Menu);
     for (uint16_t ent = 0; ent < in_input->num_entities; ent++) {
         if (menu_ptr[ent].enabled) {
@@ -139,7 +108,7 @@ void drawMenu(tnecs_system_input_t * in_input) {
 }
 
 void drawText(tnecs_system_input_t * in_input) {
-    SDL_Log("drawText");
+    // SDL_Log("drawText");
     struct Position * position_ptr = TNECS_COMPONENTS_LIST(in_input, Position);
     struct Text * text_ptr = TNECS_COMPONENTS_LIST(in_input, Text);
     struct UpdateTimer * updatetimer_ptr = TNECS_COMPONENTS_LIST(in_input, UpdateTimer);

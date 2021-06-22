@@ -92,13 +92,9 @@ int main(int32_t argc, char * argv[]) {
         currentTime_ms = SDL_GetTicks();
 
         SDL_RenderClear(Game_renderer);
-        SDL_Log("Map_draw");
         Map_draw(firesaga->map_ptr); // Only one map -> no entity
-        SDL_Log("tnecs_world_step");
         tnecs_world_step(firesaga->world, updateTime_s);
-        SDL_Log("SDL_RenderPresent");
         SDL_RenderPresent(Game_renderer);
-        SDL_Log("Events_Manage");
         Events_Manage(firesaga);
     }
     Game_clean(firesaga);

@@ -2,7 +2,6 @@
 #include "pathfinding.h"
 #include "linalg.h"
 #include "enums.h"
-#include "flecs.h"
 #include "unit.h"
 #include "position.h"
 

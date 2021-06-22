@@ -251,7 +251,7 @@ void test_map() {
     struct Unit unit3 = Unit_default;
     struct Unit unit4 = Unit_default;
     tnecs_entity_t tnecs_entity;
-    tnecs_entity = TNECS_ENTITY_CREATE_WCOMPONENTS(tnecs_world, Position, Unit);
+    tnecs_entity = TNECS_ENTITY_CREATE_wCOMPONENTS(tnecs_world, Position, Unit);
 
     struct Unit * tnecs_unit_ptr;
     struct Unit * temp_entity_unit_mptr;

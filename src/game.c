@@ -52,7 +52,7 @@ void Game_makeTurntransition(struct Game * in_game) {
         tnecs_entity_destroy(in_game->world, in_game->entity_transition);
     }
 
-    in_game->entity_transition = TNECS_ENTITY_CREATE_WCOMPONENTS(in_game->world, Position, Sprite, Text);
+    in_game->entity_transition = TNECS_ENTITY_CREATE_wCOMPONENTS(in_game->world, Position, Sprite, Text);
 
     struct Sprite * sprite_ptr = TNECS_GET_COMPONENT(in_game->world, in_game->entity_transition, Sprite);
     if (sprite_ptr != NULL) {
@@ -89,7 +89,7 @@ void Game_FPS_Create(struct Game * in_game, float in_update_time) {
     if (in_game->entity_fps != 0) {
         tnecs_entity_destroy(in_game->world, in_game->entity_fps);
     }
-    in_game->entity_fps = TNECS_ENTITY_CREATE_WCOMPONENTS(in_game->world, Position, Text, UpdateTimer);
+    in_game->entity_fps = TNECS_ENTITY_CREATE_wCOMPONENTS(in_game->world, Position, Text, UpdateTimer);
     SDL_Log("Get timer");
     struct UpdateTimer * timer_ptr = TNECS_GET_COMPONENT(in_game->world, in_game->entity_fps, UpdateTimer);
     SDL_assert(timer_ptr != NULL);
@@ -169,7 +169,7 @@ tnecs_entity_t Game_Menu_Get(struct Game * in_game, int8_t in_menu) {
 
 tnecs_entity_t Game_makeButton(struct Game * in_game, int8_t in_menu_option) {
     SDL_Log("Game_makeButton");
-    tnecs_entity_t button = TNECS_ENTITY_CREATE_WCOMPONENTS(in_game->world, Position, Text, Sprite);
+    tnecs_entity_t button = TNECS_ENTITY_CREATE_wCOMPONENTS(in_game->world, Position, Text, Sprite);
     struct Position * position_ptr = TNECS_GET_COMPONENT(in_game->world, button, Position);
     struct Sprite * sprite_ptr = TNECS_GET_COMPONENT(in_game->world, button, Sprite);
     struct Text * text_ptr = TNECS_GET_COMPONENT(in_game->world, button, Text);
@@ -247,7 +247,7 @@ void Game_Menu_Create(struct Game * in_game, int8_t in_menu) {
     if (in_game->menu_loaded[in_menu] != 0) {
         SDL_Log("menu %d is already loaded", in_menu);
     } else {
-        in_game->menu_loaded[in_menu] = TNECS_ENTITY_CREATE_WCOMPONENTS(in_game->world, Menu);
+        in_game->menu_loaded[in_menu] = TNECS_ENTITY_CREATE_wCOMPONENTS(in_game->world, Menu);
         struct Menu * temp_menu_ptr = TNECS_GET_COMPONENT(in_game->world, in_game->menu_loaded[in_menu], Menu);
         *temp_menu_ptr = Menu_default;
         temp_menu_ptr->texture_9patch = loadTexture(Game_renderer, in_game->filename_menu, false);
@@ -501,7 +501,7 @@ void Game_Mouse_Create(struct Game * in_game) {
     SDL_Log("Game_Mouse_Create");
     Game_Mouse_Destroy(in_game);
 
-    in_game->entity_mouse = TNECS_ENTITY_CREATE_WCOMPONENTS(in_game->world, controllerMouse, Position, Sprite);
+    in_game->entity_mouse = TNECS_ENTITY_CREATE_wCOMPONENTS(in_game->world, controllerMouse, Position, Sprite);
     struct Position * position_ptr = TNECS_GET_COMPONENT(in_game->world, in_game->entity_mouse, Position);
     SDL_assert(position_ptr != NULL);
     Position_Bounds_Set(position_ptr, -1000, 2000, -1000, 2000);
@@ -541,7 +541,7 @@ void Game_Cursor_Create(struct Game * in_game) {
         Game_Cursor_Destroy(in_game);
     }
 
-    in_game->entity_cursor = TNECS_ENTITY_CREATE_WCOMPONENTS(in_game->world, Position, Sprite, controllerKeyboard, controllerGamepad, controllerTouchpad);
+    in_game->entity_cursor = TNECS_ENTITY_CREATE_wCOMPONENTS(in_game->world, Position, Sprite, controllerKeyboard, controllerGamepad, controllerTouchpad);
     SDL_assert(in_game->entity_cursor != 0);
 
     struct controllerKeyboard * keyboard_ptr = TNECS_GET_COMPONENT(in_game->world, in_game->entity_cursor, controllerKeyboard);
@@ -607,7 +607,7 @@ void Game_putPConMap(struct Game * in_game, int16_t * in_units, struct Point * i
     for (int16_t i = 0; i < load_num; i++) {
         SDL_Log("Putting unit %s on map", unitNames[in_units[i]]);
 
-        tnecs_entity_t temp_unit_ent = TNECS_ENTITY_CREATE_WCOMPONENTS(in_game->world, Unit, Position, Sprite);
+        tnecs_entity_t temp_unit_ent = TNECS_ENTITY_CREATE_wCOMPONENTS(in_game->world, Unit, Position, Sprite);
         size_t typeflag_id1 = tnecs_typeflagid(in_game->world, TNECS_COMPONENT_NAMES2TYPEFLAG(in_game->world, Unit, Position, Sprite));
         size_t typeflag_id2 = tnecs_typeflagid(in_game->world, in_game->world->entity_typeflags[temp_unit_ent]);
         SDL_Log("temp_unit_ent %d", temp_unit_ent);
@@ -685,7 +685,7 @@ void Game_mapArrivals_Load(struct Game * in_game) {
             SDL_Log("2Entity with unit position Sprite %d\n", in_game->world->entities_bytype[tnecs_typeflagid(in_game->world, TNECS_COMPONENT_NAMES2TYPEFLAG(in_game->world, Unit, Position, Sprite))][1]);
             SDL_Log("2Entity with unit position Sprite %d\n", in_game->world->entities_bytype[tnecs_typeflagid(in_game->world, TNECS_COMPONENT_NAMES2TYPEFLAG(in_game->world, Unit, Position, Sprite))][2]);
             SDL_Log("2Entity with unit position Sprite %d\n", in_game->world->entities_bytype[tnecs_typeflagid(in_game->world, TNECS_COMPONENT_NAMES2TYPEFLAG(in_game->world, Unit, Position, Sprite))][3]);
-            tnecs_entity_t temp_unit_ent = TNECS_ENTITY_CREATE_WCOMPONENTS(in_game->world, Unit, Position, Sprite); // no... THIS LINE FUCKS UP THE ENTITIES BY TYPE.
+            tnecs_entity_t temp_unit_ent = TNECS_ENTITY_CREATE_wCOMPONENTS(in_game->world, Unit, Position, Sprite); // no... THIS LINE FUCKS UP THE ENTITIES BY TYPE.
             SDL_Log("3Entity with unit position Sprite %d\n", in_game->world->entities_bytype[tnecs_typeflagid(in_game->world, TNECS_COMPONENT_NAMES2TYPEFLAG(in_game->world, Unit, Position, Sprite))][0]);
             SDL_Log("3Entity with unit position Sprite %d\n", in_game->world->entities_bytype[tnecs_typeflagid(in_game->world, TNECS_COMPONENT_NAMES2TYPEFLAG(in_game->world, Unit, Position, Sprite))][1]);
             SDL_Log("3Entity with unit position Sprite %d\n", in_game->world->entities_bytype[tnecs_typeflagid(in_game->world, TNECS_COMPONENT_NAMES2TYPEFLAG(in_game->world, Unit, Position, Sprite))][2]);
@@ -880,15 +880,15 @@ void Game_init(struct Game * in_game) {
     TNECS_REGISTER_COMPONENT(in_game->world, UpdateTimer);          // 2048
     TNECS_REGISTER_COMPONENT(in_game->world, RenderTimer);          // 5096
     SDL_Log("System Registration\n");
-    TNECS_REGISTER_SYSTEM_WEXCL(in_game->world, drawSprite, 0, Sprite, Position);
-    TNECS_REGISTER_SYSTEM_WEXCL(in_game->world, drawCursor, 0, Sprite, Position, controllerGamepad, controllerKeyboard, controllerTouchpad);
-    TNECS_REGISTER_SYSTEM_WEXCL(in_game->world, drawMouse, 0, Sprite, Position, controllerMouse);
-    TNECS_REGISTER_SYSTEM_WEXCL(in_game->world, drawMenu, 0, Menu);
-    TNECS_REGISTER_SYSTEM_WEXCL(in_game->world, drawText, 0, Text, Position, UpdateTimer);
-    TNECS_REGISTER_SYSTEM_WEXCL(in_game->world, controlMouse, 0, Sprite, Position, controllerMouse);
-    TNECS_REGISTER_SYSTEM_WEXCL(in_game->world, controlKeyboard, 0, Position, Sprite, controllerKeyboard);
-    TNECS_REGISTER_SYSTEM_WEXCL(in_game->world, controlGamepad, 0, Position, Sprite, controllerGamepad);
-    TNECS_REGISTER_SYSTEM_WEXCL(in_game->world, controlTouchpad, 0, Position, Sprite, controllerTouchpad);
+    TNECS_REGISTER_SYSTEM_wEXCL(in_game->world, drawSprite, 0, Sprite, Position);
+    TNECS_REGISTER_SYSTEM_wEXCL(in_game->world, drawCursor, 0, Sprite, Position, controllerGamepad, controllerKeyboard, controllerTouchpad);
+    TNECS_REGISTER_SYSTEM_wEXCL(in_game->world, drawMouse, 0, Sprite, Position, controllerMouse);
+    TNECS_REGISTER_SYSTEM_wEXCL(in_game->world, drawMenu, 0, Menu);
+    TNECS_REGISTER_SYSTEM_wEXCL(in_game->world, drawText, 0, Text, Position, UpdateTimer);
+    TNECS_REGISTER_SYSTEM_wEXCL(in_game->world, controlMouse, 0, Sprite, Position, controllerMouse);
+    TNECS_REGISTER_SYSTEM_wEXCL(in_game->world, controlKeyboard, 0, Position, Sprite, controllerKeyboard);
+    TNECS_REGISTER_SYSTEM_wEXCL(in_game->world, controlGamepad, 0, Position, Sprite, controllerGamepad);
+    TNECS_REGISTER_SYSTEM_wEXCL(in_game->world, controlTouchpad, 0, Position, Sprite, controllerTouchpad);
 
     in_game->isrunning = true;
     in_game->keyboardInputMap = KeyboardInputMap_default;
@@ -1453,7 +1453,7 @@ void Game_menuOptions_Update(struct Game * in_game, tnecs_entity_t * in_entity, 
 void Game_menuOptions_Create(struct Game * in_game, tnecs_entity_t * in_entity, char * in_name) {
     SDL_Log("Game_menuOptions_Create");
     if (*in_entity == 0) {
-        *in_entity = TNECS_ENTITY_CREATE_WCOMPONENTS(in_game->world, Position, Text, RenderTimer);
+        *in_entity = TNECS_ENTITY_CREATE_wCOMPONENTS(in_game->world, Position, Text, RenderTimer);
     }
 
     struct Text * text_ptr = TNECS_GET_COMPONENT(in_game->world, *in_entity, Text);
