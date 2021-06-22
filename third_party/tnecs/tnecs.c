@@ -475,6 +475,8 @@ size_t tnecs_entitiesbytype_add(struct tnecs_World * in_world, tnecs_entity_t in
     TNECS_DEBUG_PRINTF("tnecs_entitiesbytype_add\n");
 
     size_t typeflag_id_new = tnecs_typeflagid(in_world, typeflag_new);
+    TNECS_DEBUG_ASSERT(typeflag_id_new < in_world->len_typeflags);
+    TNECS_DEBUG_ASSERT(in_world->len_entities_bytype[typeflag_id_new] > 0);
     if ((in_world->num_entities_bytype[typeflag_id_new] + 1) >= in_world->len_entities_bytype[typeflag_id_new]) {
         tnecs_growArray_bytype(in_world, typeflag_id_new);
     }
@@ -772,6 +774,8 @@ size_t tnecs_typeflagid(struct tnecs_World * in_world, tnecs_component_t in_type
 void * tnecs_realloc(void * ptr, size_t old_len, size_t new_len, size_t elem_bytesize) {
     TNECS_DEBUG_PRINTF("tnecs_realloc\n");
 
+    TNECS_DEBUG_ASSERT(new_len > 0);
+    TNECS_DEBUG_ASSERT(elem_bytesize > 0);
     void * temp = (void *)calloc(new_len, elem_bytesize);
     memcpy(temp, ptr, old_len * elem_bytesize);
     free(ptr);
@@ -838,6 +842,8 @@ void tnecs_growArray_typeflag(struct tnecs_World * in_world) {
     for (size_t i = old_len; i < in_world->len_typeflags; i++) {
         in_world->entities_bytype[i] = calloc(TNECS_INITIAL_ENTITY_LEN, sizeof(**in_world->entities_bytype));
         in_world->supertype_id_bytype[i] = calloc(TNECS_COMPONENT_CAP, sizeof(**in_world->supertype_id_bytype));
+        in_world->len_entities_bytype[i] = TNECS_INITIAL_ENTITY_LEN;
+        in_world->num_entities_bytype[i] = 0;
     }
 }
 
@@ -863,6 +869,7 @@ void tnecs_growArray_bytype(struct tnecs_World * in_world, size_t typeflag_id) {
     TNECS_DEBUG_PRINTF("tnecs_growArray_bytype\n");
 
     size_t old_len = in_world->len_entities_bytype[typeflag_id];
+    TNECS_DEBUG_ASSERT(old_len > 0);
     in_world->len_entities_bytype[typeflag_id] *= TNECS_ARRAY_GROWTH_FACTOR;
     in_world->entities_bytype[typeflag_id] = tnecs_realloc(in_world->entities_bytype[typeflag_id], old_len, in_world->len_entities_bytype[typeflag_id], sizeof(*in_world->entities_bytype[typeflag_id]));
     size_t new_component_num = in_world->num_components_bytype[typeflag_id];

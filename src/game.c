@@ -863,6 +863,8 @@ void Game_init(struct Game * in_game) {
 
     SDL_Log("Genesis of tnecs\n");
     in_game->world = tnecs_world_genesis();
+    SDL_assert(in_game->world->len_entities_bytype[0] > 0);
+
     SDL_Log("Components Registration\n");
     TNECS_REGISTER_COMPONENT(in_game->world, Position);             // 1
     TNECS_REGISTER_COMPONENT(in_game->world, Sprite);               // 2
