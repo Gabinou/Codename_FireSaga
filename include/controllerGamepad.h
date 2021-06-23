@@ -4,7 +4,6 @@
 #include <math.h>
 #include "map.h"
 #include "utilities.h"
-#include "flecs.h"
 
 extern SDL_Renderer * Game_renderer;
 
@@ -27,14 +26,6 @@ typedef struct controllerGamepad {
     float timeheld_button;
 } controllerGamepad;
 extern struct controllerGamepad controllerGamepad_default;
-
-typedef struct controllerGamepadModule {
-    ECS_DECLARE_COMPONENT(controllerGamepad);
-} controllerGamepadModule;
-
-void controllerGamepadModuleImport(ecs_world_t * in_world);
-#define controllerGamepadModuleImportHandles(handles)\
-    ECS_IMPORT_COMPONENT(handles, controllerGamepad);
 
 extern bool Gamepad_isPressed(struct controllerGamepad * in_gamepad, SDL_GameControllerButton * in_map, size_t mapped_len);
 extern void Gamepad_setController(struct controllerGamepad * in_gamepad, int32_t in_index);

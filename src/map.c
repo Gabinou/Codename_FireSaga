@@ -62,7 +62,7 @@ struct Map Map_default = {
     .enemies_onfield = NULL,
     .num_enemies_onfield = 0,
     .unitmap = NULL,
-    .tnecs_unitmap = NULL,
+    .unitmap = NULL,
     .essentials = NULL,
     // .boss;
     // .bossdied;
@@ -70,91 +70,22 @@ struct Map Map_default = {
 };
 
 
-extern void Map_Breakable_onBroken_tnecs(struct Map * in_map, tnecs_world_t * in_world, tnecs_entity_t in_breakable_ent) {
+extern void Map_Breakable_onBroken(struct Map * in_map, tnecs_world_t * in_world, tnecs_entity_t in_breakable_ent) {
 
 }
 
-extern void Map_Door_onOpen_tnecs(struct Map * in_map, tnecs_world_t * in_world, tnecs_entity_t in_door_ent) {
+extern void Map_Door_onOpen(struct Map * in_map, tnecs_world_t * in_world, tnecs_entity_t in_door_ent) {
 
 }
 
-extern void Map_Chest_onOpen_tnecs(struct Map * in_map, tnecs_world_t * in_world, tnecs_entity_t in_chest_ent) {
+extern void Map_Chest_onOpen(struct Map * in_map, tnecs_world_t * in_world, tnecs_entity_t in_chest_ent) {
 
 }
 
-extern void Map_Breakable_onBroken(struct Map * in_map, ecs_world_t * in_world, ecs_entity_t in_breakable_ent) {
-
-}
-
-extern void Map_Door_onOpen(struct Map * in_map, ecs_world_t * in_world, ecs_entity_t in_door_ent) {
-
-}
-
-extern void Map_Chest_onOpen(struct Map * in_map, ecs_world_t * in_world, ecs_entity_t in_chest_ent) {
-
-}
-
-extern void Map_globalRange_tnecs(struct Map * in_map, tnecs_world_t * in_world, uint8_t in_alignment) {
-    SDL_Log("Map_globalRange_tnecs");
+extern void Map_globalRange(struct Map * in_map, tnecs_world_t * in_world, uint8_t in_alignment) {
+    SDL_Log("Map_globalRange");
 
     tnecs_entity_t * unit_entities = NULL;
-    uint8_t num_unit_entities = 0;
-    if (in_map->globalRange != NULL) {
-        arrfree(in_map->globalRange);
-    }
-    arrsetlen(in_map->globalRange, in_map->row_len * in_map->col_len);
-    for (int_tile_t row = 0; row < in_map->row_len; row++) {
-        for (int_tile_t col = 0; col < in_map->col_len; col++) {
-            in_map->globalRange[row * in_map->col_len + col] = 0;
-        }
-    }
-    matrix_print_int16_t(in_map->globalRange, in_map->row_len, in_map->col_len);
-
-    switch (in_alignment) {
-        case ALIGNMENT_FRIENDLY:
-            unit_entities = in_map->tnecs_friendlies_onfield;
-            num_unit_entities = in_map->num_friendlies_onfield;
-            break;
-        case ALIGNMENT_ENEMY:
-            unit_entities = in_map->tnecs_enemies_onfield;
-            num_unit_entities = in_map->num_enemies_onfield;
-            break;
-    }
-    int_tile_t * costmapp = NULL;
-    int_tile_t * movemapp = NULL;
-    arrsetlen(movemapp, in_map->row_len * in_map->col_len);
-    int_tile_t * attackmapp = NULL;
-    arrsetlen(attackmapp, in_map->row_len * in_map->col_len);
-
-    SDL_Log("in_map->num_enemies_onfield %d", in_map->num_enemies_onfield);
-    SDL_Log("num_unit_entities %d", num_unit_entities);
-    SDL_Log("in_map->num_friendlies_onfield %d", in_map->num_friendlies_onfield);
-    for (uint8_t i = 0; i < num_unit_entities; i++) {
-        struct Unit * temp_unit = TNECS_GET_COMPONENT(in_world, unit_entities[i], Unit);
-        SDL_Log("unit name: %s", temp_unit->name);
-        struct Position * temp_pos = TNECS_GET_COMPONENT(in_world, unit_entities[i], Position);
-        struct Unit_stats temp_effective_stats = Unit_effectiveStats(temp_unit);
-        int_tile_t * range = Unit_computeRange(temp_unit);
-        uint8_t move = temp_effective_stats.move;
-        struct Point start = temp_pos->tilemap_pos;
-        costmapp = Map_Costmap_Movement_Compute_tnecs(in_map, in_world, unit_entities[i]);
-        movemapp = Pathfinding_Map_Move(costmapp, in_map->row_len, in_map->col_len, start, move, POINTS_MATRIX);
-        attackmapp = Pathfinding_Map_Attack(movemapp, in_map->row_len, in_map->col_len, move, range, POINTS_MATRIX, MOVETILE_INCLUDE);
-        in_map->globalRange = matrix_plus_int16_t(in_map->globalRange, attackmapp, in_map->row_len, in_map->col_len, 1);
-        // in_map->globalRange = matrix_plus_int16_t(in_map->globalRange, movemapp, in_map->row_len, in_map->col_len, 1);
-        arrfree(costmapp);
-        arrfree(movemapp);
-        arrfree(attackmapp);
-    }
-    matrix_print_int16_t(in_map->globalRange, in_map->row_len, in_map->col_len);
-}
-
-extern void Map_globalRange(struct Map * in_map, ecs_world_t * in_world, uint8_t in_alignment) {
-    SDL_Log("Map_globalRange");
-    ECS_IMPORT(in_world, UnitModule);
-    ECS_IMPORT(in_world, PositionModule);
-
-    ecs_entity_t * unit_entities = NULL;
     uint8_t num_unit_entities = 0;
     if (in_map->globalRange != NULL) {
         arrfree(in_map->globalRange);
@@ -187,9 +118,9 @@ extern void Map_globalRange(struct Map * in_map, ecs_world_t * in_world, uint8_t
     SDL_Log("num_unit_entities %d", num_unit_entities);
     SDL_Log("in_map->num_friendlies_onfield %d", in_map->num_friendlies_onfield);
     for (uint8_t i = 0; i < num_unit_entities; i++) {
-        struct Unit * temp_unit = ecs_get_mut(in_world, unit_entities[i], Unit, NULL);
+        struct Unit * temp_unit = TNECS_GET_COMPONENT(in_world, unit_entities[i], Unit);
         SDL_Log("unit name: %s", temp_unit->name);
-        struct Position * temp_pos = ecs_get_mut(in_world, unit_entities[i], Position, NULL);
+        struct Position * temp_pos = TNECS_GET_COMPONENT(in_world, unit_entities[i], Position);
         struct Unit_stats temp_effective_stats = Unit_effectiveStats(temp_unit);
         int_tile_t * range = Unit_computeRange(temp_unit);
         uint8_t move = temp_effective_stats.move;
@@ -454,26 +385,13 @@ void Map_writeJSON(struct Map * in_map, cJSON * in_jmap) {
     cJSON_AddItemToObject(in_jmap, "Tilemap", jtilemap);
 }
 
-void Map_Unitmap_Clear_tnecs(struct Map * in_map, tnecs_world_t * in_world) {
-    ecs_entity_t temp_unit_ent;
-    for (uint16_t row = 0; row < in_map->row_len; row++) {// This loop cache friendly.
-        for (uint16_t col = 0; col < in_map->col_len; col++) {
-            temp_unit_ent = in_map->tnecs_unitmap[row * in_map->col_len + col];
-            if (temp_unit_ent != 0) {
-                tnecs_entity_destroy(in_world, temp_unit_ent);
-            }
-        }
-    }
-    arrfree(in_map->tnecs_unitmap);
-}
-
-void Map_Unitmap_Clear(struct Map * in_map, ecs_world_t * in_world) {
-    ecs_entity_t temp_unit_ent;
+void Map_Unitmap_Clear(struct Map * in_map, tnecs_world_t * in_world) {
+    tnecs_entity_t temp_unit_ent;
     for (uint16_t row = 0; row < in_map->row_len; row++) {// This loop cache friendly.
         for (uint16_t col = 0; col < in_map->col_len; col++) {
             temp_unit_ent = in_map->unitmap[row * in_map->col_len + col];
             if (temp_unit_ent != 0) {
-                ecs_delete(in_world, temp_unit_ent);
+                tnecs_entity_destroy(in_world, temp_unit_ent);
             }
         }
     }
@@ -493,29 +411,7 @@ void Map_addArmy(struct Map * in_map, const uint8_t in_army) {
     }
 }
 
-void Map_Unit_Remove_tnecs(struct Map * in_map, const tnecs_entity_t in_entity) {
-    size_t * found = NULL;
-    if (array_isIn_uint64_t(in_map->tnecs_friendlies_onfield, in_entity, in_map->num_friendlies_onfield)) {
-        found = array_where_uint64_t(in_map->friendlies_onfield, in_entity, in_map->num_friendlies_onfield);
-        arrdel(in_map->tnecs_friendlies_onfield, found[0]);
-        in_map->num_friendlies_onfield--;
-        arrfree(found);
-    }
-    if (array_isIn_uint64_t(in_map->tnecs_enemies_onfield, in_entity, in_map->num_enemies_onfield)) {
-        found = array_where_uint64_t(in_map->enemies_onfield, in_entity, in_map->num_enemies_onfield);
-        arrdel(in_map->tnecs_enemies_onfield, found[0]);
-        in_map->num_enemies_onfield--;
-        arrfree(found);
-    }
-    if (array_isIn_uint64_t(in_map->tnecs_units_onfield, in_entity, in_map->num_units_onfield)) {
-        found = array_where_uint64_t(in_map->units_onfield, in_entity, in_map->num_units_onfield);
-        arrdel(in_map->tnecs_units_onfield, found[0]);
-        in_map->num_units_onfield--;
-        arrfree(found);
-    }
-}
-
-void Map_Unit_Remove(struct Map * in_map, const ecs_entity_t in_entity) {
+void Map_Unit_Remove(struct Map * in_map, const tnecs_entity_t in_entity) {
     size_t * found = NULL;
     if (array_isIn_uint64_t(in_map->friendlies_onfield, in_entity, in_map->num_friendlies_onfield)) {
         found = array_where_uint64_t(in_map->friendlies_onfield, in_entity, in_map->num_friendlies_onfield);
@@ -537,46 +433,20 @@ void Map_Unit_Remove(struct Map * in_map, const ecs_entity_t in_entity) {
     }
 }
 
-void Map_Unit_Remove_fromPos_tnecs(struct Map * in_map, const uint8_t col, const uint8_t row) {
-    SDL_Log("Map_Unit_Remove_fromPos_tnecs");
-    SDL_assert(in_map->tnecs_unitmap != NULL);
-    ecs_entity_t ontile_ent = in_map->tnecs_unitmap[row * in_map->col_len + col];
-    in_map->tnecs_unitmap[row * in_map->col_len + col] = 0;
-    Map_Unit_Remove_tnecs(in_map, ontile_ent);
-}
-
-
 void Map_Unit_Remove_fromPos(struct Map * in_map, const uint8_t col, const uint8_t row) {
     SDL_Log("Map_Unit_Remove_fromPos");
     SDL_assert(in_map->unitmap != NULL);
-    ecs_entity_t ontile_ent = in_map->unitmap[row * in_map->col_len + col];
+    tnecs_entity_t ontile_ent = in_map->unitmap[row * in_map->col_len + col];
     in_map->unitmap[row * in_map->col_len + col] = 0;
     Map_Unit_Remove(in_map, ontile_ent);
 }
 
-void Map_Unit_Remove_fromEntity_tnecs(struct Map * in_map, tnecs_world_t * in_world, const tnecs_entity_t in_entity) {
-    SDL_Log("Map_Unit_Remove_fromEntity_tnecs");
-    // assumes there are no doubles in the _onfield arrays
-    SDL_assert(in_map->tnecs_unitmap != NULL);
-    struct Position * temp_position = TNECS_GET_COMPONENT(in_world, in_entity, Position);
-    tnecs_entity_t ontile_ent = 0;
-    if (temp_position->onTilemap) {
-        ontile_ent = in_map->tnecs_unitmap[temp_position->tilemap_pos.y * in_map->col_len + temp_position->tilemap_pos.x];
-    }
-    SDL_assert(ontile_ent != 0);
-    if (ontile_ent == in_entity) {
-        in_map->tnecs_unitmap[temp_position->tilemap_pos.y * in_map->col_len + temp_position->tilemap_pos.x] = 0;
-    }
-    Map_Unit_Remove_tnecs(in_map, in_entity);
-}
-
-void Map_Unit_Remove_fromEntity(struct Map * in_map, ecs_world_t * in_world, const ecs_entity_t in_entity) {
+void Map_Unit_Remove_fromEntity(struct Map * in_map, tnecs_world_t * in_world, const tnecs_entity_t in_entity) {
     SDL_Log("Map_Unit_Remove_fromEntity");
     // assumes there are no doubles in the _onfield arrays
-    ECS_IMPORT(in_world, PositionModule);
     SDL_assert(in_map->unitmap != NULL);
-    const struct Position * temp_position = ecs_get(in_world, in_entity, Position);
-    ecs_entity_t ontile_ent = 0;
+    struct Position * temp_position = TNECS_GET_COMPONENT(in_world, in_entity, Position);
+    tnecs_entity_t ontile_ent = 0;
     if (temp_position->onTilemap) {
         ontile_ent = in_map->unitmap[temp_position->tilemap_pos.y * in_map->col_len + temp_position->tilemap_pos.x];
     }
@@ -587,43 +457,21 @@ void Map_Unit_Remove_fromEntity(struct Map * in_map, ecs_world_t * in_world, con
     Map_Unit_Remove(in_map, in_entity);
 }
 
-void Map_Unit_Put_tnecs(struct Map * in_map, tnecs_world_t * in_world, const uint8_t col, const uint8_t row, tnecs_entity_t in_entity) {
-    SDL_Log("Map_Unit_Put_tnecs");
-    SDL_assert(in_map->tnecs_unitmap != NULL);
-    SDL_assert((row < in_map->row_len) && (col < in_map->col_len));
-    in_map->tnecs_unitmap[row * in_map->col_len + col] = in_entity;
-    arrput(in_map->units_onfield, in_entity);
-    in_map->num_units_onfield++;
-    struct Unit * temp_unit = TNECS_GET_COMPONENT(in_world, in_entity, Unit);
-    SDL_assert(temp_unit != NULL);
-
-    switch (utilities_army2alignment(temp_unit->army)) {
-        case ALIGNMENT_FRIENDLY:
-            SDL_Log("Putting friendly: %s", temp_unit->name);
-            arrput(in_map->friendlies_onfield, in_entity);
-            in_map->num_friendlies_onfield++;
-            break;
-        case ALIGNMENT_ENEMY:
-            SDL_Log("Putting enemy : %s", temp_unit->name);
-            arrput(in_map->enemies_onfield, in_entity);
-            in_map->num_enemies_onfield++;
-            break;
-    }
-    if (temp_unit->_id == 0) {
-        Map_addArmy(in_map, temp_unit->army);
-    }
-}
-
-void Map_Unit_Put(struct Map * in_map, ecs_world_t * in_world, const uint8_t col, const uint8_t row, ecs_entity_t in_entity) {
+void Map_Unit_Put(struct Map * in_map, tnecs_world_t * in_world, const uint8_t col, const uint8_t row, tnecs_entity_t in_entity) {
     SDL_Log("Map_Unit_Put");
-    ECS_IMPORT(in_world, UnitModule);
-    ECS_IMPORT(in_world, PositionModule);
+    SDL_Log("in_entity %d", in_entity);
     SDL_assert(in_map->unitmap != NULL);
     SDL_assert((row < in_map->row_len) && (col < in_map->col_len));
+
+    size_t typeflag_id = tnecs_typeflagid(in_world, in_world->entity_typeflags[in_entity]);
+    SDL_assert(in_world->entities_bytype[typeflag_id][(in_world->num_entities_bytype[typeflag_id] - 1)] == in_entity);
     in_map->unitmap[row * in_map->col_len + col] = in_entity;
     arrput(in_map->units_onfield, in_entity);
     in_map->num_units_onfield++;
-    const struct Unit * temp_unit = ecs_get(in_world, in_entity, Unit);
+    struct Unit * temp_unit = TNECS_GET_COMPONENT(in_world, in_entity, Unit);
+
+
+    SDL_assert(in_world->entities_bytype[typeflag_id][(in_world->num_entities_bytype[typeflag_id] - 1)] == in_entity);
     SDL_assert(temp_unit != NULL);
 
     switch (utilities_army2alignment(temp_unit->army)) {
@@ -643,7 +491,7 @@ void Map_Unit_Put(struct Map * in_map, ecs_world_t * in_world, const uint8_t col
     }
 }
 
-tnecs_entity_t * Map_Unit_Gets_tnecs(struct Map * in_map, tnecs_world_t * in_world, const uint8_t in_army) {
+tnecs_entity_t * Map_Unit_Gets(struct Map * in_map, tnecs_world_t * in_world, const uint8_t in_army) {
     tnecs_entity_t * unit_ents = NULL;
     tnecs_entity_t current_unit_ent;
     struct Unit * current_unit;
@@ -657,53 +505,18 @@ tnecs_entity_t * Map_Unit_Gets_tnecs(struct Map * in_map, tnecs_world_t * in_wor
     return (unit_ents);
 }
 
-
-ecs_entity_t * Map_Unit_Gets(struct Map * in_map, ecs_world_t * in_world, const uint8_t in_army) {
-    ecs_entity_t * unit_ents = NULL;
-    ecs_entity_t current_unit_ent;
-    struct Unit * current_unit;
-    ECS_IMPORT(in_world, UnitModule);
-    for (uint8_t i = 0; i < in_map->num_units_onfield; i++) {
-        current_unit_ent = in_map->units_onfield[i];
-        current_unit = ecs_get_mut(in_world, current_unit_ent, Unit, NULL);
-        if (current_unit->army == in_army) {
-            arrput(unit_ents, current_unit_ent);
-        }
-    }
-    return (unit_ents);
-}
-
-tnecs_entity_t Map_Unit_Get_tnecs(struct Map * in_map, const uint8_t col, const uint8_t row) {
+tnecs_entity_t Map_Unit_Get(struct Map * in_map, const uint8_t col, const uint8_t row) {
     SDL_Log("Map_Unit_Get");
     tnecs_entity_t unit_ent = 0;
-    SDL_assert(in_map->tnecs_unitmap != NULL);
-    SDL_assert((col < in_map->col_len) && (row < in_map->row_len));
-    unit_ent = in_map->tnecs_unitmap[row * in_map->col_len + col];
-    return (unit_ent);
-}
-
-ecs_entity_t Map_Unit_Get(struct Map * in_map, const uint8_t col, const uint8_t row) {
-    SDL_Log("Map_Unit_Get");
-    ecs_entity_t unit_ent = 0;
     SDL_assert(in_map->unitmap != NULL);
     SDL_assert((col < in_map->col_len) && (row < in_map->row_len));
     unit_ent = in_map->unitmap[row * in_map->col_len + col];
     return (unit_ent);
 }
 
-void Map_Unit_Move_tnecs(struct Map * in_map, const uint8_t col, const uint8_t row, const uint8_t new_col, const uint8_t new_row) {
-    // Does NOT check if [new_x, new_y] is empty.
-    SDL_Log("Move Unit %d %d %d %d", col, row, new_col, new_row);
-    SDL_assert(in_map->tnecs_unitmap != NULL);
-    SDL_assert((col < in_map->col_len) && (row < in_map->row_len) && (new_col < in_map->col_len) && (new_row < in_map->row_len));
-    in_map->tnecs_unitmap[new_row * in_map->col_len + new_col] = in_map->tnecs_unitmap[row * in_map->col_len + col];
-    in_map->tnecs_unitmap[row * in_map->col_len + col] = 0;
-
-}
-
 void Map_Unit_Move(struct Map * in_map, const uint8_t col, const uint8_t row, const uint8_t new_col, const uint8_t new_row) {
     // Does NOT check if [new_x, new_y] is empty.
-    SDL_Log("Move Unit %d %d %d %d", col, row, new_col, new_row);
+    SDL_Log("Map_Unit_Move %d %d %d %d", col, row, new_col, new_row);
     SDL_assert(in_map->unitmap != NULL);
     SDL_assert((col < in_map->col_len) && (row < in_map->row_len) && (new_col < in_map->col_len) && (new_row < in_map->row_len));
     in_map->unitmap[new_row * in_map->col_len + new_col] = in_map->unitmap[row * in_map->col_len + col];
@@ -716,49 +529,18 @@ void Map_removeMapArrival(struct Map * in_map, const uint8_t index) {
     arrdel(in_map->arrivals, index);
 }
 
-int_tile_t * Map_Costmap_PushPull_Compute_tnecs(struct Map * in_map, tnecs_world_t * in_world, tnecs_entity_t in_unit_ent) {
-    SDL_Log("Map_Costmap_PushPull_Compute_tnecs");
-    int_tile_t * costmap = NULL;
-    arrsetlen(costmap, in_map->row_len * in_map->col_len);
-    SDL_assert(in_unit_ent != 0);
-    struct Unit * in_unit_ptr = TNECS_GET_COMPONENT(in_world, in_unit_ent, Unit);
-    struct Tile * temp_tile;
-    int16_t tile_ind = 0;
-    int8_t in_unit_movetype = in_unit_ptr->mvt_type;
-    uint8_t in_army = in_unit_ptr->army;
-    uint8_t ontile_army;
-    ecs_entity_t ontile_unit_ent;
-    SDL_assert(in_unit_movetype > UNIT_MVT_START);
-    for (uint8_t row = 0; row < in_map->row_len; row++) {
-        for (uint8_t col = 0; col < in_map->col_len; col++) {
-            tile_ind = in_map->tilemap[row * in_map->col_len + col] / DEFAULT_TILE_DIVISOR;
-            ontile_unit_ent = in_map->tnecs_unitmap[row * in_map->col_len + col];
-            temp_tile = hmget(in_map->tiles, tile_ind);
-            costmap[row * in_map->col_len + col] = temp_tile->cost_array[in_unit_movetype];
-            if (ontile_unit_ent != 0) {
-                struct Unit * ontile_unit_ptr = TNECS_GET_COMPONENT(in_world, ontile_unit_ent, Unit);
-                if (ontile_unit_ptr != NULL) {
-                    costmap[row * in_map->col_len + col] = COSTMAP_BLOCKED;
-                }
-            }
-        }
-    }
-    return (costmap);
-}
-
-int_tile_t * Map_Costmap_PushPull_Compute(struct Map * in_map, ecs_world_t * in_world, ecs_entity_t in_unit_ent) {
+int_tile_t * Map_Costmap_PushPull_Compute(struct Map * in_map, tnecs_world_t * in_world, tnecs_entity_t in_unit_ent) {
     SDL_Log("Map_Costmap_PushPull_Compute");
     int_tile_t * costmap = NULL;
     arrsetlen(costmap, in_map->row_len * in_map->col_len);
-    ECS_IMPORT(in_world, UnitModule);
     SDL_assert(in_unit_ent != 0);
-    struct Unit * in_unit_ptr = ecs_get_mut(in_world, in_unit_ent, Unit, NULL);
+    struct Unit * in_unit_ptr = TNECS_GET_COMPONENT(in_world, in_unit_ent, Unit);
     struct Tile * temp_tile;
     int16_t tile_ind = 0;
     int8_t in_unit_movetype = in_unit_ptr->mvt_type;
     uint8_t in_army = in_unit_ptr->army;
     uint8_t ontile_army;
-    ecs_entity_t ontile_unit_ent;
+    tnecs_entity_t ontile_unit_ent;
     SDL_assert(in_unit_movetype > UNIT_MVT_START);
     for (uint8_t row = 0; row < in_map->row_len; row++) {
         for (uint8_t col = 0; col < in_map->col_len; col++) {
@@ -767,7 +549,7 @@ int_tile_t * Map_Costmap_PushPull_Compute(struct Map * in_map, ecs_world_t * in_
             temp_tile = hmget(in_map->tiles, tile_ind);
             costmap[row * in_map->col_len + col] = temp_tile->cost_array[in_unit_movetype];
             if (ontile_unit_ent != 0) {
-                struct Unit * ontile_unit_ptr = ecs_get_mut(in_world, ontile_unit_ent, Unit, NULL);
+                struct Unit * ontile_unit_ptr = TNECS_GET_COMPONENT(in_world, ontile_unit_ent, Unit);
                 if (ontile_unit_ptr != NULL) {
                     costmap[row * in_map->col_len + col] = COSTMAP_BLOCKED;
                 }
@@ -777,7 +559,7 @@ int_tile_t * Map_Costmap_PushPull_Compute(struct Map * in_map, ecs_world_t * in_
     return (costmap);
 }
 
-int_tile_t * Map_Costmap_Movement_Compute_tnecs(struct Map * in_map, tnecs_world_t * in_world, tnecs_entity_t in_unit_ent) {
+int_tile_t * Map_Costmap_Movement_Compute(struct Map * in_map, tnecs_world_t * in_world, tnecs_entity_t in_unit_ent) {
     SDL_Log("Map_Costmap_Movement_Compute");
     int_tile_t * costmap = NULL;
     arrsetlen(costmap, in_map->row_len * in_map->col_len);
@@ -788,45 +570,7 @@ int_tile_t * Map_Costmap_Movement_Compute_tnecs(struct Map * in_map, tnecs_world
     int8_t in_unit_movetype = in_unit_ptr->mvt_type;
     uint8_t in_army = in_unit_ptr->army;
     uint8_t ontile_army;
-    ecs_entity_t ontile_unit_ent;
-
-    SDL_Log("in_unit_movetype: %d", in_unit_movetype);
-    SDL_assert(in_unit_movetype > UNIT_MVT_START);
-    for (uint8_t row = 0; row < in_map->row_len; row++) {
-        for (uint8_t col = 0; col < in_map->col_len; col++) {
-            tile_ind = in_map->tilemap[row * in_map->col_len + col] / DEFAULT_TILE_DIVISOR;
-            ontile_unit_ent = in_map->tnecs_unitmap[row * in_map->col_len + col];
-            temp_tile = hmget(in_map->tiles, tile_ind);
-            costmap[row * in_map->col_len + col] = temp_tile->cost_array[in_unit_movetype];
-            if (ontile_unit_ent != 0) {
-                struct Unit * ontile_unit_ptr = TNECS_GET_COMPONENT(in_world, ontile_unit_ent, Unit);
-                SDL_assert(ontile_unit_ptr != NULL);
-                ontile_army = ontile_unit_ptr->army;
-                SDL_assert((ontile_army < ARMY_END) && (ontile_army > ARMY_START));
-                if (utilities_army2alignment(ontile_army) != utilities_army2alignment(in_army)) {
-                    costmap[row * in_map->col_len + col] = COSTMAP_BLOCKED;
-                }
-            }
-        }
-    }
-    return (costmap);
-}
-
-int_tile_t * Map_Costmap_Movement_Compute(struct Map * in_map, ecs_world_t * in_world, ecs_entity_t in_unit_ent) {
-    SDL_Log("Map_Costmap_Movement_Compute");
-    int_tile_t * costmap = NULL;
-    arrsetlen(costmap, in_map->row_len * in_map->col_len);
-
-    ECS_IMPORT(in_world, UnitModule);
-    SDL_assert(in_unit_ent != 0);
-
-    struct Unit * in_unit_ptr = ecs_get_mut(in_world, in_unit_ent, Unit, NULL);
-    struct Tile * temp_tile;
-    int16_t tile_ind = 0;
-    int8_t in_unit_movetype = in_unit_ptr->mvt_type;
-    uint8_t in_army = in_unit_ptr->army;
-    uint8_t ontile_army;
-    ecs_entity_t ontile_unit_ent;
+    tnecs_entity_t ontile_unit_ent;
 
     SDL_Log("in_unit_movetype: %d", in_unit_movetype);
     SDL_assert(in_unit_movetype > UNIT_MVT_START);
@@ -837,7 +581,7 @@ int_tile_t * Map_Costmap_Movement_Compute(struct Map * in_map, ecs_world_t * in_
             temp_tile = hmget(in_map->tiles, tile_ind);
             costmap[row * in_map->col_len + col] = temp_tile->cost_array[in_unit_movetype];
             if (ontile_unit_ent != 0) {
-                struct Unit * ontile_unit_ptr = ecs_get_mut(in_world, ontile_unit_ent, Unit, NULL);
+                struct Unit * ontile_unit_ptr = TNECS_GET_COMPONENT(in_world, ontile_unit_ent, Unit);
                 SDL_assert(ontile_unit_ptr != NULL);
                 ontile_army = ontile_unit_ptr->army;
                 SDL_assert((ontile_army < ARMY_END) && (ontile_army > ARMY_START));

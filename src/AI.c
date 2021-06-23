@@ -12,13 +12,6 @@ struct AI AI_default = {
     .move_type = 1,
 };
 
-// void AIModuleImport(tnecs_world_t * in_world) {
-//     ECS_MODULE(in_world, AIModule);
-//     ECS_COMPONENT(in_world, AI);
-//     ECS_SET_COMPONENT(AI);
-//     ECS_EXPORT_COMPONENT(AI);
-// }
-
 extern int8_t AI_Forecast_Rating(struct Combat_Forecast in_forecast) {
     int8_t rating = 0;
     int8_t rating_buffer;
@@ -76,7 +69,7 @@ extern tnecs_entity_t AI_Target_Heal(tnecs_world_t * in_world, tnecs_entity_t in
     tnecs_entity_t out_target = 0;
     temp_ai_ptr = TNECS_GET_COMPONENT(in_world, in_staffWielder, AI);
     if (num_patients > 0) {
-        out_target = tnecs_entity_isIn(temp_ai_ptr->target_protect, in_possiblePatients, num_patients);
+        out_target = entity_isIn(temp_ai_ptr->target_protect, in_possiblePatients, num_patients);
 
         if (out_target == 0) {
             float missing_hp_prop = 0.0f;
@@ -131,7 +124,7 @@ tnecs_entity_t AI_Target_Silence(tnecs_world_t * in_world, tnecs_entity_t in_sta
     temp_ai_ptr = TNECS_GET_COMPONENT(in_world, in_staffWielder, AI);
     tnecs_entity_t out_target = 0;
     if (num_defender > 0) {
-        out_target = tnecs_entity_isIn(temp_ai_ptr->target_kill, in_possibleDefenders, num_defender);
+        out_target = entity_isIn(temp_ai_ptr->target_kill, in_possibleDefenders, num_defender);
         if (out_target == 0) {
             int8_t temp_rating;
             int8_t max_rating = INT8_MIN;
@@ -162,7 +155,7 @@ tnecs_entity_t AI_Target_Pull(tnecs_world_t * in_world, tnecs_entity_t in_staffW
     switch (temp_ai_ptr->priority) {
         case AI_PRIORITY_PROTECT:
             if (num_friendly > 0) {
-                out_target = tnecs_entity_isIn(temp_ai_ptr->target_protect, in_friendlies, num_friendly);
+                out_target = entity_isIn(temp_ai_ptr->target_protect, in_friendlies, num_friendly);
                 if (out_target > 0) {
                     temp_unit_ptr = TNECS_GET_COMPONENT(in_world, out_target, Unit);
                     missing_hp_prop = 1.0f - ((float)temp_unit_ptr->current_hp / (float)temp_unit_ptr->effective_stats.hp);
@@ -174,7 +167,7 @@ tnecs_entity_t AI_Target_Pull(tnecs_world_t * in_world, tnecs_entity_t in_staffW
             break;
         case AI_PRIORITY_KILL:
             if (num_enemy > 0) {
-                out_target = tnecs_entity_isIn(temp_ai_ptr->target_kill, in_enemies, num_enemy);
+                out_target = entity_isIn(temp_ai_ptr->target_kill, in_enemies, num_enemy);
             }
             break;
     }
@@ -217,7 +210,7 @@ tnecs_entity_t AI_Target_Attack(tnecs_world_t * in_world, tnecs_entity_t in_atta
     temp_ai_ptr = TNECS_GET_COMPONENT(in_world, in_attacker, AI);
     tnecs_entity_t out_target = 0;
     if (num_defender > 0) {
-        out_target = tnecs_entity_isIn(temp_ai_ptr->target_kill, in_possibleDefenders, num_defender);
+        out_target = entity_isIn(temp_ai_ptr->target_kill, in_possibleDefenders, num_defender);
 
         if (out_target == 0) {
             int8_t temp_rating;

@@ -34,14 +34,6 @@ typedef struct fillUpBar {
 
 extern struct fillUpBar fillUpBar_default;
 
-typedef struct HUDModule {
-    ECS_DECLARE_COMPONENT(fillUpBar);
-} HUDModule;
-
-void HUDModuleImport(ecs_world_t * in_world);
-#define HUDModuleImportHandles(handles)\
-    ECS_IMPORT_COMPONENT(handles, fillUpBar);
-
 // a menu Manage of some sort draws menu according to the number of menu objects in it, or something.
 extern struct MenuOption {
     // Unaligned size 120 bytes
@@ -55,9 +47,9 @@ extern struct MenuOption {
     void * data1_childEvent;
     void * data2_childEvent;
 
-    ecs_entity_t ent_text;
+    tnecs_entity_t ent_text;
 
-    ecs_entity_t ent_icon;
+    tnecs_entity_t ent_icon;
 
     struct Pointf posf_icon; // [0, 1] inside cell
     struct Pointf posf_text; // [0, 1] inside cell
@@ -135,26 +127,15 @@ typedef struct Menu {
 } Menu;
 extern struct Menu Menu_default;
 
-typedef struct MenuModule {
-    ECS_DECLARE_COMPONENT(Menu);
-} MenuModule;
-
-void MenuModuleImport(ecs_world_t * in_world);
-#define MenuModuleImportHandles(handles)\
-    ECS_IMPORT_COMPONENT(handles, Menu);
-
 extern void Menu_Rects_Compute(struct Menu * in_menu);
 extern void Menu_optionRects_Compute(struct Menu * in_menu);
-extern uint16_t Menu_cellWidth_Compute_tnecs(tnecs_world_t * in_world, struct Menu * in_menu, size_t row, size_t col);
-extern uint16_t Menu_cellWidth_Compute(ecs_world_t * in_world, struct Menu * in_menu, size_t row, size_t col);
-extern uint16_t Menu_cellsWidths_Compute(ecs_world_t * in_world, struct Menu * in_menu);
-extern uint16_t Menu_cellsWidths_Compute_tnecs(tnecs_world_t * in_world, struct Menu * in_menu);
+extern uint16_t Menu_cellWidth_Compute(tnecs_world_t * in_world, struct Menu * in_menu, size_t row, size_t col);
+extern uint16_t Menu_cellsWidths_Compute(tnecs_world_t * in_world, struct Menu * in_menu);
 
 extern uint16_t Menu_Width_Compute(struct Menu * in_menu);
 extern uint16_t Menu_Height_Compute(struct Menu * in_menu);
 extern uint16_t Menu_Patchsize_Compute(struct Menu * in_menu);
-extern uint16_t Menu_rowHeight_Compute(ecs_world_t * in_world, struct Menu * in_menu);
-extern uint16_t Menu_rowHeight_Compute_tnecs(tnecs_world_t * in_world, struct Menu * in_menu);
+extern uint16_t Menu_rowHeight_Compute(tnecs_world_t * in_world, struct Menu * in_menu);
 extern void Menu_Cols_init(struct Menu * in_menu);
 
 extern struct Point Menu_cursorPos_Compute(struct Menu * in_menu);
@@ -164,18 +145,18 @@ extern void loadMenus();
 extern void loadMenu(uint8_t in_menuind);
 extern void unloadMenu(uint8_t in_menuind);
 
-extern void Menu_Patches_Draw(struct Menu * in_menu);
-extern void Menu_Options_Draw(ecs_world_t * in_world, struct Menu * in_menu);
-extern void Menu_Options_Draw_tnecs(tnecs_world_t * in_world, struct Menu * in_menu);
+void Menu_Patches_Draw(struct Menu * in_menu);
+
+extern void Menu_Options_Draw(tnecs_world_t * in_world, struct Menu * in_menu);
 extern void Menu_Options_init();
 
 struct MenuOption * Menu_Weapons_options(struct Unit * in_attacker);
 struct MenuOption * menu_staffs_options(struct Unit * in_healer);
-struct MenuOption * menu_defenders_options(ecs_entity_t * defenders, uint8_t num_defenders);
-struct MenuOption * menu_patients_options(ecs_entity_t * patients, uint8_t num_patients);
-struct MenuOption * menu_talkers_options(ecs_entity_t * talkers, uint8_t num_talkers);
-struct MenuOption * menu_traders_options(ecs_entity_t * traders, uint8_t num_traders);
-struct MenuOption * menu_spectators_options(ecs_entity_t * spectators, uint8_t num_spectators);
-struct MenuOption * menu_rescuees_options(ecs_entity_t * rescuees, uint8_t num_rescuees);
+struct MenuOption * menu_defenders_options(tnecs_entity_t * defenders, uint8_t num_defenders);
+struct MenuOption * menu_patients_options(tnecs_entity_t * patients, uint8_t num_patients);
+struct MenuOption * menu_talkers_options(tnecs_entity_t * talkers, uint8_t num_talkers);
+struct MenuOption * menu_traders_options(tnecs_entity_t * traders, uint8_t num_traders);
+struct MenuOption * menu_spectators_options(tnecs_entity_t * spectators, uint8_t num_spectators);
+struct MenuOption * menu_rescuees_options(tnecs_entity_t * rescuees, uint8_t num_rescuees);
 
 #endif /* MENU_H */

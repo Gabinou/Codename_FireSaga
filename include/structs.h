@@ -4,7 +4,6 @@
 #include "SDL2/SDL.h"
 #include "types.h"
 #include "enums.h"
-#include "flecs.h"
 #include "tnecs.h"
 #include <stdint.h>
 #include <stdbool.h>
@@ -272,11 +271,6 @@ struct Shops_hash {
     struct Shop_item * value;
 };
 
-struct ecs_ent_hash {
-    uint64_t key;
-    uint64_t value;
-};
-
 extern struct Inventory_item {
     int16_t id;
     uint8_t used;
@@ -462,36 +456,18 @@ struct Uint64_t_nestedhash {
 
 extern struct Uint64_t_nestedhash * lvlup_skills;
 
-// FLECS TRAITS
 typedef struct UpdateTimer {
     float last_update;
     float update_time; // 0.0f means update one time
     uint32_t frame_count;
-    void (*onUpdate)(ecs_world_t *, ecs_entity_t, uint32_t, float, void *);
-} UpdateTimer;
-
-typedef struct tnecs_UpdateTimer {
-    float last_update;
-    float update_time; // 0.0f means update one time
-    uint32_t frame_count;
     void (*onUpdate)(tnecs_world_t *, tnecs_entity_t, uint32_t, float, void *);
-} tnecs_UpdateTimer;
+} UpdateTimer;
 
 typedef struct RenderTimer {
     float last_render;
     float render_time; // 0.0f means update one time
     uint32_t frame_count;
 } RenderTimer;
-
-typedef struct TraitsModule {
-    ECS_DECLARE_COMPONENT(UpdateTimer);
-    ECS_DECLARE_COMPONENT(RenderTimer);
-} TraitsModule;
-
-void TraitsModuleImport(ecs_world_t * in_world);
-#define TraitsModuleImportHandles(handles)\
-    ECS_IMPORT_COMPONENT(handles, UpdateTimer);\
-    ECS_IMPORT_COMPONENT(handles, RenderTimer);
 
 
 #endif /* STRUCTS_H */

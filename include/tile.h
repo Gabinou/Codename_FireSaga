@@ -7,7 +7,6 @@
 #include "utilities.h"
 #include "enums.h"
 #include "physfs.h"
-#include "flecs.h"
 #include "filesystem.h"
 
 typedef struct Tile {
@@ -25,16 +24,6 @@ typedef struct Tile {
     struct Chest * chest;
 } Tile;
 extern struct Tile Tile_default;
-
-typedef struct TileModule {
-    ECS_DECLARE_COMPONENT(Tile);
-} TileModule;
-
-void TileModuleImport(ecs_world_t * in_world);
-#define TileModuleImportHandles(handles)\
-    ECS_IMPORT_COMPONENT(handles, Tile);
-
-
 
 struct Tiles_hash {
     int_tile_t key;
@@ -54,15 +43,6 @@ typedef struct Chest {
 } Chest;
 extern struct Chest Chest_default;
 
-typedef struct ChestModule {
-    ECS_DECLARE_COMPONENT(Chest);
-} ChestModule;
-
-void ChestModuleImport(ecs_world_t * in_world);
-#define ChestModuleImportHandles(handles)\
-    ECS_IMPORT_COMPONENT(handles, Chest);
-
-
 typedef struct Breakable {
     // makes position passable OR impassable
     // according to position component + relative
@@ -74,14 +54,6 @@ typedef struct Breakable {
 } Breakable;
 extern struct Breakable Breakable_default;
 
-typedef struct BreakableModule {
-    ECS_DECLARE_COMPONENT(Breakable);
-} BreakableModule;
-
-void BreakableModuleImport(ecs_world_t * in_world);
-#define BreakableModuleImportHandles(handles)\
-    ECS_IMPORT_COMPONENT(handles, Breakable);
-
 typedef struct Door {
     struct Tiles_list * toChange_onOpen;
     int_chapter_t chapter_open;
@@ -89,15 +61,6 @@ typedef struct Door {
     int_scene_t scene_onOpen;
 } Door;
 extern struct Door Door_default;
-
-typedef struct DoorModule {
-    ECS_DECLARE_COMPONENT(Door);
-} DoorModule;
-
-void DoorModuleImport(ecs_world_t * in_world);
-#define DoorModuleImportHandles(handles)\
-    ECS_IMPORT_COMPONENT(handles, Door);
-
 
 extern void Tile_writeJSON(struct Tile * in_tile, cJSON * in_jtile);
 extern void Tile_readJSON(struct Tile * in_tile, cJSON * in_jtile);

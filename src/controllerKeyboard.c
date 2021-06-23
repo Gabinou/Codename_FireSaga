@@ -12,13 +12,6 @@ struct controllerKeyboard controllerKeyboard_default = {
     .inputmap = NULL,
 };
 
-void controllerKeyboardModuleImport(ecs_world_t * in_world) {
-    ECS_MODULE(in_world, controllerKeyboardModule);
-    ECS_COMPONENT(in_world, controllerKeyboard);
-    ECS_SET_COMPONENT(controllerKeyboard);
-    ECS_EXPORT_COMPONENT(controllerKeyboard);
-}
-
 void Keyboard_checkMove(struct controllerKeyboard * in_keyboard, int8_t * in_pressed, size_t pressed_num, float dt) {
     bool arrequal = false;
     if ((in_keyboard->held_button_num == pressed_num)  && (pressed_num != 0)) {

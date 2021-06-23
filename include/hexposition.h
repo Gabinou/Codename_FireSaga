@@ -4,7 +4,6 @@
 #include <stdlib.h>
 #include <stdint.h>
 #include <math.h>
-#include "flecs.h"
 #include "narrative.h"
 #include "q_math.h"
 #include "stb_ds.h"
@@ -30,21 +29,12 @@ typedef struct HexPosition {
     bool orientation;
     int32_t radius; // e.g. size of hexagon/side length.
 } HexPosition;
+extern struct HexPosition HexPosition_default;
 
 enum ORIENTATIONS {
     FLAT_TOP = 0,
     POINTY_TOP = 1,
 };
-
-extern struct HexPosition HexPosition_default;
-
-typedef struct HexPositionModule {
-    ECS_DECLARE_COMPONENT(HexPosition);
-} HexPositionModule;
-
-void HexPositionModuleImport(ecs_world_t * in_world);
-#define HexPositionModuleImportHandles(handles)\
-    ECS_IMPORT_COMPONENT(handles, HexPosition);
 
 extern void HexPosition_Move(struct HexPosition * in_hexpos, uint8_t direction, uint8_t magnitude);
 extern uint8_t HexDistance_HexPoints(struct HexPoint in_point1, struct HexPoint in_point2);

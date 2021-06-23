@@ -44,14 +44,6 @@ typedef struct Sprite {
 } Sprite;
 extern struct Sprite Sprite_default;
 
-typedef struct SpriteModule {
-    ECS_DECLARE_COMPONENT(Sprite);
-} SpriteModule;
-
-void SpriteModuleImport(ecs_world_t * in_world);
-#define SpriteModuleImportHandles(handles)\
-    ECS_IMPORT_COMPONENT(handles, Sprite);
-
 extern void Sprite_Rects_init(struct Sprite * in_sprite, struct Point in_position);
 extern void Sprite_slideType_Set(struct Sprite * in_sprite, uint8_t in_slidetype);
 extern void Sprite_animatedRects_Init(struct Sprite * in_sprite);
