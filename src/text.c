@@ -18,6 +18,7 @@ struct Text Text_default = {
 };
 
 void onUpdate_FPS(tnecs_world_t * in_world, tnecs_entity_t in_entity_fps, uint32_t frame_count, float last_update_s, void * data) {
+    // SDL_Log("onUpdate_FPS");
     Text * fps_text_ptr = TNECS_GET_COMPONENT(in_world, in_entity_fps, Text);
     snprintf(fps_text_ptr->text_line, sizeof(char) * DEFAULT_BUFFER_SIZE, "%.1f", (frame_count / last_update_s));
 }

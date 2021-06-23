@@ -117,7 +117,7 @@ void drawText(tnecs_system_input_t * in_input) {
             struct Point pos = position_ptr[ent].pixel_pos;
             if (updatetimer_ptr[ent].onUpdate != NULL) {
                 updatetimer_ptr[ent].frame_count++;
-                updatetimer_ptr[ent].last_update += in_input->deltat;
+                updatetimer_ptr[ent].last_update += (in_input->deltat  / 1e9);
                 if (updatetimer_ptr[ent].last_update >= updatetimer_ptr[ent].update_time) {
                     (*updatetimer_ptr[ent].onUpdate)(in_input->world, in_input->world->entities_bytype[in_input->entity_typeflag_id][ent], updatetimer_ptr[ent].frame_count, updatetimer_ptr[ent].last_update, NULL);
                     updatetimer_ptr[ent].frame_count = 0;
