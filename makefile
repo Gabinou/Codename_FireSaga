@@ -11,7 +11,6 @@ DIR_NAMES = names
 DIR_SCRIPTS = scenes
 DIR_CJSON = third_party/cJson
 DIR_CWALK = third_party/cwalk
-DIR_FLECS = third_party/flecs
 DIR_TNECS = third_party/tnecs
 DIR_LODEPNG = third_party/LodePNG
 DIR_PHYSFS = third_party/physfs
@@ -24,7 +23,7 @@ DIR_UTF8 = third_party/utf8
 DIR_BUILD = build
 DIR_TEST = test
 
-DIRS_THIRD = $(DIR_CJSON) $(DIR_CWALK) $(DIR_FLECS) $(DIR_TNECS) $(DIR_LODEPNG) $(DIR_PHYSFS) $(DIR_MINCTEST) $(DIR_STB) $(DIR_THREAD) $(DIR_TINYCTHREAD) $(DIR_TINYMT) $(DIR_UTF8)
+DIRS_THIRD = $(DIR_CJSON) $(DIR_CWALK) $(DIR_TNECS) $(DIR_LODEPNG) $(DIR_PHYSFS) $(DIR_MINCTEST) $(DIR_STB) $(DIR_THREAD) $(DIR_TINYCTHREAD) $(DIR_TINYMT) $(DIR_UTF8)
 LIBS_THIRD = -l_flecs -l_tnecs -l_cjson -l_cwalk -l_lodepng -l_physfs -l_tinymt
 # LIBS_THIRD = -l_flecs -l_cjson -l_cwalk -l_lodepng -l_physfs -l_tinymt
 # LIBS_THIRD = -l$(DIR_BUILD)/lib_cjson.a -l$(DIR_BUILD)/lib_cwalk.a -l$(DIR_BUILD)/lib_flecs.a -l$(DIR_BUILD)/lib_lodepng.a -l$(DIR_BUILD)/lib_physfs.a -l$(DIR_BUILD)/lib_tinymt.a
@@ -133,11 +132,6 @@ ${DIR_CWALK}/%.o : ${DIR_CWALK}/%.c ; $(CC) $< -c -o $@ -I$(DIR_CWALK) ${FLAGS_B
 .PHONY: lib_cwalk
 lib_cwalk: $(TARGETS_CWALK); ar rcs ${DIR_BUILD}/$@.a $(TARGETS_CWALK)
 
-${DIR_FLECS}/%.o : ${DIR_FLECS}/%.c ; $(CC) $< -c -o $@ -I$(DIR_FLECS) ${FLAGS_BUILD_TYPE} -DNDEBUG
-# -DNDEBUG always should be there for flecs, to get rid of incomprehensible INVALID_WHILE_ITERATING asserts
-.PHONY: lib_flecs
-lib_flecs: $(TARGETS_FLECS); ar rcs ${DIR_BUILD}/$@.a $(TARGETS_FLECS)
-
 ${DIR_TNECS}/%.o : ${DIR_TNECS}/%.c ; $(CC) $< -c -o $@ -I$(DIR_TNECS) ${FLAGS_BUILD_TYPE}
 .PHONY: lib_tnecs
 lib_tnecs: $(TARGETS_TNECS); ar rcs ${DIR_BUILD}/$@.a $(TARGETS_TNECS)
@@ -158,12 +152,12 @@ lib_tinymt: $(TARGETS_TINYMT); ar rcs ${DIR_BUILD}/$@.a $(TARGETS_TINYMT)
 astyle: ; astyle --style=java --indent=spaces=4 --indent-switches --pad-oper --pad-comma --pad-header --unpad-paren  --align-pointer=middle --align-reference=middle --add-braces --add-one-line-braces --attach-return-type --convert-tabs --suffix=none include/*.h src/*.c test/*.h test/*.c
 
 
-src/%.o : src/%.c lib_cjson lib_cwalk lib_flecs lib_tnecs lib_lodepng lib_physfs lib_tinymt makefile ; $(CC) $< -c -o $@ $(INCLUDE_ALL)  ${FLAGS_BUILD_TYPE} ${FLAGS_ERROR}
-test/%.o : test/%.c lib_cjson lib_cwalk lib_flecs lib_tnecs lib_lodepng lib_physfs lib_tinymt makefile ; $(CC) $< -c -o $@ $(INCLUDE_ALL)  ${FLAGS_BUILD_TYPE} ${FLAGS_ERROR}
+src/%.o : src/%.c lib_cjson lib_cwalk lib_tnecs lib_lodepng lib_physfs lib_tinymt makefile ; $(CC) $< -c -o $@ $(INCLUDE_ALL)  ${FLAGS_BUILD_TYPE} ${FLAGS_ERROR}
+test/%.o : test/%.c lib_cjson lib_cwalk lib_tnecs lib_lodepng lib_physfs lib_tinymt makefile ; $(CC) $< -c -o $@ $(INCLUDE_ALL)  ${FLAGS_BUILD_TYPE} ${FLAGS_ERROR}
 
-$(EXEC): $(TARGETS_FIRESAGA) $(TARGETS_THIRD) lib_cjson lib_cwalk lib_flecs lib_tnecs lib_lodepng lib_physfs lib_tinymt makefile ; $(CC) $(TARGETS_FIRESAGA) -o $(DIR_BUILD)/$@ $(CFLAGS) 
+$(EXEC): $(TARGETS_FIRESAGA) $(TARGETS_THIRD) lib_cjson lib_cwalk lib_tnecs lib_lodepng lib_physfs lib_tinymt makefile ; $(CC) $(TARGETS_FIRESAGA) -o $(DIR_BUILD)/$@ $(CFLAGS) 
 
-$(TEST): $(TARGETS_FIRESAGA_NOMAIN) $(TARGETS_TEST) $(TARGETS_THIRD) lib_cjson lib_cwalk lib_flecs lib_tnecs lib_lodepng lib_physfs lib_tinymt makefile ; $(CC) $(TARGETS_FIRESAGA_NOMAIN) $(TARGETS_TEST) -o $(DIR_BUILD)/$@ $(CFLAGS) 
+$(TEST): $(TARGETS_FIRESAGA_NOMAIN) $(TARGETS_TEST) $(TARGETS_THIRD) lib_cjson lib_cwalk lib_tnecs lib_lodepng lib_physfs lib_tinymt makefile ; $(CC) $(TARGETS_FIRESAGA_NOMAIN) $(TARGETS_TEST) -o $(DIR_BUILD)/$@ $(CFLAGS) 
 
 .PHONY: wclean
 wclean: ; del /q /s *.o *.a *.exe build\\*.txt
