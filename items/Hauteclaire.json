@@ -1,3 +1,63 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:185f78f7e5abab327e845ca7695ca60edd50572616cc526ccbdabd16e2894b43
-size 884
+{
+	"Item":	{
+		"Name":	"Hauteclaire",
+		"id":	18,
+		"Description":	"Crystal encrusted sword, as described in the Franc legends of old.",
+		"Bonus":	{
+			"hp":	0,
+			"str":	0,
+			"mag":	0,
+			"agi":	0,
+			"dex":	0,
+			"luck":	0,
+			"def":	0,
+			"res":	0,
+			"con":	0,
+			"move":	0,
+			"prof":	0
+		},
+		"Malus":	{
+			"hp":	0,
+			"str":	0,
+			"mag":	0,
+			"agi":	0,
+			"dex":	0,
+			"luck":	0,
+			"def":	0,
+			"res":	0,
+			"con":	0,
+			"move":	0,
+			"prof":	0
+		},
+		"Sellable":	true,
+		"Effects":	{
+			"id":	0
+		},
+		"Types":	{
+			"id":	1,
+			"Type":	"Sword"
+		},
+		"Stats":	{
+			"Pmight":	14,
+			"Mmight":	0,
+			"hit":	90,
+			"dodge":	10,
+			"crit":	0,
+			"favor":	0,
+			"wgt":	7,
+			"uses":	25,
+			"prof":	14,
+			"minrange":	1,
+			"maxrange":	1,
+			"minhand":	1,
+			"maxhand":	2,
+			"dmg_type":	0,
+			"price":	777,
+			"heal":	0
+		},
+		"Infused":	{
+			"Power":	-1,
+			"Type":	0
+		}
+	}
+}

@@ -1,3 +1,24 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:d235e276cc7655a636d9c024edcce786799f53dd5eee80ef9128d445df30239a
-size 322
+{
+	"Tile":	{
+		"Name":	"Peak",
+		"id":	32,
+		"inside":	false,
+		"Stats":	{
+			"Dodge":	30,
+			"Pprot":	0,
+			"Mprot":	4,
+			"Heal":	0
+		},
+		"MvtCost":	{
+			"foot_slow":	0,
+			"foot_fast":	5,
+			"mages":	0,
+			"fliers":	1,
+			"riders_slow":	0,
+			"riders_fast":	0,
+			"armors":	0,
+			"pirates":	5,
+			"bandits":	5
+		}
+	}
+}

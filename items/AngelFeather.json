@@ -1,3 +1,63 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:746ef69d68cb647e3a4acbd2df723146f8caa1f9f0038bdc1b0cfe422e4aae89
-size 959
+{
+	"Item":	{
+		"Name":	"Angel feather",
+		"id":	521,
+		"Description":	"Beautiful and fluffy. Given by incarnates and possessed to the worthy. Increases magical ability. Unusable by demons and demon incarnates.",
+		"Bonus":	{
+			"hp":	0,
+			"str":	0,
+			"mag":	0,
+			"agi":	0,
+			"dex":	0,
+			"luck":	0,
+			"def":	0,
+			"res":	0,
+			"con":	0,
+			"move":	0,
+			"prof":	0
+		},
+		"Malus":	{
+			"hp":	0,
+			"str":	0,
+			"mag":	0,
+			"agi":	0,
+			"dex":	0,
+			"luck":	0,
+			"def":	0,
+			"res":	0,
+			"con":	0,
+			"move":	0,
+			"prof":	0
+		},
+		"Sellable":	true,
+		"Effects":	{
+			"id":	0
+		},
+		"Types":	{
+			"id":	16,
+			"Type":	"Trinket"
+		},
+		"Stats":	{
+			"Pmight":	0,
+			"Mmight":	4,
+			"hit":	0,
+			"dodge":	10,
+			"crit":	0,
+			"favor":	4,
+			"wgt":	1,
+			"uses":	8,
+			"prof": 12,
+			"minrange":	0,
+			"maxrange":	0,
+			"minhand":	1,
+			"maxhand":	1,
+			"dmg_type":	0,
+			"price":	200,
+			"heal":	0
+		},
+		"Infused":	{
+			"Power":	-1,
+			"Type":	0
+		}
+	}
+}

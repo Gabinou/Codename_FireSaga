@@ -24,11 +24,11 @@ DIR_BUILD = build
 DIR_TEST = test
 
 DIRS_THIRD = $(DIR_CJSON) $(DIR_CWALK) $(DIR_TNECS) $(DIR_LODEPNG) $(DIR_PHYSFS) $(DIR_MINCTEST) $(DIR_STB) $(DIR_THREAD) $(DIR_TINYCTHREAD) $(DIR_TINYMT) $(DIR_UTF8)
-LIBS_THIRD = -l_flecs -l_tnecs -l_cjson -l_cwalk -l_lodepng -l_physfs -l_tinymt
-# LIBS_THIRD = -l_flecs -l_cjson -l_cwalk -l_lodepng -l_physfs -l_tinymt
-# LIBS_THIRD = -l$(DIR_BUILD)/lib_cjson.a -l$(DIR_BUILD)/lib_cwalk.a -l$(DIR_BUILD)/lib_flecs.a -l$(DIR_BUILD)/lib_lodepng.a -l$(DIR_BUILD)/lib_physfs.a -l$(DIR_BUILD)/lib_tinymt.a
-# LIBS_THIRD = $(DIR_BUILD)/lib_cjson.a $(DIR_BUILD)/lib_cwalk.a $(DIR_BUILD)/lib_flecs.a $(DIR_BUILD)/lib_lodepng.a $(DIR_BUILD)/lib_physfs.a $(DIR_BUILD)/lib_tinymt.a
-INCLUDE_ALL = -I. -I${DIR_INCLUDE} -I${DIR_NAMES} -I${DIR_SCRIPTS} -I${DIR_CJSON} -I${DIR_CWALK} -I${DIR_FLECS} -I${DIR_TNECS} -I${DIR_LODEPNG} -I${DIR_PHYSFS} -I${DIR_MINCTEST} -I${DIR_STB} -I${DIR_THREAD} -I${DIR_TINYCTHREAD} -I${DIR_TINYMT} -I${DIR_UTF8} -I${DIR_TEST} -L${DIR_BUILD}
+LIBS_THIRD = -l_tnecs -l_cjson -l_cwalk -l_lodepng -l_physfs -l_tinymt
+# LIBS_THIRD = -l_cjson -l_cwalk -l_lodepng -l_physfs -l_tinymt
+# LIBS_THIRD = -l$(DIR_BUILD)/lib_cjson.a -l$(DIR_BUILD)/lib_cwalk.a  -l$(DIR_BUILD)/lib_lodepng.a -l$(DIR_BUILD)/lib_physfs.a -l$(DIR_BUILD)/lib_tinymt.a
+# LIBS_THIRD = $(DIR_BUILD)/lib_cjson.a $(DIR_BUILD)/lib_cwalk.a  $(DIR_BUILD)/lib_lodepng.a $(DIR_BUILD)/lib_physfs.a $(DIR_BUILD)/lib_tinymt.a
+INCLUDE_ALL = -I. -I${DIR_INCLUDE} -I${DIR_NAMES} -I${DIR_SCRIPTS} -I${DIR_CJSON} -I${DIR_CWALK} -I${DIR_TNECS} -I${DIR_LODEPNG} -I${DIR_PHYSFS} -I${DIR_MINCTEST} -I${DIR_STB} -I${DIR_THREAD} -I${DIR_TINYCTHREAD} -I${DIR_TINYMT} -I${DIR_UTF8} -I${DIR_TEST} -L${DIR_BUILD}
 
 # OS AND Processor detection 
 ifeq ($(OS),Windows_NT)
@@ -88,12 +88,11 @@ $(info $$FLAGS_BUILD_TYPE [$(FLAGS_BUILD_TYPE)])
 
 CFLAGS := ${INCLUDE_ALL} ${FLAGS_BUILD_TYPE} ${FLAGS_SDL} ${LIBS_THIRD}
 
-SOURCES_THIRD :=  $(wildcard ${DIR_CJSON}/*.c) $(wildcard ${DIR_CWALK}/*.c) $(wildcard ${DIR_TNECS}/*.c) $(wildcard ${DIR_FLECS}/*.c) $(wildcard ${DIR_LODEPNG}/*.c) $(wildcard ${DIR_PHYSFS}/*.c) $(wildcard ${DIR_MINCTEST}/*.c) $(wildcard ${DIR_STB}/*.c) $(wildcard ${DIR_THREAD}/*.c) $(wildcard ${DIR_TINYMT}/*.c) $(wildcard ${DIR_UTF8}/*.c) 
+SOURCES_THIRD :=  $(wildcard ${DIR_CJSON}/*.c) $(wildcard ${DIR_CWALK}/*.c) $(wildcard ${DIR_TNECS}/*.c) $(wildcard ${DIR_LODEPNG}/*.c) $(wildcard ${DIR_PHYSFS}/*.c) $(wildcard ${DIR_MINCTEST}/*.c) $(wildcard ${DIR_STB}/*.c) $(wildcard ${DIR_THREAD}/*.c) $(wildcard ${DIR_TINYMT}/*.c) $(wildcard ${DIR_UTF8}/*.c) 
 SOURCES_FIRESAGA := $(wildcard src/*.c)
 SOURCES_FIRESAGA_NOMAIN := $(filter-out src/main.c, ${SOURCES_FIRESAGA})
 SOURCES_CJSON := $(wildcard ${DIR_CJSON}/*.c)
 SOURCES_CWALK := $(wildcard ${DIR_CWALK}/*.c)
-SOURCES_FLECS := $(wildcard ${DIR_FLECS}/*.c)
 SOURCES_TEST := $(wildcard ${DIR_TEST}/*.c)
 SOURCES_TNECS := $(wildcard ${DIR_TNECS}/*.c)
 SOURCES_LODEPNG := $(wildcard ${DIR_LODEPNG}/*.c)
@@ -109,7 +108,6 @@ TARGETS_THIRD := $(SOURCES_THIRD:.c=.o)
 TARGETS_TEST := $(SOURCES_TEST:.c=.o)
 TARGETS_CJSON := $(SOURCES_CJSON:.c=.o)
 TARGETS_CWALK := $(SOURCES_CWALK:.c=.o)
-TARGETS_FLECS := $(SOURCES_FLECS:.c=.o)
 TARGETS_TNECS := $(SOURCES_TNECS:.c=.o)
 TARGETS_LODEPNG := $(SOURCES_LODEPNG:.c=.o)
 TARGETS_PHYSFS := $(SOURCES_PHYSFS:.c=.o)

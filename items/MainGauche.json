@@ -1,3 +1,63 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:a69bf69faed79fa8d4044a29da34ca0886de68b309bbe890eeb2d69813a03875
-size 900
+{
+	"Item":	{
+		"Name":	"Main Gauche",
+		"id":	503,
+		"Description":	"Dagger designed to parry using the left/weak/off-hand. Increases avoir and favor.",
+		"Bonus":	{
+			"hp":	0,
+			"str":	0,
+			"mag":	0,
+			"agi":	0,
+			"dex":	0,
+			"luck":	0,
+			"def":	0,
+			"res":	0,
+			"con":	0,
+			"move":	0,
+			"prof":	0
+		},
+		"Malus":	{
+			"hp":	0,
+			"str":	0,
+			"mag":	0,
+			"agi":	0,
+			"dex":	0,
+			"luck":	0,
+			"def":	0,
+			"res":	0,
+			"con":	0,
+			"move":	0,
+			"prof":	0
+		},
+		"Sellable":	true,
+		"Effects":	{
+			"id":	0
+		},
+		"Types":	{
+			"id":	32,
+			"Type":	"Offhand"
+		},
+		"Stats":	{
+			"Pmight":	1,
+			"Mmight":	0,
+			"hit":	0,
+			"dodge":	10,
+			"crit":	0,
+			"favor":	5,
+			"wgt":	4,
+			"uses":	35,
+			"prof":	7,
+			"minrange":	1,
+			"maxrange":	1,
+			"minhand":	1,
+			"maxhand":	0,
+			"dmg_type":	0,
+			"price":	825,
+			"heal":	0
+		},
+		"Infused":	{
+			"Power":	-1,
+			"Type":	0
+		}
+	}
+}
