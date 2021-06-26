@@ -1498,35 +1498,26 @@ void makeContent_MENU_UNIT_ACTION(struct Game * in_game, void * data_1, void * d
     menu_ptr->col_num = 1;
     menu_ptr->row_num = 0;
     arrfree(menu_ptr->menuoptions);
-
-    MenuOption_ITEMS.pad_text = MenuOption_default.pad_text;
-    MenuOption_ITEMS.pad_icon = MenuOption_default.pad_icon;
-    MenuOption_ITEMS.pad_cell = MenuOption_default.pad_cell;
+    Menu_Options_padDefault(&MenuOption_ITEMS);
     MenuOption_ITEMS.ent_text = Game_menuOptions_Create(in_game, MenuOption_ITEMS.ent_text, menuOptionnames[MENU_OPTION_ITEMS]);
     arrput(menu_ptr->menuoptions, MenuOption_ITEMS);
     menu_ptr->row_num++;
 
     if (in_game->num_traders > 0) {
-        MenuOption_TRADE.pad_text = MenuOption_default.pad_text;
-        MenuOption_TRADE.pad_icon = MenuOption_default.pad_icon;
-        MenuOption_TRADE.pad_cell = MenuOption_default.pad_cell;
-        MenuOption_TRADE.ent_text = Game_menuOptions_Create(in_game, MenuOption_TRADE.ent_text, menuOptionnames[MENU_OPTION_TRADE]);
+    Menu_Options_padDefault(&MenuOption_TRADE);
+    MenuOption_TRADE.ent_text = Game_menuOptions_Create(in_game, MenuOption_TRADE.ent_text, menuOptionnames[MENU_OPTION_TRADE]);
         arrput(menu_ptr->menuoptions, MenuOption_TRADE);
         menu_ptr->row_num++;
     }
     bool seize = false;
     if (seize) {
-        MenuOption_SEIZE.pad_text = MenuOption_default.pad_text;
-        MenuOption_SEIZE.pad_icon = MenuOption_default.pad_icon;
-        MenuOption_SEIZE.pad_cell = MenuOption_default.pad_cell;
+    Menu_Options_padDefault(&MenuOption_SEIZE);
         MenuOption_SEIZE.ent_text = Game_menuOptions_Create(in_game, MenuOption_SEIZE.ent_text, menuOptionnames[MENU_OPTION_SEIZE]);
         arrput(menu_ptr->menuoptions, MenuOption_SEIZE);
         menu_ptr->row_num++;
     }
     if (in_game->num_talkers > 0) {
-        MenuOption_TALK.pad_text = MenuOption_default.pad_text;
-        MenuOption_TALK.pad_icon = MenuOption_default.pad_icon;
-        MenuOption_TALK.pad_cell = MenuOption_default.pad_cell;
+    Menu_Options_padDefault(&MenuOption_TALK);
        MenuOption_TALK.ent_text = Game_menuOptions_Create(in_game, MenuOption_TALK.ent_text, menuOptionnames[MENU_OPTION_TALK]);
         arrput(menu_ptr->menuoptions, MenuOption_TALK);
         menu_ptr->row_num++;

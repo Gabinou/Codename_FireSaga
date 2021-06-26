@@ -256,6 +256,11 @@ struct Point Menu_cursorPos_Compute(struct Menu * in_menu) {
 
     return (out);
 }
+ void Menu_Options_padDefault(struct MenuOption * in_menu_option) {
+    in_menu_option->pad_text = MenuOption_default.pad_text;
+    in_menu_option->pad_icon = MenuOption_default.pad_icon;
+    in_menu_option->pad_cell = MenuOption_default.pad_cell;
+}
 
 void Menu_Options_Draw(tnecs_world_t * in_world, struct Menu * in_menu) {
     struct MenuOption cell;

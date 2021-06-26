@@ -148,8 +148,8 @@ extern void unloadMenu(uint8_t in_menuind);
 void Menu_Patches_Draw(struct Menu * in_menu);
 
 extern void Menu_Options_Draw(tnecs_world_t * in_world, struct Menu * in_menu);
+extern void Menu_Options_padDefault(struct MenuOption * in_menu_option);
 extern void Menu_Options_init();
-
 struct MenuOption * Menu_Weapons_options(struct Unit * in_attacker);
 struct MenuOption * menu_staffs_options(struct Unit * in_healer);
 struct MenuOption * menu_defenders_options(tnecs_entity_t * defenders, uint8_t num_defenders);
