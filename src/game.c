@@ -1527,7 +1527,7 @@ void makeContent_MENU_UNIT_ACTION(struct Game * in_game, void * data_1, void * d
         MenuOption_TALK.pad_text = MenuOption_default.pad_text;
         MenuOption_TALK.pad_icon = MenuOption_default.pad_icon;
         MenuOption_TALK.pad_cell = MenuOption_default.pad_cell;
-        Game_menuOptions_Create(in_game, &MenuOption_TALK.ent_text, menuOptionnames[MENU_OPTION_TALK]);
+       MenuOption_TALK.ent_text = Game_menuOptions_Create(in_game, MenuOption_TALK.ent_text, menuOptionnames[MENU_OPTION_TALK]);
         arrput(menu_ptr->menuoptions, MenuOption_TALK);
         menu_ptr->row_num++;
     }
@@ -1535,7 +1535,7 @@ void makeContent_MENU_UNIT_ACTION(struct Game * in_game, void * data_1, void * d
         MenuOption_ATTACK.pad_text = MenuOption_default.pad_text;
         MenuOption_ATTACK.pad_icon = MenuOption_default.pad_icon;
         MenuOption_ATTACK.pad_cell = MenuOption_default.pad_cell;
-        Game_menuOptions_Create(in_game, &MenuOption_ATTACK.ent_text, menuOptionnames[MENU_OPTION_ATTACK]);
+        MenuOption_ATTACK.ent_text = Game_menuOptions_Create(in_game, MenuOption_ATTACK.ent_text, menuOptionnames[MENU_OPTION_ATTACK]);
         arrput(menu_ptr->menuoptions, MenuOption_ATTACK);
         menu_ptr->row_num++;
     }
@@ -1543,7 +1543,7 @@ void makeContent_MENU_UNIT_ACTION(struct Game * in_game, void * data_1, void * d
         MenuOption_STAFF.pad_text = MenuOption_default.pad_text;
         MenuOption_STAFF.pad_icon = MenuOption_default.pad_icon;
         MenuOption_STAFF.pad_cell = MenuOption_default.pad_cell;
-        Game_menuOptions_Create(in_game, &MenuOption_STAFF.ent_text, menuOptionnames[MENU_OPTION_STAFF]);
+        MenuOption_STAFF.ent_text, = Game_menuOptions_Create(in_game, MenuOption_STAFF.ent_text, menuOptionnames[MENU_OPTION_STAFF]);
         arrput(menu_ptr->menuoptions, MenuOption_STAFF);
         menu_ptr->row_num++;
     }
@@ -1551,7 +1551,7 @@ void makeContent_MENU_UNIT_ACTION(struct Game * in_game, void * data_1, void * d
         MenuOption_DANCE.pad_text = MenuOption_default.pad_text;
         MenuOption_DANCE.pad_icon = MenuOption_default.pad_icon;
         MenuOption_DANCE.pad_cell = MenuOption_default.pad_cell;
-        Game_menuOptions_Create(in_game, &MenuOption_DANCE.ent_text, menuOptionnames[MENU_OPTION_DANCE]);
+        MenuOption_DANCE.ent_text = Game_menuOptions_Create(in_game, MenuOption_DANCE.ent_text, menuOptionnames[MENU_OPTION_DANCE]);
         arrput(menu_ptr->menuoptions, MenuOption_DANCE);
         menu_ptr->row_num++;
     }
@@ -1559,14 +1559,14 @@ void makeContent_MENU_UNIT_ACTION(struct Game * in_game, void * data_1, void * d
         MenuOption_RESCUE.pad_text = MenuOption_default.pad_text;
         MenuOption_RESCUE.pad_icon = MenuOption_default.pad_icon;
         MenuOption_RESCUE.pad_cell = MenuOption_default.pad_cell;
-        Game_menuOptions_Create(in_game, &MenuOption_RESCUE.ent_text, menuOptionnames[MENU_OPTION_RESCUE]);
+        MenuOption_RESCUE.ent_text = Game_menuOptions_Create(in_game, MenuOption_RESCUE.ent_text, menuOptionnames[MENU_OPTION_RESCUE]);
         arrput(menu_ptr->menuoptions, MenuOption_RESCUE);
         menu_ptr->row_num++;
     }
     MenuOption_WAIT.pad_text = MenuOption_default.pad_text;
     MenuOption_WAIT.pad_icon = MenuOption_default.pad_icon;
     MenuOption_WAIT.pad_cell = MenuOption_default.pad_cell;
-    Game_menuOptions_Create(in_game, &MenuOption_WAIT.ent_text, menuOptionnames[MENU_OPTION_WAIT]);
+    MenuOption_WAIT.ent_text = Game_menuOptions_Create(in_game, MenuOption_WAIT.ent_text, menuOptionnames[MENU_OPTION_WAIT]);
     arrput(menu_ptr->menuoptions, MenuOption_WAIT);
     menu_ptr->row_num++;
 
@@ -1596,7 +1596,7 @@ void makeContent_MENU_UNIT_ITEMS(struct Game * in_game, void * data_1, void * da
             SDL_Log("item id %d", equipment[i].id);
             temp_option = MenuOption_default;
             strncpy(item_name, hmget(in_game->weapons, equipment[i].id).item->name, sizeof(item_name));
-            Game_menuOptions_Create(in_game, &temp_option.ent_text, item_name);
+            temp_option.ent_text, = Game_menuOptions_Create(in_game, temp_option.ent_text, item_name);
             text_ptr = TNECS_GET_COMPONENT(in_game->world, temp_option.ent_text, Text);
             strncpy(text_ptr->text_line, item_name, sizeof(text_ptr->text_line));
             arrput(menu_ptr->menuoptions, temp_option);
@@ -1716,14 +1716,14 @@ void makeContent_MENU_MAP_ACTION(struct Game * in_game, void * data_1, void * da
     MenuOption_GLOBAL_RANGE.pad_text = MenuOption_default.pad_text;
     MenuOption_GLOBAL_RANGE.pad_icon = MenuOption_default.pad_icon;
     MenuOption_GLOBAL_RANGE.pad_cell = MenuOption_default.pad_cell;
-    Game_menuOptions_Create(in_game, &MenuOption_GLOBAL_RANGE.ent_text, menuOptionnames[MENU_OPTION_GLOBAL_RANGE]);
+    MenuOption_GLOBAL_RANGE.ent_text, = Game_menuOptions_Create(in_game, MenuOption_GLOBAL_RANGE.ent_text, menuOptionnames[MENU_OPTION_GLOBAL_RANGE]);
     arrput(menu_ptr->menuoptions, MenuOption_GLOBAL_RANGE);
     menu_ptr->row_num++;
 
     MenuOption_END_TURN.pad_text = MenuOption_default.pad_text;
     MenuOption_END_TURN.pad_icon = MenuOption_default.pad_icon;
     MenuOption_END_TURN.pad_cell = MenuOption_default.pad_cell;
-    Game_menuOptions_Create(in_game, &MenuOption_END_TURN.ent_text, menuOptionnames[MENU_OPTION_END_TURN]);
+    MenuOption_END_TURN.ent_text = Game_menuOptions_Create(in_game, MenuOption_END_TURN.ent_text, menuOptionnames[MENU_OPTION_END_TURN]);
     arrput(menu_ptr->menuoptions, MenuOption_END_TURN);
     menu_ptr->row_num++;
 
