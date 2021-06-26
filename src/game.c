@@ -242,7 +242,7 @@ void Game_Menu_Update(struct Game * in_game, int8_t in_menu) {
 }
 
 void Game_Menu_Create(struct Game * in_game, int8_t in_menu) {
-    SDL_Log("Create menu: %s", menuNames[in_menu]);
+    SDL_Log("Create menu: %d %s", in_menu, menuNames[in_menu]);
     SDL_assert((in_menu > MENU_START) & (in_menu < MENU_END));
     if (in_game->menu_loaded[in_menu] != 0) {
         SDL_Log("menu %d is already loaded", in_menu);

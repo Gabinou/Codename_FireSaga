@@ -211,7 +211,9 @@ void Menu_MakeOptionnames() {
 
 #define REGISTER_ENUM(x) temp_str = (char *) malloc(DEFAULT_BUFFER_SIZE);\
 strncpy(temp_str, #x, sizeof(#x));\
-menuNames[MENU_##x], str_camelCase(str_toLower(str_replaceSingle(temp_str, '_', ' ')), ' ', 2);
+menuNames[MENU_##x] = str_camelCase(str_toLower(str_replaceSingle(temp_str, '_', ' ')), ' ', 2);
+
+
 
 char ** menuNames = NULL;
 void Menu_MakeNames() {
