@@ -181,8 +181,11 @@ uint16_t Menu_cellsWidths_Compute(tnecs_world_t * in_world, struct Menu * in_men
 uint16_t Menu_cellWidth_Compute(tnecs_world_t * in_world, struct Menu * in_menu, size_t row, size_t col) {
     SDL_Log("Menu_cellWidth_Compute");
     struct MenuOption cell = in_menu->menuoptions[row + in_menu->row_num * col];
+    SDL_assert(cell.ent_text > 0);
     struct Text * text_ptr = TNECS_GET_COMPONENT(in_world, cell.ent_text, Text);
+    SDL_assert(text_ptr != NULL);
     struct Sprite * icon_sprite_ptr = TNECS_GET_COMPONENT(in_world, cell.ent_icon, Sprite);
+    SDL_assert(icon_sprite_ptr != NULL);
     int32_t temp_width;
 
     // SDL_Log("text_lines: %s", text_ptr->text_line);
@@ -256,7 +259,7 @@ struct Point Menu_cursorPos_Compute(struct Menu * in_menu) {
 
     return (out);
 }
- void Menu_Options_padDefault(struct MenuOption * in_menu_option) {
+void Menu_Options_padDefault(struct MenuOption * in_menu_option) {
     in_menu_option->pad_text = MenuOption_default.pad_text;
     in_menu_option->pad_icon = MenuOption_default.pad_icon;
     in_menu_option->pad_cell = MenuOption_default.pad_cell;

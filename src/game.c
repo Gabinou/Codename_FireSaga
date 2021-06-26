@@ -1411,7 +1411,7 @@ tnecs_entity_t Game_menuOptions_Create(struct Game * in_game, tnecs_entity_t in_
         in_entity = TNECS_ENTITY_CREATE_wCOMPONENTS(in_game->world, Position, Text, RenderTimer);
     }
 
-    struct Text * text_ptr = TNECS_GET_COMPONENT(in_game->world, *in_entity, Text);
+    struct Text * text_ptr = TNECS_GET_COMPONENT(in_game->world, in_entity, Text);
     SDL_assert(text_ptr !=  NULL);
     text_ptr->visible = true;
     text_ptr->fontsize = in_game->settings.fontsize;
@@ -1432,7 +1432,7 @@ tnecs_entity_t Game_menuOptions_Create(struct Game * in_game, tnecs_entity_t in_
     text_ptr->sizefactor[1] = 1; // height, width
 
     strcpy(text_ptr->text_line, in_name);
-    SDL_Log("in_name, Menu_option_Line: %s %s", in_name, text_ptr->text_line);
+    SDL_Log("in_name, Menu_option_Line: %s, %s", in_name, text_ptr->text_line);
 }
 
 void Game_Menu_LocationfromCursor(struct Game * in_game, tnecs_entity_t in_menu_entity) {
@@ -1530,7 +1530,7 @@ void makeContent_MENU_UNIT_ACTION(struct Game * in_game, void * data_1, void * d
     }
     if (in_game->num_patients > 0) {
         Menu_Options_padDefault(&MenuOption_STAFF);
-        MenuOption_STAFF.ent_text, = Game_menuOptions_Create(in_game, MenuOption_STAFF.ent_text, menuOptionnames[MENU_OPTION_STAFF]);
+        MenuOption_STAFF.ent_text = Game_menuOptions_Create(in_game, MenuOption_STAFF.ent_text, menuOptionnames[MENU_OPTION_STAFF]);
         arrput(menu_ptr->menuoptions, MenuOption_STAFF);
         menu_ptr->row_num++;
     }
@@ -1577,7 +1577,7 @@ void makeContent_MENU_UNIT_ITEMS(struct Game * in_game, void * data_1, void * da
             SDL_Log("item id %d", equipment[i].id);
             temp_option = MenuOption_default;
             strncpy(item_name, hmget(in_game->weapons, equipment[i].id).item->name, sizeof(item_name));
-            temp_option.ent_text, = Game_menuOptions_Create(in_game, temp_option.ent_text, item_name);
+            temp_option.ent_text = Game_menuOptions_Create(in_game, temp_option.ent_text, item_name);
             text_ptr = TNECS_GET_COMPONENT(in_game->world, temp_option.ent_text, Text);
             strncpy(text_ptr->text_line, item_name, sizeof(text_ptr->text_line));
             arrput(menu_ptr->menuoptions, temp_option);
@@ -1695,7 +1695,7 @@ void makeContent_MENU_MAP_ACTION(struct Game * in_game, void * data_1, void * da
     arrfree(menu_ptr->menuoptions);
 
     Menu_Options_padDefault(&MenuOption_GLOBAL_RANGE);
-    MenuOption_GLOBAL_RANGE.ent_text, = Game_menuOptions_Create(in_game, MenuOption_GLOBAL_RANGE.ent_text, menuOptionnames[MENU_OPTION_GLOBAL_RANGE]);
+    MenuOption_GLOBAL_RANGE.ent_text = Game_menuOptions_Create(in_game, MenuOption_GLOBAL_RANGE.ent_text, menuOptionnames[MENU_OPTION_GLOBAL_RANGE]);
     arrput(menu_ptr->menuoptions, MenuOption_GLOBAL_RANGE);
     menu_ptr->row_num++;
 
