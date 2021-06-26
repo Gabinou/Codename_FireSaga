@@ -1405,10 +1405,10 @@ void Game_menuOptions_Update(struct Game * in_game, tnecs_entity_t * in_entity, 
 
 }
 
-void Game_menuOptions_Create(struct Game * in_game, tnecs_entity_t * in_entity, char * in_name) {
+tnecs_entity_t Game_menuOptions_Create(struct Game * in_game, tnecs_entity_t in_entity, char * in_name) {
     SDL_Log("Game_menuOptions_Create");
-    if (*in_entity == 0) {
-        *in_entity = TNECS_ENTITY_CREATE_wCOMPONENTS(in_game->world, Position, Text, RenderTimer);
+    if (in_entity == 0) {
+        in_entity = TNECS_ENTITY_CREATE_wCOMPONENTS(in_game->world, Position, Text, RenderTimer);
     }
 
     struct Text * text_ptr = TNECS_GET_COMPONENT(in_game->world, *in_entity, Text);
@@ -1502,7 +1502,7 @@ void makeContent_MENU_UNIT_ACTION(struct Game * in_game, void * data_1, void * d
     MenuOption_ITEMS.pad_text = MenuOption_default.pad_text;
     MenuOption_ITEMS.pad_icon = MenuOption_default.pad_icon;
     MenuOption_ITEMS.pad_cell = MenuOption_default.pad_cell;
-    Game_menuOptions_Create(in_game, &MenuOption_ITEMS.ent_text, menuOptionnames[MENU_OPTION_ITEMS]);
+    MenuOption_ITEMS.ent_text = Game_menuOptions_Create(in_game, MenuOption_ITEMS.ent_text, menuOptionnames[MENU_OPTION_ITEMS]);
     arrput(menu_ptr->menuoptions, MenuOption_ITEMS);
     menu_ptr->row_num++;
 
@@ -1510,7 +1510,7 @@ void makeContent_MENU_UNIT_ACTION(struct Game * in_game, void * data_1, void * d
         MenuOption_TRADE.pad_text = MenuOption_default.pad_text;
         MenuOption_TRADE.pad_icon = MenuOption_default.pad_icon;
         MenuOption_TRADE.pad_cell = MenuOption_default.pad_cell;
-        Game_menuOptions_Create(in_game, &MenuOption_TRADE.ent_text, menuOptionnames[MENU_OPTION_TRADE]);
+        MenuOption_TRADE.ent_text = Game_menuOptions_Create(in_game, MenuOption_TRADE.ent_text, menuOptionnames[MENU_OPTION_TRADE]);
         arrput(menu_ptr->menuoptions, MenuOption_TRADE);
         menu_ptr->row_num++;
     }
@@ -1519,7 +1519,7 @@ void makeContent_MENU_UNIT_ACTION(struct Game * in_game, void * data_1, void * d
         MenuOption_SEIZE.pad_text = MenuOption_default.pad_text;
         MenuOption_SEIZE.pad_icon = MenuOption_default.pad_icon;
         MenuOption_SEIZE.pad_cell = MenuOption_default.pad_cell;
-        Game_menuOptions_Create(in_game, &MenuOption_SEIZE.ent_text, menuOptionnames[MENU_OPTION_SEIZE]);
+        MenuOption_SEIZE.ent_text = Game_menuOptions_Create(in_game, MenuOption_SEIZE.ent_text, menuOptionnames[MENU_OPTION_SEIZE]);
         arrput(menu_ptr->menuoptions, MenuOption_SEIZE);
         menu_ptr->row_num++;
     }
