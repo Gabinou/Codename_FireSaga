@@ -1406,34 +1406,47 @@ void Game_menuOptions_Update(struct Game * in_game, tnecs_entity_t * in_entity, 
 
 }
 
-tnecs_entity_t Game_menuOptions_Create(struct Game * in_game, tnecs_entity_t in_entity, char * in_name) {
-    SDL_Log("Game_menuOptions_Create");
+tnecs_entity_t Game_menuOption_Icon_Create(struct Game * in_game, tnecs_entity_t in_entity) {
+    SDL_Log("Game_menuOption_Icon_Create");
     if (in_entity == 0) {
-        in_entity = TNECS_ENTITY_CREATE_wCOMPONENTS(in_game->world, Position, Text, RenderTimer);
+        in_entity = TNECS_ENTITY_CREATE_wCOMPONENTS(in_game->world, Position, Sprite, RenderTimer);
+        SDL_assert(in_entity > 0);
+        struct Text * sprite_ptr = TNECS_GET_COMPONENT(in_game->world, in_entity, Sprite);
+        SDL_assert(sprite_ptr != NULL);
     }
 
-    struct Text * text_ptr = TNECS_GET_COMPONENT(in_game->world, in_entity, Text);
-    SDL_assert(text_ptr != NULL);
-    text_ptr->visible = true;
-    text_ptr->fontsize = in_game->settings.fontsize;
+    return (in_entity);
+}
 
-    SDL_Color white = {255, 255, 255};
-    text_ptr->text_color = white;
+tnecs_entity_t Game_menuOption_Text_Create(struct Game * in_game, tnecs_entity_t in_entity, char * in_name) {
+    SDL_Log("Game_menuOption_Text_Create");
+    if (in_entity == 0) {
+        in_entity = TNECS_ENTITY_CREATE_wCOMPONENTS(in_game->world, Position, Text, RenderTimer);
+        SDL_assert(in_entity > 0);
+        struct Text * text_ptr = TNECS_GET_COMPONENT(in_game->world, in_entity, Text);
+        SDL_assert(text_ptr != NULL);
+        text_ptr->visible = true;
+        text_ptr->fontsize = in_game->settings.fontsize;
 
-    text_ptr->padding[0] = Text_default.padding[0];
-    text_ptr->padding[1] = Text_default.padding[1];
-    text_ptr->padding[2] = Text_default.padding[2];
-    text_ptr->padding[3] = Text_default.padding[3];
-    text_ptr->fontsize = Text_default.fontsize;
-    text_ptr->spacingfactor = Text_default.spacingfactor;
+        SDL_Color white = {255, 255, 255};
+        text_ptr->text_color = white;
 
-    text_ptr->text_color = white;
+        text_ptr->padding[0] = Text_default.padding[0];
+        text_ptr->padding[1] = Text_default.padding[1];
+        text_ptr->padding[2] = Text_default.padding[2];
+        text_ptr->padding[3] = Text_default.padding[3];
+        text_ptr->fontsize = Text_default.fontsize;
+        text_ptr->spacingfactor = Text_default.spacingfactor;
 
-    text_ptr->sizefactor[0] = 1; // height, width
-    text_ptr->sizefactor[1] = 1; // height, width
+        text_ptr->text_color = white;
 
-    strcpy(text_ptr->text_line, in_name);
-    SDL_Log("in_name, Menu_option_Line: %s, %s", in_name, text_ptr->text_line);
+        text_ptr->sizefactor[0] = 1; // height, width
+        text_ptr->sizefactor[1] = 1; // height, width
+
+        strcpy(text_ptr->text_line, in_name);
+        SDL_Log("in_name, Menu_option_Line: %s, %s", in_name, text_ptr->text_line);
+    }
+    return (in_entity);
 }
 
 void Game_Menu_LocationfromCursor(struct Game * in_game, tnecs_entity_t in_menu_entity) {
@@ -1500,56 +1513,65 @@ void makeContent_MENU_UNIT_ACTION(struct Game * in_game, void * data_1, void * d
     menu_ptr->row_num = 0;
     arrfree(menu_ptr->menuoptions);
     Menu_Options_padDefault(&MenuOption_ITEMS);
-    MenuOption_ITEMS.ent_text = Game_menuOptions_Create(in_game, MenuOption_ITEMS.ent_text, menuOptionnames[MENU_OPTION_ITEMS]);
+    MenuOption_ITEMS.ent_text = Game_menuOption_Text_Create(in_game, MenuOption_ITEMS.ent_text, menuOptionnames[MENU_OPTION_ITEMS]);
+    MenuOption_ITEMS.ent_icon = Game_menuOption_Icon_Create(in_game, MenuOption_ITEMS.ent_icon);
     SDL_assert(MenuOption_ITEMS.ent_text > 0);
     arrput(menu_ptr->menuoptions, MenuOption_ITEMS);
     menu_ptr->row_num++;
 
     if (in_game->num_traders > 0) {
         Menu_Options_padDefault(&MenuOption_TRADE);
-        MenuOption_TRADE.ent_text = Game_menuOptions_Create(in_game, MenuOption_TRADE.ent_text, menuOptionnames[MENU_OPTION_TRADE]);
+        MenuOption_TRADE.ent_text = Game_menuOption_Text_Create(in_game, MenuOption_TRADE.ent_text, menuOptionnames[MENU_OPTION_TRADE]);
+        MenuOption_TRADE.ent_icon = Game_menuOption_Icon_Create(in_game, MenuOption_TRADE.ent_icon);
         arrput(menu_ptr->menuoptions, MenuOption_TRADE);
         menu_ptr->row_num++;
     }
     bool seizeable = false;
     if (seizeable) {
         Menu_Options_padDefault(&MenuOption_SEIZE);
-        MenuOption_SEIZE.ent_text = Game_menuOptions_Create(in_game, MenuOption_SEIZE.ent_text, menuOptionnames[MENU_OPTION_SEIZE]);
+        MenuOption_SEIZE.ent_text = Game_menuOption_Text_Create(in_game, MenuOption_SEIZE.ent_text, menuOptionnames[MENU_OPTION_SEIZE]);
+        MenuOption_SEIZE.ent_icon = Game_menuOption_Icon_Create(in_game, MenuOption_SEIZE.ent_icon);
         arrput(menu_ptr->menuoptions, MenuOption_SEIZE);
         menu_ptr->row_num++;
     }
     if (in_game->num_talkers > 0) {
         Menu_Options_padDefault(&MenuOption_TALK);
-        MenuOption_TALK.ent_text = Game_menuOptions_Create(in_game, MenuOption_TALK.ent_text, menuOptionnames[MENU_OPTION_TALK]);
+        MenuOption_TALK.ent_text = Game_menuOption_Text_Create(in_game, MenuOption_TALK.ent_text, menuOptionnames[MENU_OPTION_TALK]);
+        MenuOption_TALK.ent_icon = Game_menuOption_Icon_Create(in_game, MenuOption_TALK.ent_icon);
         arrput(menu_ptr->menuoptions, MenuOption_TALK);
         menu_ptr->row_num++;
     }
     if (in_game->num_defenders > 0) {
         Menu_Options_padDefault(&MenuOption_ATTACK);
-        MenuOption_ATTACK.ent_text = Game_menuOptions_Create(in_game, MenuOption_ATTACK.ent_text, menuOptionnames[MENU_OPTION_ATTACK]);
+        MenuOption_ATTACK.ent_text = Game_menuOption_Text_Create(in_game, MenuOption_ATTACK.ent_text, menuOptionnames[MENU_OPTION_ATTACK]);
+        MenuOption_ATTACK.ent_icon = Game_menuOption_Icon_Create(in_game, MenuOption_TALK.ent_icon);
         arrput(menu_ptr->menuoptions, MenuOption_ATTACK);
         menu_ptr->row_num++;
     }
     if (in_game->num_patients > 0) {
         Menu_Options_padDefault(&MenuOption_STAFF);
-        MenuOption_STAFF.ent_text = Game_menuOptions_Create(in_game, MenuOption_STAFF.ent_text, menuOptionnames[MENU_OPTION_STAFF]);
+        MenuOption_STAFF.ent_text = Game_menuOption_Text_Create(in_game, MenuOption_STAFF.ent_text, menuOptionnames[MENU_OPTION_STAFF]);
+        MenuOption_STAFF.ent_icon = Game_menuOption_Icon_Create(in_game, MenuOption_STAFF.ent_icon);
         arrput(menu_ptr->menuoptions, MenuOption_STAFF);
         menu_ptr->row_num++;
     }
     if (in_game->num_spectators > 0) {
         Menu_Options_padDefault(&MenuOption_DANCE);
-        MenuOption_DANCE.ent_text = Game_menuOptions_Create(in_game, MenuOption_DANCE.ent_text, menuOptionnames[MENU_OPTION_DANCE]);
+        MenuOption_DANCE.ent_text = Game_menuOption_Text_Create(in_game, MenuOption_DANCE.ent_text, menuOptionnames[MENU_OPTION_DANCE]);
+        MenuOption_DANCE.ent_icon = Game_menuOption_Icon_Create(in_game, MenuOption_STAFF.ent_icon);
         arrput(menu_ptr->menuoptions, MenuOption_DANCE);
         menu_ptr->row_num++;
     }
     if (in_game->num_rescuees > 0) {
         Menu_Options_padDefault(&MenuOption_RESCUE);
-        MenuOption_RESCUE.ent_text = Game_menuOptions_Create(in_game, MenuOption_RESCUE.ent_text, menuOptionnames[MENU_OPTION_RESCUE]);
+        MenuOption_RESCUE.ent_text = Game_menuOption_Text_Create(in_game, MenuOption_RESCUE.ent_text, menuOptionnames[MENU_OPTION_RESCUE]);
+        MenuOption_RESCUE.ent_icon = Game_menuOption_Icon_Create(in_game, MenuOption_RESCUE.ent_icon);
         arrput(menu_ptr->menuoptions, MenuOption_RESCUE);
         menu_ptr->row_num++;
     }
     Menu_Options_padDefault(&MenuOption_WAIT);
-    MenuOption_WAIT.ent_text = Game_menuOptions_Create(in_game, MenuOption_WAIT.ent_text, menuOptionnames[MENU_OPTION_WAIT]);
+    MenuOption_WAIT.ent_text = Game_menuOption_Text_Create(in_game, MenuOption_WAIT.ent_text, menuOptionnames[MENU_OPTION_WAIT]);
+    MenuOption_WAIT.ent_icon = Game_menuOption_Icon_Create(in_game, MenuOption_WAIT.ent_icon);
     arrput(menu_ptr->menuoptions, MenuOption_WAIT);
     menu_ptr->row_num++;
 
@@ -1579,7 +1601,7 @@ void makeContent_MENU_UNIT_ITEMS(struct Game * in_game, void * data_1, void * da
             SDL_Log("item id %d", equipment[i].id);
             temp_option = MenuOption_default;
             strncpy(item_name, hmget(in_game->weapons, equipment[i].id).item->name, sizeof(item_name));
-            temp_option.ent_text = Game_menuOptions_Create(in_game, temp_option.ent_text, item_name);
+            temp_option.ent_text = Game_menuOption_Text_Create(in_game, temp_option.ent_text, item_name);
             text_ptr = TNECS_GET_COMPONENT(in_game->world, temp_option.ent_text, Text);
             strncpy(text_ptr->text_line, item_name, sizeof(text_ptr->text_line));
             arrput(menu_ptr->menuoptions, temp_option);
@@ -1697,12 +1719,12 @@ void makeContent_MENU_MAP_ACTION(struct Game * in_game, void * data_1, void * da
     arrfree(menu_ptr->menuoptions);
 
     Menu_Options_padDefault(&MenuOption_GLOBAL_RANGE);
-    MenuOption_GLOBAL_RANGE.ent_text = Game_menuOptions_Create(in_game, MenuOption_GLOBAL_RANGE.ent_text, menuOptionnames[MENU_OPTION_GLOBAL_RANGE]);
+    MenuOption_GLOBAL_RANGE.ent_text = Game_menuOption_Text_Create(in_game, MenuOption_GLOBAL_RANGE.ent_text, menuOptionnames[MENU_OPTION_GLOBAL_RANGE]);
     arrput(menu_ptr->menuoptions, MenuOption_GLOBAL_RANGE);
     menu_ptr->row_num++;
 
     Menu_Options_padDefault(&MenuOption_END_TURN);
-    MenuOption_END_TURN.ent_text = Game_menuOptions_Create(in_game, MenuOption_END_TURN.ent_text, menuOptionnames[MENU_OPTION_END_TURN]);
+    MenuOption_END_TURN.ent_text = Game_menuOption_Text_Create(in_game, MenuOption_END_TURN.ent_text, menuOptionnames[MENU_OPTION_END_TURN]);
     arrput(menu_ptr->menuoptions, MenuOption_END_TURN);
     menu_ptr->row_num++;
 
