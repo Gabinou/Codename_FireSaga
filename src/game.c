@@ -1504,59 +1504,49 @@ void makeContent_MENU_UNIT_ACTION(struct Game * in_game, void * data_1, void * d
     menu_ptr->row_num++;
 
     if (in_game->num_traders > 0) {
-    Menu_Options_padDefault(&MenuOption_TRADE);
-    MenuOption_TRADE.ent_text = Game_menuOptions_Create(in_game, MenuOption_TRADE.ent_text, menuOptionnames[MENU_OPTION_TRADE]);
+        Menu_Options_padDefault(&MenuOption_TRADE);
+        MenuOption_TRADE.ent_text = Game_menuOptions_Create(in_game, MenuOption_TRADE.ent_text, menuOptionnames[MENU_OPTION_TRADE]);
         arrput(menu_ptr->menuoptions, MenuOption_TRADE);
         menu_ptr->row_num++;
     }
     bool seize = false;
     if (seize) {
-    Menu_Options_padDefault(&MenuOption_SEIZE);
+        Menu_Options_padDefault(&MenuOption_SEIZE);
         MenuOption_SEIZE.ent_text = Game_menuOptions_Create(in_game, MenuOption_SEIZE.ent_text, menuOptionnames[MENU_OPTION_SEIZE]);
         arrput(menu_ptr->menuoptions, MenuOption_SEIZE);
         menu_ptr->row_num++;
     }
     if (in_game->num_talkers > 0) {
-    Menu_Options_padDefault(&MenuOption_TALK);
-       MenuOption_TALK.ent_text = Game_menuOptions_Create(in_game, MenuOption_TALK.ent_text, menuOptionnames[MENU_OPTION_TALK]);
+        Menu_Options_padDefault(&MenuOption_TALK);
+        MenuOption_TALK.ent_text = Game_menuOptions_Create(in_game, MenuOption_TALK.ent_text, menuOptionnames[MENU_OPTION_TALK]);
         arrput(menu_ptr->menuoptions, MenuOption_TALK);
         menu_ptr->row_num++;
     }
     if (in_game->num_defenders > 0) {
-        MenuOption_ATTACK.pad_text = MenuOption_default.pad_text;
-        MenuOption_ATTACK.pad_icon = MenuOption_default.pad_icon;
-        MenuOption_ATTACK.pad_cell = MenuOption_default.pad_cell;
+        Menu_Options_padDefault(&MenuOption_ATTACK);
         MenuOption_ATTACK.ent_text = Game_menuOptions_Create(in_game, MenuOption_ATTACK.ent_text, menuOptionnames[MENU_OPTION_ATTACK]);
         arrput(menu_ptr->menuoptions, MenuOption_ATTACK);
         menu_ptr->row_num++;
     }
     if (in_game->num_patients > 0) {
-        MenuOption_STAFF.pad_text = MenuOption_default.pad_text;
-        MenuOption_STAFF.pad_icon = MenuOption_default.pad_icon;
-        MenuOption_STAFF.pad_cell = MenuOption_default.pad_cell;
+        Menu_Options_padDefault(&MenuOption_STAFF);
         MenuOption_STAFF.ent_text, = Game_menuOptions_Create(in_game, MenuOption_STAFF.ent_text, menuOptionnames[MENU_OPTION_STAFF]);
         arrput(menu_ptr->menuoptions, MenuOption_STAFF);
         menu_ptr->row_num++;
     }
     if (in_game->num_spectators > 0) {
-        MenuOption_DANCE.pad_text = MenuOption_default.pad_text;
-        MenuOption_DANCE.pad_icon = MenuOption_default.pad_icon;
-        MenuOption_DANCE.pad_cell = MenuOption_default.pad_cell;
+        Menu_Options_padDefault(&MenuOption_DANCE);
         MenuOption_DANCE.ent_text = Game_menuOptions_Create(in_game, MenuOption_DANCE.ent_text, menuOptionnames[MENU_OPTION_DANCE]);
         arrput(menu_ptr->menuoptions, MenuOption_DANCE);
         menu_ptr->row_num++;
     }
     if (in_game->num_rescuees > 0) {
-        MenuOption_RESCUE.pad_text = MenuOption_default.pad_text;
-        MenuOption_RESCUE.pad_icon = MenuOption_default.pad_icon;
-        MenuOption_RESCUE.pad_cell = MenuOption_default.pad_cell;
+        Menu_Options_padDefault(&MenuOption_RESCUE);
         MenuOption_RESCUE.ent_text = Game_menuOptions_Create(in_game, MenuOption_RESCUE.ent_text, menuOptionnames[MENU_OPTION_RESCUE]);
         arrput(menu_ptr->menuoptions, MenuOption_RESCUE);
         menu_ptr->row_num++;
     }
-    MenuOption_WAIT.pad_text = MenuOption_default.pad_text;
-    MenuOption_WAIT.pad_icon = MenuOption_default.pad_icon;
-    MenuOption_WAIT.pad_cell = MenuOption_default.pad_cell;
+    Menu_Options_padDefault(&MenuOption_WAIT);
     MenuOption_WAIT.ent_text = Game_menuOptions_Create(in_game, MenuOption_WAIT.ent_text, menuOptionnames[MENU_OPTION_WAIT]);
     arrput(menu_ptr->menuoptions, MenuOption_WAIT);
     menu_ptr->row_num++;
@@ -1704,16 +1694,12 @@ void makeContent_MENU_MAP_ACTION(struct Game * in_game, void * data_1, void * da
     menu_ptr->row_num = 0;
     arrfree(menu_ptr->menuoptions);
 
-    MenuOption_GLOBAL_RANGE.pad_text = MenuOption_default.pad_text;
-    MenuOption_GLOBAL_RANGE.pad_icon = MenuOption_default.pad_icon;
-    MenuOption_GLOBAL_RANGE.pad_cell = MenuOption_default.pad_cell;
+    Menu_Options_padDefault(&MenuOption_GLOBAL_RANGE);
     MenuOption_GLOBAL_RANGE.ent_text, = Game_menuOptions_Create(in_game, MenuOption_GLOBAL_RANGE.ent_text, menuOptionnames[MENU_OPTION_GLOBAL_RANGE]);
     arrput(menu_ptr->menuoptions, MenuOption_GLOBAL_RANGE);
     menu_ptr->row_num++;
 
-    MenuOption_END_TURN.pad_text = MenuOption_default.pad_text;
-    MenuOption_END_TURN.pad_icon = MenuOption_default.pad_icon;
-    MenuOption_END_TURN.pad_cell = MenuOption_default.pad_cell;
+    Menu_Options_padDefault(&MenuOption_END_TURN);
     MenuOption_END_TURN.ent_text = Game_menuOptions_Create(in_game, MenuOption_END_TURN.ent_text, menuOptionnames[MENU_OPTION_END_TURN]);
     arrput(menu_ptr->menuoptions, MenuOption_END_TURN);
     menu_ptr->row_num++;
