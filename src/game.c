@@ -1432,7 +1432,7 @@ void Game_menuOptions_Create(struct Game * in_game, tnecs_entity_t * in_entity, 
     text_ptr->sizefactor[1] = 1; // height, width
 
     strcpy(text_ptr->text_line, in_name);
-    SDL_Log("Menu_option_Line: %s %s", in_name, text_ptr->text_line);
+    SDL_Log("in_name, Menu_option_Line: %s %s", in_name, text_ptr->text_line);
 }
 
 void Game_Menu_LocationfromCursor(struct Game * in_game, tnecs_entity_t in_menu_entity) {
