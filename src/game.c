@@ -995,8 +995,6 @@ void Game_loadJSON(struct Game * in_game, const int16_t save_ind) {
     }
 }
 
-
-
 void Game_saveJSON(struct Game * in_game, const int16_t save_ind) {
     if (!PHYSFS_exists(SAVE_FOLDER)) {
         PHYSFS_mkdir(SAVE_FOLDER);

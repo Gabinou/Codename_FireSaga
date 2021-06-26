@@ -215,34 +215,34 @@ void receive_Input_Cancel(struct Game * in_game, SDL_Event * in_userevent) {
 }
 
 void receive_Mouse_Disable(struct Game * in_game, SDL_Event * in_Mouse_Disable) {
-    SDL_Log("Received Mouse_Disable event");
+    SDL_Log("receive_Mouse_Disable");
     Game_Mouse_Disable(in_game);
 
 }
 
 void receive_Mouse_Enable(struct Game * in_game, SDL_Event * in_Mouse_Enable) {
-    SDL_Log("Received Mouse_Enable event");
+    SDL_Log("receive_Mouse_Enable");
     Game_Mouse_Enable(in_game);
     in_game->mouse_idletime = 0.0f;
 }
 
 void receive_Cursor_Enable(struct Game * in_game, SDL_Event * in_Cursor_Enable) {
-    SDL_Log("Received Cursor_Enable event");
+    SDL_Log("receive_Cursor_Enable");
     Game_Cursor_Enable(in_game);
 }
 
 void receive_Cursor_Disable(struct Game * in_game, SDL_Event * in_Cursor_Disable) {
-    SDL_Log("Received Cursor_Disable event");
+    SDL_Log("receive_Cursor_Disable");
     Game_Cursor_Disable(in_game);
 }
 
 void receive_Turn_Begin(struct Game * in_game, SDL_Event * in_userevent) {
-    SDL_Log("Received Turn_Begin event");
+    SDL_Log("receive_Turn_Begin");
     uint8_t army = * (uint8_t *) in_userevent->user.data1;
 }
 
 void receive_Game_Control_Switch(struct Game * in_game, SDL_Event * in_userevent) {
-    SDL_Log("Received Game_Control_Switch");
+    SDL_Log("receive_Game_Control_Switch");
     uint8_t army = * (uint8_t *) in_userevent->user.data1;
 
     if (utilities_isPC(army)) {
@@ -262,6 +262,7 @@ void receive_Game_Control_Switch(struct Game * in_game, SDL_Event * in_userevent
 }
 
 void receive_Input_Stats(struct Game * in_game, SDL_Event * in_userevent) {
+    SDL_Log("receive_Input_Stats");
 
 }
 
@@ -576,7 +577,7 @@ void receive_SDL_MOUSEBUTTON(struct Game * in_game, SDL_Event * in_event) {
 }
 
 void receive_Turn_End(struct Game * in_game, SDL_Event * in_userevent) {
-    SDL_Log("Received Turn_End event");
+    SDL_Log("receive_Turn_End");
     arrput(in_game->map_ptr->armies_onfield, in_game->map_ptr->armies_onfield[0]);
     arrdel(in_game->map_ptr->armies_onfield, 0);
     Event_Emit(SDL_USEREVENT, event_Turn_Begin, NULL, NULL);
@@ -715,7 +716,7 @@ void receive_Unit_Return(struct Game * in_game, SDL_Event * in_userevent) {
 }
 
 void receive_Unit_Moves(struct Game * in_game, SDL_Event * in_userevent) {
-    SDL_Log("receive_Cursor_Hovers_Unit");
+    SDL_Log("receive_Unit_Moves");
     // In this state, position of Silou should be equal to cursor position.
     // -> TO BECOME AN ARROW SOMEDAY.
     int16_t * costmapp = NULL;
@@ -765,15 +766,15 @@ void receive_Unit_Moves(struct Game * in_game, SDL_Event * in_userevent) {
 }
 
 void receive_Cursor_Hovers_Unit(struct Game * in_game, SDL_Event * in_userevent) {
-    SDL_Log("receive_Cursor_Hovers_Uni");
+    SDL_Log("receive_Cursor_Hovers_Unit");
 
 }
 
 void receive_Cursor_Dehovers_Unit(struct Game * in_game, SDL_Event * in_userevent) {
-    SDL_Log("Received Units_Refresh events");
+    SDL_Log("receive_Cursor_Dehovers_Unit");
     arrput(in_game->map_ptr->armies_onfield, in_game->map_ptr->armies_onfield[0]);
     arrdel(in_game->map_ptr->armies_onfield, 0);
-    Event_Emit(SDL_USEREVENT, event_Turn_Begin, NULL, NULL);
+    // Event_Emit(SDL_USEREVENT, event_Turn_Begin, NULL, NULL);
     uint8_t army = * (uint8_t *)in_userevent->user.data1;
 
     tnecs_entity_t * unit_entitys = Map_Unit_Gets(in_game->map_ptr, in_game->world, army);
