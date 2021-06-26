@@ -87,13 +87,11 @@ typedef struct Menu {
     uint8_t id;
     bool enabled;
     uint8_t fontsize;
-    uint8_t row_menuoptions;
-    uint8_t col_menuoptions;
     uint8_t row_num;
     uint8_t col_num;
 
 
-    int32_t * col_widths; // should be a singluar col_width for cursor?
+    int32_t * col_widths; // should be a singular col_width for cursor?
     int32_t row_height;
 
     int32_t max_width_icon;

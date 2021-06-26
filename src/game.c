@@ -230,6 +230,7 @@ void Game_Menu_Update(struct Game * in_game, int8_t in_menu) {
         in_game->menuContentMakers[in_menu](in_game, data_1, data_2);
         SDL_Log("Outside menuContentMakers");
         struct Menu * menu_ptr = TNECS_GET_COMPONENT(in_game->world, in_game->menu_loaded[in_menu], Menu);
+        SDL_assert(menu_ptr->row_num > 0);
         Menu_Cols_init(menu_ptr);
         Menu_cellsWidths_Compute(in_game->world, menu_ptr);
         Menu_rowHeight_Compute(in_game->world, menu_ptr);
@@ -1412,7 +1413,7 @@ tnecs_entity_t Game_menuOptions_Create(struct Game * in_game, tnecs_entity_t in_
     }
 
     struct Text * text_ptr = TNECS_GET_COMPONENT(in_game->world, in_entity, Text);
-    SDL_assert(text_ptr !=  NULL);
+    SDL_assert(text_ptr != NULL);
     text_ptr->visible = true;
     text_ptr->fontsize = in_game->settings.fontsize;
 
@@ -1491,8 +1492,8 @@ void makeContent_MENU_UNIT_ACTION(struct Game * in_game, void * data_1, void * d
     SDL_Log("makeContent_MENU_UNIT_ACTION");
     tnecs_entity_t menu_entity = in_game->menu_loaded[MENU_UNIT_ACTION];
     struct Position * unit_pos_ptr = NULL;
-    SDL_assert(in_game->selected_unit_entity != 0);
-    SDL_assert(menu_entity != 0);
+    SDL_assert(in_game->selected_unit_entity > 0);
+    SDL_assert(menu_entity > 0);
     unit_pos_ptr = TNECS_GET_COMPONENT(in_game->world, in_game->selected_unit_entity, Position);
     struct Menu * menu_ptr = TNECS_GET_COMPONENT(in_game->world, menu_entity, Menu);
     menu_ptr->col_num = 1;
@@ -1500,6 +1501,7 @@ void makeContent_MENU_UNIT_ACTION(struct Game * in_game, void * data_1, void * d
     arrfree(menu_ptr->menuoptions);
     Menu_Options_padDefault(&MenuOption_ITEMS);
     MenuOption_ITEMS.ent_text = Game_menuOptions_Create(in_game, MenuOption_ITEMS.ent_text, menuOptionnames[MENU_OPTION_ITEMS]);
+    SDL_assert(MenuOption_ITEMS.ent_text > 0);
     arrput(menu_ptr->menuoptions, MenuOption_ITEMS);
     menu_ptr->row_num++;
 
@@ -1509,8 +1511,8 @@ void makeContent_MENU_UNIT_ACTION(struct Game * in_game, void * data_1, void * d
         arrput(menu_ptr->menuoptions, MenuOption_TRADE);
         menu_ptr->row_num++;
     }
-    bool seize = false;
-    if (seize) {
+    bool seizeable = false;
+    if (seizeable) {
         Menu_Options_padDefault(&MenuOption_SEIZE);
         MenuOption_SEIZE.ent_text = Game_menuOptions_Create(in_game, MenuOption_SEIZE.ent_text, menuOptionnames[MENU_OPTION_SEIZE]);
         arrput(menu_ptr->menuoptions, MenuOption_SEIZE);
