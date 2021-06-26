@@ -1602,6 +1602,7 @@ void makeContent_MENU_UNIT_ITEMS(struct Game * in_game, void * data_1, void * da
             temp_option = MenuOption_default;
             strncpy(item_name, hmget(in_game->weapons, equipment[i].id).item->name, sizeof(item_name));
             temp_option.ent_text = Game_menuOption_Text_Create(in_game, temp_option.ent_text, item_name);
+            temp_option.ent_icon = Game_menuOption_Icon_Create(in_game, temp_option.ent_icon);
             text_ptr = TNECS_GET_COMPONENT(in_game->world, temp_option.ent_text, Text);
             strncpy(text_ptr->text_line, item_name, sizeof(text_ptr->text_line));
             arrput(menu_ptr->menuoptions, temp_option);
@@ -1720,11 +1721,13 @@ void makeContent_MENU_MAP_ACTION(struct Game * in_game, void * data_1, void * da
 
     Menu_Options_padDefault(&MenuOption_GLOBAL_RANGE);
     MenuOption_GLOBAL_RANGE.ent_text = Game_menuOption_Text_Create(in_game, MenuOption_GLOBAL_RANGE.ent_text, menuOptionnames[MENU_OPTION_GLOBAL_RANGE]);
+    MenuOption_GLOBAL_RANGE.ent_icon = Game_menuOption_Icon_Create(in_game, MenuOption_GLOBAL_RANGE.ent_icon);
     arrput(menu_ptr->menuoptions, MenuOption_GLOBAL_RANGE);
     menu_ptr->row_num++;
 
     Menu_Options_padDefault(&MenuOption_END_TURN);
     MenuOption_END_TURN.ent_text = Game_menuOption_Text_Create(in_game, MenuOption_END_TURN.ent_text, menuOptionnames[MENU_OPTION_END_TURN]);
+    MenuOption_END_TURN.ent_icon = Game_menuOption_Icon_Create(in_game, MenuOption_END_TURN.ent_icon);
     arrput(menu_ptr->menuoptions, MenuOption_END_TURN);
     menu_ptr->row_num++;
 

@@ -2,7 +2,7 @@
 #include "systemRender.h"
 
 void drawSprite(tnecs_system_input_t * in_input) {
-    // SDL_Log("drawSprite");
+    SDL_Log("drawSprite");
     struct Position * position_ptr = TNECS_COMPONENTS_LIST(in_input, Position);
     struct Sprite * sprite_ptr = TNECS_COMPONENTS_LIST(in_input, Sprite);
     bool ent_hasmouse, ent_hasgamepad;
@@ -45,7 +45,7 @@ void drawSprite(tnecs_system_input_t * in_input) {
 }
 
 void drawCursor(tnecs_system_input_t * in_input) {
-    // SDL_Log("drawCursor");
+    SDL_Log("drawCursor");
     struct Position * position_ptr = TNECS_COMPONENTS_LIST(in_input, Position);
     struct Sprite * sprite_ptr = TNECS_COMPONENTS_LIST(in_input, Sprite);
     struct controllerKeyboard * keyboard_ptr = TNECS_COMPONENTS_LIST(in_input, controllerKeyboard);
@@ -79,7 +79,7 @@ void drawCursor(tnecs_system_input_t * in_input) {
 }
 
 void drawMouse(tnecs_system_input_t * in_input) {
-    // SDL_Log("drawMouse");
+    SDL_Log("drawMouse");
     struct Position * position_ptr = TNECS_COMPONENTS_LIST(in_input, Position);
     struct Sprite * sprite_ptr = TNECS_COMPONENTS_LIST(in_input, Sprite);
     struct controllerMouse * mouse_ptr = TNECS_COMPONENTS_LIST(in_input, controllerMouse);
@@ -97,7 +97,7 @@ void drawMouse(tnecs_system_input_t * in_input) {
 }
 
 void drawMenu(tnecs_system_input_t * in_input) {
-    // SDL_Log("drawMenu");
+    SDL_Log("drawMenu");
     struct Menu * menu_ptr = TNECS_COMPONENTS_LIST(in_input, Menu);
     for (uint16_t ent = 0; ent < in_input->num_entities; ent++) {
         if (menu_ptr[ent].enabled) {
@@ -108,7 +108,7 @@ void drawMenu(tnecs_system_input_t * in_input) {
 }
 
 void drawText(tnecs_system_input_t * in_input) {
-    // SDL_Log("drawText");
+    SDL_Log("drawText");
     struct Position * position_ptr = TNECS_COMPONENTS_LIST(in_input, Position);
     struct Text * text_ptr = TNECS_COMPONENTS_LIST(in_input, Text);
     struct UpdateTimer * updatetimer_ptr = TNECS_COMPONENTS_LIST(in_input, UpdateTimer);
