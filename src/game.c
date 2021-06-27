@@ -503,17 +503,22 @@ void Game_Mouse_Create(struct Game * in_game) {
 
     in_game->entity_mouse = TNECS_ENTITY_CREATE_wCOMPONENTS(in_game->world, controllerMouse, Position, Sprite);
     struct Position * position_ptr = TNECS_GET_COMPONENT(in_game->world, in_game->entity_mouse, Position);
+    position_ptr->onTilemap = false;
     SDL_assert(position_ptr != NULL);
     Position_Bounds_Set(position_ptr, -1000, 2000, -1000, 2000);
 
     struct Sprite * sprite_ptr = TNECS_GET_COMPONENT(in_game->world, in_game->entity_mouse, Sprite);
     SDL_assert(sprite_ptr != NULL);
     Sprite_Texture_Set(sprite_ptr, ".."DIR_SEPARATOR"assets"DIR_SEPARATOR"GUI"DIR_SEPARATOR"mousecursor.png");
+    sprite_ptr->srcrect.w = 32;
+    sprite_ptr->srcrect.h = 32;
+    sprite_ptr->destrect.w = 32;
+    sprite_ptr->destrect.h = 32;
 }
 
 void Game_Mouse_Enable(struct Game * in_game) {
     SDL_Log("Game_Mouse_Enable");
-    in_game->ismouse = true;
+    in_game->ismouse = true;;
     SDL_assert(in_game->entity_mouse != 0);
     struct Sprite * sprite_ptr = TNECS_GET_COMPONENT(in_game->world, in_game->entity_mouse, Sprite);
     SDL_assert(sprite_ptr != NULL);
@@ -846,9 +851,9 @@ void Game_init(struct Game * in_game) {
     TNECS_REGISTER_COMPONENT(in_game->world, RenderTimer);          // 5096
     SDL_Log("System Registration\n");
     TNECS_REGISTER_SYSTEM_wEXCL(in_game->world, drawSprite, 0, Sprite, Position);
+    TNECS_REGISTER_SYSTEM_wEXCL(in_game->world, drawMenu, 0, Menu);
     TNECS_REGISTER_SYSTEM_wEXCL(in_game->world, drawCursor, 0, Sprite, Position, controllerGamepad, controllerKeyboard, controllerTouchpad);
     TNECS_REGISTER_SYSTEM_wEXCL(in_game->world, drawMouse, 0, Sprite, Position, controllerMouse);
-    TNECS_REGISTER_SYSTEM_wEXCL(in_game->world, drawMenu, 0, Menu);
     TNECS_REGISTER_SYSTEM_wEXCL(in_game->world, drawText, 0, Text, Position, UpdateTimer);
     TNECS_REGISTER_SYSTEM_wEXCL(in_game->world, controlMouse, 0, Sprite, Position, controllerMouse);
     TNECS_REGISTER_SYSTEM_wEXCL(in_game->world, controlKeyboard, 0, Position, Sprite, controllerKeyboard);

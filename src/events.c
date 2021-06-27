@@ -273,7 +273,7 @@ tnecs_entity_t Events_Controllers_Check(struct Game * in_game, int32_t in_code) 
         case CONTROLLER_MOUSE:
             if (!in_game->ismouse) {
                 Event_Emit(SDL_USEREVENT, event_Mouse_Enable, NULL, NULL);
-                Event_Emit(SDL_USEREVENT, event_Cursor_Disable, NULL, NULL);
+                // Event_Emit(SDL_USEREVENT, event_Cursor_Disable, NULL, NULL);
             }
             out_accepter_entity = in_game->entity_mouse;
             break;
@@ -501,9 +501,10 @@ void receive_SDL_MOUSEMOTION(struct Game * in_game, SDL_Event * in_event) {
 
         // SDL_Log("WindowID: %d %d", in_event->motion.windowID, SDL_GetWindowID(in_game->window));
         struct Sprite * sprite_ptr = TNECS_GET_COMPONENT(in_game->world, in_game->entity_mouse, Sprite);
-        if (sprite_ptr != NULL) {
-            sprite_ptr->visible = true;
-        }
+        struct Position * position_ptr = TNECS_GET_COMPONENT(in_game->world, in_game->entity_mouse, Position);
+        // if (sprite_ptr != NULL) {
+        // sprite_ptr->visible = true;
+        // }
 
         // SDL_Log("Mouse motion event rel: %d %d", in_event->motion.xrel, in_event->motion.yrel);
         // SDL_Log("Mouse motion event pos: %d %d", in_event->motion.x, in_event->motion.y);
@@ -514,7 +515,7 @@ void receive_SDL_MOUSEMOTION(struct Game * in_game, SDL_Event * in_event) {
             if (in_game->entity_mouse != 0) {
                 if (!in_game->ismouse) {
                     Event_Emit(SDL_USEREVENT, event_Mouse_Enable, NULL, NULL);
-                    Event_Emit(SDL_USEREVENT, event_Cursor_Disable, NULL, NULL);
+                    // Event_Emit(SDL_USEREVENT, event_Cursor_Disable, NULL, NULL);
                 }
 
                 struct Position * position_ptr = TNECS_GET_COMPONENT(in_game->world, in_game->entity_mouse, Position);
@@ -527,9 +528,13 @@ void receive_SDL_MOUSEMOTION(struct Game * in_game, SDL_Event * in_event) {
                     struct Point tilemap_pos = Position_pixel2tilemap(position_ptr, in_event->motion.x, in_event->motion.y);
                     Position_PosTilemap_Set(position_ptr, tilemap_pos.x, tilemap_pos.y);
                 }
-
-                in_game->mouse_lastpos.x = in_event->motion.x;
-                in_game->mouse_lastpos.y = in_event->motion.y;
+                // SDL_Log("in_event->motion: %d %d", in_event->motion.x, in_event->motion.y);
+                // Position_Pos_Set(position_ptr, in_event->motion.x, in_event->motion.y);
+                position_ptr->pixel_pos.x = in_event->motion.x;
+                position_ptr->pixel_pos.y = in_event->motion.y;
+                // in_game->mouse_lastpos.x = in_event->motion.x;
+                // in_game->mouse_lastpos.x = in_event->motion.x;
+                // in_game->mouse_lastpos.y = in_event->motion.y;
             }
         }
     }
