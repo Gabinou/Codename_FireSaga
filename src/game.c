@@ -401,7 +401,6 @@ void Game_Mouse_State_Set(struct Game * in_game, const int8_t in_menu) {
     int16_t linespace;
     SDL_assert(in_game->entity_mouse != 0);
     struct Position * mouse_position_ptr = TNECS_GET_COMPONENT(in_game->world, in_game->entity_mouse, Position);
-    struct Text * mouse_text_ptr = TNECS_GET_COMPONENT(in_game->world, in_game->entity_mouse, Text);
 
     switch (in_menu) {
         // case Gameplay_Map:
@@ -875,7 +874,7 @@ void Game_startup(struct Game * in_game, struct Input_Arguments in_args) {
         case STARTUP_TESTING:
             SDL_Log("STARTUP_TESTING ");
 
-            // SDL_ShowCursor(SDL_DISABLE); // for default cursor.
+            SDL_ShowCursor(SDL_DISABLE); // for default cursor.
             Game_FPS_Create(in_game, DEFAULT_TEXT_UPDATETIME);
             Game_Cursor_Create(in_game);
             Game_Mouse_Create(in_game);

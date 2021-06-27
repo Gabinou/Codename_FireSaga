@@ -84,7 +84,6 @@ void drawMouse(tnecs_system_input_t * in_input) {
     struct Sprite * sprite_ptr = TNECS_COMPONENTS_LIST(in_input, Sprite);
     struct controllerMouse * mouse_ptr = TNECS_COMPONENTS_LIST(in_input, controllerMouse);
     for (uint16_t ent = 0; ent < in_input->num_entities; ent++) {
-
         if (sprite_ptr[ent].visible) {
             SDL_Rect destrect = sprite_ptr[ent].destrect;
             struct Point pos = position_ptr[ent].pixel_pos;

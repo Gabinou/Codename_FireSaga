@@ -61,7 +61,7 @@ void receive_Map_globalRange_Show(struct Game * in_game, SDL_Event * in_usereven
     in_game->map_ptr->show_globalRange = true;
     gamepad_ptr->block_move = true;
     keyboard_ptr->block_move = true;
-    Game_Cursor_Disable(in_game);
+    // Game_Cursor_Disable(in_game);
     strncpy(in_game->reason, "global range is being shown", sizeof(in_game->reason));
     Game_subState_Set(in_game, GAME_SUBSTATE_MAP_GLOBAL_RANGE, in_game->reason);
 }
