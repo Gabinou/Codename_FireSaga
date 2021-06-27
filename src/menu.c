@@ -267,7 +267,7 @@ void Menu_Options_padDefault(struct MenuOption * in_menu_option) {
 }
 
 void Menu_Options_Draw(tnecs_world_t * in_world, struct Menu * in_menu) {
-    SDL_Log("Menu_Options_Draw");
+    // SDL_Log("Menu_Options_Draw");
     struct MenuOption cell;
     Text * text_ptr;
     for (uint8_t col = 0; col < in_menu->col_num; col++) {
@@ -286,7 +286,7 @@ void Menu_Options_Draw(tnecs_world_t * in_world, struct Menu * in_menu) {
 }
 
 void Menu_Patches_Draw(struct Menu * in_menu) {
-    SDL_Log("Menu_Patches_Draw");
+    // SDL_Log("Menu_Patches_Draw");
     SDL_Rect destrect;
     SDL_Rect srcrect;
     destrect.w = in_menu->patch_pixels.x;

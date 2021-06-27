@@ -1312,23 +1312,27 @@ void Game_subStateSwitch_onMenupop(struct Game * in_game, int8_t menu_popped) {
     switch (menu_popped) {
         case MENU_UNIT_ACTION:
             strncpy(in_game->reason, "MENU_UNIT_ACTION was popped", sizeof(in_game->reason));
-            Game_subState_Set(in_game, GAME_SUBSTATE_MAP_UNIT_MOVES, in_game->reason);
             break;
         case MENU_MAP_ACTION:
             strncpy(in_game->reason, "MENU_MAP_ACTION was popped", sizeof(in_game->reason));
-            Game_subState_Set(in_game, GAME_SUBSTATE_MENU, in_game->reason);
+            // Game_subState_Set(in_game, GAME_SUBSTATE_MENU, in_game->reason);
             break;
         case MENU_UNIT_ITEMS:
             SDL_Log("MENU_UNIT_ITEMS was popped");
             strncpy(in_game->reason, "MENU_UNIT_ITEMS was popped", sizeof(in_game->reason));
-            Game_subState_Set(in_game, GAME_SUBSTATE_MENU, in_game->reason);
+            // Game_subState_Set(in_game, GAME_SUBSTATE_MENU, in_game->reason);
             break;
         default:
             strncpy(in_game->reason, "invalid menu was popped, but menu still exists", sizeof(in_game->reason));
-            Game_subState_Set(in_game, GAME_SUBSTATE_MENU, in_game->reason);
+            // Game_subState_Set(in_game, GAME_SUBSTATE_MENU, in_game->reason);
             break;
     }
-    // if (in_game->menu_stack_num == 0) {
+    switch (in_game->state) {
+        case GAME_STATE_Gameplay_Map:
+            if (in_game->menu_stack_num == 0) {
+                Game_subState_Set(in_game, GAME_SUBSTATE_MAP_UNIT_MOVES, in_game->reason);
+            }
+    }
     // Game_cursorFocus_onMenu(in_game);
 }
 
@@ -1411,7 +1415,7 @@ tnecs_entity_t Game_menuOption_Icon_Create(struct Game * in_game, tnecs_entity_t
     if (in_entity == 0) {
         in_entity = TNECS_ENTITY_CREATE_wCOMPONENTS(in_game->world, Position, Sprite, RenderTimer);
         SDL_assert(in_entity > 0);
-        struct Text * sprite_ptr = TNECS_GET_COMPONENT(in_game->world, in_entity, Sprite);
+        struct Sprite * sprite_ptr = TNECS_GET_COMPONENT(in_game->world, in_entity, Sprite);
         SDL_assert(sprite_ptr != NULL);
     }
 
