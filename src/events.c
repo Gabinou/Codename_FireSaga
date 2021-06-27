@@ -526,9 +526,7 @@ void receive_SDL_MOUSEMOTION(struct Game * in_game, SDL_Event * in_event) {
                 }
                 struct Point tilemap_pos;
                 if (in_game->map_ptr != NULL) {
-                    SDL_Log("in_event->motion %d %d", in_event->motion.x, in_event->motion.y);
                     tilemap_pos = Position_pixel2tilemap(cursor_position_ptr, in_event->motion.x, in_event->motion.y);
-                    SDL_Log("tilemap_pos %d %d", tilemap_pos.x, tilemap_pos.y);
                     Position_PosTilemap_Set(position_ptr, tilemap_pos.x, tilemap_pos.y);
                     if (in_game->substate != GAME_SUBSTATE_STANDBY) {
                         struct Position * cursor_pos = TNECS_GET_COMPONENT(in_game->world, in_game->entity_cursor, Position);
