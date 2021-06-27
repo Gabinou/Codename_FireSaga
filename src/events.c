@@ -110,8 +110,6 @@ void receive_Cursor_Moved(struct Game * in_game, SDL_Event * in_userevent) {
         default:
             SDL_Log("receive_Cursor_Moved game state is invalid");
     }
-
-
 }
 
 void receive_Input_Cancel(struct Game * in_game, SDL_Event * in_userevent) {
@@ -377,6 +375,9 @@ void receive_Input_Accept(struct Game * in_game, SDL_Event * in_userevent) {
                                 in_game->cursor_lastpos.x = current_pos.x;
                                 in_game->cursor_lastpos.y = current_pos.y;
                             }
+                            if (accepter_entity == in_game->entity_mouse) {
+
+                            }
 
                             unit_entity_ontile = in_game->map_ptr->unitmap[current_pos.y * in_game->map_ptr->col_len + current_pos.x];
 
@@ -511,7 +512,7 @@ void receive_SDL_MOUSEMOTION(struct Game * in_game, SDL_Event * in_event) {
         // SDL_Log("Mouse last position: %d %d", in_game->mouse_lastpos.x, in_game->mouse_lastpos.y);
 
         // this is cause in_event->motion.xrel does not work
-        if ((in_event->motion.x != in_game->mouse_lastpos.x) || (in_event->motion.y != in_game->mouse_lastpos.y)) {
+        if ((in_event->motion.x != position_ptr->pixel_pos.x) || (in_event->motion.y != position_ptr->pixel_pos.y)) {
             if (in_game->entity_mouse != 0) {
                 if (!in_game->ismouse) {
                     Event_Emit(SDL_USEREVENT, event_Mouse_Enable, NULL, NULL);
@@ -529,12 +530,8 @@ void receive_SDL_MOUSEMOTION(struct Game * in_game, SDL_Event * in_event) {
                     Position_PosTilemap_Set(position_ptr, tilemap_pos.x, tilemap_pos.y);
                 }
                 // SDL_Log("in_event->motion: %d %d", in_event->motion.x, in_event->motion.y);
-                // Position_Pos_Set(position_ptr, in_event->motion.x, in_event->motion.y);
                 position_ptr->pixel_pos.x = in_event->motion.x;
                 position_ptr->pixel_pos.y = in_event->motion.y;
-                // in_game->mouse_lastpos.x = in_event->motion.x;
-                // in_game->mouse_lastpos.x = in_event->motion.x;
-                // in_game->mouse_lastpos.y = in_event->motion.y;
             }
         }
     }
@@ -560,10 +557,18 @@ void receive_SDL_MOUSEBUTTON(struct Game * in_game, SDL_Event * in_event) {
 
                 if (in_event->button.state == SDL_PRESSED) {
                     if (array_isIn_uint8_t(in_game->mouseInputMap.cancel, in_event->button.button, DEFAULT_MAPPABLE_BUTTONS)) {
+                        struct Position * cursor_pos = TNECS_GET_COMPONENT(in_game->world, in_game->entity_cursor, Position);
+                        struct Point pixel_pos = Position_tilemap2pixel(cursor_pos, position_ptr->tilemap_pos.x, position_ptr->tilemap_pos.y);
+                        cursor_pos->pixel_pos.x = pixel_pos.x;
+                        cursor_pos->pixel_pos.y = pixel_pos.y;
                         Event_Emit(SDL_USEREVENT, event_Input_Cancel, &in_game->entity_mouse, NULL);
                     }
 
                     if (array_isIn_uint8_t(in_game->mouseInputMap.accept, in_event->button.button, DEFAULT_MAPPABLE_BUTTONS)) {
+                        struct Position * cursor_pos = TNECS_GET_COMPONENT(in_game->world, in_game->entity_cursor, Position);
+                        struct Point tilemap_pos = Position_pixel2tilemap(cursor_pos, position_ptr->pixel_pos.x, position_ptr->pixel_pos.y);
+                        cursor_pos->tilemap_pos.x = tilemap_pos.x;
+                        cursor_pos->tilemap_pos.y = tilemap_pos.y;
                         Event_Emit(SDL_USEREVENT, event_Input_Accept, &in_game->entity_mouse, NULL);
                     }
                 }

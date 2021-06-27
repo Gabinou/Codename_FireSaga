@@ -54,7 +54,6 @@ struct uint8_t_hash {
 
 struct Game {
     struct Point cursor_lastpos;
-    struct Point mouse_lastpos;
 
     float mouse_idletime;
 

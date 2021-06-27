@@ -84,16 +84,11 @@ void drawMouse(tnecs_system_input_t * in_input) {
     struct Sprite * sprite_ptr = TNECS_COMPONENTS_LIST(in_input, Sprite);
     struct controllerMouse * mouse_ptr = TNECS_COMPONENTS_LIST(in_input, controllerMouse);
     for (uint16_t ent = 0; ent < in_input->num_entities; ent++) {
-        // SDL_Log("Mouse exists");
         if (sprite_ptr[ent].visible) {
-            // SDL_Log("Mouse is visible");
             SDL_Rect destrect = sprite_ptr[ent].destrect;
             struct Point pos = position_ptr[ent].pixel_pos;
             destrect.x = pos.x;
             destrect.y = pos.y;
-            SDL_Log("pos %d %d", pos.x, pos.y);
-            SDL_Log("destrect %d %d %d %d", destrect.x, destrect.y, destrect.w, destrect.h);
-            SDL_Log("srcrect %d %d %d %d", sprite_ptr[ent].srcrect.x, sprite_ptr[ent].srcrect.y, sprite_ptr[ent].srcrect.w, sprite_ptr[ent].srcrect.h);
             sprite_ptr[ent].destrect = destrect;
             SDL_RenderCopy(Game_renderer, sprite_ptr[ent].texture, &sprite_ptr[ent].srcrect, &sprite_ptr[ent].destrect);
         }
