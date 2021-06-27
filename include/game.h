@@ -57,7 +57,6 @@ struct Game {
     struct Point mouse_lastpos;
 
     float mouse_idletime;
-    uint32_t mouse_previous;
 
     struct uint8_t_hash * menu_options;
     struct uint8_t_hash * defaultstates;

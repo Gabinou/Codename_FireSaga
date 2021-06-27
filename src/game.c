@@ -532,8 +532,9 @@ void Game_Mouse_Disable(struct Game * in_game) {
 
 void Game_Mouse_Destroy(struct Game * in_game) {
     SDL_Log("Game_Mouse_Destroy");
-    SDL_assert(in_game->entity_mouse != 0);
-    tnecs_entity_destroy(in_game->world, in_game->entity_mouse);
+    if (in_game->entity_mouse > 0) {
+        tnecs_entity_destroy(in_game->world, in_game->entity_mouse);
+    }
 }
 
 void Game_Cursor_Create(struct Game * in_game) {
@@ -877,7 +878,7 @@ void Game_startup(struct Game * in_game, struct Input_Arguments in_args) {
             // SDL_ShowCursor(SDL_DISABLE); // for default cursor.
             Game_FPS_Create(in_game, DEFAULT_TEXT_UPDATETIME);
             Game_Cursor_Create(in_game);
-            // Game_Mouse_Create(in_game);
+            Game_Mouse_Create(in_game);
 
             SDL_Log("Loading in test Map\n");
             strncpy(in_game->reason, "for testing", sizeof(in_game->reason));
@@ -885,7 +886,7 @@ void Game_startup(struct Game * in_game, struct Input_Arguments in_args) {
             strncpy(in_game->reason, "on init state to GAME_STATE_Gameplay_Map substate is idle", sizeof(in_game->reason));
             Game_subState_Set(in_game, GAME_SUBSTATE_STANDBY, in_game->reason);
             Game_Map_Load(in_game, CHAPTER_TEST);
-            // Game_Mouse_State_Set(in_game, MENU_MAP);
+            Game_Mouse_State_Set(in_game, GAME_STATE_Gameplay_Map);
             Game_cursorFocus_onMap(in_game);
 
             SDL_Log("Loading in test party\n");
@@ -896,15 +897,9 @@ void Game_startup(struct Game * in_game, struct Input_Arguments in_args) {
             struct Point temp_point = {.x = 6, .y = 6};
             arrput(positions_list, temp_point);
             Game_putPConMap(in_game, unit_inds, positions_list, 1);
-            SDL_assert(in_game->world->entities_bytype[TNECS_TYPEFLAGID(in_game->world, TNECS_COMPONENT_NAMES2TYPEFLAG(in_game->world, Unit, Position, Sprite))][0] == 3);
-
 
             SDL_Log("Loading in arrivals\n");
             Game_mapArrivals_Load(in_game);
-            SDL_assert(in_game->world->entities_bytype[TNECS_TYPEFLAGID(in_game->world, TNECS_COMPONENT_NAMES2TYPEFLAG(in_game->world, Unit, Position, Sprite))][1] == 4);
-            SDL_assert(in_game->world->entities_bytype[TNECS_TYPEFLAGID(in_game->world, TNECS_COMPONENT_NAMES2TYPEFLAG(in_game->world, Unit, Position, Sprite))][2] == 5);
-            SDL_assert(in_game->world->entities_bytype[TNECS_TYPEFLAGID(in_game->world, TNECS_COMPONENT_NAMES2TYPEFLAG(in_game->world, Unit, Position, Sprite))][3] == 6);
-            SDL_assert(in_game->world->num_entities_bytype[TNECS_TYPEFLAGID(in_game->world, TNECS_COMPONENT_NAMES2TYPEFLAG(in_game->world, Unit, Position, Sprite))] == 4);
             break;
         default:
             SDL_Log("Startup mode is invalid.\n");

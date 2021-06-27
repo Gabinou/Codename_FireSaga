@@ -537,12 +537,12 @@ void receive_SDL_MOUSEMOTION(struct Game * in_game, SDL_Event * in_event) {
 
 void receive_SDL_MOUSEBUTTON(struct Game * in_game, SDL_Event * in_event) {
     SDL_Log("receive_SDL_MOUSEBUTTON");
-    uint32_t mouse_current = * (uint32_t *) in_event->user.data1;
     if (in_event->button.windowID == SDL_GetWindowID(in_game->window)) {
 
-        if (in_game->entity_mouse != 0) {
+        if (in_game->entity_mouse > 0) {
             struct controllerMouse * mouse_ptr = TNECS_GET_COMPONENT(in_game->world, in_game->entity_mouse, controllerMouse);
             struct Position * position_ptr = TNECS_GET_COMPONENT(in_game->world, in_game->entity_mouse, Position);
+            SDL_assert(position_ptr);
 
             if (mouse_ptr != NULL) {
                 // SDL_Log("event pos: %d %d", in_event->button.x, in_event->button.y);
@@ -553,24 +553,19 @@ void receive_SDL_MOUSEBUTTON(struct Game * in_game, SDL_Event * in_event) {
                     Position_PosTilemap_Set(position_ptr, tilemap_pos.x, tilemap_pos.y);
                 }
 
-                if (mouse_current != in_game->mouse_previous) {
-                    if (in_event->button.state == SDL_PRESSED) {
-                        if (array_isIn_uint8_t(in_game->mouseInputMap.cancel, in_event->button.button, DEFAULT_MAPPABLE_BUTTONS)) {
-                            Event_Emit(SDL_USEREVENT, event_Input_Cancel, &in_game->entity_mouse, NULL);
-                        }
+                if (in_event->button.state == SDL_PRESSED) {
+                    if (array_isIn_uint8_t(in_game->mouseInputMap.cancel, in_event->button.button, DEFAULT_MAPPABLE_BUTTONS)) {
+                        Event_Emit(SDL_USEREVENT, event_Input_Cancel, &in_game->entity_mouse, NULL);
+                    }
 
-                        if (array_isIn_uint8_t(in_game->mouseInputMap.accept, in_event->button.button, DEFAULT_MAPPABLE_BUTTONS)) {
-                            Event_Emit(SDL_USEREVENT, event_Input_Accept, &in_game->entity_mouse, NULL);
-                        }
+                    if (array_isIn_uint8_t(in_game->mouseInputMap.accept, in_event->button.button, DEFAULT_MAPPABLE_BUTTONS)) {
+                        Event_Emit(SDL_USEREVENT, event_Input_Accept, &in_game->entity_mouse, NULL);
                     }
                 }
             } else {
                 SDL_Log("cursor has no controllerMouse component");
             }
-
-            in_game->mouse_previous = mouse_current;
         }
-
     } else {
         SDL_Log("entity_mouse is not valid");
     }
