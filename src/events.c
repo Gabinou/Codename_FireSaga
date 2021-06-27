@@ -102,7 +102,7 @@ void receive_Cursor_Moved(struct Game * in_game, SDL_Event * in_userevent) {
                 case GAME_SUBSTATE_MAP_UNIT_MOVES:
                     // Unit follows cursor movement.
                     selected_position_ptr = TNECS_GET_COMPONENT(in_game->world, in_game->selected_unit_entity, Position);
-                    Position_Pos_Set(selected_position_ptr,  current_pos.x, current_pos.y);
+                    Position_Pos_Set(selected_position_ptr, current_pos.x, current_pos.y);
                     break;
             }
             break;
@@ -524,14 +524,22 @@ void receive_SDL_MOUSEMOTION(struct Game * in_game, SDL_Event * in_event) {
                 if (position_ptr != NULL) {
                     Position_PosPixel_Set(position_ptr, in_event->motion.x, in_event->motion.y);
                 }
-
+                struct Point tilemap_pos;
                 if (in_game->map_ptr != NULL) {
-                    struct Point tilemap_pos = Position_pixel2tilemap(position_ptr, in_event->motion.x, in_event->motion.y);
+                    tilemap_pos = Position_pixel2tilemap(position_ptr, in_event->motion.x, in_event->motion.y);
                     Position_PosTilemap_Set(position_ptr, tilemap_pos.x, tilemap_pos.y);
+                    if (in_game->substate != GAME_SUBSTATE_STANDBY) {
+                        struct Position * cursor_pos = TNECS_GET_COMPONENT(in_game->world, in_game->entity_cursor, Position);
+                        if ((tilemap_pos.x != cursor_pos->tilemap_pos.x) && (tilemap_pos.y != cursor_pos->tilemap_pos.y)) {
+                            Position_Pos_Set(cursor_pos, tilemap_pos.x, tilemap_pos.y);
+                            Event_Emit(SDL_USEREVENT, event_Cursor_Moved, cursor_move, NULL);
+                        }
+                    }
                 }
                 // SDL_Log("in_event->motion: %d %d", in_event->motion.x, in_event->motion.y);
                 position_ptr->pixel_pos.x = in_event->motion.x;
                 position_ptr->pixel_pos.y = in_event->motion.y;
+
             }
         }
     }
