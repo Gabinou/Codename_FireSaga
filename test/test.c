@@ -10,6 +10,7 @@
 #include "test_linalg.h"
 #include "test_item.h"
 #include "test_map.h"
+#include "test_menu.h"
 #include "test_pathfinding.h"
 #include "test_probability.h"
 #include "test_position.h"
@@ -53,6 +54,7 @@ int main(int argc, char * argv[]) {
     lrun("linalg", test_linalg);
     lrun("Item", test_item);
     lrun("Map ", test_map);
+    lrun("Menu ", test_menu);
     lrun("Pathfinding ", test_pathfinding);
     lrun("Quick Math ", test_q_math);
     lrun("Position ", test_position);

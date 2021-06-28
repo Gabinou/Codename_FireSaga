@@ -35,7 +35,6 @@ include_directories(
 	third_party/minctest
 	third_party/cJson
 	third_party/cwalk
-	third_party/flecs
 	third_party/tnecs
 	${SDL2_INCLUDE_DIR}
 )
@@ -43,16 +42,13 @@ include_directories(
 file(GLOB FSM_SRC "src/*.c")
 file(GLOB CJSON_SRC "third_party/cJson/*.c")
 file(GLOB CWALK_SRC "third_party/cwalk/*.c")
-file(GLOB FLECS_SRC "third_party/flecs/*.c")
 file(GLOB TNECS_SRC "third_party/tnecs/*.c")
 file(GLOB LODE_SRC "third_party/LodePNG/*.c")
 file(GLOB PFS_SRC "third_party/physfs/*.c")
 file(GLOB tinyMT_SRC "third_party/tinymt/*.c")
 
-add_definitions(-DFLECS_IMPL)
 ADD_LIBRARY(cJSON-static STATIC ${CJSON_SRC})
 ADD_LIBRARY(CWALK-static STATIC ${CWALK_SRC})
-ADD_LIBRARY(flecs-static STATIC ${FLECS_SRC})
 ADD_LIBRARY(tnecs-static STATIC ${TNECS_SRC})
 ADD_LIBRARY(lodepng-static STATIC ${LODE_SRC})
 ADD_LIBRARY(physfs-static STATIC ${PFS_SRC})
@@ -60,7 +56,7 @@ ADD_LIBRARY(tinyMT-static STATIC ${tinyMT_SRC})
 
 ADD_LIBRARY(fortest-static STATIC ${FSM_SRC})
 
-set(LIBRARY_STATIC cJSON-static CWALK-static tnecs-static flecs-static lodepng-static physfs-static tinyMT-static)
+set(LIBRARY_STATIC cJSON-static CWALK-static tnecs-static lodepng-static physfs-static tinyMT-static)
 
 if ($(CMAKE_C_COMPILER_ID) STREQUAL "MSVC")
 	set(FLAGS_ERRORS "") 
@@ -85,8 +81,7 @@ endif ()
 message("CMAKE_BUILD_TYPE is ${CMAKE_BUILD_TYPE}")
 if(${CMAKE_BUILD_TYPE} MATCHES "Release")
 message("MATCHES Release")
-		# -> change to -DSDL_ASSERT_LEVEL=1 when flecs is removed (flecs debug is baka)
-	add_compile_options(-O1 -D__FIRESAGA_RELEASE__ -DSDL_ASSERT_LEVEL=2)
+	add_compile_options(-O1 -D__FIRESAGA_RELEASE__ -DSDL_ASSERT_LEVEL=1)
 elseif (${CMAKE_BUILD_TYPE} MATCHES Debug)
 message("MATCHES Debug")
 	add_compile_options(-O0 -g  -D__FIRESAGA_DEBUG__ -DSDL_ASSERT_LEVEL=2 -Wall)
@@ -95,9 +90,6 @@ endif()
 set(FLAGS_ANDROID "`sdl2-config --libs --cflags`")
 message("FLAGS_ANDROID is ${FLAGS_ANDROID}")
 
-install(
-	DIRECTORY third_party/flecs/include/ DESTINATION third_party/flecs/include FILES_MATCHING PATTERN "*.h"
-)
 
 set (CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR})
 
