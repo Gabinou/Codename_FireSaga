@@ -26,9 +26,9 @@ I was happy not to have to do all this work myself at first, but after I while I
 I mean, these libraries do not work _exactly_ as I want them to.
 No choice then but develop my own:
 
--[tnecs: Tiny Entity-Component-System (ECS)](https://gitlab.com/Gabinou/tnecs)
--[darr: Dynamic Arrays](https://gitlab.com/Gabinou/darr)
--[linalg: Linear Algebra](https://gitlab.com/Gabinou/linalg)
+- [tnecs: Tiny Entity-Component-System (ECS)](https://gitlab.com/Gabinou/tnecs)
+- [darr: Dynamic Arrays](https://gitlab.com/Gabinou/darr)
+- [linalg: Linear Algebra](https://gitlab.com/Gabinou/linalg)
 
 ## Compiling from source
 The game will be available to play for free for anyone that wishes to compile the game from source, see instructions below.
