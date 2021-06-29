@@ -96,7 +96,7 @@ extern void Map_globalRange(struct Map * in_map, tnecs_world_t * in_world, uint8
             in_map->globalRange[row * in_map->col_len + col] = 0;
         }
     }
-    matrix_print_int16_t(in_map->globalRange, in_map->row_len, in_map->col_len);
+    linalg_matrix_print_int16_t(in_map->globalRange, in_map->row_len, in_map->col_len);
 
     switch (in_alignment) {
         case ALIGNMENT_FRIENDLY:
@@ -128,13 +128,13 @@ extern void Map_globalRange(struct Map * in_map, tnecs_world_t * in_world, uint8
         costmapp = Map_Costmap_Movement_Compute(in_map, in_world, unit_entities[i]);
         movemapp = Pathfinding_Map_Move(costmapp, in_map->row_len, in_map->col_len, start, move, POINTS_MATRIX);
         attackmapp = Pathfinding_Map_Attack(movemapp, in_map->row_len, in_map->col_len, move, range, POINTS_MATRIX, MOVETILE_INCLUDE);
-        in_map->globalRange = matrix_plus_int16_t(in_map->globalRange, attackmapp, in_map->row_len, in_map->col_len, 1);
-        // in_map->globalRange = matrix_plus_int16_t(in_map->globalRange, movemapp, in_map->row_len, in_map->col_len, 1);
+        in_map->globalRange = linalg_plusint16_t(in_map->globalRange, attackmapp, in_map->row_len, in_map->col_len, 1);
+        // in_map->globalRange = linalg_plusint16_t(in_map->globalRange, movemapp, in_map->row_len, in_map->col_len, 1);
         arrfree(costmapp);
         arrfree(movemapp);
         arrfree(attackmapp);
     }
-    matrix_print_int16_t(in_map->globalRange, in_map->row_len, in_map->col_len);
+    linalg_matrix_print_int16_t(in_map->globalRange, in_map->row_len, in_map->col_len);
 }
 
 void Map_startingPos_Add(struct Map * in_map, struct Point in_position) {
@@ -665,11 +665,11 @@ void Map_Danger_Load(struct Map * in_map) {
 }
 
 void Map_Danger_Add(struct Map * in_map, int16_t * in_danger) {
-    in_map->overlay_danger = matrix_plus_int16_t(in_map->overlay_danger, in_danger, in_map->row_len, in_map->col_len, 1);
+    in_map->overlay_danger = linalg_plusint16_t(in_map->overlay_danger, in_danger, in_map->row_len, in_map->col_len, 1);
 }
 
 void Map_Danger_Sub(struct Map * in_map, int16_t * in_danger) {
-    in_map->overlay_danger = matrix_plus_int16_t(in_map->overlay_danger, in_danger, in_map->row_len, in_map->col_len, -1);
+    in_map->overlay_danger = linalg_plusint16_t(in_map->overlay_danger, in_danger, in_map->row_len, in_map->col_len, -1);
 }
 
 void Map_Bounds_Compute(struct Map * in_map) {

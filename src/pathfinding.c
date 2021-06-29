@@ -407,7 +407,8 @@ int_tile_t * Pathfinding_Map_Move(int_tile_t * cost_matrix, size_t row_len, size
     struct Node * closed = DARR_INIT(closed, struct Node, row_len * col_len * 2);
 
     struct Node current = {start.x, start.y, 0}, neighbor;
-    open[DARR_NUM(open)++] = current;
+    DARR_PUT(open, current);
+
 
     bool found, neighbor_inclosed;
     while (DARR_NUM(open) > 0) {

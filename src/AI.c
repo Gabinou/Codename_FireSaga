@@ -283,7 +283,7 @@ struct AI_PushPull_Out AI_PushPull_Friendly_Offensively_Rating(tnecs_world_t * i
     // int_tile_t * unit_range = Unit_computeRange(friendly_mptr);
     // int_tile_t * gradientmapp_enemy = Pathfinding_Map_unitGradient(costmapp_pushpull, in_map->row_len, in_map->col_len, enemy_points, in_map->num_enemies_onfield);
     // int_tile_t * assailablemapp = Pathfinding_Map_Assailable(movemapp, in_map->row_len, in_map->col_len, position_ptr->tilemap_pos, unit_range, POINTS_MATRIX);
-    // int_tile_t * gradientmapp_enemy_masked = matrix_mask_int16_t(gradientmapp_enemy, assailablemapp, in_map->row_len, in_map->col_len);
+    // int_tile_t * gradientmapp_enemy_masked = linalg_mask_int16_t(gradientmapp_enemy, assailablemapp, in_map->row_len, in_map->col_len);
 
     // struct AI_PushPull_Out ai_pushpull_out = AI_PushPull_bestPosition(gradientmapp_enemy_masked, in_map->row_len, in_map->col_len, unit_range[1], position_ptr->tilemap_pos, 1);
     // ai_pushpull_out.rating = ai_pushpull_out.rating > (INT8_MAX - rating) ? INT8_MAX : ai_pushpull_out.rating + rating;
@@ -326,7 +326,7 @@ struct AI_PushPull_Out AI_PushPull_Friendly_Defensively_Rating(tnecs_world_t * i
     // int_tile_t * unit_range = Unit_computeRange(friendly_mptr);
     // int_tile_t * gradientmapp_friendly = Pathfinding_Map_unitGradient(costmapp_pushpull, in_map->row_len, in_map->col_len, friendly_points, in_map->num_friendlies_onfield);
     // int_tile_t * assailablemapp = Pathfinding_Map_Assailable(movemapp, in_map->row_len, in_map->col_len, position_ptr->tilemap_pos, unit_range, POINTS_MATRIX);
-    // int_tile_t * gradientmapp_friendly_masked = matrix_mask_int16_t(gradientmapp_friendly, assailablemapp, in_map->row_len, in_map->col_len);
+    // int_tile_t * gradientmapp_friendly_masked = linalg_mask_int16_t(gradientmapp_friendly, assailablemapp, in_map->row_len, in_map->col_len);
 
     // struct AI_PushPull_Out ai_pushpull_out = AI_PushPull_bestPosition(gradientmapp_friendly_masked, in_map->row_len, in_map->col_len, unit_range[1], position_ptr->tilemap_pos, -1);
     // ai_pushpull_out.rating = ai_pushpull_out.rating > (INT8_MAX - rating) ? INT8_MAX : ai_pushpull_out.rating + rating;
@@ -372,7 +372,7 @@ struct AI_PushPull_Out AI_PushPull_Enemy_Defensively_Rating(tnecs_world_t * in_w
     // int_tile_t * unit_range = Unit_computeRange(enemy_mptr);
     // int_tile_t * gradientmapp_enemy = Pathfinding_Map_unitGradient(costmapp_pushpull, in_map->row_len, in_map->col_len, enemy_points, in_map->num_enemies_onfield);
     // int_tile_t * assailablemapp = Pathfinding_Map_Assailable(movemapp, in_map->row_len, in_map->col_len, position_ptr->tilemap_pos, unit_range, POINTS_MATRIX);
-    // int_tile_t * gradientmapp_enemy_masked = matrix_mask_int16_t(gradientmapp_enemy, assailablemapp, in_map->row_len, in_map->col_len);
+    // int_tile_t * gradientmapp_enemy_masked = linalg_mask_int16_t(gradientmapp_enemy, assailablemapp, in_map->row_len, in_map->col_len);
 
     // struct AI_PushPull_Out ai_pushpull_out = AI_PushPull_bestPosition(gradientmapp_enemy_masked, in_map->row_len, in_map->col_len, unit_range[1], position_ptr->tilemap_pos, 1);
     // ai_pushpull_out.rating = ai_pushpull_out.rating > (INT8_MAX - rating) ? INT8_MAX : ai_pushpull_out.rating + rating;
@@ -416,7 +416,7 @@ struct AI_PushPull_Out AI_PushPull_Enemy_Offensively_Rating(tnecs_world_t * in_w
     // int_tile_t * unit_range = Unit_computeRange(enemy_mptr);
     // int_tile_t * gradientmapp_friendly = Pathfinding_Map_unitGradient(costmapp_pushpull, in_map->row_len, in_map->col_len, friendly_points, in_map->num_friendlies_onfield);
     // int_tile_t * assailablemapp = Pathfinding_Map_Assailable(movemapp, in_map->row_len, in_map->col_len, position_ptr->tilemap_pos, unit_range, POINTS_MATRIX);
-    // int_tile_t * gradientmapp_friendly_masked = matrix_mask_int16_t(gradientmapp_friendly, assailablemapp, in_map->row_len, in_map->col_len);
+    // int_tile_t * gradientmapp_friendly_masked = linalg_mask_int16_t(gradientmapp_friendly, assailablemapp, in_map->row_len, in_map->col_len);
 
     // struct AI_PushPull_Out ai_pushpull_out = AI_PushPull_bestPosition(gradientmapp_friendly_masked, in_map->row_len, in_map->col_len, unit_range[1], position_ptr->tilemap_pos, -1);
     // ai_pushpull_out.rating = ai_pushpull_out.rating > (INT8_MAX - rating) ? INT8_MAX : ai_pushpull_out.rating + rating;

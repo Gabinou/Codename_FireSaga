@@ -757,11 +757,11 @@ void receive_Unit_Moves(struct Game * in_game, SDL_Event * in_userevent) {
             range = Unit_computeRange(selected_unit_ptr);
 
             costmapp = Map_Costmap_Movement_Compute(in_game->map_ptr, in_game->world, in_game->selected_unit_entity);
-            matrix_print_int16_t(costmapp, in_game->map_ptr->row_len, in_game->map_ptr->col_len);
+            linalg_matrix_print_int16_t(costmapp, in_game->map_ptr->row_len, in_game->map_ptr->col_len);
             movemapp = Pathfinding_Map_Move(costmapp, in_game->map_ptr->row_len, in_game->map_ptr->col_len,  start, unit_move, POINTS_MATRIX);
-            matrix_print_int16_t(movemapp, in_game->map_ptr->row_len, in_game->map_ptr->col_len);
+            linalg_matrix_print_int16_t(movemapp, in_game->map_ptr->row_len, in_game->map_ptr->col_len);
             attackmapp = Pathfinding_Map_Attack(movemapp, in_game->map_ptr->row_len, in_game->map_ptr->col_len, unit_move, range, POINTS_MATRIX, MOVETILE_EXCLUDE);
-            matrix_print_int16_t(attackmapp, in_game->map_ptr->row_len, in_game->map_ptr->col_len);
+            linalg_matrix_print_int16_t(attackmapp, in_game->map_ptr->row_len, in_game->map_ptr->col_len);
 
             Map_Overlays_Set(in_game->map_ptr, MAP_OVERLAY_MOVE, movemapp);
             Map_Overlays_Set(in_game->map_ptr, MAP_OVERLAY_ATTACK, attackmapp);
@@ -836,7 +836,7 @@ void receive_Unit_Danger(struct Game * in_game, SDL_Event * in_userevent) {
             costmapp = Map_Costmap_Movement_Compute(in_game->map_ptr, in_game->world, in_game->selected_unit_entity);
             movemapp = Pathfinding_Map_Move(costmapp, in_game->map_ptr->row_len, in_game->map_ptr->col_len, start, unit_move, POINTS_MATRIX);
             attackmapp = Pathfinding_Map_Attack(movemapp, in_game->map_ptr->row_len, in_game->map_ptr->col_len, unit_move, range, POINTS_MATRIX, MOVETILE_EXCLUDE);
-            dangermapp = matrix_plus_int16_t(attackmapp, movemapp, in_game->map_ptr->row_len, in_game->map_ptr->col_len, 1);
+            dangermapp = linalg_plusint16_t(attackmapp, movemapp, in_game->map_ptr->row_len, in_game->map_ptr->col_len, 1);
 
 
             if (selected_unit_ptr != NULL) {
