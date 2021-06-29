@@ -46,12 +46,10 @@ int main(int argc, char * argv[]) {
     lrun("AI ", test_AI);
     // lrun("Camp ", test_camp);
     // lrun("Convoy ", test_convoy);
-    lrun("DynArr", test_darr);
     lrun("Enums ", test_enums);
     lrun("Equations ", test_equations);
     lrun("Filesystem ", test_filesystem);
     lrun("Game ", test_game);
-    lrun("linalg", test_linalg);
     lrun("Item", test_item);
     lrun("Map ", test_map);
     lrun("Menu ", test_menu);
