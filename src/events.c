@@ -1102,7 +1102,7 @@ void Events_Names_Declare() {
 #undef REGISTER_ENUM
 
 void Events_Receivers_Declare_Arr() {
-    receivers_arr = DARR_INIT(receiver_t, 100);
+    receivers_arr = DARR_INIT(receivers_arr, receiver_t, 100);
 }
 
 void Events_Receivers_Declare() {
