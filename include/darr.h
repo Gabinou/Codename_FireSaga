@@ -1,35 +1,60 @@
 
-#ifndef DARR_H
-#define DARR_H
+#ifndef DARR
+#define DARR
 
+#include <stddef.h>
 #include <stdint.h>
 #include <stdlib.h>
-#include <stdbool.h>
-#include <stdio.h>
-#include "SDL2/SDL.h"
 
-// Matrices are not DARR -> row_len and col_len are known
-// Lists are DARR -> len is unknown
+// DARR: Dynamic arrays for C99.
+// A darr is a simple array with two additional elements: allocated length and number of active element, saved at positions -2 and -1 respectively.
 
 #define DARR_GROWTH_FACTOR 2
+#define DARR_LEN_INDEX 2
+#define DARR_NUM_INDEX 1
 
-#define DARR_LEN(arr) (*((size_t *)arr - 2))
-#define DARR_NUM(arr) (*((size_t *)arr - 1))
+#define DARR_LEN(darr) (*((size_t *)darr - DARR_LEN_INDEX)) // allocated length
+#define DARR_NUM(darr) (*((size_t *)darr - DARR_NUM_INDEX)) // number of active elements
 
-#define DARR_INIT(type, len) (type*)(((size_t* )malloc(sizeof(size_t)*2 + sizeof(type)*(len)))+2)
-#define DARR_REALLOC(arr, len) ((size_t* )realloc(((size_t* )arr - 2), (sizeof(size_t)*2 + (sizeof(*arr))*(len)))+2)
-#define DARR_DEL(arr, elem, bytesize, num) memcpy((arr + elem), (arr + (num - 1)), bytesize)
+// DARR_INIT: a darr is an array with two size_t at indices -1 and -2, respectively num and len.
+#define DARR_INIT(darr, type, len)(type*)(((size_t* )malloc(sizeof(size_t)*DARR_LEN_INDEX + sizeof(type)*(len))) + DARR_LEN_INDEX);\
+    DARR_LEN(darr) = len;\
+    DARR_NUM(darr) = 0;\
 
-#define DARR_GROW(arr) DARR_LEN(arr)*=DARR_GROWTH_FACTOR;\
-arr = DARR_REALLOC(arr, DARR_LEN(arr));
+// DARR_REALLOC: DARR internal. Not to be called directly by users.
+#define DARR_REALLOC(darr, len) (void *)((size_t* )realloc(((size_t* )darr - DARR_LEN_INDEX), (sizeof(size_t)*DARR_LEN_INDEX + (sizeof(*darr))*(len))) + DARR_LEN_INDEX)
 
-#define DARR_PUT(arr, elem) if ((DARR_NUM(arr) + 1) >= (DARR_LEN(arr))) {\
-DARR_GROW(arr);\
+// DARR_GROW: double length of array (depending on DARR_GROWTH_FACTOR)
+#define DARR_GROW(darr) do {\
+    DARR_LEN(darr)*=DARR_GROWTH_FACTOR;\
+    darr = DARR_REALLOC(darr, DARR_LEN(darr));\
+} while(0)
+
+// DARR_PUT: put elem on top of darr, at DARR_NUM
+#define DARR_PUT(darr, elem) do {if ((DARR_NUM(darr) + 1) >= (DARR_LEN(darr))) {\
+DARR_GROW(darr);\
 }\
-arr[DARR_NUM(arr)++] = elem;
+darr[DARR_NUM(darr)++] = elem;\
+} while(0)
 
-#define DARR_POP(arr) arr[--DARR_NUM(arr)]
+// DARR_POP: get top element of darr, and "remove" it by decrementing DARR_NUM
+#define DARR_POP(darr) darr[--DARR_NUM(darr)]
 
-#define DARR_FREE(arr) free((((size_t* )arr) - 2))
+// DARR_DEL_SCRAMBLE: delete elem by copying top element over it, and decrementing DARR_NUM
+#define DARR_DEL_SCRAMBLE(darr, elem) do {\
+    if (elem < DARR_NUM(darr)) {\
+        memmove((darr + elem), (darr + --DARR_NUM(darr)), sizeof(*darr));\
+    }\
+} while(0)
 
-#endif /* DARR_H */
+// DARR_DEL: delete elem by moving all subsequent elements over
+#define DARR_DEL(darr, elem) do {\
+    if (elem < DARR_NUM(darr)) {\
+        memmove((darr + elem), (darr + elem + 1), sizeof(*darr) * (--DARR_NUM(darr) - elem));\
+    }\
+} while(0)
+
+// DARR_FREE: free whole darr
+#define DARR_FREE(darr) do {free((((size_t* )darr) - DARR_LEN_INDEX));} while(0)
+
+#endif /* DARR */
