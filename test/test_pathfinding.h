@@ -260,10 +260,10 @@ void test_pathfinding() {
     }
 
     int_tile_t * computed_attackmapp = Pathfinding_Map_Attack(movemappp, ROW_LEN_TEST_PATHFINDING, COL_LEN_TEST_PATHFINDING, move, range, POINTS_MATRIX, MOVETILE_EXCLUDE);
-    matrix_print_int16_t(computed_attackmapp, ROW_LEN_TEST_PATHFINDING, COL_LEN_TEST_PATHFINDING);
+    // matrix_print_int16_t(computed_attackmapp, ROW_LEN_TEST_PATHFINDING, COL_LEN_TEST_PATHFINDING);
     int_tile_t * computed_attackmapp_list = Pathfinding_Map_Attack(movemappp, ROW_LEN_TEST_PATHFINDING, COL_LEN_TEST_PATHFINDING, move, range, POINTS_LIST, MOVETILE_EXCLUDE);
     // printf("DARR_NUM(computed_attackmapp_list) %d", DARR_NUM(computed_attackmapp_list));
-    lok(DARR_NUM(computed_attackmapp_list) == 122);
+    lok(DARR_NUM(computed_attackmapp_list) == 102);
     for (uint16_t i = 0; i < DARR_NUM(computed_attackmapp_list) / 2; i++) {
         temp_col = computed_attackmapp_list[i * TWO_D + 0];
         temp_row = computed_attackmapp_list[i * TWO_D + 1];
@@ -1405,7 +1405,7 @@ void test_pathfinding() {
     units[4].y = 15;
     int_tile_t * computed_gradientmap1 = Pathfinding_Map_unitGradient(temp_costmap30, ROW_LEN_TEST_PATHFINDING, COL_LEN_TEST_PATHFINDING, units, 5);
     SDL_Log("Pathfinding_Map_unitGradient OUT");
-    linalg_equal_int16_t(computed_gradientmap1, temp_gradientmap1, ROW_LEN_TEST_PATHFINDING * COL_LEN_TEST_PATHFINDING);
+    out = linalg_equal_int16_t(computed_gradientmap1, temp_gradientmap1, ROW_LEN_TEST_PATHFINDING * COL_LEN_TEST_PATHFINDING);
     lok(linalg_all_int16_t(out, ROW_LEN_TEST_PATHFINDING * COL_LEN_TEST_PATHFINDING));
     free(out);
     // linalg_matrix_print_int16_t(computed_gradientmap1, ROW_LEN_TEST_PATHFINDING, COL_LEN_TEST_PATHFINDING);
