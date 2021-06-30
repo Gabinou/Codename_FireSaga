@@ -1,7 +1,6 @@
 #include "minctest.h"
 #include "pathfinding.h"
 #include "linalg.h"
-#include "enums.h"
 
 
 enum ENUM_TEST_PATHFINDING {
@@ -250,6 +249,8 @@ void test_pathfinding() {
     int_tile_t temp_col = 0;
     int_tile_t * computed_movemapp = Pathfinding_Map_Move(costmappp, ROW_LEN_TEST_PATHFINDING, COL_LEN_TEST_PATHFINDING, start, move, POINTS_MATRIX);
     int_tile_t * computed_movemapp_list = Pathfinding_Map_Move(costmappp, ROW_LEN_TEST_PATHFINDING, COL_LEN_TEST_PATHFINDING, start, move, POINTS_LIST);
+    // printf("DARR_NUM(computed_movemapp_list) %d", DARR_NUM(computed_movemapp_list));
+    lok(DARR_NUM(computed_movemapp_list) == 122);
     for (uint16_t i = 0; i < DARR_NUM(computed_movemapp_list) / 2; i++) {
         temp_col = computed_movemapp_list[i * TWO_D + 0];
         temp_row = computed_movemapp_list[i * TWO_D + 1];
@@ -257,10 +258,12 @@ void test_pathfinding() {
         // SDL_Log("%d %d %d", temp_row, temp_col, current);
         lok(current > 0);
     }
-    // linalg_matrix_print_int16_t(computed_movemapp, ROW_LEN_TEST_PATHFINDING, COL_LEN_TEST_PATHFINDING);
 
     int_tile_t * computed_attackmapp = Pathfinding_Map_Attack(movemappp, ROW_LEN_TEST_PATHFINDING, COL_LEN_TEST_PATHFINDING, move, range, POINTS_MATRIX, MOVETILE_EXCLUDE);
+    matrix_print_int16_t(computed_attackmapp, ROW_LEN_TEST_PATHFINDING, COL_LEN_TEST_PATHFINDING);
     int_tile_t * computed_attackmapp_list = Pathfinding_Map_Attack(movemappp, ROW_LEN_TEST_PATHFINDING, COL_LEN_TEST_PATHFINDING, move, range, POINTS_LIST, MOVETILE_EXCLUDE);
+    // printf("DARR_NUM(computed_attackmapp_list) %d", DARR_NUM(computed_attackmapp_list));
+    lok(DARR_NUM(computed_attackmapp_list) == 122);
     for (uint16_t i = 0; i < DARR_NUM(computed_attackmapp_list) / 2; i++) {
         temp_col = computed_attackmapp_list[i * TWO_D + 0];
         temp_row = computed_attackmapp_list[i * TWO_D + 1];
