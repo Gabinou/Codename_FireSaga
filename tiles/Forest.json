@@ -1,3 +1,24 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:041290e9ec5e1c827093d64bdaf10370af8b058a9f16af5f1889db3fd96e4848
-size 324
+{
+	"Tile":	{
+		"Name":	"Forest",
+		"id":	12,
+		"inside":	false,
+		"Stats":	{
+			"Dodge":	15,
+			"Pprot":	0,
+			"Mprot":	2,
+			"Heal":	0
+		},
+		"MvtCost":	{
+			"foot_slow":	3,
+			"foot_fast":	2,
+			"mages":	3,
+			"fliers":	1,
+			"riders_slow":	4,
+			"riders_fast":	3,
+			"armors":	3,
+			"pirates":	3,
+			"bandits":	3
+		}
+	}
+}

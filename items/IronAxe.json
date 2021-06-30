@@ -1,3 +1,63 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:e75d95e185123220a9ada636e7385e20230fe5d36b680d6472b6ad549de42ed6
-size 890
+{
+	"Item":	{
+		"Name":	"Iron axe",
+		"id":	200,
+		"Description":	"Iron cutting head on a stick. Cheap, simple, easy to repair. Bandits' favorite.",
+		"Bonus":	{
+			"hp":	0,
+			"str":	0,
+			"mag":	0,
+			"agi":	0,
+			"dex":	0,
+			"luck":	0,
+			"def":	0,
+			"res":	0,
+			"con":	0,
+			"move":	0,
+			"prof":	0
+		},
+		"Malus":	{
+			"hp":	0,
+			"str":	0,
+			"mag":	0,
+			"agi":	0,
+			"dex":	0,
+			"luck":	0,
+			"def":	0,
+			"res":	0,
+			"con":	0,
+			"move":	0,
+			"prof":	0
+		},
+		"Sellable":	true,
+		"Effects":	{
+			"id":	0
+		},
+		"Types":	{
+			"id":	4,
+			"Type":	"Axe"
+		},
+		"Stats":	{
+			"Pmight":	8,
+			"Mmight":	0,
+			"hit":	40,
+			"dodge":	0,
+			"crit":	0,
+			"favor":	0,
+			"wgt":	8,
+			"uses":	40,
+			"prof":	4,
+			"minrange":	1,
+			"maxrange":	1,
+			"minhand":	1,
+			"maxhand":	2,
+			"dmg_type":	0,
+			"price":	360,
+			"heal":	0
+		},
+		"Infused":	{
+			"Power":	-1,
+			"Type":	0
+		}
+	}
+}

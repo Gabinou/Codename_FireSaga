@@ -1,3 +1,63 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:5131643cd73f011ee1410655b71c7793a973850aa8970e7f2167c6ac988985cd
-size 929
+{
+	"Item":	{
+		"Name":	"Trident Dagger",
+		"id":	505,
+		"Description":	"Dagger whose blade splits into three prongs. Designed to catch opposing swords. Increases avoid and favor.",
+		"Bonus":	{
+			"hp":	0,
+			"str":	0,
+			"mag":	0,
+			"agi":	0,
+			"dex":	0,
+			"luck":	0,
+			"def":	0,
+			"res":	0,
+			"con":	0,
+			"move":	0,
+			"prof":	0
+		},
+		"Malus":	{
+			"hp":	0,
+			"str":	0,
+			"mag":	0,
+			"agi":	0,
+			"dex":	0,
+			"luck":	0,
+			"def":	0,
+			"res":	0,
+			"con":	0,
+			"move":	0,
+			"prof":	0
+		},
+		"Sellable":	true,
+		"Effects":	{
+			"id":	0
+		},
+		"Types":	{
+			"id":	32,
+			"Type":	"Offhand"
+		},
+		"Stats":	{
+			"Pmight":	3,
+			"Mmight":	0,
+			"hit":	14,
+			"dodge":	0,
+			"crit":	8,
+			"favor":	0,
+			"wgt":	4,
+			"uses":	20,
+			"prof":	10,
+			"minrange":	1,
+			"maxrange":	1,
+			"minhand":	1,
+			"maxhand":	0,
+			"dmg_type":	0,
+			"price":	724,
+			"heal":	0
+		},
+		"Infused":	{
+			"Power":	-1,
+			"Type":	0
+		}
+	}
+}

@@ -1,3 +1,24 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:03f652aea86bea481268658048a136c7d43d58da60dc7f475645c59e2890d1b5
-size 321
+{
+	"Tile":	{
+		"Name":	"Sea",
+		"id":	20,
+		"inside":	false,
+		"Stats":	{
+			"Dodge":	15,
+			"Pprot":	0,
+			"Mprot":	2,
+			"Heal":	0
+		},
+		"MvtCost":	{
+			"foot_slow":	0,
+			"foot_fast":	0,
+			"mages":	0,
+			"fliers":	1,
+			"riders_slow":	0,
+			"riders_fast":	0,
+			"armors":	0,
+			"pirates":	2,
+			"bandits":	0
+		}
+	}
+}

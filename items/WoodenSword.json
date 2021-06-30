@@ -1,3 +1,63 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:eb12af8eb17c5784223bcaaaa4a1c838f2597cecb3d5463fff4d948855e86160
-size 882
+{
+	"Item":	{
+		"Name":	"Wooden Sword",
+		"id":	1,
+		"Description":	"Practice sword, made of wood. It's crushing blows are still deadly.",
+		"Bonus":	{
+			"hp":	0,
+			"str":	0,
+			"mag":	0,
+			"agi":	0,
+			"dex":	0,
+			"luck":	0,
+			"def":	0,
+			"res":	0,
+			"con":	0,
+			"move":	0,
+			"prof":	0
+		},
+		"Malus":	{
+			"hp":	0,
+			"str":	0,
+			"mag":	0,
+			"agi":	0,
+			"dex":	0,
+			"luck":	0,
+			"def":	0,
+			"res":	0,
+			"con":	0,
+			"move":	0,
+			"prof":	0
+		},
+		"Sellable":	true,
+		"Effects":	{
+			"id":	0
+		},
+		"Types":	{
+			"id":	1,
+			"Type":	"Sword"
+		},
+		"Stats":	{
+			"Pmight":	3,
+			"Mmight":	0,
+			"hit":	80,
+			"dodge":	0,
+			"crit":	0,
+			"favor":	0,
+			"wgt":	3,
+			"uses":	30,
+			"prof":	2,
+			"minrange":	1,
+			"maxrange":	1,
+			"minhand":	1,
+			"maxhand":	2,
+			"dmg_type":	0,
+			"price":	200,
+			"heal":	0
+		},
+		"Infused":	{
+			"Power":	-1,
+			"Type":	0
+		}
+	}
+}

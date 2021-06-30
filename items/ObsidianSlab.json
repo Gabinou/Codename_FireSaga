@@ -1,3 +1,63 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:409f4ee67bbc1ab1dcd002dceac546c7e4ef1bb5078e96c05dfa7360f434b0ff
-size 949
+{
+	"Item":	{
+		"Name":	"Obsidian slab",
+		"id":	414,
+		"Description":	"Rock melted by demon-breath, then recystallized into a more demon-claw friendly shape. Even harder than rock, but more brittle.",
+		"Bonus":	{
+			"hp":	0,
+			"str":	0,
+			"mag":	0,
+			"agi":	0,
+			"dex":	0,
+			"luck":	0,
+			"def":	0,
+			"res":	0,
+			"con":	0,
+			"move":	0,
+			"prof":	0
+		},
+		"Malus":	{
+			"hp":	0,
+			"str":	0,
+			"mag":	0,
+			"agi":	0,
+			"dex":	0,
+			"luck":	0,
+			"def":	0,
+			"res":	0,
+			"con":	0,
+			"move":	0,
+			"prof":	0
+		},
+		"Sellable":	true,
+		"Effects":	{
+			"id":	0
+		},
+		"Types":	{
+			"id":	512,
+			"Type":	"Shield"
+		},
+		"Stats":	{
+			"Pmight":	15,
+			"Mmight":	0,
+			"hit":	0,
+			"dodge":	10,
+			"crit":	0,
+			"favor":	2,
+			"wgt":	13,
+			"uses":	19,
+			"prof":	12,
+			"minrange":	1,
+			"maxrange":	1,
+			"minhand":	1,
+			"maxhand":	0,
+			"dmg_type":	0,
+			"price":	1,
+			"heal":	0
+		},
+		"Infused":	{
+			"Power":	-1,
+			"Type":	0
+		}
+	}
+}
