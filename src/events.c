@@ -564,7 +564,7 @@ void receive_SDL_MOUSEBUTTON(struct Game * in_game, SDL_Event * in_event) {
                 }
 
                 if (in_event->button.state == SDL_PRESSED) {
-                    if (array_isIn_uint8_t(in_game->mouseInputMap.cancel, in_event->button.button, DEFAULT_MAPPABLE_BUTTONS)) {
+                    if (linalg_isIn_uint8_t(in_game->mouseInputMap.cancel, in_event->button.button, DEFAULT_MAPPABLE_BUTTONS)) {
                         struct Position * cursor_pos = TNECS_GET_COMPONENT(in_game->world, in_game->entity_cursor, Position);
                         struct Point pixel_pos = Position_tilemap2pixel(cursor_pos, position_ptr->tilemap_pos.x, position_ptr->tilemap_pos.y);
                         cursor_pos->pixel_pos.x = pixel_pos.x;
@@ -572,7 +572,7 @@ void receive_SDL_MOUSEBUTTON(struct Game * in_game, SDL_Event * in_event) {
                         Event_Emit(SDL_USEREVENT, event_Input_Cancel, &in_game->entity_mouse, NULL);
                     }
 
-                    if (array_isIn_uint8_t(in_game->mouseInputMap.accept, in_event->button.button, DEFAULT_MAPPABLE_BUTTONS)) {
+                    if (linalg_isIn_uint8_t(in_game->mouseInputMap.accept, in_event->button.button, DEFAULT_MAPPABLE_BUTTONS)) {
                         struct Position * cursor_pos = TNECS_GET_COMPONENT(in_game->world, in_game->entity_cursor, Position);
                         struct Point tilemap_pos = Position_pixel2tilemap(cursor_pos, position_ptr->pixel_pos.x, position_ptr->pixel_pos.y);
                         cursor_pos->tilemap_pos.x = tilemap_pos.x;
@@ -757,11 +757,11 @@ void receive_Unit_Moves(struct Game * in_game, SDL_Event * in_userevent) {
             range = Unit_computeRange(selected_unit_ptr);
 
             costmapp = Map_Costmap_Movement_Compute(in_game->map_ptr, in_game->world, in_game->selected_unit_entity);
-            linalg_matrix_print_int16_t(costmapp, in_game->map_ptr->row_len, in_game->map_ptr->col_len);
+            // matrix_print_int16_t(costmapp, in_game->map_ptr->row_len, in_game->map_ptr->col_len);
             movemapp = Pathfinding_Map_Move(costmapp, in_game->map_ptr->row_len, in_game->map_ptr->col_len,  start, unit_move, POINTS_MATRIX);
-            linalg_matrix_print_int16_t(movemapp, in_game->map_ptr->row_len, in_game->map_ptr->col_len);
+            // matrix_print_int16_t(movemapp, in_game->map_ptr->row_len, in_game->map_ptr->col_len);
             attackmapp = Pathfinding_Map_Attack(movemapp, in_game->map_ptr->row_len, in_game->map_ptr->col_len, unit_move, range, POINTS_MATRIX, MOVETILE_EXCLUDE);
-            linalg_matrix_print_int16_t(attackmapp, in_game->map_ptr->row_len, in_game->map_ptr->col_len);
+            // matrix_print_int16_t(attackmapp, in_game->map_ptr->row_len, in_game->map_ptr->col_len);
 
             Map_Overlays_Set(in_game->map_ptr, MAP_OVERLAY_MOVE, movemapp);
             Map_Overlays_Set(in_game->map_ptr, MAP_OVERLAY_ATTACK, attackmapp);
@@ -836,7 +836,7 @@ void receive_Unit_Danger(struct Game * in_game, SDL_Event * in_userevent) {
             costmapp = Map_Costmap_Movement_Compute(in_game->map_ptr, in_game->world, in_game->selected_unit_entity);
             movemapp = Pathfinding_Map_Move(costmapp, in_game->map_ptr->row_len, in_game->map_ptr->col_len, start, unit_move, POINTS_MATRIX);
             attackmapp = Pathfinding_Map_Attack(movemapp, in_game->map_ptr->row_len, in_game->map_ptr->col_len, unit_move, range, POINTS_MATRIX, MOVETILE_EXCLUDE);
-            dangermapp = linalg_plusint16_t(attackmapp, movemapp, in_game->map_ptr->row_len, in_game->map_ptr->col_len, 1);
+            dangermapp = linalg_plus_int16_t(attackmapp, movemapp, in_game->map_ptr->row_len * in_game->map_ptr->col_len, 1);
 
 
             if (selected_unit_ptr != NULL) {

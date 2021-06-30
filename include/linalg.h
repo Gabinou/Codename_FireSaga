@@ -8,9 +8,6 @@
 #include <string.h>
 #include <math.h>
 
-
-#ifndef DARR
-#define DARR
 /**********************DARR: DYNAMIC ARRAYS v1.0******************/
 
 // DARR: Dynamic arrays for C99.
@@ -63,7 +60,6 @@ darr[DARR_NUM(darr)++] = elem;\
 
 // DARR_FREE: free whole darr
 #define DARR_FREE(darr) do {free((((size_t* )darr) - DARR_LEN_INDEX));} while(0)
-#endif /* DARR */
 
 /************************* CONSTANTS *****************************/
 #define LINALG_TEMPLATE_TYPES_INT REGISTER_ENUM(int8_t) \
@@ -153,7 +149,7 @@ LINALG_TEMPLATE_TYPES_INT
 LINALG_TEMPLATE_TYPES_INT
 #undef REGISTER_ENUM
 
-#define REGISTER_ENUM(type) extern bool linalg_any_##type(type * matrix1, size_t arr_len);
+#define REGISTER_ENUM(type) extern bool linalg_all_##type(type * matrix1, size_t arr_len);
 LINALG_TEMPLATE_TYPES_INT
 #undef REGISTER_ENUM
 

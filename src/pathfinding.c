@@ -255,7 +255,7 @@ int_tile_t * Pathfinding_Map_Attack(int_tile_t * move_matrix, size_t row_len, si
     int_tile_t * attackmap = NULL, *temp_row = NULL, *move_list = NULL, * toadd = NULL;
     int_tile_t subrangey_min, subrangey_max;
     struct Point temp_point;
-    move_list = matrix2list_int16_t(move_matrix, row_len, col_len);
+    move_list = linalg_matrix2list_int16_t(move_matrix, row_len, col_len);
     size_t list_len = DARR_LEN(move_list) / TWO_D;
 
     switch (mode_output) {
@@ -299,8 +299,8 @@ int_tile_t * Pathfinding_Map_Attack(int_tile_t * move_matrix, size_t row_len, si
                         switch (mode_output) {
                             case POINTS_LIST:
                                 if (!Point_inList_2D(attackmap, DARR_NUM(attackmap) / TWO_D, temp_point.x, temp_point.y)) {
-                                    DARR_PUT(attackmap, temp_point.x)
-                                    DARR_PUT(attackmap, temp_point.y)
+                                    DARR_PUT(attackmap, temp_point.x);
+                                    DARR_PUT(attackmap, temp_point.y);
                                 }
                                 break;
                             case POINTS_MATRIX:

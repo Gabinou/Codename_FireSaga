@@ -36,7 +36,7 @@ extern int_tile_t distance_manhattan(struct Point start, struct Point end);
 extern int_tile_t distance_euclidian(struct Point start, struct Point end);
 
 #define Point_inList_1D list_isIn_1D_int16_t
-#define Point_inList_2D list_isIn_2D_int16_t
+#define Point_inList_2D linalg_list_isIn_2D_int16_t
 #define Point_inList_3D list_isIn_3D_int16_t
 
 #endif /* PATHFINDING_H */
