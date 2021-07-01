@@ -1,7 +1,6 @@
 #include "minctest.h"
 #include "pathfinding.h"
 #include "linalg.h"
-#include "enums.h"
 
 
 enum ENUM_TEST_PATHFINDING {
@@ -250,6 +249,8 @@ void test_pathfinding() {
     int_tile_t temp_col = 0;
     int_tile_t * computed_movemapp = Pathfinding_Map_Move(costmappp, ROW_LEN_TEST_PATHFINDING, COL_LEN_TEST_PATHFINDING, start, move, POINTS_MATRIX);
     int_tile_t * computed_movemapp_list = Pathfinding_Map_Move(costmappp, ROW_LEN_TEST_PATHFINDING, COL_LEN_TEST_PATHFINDING, start, move, POINTS_LIST);
+    // printf("DARR_NUM(computed_movemapp_list) %d", DARR_NUM(computed_movemapp_list));
+    lok(DARR_NUM(computed_movemapp_list) == 122);
     for (uint16_t i = 0; i < DARR_NUM(computed_movemapp_list) / 2; i++) {
         temp_col = computed_movemapp_list[i * TWO_D + 0];
         temp_row = computed_movemapp_list[i * TWO_D + 1];
@@ -257,10 +258,12 @@ void test_pathfinding() {
         // SDL_Log("%d %d %d", temp_row, temp_col, current);
         lok(current > 0);
     }
-    // matrix_print_int16_t(computed_movemapp, ROW_LEN_TEST_PATHFINDING, COL_LEN_TEST_PATHFINDING);
 
     int_tile_t * computed_attackmapp = Pathfinding_Map_Attack(movemappp, ROW_LEN_TEST_PATHFINDING, COL_LEN_TEST_PATHFINDING, move, range, POINTS_MATRIX, MOVETILE_EXCLUDE);
+    // matrix_print_int16_t(computed_attackmapp, ROW_LEN_TEST_PATHFINDING, COL_LEN_TEST_PATHFINDING);
     int_tile_t * computed_attackmapp_list = Pathfinding_Map_Attack(movemappp, ROW_LEN_TEST_PATHFINDING, COL_LEN_TEST_PATHFINDING, move, range, POINTS_LIST, MOVETILE_EXCLUDE);
+    // printf("DARR_NUM(computed_attackmapp_list) %d", DARR_NUM(computed_attackmapp_list));
+    lok(DARR_NUM(computed_attackmapp_list) == 102);
     for (uint16_t i = 0; i < DARR_NUM(computed_attackmapp_list) / 2; i++) {
         temp_col = computed_attackmapp_list[i * TWO_D + 0];
         temp_row = computed_attackmapp_list[i * TWO_D + 1];
@@ -268,11 +271,16 @@ void test_pathfinding() {
         // SDL_Log("%d %d %d", temp_row, temp_col, current);
         lok(current == 1);
     }
+    int16_t * out = NULL;
+    out = linalg_equal_int16_t(computed_movemapp, movemappp, ROW_LEN_TEST_PATHFINDING * COL_LEN_TEST_PATHFINDING);
+    lok(linalg_all_int16_t(out, ROW_LEN_TEST_PATHFINDING * COL_LEN_TEST_PATHFINDING));
+    free(out);
 
-    lok(matrix_equal_int16_t(computed_movemapp, movemappp, ROW_LEN_TEST_PATHFINDING, COL_LEN_TEST_PATHFINDING));
-    lok(matrix_equal_int16_t(computed_attackmapp, attackmappp, ROW_LEN_TEST_PATHFINDING, COL_LEN_TEST_PATHFINDING));
-    // matrix_print_int16_t(computed_attackmapp, ROW_LEN_TEST_PATHFINDING, COL_LEN_TEST_PATHFINDING);
-    // matrix_print_int16_t(attackmappp, ROW_LEN_TEST_PATHFINDING, COL_LEN_TEST_PATHFINDING);
+    out = linalg_equal_int16_t(computed_attackmapp, attackmappp, ROW_LEN_TEST_PATHFINDING * COL_LEN_TEST_PATHFINDING);
+    lok(linalg_all_int16_t(out, ROW_LEN_TEST_PATHFINDING * COL_LEN_TEST_PATHFINDING));
+    free(out);
+    // linalg_matrix_print_int16_t(computed_attackmapp, ROW_LEN_TEST_PATHFINDING, COL_LEN_TEST_PATHFINDING);
+    // linalg_matrix_print_int16_t(attackmappp, ROW_LEN_TEST_PATHFINDING, COL_LEN_TEST_PATHFINDING);
 
     int_tile_t temp_costmapp2[ROW_LEN_TEST_PATHFINDING * COL_LEN_TEST_PATHFINDING] = {
         1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
@@ -436,22 +444,30 @@ void test_pathfinding() {
         lok(current == 1);
     }
 
-    lok(matrix_equal_int16_t(computed_movemapp2, movemappp2, ROW_LEN_TEST_PATHFINDING, COL_LEN_TEST_PATHFINDING));
-    lok(matrix_equal_int16_t(computed_attackmapp2, attackmappp2, ROW_LEN_TEST_PATHFINDING, COL_LEN_TEST_PATHFINDING));
+    out = linalg_equal_int16_t(computed_movemapp2, movemappp2, ROW_LEN_TEST_PATHFINDING * COL_LEN_TEST_PATHFINDING);
+    lok(linalg_all_int16_t(out, ROW_LEN_TEST_PATHFINDING * COL_LEN_TEST_PATHFINDING));
+    free(out);
+    out = linalg_equal_int16_t(computed_attackmapp2, attackmappp2, ROW_LEN_TEST_PATHFINDING * COL_LEN_TEST_PATHFINDING);
+    lok(linalg_all_int16_t(out, ROW_LEN_TEST_PATHFINDING * COL_LEN_TEST_PATHFINDING));
+    free(out);
 
     int_tile_t * computed_sightmapp = Pathfinding_Map_Sight(blockmappp, ROW_LEN_TEST_PATHFINDING, COL_LEN_TEST_PATHFINDING, start, 6, POINTS_MATRIX);
     SDL_Log("Pathfinding_Map_Sight OUT");
 
-    lok(matrix_equal_int16_t(computed_sightmapp, sightmappp, ROW_LEN_TEST_PATHFINDING, COL_LEN_TEST_PATHFINDING));
-    // matrix_print_int16_t(blockmappp, ROW_LEN_TEST_PATHFINDING, COL_LEN_TEST_PATHFINDING);
-    // matrix_print_int16_t(computed_sightmapp, ROW_LEN_TEST_PATHFINDING, COL_LEN_TEST_PATHFINDING);
-    // matrix_print_int16_t(sightmappp, ROW_LEN_TEST_PATHFINDING, COL_LEN_TEST_PATHFINDING);
+    out = linalg_equal_int16_t(computed_sightmapp, sightmappp, ROW_LEN_TEST_PATHFINDING * COL_LEN_TEST_PATHFINDING);
+    lok(linalg_all_int16_t(out, ROW_LEN_TEST_PATHFINDING * COL_LEN_TEST_PATHFINDING));
+    free(out);
+    // linalg_matrix_print_int16_t(blockmappp, ROW_LEN_TEST_PATHFINDING, COL_LEN_TEST_PATHFINDING);
+    // linalg_matrix_print_int16_t(computed_sightmapp, ROW_LEN_TEST_PATHFINDING, COL_LEN_TEST_PATHFINDING);
+    // linalg_matrix_print_int16_t(sightmappp, ROW_LEN_TEST_PATHFINDING, COL_LEN_TEST_PATHFINDING);
 
     SDL_Log("Pathfinding_Map_Move_Hex IN");
     int_tile_t * computed_hexmovemapp = Pathfinding_Map_Move_Hex(costmappp, ROW_LEN_TEST_PATHFINDING, COL_LEN_TEST_PATHFINDING, hexstart, move, POINTS_MATRIX);
     int_tile_t * computed_hexmovemapp_list = Pathfinding_Map_Move_Hex(costmappp, ROW_LEN_TEST_PATHFINDING, COL_LEN_TEST_PATHFINDING, hexstart, move, POINTS_LIST);
     SDL_Log("Pathfinding_Map_Move_Hex out");
-    lok(matrix_equal_int16_t(computed_hexmovemapp, hexmovemappp, ROW_LEN_TEST_PATHFINDING, COL_LEN_TEST_PATHFINDING));
+    out = linalg_equal_int16_t(computed_hexmovemapp, hexmovemappp, ROW_LEN_TEST_PATHFINDING * COL_LEN_TEST_PATHFINDING);
+    lok(linalg_all_int16_t(out, ROW_LEN_TEST_PATHFINDING * COL_LEN_TEST_PATHFINDING));
+    free(out);
     for (uint16_t i = 0; i < DARR_NUM(computed_hexmovemapp_list) / 2; i++) {
         temp_col = computed_hexmovemapp_list[i * TWO_D + 0];
         temp_row = computed_hexmovemapp_list[i * TWO_D + 1];
@@ -461,7 +477,9 @@ void test_pathfinding() {
 
     int_tile_t * computed_hexmovemapp2 = Pathfinding_Map_Move_Hex(costmappp2, ROW_LEN_TEST_PATHFINDING, COL_LEN_TEST_PATHFINDING, hexstart, move, POINTS_MATRIX);
     int_tile_t * computed_hexmovemapp_list2 = Pathfinding_Map_Move_Hex(costmappp2, ROW_LEN_TEST_PATHFINDING, COL_LEN_TEST_PATHFINDING, hexstart, move, POINTS_LIST);
-    lok(matrix_equal_int16_t(computed_hexmovemapp2, hexmovemappp2, ROW_LEN_TEST_PATHFINDING, COL_LEN_TEST_PATHFINDING));
+    out = linalg_equal_int16_t(computed_hexmovemapp2, hexmovemappp2, ROW_LEN_TEST_PATHFINDING * COL_LEN_TEST_PATHFINDING);
+    lok(linalg_all_int16_t(out, ROW_LEN_TEST_PATHFINDING * COL_LEN_TEST_PATHFINDING));
+    free(out);
     for (uint16_t i = 0; i < DARR_NUM(computed_hexmovemapp_list2) / 2; i++) {
         temp_col = computed_hexmovemapp_list2[i * TWO_D + 0];
         temp_row = computed_hexmovemapp_list2[i * TWO_D + 1];
@@ -472,7 +490,7 @@ void test_pathfinding() {
 
     int_tile_t * computed_hexattackmapp = Pathfinding_Map_Attack(hexmovemappp, ROW_LEN_TEST_PATHFINDING, COL_LEN_TEST_PATHFINDING, move, range, POINTS_MATRIX, MOVETILE_EXCLUDE);
     int_tile_t * computed_hexattackmapp_list = Pathfinding_Map_Attack(hexmovemappp, ROW_LEN_TEST_PATHFINDING, COL_LEN_TEST_PATHFINDING, move, range, POINTS_LIST, MOVETILE_EXCLUDE);
-    lok(matrix_equal_int16_t(computed_hexattackmapp, hexattackmappp, ROW_LEN_TEST_PATHFINDING, COL_LEN_TEST_PATHFINDING));
+    lok(linalg_equal_int16_t(computed_hexattackmapp, hexattackmappp, ROW_LEN_TEST_PATHFINDING * COL_LEN_TEST_PATHFINDING));
     for (uint16_t i = 0; i < DARR_NUM(computed_hexattackmapp_list) / 2; i++) {
         // SDL_Log("i:%d %d %d %d", i, temp_row, temp_col, current);
         temp_col = computed_hexattackmapp_list[i * TWO_D + 0];
@@ -482,7 +500,9 @@ void test_pathfinding() {
     }
 
     int_tile_t * computed_hexattackmapp2 = Pathfinding_Map_Attack(hexmovemappp2, ROW_LEN_TEST_PATHFINDING, COL_LEN_TEST_PATHFINDING, move, range, POINTS_MATRIX, MOVETILE_EXCLUDE);
-    lok(matrix_equal_int16_t(computed_hexattackmapp2, hexattackmappp2, ROW_LEN_TEST_PATHFINDING, COL_LEN_TEST_PATHFINDING));
+    out = linalg_equal_int16_t(computed_hexattackmapp2, hexattackmappp2, ROW_LEN_TEST_PATHFINDING * COL_LEN_TEST_PATHFINDING);
+    lok(linalg_all_int16_t(out, ROW_LEN_TEST_PATHFINDING * COL_LEN_TEST_PATHFINDING));
+    free(out);
     int_tile_t * computed_hexattackmapp_list2 = Pathfinding_Map_Attack(hexmovemappp2, ROW_LEN_TEST_PATHFINDING, COL_LEN_TEST_PATHFINDING, move, range, POINTS_LIST, MOVETILE_EXCLUDE);
     for (uint16_t i = 0; i < DARR_NUM(computed_hexattackmapp_list2) / 2; i++) {
         temp_col = computed_hexattackmapp_list2[i * TWO_D + 0];
@@ -494,13 +514,15 @@ void test_pathfinding() {
     // plotHex2DArray(computed_hexattackmapp2, ROW_LEN_TEST_PATHFINDING, COL_LEN_TEST_PATHFINDING, POINTY_TOP);
     int_tile_t * computed_hexsightmapp = Pathfinding_Map_Sight_Hex(blockmappp, ROW_LEN_TEST_PATHFINDING, COL_LEN_TEST_PATHFINDING, hexstart, 6, POINTS_MATRIX);
     // int_tile_t * computed_hexsightmapp = Pathfinding_Map_Sight(blockmappp, ROW_LEN_TEST_PATHFINDING, COL_LEN_TEST_PATHFINDING, start, 6, POINTS_MATRIX);
-    lok(matrix_equal_int16_t(computed_hexsightmapp, hexsightmappp, ROW_LEN_TEST_PATHFINDING, COL_LEN_TEST_PATHFINDING));
+    out = linalg_equal_int16_t(computed_hexsightmapp, hexsightmappp, ROW_LEN_TEST_PATHFINDING * COL_LEN_TEST_PATHFINDING);
+    lok(linalg_all_int16_t(out, ROW_LEN_TEST_PATHFINDING * COL_LEN_TEST_PATHFINDING));
+    free(out);
     // plotHex2DArray(computed_hexsightmapp, ROW_LEN_TEST_PATHFINDING, COL_LEN_TEST_PATHFINDING, POINTY_TOP);
-    // lok(matrix_equal_int16_t(computed_sightmapp, sightmappp, ROW_LEN_TEST_PATHFINDING, COL_LEN_TEST_PATHFINDING));
+    // lok(linalg_equal_int16_t(computed_sightmapp, sightmappp, ROW_LEN_TEST_PATHFINDING, COL_LEN_TEST_PATHFINDING));
 
 
 
-    // matrix_print_int16_t(computed_sightmapp, ROW_LEN_TEST_PATHFINDING, COL_LEN_TEST_PATHFINDING);
+    // linalg_matrix_print_int16_t(computed_sightmapp, ROW_LEN_TEST_PATHFINDING, COL_LEN_TEST_PATHFINDING);
     // plotHex2DArray(computed_sightmapp, ROW_LEN_TEST_PATHFINDING, COL_LEN_TEST_PATHFINDING, FLAT_TOP);
     // plotHex2DArray(computed_sightmapp, ROW_LEN_TEST_PATHFINDING, COL_LEN_TEST_PATHFINDING, POINTY_TOP);
 
@@ -609,7 +631,9 @@ void test_pathfinding() {
     }
 
     int_tile_t * computed_attackmapp3_exclude = Pathfinding_Map_Attack(temp_movemapp3, ROW_LEN_TEST_PATHFINDING, COL_LEN_TEST_PATHFINDING, move, range, POINTS_MATRIX, MOVETILE_EXCLUDE);
-    lok(matrix_equal_int16_t(computed_attackmapp3_exclude, attackmapp3_exclude, ROW_LEN_TEST_PATHFINDING, COL_LEN_TEST_PATHFINDING));
+    out = linalg_equal_int16_t(computed_attackmapp3_exclude, attackmapp3_exclude, ROW_LEN_TEST_PATHFINDING * COL_LEN_TEST_PATHFINDING);
+    lok(linalg_all_int16_t(out, ROW_LEN_TEST_PATHFINDING * COL_LEN_TEST_PATHFINDING));
+    free(out);
     int_tile_t * attackmapp3_exclude_list = Pathfinding_Map_Attack(temp_movemapp3, ROW_LEN_TEST_PATHFINDING, COL_LEN_TEST_PATHFINDING, move, range, POINTS_LIST, MOVETILE_EXCLUDE);
     for (uint16_t i = 0; i < DARR_NUM(attackmapp3_exclude_list) / 2; i++) {
         temp_col = attackmapp3_exclude_list[i * TWO_D + 0];
@@ -619,9 +643,11 @@ void test_pathfinding() {
     }
 
     int_tile_t * computed_attackmapp3_include = Pathfinding_Map_Attack(temp_movemapp3, ROW_LEN_TEST_PATHFINDING, COL_LEN_TEST_PATHFINDING, move, range, POINTS_MATRIX, MOVETILE_INCLUDE);
-    // matrix_print_int16_t(computed_attackmapp3_include, ROW_LEN_TEST_PATHFINDING, COL_LEN_TEST_PATHFINDING);
+    // linalg_matrix_print_int16_t(computed_attackmapp3_include, ROW_LEN_TEST_PATHFINDING, COL_LEN_TEST_PATHFINDING);
 
-    lok(matrix_equal_int16_t(computed_attackmapp3_include, attackmapp3_exclude, ROW_LEN_TEST_PATHFINDING, COL_LEN_TEST_PATHFINDING));
+    out = linalg_equal_int16_t(computed_attackmapp3_include, attackmapp3_exclude, ROW_LEN_TEST_PATHFINDING * COL_LEN_TEST_PATHFINDING);
+    lok(linalg_all_int16_t(out, ROW_LEN_TEST_PATHFINDING * COL_LEN_TEST_PATHFINDING));
+    free(out);
     int_tile_t * attackmapp3_include_list = Pathfinding_Map_Attack(temp_movemapp3, ROW_LEN_TEST_PATHFINDING, COL_LEN_TEST_PATHFINDING, move, range, POINTS_LIST, MOVETILE_INCLUDE);
     for (uint16_t i = 0; i < DARR_NUM(attackmapp3_exclude_list) / 2; i++) {
         temp_col = attackmapp3_include_list[i * TWO_D + 0];
@@ -697,8 +723,10 @@ void test_pathfinding() {
     }
 
     int_tile_t * computed_attackmapp4_exclude = Pathfinding_Map_Attack(temp_movemapp3, ROW_LEN_TEST_PATHFINDING, COL_LEN_TEST_PATHFINDING, move, range, POINTS_MATRIX, MOVETILE_EXCLUDE);
-    // matrix_print_int16_t(computed_attackmapp4_exclude, ROW_LEN_TEST_PATHFINDING, COL_LEN_TEST_PATHFINDING);
-    lok(matrix_equal_int16_t(computed_attackmapp4_exclude, attackmapp4_exclude, ROW_LEN_TEST_PATHFINDING, COL_LEN_TEST_PATHFINDING));
+    // linalg_matrix_print_int16_t(computed_attackmapp4_exclude, ROW_LEN_TEST_PATHFINDING, COL_LEN_TEST_PATHFINDING);
+    out = linalg_equal_int16_t(computed_attackmapp4_exclude, attackmapp4_exclude, ROW_LEN_TEST_PATHFINDING * COL_LEN_TEST_PATHFINDING);
+    lok(linalg_all_int16_t(out, ROW_LEN_TEST_PATHFINDING * COL_LEN_TEST_PATHFINDING));
+    free(out);
     int_tile_t * attackmapp4_exclude_list = Pathfinding_Map_Attack(temp_movemapp3, ROW_LEN_TEST_PATHFINDING, COL_LEN_TEST_PATHFINDING, move, range, POINTS_LIST, MOVETILE_EXCLUDE);
     for (uint16_t i = 0; i < DARR_NUM(attackmapp4_exclude_list) / 2; i++) {
         temp_col = attackmapp4_exclude_list[i * TWO_D + 0];
@@ -708,8 +736,10 @@ void test_pathfinding() {
     }
 
     int_tile_t * computed_attackmapp4_include = Pathfinding_Map_Attack(temp_movemapp3, ROW_LEN_TEST_PATHFINDING, COL_LEN_TEST_PATHFINDING, move, range, POINTS_MATRIX, MOVETILE_INCLUDE);
-    // matrix_print_int16_t(computed_attackmapp4_include, ROW_LEN_TEST_PATHFINDING, COL_LEN_TEST_PATHFINDING);
-    lok(matrix_equal_int16_t(computed_attackmapp4_include, attackmapp4_include, ROW_LEN_TEST_PATHFINDING, COL_LEN_TEST_PATHFINDING));
+    // linalg_matrix_print_int16_t(computed_attackmapp4_include, ROW_LEN_TEST_PATHFINDING, COL_LEN_TEST_PATHFINDING);
+    out = linalg_equal_int16_t(computed_attackmapp4_include, attackmapp4_include, ROW_LEN_TEST_PATHFINDING * COL_LEN_TEST_PATHFINDING);
+    lok(linalg_all_int16_t(out, ROW_LEN_TEST_PATHFINDING * COL_LEN_TEST_PATHFINDING));
+    free(out);
     int_tile_t * attackmapp4_include_list = Pathfinding_Map_Attack(temp_movemapp3, ROW_LEN_TEST_PATHFINDING, COL_LEN_TEST_PATHFINDING, move, range, POINTS_LIST, MOVETILE_INCLUDE);
     SDL_Log("Pathfinding_Map_Attack V3 OUt ");
 
@@ -791,9 +821,10 @@ void test_pathfinding() {
         // SDL_Log("%d %d %d", temp_row, temp_col, current);
         lok(current > 0);
     }
-    // matrix_print_int16_t(computed_movemapp5, ROW_LEN_TEST_PATHFINDING, COL_LEN_TEST_PATHFINDING);
-    lok(matrix_equal_int16_t(movemapp5, computed_movemapp5, ROW_LEN_TEST_PATHFINDING, COL_LEN_TEST_PATHFINDING));
-
+    // linalg_matrix_print_int16_t(computed_movemapp5, ROW_LEN_TEST_PATHFINDING * COL_LEN_TEST_PATHFINDING);
+    out = linalg_equal_int16_t(movemapp5, computed_movemapp5, ROW_LEN_TEST_PATHFINDING * COL_LEN_TEST_PATHFINDING);
+    lok(linalg_all_int16_t(out, ROW_LEN_TEST_PATHFINDING * COL_LEN_TEST_PATHFINDING));
+    free(out);
 
     int_tile_t temp_costmapp6[ROW_LEN_TEST_PATHFINDING * COL_LEN_TEST_PATHFINDING] = {
         1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
@@ -888,11 +919,13 @@ void test_pathfinding() {
         // SDL_Log("%d %d %d", temp_row, temp_col, current);
         lok(current > 0);
     }
-    // matrix_print_int16_t(computed_movemapp6, ROW_LEN_TEST_PATHFINDING, COL_LEN_TEST_PATHFINDING);
-    lok(matrix_equal_int16_t(movemapp6, computed_movemapp6, ROW_LEN_TEST_PATHFINDING, COL_LEN_TEST_PATHFINDING));
-    // matrix_print_int16_t(temp_costmapp2, ROW_LEN_TEST_PATHFINDING, COL_LEN_TEST_PATHFINDING);
+    // linalg_matrix_print_int16_t(computed_movemapp6, ROW_LEN_TEST_PATHFINDING, COL_LEN_TEST_PATHFINDING);
+    out = linalg_equal_int16_t(movemapp6, computed_movemapp6, ROW_LEN_TEST_PATHFINDING * COL_LEN_TEST_PATHFINDING);
+    lok(linalg_all_int16_t(out, ROW_LEN_TEST_PATHFINDING * COL_LEN_TEST_PATHFINDING));
+    free(out);
+    // linalg_matrix_print_int16_t(temp_costmapp2, ROW_LEN_TEST_PATHFINDING, COL_LEN_TEST_PATHFINDING);
 
-    // matrix_print_int16_t(computed_movemapp6, ROW_LEN_TEST_PATHFINDING, COL_LEN_TEST_PATHFINDING);
+    // linalg_matrix_print_int16_t(computed_movemapp6, ROW_LEN_TEST_PATHFINDING, COL_LEN_TEST_PATHFINDING);
     int_tile_t * path_list_position6 = Pathfinding_Map_Path(computed_movemapp6, ROW_LEN_TEST_PATHFINDING, COL_LEN_TEST_PATHFINDING, start, end, PATH_POSITION);
     int_tile_t * path_list_steps6 = Pathfinding_Map_Path(computed_movemapp6, ROW_LEN_TEST_PATHFINDING, COL_LEN_TEST_PATHFINDING, start, end, PATH_STEP);
     int_tile_t * path_list_positionfromsteps6 = Pathfinding_Path_step2position(path_list_steps6, DARR_NUM(path_list_steps6) / TWO_D, start);
@@ -901,14 +934,18 @@ void test_pathfinding() {
     lok((DARR_NUM(path_list_steps6) > 0));
     lok((DARR_NUM(path_list_positionfromsteps6) > 0));
 
-    int_tile_t * path_matrix_fromposition6 = list2matrix_int16_t(path_list_position6, ROW_LEN_TEST_PATHFINDING, COL_LEN_TEST_PATHFINDING, DARR_NUM(path_list_position6) / TWO_D);
-    int_tile_t * path_matrix_fromsteps6 = list2matrix_int16_t(path_list_positionfromsteps6, ROW_LEN_TEST_PATHFINDING, COL_LEN_TEST_PATHFINDING, DARR_NUM(path_list_positionfromsteps6) / TWO_D);
-    // int_tile_t * path_matrix6 = list2matrix_int16_t(path_list_steps6, ROW_LEN_TEST_PATHFINDING, COL_LEN_TEST_PATHFINDING, abs(end.x - start.x) + abs(end.y - start.y));
-    // matrix_print_int16_t(path_matrix_fromsteps6, ROW_LEN_TEST_PATHFINDING, COL_LEN_TEST_PATHFINDING);
-    // matrix_print_int16_t(path_matrix_fromposition6, ROW_LEN_TEST_PATHFINDING, COL_LEN_TEST_PATHFINDING);
+    int_tile_t * path_matrix_fromposition6 = linalg_list2matrix_int16_t(path_list_position6, ROW_LEN_TEST_PATHFINDING, COL_LEN_TEST_PATHFINDING, DARR_NUM(path_list_position6) / TWO_D);
+    int_tile_t * path_matrix_fromsteps6 = linalg_list2matrix_int16_t(path_list_positionfromsteps6, ROW_LEN_TEST_PATHFINDING, COL_LEN_TEST_PATHFINDING, DARR_NUM(path_list_positionfromsteps6) / TWO_D);
+    // int_tile_t * path_matrix6 = linalg_list2matrix_int16_t(path_list_steps6, ROW_LEN_TEST_PATHFINDING, COL_LEN_TEST_PATHFINDING, abs(end.x - start.x) + abs(end.y - start.y));
+    // linalg_matrix_print_int16_t(path_matrix_fromsteps6, ROW_LEN_TEST_PATHFINDING, COL_LEN_TEST_PATHFINDING);
+    // linalg_matrix_print_int16_t(path_matrix_fromposition6, ROW_LEN_TEST_PATHFINDING, COL_LEN_TEST_PATHFINDING);
 
-    lok(matrix_equal_int16_t(path_matrix_fromposition6, temp_path6, ROW_LEN_TEST_PATHFINDING, COL_LEN_TEST_PATHFINDING));
-    lok(matrix_equal_int16_t(path_matrix_fromsteps6, temp_path6, ROW_LEN_TEST_PATHFINDING, COL_LEN_TEST_PATHFINDING));
+    out = linalg_equal_int16_t(path_matrix_fromposition6, temp_path6, ROW_LEN_TEST_PATHFINDING * COL_LEN_TEST_PATHFINDING);
+    lok(linalg_all_int16_t(out, ROW_LEN_TEST_PATHFINDING * COL_LEN_TEST_PATHFINDING));
+    free(out);
+    out = linalg_equal_int16_t(path_matrix_fromsteps6, temp_path6, ROW_LEN_TEST_PATHFINDING * COL_LEN_TEST_PATHFINDING);
+    lok(linalg_all_int16_t(out, ROW_LEN_TEST_PATHFINDING * COL_LEN_TEST_PATHFINDING));
+    free(out);
 
     int_tile_t temp_costmapp7[ROW_LEN_TEST_PATHFINDING * COL_LEN_TEST_PATHFINDING] = {
         1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
@@ -972,10 +1009,11 @@ void test_pathfinding() {
     }
     int_tile_t * computed_movemapp7 = Pathfinding_Map_Move(costmapp7, ROW_LEN_TEST_PATHFINDING, COL_LEN_TEST_PATHFINDING, start, move, POINTS_MATRIX);
     int_tile_t * path_list_position7 = Pathfinding_Map_Path(computed_movemapp7, ROW_LEN_TEST_PATHFINDING, COL_LEN_TEST_PATHFINDING, start, end, PATH_POSITION);
-    int_tile_t * path_matrix_fromposition7 = list2matrix_int16_t(path_list_position7, ROW_LEN_TEST_PATHFINDING, COL_LEN_TEST_PATHFINDING, DARR_NUM(path_list_position7) / TWO_D);
-    // matrix_print_int16_t(path_matrix_fromposition7, ROW_LEN_TEST_PATHFINDING, COL_LEN_TEST_PATHFINDING);
-    lok(matrix_equal_int16_t(path_matrix_fromposition7, temp_path7, ROW_LEN_TEST_PATHFINDING, COL_LEN_TEST_PATHFINDING));
-
+    int_tile_t * path_matrix_fromposition7 = linalg_list2matrix_int16_t(path_list_position7, ROW_LEN_TEST_PATHFINDING, COL_LEN_TEST_PATHFINDING, DARR_NUM(path_list_position7) / TWO_D);
+    // linalg_matrix_print_int16_t(path_matrix_fromposition7, ROW_LEN_TEST_PATHFINDING, COL_LEN_TEST_PATHFINDING);
+    out = linalg_equal_int16_t(path_matrix_fromposition7, temp_path7, ROW_LEN_TEST_PATHFINDING * COL_LEN_TEST_PATHFINDING);
+    lok(linalg_all_int16_t(out, ROW_LEN_TEST_PATHFINDING * COL_LEN_TEST_PATHFINDING));
+    free(out);
     int_tile_t temp_movemap10_include[ROW_LEN_TEST_PATHFINDING * COL_LEN_TEST_PATHFINDING] = {
         0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
         0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
@@ -1140,12 +1178,16 @@ void test_pathfinding() {
     struct Point target = {13, 6};
     int_tile_t range_1[2] = {1, 2};
     int_tile_t range_2[2] = {1, 3};
-    // matrix_print_int16_t(temp_movemapp20, ROW_LEN_TEST_PATHFINDING, COL_LEN_TEST_PATHFINDING);
+    // linalg_matrix_print_int16_t(temp_movemapp20, ROW_LEN_TEST_PATHFINDING, COL_LEN_TEST_PATHFINDING);
     int_tile_t * compute_assailablemap1 = Pathfinding_Map_Assailable(temp_movemapp20, ROW_LEN_TEST_PATHFINDING, COL_LEN_TEST_PATHFINDING, target, range_1, POINTS_MATRIX);
-    lok(matrix_equal_int16_t(compute_assailablemap1, temp_assailablemap1, ROW_LEN_TEST_PATHFINDING, COL_LEN_TEST_PATHFINDING));
+    out = linalg_equal_int16_t(compute_assailablemap1, temp_assailablemap1, ROW_LEN_TEST_PATHFINDING * COL_LEN_TEST_PATHFINDING);
+    lok(linalg_all_int16_t(out, ROW_LEN_TEST_PATHFINDING * COL_LEN_TEST_PATHFINDING));
+    free(out);
     int_tile_t * compute_assailablemap2 = Pathfinding_Map_Assailable(temp_movemapp20, ROW_LEN_TEST_PATHFINDING, COL_LEN_TEST_PATHFINDING, target, range_2, POINTS_MATRIX);
-    // matrix_print_int16_t(compute_assailablemap2, ROW_LEN_TEST_PATHFINDING, COL_LEN_TEST_PATHFINDING);
-    lok(matrix_equal_int16_t(compute_assailablemap2, temp_assailablemap2, ROW_LEN_TEST_PATHFINDING, COL_LEN_TEST_PATHFINDING));
+    // linalg_matrix_print_int16_t(compute_assailablemap2, ROW_LEN_TEST_PATHFINDING * COL_LEN_TEST_PATHFINDING);
+    out = linalg_equal_int16_t(compute_assailablemap2, temp_assailablemap2, ROW_LEN_TEST_PATHFINDING * COL_LEN_TEST_PATHFINDING);
+    lok(linalg_all_int16_t(out, ROW_LEN_TEST_PATHFINDING * COL_LEN_TEST_PATHFINDING));
+    free(out);
     int_tile_t * compute_assailablemap2_list = Pathfinding_Map_Assailable(temp_movemapp20, ROW_LEN_TEST_PATHFINDING, COL_LEN_TEST_PATHFINDING, target, range_2, POINTS_LIST);
     lok((DARR_NUM(compute_assailablemap2_list) / TWO_D) == 4);
     for (uint16_t i = 0; i < DARR_NUM(compute_assailablemap2_list) / TWO_D; i++) {
@@ -1363,9 +1405,11 @@ void test_pathfinding() {
     units[4].y = 15;
     int_tile_t * computed_gradientmap1 = Pathfinding_Map_unitGradient(temp_costmap30, ROW_LEN_TEST_PATHFINDING, COL_LEN_TEST_PATHFINDING, units, 5);
     SDL_Log("Pathfinding_Map_unitGradient OUT");
-    lok(matrix_equal_int16_t(computed_gradientmap1, temp_gradientmap1, ROW_LEN_TEST_PATHFINDING, COL_LEN_TEST_PATHFINDING));
-    // matrix_print_int16_t(computed_gradientmap1, ROW_LEN_TEST_PATHFINDING, COL_LEN_TEST_PATHFINDING);
-    // matrix_print_int16_t(temp_gradientmap1, ROW_LEN_TEST_PATHFINDING, COL_LEN_TEST_PATHFINDING);
+    out = linalg_equal_int16_t(computed_gradientmap1, temp_gradientmap1, ROW_LEN_TEST_PATHFINDING * COL_LEN_TEST_PATHFINDING);
+    lok(linalg_all_int16_t(out, ROW_LEN_TEST_PATHFINDING * COL_LEN_TEST_PATHFINDING));
+    free(out);
+    // linalg_matrix_print_int16_t(computed_gradientmap1, ROW_LEN_TEST_PATHFINDING, COL_LEN_TEST_PATHFINDING);
+    // linalg_matrix_print_int16_t(temp_gradientmap1, ROW_LEN_TEST_PATHFINDING, COL_LEN_TEST_PATHFINDING);
 
     int_tile_t temp_pushpullable1[ROW_LEN_TEST_PATHFINDING * COL_LEN_TEST_PATHFINDING] = {
         -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,
@@ -1403,8 +1447,10 @@ void test_pathfinding() {
     neighbors_pullable.left = true;
 
     int_tile_t * computed_pushpullable1 = Pathfinding_Map_PushPullable(temp_blockdistance, neighbors_pullable, ROW_LEN_TEST_PATHFINDING, COL_LEN_TEST_PATHFINDING, start, POINTS_MATRIX);
-    lok(matrix_equal_int16_t(computed_pushpullable1, temp_pushpullable1, ROW_LEN_TEST_PATHFINDING, COL_LEN_TEST_PATHFINDING));
-    // matrix_print_int16_t(computed_pushpullable1, ROW_LEN_TEST_PATHFINDING, COL_LEN_TEST_PATHFINDING);
+    out = linalg_equal_int16_t(computed_pushpullable1, temp_pushpullable1, ROW_LEN_TEST_PATHFINDING * COL_LEN_TEST_PATHFINDING);
+    lok(linalg_all_int16_t(out, ROW_LEN_TEST_PATHFINDING * COL_LEN_TEST_PATHFINDING));
+    free(out);
+    // linalg_matrix_print_int16_t(computed_pushpullable1, ROW_LEN_TEST_PATHFINDING, COL_LEN_TEST_PATHFINDING);
 
     int_tile_t temp_pushpullable2[ROW_LEN_TEST_PATHFINDING * COL_LEN_TEST_PATHFINDING] = {
         -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,
@@ -1442,8 +1488,10 @@ void test_pathfinding() {
     neighbors_pullable.left = true;
 
     int_tile_t * computed_pushpullable2 = Pathfinding_Map_PushPullable(temp_blockdistance, neighbors_pullable, ROW_LEN_TEST_PATHFINDING, COL_LEN_TEST_PATHFINDING, start, POINTS_MATRIX);
-    lok(matrix_equal_int16_t(computed_pushpullable2, temp_pushpullable2, ROW_LEN_TEST_PATHFINDING, COL_LEN_TEST_PATHFINDING));
-    // matrix_print_int16_t(computed_pushpullable2, ROW_LEN_TEST_PATHFINDING, COL_LEN_TEST_PATHFINDING);
+    out = linalg_equal_int16_t(computed_pushpullable2, temp_pushpullable2, ROW_LEN_TEST_PATHFINDING * COL_LEN_TEST_PATHFINDING);
+    lok(linalg_all_int16_t(out, ROW_LEN_TEST_PATHFINDING * COL_LEN_TEST_PATHFINDING));
+    free(out);
+    // linalg_matrix_print_int16_t(computed_pushpullable2, ROW_LEN_TEST_PATHFINDING, COL_LEN_TEST_PATHFINDING);
 
     int_tile_t temp_pushpullable3[ROW_LEN_TEST_PATHFINDING * COL_LEN_TEST_PATHFINDING] = {
         -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,
@@ -1481,6 +1529,8 @@ void test_pathfinding() {
     neighbors_pullable.left = true;
 
     int_tile_t * computed_pushpullable3 = Pathfinding_Map_PushPullable(temp_blockdistance, neighbors_pullable, ROW_LEN_TEST_PATHFINDING, COL_LEN_TEST_PATHFINDING, start, POINTS_MATRIX);
-    lok(matrix_equal_int16_t(computed_pushpullable3, temp_pushpullable3, ROW_LEN_TEST_PATHFINDING, COL_LEN_TEST_PATHFINDING));
-    // matrix_print_int16_t(computed_pushpullable3, ROW_LEN_TEST_PATHFINDING, COL_LEN_TEST_PATHFINDING);
+    out = linalg_equal_int16_t(computed_pushpullable3, temp_pushpullable3, ROW_LEN_TEST_PATHFINDING * COL_LEN_TEST_PATHFINDING);
+    lok(linalg_all_int16_t(out, ROW_LEN_TEST_PATHFINDING * COL_LEN_TEST_PATHFINDING));
+    free(out);
+    // linalg_matrix_print_int16_t(computed_pushpullable3, ROW_LEN_TEST_PATHFINDING, COL_LEN_TEST_PATHFINDING);
 }

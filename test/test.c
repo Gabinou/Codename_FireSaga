@@ -2,14 +2,13 @@
 #include "test_AI.h"
 #include "test_camp.h"
 #include "test_convoy.h"
-#include "test_darr.h"
 #include "test_equations.h"
 #include "test_enums.h"
 #include "test_filesystem.h"
 #include "test_game.h"
-#include "test_linalg.h"
 #include "test_item.h"
 #include "test_map.h"
+#include "test_menu.h"
 #include "test_pathfinding.h"
 #include "test_probability.h"
 #include "test_position.h"
@@ -45,20 +44,19 @@ int main(int argc, char * argv[]) {
     lrun("AI ", test_AI);
     // lrun("Camp ", test_camp);
     // lrun("Convoy ", test_convoy);
-    lrun("DynArr", test_darr);
     lrun("Enums ", test_enums);
     lrun("Equations ", test_equations);
     lrun("Filesystem ", test_filesystem);
     lrun("Game ", test_game);
-    lrun("linalg", test_linalg);
     lrun("Item", test_item);
     lrun("Map ", test_map);
+    lrun("Menu ", test_menu);
     lrun("Pathfinding ", test_pathfinding);
-    lrun("Quick Math ", test_q_math);
     lrun("Position ", test_position);
     lrun("Probability ", test_probability);
     lrun("Sprite ", test_sprite);
     lrun("Str ", test_str);
+    lrun("Quick Math ", test_q_math);
     lrun("Narrative ", test_narrative);
     lrun("Text ", test_text);
     lrun("Tile ", test_tile);

@@ -211,7 +211,9 @@ void Menu_MakeOptionnames() {
 
 #define REGISTER_ENUM(x) temp_str = (char *) malloc(DEFAULT_BUFFER_SIZE);\
 strncpy(temp_str, #x, sizeof(#x));\
-menuNames[MENU_##x], str_camelCase(str_toLower(str_replaceSingle(temp_str, '_', ' ')), ' ', 2);
+menuNames[MENU_##x] = str_camelCase(str_toLower(str_replaceSingle(temp_str, '_', ' ')), ' ', 2);
+
+
 
 char ** menuNames = NULL;
 void Menu_MakeNames() {
@@ -331,7 +333,7 @@ bool utilities_isPC(const uint8_t army) {
     }
 char ** utilities_unitTypes(uint16_t in_typecode) {
     char * temp_str = NULL;
-    char ** out = DARR_INIT(char *, UNIT_TYPE_END);
+    char ** out = DARR_INIT(out, char *, UNIT_TYPE_END);
 #include "names/units_types.h"
     return (out);
 }
@@ -346,9 +348,7 @@ char ** utilities_unitTypes(uint16_t in_typecode) {
 char ** utilities_wpnEffects(uint64_t in_effect) {
     SDL_Log("utilities_wpnEffects");
     char * temp_str = NULL;
-    char ** wpn_effects = DARR_INIT(char *, UNIT_TYPE_END);
-    DARR_LEN(wpn_effects) = UNIT_TYPE_END;
-    DARR_NUM(wpn_effects) = 0;
+    char ** wpn_effects = DARR_INIT(wpn_effects, char *, UNIT_TYPE_END);
 #include "names/items_effects.h"
     return (wpn_effects);
 }
@@ -636,9 +636,7 @@ void makeArmyNames() {
 }
 char ** utilities_wpnType(uint16_t in_typecode) {
     SDL_Log("utilities_wpnType");
-    char ** type_names = DARR_INIT(char *, ITEM_TYPE_END);
-    DARR_LEN(type_names) = ITEM_TYPE_END;
-    DARR_NUM(type_names) = 0;
+    char ** type_names = DARR_INIT(type_names, char *, ITEM_TYPE_END);
     char * temp_str;
 #include "names/items_types.h"
     return (type_names);
@@ -785,9 +783,7 @@ void makeclassNames() {
 }
 char ** utilities_skillNames(uint64_t in_skillscode) {
     SDL_Log("utilities_skillNames");
-    char ** skill_names = DARR_INIT(char *, UNIT_SKILL_END);
-    DARR_LEN(skill_names) = UNIT_SKILL_END;
-    DARR_NUM(skill_names) = 0;
+    char ** skill_names = DARR_INIT(skill_names, char *, UNIT_SKILL_END);
     char * temp_str = NULL;
 #include "names/skills.h"
     return (skill_names);
@@ -802,9 +798,7 @@ char ** utilities_skillNames(uint64_t in_skillscode) {
 char ** utilities_unitstateNames(uint32_t in_statecode) {
     SDL_Log("utilities_unitstateNames");
     char * temp_str = NULL;
-    char ** state_names = DARR_INIT(char *, UNIT_STATE_END);
-    DARR_LEN(state_names) = UNIT_SKILL_END;
-    DARR_NUM(state_names) = 0;
+    char ** state_names = DARR_INIT(state_names, char *, UNIT_STATE_END);
 #include "names/units_states.h"
     return (state_names);
 }
@@ -814,9 +808,7 @@ char ** utilities_unitstateNames(uint32_t in_statecode) {
 uint16_t * equippableClasscodes;
 void makeequippableClasscodes() {
     SDL_Log("makeequippableClasscodes");
-    equippableClasscodes = DARR_INIT(uint16_t, UNIT_CLASS_END);
-    DARR_LEN(equippableClasscodes) = UNIT_CLASS_END;
-    DARR_NUM(equippableClasscodes) = 0;
+    equippableClasscodes = DARR_INIT(equippableClasscodes, uint16_t, UNIT_CLASS_END);
     DARR_PUT(equippableClasscodes, 0);
 #include "names/classes.h"
 }

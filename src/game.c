@@ -230,6 +230,7 @@ void Game_Menu_Update(struct Game * in_game, int8_t in_menu) {
         in_game->menuContentMakers[in_menu](in_game, data_1, data_2);
         SDL_Log("Outside menuContentMakers");
         struct Menu * menu_ptr = TNECS_GET_COMPONENT(in_game->world, in_game->menu_loaded[in_menu], Menu);
+        SDL_assert(menu_ptr->row_num > 0);
         Menu_Cols_init(menu_ptr);
         Menu_cellsWidths_Compute(in_game->world, menu_ptr);
         Menu_rowHeight_Compute(in_game->world, menu_ptr);
@@ -242,7 +243,7 @@ void Game_Menu_Update(struct Game * in_game, int8_t in_menu) {
 }
 
 void Game_Menu_Create(struct Game * in_game, int8_t in_menu) {
-    SDL_Log("Create menu: %s", menuNames[in_menu]);
+    SDL_Log("Create menu: %d %s", in_menu, menuNames[in_menu]);
     SDL_assert((in_menu > MENU_START) & (in_menu < MENU_END));
     if (in_game->menu_loaded[in_menu] != 0) {
         SDL_Log("menu %d is already loaded", in_menu);
@@ -400,7 +401,6 @@ void Game_Mouse_State_Set(struct Game * in_game, const int8_t in_menu) {
     int16_t linespace;
     SDL_assert(in_game->entity_mouse != 0);
     struct Position * mouse_position_ptr = TNECS_GET_COMPONENT(in_game->world, in_game->entity_mouse, Position);
-    struct Text * mouse_text_ptr = TNECS_GET_COMPONENT(in_game->world, in_game->entity_mouse, Text);
 
     switch (in_menu) {
         // case Gameplay_Map:
@@ -503,17 +503,22 @@ void Game_Mouse_Create(struct Game * in_game) {
 
     in_game->entity_mouse = TNECS_ENTITY_CREATE_wCOMPONENTS(in_game->world, controllerMouse, Position, Sprite);
     struct Position * position_ptr = TNECS_GET_COMPONENT(in_game->world, in_game->entity_mouse, Position);
+    position_ptr->onTilemap = false;
     SDL_assert(position_ptr != NULL);
     Position_Bounds_Set(position_ptr, -1000, 2000, -1000, 2000);
 
     struct Sprite * sprite_ptr = TNECS_GET_COMPONENT(in_game->world, in_game->entity_mouse, Sprite);
     SDL_assert(sprite_ptr != NULL);
     Sprite_Texture_Set(sprite_ptr, ".."DIR_SEPARATOR"assets"DIR_SEPARATOR"GUI"DIR_SEPARATOR"mousecursor.png");
+    sprite_ptr->srcrect.w = 32;
+    sprite_ptr->srcrect.h = 32;
+    sprite_ptr->destrect.w = 32;
+    sprite_ptr->destrect.h = 32;
 }
 
 void Game_Mouse_Enable(struct Game * in_game) {
     SDL_Log("Game_Mouse_Enable");
-    in_game->ismouse = true;
+    in_game->ismouse = true;;
     SDL_assert(in_game->entity_mouse != 0);
     struct Sprite * sprite_ptr = TNECS_GET_COMPONENT(in_game->world, in_game->entity_mouse, Sprite);
     SDL_assert(sprite_ptr != NULL);
@@ -531,8 +536,9 @@ void Game_Mouse_Disable(struct Game * in_game) {
 
 void Game_Mouse_Destroy(struct Game * in_game) {
     SDL_Log("Game_Mouse_Destroy");
-    SDL_assert(in_game->entity_mouse != 0);
-    tnecs_entity_destroy(in_game->world, in_game->entity_mouse);
+    if (in_game->entity_mouse > 0) {
+        tnecs_entity_destroy(in_game->world, in_game->entity_mouse);
+    }
 }
 
 void Game_Cursor_Create(struct Game * in_game) {
@@ -650,19 +656,7 @@ void Game_putPConMap(struct Game * in_game, int16_t * in_units, struct Point * i
 
         SDL_assert(typeflag_id1 == typeflag_id2);
         SDL_assert(in_game->world->entities_bytype[typeflag_id1][(in_game->world->num_entities_bytype[typeflag_id1]) - 1] == temp_unit_ent);
-        SDL_Log("Entity with unit position Sprite %d\n", in_game->world->entities_bytype[tnecs_typeflagid(in_game->world, TNECS_COMPONENT_NAMES2TYPEFLAG(in_game->world, Unit, Position, Sprite))][0]);
-        SDL_Log("Entity with unit position Sprite %d\n", in_game->world->entities_bytype[tnecs_typeflagid(in_game->world, TNECS_COMPONENT_NAMES2TYPEFLAG(in_game->world, Unit, Position, Sprite))][1]);
-        SDL_Log("Entity with unit position Sprite %d\n", in_game->world->entities_bytype[tnecs_typeflagid(in_game->world, TNECS_COMPONENT_NAMES2TYPEFLAG(in_game->world, Unit, Position, Sprite))][2]);
-        SDL_Log("Entity with unit position Sprite %d\n", in_game->world->entities_bytype[tnecs_typeflagid(in_game->world, TNECS_COMPONENT_NAMES2TYPEFLAG(in_game->world, Unit, Position, Sprite))][3]);
-        SDL_Log("Entity with unit position Sprite %d\n", in_game->world->entities_bytype[tnecs_typeflagid(in_game->world, TNECS_COMPONENT_NAMES2TYPEFLAG(in_game->world, Unit, Position, Sprite))][4]);
-        SDL_Log("Entity with unit position Sprite %d\n", in_game->world->entities_bytype[tnecs_typeflagid(in_game->world, TNECS_COMPONENT_NAMES2TYPEFLAG(in_game->world, Unit, Position, Sprite))][5]);
         Map_Unit_Put(in_game->map_ptr, in_game->world, in_pos_list[i].x, in_pos_list[i].y, temp_unit_ent);
-        SDL_Log("Entity with unit position Sprite %d\n", in_game->world->entities_bytype[tnecs_typeflagid(in_game->world, TNECS_COMPONENT_NAMES2TYPEFLAG(in_game->world, Unit, Position, Sprite))][0]);
-        SDL_Log("Entity with unit position Sprite %d\n", in_game->world->entities_bytype[tnecs_typeflagid(in_game->world, TNECS_COMPONENT_NAMES2TYPEFLAG(in_game->world, Unit, Position, Sprite))][1]);
-        SDL_Log("Entity with unit position Sprite %d\n", in_game->world->entities_bytype[tnecs_typeflagid(in_game->world, TNECS_COMPONENT_NAMES2TYPEFLAG(in_game->world, Unit, Position, Sprite))][2]);
-        SDL_Log("Entity with unit position Sprite %d\n", in_game->world->entities_bytype[tnecs_typeflagid(in_game->world, TNECS_COMPONENT_NAMES2TYPEFLAG(in_game->world, Unit, Position, Sprite))][3]);
-        SDL_Log("Entity with unit position Sprite %d\n", in_game->world->entities_bytype[tnecs_typeflagid(in_game->world, TNECS_COMPONENT_NAMES2TYPEFLAG(in_game->world, Unit, Position, Sprite))][4]);
-        SDL_Log("Entity with unit position Sprite %d\n", in_game->world->entities_bytype[tnecs_typeflagid(in_game->world, TNECS_COMPONENT_NAMES2TYPEFLAG(in_game->world, Unit, Position, Sprite))][5]);
         SDL_assert(in_game->world->entities_bytype[typeflag_id2][(in_game->world->num_entities_bytype[typeflag_id2]) - 1] == temp_unit_ent);
     }
 }
@@ -673,35 +667,20 @@ void Game_mapArrivals_Load(struct Game * in_game) {
     SDL_assert(in_game->map_ptr != NULL);
     char filename[DEFAULT_BUFFER_SIZE];
     char unitname[DEFAULT_BUFFER_SIZE];
-    SDL_Log("1Entity with unit position Sprite %d\n", in_game->world->entities_bytype[tnecs_typeflagid(in_game->world, TNECS_COMPONENT_NAMES2TYPEFLAG(in_game->world, Unit, Position, Sprite))][0]);
-    SDL_Log("1Entity with unit position Sprite %d\n", in_game->world->entities_bytype[tnecs_typeflagid(in_game->world, TNECS_COMPONENT_NAMES2TYPEFLAG(in_game->world, Unit, Position, Sprite))][1]);
-    SDL_Log("1Entity with unit position Sprite %d\n", in_game->world->entities_bytype[tnecs_typeflagid(in_game->world, TNECS_COMPONENT_NAMES2TYPEFLAG(in_game->world, Unit, Position, Sprite))][2]);
-    SDL_Log("1Entity with unit position Sprite %d\n", in_game->world->entities_bytype[tnecs_typeflagid(in_game->world, TNECS_COMPONENT_NAMES2TYPEFLAG(in_game->world, Unit, Position, Sprite))][3]);
 
     for (int16_t i = 0; i < in_game->map_ptr->arrivals_num; i++) {
         if (in_game->map_ptr->arrivals[i].turn == in_game->map_ptr->turn) {
             size_t current_num = in_game->world->num_entities_bytype[TNECS_COMPONENT_NAMES2TYPEFLAGID(in_game->world, Unit, Position, Sprite)];
-            SDL_Log("2Entity with unit position Sprite %d\n", in_game->world->entities_bytype[tnecs_typeflagid(in_game->world, TNECS_COMPONENT_NAMES2TYPEFLAG(in_game->world, Unit, Position, Sprite))][0]);
-            SDL_Log("2Entity with unit position Sprite %d\n", in_game->world->entities_bytype[tnecs_typeflagid(in_game->world, TNECS_COMPONENT_NAMES2TYPEFLAG(in_game->world, Unit, Position, Sprite))][1]);
-            SDL_Log("2Entity with unit position Sprite %d\n", in_game->world->entities_bytype[tnecs_typeflagid(in_game->world, TNECS_COMPONENT_NAMES2TYPEFLAG(in_game->world, Unit, Position, Sprite))][2]);
-            SDL_Log("2Entity with unit position Sprite %d\n", in_game->world->entities_bytype[tnecs_typeflagid(in_game->world, TNECS_COMPONENT_NAMES2TYPEFLAG(in_game->world, Unit, Position, Sprite))][3]);
             tnecs_entity_t temp_unit_ent = TNECS_ENTITY_CREATE_wCOMPONENTS(in_game->world, Unit, Position, Sprite); // no... THIS LINE FUCKS UP THE ENTITIES BY TYPE.
-            SDL_Log("3Entity with unit position Sprite %d\n", in_game->world->entities_bytype[tnecs_typeflagid(in_game->world, TNECS_COMPONENT_NAMES2TYPEFLAG(in_game->world, Unit, Position, Sprite))][0]);
-            SDL_Log("3Entity with unit position Sprite %d\n", in_game->world->entities_bytype[tnecs_typeflagid(in_game->world, TNECS_COMPONENT_NAMES2TYPEFLAG(in_game->world, Unit, Position, Sprite))][1]);
-            SDL_Log("3Entity with unit position Sprite %d\n", in_game->world->entities_bytype[tnecs_typeflagid(in_game->world, TNECS_COMPONENT_NAMES2TYPEFLAG(in_game->world, Unit, Position, Sprite))][2]);
-            SDL_Log("3Entity with unit position Sprite %d\n", in_game->world->entities_bytype[tnecs_typeflagid(in_game->world, TNECS_COMPONENT_NAMES2TYPEFLAG(in_game->world, Unit, Position, Sprite))][3]);
             size_t typeflag_id1 = tnecs_typeflagid(in_game->world, TNECS_COMPONENT_NAMES2TYPEFLAG(in_game->world, Unit, Position, Sprite));
             size_t typeflag_id2 = tnecs_typeflagid(in_game->world, in_game->world->entity_typeflags[temp_unit_ent]);
             SDL_assert(typeflag_id1 == typeflag_id2);
             SDL_assert(in_game->world->num_entities_bytype[TNECS_COMPONENT_NAMES2TYPEFLAGID(in_game->world, Unit, Position, Sprite)] > current_num);
 
-            SDL_Log("temp_unit_ent %d", temp_unit_ent);
-            SDL_Log("typeflag %d", in_game->world->entity_typeflags[temp_unit_ent]);
 
             SDL_assert(in_game->world->entities[temp_unit_ent] == temp_unit_ent);
             SDL_assert(temp_unit_ent);
             SDL_assert(in_game->world->entities_bytype[tnecs_typeflagid(in_game->world, TNECS_COMPONENT_NAMES2TYPEFLAG(in_game->world, Unit, Position, Sprite))][in_game->world->num_entities_bytype[tnecs_typeflagid(in_game->world, TNECS_COMPONENT_NAMES2TYPEFLAG(in_game->world, Unit, Position, Sprite))] - 1] == temp_unit_ent);
-            SDL_Log("entity_typeflag %d", in_game->world->entities_bytype[tnecs_typeflagid(in_game->world, TNECS_COMPONENT_NAMES2TYPEFLAG(in_game->world, Unit, Position, Sprite))][in_game->world->num_entities_bytype[tnecs_typeflagid(in_game->world, TNECS_COMPONENT_NAMES2TYPEFLAG(in_game->world, Unit, Position, Sprite))] - 1]);
             SDL_assert(in_game->world->entity_typeflags[temp_unit_ent] == TNECS_COMPONENT_NAMES2TYPEFLAG(in_game->world, Unit, Position, Sprite));
 
 
@@ -714,14 +693,11 @@ void Game_mapArrivals_Load(struct Game * in_game) {
             unit_ptr->weapons = &in_game->weapons;
             strncpy(unitname, "", 1);
             // strcat(unitname, ".."DIR_SEPARATOR"units"DIR_SEPARATOR);
-            SDL_Log("arrival id %d", in_game->map_ptr->arrivals[i].id);
             strcat(unitname, unitNames[in_game->map_ptr->arrivals[i].id]);
             strcat(unitname, ".json");
             SDL_assert(in_game->world->entities_bytype[typeflag_id1][(in_game->world->num_entities_bytype[typeflag_id1]) - 1] == temp_unit_ent);
             readJSON(unitname, unit_ptr); // this line fucks up the world.
-            SDL_Log("post readJSON");
             SDL_assert(in_game->world->entities_bytype[typeflag_id1][(in_game->world->num_entities_bytype[typeflag_id1]) - 1] == temp_unit_ent);
-            SDL_Log("post assert");
             unit_ptr->army = in_game->map_ptr->arrivals[i].army;
             if (unit_ptr->_equipment[UNIT_HAND_RIGHT].id > 0) {
                 Unit_equips(unit_ptr, UNIT_HAND_RIGHT);
@@ -766,12 +742,6 @@ void Game_mapArrivals_Load(struct Game * in_game) {
 
         }
     }
-    SDL_Log("Entity with unit position Sprite %d\n", in_game->world->entities_bytype[tnecs_typeflagid(in_game->world, TNECS_COMPONENT_NAMES2TYPEFLAG(in_game->world, Unit, Position, Sprite))][0]);
-    SDL_Log("Entity with unit position Sprite %d\n", in_game->world->entities_bytype[tnecs_typeflagid(in_game->world, TNECS_COMPONENT_NAMES2TYPEFLAG(in_game->world, Unit, Position, Sprite))][1]);
-    SDL_Log("Entity with unit position Sprite %d\n", in_game->world->entities_bytype[tnecs_typeflagid(in_game->world, TNECS_COMPONENT_NAMES2TYPEFLAG(in_game->world, Unit, Position, Sprite))][2]);
-    SDL_Log("Entity with unit position Sprite %d\n", in_game->world->entities_bytype[tnecs_typeflagid(in_game->world, TNECS_COMPONENT_NAMES2TYPEFLAG(in_game->world, Unit, Position, Sprite))][3]);
-    SDL_Log("Entity with unit position Sprite %d\n", in_game->world->entities_bytype[tnecs_typeflagid(in_game->world, TNECS_COMPONENT_NAMES2TYPEFLAG(in_game->world, Unit, Position, Sprite))][4]);
-    SDL_Log("Entity with unit position Sprite %d\n", in_game->world->entities_bytype[tnecs_typeflagid(in_game->world, TNECS_COMPONENT_NAMES2TYPEFLAG(in_game->world, Unit, Position, Sprite))][5]);
 }
 
 void Game_Party_Load(struct Game * in_game, int16_t * unit_ids, size_t load_num) {
@@ -881,9 +851,9 @@ void Game_init(struct Game * in_game) {
     TNECS_REGISTER_COMPONENT(in_game->world, RenderTimer);          // 5096
     SDL_Log("System Registration\n");
     TNECS_REGISTER_SYSTEM_wEXCL(in_game->world, drawSprite, 0, Sprite, Position);
+    TNECS_REGISTER_SYSTEM_wEXCL(in_game->world, drawMenu, 0, Menu);
     TNECS_REGISTER_SYSTEM_wEXCL(in_game->world, drawCursor, 0, Sprite, Position, controllerGamepad, controllerKeyboard, controllerTouchpad);
     TNECS_REGISTER_SYSTEM_wEXCL(in_game->world, drawMouse, 0, Sprite, Position, controllerMouse);
-    TNECS_REGISTER_SYSTEM_wEXCL(in_game->world, drawMenu, 0, Menu);
     TNECS_REGISTER_SYSTEM_wEXCL(in_game->world, drawText, 0, Text, Position, UpdateTimer);
     TNECS_REGISTER_SYSTEM_wEXCL(in_game->world, controlMouse, 0, Sprite, Position, controllerMouse);
     TNECS_REGISTER_SYSTEM_wEXCL(in_game->world, controlKeyboard, 0, Position, Sprite, controllerKeyboard);
@@ -909,10 +879,10 @@ void Game_startup(struct Game * in_game, struct Input_Arguments in_args) {
         case STARTUP_TESTING:
             SDL_Log("STARTUP_TESTING ");
 
-            // SDL_ShowCursor(SDL_DISABLE); // for default cursor.
+            SDL_ShowCursor(SDL_DISABLE); // for default cursor.
             Game_FPS_Create(in_game, DEFAULT_TEXT_UPDATETIME);
             Game_Cursor_Create(in_game);
-            // Game_Mouse_Create(in_game);
+            Game_Mouse_Create(in_game);
 
             SDL_Log("Loading in test Map\n");
             strncpy(in_game->reason, "for testing", sizeof(in_game->reason));
@@ -920,7 +890,7 @@ void Game_startup(struct Game * in_game, struct Input_Arguments in_args) {
             strncpy(in_game->reason, "on init state to GAME_STATE_Gameplay_Map substate is idle", sizeof(in_game->reason));
             Game_subState_Set(in_game, GAME_SUBSTATE_STANDBY, in_game->reason);
             Game_Map_Load(in_game, CHAPTER_TEST);
-            // Game_Mouse_State_Set(in_game, MENU_MAP);
+            Game_Mouse_State_Set(in_game, GAME_STATE_Gameplay_Map);
             Game_cursorFocus_onMap(in_game);
 
             SDL_Log("Loading in test party\n");
@@ -931,22 +901,9 @@ void Game_startup(struct Game * in_game, struct Input_Arguments in_args) {
             struct Point temp_point = {.x = 6, .y = 6};
             arrput(positions_list, temp_point);
             Game_putPConMap(in_game, unit_inds, positions_list, 1);
-            SDL_assert(in_game->world->entities_bytype[TNECS_TYPEFLAGID(in_game->world, TNECS_COMPONENT_NAMES2TYPEFLAG(in_game->world, Unit, Position, Sprite))][0] == 3);
-
 
             SDL_Log("Loading in arrivals\n");
             Game_mapArrivals_Load(in_game);
-            SDL_assert(in_game->world->entities_bytype[TNECS_TYPEFLAGID(in_game->world, TNECS_COMPONENT_NAMES2TYPEFLAG(in_game->world, Unit, Position, Sprite))][1] == 4);
-            SDL_assert(in_game->world->entities_bytype[TNECS_TYPEFLAGID(in_game->world, TNECS_COMPONENT_NAMES2TYPEFLAG(in_game->world, Unit, Position, Sprite))][2] == 5);
-            SDL_assert(in_game->world->entities_bytype[TNECS_TYPEFLAGID(in_game->world, TNECS_COMPONENT_NAMES2TYPEFLAG(in_game->world, Unit, Position, Sprite))][3] == 6);
-            SDL_assert(in_game->world->num_entities_bytype[TNECS_TYPEFLAGID(in_game->world, TNECS_COMPONENT_NAMES2TYPEFLAG(in_game->world, Unit, Position, Sprite))] == 4);
-            SDL_Log("Num_Entity with unit position Sprite %d\n", in_game->world->num_entities_bytype[TNECS_TYPEFLAGID(in_game->world, TNECS_COMPONENT_NAMES2TYPEFLAG(in_game->world, Unit, Position, Sprite))]);
-            SDL_Log("Entity with unit position Sprite %d\n", in_game->world->entities_bytype[TNECS_TYPEFLAGID(in_game->world, TNECS_COMPONENT_NAMES2TYPEFLAG(in_game->world, Unit, Position, Sprite))][0]);
-            SDL_Log("Entity with unit position Sprite %d\n", in_game->world->entities_bytype[TNECS_TYPEFLAGID(in_game->world, TNECS_COMPONENT_NAMES2TYPEFLAG(in_game->world, Unit, Position, Sprite))][1]);
-            SDL_Log("Entity with unit position Sprite %d\n", in_game->world->entities_bytype[TNECS_TYPEFLAGID(in_game->world, TNECS_COMPONENT_NAMES2TYPEFLAG(in_game->world, Unit, Position, Sprite))][2]);
-            SDL_Log("Entity with unit position Sprite %d\n", in_game->world->entities_bytype[TNECS_TYPEFLAGID(in_game->world, TNECS_COMPONENT_NAMES2TYPEFLAG(in_game->world, Unit, Position, Sprite))][3]);
-            SDL_Log("Entity with unit position Sprite %d\n", in_game->world->entities_bytype[TNECS_TYPEFLAGID(in_game->world, TNECS_COMPONENT_NAMES2TYPEFLAG(in_game->world, Unit, Position, Sprite))][4]);
-            SDL_Log("Entity with unit position Sprite %d\n", in_game->world->entities_bytype[TNECS_TYPEFLAGID(in_game->world, TNECS_COMPONENT_NAMES2TYPEFLAG(in_game->world, Unit, Position, Sprite))][5]);
             break;
         default:
             SDL_Log("Startup mode is invalid.\n");
@@ -1037,8 +994,6 @@ void Game_loadJSON(struct Game * in_game, const int16_t save_ind) {
         junit = junit->next;
     }
 }
-
-
 
 void Game_saveJSON(struct Game * in_game, const int16_t save_ind) {
     if (!PHYSFS_exists(SAVE_FOLDER)) {
@@ -1356,23 +1311,27 @@ void Game_subStateSwitch_onMenupop(struct Game * in_game, int8_t menu_popped) {
     switch (menu_popped) {
         case MENU_UNIT_ACTION:
             strncpy(in_game->reason, "MENU_UNIT_ACTION was popped", sizeof(in_game->reason));
-            Game_subState_Set(in_game, GAME_SUBSTATE_MAP_UNIT_MOVES, in_game->reason);
             break;
         case MENU_MAP_ACTION:
             strncpy(in_game->reason, "MENU_MAP_ACTION was popped", sizeof(in_game->reason));
-            Game_subState_Set(in_game, GAME_SUBSTATE_MENU, in_game->reason);
+            // Game_subState_Set(in_game, GAME_SUBSTATE_MENU, in_game->reason);
             break;
         case MENU_UNIT_ITEMS:
             SDL_Log("MENU_UNIT_ITEMS was popped");
             strncpy(in_game->reason, "MENU_UNIT_ITEMS was popped", sizeof(in_game->reason));
-            Game_subState_Set(in_game, GAME_SUBSTATE_MENU, in_game->reason);
+            // Game_subState_Set(in_game, GAME_SUBSTATE_MENU, in_game->reason);
             break;
         default:
             strncpy(in_game->reason, "invalid menu was popped, but menu still exists", sizeof(in_game->reason));
-            Game_subState_Set(in_game, GAME_SUBSTATE_MENU, in_game->reason);
+            // Game_subState_Set(in_game, GAME_SUBSTATE_MENU, in_game->reason);
             break;
     }
-    // if (in_game->menu_stack_num == 0) {
+    switch (in_game->state) {
+        case GAME_STATE_Gameplay_Map:
+            if (in_game->menu_stack_num == 0) {
+                Game_subState_Set(in_game, GAME_SUBSTATE_MAP_UNIT_MOVES, in_game->reason);
+            }
+    }
     // Game_cursorFocus_onMenu(in_game);
 }
 
@@ -1450,34 +1409,47 @@ void Game_menuOptions_Update(struct Game * in_game, tnecs_entity_t * in_entity, 
 
 }
 
-void Game_menuOptions_Create(struct Game * in_game, tnecs_entity_t * in_entity, char * in_name) {
-    SDL_Log("Game_menuOptions_Create");
-    if (*in_entity == 0) {
-        *in_entity = TNECS_ENTITY_CREATE_wCOMPONENTS(in_game->world, Position, Text, RenderTimer);
+tnecs_entity_t Game_menuOption_Icon_Create(struct Game * in_game, tnecs_entity_t in_entity) {
+    SDL_Log("Game_menuOption_Icon_Create");
+    if (in_entity == 0) {
+        in_entity = TNECS_ENTITY_CREATE_wCOMPONENTS(in_game->world, Position, Sprite, RenderTimer);
+        SDL_assert(in_entity > 0);
+        struct Sprite * sprite_ptr = TNECS_GET_COMPONENT(in_game->world, in_entity, Sprite);
+        SDL_assert(sprite_ptr != NULL);
     }
 
-    struct Text * text_ptr = TNECS_GET_COMPONENT(in_game->world, *in_entity, Text);
-    SDL_assert(text_ptr !=  NULL);
-    text_ptr->visible = true;
-    text_ptr->fontsize = in_game->settings.fontsize;
+    return (in_entity);
+}
 
-    SDL_Color white = {255, 255, 255};
-    text_ptr->text_color = white;
+tnecs_entity_t Game_menuOption_Text_Create(struct Game * in_game, tnecs_entity_t in_entity, char * in_name) {
+    SDL_Log("Game_menuOption_Text_Create");
+    if (in_entity == 0) {
+        in_entity = TNECS_ENTITY_CREATE_wCOMPONENTS(in_game->world, Position, Text, RenderTimer);
+        SDL_assert(in_entity > 0);
+        struct Text * text_ptr = TNECS_GET_COMPONENT(in_game->world, in_entity, Text);
+        SDL_assert(text_ptr != NULL);
+        text_ptr->visible = true;
+        text_ptr->fontsize = in_game->settings.fontsize;
 
-    text_ptr->padding[0] = Text_default.padding[0];
-    text_ptr->padding[1] = Text_default.padding[1];
-    text_ptr->padding[2] = Text_default.padding[2];
-    text_ptr->padding[3] = Text_default.padding[3];
-    text_ptr->fontsize = Text_default.fontsize;
-    text_ptr->spacingfactor = Text_default.spacingfactor;
+        SDL_Color white = {255, 255, 255};
+        text_ptr->text_color = white;
 
-    text_ptr->text_color = white;
+        text_ptr->padding[0] = Text_default.padding[0];
+        text_ptr->padding[1] = Text_default.padding[1];
+        text_ptr->padding[2] = Text_default.padding[2];
+        text_ptr->padding[3] = Text_default.padding[3];
+        text_ptr->fontsize = Text_default.fontsize;
+        text_ptr->spacingfactor = Text_default.spacingfactor;
 
-    text_ptr->sizefactor[0] = 1; // height, width
-    text_ptr->sizefactor[1] = 1; // height, width
+        text_ptr->text_color = white;
 
-    strcpy(text_ptr->text_line, in_name);
-    SDL_Log("Menu_option_Line: %s %s", in_name, text_ptr->text_line);
+        text_ptr->sizefactor[0] = 1; // height, width
+        text_ptr->sizefactor[1] = 1; // height, width
+
+        strcpy(text_ptr->text_line, in_name);
+        SDL_Log("in_name, Menu_option_Line: %s, %s", in_name, text_ptr->text_line);
+    }
+    return (in_entity);
 }
 
 void Game_Menu_LocationfromCursor(struct Game * in_game, tnecs_entity_t in_menu_entity) {
@@ -1536,82 +1508,73 @@ void makeContent_MENU_UNIT_ACTION(struct Game * in_game, void * data_1, void * d
     SDL_Log("makeContent_MENU_UNIT_ACTION");
     tnecs_entity_t menu_entity = in_game->menu_loaded[MENU_UNIT_ACTION];
     struct Position * unit_pos_ptr = NULL;
-    SDL_assert(in_game->selected_unit_entity != 0);
-    SDL_assert(menu_entity != 0);
+    SDL_assert(in_game->selected_unit_entity > 0);
+    SDL_assert(menu_entity > 0);
     unit_pos_ptr = TNECS_GET_COMPONENT(in_game->world, in_game->selected_unit_entity, Position);
     struct Menu * menu_ptr = TNECS_GET_COMPONENT(in_game->world, menu_entity, Menu);
     menu_ptr->col_num = 1;
     menu_ptr->row_num = 0;
     arrfree(menu_ptr->menuoptions);
-
-    MenuOption_ITEMS.pad_text = MenuOption_default.pad_text;
-    MenuOption_ITEMS.pad_icon = MenuOption_default.pad_icon;
-    MenuOption_ITEMS.pad_cell = MenuOption_default.pad_cell;
-    Game_menuOptions_Create(in_game, &MenuOption_ITEMS.ent_text, menuOptionnames[MENU_OPTION_ITEMS]);
+    Menu_Options_padDefault(&MenuOption_ITEMS);
+    MenuOption_ITEMS.ent_text = Game_menuOption_Text_Create(in_game, MenuOption_ITEMS.ent_text, menuOptionnames[MENU_OPTION_ITEMS]);
+    MenuOption_ITEMS.ent_icon = Game_menuOption_Icon_Create(in_game, MenuOption_ITEMS.ent_icon);
+    SDL_assert(MenuOption_ITEMS.ent_text > 0);
     arrput(menu_ptr->menuoptions, MenuOption_ITEMS);
     menu_ptr->row_num++;
 
     if (in_game->num_traders > 0) {
-        MenuOption_TRADE.pad_text = MenuOption_default.pad_text;
-        MenuOption_TRADE.pad_icon = MenuOption_default.pad_icon;
-        MenuOption_TRADE.pad_cell = MenuOption_default.pad_cell;
-        Game_menuOptions_Create(in_game, &MenuOption_TRADE.ent_text, menuOptionnames[MENU_OPTION_TRADE]);
+        Menu_Options_padDefault(&MenuOption_TRADE);
+        MenuOption_TRADE.ent_text = Game_menuOption_Text_Create(in_game, MenuOption_TRADE.ent_text, menuOptionnames[MENU_OPTION_TRADE]);
+        MenuOption_TRADE.ent_icon = Game_menuOption_Icon_Create(in_game, MenuOption_TRADE.ent_icon);
         arrput(menu_ptr->menuoptions, MenuOption_TRADE);
         menu_ptr->row_num++;
     }
-    bool seize = false;
-    if (seize) {
-        MenuOption_SEIZE.pad_text = MenuOption_default.pad_text;
-        MenuOption_SEIZE.pad_icon = MenuOption_default.pad_icon;
-        MenuOption_SEIZE.pad_cell = MenuOption_default.pad_cell;
-        Game_menuOptions_Create(in_game, &MenuOption_SEIZE.ent_text, menuOptionnames[MENU_OPTION_SEIZE]);
+    bool seizeable = false;
+    if (seizeable) {
+        Menu_Options_padDefault(&MenuOption_SEIZE);
+        MenuOption_SEIZE.ent_text = Game_menuOption_Text_Create(in_game, MenuOption_SEIZE.ent_text, menuOptionnames[MENU_OPTION_SEIZE]);
+        MenuOption_SEIZE.ent_icon = Game_menuOption_Icon_Create(in_game, MenuOption_SEIZE.ent_icon);
         arrput(menu_ptr->menuoptions, MenuOption_SEIZE);
         menu_ptr->row_num++;
     }
     if (in_game->num_talkers > 0) {
-        MenuOption_TALK.pad_text = MenuOption_default.pad_text;
-        MenuOption_TALK.pad_icon = MenuOption_default.pad_icon;
-        MenuOption_TALK.pad_cell = MenuOption_default.pad_cell;
-        Game_menuOptions_Create(in_game, &MenuOption_TALK.ent_text, menuOptionnames[MENU_OPTION_TALK]);
+        Menu_Options_padDefault(&MenuOption_TALK);
+        MenuOption_TALK.ent_text = Game_menuOption_Text_Create(in_game, MenuOption_TALK.ent_text, menuOptionnames[MENU_OPTION_TALK]);
+        MenuOption_TALK.ent_icon = Game_menuOption_Icon_Create(in_game, MenuOption_TALK.ent_icon);
         arrput(menu_ptr->menuoptions, MenuOption_TALK);
         menu_ptr->row_num++;
     }
     if (in_game->num_defenders > 0) {
-        MenuOption_ATTACK.pad_text = MenuOption_default.pad_text;
-        MenuOption_ATTACK.pad_icon = MenuOption_default.pad_icon;
-        MenuOption_ATTACK.pad_cell = MenuOption_default.pad_cell;
-        Game_menuOptions_Create(in_game, &MenuOption_ATTACK.ent_text, menuOptionnames[MENU_OPTION_ATTACK]);
+        Menu_Options_padDefault(&MenuOption_ATTACK);
+        MenuOption_ATTACK.ent_text = Game_menuOption_Text_Create(in_game, MenuOption_ATTACK.ent_text, menuOptionnames[MENU_OPTION_ATTACK]);
+        MenuOption_ATTACK.ent_icon = Game_menuOption_Icon_Create(in_game, MenuOption_TALK.ent_icon);
         arrput(menu_ptr->menuoptions, MenuOption_ATTACK);
         menu_ptr->row_num++;
     }
     if (in_game->num_patients > 0) {
-        MenuOption_STAFF.pad_text = MenuOption_default.pad_text;
-        MenuOption_STAFF.pad_icon = MenuOption_default.pad_icon;
-        MenuOption_STAFF.pad_cell = MenuOption_default.pad_cell;
-        Game_menuOptions_Create(in_game, &MenuOption_STAFF.ent_text, menuOptionnames[MENU_OPTION_STAFF]);
+        Menu_Options_padDefault(&MenuOption_STAFF);
+        MenuOption_STAFF.ent_text = Game_menuOption_Text_Create(in_game, MenuOption_STAFF.ent_text, menuOptionnames[MENU_OPTION_STAFF]);
+        MenuOption_STAFF.ent_icon = Game_menuOption_Icon_Create(in_game, MenuOption_STAFF.ent_icon);
         arrput(menu_ptr->menuoptions, MenuOption_STAFF);
         menu_ptr->row_num++;
     }
     if (in_game->num_spectators > 0) {
-        MenuOption_DANCE.pad_text = MenuOption_default.pad_text;
-        MenuOption_DANCE.pad_icon = MenuOption_default.pad_icon;
-        MenuOption_DANCE.pad_cell = MenuOption_default.pad_cell;
-        Game_menuOptions_Create(in_game, &MenuOption_DANCE.ent_text, menuOptionnames[MENU_OPTION_DANCE]);
+        Menu_Options_padDefault(&MenuOption_DANCE);
+        MenuOption_DANCE.ent_text = Game_menuOption_Text_Create(in_game, MenuOption_DANCE.ent_text, menuOptionnames[MENU_OPTION_DANCE]);
+        MenuOption_DANCE.ent_icon = Game_menuOption_Icon_Create(in_game, MenuOption_STAFF.ent_icon);
         arrput(menu_ptr->menuoptions, MenuOption_DANCE);
         menu_ptr->row_num++;
     }
     if (in_game->num_rescuees > 0) {
-        MenuOption_RESCUE.pad_text = MenuOption_default.pad_text;
-        MenuOption_RESCUE.pad_icon = MenuOption_default.pad_icon;
-        MenuOption_RESCUE.pad_cell = MenuOption_default.pad_cell;
-        Game_menuOptions_Create(in_game, &MenuOption_RESCUE.ent_text, menuOptionnames[MENU_OPTION_RESCUE]);
+        Menu_Options_padDefault(&MenuOption_RESCUE);
+        MenuOption_RESCUE.ent_text = Game_menuOption_Text_Create(in_game, MenuOption_RESCUE.ent_text, menuOptionnames[MENU_OPTION_RESCUE]);
+        MenuOption_RESCUE.ent_icon = Game_menuOption_Icon_Create(in_game, MenuOption_RESCUE.ent_icon);
         arrput(menu_ptr->menuoptions, MenuOption_RESCUE);
         menu_ptr->row_num++;
     }
-    MenuOption_WAIT.pad_text = MenuOption_default.pad_text;
-    MenuOption_WAIT.pad_icon = MenuOption_default.pad_icon;
-    MenuOption_WAIT.pad_cell = MenuOption_default.pad_cell;
-    Game_menuOptions_Create(in_game, &MenuOption_WAIT.ent_text, menuOptionnames[MENU_OPTION_WAIT]);
+    Menu_Options_padDefault(&MenuOption_WAIT);
+    MenuOption_WAIT.ent_text = Game_menuOption_Text_Create(in_game, MenuOption_WAIT.ent_text, menuOptionnames[MENU_OPTION_WAIT]);
+    MenuOption_WAIT.ent_icon = Game_menuOption_Icon_Create(in_game, MenuOption_WAIT.ent_icon);
     arrput(menu_ptr->menuoptions, MenuOption_WAIT);
     menu_ptr->row_num++;
 
@@ -1641,7 +1604,8 @@ void makeContent_MENU_UNIT_ITEMS(struct Game * in_game, void * data_1, void * da
             SDL_Log("item id %d", equipment[i].id);
             temp_option = MenuOption_default;
             strncpy(item_name, hmget(in_game->weapons, equipment[i].id).item->name, sizeof(item_name));
-            Game_menuOptions_Create(in_game, &temp_option.ent_text, item_name);
+            temp_option.ent_text = Game_menuOption_Text_Create(in_game, temp_option.ent_text, item_name);
+            temp_option.ent_icon = Game_menuOption_Icon_Create(in_game, temp_option.ent_icon);
             text_ptr = TNECS_GET_COMPONENT(in_game->world, temp_option.ent_text, Text);
             strncpy(text_ptr->text_line, item_name, sizeof(text_ptr->text_line));
             arrput(menu_ptr->menuoptions, temp_option);
@@ -1758,17 +1722,15 @@ void makeContent_MENU_MAP_ACTION(struct Game * in_game, void * data_1, void * da
     menu_ptr->row_num = 0;
     arrfree(menu_ptr->menuoptions);
 
-    MenuOption_GLOBAL_RANGE.pad_text = MenuOption_default.pad_text;
-    MenuOption_GLOBAL_RANGE.pad_icon = MenuOption_default.pad_icon;
-    MenuOption_GLOBAL_RANGE.pad_cell = MenuOption_default.pad_cell;
-    Game_menuOptions_Create(in_game, &MenuOption_GLOBAL_RANGE.ent_text, menuOptionnames[MENU_OPTION_GLOBAL_RANGE]);
+    Menu_Options_padDefault(&MenuOption_GLOBAL_RANGE);
+    MenuOption_GLOBAL_RANGE.ent_text = Game_menuOption_Text_Create(in_game, MenuOption_GLOBAL_RANGE.ent_text, menuOptionnames[MENU_OPTION_GLOBAL_RANGE]);
+    MenuOption_GLOBAL_RANGE.ent_icon = Game_menuOption_Icon_Create(in_game, MenuOption_GLOBAL_RANGE.ent_icon);
     arrput(menu_ptr->menuoptions, MenuOption_GLOBAL_RANGE);
     menu_ptr->row_num++;
 
-    MenuOption_END_TURN.pad_text = MenuOption_default.pad_text;
-    MenuOption_END_TURN.pad_icon = MenuOption_default.pad_icon;
-    MenuOption_END_TURN.pad_cell = MenuOption_default.pad_cell;
-    Game_menuOptions_Create(in_game, &MenuOption_END_TURN.ent_text, menuOptionnames[MENU_OPTION_END_TURN]);
+    Menu_Options_padDefault(&MenuOption_END_TURN);
+    MenuOption_END_TURN.ent_text = Game_menuOption_Text_Create(in_game, MenuOption_END_TURN.ent_text, menuOptionnames[MENU_OPTION_END_TURN]);
+    MenuOption_END_TURN.ent_icon = Game_menuOption_Icon_Create(in_game, MenuOption_END_TURN.ent_icon);
     arrput(menu_ptr->menuoptions, MenuOption_END_TURN);
     menu_ptr->row_num++;
 

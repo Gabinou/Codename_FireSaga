@@ -50,7 +50,7 @@ int_id_t * Scene_Participants_Determine(struct Scene * in_scene, size_t * in_cho
     for (size_t i = 0; i < chosen_num; i++) {
         current_participant = in_scene->lines[in_chosen[i]].speaker_id;
         if (current_participant > UNIT_NAME_START) {
-            if (!array_isIn_uint16_t(out_participants, current_participant, participants_num)) {
+            if (!linalg_isIn_uint16_t(out_participants, current_participant, participants_num)) {
                 arrput(out_participants, current_participant);
                 participants_num++;
             }

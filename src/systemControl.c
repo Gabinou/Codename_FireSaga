@@ -40,7 +40,7 @@ void controlKeyboard(tnecs_system_input_t * in_input) {
     struct controllerKeyboard * keyboard_ptr = TNECS_COMPONENTS_LIST(in_input, controllerKeyboard);
 
     for (uint16_t ent = 0; ent < in_input->num_entities; ent++) {
-        // SDL_Log("controlKeyboard");
+        // SDL_Log("controlKeyboard %d", ent);
 
         const uint8_t * kb_state = SDL_GetKeyboardState(NULL);
         int8_t * pressed_button = NULL;
@@ -149,7 +149,7 @@ void controlKeyboard(tnecs_system_input_t * in_input) {
             keyboard_ptr[ent].block_buttons = false;
         }
 
-        // position_ptr->updatable = ((sprite_ptr[ent].objectivepos.x == sprite_ptr[ent].slidepos.x) && (sprite_ptr[ent].objectivepos.y == sprite_ptr[ent].slidepos.y));
+        position_ptr->updatable = ((sprite_ptr[ent].objectivepos.x == sprite_ptr[ent].slidepos.x) && (sprite_ptr[ent].objectivepos.y == sprite_ptr[ent].slidepos.y));
 
         if (((cursor_move->x != 0) || (cursor_move->y != 0)) && (position_ptr[ent].updatable)) {
             if (Position_Pos_Add(&position_ptr[ent], cursor_move->x, cursor_move->y)) {
@@ -282,6 +282,7 @@ void controlGamepad(tnecs_system_input_t * in_input) {
 
         if (((cursor_move->x != 0) || (cursor_move->y != 0)) && (position_ptr[ent].updatable)) {
             if (Position_Pos_Add(&position_ptr[ent], cursor_move->x, cursor_move->y)) {
+                // SDL_Log("Emit controlGamepad");
                 Event_Emit(SDL_USEREVENT, event_Cursor_Moved, cursor_move, NULL);
             }
         }

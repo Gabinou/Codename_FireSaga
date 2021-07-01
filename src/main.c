@@ -82,7 +82,6 @@ int main(int32_t argc, char * argv[]) {
     uint16_t currentTime_ms = SDL_GetTicks(), elapsedTime_ms = 0, delay = 0 ;
     float updateTime_s = 1.0f / firesaga->settings.FPS.cap;
     while (firesaga->isrunning) {
-        // SDL_Log("HERE\n");
         elapsedTime_ms = SDL_GetTicks() - currentTime_ms;
         if ((elapsedTime_ms * firesaga->settings.FPS.cap < 1000) || (elapsedTime_ms == 0)) {
             delay = ceil(1000.0f / firesaga->settings.FPS.cap) - elapsedTime_ms;

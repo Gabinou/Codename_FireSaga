@@ -54,10 +54,8 @@ struct uint8_t_hash {
 
 struct Game {
     struct Point cursor_lastpos;
-    struct Point mouse_lastpos;
 
     float mouse_idletime;
-    uint32_t mouse_previous;
 
     struct uint8_t_hash * menu_options;
     struct uint8_t_hash * defaultstates;
@@ -158,7 +156,8 @@ extern void Game_Mouse_Disable(struct Game * in_game);
 extern void Game_Mouse_State_Set(struct Game * in_game, const int8_t in_menu);
 
 extern uint8_t * Game_menuOptions_Get(struct Game * in_game, int8_t in_menu);
-extern void Game_menuOptions_Create(struct Game * in_game, tnecs_entity_t * in_entity, char * in_name);
+extern tnecs_entity_t Game_menuOption_Text_Create(struct Game * in_game, tnecs_entity_t in_entity, char * in_name);
+extern tnecs_entity_t Game_menuOption_Icon_Create(struct Game * in_game, tnecs_entity_t in_entity);
 extern void Game_menuText_Create(struct Game * in_game, int8_t in_menu);
 extern bool Game_Menu_init(struct Game * in_game);
 extern void Game_Menu_Create(struct Game * in_game, int8_t in_menu);

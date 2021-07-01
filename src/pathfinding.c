@@ -15,9 +15,7 @@ extern int_tile_t * Pathfinding_Map_PushPullable(struct Square_Neighbors directi
     int_point_t * pushpullable_ptr = (int_point_t *)&pushpullable;
     switch (mode_output) {
         case (POINTS_LIST):
-            pushpullablemap = DARR_INIT(int_tile_t, row_len * col_len * TWO_D);
-            DARR_LEN(pushpullablemap) = row_len * col_len * TWO_D;
-            DARR_NUM(pushpullablemap) = 0;
+            pushpullablemap = DARR_INIT(pushpullablemap, int_tile_t, row_len * col_len * TWO_D);
             break;
         case (POINTS_MATRIX):
             pushpullablemap = calloc(row_len * col_len, sizeof(int_tile_t));
@@ -67,12 +65,8 @@ int_tile_t * Pathfinding_Map_unitGradient(int_tile_t * in_costmap, size_t row_le
         }
     }
 
-    struct Node * open = DARR_INIT(struct Node, row_len * col_len);
-    DARR_LEN(open) = row_len * col_len;
-    DARR_NUM(open) = 0;
-    struct Node * closed = DARR_INIT(struct Node, row_len * col_len);
-    DARR_NUM(closed) = 0;
-    DARR_LEN(closed) = row_len * col_len;
+    struct Node * open = DARR_INIT(open, struct Node, row_len * col_len);
+    struct Node * closed = DARR_INIT(closed, struct Node, row_len * col_len);
 
     struct Node current, neighbor;
     for (int_tile_t i = 0; i < unit_num; i++) {
@@ -103,8 +97,7 @@ int_tile_t * Pathfinding_Map_unitGradient(int_tile_t * in_costmap, size_t row_le
                             neighbor_inclosed = false;
                             size_t num = DARR_NUM(closed);
                             size_t size = sizeof(*closed);
-                            DARR_DEL(closed, k, size, num);
-                            DARR_NUM(closed)--;
+                            DARR_DEL(closed, k);
                         }
                         break;
                     }
@@ -220,9 +213,7 @@ int_tile_t * Pathfinding_Map_Assailable(int_tile_t * in_movemap, size_t row_len,
 
     switch (mode_output) {
         case (POINTS_LIST):
-            assailablemap = DARR_INIT(int_tile_t, row_len * col_len * TWO_D);
-            DARR_LEN(assailablemap) = row_len * col_len * TWO_D;
-            DARR_NUM(assailablemap) = 0;
+            assailablemap = DARR_INIT(assailablemap, int_tile_t, row_len * col_len * TWO_D);
             break;
         case (POINTS_MATRIX):
             assailablemap = calloc(row_len * col_len, sizeof(int_tile_t));
@@ -264,14 +255,12 @@ int_tile_t * Pathfinding_Map_Attack(int_tile_t * move_matrix, size_t row_len, si
     int_tile_t * attackmap = NULL, *temp_row = NULL, *move_list = NULL, * toadd = NULL;
     int_tile_t subrangey_min, subrangey_max;
     struct Point temp_point;
-    move_list = matrix2list_int16_t(move_matrix, row_len, col_len);
-    size_t list_len = DARR_LEN(move_list) / TWO_D;
+    move_list = linalg_matrix2list_int16_t(move_matrix, row_len, col_len);
+    size_t list_len = DARR_NUM(move_list) / TWO_D;
 
     switch (mode_output) {
         case (POINTS_LIST):
-            attackmap = DARR_INIT(int_tile_t, row_len * col_len * TWO_D);
-            DARR_LEN(attackmap) = row_len * col_len * TWO_D;
-            DARR_NUM(attackmap) = 0;
+            attackmap = DARR_INIT(attackmap, int_tile_t, row_len * col_len * TWO_D);
             break;
         case (POINTS_MATRIX):
             attackmap = calloc(row_len * col_len, sizeof(int_tile_t));
@@ -310,8 +299,8 @@ int_tile_t * Pathfinding_Map_Attack(int_tile_t * move_matrix, size_t row_len, si
                         switch (mode_output) {
                             case POINTS_LIST:
                                 if (!Point_inList_2D(attackmap, DARR_NUM(attackmap) / TWO_D, temp_point.x, temp_point.y)) {
-                                    DARR_PUT(attackmap, temp_point.x)
-                                    DARR_PUT(attackmap, temp_point.y)
+                                    DARR_PUT(attackmap, temp_point.x);
+                                    DARR_PUT(attackmap, temp_point.y);
                                 }
                                 break;
                             case POINTS_MATRIX:
@@ -332,9 +321,7 @@ int_tile_t * Pathfinding_Map_Move_Hex(int_tile_t * cost_matrix, size_t depth_len
 
     switch (mode_output) {
         case (POINTS_LIST):
-            move_matrix = DARR_INIT(int_tile_t, depth_len * col_len * TWO_D);
-            DARR_LEN(move_matrix) = depth_len * col_len * TWO_D;
-            DARR_NUM(move_matrix) = 0;
+            move_matrix = DARR_INIT(move_matrix, int_tile_t, depth_len * col_len * TWO_D);
             break;
         case (POINTS_MATRIX):
             move_matrix = calloc(depth_len * col_len, sizeof(int_tile_t));
@@ -346,15 +333,11 @@ int_tile_t * Pathfinding_Map_Move_Hex(int_tile_t * cost_matrix, size_t depth_len
             break;
     }
 
-    struct HexNode * open = DARR_INIT(struct HexNode, depth_len * col_len);
-    struct HexNode * closed = DARR_INIT(struct HexNode, depth_len * col_len);
-    DARR_LEN(open) = depth_len * col_len;
-    DARR_LEN(closed) = depth_len * col_len;
-    DARR_NUM(open) = 0;
-    DARR_NUM(closed) = 0;
+    struct HexNode * open = DARR_INIT(open, struct HexNode, depth_len * col_len);
+    struct HexNode * closed = DARR_INIT(closed, struct HexNode, depth_len * col_len);
 
     struct HexNode current = {start.x, start.y, start.z, 0}, neighbor;
-    open[DARR_NUM(open)++] = current;
+    DARR_PUT(open, current);
     bool found;
     while (DARR_NUM(open) > 0) {
         current = DARR_POP(open);
@@ -388,8 +371,7 @@ int_tile_t * Pathfinding_Map_Move_Hex(int_tile_t * cost_matrix, size_t depth_len
                                 neighbor_inclosed = false;
                                 size_t num = DARR_NUM(closed);
                                 size_t size = sizeof(*closed);
-                                DARR_DEL(closed, k, size, num);
-                                DARR_NUM(closed)--;
+                                DARR_DEL(closed, k);
                             }
                             break;
                         }
@@ -409,9 +391,7 @@ int_tile_t * Pathfinding_Map_Move(int_tile_t * cost_matrix, size_t row_len, size
     int_tile_t * move_matrix = NULL, * temp_row = NULL;
     switch (mode_output) {
         case (POINTS_LIST):
-            move_matrix = DARR_INIT(int_tile_t, row_len * col_len * TWO_D);
-            DARR_LEN(move_matrix) = row_len * col_len * TWO_D;
-            DARR_NUM(move_matrix) = 0;
+            move_matrix = DARR_INIT(move_matrix, int_tile_t, row_len * col_len * TWO_D);
             break;
         case (POINTS_MATRIX):
             move_matrix = calloc(row_len * col_len, sizeof(int_tile_t));
@@ -423,15 +403,12 @@ int_tile_t * Pathfinding_Map_Move(int_tile_t * cost_matrix, size_t row_len, size
             break;
     }
 
-    struct Node * open = DARR_INIT(struct Node, row_len * col_len * 2);
-    struct Node * closed = DARR_INIT(struct Node, row_len * col_len * 2);
-    DARR_LEN(open) = row_len * col_len * 2;
-    DARR_LEN(closed) = row_len * col_len * 2;
-    DARR_NUM(open) = 0;
-    DARR_NUM(closed) = 0;
+    struct Node * open = DARR_INIT(open, struct Node, row_len * col_len * 2);
+    struct Node * closed = DARR_INIT(closed, struct Node, row_len * col_len * 2);
 
     struct Node current = {start.x, start.y, 0}, neighbor;
-    open[DARR_NUM(open)++] = current;
+    DARR_PUT(open, current);
+
 
     bool found, neighbor_inclosed;
     while (DARR_NUM(open) > 0) {
@@ -465,8 +442,7 @@ int_tile_t * Pathfinding_Map_Move(int_tile_t * cost_matrix, size_t row_len, size
                             neighbor_inclosed = false;
                             size_t num = DARR_NUM(closed);
                             size_t size = sizeof(*closed);
-                            DARR_DEL(closed, k, size, num);
-                            DARR_NUM(closed)--;
+                            DARR_DEL(closed, k);
                         }
                         break;
                     }
@@ -488,9 +464,7 @@ int_tile_t * Pathfinding_Map_Sight(int_tile_t * block_matrix, size_t row_len, si
 
     switch (mode_output) {
         case (POINTS_LIST):
-            sightmap = DARR_INIT(int_tile_t, row_len * col_len * TWO_D);
-            DARR_LEN(sightmap) = row_len * col_len * TWO_D;
-            DARR_NUM(sightmap) = 0;
+            sightmap = DARR_INIT(sightmap, int_tile_t, row_len * col_len * TWO_D);
             break;
         case (POINTS_MATRIX):
             sightmap = calloc(row_len * col_len, sizeof(int_tile_t));
@@ -548,9 +522,7 @@ int_tile_t * Pathfinding_Map_Sight_Hex(int_tile_t * block_matrix, size_t depth_l
 
     switch (mode_output) {
         case (POINTS_LIST):
-            sightmap = DARR_INIT(int_tile_t, depth_len * col_len * TWO_D);
-            DARR_LEN(sightmap) = depth_len * col_len * TWO_D;
-            DARR_NUM(sightmap) = 0;
+            sightmap = DARR_INIT(sightmap, int_tile_t, depth_len * col_len * TWO_D);
             break;
         case (POINTS_MATRIX):
             sightmap = calloc(depth_len * col_len, sizeof(int_tile_t));
@@ -597,12 +569,8 @@ int_tile_t * Pathfinding_Map_Sight_Hex(int_tile_t * block_matrix, size_t depth_l
 
 int_tile_t * Pathfinding_Map_Path(int_tile_t * move_matrix, size_t row_len, size_t col_len, struct Point start, struct Point end, uint8_t mode_path) {
     SDL_Log("Pathfinding_Map_Path");
-    int_tile_t * path_position = DARR_INIT(int_tile_t, row_len * col_len * TWO_D);
-    int_tile_t * out = DARR_INIT(int_tile_t, row_len * col_len * TWO_D);
-    DARR_LEN(path_position) = row_len * col_len * TWO_D;
-    DARR_NUM(path_position) = 0;
-    DARR_LEN(out) = row_len * col_len * TWO_D;
-    DARR_NUM(out) = 0;
+    int_tile_t * path_position = DARR_INIT(path_position, int_tile_t, row_len * col_len * TWO_D);
+    int_tile_t * out = DARR_INIT(out, int_tile_t, row_len * col_len * TWO_D);
 
     struct Point current = end, neighbor, next;
     int_tile_t current_cost;
@@ -646,9 +614,7 @@ int_tile_t * Pathfinding_Map_Path(int_tile_t * move_matrix, size_t row_len, size
 
 int_tile_t * Pathfinding_Path_step2position(int_tile_t * step_list, size_t list_len, struct Point start) {
     SDL_Log("Pathfinding_Path_step2position");
-    int_tile_t * path_position = DARR_INIT(int_tile_t, ((list_len + 1) * 2));
-    DARR_NUM(path_position) = 0;
-    DARR_LEN(path_position) = ((list_len + 1) * 2);
+    int_tile_t * path_position = DARR_INIT(path_position, int_tile_t, ((list_len + 1) * 2));
     DARR_PUT(path_position, start.x);
     DARR_PUT(path_position, start.y);
 

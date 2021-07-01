@@ -61,7 +61,7 @@ void receive_Map_globalRange_Show(struct Game * in_game, SDL_Event * in_usereven
     in_game->map_ptr->show_globalRange = true;
     gamepad_ptr->block_move = true;
     keyboard_ptr->block_move = true;
-    Game_Cursor_Disable(in_game);
+    // Game_Cursor_Disable(in_game);
     strncpy(in_game->reason, "global range is being shown", sizeof(in_game->reason));
     Game_subState_Set(in_game, GAME_SUBSTATE_MAP_GLOBAL_RANGE, in_game->reason);
 }
@@ -102,7 +102,7 @@ void receive_Cursor_Moved(struct Game * in_game, SDL_Event * in_userevent) {
                 case GAME_SUBSTATE_MAP_UNIT_MOVES:
                     // Unit follows cursor movement.
                     selected_position_ptr = TNECS_GET_COMPONENT(in_game->world, in_game->selected_unit_entity, Position);
-                    Position_Pos_Set(selected_position_ptr,  current_pos.x, current_pos.y);
+                    Position_Pos_Set(selected_position_ptr, current_pos.x, current_pos.y);
                     break;
             }
             break;
@@ -110,8 +110,6 @@ void receive_Cursor_Moved(struct Game * in_game, SDL_Event * in_userevent) {
         default:
             SDL_Log("receive_Cursor_Moved game state is invalid");
     }
-
-
 }
 
 void receive_Input_Cancel(struct Game * in_game, SDL_Event * in_userevent) {
@@ -215,34 +213,34 @@ void receive_Input_Cancel(struct Game * in_game, SDL_Event * in_userevent) {
 }
 
 void receive_Mouse_Disable(struct Game * in_game, SDL_Event * in_Mouse_Disable) {
-    SDL_Log("Received Mouse_Disable event");
+    SDL_Log("receive_Mouse_Disable");
     Game_Mouse_Disable(in_game);
 
 }
 
 void receive_Mouse_Enable(struct Game * in_game, SDL_Event * in_Mouse_Enable) {
-    SDL_Log("Received Mouse_Enable event");
+    SDL_Log("receive_Mouse_Enable");
     Game_Mouse_Enable(in_game);
     in_game->mouse_idletime = 0.0f;
 }
 
 void receive_Cursor_Enable(struct Game * in_game, SDL_Event * in_Cursor_Enable) {
-    SDL_Log("Received Cursor_Enable event");
+    SDL_Log("receive_Cursor_Enable");
     Game_Cursor_Enable(in_game);
 }
 
 void receive_Cursor_Disable(struct Game * in_game, SDL_Event * in_Cursor_Disable) {
-    SDL_Log("Received Cursor_Disable event");
+    SDL_Log("receive_Cursor_Disable");
     Game_Cursor_Disable(in_game);
 }
 
 void receive_Turn_Begin(struct Game * in_game, SDL_Event * in_userevent) {
-    SDL_Log("Received Turn_Begin event");
+    SDL_Log("receive_Turn_Begin");
     uint8_t army = * (uint8_t *) in_userevent->user.data1;
 }
 
 void receive_Game_Control_Switch(struct Game * in_game, SDL_Event * in_userevent) {
-    SDL_Log("Received Game_Control_Switch");
+    SDL_Log("receive_Game_Control_Switch");
     uint8_t army = * (uint8_t *) in_userevent->user.data1;
 
     if (utilities_isPC(army)) {
@@ -262,6 +260,7 @@ void receive_Game_Control_Switch(struct Game * in_game, SDL_Event * in_userevent
 }
 
 void receive_Input_Stats(struct Game * in_game, SDL_Event * in_userevent) {
+    SDL_Log("receive_Input_Stats");
 
 }
 
@@ -272,7 +271,7 @@ tnecs_entity_t Events_Controllers_Check(struct Game * in_game, int32_t in_code) 
         case CONTROLLER_MOUSE:
             if (!in_game->ismouse) {
                 Event_Emit(SDL_USEREVENT, event_Mouse_Enable, NULL, NULL);
-                Event_Emit(SDL_USEREVENT, event_Cursor_Disable, NULL, NULL);
+                // Event_Emit(SDL_USEREVENT, event_Cursor_Disable, NULL, NULL);
             }
             out_accepter_entity = in_game->entity_mouse;
             break;
@@ -375,6 +374,9 @@ void receive_Input_Accept(struct Game * in_game, SDL_Event * in_userevent) {
                             if (in_game->iscursor) {
                                 in_game->cursor_lastpos.x = current_pos.x;
                                 in_game->cursor_lastpos.y = current_pos.y;
+                            }
+                            if (accepter_entity == in_game->entity_mouse) {
+
                             }
 
                             unit_entity_ontile = in_game->map_ptr->unitmap[current_pos.y * in_game->map_ptr->col_len + current_pos.x];
@@ -500,35 +502,44 @@ void receive_SDL_MOUSEMOTION(struct Game * in_game, SDL_Event * in_event) {
 
         // SDL_Log("WindowID: %d %d", in_event->motion.windowID, SDL_GetWindowID(in_game->window));
         struct Sprite * sprite_ptr = TNECS_GET_COMPONENT(in_game->world, in_game->entity_mouse, Sprite);
-        if (sprite_ptr != NULL) {
-            sprite_ptr->visible = true;
-        }
+        struct Position * position_ptr = TNECS_GET_COMPONENT(in_game->world, in_game->entity_mouse, Position);
+        // if (sprite_ptr != NULL) {
+        // sprite_ptr->visible = true;
+        // }
 
         // SDL_Log("Mouse motion event rel: %d %d", in_event->motion.xrel, in_event->motion.yrel);
         // SDL_Log("Mouse motion event pos: %d %d", in_event->motion.x, in_event->motion.y);
         // SDL_Log("Mouse last position: %d %d", in_game->mouse_lastpos.x, in_game->mouse_lastpos.y);
 
         // this is cause in_event->motion.xrel does not work
-        if ((in_event->motion.x != in_game->mouse_lastpos.x) || (in_event->motion.y != in_game->mouse_lastpos.y)) {
+        if ((in_event->motion.x != position_ptr->pixel_pos.x) || (in_event->motion.y != position_ptr->pixel_pos.y)) {
             if (in_game->entity_mouse != 0) {
                 if (!in_game->ismouse) {
                     Event_Emit(SDL_USEREVENT, event_Mouse_Enable, NULL, NULL);
-                    Event_Emit(SDL_USEREVENT, event_Cursor_Disable, NULL, NULL);
+                    // Event_Emit(SDL_USEREVENT, event_Cursor_Disable, NULL, NULL);
                 }
 
-                struct Position * position_ptr = TNECS_GET_COMPONENT(in_game->world, in_game->entity_mouse, Position);
+                struct Position * cursor_position_ptr = TNECS_GET_COMPONENT(in_game->world, in_game->entity_cursor, Position);
 
                 if (position_ptr != NULL) {
                     Position_PosPixel_Set(position_ptr, in_event->motion.x, in_event->motion.y);
                 }
-
+                struct Point tilemap_pos;
                 if (in_game->map_ptr != NULL) {
-                    struct Point tilemap_pos = Position_pixel2tilemap(position_ptr, in_event->motion.x, in_event->motion.y);
+                    tilemap_pos = Position_pixel2tilemap(cursor_position_ptr, in_event->motion.x, in_event->motion.y);
                     Position_PosTilemap_Set(position_ptr, tilemap_pos.x, tilemap_pos.y);
+                    if (in_game->substate != GAME_SUBSTATE_STANDBY) {
+                        struct Position * cursor_pos = TNECS_GET_COMPONENT(in_game->world, in_game->entity_cursor, Position);
+                        if ((tilemap_pos.x != cursor_pos->tilemap_pos.x) && (tilemap_pos.y != cursor_pos->tilemap_pos.y)) {
+                            Position_Pos_Set(cursor_pos, tilemap_pos.x, tilemap_pos.y);
+                            Event_Emit(SDL_USEREVENT, event_Cursor_Moved, cursor_move, NULL);
+                        }
+                    }
                 }
+                // SDL_Log("in_event->motion: %d %d", in_event->motion.x, in_event->motion.y);
+                position_ptr->pixel_pos.x = in_event->motion.x;
+                position_ptr->pixel_pos.y = in_event->motion.y;
 
-                in_game->mouse_lastpos.x = in_event->motion.x;
-                in_game->mouse_lastpos.y = in_event->motion.y;
             }
         }
     }
@@ -536,12 +547,12 @@ void receive_SDL_MOUSEMOTION(struct Game * in_game, SDL_Event * in_event) {
 
 void receive_SDL_MOUSEBUTTON(struct Game * in_game, SDL_Event * in_event) {
     SDL_Log("receive_SDL_MOUSEBUTTON");
-    uint32_t mouse_current = * (uint32_t *) in_event->user.data1;
     if (in_event->button.windowID == SDL_GetWindowID(in_game->window)) {
 
-        if (in_game->entity_mouse != 0) {
+        if (in_game->entity_mouse > 0) {
             struct controllerMouse * mouse_ptr = TNECS_GET_COMPONENT(in_game->world, in_game->entity_mouse, controllerMouse);
             struct Position * position_ptr = TNECS_GET_COMPONENT(in_game->world, in_game->entity_mouse, Position);
+            SDL_assert(position_ptr);
 
             if (mouse_ptr != NULL) {
                 // SDL_Log("event pos: %d %d", in_event->button.x, in_event->button.y);
@@ -552,31 +563,34 @@ void receive_SDL_MOUSEBUTTON(struct Game * in_game, SDL_Event * in_event) {
                     Position_PosTilemap_Set(position_ptr, tilemap_pos.x, tilemap_pos.y);
                 }
 
-                if (mouse_current != in_game->mouse_previous) {
-                    if (in_event->button.state == SDL_PRESSED) {
-                        if (array_isIn_uint8_t(in_game->mouseInputMap.cancel, in_event->button.button, DEFAULT_MAPPABLE_BUTTONS)) {
-                            Event_Emit(SDL_USEREVENT, event_Input_Cancel, &in_game->entity_mouse, NULL);
-                        }
+                if (in_event->button.state == SDL_PRESSED) {
+                    if (linalg_isIn_uint8_t(in_game->mouseInputMap.cancel, in_event->button.button, DEFAULT_MAPPABLE_BUTTONS)) {
+                        struct Position * cursor_pos = TNECS_GET_COMPONENT(in_game->world, in_game->entity_cursor, Position);
+                        struct Point pixel_pos = Position_tilemap2pixel(cursor_pos, position_ptr->tilemap_pos.x, position_ptr->tilemap_pos.y);
+                        cursor_pos->pixel_pos.x = pixel_pos.x;
+                        cursor_pos->pixel_pos.y = pixel_pos.y;
+                        Event_Emit(SDL_USEREVENT, event_Input_Cancel, &in_game->entity_mouse, NULL);
+                    }
 
-                        if (array_isIn_uint8_t(in_game->mouseInputMap.accept, in_event->button.button, DEFAULT_MAPPABLE_BUTTONS)) {
-                            Event_Emit(SDL_USEREVENT, event_Input_Accept, &in_game->entity_mouse, NULL);
-                        }
+                    if (linalg_isIn_uint8_t(in_game->mouseInputMap.accept, in_event->button.button, DEFAULT_MAPPABLE_BUTTONS)) {
+                        struct Position * cursor_pos = TNECS_GET_COMPONENT(in_game->world, in_game->entity_cursor, Position);
+                        struct Point tilemap_pos = Position_pixel2tilemap(cursor_pos, position_ptr->pixel_pos.x, position_ptr->pixel_pos.y);
+                        cursor_pos->tilemap_pos.x = tilemap_pos.x;
+                        cursor_pos->tilemap_pos.y = tilemap_pos.y;
+                        Event_Emit(SDL_USEREVENT, event_Input_Accept, &in_game->entity_mouse, NULL);
                     }
                 }
             } else {
                 SDL_Log("cursor has no controllerMouse component");
             }
-
-            in_game->mouse_previous = mouse_current;
         }
-
     } else {
         SDL_Log("entity_mouse is not valid");
     }
 }
 
 void receive_Turn_End(struct Game * in_game, SDL_Event * in_userevent) {
-    SDL_Log("Received Turn_End event");
+    SDL_Log("receive_Turn_End");
     arrput(in_game->map_ptr->armies_onfield, in_game->map_ptr->armies_onfield[0]);
     arrdel(in_game->map_ptr->armies_onfield, 0);
     Event_Emit(SDL_USEREVENT, event_Turn_Begin, NULL, NULL);
@@ -715,7 +729,7 @@ void receive_Unit_Return(struct Game * in_game, SDL_Event * in_userevent) {
 }
 
 void receive_Unit_Moves(struct Game * in_game, SDL_Event * in_userevent) {
-    SDL_Log("receive_Cursor_Hovers_Unit");
+    SDL_Log("receive_Unit_Moves");
     // In this state, position of Silou should be equal to cursor position.
     // -> TO BECOME AN ARROW SOMEDAY.
     int16_t * costmapp = NULL;
@@ -743,11 +757,11 @@ void receive_Unit_Moves(struct Game * in_game, SDL_Event * in_userevent) {
             range = Unit_computeRange(selected_unit_ptr);
 
             costmapp = Map_Costmap_Movement_Compute(in_game->map_ptr, in_game->world, in_game->selected_unit_entity);
-            matrix_print_int16_t(costmapp, in_game->map_ptr->row_len, in_game->map_ptr->col_len);
+            // matrix_print_int16_t(costmapp, in_game->map_ptr->row_len, in_game->map_ptr->col_len);
             movemapp = Pathfinding_Map_Move(costmapp, in_game->map_ptr->row_len, in_game->map_ptr->col_len,  start, unit_move, POINTS_MATRIX);
-            matrix_print_int16_t(movemapp, in_game->map_ptr->row_len, in_game->map_ptr->col_len);
+            // matrix_print_int16_t(movemapp, in_game->map_ptr->row_len, in_game->map_ptr->col_len);
             attackmapp = Pathfinding_Map_Attack(movemapp, in_game->map_ptr->row_len, in_game->map_ptr->col_len, unit_move, range, POINTS_MATRIX, MOVETILE_EXCLUDE);
-            matrix_print_int16_t(attackmapp, in_game->map_ptr->row_len, in_game->map_ptr->col_len);
+            // matrix_print_int16_t(attackmapp, in_game->map_ptr->row_len, in_game->map_ptr->col_len);
 
             Map_Overlays_Set(in_game->map_ptr, MAP_OVERLAY_MOVE, movemapp);
             Map_Overlays_Set(in_game->map_ptr, MAP_OVERLAY_ATTACK, attackmapp);
@@ -765,15 +779,15 @@ void receive_Unit_Moves(struct Game * in_game, SDL_Event * in_userevent) {
 }
 
 void receive_Cursor_Hovers_Unit(struct Game * in_game, SDL_Event * in_userevent) {
-    SDL_Log("receive_Cursor_Hovers_Uni");
+    SDL_Log("receive_Cursor_Hovers_Unit");
 
 }
 
 void receive_Cursor_Dehovers_Unit(struct Game * in_game, SDL_Event * in_userevent) {
-    SDL_Log("Received Units_Refresh events");
+    SDL_Log("receive_Cursor_Dehovers_Unit");
     arrput(in_game->map_ptr->armies_onfield, in_game->map_ptr->armies_onfield[0]);
     arrdel(in_game->map_ptr->armies_onfield, 0);
-    Event_Emit(SDL_USEREVENT, event_Turn_Begin, NULL, NULL);
+    // Event_Emit(SDL_USEREVENT, event_Turn_Begin, NULL, NULL);
     uint8_t army = * (uint8_t *)in_userevent->user.data1;
 
     tnecs_entity_t * unit_entitys = Map_Unit_Gets(in_game->map_ptr, in_game->world, army);
@@ -822,7 +836,7 @@ void receive_Unit_Danger(struct Game * in_game, SDL_Event * in_userevent) {
             costmapp = Map_Costmap_Movement_Compute(in_game->map_ptr, in_game->world, in_game->selected_unit_entity);
             movemapp = Pathfinding_Map_Move(costmapp, in_game->map_ptr->row_len, in_game->map_ptr->col_len, start, unit_move, POINTS_MATRIX);
             attackmapp = Pathfinding_Map_Attack(movemapp, in_game->map_ptr->row_len, in_game->map_ptr->col_len, unit_move, range, POINTS_MATRIX, MOVETILE_EXCLUDE);
-            dangermapp = matrix_plus_int16_t(attackmapp, movemapp, in_game->map_ptr->row_len, in_game->map_ptr->col_len, 1);
+            dangermapp = linalg_plus_int16_t(attackmapp, movemapp, in_game->map_ptr->row_len * in_game->map_ptr->col_len, 1);
 
 
             if (selected_unit_ptr != NULL) {
@@ -1088,7 +1102,7 @@ void Events_Names_Declare() {
 #undef REGISTER_ENUM
 
 void Events_Receivers_Declare_Arr() {
-    receivers_arr = DARR_INIT(receiver_t, 100);
+    receivers_arr = DARR_INIT(receivers_arr, receiver_t, 100);
 }
 
 void Events_Receivers_Declare() {
