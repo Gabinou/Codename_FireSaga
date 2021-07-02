@@ -1,24 +1,3 @@
-{
-	"Tile":	{
-		"Name":	"Pillar",
-		"id":	51,
-		"inside":	true,
-		"Stats":	{
-			"Dodge":	10,
-			"Pprot":	1,
-			"Mprot":	10,
-			"Heal":	0
-		},
-		"MvtCost":	{
-			"foot_slow":	2,
-			"foot_fast":	2,
-			"mages":	2,
-			"fliers":	1,
-			"riders_slow":	3,
-			"riders_fast":	3,
-			"armors":	3,
-			"pirates":	2,
-			"bandits":	2
-		}
-	}
-}
+version https://git-lfs.github.com/spec/v1
+oid sha256:5fe46026c62ec8c3dda39fab015f9240e44c5302093be9e96e0b7438a8b130e2
+size 324
