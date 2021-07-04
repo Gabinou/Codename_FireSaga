@@ -1,24 +1,3 @@
-{
-	"Tile":	{
-		"Name":	"Waterfall",
-		"id":	23,
-		"inside":	false,
-		"Stats":	{
-			"Dodge":	15,
-			"Pprot":	0,
-			"Mprot":	2,
-			"Heal":	0
-		},
-		"MvtCost":	{
-			"foot_slow":	0,
-			"foot_fast":	0,
-			"mages":	0,
-			"fliers":	1,
-			"riders_slow":	0,
-			"riders_fast":	0,
-			"armors":	0,
-			"pirates":	0,
-			"bandits":	0
-		}
-	}
-}
+version https://git-lfs.github.com/spec/v1
+oid sha256:5f6e9b7b4cb29adac7264ef840a1417c3faec17325c2125afd8e78d26f0645f9
+size 327
