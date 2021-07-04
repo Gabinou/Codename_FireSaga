@@ -1,3 +1,24 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:ecaaf4ec8daa19248150459884cac62c1103917ee983d95b6c9a4f03be4243dc
-size 323
+{
+	"Tile":	{
+		"Name":	"River",
+		"id":	22,
+		"inside":	false,
+		"Stats":	{
+			"Dodge":	15,
+			"Pprot":	0,
+			"Mprot":	2,
+			"Heal":	0
+		},
+		"MvtCost":	{
+			"foot_slow":	5,
+			"foot_fast":	4,
+			"mages":	5,
+			"fliers":	1,
+			"riders_slow":	0,
+			"riders_fast":	0,
+			"armors":	0,
+			"pirates":	2,
+			"bandits":	4
+		}
+	}
+}
