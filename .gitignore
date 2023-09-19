@@ -39,3 +39,4 @@ B_obj/*
 !*.dvc
 /assets
 /fonts
+/gamecontrollerdb.txt
