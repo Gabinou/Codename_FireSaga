@@ -22,6 +22,7 @@ Makefile
 # mace
 !macefile.c
 !mace.h
+builder
 
 # Docs
 !*.md
