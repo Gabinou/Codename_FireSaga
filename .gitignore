@@ -36,3 +36,6 @@ B_obj/*
 
 # DVC
 !.dvc
+!*.dvc
+/assets
+/fonts
