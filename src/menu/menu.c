@@ -1,0 +1,200 @@
+#include "menu/menu.h"
+
+struct MenuElemDirections MenuElemDirections_default = {
+    .right  = MENU_ELEM_NULL,
+    .top    = MENU_ELEM_NULL,
+    .left   = MENU_ELEM_NULL,
+    .bottom = MENU_ELEM_NULL,
+};
+
+struct MenuComponent MenuComponent_default =  {
+    .elem_pos         = NULL, /* [elem] */
+    .elem_box         = NULL, /* [elem] */
+    .cursor_pos       = NULL, /* [elem] */
+    .elem_description = NULL, /* [elem] */
+    .elem_links       = NULL, /* [elem] */
+    .data             = NULL,
+    .visible          = true,
+    .elem             = 0,
+    .draw             = NULL,
+    .type             = SOTA_NULL,
+};
+
+/* --- MenuComponent --- */
+void MenuComponent_Elem_Alloc(struct MenuComponent *menu_comp, uf8 elem_num) {
+    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
+    MenuComponent_Elem_Free(menu_comp);
+    menu_comp->elem_pos         = calloc(elem_num, sizeof(*menu_comp->elem_pos));
+    menu_comp->elem_box         = calloc(elem_num, sizeof(*menu_comp->elem_box));
+    menu_comp->cursor_pos       = calloc(elem_num, sizeof(*menu_comp->cursor_pos));
+    menu_comp->elem_links       = malloc(elem_num * sizeof(*menu_comp->elem_links));
+    menu_comp->elem_description = malloc(elem_num * sizeof(*menu_comp->elem_description));
+    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
+}
+
+void MenuComponent_Elem_Free(struct MenuComponent *menu_comp) {
+    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
+    if (menu_comp->elem_pos != NULL) {
+        free(menu_comp->elem_pos);
+        menu_comp->elem_pos = NULL;
+    }
+    if (menu_comp->cursor_pos != NULL) {
+        free(menu_comp->elem_pos);
+        menu_comp->elem_pos = NULL;
+    }
+    if (menu_comp->elem_box != NULL) {
+        free(menu_comp->elem_box);
+        menu_comp->elem_box = NULL;
+    }
+    if (menu_comp->elem_description != NULL) {
+        free(menu_comp->elem_description);
+        menu_comp->elem_description = NULL;
+    }
+    if (menu_comp->elem_links != NULL) {
+        free(menu_comp->elem_links);
+        menu_comp->elem_links = NULL;
+    }
+    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
+}
+
+int Periodic_Elem_Move(struct MenuComponent *in_menu, int direction, int min, int max) {
+    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
+    // Cursor can only move in 2 directions between elems
+    // Cursor movement is periodid
+    direction = Ternary_Direction_Straight(direction);
+    SDL_assert(sizeof(*in_menu->elem_links) == MENU_ELEM_DIRECTIONS_PACKED_BYTESIZE);
+
+    /* Find next elem using direction and array of links */
+    if8 out = -1;
+    if        (direction == SOTA_DIRECTION_BOTTOM) {
+        out = in_menu->elem == (max - 1) ? min : in_menu->elem + 1;
+    } else if (direction == SOTA_DIRECTION_TOP) {
+        out = in_menu->elem == min ? max - 1 : in_menu->elem - 1;
+    } else {
+        out = in_menu->elem;
+    }
+
+    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
+    return (out);
+}
+
+void MenuComponent_Elem_Set(struct MenuComponent *mc, struct Game *sota, if8 new_elem) {
+    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
+    SDL_assert(new_elem >= 0);
+    SDL_assert(new_elem != MENU_ELEM_NULL);
+
+    tnecs_entity_t cursor = sota->entity_cursor;
+    struct Position *cursor_pos = TNECS_GET_COMPONENT(sota->world, cursor, Position);
+    cursor_pos->pixel_pos.x = mc->elem_pos[new_elem].x;
+    cursor_pos->pixel_pos.y = mc->elem_pos[new_elem].y;
+    Cursor_Box_Offset(&cursor_pos->pixel_pos);
+    mc->elem = new_elem;
+
+    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
+}
+
+int MenuComponent_Elem_Move(struct MenuComponent *in_menu, int direction) {
+    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
+    // Cursor can only move in 4 directions between elems
+    direction = Ternary_Direction_Straight(direction);
+    SDL_assert(sizeof(*in_menu->elem_links) == MENU_ELEM_DIRECTIONS_PACKED_BYTESIZE);
+
+    /* Cast packed struct of if8 to array */
+    SDL_assert(in_menu->elem_links != NULL);
+    if8 *links = (if8 *) &in_menu->elem_links[in_menu->elem];
+
+    // Find next elem using direction and array of links
+    if8 out = in_menu->elem;
+    int direction_i = direction_arr_i[direction];
+    if (links[direction_i] < in_menu->elem_num)
+        out = links[direction_i] > MENU_ELEM_NULL ? links[direction_i] : in_menu->elem;
+    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
+    return (out);
+}
+
+void MenuComponent_Elem_Boxes_Check(struct MenuComponent *menu_comp) {
+    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
+    /* Fit elem_box to linked elems snuggly */
+    for (uf32 i = 0; i < menu_comp->elem_num; i++) {
+        /* Get elem pos and initial box */
+        struct Point *elem_box = &(menu_comp->elem_box[i]);
+        SDL_assert(elem_box->x == menu_comp->elem_box[i].x);
+        SDL_assert(elem_box->y == menu_comp->elem_box[i].y);
+        struct Point *elem_pos = &(menu_comp->elem_pos[i]);
+        SDL_assert(elem_pos->x == menu_comp->elem_pos[i].x);
+        SDL_assert(elem_pos->y == menu_comp->elem_pos[i].y);
+        /* - cast link struct to array - */
+        if8 *links = (if8 *) & (menu_comp->elem_links[i]);
+
+        /* -- Fitting box to 4 linked elems if they exist -- */
+        /* - right link - */
+        int direction_i = direction_arr_i[SOTA_DIRECTION_RIGHT];
+        if8 link = links[direction_i];
+        SDL_assert(link < menu_comp->elem_num);
+        if (link != MENU_ELEM_NULL) {
+            struct Point *link_pos = &(menu_comp->elem_pos[link]);
+            if (elem_pos->x < link_pos->x) {
+                /* - shorten elem x - */
+                elem_box->x = link_pos->x - elem_pos->x - 1;
+            }
+        }
+
+        /* - top link - */
+        direction_i = direction_arr_i[SOTA_DIRECTION_TOP];
+        link = links[direction_i];
+        SDL_assert(link < menu_comp->elem_num);
+        if (link != MENU_ELEM_NULL) {
+            struct Point *link_box = &(menu_comp->elem_box[link]);
+            struct Point *link_pos = &(menu_comp->elem_pos[link]);
+            if (link_pos->y < elem_pos->y) {
+                /* - shorten link y - */
+                link_box->y = elem_pos->y - link_pos->y - 1;
+            }
+        }
+
+        /* - left link - */
+        direction_i = direction_arr_i[SOTA_DIRECTION_LEFT];
+        link = links[SOTA_DIRECTION_LEFT];
+        SDL_assert(link < menu_comp->elem_num);
+        if (link != MENU_ELEM_NULL) {
+            struct Point *link_box = &(menu_comp->elem_box[link]);
+            struct Point *link_pos = &(menu_comp->elem_pos[link]);
+            if (link_pos->x < elem_pos->x) {
+                /* - shorten link x - */
+                link_box->x = elem_pos->x - link_pos->x - 1;
+            }
+        }
+
+        /* - bottom link - */
+        direction_i = direction_arr_i[SOTA_DIRECTION_BOTTOM];
+        link = links[direction_i];
+        SDL_assert(link < menu_comp->elem_num);
+        if (link != MENU_ELEM_NULL) {
+            struct Point *link_pos = &(menu_comp->elem_pos[link]);
+            if (elem_pos->y < link_pos->y) {
+                /* - shorten elem y - */
+                elem_box->y = link_pos->y - elem_pos->y - 1;
+            }
+        }
+    }
+    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
+}
+
+/* --- Debug --- */
+void MenuComponent_Elem_Boxes_Draw(struct MenuComponent *mc, struct SDL_Renderer *renderer) {
+    SOTA_Log_FPS("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
+    /* -- Set colors of elem_box to NES palette -- */
+    for (int i = 0; i < mc->elem_num; i++) {
+        int color = i + 2 % palette_NES->ncolors;
+        uf8 r = palette_NES->colors[color].r;
+        uf8 g = palette_NES->colors[color].g;
+        uf8 b = palette_NES->colors[color].b;
+        SDL_SetRenderDrawColor(renderer, r, g, b, SDL_ALPHA_OPAQUE);
+        struct Point pos = mc->elem_pos[i];
+        struct Point box = mc->elem_box[i];
+        SDL_Rect rect = {pos.x, pos.y, box.x, box.y};
+        SDL_RenderDrawRect(renderer, &rect);
+    }
+    Utilities_DrawColor_Reset(renderer);
+    SOTA_Log_FPS("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
+}
