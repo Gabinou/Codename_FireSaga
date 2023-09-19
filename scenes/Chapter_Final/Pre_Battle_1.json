@@ -1,0 +1,20 @@
+{
+    "Scene": {
+        "id" : 1,
+        "Lines" : [
+// The pope/Someone in the church that understands:
+            {"Archbishop": "You are neithers gods, not angels, neither fallen nor corrupted higher beings but twisted humans!"},
+            {"Archbishop": "Torn and disfigured by thine own hands!"},
+            {"Archbishop": "Fraudulent usurpers of flesh!"},
+            {"Archbishop": "You fall! By mine hands or thine own!"},
+// About the angels: 
+            {"Archbishop": "YOU ARE MEN! Men possessed of power absolute, lacking any shred of Wisdom! Become ashes!"},
+// About the Demons: 
+            {"Archbishop": "You would stay Demons? You would spiral down the caverns, empty of light?"},
+            {"Archbishop": "I've been down, to the bottom."},
+            {"Archbishop": "Nothing awaits you there but the Supreme Usurper!"},
+            {"Archbishop": "Out of spite he will kill you, out of mercy he will torture you!"},
+            {"Archbishop": "Repent!"},
+        ]
+    }
+}

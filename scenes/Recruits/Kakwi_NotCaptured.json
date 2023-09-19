@@ -1,0 +1,9 @@
+{
+    "Scene": {
+        "id" : 1,
+        "Lines" : [
+            {"Otto": "I am a line with no conditions."},
+            {"Sebastian": "I am also a line with no conditions."},
+        ]
+    }
+}

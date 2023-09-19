@@ -1,0 +1,24 @@
+{
+	"Tile":	{
+		"Name":	"Fort",
+		"id":	65,
+		"inside":	false,
+		"Stats":	{
+			"Dodge":	10,
+			"Pprot":	2,
+			"Mprot":	10,
+			"Heal":	0
+		},
+		"MvtCost":	{
+			"foot_slow":	2,
+			"foot_fast":	2,
+			"mages":	2,
+			"fliers":	1,
+			"riders_slow":	2,
+			"riders_fast":	2,
+			"armors":	2,
+			"pirates":	2,
+			"bandits":	2
+		}
+	}
+}

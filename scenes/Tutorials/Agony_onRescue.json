@@ -1,0 +1,12 @@
+{
+    "Scene": {
+        "id" : 1,
+        "Lines" : [
+            {"*Healer*": "I've got *unit_agonizing*!"},
+            {"Erwin": "Thank the Gods! How is *Unit in agony name*?"},
+            {"*Healer*": "*he/she* will live, as long as I take care of *him/her*!."},
+            {"*Healer*": "Focus on the battle!"},
+            {"Erwin": "Wonderful news! Bless all of you!"}
+        ]
+    }
+}

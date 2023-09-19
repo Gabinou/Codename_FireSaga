@@ -1,0 +1,13 @@
+{
+    "Scene": {
+        "id" : 1,
+        "Lines" : [
+            {"Ignell": "You know what I'll get fer that?"},
+            {"Ignell": "Treason to the Empire!"},
+            {"Ignell": "You know what you'll get fer that? Harboring traitors!"},
+            {"Ignell": "Even country boys know what the Empire does to people like that!"},
+            {"Sebastian": "We needs your protection! The savages keep stealing!"},
+            {"Ignell": "Now, the Duke of Gaolin tells me to march."},
+        ]
+    }
+}

@@ -1,0 +1,9 @@
+{
+    "Scene": {
+        "id" : 1,
+        "Lines" : [
+            {"Erwin": "*agonizing* fell! Rescue him/her!"},
+            {"Erwin": "Quickly, before *he/she* dies or an enemy finishes *him/her*!"}
+        ]
+    }
+}

@@ -1,0 +1,14 @@
+{
+    "Scene": {
+        "id" : 1,
+        "Lines" : [
+            {"Erwin": "*Healer*! How is *Unit_agonizing*? Let me see *Him/her*!"},
+            {"*Healer*": "*He/she* is resting, Erwin. Calm yourself."},
+            {"Erwin": "Can I see to *him/her*?"},
+            {"*Healer*": "You can. Please spare *him/her* any harsh feelings. *He/she* needs to rest."},
+            {"*Unit_agonizing*": "Erwin, I'm sorry..."},
+            {"Erwin": "Thank the Gods..."},
+            {"*Healer*": "*Unit_agonizing* will need to rest for a short while. *He/She* won't be able to fight during the next battle."}
+        ]
+    }
+}

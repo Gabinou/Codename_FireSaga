@@ -1,0 +1,53 @@
+{
+    "Scene": {
+        "id" : 1,
+        "Lines" : [
+            // Context The Angel army has been defeated. Erwin has BIG PICTURE QUESTIONS.)
+            {"Erwin": "Pierre. I've been meaning to ask you questions..."},
+            {"Pierre": "Erwin! I don't mind talking to you, but make it quick, I can't deal with aristocrats. They're everywhere!"},
+            {"Erwin": "Pierre. Thanks to you, there are now 3 schools of Magic right? The Elemental School, Angelic School, and Demonic School, right?"},
+            {"Erwin": "Will you found two new official magic schools?"},
+            {"Pierre": "No"},
+            {"Erwin": "No?"},
+            {"Pierre": "No."},
+            {"Pierre": "Someone else will."},
+            {"Erwin": "Right then. I did have other questions for you... concerning magic."},
+            {"Pierre": "I doubt you can become a mage."},
+            {"Erwin": "Hear me out, Pierre. It is very simple. Where are the possessed of Elemental magic?"},
+            {"Pierre": "... Erwin..."},
+            {"Erwin": "Where are the Elementals?"},
+            {"Pierre": "Erwin!!! No!"},
+            {"Pierre": "I can't believe you thought of this before me!"},
+            {
+                "Pierre": "I have to talk about this to my brother!",
+                "Conditions": {"Alive": "Simon"}
+            },
+            {"Erwin": " Don't just run away!!"},
+            {"Pierre": "How did you?? Why didn't I?."},
+            {"Erwin": " Hm."},
+            {"Simon": "Erwin!!!!"},
+            {"Pierre": " Simon! Let's go, right now!"},
+            {"Simon": "You're a genius! It will all be thanks to you! Pierre and I wil  answer your question soon!"},
+            {"Pierre": "Stop wasting time!"},
+            {"Simon": "Don't say anything to anyone else! We are just dealing with some urgent personal matters..."},
+            {"Erwin": "I..."},
+            {"Simon": "Thank you, again!"},
+            {"Erwin": "Yes..."},
+            {"Melly": "Magic researchers... wouldn't you say?. "},
+            {"Erwin": "Are they all that?"},
+            {
+                "Melly": "Haha. Look how bright he shines. Thank you, Erwin.",
+                "Conditions": {"Dead": "Simon"}
+            },
+            {
+                "Melly": "Haha. Look how bright they shine. Thank you, Erwin.",
+                "Conditions": {"Alive": ["Simon", "Pierre"]}
+            },
+            {"Erwin": "I didn't do anything! Aren't pretty shining brightly yourself?"},
+            {"Melly": "It's just Simon's light, reflecting one me..."},
+            {"Melly": "I will be my husband, Erwin. Please give my to the Empire the rest of the"},
+            {"Erwin": "Go get Ray. Tell her Pierre sent you."},
+            {"Melly": "Oh! I will See you, Erwin."},
+        ]
+    }
+}

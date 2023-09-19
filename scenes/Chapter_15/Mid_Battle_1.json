@@ -1,0 +1,11 @@
+{
+    "Scene": {
+        "id" : 1,
+        "Lines" : [
+            // Explaining Demonic immolation... Necessary?
+                {"Rayan": "You don't understand Demonic Immolation!"},
+                {"Rayan": "The flames travel super far!"},
+                {"Rayan": "Their magical power is much too strong!!"},
+        ]
+    }
+}

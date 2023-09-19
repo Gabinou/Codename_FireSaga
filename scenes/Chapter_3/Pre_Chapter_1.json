@@ -1,0 +1,12 @@
+{
+    "Scene": {
+        "id" : 1,
+        "Lines" : [
+            {"Erwin": "There is no time! Kiara was taken! We need to prepare now, and go!"},
+            {"EFAILWENPRIEST": "You will be prepared after you are recognized as Men, by the Gods above and your brothers and sister villagers."},
+            {"EFAILWENPRIEST": " The Gods will forgive us this quick ceremony. Come."},
+            {"Erwin": "Ceremonies are never quick..."},
+            {"EFAILWENPRIEST": "I will see you becoming a Man, but none in this village can see you becoming a Warrior, Erwin. Forgive me for this."}
+        ]
+    }
+}

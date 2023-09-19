@@ -1,0 +1,24 @@
+{
+	"Tile":	{
+		"Name":	"Wall",
+		"id":	52,
+		"inside":	true,
+		"Stats":	{
+			"Dodge":	0,
+			"Pprot":	0,
+			"Mprot":	0,
+			"Heal":	0
+		},
+		"MvtCost":	{
+			"foot_slow":	0,
+			"foot_fast":	0,
+			"mages":	0,
+			"fliers":	1,
+			"riders_slow":	0,
+			"riders_fast":	0,
+			"armors":	0,
+			"pirates":	0,
+			"bandits":	0
+		}
+	}
+}

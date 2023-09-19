@@ -1,0 +1,15 @@
+{
+    "Scene": {
+        "id" : 1,
+        "Lines" : [
+            {"Kakwi": ""},
+            {"Kakwi": "Tracks must continue to the herd!"},
+            {"Kakwi": "But there is one there! "},
+            {"Kakwi": "Why? "},
+            {"Kakwi": "Does the Goddess really want it so? ..."},
+            {"Kakwi": "Oh no, its coming!"},
+            {"Kakwi": "I am dead!"},
+            {"Kakwi": "*wolf companion name*"}
+        ]
+    }
+}

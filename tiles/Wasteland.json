@@ -1,0 +1,24 @@
+{
+	"Tile":	{
+		"Name":	"Wasteland",
+		"id":	41,
+		"inside":	false,
+		"Stats":	{
+			"Dodge":	0,
+			"Pprot":	0,
+			"Mprot":	0,
+			"Heal":	0
+		},
+		"MvtCost":	{
+			"foot_slow":	3,
+			"foot_fast":	2,
+			"mages":	1,
+			"fliers":	1,
+			"riders_slow":	4,
+			"riders_fast":	3,
+			"armors":	3,
+			"pirates":	2,
+			"bandits":	2
+		}
+	}
+}

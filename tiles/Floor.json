@@ -1,0 +1,24 @@
+{
+	"Tile":	{
+		"Name":	"Floor",
+		"id":	50,
+		"inside":	true,
+		"Stats":	{
+			"Dodge":	0,
+			"Pprot":	0,
+			"Mprot":	0,
+			"Heal":	0
+		},
+		"MvtCost":	{
+			"foot_slow":	1,
+			"foot_fast":	1,
+			"mages":	1,
+			"fliers":	1,
+			"riders_slow":	1,
+			"riders_fast":	1,
+			"armors":	1,
+			"pirates":	1,
+			"bandits":	1
+		}
+	}
+}

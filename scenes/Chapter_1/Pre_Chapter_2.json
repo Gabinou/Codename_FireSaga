@@ -1,0 +1,42 @@
+{
+    "Scene": {
+        "id" : 1,
+        "Lines" : [
+            {"Michael": "They're not coming back."},
+            {"Erwin": "I know."},
+            {"Sebastian": "Let's go home now! We gots work to do tomorrow."},
+            {"Erwin": "No... Everyone is gone. Let's search the house."},
+            {"Michael": "In the dark?"},
+            {"Erwin": "Humor me"},
+
+            {"Erwin": "LOOK AT THIS!"},
+            {"Sebastian": "They've forgots a sword?"},
+            {"Michael": "Seb... Imperial armymen wudn't forget a sword..."},
+            {"Erwin": "It was hidden. I think Ignell wanted us to find it... Oh! Seb no!"},
+            {"Sebastian": "Wow it's so light!"},
+            {"Erwin": "You can kill someone with this!"},
+            {"Sebastian": "Oh spare me! It weighs half as much as an old pitchfork!"},
+            {"Michael": "Lemme sees!"},
+
+            {"Michael": "Ain't it a beautiful toy!"},
+            {"Erwin": "Give!"},
+            {"Sebastian": "No, let me have it back!"},
+            {"Erwin": "You dung headed mules!"},
+            {"Erwin": "This is why I wasn't gunna give you!"},
+            {"Sebastian": "Just practice with that hoe over instead!"},
+            {"Michael": "Ah!"},
+            {"Erwin": "Brats don't get to play with knives!"},
+            {"Michael": "This isn't a knife."},
+            {"Erwin": "It is a knife. A long knife."},
+            {"Michael": "No..."},
+            {"Sebastian": "No one'll buy ya pot of crock!"},
+            {"Erwin": "We're alone, again."},
+            {"Sebastian": "Dudn't matter!"},
+            {"Michael": "What?"},
+            {"Erwin": "By the Union Divine, this is a sign."},
+            {"Sebastian": "Isn't."},
+            {"Michael": "... What?"},
+            {"Erwin": "Come!"},
+        ]
+    }
+}

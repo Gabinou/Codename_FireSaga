@@ -1,0 +1,42 @@
+{
+    "Scene": {
+        "id" : 1,
+        "Conditions": {
+            "Alive": "Erwin",
+            "Recruited": ["Silou"],
+            "Dead": ["Hamilcar", "ZIDINE"]
+        },
+        "Lines" : [
+            {
+                "Erwin": "I am a line with conditions. I only show up if all conditions are met.", 
+                "Conditions": {
+                    "Alive": "Erwin",
+                    "Recruited": ["Silou"],
+                    "Dead": ["Hamilcar", "ZIDINE"]
+                }
+            },
+            {"Otto": "I am a line with no conditions."},
+            {"Sebastian": "I am also a line with no conditions."},
+            {
+                "Silou": "I am a also line with conditions. I only show up if all conditions are met.", 
+                "Conditions": {
+                    "Alive": "Erwin",
+                    "Recruited": ["Silou"],
+                    "Dead": ["Hamilcar"]
+                }
+            },
+            {
+                "Kiara": "I should show up.", 
+                "Conditions": {
+                    "Alive": "Silou",
+                    "Recruited": ["Otto"],
+                    "Dead": {
+                        "Or": "Sebastian",
+                        "Or": "Hamilcar"
+                    }
+                }
+            },
+            {"Sebastian": "I am a dynamic line spoken by *biggestbaka*."}
+        ]
+    }
+}

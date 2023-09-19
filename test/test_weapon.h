@@ -1,0 +1,216 @@
+#include "nourstest.h"
+#include "weapon.h"
+#include "platform.h"
+#include "narrative.h"
+
+void test_weapon1() {
+    SDL_Log("test_weapon");
+    struct Weapon wpn1  = Weapon_default;
+    struct Weapon wpn2  = Weapon_default;
+    struct Weapon wpn3  = Weapon_default;
+    struct Item item1   = Item_default;
+    struct Item item2   = Item_default;
+    struct Item item3   = Item_default;
+    wpn1.item   = malloc(sizeof(struct Item));
+    wpn2.item   = malloc(sizeof(struct Item));
+    wpn3.item   = malloc(sizeof(struct Item));
+    *wpn1.item  = Item_default;
+    *wpn2.item  = Item_default;
+    *wpn3.item  = Item_default;
+    struct Weapon_stats in_wpn_stats = {
+        .attack[DAMAGE_TYPE_PHYSICAL]   = 3,
+        .attack[DAMAGE_TYPE_MAGICAL]    = 0,
+        .hit    = 80,
+        .crit   = 0,
+        .dodge  =  0,
+        .favor  = 0,
+        .wgt    = 3,
+        .range  = {1, 2},
+    };
+    struct Weapon_stats out_wpn_stats;
+    struct Unit_stats in_stats = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12};
+    struct Unit_stats out_stats;
+    uint64_t in_effect;
+    bool in_canSell = false;
+    uint_fast16_t in_type = ITEM_TYPE_SWORD + ITEM_TYPE_LANCE;
+
+    in_effect = ITEM_EFFECT_KILL1P + ITEM_EFFECT_BRAVE2X + ITEM_EFFECT_BREAK_SHIELD;
+    wpn1.item->type = in_type;
+    wpn1.stats = in_wpn_stats;
+    wpn1.item->id = ITEM_ID_WOODEN_SWORD;
+    strncpy(wpn1.item->name, "Wooden Sword", strlen("Wooden Sword"));
+    char *in_description = "Practice sword, made of wood. It's crushing blows are still deadly.";
+    char *out_description;
+    strncpy(wpn1.item->description, in_description, strlen(in_description));
+    wpn1.item->passive      = in_effect;
+    wpn1.item->bonus_stats  = in_stats;
+    wpn1.item->malus_stats  = in_stats;
+    wpn1.item->canSell      = in_canSell;
+    out_wpn_stats           = wpn1.stats;
+    nourstest_true(in_wpn_stats.attack[DAMAGE_TYPE_PHYSICAL] ==
+                   out_wpn_stats.attack[DAMAGE_TYPE_PHYSICAL]);
+    nourstest_true(in_wpn_stats.attack[DAMAGE_TYPE_MAGICAL] ==
+                   out_wpn_stats.attack[DAMAGE_TYPE_MAGICAL]);
+    nourstest_true(in_wpn_stats.hit         == out_wpn_stats.hit);
+    nourstest_true(in_wpn_stats.crit        == out_wpn_stats.crit);
+    nourstest_true(in_wpn_stats.dodge       == out_wpn_stats.dodge);
+    nourstest_true(in_wpn_stats.favor       == out_wpn_stats.favor);
+    nourstest_true(in_wpn_stats.wgt         == out_wpn_stats.wgt);
+    nourstest_true(in_wpn_stats.prof        == out_wpn_stats.prof);
+    nourstest_true(in_wpn_stats.range.min   == out_wpn_stats.range.min);
+    nourstest_true(in_wpn_stats.range.max   == out_wpn_stats.range.max);
+    out_description = wpn1.item->description;
+    nourstest_true(strcmp(in_description, out_description) == 0);
+    nourstest_true(strncmp(wpn1.item->name, "Wooden Sword", strlen("Wooden Sword")) == 0);
+    nourstest_true(wpn1.item->passive   == in_effect);
+    nourstest_true(wpn1.item->type      == in_type);
+    nourstest_true(wpn1.item->canSell   == in_canSell);
+    out_stats = wpn1.item->bonus_stats;
+    nourstest_true(in_stats.hp      == out_stats.hp);
+    nourstest_true(in_stats.str     == out_stats.str);
+    nourstest_true(in_stats.mag     == out_stats.mag);
+    nourstest_true(in_stats.agi     == out_stats.agi);
+    nourstest_true(in_stats.dex     == out_stats.dex);
+    nourstest_true(in_stats.luck    == out_stats.luck);
+    nourstest_true(in_stats.def     == out_stats.def);
+    nourstest_true(in_stats.res     == out_stats.res);
+    nourstest_true(in_stats.con     == out_stats.con);
+    nourstest_true(in_stats.move    == out_stats.move);
+    nourstest_true(in_stats.prof    == out_stats.prof);
+    out_stats = wpn1.item->malus_stats;
+    nourstest_true(in_stats.hp      == out_stats.hp);
+    nourstest_true(in_stats.str     == out_stats.str);
+    nourstest_true(in_stats.mag     == out_stats.mag);
+    nourstest_true(in_stats.agi     == out_stats.agi);
+    nourstest_true(in_stats.dex     == out_stats.dex);
+    nourstest_true(in_stats.luck    == out_stats.luck);
+    nourstest_true(in_stats.def     == out_stats.def);
+    nourstest_true(in_stats.res     == out_stats.res);
+    nourstest_true(in_stats.con     == out_stats.con);
+    nourstest_true(in_stats.move    == out_stats.move);
+    nourstest_true(in_stats.prof    == out_stats.prof);
+    if (PHYSFS_stat("saves", NULL) == 0) {
+        PHYSFS_mkdir("saves");
+    }
+
+    PHYSFS_mount("saves", NULL, 1);
+    jsonio_writeJSON("saves"PHYSFS_SEPARATOR"weapon_test.json", &wpn1, false);
+    jsonio_readJSON("saves"PHYSFS_SEPARATOR"weapon_test.json", &wpn3);
+    out_wpn_stats = wpn3.stats;
+    nourstest_true(in_wpn_stats.attack[DAMAGE_TYPE_PHYSICAL] ==
+                   out_wpn_stats.attack[DAMAGE_TYPE_PHYSICAL]);
+    nourstest_true(in_wpn_stats.attack[DAMAGE_TYPE_MAGICAL] ==
+                   out_wpn_stats.attack[DAMAGE_TYPE_MAGICAL]);
+    nourstest_true(in_wpn_stats.hit       == out_wpn_stats.hit);
+    nourstest_true(in_wpn_stats.crit      == out_wpn_stats.crit);
+    nourstest_true(in_wpn_stats.dodge     == out_wpn_stats.dodge);
+    nourstest_true(in_wpn_stats.favor     == out_wpn_stats.favor);
+    nourstest_true(in_wpn_stats.wgt       == out_wpn_stats.wgt);
+    nourstest_true(in_wpn_stats.prof      == out_wpn_stats.prof);
+    nourstest_true(in_wpn_stats.range.min == out_wpn_stats.range.min);
+    nourstest_true(in_wpn_stats.range.max == out_wpn_stats.range.max);
+    out_description = wpn3.item->description;
+    nourstest_true(strcmp(in_description, out_description) == 0);
+    nourstest_true(strcmp(wpn3.item->name, "Wooden Sword") == 0);
+    nourstest_true(wpn3.item->passive   == in_effect);
+    nourstest_true(wpn3.item->type      == in_type);
+    nourstest_true(wpn3.item->canSell   == in_canSell);
+    out_stats = wpn3.item->bonus_stats;
+    nourstest_true(in_stats.hp      == out_stats.hp);
+    nourstest_true(in_stats.str     == out_stats.str);
+    nourstest_true(in_stats.mag     == out_stats.mag);
+    nourstest_true(in_stats.agi     == out_stats.agi);
+    nourstest_true(in_stats.dex     == out_stats.dex);
+    nourstest_true(in_stats.luck    == out_stats.luck);
+    nourstest_true(in_stats.def     == out_stats.def);
+    nourstest_true(in_stats.res     == out_stats.res);
+    nourstest_true(in_stats.con     == out_stats.con);
+    nourstest_true(in_stats.move    == out_stats.move);
+    nourstest_true(in_stats.prof    == out_stats.prof);
+    out_stats = wpn3.item->malus_stats;
+    nourstest_true(in_stats.hp      == out_stats.hp);
+    nourstest_true(in_stats.str     == out_stats.str);
+    nourstest_true(in_stats.mag     == out_stats.mag);
+    nourstest_true(in_stats.agi     == out_stats.agi);
+    nourstest_true(in_stats.dex     == out_stats.dex);
+    nourstest_true(in_stats.luck    == out_stats.luck);
+    nourstest_true(in_stats.def     == out_stats.def);
+    nourstest_true(in_stats.res     == out_stats.res);
+    nourstest_true(in_stats.con     == out_stats.con);
+    nourstest_true(in_stats.move    == out_stats.move);
+    nourstest_true(in_stats.prof    == out_stats.prof);
+    jsonio_writeJSON("saves"PHYSFS_SEPARATOR"weapon_rewrite.json", &wpn3, false);
+    nourstest_true(Filesystem_fequal("saves"PHYSFS_SEPARATOR"weapon_test.json",
+                                     "saves"PHYSFS_SEPARATOR"weapon_rewrite.json"));
+    out_wpn_stats = wpn3.stats;
+    nourstest_true(in_wpn_stats.attack[DAMAGE_TYPE_PHYSICAL] ==
+                   out_wpn_stats.attack[DAMAGE_TYPE_PHYSICAL]);
+    nourstest_true(in_wpn_stats.attack[DAMAGE_TYPE_MAGICAL] ==
+                   out_wpn_stats.attack[DAMAGE_TYPE_MAGICAL]);
+    nourstest_true(in_wpn_stats.hit         == out_wpn_stats.hit);
+    nourstest_true(in_wpn_stats.crit        == out_wpn_stats.crit);
+    nourstest_true(in_wpn_stats.dodge       == out_wpn_stats.dodge);
+    nourstest_true(in_wpn_stats.favor       == out_wpn_stats.favor);
+    nourstest_true(in_wpn_stats.wgt         == out_wpn_stats.wgt);
+    nourstest_true(in_wpn_stats.prof        == out_wpn_stats.prof);
+    nourstest_true(in_wpn_stats.range.min   == out_wpn_stats.range.min);
+    nourstest_true(in_wpn_stats.range.max   == out_wpn_stats.range.max);
+    out_description = wpn3.item->description;
+    nourstest_true(strcmp(in_description, out_description) == 0);
+    nourstest_true(strcmp(wpn3.item->name, "Wooden Sword") == 0);
+    nourstest_true(wpn3.item->passive    == in_effect);
+    nourstest_true(wpn3.item->type       == in_type);
+    nourstest_true(wpn3.item->canSell    == in_canSell);
+    out_stats = wpn3.item->bonus_stats;
+    nourstest_true(in_stats.hp      == out_stats.hp);
+    nourstest_true(in_stats.str     == out_stats.str);
+    nourstest_true(in_stats.mag     == out_stats.mag);
+    nourstest_true(in_stats.agi     == out_stats.agi);
+    nourstest_true(in_stats.dex     == out_stats.dex);
+    nourstest_true(in_stats.luck    == out_stats.luck);
+    nourstest_true(in_stats.def     == out_stats.def);
+    nourstest_true(in_stats.res     == out_stats.res);
+    nourstest_true(in_stats.con     == out_stats.con);
+    nourstest_true(in_stats.move    == out_stats.move);
+    nourstest_true(in_stats.prof    == out_stats.prof);
+    out_stats = wpn3.item->malus_stats;
+    nourstest_true(in_stats.hp      == out_stats.hp);
+    nourstest_true(in_stats.str     == out_stats.str);
+    nourstest_true(in_stats.mag     == out_stats.mag);
+    nourstest_true(in_stats.agi     == out_stats.agi);
+    nourstest_true(in_stats.dex     == out_stats.dex);
+    nourstest_true(in_stats.luck    == out_stats.luck);
+    nourstest_true(in_stats.def     == out_stats.def);
+    nourstest_true(in_stats.res     == out_stats.res);
+    nourstest_true(in_stats.con     == out_stats.con);
+    nourstest_true(in_stats.move    == out_stats.move);
+    nourstest_true(in_stats.prof    == out_stats.prof);
+    jsonio_writeJSON("saves"PHYSFS_SEPARATOR"weapon_rewrite.json", &wpn3, false);
+    nourstest_true(Filesystem_fequal("saves"PHYSFS_SEPARATOR"weapon_test.json",
+                                     "saves"PHYSFS_SEPARATOR"weapon_rewrite.json"));
+
+    Weapon_Free(&wpn1);
+    Weapon_Free(&wpn2);
+    Weapon_Free(&wpn3);
+}
+
+void test_weapon_stats() {
+    struct Weapon_stats wpn_stats_struct = {
+        .attack[DAMAGE_TYPE_PHYSICAL] = 3,
+        .hit    = 80,
+        .crit   =  0,
+        .dodge  = -4,
+        .favor  =  0,
+        .wgt    =  3,
+        .range  = {2, 1},
+    };
+    nourstest_true(wpn_stats_struct.dodge == -4);
+    uf8 *wpn_stats_arr = (uf8 *)&wpn_stats_struct;
+    nourstest_true(wpn_stats_arr[WEAPON_STAT_HIT - WEAPON_STAT_START - 1] == 80);
+    nourstest_true((int_fast8_t)wpn_stats_arr[WEAPON_STAT_DODGE - WEAPON_STAT_START - 1] == -4);
+}
+
+void test_weapon() {
+    test_weapon1();
+    test_weapon_stats();
+}
