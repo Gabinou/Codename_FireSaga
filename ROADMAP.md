@@ -1,10 +1,11 @@
 
-
 # Design considerations
 
-More details on my thoughts are available on the [development blog] (https://averagebear.game.blog/):
+More details on my thoughts are available in the [development blog] (https://averagebear.game.blog/):
 - Benevolent Dictator veto:
-	1. Permadeath, no exceptions
+	1. Permadeath
+		- Minimize story-convenient exceptions.
+		- Workaround: Units can live through the DnD-like Agony state.
 	2. No Phoenix/Casual mode
 	3. No Ambush spawns
 	4. No Teleportation
@@ -21,18 +22,18 @@ More details on my thoughts are available on the [development blog] (https://ave
 		- Slavery to Gods & Kings
 		- Fighting Demons within & without
 
-- Linear, chapter-based
-	* Camp between chapters where you can move around on the map, go to shops, talk to people.
-		- Replaces menu navigation.
-	* Army movement on the world map only if it makes narrative sense
-		- Enemy encounters on world Map are rare
-	* Side chapters unlockable.
-	* Notes taken in books magically present on a newgame
-
 - Units have two hands
 	* Swords & shields
 	* Dual Wielding & Two-handing
 	* Handedness, Ambidextry
+
+- Linear, chapter-based
+	* Camp between chapters where you can move around on the map, go to shops, talk to people.
+		- Replaces menu navigation?
+	* Army movement on the world map only if it makes narrative sense
+		- No enemy encounters on world map
+	* Side chapters unlockable.
+	* Notes taken in books magically present on a newgame
 
 - Mounts 
 	* No mount on promotion, get mounts through story/gameplay. 

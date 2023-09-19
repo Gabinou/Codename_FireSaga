@@ -2,7 +2,7 @@
 
 ## Introduction
 This is the source code for a Strategy RPG game strongly inspired by Fire Emblem and Tear Ring Saga.
-I specifically aim to capture the spirit of the older games created by Shouzou Kaga.
+I aim to capture the spirit of the older games created by Shouzou Kaga.
 Game title pending.
 Everything is hancrafted: code, music, pixel art...
 
