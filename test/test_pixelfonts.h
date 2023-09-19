@@ -47,7 +47,7 @@ void test_pixelfonts() {
 
     /* -- Lines split by breaking whole words -- */
     char *text3 = "The lizard is a wizard, by joving rove. I say living hell.";
-    line_num = PixelFont_Lines_Num_Len(test_font, text3 , line_len_px);
+    line_num = PixelFont_Lines_Num_Len(test_font, text3, line_len_px);
     nourstest_true(line_num == 4);
     struct TextLines text_lines = PixelFont_Lines_Len(test_font, text3, line_len_px);
     nourstest_true(text_lines.line_num == 4);
@@ -62,10 +62,11 @@ void test_pixelfonts() {
     nourstest_true(strcmp(text_lines.lines[3], "hell.") == 0);
 
     /* -- Lines split by breaking words in halves -- */
-    char *text4 = "Conglomerate a rock y baka agglomeration bakanumeration stupidification negativitiation.";
+    char *text4 =
+            "Conglomerate a rock y baka agglomeration bakanumeration stupidification negativitiation.";
     TextLines_Free(&text_lines);
     text_lines = PixelFont_Lines_Len(test_font, text4, line_len_px);
-    line_num = PixelFont_Lines_Num_Len(test_font, text4 , line_len_px);
+    line_num = PixelFont_Lines_Num_Len(test_font, text4, line_len_px);
     nourstest_true(line_num == 6);
     nourstest_true(text_lines.line_num == 6);
     nourstest_true(text_lines.line_len == 8);

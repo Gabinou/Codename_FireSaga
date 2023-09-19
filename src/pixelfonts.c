@@ -281,7 +281,7 @@ struct TextLines PixelFont_Lines(struct PixelFont *font, const char *text, size_
 
         /* -- Add hyphen if necessary -- */
         if (add_hyphen)
-            textlines.lines[line_i][line_len_char -1] = '-';
+            textlines.lines[line_i][line_len_char - 1] = '-';
 
     }
 
