@@ -34,13 +34,13 @@ Game assets (graphics, music) to be distributed separately.
 
 ### Basic compilation instructions
 0. Install all pre-requisites
-	1. Windows only: You need to use the MSYS2 MinGW64 shell/command prompt/terminal! On this shell you can install all pre-requisites with `pacman`, exactly as on Linux.
+	1. Windows only: You need to use the MSYS2 MinGW64 terminal! On it you can install all pre-requisites with `pacman`, exactly as on Linux.
 1. Get the source code (with `git clone`)
 2. Run:
 ```
 mace
 ```
-Or, without the `mace` convienience executable:
+Or, without the `mace` convenience executable:
 ```
 gcc macefile.c -o builder
 ./builder
