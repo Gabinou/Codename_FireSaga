@@ -1,0 +1,33 @@
+# Astyle option file aka config
+
+# Show only formatted files
+--formatted
+
+# Brace style options #
+--style=java
+
+# Indentation options #
+--indent=spaces=4
+--indent-switches
+--indent-labels
+--indent-continuation=2
+--indent-preproc-block
+--indent-preproc-define
+--indent-preproc-cond
+--indent-col1-comments
+--min-conditional-indent=0
+--max-continuation-indent=60
+
+# Padding options #
+--pad-oper
+--pad-comma
+--pad-header
+--align-pointer=name
+--align-reference=name
+
+# Formatting options #
+--break-one-line-headers
+--attach-return-type
+--convert-tabs
+--suffix=none
+--max-code-length=100

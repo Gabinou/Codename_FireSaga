@@ -12,6 +12,7 @@
 !*.json
 !*.hex
 !*.lua
+!*.txt
 !*.iss
 
 # Make
