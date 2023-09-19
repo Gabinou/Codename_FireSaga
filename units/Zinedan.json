@@ -1,0 +1,97 @@
+{
+	"Unit":	{
+		"id":	27938,
+		"Name":	"",
+		"Sex":	false,
+		"BaseExp":	0,
+		"Exp":	0,
+		"CurrentHP":	0,
+		"Class":	"",
+		"Class Index":	29,
+		"Stats":	{
+			"hp":	0,
+			"str":	0,
+			"mag":	0,
+			"agi":	0,
+			"dex":	0,
+			"luck":	0,
+			"def":	0,
+			"res":	0,
+			"con":	0,
+			"move":	0,
+			"prof":	0
+		},
+		"Caps":	{
+			"hp":	0,
+			"str":	0,
+			"mag":	0,
+			"agi":	0,
+			"dex":	0,
+			"luck":	0,
+			"def":	0,
+			"res":	0,
+			"con":	0,
+			"move":	0,
+			"prof":	0
+		},
+		"Growths":	{
+			"hp":	0,
+			"str":	0,
+			"mag":	0,
+			"agi":	0,
+			"dex":	0,
+			"luck":	0,
+			"def":	0,
+			"res":	0,
+			"con":	0,
+			"move":	0,
+			"prof":	0
+		},
+		"Level-ups":	{
+		},
+		"Items":	{
+			"Item":	{
+				"name":	"Empty",
+				"Infused":	-1,
+				"id":	-1,
+				"used":	0
+			},
+			"Item":	{
+				"name":	"Empty",
+				"Infused":	-1,
+				"id":	-1,
+				"used":	0
+			},
+			"Item":	{
+				"name":	"Empty",
+				"Infused":	-1,
+				"id":	-1,
+				"used":	0
+			},
+			"Item":	{
+				"name":	"Empty",
+				"Infused":	-1,
+				"id":	-1,
+				"used":	0
+			},
+			"Item":	{
+				"name":	"Empty",
+				"Infused":	-1,
+				"id":	-1,
+				"used":	0
+			},
+			"Item":	{
+				"name":	"Empty",
+				"Infused":	-1,
+				"id":	-1,
+				"used":	0
+			},
+			"Item":	{
+				"name":	"Empty",
+				"Infused":	-1,
+				"id":	-1,
+				"used":	0
+			}
+		}
+	}
+}

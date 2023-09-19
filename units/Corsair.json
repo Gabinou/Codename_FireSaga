@@ -1,0 +1,110 @@
+{
+	"Unit":	{
+		"id":	23,
+		"Name":	"Corsair",
+		"Sex":	true,
+		"BaseExp":	0,
+		"Exp":	0,
+		"CurrentHP":	27,
+		"Class":	"Corsair",
+		"Class Index":	12,
+		"Bases":	{
+			"hp":	27,
+			"str":	4,
+			"mag":	5,
+			"agi":	7,
+			"dex":	6,
+			"luck":	8,
+			"def":	4,
+			"res":	0,
+			"con":	5,
+			"move":	5,
+			"prof":	0
+		},
+		"Stats":	{
+			"hp":	27,
+			"str":	4,
+			"mag":	5,
+			"agi":	7,
+			"dex":	6,
+			"luck":	8,
+			"def":	4,
+			"res":	0,
+			"con":	5,
+			"move":	5,
+			"prof":	0
+		},
+		"Caps":	{
+			"hp":	48,
+			"str":	14,
+			"mag":	25,
+			"agi":	32,
+			"dex":	34,
+			"luck":	28,
+			"def":	19,
+			"res":	40,
+			"con":	15,
+			"move":	0,
+			"prof":	0
+		},
+		"Growths":	{
+			"hp":	60,
+			"str":	50,
+			"mag":	20,
+			"agi":	60,
+			"dex":	70,
+			"luck":	40,
+			"def":	30,
+			"res":	20,
+			"con":	10,
+			"move":	0,
+			"prof":	0
+		},
+		"Level-ups":	{
+		},
+		"Items":	{
+			"Item":	{
+				"name":	"Empty",
+				"Infused":	-1,
+				"id":	-1,
+				"used":	0
+			},
+			"Item":	{
+				"name":	"Empty",
+				"Infused":	-1,
+				"id":	-1,
+				"used":	0
+			},
+			"Item":	{
+				"name":	"Empty",
+				"Infused":	-1,
+				"id":	-1,
+				"used":	0
+			},
+			"Item":	{
+				"name":	"Empty",
+				"Infused":	-1,
+				"id":	-1,
+				"used":	0
+			},
+			"Item":	{
+				"name":	"Empty",
+				"Infused":	-1,
+				"id":	-1,
+				"used":	0
+			},
+			"Item":	{
+				"name":	"Empty",
+				"Infused":	-1,
+				"id":	-1,
+				"used":	0
+			},
+			"Item":	{
+				"name":	"Empty",
+				"Infused":	-1,
+				"id":	-1,
+				"used":	0
+			}
+		}
+	}
+}

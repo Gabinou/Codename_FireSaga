@@ -1,0 +1,22 @@
+{
+	"Promotion":	{
+		"Stats":	{
+			"hp":	2,
+			"str":	1,
+			"mag":	2,
+			"agi":	2,
+			"dex":	1,
+			"fth":	0,
+			"luck":	1,
+			"def":	1,
+			"res":	3,
+			"con":	1,
+			"move":	1,
+			"prof":	2
+		},
+		"Skill" : {
+			"Name": "Infuse",
+			"Level": 20
+		}
+	}
+}

@@ -1,0 +1,11 @@
+{
+	"Shop":	{
+		"Shopkeeper": "Aline",
+		"Items":[
+			{"Iron Sword": 1},			
+			{"Iron Buckler": 1},			
+			{"Heal": 4},			
+			{"Heal": 4}			
+		]
+	}
+}

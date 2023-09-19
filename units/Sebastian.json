@@ -1,0 +1,110 @@
+{
+	"Unit":	{
+		"id":	7,
+		"Name":	"Sebastian",
+		"Sex":	true,
+		"BaseExp":	100,
+		"Exp":	100,
+		"CurrentHP":	18,
+		"Class":	"Cavalier",
+		"Class Index":	27,
+		"Stats":	{
+			"hp":	18,
+			"str":	6,
+			"mag":	2,
+			"agi":	7,
+			"dex":	7,
+			"luck":	7,
+			"def":	4,
+			"res":	5,
+			"con":	6,
+			"move":	7,
+			"prof":	0
+		},		
+		"Bases":	{
+			"hp":	18,
+			"str":	6,
+			"mag":	2,
+			"agi":	7,
+			"dex":	7,
+			"luck":	7,
+			"def":	4,
+			"res":	5,
+			"con":	6,
+			"move":	7,
+			"prof":	0
+		},
+		"Caps":	{
+			"hp":	48,
+			"str":	14,
+			"mag":	25,
+			"agi":	32,
+			"dex":	34,
+			"luck":	28,
+			"def":	19,
+			"res":	40,
+			"con":	15,
+			"move":	0,
+			"prof":	0
+		},
+		"Growths":	{
+			"hp":	60,
+			"str":	50,
+			"mag":	20,
+			"agi":	60,
+			"dex":	70,
+			"luck":	40,
+			"def":	30,
+			"res":	20,
+			"con":	10,
+			"move":	0,
+			"prof":	0
+		},
+		"Level-ups":	{
+		},
+		"Items":	{
+			"Item":	{
+				"name":	"Iron lance",
+				"Infused":	-1,
+				"id":	102,
+				"used":	0
+			},
+			"Item":	{
+				"name":	"Empty",
+				"Infused":	-1,
+				"id":	-1,
+				"used":	0
+			},
+			"Item":	{
+				"name":	"Empty",
+				"Infused":	-1,
+				"id":	-1,
+				"used":	0
+			},
+			"Item":	{
+				"name":	"Empty",
+				"Infused":	-1,
+				"id":	-1,
+				"used":	0
+			},
+			"Item":	{
+				"name":	"Empty",
+				"Infused":	-1,
+				"id":	-1,
+				"used":	0
+			},
+			"Item":	{
+				"name":	"Empty",
+				"Infused":	-1,
+				"id":	-1,
+				"used":	0
+			},
+			"Item":	{
+				"name":	"Empty",
+				"Infused":	-1,
+				"id":	-1,
+				"used":	0
+			}
+		}
+	}
+}
