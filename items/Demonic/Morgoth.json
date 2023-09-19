@@ -1,0 +1,68 @@
+{
+    "Item":
+    {
+        "Name": "Morgoth",
+        "id": 707,
+        "Description": "Dark power, in the shape of a massive dark hammer. Makes craters wherever it strikes.",
+        "Bonus":
+        {
+            "hp": 0,
+            "str": 0,
+            "mag": 0,
+            "agi": 0,
+            "dex": 0,
+            "luck": 0,
+            "def": 0,
+            "res": 0,
+            "con": 0,
+            "move": 0,
+            "prof": 0
+        },
+        "Users":
+        {
+            "id": []
+        },
+        "Malus":
+        {
+            "hp": 0,
+            "str": 0,
+            "mag": 0,
+            "agi": 0,
+            "dex": 0,
+            "luck": 0,
+            "def": 0,
+            "res": 0,
+            "con": 0,
+            "move": 0,
+            "prof": 0
+        },
+        "canSell": false,
+        "Effects":
+        {
+            "id": 0
+        },
+        "Types":
+        {
+            "id": 128,
+            "Type": "Demonic"
+        },
+        "Subtype": 0,
+        "Handedness": 0,
+        "Stats":
+        {
+            "Attack": [0,25,0],
+            "Protection": [0,0],
+            "hit": 50,
+            "dodge": 0,
+            "crit": 5,
+            "favor": 0,
+            "wgt": 21,
+            "prof": 6,
+            "Range": [1,2],
+            "uses": 25,
+            "price": 25000,
+            "AP": 0
+        },
+        "Effective": 0
+    }
+}

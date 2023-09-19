@@ -1,0 +1,68 @@
+{
+    "Item":
+    {
+        "Name": "Feanor",
+        "id": 607,
+        "Description": "The fire used to forge Secundus, contained magically. Can melt any and all metals.",
+        "Bonus":
+        {
+            "hp": 0,
+            "str": 0,
+            "mag": 0,
+            "agi": 0,
+            "dex": 0,
+            "luck": 0,
+            "def": 0,
+            "res": 0,
+            "con": 0,
+            "move": 0,
+            "prof": 0
+        },
+        "Users":
+        {
+            "id": []
+        },
+        "Malus":
+        {
+            "hp": 0,
+            "str": 0,
+            "mag": 0,
+            "agi": 0,
+            "dex": 0,
+            "luck": 0,
+            "def": 0,
+            "res": 0,
+            "con": 0,
+            "move": 0,
+            "prof": 0
+        },
+        "canSell": false,
+        "Effects":
+        {
+            "id": 0
+        },
+        "Types":
+        {
+            "id": 64,
+            "Type": "Elemental"
+        },
+        "Subtype": 0,
+        "Handedness": 0,
+        "Stats":
+        {
+            "Attack": [0,18,0],
+            "Protection": [0,0],
+            "hit": 75,
+            "dodge": 0,
+            "crit": 5,
+            "favor": 0,
+            "wgt": 11,
+            "prof": 18,
+            "Range": [0,0],
+            "uses": 18,
+            "price": 5000,
+            "AP": 0
+        },
+        "Effective": 9.2233720368547758E+18
+    }
+}

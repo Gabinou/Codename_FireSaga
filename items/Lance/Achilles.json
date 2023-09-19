@@ -1,0 +1,70 @@
+{
+    "Item":
+    {
+        "Name": "Achilles",
+        "id": 114,
+        "Description": "Legendary throwing spear named after a fearless, immortal hero. Kills instantly if hits enemy's heel (1%).",
+        "Bonus":
+        {
+            "agi": 0,
+            "con": 0,
+            "def": 0,
+            "dex": 2,
+            "hp": 0,
+            "luck": 0,
+            "mag": 0,
+            "move": 0,
+            "prof": 0,
+            "res": 0,
+            "str": 0
+        },
+        "Users":
+        {
+            "id": []
+        },
+        "Malus":
+        {
+            "agi": 0,
+            "con": 0,
+            "def": 0,
+            "dex": 0,
+            "hp": 0,
+            "luck": 0,
+            "mag": 0,
+            "move": 0,
+            "prof": 0,
+            "res": 0,
+            "str": 0
+        },
+        "canSell": false,
+        "Effects":
+        {
+            "Effect": "Kill1p",
+            "id": 1
+        },
+        "Types":
+        {
+            "Type": "Lance",
+            "id": 2
+        },
+        "Subtype": 0,
+        "Handedness": 0,
+        "Stats":
+        {
+            "AP": 0,
+            "Attack": [12,0,0],
+            "Protection": [0,0],
+            "hit": 80,
+            "dodge": 0,
+            "crit": 10,
+            "favor": 10,
+            "wgt": 9,
+            "prof": 18,
+            "Range": [1,2],
+            "uses": 25,
+            "price": 8000,
+            "AP": 0
+        },
+        "Effective": 9.223372036854776E+18
+    }
+}

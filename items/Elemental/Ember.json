@@ -1,0 +1,68 @@
+{
+    "Item":
+    {
+        "Name": "Ember",
+        "id": 604,
+        "Description": "Summon smoldering embers.",
+        "Bonus":
+        {
+            "hp": 0,
+            "str": 0,
+            "mag": 0,
+            "agi": 0,
+            "dex": 0,
+            "luck": 0,
+            "def": 0,
+            "res": 0,
+            "con": 0,
+            "move": 0,
+            "prof": 0
+        },
+        "Users":
+        {
+            "id": []
+        },
+        "Malus":
+        {
+            "hp": 0,
+            "str": 0,
+            "mag": 0,
+            "agi": 0,
+            "dex": 0,
+            "luck": 0,
+            "def": 0,
+            "res": 0,
+            "con": 0,
+            "move": 0,
+            "prof": 0
+        },
+        "canSell": true,
+        "Effects":
+        {
+            "id": 0
+        },
+        "Types":
+        {
+            "id": 64,
+            "Type": "Elemental"
+        },
+        "Subtype": 0,
+        "Handedness": 0,
+        "Stats":
+        {
+            "Attack": [0,8,0],
+            "Protection": [0,0],
+            "hit": 60,
+            "dodge": 0,
+            "crit": 10,
+            "favor": 0,
+            "wgt": 8,
+            "prof": 12,
+            "Range": [1,2],
+            "uses": 22,
+            "price": 900,
+            "AP": 0
+        },
+        "Effective": 9.2233720368547758E+18
+    }
+}

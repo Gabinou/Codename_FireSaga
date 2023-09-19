@@ -1,0 +1,61 @@
+{
+	"Item":	{
+		"Name":	"Human Femur",
+		"id":	518,
+		"Description":	"Taken from an ancient tomb. Amplifies Demonic magics.",
+		"Bonus":	{
+			"hp":	0,
+			"str":	0,
+			"mag":	0,
+			"agi":	0,
+			"dex":	0,
+			"luck":	0,
+			"def":	0,
+			"res":	0,
+			"con":	0,
+			"move":	0,
+			"prof":	0
+		},
+		"Users":	{
+			"id":	[]
+		},
+		"Malus":	{
+			"hp":	0,
+			"str":	0,
+			"mag":	0,
+			"agi":	0,
+			"dex":	0,
+			"luck":	0,
+			"def":	0,
+			"res":	0,
+			"con":	0,
+			"move":	0,
+			"prof":	0
+		},
+		"canSell":	false,
+		"Effects":	{
+			"id":	0
+		},
+		"Types":	{
+			"id":	4096,
+			"Type":	"Trinket"
+		},
+		"Subtype":	0,
+		"Handedness":	0,
+		"Stats":	{
+			"Attack":	[7, 0, 0],
+			"Protection":	[7, 0],
+			"hit":	0,
+			"dodge":	0,
+			"crit":	0,
+			"favor":	0,
+			"wgt":	7,
+			"prof":	5,
+			"Range":	[1, 1],
+			"uses":	0,
+			"price":	0,
+			"AP":	0
+		},
+		"Effective":	9.2233720368547758e+18
+	}
+}

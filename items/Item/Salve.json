@@ -1,0 +1,68 @@
+{
+    "Item":
+    {
+        "Name": "Salve",
+        "id": 1109,
+        "Description": "Crushed medecinal plants, mixed into a healing salve. Can be made in a pinch by an experienced forager.",
+        "Bonus":
+        {
+            "hp": 0,
+            "str": 0,
+            "mag": 0,
+            "agi": 0,
+            "dex": 0,
+            "luck": 0,
+            "def": 0,
+            "res": 0,
+            "con": 0,
+            "move": 0,
+            "prof": 0
+        },
+        "Users":
+        {
+            "id": []
+        },
+        "Malus":
+        {
+            "hp": 0,
+            "str": 0,
+            "mag": 0,
+            "agi": 0,
+            "dex": 0,
+            "luck": 0,
+            "def": 0,
+            "res": 0,
+            "con": 0,
+            "move": 0,
+            "prof": 0
+        },
+        "canSell": true,
+        "Effects":
+        {
+            "id": 0
+        },
+        "Types":
+        {
+            "id": 2048,
+            "Type": "Item"
+        },
+        "Subtype": 0,
+        "Handedness": 0,
+        "Stats":
+        {
+            "Attack": [0,0,0],
+            "Protection": [0,0],
+            "hit": 0,
+            "dodge": 0,
+            "crit": 0,
+            "favor": 0,
+            "wgt": 0,
+            "prof": 0,
+            "Range": [0,0],
+            "uses": 4,
+            "price": 500,
+            "AP": 50
+        },
+        "Effective": 0
+    }
+}

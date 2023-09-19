@@ -1,0 +1,62 @@
+{
+	"Item":	{
+		"Name":	"Merciful Lance",
+		"id":	108,
+		"Description":	"Infused with the life-giving tears of the goddess. Cannot reduce enemy HP below 1.",
+		"Bonus":	{
+			"hp":	0,
+			"str":	0,
+			"mag":	0,
+			"agi":	0,
+			"dex":	0,
+			"luck":	0,
+			"def":	0,
+			"res":	0,
+			"con":	0,
+			"move":	0,
+			"prof":	0
+		},
+		"Users":	{
+			"id":	[]
+		},
+		"Malus":	{
+			"hp":	0,
+			"str":	0,
+			"mag":	0,
+			"agi":	0,
+			"dex":	0,
+			"luck":	0,
+			"def":	0,
+			"res":	0,
+			"con":	0,
+			"move":	0,
+			"prof":	0
+		},
+		"canSell":	false,
+		"Effects":	{
+			"id":	27,
+			"Name":	"Spare"
+		},
+		"Types":	{
+			"id":	2,
+			"Type":	"Lance"
+		},
+		"Subtype":	0,
+		"Handedness":	0,
+		"Stats":	{
+			"Attack":	[6, 0, 0],
+			"Protection":	[6, 0],
+			"hit":	70,
+			"dodge":	0,
+			"crit":	0,
+			"favor":	0,
+			"wgt":	7,
+			"prof":	7,
+			"Range":	[1, 1],
+			"uses":	0,
+			"price":	0,
+			"AP":	0
+		},
+		"Effective":	9.2233720368547758e+18
+	}
+}

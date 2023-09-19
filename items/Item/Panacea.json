@@ -1,0 +1,69 @@
+{
+    "Item":
+    {
+        "Name": "Panacea",
+        "id": 1101,
+        "Description": "Mysterious cure-all produced by skilled Apothicaries.",
+        "Bonus":
+        {
+            "hp": 0,
+            "str": 0,
+            "mag": 0,
+            "agi": 0,
+            "dex": 0,
+            "luck": 0,
+            "def": 0,
+            "res": 0,
+            "con": 0,
+            "move": 0,
+            "prof": 0
+        },
+        "Users":
+        {
+            "id": []
+        },
+        "Malus":
+        {
+            "hp": 0,
+            "str": 0,
+            "mag": 0,
+            "agi": 0,
+            "dex": 0,
+            "luck": 0,
+            "def": 0,
+            "res": 0,
+            "con": 0,
+            "move": 0,
+            "prof": 0
+        },
+        "canSell": true,
+        "Effects":
+        {
+            "id": 41,
+            "Name": "Cure ailments"
+        },
+        "Types":
+        {
+            "id": 2048,
+            "Type": "Item"
+        },
+        "Subtype": 0,
+        "Handedness": 0,
+        "Stats":
+        {
+            "Attack": [0,0,0],
+            "Protection": [0,0],
+            "hit": 0,
+            "dodge": 0,
+            "crit": 0,
+            "favor": 0,
+            "wgt": 0,
+            "prof": 0,
+            "Range": [0,0],
+            "uses": 4,
+            "price": 300,
+            "AP": 0
+        },
+        "Effective": 0
+    }
+}

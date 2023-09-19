@@ -1,0 +1,68 @@
+{
+    "Item":
+    {
+        "Name": "Lance Start",
+        "id": 116,
+        "Description": "Farming implement. Makeshift lance for desperate times.",
+        "Bonus":
+        {
+            "hp": 0,
+            "str": 0,
+            "mag": 0,
+            "agi": 0,
+            "dex": 0,
+            "luck": 0,
+            "def": 0,
+            "res": 0,
+            "con": 0,
+            "move": 0,
+            "prof": 0
+        },
+        "Users":
+        {
+            "id": []
+        },
+        "Malus":
+        {
+            "hp": 0,
+            "str": 0,
+            "mag": 0,
+            "agi": 0,
+            "dex": 0,
+            "luck": 0,
+            "def": 0,
+            "res": 0,
+            "con": 0,
+            "move": 0,
+            "prof": 0
+        },
+        "canSell": false,
+        "Effects":
+        {
+            "id": 0
+        },
+        "Types":
+        {
+            "id": 2,
+            "Type": "Lance"
+        },
+        "Subtype": 0,
+        "Handedness": 0,
+        "Stats":
+        {
+            "Attack": [3,0,0],
+            "Protection": [0,0],
+            "hit": 60,
+            "dodge": 0,
+            "crit": 0,
+            "favor": 0,
+            "wgt": 4,
+            "prof": 1,
+            "Range": [1,1],
+            "uses": 30,
+            "price": 300,
+            "AP": 0
+        },
+        "Effective": 9.2233720368547758E+18
+    }
+}

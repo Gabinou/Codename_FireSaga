@@ -1,0 +1,68 @@
+{
+    "Item":
+    {
+        "Name": "Broadsword",
+        "id": 13,
+        "Description": "Blade of notable girth. Heavy and strong.",
+        "Bonus":
+        {
+            "hp": 0,
+            "str": 0,
+            "mag": 0,
+            "agi": 0,
+            "dex": 0,
+            "luck": 0,
+            "def": 0,
+            "res": 0,
+            "con": 0,
+            "move": 0,
+            "prof": 0
+        },
+        "Users":
+        {
+            "id": []
+        },
+        "Malus":
+        {
+            "hp": 0,
+            "str": 0,
+            "mag": 0,
+            "agi": 0,
+            "dex": 0,
+            "luck": 0,
+            "def": 0,
+            "res": 0,
+            "con": 0,
+            "move": 0,
+            "prof": 0
+        },
+        "canSell": false,
+        "Effects":
+        {
+            "id": 0
+        },
+        "Types":
+        {
+            "id": 1,
+            "Type": "Sword"
+        },
+        "Subtype": 0,
+        "Handedness": 0, 
+        "Stats":
+        {
+            "Attack": [10,0,0],
+            "Protection": [0,0],
+            "hit": 57,
+            "dodge": 0,
+            "crit": 7,
+            "favor": 0,
+            "wgt": 10,
+            "prof": 6,
+            "Range": [1,1],
+            "uses": 28,
+            "price": 0,
+            "AP": 0
+        },
+        "Effective": 9.2233720368547758E+18
+    }
+}

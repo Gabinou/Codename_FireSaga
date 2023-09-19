@@ -1,0 +1,68 @@
+{
+    "Item":
+    {
+        "Name": "Maiden's Handkerchief",
+        "id": 523,
+        "Description": "Acknowledgment of valor from the fairer sex.",
+        "Bonus":
+        {
+            "hp": 0,
+            "str": 0,
+            "mag": 0,
+            "agi": 0,
+            "dex": 0,
+            "luck": 0,
+            "def": 0,
+            "res": 0,
+            "con": 0,
+            "move": 0,
+            "prof": 0
+        },
+        "Users":
+        {
+            "id": []
+        },
+        "Malus":
+        {
+            "hp": 0,
+            "str": 0,
+            "mag": 0,
+            "agi": 0,
+            "dex": 0,
+            "luck": 0,
+            "def": 0,
+            "res": 0,
+            "con": 0,
+            "move": 0,
+            "prof": 0
+        },
+        "canSell": false,
+        "Effects":
+        {
+            "id": 0
+        },
+        "Types":
+        {
+            "id": 16,
+            "Type": "Trinket"
+        },
+        "Subtype": 0,
+        "Handedness": 0,
+        "Stats":
+        {
+            "Attack": [6,6,0],
+            "Protection": [4,4],
+            "hit": 10,
+            "dodge": 5,
+            "crit": 5,
+            "favor": 20,
+            "wgt": 7,
+            "prof": 5,
+            "Range": [0,0],
+            "uses": 20,
+            "price": 5000,
+            "AP": 0
+        },
+        "Effective": 9.2233720368547758E+18
+    }
+}

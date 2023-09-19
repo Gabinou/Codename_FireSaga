@@ -1,0 +1,68 @@
+{
+    "Item":
+    {
+        "Name": "Leather Shield",
+        "id": 404,
+        "Description": "Wooden plank lined with leather. Smooth and slippery. Cheap way to redirect weapons away from the body.",
+        "Bonus":
+        {
+            "hp": 0,
+            "str": 0,
+            "mag": 0,
+            "agi": 0,
+            "dex": 0,
+            "luck": 0,
+            "def": 0,
+            "res": 0,
+            "con": 0,
+            "move": 0,
+            "prof": 0
+        },
+        "Users":
+        {
+            "id": []
+        },
+        "Malus":
+        {
+            "hp": 0,
+            "str": 0,
+            "mag": 0,
+            "agi": 0,
+            "dex": 0,
+            "luck": 0,
+            "def": 0,
+            "res": 0,
+            "con": 0,
+            "move": 0,
+            "prof": 0
+        },
+        "canSell": false,
+        "Effects":
+        {
+            "id": 0
+        },
+        "Types":
+        {
+            "id": 16,
+            "Type": "Shield"
+        },
+        "Subtype": 0,
+        "Handedness": 0,
+        "Stats":
+        {
+            "Attack": [0,0,0],
+            "Protection": [5,4],
+            "hit": 0,
+            "dodge": 4,
+            "crit": 0,
+            "favor": 6,
+            "wgt": 4,
+            "prof": 9,
+            "Range": [1,1],
+            "uses": 30,
+            "price": 500,
+            "AP": 0
+        },
+        "Effective": 9.2233720368547758E+18
+    }
+}

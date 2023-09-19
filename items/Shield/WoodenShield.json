@@ -1,0 +1,61 @@
+{
+	"Item":	{
+		"Name":	"Wooden Shield",
+		"id":	402,
+		"Description":	"Simple wood plank with a strap. Will probably save your life.",
+		"Bonus":	{
+			"hp":	0,
+			"str":	0,
+			"mag":	0,
+			"agi":	0,
+			"dex":	0,
+			"luck":	0,
+			"def":	0,
+			"res":	0,
+			"con":	0,
+			"move":	0,
+			"prof":	0
+		},
+		"Users":	{
+			"id":	[]
+		},
+		"Malus":	{
+			"hp":	0,
+			"str":	0,
+			"mag":	0,
+			"agi":	0,
+			"dex":	0,
+			"luck":	0,
+			"def":	0,
+			"res":	0,
+			"con":	0,
+			"move":	0,
+			"prof":	0
+		},
+		"canSell":	false,
+		"Effects":	{
+			"id":	0
+		},
+		"Types":	{
+			"id":	16,
+			"Type":	"Shield"
+		},
+		"Subtype":	0,
+		"Handedness":	0,
+		"Stats":	{
+			"Attack":	[0, 0, 0],
+			"Protection":	[3, 3],
+			"hit":	0,
+			"dodge":	1,
+			"crit":	0,
+			"favor":	2,
+			"wgt":	3,
+			"prof":	2,
+			"Range":	[1, 1],
+			"uses":	12,
+			"price":	100,
+			"AP":	0
+		},
+		"Effective":	9.2233720368547758e+18
+	}
+}

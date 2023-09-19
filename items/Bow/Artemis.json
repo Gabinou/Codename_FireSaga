@@ -1,0 +1,68 @@
+{
+    "Item":
+    {
+        "Name": "Artemis",
+        "id": 309,
+        "Description": "Bow of the ancient goddess of hunting.",
+        "Bonus":
+        {
+            "hp": 0,
+            "str": 0,
+            "mag": 0,
+            "agi": 0,
+            "dex": 0,
+            "luck": 0,
+            "def": 0,
+            "res": 0,
+            "con": 0,
+            "move": 0,
+            "prof": 0
+        },
+        "Users":
+        {
+            "id": []
+        },
+        "Malus":
+        {
+            "hp": 0,
+            "str": 0,
+            "mag": 0,
+            "agi": 0,
+            "dex": 0,
+            "luck": 0,
+            "def": 0,
+            "res": 0,
+            "con": 0,
+            "move": 0,
+            "prof": 0
+        },
+        "canSell": false,
+        "Effects":
+        {
+            "id": 0
+        },
+        "Types":
+        {
+            "id": 8,
+            "Type": "Bow"
+        },
+        "Subtype": 0,
+        "Handedness": 0,
+        "Stats":
+        {
+            "Attack": [18,0,0],
+            "Protection": [0,0],
+            "hit": 96,
+            "dodge": 0,
+            "crit": 32,
+            "favor": 32,
+            "wgt": 14,
+            "prof": 19,
+            "Range": [2,3],
+            "uses": 20,
+            "price": 12000,
+            "AP": 0
+        },
+        "Effective": 9.2233720368547758E+18
+    }
+}

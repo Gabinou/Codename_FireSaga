@@ -1,0 +1,69 @@
+{
+    "Item":
+    {
+        "Name": "Swordbreaker",
+        "id": 504,
+        "Description": "Dagger with slots designed to catch swords. Increases avoid and favor. Rarely does it actually break swords...",
+        "Bonus":
+        {
+            "hp": 0,
+            "str": 0,
+            "mag": 0,
+            "agi": 0,
+            "dex": 0,
+            "luck": 0,
+            "def": 0,
+            "res": 0,
+            "con": 0,
+            "move": 0,
+            "prof": 0
+        },
+        "Users":
+        {
+            "id": []
+        },
+        "Malus":
+        {
+            "hp": 0,
+            "str": 0,
+            "mag": 0,
+            "agi": 0,
+            "dex": 0,
+            "luck": 0,
+            "def": 0,
+            "res": 0,
+            "con": 0,
+            "move": 0,
+            "prof": 0
+        },
+        "canSell": false,
+        "Effects":
+        {
+            "id": 18,
+            "Name": "Break Weapon"
+        },
+        "Types":
+        {
+            "id": 32,
+            "Type": "Offhand"
+        },
+        "Subtype": 0,
+        "Handedness": 0,
+        "Stats":
+        {
+            "Attack": [2,0,0],
+            "Protection": [0,0],
+            "hit": 0,
+            "dodge": 0,
+            "crit": 0,
+            "favor": 0,
+            "wgt": 6,
+            "prof": 12,
+            "Range": [1,1],
+            "uses": 8,
+            "price": 4000,
+            "AP": 0
+        },
+        "Effective": 9.2233720368547758E+18
+    }
+}

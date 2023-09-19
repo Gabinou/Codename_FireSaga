@@ -1,0 +1,68 @@
+{
+    "Item":
+    {
+        "Name": "Hauteclaire",
+        "id": 18,
+        "Description": "Crystal encrusted sword, as in the legends of old.",
+        "Bonus":
+        {
+            "hp": 0,
+            "str": 0,
+            "mag": 0,
+            "agi": 0,
+            "dex": 0,
+            "luck": 0,
+            "def": 0,
+            "res": 0,
+            "con": 0,
+            "move": 0,
+            "prof": 0
+        },
+        "Users":
+        {
+            "id": []
+        },
+        "Malus":
+        {
+            "hp": 0,
+            "str": 0,
+            "mag": 0,
+            "agi": 0,
+            "dex": 0,
+            "luck": 0,
+            "def": 0,
+            "res": 0,
+            "con": 0,
+            "move": 0,
+            "prof": 0
+        },
+        "canSell": false,
+        "Effects":
+        {
+            "id": 0
+        },
+        "Types":
+        {
+            "id": 1,
+            "Type": "Sword"
+        },
+        "Subtype": 1,
+        "Handedness": 1,
+        "Stats":
+        {
+            "Attack": [14,0,0],
+            "Protection": [0,0],
+            "hit": 90,
+            "dodge": 10,
+            "crit": 10,
+            "favor": 0,
+            "wgt": 6,
+            "prof": 20,
+            "Range": [1,1],
+            "uses": 0,
+            "price": 7000,
+            "AP": 0
+        },
+        "Effective": 9.2233720368547758E+18
+    }
+}

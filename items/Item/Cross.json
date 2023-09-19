@@ -1,0 +1,69 @@
+{
+    "Item":
+    {
+        "Name": "Cross",
+        "id": 1105,
+        "Description": "Burden of the Redemptor. Brings life, when carried in hand.",
+        "Bonus":
+        {
+            "hp": 0,
+            "str": 0,
+            "mag": 0,
+            "agi": 0,
+            "dex": 0,
+            "luck": 0,
+            "def": 0,
+            "res": 0,
+            "con": 0,
+            "move": 0,
+            "prof": 0
+        },
+        "Users":
+        {
+            "id": []
+        },
+        "Malus":
+        {
+            "hp": 0,
+            "str": 0,
+            "mag": 0,
+            "agi": 0,
+            "dex": 0,
+            "luck": 0,
+            "def": 0,
+            "res": 0,
+            "con": 0,
+            "move": 0,
+            "prof": 0
+        },
+        "canSell": true,
+        "Effects":
+        {
+            "id": 46,
+            "Name": "AOE Heal"
+        },
+        "Types":
+        {
+            "id": 2048,
+            "Type": "Item"
+        },
+        "Subtype": 0,
+        "Handedness": 0,
+        "Stats":
+        {
+            "Attack": [0,0,0],
+            "Protection": [0,0],
+            "hit": 0,
+            "dodge": 0,
+            "crit": 0,
+            "favor": 0,
+            "wgt": 0,
+            "prof": 0,
+            "Range": [0,0],
+            "uses": 0,
+            "price": 2000,
+            "AP": 10
+        },
+        "Effective": 0
+    }
+}

@@ -1,0 +1,68 @@
+{
+    "Item":
+    {
+        "Name": "Sai",
+        "id": 527,
+        "Description": "Legendary Dagger.",
+        "Bonus":
+        {
+            "hp": 0,
+            "str": 0,
+            "mag": 0,
+            "agi": 0,
+            "dex": 0,
+            "luck": 0,
+            "def": 0,
+            "res": 0,
+            "con": 0,
+            "move": 0,
+            "prof": 0
+        },
+        "Users":
+        {
+            "id": [] 
+        },
+        "Malus":
+        {
+            "hp": 0,
+            "str": 0,
+            "mag": 0,
+            "agi": 0,
+            "dex": 0,
+            "luck": 0,
+            "def": 0,
+            "res": 0,
+            "con": 0,
+            "move": 0,
+            "prof": 0
+        },
+        "canSell": false,
+        "Effects":
+        {
+            "id": 0
+        },
+        "Types":
+        {
+            "id": 32,
+            "Type": "Offhand"
+        },
+        "Subtype": 0,
+        "Handedness": 0,
+        "Stats":
+        {
+            "Attack": [10,0,0],
+            "Protection": [0,0],
+            "hit": 0,
+            "dodge": 0,
+            "crit": 10,
+            "favor": 10,
+            "wgt": 6,
+            "prof": 16,
+            "Range": [1,1],
+            "uses": 15,
+            "price": 0,
+            "AP": 0
+        },
+        "Effective": 9.2233720368547758E+18
+    }
+}

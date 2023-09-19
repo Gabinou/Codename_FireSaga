@@ -1,0 +1,68 @@
+{
+    "Item":
+    {
+        "Name": "Recurve Bow",
+        "id": 307,
+        "Description": "Bow whose limbs curve away when unstrung. Shoots faster and deadlier arrows.",
+        "Bonus":
+        {
+            "hp": 0,
+            "str": 0,
+            "mag": 0,
+            "agi": 0,
+            "dex": 0,
+            "luck": 0,
+            "def": 0,
+            "res": 0,
+            "con": 0,
+            "move": 0,
+            "prof": 0
+        },
+        "Users":
+        {
+            "id": []
+        },
+        "Malus":
+        {
+            "hp": 0,
+            "str": 0,
+            "mag": 0,
+            "agi": 0,
+            "dex": 0,
+            "luck": 0,
+            "def": 0,
+            "res": 0,
+            "con": 0,
+            "move": 0,
+            "prof": 0
+        },
+        "canSell": false,
+        "Effects":
+        {
+            "id": 0
+        },
+        "Types":
+        {
+            "id": 8,
+            "Type": "Bow"
+        },
+        "Subtype": 0,
+        "Handedness": 0,
+        "Stats":
+        {
+            "Attack": [13,0,0],
+            "Protection": [0,0],
+            "hit": 75,
+            "dodge": 0,
+            "crit": 7,
+            "favor": 0,
+            "wgt": 10,
+            "prof": 14,
+            "Range": [2,2],
+            "uses": 35,
+            "price": 1500,
+            "AP": 0
+        },
+        "Effective": 9.2233720368547758E+18
+    }
+}

@@ -1,0 +1,68 @@
+{
+    "Item":
+    {
+        "Name": "Dague",
+        "id": 508,
+        "Description": "Messenic dagger. Simple and efficient. Beautiful engravings adorn the blade surface. ",
+        "Bonus":
+        {
+            "hp": 0,
+            "str": 0,
+            "mag": 0,
+            "agi": 0,
+            "dex": 0,
+            "luck": 0,
+            "def": 0,
+            "res": 0,
+            "con": 0,
+            "move": 0,
+            "prof": 0
+        },
+        "Users":
+        {
+            "id": []
+        },
+        "Malus":
+        {
+            "hp": 0,
+            "str": 0,
+            "mag": 0,
+            "agi": 0,
+            "dex": 0,
+            "luck": 0,
+            "def": 0,
+            "res": 0,
+            "con": 0,
+            "move": 0,
+            "prof": 0
+        },
+        "canSell": false,
+        "Effects":
+        {
+            "id": 0
+        },
+        "Types":
+        {
+            "id": 32,
+            "Type": "Offhand"
+        },
+        "Subtype": 0,
+        "Handedness": 0,
+        "Stats":
+        {
+            "Attack": [4,0,0],
+            "Protection": [0,0],
+            "hit": 15,
+            "dodge": 0,
+            "crit": 0,
+            "favor": 0,
+            "wgt": 2,
+            "prof": 10,
+            "Range": [1,1],
+            "uses": 26,
+            "price": 250,
+            "AP": 0
+        },
+        "Effective": 9.2233720368547758E+18
+    }
+}

@@ -1,0 +1,68 @@
+{
+    "Item":
+    {
+        "Name": "Fuujintou",
+        "id": 23,
+        "Description": "The wind god's sword. Cuts enemies with wind at a distance.",
+        "Bonus":
+        {
+            "hp": 0,
+            "str": 0,
+            "mag": 0,
+            "agi": 0,
+            "dex": 0,
+            "luck": 0,
+            "def": 0,
+            "res": 0,
+            "con": 0,
+            "move": 0,
+            "prof": 0
+        },
+        "Users":
+        {
+            "id": []
+        },
+        "Malus":
+        {
+            "hp": 0,
+            "str": 0,
+            "mag": 0,
+            "agi": 0,
+            "dex": 0,
+            "luck": 0,
+            "def": 0,
+            "res": 0,
+            "con": 0,
+            "move": 0,
+            "prof": 0
+        },
+        "canSell": false,
+        "Effects":
+        {
+            "id": 0
+        },
+        "Types":
+        {
+            "id": 1,
+            "Type": "Sword"
+        },
+        "Subtype": 0,
+        "Handedness": 0,
+        "Stats":
+        {
+            "Attack": [7,7,0],
+            "Protection": [0,0],
+            "hit": 45,
+            "dodge": 0,
+            "crit": 0,
+            "favor": 0,
+            "wgt": 7,
+            "prof": 11,
+            "Range": [1,2],
+            "uses": 24,
+            "price": 960,
+            "AP": 0
+        },
+        "Effective": 9.2233720368547758E+18
+    }
+}

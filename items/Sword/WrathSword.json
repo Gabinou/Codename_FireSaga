@@ -1,0 +1,68 @@
+{
+    "Item":
+    {
+        "Name": "Wrath Sword",
+        "id": 3,
+        "Description": "Increases critical hit chance.",
+        "Bonus":
+        {
+            "hp": 0,
+            "str": 0,
+            "mag": 0,
+            "agi": 0,
+            "dex": 0,
+            "luck": 0,
+            "def": 0,
+            "res": 0,
+            "con": 0,
+            "move": 0,
+            "prof": 0
+        },
+        "Users":
+        {
+            "id": []
+        },
+        "Malus":
+        {
+            "hp": 0,
+            "str": 0,
+            "mag": 0,
+            "agi": 0,
+            "dex": 0,
+            "luck": 0,
+            "def": 0,
+            "res": 0,
+            "con": 0,
+            "move": 0,
+            "prof": 0
+        },
+        "canSell": false,
+        "Effects":
+        {
+            "id": 0
+        },
+        "Types":
+        {
+            "id": 1,
+            "Type": "Sword"
+        },
+        "Subtype": 0,
+        "Handedness": 0,
+        "Stats":
+        {
+            "Attack": [7,0,0],
+            "Protection": [0,0],
+            "hit": 60,
+            "dodge": 0,
+            "crit": 25,
+            "favor": 0,
+            "wgt": 7,
+            "prof": 9,
+            "Range": [1,1],
+            "uses": 32,
+            "price": 750,
+            "AP": 0
+        },
+        "Effective": 9.2233720368547758E+18
+    }
+}

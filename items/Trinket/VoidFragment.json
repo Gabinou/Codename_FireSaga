@@ -1,0 +1,68 @@
+{
+    "Item":
+    {
+        "Name": "Void Fragment",
+        "id": 519,
+        "Description": "It stares back.",
+        "Bonus":
+        {
+            "hp": 0,
+            "str": 0,
+            "mag": 0,
+            "agi": 0,
+            "dex": 0,
+            "luck": 0,
+            "def": 0,
+            "res": 0,
+            "con": 0,
+            "move": 0,
+            "prof": 0
+        },
+        "Users":
+        {
+            "id": []
+        },
+        "Malus":
+        {
+            "hp": 0,
+            "str": 0,
+            "mag": 0,
+            "agi": 0,
+            "dex": 0,
+            "luck": 0,
+            "def": 0,
+            "res": 0,
+            "con": 0,
+            "move": 0,
+            "prof": 0
+        },
+        "canSell": false,
+        "Effects":
+        {
+            "id": 0
+        },
+        "Types":
+        {
+            "id": 4096,
+            "Type": "Trinket"
+        },
+        "Subtype": 0,
+        "Handedness": 0,
+        "Stats":
+        {
+            "Attack": [3,4,0],
+            "Protection": [1,2],
+            "hit": 10,
+            "dodge": 9,
+            "crit": 8,
+            "favor": 7,
+            "wgt": 5,
+            "prof": 6,
+            "Range": [1,1],
+            "uses": 20,
+            "price": 10000,
+            "AP": 0
+        },
+        "Effective": 9.2233720368547758E+18
+    }
+}

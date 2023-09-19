@@ -1,0 +1,69 @@
+{
+    "Item":
+    {
+        "Name": "Killy",
+        "id": 27,
+        "Description": "Surprisingly short, deceptively powerful. Works best paired with Cibo.",
+        "Bonus":
+        {
+            "hp": 0,
+            "str": 0,
+            "mag": 0,
+            "agi": 0,
+            "dex": 0,
+            "luck": 0,
+            "def": 0,
+            "res": 0,
+            "con": 0,
+            "move": 0,
+            "prof": 0
+        },
+        "Users":
+        {
+            "id": []
+        },
+        "Malus":
+        {
+            "hp": 0,
+            "str": 0,
+            "mag": 0,
+            "agi": 0,
+            "dex": 0,
+            "luck": 0,
+            "def": 0,
+            "res": 0,
+            "con": 0,
+            "move": 0,
+            "prof": 0
+        },
+        "canSell": false,
+        "Effects":
+        {
+            "Name": "Killy_Cibo_Pair",
+            "id": 33
+        },
+        "Types":
+        {
+            "id": 1,
+            "Type": "Sword"
+        },
+        "Subtype": 0,
+        "Handedness": 0,
+        "Stats":
+        {
+            "Attack": [13,0,0],
+            "Protection": [0,0],
+            "hit": 40,
+            "dodge": 0,
+            "crit": 15,
+            "favor": 5,
+            "wgt": 5,
+            "prof": 12,
+            "Range": [1,1],
+            "uses": 64,
+            "price": 65536,
+            "AP": 0
+        },
+        "Effective": 9.2233720368547758E+18
+    }
+}

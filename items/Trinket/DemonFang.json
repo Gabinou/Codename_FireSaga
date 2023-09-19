@@ -1,0 +1,69 @@
+{
+    "Item":
+    {
+        "Name": "Demon Fang",
+        "id": 520,
+        "Description": "Ripped from the mouth of a dead demon. Amplifies Demonic magics.",
+        "Bonus":
+        {
+            "hp": 0,
+            "str": 0,
+            "mag": 0,
+            "agi": 0,
+            "dex": 0,
+            "luck": 0,
+            "def": 0,
+            "res": 0,
+            "con": 0,
+            "move": 0,
+            "prof": 0
+        },
+        "Users":
+        {
+            "id": []
+        },
+        "Malus":
+        {
+            "hp": 0,
+            "str": 0,
+            "mag": 0,
+            "agi": 0,
+            "dex": 0,
+            "luck": 0,
+            "def": 0,
+            "res": 0,
+            "con": 0,
+            "move": 0,
+            "prof": 0
+        },
+        "canSell": false,
+        "Effects":
+        {
+            "id": 38,
+            "Name": "Demonic"
+        },
+        "Types":
+        {
+            "id": 4096,
+            "Type": "Trinket"
+        },
+        "Subtype": 0,
+        "Handedness": 0,
+        "Stats":
+        {
+            "Attack": [0,3,0],
+            "Protection": [0,0],
+            "hit": 0,
+            "dodge": 0,
+            "crit": 0,
+            "favor": 0,
+            "wgt": 2,
+            "prof": 5,
+            "Range": [1,1],
+            "uses": 13,
+            "price": 50,
+            "AP": 0
+        },
+        "Effective": 9.2233720368547758E+18
+    }
+}

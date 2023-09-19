@@ -1,0 +1,68 @@
+{
+    "Item":
+    {
+        "Name": "Adapted Shield",
+        "id": 401,
+        "Description": "Shield adapted to be used without one's weak hand. Straps on the forearm. 1H assassin only.",
+        "Bonus":
+        {
+            "hp": 0,
+            "str": 0,
+            "mag": 0,
+            "agi": 0,
+            "dex": 0,
+            "luck": 0,
+            "def": 0,
+            "res": 0,
+            "con": 0,
+            "move": 0,
+            "prof": 0
+        },
+        "Users":
+        {
+            "id": []
+        },
+        "Malus":
+        {
+            "hp": 0,
+            "str": 0,
+            "mag": 0,
+            "agi": 0,
+            "dex": 0,
+            "luck": 0,
+            "def": 0,
+            "res": 0,
+            "con": 0,
+            "move": 0,
+            "prof": 0
+        },
+        "canSell": true,
+        "Effects":
+        {
+            "id": 0
+        },
+        "Types":
+        {
+            "id": 16,
+            "Type": "Shield"
+        },
+        "Subtype": 0,
+        "Handedness": 1,
+        "Stats":
+        {
+            "Attack": [0,0,0],
+            "Protection": [5,2],
+            "hit": 0,
+            "dodge": 10,
+            "crit": 0,
+            "favor": 3,
+            "wgt": 5,
+            "prof": 8,
+            "Range": [1,1],
+            "uses": 44,
+            "price": 740,
+            "AP": 0
+        },
+        "Effective": 9.2233720368547758E+18
+    }
+}

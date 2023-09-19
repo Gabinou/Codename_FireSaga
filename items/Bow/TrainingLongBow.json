@@ -1,0 +1,68 @@
+{
+    "Item":
+    {
+        "Name": "Iron Lance",
+        "id": 304,
+        "Description": "Archer only. Bow used to train Archers to shoot at long range.",
+        "Bonus":
+        {
+            "hp": 0,
+            "str": 0,
+            "mag": 0,
+            "agi": 0,
+            "dex": 0,
+            "luck": 0,
+            "def": 0,
+            "res": 0,
+            "con": 0,
+            "move": 0,
+            "prof": 0
+        },
+        "Users":
+        {
+            "id": []
+        },
+        "Malus":
+        {
+            "hp": 0,
+            "str": 0,
+            "mag": 0,
+            "agi": 0,
+            "dex": 0,
+            "luck": 0,
+            "def": 0,
+            "res": 0,
+            "con": 0,
+            "move": 0,
+            "prof": 0
+        },
+        "canSell": false,
+        "Effects":
+        {
+            "id": 0
+        },
+        "Types":
+        {
+            "id": 8,
+            "Type": "Bow"
+        },
+        "Subtype": 0,
+        "Handedness": 0,
+        "Stats":
+        {
+            "Attack": [5,0,0],
+            "Protection": [0,0],
+            "hit": 70,
+            "dodge": 0,
+            "crit": 0,
+            "favor": 0,
+            "wgt": 12,
+            "prof": 11,
+            "Range": [3,4],
+            "uses": 22,
+            "price": 1400,
+            "AP": 0
+        },
+        "Effective": 0
+    }
+}

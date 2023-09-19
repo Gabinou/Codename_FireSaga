@@ -1,0 +1,68 @@
+{
+    "Item":
+    {
+        "Name": "Healing Potion",
+        "id": 1102,
+        "Description": "Powerful mix of herbs, infused with magical energies. Fully heals.",
+        "Bonus":
+        {
+            "hp": 0,
+            "str": 0,
+            "mag": 0,
+            "agi": 0,
+            "dex": 0,
+            "luck": 0,
+            "def": 0,
+            "res": 0,
+            "con": 0,
+            "move": 0,
+            "prof": 0
+        },
+        "Users":
+        {
+            "id": []
+        },
+        "Malus":
+        {
+            "hp": 0,
+            "str": 0,
+            "mag": 0,
+            "agi": 0,
+            "dex": 0,
+            "luck": 0,
+            "def": 0,
+            "res": 0,
+            "con": 0,
+            "move": 0,
+            "prof": 0
+        },
+        "canSell": true,
+        "Effects":
+        {
+            "id": 0
+        },
+        "Types":
+        {
+            "id": 2048,
+            "Type": "Item"
+        },
+        "Subtype": 0,
+        "Handedness": 0,
+        "Stats":
+        {
+            "Attack": [0,0,0],
+            "Protection": [0,0],
+            "hit": 0,
+            "dodge": 0,
+            "crit": 0,
+            "favor": 0,
+            "wgt": 0,
+            "prof": 0,
+            "Range": [0,0],
+            "uses": 2,
+            "price": 1000,
+            "AP": 100
+        },
+        "Effective": 0
+    }
+}
