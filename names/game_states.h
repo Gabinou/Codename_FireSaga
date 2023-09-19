@@ -1,0 +1,8 @@
+REGISTER_ENUM(Combat)
+REGISTER_ENUM(Scene_Talk)
+REGISTER_ENUM(Scene_FMV)
+REGISTER_ENUM(Gameplay_Map)
+REGISTER_ENUM(Gameplay_Camp)
+REGISTER_ENUM(Preparation)
+REGISTER_ENUM(Title_Screen)
+REGISTER_ENUM(Animation)
