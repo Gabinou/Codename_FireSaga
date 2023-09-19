@@ -1,0 +1,145 @@
+
+
+# Design considerations
+
+More details on my thoughts are available on the [development blog] (https://averagebear.game.blog/):
+- Benevolent Dictator veto:
+	1. Permadeath, no exceptions
+	2. No Phoenix/Casual mode
+	3. No Ambush spawns
+	4. No Teleportation
+		- Maybe except rescue staves
+ 	5. No Time travel
+	6. No Dragons
+	7. Minimal so-called "fanservice"
+	8. No Digital Rights Management (DRM) software or anti-piracy measures
+
+- Narrative is king.
+	* Everything in the game, mechanics, gameplay, items, etc. tells a story.
+	* Themes
+		- Tragedy of War & Death
+		- Slavery to Gods & Kings
+		- Fighting Demons within & without
+
+- Linear, chapter-based
+	* Camp between chapters where you can move around on the map, go to shops, talk to people.
+		- Replaces menu navigation.
+	* Army movement on the world map only if it makes narrative sense
+		- Enemy encounters on world Map are rare
+	* Side chapters unlockable.
+	* Notes taken in books magically present on a newgame
+
+- Units have two hands
+	* Swords & shields
+	* Dual Wielding & Two-handing
+	* Handedness, Ambidextry
+
+- Mounts 
+	* No mount on promotion, get mounts through story/gameplay. 
+	* Almost any unit/class can have a mount: horse, pegasus, etc.
+		- Some mounts have unit/classes preferences. Some are scared of magic.
+	* Mounts get attached to rider.
+
+- Items
+	* Breakable
+	* Becomes unusable "broken trash" item when broken
+	* Weapon's remaining number of uses can be increased using whetstones
+
+- Skills:
+	* Limited number of simpler skills
+	* Skills more tightly coupled with narrative
+	* 5 Skills maximum per unit: 4 Passives, 1 Active.
+
+- Questionable:
+	* IronMan Mode 
+		Automatic game save + deletion of previous save 
+	* Forcible IronMan Mode
+		Force player into IronMan mode. The game always saves, no retries. 
+	* No Achievements
+		I do not care for them and I think they are generally harmful.
+	* Cities are visitable like camps?
+
+## Under the hood:
+- Multithreading? 
+	Might be useful to load assets in the background
+- OpenGL?
+	Hardware acceleration, make use of GPU. 
+
+## Long-term
+Playable on
+1. Smartphones (iOS/Android)
+2. Consoles?
+
+# Roadmap
+In no particular order:
+
+- Turn system
+	1. AI for enemy attacks		(0.0)
+	2. Switching between armies (0.1)
+- Design
+	1. Weapons 	(1.0)
+	* Types 	(1.0)
+	2. Tiles 	(0.3)
+	3. Maps
+	* Test chapter 	(1.0)
+	* Other chapters
+	4. Units 		(0.2)
+	* Names 		(0.2)
+	* Bases 		(0.1)
+	* Caps 			(0.1)
+	* Promotions 	(0.1)
+- Animations
+	1. Cursor idle 		(1.0) 
+	2. Cursor slide 	(1.0) 
+	3. Unit walking 	(0.1)
+	4. Unit idle 		(0.1)
+	5. Unit portraits
+	6. Turn transition
+- Menus
+	1. Dynamic Unit Actions (1.0)
+	2. Unit Statistics 		(0.3)
+	3. Unit Attack 			(0.2)
+	4. Options
+- Grid
+	1. Unit movement on grid 	(1.0) 
+	2. Attackable tiles 		(1.0)
+	3. Moveable tiles 			(1.0)
+	4. Danger tiles 			(1.0)
+	5. Camera Pan and Zoom 		(1.0)
+- Controllers
+	1. Gamepad Controller 		(0.4: D-Pad + Joystics + 2 buttons)
+	2. Keyboard Controller 		(0.3: Move Keys + 2 buttons)
+	3. Mouse Controller 		(0.2: Movement + 2 buttons)
+	4. Touch Controller
+	5. Contextual inputs 		(0.2)
+	6. Mouse clickable buttons 	(0.2)
+- Sound
+	1. Sound system
+	2. Sounds
+	3. Songs
+- Art
+	1. Art style 		(0.2)
+	2. Unit concepts
+	3. Unit portraits
+	4. Map units 		(0.2)
+	5. Tiles 			(0.2)
+	6. Custom Mouse 	(0.2)
+	7. Title Screen 	(0.2)
+	8. World Map
+- Gameplay systems
+	1. Convoy 	(1.0)
+	2. Camp  	(0.2)
+	3. Combat 	(2.0)
+- Story
+	1. Main thrust 				(0.2)
+	2. Chapter introductions
+	3. Side-chapters
+	4. Camp Events
+	5. Relationship Events
+	6. Supports
+
+## Features
+- Gamecube controller support!
+
+## Credits
+:copyright: Average Bear Games, made by Gabriel Taillon
