@@ -1,0 +1,82 @@
+#ifndef PLAYER_SELECT_MENU_H
+#define PLAYER_SELECT_MENU_H
+
+#include "enums.h"
+#include "globals.h"
+#include "pixelfonts.h"
+#include "n9patch.h"
+#include "events.h"
+#include "nstr.h"
+#include "stb_sprintf.h"
+#include "SDL2/SDL.h"
+
+/* --- FORWARD DECLARATIONS --- */
+struct MenuComponent;
+
+enum PLAYER_SELECT_ENUM {
+    PSM_N9PATCH_SCALE_X =  6,
+    PSM_N9PATCH_SCALE_Y =  6,
+    PSM_PADDING_RIGHT   =  7,
+    PSM_PADDING_TOP     =  5,
+    PSM_PADDING_LEFT    =  7,
+    PSM_PADDING_BOTTOM  = 11,
+};
+
+typedef void (*psm_maker_t)(struct Game *in_game, void *dat1, void *dat2);
+extern psm_maker_t menuContentMakers[MENU_PLAYER_SELECT_END];
+
+struct PlayerSelectMenu {
+    struct nmath_point_int32_t pos; /* MENU_POS_bOFFSET = 0 */
+
+    char **option_names;        /* [option_i] */
+    uf32  *options;             /* [option_i] */
+    SDL_Texture *texture;
+    struct PixelFont *pixelnours;
+    struct Padding menu_padding;
+
+    uf32 option_num;
+    uf32 id;
+    if32 row_height; /* [pixels] total height is row_height * option_num */
+    if32 text_width; /* [pixels] */
+    if32 icon_width;
+    if32 text_alignment;
+
+    bool update : 1;
+};
+extern struct PlayerSelectMenu PlayerSelectMenu_default;
+
+/* --- Constructors/Destructors --- */
+extern struct PlayerSelectMenu *PlayerSelectMenu_Alloc();
+extern void FirstMenu_Load(       struct PlayerSelectMenu *m, SDL_Renderer *r, struct n9Patch *n9);
+extern void PlayerSelectMenu_Free(struct PlayerSelectMenu *m, struct MenuComponent *mc);
+extern void PlayerSelectMenu_Load(struct PlayerSelectMenu *m, SDL_Renderer *r, struct n9Patch *n9);
+
+/* --- Menu Elem properties --- */
+/* -- Options -- */
+extern int PlayerSelectMenu_Option_Index(  struct PlayerSelectMenu *m, uf32 op);
+extern void PlayerSelectMenu_Option_Add(   struct PlayerSelectMenu *m, uf32 op);
+extern void PlayerSelectMenu_Compute_Size( struct PlayerSelectMenu *m, struct n9Patch *n9);
+extern void PlayerSelectMenu_Options_Reset(struct PlayerSelectMenu *m);
+
+/* -- Elems -- */
+// PlayerSelectMenu_Elem_Links SHOULD NOT NEED LINKS
+extern void PlayerSelectMenu_Elem_Pos(  struct PlayerSelectMenu *m, struct MenuComponent *mc);
+extern void PlayerSelectMenu_Elem_Links(struct PlayerSelectMenu *m, struct MenuComponent *mc);
+extern void PlayerSelectMenu_Elem_Boxes(struct PlayerSelectMenu *m, struct MenuComponent *mc);
+
+/* -- Cursor -- */
+extern void PlayerSelectMenu_Cursor_Pos(  struct PlayerSelectMenu *m, struct MenuComponent *mc);
+extern void PlayerSelectMenu_Cursor_Boxes(struct PlayerSelectMenu *m, struct MenuComponent *mc);
+
+/* --- Drawing --- */
+extern void PlayerSelectMenu_Draw(  struct MenuComponent *mc, SDL_Texture *rt, SDL_Renderer *r);
+extern void PlayerSelectMenu_Update(struct PlayerSelectMenu *m, struct n9Patch *n9,
+                                    SDL_Texture *rt, SDL_Renderer *r);
+
+/* --- DECLARE PLAYER_SELECT MENU CONTENT MAKERS --- */
+#define REGISTER_ENUM(x) void makeContent_PSM_##x(struct Game * in_game, void * data_1, void * data_2);
+#include "names/menu/player_select.h"
+#undef REGISTER_ENUM
+extern void makeContent_FirstMenu(struct Game *g);
+
+#endif /* PLAYER_SELECT_MENU_H */

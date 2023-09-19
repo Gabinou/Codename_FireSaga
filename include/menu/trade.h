@@ -1,0 +1,70 @@
+#ifndef TRADE_MENU_H
+#define TRADE_MENU_H
+
+#include "enums.h"
+#include "globals.h"
+#include "pixelfonts.h"
+#include "menu.h"
+#include "n9patch.h"
+#include "events.h"
+#include "menu/loadout_select.h"
+#include "structs.h"
+#include "nstr.h"
+#include "stb_sprintf.h"
+#include "SDL2/SDL.h"
+
+/* --- FORWARD DECLARATIONS --- */
+struct MenuComponent;
+
+enum TRADE_MENU {
+    TM_PATCH_X_PIXELS = 8,
+    TM_PATCH_Y_PIXELS = 8,
+};
+
+enum TRADE_MENU_ELEMS {
+    TM_ELEM_NULL    = -1,
+    TM_ELEM_ITEM1_A =  0,
+    TM_ELEM_ITEM2_A =  1,
+    TM_ELEM_ITEM3_A =  2,
+    TM_ELEM_ITEM4_A =  3,
+    TM_ELEM_ITEM5_A =  4,
+    TM_ELEM_ITEM6_A =  5,
+    TM_ELEM_ITEM1_P =  6,
+    TM_ELEM_ITEM2_P =  7,
+    TM_ELEM_ITEM3_P =  8,
+    TM_ELEM_ITEM4_P =  9,
+    TM_ELEM_ITEM5_P = 10,
+    TM_ELEM_ITEM6_P = 11,
+    TRADE_MENU_ELEMS_NUM,
+};
+extern struct MenuElemDirections trade_menu_links[TRADE_MENU_ELEMS_NUM];
+extern struct Point trade_menu_elem_pos[TRADE_MENU_ELEMS_NUM];
+extern struct Point trade_menu_elem_box[TRADE_MENU_ELEMS_NUM];
+extern struct Point trade_cursor_pos[TRADE_MENU_ELEMS_NUM];
+extern struct Point trade_cursor_box[TRADE_MENU_ELEMS_NUM];
+
+struct TradeMenu {
+    struct LoadoutSelectMenu *active;
+    struct LoadoutSelectMenu *passive;
+    if8 selected_trader;
+    if8 selected_item;
+    if8 target_trader;
+    if8 target_item;
+};
+
+/* --- Constructors/Destructors --- */
+extern struct TradeMenu *TradeMenu_Alloc();
+extern void TradeMenu_Free(struct MenuComponent *mc, SDL_Texture *rt, SDL_Renderer *r);
+
+/* --- Item placement --- */
+extern void TradeMenu_Trade(   struct TradeMenu *tm);
+extern void TradeMenu_Select(  struct TradeMenu *tm, if8 s);
+extern void TradeMenu_Deselect(struct TradeMenu *tm);
+
+/* --- Positioning --- */
+extern void TradeMenu_Elem_Pos(struct TradeMenu *tm, struct MenuComponent *mc);
+
+/* --- Drawing --- */
+extern void TradeMenu_Draw(struct MenuComponent *mc, SDL_Texture *rt, SDL_Renderer *r);
+
+#endif /* TRADE_MENU_H */

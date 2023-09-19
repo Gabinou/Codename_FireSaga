@@ -1,0 +1,99 @@
+#ifndef CONTROLLERGAMEPAD_H
+#define CONTROLLERGAMEPAD_H
+
+#include <math.h>
+#include "types.h"
+#include "enums.h"
+#include "nmath.h"
+#include "debug.h"
+#include "utilities.h"
+#include "macros.h"
+#include "globals.h"
+#include "SDL2/SDL.h"
+
+struct GamepadInputMap {
+    SDL_GameControllerAxis    mainxaxis;
+    SDL_GameControllerAxis    mainyaxis;
+    SDL_GameControllerAxis    secondxaxis;
+    SDL_GameControllerAxis    secondyaxis;
+
+    SDL_GameControllerButton  moveright;
+    SDL_GameControllerButton  moveup;
+    SDL_GameControllerButton  moveleft;
+    SDL_GameControllerButton  movedown;
+    SDL_GameControllerButton  accept;
+    SDL_GameControllerButton  cancel;
+    SDL_GameControllerButton  minimap;
+    SDL_GameControllerButton  menuright;
+    SDL_GameControllerButton  menuleft;
+    SDL_GameControllerButton  pause;
+    SDL_GameControllerButton  stats;
+    SDL_GameControllerButton  options;
+    SDL_GameControllerButton  faster;
+    SDL_GameControllerButton  globalRange;
+
+    /* Button or Trigger flags */
+    bool accept_button;
+    bool cancel_button;
+    bool minimap_button;
+    bool menuright_button;
+    bool menuleft_button;
+    bool pause_button;
+    bool stats_button;
+    bool options_button;
+    bool faster_button;
+    bool globalRange_button;
+};
+extern struct GamepadInputMap GamepadInputMap_default;
+extern struct GamepadInputMap GamepadInputMap_gamecube;
+
+typedef struct controllerGamepad {
+    SDL_GameController     **controllers;
+    struct GamepadInputMap  *inputmap;
+
+    if32   *joystick_instances;
+    if32    controller_type;
+    int     controllers_num;
+    int     controllers_len;
+
+    if16    deadzone_joystick;
+    if16    deadzone_trigger;
+
+    if8     held_move[SOTA_DIRECTIONS_MAIN_NUM];
+    if8     held_button[SOTA_BUTTON_END];
+
+    size_t  held_move_num;
+    size_t  held_button_num;
+
+    if32    timeheld_move_ns;
+    if32    timeheld_button_ns;
+    char **button_names;
+
+    bool    block_buttons   : 1;
+    bool    block_move      : 1;
+} controllerGamepad;
+extern struct controllerGamepad controllerGamepad_default;
+
+enum GAMEPAD_BUTTON_NAMES {
+    BUTTON_NAME_MAX_LEN = 36,
+    AXIS_NAME_MAX_LEN   = 33,
+};
+extern char button_names[SDL_CONTROLLER_BUTTON_MAX][BUTTON_NAME_MAX_LEN];
+extern char axis_names[SDL_CONTROLLER_AXIS_MAX][AXIS_NAME_MAX_LEN];
+
+/* --- Constructors/Destructors --- */
+extern void Gamepad_Init(struct controllerGamepad *g);
+extern void Gamepad_Free(struct controllerGamepad *g);
+
+/* -- Controller management -- */
+extern void Gamepad_Realloc(struct controllerGamepad *g);
+extern void Gamepad_addController(   struct controllerGamepad *g, if32 j);
+extern void Gamepad_removeController(struct controllerGamepad *g, if32 i);
+
+/* -- Pressed button -- */
+extern void Gamepad_Held(if8 *h, size_t *hn, if32 *t, if8 *p, size_t pn, if32 dt);
+extern bool Gamepad_isPressed(   struct controllerGamepad *g,  int sb);
+extern bool Gamepad_ButtonorAxis(struct controllerGamepad *g,  int b, int i, bool is);
+extern struct Point Gamepad_Joystick_Direction(struct controllerGamepad *g);
+
+#endif /* CONTROLLERGAMEPAD_H */
