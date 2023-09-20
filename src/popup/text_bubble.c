@@ -1,5 +1,4 @@
 
-
 #include "text_bubble.h"
 
 struct Text_Bubble_Pointer Text_Bubble_Pointer_default = {
@@ -12,17 +11,17 @@ struct Text_Bubble_Pointer Text_Bubble_Pointer_default = {
 };
 
 struct Text_Bubble TextBubble_default = {
-    .width      = 0,
-    .height     = 0,
-    .row_height = ASCII_GLYPH_HEIGHT,
-    .line_len_px   = 0,
-    .line_num   = 0,
-    .text       = NULL,
-    .padding    = {0},
-    .target     = {0, 0},
-    .pixelnours = NULL,
-    .texture    = NULL,
-    .update     = false,
+    .width       = 0,
+    .height      = 0,
+    .row_height  = ASCII_GLYPH_HEIGHT,
+    .line_len_px = 64,
+    .line_num    = 0,
+    .text        = NULL,
+    .padding     = {0},
+    .target      = {0, 0},
+    .pixelnours  = NULL,
+    .texture     = NULL,
+    .update      = false,
     .pointer = {
         .pos        = {0, 0},
         .flip       = SDL_FLIP_NONE,
@@ -67,18 +66,16 @@ void TextBubble_Load(struct Text_Bubble *bubble, SDL_Renderer *renderer, struct 
     n9patch->patch_pixels.y   = PLS_PATCH_PIXELS;
     n9patch->scale.x          = PLS_N9PATCH_SCALE_X;
     n9patch->scale.y          = PLS_N9PATCH_SCALE_Y;
-    n9patch->size_pixels.x    = PLS_PATCH_PIXELS * PLS_PATCH_X_SIZE;
-    n9patch->size_pixels.y    = PLS_PATCH_PIXELS * PLS_PATCH_Y_SIZE;
     n9patch->size_patches.x   = PLS_PATCH_X_SIZE;
     n9patch->size_patches.y   = PLS_PATCH_Y_SIZE;
     n9patch->pos.x            = 0;
     n9patch->pos.y            = 0;
 
-    char *path = PATH_JOIN("..", "assets", "GUI", "Popup", "Popup_TextBubble.png");
+    char *path = PATH_JOIN("..", "assets", "GUI", "Popup", "Popup_TextBubble_n9patch.png");
     n9patch->texture = Filesystem_Texture_Load(renderer, path, SDL_PIXELFORMAT_INDEX8);
-    SDL_assert(bubble->texture != NULL);
+    SDL_assert(n9patch->texture != NULL);
 
-    path = PATH_JOIN("..", "assets", "GUI", "Menu", "texture_pointer.png");
+    path = PATH_JOIN("..", "assets", "GUI", "Popup", "Popup_TextBubble_Pointer.png");
     bubble->pointer.texture = Filesystem_Texture_Load(renderer, path, SDL_PIXELFORMAT_INDEX8);
     SDL_assert(bubble->pointer.texture != NULL);
 
@@ -91,7 +88,7 @@ void TextBubble_Set_Text(struct Text_Bubble *bubble, const char *text) {
         free(bubble->text);
 
     size_t len   = strlen(text);
-    bubble->text = calloc(len, sizeof(*bubble->text));
+    bubble->text = calloc(len + 1, sizeof(*bubble->text));
     strncpy(bubble->text, text, len);
     TextBubble_Compute_Size(bubble);
 
@@ -209,6 +206,9 @@ void TextBubble_Compute_Size(struct Text_Bubble *bu) {
 /* -- Drawing elements -- */
 void TextBubble_Write(struct Text_Bubble *bubble, SDL_Renderer *renderer) {
     SOTA_Log_FPS("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
+    /* - name - */
+    int x = bubble->padding.left, y = bubble->padding.top;
+    PixelFont_Write_Len(bubble->pixelnours, renderer, bubble->text, x, y);
 
     SOTA_Log_FPS("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
@@ -221,17 +221,24 @@ void TextBubble_Update(struct Text_Bubble *bubble, struct n9Patch *n9patch,
     SDL_assert(bubble != NULL);
     SDL_assert(renderer != NULL);
     /* - variable declaration/ constants definition - */
-    SDL_assert(n9patch->size_pixels.x > 0);
-    SDL_assert(n9patch->size_pixels.y > 0);
-    SDL_assert(n9patch->scale.x > 0);
-    SDL_assert(n9patch->scale.y > 0);
-    SDL_assert(bubble->width > 0);
-    SDL_assert(bubble->height > 0);
-
+    SDL_assert(bubble->width            > 0);
+    SDL_assert(bubble->height           > 0);
+    SDL_assert(n9patch->scale.x         > 0);
+    SDL_assert(n9patch->scale.y         > 0);
+    n9patch->size_pixels.x = bubble->width ;
+    n9patch->size_pixels.y = bubble->height;
+    n9patch->size_patches.x = n9patch->size_pixels.x / n9patch->patch_pixels.x;
+    n9patch->size_patches.y = n9patch->size_pixels.y / n9patch->patch_pixels.y;
+    n9patch->size_pixels.x = n9patch->size_patches.x * n9patch->patch_pixels.x;
+    n9patch->size_pixels.y = n9patch->size_patches.y * n9patch->patch_pixels.y;
+    SDL_assert(n9patch->size_pixels.x   > 0);
+    SDL_assert(n9patch->size_pixels.y   > 0);
+        
     /* - create render target texture - */
     if (bubble->texture == NULL) {
+        int x  = n9patch->size_pixels.x, y = n9patch->size_pixels.y;
         bubble->texture = SDL_CreateTexture(renderer, SDL_PIXELFORMAT_ARGB8888,
-                                            SDL_TEXTUREACCESS_TARGET, bubble->width, bubble->height);
+                                            SDL_TEXTUREACCESS_TARGET, x, y);
         SDL_assert(bubble->texture != NULL);
         SDL_SetTextureBlendMode(bubble->texture, SDL_BLENDMODE_BLEND);
     }
@@ -252,8 +259,10 @@ void TextBubble_Update(struct Text_Bubble *bubble, struct n9Patch *n9patch,
     n9patch->scale.x    = scale_x;
     n9patch->scale.y    = scale_y;
 
-    TextBubble_Write(       bubble, renderer);
-    TextBubble_Pointer_Draw(bubble, renderer);
+    // TextBubble_Write(       bubble, renderer);
+    // TextBubble_Pointer_Draw(bubble, renderer);
+
+    SDL_SetRenderTarget(renderer, target);
 
     SOTA_Log_FPS("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
@@ -279,7 +288,6 @@ void TextBubble_Draw(struct PopUp *popup, struct Point pos,
     SDL_assert(bubble->texture != NULL);
     SDL_RenderCopy(renderer, bubble->texture, NULL, &dstrect);
     Utilities_DrawColor_Reset(renderer);
-
 
     SOTA_Log_FPS("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }

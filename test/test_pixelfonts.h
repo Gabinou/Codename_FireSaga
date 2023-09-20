@@ -35,6 +35,11 @@ void test_pixelfonts() {
     line_num = PixelFont_Lines_Num_Len(test_font, text, line_len_px);
     nourstest_true(line_num == 1);
 
+    text     = "Hello, World!";
+    SDL_assert(PixelFont_Width(test_font, text, strlen(text)) < line_len_px);
+    line_num = PixelFont_Lines_Num_Len(test_font, text, line_len_px);
+    nourstest_true(line_num == 1);
+
     /* -- 2 line -- */
     text     = "The lizard is a wizard";
     line_num = PixelFont_Lines_Num_Len(test_font, text, line_len_px);
@@ -66,7 +71,7 @@ void test_pixelfonts() {
             "Conglomerate a rock y baka agglomeration bakanumeration stupidification negativitiation.";
     TextLines_Free(&text_lines);
     text_lines = PixelFont_Lines_Len(test_font, text4, line_len_px);
-    line_num = PixelFont_Lines_Num_Len(test_font, text4, line_len_px);
+    line_num   = PixelFont_Lines_Num_Len(test_font, text4, line_len_px);
     nourstest_true(line_num == 6);
     nourstest_true(text_lines.line_num == 6);
     nourstest_true(text_lines.line_len == 8);

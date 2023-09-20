@@ -294,6 +294,7 @@ struct TextLines PixelFont_Lines(struct PixelFont *font, const char *text, size_
 int PixelFont_Lines_Num(struct PixelFont *font, const char *text, size_t len_char,
                         size_t line_len_px) {
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
+    SDL_assert(line_len_px > 0);
     SDL_assert(font != NULL);
     SDL_assert(font->glyph_bbox_width != NULL);
     int next_start    = 0; /* start of next line in text [char] */
@@ -390,6 +391,8 @@ int NextLine_Start(const char *text, int previous_break, int current_break, size
 }
 
 int PixelFont_Lines_Num_Len(struct PixelFont *font, const char *text, size_t line_len_px) {
+    SDL_assert(font != NULL);
+    SDL_assert(line_len_px > 0);
     size_t len = strlen(text);
     return (PixelFont_Lines_Num(font, text, len, line_len_px));
 }
@@ -414,7 +417,6 @@ int PixelFont_Width(struct PixelFont *font, const char *text, size_t len) {
 void PixelFont_Compute_Glyph_BBox(struct PixelFont *font) {
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     SDL_assert(font->surface);
-    SDL_assert(font->word_space > 0);
     SDL_assert(SDL_ISPIXELFORMAT_INDEXED(font->surface->format->format));
     SDL_LockSurface(font->surface);
     uf8 *pixels = font->surface->pixels;
