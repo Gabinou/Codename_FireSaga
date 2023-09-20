@@ -97,7 +97,7 @@ int main(int argc, char *argv[]) {
 
     /* -- Running tests -- */
     unit_tests();
-    // render_tests();
+    render_tests();
 
     /* -- Postliminaries -- */
     Utilities_Free();

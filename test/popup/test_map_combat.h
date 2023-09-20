@@ -5,6 +5,7 @@
 #include "RNG.h"
 
 void test_popup_map_combat() {
+    SDL_Log("%s " STRINGIZE(__LINE__), __func__);
     /* -- Preliminaries -- */
     sota_mkdir("popup_map_combat");
 

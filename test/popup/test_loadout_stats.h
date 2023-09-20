@@ -4,6 +4,7 @@
 #include "unit.h"
 
 void test_popup_loadout_stats() {
+    SDL_Log("%s " STRINGIZE(__LINE__), __func__);
     /* -- Preliminaries -- */
     sota_mkdir("popup_loadout_stats");
 

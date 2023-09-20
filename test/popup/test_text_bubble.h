@@ -3,6 +3,8 @@
 
 
 void test_text_bubble() {
+    SDL_Log("%s " STRINGIZE(__LINE__), __func__);
+
     sota_mkdir("text_bubble");
 
     /* -- Create renderer -- */
@@ -21,14 +23,13 @@ void test_text_bubble() {
     bubble.pixelnours = PixelFont_Alloc();
     PixelFont_Load(bubble.pixelnours, renderer, PATH_JOIN("..", "assets", "Fonts", "pixelnours.png"));
 
-    // TextBubble_Set_Text(&bubble, "Hello, World!");
-    // TextBubble_Compute_Size(&bubble);
-    // SDL_assert(bubble.width  > 0);
-    // SDL_assert(bubble.height > 0);
+    TextBubble_Set_Text(&bubble, "Hello, World!");
+    SDL_assert(bubble.width  > 0);
+    SDL_assert(bubble.height > 0);
 
-    // TextBubble_Update(&bubble, &n9patch, render_target, renderer);
-    // Filesystem_Texture_Dump(PATH_JOIN("text_bubble", "TextBubble_HelloWorld.png"),
-    //                         renderer, bubble.texture, SDL_PIXELFORMAT_ARGB8888, render_target);
+    TextBubble_Update(&bubble, &n9patch, render_target, renderer);
+    Filesystem_Texture_Dump(PATH_JOIN("text_bubble", "TextBubble_HelloWorld.png"),
+                            renderer, bubble.texture, SDL_PIXELFORMAT_ARGB8888, render_target);
 
     PixelFont_Free(bubble.pixelnours, true);
     TextBubble_Free(&bubble);

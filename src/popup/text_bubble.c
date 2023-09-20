@@ -93,6 +93,7 @@ void TextBubble_Set_Text(struct Text_Bubble *bubble, const char *text) {
     size_t len   = strlen(text);
     bubble->text = calloc(len, sizeof(*bubble->text));
     strncpy(bubble->text, text, len);
+    TextBubble_Compute_Size(bubble);
 
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
