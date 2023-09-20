@@ -227,7 +227,10 @@ void TextLines_Realloc(struct TextLines *textlines, size_t len) {
 
 void TextLines_Free(struct TextLines *textlines) {
     if (textlines->lines == NULL) {
-
+        for (int i = 0; i < textlines->line_num; i++) {
+            free(textlines->lines[i]);
+        }
+        free(textlines->lines);
     }
     if (textlines->lines_len == NULL) {
         free(textlines->lines_len);
