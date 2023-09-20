@@ -52,8 +52,6 @@ struct PixelFont PixelFont_default =  {
     .glyph_bbox_width   = NULL,
     .glyph_bbox_height  = NULL,
     .y_offset           = NULL,
-    .white_color        = -1,
-    .black_color        = -1,
     .scroll_speed       = SCROLL_TIME_FAST,
     .scroll_len         = 0,
 };
@@ -71,8 +69,6 @@ struct PixelFont TextureFont_default =  {
     .glyph_bbox_width   = NULL,
     .glyph_bbox_height  = NULL,
     .y_offset           = NULL,
-    .white_color        = -1,
-    .black_color        = -1,
     .scroll_speed       = SCROLL_TIME_FAST,
     .scroll_len         = 0,
 };
@@ -156,24 +152,29 @@ void PixelFont_Swap_Palette(struct PixelFont *font, SDL_Renderer *renderer, if8 
     SDL_assert(NEWb < PALETTE_NES_COLOR_NUM);
     SDL_assert(palette_NES->ncolors == PALETTE_NES_COLOR_NUM);
 
-    /* Save old colors fropm palette_NES */
+    /* Save old colors fropm palette_NES, */
+    /* before changing anything */
     if8 NESb = 1, NESw = PALETTE_NES_COLOR_NUM - 1;
-    SDL_Color old_white, old_black;
-    if (NEWw > -1)
+    SDL_Color old_white, old_black, new_white, new_black;
+    if (NEWw > -1) {
         old_white = palette_NES->colors[NESw];
-    if (NEWb > -1)
+        new_white = palette_NES->colors[NEWw];
+    }
+    if (NEWb > -1) {
         old_black = palette_NES->colors[NESb];
+        new_black = palette_NES->colors[NEWb];
+    }
 
     /* Swap colors in palette_NES */
     if (NEWw > -1) {
-        palette_NES->colors[NESw].r = palette_NES->colors[NEWw].r;
-        palette_NES->colors[NESw].g = palette_NES->colors[NEWw].g;
-        palette_NES->colors[NESw].b = palette_NES->colors[NEWw].b;
+        palette_NES->colors[NESw].r = new_white.r;
+        palette_NES->colors[NESw].g = new_white.g;
+        palette_NES->colors[NESw].b = new_white.b;
     }
     if (NEWb > -1) {
-        palette_NES->colors[NESb].r = palette_NES->colors[NEWb].r;
-        palette_NES->colors[NESb].g = palette_NES->colors[NEWb].g;
-        palette_NES->colors[NESb].b = palette_NES->colors[NEWb].b;
+        palette_NES->colors[NESb].r = new_black.r;
+        palette_NES->colors[NESb].g = new_black.g;
+        palette_NES->colors[NESb].b = new_black.b;
     }
 
     /* Swap palette of font surface, texture */

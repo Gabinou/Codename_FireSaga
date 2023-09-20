@@ -20,9 +20,10 @@ void test_text_bubble() {
 
     /* - loading fonts - */
     bubble.pixelnours = PixelFont_Alloc();
-    bubble.pixelnours->y_offset = pixelfont_y_offset;
+    bubble.pixelnours->y_offset     = pixelfont_y_offset;
     TextBubble_Load(&bubble, renderer, &n9patch);
     PixelFont_Load(bubble.pixelnours, renderer, PATH_JOIN("..", "assets", "Fonts", "pixelnours.png"));
+    PixelFont_Swap_Palette(bubble.pixelnours, renderer, 1, 55);
     bubble.line_len_px = 64;
 
     TextBubble_Set_Text(&bubble, "Hello, World!");

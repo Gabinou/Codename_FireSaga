@@ -55,8 +55,6 @@ typedef struct PixelFont {
     uf8 *glyph_bbox_width;
     uf8 *glyph_bbox_height;
     uf8 *y_offset;
-    if8  white_color;    /* replaces white */
-    if8  black_color;    /* replaces black */
     /* Text Scrolling */
     int  scroll_speed;   /* [ms] time until new character is rendered */
     int  scroll_len;   /* [pixels/char] to render */
