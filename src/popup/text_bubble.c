@@ -17,7 +17,12 @@ struct Text_Bubble TextBubble_default = {
     .line_len_px = 64,
     .line_num    = 0,
     .text        = NULL,
-    .padding     = {0},
+    .padding     = {
+        .left   = 7,
+        .top    = 4,
+        .bottom = 2,
+        .right  = 7,
+    },
     .target      = {0, 0},
     .pixelnours  = NULL,
     .texture     = NULL,
@@ -227,8 +232,8 @@ void TextBubble_Update(struct Text_Bubble *bubble, struct n9Patch *n9patch,
     SDL_assert(n9patch->scale.y         > 0);
     n9patch->size_pixels.x = bubble->width ;
     n9patch->size_pixels.y = bubble->height;
-    n9patch->size_patches.x = n9patch->size_pixels.x / n9patch->patch_pixels.x;
-    n9patch->size_patches.y = n9patch->size_pixels.y / n9patch->patch_pixels.y;
+    n9patch->size_patches.x = n9patch->size_pixels.x / n9patch->patch_pixels.x + 1;
+    n9patch->size_patches.y = n9patch->size_pixels.y / n9patch->patch_pixels.y + 1;
     n9patch->size_pixels.x = n9patch->size_patches.x * n9patch->patch_pixels.x;
     n9patch->size_pixels.y = n9patch->size_patches.y * n9patch->patch_pixels.y;
     SDL_assert(n9patch->size_pixels.x   > 0);
@@ -254,12 +259,12 @@ void TextBubble_Update(struct Text_Bubble *bubble, struct n9Patch *n9patch,
     n9patch->scale.x    = 1;
     n9patch->scale.y    = 1;
     n9patch->pos.x      = 0;
-    n9patch->pos.y      = PLS_DEST_Y;
+    n9patch->pos.y      = 0;
     n9Patch_Draw(n9patch, renderer);
     n9patch->scale.x    = scale_x;
     n9patch->scale.y    = scale_y;
 
-    // TextBubble_Write(       bubble, renderer);
+    TextBubble_Write(       bubble, renderer);
     // TextBubble_Pointer_Draw(bubble, renderer);
 
     SDL_SetRenderTarget(renderer, target);

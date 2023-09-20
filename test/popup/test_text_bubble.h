@@ -20,6 +20,7 @@ void test_text_bubble() {
 
     /* - loading fonts - */
     bubble.pixelnours = PixelFont_Alloc();
+    bubble.pixelnours->y_offset = pixelfont_y_offset;
     TextBubble_Load(&bubble, renderer, &n9patch);
     PixelFont_Load(bubble.pixelnours, renderer, PATH_JOIN("..", "assets", "Fonts", "pixelnours.png"));
     bubble.line_len_px = 64;

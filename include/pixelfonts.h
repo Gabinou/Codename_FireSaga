@@ -36,6 +36,7 @@ enum SCROLLING {
     SCROLL_TIME_SLOW            = 200,
 };
 
+extern uf8 pixelfont_y_offset[ASCII_GLYPH_NUM];
 extern uf8 pixelfont_big_y_offset[ASCII_GLYPH_NUM];
 
 /* --- DEFINITION --- */
