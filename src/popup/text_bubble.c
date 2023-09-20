@@ -192,15 +192,16 @@ void TextBubble_Pointer_Draw(struct Text_Bubble *bubble, SDL_Renderer *renderer)
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
-void TextBubble_Compute_Size(struct Text_Bubble *bubble) {
+void TextBubble_Compute_Size(struct Text_Bubble *bu) {
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
-    if (bubble->text == NULL) {
+    if (bu->text == NULL) {
         SOTA_Log_Debug("bubble's text is NULL");
         return;
     }
-    bubble->width   = bubble->line_len_px + bubble->padding.right + bubble->padding.left;
-    PixelFont_Width_Len(bubble->pixelnours, bubble->text);
-    bubble->height  = bubble->line_len_px + bubble->padding.right + bubble->padding.left;
+    PixelFont_Width_Len(bu->pixelnours, bu->text);
+    int line_num = PixelFont_Lines_Num_Len(bu->pixelnours, bu->text, bu->line_len_px);
+    bu->height = line_num * bu->row_height + bu->padding.top + bu->padding.bottom;
+    bu->width  = bu->line_len_px + bu->padding.right + bu->padding.left;
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
@@ -223,15 +224,13 @@ void TextBubble_Update(struct Text_Bubble *bubble, struct n9Patch *n9patch,
     SDL_assert(n9patch->size_pixels.y > 0);
     SDL_assert(n9patch->scale.x > 0);
     SDL_assert(n9patch->scale.y > 0);
-    if16 menu_w = n9patch->size_pixels.x;
-    if16 menu_h = n9patch->size_pixels.y + PLS_DEST_Y;
-    SDL_assert(menu_w > 0);
-    SDL_assert(menu_h > 0);
+    SDL_assert(bubble->width > 0);
+    SDL_assert(bubble->height > 0);
 
     /* - create render target texture - */
     if (bubble->texture == NULL) {
         bubble->texture = SDL_CreateTexture(renderer, SDL_PIXELFORMAT_ARGB8888,
-                                            SDL_TEXTUREACCESS_TARGET, menu_w, menu_h);
+                                            SDL_TEXTUREACCESS_TARGET, bubble->width, bubble->height);
         SDL_assert(bubble->texture != NULL);
         SDL_SetTextureBlendMode(bubble->texture, SDL_BLENDMODE_BLEND);
     }

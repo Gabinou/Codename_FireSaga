@@ -61,11 +61,11 @@ struct Text_Bubble_Pointer {
 };
 
 struct Text_Bubble {
-    if32 width;
-    if32 height;
-    if32 row_height;
-    if32 line_len_px;
-    if32 line_num;
+    int width;
+    int height;
+    int row_height;
+    int line_len_px;
+    int line_num;
     char *text;
     struct Padding padding;
     struct Point target; /* Where arrow bubble should point */
