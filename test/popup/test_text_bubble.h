@@ -40,6 +40,13 @@ void test_text_bubble() {
     Filesystem_Texture_Dump(PATH_JOIN("popup_text_bubble", "TextBubble_A.png"),
                             renderer, bubble.texture, SDL_PIXELFORMAT_ARGB8888, render_target);
 
+    TextBubble_Set_Text(&bubble, "I am a 2 line long speech. Brief, to the point.");
+    SDL_assert(bubble.width  > 0);
+    SDL_assert(bubble.height > 0);
+    TextBubble_Update(&bubble, &n9patch, render_target, renderer);
+    Filesystem_Texture_Dump(PATH_JOIN("popup_text_bubble", "TextBubble_2lines.png"),
+                            renderer, bubble.texture, SDL_PIXELFORMAT_ARGB8888, render_target);
+
 
     PixelFont_Free(bubble.pixelnours, true);
     TextBubble_Free(&bubble);
