@@ -33,6 +33,13 @@ void test_text_bubble() {
     Filesystem_Texture_Dump(PATH_JOIN("popup_text_bubble", "TextBubble_HelloWorld.png"),
                             renderer, bubble.texture, SDL_PIXELFORMAT_ARGB8888, render_target);
 
+    TextBubble_Set_Text(&bubble, "Another oneliner.");
+    SDL_assert(bubble.width  > 0);
+    SDL_assert(bubble.height > 0);
+    TextBubble_Update(&bubble, &n9patch, render_target, renderer);
+    Filesystem_Texture_Dump(PATH_JOIN("popup_text_bubble", "TextBubble_1line.png"),
+                            renderer, bubble.texture, SDL_PIXELFORMAT_ARGB8888, render_target);
+
     TextBubble_Set_Text(&bubble, "A");
     SDL_assert(bubble.width  > 0);
     SDL_assert(bubble.height > 0);
@@ -40,11 +47,19 @@ void test_text_bubble() {
     Filesystem_Texture_Dump(PATH_JOIN("popup_text_bubble", "TextBubble_A.png"),
                             renderer, bubble.texture, SDL_PIXELFORMAT_ARGB8888, render_target);
 
-    TextBubble_Set_Text(&bubble, "I am a 2 line long speech. Brief, to the point.");
+    TextBubble_Set_Text(&bubble, "I am a 2 line long speech. Brief.");
     SDL_assert(bubble.width  > 0);
     SDL_assert(bubble.height > 0);
     TextBubble_Update(&bubble, &n9patch, render_target, renderer);
     Filesystem_Texture_Dump(PATH_JOIN("popup_text_bubble", "TextBubble_2lines.png"),
+                            renderer, bubble.texture, SDL_PIXELFORMAT_ARGB8888, render_target);
+
+
+    TextBubble_Set_Text(&bubble, "The quick brown fox jumped over the lazy dog");
+    SDL_assert(bubble.width  > 0);
+    SDL_assert(bubble.height > 0);
+    TextBubble_Update(&bubble, &n9patch, render_target, renderer);
+    Filesystem_Texture_Dump(PATH_JOIN("popup_text_bubble", "TextBubble_BrownFox.png"),
                             renderer, bubble.texture, SDL_PIXELFORMAT_ARGB8888, render_target);
 
 

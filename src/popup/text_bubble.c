@@ -14,6 +14,7 @@ struct Text_Bubble TextBubble_default = {
     .width       = 0,
     .height      = 0,
     .row_height  = ASCII_GLYPH_HEIGHT,
+    .lines       = {0},
     .line_len_px = 64,
     .line_num    = 0,
     .text        = NULL,
@@ -48,6 +49,8 @@ void TextBubble_Free(struct Text_Bubble *bubble) {
         SDL_DestroyTexture(bubble->texture);
         bubble->texture = NULL;
     }
+
+    TextLines_Free(&bubble->lines);
 
     if (bubble->pointer.texture != NULL) {
         SDL_DestroyTexture(bubble->pointer.texture);
@@ -93,13 +96,15 @@ void TextBubble_Set_Text(struct Text_Bubble *bubble, const char *text) {
         free(bubble->text);
         bubble->text = NULL;
     }
-    // SDL_Log("text '%s'", text);
-    SDL_Log("%d", strlen(text));
     size_t len   = strlen(text);
     bubble->text = calloc(len + 1, sizeof(*bubble->text));
     strncpy(bubble->text, text, len);
-    // SDL_Log("%d", strlen(bubble->text));
+
+    TextLines_Free(&bubble->lines);
+    bubble->lines = PixelFont_Lines_Len(bubble->pixelnours, bubble->text, bubble->line_len_px);
+
     TextBubble_Compute_Size(bubble);
+
     if (bubble->texture != NULL) {
         SDL_DestroyTexture(bubble->texture);
         bubble->texture = NULL;
@@ -210,13 +215,12 @@ void TextBubble_Compute_Size(struct Text_Bubble *bu) {
     }
     
     int line_num = PixelFont_Lines_Num_Len(bu->pixelnours, bu->text, bu->line_len_px);
-    SDL_Log("line_num %d", line_num);
+    SDL_assert(line_num == bu->lines.line_num);
     bu->height = line_num * bu->row_height + bu->padding.top + bu->padding.bottom;
     if (line_num <= 1) {
-        SDL_Log("PixelFont_Width_Len %d", PixelFont_Width_Len(bu->pixelnours, bu->text));
-        bu->width  = PixelFont_Width_Len(bu->pixelnours, bu->text) + bu->padding.right + bu->padding.left;
+        bu->width = PixelFont_Width_Len(bu->pixelnours, bu->text) + bu->padding.right*3 + bu->padding.left;
     } else {
-        bu->width  = bu->line_len_px + bu->padding.right + bu->padding.left;
+        bu->width = bu->line_len_px + bu->padding.right + bu->padding.left;
     }
 
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
@@ -226,8 +230,11 @@ void TextBubble_Compute_Size(struct Text_Bubble *bu) {
 void TextBubble_Write(struct Text_Bubble *bubble, SDL_Renderer *renderer) {
     SOTA_Log_FPS("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     /* - name - */
-    int x = bubble->padding.left, y = bubble->padding.top;
-    PixelFont_Write_Len(bubble->pixelnours, renderer, bubble->text, x, y);
+    int x = bubble->padding.left, y; 
+    for (int i = 0; i < bubble->lines.line_num; i++) {
+        y = bubble->padding.top + bubble->row_height * i;
+        PixelFont_Write_Len(bubble->pixelnours, renderer, bubble->lines.lines[i], x, y);
+    }
 
     SOTA_Log_FPS("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
@@ -246,7 +253,8 @@ void TextBubble_Update(struct Text_Bubble *bubble, struct n9Patch *n9patch,
     SDL_assert(n9patch->scale.y         > 0);
     n9patch->size_pixels.x  = bubble->width ;
     n9patch->size_pixels.y  = bubble->height;
-    n9patch->size_patches.x = n9patch->size_pixels.x / n9patch->patch_pixels.x + 1;
+    n9patch->size_patches.x = n9patch->size_pixels.x / n9patch->patch_pixels.x;
+    n9patch->size_patches.x = n9patch->size_patches.x < 2 ? 2 : n9patch->size_patches.x;
     n9patch->size_patches.y = n9patch->size_pixels.y / n9patch->patch_pixels.y + 1;
     n9patch->size_patches.y = n9patch->size_patches.y < 2 ? 2 : n9patch->size_patches.y;
     n9patch->size_pixels.x  = n9patch->size_patches.x * n9patch->patch_pixels.x;

@@ -69,6 +69,7 @@ struct Text_Bubble {
     int line_len_px;
     int line_num;
     char *text;
+    struct TextLines lines;
     struct Padding padding;
     struct Point target; /* Where arrow bubble should point */
     struct PixelFont *pixelnours;
