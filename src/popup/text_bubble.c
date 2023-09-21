@@ -19,10 +19,10 @@ struct Text_Bubble TextBubble_default = {
     .line_num    = 0,
     .text        = NULL,
     .padding     = {
-        .left   = 7,
-        .top    = 4,
-        .bottom = 2,
-        .right  = 4,
+        .left   = TEXT_BUBBLE_PADDING_LEFT,
+        .top    = TEXT_BUBBLE_PADDING_TOP,
+        .bottom = TEXT_BUBBLE_PADDING_BOTTOM,
+        .right  = TEXT_BUBBLE_PADDING_RIGHT,
     },
     .target      = {0, 0},
     .pixelnours  = NULL,
@@ -218,7 +218,7 @@ void TextBubble_Compute_Size(struct Text_Bubble *bu) {
     SDL_assert(line_num == bu->lines.line_num);
     bu->height = line_num * bu->row_height + bu->padding.top + bu->padding.bottom;
     if (line_num <= 1) {
-        bu->width = PixelFont_Width_Len(bu->pixelnours, bu->text) + bu->padding.right*3 + bu->padding.left;
+        bu->width = PixelFont_Width_Len(bu->pixelnours, bu->text) + bu->padding.right*2 + bu->padding.left;
     } else {
         bu->width = bu->line_len_px + bu->padding.right + bu->padding.left;
     }
