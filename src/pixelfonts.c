@@ -349,7 +349,8 @@ int PixelFont_Lines_Num(struct PixelFont *font, const char *text, size_t len_cha
         next_start = NextLine_Start(text, current_start, current_break, line_len_char);
         SDL_assert(next_start > current_start);
     }
-
+    if (rows < 1)
+        rows = 1;
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
     return (rows);
 }
