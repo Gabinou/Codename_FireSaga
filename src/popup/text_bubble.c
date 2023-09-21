@@ -21,7 +21,7 @@ struct Text_Bubble TextBubble_default = {
         .left   = 7,
         .top    = 4,
         .bottom = 2,
-        .right  = 7,
+        .right  = 4,
     },
     .target      = {0, 0},
     .pixelnours  = NULL,
@@ -201,10 +201,14 @@ void TextBubble_Compute_Size(struct Text_Bubble *bu) {
         SOTA_Log_Debug("bubble's text is NULL");
         return;
     }
-    PixelFont_Width_Len(bu->pixelnours, bu->text);
+    
     int line_num = PixelFont_Lines_Num_Len(bu->pixelnours, bu->text, bu->line_len_px);
     bu->height = line_num * bu->row_height + bu->padding.top + bu->padding.bottom;
-    bu->width  = bu->line_len_px + bu->padding.right + bu->padding.left;
+    if (line_num == 1 ){
+        bu->width  = PixelFont_Width_Len(bu->pixelnours, bu->text) + bu->padding.right + bu->padding.left;
+    } else {
+        bu->width  = bu->line_len_px + bu->padding.right + bu->padding.left;
+    }
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
