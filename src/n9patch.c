@@ -26,7 +26,7 @@ void n9Patch_Fit(struct n9Patch *n9patch, struct Point content) {
     SDL_assert(n9patch->patch_pixels.y  > 0);
     SDL_assert(content.x                > 0);
     SDL_assert(content.y                > 0);
-    
+
     n9patch->size_pixels.x  = content.x;
     n9patch->size_pixels.y  = content.y;
     n9patch->size_patches.x = n9patch->size_pixels.x / n9patch->patch_pixels.x;
@@ -78,14 +78,14 @@ void n9Patch_Draw(struct n9Patch *n9patch, struct SDL_Renderer *renderer) {
             if (x == size_x - 2) {
                 srcrect.w -= n9patch->fit.x;
                 dstrect.w -= n9patch->fit.x * n9patch->scale.x;
-            } 
+            }
             if (y == size_y - 2) {
                 srcrect.h -= n9patch->fit.y;
                 dstrect.h -= n9patch->fit.y * n9patch->scale.y;
             }
-            if (x == size_x - 1) 
+            if (x == size_x - 1)
                 dstrect.x -= n9patch->fit.x;
-            if (y == size_y - 1) 
+            if (y == size_y - 1)
                 dstrect.y -= n9patch->fit.y;
 
             SDL_RenderCopy(renderer, n9patch->texture, &srcrect, &dstrect);

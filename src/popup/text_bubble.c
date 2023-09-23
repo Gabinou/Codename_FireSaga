@@ -24,8 +24,8 @@ struct Text_Bubble TextBubble_default = {
         .bottom = TEXT_BUBBLE_PADDING_BOTTOM,
         .right  = TEXT_BUBBLE_PADDING_RIGHT,
     },
-    .target      = {-1, -1},
-    .pixelfont  = NULL,
+    .target      = {-100, -100},
+    .pixelfont   = NULL,
     .texture     = NULL,
     .update      = false,
     .pointer = {
@@ -162,58 +162,58 @@ int TextBubble_Pointer_Angle(struct Text_Bubble *bubble) {
     /* Decide orientation of pointer, except flip. */
     // Only puts pointer in correct octant
 
-    bubble->pointer.dstrect.w = TEXT_BUBBLE_POINTER_SIZE; 
-    bubble->pointer.dstrect.h = TEXT_BUBBLE_POINTER_SIZE; 
+    bubble->pointer.dstrect.w = TEXT_BUBBLE_POINTER_SIZE;
+    bubble->pointer.dstrect.h = TEXT_BUBBLE_POINTER_SIZE;
 
     bubble->pointer.flip = SDL_FLIP_NONE;
     switch (bubble->pointer.octant) {
         case SOTA_DIRECTION_RIGHT:
             bubble->pointer.angle = 270.0;
             bubble->pointer.index = TEXT_BUBBLE_STRAIGHT;
-            bubble->pointer.dstrect.x = bubble->width - 1; 
-            bubble->pointer.dstrect.y = TEXT_BUBBLE_PATCH_PIXELS; 
+            bubble->pointer.dstrect.x = bubble->width - 2;
+            bubble->pointer.dstrect.y = TEXT_BUBBLE_PATCH_PIXELS - 3;
             break;
         case SOTA_DIRECTION_TOP:
             bubble->pointer.angle = 180.0;
             bubble->pointer.index = TEXT_BUBBLE_STRAIGHT;
-            bubble->pointer.dstrect.x = TEXT_BUBBLE_PATCH_PIXELS; 
-            bubble->pointer.dstrect.y = -6; 
+            bubble->pointer.dstrect.x = TEXT_BUBBLE_PATCH_PIXELS;
+            bubble->pointer.dstrect.y = -6;
             break;
         case SOTA_DIRECTION_BOTTOM:
             bubble->pointer.angle = 0.0;
             bubble->pointer.index = TEXT_BUBBLE_STRAIGHT;
-            bubble->pointer.dstrect.x = TEXT_BUBBLE_PATCH_PIXELS; 
-            bubble->pointer.dstrect.y = bubble->height - 2; 
+            bubble->pointer.dstrect.x = TEXT_BUBBLE_PATCH_PIXELS;
+            bubble->pointer.dstrect.y = bubble->height - 2;
             break;
         case SOTA_DIRECTION_LEFT:
             bubble->pointer.angle = 90.0;
             bubble->pointer.index = TEXT_BUBBLE_STRAIGHT;
-            bubble->pointer.dstrect.x = -6; 
-            bubble->pointer.dstrect.y = TEXT_BUBBLE_PATCH_PIXELS - 3; 
+            bubble->pointer.dstrect.x = -6;
+            bubble->pointer.dstrect.y = TEXT_BUBBLE_PATCH_PIXELS - 3;
             break;
         case SOTA_DIRECTION_DIAGONAL_TR:
             bubble->pointer.angle = 270.0;
             bubble->pointer.index = TEXT_BUBBLE_DIAGONAL;
-            bubble->pointer.dstrect.x = bubble->width  - 7; 
-            bubble->pointer.dstrect.y = 0; 
+            bubble->pointer.dstrect.x = bubble->width - 6;
+            bubble->pointer.dstrect.y = -2;
             break;
         case SOTA_DIRECTION_DIAGONAL_BR:
-            bubble->pointer.angle = 90.0;
-            bubble->pointer.index = TEXT_BUBBLE_DIAGONAL;
-            bubble->pointer.dstrect.x = bubble->width  - 7; 
-            bubble->pointer.dstrect.y = bubble->height - 6; 
-            break;
-        case SOTA_DIRECTION_DIAGONAL_BL:
             bubble->pointer.angle = 0.0;
             bubble->pointer.index = TEXT_BUBBLE_DIAGONAL;
-            bubble->pointer.dstrect.x = 0; 
-            bubble->pointer.dstrect.y = bubble->height - 6; 
+            bubble->pointer.dstrect.x = bubble->width  - 6;
+            bubble->pointer.dstrect.y = bubble->height - 6;
+            break;
+        case SOTA_DIRECTION_DIAGONAL_BL:
+            bubble->pointer.angle = 90.0;
+            bubble->pointer.index = TEXT_BUBBLE_DIAGONAL;
+            bubble->pointer.dstrect.x = -2;
+            bubble->pointer.dstrect.y = bubble->height - 6;
             break;
         case SOTA_DIRECTION_DIAGONAL_TL:
             bubble->pointer.angle = 180.0;
             bubble->pointer.index = TEXT_BUBBLE_DIAGONAL;
-            bubble->pointer.dstrect.x = -2; 
-            bubble->pointer.dstrect.y = -2; 
+            bubble->pointer.dstrect.x = -2;
+            bubble->pointer.dstrect.y = -2;
             break;
     }
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
@@ -232,14 +232,14 @@ void TextBubble_Pointer_Draw(struct Text_Bubble *bubble, SDL_Renderer *renderer)
     dstrect.y = bubble->pointer.dstrect.y + TEXT_BUBBLE_RENDER_PAD;
     dstrect.w = bubble->pointer.dstrect.w;
     dstrect.h = bubble->pointer.dstrect.h;
-        
+
     SDL_Point center = {TEXT_BUBBLE_POINTER_SIZE / 2, TEXT_BUBBLE_POINTER_SIZE / 2};
     SDL_RenderCopyEx(renderer, bubble->pointer.texture,
-                   &srcrect,
-                   &dstrect,
-                   bubble->pointer.angle,
-                   &center,
-                   bubble->pointer.flip);
+                     &srcrect,
+                     &dstrect,
+                     bubble->pointer.angle,
+                     &center,
+                     bubble->pointer.flip);
 
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
@@ -250,13 +250,13 @@ void TextBubble_Compute_Size(struct Text_Bubble *bu, struct n9Patch *n9patch) {
         SOTA_Log_Debug("bubble's text is NULL");
         return;
     }
-    
+
     /* -- Bubble text size -- */
     int line_num = PixelFont_Lines_Num_Len(bu->pixelfont, bu->text, bu->line_len_px);
     SDL_assert(line_num == bu->lines.line_num);
     bu->height = line_num * bu->row_height + bu->padding.top + bu->padding.bottom;
     if (line_num <= 1) {
-        bu->width = PixelFont_Width_Len(bu->pixelfont, bu->text) + bu->padding.right*2 + bu->padding.left;
+        bu->width = PixelFont_Width_Len(bu->pixelfont, bu->text) + bu->padding.right * 2 + bu->padding.left;
     } else {
         bu->width = bu->line_len_px + bu->padding.right + bu->padding.left;
     }
@@ -274,7 +274,7 @@ void TextBubble_Compute_Size(struct Text_Bubble *bu, struct n9Patch *n9patch) {
 void TextBubble_Write(struct Text_Bubble *bubble, SDL_Renderer *renderer) {
     SOTA_Log_FPS("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     /* - name - */
-    int x = bubble->padding.left + TEXT_BUBBLE_RENDER_PAD, y; 
+    int x = bubble->padding.left + TEXT_BUBBLE_RENDER_PAD, y;
     for (int i = 0; i < bubble->lines.line_num; i++) {
         y = bubble->padding.top + bubble->row_height * i + TEXT_BUBBLE_RENDER_PAD;
         PixelFont_Write_Len(bubble->pixelfont, renderer, bubble->lines.lines[i], x, y);
@@ -297,10 +297,10 @@ void TextBubble_Update(struct Text_Bubble *bubble, struct n9Patch *n9patch,
     SDL_assert(n9patch->scale.y         > 0);
     SDL_assert(n9patch->size_pixels.x   > 0);
     SDL_assert(n9patch->size_pixels.y   > 0);
-        
+
     /* - create render target texture - */
     if (bubble->texture == NULL) {
-        int x = n9patch->size_pixels.x + TEXT_BUBBLE_RENDER_PAD * 2; 
+        int x = n9patch->size_pixels.x + TEXT_BUBBLE_RENDER_PAD * 2;
         int y = n9patch->size_pixels.y + TEXT_BUBBLE_RENDER_PAD * 2;
         bubble->texture = SDL_CreateTexture(renderer, SDL_PIXELFORMAT_ARGB8888,
                                             SDL_TEXTUREACCESS_TARGET, x, y);

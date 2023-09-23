@@ -85,7 +85,8 @@ void test_text_bubble() {
     /* - Pixelnours_big - */
     bubble.pixelfont->y_offset     = pixelfont_big_y_offset;
     TextBubble_Load(&bubble, renderer, &n9patch);
-    PixelFont_Load(bubble.pixelfont, renderer, PATH_JOIN("..", "assets", "Fonts", "pixelnours_Big.png"));
+    PixelFont_Load(bubble.pixelfont, renderer, PATH_JOIN("..", "assets", "Fonts",
+                                                         "pixelnours_Big.png"));
     PixelFont_Swap_Palette(bubble.pixelfont, renderer, 1, 55);
     bubble.line_len_px  = 96;
     bubble.row_height   = ASCII_GLYPH_HEIGHT + 2;
@@ -102,7 +103,7 @@ void test_text_bubble() {
                             renderer, bubble.texture, SDL_PIXELFORMAT_ARGB8888, render_target);
 
     TextBubble_Set_Text(&bubble, "Another oneliner.", &n9patch);
-    bubble.target.x = bubble.width *2;
+    bubble.target.x = bubble.width * 2;
     bubble.target.y = -bubble.height;
     TextBubble_Set_Target(&bubble, bubble.target);
     SDL_assert(bubble.width  > 0);
@@ -112,8 +113,8 @@ void test_text_bubble() {
                             renderer, bubble.texture, SDL_PIXELFORMAT_ARGB8888, render_target);
 
     TextBubble_Set_Text(&bubble, "A", &n9patch);
-    bubble.target.x = bubble.width *2;
-    bubble.target.y = bubble.height/2;
+    bubble.target.x = bubble.width * 2;
+    bubble.target.y = bubble.height / 2;
     TextBubble_Set_Target(&bubble, bubble.target);
     SDL_assert(bubble.width  > 0);
     SDL_assert(bubble.height > 0);
