@@ -4,7 +4,6 @@
 
 void test_text_bubble() {
     SDL_Log("%s " STRINGIZE(__LINE__), __func__);
-
     sota_mkdir("popup_text_bubble");
 
     /* -- Create renderer -- */
@@ -232,7 +231,7 @@ void test_text_bubble() {
 
     /* - rendering - */
     TextBubble_Update(&bubble, &n9patch, render_target, renderer);
-    Filesystem_Texture_Dump(PATH_JOIN("popup_text_bubble", "TextBubble_3lines_pointerR.png"),
+    Filesystem_Texture_Dump(PATH_JOIN("popup_text_bubble", "TextBubble_3lines_pointerR3.png"),
                             renderer, bubble.texture, SDL_PIXELFORMAT_ARGB8888, render_target);
 
     /* - setting - */
@@ -246,13 +245,159 @@ void test_text_bubble() {
 
     /* - rendering - */
     TextBubble_Update(&bubble, &n9patch, render_target, renderer);
-    Filesystem_Texture_Dump(PATH_JOIN("popup_text_bubble", "TextBubble_3lines_pointerL.png"),
+    Filesystem_Texture_Dump(PATH_JOIN("popup_text_bubble", "TextBubble_3lines_pointerL3.png"),
                             renderer, bubble.texture, SDL_PIXELFORMAT_ARGB8888, render_target);
 
- 
+    /* - setting - */
+    TextBubble_Set_Text(&bubble, "The quick brown fox jumped over the lazy dog", &n9patch);
+    bubble.target.x = bubble.width * 2;
+    bubble.target.y = bubble.height / 3;
+    TextBubble_Set_Target(&bubble, bubble.target);
+    SDL_assert(bubble.width  > 0);
+    SDL_assert(bubble.height > 0);
+    TextBubble_Pointer_Pos(&bubble, &n9patch);
+
+    /* - rendering - */
+    TextBubble_Update(&bubble, &n9patch, render_target, renderer);
+    Filesystem_Texture_Dump(PATH_JOIN("popup_text_bubble", "TextBubble_3lines_pointerR2.png"),
+                            renderer, bubble.texture, SDL_PIXELFORMAT_ARGB8888, render_target);
+
+    /* - setting - */
+    TextBubble_Set_Text(&bubble, "The quick brown fox jumped over the lazy dog", &n9patch);
+    bubble.target.x = -bubble.width * 2;
+    bubble.target.y = bubble.height / 3;
+    TextBubble_Set_Target(&bubble, bubble.target);
+    SDL_assert(bubble.width  > 0);
+    SDL_assert(bubble.height > 0);
+    TextBubble_Pointer_Pos(&bubble, &n9patch);
+
+    /* - rendering - */
+    TextBubble_Update(&bubble, &n9patch, render_target, renderer);
+    Filesystem_Texture_Dump(PATH_JOIN("popup_text_bubble", "TextBubble_3lines_pointerL2.png"),
+                            renderer, bubble.texture, SDL_PIXELFORMAT_ARGB8888, render_target);
+
+    /* - setting - */
+    TextBubble_Set_Text(&bubble, "The quick brown fox jumped over the lazy dog", &n9patch);
+    bubble.target.x = bubble.width * 2;
+    bubble.target.y = 2 * bubble.height / 3;
+    TextBubble_Set_Target(&bubble, bubble.target);
+    SDL_assert(bubble.width  > 0);
+    SDL_assert(bubble.height > 0);
+    TextBubble_Pointer_Pos(&bubble, &n9patch);
+
+    /* - rendering - */
+    TextBubble_Update(&bubble, &n9patch, render_target, renderer);
+    Filesystem_Texture_Dump(PATH_JOIN("popup_text_bubble", "TextBubble_3lines_pointerR1.png"),
+                            renderer, bubble.texture, SDL_PIXELFORMAT_ARGB8888, render_target);
+
+    /* - setting - */
+    TextBubble_Set_Text(&bubble, "The quick brown fox jumped over the lazy dog", &n9patch);
+    bubble.target.x = -bubble.width * 2;
+    bubble.target.y = 2 * bubble.height / 3;
+    TextBubble_Set_Target(&bubble, bubble.target);
+    SDL_assert(bubble.width  > 0);
+    SDL_assert(bubble.height > 0);
+    TextBubble_Pointer_Pos(&bubble, &n9patch);
+
+    /* - rendering - */
+    TextBubble_Update(&bubble, &n9patch, render_target, renderer);
+    Filesystem_Texture_Dump(PATH_JOIN("popup_text_bubble", "TextBubble_3lines_pointerL1.png"),
+                            renderer, bubble.texture, SDL_PIXELFORMAT_ARGB8888, render_target);
+
+    /* - setting - */
+    TextBubble_Set_Text(&bubble, "Hello, World!", &n9patch);
+    bubble.target.x = bubble.width / 3;
+    bubble.target.y = bubble.height * 2;
+    TextBubble_Set_Target(&bubble, bubble.target);
+    SDL_assert(bubble.width  > 0);
+    SDL_assert(bubble.height > 0);
+    TextBubble_Pointer_Pos(&bubble, &n9patch);
+
+    /* - rendering - */
+    TextBubble_Update(&bubble, &n9patch, render_target, renderer);
+    Filesystem_Texture_Dump(PATH_JOIN("popup_text_bubble", "TextBubble_pointerT1.png"),
+                            renderer, bubble.texture, SDL_PIXELFORMAT_ARGB8888, render_target);
+
+    /* - setting - */
+    TextBubble_Set_Text(&bubble, "Hello, World!", &n9patch);
+    bubble.target.x = bubble.width / 3;
+    bubble.target.y = -bubble.height * 2;
+    TextBubble_Set_Target(&bubble, bubble.target);
+    SDL_assert(bubble.width  > 0);
+    SDL_assert(bubble.height > 0);
+    TextBubble_Pointer_Pos(&bubble, &n9patch);
+
+    /* - rendering - */
+    TextBubble_Update(&bubble, &n9patch, render_target, renderer);
+    Filesystem_Texture_Dump(PATH_JOIN("popup_text_bubble", "TextBubble_pointerB1.png"),
+                            renderer, bubble.texture, SDL_PIXELFORMAT_ARGB8888, render_target);
+
+
+    /* - setting - */
+    TextBubble_Set_Text(&bubble, "Hello, World!", &n9patch);
+    bubble.target.x = bubble.width / 2;
+    bubble.target.y = bubble.height * 2;
+    TextBubble_Set_Target(&bubble, bubble.target);
+    SDL_assert(bubble.width  > 0);
+    SDL_assert(bubble.height > 0);
+    TextBubble_Pointer_Pos(&bubble, &n9patch);
+
+    /* - rendering - */
+    TextBubble_Update(&bubble, &n9patch, render_target, renderer);
+    Filesystem_Texture_Dump(PATH_JOIN("popup_text_bubble", "TextBubble_pointerT2.png"),
+                            renderer, bubble.texture, SDL_PIXELFORMAT_ARGB8888, render_target);
+
+    /* - setting - */
+    TextBubble_Set_Text(&bubble, "Hello, World!", &n9patch);
+    bubble.target.x = bubble.width / 2;
+    bubble.target.y = -bubble.height * 2;
+    TextBubble_Set_Target(&bubble, bubble.target);
+    SDL_assert(bubble.width  > 0);
+    SDL_assert(bubble.height > 0);
+    TextBubble_Pointer_Pos(&bubble, &n9patch);
+
+    /* - rendering - */
+    TextBubble_Update(&bubble, &n9patch, render_target, renderer);
+    Filesystem_Texture_Dump(PATH_JOIN("popup_text_bubble", "TextBubble_pointerB2.png"),
+                            renderer, bubble.texture, SDL_PIXELFORMAT_ARGB8888, render_target);
+
+
+    /* - setting - */
+    TextBubble_Set_Text(&bubble, "Hello, World!", &n9patch);
+    bubble.target.x = bubble.width * 2 / 3;
+    bubble.target.y = bubble.height * 2;
+    TextBubble_Set_Target(&bubble, bubble.target);
+    SDL_assert(bubble.width  > 0);
+    SDL_assert(bubble.height > 0);
+    TextBubble_Pointer_Pos(&bubble, &n9patch);
+
+    /* - rendering - */
+    TextBubble_Update(&bubble, &n9patch, render_target, renderer);
+    Filesystem_Texture_Dump(PATH_JOIN("popup_text_bubble", "TextBubble_pointerT3.png"),
+                            renderer, bubble.texture, SDL_PIXELFORMAT_ARGB8888, render_target);
+
+    /* - setting - */
+    TextBubble_Set_Text(&bubble, "Hello, World!", &n9patch);
+    bubble.target.x = bubble.width *2 / 3;
+    bubble.target.y = -bubble.height * 2;
+    TextBubble_Set_Target(&bubble, bubble.target);
+    SDL_assert(bubble.width  > 0);
+    SDL_assert(bubble.height > 0);
+    TextBubble_Pointer_Pos(&bubble, &n9patch);
+
+    /* - rendering - */
+    TextBubble_Update(&bubble, &n9patch, render_target, renderer);
+    Filesystem_Texture_Dump(PATH_JOIN("popup_text_bubble", "TextBubble_pointerB3.png"),
+                            renderer, bubble.texture, SDL_PIXELFORMAT_ARGB8888, render_target);
+
     /* FREE */
     PixelFont_Free(bubble.pixelfont, true);
     TextBubble_Free(&bubble);
     SDL_DestroyRenderer(renderer);
     SDL_FreeSurface(surface);
 }
+
+void test_text_bubble_scroll() {
+
+}
+
