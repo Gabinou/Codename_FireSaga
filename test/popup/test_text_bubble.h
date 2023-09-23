@@ -430,7 +430,8 @@ void test_text_bubble_scroll() {
     int i = 0;
     char path_raw[128] = PATH_JOIN("popup_text_bubble", "TextBubble_Scroll_%02d.png");
     char path[128];
-    while (bubble.pixelfont->scroll_len <= strlen(bubble.text)) {
+    size_t scroll_lim = strlen(bubble.text) - bubble.lines.line_num +1;
+    while (bubble.pixelfont->scroll_len <= scroll_lim) {
         sprintf(path, path_raw, i);
 
         /* - rendering - */
