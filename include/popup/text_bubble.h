@@ -36,12 +36,10 @@
 /* --- FORWARD DECLARATIONS --- */
 
 enum SOTA_TEXT_BUBBLE {
-    TEXT_BUBBLE_ARROW_WIDTH         = 8,
-    TEXT_BUBBLE_ARROW_HEIGHT        = 8,
     TEXT_BUBBLE_TEXTURE_PATCH_WIDTH = 4,
     TEXT_BUBBLE_TEXTURE_CORNER      = 3,
     TEXT_BUBBLE_TEXTURE_MID         = 7,
-    TEXT_BUBBLE_PATCH_PIXELS        = 4,
+    TEXT_BUBBLE_PATCH_PIXELS        = 8,
     TEXT_BUBBLE_SCALE               = 4,
 };
 enum SOTA_TEXT_BUBBLE_N9PATCH {
@@ -52,19 +50,21 @@ enum SOTA_TEXT_BUBBLE_N9PATCH {
 };
 
 enum SOTA_TEXT_BUBBLE_POINTER {
-    TEXT_BUBBLE_NULL        = -1,
-    TEXT_BUBBLE_STRAIGHT    =  0,
-    TEXT_BUBBLE_DIAGONAL    =  1,
+    TEXT_BUBBLE_POINTER_SIZE =  8,
+    TEXT_BUBBLE_NULL         = -1,
+    TEXT_BUBBLE_STRAIGHT     =  0,
+    TEXT_BUBBLE_DIAGONAL     =  1,
+    TEXT_BUBBLE_RENDER_PAD   =  6,
 };
 
 struct Text_Bubble_Pointer {
     struct Point pos;
     SDL_RendererFlip flip;
     SDL_Texture *texture;
+    SDL_Rect     dstrect;
     double angle;   /* [degree] clockwise */
     int octant;     /* Octant around bubble target is in */
     int index;
-
     bool half : 1;  /* Half around pointer target is in */
 };
 
@@ -96,7 +96,9 @@ extern void TextBubble_Set_Target(  struct Text_Bubble *b, struct Point t);
 extern void TextBubble_Compute_Size(struct Text_Bubble *b, struct n9Patch *n9patch);
 
 /* --- Internals --- */
-extern int TextBubble_Pointer_Octant(struct Text_Bubble *bubble, struct Point pos);
+extern int TextBubble_Pointer_Flip(  struct Text_Bubble *b, struct Point pos);
+extern int TextBubble_Pointer_Angle( struct Text_Bubble *b);
+extern int TextBubble_Pointer_Octant(struct Text_Bubble *b, struct Point pos);
 
 /* --- Drawing --- */
 extern void TextBubble_Draw(  struct PopUp *p, struct Point pos,
