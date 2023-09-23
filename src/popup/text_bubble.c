@@ -132,7 +132,7 @@ int TextBubble_Pointer_Octant(struct Text_Bubble *bubble) {
     return (bubble->pointer.octant);
 }
 
-void TextBubble_Pointer_Flip(struct Text_Bubble *bubble, struct Point pos) {
+void TextBubble_Pointer_Flip(struct Text_Bubble *bubble) {
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     /* Decide pointer flip. */
     // Points pointer in direction of target
@@ -159,7 +159,7 @@ void TextBubble_Pointer_Flip(struct Text_Bubble *bubble, struct Point pos) {
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
-void TextBubble_Pointer_Pos(struct Text_Bubble *bubble, struct n9Patch * n9patch) {
+void TextBubble_Pointer_Pos(struct Text_Bubble *bubble, struct n9Patch *n9patch) {
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     /* Decide pointer position. */
     struct Point pos = {TEXT_BUBBLE_RENDER_PAD, TEXT_BUBBLE_RENDER_PAD};
@@ -171,6 +171,9 @@ void TextBubble_Pointer_Pos(struct Text_Bubble *bubble, struct n9Patch * n9patch
         case SOTA_DIRECTION_RIGHT:
             bubble->pointer.dstrect.x = bubble->width - 2;
             bubble->pointer.dstrect.y = TEXT_BUBBLE_PATCH_PIXELS - 5;
+            if (n9patch->size_patches.y > 2) {
+                /* Place pointer according to target */
+            }
             break;
         case SOTA_DIRECTION_TOP:
             bubble->pointer.dstrect.x = TEXT_BUBBLE_PATCH_PIXELS;
@@ -181,9 +184,11 @@ void TextBubble_Pointer_Pos(struct Text_Bubble *bubble, struct n9Patch * n9patch
             bubble->pointer.dstrect.y = bubble->height - 2;
             break;
         case SOTA_DIRECTION_LEFT:
-            // if (bubble->)
-            bubble->pointer.dstrect.x = -6;
-            bubble->pointer.dstrect.y = TEXT_BUBBLE_PATCH_PIXELS - 3;
+                bubble->pointer.dstrect.x = -6;
+                bubble->pointer.dstrect.y = TEXT_BUBBLE_PATCH_PIXELS - 3;
+            if (n9patch->size_patches.y > 2) {
+                /* Place pointer according to target */
+            }
             break;
         case SOTA_DIRECTION_DIAGONAL_TR:
             bubble->pointer.dstrect.x = bubble->width - 6;
@@ -291,9 +296,20 @@ void TextBubble_Compute_Size(struct Text_Bubble *bu, struct n9Patch *n9patch) {
     n9patch->size_pixels.y  = bu->height;
     struct Point content = {bu->width, bu->height};
     n9Patch_Fit(n9patch, content);
+    SDL_assert(n9patch->size_patches.x >= 2);
+    SDL_assert(n9patch->size_patches.y >= 2);
 
+    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
+}
+
+void TextBubble_Set_All(struct Text_Bubble *bubble, const char *text, struct Point target, struct n9Patch *n9patch) {
+    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
+    
+    TextBubble_Set_Text(bubble, text, n9patch);
+    TextBubble_Set_Target(bubble, target);
+    SDL_assert(bubble->width  > 0);
+    SDL_assert(bubble->height > 0);
     TextBubble_Pointer_Pos(bubble, n9patch);
-
 
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
