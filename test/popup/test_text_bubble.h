@@ -220,6 +220,36 @@ void test_text_bubble() {
     Filesystem_Texture_Dump(PATH_JOIN("popup_text_bubble", "TextBubble_Big_BrownFox.png"),
                             renderer, bubble.texture, SDL_PIXELFORMAT_ARGB8888, render_target);
 
+
+    /* - setting - */
+    TextBubble_Set_Text(&bubble, "The quick brown fox jumped over the lazy dog", &n9patch);
+    bubble.target.x = bubble.width * 2;
+    bubble.target.y = bubble.height / 2;
+    TextBubble_Set_Target(&bubble, bubble.target);
+    SDL_assert(bubble.width  > 0);
+    SDL_assert(bubble.height > 0);
+    TextBubble_Pointer_Pos(&bubble, &n9patch);
+
+    /* - rendering - */
+    TextBubble_Update(&bubble, &n9patch, render_target, renderer);
+    Filesystem_Texture_Dump(PATH_JOIN("popup_text_bubble", "TextBubble_3lines_pointerR.png"),
+                            renderer, bubble.texture, SDL_PIXELFORMAT_ARGB8888, render_target);
+
+    /* - setting - */
+    TextBubble_Set_Text(&bubble, "The quick brown fox jumped over the lazy dog", &n9patch);
+    bubble.target.x = -bubble.width * 2;
+    bubble.target.y = bubble.height / 2;
+    TextBubble_Set_Target(&bubble, bubble.target);
+    SDL_assert(bubble.width  > 0);
+    SDL_assert(bubble.height > 0);
+    TextBubble_Pointer_Pos(&bubble, &n9patch);
+
+    /* - rendering - */
+    TextBubble_Update(&bubble, &n9patch, render_target, renderer);
+    Filesystem_Texture_Dump(PATH_JOIN("popup_text_bubble", "TextBubble_3lines_pointerL.png"),
+                            renderer, bubble.texture, SDL_PIXELFORMAT_ARGB8888, render_target);
+
+ 
     /* FREE */
     PixelFont_Free(bubble.pixelfont, true);
     TextBubble_Free(&bubble);

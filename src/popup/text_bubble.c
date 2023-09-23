@@ -173,14 +173,17 @@ void TextBubble_Pointer_Pos(struct Text_Bubble *bubble, struct n9Patch *n9patch)
             bubble->pointer.dstrect.y = TEXT_BUBBLE_PATCH_PIXELS - 5;
             if (n9patch->size_patches.y > 2) {
                 /* Place pointer according to target */
+                bubble->pointer.dstrect.y = bubble->target.y - TEXT_BUBBLE_RENDER_PAD / 2;
             }
             break;
         case SOTA_DIRECTION_TOP:
-            bubble->pointer.dstrect.x = TEXT_BUBBLE_PATCH_PIXELS;
+            // bubble->pointer.dstrect.x = TEXT_BUBBLE_PATCH_PIXELS;
+            bubble->pointer.dstrect.x = bubble->target.x - TEXT_BUBBLE_RENDER_PAD / 2;
             bubble->pointer.dstrect.y = -6;
             break;
         case SOTA_DIRECTION_BOTTOM:
-            bubble->pointer.dstrect.x = TEXT_BUBBLE_PATCH_PIXELS;
+            // bubble->pointer.dstrect.x = TEXT_BUBBLE_PATCH_PIXELS;
+            bubble->pointer.dstrect.x = bubble->target.x - TEXT_BUBBLE_RENDER_PAD / 2;
             bubble->pointer.dstrect.y = bubble->height - 2;
             break;
         case SOTA_DIRECTION_LEFT:
@@ -188,6 +191,7 @@ void TextBubble_Pointer_Pos(struct Text_Bubble *bubble, struct n9Patch *n9patch)
                 bubble->pointer.dstrect.y = TEXT_BUBBLE_PATCH_PIXELS - 3;
             if (n9patch->size_patches.y > 2) {
                 /* Place pointer according to target */
+                bubble->pointer.dstrect.y = bubble->target.y - TEXT_BUBBLE_RENDER_PAD / 2;
             }
             break;
         case SOTA_DIRECTION_DIAGONAL_TR:
