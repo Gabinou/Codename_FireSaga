@@ -52,6 +52,18 @@ void test_text_bubble() {
     Filesystem_Texture_Dump(PATH_JOIN("popup_text_bubble", "TextBubble_1line.png"),
                             renderer, bubble.texture, SDL_PIXELFORMAT_ARGB8888, render_target);
 
+    TextBubble_Set_Text(&bubble, "Another oneliner.", &n9patch);
+    bubble.target.x = bubble.width *2;
+    bubble.target.y = bubble.height / 2;
+    TextBubble_Set_Target(&bubble, bubble.target);
+
+    SDL_assert(bubble.width  > 0);
+    SDL_assert(bubble.height > 0);
+    TextBubble_Update(&bubble, &n9patch, render_target, renderer);
+    Filesystem_Texture_Dump(PATH_JOIN("popup_text_bubble", "TextBubble_1line_PointerR.png"),
+                            renderer, bubble.texture, SDL_PIXELFORMAT_ARGB8888, render_target);
+
+
     TextBubble_Set_Text(&bubble, "A", &n9patch);
     bubble.target.x = - bubble.width;
     bubble.target.y = bubble.height * 2;
@@ -122,6 +134,7 @@ void test_text_bubble() {
     Filesystem_Texture_Dump(PATH_JOIN("popup_text_bubble", "TextBubble_Big_A.png"),
                             renderer, bubble.texture, SDL_PIXELFORMAT_ARGB8888, render_target);
 
+
     TextBubble_Set_Text(&bubble, "I am a 2 line long speech. Brief.", &n9patch);
     bubble.target.x = bubble.width * 2;
     bubble.target.y = bubble.height * 2;
@@ -139,6 +152,8 @@ void test_text_bubble() {
     TextBubble_Update(&bubble, &n9patch, render_target, renderer);
     Filesystem_Texture_Dump(PATH_JOIN("popup_text_bubble", "TextBubble_Big_BrownFox.png"),
                             renderer, bubble.texture, SDL_PIXELFORMAT_ARGB8888, render_target);
+
+ 
 
     /* FREE */
     PixelFont_Free(bubble.pixelfont, true);
