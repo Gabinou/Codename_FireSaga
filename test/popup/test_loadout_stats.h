@@ -18,7 +18,7 @@ void test_popup_loadout_stats() {
 
     /* -- Create n9patch -- */
     // render_target is NULL cause there is render_target!
-    struct n9Patch n9patch;
+    struct n9Patch n9patch = n9Patch_default;
     SDL_Texture *render_target = NULL;
 
     /* -- Create Computed stats -- */

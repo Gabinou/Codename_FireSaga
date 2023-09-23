@@ -25,7 +25,7 @@ struct Text_Bubble TextBubble_default = {
         .right  = TEXT_BUBBLE_PADDING_RIGHT,
     },
     .target      = {0, 0},
-    .pixelnours  = NULL,
+    .pixelfont  = NULL,
     .texture     = NULL,
     .update      = false,
     .pointer = {
@@ -90,7 +90,7 @@ void TextBubble_Load(struct Text_Bubble *bubble, SDL_Renderer *renderer, struct 
     SOTA_Log_FPS("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
-void TextBubble_Set_Text(struct Text_Bubble *bubble, const char *text) {
+void TextBubble_Set_Text(struct Text_Bubble *bubble, const char *text, struct n9Patch *n9patch) {
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     if (bubble->text != NULL) {
         free(bubble->text);
@@ -101,9 +101,9 @@ void TextBubble_Set_Text(struct Text_Bubble *bubble, const char *text) {
     strncpy(bubble->text, text, len);
 
     TextLines_Free(&bubble->lines);
-    bubble->lines = PixelFont_Lines_Len(bubble->pixelnours, bubble->text, bubble->line_len_px);
+    bubble->lines = PixelFont_Lines_Len(bubble->pixelfont, bubble->text, bubble->line_len_px);
 
-    TextBubble_Compute_Size(bubble);
+    TextBubble_Compute_Size(bubble, n9patch);
 
     if (bubble->texture != NULL) {
         SDL_DestroyTexture(bubble->texture);
@@ -207,21 +207,28 @@ void TextBubble_Pointer_Draw(struct Text_Bubble *bubble, SDL_Renderer *renderer)
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
-void TextBubble_Compute_Size(struct Text_Bubble *bu) {
+void TextBubble_Compute_Size(struct Text_Bubble *bu, struct n9Patch *n9patch) {
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     if (bu->text == NULL) {
         SOTA_Log_Debug("bubble's text is NULL");
         return;
     }
     
-    int line_num = PixelFont_Lines_Num_Len(bu->pixelnours, bu->text, bu->line_len_px);
+    /* -- Bubble text size -- */
+    int line_num = PixelFont_Lines_Num_Len(bu->pixelfont, bu->text, bu->line_len_px);
     SDL_assert(line_num == bu->lines.line_num);
     bu->height = line_num * bu->row_height + bu->padding.top + bu->padding.bottom;
     if (line_num <= 1) {
-        bu->width = PixelFont_Width_Len(bu->pixelnours, bu->text) + bu->padding.right*2 + bu->padding.left;
+        bu->width = PixelFont_Width_Len(bu->pixelfont, bu->text) + bu->padding.right*2 + bu->padding.left;
     } else {
         bu->width = bu->line_len_px + bu->padding.right + bu->padding.left;
     }
+
+    /* -- n9patch size -- */
+    n9patch->size_pixels.x  = bu->width;
+    n9patch->size_pixels.y  = bu->height;
+    struct Point content = {bu->width, bu->height};
+    n9Patch_Fit_Padding(n9patch, content, bu->padding);
 
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
@@ -233,7 +240,7 @@ void TextBubble_Write(struct Text_Bubble *bubble, SDL_Renderer *renderer) {
     int x = bubble->padding.left, y; 
     for (int i = 0; i < bubble->lines.line_num; i++) {
         y = bubble->padding.top + bubble->row_height * i;
-        PixelFont_Write_Len(bubble->pixelnours, renderer, bubble->lines.lines[i], x, y);
+        PixelFont_Write_Len(bubble->pixelfont, renderer, bubble->lines.lines[i], x, y);
     }
 
     SOTA_Log_FPS("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
@@ -251,14 +258,6 @@ void TextBubble_Update(struct Text_Bubble *bubble, struct n9Patch *n9patch,
     SDL_assert(bubble->height           > 0);
     SDL_assert(n9patch->scale.x         > 0);
     SDL_assert(n9patch->scale.y         > 0);
-    n9patch->size_pixels.x  = bubble->width ;
-    n9patch->size_pixels.y  = bubble->height;
-    n9patch->size_patches.x = n9patch->size_pixels.x / n9patch->patch_pixels.x;
-    n9patch->size_patches.x = n9patch->size_patches.x < 2 ? 2 : n9patch->size_patches.x;
-    n9patch->size_patches.y = n9patch->size_pixels.y / n9patch->patch_pixels.y + 1;
-    n9patch->size_patches.y = n9patch->size_patches.y < 2 ? 2 : n9patch->size_patches.y;
-    n9patch->size_pixels.x  = n9patch->size_patches.x * n9patch->patch_pixels.x;
-    n9patch->size_pixels.y  = n9patch->size_patches.y * n9patch->patch_pixels.y;
     SDL_assert(n9patch->size_pixels.x   > 0);
     SDL_assert(n9patch->size_pixels.y   > 0);
         

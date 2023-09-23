@@ -232,7 +232,7 @@ void PlayerSelectMenu_Elem_Pos(struct PlayerSelectMenu *psm, struct MenuComponen
     if (mc->elem_pos != NULL)
         free(mc->elem_pos);
     struct Padding mp = psm->menu_padding;
-    struct nmath_point_int32_t pos9 = mc->n9patch.pos, scale = mc->n9patch.scale;
+    struct Point pos9 = mc->n9patch.pos, scale = mc->n9patch.scale;
 
     mc->elem_pos = calloc(mc->elem_num, sizeof(*mc->elem_pos));
     for (if32 i = 0; i < mc->elem_num; i++) {

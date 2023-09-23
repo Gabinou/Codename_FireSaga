@@ -18,36 +18,35 @@ void test_text_bubble() {
     struct n9Patch n9patch;
     SDL_Texture *render_target = NULL;
 
-    /* - loading fonts - */
-    bubble.pixelnours = PixelFont_Alloc();
-    bubble.pixelnours->y_offset     = pixelfont_y_offset;
+    /* - Pixelnours - */
+    bubble.pixelfont = PixelFont_Alloc();
+    bubble.pixelfont->y_offset     = pixelfont_y_offset;
     TextBubble_Load(&bubble, renderer, &n9patch);
-    PixelFont_Load(bubble.pixelnours, renderer, PATH_JOIN("..", "assets", "Fonts", "pixelnours.png"));
-    PixelFont_Swap_Palette(bubble.pixelnours, renderer, 1, 55);
-    bubble.line_len_px = 64;
+    PixelFont_Load(bubble.pixelfont, renderer, PATH_JOIN("..", "assets", "Fonts", "pixelnours.png"));
+    PixelFont_Swap_Palette(bubble.pixelfont, renderer, 1, 55);
 
-    TextBubble_Set_Text(&bubble, "Hello, World!");
+    TextBubble_Set_Text(&bubble, "Hello, World!", &n9patch);
     SDL_assert(bubble.width  > 0);
     SDL_assert(bubble.height > 0);
     TextBubble_Update(&bubble, &n9patch, render_target, renderer);
     Filesystem_Texture_Dump(PATH_JOIN("popup_text_bubble", "TextBubble_HelloWorld.png"),
                             renderer, bubble.texture, SDL_PIXELFORMAT_ARGB8888, render_target);
 
-    TextBubble_Set_Text(&bubble, "Another oneliner.");
+    TextBubble_Set_Text(&bubble, "Another oneliner.", &n9patch);
     SDL_assert(bubble.width  > 0);
     SDL_assert(bubble.height > 0);
     TextBubble_Update(&bubble, &n9patch, render_target, renderer);
     Filesystem_Texture_Dump(PATH_JOIN("popup_text_bubble", "TextBubble_1line.png"),
                             renderer, bubble.texture, SDL_PIXELFORMAT_ARGB8888, render_target);
 
-    TextBubble_Set_Text(&bubble, "A");
+    TextBubble_Set_Text(&bubble, "A", &n9patch);
     SDL_assert(bubble.width  > 0);
     SDL_assert(bubble.height > 0);
     TextBubble_Update(&bubble, &n9patch, render_target, renderer);
     Filesystem_Texture_Dump(PATH_JOIN("popup_text_bubble", "TextBubble_A.png"),
                             renderer, bubble.texture, SDL_PIXELFORMAT_ARGB8888, render_target);
 
-    TextBubble_Set_Text(&bubble, "I am a 2 line long speech. Brief.");
+    TextBubble_Set_Text(&bubble, "I am a 2 line long speech. Brief.", &n9patch);
     SDL_assert(bubble.width  > 0);
     SDL_assert(bubble.height > 0);
     TextBubble_Update(&bubble, &n9patch, render_target, renderer);
@@ -55,15 +54,60 @@ void test_text_bubble() {
                             renderer, bubble.texture, SDL_PIXELFORMAT_ARGB8888, render_target);
 
 
-    TextBubble_Set_Text(&bubble, "The quick brown fox jumped over the lazy dog");
+    TextBubble_Set_Text(&bubble, "The quick brown fox jumped over the lazy dog", &n9patch);
     SDL_assert(bubble.width  > 0);
     SDL_assert(bubble.height > 0);
     TextBubble_Update(&bubble, &n9patch, render_target, renderer);
     Filesystem_Texture_Dump(PATH_JOIN("popup_text_bubble", "TextBubble_BrownFox.png"),
                             renderer, bubble.texture, SDL_PIXELFORMAT_ARGB8888, render_target);
 
+    /* - Pixelnours_big - */
+    bubble.pixelfont->y_offset     = pixelfont_big_y_offset;
+    TextBubble_Load(&bubble, renderer, &n9patch);
+    PixelFont_Load(bubble.pixelfont, renderer, PATH_JOIN("..", "assets", "Fonts", "pixelnours_Big.png"));
+    PixelFont_Swap_Palette(bubble.pixelfont, renderer, 1, 55);
+    bubble.line_len_px  = 96;
+    bubble.row_height   = ASCII_GLYPH_HEIGHT + 2;
+    bubble.padding.top  = TEXT_BUBBLE_PADDING_TOP + 2;
 
-    PixelFont_Free(bubble.pixelnours, true);
+    TextBubble_Set_Text(&bubble, "Hello, World!", &n9patch);
+    SDL_assert(bubble.width  > 0);
+    SDL_assert(bubble.height > 0);
+    TextBubble_Update(&bubble, &n9patch, render_target, renderer);
+    Filesystem_Texture_Dump(PATH_JOIN("popup_text_bubble", "TextBubble_Big_HelloWorld.png"),
+                            renderer, bubble.texture, SDL_PIXELFORMAT_ARGB8888, render_target);
+
+    TextBubble_Set_Text(&bubble, "Another oneliner.", &n9patch);
+    SDL_assert(bubble.width  > 0);
+    SDL_assert(bubble.height > 0);
+    TextBubble_Update(&bubble, &n9patch, render_target, renderer);
+    Filesystem_Texture_Dump(PATH_JOIN("popup_text_bubble", "TextBubble_Big_1line.png"),
+                            renderer, bubble.texture, SDL_PIXELFORMAT_ARGB8888, render_target);
+
+    TextBubble_Set_Text(&bubble, "A", &n9patch);
+    SDL_assert(bubble.width  > 0);
+    SDL_assert(bubble.height > 0);
+    TextBubble_Update(&bubble, &n9patch, render_target, renderer);
+    Filesystem_Texture_Dump(PATH_JOIN("popup_text_bubble", "TextBubble_Big_A.png"),
+                            renderer, bubble.texture, SDL_PIXELFORMAT_ARGB8888, render_target);
+
+    TextBubble_Set_Text(&bubble, "I am a 2 line long speech. Brief.", &n9patch);
+    SDL_assert(bubble.width  > 0);
+    SDL_assert(bubble.height > 0);
+    TextBubble_Update(&bubble, &n9patch, render_target, renderer);
+    Filesystem_Texture_Dump(PATH_JOIN("popup_text_bubble", "TextBubble_Big_2lines.png"),
+                            renderer, bubble.texture, SDL_PIXELFORMAT_ARGB8888, render_target);
+
+
+    TextBubble_Set_Text(&bubble, "The quick brown fox jumped over the lazy dog", &n9patch);
+    SDL_assert(bubble.width  > 0);
+    SDL_assert(bubble.height > 0);
+    TextBubble_Update(&bubble, &n9patch, render_target, renderer);
+    Filesystem_Texture_Dump(PATH_JOIN("popup_text_bubble", "TextBubble_Big_BrownFox.png"),
+                            renderer, bubble.texture, SDL_PIXELFORMAT_ARGB8888, render_target);
+
+    /* FREE */
+    PixelFont_Free(bubble.pixelfont, true);
     TextBubble_Free(&bubble);
     SDL_DestroyRenderer(renderer);
     SDL_FreeSurface(surface);

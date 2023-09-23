@@ -49,7 +49,7 @@ enum SOTA_TEXT_BUBBLE_N9PATCH {
     TEXT_BUBBLE_PADDING_TOP    = 4,
     TEXT_BUBBLE_PADDING_BOTTOM = 2,
     TEXT_BUBBLE_PADDING_RIGHT  = 6,
-}
+};
 
 enum SOTA_TEXT_BUBBLE_POINTER {
     TEXT_BUBBLE_NULL        = -1,
@@ -78,7 +78,7 @@ struct Text_Bubble {
     struct TextLines lines;
     struct Padding padding;
     struct Point target; /* Where arrow bubble should point */
-    struct PixelFont *pixelnours;
+    struct PixelFont *pixelfont;
     struct Text_Bubble_Pointer pointer;
     SDL_Texture *texture;
     bool update;
@@ -90,9 +90,9 @@ extern void TextBubble_Free(struct Text_Bubble *b);
 extern void TextBubble_Load(struct Text_Bubble *b, SDL_Renderer *r, struct n9Patch *n9patch);
 
 /* --- Setters --- */
-extern void TextBubble_Set_Text(    struct Text_Bubble *b, const char *text);
+extern void TextBubble_Set_Text(    struct Text_Bubble *b, const char *t, struct n9Patch *n9patch);
 extern void TextBubble_Set_Target(  struct Text_Bubble *b, struct Point t);
-extern void TextBubble_Compute_Size(struct Text_Bubble *b);
+extern void TextBubble_Compute_Size(struct Text_Bubble *b, struct n9Patch *n9patch);
 
 /* --- Internals --- */
 extern int TextBubble_Pointer_Octant(struct Text_Bubble *bubble, struct Point pos);
