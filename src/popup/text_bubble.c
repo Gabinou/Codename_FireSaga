@@ -112,18 +112,18 @@ void TextBubble_Set_Text(struct Text_Bubble *bubble, const char *text, struct n9
 
 void TextBubble_Set_Target(struct Text_Bubble *bubble, struct Point target) {
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
+    /* Target is relative to bubble position*/
     bubble->target = target;
-    struct Point pos = {0, 0};
-    TextBubble_Pointer_Octant(bubble, pos);
-    TextBubble_Pointer_Flip(bubble, pos);
-    TextBubble_Pointer_Pos(bubble, pos);
+    TextBubble_Pointer_Octant(bubble);
+    TextBubble_Pointer_Flip(bubble);
     TextBubble_Pointer_Angle(bubble);
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
-int TextBubble_Pointer_Octant(struct Text_Bubble *bubble, struct Point pos) {
+int TextBubble_Pointer_Octant(struct Text_Bubble *bubble) {
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     // Find octant around text bubble target is in
+    struct Point pos = {TEXT_BUBBLE_RENDER_PAD, TEXT_BUBBLE_RENDER_PAD};
     struct Point ternary;
     ternary = Ternary_Direction_Octant(pos, bubble->target, bubble->width, bubble->height);
     bubble->pointer.octant = Ternary_Direction_Index(ternary.x, ternary.y);
@@ -137,6 +137,7 @@ void TextBubble_Pointer_Flip(struct Text_Bubble *bubble, struct Point pos) {
     /* Decide pointer flip. */
     // Points pointer in direction of target
     // Only for straight quadrants
+    struct Point pos = {TEXT_BUBBLE_RENDER_PAD, TEXT_BUBBLE_RENDER_PAD};
     struct Point half = {pos.x > bubble->target.x, pos.y > bubble->target.y};
 
     switch (bubble->pointer.octant) {
@@ -158,9 +159,11 @@ void TextBubble_Pointer_Flip(struct Text_Bubble *bubble, struct Point pos) {
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
-void TextBubble_Pointer_Pos(struct Text_Bubble *bubble, struct Point pos) {
+void TextBubble_Pointer_Pos(struct Text_Bubble *bubble, struct n9Patch * n9patch) {
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     /* Decide pointer position. */
+    struct Point pos = {TEXT_BUBBLE_RENDER_PAD, TEXT_BUBBLE_RENDER_PAD};
+
     bubble->pointer.dstrect.w = TEXT_BUBBLE_POINTER_SIZE;
     bubble->pointer.dstrect.h = TEXT_BUBBLE_POINTER_SIZE;
 
@@ -288,6 +291,9 @@ void TextBubble_Compute_Size(struct Text_Bubble *bu, struct n9Patch *n9patch) {
     n9patch->size_pixels.y  = bu->height;
     struct Point content = {bu->width, bu->height};
     n9Patch_Fit(n9patch, content);
+
+    TextBubble_Pointer_Pos(bubble, n9patch);
+
 
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
