@@ -228,7 +228,7 @@ void TextBubble_Compute_Size(struct Text_Bubble *bu, struct n9Patch *n9patch) {
     n9patch->size_pixels.x  = bu->width;
     n9patch->size_pixels.y  = bu->height;
     struct Point content = {bu->width, bu->height};
-    n9Patch_Fit_Padding(n9patch, content, bu->padding);
+    n9Patch_Fit(n9patch, content);
 
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }

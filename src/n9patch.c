@@ -20,24 +20,15 @@ void n9Patch_Free(struct n9Patch *n9patch) {
     SOTA_Log_FPS("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
-void n9Patch_Fit_Padding(struct n9Patch *n9patch, struct Point content, struct Padding padding) {
-    SOTA_Log_FPS("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
-    struct Point pad = {padding.right + padding.left, padding.top + padding.bottom};
-    n9Patch_Fit(n9patch, content, pad);
-    SOTA_Log_FPS("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
-}
-
-void n9Patch_Fit(struct n9Patch *n9patch, struct Point content, struct Point pad) {
+void n9Patch_Fit(struct n9Patch *n9patch, struct Point content) {
     SOTA_Log_FPS("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     SDL_assert(n9patch->patch_pixels.x  > 0);
     SDL_assert(n9patch->patch_pixels.y  > 0);
     SDL_assert(content.x                > 0);
     SDL_assert(content.y                > 0);
-    SDL_assert(pad.x                    > 0);
-    SDL_assert(pad.y                    > 0);
     
-    n9patch->size_pixels.x  = content.x + pad.x;
-    n9patch->size_pixels.y  = content.y + pad.y;
+    n9patch->size_pixels.x  = content.x;
+    n9patch->size_pixels.y  = content.y;
     n9patch->size_patches.x = n9patch->size_pixels.x / n9patch->patch_pixels.x;
     n9patch->size_patches.y = n9patch->size_pixels.y / n9patch->patch_pixels.y;
     n9patch->fit.x          = n9patch->size_pixels.x % n9patch->patch_pixels.x;
