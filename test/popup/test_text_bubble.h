@@ -411,9 +411,12 @@ void test_text_bubble_scroll() {
     PixelFont_Load(bubble.pixelfont, renderer, PATH_JOIN("..", "assets", "Fonts", "pixelnours_Big.png"));
     PixelFont_Swap_Palette(bubble.pixelfont, renderer, 1, 55);
     bubble.pixelfont->scroll_speed = 0;
+    bubble.line_len_px  = 96;
+    bubble.row_height   = ASCII_GLYPH_HEIGHT + 2;
+    bubble.padding.top  = TEXT_BUBBLE_PADDING_TOP + 2;
 
     /* - setting - */
-    TextBubble_Set_Text(&bubble, "Hello, World!", &n9patch);
+    TextBubble_Set_Text(&bubble, "The quick brown fox jumped over the lazy dog.", &n9patch);
     bubble.target.x = -bubble.width;
     bubble.target.y = -bubble.height;
     TextBubble_Set_Target(&bubble, bubble.target);

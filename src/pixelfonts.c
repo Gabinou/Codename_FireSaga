@@ -273,6 +273,10 @@ struct TextLines PixelFont_Lines(struct PixelFont *font, const char *text, size_
         if (current_break >= (len_char - 1)) {
             textlines.lines[line_i] = calloc(line_len_char + 1, sizeof(char));
             strncpy(textlines.lines[line_i], text + current_start, line_len_char);
+            
+            /* -- Measure line length -- */
+            textlines.lines_len[line_i] = strlen(textlines.lines[line_i]);
+            SDL_assert(textlines.lines_len[line_i] > 0);
             break;
         }
 
@@ -284,6 +288,10 @@ struct TextLines PixelFont_Lines(struct PixelFont *font, const char *text, size_
             textlines.lines[line_i] = calloc(line_len_char + 1, sizeof(char));
             strncpy(textlines.lines[line_i], text + current_start, line_len_char);
             next_start = current_break;
+    
+            /* -- Measure line length -- */
+            textlines.lines_len[line_i] = strlen(textlines.lines[line_i]);
+            SDL_assert(textlines.lines_len[line_i] > 0);
             continue;
         }
         next_start = NextLine_Start(text, current_start, current_break, line_len_char);
@@ -306,7 +314,10 @@ struct TextLines PixelFont_Lines(struct PixelFont *font, const char *text, size_
         /* -- Add hyphen if necessary -- */
         if (add_hyphen)
             textlines.lines[line_i][line_len_char - 1] = '-';
-
+        
+        /* -- Measure line length -- */
+        textlines.lines_len[line_i] = strlen(textlines.lines[line_i]);
+        SDL_assert(textlines.lines_len[line_i] > 0);
     }
 
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);

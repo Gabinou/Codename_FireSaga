@@ -326,14 +326,27 @@ void TextBubble_Write(struct Text_Bubble *bubble, SDL_Renderer *renderer) {
     SOTA_Log_FPS("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     /* - name - */
     int x = bubble->padding.left + TEXT_BUBBLE_RENDER_PAD, y;
+    int scroll_len_rem = bubble->pixelfont->scroll_len;
+
     for (int i = 0; i < bubble->lines.line_num; i++) {
         y = bubble->padding.top + bubble->row_height * i + TEXT_BUBBLE_RENDER_PAD;
-        if (bubble->scroll) {
-            PixelFont_Write_Scroll(bubble->pixelfont, renderer, bubble->lines.lines[i], x, y);
-        } else {
+        if (!bubble->scroll) {
             PixelFont_Write_Len(bubble->pixelfont, renderer, bubble->lines.lines[i], x, y);
+            continue;
         }
+ 
+        if (scroll_len_rem <= 0)
+            break;
+
+        /* -- Scrolling -- */
+        int line_len = bubble->lines.lines_len[i];
+        SDL_assert(bubble->lines.lines_len[i] > 0);
+
+        int to_render = (line_len >= scroll_len_rem) ? scroll_len_rem : line_len;
+        scroll_len_rem -= to_render;
+        PixelFont_Write(bubble->pixelfont, renderer, bubble->lines.lines[i], to_render, x, y);
     }
+    // getchar();
     SOTA_Log_FPS("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
