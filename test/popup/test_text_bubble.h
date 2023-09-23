@@ -1,11 +1,7 @@
 #include "nourstest.h"
 #include "text_bubble.h"
 
-
-void test_text_bubble() {
-    SDL_Log("%s " STRINGIZE(__LINE__), __func__);
-    sota_mkdir("popup_text_bubble");
-
+void test_text_bubble_pointer() {
     /* -- Create renderer -- */
     SDL_Surface  *surface  = Filesystem_indexedSurface_Init(1024, 1024);
     SDL_Renderer *renderer = SDL_CreateSoftwareRenderer(surface);
@@ -14,7 +10,7 @@ void test_text_bubble() {
 
     /* -- Create n9patch -- */
     // render_target is NULL cause there is render_target!
-    struct n9Patch n9patch;
+    struct n9Patch n9patch = n9Patch_default;
     SDL_Texture *render_target = NULL;
     /* - Pixelnours - */
     bubble.pixelfont = PixelFont_Alloc();
@@ -398,6 +394,62 @@ void test_text_bubble() {
 }
 
 void test_text_bubble_scroll() {
+    /* -- Create renderer -- */
+    SDL_Surface  *surface  = Filesystem_indexedSurface_Init(1024, 1024);
+    SDL_Renderer *renderer = SDL_CreateSoftwareRenderer(surface);
 
+    struct Text_Bubble bubble = TextBubble_default;
+
+    /* -- Create n9patch -- */
+    // render_target is NULL cause there is render_target!
+    struct n9Patch n9patch = n9Patch_default;
+    SDL_Texture *render_target = NULL;
+    /* - Pixelnours - */
+    bubble.pixelfont = PixelFont_Alloc();
+    bubble.pixelfont->y_offset     = pixelfont_big_y_offset;
+    TextBubble_Load(&bubble, renderer, &n9patch);
+    PixelFont_Load(bubble.pixelfont, renderer, PATH_JOIN("..", "assets", "Fonts", "pixelnours_Big.png"));
+    PixelFont_Swap_Palette(bubble.pixelfont, renderer, 1, 55);
+    bubble.pixelfont->scroll_speed = 0;
+
+    /* - setting - */
+    TextBubble_Set_Text(&bubble, "Hello, World!", &n9patch);
+    bubble.target.x = -bubble.width;
+    bubble.target.y = -bubble.height;
+    TextBubble_Set_Target(&bubble, bubble.target);
+    SDL_assert(bubble.pointer.index     == TEXT_BUBBLE_DIAGONAL);
+    SDL_assert(bubble.pointer.angle     == 180.0);
+    SDL_assert(bubble.pointer.octant    == SOTA_DIRECTION_DIAGONAL_TL);
+    TextBubble_Pointer_Pos(&bubble, &n9patch);
+    SDL_assert(bubble.width  > 0);
+    SDL_assert(bubble.height > 0);
+    bubble.scroll = true;
+    int i = 0;
+    char path_raw[128] = PATH_JOIN("popup_text_bubble", "TextBubble_Scroll_%02d.png");
+    char path[128];
+    while (bubble.pixelfont->scroll_len <= strlen(bubble.text)) {
+        sprintf(path, path_raw, i);
+
+        /* - rendering - */
+        TextBubble_Update(&bubble, &n9patch, render_target, renderer);
+        Filesystem_Texture_Dump(path, renderer, bubble.texture, SDL_PIXELFORMAT_ARGB8888, render_target);
+
+        /* - scrolling - */
+        PixelFont_Scroll(bubble.pixelfont, 1);
+        i++;
+    }
+
+    /* FREE */
+    PixelFont_Free(bubble.pixelfont, true);
+    TextBubble_Free(&bubble);
+    SDL_DestroyRenderer(renderer);
+    SDL_FreeSurface(surface);
 }
 
+
+void test_text_bubble() {
+    SDL_Log("%s " STRINGIZE(__LINE__), __func__);
+    sota_mkdir("popup_text_bubble");
+    test_text_bubble_pointer();
+    test_text_bubble_scroll();
+}

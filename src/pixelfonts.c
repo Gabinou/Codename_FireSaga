@@ -496,7 +496,9 @@ void PixelFont_Write_Len(struct PixelFont *font, SDL_Renderer *rdr, char *text, 
 }
 
 void PixelFont_Write_Scroll(struct PixelFont *font, SDL_Renderer *rdr, char *text, uf32 x, uf32 y) {
-    PixelFont_Write(font, rdr, text, font->scroll_len, x, y);
+    size_t len = strlen(text);
+    size_t to_render = font->scroll_len > len ? len : font->scroll_len;
+    PixelFont_Write(font, rdr, text, to_render, x, y);
 }
 
 void PixelFont_Write(struct PixelFont *font, SDL_Renderer *renderer, char *text,

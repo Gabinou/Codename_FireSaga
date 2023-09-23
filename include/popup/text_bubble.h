@@ -84,6 +84,7 @@ struct Text_Bubble {
     struct Text_Bubble_Pointer pointer;
     SDL_Texture *texture;
     bool update;
+    bool scroll;
 };
 extern struct Text_Bubble TextBubble_default;
 

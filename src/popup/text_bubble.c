@@ -8,6 +8,7 @@ struct Text_Bubble_Pointer Text_Bubble_Pointer_default = {
     .angle      = 0.0,
     .half       = false,
     .index      = false,
+    .index      = false,
 };
 
 struct Text_Bubble TextBubble_default = {
@@ -327,7 +328,11 @@ void TextBubble_Write(struct Text_Bubble *bubble, SDL_Renderer *renderer) {
     int x = bubble->padding.left + TEXT_BUBBLE_RENDER_PAD, y;
     for (int i = 0; i < bubble->lines.line_num; i++) {
         y = bubble->padding.top + bubble->row_height * i + TEXT_BUBBLE_RENDER_PAD;
-        PixelFont_Write_Len(bubble->pixelfont, renderer, bubble->lines.lines[i], x, y);
+        if (bubble->scroll) {
+            PixelFont_Write_Scroll(bubble->pixelfont, renderer, bubble->lines.lines[i], x, y);
+        } else {
+            PixelFont_Write_Len(bubble->pixelfont, renderer, bubble->lines.lines[i], x, y);
+        }
     }
     SOTA_Log_FPS("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
