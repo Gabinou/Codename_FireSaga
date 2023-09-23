@@ -77,6 +77,7 @@ struct Text_Bubble {
     char *text;
     struct TextLines lines;
     struct Padding padding;
+    /* Origin is top left of bubble*/
     struct Point target; /* Where arrow bubble should point */
     struct PixelFont *pixelfont;
     struct Text_Bubble_Pointer pointer;

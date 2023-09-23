@@ -115,15 +115,13 @@ void TextBubble_Set_Text(struct Text_Bubble *bubble, const char *text, struct n9
 void TextBubble_Set_Target(struct Text_Bubble *bubble, struct Point target) {
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     bubble->target = target;
-    // TextBubble_Pointer_Octant(bubble, target);
+    TextBubble_Pointer_Octant(bubble, target);
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 int TextBubble_Pointer_Octant(struct Text_Bubble *bubble, struct Point pos) {
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     // Find octant around text bubble target is in
-    SDL_assert(bubble->target.x >= 0);
-    SDL_assert(bubble->target.y >= 0);
     struct Point ternary;
     ternary = Ternary_Direction_Octant(pos, bubble->target, bubble->width, bubble->height);
     bubble->pointer.octant  = Ternary_Direction_Index(ternary.x, ternary.y);
