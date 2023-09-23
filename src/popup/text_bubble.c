@@ -286,7 +286,9 @@ void TextBubble_Compute_Size(struct Text_Bubble *bu, struct n9Patch *n9patch) {
     SDL_assert(line_num == bu->lines.line_num);
     bu->height = line_num * bu->row_height + bu->padding.top + bu->padding.bottom;
     if (line_num <= 1) {
-        bu->width = PixelFont_Width_Len(bu->pixelfont, bu->text) + bu->padding.right * 2 + bu->padding.left;
+        int len = PixelFont_Width_Len(bu->pixelfont, bu->text);
+        len = (len < TEXT_BUBBLE_MIN_WIDTH) ? (TEXT_BUBBLE_MIN_WIDTH) : len;
+        bu->width = len + bu->padding.right * 2 + bu->padding.left;
     } else {
         bu->width = bu->line_len_px + bu->padding.right + bu->padding.left;
     }
