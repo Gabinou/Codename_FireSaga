@@ -277,6 +277,9 @@ void TextBubble_Compute_Size(struct Text_Bubble *bu, struct n9Patch *n9patch) {
     /* -- Bubble text size -- */
     int line_num = PixelFont_Lines_Num_Len(bu->pixelfont, bu->text, bu->line_len_px);
     SDL_assert(line_num == bu->lines.line_num);
+
+    /* -- Max line num -- */
+    line_num = bu->line_num_max > 0 ? bu->line_num_max : line_num;
     bu->height = line_num * bu->row_height + bu->padding.top + bu->padding.bottom;
     if (line_num <= 1) {
         int len = PixelFont_Width_Len(bu->pixelfont, bu->text);
@@ -320,7 +323,6 @@ void TextBubble_Write(struct Text_Bubble *bubble, SDL_Renderer *renderer) {
     /* - find the start line if vertical scroll - */
     int start_line = 0;
     if (bubble->line_num_max > 0) {
-
         int lines_to_render = 0;
         for (int i = 0; i < bubble->lines.line_num; i++) {
             lines_to_render++;
@@ -329,14 +331,22 @@ void TextBubble_Write(struct Text_Bubble *bubble, SDL_Renderer *renderer) {
                 break;
         }
         int max_lines = bubble->line_num_max;
-        int start_line = lines_to_render > max_lines ? lines_to_render - max_lines : 0;
+        start_line = (lines_to_render > max_lines) ? ((lines_to_render - 1) / max_lines) * max_lines : 0;
     }
 
     /* - Render the lines - */
     scroll_len_rem = bubble->pixelfont->scroll_len;
 
-    for (int i = start_line; i < bubble->lines.line_num; i++) {
-        int draw_i = bubble->line_num_max > 0 ? i % bubble->line_num_max : i;
+    for (int i = 0; i < bubble->lines.line_num; i++) {
+        int draw_i      = bubble->line_num_max > 0 ? i % bubble->line_num_max : i;
+        int line_len    = bubble->lines.lines_len[i];
+        int to_render   = (line_len >= scroll_len_rem) ? scroll_len_rem : line_len;
+
+        if ((bubble->line_num_max > 0) && (i < start_line)) {
+            scroll_len_rem -= to_render;
+            continue;
+        }
+
 
         y = bubble->padding.top + bubble->row_height * draw_i + TEXT_BUBBLE_RENDER_PAD;
         if (!bubble->scroll) {
@@ -349,10 +359,8 @@ void TextBubble_Write(struct Text_Bubble *bubble, SDL_Renderer *renderer) {
             break;
 
         /* -- Scrolling -- */
-        int line_len = bubble->lines.lines_len[i];
         SDL_assert(bubble->lines.lines_len[i] > 0);
 
-        int to_render = (line_len >= scroll_len_rem) ? scroll_len_rem : line_len;
         scroll_len_rem -= to_render;
         PixelFont_Write(bubble->pixelfont, renderer, bubble->lines.lines[i], to_render, x, y);
     }
