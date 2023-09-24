@@ -29,6 +29,7 @@ void test_menu_growths() {
 
     /* - loading fonts - */
     char *path = PATH_JOIN("..", "assets", "Fonts", "pixelnours.png");
+
     PixelFont_Load(gm->pixelnours, renderer, path);
     SDL_assert(gm->pixelnours);
 
@@ -216,13 +217,10 @@ void test_menu_growths() {
                             gm->texture, SDL_PIXELFORMAT_ARGB8888, render_target);
 
     /* --- FREE --- */
-    PixelFont_Free(gm->pixelnours, true);
-    PixelFont_Free(gm->pixelnours_big, true);
-
     Game_Weapons_Free(weapons_dtab);
     SDL_DestroyRenderer(renderer);
-    SDL_FreeSurface(surface);
     GrowthsMenu_Free(gm);
+    SDL_FreeSurface(surface);
 
     if (n9patch.texture != NULL)
         SDL_DestroyTexture(n9patch.texture);

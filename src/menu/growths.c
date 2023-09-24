@@ -186,6 +186,14 @@ void GrowthsMenu_Free(struct GrowthsMenu *gm) {
         SDL_DestroyTexture(gm->texture);
         gm->texture = NULL;
     }
+    if (gm->pixelnours != NULL) {
+        PixelFont_Free(gm->pixelnours, true);
+        gm->pixelnours = NULL;
+    }
+    if (gm->pixelnours_big != NULL) {
+        PixelFont_Free(gm->pixelnours_big, true);
+        gm->pixelnours_big = NULL;
+    }
     if (gm != NULL) {
         free(gm);
         gm = NULL;
