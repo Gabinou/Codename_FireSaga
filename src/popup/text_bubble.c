@@ -123,7 +123,6 @@ void TextBubble_Set_Target(struct Text_Bubble *bubble, struct Point target) {
     /* target is relative to bubble position */
     bubble->target = target;
     TextBubble_Tail_Octant(bubble);
-    TextBubble_Tail_Flip(  bubble);
     TextBubble_Tail_Angle( bubble);
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
@@ -136,39 +135,9 @@ int TextBubble_Tail_Octant(struct Text_Bubble *bubble) {
 
     ternary = Ternary_Direction_Octant(pos, bubble->target, bubble->width, bubble->height);
     bubble->tail.octant = Ternary_Direction_Index(ternary.x, ternary.y);
-
+    SDL_assert(bubble->tail.octant != SOTA_DIRECTION_INSIDE);
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
     return (bubble->tail.octant);
-}
-
-void TextBubble_Tail_Flip(struct Text_Bubble *bubble) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
-    /* -- Decide tail flip. -- */
-    // Points tail in direction of target
-    // Only for straight quadrants
-
-    // TODO: Is this useless?
-
-    struct Point pos = {TEXT_BUBBLE_RENDER_PAD, TEXT_BUBBLE_RENDER_PAD};
-    struct Point half = {pos.x > bubble->target.x, pos.y > bubble->target.y};
-
-    switch (bubble->tail.octant) {
-        case SOTA_DIRECTION_RIGHT:
-            bubble->tail.flip = half.y ? SDL_FLIP_VERTICAL   : SDL_FLIP_NONE;
-            break;
-        case SOTA_DIRECTION_TOP:
-            bubble->tail.flip = half.x ? SDL_FLIP_HORIZONTAL : SDL_FLIP_NONE;
-            break;
-        case SOTA_DIRECTION_BOTTOM:
-            bubble->tail.flip = half.x ? SDL_FLIP_NONE       : SDL_FLIP_HORIZONTAL;
-            break;
-        case SOTA_DIRECTION_LEFT:
-            bubble->tail.flip = half.y ? SDL_FLIP_NONE       : SDL_FLIP_VERTICAL;
-            break;
-    }
-    // TODO: IF diagonal octant, flip one way or another if target more x than y and vice-versa
-
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 void TextBubble_Tail_Pos(struct Text_Bubble *bubble, struct n9Patch *n9patch) {

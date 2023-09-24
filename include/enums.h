@@ -847,6 +847,7 @@ enum CONTROLLER_DIRECTIONS { /* ternary -> octant */
     /* Area split into octants around 2D area */
     // NOTE: Order in enum is array index
     SOTA_DIRECTION_NULL         =  0,
+    SOTA_DIRECTION_INSIDE       =  0,
     SOTA_DIRECTION_RIGHT        =  2,
     SOTA_DIRECTION_TOP          =  6, /* Intuitive -> top of screen */
     SOTA_DIRECTION_LEFT         =  1,

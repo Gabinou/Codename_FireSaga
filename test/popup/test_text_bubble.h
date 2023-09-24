@@ -20,8 +20,8 @@ void test_Text_Bubble_Tail() {
     PixelFont_Swap_Palette(bubble.pixelfont, renderer, 1, 55);
 
     /* - setting - */
-    bubble.target.x = -bubble.width;
-    bubble.target.y = -bubble.height;
+    bubble.target.x = -100;
+    bubble.target.y = -100;
     TextBubble_Set_All(&bubble, "Hello, World!", bubble.target, &n9patch);
     SDL_assert(bubble.tail.index     == TEXT_BUBBLE_DIAGONAL);
     SDL_assert(bubble.tail.angle     == 180.0);
@@ -33,8 +33,8 @@ void test_Text_Bubble_Tail() {
                             renderer, bubble.texture, SDL_PIXELFORMAT_ARGB8888, render_target);
 
     /* - setting - */
-    bubble.target.x = -bubble.width;
-    bubble.target.y = bubble.height / 2;
+    bubble.target.x = -100;
+    bubble.target.y = 10;
     TextBubble_Set_All(&bubble, "Another oneliner.", bubble.target, &n9patch);
     SDL_assert(bubble.tail.octant    == SOTA_DIRECTION_LEFT);
     SDL_assert(bubble.tail.index     == TEXT_BUBBLE_STRAIGHT);
@@ -96,8 +96,10 @@ void test_Text_Bubble_Tail() {
                             renderer, bubble.texture, SDL_PIXELFORMAT_ARGB8888, render_target);
 
     /* - setting - */
+    TextBubble_Set_All(&bubble, "The quick brown fox jumped over the lazy dog", bubble.target,
+                       &n9patch);
     bubble.target.x = bubble.width / 2;
-    bubble.target.y = bubble.height / 2;
+    bubble.target.y = 2 * bubble.height;
     TextBubble_Set_All(&bubble, "The quick brown fox jumped over the lazy dog", bubble.target,
                        &n9patch);
 
@@ -157,6 +159,8 @@ void test_Text_Bubble_Tail() {
                             renderer, bubble.texture, SDL_PIXELFORMAT_ARGB8888, render_target);
 
     /* - setting - */
+    bubble.target.x = bubble.width * 4;
+    bubble.target.y = bubble.height * 4;
     TextBubble_Set_All(&bubble, "The quick brown fox jumped over the lazy dog", bubble.target,
                        &n9patch);
 
@@ -164,7 +168,6 @@ void test_Text_Bubble_Tail() {
     TextBubble_Update(&bubble, &n9patch, render_target, renderer);
     Filesystem_Texture_Dump(PATH_JOIN("popup_text_bubble", "TextBubble_Big_BrownFox.png"),
                             renderer, bubble.texture, SDL_PIXELFORMAT_ARGB8888, render_target);
-
 
     /* - setting - */
     bubble.target.x = bubble.width * 2;
