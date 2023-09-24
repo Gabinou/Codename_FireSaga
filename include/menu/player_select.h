@@ -19,7 +19,7 @@ enum PLAYER_SELECT_ENUM {
     PSM_PADDING_RIGHT   =  7,
     PSM_PADDING_TOP     =  5,
     PSM_PADDING_LEFT    =  7,
-    PSM_PADDING_BOTTOM  = 11,
+    PSM_PADDING_BOTTOM  =  3,
 };
 
 typedef void (*psm_maker_t)(struct Game *in_game, void *dat1, void *dat2);
