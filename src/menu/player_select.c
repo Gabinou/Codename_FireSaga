@@ -124,9 +124,9 @@ void PlayerSelectMenu_Load(struct PlayerSelectMenu *psm, SDL_Renderer *renderer,
 
 void PlayerSelectMenu_Options_Reset(struct PlayerSelectMenu *psm) {
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
-    DARR_NUM(psm->options) = 0;
+    DARR_NUM(psm->options)      = 0;
     DARR_NUM(psm->option_names) = 0;
-    psm->option_num = 0;
+    psm->option_num             = 0;
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
@@ -169,14 +169,6 @@ void PlayerSelectMenu_Option_Add(struct PlayerSelectMenu *psm, uf32 option) {
 void PlayerSelectMenu_Compute_Size(struct PlayerSelectMenu *psm, struct n9Patch *n9patch) {
     SOTA_Log_FPS("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     /* - Compute patch sizes from text - */
-    // n9patch->size_patches.x = (int)round((float)psm->text_width / n9patch->patch_pixels.x);
-    // int temp_y = mp.top + mp.bottom + psm->row_height * psm->option_num;
-    // n9patch->size_patches.y = temp_y / n9patch->patch_pixels.y;
-
-    // /* - Compute pixel size from previous patch sizes for tight fit - */
-    // n9patch->size_pixels.x = n9patch->size_patches.x * n9patch->patch_pixels.x;
-    // n9patch->size_pixels.y = n9patch->size_patches.y * n9patch->patch_pixels.y;
-
     struct Padding mp = psm->menu_padding;
     int text_height = mp.top + mp.bottom + psm->row_height * psm->option_num;
     struct Point content = {psm->text_width, text_height};
@@ -398,10 +390,10 @@ void makeContent_PSM_MAP_ACTION(struct Game *sota, void *data1, void *data2) {
     struct PlayerSelectMenu *psm = mc_ptr->data;
     SDL_assert(psm != NULL);
     psm->option_num = 0;
-    PlayerSelectMenu_Option_Add(psm, MENU_OPTION_UNITS);
-    PlayerSelectMenu_Option_Add(psm, MENU_OPTION_CONVOY);
-    PlayerSelectMenu_Option_Add(psm, MENU_OPTION_QUIT);
-    PlayerSelectMenu_Option_Add(psm, MENU_OPTION_END_TURN);
+    PlayerSelectMenu_Option_Add(  psm, MENU_OPTION_UNITS);
+    PlayerSelectMenu_Option_Add(  psm, MENU_OPTION_CONVOY);
+    PlayerSelectMenu_Option_Add(  psm, MENU_OPTION_QUIT);
+    PlayerSelectMenu_Option_Add(  psm, MENU_OPTION_END_TURN);
     PlayerSelectMenu_Compute_Size(psm, &mc_ptr->n9patch);
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }

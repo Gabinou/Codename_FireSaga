@@ -19,17 +19,19 @@ struct Text_Bubble TextBubble_default = {
     .line_len_px = 64,
     .line_num    =  0,
     .text        = NULL,
-    .padding     = {
-        .left   = TEXT_BUBBLE_PADDING_LEFT,
-        .top    = TEXT_BUBBLE_PADDING_TOP,
-        .bottom = TEXT_BUBBLE_PADDING_BOTTOM,
-        .right  = TEXT_BUBBLE_PADDING_RIGHT,
-    },
     .target      = {-100, -100},
     .pixelfont   = NULL,
     .texture     = NULL,
     .update      = false,
-    .pointer = {
+
+    .padding     = {
+        .left       = TEXT_BUBBLE_PADDING_LEFT,
+        .top        = TEXT_BUBBLE_PADDING_TOP,
+        .bottom     = TEXT_BUBBLE_PADDING_BOTTOM,
+        .right      = TEXT_BUBBLE_PADDING_RIGHT,
+    },
+
+    .pointer     = {
         .pos        = {0, 0},
         .flip       = SDL_FLIP_NONE,
         .texture    = NULL,
@@ -116,8 +118,8 @@ void TextBubble_Set_Target(struct Text_Bubble *bubble, struct Point target) {
     /* Target is relative to bubble position*/
     bubble->target = target;
     TextBubble_Pointer_Octant(bubble);
-    TextBubble_Pointer_Flip(bubble);
-    TextBubble_Pointer_Angle(bubble);
+    TextBubble_Pointer_Flip(  bubble);
+    TextBubble_Pointer_Angle( bubble);
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
