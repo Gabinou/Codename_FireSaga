@@ -111,6 +111,8 @@ struct Target test = {
     .flags              = "-fwrapv,-fno-strict-overflow,-fno-strict-aliasing",
     .links              = "SDL2,SDL2_image,SDL2_ttf,m,GLEW,cjson,noursmath,physfs,"
                           "tinymt,tnecs,nstr,parg",
+    .command_pre_build  = "astyle --options=utils/style.txt --verbose "
+                          "--recursive src/* include/* test/* names/*",
     .kind               = MACE_EXECUTABLE,
 };
 
