@@ -20,13 +20,8 @@ void test_text_bubble_pointer() {
     PixelFont_Swap_Palette(bubble.pixelfont, renderer, 1, 55);
 
     /* - setting - */
-    // TextBubble_Set_Text(&bubble, "Hello, World!", &n9patch);
     bubble.target.x = -bubble.width;
     bubble.target.y = -bubble.height;
-    // TextBubble_Set_Target(&bubble, bubble.target);
-    // TextBubble_Pointer_Pos(&bubble, &n9patch);
-    // SDL_assert(bubble.width  > 0);
-    // SDL_assert(bubble.height > 0);
     TextBubble_Set_All(&bubble, "Hello, World!", bubble.target, &n9patch);
     SDL_assert(bubble.pointer.index     == TEXT_BUBBLE_DIAGONAL);
     SDL_assert(bubble.pointer.angle     == 180.0);
@@ -38,14 +33,12 @@ void test_text_bubble_pointer() {
                             renderer, bubble.texture, SDL_PIXELFORMAT_ARGB8888, render_target);
 
     /* - setting - */
-    TextBubble_Set_Text(&bubble, "Another oneliner.", &n9patch);
     bubble.target.x = -bubble.width;
     bubble.target.y = bubble.height / 2;
-    TextBubble_Set_Target(&bubble, bubble.target);
+    TextBubble_Set_All(&bubble, "Another oneliner.", bubble.target, &n9patch);
     SDL_assert(bubble.pointer.octant    == SOTA_DIRECTION_LEFT);
     SDL_assert(bubble.pointer.index     == TEXT_BUBBLE_STRAIGHT);
     SDL_assert(bubble.pointer.angle     == 90.0);
-    TextBubble_Pointer_Pos(&bubble, &n9patch);
     SDL_assert(bubble.width  > 0);
     SDL_assert(bubble.height > 0);
 
@@ -55,13 +48,11 @@ void test_text_bubble_pointer() {
                             renderer, bubble.texture, SDL_PIXELFORMAT_ARGB8888, render_target);
 
     /* - setting - */
-    TextBubble_Set_Text(&bubble, "Another oneliner.", &n9patch);
     bubble.target.x = bubble.width * 2;
     bubble.target.y = bubble.height / 2;
-    TextBubble_Set_Target(&bubble, bubble.target);
+    TextBubble_Set_All(&bubble, "Another oneliner.", bubble.target, &n9patch);
     SDL_assert(bubble.width  > 0);
     SDL_assert(bubble.height > 0);
-    TextBubble_Pointer_Pos(&bubble, &n9patch);
 
     /* - rendering - */
     TextBubble_Update(&bubble, &n9patch, render_target, renderer);
@@ -69,13 +60,11 @@ void test_text_bubble_pointer() {
                             renderer, bubble.texture, SDL_PIXELFORMAT_ARGB8888, render_target);
 
     /* - setting - */
-    TextBubble_Set_Text(&bubble, "A", &n9patch);
     bubble.target.x = - bubble.width;
     bubble.target.y = bubble.height * 2;
-    TextBubble_Set_Target(&bubble, bubble.target);
+    TextBubble_Set_All(&bubble, "A", bubble.target, &n9patch);
     SDL_assert(bubble.width  > 0);
     SDL_assert(bubble.height > 0);
-    TextBubble_Pointer_Pos(&bubble, &n9patch);
 
     /* - rendering - */
     TextBubble_Update(&bubble, &n9patch, render_target, renderer);
@@ -83,13 +72,11 @@ void test_text_bubble_pointer() {
                             renderer, bubble.texture, SDL_PIXELFORMAT_ARGB8888, render_target);
 
     /* - setting - */
-    TextBubble_Set_Text(&bubble, "I am a 2 line long speech. Brief.", &n9patch);
     bubble.target.x = bubble.width / 2;
     bubble.target.y = - bubble.height;
-    TextBubble_Set_Target(&bubble, bubble.target);
+    TextBubble_Set_All(&bubble, "I am a 2 line long speech. Brief.", bubble.target, &n9patch);
     SDL_assert(bubble.width  > 0);
     SDL_assert(bubble.height > 0);
-    TextBubble_Pointer_Pos(&bubble, &n9patch);
 
     /* - rendering - */
     TextBubble_Update(&bubble, &n9patch, render_target, renderer);
