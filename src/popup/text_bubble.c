@@ -1,7 +1,7 @@
 
 #include "text_bubble.h"
 
-struct Text_Bubble_Pointer Text_Bubble_Pointer_default = {
+struct Text_Bubble_Tail Text_Bubble_Tail_default = {
     .pos        = {0, 0},
     .flip       = SDL_FLIP_NONE,
     .texture    = NULL,
@@ -31,7 +31,7 @@ struct Text_Bubble TextBubble_default = {
         .right      = TEXT_BUBBLE_PADDING_RIGHT,
     },
 
-    .pointer     = {
+    .tail     = {
         .pos        = {0, 0},
         .flip       = SDL_FLIP_NONE,
         .texture    = NULL,
@@ -55,9 +55,9 @@ void TextBubble_Free(struct Text_Bubble *bubble) {
 
     TextLines_Free(&bubble->lines);
 
-    if (bubble->pointer.texture != NULL) {
-        SDL_DestroyTexture(bubble->pointer.texture);
-        bubble->pointer.texture = NULL;
+    if (bubble->tail.texture != NULL) {
+        SDL_DestroyTexture(bubble->tail.texture);
+        bubble->tail.texture = NULL;
     }
 
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
@@ -67,11 +67,14 @@ void TextBubble_Load(struct Text_Bubble *bubble, SDL_Renderer *renderer, struct 
     SOTA_Log_FPS("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     SDL_assert(bubble != NULL);
 
+    /* -- Free before re-allocating -- */
     TextBubble_Free(bubble);
     n9Patch_Free(n9patch);
 
+    /* -- Bubble defaults -- */
     bubble->update = true;
 
+    /* -- n9patch defaults -- */
     *n9patch                  = n9Patch_default;
     n9patch->patch_pixels.x   = TEXT_BUBBLE_PATCH_PIXELS;
     n9patch->patch_pixels.y   = TEXT_BUBBLE_PATCH_PIXELS;
@@ -80,81 +83,87 @@ void TextBubble_Load(struct Text_Bubble *bubble, SDL_Renderer *renderer, struct 
     n9patch->pos.x            = 0;
     n9patch->pos.y            = 0;
 
+    /* -- Loading textures -- */
     char *path = PATH_JOIN("..", "assets", "GUI", "Popup", "Popup_TextBubble_n9patch.png");
     n9patch->texture = Filesystem_Texture_Load(renderer, path, SDL_PIXELFORMAT_INDEX8);
     SDL_assert(n9patch->texture != NULL);
 
-    path = PATH_JOIN("..", "assets", "GUI", "Popup", "Popup_TextBubble_Pointer.png");
-    bubble->pointer.texture = Filesystem_Texture_Load(renderer, path, SDL_PIXELFORMAT_INDEX8);
-    SDL_assert(bubble->pointer.texture != NULL);
+    path = PATH_JOIN("..", "assets", "GUI", "Popup", "Popup_TextBubble_Tail.png");
+    bubble->tail.texture = Filesystem_Texture_Load(renderer, path, SDL_PIXELFORMAT_INDEX8);
+    SDL_assert(bubble->tail.texture != NULL);
 
     SOTA_Log_FPS("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 void TextBubble_Set_Text(struct Text_Bubble *bubble, const char *text, struct n9Patch *n9patch) {
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
+    /* -- Free before re-allocating -- */
     if (bubble->text != NULL) {
         free(bubble->text);
         bubble->text = NULL;
     }
+    /* -- Copying input text -- */
     size_t len   = strlen(text);
     bubble->text = calloc(len + 1, sizeof(*bubble->text));
     strncpy(bubble->text, text, len);
 
+    /* -- Split text into n lines depending on bubble max line length -- */
     TextLines_Free(&bubble->lines);
     bubble->lines = PixelFont_Lines_Len(bubble->pixelfont, bubble->text, bubble->line_len_px);
 
+    /* -- Compute bubble size from text lines -- */
     TextBubble_Compute_Size(bubble, n9patch);
 
-    if (bubble->texture != NULL) {
-        SDL_DestroyTexture(bubble->texture);
-        bubble->texture = NULL;
-    }
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 void TextBubble_Set_Target(struct Text_Bubble *bubble, struct Point target) {
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
-    /* Target is relative to bubble position*/
+    /* -- Compute everything related to new target --  */
+    /* target is relative to bubble position */
     bubble->target = target;
-    TextBubble_Pointer_Octant(bubble);
-    TextBubble_Pointer_Flip(  bubble);
-    TextBubble_Pointer_Angle( bubble);
+    TextBubble_Tail_Octant(bubble);
+    TextBubble_Tail_Flip(  bubble);
+    TextBubble_Tail_Angle( bubble);
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
-int TextBubble_Pointer_Octant(struct Text_Bubble *bubble) {
+int TextBubble_Tail_Octant(struct Text_Bubble *bubble) {
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
-    // Find octant around text bubble target is in
+    /* -- Find octant around text bubble target is in -- */
     struct Point pos = {TEXT_BUBBLE_RENDER_PAD, TEXT_BUBBLE_RENDER_PAD};
     struct Point ternary;
+
     ternary = Ternary_Direction_Octant(pos, bubble->target, bubble->width, bubble->height);
-    bubble->pointer.octant = Ternary_Direction_Index(ternary.x, ternary.y);
+    bubble->tail.octant = Ternary_Direction_Index(ternary.x, ternary.y);
 
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
-    return (bubble->pointer.octant);
+    return (bubble->tail.octant);
 }
 
-void TextBubble_Pointer_Flip(struct Text_Bubble *bubble) {
+void TextBubble_Tail_Flip(struct Text_Bubble *bubble) {
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
-    /* Decide pointer flip. */
-    // Points pointer in direction of target
+    /* -- Decide tail flip. -- */
+    // Points tail in direction of target
     // Only for straight quadrants
+
+    // TODO: Is this useless?
+
     struct Point pos = {TEXT_BUBBLE_RENDER_PAD, TEXT_BUBBLE_RENDER_PAD};
     struct Point half = {pos.x > bubble->target.x, pos.y > bubble->target.y};
 
-    switch (bubble->pointer.octant) {
+    switch (bubble->tail.octant) {
         case SOTA_DIRECTION_RIGHT:
-            bubble->pointer.flip = half.y ? SDL_FLIP_VERTICAL   : SDL_FLIP_NONE;
+            bubble->tail.flip = half.y ? SDL_FLIP_VERTICAL   : SDL_FLIP_NONE;
             break;
         case SOTA_DIRECTION_TOP:
-            bubble->pointer.flip = half.x ? SDL_FLIP_HORIZONTAL : SDL_FLIP_NONE;
+            bubble->tail.flip = half.x ? SDL_FLIP_HORIZONTAL : SDL_FLIP_NONE;
             break;
         case SOTA_DIRECTION_BOTTOM:
-            bubble->pointer.flip = half.x ? SDL_FLIP_NONE       : SDL_FLIP_HORIZONTAL;
+            bubble->tail.flip = half.x ? SDL_FLIP_NONE       : SDL_FLIP_HORIZONTAL;
             break;
         case SOTA_DIRECTION_LEFT:
-            bubble->pointer.flip = half.y ? SDL_FLIP_NONE       : SDL_FLIP_VERTICAL;
+            bubble->tail.flip = half.y ? SDL_FLIP_NONE       : SDL_FLIP_VERTICAL;
             break;
     }
     // TODO: IF diagonal octant, flip one way or another if target more x than y and vice-versa
@@ -162,130 +171,137 @@ void TextBubble_Pointer_Flip(struct Text_Bubble *bubble) {
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
-void TextBubble_Pointer_Pos(struct Text_Bubble *bubble, struct n9Patch *n9patch) {
+void TextBubble_Tail_Pos(struct Text_Bubble *bubble, struct n9Patch *n9patch) {
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
-    /* Decide pointer position. */
+    /* Decide tail position. */
     struct Point pos = {TEXT_BUBBLE_RENDER_PAD, TEXT_BUBBLE_RENDER_PAD};
 
-    bubble->pointer.dstrect.w = TEXT_BUBBLE_POINTER_SIZE;
-    bubble->pointer.dstrect.h = TEXT_BUBBLE_POINTER_SIZE;
+    bubble->tail.dstrect.w = Text_Bubble_Tail_SIZE;
+    bubble->tail.dstrect.h = Text_Bubble_Tail_SIZE;
 
-    switch (bubble->pointer.octant) {
+    switch (bubble->tail.octant) {
         case SOTA_DIRECTION_RIGHT:
-            bubble->pointer.dstrect.x = bubble->width - 2;
-            bubble->pointer.dstrect.y = TEXT_BUBBLE_PATCH_PIXELS - 5;
+            bubble->tail.dstrect.x = bubble->width - 2;
+            bubble->tail.dstrect.y = TEXT_BUBBLE_PATCH_PIXELS - 5;
             if (n9patch->size_patches.y > 2) {
-                /* Place pointer according to target */
-                bubble->pointer.dstrect.y = bubble->target.y - TEXT_BUBBLE_RENDER_PAD / 2;
+                /* Place tail according to target */
+                bubble->tail.dstrect.y = bubble->target.y - TEXT_BUBBLE_RENDER_PAD / 2;
             }
             break;
         case SOTA_DIRECTION_TOP:
-            // bubble->pointer.dstrect.x = TEXT_BUBBLE_PATCH_PIXELS;
-            bubble->pointer.dstrect.x = bubble->target.x - TEXT_BUBBLE_RENDER_PAD / 2;
-            bubble->pointer.dstrect.y = -6;
+            // bubble->tail.dstrect.x = TEXT_BUBBLE_PATCH_PIXELS;
+            bubble->tail.dstrect.x = bubble->target.x - TEXT_BUBBLE_RENDER_PAD / 2;
+            bubble->tail.dstrect.y = -6;
             break;
         case SOTA_DIRECTION_BOTTOM:
-            // bubble->pointer.dstrect.x = TEXT_BUBBLE_PATCH_PIXELS;
-            bubble->pointer.dstrect.x = bubble->target.x - TEXT_BUBBLE_RENDER_PAD / 2;
-            bubble->pointer.dstrect.y = bubble->height - 2;
+            // bubble->tail.dstrect.x = TEXT_BUBBLE_PATCH_PIXELS;
+            bubble->tail.dstrect.x = bubble->target.x - TEXT_BUBBLE_RENDER_PAD / 2;
+            bubble->tail.dstrect.y = bubble->height - 2;
             break;
         case SOTA_DIRECTION_LEFT:
-            bubble->pointer.dstrect.x = -6;
-            bubble->pointer.dstrect.y = TEXT_BUBBLE_PATCH_PIXELS - 3;
+            bubble->tail.dstrect.x = -6;
+            bubble->tail.dstrect.y = TEXT_BUBBLE_PATCH_PIXELS - 3;
             if (n9patch->size_patches.y > 2) {
-                /* Place pointer according to target */
-                bubble->pointer.dstrect.y = bubble->target.y - TEXT_BUBBLE_RENDER_PAD / 2;
+                /* Place tail according to target */
+                bubble->tail.dstrect.y = bubble->target.y - TEXT_BUBBLE_RENDER_PAD / 2;
             }
             break;
         case SOTA_DIRECTION_DIAGONAL_TR:
-            bubble->pointer.dstrect.x = bubble->width - 6;
-            bubble->pointer.dstrect.y = -2;
+            bubble->tail.dstrect.x = bubble->width - 6;
+            bubble->tail.dstrect.y = -2;
             break;
         case SOTA_DIRECTION_DIAGONAL_BR:
-            bubble->pointer.dstrect.x = bubble->width  - 6;
-            bubble->pointer.dstrect.y = bubble->height - 6;
+            bubble->tail.dstrect.x = bubble->width  - 6;
+            bubble->tail.dstrect.y = bubble->height - 6;
             break;
         case SOTA_DIRECTION_DIAGONAL_BL:
-            bubble->pointer.dstrect.x = -2;
-            bubble->pointer.dstrect.y = bubble->height - 6;
+            bubble->tail.dstrect.x = -2;
+            bubble->tail.dstrect.y = bubble->height - 6;
             break;
         case SOTA_DIRECTION_DIAGONAL_TL:
-            bubble->pointer.dstrect.x = -2;
-            bubble->pointer.dstrect.y = -2;
+            bubble->tail.dstrect.x = -2;
+            bubble->tail.dstrect.y = -2;
             break;
     }
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
-void TextBubble_Pointer_Angle(struct Text_Bubble *bubble) {
+void TextBubble_Tail_Angle(struct Text_Bubble *bubble) {
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
-    /* Decide orientation of pointer, except flip. */
-    // Only puts pointer in correct octant
+    /* Decide orientation of tail, except flip. */
+    // Only puts tail in correct octant
 
-    bubble->pointer.flip = SDL_FLIP_NONE;
-    switch (bubble->pointer.octant) {
+    bubble->tail.flip = SDL_FLIP_NONE;
+    switch (bubble->tail.octant) {
         case SOTA_DIRECTION_RIGHT:
-            bubble->pointer.angle = 270.0;
-            bubble->pointer.index = TEXT_BUBBLE_STRAIGHT;
+            bubble->tail.angle = 270.0;
+            bubble->tail.index = TEXT_BUBBLE_STRAIGHT;
             break;
         case SOTA_DIRECTION_TOP:
-            bubble->pointer.angle = 180.0;
-            bubble->pointer.index = TEXT_BUBBLE_STRAIGHT;
+            bubble->tail.angle = 180.0;
+            bubble->tail.index = TEXT_BUBBLE_STRAIGHT;
             break;
         case SOTA_DIRECTION_BOTTOM:
-            bubble->pointer.angle = 0.0;
-            bubble->pointer.index = TEXT_BUBBLE_STRAIGHT;
+            bubble->tail.angle = 0.0;
+            bubble->tail.index = TEXT_BUBBLE_STRAIGHT;
             break;
         case SOTA_DIRECTION_LEFT:
-            bubble->pointer.angle = 90.0;
-            bubble->pointer.index = TEXT_BUBBLE_STRAIGHT;
+            bubble->tail.angle = 90.0;
+            bubble->tail.index = TEXT_BUBBLE_STRAIGHT;
             break;
         case SOTA_DIRECTION_DIAGONAL_TR:
-            bubble->pointer.angle = 270.0;
-            bubble->pointer.index = TEXT_BUBBLE_DIAGONAL;
+            bubble->tail.angle = 270.0;
+            bubble->tail.index = TEXT_BUBBLE_DIAGONAL;
             break;
         case SOTA_DIRECTION_DIAGONAL_BR:
-            bubble->pointer.angle = 0.0;
-            bubble->pointer.index = TEXT_BUBBLE_DIAGONAL;
+            bubble->tail.angle = 0.0;
+            bubble->tail.index = TEXT_BUBBLE_DIAGONAL;
             break;
         case SOTA_DIRECTION_DIAGONAL_BL:
-            bubble->pointer.angle = 90.0;
-            bubble->pointer.index = TEXT_BUBBLE_DIAGONAL;
+            bubble->tail.angle = 90.0;
+            bubble->tail.index = TEXT_BUBBLE_DIAGONAL;
             break;
         case SOTA_DIRECTION_DIAGONAL_TL:
-            bubble->pointer.angle = 180.0;
-            bubble->pointer.index = TEXT_BUBBLE_DIAGONAL;
+            bubble->tail.angle = 180.0;
+            bubble->tail.index = TEXT_BUBBLE_DIAGONAL;
             break;
     }
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 
-void TextBubble_Pointer_Draw(struct Text_Bubble *bubble, SDL_Renderer *renderer) {
+void TextBubble_Tail_Draw(struct Text_Bubble *bubble, SDL_Renderer *renderer) {
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     SDL_Rect srcrect;
-    srcrect.x = TEXT_BUBBLE_POINTER_SIZE * bubble->pointer.index;
+    srcrect.x = Text_Bubble_Tail_SIZE * bubble->tail.index;
     srcrect.y = 0;
-    srcrect.w = TEXT_BUBBLE_POINTER_SIZE;
-    srcrect.h = TEXT_BUBBLE_POINTER_SIZE;
+    srcrect.w = Text_Bubble_Tail_SIZE;
+    srcrect.h = Text_Bubble_Tail_SIZE;
     SDL_Rect dstrect;
-    dstrect.x = bubble->pointer.dstrect.x + TEXT_BUBBLE_RENDER_PAD;
-    dstrect.y = bubble->pointer.dstrect.y + TEXT_BUBBLE_RENDER_PAD;
-    dstrect.w = bubble->pointer.dstrect.w;
-    dstrect.h = bubble->pointer.dstrect.h;
+    dstrect.x = bubble->tail.dstrect.x + TEXT_BUBBLE_RENDER_PAD;
+    dstrect.y = bubble->tail.dstrect.y + TEXT_BUBBLE_RENDER_PAD;
+    dstrect.w = bubble->tail.dstrect.w;
+    dstrect.h = bubble->tail.dstrect.h;
 
-    SDL_Point center = {TEXT_BUBBLE_POINTER_SIZE / 2, TEXT_BUBBLE_POINTER_SIZE / 2};
-    SDL_RenderCopyEx(renderer, bubble->pointer.texture, &srcrect, &dstrect,
-                     bubble->pointer.angle, &center, bubble->pointer.flip);
+    SDL_Point center = {Text_Bubble_Tail_SIZE / 2, Text_Bubble_Tail_SIZE / 2};
+    SDL_RenderCopyEx(renderer, bubble->tail.texture, &srcrect, &dstrect,
+                     bubble->tail.angle, &center, bubble->tail.flip);
 
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 void TextBubble_Compute_Size(struct Text_Bubble *bu, struct n9Patch *n9patch) {
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
+    /* -- Check -- */
     if (bu->text == NULL) {
         SOTA_Log_Debug("bubble's text is NULL");
         return;
+    }
+
+    /* -- Destroy old bubble texture. -- */
+    if (bu->texture != NULL) {
+        SDL_DestroyTexture(bu->texture);
+        bu->texture = NULL;
     }
 
     /* -- Bubble text size -- */
@@ -319,7 +335,7 @@ void TextBubble_Set_All(struct Text_Bubble *bubble, const char *text, struct Poi
     TextBubble_Set_Target(bubble, target);
     SDL_assert(bubble->width  > 0);
     SDL_assert(bubble->height > 0);
-    TextBubble_Pointer_Pos(bubble, n9patch);
+    TextBubble_Tail_Pos(bubble, n9patch);
 
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
@@ -395,7 +411,7 @@ void TextBubble_Update(struct Text_Bubble *bubble, struct n9Patch *n9patch,
     n9patch->scale.y    = scale_y;
 
     TextBubble_Write(       bubble, renderer);
-    TextBubble_Pointer_Draw(bubble, renderer);
+    TextBubble_Tail_Draw(bubble, renderer);
 
     SDL_SetRenderTarget(renderer, target);
 

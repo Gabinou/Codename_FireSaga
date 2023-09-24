@@ -1,7 +1,7 @@
 #include "nourstest.h"
 #include "text_bubble.h"
 
-void test_text_bubble_pointer() {
+void test_Text_Bubble_Tail() {
     /* -- Create renderer -- */
     SDL_Surface  *surface  = Filesystem_indexedSurface_Init(1024, 1024);
     SDL_Renderer *renderer = SDL_CreateSoftwareRenderer(surface);
@@ -23,9 +23,9 @@ void test_text_bubble_pointer() {
     bubble.target.x = -bubble.width;
     bubble.target.y = -bubble.height;
     TextBubble_Set_All(&bubble, "Hello, World!", bubble.target, &n9patch);
-    SDL_assert(bubble.pointer.index     == TEXT_BUBBLE_DIAGONAL);
-    SDL_assert(bubble.pointer.angle     == 180.0);
-    SDL_assert(bubble.pointer.octant    == SOTA_DIRECTION_DIAGONAL_TL);
+    SDL_assert(bubble.tail.index     == TEXT_BUBBLE_DIAGONAL);
+    SDL_assert(bubble.tail.angle     == 180.0);
+    SDL_assert(bubble.tail.octant    == SOTA_DIRECTION_DIAGONAL_TL);
 
     /* - rendering - */
     TextBubble_Update(&bubble, &n9patch, render_target, renderer);
@@ -36,9 +36,9 @@ void test_text_bubble_pointer() {
     bubble.target.x = -bubble.width;
     bubble.target.y = bubble.height / 2;
     TextBubble_Set_All(&bubble, "Another oneliner.", bubble.target, &n9patch);
-    SDL_assert(bubble.pointer.octant    == SOTA_DIRECTION_LEFT);
-    SDL_assert(bubble.pointer.index     == TEXT_BUBBLE_STRAIGHT);
-    SDL_assert(bubble.pointer.angle     == 90.0);
+    SDL_assert(bubble.tail.octant    == SOTA_DIRECTION_LEFT);
+    SDL_assert(bubble.tail.index     == TEXT_BUBBLE_STRAIGHT);
+    SDL_assert(bubble.tail.angle     == 90.0);
 
     /* - rendering - */
     TextBubble_Update(&bubble, &n9patch, render_target, renderer);
@@ -52,7 +52,7 @@ void test_text_bubble_pointer() {
 
     /* - rendering - */
     TextBubble_Update(&bubble, &n9patch, render_target, renderer);
-    Filesystem_Texture_Dump(PATH_JOIN("popup_text_bubble", "TextBubble_1line_pointerR.png"),
+    Filesystem_Texture_Dump(PATH_JOIN("popup_text_bubble", "TextBubble_1line_tailR.png"),
                             renderer, bubble.texture, SDL_PIXELFORMAT_ARGB8888, render_target);
 
     /* - setting - */
@@ -82,7 +82,7 @@ void test_text_bubble_pointer() {
 
     /* - rendering - */
     TextBubble_Update(&bubble, &n9patch, render_target, renderer);
-    Filesystem_Texture_Dump(PATH_JOIN("popup_text_bubble", "TextBubble_2lines_pointerR.png"),
+    Filesystem_Texture_Dump(PATH_JOIN("popup_text_bubble", "TextBubble_2lines_tailR.png"),
                             renderer, bubble.texture, SDL_PIXELFORMAT_ARGB8888, render_target);
 
     /* - setting - */
@@ -92,7 +92,7 @@ void test_text_bubble_pointer() {
 
     /* - rendering - */
     TextBubble_Update(&bubble, &n9patch, render_target, renderer);
-    Filesystem_Texture_Dump(PATH_JOIN("popup_text_bubble", "TextBubble_2lines_pointerL.png"),
+    Filesystem_Texture_Dump(PATH_JOIN("popup_text_bubble", "TextBubble_2lines_tailL.png"),
                             renderer, bubble.texture, SDL_PIXELFORMAT_ARGB8888, render_target);
 
     /* - setting - */
@@ -174,7 +174,7 @@ void test_text_bubble_pointer() {
 
     /* - rendering - */
     TextBubble_Update(&bubble, &n9patch, render_target, renderer);
-    Filesystem_Texture_Dump(PATH_JOIN("popup_text_bubble", "TextBubble_3lines_pointerR3.png"),
+    Filesystem_Texture_Dump(PATH_JOIN("popup_text_bubble", "TextBubble_3lines_tailR3.png"),
                             renderer, bubble.texture, SDL_PIXELFORMAT_ARGB8888, render_target);
 
     /* - setting - */
@@ -185,7 +185,7 @@ void test_text_bubble_pointer() {
 
     /* - rendering - */
     TextBubble_Update(&bubble, &n9patch, render_target, renderer);
-    Filesystem_Texture_Dump(PATH_JOIN("popup_text_bubble", "TextBubble_3lines_pointerL3.png"),
+    Filesystem_Texture_Dump(PATH_JOIN("popup_text_bubble", "TextBubble_3lines_tailL3.png"),
                             renderer, bubble.texture, SDL_PIXELFORMAT_ARGB8888, render_target);
 
     /* - setting - */
@@ -196,7 +196,7 @@ void test_text_bubble_pointer() {
 
     /* - rendering - */
     TextBubble_Update(&bubble, &n9patch, render_target, renderer);
-    Filesystem_Texture_Dump(PATH_JOIN("popup_text_bubble", "TextBubble_3lines_pointerR2.png"),
+    Filesystem_Texture_Dump(PATH_JOIN("popup_text_bubble", "TextBubble_3lines_tailR2.png"),
                             renderer, bubble.texture, SDL_PIXELFORMAT_ARGB8888, render_target);
 
     /* - setting - */
@@ -207,7 +207,7 @@ void test_text_bubble_pointer() {
 
     /* - rendering - */
     TextBubble_Update(&bubble, &n9patch, render_target, renderer);
-    Filesystem_Texture_Dump(PATH_JOIN("popup_text_bubble", "TextBubble_3lines_pointerL2.png"),
+    Filesystem_Texture_Dump(PATH_JOIN("popup_text_bubble", "TextBubble_3lines_tailL2.png"),
                             renderer, bubble.texture, SDL_PIXELFORMAT_ARGB8888, render_target);
 
     /* - setting - */
@@ -218,7 +218,7 @@ void test_text_bubble_pointer() {
 
     /* - rendering - */
     TextBubble_Update(&bubble, &n9patch, render_target, renderer);
-    Filesystem_Texture_Dump(PATH_JOIN("popup_text_bubble", "TextBubble_3lines_pointerR1.png"),
+    Filesystem_Texture_Dump(PATH_JOIN("popup_text_bubble", "TextBubble_3lines_tailR1.png"),
                             renderer, bubble.texture, SDL_PIXELFORMAT_ARGB8888, render_target);
 
     /* - setting - */
@@ -229,7 +229,7 @@ void test_text_bubble_pointer() {
 
     /* - rendering - */
     TextBubble_Update(&bubble, &n9patch, render_target, renderer);
-    Filesystem_Texture_Dump(PATH_JOIN("popup_text_bubble", "TextBubble_3lines_pointerL1.png"),
+    Filesystem_Texture_Dump(PATH_JOIN("popup_text_bubble", "TextBubble_3lines_tailL1.png"),
                             renderer, bubble.texture, SDL_PIXELFORMAT_ARGB8888, render_target);
 
     /* - setting - */
@@ -239,7 +239,7 @@ void test_text_bubble_pointer() {
 
     /* - rendering - */
     TextBubble_Update(&bubble, &n9patch, render_target, renderer);
-    Filesystem_Texture_Dump(PATH_JOIN("popup_text_bubble", "TextBubble_pointerT1.png"),
+    Filesystem_Texture_Dump(PATH_JOIN("popup_text_bubble", "TextBubble_tailT1.png"),
                             renderer, bubble.texture, SDL_PIXELFORMAT_ARGB8888, render_target);
 
     /* - setting - */
@@ -249,7 +249,7 @@ void test_text_bubble_pointer() {
 
     /* - rendering - */
     TextBubble_Update(&bubble, &n9patch, render_target, renderer);
-    Filesystem_Texture_Dump(PATH_JOIN("popup_text_bubble", "TextBubble_pointerB1.png"),
+    Filesystem_Texture_Dump(PATH_JOIN("popup_text_bubble", "TextBubble_tailB1.png"),
                             renderer, bubble.texture, SDL_PIXELFORMAT_ARGB8888, render_target);
 
 
@@ -260,7 +260,7 @@ void test_text_bubble_pointer() {
 
     /* - rendering - */
     TextBubble_Update(&bubble, &n9patch, render_target, renderer);
-    Filesystem_Texture_Dump(PATH_JOIN("popup_text_bubble", "TextBubble_pointerT2.png"),
+    Filesystem_Texture_Dump(PATH_JOIN("popup_text_bubble", "TextBubble_tailT2.png"),
                             renderer, bubble.texture, SDL_PIXELFORMAT_ARGB8888, render_target);
 
     /* - setting - */
@@ -270,7 +270,7 @@ void test_text_bubble_pointer() {
 
     /* - rendering - */
     TextBubble_Update(&bubble, &n9patch, render_target, renderer);
-    Filesystem_Texture_Dump(PATH_JOIN("popup_text_bubble", "TextBubble_pointerB2.png"),
+    Filesystem_Texture_Dump(PATH_JOIN("popup_text_bubble", "TextBubble_tailB2.png"),
                             renderer, bubble.texture, SDL_PIXELFORMAT_ARGB8888, render_target);
 
 
@@ -281,7 +281,7 @@ void test_text_bubble_pointer() {
 
     /* - rendering - */
     TextBubble_Update(&bubble, &n9patch, render_target, renderer);
-    Filesystem_Texture_Dump(PATH_JOIN("popup_text_bubble", "TextBubble_pointerT3.png"),
+    Filesystem_Texture_Dump(PATH_JOIN("popup_text_bubble", "TextBubble_tailT3.png"),
                             renderer, bubble.texture, SDL_PIXELFORMAT_ARGB8888, render_target);
 
     /* - setting - */
@@ -291,7 +291,7 @@ void test_text_bubble_pointer() {
 
     /* - rendering - */
     TextBubble_Update(&bubble, &n9patch, render_target, renderer);
-    Filesystem_Texture_Dump(PATH_JOIN("popup_text_bubble", "TextBubble_pointerB3.png"),
+    Filesystem_Texture_Dump(PATH_JOIN("popup_text_bubble", "TextBubble_tailB3.png"),
                             renderer, bubble.texture, SDL_PIXELFORMAT_ARGB8888, render_target);
 
     /* FREE */
@@ -329,10 +329,10 @@ void test_text_bubble_scroll() {
     bubble.target.x = -bubble.width;
     bubble.target.y = -bubble.height;
     TextBubble_Set_Target(&bubble, bubble.target);
-    SDL_assert(bubble.pointer.index     == TEXT_BUBBLE_DIAGONAL);
-    SDL_assert(bubble.pointer.angle     == 180.0);
-    SDL_assert(bubble.pointer.octant    == SOTA_DIRECTION_DIAGONAL_TL);
-    TextBubble_Pointer_Pos(&bubble, &n9patch);
+    SDL_assert(bubble.tail.index     == TEXT_BUBBLE_DIAGONAL);
+    SDL_assert(bubble.tail.angle     == 180.0);
+    SDL_assert(bubble.tail.octant    == SOTA_DIRECTION_DIAGONAL_TL);
+    TextBubble_Tail_Pos(&bubble, &n9patch);
     SDL_assert(bubble.width  > 0);
     SDL_assert(bubble.height > 0);
     bubble.scroll = true;
@@ -363,6 +363,6 @@ void test_text_bubble_scroll() {
 void test_text_bubble() {
     SDL_Log("%s " STRINGIZE(__LINE__), __func__);
     sota_mkdir("popup_text_bubble");
-    test_text_bubble_pointer();
+    test_Text_Bubble_Tail();
     test_text_bubble_scroll();
 }

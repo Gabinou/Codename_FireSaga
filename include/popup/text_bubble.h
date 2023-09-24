@@ -28,10 +28,10 @@
 //                     ^
 //     x -> false      |     x -> true        y -> false
 //                    o-------------
-// ------------------ | text bubble | -> Pointer -------------
+// ------------------ | text bubble | -> tail -------------
 //                     -------------
 //                     |                      y -> true
-// Note: half = (pos_object > pos_pointer)
+// Note: half = (pos_object > pos_tail)
 
 /* --- FORWARD DECLARATIONS --- */
 
@@ -49,16 +49,16 @@ enum SOTA_TEXT_BUBBLE_N9PATCH {
     TEXT_BUBBLE_PADDING_RIGHT       = 3,
 };
 
-enum SOTA_TEXT_BUBBLE_POINTER {
+enum SOTA_Text_Bubble_Tail {
     TEXT_BUBBLE_MIN_WIDTH           =  TEXT_BUBBLE_PATCH_PIXELS * 3,
-    TEXT_BUBBLE_POINTER_SIZE        =  8,
+    Text_Bubble_Tail_SIZE        =  8,
     TEXT_BUBBLE_NULL                = -1,
     TEXT_BUBBLE_STRAIGHT            =  0,
     TEXT_BUBBLE_DIAGONAL            =  1,
     TEXT_BUBBLE_RENDER_PAD          =  6,
 };
 
-struct Text_Bubble_Pointer {
+struct Text_Bubble_Tail {
     double              angle; /* [degree] clockwise */
     int                 octant; /* Octant around bubble target is in */
     int                 index;
@@ -68,7 +68,7 @@ struct Text_Bubble_Pointer {
     SDL_Rect            dstrect;
     struct Point        pos;
 
-    bool half : 1;  /* Half around pointer target is in */
+    bool half : 1;  /* Half around tail target is in */
 };
 
 struct Text_Bubble {
@@ -82,7 +82,7 @@ struct Text_Bubble {
     struct TextLines            lines;
     struct Padding              padding;
     struct Point                target; /* Where to point at */
-    struct Text_Bubble_Pointer  pointer;
+    struct Text_Bubble_Tail     tail;
     SDL_Texture                *texture;
     struct PixelFont           *pixelfont;
 
@@ -102,10 +102,10 @@ extern void TextBubble_Compute_Size(struct Text_Bubble *b, struct n9Patch *n9pat
 
 /* --- Internals --- */
 
-extern void TextBubble_Pointer_Pos(   struct Text_Bubble *b, struct n9Patch *n9patch);
-extern void TextBubble_Pointer_Flip(  struct Text_Bubble *b);
-extern void TextBubble_Pointer_Angle( struct Text_Bubble *b);
-extern int  TextBubble_Pointer_Octant(struct Text_Bubble *b);
+extern void TextBubble_Tail_Pos(   struct Text_Bubble *b, struct n9Patch *n9patch);
+extern void TextBubble_Tail_Flip(  struct Text_Bubble *b);
+extern void TextBubble_Tail_Angle( struct Text_Bubble *b);
+extern int  TextBubble_Tail_Octant(struct Text_Bubble *b);
 
 extern void TextBubble_Set_All(struct Text_Bubble *b, const char *t, struct Point ta,
                                struct n9Patch *n9patch);
@@ -118,7 +118,7 @@ extern void TextBubble_Update(struct Text_Bubble *b, struct n9Patch *n9patch,
 
 /* -- Drawing elements -- */
 extern void TextBubble_Write(       struct Text_Bubble *b, SDL_Renderer *r);
-extern void TextBubble_Pointer_Draw(struct Text_Bubble *b, SDL_Renderer *r);
+extern void TextBubble_Tail_Draw(struct Text_Bubble *b, SDL_Renderer *r);
 
 
 #endif /* TEXT_BUBBLE_H */
