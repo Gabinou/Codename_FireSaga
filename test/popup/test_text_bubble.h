@@ -374,7 +374,7 @@ void test_text_bubble_pointer() {
 
     /* - setting - */
     TextBubble_Set_Text(&bubble, "Hello, World!", &n9patch);
-    bubble.target.x = bubble.width *2 / 3;
+    bubble.target.x = bubble.width * 2 / 3;
     bubble.target.y = -bubble.height * 2;
     TextBubble_Set_Target(&bubble, bubble.target);
     SDL_assert(bubble.width  > 0);
@@ -408,7 +408,8 @@ void test_text_bubble_scroll() {
     bubble.pixelfont = PixelFont_Alloc();
     bubble.pixelfont->y_offset     = pixelfont_big_y_offset;
     TextBubble_Load(&bubble, renderer, &n9patch);
-    PixelFont_Load(bubble.pixelfont, renderer, PATH_JOIN("..", "assets", "Fonts", "pixelnours_Big.png"));
+    PixelFont_Load(bubble.pixelfont, renderer, PATH_JOIN("..", "assets", "Fonts",
+                                                         "pixelnours_Big.png"));
     PixelFont_Swap_Palette(bubble.pixelfont, renderer, 1, 55);
     bubble.pixelfont->scroll_speed = 0;
     bubble.line_len_px  = 96;
@@ -430,7 +431,7 @@ void test_text_bubble_scroll() {
     int i = 0;
     char path_raw[128] = PATH_JOIN("popup_text_bubble", "TextBubble_Scroll_%02d.png");
     char path[128];
-    size_t scroll_lim = strlen(bubble.text) - bubble.lines.line_num +1;
+    size_t scroll_lim = strlen(bubble.text) - bubble.lines.line_num + 1;
     while (bubble.pixelfont->scroll_len <= scroll_lim) {
         sprintf(path, path_raw, i);
 

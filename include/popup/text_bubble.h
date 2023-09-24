@@ -99,12 +99,13 @@ extern void TextBubble_Compute_Size(struct Text_Bubble *b, struct n9Patch *n9pat
 
 /* --- Internals --- */
 
-extern void TextBubble_Pointer_Pos(  struct Text_Bubble *b, struct n9Patch *n9patch);
-extern void TextBubble_Pointer_Flip( struct Text_Bubble *b);
-extern void TextBubble_Pointer_Angle(struct Text_Bubble *b);
-extern int TextBubble_Pointer_Octant(struct Text_Bubble *b);
+extern void TextBubble_Pointer_Pos(   struct Text_Bubble *b, struct n9Patch *n9patch);
+extern void TextBubble_Pointer_Flip(  struct Text_Bubble *b);
+extern void TextBubble_Pointer_Angle( struct Text_Bubble *b);
+extern int  TextBubble_Pointer_Octant(struct Text_Bubble *b);
 
-extern void TextBubble_Set_All(struct Text_Bubble *b, const char *t, struct Point ta, struct n9Patch *n9patch);
+extern void TextBubble_Set_All(struct Text_Bubble *b, const char *t, struct Point ta,
+                               struct n9Patch *n9patch);
 
 /* --- Drawing --- */
 extern void TextBubble_Draw(  struct PopUp *p, struct Point pos,

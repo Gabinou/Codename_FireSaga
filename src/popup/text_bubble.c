@@ -188,8 +188,8 @@ void TextBubble_Pointer_Pos(struct Text_Bubble *bubble, struct n9Patch *n9patch)
             bubble->pointer.dstrect.y = bubble->height - 2;
             break;
         case SOTA_DIRECTION_LEFT:
-                bubble->pointer.dstrect.x = -6;
-                bubble->pointer.dstrect.y = TEXT_BUBBLE_PATCH_PIXELS - 3;
+            bubble->pointer.dstrect.x = -6;
+            bubble->pointer.dstrect.y = TEXT_BUBBLE_PATCH_PIXELS - 3;
             if (n9patch->size_patches.y > 2) {
                 /* Place pointer according to target */
                 bubble->pointer.dstrect.y = bubble->target.y - TEXT_BUBBLE_RENDER_PAD / 2;
@@ -309,9 +309,10 @@ void TextBubble_Compute_Size(struct Text_Bubble *bu, struct n9Patch *n9patch) {
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
-void TextBubble_Set_All(struct Text_Bubble *bubble, const char *text, struct Point target, struct n9Patch *n9patch) {
+void TextBubble_Set_All(struct Text_Bubble *bubble, const char *text, struct Point target,
+                        struct n9Patch *n9patch) {
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
-    
+
     TextBubble_Set_Text(bubble, text, n9patch);
     TextBubble_Set_Target(bubble, target);
     SDL_assert(bubble->width  > 0);
@@ -334,7 +335,7 @@ void TextBubble_Write(struct Text_Bubble *bubble, SDL_Renderer *renderer) {
             PixelFont_Write_Len(bubble->pixelfont, renderer, bubble->lines.lines[i], x, y);
             continue;
         }
- 
+
         if (scroll_len_rem <= 0)
             break;
 
