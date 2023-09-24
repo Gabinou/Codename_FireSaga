@@ -20,16 +20,17 @@ void test_text_bubble_pointer() {
     PixelFont_Swap_Palette(bubble.pixelfont, renderer, 1, 55);
 
     /* - setting - */
-    TextBubble_Set_Text(&bubble, "Hello, World!", &n9patch);
+    // TextBubble_Set_Text(&bubble, "Hello, World!", &n9patch);
     bubble.target.x = -bubble.width;
     bubble.target.y = -bubble.height;
-    TextBubble_Set_Target(&bubble, bubble.target);
+    // TextBubble_Set_Target(&bubble, bubble.target);
+    // TextBubble_Pointer_Pos(&bubble, &n9patch);
+    // SDL_assert(bubble.width  > 0);
+    // SDL_assert(bubble.height > 0);
+    TextBubble_Set_All(&bubble, "Hello, World!", bubble.target, &n9patch);
     SDL_assert(bubble.pointer.index     == TEXT_BUBBLE_DIAGONAL);
     SDL_assert(bubble.pointer.angle     == 180.0);
     SDL_assert(bubble.pointer.octant    == SOTA_DIRECTION_DIAGONAL_TL);
-    TextBubble_Pointer_Pos(&bubble, &n9patch);
-    SDL_assert(bubble.width  > 0);
-    SDL_assert(bubble.height > 0);
 
     /* - rendering - */
     TextBubble_Update(&bubble, &n9patch, render_target, renderer);

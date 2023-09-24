@@ -19,14 +19,14 @@ enum N9PATCH {
 typedef struct n9Patch {
     /* Note: size_patches = size_pixels / patch_pixels */
     struct Point scale;
-    // patch_pixels: how many pixels per patch
-    struct Point patch_pixels;    /* [pixels]     */
-    struct Point size_patches;    /* [patches]    */
-    struct Point size_pixels;     /* [pixels]     */
-    // fit: amount of pixels to move last row back to fit content snuggly
-    struct Point fit;             /* [pixels]     */
-    struct Point pos;             /* [pixels]     */
-    SDL_Texture *texture;                       /* texture is 3x3 patches */
+    /* patch_pixels: how many pixels per patch */
+    struct Point patch_pixels;    /* [pixels]      */
+    struct Point size_patches;    /* [patches]     */
+    struct Point size_pixels;     /* [pixels]      */
+    /* fit: amount of pixels to move last row back to fit content snuggly */
+    struct Point fit;             /* [pixels]      */
+    struct Point pos;             /* [pixels]      */
+    SDL_Texture *texture; /* texture is 3x3 patches */
 } n9Patch;
 extern struct n9Patch n9Patch_default;
 
