@@ -77,7 +77,7 @@ struct Text_Bubble {
     int                         height;
     int                         row_height;
     int                         line_len_px;
-    int                         line_num;
+    int                         line_num_max;
 
     struct TextLines            lines;
     struct Padding              padding;
