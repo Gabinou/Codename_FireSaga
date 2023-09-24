@@ -45,8 +45,6 @@ void test_menu_stats() {
     jsonio_readJSON(PATH_JOIN("units", "Silou_test.json"), &Silou);
     SDL_assert(Silou.num_equipment == 4);
 
-    StatsMenu_Load(sm, &Silou, renderer, &n9patch);
-
     /* - Unit equip - */
     struct Inventory_item in_wpn = Inventory_item_default;
     in_wpn.id = ITEM_ID_FLEURET;
@@ -388,18 +386,12 @@ void test_menu_stats() {
     PixelFont_Free(sm->pixelnours_big, true);
 
     Game_Weapons_Free(weapons_dtab);
-    SDL_Log("OUT1");
     Game_Items_Free(items_dtab);
-    SDL_Log("OUT2");
     SDL_DestroyRenderer(renderer);
-    SDL_Log("OUT3");
     SDL_FreeSurface(surface);
-    SDL_Log("OUT4");
     StatsMenu_Free(sm);
-    SDL_Log("OUT6");
 
     if (n9patch.texture != NULL)
         SDL_DestroyTexture(n9patch.texture);
     Unit_Free(&Silou);
-    SDL_Log("OUT7");
 }
