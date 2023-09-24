@@ -314,6 +314,16 @@ void TextBubble_Set_All(struct Text_Bubble *bubble, const char *text, struct Poi
 }
 
 /* -- Drawing elements -- */
+void TextBubble_VScroll(  struct Text_Bubble *b, SDL_Renderer *r) {
+    SOTA_Log_FPS("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
+    /* - To do vscroll */
+    // Copy latest written texture inside bubble
+    // Stop writing
+    // Move texture up x pixels every Scroll
+    //      - Which what timer?
+    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
+}
+
 void TextBubble_Write(struct Text_Bubble *bubble, SDL_Renderer *renderer) {
     SOTA_Log_FPS("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     /* - name - */
@@ -409,7 +419,7 @@ void TextBubble_Update(struct Text_Bubble *bubble, struct n9Patch *n9patch,
     n9patch->scale.x    = scale_x;
     n9patch->scale.y    = scale_y;
 
-    TextBubble_Write(       bubble, renderer);
+    TextBubble_Write(    bubble, renderer);
     TextBubble_Tail_Draw(bubble, renderer);
 
     SDL_SetRenderTarget(renderer, target);

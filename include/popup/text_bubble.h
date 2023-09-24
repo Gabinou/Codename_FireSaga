@@ -84,10 +84,13 @@ struct Text_Bubble {
     struct Point                target; /* Where to point at */
     struct Text_Bubble_Tail     tail;
     SDL_Texture                *texture;
+    SDL_Texture                *texture_vscroll;
     struct PixelFont           *pixelfont;
 
-    bool update : 1;
-    bool scroll : 1;
+    bool update         : 1;
+    bool scroll         : 1;
+    bool animating      : 1;
+    bool vscroll_anim   : 1;
 };
 extern struct Text_Bubble TextBubble_default;
 
@@ -110,6 +113,10 @@ extern int  TextBubble_Tail_Octant(struct Text_Bubble *b);
 extern void TextBubble_Set_All(struct Text_Bubble *b, const char *t, struct Point ta,
                                struct n9Patch *n9patch);
 
+/* --- Scrolling --- */
+extern void TextBubble_Copy(   struct Text_Bubble *b, SDL_Renderer *r);
+extern void TextBubble_VScroll(struct Text_Bubble *b, SDL_Renderer *r);
+
 /* --- Drawing --- */
 extern void TextBubble_Draw(  struct PopUp *p,       struct Point pos,
                               SDL_Texture *rt, SDL_Renderer *r);
@@ -118,7 +125,8 @@ extern void TextBubble_Update(struct Text_Bubble *b, struct n9Patch *n9patch,
 
 /* -- Drawing elements -- */
 extern void TextBubble_Write(       struct Text_Bubble *b, SDL_Renderer *r);
-extern void TextBubble_Tail_Draw(struct Text_Bubble *b, SDL_Renderer *r);
+extern void TextBubble_Tail_Draw(   struct Text_Bubble *b, SDL_Renderer *r);
+extern void TextBubble_VScroll_Draw(struct Text_Bubble *b, SDL_Renderer *r);
 
 
 #endif /* TEXT_BUBBLE_H */
