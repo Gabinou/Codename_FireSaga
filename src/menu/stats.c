@@ -377,14 +377,15 @@ void StatsMenu_Free(struct StatsMenu *stats_menu) {
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
-void StatsMenu_Load(struct StatsMenu *stats_menu, struct Unit *unit, SDL_Renderer *renderer,
-                    struct n9Patch *n9patch) {
+void StatsMenu_Load(struct StatsMenu *stats_menu, struct Unit *unit,
+                    SDL_Renderer *renderer, struct n9Patch *n9patch) {
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     SDL_assert(stats_menu != NULL);
     SDL_assert(unit != NULL);
     SDL_assert(unit->weapons_dtab != NULL);
-    stats_menu->unit = unit;
-    stats_menu->update = true;
+
+    stats_menu->unit    = unit;
+    stats_menu->update  = true;
     StatsMenu_Load_Face(stats_menu);
     StatsMenu_Load_Icons(stats_menu, renderer);
 

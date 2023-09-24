@@ -65,6 +65,7 @@ void test_menu_stats() {
     /* --- RENDERS --- */
     /* -- test 0 -- */
     StatsMenu_Update(sm, &n9patch, render_target, renderer);
+    SDL_assert(sm->texture != NULL);
     Filesystem_Texture_Dump(PATH_JOIN("menu_stats", "StatsMenu_Test.png"), renderer, sm->texture,
                             SDL_PIXELFORMAT_ARGB8888, render_target);
 

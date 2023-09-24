@@ -320,12 +320,12 @@ void PlayerSelectMenu_Update(struct PlayerSelectMenu *psm, struct n9Patch *n9pat
     n9patch->scale.y = scale_y;
 
     if32 posx = n9patch->pos.x + psm->menu_padding.left, posy;
-    int total_text_height = psm->option_num * psm->row_height +  n9patch->pos.y + psm->menu_padding.top;
-    int shift_y = (n9patch->size_patches.y * n9patch->patch_pixels.y) - total_text_height;
-    shift_y /= 2;
+    // int total_text_height = psm->option_num * psm->row_height +  n9patch->pos.y + psm->menu_padding.top;
+    // int shift_y = (n9patch->size_patches.y * n9patch->patch_pixels.y) - total_text_height;
+    // shift_y /= 2;
 
     for (if32 i = 0; i < psm->option_num; i++) {
-        posy = shift_y + n9patch->pos.y + psm->menu_padding.top + (i * psm->row_height);
+        posy = n9patch->pos.y + psm->menu_padding.top + (i * psm->row_height);
         PixelFont_Write(psm->pixelnours, renderer, psm->option_names[i],
                         strlen(psm->option_names[i]), posx, posy);
     }
