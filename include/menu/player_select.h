@@ -53,8 +53,8 @@ extern void PlayerSelectMenu_Load(struct PlayerSelectMenu *m, SDL_Renderer *r, s
 
 /* --- Menu Elem properties --- */
 /* -- Options -- */
-extern int PlayerSelectMenu_Option_Index(  struct PlayerSelectMenu *m, uf32 op);
 extern void PlayerSelectMenu_Option_Add(   struct PlayerSelectMenu *m, uf32 op);
+extern int  PlayerSelectMenu_Option_Index( struct PlayerSelectMenu *m, uf32 op);
 extern void PlayerSelectMenu_Compute_Size( struct PlayerSelectMenu *m, struct n9Patch *n9);
 extern void PlayerSelectMenu_Options_Reset(struct PlayerSelectMenu *m);
 

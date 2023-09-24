@@ -3,6 +3,7 @@
 
 #include <math.h>
 #include "structs.h"
+#include "globals.h"
 
 /* --- OCTANT GEOMETRY --- */
 

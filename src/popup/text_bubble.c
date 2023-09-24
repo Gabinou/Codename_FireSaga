@@ -12,12 +12,12 @@ struct Text_Bubble_Pointer Text_Bubble_Pointer_default = {
 };
 
 struct Text_Bubble TextBubble_default = {
-    .width       = 0,
-    .height      = 0,
+    .width       =  0,
+    .height      =  0,
     .row_height  = ASCII_GLYPH_HEIGHT,
     .lines       = {0},
     .line_len_px = 64,
-    .line_num    = 0,
+    .line_num    =  0,
     .text        = NULL,
     .padding     = {
         .left   = TEXT_BUBBLE_PADDING_LEFT,

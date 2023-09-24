@@ -1,7 +1,6 @@
 #include "menu/player_select.h"
 
 /* --- PUT PLAYER_SELECT MENU CONTENT MAKERS INTO FSM --- */
-// #include "names/menu/player_select.h"
 psm_maker_t menuContentMakers[MENU_PLAYER_SELECT_END] = {
     /* NULL */        NULL,
     /* UNIT_ACTION */ makeContent_PSM_UNIT_ACTION,
@@ -23,7 +22,7 @@ struct PlayerSelectMenu PlayerSelectMenu_default = {
     .update         = true,
     .texture        = NULL,
 
-    .text_width     = 0,
+    .text_width     =  0,
     .icon_width     = 32,
 
     .pixelnours     = NULL,
@@ -93,7 +92,6 @@ void FirstMenu_Load(struct PlayerSelectMenu *psm, SDL_Renderer *renderer, struct
         n9patch->texture = Filesystem_Texture_Load(renderer, path, SDL_PIXELFORMAT_INDEX8);
     }
     SDL_assert(n9patch->texture != NULL);
-
 
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
@@ -170,15 +168,19 @@ void PlayerSelectMenu_Option_Add(struct PlayerSelectMenu *psm, uf32 option) {
 
 void PlayerSelectMenu_Compute_Size(struct PlayerSelectMenu *psm, struct n9Patch *n9patch) {
     SOTA_Log_FPS("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
-    struct Padding mp = psm->menu_padding;
     /* - Compute patch sizes from text - */
-    n9patch->size_patches.x = (int)round((float)psm->text_width / n9patch->patch_pixels.x);
-    int temp_y = mp.top + mp.bottom + psm->row_height * psm->option_num;
-    n9patch->size_patches.y = temp_y / n9patch->patch_pixels.y;
+    // n9patch->size_patches.x = (int)round((float)psm->text_width / n9patch->patch_pixels.x);
+    // int temp_y = mp.top + mp.bottom + psm->row_height * psm->option_num;
+    // n9patch->size_patches.y = temp_y / n9patch->patch_pixels.y;
 
-    /* - Compute pixel size from previous patch sizes for tight fit - */
-    n9patch->size_pixels.x = n9patch->size_patches.x * n9patch->patch_pixels.x;
-    n9patch->size_pixels.y = n9patch->size_patches.y * n9patch->patch_pixels.y;
+    // /* - Compute pixel size from previous patch sizes for tight fit - */
+    // n9patch->size_pixels.x = n9patch->size_patches.x * n9patch->patch_pixels.x;
+    // n9patch->size_pixels.y = n9patch->size_patches.y * n9patch->patch_pixels.y;
+
+    struct Padding mp = psm->menu_padding;
+    int text_height = mp.top + mp.bottom + psm->row_height * psm->option_num;
+    struct Point content = {psm->text_width, text_height};
+    n9Patch_Fit(n9patch, content);
 
     /* - Destroy texture because it does not fit new size - */
     SDL_DestroyTexture(psm->texture);
