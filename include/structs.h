@@ -232,7 +232,7 @@ struct Fps {
     SDL_Color textcolor;
     float sizefactor[TWO_D];
     bool show;
-    uf16 cap; /* [Hz] [s^-1] */
+    int cap; /* [Hz] [s^-1] */
 };
 
 struct Mouse {

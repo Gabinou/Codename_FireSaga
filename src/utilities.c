@@ -89,9 +89,15 @@ int Utilities_Mirror(int room_diameter, int pos, int object_width) {
     return (mirrored_pos);
 }
 
-i64 Utilities_Frame_Delay(u64 elapsedTime_ns, uf8 fps_cap) {
+i64 Utilities_Frame_Delay(u64 elapsedTime_ns, uf8 fps_cap, bool fastforward) {
     SOTA_Log_FPS("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     i64 delay = 0;
+    /* 0 frame delay if fast-forwarding */
+    if (fastforward) {
+        SOTA_Log_FPS("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
+        return (delay);
+    }
+
     if (((elapsedTime_ns * fps_cap) < 1e9) || (elapsedTime_ns == 0)) {
         delay = floor(1000.0f / fps_cap - elapsedTime_ns / 1e6);
     }

@@ -66,7 +66,8 @@ struct Game Game_default = {
     .state              = GAME_STATE_Title_Screen,
     .substate           = GAME_SUBSTATE_MENU,
     .state_previous     = GAME_STATE_START,
-    .substate_previous  = GAME_SUBSTATE_START
+    .substate_previous  = GAME_SUBSTATE_START,
+    .fast_forward       = true
 };
 
 /* --- Constructors/Destructors --- */

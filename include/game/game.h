@@ -182,11 +182,11 @@ struct Game {
     uf8    party_size;
     u64    runtime_ns; // -> millions of years
     bool  *shadow_area;  /* pixels */
-    bool   ismouse    : 1;
-    bool   iscursor   : 1;
-    bool   isrunning  : 1;
-    bool   isShadow   : 1;
-
+    bool   ismouse          : 1;
+    bool   iscursor         : 1;
+    bool   isrunning        : 1;
+    bool   isShadow         : 1;
+    bool   fast_forward     : 1;
 };
 extern struct Game Game_default;
 

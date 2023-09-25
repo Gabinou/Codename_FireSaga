@@ -141,7 +141,8 @@ int main(int argc, char *argv[]) {
         /* --- POST-FRAME --- */
         /* -- synchronize timers -- */
         elapsedTime_ns = tnecs_get_ns() - currentTime_ns;
-        delay_ms       = Utilities_Frame_Delay(elapsedTime_ns, sota->settings.FPS.cap);
+        int cap = sota->settings.FPS.cap;
+        delay_ms       = Utilities_Frame_Delay(elapsedTime_ns, cap, sota->fast_forward);
         time_ns        = (elapsedTime_ns + delay_ms * SOTA_ns / SOTA_ms);
         Game_Cursor_movedTime_Compute(sota, time_ns);
         tnecs_custom_system_run(sota->world, timeSynchronize, sota->timer_typeflag, time_ns, NULL);
