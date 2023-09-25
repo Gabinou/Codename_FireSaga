@@ -96,11 +96,11 @@ void test_Text_Bubble_Tail() {
                             renderer, bubble.texture, SDL_PIXELFORMAT_ARGB8888, render_target);
 
     /* - setting - */
-    TextBubble_Set_All(&bubble, "The quick brown fox jumps over the lazy dog", bubble.target,
+    TextBubble_Set_All(&bubble, "A quick brown fox jumps over the lazy dog", bubble.target,
                        &n9patch);
     bubble.target.x = bubble.width / 2;
     bubble.target.y = 2 * bubble.height;
-    TextBubble_Set_All(&bubble, "The quick brown fox jumps over the lazy dog", bubble.target,
+    TextBubble_Set_All(&bubble, "A quick brown fox jumps over the lazy dog", bubble.target,
                        &n9patch);
 
     /* - rendering - */
@@ -161,7 +161,7 @@ void test_Text_Bubble_Tail() {
     /* - setting - */
     bubble.target.x = bubble.width * 4;
     bubble.target.y = bubble.height * 4;
-    TextBubble_Set_All(&bubble, "The quick brown fox jumps over the lazy dog", bubble.target,
+    TextBubble_Set_All(&bubble, "A quick brown fox jumps over the lazy dog", bubble.target,
                        &n9patch);
 
     /* - rendering - */
@@ -172,7 +172,7 @@ void test_Text_Bubble_Tail() {
     /* - setting - */
     bubble.target.x = bubble.width * 2;
     bubble.target.y = bubble.height / 2;
-    TextBubble_Set_All(&bubble, "The quick brown fox jumps over the lazy dog", bubble.target,
+    TextBubble_Set_All(&bubble, "A quick brown fox jumps over the lazy dog", bubble.target,
                        &n9patch);
 
     /* - rendering - */
@@ -183,7 +183,7 @@ void test_Text_Bubble_Tail() {
     /* - setting - */
     bubble.target.x = -bubble.width * 2;
     bubble.target.y = bubble.height / 2;
-    TextBubble_Set_All(&bubble, "The quick brown fox jumps over the lazy dog", bubble.target,
+    TextBubble_Set_All(&bubble, "A quick brown fox jumps over the lazy dog", bubble.target,
                        &n9patch);
 
     /* - rendering - */
@@ -194,7 +194,7 @@ void test_Text_Bubble_Tail() {
     /* - setting - */
     bubble.target.x = bubble.width * 2;
     bubble.target.y = bubble.height / 3;
-    TextBubble_Set_All(&bubble, "The quick brown fox jumps over the lazy dog", bubble.target,
+    TextBubble_Set_All(&bubble, "A quick brown fox jumps over the lazy dog", bubble.target,
                        &n9patch);
 
     /* - rendering - */
@@ -205,7 +205,7 @@ void test_Text_Bubble_Tail() {
     /* - setting - */
     bubble.target.x = -bubble.width * 2;
     bubble.target.y = bubble.height / 3;
-    TextBubble_Set_All(&bubble, "The quick brown fox jumps over the lazy dog", bubble.target,
+    TextBubble_Set_All(&bubble, "A quick brown fox jumps over the lazy dog", bubble.target,
                        &n9patch);
 
     /* - rendering - */
@@ -216,7 +216,7 @@ void test_Text_Bubble_Tail() {
     /* - setting - */
     bubble.target.x = bubble.width * 2;
     bubble.target.y = 2 * bubble.height / 3;
-    TextBubble_Set_All(&bubble, "The quick brown fox jumps over the lazy dog", bubble.target,
+    TextBubble_Set_All(&bubble, "A quick brown fox jumps over the lazy dog", bubble.target,
                        &n9patch);
 
     /* - rendering - */
@@ -227,7 +227,7 @@ void test_Text_Bubble_Tail() {
     /* - setting - */
     bubble.target.x = -bubble.width * 2;
     bubble.target.y = 2 * bubble.height / 3;
-    TextBubble_Set_All(&bubble, "The quick brown fox jumps over the lazy dog", bubble.target,
+    TextBubble_Set_All(&bubble, "A quick brown fox jumps over the lazy dog", bubble.target,
                        &n9patch);
 
     /* - rendering - */
@@ -328,7 +328,7 @@ void test_text_bubble_scroll() {
     bubble.padding.top  = TEXT_BUBBLE_PADDING_TOP + 2;
 
     /* - setting - */
-    TextBubble_Set_Text(&bubble, "The quick brown fox jumps over the lazy dog.", &n9patch);
+    TextBubble_Set_Text(&bubble, "Portez ce vieux whisky au juge blond qui fume.", &n9patch);
     bubble.target.x = -bubble.width;
     bubble.target.y = -bubble.height;
     TextBubble_Set_Target(&bubble, bubble.target);
@@ -388,7 +388,7 @@ void test_text_bubble_scroll_vertical() {
 
     /* - setting - */
     TextBubble_Set_Text(&bubble,
-                        "The quick brown fox jumps over the lazy dog. Twice and thrice and once another! Open your eyes and call your mother!",
+                        "A quick brown fox jumps over the lazy dog. Twice and thrice and once another! Open your eyes and call your mother!",
                         &n9patch);
     bubble.target.x = -bubble.width;
     bubble.target.y = -bubble.height;
