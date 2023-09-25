@@ -16,7 +16,7 @@ Note: The repo does not include game assets!
 - Free! \*If you can compile from source
 	- If I ever sell this game, users would pay for convenience.
 - Emulator-inspired quality-of-life improvements
-	- Fast-forward button! Up to 150x on my machine.
+	- Fast-forward button! Up to 150x faster on my machine (15000%).
 	- TBD: Save state button. Not so sure.
 - Handcrafted pixel-art
 	- NES color palette only

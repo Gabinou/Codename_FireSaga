@@ -233,6 +233,7 @@ struct Fps {
     float sizefactor[TWO_D];
     bool show;
     int cap; /* [Hz] [s^-1] */
+    int ff_cap; /* [%] Above cap FPS */
 };
 
 struct Mouse {
