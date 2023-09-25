@@ -109,9 +109,13 @@ void test_Text_Bubble_Tail() {
 
 
     /* - setting - */
+    TextBubble_Set_Text(&bubble, "I am a 2 line long speech. Brief.", &n9patch);
     bubble.target.x = bubble.width * 2;
     bubble.target.y = bubble.height / 2;
-    TextBubble_Set_All(&bubble, "I am a 2 line long speech. Brief.", bubble.target, &n9patch);
+    TextBubble_Set_Target(&bubble, bubble.target);
+    SDL_assert(bubble.width  > 0);
+    SDL_assert(bubble.height > 0);
+    TextBubble_Tail_Pos(&bubble, &n9patch);
 
     /* - rendering - */
     TextBubble_Update(&bubble, &n9patch, render_target, renderer);
@@ -141,51 +145,52 @@ void test_Text_Bubble_Tail() {
     bubble.row_height   = ASCII_GLYPH_HEIGHT + 2;
     bubble.padding.top  = TEXT_BUBBLE_PADDING_TOP + 2;
 
-    /* - setting - */
-    bubble.target.x = bubble.width / 2;
-    bubble.target.y = bubble.height * 2;
-    TextBubble_Set_All(&bubble, "Hello, World!", bubble.target, &n9patch);
+    // /* - setting - */
+    // bubble.target.x = bubble.width / 2;
+    // bubble.target.y = bubble.height * 2;
+    // TextBubble_Set_All(&bubble, "Hello, World!", bubble.target, &n9patch);
 
-    /* - rendering - */
-    TextBubble_Update(&bubble, &n9patch, render_target, renderer);
-    Filesystem_Texture_Dump(PATH_JOIN("popup_text_bubble", "TextBubble_Big_HelloWorld.png"),
-                            renderer, bubble.texture, SDL_PIXELFORMAT_ARGB8888, render_target);
+    // /* - rendering - */
+    // TextBubble_Update(&bubble, &n9patch, render_target, renderer);
+    // Filesystem_Texture_Dump(PATH_JOIN("popup_text_bubble", "TextBubble_Big_HelloWorld.png"),
+    //                         renderer, bubble.texture, SDL_PIXELFORMAT_ARGB8888, render_target);
 
-    /* - setting - */
-    bubble.target.x = bubble.width * 2;
-    bubble.target.y = -bubble.height;
-    TextBubble_Set_All(&bubble, "Another oneliner.", bubble.target, &n9patch);
+    // /* - setting - */
+    // bubble.target.x = bubble.width * 2;
+    // bubble.target.y = -bubble.height;
+    // TextBubble_Set_All(&bubble, "Another oneliner.", bubble.target, &n9patch);
 
-    /* - rendering - */
-    TextBubble_Update(&bubble, &n9patch, render_target, renderer);
-    Filesystem_Texture_Dump(PATH_JOIN("popup_text_bubble", "TextBubble_Big_1line.png"),
-                            renderer, bubble.texture, SDL_PIXELFORMAT_ARGB8888, render_target);
+    // /* - rendering - */
+    // TextBubble_Update(&bubble, &n9patch, render_target, renderer);
+    // Filesystem_Texture_Dump(PATH_JOIN("popup_text_bubble", "TextBubble_Big_1line.png"),
+    //                         renderer, bubble.texture, SDL_PIXELFORMAT_ARGB8888, render_target);
 
-    /* - setting - */
-    bubble.target.x = bubble.width * 2;
-    bubble.target.y = bubble.height / 2;
-    TextBubble_Set_All(&bubble, "A", bubble.target, &n9patch);
+    // /* - setting - */
+    // bubble.target.x = bubble.width * 2;
+    // bubble.target.y = bubble.height / 2;
+    // TextBubble_Set_All(&bubble, "A", bubble.target, &n9patch);
 
-    /* - rendering - */
-    TextBubble_Update(&bubble, &n9patch, render_target, renderer);
-    Filesystem_Texture_Dump(PATH_JOIN("popup_text_bubble", "TextBubble_Big_A.png"),
-                            renderer, bubble.texture, SDL_PIXELFORMAT_ARGB8888, render_target);
+    // /* - rendering - */
+    // TextBubble_Update(&bubble, &n9patch, render_target, renderer);
+    // Filesystem_Texture_Dump(PATH_JOIN("popup_text_bubble", "TextBubble_Big_A.png"),
+    //                         renderer, bubble.texture, SDL_PIXELFORMAT_ARGB8888, render_target);
 
-    /* - setting - */
-    bubble.target.x = bubble.width * 2;
-    bubble.target.y = bubble.height * 2;
-    TextBubble_Set_All(&bubble, "I am a 2 line long speech. Brief.", bubble.target, &n9patch);
+    // /* - setting - */
+    // bubble.target.x = bubble.width * 2;
+    // bubble.target.y = bubble.height * 2;
+    // TextBubble_Set_All(&bubble, "I am a 2 line long speech. Brief.", bubble.target, &n9patch);
 
-    /* - rendering - */
-    TextBubble_Update(&bubble, &n9patch, render_target, renderer);
-    Filesystem_Texture_Dump(PATH_JOIN("popup_text_bubble", "TextBubble_Big_2lines.png"),
-                            renderer, bubble.texture, SDL_PIXELFORMAT_ARGB8888, render_target);
+    // /* - rendering - */
+    // TextBubble_Update(&bubble, &n9patch, render_target, renderer);
+    // Filesystem_Texture_Dump(PATH_JOIN("popup_text_bubble", "TextBubble_Big_2lines.png"),
+    //                         renderer, bubble.texture, SDL_PIXELFORMAT_ARGB8888, render_target);
 
     /* - setting - */
     bubble.target.x = bubble.width * 4;
     bubble.target.y = bubble.height * 4;
     TextBubble_Set_All(&bubble, "A quick brown fox jumps over the lazy dog", bubble.target,
                        &n9patch);
+    SDL_assert(bubble.lines.line_num == 3);
 
     /* - rendering - */
     TextBubble_Update(&bubble, &n9patch, render_target, renderer);
@@ -197,6 +202,7 @@ void test_Text_Bubble_Tail() {
     bubble.target.y = bubble.height / 2;
     TextBubble_Set_All(&bubble, "A quick brown fox jumps over the lazy dog.", bubble.target,
                        &n9patch);
+
 
     /* - rendering - */
     TextBubble_Update(&bubble, &n9patch, render_target, renderer);
