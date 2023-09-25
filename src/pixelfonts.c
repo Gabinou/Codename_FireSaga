@@ -258,7 +258,6 @@ struct TextLines PixelFont_Lines(struct PixelFont *font, const char *text, size_
     while (current_break < len_char) {
         /* Get start of current line from next line */
         current_start = next_start;
-
         int line_i = textlines.line_num;
         textlines.line_num += 1;
 
@@ -270,7 +269,7 @@ struct TextLines PixelFont_Lines(struct PixelFont *font, const char *text, size_
         line_len_char = current_break - current_start;
 
         /* -- Break: text fits in final row -- */
-        if (current_break >= (len_char - 1)) {
+        if (current_break >= len_char) {
             textlines.lines[line_i] = calloc(line_len_char + 1, sizeof(char));
             strncpy(textlines.lines[line_i], text + current_start, line_len_char);
 
@@ -287,13 +286,14 @@ struct TextLines PixelFont_Lines(struct PixelFont *font, const char *text, size_
             int line_i = textlines.line_num - 1;
             textlines.lines[line_i] = calloc(line_len_char + 1, sizeof(char));
             strncpy(textlines.lines[line_i], text + current_start, line_len_char);
-            next_start = current_break;
+            next_start = current_break + 1;
 
             /* -- Measure line length -- */
             textlines.lines_len[line_i] = strlen(textlines.lines[line_i]);
             SDL_assert(textlines.lines_len[line_i] > 0);
             continue;
         }
+
         next_start = NextLine_Start(text, current_start, current_break, line_len_char);
         SDL_assert(next_start <= current_break);
         current_break = next_start;
@@ -338,7 +338,7 @@ int PixelFont_Lines_Num(struct PixelFont *font, const char *text, size_t len_cha
     size_t line_len_char;  /* [char] */
     int rows = 0;
 
-    while (current_break < (len_char - 1)) {
+    while (current_break < len_char) {
         rows += 1;
         current_start = next_start;
 
@@ -347,7 +347,7 @@ int PixelFont_Lines_Num(struct PixelFont *font, const char *text, size_t len_cha
         SDL_assert(current_break > current_start);
         line_len_char = current_break - current_start;
         /* -- Break: text fits in final row -- */
-        if (current_break >= (len_char - 1))
+        if (current_break >= len_char)
             break;
 
         /* -- Text doesn't fit in final row -- */
@@ -389,7 +389,6 @@ int NextLine_Start(const char *text, int previous_break, int current_break, size
     // Breaking a new line:
     //  1. If word > 4 char: Add "-" in middle of word. Send part after - to new line.
     //  2. Send word to next line
-
     int next_char;
     /* - If current_break is a char, need to check word length - */
     /* Get first half of length */
