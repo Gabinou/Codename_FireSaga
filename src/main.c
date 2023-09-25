@@ -144,6 +144,9 @@ int main(int argc, char *argv[]) {
         int cap = sota->settings.FPS.cap;
         delay_ms       = Utilities_Frame_Delay(elapsedTime_ns, cap, sota->fast_forward);
         time_ns        = (elapsedTime_ns + delay_ms * SOTA_ns / SOTA_ms);
+        // printf("time_ns %d \n", time_ns);
+        // printf("time_us %d \n", time_ns / 1000);
+        // printf("time_ms %d \n", time_ns / 1000000);
         Game_Cursor_movedTime_Compute(sota, time_ns);
         tnecs_custom_system_run(sota->world, timeSynchronize, sota->timer_typeflag, time_ns, NULL);
         Game_Delay(sota, delay_ms, currentTime_ns, elapsedTime_ns);

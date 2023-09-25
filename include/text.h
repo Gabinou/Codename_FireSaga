@@ -1,12 +1,13 @@
 #ifndef TEXT_H
 #define TEXT_H
 
+#include "game/game.h"
 #include "filesystem.h"
 #include "pixelfonts.h"
 #include "SDL2/SDL.h"
 #include "nmath.h"
 
-typedef void (* onUpdate_t)(tnecs_world_t *, tnecs_entity_t, u32, i64, void *);
+typedef void (* onUpdate_t)(struct Game *, tnecs_entity_t, u32, i64, void *);
 
 typedef struct Text_TTF {
     SDL_Texture      *texture;
@@ -33,7 +34,7 @@ extern void Text_TTF_Draw(         struct Text_TTF *t, SDL_Renderer *r);
 extern void Text_TTF_Texture_Make( struct Text_TTF *t, SDL_Renderer *r);
 extern void Text_TTF_Rects_Pos_Set(struct Text_TTF *t, if16 x, if16 y);
 
-extern void Text_TTF_onUpdate_FPS(tnecs_world_t *w, tnecs_entity_t ent, u32 fc, i64 up, void *data);
+extern void Text_TTF_onUpdate_FPS(struct Game *g, tnecs_entity_t ent, u32 fc, i64 up, void *data);
 
 typedef struct Text {
     SDL_Renderer       *renderer;

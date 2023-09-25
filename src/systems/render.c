@@ -259,7 +259,7 @@ void drawText_TTF(tnecs_system_input_t *in_input) {
             continue;
 
         if ((text->onUpdate != NULL) && (ut->time_ns >= text->update_time_ns)) {
-            (*text->onUpdate)(world, entity, ut->frame_count, ut->time_ns, NULL);
+            (*text->onUpdate)(sota, entity, ut->frame_count, ut->time_ns, NULL);
             ut->reset = true;
         }
 

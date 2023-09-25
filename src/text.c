@@ -16,14 +16,23 @@ struct Text_TTF Text_TTF_default = {
     // .sizefactor = {1.0f, 1.0f}, // height, width
 };
 
-void Text_TTF_onUpdate_FPS(tnecs_world_t *world, tnecs_entity_t entity_fps,
+void Text_TTF_onUpdate_FPS(struct Game *sota, tnecs_entity_t entity_fps,
                            u32 frame_count, i64 last_update_ns, void *data) {
     SOTA_Log_FPS("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
-    struct Text_TTF *fps_text_ptr =     TNECS_GET_COMPONENT(world, entity_fps, Text_TTF);
-    struct Timer    *fps_timer_ptr =    TNECS_GET_COMPONENT(world, entity_fps, Timer);
+    SDL_assert(sota != NULL);
+    SDL_assert(sota->world != NULL);
+    SDL_assert(entity_fps != TNECS_NULL);
+
+    struct Text_TTF *fps_text_ptr = TNECS_GET_COMPONENT(sota->world, entity_fps, Text_TTF);
     float ratio = (float)SOTA_ns / (float)last_update_ns;
     float fps = (frame_count * ratio);
-    snprintf(fps_text_ptr->text_line, sizeof(char) * DEFAULT_BUFFER_SIZE, "%.1f", fps);
+    if (sota->fast_forward) {
+        int fps_cap = sota->settings.FPS.cap;
+        int fps_ratio = fps / fps_cap;
+        snprintf(fps_text_ptr->text_line, sizeof(char) * DEFAULT_BUFFER_SIZE, "x%d", fps_ratio);
+    } else {
+        snprintf(fps_text_ptr->text_line, sizeof(char) * DEFAULT_BUFFER_SIZE, "%.1f", fps);
+    }
     SOTA_Log_FPS("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
