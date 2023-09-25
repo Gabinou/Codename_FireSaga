@@ -12,6 +12,15 @@ Everything is hancrafted: code, music, pixel art...
 
 Note: The repo does not include game assets!
 
+## Features
+- Free! \*If you can compile from source
+	- If I ever sell this game, users would pay for convenience.
+- Emulator-inspired quality-of-life improvements
+	- Fast-forward button! Up to 150x on my machine.
+	- TBD: Save state button. Not so sure.
+- Handcrafted pixel-art
+	- NES color palette only
+
 ## Installation
 The game will be free to play, if compiled from source.
 Source code is free to own and distribute, see the [licence](https://gitlab.com/Gabinou/firesagamaker/-/blob/master/LICENCE_SRC.md).
@@ -45,8 +54,8 @@ Or, without the `mace` convenience executable:
 gcc macefile.c -o builder
 ./builder
 ```
-Or, with `premake5` and `make`:
 
+Or, with `premake5` and `make`:
 ```
 premake5 gmake
 make
