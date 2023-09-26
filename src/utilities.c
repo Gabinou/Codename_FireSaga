@@ -82,7 +82,7 @@ int Utilities_Mirror(int room_diameter, int pos, int object_width) {
     SDL_assert(pos !=    (room_diameter / 2)); // object is not on mirror
     SDL_assert(object_width < (room_diameter / 2)); // object is not bigger than room
     // Shifting object left/right, depends on which side of the mirror pos is
-    int shift = pos > room_diameter ? - object_width : object_width;
+    int shift        = pos > room_diameter ? - object_width : object_width;
 
     int mirrored_pos = room_diameter - pos + shift;
     SOTA_Log_FPS("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);

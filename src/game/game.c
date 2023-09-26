@@ -66,7 +66,7 @@ struct Game Game_default = {
     .substate           = GAME_SUBSTATE_MENU,
     .state_previous     = GAME_STATE_START,
     .substate_previous  = GAME_SUBSTATE_START,
-    .fast_forward       = true,
+    .fast_forward       = false,
 };
 
 /* --- Constructors/Destructors --- */
@@ -682,14 +682,14 @@ i64 Game_FPS_Delay(struct Game *sota, u64 elapsedTime_ns) {
     /* Compute delay for ff_cap */
     if ((sota->fast_forward) && (ff_cap > SOTA_100PERCENT)) {
         int ff_fps_cap = fps_cap * ff_cap / SOTA_100PERCENT;
-        delay = floor(1000.0f / ff_fps_cap - elapsedTime_ns / 1e6);
+        delay = ceil(1000.0f / ff_fps_cap - elapsedTime_ns / 1e6);
         SOTA_Log_FPS("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
         return (delay);
     }
 
     /* Compute delay for no ff */
     if (((elapsedTime_ns * fps_cap) < 1e9) || (elapsedTime_ns == 0))
-        delay = floor(1000.0f / fps_cap - elapsedTime_ns / 1e6);
+        delay = ceil(1000.0f / fps_cap - elapsedTime_ns / 1e6);
 
     SDL_assert(delay >= 0);
     SOTA_Log_FPS("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
