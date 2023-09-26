@@ -456,11 +456,65 @@ void test_text_bubble_scroll_vertical() {
     SDL_FreeSurface(surface);
 }
 
+void test_text_bubble_VScroll_Anim() {
+    /* -- Create renderer -- */
+    SDL_Surface  *surface  = Filesystem_indexedSurface_Init(1024, 1024);
+    SDL_Renderer *renderer = SDL_CreateSoftwareRenderer(surface);
+
+    struct Text_Bubble bubble = TextBubble_default;
+
+    /* -- Create n9patch -- */
+    // render_target is NULL cause there is render_target!
+    struct n9Patch n9patch = n9Patch_default;
+    SDL_Texture *render_target = NULL;
+    /* - Pixelnours - */
+    bubble.pixelfont = PixelFont_Alloc();
+    bubble.pixelfont->y_offset     = pixelfont_big_y_offset;
+    TextBubble_Load(&bubble, renderer, &n9patch);
+    PixelFont_Load(bubble.pixelfont, renderer, PATH_JOIN("..", "assets", "Fonts",
+                                                         "pixelnours_Big.png"));
+    PixelFont_Swap_Palette(bubble.pixelfont, renderer, 1, 55);
+    bubble.pixelfont->scroll_speed = 0;
+    bubble.line_len_px  = 72;
+    bubble.row_height   = ASCII_GLYPH_HEIGHT + 2;
+    bubble.padding.top  = TEXT_BUBBLE_PADDING_TOP + 2;
+    bubble.line_num_max = 0;
+
+    /* - setting - */
+    TextBubble_Set_Text(&bubble, "A quick brown fox jumps over the lazy dog.", &n9patch);
+    bubble.target.x = -bubble.width;
+    bubble.target.y = -bubble.height;
+    TextBubble_Set_Target(&bubble, bubble.target);
+    SDL_assert(bubble.tail.index     == TEXT_BUBBLE_DIAGONAL);
+    SDL_assert(bubble.tail.angle     == 180.0);
+    SDL_assert(bubble.tail.octant    == SOTA_DIRECTION_DIAGONAL_TL);
+    TextBubble_Tail_Pos(&bubble, &n9patch);
+    SDL_assert(bubble.width  > 0);
+    SDL_assert(bubble.height > 0);
+    bubble.scroll = false;
+
+    TextBubble_Update(&bubble, &n9patch, render_target, renderer);
+    char *path = PATH_JOIN("popup_text_bubble",  "Popup_TextBubble_VScroll_Original.png");
+    Filesystem_Texture_Dump(path, renderer, bubble.texture, SDL_PIXELFORMAT_ARGB8888,
+                            render_target);
+    TextBubble_Copy_VScroll(&bubble, renderer, render_target);
+    SDL_assert(bubble.texture_vscroll != NULL);
+    path = PATH_JOIN("popup_text_bubble",  "Popup_TextBubble_VScroll_Copy.png");
+    Filesystem_Texture_Dump(path, renderer, bubble.texture_vscroll, SDL_PIXELFORMAT_ARGB8888,
+                            render_target);
+
+    /* FREE */
+    PixelFont_Free(bubble.pixelfont, true);
+    TextBubble_Free(&bubble);
+    SDL_DestroyRenderer(renderer);
+    SDL_FreeSurface(surface);
+}
 
 void test_text_bubble() {
     SDL_Log("%s " STRINGIZE(__LINE__), __func__);
     sota_mkdir("popup_text_bubble");
-    test_Text_Bubble_Tail();
-    test_text_bubble_scroll();
-    test_text_bubble_scroll_vertical();
+    test_text_bubble_VScroll_Anim();
+    // test_Text_Bubble_Tail();
+    // test_text_bubble_scroll();
+    // test_text_bubble_scroll_vertical();
 }

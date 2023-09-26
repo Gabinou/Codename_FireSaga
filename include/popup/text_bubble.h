@@ -115,8 +115,8 @@ extern void TextBubble_Set_All(struct Text_Bubble *b, const char *t, struct Poin
                                struct n9Patch *n9patch);
 
 /* --- Scrolling --- */
-extern void TextBubble_Copy(   struct Text_Bubble *b, SDL_Renderer *r);
-extern void TextBubble_VScroll(struct Text_Bubble *b, SDL_Renderer *r);
+extern void TextBubble_VScroll(     struct Text_Bubble *b, SDL_Renderer *r);
+extern void TextBubble_Copy_VScroll(struct Text_Bubble *b, SDL_Renderer *r, SDL_Texture *rt);
 
 /* --- Drawing --- */
 extern void TextBubble_Draw(  struct PopUp *p,       struct Point pos,

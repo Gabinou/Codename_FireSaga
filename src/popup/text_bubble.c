@@ -12,17 +12,18 @@ struct Text_Bubble_Tail Text_Bubble_Tail_default = {
 };
 
 struct Text_Bubble TextBubble_default = {
-    .width          =  0,
-    .height         =  0,
-    .row_height     = ASCII_GLYPH_HEIGHT,
-    .lines          = {0},
-    .line_len_px    = 64,
-    .line_num_max   = -1,
-    .text           = NULL,
-    .target         = {-100, -100},
-    .pixelfont      = NULL,
-    .texture        = NULL,
-    .update         = false,
+    .width              =  0,
+    .height             =  0,
+    .row_height         = ASCII_GLYPH_HEIGHT,
+    .lines              = {0},
+    .line_len_px        = 64,
+    .line_num_max       = -1,
+    .text               = NULL,
+    .target             = {-100, -100},
+    .pixelfont          = NULL,
+    .texture            = NULL,
+    .texture_vscroll    = NULL,
+    .update             = false,
 
     .padding     = {
         .left       = TEXT_BUBBLE_PADDING_LEFT,
@@ -32,12 +33,12 @@ struct Text_Bubble TextBubble_default = {
     },
 
     .tail     = {
-        .pos        = {0, 0},
-        .flip       = SDL_FLIP_NONE,
-        .texture    = NULL,
-        .angle      = 0.0,
-        .half       = false,
-        .index      = false,
+        .pos            = {0, 0},
+        .flip           = SDL_FLIP_NONE,
+        .texture        = NULL,
+        .angle          = 0.0,
+        .half           = false,
+        .index          = false,
     },
 };
 
@@ -318,27 +319,38 @@ void TextBubble_Set_All(struct Text_Bubble *bubble, const char *text, struct Poi
 }
 
 /* -- Drawing elements -- */
-void TextBubble_Copy(struct Text_Bubble *bubble, SDL_Renderer *renderer, SDL_Texture* render_target) {
+void TextBubble_Copy_VScroll(struct Text_Bubble *bubble, SDL_Renderer *renderer,
+                             SDL_Texture *render_target) {
     SOTA_Log_FPS("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     /* - Copy written text + middle of n9patch for VScroll - */
 
     /* - create render target texture - */
-    SDL_Rect srcrect, dstrect;
-    dstrect.w = n9patch->size_pixels.x - TEXT_BUBBLE_COPY_PAD * 2;
-    dstrect.h = n9patch->size_pixels.y - TEXT_BUBBLE_COPY_PAD * 2;
+    SDL_Log("bubble %d %d", bubble->width, bubble->height);
+    SDL_Rect srcrect = {0}, dstrect = {0};
+    dstrect.w = bubble->width  - TEXT_BUBBLE_COPY_PAD * 2;
+    dstrect.h = bubble->height - TEXT_BUBBLE_COPY_PAD * 2;
     srcrect.x = TEXT_BUBBLE_COPY_PAD + TEXT_BUBBLE_RENDER_PAD;
     srcrect.y = TEXT_BUBBLE_COPY_PAD + TEXT_BUBBLE_RENDER_PAD;
-    srcrect.w = srcrect.w;
-    srcrect.h = srcrect.h;
+    srcrect.w = dstrect.w;
+    srcrect.h = dstrect.h;
+
+    SDL_Log("TEXT_BUBBLE_COPY_PAD %d", TEXT_BUBBLE_COPY_PAD);
+    SDL_Log("dstrect %d %d %d %d", dstrect.x, dstrect.y, dstrect.w, dstrect.h);
+    SDL_Log("srcrect %d %d %d %d", srcrect.x, srcrect.y, srcrect.w, srcrect.h);
+
     if (bubble->texture_vscroll == NULL) {
         bubble->texture_vscroll = SDL_CreateTexture(renderer, SDL_PIXELFORMAT_ARGB8888,
-                                            SDL_TEXTUREACCESS_TARGET, dstrect.h, dstrect.w);
+                                                    SDL_TEXTUREACCESS_TARGET, dstrect.w, dstrect.h);
         SDL_assert(bubble->texture_vscroll != NULL);
         SDL_SetTextureBlendMode(bubble->texture_vscroll, SDL_BLENDMODE_BLEND);
     }
 
+    SDL_Log("dstrect %d %d %d %d", dstrect.x, dstrect.y, dstrect.w, dstrect.h);
+    SDL_Log("srcrect %d %d %d %d", srcrect.x, srcrect.y, srcrect.w, srcrect.h);
+
+    SDL_assert(bubble->texture_vscroll != NULL);
     SDL_SetRenderTarget(renderer, bubble->texture_vscroll);
-    SDL_RenderCopy(renderer, bubble->texture, srcrect, dstrect);
+    SDL_RenderCopy(renderer, bubble->texture, &srcrect, &dstrect);
     SDL_SetRenderTarget(renderer, render_target);
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
@@ -422,6 +434,8 @@ void TextBubble_Update(struct Text_Bubble *bubble, struct n9Patch *n9patch,
     SDL_assert(n9patch->scale.y         > 0);
     SDL_assert(n9patch->size_pixels.x   > 0);
     SDL_assert(n9patch->size_pixels.y   > 0);
+    SDL_assert(n9patch->size_pixels.x   == bubble->width);
+    SDL_assert(n9patch->size_pixels.y   == bubble->height);
 
     /* - create render target texture - */
     if (bubble->texture == NULL) {
