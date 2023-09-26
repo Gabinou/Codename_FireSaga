@@ -159,6 +159,7 @@ struct Settings Settings_default = {
         .sizefactor     = {FPS_DEFAULT_SIZEFACTORX, FPS_DEFAULT_SIZEFACTORY},
         .show           = FPS_DEFAULT_SHOW,
         .cap            = FPS_DEFAULT_CAP,
+        .ff_cap         = FF_DEFAULT_CAP,
     },
     .map_settings = {
         .overlay_mode   = MAP_OVERLAY_MODE_PALETTESWAP,

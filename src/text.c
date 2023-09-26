@@ -27,9 +27,9 @@ void Text_TTF_onUpdate_FPS(struct Game *sota, tnecs_entity_t entity_fps,
     float ratio = (float)SOTA_ns / (float)last_update_ns;
     float fps = (frame_count * ratio);
     if (sota->fast_forward) {
-        int fps_cap = sota->settings.FPS.cap;
-        int fps_ratio = fps / fps_cap;
-        snprintf(fps_text_ptr->text_line, sizeof(char) * DEFAULT_BUFFER_SIZE, "x%d", fps_ratio);
+        int fps_cap     = sota->settings.FPS.cap;
+        int fps_ratio   = fps / fps_cap / SOTA_100PERCENT;
+        snprintf(fps_text_ptr->text_line, sizeof(char) * DEFAULT_BUFFER_SIZE, "%d%", fps_ratio);
     } else {
         snprintf(fps_text_ptr->text_line, sizeof(char) * DEFAULT_BUFFER_SIZE, "%.1f", fps);
     }

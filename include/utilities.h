@@ -50,9 +50,6 @@ struct WpnorItem Utilities_WpnorItem(if16 id, struct dtab *wt, struct dtab *it);
 /* --- Cursor --- */
 extern void Cursor_Box_Offset(struct Point *pos);
 
-/* --- MATHS --- */
-extern i64 Utilities_Frame_Delay(u64 e, uf8 f, bool ff);
-
 /* Computed mirrored object position in a room */
 //      mirror
 // |-a-----|------a'|
