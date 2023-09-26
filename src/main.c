@@ -125,31 +125,30 @@ int main(int argc, char *argv[]) {
         SDL_assert(fsm_control_state[sota->state] != NULL);
 
         fsm_render_state[sota->state](sota);
-        tnecs_world_step_wdata(sota->world, updateTime_ns, sota);               /* CONTROL+RENDER */
+        tnecs_world_step_wdata(sota->world, updateTime_ns, sota); /* CONTROL+RENDER */
         fsm_control_state[sota->state](sota);
         /* -- Events -- */
-        Events_Manage(sota);                                                    /* CONTROL */
+        Events_Manage(sota); /* CONTROL */
 
         /* -- Render to screen -- */
         #ifndef RENDER2WINDOW
         SDL_SetRenderTarget(sota->renderer, NULL); /* RENDER */
-        SDL_RenderCopy(sota->renderer,      sota->render_target, NULL, NULL);   /* RENDER */
-        SDL_SetRenderTarget(sota->renderer, sota->render_target);               /* RENDER */
+        SDL_RenderCopy(sota->renderer,      sota->render_target, NULL, NULL);
+        SDL_SetRenderTarget(sota->renderer, sota->render_target);
         #endif
-        SDL_RenderPresent(sota->renderer);                                      /* RENDER */
+        SDL_RenderPresent(sota->renderer);
 
         /* --- POST-FRAME --- */
-        /* -- synchronize timers -- */
+        /* -- Synchronize timers -- */
         elapsedTime_ns = tnecs_get_ns() - currentTime_ns;
         delay_ms       = Game_FPS_Delay(sota, elapsedTime_ns);
-
         time_ns        = (elapsedTime_ns + delay_ms * SOTA_ns / SOTA_ms);
-        // printf("time_ns %d \n", time_ns);
-        // printf("time_us %d \n", time_ns / 1000);
-        // printf("time_ms %d \n", time_ns / 1000000);
+
         Game_Cursor_movedTime_Compute(sota, time_ns);
         tnecs_custom_system_run(sota->world, timeSynchronize, sota->timer_typeflag, time_ns, NULL);
-        Game_Timers_Delay(sota, delay_ms, currentTime_ns, elapsedTime_ns);
+
+        /* -- Delay until next frame -- */
+        Game_Delay(sota, delay_ms, currentTime_ns, elapsedTime_ns);
     }
 
     /* -- Cleaning & Quitting -- */

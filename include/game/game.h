@@ -210,7 +210,7 @@ extern void Game_subState_Set(struct Game *sota, if8 ns, const char *r);
 extern void Game_Camera_Scroll(struct Game *sota);
 
 /* --- Time --- */
-extern void Game_Timers_Delay(struct Game *sota, u16 d, u64 c, u64 e);
+extern void Game_Delay(struct Game *sota, i64 d, u64 c, u64 e);
 
 /* --- FPS --- */
 extern i64 Game_FPS_Delay(  struct Game *sota, u64 e);

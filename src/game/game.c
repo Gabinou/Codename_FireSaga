@@ -651,17 +651,22 @@ void Game_Camera_Scroll(struct Game *sota) {
 }
 
 /* --- Time --- */
-void Game_Timers_Delay(struct Game *sota, uint16_t delay_ms, u64 currentTime_ns,
-                       u64 elapsedTime_ns) {
+void Game_Delay(struct Game *sota, i64 delay_ms, u64 currentTime_ns,
+                u64 elapsedTime_ns) {
+    /* - Skip if negative delay - */
+    if (delay_ms < 0) {
+        SOTA_Log_FPS("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
+        return;
+    }
+
     /* - Delay game in case synchronization took > 1ms - */
     u64 new_elapsedTime_ns = tnecs_get_ns() - currentTime_ns;
 
-    int16_t delay = delay_ms - (new_elapsedTime_ns / 1000 - elapsedTime_ns / 1000) / 1000 ;
-    if (delay > 0) {
+    u32 delay = delay_ms - (new_elapsedTime_ns - elapsedTime_ns) / 1000000;
+    if (delay > 0)
         SDL_Delay(delay);
-        sota->runtime_ns += new_elapsedTime_ns + delay * SOTA_us;
-    } else
-        sota->runtime_ns += new_elapsedTime_ns;
+
+    sota->runtime_ns += new_elapsedTime_ns + (delay > 0) * delay * SOTA_us;
 
     SOTA_Log_FPS("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
@@ -673,7 +678,7 @@ i64 Game_FPS_Delay(struct Game *sota, u64 elapsedTime_ns) {
     int fps_cap     = sota->settings.FPS.cap;    /* [s^-1] */
     int ff_cap      = sota->settings.FPS.ff_cap; /* [%]    */
 
-    /* 0 frame delay if fast-forwarding without limit */
+    /* 0 frame delay if fast-forwarding (ff) without limit */
     if ((sota->fast_forward) && (ff_cap <= SOTA_100PERCENT)) {
         SOTA_Log_FPS("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
         return (delay);
@@ -682,14 +687,14 @@ i64 Game_FPS_Delay(struct Game *sota, u64 elapsedTime_ns) {
     /* Compute delay for ff_cap */
     if ((sota->fast_forward) && (ff_cap > SOTA_100PERCENT)) {
         int ff_fps_cap = fps_cap * ff_cap / SOTA_100PERCENT;
-        delay = ceil(1000.0f / ff_fps_cap - elapsedTime_ns / 1e6);
+        delay = ceil((1000.0f / ff_fps_cap) - (elapsedTime_ns / 1e6));
         SOTA_Log_FPS("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
         return (delay);
     }
 
     /* Compute delay for no ff */
     if (((elapsedTime_ns * fps_cap) < 1e9) || (elapsedTime_ns == 0))
-        delay = ceil(1000.0f / fps_cap - elapsedTime_ns / 1e6);
+        delay = ceil((1000.0f / fps_cap) - (elapsedTime_ns / 1e6));
 
     SDL_assert(delay >= 0);
     SOTA_Log_FPS("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);

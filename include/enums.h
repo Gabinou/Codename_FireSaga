@@ -218,7 +218,7 @@ enum FPS_DEFAULTS {
     FPS_DEFAULT_POSY    =   10,
     FPS_DEFAULT_SHOW    =    1,
     FPS_DEFAULT_CAP     =   60,
-    FF_DEFAULT_CAP      = 1000,
+    FF_DEFAULT_CAP      = 2000,
     FPS_DEFAULT_COLORR  =    0,
     FPS_DEFAULT_COLORG  =    0,
     FPS_DEFAULT_COLORB  =    0,
