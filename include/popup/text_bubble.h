@@ -51,11 +51,12 @@ enum SOTA_TEXT_BUBBLE_N9PATCH {
 
 enum SOTA_Text_Bubble_Tail {
     TEXT_BUBBLE_MIN_WIDTH           =  TEXT_BUBBLE_PATCH_PIXELS * 3,
-    Text_Bubble_Tail_SIZE        =  8,
+    Text_Bubble_Tail_SIZE           =  8,
     TEXT_BUBBLE_NULL                = -1,
     TEXT_BUBBLE_STRAIGHT            =  0,
     TEXT_BUBBLE_DIAGONAL            =  1,
     TEXT_BUBBLE_RENDER_PAD          =  6,
+    TEXT_BUBBLE_COPY_PAD            =  5,
 };
 
 struct Text_Bubble_Tail {

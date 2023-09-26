@@ -273,6 +273,10 @@ void TextBubble_Compute_Size(struct Text_Bubble *bu, struct n9Patch *n9patch) {
         SDL_DestroyTexture(bu->texture);
         bu->texture = NULL;
     }
+    if (bu->texture_vscroll != NULL) {
+        SDL_DestroyTexture(bu->texture_vscroll);
+        bu->texture_vscroll = NULL;
+    }
 
     /* -- Bubble text size -- */
     int line_num = PixelFont_Lines_Num_Len(bu->pixelfont, bu->text, bu->line_len_px);
@@ -314,10 +318,28 @@ void TextBubble_Set_All(struct Text_Bubble *bubble, const char *text, struct Poi
 }
 
 /* -- Drawing elements -- */
-void TextBubble_Copy(   struct Text_Bubble *b, SDL_Renderer *r) {
+void TextBubble_Copy(struct Text_Bubble *bubble, SDL_Renderer *renderer, SDL_Texture* render_target) {
     SOTA_Log_FPS("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     /* - Copy written text + middle of n9patch for VScroll - */
 
+    /* - create render target texture - */
+    SDL_Rect srcrect, dstrect;
+    dstrect.w = n9patch->size_pixels.x - TEXT_BUBBLE_COPY_PAD * 2;
+    dstrect.h = n9patch->size_pixels.y - TEXT_BUBBLE_COPY_PAD * 2;
+    srcrect.x = TEXT_BUBBLE_COPY_PAD + TEXT_BUBBLE_RENDER_PAD;
+    srcrect.y = TEXT_BUBBLE_COPY_PAD + TEXT_BUBBLE_RENDER_PAD;
+    srcrect.w = srcrect.w;
+    srcrect.h = srcrect.h;
+    if (bubble->texture_vscroll == NULL) {
+        bubble->texture_vscroll = SDL_CreateTexture(renderer, SDL_PIXELFORMAT_ARGB8888,
+                                            SDL_TEXTUREACCESS_TARGET, dstrect.h, dstrect.w);
+        SDL_assert(bubble->texture_vscroll != NULL);
+        SDL_SetTextureBlendMode(bubble->texture_vscroll, SDL_BLENDMODE_BLEND);
+    }
+
+    SDL_SetRenderTarget(renderer, bubble->texture_vscroll);
+    SDL_RenderCopy(renderer, bubble->texture, srcrect, dstrect);
+    SDL_SetRenderTarget(renderer, render_target);
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
