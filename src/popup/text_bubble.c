@@ -24,6 +24,8 @@ struct Text_Bubble TextBubble_default = {
     .texture            = NULL,
     .texture_vscroll    = NULL,
     .update             = false,
+    .vscroll_speed      = TEXT_BUBBLE_VSCROLL_SPEED,
+    .vscroll            = 0,
 
     .padding     = {
         .left       = TEXT_BUBBLE_PADDING_LEFT,
@@ -323,9 +325,9 @@ void TextBubble_Copy_VScroll(struct Text_Bubble *bubble, SDL_Renderer *renderer,
                              SDL_Texture *render_target) {
     SOTA_Log_FPS("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     /* - Copy written text + middle of n9patch for VScroll - */
+    bubble->vscroll = 0;
 
     /* - create render target texture - */
-    SDL_Log("bubble %d %d", bubble->width, bubble->height);
     SDL_Rect srcrect = {0}, dstrect = {0};
     dstrect.w = bubble->width  - TEXT_BUBBLE_COPY_PAD * 2;
     dstrect.h = bubble->height - TEXT_BUBBLE_COPY_PAD * 2;
@@ -334,19 +336,12 @@ void TextBubble_Copy_VScroll(struct Text_Bubble *bubble, SDL_Renderer *renderer,
     srcrect.w = dstrect.w;
     srcrect.h = dstrect.h;
 
-    SDL_Log("TEXT_BUBBLE_COPY_PAD %d", TEXT_BUBBLE_COPY_PAD);
-    SDL_Log("dstrect %d %d %d %d", dstrect.x, dstrect.y, dstrect.w, dstrect.h);
-    SDL_Log("srcrect %d %d %d %d", srcrect.x, srcrect.y, srcrect.w, srcrect.h);
-
     if (bubble->texture_vscroll == NULL) {
         bubble->texture_vscroll = SDL_CreateTexture(renderer, SDL_PIXELFORMAT_ARGB8888,
                                                     SDL_TEXTUREACCESS_TARGET, dstrect.w, dstrect.h);
         SDL_assert(bubble->texture_vscroll != NULL);
         SDL_SetTextureBlendMode(bubble->texture_vscroll, SDL_BLENDMODE_BLEND);
     }
-
-    SDL_Log("dstrect %d %d %d %d", dstrect.x, dstrect.y, dstrect.w, dstrect.h);
-    SDL_Log("srcrect %d %d %d %d", srcrect.x, srcrect.y, srcrect.w, srcrect.h);
 
     SDL_assert(bubble->texture_vscroll != NULL);
     SDL_SetRenderTarget(renderer, bubble->texture_vscroll);
@@ -355,15 +350,37 @@ void TextBubble_Copy_VScroll(struct Text_Bubble *bubble, SDL_Renderer *renderer,
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
-void TextBubble_VScroll(  struct Text_Bubble *b, SDL_Renderer *r) {
+void TextBubble_VScroll(struct Text_Bubble *bubble, SDL_Renderer *renderer) {
     SOTA_Log_FPS("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     /* - To do vscroll - */
-    // Copy latest written texture inside bubble
-    // Stop writing
-    // Move texture up x pixels every Scroll
-    //      - Create system for that
+    bubble->vscroll += bubble->vscroll_speed;
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
+
+void TextBubble_VScroll_Draw(struct Text_Bubble *bubble, SDL_Renderer *renderer, SDL_Texture * render_target) {
+    SOTA_Log_FPS("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
+    /* - To do vscroll - */
+    SDL_Rect srcrect = {0}, dstrect = {0};
+    dstrect.h = bubble->height - TEXT_BUBBLE_COPY_PAD * 2;
+    if (bubble->vscroll > dstrect.h) {
+        bubble->vscroll      = 0;
+        bubble->vscroll_anim = false;
+    }
+    dstrect.w = bubble->width  - TEXT_BUBBLE_COPY_PAD * 2;
+    dstrect.h = bubble->height - TEXT_BUBBLE_COPY_PAD * 2 - bubble->vscroll;
+    srcrect.x = TEXT_BUBBLE_COPY_PAD + TEXT_BUBBLE_RENDER_PAD;
+    srcrect.y = TEXT_BUBBLE_COPY_PAD + TEXT_BUBBLE_RENDER_PAD + bubble->vscroll;
+    srcrect.w = dstrect.w;
+    srcrect.h = dstrect.h;
+
+    SDL_assert(bubble->texture_vscroll != NULL);
+    SDL_SetRenderTarget(renderer, bubble->texture_vscroll);
+    SDL_RenderCopy(renderer, bubble->texture, &srcrect, &dstrect);
+    SDL_SetRenderTarget(renderer, render_target);
+
+    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
+}
+
 
 /* --- Scrolling --- */
 void TextBubble_Write(struct Text_Bubble *bubble, SDL_Renderer *renderer) {
@@ -398,7 +415,6 @@ void TextBubble_Write(struct Text_Bubble *bubble, SDL_Renderer *renderer) {
             scroll_len_rem -= to_render;
             continue;
         }
-
 
         y = bubble->padding.top + bubble->row_height * draw_i + TEXT_BUBBLE_RENDER_PAD;
         if (!bubble->scroll) {
@@ -463,7 +479,11 @@ void TextBubble_Update(struct Text_Bubble *bubble, struct n9Patch *n9patch,
     n9patch->scale.x    = scale_x;
     n9patch->scale.y    = scale_y;
 
-    TextBubble_Write(    bubble, renderer);
+    if (bubble->vscroll_anim) {
+        TextBubble_VScroll_Draw(bubble, renderer);
+    } else {
+        TextBubble_Write(bubble, renderer);
+    }
     TextBubble_Tail_Draw(bubble, renderer);
 
     SDL_SetRenderTarget(renderer, target);

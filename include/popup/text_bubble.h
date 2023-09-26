@@ -57,6 +57,7 @@ enum SOTA_Text_Bubble_Tail {
     TEXT_BUBBLE_DIAGONAL            =  1,
     TEXT_BUBBLE_RENDER_PAD          =  6,
     TEXT_BUBBLE_COPY_PAD            =  5,
+    TEXT_BUBBLE_VSCROLL_SPEED       =  1,
 };
 
 struct Text_Bubble_Tail {
@@ -79,6 +80,8 @@ struct Text_Bubble {
     int                         row_height;
     int                         line_len_px;
     int                         line_num_max;
+    int                         vscroll;
+    int                         vscroll_speed;
 
     struct TextLines            lines;
     struct Padding              padding;
@@ -127,7 +130,7 @@ extern void TextBubble_Update(struct Text_Bubble *b, struct n9Patch *n9patch,
 /* -- Drawing elements -- */
 extern void TextBubble_Write(       struct Text_Bubble *b, SDL_Renderer *r);
 extern void TextBubble_Tail_Draw(   struct Text_Bubble *b, SDL_Renderer *r);
-extern void TextBubble_VScroll_Draw(struct Text_Bubble *b, SDL_Renderer *r);
+extern void TextBubble_VScroll_Draw(struct Text_Bubble *b, SDL_Renderer *r, SDL_Texture *rt);
 
 
 #endif /* TEXT_BUBBLE_H */
