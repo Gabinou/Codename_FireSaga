@@ -120,8 +120,8 @@ int mace(int argc, char *argv[]) {
     /* MACE_SET_COMPILER(CC); */
     mace_set_compiler(CC);
     mace_set_archiver(AR);
-    mace_set_build_dir("A_build");
-    mace_set_obj_dir("B_obj");
+    mace_set_build_dir("build");
+    mace_set_obj_dir("obj");
 
     /* -- Configs -- */
     MACE_ADD_CONFIG(debug);

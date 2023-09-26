@@ -15,7 +15,7 @@ extern int  call_stack_depth;
 #define GAME_TITLE       "Sword of the Anointed"
 #define SAVE_FOLDER      "saves"
 #define SOTA_EXE_NAME    "CodenameFireSaga"
-#define SOTA_BUILD_DIR   "A_build"
+#define SOTA_BUILD_DIR   "build"
 #define GAME_TITLE_ABREV "SotA"
 
 #endif /* GLOBALS_H */

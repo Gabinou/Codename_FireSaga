@@ -7,22 +7,22 @@ workspace "HelloPremake"
 	staticruntime "on"
 	-- cdialect "C99" -- BORKED BY STB
 
-	targetdir "A_build"
-	os.mkdir("A_build")
-	os.mkdir("B_obj")
-	objdir "!B_obj\\%{cfg.buildcfg}"
+	targetdir "build"
+	os.mkdir("build")
+	os.mkdir("obj")
+	objdir "!obj\\%{cfg.buildcfg}"
 
 	filter{"configurations:Debug"}
 		runtime "Debug"
 		kind "WindowedApp"
-		os.mkdir("B_obj\\Debug")
+		os.mkdir("obj\\Debug")
         buildoptions{"-O0", "-D__SOTA_DEBUG__", "-DSDL_ASSERT_LEVEL=2 -I\\msys64\\mingw64\\include"}
         symbols "on"
 
 	filter{"configurations:Release"}
 		runtime "Release"
 		kind "WindowedApp"
-		os.mkdir("B_obj\\Release")
+		os.mkdir("obj\\Release")
 		-- optimize "on" -- what does on do -> O1?
 		buildoptions{"-O2", "-D__SOTA_RELEASE__", "-DSDL_ASSERT_LEVEL=2 -I\\msys64\\mingw64\\include"}
 
