@@ -96,7 +96,7 @@ void test_pixelfonts_internals() {
     SDL_FreeSurface(surface);
 }
 
-void test_text_bubble_pixelfonts() {
+void test_pixelfonts_render() {
     /* -- Create renderer -- */
     SDL_Surface  *surface  = Filesystem_indexedSurface_Init(1024, 1024);
     SDL_Renderer *renderer = SDL_CreateSoftwareRenderer(surface);
@@ -166,6 +166,71 @@ void test_text_bubble_pixelfonts() {
     Filesystem_Texture_Dump(PATH_JOIN("pixelfont", "Pixelnours_Big_BoW_ENGLISH.png"),
                             renderer, bubble.texture, SDL_PIXELFORMAT_ARGB8888, render_target);
 
+    /* -- Bubble with blue 9patch -- */
+    char *path = PATH_JOIN("..", "assets", "GUI", "n9Patch", "menu8px.png");
+    SDL_DestroyTexture(n9patch.texture);
+    n9patch.texture = Filesystem_Texture_Load(renderer, path, SDL_PIXELFORMAT_INDEX8);
+    SDL_assert(n9patch.texture != NULL);
+    PixelFont_Swap_Palette(bubble.pixelfont, renderer, -1, -1);
+
+    /* - setting - */
+    bubble.target.x = -100;
+    bubble.target.y = -100;
+    TextBubble_Set_All(&bubble, "portez ce vieux whisky au juge blond qui fume. ?!", bubble.target,
+                       &n9patch);
+
+    /* - rendering - */
+    TextBubble_Update(&bubble, &n9patch, render_target, renderer);
+    Filesystem_Texture_Dump(PATH_JOIN("pixelfont", "Pixelnours_french.png"),
+                            renderer, bubble.texture, SDL_PIXELFORMAT_ARGB8888, render_target);
+
+    /* - setting - */
+    TextBubble_Set_All(&bubble, "PORTEZ CE VIEUX WHISKY AU JUGE BLOND QUI FUME. ?! ", bubble.target,
+                       &n9patch);
+
+    /* - rendering - */
+    TextBubble_Update(&bubble, &n9patch, render_target, renderer);
+    Filesystem_Texture_Dump(PATH_JOIN("pixelfont", "Pixelnours_FRENCH.png"),
+                            renderer, bubble.texture, SDL_PIXELFORMAT_ARGB8888, render_target);
+
+    /* - Pixelnours_big - */
+    TextBubble_Load(&bubble, renderer, &n9patch);
+    path = PATH_JOIN("..", "assets", "GUI", "n9Patch", "menu8px.png");
+    SDL_DestroyTexture(n9patch.texture);
+    n9patch.texture = Filesystem_Texture_Load(renderer, path, SDL_PIXELFORMAT_INDEX8);
+    SDL_assert(n9patch.texture != NULL);
+
+
+    PixelFont_Free(bubble.pixelfont, false);
+    bubble.pixelfont = PixelFont_Alloc();
+    PixelFont_Load(bubble.pixelfont, renderer, PATH_JOIN("..", "assets", "Fonts",
+                                                         "pixelnours_Big.png"));
+    PixelFont_Swap_Palette(bubble.pixelfont, renderer, -1, -1);
+    bubble.pixelfont->y_offset     = pixelfont_big_y_offset;
+    bubble.line_len_px  = 96;
+    bubble.row_height   = ASCII_GLYPH_HEIGHT + 2;
+    bubble.padding.top  = TEXT_BUBBLE_PADDING_TOP + 2;
+
+    /* - setting - */
+    bubble.target.x = -100;
+    bubble.target.y = -100;
+    TextBubble_Set_All(&bubble, "a quick brown fox jumps over the lazy dog. ?!", bubble.target,
+                       &n9patch);
+
+    /* - rendering - */
+    TextBubble_Update(&bubble, &n9patch, render_target, renderer);
+    Filesystem_Texture_Dump(PATH_JOIN("pixelfont", "Pixelnours_Big_english.png"),
+                            renderer, bubble.texture, SDL_PIXELFORMAT_ARGB8888, render_target);
+
+    /* - setting - */
+    TextBubble_Set_All(&bubble, "A QUICK BROWN FOX JUMPS OVER THE LAZY DOG. ?! ", bubble.target,
+                       &n9patch);
+
+    /* - rendering - */
+    TextBubble_Update(&bubble, &n9patch, render_target, renderer);
+    Filesystem_Texture_Dump(PATH_JOIN("pixelfont", "Pixelnours_Big_ENGLISH.png"),
+                            renderer, bubble.texture, SDL_PIXELFORMAT_ARGB8888, render_target);
+
     /* FREE */
     PixelFont_Free(bubble.pixelfont, true);
     TextBubble_Free(&bubble);
@@ -176,7 +241,6 @@ void test_text_bubble_pixelfonts() {
 void test_pixelfonts() {
     SDL_Log("%s " STRINGIZE(__LINE__), __func__);
     sota_mkdir("pixelfont");
-    test_text_bubble_pixelfonts();
     test_pixelfonts_internals();
-
+    test_pixelfonts_render();
 }
