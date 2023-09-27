@@ -25,6 +25,7 @@ struct Text_Bubble TextBubble_default = {
     .texture_vscroll    = NULL,
     .update             = false,
     .vscroll_speed      = TEXT_BUBBLE_VSCROLL_SPEED,
+    .vscroll_dir        = TEXT_BUBBLE_VSCROLL_TOP,
     .vscroll            = 0,
 
     .padding     = {
@@ -353,11 +354,12 @@ void TextBubble_Copy_VScroll(struct Text_Bubble *bubble, SDL_Renderer *renderer,
 void TextBubble_VScroll(struct Text_Bubble *bubble, SDL_Renderer *renderer) {
     SOTA_Log_FPS("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     /* - To do vscroll - */
+    SDL_assert(bubble->vscroll_speed > 0);
     bubble->vscroll += bubble->vscroll_speed;
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
-void TextBubble_VScroll_Draw(struct Text_Bubble *bubble, SDL_Renderer *renderer, SDL_Texture * render_target) {
+void TextBubble_VScroll_Draw(struct Text_Bubble *bubble, SDL_Renderer *renderer) {
     SOTA_Log_FPS("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     /* - To do vscroll - */
     SDL_Rect srcrect = {0}, dstrect = {0};
@@ -365,19 +367,24 @@ void TextBubble_VScroll_Draw(struct Text_Bubble *bubble, SDL_Renderer *renderer,
     if (bubble->vscroll > dstrect.h) {
         bubble->vscroll      = 0;
         bubble->vscroll_anim = false;
+        SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
+        return;
     }
     dstrect.w = bubble->width  - TEXT_BUBBLE_COPY_PAD * 2;
-    dstrect.h = bubble->height - TEXT_BUBBLE_COPY_PAD * 2 - bubble->vscroll;
-    srcrect.x = TEXT_BUBBLE_COPY_PAD + TEXT_BUBBLE_RENDER_PAD;
-    srcrect.y = TEXT_BUBBLE_COPY_PAD + TEXT_BUBBLE_RENDER_PAD + bubble->vscroll;
+
+    dstrect.h -= bubble->vscroll;
+    dstrect.x = TEXT_BUBBLE_COPY_PAD + TEXT_BUBBLE_RENDER_PAD;
+    dstrect.y = TEXT_BUBBLE_COPY_PAD + TEXT_BUBBLE_RENDER_PAD;
+    if (bubble->vscroll_dir == TEXT_BUBBLE_VSCROLL_BOTTOM) {
+        dstrect.y += bubble->vscroll;
+    } else {
+        srcrect.y = bubble->vscroll;
+    }
     srcrect.w = dstrect.w;
     srcrect.h = dstrect.h;
 
     SDL_assert(bubble->texture_vscroll != NULL);
-    SDL_SetRenderTarget(renderer, bubble->texture_vscroll);
-    SDL_RenderCopy(renderer, bubble->texture, &srcrect, &dstrect);
-    SDL_SetRenderTarget(renderer, render_target);
-
+    SDL_RenderCopy(renderer, bubble->texture_vscroll, &srcrect, &dstrect);
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
@@ -438,7 +445,7 @@ void TextBubble_Write(struct Text_Bubble *bubble, SDL_Renderer *renderer) {
 
 /* --- Drawing --- */
 void TextBubble_Update(struct Text_Bubble *bubble, struct n9Patch *n9patch,
-                       SDL_Texture *target, SDL_Renderer *renderer) {
+                       SDL_Texture *render_target, SDL_Renderer *renderer) {
     SOTA_Log_FPS("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     /* --- PRELIMINARIES --- */
     SDL_assert(bubble != NULL);
@@ -486,7 +493,7 @@ void TextBubble_Update(struct Text_Bubble *bubble, struct n9Patch *n9patch,
     }
     TextBubble_Tail_Draw(bubble, renderer);
 
-    SDL_SetRenderTarget(renderer, target);
+    SDL_SetRenderTarget(renderer, render_target);
 
     SOTA_Log_FPS("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }

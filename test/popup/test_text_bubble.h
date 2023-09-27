@@ -434,7 +434,7 @@ void test_text_bubble_scroll_vertical() {
     SDL_assert(bubble.height > 0);
     bubble.scroll = true;
     int i = 0;
-    char path_raw[128] = PATH_JOIN("popup_text_bubble", "TextBubble_Vertical_Scroll_%03d.png");
+    char path_raw[128] = PATH_JOIN("popup_text_bubble", "TextBubble_Text_Scroll_%03d.png");
     char path[128];
     size_t scroll_lim = strlen(bubble.text) - bubble.lines.line_num + 1;
     while (bubble.pixelfont->scroll_len <= scroll_lim) {
@@ -494,14 +494,32 @@ void test_text_bubble_VScroll_Anim() {
     bubble.scroll = false;
 
     TextBubble_Update(&bubble, &n9patch, render_target, renderer);
-    char *path = PATH_JOIN("popup_text_bubble",  "Popup_TextBubble_VScroll_Original.png");
-    Filesystem_Texture_Dump(path, renderer, bubble.texture, SDL_PIXELFORMAT_ARGB8888,
+    char *temp_path = PATH_JOIN("popup_text_bubble",  "Popup_TextBubble_VScroll_Original.png");
+    Filesystem_Texture_Dump(temp_path, renderer, bubble.texture, SDL_PIXELFORMAT_ARGB8888,
                             render_target);
     TextBubble_Copy_VScroll(&bubble, renderer, render_target);
     SDL_assert(bubble.texture_vscroll != NULL);
-    path = PATH_JOIN("popup_text_bubble",  "Popup_TextBubble_VScroll_Copy.png");
-    Filesystem_Texture_Dump(path, renderer, bubble.texture_vscroll, SDL_PIXELFORMAT_ARGB8888,
+    temp_path = PATH_JOIN("popup_text_bubble",  "Popup_TextBubble_VScroll_Copy.png");
+    Filesystem_Texture_Dump(temp_path, renderer, bubble.texture_vscroll, SDL_PIXELFORMAT_ARGB8888,
                             render_target);
+
+    /* -- Actually scrolling animation -- */
+    char path_raw[128] = PATH_JOIN("popup_text_bubble", "TextBubble_VScroll_%03d.png");
+    char path[128];
+    bubble.vscroll_anim  = true;
+    bubble.vscroll_dir   = TEXT_BUBBLE_VSCROLL_TOP;
+    int i = 0;
+    while (bubble.vscroll_anim) {
+        sprintf(path, path_raw, i);
+
+        /* - rendering - */
+        TextBubble_Update(&bubble, &n9patch, render_target, renderer);
+        Filesystem_Texture_Dump(path, renderer, bubble.texture, SDL_PIXELFORMAT_ARGB8888, render_target);
+
+        /* - scrolling - */
+        TextBubble_VScroll(&bubble, renderer);
+        i++;
+    }
 
     /* FREE */
     PixelFont_Free(bubble.pixelfont, true);
@@ -514,7 +532,7 @@ void test_text_bubble() {
     SDL_Log("%s " STRINGIZE(__LINE__), __func__);
     sota_mkdir("popup_text_bubble");
     test_text_bubble_VScroll_Anim();
-    // test_Text_Bubble_Tail();
-    // test_text_bubble_scroll();
-    // test_text_bubble_scroll_vertical();
+    test_Text_Bubble_Tail();
+    test_text_bubble_scroll();
+    test_text_bubble_scroll_vertical();
 }
