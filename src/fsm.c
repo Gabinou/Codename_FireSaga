@@ -308,9 +308,10 @@ void fsm_sub_event_IGR_STANDBY(struct Game *sota) {
         Map_Healtomap_Compute(sota->map,   sota->world, entity, true, false);
         Map_Attacktomap_Compute(sota->map, sota->world, entity, true, false);
         if (rangemap        == RANGEMAP_HEALMAP) {
-            Map_Palettemap_Autoset(sota->map, MAP_OVERLAY_MOVE + MAP_OVERLAY_HEAL);
+            Map_Palettemap_Autoset(sota->map, MAP_OVERLAY_GLOBAL_DANGER + MAP_OVERLAY_MOVE + MAP_OVERLAY_HEAL);
         } else if (rangemap == RANGEMAP_ATTACKMAP) {
-            Map_Palettemap_Autoset(sota->map, MAP_OVERLAY_MOVE + MAP_OVERLAY_ATTACK);
+            Map_Palettemap_Autoset(sota->map,
+                                   MAP_OVERLAY_GLOBAL_DANGER + MAP_OVERLAY_MOVE + MAP_OVERLAY_ATTACK);
         }
         Map_Stacked_Dangermap_Compute(sota->map);
         return;
@@ -371,10 +372,12 @@ void fsm_substate_CHU_STANDBY(struct Game *sota, tnecs_entity_t hov_ent) {
     int rangemap = Unit_Rangemap_Get(unit_ontile);
 
     /* - Compute new stackmap with recomputed attacktomap - */
+    int all_overlays = MAP_OVERLAY_MOVE + MAP_OVERLAY_HEAL + MAP_OVERLAY_ATTACK;
+    all_overlays += MAP_OVERLAY_DANGER + MAP_OVERLAY_GLOBAL_DANGER;
     if (rangemap        == RANGEMAP_HEALMAP) {
-        Map_Palettemap_Autoset(sota->map, MAP_OVERLAY_MOVE + MAP_OVERLAY_HEAL + MAP_OVERLAY_DANGER);
+        Map_Palettemap_Autoset(sota->map, all_overlays);
     } else if (rangemap == RANGEMAP_ATTACKMAP) {
-        Map_Palettemap_Autoset(sota->map, MAP_OVERLAY_MOVE + MAP_OVERLAY_ATTACK + MAP_OVERLAY_DANGER);
+        Map_Palettemap_Autoset(sota->map, all_overlays);
     }
 
     /* Stack all overlay maps */
@@ -413,7 +416,7 @@ void fsm_substate_CDU_STANDBY(struct Game *sota, tnecs_entity_t dehov_ent) {
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
 
     /* -- Re-computing overlay -- */
-    Map_Palettemap_Autoset(sota->map, MAP_OVERLAY_DANGER);
+    Map_Palettemap_Autoset(sota->map, MAP_OVERLAY_DANGER + MAP_OVERLAY_GLOBAL_DANGER);
     Map_Stacked_Dangermap_Reset(sota->map);
 
     /* -- Placing popup_unit out of view -- */
