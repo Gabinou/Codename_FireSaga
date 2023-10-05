@@ -98,6 +98,12 @@ struct Map Map_default = {
     .num_enemies_onfield     = 0,
     .unitmap                 = NULL,
     .arrow                   = NULL,
+
+    .stacked_movemap            = NULL,
+    .stacked_dangermap          = NULL,
+    .stacked_attacktomap        = NULL,
+    .stacked_global_dangermap   = NULL,
+
     // .boss;
     // .bossdied;
     // .seized; // maybe unecessary if turn system.
@@ -308,12 +314,13 @@ void Map_dArrays_Init(struct Map *map, const struct Settings *settings) {
     map->healfrommap        = calloc(len,  sizeof(*map->healfrommap));
     map->temp_palette       = malloc(len * sizeof(*map->temp_palette));
     map->attackfrommap      = calloc(len,  sizeof(*map->attackfrommap));
-    map->global_rangemap     = calloc(len,  sizeof(*map->global_rangemap));
+    map->global_rangemap    = calloc(len,  sizeof(*map->global_rangemap));
     map->global_dangermap   = calloc(len,  sizeof(*map->global_dangermap));
 
-    if (map->stack_mode == MAP_SETTING_STACK_DANGERMAP)
-        map->stacked_dangermap      = calloc(len, sizeof(*map->stacked_dangermap));
-    if (map->stack_mode == MAP_SETTING_STACK_MOVEMAP) {
+    if (map->stack_mode == MAP_SETTING_STACK_DANGERMAP) {
+        map->stacked_dangermap          = calloc(len, sizeof(*map->stacked_dangermap));
+        map->stacked_global_dangermap   = calloc(len, sizeof(*map->stacked_global_dangermap));
+    } else if (map->stack_mode == MAP_SETTING_STACK_MOVEMAP) {
         map->stacked_movemap        = calloc(len, sizeof(*map->stacked_movemap));
         map->stacked_attacktomap    = calloc(len, sizeof(*map->stacked_attacktomap));
     }
@@ -385,6 +392,10 @@ void Map_dArrays_Free(struct Map *map) {
     if (map->stacked_dangermap != NULL) {
         free(map->stacked_dangermap);
         map->stacked_dangermap = NULL;
+    }
+    if (map->stacked_global_dangermap != NULL) {
+        free(map->stacked_global_dangermap);
+        map->stacked_global_dangermap = NULL;
     }
     if (map->global_dangermap != NULL) {
         free(map->global_dangermap);

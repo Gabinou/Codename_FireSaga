@@ -846,7 +846,7 @@ void receive_event_Unit_Wait(struct Game *sota, SDL_Event *userevent) {
     sota->map->arrow->show = false;
 
     /* - hide movemap - */
-    Map_Stackmap_Reset(sota->map);
+    Map_Stacked_Dangermap_Reset(sota->map);
     Map_Palettemap_Reset(sota->map);
 
     /* -- Deselect unit and go back to map -- */
@@ -1054,7 +1054,7 @@ void receive_event_Defendant_Select(struct Game *sota, SDL_Event *userevent) {
     memset(map->attacktomap, 0, map->row_len * map->col_len * sizeof(*map->attacktomap));
     map->attacktomap[(pos->tilemap_pos.y * map->col_len + pos->tilemap_pos.x)] = 1;
     Map_Palettemap_Autoset(sota->map, MAP_OVERLAY_ATTACK);
-    Map_Stackmap_Compute(sota->map);
+    Map_Stacked_Dangermap_Compute(sota->map);
 
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }

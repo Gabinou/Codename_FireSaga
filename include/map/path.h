@@ -10,11 +10,21 @@ struct Map;
 /* --- Bounds --- */
 extern void Map_Bounds_Compute(struct Map *map);
 
-/* --- Dangermap --- */
-extern void Map_Danger_Add(    struct Map *map, i32 *danger);
-extern void Map_Danger_Sub(    struct Map *map, i32 *danger);
-extern void Map_Danger_Reset(  struct Map *map);
 extern i32 *Map_Danger_Compute(struct Map *map, tnecs_world_t *w, tnecs_entity_t u);
+
+/* --- Dangermap --- */
+extern void Map_Danger_Add(               struct Map *map, i32 *danger);
+extern void Map_Danger_Sub(               struct Map *map, i32 *danger);
+extern void Map_Danger_Reset(             struct Map *map);
+extern void Map_Stacked_Dangermap_Reset(  struct Map *map);
+extern void Map_Stacked_Dangermap_Compute(struct Map *map);
+
+/* --- Global_Dangermap --- */
+extern void Map_Global_Danger_Add(       struct Map *map, i32 *danger);
+extern void Map_Global_Danger_Sub(       struct Map *map, i32 *danger);
+extern void Map_Global_Danger_Reset(     struct Map *map);
+extern void Map_Global_Dangermap_Reset(  struct Map *map);
+extern void Map_Global_Dangermap_Compute(struct Map *map);
 
 /* --- Costmap --- */
 extern i32   *Map_Costmap_Movement_Compute( struct Map *map, tnecs_world_t *w, tnecs_entity_t u);
@@ -47,13 +57,11 @@ extern i32 *_Map_tomap_Compute(i32 *tomap, i32 *mvtmat, uf8 row_len, uf8 col_len
 
 extern void Map_globalRange(struct Map *map, tnecs_world_t *w, uf8 alignment);
 
-/* --- Stackmap --- */
-extern void Map_Stackmap_Reset(  struct Map *map);
-extern void Map_Stackmap_Compute(struct Map *map);
 
 /* --- Taxicab Geometry --- */
 /* Taxicabs can't move diagonal so manhattan distance: abs(x1-x2) + abs(y1-ys2)
  * Manhattan (distance) used to trace 'circles' on square tilemap
+ * Returns: Find points at distance [range_min, range_max] dist from [x, y]
  * Returns: Find points at distance [range_min, range_max] dist from [x, y]
  */
 extern i32 *Taxicab_Circle(             i32 *m, i32 x, i32 y, size_t r, size_t c, struct Range *R);

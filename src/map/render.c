@@ -82,7 +82,7 @@ void Map_Palettemap_Autoset(struct Map *map, uf16 flagsum) {
     memset(palette, 0, bytesize);
     if (flagsum_isIn(MAP_OVERLAY_GLOBAL_DANGER, flagsum)) {
         SDL_assert(palette);
-        palette = linalg_sgreater_noM_int32_t(palette, map->global, 0, size);
+        palette = linalg_sgreater_noM_int32_t(palette, map->global_dangermap, 0, size);
         Map_Palettemap_addMap_scalar(map, palette, PALETTE_NES_FILTER_PURPLE);
     }
     memset(palette, 0, bytesize);

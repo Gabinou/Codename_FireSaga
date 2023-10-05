@@ -76,9 +76,10 @@ struct Map {
     uf8 stack_mode;
 
     /* - Actual stackmaps - */
-    i32 *stacked_movemap;       /* 2D dynamic array */
-    i32 *stacked_dangermap;     /* 2D dynamic array */
-    i32 *stacked_attacktomap;   /* 2D dynamic array */
+    i32 *stacked_movemap;           /* 2D dynamic array */
+    i32 *stacked_dangermap;         /* 2D dynamic array */
+    i32 *stacked_attacktomap;       /* 2D dynamic array */
+    i32 *stacked_global_dangermap;  /* 2D dynamic array */
 
     /* --- ICONS --- */
     struct SDL_Texture *stack_move;

@@ -182,7 +182,7 @@ void fsm_map_candidate_IA_dance(struct Game *sota, struct MenuComponent *in_mc) 
     Game_Unit_Wait(sota, dancer);
 
     /* - hide movemap - */
-    Map_Stackmap_Reset(sota->map);
+    Map_Stacked_Dangermap_Reset(sota->map);
     Map_Palettemap_Reset(sota->map);
 
     /* -- Deselect unit and go back to map -- */
@@ -228,7 +228,7 @@ void fsm_map_candidate_IA_staff(struct Game *sota, struct MenuComponent *in_mc) 
     Game_Unit_Wait(sota, healer);
 
     /* - hide movemap - */
-    Map_Stackmap_Reset(sota->map);
+    Map_Stacked_Dangermap_Reset(sota->map);
     Map_Palettemap_Reset(sota->map);
 
     /* -- Deselect unit and go back to map -- */
@@ -413,7 +413,7 @@ void fsm_menu_type_CMs_weapon_select(struct Game *sota, struct MenuComponent *mc
     } else if (rangemap == RANGEMAP_ATTACKMAP) {
         Map_Palettemap_Autoset(sota->map, MAP_OVERLAY_MOVE + MAP_OVERLAY_ATTACK);
     }
-    Map_Stackmap_Compute(sota->map);
+    Map_Stacked_Dangermap_Compute(sota->map);
 
     PopUp_Loadout_Stats_New(pls);
 
@@ -560,7 +560,7 @@ void fsm_menu_type_IC_pre_combat(struct Game *sota, struct MenuComponent *mc) {
     // 4. Attacktomap: recompute for aggressor
     Map_Attacktomap_Compute(sota->map, sota->world, sota->aggressor, false, true);
     Map_Palettemap_Autoset(sota->map, MAP_OVERLAY_MOVE + MAP_OVERLAY_ATTACK);
-    Map_Stackmap_Compute(sota->map);
+    Map_Stacked_Dangermap_Compute(sota->map);
 
     SDL_assert(wsm->selected[UNIT_HAND_LEFT]    > -1);
     SDL_assert(wsm->selected[UNIT_HAND_RIGHT]   > -1);
@@ -611,7 +611,7 @@ void fsm_menu_type_IC_player_select(struct Game *sota, struct MenuComponent *mc)
             } else if (Unit_canAttack(unit)) {
                 Map_Palettemap_Autoset(sota->map, MAP_OVERLAY_MOVE + MAP_OVERLAY_ATTACK + MAP_OVERLAY_DANGER);
             }
-            Map_Stackmap_Compute(sota->map);
+            Map_Stacked_Dangermap_Compute(sota->map);
 
             // 4. Revert Unit animation state to move
             struct Sprite *sprite;
@@ -700,7 +700,7 @@ void fsm_menu_type_IC_weapon_select(struct Game *sota, struct MenuComponent *mc)
     } else if (rangemap == RANGEMAP_ATTACKMAP) {
         Map_Palettemap_Autoset(sota->map, MAP_OVERLAY_MOVE + MAP_OVERLAY_ATTACK);
     }
-    Map_Stackmap_Compute(sota->map);
+    Map_Stacked_Dangermap_Compute(sota->map);
 
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
@@ -818,7 +818,7 @@ void fsm_menu_type_IA_weapon_select(struct Game *sota, struct MenuComponent *mc)
     } else if (rangemap == RANGEMAP_ATTACKMAP) {
         Map_Palettemap_Autoset(sota->map, MAP_OVERLAY_MOVE + MAP_OVERLAY_ATTACK);
     }
-    Map_Stackmap_Compute(sota->map);
+    Map_Stacked_Dangermap_Compute(sota->map);
 
     // TODO: Change to if other item in invetory
     if (WeaponSelectMenu_Usable_Remains(wsm)) {
@@ -967,7 +967,7 @@ void fsm_psm_option_IA_staff(struct Game *sota, struct MenuComponent *mc) {
     // TODO: save rangemap previous state? how to go back
     unit->rangemap = RANGEMAP_HEALMAP;
     Map_Palettemap_Autoset(sota->map, MAP_OVERLAY_MOVE + MAP_OVERLAY_HEAL);
-    Map_Stackmap_Compute(sota->map);
+    Map_Stacked_Dangermap_Compute(sota->map);
 
     /* -- Create PopUp_Loadout_Stats -- */
     // TODO: only if selecting weapon?
@@ -1026,13 +1026,13 @@ void fsm_psm_option_IA_attack(struct Game *sota, struct MenuComponent *mc_bad) {
     } else if (rangemap == RANGEMAP_ATTACKMAP) {
         Map_Palettemap_Autoset(sota->map, MAP_OVERLAY_MOVE + MAP_OVERLAY_ATTACK);
     }
-    Map_Stackmap_Compute(sota->map);
+    Map_Stacked_Dangermap_Compute(sota->map);
 
     /* -- Enable attack rangemap to choose defendants -- */
     // TODO: save rangemap previous state? how to go back
     unit->rangemap = RANGEMAP_ATTACKMAP;
     Map_Palettemap_Autoset(sota->map, MAP_OVERLAY_MOVE + MAP_OVERLAY_ATTACK);
-    Map_Stackmap_Compute(sota->map);
+    Map_Stacked_Dangermap_Compute(sota->map);
 
     /* -- TODO: Render Face -- */
 

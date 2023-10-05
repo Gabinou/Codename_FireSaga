@@ -313,7 +313,7 @@ void fsm_sub_event_IGR_STANDBY(struct Game *sota) {
         } else if (rangemap == RANGEMAP_ATTACKMAP) {
             Map_Palettemap_Autoset(sota->map, MAP_OVERLAY_MOVE + MAP_OVERLAY_ATTACK);
         }
-        Map_Stackmap_Compute(sota->map);
+        Map_Stacked_Dangermap_Compute(sota->map);
         return;
     }
 
@@ -379,7 +379,7 @@ void fsm_substate_CHU_STANDBY(struct Game *sota, tnecs_entity_t hov_ent) {
     }
 
     /* Stack all overlay maps */
-    Map_Stackmap_Compute(sota->map);
+    Map_Stacked_Dangermap_Compute(sota->map);
     sota->map->show_icons = SotA_isPC(unit_ontile->army);
 
     /* -- Changing animation loop to Taunt -- */
@@ -415,7 +415,7 @@ void fsm_substate_CDU_STANDBY(struct Game *sota, tnecs_entity_t dehov_ent) {
 
     /* -- Re-computing overlay -- */
     Map_Palettemap_Autoset(sota->map, MAP_OVERLAY_DANGER);
-    Map_Stackmap_Reset(sota->map);
+    Map_Stacked_Dangermap_Reset(sota->map);
 
     /* -- Placing popup_unit out of view -- */
     tnecs_entity_t popup_ent = sota->popups[POPUP_TYPE_HUD_UNIT];
@@ -1037,7 +1037,7 @@ void fsm_substate_IA_MAP_UNIT_MOVES(struct Game *sota, tnecs_entity_t accepter_e
     } else if (rangemap == RANGEMAP_ATTACKMAP) {
         Map_Palettemap_Autoset(sota->map, MAP_OVERLAY_MOVE + MAP_OVERLAY_ATTACK);
     }
-    Map_Stackmap_Compute(sota->map);
+    Map_Stacked_Dangermap_Compute(sota->map);
 
     /* - Pre-menu update computation for content - */
     Game_preUnitAction_Targets(sota, unit_ent);
@@ -1149,7 +1149,7 @@ void fsm_substate_UD_MAP_UNIT_MOVES(struct Game *sota, tnecs_entity_t selector) 
         // If cursor is on unit, movemap and attackmap should be shown
         Map_Palettemap_Reset(sota->map);
         Map_Palettemap_Autoset(sota->map, MAP_OVERLAY_DANGER);
-        Map_Stackmap_Reset(sota->map);
+        Map_Stacked_Dangermap_Reset(sota->map);
     }
 
     strncpy(sota->reason, "Unit was deselected during movement", sizeof(sota->reason));
