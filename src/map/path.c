@@ -53,25 +53,10 @@ void Map_Stacked_Dangermap_Compute(struct Map *map) {
 void Map_Stacked_Dangermap_Reset(struct Map *map) {
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     int len = map->row_len * map->col_len;
-    if (map->stacked_movemap != NULL) {
-        SOTA_Log_Debug("Map_Stackmap_Reset SETstacked_movemap");
-        map->stacked_movemap = memset(map->stacked_movemap, 0, sizeof(*map->stacked_movemap) * len);
-    }
-    if (map->stacked_attacktomap != NULL) {
-        SOTA_Log_Debug("Map_Stackmap_Reset SETstacked_mattack");
-        int size = sizeof(*map->stacked_attacktomap);
-        map->stacked_attacktomap = memset(map->stacked_attacktomap, 0, size * len);
-    }
     if (map->stacked_dangermap != NULL) {
         SOTA_Log_Debug("Map_Stackmap_Reset SETdanger");
         int size = sizeof(*map->stacked_dangermap);
         map->stacked_dangermap = memset(map->stacked_dangermap, 0, size * len);
-    }
-
-    if (map->stacked_global_dangermap != NULL) {
-        SOTA_Log_Debug("Map_Stackmap_Reset SETglobal_danger");
-        int size = sizeof(*map->stacked_global_dangermap);
-        map->stacked_global_dangermap = memset(map->stacked_global_dangermap, 0, size * len);
     }
 
     map->shading_changed = true;

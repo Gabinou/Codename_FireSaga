@@ -166,18 +166,6 @@ SDL_Texture *Map_Tilemap_Texture_Stitch(struct Map *map, struct SDL_Texture *ren
         texture = map->tileset_textures[PALETTE_NES][tile_order];
         srcrect.y = 0;
         switch (map->stack_mode) {
-            case MAP_SETTING_STACK_MOVEMAP:
-                if (map->stacked_movemap[i] == true) {
-                    srcrect.x = (TILE_ICON_MOVETO % TILESET_COL_LEN) * map->tilesize[0];
-                    success = SDL_RenderCopy(map->renderer, texture, &srcrect, &dstrect);
-                    SDL_assert(success);
-                }
-                if (map->stacked_attacktomap[i] == true) {
-                    srcrect.x = (TILE_ICON_ATTACKTO % TILESET_COL_LEN) * map->tilesize[0];
-                    success = SDL_RenderCopy(map->renderer, texture, &srcrect, &dstrect);
-                    SDL_assert(success);
-                }
-                break;
             case MAP_SETTING_STACK_DANGERMAP:
                 if (map->stacked_dangermap[i] == true) {
                     srcrect.x = (TILE_ICON_DANGER % TILESET_COL_LEN) * map->tilesize[0];
@@ -291,18 +279,6 @@ SDL_Surface *Map_Tilemap_Surface_Stitch(struct Map *map) {
         surf = map->tileset_surfaces[PALETTE_NES][tile_order];
         srcrect.y = 0;
         switch (map->stack_mode) {
-            case MAP_SETTING_STACK_MOVEMAP:
-                if (map->stacked_movemap[i]) {
-                    srcrect.x = (TILE_ICON_MOVETO % TILESET_COL_LEN) * map->tilesize[0];
-                    success = SDL_BlitSurface(surf, &srcrect, map->tilemap_surface, &dstrect);
-                    SDL_assert(success == 0);
-                }
-                if (map->stacked_attacktomap[i]) {
-                    srcrect.x = (TILE_ICON_ATTACKTO % TILESET_COL_LEN) * map->tilesize[0];
-                    success = SDL_BlitSurface(surf, &srcrect, map->tilemap_surface, &dstrect);
-                    SDL_assert(success == 0);
-                }
-                break;
             case MAP_SETTING_STACK_DANGERMAP:
                 if (map->stacked_dangermap[i]) {
                     srcrect.x = (TILE_ICON_DANGER % TILESET_COL_LEN) * map->tilesize[0];

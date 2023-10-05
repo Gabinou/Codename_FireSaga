@@ -99,9 +99,7 @@ struct Map Map_default = {
     .unitmap                 = NULL,
     .arrow                   = NULL,
 
-    .stacked_movemap            = NULL,
     .stacked_dangermap          = NULL,
-    .stacked_attacktomap        = NULL,
     .stacked_global_dangermap   = NULL,
 
     // .boss;
@@ -117,10 +115,10 @@ struct Map *Map_Init(struct Map *map, i32 width, i32 height) {
         Map_Free(map);
     map = (struct Map *)SDL_malloc(sizeof(struct Map));
     *map = Map_default;
-    map->tiles      = DARR_INIT(map->tiles, struct Tile, 64);
-    map->tiles_id   = DARR_INIT(map->tiles_id, i32, 64);
-    map->items_num  = DARR_INIT(map->items_num, uf8, 8);
-    map->start_pos  = DARR_INIT(map->start_pos, struct Point, 20);
+    map->tiles              = DARR_INIT(map->tiles, struct Tile, 64);
+    map->tiles_id           = DARR_INIT(map->tiles_id, i32, 64);
+    map->items_num          = DARR_INIT(map->items_num, uf8, 8);
+    map->start_pos          = DARR_INIT(map->start_pos, struct Point, 20);
     map->enemies_onfield    = DARR_INIT(map->enemies_onfield, tnecs_entity_t, 20);
     map->friendlies_onfield = DARR_INIT(map->friendlies_onfield, tnecs_entity_t, 20);
     map->units_onfield      = DARR_INIT(map->units_onfield, tnecs_entity_t, 20);
@@ -320,9 +318,6 @@ void Map_dArrays_Init(struct Map *map, const struct Settings *settings) {
     if (map->stack_mode == MAP_SETTING_STACK_DANGERMAP) {
         map->stacked_dangermap          = calloc(len, sizeof(*map->stacked_dangermap));
         map->stacked_global_dangermap   = calloc(len, sizeof(*map->stacked_global_dangermap));
-    } else if (map->stack_mode == MAP_SETTING_STACK_MOVEMAP) {
-        map->stacked_movemap        = calloc(len, sizeof(*map->stacked_movemap));
-        map->stacked_attacktomap    = calloc(len, sizeof(*map->stacked_attacktomap));
     }
     Map_Palettemap_Reset(map);
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
@@ -401,14 +396,7 @@ void Map_dArrays_Free(struct Map *map) {
         free(map->global_dangermap);
         map->global_dangermap = NULL;
     }
-    if (map->stacked_attacktomap != NULL) {
-        free(map->stacked_attacktomap);
-        map->stacked_attacktomap = NULL;
-    }
-    if (map->stacked_movemap != NULL) {
-        free(map->stacked_movemap);
-        map->stacked_movemap = NULL;
-    }
+
     if (map->attacktolist != NULL) {
         DARR_FREE(map->attacktolist);
         map->attacktolist = NULL;
