@@ -392,8 +392,8 @@ void Map_globalRange(struct Map *map, tnecs_world_t *world, uf8 alignment) {
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     tnecs_entity_t *unit_entities = NULL;
     uf8 num_unit_entities = 0;
-    SDL_assert(map->globalRangemap != NULL);
-    memset(map->globalRangemap, 0, sizeof(*map->globalRangemap) * map->row_len * map->col_len);
+    SDL_assert(map->global_rangemap != NULL);
+    memset(map->global_rangemap, 0, sizeof(*map->global_rangemap) * map->row_len * map->col_len);
 
     /* Get enemies depending on alignment */
     switch (alignment) {
@@ -408,7 +408,7 @@ void Map_globalRange(struct Map *map, tnecs_world_t *world, uf8 alignment) {
     }
     /* TODO: Only recompute if enemy died, turn changed */
 
-    /* Add all enemies attackmap into globalRangemap */
+    /* Add all enemies attackmap into global_rangemap */
     for (int i = 0; i < num_unit_entities; i++) {
         struct Unit     *temp_unit  = TNECS_GET_COMPONENT(world, unit_entities[i], Unit);
         struct Position *temp_pos   = TNECS_GET_COMPONENT(world, unit_entities[i], Position);
@@ -421,8 +421,8 @@ void Map_globalRange(struct Map *map, tnecs_world_t *world, uf8 alignment) {
                                                           map->row_len, map->col_len, start, move);
         map->attacktomap = pathfinding_Map_Attackto_noM_int32_t(map->attacktomap, map->movemap,
                                                                 map->row_len, map->col_len, move, (uf8 *)range, NMATH_MOVETILE_INCLUDE);
-        map->globalRangemap = linalg_plus_noM_int32_t(map->globalRangemap, map->attacktomap,
-                                                      map->row_len * map->col_len);
+        map->global_rangemap = linalg_plus_noM_int32_t(map->global_rangemap, map->attacktomap,
+                                                       map->row_len * map->col_len);
     }
 
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);

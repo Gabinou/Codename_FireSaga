@@ -32,59 +32,60 @@ struct Map Map_default = {
     .tilemap_frame_factor   = 0.15f,
     .tilemap_frame_counter  = UINT8_MAX - 1, /* map renders on first frame */
 
-    .tilemap_shader    = NULL,
-    .tileset_surfaces  = NULL,
-    .tileset_textures  = NULL,
-    .texture           = NULL,
-    .fcostmap          = NULL,
-    .fmovemap          = NULL,
-    .costmap           = NULL,
-    .costmap_ent       = TNECS_NULL,
-    .movemap           = NULL,
-    .attackfrommap     = NULL,
-    .attacktomap       = NULL,
-    .attacktolist      = NULL,
-    .healtomap         = NULL,
-    .dangermap         = NULL,
-    .globalRangemap    = NULL,
-    .tilesindex        = NULL,
-    .tilemap_surface   = NULL,
+    .tilemap_shader     = NULL,
+    .tileset_surfaces   = NULL,
+    .tileset_textures   = NULL,
+    .texture            = NULL,
+    .fcostmap           = NULL,
+    .fmovemap           = NULL,
+    .costmap            = NULL,
+    .costmap_ent        = TNECS_NULL,
+    .movemap            = NULL,
+    .attackfrommap      = NULL,
+    .attacktomap        = NULL,
+    .attacktolist       = NULL,
+    .healtomap          = NULL,
+    .dangermap          = NULL,
+    .global_dangermap   = NULL,
+    .global_rangemap    = NULL,
+    .tilesindex         = NULL,
+    .tilemap_surface    = NULL,
 
-    .show_move         = false,
-    .show_attack       = false,
-    .show_heal         = false,
-    .show_danger       = false,
-    .show_globalRange  = false,
-    .show_grid         = false,
+    .show_move          = false,
+    .show_attack        = false,
+    .show_heal          = false,
+    .show_danger        = false,
+    .show_globalRange   = false,
+    .show_grid          = false,
 
-    .camera_moved      = false,
-    .visible_changed   = false,
-    .shading_changed   = false,
+    .camera_moved       = false,
+    .visible_changed    = false,
+    .shading_changed    = false,
 
-    .row_len = 0,
-    .col_len = 0,
+    .row_len            = 0,
+    .col_len            = 0,
 
-    .tiles_id          = NULL,
-    .tiles             = NULL,
-    .tilemap           = NULL,
-    .palettemap        = NULL,
+    .tiles_id           = NULL,
+    .tiles              = NULL,
+    .tilemap            = NULL,
+    .palettemap         = NULL,
 
-    .boundsmin         = {  0,   0},
-    .boundsmax         = {255, 255},
-    .num_friendlies    = 0,
-    .num_enemies       = 0,
-    .turn              = 0, // Automatic loss if turn 255.
-    .chapter           = 0,
+    .boundsmin          = {  0,   0},
+    .boundsmax          = {255, 255},
+    .num_friendlies     = 0,
+    .num_enemies        = 0,
+    .turn               = 0, /* Automatic loss if turn 255. */
+    .chapter            = 0,
 
-    .reinforcements    = NULL,
-    .reinf_equipments  = NULL,
+    .reinforcements     = NULL,
+    .reinf_equipments   = NULL,
 
-    .breakables_ent    = NULL,
-    .chests_ent        = NULL,
-    .doors_ent         = NULL,
-    .breakable_num     = 0,
-    .chest_num         = 0,
-    .door_num          = 0,
+    .breakables_ent     = NULL,
+    .chests_ent         = NULL,
+    .doors_ent          = NULL,
+    .breakable_num      = 0,
+    .chest_num          = 0,
+    .door_num           = 0,
 
     .start_pos               = NULL,
     .armies_onfield          = NULL,
@@ -293,21 +294,22 @@ void Map_dArrays_Init(struct Map *map, const struct Settings *settings) {
     map->healtolist   = DARR_INIT(map->healtolist,   i32, 32);
     map->attacktolist = DARR_INIT(map->attacktolist, i32, 32);
     int len = map->row_len * map->col_len;
-    map->temp           = calloc(len,  sizeof(*map->temp));
-    map->unitmap        = calloc(len,  sizeof(*map->unitmap));
-    map->costmap        = calloc(len,  sizeof(*map->costmap));
-    map->movemap        = calloc(len,  sizeof(*map->movemap));
-    map->fcostmap       = calloc(len,  sizeof(*map->fcostmap));
-    map->fmovemap       = calloc(len,  sizeof(*map->fmovemap));
+    map->temp               = calloc(len,  sizeof(*map->temp));
+    map->unitmap            = calloc(len,  sizeof(*map->unitmap));
+    map->costmap            = calloc(len,  sizeof(*map->costmap));
+    map->movemap            = calloc(len,  sizeof(*map->movemap));
+    map->fcostmap           = calloc(len,  sizeof(*map->fcostmap));
+    map->fmovemap           = calloc(len,  sizeof(*map->fmovemap));
 
-    map->dangermap      = calloc(len,  sizeof(*map->dangermap));
-    map->palettemap     = malloc(len * sizeof(*map->palettemap));
-    map->attacktomap    = calloc(len,  sizeof(*map->attacktomap));
-    map->healtomap      = calloc(len,  sizeof(*map->healtomap));
-    map->healfrommap    = calloc(len,  sizeof(*map->healfrommap));
-    map->temp_palette   = malloc(len * sizeof(*map->temp_palette));
-    map->attackfrommap  = calloc(len,  sizeof(*map->attackfrommap));
-    map->globalRangemap = calloc(len,  sizeof(*map->globalRangemap));
+    map->dangermap          = calloc(len,  sizeof(*map->dangermap));
+    map->palettemap         = malloc(len * sizeof(*map->palettemap));
+    map->attacktomap        = calloc(len,  sizeof(*map->attacktomap));
+    map->healtomap          = calloc(len,  sizeof(*map->healtomap));
+    map->healfrommap        = calloc(len,  sizeof(*map->healfrommap));
+    map->temp_palette       = malloc(len * sizeof(*map->temp_palette));
+    map->attackfrommap      = calloc(len,  sizeof(*map->attackfrommap));
+    map->global_rangemap     = calloc(len,  sizeof(*map->global_rangemap));
+    map->global_dangermap   = calloc(len,  sizeof(*map->global_dangermap));
 
     if (map->stack_mode == MAP_SETTING_STACK_DANGERMAP)
         map->stacked_dangermap      = calloc(len, sizeof(*map->stacked_dangermap));
@@ -368,9 +370,9 @@ void Map_dArrays_Free(struct Map *map) {
         free(map->temp);
         map->temp = NULL;
     }
-    if (map->globalRangemap != NULL) {
-        free(map->globalRangemap);
-        map->globalRangemap = NULL;
+    if (map->global_rangemap != NULL) {
+        free(map->global_rangemap);
+        map->global_rangemap = NULL;
     }
     if (map->palettemap != NULL) {
         free(map->palettemap);
@@ -383,6 +385,10 @@ void Map_dArrays_Free(struct Map *map) {
     if (map->stacked_dangermap != NULL) {
         free(map->stacked_dangermap);
         map->stacked_dangermap = NULL;
+    }
+    if (map->global_dangermap != NULL) {
+        free(map->global_dangermap);
+        map->global_dangermap = NULL;
     }
     if (map->stacked_attacktomap != NULL) {
         free(map->stacked_attacktomap);

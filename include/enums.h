@@ -950,11 +950,12 @@ enum MAP_CONDITIONS {
 };
 
 enum OVERLAYS {
-    MAP_OVERLAY_NULL         = 0,
-    MAP_OVERLAY_HEAL         = 1 << 0,
-    MAP_OVERLAY_MOVE         = 1 << 1,
-    MAP_OVERLAY_ATTACK       = 1 << 2,
-    MAP_OVERLAY_DANGER       = 1 << 3,
+    MAP_OVERLAY_NULL            = 0,
+    MAP_OVERLAY_HEAL            = 1 << 0,
+    MAP_OVERLAY_MOVE            = 1 << 1,
+    MAP_OVERLAY_ATTACK          = 1 << 2,
+    MAP_OVERLAY_DANGER          = 1 << 3,
+    MAP_OVERLAY_GLOBAL_DANGER   = 1 << 4,
 };
 
 enum LOOPINGS {

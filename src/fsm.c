@@ -319,13 +319,13 @@ void fsm_sub_event_IGR_STANDBY(struct Game *sota) {
 
     if (sota->map->show_globalRange) {
         sota->map->show_globalRange = false;
-        Map_Danger_Sub(sota->map, sota->map->globalRangemap);
+        Map_Danger_Sub(sota->map, sota->map->global_rangemap);
         Map_Palettemap_Autoset(sota->map, MAP_OVERLAY_DANGER);
 
     } else {
         sota->map->show_globalRange = true;
         Map_globalRange(sota->map, sota->world, ALIGNMENT_ENEMY);
-        Map_Danger_Add(sota->map, sota->map->globalRangemap);
+        Map_Danger_Add(sota->map, sota->map->global_rangemap);
 
         /* Stack all overlay maps */
         Map_Palettemap_Autoset(sota->map, MAP_OVERLAY_DANGER);
