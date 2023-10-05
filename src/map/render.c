@@ -54,10 +54,9 @@ void Map_Palettemap_Autoset(struct Map *map, uf16 flagsum) {
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     Map_Palettemap_Reset(map);
     int size = map->row_len * map->col_len;
-
     i32 *palette = map->temp_palette;
     size_t bytesize = map->col_len * map->row_len * sizeof(*map->temp_palette);
-    
+
     /* Last set Map_Palettemap_addMap is rendered */
     memset(palette, 0, bytesize);
     if (flagsum_isIn(MAP_OVERLAY_ATTACK, flagsum)) {

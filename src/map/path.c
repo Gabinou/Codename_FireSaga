@@ -279,12 +279,8 @@ i32 *Map_Danger_Compute(struct Map *map, tnecs_world_t *world, tnecs_entity_t un
 
     map->attacktomap = _Map_tomap_Compute(map->attacktomap, map->movemap, map->row_len,
                                           map->col_len, move, range, NMATH_MOVETILE_INCLUDE);
-    // linalg_matrix_print_int(map->attacktomap, map->row_len, map->col_len);
-    // SOTA_Log_Debug("range : %d %d", range->min, range->max);
     memset(map->temp, 0, sizeof(*map->temp)*map->row_len * map->col_len);
     map->temp = linalg_plus_noM_int32_t(map->temp, map->attacktomap, map->row_len * map->col_len);
-    int map_index = position->tilemap_pos.y * map->col_len + position->tilemap_pos.x;
-    map->temp[map_index] += DANGERMAP_UNIT_DIVISOR * unit_ent;
     // linalg_matrix_print_int(map->temp, map->row_len, map->col_len);
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
     return (map->temp);

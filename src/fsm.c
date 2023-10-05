@@ -483,8 +483,8 @@ void fsm_substate_UDgr_STANDBY(struct Game *sota, tnecs_entity_t selector_entity
     }
 
     /* -- Computing new dangermap -- */
-    struct Position *pos = TNECS_GET_COMPONENT(sota->world, selector_entity, Position);
-    i32 *temp_danger = Map_Danger_Compute(sota->map, sota->world, selected);
+    struct Position *pos    = TNECS_GET_COMPONENT(sota->world, selector_entity, Position);
+    i32 *temp_danger        = Map_Danger_Compute(sota->map, sota->world, selected);
     int map_index = pos->tilemap_pos.y * sota->map->col_len + pos->tilemap_pos.x;
     bool isShown = ((sota->map->dangermap[map_index] / DANGERMAP_UNIT_DIVISOR) > 0);
     if (isShown) {
