@@ -327,7 +327,7 @@ void fsm_sub_event_IGR_STANDBY(struct Game *sota) {
         Map_Global_Danger_Add(sota->map, sota->map->global_rangemap);
 
         /* Stack all overlay maps */
-        Map_Palettemap_Autoset(sota->map, MAP_OVERLAY_GLOBAL_DANGER);
+        Map_Palettemap_Autoset(sota->map, MAP_OVERLAY_DANGER + MAP_OVERLAY_GLOBAL_DANGER);
     }
 
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);

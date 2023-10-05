@@ -23,14 +23,7 @@ void Map_Palettemap_Reset(struct Map *map) {
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
-void Map_Palettemap_addMap(struct Map *map, uf8 *palettemap) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
-    for (size_t i = 0; i < (map->col_len * map->row_len); i++)
-        map->palettemap[i] = palettemap[i];
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
-}
-
-void Map_Palettemap_addMap_scalar(struct Map *map, i32 *palettemap, uf8 palette) {
+void Map_Palettemap_addMap(struct Map *map, i32 *palettemap, uf8 palette) {
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     SDL_assert(palette >= PALETTE_NES);
     SDL_assert(palette  < PALETTE_NUM);
@@ -64,6 +57,20 @@ void Map_Palettemap_Autoset(struct Map *map, uf16 flagsum) {
 
     i32 *palette = map->temp_palette;
     size_t bytesize = map->col_len * map->row_len * sizeof(*map->temp_palette);
+    
+    /* Last set Map_Palettemap_addMap is rendered */
+    memset(palette, 0, bytesize);
+    if (flagsum_isIn(MAP_OVERLAY_ATTACK, flagsum)) {
+        SDL_assert(palette);
+        palette = linalg_sgreater_noM_int32_t(palette, map->attacktomap, 0, size);
+        Map_Palettemap_addMap(map, palette, PALETTE_NES_FILTER_RED);
+    }
+    memset(palette, 0, bytesize);
+    if (flagsum_isIn(MAP_OVERLAY_GLOBAL_DANGER, flagsum)) {
+        SDL_assert(palette);
+        palette = linalg_sgreater_noM_int32_t(palette, map->global_dangermap, 0, size);
+        Map_Palettemap_addMap(map, palette, PALETTE_NES_FILTER_PURPLE);
+    }
     memset(palette, 0, bytesize);
     if (flagsum_isIn(MAP_OVERLAY_DANGER, flagsum)) {
         SDL_assert(palette);
@@ -71,31 +78,19 @@ void Map_Palettemap_Autoset(struct Map *map, uf16 flagsum) {
         i32 *temp_palette2 = linalg_ssmaller_int32_t(map->dangermap, DANGERMAP_UNIT_DIVISOR, size);
         palette = linalg_and_noM_int32_t(palette, temp_palette2, palette, size);
         free(temp_palette2);
-        Map_Palettemap_addMap_scalar(map, palette, PALETTE_NES_FILTER_DARKREDwSHADOW);
-    }
-    memset(palette, 0, bytesize);
-    if (flagsum_isIn(MAP_OVERLAY_ATTACK, flagsum)) {
-        SDL_assert(palette);
-        palette = linalg_sgreater_noM_int32_t(palette, map->attacktomap, 0, size);
-        Map_Palettemap_addMap_scalar(map, palette, PALETTE_NES_FILTER_RED);
-    }
-    memset(palette, 0, bytesize);
-    if (flagsum_isIn(MAP_OVERLAY_GLOBAL_DANGER, flagsum)) {
-        SDL_assert(palette);
-        palette = linalg_sgreater_noM_int32_t(palette, map->global_dangermap, 0, size);
-        Map_Palettemap_addMap_scalar(map, palette, PALETTE_NES_FILTER_PURPLE);
+        Map_Palettemap_addMap(map, palette, PALETTE_NES_FILTER_DARKREDwSHADOW);
     }
     memset(palette, 0, bytesize);
     if (flagsum_isIn(MAP_OVERLAY_HEAL, flagsum)) {
         SDL_assert(palette);
         palette = linalg_sgreater_noM_int32_t(palette, map->healtomap, 0, size);
-        Map_Palettemap_addMap_scalar(map, palette, PALETTE_NES_FILTER_GREEN);
+        Map_Palettemap_addMap(map, palette, PALETTE_NES_FILTER_GREEN);
     }
     memset(palette, 0, bytesize);
     if (flagsum_isIn(MAP_OVERLAY_MOVE, flagsum)) {
         SDL_assert(palette);
         palette = linalg_sgreater_noM_int32_t(palette, map->movemap, 0, size);
-        Map_Palettemap_addMap_scalar(map, palette, PALETTE_NES_FILTER_BLUE);
+        Map_Palettemap_addMap(map, palette, PALETTE_NES_FILTER_BLUE);
     }
     memset(palette, 0, bytesize);
 

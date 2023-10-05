@@ -8,11 +8,10 @@ struct Map;
 
 /* --- Palettes --- */
 extern void Map_Palettemap_Reset(        struct Map *map);
-extern void Map_Palettemap_addMap(       struct Map *map, uf8 *pm);
+extern void Map_Palettemap_addMap(       struct Map *map, i32 *pmap, uf8 palette);
 extern void Map_Palettemap_addList(      struct Map *map, i32 *list, uf8 palette);
 extern void Map_Palettemap_Autoset(      struct Map *map, uf16 flagsum);
 extern void Map_Palettemap_SetwMap(      struct Map *map, uf8 *pm);
-extern void Map_Palettemap_addMap_scalar(struct Map *map, i32 *pm, uf8 palette);
 
 extern void Map_swappedTextures_All(struct Map *map);
 
