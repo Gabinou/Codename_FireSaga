@@ -489,11 +489,12 @@ void fsm_substate_UDgr_STANDBY(struct Game *sota, tnecs_entity_t selector_entity
     bool isShown = ((sota->map->dangermap[map_index] / DANGERMAP_UNIT_DIVISOR) > 0);
     if (isShown) {
         Map_Danger_Sub(sota->map, temp_danger);
-        Map_Palettemap_Autoset(sota->map, MAP_OVERLAY_DANGER + MAP_OVERLAY_MOVE + MAP_OVERLAY_ATTACK);
+        Map_Palettemap_Autoset(sota->map,
+                               MAP_OVERLAY_GLOBAL_DANGER + MAP_OVERLAY_DANGER + MAP_OVERLAY_MOVE + MAP_OVERLAY_ATTACK);
         unit->show_danger = false;
     } else {
         Map_Danger_Add(sota->map, temp_danger);
-        Map_Palettemap_Autoset(sota->map, MAP_OVERLAY_DANGER);
+        Map_Palettemap_Autoset(sota->map, MAP_OVERLAY_GLOBAL_DANGER + MAP_OVERLAY_DANGER);
         unit->show_danger = true;
     }
 
@@ -1032,9 +1033,10 @@ void fsm_substate_IA_MAP_UNIT_MOVES(struct Game *sota, tnecs_entity_t accepter_e
 
     int rangemap = Unit_Rangemap_Get(unit);
     if (rangemap == RANGEMAP_HEALMAP) {
-        Map_Palettemap_Autoset(sota->map, MAP_OVERLAY_MOVE + MAP_OVERLAY_HEAL);
+        Map_Palettemap_Autoset(sota->map, MAP_OVERLAY_GLOBAL_DANGER + MAP_OVERLAY_MOVE + MAP_OVERLAY_HEAL);
     } else if (rangemap == RANGEMAP_ATTACKMAP) {
-        Map_Palettemap_Autoset(sota->map, MAP_OVERLAY_MOVE + MAP_OVERLAY_ATTACK);
+        Map_Palettemap_Autoset(sota->map,
+                               MAP_OVERLAY_GLOBAL_DANGER + MAP_OVERLAY_MOVE + MAP_OVERLAY_ATTACK);
     }
     Map_Stacked_Dangermap_Compute(sota->map);
 
@@ -1147,7 +1149,7 @@ void fsm_substate_UD_MAP_UNIT_MOVES(struct Game *sota, tnecs_entity_t selector) 
         // Only if cursor not on unit.
         // If cursor is on unit, movemap and attackmap should be shown
         Map_Palettemap_Reset(sota->map);
-        Map_Palettemap_Autoset(sota->map, MAP_OVERLAY_DANGER);
+        Map_Palettemap_Autoset(sota->map, MAP_OVERLAY_GLOBAL_DANGER + MAP_OVERLAY_DANGER);
         Map_Stacked_Dangermap_Reset(sota->map);
     }
 

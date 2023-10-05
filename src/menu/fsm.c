@@ -607,9 +607,10 @@ void fsm_menu_type_IC_player_select(struct Game *sota, struct MenuComponent *mc)
 
             // 3. Compute new stackmap with recomputed attacktomap
             if (Unit_canStaff(unit)) {
-                Map_Palettemap_Autoset(sota->map, MAP_OVERLAY_HEAL + MAP_OVERLAY_MOVE);
+                Map_Palettemap_Autoset(sota->map, MAP_OVERLAY_GLOBAL_DANGER + MAP_OVERLAY_HEAL + MAP_OVERLAY_MOVE);
             } else if (Unit_canAttack(unit)) {
-                Map_Palettemap_Autoset(sota->map, MAP_OVERLAY_MOVE + MAP_OVERLAY_ATTACK + MAP_OVERLAY_DANGER);
+                Map_Palettemap_Autoset(sota->map,
+                                       MAP_OVERLAY_GLOBAL_DANGER + MAP_OVERLAY_MOVE + MAP_OVERLAY_ATTACK + MAP_OVERLAY_DANGER);
             }
             Map_Stacked_Dangermap_Compute(sota->map);
 
