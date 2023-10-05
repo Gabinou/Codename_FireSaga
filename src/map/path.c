@@ -13,6 +13,29 @@ void Map_Bounds_Compute(struct Map *map) {
 }
 
 
+void Map_Global_Danger_Reset(struct Map *map) {
+    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
+    memset(map->global_dangermap, 0, sizeof(*map->global_dangermap) * map->row_len * map->col_len);
+    map->shading_changed = true;
+    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
+}
+
+void Map_Global_Danger_Add(struct Map *map, i32 *danger) {
+    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
+    map->global_dangermap = linalg_plus_noM_int32_t(map->global_dangermap, danger,
+                                                    map->row_len * map->col_len);
+    map->shading_changed = true;
+    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
+}
+
+void Map_Global_Danger_Sub(struct Map *map, i32 *danger) {
+    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
+    map->global_dangermap = linalg_sub_noM_int32_t(map->global_dangermap, danger,
+                                                   map->row_len * map->col_len);
+    map->shading_changed = true;
+    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
+}
+
 void Map_Danger_Reset(struct Map *map) {
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     memset(map->dangermap, 0, sizeof(*map->dangermap) * map->row_len * map->col_len);
