@@ -123,8 +123,6 @@ struct Map {
 
     /* --- PALETTES --- */
     SDL_Palette *palette_default;
-    uf8 palettes[PALETTE_NUM]; /* [palette_order] */
-    uf8 palettes_num;
     uf8 *palettemap;    // [row * col_len + col]
     i32 *temp_palette;  // [row * col_len + col]
 

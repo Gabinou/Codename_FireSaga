@@ -7,7 +7,6 @@
 struct Map;
 
 /* --- Palettes --- */
-extern uf8  Map_Palette_Order(           struct Map *map, uf8 palette);
 extern void Map_Palettemap_Reset(        struct Map *map);
 extern void Map_Palettemap_addMap(       struct Map *map, uf8 *pm);
 extern void Map_Palettemap_addList(      struct Map *map, i32 *list, uf8 palette);

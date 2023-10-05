@@ -67,16 +67,7 @@ struct Map Map_default = {
     .tiles_id          = NULL,
     .tiles             = NULL,
     .tilemap           = NULL,
-    .palettes_num      = 5,
     .palettemap        = NULL,
-
-    .palettes = {
-        PALETTE_NES,
-        PALETTE_NES_FILTER_RED,
-        PALETTE_NES_FILTER_GREEN,
-        PALETTE_NES_FILTER_BLUE,
-        PALETTE_NES_DARKREDwSHADOW
-    },
 
     .boundsmin         = {  0,   0},
     .boundsmax         = {255, 255},

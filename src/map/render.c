@@ -23,20 +23,6 @@ void Map_Palettemap_Reset(struct Map *map) {
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
-uf8 Map_Palette_Order(struct Map *map, uf8 palette) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
-    /* - Find order of palette - */
-    uf8 out = PALETTE_NUM + 1;
-    for (uf8 i = 0; i < map->palettes_num; i++) {
-        if (palette == map->palettes[i]) {
-            out = i;
-            break;
-        }
-    }
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
-    return (out);
-}
-
 void Map_Palettemap_addMap(struct Map *map, uf8 *palettemap) {
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     for (size_t i = 0; i < (map->col_len * map->row_len); i++)
