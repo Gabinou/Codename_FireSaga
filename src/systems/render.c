@@ -214,6 +214,34 @@ void drawText(tnecs_system_input_t *in_input) {
     /* -- Get components arrays -- */
     struct Text     *text_arr        = TNECS_COMPONENTS_LIST(in_input, Text);
     struct Position *position_arr    = TNECS_COMPONENTS_LIST(in_input, Position);
+    SDL_assert(position_arr != NULL);
+
+    /* --- DRAWING TEXT ENTITIES --- */
+    for (uf16 order = 0; order < in_input->num_entities; order++) {
+        struct Position *pos  = (position_arr    + order);
+        struct Text     *text = (text_arr        + order);
+
+        dstrect.x = pos->pixel_pos.x;
+        dstrect.y = pos->pixel_pos.y;
+        dstrect.w = text->rect.w * pos->scale[0];
+        dstrect.h = text->rect.h * pos->scale[1];
+
+        Text_Draw(text, sota->renderer, &dstrect);
+    }
+    SOTA_Log_FPS("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
+}
+
+void drawTextTimer(tnecs_system_input_t *in_input) {
+    SOTA_Log_FPS("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
+    /* --- PRELIMINARIES --- */
+    SDL_Rect dstrect;
+    /* -- Get game -- */
+    struct Game *sota = (struct Game *)in_input->user_data;
+    SDL_assert(sota != NULL);
+
+    /* -- Get components arrays -- */
+    struct Text     *text_arr        = TNECS_COMPONENTS_LIST(in_input, Text);
+    struct Position *position_arr    = TNECS_COMPONENTS_LIST(in_input, Position);
     struct Timer    *updatetimer_arr = TNECS_COMPONENTS_LIST(in_input, Timer);
     SDL_assert(position_arr != NULL);
 
@@ -238,43 +266,6 @@ void drawText(tnecs_system_input_t *in_input) {
         }
 
         Text_Draw(text, sota->renderer, &dstrect);
-    }
-    SOTA_Log_FPS("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
-}
-
-void drawText_TTF(tnecs_system_input_t *in_input) {
-    SOTA_Log_FPS("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
-    /* --- PRELIMINARIES --- */
-    /* -- Get components arrays -- */
-    struct Text_TTF *text_arr        = TNECS_COMPONENTS_LIST(in_input, Text_TTF);
-    struct Position *position_arr    = TNECS_COMPONENTS_LIST(in_input, Position);
-    struct Timer    *updatetimer_arr = TNECS_COMPONENTS_LIST(in_input, Timer);
-
-    SDL_assert(in_input->user_data != NULL);
-    struct Game *sota = (struct Game *)in_input->user_data;
-
-    for (uf16 order = 0; order < in_input->num_entities; order++) {
-        struct Timer    *ut       = updatetimer_arr + order;
-        struct Text_TTF *text     = text_arr        + order;
-        struct Position *position = position_arr    + order;
-
-        tnecs_world_t   *world       = in_input->world;
-        size_t           typeflag_id = in_input->entity_typeflag_id;
-        tnecs_entity_t   entity      = world->entities_bytype[typeflag_id][order];
-
-        struct Point pos = position->pixel_pos;
-
-        if (!((text->visible) && (!position->onTilemap)))
-            continue;
-
-        if ((text->onUpdate != NULL) && (ut->time_ns >= text->update_time_ns)) {
-            (*text->onUpdate)(sota, entity, ut->frame_count, ut->time_ns, NULL);
-            ut->reset = true;
-        }
-
-        Text_TTF_Texture_Make(text, sota->renderer);
-        Text_TTF_Rects_Pos_Set(text, pos.x, pos.y);
-        Text_TTF_Draw(text, sota->renderer);
     }
     SOTA_Log_FPS("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }

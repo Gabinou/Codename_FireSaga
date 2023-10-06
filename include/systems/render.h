@@ -21,7 +21,7 @@ extern void drawPopUp(    tnecs_system_input_t *in_input);
 extern void drawCursor(   tnecs_system_input_t *in_input);
 extern void scrollText(   tnecs_system_input_t *in_input);
 extern void drawMapUnit(  tnecs_system_input_t *in_input);
-extern void drawText_TTF( tnecs_system_input_t *in_input);
+extern void drawTextTimer(tnecs_system_input_t *in_input);
 extern void animateSprite(tnecs_system_input_t *in_input);
 extern void drawMap_HPBar(tnecs_system_input_t *in_input);
 
