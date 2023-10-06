@@ -223,6 +223,7 @@ enum FPS_DEFAULTS {
     FPS_DEFAULT_COLORG  =    0,
     FPS_DEFAULT_COLORB  =    0,
     FPS_DEFAULT_COLORA  =  255,
+    FPS_SCALE           =    5,
 };
 
 enum NES_COLORS {

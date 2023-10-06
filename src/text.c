@@ -55,8 +55,6 @@ void Text_onUpdate_FPS(struct Game *sota, tnecs_entity_t entity_fps,
     text->rect.h    = text->pixelfont->glyph_height;
     text->update    = true;
     SDL_assert((text->rect.w > 0) && (text->rect.h > 0));
-
-    SDL_Log("%d %d %s", text->rect.w, text->len, text->line);
     SOTA_Log_FPS("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
@@ -68,7 +66,6 @@ void Text_Update(struct Text *text, SDL_Renderer *renderer) {
         SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
         return;
     }
-    SDL_Log("%d %d %s", text->rect.w, text->len, text->line);
     SDL_assert(text->len        >  0);
 
     /* - create render target texture - */
@@ -76,7 +73,7 @@ void Text_Update(struct Text *text, SDL_Renderer *renderer) {
 
     if (text->texture == NULL) {
         text->texture = SDL_CreateTexture(renderer, SDL_PIXELFORMAT_ARGB8888,
-                            SDL_TEXTUREACCESS_TARGET, text->rect.w, text->rect.h);
+                                          SDL_TEXTUREACCESS_TARGET, text->rect.w, text->rect.h);
         SDL_SetTextureBlendMode(text->texture, SDL_BLENDMODE_BLEND);
         SDL_assert(text->texture != NULL);
     }
@@ -94,6 +91,7 @@ void Text_Draw(struct Text *text, SDL_Renderer *renderer, SDL_Rect *dstrect) {
     SOTA_Log_FPS("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     SDL_assert(text     != NULL);
     SDL_assert(renderer != NULL);
+    SDL_assert((dstrect->w > 0) && (dstrect->h > 0));
 
     if (text->update) {
         Text_Update(text, renderer);

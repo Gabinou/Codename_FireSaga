@@ -719,9 +719,11 @@ void Game_FPS_Create(struct Game *sota, i64 in_update_time_ns) {
     SDL_assert(position != NULL);
     position->onTilemap = false;
     Position_Bounds_Set(position, 0, sota->settings.res.x, 0, sota->settings.res.y);
-    if16 in_x = sota->settings.res.x * 0.9f;
-    if16 in_y = sota->settings.res.y * 0.01f;
+    if16 in_x = sota->settings.res.x * 0.92f;
+    if16 in_y = sota->settings.res.y * 0.02f;
     Position_Pos_Set(position, in_x, in_y);
+    position->scale[0] = FPS_SCALE;
+    position->scale[1] = FPS_SCALE;
 
     /* -- Get Text -- */
     struct Text *text = TNECS_GET_COMPONENT(sota->world, sota->entity_fps, Text);
@@ -730,7 +732,7 @@ void Game_FPS_Create(struct Game *sota, i64 in_update_time_ns) {
     text->pixelfont         = sota->pixelnours_big;
     text->onUpdate          = &Text_onUpdate_FPS;
     text->update_time_ns    = in_update_time_ns;
-    Text_Set(text, "60,1");
+    Text_Set(text, "60.1");
 
     SDL_assert(sota->world->entity_typeflags[sota->entity_fps] ==
                TNECS_COMPONENT_NAMES2TYPEFLAG(sota->world, Timer, Position, Text));

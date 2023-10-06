@@ -226,7 +226,7 @@ void drawText(tnecs_system_input_t *in_input) {
         dstrect.w = text->rect.w * pos->scale[0];
         dstrect.h = text->rect.h * pos->scale[1];
 
-        // Text_Draw(text, sota->renderer, &dstrect);
+        Text_Draw(text, sota->renderer, &dstrect);
     }
     SOTA_Log_FPS("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
@@ -255,15 +255,15 @@ void drawTextTimer(tnecs_system_input_t *in_input) {
         size_t           typeflag_id = in_input->entity_typeflag_id;
         tnecs_entity_t   entity      = world->entities_bytype[typeflag_id][order];
 
-        dstrect.x = pos->pixel_pos.x;
-        dstrect.y = pos->pixel_pos.y;
-        dstrect.w = text->rect.w * pos->scale[0];
-        dstrect.h = text->rect.h * pos->scale[1];
-
         if ((text->onUpdate != NULL) && (ut->time_ns >= text->update_time_ns)) {
             (*text->onUpdate)(sota, entity, ut->frame_count, ut->time_ns, NULL);
             ut->reset = true;
         }
+
+        dstrect.x = pos->pixel_pos.x;
+        dstrect.y = pos->pixel_pos.y;
+        dstrect.w = text->rect.w * pos->scale[0];
+        dstrect.h = text->rect.h * pos->scale[1];
 
         Text_Draw(text, sota->renderer, &dstrect);
     }
