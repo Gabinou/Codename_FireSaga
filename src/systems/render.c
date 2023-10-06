@@ -226,7 +226,7 @@ void drawText(tnecs_system_input_t *in_input) {
         dstrect.w = text->rect.w * pos->scale[0];
         dstrect.h = text->rect.h * pos->scale[1];
 
-        Text_Draw(text, sota->renderer, &dstrect);
+        // Text_Draw(text, sota->renderer, &dstrect);
     }
     SOTA_Log_FPS("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }

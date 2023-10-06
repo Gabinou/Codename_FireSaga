@@ -727,7 +727,7 @@ void Game_FPS_Create(struct Game *sota, i64 in_update_time_ns) {
     struct Text *text = TNECS_GET_COMPONENT(sota->world, sota->entity_fps, Text);
     *text = Text_default;
     SDL_assert(text != NULL);
-    text->pixelfont         = sota->pixelnours;
+    text->pixelfont         = sota->pixelnours_big;
     text->onUpdate          = &Text_onUpdate_FPS;
     text->update_time_ns    = in_update_time_ns;
     Text_Set(text, "60,1");
