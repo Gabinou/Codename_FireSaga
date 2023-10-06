@@ -212,23 +212,32 @@ void drawText(tnecs_system_input_t *in_input) {
     SDL_assert(sota != NULL);
 
     /* -- Get components arrays -- */
-    struct Text     *text_arr     = TNECS_COMPONENTS_LIST(in_input, Text);
-    struct Position *position_arr = TNECS_COMPONENTS_LIST(in_input, Position);
+    struct Text     *text_arr        = TNECS_COMPONENTS_LIST(in_input, Text);
+    struct Position *position_arr    = TNECS_COMPONENTS_LIST(in_input, Position);
+    struct Timer    *updatetimer_arr = TNECS_COMPONENTS_LIST(in_input, Timer);
     SDL_assert(position_arr != NULL);
 
     /* --- DRAWING TEXT ENTITIES --- */
     for (uf16 order = 0; order < in_input->num_entities; order++) {
-        struct Position *pos  = (position_arr + order);
-        struct Text     *text = (text_arr     + order);
+        struct Position *pos  = (position_arr    + order);
+        struct Text     *text = (text_arr        + order);
+        struct Timer    *ut   = (updatetimer_arr + order);
 
-        Text_Draw(text, sota->renderer);
+        tnecs_world_t   *world       = in_input->world;
+        size_t           typeflag_id = in_input->entity_typeflag_id;
+        tnecs_entity_t   entity      = world->entities_bytype[typeflag_id][order];
 
         dstrect.x = pos->pixel_pos.x;
         dstrect.y = pos->pixel_pos.y;
-        dstrect.w = text->box_x * pos->scale[0];
-        dstrect.h = text->box_y * pos->scale[1];
+        dstrect.w = text->rect.w * pos->scale[0];
+        dstrect.h = text->rect.h * pos->scale[1];
 
-        SDL_RenderCopy(sota->renderer, text->texture, NULL, &dstrect);
+        if ((text->onUpdate != NULL) && (ut->time_ns >= text->update_time_ns)) {
+            (*text->onUpdate)(sota, entity, ut->frame_count, ut->time_ns, NULL);
+            ut->reset = true;
+        }
+
+        Text_Draw(text, sota->renderer, &dstrect);
     }
     SOTA_Log_FPS("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }

@@ -71,7 +71,7 @@ struct Game {
     struct dtab *units_loaded_dtab;
     tnecs_entity_t *units_loaded;
 
-    TTF_Font *font;
+    // TTF_Font *font;
 
     struct KeyboardInputMap  keyboardInputMap;
     struct GamepadInputMap   gamepadInputMap;

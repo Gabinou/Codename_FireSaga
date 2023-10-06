@@ -151,10 +151,10 @@ void Game_Free(struct Game *sota) {
         SDL_free(sota->units_loaded);
         sota->units_loaded = NULL;
     }
-    if (sota->font != NULL) {
-        TTF_CloseFont(sota->font);
-        sota->font = NULL;
-    }
+    // if (sota->font != NULL) {
+    //     TTF_CloseFont(sota->font);
+    //     sota->font = NULL;
+    // }
     if (sota->menu_pixelfont != NULL) {
         PixelFont_Free(sota->menu_pixelfont, false);
     }
@@ -224,13 +224,15 @@ struct Game *Game_Init() {
     out_game->camera.offset.x = DEFAULT_CAMERA_XOFFSET;
     out_game->camera.offset.y = DEFAULT_CAMERA_YOFFSET;
     out_game->camera.zoom = DEFAULT_CAMERA_ZOOM;
-    SOTA_Log_Debug("Firesaga: Font Initialization");
-    if (TTF_Init() == -1) {
-        SOTA_Log_Debug("TTF_Init: %s\n", TTF_GetError());
-        exit(ERROR_TTFInitFail);
-    }
-    out_game->font = TTF_OpenFont(PATH_JOIN("..", "fonts", "arial.ttf"), out_game->settings.fontsize);
-    SDL_assert(out_game->font != NULL);
+
+    // SOTA_Log_Debug("Firesaga: Font Initialization");
+    // if (TTF_Init() == -1) {
+    //     SOTA_Log_Debug("TTF_Init: %s\n", TTF_GetError());
+    //     exit(ERROR_TTFInitFail);
+    // }
+
+    // out_game->font = TTF_OpenFont(PATH_JOIN("..", "fonts", "arial.ttf"), out_game->settings.fontsize);
+    // SDL_assert(out_game->font != NULL);
     // SOTA_Log_Debug("Failed to load lazy font! SDL_ttf Error: %s\n", TTF_GetError());
 
     #ifndef SOTA_OPENGL
@@ -319,7 +321,7 @@ struct Game *Game_Init() {
     TNECS_REGISTER_COMPONENT(out_game->world, Position);
     TNECS_REGISTER_COMPONENT(out_game->world, Sprite);
     TNECS_REGISTER_COMPONENT(out_game->world, Unit);
-    TNECS_REGISTER_COMPONENT(out_game->world, Text_TTF);
+    // TNECS_REGISTER_COMPONENT(out_game->world, Text_TTF);
     TNECS_REGISTER_COMPONENT(out_game->world, MenuComponent);
     TNECS_REGISTER_COMPONENT(out_game->world, controllerGamepad);
     TNECS_REGISTER_COMPONENT(out_game->world, controllerMouse);
@@ -352,7 +354,7 @@ struct Game *Game_Init() {
     TNECS_REGISTER_SYSTEM_wEXCL(world, Control_Touchpad, 0, Position, Sprite, controllerTouchpad);
 
     /* -- Animating and sliding systems before drawing --  */
-    TNECS_REGISTER_SYSTEM_wEXCL(world, slideSprite, 0, Sprite, Position, Slider);
+    TNECS_REGISTER_SYSTEM_wEXCL(world, slideSprite,   0, Sprite, Position, Slider);
     TNECS_REGISTER_SYSTEM_wEXCL(world, slidePopUpOffscreen, 1, PopUp, Slider,
                                 SliderOffscreen, Position);
     /* - no sliders without offscreen yet -  */
@@ -362,7 +364,7 @@ struct Game *Game_Init() {
     // Remove animated flag. Animated sprites must have a timer! Still sprites dont!
 
     /* -- Scrolling Text -- */
-    TNECS_REGISTER_SYSTEM_wEXCL(world, scrollText, 0, PixelFont, Timer);
+    TNECS_REGISTER_SYSTEM_wEXCL(world, scrollText,    0, PixelFont, Timer);
 
     /* -- Drawing -- */
     /* - for now only drawn sprites are map_units - */
@@ -374,19 +376,16 @@ struct Game *Game_Init() {
     TNECS_REGISTER_SYSTEM_wEXCL(world, drawMap_HPBar, 0, Unit, Position, MapHPBar);
 
     TNECS_REGISTER_SYSTEM_wEXCL(world, drawMenu,      0, MenuComponent);
-    TNECS_REGISTER_SYSTEM_wEXCL(world, drawText_TTF,  0, Text_TTF, Position, Timer);
-    TNECS_REGISTER_SYSTEM_wEXCL(world, drawText,      1, Text,     Position);
-    TNECS_REGISTER_SYSTEM_wEXCL(world, drawPopUp,     0, PopUp,    Position);
+    TNECS_REGISTER_SYSTEM_wEXCL(world, drawText,      1, Text, Position, Timer);
+    TNECS_REGISTER_SYSTEM_wEXCL(world, drawPopUp,     0, PopUp, Position);
     /* - draw Cursor and Mouse last -> on top - */
-    TNECS_REGISTER_SYSTEM_wEXCL(world, drawCursor, 0, Sprite,          Position, CursorFlag);
-    TNECS_REGISTER_SYSTEM_wEXCL(world, drawMouse,  1, controllerMouse, Position, Sprite, MouseFlag);
+    TNECS_REGISTER_SYSTEM_wEXCL(world, drawCursor,    0, Sprite,          Position, CursorFlag);
+    TNECS_REGISTER_SYSTEM_wEXCL(world, drawMouse,     1, controllerMouse, Position, Sprite, MouseFlag);
     SOTA_Log_Debug("System Registration DONE\n");
 
     out_game->isrunning = true;
-    out_game->keyboardInputMap = KeyboardInputMap_default;
-    out_game->gamepadInputMap = GamepadInputMap_gamecube;
-    // out_game->gamepadInputMap = GamepadInputMap_default;
-    // out_game->mouseInputMap = MouseInputMap_default;
+    out_game->keyboardInputMap  = KeyboardInputMap_default;
+    out_game->gamepadInputMap   = GamepadInputMap_gamecube;
     SOTA_Log_Debug("Loading pixelfonts\n");
     out_game->pixelnours = PixelFont_Alloc();
     char *path = PATH_JOIN("..", "assets", "Fonts", "pixelnours.png");
@@ -706,7 +705,7 @@ void Game_FPS_Create(struct Game *sota, i64 in_update_time_ns) {
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     if (sota->entity_fps != 0)
         tnecs_entity_destroy(sota->world, sota->entity_fps);
-    sota->entity_fps = TNECS_ENTITY_CREATE_wCOMPONENTS(sota->world, Position, Text_TTF, Timer);
+    sota->entity_fps = TNECS_ENTITY_CREATE_wCOMPONENTS(sota->world, Position, Text, Timer);
 
     /* -- Get timer -- */
     struct Timer *timer;
@@ -723,27 +722,16 @@ void Game_FPS_Create(struct Game *sota, i64 in_update_time_ns) {
     if16 in_y = sota->settings.res.y * 0.01f;
     Position_Pos_Set(position, in_x, in_y);
 
-    /* -- Get Text_TTF -- */
-    struct Text_TTF *text = TNECS_GET_COMPONENT(sota->world, sota->entity_fps, Text_TTF);
+    /* -- Get Text -- */
+    struct Text *text = TNECS_GET_COMPONENT(sota->world, sota->entity_fps, Text);
+    *text = Text_default;
     SDL_assert(text != NULL);
-    strcpy(text->text_line, "60.1");
-    SDL_assert(sota->font != NULL);
-    text->font           = sota->font;
-    text->padding[0]     = Text_TTF_default.padding[0];
-    text->padding[1]     = Text_TTF_default.padding[1];
-    text->padding[2]     = Text_TTF_default.padding[2];
-    text->padding[3]     = Text_TTF_default.padding[3];
-    text->fontsize       = Text_TTF_default.fontsize;
-    text->spacingfactor  = Text_TTF_default.spacingfactor;
-    text->text_color     = sota->settings.FPS.textcolor;
-    text->sizefactor[0]  = sota->settings.FPS.sizefactor[0]; // height
-    text->sizefactor[1]  = sota->settings.FPS.sizefactor[1]; // width
-    text->visible        = sota->settings.FPS.show;
-    Text_TTF_Texture_Make(text, sota->renderer);
-    text->update_time_ns = in_update_time_ns;
-    text->onUpdate       = &Text_TTF_onUpdate_FPS;
+    text->pixelfont         = sota->pixelnours;
+    text->onUpdate          = &Text_onUpdate_FPS;
+    text->update_time_ns    = in_update_time_ns;
+    Text_Set(text, "60,1");
 
     SDL_assert(sota->world->entity_typeflags[sota->entity_fps] ==
-               TNECS_COMPONENT_NAMES2TYPEFLAG(sota->world, Timer, Position, Text_TTF));
+               TNECS_COMPONENT_NAMES2TYPEFLAG(sota->world, Timer, Position, Text));
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }

@@ -934,25 +934,30 @@ void Game_Title_Create(struct Game *sota) {
     }
 
     sota->title = TNECS_ENTITY_CREATE_wCOMPONENTS(sota->world, Position, Text);
+
+    /* -- Get position -- */
     struct Position *position = TNECS_GET_COMPONENT(sota->world, sota->title, Position);
     position->pixel_pos.x = sota->settings.res.x / 20;
     position->pixel_pos.y = sota->settings.res.y / 10;
     position->scale[0] = 10;
     position->scale[1] = 10;
+
+    /* -- Get text -- */
     struct Text *text = TNECS_GET_COMPONENT(sota->world, sota->title, Text);
-    text->box_x = 150;
-    text->box_y = 16;
-    strncpy(text->line, GAME_TITLE, sizeof(GAME_TITLE));
-    text->len2draw = strlen(GAME_TITLE);
-    SDL_assert(sota->pixelnours_big != NULL);
+    *text = Text_default;
+
+    /* - Load pixelfont - */
     text->pixelfont = PixelFont_Alloc();
-    text->pixelfont->glyph_width = 16;
+    text->pixelfont->glyph_width  = 16;
     text->pixelfont->glyph_height = 16;
     char *path = PATH_JOIN("..", "assets", "Fonts", "pixelnours_gothic.png");
     PixelFont_Load(text->pixelfont, sota->renderer, path);
-    text->update = true;
-    SDL_assert(sota->renderer != NULL);
-    text->renderer = sota->renderer;
+
+    /* - Set title - */
+    Text_Set(text, GAME_TITLE);
+    SDL_assert((text->rect.w > 0) && (text->rect.h > 0));
+    SDL_assert(sota->pixelnours_big != NULL);
+
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 

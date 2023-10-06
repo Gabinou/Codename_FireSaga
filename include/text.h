@@ -9,6 +9,10 @@
 
 typedef void (* onUpdate_t)(struct Game *, tnecs_entity_t, u32, i64, void *);
 
+enum SOTA_TEXT_CONSTANTS {
+    SOTA_FPS_BUFFER = 8,
+};
+
 typedef struct Text_TTF {
     SDL_Texture      *texture;
     char             text_line[DEFAULT_BUFFER_SIZE];
@@ -34,32 +38,26 @@ extern void Text_TTF_Draw(         struct Text_TTF *t, SDL_Renderer *r);
 extern void Text_TTF_Texture_Make( struct Text_TTF *t, SDL_Renderer *r);
 extern void Text_TTF_Rects_Pos_Set(struct Text_TTF *t, if16 x, if16 y);
 
-extern void Text_TTF_onUpdate_FPS(struct Game *g, tnecs_entity_t ent, u32 fc, i64 up, void *data);
-
+/* -- Text: Standalone Pixelfont -- */
 typedef struct Text {
-    SDL_Renderer       *renderer;
     SDL_Texture        *texture;
     struct PixelFont   *pixelfont;
     char                line[DEFAULT_BUFFER_SIZE];
-    if16                strlen;
-    if16                len2draw;
-    /* text should go to next line inside box */
-    if16                box_x;
-    if16                box_y;
-
+    if16                len;
+    SDL_Rect            rect;
     i64                 update_time_ns; /* 0 means update one time */
-    onUpdate_t          onUpdate;
 
+    onUpdate_t          onUpdate;
     bool                visible;
     bool                update;
-    if16                align;
-    if16                scroll_speed;
 } Text;
 extern struct Text Text_default;
 
-extern void Text_Draw(      struct Text *t, SDL_Renderer *renderer);
-extern void Text_Update(    struct Text *t, SDL_Renderer *renderer);
+extern void Text_Set(       struct Text *t, char *l);
+extern void Text_Draw(      struct Text *t, SDL_Renderer *r, SDL_Rect *d);
+extern void Text_Update(    struct Text *t, SDL_Renderer *r);
 extern void Text_onUpdate(  struct Text *t);
-extern void Text_Box_Create(struct Text *t);
+
+extern void Text_onUpdate_FPS(struct Game *g, tnecs_entity_t ent, u32 fc, i64 up, void *data);
 
 #endif /* TEXT_H */

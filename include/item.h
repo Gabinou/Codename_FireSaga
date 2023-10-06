@@ -66,7 +66,7 @@ extern struct Item Item_default;
 /* --- Inventory Item --- */
 extern void Inventory_item_Swap(struct Inventory_item *items, uf8 i1, uf8 i2);
 
-/* --- (De)Constructors --- */
+/* --- Constructors/Destructors --- */
 extern void Item_Free(struct Item *item);
 
 /* --- I/O --- */
