@@ -347,6 +347,15 @@ char **Names_wpnType(uf16 in_typecode) {
 }
 #undef REGISTER_ENUM
 
+void Names_wpnType_Free(char **type_names) {
+    for (int i = 0; i < DARR_NUM(type_names); ++i) {
+        if (type_names[i] != NULL)
+            free(type_names[i]);
+    }
+    DARR_FREE(type_names);
+}
+
+
 /* --- API --- */
 void Names_Load_All() {
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);

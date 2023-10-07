@@ -147,7 +147,7 @@ void Weapon_Load(struct dtab *weapons_dtab, if16 id) {
         char **types = Names_wpnType(typecode);
         strncat(filename, types[0], strlen(types[0]));
         strncat(filename, PHYSFS_SEPARATOR, 2);
-        DARR_FREE(types);
+        Names_wpnType_Free(types);
 
         /* - add weapon name to filename - */
         size_t item_order = *(uf16 *)DTAB_GET(global_itemOrders, id);

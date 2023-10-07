@@ -62,6 +62,7 @@ extern void Names_itemNames();
 extern void Names_tileNames();
 
 /* --- X macros generators --- */
+extern void Names_wpnType_Free(char **types);
 extern char **Names_wpnType(   uf16 typecode);
 extern char **Names_unitTypes( uf16 typecode);
 extern char **Names_skillNames(u64  skillscode);

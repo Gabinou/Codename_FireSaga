@@ -202,22 +202,27 @@ void TextLines_Realloc(struct TextLines *textlines, size_t len) {
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     SDL_assert(len > textlines->line_len);
     if (textlines->lines == NULL) {
-        textlines->lines    = calloc(len, sizeof(*textlines->lines));
+        textlines->lines = calloc(len, sizeof(*textlines->lines));
+        SDL_assert(textlines->lines != NULL);
     } else {
-        /* Allocation */
-        textlines->lines = realloc(textlines->lines, len * sizeof(*textlines->lines));
+        /* Re-Allocation */
+        size_t bytesize = len * sizeof(*textlines->lines);
+        char **buffer = SDL_realloc(textlines->lines, bytesize);
+        SDL_assert(buffer != NULL);
+        textlines->lines = buffer;
 
-        /* Setting memory to 0 */
-        size_t bytesize  = (len - textlines->line_len) * sizeof(*textlines->lines);
+        /* Setting new memory to 0 */
+        bytesize  = (len - textlines->line_len) * sizeof(*textlines->lines);
         memset(textlines->lines + textlines->line_len, 0, bytesize);
     }
 
     if (textlines->lines_len == NULL) {
-        textlines->lines_len    = calloc(len, sizeof(*textlines->lines_len));
+        textlines->lines_len = calloc(len, sizeof(*textlines->lines_len));
+        SDL_assert(textlines->lines_len != NULL);
     } else {
         SDL_assert(len > textlines->line_len);
-        /* Allocation */
-        textlines->lines_len = realloc(textlines->lines_len, len * sizeof(*textlines->lines_len));
+        /* Re-Allocation */
+        textlines->lines_len = SDL_realloc(textlines->lines_len, len * sizeof(*textlines->lines_len));
 
         /* Setting memory to 0 */
         size_t bytesize  = (len - textlines->line_len) * sizeof(*textlines->lines_len);
@@ -228,13 +233,14 @@ void TextLines_Realloc(struct TextLines *textlines, size_t len) {
 }
 
 void TextLines_Free(struct TextLines *textlines) {
-    if (textlines->lines == NULL) {
-        for (int i = 0; i < textlines->line_num; i++) {
-            free(textlines->lines[i]);
+    if (textlines->lines != NULL) {
+        for (int i = 0; i < textlines->line_len; i++) {
+            if (textlines->lines[i] != NULL)
+                free(textlines->lines[i]);
         }
         free(textlines->lines);
     }
-    if (textlines->lines_len == NULL) {
+    if (textlines->lines_len != NULL) {
         free(textlines->lines_len);
     }
 }
