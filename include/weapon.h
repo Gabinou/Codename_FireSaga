@@ -51,6 +51,7 @@ extern void Weapon_Load(     struct dtab *weapons_dtab, if16 id);
 extern void Weapon_Save(     struct dtab *weapons_dtab, if16 id);
 extern void Weapons_All_Read(struct dtab *weapons_dtab);
 extern void Weapons_All_Save(struct dtab *weapons_dtab);
+extern void Weapons_All_Free(struct dtab *weapons_dtab);
 
 /* --- Stats --- */
 extern int Weapon_Stat(        const struct Weapon *wpn, if16 s);

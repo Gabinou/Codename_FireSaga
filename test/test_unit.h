@@ -336,6 +336,8 @@ void test_canEquip() {
     nourstest_true(Unit_canEquip_Type(&equiper, ITEM_ID_MOONLIGHT)      == 0);
     nourstest_true(Unit_canEquip_Type(&equiper, ITEM_ID_HEAL)           == 1);
     nourstest_true(Unit_canEquip_Type(&equiper, ITEM_ID_CLAW)           == 0);
+
+    Game_Weapons_Free(weapons_dtab);
 }
 
 void test_skills() {
@@ -680,6 +682,9 @@ void test_wpn_or_item() {
     nourstest_true(wpn_or_item.item->id      == Silou._equipment[eq_id].id);
     nourstest_true(wpn_or_item.item->id      == ITEM_ID_PANACEA);
     nourstest_true(wpn_or_item.wpn           == NULL);
+
+    DTAB_FREE(items_dtab);
+    Game_Weapons_Free(weapons_dtab);
 }
 
 void test_unit() {

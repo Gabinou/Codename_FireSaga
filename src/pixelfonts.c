@@ -178,7 +178,9 @@ void PixelFont_Swap_Palette(struct PixelFont *font, SDL_Renderer *renderer, if8 
     }
 
     /* Swap palette of font surface, texture */
-    font->surface = Filesystem_Surface_Palette_Swap(font->surface, palette_NES);
+    SDL_Surface *buffer = Filesystem_Surface_Palette_Swap(font->surface, palette_NES);
+    SDL_FreeSurface(font->surface);
+    font->surface = buffer;
     font->texture = SDL_CreateTextureFromSurface(renderer, font->surface);
 
     /* Revert colors in palette_NES */
@@ -421,6 +423,7 @@ int NextLine_Start(const char *text, int previous_break, int current_break, size
         next_char = current_break - 1;
     }
 
+    free(buffer);
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
     return (next_char);
 }

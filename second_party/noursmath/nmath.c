@@ -1666,6 +1666,8 @@ TEMPLATE_TYPES_FLOAT
             }\
         }\
     }\
+    DARR_FREE(open);\
+    DARR_FREE(closed);\
     return (move_matrix);\
 }
 TEMPLATE_TYPES_SINT

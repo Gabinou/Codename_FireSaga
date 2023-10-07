@@ -269,10 +269,6 @@ SDL_Surface *Filesystem_Surface_Load(const char *filename, const u32 format) {
         /* alloc: */
         indexedsurface = Filesystem_indexedSurface_Init(conv1surface->w, conv1surface->h);
         SDL_assert(indexedsurface != NULL);
-        SDL_Log("conv1surface %d %d %d", conv1surface->w, conv1surface->h, conv1surface->pitch);
-        SDL_Log("pitch        %d %d %d", indexedsurface->w, indexedsurface->h, indexedsurface->pitch);
-        SDL_Log("equal?        %d", loadedsurface == conv1surface);
-        SDL_Log("equal?        %d", indexedsurface == conv1surface);
         // getchar();
 
         /* WEIRDNESS: SDL_ConvertSurface messes up colors when converting to indexed.
@@ -283,7 +279,6 @@ SDL_Surface *Filesystem_Surface_Load(const char *filename, const u32 format) {
         SDL_LockSurface(conv1surface);
         /* no alloc: */
         indexedsurface = Filesystem_Surface_Pixels2Indices(conv1surface, indexedsurface);
-        SDL_Log("equal?        %d", indexedsurface == conv1surface);
         SDL_SaveBMP(indexedsurface, "indexedsurface.png");
         /*makes surfaces faster allocs? */
         // conv2surface = SDL_ConvertSurface(indexedsurface, indexedsurface->format, SDL_IGNORE);
@@ -297,8 +292,7 @@ SDL_Surface *Filesystem_Surface_Load(const char *filename, const u32 format) {
         outsurface = indexedsurface;
         // conv2surface = NULL;
         SDL_SaveBMP(indexedsurface, "indexedsurface2.bmp");
-        // SDL_FreeSurface(indexedsurface);
-        // SDL_FreeSurface(conv1surface);
+        SDL_FreeSurface(conv1surface);
     } else
         outsurface = loadedsurface;
 
@@ -316,21 +310,26 @@ SDL_Surface *Filesystem_Surface_Load(const char *filename, const u32 format) {
 SDL_Surface *Filesystem_Surface_Palette_Swap(SDL_Surface *surface, SDL_Palette *palette) {
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     /* allocates memory for new surface with switched palette */
+    /* Caller deals with memory */
+
     SDL_assert(surface);
     SDL_assert(surface->w > 0);
     SDL_assert(surface->h > 0);
+    /* Duplicate input surface*/
     SDL_Surface *out_surface = SDL_DuplicateSurface(surface);
     SDL_assert(out_surface != NULL);
     SDL_assert(SDL_ISPIXELFORMAT_INDEXED(out_surface->format->format));
     SDL_assert(palette);
     SDL_assert(SDL_ISPIXELFORMAT_INDEXED(surface->format->format));
+
+    /* Swap palette */
     SDL_LockSurface(out_surface);
     SDL_LockSurface(surface);
     SDL_SetSurfacePalette(out_surface, palette);
     SDL_SetColorKey(out_surface, SDL_TRUE, PALETTE_COLORKEY);
     SDL_UnlockSurface(out_surface);
     SDL_UnlockSurface(surface);
-    SDL_assert(surface != out_surface);
+
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
     return (out_surface);
 }

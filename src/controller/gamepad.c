@@ -132,7 +132,9 @@ void Gamepad_Init(struct controllerGamepad *gp) {
     gp->controllers_num     = controllerGamepad_default.controllers_num;
     gp->controllers_len     = controllerGamepad_default.controllers_len;
     gp->controllers         = calloc(gp->controllers_len, sizeof(*gp->controllers));
+    SDL_assert(gp->controllers != NULL);
     gp->joystick_instances  = calloc(gp->controllers_len, sizeof(*gp->joystick_instances));
+    SDL_assert(gp->joystick_instances != NULL);
 
     SOTA_Log_FPS("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
@@ -257,8 +259,11 @@ void Gamepad_Realloc(struct controllerGamepad *gp) {
     gp->controllers_len *= 2;
 
     int bytesize            = gp->controllers_len * sizeof(*gp->controllers);
+    SDL_assert(bytesize > 0);
     gp->controllers         = realloc(gp->controllers,          bytesize);
+    SDL_assert(gp->controllers        != NULL);
     gp->joystick_instances  = realloc(gp->joystick_instances,   bytesize);
+    SDL_assert(gp->joystick_instances != NULL);
 
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }

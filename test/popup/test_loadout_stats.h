@@ -230,5 +230,7 @@ void test_popup_loadout_stats() {
     PopUp_Loadout_Stats_Free(&pls);
     SDL_DestroyRenderer(renderer);
     SDL_FreeSurface(surface);
+    Weapons_All_Free(weapons_dtab);
+    DTAB_FREE(weapons_dtab);
     SDL_Quit();
 }

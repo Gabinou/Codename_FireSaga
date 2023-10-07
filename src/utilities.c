@@ -173,6 +173,7 @@ void Utilities_Free() {
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     Palettes_Free();
     Names_Free();
+    Hashes_Free();
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 

@@ -161,7 +161,10 @@ void test_pathfinding_Astar() {
         }
     }
 
+    free(movemapp);
+    DARR_FREE(movemapp_list);
     DARR_FREE(path_list);
+    free(computed_path);
 }
 
 #undef TEST_MAP_ROW_LEN

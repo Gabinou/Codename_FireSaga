@@ -37,7 +37,7 @@ void test_menu_item_drop() {
 
     /* - title - */
     Silou.weapons_dtab = weapons_dtab;
-    Silou.items_dtab = weapons_dtab;
+    Silou.items_dtab   = items_dtab;
     SDL_assert(Silou.num_equipment == 0);
     jsonio_readJSON(PATH_JOIN("units", "Silou_test.json"), &Silou);
     SDL_assert(Silou.num_equipment == 4);
@@ -94,4 +94,7 @@ void test_menu_item_drop() {
     PixelFont_Free(idm->pixelnours, true);
     PixelFont_Free(idm->pixelnours_big, true);
     ItemDropMenu_Free(idm);
+    Weapons_All_Free(weapons_dtab);
+    DTAB_FREE(items_dtab);
+    DTAB_FREE(weapons_dtab);
 }

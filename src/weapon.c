@@ -229,6 +229,16 @@ void Weapons_All_Save(struct dtab *weapons_dtab) {
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
+void Weapons_All_Free(struct dtab *weapons_dtab) {
+    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
+    for (size_t i = ITEM_NULL; i < ITEM_ID_CLAW_END; i++) {
+        if (DTAB_GET(weapons_dtab, i) != NULL)
+            Weapon_Free(DTAB_GET(weapons_dtab, i));
+    }
+
+    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
+}
+
 uf16 Weapon_TypeExp(const struct Weapon *weapon) {
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     u64 wpntypecode = weapon->item->type;

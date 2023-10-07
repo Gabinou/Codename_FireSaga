@@ -501,8 +501,6 @@ void Game_Cursor_Free(struct Game *sota) {
         SDL_assert(sprite != NULL);
         Sprite_Free(sprite);
 
-
-
         tnecs_entity_destroy(sota->world, sota->entity_cursor);
     }
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);

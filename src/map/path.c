@@ -733,5 +733,7 @@ int *Map_Pathfinding_Astar(int *path_list, int *costmap, size_t row_len,
     }
     path_list = Map_Pathfinding_CameFrom_List(path_list, came_from, col_len, start, end);
     free(cost);
+    free(came_from);
+    DARR_FREE(frontier_queue);
     return (path_list);
 }
