@@ -25,18 +25,19 @@ struct GamepadInputMap {
     SDL_GameControllerButton  dpad_left;
     SDL_GameControllerButton  dpad_down;
 
-    /* Physical buttons and triggers */
-    /* Triggers  [0, INT_FAST16_MAX] -> [0, 32767] */
+    /* Physical buttons */
     SDL_GameControllerButton  a;
     SDL_GameControllerButton  b;
-    SDL_GameControllerButton  minimap;
+    SDL_GameControllerButton  x;
+    SDL_GameControllerButton  y;
     SDL_GameControllerButton  menuright;
     SDL_GameControllerButton  menuleft;
     SDL_GameControllerButton  pause;
-    SDL_GameControllerButton  stats;
     SDL_GameControllerButton  options;
     SDL_GameControllerButton  faster;
     SDL_GameControllerButton  globalRange;
+    /* Physical triggers */
+    /* Triggers  [0, INT_FAST16_MAX] -> [0, 32767] */
 
     /* Is it a Button or a Trigger? */
     bool accept_button;
