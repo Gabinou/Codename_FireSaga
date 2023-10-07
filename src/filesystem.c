@@ -262,12 +262,18 @@ SDL_Surface *Filesystem_Surface_Load(const char *filename, const u32 format) {
         SOTA_Log_Debug("is indexed %d\n", SDL_ISPIXELFORMAT_INDEXED(format));
         /*align bits for Filesystem_Surface_Pixels2Indices allocs*/
         conv1surface = SDL_ConvertSurfaceFormat(loadedsurface, SDL_PIXELFORMAT_ABGR8888, SDL_IGNORE);
+        SDL_FreeSurface(loadedsurface);
 
         SDL_SaveBMP(conv1surface, "conv1surface.png");
         SDL_assert(conv1surface != NULL);
         /* alloc: */
         indexedsurface = Filesystem_indexedSurface_Init(conv1surface->w, conv1surface->h);
         SDL_assert(indexedsurface != NULL);
+        SDL_Log("conv1surface %d %d %d", conv1surface->w, conv1surface->h, conv1surface->pitch);
+        SDL_Log("pitch        %d %d %d", indexedsurface->w, indexedsurface->h, indexedsurface->pitch);
+        SDL_Log("equal?        %d", loadedsurface == conv1surface);
+        SDL_Log("equal?        %d", indexedsurface == conv1surface);
+        // getchar();
 
         /* WEIRDNESS: SDL_ConvertSurface messes up colors when converting to indexed.
             -> affects bridge tileset <-
@@ -277,23 +283,22 @@ SDL_Surface *Filesystem_Surface_Load(const char *filename, const u32 format) {
         SDL_LockSurface(conv1surface);
         /* no alloc: */
         indexedsurface = Filesystem_Surface_Pixels2Indices(conv1surface, indexedsurface);
+        SDL_Log("equal?        %d", indexedsurface == conv1surface);
         SDL_SaveBMP(indexedsurface, "indexedsurface.png");
         /*makes surfaces faster allocs? */
-        conv2surface = SDL_ConvertSurface(indexedsurface, indexedsurface->format, SDL_IGNORE);
-        SDL_assert(conv2surface != NULL);
+        // conv2surface = SDL_ConvertSurface(indexedsurface, indexedsurface->format, SDL_IGNORE);
+        // SDL_assert(conv2surface != NULL);
 
-        SDL_SaveBMP(conv2surface, "conv2surface.png");
-        SDL_assert(conv2surface != NULL);
+        // SDL_SaveBMP(conv2surface, "conv2surface.png");
+        // SDL_assert(conv2surface != NULL);
         SDL_UnlockSurface(indexedsurface);
         SDL_UnlockSurface(conv1surface);
 
-        outsurface = conv2surface;
-        conv2surface = NULL;
+        outsurface = indexedsurface;
+        // conv2surface = NULL;
         SDL_SaveBMP(indexedsurface, "indexedsurface2.bmp");
-        SDL_assert(SDL_SetColorKey(outsurface, SDL_TRUE, PALETTE_COLORKEY) == 0);
-        // SDL_FreeSurface(loadedsurface);
         // SDL_FreeSurface(indexedsurface);
-        SDL_FreeSurface(conv1surface);
+        // SDL_FreeSurface(conv1surface);
     } else
         outsurface = loadedsurface;
 
@@ -409,7 +414,7 @@ SDL_Surface *Filesystem_indexedSurface_Init(size_t w, size_t h) {
     return (surface);
 }
 
-/* Convert abgr color image to indexed images (NES colors) */
+/* Convert ABGR color image to indexed images (NES colors) */
 SDL_Surface *Filesystem_Surface_Pixels2Indices(SDL_Surface *abgr_surf, SDL_Surface *index_surf) {
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     /* VERY SLOW */
@@ -421,21 +426,28 @@ SDL_Surface *Filesystem_Surface_Pixels2Indices(SDL_Surface *abgr_surf, SDL_Surfa
     SDL_assert(abgr_surf->h  > 0);
     SDL_assert(index_surf->format->palette      != NULL);
     SDL_assert(index_surf->format->BitsPerPixel == 8);
+    SDL_assert(index_surf->w == abgr_surf->w);
+    SDL_assert(index_surf->h == abgr_surf->h);
+
+
     u32 pixel, color;
-    uf8 bitsmin = 24, bitsmax = 32;
+    uf8 bitsmin = 24, bitsmax = 32; /* Bits for A channel? */
     SDL_LockSurface(abgr_surf);
     SDL_LockSurface(index_surf);
     u8 *arbg_pixels  = (u8 *)abgr_surf->pixels;
     u8 *index_pixels = (u8 *)index_surf->pixels;
-    for (size_t y = 0; y < abgr_surf->h; y++) {// this loop cache friendly
+    for (size_t y = 0; y < abgr_surf->h; y++) {/* this loop cache friendly */
         for (size_t x = 0; x < abgr_surf->w; x++) {
             size_t index = Util_SDL_Surface_Index(abgr_surf, x, y);
+            SDL_assert(index >= 0);
+            SDL_assert(index < (abgr_surf->pitch * abgr_surf->h));
             pixel = *(u32 *)(arbg_pixels + index);
+
             /* Swap byte order if big endian */
             if (SDL_BYTEORDER == SDL_BIG_ENDIAN)
                 pixel = SDL_SwapBE32(pixel);
 
-            /* Get all colors of current pixel? */
+            /* Get rid of A channel? */
             for (size_t j = bitsmin; j < bitsmax; j++)
                 pixel &= ~(1 << j);
 
@@ -444,6 +456,9 @@ SDL_Surface *Filesystem_Surface_Pixels2Indices(SDL_Surface *abgr_surf, SDL_Surfa
                 color = *(u32 *)(&index_surf->format->palette->colors[i]);
                 if (pixel == color) {
                     index = Util_SDL_Surface_Index(index_surf, x, y);
+                    SDL_assert(index >= 0);
+                    SDL_assert(index < (index_surf->pitch * index_surf->h));
+
                     index_pixels[index] = i;
                     break;
                 }

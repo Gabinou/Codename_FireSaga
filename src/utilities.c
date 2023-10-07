@@ -27,8 +27,8 @@ bool if8_all_equal(if8 *arr1, if8 *arr2, size_t len) {
 }
 
 size_t Util_SDL_Surface_Index(SDL_Surface *surf, int x, int y) {
-    /* Note: Pitch is the width of the memory buffer,
-    it can be different of the surface width. */
+    /* Note: Pitch is the width of the memory buffer in bytes.      */
+    /* Pitch [bytes] = width [pixels] * BytesPerPixel [bytes/pixel] */
     return (y * surf->pitch + x * surf->format->BytesPerPixel);
 }
 
