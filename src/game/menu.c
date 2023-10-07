@@ -1013,6 +1013,6 @@ void Game_titleScreen_Load(struct Game *sota, struct Input_Arguments in_args) {
     Game_FirstMenu_Create(sota);
     Game_FirstMenu_Update(sota);
     Game_menuStack_Push(sota, sota->first_menu);
-    Game_Title_Create(sota);
+    // Game_Title_Create(sota);
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }

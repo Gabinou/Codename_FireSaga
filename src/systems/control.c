@@ -64,8 +64,10 @@ void Control_Pressed(if8 sota_b, if8 *press, if8 *pressed_num, bool block, if32 
         SOTA_Log_FPS("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
         return;
     }
-    if (event <= 0)
+    if (event <= 0) {
+        SOTA_Log_FPS("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
         return;
+    }
     // TODO: fsm for button events
     if ((t_min_ns <= 0) || (t_held_ns > t_min_ns))
         Event_Emit(__func__, SDL_USEREVENT, event, controller_type, NULL);

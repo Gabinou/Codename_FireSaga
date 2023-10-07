@@ -429,18 +429,21 @@ struct Game *Game_Init() {
 void Game_Startup(struct Game *sota, struct Input_Arguments in_args) {
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     strncpy(sota->reason, "Initial sota startup", sizeof(sota->reason));
+
     /* -- Load Cursor and mouse -- */
     SDL_ShowCursor(SDL_DISABLE); // for default cursor.
     Game_FPS_Create(sota, SOTA_FPS_UPDATE_ns);
     Game_Cursor_Create(sota);
     Game_Mouse_Create(sota);
+
     /* -- Load Title -- */
     Game_titleScreen_Load(sota, in_args);
     Game_Mouse_Disable(sota);
     Game_cursorFocus_onMenu(sota);
+
     /* -- Load Background -- */
-    SDL_assert(sota->state == GAME_STATE_Title_Screen);
-    SDL_assert(sota->substate == GAME_SUBSTATE_MENU);
+    SDL_assert(sota->state      == GAME_STATE_Title_Screen);
+    SDL_assert(sota->substate   == GAME_SUBSTATE_MENU);
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
@@ -487,13 +490,13 @@ void Game_loadJSON(struct Game *sota, const if16 save_ind) {
     char temp[DEFAULT_BUFFER_SIZE];
     stbsp_snprintf(temp, DEFAULT_BUFFER_SIZE, DIR_SEPARATOR"save%04d.bsav", save_ind);
     strcat(filename, temp);
-    cJSON *json = jsonio_parseJSON(filename);
+    cJSON *json         = jsonio_parseJSON(filename);
     // readJSON_narrative(json, &sota->narrative);
-    cJSON *jRN = cJSON_GetObjectItem(json, "RN");
-    cJSON *jRN_status = cJSON_GetObjectItem(jRN, "Status");
-    cJSON *jRN_mat1 = cJSON_GetObjectItem(jRN, "mat1");
-    cJSON *jRN_mat2 = cJSON_GetObjectItem(jRN, "mat2");
-    cJSON *jRN_tmat = cJSON_GetObjectItem(jRN, "tmat");
+    cJSON *jRN          = cJSON_GetObjectItem(json, "RN");
+    cJSON *jRN_status   = cJSON_GetObjectItem(jRN, "Status");
+    cJSON *jRN_mat1     = cJSON_GetObjectItem(jRN, "mat1");
+    cJSON *jRN_mat2     = cJSON_GetObjectItem(jRN, "mat2");
+    cJSON *jRN_tmat     = cJSON_GetObjectItem(jRN, "tmat");
     sota->tinymt32.mat1 = cJSON_GetNumberValue(jRN_mat1);
     sota->tinymt32.mat2 = cJSON_GetNumberValue(jRN_mat2);
     sota->tinymt32.tmat = cJSON_GetNumberValue(jRN_tmat);
@@ -539,17 +542,17 @@ void Game_saveJSON(struct Game *sota, const if16 save_ind) {
     PHYSFS_delete(filename);
     PHYSFS_file *fp = PHYSFS_openWrite(filename);
     SDL_assert(fp);
-    cJSON *json = cJSON_CreateObject();
+    cJSON *json         = cJSON_CreateObject();
     // writeJSON_narrative(json, &sota->narrative);
-    cJSON *jparty = cJSON_CreateObject();
-    cJSON *jconvoy = cJSON_CreateObject();
+    cJSON *jparty       = cJSON_CreateObject();
+    cJSON *jconvoy      = cJSON_CreateObject();
     // cJSON * jcamp = cJSON_CreateObject();
     cJSON *junit;
-    cJSON *jRN = cJSON_CreateObject();
-    cJSON *jRN_status = cJSON_CreateArray();
-    cJSON *jRN_mat1 = cJSON_CreateNumber(sota->tinymt32.mat1);
-    cJSON *jRN_mat2 = cJSON_CreateNumber(sota->tinymt32.mat2);
-    cJSON *jRN_tmat = cJSON_CreateNumber(sota->tinymt32.tmat);
+    cJSON *jRN          = cJSON_CreateObject();
+    cJSON *jRN_status   = cJSON_CreateArray();
+    cJSON *jRN_mat1     = cJSON_CreateNumber(sota->tinymt32.mat1);
+    cJSON *jRN_mat2     = cJSON_CreateNumber(sota->tinymt32.mat2);
+    cJSON *jRN_tmat     = cJSON_CreateNumber(sota->tinymt32.tmat);
     cJSON *jtemp;
     // SOTA_Log_Debug("RnStatus[0] %d", tinymt32.status[0]);
     jtemp = cJSON_CreateNumber(sota->tinymt32.status[0]);
@@ -565,12 +568,12 @@ void Game_saveJSON(struct Game *sota, const if16 save_ind) {
         Unit_writeJSON(&sota->party[i], junit);
         cJSON_AddItemToObject(jparty, "Unit", junit);
     }
-    cJSON_AddItemToObject(jRN, "Status", jRN_status);
-    cJSON_AddItemToObject(jRN, "mat1", jRN_mat1);
-    cJSON_AddItemToObject(jRN, "mat2", jRN_mat2);
-    cJSON_AddItemToObject(jRN, "tmat", jRN_tmat);
-    cJSON_AddItemToObject(json, "RN", jRN);
-    cJSON_AddItemToObject(json, "Party", jparty);
+    cJSON_AddItemToObject(jRN,  "Status",   jRN_status);
+    cJSON_AddItemToObject(jRN,  "mat1",     jRN_mat1);
+    cJSON_AddItemToObject(jRN,  "mat2",     jRN_mat2);
+    cJSON_AddItemToObject(jRN,  "tmat",     jRN_tmat);
+    cJSON_AddItemToObject(json, "RN",       jRN);
+    cJSON_AddItemToObject(json, "Party",    jparty);
     Convoy_writeJSON(&sota->convoy, jconvoy);
     // cJSON_AddItemToObject(json, "Camp", jcamp);
     // Camp_writeJSON(&sota->camp, jcamp);
@@ -653,6 +656,9 @@ void Game_Camera_Scroll(struct Game *sota) {
 /* --- Time --- */
 void Game_Delay(struct Game *sota, i64 delay_ms, u64 currentTime_ns,
                 u64 elapsedTime_ns) {
+    SOTA_Log_FPS("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
+    SDL_assert(sota != NULL);
+
     /* - Skip if negative delay - */
     if (delay_ms < 0) {
         SOTA_Log_FPS("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
@@ -710,12 +716,14 @@ void Game_FPS_Create(struct Game *sota, i64 in_update_time_ns) {
 
     /* -- Get timer -- */
     struct Timer *timer;
-    timer = TNECS_GET_COMPONENT(sota->world, sota->entity_fps, Timer);
+    timer  = TNECS_GET_COMPONENT(sota->world, sota->entity_fps, Timer);
     SDL_assert(timer != NULL);
     *timer = Timer_default;
 
     /* -- Get position -- */
     struct Position *position = TNECS_GET_COMPONENT(sota->world, sota->entity_fps, Position);
+    *position = Position_default;
+
     SDL_assert(position != NULL);
     position->onTilemap = false;
     Position_Bounds_Set(position, 0, sota->settings.res.x, 0, sota->settings.res.y);

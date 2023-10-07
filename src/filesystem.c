@@ -279,6 +279,8 @@ SDL_Surface *Filesystem_Surface_Load(const char *filename, const u32 format) {
         SDL_SaveBMP(indexedsurface, "indexedsurface.png");
         /*makes surfaces faster allocs? */
         conv2surface = SDL_ConvertSurface(indexedsurface, indexedsurface->format, SDL_INPUT_IGNORE);
+        SDL_assert(conv2surface != NULL);
+
         SDL_SaveBMP(conv2surface, "conv2surface.png");
         SDL_assert(conv2surface != NULL);
         SDL_UnlockSurface(indexedsurface);

@@ -1299,6 +1299,7 @@ void Events_Receivers_Declare() {
 
 void Events_Manage(struct Game *sota) {
     SOTA_Log_FPS("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
+    SDL_assert(sota != NULL);
     SDL_Event event;
 
     while (SDL_PollEvent(&event)) {

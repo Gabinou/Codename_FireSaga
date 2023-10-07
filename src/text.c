@@ -1,14 +1,15 @@
 #include "text.h"
 
 struct Text Text_default = {
-    .texture     = NULL,
-    .pixelfont   = NULL,
-    .line        = 0,
-    .len         = 0,
-    .rect        = {0},
-    .onUpdate    = NULL,
-    .visible     = true,
-    .update      = true,
+    .texture        = NULL,
+    .pixelfont      = NULL,
+    .line           = {0},
+    .len            = 0,
+    .rect           = {0},
+    .update_time_ns = 0,
+    .onUpdate       = NULL,
+    .visible        = true,
+    .update         = true,
 };
 
 /* -- Text: Standalone Pixelfont -- */
@@ -33,14 +34,14 @@ void Text_onUpdate_FPS(struct Game *sota, tnecs_entity_t entity_fps,
     SDL_assert(entity_fps != TNECS_NULL);
 
     struct Text *text   = TNECS_GET_COMPONENT(sota->world, entity_fps, Text);
-    float ratio             = (float)SOTA_ns / (float)last_update_ns;
-    float fps               = (frame_count * ratio);
+    float ratio         = (float)SOTA_ns / (float)last_update_ns;
+    float fps           = (frame_count * ratio);
     if (sota->fast_forward) {
         int fps_cap     = sota->settings.FPS.cap;
         int fps_ratio   = fps / fps_cap * SOTA_100PERCENT;
-        snprintf(text->line, sizeof(char) * DEFAULT_BUFFER_SIZE, "%d%%", fps_ratio);
+        snprintf(text->line, sizeof(char) * 5, "%d%%", fps_ratio);
     } else {
-        snprintf(text->line, sizeof(char) * DEFAULT_BUFFER_SIZE, "%.1f", fps);
+        snprintf(text->line, sizeof(char) * 5, "%.1f", fps);
     }
 
     text->len       = strlen(text->line);
