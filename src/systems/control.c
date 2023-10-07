@@ -108,7 +108,7 @@ void Control_Keyboard(tnecs_system_input_t *input) {
         if32   *theld_ns = &kb->timeheld_move_ns;
         size_t *bheld    = &kb->held_button_num;
 
-        for (int b = SOTA_BUTTON_ACCEPT; b <= SOTA_BUTTON_GLOBALRANGE; b++) {
+        for (int b = SOTA_INPUT_ACCEPT; b <= SOTA_INPUT_GLOBALRANGE; b++) {
             if (Keyboard_isPressed(kb, kb_state, b))
                 Keyboard_Pressed(b, press, &pnum, ct, btn_ev[b], kb);
         }
@@ -122,25 +122,25 @@ void Control_Keyboard(tnecs_system_input_t *input) {
         /* -- Keyboard move checking -- */
         if8 pmove[SOTA_DIRECTIONS_MAIN_NUM];
         if8 pmove_num = 0;
-        bool right = Keyboard_isPressed(kb, kb_state, SOTA_BUTTON_RIGHT);
-        bool up    = Keyboard_isPressed(kb, kb_state, SOTA_BUTTON_UP);
-        bool left  = Keyboard_isPressed(kb, kb_state, SOTA_BUTTON_LEFT);
-        bool down  = Keyboard_isPressed(kb, kb_state, SOTA_BUTTON_DOWN);
+        bool right = Keyboard_isPressed(kb, kb_state, SOTA_INPUT_RIGHT);
+        bool up    = Keyboard_isPressed(kb, kb_state, SOTA_INPUT_UP);
+        bool left  = Keyboard_isPressed(kb, kb_state, SOTA_INPUT_LEFT);
+        bool down  = Keyboard_isPressed(kb, kb_state, SOTA_INPUT_DOWN);
 
         /* - Collapse diagonals to one of 4 main directions - */
         if (up && !down) {
             cursor_move.y       = -1;
-            pmove[pmove_num++]  = SOTA_BUTTON_UP;
+            pmove[pmove_num++]  = SOTA_INPUT_UP;
         } else if (down && !up) {
             cursor_move.y       =  1;
-            pmove[pmove_num++]  = SOTA_BUTTON_DOWN;
+            pmove[pmove_num++]  = SOTA_INPUT_DOWN;
         }
         if (left && !right) {
             cursor_move.x       = -1;
-            pmove[pmove_num++]  = SOTA_BUTTON_LEFT;
+            pmove[pmove_num++]  = SOTA_INPUT_LEFT;
         } else if (right && !left) {
             cursor_move.x       =  1;
-            pmove[pmove_num++]  = SOTA_BUTTON_RIGHT;
+            pmove[pmove_num++]  = SOTA_INPUT_RIGHT;
         }
 
         Keyboard_Held(kb->held_move, mheld, theld_ns, press, pnum, input->deltat);
@@ -180,9 +180,10 @@ void Control_Gamepad(tnecs_system_input_t *input) {
 
         /* -- Gamepad button checking -- */
         // TODO: use controller buttons
-        for (int b = SOTA_BUTTON_ACCEPT; b <= SOTA_BUTTON_GLOBALRANGE; b++) {
-            if (Gamepad_isPressed(gp, b))
-                Gamepad_Pressed(b, press, &pnum, &gp->controller_type, btn_ev[b], gp);
+        for (int b = SOTA_INPUT_ACCEPT; b < SOTA_INPUT_END; b++) {
+            int button = sota_buttons[b];
+            if (Gamepad_isPressed(gp, button))
+                Gamepad_Pressed(button, press, &pnum, &gp->controller_type, btn_ev[button], gp);
         }
 
         Gamepad_Held(gp->held_button, bheld, theld, press, pnum, input->deltat);
@@ -197,32 +198,32 @@ void Control_Gamepad(tnecs_system_input_t *input) {
 
         cursor_move = Gamepad_Joystick_Direction(gp);
         if (cursor_move.x > 0) {
-            pmove[pmove_num++]  = SOTA_BUTTON_RIGHT;
+            pmove[pmove_num++]  = SOTA_INPUT_RIGHT;
         } else if (cursor_move.x < 0) {
-            pmove[pmove_num++]  = SOTA_BUTTON_LEFT;
+            pmove[pmove_num++]  = SOTA_INPUT_LEFT;
         }
         /* - Up/Down axis - */
         if  (cursor_move.y > 0) {
-            pmove[pmove_num++]  = SOTA_BUTTON_DOWN;
+            pmove[pmove_num++]  = SOTA_INPUT_DOWN;
         } else if  (cursor_move.y < 0)  {
-            pmove[pmove_num++]  = SOTA_BUTTON_UP;
+            pmove[pmove_num++]  = SOTA_INPUT_UP;
         }
 
         /* - Move buttons - */
         /* Priority of move buttons over joystick */
-        if (Gamepad_isPressed(gp, SOTA_BUTTON_RIGHT)) {
+        if (Gamepad_isPressed(gp, SOTA_INPUT_RIGHT)) {
             cursor_move.x       =  1;
-            pmove[pmove_num++]  = SOTA_BUTTON_RIGHT;
-        } else if (Gamepad_isPressed(gp, SOTA_BUTTON_LEFT)) {
+            pmove[pmove_num++]  = SOTA_INPUT_RIGHT;
+        } else if (Gamepad_isPressed(gp, SOTA_INPUT_LEFT)) {
             cursor_move.x       = -1;
-            pmove[pmove_num++]  = SOTA_BUTTON_LEFT;
+            pmove[pmove_num++]  = SOTA_INPUT_LEFT;
         }
-        if (Gamepad_isPressed(gp, SOTA_BUTTON_UP)) {
+        if (Gamepad_isPressed(gp, SOTA_INPUT_UP)) {
             cursor_move.y       = -1;
-            pmove[pmove_num++]  = SOTA_BUTTON_UP;
-        } else if (Gamepad_isPressed(gp, SOTA_BUTTON_DOWN)) {
+            pmove[pmove_num++]  = SOTA_INPUT_UP;
+        } else if (Gamepad_isPressed(gp, SOTA_INPUT_DOWN)) {
             cursor_move.y       =  1;
-            pmove[pmove_num++]  = SOTA_BUTTON_DOWN;
+            pmove[pmove_num++]  = SOTA_INPUT_DOWN;
         }
 
         Gamepad_Held(gp->held_move, mheld, theld_ns, pmove, pmove_num, input->deltat);

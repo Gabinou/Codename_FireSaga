@@ -1209,7 +1209,8 @@ void Events_Names_Declare() {
     // .options           = SDL_CONTROLLER_AXIS_TRIGGERLEFT,
     // .faster            = SDL_CONTROLLER_BUTTON_START,
     // .globalRange       = SDL_CONTROLLER_AXIS_TRIGGERRIGHT,
-    // TODO: Button vs inputs
+
+    // TODO: fsm for Button to inputs
 
     // btn_ev[SOTA_INPUT_NULL]        = 0;
     btn_ev[SOTA_BUTTON_DPAD_RIGHT]      = 0;
