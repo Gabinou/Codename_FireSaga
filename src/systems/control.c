@@ -180,7 +180,7 @@ void Control_Gamepad(tnecs_system_input_t *input) {
 
         /* -- Gamepad button checking -- */
         // TODO: use controller buttons
-        for (int b = SOTA_INPUT_ACCEPT; b < SOTA_INPUT_END; b++) {
+        for (int b = SOTA_BUTTON_A; b < SOTA_BUTTON_END; b++) {
             int button = sota_buttons[b];
             if (Gamepad_isPressed(gp, button))
                 Gamepad_Pressed(button, press, &pnum, &gp->controller_type, btn_ev[button], gp);
