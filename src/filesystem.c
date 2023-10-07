@@ -262,6 +262,7 @@ SDL_Surface *Filesystem_Surface_Load(const char *filename, const u32 format) {
         SOTA_Log_Debug("is indexed %d\n", SDL_ISPIXELFORMAT_INDEXED(format));
         /*align bits for Filesystem_Surface_Pixels2Indices allocs*/
         conv1surface = SDL_ConvertSurfaceFormat(loadedsurface, SDL_PIXELFORMAT_ABGR8888, SDL_IGNORE);
+
         SDL_SaveBMP(conv1surface, "conv1surface.png");
         SDL_assert(conv1surface != NULL);
         /* alloc: */
@@ -290,8 +291,8 @@ SDL_Surface *Filesystem_Surface_Load(const char *filename, const u32 format) {
         conv2surface = NULL;
         SDL_SaveBMP(indexedsurface, "indexedsurface2.bmp");
         SDL_assert(SDL_SetColorKey(outsurface, SDL_TRUE, PALETTE_COLORKEY) == 0);
-        SDL_FreeSurface(loadedsurface);
-        SDL_FreeSurface(indexedsurface);
+        // SDL_FreeSurface(loadedsurface);
+        // SDL_FreeSurface(indexedsurface);
         SDL_FreeSurface(conv1surface);
     } else
         outsurface = loadedsurface;

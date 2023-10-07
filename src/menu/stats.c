@@ -30,17 +30,17 @@ int status_offset_x[UNIT_STATUS_END] = {
 };
 
 int status_offset_y[UNIT_STATUS_END] = {
-    /* NULL     */ 0,
-    /* POISONED */ 0,
-    /* STONE    */ 0,
-    /* ROOTED   */ 0,
-    /* STUNNED  */ 0,
-    /* SEDUCED  */ 1,
-    /* SLOWED   */ 0,
-    /* TERROR   */ 0,
-    /* BERSERK  */ 0,
-    /* STASIS   */ 0,
-    /* SILENCE  */ 0,
+    /* NULL     */  0,
+    /* POISONED */  0,
+    /* STONE    */  0,
+    /* ROOTED   */  0,
+    /* STUNNED  */  0,
+    /* SEDUCED  */  1,
+    /* SLOWED   */  0,
+    /* TERROR   */  0,
+    /* BERSERK  */  0,
+    /* STASIS   */  0,
+    /* SILENCE  */  0,
 };
 
 /* --- STATS_MENU --- */
@@ -478,8 +478,8 @@ void StatsMenu_Elem_Pos(struct StatsMenu *sm, struct MenuComponent *mc) {
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     // Scales elem_pos to menu size
     for (size_t i = 0; i < mc->elem_num; i++) {
-        mc->elem_pos[i].x = sm->pos.x + mc->n9patch.pos.x + mc->elem_pos[i].x * mc->n9patch.scale.x;
-        mc->elem_pos[i].y = sm->pos.y + mc->elem_pos[i].y * mc->n9patch.scale.y;
+        mc->elem_pos[i].x = sm->pos.x + mc->n9patch.pos.x + stats_menu_elem_pos[i].x * mc->n9patch.scale.x;
+        mc->elem_pos[i].y = sm->pos.y + stats_menu_elem_pos[i].y * mc->n9patch.scale.y;
     }
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }

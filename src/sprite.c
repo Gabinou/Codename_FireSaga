@@ -312,6 +312,7 @@ void Sprite_Load(struct Sprite *sprite, const char *asset_name, SDL_Renderer *re
 
     /* -- Keep spritesheed in memory -- */
     sprite->spritesheet->surface = Filesystem_Surface_Load(asset_name, SDL_PIXELFORMAT_INDEX8);
+    SDL_assert(sprite->spritesheet->surface != NULL);
     sprite->texture = SDL_CreateTextureFromSurface(renderer, sprite->spritesheet->surface);
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
