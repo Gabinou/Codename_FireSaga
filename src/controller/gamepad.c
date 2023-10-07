@@ -1,6 +1,7 @@
 
 #include "controller/gamepad.h"
 
+
 struct GamepadInputMap GamepadInputMap_gamecube = {
     // NOTE:
     /*  1. L/R buttons -> TriggerLeft and TriggerRight  */
@@ -15,16 +16,27 @@ struct GamepadInputMap GamepadInputMap_gamecube = {
     .dpad_down          = SDL_CONTROLLER_BUTTON_DPAD_DOWN,
     .dpad_left          = SDL_CONTROLLER_BUTTON_DPAD_LEFT,
 
+    // .accept            = SDL_CONTROLLER_BUTTON_A,
+    // .cancel            = SDL_CONTROLLER_BUTTON_B,
+    // .minimap           = SDL_CONTROLLER_BUTTON_X,
+    // .menuright         = SDL_CONTROLLER_AXIS_TRIGGERRIGHT,
+    // .menuleft          = SDL_CONTROLLER_AXIS_TRIGGERLEFT,
+    // .pause             = SDL_CONTROLLER_BUTTON_START,
+    // .stats             = SDL_CONTROLLER_BUTTON_Y,
+    // .options           = SDL_CONTROLLER_BUTTON_INVALID,
+    // .faster            = SDL_CONTROLLER_BUTTON_INVALID,
+    // .globalRange       = SDL_CONTROLLER_BUTTON_INVALID,
+
     .a                  = SDL_CONTROLLER_BUTTON_A,
     .b                  = SDL_CONTROLLER_BUTTON_B,
     .x                  = SDL_CONTROLLER_BUTTON_X,
     .y                  = SDL_CONTROLLER_BUTTON_Y,
-    .trigger_right      = SDL_CONTROLLER_AXIS_TRIGGERRIGHT,
-    .trigger_left       = SDL_CONTROLLER_AXIS_TRIGGERLEFT,
     .start              = SDL_CONTROLLER_BUTTON_START,
-    .options            = SDL_CONTROLLER_BUTTON_INVALID,
-    .faster             = SDL_CONTROLLER_BUTTON_INVALID,
-    .globalRange        = SDL_CONTROLLER_BUTTON_INVALID,
+    .shoulder_left      = SDL_CONTROLLER_BUTTON_INVALID,
+    .shoulder_right     = SDL_CONTROLLER_BUTTON_RIGHTSHOULDER,
+
+    .trigger_left       = SDL_CONTROLLER_AXIS_TRIGGERLEFT,
+    .trigger_right      = SDL_CONTROLLER_AXIS_TRIGGERRIGHT,
 
     .accept_button      = true,
     .cancel_button      = true,
@@ -38,6 +50,17 @@ struct GamepadInputMap GamepadInputMap_gamecube = {
 };
 
 struct GamepadInputMap GamepadInputMap_default = {
+    // .accept            = SDL_CONTROLLER_BUTTON_A,
+    // .cancel            = SDL_CONTROLLER_BUTTON_B,
+    // .minimap           = SDL_CONTROLLER_BUTTON_Y,
+    // .menuright         = SDL_CONTROLLER_BUTTON_RIGHTSHOULDER,
+    // .menuleft          = SDL_CONTROLLER_BUTTON_LEFTSHOULDER,
+    // .pause             = SDL_CONTROLLER_BUTTON_START,
+    // .stats             = SDL_CONTROLLER_BUTTON_X,
+    // .options           = SDL_CONTROLLER_AXIS_TRIGGERLEFT,
+    // .faster            = SDL_CONTROLLER_BUTTON_START,
+    // .globalRange       = SDL_CONTROLLER_AXIS_TRIGGERRIGHT,
+
     .axis_left_x        = SDL_CONTROLLER_AXIS_LEFTX,
     .axis_left_y        = SDL_CONTROLLER_AXIS_LEFTY,
     .axis_right_x       = SDL_CONTROLLER_AXIS_RIGHTX,
@@ -51,13 +74,13 @@ struct GamepadInputMap GamepadInputMap_default = {
     .a                  = SDL_CONTROLLER_BUTTON_A,
     .b                  = SDL_CONTROLLER_BUTTON_B,
     .y                  = SDL_CONTROLLER_BUTTON_Y,
-    .shoulder_right     = SDL_CONTROLLER_BUTTON_RIGHTSHOULDER,
-    .shoulder_left      = SDL_CONTROLLER_BUTTON_LEFTSHOULDER,
-    .start              = SDL_CONTROLLER_BUTTON_START,
     .x                  = SDL_CONTROLLER_BUTTON_X,
-    .options            = SDL_CONTROLLER_AXIS_TRIGGERLEFT,
-    .faster             = SDL_CONTROLLER_BUTTON_START,
-    .globalRange        = SDL_CONTROLLER_AXIS_TRIGGERRIGHT,
+    .start              = SDL_CONTROLLER_BUTTON_START,
+    .shoulder_left      = SDL_CONTROLLER_BUTTON_LEFTSHOULDER,
+    .shoulder_right     = SDL_CONTROLLER_BUTTON_RIGHTSHOULDER,
+
+    .trigger_left       = SDL_CONTROLLER_AXIS_TRIGGERLEFT,
+    .trigger_right      = SDL_CONTROLLER_AXIS_TRIGGERRIGHT,
 
     .accept_button      = true,
     .cancel_button      = true,
@@ -167,6 +190,7 @@ bool Gamepad_ButtonorAxis(struct controllerGamepad *gp, int button, int i, bool 
 
 bool Gamepad_isPressed(struct controllerGamepad *gp, int sota_button) {
     SOTA_Log_FPS("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
+    // TODO: Change to sota_input
     /* -- Preliminaries -- */
     struct GamepadInputMap *map = gp->inputmap;
     int pure_button = (sota_button - SOTA_INPUT_DPAD_END); /* button index excluding dpad */

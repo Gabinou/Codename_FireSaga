@@ -25,7 +25,6 @@ void Events_Data_Free() {
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
-
 tnecs_entity_t Events_Controllers_Check(struct Game *sota, i32 code) {
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     tnecs_entity_t out_accepter_entity;
@@ -1200,22 +1199,32 @@ void Events_Names_Declare() {
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
 #define REGISTER_ENUM(x) event_##x = SDL_RegisterEvents(1);
 #include "names/events.h"
+    // .accept            = SDL_CONTROLLER_BUTTON_A,
+    // .cancel            = SDL_CONTROLLER_BUTTON_B,
+    // .minimap           = SDL_CONTROLLER_BUTTON_Y,
+    // .menuright         = SDL_CONTROLLER_BUTTON_RIGHTSHOULDER,
+    // .menuleft          = SDL_CONTROLLER_BUTTON_LEFTSHOULDER,
+    // .pause             = SDL_CONTROLLER_BUTTON_START,
+    // .stats             = SDL_CONTROLLER_BUTTON_X,
+    // .options           = SDL_CONTROLLER_AXIS_TRIGGERLEFT,
+    // .faster            = SDL_CONTROLLER_BUTTON_START,
+    // .globalRange       = SDL_CONTROLLER_AXIS_TRIGGERRIGHT,
+    // TODO: Button vs inputs
 
     // btn_ev[SOTA_INPUT_NULL]        = 0;
-    btn_ev[SOTA_BUTTON_RIGHT]       = 0;
-    btn_ev[SOTA_BUTTON_UP]          = 0;
-    btn_ev[SOTA_BUTTON_LEFT]        = 0;
-    btn_ev[SOTA_BUTTON_DOWN]        = 0;
-    btn_ev[SOTA_BUTTON_ACCEPT]      = event_Input_Accept;
-    btn_ev[SOTA_BUTTON_CANCEL]      = event_Input_Cancel;
-    btn_ev[SOTA_BUTTON_MINIMAP]     = event_Input_Minimap;
-    btn_ev[SOTA_BUTTON_MENURIGHT]   = event_Input_menuRight;
-    btn_ev[SOTA_BUTTON_MENULEFT]    = event_Input_menuLeft;
-    btn_ev[SOTA_BUTTON_PAUSE]       = event_Input_Pause;
-    btn_ev[SOTA_BUTTON_STATS]       = event_Input_Stats;
-    btn_ev[SOTA_BUTTON_OPTIONS]     = 0;
-    btn_ev[SOTA_BUTTON_FASTER]      = event_Input_Faster;
-    btn_ev[SOTA_BUTTON_GLOBALRANGE] = event_Input_globalRange;
+    btn_ev[SOTA_BUTTON_DPAD_RIGHT]      = 0;
+    btn_ev[SOTA_BUTTON_DPAD_UP]         = 0;
+    btn_ev[SOTA_BUTTON_DPAD_LEFT]       = 0;
+    btn_ev[SOTA_BUTTON_DPAD_DOWN]       = 0;
+    btn_ev[SOTA_BUTTON_A]               = event_Input_Accept;
+    btn_ev[SOTA_BUTTON_B]               = event_Input_Cancel;
+    btn_ev[SOTA_BUTTON_X]               = event_Input_Minimap;
+    btn_ev[SOTA_BUTTON_TRIGGER_RIGHT]   = event_Input_menuRight;
+    btn_ev[SOTA_BUTTON_TRIGGER_LEFT]    = event_Input_menuLeft;
+    btn_ev[SOTA_BUTTON_START]           = event_Input_Pause;
+    btn_ev[SOTA_BUTTON_Y]               = event_Input_Stats;
+    btn_ev[SOTA_BUTTON_SHOULDER_RIGHT]  = event_Input_Faster;
+    btn_ev[SOTA_BUTTON_SHOULDER_LEFT]   = event_Input_globalRange;
 
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }

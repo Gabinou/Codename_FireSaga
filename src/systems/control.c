@@ -66,6 +66,7 @@ void Control_Pressed(if8 button, if8 *press, if8 *pressed_num, bool block, if32 
     }
     if (event <= 0)
         return;
+    // TODO: fsm for button events
     if ((t_min_ns <= 0) || (t_held_ns > t_min_ns))
         Event_Emit(__func__, SDL_USEREVENT, event, controller_type, NULL);
     SOTA_Log_FPS("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
@@ -178,6 +179,7 @@ void Control_Gamepad(tnecs_system_input_t *input) {
         size_t  *bheld    = &gp->held_button_num;
 
         /* -- Gamepad button checking -- */
+        // TODO: use controller buttons
         for (int b = SOTA_BUTTON_ACCEPT; b <= SOTA_BUTTON_GLOBALRANGE; b++) {
             if (Gamepad_isPressed(gp, b))
                 Gamepad_Pressed(b, press, &pnum, &gp->controller_type, btn_ev[b], gp);
