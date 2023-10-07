@@ -37,16 +37,6 @@ struct GamepadInputMap GamepadInputMap_gamecube = {
 
     .trigger_left       = SDL_CONTROLLER_AXIS_TRIGGERLEFT,
     .trigger_right      = SDL_CONTROLLER_AXIS_TRIGGERRIGHT,
-
-    .accept_button      = true,
-    .cancel_button      = true,
-    .stats_button       = true,
-    .menuright_button   = false,
-    .menuleft_button    = false,
-    .minimap_button     = true,
-    .faster_button      = true,
-    .pause_button       = true,
-    .globalRange_button = false,
 };
 
 struct GamepadInputMap GamepadInputMap_default = {
@@ -81,16 +71,6 @@ struct GamepadInputMap GamepadInputMap_default = {
 
     .trigger_left       = SDL_CONTROLLER_AXIS_TRIGGERLEFT,
     .trigger_right      = SDL_CONTROLLER_AXIS_TRIGGERRIGHT,
-
-    .accept_button      = true,
-    .cancel_button      = true,
-    .stats_button       = true,
-    .menuright_button   = true,
-    .menuleft_button    = true,
-    .minimap_button     = true,
-    .faster_button      = true,
-    .pause_button       = true,
-    .globalRange_button = false,
 };
 
 char button_names[SDL_CONTROLLER_BUTTON_MAX][BUTTON_NAME_MAX_LEN] = {
@@ -192,19 +172,18 @@ bool Gamepad_isPressed(struct controllerGamepad *gp, int sota_button) {
     SOTA_Log_FPS("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     // TODO: Change to sota_input
     /* -- Preliminaries -- */
-    struct GamepadInputMap *map = gp->inputmap;
-    int pure_button = (sota_button - SOTA_INPUT_DPAD_END); /* button index excluding dpad */
-
-    /* -- Get mapped button from button index -- */
-    SDL_GameControllerButton button = *(&map->dpad_right + sota_button);
+    struct GamepadInputMap      *map        =  gp->inputmap;
+    SDL_GameControllerButton    *gp_buttons = &map->dpad_right;
+    SDL_GameControllerButton     sdl_button = *(gp_buttons + sota_button);
 
     /* -- Check if button/axis is pressed, -- */
     /* EXCLUDES JOYSTICKS */
-    bool *flags   = &map->accept_button;
-    bool isbutton = (pure_button < 0) ? true : *(flags + pure_button);
+    bool isbutton = (sota_button != SOTA_BUTTON_TRIGGER_LEFT);
+    isbutton     &= (sota_button != SOTA_BUTTON_TRIGGER_RIGHT);
+
     bool out = false;
     for (int i = 0; i < gp->controllers_num; i++) {
-        out |= Gamepad_ButtonorAxis(gp, button, i, isbutton);
+        out |= Gamepad_ButtonorAxis(gp, sdl_button, i, isbutton);
     }
     SOTA_Log_FPS("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
     return (out);
@@ -218,8 +197,8 @@ struct Point Gamepad_Joystick_Direction(struct controllerGamepad *gp) {
     for (int i = 0; i < gp->controllers_num; i++) {
         SDL_GameController *controller  = gp->controllers[i];
 
-        Sint16 axis_left_x        = SDL_GameControllerGetAxis(controller, im->axis_left_x);
-        Sint16 axis_left_y        = SDL_GameControllerGetAxis(controller, im->axis_left_y);
+        Sint16 axis_left_x       = SDL_GameControllerGetAxis(controller, im->axis_left_x);
+        Sint16 axis_left_y       = SDL_GameControllerGetAxis(controller, im->axis_left_y);
         Sint16 axis_right_x      = SDL_GameControllerGetAxis(controller, im->axis_right_x);
         Sint16 axis_right_y      = SDL_GameControllerGetAxis(controller, im->axis_right_y);
 

@@ -38,18 +38,6 @@ struct GamepadInputMap {
     /* Triggers  [0, INT_FAST16_MAX] -> [0, 32767] */
     SDL_GameControllerButton  trigger_left;
     SDL_GameControllerButton  trigger_right;
-
-    /* Is it a Button or a Trigger? */
-    bool accept_button;
-    bool cancel_button;
-    bool minimap_button;
-    bool menuright_button;
-    bool menuleft_button;
-    bool pause_button;
-    bool stats_button;
-    bool options_button;
-    bool faster_button;
-    bool globalRange_button;
 };
 
 extern struct GamepadInputMap GamepadInputMap_default;
