@@ -126,10 +126,6 @@ enum SOTA_SETTINGS {
     CAMERA_SCROLL_SPEED                     =   10,
 };
 
-enum SOTA_SDL {
-    SDL_INPUT_IGNORE                        =    0,
-};
-
 enum SOTA_LIMITS {
     SOTA_MAX_DAMAGE                         = 0xFF,
     SOTA_MAX_HP                             =   80,

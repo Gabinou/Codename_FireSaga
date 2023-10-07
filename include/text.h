@@ -21,7 +21,6 @@ typedef struct Text {
     if16                len;
     SDL_Rect            rect;
     i64                 update_time_ns; /* 0 means update one time */
-
     onUpdate_t          onUpdate;
     bool                visible;
     bool                update;

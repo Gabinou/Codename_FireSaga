@@ -261,7 +261,7 @@ SDL_Surface *Filesystem_Surface_Load(const char *filename, const u32 format) {
     if (SDL_ISPIXELFORMAT_INDEXED(format)) {
         SOTA_Log_Debug("is indexed %d\n", SDL_ISPIXELFORMAT_INDEXED(format));
         /*align bits for Filesystem_Surface_Pixels2Indices allocs*/
-        conv1surface = SDL_ConvertSurfaceFormat(loadedsurface, SDL_PIXELFORMAT_ABGR8888, SDL_INPUT_IGNORE);
+        conv1surface = SDL_ConvertSurfaceFormat(loadedsurface, SDL_PIXELFORMAT_ABGR8888, SDL_IGNORE);
         SDL_SaveBMP(conv1surface, "conv1surface.png");
         SDL_assert(conv1surface != NULL);
         /* alloc: */
@@ -278,7 +278,7 @@ SDL_Surface *Filesystem_Surface_Load(const char *filename, const u32 format) {
         indexedsurface = Filesystem_Surface_Pixels2Indices(conv1surface, indexedsurface);
         SDL_SaveBMP(indexedsurface, "indexedsurface.png");
         /*makes surfaces faster allocs? */
-        conv2surface = SDL_ConvertSurface(indexedsurface, indexedsurface->format, SDL_INPUT_IGNORE);
+        conv2surface = SDL_ConvertSurface(indexedsurface, indexedsurface->format, SDL_IGNORE);
         SDL_assert(conv2surface != NULL);
 
         SDL_SaveBMP(conv2surface, "conv2surface.png");
@@ -288,7 +288,7 @@ SDL_Surface *Filesystem_Surface_Load(const char *filename, const u32 format) {
 
         outsurface = conv2surface;
         conv2surface = NULL;
-        // SDL_SaveBMP(indexedsurface, "indexedsurface.bmp");
+        SDL_SaveBMP(indexedsurface, "indexedsurface2.bmp");
         SDL_assert(SDL_SetColorKey(outsurface, SDL_TRUE, PALETTE_COLORKEY) == 0);
         SDL_FreeSurface(loadedsurface);
         SDL_FreeSurface(indexedsurface);
@@ -352,11 +352,13 @@ SDL_Surface *Filesystem_TexturetoSurface(SDL_Renderer *renderer, SDL_Texture *te
 
     int w, h, success;
     void *pixels = NULL;
+
     /* Get information about texture we want to save */
     success = SDL_QueryTexture(texture, NULL, NULL, &w, &h);
     SDL_assert(success == 0);
     render_texture = SDL_CreateTexture(renderer, format, SDL_TEXTUREACCESS_TARGET, w, h);
     SDL_assert(render_texture);
+
     /* Initialize our canvas, then copy texture to a target whose pixel data we can access */
     success = SDL_SetRenderTarget(renderer, render_texture);
     SDL_assert(success == 0);
@@ -364,12 +366,14 @@ SDL_Surface *Filesystem_TexturetoSurface(SDL_Renderer *renderer, SDL_Texture *te
     SDL_RenderClear(renderer);
     success = SDL_RenderCopy(renderer, texture, NULL, NULL);
     SDL_assert(success == 0);
+
     /* Create buffer to hold texture data and load it */
-    int bits = SDL_BITSPERPIXEL(format), bytes = SDL_BYTESPERPIXEL(format);
-    pixels = malloc(w * h * bytes);
+    int bits    = SDL_BITSPERPIXEL(format), bytes = SDL_BYTESPERPIXEL(format);
+    pixels      = malloc(w * h * bytes);
     SDL_assert(pixels);
     success = SDL_RenderReadPixels(renderer, NULL, format, pixels, w * bytes);
     SDL_assert(success == 0);
+
     /* Copy pixel data over to surface */
     out_surface = SDL_CreateRGBSurfaceWithFormatFrom(pixels, w, h, bits, w * bytes, format);
     SDL_assert(out_surface);
@@ -382,15 +386,22 @@ SDL_Surface *Filesystem_TexturetoSurface(SDL_Renderer *renderer, SDL_Texture *te
 SDL_Surface *Filesystem_indexedSurface_Init(size_t w, size_t h) {
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     SDL_Surface *surface;
-    surface = SDL_CreateRGBSurfaceWithFormat(SDL_INPUT_IGNORE, w, h, 32, SDL_PIXELFORMAT_INDEX8);
+
+    surface = SDL_CreateRGBSurfaceWithFormat(SDL_IGNORE, w, h, 8, SDL_PIXELFORMAT_INDEX8);
+
     if (PALETTE_DEFAULT == NULL) {
         SOTA_Log_Debug("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
         SOTA_Log_Debug("palette_NES not loaded");
         exit(ERROR_NullPointer);
     }
+
+    SDL_assert(SDL_ISPIXELFORMAT_INDEXED(surface->format->format));
     SDL_assert(surface);
     SDL_LockSurface(surface);
-    SDL_assert(SDL_SetSurfacePalette(surface, PALETTE_DEFAULT) == 0);
+    int success = SDL_SetColorKey(surface, SDL_TRUE, PALETTE_COLORKEY);
+    SDL_assert(success == 0);
+    success = SDL_SetSurfacePalette(surface, PALETTE_DEFAULT);
+    SDL_assert(success == 0);
     SDL_assert(surface->format->palette != NULL);
     SDL_UnlockSurface(surface);
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
