@@ -150,36 +150,37 @@ void Gamepad_Free(struct controllerGamepad *gp) {
     SOTA_Log_FPS("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
-bool Gamepad_ButtonorAxis(struct controllerGamepad *gp, int button, int i, bool isbutton) {
+bool Gamepad_ButtonorAxis(struct controllerGamepad *gp, int sdl_button, int i, bool isbutton) {
     SOTA_Log_FPS("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     SDL_GameController *controller  = gp->controllers[i];
     bool out;
     if (isbutton) {
-        out = SDL_GameControllerGetButton(controller, button);
+        out = SDL_GameControllerGetButton(controller, sdl_button);
         if (out)
-            SDL_Log("Gamepad pressing %s", button_names[button]);
+            SDL_Log("Gamepad pressing %s", button_names[sdl_button]);
     } else {
-        out = SDL_GameControllerGetAxis(controller, button) > gp->deadzone_trigger;
+        out = SDL_GameControllerGetAxis(controller, sdl_button) > gp->deadzone_trigger;
         if (out)
-            SDL_Log("Gamepad pressing %s", axis_names[button]);
+            SDL_Log("Gamepad pressing %s", axis_names[sdl_button]);
     }
 
     SOTA_Log_FPS("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
     return (out);
 }
 
-bool Gamepad_isPressed(struct controllerGamepad *gp, int sota_button) {
+bool Gamepad_isPressed(struct controllerGamepad *gp, int sdl_button) {
     SOTA_Log_FPS("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     // TODO: Change to sota_input
     /* -- Preliminaries -- */
     struct GamepadInputMap      *map        =  gp->inputmap;
-    SDL_GameControllerButton    *gp_buttons = &map->dpad_right;
-    SDL_GameControllerButton     sdl_button = *(gp_buttons + sota_button);
+    // SDL_GameControllerButton    *gp_buttons = &map->dpad_right;
+    // SDL_GameControllerButton     sdl_button = *(gp_buttons + sota_button);
+    // SDL_Log("%d %d %d", SDL_CONTROLLER_BUTTON_Y, sota_button, sdl_button);
 
     /* -- Check if button/axis is pressed, -- */
     /* EXCLUDES JOYSTICKS */
-    bool isbutton = (sota_button != SOTA_BUTTON_TRIGGER_LEFT);
-    isbutton     &= (sota_button != SOTA_BUTTON_TRIGGER_RIGHT);
+    bool isbutton = (sdl_button != SDL_CONTROLLER_AXIS_TRIGGERLEFT);
+    isbutton     &= (sdl_button != SDL_CONTROLLER_AXIS_TRIGGERRIGHT);
 
     bool out = false;
     for (int i = 0; i < gp->controllers_num; i++) {
@@ -255,9 +256,9 @@ void Gamepad_Realloc(struct controllerGamepad *gp) {
     SDL_assert(gp->controllers_len    > 0);
     gp->controllers_len *= 2;
 
-    gp->controllers         = realloc(gp->controllers, gp->controllers_len * sizeof(*gp->controllers));
-    gp->joystick_instances  = realloc(gp->joystick_instances,
-                                      gp->controllers_len * sizeof(*gp->joystick_instances));
+    int bytesize            = gp->controllers_len * sizeof(*gp->controllers);
+    gp->controllers         = realloc(gp->controllers,          bytesize);
+    gp->joystick_instances  = realloc(gp->joystick_instances,   bytesize);
 
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
@@ -269,9 +270,9 @@ void Gamepad_addController(struct controllerGamepad *gp, if32 joystick_device) {
     if ((gp->controllers_num + 1) >= gp->controllers_len)
         Gamepad_Realloc(gp);
 
+    SDL_GameController *controllers = gp->controllers[gp->controllers_num];
     gp->controllers[gp->controllers_num]        = SDL_GameControllerOpen(joystick_device);
-    SDL_Joystick *joystick                      = SDL_GameControllerGetJoystick(
-                                                          gp->controllers[gp->controllers_num]);
+    SDL_Joystick *joystick                      = SDL_GameControllerGetJoystick(controllers);
     gp->joystick_instances[gp->controllers_num] = SDL_JoystickInstanceID(joystick);
     gp->controllers_num++;
 

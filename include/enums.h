@@ -731,7 +731,7 @@ enum SOTA_BUTTONS {
     SOTA_BUTTON_TRIGGER_RIGHT,
     SOTA_BUTTON_END,
 };
-extern char sota_buttons[SOTA_BUTTON_END];
+extern char sdl_buttons[SOTA_BUTTON_END];
 
 enum SKILL_VALUES {
     SOTA_SKILL_PINPRICK         = 1,

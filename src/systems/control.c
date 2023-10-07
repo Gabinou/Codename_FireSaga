@@ -32,34 +32,34 @@ void Control_Cursor_Moves(struct Game *sota, struct Point cursor_move, struct Po
     SOTA_Log_FPS("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
-void Gamepad_Pressed(if8 button, if8 *press, if8 *pressed_num, if32 *controller_type,
+void Gamepad_Pressed(if8 sota_b, if8 *press, if8 *pressed_num, if32 *controller_type,
                      u32 event, struct controllerGamepad *gp) {
     SOTA_Log_FPS("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     if32 theld      = gp->timeheld_button_ns;
     if32 min_held   = GAMEPAD_MINHELD_ns;
     bool butblk     = gp->block_buttons;
 
-    Control_Pressed(button, press, pressed_num, butblk, theld,
+    Control_Pressed(sota_b, press, pressed_num, butblk, theld,
                     controller_type, event, min_held);
     SOTA_Log_FPS("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
-void Keyboard_Pressed(if8 button, if8 *press, if8 *pressed_num, if32 *controller_type,
+void Keyboard_Pressed(if8 sota_b, if8 *press, if8 *pressed_num, if32 *controller_type,
                       u32 event, struct controllerKeyboard *kb) {
     SOTA_Log_FPS("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     if32 theld      = kb->timeheld_button_ns;
     if32 min_held   = KEYBOARD_MINHELD_ns;
     bool butblk     = kb->block_buttons;
 
-    Control_Pressed(button, press, pressed_num, butblk, theld,
+    Control_Pressed(sota_b, press, pressed_num, butblk, theld,
                     controller_type, event, min_held);
     SOTA_Log_FPS("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
-void Control_Pressed(if8 button, if8 *press, if8 *pressed_num, bool block, if32 t_held_ns,
+void Control_Pressed(if8 sota_b, if8 *press, if8 *pressed_num, bool block, if32 t_held_ns,
                      if32 *controller_type, u32 event, if32 t_min_ns) {
     SOTA_Log_FPS("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
-    press[(*pressed_num)++] = button;
+    press[(*pressed_num)++] = sota_b;
     if (block) {
         SOTA_Log_FPS("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
         return;
@@ -100,7 +100,7 @@ void Control_Keyboard(tnecs_system_input_t *input) {
         const uf8                 *kb_state = SDL_GetKeyboardState(NULL);
 
         /* -- Keyboard button checking -- */
-        if8 press[SOTA_INPUT_END];
+        if8 press[SOTA_BUTTON_END];
         if8 pnum         = 0;
         bool butblk      =  kb->block_buttons;
         size_t *mheld    = &kb->held_move_num;
@@ -171,7 +171,7 @@ void Control_Gamepad(tnecs_system_input_t *input) {
         struct controllerGamepad *gp = gamepad_arr + order;
 
         /* -- Preliminaries -- */
-        if8 press[SOTA_INPUT_END];
+        if8 press[SOTA_BUTTON_END];
         if8 pnum = 0;
         size_t  *mheld    = &gp->held_move_num;
         if32    *theld_ns = &gp->timeheld_move_ns;
@@ -180,10 +180,10 @@ void Control_Gamepad(tnecs_system_input_t *input) {
 
         /* -- Gamepad button checking -- */
         // TODO: use controller buttons
-        for (int b = SOTA_BUTTON_A; b < SOTA_BUTTON_END; b++) {
-            int button = sota_buttons[b];
-            if (Gamepad_isPressed(gp, button))
-                Gamepad_Pressed(button, press, &pnum, &gp->controller_type, btn_ev[button], gp);
+        for (int sota_b = SOTA_BUTTON_A; sota_b < SOTA_BUTTON_END; sota_b++) {
+            int sdl_button = sdl_buttons[sota_b];
+            if (Gamepad_isPressed(gp, sdl_button))
+                Gamepad_Pressed(sota_b, press, &pnum, &gp->controller_type, btn_ev[sota_b], gp);
         }
 
         Gamepad_Held(gp->held_button, bheld, theld, press, pnum, input->deltat);
