@@ -696,14 +696,19 @@ enum UNIT_MVT {
 };
 #undef REGISTER_ENUM
 
+/* --- Inputs vs buttons --- */
+/* Button: Physical button on a controller e.g. A, B, X, Y
+*  Input:  Context dependent interpretation of user button press
+*       e,g. Menuright, Accept, Open Minimap, Pause...
+*/
 #define REGISTER_ENUM(x) SOTA_BUTTON_##x,
-enum BUTTONS {
-    SOTA_MAPPABLE_BUTTONS_NUM =  2,
-    SOTA_BUTTON_ARROWS_END    =  4,
-    SOTA_BUTTON_NULL          = -1,
-    SOTA_BUTTON_START         = -1,
-#include "names/buttons.h"
-    SOTA_BUTTON_END,
+enum SOTA_INPUTS {
+    SOTA_MAPPABLE_BUTTONS_NUM   =  2,
+    SOTA_INPUT_DPAD_END         =  4,
+    SOTA_INPUT_NULL             = -1,
+    SOTA_INPUT_START            = -1,
+#include "names/input.h"
+    SOTA_INPUT_END,
 };
 #undef REGISTER_ENUM
 

@@ -1195,13 +1195,13 @@ void receive_event_SDL_WINDOWEVENT(struct Game *sota, SDL_Event *event) {
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
-u32 btn_ev[SOTA_BUTTON_END];
+u32 btn_ev[SOTA_INPUT_END];
 void Events_Names_Declare() {
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
 #define REGISTER_ENUM(x) event_##x = SDL_RegisterEvents(1);
 #include "names/events.h"
 
-    // btn_ev[SOTA_BUTTON_NULL]        = 0;
+    // btn_ev[SOTA_INPUT_NULL]        = 0;
     btn_ev[SOTA_BUTTON_RIGHT]       = 0;
     btn_ev[SOTA_BUTTON_UP]          = 0;
     btn_ev[SOTA_BUTTON_LEFT]        = 0;

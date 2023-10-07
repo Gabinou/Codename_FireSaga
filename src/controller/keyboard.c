@@ -44,7 +44,7 @@ struct controllerKeyboard controllerKeyboard_default = {
 
 void Keyboard_Held(if8 *held, size_t *h_num, if32 *timeheld, if8 *pressed, size_t p_num, if32 dt) {
     SOTA_Log_FPS("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
-    SDL_assert(p_num < SOTA_BUTTON_END);
+    SDL_assert(p_num < SOTA_INPUT_END);
     SDL_assert(p_num >= 0);
     bool arrequal = false;
     if ((*h_num == p_num) && (p_num != 0))

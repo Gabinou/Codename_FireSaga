@@ -5,26 +5,26 @@ struct GamepadInputMap GamepadInputMap_gamecube = {
     // NOTE:
     /*  1. L/R buttons -> TriggerLeft and TriggerRight  */
     /*  2. Z button    -> RightShoulder                 */
-    .mainxaxis         = SDL_CONTROLLER_AXIS_LEFTX,
-    .mainyaxis         = SDL_CONTROLLER_AXIS_LEFTY,
-    .secondxaxis       = SDL_CONTROLLER_AXIS_RIGHTX,
-    .secondyaxis       = SDL_CONTROLLER_AXIS_RIGHTY,
+    .axis_left_x        = SDL_CONTROLLER_AXIS_LEFTX,
+    .axis_left_y        = SDL_CONTROLLER_AXIS_LEFTY,
+    .axis_right_x       = SDL_CONTROLLER_AXIS_RIGHTX,
+    .axis_right_y       = SDL_CONTROLLER_AXIS_RIGHTY,
 
-    .moveright         = SDL_CONTROLLER_BUTTON_DPAD_RIGHT,
-    .moveup            = SDL_CONTROLLER_BUTTON_DPAD_UP,
-    .movedown          = SDL_CONTROLLER_BUTTON_DPAD_DOWN,
-    .moveleft          = SDL_CONTROLLER_BUTTON_DPAD_LEFT,
+    .dpad_right         = SDL_CONTROLLER_BUTTON_DPAD_RIGHT,
+    .dpad_up            = SDL_CONTROLLER_BUTTON_DPAD_UP,
+    .dpad_down          = SDL_CONTROLLER_BUTTON_DPAD_DOWN,
+    .dpad_left          = SDL_CONTROLLER_BUTTON_DPAD_LEFT,
 
-    .accept            = SDL_CONTROLLER_BUTTON_A,
-    .cancel            = SDL_CONTROLLER_BUTTON_B,
-    .minimap           = SDL_CONTROLLER_BUTTON_X,
-    .menuright         = SDL_CONTROLLER_AXIS_TRIGGERRIGHT,
-    .menuleft          = SDL_CONTROLLER_AXIS_TRIGGERLEFT,
-    .pause             = SDL_CONTROLLER_BUTTON_START,
-    .stats             = SDL_CONTROLLER_BUTTON_Y,
-    .options           = SDL_CONTROLLER_BUTTON_INVALID,
-    .faster            = SDL_CONTROLLER_BUTTON_INVALID,
-    .globalRange       = SDL_CONTROLLER_BUTTON_INVALID,
+    .a                  = SDL_CONTROLLER_BUTTON_A,
+    .b                  = SDL_CONTROLLER_BUTTON_B,
+    .minimap            = SDL_CONTROLLER_BUTTON_X,
+    .menuright          = SDL_CONTROLLER_AXIS_TRIGGERRIGHT,
+    .menuleft           = SDL_CONTROLLER_AXIS_TRIGGERLEFT,
+    .pause              = SDL_CONTROLLER_BUTTON_START,
+    .stats              = SDL_CONTROLLER_BUTTON_Y,
+    .options            = SDL_CONTROLLER_BUTTON_INVALID,
+    .faster             = SDL_CONTROLLER_BUTTON_INVALID,
+    .globalRange        = SDL_CONTROLLER_BUTTON_INVALID,
 
     .accept_button      = true,
     .cancel_button      = true,
@@ -38,18 +38,21 @@ struct GamepadInputMap GamepadInputMap_gamecube = {
 };
 
 struct GamepadInputMap GamepadInputMap_default = {
-    .mainxaxis         = SDL_CONTROLLER_AXIS_LEFTX,
-    .mainyaxis         = SDL_CONTROLLER_AXIS_LEFTY,
-    .secondxaxis       = SDL_CONTROLLER_AXIS_RIGHTX,
-    .secondyaxis       = SDL_CONTROLLER_AXIS_RIGHTY,
+    .axis_left_x         = SDL_CONTROLLER_AXIS_LEFTX,
+    .axis_left_y         = SDL_CONTROLLER_AXIS_LEFTY,
+    .axis_right_x       = SDL_CONTROLLER_AXIS_RIGHTX,
+    .axis_right_y       = SDL_CONTROLLER_AXIS_RIGHTY,
 
-    .moveright         = SDL_CONTROLLER_BUTTON_DPAD_RIGHT,
-    .moveup            = SDL_CONTROLLER_BUTTON_DPAD_UP,
-    .movedown          = SDL_CONTROLLER_BUTTON_DPAD_DOWN,
-    .moveleft          = SDL_CONTROLLER_BUTTON_DPAD_LEFT,
+    .dpad_right         = SDL_CONTROLLER_BUTTON_DPAD_RIGHT,
+    .dpad_up            = SDL_CONTROLLER_BUTTON_DPAD_UP,
+    .dpad_up            = SDL_CONTROLLER_BUTTON_DPAD_UP,
+    .dpad_down          = SDL_CONTROLLER_BUTTON_DPAD_DOWN,
+    .dpad_down          = SDL_CONTROLLER_BUTTON_DPAD_DOWN,
+    .dpad_left          = SDL_CONTROLLER_BUTTON_DPAD_LEFT,
+    .dpad_left          = SDL_CONTROLLER_BUTTON_DPAD_LEFT,
 
-    .accept            = SDL_CONTROLLER_BUTTON_A,
-    .cancel            = SDL_CONTROLLER_BUTTON_B,
+    .a            = SDL_CONTROLLER_BUTTON_A,
+    .b            = SDL_CONTROLLER_BUTTON_B,
     .minimap           = SDL_CONTROLLER_BUTTON_Y,
     .menuright         = SDL_CONTROLLER_BUTTON_RIGHTSHOULDER,
     .menuleft          = SDL_CONTROLLER_BUTTON_LEFTSHOULDER,
@@ -169,14 +172,15 @@ bool Gamepad_isPressed(struct controllerGamepad *gp, int sota_button) {
     SOTA_Log_FPS("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     /* -- Preliminaries -- */
     struct GamepadInputMap *map = gp->inputmap;
-    int pure_button = (sota_button - SOTA_BUTTON_ARROWS_END); /* button index excluding dpad */
+    int pure_button = (sota_button - SOTA_INPUT_DPAD_END); /* button index excluding dpad */
 
     /* -- Get mapped button from button index -- */
-    SDL_GameControllerButton button = *(&map->moveright + sota_button);
+    SDL_GameControllerButton button = *(&map->dpad_right + sota_button);
 
     /* -- Check if button/axis is pressed, -- */
     /* EXCLUDES JOYSTICKS */
-    bool isbutton = (pure_button < 0) ? true : *(&map->accept_button + pure_button);
+    bool *flags   = &map->accept_button;
+    bool isbutton = (pure_button < 0) ? true : *(flags + pure_button);
     bool out = false;
     for (int i = 0; i < gp->controllers_num; i++) {
         out |= Gamepad_ButtonorAxis(gp, button, i, isbutton);
@@ -193,27 +197,25 @@ struct Point Gamepad_Joystick_Direction(struct controllerGamepad *gp) {
     for (int i = 0; i < gp->controllers_num; i++) {
         SDL_GameController *controller  = gp->controllers[i];
 
-        // Joysticks [INT_FAST16_MIN, INT_FAST16_MAX] / [-32768, 32767]
-        // Triggers  [0,              INT_FAST16_MAX] / [0,      32767]
-        Sint16 mainxaxis        = SDL_GameControllerGetAxis(controller, im->mainxaxis);
-        Sint16 mainyaxis        = SDL_GameControllerGetAxis(controller, im->mainyaxis);
-        Sint16 secondxaxis      = SDL_GameControllerGetAxis(controller, im->secondxaxis);
-        Sint16 secondyaxis      = SDL_GameControllerGetAxis(controller, im->secondyaxis);
+        Sint16 axis_left_x        = SDL_GameControllerGetAxis(controller, im->axis_left_x);
+        Sint16 axis_left_y        = SDL_GameControllerGetAxis(controller, im->axis_left_y);
+        Sint16 axis_right_x      = SDL_GameControllerGetAxis(controller, im->axis_right_x);
+        Sint16 axis_right_y      = SDL_GameControllerGetAxis(controller, im->axis_right_y);
 
         /* - Left/Right axis - */
         bool pressed = false;
-        if          ((mainxaxis >  jdead) || (secondxaxis >  jdead)) {
+        if          ((axis_left_x >  jdead) || (axis_right_x >  jdead)) {
             cursor_move.x = 1;
             pressed = true;
-        } else if   ((mainxaxis < -jdead) || (secondxaxis < -jdead)) {
+        } else if   ((axis_left_x < -jdead) || (axis_right_x < -jdead)) {
             cursor_move.x = -1;
             pressed = true;
         }
         /* - Up/Down axis - */
-        if          ((mainyaxis >  jdead) || (secondyaxis >  jdead)) {
+        if          ((axis_left_y >  jdead) || (axis_right_y >  jdead)) {
             cursor_move.y = 1;
             pressed = true;
-        } else if   ((mainyaxis < -jdead) || (secondyaxis < -jdead))  {
+        } else if   ((axis_left_y < -jdead) || (axis_right_y < -jdead))  {
             cursor_move.y = -1;
             pressed = true;
         }
@@ -278,7 +280,7 @@ void Gamepad_addController(struct controllerGamepad *gp, if32 joystick_device) {
 
 void Gamepad_Held(if8 *held, size_t *h_num, if32 *held_ns, if8 *pressed, size_t p_num, if32 dt_ns) {
     SOTA_Log_FPS("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
-    SDL_assert(p_num < SOTA_BUTTON_END);
+    SDL_assert(p_num < SOTA_INPUT_END);
     SDL_assert(p_num >= 0);
     bool arrequal = false;
     if ((*h_num == p_num) && (p_num != 0))

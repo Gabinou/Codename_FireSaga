@@ -99,7 +99,7 @@ void Control_Keyboard(tnecs_system_input_t *input) {
         const uf8                 *kb_state = SDL_GetKeyboardState(NULL);
 
         /* -- Keyboard button checking -- */
-        if8 press[SOTA_BUTTON_END];
+        if8 press[SOTA_INPUT_END];
         if8 pnum         = 0;
         bool butblk      =  kb->block_buttons;
         size_t *mheld    = &kb->held_move_num;
@@ -170,7 +170,7 @@ void Control_Gamepad(tnecs_system_input_t *input) {
         struct controllerGamepad *gp = gamepad_arr + order;
 
         /* -- Preliminaries -- */
-        if8 press[SOTA_BUTTON_END];
+        if8 press[SOTA_INPUT_END];
         if8 pnum = 0;
         size_t  *mheld    = &gp->held_move_num;
         if32    *theld_ns = &gp->timeheld_move_ns;

@@ -48,7 +48,7 @@ extern struct KeyboardInputMap {
 typedef struct controllerKeyboard {
     struct KeyboardInputMap *inputmap;
 
-    if8     held_button[SOTA_BUTTON_END];
+    if8     held_button[SOTA_INPUT_END];
     if8     held_move[SOTA_DIRECTIONS_MAIN_NUM];
 
     if32    controller_type;

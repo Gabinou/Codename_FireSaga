@@ -12,17 +12,23 @@
 #include "SDL2/SDL.h"
 
 struct GamepadInputMap {
-    SDL_GameControllerAxis    mainxaxis;
-    SDL_GameControllerAxis    mainyaxis;
-    SDL_GameControllerAxis    secondxaxis;
-    SDL_GameControllerAxis    secondyaxis;
+    /* Physical joysticks */
+    /* Joysticks: [INT_FAST16_MIN, INT_FAST16_MAX] -> [-32768, 32767] */
+    SDL_GameControllerAxis    axis_left_x;
+    SDL_GameControllerAxis    axis_left_y;
+    SDL_GameControllerAxis    axis_right_x;
+    SDL_GameControllerAxis    axis_right_y;
 
-    SDL_GameControllerButton  moveright;
-    SDL_GameControllerButton  moveup;
-    SDL_GameControllerButton  moveleft;
-    SDL_GameControllerButton  movedown;
-    SDL_GameControllerButton  accept;
-    SDL_GameControllerButton  cancel;
+    /* Physical dpad */
+    SDL_GameControllerButton  dpad_right;
+    SDL_GameControllerButton  dpad_up;
+    SDL_GameControllerButton  dpad_left;
+    SDL_GameControllerButton  dpad_down;
+
+    /* Physical buttons and triggers */
+    /* Triggers  [0, INT_FAST16_MAX] -> [0, 32767] */
+    SDL_GameControllerButton  a;
+    SDL_GameControllerButton  b;
     SDL_GameControllerButton  minimap;
     SDL_GameControllerButton  menuright;
     SDL_GameControllerButton  menuleft;
@@ -32,7 +38,7 @@ struct GamepadInputMap {
     SDL_GameControllerButton  faster;
     SDL_GameControllerButton  globalRange;
 
-    /* Button or Trigger flags */
+    /* Is it a Button or a Trigger? */
     bool accept_button;
     bool cancel_button;
     bool minimap_button;
@@ -44,6 +50,7 @@ struct GamepadInputMap {
     bool faster_button;
     bool globalRange_button;
 };
+
 extern struct GamepadInputMap GamepadInputMap_default;
 extern struct GamepadInputMap GamepadInputMap_gamecube;
 
@@ -51,26 +58,26 @@ typedef struct controllerGamepad {
     SDL_GameController     **controllers;
     struct GamepadInputMap  *inputmap;
 
-    if32   *joystick_instances;
-    if32    controller_type;
-    int     controllers_num;
-    int     controllers_len;
+    if32       *joystick_instances;
+    if32        controller_type;
+    int         controllers_num;
+    int         controllers_len;
 
-    if16    deadzone_joystick;
-    if16    deadzone_trigger;
+    if16        deadzone_joystick;
+    if16        deadzone_trigger;
 
-    if8     held_move[SOTA_DIRECTIONS_MAIN_NUM];
-    if8     held_button[SOTA_BUTTON_END];
+    if8         held_move[SOTA_DIRECTIONS_MAIN_NUM];
+    if8         held_button[SOTA_INPUT_END];
 
-    size_t  held_move_num;
-    size_t  held_button_num;
+    size_t      held_move_num;
+    size_t      held_button_num;
 
-    if32    timeheld_move_ns;
-    if32    timeheld_button_ns;
-    char **button_names;
+    if32        timeheld_move_ns;
+    if32        timeheld_button_ns;
+    char      **button_names;
 
-    bool    block_buttons   : 1;
-    bool    block_move      : 1;
+    bool        block_buttons   : 1;
+    bool        block_move      : 1;
 } controllerGamepad;
 extern struct controllerGamepad controllerGamepad_default;
 
