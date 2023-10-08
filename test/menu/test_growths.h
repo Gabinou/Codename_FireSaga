@@ -218,11 +218,12 @@ void test_menu_growths() {
 
     /* --- FREE --- */
     Game_Weapons_Free(weapons_dtab);
-    SDL_DestroyRenderer(renderer);
     GrowthsMenu_Free(gm);
     SDL_FreeSurface(surface);
 
     if (n9patch.texture != NULL)
         SDL_DestroyTexture(n9patch.texture);
     Unit_Free(&Silou);
+
+    SDL_DestroyRenderer(renderer);
 }
