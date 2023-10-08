@@ -88,6 +88,7 @@ void test_menu_item_drop() {
                             idm->texture, SDL_PIXELFORMAT_ARGB8888, render_target);
 
     /* -- FREE -- */
+    Unit_Free(&Silou);
     n9Patch_Free(&n9patch);
     SDL_FreeSurface(surface);
     PixelFont_Free(idm->pixelnours, true);

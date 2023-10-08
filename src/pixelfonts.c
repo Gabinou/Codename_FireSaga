@@ -91,38 +91,6 @@ struct PixelFont *PixelFont_Alloc() {
     return (font);
 }
 
-struct PixelFont *TextureFont_Alloc(uf8 row_len, uf8 col_len) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
-    struct PixelFont *font = malloc(sizeof(struct PixelFont));
-    SDL_assert(font);
-    *font = TextureFont_default;
-
-    font->charset_num = row_len * col_len;
-    font->row_len     = row_len;
-    font->col_len     = col_len;
-
-    font->glyph_bbox_width  = malloc(font->charset_num * sizeof(*font->glyph_bbox_width));
-    font->glyph_bbox_height = malloc(font->charset_num * sizeof(*font->glyph_bbox_height));
-
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
-    return (font);
-}
-
-void PixelFont_Load(struct PixelFont *font, SDL_Renderer *renderer, char *fontname) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
-    SDL_assert(fontname != NULL);
-    SDL_assert(font != NULL);
-    font->surface = Filesystem_Surface_Load(fontname, SDL_PIXELFORMAT_INDEX8);
-    SDL_assert(font->surface != NULL);
-    // SDL_SaveBMP(font->surface, "outsurface.bmp");
-
-    SDL_assert(renderer != NULL);
-    font->texture = SDL_CreateTextureFromSurface(renderer, font->surface);
-    SDL_assert(font->texture);
-    PixelFont_Compute_Glyph_BBox(font);
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
-}
-
 void PixelFont_Free(struct PixelFont *font, bool isfree) {
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     SDL_assert(font != NULL);
@@ -150,6 +118,39 @@ void PixelFont_Free(struct PixelFont *font, bool isfree) {
     }
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
+
+void PixelFont_Load(struct PixelFont *font, SDL_Renderer *renderer, char *fontname) {
+    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
+    SDL_assert(fontname != NULL);
+    SDL_assert(font != NULL);
+    font->surface = Filesystem_Surface_Load(fontname, SDL_PIXELFORMAT_INDEX8);
+    SDL_assert(font->surface != NULL);
+    // SDL_SaveBMP(font->surface, "outsurface.bmp");
+
+    SDL_assert(renderer != NULL);
+    font->texture = SDL_CreateTextureFromSurface(renderer, font->surface);
+    SDL_assert(font->texture);
+    PixelFont_Compute_Glyph_BBox(font);
+    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
+}
+
+struct PixelFont *TextureFont_Alloc(uf8 row_len, uf8 col_len) {
+    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
+    struct PixelFont *font = malloc(sizeof(struct PixelFont));
+    SDL_assert(font);
+    *font = TextureFont_default;
+
+    font->charset_num = row_len * col_len;
+    font->row_len     = row_len;
+    font->col_len     = col_len;
+
+    font->glyph_bbox_width  = malloc(font->charset_num * sizeof(*font->glyph_bbox_width));
+    font->glyph_bbox_height = malloc(font->charset_num * sizeof(*font->glyph_bbox_height));
+
+    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
+    return (font);
+}
+
 
 /*--- Internals --- */
 void PixelFont_Swap_Palette(struct PixelFont *font, SDL_Renderer *renderer, if8 NEWw, if8 NEWb) {

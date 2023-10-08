@@ -46,24 +46,17 @@ struct PlayerSelectMenu *PlayerSelectMenu_Alloc() {
 
 void PlayerSelectMenu_Free(struct PlayerSelectMenu *psm, struct MenuComponent *mc) {
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
-    SDL_assert(mc);
     SDL_assert(psm);
-    if (mc->elem_box != NULL) {
-        free(mc->elem_box);
-        mc->elem_box = NULL;
-    }
-    if (mc->elem_pos != NULL) {
-        free(mc->elem_pos);
-        mc->elem_pos = NULL;
-    }
-    if (mc->elem_links != NULL) {
-        free(mc->elem_links);
-        mc->elem_links = NULL;
-    }
-    if (psm->options != NULL)
+    SDL_assert(mc);
+    MenuComponent_Elem_Free(mc);
+    if (psm->options != NULL) {
         DARR_FREE(psm->options);
-    if (psm->option_names != NULL)
+        psm->options = NULL;
+    }
+    if (psm->option_names != NULL) {
         DARR_FREE(psm->option_names);
+        psm->option_names = NULL;
+    }
     if (psm->texture != NULL) {
         SDL_DestroyTexture(psm->texture);
         psm->texture = NULL;

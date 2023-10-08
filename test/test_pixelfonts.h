@@ -135,7 +135,7 @@ void test_pixelfonts_render() {
                             renderer, bubble.texture, SDL_PIXELFORMAT_ARGB8888, render_target);
 
     /* - Pixelnours_big - */
-    PixelFont_Free(bubble.pixelfont, false);
+    PixelFont_Free(bubble.pixelfont, true);
     bubble.pixelfont = PixelFont_Alloc();
     TextBubble_Load(&bubble, renderer, &n9patch);
     PixelFont_Load(bubble.pixelfont, renderer, PATH_JOIN("..", "assets", "Fonts",
@@ -201,7 +201,7 @@ void test_pixelfonts_render() {
     SDL_assert(n9patch.texture != NULL);
 
 
-    PixelFont_Free(bubble.pixelfont, false);
+    PixelFont_Free(bubble.pixelfont, true);
     bubble.pixelfont = PixelFont_Alloc();
     PixelFont_Load(bubble.pixelfont, renderer, PATH_JOIN("..", "assets", "Fonts",
                                                          "pixelnours_Big.png"));

@@ -22,6 +22,7 @@ void test_menu_player_select() {
 
     /* -- MenuComponent -- */
     struct MenuComponent *mc = malloc(sizeof(struct MenuComponent));
+    *mc = MenuComponent_default;
     mc->elem_box = NULL;
     mc->elem_pos = NULL;
     mc->elem_links = NULL;
@@ -193,5 +194,6 @@ void test_menu_player_select() {
     PixelFont_Free(psm->pixelnours, true);
     SDL_FreeSurface(surface);
     PlayerSelectMenu_Free(psm, mc);
+    free(mc);
     SDL_DestroyRenderer(renderer);
 }

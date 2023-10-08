@@ -522,6 +522,8 @@ void test_menu_pre_combat() {
                             renderer, pcm->texture, SDL_PIXELFORMAT_ARGB8888, render_target);
 
     /* --- FREE --- */
+    Unit_Free(&Silou);
+    Unit_Free(&Hamilcar);
     PixelFont_Free(pcm->pixelnours, true);
     PixelFont_Free(pcm->pixelnours_big, true);
 

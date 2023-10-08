@@ -673,6 +673,8 @@ void PopUp_Loadout_Stats_Draw_Weapons( struct PopUp_Loadout_Stats *pls, SDL_Rend
         width = PixelFont_Width(pls->pixelnours, buffer, len);
 
         PixelFont_Write(pls->pixelnours, renderer, buffer, len, x - width, y);
+
+        free(buffer);
     } while (false);
 }
 

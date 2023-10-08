@@ -39,14 +39,16 @@ void test_menu_growths() {
 
     /* -- Create Unit -- */
     struct Unit Silou = Unit_default;
+    SDL_assert(Silou.grown_stats == NULL);
     Silou.weapons_dtab = weapons_dtab;
     SDL_assert(Silou.num_equipment == 0);
     jsonio_readJSON(PATH_JOIN("units", "Silou_test.json"), &Silou);
+    SDL_assert(Silou.grown_stats != NULL);
     SDL_assert(Silou.num_equipment == 4);
 
     /* - Unit equip - */
     struct Inventory_item in_wpn = Inventory_item_default;
-    in_wpn.id = ITEM_ID_FLEURET;
+    in_wpn.id   = ITEM_ID_FLEURET;
     in_wpn.used = 0;
     Weapon_Load(weapons_dtab, in_wpn.id);
 
@@ -72,8 +74,9 @@ void test_menu_growths() {
     struct Unit_stats grown_1[1] = {
         {00, 01, 00, 00, 00, 01, 00, 00, 00, 00, 00, 00},
     };
-    Graph_Stat_Add(&gm->graph, &Silou.base_stats, grown_1, 2, 1,
-                   stat_toplot);
+    Graph_Stat_Add(&gm->graph, &Silou.base_stats, grown_1, 2, 1, stat_toplot);
+    /* Free alloced in Unit_readJSON grown_stats*/
+    DARR_FREE(Silou.grown_stats);
     Silou.grown_stats = &grown_1[0];
     GrowthsMenu_Update(gm, &n9patch, render_target, renderer);
     Filesystem_Texture_Dump(PATH_JOIN("menu_growths", "GrowthsMenu_Grown_01.png"), renderer,
@@ -217,13 +220,13 @@ void test_menu_growths() {
                             gm->texture, SDL_PIXELFORMAT_ARGB8888, render_target);
 
     /* --- FREE --- */
+    Unit_Free(&Silou);
     Game_Weapons_Free(weapons_dtab);
     GrowthsMenu_Free(gm);
     SDL_FreeSurface(surface);
 
     if (n9patch.texture != NULL)
         SDL_DestroyTexture(n9patch.texture);
-    Unit_Free(&Silou);
 
     SDL_DestroyRenderer(renderer);
 }

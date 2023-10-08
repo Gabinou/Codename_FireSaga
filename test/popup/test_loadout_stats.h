@@ -224,6 +224,7 @@ void test_popup_loadout_stats() {
                             renderer, pls.texture, SDL_PIXELFORMAT_ARGB8888, render_target);
 
     /* -- FREE -- */
+    Unit_Free(&unit);
     n9Patch_Free(&n9patch);
     PixelFont_Free(pls.pixelnours, true);
     PixelFont_Free(pls.pixelnours_big, true);
