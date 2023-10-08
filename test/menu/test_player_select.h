@@ -172,10 +172,10 @@ void test_menu_player_select() {
     PlayerSelectMenu_Options_Reset(psm);
 
     SDL_assert(DARR_NUM(psm->options) == 0);
-    PlayerSelectMenu_Option_Add(psm, MENU_OPTION_UNITS);
-    PlayerSelectMenu_Option_Add(psm, MENU_OPTION_CONVOY);
-    PlayerSelectMenu_Option_Add(psm, MENU_OPTION_QUIT);
-    PlayerSelectMenu_Option_Add(psm, MENU_OPTION_END_TURN);
+    PlayerSelectMenu_Option_Add(psm,    MENU_OPTION_UNITS);
+    PlayerSelectMenu_Option_Add(psm,    MENU_OPTION_CONVOY);
+    PlayerSelectMenu_Option_Add(psm,    MENU_OPTION_QUIT);
+    PlayerSelectMenu_Option_Add(psm,    MENU_OPTION_END_TURN);
     PlayerSelectMenu_Compute_Size(psm, &mc->n9patch);
     SDL_assert(DARR_NUM(psm->options) == 4);
     mc->elem_num = psm->option_num;
@@ -191,7 +191,7 @@ void test_menu_player_select() {
 
     /* --- FREE --- */
     PixelFont_Free(psm->pixelnours, true);
-    SDL_DestroyRenderer(renderer);
     SDL_FreeSurface(surface);
     PlayerSelectMenu_Free(psm, mc);
+    SDL_DestroyRenderer(renderer);
 }

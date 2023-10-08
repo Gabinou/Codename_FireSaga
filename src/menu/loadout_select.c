@@ -483,7 +483,7 @@ void LoadoutSelectMenu_Header_Set(struct LoadoutSelectMenu *lsm, const char *hea
         free(lsm->header);
     }
     size_t len  = strlen(header);
-    lsm->header = calloc(len, sizeof(*lsm->header));
+    lsm->header = calloc(len + 1, sizeof(*lsm->header));
     strncpy(lsm->header, header, len);
 
     SOTA_Log_FPS("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
@@ -496,8 +496,9 @@ void LoadoutSelectMenu_Draw_Header(struct LoadoutSelectMenu  *lsm, SDL_Renderer 
         return;
 
     /* Draw textual header: information to the player */
-    int dura_w = PixelFont_Width(lsm->pixelnours_big, lsm->header, strlen(lsm->header));
-    PixelFont_Write(lsm->pixelnours_big, renderer, lsm->header, strlen(lsm->header),
+    size_t len = strlen(lsm->header);
+    int dura_w = PixelFont_Width(lsm->pixelnours_big, lsm->header, len);
+    PixelFont_Write(lsm->pixelnours_big, renderer, lsm->header, len,
                     WSM_HEADER_LEFT,  WSM_TOP_OF_TEXT);
 }
 

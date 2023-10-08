@@ -229,11 +229,12 @@ void test_menu_weapon_select() {
     PixelFont_Free(wsm->pixelnours_big, true);
 
     Game_Weapons_Free(weapons_dtab);
-    SDL_DestroyRenderer(renderer);
     SDL_FreeSurface(surface);
     LoadoutSelectMenu_Free(wsm);
 
     if (n9patch.texture != NULL)
         SDL_DestroyTexture(n9patch.texture);
     Unit_Free(&Silou);
+
+    SDL_DestroyRenderer(renderer);
 }

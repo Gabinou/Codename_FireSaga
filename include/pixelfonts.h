@@ -40,6 +40,14 @@ extern uf8 pixelfont_y_offset[ASCII_GLYPH_NUM];
 extern uf8 pixelfont_big_y_offset[ASCII_GLYPH_NUM];
 
 /* --- DEFINITION --- */
+struct TextLines {
+    char **lines;
+    int   *lines_len;
+    int    line_num;
+    int    line_len;
+};
+extern struct TextLines TextLines_default;
+
 typedef struct PixelFont {
     SDL_Texture *texture;  /* ASCII order */
     SDL_Surface *surface;  /* ASCII order */

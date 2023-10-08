@@ -38,6 +38,12 @@ uf8 pixelfont_y_offset[ASCII_GLYPH_NUM] = {
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
 };
 
+struct TextLines TextLines_default =  {
+    .lines      = NULL,
+    .lines_len  = NULL,
+    .line_num   = 0,
+    .line_len   = 0,
+};
 
 struct PixelFont PixelFont_default =  {
     .texture            = NULL,
@@ -235,13 +241,17 @@ void TextLines_Realloc(struct TextLines *textlines, size_t len) {
 void TextLines_Free(struct TextLines *textlines) {
     if (textlines->lines != NULL) {
         for (int i = 0; i < textlines->line_len; i++) {
-            if (textlines->lines[i] != NULL)
+            if (textlines->lines[i] != NULL) {
                 free(textlines->lines[i]);
+                textlines->lines[i] = NULL;
+            }
         }
         free(textlines->lines);
+        textlines->lines = NULL;
     }
     if (textlines->lines_len != NULL) {
         free(textlines->lines_len);
+        textlines->lines_len = NULL;
     }
 }
 
@@ -255,7 +265,7 @@ struct TextLines PixelFont_Lines(struct PixelFont *font, const char *text, size_
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     SDL_assert(font != NULL);
     SDL_assert(font->glyph_bbox_width != NULL);
-    struct TextLines textlines = {0};
+    struct TextLines textlines = TextLines_default;
     TextLines_Realloc(&textlines, 4);
     SDL_assert(textlines.line_len == 4);
     int next_start    = 0; /* start of next line in text [char] */
@@ -275,6 +285,7 @@ struct TextLines PixelFont_Lines(struct PixelFont *font, const char *text, size_
         /* -- Get char that exceeds line pixel length -- */
         current_break = PixelFont_NextLine_Break(font, text, current_start, len_char, line_len_px);
         line_len_char = current_break - current_start;
+        SDL_assert((line_len_char >= 0));
 
         /* -- Break: text fits in final row -- */
         if (current_break >= len_char) {
@@ -314,6 +325,7 @@ struct TextLines PixelFont_Lines(struct PixelFont *font, const char *text, size_
         /* true:  need 1 more char to put hyphen */
         /* false: last char is a space and is removed */
         line_len_char += add_hyphen - 1 + add_hyphen;
+        SDL_assert(line_len_char >= 0);
 
         /* -- Copy test line -- */
         textlines.lines[line_i] = calloc(line_len_char + 1, sizeof(char));
@@ -494,7 +506,10 @@ void PixelFont_Compute_Glyph_BBox(struct PixelFont *font) {
     SDL_UnlockSurface(font->surface);
 
     /* Word space */
-    font->glyph_bbox_width[' '] = font->word_space;
+    unsigned char ascii = (unsigned char)' ';
+    if (ascii < font->charset_num) {
+        font->glyph_bbox_width[ascii] = font->word_space;
+    }
 
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }

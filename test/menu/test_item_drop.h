@@ -90,11 +90,11 @@ void test_menu_item_drop() {
     /* -- FREE -- */
     n9Patch_Free(&n9patch);
     SDL_FreeSurface(surface);
-    SDL_DestroyRenderer(renderer);
     PixelFont_Free(idm->pixelnours, true);
     PixelFont_Free(idm->pixelnours_big, true);
     ItemDropMenu_Free(idm);
     Weapons_All_Free(weapons_dtab);
     DTAB_FREE(items_dtab);
     DTAB_FREE(weapons_dtab);
+    SDL_DestroyRenderer(renderer);
 }

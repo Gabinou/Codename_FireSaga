@@ -258,13 +258,6 @@ struct Map_settings {
     bool        grid_show;
 };
 
-struct TextLines {
-    char **lines;
-    int   *lines_len;
-    int    line_num;
-    int    line_len;
-};
-
 struct Settings {
     struct Point res; /* resolution */
     struct Point pos;

@@ -27,7 +27,7 @@ char * nstr_toLower(char * in_str) {
 }
 
 char * nstr_toUpper(char * in_str) {
-    for (uint_fast16_t i = 0; i < strlen(in_str) ; i++) {
+    for (uint_fast16_t i = 0; i < strlen(in_str); i++) {
         *(in_str + i) = (char)toupper(*(in_str + i));
     }
     return (in_str);

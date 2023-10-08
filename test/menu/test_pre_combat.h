@@ -526,11 +526,12 @@ void test_menu_pre_combat() {
     PixelFont_Free(pcm->pixelnours_big, true);
 
     Game_Weapons_Free(weapons_dtab);
-    SDL_DestroyRenderer(renderer);
     SDL_FreeSurface(surface);
     PreCombatMenu_Free(pcm);
 
     if (n9patch.texture != NULL)
         SDL_DestroyTexture(n9patch.texture);
+
+    SDL_DestroyRenderer(renderer);
     Unit_Free(&Silou);
 }

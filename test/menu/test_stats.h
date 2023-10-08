@@ -388,11 +388,12 @@ void test_menu_stats() {
 
     Game_Weapons_Free(weapons_dtab);
     Game_Items_Free(items_dtab);
-    SDL_DestroyRenderer(renderer);
     SDL_FreeSurface(surface);
     StatsMenu_Free(sm);
 
     if (n9patch.texture != NULL)
         SDL_DestroyTexture(n9patch.texture);
+
+    SDL_DestroyRenderer(renderer);
     Unit_Free(&Silou);
 }

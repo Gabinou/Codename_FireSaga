@@ -630,7 +630,7 @@ void PopUp_Loadout_Stats_Draw_Weapons( struct PopUp_Loadout_Stats *pls, SDL_Rend
             break;
 
         size_t len = strlen(wpn->item->name);
-        char *buffer = malloc(len + 1);
+        char *buffer = calloc(len + 1, sizeof(char));
         strncpy(buffer, wpn->item->name, len);
         buffer = nstr_toUpper(buffer);
 
@@ -667,7 +667,7 @@ void PopUp_Loadout_Stats_Draw_Weapons( struct PopUp_Loadout_Stats *pls, SDL_Rend
             break;
 
         size_t len = strlen(wpn->item->name);
-        char *buffer = malloc(len + 1);
+        char *buffer = calloc(len + 1, sizeof(char));
         strncpy(buffer, wpn->item->name, len);
         buffer = nstr_toUpper(buffer);
         width = PixelFont_Width(pls->pixelnours, buffer, len);

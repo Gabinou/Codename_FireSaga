@@ -149,12 +149,12 @@ void ItemDropMenu_Update(struct  ItemDropMenu  *idm, struct n9Patch *n9patch,
     if (wpn_or_item.dtab == SOTA_DTAB_WEAPONS) {
         SDL_assert(wpn_or_item.item == NULL);
         len     = strlen(wpn_or_item.wpn->item->name);
-        name    = calloc(len, sizeof(*name));
+        name    = calloc(len + 1, sizeof(*name));
         strncpy(name, wpn_or_item.wpn->item->name, len);
     } else {
         SDL_assert(wpn_or_item.wpn == NULL);
         len     = strlen(wpn_or_item.item->name);
-        name    = calloc(len, sizeof(*name));
+        name    = calloc(len + 1, sizeof(*name));
         strncpy(name, wpn_or_item.item->name, len);
     }
     name = nstr_toUpper(name);
