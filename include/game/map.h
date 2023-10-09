@@ -14,6 +14,7 @@ extern void Game_Map_Load(  struct Game *sota, if16 in_map_index);
 extern void Game_Map_Unload(struct Game *sota);
 
 extern void Game_debugMap_Load(struct Game *sota);
+extern void Game_debugMap_Free(struct Game *sota);
 
 /* --- Reinforcements --- */
 extern void Game_Map_Reinforcements_Load(struct Game *sota);

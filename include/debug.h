@@ -4,11 +4,11 @@
 #include "macros.h"
 
 /* -- Manual Logging switches -- */
-// #define SOTA_Log_FPS(...) do {} while (0)
-#define SOTA_Log_FPS(...) SDL_Log(__VA_ARGS__)
+#define SOTA_Log_FPS(...) do {} while (0)
+// #define SOTA_Log_FPS(...) SDL_Log(__VA_ARGS__)
 
-// #define SOTA_Log_Func(...) do {} while (0)
-#define SOTA_Log_Func(...) SDL_Log(__VA_ARGS__)
+#define SOTA_Log_Func(...) do {} while (0)
+// #define SOTA_Log_Func(...) SDL_Log(__VA_ARGS__)
 
 // #define SOTA_Log_Debug(...) do {} while (0)
 #define SOTA_Log_Debug(...) SDL_Log(__VA_ARGS__)

@@ -7,7 +7,6 @@
 
 /* --- Map utilities --- */
 void Game_Map_Unload(struct Game *sota) {
-
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
 
     Game_Map_Free(sota);
@@ -51,6 +50,13 @@ void Game_Map_Free(struct Game *sota) {
         free(sota->map);
         sota->map = NULL;
     }
+    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
+}
+
+void Game_debugMap_Free(struct Game *sota) {
+    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
+    Game_Map_Load(sota, CHAPTER_TEST_V6);
+
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
@@ -107,7 +113,6 @@ void Game_debugMap_Load(struct Game *sota) {
 
 /* --- Reinforcements --- */
 void Game_Map_Reinforcements_Free(struct Game *sota) {
-
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
 
     SDL_assert(sota->map != NULL);
