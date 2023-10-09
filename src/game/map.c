@@ -200,6 +200,10 @@ void Game_Map_Reinforcements_Load(struct Game *sota) {
         SOTA_Log_Debug("unitname: %ld %s", sota->map->reinforcements[i].id, unitname);
         SDL_assert(entities_bytype[typeflag_id1][num_typeflag1 - 1] == temp_unit_ent);
         jsonio_readJSON(unitname, unit);
+        if (!Unit_ID_Valid(unit->_id)) {
+            SDL_Log("Unit %s.json has wrong ID. Should be %d.", unit->name, sota->map->reinforcements[i].id);
+            exit(ERROR_Generic);
+        }
         SDL_assert(entities_bytype[typeflag_id1][num_typeflag1 - 1] == temp_unit_ent);
         unit->army = sota->map->reinforcements[i].army;
         SOTA_Log_Debug("-- loading unit equipment --");

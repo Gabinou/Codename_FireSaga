@@ -40,33 +40,23 @@ void Map_Unit_Put(struct Map *map, tnecs_world_t *world, uf8 col, uf8 row,
     /* -- Adding unit to army list -- */
     switch (SotA_army2alignment(temp_unit->army)) {
         case ALIGNMENT_FRIENDLY: {
-            SOTA_Log_Debug("temp_unit->name %s", temp_unit->name);
             SDL_assert(Unit_ID_Valid(temp_unit->_id));
-            SOTA_Log_Debug("id  UNIT_ID_CORSAIR %d %d", temp_unit->_id, UNIT_ID_CORSAIR);
             SDL_assert(global_unitOrders != NULL);
             SDL_assert(dtab_get(global_unitOrders, temp_unit->_id) != NULL);
-            SOTA_Log_Debug("id %d", temp_unit->_id);
             uf16 index = *(uf16 *)dtab_get(global_unitOrders, temp_unit->_id);
-            SOTA_Log_Debug("int %d", index);
             SDL_assert(index != 0);
             SDL_assert(index < DARR_NUM(global_unitNames));
-            SOTA_Log_Debug("Putting friendly: %s", global_unitNames[index]);
             DARR_PUT(map->friendlies_onfield, entity);
             map->num_friendlies_onfield++;
             break;
         }
         case ALIGNMENT_ENEMY: {
-            SOTA_Log_Debug("temp_unit->name %s", temp_unit->name);
             SDL_assert(Unit_ID_Valid(temp_unit->_id));
-            SOTA_Log_Debug("id  UNIT_ID_CORSAIR %d %d", temp_unit->_id, UNIT_ID_CORSAIR);
             SDL_assert(global_unitOrders != NULL);
             SDL_assert(dtab_get(global_unitOrders, temp_unit->_id) != NULL);
-            SOTA_Log_Debug("id %d", temp_unit->_id);
             uf16 index = *(uf16 *)dtab_get(global_unitOrders, temp_unit->_id);
-            SOTA_Log_Debug("int %d", index);
             SDL_assert(index != 0);
             SDL_assert(index < DARR_NUM(global_unitNames));
-            SOTA_Log_Debug("Putting enemy : %s", global_unitNames[index]);
             DARR_PUT(map->enemies_onfield, entity);
             map->num_enemies_onfield++;
             break;
