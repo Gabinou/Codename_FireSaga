@@ -385,4 +385,7 @@ extern struct Range *_Unit_Range_Combine(const struct Unit  *u, struct Range *r,
 extern struct Range *Unit_Range_Item(   struct Unit *u, int i);
 extern struct Range *Unit_Range_Loadout(struct Unit *u);
 
+/* -- Unit_id -- */
+extern bool Unit_ID_Valid(uf16 id);
+
 #endif /* UNIT_H */

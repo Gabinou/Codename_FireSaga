@@ -2434,3 +2434,11 @@ struct Unit_stats Unit_stats_minus(struct Unit_stats in_stats1, struct Unit_stat
     return (out_stats);
 }
 
+
+bool Unit_ID_Valid(uf16 id) {
+    bool out = (id > UNIT_ID_PC_START)      && (id < UNIT_ID_PC_START);
+    out |=     (id > UNIT_ID_NPC_START)     && (id < UNIT_ID_NPC_END);
+    out |=     (id > UNIT_ID_GENERIC_START) && (id < UNIT_ID_GENERIC_END);
+    return (out);
+}
+

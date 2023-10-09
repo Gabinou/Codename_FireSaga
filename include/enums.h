@@ -550,6 +550,7 @@ enum UNIT_ARMIES {
 enum UNIT_IDS {
     UNIT_NULL = 0,
     UNIT_ID_START = 0,
+    UNIT_ID_PC_START = 0,
 #include "names/units_PC.h"
 #include "names/units_NPC.h"
 #undef REGISTER_ENUM

@@ -114,8 +114,17 @@ void Game_debugMap_Load(struct Game *sota) {
 /* --- Reinforcements --- */
 void Game_Map_Reinforcements_Free(struct Game *sota) {
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
+    SDL_assert(sota                 != NULL);
+    SDL_assert(sota->map            != NULL);
+    if (sota->map_enemies == NULL) {
+        SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
+        return;
+    }
+    if (DARR_NUM(sota->map_enemies) == 0) {
+        SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
+        return;
+    }
 
-    SDL_assert(sota->map != NULL);
     char filename[DEFAULT_BUFFER_SIZE];
     char unitname[DEFAULT_BUFFER_SIZE];
     for (if16 i = 0; i < DARR_NUM(sota->map_enemies); i++) {
@@ -129,6 +138,7 @@ void Game_Map_Reinforcements_Free(struct Game *sota) {
         if (sprite)
             Sprite_Free(sprite);
     }
+    DARR_NUM(sota->map_enemies) = 0;
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
