@@ -668,7 +668,10 @@ void Game_Delay(struct Game *sota, i64 delay_ms, u64 currentTime_ns,
     /* - Delay game in case synchronization took > 1ms - */
     u64 new_elapsedTime_ns = tnecs_get_ns() - currentTime_ns;
 
-    u32 delay = delay_ms - (new_elapsedTime_ns - elapsedTime_ns) / 1000000;
+    u32 delay = 0;
+    if (delay_ms > (new_elapsedTime_ns - elapsedTime_ns))
+        delay = delay_ms - (new_elapsedTime_ns - elapsedTime_ns) / 1000000;
+
     if (delay > 0)
         SDL_Delay(delay);
 
