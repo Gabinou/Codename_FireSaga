@@ -260,6 +260,7 @@ void Game_putPConMap(struct Game *sota, if16 *unit_ids,
     SDL_assert(posarr != NULL);
     SDL_assert(load_num > 0);
     for (if16 i = 0; i < load_num; i++) {
+        SDL_assert(Unit_ID_Valid(unit_ids[i]));
         size_t order = *(uf16 *)DTAB_GET(global_unitOrders, unit_ids[i]);
         tnecs_entity_t temp_unit_ent = Game_Unit_Entity_Create(sota, unit_ids[i], posarr[i]);
         SDL_assert(temp_unit_ent);

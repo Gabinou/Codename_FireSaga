@@ -2436,9 +2436,12 @@ struct Unit_stats Unit_stats_minus(struct Unit_stats in_stats1, struct Unit_stat
 
 
 bool Unit_ID_Valid(uf16 id) {
-    bool out = (id > UNIT_ID_PC_START)      && (id < UNIT_ID_PC_START);
+    SOTA_Log_FPS("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
+    SOTA_Log_Debug("Unit ID valid: %d", id);
+    bool out = (id > UNIT_ID_PC_START)      && (id < UNIT_ID_PC_END);
     out |=     (id > UNIT_ID_NPC_START)     && (id < UNIT_ID_NPC_END);
     out |=     (id > UNIT_ID_GENERIC_START) && (id < UNIT_ID_GENERIC_END);
+    SOTA_Log_FPS("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
     return (out);
 }
 

@@ -40,6 +40,7 @@ void Map_Unit_Put(struct Map *map, tnecs_world_t *world, uf8 col, uf8 row,
     /* -- Adding unit to army list -- */
     switch (SotA_army2alignment(temp_unit->army)) {
         case ALIGNMENT_FRIENDLY: {
+            SOTA_Log_Debug("temp_unit->name %s", temp_unit->name);
             SDL_assert(Unit_ID_Valid(temp_unit->_id));
             SOTA_Log_Debug("id  UNIT_ID_CORSAIR %d %d", temp_unit->_id, UNIT_ID_CORSAIR);
             SDL_assert(global_unitOrders != NULL);
@@ -55,6 +56,7 @@ void Map_Unit_Put(struct Map *map, tnecs_world_t *world, uf8 col, uf8 row,
             break;
         }
         case ALIGNMENT_ENEMY: {
+            SOTA_Log_Debug("temp_unit->name %s", temp_unit->name);
             SDL_assert(Unit_ID_Valid(temp_unit->_id));
             SOTA_Log_Debug("id  UNIT_ID_CORSAIR %d %d", temp_unit->_id, UNIT_ID_CORSAIR);
             SDL_assert(global_unitOrders != NULL);
