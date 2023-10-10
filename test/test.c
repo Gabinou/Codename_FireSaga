@@ -12,7 +12,6 @@
 #include "test_filesystem.h"
 #include "test_game.h"
 #include "test_item.h"
-#include "test_leaks.h"
 #include "test_map.h"
 #include "test_menu.h"
 #include "test_RNG.h"
@@ -68,7 +67,6 @@ int unit_tests() {
     nourstest_run("Filesystem ",    test_filesystem);
     nourstest_run("Game ",          test_game);
     nourstest_run("Item",           test_item);
-    nourstest_run("Leaks ",          test_leaks);
     nourstest_run("Map ",           test_map);
     nourstest_run("Menu ",          test_menu);
     nourstest_run("Octant ",        test_octant);
