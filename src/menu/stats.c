@@ -642,7 +642,7 @@ void StatsMenu_Draw_Stats(struct StatsMenu *stats_menu, SDL_Renderer *renderer) 
     /* - mag - */
     x = MAG_X_OFFSET, y = MAG_Y_OFFSET;
     PixelFont_Write(stats_menu->pixelnours, renderer, "MAG", 3, x, y);
-    x += STATBAR_COL1_X_OFFSET, y += STATBAR_COL2_Y_OFFSET;
+    x += STATBAR_COL2_X_OFFSET, y += STATBAR_COL2_Y_OFFSET;
     StatBar_Init(&stat_bar, effective_stats->mag, unit->caps_stats.mag, x, y);
     StatBar_Draw(&stat_bar, renderer);
     stbsp_sprintf(numbuff, "%d", effective_stats->mag);
@@ -662,7 +662,7 @@ void StatsMenu_Draw_Stats(struct StatsMenu *stats_menu, SDL_Renderer *renderer) 
     /* - agi - */
     x = AGI_X_OFFSET, y = AGI_Y_OFFSET;
     PixelFont_Write(stats_menu->pixelnours, renderer, "AGI", 3, x, y);
-    x += STATBAR_COL1_X_OFFSET, y += STATBAR_COL1_Y_OFFSET;
+    x += STATBAR_COL2_X_OFFSET, y += STATBAR_COL2_Y_OFFSET;
     StatBar_Init(&stat_bar, effective_stats->agi, unit->caps_stats.agi, x, y);
     StatBar_Draw(&stat_bar, renderer);
     stbsp_sprintf(numbuff, "%d", effective_stats->agi);
@@ -682,7 +682,7 @@ void StatsMenu_Draw_Stats(struct StatsMenu *stats_menu, SDL_Renderer *renderer) 
     /* - luck - */
     x = LUCK_X_OFFSET, y = LUCK_Y_OFFSET;
     PixelFont_Write(stats_menu->pixelnours, renderer, "LUCK", 4, x, y);
-    x += STATBAR_COL1_X_OFFSET, y += STATBAR_COL1_Y_OFFSET;
+    x += STATBAR_COL2_X_OFFSET, y += STATBAR_COL2_Y_OFFSET;
     StatBar_Init(&stat_bar, effective_stats->luck, unit->caps_stats.luck, x, y);
     StatBar_Draw(&stat_bar, renderer);
     stbsp_sprintf(numbuff, "%d", effective_stats->luck);
@@ -702,7 +702,7 @@ void StatsMenu_Draw_Stats(struct StatsMenu *stats_menu, SDL_Renderer *renderer) 
     /* - res - */
     x = RES_X_OFFSET, y = RES_Y_OFFSET;
     PixelFont_Write(stats_menu->pixelnours, renderer, "RES", 3, x, y);
-    x += STATBAR_COL1_X_OFFSET, y += STATBAR_COL1_Y_OFFSET;
+    x += STATBAR_COL2_X_OFFSET, y += STATBAR_COL2_Y_OFFSET;
     StatBar_Init(&stat_bar, effective_stats->res, unit->caps_stats.res, x, y);
     StatBar_Draw(&stat_bar, renderer);
     stbsp_sprintf(numbuff, "%d", effective_stats->res);
@@ -722,7 +722,7 @@ void StatsMenu_Draw_Stats(struct StatsMenu *stats_menu, SDL_Renderer *renderer) 
     /* - prof - */
     x = PROF_X_OFFSET, y = PROF_Y_OFFSET;
     PixelFont_Write(stats_menu->pixelnours, renderer, "PROF", 4, x, y);
-    x += STATBAR_COL1_X_OFFSET, y += STATBAR_COL1_Y_OFFSET;
+    x += STATBAR_COL2_X_OFFSET, y += STATBAR_COL2_Y_OFFSET;
     StatBar_Init(&stat_bar, effective_stats->prof, unit->caps_stats.prof, x, y);
     StatBar_Draw(&stat_bar, renderer);
     stbsp_sprintf(numbuff, "%d", effective_stats->prof);
