@@ -348,6 +348,7 @@ SDL_Texture *Filesystem_Texture_Load(struct SDL_Renderer *renderer, const char *
     return (texture);
 }
 
+/* Note: pixels are in a separate buffer that needs to be freed separately. */
 SDL_Surface *Filesystem_TexturetoSurface(SDL_Renderer *renderer, SDL_Texture *texture,
                                          u32 format, SDL_Texture *render_target) {
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);

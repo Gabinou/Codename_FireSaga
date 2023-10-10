@@ -64,6 +64,7 @@ extern void Filesystem_Load_Bytes(const char *name, uf8 **mem, size_t *len);
 extern SDL_Surface *Filesystem_TexturetoSurface(SDL_Renderer *, SDL_Texture *, u32, SDL_Texture *);
 extern void Filesystem_Texture_Dump(const char *f, SDL_Renderer *, SDL_Texture *,
                                     u32 fo, SDL_Texture *rt);
+extern void Filesystem_Surface_Dump(const char *f, SDL_Surface *);
 
 /* -- Loading -- */
 extern SDL_Surface *Filesystem_Surface_Load(const char *f, u32 in_format);
