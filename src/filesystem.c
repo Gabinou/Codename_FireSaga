@@ -409,6 +409,10 @@ SDL_Surface *Filesystem_indexedSurface_Init(size_t w, size_t h) {
     success = SDL_SetSurfacePalette(surface, PALETTE_DEFAULT);
     SDL_assert(success == 0);
     SDL_assert(surface->format->palette != NULL);
+
+    /* Init pixels value */
+    memset(surface->pixels, 0, surface->h * surface->pitch);
+
     SDL_UnlockSurface(surface);
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
     return (surface);
@@ -428,7 +432,6 @@ void Filesystem_Surface_Pixels2Indices(SDL_Surface *abgr_surf, SDL_Surface *inde
     SDL_assert(index_surf->format->BitsPerPixel == 8);
     SDL_assert(index_surf->w == abgr_surf->w);
     SDL_assert(index_surf->h == abgr_surf->h);
-
 
     u32 pixel, color;
     uf8 bitsmin = 24, bitsmax = 32; /* Bits for A channel? */

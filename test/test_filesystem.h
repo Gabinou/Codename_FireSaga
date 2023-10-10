@@ -42,9 +42,14 @@ void test_leaks() {
     /* Filesystem_Surface_Pixels2Indices leak */
     path = PATH_JOIN("..", "assets", "Fonts", "pixelnours_test.png");
     SDL_Surface *surf_abgr  = IMG_Load(path);
+    success = SDL_SetSurfacePalette(surf_abgr, palette_NES);
+    SDL_assert(success == 0);
     path = PATH_JOIN("filesystem", "pixelnours_abgr.png");
     SDL_SaveBMP(surf_abgr, path);
     SDL_Surface *surf_index =  Filesystem_indexedSurface_Init(surf_abgr->w, surf_abgr->h);
+    success = SDL_SetSurfacePalette(surf_index, palette_NES);
+    SDL_assert(success == 0);
+
     Filesystem_Surface_Pixels2Indices(surf_abgr, surf_index);
 
     path = PATH_JOIN("filesystem", "pixelnours_index.png");
