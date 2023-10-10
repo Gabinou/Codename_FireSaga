@@ -71,8 +71,8 @@ extern SDL_Texture *Filesystem_Texture_Load(struct SDL_Renderer *, const char *f
 
 /* -- Palettes & index shaders -- */
 extern SDL_Surface *Filesystem_indexedSurface_Init(size_t w, size_t h);
-extern SDL_Surface *Filesystem_Surface_Palette_Swap(  SDL_Surface *s, SDL_Palette *p);
-extern SDL_Surface *Filesystem_Surface_Pixels2Indices(SDL_Surface *r, SDL_Surface *i);
+extern SDL_Surface *Filesystem_Surface_Palette_Swap(SDL_Surface *s, SDL_Palette *p);
+extern void Filesystem_Surface_Pixels2Indices(SDL_Surface *r, SDL_Surface *i);
 
 /* --- JSON I/O --- */
 extern void Filesystem_readJSON_Shop(        const char *f, struct Shop         *s);

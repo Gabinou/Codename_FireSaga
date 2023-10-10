@@ -278,7 +278,7 @@ SDL_Surface *Filesystem_Surface_Load(const char *filename, const u32 format) {
         SDL_LockSurface(indexedsurface);
         SDL_LockSurface(conv1surface);
         /* no alloc: */
-        indexedsurface = Filesystem_Surface_Pixels2Indices(conv1surface, indexedsurface);
+        Filesystem_Surface_Pixels2Indices(conv1surface, indexedsurface);
         SDL_SaveBMP(indexedsurface, "indexedsurface.png");
         /*makes surfaces faster allocs? */
         // conv2surface = SDL_ConvertSurface(indexedsurface, indexedsurface->format, SDL_IGNORE);
@@ -414,7 +414,7 @@ SDL_Surface *Filesystem_indexedSurface_Init(size_t w, size_t h) {
 }
 
 /* Convert ABGR color image to indexed images (NES colors) */
-SDL_Surface *Filesystem_Surface_Pixels2Indices(SDL_Surface *abgr_surf, SDL_Surface *index_surf) {
+void Filesystem_Surface_Pixels2Indices(SDL_Surface *abgr_surf, SDL_Surface *index_surf) {
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     /* VERY SLOW */
     SDL_assert(abgr_surf    != NULL);
@@ -467,7 +467,6 @@ SDL_Surface *Filesystem_Surface_Pixels2Indices(SDL_Surface *abgr_surf, SDL_Surfa
     SDL_UnlockSurface(abgr_surf);
     SDL_UnlockSurface(index_surf);
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
-    return (index_surf);
 }
 
 void Filesystem_Texture_Dump(const char *filename, SDL_Renderer *renderer, SDL_Texture *texture,
