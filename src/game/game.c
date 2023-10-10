@@ -392,10 +392,12 @@ struct Game *Game_Init() {
     out_game->pixelnours = PixelFont_Alloc();
     char *path = PATH_JOIN("..", "assets", "Fonts", "pixelnours.png");
     PixelFont_Load(out_game->pixelnours, out_game->renderer, path);
+    out_game->pixelnours->y_offset = pixelfont_y_offset;
 
     out_game->pixelnours_big = PixelFont_Alloc();
     path = PATH_JOIN("..", "assets", "Fonts", "pixelnours_Big.png");
     PixelFont_Load(out_game->pixelnours_big, out_game->renderer, path);
+    out_game->pixelnours_big->y_offset = pixelfont_big_y_offset;
 
     out_game->pixelnours_tight = PixelFont_Alloc();
     path = PATH_JOIN("..", "assets", "Fonts", "pixelnours_tight.png");
