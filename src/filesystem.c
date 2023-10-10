@@ -252,15 +252,14 @@ SDL_Surface *Filesystem_Surface_Load(const char *filename, const u32 format) {
     SDL_Surface *loadedsurface  = NULL, *outsurface   = NULL;
     SDL_Surface *conv1surface   = NULL, *conv2surface = NULL;
     SDL_Surface *indexedsurface = NULL;
-    // SDL. ~2x faster Lodepng with Physfs
+    /* IMG_Load leaves some pixels non-init -> SDL_ConvertSurfaceFormat */
     loadedsurface = IMG_Load(filename);
     SDL_SaveBMP(loadedsurface, "loadedsurface.png");
 
-    // SDL_SaveBMP(loadedsurface, "conv2surface.bmp");
     SDL_assert(loadedsurface != NULL);
     if (SDL_ISPIXELFORMAT_INDEXED(format)) {
         SOTA_Log_Debug("is indexed %d\n", SDL_ISPIXELFORMAT_INDEXED(format));
-        /*align bits for Filesystem_Surface_Pixels2Indices allocs*/
+        /* align bits for Filesystem_Surface_Pixels2Indices allocs */
         conv1surface = SDL_ConvertSurfaceFormat(loadedsurface, SDL_PIXELFORMAT_ABGR8888, SDL_IGNORE);
         SDL_FreeSurface(loadedsurface);
 
@@ -269,7 +268,6 @@ SDL_Surface *Filesystem_Surface_Load(const char *filename, const u32 format) {
         /* alloc: */
         indexedsurface = Filesystem_indexedSurface_Init(conv1surface->w, conv1surface->h);
         SDL_assert(indexedsurface != NULL);
-        // getchar();
 
         /* WEIRDNESS: SDL_ConvertSurface messes up colors when converting to indexed.
             -> affects bridge tileset <-
@@ -457,6 +455,7 @@ void Filesystem_Surface_Pixels2Indices(SDL_Surface *abgr_surf, SDL_Surface *inde
             /* Find which color this pixel corresponds to */
             for (size_t i = 0; i < index_surf->format->palette->ncolors; i++) {
                 color = *(u32 *)(&index_surf->format->palette->colors[i]);
+
                 if (pixel == color) {
                     index = Util_SDL_Surface_Index(index_surf, x, y);
                     SDL_assert(index >= 0);
