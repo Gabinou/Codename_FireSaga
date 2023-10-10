@@ -165,8 +165,9 @@ extern struct MenuElemDirections GM_links[GM_ELEM_NUM];
 extern char GM_description[GM_ELEM_NUM][GM_BUFFER_LEN];
 // TODO: reduce memory usage.
 extern struct Point GM_elem_pos[GM_ELEM_NUM];
+extern struct Point GM_elem_pos_const[GM_ELEM_NUM];
 extern struct Point GM_elem_box[GM_ELEM_NUM];
-extern struct Point GM_cursor_pos[GM_ELEM_NUM];
+extern struct Point GM_cursor_pos_const[GM_ELEM_NUM];
 extern struct Point GM_cursor_box[GM_ELEM_NUM];
 
 #define GROWTHSMENU_POS(xory, offset) (offset * n9patch->scale.xory)

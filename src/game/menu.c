@@ -197,7 +197,7 @@ void Game_StatsMenu_Create(struct Game *sota) {
     mc->data          = stats_menu;
     mc->visible       = true;
     mc->elem_links    = stats_menu_links;
-    mc->elem_pos      = stats_menu_elem_pos;
+    // mc->elem_pos      = stats_menu_elem_pos;
     mc->elem_box      = stats_menu_elem_box;
     mc->elem_num      = STATS_MENU_ELEMS_NUM;
 
@@ -225,7 +225,7 @@ void Game_StatsMenu_Update(struct Game *sota, tnecs_entity_t unit_entity_ontile)
     struct StatsMenu *stats_menu = (struct StatsMenu *)mc->data;
     SDL_assert(unit_ontile->weapons_dtab != NULL);
     StatsMenu_Load(stats_menu, unit_ontile, sota->renderer, &mc->n9patch);
-    /* Scaling elem_pos: put it last cause dependencies */
+    // Scaling elem_pos: put it last cause dependencies
     StatsMenu_Elem_Pos(stats_menu, mc);
     MenuComponent_Elem_Boxes_Check(mc);
 

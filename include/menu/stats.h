@@ -362,11 +362,9 @@ enum STATS_MENU_ELEMS {
 extern struct MenuElemDirections stats_menu_links[STATS_MENU_ELEMS_NUM];
 extern char stats_menu_description[STATS_MENU_ELEMS_NUM][STATSMENU_BUFFER_LEN];
 
-// TODO: reduce memory usage.
 extern struct Point stats_menu_elem_pos[STATS_MENU_ELEMS_NUM];
+extern struct Point sm_elem_pos_const[STATS_MENU_ELEMS_NUM];
 extern struct Point stats_menu_elem_box[STATS_MENU_ELEMS_NUM];
-extern struct Point stats_menu_cursor_pos[STATS_MENU_ELEMS_NUM];
-extern struct Point stats_menu_cursor_box[STATS_MENU_ELEMS_NUM];
 
 extern int status_offset_x[UNIT_STATUS_END];
 extern int status_offset_y[UNIT_STATUS_END];
@@ -404,13 +402,12 @@ extern void StatsMenu_Load(struct StatsMenu       *sm, struct Unit *u, SDL_Rende
 extern void StatsMenu_Load_Face(struct StatsMenu  *sm);
 extern void StatsMenu_Load_Icons(struct StatsMenu *sm, SDL_Renderer *r);
 
-/* --- Positioning --- */
-extern void StatsMenu_Elem_Pos(struct StatsMenu *sm, struct MenuComponent *mc);
-
 /* --- Drawing --- */
 extern void StatsMenu_Draw(  struct MenuComponent *mc, SDL_Texture *rt, SDL_Renderer *r);
 extern void StatsMenu_Update(struct StatsMenu     *s,  struct n9Patch *n9, SDL_Texture *rt,
                              SDL_Renderer *r);
+/* --- Positioning --- */
+extern void StatsMenu_Elem_Pos(struct StatsMenu *sm, struct MenuComponent *mc);
 
 /* -- Drawing elements -- */
 extern void StatsMenu_Draw_Item(         struct StatsMenu *sm, SDL_Renderer *r, int i);
