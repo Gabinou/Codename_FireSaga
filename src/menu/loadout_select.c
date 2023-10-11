@@ -17,7 +17,8 @@ struct Point wsm_elem_box[WSM_ELEMS_NUM] = {
     /* WSM_ELEM_ITEM5 */ {SOTA_TILESIZE, SOTA_TILESIZE},
     /* WSM_ELEM_ITEM6 */ {SOTA_TILESIZE, SOTA_TILESIZE},
 };
-const struct Point  wsm_elem_pos_const[WSM_ELEMS_NUM] = {
+
+struct Point  wsm_elem_pos[WSM_ELEMS_NUM] = {
     /* WSM_ELEM_ITEM1 */ {WSM1_X_OFFSET, WSM1_Y_OFFSET},
     /* WSM_ELEM_ITEM2 */ {WSM2_X_OFFSET, WSM2_Y_OFFSET},
     /* WSM_ELEM_ITEM3 */ {WSM3_X_OFFSET, WSM3_Y_OFFSET},
@@ -25,8 +26,6 @@ const struct Point  wsm_elem_pos_const[WSM_ELEMS_NUM] = {
     /* WSM_ELEM_ITEM5 */ {WSM5_X_OFFSET, WSM5_Y_OFFSET},
     /* WSM_ELEM_ITEM6 */ {WSM6_X_OFFSET, WSM6_Y_OFFSET},
 };
-
-struct Point wsm_elem_pos[WSM_ELEMS_NUM] = {0};
 
 struct MenuElemDirections wsm_links[WSM_ELEMS_NUM] = {
     /*right, top, left, bottom */
@@ -193,15 +192,57 @@ void LoadoutSelectMenu_Elem_Reset(struct LoadoutSelectMenu *lsm, struct MenuComp
 
 void LoadoutSelectMenu_Elem_Pos(struct LoadoutSelectMenu *lsm, struct MenuComponent *mc) {
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
-    /* Scales elem_pos to menu size */
+    /* Scales elem_pos to menu size. */
+    /* 1. Makes the cursor focus on right place on the Screen       */
+    /* 2. Box lined are drawn in menu frame, making thinner lines   */
+
     bool header_drawn = (lsm->header != NULL);
+    /* - Skip if already in screen frame - */
+    if (mc->elem_pos_frame == ELEM_POS_SCREEN_FRAME) {
+        SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
+        return;
+    }
 
     for (size_t i = 0; i < mc->elem_num; i++) {
-        mc->elem_pos[i].x = lsm->pos.x + mc->n9patch.pos.x + wsm_elem_pos_const[i].x *
-                            mc->n9patch.scale.x;
-        mc->elem_pos[i].y = lsm->pos.y + wsm_elem_pos_const[i].y * mc->n9patch.scale.y + header_drawn *
-                            WSM_ROW_HEIGHT;
+        int scale_x = mc->n9patch.scale.x;
+        int scale_y = mc->n9patch.scale.y;
+        int x       = lsm->pos.x + mc->n9patch.pos.x;
+        int y       = lsm->pos.y + header_drawn * WSM_ROW_HEIGHT;
+        int elem_x  = mc->elem_pos[i].x;
+        int elem_y  = mc->elem_pos[i].y;
+        mc->elem_pos[i].x = x + elem_x * scale_x;
+        mc->elem_pos[i].y = y + elem_y * scale_y;
     }
+
+    mc->elem_pos_frame = ELEM_POS_SCREEN_FRAME;
+    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
+}
+
+void LoadoutSelectMenu_Elem_Pos_revert(struct LoadoutSelectMenu *lsm, struct MenuComponent *mc) {
+    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
+    /* Scales elem_pos to menu size. */
+    /* 1. Makes the cursor focus on right place on the Screen       */
+    /* 2. Box lined are drawn in menu frame, making thinner lines   */
+
+    bool header_drawn = (lsm->header != NULL);
+    /* - Skip if already in screen frame - */
+    if (mc->elem_pos_frame == ELEM_POS_MENU_FRAME) {
+        SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
+        return;
+    }
+
+    for (size_t i = 0; i < mc->elem_num; i++) {
+        int scale_x = mc->n9patch.scale.x;
+        int scale_y = mc->n9patch.scale.y;
+        int x       = lsm->pos.x + mc->n9patch.pos.x;
+        int y       = lsm->pos.y + header_drawn * WSM_ROW_HEIGHT;
+        int elem_x  = mc->elem_pos[i].x;
+        int elem_y  = mc->elem_pos[i].y;
+        mc->elem_pos[i].x = (elem_x - x) / scale_x;
+        mc->elem_pos[i].y = (elem_y - y) / scale_y;
+    }
+
+    mc->elem_pos_frame = ELEM_POS_MENU_FRAME;
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 

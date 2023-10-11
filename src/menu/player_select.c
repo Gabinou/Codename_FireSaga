@@ -216,11 +216,11 @@ void PlayerSelectMenu_Elem_Boxes(struct PlayerSelectMenu *psm, struct MenuCompon
 
 void PlayerSelectMenu_Elem_Pos(struct PlayerSelectMenu *psm, struct MenuComponent *mc) {
     SOTA_Log_FPS("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
-    if (mc->elem_pos != NULL)
-        free(mc->elem_pos);
     struct Padding mp = psm->menu_padding;
     struct Point pos9 = mc->n9patch.pos, scale = mc->n9patch.scale;
 
+    if (mc->elem_pos != NULL)
+        free(mc->elem_pos);
     mc->elem_pos = calloc(mc->elem_num, sizeof(*mc->elem_pos));
     for (if32 i = 0; i < mc->elem_num; i++) {
         mc->elem_pos[i].x = psm->pos.x + pos9.x + mp.left * scale.x;

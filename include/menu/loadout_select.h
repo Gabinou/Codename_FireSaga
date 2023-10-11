@@ -139,7 +139,6 @@ extern struct Point   wsm_elem_pos[WSM_ELEMS_NUM];
 extern struct Point   wsm_elem_box[WSM_ELEMS_NUM];
 extern struct Point   wsm_cursor_pos[WSM_ELEMS_NUM];
 extern struct Point   wsm_cursor_box[WSM_ELEMS_NUM];
-extern const struct Point   wsm_elem_pos_const[WSM_ELEMS_NUM];
 
 struct LoadoutSelectMenu {
     struct Point pos; /* [pixels], MENU_POS_bOFFSET = 0 */
@@ -202,6 +201,8 @@ extern void ItemSelectMenu_Select(          struct LoadoutSelectMenu *lsm, int s
 /* --- Elements --- */
 extern void LoadoutSelectMenu_Elem_Pos(  struct LoadoutSelectMenu *lsm, struct MenuComponent *mc);
 extern void LoadoutSelectMenu_Elem_Reset(struct LoadoutSelectMenu *lsm, struct MenuComponent *mc);
+extern void LoadoutSelectMenu_Elem_Pos_Revert(struct LoadoutSelectMenu *lsm,
+                                              struct MenuComponent *mc);
 
 /* --- Drawing --- */
 extern void LoadoutSelectMenu_Size(struct LoadoutSelectMenu  *lsm, struct n9Patch *n9);
