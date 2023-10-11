@@ -361,8 +361,7 @@ enum STATS_MENU_ELEMS {
 extern struct MenuElemDirections stats_menu_links[STATS_MENU_ELEMS_NUM];
 extern char stats_menu_description[STATS_MENU_ELEMS_NUM][STATSMENU_BUFFER_LEN];
 
-extern struct Point stats_menu_elem_pos[STATS_MENU_ELEMS_NUM];
-extern struct Point sm_elem_pos_const[STATS_MENU_ELEMS_NUM];
+extern struct Point sm_elem_pos[STATS_MENU_ELEMS_NUM];
 extern struct Point stats_menu_elem_box[STATS_MENU_ELEMS_NUM];
 
 extern int status_offset_x[UNIT_STATUS_END];

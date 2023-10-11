@@ -19,6 +19,11 @@ enum MENU_ELEM {
     MENU_ELEM_NULL = -1,
 };
 
+enum MENU_ELEM_POS_FRAME {
+    ELEM_POS_MENU_FRAME     = 0,
+    ELEM_POS_SCREEN_FRAME   = 1,
+};
+
 #define MENU_ELEM_DIRECTIONS_PACKED_BYTESIZE 4
 
 /* --- TYPEDEFS --- */
@@ -32,6 +37,7 @@ struct MenuComponent {
 
     /* -- Top left corner of elem box -- */
     struct Point *elem_pos;                 /* [elem] absolute pos on texture */
+    int elem_pos_frame;                     /* elem_pos reference frame */
 
     /* -- Width/height of elem box -- */
     struct Point *elem_box;                 /* [elem] width, height of box in [pixel] */
@@ -51,13 +57,12 @@ struct MenuComponent {
 extern struct MenuComponent MenuComponent_default;
 
 /* --- Constructors/Destructors --- */
-extern void MenuComponent_Elem_Free( struct MenuComponent *mc);
-extern void MenuComponent_Elem_Alloc(struct MenuComponent *mc, uf8 en);
+extern void MenuComponent_Elem_Free(struct MenuComponent *mc);
 
 /* --- Internals --- */
-extern int Periodic_Elem_Move(             struct MenuComponent *mc, int d, int min, int max);
-extern void MenuComponent_Elem_Set(        struct MenuComponent *mc, struct Game *sota, if8 d);
-extern int MenuComponent_Elem_Move(        struct MenuComponent *mc, int d);
+extern int Periodic_Elem_Move(     struct MenuComponent *mc, int d, int min, int max);
+extern void MenuComponent_Elem_Set(struct MenuComponent *mc, struct Game *sota, if8 d);
+extern int MenuComponent_Elem_Move(struct MenuComponent *mc, int d);
 extern void MenuComponent_Elem_Boxes_Check(struct MenuComponent *mc);
 
 /* --- Debug --- */

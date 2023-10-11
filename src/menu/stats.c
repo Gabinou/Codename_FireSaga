@@ -233,7 +233,7 @@ struct Point stats_menu_elem_box[SM_ELEM_NUM] = {
 };
 struct Point stats_menu_elem_pos[STATS_MENU_ELEMS_NUM] = {0};
 
-struct Point sm_elem_pos_const[SM_ELEM_NUM] = {
+struct Point sm_elem_pos[SM_ELEM_NUM] = {
     /* SM_ELEM_SEX */       {SEX_ICON_X_OFFSET, SEX_ICON_Y_OFFSET},
     /* SM_ELEM_TITLE */     {TITLE_X_OFFSET,     TITLE_Y_OFFSET},
     /* SM_ELEM_NAME */      {NAME_X_OFFSET,      NAME_Y_OFFSET},
@@ -480,10 +480,18 @@ void StatsMenu_Elem_Pos(struct StatsMenu *sm, struct MenuComponent *mc) {
     /* Scales elem_pos to menu size. */
     /* 1. Makes the cursor focus on right place on the Screen */
     /* 2. Draws the boxes with thinner lines due to scaling */
-    for (size_t i = 0; i < mc->elem_num; i++) {
-        mc->elem_pos[i].x = sm->pos.x + mc->n9patch.pos.x + sm_elem_pos_const[i].x * mc->n9patch.scale.x;
-        mc->elem_pos[i].y = sm->pos.y + sm_elem_pos_const[i].y * mc->n9patch.scale.y;
+
+    /* - Skip if already in menu frame - */
+    if (mc->elem_pos_frame == ELEM_POS_MENU_FRAME) {
+        SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
+        return;
     }
+
+    for (size_t i = 0; i < mc->elem_num; i++) {
+        mc->elem_pos[i].x = sm->pos.x + mc->n9patch.pos.x + mc->elem_pos[i].x * mc->n9patch.scale.x;
+        mc->elem_pos[i].y = sm->pos.y + mc->elem_pos[i].y * mc->n9patch.scale.y;
+    }
+    mc->elem_pos_frame = ELEM_POS_SCREEN_FRAME;
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 

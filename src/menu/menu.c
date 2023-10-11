@@ -9,6 +9,7 @@ struct MenuElemDirections MenuElemDirections_default = {
 
 struct MenuComponent MenuComponent_default =  {
     .elem_pos         = NULL, /* [elem] */
+    .elem_pos_frame   = ELEM_POS_MENU_FRAME,
     .elem_box         = NULL, /* [elem] */
     .cursor_pos       = NULL, /* [elem] */
     .elem_description = NULL, /* [elem] */
@@ -21,38 +22,27 @@ struct MenuComponent MenuComponent_default =  {
 };
 
 /* --- MenuComponent --- */
-void MenuComponent_Elem_Alloc(struct MenuComponent *menu_comp, uf8 elem_num) {
+void MenuComponent_Elem_Free(struct MenuComponent *mc) {
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
-    MenuComponent_Elem_Free(menu_comp);
-    menu_comp->elem_pos         = calloc(elem_num, sizeof(*menu_comp->elem_pos));
-    menu_comp->elem_box         = calloc(elem_num, sizeof(*menu_comp->elem_box));
-    menu_comp->cursor_pos       = calloc(elem_num, sizeof(*menu_comp->cursor_pos));
-    menu_comp->elem_links       = malloc(elem_num * sizeof(*menu_comp->elem_links));
-    menu_comp->elem_description = malloc(elem_num * sizeof(*menu_comp->elem_description));
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
-}
-
-void MenuComponent_Elem_Free(struct MenuComponent *menu_comp) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
-    if (menu_comp->elem_pos != NULL) {
-        free(menu_comp->elem_pos);
-        menu_comp->elem_pos = NULL;
+    if (mc->elem_pos != NULL) {
+        free(mc->elem_pos);
+        mc->elem_pos = NULL;
     }
-    if (menu_comp->cursor_pos != NULL) {
-        free(menu_comp->elem_pos);
-        menu_comp->elem_pos = NULL;
+    if (mc->cursor_pos != NULL) {
+        free(mc->elem_pos);
+        mc->elem_pos = NULL;
     }
-    if (menu_comp->elem_box != NULL) {
-        free(menu_comp->elem_box);
-        menu_comp->elem_box = NULL;
+    if (mc->elem_box != NULL) {
+        free(mc->elem_box);
+        mc->elem_box = NULL;
     }
-    if (menu_comp->elem_description != NULL) {
-        free(menu_comp->elem_description);
-        menu_comp->elem_description = NULL;
+    if (mc->elem_description != NULL) {
+        free(mc->elem_description);
+        mc->elem_description = NULL;
     }
-    if (menu_comp->elem_links != NULL) {
-        free(menu_comp->elem_links);
-        menu_comp->elem_links = NULL;
+    if (mc->elem_links != NULL) {
+        free(mc->elem_links);
+        mc->elem_links = NULL;
     }
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
@@ -112,27 +102,27 @@ int MenuComponent_Elem_Move(struct MenuComponent *in_menu, int direction) {
     return (out);
 }
 
-void MenuComponent_Elem_Boxes_Check(struct MenuComponent *menu_comp) {
+void MenuComponent_Elem_Boxes_Check(struct MenuComponent *mc) {
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     /* Fit elem_box to linked elems snuggly */
-    for (uf32 i = 0; i < menu_comp->elem_num; i++) {
+    for (uf32 i = 0; i < mc->elem_num; i++) {
         /* Get elem pos and initial box */
-        struct Point *elem_box = &(menu_comp->elem_box[i]);
-        SDL_assert(elem_box->x == menu_comp->elem_box[i].x);
-        SDL_assert(elem_box->y == menu_comp->elem_box[i].y);
-        struct Point *elem_pos = &(menu_comp->elem_pos[i]);
-        SDL_assert(elem_pos->x == menu_comp->elem_pos[i].x);
-        SDL_assert(elem_pos->y == menu_comp->elem_pos[i].y);
+        struct Point *elem_box = &(mc->elem_box[i]);
+        SDL_assert(elem_box->x == mc->elem_box[i].x);
+        SDL_assert(elem_box->y == mc->elem_box[i].y);
+        struct Point *elem_pos = &(mc->elem_pos[i]);
+        SDL_assert(elem_pos->x == mc->elem_pos[i].x);
+        SDL_assert(elem_pos->y == mc->elem_pos[i].y);
         /* - cast link struct to array - */
-        if8 *links = (if8 *) & (menu_comp->elem_links[i]);
+        if8 *links = (if8 *) & (mc->elem_links[i]);
 
         /* -- Fitting box to 4 linked elems if they exist -- */
         /* - right link - */
         int direction_i = direction_arr_i[SOTA_DIRECTION_RIGHT];
         if8 link = links[direction_i];
-        SDL_assert(link < menu_comp->elem_num);
+        SDL_assert(link < mc->elem_num);
         if (link != MENU_ELEM_NULL) {
-            struct Point *link_pos = &(menu_comp->elem_pos[link]);
+            struct Point *link_pos = &(mc->elem_pos[link]);
             if (elem_pos->x < link_pos->x) {
                 /* - shorten elem x - */
                 elem_box->x = link_pos->x - elem_pos->x - 1;
@@ -142,10 +132,10 @@ void MenuComponent_Elem_Boxes_Check(struct MenuComponent *menu_comp) {
         /* - top link - */
         direction_i = direction_arr_i[SOTA_DIRECTION_TOP];
         link = links[direction_i];
-        SDL_assert(link < menu_comp->elem_num);
+        SDL_assert(link < mc->elem_num);
         if (link != MENU_ELEM_NULL) {
-            struct Point *link_box = &(menu_comp->elem_box[link]);
-            struct Point *link_pos = &(menu_comp->elem_pos[link]);
+            struct Point *link_box = &(mc->elem_box[link]);
+            struct Point *link_pos = &(mc->elem_pos[link]);
             if (link_pos->y < elem_pos->y) {
                 /* - shorten link y - */
                 link_box->y = elem_pos->y - link_pos->y - 1;
@@ -155,10 +145,10 @@ void MenuComponent_Elem_Boxes_Check(struct MenuComponent *menu_comp) {
         /* - left link - */
         direction_i = direction_arr_i[SOTA_DIRECTION_LEFT];
         link = links[SOTA_DIRECTION_LEFT];
-        SDL_assert(link < menu_comp->elem_num);
+        SDL_assert(link < mc->elem_num);
         if (link != MENU_ELEM_NULL) {
-            struct Point *link_box = &(menu_comp->elem_box[link]);
-            struct Point *link_pos = &(menu_comp->elem_pos[link]);
+            struct Point *link_box = &(mc->elem_box[link]);
+            struct Point *link_pos = &(mc->elem_pos[link]);
             if (link_pos->x < elem_pos->x) {
                 /* - shorten link x - */
                 link_box->x = elem_pos->x - link_pos->x - 1;
@@ -168,9 +158,9 @@ void MenuComponent_Elem_Boxes_Check(struct MenuComponent *menu_comp) {
         /* - bottom link - */
         direction_i = direction_arr_i[SOTA_DIRECTION_BOTTOM];
         link = links[direction_i];
-        SDL_assert(link < menu_comp->elem_num);
+        SDL_assert(link < mc->elem_num);
         if (link != MENU_ELEM_NULL) {
-            struct Point *link_pos = &(menu_comp->elem_pos[link]);
+            struct Point *link_pos = &(mc->elem_pos[link]);
             if (elem_pos->y < link_pos->y) {
                 /* - shorten elem y - */
                 elem_box->y = link_pos->y - elem_pos->y - 1;

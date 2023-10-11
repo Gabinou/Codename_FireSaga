@@ -197,7 +197,7 @@ void Game_StatsMenu_Create(struct Game *sota) {
     mc->data          = stats_menu;
     mc->visible       = true;
     mc->elem_links    = stats_menu_links;
-    mc->elem_pos      = stats_menu_elem_pos;
+    mc->elem_pos      = sm_elem_pos;
     mc->elem_box      = stats_menu_elem_box;
     mc->elem_num      = STATS_MENU_ELEMS_NUM;
 
