@@ -229,10 +229,45 @@ void GrowthsMenu_Load(struct GrowthsMenu *gm, SDL_Renderer *renderer, struct n9P
 }
 
 void GrowthsMenu_Elem_Pos(struct GrowthsMenu *gm, struct MenuComponent *mc) {
+    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
+    /* Scales elem_pos to menu size. */
+    /* 1. Makes the cursor focus on right place on the Screen       */
+    /* 2. Box lined are drawn in menu frame, making thinner lines   */
+
+    /* - Skip if already in screen frame - */
+    if (mc->elem_pos_frame == ELEM_POS_SCREEN_FRAME) {
+        SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
+        return;
+    }
+
     for (size_t i = 0; i < mc->elem_num; i++) {
         mc->elem_pos[i].x = gm->pos.x + mc->elem_pos[i].x * mc->n9patch.scale.x;
         mc->elem_pos[i].y = gm->pos.y + mc->elem_pos[i].y * mc->n9patch.scale.y;
     }
+
+    mc->elem_pos_frame = ELEM_POS_SCREEN_FRAME;
+    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
+}
+
+void GrowthsMenu_Elem_Pos_Revert(struct GrowthsMenu *gm, struct MenuComponent *mc) {
+    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
+    /* Scales elem_pos to menu size. */
+    /* 1. Makes the cursor focus on right place on the Screen       */
+    /* 2. Box lined are drawn in menu frame, making thinner lines   */
+
+    /* - Skip if already in screen frame - */
+    if (mc->elem_pos_frame == ELEM_POS_MENU_FRAME) {
+        SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
+        return;
+    }
+
+    for (size_t i = 0; i < mc->elem_num; i++) {
+        mc->elem_pos[i].x = (mc->elem_pos[i].x - gm->pos.x) / mc->n9patch.scale.x;
+        mc->elem_pos[i].y = (mc->elem_pos[i].y - gm->pos.y) / mc->n9patch.scale.y;
+    }
+
+    mc->elem_pos_frame = ELEM_POS_MENU_FRAME;
+    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 void GrowthsMenu_Draw(struct MenuComponent *mc, SDL_Texture *render_target,

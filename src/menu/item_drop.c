@@ -21,7 +21,7 @@ struct nmath_point_int32_t idm_elem_box[IDM_ELEM_NUM] = {
     /* IDM_ELEM_NO */ {SOTA_TILESIZE, SOTA_TILESIZE},
 };
 
-const struct nmath_point_int32_t  idm_elem_pos_const[IDM_ELEM_NUM] = {
+struct nmath_point_int32_t  idm_elem_pos[IDM_ELEM_NUM] = {
     /* IDM_ELEM_YES */ {IDM_ELEM_YES_X, IDM_ELEM_YES_Y},
     /* IDM_ELEM_NO */  {IDM_ELEM_NO_X,  IDM_ELEM_NO_Y},
 };

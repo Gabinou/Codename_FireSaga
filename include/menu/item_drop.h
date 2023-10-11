@@ -64,7 +64,6 @@ extern       struct nmath_point_int32_t   idm_elem_pos      [IDM_ELEM_NUM];
 extern       struct nmath_point_int32_t   idm_elem_box      [IDM_ELEM_NUM];
 extern       struct nmath_point_int32_t   idm_cursor_pos    [IDM_ELEM_NUM];
 extern       struct nmath_point_int32_t   idm_cursor_box    [IDM_ELEM_NUM];
-extern const struct nmath_point_int32_t   idm_elem_pos_const[IDM_ELEM_NUM];
 
 
 struct ItemDropMenu {
