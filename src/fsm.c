@@ -1083,7 +1083,7 @@ void fsm_substate_IA_MAP_NPCTURN(struct Game *sota, tnecs_entity_t accepter_enti
 /* Input_Stats */
 void fsm_sub_event_IS_STANDBY(struct Game *sota, tnecs_entity_t accepter) {
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
-    SDL_Log("Making stats menu");
+
     SDL_assert(sota->entity_cursor);
     struct Position *cursor_pos = TNECS_GET_COMPONENT(sota->world, sota->entity_cursor, Position);
     SDL_assert(cursor_pos != NULL);

@@ -478,8 +478,33 @@ void StatsMenu_Load_Icons(struct StatsMenu *stats_menu, SDL_Renderer *renderer) 
 void StatsMenu_Elem_Pos(struct StatsMenu *sm, struct MenuComponent *mc) {
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     /* Scales elem_pos to menu size. */
-    /* 1. Makes the cursor focus on right place on the Screen */
-    /* 2. Draws the boxes with thinner lines due to scaling */
+    /* 1. Makes the cursor focus on right place on the Screen       */
+    /* 2. Box lined are drawn in menu frame, making thinner lines   */
+
+    /* - Skip if already in screen frame - */
+    if (mc->elem_pos_frame == ELEM_POS_SCREEN_FRAME) {
+        SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
+        return;
+    }
+
+    for (size_t i = 0; i < mc->elem_num; i++) {
+        int scale_x = mc->n9patch.scale.x;
+        int scale_y = mc->n9patch.scale.y;
+        int x       = sm->pos.x + mc->n9patch.pos.x;
+        int y       = sm->pos.y;
+        int elem_x  = mc->elem_pos[i].x;
+        int elem_y  = mc->elem_pos[i].y;
+        mc->elem_pos[i].x = x + elem_x * scale_x;
+        mc->elem_pos[i].y = y + elem_y * scale_y;
+    }
+
+    mc->elem_pos_frame = ELEM_POS_SCREEN_FRAME;
+    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
+}
+
+void StatsMenu_Elem_Pos_Revert(struct StatsMenu *sm, struct MenuComponent *mc) {
+    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
+    /* Reset elem_pos to menu size. */
 
     /* - Skip if already in menu frame - */
     if (mc->elem_pos_frame == ELEM_POS_MENU_FRAME) {
@@ -488,15 +513,23 @@ void StatsMenu_Elem_Pos(struct StatsMenu *sm, struct MenuComponent *mc) {
     }
 
     for (size_t i = 0; i < mc->elem_num; i++) {
-        mc->elem_pos[i].x = sm->pos.x + mc->n9patch.pos.x + mc->elem_pos[i].x * mc->n9patch.scale.x;
-        mc->elem_pos[i].y = sm->pos.y + mc->elem_pos[i].y * mc->n9patch.scale.y;
+        int scale_x = mc->n9patch.scale.x;
+        int scale_y = mc->n9patch.scale.y;
+        int x       = sm->pos.x + mc->n9patch.pos.x;
+        int y       = sm->pos.y;
+        int elem_x  = mc->elem_pos[i].x;
+        int elem_y  = mc->elem_pos[i].y;
+        mc->elem_pos[i].x = (elem_x - x) / scale_x;
+        mc->elem_pos[i].y = (elem_y - y) / scale_y;
     }
-    mc->elem_pos_frame = ELEM_POS_SCREEN_FRAME;
+
+    mc->elem_pos_frame = ELEM_POS_MENU_FRAME;
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 /* --- Drawing --- */
 void StatsMenu_Draw_Name(struct StatsMenu *stats_menu, SDL_Renderer *renderer) {
+    SOTA_Log_FPS("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     /* -- HEADER WRITING -- */
     SDL_Rect dstrect, srcrect;
     struct Unit_stats     *effective_stats  = &stats_menu->unit->effective_stats;
@@ -572,6 +605,7 @@ void StatsMenu_Draw_Name(struct StatsMenu *stats_menu, SDL_Renderer *renderer) {
     stbsp_sprintf(numbuff, "%d", effective_stats->move);
     x = MOVE_STAT_X_OFFSET, y = MOVE_STAT_Y_OFFSET;
     PixelFont_Write_Len(stats_menu->pixelnours_big, renderer, numbuff, x, y);
+    SOTA_Log_FPS("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 void StatsMenu_Draw_Mount(struct StatsMenu *stats_menu, SDL_Renderer *renderer) {

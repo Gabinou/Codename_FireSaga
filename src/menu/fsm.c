@@ -729,7 +729,6 @@ void fsm_menu_type_IC_item_select(struct Game *sota, struct MenuComponent *mc) {
 
 void fsm_menu_type_IC_stats(struct Game *sota, struct MenuComponent *mc) {
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
-    SDL_Log("Popping stats menu");
 
     bool destroy = false;
     tnecs_entity_t menu_popped_entity = Game_menuStack_Pop(sota, destroy);
