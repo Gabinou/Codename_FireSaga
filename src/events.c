@@ -777,6 +777,18 @@ void receive_event_Loadout_Selected(struct Game *sota, SDL_Event *userevent) {
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
+void receive_event_Input_ZOOM_IN(struct Game *sota, SDL_Event *userevent) { 
+    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
+
+    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
+}
+
+void receive_event_Input_ZOOM_OUT(struct Game *sota, SDL_Event *userevent) { 
+    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
+
+    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
+}
+
 void receive_event_Input_MENURIGHT(struct Game *sota, SDL_Event *userevent) {
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     i32 controller_type = *(i32 *)userevent->user.data1;
@@ -786,6 +798,7 @@ void receive_event_Input_MENURIGHT(struct Game *sota, SDL_Event *userevent) {
         fsm_state_ImR[sota->state](sota, controller_type);
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
+
 
 void receive_event_Input_MENULEFT(struct Game *sota, SDL_Event *userevent) {
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
