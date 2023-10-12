@@ -32,6 +32,7 @@ fsm_state_inputs_t fsm_substate_inputs[GAME_SUBSTATE_NUM] = {
 
 /* Gamecube controller has NO shoulder_left */
 void fsm_state_inputs_GAMEPLAY_MAP(struct Game *sota) {
+    SDL_Log("fsm_state_inputs_GAMEPLAY_MAP");
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     sota->inputs[SOTA_BUTTON_DPAD_RIGHT]      = 0;
     sota->inputs[SOTA_BUTTON_DPAD_UP]         = 0;
@@ -59,6 +60,7 @@ void fsm_state_inputs_TITLE_SCREEN(struct Game *sota) {
 
 void fsm_substate_inputs_MENU(struct Game *sota) {
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
+    SDL_Log("fsm_substate_inputs_MENU");
     sota->inputs[SOTA_BUTTON_DPAD_RIGHT]      = 0;
     sota->inputs[SOTA_BUTTON_DPAD_UP]         = 0;
     sota->inputs[SOTA_BUTTON_DPAD_LEFT]       = 0;

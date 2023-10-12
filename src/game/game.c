@@ -622,7 +622,7 @@ void Game_State_Set(struct Game *sota, const if8 new_state, const char *reason) 
     sota->state = new_state;
 
     /* --- Set default contextual inputs --- */
-    // fsm_state_inputs[sota->state](sota);
+    fsm_state_inputs[sota->state](sota);
 
     SOTA_Log_Debug("Game state changed %d->%d: %s->%s", sota->state_previous, sota->state,
                    gameStatenames[sota->state_previous], gameStatenames[sota->state]);

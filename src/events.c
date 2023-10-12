@@ -867,6 +867,11 @@ void receive_event_Input_ZOOM_OUT(struct Game *sota, SDL_Event *userevent) {
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
+void receive_event_Input_UP(    struct Game *sota, SDL_Event *userevent) {}
+void receive_event_Input_LEFT(  struct Game *sota, SDL_Event *userevent) {}
+void receive_event_Input_DOWN(  struct Game *sota, SDL_Event *userevent) {}
+void receive_event_Input_RIGHT( struct Game *sota, SDL_Event *userevent) {}
+
 void receive_event_Input_MENURIGHT(struct Game *sota, SDL_Event *userevent) {
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     i32 controller_type = *(i32 *)userevent->user.data1;
@@ -1293,9 +1298,12 @@ void Events_Names_Declare() {
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
 #define REGISTER_ENUM(x) event_##x = SDL_RegisterEvents(1);
 #include "names/events.h"
+#undef REGISTER_ENUM
+#define REGISTER_ENUM(x)  event_Input_##x = SDL_RegisterEvents(1);
+#include "names/input.h"
+#undef REGISTER_ENUM
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
-#undef REGISTER_ENUM
 
 extern void Events_Names_Free() {
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
@@ -1325,9 +1333,17 @@ extern void Events_Names_Alloc() {
     temp_str[sizeof(#x)] = '\0';\
     event_names[(event_##x - event_Start)] = nstr_toUpper(temp_str);
 #include "names/events.h"
+#undef REGISTER_ENUM
+
+#define REGISTER_ENUM(x) temp_str = (char *) malloc(DEFAULT_BUFFER_SIZE);\
+    strncpy(temp_str, #x, sizeof(#x));\
+    temp_str[sizeof(#x)] = '\0';\
+    event_names[(event_Input_##x - event_Start)] = nstr_toUpper(temp_str);
+#include "names/input.h"
+#undef REGISTER_ENUM
+
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
-#undef REGISTER_ENUM
 
 void Events_Receivers_Free() {
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
@@ -1346,6 +1362,11 @@ void Events_Receivers_Declare() {
     DTAB_ADD(receivers_dtab, &temp_receiver_p, event_##x);
 #include "names/events.h"
 #undef REGISTER_ENUM
+#define REGISTER_ENUM(x) temp_receiver_p = &receive_event_Input_##x;\
+    DTAB_ADD(receivers_dtab, &temp_receiver_p, event_Input_##x);
+#include "names/input.h"
+#undef REGISTER_ENUM
+
 #define REGISTER_ENUM(x) temp_index = x;\
     temp_receiver_p     = &receive_event_##x;\
     DTAB_ADD(receivers_dtab, &temp_receiver_p, temp_index);

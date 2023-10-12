@@ -62,16 +62,20 @@ void Control_Pressed(if8 sota_b, if8 *press, if8 *pressed_num, bool block, if32 
     SOTA_Log_FPS("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     press[(*pressed_num)++] = sota_b;
     if (block) {
+        SDL_Log("blocked");
         SOTA_Log_FPS("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
         return;
     }
     if (event <= 0) {
+        SDL_Log("event <= 0 -> %d", event);
         SOTA_Log_FPS("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
         return;
     }
     // TODO: fsm for button events
-    if ((t_min_ns <= 0) || (t_held_ns > t_min_ns))
+    if ((t_min_ns <= 0) || (t_held_ns > t_min_ns)) {
+        SDL_Log("Event_Emit");
         Event_Emit(__func__, SDL_USEREVENT, event, controller_type, NULL);
+    }
     SOTA_Log_FPS("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
@@ -111,10 +115,10 @@ void Control_Keyboard(tnecs_system_input_t *input) {
         if32   *theld_ns = &kb->timeheld_move_ns;
         size_t *bheld    = &kb->held_button_num;
 
-        for (int b = SOTA_BUTTON_A; b <= SOTA_BUTTON_TRIGGER_RIGHT; b++) {
-            // for (int sota_b = SOTA_BUTTON_A; sota_b < SOTA_BUTTON_END; sota_b++) {
-            if (Keyboard_isPressed(kb, kb_state, b))
-                Keyboard_Pressed(b, press, &pnum, ct, sota->inputs[b], kb);
+        for (int sota_b = SOTA_BUTTON_A; sota_b <= SOTA_BUTTON_TRIGGER_RIGHT; sota_b++) {
+            int sdl_button = sdl_buttons[sota_b];
+            if (Keyboard_isPressed(kb, kb_state, sota_b))
+                Keyboard_Pressed(sota_b, press, &pnum, ct, sota->inputs[sota_b], kb);
         }
 
         Keyboard_Held(kb->held_button, bheld, theld, press, pnum, input->deltat);
@@ -186,8 +190,10 @@ void Control_Gamepad(tnecs_system_input_t *input) {
         // TODO: use controller buttons
         for (int sota_b = SOTA_BUTTON_A; sota_b < SOTA_BUTTON_END; sota_b++) {
             int sdl_button = sdl_buttons[sota_b];
-            if (Gamepad_isPressed(gp, sdl_button))
+            if (Gamepad_isPressed(gp, sdl_button)) {
+                SDL_Log("button %d", sota_b);
                 Gamepad_Pressed(sota_b, press, &pnum, &gp->controller_type, sota->inputs[sota_b], gp);
+            }
         }
 
         Gamepad_Held(gp->held_button, bheld, theld, press, pnum, input->deltat);
