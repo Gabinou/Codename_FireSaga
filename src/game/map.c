@@ -115,7 +115,6 @@ void Game_debugMap_Load(struct Game *sota) {
 void Game_Map_Reinforcements_Free(struct Game *sota) {
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     SDL_assert(sota                 != NULL);
-    SDL_assert(sota->map            != NULL);
     if (sota->map_enemies == NULL) {
         SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
         return;

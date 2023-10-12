@@ -65,7 +65,7 @@ void fsm_substate_inputs_MENU(struct Game *sota) {
     sota->inputs[SOTA_BUTTON_DPAD_DOWN]       = 0;
     sota->inputs[SOTA_BUTTON_A]               = event_Input_ACCEPT;
     sota->inputs[SOTA_BUTTON_B]               = event_Input_CANCEL;
-    // sota->inputs[SOTA_BUTTON_X]               = 0;
+    sota->inputs[SOTA_BUTTON_X]               = 0;
     sota->inputs[SOTA_BUTTON_Y]               = event_Input_STATS;
     sota->inputs[SOTA_BUTTON_START]           = event_Input_PAUSE;
     sota->inputs[SOTA_BUTTON_SHOULDER_LEFT]   = 0;

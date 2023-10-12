@@ -328,7 +328,7 @@ void receive_event_Gameplay_Return2Standby(struct Game *sota, SDL_Event *usereve
 
     /* -- Setting game substate -- */
     if (sota->substate != GAME_SUBSTATE_STANDBY) {
-        strncpy(sota->reason, "game->substate returns to Standby",
+        strncpy(sota->reason, "sota->substate returns to Standby",
                 sizeof(sota->reason));
         Game_subState_Set(sota, GAME_SUBSTATE_STANDBY, sota->reason);
     }
@@ -777,14 +777,92 @@ void receive_event_Loadout_Selected(struct Game *sota, SDL_Event *userevent) {
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
-void receive_event_Input_ZOOM_IN(struct Game *sota, SDL_Event *userevent) { 
+void receive_event_Input_ZOOM_IN(struct Game *sota, SDL_Event *userevent) {
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
+    /* -- Check: Only Zoom_in on the map -- */
+    SDL_assert(sota->state == GAME_STATE_Gameplay_Map);
+    bool correct_substate = (sota->substate == GAME_SUBSTATE_STANDBY);
+    correct_substate |= (sota->substate == GAME_SUBSTATE_MAP_CANDIDATES);
+    correct_substate |= (sota->substate == GAME_SUBSTATE_MAP_UNIT_MOVES);
+    correct_substate |= (sota->substate == GAME_SUBSTATE_MAP_ANIMATION);
+    SDL_assert(correct_substate);
+
+    i32 controller_type = *(i32 *)userevent->user.data1;
+    Events_Controllers_Check(sota, controller_type);
+
+    /* -- Zoom in to sprite_atorigin -- */
+    const struct Sprite *sprite_atorigin;
+    const struct Sprite *cursor_sprite;
+    const struct Sprite *mouse_sprite;
+    cursor_sprite   = TNECS_GET_COMPONENT(sota->world, sota->entity_cursor, Sprite);
+    mouse_sprite    = TNECS_GET_COMPONENT(sota->world, sota->entity_mouse, Sprite);
+    SDL_assert(cursor_sprite != NULL);
+    SDL_assert(mouse_sprite != NULL);
+
+    /* - Choose which sprite to zoom into - */
+    switch (controller_type) {
+        case CONTROLLER_GAMEPAD:
+            sprite_atorigin = cursor_sprite;
+        case CONTROLLER_MOUSE:
+            sprite_atorigin = mouse_sprite;
+        default:
+            sprite_atorigin = cursor_sprite;
+    }
+    /* - Zoom in - */
+    struct Camera *cam = &sota->camera;
+    struct SDL_Rect dstrect = sprite_atorigin->dstrect;
+    float previous_zoom = cam->zoom;
+    float new_zoom = cam->zoom + CAMERA_INCREMENT;
+    cam->zoom = new_zoom < MAX_CAMERA_ZOOM ? new_zoom : cam->zoom;
+    cam->offset.x = SOTA_ZOOMTOPOINT(cam->zoom / previous_zoom, cam->offset.x, dstrect.x);
+    cam->offset.y = SOTA_ZOOMTOPOINT(cam->zoom / previous_zoom, cam->offset.y, dstrect.y);
+    sota->map->camera_moved = true;
+
 
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
-void receive_event_Input_ZOOM_OUT(struct Game *sota, SDL_Event *userevent) { 
+void receive_event_Input_ZOOM_OUT(struct Game *sota, SDL_Event *userevent) {
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
+    /* -- Check: Only Zoom_out on the map -- */
+    SDL_assert(sota->state == GAME_STATE_Gameplay_Map);
+    bool correct_substate = (sota->substate == GAME_SUBSTATE_STANDBY);
+    correct_substate |= (sota->substate == GAME_SUBSTATE_MAP_CANDIDATES);
+    correct_substate |= (sota->substate == GAME_SUBSTATE_MAP_UNIT_MOVES);
+    correct_substate |= (sota->substate == GAME_SUBSTATE_MAP_ANIMATION);
+    SDL_assert(correct_substate);
+
+    i32 controller_type = *(i32 *)userevent->user.data1;
+    Events_Controllers_Check(sota, controller_type);
+
+    /* -- Zoom out to sprite_atorigin -- */
+    const struct Sprite *cursor_sprite;
+    const struct Sprite *mouse_sprite;
+    const struct Sprite *sprite_atorigin;
+    cursor_sprite = TNECS_GET_COMPONENT(sota->world, sota->entity_cursor, Sprite);
+    mouse_sprite = TNECS_GET_COMPONENT(sota->world, sota->entity_mouse, Sprite);
+    SDL_assert(cursor_sprite != NULL);
+    SDL_assert(mouse_sprite != NULL);
+
+    /* - Choose which sprite to zoom into - */
+    switch (controller_type) {
+        case CONTROLLER_GAMEPAD:
+            sprite_atorigin = cursor_sprite;
+        case CONTROLLER_MOUSE:
+            sprite_atorigin = mouse_sprite;
+        default:
+            sprite_atorigin = cursor_sprite;
+    }
+    /* - Zoom out - */
+    struct Camera *cam = &sota->camera;
+    struct SDL_Rect dstrect = sprite_atorigin->dstrect;
+    float previous_zoom = cam->zoom;
+    float new_zoom = cam->zoom - CAMERA_INCREMENT;
+    cam->zoom = new_zoom > MIN_CAMERA_ZOOM ? new_zoom : cam->zoom;
+    cam->offset.x = SOTA_ZOOMTOPOINT(cam->zoom / previous_zoom, cam->offset.x, dstrect.x);
+    cam->offset.y = SOTA_ZOOMTOPOINT(cam->zoom / previous_zoom, cam->offset.y, dstrect.y);
+    sota->map->camera_moved = true;
+
 
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }

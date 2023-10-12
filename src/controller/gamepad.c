@@ -137,12 +137,12 @@ bool Gamepad_ButtonorAxis(struct controllerGamepad *gp, int sdl_button, int i, b
     bool out;
     if (isbutton) {
         out = SDL_GameControllerGetButton(controller, sdl_button);
-        // if (out)
-        // SOTA_Log_Debug("Gamepad pressing %s", button_names[sdl_button]);
+        if (out)
+            SDL_Log("Gamepad pressing %s", button_names[sdl_button]);
     } else {
         out = SDL_GameControllerGetAxis(controller, sdl_button) > gp->deadzone_trigger;
-        // if (out)
-        // SOTA_Log_Debug("Gamepad pressing %s", axis_names[sdl_button]);
+        if (out)
+            SDL_Log("Gamepad pressing %s", axis_names[sdl_button]);
     }
 
     SOTA_Log_FPS("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);

@@ -10,6 +10,7 @@
 #include "nmath.h"
 #include "globals.h"
 #include "utilities.h"
+#include "controller/gamepad.h"
 #include "SDL2/SDL.h"
 
 extern struct KeyboardInputMap {
