@@ -2,7 +2,7 @@
 #include "systems/control.h"
 
 void Control_Cursor_Moves(struct Game *sota,    struct Point cursor_move,
-                          struct Point target,  struct Point px_pos, 
+                          struct Point target,  struct Point px_pos,
                           if32 controller_type) {
     SOTA_Log_FPS("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     /* - Immobile cursor - */
@@ -111,8 +111,8 @@ void Control_Keyboard(tnecs_system_input_t *input) {
         if32   *theld_ns = &kb->timeheld_move_ns;
         size_t *bheld    = &kb->held_button_num;
 
-        for (int b = SOTA_INPUT_ACCEPT; b <= SOTA_INPUT_GLOBALRANGE; b++) {
-        // for (int sota_b = SOTA_BUTTON_A; sota_b < SOTA_BUTTON_END; sota_b++) {
+        for (int b = SOTA_BUTTON_A; b <= SOTA_BUTTON_TRIGGER_RIGHT; b++) {
+            // for (int sota_b = SOTA_BUTTON_A; sota_b < SOTA_BUTTON_END; sota_b++) {
             if (Keyboard_isPressed(kb, kb_state, b))
                 Keyboard_Pressed(b, press, &pnum, ct, btn_ev[b], kb);
         }

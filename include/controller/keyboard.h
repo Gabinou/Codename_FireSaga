@@ -20,42 +20,32 @@ extern struct KeyboardInputMap {
     SDL_Scancode    dpad_down[SOTA_MAPPABLE_BUTTONS_NUM];
 
     /* Physical buttons -> Keyboard equivalent */
-    SDL_GameControllerButton  a;
-    SDL_GameControllerButton  b;
-    SDL_GameControllerButton  x;
-    SDL_GameControllerButton  y;
-    SDL_GameControllerButton  start;
-    SDL_GameControllerButton  shoulder_left;
-    SDL_GameControllerButton  shoulder_right;
-    // SDL_Scancode    a[SOTA_MAPPABLE_BUTTONS_NUM];
-    // SDL_Scancode    cancel[SOTA_MAPPABLE_BUTTONS_NUM];
-    // SDL_Scancode    minimap[SOTA_MAPPABLE_BUTTONS_NUM];
-    // SDL_Scancode    pause[SOTA_MAPPABLE_BUTTONS_NUM];
-    // SDL_Scancode    stats[SOTA_MAPPABLE_BUTTONS_NUM];
-    // SDL_Scancode    options[SOTA_MAPPABLE_BUTTONS_NUM];
-    // SDL_Scancode    faster[SOTA_MAPPABLE_BUTTONS_NUM];
-    // SDL_Scancode    globalRange[SOTA_MAPPABLE_BUTTONS_NUM];
+    SDL_Scancode    a[SOTA_MAPPABLE_BUTTONS_NUM];
+    SDL_Scancode    b[SOTA_MAPPABLE_BUTTONS_NUM];
+    SDL_Scancode    y[SOTA_MAPPABLE_BUTTONS_NUM];
+    SDL_Scancode    x[SOTA_MAPPABLE_BUTTONS_NUM];
+    SDL_Scancode    start[SOTA_MAPPABLE_BUTTONS_NUM];
+    SDL_Scancode    shoulder_left[SOTA_MAPPABLE_BUTTONS_NUM];
+    SDL_Scancode    shoulder_right[SOTA_MAPPABLE_BUTTONS_NUM];
 
     /* Physical triggers -> Keyboard equivalent */
     /* Triggers  [0, INT_FAST16_MAX] -> [0, 32767] */
     SDL_Scancode    trigger_right[SOTA_MAPPABLE_BUTTONS_NUM];
     SDL_Scancode    trigger_left[SOTA_MAPPABLE_BUTTONS_NUM];
 
-
     uf8  dpad_right_len;
     uf8  dpad_up_len;
     uf8  dpad_left_len;
     uf8  dpad_down_len;
     uf8  a_len;
-    uf8  cancel_len;
-    uf8  minimap_len;
+    uf8  b_len;
+    uf8  x_len;
+    uf8  y_len;
+    uf8  start_len;
+    uf8  shoulder_left_len;
+    uf8  shoulder_right_len;
     uf8  trigger_right_len;
     uf8  trigger_left_len;
-    uf8  pause_len;
-    uf8  stats_len;
-    uf8  options_len;
-    uf8  faster_len;
-    uf8  globalRange_len;
 
 } KeyboardInputMap_default;
 

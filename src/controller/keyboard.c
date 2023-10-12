@@ -2,35 +2,33 @@
 #include "controller/keyboard.h"
 
 struct KeyboardInputMap KeyboardInputMap_default = {
-    .dpad_right       = {SDL_SCANCODE_D,     SDL_SCANCODE_RIGHT},
-    .dpad_up          = {SDL_SCANCODE_W,     SDL_SCANCODE_UP},
-    .dpad_left        = {SDL_SCANCODE_A,     SDL_SCANCODE_LEFT},
-    .dpad_down        = {SDL_SCANCODE_S,     SDL_SCANCODE_DOWN},
-    .a           = {SDL_SCANCODE_Z,     SDL_SCANCODE_SPACE},
-    .cancel           = {SDL_SCANCODE_X,     SDL_SCANCODE_BACKSPACE},
-    .minimap          = {SDL_SCANCODE_R},
-    .trigger_right    = {SDL_SCANCODE_E},
-    .trigger_left     = {SDL_SCANCODE_Q},
-    .pause            = {SDL_SCANCODE_RETURN},
-    .stats            = {SDL_SCANCODE_C},
-    .options          = {SDL_SCANCODE_P},
-    .faster           = {SDL_SCANCODE_TAB},
-    .globalRange      = {SDL_SCANCODE_F},
+    .dpad_right         = {SDL_SCANCODE_D,     SDL_SCANCODE_RIGHT},
+    .dpad_up            = {SDL_SCANCODE_W,     SDL_SCANCODE_UP},
+    .dpad_left          = {SDL_SCANCODE_A,     SDL_SCANCODE_LEFT},
+    .dpad_down          = {SDL_SCANCODE_S,     SDL_SCANCODE_DOWN},
+    .a                  = {SDL_SCANCODE_Z,     SDL_SCANCODE_SPACE},
+    .b                  = {SDL_SCANCODE_X,     SDL_SCANCODE_BACKSPACE},
+    .x                  = {SDL_SCANCODE_R},
+    .trigger_right      = {SDL_SCANCODE_E},
+    .trigger_left       = {SDL_SCANCODE_Q},
+    .start              = {SDL_SCANCODE_RETURN},
+    .y                  = {SDL_SCANCODE_C},
+    .shoulder_left      = {SDL_SCANCODE_P},
+    .shoulder_right     = {SDL_SCANCODE_TAB},
 
-    .dpad_right_len    = 2,
-    .dpad_up_len       = 2,
-    .dpad_left_len     = 2,
-    .dpad_down_len     = 2,
-    .a_len       = 2,
-    .cancel_len       = 2,
-    .minimap_len      = 1,
-    .trigger_right_len    = 1,
-    .trigger_left_len     = 1,
-    .pause_len        = 1,
-    .stats_len        = 1,
-    .options_len      = 1,
-    .faster_len       = 1,
-    .globalRange_len  = 1,
+    .dpad_right_len     = 2,
+    .dpad_up_len        = 2,
+    .dpad_left_len      = 2,
+    .dpad_down_len      = 2,
+    .a_len              = 2,
+    .b_len              = 2,
+    .x_len              = 1,
+    .y_len              = 1,
+    .start_len          = 1,
+    .shoulder_left_len  = 1,
+    .shoulder_right_len = 1,
+    .trigger_right_len  = 1,
+    .trigger_left_len   = 1,
 };
 
 struct controllerKeyboard controllerKeyboard_default = {
@@ -74,7 +72,7 @@ bool Keyboard_isPressed(struct controllerKeyboard *kb, const uf8 *state_array, i
 
     /* -- Check if button/axis is pressed, -- */
     bool out = false;
-    uf8 len  = *(&map->moveright_len + button);
+    uf8 len  = *(&map->dpad_right_len + button);
 
     for (int i = 0; i < len; i++) {
         if (state_array[buttons[i]]) {
