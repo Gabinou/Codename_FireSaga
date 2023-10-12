@@ -6,6 +6,9 @@ struct dtab *receivers_dtab = NULL;
 #define REGISTER_ENUM(x) u32 event_##x;
 #include "names/events.h"
 #undef REGISTER_ENUM
+#define REGISTER_ENUM(x) u32 event_Input_##x;
+#include "names/input.h"
+#undef REGISTER_ENUM
 
 /* --- DATA ENTITIES DEFINITION --- */
 tnecs_entity_t *data1_entity;
@@ -175,7 +178,7 @@ void receive_event_Cursor_Moved(struct Game *sota, SDL_Event *userevent) {
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
-void receive_event_Input_Cancel(struct Game *sota, SDL_Event *userevent) {
+void receive_event_Input_CANCEL(struct Game *sota, SDL_Event *userevent) {
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     i32 controller_type = * (i32 *) userevent->user.data1;
     tnecs_entity_t canceller_entity = Events_Controllers_Check(sota, controller_type);
@@ -265,7 +268,7 @@ void receive_event_Game_Control_Switch(struct Game *sota, SDL_Event *userevent) 
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
-void receive_event_Input_Stats(struct Game *sota, SDL_Event *userevent) {
+void receive_event_Input_STATS(struct Game *sota, SDL_Event *userevent) {
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     SDL_assert(sota != NULL);
     i32 controller_type = * (i32 *) userevent->user.data1;
@@ -333,7 +336,7 @@ void receive_event_Gameplay_Return2Standby(struct Game *sota, SDL_Event *usereve
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
-void receive_event_Input_globalRange(struct Game *sota, SDL_Event *userevent) {
+void receive_event_Input_GLOBALRANGE(struct Game *sota, SDL_Event *userevent) {
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     i32 controller_type = *(i32 *)userevent->user.data1;
     Events_Controllers_Check(sota, controller_type);
@@ -344,7 +347,7 @@ void receive_event_Input_globalRange(struct Game *sota, SDL_Event *userevent) {
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
-void receive_event_Input_Accept(struct Game *sota, SDL_Event *userevent) {
+void receive_event_Input_ACCEPT(struct Game *sota, SDL_Event *userevent) {
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
 
     SDL_assert(sota);
@@ -774,7 +777,7 @@ void receive_event_Loadout_Selected(struct Game *sota, SDL_Event *userevent) {
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
-void receive_event_Input_menuRight(struct Game *sota, SDL_Event *userevent) {
+void receive_event_Input_MENURIGHT(struct Game *sota, SDL_Event *userevent) {
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     i32 controller_type = *(i32 *)userevent->user.data1;
     Events_Controllers_Check(sota, controller_type);
@@ -784,7 +787,7 @@ void receive_event_Input_menuRight(struct Game *sota, SDL_Event *userevent) {
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
-void receive_event_Input_menuLeft(struct Game *sota, SDL_Event *userevent) {
+void receive_event_Input_MENULEFT(struct Game *sota, SDL_Event *userevent) {
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     i32 controller_type = *(i32 *)userevent->user.data1;
     Events_Controllers_Check(sota, controller_type);
@@ -794,7 +797,7 @@ void receive_event_Input_menuLeft(struct Game *sota, SDL_Event *userevent) {
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
-void receive_event_Input_Minimap(struct Game *sota, SDL_Event *userevent) {
+void receive_event_Input_MINIMAP(struct Game *sota, SDL_Event *userevent) {
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     i32 controller_type = *(i32 *)userevent->user.data1;
     Events_Controllers_Check(sota, controller_type);
@@ -802,7 +805,7 @@ void receive_event_Input_Minimap(struct Game *sota, SDL_Event *userevent) {
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
-void receive_event_Input_Faster(struct Game *sota, SDL_Event *userevent) {
+void receive_event_Input_FASTER(struct Game *sota, SDL_Event *userevent) {
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     i32 controller_type = *(i32 *)userevent->user.data1;
     Events_Controllers_Check(sota, controller_type);
@@ -810,8 +813,9 @@ void receive_event_Input_Faster(struct Game *sota, SDL_Event *userevent) {
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
-void receive_event_Input_Pause(struct Game *sota, SDL_Event *userevent) {
+void receive_event_Input_PAUSE(struct Game *sota, SDL_Event *userevent) {
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
+    /* Pausing opens options */
     i32 controller_type = *(i32 *)userevent->user.data1;
     Events_Controllers_Check(sota, controller_type);
 

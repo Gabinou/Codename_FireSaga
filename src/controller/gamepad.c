@@ -2,6 +2,7 @@
 #include "controller/gamepad.h"
 
 
+/* Gamecube controller */
 struct GamepadInputMap GamepadInputMap_gamecube = {
     /*  1. L/R buttons -> TriggerLeft and TriggerRight  */
     /*  2. Z button    -> RightShoulder                 */
@@ -27,6 +28,7 @@ struct GamepadInputMap GamepadInputMap_gamecube = {
     .trigger_right      = SDL_CONTROLLER_AXIS_TRIGGERRIGHT,
 };
 
+/* Other gamepad */
 struct GamepadInputMap GamepadInputMap_default = {
     .axis_left_x        = SDL_CONTROLLER_AXIS_LEFTX,
     .axis_left_y        = SDL_CONTROLLER_AXIS_LEFTY,
@@ -213,7 +215,7 @@ void Gamepad_removeController(struct controllerGamepad *gp, if32 joystick_instan
             gp->joystick_instances[i]   = -1;
             int num_to_move = gp->controllers_num-- - i;
             if (num_to_move > 0) {
-                SDL_GameController ** conts = gp->controllers;
+                SDL_GameController **conts = gp->controllers;
                 int bytesize = num_to_move * sizeof(*conts);
                 memmove(conts + i - 1, conts + i, bytesize);
 
@@ -236,7 +238,7 @@ void Gamepad_Realloc(struct controllerGamepad *gp) {
     int bytesize            = gp->controllers_len * sizeof(*gp->controllers);
     SDL_assert(bytesize > 0);
     gp->controllers         = realloc(gp->controllers,          bytesize);
-    
+
     bytesize                = gp->controllers_len * sizeof(*gp->joystick_instances);
     SDL_assert(bytesize > 0);
     gp->joystick_instances  = realloc(gp->joystick_instances,   bytesize);
