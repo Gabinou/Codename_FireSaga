@@ -1199,20 +1199,6 @@ void Events_Names_Declare() {
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
 #define REGISTER_ENUM(x) event_##x = SDL_RegisterEvents(1);
 #include "names/events.h"
-    // .accept            = SDL_CONTROLLER_BUTTON_A,
-    // .cancel            = SDL_CONTROLLER_BUTTON_B,
-    // .minimap           = SDL_CONTROLLER_BUTTON_Y,
-    // .trigger_right         = SDL_CONTROLLER_BUTTON_RIGHTSHOULDER,
-    // .trigger_left          = SDL_CONTROLLER_BUTTON_LEFTSHOULDER,
-    // .pause             = SDL_CONTROLLER_BUTTON_START,
-    // .stats             = SDL_CONTROLLER_BUTTON_X,
-    // .options           = SDL_CONTROLLER_AXIS_TRIGGERLEFT,
-    // .faster            = SDL_CONTROLLER_BUTTON_START,
-    // .globalRange       = SDL_CONTROLLER_AXIS_TRIGGERRIGHT,
-
-    // TODO: fsm for Button to inputs
-
-    // btn_ev[SOTA_INPUT_NULL]        = 0;
     btn_ev[SOTA_BUTTON_DPAD_RIGHT]      = 0;
     btn_ev[SOTA_BUTTON_DPAD_UP]         = 0;
     btn_ev[SOTA_BUTTON_DPAD_LEFT]       = 0;
