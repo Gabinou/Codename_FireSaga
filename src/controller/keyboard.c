@@ -2,30 +2,30 @@
 #include "controller/keyboard.h"
 
 struct KeyboardInputMap KeyboardInputMap_default = {
-    .moveright        = {SDL_SCANCODE_D,     SDL_SCANCODE_RIGHT},
-    .moveup           = {SDL_SCANCODE_W,     SDL_SCANCODE_UP},
-    .moveleft         = {SDL_SCANCODE_A,     SDL_SCANCODE_LEFT},
-    .movedown         = {SDL_SCANCODE_S,     SDL_SCANCODE_DOWN},
-    .accept           = {SDL_SCANCODE_Z,     SDL_SCANCODE_SPACE},
+    .dpad_right       = {SDL_SCANCODE_D,     SDL_SCANCODE_RIGHT},
+    .dpad_up          = {SDL_SCANCODE_W,     SDL_SCANCODE_UP},
+    .dpad_left        = {SDL_SCANCODE_A,     SDL_SCANCODE_LEFT},
+    .dpad_down        = {SDL_SCANCODE_S,     SDL_SCANCODE_DOWN},
+    .a           = {SDL_SCANCODE_Z,     SDL_SCANCODE_SPACE},
     .cancel           = {SDL_SCANCODE_X,     SDL_SCANCODE_BACKSPACE},
     .minimap          = {SDL_SCANCODE_R},
-    .menuright        = {SDL_SCANCODE_E},
-    .menuleft         = {SDL_SCANCODE_Q},
+    .trigger_right    = {SDL_SCANCODE_E},
+    .trigger_left     = {SDL_SCANCODE_Q},
     .pause            = {SDL_SCANCODE_RETURN},
     .stats            = {SDL_SCANCODE_C},
     .options          = {SDL_SCANCODE_P},
     .faster           = {SDL_SCANCODE_TAB},
     .globalRange      = {SDL_SCANCODE_F},
 
-    .moveright_len    = 2,
-    .moveup_len       = 2,
-    .moveleft_len     = 2,
-    .movedown_len     = 2,
-    .accept_len       = 2,
+    .dpad_right_len    = 2,
+    .dpad_up_len       = 2,
+    .dpad_left_len     = 2,
+    .dpad_down_len     = 2,
+    .a_len       = 2,
     .cancel_len       = 2,
     .minimap_len      = 1,
-    .menuright_len    = 1,
-    .menuleft_len     = 1,
+    .trigger_right_len    = 1,
+    .trigger_left_len     = 1,
     .pause_len        = 1,
     .stats_len        = 1,
     .options_len      = 1,
@@ -69,7 +69,7 @@ bool Keyboard_isPressed(struct controllerKeyboard *kb, const uf8 *state_array, i
     /* -- Preliminaries -- */
     struct KeyboardInputMap *map = kb->inputmap;
     /* -- Get mapped button from button index -- */
-    SDL_Scancode *buttons = (SDL_Scancode *)&map->moveright;
+    SDL_Scancode *buttons = (SDL_Scancode *)&map->dpad_right;
     buttons += button * SOTA_MAPPABLE_BUTTONS_NUM;
 
     /* -- Check if button/axis is pressed, -- */

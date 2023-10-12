@@ -15,8 +15,8 @@ extern struct MouseInputMap {
     uf8 accept;
     uf8 cancel;
     uf8 stats;
-    uf8 menuright;
-    uf8 menuleft;
+    uf8 trigger_right;
+    uf8 trigger_left;
     uf8 minimap;
     uf8 faster;
     uf8 pause;

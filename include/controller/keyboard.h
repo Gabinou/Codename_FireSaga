@@ -13,30 +13,44 @@
 #include "SDL2/SDL.h"
 
 extern struct KeyboardInputMap {
-    SDL_Scancode    moveright[SOTA_MAPPABLE_BUTTONS_NUM];
-    SDL_Scancode    moveup[SOTA_MAPPABLE_BUTTONS_NUM];
-    SDL_Scancode    moveleft[SOTA_MAPPABLE_BUTTONS_NUM];
-    SDL_Scancode    movedown[SOTA_MAPPABLE_BUTTONS_NUM];
-    SDL_Scancode    accept[SOTA_MAPPABLE_BUTTONS_NUM];
-    SDL_Scancode    cancel[SOTA_MAPPABLE_BUTTONS_NUM];
-    SDL_Scancode    minimap[SOTA_MAPPABLE_BUTTONS_NUM];
-    SDL_Scancode    menuright[SOTA_MAPPABLE_BUTTONS_NUM];
-    SDL_Scancode    menuleft[SOTA_MAPPABLE_BUTTONS_NUM];
-    SDL_Scancode    pause[SOTA_MAPPABLE_BUTTONS_NUM];
-    SDL_Scancode    stats[SOTA_MAPPABLE_BUTTONS_NUM];
-    SDL_Scancode    options[SOTA_MAPPABLE_BUTTONS_NUM];
-    SDL_Scancode    faster[SOTA_MAPPABLE_BUTTONS_NUM];
-    SDL_Scancode    globalRange[SOTA_MAPPABLE_BUTTONS_NUM];
+    /* Physical dpad -> Keyboard equivalent */
+    SDL_Scancode    dpad_right[SOTA_MAPPABLE_BUTTONS_NUM];
+    SDL_Scancode    dpad_up[SOTA_MAPPABLE_BUTTONS_NUM];
+    SDL_Scancode    dpad_left[SOTA_MAPPABLE_BUTTONS_NUM];
+    SDL_Scancode    dpad_down[SOTA_MAPPABLE_BUTTONS_NUM];
 
-    uf8  moveright_len;
-    uf8  moveup_len;
-    uf8  moveleft_len;
-    uf8  movedown_len;
-    uf8  accept_len;
+    /* Physical buttons -> Keyboard equivalent */
+    SDL_GameControllerButton  a;
+    SDL_GameControllerButton  b;
+    SDL_GameControllerButton  x;
+    SDL_GameControllerButton  y;
+    SDL_GameControllerButton  start;
+    SDL_GameControllerButton  shoulder_left;
+    SDL_GameControllerButton  shoulder_right;
+    // SDL_Scancode    a[SOTA_MAPPABLE_BUTTONS_NUM];
+    // SDL_Scancode    cancel[SOTA_MAPPABLE_BUTTONS_NUM];
+    // SDL_Scancode    minimap[SOTA_MAPPABLE_BUTTONS_NUM];
+    // SDL_Scancode    pause[SOTA_MAPPABLE_BUTTONS_NUM];
+    // SDL_Scancode    stats[SOTA_MAPPABLE_BUTTONS_NUM];
+    // SDL_Scancode    options[SOTA_MAPPABLE_BUTTONS_NUM];
+    // SDL_Scancode    faster[SOTA_MAPPABLE_BUTTONS_NUM];
+    // SDL_Scancode    globalRange[SOTA_MAPPABLE_BUTTONS_NUM];
+
+    /* Physical triggers -> Keyboard equivalent */
+    /* Triggers  [0, INT_FAST16_MAX] -> [0, 32767] */
+    SDL_Scancode    trigger_right[SOTA_MAPPABLE_BUTTONS_NUM];
+    SDL_Scancode    trigger_left[SOTA_MAPPABLE_BUTTONS_NUM];
+
+
+    uf8  dpad_right_len;
+    uf8  dpad_up_len;
+    uf8  dpad_left_len;
+    uf8  dpad_down_len;
+    uf8  a_len;
     uf8  cancel_len;
     uf8  minimap_len;
-    uf8  menuright_len;
-    uf8  menuleft_len;
+    uf8  trigger_right_len;
+    uf8  trigger_left_len;
     uf8  pause_len;
     uf8  stats_len;
     uf8  options_len;
