@@ -61,6 +61,9 @@ struct Game Game_default = {
 
     .cursor_diagonal    = false,
 
+    .inputs = {0},
+
+
     .chapter            = -1,
     .state              = GAME_STATE_Title_Screen,
     .substate           = GAME_SUBSTATE_MENU,
@@ -423,6 +426,9 @@ struct Game *Game_Init() {
     /* --- Alloc combat arrays --- */
     out_game->combat_attacks = DARR_INIT(out_game->combat_attacks, struct Combat_Attack,
                                          SOTA_COMBAT_MAX_ATTACKS);
+
+    /* --- Set default contextual inputs --- */
+    fsm_state_inputs[out_game->state](out_game);
 
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
     return (out_game);

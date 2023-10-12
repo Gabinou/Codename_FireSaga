@@ -52,7 +52,6 @@ extern char **event_names;
 extern void Events_Names_Declare();
 extern void Events_Names_Alloc();
 extern void Events_Names_Free();
-extern u32 btn_ev[SOTA_BUTTON_END]; /* button events */
 
 /* --- HOMEMADE EVENT RECEIVERS --- */
 /* -- Function Declaration -- */

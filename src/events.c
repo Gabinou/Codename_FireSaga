@@ -1194,25 +1194,10 @@ void receive_event_SDL_WINDOWEVENT(struct Game *sota, SDL_Event *event) {
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
-u32 btn_ev[SOTA_BUTTON_END];
 void Events_Names_Declare() {
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
 #define REGISTER_ENUM(x) event_##x = SDL_RegisterEvents(1);
 #include "names/events.h"
-    btn_ev[SOTA_BUTTON_DPAD_RIGHT]      = 0;
-    btn_ev[SOTA_BUTTON_DPAD_UP]         = 0;
-    btn_ev[SOTA_BUTTON_DPAD_LEFT]       = 0;
-    btn_ev[SOTA_BUTTON_DPAD_DOWN]       = 0;
-    btn_ev[SOTA_BUTTON_A]               = event_Input_Accept;
-    btn_ev[SOTA_BUTTON_B]               = event_Input_Cancel;
-    btn_ev[SOTA_BUTTON_X]               = event_Input_Minimap;
-    btn_ev[SOTA_BUTTON_Y]               = event_Input_Stats;
-    btn_ev[SOTA_BUTTON_START]           = event_Input_Pause;
-    btn_ev[SOTA_BUTTON_SHOULDER_LEFT]   = event_Input_globalRange;
-    btn_ev[SOTA_BUTTON_SHOULDER_RIGHT]  = event_Input_Faster;
-    btn_ev[SOTA_BUTTON_TRIGGER_LEFT]    = event_Input_menuLeft;
-    btn_ev[SOTA_BUTTON_TRIGGER_RIGHT]   = event_Input_menuRight;
-
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 #undef REGISTER_ENUM

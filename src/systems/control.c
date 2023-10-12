@@ -114,7 +114,7 @@ void Control_Keyboard(tnecs_system_input_t *input) {
         for (int b = SOTA_BUTTON_A; b <= SOTA_BUTTON_TRIGGER_RIGHT; b++) {
             // for (int sota_b = SOTA_BUTTON_A; sota_b < SOTA_BUTTON_END; sota_b++) {
             if (Keyboard_isPressed(kb, kb_state, b))
-                Keyboard_Pressed(b, press, &pnum, ct, btn_ev[b], kb);
+                Keyboard_Pressed(b, press, &pnum, ct, sota->inputs[b], kb);
         }
 
         Keyboard_Held(kb->held_button, bheld, theld, press, pnum, input->deltat);
@@ -187,7 +187,7 @@ void Control_Gamepad(tnecs_system_input_t *input) {
         for (int sota_b = SOTA_BUTTON_A; sota_b < SOTA_BUTTON_END; sota_b++) {
             int sdl_button = sdl_buttons[sota_b];
             if (Gamepad_isPressed(gp, sdl_button))
-                Gamepad_Pressed(sota_b, press, &pnum, &gp->controller_type, btn_ev[sota_b], gp);
+                Gamepad_Pressed(sota_b, press, &pnum, &gp->controller_type, sota->inputs[sota_b], gp);
         }
 
         Gamepad_Held(gp->held_button, bheld, theld, press, pnum, input->deltat);

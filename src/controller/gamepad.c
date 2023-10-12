@@ -135,12 +135,12 @@ bool Gamepad_ButtonorAxis(struct controllerGamepad *gp, int sdl_button, int i, b
     bool out;
     if (isbutton) {
         out = SDL_GameControllerGetButton(controller, sdl_button);
-        if (out)
-            SDL_Log("Gamepad pressing %s", button_names[sdl_button]);
+        // if (out)
+        // SOTA_Log_Debug("Gamepad pressing %s", button_names[sdl_button]);
     } else {
         out = SDL_GameControllerGetAxis(controller, sdl_button) > gp->deadzone_trigger;
-        if (out)
-            SDL_Log("Gamepad pressing %s", axis_names[sdl_button]);
+        // if (out)
+        // SOTA_Log_Debug("Gamepad pressing %s", axis_names[sdl_button]);
     }
 
     SOTA_Log_FPS("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
@@ -209,14 +209,17 @@ void Gamepad_removeController(struct controllerGamepad *gp, if32 joystick_instan
     for (int i = 0; i < gp->controllers_num; i++) {
         if (joystick_instance == gp->joystick_instances[i]) {
             SDL_GameControllerClose(gp->controllers[i]);
-            gp->controllers[i]           = NULL;
+            gp->controllers[i]          = NULL;
             gp->joystick_instances[i]   = -1;
             int num_to_move = gp->controllers_num-- - i;
             if (num_to_move > 0) {
-                int bytesize = num_to_move * sizeof(*gp->controllers);
-                memmove(gp->controllers        + i - 1, gp->controllers        + i, bytesize);
+                SDL_GameController ** conts = gp->controllers;
+                int bytesize = num_to_move * sizeof(*conts);
+                memmove(conts + i - 1, conts + i, bytesize);
+
+                if32 *joyst = gp->joystick_instances;
                 bytesize = num_to_move * sizeof(*gp->joystick_instances);
-                memmove(gp->joystick_instances + i - 1, gp->joystick_instances + i, bytesize);
+                memmove(joyst + i - 1, joyst + i, bytesize);
             }
         }
     }
@@ -233,8 +236,12 @@ void Gamepad_Realloc(struct controllerGamepad *gp) {
     int bytesize            = gp->controllers_len * sizeof(*gp->controllers);
     SDL_assert(bytesize > 0);
     gp->controllers         = realloc(gp->controllers,          bytesize);
-    SDL_assert(gp->controllers        != NULL);
+    
+    bytesize                = gp->controllers_len * sizeof(*gp->joystick_instances);
+    SDL_assert(bytesize > 0);
     gp->joystick_instances  = realloc(gp->joystick_instances,   bytesize);
+
+    SDL_assert(gp->controllers        != NULL);
     SDL_assert(gp->joystick_instances != NULL);
 
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);

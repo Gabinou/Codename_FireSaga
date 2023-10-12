@@ -8,12 +8,14 @@
 #include "enums.h"
 #include "structs.h"
 #include "bitfields.h"
+#include "input.h"
 #include "controller/keyboard.h"
 #include "controller/gamepad.h"
+#include "controller/fsm.h"
 #include "weapon.h"
 #include "slider.h"
-#include "input.h"
 #include "tnecs.h"
+#include "events.h"
 #include "nmath.h"
 #include "macros.h"
 #include "hover.h"
@@ -178,6 +180,9 @@ struct Game {
     tnecs_entity_t *openables;      // doors and chests
 
     i32   controller_code;
+
+    /* Button interpreted as which input?  */
+    u32 inputs[SOTA_BUTTON_END];
 
     uf8    party_size;
     u64    runtime_ns; // -> millions of years
