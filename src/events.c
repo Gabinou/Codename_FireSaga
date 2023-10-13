@@ -3,12 +3,14 @@
 /* --- RECEIVERS DECLARATION --- */
 struct dtab *receivers_dtab = NULL;
 
+u32 event_Start;
 #define REGISTER_ENUM(x) u32 event_##x;
 #include "names/events.h"
 #undef REGISTER_ENUM
 #define REGISTER_ENUM(x) u32 event_Input_##x;
 #include "names/input.h"
 #undef REGISTER_ENUM
+u32 event_End;
 
 /* --- DATA ENTITIES DEFINITION --- */
 tnecs_entity_t *data1_entity;
@@ -1296,12 +1298,14 @@ void receive_event_SDL_WINDOWEVENT(struct Game *sota, SDL_Event *event) {
 
 void Events_Names_Declare() {
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
+    event_Start = SDL_RegisterEvents(1);
 #define REGISTER_ENUM(x) event_##x = SDL_RegisterEvents(1);
 #include "names/events.h"
 #undef REGISTER_ENUM
 #define REGISTER_ENUM(x)  event_Input_##x = SDL_RegisterEvents(1);
 #include "names/input.h"
 #undef REGISTER_ENUM
+    event_End = SDL_RegisterEvents(1);
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
@@ -1328,6 +1332,7 @@ extern void Events_Names_Alloc() {
     event_names = (char **)calloc((event_End - event_Start) + 1, sizeof(*event_names));
     SDL_assert(event_names != NULL);
     char *temp_str;
+
 #define REGISTER_ENUM(x) temp_str = (char *) malloc(DEFAULT_BUFFER_SIZE);\
     strncpy(temp_str, #x, sizeof(#x));\
     temp_str[sizeof(#x)] = '\0';\
@@ -1358,10 +1363,12 @@ void Events_Receivers_Declare() {
     Events_Receivers_Free();
     receiver_t temp_receiver_p;
     DTAB_INIT(receivers_dtab, receiver_t);
+
 #define REGISTER_ENUM(x) temp_receiver_p = &receive_event_##x;\
     DTAB_ADD(receivers_dtab, &temp_receiver_p, event_##x);
 #include "names/events.h"
 #undef REGISTER_ENUM
+
 #define REGISTER_ENUM(x) temp_receiver_p = &receive_event_Input_##x;\
     DTAB_ADD(receivers_dtab, &temp_receiver_p, event_Input_##x);
 #include "names/input.h"

@@ -43,12 +43,14 @@ extern tnecs_entity_t Events_Controllers_Check(struct Game *sota, i32 code);
 /* --- EVENT NAMES --- */
 /* -- Declaration -- */
 #define NO_EVENT 0
+extern u32 event_Start;
 #define REGISTER_ENUM(x) extern u32 event_##x;
 #include "names/events.h"
 #undef REGISTER_ENUM
 #define REGISTER_ENUM(x) extern u32 event_Input_##x;
 #include "names/input.h"
 #undef REGISTER_ENUM
+extern u32 event_End;
 
 /* -- Constructor/Destructors -- */
 extern char **event_names;
