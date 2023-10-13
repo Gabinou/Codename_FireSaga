@@ -214,17 +214,17 @@ void Control_Gamepad(tnecs_system_input_t *input) {
 
         /* - Move buttons - */
         /* Priority of move buttons over joystick */
-        if (Gamepad_isPressed(gp, SOTA_INPUT_RIGHT)) {
+        if (Gamepad_isPressed(gp, SOTA_BUTTON_DPAD_RIGHT)) {
             cursor_move.x       =  1;
             pmove[pmove_num++]  = SOTA_INPUT_RIGHT;
-        } else if (Gamepad_isPressed(gp, SOTA_INPUT_LEFT)) {
+        } else if (Gamepad_isPressed(gp, SOTA_BUTTON_DPAD_LEFT)) {
             cursor_move.x       = -1;
             pmove[pmove_num++]  = SOTA_INPUT_LEFT;
         }
-        if (Gamepad_isPressed(gp, SOTA_INPUT_UP)) {
+        if (Gamepad_isPressed(gp, SOTA_BUTTON_DPAD_UP)) {
             cursor_move.y       = -1;
             pmove[pmove_num++]  = SOTA_INPUT_UP;
-        } else if (Gamepad_isPressed(gp, SOTA_INPUT_DOWN)) {
+        } else if (Gamepad_isPressed(gp, SOTA_BUTTON_DPAD_DOWN)) {
             cursor_move.y       =  1;
             pmove[pmove_num++]  = SOTA_INPUT_DOWN;
         }

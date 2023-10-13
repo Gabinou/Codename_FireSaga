@@ -11,21 +11,24 @@
 #include "globals.h"
 #include "SDL2/SDL.h"
 
+/* -- How to present controller remapping to players? -- */
+// -> Use gameplay.standby sota_inputs as labels
+
 struct GamepadInputMap {
-    /* Physical joysticks */
+    /* Physical joysticks -> no user change */
     /* Joysticks: [INT_FAST16_MIN, INT_FAST16_MAX] -> [-32768, 32767] */
     SDL_GameControllerAxis    axis_left_x;
     SDL_GameControllerAxis    axis_left_y;
     SDL_GameControllerAxis    axis_right_x;
     SDL_GameControllerAxis    axis_right_y;
 
-    /* Physical dpad */
+    /* Physical dpad -> no user change */
     SDL_GameControllerButton  dpad_right;
     SDL_GameControllerButton  dpad_up;
     SDL_GameControllerButton  dpad_left;
     SDL_GameControllerButton  dpad_down;
 
-    /* Physical buttons */
+    /* Physical buttons -> user can change */
     SDL_GameControllerButton  a;
     SDL_GameControllerButton  b;
     SDL_GameControllerButton  x;
@@ -34,7 +37,7 @@ struct GamepadInputMap {
     SDL_GameControllerButton  shoulder_left;
     SDL_GameControllerButton  shoulder_right;
 
-    /* Physical triggers */
+    /* Physical triggers -> user can change */
     /* Triggers  [0, INT_FAST16_MAX] -> [0, 32767] */
     SDL_GameControllerButton  trigger_left;
     SDL_GameControllerButton  trigger_right;
@@ -63,7 +66,7 @@ typedef struct controllerGamepad {
 
     if32        timeheld_move_ns;
     if32        timeheld_button_ns;
-    char      **button_names;
+    char      **sdl_button_names;
 
     bool        block_buttons   : 1;
     bool        block_move      : 1;
@@ -71,11 +74,13 @@ typedef struct controllerGamepad {
 extern struct controllerGamepad controllerGamepad_default;
 
 enum GAMEPAD_BUTTON_NAMES {
-    BUTTON_NAME_MAX_LEN = 36,
-    AXIS_NAME_MAX_LEN   = 33,
+    SOTA_BUTTON_NAME_MAX_LEN    = 36,
+    SDL_BUTTON_NAME_MAX_LEN     = 36,
+    AXIS_NAME_MAX_LEN           = 33,
 };
-extern char button_names[SDL_CONTROLLER_BUTTON_MAX][BUTTON_NAME_MAX_LEN];
-extern char axis_names[SDL_CONTROLLER_AXIS_MAX][AXIS_NAME_MAX_LEN];
+extern char sdl_button_names[SDL_CONTROLLER_BUTTON_MAX][SDL_BUTTON_NAME_MAX_LEN];
+extern char sdl_axis_names[SDL_CONTROLLER_AXIS_MAX][AXIS_NAME_MAX_LEN];
+extern char sota_button_names[SOTA_BUTTON_END][SOTA_BUTTON_NAME_MAX_LEN]
 
 /* --- Constructors/Destructors --- */
 extern void Gamepad_Init(struct controllerGamepad *g);

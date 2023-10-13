@@ -1,11 +1,15 @@
 
 #include "controller/gamepad.h"
 
+/* -- GLOSSARY -- */
+// - sota_button:   index to physical button in GamepadInputMap
+// - mapped_button: user determining what the physical button should do
 
 /* Gamecube controller */
 struct GamepadInputMap GamepadInputMap_gamecube = {
     /*  1. L/R buttons -> TriggerLeft and TriggerRight  */
     /*  2. Z button    -> RightShoulder                 */
+    /*<sota_button>     = <mapped_button> */
     .axis_left_x        = SDL_CONTROLLER_AXIS_LEFTX,
     .axis_left_y        = SDL_CONTROLLER_AXIS_LEFTY,
     .axis_right_x       = SDL_CONTROLLER_AXIS_RIGHTX,
@@ -52,7 +56,7 @@ struct GamepadInputMap GamepadInputMap_default = {
     .trigger_right      = SDL_CONTROLLER_AXIS_TRIGGERRIGHT,
 };
 
-char button_names[SDL_CONTROLLER_BUTTON_MAX][BUTTON_NAME_MAX_LEN] = {
+char sdl_button_names[SDL_CONTROLLER_BUTTON_MAX][BUTTON_NAME_MAX_LEN] = {
     "SDL_CONTROLLER_BUTTON_A",
     "SDL_CONTROLLER_BUTTON_B",
     "SDL_CONTROLLER_BUTTON_X",
@@ -76,7 +80,23 @@ char button_names[SDL_CONTROLLER_BUTTON_MAX][BUTTON_NAME_MAX_LEN] = {
     "SDL_CONTROLLER_BUTTON_TOUCHPAD"
 };
 
-char axis_names[SDL_CONTROLLER_AXIS_MAX][AXIS_NAME_MAX_LEN] = {
+char sota_button_names[SOTA_BUTTON_END][SOTA_BUTTON_NAME_MAX_LEN] = {
+    "SOTA_BUTTON_DPAD_RIGHT",
+    "SOTA_BUTTON_DPAD_UP",
+    "SOTA_BUTTON_DPAD_DOWN",
+    "SOTA_BUTTON_DPAD_LEFT",
+    "SOTA_BUTTON_A",
+    "SOTA_BUTTON_B",
+    "SOTA_BUTTON_X",
+    "SOTA_BUTTON_Y",
+    "SOTA_BUTTON_START",
+    "SOTA_BUTTON_SHOULDER_LEFT",
+    "SOTA_BUTTON_SHOULDER_RIGHT",
+    "SOTA_BUTTON_TRIGGER_LEFT",
+    "SOTA_BUTTON_TRIGGER_RIGHT",
+};
+
+char sdl_axis_names[SDL_CONTROLLER_AXIS_MAX][AXIS_NAME_MAX_LEN] = {
     "SDL_CONTROLLER_AXIS_LEFTX",
     "SDL_CONTROLLER_AXIS_LEFTY",
     "SDL_CONTROLLER_AXIS_RIGHTX",
@@ -137,23 +157,23 @@ bool Gamepad_ButtonorAxis(struct controllerGamepad *gp, int sdl_button, int i, b
     bool out;
     if (isbutton) {
         out = SDL_GameControllerGetButton(controller, sdl_button);
-        if (out)
-            SDL_Log("Gamepad pressing %s", button_names[sdl_button]);
+        // if (out)
+            // SDL_Log("Gamepad pressing %s", sdl_button_names[sdl_button]);
     } else {
         out = SDL_GameControllerGetAxis(controller, sdl_button) > gp->deadzone_trigger;
-        if (out)
-            SDL_Log("Gamepad pressing %s", axis_names[sdl_button]);
+        // if (out)
+            // SDL_Log("Gamepad pressing %s", sdl_axis_names[sdl_button]);
     }
 
     SOTA_Log_FPS("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
     return (out);
 }
-
-bool Gamepad_isPressed(struct controllerGamepad *gp, int button) {
+// Note: input button index in GamepadInputMap
+bool Gamepad_isPressed(struct controllerGamepad *gp, int sota_button) {
     SOTA_Log_FPS("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     /* -- Preliminaries -- */
     struct GamepadInputMap *map = gp->inputmap;
-    int sdl_button = sdl_buttons[button];
+    int sdl_button = sdl_buttons[sota_button];
 
     /* -- Check if button/axis is pressed, -- */
     bool isbutton = (sdl_button != SDL_CONTROLLER_AXIS_TRIGGERLEFT);

@@ -77,7 +77,7 @@ bool Keyboard_isPressed(struct controllerKeyboard *kb, const uf8 *state_array, i
     for (int i = 0; i < len; i++) {
         if (state_array[buttons[i]]) {
             out = true;
-            // SDL_Log("Keyboard pressing %s", button_names[sdl_buttons[button]]);
+            // SDL_Log("Keyboard pressing %s", sdl_button_names[sdl_buttons[button]]);
             break;
         }
     }
