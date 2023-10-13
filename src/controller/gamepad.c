@@ -149,10 +149,11 @@ bool Gamepad_ButtonorAxis(struct controllerGamepad *gp, int sdl_button, int i, b
     return (out);
 }
 
-bool Gamepad_isPressed(struct controllerGamepad *gp, int sdl_button) {
+bool Gamepad_isPressed(struct controllerGamepad *gp, int button) {
     SOTA_Log_FPS("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     /* -- Preliminaries -- */
     struct GamepadInputMap *map = gp->inputmap;
+    int sdl_button = sdl_buttons[button];
 
     /* -- Check if button/axis is pressed, -- */
     bool isbutton = (sdl_button != SDL_CONTROLLER_AXIS_TRIGGERLEFT);
