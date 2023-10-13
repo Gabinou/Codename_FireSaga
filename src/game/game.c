@@ -609,6 +609,9 @@ void Game_subState_Set(struct Game *sota, const if8 new_substate, const char *re
         sota->cursor_diagonal = true;
     else
         sota->cursor_diagonal = false;
+
+    if (fsm_substate_inputs[sota->substate] != NULL)
+        fsm_substate_inputs[sota->substate](sota);
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
@@ -619,10 +622,11 @@ void Game_State_Set(struct Game *sota, const if8 new_state, const char *reason) 
     SDL_assert(new_state > 0);
     SDL_assert(sota->state != new_state);
     sota->state_previous = sota->state;
-    sota->state = new_state;
+    sota->state          = new_state;
 
     /* --- Set default contextual inputs --- */
-    fsm_state_inputs[sota->state](sota);
+    if (fsm_state_inputs[sota->state] != NULL)
+        fsm_state_inputs[sota->state](sota);
 
     SOTA_Log_Debug("Game state changed %d->%d: %s->%s", sota->state_previous, sota->state,
                    gameStatenames[sota->state_previous], gameStatenames[sota->state]);

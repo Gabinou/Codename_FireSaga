@@ -21,5 +21,6 @@ void fsm_state_inputs_TITLE_SCREEN(struct Game *sota);
 void fsm_state_inputs_GAMEPLAY_MAP(struct Game *sota);
 
 void fsm_substate_inputs_MENU(struct Game *sota);
+void fsm_substate_inputs_STANDBY(struct Game *sota);
 
 #endif /* FSM_CONTROLLER_H */

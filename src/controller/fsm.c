@@ -23,7 +23,7 @@ fsm_state_inputs_t fsm_substate_inputs[GAME_SUBSTATE_NUM] = {
     /* MAP_COMBAT */      NULL,
     /* MAP_NPCTURN */     NULL,
     /* SAVING */          NULL,
-    /* STANDBY */         NULL,
+    /* STANDBY */         &fsm_substate_inputs_STANDBY,
     /* PAUSED */          NULL,
     /* MAP_CANDIDATES */  NULL,
     /* CUTSCENE */        NULL,
@@ -34,19 +34,9 @@ fsm_state_inputs_t fsm_substate_inputs[GAME_SUBSTATE_NUM] = {
 void fsm_state_inputs_GAMEPLAY_MAP(struct Game *sota) {
     SDL_Log("fsm_state_inputs_GAMEPLAY_MAP");
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
-    sota->inputs[SOTA_BUTTON_DPAD_RIGHT]      = 0;
-    sota->inputs[SOTA_BUTTON_DPAD_UP]         = 0;
-    sota->inputs[SOTA_BUTTON_DPAD_LEFT]       = 0;
-    sota->inputs[SOTA_BUTTON_DPAD_DOWN]       = 0;
-    sota->inputs[SOTA_BUTTON_A]               = event_Input_ACCEPT;
-    sota->inputs[SOTA_BUTTON_B]               = event_Input_CANCEL;
-    sota->inputs[SOTA_BUTTON_X]               = event_Input_MINIMAP;
-    sota->inputs[SOTA_BUTTON_Y]               = event_Input_STATS;
-    sota->inputs[SOTA_BUTTON_START]           = event_Input_PAUSE;
-    sota->inputs[SOTA_BUTTON_SHOULDER_LEFT]   = 0;
-    sota->inputs[SOTA_BUTTON_SHOULDER_RIGHT]  = event_Input_FASTER;
-    sota->inputs[SOTA_BUTTON_TRIGGER_LEFT]    = event_Input_ZOOM_IN;
-    sota->inputs[SOTA_BUTTON_TRIGGER_RIGHT]   = event_Input_ZOOM_OUT;
+    if (fsm_substate_inputs[sota->substate] != NULL)
+        fsm_substate_inputs[sota->substate](sota);
+
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
@@ -74,5 +64,24 @@ void fsm_substate_inputs_MENU(struct Game *sota) {
     sota->inputs[SOTA_BUTTON_SHOULDER_RIGHT]  = event_Input_FASTER;
     sota->inputs[SOTA_BUTTON_TRIGGER_LEFT]    = event_Input_MENULEFT;
     sota->inputs[SOTA_BUTTON_TRIGGER_RIGHT]   = event_Input_MENURIGHT;
+    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
+}
+
+void fsm_substate_inputs_STANDBY(struct Game *sota) {
+    SDL_Log("fsm_substate_inputs_STANDBY");
+    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
+    sota->inputs[SOTA_BUTTON_DPAD_RIGHT]      = 0;
+    sota->inputs[SOTA_BUTTON_DPAD_UP]         = 0;
+    sota->inputs[SOTA_BUTTON_DPAD_LEFT]       = 0;
+    sota->inputs[SOTA_BUTTON_DPAD_DOWN]       = 0;
+    sota->inputs[SOTA_BUTTON_A]               = event_Input_ACCEPT;
+    sota->inputs[SOTA_BUTTON_B]               = event_Input_CANCEL;
+    sota->inputs[SOTA_BUTTON_X]               = event_Input_MINIMAP;
+    sota->inputs[SOTA_BUTTON_Y]               = event_Input_STATS;
+    sota->inputs[SOTA_BUTTON_START]           = event_Input_PAUSE;
+    sota->inputs[SOTA_BUTTON_SHOULDER_LEFT]   = 0;
+    sota->inputs[SOTA_BUTTON_SHOULDER_RIGHT]  = event_Input_FASTER;
+    sota->inputs[SOTA_BUTTON_TRIGGER_LEFT]    = event_Input_ZOOM_IN;
+    sota->inputs[SOTA_BUTTON_TRIGGER_RIGHT]   = event_Input_ZOOM_OUT;
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
