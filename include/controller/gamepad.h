@@ -74,13 +74,15 @@ typedef struct controllerGamepad {
 extern struct controllerGamepad controllerGamepad_default;
 
 enum GAMEPAD_BUTTON_NAMES {
-    SOTA_BUTTON_NAME_MAX_LEN    = 36,
+    SOTA_INPUT_NAME_MAX_LEN     = 23,
+    SOTA_BUTTON_NAME_MAX_LEN    = 27,
     SDL_BUTTON_NAME_MAX_LEN     = 36,
     AXIS_NAME_MAX_LEN           = 33,
 };
 extern char sdl_button_names[SDL_CONTROLLER_BUTTON_MAX][SDL_BUTTON_NAME_MAX_LEN];
 extern char sdl_axis_names[SDL_CONTROLLER_AXIS_MAX][AXIS_NAME_MAX_LEN];
-extern char sota_button_names[SOTA_BUTTON_END][SOTA_BUTTON_NAME_MAX_LEN]
+extern char sota_button_names[SOTA_BUTTON_END][SOTA_BUTTON_NAME_MAX_LEN];
+extern char sota_input_names[SOTA_INPUT_END][SOTA_INPUT_NAME_MAX_LEN];
 
 /* --- Constructors/Destructors --- */
 extern void Gamepad_Init(struct controllerGamepad *g);

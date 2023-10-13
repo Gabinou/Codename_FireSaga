@@ -56,7 +56,7 @@ struct GamepadInputMap GamepadInputMap_default = {
     .trigger_right      = SDL_CONTROLLER_AXIS_TRIGGERRIGHT,
 };
 
-char sdl_button_names[SDL_CONTROLLER_BUTTON_MAX][BUTTON_NAME_MAX_LEN] = {
+char sdl_button_names[SDL_CONTROLLER_BUTTON_MAX][SDL_BUTTON_NAME_MAX_LEN] = {
     "SDL_CONTROLLER_BUTTON_A",
     "SDL_CONTROLLER_BUTTON_B",
     "SDL_CONTROLLER_BUTTON_X",
@@ -104,6 +104,13 @@ char sdl_axis_names[SDL_CONTROLLER_AXIS_MAX][AXIS_NAME_MAX_LEN] = {
     "SDL_CONTROLLER_AXIS_TRIGGERLEFT",
     "SDL_CONTROLLER_AXIS_TRIGGERRIGHT",
 };
+
+char sota_input_names[SOTA_INPUT_END][SOTA_INPUT_NAME_MAX_LEN] = {
+#define REGISTER_ENUM(x) "SOTA_INPUT_##x",
+#include "names/input.h"
+};
+#undef REGISTER_ENUM
+
 
 
 struct controllerGamepad controllerGamepad_default = {
@@ -158,11 +165,11 @@ bool Gamepad_ButtonorAxis(struct controllerGamepad *gp, int sdl_button, int i, b
     if (isbutton) {
         out = SDL_GameControllerGetButton(controller, sdl_button);
         // if (out)
-            // SDL_Log("Gamepad pressing %s", sdl_button_names[sdl_button]);
+        // SDL_Log("Gamepad pressing %s", sdl_button_names[sdl_button]);
     } else {
         out = SDL_GameControllerGetAxis(controller, sdl_button) > gp->deadzone_trigger;
         // if (out)
-            // SDL_Log("Gamepad pressing %s", sdl_axis_names[sdl_button]);
+        // SDL_Log("Gamepad pressing %s", sdl_axis_names[sdl_button]);
     }
 
     SOTA_Log_FPS("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
