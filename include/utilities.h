@@ -41,7 +41,7 @@
 void Utilities_stacktrace();
 
 /* --- Array --- */
-int int_inbouds(int pos, int boundmin, int boundmax);
+int int_inbounds(int pos, int boundmin, int boundmax);
 bool if8_all_equal(if8 *arr1, if8 *arr2, size_t len);
 bool Utilities_charArr_Equal(char *arr1, char *arr2, size_t len);
 

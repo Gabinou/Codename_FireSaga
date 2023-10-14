@@ -133,6 +133,11 @@ struct Point {
     i32 y;
 };
 
+struct Pointf {
+    float x;
+    float y;
+};
+
 struct Node {
     i32 x;
     i32 y;

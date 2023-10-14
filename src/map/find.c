@@ -189,8 +189,8 @@ tnecs_entity_t *Map_Find_Spectators(struct Map *map, tnecs_entity_t *spectators,
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     /* -- Find spectator on neighbor tiles (to dance) -- */
     for (i32 i = 0; i < SQUARE_NEIGHBOURS; i++) {
-        int x_at = int_inbouds(x + q_cycle4_mzpz(i), 0, map->col_len);
-        int y_at = int_inbouds(y + q_cycle4_zmzp(i), 0, map->row_len);
+        int x_at = int_inbounds(x + q_cycle4_mzpz(i), 0, map->col_len);
+        int y_at = int_inbounds(y + q_cycle4_zmzp(i), 0, map->row_len);
         SDL_assert((x_at == (x + 1)) || (x_at == (x - 1)) || (y_at == (y + 1)) || (y_at == (y - 1)));
 
         tnecs_entity_t spectator = map->unitmap[y_at * map->col_len + x_at];
@@ -211,8 +211,8 @@ tnecs_entity_t *Map_Find_Auditors(struct Map *map, tnecs_entity_t *auditors, i32
     /* -- Find auditors on neighbor tiles (to speak) -- */
 
     for (i32 i = 0; i < SQUARE_NEIGHBOURS; i++) {
-        int x_at = int_inbouds(x + q_cycle4_mzpz(i), 0, map->col_len);
-        int y_at = int_inbouds(y + q_cycle4_zmzp(i), 0, map->row_len);
+        int x_at = int_inbounds(x + q_cycle4_mzpz(i), 0, map->col_len);
+        int y_at = int_inbounds(y + q_cycle4_zmzp(i), 0, map->row_len);
         SDL_assert((x_at == (x + 1)) || (x_at == (x - 1)) || (y_at == (y + 1)) || (y_at == (y - 1)));
 
         tnecs_entity_t auditor_ent = map->unitmap[y_at * map->col_len + x_at];
@@ -232,8 +232,8 @@ tnecs_entity_t *Map_Find_Traders(struct Map *map, tnecs_entity_t *passives, i32 
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     /* -- Find traders on neighbors (to trade with) -- */
     for (i32 i = 0; i < SQUARE_NEIGHBOURS; i++) {
-        int x_at = int_inbouds(x + q_cycle4_mzpz(i), 0, map->col_len);
-        int y_at = int_inbouds(y + q_cycle4_zmzp(i), 0, map->row_len);
+        int x_at = int_inbounds(x + q_cycle4_mzpz(i), 0, map->col_len);
+        int y_at = int_inbounds(y + q_cycle4_zmzp(i), 0, map->row_len);
         SDL_assert((x_at == (x + 1)) || (x_at == (x - 1)) || (y_at == (y + 1)) || (y_at == (y - 1)));
 
         tnecs_entity_t passive = map->unitmap[y_at * map->col_len + x_at];
@@ -254,8 +254,8 @@ tnecs_entity_t *Map_Find_Victims(struct Map *map, tnecs_entity_t *victims_ent,
     // Find victims on neighbors (to rescue)
 
     for (i32 i = 0; i < SQUARE_NEIGHBOURS; i++) {
-        int x_at = int_inbouds(x + q_cycle4_mzpz(i), 0, map->col_len);
-        int y_at = int_inbouds(y + q_cycle4_zmzp(i), 0, map->row_len);
+        int x_at = int_inbounds(x + q_cycle4_mzpz(i), 0, map->col_len);
+        int y_at = int_inbounds(y + q_cycle4_zmzp(i), 0, map->row_len);
         SDL_assert((x_at == (x + 1)) || (x_at == (x - 1)) || (y_at == (y + 1)) || (y_at == (y - 1)));
 
         tnecs_entity_t victim_ent = map->unitmap[y_at * map->col_len + x_at];

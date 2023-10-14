@@ -14,7 +14,7 @@ void Utilities_stacktrace() {
 #endif  /* __clang__ */
 
 /* --- Array --- */
-int int_inbouds(int pos, int boundmin, int boundmax) {
+int int_inbounds(int pos, int boundmin, int boundmax) {
     int out = 0;
     out = pos < boundmin ? boundmin : pos;
     out = out > boundmax ? boundmax : out;

@@ -204,20 +204,20 @@ void test_Equation_Unit_Speed() {
 void test_Equation_simple() {
     SDL_Log("test_Equation_simple");
 
-    nourstest_true(int_inbouds( 1, 0, 23) == 1);
-    nourstest_true(int_inbouds(-1, 0, 23) == 0);
-    nourstest_true(int_inbouds(24, 0, 23) == 23);
-    nourstest_true(int_inbouds( 1, 0, 23) == 1);
-    nourstest_true(int_inbouds( 2, 0, 23) == 2);
-    nourstest_true(int_inbouds( 3, 0, 23) == 3);
-    nourstest_true(int_inbouds( 4, 0, 23) == 4);
-    nourstest_true(int_inbouds( 5, 0, 23) == 5);
-    nourstest_true(int_inbouds( 6, 0, 23) == 6);
-    nourstest_true(int_inbouds( 7, 0, 23) == 7);
-    nourstest_true(int_inbouds( 8, 0, 23) == 8);
-    nourstest_true(int_inbouds( 9, 0, 23) == 9);
-    nourstest_true(int_inbouds( 0, 0, 23) == 0);
-    nourstest_true(int_inbouds(23, 0, 23) == 23);
+    nourstest_true(int_inbounds( 1, 0, 23) == 1);
+    nourstest_true(int_inbounds(-1, 0, 23) == 0);
+    nourstest_true(int_inbounds(24, 0, 23) == 23);
+    nourstest_true(int_inbounds( 1, 0, 23) == 1);
+    nourstest_true(int_inbounds( 2, 0, 23) == 2);
+    nourstest_true(int_inbounds( 3, 0, 23) == 3);
+    nourstest_true(int_inbounds( 4, 0, 23) == 4);
+    nourstest_true(int_inbounds( 5, 0, 23) == 5);
+    nourstest_true(int_inbounds( 6, 0, 23) == 6);
+    nourstest_true(int_inbounds( 7, 0, 23) == 7);
+    nourstest_true(int_inbounds( 8, 0, 23) == 8);
+    nourstest_true(int_inbounds( 9, 0, 23) == 9);
+    nourstest_true(int_inbounds( 0, 0, 23) == 0);
+    nourstest_true(int_inbounds(23, 0, 23) == 23);
 
     nourstest_true(Equation_Weapon_Attack(1, 2) == 3);
     nourstest_true(Equation_Weapon_Attack(UINT8_MAX, 2) == UINT8_MAX);
