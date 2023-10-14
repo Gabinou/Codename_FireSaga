@@ -150,7 +150,7 @@ i32 *Taxicab_Circle(i32 *matrix, i32 x, i32 y, size_t row_len, size_t col_len,
         subrangey_min = (rangex > range->min) ? 0 : (range->min - rangex);
         subrangey_max = (rangex > range->max) ? 0 : (range->max - rangex);
         for (i32 rangey = subrangey_min; rangey <= subrangey_max; rangey++) {
-            for (int8_t sq_neighbor = 0; sq_neighbor < NMATH_SQUARE_NEIGHBOURS; sq_neighbor++) {
+            for (int8_t sq_neighbor = 0; sq_neighbor < SQUARE_NEIGHBOURS; sq_neighbor++) {
                 i32 tempx = int_inbouds(x + q_cycle4_pmmp(sq_neighbor) * rangex, 0, col_len - 1);
                 i32 tempy = int_inbouds(y + q_cycle4_ppmm(sq_neighbor) * rangey, 0, row_len - 1);
                 matrix[tempx * col_len + tempy] = 1;
@@ -512,7 +512,7 @@ void Map_globalRange(struct Map *map, tnecs_world_t *world, uf8 alignment) {
 //     struct nmath_sq_neighbors  Pushto = {0, 0, 0, 0};
 //     struct Point neighbor;
 //     for (i32 distance = range[0]; distance <= range[1]; distance++) {
-//         for (i32  i = 0; i < NMATH_SQUARE_NEIGHBOURS; i++) {
+//         for (i32  i = 0; i < SQUARE_NEIGHBOURS; i++) {
 //             neighbor.x = int_inbouds((target.x + distance * q_cycle4_pzmz(i)), 0, col_len - 1);
 //             neighbor.y = int_inbouds((target.y + distance * q_cycle4_zpzm(i)), 0, row_len - 1);
 //             if (attackfrommap[neighbor.y * col_len + neighbor.x] >= NMATH_ATTACKFROM_MOVEABLEMIN) {
@@ -537,7 +537,7 @@ void Map_globalRange(struct Map *map, tnecs_world_t *world, uf8 alignment) {
 //     i32 * Pullto_ptr = (i32 *)&Pullto;
 //     assert(range[0] < range[1]);
 //     for (i32  distance = range[0]; distance <= range[1]; distance++) {
-//         for (i32  i = 0; i < NMATH_SQUARE_NEIGHBOURS; i++) {
+//         for (i32  i = 0; i < SQUARE_NEIGHBOURS; i++) {
 //             neighbor.x = int_inbouds((target.x + distance * q_cycle4_pzmz(i)), 0, col_len - 1);
 //             neighbor.y = int_inbouds((target.y + distance * q_cycle4_zmzp(i)), 0, row_len - 1);
 //             if ((attackfrommap[neighbor.y * col_len + neighbor.x] > 0) && (neighbor.x != 0) && (neighbor.x != (col_len - 1)) && (neighbor.y != 0) && (neighbor.x != (row_len - 1))) {
@@ -556,7 +556,7 @@ void Map_globalRange(struct Map *map, tnecs_world_t *world, uf8 alignment) {
 //     i32  distance = 0;
 //     while ((distance_block.top == 0) || (distance_block.bottom == 0) || (distance_block.left == 0) || (distance_block.right == 0)) {
 //         distance++;
-//         for (i32  i = 0; i < NMATH_SQUARE_NEIGHBOURS; i++) {
+//         for (i32  i = 0; i < SQUARE_NEIGHBOURS; i++) {
 //             neighbor.x = int_inbouds((start.x + q_cycle4_pzmz(i) * distance), 0, col_len - 1);
 //             neighbor.y = int_inbouds((start.y + q_cycle4_zpzm(i) * distance), 0, row_len - 1);
 //             if ((costmap_pushpull[neighbor.y * col_len + neighbor.x] == 0) && (*(distance_ptr + i) == 0)) {
@@ -587,7 +587,7 @@ void Map_globalRange(struct Map *map, tnecs_world_t *world, uf8 alignment) {
 //         }
 //     }
 //     pushpulltomap[start.y * col_len + start.x] = 0;
-//     for (i32  sq_neighbor = 0; sq_neighbor < NMATH_SQUARE_NEIGHBOURS; sq_neighbor++) {
+//     for (i32  sq_neighbor = 0; sq_neighbor < SQUARE_NEIGHBOURS; sq_neighbor++) {
 //         temp_distance = *(block_ptr + sq_neighbor);
 //         if (*(pushpullto_ptr + sq_neighbor) >= NMATH_PUSHPULLMAP_MINDIST) {
 //         for (i32  distance = 1; distance < temp_distance; distance++) {
@@ -607,10 +607,10 @@ void Map_globalRange(struct Map *map, tnecs_world_t *world, uf8 alignment) {
 //     i32 * block_ptr = (i32 *)&direction_block;
 //     i32 * pushpullto_ptr = (i32 *)&pushpullto;
 //     switch (mode_output) {
-//         case (NMATH_POINTS_MODE_LIST):
+//         case (POINTS_MODE_LIST):
 //             pushpulltomap = DARR_INIT(pushpulltomap, i32, row_len * col_len * NMATH_TWO_D);
 //             break;
-//         case (NMATH_POINTS_MODE_MATRIX):
+//         case (POINTS_MODE_MATRIX):
 //             pushpulltomap = calloc(row_len * col_len, sizeof(*pushpulltomap));
 //             for (size_t row = 0; row < row_len; row++) {
 //                 for (size_t col = 0; col < col_len; col++) {
@@ -620,18 +620,18 @@ void Map_globalRange(struct Map *map, tnecs_world_t *world, uf8 alignment) {
 //             break;
 //     }
 //     pushpulltomap[start.y * col_len + start.x] = 0;
-//     for (i32  sq_neighbor = 0; sq_neighbor < NMATH_SQUARE_NEIGHBOURS; sq_neighbor++) {
+//     for (i32  sq_neighbor = 0; sq_neighbor < SQUARE_NEIGHBOURS; sq_neighbor++) {
 //         temp_distance = *(block_ptr + sq_neighbor);
 //         if (*(pushpullto_ptr + sq_neighbor) >= NMATH_PUSHPULLMAP_MINDIST) {
 //             for (i32  distance = 1; distance < temp_distance; distance++) {
 //                 pushpullto_tile.x = int_inbouds((distance * q_cycle4_pzmz(sq_neighbor)) + start.x, 0, col_len - 1);
 //                 pushpullto_tile.y = int_inbouds((distance * q_cycle4_zmzp(sq_neighbor)) + start.y, 0, row_len - 1);
 //                 switch (mode_output) {
-//                     case NMATH_POINTS_MODE_LIST:
+//                     case POINTS_MODE_LIST:
 //                         DARR_PUT(pushpulltomap, pushpullto_tile.x);
 //                         DARR_PUT(pushpulltomap, pushpullto_tile.y);
 //                         break;
-//                     case NMATH_POINTS_MODE_MATRIX:
+//                     case POINTS_MODE_MATRIX:
 //                         pushpulltomap[pushpullto_tile.y * col_len + pushpullto_tile.x] = distance;
 //                         break;
 //                 }
@@ -697,7 +697,7 @@ i32 *Pathfinding_Astar(i32 *path_list, i32 *costmap, size_t row_len,
             break;
 
         /* Visit all square neighbors */
-        for (size_t sq_neighbor = 0; sq_neighbor < NMATH_SQUARE_NEIGHBOURS; sq_neighbor++) {
+        for (size_t sq_neighbor = 0; sq_neighbor < SQUARE_NEIGHBOURS; sq_neighbor++) {
             /* Get next neighbor movement cost */
             neighbor.x = int_inbouds(q_cycle4_mzpz(sq_neighbor) + current.x, 0, col_len - 1);
             neighbor.y = int_inbouds(q_cycle4_zmzp(sq_neighbor) + current.y, 0, row_len - 1);
@@ -746,10 +746,10 @@ i32 *Pathfinding_Moveto(i32 *cost_matrix, size_t row_len, size_t col_len,
     /* -- Setup output move_matrix -- */
     i32 *move_matrix = NULL;
     switch (mode_output) {
-        case (NMATH_POINTS_MODE_LIST):
+        case (POINTS_MODE_LIST):
             move_matrix = DARR_INIT(move_matrix, i32, row_len * col_len * NMATH_TWO_D);
             break;
-        case (NMATH_POINTS_MODE_MATRIX):
+        case (POINTS_MODE_MATRIX):
             move_matrix = calloc(row_len * col_len, sizeof(*move_matrix));
             for (size_t row = 0; row < row_len; row++) {
                 for (size_t col = 0; col < col_len; col++) {
@@ -776,10 +776,10 @@ i32 *Pathfinding_Moveto(i32 *cost_matrix, size_t row_len, size_t col_len,
         /* -- Compute cost to current tile -- */
         i32 current_i   = current.y * col_len + current.x;
         i32 move_i      = move_matrix[current_i];
-        if (mode_output == NMATH_POINTS_MODE_MATRIX) {
+        if (mode_output == POINTS_MODE_MATRIX) {
             if ((move_i == MOVEMAP_BLOCKED) || (move_i > (current.distance + 1)))
                 move_matrix[current_i] = current.distance + 1;
-        } else if (mode_output == NMATH_POINTS_MODE_LIST) {
+        } else if (mode_output == POINTS_MODE_LIST) {
             size_t pnum = DARR_NUM(move_matrix) / NMATH_TWO_D;
             if (!linalg_list_isIn_2D_int32_t(move_matrix, pnum, current.x, current.y)) {
                 DARR_PUT(move_matrix, current.x);
@@ -840,7 +840,7 @@ void Pathfinding_Neighbors(struct Node *open, struct Node *closed,
     struct Node neighbor;
 
     /* -- Move to four square neighbor tiles -- */
-    for (size_t i = 0; i < NMATH_SQUARE_NEIGHBOURS; i++) {
+    for (size_t i = 0; i < SQUARE_NEIGHBOURS; i++) {
         /* - Get square neighbor - */
         neighbor.x = int_inbouds(current.x + q_cycle4_mzpz(i), 0, col_len - 1);
         neighbor.y = int_inbouds(current.y + q_cycle4_zmzp(i), 0, row_len - 1);

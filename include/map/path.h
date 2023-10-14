@@ -13,6 +13,11 @@ enum MOVEMAP {
     MOVEMAP_MOVEABLEMIN = 1,
 };
 
+enum PATHFINDING_POINTS_MODE {
+    POINTS_MODE_MATRIX  = 0,
+    POINTS_MODE_LIST    = 1,
+};
+
 
 /* --- Bounds --- */
 extern void Map_Bounds_Compute(struct Map *map);

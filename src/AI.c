@@ -406,7 +406,7 @@ struct AI AI_default = {
 //     struct Point pushpullable;
 //     out.rating = INT8_MIN;
 //     int_fast8_t temp_rating = 0;
-//     for (i32 sq_neighbor = 0; sq_neighbor < NMATH_SQUARE_NEIGHBOURS; sq_neighbor++) {
+//     for (i32 sq_neighbor = 0; sq_neighbor < SQUARE_NEIGHBOURS; sq_neighbor++) {
 //         for (i32 distance = 1; distance < pushpull_distance; distance++) {
 //             pushpullable.x = int_inbouds((distance * q_cycle4_pzmz(
 //                     sq_neighbor)) + victim_pos.x, 0,

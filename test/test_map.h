@@ -128,7 +128,7 @@ void test_pathfinding_Astar() {
     /* -- Test computing a movemap from a costmap -- */
     /* - Computing a movemap matrix - */
     i32 *movemapp = Pathfinding_Moveto(costmapp, ROW_LEN, COL_LEN, start_nmath, move,
-                                       NMATH_POINTS_MODE_MATRIX);
+                                       POINTS_MODE_MATRIX);
     // linalg_matrix_print_int32_t(movemapp, ROW_LEN, COL_LEN);
 
     for (size_t row = 0; row < ROW_LEN; row++) {
@@ -150,7 +150,7 @@ void test_pathfinding_Astar() {
 
     /* - Computing a movemap list - */
     int *movemapp_list = Pathfinding_Moveto(costmapp, ROW_LEN, COL_LEN, start_nmath, move,
-                                            NMATH_POINTS_MODE_LIST);
+                                            POINTS_MODE_LIST);
     for (size_t i = 0; i < DARR_NUM(movemapp_list) / 2; i++) {
         int temp_col = movemapp_list[i * NMATH_TWO_D + 0];
         int temp_row = movemapp_list[i * NMATH_TWO_D + 1];

@@ -113,6 +113,10 @@ enum SOTA_REGRETS {
     REGRET_MAX              =  1,
 };
 
+enum SOTA_MATH {
+    SQUARE_NEIGHBOURS = 4
+};
+
 enum SOTA {
     SOTA_NULL                               =    0,
     SOTA_EXP_PER_LEVEL                      =  100,
