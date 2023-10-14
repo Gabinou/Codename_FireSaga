@@ -101,8 +101,8 @@ void Map_Stacked_Global_Dangermap_Reset(struct Map *map) {
 
 float *_Map_fMovemap_Compute(struct Map *map, struct nmath_point_float start, float move) {
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
-    map->fmovemap = pathfinding_Map_Moveto_noM_float(map->fmovemap, map->fcostmap,
-                                                     map->row_len, map->col_len, start, move);
+    // map->fmovemap = pathfinding_Map_Moveto_noM_float(map->fmovemap, map->fcostmap,
+    // map->row_len, map->col_len, start, move);
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
     return (map->fmovemap);
 }

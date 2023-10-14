@@ -1106,18 +1106,6 @@ TEMPLATE_TYPES_INT
 
 /******************************* PATHFINDING ***********************************/
 
-// extern int32_t * pathfinding_Astar_List_int32_t(int32_t * path_list, int32_t * costmap, size_t row_len, size_t col_len, struct nmath_point_int32_t start, struct nmath_point_int32_t end);
-
-#define REGISTER_ENUM(type) extern type * pathfinding_Map_Moveto_noM_##type(type * move_matrix, type * cost_matrix, size_t row_len, size_t col_len, struct nmath_point_##type start, type move);
-TEMPLATE_TYPES_SINT
-TEMPLATE_TYPES_FLOAT
-#undef REGISTER_ENUM
-
-#define REGISTER_ENUM(type) extern type * pathfinding_Map_Moveto_##type(type * costmap, size_t row_len, size_t col_len, struct nmath_point_##type start, type move, uint8_t mode_output);
-TEMPLATE_TYPES_SINT
-TEMPLATE_TYPES_FLOAT
-#undef REGISTER_ENUM
-
 #define REGISTER_ENUM(type) extern type * pathfinding_Map_Visible_noM_##type(type * sightmap, type * blockmap, size_t row_len, size_t col_len, struct nmath_point_##type start, type sight);
 TEMPLATE_TYPES_SINT
 #undef REGISTER_ENUM
