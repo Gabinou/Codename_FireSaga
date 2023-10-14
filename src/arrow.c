@@ -126,7 +126,7 @@ void Arrow_Path_Trace(struct Arrow *arrow, struct Point end_in) {
         for (i32 i = 0; i < (pointnum - 1); i++)
             Arrow_Decider(arrow, i);
     } else
-        DARR_NUM(arrow->pathlist) = NMATH_TWO_D;
+        DARR_NUM(arrow->pathlist) = TWO_D;
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 

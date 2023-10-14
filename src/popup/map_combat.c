@@ -68,10 +68,10 @@ void PopUp_Map_Combat_Load(struct PopUp_Map_Combat *pmc, SDL_Renderer *renderer,
     path = PATH_JOIN("..", "assets", "GUI", "Popup", "PopUp_Map_Combat_Header_Red.png");
     pmc->texture_header_red = Filesystem_Texture_Load(renderer, path, SDL_PIXELFORMAT_INDEX8);
 
-    path = PATH_JOIN("..", "assets", "GUI", "Popup", "n9patch_popup_map_combat_red_8px.png");
+    path = PATH_JOIN("..", "assets", "GUI", "n9Patch", "n9patch_popup_map_combat_red_8px.png");
     pmc->texture_n9patch_red = Filesystem_Texture_Load(renderer, path, SDL_PIXELFORMAT_INDEX8);
 
-    path = PATH_JOIN("..", "assets", "GUI", "Popup", "n9patch_popup_map_combat_blue_8px.png");
+    path = PATH_JOIN("..", "assets", "GUI", "n9Patch", "n9patch_popup_map_combat_blue_8px.png");
     pmc->texture_n9patch_blue = Filesystem_Texture_Load(renderer, path, SDL_PIXELFORMAT_INDEX8);
 
     /* - bar colors - */

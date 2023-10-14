@@ -152,8 +152,8 @@ void test_pathfinding_Astar() {
     int *movemapp_list = Pathfinding_Moveto(costmapp, ROW_LEN, COL_LEN, start_nmath, move,
                                             POINTS_MODE_LIST);
     for (size_t i = 0; i < DARR_NUM(movemapp_list) / 2; i++) {
-        int temp_col = movemapp_list[i * NMATH_TWO_D + 0];
-        int temp_row = movemapp_list[i * NMATH_TWO_D + 1];
+        int temp_col = movemapp_list[i * TWO_D + 0];
+        int temp_row = movemapp_list[i * TWO_D + 1];
         int current  = movemapp[temp_row * COL_LEN + temp_col];
         nourstest_true(current > 0);
     }
@@ -162,7 +162,7 @@ void test_pathfinding_Astar() {
     int *path_list = DARR_INIT(path_list, int, 32);
     path_list = Pathfinding_Astar(path_list, costmapp, ROW_LEN, COL_LEN, start, end);
 
-    int point_num       = DARR_NUM(path_list) / NMATH_TWO_D;
+    int point_num       = DARR_NUM(path_list) / TWO_D;
     int *computed_path  = linalg_list2matrix_int32_t(path_list, ROW_LEN, COL_LEN, point_num);
     // linalg_matrix_print_int32_t(computed_path, ROW_LEN, COL_LEN);
 

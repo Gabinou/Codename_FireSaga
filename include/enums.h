@@ -120,6 +120,7 @@ enum SOTA_MATH {
 enum SOTA {
     SOTA_NULL                               =    0,
     SOTA_EXP_PER_LEVEL                      =  100,
+    SOTA_ITERATIONS_LIMIT                   = 1000,
 };
 
 enum SOTA_SETTINGS {

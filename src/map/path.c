@@ -220,7 +220,7 @@ i32 *Map_Healtomap_Compute(struct Map *map, tnecs_world_t *world, tnecs_entity_t
     map->update = true;
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
     map->healtomap = _Map_tomap_Compute(map->healtomap, map->movemap, map->row_len, map->col_len,
-                                        move_stat, &range, NMATH_MOVETILE_INCLUDE);
+                                        move_stat, &range, MOVETILE_INCLUDE);
     // linalg_matrix_print_int(map->healtomap, map->row_len, map->col_len);
     return (map->healtomap);
 }
@@ -258,7 +258,7 @@ i32 *Map_Attacktomap_Compute(struct Map *map, tnecs_world_t *world, tnecs_entity
     _Unit_Range_Combine(unit, &range, equipped, ITEM_ARCHETYPE_WEAPON);
     map->update = true;
     map->attacktomap = _Map_tomap_Compute(map->attacktomap, map->movemap, map->row_len, map->col_len,
-                                          move_stat, &range, NMATH_MOVETILE_INCLUDE);
+                                          move_stat, &range, MOVETILE_INCLUDE);
     // linalg_matrix_print_int(map->attacktomap, map->row_len, map->col_len);
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
     return (map->attacktomap);
@@ -277,7 +277,7 @@ i32 *Map_Danger_Compute(struct Map *map, tnecs_world_t *world, tnecs_entity_t un
     struct Range *range = Unit_Range_Combine_Equipment(unit);
 
     map->attacktomap = _Map_tomap_Compute(map->attacktomap, map->movemap, map->row_len,
-                                          map->col_len, move, range, NMATH_MOVETILE_INCLUDE);
+                                          map->col_len, move, range, MOVETILE_INCLUDE);
     memset(map->temp, 0, sizeof(*map->temp)*map->row_len * map->col_len);
     map->temp = linalg_plus_noM_int32_t(map->temp, map->attacktomap, map->row_len * map->col_len);
     // linalg_matrix_print_int(map->temp, map->row_len, map->col_len);
@@ -444,7 +444,7 @@ void Map_globalRange(struct Map *map, tnecs_world_t *world, uf8 alignment) {
         Pathfinding_Moveto_noM(map->movemap, map->costmap, map->row_len,
                                map->col_len, start, move);
         map->attacktomap = pathfinding_Map_Attackto_noM_int32_t(map->attacktomap, map->movemap,
-                                                                map->row_len, map->col_len, move, (uf8 *)range, NMATH_MOVETILE_INCLUDE);
+                                                                map->row_len, map->col_len, move, (uf8 *)range, MOVETILE_INCLUDE);
         map->global_rangemap = linalg_plus_noM_int32_t(map->global_rangemap, map->attacktomap,
                                                        map->row_len * map->col_len);
     }
@@ -457,7 +457,7 @@ void Map_globalRange(struct Map *map, tnecs_world_t *world, uf8 alignment) {
 /* TODO: Convert from nmath to SOTA */
 // int * came_from2path_map(int * path_map, int * came_from, size_t row_len, size_t col_len, int x_start, int y_start, int x_end, int y_end) {
 //     struct Point current = {x_end, y_end};
-//     for (size_t i = 0; i < NMATH_ITERATIONS_LIMIT; i++) {
+//     for (size_t i = 0; i < SOTA_ITERATIONS_LIMIT; i++) {
 //         path_map[current.y * col_len + current.x] = 1;
 //         if ((current.x == x_start) && (current.y == y_start)) {
 //             break;
@@ -484,7 +484,7 @@ void Map_globalRange(struct Map *map, tnecs_world_t *world, uf8 alignment) {
 // int * came_from2path_list(int * path_list, int * came_from, size_t row_len, size_t col_len, int x_start, int y_start, int x_end, int y_end) {
 //     struct Point current = {x_end, y_end};
 //     DARR_NUM(path_list) = 0;
-//     for (size_t i = 0; i < NMATH_ITERATIONS_LIMIT; i++) {
+//     for (size_t i = 0; i < SOTA_ITERATIONS_LIMIT; i++) {
 //         DARR_PUT(path_list, current.x);
 //         DARR_PUT(path_list, current.y);
 //         if ((current.x == x_start) && (current.y == y_start)) {
@@ -608,7 +608,7 @@ void Map_globalRange(struct Map *map, tnecs_world_t *world, uf8 alignment) {
 //     i32 * pushpullto_ptr = (i32 *)&pushpullto;
 //     switch (mode_output) {
 //         case (POINTS_MODE_LIST):
-//             pushpulltomap = DARR_INIT(pushpulltomap, i32, row_len * col_len * NMATH_TWO_D);
+//             pushpulltomap = DARR_INIT(pushpulltomap, i32, row_len * col_len * TWO_D);
 //             break;
 //         case (POINTS_MODE_MATRIX):
 //             pushpulltomap = calloc(row_len * col_len, sizeof(*pushpulltomap));
@@ -647,7 +647,7 @@ i32 *Pathfinding_CameFrom_List(i32 *path, i32 *came_from, size_t col_len,
     struct Point current = end;
     struct Point move;
     DARR_NUM(path) = 0;
-    for (size_t i = 0; i < NMATH_ITERATIONS_LIMIT; i++) {
+    for (size_t i = 0; i < SOTA_ITERATIONS_LIMIT; i++) {
         DARR_PUT(path, current.x);
         DARR_PUT(path, current.y);
         if ((current.x == start.x) && (current.y == start.y))
@@ -747,7 +747,7 @@ i32 *Pathfinding_Moveto(i32 *cost_matrix, size_t row_len, size_t col_len,
     i32 *move_matrix = NULL;
     switch (mode_output) {
         case (POINTS_MODE_LIST):
-            move_matrix = DARR_INIT(move_matrix, i32, row_len * col_len * NMATH_TWO_D);
+            move_matrix = DARR_INIT(move_matrix, i32, row_len * col_len * TWO_D);
             break;
         case (POINTS_MODE_MATRIX):
             move_matrix = calloc(row_len * col_len, sizeof(*move_matrix));
@@ -780,7 +780,7 @@ i32 *Pathfinding_Moveto(i32 *cost_matrix, size_t row_len, size_t col_len,
             if ((move_i == MOVEMAP_BLOCKED) || (move_i > (current.distance + 1)))
                 move_matrix[current_i] = current.distance + 1;
         } else if (mode_output == POINTS_MODE_LIST) {
-            size_t pnum = DARR_NUM(move_matrix) / NMATH_TWO_D;
+            size_t pnum = DARR_NUM(move_matrix) / TWO_D;
             if (!linalg_list_isIn_2D_int32_t(move_matrix, pnum, current.x, current.y)) {
                 DARR_PUT(move_matrix, current.x);
                 DARR_PUT(move_matrix, current.y);

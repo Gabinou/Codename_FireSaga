@@ -18,6 +18,11 @@ enum PATHFINDING_POINTS_MODE {
     POINTS_MODE_LIST    = 1,
 };
 
+enum PATHFINDING_MODE_MOVETILE {
+    MOVETILE_EXCLUDE = 0,
+    MOVETILE_INCLUDE = 1,
+};
+
 
 /* --- Bounds --- */
 extern void Map_Bounds_Compute(struct Map *map);
