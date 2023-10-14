@@ -67,10 +67,24 @@ extern void Map_globalRange(struct Map *map, tnecs_world_t *w, uf8 alignment);
 extern i32 *Taxicab_Circle(             i32 *m, i32 x, i32 y, size_t r, size_t c, struct Range *R);
 extern i32 *Taxicab_Circle_List(i32 *d, i32 *m, i32 x, i32 y, size_t r, size_t c, struct Range *R);
 
-/* --- AStar --- */
-extern int Map_Pathfinding_Manhattan(struct Point start, struct Point end);
-extern int *Map_Pathfinding_Astar(int *path, int *cost, size_t rowl, size_t coll,
+/* --- Pathfinding --- */
+/* -- Astar -- */
+extern i32 *Map_Pathfinding_Astar(i32 *path, i32 *cost, size_t rowl, size_t coll,
                                   struct Point start, struct Point end);
+extern i32 Map_Pathfinding_Manhattan(struct Point start, struct Point end);
+
+
+/* -- Moveto -- */
+extern i32 *Map_Pathfinding_CameFrom_List(i32 *path, i32 *came_from, size_t col_len,
+                                          struct Point start, struct Point end);
+extern i32 *Map_Pathfinding_Moveto_noM(i32 *move_matrix, i32 *cost_matrix,
+                                       size_t row_len, size_t col_len,
+                                       struct Point start, i32 move);
+extern i32 *Map_Pathfinding_Moveto(i32 *costmap, size_t row_len, size_t col_len,
+                                   struct Point start, i32 move, int mode_output);
+
+
+
 
 /* --- Pushing and pulling --- */
 

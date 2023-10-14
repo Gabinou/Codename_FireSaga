@@ -55,10 +55,10 @@ void test_position() {
     nourstest_true(position.pixel_pos.x == 0);
     nourstest_true(position.pixel_pos.y == 0);
 
-    struct Point tiles_pos = Point_default;
-    struct Position position2 = Position_default;
-    uint_fast16_t tilesize = 32;
-    position2.scale[0] = tilesize;
-    position2.scale[1] = tilesize;
-    position2.onTilemap = false;
+    struct Point tiles_pos      = {0};
+    struct Position position2   = {0};
+    uint_fast16_t tilesize      = 32;
+    position2.scale[0]          = tilesize;
+    position2.scale[1]          = tilesize;
+    position2.onTilemap         = false;
 }

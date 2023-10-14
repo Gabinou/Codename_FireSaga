@@ -133,11 +133,18 @@ struct Point {
     i32 y;
 };
 
+struct Node {
+    i32 x;
+    i32 y;
+    i32 distance;
+    i32 cost;
+};
+
 struct Nodeq {
-    int x;
-    int y;
-    int priority;
-    int cost;
+    i32 x;
+    i32 y;
+    i32 priority;
+    i32 cost;
 };
 
 struct Padding {
