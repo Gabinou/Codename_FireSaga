@@ -4,8 +4,8 @@
 void test_position() {
     SDL_Log("test_position");
     struct Position position = Position_default;
-    struct nmath_point_int32_t pos = nmath_point_int32_t_default;
-    struct nmath_point_int32_t *ptrpos = NULL;
+    struct Point pos = {0};
+    struct Point *ptrpos = NULL;
     position.onTilemap = false;
 
     Position_Bounds_Set(&position, 0, 100, 0, 100);
@@ -55,7 +55,7 @@ void test_position() {
     nourstest_true(position.pixel_pos.x == 0);
     nourstest_true(position.pixel_pos.y == 0);
 
-    struct nmath_point_int32_t tiles_pos = nmath_point_int32_t_default;
+    struct Point tiles_pos = Point_default;
     struct Position position2 = Position_default;
     uint_fast16_t tilesize = 32;
     position2.scale[0] = tilesize;

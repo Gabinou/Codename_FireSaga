@@ -346,8 +346,8 @@ void test_skills() {
     struct Combat_Phase combat_outcome[SOTA_COMBAT_MAX_PHASES];
     struct TINYMT32_T tinymt32;
     RNG_Init_tinymt(&tinymt32);
-    struct nmath_point_int32_t attacker_pos = {1, 2};
-    struct nmath_point_int32_t defender_pos = {2, 2};
+    struct Point attacker_pos = {1, 2};
+    struct Point defender_pos = {2, 2};
     int distance = 1;
     struct Unit Silou = Unit_default;
     struct Unit Enemy = Unit_default;

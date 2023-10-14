@@ -12,8 +12,8 @@ enum ENUM_TEST_AI {
 void test_AI() {
     SDL_Log("test_AI");
     uint32_t move;
-    struct nmath_point_int32_t start = {10, 6};
-    struct nmath_point_int32_t end = {15, 1};
+    struct Point start = {10, 6};
+    struct Point end   = {15, 1};
     struct nmath_hexpoint_int32_t hexstart = {10, -4, 6};
     i32 range[2];
     i32 *position;
