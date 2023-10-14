@@ -268,7 +268,7 @@ struct AI AI_default = {
 //     // i32 * costmapp_move = Map_Costmap_Movement_Compute(in_map, in_world, in_friendly_ent);
 //     // i32 * movemapp = pathfinding_Map_Movable_int32_t(costmapp_move, in_map->row_len, in_map->col_len, position_ptr->tilemap_pos, Unit_computeMove(friendly_mptr), POINTS_MATRIX);
 //     // struct Position * temp_pos;
-//     // struct nmath_point_int32_t * enemy_points = NULL;
+//     // struct Point * enemy_points = NULL;
 //     // for (uf8 i = 0; i < in_map->num_enemies_onfield; i++) {
 //     //     if (in_map->friendlies_onfield[i] > 0) {
 //     //         temp_pos = TNECS_GET_COMPONENT(in_world, in_map->enemies_onfield[i], Position);
@@ -305,7 +305,7 @@ struct AI AI_default = {
 //     // i32 * costmapp_move = Map_Costmap_Movement_Compute(in_map, in_world, in_friendly_ent);
 //     // i32 * movemapp = pathfinding_Map_Movable_int32_t(costmapp_move, in_map->row_len, in_map->col_len, position_ptr->tilemap_pos, Unit_computeMove(friendly_mptr), POINTS_MATRIX);
 //     // struct Position * temp_pos;
-//     // struct nmath_point_int32_t * friendly_points = NULL;
+//     // struct Point * friendly_points = NULL;
 //     // for (uf8 i = 0; i < in_map->num_friendlies_onfield; i++) {
 //     //     if (in_map->friendlies_onfield[i] > 0) {
 //     //         temp_pos = TNECS_GET_COMPONENT(in_world, in_map->friendlies_onfield[i], Position);
@@ -343,7 +343,7 @@ struct AI AI_default = {
 //     // i32 * costmapp_move = Map_Costmap_Movement_Compute(in_map, in_world, in_enemy_ent);
 //     // i32 * movemapp = pathfinding_Map_Movable_int32_t(costmapp_move, in_map->row_len, in_map->col_len, position_ptr->tilemap_pos, Unit_computeMove(enemy_mptr), POINTS_MATRIX);
 //     // struct Position * temp_pos;
-//     // struct nmath_point_int32_t * enemy_points = NULL;
+//     // struct Point * enemy_points = NULL;
 //     // for (uf8 i = 0; i < in_map->num_enemies_onfield; i++) {
 //     //     if (in_map->friendlies_onfield[i] > 0) {
 //     //         temp_pos = TNECS_GET_COMPONENT(in_world, in_map->enemies_onfield[i], Position);
@@ -380,7 +380,7 @@ struct AI AI_default = {
 //     // i32 * costmapp_move = Map_Costmap_Movement_Compute(in_map, in_world, in_enemy_ent);
 //     // i32 * movemapp = pathfinding_Map_Movable_int32_t(costmapp_move, in_map->row_len, in_map->col_len, position_ptr->tilemap_pos, Unit_computeMove(enemy_mptr), POINTS_MATRIX);
 //     // struct Position * temp_pos;
-//     // struct nmath_point_int32_t * friendly_points = NULL;
+//     // struct Point * friendly_points = NULL;
 //     // for (uf8 i = 0; i < in_map->num_friendlies_onfield; i++) {
 //     //     if (in_map->friendlies_onfield[i] > 0) {
 //     //         temp_pos = TNECS_GET_COMPONENT(in_world, in_map->friendlies_onfield[i], Position);
@@ -400,10 +400,10 @@ struct AI AI_default = {
 
 // struct AI_PushPull_Out AI_PushPull_bestPosition(i32 * in_gradientmap,
 //         size_t row_len,
-//         size_t col_len, i32 pushpull_distance, struct nmath_point_int32_t victim_pos,
+//         size_t col_len, i32 pushpull_distance, struct Point victim_pos,
 //         int_fast8_t sign) {
 //     struct AI_PushPull_Out out = {{-1 - 1}, INT8_MIN};
-//     struct nmath_point_int32_t pushpullable;
+//     struct Point pushpullable;
 //     out.rating = INT8_MIN;
 //     int_fast8_t temp_rating = 0;
 //     for (i32 sq_neighbor = 0; sq_neighbor < NMATH_SQUARE_NEIGHBOURS; sq_neighbor++) {

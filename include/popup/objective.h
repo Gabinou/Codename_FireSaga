@@ -58,8 +58,9 @@ extern void PopUp_Objective_Set_SubObj(struct PopUp_Objective *po, char *obj);
 extern void PopUp_Objective_Compute_Size(struct PopUp_Objective *po, struct n9Patch *n9patch);
 
 /* --- Drawing --- */
-extern void PopUp_Objective_Draw(struct PopUp *p, struct nmath_point_int32_t pos,
+extern void PopUp_Objective_Draw(struct PopUp *p, struct Point pos,
                                  SDL_Texture *rt, SDL_Renderer *r);
-extern void PopUp_Objective_Update(struct PopUp_Objective *po,
-                                   struct n9Patch *n9patch, SDL_Texture *rt, SDL_Renderer *r);
+extern void PopUp_Objective_Update(struct PopUp_Objective *po, struct n9Patch *n9,
+                                   SDL_Texture *rt, SDL_Renderer *r);
+
 #endif /* POPUP_OBJECTIVE_H */

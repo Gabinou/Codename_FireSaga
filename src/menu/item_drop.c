@@ -11,17 +11,17 @@ struct ItemDropMenu ItemDropMenu_default = {
     .update         = false,
 };
 
-struct nmath_point_int32_t idm_cursor_pos[IDM_ELEM_NUM] = {
+struct Point idm_cursor_pos[IDM_ELEM_NUM] = {
     /* ID_ELEM_YES */ {IDM_ELEM_YES_X, IDM_ELEM_YES_Y},
     /* IDM_ELEM_NO */ {IDM_ELEM_NO_X, IDM_ELEM_NO_Y},
 };
 
-struct nmath_point_int32_t idm_elem_box[IDM_ELEM_NUM] = {
+struct Point idm_elem_box[IDM_ELEM_NUM] = {
     /* ID_ELEM_YES */ {SOTA_TILESIZE, SOTA_TILESIZE},
     /* IDM_ELEM_NO */ {SOTA_TILESIZE, SOTA_TILESIZE},
 };
 
-struct nmath_point_int32_t  idm_elem_pos[IDM_ELEM_NUM] = {
+struct Point idm_elem_pos[IDM_ELEM_NUM] = {
     /* IDM_ELEM_YES */ {IDM_ELEM_YES_X, IDM_ELEM_YES_Y},
     /* IDM_ELEM_NO */  {IDM_ELEM_NO_X,  IDM_ELEM_NO_Y},
 };

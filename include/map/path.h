@@ -68,6 +68,7 @@ extern i32 *Taxicab_Circle(             i32 *m, i32 x, i32 y, size_t r, size_t c
 extern i32 *Taxicab_Circle_List(i32 *d, i32 *m, i32 x, i32 y, size_t r, size_t c, struct Range *R);
 
 /* --- AStar --- */
+extern int Map_Pathfinding_Manhattan(struct Point start, struct Point end);
 extern int *Map_Pathfinding_Astar(int *path, int *cost, size_t rowl, size_t coll,
                                   struct Point start, struct Point end);
 

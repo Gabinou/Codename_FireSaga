@@ -18,8 +18,8 @@ void test_combat_game() {
     struct Combat_Flow temp_flow;
     struct Unit attacker = Unit_default;
     struct Unit defender = Unit_default;
-    struct nmath_point_int32_t attacker_pos = {0, 0};
-    struct nmath_point_int32_t defender_pos = {1, 0};
+    struct Point attacker_pos = {0, 0};
+    struct Point defender_pos = {1, 0};
     int distance = 1;
     //                               hp, str, mag, agi, dex, fth, luck, def, res, con, move
     struct Unit_stats attacker_stats = {19,  4,  2,  7,  7,  7, 7,  4,  5,  6, 5};
@@ -152,16 +152,16 @@ void test_combat_game() {
                                                      defender.effective_stats.agi, defender.effective_stats.con, defender.effective_stats.str);
     nourstest_true(Unit_computeSpeed(&defender, distance) == defender_speed);
     nourstest_true(defender.computed_stats.speed == defender_speed);
-    temp_flow = Compute_Combat_Flow(&attacker, &defender, (struct Point *)&attacker_pos,
-                                    (struct Point *)&defender_pos);
+    temp_flow = Compute_Combat_Flow(&attacker, &defender, &attacker_pos,
+                                    &defender_pos);
     nourstest_true(temp_flow.defendant_retaliates == Combat_canAttack_Equipped(&defender,
-                   &attacker, (struct Point *)&defender_pos, (struct Point *)&attacker_pos));
+                   &attacker, &defender_pos, &attacker_pos));
 
     struct Combat_Forecast test_Combat_Forecast;
 
     firesaga.combat_forecast = Compute_Combat_Forecast(&attacker, &defender,
-                                                       (struct Point *)&attacker_pos,
-                                                       (struct Point *)&defender_pos);
+                                                       &attacker_pos,
+                                                       &defender_pos);
     nourstest_true(firesaga.combat_forecast.flow.aggressor_phases == 1);
     nourstest_true(firesaga.combat_forecast.flow.defendant_phases == 1);
     nourstest_true(firesaga.combat_forecast.flow.defendant_retaliates == true);
@@ -193,8 +193,8 @@ void test_combat_game() {
     nourstest_true(attacker.current_stats.agi = attacker_stats.agi);
     nourstest_true(attacker.effective_stats.agi = attacker_stats.agi);
     firesaga.combat_forecast = Compute_Combat_Forecast(&attacker, &defender,
-                                                       (struct Point *)&attacker_pos,
-                                                       (struct Point *)&defender_pos);
+                                                       &attacker_pos,
+                                                       &defender_pos);
     nourstest_true(firesaga.combat_forecast.flow.aggressor_phases == 1);
     nourstest_true(firesaga.combat_forecast.flow.defendant_phases == 1);
     nourstest_true(firesaga.combat_forecast.flow.defendant_retaliates == true);
@@ -222,8 +222,8 @@ void test_combat_game() {
     attacker_stats.agi = defender_stats.agi + 2;
     Unit_setStats(&attacker, attacker_stats);
     firesaga.combat_forecast = Compute_Combat_Forecast(&attacker, &defender,
-                                                       (struct Point *)&attacker_pos,
-                                                       (struct Point *)&defender_pos);
+                                                       &attacker_pos,
+                                                       &defender_pos);
     nourstest_true(firesaga.combat_forecast.flow.aggressor_phases == 1);
     nourstest_true(firesaga.combat_forecast.flow.defendant_phases == 1);
     nourstest_true(firesaga.combat_forecast.flow.defendant_retaliates == true);
@@ -250,8 +250,8 @@ void test_combat_game() {
     attacker_stats.agi = defender_stats.agi + 3;
     Unit_setStats(&attacker, attacker_stats);
     firesaga.combat_forecast = Compute_Combat_Forecast(&attacker, &defender,
-                                                       (struct Point *)&attacker_pos,
-                                                       (struct Point *)&defender_pos);
+                                                       &attacker_pos,
+                                                       &defender_pos);
     nourstest_true(firesaga.combat_forecast.flow.aggressor_phases == 1);
     nourstest_true(firesaga.combat_forecast.flow.defendant_phases == 1);
     nourstest_true(firesaga.combat_forecast.flow.defendant_retaliates == true);
@@ -278,8 +278,8 @@ void test_combat_game() {
     attacker_stats.agi = defender_stats.agi + 4;
     Unit_setStats(&attacker, attacker_stats);
     firesaga.combat_forecast = Compute_Combat_Forecast(&attacker, &defender,
-                                                       (struct Point *)&attacker_pos,
-                                                       (struct Point *)&defender_pos);
+                                                       &attacker_pos,
+                                                       &defender_pos);
     nourstest_true(firesaga.combat_forecast.flow.aggressor_phases == 1);
     nourstest_true(firesaga.combat_forecast.flow.defendant_phases == 1);
     nourstest_true(firesaga.combat_forecast.flow.defendant_retaliates == true);
@@ -307,8 +307,8 @@ void test_combat_game() {
     Unit_setStats(&attacker, attacker_stats);
     nourstest_true(attacker.effective_stats.agi == attacker_stats.agi);
     firesaga.combat_forecast = Compute_Combat_Forecast(&attacker, &defender,
-                                                       (struct Point *)&attacker_pos,
-                                                       (struct Point *)&defender_pos);
+                                                       &attacker_pos,
+                                                       &defender_pos);
     nourstest_true(firesaga.combat_forecast.flow.aggressor_phases == 2);
     nourstest_true(firesaga.combat_forecast.flow.defendant_phases == 1);
     nourstest_true(firesaga.combat_forecast.flow.defendant_retaliates == true);
@@ -342,8 +342,8 @@ void test_combat_game() {
     Unit_setStats(&attacker, attacker_stats);
     Unit_setStats(&defender, defender_stats);
     firesaga.combat_forecast = Compute_Combat_Forecast(&attacker, &defender,
-                                                       (struct Point *)&attacker_pos,
-                                                       (struct Point *)&defender_pos);
+                                                       &attacker_pos,
+                                                       &defender_pos);
     nourstest_true(firesaga.combat_forecast.flow.aggressor_phases == 1);
     nourstest_true(firesaga.combat_forecast.flow.defendant_phases == 2);
     nourstest_true(firesaga.combat_forecast.flow.defendant_retaliates == true);
@@ -376,8 +376,8 @@ void test_combat_game() {
     defender_stats.agi = attacker_stats.agi;
     Unit_setStats(&defender, defender_stats);
     firesaga.combat_forecast = Compute_Combat_Forecast(&attacker, &defender,
-                                                       (struct Point *)&attacker_pos,
-                                                       (struct Point *)&defender_pos);
+                                                       &attacker_pos,
+                                                       &defender_pos);
 
     Compute_Combat_Outcome(firesaga.combat_phases, firesaga.combat_attacks, &firesaga.combat_forecast,
                            &firesaga.tinymt32, &attacker, &defender);
@@ -396,8 +396,8 @@ void test_combat_game() {
     Unit_setStats(&defender, defender_stats);
     Unit_setStats(&attacker, attacker_stats);
     firesaga.combat_forecast = Compute_Combat_Forecast(&attacker, &defender,
-                                                       (struct Point *)&attacker_pos,
-                                                       (struct Point *)&defender_pos);
+                                                       &attacker_pos,
+                                                       &defender_pos);
     Compute_Combat_Outcome(firesaga.combat_phases, firesaga.combat_attacks, &firesaga.combat_forecast,
                            &firesaga.tinymt32, &attacker, &defender);
     Combat_Resolve(firesaga.combat_attacks, firesaga.combat_forecast.attack_num, &attacker, &defender);
@@ -416,8 +416,8 @@ void test_combat_game() {
     Unit_setStats(&attacker, attacker_stats);
     Unit_setStats(&defender, defender_stats);
     firesaga.combat_forecast = Compute_Combat_Forecast(&attacker, &defender,
-                                                       (struct Point *)&attacker_pos,
-                                                       (struct Point *)&defender_pos);
+                                                       &attacker_pos,
+                                                       &defender_pos);
     Compute_Combat_Outcome(firesaga.combat_phases, firesaga.combat_attacks, &firesaga.combat_forecast,
                            &firesaga.tinymt32, &attacker, &defender);
     Combat_Resolve(firesaga.combat_attacks, firesaga.combat_forecast.attack_num, &attacker, &defender);
@@ -435,7 +435,7 @@ void test_combat_game() {
     attacker_stats.agi = defender_stats.agi;
     Unit_setStats(&attacker, attacker_stats);
     firesaga.combat_forecast = Compute_Combat_Forecast(&attacker, &defender,
-                                                       (struct Point *)&attacker_pos, (struct Point *)&defender_pos);
+                                                       &attacker_pos, &defender_pos);
     Compute_Combat_Outcome(firesaga.combat_phases, firesaga.combat_attacks, &firesaga.combat_forecast,
                            &firesaga.tinymt32, &attacker, &defender);
     firesaga.combat_attacks[0].crit = true;

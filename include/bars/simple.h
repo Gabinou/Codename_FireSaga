@@ -19,8 +19,8 @@ struct SimpleBar {
     float fill;
     size_t len; /* [pixels] as overfilled */
     size_t height; /* [pixels] */
-    struct nmath_point_int32_t pos;
-    struct nmath_point_int32_t scale;
+    struct Point pos;
+    struct Point scale;
     SDL_Color BG_dark;
     SDL_Color BG_light;
     SDL_Color FG_dark;

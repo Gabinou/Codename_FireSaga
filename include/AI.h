@@ -16,27 +16,27 @@
 struct Game;
 
 struct AI_PushPull_Out {
-    struct nmath_point_int32_t pos;
-    int_fast8_t rating;
+    struct Point pos;
+    if8 rating;
 };
 
 enum AI_RATINGS {
     // Ratings for AI decision making in [-128, 128]
-    AI_RATING_AGGRESSOR_DEATH_CERTAIN = 40,
+    AI_RATING_AGGRESSOR_DEATH_CERTAIN  = 40,
     AI_RATING_AGGRESSOR_DEATH_POSSIBLE = 20,
     AI_RATING_DEFENDANT_DEATH_POSSIBLE = 10,
-    AI_RATING_DEFENDANT_DEATH_CERTAIN = 30,
-    AI_RATING_AGGRESSOR_MULTIPLIER = 2,
-    AI_RATING_aggressor_brave = 10,
-    AI_RATING_aggressor_doubles = 10,
-    AI_RATING_defendant_brave = 10,
-    AI_RATING_defendant_doubles = 10,
-    AI_RATING_defendant_retaliates = 20,
+    AI_RATING_DEFENDANT_DEATH_CERTAIN  = 30,
+    AI_RATING_AGGRESSOR_MULTIPLIER     =  2,
+    AI_RATING_aggressor_brave          = 10,
+    AI_RATING_aggressor_doubles        = 10,
+    AI_RATING_defendant_brave          = 10,
+    AI_RATING_defendant_doubles        = 10,
+    AI_RATING_defendant_retaliates     = 20,
 
     AI_RATING_STAFF_SILENCE = 50,
-    AI_RATING_STAFF_PUSH = 20,
-    AI_RATING_STAFF_PULL = 20,
-    AI_RATING_STAFF_HEAL = 10,
+    AI_RATING_STAFF_PUSH    = 20,
+    AI_RATING_STAFF_PULL    = 20,
+    AI_RATING_STAFF_HEAL    = 10,
 };
 
 enum AI_PRIORITIES {
@@ -45,22 +45,22 @@ enum AI_PRIORITIES {
     // staffWielders that have AI_PRIORITY_KILL should act first
     // staffWielders that have AI_PRIORITY_PROTECT should act last
     // -> pullers should act before healers
-    AI_PRIORITY_START = 0,
-    AI_PRIORITY_KILL = 1,       // Always attacks, ignores other actions.
+    AI_PRIORITY_START   = 0,
+    AI_PRIORITY_KILL    = 1,       // Always attacks, ignores other actions.
     AI_PRIORITY_PROTECT = 2,    // Rescues friendlies, heal friendlies. Otherwise attacks.
-    AI_PRIORITY_SEIZE = 3,      // Runs to objective. Attacks only if it doesn't slow down or kills you.
-    AI_PRIORITY_LOOT = 4,       // Goes for chests. Does not attack.
+    AI_PRIORITY_SEIZE   = 3,      // Runs to objective. Attacks only if it doesn't slow down or kills you.
+    AI_PRIORITY_LOOT    = 4,       // Goes for chests. Does not attack.
     AI_PRIORITY_SURVIVE = 5,    // Attacks. Runs away when injured. Take healing items from friendlies to heal.
-    AI_PRIORITY_FLEE = 6,       // Does not attack.
-    AI_PRIORITY_END = 7,
+    AI_PRIORITY_FLEE    = 6,       // Does not attack.
+    AI_PRIORITY_END     = 7,
 };
 
 enum AI_MOVEMENT_TYPE {
-    AI_MOVE_START = 0,
-    AI_MOVE_ONCHAPTER = 1ULL << 0,
-    AI_MOVE_ENEMYINRANGE = 1ULL << 1,
-    AI_MOVE_NEVER = 1ULL << 2,
-    AI_MOVE_OPTIONS = 3,
+    AI_MOVE_START           = 0,
+    AI_MOVE_ONCHAPTER       = 1ULL << 0,
+    AI_MOVE_ENEMYINRANGE    = 1ULL << 1,
+    AI_MOVE_NEVER           = 1ULL << 2,
+    AI_MOVE_OPTIONS         = 3,
 };
 
 #define AI_PULL_FRIENDLY_MISSINGHP 0.25f
@@ -69,17 +69,17 @@ enum AI_MOVEMENT_TYPE {
 typedef struct AI {
     tnecs_entity_t target_protect;
     tnecs_entity_t target_kill;
-    struct nmath_point_int32_t target_seize;
-    struct nmath_point_int32_t target_open;
-    struct nmath_point_int32_t target_defend;
-    struct nmath_point_int32_t target_interim;
+    struct Point target_seize;
+    struct Point target_open;
+    struct Point target_defend;
+    struct Point target_interim;
     uf8 priority;
     uf8 move_chapter;
     uf8 move_type;
 } AI;
 extern struct AI AI_default;
 
-extern struct nmath_point_int32_t *Target_Assailable_Positions(
+extern struct Point *Target_Assailable_Positions(
         tnecs_entity_t in_attacker,
         tnecs_entity_t in_defender, i32 *in_movemap);
 
@@ -113,14 +113,14 @@ extern tnecs_entity_t AI_interimTarget_Compute(struct Map *in_map,
                                                tnecs_entity_t in_actor);
 extern tnecs_entity_t AI_MovetoTarget(struct Map *in_map, tnecs_entity_t in_actor);
 
-extern int_fast8_t AI_Forecast_Rating(struct Combat_Forecast in_forecast);
-extern int_fast8_t AI_Silence_Rating(tnecs_world_t *in_world, uf8 in_hit_rate,
-                                     tnecs_entity_t in_enemy_ent);
+extern if8 AI_Forecast_Rating(struct Combat_Forecast in_forecast);
+extern if8 AI_Silence_Rating(tnecs_world_t *in_world, uf8 in_hit_rate,
+                             tnecs_entity_t in_enemy_ent);
 
 extern struct AI_PushPull_Out AI_PushPull_bestPosition(i32 *in_gradientmap,
                                                        size_t row_len,
-                                                       size_t col_len, i32 pushpull_distance, struct nmath_point_int32_t victim_pos,
-                                                       int_fast8_t sign);
+                                                       size_t col_len, i32 pushpull_distance, struct Point victim_pos,
+                                                       if8 sign);
 
 extern struct AI_PushPull_Out AI_PushPull_Friendly_Offensively_Rating(
         tnecs_world_t *in_world,
@@ -136,10 +136,10 @@ extern struct AI_PushPull_Out AI_PushPull_Enemy_Defensively_Rating(
         tnecs_world_t *in_world,
         struct Map *in_map, tnecs_entity_t in_enemy_ent);
 
-extern struct nmath_point_int32_t AI_Boss_Arc3_Target_Leg_Right(tnecs_entity_t *unitmap);
-extern struct nmath_point_int32_t AI_Boss_Arc3_Target_Leg_Left(tnecs_entity_t *unitmap);
-extern struct nmath_point_int32_t AI_Boss_Arc3_Target_Arm_Right(tnecs_entity_t *unitmap);
-extern struct nmath_point_int32_t AI_Boss_Arc3_Target_Arm_Left(tnecs_entity_t *unitmap);
+extern struct Point AI_Boss_Arc3_Target_Leg_Right(tnecs_entity_t *unitmap);
+extern struct Point AI_Boss_Arc3_Target_Leg_Left(tnecs_entity_t *unitmap);
+extern struct Point AI_Boss_Arc3_Target_Arm_Right(tnecs_entity_t *unitmap);
+extern struct Point AI_Boss_Arc3_Target_Arm_Left(tnecs_entity_t *unitmap);
 
 
 #endif /* AI_H */

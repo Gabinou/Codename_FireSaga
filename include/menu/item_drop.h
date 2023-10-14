@@ -59,15 +59,15 @@ enum IDM_ELEMS {
     IDM_ELEM_NUM    =  2,
 };
 
-extern       struct MenuElemDirections    idm_links         [IDM_ELEM_NUM];
-extern       struct nmath_point_int32_t   idm_elem_pos      [IDM_ELEM_NUM];
-extern       struct nmath_point_int32_t   idm_elem_box      [IDM_ELEM_NUM];
-extern       struct nmath_point_int32_t   idm_cursor_pos    [IDM_ELEM_NUM];
-extern       struct nmath_point_int32_t   idm_cursor_box    [IDM_ELEM_NUM];
+extern       struct MenuElemDirections  idm_links         [IDM_ELEM_NUM];
+extern       struct Point               idm_elem_pos      [IDM_ELEM_NUM];
+extern       struct Point               idm_elem_box      [IDM_ELEM_NUM];
+extern       struct Point               idm_cursor_pos    [IDM_ELEM_NUM];
+extern       struct Point               idm_cursor_box    [IDM_ELEM_NUM];
 
 
 struct ItemDropMenu {
-    struct nmath_point_int32_t pos; /* [pixels], MENU_POS_bOFFSET = 0 */
+    struct Point pos; /* [pixels], MENU_POS_bOFFSET = 0 */
 
     SDL_Texture *texture;
 

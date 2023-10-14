@@ -63,7 +63,7 @@ void Skill_DISMEMBER(struct Unit *aggressor, void *in_defendant) {
 
 void Skill_TUNNELING(struct Unit *actor, void *pos) {
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
-    // struct nmath_point_int32_t
+
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 

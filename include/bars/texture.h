@@ -16,9 +16,9 @@ struct TextureBar {
     int row_len; /* number of rows of textures */
     int len; /* [patches] */
     float fill;
-    struct nmath_point_int32_t pos; // [pixels]
-    struct nmath_point_int32_t scale;
-    struct nmath_point_int32_t size_pixels; // [pixels]
+    struct Point pos; // [pixels]
+    struct Point scale;
+    struct Point size_pixels; // [pixels]
 };
 extern struct TextureBar TextureBar_default;
 

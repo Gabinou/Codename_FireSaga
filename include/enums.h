@@ -19,7 +19,7 @@ enum bOFFSET {
     // WHAT * what = (WHAT *)(byte_ptr + bOFFSET)
     // In words:
     // Cast struct pointer to bytes, bOFFSET it, cast to WHAT is at bOFFSET
-    MENU_POS_bOFFSET  = 0, // for struct nmath_point_int32_t in menu structs
+    MENU_POS_bOFFSET  = 0, // for struct Point in menu structs
     JSON_ELEM_bOFFSET = 0, // for uif8 in json read/writable structs
 };
 

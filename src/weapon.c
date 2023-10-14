@@ -143,7 +143,7 @@ void Weapon_Load(struct dtab *weapons_dtab, if16 id) {
 
         /* - add weapon type subfolder to filename - */
         int type_exp = id / SOTA_WPN_ID_FACTOR;
-        if16 typecode = nmath_slowpow(2.0f, type_exp);
+        if16 typecode = (1 << type_exp);
         char **types = Names_wpnType(typecode);
         strncat(filename, types[0], strlen(types[0]));
         strncat(filename, PHYSFS_SEPARATOR, 2);

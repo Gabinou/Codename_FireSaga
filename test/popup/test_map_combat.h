@@ -43,9 +43,10 @@ void test_popup_map_combat() {
     jsonio_readJSON(PATH_JOIN("units", "Silou.json"),  &aggressor);
     jsonio_readJSON(PATH_JOIN("units", "Fencer.json"), &defendant);
 
-    struct nmath_point_int32_t agg_tilemap_pos = {0, 0};
-    struct nmath_point_int32_t dft_tilemap_pos = {0, 1};
-    int dist = linalg_distance_manhattan_point_int32_t(agg_tilemap_pos, dft_tilemap_pos);
+    struct Point agg_tilemap_pos = {0, 0};
+    struct Point dft_tilemap_pos = {0, 1};
+    int dist = Map_Pathfinding_Manhattan(agg_tilemap_pos, dft_tilemap_pos);
+
     /* - Combatants equip - */
 
     struct Inventory_item in_wpn = Inventory_item_default;

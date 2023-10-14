@@ -120,7 +120,7 @@ void PopUp_Objective_Compute_Size(struct PopUp_Objective *po, struct n9Patch *n9
 }
 
 /* --- Drawing --- */
-void PopUp_Objective_Draw(struct PopUp *popup, struct nmath_point_int32_t pos,
+void PopUp_Objective_Draw(struct PopUp *popup, struct Point pos,
                           SDL_Texture *render_target, SDL_Renderer *renderer) {
     SOTA_Log_FPS("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     struct PopUp_Objective *po = (struct PopUp_Objective *)popup->data;

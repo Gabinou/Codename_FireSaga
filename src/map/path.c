@@ -12,7 +12,6 @@ void Map_Bounds_Compute(struct Map *map) {
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
-
 void Map_Global_Danger_Reset(struct Map *map) {
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     memset(map->global_dangermap, 0, sizeof(*map->global_dangermap) * map->row_len * map->col_len);
@@ -658,6 +657,12 @@ int *Map_Pathfinding_CameFrom_List(int *path, int *came_from, size_t col_len, st
         current.y -= move.y;
     }
     return (path);
+}
+
+int Map_Pathfinding_Manhattan(struct Point start, struct Point end) {
+    /* Does not include endpoints */
+    int distance = labs(start.x - end.x) + labs(start.y - end.y);
+    return (distance);
 }
 
 int *Map_Pathfinding_Astar(int *path_list, int *costmap, size_t row_len,

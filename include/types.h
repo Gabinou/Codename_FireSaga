@@ -32,7 +32,4 @@ typedef int_fast16_t  if16;
 typedef int_fast32_t  if32;
 typedef int_fast64_t  if64;
 
-/* -- mmath -- */
-typedef struct nmath_point_int32_t point_i32;
-
 #endif /* TYPES_H */

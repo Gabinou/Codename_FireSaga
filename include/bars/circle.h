@@ -24,7 +24,7 @@ enum CIRCLE_BAR {
 struct CircleBar {
     int fill;
     SDL_RendererFlip flip;
-    struct nmath_point_int32_t pos;
+    struct Point pos;
 };
 extern struct CircleBar CircleBar_default;
 
