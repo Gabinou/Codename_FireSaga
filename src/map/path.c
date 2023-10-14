@@ -150,7 +150,7 @@ i32 *Taxicab_Circle(i32 *matrix, i32 x, i32 y, size_t row_len, size_t col_len,
         subrangey_min = (rangex > range->min) ? 0 : (range->min - rangex);
         subrangey_max = (rangex > range->max) ? 0 : (range->max - rangex);
         for (i32 rangey = subrangey_min; rangey <= subrangey_max; rangey++) {
-            for (int8_t sq_neighbor = 0; sq_neighbor < SQUARE_NEIGHBOURS; sq_neighbor++) {
+            for (i32 sq_neighbor = 0; sq_neighbor < SQUARE_NEIGHBOURS; sq_neighbor++) {
                 i32 tempx = int_inbounds(x + q_cycle4_pmmp(sq_neighbor) * rangex, 0, col_len - 1);
                 i32 tempy = int_inbounds(y + q_cycle4_ppmm(sq_neighbor) * rangey, 0, row_len - 1);
                 matrix[tempx * col_len + tempy] = 1;
@@ -176,7 +176,7 @@ i32 *Taxicab_Circle_List(i32 *darr_list, i32 *matrix, i32 x, i32 y,
 i32 *_Map_tomap_Compute(i32 *tomap, i32 *movemap, uf8 row_len, uf8 col_len,
                         i32 move, struct Range *range, uf8 mode_movetile) {
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
-    Pathfinding_Attackto_noM(tomap, movemap, row_len, col_len, move, (uf8 *)range,
+    Pathfinding_Attackto_noM(tomap, movemap, row_len, col_len, (uf8 *)range,
                              mode_movetile);
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
     return (tomap);
@@ -444,7 +444,7 @@ void Map_globalRange(struct Map *map, tnecs_world_t *world, uf8 alignment) {
         Pathfinding_Moveto_noM(map->movemap, map->costmap, map->row_len,
                                map->col_len, start, move);
         Pathfinding_Attackto_noM(map->attacktomap, map->movemap, map->row_len,
-                                 map->col_len, move, (uf8 *)range, MOVETILE_INCLUDE);
+                                 map->col_len, (uf8 *)range, MOVETILE_INCLUDE);
         map->global_rangemap = linalg_plus_noM_int32_t(map->global_rangemap, map->attacktomap,
                                                        map->row_len * map->col_len);
     }
@@ -557,6 +557,7 @@ i32 *Pathfinding_Astar(i32 *path_list, i32 *costmap, size_t row_len,
 
 i32 *Pathfinding_Moveto(i32 *cost_matrix, size_t row_len, size_t col_len,
                         struct Point start, i32 move, int mode_output) {
+
     /* -- Setup output move_matrix -- */
     i32 *move_matrix = NULL;
     switch (mode_output) {
@@ -602,8 +603,8 @@ i32 *Pathfinding_Moveto(i32 *cost_matrix, size_t row_len, size_t col_len,
         }
 
         /* -- Move to four square neighbor tiles -- */
-        Pathfinding_Neighbors(open, closed, current, cost_matrix,
-                              row_len, col_len, move);
+        Pathfinding_Moveto_Neighbors(open, closed, current, cost_matrix,
+                                     row_len, col_len, move);
     }
     DARR_FREE(open);
     DARR_FREE(closed);
@@ -614,7 +615,7 @@ void Pathfinding_Moveto_noM(i32 *move_matrix, i32 *cost_matrix, size_t row_len,
                             size_t col_len, struct Point start, i32 move) {
     /* -- Wipe move_matrix -- */
     for (size_t i = 0; i < row_len * col_len; i++)
-            move_matrix[i] = MOVEMAP_BLOCKED;
+        move_matrix[i] = MOVEMAP_BLOCKED;
 
     /* -- Setup variables -- */
     size_t init_size    = row_len * col_len * 2;
@@ -637,17 +638,17 @@ void Pathfinding_Moveto_noM(i32 *move_matrix, i32 *cost_matrix, size_t row_len,
             move_matrix[current_i] = current.distance + 1;
 
         /* -- Move to four square neighbor tiles -- */
-        Pathfinding_Neighbors(open, closed, current, cost_matrix,
-                              row_len, col_len, move);
+        Pathfinding_Moveto_Neighbors(open, closed, current, cost_matrix,
+                                     row_len, col_len, move);
     }
 
     DARR_FREE(open);
     DARR_FREE(closed);
 }
 
-void Pathfinding_Neighbors(struct Node *open, struct Node *closed,
-                           struct Node current, i32 *cost_matrix,
-                           size_t row_len, size_t col_len, i32 move) {
+void Pathfinding_Moveto_Neighbors(struct Node *open, struct Node *closed,
+                                  struct Node current, i32 *cost_matrix,
+                                  size_t row_len, size_t col_len, i32 move) {
     struct Node neighbor;
 
     /* -- Move to four square neighbor tiles -- */
@@ -689,118 +690,77 @@ void Pathfinding_Neighbors(struct Node *open, struct Node *closed,
 
 
 /* -- Attackto -- */
-
-
 void Pathfinding_Attackto_noM(i32 *attackmap, i32 *move_matrix,
                               size_t row_len, size_t col_len,
-                              i32 move, u8 range[2], int mode_movetile) {
+                              u8 range[2], i32 mode_movetile) {
     /* -- Wipe attackmap -- */
     for (u8 i = 0; i < row_len * col_len; i++)
-            attackmap[i] = ATTACKMAP_BLOCKED;
-    
-    i32 *move_list = NULL;
-    i32  subrangey_min, subrangey_max;
-    struct Point point;
-    move_list = linalg_matrix2list_int32_t(move_matrix, row_len, col_len);
-    size_t list_len = DARR_NUM(move_list) / NMATH_TWO_D;
+        attackmap[i] = ATTACKMAP_BLOCKED;
 
+    /* -- Setup variables -- */
+    i32 *move_list  = linalg_matrix2list_int32_t(move_matrix, row_len, col_len);
+    size_t list_len = DARR_NUM(move_list) / TWO_D;
 
-    bool add_nmath_point;
-    switch (mode_movetile) {
-        case NMATH_MOVETILE_INCLUDE:
-            add_nmath_point = true;
-            break;
-        default:
-            add_nmath_point = true;
-            break;
-    }
+    /* -- For every point in movemap -- */
     for (i32 i = 0; i < list_len; i++) {
-        for (i32 rangex = 0; rangex <= range[1]; rangex++) {
-            subrangey_min = (rangex > range[0]) ? 0 : (range[0] - rangex);
-            subrangey_max = (rangex > range[1]) ? 0 : (range[1] - rangex);
-            for (i32  rangey = subrangey_min; rangey <= subrangey_max; rangey++) {
-                for (int8_t sq_neighbor = 0; sq_neighbor < NMATH_SQUARE_NEIGHBOURS; sq_neighbor++) {
-                    point.x = int_inbounds(move_list[i * NMATH_TWO_D + 0] + q_cycle4_pmmp(
-                                                   sq_neighbor) * rangex, 0, col_len - 1);
-                    point.y = int_inbounds(move_list[i * NMATH_TWO_D + 1] + q_cycle4_ppmm(
-                                                   sq_neighbor) * rangey, 0, row_len - 1);
-                    switch (mode_movetile) {
-                        case NMATH_MOVETILE_EXCLUDE:
-                            add_nmath_point = (move_matrix[point.y * col_len + point.x] ==
-                                               NMATH_MOVEMAP_BLOCKED);
-                            break;
-                    }
-                    if (add_nmath_point) {
-                        attackmap[point.y * col_len + point.x] = NMATH_ATTACKMAP_MOVEABLEMIN;
-                    }
-                }
-            }
-        }
+        i32 x = move_list[i * TWO_D + 0];
+        i32 y = move_list[i * TWO_D + 1];
+
+        Pathfinding_Attackto_Neighbors(x, y, attackmap, move_matrix, row_len,
+                                       col_len, range, mode_movetile);
     }
+    DARR_FREE(list_len);
 }
 
 i32 *Pathfinding_Attackto(i32 *move_matrix, size_t row_len, size_t col_len,
-                          i32  move, u8 range[2], int mode_output, int mode_movetile) {
-    i32 *attackmap = NULL, *move_list = NULL;
-    i32  subrangey_min, subrangey_max;
-    struct Point point;
-    move_list = linalg_matrix2list_int32_t(move_matrix, row_len, col_len);
+                          u8 range[2], i32 mode_movetile) {
+    /* -- Setup output attackmap -- */
+    i32 *attackmap = calloc(row_len * col_len, sizeof(*attackmap));
+    for (u8 i = 0; i < row_len * col_len; i++)
+        attackmap[i] = NMATH_ATTACKMAP_BLOCKED;
+
+    /* -- Setup variables -- */
+    i32 *move_list  = linalg_matrix2list_int32_t(move_matrix, row_len, col_len);
     size_t list_len = DARR_NUM(move_list) / NMATH_TWO_D;
-    switch (mode_output) {
-        case (POINTS_MODE_LIST):
-            attackmap = DARR_INIT(attackmap, i32, row_len * col_len * NMATH_TWO_D);
-            break;
-        case (POINTS_MODE_MATRIX):
-            attackmap = calloc(row_len * col_len, sizeof(i32));
-            for (u8 row = 0; row < row_len; row++) {
-                for (u8 col = 0; col < col_len; col++) {
-                    attackmap[(row * col_len + col)] = NMATH_ATTACKMAP_BLOCKED;
-                }
-            }
-            break;
-    }
-    bool add_nmath_point;
-    switch (mode_movetile) {
-        case NMATH_MOVETILE_INCLUDE:
-            add_nmath_point = true;
-            break;
-        default:
-            add_nmath_point = true;
-            break;
-    }
+    // bool add_point  = (mode_movetile != MOVETILE_EXCLUDE);
+
+    /* -- For every point in movemap -- */
     for (i32 i = 0; i < list_len; i++) {
-        for (i32 rangex = 0; rangex <= range[1]; rangex++) {
-            subrangey_min = (rangex > range[0]) ? 0 : (range[0] - rangex);
-            subrangey_max = (rangex > range[1]) ? 0 : (range[1] - rangex);
-            for (i32  rangey = subrangey_min; rangey <= subrangey_max; rangey++) {
-                for (int8_t sq_neighbor = 0; sq_neighbor < NMATH_SQUARE_NEIGHBOURS; sq_neighbor++) {
-                    point.x = int_inbounds(move_list[i * NMATH_TWO_D + 0] + q_cycle4_pmmp(
-                                                   sq_neighbor) * rangex, 0, col_len - 1);
-                    point.y = int_inbounds(move_list[i * NMATH_TWO_D + 1] + q_cycle4_ppmm(
-                                                   sq_neighbor) * rangey, 0, row_len - 1);
-                    switch (mode_movetile) {
-                        case NMATH_MOVETILE_EXCLUDE:
-                            add_nmath_point = (move_matrix[point.y * col_len + point.x] ==
-                                               NMATH_MOVEMAP_BLOCKED);
-                            break;
-                    }
-                    if (add_nmath_point) {
-                        switch (mode_output) {
-                            case POINTS_MODE_LIST:
-                                if (!linalg_list_isIn_2D_int32_t(attackmap, DARR_NUM(attackmap) / NMATH_TWO_D, point.x,
-                                                                 point.y)) {
-                                    DARR_PUT(attackmap, point.x);
-                                    DARR_PUT(attackmap, point.y);
-                                }
-                                break;
-                            case POINTS_MODE_MATRIX:
-                                attackmap[point.y * col_len + point.x] = NMATH_ATTACKMAP_MOVEABLEMIN;
-                                break;
-                        }
-                    }
-                }
+        i32 x = move_list[i * TWO_D + 0];
+        i32 y = move_list[i * TWO_D + 1];
+
+        Pathfinding_Attackto_Neighbors(x, y, attackmap, move_matrix, row_len, 
+                                       col_len, range, mode_movetile);
+    }
+    free(move_list);
+}
+
+void Pathfinding_Attackto_Neighbors(i32 x, i32 y, i32 *attackmap, i32 *move_matrix,                                size_t row_len, size_t col_len,
+                                    u8 range[2], i32 mode_movetile) {
+    struct Point point;
+    bool add_point  = (mode_movetile != MOVETILE_EXCLUDE);
+
+    /* -- Setup output attackmap -- */
+    /* -- Iterate over possible ranges in x -- */
+    for (i32 rangex = 0; rangex <= range[1]; rangex++) {
+        i32 subrangey_min = (rangex > range[0]) ? 0 : (range[0] - rangex);
+        i32 subrangey_max = (rangex > range[1]) ? 0 : (range[1] - rangex);
+        /* -- Iterate over possible ranges in y, knowing x range -- */
+        for (i32 rangey = subrangey_min; rangey <= subrangey_max; rangey++) {
+            /* -- Iterate over range 4 combinations: x+y+, x+y-, x-y+, x-y- */
+            for (i32 sq_neighbor = 0; sq_neighbor < NMATH_SQUARE_NEIGHBOURS; sq_neighbor++) {
+                point.x = int_inbounds(x + q_cycle4_pmmp(sq_neighbor) * rangex, 0, col_len - 1);
+                point.y = int_inbounds(y + q_cycle4_ppmm(sq_neighbor) * rangey, 0, row_len - 1);
+
+                if (mode_movetile == NMATH_MOVETILE_EXCLUDE)
+                    add_point = (move_matrix[point.y * col_len + point.x] == MOVEMAP_BLOCKED);
+
+                /* Skip if not adding point to attackmap */
+                if (!add_point)
+                    continue;
+
+                attackmap[point.y * col_len + point.x] = NMATH_ATTACKMAP_MOVEABLEMIN;
             }
         }
     }
-    free(move_list);
 }

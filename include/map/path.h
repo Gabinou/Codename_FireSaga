@@ -106,32 +106,34 @@ extern i32 *Pathfinding_Moveto(i32 *costmap, size_t row_len, size_t col_len,
 extern void Pathfinding_Moveto_noM(i32 *move_matrix, i32 *cost_matrix,
                                    size_t row_len, size_t col_len,
                                    struct Point start, i32 move);
+extern void Pathfinding_Moveto_Neighbors(struct Node *open, struct Node *closed,
+                                         struct Node current, i32 *cost_matrix,
+                                         size_t row_len, size_t col_len, i32 move);
 
 /* -- Visible -- */
-extern i32 *Pathfinding_Visible_noM(i32 *sightmap, i32 *blockmap, size_t row_len,
-                                    size_t col_len, struct Point start, i32 sight);
 extern i32 *Pathfinding_Visible(i32 *blockmap, size_t row_len, size_t col_len,
                                 struct Point start, i32 sight, int mode_output);
+extern i32 *Pathfinding_Visible_noM(i32 *sightmap, i32 *blockmap, size_t row_len,
+                                    size_t col_len, struct Point start, i32 sight);
 
 /* -- Attackto -- */
-extern void Pathfinding_Attackto_noM(i32 *attackto_mat, i32 *move_matrix,
-                                     size_t row_len, size_t col_len, i32 move,
-                                     u8 range[2], int mode_movetile);
 extern i32 *Pathfinding_Attackto(i32 *move_matrix, size_t row_len, size_t col_len,
-                                 i32 move, u8 range[2], int mode_output,
-                                 int mode_movetile);
+                                 u8 range[2], i32 mode_movetile);
+extern void Pathfinding_Attackto_noM(i32 *attackto_mat, i32 *move_matrix,
+                                     size_t row_len, size_t col_len,
+                                     u8 range[2], i32 mode_movetile);
+extern void Pathfinding_Attackto_Neighbors(i32 x, i32 y, i32 *attackmap, i32 *movemat,
+                                           size_t row_len, size_t col_len,
+                                           u8 range[2], i32 mode_movetile);
 
 /* -- Attackfrom -- */
+extern i32 *Pathfinding_Attackfrom(i32 *movemap, size_t row_len, size_t col_len,
+                                   struct Point target, u8 range[2], int mode_output);
 extern i32 *Pathfinding_Attackfrom_noM(i32 *attackfrom, i32 *movemap,
                                        size_t row_len, size_t col_len,
                                        struct Point target, u8 range[2]);
-extern i32 *Pathfinding_Attackfrom(i32 *movemap, size_t row_len, size_t col_len,
-                                   struct Point target, u8 range[2], int mode_output);
 
 /* -- Utils -- */
-extern void Pathfinding_Neighbors(struct Node *open, struct Node *closed,
-                                  struct Node current, i32 *cost_matrix,
-                                  size_t row_len, size_t col_len, i32 move);
 extern i32 *Pathfinding_CameFrom_List(i32 *path, i32 *came_from, size_t col_len,
                                       struct Point start, struct Point end);
 
@@ -142,11 +144,11 @@ extern i32 *Pathfinding_Pullto(i32 *movemap, size_t row_len, size_t col_len,
                                struct Point target, int mode_output);
 
 /* -- Unit Gradient -- */
+extern i32 *Pathfinding_unitGradient(i32 *costmap, size_t row_len, size_t col_len,
+                                     struct Point  *targets, size_t unit_num);
 extern i32 *Pathfinding_unitGradient_noM(i32 *gradmap, i32 *costmap,
                                          size_t row_len, size_t col_len,
                                          struct Point *targets, size_t unit_num);
-extern i32 *Pathfinding_unitGradient(i32 *costmap, size_t row_len, size_t col_len,
-                                     struct Point  *targets, size_t unit_num);
 
 /* -- Hex -- */
 extern i32 *Pathfinding_Moveto_Hex(i32 *costmap, size_t row_len, size_t depth_len,
