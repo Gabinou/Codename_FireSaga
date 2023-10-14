@@ -4,6 +4,7 @@
 #include "SDL2/SDL.h"
 #include "SDL2/SDL_render.h"
 #include "nmath.h"
+#include "pathfinding.h"
 #include "enums.h"
 #include "debug.h"
 #include "types.h"
@@ -17,27 +18,27 @@
 enum ARROW_17PATCHES {
     /* lots of patches cause arrows cast shadows that cannot be rotated */
     /* screen "UP" is reversed */
-    ARROW_NULL = 0,
-    ARROW_START_UP = 1,
-    ARROW_START_HORIZONTAL = 2,
-    ARROW_START_DOWN = 3,
-    ARROW_STRAIGHT_HORIZONTAL = 4,
-    ARROW_STRAIGHT_VERTICAL = 5,
-    ARROW_STOP_UP = 6,
-    ARROW_STOP_HORIZONTAL = 7,
-    ARROW_STOP_DOWN = 8,
-    ARROW_CORNER_DOWN = 9,
-    ARROW_CORNER_UP = 10,
-    ARROW_STOP_CORNER_RDOWN = 11,
-    ARROW_STOP_CORNER_RUP = 12,
-    ARROW_STOP_CORNER_URIGHT = 13,
-    ARROW_STOP_CORNER_DRIGHT = 14,
-    ARROW_STARTEND_HORIZONTAL = 15,
-    ARROW_STARTEND_UP = 16,
-    ARROW_STARTEND_DOWN = 17,
-    ARROW_NUM = 18,
-    ARROW_TILESIZE = 32,
-    ARROW_MAxLEN = 128,
+    ARROW_NULL                =   0,
+    ARROW_START_UP            =   1,
+    ARROW_START_HORIZONTAL    =   2,
+    ARROW_START_DOWN          =   3,
+    ARROW_STRAIGHT_HORIZONTAL =   4,
+    ARROW_STRAIGHT_VERTICAL   =   5,
+    ARROW_STOP_UP             =   6,
+    ARROW_STOP_HORIZONTAL     =   7,
+    ARROW_STOP_DOWN           =   8,
+    ARROW_CORNER_DOWN         =   9,
+    ARROW_CORNER_UP           =  10,
+    ARROW_STOP_CORNER_RDOWN   =  11,
+    ARROW_STOP_CORNER_RUP     =  12,
+    ARROW_STOP_CORNER_URIGHT  =  13,
+    ARROW_STOP_CORNER_DRIGHT  =  14,
+    ARROW_STARTEND_HORIZONTAL =  15,
+    ARROW_STARTEND_UP         =  16,
+    ARROW_STARTEND_DOWN       =  17,
+    ARROW_NUM                 =  18,
+    ARROW_TILESIZE            =  32,
+    ARROW_MAXLEN              = 128,
 };
 
 typedef struct Arrow {

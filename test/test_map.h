@@ -1,5 +1,6 @@
 #include "nourstest.h"
 #include "platform.h"
+#include "pathfinding.h"
 
 #define TEST_MAP_ROW_LEN 10
 #define TEST_MAP_COL_LEN 10
