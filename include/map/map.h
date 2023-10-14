@@ -10,6 +10,7 @@
 #include "map/path.h"
 #include "index_shader.h"
 #include "arrow.h"
+#include "nmath.h"
 #include "unit.h"
 #include "position.h"
 #include "sprite.h"

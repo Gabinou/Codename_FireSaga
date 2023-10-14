@@ -21,16 +21,16 @@ void Map_Global_Danger_Reset(struct Map *map) {
 
 void Map_Global_Danger_Add(struct Map *map, i32 *danger) {
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
-    map->global_dangermap = linalg_plus_noM_i32(map->global_dangermap, danger,
-                                                map->row_len * map->col_len);
+    map->global_dangermap = linalg_plus_noM_int32_t(map->global_dangermap, danger,
+                                                    map->row_len * map->col_len);
     map->shading_changed = true;
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 void Map_Global_Danger_Sub(struct Map *map, i32 *danger) {
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
-    map->global_dangermap = linalg_sub_noM_i32(map->global_dangermap, danger,
-                                               map->row_len * map->col_len);
+    map->global_dangermap = linalg_sub_noM_int32_t(map->global_dangermap, danger,
+                                                   map->row_len * map->col_len);
     map->shading_changed = true;
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
@@ -44,14 +44,14 @@ void Map_Danger_Reset(struct Map *map) {
 
 void Map_Danger_Add(struct Map *map, i32 *danger) {
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
-    map->dangermap = linalg_plus_noM_i32(map->dangermap, danger, map->row_len * map->col_len);
+    map->dangermap = linalg_plus_noM_int32_t(map->dangermap, danger, map->row_len * map->col_len);
     map->shading_changed = true;
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 void Map_Danger_Sub(struct Map *map, i32 *danger) {
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
-    map->dangermap = linalg_sub_noM_i32(map->dangermap, danger, map->row_len * map->col_len);
+    map->dangermap = linalg_sub_noM_int32_t(map->dangermap, danger, map->row_len * map->col_len);
     map->shading_changed = true;
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
@@ -61,11 +61,11 @@ void Map_Stacked_Dangermap_Compute(struct Map *map) {
     /* assumes movemap, attacktomap, dangermap are computed */
 
     int size = map->row_len * map->col_len;
-    i32 *temp_map = linalg_ssmaller_i32(map->dangermap, DANGERMAP_UNIT_DIVISOR, size);
-    map->stacked_dangermap = linalg_and_noM_i32(map->stacked_dangermap, map->dangermap, temp_map,
-                                                map->row_len * map->col_len);
-    map->stacked_dangermap = linalg_and_noM_i32(map->stacked_dangermap, map->stacked_dangermap,
-                                                map->movemap, map->row_len * map->col_len);
+    i32 *temp_map = linalg_ssmaller_int32_t(map->dangermap, DANGERMAP_UNIT_DIVISOR, size);
+    map->stacked_dangermap = linalg_and_noM_int32_t(map->stacked_dangermap, map->dangermap, temp_map,
+                                                    map->row_len * map->col_len);
+    map->stacked_dangermap = linalg_and_noM_int32_t(map->stacked_dangermap, map->stacked_dangermap,
+                                                    map->movemap, map->row_len * map->col_len);
 
     free(temp_map);
     map->shading_changed = true;
@@ -123,9 +123,9 @@ float *Map_fMovemap_Compute(struct Map *map, tnecs_world_t *world, tnecs_entity_
 
 i32 *_Map_Movemap_Compute(struct Map *map, struct Point start_in, i32 move) {
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
-    struct nmath_point_i32 start = {start_in.x, start_in.y};
-    map->movemap = pathfinding_Map_Moveto_noM_i32(map->movemap, map->costmap,
-                                                  map->row_len, map->col_len, start, move);
+    struct Point start = {start_in.x, start_in.y};
+    map->movemap = Map_Pathfinding_Moveto_noM(map->movemap, map->costmap, map->row_len,
+                                              map->col_len, start, move);
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
     return (map->movemap);
 }
@@ -133,8 +133,8 @@ i32 *_Map_Movemap_Compute(struct Map *map, struct Point start_in, i32 move) {
 i32 *Map_Movemap_Compute(struct Map *map, tnecs_world_t *world, tnecs_entity_t unit_ent) {
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     Map_Costmap_Movement_Compute(map, world, unit_ent);
-    struct Unit *unit = TNECS_GET_COMPONENT(world, unit_ent, Unit);
-    struct Position *pos = TNECS_GET_COMPONENT(world, unit_ent, Position);
+    struct Unit     *unit   = TNECS_GET_COMPONENT(world, unit_ent, Unit);
+    struct Position *pos    = TNECS_GET_COMPONENT(world, unit_ent, Position);
     struct Unit_stats temp_effective_stats = Unit_effectiveStats(unit);
     i32 move = Unit_getStats(unit).move;
     struct Point start = pos->tilemap_pos;
@@ -151,8 +151,8 @@ i32 *Taxicab_Circle(i32 *matrix, i32 x, i32 y, size_t row_len, size_t col_len,
         subrangey_max = (rangex > range->max) ? 0 : (range->max - rangex);
         for (i32 rangey = subrangey_min; rangey <= subrangey_max; rangey++) {
             for (int8_t sq_neighbor = 0; sq_neighbor < NMATH_SQUARE_NEIGHBOURS; sq_neighbor++) {
-                i32 tempx = nmath_inbounds_i32(x + q_cycle4_pmmp(sq_neighbor) * rangex, 0, col_len - 1);
-                i32 tempy = nmath_inbounds_i32(y + q_cycle4_ppmm(sq_neighbor) * rangey, 0, row_len - 1);
+                i32 tempx = nmath_inbounds_int32_t(x + q_cycle4_pmmp(sq_neighbor) * rangex, 0, col_len - 1);
+                i32 tempy = nmath_inbounds_int32_t(y + q_cycle4_ppmm(sq_neighbor) * rangey, 0, row_len - 1);
                 matrix[tempx * col_len + tempy] = 1;
             }
         }
@@ -168,7 +168,7 @@ i32 *Taxicab_Circle_List(i32 *darr_list, i32 *matrix, i32 x, i32 y,
     // Manhattan (distance) used to trace 'circles' on square tilemap
     // Returns: List points at distance [range_min, range_max] dist from [x, y]
     matrix = Taxicab_Circle(matrix, x, y, row_len, col_len, range);
-    darr_list = linalg_matrix2list_noM_i32(matrix, darr_list, row_len, col_len);
+    darr_list = linalg_matrix2list_noM_int32_t(matrix, darr_list, row_len, col_len);
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
     return (darr_list);
 }
@@ -176,8 +176,8 @@ i32 *Taxicab_Circle_List(i32 *darr_list, i32 *matrix, i32 x, i32 y,
 i32 *_Map_tomap_Compute(i32 *tomap, i32 *movemap, uf8 row_len, uf8 col_len,
                         i32 move, struct Range *range, uf8 mode_movetile) {
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
-    tomap = pathfinding_Map_Attackto_noM_i32(tomap, movemap, row_len, col_len, move, (uf8 *)range,
-                                             mode_movetile);
+    tomap = pathfinding_Map_Attackto_noM_int32_t(tomap, movemap, row_len, col_len, move, (uf8 *)range,
+                                                 mode_movetile);
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
     return (tomap);
 }
@@ -186,8 +186,8 @@ i32 *Map_Healtolist_Compute(struct Map   *map) {
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     SDL_assert(map->healtomap  != NULL);
     SDL_assert(map->healtolist != NULL);
-    map->healtolist = linalg_matrix2list_noM_i32(map->healtomap, map->healtolist,
-                                                 map->row_len, map->col_len);
+    map->healtolist = linalg_matrix2list_noM_int32_t(map->healtomap, map->healtolist,
+                                                     map->row_len, map->col_len);
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
     return (map->healtolist);
 }
@@ -214,7 +214,7 @@ i32 *Map_Healtomap_Compute(struct Map *map, tnecs_world_t *world, tnecs_entity_t
     i32 move_stat = move ? Unit_getStats(unit).move : 0;
     _Map_Movemap_Compute(map, start, move_stat);
     struct Range range = {.min = UINT8_MAX, .max = 0 };
-    _Unit_Range_Combine(unit, &range, equipped, ITEM_ARCHEi32_STAFF);
+    _Unit_Range_Combine(unit, &range, equipped, ITEM_ARCHETYPE_STAFF);
     // SOTA_Log_Debug("range %d %d", range.min, range.max);
 
     map->update = true;
@@ -227,8 +227,8 @@ i32 *Map_Healtomap_Compute(struct Map *map, tnecs_world_t *world, tnecs_entity_t
 
 i32 *Map_Attacktolist_Compute(struct Map   *map) {
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
-    map->attacktolist = linalg_matrix2list_noM_i32(map->attacktomap, map->attacktolist,
-                                                   map->row_len, map->col_len);
+    map->attacktolist = linalg_matrix2list_noM_int32_t(map->attacktomap, map->attacktolist,
+                                                       map->row_len, map->col_len);
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
     return (map->attacktolist);
 }
@@ -255,7 +255,7 @@ i32 *Map_Attacktomap_Compute(struct Map *map, tnecs_world_t *world, tnecs_entity
     i32 move_stat = move ? Unit_getStats(unit).move : 0;
     _Map_Movemap_Compute(map, start, move_stat);
     struct Range range = {.min = UINT8_MAX, .max = 0 };
-    _Unit_Range_Combine(unit, &range, equipped, ITEM_ARCHEi32_WEAPON);
+    _Unit_Range_Combine(unit, &range, equipped, ITEM_ARCHETYPE_WEAPON);
     map->update = true;
     map->attacktomap = _Map_tomap_Compute(map->attacktomap, map->movemap, map->row_len, map->col_len,
                                           move_stat, &range, NMATH_MOVETILE_INCLUDE);
@@ -279,7 +279,7 @@ i32 *Map_Danger_Compute(struct Map *map, tnecs_world_t *world, tnecs_entity_t un
     map->attacktomap = _Map_tomap_Compute(map->attacktomap, map->movemap, map->row_len,
                                           map->col_len, move, range, NMATH_MOVETILE_INCLUDE);
     memset(map->temp, 0, sizeof(*map->temp)*map->row_len * map->col_len);
-    map->temp = linalg_plus_noM_i32(map->temp, map->attacktomap, map->row_len * map->col_len);
+    map->temp = linalg_plus_noM_int32_t(map->temp, map->attacktomap, map->row_len * map->col_len);
     // linalg_matrix_print_int(map->temp, map->row_len, map->col_len);
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
     return (map->temp);
@@ -294,18 +294,18 @@ i32 *Map_Costmap_PushPull_Compute(struct Map *map, tnecs_world_t *world,
     struct Unit *unit = TNECS_GET_COMPONENT(world, unit_ent, Unit);
     struct Tile *temp_tile;
     i32 tile_ind = 0;
-    if8 unit_movei32 = unit->mvt_i32;
+    if8 unit_movetype = unit->mvt_type;
     uf8 army = unit->army;
     uf8 ontile_army;
     tnecs_entity_t ontile_unit_ent;
-    SDL_assert(unit_movei32 > UNIT_MVT_START);
+    SDL_assert(unit_movetype > UNIT_MVT_START);
     for (uf8 i = 0; i < map->row_len * map->col_len; i++) {
         tile_ind = map->tilemap[i] / TILE_DIVISOR;
         ontile_unit_ent = map->unitmap[i];
         SDL_assert(tile_ind > 0);
         size_t tile_order = Map_Tile_Order(map, tile_ind);
         temp_tile = map->tiles + tile_order;
-        map->costmap[i] = temp_tile->cost_array[unit_movei32];
+        map->costmap[i] = temp_tile->cost_array[unit_movetype];
         if (ontile_unit_ent <= TNECS_NULL)
             continue;
         struct Unit *ontile_unit = TNECS_GET_COMPONENT(world, ontile_unit_ent, Unit);
@@ -328,18 +328,18 @@ float *Map_fCostmap_Movement_Compute(struct Map *map, tnecs_world_t *world,
     struct Unit *unit = TNECS_GET_COMPONENT(world, unit_ent, Unit);
     struct Tile *temp_tile;
     i32 tile_ind = 0;
-    if8 unit_movei32 = unit->mvt_i32;
+    if8 unit_movetype = unit->mvt_type;
     uf8 army = unit->army;
 
     /* Compute cost of each tile*/
-    SDL_assert(unit_movei32 > UNIT_MVT_START);
+    SDL_assert(unit_movetype > UNIT_MVT_START);
     for (size_t i = 0; i < (map->col_len * map->row_len); i++) {
         /* - Compute cost from tile - */
         tile_ind = map->tilemap[i] / TILE_DIVISOR;
         SDL_assert(tile_ind > 0);
         size_t tile_order = Map_Tile_Order(map, tile_ind);
         temp_tile = map->tiles + tile_order;
-        map->fcostmap[i] = temp_tile->cost_array[unit_movei32];
+        map->fcostmap[i] = temp_tile->cost_array[unit_movetype];
 
         /* - Check if tile is blocked from opposing army - */
         tnecs_entity_t ontile_unit_ent = map->unitmap[i];
@@ -376,11 +376,11 @@ i32 *Map_Costmap_Movement_Compute(struct Map *map, tnecs_world_t *world,
     struct Unit *unit = TNECS_GET_COMPONENT(world, unit_ent, Unit);
     struct Tile *temp_tile;
     i32 tile_ind = 0;
-    if8 unit_movei32 = unit->mvt_i32;
+    if8 unit_movetype = unit->mvt_type;
     uf8 army = unit->army;
 
     /* - Compute cost of each tile - */
-    SDL_assert(unit_movei32 > UNIT_MVT_START);
+    SDL_assert(unit_movetype > UNIT_MVT_START);
     for (size_t i = 0; i < (map->col_len * map->row_len); i++) {
         #ifndef UNITS_IGNORE_TERRAIN
         /* - Compute cost from tile - */
@@ -388,7 +388,7 @@ i32 *Map_Costmap_Movement_Compute(struct Map *map, tnecs_world_t *world,
         SDL_assert(tile_ind > 0);
         size_t tile_order = Map_Tile_Order(map, tile_ind);
         temp_tile = map->tiles + tile_order;
-        map->costmap[i] = temp_tile->cost_array[unit_movei32];
+        map->costmap[i] = temp_tile->cost_array[unit_movetype];
 
         /* - Check if tile is blocked from opposing army - */
         tnecs_entity_t ontile_unit_ent = map->unitmap[i];
@@ -439,14 +439,14 @@ void Map_globalRange(struct Map *map, tnecs_world_t *world, uf8 alignment) {
         struct Range    *range      = Unit_Range_Combine_Equipment(temp_unit);
         struct Unit_stats temp_effective_stats = Unit_effectiveStats(temp_unit);
         uf8 move = temp_effective_stats.move;
-        struct nmath_point_i32 start = {temp_pos->tilemap_pos.x, temp_pos->tilemap_pos.y};
+        struct Point start = {temp_pos->tilemap_pos.x, temp_pos->tilemap_pos.y};
         Map_Costmap_Movement_Compute(map, world, unit_entities[i]);
-        map->movemap = pathfinding_Map_Moveto_noM_i32(map->movemap, map->costmap,
-                                                      map->row_len, map->col_len, start, move);
-        map->attacktomap = pathfinding_Map_Attackto_noM_i32(map->attacktomap, map->movemap,
-                                                            map->row_len, map->col_len, move, (uf8 *)range, NMATH_MOVETILE_INCLUDE);
-        map->global_rangemap = linalg_plus_noM_i32(map->global_rangemap, map->attacktomap,
-                                                   map->row_len * map->col_len);
+        map->movemap = Map_Pathfinding_Moveto_noM(map->movemap, map->costmap,
+                                                  map->row_len, map->col_len, start, move);
+        map->attacktomap = pathfinding_Map_Attackto_noM_int32_t(map->attacktomap, map->movemap,
+                                                                map->row_len, map->col_len, move, (uf8 *)range, NMATH_MOVETILE_INCLUDE);
+        map->global_rangemap = linalg_plus_noM_int32_t(map->global_rangemap, map->attacktomap,
+                                                       map->row_len * map->col_len);
     }
 
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
@@ -508,9 +508,9 @@ void Map_globalRange(struct Map *map, tnecs_world_t *world, uf8 alignment) {
 //     return (path_list);
 // }
 
-// struct nmath_sq_neighbors  pathfinding_Direction_Pushto(i32  * attackfrommap, size_t row_len, size_t col_len, u8 range[2], struct nmath_point target) {
+// struct nmath_sq_neighbors  pathfinding_Direction_Pushto(i32  * attackfrommap, size_t row_len, size_t col_len, u8 range[2], struct Point target) {
 //     struct nmath_sq_neighbors  Pushto = {0, 0, 0, 0};
-//     struct nmath_point neighbor;
+//     struct Point neighbor;
 //     for (i32 distance = range[0]; distance <= range[1]; distance++) {
 //         for (i32  i = 0; i < NMATH_SQUARE_NEIGHBOURS; i++) {
 //             neighbor.x = nmath_inbounds((target.x + distance * q_cycle4_pzmz(i)), 0, col_len - 1);
@@ -531,9 +531,9 @@ void Map_globalRange(struct Map *map, tnecs_world_t *world, uf8 alignment) {
 //     return (Pushto);
 // }
 
-// struct nmath_sq_neighbors  pathfinding_Direction_Pullto(i32  * attackfrommap, size_t row_len, size_t col_len, u8 range[2], struct nmath_point target) {
+// struct nmath_sq_neighbors  pathfinding_Direction_Pullto(i32  * attackfrommap, size_t row_len, size_t col_len, u8 range[2], struct Point target) {
 //     struct nmath_sq_neighbors  Pullto = {0, 0, 0, 0};
-//     struct nmath_point neighbor;
+//     struct Point neighbor;
 //     i32 * Pullto_ptr = (i32 *)&Pullto;
 //     assert(range[0] < range[1]);
 //     for (i32  distance = range[0]; distance <= range[1]; distance++) {
@@ -549,10 +549,10 @@ void Map_globalRange(struct Map *map, tnecs_world_t *world, uf8 alignment) {
 // }
 
 
-// struct nmath_sq_neighbors  pathfinding_Direction_Block(i32  * costmap_pushpull, size_t row_len, size_t col_len, struct nmath_point start) {
+// struct nmath_sq_neighbors  pathfinding_Direction_Block(i32  * costmap_pushpull, size_t row_len, size_t col_len, struct Point start) {
 //     struct nmath_sq_neighbors  distance_block = {0, 0, 0, 0};
 //     i32 * distance_ptr = (i32 *)&distance_block;
-//     struct nmath_point neighbor = {0, 0};
+//     struct Point neighbor = {0, 0};
 //     i32  distance = 0;
 //     while ((distance_block.top == 0) || (distance_block.bottom == 0) || (distance_block.left == 0) || (distance_block.right == 0)) {
 //         distance++;
@@ -576,9 +576,9 @@ void Map_globalRange(struct Map *map, tnecs_world_t *world, uf8 alignment) {
 //     return (distance_block);
 // }
 
-// i32 * pathfinding_Map_PushPullto_noM(i32 * pushpulltomap, struct nmath_sq_neighbors  direction_block, struct nmath_sq_neighbors  pushpullto, size_t row_len, size_t col_len, struct nmath_point start) {\
+// i32 * pathfinding_Map_PushPullto_noM(i32 * pushpulltomap, struct nmath_sq_neighbors  direction_block, struct nmath_sq_neighbors  pushpullto, size_t row_len, size_t col_len, struct Point start) {\
 //     i32 temp_distance;
-//     struct nmath_point pushpullto_tile;
+//     struct Point pushpullto_tile;
 //     i32 * block_ptr = (i32 *)&direction_block;
 //     i32 * pushpullto_ptr = (i32 *)&pushpullto;
 //     for (size_t row = 0; row < row_len; row++) {
@@ -600,10 +600,10 @@ void Map_globalRange(struct Map *map, tnecs_world_t *world, uf8 alignment) {
 //     return (pushpulltomap);
 // }
 
-// i32 * pathfinding_Map_PushPullto(struct nmath_sq_neighbors  direction_block, struct nmath_sq_neighbors  pushpullto, size_t row_len, size_t col_len, struct nmath_point start, u8 mode_output) {
+// i32 * pathfinding_Map_PushPullto(struct nmath_sq_neighbors  direction_block, struct nmath_sq_neighbors  pushpullto, size_t row_len, size_t col_len, struct Point start, u8 mode_output) {
 //     i32 * pushpulltomap = NULL;
 //     i32 temp_distance;
-//     struct nmath_point pushpullto_tile;
+//     struct Point pushpullto_tile;
 //     i32 * block_ptr = (i32 *)&direction_block;
 //     i32 * pushpullto_ptr = (i32 *)&pushpullto;
 //     switch (mode_output) {
@@ -699,8 +699,8 @@ i32 *Map_Pathfinding_Astar(i32 *path_list, i32 *costmap, size_t row_len,
         /* Visit all square neighbors */
         for (size_t sq_neighbor = 0; sq_neighbor < NMATH_SQUARE_NEIGHBOURS; sq_neighbor++) {
             /* Get next neighbor movement cost */
-            neighbor.x = nmath_inbounds_i32(q_cycle4_mzpz(sq_neighbor) + current.x, 0, col_len - 1);
-            neighbor.y = nmath_inbounds_i32(q_cycle4_zmzp(sq_neighbor) + current.y, 0, row_len - 1);
+            neighbor.x = nmath_inbounds_int32_t(q_cycle4_mzpz(sq_neighbor) + current.x, 0, col_len - 1);
+            neighbor.y = nmath_inbounds_int32_t(q_cycle4_zmzp(sq_neighbor) + current.y, 0, row_len - 1);
             neighbor.cost = current.cost + costmap[neighbor.y * col_len + neighbor.x];
 
             /* Compute conditions for adding neighbor to frontier */
@@ -716,7 +716,7 @@ i32 *Map_Pathfinding_Astar(i32 *path_list, i32 *costmap, size_t row_len,
                 continue;
 
             /* distance is heuristic for closeness to goal */
-            size_t distance = linalg_distance_manhattan_i32(end.x, end.y, neighbor.x, neighbor.y);
+            size_t distance = linalg_distance_manhattan_int32_t(end.x, end.y, neighbor.x, neighbor.y);
             cost[neighbor.y * col_len + neighbor.x] = neighbor.cost;
 
             /* Djikstra algo only has cost in this step */
@@ -742,7 +742,7 @@ i32 *Map_Pathfinding_Astar(i32 *path_list, i32 *costmap, size_t row_len,
 }
 
 i32 *Map_Pathfinding_Moveto(i32 *cost_matrix, size_t row_len, size_t col_len,
-                            struct nmath_point start, i32 move, u8 mode_output) {
+                            struct Point start, i32 move, int mode_output) {
     i32 *move_matrix = NULL;
     switch (mode_output) {
         case (NMATH_POINTS_MODE_LIST):
@@ -760,23 +760,23 @@ i32 *Map_Pathfinding_Moveto(i32 *cost_matrix, size_t row_len, size_t col_len,
     size_t init_size = row_len * col_len * 2;
     struct Node *open     = DARR_INIT(open,   struct Node, init_size);
     struct Node *closed   = DARR_INIT(closed, struct Node, init_size);
-    struct Node current   = {start.x, start.y, NMATH_ZERO}, neighbor;
+    struct Node current   = {start.x, start.y, 0}, neighbor;
     DARR_PUT(open, current);
     bool found, neighbor_inclosed;
     while (DARR_NUM(open) > 0) {
         current = DARR_POP(open);
         DARR_PUT(closed, current);
-        int current_i = current.y * col_len + current.x;
-
+        i32 move_i = move_matrix[current.y * col_len + current.x];
         switch (mode_output) {
             case NMATH_POINTS_MODE_MATRIX:
-                if ((move_matrix[current_i] == NMATH_MOVEMAP_BLOCKED)
-                    || (move_matrix[current_i] > (current.distance + NMATH_ONE))) {
-                    move_matrix[current_i] = current.distance + NMATH_ONE;
+                if ((move_i == NMATH_MOVEMAP_BLOCKED) || (move_i > (current.distance + 1))) {
+                    move_i = current.distance + 1;
                 }
                 break;
             case NMATH_POINTS_MODE_LIST:
-                found = linalg_list_isIn_2D(move_matrix, DARR_NUM(move_matrix) / NMATH_TWO_D, current.x, current.y);
+                size_t pnum = DARR_NUM(move_matrix) / NMATH_TWO_D;
+                found = linalg_list_isIn_2D_int32_t(move_matrix, pnum, current.x,
+                                                    current.y);
                 if (!found) {
                     DARR_PUT(move_matrix, current.x);
                     DARR_PUT(move_matrix, current.y);
@@ -784,12 +784,12 @@ i32 *Map_Pathfinding_Moveto(i32 *cost_matrix, size_t row_len, size_t col_len,
                 break;
         }
         for (int8_t i = 0; i < NMATH_SQUARE_NEIGHBOURS; i++) {
-            neighbor.x = nmath_inbounds(current.x + q_cycle4_mzpz(i), 0, col_len - 1);
-            neighbor.y = nmath_inbounds(current.y + q_cycle4_zmzp(i), 0, row_len - 1);
+            neighbor.x = nmath_inbounds_int32_t(current.x + q_cycle4_mzpz(i), 0, col_len - 1);
+            neighbor.y = nmath_inbounds_int32_t(current.y + q_cycle4_zmzp(i), 0, row_len - 1);
             int current_n = neighbor.y * col_len + neighbor.x;
             neighbor.distance = current.distance + cost_matrix[current_n];
             if ((neighbor.distance <= (i32)move)
-                && (cost_matrix[neighbor.y * col_len + neighbor.x] >= NMATH_ONE)) {
+                && (cost_matrix[neighbor.y * col_len + neighbor.x] >= 1)) {
                 neighbor_inclosed = false;
                 for (i32 k = 0; k < DARR_NUM(closed); k++) {
                     if ((neighbor.x == closed[k].x) && (neighbor.y == closed[k].y)) {
@@ -812,8 +812,8 @@ i32 *Map_Pathfinding_Moveto(i32 *cost_matrix, size_t row_len, size_t col_len,
     return (move_matrix);
 }
 
-i32 *pathfinding_Map_Moveto_noM(i32 *move_matrix, i32 *cost_matrix, size_t row_len,
-                                size_t col_len, struct nmath_point start, i32 move) {
+i32 *Map_Pathfinding_Moveto_noM(i32 *move_matrix, i32 *cost_matrix, size_t row_len,
+                                size_t col_len, struct Point start, i32 move) {
     for (size_t row = 0; row < row_len; row++) {
         for (size_t col = 0; col < col_len; col++) {
             move_matrix[(row * col_len + col)] = NMATH_MOVEMAP_BLOCKED;
@@ -822,23 +822,22 @@ i32 *pathfinding_Map_Moveto_noM(i32 *move_matrix, i32 *cost_matrix, size_t row_l
     size_t init_size    = row_len * col_len * 2;
     struct Node *open   = DARR_INIT(open,   struct Node, init_size);
     struct Node *closed = DARR_INIT(closed, struct Node, init_size);
-    struct Node current = {start.x, start.y, NMATH_ZERO}, neighbor;
+    struct Node current = {start.x, start.y, 0}, neighbor;
     DARR_PUT(open, current);
     bool neighbor_inclosed;
     while (DARR_NUM(open) > 0) {
         current = DARR_POP(open);
         DARR_PUT(closed, current);
-        int current_i = current.y * col_len + current.x;
-        if ((move_matrix[current_i] == NMATH_MOVEMAP_BLOCKED)
-            || (move_matrix[current_i] > (current.distance + NMATH_ONE))) {
-            move_matrix[current_i] = current.distance + NMATH_ONE;
+        i32 move_i = move_matrix[current.y * col_len + current.x];
+        if (( move_i == NMATH_MOVEMAP_BLOCKED) || (move_i > (current.distance + 1))) {
+            move_i = current.distance + 1;
         }
         for (int i = 0; i < NMATH_SQUARE_NEIGHBOURS; i++) {
-            neighbor.x = nmath_inbounds(current.x + q_cycle4_mzpz(i), 0, col_len - 1);
-            neighbor.y = nmath_inbounds(current.y + q_cycle4_zmzp(i), 0, row_len - 1);
+            neighbor.x = nmath_inbounds_int32_t(current.x + q_cycle4_mzpz(i), 0, col_len - 1);
+            neighbor.y = nmath_inbounds_int32_t(current.y + q_cycle4_zmzp(i), 0, row_len - 1);
             int current_n = neighbor.y * col_len + neighbor.x;
             neighbor.distance = current.distance + cost_matrix[current_n];
-            if ((neighbor.distance <= move) && (cost_matrix[current_n] >= NMATH_ONE)) {
+            if ((neighbor.distance <= move) && (cost_matrix[current_n] >= 1)) {
                 neighbor_inclosed = false;
                 for (i32 k = 0; k < DARR_NUM(closed); k++) {
                     if ((neighbor.x == closed[k].x) && (neighbor.y == closed[k].y)) {

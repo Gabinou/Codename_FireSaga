@@ -49,10 +49,10 @@ void test_map_simple() {
 void test_pathfinding_Astar() {
     SOTA_Log_Func("%s " STRINGIZE(__LINE__), __func__);
     /* --- PRELIMINARIES --- */
-    struct nmath_point_int32_t start_nmath  = {10, 6};
-    struct nmath_point_int32_t end_nmath    = {15, 1};
-    struct Point start                      = {10, 6};
-    struct Point end                        = {15, 1};
+    struct Point start_nmath  = {10, 6};
+    struct Point end_nmath    = {15, 1};
+    struct Point start        = {10, 6};
+    struct Point end          = {15, 1};
     int *position;
     int move = 30;
     int costmapp[ROW_LEN * COL_LEN] = {
@@ -127,8 +127,8 @@ void test_pathfinding_Astar() {
     };
     /* -- Test computing a movemap from a costmap -- */
     /* - Computing a movemap matrix - */
-    int *movemapp = pathfinding_Map_Moveto_int32_t(costmapp, ROW_LEN, COL_LEN, start_nmath, move,
-                                                   NMATH_POINTS_MODE_MATRIX);
+    int *movemapp = Map_Pathfinding_Moveto(costmapp, ROW_LEN, COL_LEN, start_nmath, move,
+                                           NMATH_POINTS_MODE_MATRIX);
     // linalg_matrix_print_int32_t(movemapp, ROW_LEN, COL_LEN);
 
     for (size_t row = 0; row < ROW_LEN; row++) {
@@ -138,8 +138,8 @@ void test_pathfinding_Astar() {
     }
 
     /* - Computing a movemap list - */
-    int *movemapp_list = pathfinding_Map_Moveto_int32_t(costmapp, ROW_LEN, COL_LEN, start_nmath, move,
-                                                        NMATH_POINTS_MODE_LIST);
+    int *movemapp_list = Map_Pathfinding_Moveto(costmapp, ROW_LEN, COL_LEN, start_nmath, move,
+                                                NMATH_POINTS_MODE_LIST);
     for (size_t i = 0; i < DARR_NUM(movemapp_list) / 2; i++) {
         int temp_col = movemapp_list[i * NMATH_TWO_D + 0];
         int temp_row = movemapp_list[i * NMATH_TWO_D + 1];
