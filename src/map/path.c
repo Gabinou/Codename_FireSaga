@@ -124,8 +124,8 @@ float *Map_fMovemap_Compute(struct Map *map, tnecs_world_t *world, tnecs_entity_
 i32 *_Map_Movemap_Compute(struct Map *map, struct Point start_in, i32 move) {
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     struct Point start = {start_in.x, start_in.y};
-    map->movemap = Map_Pathfinding_Moveto_noM(map->movemap, map->costmap, map->row_len,
-                                              map->col_len, start, move);
+    Map_Pathfinding_Moveto_noM(map->movemap, map->costmap,
+                               map->row_len, map->col_len, start, move);
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
     return (map->movemap);
 }
@@ -441,8 +441,8 @@ void Map_globalRange(struct Map *map, tnecs_world_t *world, uf8 alignment) {
         uf8 move = temp_effective_stats.move;
         struct Point start = {temp_pos->tilemap_pos.x, temp_pos->tilemap_pos.y};
         Map_Costmap_Movement_Compute(map, world, unit_entities[i]);
-        map->movemap = Map_Pathfinding_Moveto_noM(map->movemap, map->costmap,
-                                                  map->row_len, map->col_len, start, move);
+        Map_Pathfinding_Moveto_noM(map->movemap, map->costmap, map->row_len,
+                                   map->col_len, start, move);
         map->attacktomap = pathfinding_Map_Attackto_noM_int32_t(map->attacktomap, map->movemap,
                                                                 map->row_len, map->col_len, move, (uf8 *)range, NMATH_MOVETILE_INCLUDE);
         map->global_rangemap = linalg_plus_noM_int32_t(map->global_rangemap, map->attacktomap,
@@ -835,48 +835,70 @@ i32 *Map_Pathfinding_Moveto(i32 *cost_matrix, size_t row_len, size_t col_len,
     return (move_matrix);
 }
 
-i32 *Map_Pathfinding_Moveto_noM(i32 *move_matrix, i32 *cost_matrix, size_t row_len,
+void Map_Pathfinding_Moveto_noM(i32 *move_matrix, i32 *cost_matrix, size_t row_len,
                                 size_t col_len, struct Point start, i32 move) {
+    /* -- Wipe move_matrix -- */
     for (size_t row = 0; row < row_len; row++) {
         for (size_t col = 0; col < col_len; col++) {
             move_matrix[(row * col_len + col)] = NMATH_MOVEMAP_BLOCKED;
         }
     }
+
+    /* -- Setup variables -- */
     size_t init_size    = row_len * col_len * 2;
     struct Node *open   = DARR_INIT(open,   struct Node, init_size);
     struct Node *closed = DARR_INIT(closed, struct Node, init_size);
     struct Node current = {start.x, start.y, 0}, neighbor;
     DARR_PUT(open, current);
     bool neighbor_inclosed;
+
+    /* -- Loop over open nodes -- */
     while (DARR_NUM(open) > 0) {
+        /* -- Get current open node from open list -- */
         current = DARR_POP(open);
         DARR_PUT(closed, current);
-        i32 move_i = move_matrix[current.y * col_len + current.x];
+
+        /* -- Compute cost to current tile -- */
+        i32 current_i   = current.y * col_len + current.x;
+        i32 move_i      = move_matrix[current_i];
         if (( move_i == NMATH_MOVEMAP_BLOCKED) || (move_i > (current.distance + 1))) {
-            move_i = current.distance + 1;
+            move_matrix[current_i] = current.distance + 1;
         }
-        for (int i = 0; i < NMATH_SQUARE_NEIGHBOURS; i++) {
+
+        /* -- Move to four square neighbor tiles -- */
+        for (size_t i = 0; i < NMATH_SQUARE_NEIGHBOURS; i++) {
+            /* - Get square neighbor - */
             neighbor.x = nmath_inbounds_int32_t(current.x + q_cycle4_mzpz(i), 0, col_len - 1);
             neighbor.y = nmath_inbounds_int32_t(current.y + q_cycle4_zmzp(i), 0, row_len - 1);
-            int current_n = neighbor.y * col_len + neighbor.x;
-            neighbor.distance = current.distance + cost_matrix[current_n];
-            if ((neighbor.distance <= move) && (cost_matrix[current_n] >= 1)) {
-                neighbor_inclosed = false;
-                for (i32 k = 0; k < DARR_NUM(closed); k++) {
-                    if ((neighbor.x == closed[k].x) && (neighbor.y == closed[k].y)) {
-                        neighbor_inclosed = true;
-                        if (neighbor.distance < closed[k].distance) {
-                            neighbor_inclosed = false;
-                            DARR_DEL(closed, k);
-                        }
-                        break;
-                    }
+
+            /* - Get total cost to neighbor - */
+            int current_n       = neighbor.y * col_len + neighbor.x;
+            neighbor.distance   = current.distance + cost_matrix[current_n];
+
+            /* - Skip if neighbor is out of reach - */
+            if ((neighbor.distance > move) || (cost_matrix[current_n] == 0))
+                continue;
+
+            /* - Find if neighbor was already visited -> in closed - */
+            int neighbor_inclosed = -1;
+            for (i32 k = 0; k < DARR_NUM(closed); k++) {
+                if ((neighbor.x == closed[k].x) && (neighbor.y == closed[k].y)) {
+                    neighbor_inclosed = k;
+                    break;
                 }
-                if (!neighbor_inclosed) {
-                    DARR_PUT(open, neighbor);
-                }
+            }
+
+            /* - Add neighbor to open list, if not visited before - */
+            if (neighbor_inclosed < 0) {
+                DARR_PUT(open, neighbor);
+                continue;
+            }
+
+            /* - Add neighbor to open list, if closer than before - */
+            if (neighbor.distance < closed[neighbor_inclosed].distance) {
+                DARR_DEL(closed, neighbor_inclosed);
+                DARR_PUT(open,   neighbor);
             }
         }
     }
-    return (move_matrix);
 }

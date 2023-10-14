@@ -77,7 +77,7 @@ extern i32 Map_Pathfinding_Manhattan(struct Point start, struct Point end);
 /* -- Moveto -- */
 extern i32 *Map_Pathfinding_CameFrom_List(i32 *path, i32 *came_from, size_t col_len,
                                           struct Point start, struct Point end);
-extern i32 *Map_Pathfinding_Moveto_noM(i32 *move_matrix, i32 *cost_matrix,
+extern void Map_Pathfinding_Moveto_noM(i32 *move_matrix, i32 *cost_matrix,
                                        size_t row_len, size_t col_len,
                                        struct Point start, i32 move);
 extern i32 *Map_Pathfinding_Moveto(i32 *costmap, size_t row_len, size_t col_len,

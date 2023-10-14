@@ -55,7 +55,7 @@ void test_pathfinding_Astar() {
     struct Point end          = {15, 1};
     int *position;
     int move = 30;
-    int costmapp[ROW_LEN * COL_LEN] = {
+    i32 costmapp[ROW_LEN * COL_LEN] = {
         1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
         1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
         1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
@@ -127,7 +127,7 @@ void test_pathfinding_Astar() {
     };
     /* -- Test computing a movemap from a costmap -- */
     /* - Computing a movemap matrix - */
-    int *movemapp = Map_Pathfinding_Moveto(costmapp, ROW_LEN, COL_LEN, start_nmath, move,
+    i32 *movemapp = Map_Pathfinding_Moveto(costmapp, ROW_LEN, COL_LEN, start_nmath, move,
                                            NMATH_POINTS_MODE_MATRIX);
     // linalg_matrix_print_int32_t(movemapp, ROW_LEN, COL_LEN);
 
@@ -136,6 +136,17 @@ void test_pathfinding_Astar() {
             nourstest_true(movemapp[row * COL_LEN + col] == expected_movemapp[row * COL_LEN + col]);
         }
     }
+
+    Map_Pathfinding_Moveto_noM(movemapp, costmapp, ROW_LEN, COL_LEN, start_nmath, move);
+
+    for (size_t row = 0; row < ROW_LEN; row++) {
+        for (size_t col = 0; col < COL_LEN; col++) {
+            nourstest_true(movemapp[row * COL_LEN + col] == expected_movemapp[row * COL_LEN + col]);
+        }
+    }
+
+    // linalg_matrix_print_int32_t(movemapp, ROW_LEN, COL_LEN);
+
 
     /* - Computing a movemap list - */
     int *movemapp_list = Map_Pathfinding_Moveto(costmapp, ROW_LEN, COL_LEN, start_nmath, move,
