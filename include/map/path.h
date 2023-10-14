@@ -7,6 +7,13 @@
 /* --- FORWARD DECLARATIONS --- */
 struct Map;
 
+/* --- ENUMS --- */
+enum MOVEMAP {
+    MOVEMAP_BLOCKED     = 0,
+    MOVEMAP_MOVEABLEMIN = 1,
+};
+
+
 /* --- Bounds --- */
 extern void Map_Bounds_Compute(struct Map *map);
 
@@ -83,8 +90,9 @@ extern void Map_Pathfinding_Moveto_noM(i32 *move_matrix, i32 *cost_matrix,
 extern i32 *Map_Pathfinding_Moveto(i32 *costmap, size_t row_len, size_t col_len,
                                    struct Point start, i32 move, int mode_output);
 
-
-
+extern void Map_Pathfinding_Neighbors(struct Node *open, struct Node *closed,
+                                      struct Node current, i32 *cost_matrix,
+                                      size_t row_len, size_t col_len, i32 move);
 
 /* --- Pushing and pulling --- */
 
