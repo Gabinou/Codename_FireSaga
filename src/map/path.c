@@ -91,7 +91,6 @@ void Map_Stacked_Global_Dangermap_Reset(struct Map *map) {
     int len = map->row_len * map->col_len;
 
     if (map->stacked_global_dangermap != NULL) {
-        SOTA_Log_Debug("Map_Stackmap_Reset SETglobal_danger");
         int size = sizeof(*map->stacked_global_dangermap);
         map->stacked_global_dangermap = memset(map->stacked_global_dangermap, 0, size * len);
     }
@@ -126,6 +125,8 @@ i32 *_Map_Movemap_Compute(struct Map *map, struct Point start_in, i32 move) {
     struct Point start = {start_in.x, start_in.y};
     Map_Pathfinding_Moveto_noM(map->movemap, map->costmap,
                                map->row_len, map->col_len, start, move);
+    // linalg_matrix_print_int32_t(map->movemap, map->row_len, map->col_len);
+
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
     return (map->movemap);
 }
@@ -135,9 +136,8 @@ i32 *Map_Movemap_Compute(struct Map *map, tnecs_world_t *world, tnecs_entity_t u
     Map_Costmap_Movement_Compute(map, world, unit_ent);
     struct Unit     *unit   = TNECS_GET_COMPONENT(world, unit_ent, Unit);
     struct Position *pos    = TNECS_GET_COMPONENT(world, unit_ent, Position);
-    struct Unit_stats temp_effective_stats = Unit_effectiveStats(unit);
-    i32 move = Unit_getStats(unit).move;
-    struct Point start = pos->tilemap_pos;
+    i32              move   = Unit_getStats(unit).move;
+    struct Point     start  = pos->tilemap_pos;
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
     return (_Map_Movemap_Compute(map, start, move));
 }
