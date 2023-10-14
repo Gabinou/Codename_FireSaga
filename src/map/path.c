@@ -762,7 +762,10 @@ i32 *Map_Pathfinding_Moveto(i32 *cost_matrix, size_t row_len, size_t col_len,
     struct Node *closed   = DARR_INIT(closed, struct Node, init_size);
     struct Node current   = {start.x, start.y, 0}, neighbor;
     DARR_PUT(open, current);
-    bool found, neighbor_inclosed;
+
+    bool found;
+    size_t neighbor_inclosed;
+
     while (DARR_NUM(open) > 0) {
         current = DARR_POP(open);
         DARR_PUT(closed, current);
@@ -783,28 +786,41 @@ i32 *Map_Pathfinding_Moveto(i32 *cost_matrix, size_t row_len, size_t col_len,
                 }
                 break;
         }
-        for (int8_t i = 0; i < NMATH_SQUARE_NEIGHBOURS; i++) {
+        for (size_t i = 0; i < NMATH_SQUARE_NEIGHBOURS; i++) {
+            /* - Get square neighbor - */
             neighbor.x = nmath_inbounds_int32_t(current.x + q_cycle4_mzpz(i), 0, col_len - 1);
             neighbor.y = nmath_inbounds_int32_t(current.y + q_cycle4_zmzp(i), 0, row_len - 1);
-            int current_n = neighbor.y * col_len + neighbor.x;
-            neighbor.distance = current.distance + cost_matrix[current_n];
-            if ((neighbor.distance <= (i32)move)
-                && (cost_matrix[neighbor.y * col_len + neighbor.x] >= 1)) {
-                neighbor_inclosed = false;
-                for (i32 k = 0; k < DARR_NUM(closed); k++) {
-                    if ((neighbor.x == closed[k].x) && (neighbor.y == closed[k].y)) {
-                        neighbor_inclosed = true;
-                        if (neighbor.distance < closed[k].distance) {
-                            neighbor_inclosed = false;
-                            DARR_DEL(closed, k);
-                        }
-                        break;
-                    }
-                }
-                if (!neighbor_inclosed) {
-                    DARR_PUT(open, neighbor);
+
+            /* - Get total cost to neighbor - */
+            int current_n       = neighbor.y * col_len + neighbor.x;
+            neighbor.distance   = current.distance + cost_matrix[current_n];
+
+            /* - Is neighbor still within reach? - */
+            if ((neighbor.distance > move) || (cost_matrix[current_n] == 0))
+                continue;
+
+            /* - Was neighbor already visited? - */
+            neighbor_inclosed = -1;
+            for (i32 k = 0; k < DARR_NUM(closed); k++) {
+                if ((neighbor.x == closed[k].x) && (neighbor.y == closed[k].y)) {
+                    neighbor_inclosed = k;
+                    break;
                 }
             }
+
+            /* - Add neighbor to open list, if not visited before - */
+            if (neighbor_inclosed < 0) {
+                DARR_PUT(open, neighbor);
+                continue;
+            }
+
+            /* - Add neighbor to open list, if closer than before - */
+            if (neighbor.distance > closed[neighbor_inclosed].distance) {
+                neighbor_inclosed = false;
+                DARR_DEL(closed, neighbor_inclosed);
+                DARR_PUT(open, neighbor);
+            }
+
         }
     }
     DARR_FREE(open);

@@ -1579,7 +1579,7 @@ TEMPLATE_TYPES_SINT
         if ((move_matrix[current.y * col_len + current.x] == NMATH_MOVEMAP_BLOCKED) || (move_matrix[current.y * col_len + current.x] > (current.distance + NMATH_ONE_##type))) {\
             move_matrix[current.y * col_len + current.x] = current.distance + NMATH_ONE_##type;\
         }\
-        for (int8_t i = 0; i < NMATH_SQUARE_NEIGHBOURS; i++) {\
+        for (size_t i = 0; i < NMATH_SQUARE_NEIGHBOURS; i++) {\
             neighbor.x = nmath_inbounds_##type(current.x + q_cycle4_mzpz(i), 0, col_len - 1);\
             neighbor.y = nmath_inbounds_##type(current.y + q_cycle4_zmzp(i), 0, row_len - 1);\
             neighbor.distance = current.distance + cost_matrix[neighbor.y * col_len + neighbor.x];\
