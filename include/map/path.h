@@ -76,23 +76,27 @@ extern i32 *Taxicab_Circle_List(i32 *d, i32 *m, i32 x, i32 y, size_t r, size_t c
 
 /* --- Pathfinding --- */
 /* -- Astar -- */
-extern i32 *Map_Pathfinding_Astar(i32 *path, i32 *cost, size_t rowl, size_t coll,
-                                  struct Point start, struct Point end);
-extern i32 Map_Pathfinding_Manhattan(struct Point start, struct Point end);
+extern i32 *Pathfinding_Astar(i32 *path, i32 *cost, size_t rowl, size_t coll,
+                              struct Point start, struct Point end);
+extern i32 Pathfinding_Manhattan(struct Point start, struct Point end);
 
 
 /* -- Moveto -- */
-extern i32 *Map_Pathfinding_CameFrom_List(i32 *path, i32 *came_from, size_t col_len,
-                                          struct Point start, struct Point end);
-extern void Map_Pathfinding_Moveto_noM(i32 *move_matrix, i32 *cost_matrix,
-                                       size_t row_len, size_t col_len,
-                                       struct Point start, i32 move);
-extern i32 *Map_Pathfinding_Moveto(i32 *costmap, size_t row_len, size_t col_len,
-                                   struct Point start, i32 move, int mode_output);
+extern i32 *Pathfinding_Moveto(i32 *costmap, size_t row_len, size_t col_len,
+                               struct Point start, i32 move, int mode_output);
+extern void Pathfinding_Moveto_noM(i32 *move_matrix, i32 *cost_matrix,
+                                   size_t row_len, size_t col_len,
+                                   struct Point start, i32 move);
 
-extern void Map_Pathfinding_Neighbors(struct Node *open, struct Node *closed,
-                                      struct Node current, i32 *cost_matrix,
-                                      size_t row_len, size_t col_len, i32 move);
+/* -- Utils -- */
+extern void Pathfinding_Neighbors(struct Node *open, struct Node *closed,
+                                  struct Node current, i32 *cost_matrix,
+                                  size_t row_len, size_t col_len, i32 move);
+extern i32 *Pathfinding_CameFrom_List(i32 *path, i32 *came_from, size_t col_len,
+                                      struct Point start, struct Point end);
+
+
+
 
 /* --- Pushing and pulling --- */
 

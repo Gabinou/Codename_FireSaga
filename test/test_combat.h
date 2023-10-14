@@ -26,7 +26,7 @@ void test_combat_stats() {
     // struct Unit defender = Unit_default;
     struct Point attacker_pos = {1, 1};
     struct Point defender_pos = {1, 2};
-    int distance = Map_Pathfinding_Manhattan(attacker_pos, defender_pos);
+    int distance = Pathfinding_Manhattan(attacker_pos, defender_pos);
     //                                 hp,str,mag,agi,fth,dex,luck,def,res,con,move
     struct Unit_stats attacker_stats = {17,  6,  2,  7,  7,  7,  7,  4,  5,  6, 5};
     struct Unit_stats defender_stats = {18,  7,  3,  8,  8,  7,  8,  5,  6,  7, 6};
@@ -158,7 +158,7 @@ void test_combat_death() {
     // struct Unit defender = Unit_default;
     struct Point attacker_pos = {1, 2};
     struct Point defender_pos = {2, 2};
-    int distance = Map_Pathfinding_Manhattan(attacker_pos, defender_pos);
+    int distance = Pathfinding_Manhattan(attacker_pos, defender_pos);
 
     //                                  hp,str,mag,agi,dex,fth,luck,def,res,con,move
     struct Unit_stats attacker_stats = {17,  6,  2,  7,  7,   7,  1,  2,  6, 5};
@@ -308,7 +308,7 @@ void test_combat_flow() {
     Unit_InitWweapons(&defender, weapons_dtab);
     struct Point attacker_pos = {1, 2};
     struct Point defender_pos = {2, 2};
-    int distance = Map_Pathfinding_Manhattan(attacker_pos, defender_pos);
+    int distance = Pathfinding_Manhattan(attacker_pos, defender_pos);
     //hp, str, mag, agi, dex, fth, luck, def, res, con, move
     struct Unit_stats attacker_stats = {17,  6,  2,  7,  7,  7,   7,  4,  5,  6, 5};
     struct Unit_stats defender_stats = {17,  6,  2,  7,  7,  7,   7,  4,  5,  6, 5};

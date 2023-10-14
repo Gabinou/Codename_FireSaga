@@ -3,6 +3,7 @@
 #include "stb_sprintf.h"
 
 #ifndef __clang__
+
 /* --- Debug --- */
 void Utilities_stacktrace() {
     /* Depends on glibc. Need '-rdynamic' linker options. */
@@ -13,6 +14,13 @@ void Utilities_stacktrace() {
 #endif  /* __clang__ */
 
 /* --- Array --- */
+int int_inbouds(int pos, int boundmin, int boundmax) {
+    int out = 0;
+    out = pos < boundmin ? boundmin : pos;
+    out = out > boundmax ? boundmax : out;
+    return (out);
+}
+
 bool if8_all_equal(if8 *arr1, if8 *arr2, size_t len) {
     SOTA_Log_FPS("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     bool arrequal = true;

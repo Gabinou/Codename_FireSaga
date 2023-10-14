@@ -458,9 +458,9 @@ void PreCombatMenu_Draw_Stats_Math(  struct PreCombatMenu *pcm, SDL_Renderer *re
     PixelFont_Write(pcm->pixelnours_big, renderer, numbuff, strlen(numbuff), x, y);
 
     /* atk */
-    int toprint  = nmath_inbounds_int32_t(computed_stats_d.attack[DMG_TYPE_PHYSICAL], 0, 0xFF);
-    int toprint2 = nmath_inbounds_int32_t(computed_stats_d.attack[DMG_TYPE_MAGICAL],  0, 0xFF);
-    int toprint3 = nmath_inbounds_int32_t(computed_stats_d.attack[DMG_TYPE_TRUE],     0, 0xFF);
+    int toprint  = int_inbouds(computed_stats_d.attack[DMG_TYPE_PHYSICAL], 0, 0xFF);
+    int toprint2 = int_inbouds(computed_stats_d.attack[DMG_TYPE_MAGICAL],  0, 0xFF);
+    int toprint3 = int_inbouds(computed_stats_d.attack[DMG_TYPE_TRUE],     0, 0xFF);
     if (toprint3 > 0)
         stbsp_sprintf(numbuff, "%d/%d/%d", toprint, toprint2, toprint3);
     else
@@ -473,25 +473,25 @@ void PreCombatMenu_Draw_Stats_Math(  struct PreCombatMenu *pcm, SDL_Renderer *re
     PixelFont_Write(pcm->pixelnours_big, renderer, numbuff, strlen(numbuff), x, y);
 
     /* prot */
-    toprint = nmath_inbounds_int32_t(computed_stats_d.protection[DMG_TYPE_PHYSICAL], 0, 0xFF);
-    toprint2 = nmath_inbounds_int32_t(computed_stats_d.protection[DMG_TYPE_MAGICAL], 0, 0xFF);
+    toprint = int_inbouds(computed_stats_d.protection[DMG_TYPE_PHYSICAL], 0, 0xFF);
+    toprint2 = int_inbouds(computed_stats_d.protection[DMG_TYPE_MAGICAL], 0, 0xFF);
     stbsp_sprintf(numbuff, "%d/%d", toprint, toprint2);
     x = PCM_MATH_PROT_DSTAT_X,   y = PCM_MATH_PROT_DSTAT_Y;
     PixelFont_Write(pcm->pixelnours_big, renderer, numbuff, strlen(numbuff), x, y);
 
     /* hit */
-    toprint = nmath_inbounds_int32_t(rates_d.hit, 0, SOTA_100PERCENT);
+    toprint = int_inbouds(rates_d.hit, 0, SOTA_100PERCENT);
     stbsp_sprintf(numbuff, "%3d", toprint);
     x = PCM_MATH_HIT_DSTAT_X,   y = PCM_MATH_HIT_DSTAT_Y;
     PixelFont_Write(pcm->pixelnours_big, renderer, numbuff, 3, x, y);
 
     /* crit */
-    toprint = nmath_inbounds_int32_t(rates_d.crit, 0, SOTA_100PERCENT);
+    toprint = int_inbouds(rates_d.crit, 0, SOTA_100PERCENT);
     stbsp_sprintf(numbuff, "%3d", toprint);
     x = PCM_MATH_CRIT_DSTAT_X,   y = PCM_MATH_CRIT_DSTAT_Y;
     PixelFont_Write(pcm->pixelnours_big, renderer, numbuff, 3, x, y);
     /* speed */
-    toprint = nmath_inbounds_int32_t(computed_stats_d.speed, 0, SOTA_100PERCENT);
+    toprint = int_inbouds(computed_stats_d.speed, 0, SOTA_100PERCENT);
     stbsp_sprintf(numbuff, "%2d", toprint);
     x = PCM_MATH_SPEED_DSTAT_X,   y = PCM_MATH_SPEED_DSTAT_Y;
     PixelFont_Write(pcm->pixelnours_big, renderer, numbuff, 3, x, y);
@@ -503,9 +503,9 @@ void PreCombatMenu_Draw_Stats_Math(  struct PreCombatMenu *pcm, SDL_Renderer *re
     PixelFont_Write(pcm->pixelnours_big, renderer, numbuff, strlen(numbuff), x, y);
 
     /* atk */
-    toprint  = nmath_inbounds_int32_t(computed_stats_a.attack[DMG_TYPE_PHYSICAL],   0, 0xFF);
-    toprint2 = nmath_inbounds_int32_t(computed_stats_a.attack[DMG_TYPE_MAGICAL],    0, 0xFF);
-    toprint3 = nmath_inbounds_int32_t(computed_stats_a.attack[DMG_TYPE_TRUE],       0, 0xFF);
+    toprint  = int_inbouds(computed_stats_a.attack[DMG_TYPE_PHYSICAL],   0, 0xFF);
+    toprint2 = int_inbouds(computed_stats_a.attack[DMG_TYPE_MAGICAL],    0, 0xFF);
+    toprint3 = int_inbouds(computed_stats_a.attack[DMG_TYPE_TRUE],       0, 0xFF);
     if (toprint3 > 0)
         stbsp_sprintf(numbuff, "%d/%d/%d", toprint, toprint2, toprint3);
     else
@@ -517,26 +517,26 @@ void PreCombatMenu_Draw_Stats_Math(  struct PreCombatMenu *pcm, SDL_Renderer *re
     PixelFont_Write_Len(pcm->pixelnours_big, renderer, numbuff, x, y);
 
     /* prot */
-    toprint  = nmath_inbounds_int32_t(computed_stats_a.protection[DMG_TYPE_PHYSICAL], 0, 0xFF);
-    toprint2 = nmath_inbounds_int32_t(computed_stats_a.protection[DMG_TYPE_MAGICAL],  0, 0xFF);
+    toprint  = int_inbouds(computed_stats_a.protection[DMG_TYPE_PHYSICAL], 0, 0xFF);
+    toprint2 = int_inbouds(computed_stats_a.protection[DMG_TYPE_MAGICAL],  0, 0xFF);
     stbsp_sprintf(numbuff, "%d/%d", toprint, toprint2);
     x = PCM_MATH_PROT_ASTAT_X,   y = PCM_MATH_PROT_ASTAT_Y;
     PixelFont_Write(pcm->pixelnours_big, renderer, numbuff, strlen(numbuff), x, y);
 
     /* hit */
-    toprint = nmath_inbounds_int32_t(rates_a.hit, 0, SOTA_100PERCENT);
+    toprint = int_inbouds(rates_a.hit, 0, SOTA_100PERCENT);
     stbsp_sprintf(numbuff, "%3d", toprint);
     x = PCM_MATH_HIT_ASTAT_X,   y = PCM_MATH_HIT_ASTAT_Y;
     PixelFont_Write(pcm->pixelnours_big, renderer, numbuff, 3, x, y);
 
     /* crit */
-    toprint = nmath_inbounds_int32_t(rates_a.crit, 0, SOTA_100PERCENT);
+    toprint = int_inbouds(rates_a.crit, 0, SOTA_100PERCENT);
     stbsp_sprintf(numbuff, "%3d", toprint);
     x = PCM_MATH_CRIT_ASTAT_X,   y = PCM_MATH_CRIT_ASTAT_Y;
     PixelFont_Write(pcm->pixelnours_big, renderer, numbuff, 3, x, y);
 
     /* speed */
-    toprint = nmath_inbounds_int32_t(computed_stats_a.speed, 0, SOTA_100PERCENT);
+    toprint = int_inbouds(computed_stats_a.speed, 0, SOTA_100PERCENT);
     stbsp_sprintf(numbuff, "%2d", toprint);
     x = PCM_MATH_SPEED_ASTAT_X,   y = PCM_MATH_SPEED_ASTAT_Y;
     PixelFont_Write(pcm->pixelnours_big, renderer, numbuff, 3, x, y);
@@ -599,19 +599,19 @@ void PreCombatMenu_Draw_Stats_Total( struct PreCombatMenu *pcm, SDL_Renderer *re
     PixelFont_Write(pcm->pixelnours_big, renderer, numbuff, strlen(numbuff), x, y);
 
     /* dmg */
-    int toprint = nmath_inbounds_int32_t(damage_d.dmg[DMG_TYPE_TOTAL], 0, 0xFF);
+    int toprint = int_inbouds(damage_d.dmg[DMG_TYPE_TOTAL], 0, 0xFF);
     stbsp_sprintf(numbuff, "%2d", toprint);
     x = PCM_SIMPLE_DMG_DSTAT_X,   y = PCM_SIMPLE_DMG_DSTAT_Y;
     PixelFont_Write(pcm->pixelnours_big, renderer, numbuff, 3, x, y);
 
     /* hit */
-    toprint = nmath_inbounds_int32_t(rates_d.hit, 0, SOTA_100PERCENT);
+    toprint = int_inbouds(rates_d.hit, 0, SOTA_100PERCENT);
     stbsp_sprintf(numbuff, "%3d", toprint);
     x = PCM_SIMPLE_HIT_DSTAT_X,   y = PCM_SIMPLE_HIT_DSTAT_Y;
     PixelFont_Write(pcm->pixelnours_big, renderer, numbuff, 3, x, y);
 
     /* crit */
-    toprint = nmath_inbounds_int32_t(rates_d.crit, 0, SOTA_100PERCENT);
+    toprint = int_inbouds(rates_d.crit, 0, SOTA_100PERCENT);
     stbsp_sprintf(numbuff, "%3d", toprint);
     x = PCM_SIMPLE_CRIT_DSTAT_X,   y = PCM_SIMPLE_CRIT_DSTAT_Y;
     PixelFont_Write(pcm->pixelnours_big, renderer, numbuff, 3, x, y);
@@ -623,19 +623,19 @@ void PreCombatMenu_Draw_Stats_Total( struct PreCombatMenu *pcm, SDL_Renderer *re
     PixelFont_Write(pcm->pixelnours_big, renderer, numbuff, strlen(numbuff), x, y);
 
     /* dmg */
-    toprint = nmath_inbounds_int32_t(damage_a.dmg[DMG_TYPE_TOTAL], 0, 0xFF);
+    toprint = int_inbouds(damage_a.dmg[DMG_TYPE_TOTAL], 0, 0xFF);
     stbsp_sprintf(numbuff, "%2d", toprint);
     x = PCM_SIMPLE_DMG_ASTAT_X,   y = PCM_SIMPLE_DMG_ASTAT_Y;
     PixelFont_Write(pcm->pixelnours_big, renderer, numbuff, 3, x, y);
 
     /* hit */
-    toprint = nmath_inbounds_int32_t(rates_a.hit, 0, SOTA_100PERCENT);
+    toprint = int_inbouds(rates_a.hit, 0, SOTA_100PERCENT);
     stbsp_sprintf(numbuff, "%3d", toprint);
     x = PCM_SIMPLE_HIT_ASTAT_X,   y = PCM_SIMPLE_HIT_ASTAT_Y;
     PixelFont_Write(pcm->pixelnours_big, renderer, numbuff, 3, x, y);
 
     /* crit */
-    toprint = nmath_inbounds_int32_t(rates_a.crit, 0, SOTA_100PERCENT);
+    toprint = int_inbouds(rates_a.crit, 0, SOTA_100PERCENT);
     stbsp_sprintf(numbuff, "%3d", toprint);
     x = PCM_SIMPLE_CRIT_ASTAT_X,   y = PCM_SIMPLE_CRIT_ASTAT_Y;
     PixelFont_Write(pcm->pixelnours_big, renderer, numbuff, 3, x, y);
@@ -692,9 +692,9 @@ void PreCombatMenu_Draw_Stats_Simple(struct PreCombatMenu *pcm, SDL_Renderer *re
     PixelFont_Write(pcm->pixelnours_big, renderer, numbuff, strlen(numbuff), x, y);
 
     /* dmg */
-    int toprint  = nmath_inbounds_int32_t(damage_d.dmg[DMG_TYPE_PHYSICAL],  0, 0xFF);
-    int toprint2 = nmath_inbounds_int32_t(damage_d.dmg[DMG_TYPE_MAGICAL],   0, 0xFF);
-    int toprint3 = nmath_inbounds_int32_t(damage_d.dmg[DMG_TYPE_TRUE],      0, 0xFF);
+    int toprint  = int_inbouds(damage_d.dmg[DMG_TYPE_PHYSICAL],  0, 0xFF);
+    int toprint2 = int_inbouds(damage_d.dmg[DMG_TYPE_MAGICAL],   0, 0xFF);
+    int toprint3 = int_inbouds(damage_d.dmg[DMG_TYPE_TRUE],      0, 0xFF);
     if (toprint3 > 0)
         stbsp_sprintf(numbuff, "%d/%d/%d", toprint, toprint2, toprint3);
     else
@@ -706,13 +706,13 @@ void PreCombatMenu_Draw_Stats_Simple(struct PreCombatMenu *pcm, SDL_Renderer *re
     PixelFont_Write(pcm->pixelnours_big, renderer, numbuff, strlen(numbuff), x, y);
 
     /* hit */
-    toprint = nmath_inbounds_int32_t(rates_d.hit, 0, SOTA_100PERCENT);
+    toprint = int_inbouds(rates_d.hit, 0, SOTA_100PERCENT);
     stbsp_sprintf(numbuff, "%3d", toprint);
     x = PCM_SIMPLE_SPLIT_DMG_DSTAT_X,      y = PCM_SIMPLE_SPLIT_DMG_DSTAT_Y;
     PixelFont_Write(pcm->pixelnours_big, renderer, numbuff, 3, x, y);
 
     /* crit */
-    toprint = nmath_inbounds_int32_t(rates_d.crit, 0, SOTA_100PERCENT);
+    toprint = int_inbouds(rates_d.crit, 0, SOTA_100PERCENT);
     stbsp_sprintf(numbuff, "%3d", toprint);
     x = PCM_SIMPLE_CRIT_DSTAT_X,      y = PCM_SIMPLE_CRIT_DSTAT_Y;
     PixelFont_Write(pcm->pixelnours_big, renderer, numbuff, 3, x, y);
@@ -724,9 +724,9 @@ void PreCombatMenu_Draw_Stats_Simple(struct PreCombatMenu *pcm, SDL_Renderer *re
     PixelFont_Write(pcm->pixelnours_big, renderer, numbuff, strlen(numbuff), x, y);
 
     /* dmg */
-    toprint  = nmath_inbounds_int32_t(damage_a.dmg[DMG_TYPE_PHYSICAL], 0, 0xFF);
-    toprint2 = nmath_inbounds_int32_t(damage_a.dmg[DMG_TYPE_MAGICAL],  0, 0xFF);
-    toprint3 = nmath_inbounds_int32_t(damage_a.dmg[DMG_TYPE_TRUE],     0, 0xFF);
+    toprint  = int_inbouds(damage_a.dmg[DMG_TYPE_PHYSICAL], 0, 0xFF);
+    toprint2 = int_inbouds(damage_a.dmg[DMG_TYPE_MAGICAL],  0, 0xFF);
+    toprint3 = int_inbouds(damage_a.dmg[DMG_TYPE_TRUE],     0, 0xFF);
     if (toprint3 > 0)
         stbsp_sprintf(numbuff, "%d/%d/%d", toprint, toprint2, toprint3);
     else
@@ -738,13 +738,13 @@ void PreCombatMenu_Draw_Stats_Simple(struct PreCombatMenu *pcm, SDL_Renderer *re
     PixelFont_Write(pcm->pixelnours_big, renderer, numbuff, strlen(numbuff), x, y);
 
     /* hit */
-    toprint = nmath_inbounds_int32_t(rates_a.hit, 0, SOTA_100PERCENT);
+    toprint = int_inbouds(rates_a.hit, 0, SOTA_100PERCENT);
     stbsp_sprintf(numbuff, "%3d", toprint);
     x = PCM_SIMPLE_HIT_ASTAT_X,      y = PCM_SIMPLE_HIT_ASTAT_Y;
     PixelFont_Write(pcm->pixelnours_big, renderer, numbuff, 3, x, y);
 
     /* crit */
-    toprint = nmath_inbounds_int32_t(rates_a.crit, 0, SOTA_100PERCENT);
+    toprint = int_inbouds(rates_a.crit, 0, SOTA_100PERCENT);
     stbsp_sprintf(numbuff, "%3d", toprint);
     x = PCM_SIMPLE_CRIT_ASTAT_X,      y = PCM_SIMPLE_CRIT_ASTAT_Y;
     PixelFont_Write(pcm->pixelnours_big, renderer, numbuff, 3, x, y);

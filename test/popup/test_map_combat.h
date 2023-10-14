@@ -45,7 +45,7 @@ void test_popup_map_combat() {
 
     struct Point agg_tilemap_pos = {0, 0};
     struct Point dft_tilemap_pos = {0, 1};
-    int dist = Map_Pathfinding_Manhattan(agg_tilemap_pos, dft_tilemap_pos);
+    int dist = Pathfinding_Manhattan(agg_tilemap_pos, dft_tilemap_pos);
 
     /* - Combatants equip - */
 

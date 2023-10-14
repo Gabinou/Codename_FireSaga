@@ -408,10 +408,10 @@ struct AI AI_default = {
 //     int_fast8_t temp_rating = 0;
 //     for (i32 sq_neighbor = 0; sq_neighbor < NMATH_SQUARE_NEIGHBOURS; sq_neighbor++) {
 //         for (i32 distance = 1; distance < pushpull_distance; distance++) {
-//             pushpullable.x = nmath_inbounds_int32_t((distance * q_cycle4_pzmz(
+//             pushpullable.x = int_inbouds((distance * q_cycle4_pzmz(
 //                     sq_neighbor)) + victim_pos.x, 0,
 //                                                     col_len - 1);
-//             pushpullable.y = nmath_inbounds_int32_t((distance * q_cycle4_zmzp(
+//             pushpullable.y = int_inbouds((distance * q_cycle4_zmzp(
 //                     sq_neighbor)) + victim_pos.y, 0,
 //                                                     row_len - 1);
 //             if ((pushpullable.x == victim_pos.x) && (pushpullable.y == victim_pos.y))

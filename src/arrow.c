@@ -119,8 +119,8 @@ void Arrow_Path_Trace(struct Arrow *arrow, struct Point end_in) {
     if ((start.x != end.x) || (start.y != end.y)) {
         /* A* implemented here. Goes backwards for some reason. */
         /* IMPORTANT NOTE: Switching start and end CRASHES MY COMPUTER. */
-        arrow->pathlist = Map_Pathfinding_Astar(arrow->pathlist, arrow->costmap,
-                                                arrow->row_len, arrow->col_len, start, end);
+        arrow->pathlist = Pathfinding_Astar(arrow->pathlist, arrow->costmap,
+                                            arrow->row_len, arrow->col_len, start, end);
         /* Flipping path. */
         i32 pointnum    = DARR_NUM(arrow->pathlist) / TWO_D;
         for (i32 i = 0; i < (pointnum - 1); i++)
