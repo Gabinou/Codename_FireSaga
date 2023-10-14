@@ -743,6 +743,7 @@ i32 *Map_Pathfinding_Astar(i32 *path_list, i32 *costmap, size_t row_len,
 
 i32 *Map_Pathfinding_Moveto(i32 *cost_matrix, size_t row_len, size_t col_len,
                             struct Point start, i32 move, int mode_output) {
+    /* -- Setup output move_matrix -- */
     i32 *move_matrix = NULL;
     switch (mode_output) {
         case (NMATH_POINTS_MODE_LIST):
@@ -757,23 +758,28 @@ i32 *Map_Pathfinding_Moveto(i32 *cost_matrix, size_t row_len, size_t col_len,
             }
             break;
     }
-    size_t init_size = row_len * col_len * 2;
+
+    /* -- Setup variables -- */
+    size_t init_size = row_len * col_len / 4;
     struct Node *open     = DARR_INIT(open,   struct Node, init_size);
     struct Node *closed   = DARR_INIT(closed, struct Node, init_size);
     struct Node current   = {start.x, start.y, 0}, neighbor;
     DARR_PUT(open, current);
-
     bool found;
-    size_t neighbor_inclosed;
 
+    /* -- Loop over open nodes -- */
     while (DARR_NUM(open) > 0) {
+        /* -- Get current open node from open list -- */
         current = DARR_POP(open);
         DARR_PUT(closed, current);
-        i32 move_i = move_matrix[current.y * col_len + current.x];
+
+        /* -- Compute cost to current tile -- */
+        i32 current_i   = current.y * col_len + current.x;
+        i32 move_i      = move_matrix[current_i];
         switch (mode_output) {
             case NMATH_POINTS_MODE_MATRIX:
                 if ((move_i == NMATH_MOVEMAP_BLOCKED) || (move_i > (current.distance + 1))) {
-                    move_i = current.distance + 1;
+                    move_matrix[current_i] = current.distance + 1;
                 }
                 break;
             case NMATH_POINTS_MODE_LIST:
@@ -786,6 +792,8 @@ i32 *Map_Pathfinding_Moveto(i32 *cost_matrix, size_t row_len, size_t col_len,
                 }
                 break;
         }
+
+        /* -- Move to four square neighbor tiles -- */
         for (size_t i = 0; i < NMATH_SQUARE_NEIGHBOURS; i++) {
             /* - Get square neighbor - */
             neighbor.x = nmath_inbounds_int32_t(current.x + q_cycle4_mzpz(i), 0, col_len - 1);
@@ -795,12 +803,12 @@ i32 *Map_Pathfinding_Moveto(i32 *cost_matrix, size_t row_len, size_t col_len,
             int current_n       = neighbor.y * col_len + neighbor.x;
             neighbor.distance   = current.distance + cost_matrix[current_n];
 
-            /* - Is neighbor still within reach? - */
+            /* - Skip if neighbor is out of reach - */
             if ((neighbor.distance > move) || (cost_matrix[current_n] == 0))
                 continue;
 
-            /* - Was neighbor already visited? - */
-            neighbor_inclosed = -1;
+            /* - Find if neighbor was already visited -> in closed - */
+            int neighbor_inclosed = -1;
             for (i32 k = 0; k < DARR_NUM(closed); k++) {
                 if ((neighbor.x == closed[k].x) && (neighbor.y == closed[k].y)) {
                     neighbor_inclosed = k;
@@ -815,10 +823,9 @@ i32 *Map_Pathfinding_Moveto(i32 *cost_matrix, size_t row_len, size_t col_len,
             }
 
             /* - Add neighbor to open list, if closer than before - */
-            if (neighbor.distance > closed[neighbor_inclosed].distance) {
-                neighbor_inclosed = false;
+            if (neighbor.distance < closed[neighbor_inclosed].distance) {
                 DARR_DEL(closed, neighbor_inclosed);
-                DARR_PUT(open, neighbor);
+                DARR_PUT(open,   neighbor);
             }
 
         }
