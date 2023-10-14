@@ -1,13 +1,13 @@
 #include "popup/map_combat.h"
 
 struct PopUp_Map_Combat PopUp_Map_Combat_default = {
-    .aggressor          = NULL,
-    .defendant          = NULL,
-    .pixelnours_big     = NULL,
-    .pixelnours_tight   = NULL,
+    .aggressor              = NULL,
+    .defendant              = NULL,
+    .pixelnours_big         = NULL,
+    .pixelnours_tight       = NULL,
 
-    .topoff_aggressor   = TNECS_NULL,
-    .topoff_defendant   = TNECS_NULL,
+    .topoff_aggressor       = TNECS_NULL,
+    .topoff_defendant       = TNECS_NULL,
 
     .texture                = NULL,
     .texture_n9patch_red    = NULL,
@@ -15,8 +15,8 @@ struct PopUp_Map_Combat PopUp_Map_Combat_default = {
     .texture_header_red     = NULL,
     .texture_header_blue    = NULL,
 
-    .current_attack = 0,
-    .update         = true,
+    .current_attack         = 0,
+    .update                 = true,
 };
 
 /* --- Constructors/Destructors --- */
@@ -62,16 +62,17 @@ void PopUp_Map_Combat_Load(struct PopUp_Map_Combat *pmc, SDL_Renderer *renderer,
 
     /* -- TopOffBar -- */
     /* - bar textures - */
-    pmc->texture_header_blue = Filesystem_Texture_Load(renderer, PATH_JOIN("..", "assets", "GUI",
-                                                       "Popup",
-                                                       "PopUp_Map_Combat_Header_Blue.png"), SDL_PIXELFORMAT_INDEX8);
-    pmc->texture_header_red = Filesystem_Texture_Load(renderer, PATH_JOIN("..", "assets", "GUI",
-                                                      "Popup",
-                                                      "PopUp_Map_Combat_Header_Red.png"), SDL_PIXELFORMAT_INDEX8);
-    pmc->texture_n9patch_red = Filesystem_Texture_Load(renderer, PATH_JOIN("..", "assets", "GUI",
-                                                       "n9Patch", "n9patch_popup_map_combat_red_8px.png"), SDL_PIXELFORMAT_INDEX8);
-    pmc->texture_n9patch_blue = Filesystem_Texture_Load(renderer, PATH_JOIN("..", "assets", "GUI",
-                                                        "n9Patch", "n9patch_popup_map_combat_blue_8px.png"), SDL_PIXELFORMAT_INDEX8);
+    char *path = PATH_JOIN("..", "assets", "GUI", "Popup", "PopUp_Map_Combat_Header_Blue.png");
+    pmc->texture_header_blue = Filesystem_Texture_Load(renderer, path, SDL_PIXELFORMAT_INDEX8);
+
+    path = PATH_JOIN("..", "assets", "GUI", "Popup", "PopUp_Map_Combat_Header_Red.png");
+    pmc->texture_header_red = Filesystem_Texture_Load(renderer, path, SDL_PIXELFORMAT_INDEX8);
+
+    path = PATH_JOIN("..", "assets", "GUI", "Popup", "n9patch_popup_map_combat_red_8px.png");
+    pmc->texture_n9patch_red = Filesystem_Texture_Load(renderer, path, SDL_PIXELFORMAT_INDEX8);
+
+    path = PATH_JOIN("..", "assets", "GUI", "Popup", "n9patch_popup_map_combat_blue_8px.png");
+    pmc->texture_n9patch_blue = Filesystem_Texture_Load(renderer, path, SDL_PIXELFORMAT_INDEX8);
 
     /* - bar colors - */
     pmc->topoff_aggressor.BG_dark   = palette_NES->colors[TOPOFF_BAR_BG_DARK];
