@@ -29,6 +29,10 @@ enum PATHFINDING_COSTMAP {
 };
 #define COSTMAP_fBLOCKED 0.0f
 
+enum PATHFINDING_ATTACKMAP {
+    ATTACKMAP_BLOCKED       = 0,
+    ATTACKMAP_MOVEABLEMIN   = 1,
+};
 
 /* --- Bounds --- */
 extern void Map_Bounds_Compute(struct Map *map);

@@ -613,11 +613,8 @@ i32 *Pathfinding_Moveto(i32 *cost_matrix, size_t row_len, size_t col_len,
 void Pathfinding_Moveto_noM(i32 *move_matrix, i32 *cost_matrix, size_t row_len,
                             size_t col_len, struct Point start, i32 move) {
     /* -- Wipe move_matrix -- */
-    for (size_t row = 0; row < row_len; row++) {
-        for (size_t col = 0; col < col_len; col++) {
-            move_matrix[(row * col_len + col)] = MOVEMAP_BLOCKED;
-        }
-    }
+    for (size_t i = 0; i < row_len * col_len; i++)
+            move_matrix[i] = MOVEMAP_BLOCKED;
 
     /* -- Setup variables -- */
     size_t init_size    = row_len * col_len * 2;
@@ -692,19 +689,22 @@ void Pathfinding_Neighbors(struct Node *open, struct Node *closed,
 
 
 /* -- Attackto -- */
+
+
 void Pathfinding_Attackto_noM(i32 *attackmap, i32 *move_matrix,
                               size_t row_len, size_t col_len,
                               i32 move, u8 range[2], int mode_movetile) {
+    /* -- Wipe attackmap -- */
+    for (u8 i = 0; i < row_len * col_len; i++)
+            attackmap[i] = ATTACKMAP_BLOCKED;
+    
     i32 *move_list = NULL;
     i32  subrangey_min, subrangey_max;
     struct Point point;
     move_list = linalg_matrix2list_int32_t(move_matrix, row_len, col_len);
     size_t list_len = DARR_NUM(move_list) / NMATH_TWO_D;
-    for (u8 row = 0; row < row_len; row++) {
-        for (u8 col = 0; col < col_len; col++) {
-            attackmap[(row * col_len + col)] = NMATH_ATTACKMAP_BLOCKED;
-        }
-    }
+
+
     bool add_nmath_point;
     switch (mode_movetile) {
         case NMATH_MOVETILE_INCLUDE:
