@@ -4,6 +4,28 @@
 
 #ifndef __clang__
 
+/* --- matrix2list --- */
+i32 *matrix2list_noM(i32 *matrix, i32 *list, size_t row_len, size_t col_len) {
+    DARR_NUM(list) = 0;
+    for (size_t col = 0; col < col_len; col++) {
+        for (size_t row = 0; row < row_len; row++) {
+            if (matrix[row * col_len + col] > 0) {
+                DARR_PUT(list, col);
+                DARR_PUT(list, row);
+            }
+        }
+    }
+    return (list);
+}
+
+i32 *matrix2list(i32 *matrix, size_t row_len, size_t col_len) {
+    i32 *list = DARR_INIT(list, i32, row_len * col_len * 2);
+    matrix2list_noM(matrix, list, row_len, col_len);
+    size_t newsize = (DARR_NUM(list) < SOTA_MINLEN) ? SOTA_MINLEN : DARR_NUM(list);
+    list = DARR_REALLOC(list, newsize);
+    return (list);
+}
+
 /* --- Debug --- */
 void Utilities_stacktrace() {
     /* Depends on glibc. Need '-rdynamic' linker options. */

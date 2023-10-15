@@ -155,8 +155,8 @@ i32 *Map_Healtolist_Compute(struct Map   *map) {
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     SDL_assert(map->healtomap  != NULL);
     SDL_assert(map->healtolist != NULL);
-    map->healtolist = linalg_matrix2list_noM_int32_t(map->healtomap, map->healtolist,
-                                                     map->row_len, map->col_len);
+    map->healtolist = matrix2list_noM(map->healtomap, map->healtolist,
+                                      map->row_len, map->col_len);
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
     return (map->healtolist);
 }
@@ -196,8 +196,8 @@ i32 *Map_Healtomap_Compute(struct Map *map, tnecs_world_t *world, tnecs_entity_t
 
 i32 *Map_Attacktolist_Compute(struct Map   *map) {
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
-    map->attacktolist = linalg_matrix2list_noM_int32_t(map->attacktomap, map->attacktolist,
-                                                       map->row_len, map->col_len);
+    map->attacktolist = matrix2list_noM(map->attacktomap, map->attacktolist,
+                                        map->row_len, map->col_len);
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
     return (map->attacktolist);
 }

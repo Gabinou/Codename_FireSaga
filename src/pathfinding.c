@@ -8,8 +8,8 @@ i32 *Taxicab_Circle_List(i32 *darr_list, i32 *matrix, i32 x, i32 y,
     // Taxicabs can't move diagonal so manhattan distance: abs(x1-x2) + abs(y1-ys2)
     // Manhattan (distance) used to trace 'circles' on square tilemap
     // Returns: List points at distance [range_min, range_max] dist from [x, y]
-    matrix = Taxicab_Circle(matrix, x, y, row_len, col_len, range);
-    darr_list = linalg_matrix2list_noM_int32_t(matrix, darr_list, row_len, col_len);
+    matrix    = Taxicab_Circle(matrix, x, y, row_len, col_len, range);
+    darr_list = matrix2list_noM(matrix, darr_list, row_len, col_len);
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
     return (darr_list);
 }
@@ -361,7 +361,7 @@ void Pathfinding_Attackto_noM(i32 *attackmap, i32 *move_matrix,
         attackmap[i] = ATTACKMAP_BLOCKED;
 
     /* -- Setup variables -- */
-    i32 *move_list  = linalg_matrix2list_int32_t(move_matrix, row_len, col_len);
+    i32 *move_list  = matrix2list(move_matrix, row_len, col_len);
     size_t list_len = DARR_NUM(move_list) / TWO_D;
 
     /* -- For every point in movemap -- */

@@ -49,7 +49,7 @@ tnecs_entity_t *Map_Find_Defendants(struct Map *map, i32 *attacktolist,
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     /* Find all defendants on attacktolist according to alignment */
 
-    /* Note: Assumes attacktolist was created before with linalg_matrix2list_noM_int32_t */
+    /* Note: Assumes attacktolist was created before with matrix2list_noM */
     SDL_assert(aggressor > TNECS_NULL);
     SDL_assert(attacktolist);
     for (size_t i = 0; i < DARR_NUM(attacktolist) / TWO_D; i++) {
@@ -80,7 +80,7 @@ tnecs_entity_t *Map_Find_Breakables(struct Map *map, i32 *attacktolist,
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     /* Find all breakables on attacktolist */
 
-    // Note: Assumes attacktolist was created before with linalg_matrix2list_noM_int32_t
+    // Note: Assumes attacktolist was created before with matrix2list_noM
     SDL_assert(attackable != NULL);
     SDL_assert(attacktolist != NULL);
     for (size_t i = 0; i < DARR_NUM(attacktolist) / TWO_D; i++) {
@@ -106,7 +106,7 @@ tnecs_entity_t *Map_Find_Patients(struct Map *map, struct dtab *weapons_dtab, i3
                                   tnecs_entity_t *patients, tnecs_entity_t healer_ent,
                                   bool fastquit) {
     /* Find all patients on healtolist according to alignment */
-    /* Assumes healtolist was created before with linalg_matrix2list_noM_int32_t */
+    /* Assumes healtolist was created before with matrix2list_noM */
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     struct Unit *healer = TNECS_GET_COMPONENT(map->world, healer_ent, Unit);
 
