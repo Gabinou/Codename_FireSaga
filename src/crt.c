@@ -282,7 +282,6 @@ float Scanline_Brightness(float c, float n) {
 void CRT_Bloom(float *color, uint_fast32_t width, uint_fast32_t height, float radius) {
     SOTA_Log_Debug("CRT_Bloom");
     // for Gamma == 2
-    // linalg_matrix_print_float(color, width, height);
     float *copy = malloc(width * height * sizeof(*copy));
     memcpy(copy, color, width * height * sizeof(*copy));
     float *copy_blurred = malloc(width * height * sizeof(*copy));
@@ -427,7 +426,6 @@ void blur(const float *input, float *output, float *temp, if32 w,
         // boxBlurH_4 (blur horizontally for each row):
         const float *scl = data;
         float *tcl = temp;
-        // linalg_matrix_print_float(temp, w, h);
         for (if32 i = 0; i < h; ++i) {
             if32 ti = i * w, li = ti, ri = ti + r;
             if32 fv = scl[ti], lv = scl[ti + w - 1];

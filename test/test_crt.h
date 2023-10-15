@@ -51,9 +51,6 @@ void test_crt() {
 
     Lanczos_Filter_2D(small, filtered, SMALL_COL_LEN, SMALL_ROW_LEN, MAT_COL_LEN, MAT_ROW_LEN,
                       LANCZOS_A);
-    // linalg_matrix_print_float(small, SMALL_ROW_LEN, SMALL_COL_LEN);
-    // printf("\n");
-    // linalg_matrix_print_float(filtered, MAT_ROW_LEN, MAT_COL_LEN);
 
     /* -- Downscaling -- */
     /* !!! downscaling basically works !!! */
@@ -61,24 +58,14 @@ void test_crt() {
     Lanczos_Filter_2D(filtered, downscaled, MAT_COL_LEN, MAT_ROW_LEN, SMALL_COL_LEN, SMALL_ROW_LEN,
                       LANCZOS_A);
 
-    // linalg_matrix_print_float(small, SMALL_ROW_LEN, SMALL_COL_LEN);
-    // printf("\n");
-    // linalg_matrix_print_float(downscaled, SMALL_ROW_LEN, SMALL_COL_LEN);
-
     /* --- NEAREST --- */
 
     /* -- Upscaling -- */
     Nearest_Scanline_Filter_2D(small, filtered, SMALL_COL_LEN, SMALL_ROW_LEN, MAT_COL_LEN, MAT_ROW_LEN);
-    // linalg_matrix_print_float(small, SMALL_ROW_LEN, SMALL_COL_LEN);
-    // printf("\n");
-    // linalg_matrix_print_float(filtered, MAT_ROW_LEN, MAT_COL_LEN);
 
     /* -- Downscaling -- */
     Nearest_Scanline_Filter_2D(filtered, downscaled, MAT_COL_LEN, MAT_ROW_LEN, SMALL_COL_LEN,
                                SMALL_ROW_LEN);
-    // linalg_matrix_print_float(filtered, MAT_ROW_LEN, MAT_COL_LEN);
-    // printf("\n");
-    // linalg_matrix_print_float(downscaled, SMALL_ROW_LEN, SMALL_COL_LEN);
 
     /* --- GAUSSIAN BLUR FILTER --- */
     float small2[SMALL_ROW_LEN * SMALL_COL_LEN] = {
@@ -97,20 +84,9 @@ void test_crt() {
     float temp[SMALL_ROW_LEN * SMALL_COL_LEN] = {0};
     float small_blurred[SMALL_ROW_LEN * SMALL_COL_LEN] = {0};
 
-    linalg_matrix_print_float(small2, SMALL_ROW_LEN, SMALL_COL_LEN);
-    printf("\n");
-    linalg_matrix_print_float(small_blurred, SMALL_ROW_LEN, SMALL_COL_LEN);
-    printf("\n");
-    linalg_matrix_print_float(temp, SMALL_ROW_LEN, SMALL_COL_LEN);
-
     blur(small2, small_blurred, temp, SMALL_COL_LEN, SMALL_ROW_LEN, 8.0f, 3);
 
     gaussBlur_4(small2, small_blurred, SMALL_ROW_LEN, SMALL_COL_LEN, 2.0f, GAMMA_N);
-    linalg_matrix_print_float(small2, SMALL_ROW_LEN, SMALL_COL_LEN);
-    printf("\n");
-    linalg_matrix_print_float(small_blurred, SMALL_ROW_LEN, SMALL_COL_LEN);
-    printf("\n");
-    linalg_matrix_print_float(temp, SMALL_ROW_LEN, SMALL_COL_LEN);
 
     /* --- SHAsublDOW MASK --- */
     uint8_t mask_R[MAT_ROW_LEN * MAT_COL_LEN] = {
@@ -195,38 +171,11 @@ void test_crt() {
     CRT_Shadow_Mask(mask_B_test, MAT_COL_LEN, MAT_ROW_LEN, cell_height, cell_width, cell_Hblank,
                     cell_Vblank, stagger,  x_offset_G,  y_offset_B);
 
-    // linalg_matrix_print_uint8_t(mask_R, MAT_ROW_LEN, MAT_COL_LEN);
-    // printf("\n");
-    // linalg_matrix_print_uint8_t(mask_R_test, MAT_ROW_LEN, MAT_COL_LEN);
-
     /* !!! Shadow Filtering works  !!! */
     nourstest_true(linalg_equal_uint8_t(mask_R, mask_R_test, MAT_ROW_LEN * MAT_COL_LEN));
     nourstest_true(linalg_equal_uint8_t(mask_G, mask_G_test, MAT_ROW_LEN * MAT_COL_LEN));
     nourstest_true(linalg_equal_uint8_t(mask_B, mask_B_test, MAT_ROW_LEN * MAT_COL_LEN));
 
-    // linalg_matrix_print_float(filtered, MAT_ROW_LEN, MAT_COL_LEN);
-    // CRT_Shadow_Filter(mask_R_test, filtered, MAT_ROW_LEN, MAT_COL_LEN);
-    // printf("\n");
-    // linalg_matrix_print_float(filtered, MAT_ROW_LEN, MAT_COL_LEN);
-
-    /* --- BLOOM --- */
-    // // CRT_Gamma_Uncorrection WORKS
-    // linalg_matrix_print_float(small, MAT_ROW_LEN, MAT_COL_LEN);
-    // printf("\n");
-    // CRT_Gamma_Uncorrection(small, SMALL_ROW_LEN * SMALL_COL_LEN);
-    // linalg_matrix_print_float(small, MAT_ROW_LEN, MAT_COL_LEN);
-
-    // // CRT_Gamma_Correction WORKS
-    // linalg_matrix_print_float(small, MAT_ROW_LEN, MAT_COL_LEN);
-    // printf("\n");
-    // CRT_Gamma_Correction(small, SMALL_ROW_LEN * SMALL_COL_LEN);
-    // linalg_matrix_print_float(small, MAT_ROW_LEN, MAT_COL_LEN);
-
-    // // CRT_Bloom_Correction WORKS
-    // linalg_matrix_print_float(small, MAT_ROW_LEN, MAT_COL_LEN);
-    // printf("\n");
-    // CRT_Bloom_Correction(small, SMALL_ROW_LEN * SMALL_COL_LEN);
-    // linalg_matrix_print_float(small, MAT_ROW_LEN, MAT_COL_LEN);
 
     /* --- PIXEL2FLOATS --- */
     // WORK,CONFIRMED BY MY EYES
