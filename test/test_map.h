@@ -128,8 +128,7 @@ void test_pathfinding_Astar() {
     };
     /* -- Test computing a movemap from a costmap -- */
     /* - Computing a movemap matrix - */
-    i32 *movemapp = Pathfinding_Moveto(costmapp, ROW_LEN, COL_LEN, start_nmath, move,
-                                       POINTS_MODE_MATRIX);
+    i32 *movemapp = Pathfinding_Moveto(costmapp, ROW_LEN, COL_LEN, start_nmath, move);
     // linalg_matrix_print_int32_t(movemapp, ROW_LEN, COL_LEN);
 
     for (size_t row = 0; row < ROW_LEN; row++) {
@@ -149,16 +148,6 @@ void test_pathfinding_Astar() {
     // linalg_matrix_print_int32_t(movemapp, ROW_LEN, COL_LEN);
 
 
-    /* - Computing a movemap list - */
-    int *movemapp_list = Pathfinding_Moveto(costmapp, ROW_LEN, COL_LEN, start_nmath, move,
-                                            POINTS_MODE_LIST);
-    for (size_t i = 0; i < DARR_NUM(movemapp_list) / 2; i++) {
-        int temp_col = movemapp_list[i * TWO_D + 0];
-        int temp_row = movemapp_list[i * TWO_D + 1];
-        int current  = movemapp[temp_row * COL_LEN + temp_col];
-        nourstest_true(current > 0);
-    }
-
     /* -- Test computing a path -- */
     int *path_list = DARR_INIT(path_list, int, 32);
     path_list = Pathfinding_Astar(path_list, costmapp, ROW_LEN, COL_LEN, start, end);
@@ -174,7 +163,6 @@ void test_pathfinding_Astar() {
     }
 
     free(movemapp);
-    DARR_FREE(movemapp_list);
     DARR_FREE(path_list);
     free(computed_path);
 }

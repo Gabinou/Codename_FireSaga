@@ -58,7 +58,7 @@ extern i32 Pathfinding_Manhattan(struct Point start, struct Point end);
 
 /* -- Moveto -- */
 extern i32 *Pathfinding_Moveto(i32 *costmap, size_t row_len, size_t col_len,
-                               struct Point start, i32 move, int mode_output);
+                               struct Point start, i32 move);
 extern void Pathfinding_Moveto_noM(i32 *move_matrix, i32 *cost_matrix,
                                    size_t row_len, size_t col_len,
                                    struct Point start, i32 move);
@@ -68,8 +68,8 @@ extern void Pathfinding_Moveto_Neighbours(struct Node *open, struct Node *closed
 
 /* -- Visible -- */
 extern i32 *Pathfinding_Visible(i32 *blockmap, size_t row_len, size_t col_len,
-                                struct Point start, i32 sight, int mode_output);
-extern i32 *Pathfinding_Visible_noM(i32 *sightmap, i32 *blockmap, size_t row_len,
+                                struct Point start, i32 sight);
+extern void Pathfinding_Visible_noM(i32 *sightmap, i32 *blockmap, size_t row_len,
                                     size_t col_len, struct Point start, i32 sight);
 
 /* -- Attackto -- */
@@ -102,7 +102,7 @@ extern i32 *Pathfinding_Pullto(i32 *movemap, size_t row_len, size_t col_len,
 /* -- Unit Gradient -- */
 extern i32 *Pathfinding_unitGradient(i32 *costmap, size_t row_len, size_t col_len,
                                      struct Point  *targets, size_t unit_num);
-extern i32 *Pathfinding_unitGradient_noM(i32 *gradmap, i32 *costmap,
+extern void Pathfinding_unitGradient_noM(i32 *gradmap, i32 *costmap,
                                          size_t row_len, size_t col_len,
                                          struct Point *targets, size_t unit_num);
 
