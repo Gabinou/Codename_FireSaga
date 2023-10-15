@@ -5,6 +5,17 @@
 #ifndef __clang__
 
 /* --- matrix --- */
+bool list_isIn_2D(i32 *list_2D, size_t list_len, i32 x, i32 y) {
+    bool found = false;
+    for (size_t i = 0; i < list_len; i++) {
+        if ((x == list_2D[i * NMATH_TWO_D + 0]) && (y == list_2D[i * NMATH_TWO_D + 1])) {
+            found = true;
+            break;
+        }
+    }
+    return (found);
+}
+
 i32 *matrix_sgreater_noM(i32 *out, i32 *matrix1, i32 tocompare, size_t arr_len) {
     for (size_t i = 0; i < arr_len; i++)
         out[i] = (matrix1[i] > tocompare);

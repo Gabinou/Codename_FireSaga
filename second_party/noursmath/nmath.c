@@ -321,20 +321,20 @@ TEMPLATE_TYPES_FLOAT
 TEMPLATE_TYPES_BOOL
 #undef REGISTER_ENUM
 
-#define REGISTER_ENUM(type) bool linalg_list_isIn_2D_##type(type * list_2D, size_t list_len, type x, type y) {\
-    bool found = false;\
-    for (size_t i = 0; i < list_len; i++) {\
-        if ((x == list_2D[i * NMATH_TWO_D + 0]) && (y == list_2D[i * NMATH_TWO_D + 1])) {\
-            found = true;\
-            break;\
-        }\
-    }\
-    return (found);\
-}
-TEMPLATE_TYPES_INT
-TEMPLATE_TYPES_FLOAT
-TEMPLATE_TYPES_BOOL
-#undef REGISTER_ENUM
+// #define REGISTER_ENUM(type) bool linalg_list_isIn_2D_##type(type * list_2D, size_t list_len, type x, type y) {\
+//     bool found = false;\
+//     for (size_t i = 0; i < list_len; i++) {\
+//         if ((x == list_2D[i * NMATH_TWO_D + 0]) && (y == list_2D[i * NMATH_TWO_D + 1])) {\
+//             found = true;\
+//             break;\
+//         }\
+//     }\
+//     return (found);\
+// }
+// TEMPLATE_TYPES_INT
+// TEMPLATE_TYPES_FLOAT
+// TEMPLATE_TYPES_BOOL
+// #undef REGISTER_ENUM
 
 #define REGISTER_ENUM(type) bool linalg_list_isIn_3D_##type(type * list_3D, size_t list_len, type x, type y, type z) {\
     bool found = false;\
@@ -1214,71 +1214,71 @@ TEMPLATE_TYPES_SINT
 TEMPLATE_TYPES_SINT
 #undef REGISTER_ENUM
 
-#define REGISTER_ENUM(type) type  * pathfinding_Map_Moveto_Hex_##type(type  * cost_matrix, size_t depth_len, size_t col_len, struct nmath_hexpoint_##type start, type move, uint8_t mode_output) {\
-    type  * move_matrix = NULL;\
-    switch (mode_output) {\
-        case (NMATH_POINTS_MODE_LIST):\
-            move_matrix = DARR_INIT(move_matrix, type, depth_len * col_len * NMATH_TWO_D);\
-            break;\
-        case (NMATH_POINTS_MODE_MATRIX):\
-            move_matrix = calloc(depth_len * col_len, sizeof(type));\
-            for (uint8_t depth = 0; depth < depth_len; depth++) {\
-                for (uint8_t col = 0; col < col_len; col++) {\
-                    move_matrix[(depth * col_len + col)] = NMATH_MOVEMAP_BLOCKED;\
-                }\
-            }\
-            break;\
-    }\
-    struct nmath_hexnode_##type * open = DARR_INIT(open, struct nmath_hexnode_##type, depth_len * col_len);\
-    struct nmath_hexnode_##type * closed = DARR_INIT(closed, struct nmath_hexnode_##type, depth_len * col_len);\
-    struct nmath_hexnode_##type current = {start.x, start.y, start.z, 0}, neighbor = {0};\
-    DARR_PUT(open, current);\
-    bool found;\
-    while (DARR_NUM(open) > 0) {\
-        current = DARR_POP(open);\
-        DARR_PUT(closed, current);\
-        switch (mode_output) {\
-            case NMATH_POINTS_MODE_MATRIX:\
-                if ((move_matrix[current.z * col_len + current.x] == 0) || (move_matrix[current.z * col_len + current.x] > (current.distance + 1))) {\
-                    move_matrix[current.z * col_len + current.x] = current.distance + 1;\
-                }\
-                break;\
-            case NMATH_POINTS_MODE_LIST:\
-                found = linalg_list_isIn_2D_##type(move_matrix, DARR_NUM(move_matrix) / NMATH_TWO_D, current.x, current.z);\
-                if (!found) {\
-                    DARR_PUT(move_matrix, current.x);\
-                    DARR_PUT(move_matrix, current.z);\
-                }\
-                break;\
-        }\
-        for (type hex_neighbor = 0; hex_neighbor < NMATH_HEXAGON_NEIGHBOURS; hex_neighbor++) {\
-            neighbor.x = nmath_inbounds_##type(current.x + q_cycle6_mppmzz(hex_neighbor), 0, col_len - 1);\
-            neighbor.z = nmath_inbounds_##type(current.z + q_cycle6_pmzzmp(hex_neighbor), 0, depth_len - 1);\
-            if (cost_matrix[current.z * col_len + current.x] >= 0) {\
-                neighbor.distance = current.distance + cost_matrix[current.z * col_len + current.x];\
-                if ((neighbor.distance <= move) && (cost_matrix[neighbor.z * col_len + neighbor.x] >= NMATH_COSTMAP_MOVEABLEMIN)) {\
-                    bool neighbor_inclosed = false;\
-                    for (int32_t k = 0; k < DARR_NUM(closed); k++) {\
-                        if ((neighbor.x == closed[k].x) && (neighbor.y == closed[k].y)  && (neighbor.z == closed[k].z)) {\
-                            neighbor_inclosed = true;\
-                            if (neighbor.distance < closed[k].distance) {\
-                                neighbor_inclosed = false;\
-                                DARR_DEL(closed, k);\
-                            }\
-                            break;\
-                        }\
-                    }\
-                    if (!neighbor_inclosed) {\
-                        DARR_PUT(open, neighbor);\
-                    }\
-                }\
-            }\
-        }\
-    }\
-    return (move_matrix);\
-}
-TEMPLATE_TYPES_SINT
-#undef REGISTER_ENUM
+// #define REGISTER_ENUM(type) type  * pathfinding_Map_Moveto_Hex_##type(type  * cost_matrix, size_t depth_len, size_t col_len, struct nmath_hexpoint_##type start, type move, uint8_t mode_output) {\
+//     type  * move_matrix = NULL;\
+//     switch (mode_output) {\
+//         case (NMATH_POINTS_MODE_LIST):\
+//             move_matrix = DARR_INIT(move_matrix, type, depth_len * col_len * NMATH_TWO_D);\
+//             break;\
+//         case (NMATH_POINTS_MODE_MATRIX):\
+//             move_matrix = calloc(depth_len * col_len, sizeof(type));\
+//             for (uint8_t depth = 0; depth < depth_len; depth++) {\
+//                 for (uint8_t col = 0; col < col_len; col++) {\
+//                     move_matrix[(depth * col_len + col)] = NMATH_MOVEMAP_BLOCKED;\
+//                 }\
+//             }\
+//             break;\
+//     }\
+//     struct nmath_hexnode_##type * open = DARR_INIT(open, struct nmath_hexnode_##type, depth_len * col_len);\
+//     struct nmath_hexnode_##type * closed = DARR_INIT(closed, struct nmath_hexnode_##type, depth_len * col_len);\
+//     struct nmath_hexnode_##type current = {start.x, start.y, start.z, 0}, neighbor = {0};\
+//     DARR_PUT(open, current);\
+//     bool found;\
+//     while (DARR_NUM(open) > 0) {\
+//         current = DARR_POP(open);\
+//         DARR_PUT(closed, current);\
+//         switch (mode_output) {\
+//             case NMATH_POINTS_MODE_MATRIX:\
+//                 if ((move_matrix[current.z * col_len + current.x] == 0) || (move_matrix[current.z * col_len + current.x] > (current.distance + 1))) {\
+//                     move_matrix[current.z * col_len + current.x] = current.distance + 1;\
+//                 }\
+//                 break;\
+//             case NMATH_POINTS_MODE_LIST:\
+//                 found = linalg_list_isIn_2D_##type(move_matrix, DARR_NUM(move_matrix) / NMATH_TWO_D, current.x, current.z);\
+//                 if (!found) {\
+//                     DARR_PUT(move_matrix, current.x);\
+//                     DARR_PUT(move_matrix, current.z);\
+//                 }\
+//                 break;\
+//         }\
+//         for (type hex_neighbor = 0; hex_neighbor < NMATH_HEXAGON_NEIGHBOURS; hex_neighbor++) {\
+//             neighbor.x = nmath_inbounds_##type(current.x + q_cycle6_mppmzz(hex_neighbor), 0, col_len - 1);\
+//             neighbor.z = nmath_inbounds_##type(current.z + q_cycle6_pmzzmp(hex_neighbor), 0, depth_len - 1);\
+//             if (cost_matrix[current.z * col_len + current.x] >= 0) {\
+//                 neighbor.distance = current.distance + cost_matrix[current.z * col_len + current.x];\
+//                 if ((neighbor.distance <= move) && (cost_matrix[neighbor.z * col_len + neighbor.x] >= NMATH_COSTMAP_MOVEABLEMIN)) {\
+//                     bool neighbor_inclosed = false;\
+//                     for (int32_t k = 0; k < DARR_NUM(closed); k++) {\
+//                         if ((neighbor.x == closed[k].x) && (neighbor.y == closed[k].y)  && (neighbor.z == closed[k].z)) {\
+//                             neighbor_inclosed = true;\
+//                             if (neighbor.distance < closed[k].distance) {\
+//                                 neighbor_inclosed = false;\
+//                                 DARR_DEL(closed, k);\
+//                             }\
+//                             break;\
+//                         }\
+//                     }\
+//                     if (!neighbor_inclosed) {\
+//                         DARR_PUT(open, neighbor);\
+//                     }\
+//                 }\
+//             }\
+//         }\
+//     }\
+//     return (move_matrix);\
+// }
+// TEMPLATE_TYPES_SINT
+// #undef REGISTER_ENUM
 
 #define REGISTER_ENUM(type) type * pathfinding_Map_Visible_Hex_##type(type  * block_matrix, size_t depth_len, size_t col_len, struct nmath_hexpoint_##type start, type sight, uint8_t mode_output) {\
     type  * sightmap = NULL;\

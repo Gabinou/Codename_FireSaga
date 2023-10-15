@@ -72,7 +72,7 @@ void Arrow_Path_Add(struct Arrow *arrow, i32 x_next, i32 y_next) {
     i32 y_previous = arrow->pathlist[((point_current - 1) * TWO_D) + 1];
 
     /* -- Point characterstics -- */
-    bool isin_list  = linalg_list_isIn_2D_int32_t(arrow->pathlist, point_current, x_next, y_next);
+    bool isin_list  = list_isIn_2D(arrow->pathlist, point_current, x_next, y_next);
     bool isprevious = ((x_next == x_previous) && (y_next == y_previous));
 
     /* - Arrow can be infinitely long or not - */

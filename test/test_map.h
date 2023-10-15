@@ -153,7 +153,7 @@ void test_pathfinding_Astar() {
     path_list = Pathfinding_Astar(path_list, costmapp, ROW_LEN, COL_LEN, start, end);
 
     int point_num       = DARR_NUM(path_list) / TWO_D;
-    int *computed_path  = linalg_list2matrix_int32_t(path_list, ROW_LEN, COL_LEN, point_num);
+    int *computed_path  = list2matrix(path_list, ROW_LEN, COL_LEN, point_num);
     // matrix_print(computed_path, ROW_LEN, COL_LEN);
 
     for (size_t row = 0; row < ROW_LEN; row++) {

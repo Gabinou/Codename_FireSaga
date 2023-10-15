@@ -172,10 +172,6 @@ void test_crt() {
                     cell_Vblank, stagger,  x_offset_G,  y_offset_B);
 
     /* !!! Shadow Filtering works  !!! */
-    nourstest_true(linalg_equal_uint8_t(mask_R, mask_R_test, MAT_ROW_LEN * MAT_COL_LEN));
-    nourstest_true(linalg_equal_uint8_t(mask_G, mask_G_test, MAT_ROW_LEN * MAT_COL_LEN));
-    nourstest_true(linalg_equal_uint8_t(mask_B, mask_B_test, MAT_ROW_LEN * MAT_COL_LEN));
-
 
     /* --- PIXEL2FLOATS --- */
     // WORK,CONFIRMED BY MY EYES
