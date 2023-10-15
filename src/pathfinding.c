@@ -530,7 +530,7 @@ i32 *Pathfinding_unitGradient(i32 *costmap, size_t row_len, size_t col_len,
 }
 
 /* -- Visible -- */
-bool Pathfinding_Tile_Visible(i32 *block_matrix, struct Point start, struct Point delta,
+bool Pathfinding_Tile_Visible(i32 *blockmap, struct Point start, struct Point delta,
                               size_t col_len) {
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     /* -- Between start and delta -- */
@@ -544,12 +544,8 @@ bool Pathfinding_Tile_Visible(i32 *block_matrix, struct Point start, struct Poin
         interpolated.x = start.x + (delta.x == 0 ? 0 : dist_x);
         interpolated.y = start.y + (delta.y == 0 ? 0 : dist_y);
 
-        /* -- Skip neighbour if: interp is start -- */
-        if ((interpolated.x == start.x) || (interpolated.y == start.y))
-            continue;
-
         i32 interp_i = interpolated.y * col_len + interpolated.x;
-        if (block_matrix[interp_i] >= NMATH_BLOCKMAP_MIN) {
+        if (blockmap[interp_i] < BLOCKMAP_MIN) {
             /* -- Perimeter tile is blocked -- */
             visible = false;
             break;
@@ -560,19 +556,18 @@ bool Pathfinding_Tile_Visible(i32 *block_matrix, struct Point start, struct Poin
     return (visible);
 }
 
-void Pathfinding_Visible_noM(i32 *sightmap, i32 *block_matrix,
+void Pathfinding_Visible_noM(i32 *sightmap, i32 *blockmap,
                              size_t row_len, size_t col_len,
                              struct Point start, i32 sight) {
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     /* -- Wipe sightmap -- */
 
-    for (u8 i = 0; i < row_len * col_len; i++)
-        sightmap[i] = SIGHTMAP_BLOCKED;
+    for (int i = 0; i < row_len * col_len; i++)
+        sightmap[i] = SIGHTMAP_NOT_VISIBLE;
 
     /* -- Setup variables -- */
     struct Point perimeter_point = {0}, delta = {0};
-    sightmap[start.y * col_len + start.x] = NMATH_SIGHTMAP_OBSERVER;
+    sightmap[start.y * col_len + start.x] = SIGHTMAP_OBSERVER;
 
     /* -- Loop over all visible tiles -- */
     for (i32 distance = 1; distance <= sight; distance++) {
@@ -595,24 +590,23 @@ void Pathfinding_Visible_noM(i32 *sightmap, i32 *block_matrix,
             perimeter_point.y = start.y + delta.y;
 
             /* -- Skip neighbour if: tile is not visible -- */
-            if (!Pathfinding_Tile_Visible(block_matrix, start, delta, col_len))
+            if (!Pathfinding_Tile_Visible(blockmap, start, delta, col_len))
                 continue;
 
             /* -- Update sightmap -- */
             i32 perim_i = perimeter_point.y * col_len + perimeter_point.x;
-            i32 blocked = block_matrix[perim_i];
-            sightmap[perim_i] = (blocked == BLOCKMAP_BLOCKED) ? SIGHTMAP_VISIBLE : SIGHTMAP_WALL;
+            sightmap[perim_i] = (blockmap[perim_i] == BLOCKMAP_BLOCKED) ? SIGHTMAP_BLOCKED : SIGHTMAP_VISIBLE;
         }
     }
 
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
-i32 *Pathfinding_Visible(i32 *block_matrix, size_t row_len, size_t col_len,
+i32 *Pathfinding_Visible(i32 *blockmap, size_t row_len, size_t col_len,
                          struct Point start, i32 sight) {
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     i32 *sightmap = calloc(row_len * col_len, sizeof(i32));
-    Pathfinding_Visible_noM(sightmap, block_matrix, row_len, col_len, start, sight);
+    Pathfinding_Visible_noM(sightmap, blockmap, row_len, col_len, start, sight);
 
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
     return (sightmap);

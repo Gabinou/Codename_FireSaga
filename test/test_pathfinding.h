@@ -88,19 +88,13 @@ void test_pathfinding_Astar() {
     i32 *movemapp = Pathfinding_Moveto(costmapp, ROW_LEN, COL_LEN, start, move);
     // matrix_print(movemapp, ROW_LEN, COL_LEN);
 
-    for (size_t row = 0; row < ROW_LEN; row++) {
-        for (size_t col = 0; col < COL_LEN; col++) {
-            nourstest_true(movemapp[row * COL_LEN + col] == expected_movemapp[row * COL_LEN + col]);
-        }
-    }
+    for (size_t i = 0; i < ROW_LEN * COL_LEN; i++)
+        nourstest_true(movemapp[i] == expected_movemapp[i]);
 
     Pathfinding_Moveto_noM(movemapp, costmapp, ROW_LEN, COL_LEN, start, move);
 
-    for (size_t row = 0; row < ROW_LEN; row++) {
-        for (size_t col = 0; col < COL_LEN; col++) {
-            nourstest_true(movemapp[row * COL_LEN + col] == expected_movemapp[row * COL_LEN + col]);
-        }
-    }
+    for (size_t i = 0; i < ROW_LEN * COL_LEN; i++)
+        nourstest_true(movemapp[i] == expected_movemapp[i]);
 
     // matrix_print(movemapp, ROW_LEN, COL_LEN);
 
@@ -113,11 +107,8 @@ void test_pathfinding_Astar() {
     int *computed_path  = list2matrix(path_list, ROW_LEN, COL_LEN, point_num);
     // matrix_print(computed_path, ROW_LEN, COL_LEN);
 
-    for (size_t row = 0; row < ROW_LEN; row++) {
-        for (size_t col = 0; col < COL_LEN; col++) {
-            nourstest_true(computed_path[row * COL_LEN + col] == expected_path[row * COL_LEN + col]);
-        }
-    }
+    for (size_t i = 0; i < ROW_LEN * COL_LEN; i++)
+        nourstest_true(computed_path[i] == expected_path[i]);
 
     free(movemapp);
     DARR_FREE(path_list);
@@ -133,7 +124,7 @@ void test_pathfinding_sight() {
     struct Point start        = {10, 6};
     struct Point end          = {15, 1};
     int *position;
-    int sight = 1;
+    int sight = 3;
     i32 blockmap[ROW_LEN * COL_LEN] = {
         1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
         1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
@@ -158,13 +149,16 @@ void test_pathfinding_sight() {
         1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1
     };
 
-    int expected_vision[ROW_LEN * COL_LEN] = {
+    int expected_vision_3[ROW_LEN * COL_LEN] = {
         0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
         0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
         0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 5, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 5, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 2, 1, 5, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 5, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
         0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
         0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
         0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
@@ -177,13 +171,47 @@ void test_pathfinding_sight() {
         0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
         0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
         0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+    };
+
+    i32 *sightmap = Pathfinding_Visible(blockmap, ROW_LEN, COL_LEN, start, sight);
+    for (size_t i = 0; i < ROW_LEN * COL_LEN; i++)
+        nourstest_true(sightmap[i] == expected_vision_3[i]);
+    // matrix_print(sightmap, ROW_LEN, COL_LEN);
+
+    sight = 6;
+    int expected_vision_6[ROW_LEN * COL_LEN] = {
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 2, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
         0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
         0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
         0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     };
-    i32 *sightmap = Pathfinding_Visible(blockmap, ROW_LEN, COL_LEN, start, sight);
 
+    Pathfinding_Visible_noM(sightmap, blockmap, ROW_LEN, COL_LEN, start, sight);
+    for (size_t i = 0; i < ROW_LEN * COL_LEN; i++)
+        nourstest_true(sightmap[i] == expected_vision_3[i]);
+    matrix_print(sightmap, ROW_LEN, COL_LEN);
+
+
+    free(sightmap);
 }
+
 void test_pathfinding() {
     SOTA_Log_Func("%s " STRINGIZE(__LINE__), __func__);
     test_pathfinding_sight();

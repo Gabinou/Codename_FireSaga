@@ -1055,15 +1055,6 @@ enum STARTUP_MODES {
     STARTUP_END,
 };
 
-enum SIGHTMAP_CODES {
-    SIGHTMAP_NOT_VISIBLE = 0,
-    SIGHTMAP_VISIBLE     = 1,
-    SIGHTMAP_OBSERVER    = 2,
-    SIGHTMAP_WALL        = 3,
-    SIGHTMAP_ENEMY       = 4,
-    SIGHTMAP_FRIENDLY    = 5,
-};
-
 /* Always from the point of view of the player/Erwin */
 enum ALIGNMENT {
     NO_ALIGNMENT         = 0,

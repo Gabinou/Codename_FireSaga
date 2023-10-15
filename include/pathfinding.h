@@ -51,6 +51,14 @@ enum PATHFINDING_BLOCKMAP {
     BLOCKMAP_MIN        = 1,
 };
 
+enum SIGHTMAP_CODES {
+    SIGHTMAP_NOT_VISIBLE    = 0,
+    SIGHTMAP_VISIBLE        = 1,
+    SIGHTMAP_OBSERVER       = 2,
+    SIGHTMAP_ENEMY          = 3,
+    SIGHTMAP_FRIENDLY       = 4,
+    SIGHTMAP_BLOCKED        = 5,
+};
 
 /* --- Manhattan distance --- */
 i32 _Pathfinding_Manhattan(i32 x_0, i32 y_0, i32 x_1, i32 y_1);
@@ -139,4 +147,4 @@ extern i32 *Pathfinding_Moveto_Hex(i32 *costmap, size_t row_len, size_t depth_le
 extern i32 *Pathfinding_Visible_Hex(i32 *blockmap, size_t depth_len, size_t col_len,
                                     struct Pointf  start, i32 sight, int mode);
 
-#endif /* PATH_H */
+#endif /* PATHFINDING_H */
