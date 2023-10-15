@@ -4,16 +4,74 @@
 
 #ifndef __clang__
 
-/* --- matrix2list --- */
+/* --- matrix --- */
+i32 *matrix_sgreater_noM(i32 *out, i32 *matrix1, i32 tocompare, size_t arr_len) {
+    for (size_t i = 0; i < arr_len; i++)
+        out[i] = (matrix1[i] > tocompare);
+    return (out);
+}
+
+i32 *matrix_sgreater(i32 *matrix1, i32 tocompare, size_t arr_len) {
+    i32 *out = calloc(arr_len, sizeof(*out));
+    return (matrix_sgreater_noM(out, matrix1, tocompare, arr_len));
+}
+
+i32 *matrix_ssmaller_noM(i32 *out, i32 *matrix1, i32 tocompare, size_t arr_len) {
+    for (size_t i = 0; i < arr_len; i++)
+        out[i] = (matrix1[i] < tocompare);
+    return (out);
+}
+
+i32 *matrix_ssmaller(i32 *matrix1, i32 tocompare, size_t arr_len) {
+    i32 *out = calloc(arr_len, sizeof(*out));
+    return (matrix_ssmaller_noM(out, matrix1, tocompare, arr_len));
+}
+
+void matrix_print(i32 *array, size_t row_len, size_t col_len) {
+    for (size_t row = 0; row < row_len; row++) {
+        for (size_t col = 0; col < col_len; col++)
+            printf("%2.6f ", array[row * col_len + col]);
+        printf("\n");
+    }
+}
+
+i32 *matrix_and_noM(i32 *out, i32 *matrix1, i32 *matrix2, size_t arr_len) {
+    for (size_t i = 0; i < arr_len; i++)
+        out[i] = (matrix1[i] && matrix2[i]);
+    return (out);
+}
+
+i32 *matrix_and(i32 *matrix1, i32 *matrix2, size_t arr_len) {
+    i32 *out = calloc(arr_len, sizeof(*out));
+    return (matrix_and_noM(out, matrix1, matrix2, arr_len));
+}
+
+i32 *matrix_sub_noM(i32 *matrix1, i32 *matrix2, size_t arr_len) {
+    for (size_t i = 0; i < arr_len; i++)
+        matrix1[i] -= matrix2[i];
+    return (matrix1);
+}
+
+i32 *matrix_plus_noM(i32 *matrix1, i32 *matrix2, size_t arr_len) {
+    for (size_t i = 0; i < arr_len; i++)
+        matrix1[i] += matrix2[i];
+    return (matrix1);
+}
+
+i32 *matrix_plus(i32 *matrix1, i32 *matrix2, size_t arr_len) {
+    i32 *out = calloc(arr_len, sizeof(*out));
+    return (matrix_plus_noM(matrix1, matrix2, arr_len));
+}
+
 i32 *matrix2list_noM(i32 *matrix, i32 *list, size_t row_len, size_t col_len) {
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     DARR_NUM(list) = 0;
     for (size_t col = 0; col < col_len; col++) {
         for (size_t row = 0; row < row_len; row++) {
-            if (matrix[row * col_len + col] > 0) {
-                DARR_PUT(list, col);
-                DARR_PUT(list, row);
-            }
+            if (matrix[row * col_len + col] <= 0)
+                continue;
+            DARR_PUT(list, col);
+            DARR_PUT(list, row);
         }
     }
 

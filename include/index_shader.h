@@ -13,6 +13,13 @@
 /* --- FORWARD DECLARATIONS --- */
 struct Map;
 
+/* --- pixels --- */
+extern uf8 *pixels2list_noM(uf8 *matrix, uf8 *list, size_t row_len, size_t col_len);
+extern uf8 *pixels2list(uf8 *matrix, size_t row_len, size_t col_len);
+extern uf8 *pixels_and_noM(uf8 *out, uf8 *matrix1, uf8 *matrix2, size_t arr_len);
+extern uf8 *pixels_and(uf8 *matrix1, uf8 *matrix2, size_t arr_len);
+
+
 /* --- SHADING NOISE --- */
 extern int *matrix_circ_noise(int *m, int ox, int oy, size_t w, size_t h,  size_t rl, size_t cl);
 extern int *matrix_rect_noise(int *m, int ox, int oy, size_t d, size_t rl, size_t cl);

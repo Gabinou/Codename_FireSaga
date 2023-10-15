@@ -21,16 +21,16 @@ void Map_Global_Danger_Reset(struct Map *map) {
 
 void Map_Global_Danger_Add(struct Map *map, i32 *danger) {
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
-    map->global_dangermap = linalg_plus_noM_int32_t(map->global_dangermap, danger,
-                                                    map->row_len * map->col_len);
+    map->global_dangermap = matrix_plus_noM(map->global_dangermap, danger,
+                                            map->row_len * map->col_len);
     map->shading_changed = true;
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 void Map_Global_Danger_Sub(struct Map *map, i32 *danger) {
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
-    map->global_dangermap = linalg_sub_noM_int32_t(map->global_dangermap, danger,
-                                                   map->row_len * map->col_len);
+    map->global_dangermap = matrix_sub_noM(map->global_dangermap, danger,
+                                           map->row_len * map->col_len);
     map->shading_changed = true;
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
@@ -44,14 +44,14 @@ void Map_Danger_Reset(struct Map *map) {
 
 void Map_Danger_Add(struct Map *map, i32 *danger) {
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
-    map->dangermap = linalg_plus_noM_int32_t(map->dangermap, danger, map->row_len * map->col_len);
+    map->dangermap = matrix_plus_noM(map->dangermap, danger, map->row_len * map->col_len);
     map->shading_changed = true;
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 void Map_Danger_Sub(struct Map *map, i32 *danger) {
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
-    map->dangermap = linalg_sub_noM_int32_t(map->dangermap, danger, map->row_len * map->col_len);
+    map->dangermap = matrix_sub_noM(map->dangermap, danger, map->row_len * map->col_len);
     map->shading_changed = true;
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
@@ -61,11 +61,11 @@ void Map_Stacked_Dangermap_Compute(struct Map *map) {
     /* assumes movemap, attacktomap, dangermap are computed */
 
     int size = map->row_len * map->col_len;
-    i32 *temp_map = linalg_ssmaller_int32_t(map->dangermap, DANGERMAP_UNIT_DIVISOR, size);
-    map->stacked_dangermap = linalg_and_noM_int32_t(map->stacked_dangermap, map->dangermap, temp_map,
-                                                    map->row_len * map->col_len);
-    map->stacked_dangermap = linalg_and_noM_int32_t(map->stacked_dangermap, map->stacked_dangermap,
-                                                    map->movemap, map->row_len * map->col_len);
+    i32 *temp_map = matrix_ssmaller(map->dangermap, DANGERMAP_UNIT_DIVISOR, size);
+    map->stacked_dangermap = matrix_and_noM(map->stacked_dangermap, map->dangermap, temp_map,
+                                            map->row_len * map->col_len);
+    map->stacked_dangermap = matrix_and_noM(map->stacked_dangermap, map->stacked_dangermap,
+                                            map->movemap, map->row_len * map->col_len);
 
     free(temp_map);
     map->shading_changed = true;
@@ -248,7 +248,7 @@ i32 *Map_Danger_Compute(struct Map *map, tnecs_world_t *world, tnecs_entity_t un
     map->attacktomap = _Map_tomap_Compute(map->attacktomap, map->movemap, map->row_len,
                                           map->col_len, move, range, MOVETILE_INCLUDE);
     memset(map->temp, 0, sizeof(*map->temp)*map->row_len * map->col_len);
-    map->temp = linalg_plus_noM_int32_t(map->temp, map->attacktomap, map->row_len * map->col_len);
+    map->temp = matrix_plus_noM(map->temp, map->attacktomap, map->row_len * map->col_len);
     // linalg_matrix_print_int(map->temp, map->row_len, map->col_len);
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
     return (map->temp);
@@ -414,8 +414,8 @@ void Map_globalRange(struct Map *map, tnecs_world_t *world, uf8 alignment) {
                                map->col_len, start, move);
         Pathfinding_Attackto_noM(map->attacktomap, map->movemap, map->row_len,
                                  map->col_len, (uf8 *)range, MOVETILE_INCLUDE);
-        map->global_rangemap = linalg_plus_noM_int32_t(map->global_rangemap, map->attacktomap,
-                                                       map->row_len * map->col_len);
+        map->global_rangemap = matrix_plus_noM(map->global_rangemap, map->attacktomap,
+                                               map->row_len * map->col_len);
     }
 
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);

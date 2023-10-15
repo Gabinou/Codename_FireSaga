@@ -472,100 +472,100 @@ TEMPLATE_TYPES_BOOL
 #undef REGISTER_ENUM
 
 
-void linalg_matrix_print_bool(bool * array, size_t row_len, size_t col_len) {
-    for (size_t row = 0; row < row_len; row++) {
-        for (size_t col = 0; col < col_len; col++) {
-            printf("%d", array[row * col_len + col]);
-        }
-        printf("\n");
-    }
-}
+// void linalg_matrix_print_bool(bool * array, size_t row_len, size_t col_len) {
+//     for (size_t row = 0; row < row_len; row++) {
+//         for (size_t col = 0; col < col_len; col++) {
+//             printf("%d", array[row * col_len + col]);
+//         }
+//         printf("\n");
+//     }
+// }
 
-void linalg_matrix_print_uint8_t(uint8_t * array, size_t row_len, size_t col_len) {
-    for (size_t row = 0; row < row_len; row++) {
-        for (size_t col = 0; col < col_len; col++) {
-            printf("%02u", array[row * col_len + col]);
-        }
-        printf("\n");
-    }
-}
+// void linalg_matrix_print_uint8_t(uint8_t * array, size_t row_len, size_t col_len) {
+//     for (size_t row = 0; row < row_len; row++) {
+//         for (size_t col = 0; col < col_len; col++) {
+//             printf("%02u", array[row * col_len + col]);
+//         }
+//         printf("\n");
+//     }
+// }
 
-void linalg_matrix_print_uint16_t(uint16_t * array, size_t row_len, size_t col_len) {
-    for (size_t row = 0; row < row_len; row++) {
-        for (size_t col = 0; col < col_len; col++) {
-            printf("%02u", array[row * col_len + col]);
-        }
-        printf("\n");
-    }
-}
+// void linalg_matrix_print_uint16_t(uint16_t * array, size_t row_len, size_t col_len) {
+//     for (size_t row = 0; row < row_len; row++) {
+//         for (size_t col = 0; col < col_len; col++) {
+//             printf("%02u", array[row * col_len + col]);
+//         }
+//         printf("\n");
+//     }
+// }
 
-void linalg_matrix_print_uint32_t(uint32_t * array, size_t row_len, size_t col_len) {
-    for (size_t row = 0; row < row_len; row++) {
-        for (size_t col = 0; col < col_len; col++) {
-            printf("%02u", array[row * col_len + col]);
-        }
-        printf("\n");
-    }
-}
+// void linalg_matrix_print_uint32_t(uint32_t * array, size_t row_len, size_t col_len) {
+//     for (size_t row = 0; row < row_len; row++) {
+//         for (size_t col = 0; col < col_len; col++) {
+//             printf("%02u", array[row * col_len + col]);
+//         }
+//         printf("\n");
+//     }
+// }
 
-void linalg_matrix_print_uint64_t(uint64_t * array, size_t row_len, size_t col_len) {
-    for (size_t row = 0; row < row_len; row++) {
-        for (size_t col = 0; col < col_len; col++) {
-            printf("%02lu", array[row * col_len + col]);
-        }
-        printf("\n");
-    }
-}
-
-
-void linalg_matrix_print_int8_t(int8_t * array, size_t row_len, size_t col_len) {
-    for (size_t row = 0; row < row_len; row++) {
-        for (size_t col = 0; col < col_len; col++) {
-            printf("%02d", array[row * col_len + col]);
-        }
-        printf("\n");
-    }
-}
-
-void linalg_matrix_print_int16_t(int16_t * array, size_t row_len, size_t col_len) {
-    for (size_t row = 0; row < row_len; row++) {
-        for (size_t col = 0; col < col_len; col++) {
-            printf("%02d", array[row * col_len + col]);
-        }
-        printf("\n");
-    }
-}
-
-void linalg_matrix_print_int32_t(int32_t * array, size_t row_len, size_t col_len) {
-    for (size_t row = 0; row < row_len; row++) {
-        for (size_t col = 0; col < col_len; col++) {
-            printf("%02d", array[row * col_len + col]);
-        }
-        printf("\n");
-    }
-}
-
-void linalg_matrix_print_int64_t(int64_t * array, size_t row_len, size_t col_len) {
-    for (size_t row = 0; row < row_len; row++) {
-        for (size_t col = 0; col < col_len; col++) {
-            printf("%02ld", array[row * col_len + col]);
-        }
-        printf("\n");
-    }
-}
+// void linalg_matrix_print_uint64_t(uint64_t * array, size_t row_len, size_t col_len) {
+//     for (size_t row = 0; row < row_len; row++) {
+//         for (size_t col = 0; col < col_len; col++) {
+//             printf("%02lu", array[row * col_len + col]);
+//         }
+//         printf("\n");
+//     }
+// }
 
 
+// void linalg_matrix_print_int8_t(int8_t * array, size_t row_len, size_t col_len) {
+//     for (size_t row = 0; row < row_len; row++) {
+//         for (size_t col = 0; col < col_len; col++) {
+//             printf("%02d", array[row * col_len + col]);
+//         }
+//         printf("\n");
+//     }
+// }
 
-#define REGISTER_ENUM(type) void linalg_matrix_print_##type(type * array, size_t row_len, size_t col_len) {\
-    for (size_t row = 0; row < row_len; row++) {\
-        for (size_t col = 0; col < col_len; col++) {\
-            printf("%2.6f ", array[row * col_len + col]);\
-        }\
-        printf("\n");\
-    }\
-}
-TEMPLATE_TYPES_FLOAT
-#undef REGISTER_ENUM
+// void linalg_matrix_print_int16_t(int16_t * array, size_t row_len, size_t col_len) {
+//     for (size_t row = 0; row < row_len; row++) {
+//         for (size_t col = 0; col < col_len; col++) {
+//             printf("%02d", array[row * col_len + col]);
+//         }
+//         printf("\n");
+//     }
+// }
+
+// void linalg_matrix_print_int32_t(int32_t * array, size_t row_len, size_t col_len) {
+//     for (size_t row = 0; row < row_len; row++) {
+//         for (size_t col = 0; col < col_len; col++) {
+//             printf("%02d", array[row * col_len + col]);
+//         }
+//         printf("\n");
+//     }
+// }
+
+// void linalg_matrix_print_int64_t(int64_t * array, size_t row_len, size_t col_len) {
+//     for (size_t row = 0; row < row_len; row++) {
+//         for (size_t col = 0; col < col_len; col++) {
+//             printf("%02ld", array[row * col_len + col]);
+//         }
+//         printf("\n");
+//     }
+// }
+
+
+
+// #define REGISTER_ENUM(type) void linalg_matrix_print_##type(type * array, size_t row_len, size_t col_len) {\
+//     for (size_t row = 0; row < row_len; row++) {\
+//         for (size_t col = 0; col < col_len; col++) {\
+//             printf("%2.6f ", array[row * col_len + col]);\
+//         }\
+//         printf("\n");\
+//     }\
+// }
+// TEMPLATE_TYPES_FLOAT
+// #undef REGISTER_ENUM
 
 #define REGISTER_ENUM(type) type * linalg_smaller_noM_##type(type * out, type * matrix1, type * matrix2, size_t arr_len) {\
     for (size_t i = 0; i < arr_len; i++) {\
@@ -630,48 +630,48 @@ TEMPLATE_TYPES_INT
 TEMPLATE_TYPES_BOOL
 #undef REGISTER_ENUM
 
-#define REGISTER_ENUM(type) type * linalg_ssmaller_noM_##type(type * out, type * matrix1, type tocompare, size_t arr_len) {\
-    for (size_t i = 0; i < arr_len; i++) {\
-            out[i] = (matrix1[i] < tocompare);\
-    }\
-return (out);\
-}
-TEMPLATE_TYPES_INT
-TEMPLATE_TYPES_BOOL
-#undef REGISTER_ENUM
+// #define REGISTER_ENUM(type) type * linalg_ssmaller_noM_##type(type * out, type * matrix1, type tocompare, size_t arr_len) {\
+//     for (size_t i = 0; i < arr_len; i++) {\
+//             out[i] = (matrix1[i] < tocompare);\
+//     }\
+// return (out);\
+// }
+// TEMPLATE_TYPES_INT
+// TEMPLATE_TYPES_BOOL
+// #undef REGISTER_ENUM
 
-#define REGISTER_ENUM(type) type * linalg_ssmaller_##type(type * matrix1, type tocompare, size_t arr_len) {\
-    type * out = calloc(arr_len, sizeof(type));\
-    for (size_t i = 0; i < arr_len; i++) {\
-            out[i] = (matrix1[i] < tocompare);\
-    }\
-return (out);\
-}
-TEMPLATE_TYPES_INT
-TEMPLATE_TYPES_BOOL
-#undef REGISTER_ENUM
+// #define REGISTER_ENUM(type) type * linalg_ssmaller_##type(type * matrix1, type tocompare, size_t arr_len) {\
+//     type * out = calloc(arr_len, sizeof(type));\
+//     for (size_t i = 0; i < arr_len; i++) {\
+//             out[i] = (matrix1[i] < tocompare);\
+//     }\
+// return (out);\
+// }
+// TEMPLATE_TYPES_INT
+// TEMPLATE_TYPES_BOOL
+// #undef REGISTER_ENUM
 
-#define REGISTER_ENUM(type) type * linalg_sgreater_noM_##type(type * out, type * matrix1, type tocompare, size_t arr_len) {\
-    for (size_t i = 0; i < arr_len; i++) {\
-            out[i] = (matrix1[i] > tocompare);\
-    }\
-return (out);\
-}
-TEMPLATE_TYPES_INT
-TEMPLATE_TYPES_BOOL
-#undef REGISTER_ENUM
+// #define REGISTER_ENUM(type) type * linalg_sgreater_noM_##type(type * out, type * matrix1, type tocompare, size_t arr_len) {\
+//     for (size_t i = 0; i < arr_len; i++) {\
+//             out[i] = (matrix1[i] > tocompare);\
+//     }\
+// return (out);\
+// }
+// TEMPLATE_TYPES_INT
+// TEMPLATE_TYPES_BOOL
+// #undef REGISTER_ENUM
 
 
-#define REGISTER_ENUM(type) type * linalg_sgreater_##type(type * matrix1, type tocompare, size_t arr_len) {\
-    type * out = calloc(arr_len, sizeof(type));\
-    for (size_t i = 0; i < arr_len; i++) {\
-            out[i] = (matrix1[i] > tocompare);\
-    }\
-return (out);\
-}
-TEMPLATE_TYPES_INT
-TEMPLATE_TYPES_BOOL
-#undef REGISTER_ENUM
+// #define REGISTER_ENUM(type) type * linalg_sgreater_##type(type * matrix1, type tocompare, size_t arr_len) {\
+//     type * out = calloc(arr_len, sizeof(type));\
+//     for (size_t i = 0; i < arr_len; i++) {\
+//             out[i] = (matrix1[i] > tocompare);\
+//     }\
+// return (out);\
+// }
+// TEMPLATE_TYPES_INT
+// TEMPLATE_TYPES_BOOL
+// #undef REGISTER_ENUM
 
 #define REGISTER_ENUM(type) type * linalg_seq_noM_##type(type * out, type * matrix1, type * matrix2, size_t arr_len) {\
     for (size_t i = 0; i < arr_len; i++) {\
@@ -694,26 +694,26 @@ TEMPLATE_TYPES_INT
 TEMPLATE_TYPES_BOOL
 #undef REGISTER_ENUM
 
-#define REGISTER_ENUM(type) type * linalg_greater_noM_##type(type * out, type * matrix1, type * matrix2, size_t arr_len) {\
-    for (size_t i = 0; i < arr_len; i++) {\
-            out[i] = (matrix1[i] > matrix2[i]);\
-    }\
-return (out);\
-}
-TEMPLATE_TYPES_INT
-TEMPLATE_TYPES_BOOL
-#undef REGISTER_ENUM
+// #define REGISTER_ENUM(type) type * linalg_greater_noM_##type(type * out, type * matrix1, type * matrix2, size_t arr_len) {\
+//     for (size_t i = 0; i < arr_len; i++) {\
+//             out[i] = (matrix1[i] > matrix2[i]);\
+//     }\
+// return (out);\
+// }
+// TEMPLATE_TYPES_INT
+// TEMPLATE_TYPES_BOOL
+// #undef REGISTER_ENUM
 
-#define REGISTER_ENUM(type) type * linalg_greater_##type(type * matrix1, type * matrix2, size_t arr_len) {\
-    type * out = calloc(arr_len, sizeof(type));\
-    for (size_t i = 0; i < arr_len; i++) {\
-            out[i] = (matrix1[i] > matrix2[i]);\
-    }\
-return (out);\
-}
-TEMPLATE_TYPES_INT
-TEMPLATE_TYPES_BOOL
-#undef REGISTER_ENUM
+// #define REGISTER_ENUM(type) type * linalg_greater_##type(type * matrix1, type * matrix2, size_t arr_len) {\
+//     type * out = calloc(arr_len, sizeof(type));\
+//     for (size_t i = 0; i < arr_len; i++) {\
+//             out[i] = (matrix1[i] > matrix2[i]);\
+//     }\
+// return (out);\
+// }
+// TEMPLATE_TYPES_INT
+// TEMPLATE_TYPES_BOOL
+// #undef REGISTER_ENUM
 
 #define REGISTER_ENUM(type) type * linalg_geq_noM_##type(type * out, type * matrix1, type * matrix2, size_t arr_len) {\
     for (size_t i = 0; i < arr_len; i++) {\
@@ -806,28 +806,28 @@ TEMPLATE_TYPES_FLOAT
 TEMPLATE_TYPES_BOOL
 #undef REGISTER_ENUM
 
-#define REGISTER_ENUM(type) type * linalg_and_noM_##type(type * out, type * matrix1, type * matrix2, size_t arr_len) {\
-    for (size_t i = 0; i < arr_len; i++) {\
-        out[i] = (matrix1[i] && matrix2[i]);\
-    }\
-    return (out);\
-}
-TEMPLATE_TYPES_INT
-TEMPLATE_TYPES_FLOAT
-TEMPLATE_TYPES_BOOL
-#undef REGISTER_ENUM
+// #define REGISTER_ENUM(type) type * linalg_and_noM_##type(type * out, type * matrix1, type * matrix2, size_t arr_len) {\
+//     for (size_t i = 0; i < arr_len; i++) {\
+//         out[i] = (matrix1[i] && matrix2[i]);\
+//     }\
+//     return (out);\
+// }
+// TEMPLATE_TYPES_INT
+// TEMPLATE_TYPES_FLOAT
+// TEMPLATE_TYPES_BOOL
+// #undef REGISTER_ENUM
 
-#define REGISTER_ENUM(type) type * linalg_and_##type(type * matrix1, type * matrix2, size_t arr_len) {\
-    type * out = calloc(arr_len, sizeof(type));\
-    for (size_t i = 0; i < arr_len; i++) {\
-        out[i] = (matrix1[i] && matrix2[i]);\
-    }\
-    return (out);\
-}
-TEMPLATE_TYPES_INT
-TEMPLATE_TYPES_FLOAT
-TEMPLATE_TYPES_BOOL
-#undef REGISTER_ENUM
+// #define REGISTER_ENUM(type) type * linalg_and_##type(type * matrix1, type * matrix2, size_t arr_len) {\
+//     type * out = calloc(arr_len, sizeof(type));\
+//     for (size_t i = 0; i < arr_len; i++) {\
+//         out[i] = (matrix1[i] && matrix2[i]);\
+//     }\
+//     return (out);\
+// }
+// TEMPLATE_TYPES_INT
+// TEMPLATE_TYPES_FLOAT
+// TEMPLATE_TYPES_BOOL
+// #undef REGISTER_ENUM
 
 #define REGISTER_ENUM(type) type * linalg_or_noM_##type(type * out, type * matrix1, type * matrix2, size_t arr_len) {\
     for (size_t i = 0; i < arr_len; i++) {\
@@ -852,39 +852,39 @@ TEMPLATE_TYPES_FLOAT
 TEMPLATE_TYPES_BOOL
 #undef REGISTER_ENUM
 
-#define REGISTER_ENUM(type) type * linalg_sub_noM_##type(type * matrix1, type * matrix2, size_t arr_len) {\
-    for (size_t i = 0; i < arr_len; i++) {\
-            matrix1[i] -= matrix2[i];\
-    }\
-    return (matrix1);\
-}
-TEMPLATE_TYPES_INT
-TEMPLATE_TYPES_FLOAT
-TEMPLATE_TYPES_BOOL
-#undef REGISTER_ENUM
+// #define REGISTER_ENUM(type) type * linalg_sub_noM_##type(type * matrix1, type * matrix2, size_t arr_len) {\
+//     for (size_t i = 0; i < arr_len; i++) {\
+//             matrix1[i] -= matrix2[i];\
+//     }\
+//     return (matrix1);\
+// }
+// TEMPLATE_TYPES_INT
+// TEMPLATE_TYPES_FLOAT
+// TEMPLATE_TYPES_BOOL
+// #undef REGISTER_ENUM
 
-#define REGISTER_ENUM(type) type * linalg_plus_noM_##type(type * matrix1, type * matrix2, size_t arr_len) {\
-    for (size_t i = 0; i < arr_len; i++) {\
-            matrix1[i] += matrix2[i];\
-    }\
-    return (matrix1);\
-}
-TEMPLATE_TYPES_INT
-TEMPLATE_TYPES_FLOAT
-TEMPLATE_TYPES_BOOL
-#undef REGISTER_ENUM
+// #define REGISTER_ENUM(type) type * linalg_plus_noM_##type(type * matrix1, type * matrix2, size_t arr_len) {\
+//     for (size_t i = 0; i < arr_len; i++) {\
+//             matrix1[i] += matrix2[i];\
+//     }\
+//     return (matrix1);\
+// }
+// TEMPLATE_TYPES_INT
+// TEMPLATE_TYPES_FLOAT
+// TEMPLATE_TYPES_BOOL
+// #undef REGISTER_ENUM
 
-#define REGISTER_ENUM(type) type * linalg_plus_##type(type * matrix1, type * matrix2, size_t arr_len) {\
-    type * out = calloc(arr_len, sizeof(type));\
-    for (size_t i = 0; i < arr_len; i++) {\
-            out[i] = matrix1[i] + matrix2[i];\
-    }\
-    return (out);\
-}
-TEMPLATE_TYPES_INT
-TEMPLATE_TYPES_FLOAT
-TEMPLATE_TYPES_BOOL
-#undef REGISTER_ENUM
+// #define REGISTER_ENUM(type) type * linalg_plus_##type(type * matrix1, type * matrix2, size_t arr_len) {\
+//     type * out = calloc(arr_len, sizeof(type));\
+//     for (size_t i = 0; i < arr_len; i++) {\
+//             out[i] = matrix1[i] + matrix2[i];\
+//     }\
+//     return (out);\
+// }
+// TEMPLATE_TYPES_INT
+// TEMPLATE_TYPES_FLOAT
+// TEMPLATE_TYPES_BOOL
+// #undef REGISTER_ENUM
 
 #define REGISTER_ENUM(type) type * linalg_plus_scalar_noM_##type(type * out, type * matrix, type value, size_t arr_len) {\
     for (size_t i = 0; i < arr_len; i++) {\

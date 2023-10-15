@@ -39,20 +39,32 @@
 
 #define SOTA_MINLEN 12
 
-/* --- matrix2list --- */
-i32 *matrix2list_noM(i32 *matrix, i32 *list, size_t row_len, size_t col_len);
-i32 *matrix2list(    i32 *matrix,            size_t row_len, size_t col_len);
+/* --- matrix --- */
+extern i32 *matrix2list_noM(i32 *matrix, i32 *list, size_t row_len, size_t col_len);
+extern i32 *matrix2list(    i32 *matrix,            size_t row_len, size_t col_len);
+
+extern void matrix_print(i32 *array, size_t row_len, size_t col_len);
+
+extern i32 *matrix_plus_noM(i32 *matrix1, i32 *matrix2, size_t arr_len);
+extern i32 *matrix_sgreater_noM(i32 *out, i32 *matrix1, i32 tocompare, size_t arr_len);
+extern i32 *matrix_sgreater(i32 *matrix1, i32 tocompare, size_t arr_len);
+extern i32 *matrix_ssmaller_noM(i32 *out, i32 *matrix1, i32 tocompare, size_t arr_len);
+extern i32 *matrix_ssmaller(i32 *matrix1, i32 tocompare, size_t arr_len);
+extern i32 *matrix_and_noM(i32 *out, i32 *matrix1, i32 *matrix2, size_t arr_len);
+extern i32 *matrix_and(i32 *matrix1, i32 *matrix2, size_t arr_len);
+extern i32 *matrix_sub_noM(i32 *matrix1, i32 *matrix2, size_t arr_len);
+extern i32 *matrix_plus(i32 *matrix1, i32 *matrix2, size_t arr_len);
 
 /* --- Debug --- */
-void Utilities_stacktrace();
+extern void Utilities_stacktrace();
 
 /* --- Array --- */
-int int_inbounds(int pos, int boundmin, int boundmax);
-bool if8_all_equal(if8 *arr1, if8 *arr2, size_t len);
-bool Utilities_charArr_Equal(char *arr1, char *arr2, size_t len);
+extern int int_inbounds(int pos, int boundmin, int boundmax);
+extern bool if8_all_equal(if8 *arr1, if8 *arr2, size_t len);
+extern bool Utilities_charArr_Equal(char *arr1, char *arr2, size_t len);
 
 /* --- Weapons and items --- */
-struct WpnorItem Utilities_WpnorItem(if16 id, struct dtab *wt, struct dtab *it);
+extern struct WpnorItem Utilities_WpnorItem(if16 id, struct dtab *wt, struct dtab *it);
 
 /* --- Cursor --- */
 extern void Cursor_Box_Offset(struct Point *pos);

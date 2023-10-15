@@ -61,34 +61,34 @@ void Map_Palettemap_Autoset(struct Map *map, uf16 flagsum) {
     memset(palette, 0, bytesize);
     if (flagsum_isIn(MAP_OVERLAY_GLOBAL_DANGER, flagsum)) {
         SDL_assert(palette);
-        palette = linalg_sgreater_noM_int32_t(palette, map->global_dangermap, 0, size);
+        palette = matrix_sgreater_noM(palette, map->global_dangermap, 0, size);
         Map_Palettemap_addMap(map, palette, PALETTE_NES_FILTER_PURPLE);
     }
     memset(palette, 0, bytesize);
     if (flagsum_isIn(MAP_OVERLAY_ATTACK, flagsum)) {
         SDL_assert(palette);
-        palette = linalg_sgreater_noM_int32_t(palette, map->attacktomap, 0, size);
+        palette = matrix_sgreater_noM(palette, map->attacktomap, 0, size);
         Map_Palettemap_addMap(map, palette, PALETTE_NES_FILTER_RED);
     }
     memset(palette, 0, bytesize);
     if (flagsum_isIn(MAP_OVERLAY_DANGER, flagsum)) {
         SDL_assert(palette);
-        palette = linalg_sgreater_noM_int32_t(palette, map->dangermap, 0, size);
-        i32 *temp_palette2 = linalg_ssmaller_int32_t(map->dangermap, DANGERMAP_UNIT_DIVISOR, size);
-        palette = linalg_and_noM_int32_t(palette, temp_palette2, palette, size);
+        palette = matrix_sgreater_noM(palette, map->dangermap, 0, size);
+        i32 *temp_palette2 = matrix_ssmaller(map->dangermap, DANGERMAP_UNIT_DIVISOR, size);
+        palette = matrix_and_noM(palette, temp_palette2, palette, size);
         free(temp_palette2);
         Map_Palettemap_addMap(map, palette, PALETTE_NES_FILTER_DARKREDwSHADOW);
     }
     memset(palette, 0, bytesize);
     if (flagsum_isIn(MAP_OVERLAY_HEAL, flagsum)) {
         SDL_assert(palette);
-        palette = linalg_sgreater_noM_int32_t(palette, map->healtomap, 0, size);
+        palette = matrix_sgreater_noM(palette, map->healtomap, 0, size);
         Map_Palettemap_addMap(map, palette, PALETTE_NES_FILTER_GREEN);
     }
     memset(palette, 0, bytesize);
     if (flagsum_isIn(MAP_OVERLAY_MOVE, flagsum)) {
         SDL_assert(palette);
-        palette = linalg_sgreater_noM_int32_t(palette, map->movemap, 0, size);
+        palette = matrix_sgreater_noM(palette, map->movemap, 0, size);
         Map_Palettemap_addMap(map, palette, PALETTE_NES_FILTER_BLUE);
     }
     memset(palette, 0, bytesize);

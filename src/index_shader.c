@@ -32,7 +32,7 @@ i32 *matrix_rect_noise(i32 *matrix, i32 origx, i32 origy,
     return (NULL);
 }
 
-/* --- pixels2list --- */
+/* --- pixels --- */
 uf8 *pixels2list_noM(uf8 *matrix, uf8 *list, size_t row_len, size_t col_len) {
     DARR_NUM(list) = 0;
     for (size_t col = 0; col < col_len; col++) {
@@ -52,6 +52,17 @@ uf8 *pixels2list(uf8 *matrix, size_t row_len, size_t col_len) {
     size_t newsize = (DARR_NUM(list) < SOTA_MINLEN) ? SOTA_MINLEN : DARR_NUM(list);
     list = DARR_REALLOC(list, newsize);
     return (list);
+}
+
+uf8 *pixels_and_noM(uf8 *out, uf8 *matrix1, uf8 *matrix2, size_t arr_len) {
+    for (size_t i = 0; i < arr_len; i++)
+        out[i] = (matrix1[i] && matrix2[i]);
+    return (out);
+}
+
+uf8 *pixels_and(uf8 *matrix1, uf8 *matrix2, size_t arr_len) {
+    uf8 *out = calloc(arr_len, sizeof(*out));
+    return (pixels_and_noM(out, matrix1, matrix2, arr_len));
 }
 
 
@@ -325,7 +336,7 @@ void Index_Shader_Load(struct Index_Shader *shd, SDL_Surface *surf, SDL_Rect *re
 
     /* -- Find which pixels have to be shaded -- */
     if (shd->shaded_pixels != NULL)
-        temp_arr = linalg_and_uint_fast8_t(temp_arr, shd->shaded_pixels, rect->h * rect->w);
+        temp_arr = pixels_and(temp_arr, shd->shaded_pixels, rect->h * rect->w);
 
     /* - Make list of shaded pixels from 2D array - */
     if (shd->pixels_list != NULL)
