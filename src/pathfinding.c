@@ -367,7 +367,7 @@ void Pathfinding_Moveto_Neighbours(struct Node *open, struct Node *closed,
 
         /* - Get total cost to neighbour - */
         int current_n       = neighbour.y * col_len + neighbour.x;
-        neighbour.distance   = current.distance + cost_matrix[current_n];
+        neighbour.distance  = current.distance + cost_matrix[current_n];
 
         /* - Skip if neighbour is out of reach - */
         if ((neighbour.distance > move) || (cost_matrix[current_n] == 0))
@@ -420,30 +420,15 @@ void Pathfinding_Attackto_noM(i32 *attackmap, i32 *move_matrix,
         Pathfinding_Attackto_Neighbours(x, y, attackmap, move_matrix, row_len,
                                         col_len, range, mode_movetile);
     }
-    DARR_FREE(list_len);
+    DARR_FREE(move_list);
 }
 
 i32 *Pathfinding_Attackto(i32 *move_matrix, size_t row_len, size_t col_len,
                           u8 range[2], i32 mode_movetile) {
     /* -- Setup output attackmap -- */
     i32 *attackmap = calloc(row_len * col_len, sizeof(*attackmap));
-    for (u8 i = 0; i < row_len * col_len; i++)
-        attackmap[i] = NMATH_ATTACKMAP_BLOCKED;
-
-    /* -- Setup variables -- */
-    i32 *move_list  = linalg_matrix2list_int32_t(move_matrix, row_len, col_len);
-    size_t list_len = DARR_NUM(move_list) / NMATH_TWO_D;
-    // bool add_point  = (mode_movetile != MOVETILE_EXCLUDE);
-
-    /* -- For every point in movemap -- */
-    for (i32 i = 0; i < list_len; i++) {
-        i32 x = move_list[i * TWO_D + 0];
-        i32 y = move_list[i * TWO_D + 1];
-
-        Pathfinding_Attackto_Neighbours(x, y, attackmap, move_matrix, row_len,
-                                        col_len, range, mode_movetile);
-    }
-    free(move_list);
+    Pathfinding_Attackto_noM(attackmap, move_matrix, row_len, col_len, range, mode_movetile);
+    return (attackmap);
 }
 
 void Pathfinding_Attackto_Neighbours(i32 x, i32 y, i32 *attackmap, i32 *move_matrix,
@@ -522,8 +507,11 @@ void pathfinding_Map_unitGradient_noM(i32 *gradmap, i32 *costmap,
                 continue;
 
             /* Skip neighbour if:  already visited AND higher cost */
-            if (neighbour.distance < gradmap[current_n])
-                gradmap[current_n] = neighbour.distance;
+            if (neighbour.distance >= gradmap[current_n])
+                continue;
+
+            /* Update gradmap if closer than when visited previously */
+            gradmap[current_n] = neighbour.distance;
 
             Pathfinding_Neighbour(open, closed, neighbour);
         }
