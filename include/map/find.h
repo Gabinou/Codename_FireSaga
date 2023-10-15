@@ -23,7 +23,7 @@ extern tnecs_entity_t *Map_Find_Breakables(struct Map *map, i32 *al, tnecs_entit
 extern tnecs_entity_t *Map_Find_Defendants(struct Map *map, i32 *al, tnecs_entity_t *a,
                                            tnecs_entity_t agg, bool q);
 
-/* - neighbors - */
+/* - neighbours - */
 extern tnecs_entity_t *Map_Find_Victims(struct Map *map, tnecs_entity_t *a, i32 x, i32 y,
                                         tnecs_entity_t savior);
 

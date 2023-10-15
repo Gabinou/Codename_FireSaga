@@ -406,13 +406,13 @@ struct AI AI_default = {
 //     struct Point pushpullable;
 //     out.rating = INT8_MIN;
 //     int_fast8_t temp_rating = 0;
-//     for (i32 sq_neighbor = 0; sq_neighbor < SQUARE_NEIGHBOURS; sq_neighbor++) {
+//     for (i32 sq_neighbour = 0; sq_neighbour < SQUARE_NEIGHBOURS; sq_neighbour++) {
 //         for (i32 distance = 1; distance < pushpull_distance; distance++) {
 //             pushpullable.x = int_inbounds((distance * q_cycle4_pzmz(
-//                     sq_neighbor)) + victim_pos.x, 0,
+//                     sq_neighbour)) + victim_pos.x, 0,
 //                                                     col_len - 1);
 //             pushpullable.y = int_inbounds((distance * q_cycle4_zmzp(
-//                     sq_neighbor)) + victim_pos.y, 0,
+//                     sq_neighbour)) + victim_pos.y, 0,
 //                                                     row_len - 1);
 //             if ((pushpullable.x == victim_pos.x) && (pushpullable.y == victim_pos.y))
 //                 break;

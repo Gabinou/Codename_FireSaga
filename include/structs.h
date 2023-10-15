@@ -138,7 +138,7 @@ struct Pointf {
     float y;
 };
 
-struct SquareNeighbors {
+struct SquareNeighbours {
     i32 right;
     i32 top;
     i32 left;

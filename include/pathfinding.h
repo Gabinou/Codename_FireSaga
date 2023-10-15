@@ -48,6 +48,9 @@ extern i32 *Taxicab_Circle(             i32 *m, i32 x, i32 y, size_t r, size_t c
 extern i32 *Taxicab_Circle_List(i32 *d, i32 *m, i32 x, i32 y, size_t r, size_t c, struct Range *R);
 
 /* --- Pathfinding --- */
+
+void Pathfinding_Neighbour(struct Node *o, struct Node *c, struct Node ne);
+
 /* -- Astar -- */
 extern i32 *Pathfinding_Astar(i32 *path, i32 *cost, size_t rowl, size_t coll,
                               struct Point start, struct Point end);
@@ -59,9 +62,9 @@ extern i32 *Pathfinding_Moveto(i32 *costmap, size_t row_len, size_t col_len,
 extern void Pathfinding_Moveto_noM(i32 *move_matrix, i32 *cost_matrix,
                                    size_t row_len, size_t col_len,
                                    struct Point start, i32 move);
-extern void Pathfinding_Moveto_Neighbors(struct Node *open, struct Node *closed,
-                                         struct Node current, i32 *cost_matrix,
-                                         size_t row_len, size_t col_len, i32 move);
+extern void Pathfinding_Moveto_Neighbours(struct Node *open, struct Node *closed,
+                                          struct Node current, i32 *cost_matrix,
+                                          size_t row_len, size_t col_len, i32 move);
 
 /* -- Visible -- */
 extern i32 *Pathfinding_Visible(i32 *blockmap, size_t row_len, size_t col_len,
@@ -75,9 +78,9 @@ extern i32 *Pathfinding_Attackto(i32 *move_matrix, size_t row_len, size_t col_le
 extern void Pathfinding_Attackto_noM(i32 *attackto_mat, i32 *move_matrix,
                                      size_t row_len, size_t col_len,
                                      u8 range[2], i32 mode_movetile);
-extern void Pathfinding_Attackto_Neighbors(i32 x, i32 y, i32 *attackmap, i32 *movemat,
-                                           size_t row_len, size_t col_len,
-                                           u8 range[2], i32 mode_movetile);
+extern void Pathfinding_Attackto_Neighbours(i32 x, i32 y, i32 *attackmap, i32 *movemat,
+                                            size_t row_len, size_t col_len,
+                                            u8 range[2], i32 mode_movetile);
 
 /* -- Attackfrom -- */
 extern i32 *Pathfinding_Attackfrom(i32 *movemap, size_t row_len, size_t col_len,

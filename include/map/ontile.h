@@ -31,7 +31,7 @@ struct Map;
 // Check attack map for
 //      - Attackable Breakable -> UnitAction menu
 //      - Attackable Units -> UnitAction menu
-// Check Neighbor tiles for
+// Check neighbour tiles for
 //      - Openable Doors -> UnitAction menu
 //      - Openable Chests -> UnitAction menu
 // Check Current Tiles for

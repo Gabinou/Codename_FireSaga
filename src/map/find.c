@@ -187,7 +187,7 @@ tnecs_entity_t Map_Find_Chest_Ent(struct Map *map, i32 x, i32 y) {
 
 tnecs_entity_t *Map_Find_Spectators(struct Map *map, tnecs_entity_t *spectators, i32 x, i32 y) {
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
-    /* -- Find spectator on neighbor tiles (to dance) -- */
+    /* -- Find spectator on neighbour tiles (to dance) -- */
     for (i32 i = 0; i < SQUARE_NEIGHBOURS; i++) {
         int x_at = int_inbounds(x + q_cycle4_mzpz(i), 0, map->col_len);
         int y_at = int_inbounds(y + q_cycle4_zmzp(i), 0, map->row_len);
@@ -208,7 +208,7 @@ tnecs_entity_t *Map_Find_Spectators(struct Map *map, tnecs_entity_t *spectators,
 
 tnecs_entity_t *Map_Find_Auditors(struct Map *map, tnecs_entity_t *auditors, i32 x, i32 y) {
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
-    /* -- Find auditors on neighbor tiles (to speak) -- */
+    /* -- Find auditors on neighbour tiles (to speak) -- */
 
     for (i32 i = 0; i < SQUARE_NEIGHBOURS; i++) {
         int x_at = int_inbounds(x + q_cycle4_mzpz(i), 0, map->col_len);
@@ -230,7 +230,7 @@ tnecs_entity_t *Map_Find_Auditors(struct Map *map, tnecs_entity_t *auditors, i32
 
 tnecs_entity_t *Map_Find_Traders(struct Map *map, tnecs_entity_t *passives, i32 x, i32 y) {
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
-    /* -- Find traders on neighbors (to trade with) -- */
+    /* -- Find traders on neighbours (to trade with) -- */
     for (i32 i = 0; i < SQUARE_NEIGHBOURS; i++) {
         int x_at = int_inbounds(x + q_cycle4_mzpz(i), 0, map->col_len);
         int y_at = int_inbounds(y + q_cycle4_zmzp(i), 0, map->row_len);
@@ -251,7 +251,7 @@ tnecs_entity_t *Map_Find_Traders(struct Map *map, tnecs_entity_t *passives, i32 
 tnecs_entity_t *Map_Find_Victims(struct Map *map, tnecs_entity_t *victims_ent,
                                  i32 x, i32 y, tnecs_entity_t savior_ent) {
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
-    // Find victims on neighbors (to rescue)
+    // Find victims on neighbours (to rescue)
 
     for (i32 i = 0; i < SQUARE_NEIGHBOURS; i++) {
         int x_at = int_inbounds(x + q_cycle4_mzpz(i), 0, map->col_len);
@@ -293,7 +293,7 @@ tnecs_entity_t *Map_Find_Doors(struct Map *map, tnecs_entity_t *openable, i32 x,
 
 tnecs_entity_t *Map_Find_Chests(struct Map *map, tnecs_entity_t *openable, i32 x, i32 y) {
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
-    // Find Chests on current position and neighbors
+    // Find Chests on current position and neighbours
     for (size_t i = 0; i < map->chest_num; i++) {
         struct Position *pos = TNECS_GET_COMPONENT(map->world, map->chests_ent[i], Position);
         size_t x_at          = pos->tilemap_pos.x;
