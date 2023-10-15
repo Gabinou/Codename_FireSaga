@@ -351,53 +351,53 @@ TEMPLATE_TYPES_FLOAT
 TEMPLATE_TYPES_BOOL
 #undef REGISTER_ENUM
 
-#define REGISTER_ENUM(type) type * linalg_uniques_##type(type * array, size_t arr_len) {\
-    type * uniques_list = DARR_INIT(uniques_list, type, arr_len);\
-    for (size_t i = 0; i < arr_len; i++) {\
-        if (!linalg_isIn_##type(uniques_list, array[i], DARR_NUM(uniques_list))) {\
-            DARR_PUT(uniques_list, array[i]);\
-        }\
-    }\
-    DARR_LEN(uniques_list) = DARR_NUM(uniques_list);\
-    uniques_list = DARR_REALLOC(uniques_list, (DARR_NUM(uniques_list) < NMATH_MINLEN? NMATH_MINLEN : DARR_NUM(uniques_list)));\
-    return (uniques_list);\
-}
-TEMPLATE_TYPES_INT
-TEMPLATE_TYPES_FLOAT
-TEMPLATE_TYPES_BOOL
-#undef REGISTER_ENUM
+// #define REGISTER_ENUM(type) type * linalg_uniques_##type(type * array, size_t arr_len) {\
+//     type * uniques_list = DARR_INIT(uniques_list, type, arr_len);\
+//     for (size_t i = 0; i < arr_len; i++) {\
+//         if (!linalg_isIn_##type(uniques_list, array[i], DARR_NUM(uniques_list))) {\
+//             DARR_PUT(uniques_list, array[i]);\
+//         }\
+//     }\
+//     DARR_LEN(uniques_list) = DARR_NUM(uniques_list);\
+//     uniques_list = DARR_REALLOC(uniques_list, (DARR_NUM(uniques_list) < NMATH_MINLEN? NMATH_MINLEN : DARR_NUM(uniques_list)));\
+//     return (uniques_list);\
+// }
+// TEMPLATE_TYPES_INT
+// TEMPLATE_TYPES_FLOAT
+// TEMPLATE_TYPES_BOOL
+// #undef REGISTER_ENUM
 
-#define REGISTER_ENUM(type) bool linalg_isIn_##type(type * array, type to_find, size_t arr_len) {\
-    bool found = false;\
-    for (size_t i = 0; i < arr_len; i++) {\
-        if (array[i] == to_find) {\
-            found = true;\
-            break;\
-        }\
-    }\
-    return (found);\
-}
-TEMPLATE_TYPES_INT
-TEMPLATE_TYPES_FLOAT
-TEMPLATE_TYPES_BOOL
-#undef REGISTER_ENUM
+// #define REGISTER_ENUM(type) bool linalg_isIn_##type(type * array, type to_find, size_t arr_len) {\
+//     bool found = false;\
+//     for (size_t i = 0; i < arr_len; i++) {\
+//         if (array[i] == to_find) {\
+//             found = true;\
+//             break;\
+//         }\
+//     }\
+//     return (found);\
+// }
+// TEMPLATE_TYPES_INT
+// TEMPLATE_TYPES_FLOAT
+// TEMPLATE_TYPES_BOOL
+// #undef REGISTER_ENUM
 
-#define REGISTER_ENUM(type) size_t * linalg_where_##type(type * array, type to_find, size_t arr_len) {\
-    size_t * found_list = DARR_INIT(found_list, size_t, arr_len);\
-    for (size_t i = 0; i < arr_len; i++) {\
-        if (array[i] == to_find) {\
-            DARR_PUT(found_list, i);\
-            break;\
-        }\
-    }\
-    DARR_LEN(found_list) = DARR_NUM(found_list);\
-    found_list = DARR_REALLOC(found_list, (DARR_NUM(found_list) < NMATH_MINLEN? NMATH_MINLEN :DARR_NUM(found_list)));\
-    return (found_list);\
-}
-TEMPLATE_TYPES_INT
-TEMPLATE_TYPES_FLOAT
-TEMPLATE_TYPES_BOOL
-#undef REGISTER_ENUM
+// #define REGISTER_ENUM(type) size_t * linalg_where_##type(type * array, type to_find, size_t arr_len) {\
+//     size_t * found_list = DARR_INIT(found_list, size_t, arr_len);\
+//     for (size_t i = 0; i < arr_len; i++) {\
+//         if (array[i] == to_find) {\
+//             DARR_PUT(found_list, i);\
+//             break;\
+//         }\
+//     }\
+//     DARR_LEN(found_list) = DARR_NUM(found_list);\
+//     found_list = DARR_REALLOC(found_list, (DARR_NUM(found_list) < NMATH_MINLEN? NMATH_MINLEN :DARR_NUM(found_list)));\
+//     return (found_list);\
+// }
+// TEMPLATE_TYPES_INT
+// TEMPLATE_TYPES_FLOAT
+// TEMPLATE_TYPES_BOOL
+// #undef REGISTER_ENUM
 
 #define REGISTER_ENUM(type) extern type * linalg_draw_circ_noM_##type(type * out_mat, type origin_x, type origin_y, size_t diameter, size_t row_len, size_t col_len){\
     size_t radius = diameter / 2;\
@@ -845,26 +845,26 @@ TEMPLATE_TYPES_FLOAT
 TEMPLATE_TYPES_BOOL
 #undef REGISTER_ENUM
 
-#define REGISTER_ENUM(type) type * linalg_list2matrix_noM_##type(type * out, type * list, size_t row_len, size_t col_len, size_t list_len) {\
-    for (size_t elem = 0; elem < list_len; elem++) {\
-        out[list[2 * elem + 1] * col_len + list[2 * elem + 0]] = 1;\
-    }\
-    return (out);\
-}
-TEMPLATE_TYPES_INT
-TEMPLATE_TYPES_BOOL
-#undef REGISTER_ENUM
+// #define REGISTER_ENUM(type) type * linalg_list2matrix_noM_##type(type * out, type * list, size_t row_len, size_t col_len, size_t list_len) {\
+//     for (size_t elem = 0; elem < list_len; elem++) {\
+//         out[list[2 * elem + 1] * col_len + list[2 * elem + 0]] = 1;\
+//     }\
+//     return (out);\
+// }
+// TEMPLATE_TYPES_INT
+// TEMPLATE_TYPES_BOOL
+// #undef REGISTER_ENUM
 
-#define REGISTER_ENUM(type) type * linalg_list2matrix_##type(type * list, size_t row_len, size_t col_len, size_t list_len) {\
-    type * out = calloc(row_len * col_len, sizeof(type));\
-    for (size_t elem = 0; elem < list_len; elem++) {\
-        out[list[2 * elem + 1] * col_len + list[2 * elem + 0]] = 1;\
-    }\
-    return (out);\
-}
-TEMPLATE_TYPES_INT
-TEMPLATE_TYPES_BOOL
-#undef REGISTER_ENUM
+// #define REGISTER_ENUM(type) type * linalg_list2matrix_##type(type * list, size_t row_len, size_t col_len, size_t list_len) {\
+//     type * out = calloc(row_len * col_len, sizeof(type));\
+//     for (size_t elem = 0; elem < list_len; elem++) {\
+//         out[list[2 * elem + 1] * col_len + list[2 * elem + 0]] = 1;\
+//     }\
+//     return (out);\
+// }
+// TEMPLATE_TYPES_INT
+// TEMPLATE_TYPES_BOOL
+// #undef REGISTER_ENUM
 
 #define REGISTER_ENUM(type) type * linalg_matrix2list_noM_##type(type * matrix, type * list, size_t row_len, size_t col_len) {\
     DARR_NUM(list) = 0;\

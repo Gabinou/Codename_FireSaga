@@ -41,6 +41,10 @@ struct Map;
 // Openable-> list of 2D positions
 // Attackable-> list of 2D positions
 
+/* --- Entity finders --- */
+bool entity_isIn(    u64 *array, u64 to_find, size_t arr_len);
+size_t *entity_where(u64 *array, u64 to_find, size_t arr_len);
+
 /* --- Units --- */
 extern void Map_startingPos_Add(       struct Map *map, i32 col, i32 row);
 extern void Map_addArmy(struct Map *map, const uf8 army);

@@ -5,6 +5,20 @@
 #ifndef __clang__
 
 /* --- matrix --- */
+size_t *matrix_where(i32 *array, i32 to_find, size_t arr_len) {
+    size_t *found_list = DARR_INIT(found_list, size_t, arr_len);
+    for (size_t i = 0; i < arr_len; i++) {
+        if (array[i] == to_find) {
+            DARR_PUT(found_list, i);
+            break;
+        }
+    }
+    DARR_LEN(found_list) = DARR_NUM(found_list);
+    size_t newl = (DARR_NUM(found_list) < SOTA_MINLEN ? SOTA_MINLEN : DARR_NUM(found_list));
+    found_list = DARR_REALLOC(found_list, newl);
+    return (found_list);
+}
+
 bool list_isIn_2D(i32 *list_2D, size_t list_len, i32 x, i32 y) {
     bool found = false;
     for (size_t i = 0; i < list_len; i++) {

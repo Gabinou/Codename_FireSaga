@@ -1,6 +1,32 @@
 
 #include "map/ontile.h"
 
+/* --- Entity finders --- */
+bool entity_isIn(u64 *array, u64 to_find, size_t arr_len) {
+    bool found = false;
+    for (size_t i = 0; i < arr_len; i++) {
+        if (array[i] == to_find) {
+            found = true;
+            break;
+        }
+    }
+    return (found);
+}
+
+size_t *entity_where(u64 *array, u64 to_find, size_t arr_len) {
+    size_t *found_list = DARR_INIT(found_list, size_t, arr_len);
+    for (size_t i = 0; i < arr_len; i++) {
+        if (array[i] == to_find) {
+            DARR_PUT(found_list, i);
+            break;
+        }
+    }
+    DARR_LEN(found_list) = DARR_NUM(found_list);
+    size_t newl = (DARR_NUM(found_list) < SOTA_MINLEN ? SOTA_MINLEN : DARR_NUM(found_list));
+    found_list = DARR_REALLOC(found_list, newl);
+    return (found_list);
+}
+
 void Map_startingPos_Add(struct Map *map, i32 col, i32 row) {
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     struct Point pos = {col, row};
@@ -147,20 +173,20 @@ void Map_addArmy(struct Map *map, const uf8 army) {
 void Map_Unit_Remove(struct Map *map, const tnecs_entity_t entity) {
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     size_t *found = NULL;
-    if (linalg_isIn_uint64_t(map->friendlies_onfield, entity, map->num_friendlies_onfield)) {
-        found = linalg_where_uint64_t(map->friendlies_onfield, entity, map->num_friendlies_onfield);
+    if (entity_isIn(map->friendlies_onfield, entity, map->num_friendlies_onfield)) {
+        found = entity_where(map->friendlies_onfield, entity, map->num_friendlies_onfield);
         DARR_DEL(map->friendlies_onfield, found[0]);
         map->num_friendlies_onfield--;
         free(found);
     }
-    if (linalg_isIn_uint64_t(map->enemies_onfield, entity, map->num_enemies_onfield)) {
-        found = linalg_where_uint64_t(map->enemies_onfield, entity, map->num_enemies_onfield);
+    if (entity_isIn(map->enemies_onfield, entity, map->num_enemies_onfield)) {
+        found = entity_where(map->enemies_onfield, entity, map->num_enemies_onfield);
         DARR_DEL(map->enemies_onfield, found[0]);
         map->num_enemies_onfield--;
         free(found);
     }
-    if (linalg_isIn_uint64_t(map->units_onfield, entity, map->num_units_onfield)) {
-        found = linalg_where_uint64_t(map->units_onfield, entity, map->num_units_onfield);
+    if (entity_isIn(map->units_onfield, entity, map->num_units_onfield)) {
+        found = entity_where(map->units_onfield, entity, map->num_units_onfield);
         DARR_DEL(map->units_onfield, found[0]);
         map->num_units_onfield--;
         free(found);

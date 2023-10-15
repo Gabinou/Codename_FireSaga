@@ -43,8 +43,12 @@
 extern bool list_isIn_2D(i32 *list_2D, size_t list_len, i32 x, i32 y);
 extern i32 *matrix2list_noM(i32 *matrix, i32 *list, size_t row_len, size_t col_len);
 extern i32 *matrix2list(    i32 *matrix,            size_t row_len, size_t col_len);
+extern i32 *list2matrix(i32 *list, size_t row_len, size_t col_len, size_t list_len);
+extern i32 *list2matrix_noM(i32 *out, i32 *list, size_t row_len, size_t col_len, size_t list_len);
 
 extern void matrix_print(i32 *array, size_t row_len, size_t col_len);
+
+extern size_t *matrix_where(i32 *array, i32 to_find, size_t arr_len);
 
 extern i32 *matrix_plus_noM(i32 *matrix1, i32 *matrix2, size_t arr_len);
 extern i32 *matrix_sgreater_noM(i32 *out, i32 *matrix1, i32 tocompare, size_t arr_len);
