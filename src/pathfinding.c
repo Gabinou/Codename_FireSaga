@@ -534,7 +534,11 @@ bool Pathfinding_Tile_Visible(i32 *blockmap, struct Point start, struct Point de
                               size_t col_len) {
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     /* -- Between start and delta -- */
-    i32 distance = delta.x + delta.y;
+    i32 distance = labs(delta.x) + labs(delta.y);
+    printf("start %d %d\n", start.x, start.y);
+    printf("delta %d %d\n", delta.x, delta.y);
+    printf("distance %d \n", delta.x, delta.y);
+
     bool visible = true;
     for (i32 d = 1; d < distance; d++) {
         i32 dist_x = (i32)lround(d * delta.x * (1.0f / distance));
@@ -543,6 +547,7 @@ bool Pathfinding_Tile_Visible(i32 *blockmap, struct Point start, struct Point de
         struct Point interpolated;
         interpolated.x = start.x + dist_x;
         interpolated.y = start.y + dist_y;
+        printf("interpolated %d %d\n", interpolated.x, interpolated.y);
 
         i32 interp_i = interpolated.y * col_len + interpolated.x;
         if (blockmap[interp_i] == BLOCKMAP_BLOCKED) {
