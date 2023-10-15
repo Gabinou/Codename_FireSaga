@@ -15,6 +15,7 @@
 #include "test_map.h"
 #include "test_menu.h"
 #include "test_RNG.h"
+#include "test_pathfinding.h"
 #include "test_position.h"
 #include "test_pixelfonts.h"
 #include "test_scene.h"
@@ -68,6 +69,7 @@ int unit_tests() {
     nourstest_run("Game ",          test_game);
     nourstest_run("Item",           test_item);
     nourstest_run("Map ",           test_map);
+    nourstest_run("Pathfinding ",   test_pathfinding);
     nourstest_run("Menu ",          test_menu);
     nourstest_run("Octant ",        test_octant);
     nourstest_run("Position ",      test_position);
