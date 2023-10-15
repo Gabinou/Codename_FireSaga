@@ -566,9 +566,9 @@ void Pathfinding_Visible_noM(i32 *sightmap, i32 *block_matrix,
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     /* -- Wipe sightmap -- */
-    for (u8 i = 0; i < row_len * col_len; i++) {
-        sightmap[i] = NMATH_SIGHTMAP_BLOCKED;
-    }
+
+    for (u8 i = 0; i < row_len * col_len; i++)
+        sightmap[i] = SIGHTMAP_BLOCKED;
 
     /* -- Setup variables -- */
     struct Point perimeter_point = {0}, delta = {0};

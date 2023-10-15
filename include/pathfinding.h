@@ -38,7 +38,7 @@ enum PATHFINDING_ATTACKMAP {
 };
 
 /* --- About pushpull --- */
-// unit gradient map SHOULD BE a Pushpullmap also  
+// unit gradient map SHOULD BE a Pushpullmap also
 enum PATHFINDING_PUSHPULLMAP {
     PUSHPULLMAP_UNIT    =  0,
     PUSHPULLMAP_BLOCKED = -1,
@@ -88,8 +88,8 @@ extern void Pathfinding_Moveto_Neighbours(struct Node *open, struct Node *closed
                                           size_t row_len, size_t col_len, i32 move);
 
 /* -- Visible -- */
-extern bool Pathfinding_Tile_Visible(i32 *block_matrix, struct Point start, struct Point delta,
-                                     size_t col_len);
+extern bool Pathfinding_Tile_Visible(i32 *block_matrix, struct Point start,
+                                     struct Point delta, size_t col_len);
 extern i32 *Pathfinding_Visible(i32 *blockmap, size_t row_len, size_t col_len,
                                 struct Point start, i32 sight);
 extern void Pathfinding_Visible_noM(i32 *sightmap, i32 *blockmap, size_t row_len,
@@ -109,7 +109,7 @@ extern void Pathfinding_Attackto_Neighbours(i32 x, i32 y, i32 *attackmap, i32 *m
 
 /* -- Attackfrom -- */
 // NOMENCLATURE: attackfrom alternatives
-// - siegeable
+// -
 extern i32 *Pathfinding_Attackfrom(i32 *movemap, size_t row_len, size_t col_len,
                                    struct Point target, u8 range[2], int mode_output);
 extern i32 *Pathfinding_Attackfrom_noM(i32 *attackfrom, i32 *movemap,
