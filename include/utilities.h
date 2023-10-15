@@ -40,7 +40,7 @@
 #define SOTA_MINLEN 12
 
 /* --- matrix2list --- */
-void matrix2list_noM(i32 *matrix, i32 *list, size_t row_len, size_t col_len);
+i32 *matrix2list_noM(i32 *matrix, i32 *list, size_t row_len, size_t col_len);
 i32 *matrix2list(    i32 *matrix,            size_t row_len, size_t col_len);
 
 /* --- Debug --- */

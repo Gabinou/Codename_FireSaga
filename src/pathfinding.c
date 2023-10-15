@@ -40,6 +40,7 @@ i32 *Pathfinding_PushPullto_noM(i32 *pushpulltomap,
                                 struct SquareNeighbours pushpullto,
                                 size_t row_len, size_t col_len,
                                 struct Point start) {
+    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     i32 temp_distance;
     struct Point pushpullto_tile;
     i32 *block_ptr         = (i32 *)&direction_block;
@@ -58,13 +59,16 @@ i32 *Pathfinding_PushPullto_noM(i32 *pushpulltomap,
                 }
             }
         }
-        return (pushpulltomap);
     }
+
+    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
+    return (pushpulltomap);
 }
 
 
 struct SquareNeighbours pathfinding_Direction_Pushto(i32 *attackfrommap, size_t row_len,
                                                      size_t col_len, u8 range[2], struct Point target) {
+    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     struct SquareNeighbours Pushto = {0, 0, 0, 0};
     struct Point neighbour;
     for (i32 distance = range[0]; distance <= range[1]; distance++) {
@@ -84,6 +88,8 @@ struct SquareNeighbours pathfinding_Direction_Pushto(i32 *attackfrommap, size_t 
             }
         }
     }
+
+    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
     return (Pushto);
 }
 
@@ -91,6 +97,7 @@ i32 *Pathfinding_PushPullto(struct SquareNeighbours direction_block,
                             struct SquareNeighbours pushpullto,
                             size_t row_len, size_t col_len,
                             struct Point start, u8 mode_output) {
+    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     i32 *pushpulltomap = NULL;
     i32 temp_distance;
     struct Point pushpullto_tile;
@@ -130,11 +137,14 @@ i32 *Pathfinding_PushPullto(struct SquareNeighbours direction_block,
             }
         }
     }
+
+    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
     return (pushpulltomap);
 }
 
 struct SquareNeighbours pathfinding_Direction_Block(i32 *costmap_pushpull, size_t row_len,
                                                     size_t col_len, struct Point start) {
+    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     struct SquareNeighbours  distance_block = {0, 0, 0, 0};
     i32 *distance_ptr = (i32 *)&distance_block;
     struct Point neighbour = {0, 0};
@@ -159,12 +169,15 @@ struct SquareNeighbours pathfinding_Direction_Block(i32 *costmap_pushpull, size_
             }
         }
     }
+
+    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
     return (distance_block);
 }
 
 /* --- AStar --- */
 i32 *Pathfinding_CameFrom_List(i32 *path, i32 *came_from, size_t col_len,
                                struct Point start, struct Point end) {
+    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     struct Point current = end;
     struct Point move;
     DARR_NUM(path) = 0;
@@ -177,17 +190,23 @@ i32 *Pathfinding_CameFrom_List(i32 *path, i32 *came_from, size_t col_len,
         current.x -= move.x;
         current.y -= move.y;
     }
+
+    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
     return (path);
 }
 
 i32 Pathfinding_Manhattan(struct Point start, struct Point end) {
+    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     /* Does not include endpoints */
     i32 distance = labs(start.x - end.x) + labs(start.y - end.y);
+
+    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
     return (distance);
 }
 
 i32 *Pathfinding_Astar(i32 *path_list, i32 *costmap, size_t row_len,
                        size_t col_len, struct Point start, struct Point end) {
+    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     /* Assumes square grid, path_list is a DARR */
     /* [1]: http://www.redblobgames.com/pathfinding/a-star/introduction.html */
     /* Checks */
@@ -259,19 +278,25 @@ i32 *Pathfinding_Astar(i32 *path_list, i32 *costmap, size_t row_len,
     free(cost);
     free(came_from);
     DARR_FREE(frontier_queue);
+
+    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
     return (path_list);
 }
 
 i32 *Pathfinding_Moveto(i32 *cost_matrix, size_t row_len, size_t col_len,
                         struct Point start, i32 move) {
+    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     /* -- Setup output move_matrix -- */
     i32 *move_matrix = calloc(row_len * col_len, sizeof(*move_matrix));
     Pathfinding_Moveto_noM(move_matrix, cost_matrix, row_len, col_len, start, move);
+
+    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
     return (move_matrix);
 }
 
 void Pathfinding_Moveto_noM(i32 *move_matrix, i32 *cost_matrix, size_t row_len,
                             size_t col_len, struct Point start, i32 move) {
+    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     /* -- Wipe move_matrix -- */
     for (size_t i = 0; i < row_len * col_len; i++)
         move_matrix[i] = MOVEMAP_BLOCKED;
@@ -303,11 +328,14 @@ void Pathfinding_Moveto_noM(i32 *move_matrix, i32 *cost_matrix, size_t row_len,
 
     DARR_FREE(open);
     DARR_FREE(closed);
+
+    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 void Pathfinding_Moveto_Neighbours(struct Node *open, struct Node *closed,
                                    struct Node current, i32 *cost_matrix,
                                    size_t row_len, size_t col_len, i32 move) {
+    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     struct Node neighbour;
 
     /* -- Move to four square neighbour tiles -- */
@@ -327,9 +355,12 @@ void Pathfinding_Moveto_Neighbours(struct Node *open, struct Node *closed,
         /* - Decide to add neighbor to open list or not - */
         Pathfinding_Neighbour(open, closed, neighbour);
     }
+
+    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 void Pathfinding_Neighbour(struct Node *open, struct Node *closed, struct Node neighbour) {
+    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     /* - Find if neighbour was already visited -> in closed - */
     int neighbour_inclosed = -1;
     for (i32 k = 0; k < DARR_NUM(closed); k++) {
@@ -350,14 +381,17 @@ void Pathfinding_Neighbour(struct Node *open, struct Node *closed, struct Node n
         DARR_DEL(closed, neighbour_inclosed);
         DARR_PUT(open,   neighbour);
     }
+
+    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 /* -- Attackto -- */
 void Pathfinding_Attackto_noM(i32 *attackmap, i32 *move_matrix,
                               size_t row_len, size_t col_len,
                               u8 range[2], i32 mode_movetile) {
+    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     /* -- Wipe attackmap -- */
-    for (u8 i = 0; i < row_len * col_len; i++)
+    for (i32 i = 0; i < row_len * col_len; i++)
         attackmap[i] = ATTACKMAP_BLOCKED;
 
     /* -- Setup variables -- */
@@ -373,19 +407,25 @@ void Pathfinding_Attackto_noM(i32 *attackmap, i32 *move_matrix,
                                         col_len, range, mode_movetile);
     }
     DARR_FREE(move_list);
+
+    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 i32 *Pathfinding_Attackto(i32 *move_matrix, size_t row_len, size_t col_len,
                           u8 range[2], i32 mode_movetile) {
+    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     /* -- Setup output attackmap -- */
     i32 *attackmap = calloc(row_len * col_len, sizeof(*attackmap));
     Pathfinding_Attackto_noM(attackmap, move_matrix, row_len, col_len, range, mode_movetile);
+
+    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
     return (attackmap);
 }
 
 void Pathfinding_Attackto_Neighbours(i32 x, i32 y, i32 *attackmap, i32 *move_matrix,
                                      size_t row_len, size_t col_len,
                                      u8 range[2], i32 mode_movetile) {
+    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     /* -- Setup variables -- */
     struct Point point;
     bool add_point  = (mode_movetile != MOVETILE_EXCLUDE);
@@ -412,12 +452,15 @@ void Pathfinding_Attackto_Neighbours(i32 x, i32 y, i32 *attackmap, i32 *move_mat
             }
         }
     }
+
+    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 /* -- Unit Gradient -- */
 void Pathfinding_unitGradient_noM(i32 *gradmap, i32 *costmap,
                                   size_t row_len, size_t col_len,
                                   struct Point *targets, size_t unit_num) {
+    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     /* -- Wipe gradmap -- */
     for (i32 i = 0; i < col_len * row_len; i++) {
         if (costmap[i] < NMATH_PUSHPULLMAP_BLOCKED)
@@ -468,18 +511,24 @@ void Pathfinding_unitGradient_noM(i32 *gradmap, i32 *costmap,
             Pathfinding_Neighbour(open, closed, neighbour);
         }
     }
+
+    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 i32 *Pathfinding_unitGradient(i32 *costmap, size_t row_len, size_t col_len,
                               struct Point *targets, size_t unit_num) {
+    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     i32 *gradmap = calloc(row_len * col_len, sizeof(i32));
     Pathfinding_unitGradient_noM(gradmap, costmap, row_len, col_len, targets, unit_num);
+
+    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
     return (gradmap);
 }
 
 /* -- Visible -- */
 bool Pathfinding_Tile_Visible(i32 *block_matrix, struct Point start, struct Point delta,
                               size_t col_len) {
+    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     /* -- Between start and delta -- */
     i32 distance = delta.x + delta.y;
     bool visible = true;
@@ -502,12 +551,16 @@ bool Pathfinding_Tile_Visible(i32 *block_matrix, struct Point start, struct Poin
             break;
         }
     }
+
+    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
     return (visible);
 }
 
 void Pathfinding_Visible_noM(i32 *sightmap, i32 *block_matrix,
                              size_t row_len, size_t col_len,
                              struct Point start, i32 sight) {
+    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
+    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     /* -- Wipe sightmap -- */
     for (u8 i = 0; i < row_len * col_len; i++) {
         sightmap[i] = NMATH_SIGHTMAP_BLOCKED;
@@ -547,11 +600,16 @@ void Pathfinding_Visible_noM(i32 *sightmap, i32 *block_matrix,
             sightmap[perim_i] = (blocked == BLOCKMAP_BLOCKED) ? SIGHTMAP_VISIBLE : SIGHTMAP_WALL;
         }
     }
+
+    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 i32 *Pathfinding_Visible(i32 *block_matrix, size_t row_len, size_t col_len,
                          struct Point start, i32 sight) {
+    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     i32 *sightmap = calloc(row_len * col_len, sizeof(i32));
     Pathfinding_Visible_noM(sightmap, block_matrix, row_len, col_len, start, sight);
+
+    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
     return (sightmap);
 }

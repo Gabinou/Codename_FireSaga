@@ -200,8 +200,8 @@ void Tilemap_Shader_Load_Tileset_pixels(struct Tilemap_Shader *shd, const char *
         offset = Util_SDL_Surface_Index(surf, x, y);
 
         /* - read shaded pixels - */
-        // temp_arr = pixels2list(surf->pixels + offset, tilesize[1], tilesize[0]);
-        temp_arr = linalg_matrix2list_uint_fast8_t(surf->pixels + offset, tilesize[1], tilesize[0]);
+        temp_arr = pixels2list(surf->pixels + offset, tilesize[1], tilesize[0]);
+        // temp_arr = linalg_matrix2list_uint_fast8_t(surf->pixels + offset, tilesize[1], tilesize[0]);
         /* - alloc shadowtile pixels - */
         shd->shadowtile_pixels_num[i] = DARR_NUM(temp_arr) / 2;
         bytesize = shd->shadowtile_pixels_num[i] * sizeof(*temp_arr);
@@ -330,8 +330,8 @@ void Index_Shader_Load(struct Index_Shader *shd, SDL_Surface *surf, SDL_Rect *re
     /* - Make list of shaded pixels from 2D array - */
     if (shd->pixels_list != NULL)
         DARR_FREE(shd->pixels_list);
-    // shd->pixels_list = pixels2list(temp_arr, rect->h, rect->w);
-    shd->pixels_list = linalg_matrix2list_uint_fast8_t(temp_arr, rect->h, rect->w);
+    shd->pixels_list = pixels2list(temp_arr, rect->h, rect->w);
+    // shd->pixels_list = linalg_matrix2list_uint_fast8_t(temp_arr, rect->h, rect->w);
     shd->pixels_num = (DARR_NUM(shd->pixels_list) / 2);
     free(temp_arr);
 
