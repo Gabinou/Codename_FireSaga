@@ -20,11 +20,25 @@ i32 *matrix2list_noM(i32 *matrix, i32 *list, size_t row_len, size_t col_len) {
 
 i32 *matrix2list(i32 *matrix, size_t row_len, size_t col_len) {
     i32 *list = DARR_INIT(list, i32, row_len * col_len * 2);
-    matrix2list_noM(matrix, list, row_len, col_len);
+    list = matrix2list_noM(matrix, list, row_len, col_len);
     size_t newsize = (DARR_NUM(list) < SOTA_MINLEN) ? SOTA_MINLEN : DARR_NUM(list);
     list = DARR_REALLOC(list, newsize);
     return (list);
 }
+
+i32 *list2matrix_noM(i32 *out, i32 *list, size_t row_len, size_t col_len, size_t list_len) {
+    for (size_t elem = 0; elem < list_len; elem++) {
+        out[list[2 * elem + 1] * col_len + list[2 * elem + 0]] = 1;
+    }
+    return (out);
+}
+
+i32 *list2matrix(i32 *list, size_t row_len, size_t col_len, size_t list_len) {
+    i32 *out = calloc(row_len * col_len, sizeof(i32));
+    list2matrix_noM(out, list, row_len, col_len, list_len);
+    return (out);
+}
+
 
 /* --- Debug --- */
 void Utilities_stacktrace() {

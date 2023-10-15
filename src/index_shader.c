@@ -32,6 +32,29 @@ i32 *matrix_rect_noise(i32 *matrix, i32 origx, i32 origy,
     return (NULL);
 }
 
+/* --- pixels2list --- */
+uf8 *pixels2list_noM(uf8 *matrix, uf8 *list, size_t row_len, size_t col_len) {
+    DARR_NUM(list) = 0;
+    for (size_t col = 0; col < col_len; col++) {
+        for (size_t row = 0; row < row_len; row++) {
+            if (matrix[row * col_len + col] > 0) {
+                DARR_PUT(list, col);
+                DARR_PUT(list, row);
+            }
+        }
+    }
+    return (list);
+}
+
+uf8 *pixels2list(uf8 *matrix, size_t row_len, size_t col_len) {
+    uf8 *list = DARR_INIT(list, uf8, row_len * col_len * 2);
+    list = pixels2list_noM(matrix, list, row_len, col_len);
+    size_t newsize = (DARR_NUM(list) < SOTA_MINLEN) ? SOTA_MINLEN : DARR_NUM(list);
+    list = DARR_REALLOC(list, newsize);
+    return (list);
+}
+
+
 void Index_Shade_Pixels(uf8 *to, SDL_Surface *unlocked_surface, uf8 *pixels_list,
                         size_t pixels_num, size_t offset_x, size_t offset_y) {
     SOTA_Log_FPS("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
@@ -177,6 +200,7 @@ void Tilemap_Shader_Load_Tileset_pixels(struct Tilemap_Shader *shd, const char *
         offset = Util_SDL_Surface_Index(surf, x, y);
 
         /* - read shaded pixels - */
+        // temp_arr = pixels2list(surf->pixels + offset, tilesize[1], tilesize[0]);
         temp_arr = linalg_matrix2list_uint_fast8_t(surf->pixels + offset, tilesize[1], tilesize[0]);
         /* - alloc shadowtile pixels - */
         shd->shadowtile_pixels_num[i] = DARR_NUM(temp_arr) / 2;
@@ -306,6 +330,7 @@ void Index_Shader_Load(struct Index_Shader *shd, SDL_Surface *surf, SDL_Rect *re
     /* - Make list of shaded pixels from 2D array - */
     if (shd->pixels_list != NULL)
         DARR_FREE(shd->pixels_list);
+    // shd->pixels_list = pixels2list(temp_arr, rect->h, rect->w);
     shd->pixels_list = linalg_matrix2list_uint_fast8_t(temp_arr, rect->h, rect->w);
     shd->pixels_num = (DARR_NUM(shd->pixels_list) / 2);
     free(temp_arr);
