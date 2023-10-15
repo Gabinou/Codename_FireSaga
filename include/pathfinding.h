@@ -37,6 +37,12 @@ enum PATHFINDING_PUSHPULLMAP {
     PUSHPULLMAP_MINDIST = 1, // minimal moveable distance
 };
 
+enum PATHFINDING_BLOCKMAP {
+    BLOCKMAP_INIT = 0,
+    BLOCKMAP_BLOCKED = 0,
+    BLOCKMAP_MIN = 1,
+};
+
 
 /* --- Taxicab Geometry --- */
 /* Taxicabs can't move diagonal so manhattan distance: abs(x1-x2) + abs(y1-ys2)
@@ -67,6 +73,9 @@ extern void Pathfinding_Moveto_Neighbours(struct Node *open, struct Node *closed
                                           size_t row_len, size_t col_len, i32 move);
 
 /* -- Visible -- */
+
+extern bool Pathfinding_Tile_Visible(i32 *block_matrix, struct Point start, struct Point delta,
+                                     size_t col_len);
 extern i32 *Pathfinding_Visible(i32 *blockmap, size_t row_len, size_t col_len,
                                 struct Point start, i32 sight);
 extern void Pathfinding_Visible_noM(i32 *sightmap, i32 *blockmap, size_t row_len,

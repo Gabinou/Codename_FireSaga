@@ -33,8 +33,8 @@ i32 *Taxicab_Circle(i32 *matrix, i32 x, i32 y, size_t row_len, size_t col_len,
     return (matrix);
 }
 
-
 /* --- Pushing and pulling --- */
+// TODO: refactor pushpull stuff to be BETTER
 i32 *Pathfinding_PushPullto_noM(i32 *pushpulltomap,
                                 struct SquareNeighbours direction_block,
                                 struct SquareNeighbours pushpullto,
@@ -63,9 +63,9 @@ i32 *Pathfinding_PushPullto_noM(i32 *pushpulltomap,
 }
 
 
-struct SquareNeighbours  pathfinding_Direction_Pushto(i32   *attackfrommap, size_t row_len,
-                                                      size_t col_len, int8_t range[2], struct Point target) {
-    struct SquareNeighbours  Pushto = {0, 0, 0, 0};
+struct SquareNeighbours pathfinding_Direction_Pushto(i32 *attackfrommap, size_t row_len,
+                                                     size_t col_len, u8 range[2], struct Point target) {
+    struct SquareNeighbours Pushto = {0, 0, 0, 0};
     struct Point neighbour;
     for (i32 distance = range[0]; distance <= range[1]; distance++) {
         for (i32  i = 0; i < NMATH_SQUARE_NEIGHBOURS; i++) {
@@ -133,10 +133,8 @@ i32 *Pathfinding_PushPullto(struct SquareNeighbours direction_block,
     return (pushpulltomap);
 }
 
-
-
-struct SquareNeighbours  pathfinding_Direction_Block(i32   *costmap_pushpull, size_t row_len,
-                                                     size_t col_len, struct Point start) {
+struct SquareNeighbours pathfinding_Direction_Block(i32 *costmap_pushpull, size_t row_len,
+                                                    size_t col_len, struct Point start) {
     struct SquareNeighbours  distance_block = {0, 0, 0, 0};
     i32 *distance_ptr = (i32 *)&distance_block;
     struct Point neighbour = {0, 0};
@@ -480,47 +478,73 @@ i32 *Pathfinding_unitGradient(i32 *costmap, size_t row_len, size_t col_len,
 }
 
 /* -- Visible -- */
-void Pathfinding_Visible_noM(i32 *sightmap, i32 *block_matrix, size_t row_len, size_t col_len,
-                             struct Point start, i32 sight) {
-    struct Point perimeter_nmath_point = {0, 0}, delta = {0, 0}, interpolated = {0, 0};
-    bool visible;
-    for (u8 row = 0; row < row_len; row++) {
-        for (u8 col = 0; col < col_len; col++) {
-            sightmap[(row * col_len + col)] = NMATH_SIGHTMAP_BLOCKED;
+bool Pathfinding_Tile_Visible(i32 *block_matrix, struct Point start, struct Point delta,
+                              size_t col_len) {
+    /* -- Between start and delta -- */
+    i32 distance = delta.x + delta.y;
+    bool visible = true;
+    for (i32 d = 1; d < distance; d++) {
+        i32 dist_x = (i32)lround(d * delta.x * (1.0f / distance));
+        i32 dist_y = (i32)lround(d * delta.y * (1.0f / distance));
+
+        struct Point interpolated;
+        interpolated.x = start.x + (delta.x == 0 ? 0 : dist_x);
+        interpolated.y = start.y + (delta.y == 0 ? 0 : dist_y);
+
+        /* -- Skip neighbour if: interp is start -- */
+        if ((interpolated.x == start.x) || (interpolated.y == start.y))
+            continue;
+
+        i32 interp_i = interpolated.y * col_len + interpolated.x;
+        if (block_matrix[interp_i] >= NMATH_BLOCKMAP_MIN) {
+            /* -- Perimeter tile is blocked -- */
+            visible = false;
+            break;
         }
     }
+    return (visible);
+}
+
+void Pathfinding_Visible_noM(i32 *sightmap, i32 *block_matrix,
+                             size_t row_len, size_t col_len,
+                             struct Point start, i32 sight) {
+    /* -- Wipe sightmap -- */
+    for (u8 i = 0; i < row_len * col_len; i++) {
+        sightmap[i] = NMATH_SIGHTMAP_BLOCKED;
+    }
+
+    /* -- Setup variables -- */
+    struct Point perimeter_point = {0}, delta = {0};
     sightmap[start.y * col_len + start.x] = NMATH_SIGHTMAP_OBSERVER;
-    for (i32  distance = 1; distance <= sight; distance++) {
-        for (i32  n = 0; n < (distance * NMATH_SQUARE_NEIGHBOURS); n++) {
-            delta.x = int_inbounds(distance * q_cycle4_mzpz(n) + (n /
-                                                                  NMATH_SQUARE_NEIGHBOURS) * q_cycle4_pmmp(n), -start.x, col_len - start.x);
-            delta.y = int_inbounds(distance * q_cycle4_zmzp(n) + (n /
-                                                                  NMATH_SQUARE_NEIGHBOURS) * q_cycle4_ppmm(n), -start.y, row_len - start.y);
-            perimeter_nmath_point.x = start.x + delta.x;
-            perimeter_nmath_point.y = start.y + delta.y;
-            visible = true;
-            for (i32 interp_dist = 1; interp_dist < distance; interp_dist++) {
-                interpolated.x = start.x + (delta.x == 0 ? 0 : (i32)lround(interp_dist * delta.x *
-                                                                           (1.0f / distance)));
-                interpolated.y = start.y + (delta.y == 0 ? 0 : (i32)lround(interp_dist * delta.y *
-                                                                           (1.0f / distance)));
-                if ((interpolated.x != start.x) || (interpolated.y != start.y)) {
-                    if (block_matrix[interpolated.y * col_len + interpolated.x] >= NMATH_BLOCKMAP_MIN) {
-                        visible = false;
-                        break;
-                    }
-                }
-            }
-            if (visible) {
-                switch (block_matrix[perimeter_nmath_point.y * col_len + perimeter_nmath_point.x]) {
-                    case NMATH_BLOCKMAP_BLOCKED:
-                        sightmap[perimeter_nmath_point.y * col_len + perimeter_nmath_point.x] = NMATH_SIGHTMAP_VISIBLE;
-                        break;
-                    default:
-                        sightmap[perimeter_nmath_point.y * col_len + perimeter_nmath_point.x] = NMATH_SIGHTMAP_WALL;
-                        break;
-                }
-            }
+
+    /* -- Loop over all visible tiles -- */
+    for (i32 distance = 1; distance <= sight; distance++) {
+        for (i32 n = 0; n < (distance * NMATH_SQUARE_NEIGHBOURS); n++) {
+            /* -- Find perimeter tile at edge of visible distance -- */
+            //  Example components:
+            //  _1 --------->    e.g. component 1 goes to max,
+            //     |distance|
+            //  _2      ^
+            //  _2      |--      e.g. component 2 walks back to perimeter
+            i32 x_1  = distance * q_cycle4_mzpz(n);
+            i32 y_1  = distance * q_cycle4_zmzp(n);
+            i32 x_2  = (n / NMATH_SQUARE_NEIGHBOURS) * q_cycle4_pmmp(n);
+            i32 y_2  = (n / NMATH_SQUARE_NEIGHBOURS) * q_cycle4_ppmm(n);
+
+            delta.x = int_inbounds(x_1 + x_2, -start.x, col_len - start.x);
+            delta.y = int_inbounds(y_1 + y_2, -start.y, row_len - start.y);
+
+            perimeter_point.x = start.x + delta.x;
+            perimeter_point.y = start.y + delta.y;
+
+            /* -- Skip neighbour if: tile is not visible -- */
+            if (!Pathfinding_Tile_Visible(block_matrix, start, delta, col_len))
+                continue;
+
+            /* -- Update sightmap -- */
+            i32 perim_i = perimeter_point.y * col_len + perimeter_point.x;
+            i32 blocked = block_matrix[perim_i];
+            sightmap[perim_i] = (blocked == BLOCKMAP_BLOCKED) ? SIGHTMAP_VISIBLE : SIGHTMAP_WALL;
         }
     }
 }
@@ -531,5 +555,3 @@ i32 *Pathfinding_Visible(i32 *block_matrix, size_t row_len, size_t col_len,
     Pathfinding_Visible_noM(sightmap, block_matrix, row_len, col_len, start, sight);
     return (sightmap);
 }
-
-
