@@ -527,48 +527,8 @@ void Pathfinding_Visible_noM(i32 *sightmap, i32 *block_matrix, size_t row_len, s
 
 i32 *Pathfinding_Visible(i32 *block_matrix, size_t row_len, size_t col_len,
                          struct Point start, i32 sight) {
-    struct Point perimeter_nmath_point = {0, 0}, delta = {0, 0}, interpolated = {0, 0};
-    bool visible;
     i32 *sightmap = calloc(row_len * col_len, sizeof(i32));
-    for (u8 row = 0; row < row_len; row++) {
-        for (u8 col = 0; col < col_len; col++) {
-            sightmap[(row * col_len + col)] = NMATH_SIGHTMAP_BLOCKED;
-        }
-    }
-    sightmap[start.y * col_len + start.x] = NMATH_SIGHTMAP_OBSERVER;
-    for (i32  distance = 1; distance <= sight; distance++) {
-        for (i32  n = 0; n < (distance * NMATH_SQUARE_NEIGHBOURS); n++) {
-            delta.x = int_inbounds(distance * q_cycle4_mzpz(n) + (n /
-                                                                  NMATH_SQUARE_NEIGHBOURS) * q_cycle4_pmmp(n), -start.x, col_len - start.x);
-            delta.y = int_inbounds(distance * q_cycle4_zmzp(n) + (n /
-                                                                  NMATH_SQUARE_NEIGHBOURS) * q_cycle4_ppmm(n), -start.y, row_len - start.y);
-            perimeter_nmath_point.x = start.x + delta.x;
-            perimeter_nmath_point.y = start.y + delta.y;
-            visible = true;
-            for (i32 interp_dist = 1; interp_dist < distance; interp_dist++) {
-                interpolated.x = start.x + (delta.x == 0 ? 0 : (i32)lround(interp_dist * delta.x *
-                                                                           (1.0f / distance)));
-                interpolated.y = start.y + (delta.y == 0 ? 0 : (i32)lround(interp_dist * delta.y *
-                                                                           (1.0f / distance)));
-                if ((interpolated.x != start.x) || (interpolated.y != start.y)) {
-                    if (block_matrix[interpolated.y * col_len + interpolated.x] >= NMATH_BLOCKMAP_MIN) {
-                        visible = false;
-                        break;
-                    }
-                }
-            }
-            if (visible) {
-                switch (block_matrix[perimeter_nmath_point.y * col_len + perimeter_nmath_point.x]) {
-                    case NMATH_BLOCKMAP_BLOCKED:
-                        sightmap[perimeter_nmath_point.y * col_len + perimeter_nmath_point.x] = NMATH_SIGHTMAP_VISIBLE;
-                        break;
-                    default:
-                        sightmap[perimeter_nmath_point.y * col_len + perimeter_nmath_point.x] = NMATH_SIGHTMAP_WALL;
-                        break;
-                }
-            }
-        }
-    }
+    Pathfinding_Visible_noM(sightmap, block_matrix, row_len, col_len, start, sight);
     return (sightmap);
 }
 
