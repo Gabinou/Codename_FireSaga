@@ -36,6 +36,129 @@ i32 *Taxicab_Circle(i32 *matrix, i32 x, i32 y, size_t row_len, size_t col_len,
 /* --- Pushing and pulling --- */
 /* TODO: Convert from nmath to SOTA */
 
+i32 *pathfinding_Map_PushPullto_noM(i32 *pushpulltomap, struct SquareNeighbors  direction_block,
+                                    struct SquareNeighbors pushpullto, size_t row_len, size_t col_len, struct Point start) {
+    i32 temp_distance;
+    struct Point pushpullto_tile;
+    i32 *block_ptr         = (i32 *)&direction_block;
+    i32 *pushpullto_ptr    = (i32 *)&pushpullto;
+    for (size_t i = 0; i < row_len; i++) {
+        pushpulltomap[i] = PUSHPULLMAP_BLOCKED;
+
+        pushpulltomap[start.y * col_len + start.x] = 0;
+        for (i32  sq_neighbor = 0; sq_neighbor < NMATH_SQUARE_NEIGHBOURS; sq_neighbor++) {
+            temp_distance = *(block_ptr + sq_neighbor);
+            if (*(pushpullto_ptr + sq_neighbor) >= NMATH_PUSHPULLMAP_MINDIST) {
+                for (i32  distance = 1; distance < temp_distance; distance++) {
+                    pushpullto_tile.x = int_inbounds((distance * q_cycle4_pzmz(sq_neighbor)) + start.x, 0, col_len - 1);
+                    pushpullto_tile.y = int_inbounds((distance * q_cycle4_zmzp(sq_neighbor)) + start.y, 0, row_len - 1);
+                    pushpulltomap[pushpullto_tile.y * col_len + pushpullto_tile.x] = distance;
+                }
+            }
+        }
+        return (pushpulltomap);
+    }
+}
+
+
+struct SquareNeighbors  pathfinding_Direction_Pushto(i32   *attackfrommap, size_t row_len,
+                                                     size_t col_len, int8_t range[2], struct Point target) {
+    struct SquareNeighbors  Pushto = {0, 0, 0, 0};
+    struct Point neighbor;
+    for (i32 distance = range[0]; distance <= range[1]; distance++) {
+        for (i32  i = 0; i < NMATH_SQUARE_NEIGHBOURS; i++) {
+            neighbor.x = int_inbounds((target.x + distance * q_cycle4_pzmz(i)), 0, col_len - 1);
+            neighbor.y = int_inbounds((target.y + distance * q_cycle4_zpzm(i)), 0, row_len - 1);
+            if (attackfrommap[neighbor.y * col_len + neighbor.x] >= NMATH_ATTACKFROM_MOVEABLEMIN) {
+                if (neighbor.x > target.x) {
+                    Pushto.left = true;
+                } else if (neighbor.y > target.y) {
+                    Pushto.top = true;
+                } else if (neighbor.x < target.x) {
+                    Pushto.right = true;
+                } else if (neighbor.y < target.y) {
+                    Pushto.bottom = true;
+                }
+            }
+        }
+    }
+    return (Pushto);
+}
+
+i32 *pathfinding_Map_PushPullto(struct SquareNeighbors  direction_block,
+                                struct SquareNeighbors  pushpullto, size_t row_len, size_t col_len, struct Point start,
+                                u8 mode_output) {
+    i32 *pushpulltomap = NULL;
+    i32 temp_distance;
+    struct Point pushpullto_tile;
+    i32 *block_ptr = (i32 *)&direction_block;
+    i32 *pushpullto_ptr = (i32 *)&pushpullto;
+    switch (mode_output) {
+        case (NMATH_POINTS_MODE_LIST):
+            pushpulltomap = DARR_INIT(pushpulltomap, i32, row_len * col_len * NMATH_TWO_D);
+            break;
+        case (NMATH_POINTS_MODE_MATRIX):
+            pushpulltomap = calloc(row_len * col_len, sizeof(*pushpulltomap));
+            for (size_t row = 0; row < row_len; row++) {
+                for (size_t col = 0; col < col_len; col++) {
+                    pushpulltomap[(row * col_len + col)] = NMATH_PUSHPULLMAP_BLOCKED;
+                }
+            }
+            break;
+    }
+    pushpulltomap[start.y * col_len + start.x] = 0;
+    for (i32  sq_neighbor = 0; sq_neighbor < NMATH_SQUARE_NEIGHBOURS; sq_neighbor++) {
+        temp_distance = *(block_ptr + sq_neighbor);
+        if (*(pushpullto_ptr + sq_neighbor) >= NMATH_PUSHPULLMAP_MINDIST) {
+            for (i32  distance = 1; distance < temp_distance; distance++) {
+                pushpullto_tile.x = int_inbounds((distance * q_cycle4_pzmz(sq_neighbor)) + start.x, 0, col_len - 1);
+                pushpullto_tile.y = int_inbounds((distance * q_cycle4_zmzp(sq_neighbor)) + start.y, 0, row_len - 1);
+                switch (mode_output) {
+                    case NMATH_POINTS_MODE_LIST:
+                        DARR_PUT(pushpulltomap, pushpullto_tile.x);
+                        DARR_PUT(pushpulltomap, pushpullto_tile.y);
+                        break;
+                    case NMATH_POINTS_MODE_MATRIX:
+                        pushpulltomap[pushpullto_tile.y * col_len + pushpullto_tile.x] = distance;
+                        break;
+                }
+            }
+        }
+    }
+    return (pushpulltomap);
+}
+
+
+
+struct SquareNeighbors  pathfinding_Direction_Block(i32   *costmap_pushpull, size_t row_len,
+                                                    size_t col_len, struct Point start) {
+    struct SquareNeighbors  distance_block = {0, 0, 0, 0};
+    i32 *distance_ptr = (i32 *)&distance_block;
+    struct Point neighbor = {0, 0};
+    i32  distance = 0;
+    while ((distance_block.top == 0) || (distance_block.bottom == 0) || (distance_block.left == 0)
+           || (distance_block.right == 0)) {
+        distance++;
+        for (i32  i = 0; i < NMATH_SQUARE_NEIGHBOURS; i++) {
+            neighbor.x = int_inbounds((start.x + q_cycle4_pzmz(i) * distance), 0, col_len - 1);
+            neighbor.y = int_inbounds((start.y + q_cycle4_zpzm(i) * distance), 0, row_len - 1);
+            if ((costmap_pushpull[neighbor.y * col_len + neighbor.x] == 0) && (*(distance_ptr + i) == 0)) {
+                *(distance_ptr + i) = distance;
+            }
+            if ((neighbor.x == 0) && (distance_block.left == 0)) {
+                distance_block.left = start.x;
+            } else if ((neighbor.y == 0) && (distance_block.top == 0)) {
+                distance_block.top = start.y;
+            } else if ((neighbor.x == (col_len - 1)) && (distance_block.right == 0)) {
+                distance_block.right = (col_len - 1) - start.x;
+            } else if ((neighbor.y == (row_len - 1)) && (distance_block.bottom == 0)) {
+                distance_block.bottom = (row_len - 1) - start.y;
+            }
+        }
+    }
+    return (distance_block);
+}
+
 /* --- AStar --- */
 i32 *Pathfinding_CameFrom_List(i32 *path, i32 *came_from, size_t col_len,
                                struct Point start, struct Point end) {
@@ -269,7 +392,6 @@ void Pathfinding_Moveto_Neighbors(struct Node *open, struct Node *closed,
     }
 }
 
-
 /* -- Attackto -- */
 void Pathfinding_Attackto_noM(i32 *attackmap, i32 *move_matrix,
                               size_t row_len, size_t col_len,
@@ -346,3 +468,223 @@ void Pathfinding_Attackto_Neighbors(i32 x, i32 y, i32 *attackmap, i32 *move_matr
         }
     }
 }
+
+/* -- Unit Gradient -- */
+i32 *pathfinding_Map_unitGradient_noM(i32 *unitgradientmap, i32 *in_costmap, size_t row_len,
+                                      size_t col_len, struct Point *in_targets, size_t unit_num) {
+    for (i32  col = 0; col < col_len; col++) {
+        for (i32  row = 0; row < row_len; row++) {
+            if (in_costmap[row * col_len + col] < NMATH_PUSHPULLMAP_BLOCKED) {
+                unitgradientmap[row * col_len + col] = NMATH_GRADIENTMAP_BLOCKED;
+            } else {
+                unitgradientmap[row * col_len + col] = row_len + col_len;
+            }
+        }
+    }
+    struct Node *open = DARR_INIT(open, struct Node, row_len * col_len);
+    struct Node *closed = DARR_INIT(closed, struct Node, row_len * col_len);
+    struct Node current, neighbor;
+    for (i32  i = 0; i < unit_num; i++) {
+        unitgradientmap[in_targets[i].y * col_len + in_targets[i].x] = NMATH_GRADIENTMAP_UNIT;
+        current.x = in_targets[i].x;
+        current.y = in_targets[i].y;
+        current.distance = 1;
+        DARR_PUT(open, current);
+    }
+    while (DARR_NUM(open) > 0) {
+        current = DARR_POP(open);
+        DARR_PUT(closed, current);
+        for (i32  sq_neighbor = 0; sq_neighbor < NMATH_SQUARE_NEIGHBOURS; sq_neighbor++) {
+            neighbor.x = int_inbounds(q_cycle4_mzpz(sq_neighbor) + current.x, 0, col_len - 1);
+            neighbor.y = int_inbounds(q_cycle4_zmzp(sq_neighbor) + current.y, 0, row_len - 1);
+            neighbor.distance = unitgradientmap[current.y * col_len + current.x] + 1;
+            if (in_costmap[neighbor.y * col_len + neighbor.x] >= NMATH_COSTMAP_MOVEABLEMIN) {
+                if (neighbor.distance < unitgradientmap[neighbor.y * col_len + neighbor.x]) {
+                    unitgradientmap[neighbor.y * col_len + neighbor.x] = neighbor.distance;
+                }
+                bool neighbor_inclosed = false;
+                for (int32_t k = 0; k < DARR_NUM(closed); k++) {
+                    if ((neighbor.x == closed[k].x) && (neighbor.y == closed[k].y)) {
+                        neighbor_inclosed = true;
+                        if (neighbor.distance < closed[k].distance) {
+                            neighbor_inclosed = false;
+                            DARR_DEL(closed, k);
+                        }
+                        break;
+                    }
+                }
+                if (!neighbor_inclosed) {
+                    DARR_PUT(open, neighbor);
+                }
+            }
+        }
+    }
+    return (unitgradientmap);
+}
+
+
+
+i32 *pathfinding_Map_unitGradient(i32 *in_costmap, size_t row_len, size_t col_len,
+                                  struct Point *in_targets, size_t unit_num) {
+    i32 *unitgradientmap = calloc(row_len * col_len, sizeof(i32));
+    for (i32  col = 0; col < col_len; col++) {
+        for (i32  row = 0; row < row_len; row++) {
+            if (in_costmap[row * col_len + col] < NMATH_PUSHPULLMAP_BLOCKED) {
+                unitgradientmap[row * col_len + col] = NMATH_GRADIENTMAP_BLOCKED;
+            } else {
+                unitgradientmap[row * col_len + col] = row_len + col_len;
+            }
+        }
+    }
+    struct Node *open = DARR_INIT(open, struct Node, row_len * col_len);
+    struct Node *closed = DARR_INIT(closed, struct Node, row_len * col_len);
+    struct Node current, neighbor;
+    for (i32  i = 0; i < unit_num; i++) {
+        unitgradientmap[in_targets[i].y * col_len + in_targets[i].x] = NMATH_GRADIENTMAP_UNIT;
+        current.x = in_targets[i].x;
+        current.y = in_targets[i].y;
+        current.distance = 1;
+        DARR_PUT(open, current);
+    }
+    while (DARR_NUM(open) > 0) {
+        current = DARR_POP(open);
+        DARR_PUT(closed, current);
+        for (i32  sq_neighbor = 0; sq_neighbor < NMATH_SQUARE_NEIGHBOURS; sq_neighbor++) {
+            neighbor.x = int_inbounds(q_cycle4_mzpz(sq_neighbor) + current.x, 0, col_len - 1);
+            neighbor.y = int_inbounds(q_cycle4_zmzp(sq_neighbor) + current.y, 0, row_len - 1);
+            neighbor.distance = unitgradientmap[current.y * col_len + current.x] + 1;
+            if (in_costmap[neighbor.y * col_len + neighbor.x] >= NMATH_COSTMAP_MOVEABLEMIN) {
+                if (neighbor.distance < unitgradientmap[neighbor.y * col_len + neighbor.x]) {
+                    unitgradientmap[neighbor.y * col_len + neighbor.x] = neighbor.distance;
+                }
+                bool neighbor_inclosed = false;
+                for (int32_t k = 0; k < DARR_NUM(closed); k++) {
+                    if ((neighbor.x == closed[k].x) && (neighbor.y == closed[k].y)) {
+                        neighbor_inclosed = true;
+                        if (neighbor.distance < closed[k].distance) {
+                            neighbor_inclosed = false;
+                            DARR_DEL(closed, k);
+                        }
+                        break;
+                    }
+                }
+                if (!neighbor_inclosed) {
+                    DARR_PUT(open, neighbor);
+                }
+            }
+        }
+    }
+    return (unitgradientmap);
+}
+
+
+
+/* -- Visible -- */
+i32 *pathfinding_Map_Visible_noM(i32 *sightmap, i32 *block_matrix, size_t row_len, size_t col_len,
+                                 struct Point start, i32 sight) {
+    struct Point perimeter_nmath_point = {0, 0}, delta = {0, 0}, interpolated = {0, 0};
+    bool visible;
+    for (u8 row = 0; row < row_len; row++) {
+        for (u8 col = 0; col < col_len; col++) {
+            sightmap[(row * col_len + col)] = NMATH_SIGHTMAP_BLOCKED;
+        }
+    }
+    sightmap[start.y * col_len + start.x] = NMATH_SIGHTMAP_OBSERVER;
+    for (i32  distance = 1; distance <= sight; distance++) {
+        for (i32  sq_neighbor = 0; sq_neighbor < (distance * NMATH_SQUARE_NEIGHBOURS); sq_neighbor++) {
+            delta.x = int_inbounds(distance * q_cycle4_mzpz(sq_neighbor) + (sq_neighbor /
+                                   NMATH_SQUARE_NEIGHBOURS) * q_cycle4_pmmp(sq_neighbor), -start.x, col_len - start.x);
+            delta.y = int_inbounds(distance * q_cycle4_zmzp(sq_neighbor) + (sq_neighbor /
+                                   NMATH_SQUARE_NEIGHBOURS) * q_cycle4_ppmm(sq_neighbor), -start.y, row_len - start.y);
+            perimeter_nmath_point.x = start.x + delta.x;
+            perimeter_nmath_point.y = start.y + delta.y;
+            visible = true;
+            for (int32_t interp_dist = 1; interp_dist < distance; interp_dist++) {
+                interpolated.x = start.x + (delta.x == 0 ? 0 : (int32_t)lround(interp_dist * delta.x *
+                                            (1.0f / distance)));
+                interpolated.y = start.y + (delta.y == 0 ? 0 : (int32_t)lround(interp_dist * delta.y *
+                                            (1.0f / distance)));
+                if ((interpolated.x != start.x) || (interpolated.y != start.y)) {
+                    if (block_matrix[interpolated.y * col_len + interpolated.x] >= NMATH_BLOCKMAP_MIN) {
+                        visible = false;
+                        break;
+                    }
+                }
+            }
+            if (visible) {
+                switch (block_matrix[perimeter_nmath_point.y * col_len + perimeter_nmath_point.x]) {
+                    case NMATH_BLOCKMAP_BLOCKED:
+                        sightmap[perimeter_nmath_point.y * col_len + perimeter_nmath_point.x] = NMATH_SIGHTMAP_VISIBLE;
+                        break;
+                    default:
+                        sightmap[perimeter_nmath_point.y * col_len + perimeter_nmath_point.x] = NMATH_SIGHTMAP_WALL;
+                        break;
+                }
+            }
+        }
+    }
+    return (sightmap);
+}
+
+
+
+i32 *pathfinding_Map_Visible(i32   *block_matrix, size_t row_len, size_t col_len,
+                             struct Point start, i32 sight, u8 mode_output) {
+    i32   *sightmap = NULL;
+    struct Point perimeter_nmath_point = {0, 0}, delta = {0, 0}, interpolated = {0, 0};
+    bool visible;
+    switch (mode_output) {
+        case (NMATH_POINTS_MODE_LIST):
+            sightmap = DARR_INIT(sightmap, i32, row_len * col_len * NMATH_TWO_D);
+            break;
+        case (NMATH_POINTS_MODE_MATRIX):
+            sightmap = calloc(row_len * col_len, sizeof(i32));
+            for (u8 row = 0; row < row_len; row++) {
+                for (u8 col = 0; col < col_len; col++) {
+                    sightmap[(row * col_len + col)] = NMATH_SIGHTMAP_BLOCKED;
+                }
+            }
+            break;
+    }
+    sightmap[start.y * col_len + start.x] = NMATH_SIGHTMAP_OBSERVER;
+    for (i32  distance = 1; distance <= sight; distance++) {
+        for (i32  sq_neighbor = 0; sq_neighbor < (distance * NMATH_SQUARE_NEIGHBOURS); sq_neighbor++) {
+            delta.x = int_inbounds(distance * q_cycle4_mzpz(sq_neighbor) + (sq_neighbor /
+                                   NMATH_SQUARE_NEIGHBOURS) * q_cycle4_pmmp(sq_neighbor), -start.x, col_len - start.x);
+            delta.y = int_inbounds(distance * q_cycle4_zmzp(sq_neighbor) + (sq_neighbor /
+                                   NMATH_SQUARE_NEIGHBOURS) * q_cycle4_ppmm(sq_neighbor), -start.y, row_len - start.y);
+            perimeter_nmath_point.x = start.x + delta.x;
+            perimeter_nmath_point.y = start.y + delta.y;
+            visible = true;
+            for (int32_t interp_dist = 1; interp_dist < distance; interp_dist++) {
+                interpolated.x = start.x + (delta.x == 0 ? 0 : (int32_t)lround(interp_dist * delta.x *
+                                            (1.0f / distance)));
+                interpolated.y = start.y + (delta.y == 0 ? 0 : (int32_t)lround(interp_dist * delta.y *
+                                            (1.0f / distance)));
+                if ((interpolated.x != start.x) || (interpolated.y != start.y)) {
+                    if (block_matrix[interpolated.y * col_len + interpolated.x] >= NMATH_BLOCKMAP_MIN) {
+                        visible = false;
+                        break;
+                    }
+                }
+            }
+            if (visible) {
+                switch (mode_output) {
+                    case (NMATH_POINTS_MODE_MATRIX):
+                        switch (block_matrix[perimeter_nmath_point.y * col_len + perimeter_nmath_point.x]) {
+                            case NMATH_BLOCKMAP_BLOCKED:
+                                sightmap[perimeter_nmath_point.y * col_len + perimeter_nmath_point.x] = NMATH_SIGHTMAP_VISIBLE;
+                                break;
+                            default:
+                                sightmap[perimeter_nmath_point.y * col_len + perimeter_nmath_point.x] = NMATH_SIGHTMAP_WALL;
+                                break;
+                        }
+                        break;
+                }
+            }
+        }
+    }
+    return (sightmap);
+}
+
+

@@ -31,6 +31,13 @@ enum PATHFINDING_ATTACKMAP {
     ATTACKMAP_MOVEABLEMIN   = 1,
 };
 
+enum PATHFINDING_PUSHPULLMAP {
+    PUSHPULLMAP_UNIT = 0,
+    PUSHPULLMAP_BLOCKED = -1,
+    PUSHPULLMAP_MINDIST = 1, // minimal moveable distance
+};
+
+
 /* --- Taxicab Geometry --- */
 /* Taxicabs can't move diagonal so manhattan distance: abs(x1-x2) + abs(y1-ys2)
  * Manhattan (distance) used to trace 'circles' on square tilemap

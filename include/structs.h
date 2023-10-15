@@ -138,6 +138,14 @@ struct Pointf {
     float y;
 };
 
+struct SquareNeighbors {
+    i32 right;
+    i32 top;
+    i32 left;
+    i32 bottom;
+};
+
+
 struct Node {
     i32 x;
     i32 y;
