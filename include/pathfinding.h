@@ -20,6 +20,12 @@ enum PATHFINDING_MODE_MOVETILE {
     MOVETILE_INCLUDE = 1,
 };
 
+/* --- About blocking --- */
+// 1. Everything BLOCKED    is == 0
+// 2. Everything DOABLE     is  > 0 ex: move to, visible, attack to
+//     - A costmap for movement can ALSO be used as a blockmap for vision
+//          -> Only if units cannot block vision.
+//     -> costmap NOT ENOUGH for pushpull because friendlies can block push/pull
 enum PATHFINDING_COSTMAP {
     COSTMAP_BLOCKED     = 0,
     COSTMAP_MOVEABLEMIN = 1,
@@ -31,16 +37,18 @@ enum PATHFINDING_ATTACKMAP {
     ATTACKMAP_MOVEABLEMIN   = 1,
 };
 
+/* --- About pushpull --- */
+// unit gradient map SHOULD BE a Pushpullmap also  
 enum PATHFINDING_PUSHPULLMAP {
-    PUSHPULLMAP_UNIT = 0,
+    PUSHPULLMAP_UNIT    =  0,
     PUSHPULLMAP_BLOCKED = -1,
-    PUSHPULLMAP_MINDIST = 1, // minimal moveable distance
+    PUSHPULLMAP_MINDIST =  1, // minimal moveable distance
 };
 
 enum PATHFINDING_BLOCKMAP {
-    BLOCKMAP_INIT = 0,
-    BLOCKMAP_BLOCKED = 0,
-    BLOCKMAP_MIN = 1,
+    BLOCKMAP_INIT       = 0,
+    BLOCKMAP_BLOCKED    = 0,
+    BLOCKMAP_MIN        = 1,
 };
 
 
@@ -66,6 +74,10 @@ extern i32 *Pathfinding_Astar(i32 *path, i32 *cost, size_t rowl, size_t coll,
 extern i32 Pathfinding_Manhattan(struct Point start, struct Point end);
 
 /* -- Moveto -- */
+// NOMENCLATURE: moveto alternatives
+// - traversable, accessible, travelable (long...)
+// - crossable  (Maybe)
+// - passable (used more to mean "Okay")
 extern i32 *Pathfinding_Moveto(i32 *costmap, size_t row_len, size_t col_len,
                                struct Point start, i32 move);
 extern void Pathfinding_Moveto_noM(i32 *move_matrix, i32 *cost_matrix,
@@ -76,7 +88,6 @@ extern void Pathfinding_Moveto_Neighbours(struct Node *open, struct Node *closed
                                           size_t row_len, size_t col_len, i32 move);
 
 /* -- Visible -- */
-
 extern bool Pathfinding_Tile_Visible(i32 *block_matrix, struct Point start, struct Point delta,
                                      size_t col_len);
 extern i32 *Pathfinding_Visible(i32 *blockmap, size_t row_len, size_t col_len,
@@ -85,6 +96,8 @@ extern void Pathfinding_Visible_noM(i32 *sightmap, i32 *blockmap, size_t row_len
                                     size_t col_len, struct Point start, i32 sight);
 
 /* -- Attackto -- */
+// NOMENCLATURE: attackto alternatives
+// - assailable
 extern i32 *Pathfinding_Attackto(i32 *move_matrix, size_t row_len, size_t col_len,
                                  u8 range[2], i32 mode_movetile);
 extern void Pathfinding_Attackto_noM(i32 *attackto_mat, i32 *move_matrix,
@@ -95,6 +108,8 @@ extern void Pathfinding_Attackto_Neighbours(i32 x, i32 y, i32 *attackmap, i32 *m
                                             u8 range[2], i32 mode_movetile);
 
 /* -- Attackfrom -- */
+// NOMENCLATURE: attackfrom alternatives
+// - siegeable
 extern i32 *Pathfinding_Attackfrom(i32 *movemap, size_t row_len, size_t col_len,
                                    struct Point target, u8 range[2], int mode_output);
 extern i32 *Pathfinding_Attackfrom_noM(i32 *attackfrom, i32 *movemap,
