@@ -125,7 +125,7 @@ i32 *_Map_Movemap_Compute(struct Map *map, struct Point start_in, i32 move) {
     struct Point start = {start_in.x, start_in.y};
     Pathfinding_Moveto_noM(map->movemap, map->costmap,
                            map->row_len, map->col_len, start, move);
-    // linalg_matrix_print_int32_t(map->movemap, map->row_len, map->col_len);
+    // matrix_print(map->movemap, map->row_len, map->col_len);
 
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
     return (map->movemap);
@@ -190,7 +190,7 @@ i32 *Map_Healtomap_Compute(struct Map *map, tnecs_world_t *world, tnecs_entity_t
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
     map->healtomap = _Map_tomap_Compute(map->healtomap, map->movemap, map->row_len, map->col_len,
                                         move_stat, &range, MOVETILE_INCLUDE);
-    // linalg_matrix_print_int(map->healtomap, map->row_len, map->col_len);
+    // matrix_print(map->healtomap, map->row_len, map->col_len);
     return (map->healtomap);
 }
 
@@ -228,7 +228,7 @@ i32 *Map_Attacktomap_Compute(struct Map *map, tnecs_world_t *world, tnecs_entity
     map->update = true;
     map->attacktomap = _Map_tomap_Compute(map->attacktomap, map->movemap, map->row_len, map->col_len,
                                           move_stat, &range, MOVETILE_INCLUDE);
-    // linalg_matrix_print_int(map->attacktomap, map->row_len, map->col_len);
+    // matrix_print(map->attacktomap, map->row_len, map->col_len);
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
     return (map->attacktomap);
 }
@@ -249,7 +249,7 @@ i32 *Map_Danger_Compute(struct Map *map, tnecs_world_t *world, tnecs_entity_t un
                                           map->col_len, move, range, MOVETILE_INCLUDE);
     memset(map->temp, 0, sizeof(*map->temp)*map->row_len * map->col_len);
     map->temp = matrix_plus_noM(map->temp, map->attacktomap, map->row_len * map->col_len);
-    // linalg_matrix_print_int(map->temp, map->row_len, map->col_len);
+    // matrix_print(map->temp, map->row_len, map->col_len);
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
     return (map->temp);
 }

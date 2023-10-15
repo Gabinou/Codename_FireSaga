@@ -144,7 +144,7 @@ uf16 SB_Rate_Drop(uf16 rate, uf16 n) {
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     float fout = rate, base = sb_drop_table[rate / RNG_SB_BASE_NUM];
     if8 exponent = (if8)(n - RNG_SB_SEQ_OFFSET);
-    fout /= nmath_slowpow(base, exponent);
+    fout /= sota_slowpow(base, exponent);
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
     return ((uf16)fout);
 }

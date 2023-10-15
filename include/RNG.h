@@ -7,8 +7,10 @@
 #include "macros.h"
 #include "types.h"
 #include "tinymt32.h"
-#include "nmath.h"
 #include "SDL2/SDL.h"
+
+/* --- FORWARD DECLARATIONS --- */
+extern float sota_slowpow(float base, int exponent);
 
 /* -- GLOSSARY: -- */
 /* RN: Random number             */
@@ -69,7 +71,6 @@ extern uf8 URN_debug; /* Value returned by RNG_URN_debug */
 *   sequence breaking for crit is probably useless? -> implement anyway, easy to remove later
 *   sequence breaking should be GLOBAL? maybe. if so make global sequence of HIT/CRITS
 */
-
 struct RNG_Sequence { /* Sequence of hits/misses in a row */
     if8 len;
     if8 eff_rate;
@@ -87,9 +88,9 @@ extern float sb_rise_table[RNG_SB_BASE_NUM];
 extern float sb_drop_table[RNG_SB_BASE_NUM];
 
 /* -- Macros -- */
-#define SB_GROWTH_RISE(rate, n) (uf16) ( (float) rate * nmath_slowpow((float)sb_rise_table[rate/RNG_SB_BASE_NUM], (uf16)((n > RNG_SB_GROWTH_OFFSET ? n : RNG_SB_GROWTH_OFFSET) - RNG_SB_GROWTH_OFFSET)))
-#define SB_RATE_RISE(rate, n) (uf16) ( (float) rate * nmath_slowpow((float)sb_rise_table[rate/RNG_SB_BASE_NUM], (uf16)((n > RNG_SB_SEQ_OFFSET ? n : RNG_SB_SEQ_OFFSET) - RNG_SB_SEQ_OFFSET)))
-#define SB_RATE_DROP(rate, n) (uf16) ( (float) rate / nmath_slowpow((float)sb_drop_table[rate/RNG_SB_BASE_NUM], (uf16)((n > RNG_SB_SEQ_OFFSET ? n : RNG_SB_SEQ_OFFSET) - RNG_SB_SEQ_OFFSET)))
+#define SB_GROWTH_RISE(rate, n) (uf16) ( (float) rate * sota_slowpow((float)sb_rise_table[rate/RNG_SB_BASE_NUM], (uf16)((n > RNG_SB_GROWTH_OFFSET ? n : RNG_SB_GROWTH_OFFSET) - RNG_SB_GROWTH_OFFSET)))
+#define SB_RATE_RISE(rate, n) (uf16) ( (float) rate * sota_slowpow((float)sb_rise_table[rate/RNG_SB_BASE_NUM], (uf16)((n > RNG_SB_SEQ_OFFSET ? n : RNG_SB_SEQ_OFFSET) - RNG_SB_SEQ_OFFSET)))
+#define SB_RATE_DROP(rate, n) (uf16) ( (float) rate / sota_slowpow((float)sb_drop_table[rate/RNG_SB_BASE_NUM], (uf16)((n > RNG_SB_SEQ_OFFSET ? n : RNG_SB_SEQ_OFFSET) - RNG_SB_SEQ_OFFSET)))
 
 /* -- Functions -- */
 extern uf16 SB_Rate_Drop(uf16 rate, uf16 n);

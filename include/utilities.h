@@ -70,6 +70,8 @@ extern struct WpnorItem Utilities_WpnorItem(if16 id, struct dtab *wt, struct dta
 /* --- Cursor --- */
 extern void Cursor_Box_Offset(struct Point *pos);
 
+/* --- Maths --- */
+extern float sota_slowpow(float base, int exponent);
 /* Computed mirrored object position in a room */
 //      mirror
 // |-a-----|------a'|

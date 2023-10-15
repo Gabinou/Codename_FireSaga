@@ -14,6 +14,7 @@
 #include "physfs.h"
 #include "equations.h"
 #include "platform.h"
+#include "RNG.h"
 #include "utilities.h"
 #include "combat.h"
 
@@ -21,6 +22,7 @@
 struct Item;
 struct Weapon;
 struct Damage;
+struct RNG_Sequence;
 
 /* --- CONSTANTS--- */
 enum STATUSES {

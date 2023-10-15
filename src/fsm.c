@@ -500,7 +500,7 @@ void fsm_substate_UDgr_STANDBY(struct Game *sota, tnecs_entity_t selector_entity
         unit->show_danger = true;
     }
 
-    // linalg_matrix_print_int32_t(sota->map->attacktomap, sota->map->row_len, sota->map->col_len);
+    // matrix_print(sota->map->attacktomap, sota->map->row_len, sota->map->col_len);
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 

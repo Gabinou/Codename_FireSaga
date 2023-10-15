@@ -202,6 +202,16 @@ int Utilities_Loop(int direction, int flip) {
 
 
 /* --- Maths --- */
+float sota_slowpow(float base, int exponent) {
+    /* Super fast for -O1/-O2 optimization */
+    if (exponent == 0)
+        return (1.0f);
+    float out = base;
+    for (int i = 0; i < (exponent - 1); i++)
+        out *= base;
+    return (out);
+}
+
 int Utilities_Mirror(int room_diameter, int pos, int object_width) {
     SOTA_Log_FPS("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     SDL_assert(pos !=    (room_diameter / 2)); // object is not on mirror
