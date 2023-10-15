@@ -1,6 +1,19 @@
 
 #include "pathfinding.h"
 
+/* --- Manhattan distance --- */
+i32 Pathfinding_Manhattan(struct Point start, struct Point end) {
+    /* Does not include endpoints */
+    i32 distance = labs(start.x - end.x) + labs(start.y - end.y);
+    return (distance);
+}
+
+i32 _Pathfinding_Manhattan(i32 x_0, i32 y_0, i32 x_1, i32 y_1) {
+    /* Does not include endpoints */
+    i32 distance = labs(x_0 - x_1) + labs(y_0 - y_1);
+    return (distance);
+}
+
 /* --- Taxicab Geometry --- */
 i32 *Taxicab_Circle_List(i32 *darr_list, i32 *matrix, i32 x, i32 y,
                          size_t row_len, size_t col_len, struct Range *range) {
@@ -195,15 +208,6 @@ i32 *Pathfinding_CameFrom_List(i32 *path, i32 *came_from, size_t col_len,
     return (path);
 }
 
-i32 Pathfinding_Manhattan(struct Point start, struct Point end) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
-    /* Does not include endpoints */
-    i32 distance = labs(start.x - end.x) + labs(start.y - end.y);
-
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
-    return (distance);
-}
-
 i32 *Pathfinding_Astar(i32 *path_list, i32 *costmap, size_t row_len,
                        size_t col_len, struct Point start, struct Point end) {
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
@@ -256,7 +260,7 @@ i32 *Pathfinding_Astar(i32 *path_list, i32 *costmap, size_t row_len,
                 continue;
 
             /* distance is heuristic for closeness to goal */
-            size_t distance = linalg_distance_manhattan_int32_t(end.x, end.y, neighbour.x, neighbour.y);
+            size_t distance = _Pathfinding_Manhattan(end.x, end.y, neighbour.x, neighbour.y);
             cost[current_n] = neighbour.cost;
 
             /* Djikstra algo only has cost in this step */

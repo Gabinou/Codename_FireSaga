@@ -1179,21 +1179,21 @@ TEMPLATE_TYPES_BOOL
 
 /******************************* PATHFINDING ***********************************/
 
-#define REGISTER_ENUM(type) type linalg_distance_manhattan_point_##type(struct nmath_point_##type start, struct nmath_point_##type end) {\
-    /* Does not include endpoints */ \
-    type  distance = labs(start.x - end.x) + labs(start.y - end.y);\
-    return (distance);\
-}
-TEMPLATE_TYPES_SINT
-#undef REGISTER_ENUM
+// #define REGISTER_ENUM(type) type linalg_distance_manhattan_point_##type(struct nmath_point_##type start, struct nmath_point_##type end) {\
+//     /* Does not include endpoints */ \
+//     type  distance = labs(start.x - end.x) + labs(start.y - end.y);\
+//     return (distance);\
+// }
+// TEMPLATE_TYPES_SINT
+// #undef REGISTER_ENUM
 
-#define REGISTER_ENUM(type) type linalg_distance_manhattan_##type(type x_0, type y_0, type x_1, type y_1) {\
-    /* Does not include endpoints */ \
-    type distance = labs(x_0 - x_1) + labs(y_0 - y_1);\
-    return (distance);\
-}
-TEMPLATE_TYPES_SINT
-#undef REGISTER_ENUM
+// #define REGISTER_ENUM(type) type linalg_distance_manhattan_##type(type x_0, type y_0, type x_1, type y_1) {\
+//     /* Does not include endpoints */ \
+//     type distance = labs(x_0 - x_1) + labs(y_0 - y_1);\
+//     return (distance);\
+// }
+// TEMPLATE_TYPES_SINT
+// #undef REGISTER_ENUM
 
 #define REGISTER_ENUM(type) type distance_euclidian_##type(struct nmath_point_##type start, struct nmath_point_##type end) {\
     type term_x = (start.x - end.x) > type##_MAX / (start.x - end.x) ? type##_MAX : (start.x - end.x) * (start.x - end.x);\

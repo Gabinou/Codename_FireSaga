@@ -44,6 +44,10 @@ enum PATHFINDING_BLOCKMAP {
 };
 
 
+/* --- Manhattan distance --- */
+i32 _Pathfinding_Manhattan(i32 x_0, i32 y_0, i32 x_1, i32 y_1);
+i32 Pathfinding_Manhattan(struct Point start, struct Point end);
+
 /* --- Taxicab Geometry --- */
 /* Taxicabs can't move diagonal so manhattan distance: abs(x1-x2) + abs(y1-ys2)
  * Manhattan (distance) used to trace 'circles' on square tilemap
