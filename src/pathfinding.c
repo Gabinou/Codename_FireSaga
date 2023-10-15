@@ -530,28 +530,25 @@ i32 *Pathfinding_unitGradient(i32 *costmap, size_t row_len, size_t col_len,
 }
 
 /* -- Visible -- */
-bool Pathfinding_Tile_Visible(i32 *blockmap, struct Point start, struct Point delta,
-                              size_t col_len) {
+bool Pathfinding_Tile_Visible(i32 *sightmap, i32 *blockmap, struct Point start,
+                              struct Point delta, size_t col_len) {
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     /* -- Between start and delta -- */
-    i32 distance = labs(delta.x) + labs(delta.y);
-    printf("start %d %d\n", start.x, start.y);
-    printf("delta %d %d\n", delta.x, delta.y);
-    printf("distance %d \n", delta.x, delta.y);
+    i32 distance = abs(delta.x) + abs(delta.y);
 
     bool visible = true;
-    for (i32 d = 1; d < distance; d++) {
+    for (i32 d = 1; d <= distance; d++) {
         i32 dist_x = (i32)lround(d * delta.x * (1.0f / distance));
         i32 dist_y = (i32)lround(d * delta.y * (1.0f / distance));
 
         struct Point interpolated;
         interpolated.x = start.x + dist_x;
         interpolated.y = start.y + dist_y;
-        printf("interpolated %d %d\n", interpolated.x, interpolated.y);
 
         i32 interp_i = interpolated.y * col_len + interpolated.x;
         if (blockmap[interp_i] == BLOCKMAP_BLOCKED) {
             /* -- Perimeter tile is blocked -- */
+            sightmap[interp_i] = SIGHTMAP_BLOCKED;
             visible = false;
             break;
         }
@@ -594,13 +591,15 @@ void Pathfinding_Visible_noM(i32 *sightmap, i32 *blockmap,
             perimeter_point.x = start.x + delta.x;
             perimeter_point.y = start.y + delta.y;
 
+            i32 perim_i = perimeter_point.y * col_len + perimeter_point.x;
+
             /* -- Skip neighbour if: tile is not visible -- */
-            if (!Pathfinding_Tile_Visible(blockmap, start, delta, col_len))
+            if (!Pathfinding_Tile_Visible(sightmap, blockmap, start, delta, col_len)) {
                 continue;
+            }
 
             /* -- Update sightmap -- */
-            i32 perim_i = perimeter_point.y * col_len + perimeter_point.x;
-            sightmap[perim_i] = (blockmap[perim_i] == BLOCKMAP_BLOCKED) ? SIGHTMAP_BLOCKED : SIGHTMAP_VISIBLE;
+            sightmap[perim_i] = SIGHTMAP_VISIBLE;
         }
     }
 

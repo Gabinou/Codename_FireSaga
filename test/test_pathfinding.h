@@ -178,7 +178,7 @@ void test_pathfinding_sight() {
         nourstest_true(sightmap[i] == expected_vision_3[i]);
     // matrix_print(sightmap, ROW_LEN, COL_LEN);
 
-    sight = 6;
+    sight = 7;
     int expected_vision_6[ROW_LEN * COL_LEN] = {
         0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
         0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
@@ -202,6 +202,8 @@ void test_pathfinding_sight() {
         0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
         0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     };
+
+
 
     Pathfinding_Visible_noM(sightmap, blockmap, ROW_LEN, COL_LEN, start, sight);
     for (size_t i = 0; i < ROW_LEN * COL_LEN; i++)

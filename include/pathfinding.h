@@ -96,7 +96,7 @@ extern void Pathfinding_Moveto_Neighbours(struct Node *open, struct Node *closed
                                           size_t row_len, size_t col_len, i32 move);
 
 /* -- Visible -- */
-extern bool Pathfinding_Tile_Visible(i32 *block_matrix, struct Point start,
+extern bool Pathfinding_Tile_Visible(i32 *sightmap, i32 *block_matrix, struct Point start,
                                      struct Point delta, size_t col_len);
 extern i32 *Pathfinding_Visible(i32 *blockmap, size_t row_len, size_t col_len,
                                 struct Point start, i32 sight);
