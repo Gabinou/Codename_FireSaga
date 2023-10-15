@@ -541,11 +541,11 @@ bool Pathfinding_Tile_Visible(i32 *blockmap, struct Point start, struct Point de
         i32 dist_y = (i32)lround(d * delta.y * (1.0f / distance));
 
         struct Point interpolated;
-        interpolated.x = start.x + (delta.x == 0 ? 0 : dist_x);
-        interpolated.y = start.y + (delta.y == 0 ? 0 : dist_y);
+        interpolated.x = start.x + dist_x;
+        interpolated.y = start.y + dist_y;
 
         i32 interp_i = interpolated.y * col_len + interpolated.x;
-        if (blockmap[interp_i] < BLOCKMAP_MIN) {
+        if (blockmap[interp_i] == BLOCKMAP_BLOCKED) {
             /* -- Perimeter tile is blocked -- */
             visible = false;
             break;
