@@ -106,7 +106,7 @@ char sdl_axis_names[SDL_CONTROLLER_AXIS_MAX][AXIS_NAME_MAX_LEN] = {
 };
 
 char sota_input_names[SOTA_INPUT_END][SOTA_INPUT_NAME_MAX_LEN] = {
-#define REGISTER_ENUM(x) "SOTA_INPUT_##x",
+#define REGISTER_ENUM(x, y) "SOTA_INPUT_##x",
 #include "names/input.h"
 };
 #undef REGISTER_ENUM

@@ -666,14 +666,14 @@ enum TILE_ICON_INDICES {
 
 enum GAME_STATES {
     GAME_STATE_START = 0,
-#define REGISTER_ENUM(x) GAME_STATE_##x,
+#define REGISTER_ENUM(x, y) GAME_STATE_##x,
 #include "names/game_states.h"
     GAME_STATE_END,
     GAME_STATE_NUM = GAME_STATE_END,
 #undef REGISTER_ENUM
 };
 
-#define REGISTER_ENUM(x) GAME_SUBSTATE_##x,
+#define REGISTER_ENUM(x, y) GAME_SUBSTATE_##x,
 enum GAME_substate {
     GAME_SUBSTATE_START = 0,
 #include "names/game_substates.h"
@@ -704,7 +704,7 @@ enum UNIT_MVT {
 *  Input:  Context dependent interpretation of user button press
 *       e,g. Menuright, Accept, Open Minimap, Pause...
 */
-#define REGISTER_ENUM(x) SOTA_INPUT_##x,
+#define REGISTER_ENUM(x, y) SOTA_INPUT_##x,
 enum SOTA_INPUTS {
     SOTA_INPUT_DPAD_END         =  4,
     SOTA_INPUT_NULL             = -1,
@@ -824,15 +824,6 @@ enum ERRORS {
     ERROR_START = 0,
 #include "names/errors.h"
     ERROR_END
-};
-#undef REGISTER_ENUM
-
-#define REGISTER_ENUM(x) INPUTFLAG_##x,
-enum INPUTFLAGS {
-    NO_INPUTFLAG    = 0,
-    INPUTFLAG_START = 1,
-#include "names/input_flags.h"
-    INPUTFLAG_END,
 };
 #undef REGISTER_ENUM
 

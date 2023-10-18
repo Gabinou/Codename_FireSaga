@@ -4,10 +4,10 @@
 struct dtab *receivers_dtab = NULL;
 
 u32 event_Start;
-#define REGISTER_ENUM(x) u32 event_##x;
+#define REGISTER_ENUM(x, y) u32 event_##x;
 #include "names/events.h"
 #undef REGISTER_ENUM
-#define REGISTER_ENUM(x) u32 event_Input_##x;
+#define REGISTER_ENUM(x, y) u32 event_Input_##x;
 #include "names/input.h"
 #undef REGISTER_ENUM
 u32 event_End;
@@ -1301,10 +1301,10 @@ void receive_event_SDL_WINDOWEVENT(struct Game *sota, SDL_Event *event) {
 void Events_Names_Declare() {
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     event_Start = SDL_RegisterEvents(1);
-#define REGISTER_ENUM(x) event_##x = SDL_RegisterEvents(1);
+#define REGISTER_ENUM(x, y) event_##x = SDL_RegisterEvents(1);
 #include "names/events.h"
 #undef REGISTER_ENUM
-#define REGISTER_ENUM(x)  event_Input_##x = SDL_RegisterEvents(1);
+#define REGISTER_ENUM(x, y)  event_Input_##x = SDL_RegisterEvents(1);
 #include "names/input.h"
 #undef REGISTER_ENUM
     event_End = SDL_RegisterEvents(1);
@@ -1335,14 +1335,14 @@ extern void Events_Names_Alloc() {
     SDL_assert(event_names != NULL);
     char *temp_str;
 
-#define REGISTER_ENUM(x) temp_str = (char *) malloc(DEFAULT_BUFFER_SIZE);\
+#define REGISTER_ENUM(x, y) temp_str = (char *) malloc(DEFAULT_BUFFER_SIZE);\
     strncpy(temp_str, #x, sizeof(#x));\
     temp_str[sizeof(#x)] = '\0';\
     event_names[(event_##x - event_Start)] = nstr_toUpper(temp_str);
 #include "names/events.h"
 #undef REGISTER_ENUM
 
-#define REGISTER_ENUM(x) temp_str = (char *) malloc(DEFAULT_BUFFER_SIZE);\
+#define REGISTER_ENUM(x, y) temp_str = (char *) malloc(DEFAULT_BUFFER_SIZE);\
     strncpy(temp_str, #x, sizeof(#x));\
     temp_str[sizeof(#x)] = '\0';\
     event_names[(event_Input_##x - event_Start)] = nstr_toUpper(temp_str);
@@ -1366,12 +1366,12 @@ void Events_Receivers_Declare() {
     receiver_t temp_receiver_p;
     DTAB_INIT(receivers_dtab, receiver_t);
 
-#define REGISTER_ENUM(x) temp_receiver_p = &receive_event_##x;\
+#define REGISTER_ENUM(x, y) temp_receiver_p = &receive_event_##x;\
     DTAB_ADD(receivers_dtab, &temp_receiver_p, event_##x);
 #include "names/events.h"
 #undef REGISTER_ENUM
 
-#define REGISTER_ENUM(x) temp_receiver_p = &receive_event_Input_##x;\
+#define REGISTER_ENUM(x, y) temp_receiver_p = &receive_event_Input_##x;\
     DTAB_ADD(receivers_dtab, &temp_receiver_p, event_Input_##x);
 #include "names/input.h"
 #undef REGISTER_ENUM

@@ -612,7 +612,8 @@ void fsm_menu_type_IC_player_select(struct Game *sota, struct MenuComponent *mc)
                 int overlay = MAP_OVERLAY_GLOBAL_DANGER + MAP_OVERLAY_HEAL + MAP_OVERLAY_MOVE;
                 Map_Palettemap_Autoset(sota->map, overlay);
             } else if (Unit_canAttack(unit)) {
-                int overlay = MAP_OVERLAY_GLOBAL_DANGER + MAP_OVERLAY_MOVE + MAP_OVERLAY_ATTACK + MAP_OVERLAY_DANGER;
+                int overlay = MAP_OVERLAY_GLOBAL_DANGER + MAP_OVERLAY_MOVE + MAP_OVERLAY_ATTACK +
+                              MAP_OVERLAY_DANGER;
                 Map_Palettemap_Autoset(sota->map, overlay);
             }
             Map_Stacked_Dangermap_Compute(sota->map);

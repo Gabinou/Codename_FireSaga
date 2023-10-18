@@ -44,10 +44,10 @@ extern tnecs_entity_t Events_Controllers_Check(struct Game *sota, i32 code);
 /* -- Declaration -- */
 #define NO_EVENT 0
 extern u32 event_Start;
-#define REGISTER_ENUM(x) extern u32 event_##x;
+#define REGISTER_ENUM(x, y) extern u32 event_##x;
 #include "names/events.h"
 #undef REGISTER_ENUM
-#define REGISTER_ENUM(x) extern u32 event_Input_##x;
+#define REGISTER_ENUM(x, y) extern u32 event_Input_##x;
 #include "names/input.h"
 #undef REGISTER_ENUM
 extern u32 event_End;
@@ -63,7 +63,7 @@ extern void Events_Names_Free();
 // SDL_events are all > 0xFF (255)
 // Firesaga Events are all < 100
 // TODO: Define max number of events?
-#define REGISTER_ENUM(x) extern void receive_event_##x(struct Game * sota, SDL_Event *);
+#define REGISTER_ENUM(x, y) extern void receive_event_##x(struct Game * sota, SDL_Event *);
 #include "names/events.h"
 #undef REGISTER_ENUM
 

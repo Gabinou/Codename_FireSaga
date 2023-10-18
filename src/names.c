@@ -187,7 +187,7 @@ void Menu_MakeOptionnames() {
 }
 #undef REGISTER_ENUM
 
-#define REGISTER_ENUM(x) temp_str = (char *) malloc(DEFAULT_BUFFER_SIZE);\
+#define REGISTER_ENUM(x, y) temp_str = (char *) malloc(DEFAULT_BUFFER_SIZE);\
     strncpy(temp_str, #x, sizeof(#x));\
     gamesubStatenames[GAME_SUBSTATE_##x] = nstr_camelCase(nstr_toLower(nstr_replaceSingle(temp_str, '_', ' ')), ' ', 2);
 
@@ -201,7 +201,7 @@ void Names_gamesubStatenames() {
 }
 #undef REGISTER_ENUM
 
-#define REGISTER_ENUM(x) temp_str = (char *) malloc(DEFAULT_BUFFER_SIZE);\
+#define REGISTER_ENUM(x, y) temp_str = (char *) malloc(DEFAULT_BUFFER_SIZE);\
     strncpy(temp_str, #x, sizeof(#x));\
     gameStatenames[GAME_STATE_##x] = nstr_camelCase(nstr_toLower(nstr_replaceSingle(temp_str, '_', ' ')), ' ', 2);
 
