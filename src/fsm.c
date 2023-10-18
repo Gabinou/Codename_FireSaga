@@ -14,24 +14,24 @@ fsm_eGmp2Stby_s_t fsm_eGmp2Stby_s[GAME_STATE_NUM] = {
     /* Animation */      NULL,
 };
 
-fsm_state_IA_t fsm_state_IA[GAME_STATE_NUM] = {
+fsm_eAcpt_s_t fsm_eAcpt_s[GAME_STATE_NUM] = {
     /* NULL */           NULL,
     /* Combat */         NULL,
     /* Scene_Talk */     NULL,
     /* Scene_FMV */      NULL,
-    /* Gameplay_Map */   &fsm_state_IA_GAMEPLAY_MAP,
+    /* Gameplay_Map */   &fsm_eAcpt_s_GAMEPLAY_MAP,
     /* Gameplay_Camp */  NULL,
     /* Preparation */    NULL,
-    /* Title_Screen */   &fsm_state_IA_TITLE_SCREEN,
+    /* Title_Screen */   &fsm_eAcpt_s_TITLE_SCREEN,
     /* Animation */      NULL,
 };
 
-fsm_state_IC_t fsm_state_IC[GAME_STATE_NUM] = {
+fsm_eCncl_s_t fsm_eCncl_s[GAME_STATE_NUM] = {
     /* NULL */           NULL,
     /* Combat */         NULL,
     /* Scene_Talk */     NULL,
     /* Scene_FMV */      NULL,
-    /* Gameplay_Map */   &fsm_state_IC_GAMEPLAY_MAP,
+    /* Gameplay_Map */   &fsm_eCncl_s_GAMEPLAY_MAP,
     /* Gameplay_Camp */  NULL,
     /* Preparation */    NULL,
     /* Title_Screen */   NULL,
@@ -62,12 +62,12 @@ fsm_eMenuLeft_s_t fsm_eMenuLeft_s[GAME_STATE_NUM] = {
     /* Animation */      NULL,
 };
 
-fsm_state_CMd_t fsm_state_CMd[GAME_STATE_NUM] = {
+fsm_eCrsMvd_s_t fsm_eCrsMvd_s[GAME_STATE_NUM] = {
     /* NULL */           NULL,
     /* Combat */         NULL,
     /* Scene_Talk */     NULL,
     /* Scene_FMV */      NULL,
-    /* Gameplay_Map */   &fsm_state_CMd_GAMEPLAY_MAP,
+    /* Gameplay_Map */   &fsm_eCrsMvd_s_GAMEPLAY_MAP,
     /* Gameplay_Camp */  NULL,
     /* Preparation */    NULL,
     /* Title_Screen */   NULL,
@@ -90,62 +90,62 @@ fsm_eGmp2Stby_s_t fsm_eGmp2Stby_ss[GAME_SUBSTATE_NUM] = {
     /* MAP_ANIMATION */   NULL,
 };
 
-fsm_state_CMs_t fsm_sub_event_CMs[GAME_SUBSTATE_NUM] = {
+fsm_eCrsMvs_s_t fsm_eCrsMvs_ss[GAME_SUBSTATE_NUM] = {
     /* NULL */            NULL,
     /* MAP_MINIMAP */     NULL,
-    /* MENU */            &fsm_sub_event_CMs_MENU,
-    /* MAP_UNIT_MOVES */  &fsm_sub_event_CMs_MAP_UNIT_MOVES,
+    /* MENU */            &fsm_eCrsMvs_ss_MENU,
+    /* MAP_UNIT_MOVES */  &fsm_eCrsMvs_ss_MAP_UNIT_MOVES,
     /* MAP_COMBAT */      NULL,
     /* MAP_NPCTURN */     NULL,
     /* SAVING */          NULL,
-    /* STANDBY */         &fsm_sub_event_CMs_STANDBY,
+    /* STANDBY */         &fsm_eCrsMvs_ss_STANDBY,
     /* PAUSED */          NULL,
-    /* MAP_CANDIDATES */  &fsm_sub_event_CMs_MAP_CANDIDATES,
+    /* MAP_CANDIDATES */  &fsm_eCrsMvs_ss_MAP_CANDIDATES,
     /* CUTSCENE */        NULL,
     /* MAP_ANIMATION */   NULL,
 };
 
-fsm_state_CMd_t fsm_sub_event_CMd[GAME_SUBSTATE_NUM] = {
+fsm_eCrsMvd_s_t fsm_eCrsMvd_ss[GAME_SUBSTATE_NUM] = {
     /* NULL */            NULL,
     /* MAP_MINIMAP */     NULL,
     /* MENU */            NULL,
-    /* MAP_UNIT_MOVES */  &fsm_sub_event_CMd_MAP_UNIT_MOVES,
+    /* MAP_UNIT_MOVES */  &fsm_eCrsMvd_ss_MAP_UNIT_MOVES,
     /* MAP_COMBAT */      NULL,
     /* MAP_NPCTURN */     NULL,
     /* SAVING */          NULL,
-    /* STANDBY */         &fsm_sub_event_CMd_STANDBY,
+    /* STANDBY */         &fsm_eCrsMvd_ss_STANDBY,
     /* PAUSED */          NULL,
-    /* MAP_CANDIDATES */  &fsm_sub_event_CMd_MAP_CANDIDATES,
+    /* MAP_CANDIDATES */  &fsm_eCrsMvd_ss_MAP_CANDIDATES,
     /* CUTSCENE */        NULL,
     /* MAP_ANIMATION */   NULL,
 };
 
-fsm_state_IA_t fsm_substate_IA[GAME_SUBSTATE_NUM] = {
+fsm_eAcpt_s_t fsm_eAcpt_ss[GAME_SUBSTATE_NUM] = {
     /* NULL */            NULL,
-    /* MAP_MINIMAP */     &fsm_substate_IA_MAP_MINIMAP,
-    /* MENU */            &fsm_substate_IA_MENU,
-    /* MAP_UNIT_MOVES */  &fsm_substate_IA_MAP_UNIT_MOVES,
-    /* MAP_COMBAT */      &fsm_substate_IA_MAP_COMBAT,
-    /* MAP_NPCTURN */     &fsm_substate_IA_MAP_NPCTURN,
+    /* MAP_MINIMAP */     &fsm_eAcpt_ss_MAP_MINIMAP,
+    /* MENU */            &fsm_eAcpt_ss_MENU,
+    /* MAP_UNIT_MOVES */  &fsm_eAcpt_ss_MAP_UNIT_MOVES,
+    /* MAP_COMBAT */      &fsm_eAcpt_ss_MAP_COMBAT,
+    /* MAP_NPCTURN */     &fsm_eAcpt_ss_MAP_NPCTURN,
     /* SAVING */          NULL,
-    /* STANDBY */         &fsm_substate_IA_STANDBY,
-    /* PAUSED */          &fsm_substate_IA_PAUSED,
-    /* MAP_CANDIDATES */  &fsm_substate_IA_MAP_CANDIDATES,
+    /* STANDBY */         &fsm_eAcpt_ss_STANDBY,
+    /* PAUSED */          &fsm_eAcpt_ss_PAUSED,
+    /* MAP_CANDIDATES */  &fsm_eAcpt_ss_MAP_CANDIDATES,
     /* CUTSCENE */        NULL,
     /* MAP_ANIMATION */   NULL,
 };
 
-fsm_state_IC_t fsm_substate_IC[GAME_SUBSTATE_NUM] = {
+fsm_eCncl_s_t fsm_eCncl_ss[GAME_SUBSTATE_NUM] = {
     /* NULL */            NULL,
     /* MAP_MINIMAP */     NULL,
-    /* MENU */            &fsm_substate_IC_MENU,
-    /* MAP_UNIT_MOVES */  &fsm_substate_IC_MAP_UNIT_MOVES,
-    /* MAP_COMBAT */      &fsm_substate_IC_MAP_COMBAT,
-    /* MAP_NPCTURN */     &fsm_substate_IC_MAP_NPCTURN,
+    /* MENU */            &fsm_eCncl_ss_MENU,
+    /* MAP_UNIT_MOVES */  &fsm_eCncl_ss_MAP_UNIT_MOVES,
+    /* MAP_COMBAT */      &fsm_eCncl_ss_MAP_COMBAT,
+    /* MAP_NPCTURN */     &fsm_eCncl_ss_MAP_NPCTURN,
     /* SAVING */          NULL,
-    /* STANDBY */         &fsm_substate_IC_STANDBY,
+    /* STANDBY */         &fsm_eCncl_ss_STANDBY,
     /* PAUSED */          NULL,
-    /* MAP_CANDIDATES */  &fsm_substate_IC_MAP_CANDIDATES,
+    /* MAP_CANDIDATES */  &fsm_eCncl_ss_MAP_CANDIDATES,
     /* CUTSCENE */        NULL,
     /* MAP_ANIMATION */   NULL,
 };
@@ -240,7 +240,7 @@ fsm_eMenuLeft_s_t fsm_eMenuLeft_ss[GAME_SUBSTATE_NUM] = {
     /* MAP_ANIMATION */   NULL,
 };
 
-fsm_state_CHU_t fsm_substate_CHU[GAME_SUBSTATE_NUM] = {
+fsm_eCrsHvUnit_s_t fsm_eCrsHvUnit_ss[GAME_SUBSTATE_NUM] = {
     /* NULL */            NULL,
     /* MAP_MINIMAP */     NULL,
     /* MENU */            NULL,
@@ -248,14 +248,14 @@ fsm_state_CHU_t fsm_substate_CHU[GAME_SUBSTATE_NUM] = {
     /* MAP_COMBAT */      NULL,
     /* MAP_NPCTURN */     NULL,
     /* SAVING */          NULL,
-    /* STANDBY */         &fsm_substate_CHU_STANDBY,
+    /* STANDBY */         &fsm_eCrsHvUnit_ss_STANDBY,
     /* PAUSED */          NULL,
-    /* MAP_CANDIDATES */  &fsm_substate_CHU_MAP_CANDIDATES,
+    /* MAP_CANDIDATES */  &fsm_eCrsHvUnit_ss_MAP_CANDIDATES,
     /* CUTSCENE */        NULL,
     /* MAP_ANIMATION */   NULL,
 };
 
-fsm_state_CDU_t fsm_substate_CDU[GAME_SUBSTATE_NUM] = {
+fsm_eCrsDeHvUnit_s_t fsm_eCrsDeHvUnit_ss[GAME_SUBSTATE_NUM] = {
     /* NULL */            NULL,
     /* MAP_MINIMAP */     NULL,
     /* MENU */            NULL,
@@ -263,9 +263,9 @@ fsm_state_CDU_t fsm_substate_CDU[GAME_SUBSTATE_NUM] = {
     /* MAP_COMBAT */      NULL,
     /* MAP_NPCTURN */     NULL,
     /* SAVING */          NULL,
-    /* STANDBY */         &fsm_substate_CDU_STANDBY,
+    /* STANDBY */         &fsm_eCrsDeHvUnit_ss_STANDBY,
     /* PAUSED */          NULL,
-    /* MAP_CANDIDATES */  &fsm_substate_CDU_MAP_CANDIDATES,
+    /* MAP_CANDIDATES */  &fsm_eCrsDeHvUnit_ss_MAP_CANDIDATES,
     /* CUTSCENE */        NULL,
     /* MAP_ANIMATION */   NULL,
 };
@@ -337,7 +337,7 @@ void fsm_eGlbRng_ss_STANDBY(struct Game *sota) {
 // --- FSM ACTION AND SUBACTION DEFINITIONS ---
 
 // -- FSM: Cursor_Hovers_Unit --
-void fsm_substate_CHU_STANDBY(struct Game *sota, tnecs_entity_t hov_ent) {
+void fsm_eCrsHvUnit_ss_STANDBY(struct Game *sota, tnecs_entity_t hov_ent) {
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     SDL_assert(hov_ent > TNECS_NULL);
 
@@ -397,7 +397,7 @@ void fsm_substate_CHU_STANDBY(struct Game *sota, tnecs_entity_t hov_ent) {
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
-void fsm_substate_CHU_MAP_CANDIDATES(struct Game *sota, tnecs_entity_t hov_ent) {
+void fsm_eCrsHvUnit_ss_MAP_CANDIDATES(struct Game *sota, tnecs_entity_t hov_ent) {
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     SDL_assert(hov_ent > TNECS_NULL);
 
@@ -412,7 +412,7 @@ void fsm_substate_CHU_MAP_CANDIDATES(struct Game *sota, tnecs_entity_t hov_ent) 
 }
 
 // -- FSM: Cursor_Dehovers_Unit --
-void fsm_substate_CDU_STANDBY(struct Game *sota, tnecs_entity_t dehov_ent) {
+void fsm_eCrsDeHvUnit_ss_STANDBY(struct Game *sota, tnecs_entity_t dehov_ent) {
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
 
     /* -- Re-computing overlay -- */
@@ -449,7 +449,7 @@ void fsm_substate_CDU_STANDBY(struct Game *sota, tnecs_entity_t dehov_ent) {
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
-void fsm_substate_CDU_MAP_CANDIDATES(struct Game *sota, tnecs_entity_t dehov_ent) {
+void fsm_eCrsDeHvUnit_ss_MAP_CANDIDATES(struct Game *sota, tnecs_entity_t dehov_ent) {
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
 
     /* -- Reset unit loop to Idle --  */
@@ -463,10 +463,10 @@ void fsm_substate_CDU_MAP_CANDIDATES(struct Game *sota, tnecs_entity_t dehov_ent
 }
 
 // -- FSM: INPUT_CANCEL EVENT --
-void fsm_state_IC_GAMEPLAY_MAP(struct Game *sota, tnecs_entity_t canceller) {
+void fsm_eCncl_s_GAMEPLAY_MAP(struct Game *sota, tnecs_entity_t canceller) {
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
-    if (fsm_substate_IC[sota->substate] != NULL)
-        fsm_substate_IC[sota->substate](sota, canceller);
+    if (fsm_eCncl_ss[sota->substate] != NULL)
+        fsm_eCncl_ss[sota->substate](sota, canceller);
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
@@ -504,7 +504,7 @@ void fsm_eUnitDng_ss_STANDBY(struct Game *sota, tnecs_entity_t selector_entity) 
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
-void fsm_substate_IC_STANDBY(struct Game *sota, tnecs_entity_t canceller) {
+void fsm_eCncl_ss_STANDBY(struct Game *sota, tnecs_entity_t canceller) {
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     SDL_assert(canceller > 0);
     SDL_assert(sota->state == GAME_STATE_Gameplay_Map);
@@ -531,7 +531,7 @@ void fsm_substate_IC_STANDBY(struct Game *sota, tnecs_entity_t canceller) {
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
-void fsm_substate_IC_MAP_CANDIDATES(struct Game *sota, tnecs_entity_t canceller) {
+void fsm_eCncl_ss_MAP_CANDIDATES(struct Game *sota, tnecs_entity_t canceller) {
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
 
     /* 1. Dehover candidate defendant */
@@ -545,7 +545,7 @@ void fsm_substate_IC_MAP_CANDIDATES(struct Game *sota, tnecs_entity_t canceller)
 
     SDL_assert(ontile > TNECS_NULL);
     // Try to limit calling FSM function directly.
-    fsm_substate_CDU_MAP_CANDIDATES(sota, ontile);
+    fsm_eCrsDeHvUnit_ss_MAP_CANDIDATES(sota, ontile);
 
     /* 2. set state to Menu */
     strncpy(sota->reason, "Cancel Selection of candidates", sizeof(sota->reason));
@@ -557,7 +557,7 @@ void fsm_substate_IC_MAP_CANDIDATES(struct Game *sota, tnecs_entity_t canceller)
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
-void fsm_substate_IC_MENU(struct Game *sota, tnecs_entity_t canceller) {
+void fsm_eCncl_ss_MENU(struct Game *sota, tnecs_entity_t canceller) {
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     bool destroy = false;
     tnecs_entity_t ent_topop = sota->menu_stack[DARR_NUM(sota->menu_stack) - 1];
@@ -573,7 +573,7 @@ void fsm_substate_IC_MENU(struct Game *sota, tnecs_entity_t canceller) {
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
-void fsm_substate_IC_MAP_UNIT_MOVES(struct Game *sota, tnecs_entity_t canceller) {
+void fsm_eCncl_ss_MAP_UNIT_MOVES(struct Game *sota, tnecs_entity_t canceller) {
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     sota->map->arrow->show = false;
 
@@ -602,22 +602,22 @@ void fsm_substate_IC_MAP_UNIT_MOVES(struct Game *sota, tnecs_entity_t canceller)
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
-void fsm_substate_IC_ANIMATION(struct Game *sota, tnecs_entity_t canceller) {
+void fsm_eCncl_ss_ANIMATION(struct Game *sota, tnecs_entity_t canceller) {
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
-void fsm_substate_IC_MAP_COMBAT(struct Game *sota, tnecs_entity_t canceller) {
+void fsm_eCncl_ss_MAP_COMBAT(struct Game *sota, tnecs_entity_t canceller) {
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
-void fsm_substate_IC_MAP_NPCTURN(struct Game *sota, tnecs_entity_t canceller) {
+void fsm_eCncl_ss_MAP_NPCTURN(struct Game *sota, tnecs_entity_t canceller) {
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
-// void fsm_substate_IC_MAP_GLOBAL_RANGE(struct Game * sota,
+// void fsm_eCncl_ss_MAP_GLOBAL_RANGE(struct Game * sota,
 //         tnecs_entity_t canceller) {
 //     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
 //     strncpy(sota->reason, "stops showing global Range", sizeof(sota->reason));
@@ -627,8 +627,8 @@ void fsm_substate_IC_MAP_NPCTURN(struct Game *sota, tnecs_entity_t canceller) {
 // }
 
 // -- FSM: CURSOR_MOVES EVENT --
-void fsm_sub_event_CMs_STANDBY(struct Game *sota, tnecs_entity_t mover_entity,
-                               struct Point *cursor_move) {
+void fsm_eCrsMvs_ss_STANDBY(struct Game *sota, tnecs_entity_t mover_entity,
+                            struct Point *cursor_move) {
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     tnecs_entity_t cursor = sota->entity_cursor;
     struct Position *cursor_pos = TNECS_GET_COMPONENT(sota->world, cursor, Position);
@@ -651,8 +651,8 @@ void fsm_sub_event_CMs_STANDBY(struct Game *sota, tnecs_entity_t mover_entity,
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
-void fsm_sub_event_CMs_MENU(struct Game *sota, tnecs_entity_t mover_entity,
-                            struct Point *cursor_move) {
+void fsm_eCrsMvs_ss_MENU(struct Game *sota, tnecs_entity_t mover_entity,
+                         struct Point *cursor_move) {
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     /* Find menu elem in direction */
     tnecs_entity_t menu = sota->menu_stack[DARR_NUM(sota->menu_stack) - 1];
@@ -689,8 +689,8 @@ void fsm_sub_event_CMs_MENU(struct Game *sota, tnecs_entity_t mover_entity,
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
-void fsm_sub_event_CMs_MAP_CANDIDATES(struct Game *sota, tnecs_entity_t mover_entity,
-                                      struct Point *cursor_move) {
+void fsm_eCrsMvs_ss_MAP_CANDIDATES(struct Game *sota, tnecs_entity_t mover_entity,
+                                   struct Point *cursor_move) {
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
 
     /* Find menu elem in direction */
@@ -712,8 +712,8 @@ void fsm_sub_event_CMs_MAP_CANDIDATES(struct Game *sota, tnecs_entity_t mover_en
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
-void fsm_sub_event_CMs_MAP_UNIT_MOVES(struct Game *sota,
-                                      tnecs_entity_t mover_entity, struct Point *cursor_move) {
+void fsm_eCrsMvs_ss_MAP_UNIT_MOVES(struct Game *sota,
+                                   tnecs_entity_t mover_entity, struct Point *cursor_move) {
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
 
     /* -- Move cursor -- */
@@ -738,7 +738,7 @@ void fsm_sub_event_CMs_MAP_UNIT_MOVES(struct Game *sota,
 }
 
 // -- FSM: CURSOR_MOVED EVENT --
-void fsm_state_CMd_GAMEPLAY_MAP(struct Game *sota, tnecs_entity_t mover_entity,
+void fsm_eCrsMvd_s_GAMEPLAY_MAP(struct Game *sota, tnecs_entity_t mover_entity,
                                 struct Point *cursor_move) {
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     SDL_assert(sota->entity_cursor != TNECS_NULL);
@@ -751,8 +751,8 @@ void fsm_state_CMd_GAMEPLAY_MAP(struct Game *sota, tnecs_entity_t mover_entity,
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
-void fsm_sub_event_CMd_STANDBY(struct Game *sota, tnecs_entity_t mover_entity,
-                               struct Point *cursor_move) {
+void fsm_eCrsMvd_ss_STANDBY(struct Game *sota, tnecs_entity_t mover_entity,
+                            struct Point *cursor_move) {
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
 
     // SDL_assert(sota->moved_direction > -1);
@@ -783,8 +783,8 @@ void fsm_sub_event_CMd_STANDBY(struct Game *sota, tnecs_entity_t mover_entity,
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
-void fsm_sub_event_CMd_MAP_CANDIDATES(struct Game *sota, tnecs_entity_t mover_entity,
-                                      struct Point *cursor_move) {
+void fsm_eCrsMvd_ss_MAP_CANDIDATES(struct Game *sota, tnecs_entity_t mover_entity,
+                                   struct Point *cursor_move) {
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
 
     struct Position *cursor_pos;
@@ -815,8 +815,8 @@ void fsm_sub_event_CMd_MAP_CANDIDATES(struct Game *sota, tnecs_entity_t mover_en
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
-void fsm_sub_event_CMd_MAP_UNIT_MOVES(struct Game *sota, tnecs_entity_t mover_entity,
-                                      struct Point *cursor_pos) {
+void fsm_eCrsMvd_ss_MAP_UNIT_MOVES(struct Game *sota, tnecs_entity_t mover_entity,
+                                   struct Point *cursor_pos) {
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
 
     /* -- Unit follows cursor movement  -- */
@@ -885,26 +885,26 @@ void fsm_eGmp2Stby_ss_GAMEPLAY_CAMP(struct Game *sota, tnecs_entity_t controller
 }
 
 // -- FSM: INPUT_ACCEPT EVENT --
-void fsm_state_IA_GAMEPLAY_MAP(struct Game *sota, tnecs_entity_t accepter) {
+void fsm_eAcpt_s_GAMEPLAY_MAP(struct Game *sota, tnecs_entity_t accepter) {
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
-    if (fsm_substate_IA[sota->substate] != NULL)
-        fsm_substate_IA[sota->substate](sota, accepter);
+    if (fsm_eAcpt_ss[sota->substate] != NULL)
+        fsm_eAcpt_ss[sota->substate](sota, accepter);
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
-// Only fsm_substate_IA_MENU called for other states
-void fsm_state_IA_TITLE_SCREEN(struct Game *sota, tnecs_entity_t accepter) {
+// Only fsm_eAcpt_ss_MENU called for other states
+void fsm_eAcpt_s_TITLE_SCREEN(struct Game *sota, tnecs_entity_t accepter) {
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     if (sota->substate != GAME_SUBSTATE_MENU) {
         SOTA_Log_Debug("Wrong substate %d on Title_Screen state", sota->substate);
         exit(EPERM);
     }
-    fsm_substate_IA_MENU(sota, accepter);
+    fsm_eAcpt_ss_MENU(sota, accepter);
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 /* -- Input_Accept -- */
-void fsm_substate_IA_MAP_CANDIDATES(struct Game *sota, tnecs_entity_t canceller) {
+void fsm_eAcpt_ss_MAP_CANDIDATES(struct Game *sota, tnecs_entity_t canceller) {
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
 
     // /* - Set Defendant to selected unit - */
@@ -929,7 +929,7 @@ void fsm_substate_IA_MAP_CANDIDATES(struct Game *sota, tnecs_entity_t canceller)
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
-void fsm_substate_IA_STANDBY(struct Game *sota, tnecs_entity_t accepter) {
+void fsm_eAcpt_ss_STANDBY(struct Game *sota, tnecs_entity_t accepter) {
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     // for state == GAME_STATE_GAMEPLAY
     SDL_assert(sota->entity_cursor);
@@ -960,7 +960,7 @@ void fsm_substate_IA_STANDBY(struct Game *sota, tnecs_entity_t accepter) {
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
-void fsm_substate_IA_MENU(struct Game *sota, tnecs_entity_t accepter_entity) {
+void fsm_eAcpt_ss_MENU(struct Game *sota, tnecs_entity_t accepter_entity) {
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     // Possible state pairs: [?, MENU]
 
@@ -976,13 +976,13 @@ void fsm_substate_IA_MENU(struct Game *sota, tnecs_entity_t accepter_entity) {
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
-void fsm_substate_IA_PAUSED(struct Game *sota, tnecs_entity_t accepter_entity) {
+void fsm_eAcpt_ss_PAUSED(struct Game *sota, tnecs_entity_t accepter_entity) {
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     Event_Emit(__func__, SDL_USEREVENT, event_Gameplay_Return2Standby, data1_entity, NULL);
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
-void fsm_substate_IA_MAP_UNIT_MOVES(struct Game *sota, tnecs_entity_t accepter_entity) {
+void fsm_eAcpt_ss_MAP_UNIT_MOVES(struct Game *sota, tnecs_entity_t accepter_entity) {
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
 
     /* - Unit should have been selected - */
@@ -1055,27 +1055,27 @@ void fsm_substate_IA_MAP_UNIT_MOVES(struct Game *sota, tnecs_entity_t accepter_e
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
-void fsm_substate_IA_MAP_MINIMAP(struct Game *sota, tnecs_entity_t accepter_entity) {
+void fsm_eAcpt_ss_MAP_MINIMAP(struct Game *sota, tnecs_entity_t accepter_entity) {
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
-void fsm_substate_IA_ANIMATION(struct Game *sota, tnecs_entity_t accepter_entity) {
+void fsm_eAcpt_ss_ANIMATION(struct Game *sota, tnecs_entity_t accepter_entity) {
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
-void fsm_substate_IA_MAP_COMBAT(struct Game *sota, tnecs_entity_t accepter_entity) {
+void fsm_eAcpt_ss_MAP_COMBAT(struct Game *sota, tnecs_entity_t accepter_entity) {
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
-void fsm_substate_IA_MAP_NPCTURN(struct Game *sota, tnecs_entity_t accepter_entity) {
+void fsm_eAcpt_ss_MAP_NPCTURN(struct Game *sota, tnecs_entity_t accepter_entity) {
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
-// void fsm_substate_IA_MAP_GLOBAL_RANGE(struct Game * sota,
+// void fsm_eAcpt_ss_MAP_GLOBAL_RANGE(struct Game * sota,
 //         tnecs_entity_t accepter_entity) {
 //     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
 //     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);

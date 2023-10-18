@@ -146,8 +146,8 @@ void receive_event_Cursor_Moves(struct Game *sota, SDL_Event *userevent) {
         return;
 
     // if moving more than one tile, ignore movement.
-    if (fsm_sub_event_CMs[sota->substate] != NULL)
-        fsm_sub_event_CMs[sota->substate](sota, mover_entity, &sota->cursor_move);
+    if (fsm_eCrsMvs_ss[sota->substate] != NULL)
+        fsm_eCrsMvs_ss[sota->substate](sota, mover_entity, &sota->cursor_move);
 
     Event_Emit(__func__, SDL_USEREVENT, event_Cursor_Moved, &sota->cursor_move,
                userevent->user.data2);
@@ -169,11 +169,11 @@ void receive_event_Cursor_Moved(struct Game *sota, SDL_Event *userevent) {
     cursor_pos = TNECS_GET_COMPONENT(sota->world, sota->entity_cursor, Position);
     struct Point pos = cursor_pos->tilemap_pos;
 
-    if (fsm_sub_event_CMd[sota->substate] != NULL)
-        fsm_sub_event_CMd[sota->substate](sota, mover_entity, &pos);
+    if (fsm_eCrsMvd_ss[sota->substate] != NULL)
+        fsm_eCrsMvd_ss[sota->substate](sota, mover_entity, &pos);
 
-    if (fsm_state_CMd[sota->state] != NULL)
-        fsm_state_CMd[sota->state](sota, mover_entity, cursor_move);
+    if (fsm_eCrsMvd_s[sota->state] != NULL)
+        fsm_eCrsMvd_s[sota->state](sota, mover_entity, cursor_move);
 
     // cursor_move->x = 0;
     // cursor_move->y = 0;
@@ -185,8 +185,8 @@ void receive_event_Input_CANCEL(struct Game *sota, SDL_Event *userevent) {
     i32 controller_type = * (i32 *) userevent->user.data1;
     tnecs_entity_t canceller_entity = Events_Controllers_Check(sota, controller_type);
     SDL_assert(canceller_entity > 0);
-    if (fsm_state_IC[sota->state] != NULL)
-        fsm_state_IC[sota->state](sota, canceller_entity);
+    if (fsm_eCncl_s[sota->state] != NULL)
+        fsm_eCncl_s[sota->state](sota, canceller_entity);
 
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
@@ -358,8 +358,8 @@ void receive_event_Input_ACCEPT(struct Game *sota, SDL_Event *userevent) {
     SDL_assert(accepter_entity > 0);
     *data1_entity = accepter_entity;
 
-    if (fsm_state_IA[sota->state] != NULL)
-        fsm_state_IA[sota->state](sota, accepter_entity);
+    if (fsm_eAcpt_s[sota->state] != NULL)
+        fsm_eAcpt_s[sota->state](sota, accepter_entity);
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
@@ -689,8 +689,8 @@ void receive_event_Cursor_Hovers_Unit(struct Game *sota, SDL_Event *userevent) {
     sota->hovered_unit_entity = *(tnecs_entity_t *)userevent->user.data2;
     SDL_assert(sota->hovered_unit_entity != TNECS_NULL);
 
-    if (fsm_substate_CHU[sota->substate] != NULL)
-        fsm_substate_CHU[sota->substate](sota, sota->hovered_unit_entity);
+    if (fsm_eCrsHvUnit_ss[sota->substate] != NULL)
+        fsm_eCrsHvUnit_ss[sota->substate](sota, sota->hovered_unit_entity);
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
@@ -699,8 +699,8 @@ void receive_event_Cursor_Dehovers_Unit(struct Game *sota, SDL_Event *userevent)
     tnecs_entity_t dehovered_unit_entity = sota->hovered_unit_entity;
     sota->hovered_unit_entity            = TNECS_NULL;
 
-    if (fsm_substate_CDU[sota->substate] != NULL)
-        fsm_substate_CDU[sota->substate](sota, dehovered_unit_entity);
+    if (fsm_eCrsDeHvUnit_ss[sota->substate] != NULL)
+        fsm_eCrsDeHvUnit_ss[sota->substate](sota, dehovered_unit_entity);
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 

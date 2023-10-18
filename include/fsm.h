@@ -54,98 +54,98 @@ struct PopUp_Loadout_Stats;
 
 /* --- TYPEDEFS --- */
 typedef void (*fsm_eGlbRng_s_t)( struct Game *);
-typedef void (*fsm_state_IC_t)(  struct Game *, tnecs_entity_t);
-typedef void (*fsm_state_CMd_t)( struct Game *, tnecs_entity_t, struct Point *);
+typedef void (*fsm_eCncl_s_t)(  struct Game *, tnecs_entity_t);
+typedef void (*fsm_eCrsMvd_s_t)( struct Game *, tnecs_entity_t, struct Point *);
 typedef void (*fsm_eGmp2Stby_s_t)(struct Game *, tnecs_entity_t);
 typedef void (*fsm_eMenuRight_s_t)( struct Game *, i32);
-typedef fsm_state_IC_t   fsm_state_IA_t;
-typedef fsm_state_IC_t   fsm_eStats_s_t;
-typedef fsm_state_IC_t   fsm_substate_IC_t;
+typedef fsm_eCncl_s_t   fsm_eAcpt_s_t;
+typedef fsm_eCncl_s_t   fsm_eStats_s_t;
+typedef fsm_eCncl_s_t   fsm_eCncl_ss_t;
 typedef fsm_eMenuRight_s_t  fsm_eMenuLeft_s_t;
 typedef fsm_eMenuRight_s_t  fsm_eMenuLeft_ss_t;
 typedef fsm_eMenuRight_s_t  fsm_eMenuRight_ss_t;
-typedef fsm_state_CMd_t  fsm_state_CMs_t;
+typedef fsm_eCrsMvd_s_t  fsm_eCrsMvs_s_t;
 typedef fsm_eGmp2Stby_s_t fsm_eUnitDsel_s_t;
 typedef fsm_eGmp2Stby_s_t fsm_eUnitSel_s_t ;
 typedef fsm_eGmp2Stby_s_t fsm_eUnitDng_s_t;
-typedef fsm_eGmp2Stby_s_t fsm_state_CDU_t;
-typedef fsm_eGmp2Stby_s_t fsm_state_CHU_t;
+typedef fsm_eGmp2Stby_s_t fsm_eCrsDeHvUnit_s_t;
+typedef fsm_eGmp2Stby_s_t fsm_eCrsHvUnit_s_t;
 typedef fsm_eGmp2Stby_s_t fsm_Unit_Wait_state_t;
 typedef fsm_eGmp2Stby_s_t fsm_eUnitDsel_s_t;
 
 /* -- FSM: Cursor_Moves EVENT --  */
-extern fsm_state_CMs_t fsm_state_CMs[GAME_STATE_NUM];
-extern fsm_state_CMs_t fsm_sub_event_CMs[GAME_SUBSTATE_NUM];
+extern fsm_eCrsMvs_s_t fsm_eCrsMvs_s[GAME_STATE_NUM];
+extern fsm_eCrsMvs_s_t fsm_eCrsMvs_ss[GAME_SUBSTATE_NUM];
 
-void fsm_state_CMs_GAMEPLAY_MAP(struct Game *s, tnecs_entity_t t, struct Point *);
+void fsm_eCrsMvs_s_GAMEPLAY_MAP(struct Game *s, tnecs_entity_t t, struct Point *);
 
-void fsm_sub_event_CMs_MENU(          struct Game *sota, tnecs_entity_t t, struct Point *);
-void fsm_sub_event_CMs_STANDBY(       struct Game *sota, tnecs_entity_t t, struct Point *);
-void fsm_sub_event_CMs_MAP_UNIT_MOVES(struct Game *sota, tnecs_entity_t t, struct Point *);
-void fsm_sub_event_CMs_MAP_CANDIDATES(struct Game *sota, tnecs_entity_t t, struct Point *);
+void fsm_eCrsMvs_ss_MENU(          struct Game *sota, tnecs_entity_t t, struct Point *);
+void fsm_eCrsMvs_ss_STANDBY(       struct Game *sota, tnecs_entity_t t, struct Point *);
+void fsm_eCrsMvs_ss_MAP_UNIT_MOVES(struct Game *sota, tnecs_entity_t t, struct Point *);
+void fsm_eCrsMvs_ss_MAP_CANDIDATES(struct Game *sota, tnecs_entity_t t, struct Point *);
 
 /* -- FSM: Cursor_Moved EVENT -- */
-extern fsm_state_CMd_t fsm_state_CMd[GAME_STATE_NUM];
-extern fsm_state_CMd_t fsm_sub_event_CMd[GAME_SUBSTATE_NUM];
+extern fsm_eCrsMvd_s_t fsm_eCrsMvd_s[GAME_STATE_NUM];
+extern fsm_eCrsMvd_s_t fsm_eCrsMvd_ss[GAME_SUBSTATE_NUM];
 
-void fsm_state_CMd_GAMEPLAY_MAP(struct Game *, tnecs_entity_t t, struct Point *);
+void fsm_eCrsMvd_s_GAMEPLAY_MAP(struct Game *, tnecs_entity_t t, struct Point *);
 
-void fsm_sub_event_CMd_STANDBY(       struct Game *sota, tnecs_entity_t t, struct Point *);
-void fsm_sub_event_CMd_MAP_UNIT_MOVES(struct Game *sota, tnecs_entity_t t, struct Point *);
-void fsm_sub_event_CMd_MAP_CANDIDATES(struct Game *sota, tnecs_entity_t t, struct Point *);
+void fsm_eCrsMvd_ss_STANDBY(       struct Game *sota, tnecs_entity_t t, struct Point *);
+void fsm_eCrsMvd_ss_MAP_UNIT_MOVES(struct Game *sota, tnecs_entity_t t, struct Point *);
+void fsm_eCrsMvd_ss_MAP_CANDIDATES(struct Game *sota, tnecs_entity_t t, struct Point *);
 
 /* -- FSM: Cursor_Hovers_Unit EVENT -- */
-extern fsm_state_CHU_t fsm_state_CHU[GAME_STATE_NUM];
-extern fsm_state_CHU_t fsm_substate_CHU[GAME_SUBSTATE_NUM];
+extern fsm_eCrsHvUnit_s_t fsm_eCrsHvUnit_s[GAME_STATE_NUM];
+extern fsm_eCrsHvUnit_s_t fsm_eCrsHvUnit_ss[GAME_SUBSTATE_NUM];
 
-void fsm_state_CHU_GAMEPLAY_MAP(struct Game *sota, tnecs_entity_t ent);
+void fsm_eCrsHvUnit_s_GAMEPLAY_MAP(struct Game *sota, tnecs_entity_t ent);
 
-void fsm_substate_CHU_STANDBY(       struct Game *sota, tnecs_entity_t ent);
-void fsm_substate_CHU_MAP_CANDIDATES(struct Game *sota, tnecs_entity_t ent);
+void fsm_eCrsHvUnit_ss_STANDBY(       struct Game *sota, tnecs_entity_t ent);
+void fsm_eCrsHvUnit_ss_MAP_CANDIDATES(struct Game *sota, tnecs_entity_t ent);
 
 /* -- FSM: Cursor_Dehovers_Unit EVENT -- */
-extern fsm_state_CDU_t fsm_state_CDU[GAME_STATE_NUM];
-extern fsm_state_CDU_t fsm_substate_CDU[GAME_SUBSTATE_NUM];
+extern fsm_eCrsDeHvUnit_s_t fsm_eCrsDeHvUnit_s[GAME_STATE_NUM];
+extern fsm_eCrsDeHvUnit_s_t fsm_eCrsDeHvUnit_ss[GAME_SUBSTATE_NUM];
 
-void fsm_state_CDU_GAMEPLAY_MAP(struct Game *sota, tnecs_entity_t ent);
+void fsm_eCrsDeHvUnit_s_GAMEPLAY_MAP(struct Game *sota, tnecs_entity_t ent);
 
-void fsm_substate_CDU_STANDBY(       struct Game *sota, tnecs_entity_t ent);
-void fsm_substate_CDU_MAP_UNIT_MOVES(struct Game *sota, tnecs_entity_t ent);
-void fsm_substate_CDU_MAP_CANDIDATES(struct Game *sota, tnecs_entity_t ent);
+void fsm_eCrsDeHvUnit_ss_STANDBY(       struct Game *sota, tnecs_entity_t ent);
+void fsm_eCrsDeHvUnit_ss_MAP_UNIT_MOVES(struct Game *sota, tnecs_entity_t ent);
+void fsm_eCrsDeHvUnit_ss_MAP_CANDIDATES(struct Game *sota, tnecs_entity_t ent);
 
 /* -- FSM: Input_Accept EVENT -- */
-extern fsm_state_IA_t fsm_state_IA[GAME_STATE_NUM];
-extern fsm_state_IA_t fsm_substate_IA[GAME_SUBSTATE_NUM];
+extern fsm_eAcpt_s_t fsm_eAcpt_s[GAME_STATE_NUM];
+extern fsm_eAcpt_s_t fsm_eAcpt_ss[GAME_SUBSTATE_NUM];
 
-void fsm_state_IA_TITLE_SCREEN(struct Game *sota, tnecs_entity_t ent);
-void fsm_state_IA_GAMEPLAY_MAP(struct Game *sota, tnecs_entity_t ent);
+void fsm_eAcpt_s_TITLE_SCREEN(struct Game *sota, tnecs_entity_t ent);
+void fsm_eAcpt_s_GAMEPLAY_MAP(struct Game *sota, tnecs_entity_t ent);
 
-void fsm_substate_IA_MENU(            struct Game *sota, tnecs_entity_t ent);
-void fsm_substate_IA_PAUSED(          struct Game *sota, tnecs_entity_t ent);
-void fsm_substate_IA_STANDBY(         struct Game *sota, tnecs_entity_t ent);
-void fsm_substate_IA_ANIMATION(       struct Game *sota, tnecs_entity_t ent);
-void fsm_substate_IA_MAP_COMBAT(      struct Game *sota, tnecs_entity_t ent);
-void fsm_substate_IA_MAP_NPCTURN(     struct Game *sota, tnecs_entity_t ent);
-void fsm_substate_IA_MAP_MINIMAP(     struct Game *sota, tnecs_entity_t ent);
-void fsm_substate_IA_MAP_UNIT_MOVES(  struct Game *sota, tnecs_entity_t ent);
-void fsm_substate_IA_MAP_CANDIDATES(  struct Game *sota, tnecs_entity_t ent);
-void fsm_substate_IA_MAP_GLOBAL_RANGE(struct Game *sota, tnecs_entity_t ent);
+void fsm_eAcpt_ss_MENU(            struct Game *sota, tnecs_entity_t ent);
+void fsm_eAcpt_ss_PAUSED(          struct Game *sota, tnecs_entity_t ent);
+void fsm_eAcpt_ss_STANDBY(         struct Game *sota, tnecs_entity_t ent);
+void fsm_eAcpt_ss_ANIMATION(       struct Game *sota, tnecs_entity_t ent);
+void fsm_eAcpt_ss_MAP_COMBAT(      struct Game *sota, tnecs_entity_t ent);
+void fsm_eAcpt_ss_MAP_NPCTURN(     struct Game *sota, tnecs_entity_t ent);
+void fsm_eAcpt_ss_MAP_MINIMAP(     struct Game *sota, tnecs_entity_t ent);
+void fsm_eAcpt_ss_MAP_UNIT_MOVES(  struct Game *sota, tnecs_entity_t ent);
+void fsm_eAcpt_ss_MAP_CANDIDATES(  struct Game *sota, tnecs_entity_t ent);
+void fsm_eAcpt_ss_MAP_GLOBAL_RANGE(struct Game *sota, tnecs_entity_t ent);
 
 /* -- FSM: Input_Cancel EVENT -- */
-extern fsm_state_IC_t    fsm_state_IC[GAME_STATE_NUM];
-extern fsm_substate_IC_t fsm_substate_IC[GAME_SUBSTATE_NUM];
+extern fsm_eCncl_s_t  fsm_eCncl_s[GAME_STATE_NUM];
+extern fsm_eCncl_ss_t fsm_eCncl_ss[GAME_SUBSTATE_NUM];
 
-void fsm_state_IC_GAMEPLAY_MAP(struct Game *sota, tnecs_entity_t ent);
+void fsm_eCncl_s_GAMEPLAY_MAP(struct Game *sota, tnecs_entity_t ent);
 
-void fsm_substate_IC_MENU(            struct Game *sota, tnecs_entity_t ent);
-void fsm_substate_IC_STANDBY(         struct Game *sota, tnecs_entity_t ent);
-void fsm_substate_IC_ANIMATION(       struct Game *sota, tnecs_entity_t ent);
-void fsm_substate_IC_MAP_COMBAT(      struct Game *sota, tnecs_entity_t ent);
-void fsm_substate_IC_STATS_MENU(      struct Game *sota, tnecs_entity_t ent);
-void fsm_substate_IC_MAP_NPCTURN(     struct Game *sota, tnecs_entity_t ent);
-void fsm_substate_IC_MAP_UNIT_MOVES(  struct Game *sota, tnecs_entity_t ent);
-void fsm_substate_IC_MAP_CANDIDATES(  struct Game *sota, tnecs_entity_t ent);
-void fsm_substate_IC_MAP_GLOBAL_RANGE(struct Game *sota, tnecs_entity_t ent);
+void fsm_eCncl_ss_MENU(            struct Game *sota, tnecs_entity_t ent);
+void fsm_eCncl_ss_STANDBY(         struct Game *sota, tnecs_entity_t ent);
+void fsm_eCncl_ss_ANIMATION(       struct Game *sota, tnecs_entity_t ent);
+void fsm_eCncl_ss_MAP_COMBAT(      struct Game *sota, tnecs_entity_t ent);
+void fsm_eCncl_ss_STATS_MENU(      struct Game *sota, tnecs_entity_t ent);
+void fsm_eCncl_ss_MAP_NPCTURN(     struct Game *sota, tnecs_entity_t ent);
+void fsm_eCncl_ss_MAP_UNIT_MOVES(  struct Game *sota, tnecs_entity_t ent);
+void fsm_eCncl_ss_MAP_CANDIDATES(  struct Game *sota, tnecs_entity_t ent);
+void fsm_eCncl_ss_MAP_GLOBAL_RANGE(struct Game *sota, tnecs_entity_t ent);
 
 /* -- FSM: Input_Stats EVENT -- */
 extern fsm_eStats_s_t fsm_eStats_s[GAME_STATE_NUM];

@@ -19,7 +19,7 @@ typedef void (*fsm_menu_t)(struct Game *, struct MenuComponent *);
 *   Type:       fsm_<type>_<event>_t
 *   Function:   fsm_<type>_<event>_<INDEX>
 *   <fsm_array>[<index>] -> returns <fsm_function>
-*   Ex: fsm_substate_IC_MAP_UNIT_MOVES
+*   Ex: fsm_eCncl_ss_MAP_UNIT_MOVES
 */
 
 /* -- Menu-type FSMs -- */
