@@ -115,21 +115,21 @@ void fsm_eCrsDeHvUnit_ss_MAP_CANDIDATES(struct Game *sota, tnecs_entity_t ent);
 
 /* -- FSM: Input_Accept EVENT -- */
 extern fsm_eAcpt_s_t fsm_eAcpt_s[GAME_STATE_NUM];
-extern fsm_eAcpt_s_t fsm_eAcpt_ss[GAME_SUBSTATE_NUM];
+extern fsm_eAcpt_s_t fsm_eAcpt_sGmpMap_ss[GAME_SUBSTATE_NUM];
 
 void fsm_eAcpt_s_TITLE_SCREEN(struct Game *sota, tnecs_entity_t ent);
 void fsm_eAcpt_s_GAMEPLAY_MAP(struct Game *sota, tnecs_entity_t ent);
 
-void fsm_eAcpt_ss_MENU(            struct Game *sota, tnecs_entity_t ent);
-void fsm_eAcpt_ss_PAUSED(          struct Game *sota, tnecs_entity_t ent);
-void fsm_eAcpt_ss_STANDBY(         struct Game *sota, tnecs_entity_t ent);
-void fsm_eAcpt_ss_ANIMATION(       struct Game *sota, tnecs_entity_t ent);
-void fsm_eAcpt_ss_MAP_COMBAT(      struct Game *sota, tnecs_entity_t ent);
-void fsm_eAcpt_ss_MAP_NPCTURN(     struct Game *sota, tnecs_entity_t ent);
-void fsm_eAcpt_ss_MAP_MINIMAP(     struct Game *sota, tnecs_entity_t ent);
-void fsm_eAcpt_ss_MAP_UNIT_MOVES(  struct Game *sota, tnecs_entity_t ent);
-void fsm_eAcpt_ss_MAP_CANDIDATES(  struct Game *sota, tnecs_entity_t ent);
-void fsm_eAcpt_ss_MAP_GLOBAL_RANGE(struct Game *sota, tnecs_entity_t ent);
+void fsm_eAcpt_sGmpMap_ss_MENU(            struct Game *sota, tnecs_entity_t ent);
+void fsm_eAcpt_sGmpMap_ss_PAUSED(          struct Game *sota, tnecs_entity_t ent);
+void fsm_eAcpt_sGmpMap_ss_STANDBY(         struct Game *sota, tnecs_entity_t ent);
+void fsm_eAcpt_sGmpMap_ss_ANIMATION(       struct Game *sota, tnecs_entity_t ent);
+void fsm_eAcpt_sGmpMap_ss_MAP_COMBAT(      struct Game *sota, tnecs_entity_t ent);
+void fsm_eAcpt_sGmpMap_ss_MAP_NPCTURN(     struct Game *sota, tnecs_entity_t ent);
+void fsm_eAcpt_sGmpMap_ss_MAP_MINIMAP(     struct Game *sota, tnecs_entity_t ent);
+void fsm_eAcpt_sGmpMap_ss_MAP_UNIT_MOVES(  struct Game *sota, tnecs_entity_t ent);
+void fsm_eAcpt_sGmpMap_ss_MAP_CANDIDATES(  struct Game *sota, tnecs_entity_t ent);
+void fsm_eAcpt_sGmpMap_ss_MAP_GLOBAL_RANGE(struct Game *sota, tnecs_entity_t ent);
 
 /* -- FSM: Input_Cancel EVENT -- */
 extern fsm_eCncl_s_t  fsm_eCncl_s[GAME_STATE_NUM];
