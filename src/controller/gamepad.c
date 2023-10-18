@@ -111,8 +111,6 @@ char sota_input_names[SOTA_INPUT_END][SOTA_INPUT_NAME_MAX_LEN] = {
 };
 #undef REGISTER_ENUM
 
-
-
 struct controllerGamepad controllerGamepad_default = {
     .inputmap           = NULL,
     .controllers        = NULL,

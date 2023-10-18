@@ -281,8 +281,8 @@ void receive_event_Input_STATS(struct Game *sota, SDL_Event *userevent) {
     // if (fsm_Input_Stats_state[sota->state] != NULL) {
     //     fsm_Input_Stats_state[sota->state](sota, accepter_entity);
     // }
-    if (fsm_sub_event_IS[sota->substate] != NULL)
-        fsm_sub_event_IS[sota->substate](sota, accepter_entity);
+    if (fsm_eStats_ss[sota->substate] != NULL)
+        fsm_eStats_ss[sota->substate](sota, accepter_entity);
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
@@ -323,10 +323,10 @@ void receive_event_Gameplay_Return2Standby(struct Game *sota, SDL_Event *usereve
     }
 
     /* -- FSM -- */
-    if (fsm_substate_GR2S[sota->substate] != NULL)
-        fsm_substate_GR2S[sota->substate](sota, TNECS_NULL);
-    if (fsm_state_GR2S[sota->state] != NULL)
-        fsm_state_GR2S[sota->state](sota, TNECS_NULL);
+    if (fsm_eGmp2Stby_ss[sota->substate] != NULL)
+        fsm_eGmp2Stby_ss[sota->substate](sota, TNECS_NULL);
+    if (fsm_eGmp2Stby_s[sota->state] != NULL)
+        fsm_eGmp2Stby_s[sota->state](sota, TNECS_NULL);
 
     /* -- Setting game substate -- */
     if (sota->substate != GAME_SUBSTATE_STANDBY) {
@@ -343,8 +343,8 @@ void receive_event_Input_GLOBALRANGE(struct Game *sota, SDL_Event *userevent) {
     i32 controller_type = *(i32 *)userevent->user.data1;
     Events_Controllers_Check(sota, controller_type);
 
-    if (fsm_sub_event_IGR[sota->substate] != NULL)
-        fsm_sub_event_IGR[sota->substate](sota);
+    if (fsm_eGlbRng_ss[sota->substate] != NULL)
+        fsm_eGlbRng_ss[sota->substate](sota);
 
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
@@ -567,8 +567,8 @@ void receive_event_Unit_Select(struct Game *sota, SDL_Event *userevent) {
     sota->aggressor = sota->selected_unit_entity;
     SDL_assert(sota->selected_unit_entity > TNECS_NULL);
     SDL_assert(sota->state                == GAME_STATE_Gameplay_Map);
-    if (fsm_substate_US[sota->substate] != NULL)
-        fsm_substate_US[sota->substate](sota, sota->entity_cursor);
+    if (fsm_eUnitSel_ss[sota->substate] != NULL)
+        fsm_eUnitSel_ss[sota->substate](sota, sota->entity_cursor);
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
@@ -593,8 +593,8 @@ void receive_event_Unit_Deselect(struct Game *sota, SDL_Event *userevent) {
     sota->selected_unit_moved_position.y = pos_ptr->tilemap_pos.y;
 
     /* - Reset overlay modes and/or go back to standby - */
-    if (fsm_substate_UD[sota->substate] != NULL)
-        fsm_substate_UD[sota->substate](sota, sota->entity_cursor);
+    if (fsm_eUnitDsel_ss[sota->substate] != NULL)
+        fsm_eUnitDsel_ss[sota->substate](sota, sota->entity_cursor);
 
     /* - New overlays - */
     if (SotA_isPC(unit_ptr->army)) {
@@ -713,8 +713,8 @@ void receive_event_Unit_Danger(struct Game *sota, SDL_Event *userevent) {
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     SDL_assert(sota->entity_cursor != TNECS_NULL);
 
-    if (fsm_substate_UDgr[sota->substate] != NULL)
-        fsm_substate_UDgr[sota->substate](sota, sota->entity_cursor);
+    if (fsm_eUnitDng_ss[sota->substate] != NULL)
+        fsm_eUnitDng_ss[sota->substate](sota, sota->entity_cursor);
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
@@ -881,8 +881,8 @@ void receive_event_Input_MENURIGHT(struct Game *sota, SDL_Event *userevent) {
     i32 controller_type = *(i32 *)userevent->user.data1;
     Events_Controllers_Check(sota, controller_type);
 
-    if (fsm_state_ImR[sota->state] != NULL)
-        fsm_state_ImR[sota->state](sota, controller_type);
+    if (fsm_eMenuRight_s[sota->state] != NULL)
+        fsm_eMenuRight_s[sota->state](sota, controller_type);
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
@@ -892,8 +892,8 @@ void receive_event_Input_MENULEFT(struct Game *sota, SDL_Event *userevent) {
     i32 controller_type = *(i32 *)userevent->user.data1;
     Events_Controllers_Check(sota, controller_type);
 
-    if (fsm_state_ImL[sota->state] != NULL)
-        fsm_state_ImL[sota->state](sota, controller_type);
+    if (fsm_eMenuLeft_s[sota->state] != NULL)
+        fsm_eMenuLeft_s[sota->state](sota, controller_type);
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
