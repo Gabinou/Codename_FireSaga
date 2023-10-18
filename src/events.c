@@ -653,15 +653,17 @@ void receive_event_Unit_Icon_Return(struct Game *sota, SDL_Event *userevent) {
 void receive_event_Unit_Moves(struct Game *sota, SDL_Event *userevent) {
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     SDL_assert(userevent->user.data1 != NULL);
-    SDL_assert(sota->entity_cursor != TNECS_NULL);
-    SDL_assert(sota->selected_unit_entity != TNECS_NULL);
+    SDL_assert(sota->entity_cursor          != TNECS_NULL);
+    SDL_assert(sota->selected_unit_entity   != TNECS_NULL);
 
     /* -- Initialize Arrow -- */
-    struct Position *cpos = TNECS_GET_COMPONENT(sota->world, sota->entity_cursor, Position);
-    struct Unit *selected = TNECS_GET_COMPONENT(sota->world, sota->selected_unit_entity, Unit);
-    SDL_assert(cpos != NULL);
-    SDL_assert(selected != NULL);
-    SDL_assert(sota->map->costmap != NULL);
+    struct Position *cpos;
+    struct Unit *selected;
+    cpos     = TNECS_GET_COMPONENT(sota->world, sota->entity_cursor,        Position);
+    selected = TNECS_GET_COMPONENT(sota->world, sota->selected_unit_entity, Unit);
+    SDL_assert(cpos                 != NULL);
+    SDL_assert(selected             != NULL);
+    SDL_assert(sota->map->costmap   != NULL);
     struct Map *map = sota->map;
     Arrow_Path_Init(map->arrow, map->costmap, Unit_computeMove(selected), cpos->tilemap_pos);
     strncpy(sota->reason, "friendly unit was selected and can move", sizeof(sota->reason));

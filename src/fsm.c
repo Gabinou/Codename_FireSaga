@@ -507,6 +507,7 @@ void fsm_substate_UDgr_STANDBY(struct Game *sota, tnecs_entity_t selector_entity
 void fsm_substate_IC_STANDBY(struct Game *sota, tnecs_entity_t canceller) {
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     SDL_assert(canceller > 0);
+    SDL_assert(sota->state == GAME_STATE_Gameplay_Map);
     /* -- Preliminaries -- */
     *data1_entity = canceller;
     const struct Unit *unit_ontile;

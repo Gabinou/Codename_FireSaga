@@ -580,6 +580,8 @@ void fsm_menu_type_IC_player_select(struct Game *sota, struct MenuComponent *mc)
     struct PlayerSelectMenu *menu_ptr = (struct PlayerSelectMenu *)mc->data;
     if8 new_substate = -1;
 
+    /* Popped menu reverter */
+    // TODO can it be replaced by events?
     switch (menu_ptr->id) {
         case MENU_PLAYER_SELECT_UNIT_ACTION:
             ;
@@ -600,17 +602,18 @@ void fsm_menu_type_IC_player_select(struct Game *sota, struct MenuComponent *mc)
             // 2. Moving pos ptr to initial position to compute initial attacktomap
             // 2.1 inital pos != moved pos, so cursor would move...
             Position_Pos_Set(selected_pos, init_pos.x, init_pos.y);
-            Map_Healtomap_Compute(sota->map, sota->world, sota->selected_unit_entity,   true, true);
+            Map_Healtomap_Compute(  sota->map, sota->world, sota->selected_unit_entity, true, true);
             Map_Attacktomap_Compute(sota->map, sota->world, sota->selected_unit_entity, true, true);
             // 2.2 BUT: Moving pos ptr to selected position so that cursor doesn't move
             Position_Pos_Set(selected_pos, moved_pos.x, moved_pos.y);
 
             // 3. Compute new stackmap with recomputed attacktomap
             if (Unit_canStaff(unit)) {
-                Map_Palettemap_Autoset(sota->map, MAP_OVERLAY_GLOBAL_DANGER + MAP_OVERLAY_HEAL + MAP_OVERLAY_MOVE);
+                int overlay = MAP_OVERLAY_GLOBAL_DANGER + MAP_OVERLAY_HEAL + MAP_OVERLAY_MOVE;
+                Map_Palettemap_Autoset(sota->map, overlay);
             } else if (Unit_canAttack(unit)) {
-                Map_Palettemap_Autoset(sota->map,
-                                       MAP_OVERLAY_GLOBAL_DANGER + MAP_OVERLAY_MOVE + MAP_OVERLAY_ATTACK + MAP_OVERLAY_DANGER);
+                int overlay = MAP_OVERLAY_GLOBAL_DANGER + MAP_OVERLAY_MOVE + MAP_OVERLAY_ATTACK + MAP_OVERLAY_DANGER;
+                Map_Palettemap_Autoset(sota->map, overlay);
             }
             Map_Stacked_Dangermap_Compute(sota->map);
 
