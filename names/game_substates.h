@@ -1,6 +1,6 @@
 REGISTER_ENUM(MAP_MINIMAP,           MapMini)
 REGISTER_ENUM(MENU,                  Menu)
-REGISTER_ENUM(MAP_UNIT_MOVES,        MapUtMv)
+REGISTER_ENUM(MAP_UNIT_MOVES,        MapUntMv)
 REGISTER_ENUM(MAP_COMBAT,            MapCmbt)
 REGISTER_ENUM(MAP_NPCTURN,           MapNPC)
 REGISTER_ENUM(SAVING,                Save)
