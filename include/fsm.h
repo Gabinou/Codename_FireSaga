@@ -30,9 +30,9 @@ struct PopUp_Loadout_Stats;
 
 /* --- FINITE-STATE MACHINE FOR EVENTS --- */
 /* -- NAMING CONVENTION -- */
-/*  Array:      fsm_<type>_<event>
+/*  Array:      fsm_<event>_<prefixes>
         - Example: `fsm_eCncl_s_ss_m`
-*   Type:       fsm_<type>_<event>_t
+*   Type:       fsm_<event>_<prefixes>_t
         - Example: `fsm_eCncl_s_ss_m_t`
 *   Function:   fsm_<typeABRV>_<state1>_<state2>...
     - <typeABRV>    -> <prefix><event abbreviation>
@@ -53,25 +53,25 @@ struct PopUp_Loadout_Stats;
 //    If need one fsm_substate per state -> fsm_sub_<state_name>
 
 /* --- TYPEDEFS --- */
-typedef void (*fsm_eGlbRng_s_t)( struct Game *);
-typedef void (*fsm_eCncl_s_t)(  struct Game *, tnecs_entity_t);
-typedef void (*fsm_eCrsMvd_s_t)( struct Game *, tnecs_entity_t, struct Point *);
-typedef void (*fsm_eGmp2Stby_s_t)(struct Game *, tnecs_entity_t);
-typedef void (*fsm_eMenuRight_s_t)( struct Game *, i32);
-typedef fsm_eCncl_s_t   fsm_eAcpt_s_t;
-typedef fsm_eCncl_s_t   fsm_eStats_s_t;
-typedef fsm_eCncl_s_t   fsm_eCncl_ss_t;
+typedef void (*fsm_eCncl_s_t)(     struct Game *, tnecs_entity_t);
+typedef void (*fsm_eGlbRng_s_t)(   struct Game *);
+typedef void (*fsm_eCrsMvd_s_t)(   struct Game *, tnecs_entity_t, struct Point *);
+typedef void (*fsm_eGmp2Stby_s_t)( struct Game *, tnecs_entity_t);
+typedef void (*fsm_eMenuRight_s_t)(struct Game *, i32);
+typedef fsm_eCncl_s_t       fsm_eAcpt_s_t;
+typedef fsm_eCncl_s_t       fsm_eStats_s_t;
+typedef fsm_eCncl_s_t       fsm_eCncl_sGmpMap_ss_t;
 typedef fsm_eMenuRight_s_t  fsm_eMenuLeft_s_t;
 typedef fsm_eMenuRight_s_t  fsm_eMenuLeft_ss_t;
 typedef fsm_eMenuRight_s_t  fsm_eMenuRight_ss_t;
-typedef fsm_eCrsMvd_s_t  fsm_eCrsMvs_s_t;
-typedef fsm_eGmp2Stby_s_t fsm_eUnitDsel_s_t;
-typedef fsm_eGmp2Stby_s_t fsm_eUnitSel_s_t ;
-typedef fsm_eGmp2Stby_s_t fsm_eUnitDng_s_t;
-typedef fsm_eGmp2Stby_s_t fsm_eCrsDeHvUnit_s_t;
-typedef fsm_eGmp2Stby_s_t fsm_eCrsHvUnit_s_t;
-typedef fsm_eGmp2Stby_s_t fsm_Unit_Wait_state_t;
-typedef fsm_eGmp2Stby_s_t fsm_eUnitDsel_s_t;
+typedef fsm_eCrsMvd_s_t     fsm_eCrsMvs_s_t;
+typedef fsm_eGmp2Stby_s_t   fsm_eUnitDsel_s_t;
+typedef fsm_eGmp2Stby_s_t   fsm_eUnitSel_s_t ;
+typedef fsm_eGmp2Stby_s_t   fsm_eUnitDng_s_t;
+typedef fsm_eGmp2Stby_s_t   fsm_eCrsDeHvUnit_s_t;
+typedef fsm_eGmp2Stby_s_t   fsm_eCrsHvUnit_s_t;
+typedef fsm_eGmp2Stby_s_t   fsm_Unit_Wait_state_t;
+typedef fsm_eGmp2Stby_s_t   fsm_eUnitDsel_s_t;
 
 /* -- FSM: Cursor_Moves EVENT --  */
 extern fsm_eCrsMvs_s_t fsm_eCrsMvs_s[GAME_STATE_NUM];
@@ -133,19 +133,19 @@ void fsm_eAcpt_ss_MAP_GLOBAL_RANGE(struct Game *sota, tnecs_entity_t ent);
 
 /* -- FSM: Input_Cancel EVENT -- */
 extern fsm_eCncl_s_t  fsm_eCncl_s[GAME_STATE_NUM];
-extern fsm_eCncl_ss_t fsm_eCncl_ss[GAME_SUBSTATE_NUM];
+extern fsm_eCncl_sGmpMap_ss_t fsm_eCncl_sGmpMap_ss[GAME_SUBSTATE_NUM];
 
 void fsm_eCncl_s_GAMEPLAY_MAP(struct Game *sota, tnecs_entity_t ent);
 
-void fsm_eCncl_ss_MENU(            struct Game *sota, tnecs_entity_t ent);
-void fsm_eCncl_ss_STANDBY(         struct Game *sota, tnecs_entity_t ent);
-void fsm_eCncl_ss_ANIMATION(       struct Game *sota, tnecs_entity_t ent);
-void fsm_eCncl_ss_MAP_COMBAT(      struct Game *sota, tnecs_entity_t ent);
-void fsm_eCncl_ss_STATS_MENU(      struct Game *sota, tnecs_entity_t ent);
-void fsm_eCncl_ss_MAP_NPCTURN(     struct Game *sota, tnecs_entity_t ent);
-void fsm_eCncl_ss_MAP_UNIT_MOVES(  struct Game *sota, tnecs_entity_t ent);
-void fsm_eCncl_ss_MAP_CANDIDATES(  struct Game *sota, tnecs_entity_t ent);
-void fsm_eCncl_ss_MAP_GLOBAL_RANGE(struct Game *sota, tnecs_entity_t ent);
+void fsm_eCncl_sGmpMap_ss_MENU(            struct Game *sota, tnecs_entity_t ent);
+void fsm_eCncl_sGmpMap_ss_STANDBY(         struct Game *sota, tnecs_entity_t ent);
+void fsm_eCncl_sGmpMap_ss_ANIMATION(       struct Game *sota, tnecs_entity_t ent);
+void fsm_eCncl_sGmpMap_ss_MAP_COMBAT(      struct Game *sota, tnecs_entity_t ent);
+void fsm_eCncl_sGmpMap_ss_STATS_MENU(      struct Game *sota, tnecs_entity_t ent);
+void fsm_eCncl_sGmpMap_ss_MAP_NPCTURN(     struct Game *sota, tnecs_entity_t ent);
+void fsm_eCncl_sGmpMap_ss_MAP_UNIT_MOVES(  struct Game *sota, tnecs_entity_t ent);
+void fsm_eCncl_sGmpMap_ss_MAP_CANDIDATES(  struct Game *sota, tnecs_entity_t ent);
+void fsm_eCncl_sGmpMap_ss_MAP_GLOBAL_RANGE(struct Game *sota, tnecs_entity_t ent);
 
 /* -- FSM: Input_Stats EVENT -- */
 extern fsm_eStats_s_t fsm_eStats_s[GAME_STATE_NUM];
