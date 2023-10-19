@@ -30,18 +30,20 @@ struct PopUp_Loadout_Stats;
 
 /* --- FINITE-STATE MACHINE FOR EVENTS --- */
 /* -- NAMING CONVENTION -- */
-/*  Array:      fsm_<event>_<prefixes>
-        - Example: `fsm_eCncl_s_ss_m`
+/*  Array:      fsm_<trigger>_<combo_states>_<state prefix>
+    - Ex: `fsm_eAcpt_sGmpMap_m`
 
-*   Type:       fsm_<event>_<prefixes>_t
-        - Example: `fsm_eCncl_s_ss_m_t`
+*   Type:       fsm_<trigger>_<combo_states>_<state prefix>_t
+    - Ex: `fsm_eAcpt_sGmpMap_m_t`
 
-*   Function:   fsm_<typeABRV>_<state1>_<state2>...
-    - <typeABRV>    -> <prefix><event abbreviation>
+*   Function:   fsm_<trigger>_<state1>_<state2>...
+    - Array keys are states for last prefix 
+
+    - <trigger>  -> <prefix><abbreviation> OR <Exit/Entry>
         - event OR Exit/Entry
         - Prefix: e for event
         - See abbreviations in names/game_states.h ...
-        
+
     - <stateN>      -> <prefix><abbreviation>
         - Prefixes: s for state, ss for substate, m for menu
 

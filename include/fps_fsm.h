@@ -9,12 +9,16 @@
 
 /* --- FINITE-STATE MACHINE FOR CONTROL --- */
 /* -- NAMING CONVENTION -- */
-/*  Array:      fsm_<type>_<event>
-        - Example: `fsm_R_s`
-*   Type:       fsm_<type>_<event>_t
-        - Example: `fsm_R_s_t`
-*   Function:   fsm_<type>_<state1>_<state2>...
-    - <type>  :     R for render, C for control
+/*  Array:      fsm_<trigger>_<combo_states>_<state prefix>
+    - Ex: `fsm_eAcpt_sGmpMap_m`
+
+*   Type:       fsm_<trigger>_<combo_states>_<state prefix>_t
+    - Ex: `fsm_eAcpt_sGmpMap_m_t`
+
+*   Function:   fsm_<trigger>_<state1>_<state2>...
+    - Array keys are states for last prefix 
+
+    - <trigger>  :     R for render, C for control (every frame)
     - <stateN>      -> <prefix><Event>
         - Prefixes: s for state, ss for substate
         - Example: `fsm_R_sCombat`

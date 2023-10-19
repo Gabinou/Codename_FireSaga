@@ -15,33 +15,34 @@ typedef void (*fsm_menu_t)(struct Game *, struct MenuComponent *);
 
 /* --- FINITE-STATE MACHINE FOR EVENTS --- */
 /* -- NAMING CONVENTION -- */
-/*  Array:      fsm_<event>_<prefixes>
-        - Example: `fsm_eCncl_s_ss_m`
+/*  Array:      fsm_<trigger>_<combo_states>_<state prefix>
+    - Ex: `fsm_eAcpt_sGmpMap_m`
 
-*   Type:       fsm_<event>_<prefixes>_t
-        - Example: `fsm_eCncl_s_ss_m_t`
+*   Type:       fsm_<trigger>_<combo_states>_<state prefix>_t
+    - Ex: `fsm_eAcpt_sGmpMap_m_t`
 
-*   Function:   fsm_<typeABRV>_<state1>_<state2>...
-    - <typeABRV>    -> <prefix><event abbreviation>
-        - OR Exit/Entry
+*   Function:   fsm_<trigger>_<state1>_<state2>...
+    - Array keys are states for last prefix 
+
+    - <trigger>  -> <prefix><abbreviation> OR <Exit/Entry>
         - Prefix: e for event
         - See abbreviations in names/game_states.h ...
-        
+
     - <stateN>      -> <prefix><abbreviation>
         - Prefixes: m for menu, mo for menu option
 
-    - Example: `fsm_eAcpt_sGmpMap_moStats`
+    - Ex: `fsm_eAcpt_sGmpMap_moStats`
+    - Ex: `fsm_eAcpt_sGmpMap_mPreCmbt`
 
 *   Hierarchy:
         Trigger: Event
         States:  state -> substate -> menu -> menu option
-
 */
 
 /* -- Menu-type FSMs -- */
-extern fsm_menu_t fsm_eAcpt_sGmpMap_m[MENU_TYPE_END];
-extern fsm_menu_t fsm_eCncl_m[MENU_TYPE_END];
-extern fsm_menu_t fsm_eCrsMvs_m[MENU_TYPE_END];
+extern fsm_menu_t fsm_eCncl_m           [MENU_TYPE_END];
+extern fsm_menu_t fsm_eCrsMvs_m         [MENU_TYPE_END];
+extern fsm_menu_t fsm_eAcpt_sGmpMap_m   [MENU_TYPE_END];
 
 /* event_Input_Accept */
 void fsm_eAcpt_sGmpMap_m_trade(        struct Game *sota, struct MenuComponent *mc);
@@ -66,7 +67,7 @@ void fsm_eCrsMvs_m_item_select(  struct Game *sota, struct MenuComponent *mc);
 void fsm_eCrsMvs_m_staff_select( struct Game *sota, struct MenuComponent *mc);
 void fsm_eCrsMvs_m_weapon_select(struct Game *sota, struct MenuComponent *mc);
 
-/* -- PSM -option FSMs -- */
+/* -- PSM menu-option FSMs -- */
 // Only posible state pair [Gameplay_Map, MENU]
 extern fsm_menu_t fsm_eAcpt_sGmpMap_mPSM_mo[MENU_OPTION_NUM];
 
