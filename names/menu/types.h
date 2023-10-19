@@ -1,14 +1,11 @@
-REGISTER_ENUM(PLAYER_SELECT)    /* Interactive menu with text and icons */
-REGISTER_ENUM(WEAPON_SELECT)      /* Interactive menu with text and icons */
-REGISTER_ENUM(STAFF_SELECT)     /* Interactive menu with text and icons */
-REGISTER_ENUM(ITEM_SELECT)      /* Interactive menu with text and icons */
-REGISTER_ENUM(TEXT_ICONS)       /* Display only text and icons */
-REGISTER_ENUM(STATS)            /* and equipment */
-REGISTER_ENUM(RESCUE)           /* show Con during rescue choose */
-REGISTER_ENUM(SUPPORTS)         /* and talkable people portraits */
-REGISTER_ENUM(GROWTHS)          /* and grown stats */
-REGISTER_ENUM(TILE_HUD)         /* map HUD information */
-REGISTER_ENUM(TILE_COSTS)
-REGISTER_ENUM(PRE_COMBAT)       /* Computed stats information */
-REGISTER_ENUM(TRADE)            /* Trade: two ISM side to side */
-REGISTER_ENUM(ITEM_DROP)        /* User drops items */
+REGISTER_ENUM(PLAYER_SELECT,     PSM)   /* Interactive menu with text and icons */
+REGISTER_ENUM(WEAPON_SELECT,     WSM)   /* Interactive menu with text and icons */
+REGISTER_ENUM(STAFF_SELECT,      SSM)   /* Interactive menu with text and icons */
+REGISTER_ENUM(ITEM_SELECT,       ISM)   /* Interactive menu with text and icons */
+REGISTER_ENUM(STATS,             SM)    /* and equipment */
+REGISTER_ENUM(RESCUE,            RM)    /* show Con during rescue choose */
+REGISTER_ENUM(SUPPORTS,          SupM)   /* and talkable people portraits */
+REGISTER_ENUM(GROWTHS,           GM)    /* and grown stats */
+REGISTER_ENUM(PRE_COMBAT,        PCM)   /* Computed stats information */
+REGISTER_ENUM(TRADE,             TM)    /* Trade: two ISM side to side */
+REGISTER_ENUM(ITEM_DROP,         IDM)   /* User drops items */

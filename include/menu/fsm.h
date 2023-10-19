@@ -45,27 +45,27 @@ extern fsm_menu_t fsm_eCrsMvs_m         [MENU_TYPE_END];
 extern fsm_menu_t fsm_eAcpt_sGmpMap_m   [MENU_TYPE_END];
 
 /* event_Input_Accept */
-void fsm_eAcpt_sGmpMap_m_trade(        struct Game *sota, struct MenuComponent *mc);
-void fsm_eAcpt_sGmpMap_m_stats(        struct Game *sota, struct MenuComponent *mc);
-void fsm_eAcpt_sGmpMap_m_pre_combat(   struct Game *sota, struct MenuComponent *mc);
-void fsm_eAcpt_sGmpMap_m_item_select(  struct Game *sota, struct MenuComponent *mc);
-void fsm_eAcpt_sGmpMap_m_staff_select( struct Game *sota, struct MenuComponent *mc);
-void fsm_eAcpt_sGmpMap_m_player_select(struct Game *sota, struct MenuComponent *mc);
-void fsm_eAcpt_sGmpMap_m_weapon_select(struct Game *sota, struct MenuComponent *mc);
+void fsm_eAcpt_sGmpMap_mTM( struct Game *sota, struct MenuComponent *mc);
+void fsm_eAcpt_sGmpMap_mSM( struct Game *sota, struct MenuComponent *mc);
+void fsm_eAcpt_sGmpMap_mPCM(struct Game *sota, struct MenuComponent *mc);
+void fsm_eAcpt_sGmpMap_mISM(struct Game *sota, struct MenuComponent *mc);
+void fsm_eAcpt_sGmpMap_mSSM(struct Game *sota, struct MenuComponent *mc);
+void fsm_eAcpt_sGmpMap_mPSM(struct Game *sota, struct MenuComponent *mc);
+void fsm_eAcpt_sGmpMap_mWSM(struct Game *sota, struct MenuComponent *mc);
 
 /* event_Input_Cancel */
-void fsm_eCncl_m_stats(        struct Game *sota, struct MenuComponent *mc);
-void fsm_eCncl_m_trade(        struct Game *sota, struct MenuComponent *mc);
-void fsm_eCncl_m_pre_combat(   struct Game *sota, struct MenuComponent *mc);
-void fsm_eCncl_m_item_select(  struct Game *sota, struct MenuComponent *mc);
-void fsm_eCncl_m_staff_select( struct Game *sota, struct MenuComponent *mc);
-void fsm_eCncl_m_player_select(struct Game *sota, struct MenuComponent *mc);
-void fsm_eCncl_m_weapon_select(struct Game *sota, struct MenuComponent *mc);
+void fsm_eCncl_mSM( struct Game *sota, struct MenuComponent *mc);
+void fsm_eCncl_mTM( struct Game *sota, struct MenuComponent *mc);
+void fsm_eCncl_mPCM(struct Game *sota, struct MenuComponent *mc);
+void fsm_eCncl_mISM(struct Game *sota, struct MenuComponent *mc);
+void fsm_eCncl_mSSM(struct Game *sota, struct MenuComponent *mc);
+void fsm_eCncl_mPSM(struct Game *sota, struct MenuComponent *mc);
+void fsm_eCncl_mWSM(struct Game *sota, struct MenuComponent *mc);
 
 /* event_Cursor_Moves */
-void fsm_eCrsMvs_m_item_select(  struct Game *sota, struct MenuComponent *mc);
-void fsm_eCrsMvs_m_staff_select( struct Game *sota, struct MenuComponent *mc);
-void fsm_eCrsMvs_m_weapon_select(struct Game *sota, struct MenuComponent *mc);
+void fsm_eCrsMvs_mISM(struct Game *sota, struct MenuComponent *mc);
+void fsm_eCrsMvs_mSSM(struct Game *sota, struct MenuComponent *mc);
+void fsm_eCrsMvs_mWSM(struct Game *sota, struct MenuComponent *mc);
 
 /* -- PSM menu-option FSMs -- */
 // Only posible state pair [Gameplay_Map, MENU]
