@@ -71,31 +71,31 @@ void fsm_eCrsMvs_ssMenu_mWSM(struct Game *sota, struct MenuComponent *mc);
 // Only posible state pair [Gameplay_Map, MENU]
 extern fsm_menu_t fsm_eAcpt_sGmpMap_ssMenu_mPSM_mo[MENU_OPTION_NUM];
 
-void fsm_eAcpt_sGmpMap_ssMenu_mPSM_mo_quit(     struct Game *sota, struct MenuComponent *mc);
-void fsm_eAcpt_sGmpMap_ssMenu_mPSM_mo_wait(     struct Game *sota, struct MenuComponent *mc);
-void fsm_eAcpt_sGmpMap_ssMenu_mPSM_mo_staff(    struct Game *sota, struct MenuComponent *mc);
-void fsm_eAcpt_sGmpMap_ssMenu_mPSM_mo_dance(    struct Game *sota, struct MenuComponent *mc);
-void fsm_eAcpt_sGmpMap_ssMenu_mPSM_mo_items(    struct Game *sota, struct MenuComponent *mc);
-void fsm_eAcpt_sGmpMap_ssMenu_mPSM_mo_trade(    struct Game *sota, struct MenuComponent *mc);
-void fsm_eAcpt_sGmpMap_ssMenu_mPSM_mo_attack(   struct Game *sota, struct MenuComponent *mc);
-void fsm_eAcpt_sGmpMap_ssMenu_mPSM_mo_end_turn( struct Game *sota, struct MenuComponent *mc);
-void fsm_eAcpt_sGmpMap_ssMenu_mPSM_mo_debug_map(struct Game *sota, struct MenuComponent *mc);
+void fsm_eAcpt_sGmpMap_ssMenu_mPSM_moAtk(   struct Game *s, struct MenuComponent *mc);
+void fsm_eAcpt_sGmpMap_ssMenu_mPSM_moQuit(  struct Game *s, struct MenuComponent *mc);
+void fsm_eAcpt_sGmpMap_ssMenu_mPSM_moWait(  struct Game *s, struct MenuComponent *mc);
+void fsm_eAcpt_sGmpMap_ssMenu_mPSM_moItem(  struct Game *s, struct MenuComponent *mc);
+void fsm_eAcpt_sGmpMap_ssMenu_mPSM_moEndT(  struct Game *s, struct MenuComponent *mc);
+void fsm_eAcpt_sGmpMap_ssMenu_mPSM_moStaff( struct Game *s, struct MenuComponent *mc);
+void fsm_eAcpt_sGmpMap_ssMenu_mPSM_moDance( struct Game *s, struct MenuComponent *mc);
+void fsm_eAcpt_sGmpMap_ssMenu_mPSM_moTrade( struct Game *s, struct MenuComponent *mc);
+void fsm_eAcpt_sGmpMap_ssMenu_mPSM_moDbgMap(struct Game *s, struct MenuComponent *mc);
 
 /* -- Map candidates FSMs -- */
 /* event_Input_Accept */
 extern fsm_menu_t fsm_eAcpt_sGmpMap_ssMapCndt_mo[MENU_OPTION_NUM];
 
-void fsm_eAcpt_sGmpMap_ssMapCndt_mo_staff( struct Game *sota, struct MenuComponent *mc);
-void fsm_eAcpt_sGmpMap_ssMapCndt_mo_dance( struct Game *sota, struct MenuComponent *mc);
-void fsm_eAcpt_sGmpMap_ssMapCndt_mo_trade( struct Game *sota, struct MenuComponent *mc);
-void fsm_eAcpt_sGmpMap_ssMapCndt_mo_attack(struct Game *sota, struct MenuComponent *mc);
+void fsm_eAcpt_sGmpMap_ssMapCndt_moAtk(  struct Game *sota, struct MenuComponent *mc);
+void fsm_eAcpt_sGmpMap_ssMapCndt_moStaff(struct Game *sota, struct MenuComponent *mc);
+void fsm_eAcpt_sGmpMap_ssMapCndt_moDance(struct Game *sota, struct MenuComponent *mc);
+void fsm_eAcpt_sGmpMap_ssMapCndt_moTrade(struct Game *sota, struct MenuComponent *mc);
 
 /* event_Input_Cancel */
 extern fsm_menu_t fsm_eCncl_sGmpMap_ssMapCndt_mo[MENU_OPTION_NUM];
 
-void fsm_eCncl_sGmpMap_ssMapCndt_mo_dance( struct Game *sota, struct MenuComponent *mc);
-void fsm_eCncl_sGmpMap_ssMapCndt_mo_staff( struct Game *sota, struct MenuComponent *mc);
-void fsm_eCncl_sGmpMap_ssMapCndt_mo_trade( struct Game *sota, struct MenuComponent *mc);
-void fsm_eCncl_sGmpMap_ssMapCndt_mo_attack(struct Game *sota, struct MenuComponent *mc);
+void fsm_eCncl_sGmpMap_ssMapCndt_moAtk(  struct Game *sota, struct MenuComponent *mc);
+void fsm_eCncl_sGmpMap_ssMapCndt_moDance(struct Game *sota, struct MenuComponent *mc);
+void fsm_eCncl_sGmpMap_ssMapCndt_moStaff(struct Game *sota, struct MenuComponent *mc);
+void fsm_eCncl_sGmpMap_ssMapCndt_moTrade(struct Game *sota, struct MenuComponent *mc);
 
 #endif /* MENU_FPS_H */
