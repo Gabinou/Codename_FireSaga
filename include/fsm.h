@@ -32,25 +32,28 @@ struct PopUp_Loadout_Stats;
 /* -- NAMING CONVENTION -- */
 /*  Array:      fsm_<event>_<prefixes>
         - Example: `fsm_eCncl_s_ss_m`
+
 *   Type:       fsm_<event>_<prefixes>_t
         - Example: `fsm_eCncl_s_ss_m_t`
+
 *   Function:   fsm_<typeABRV>_<state1>_<state2>...
     - <typeABRV>    -> <prefix><event abbreviation>
         - event OR Exit/Entry
         - Prefix: e for event
         - See abbreviations in names/game_states.h ...
+        
     - <stateN>      -> <prefix><abbreviation>
         - Prefixes: s for state, ss for substate, m for menu
+
     - Combo example: `fsm_eCncl_sGMap_ssMenu_mPlSlct`
         - Event calls `fsm_eCncl_sGMap`
         - Which calls `fsm_eCncl_sGMap_ssMenu`
         - Which calls `fsm_eCncl_sGMap_ssMenu_mPlSlct`
-*/
 
-// Two types of substate fsm:
-// Called by event -> fsm_sub_event
-// Called by state -> fsm_substate
-//    If need one fsm_substate per state -> fsm_sub_<state_name>
+*   Hierarchy:
+        Trigger: Event
+        States:  state -> substate -> menu -> menu option
+*/
 
 /* --- TYPEDEFS --- */
 typedef void (*fsm_eCncl_s_t)(     struct Game *, tnecs_entity_t);

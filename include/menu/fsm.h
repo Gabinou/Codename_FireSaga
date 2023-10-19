@@ -17,20 +17,29 @@ typedef void (*fsm_menu_t)(struct Game *, struct MenuComponent *);
 /* -- NAMING CONVENTION -- */
 /*  Array:      fsm_<event>_<prefixes>
         - Example: `fsm_eCncl_s_ss_m`
+
 *   Type:       fsm_<event>_<prefixes>_t
         - Example: `fsm_eCncl_s_ss_m_t`
+
 *   Function:   fsm_<typeABRV>_<state1>_<state2>...
     - <typeABRV>    -> <prefix><event abbreviation>
-        - event OR Exit/Entry
+        - OR Exit/Entry
         - Prefix: e for event
         - See abbreviations in names/game_states.h ...
+        
     - <stateN>      -> <prefix><abbreviation>
         - Prefixes: m for menu, mo for menu option
-    - Example: `fsm_eAcpt_sGmpMap_msoStats`
+
+    - Example: `fsm_eAcpt_sGmpMap_moStats`
+
+*   Hierarchy:
+        Trigger: Event
+        States:  state -> substate -> menu -> menu option
+
 */
 
 /* -- Menu-type FSMs -- */
-extern fsm_menu_t fsm_eAcpt_sGmpMap_ms[MENU_TYPE_END];
+extern fsm_menu_t fsm_eAcpt_sGmpMap_m[MENU_TYPE_END];
 extern fsm_menu_t fsm_eCncl_m[MENU_TYPE_END];
 extern fsm_menu_t fsm_eCrsMvs_m[MENU_TYPE_END];
 
@@ -59,17 +68,17 @@ void fsm_eCrsMvs_m_weapon_select(struct Game *sota, struct MenuComponent *mc);
 
 /* -- PSM -option FSMs -- */
 // Only posible state pair [Gameplay_Map, MENU]
-extern fsm_menu_t fsm_eAcpt_sGmpMap_msPSM_mo[MENU_OPTION_NUM];
+extern fsm_menu_t fsm_eAcpt_sGmpMap_mPSM_mo[MENU_OPTION_NUM];
 
-void fsm_eAcpt_sGmpMap_msPSM_mo_quit(     struct Game *sota, struct MenuComponent *mc);
-void fsm_eAcpt_sGmpMap_msPSM_mo_wait(     struct Game *sota, struct MenuComponent *mc);
-void fsm_eAcpt_sGmpMap_msPSM_mo_staff(    struct Game *sota, struct MenuComponent *mc);
-void fsm_eAcpt_sGmpMap_msPSM_mo_dance(    struct Game *sota, struct MenuComponent *mc);
-void fsm_eAcpt_sGmpMap_msPSM_mo_items(    struct Game *sota, struct MenuComponent *mc);
-void fsm_eAcpt_sGmpMap_msPSM_mo_trade(    struct Game *sota, struct MenuComponent *mc);
-void fsm_eAcpt_sGmpMap_msPSM_mo_attack(   struct Game *sota, struct MenuComponent *mc);
-void fsm_eAcpt_sGmpMap_msPSM_mo_end_turn( struct Game *sota, struct MenuComponent *mc);
-void fsm_eAcpt_sGmpMap_msPSM_mo_debug_map(struct Game *sota, struct MenuComponent *mc);
+void fsm_eAcpt_sGmpMap_mPSM_mo_quit(     struct Game *sota, struct MenuComponent *mc);
+void fsm_eAcpt_sGmpMap_mPSM_mo_wait(     struct Game *sota, struct MenuComponent *mc);
+void fsm_eAcpt_sGmpMap_mPSM_mo_staff(    struct Game *sota, struct MenuComponent *mc);
+void fsm_eAcpt_sGmpMap_mPSM_mo_dance(    struct Game *sota, struct MenuComponent *mc);
+void fsm_eAcpt_sGmpMap_mPSM_mo_items(    struct Game *sota, struct MenuComponent *mc);
+void fsm_eAcpt_sGmpMap_mPSM_mo_trade(    struct Game *sota, struct MenuComponent *mc);
+void fsm_eAcpt_sGmpMap_mPSM_mo_attack(   struct Game *sota, struct MenuComponent *mc);
+void fsm_eAcpt_sGmpMap_mPSM_mo_end_turn( struct Game *sota, struct MenuComponent *mc);
+void fsm_eAcpt_sGmpMap_mPSM_mo_debug_map(struct Game *sota, struct MenuComponent *mc);
 
 /* -- Map candidates FSMs -- */
 /* event_Input_Accept */

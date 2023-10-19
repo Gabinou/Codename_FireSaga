@@ -18,6 +18,11 @@
     - <stateN>      -> <prefix><Event>
         - Prefixes: s for state, ss for substate
         - Example: `fsm_R_sCombat`
+
+*   Hierarchy:
+        Trigger: Frame
+        States:  state -> substate -> menu -> menu option
+
 */
 
 typedef void (*fsm_main_t)(struct Game *);
