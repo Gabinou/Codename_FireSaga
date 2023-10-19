@@ -40,7 +40,7 @@ typedef void (*fsm_menu_t)(struct Game *, struct MenuComponent *);
 */
 
 /* -- Menu-type FSMs -- */
-extern fsm_menu_t fsm_eCncl_m           [MENU_TYPE_END];
+extern fsm_menu_t fsm_eCncl_sGmpMap_ssMenu_m           [MENU_TYPE_END];
 extern fsm_menu_t fsm_eCrsMvs_m         [MENU_TYPE_END];
 extern fsm_menu_t fsm_eAcpt_sGmpMap_m   [MENU_TYPE_END];
 
@@ -54,13 +54,13 @@ void fsm_eAcpt_sGmpMap_mPSM(struct Game *sota, struct MenuComponent *mc);
 void fsm_eAcpt_sGmpMap_mWSM(struct Game *sota, struct MenuComponent *mc);
 
 /* event_Input_Cancel */
-void fsm_eCncl_mSM( struct Game *sota, struct MenuComponent *mc);
-void fsm_eCncl_mTM( struct Game *sota, struct MenuComponent *mc);
-void fsm_eCncl_mPCM(struct Game *sota, struct MenuComponent *mc);
-void fsm_eCncl_mISM(struct Game *sota, struct MenuComponent *mc);
-void fsm_eCncl_mSSM(struct Game *sota, struct MenuComponent *mc);
-void fsm_eCncl_mPSM(struct Game *sota, struct MenuComponent *mc);
-void fsm_eCncl_mWSM(struct Game *sota, struct MenuComponent *mc);
+void fsm_eCncl_sGmpMap_ssMenu_mSM( struct Game *sota, struct MenuComponent *mc);
+void fsm_eCncl_sGmpMap_ssMenu_mTM( struct Game *sota, struct MenuComponent *mc);
+void fsm_eCncl_sGmpMap_ssMenu_mPCM(struct Game *sota, struct MenuComponent *mc);
+void fsm_eCncl_sGmpMap_ssMenu_mISM(struct Game *sota, struct MenuComponent *mc);
+void fsm_eCncl_sGmpMap_ssMenu_mSSM(struct Game *sota, struct MenuComponent *mc);
+void fsm_eCncl_sGmpMap_ssMenu_mPSM(struct Game *sota, struct MenuComponent *mc);
+void fsm_eCncl_sGmpMap_ssMenu_mWSM(struct Game *sota, struct MenuComponent *mc);
 
 /* event_Cursor_Moves */
 void fsm_eCrsMvs_mISM(struct Game *sota, struct MenuComponent *mc);

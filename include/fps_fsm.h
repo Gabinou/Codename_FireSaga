@@ -57,7 +57,7 @@ void fsm_cFrame_sGmpMap_ssMapCmbt( struct Game *sota);
 void fsm_cFrame_sGmpMap_ssMapMini( struct Game *sota);
 void fsm_cFrame_sGmpMap_ssMapAnim( struct Game *sota);
 void fsm_cFrame_sGmpMap_ssMapCndt( struct Game *sota);
-void fsm_cFrame_sGmpMap_ssMapUntMv(struct Game *sota);
+void fsm_cFrame_sGmpMap_ssMapUnitMv(struct Game *sota);
 
 /* --- render FSM --- */
 /* - Render FSM standalone state - */
@@ -80,6 +80,6 @@ void fsm_rFrame_sGmpMap_ssMapCmbt( struct Game *sota);
 void fsm_rFrame_sGmpMap_ssMapMini( struct Game *sota);
 void fsm_rFrame_sGmpMap_ssMapAnim( struct Game *sota);
 void fsm_rFrame_sGmpMap_ssMapCndt( struct Game *sota);
-void fsm_rFrame_sGmpMap_ssMapUntMv(struct Game *sota);
+void fsm_rFrame_sGmpMap_ssMapUnitMv(struct Game *sota);
 
 #endif /* RENDER_FSM_H */

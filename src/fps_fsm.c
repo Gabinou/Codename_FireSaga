@@ -29,7 +29,7 @@ fsm_main_t fsm_cFrame_sGmpMap_ss[GAME_SUBSTATE_NUM] = {
     /* GAME_SUBSTATE_START */           NULL,
     /* GAME_SUBSTATE_MAP_MINIMAP */     &fsm_cFrame_sGmpMap_ssMapMini,
     /* GAME_SUBSTATE_MENU */            &fsm_cFrame_sGmpMap_ssMenu,
-    /* GAME_SUBSTATE_MAP_UNIT_MOVES */  &fsm_cFrame_sGmpMap_ssMapUntMv,
+    /* GAME_SUBSTATE_MAP_UNIT_MOVES */  &fsm_cFrame_sGmpMap_ssMapUnitMv,
     /* GAME_SUBSTATE_MAP_COMBAT */      &fsm_cFrame_sGmpMap_ssMapCmbt,
     /* GAME_SUBSTATE_MAP_NPCTURN */     &fsm_cFrame_sGmpMap_ssMapNPC,
     /* GAME_SUBSTATE_SAVING */          &fsm_cFrame_sGmpMap_ssSave,
@@ -44,7 +44,7 @@ fsm_main_t fsm_rFrame_sGmpMap_ss[GAME_SUBSTATE_NUM] = {
     /* GAME_SUBSTATE_START */           NULL,
     /* GAME_SUBSTATE_MAP_MINIMAP */     &fsm_rFrame_sGmpMap_ssMapMini,
     /* GAME_SUBSTATE_MENU */            &fsm_rFrame_sGmpMap_ssMenu,
-    /* GAME_SUBSTATE_MAP_UNIT_MOVES */  &fsm_rFrame_sGmpMap_ssMapUntMv,
+    /* GAME_SUBSTATE_MAP_UNIT_MOVES */  &fsm_rFrame_sGmpMap_ssMapUnitMv,
     /* GAME_SUBSTATE_MAP_COMBAT */      &fsm_rFrame_sGmpMap_ssMapCmbt,
     /* GAME_SUBSTATE_MAP_NPCTURN */     &fsm_rFrame_sGmpMap_ssMapNPC,
     /* GAME_SUBSTATE_SAVING */          &fsm_rFrame_sGmpMap_ssSave,
@@ -70,7 +70,7 @@ void fsm_cFrame_sGmpMap_ssMenu(struct Game *sota) {
     SOTA_Log_FPS("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
-void fsm_cFrame_sGmpMap_ssMapUntMv(struct Game *sota) {
+void fsm_cFrame_sGmpMap_ssMapUnitMv(struct Game *sota) {
     SOTA_Log_FPS("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     Game_CursorfollowsMouse_onMap(sota);  /* CONTROL */
     Game_Cursor_Moves_onMap(sota); /* CONTROL */
@@ -274,7 +274,7 @@ void fsm_rFrame_sGmpMap_ssMenu(struct Game *sota) {
     SOTA_Log_FPS("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
-void fsm_rFrame_sGmpMap_ssMapUntMv(struct Game *sota) {
+void fsm_rFrame_sGmpMap_ssMapUnitMv(struct Game *sota) {
     SOTA_Log_FPS("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
 
     SOTA_Log_FPS("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
