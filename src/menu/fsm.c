@@ -14,13 +14,10 @@ fsm_menu_t fsm_eAcpt_sGmpMap_m[MENU_TYPE_END] = {
     /* MENU_TYPE_WEAPON_SELECT  */  &fsm_eAcpt_sGmpMap_mWSM,
     /* MENU_TYPE_STAFF_SELECT  */   &fsm_eAcpt_sGmpMap_mSSM,
     /* MENU_TYPE_ITEM_SELECT  */    &fsm_eAcpt_sGmpMap_mISM,
-    /* MENU_TYPE_TEXT_ICONS */      NULL,
     /* MENU_TYPE_STATS */           &fsm_eAcpt_sGmpMap_mSM,
     /* MENU_TYPE_RESCUE */          NULL,
     /* MENU_TYPE_SUPPORTS */        NULL,
     /* MENU_TYPE_GROWTHS */         NULL,
-    /* MENU_TYPE_TILE_HUD */        NULL,
-    /* MENU_TYPE_TILE_COSTS */      NULL,
     /* MENU_TYPE_PRE_COMBAT */      &fsm_eAcpt_sGmpMap_mPCM,
     /* MENU_TYPE_TRADE */           &fsm_eAcpt_sGmpMap_mTM,
 };
@@ -31,13 +28,10 @@ fsm_menu_t fsm_eCncl_m[MENU_TYPE_END] = {
     /* MENU_TYPE_WEAPON_SELECT */   &fsm_eCncl_mWSM,
     /* MENU_TYPE_STAFF_SELECT  */   &fsm_eCncl_mSSM,
     /* MENU_TYPE_ITEM_SELECT  */    &fsm_eCncl_mISM,
-    /* MENU_TYPE_TEXT_ICONS */      NULL,
     /* MENU_TYPE_STATS */           &fsm_eCncl_mSM,
     /* MENU_TYPE_RESCUE */          NULL,
     /* MENU_TYPE_SUPPORTS */        NULL,
     /* MENU_TYPE_GROWTHS */         &fsm_eCncl_mSM,
-    /* MENU_TYPE_TILE_HUD */        NULL,
-    /* MENU_TYPE_TILE_COSTS */      NULL,
     /* MENU_TYPE_PRE_COMBAT */      &fsm_eCncl_mPCM
 };
 
@@ -47,13 +41,10 @@ fsm_menu_t fsm_eCrsMvs_m[MENU_TYPE_END] = {
     /* MENU_TYPE_WEAPON_SELECT */   &fsm_eCrsMvs_mWSM,
     /* MENU_TYPE_STAFF_SELECT  */   &fsm_eCrsMvs_mSSM,
     /* MENU_TYPE_ITEM_SELECT  */    &fsm_eCrsMvs_mISM,
-    /* MENU_TYPE_TEXT_ICONS */      NULL,
     /* MENU_TYPE_STATS */           NULL,
     /* MENU_TYPE_RESCUE */          NULL,
     /* MENU_TYPE_SUPPORTS */        NULL,
     /* MENU_TYPE_GROWTHS */         NULL,
-    /* MENU_TYPE_TILE_HUD */        NULL,
-    /* MENU_TYPE_TILE_COSTS */      NULL,
     /* MENU_TYPE_PRE_COMBAT */      NULL,
     /* MENU_TYPE_TRADE */           NULL,
 };

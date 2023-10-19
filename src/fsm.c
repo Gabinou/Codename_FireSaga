@@ -969,8 +969,8 @@ void fsm_eAcpt_sGmpMap_ss_MENU(struct Game *sota, tnecs_entity_t accepter_entity
     SDL_assert(top_menu > TNECS_NULL);
     struct MenuComponent *mc_topop = TNECS_GET_COMPONENT(sota->world, top_menu, MenuComponent);
 
-    if (fsm_eAcpt_sGmpMap_ms[mc_topop->type] != NULL)
-        fsm_eAcpt_sGmpMap_ms[mc_topop->type](sota, mc_topop);
+    if (fsm_eAcpt_sGmpMap_m[mc_topop->type] != NULL)
+        fsm_eAcpt_sGmpMap_m[mc_topop->type](sota, mc_topop);
 
     Event_Emit(__func__, SDL_USEREVENT, event_Menu_Select, NULL, NULL);
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);

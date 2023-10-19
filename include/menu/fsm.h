@@ -16,7 +16,7 @@ typedef void (*fsm_menu_t)(struct Game *, struct MenuComponent *);
 /* --- FINITE-STATE MACHINE FOR EVENTS --- */
 /* -- NAMING CONVENTION -- */
 /*  Array:      fsm_<trigger>_<combo_states>_<state prefix>
-    - Array keys are states for last prefix 
+    - Array keys are states for last prefix
     - Ex: `fsm_eAcpt_sGmpMap_m`
 
 *   Type:       fsm_<trigger>_<combo_states>_<state prefix>_t

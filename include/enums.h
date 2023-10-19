@@ -315,7 +315,7 @@ enum SHOPS {
 };
 #undef REGISTER_ENUM
 
-#define REGISTER_ENUM(x, y, z) MENU_OPTION_##x,
+#define REGISTER_ENUM(x, y) MENU_OPTION_##x,
 enum OPTIONS {
     MENU_OPTION_START = 0,
 #include "names/menu/options.h"
@@ -507,9 +507,9 @@ enum ITEM_EFFECT_EXP {
 enum CAMPJOBS {
     CAMPJOB_START = 0,
 #include "names/camp_jobs.h"
-#undef REGISTER_ENUM
+    // #undef REGISTER_ENUM
     CAMPJOB_END,
-#define REGISTER_ENUM(x) CAMPJOB_INDEX_##x = 1 << (CAMPJOB_##x - 1),
+    // #define REGISTER_ENUM(x) CAMPJOB_INDEX_##x = 1 << (CAMPJOB_##x - 1),
 };
 #undef REGISTER_ENUM
 
@@ -553,12 +553,11 @@ enum UNIT_ARMIES {
 
 #define REGISTER_ENUM(x, y) UNIT_ID_##x = y,
 enum UNIT_IDS {
-    UNIT_NULL = 0,
-    UNIT_ID_START = 0,
-    UNIT_ID_PC_START = 0,
+    UNIT_NULL           = 0,
+    UNIT_ID_START       = 0,
+    UNIT_ID_PC_START    = 0,
 #include "names/units_PC.h"
 #include "names/units_NPC.h"
-#undef REGISTER_ENUM
     UNIT_ID_END,
 };
 #undef REGISTER_ENUM
@@ -791,7 +790,7 @@ enum POPUP_TYPE {
 };
 #undef REGISTER_ENUM
 
-#define REGISTER_ENUM(x) MENU_TYPE_##x,
+#define REGISTER_ENUM(x, y) MENU_TYPE_##x,
 enum MENU_TYPE {
     MENU_TYPE_START = 0,
 #include "names/menu/types.h"

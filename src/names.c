@@ -174,7 +174,7 @@ void Names_campjobNames() {
 }
 #undef REGISTER_ENUM
 
-#define REGISTER_ENUM(x, y, z) temp_str = (char *) malloc(DEFAULT_BUFFER_SIZE);\
+#define REGISTER_ENUM(x, y) temp_str = (char *) malloc(DEFAULT_BUFFER_SIZE);\
     strncpy(temp_str, #x, sizeof(#x));\
     menuOptionnames[MENU_OPTION_##x] = nstr_camelCase(nstr_toLower(nstr_replaceSingle(temp_str, '_', ' ')), ' ', 2);
 char **menuOptionnames = NULL;
