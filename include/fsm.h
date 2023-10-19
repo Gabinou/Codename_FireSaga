@@ -32,10 +32,10 @@ struct PopUp_Loadout_Stats;
 /* -- NAMING CONVENTION -- */
 /*  Array:      fsm_<trigger>_<combo_states>_<state prefix>
     - Array keys are states for last prefix
-    - Ex: `fsm_eAcpt_sGmpMap_m`
+    - Ex: `fsm_eAcpt_sGmpMap_ssMenu_m`
 
 *   Type:       fsm_<trigger>_<combo_states>_<state prefix>_t
-    - Ex: `fsm_eAcpt_sGmpMap_m_t`
+    - Ex: `fsm_eAcpt_sGmpMap_ssMenu_m_t`
 
 *   Function:   fsm_<trigger>_<state1>_<state2>...
 
@@ -67,8 +67,8 @@ typedef fsm_eCncl_s_t       fsm_eAcpt_s_t;
 typedef fsm_eCncl_s_t       fsm_eStats_s_t;
 typedef fsm_eCncl_s_t       fsm_eCncl_sGmpMap_ss_t;
 typedef fsm_eMenuRight_s_t  fsm_eMenuLeft_s_t;
-typedef fsm_eMenuRight_s_t  fsm_eMenuLeft_ss_t;
-typedef fsm_eMenuRight_s_t  fsm_eMenuRight_ss_t;
+typedef fsm_eMenuRight_s_t  fsm_eMenuLeft_sGmpMap_ss_t;
+typedef fsm_eMenuRight_s_t  fsm_eMenuRight_sGmpMap_ss_t;
 typedef fsm_eCrsMvd_s_t     fsm_eCrsMvs_s_t;
 typedef fsm_eGmp2Stby_s_t   fsm_eUnitDsel_s_t;
 typedef fsm_eGmp2Stby_s_t   fsm_eUnitSel_s_t ;
@@ -157,21 +157,21 @@ void fsm_eStats_ssStby(struct Game *sota, tnecs_entity_t ent);
 
 /* -- FSM: Input_menuRight EVENT -- */
 extern fsm_eMenuRight_s_t  fsm_eMenuRight_s[GAME_STATE_NUM];
-extern fsm_eMenuRight_ss_t fsm_eMenuRight_ss[GAME_SUBSTATE_NUM];
+extern fsm_eMenuRight_sGmpMap_ss_t fsm_eMenuRight_sGmpMap_ss[GAME_SUBSTATE_NUM];
 
 void fsm_eMenuRight_sGmpMap(struct Game *sota, int32_t c);
 
-void fsm_eMenuRight_ssMenu(   struct Game *sota, int32_t c);
-void fsm_eMenuRight_ssStby(struct Game *sota, int32_t c);
+void fsm_eMenuRight_sGmpMap_ssMenu(   struct Game *sota, int32_t c);
+void fsm_eMenuRight_sGmpMap_ssStby(struct Game *sota, int32_t c);
 
 /* -- FSM: Input_menuLeft EVENT -- */
 extern fsm_eMenuLeft_s_t  fsm_eMenuLeft_s[GAME_STATE_NUM];
-extern fsm_eMenuLeft_ss_t fsm_eMenuLeft_ss[GAME_SUBSTATE_NUM];
+extern fsm_eMenuLeft_sGmpMap_ss_t fsm_eMenuLeft_sGmpMap_ss[GAME_SUBSTATE_NUM];
 
 void fsm_eMenuLeft_sGmpMap(struct Game *sota, int32_t c);
 
-void fsm_eMenuLeft_ssMenu(   struct Game *sota, int32_t c);
-void fsm_eMenuLeft_ssStby(struct Game *sota, int32_t c);
+void fsm_eMenuLeft_sGmpMap_ssMenu(   struct Game *sota, int32_t c);
+void fsm_eMenuLeft_sGmpMap_ssStby(struct Game *sota, int32_t c);
 
 /* -- FSM: Unit_Danger EVENT -- */
 extern fsm_eUnitDng_s_t fsm_eUnitDng_s[GAME_STATE_NUM];

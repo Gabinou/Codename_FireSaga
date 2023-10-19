@@ -210,30 +210,30 @@ fsm_eUnitDng_s_t fsm_eUnitDng_ss[GAME_SUBSTATE_NUM] = {
     /* MAP_ANIMATION */   NULL,
 };
 
-fsm_eMenuRight_s_t fsm_eMenuRight_ss[GAME_SUBSTATE_NUM] = {
+fsm_eMenuRight_s_t fsm_eMenuRight_sGmpMap_ss[GAME_SUBSTATE_NUM] = {
     /* NULL */            NULL,
     /* MAP_MINIMAP */     NULL,
-    /* MENU */            &fsm_eMenuRight_ssMenu,
+    /* MENU */            &fsm_eMenuRight_sGmpMap_ssMenu,
     /* MAP_UNIT_MOVES */  NULL,
     /* MAP_COMBAT */      NULL,
     /* MAP_NPCTURN */     NULL,
     /* SAVING */          NULL,
-    /* STANDBY */         &fsm_eMenuRight_ssStby,
+    /* STANDBY */         &fsm_eMenuRight_sGmpMap_ssStby,
     /* PAUSED */          NULL,
     /* MAP_CANDIDATES */  NULL,
     /* CUTSCENE */        NULL,
     /* MAP_ANIMATION */   NULL,
 };
 
-fsm_eMenuLeft_s_t fsm_eMenuLeft_ss[GAME_SUBSTATE_NUM] = {
+fsm_eMenuLeft_s_t fsm_eMenuLeft_sGmpMap_ss[GAME_SUBSTATE_NUM] = {
     /* NULL */            NULL,
     /* MAP_MINIMAP */     NULL,
-    /* MENU */            &fsm_eMenuLeft_ssMenu,
+    /* MENU */            &fsm_eMenuLeft_sGmpMap_ssMenu,
     /* MAP_UNIT_MOVES */  NULL,
     /* MAP_COMBAT */      NULL,
     /* MAP_NPCTURN */     NULL,
     /* SAVING */          NULL,
-    /* STANDBY */         &fsm_eMenuLeft_ssStby,
+    /* STANDBY */         &fsm_eMenuLeft_sGmpMap_ssStby,
     /* PAUSED */          NULL,
     /* MAP_CANDIDATES */  NULL,
     /* CUTSCENE */        NULL,
@@ -955,8 +955,8 @@ void fsm_eAcpt_sGmpMap_ssMenu(struct Game *sota, tnecs_entity_t accepter_entity)
     SDL_assert(top_menu > TNECS_NULL);
     struct MenuComponent *mc_topop = TNECS_GET_COMPONENT(sota->world, top_menu, MenuComponent);
 
-    if (fsm_eAcpt_sGmpMap_m[mc_topop->type] != NULL)
-        fsm_eAcpt_sGmpMap_m[mc_topop->type](sota, mc_topop);
+    if (fsm_eAcpt_sGmpMap_ssMenu_m[mc_topop->type] != NULL)
+        fsm_eAcpt_sGmpMap_ssMenu_m[mc_topop->type](sota, mc_topop);
 
     Event_Emit(__func__, SDL_USEREVENT, event_Menu_Select, NULL, NULL);
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
@@ -1145,12 +1145,12 @@ void fsm_eUnitDsel_sMapUnitMv(struct Game *sota, tnecs_entity_t selector) {
 // -- FSM: INPUT_MENURIGHT EVENT --
 void fsm_eMenuRight_sGmpMap(struct Game *sota, i32 controller_type) {
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
-    if (fsm_eMenuRight_ss[sota->substate] != NULL)
-        fsm_eMenuRight_ss[sota->substate](sota, controller_type);
+    if (fsm_eMenuRight_sGmpMap_ss[sota->substate] != NULL)
+        fsm_eMenuRight_sGmpMap_ss[sota->substate](sota, controller_type);
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
-void fsm_eMenuRight_ssMenu(struct Game *sota, i32 controller_type) {
+void fsm_eMenuRight_sGmpMap_ssMenu(struct Game *sota, i32 controller_type) {
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     /* -- Pop previous menu -- */
     bool destroy = false;
@@ -1193,7 +1193,7 @@ void fsm_eMenuRight_ssMenu(struct Game *sota, i32 controller_type) {
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
-void fsm_eMenuRight_ssStby(struct Game *sota, i32 controller_type) {
+void fsm_eMenuRight_sGmpMap_ssStby(struct Game *sota, i32 controller_type) {
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
@@ -1201,12 +1201,12 @@ void fsm_eMenuRight_ssStby(struct Game *sota, i32 controller_type) {
 // -- FSM: INPUT_MENULEFT EVENT --
 void fsm_eMenuLeft_sGmpMap(struct Game *sota, i32 controller_type) {
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
-    if (fsm_eMenuLeft_ss[sota->substate] != NULL)
-        fsm_eMenuLeft_ss[sota->substate](sota, controller_type);
+    if (fsm_eMenuLeft_sGmpMap_ss[sota->substate] != NULL)
+        fsm_eMenuLeft_sGmpMap_ss[sota->substate](sota, controller_type);
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
-void fsm_eMenuLeft_ssMenu(struct Game *sota, i32 controller_type) {
+void fsm_eMenuLeft_sGmpMap_ssMenu(struct Game *sota, i32 controller_type) {
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     /* -- Pop previous menu -- */
     bool destroy = false;
@@ -1249,7 +1249,7 @@ void fsm_eMenuLeft_ssMenu(struct Game *sota, i32 controller_type) {
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
-void fsm_eMenuLeft_ssStby(struct Game *sota, i32 controller_type) {
+void fsm_eMenuLeft_sGmpMap_ssStby(struct Game *sota, i32 controller_type) {
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
