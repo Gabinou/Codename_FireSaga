@@ -139,6 +139,22 @@ fsm_menu_t fsm_eAcpt_sGmpMap_ssMapCndt_mo[MENU_OPTION_NUM] = {
     /* MENU_OPTION_DEBUG_MAP */     NULL,
 };
 
+/* -- Menu Pop/Exit FSM -- */
+fsm_menu_t fsm_Exit_sGmpMap_ssMenu_m[MENU_TYPE_END] = {
+    /* MENU_TYPE_START */           NULL,
+    /* MENU_TYPE_PLAYER_SELECT */   &fsm_Exit_sGmpMap_ssMenu_mPSM,
+    /* MENU_TYPE_WEAPON_SELECT */   NULL,
+    /* MENU_TYPE_STAFF_SELECT  */   NULL,
+    /* MENU_TYPE_ITEM_SELECT  */    NULL,
+    /* MENU_TYPE_STATS */           NULL,
+    /* MENU_TYPE_RESCUE */          NULL,
+    /* MENU_TYPE_SUPPORTS */        NULL,
+    /* MENU_TYPE_GROWTHS */         NULL,
+    /* MENU_TYPE_PRE_COMBAT */      NULL,
+    /* MENU_TYPE_TRADE */           NULL,
+};
+
+
 /* --- fsm_eAcpt_sGmpMap_ssMapCndt_mo --- */
 void fsm_eAcpt_sGmpMap_ssMapCndt_moTrade(struct Game *sota, struct MenuComponent *in_mc) {
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
@@ -1068,3 +1084,68 @@ void fsm_eAcpt_sGmpMap_ssMenu_mPSM_moDbgMap(struct Game *sota, struct MenuCompon
     Event_Emit(__func__, SDL_USEREVENT, event_Load_Debug_Map, data1_entity, data2_entity);
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
+
+/* -- Menu Pop/Exit FSM -- */
+void fsm_Exit_sGmpMap_ssMenu_mPSM(struct Game *sota, struct MenuComponent *mc) {
+    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
+    /* Popped menu reverter */
+    // TODO fsm_Exit_sGmpMap_ssMenu_m -> for menu popping
+    switch (menu_ptr->id) {
+        case MENU_PLAYER_SELECT_UNIT_ACTION:
+            ;
+
+            tnecs_entity_t unit_ent       = sota->selected_unit_entity;
+            struct Unit *unit             = TNECS_GET_COMPONENT(sota->world, unit_ent, Unit);
+            struct Position *selected_pos = TNECS_GET_COMPONENT(sota->world, unit_ent, Position);
+            new_substate                  = GAME_SUBSTATE_MAP_UNIT_MOVES;
+            strncpy(sota->reason, "Unit action is taken after Map_unit moves only",
+                    sizeof(sota->reason));
+
+            // 1. Moving entity back to original spot in map
+            struct Point moved_pos = sota->selected_unit_moved_position;
+            struct Point init_pos  = sota->selected_unit_initial_position;
+            if ((init_pos.x != moved_pos.x) || (init_pos.y != moved_pos.y))
+                Map_Unit_Move(sota->map, moved_pos.x, moved_pos.y, init_pos.x, init_pos.y);
+
+            // 2. Moving pos ptr to initial position to compute initial attacktomap
+            // 2.1 inital pos != moved pos, so cursor would move...
+            Position_Pos_Set(selected_pos, init_pos.x, init_pos.y);
+            Map_Healtomap_Compute(  sota->map, sota->world, sota->selected_unit_entity, true, true);
+            Map_Attacktomap_Compute(sota->map, sota->world, sota->selected_unit_entity, true, true);
+            // 2.2 BUT: Moving pos ptr to selected position so that cursor doesn't move
+            Position_Pos_Set(selected_pos, moved_pos.x, moved_pos.y);
+
+            // 3. Compute new stackmap with recomputed attacktomap
+            if (Unit_canStaff(unit)) {
+                int overlay = MAP_OVERLAY_GLOBAL_DANGER + MAP_OVERLAY_HEAL + MAP_OVERLAY_MOVE;
+                Map_Palettemap_Autoset(sota->map, overlay);
+            } else if (Unit_canAttack(unit)) {
+                int overlay = MAP_OVERLAY_GLOBAL_DANGER + MAP_OVERLAY_MOVE + MAP_OVERLAY_ATTACK +
+                              MAP_OVERLAY_DANGER;
+                Map_Palettemap_Autoset(sota->map, overlay);
+            }
+            Map_Stacked_Dangermap_Compute(sota->map);
+
+            // 4. Revert Unit animation state to move
+            struct Sprite *sprite;
+            sprite = TNECS_GET_COMPONENT(sota->world, sota->selected_unit_entity, Sprite);
+            // TODO: REMOVE IF WHEN ALL MAP_UNITS HAVE SPRITESHEETS.
+            if (sprite->spritesheet != NULL) {
+                SDL_assert(sprite->spritesheet->loop_num == MAP_UNIT_SPRITE_LOOP_NUM);
+                Spritesheet_Loop_Set(sprite->spritesheet, MAP_UNIT_SPRITE_LOOP_MOVER, sprite->flip);
+                Sprite_Animation_Loop(sprite);
+                Sprite_Draw(sprite, sota->renderer);
+            }
+
+            break;
+        case MENU_PLAYER_SELECT_MAP_ACTION:
+            new_substate = GAME_SUBSTATE_STANDBY;
+            strncpy(sota->reason, "Map action is taken on standby only", sizeof(sota->reason));
+            break;
+        default:
+            SOTA_Log_Debug("invalid PlayerSelectMenu id");
+    }
+    
+    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
+}
+
