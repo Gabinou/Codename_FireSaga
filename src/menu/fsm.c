@@ -35,12 +35,12 @@ fsm_menu_t fsm_eCncl_sGmpMap_ssMenu_m[MENU_TYPE_END] = {
     /* MENU_TYPE_PRE_COMBAT */      &fsm_eCncl_sGmpMap_ssMenu_mPCM
 };
 
-fsm_menu_t fsm_eCrsMvs_m[MENU_TYPE_END] = {
+fsm_menu_t fsm_eCrsMvs_ssMenu_m[MENU_TYPE_END] = {
     /* MENU_TYPE_START */           NULL,
     /* MENU_TYPE_PLAYER_SELECT */   NULL,
-    /* MENU_TYPE_WEAPON_SELECT */   &fsm_eCrsMvs_mWSM,
-    /* MENU_TYPE_STAFF_SELECT  */   &fsm_eCrsMvs_mSSM,
-    /* MENU_TYPE_ITEM_SELECT  */    &fsm_eCrsMvs_mISM,
+    /* MENU_TYPE_WEAPON_SELECT */   &fsm_eCrsMvs_ssMenu_mWSM,
+    /* MENU_TYPE_STAFF_SELECT  */   &fsm_eCrsMvs_ssMenu_mSSM,
+    /* MENU_TYPE_ITEM_SELECT  */    &fsm_eCrsMvs_ssMenu_mISM,
     /* MENU_TYPE_STATS */           NULL,
     /* MENU_TYPE_RESCUE */          NULL,
     /* MENU_TYPE_SUPPORTS */        NULL,
@@ -370,13 +370,13 @@ void fsm_eCncl_sGmpMap_ssMapCndt_mo_attack(struct Game *sota, struct MenuCompone
 }
 
 /* --- fsm_eCncl_sGmpMap_ssMenu_m --- */
-void fsm_eCrsMvs_mSSM(struct Game *sota, struct MenuComponent *mc) {
+void fsm_eCrsMvs_ssMenu_mSSM(struct Game *sota, struct MenuComponent *mc) {
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     // TODO: update healmap when STAFF CHANGES
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
-void fsm_eCrsMvs_mWSM(struct Game *sota, struct MenuComponent *mc) {
+void fsm_eCrsMvs_ssMenu_mWSM(struct Game *sota, struct MenuComponent *mc) {
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     SDL_assert(mc->elem < DEFAULT_EQUIPMENT_SIZE);
     /* -- Update Popup_Loadout_Stats to potential loadout -- */
@@ -410,7 +410,7 @@ void fsm_eCrsMvs_mWSM(struct Game *sota, struct MenuComponent *mc) {
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
-void fsm_eCrsMvs_mISM(struct Game *sota, struct MenuComponent *mc) {
+void fsm_eCrsMvs_ssMenu_mISM(struct Game *sota, struct MenuComponent *mc) {
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     /* -- Update Popup_Loadout_Stats to potential loadout -- */
     struct LoadoutSelectMenu *ism = mc->data;

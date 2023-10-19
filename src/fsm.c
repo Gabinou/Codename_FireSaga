@@ -674,8 +674,8 @@ void fsm_eCrsMvs_ssMenu(struct Game *sota, tnecs_entity_t mover_entity,
     sota->cursor_move.x = 0;
     sota->cursor_move.y = 0;
 
-    if (fsm_eCrsMvs_m[mc->type] != NULL)
-        fsm_eCrsMvs_m[mc->type](sota, mc);
+    if (fsm_eCrsMvs_ssMenu_m[mc->type] != NULL)
+        fsm_eCrsMvs_ssMenu_m[mc->type](sota, mc);
 
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }

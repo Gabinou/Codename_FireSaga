@@ -40,7 +40,7 @@ typedef void (*fsm_menu_t)(struct Game *, struct MenuComponent *);
 */
 
 /* -- Menu-type FSMs -- */
-extern fsm_menu_t fsm_eCrsMvs_m             [MENU_TYPE_END];
+extern fsm_menu_t fsm_eCrsMvs_ssMenu_m             [MENU_TYPE_END];
 extern fsm_menu_t fsm_eCncl_sGmpMap_ssMenu_m[MENU_TYPE_END];
 extern fsm_menu_t fsm_eAcpt_sGmpMap_ssMenu_m[MENU_TYPE_END];
 
@@ -63,9 +63,9 @@ void fsm_eCncl_sGmpMap_ssMenu_mPSM(struct Game *sota, struct MenuComponent *mc);
 void fsm_eCncl_sGmpMap_ssMenu_mWSM(struct Game *sota, struct MenuComponent *mc);
 
 /* event_Cursor_Moves */
-void fsm_eCrsMvs_mISM(struct Game *sota, struct MenuComponent *mc);
-void fsm_eCrsMvs_mSSM(struct Game *sota, struct MenuComponent *mc);
-void fsm_eCrsMvs_mWSM(struct Game *sota, struct MenuComponent *mc);
+void fsm_eCrsMvs_ssMenu_mISM(struct Game *sota, struct MenuComponent *mc);
+void fsm_eCrsMvs_ssMenu_mSSM(struct Game *sota, struct MenuComponent *mc);
+void fsm_eCrsMvs_ssMenu_mWSM(struct Game *sota, struct MenuComponent *mc);
 
 /* -- PSM menu-option FSMs -- */
 // Only posible state pair [Gameplay_Map, MENU]
