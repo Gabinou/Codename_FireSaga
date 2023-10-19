@@ -21,7 +21,7 @@
     - <trigger>  :     R for render, C for control (every frame)
     - <stateN>      -> <prefix><Event>
         - Prefixes: s for state, ss for substate
-        - Example: `fsm_R_sCombat`
+        - Example: `fsm_R_sCmbt`
 
 *   Hierarchy:
         Trigger: Frame
@@ -38,13 +38,13 @@ extern fsm_main_t fsm_R_sGmpMap_ss[GAME_SUBSTATE_NUM];
 
 /* --- Control FSM --- */
 /* - Control FSM standalone state - */
-void fsm_C_sCombat(       struct Game *sota);
-void fsm_C_sScene_FMV(    struct Game *sota);
-void fsm_C_sScene_Talk(   struct Game *sota);
-void fsm_C_sPreparation(  struct Game *sota);
-void fsm_C_sTitle_Screen( struct Game *sota);
-void fsm_C_sGameplay_Map( struct Game *sota);
-void fsm_C_sGameplay_Camp(struct Game *sota);
+void fsm_C_sCmbt(   struct Game *sota);
+void fsm_C_sPrep(   struct Game *sota);
+void fsm_C_sScnFMV( struct Game *sota);
+void fsm_C_sGmpMap( struct Game *sota);
+void fsm_C_sScnTalk(struct Game *sota);
+void fsm_C_sTtlScrn(struct Game *sota);
+void fsm_C_sGmpCamp(struct Game *sota);
 
 /* - Control FSM combo Gameplay_Map state + substate - */
 void fsm_C_sGmpMap_ssMenu(          struct Game *sota);
@@ -61,13 +61,13 @@ void fsm_C_sGmpMap_ssMap_Unit_Moves(struct Game *sota);
 
 /* --- render FSM --- */
 /* - Render FSM standalone state - */
-void fsm_R_sCombat(       struct Game *sota);
-void fsm_R_sScene_FMV(    struct Game *sota);
-void fsm_R_sScene_Talk(   struct Game *sota);
-void fsm_R_sPreparation(  struct Game *sota);
-void fsm_R_sTitle_Screen( struct Game *sota);
-void fsm_R_sGameplay_Map( struct Game *sota);
-void fsm_R_sGameplay_Camp(struct Game *sota);
+void fsm_R_sCmbt(   struct Game *sota);
+void fsm_R_sPrep(   struct Game *sota);
+void fsm_R_sScnFMV( struct Game *sota);
+void fsm_R_sGmpMap( struct Game *sota);
+void fsm_R_sGmpCamp(struct Game *sota);
+void fsm_R_sScnTalk(struct Game *sota);
+void fsm_R_sTtlScrn(struct Game *sota);
 
 /* Render FSM combo Gameplay_Map state + substate */
 void fsm_R_sGmpMap_ssMenu(          struct Game *sota);

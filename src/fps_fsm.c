@@ -3,25 +3,25 @@
 
 fsm_main_t fsm_C_s[GAME_STATE_NUM] = {
     /* GAME_STATE_START */          NULL,
-    /* GAME_STATE_Combat */         &fsm_C_sCombat,
-    /* GAME_STATE_Scene_Talk */     &fsm_C_sScene_Talk,
-    /* GAME_STATE_Scene_FMV */      &fsm_C_sScene_FMV,
-    /* GAME_STATE_Gameplay_Map */   &fsm_C_sGameplay_Map,
-    /* GAME_STATE_Gameplay_Camp */  &fsm_C_sGameplay_Camp,
-    /* GAME_STATE_Preparation */    &fsm_C_sPreparation,
-    /* GAME_STATE_Title_Screen */   &fsm_C_sTitle_Screen,
+    /* GAME_STATE_Combat */         &fsm_C_sCmbt,
+    /* GAME_STATE_Scene_Talk */     &fsm_C_sScnTalk,
+    /* GAME_STATE_Scene_FMV */      &fsm_C_sScnFMV,
+    /* GAME_STATE_Gameplay_Map */   &fsm_C_sGmpMap,
+    /* GAME_STATE_Gameplay_Camp */  &fsm_C_sGmpCamp,
+    /* GAME_STATE_Preparation */    &fsm_C_sPrep,
+    /* GAME_STATE_Title_Screen */   &fsm_C_sTtlScrn,
     /* GAME_STATE_Animation */      NULL
 };
 
 fsm_main_t fsm_R_s[GAME_STATE_NUM] = {
     /* GAME_STATE_START */          NULL,
-    /* GAME_STATE_Combat */         &fsm_R_sCombat,
-    /* GAME_STATE_Scene_Talk */     &fsm_R_sScene_Talk,
-    /* GAME_STATE_Scene_FMV */      &fsm_R_sScene_FMV,
-    /* GAME_STATE_Gameplay_Map */   &fsm_R_sGameplay_Map,
-    /* GAME_STATE_Gameplay_Camp */  &fsm_R_sGameplay_Camp,
-    /* GAME_STATE_Preparation */    &fsm_R_sPreparation,
-    /* GAME_STATE_Title_Screen */   &fsm_R_sTitle_Screen,
+    /* GAME_STATE_Combat */         &fsm_R_sCmbt,
+    /* GAME_STATE_Scene_Talk */     &fsm_R_sScnTalk,
+    /* GAME_STATE_Scene_FMV */      &fsm_R_sScnFMV,
+    /* GAME_STATE_Gameplay_Map */   &fsm_R_sGmpMap,
+    /* GAME_STATE_Gameplay_Camp */  &fsm_R_sGmpCamp,
+    /* GAME_STATE_Preparation */    &fsm_R_sPrep,
+    /* GAME_STATE_Title_Screen */   &fsm_R_sTtlScrn,
     /* GAME_STATE_Animation */      NULL,
 };
 
@@ -199,22 +199,22 @@ void fsm_C_sGmpMap_ssMap_Animation(struct Game *sota) {
 }
 
 /* -- states --*/
-void fsm_C_sCombat(struct Game *sota) {
+void fsm_C_sCmbt(struct Game *sota) {
     SOTA_Log_FPS("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     SOTA_Log_FPS("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
-void fsm_C_sScene_Talk(struct Game *sota) {
+void fsm_C_sScnTalk(struct Game *sota) {
     SOTA_Log_FPS("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     SOTA_Log_FPS("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
-void fsm_C_sScene_FMV(struct Game *sota) {
+void fsm_C_sScnFMV(struct Game *sota) {
     SOTA_Log_FPS("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     SOTA_Log_FPS("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
-void fsm_C_sGameplay_Map(struct Game *sota) {
+void fsm_C_sGmpMap(struct Game *sota) {
     SOTA_Log_FPS("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     Game_Camera_Scroll(sota); /* CONTROL */
     /* RENDER only one map -> no entity */
@@ -222,17 +222,17 @@ void fsm_C_sGameplay_Map(struct Game *sota) {
     SOTA_Log_FPS("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
-void fsm_C_sGameplay_Camp(struct Game *sota) {
+void fsm_C_sGmpCamp(struct Game *sota) {
     SOTA_Log_FPS("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     SOTA_Log_FPS("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
-void fsm_C_sPreparation(struct Game *sota) {
+void fsm_C_sPrep(struct Game *sota) {
     SOTA_Log_FPS("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     SOTA_Log_FPS("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
-void fsm_C_sTitle_Screen(struct Game *sota) {
+void fsm_C_sTtlScrn(struct Game *sota) {
     SOTA_Log_FPS("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     fsm_C_sGmpMap_ss[sota->substate](sota);
     // Game_CursorfollowsMouse_onMenu(sota);  /* CONTROL */
@@ -328,25 +328,25 @@ void fsm_R_sAnimation(struct Game *sota) {
     SOTA_Log_FPS("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
-void fsm_R_sCombat(struct Game *sota) {
+void fsm_R_sCmbt(struct Game *sota) {
     SOTA_Log_FPS("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
 
     SOTA_Log_FPS("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
-void fsm_R_sScene_Talk(struct Game *sota) {
+void fsm_R_sScnTalk(struct Game *sota) {
     SOTA_Log_FPS("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
 
     SOTA_Log_FPS("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
-void fsm_R_sScene_FMV(struct Game *sota) {
+void fsm_R_sScnFMV(struct Game *sota) {
     SOTA_Log_FPS("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     SOTA_Log_FPS("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 
 }
 
-void fsm_R_sGameplay_Map(struct Game *sota) {
+void fsm_R_sGmpMap(struct Game *sota) {
     SOTA_Log_FPS("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     /* RENDER only one map -> no entity */
     Map_Draw(sota->map, &sota->settings, &sota->camera, sota->render_target);
@@ -355,17 +355,17 @@ void fsm_R_sGameplay_Map(struct Game *sota) {
     SOTA_Log_FPS("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
-void fsm_R_sGameplay_Camp(struct Game *sota) {
+void fsm_R_sGmpCamp(struct Game *sota) {
     SOTA_Log_FPS("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     SOTA_Log_FPS("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
-void fsm_R_sPreparation(struct Game *sota) {
+void fsm_R_sPrep(struct Game *sota) {
     SOTA_Log_FPS("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     SOTA_Log_FPS("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
-void fsm_R_sTitle_Screen(struct Game *sota) {
+void fsm_R_sTtlScrn(struct Game *sota) {
     SOTA_Log_FPS("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     SOTA_Log_FPS("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
