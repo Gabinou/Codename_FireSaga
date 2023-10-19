@@ -121,12 +121,12 @@ int main(int argc, char *argv[]) {
 
         /* --- FRAME --- */
         /* -- fps_fsm -- */
-        SDL_assert(fsm_R_s[sota->state] != NULL);
-        SDL_assert(fsm_C_s[sota->state] != NULL);
+        SDL_assert(fsm_rFrame_s[sota->state] != NULL);
+        SDL_assert(fsm_cFrame_s[sota->state] != NULL);
 
-        fsm_R_s[sota->state](sota); /* RENDER */
+        fsm_rFrame_s[sota->state](sota); /* RENDER */
         tnecs_world_step_wdata(sota->world, updateTime_ns, sota); /* CONTROL+RENDER */
-        fsm_C_s[sota->state](sota); /* CONTROl */
+        fsm_cFrame_s[sota->state](sota); /* CONTROl */
         /* -- Events -- */
         Events_Manage(sota); /* CONTROL */
 

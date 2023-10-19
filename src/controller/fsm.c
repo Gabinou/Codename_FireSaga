@@ -2,28 +2,28 @@
 #include "controller/fsm.h"
 
 /* --- ACTIONS --- */
-fsm_state_inputs_t fsm_state_inputs[GAME_STATE_NUM] = {
+fsm_Input_s_t fsm_Input_s[GAME_STATE_NUM] = {
     /* NULL */           NULL,
     /* Combat */         NULL,
     /* Scene_Talk */     NULL,
     /* Scene_FMV */      NULL,
-    /* Gameplay_Map */   &fsm_state_inputs_GAMEPLAY_MAP,
+    /* Gameplay_Map */   &fsm_Input_sGAMEPLAY_MAP,
     /* Gameplay_Camp */  NULL,
     /* Preparation */    NULL,
-    /* Title_Screen */   &fsm_state_inputs_TITLE_SCREEN,
+    /* Title_Screen */   &fsm_Input_sTITLE_SCREEN,
     /* Animation */      NULL,
 };
 
 /* --- SUB-ACTIONS --- */
-fsm_state_inputs_t fsm_substate_inputs[GAME_SUBSTATE_NUM] = {
+fsm_Input_s_t fsm_Input_sGmpMap_ss[GAME_SUBSTATE_NUM] = {
     /* NULL */            NULL,
     /* MAP_MINIMAP */     NULL,
-    /* MENU */            &fsm_substate_inputs_MENU,
+    /* MENU */            &fsm_Input_sGmpMap_ss_MENU,
     /* MAP_UNIT_MOVES */  NULL,
     /* MAP_COMBAT */      NULL,
     /* MAP_NPCTURN */     NULL,
     /* SAVING */          NULL,
-    /* STANDBY */         &fsm_substate_inputs_STANDBY,
+    /* STANDBY */         &fsm_Input_sGmpMap_ss_STANDBY,
     /* PAUSED */          NULL,
     /* MAP_CANDIDATES */  NULL,
     /* CUTSCENE */        NULL,
@@ -31,23 +31,23 @@ fsm_state_inputs_t fsm_substate_inputs[GAME_SUBSTATE_NUM] = {
 };
 
 /* Gamecube controller has NO shoulder_left */
-void fsm_state_inputs_GAMEPLAY_MAP(struct Game *sota) {
+void fsm_Input_sGAMEPLAY_MAP(struct Game *sota) {
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
-    if (fsm_substate_inputs[sota->substate] != NULL)
-        fsm_substate_inputs[sota->substate](sota);
+    if (fsm_Input_sGmpMap_ss[sota->substate] != NULL)
+        fsm_Input_sGmpMap_ss[sota->substate](sota);
 
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
-void fsm_state_inputs_TITLE_SCREEN(struct Game *sota) {
+void fsm_Input_sTITLE_SCREEN(struct Game *sota) {
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
-    if (fsm_substate_inputs[sota->substate] != NULL)
-        fsm_substate_inputs[sota->substate](sota);
+    if (fsm_Input_sGmpMap_ss[sota->substate] != NULL)
+        fsm_Input_sGmpMap_ss[sota->substate](sota);
 
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
-void fsm_substate_inputs_MENU(struct Game *sota) {
+void fsm_Input_sGmpMap_ss_MENU(struct Game *sota) {
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     sota->inputs[SOTA_BUTTON_DPAD_RIGHT]      = 0;
     sota->inputs[SOTA_BUTTON_DPAD_UP]         = 0;
@@ -65,7 +65,7 @@ void fsm_substate_inputs_MENU(struct Game *sota) {
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
-void fsm_substate_inputs_STANDBY(struct Game *sota) {
+void fsm_Input_sGmpMap_ss_STANDBY(struct Game *sota) {
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     sota->inputs[SOTA_BUTTON_DPAD_RIGHT]      = 0;
     sota->inputs[SOTA_BUTTON_DPAD_UP]         = 0;

@@ -428,7 +428,7 @@ struct Game *Game_Init() {
                                          SOTA_COMBAT_MAX_ATTACKS);
 
     /* --- Set default contextual inputs --- */
-    fsm_state_inputs[out_game->state](out_game);
+    fsm_Input_s[out_game->state](out_game);
 
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
     return (out_game);
@@ -610,8 +610,8 @@ void Game_subState_Set(struct Game *sota, const if8 new_substate, const char *re
     else
         sota->cursor_diagonal = false;
 
-    if (fsm_substate_inputs[sota->substate] != NULL)
-        fsm_substate_inputs[sota->substate](sota);
+    if (fsm_Input_sGmpMap_ss[sota->substate] != NULL)
+        fsm_Input_sGmpMap_ss[sota->substate](sota);
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
@@ -625,8 +625,8 @@ void Game_State_Set(struct Game *sota, const if8 new_state, const char *reason) 
     sota->state          = new_state;
 
     /* --- Set default contextual inputs --- */
-    if (fsm_state_inputs[sota->state] != NULL)
-        fsm_state_inputs[sota->state](sota);
+    if (fsm_Input_s[sota->state] != NULL)
+        fsm_Input_s[sota->state](sota);
 
     SOTA_Log_Debug("Game state changed %d->%d: %s->%s", sota->state_previous, sota->state,
                    gameStatenames[sota->state_previous], gameStatenames[sota->state]);
