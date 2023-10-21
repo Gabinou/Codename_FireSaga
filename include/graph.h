@@ -88,18 +88,19 @@ extern struct Unit_stats test_grown_stats[10];
 extern struct Unit_stats test_base_stats;
 
 /* --- Stats --- */
-extern void Graph_Stat_Remove(struct Graph *g, uf8 stat);
+void Graph_Stat_Remove(struct Graph *g, uf8 stat);
 // TODO: call Graph_Stat_Add when growths menu elem is selected.
-extern void Graph_Stat_Add(struct Graph *g, struct Unit_stats *base_stats,
-                           struct Unit_stats *grown_stats, if8 level, if8 base_level, uf8 stat);
+void Graph_Stat_Add(struct Graph *g, struct Unit_stats *base_stats,
+                    struct Unit_stats *grown_stats,
+                    if8 level, if8 base_level, uf8 stat);
 
 /* --- Drawing --- */
-extern void Graph_Draw(struct Graph *g, struct n9Patch *n9, struct PixelFont *pb,
-                       SDL_Renderer *r, SDL_Texture *rt);
+void Graph_Draw(struct Graph *g, struct n9Patch *n9, struct PixelFont *pb,
+                SDL_Renderer *r, SDL_Texture *rt);
 
-extern void Graph_Draw_Axes(struct Graph *g, struct n9Patch *n9patch,
-                            struct PixelFont *pb, SDL_Renderer *r, SDL_Texture *rt);
-extern void Graph_Draw_Stat(struct Graph *g, uf8 stat, struct n9Patch *n9patch,
-                            struct PixelFont *pb, SDL_Renderer *r, SDL_Texture *rt);
+static void _Graph_Draw_Axes(struct Graph *g, struct n9Patch *n9patch,
+                             struct PixelFont *pb, SDL_Renderer *r, SDL_Texture *rt);
+static void _Graph_Draw_Stat(struct Graph *g, uf8 stat, struct n9Patch *n9patch,
+                             struct PixelFont *pb, SDL_Renderer *r, SDL_Texture *rt);
 
 #endif /* GRAPH_H */

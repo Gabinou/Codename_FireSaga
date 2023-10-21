@@ -104,18 +104,18 @@ void Graph_Draw(struct Graph *graph, struct n9Patch *n9patch, struct PixelFont *
         SDL_SetTextureBlendMode(graph->texture, SDL_BLENDMODE_BLEND);
     }
     SDL_SetRenderTarget(renderer, graph->texture);
-    Graph_Draw_Axes(graph, n9patch, pixelnours_big, renderer, render_target);
+    _Graph_Draw_Axes(graph, n9patch, pixelnours_big, renderer, render_target);
     for (uf8 i = 0; i < UNIT_STAT_NUM; i++) {
         if (graph->graph_stats[i].stat_id >= 0)
-            Graph_Draw_Stat(graph, i, n9patch, pixelnours_big, renderer, render_target);
+            _Graph_Draw_Stat(graph, i, n9patch, pixelnours_big, renderer, render_target);
     }
     SDL_SetRenderTarget(renderer, render_target);
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
-void Graph_Draw_Axes(struct Graph *graph, struct n9Patch *n9patch,
-                     struct PixelFont *pixelnours_big,
-                     SDL_Renderer *renderer, SDL_Texture *render_target) {
+void _Graph_Draw_Axes(struct Graph *graph, struct n9Patch *n9patch,
+                      struct PixelFont *pixelnours_big,
+                      SDL_Renderer *renderer, SDL_Texture *render_target) {
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     /* -- Clear graph -- */
     SDL_SetRenderDrawColor(renderer, 0x00, 0x00, 0x00, SDL_ALPHA_TRANSPARENT);
@@ -232,9 +232,9 @@ void Graph_Draw_Axes(struct Graph *graph, struct n9Patch *n9patch,
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
-void Graph_Draw_Stat(struct Graph *graph, uf8 stat_id, struct n9Patch *n9patch,
-                     struct PixelFont *pixelnours_big,
-                     SDL_Renderer *renderer, SDL_Texture *render_target) {
+void _Graph_Draw_Stat(struct Graph *graph, uf8 stat_id, struct n9Patch *n9patch,
+                      struct PixelFont *pixelnours_big,
+                      SDL_Renderer *renderer, SDL_Texture *render_target) {
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     /* -- Preliminaries -- */
     struct GraphStat graph_stat = graph->graph_stats[stat_id];
