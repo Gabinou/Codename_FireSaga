@@ -66,8 +66,8 @@ uf8 *pixels_and(uf8 *matrix1, uf8 *matrix2, size_t arr_len) {
 }
 
 
-void Index_Shade_Pixels(uf8 *to, SDL_Surface *unlocked_surface, uf8 *pixels_list,
-                        size_t pixels_num, size_t offset_x, size_t offset_y) {
+void _Index_Shade_Pixels(uf8 *to, SDL_Surface *unlocked_surface, uf8 *pixels_list,
+                         size_t pixels_num, size_t offset_x, size_t offset_y) {
     SOTA_Log_FPS("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     SDL_assert(SDL_ISPIXELFORMAT_INDEXED(unlocked_surface->format->format));
     SDL_assert(pixels_num > 0);
@@ -86,7 +86,7 @@ void Index_Shade_Pixels(uf8 *to, SDL_Surface *unlocked_surface, uf8 *pixels_list
     SOTA_Log_FPS("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
-void Index_Shade_Rect(uf8 *to, SDL_Surface *unlocked_surface, SDL_Rect *rect) {
+void _Index_Shade_Rect( uf8 *to, SDL_Surface *unlocked_surface, SDL_Rect *rect) {
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     uf8 *pixels = unlocked_surface->pixels;
     SDL_assert(SDL_ISPIXELFORMAT_INDEXED(unlocked_surface->format->format));
@@ -176,7 +176,7 @@ void Tilemap_Shader_Free(struct Tilemap_Shader *shd) {
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
-void Tilemap_Shader_Shadow_Free(struct Tilemap_Shader *shd) {
+void _Tilemap_Shader_Shadow_Free( struct Tilemap_Shader *shd) {
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     if (shd->shadowtile_pixels_num != NULL)
         free(shd->shadowtile_pixels_num);
@@ -197,7 +197,7 @@ void Tilemap_Shader_Load_Tileset_pixels(struct Tilemap_Shader *shd, const char *
                                         size_t tilenum, i32 tilesize[TWO_D]) {
     SOTA_Log_FPS("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     /* -- Preliminaries -- */
-    Tilemap_Shader_Shadow_Free(shd);
+    _Tilemap_Shader_Shadow_Free( shd);
     Tilemap_Shader_Alloc(shd, tilenum);
     SDL_Surface *surf = Filesystem_Surface_Load(filename, SDL_PIXELFORMAT_INDEX8);
     SDL_LockSurface(surf);
@@ -236,7 +236,7 @@ void Tilemap_Shader_Load_Tileset_JSON(struct Tilemap_Shader *shd,
     cJSON *jtilesnum = cJSON_GetObjectItem(jshadow_tileset, "tiles_num");
 
     /* -- Alloc shadow tiles -- */
-    Tilemap_Shader_Shadow_Free(shd);
+    _Tilemap_Shader_Shadow_Free( shd);
     Tilemap_Shader_Alloc(shd, cJSON_GetNumberValue(jtilesnum));
     cJSON *jtiles_pixelnum = cJSON_GetObjectItem(jshadow_tileset, "tiles_pixelnum");
     SDL_assert(jtiles_pixelnum != NULL);
@@ -307,7 +307,7 @@ SDL_Surface *Tilemap_Shade_Surface(struct Tilemap_Shader *shd, SDL_Surface *surf
             uf8 *list = shd->shadowtile_pixels_lists[st_index];
             size_t num = shd->shadowtile_pixels_num[st_index];
             if ((st_index > 0) && (st_index < shd->shadowtile_num))
-                Index_Shade_Pixels(shd->to, surf, list, num, col * tsize[1], row * tsize[0]);
+                _Index_Shade_Pixels(shd->to, surf, list, num, col * tsize[1], row * tsize[0]);
         }
     }
     SDL_UnlockSurface(surf);
@@ -386,7 +386,7 @@ SDL_Surface *Index_Shade_Surface(struct Index_Shader *shd, SDL_Surface *surf, SD
     /* -- Shade surf -- */
     SDL_LockSurface(out);
     SDL_LockSurface(surf);
-    Index_Shade_Pixels(shd->to, out, shd->pixels_list, shd->pixels_num, rect->x, rect->y);
+    _Index_Shade_Pixels(shd->to, out, shd->pixels_list, shd->pixels_num, rect->x, rect->y);
     SDL_UnlockSurface(out);
     SDL_UnlockSurface(surf);
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
