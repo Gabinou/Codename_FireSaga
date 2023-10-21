@@ -109,8 +109,8 @@ void _PreCombatMenu_Load(struct PreCombatMenu *pcm, struct Unit *agg_unit, struc
     pcm->dft_unit = dft_unit;
 
     pcm->update = true;
-    PreCombatMenu_Load_Faces(pcm, renderer);
-    PreCombatMenu_Load_Icons(pcm, renderer);
+    _PreCombatMenu_Load_Faces(pcm, renderer);
+    _PreCombatMenu_Load_Icons(pcm, renderer);
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 void PreCombatMenu_Free_Faces(struct PreCombatMenu *pcm) {
@@ -126,7 +126,7 @@ void PreCombatMenu_Free_Faces(struct PreCombatMenu *pcm) {
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
-void PreCombatMenu_Load_Faces(struct PreCombatMenu *pcm, SDL_Renderer *renderer) {
+void _PreCombatMenu_Load_Faces(struct PreCombatMenu *pcm, SDL_Renderer *renderer) {
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     SDL_assert(pcm);
     SDL_assert(pcm->agg_unit > TNECS_NULL);
@@ -144,7 +144,7 @@ void PreCombatMenu_Free_Icons(struct PreCombatMenu *pcm) {
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
-void PreCombatMenu_Load_Icons(struct PreCombatMenu *pcm, SDL_Renderer *renderer) {
+void _PreCombatMenu_Load_Icons(struct PreCombatMenu *pcm, SDL_Renderer *renderer) {
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     SDL_assert(pcm);
     SDL_assert(renderer != NULL);
@@ -168,7 +168,7 @@ void PreCombatMenu_Set(struct PreCombatMenu *pcm, struct Game *sota) {
 
 /* --- Drawing --- */
 /* Draw the doubling/tripling/quadrupling symbol */
-void PreCombatMenu_Draw_Doubling(struct PreCombatMenu *pcm, SDL_Renderer *renderer) {
+void _PreCombatMenu_Draw_Doubling(struct PreCombatMenu *pcm, SDL_Renderer *renderer) {
     SOTA_Log_FPS("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     /* -- Preliminaries -- */
     /* - Checking number of phases to draw - */
@@ -260,7 +260,7 @@ void PreCombatMenu_Draw(struct MenuComponent *mc, SDL_Texture *render_target,
     SOTA_Log_FPS("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
-void PreCombatMenu_Draw_Names(struct PreCombatMenu *pcm, SDL_Renderer *renderer) {
+void _PreCombatMenu_Draw_Names(struct PreCombatMenu *pcm, SDL_Renderer *renderer) {
     /* - Name - */
     char *name = pcm->agg_unit->name;
     int x = PCM_SIMPLE_ANAME_X, y = PCM_SIMPLE_ANAME_Y;
@@ -270,7 +270,7 @@ void PreCombatMenu_Draw_Names(struct PreCombatMenu *pcm, SDL_Renderer *renderer)
     PixelFont_Write_Len(pcm->pixelnours_big, renderer, name, x, y);
 }
 
-void PreCombatMenu_Draw_Faces(struct PreCombatMenu *pcm, SDL_Renderer *renderer) {
+void _PreCombatMenu_Draw_Faces(struct PreCombatMenu *pcm, SDL_Renderer *renderer) {
     /* - Portrait/Face - */
     SDL_Rect srcrect;
     SDL_SetRenderDrawColor(renderer, 0xFF, 0xFF, 0xFF, SDL_ALPHA_OPAQUE);
@@ -286,7 +286,7 @@ void PreCombatMenu_Draw_Faces(struct PreCombatMenu *pcm, SDL_Renderer *renderer)
     SDL_RenderFillRect(renderer, &srcrect);
 }
 
-void PreCombatMenu_Draw_WpnIcons(struct PreCombatMenu *pcm, SDL_Renderer *renderer) {
+void _PreCombatMenu_Draw_WpnIcons(struct PreCombatMenu *pcm, SDL_Renderer *renderer) {
     struct Inventory_item *item;
     SDL_Rect dstrect, srcrect;
     /* - Weapon icons - */
@@ -411,12 +411,12 @@ void PreCombatMenu_Draw_WpnIcons(struct PreCombatMenu *pcm, SDL_Renderer *render
 
 pcm_draw_stats_t pcm_draw_stats[PCM_MODE_NUM] = {
     /* NULL     */ NULL,
-    /* TOTAL    */ PreCombatMenu_Draw_Stats_Total,
-    /* SIMPLE   */ PreCombatMenu_Draw_Stats_Simple,
-    /* MATH     */ PreCombatMenu_Draw_Stats_Math,
+    /* TOTAL    */ _PreCombatMenu_Draw_Stats_Total,
+    /* SIMPLE   */ _PreCombatMenu_Draw_Stats_Simple,
+    /* MATH     */ _PreCombatMenu_Draw_Stats_Math,
 };
 
-void PreCombatMenu_Draw_Stats_Math(  struct PreCombatMenu *pcm, SDL_Renderer *renderer) {
+void _PreCombatMenu_Draw_Stats_Math(  struct PreCombatMenu *pcm, SDL_Renderer *renderer) {
     /* -- Preliminaries -- */
     SDL_Rect dstrect, srcrect;
 
@@ -553,13 +553,13 @@ void PreCombatMenu_Draw_Stats_Math(  struct PreCombatMenu *pcm, SDL_Renderer *re
             dstrect.x = PCM_DOUBLING_MATH_AGG_X;
             dstrect.y = PCM_DOUBLING_MATH_AGG_Y;
         }
-        PreCombatMenu_Draw_Doubling(pcm, renderer);
+        _PreCombatMenu_Draw_Doubling(pcm, renderer);
         dstrect.w = PCM_DOUBLING_MATH_TEXT_W, dstrect.h = PCM_DOUBLING_MATH_TEXT_H;
         SDL_RenderCopy(renderer, pcm->texture_doubling, NULL, &dstrect);
     }
 }
 
-void PreCombatMenu_Draw_Stats_Total( struct PreCombatMenu *pcm, SDL_Renderer *renderer) {
+void _PreCombatMenu_Draw_Stats_Total( struct PreCombatMenu *pcm, SDL_Renderer *renderer) {
     char numbuff[10];
     /* -- Preliminaries -- */
     SDL_Rect dstrect, srcrect;
@@ -646,16 +646,16 @@ void PreCombatMenu_Draw_Stats_Total( struct PreCombatMenu *pcm, SDL_Renderer *re
     if ((phases_agg > 1) || (phases_dft > 1)) {
         if (phases_dft > 1)
             dstrect.x = PCM_DOUBLING_SIMPLE_DFT_X, dstrect.y = PCM_DOUBLING_SIMPLE_DFT_Y;
-        PreCombatMenu_Draw_Doubling(pcm, renderer);
+        _PreCombatMenu_Draw_Doubling(pcm, renderer);
         if (phases_agg > 1)
             dstrect.x = PCM_DOUBLING_SIMPLE_AGG_X, dstrect.y = PCM_DOUBLING_SIMPLE_AGG_Y;
-        PreCombatMenu_Draw_Doubling(pcm, renderer);
+        _PreCombatMenu_Draw_Doubling(pcm, renderer);
         dstrect.w = PCM_DOUBLING_SIMPLE_TEXT_W,    dstrect.h = PCM_DOUBLING_SIMPLE_TEXT_H;
         SDL_RenderCopy(renderer, pcm->texture_doubling, NULL, &dstrect);
     }
 }
 
-void PreCombatMenu_Draw_Stats_Simple(struct PreCombatMenu *pcm, SDL_Renderer *renderer) {
+void _PreCombatMenu_Draw_Stats_Simple(struct PreCombatMenu *pcm, SDL_Renderer *renderer) {
     char numbuff[10];
     /* -- Preliminaries -- */
     SDL_Rect dstrect, srcrect;
@@ -761,13 +761,13 @@ void PreCombatMenu_Draw_Stats_Simple(struct PreCombatMenu *pcm, SDL_Renderer *re
             dstrect.x = PCM_DOUBLING_SPLIT_AGG_X;
             dstrect.y = PCM_DOUBLING_SPLIT_AGG_Y;
         }
-        PreCombatMenu_Draw_Doubling(pcm, renderer);
+        _PreCombatMenu_Draw_Doubling(pcm, renderer);
         dstrect.w = PCM_DOUBLING_SPLIT_TEXT_W, dstrect.h = PCM_DOUBLING_SPLIT_TEXT_H;
         SDL_RenderCopy(renderer, pcm->texture_doubling, NULL, &dstrect);
     }
 }
 
-void PreCombatMenu_Draw_Stats(struct PreCombatMenu *pcm, SDL_Renderer *renderer) {
+void _PreCombatMenu_Draw_Stats(struct PreCombatMenu *pcm, SDL_Renderer *renderer) {
     SDL_assert(pcm->mode >= PCM_MODE_NULL && pcm->mode < PCM_MODE_NUM);
 
     if (pcm_draw_stats[pcm->mode] != NULL)
@@ -817,10 +817,10 @@ void PreCombatMenu_Update(struct PreCombatMenu *pcm, struct n9Patch *n9patch,
     n9patch->scale.x = scale_x;
     n9patch->scale.y = scale_y;
 
-    PreCombatMenu_Draw_Names(pcm,    renderer);
-    PreCombatMenu_Draw_Faces(pcm,    renderer);
-    PreCombatMenu_Draw_WpnIcons(pcm, renderer);
-    PreCombatMenu_Draw_Stats(pcm,    renderer);
+    _PreCombatMenu_Draw_Names(pcm,    renderer);
+    _PreCombatMenu_Draw_Faces(pcm,    renderer);
+    _PreCombatMenu_Draw_WpnIcons(pcm, renderer);
+    _PreCombatMenu_Draw_Stats(pcm,    renderer);
 
     /* - Finish - */
     SDL_SetRenderTarget(renderer, render_target);

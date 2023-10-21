@@ -57,15 +57,15 @@ struct MenuComponent {
 extern struct MenuComponent MenuComponent_default;
 
 /* --- Constructors/Destructors --- */
-extern void MenuComponent_Elem_Free(struct MenuComponent *mc);
+void MenuComponent_Elem_Free(struct MenuComponent *mc);
 
 /* --- Internals --- */
-extern int Periodic_Elem_Move(     struct MenuComponent *mc, int d, int min, int max);
-extern void MenuComponent_Elem_Set(struct MenuComponent *mc, struct Game *sota, if8 d);
-extern int MenuComponent_Elem_Move(struct MenuComponent *mc, int d);
-extern void MenuComponent_Elem_Boxes_Check(struct MenuComponent *mc);
+int Periodic_Elem_Move(     struct MenuComponent *mc, int d, int min, int max);
+void MenuComponent_Elem_Set(struct MenuComponent *mc, struct Game *sota, if8 d);
+int MenuComponent_Elem_Move(struct MenuComponent *mc, int d);
+void MenuComponent_Elem_Boxes_Check(struct MenuComponent *mc);
 
 /* --- Debug --- */
-extern void MenuComponent_Elem_Boxes_Draw(struct MenuComponent *mc, struct SDL_Renderer *r);
+void MenuComponent_Elem_Boxes_Draw(struct MenuComponent *mc, struct SDL_Renderer *r);
 
 #endif /* MENU_H */
