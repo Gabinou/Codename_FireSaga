@@ -139,10 +139,10 @@ fsm_menu_t fsm_eAcpt_sGmpMap_ssMapCndt_mo[MENU_OPTION_NUM] = {
     /* MENU_OPTION_DEBUG_MAP */     NULL,
 };
 
-/* -- Menu Pop/Exit FSM -- */
-fsm_menu_t fsm_Exit_sGmpMap_ssMenu_m[MENU_TYPE_END] = {
+/* -- Menu Pop FSM -- */
+fsm_menu_t fsm_Pop_sGmpMap_ssMenu_m[MENU_TYPE_END] = {
     /* MENU_TYPE_START */           NULL,
-    /* MENU_TYPE_PLAYER_SELECT */   &fsm_Exit_sGmpMap_ssMenu_mPSM,
+    /* MENU_TYPE_PLAYER_SELECT */   &fsm_Pop_sGmpMap_ssMenu_mPSM,
     /* MENU_TYPE_WEAPON_SELECT */   NULL,
     /* MENU_TYPE_STAFF_SELECT  */   NULL,
     /* MENU_TYPE_ITEM_SELECT  */    NULL,
@@ -553,8 +553,6 @@ void fsm_eCncl_sGmpMap_ssMenu_mPCM(struct Game *sota, struct MenuComponent *mc) 
     bool destroy = false;
     tnecs_entity_t menu_popped_entity = Game_menuStack_Pop(sota, destroy);
     SDL_assert(menu_popped_entity > 0);
-    struct MenuComponent *menu_comp_popped;
-    menu_comp_popped = TNECS_GET_COMPONENT(sota->world, menu_popped_entity, MenuComponent);
 
     // 2. Make cursor visible
     struct Sprite *sprite = TNECS_GET_COMPONENT(sota->world, sota->entity_cursor, Sprite);
@@ -580,72 +578,11 @@ void fsm_eCncl_sGmpMap_ssMenu_mPSM(struct Game *sota, struct MenuComponent *mc) 
     bool destroy = false;
     tnecs_entity_t menu_popped_entity = Game_menuStack_Pop(sota, destroy);
     SDL_assert(menu_popped_entity > 0);
-    struct MenuComponent *menu_comp_popped;
-    menu_comp_popped = TNECS_GET_COMPONENT(sota->world, menu_popped_entity, MenuComponent);
+    struct MenuComponent *mc_pop;
+    mc_pop = TNECS_GET_COMPONENT(sota->world, menu_popped_entity, MenuComponent);
 
-    struct PlayerSelectMenu *menu_ptr = (struct PlayerSelectMenu *)mc->data;
-    if8 new_substate = -1;
-
-    /* Popped menu reverter */
-    // TODO fsm_Exit_sGmpMap_ssMenu_m -> for menu popping
-    switch (menu_ptr->id) {
-        case MENU_PLAYER_SELECT_UNIT_ACTION:
-            ;
-
-            tnecs_entity_t unit_ent       = sota->selected_unit_entity;
-            struct Unit *unit             = TNECS_GET_COMPONENT(sota->world, unit_ent, Unit);
-            struct Position *selected_pos = TNECS_GET_COMPONENT(sota->world, unit_ent, Position);
-            new_substate                  = GAME_SUBSTATE_MAP_UNIT_MOVES;
-            strncpy(sota->reason, "Unit action is taken after Map_unit moves only",
-                    sizeof(sota->reason));
-
-            // 1. Moving entity back to original spot in map
-            struct Point moved_pos = sota->selected_unit_moved_position;
-            struct Point init_pos  = sota->selected_unit_initial_position;
-            if ((init_pos.x != moved_pos.x) || (init_pos.y != moved_pos.y))
-                Map_Unit_Move(sota->map, moved_pos.x, moved_pos.y, init_pos.x, init_pos.y);
-
-            // 2. Moving pos ptr to initial position to compute initial attacktomap
-            // 2.1 inital pos != moved pos, so cursor would move...
-            Position_Pos_Set(selected_pos, init_pos.x, init_pos.y);
-            Map_Healtomap_Compute(  sota->map, sota->world, sota->selected_unit_entity, true, true);
-            Map_Attacktomap_Compute(sota->map, sota->world, sota->selected_unit_entity, true, true);
-            // 2.2 BUT: Moving pos ptr to selected position so that cursor doesn't move
-            Position_Pos_Set(selected_pos, moved_pos.x, moved_pos.y);
-
-            // 3. Compute new stackmap with recomputed attacktomap
-            if (Unit_canStaff(unit)) {
-                int overlay = MAP_OVERLAY_GLOBAL_DANGER + MAP_OVERLAY_HEAL + MAP_OVERLAY_MOVE;
-                Map_Palettemap_Autoset(sota->map, overlay);
-            } else if (Unit_canAttack(unit)) {
-                int overlay = MAP_OVERLAY_GLOBAL_DANGER + MAP_OVERLAY_MOVE + MAP_OVERLAY_ATTACK +
-                              MAP_OVERLAY_DANGER;
-                Map_Palettemap_Autoset(sota->map, overlay);
-            }
-            Map_Stacked_Dangermap_Compute(sota->map);
-
-            // 4. Revert Unit animation state to move
-            struct Sprite *sprite;
-            sprite = TNECS_GET_COMPONENT(sota->world, sota->selected_unit_entity, Sprite);
-            // TODO: REMOVE IF WHEN ALL MAP_UNITS HAVE SPRITESHEETS.
-            if (sprite->spritesheet != NULL) {
-                SDL_assert(sprite->spritesheet->loop_num == MAP_UNIT_SPRITE_LOOP_NUM);
-                Spritesheet_Loop_Set(sprite->spritesheet, MAP_UNIT_SPRITE_LOOP_MOVER, sprite->flip);
-                Sprite_Animation_Loop(sprite);
-                Sprite_Draw(sprite, sota->renderer);
-            }
-
-            break;
-        case MENU_PLAYER_SELECT_MAP_ACTION:
-            new_substate = GAME_SUBSTATE_STANDBY;
-            strncpy(sota->reason, "Map action is taken on standby only", sizeof(sota->reason));
-            break;
-        default:
-            SOTA_Log_Debug("invalid PlayerSelectMenu id");
-    }
-    strncpy(sota->reason, "stops showing player select menu", sizeof(sota->reason));
-    if ((sota->substate != new_substate) && (new_substate > 0))
-        Game_subState_Set(sota, new_substate, sota->reason);
+    if (fsm_Pop_sGmpMap_ssMenu_m[mc_pop->type] != NULL)
+        fsm_Pop_sGmpMap_ssMenu_m[mc_pop->type](sota, mc);
 
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
@@ -743,8 +680,6 @@ void fsm_eCncl_sGmpMap_ssMenu_mSM(struct Game *sota, struct MenuComponent *mc) {
     bool destroy = false;
     tnecs_entity_t menu_popped_entity = Game_menuStack_Pop(sota, destroy);
     SDL_assert(menu_popped_entity > 0);
-    struct MenuComponent *menu_comp_popped;
-    menu_comp_popped = TNECS_GET_COMPONENT(sota->world, menu_popped_entity, MenuComponent);
 
     if8 new_substate = GAME_SUBSTATE_STANDBY;
     strncpy(sota->reason, "stops showing stats menu", sizeof(sota->reason));
@@ -1086,10 +1021,14 @@ void fsm_eAcpt_sGmpMap_ssMenu_mPSM_moDbgMap(struct Game *sota, struct MenuCompon
 }
 
 /* -- Menu Pop/Exit FSM -- */
-void fsm_Exit_sGmpMap_ssMenu_mPSM(struct Game *sota, struct MenuComponent *mc) {
+// For Last menu popped? for Any menu popped?
+void fsm_Pop_sGmpMap_ssMenu_mPSM(struct Game *sota, struct MenuComponent *mc) {
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     /* Popped menu reverter */
-    // TODO fsm_Exit_sGmpMap_ssMenu_m -> for menu popping
+    // TODO fsm_Pop_sGmpMap_ssMenu_m -> for menu popping
+    struct PlayerSelectMenu *menu_ptr = (struct PlayerSelectMenu *)mc->data;
+    if8 new_substate = -1;
+
     switch (menu_ptr->id) {
         case MENU_PLAYER_SELECT_UNIT_ACTION:
             ;
@@ -1145,7 +1084,11 @@ void fsm_Exit_sGmpMap_ssMenu_mPSM(struct Game *sota, struct MenuComponent *mc) {
         default:
             SOTA_Log_Debug("invalid PlayerSelectMenu id");
     }
-    
+
+    strncpy(sota->reason, "stops showing player select menu", sizeof(sota->reason));
+    if ((sota->substate != new_substate) && (new_substate > 0))
+        Game_subState_Set(sota, new_substate, sota->reason);
+
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 

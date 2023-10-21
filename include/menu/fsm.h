@@ -98,9 +98,10 @@ void fsm_eCncl_sGmpMap_ssMapCndt_moDance(struct Game *sota, struct MenuComponent
 void fsm_eCncl_sGmpMap_ssMapCndt_moStaff(struct Game *sota, struct MenuComponent *mc);
 void fsm_eCncl_sGmpMap_ssMapCndt_moTrade(struct Game *sota, struct MenuComponent *mc);
 
-/* -- Menu pop/Exit FSM -- */
-extern fsm_menu_t fsm_Exit_sGmpMap_ssMenu_m[MENU_TYPE_END];
+/* -- Menu Pop FSM -- */
+/* Need Popped Last / Any popped menu fsm ? */
+extern fsm_menu_t fsm_Pop_sGmpMap_ssMenu_m[MENU_TYPE_END];
 
-void fsm_Exit_sGmpMap_ssMenu_mPSM(struct Game *sota, struct MenuComponent *mc);
+void fsm_Pop_sGmpMap_ssMenu_mPSM(struct Game *sota, struct MenuComponent *mc);
 
 #endif /* MENU_FPS_H */
