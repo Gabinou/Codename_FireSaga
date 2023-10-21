@@ -131,21 +131,20 @@ extern void Compute_Combat_Outcome(struct Combat_Phase *,    struct Combat_Attac
 
 /* -- Combat Resolution -- */
 /* - Execute all combat attacks - */
+extern uf8 Combat_Next_HP( struct Combat_Attack, uf8 hp);
 extern void Combat_Resolve(struct Combat_Attack *, uf8 a, struct Unit *, struct Unit *);
-extern uf8 Combat_Next_HP(struct Combat_Attack, uf8 hp);
 
 /* --- INTERNALS --- */
 /* -- isCan -- */
 extern bool Combat_canDouble(const struct Unit *a, const struct Unit *d);
-extern bool
-Combat_canAttack_Equipped(      struct Unit  *agg,           struct Unit  *dft,
-                                const struct Point *agg_pos, const struct Point *dft_pos);
+extern bool Combat_canAttack_Equipped(      struct Unit  *agg,           struct Unit  *dft,
+                                            const struct Point *agg_pos, const struct Point *dft_pos);
 extern void Combat_Death_isPossible(struct Combat_Flow, uf8 *out);
 
 /* -- Combat Forecast -- */
 extern struct Damage Compute_Combat_Damage(struct      Unit *att, struct Unit *dfd);
-extern struct Combat_Rates Compute_Combat_Rates(      struct Unit  *att,
-                                                      struct Unit  *dfd, const struct Point *agg_pos, const struct Point *dft_pos);
+extern struct Combat_Rates Compute_Combat_Rates(struct Unit  *att, struct Unit  *dfd,
+                                                const struct Point *agg_pos, const struct Point *dft_pos);
 
 extern struct Combat_Death Compute_Combat_Death(struct Unit *agg, struct Unit *dft,
                                                 struct Combat_Stats, struct Combat_Flow);

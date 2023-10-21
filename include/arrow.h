@@ -61,21 +61,24 @@ extern struct Arrow Arrow_default;
 extern void Arrow_Init(struct Arrow *a, i32 tilesize[TWO_D]);
 extern void Arrow_Free(struct Arrow *a);
 
+/* --- Path --- */
+/* -- Public -- */
+extern void Arrow_Path_Add( struct Arrow *a, i32 x, i32 y);
+extern void Arrow_Path_Init(struct Arrow *a, i32 *c, i32 m, struct Point s);
+
+/* -- Private -- */
+extern void _Arrow_Path_Trace(struct Arrow *a, struct Point end);
+
 /* --- I/O --- */
 extern void Arrow_Textures_Load(struct Arrow *a, const char *f, SDL_Renderer *r);
 
-/* --- Internals --- */
-extern void Arrow_Path_Add(  struct Arrow *a, i32 x, i32 y);
-extern void Arrow_Path_Init( struct Arrow *a, i32 *c, i32 m, struct Point s);
-extern void Arrow_Path_Trace(struct Arrow *a, struct Point end);
+/* --- Decider --- */
+extern void _Arrow_Decider(struct Arrow *a, i32 point);
 
-/* -- Arrow path deciding -- */
-extern void Arrow_Decider(struct Arrow *a, i32 point);
-
-extern struct Rendered Arrow_Decider_End(     i32 x0, i32 y0, i32 x1, i32 y1, i32 x2, i32 y2);
-extern struct Rendered Arrow_Decider_Start(   i32 x0, i32 y0, i32 x1, i32 y1);
-extern struct Rendered Arrow_Decider_Middle(  i32 x0, i32 y0, i32 x1, i32 y1, i32 x2, i32 y2);
-extern struct Rendered Arrow_Decider_Startend(i32 x0, i32 y0, i32 x1, i32 y1);
+extern struct Rendered _Arrow_Decider_End(     i32 x0, i32 y0, i32 x1, i32 y1, i32 x2, i32 y2);
+extern struct Rendered _Arrow_Decider_Start(   i32 x0, i32 y0, i32 x1, i32 y1);
+extern struct Rendered _Arrow_Decider_Middle(  i32 x0, i32 y0, i32 x1, i32 y1, i32 x2, i32 y2);
+extern struct Rendered _Arrow_Decider_Startend(i32 x0, i32 y0, i32 x1, i32 y1);
 
 /* --- Draw --- */
 extern void Arrow_Draw(struct Arrow *a, SDL_Renderer *r, struct Camera *c);

@@ -2,6 +2,7 @@
 #include "filesystem.h"
 #include "nourstest.h"
 #include "test_AI.h"
+#include "test_arrow.h"
 #include "test_bitfields.h"
 #include "test_camp.h"
 #include "test_combat.h"

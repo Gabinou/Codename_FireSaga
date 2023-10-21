@@ -254,7 +254,7 @@ void Gamepad_removeController(struct controllerGamepad *gp, if32 joystick_instan
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
-void Gamepad_Realloc(struct controllerGamepad *gp) {
+void _Gamepad_Realloc(struct controllerGamepad *gp) {
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     SDL_assert(gp->controllers        != NULL);
     SDL_assert(gp->joystick_instances != NULL);
@@ -280,7 +280,7 @@ void Gamepad_addController(struct controllerGamepad *gp, if32 joystick_device) {
     SOTA_Log_Debug("add joystick %ld", joystick_device);
     SDL_assert(SDL_IsGameController(joystick_device));
     if ((gp->controllers_num + 1) >= gp->controllers_len)
-        Gamepad_Realloc(gp);
+        _Gamepad_Realloc(gp);
 
     SDL_GameController *controllers = gp->controllers[gp->controllers_num];
     gp->controllers[gp->controllers_num]        = SDL_GameControllerOpen(joystick_device);
