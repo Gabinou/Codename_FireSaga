@@ -24,8 +24,8 @@ extern json_read_t  json_read_funcs [JSON_END];
 extern json_write_t json_write_funcs[JSON_END];
 
 /* --- API --- */
-extern void          jsonio_readJSON( const char *f,       void *ptr);
-extern void          jsonio_writeJSON(const char *f, const void *ptr, bool a);
-extern struct cJSON *jsonio_parseJSON(const char *f);
+void          jsonio_readJSON( const char *f,       void *ptr);
+void          jsonio_writeJSON(const char *f, const void *ptr, bool a);
+struct cJSON *jsonio_parseJSON(const char *f);
 
 #endif /* Filesystem_H */

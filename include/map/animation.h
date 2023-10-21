@@ -28,6 +28,6 @@ struct CombatAnimation { /* on Map */
 /* --- Constructors/Destructors --- */
 
 /* --- Play --- */
-extern void CombatAnimation_Play(struct CombatAnimation *ca);
+void CombatAnimation_Play(struct CombatAnimation *ca);
 
 #endif /* MAP_ANIMATION_H */

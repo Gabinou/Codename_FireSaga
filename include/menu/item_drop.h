@@ -84,20 +84,21 @@ struct ItemDropMenu {
 extern struct ItemDropMenu ItemDropMenu_default;
 
 /* --- Constructors/Destructors --- */
-extern struct ItemDropMenu *ItemDropMenu_Alloc();
-extern void ItemDropMenu_Free(struct ItemDropMenu *idm);
-extern void ItemDropMenu_Load(struct ItemDropMenu *idm, SDL_Renderer *r, struct n9Patch *n9);
+struct ItemDropMenu *ItemDropMenu_Alloc();
+void ItemDropMenu_Free(struct ItemDropMenu *idm);
+void ItemDropMenu_Load(struct ItemDropMenu *idm, SDL_Renderer *r, struct n9Patch *n9);
 
 /* --- Elements --- */
-extern void ItemDropMenu_Elem_Pos(struct ItemDropMenu *idm, struct MenuComponent *mc);
+void ItemDropMenu_Elem_Pos(struct ItemDropMenu *idm, struct MenuComponent *mc);
 
 /* --- Selection --- */
-extern void ItemDropMenu_Drop(  struct ItemDropMenu *idm);
-extern void ItemDropMenu_Select(struct ItemDropMenu *idm, if8 elem);
+void ItemDropMenu_Drop(  struct ItemDropMenu *idm);
+void ItemDropMenu_Select(struct ItemDropMenu *idm, if8 elem);
 
 /* --- Drawing --- */
-extern void ItemDropMenu_Draw(  struct MenuComponent *mc,  SDL_Texture *rt, SDL_Renderer *r);
-extern void ItemDropMenu_Update(struct ItemDropMenu  *idm, struct n9Patch *n9, SDL_Texture *rt,
-                                SDL_Renderer *r);
+void ItemDropMenu_Draw(  struct MenuComponent *mc,  SDL_Texture *rt, SDL_Renderer *r);
+
+void ItemDropMenu_Update(struct ItemDropMenu  *idm, struct n9Patch *n9, SDL_Texture *rt,
+                         SDL_Renderer *r);
 
 #endif /* ITEM_DROP_MENU_H */

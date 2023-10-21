@@ -64,37 +64,37 @@ typedef struct Item {
 extern struct Item Item_default;
 
 /* --- Inventory Item --- */
-extern void Inventory_item_Swap(struct Inventory_item *items, uf8 i1, uf8 i2);
+void Inventory_item_Swap(struct Inventory_item *items, uf8 i1, uf8 i2);
 
 /* --- Constructors/Destructors --- */
-extern void Item_Free(struct Item *item);
+void Item_Free(struct Item *item);
 
 /* --- I/O --- */
-extern void Item_Load(    struct dtab *items_dtab, if16 id);
-extern void Item_readJSON(       void *input, const cJSON *jitem);
-extern void Item_writeJSON(const void *input,       cJSON *jitem);
+void Item_Load(    struct dtab *items_dtab, if16 id);
+void Item_readJSON(       void *input, const cJSON *jitem);
+void Item_writeJSON(const void *input,       cJSON *jitem);
 
 /* --- Type --- */
-extern int Item_Archetype(if16 id);
+int Item_Archetype(if16 id);
 
 /* --- Is --- */
-extern bool Item_isStaff(  if16 id);
-extern bool Item_isShield( if16 id);
-extern bool Item_isWeapon( if16 id);
-extern bool Item_isOffhand(if16 id);
+bool Item_isStaff(  if16 id);
+bool Item_isShield( if16 id);
+bool Item_isWeapon( if16 id);
+bool Item_isOffhand(if16 id);
 
-extern bool Item_canUse(struct Item *item, const struct Unit *unit);
+bool Item_canUse(struct Item *item, const struct Unit *unit);
 
 /* --- Use --- */
-extern void Item_Use(              struct Item *i, struct Unit *u, struct Unit *t);
-extern void Inventory_item_Break(  struct Inventory_item *invitem);
-extern void Inventory_item_Deplete(struct Inventory_item *invitem, int uses);
+void Item_Use(              struct Item *i, struct Unit *u, struct Unit *t);
+void Inventory_item_Break(  struct Inventory_item *invitem);
+void Inventory_item_Deplete(struct Inventory_item *invitem, int uses);
 
 /* --- Check --- */
-extern bool Item_ID_isValid(uf16 id); /* NOT for weapons */
+bool Item_ID_isValid(uf16 id); /* NOT for weapons */
 
 /* --- Stat --- */
-extern int Item_Stat(const struct Item *item, if16 s);
+int Item_Stat(const struct Item *item, if16 s);
 
 /* -- Effects -- */
 #define REGISTER_ENUM(x, y) ITEM_EFFECT_ID_##x = y,
@@ -112,7 +112,7 @@ enum ITEM_EFFECTS_ORDER {
 };
 #undef REGISTER_ENUM
 
-#define REGISTER_ENUM(x, y) extern if8 useEffect_##x(struct Item *i, struct Unit *u, struct Unit *t);
+#define REGISTER_ENUM(x, y) if8 useEffect_##x(struct Item *i, struct Unit *u, struct Unit *t);
 #include "names/items_effects.h"
 #undef REGISTER_ENUM
 
