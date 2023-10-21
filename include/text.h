@@ -27,11 +27,11 @@ typedef struct Text {
 } Text;
 extern struct Text Text_default;
 
-extern void Text_Set(       struct Text *t, char *l);
-extern void Text_Draw(      struct Text *t, SDL_Renderer *r, SDL_Rect *d);
-extern void Text_Update(    struct Text *t, SDL_Renderer *r);
-extern void Text_onUpdate(  struct Text *t);
+void Text_Set(       struct Text *t, char *l);
+void Text_Draw(      struct Text *t, SDL_Renderer *r, SDL_Rect *d);
+void Text_Update(    struct Text *t, SDL_Renderer *r);
+void Text_onUpdate(  struct Text *t);
 
-extern void Text_onUpdate_FPS(struct Game *g, tnecs_entity_t ent, u32 fc, i64 up, void *data);
+void Text_onUpdate_FPS(struct Game *g, tnecs_entity_t ent, u32 fc, i64 up, void *data);
 
 #endif /* TEXT_H */

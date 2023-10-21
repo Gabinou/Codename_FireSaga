@@ -196,30 +196,30 @@ struct Game {
 extern struct Game Game_default;
 
 /* --- Constructors/Destructors --- */
-extern struct Game *Game_Init();
-extern void Game_Free(   struct Game *sota);
-extern void Game_Startup(struct Game *sota, struct Input_Arguments in_args);
+struct Game *Game_Init();
+void Game_Free(   struct Game *sota);
+void Game_Startup(struct Game *sota, struct Input_Arguments in_args);
 
 
 /* --- I/O --- */
-extern void Game_saveJSON(struct Game *sota, if16 save_ind);
-extern void Game_loadJSON(struct Game *sota, if16 save_ind);
-extern void Game_Save_Delete(if16 save_ind);
-extern void Game_Save_Copy(if16 from, if16 to);
+void Game_saveJSON(struct Game *sota, if16 save_ind);
+void Game_loadJSON(struct Game *sota, if16 save_ind);
+void Game_Save_Delete(if16 save_ind);
+void Game_Save_Copy(if16 from, if16 to);
 
 /* --- State --- */
-extern void Game_State_Set(   struct Game *sota, if8 ns, const char *r);
-extern void Game_subState_Set(struct Game *sota, if8 ns, const char *r);
+void Game_State_Set(   struct Game *sota, if8 ns, const char *r);
+void Game_subState_Set(struct Game *sota, if8 ns, const char *r);
 
 /* --- Camera --- */
-extern void Game_Camera_Scroll(struct Game *sota);
+void Game_Camera_Scroll(struct Game *sota);
 
 /* --- Time --- */
-extern void Game_Delay(struct Game *sota, i64 d, u64 c, u64 e);
+void Game_Delay(struct Game *sota, i64 d, u64 c, u64 e);
 
 /* --- FPS --- */
-extern i64 Game_FPS_Delay(  struct Game *sota, u64 e);
-extern void Game_FPS_Free(  struct Game *sota);
-extern void Game_FPS_Create(struct Game *sota, i64 ut);
+i64 Game_FPS_Delay(  struct Game *sota, u64 e);
+void Game_FPS_Free(  struct Game *sota);
+void Game_FPS_Create(struct Game *sota, i64 ut);
 
 #endif /* GAME_STRUCT_H */

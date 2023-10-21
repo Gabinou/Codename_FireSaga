@@ -197,36 +197,36 @@ typedef struct PopUp_Loadout_Stats {
 extern struct PopUp_Loadout_Stats PopUp_Loadout_Stats_default;
 
 /* --- Constructor/Destructor --- */
-extern void PopUp_Loadout_Stats_Free(struct PopUp_Loadout_Stats *pls);
-extern void PopUp_Loadout_Stats_Load(struct PopUp_Loadout_Stats *pls, SDL_Renderer *r,
-                                     struct n9Patch *n9);
+void PopUp_Loadout_Stats_Free(struct PopUp_Loadout_Stats *pls);
+void PopUp_Loadout_Stats_Load(struct PopUp_Loadout_Stats *pls, SDL_Renderer *r,
+                              struct n9Patch *n9);
 
 /* --- Setters --- */
-extern void  PopUp_Loadout_Stats_New(     struct PopUp_Loadout_Stats *pls);
-extern void  PopUp_Loadout_Stats_Unit(    struct PopUp_Loadout_Stats *pls, struct Unit *u);
-extern void  PopUp_Loadout_Stats_Previous(struct PopUp_Loadout_Stats *pls);
+void  PopUp_Loadout_Stats_New(     struct PopUp_Loadout_Stats *pls);
+void  PopUp_Loadout_Stats_Unit(    struct PopUp_Loadout_Stats *pls, struct Unit *u);
+void  PopUp_Loadout_Stats_Previous(struct PopUp_Loadout_Stats *pls);
 
 /* --- Select --- */
-extern void PopUp_Loadout_Stats_Hover(struct PopUp_Loadout_Stats *pls,
-                                      struct LoadoutSelectMenu *wsm, int elem);
+void PopUp_Loadout_Stats_Hover(struct PopUp_Loadout_Stats *pls,
+                               struct LoadoutSelectMenu *wsm, int elem);
 
 /* --- Internals --- */
-extern void PopUp_Loadout_Stats_ItemTypes(      struct PopUp_Loadout_Stats *pls);
-extern void PopUp_Loadout_Stats_Weakhand_Offset(struct PopUp_Loadout_Stats *pls);
+void PopUp_Loadout_Stats_ItemTypes(      struct PopUp_Loadout_Stats *pls);
+void PopUp_Loadout_Stats_Weakhand_Offset(struct PopUp_Loadout_Stats *pls);
 
 /* --- Rendering --- */
-extern void PopUp_Loadout_Stats_Draw(struct PopUp *p, struct Point pos,
-                                     SDL_Texture *rt, SDL_Renderer *r);
-extern void PopUp_Loadout_Stats_Update(struct PopUp_Loadout_Stats *pls, struct n9Patch *n9patch,
-                                       SDL_Texture *rt, SDL_Renderer *r);
+void PopUp_Loadout_Stats_Draw(struct PopUp *p, struct Point pos,
+                              SDL_Texture *rt, SDL_Renderer *r);
+void PopUp_Loadout_Stats_Update(struct PopUp_Loadout_Stats *pls, struct n9Patch *n9patch,
+                                SDL_Texture *rt, SDL_Renderer *r);
 
 /* -- Drawing elements -- */
-extern void PopUp_Loadout_Stats_Draw_Text(    struct PopUp_Loadout_Stats *pls, SDL_Renderer *r);
-extern void PopUp_Loadout_Stats_Draw_Hands(   struct PopUp_Loadout_Stats *pls, SDL_Renderer *r);
-extern void PopUp_Loadout_Stats_Draw_Stats(   struct PopUp_Loadout_Stats *pls, SDL_Renderer *r);
-extern void PopUp_Loadout_Stats_Draw_Equip(   struct PopUp_Loadout_Stats *pls, SDL_Renderer *r);
-extern void PopUp_Loadout_Stats_Draw_Arrows(  struct PopUp_Loadout_Stats *pls, SDL_Renderer *r);
-extern void PopUp_Loadout_Stats_Draw_Weapons( struct PopUp_Loadout_Stats *pls, SDL_Renderer *r);
-extern void PopUp_Loadout_Stats_Draw_WpnIcons(struct PopUp_Loadout_Stats *pls, SDL_Renderer *r);
+static void __PopUp_Loadout_Stats_Draw_Text(    struct PopUp_Loadout_Stats *pls, SDL_Renderer *r);
+static void __PopUp_Loadout_Stats_Draw_Hands(   struct PopUp_Loadout_Stats *pls, SDL_Renderer *r);
+static void __PopUp_Loadout_Stats_Draw_Stats(   struct PopUp_Loadout_Stats *pls, SDL_Renderer *r);
+static void __PopUp_Loadout_Stats_Draw_Equip(   struct PopUp_Loadout_Stats *pls, SDL_Renderer *r);
+static void __PopUp_Loadout_Stats_Draw_Arrows(  struct PopUp_Loadout_Stats *pls, SDL_Renderer *r);
+static void __PopUp_Loadout_Stats_Draw_Weapons( struct PopUp_Loadout_Stats *pls, SDL_Renderer *r);
+static void __PopUp_Loadout_Stats_Draw_WpnIcons(struct PopUp_Loadout_Stats *pls, SDL_Renderer *r);
 
 #endif /* PLS_H */

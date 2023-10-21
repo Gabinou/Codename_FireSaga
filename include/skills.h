@@ -17,9 +17,9 @@ typedef void (*Active_Skill)(struct Unit *, void *);
 extern Active_Skill global_active_skills[ACTIVE_SKILL_NUM];
 
 /* --- FUNCTIONS --- */
-extern void Make_Active_Skill_Array();
+void Make_Active_Skill_Array();
 
-#define REGISTER_ENUM(x) extern void Skill_##x(struct Unit * actor, void * data1);
+#define REGISTER_ENUM(x) void Skill_##x(struct Unit * actor, void * data1);
 #include "names/skills_active.h"
 #undef REGISTER_ENUM
 

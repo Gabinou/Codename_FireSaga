@@ -3,6 +3,7 @@
 
 #include <stdint.h>
 #include <string.h>
+#include "types.h"
 #include "SDL2/SDL.h"
 
 /* --- IDs --- */
@@ -63,7 +64,7 @@ enum COMPILERS {
     #define DIR_SEPARATOR NULL
 #endif /* PLATFORM IDENTIFICATION */
 
-extern int sota_mkdir(char *name);
-extern uint_fast8_t platform_fromSDL();
+int sota_mkdir(char *name);
+u8 platform_fromSDL();
 
 #endif /* PLATFORM_H */

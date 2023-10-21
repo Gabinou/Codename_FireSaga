@@ -102,38 +102,38 @@ struct Text_Bubble {
 extern struct Text_Bubble TextBubble_default;
 
 /* --- Constructor/Destructor --- */
-extern void TextBubble_Free(struct Text_Bubble *b);
-extern void TextBubble_Load(struct Text_Bubble *b, SDL_Renderer *r, struct n9Patch *n9patch);
+void TextBubble_Free(struct Text_Bubble *b);
+void TextBubble_Load(struct Text_Bubble *b, SDL_Renderer *r, struct n9Patch *n9patch);
 
 /* --- Setters --- */
-extern void TextBubble_Set_Text(    struct Text_Bubble *b, const char *t, struct n9Patch *n9patch);
-extern void TextBubble_Set_Target(  struct Text_Bubble *b, struct Point t);
-extern void TextBubble_Compute_Size(struct Text_Bubble *b, struct n9Patch *n9patch);
+void TextBubble_Set_Text(    struct Text_Bubble *b, const char *t, struct n9Patch *n9patch);
+void TextBubble_Set_Target(  struct Text_Bubble *b, struct Point t);
+void TextBubble_Compute_Size(struct Text_Bubble *b, struct n9Patch *n9patch);
 
 /* --- Internals --- */
 
-extern void TextBubble_Tail_Pos(   struct Text_Bubble *b, struct n9Patch *n9patch);
-extern void TextBubble_Tail_Flip(  struct Text_Bubble *b);
-extern void TextBubble_Tail_Angle( struct Text_Bubble *b);
-extern int  TextBubble_Tail_Octant(struct Text_Bubble *b);
+void TextBubble_Tail_Pos(   struct Text_Bubble *b, struct n9Patch *n9patch);
+void TextBubble_Tail_Flip(  struct Text_Bubble *b);
+void TextBubble_Tail_Angle( struct Text_Bubble *b);
+int  TextBubble_Tail_Octant(struct Text_Bubble *b);
 
-extern void TextBubble_Set_All(struct Text_Bubble *b, const char *t, struct Point ta,
-                               struct n9Patch *n9patch);
+void TextBubble_Set_All(struct Text_Bubble *b, const char *t, struct Point ta,
+                        struct n9Patch *n9patch);
 
 /* --- Scrolling --- */
-extern void TextBubble_VScroll(     struct Text_Bubble *b, SDL_Renderer *r);
-extern void TextBubble_Copy_VScroll(struct Text_Bubble *b, SDL_Renderer *r, SDL_Texture *rt);
+void TextBubble_VScroll(     struct Text_Bubble *b, SDL_Renderer *r);
+void TextBubble_Copy_VScroll(struct Text_Bubble *b, SDL_Renderer *r, SDL_Texture *rt);
 
 /* --- Drawing --- */
-extern void TextBubble_Draw(  struct PopUp *p,       struct Point pos,
-                              SDL_Texture *rt, SDL_Renderer *r);
-extern void TextBubble_Update(struct Text_Bubble *b, struct n9Patch *n9patch,
-                              SDL_Texture *rt, SDL_Renderer *r);
+void TextBubble_Draw(  struct PopUp *p,       struct Point pos,
+                       SDL_Texture *rt, SDL_Renderer *r);
+void TextBubble_Update(struct Text_Bubble *b, struct n9Patch *n9patch,
+                       SDL_Texture *rt, SDL_Renderer *r);
 
 /* -- Drawing elements -- */
-extern void TextBubble_Write(       struct Text_Bubble *b, SDL_Renderer *r);
-extern void TextBubble_Tail_Draw(   struct Text_Bubble *b, SDL_Renderer *r);
-extern void TextBubble_VScroll_Draw(struct Text_Bubble *b, SDL_Renderer *r);
+void TextBubble_Write(       struct Text_Bubble *b, SDL_Renderer *r);
+void TextBubble_Tail_Draw(   struct Text_Bubble *b, SDL_Renderer *r);
+void TextBubble_VScroll_Draw(struct Text_Bubble *b, SDL_Renderer *r);
 
 
 #endif /* TEXT_BUBBLE_H */

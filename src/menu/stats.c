@@ -365,8 +365,8 @@ void StatsMenu_Free(struct StatsMenu *stats_menu) {
         SDL_DestroyTexture(stats_menu->texture);
         stats_menu->texture = NULL;
     }
-    StatsMenu_Free_Face(stats_menu);
-    StatsMenu_Free_Icons(stats_menu);
+    _StatsMenu_Free_Face(stats_menu);
+    _StatsMenu_Free_Icons(stats_menu);
     if (stats_menu->font_wpns != NULL) {
         PixelFont_Free(stats_menu->font_wpns, true);
         stats_menu->font_wpns = NULL;
@@ -387,8 +387,8 @@ void StatsMenu_Load(struct StatsMenu *stats_menu, struct Unit *unit,
 
     stats_menu->unit    = unit;
     stats_menu->update  = true;
-    StatsMenu_Load_Face(stats_menu);
-    StatsMenu_Load_Icons(stats_menu, renderer);
+    _StatsMenu_Load_Face(stats_menu);
+    _StatsMenu_Load_Icons(stats_menu, renderer);
 
     n9patch->patch_pixels.x  = MENU_PATCH_PIXELS;
     n9patch->patch_pixels.y  = MENU_PATCH_PIXELS;
@@ -407,7 +407,7 @@ void StatsMenu_Load(struct StatsMenu *stats_menu, struct Unit *unit,
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
-void StatsMenu_Free_Face(struct StatsMenu *stats_menu) {
+void _StatsMenu_Free_Face(struct StatsMenu *stats_menu) {
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     if (stats_menu->texture_face != NULL) {
         SDL_DestroyTexture(stats_menu->texture_face);
@@ -416,7 +416,7 @@ void StatsMenu_Free_Face(struct StatsMenu *stats_menu) {
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
-void StatsMenu_Load_Face(struct StatsMenu *stats_menu) {
+void _StatsMenu_Load_Face(struct StatsMenu *stats_menu) {
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     SDL_assert(stats_menu);
     SDL_assert(stats_menu->unit);
@@ -424,7 +424,7 @@ void StatsMenu_Load_Face(struct StatsMenu *stats_menu) {
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
-void StatsMenu_Free_Icons(struct StatsMenu *stats_menu) {
+void _StatsMenu_Free_Icons(struct StatsMenu *stats_menu) {
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     if (stats_menu->texture_sex != NULL) {
         SDL_DestroyTexture(stats_menu->texture_sex);
@@ -445,7 +445,7 @@ void StatsMenu_Free_Icons(struct StatsMenu *stats_menu) {
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
-void StatsMenu_Load_Icons(struct StatsMenu *stats_menu, SDL_Renderer *renderer) {
+void _StatsMenu_Load_Icons(struct StatsMenu *stats_menu, SDL_Renderer *renderer) {
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     SDL_assert(stats_menu);
     SDL_assert(renderer != NULL);
@@ -528,7 +528,7 @@ void StatsMenu_Elem_Pos_Revert(struct StatsMenu *sm, struct MenuComponent *mc) {
 }
 
 /* --- Drawing --- */
-void StatsMenu_Draw_Name(struct StatsMenu *stats_menu, SDL_Renderer *renderer) {
+void _StatsMenu_Draw_Name(struct StatsMenu *stats_menu, SDL_Renderer *renderer) {
     SOTA_Log_FPS("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     /* -- HEADER WRITING -- */
     SDL_Rect dstrect, srcrect;
@@ -608,7 +608,7 @@ void StatsMenu_Draw_Name(struct StatsMenu *stats_menu, SDL_Renderer *renderer) {
     SOTA_Log_FPS("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
-void StatsMenu_Draw_Mount(struct StatsMenu *stats_menu, SDL_Renderer *renderer) {
+void _StatsMenu_Draw_Mount(struct StatsMenu *stats_menu, SDL_Renderer *renderer) {
     /* -- MOUNT -- */
     /* - preliminaries - */
     SDL_Rect dstrect, srcrect;
@@ -653,7 +653,7 @@ void StatsMenu_Draw_Mount(struct StatsMenu *stats_menu, SDL_Renderer *renderer) 
     SDL_RenderCopy(renderer, stats_menu->texture_mount, &srcrect, &dstrect);
 }
 
-void StatsMenu_Draw_Stats(struct StatsMenu *stats_menu, SDL_Renderer *renderer) {
+void _StatsMenu_Draw_Stats(struct StatsMenu *stats_menu, SDL_Renderer *renderer) {
     /* -- STATS -- */
     SDL_Rect dstrect, srcrect;
     struct Unit_stats *effective_stats  = &stats_menu->unit->effective_stats;
@@ -772,7 +772,7 @@ void StatsMenu_Draw_Stats(struct StatsMenu *stats_menu, SDL_Renderer *renderer) 
     PixelFont_Write_Len(stats_menu->pixelnours_big, renderer, numbuff, x, y);
 }
 
-void StatsMenu_Draw_Hands(struct StatsMenu *stats_menu, SDL_Renderer *renderer) {
+void _StatsMenu_Draw_Hands(struct StatsMenu *stats_menu, SDL_Renderer *renderer) {
     SDL_Rect dstrect, srcrect;
     /* - HANDS - */
     int stronghand = Unit_Hand_Strong(stats_menu->unit);
@@ -829,7 +829,7 @@ void StatsMenu_Draw_Hands(struct StatsMenu *stats_menu, SDL_Renderer *renderer) 
     SDL_RenderCopy(renderer, stats_menu->texture_hands, &srcrect, &dstrect);
 }
 
-void StatsMenu_Draw_Rescue(struct StatsMenu *stats_menu, SDL_Renderer *renderer) {
+void _StatsMenu_Draw_Rescue(struct StatsMenu *stats_menu, SDL_Renderer *renderer) {
     SDL_Rect dstrect, srcrect;
     struct Unit *unit = stats_menu->unit;
     int x, y;
@@ -854,7 +854,7 @@ void StatsMenu_Draw_Rescue(struct StatsMenu *stats_menu, SDL_Renderer *renderer)
     PixelFont_Write(stats_menu->pixelnours, renderer, "STATUS", 6, x, y);
 
 }
-void StatsMenu_Draw_Skills(struct StatsMenu *stats_menu, SDL_Renderer *renderer) {
+void _StatsMenu_Draw_Skills(struct StatsMenu *stats_menu, SDL_Renderer *renderer) {
     SDL_Rect dstrect, srcrect;
     struct Unit *unit = stats_menu->unit;
 
@@ -882,7 +882,7 @@ void StatsMenu_Draw_Skills(struct StatsMenu *stats_menu, SDL_Renderer *renderer)
     SDL_RenderFillRect(renderer, &srcrect);
 }
 
-void StatsMenu_Draw_Statuses(struct StatsMenu *stats_menu, SDL_Renderer *renderer) {
+void _StatsMenu_Draw_Statuses(struct StatsMenu *stats_menu, SDL_Renderer *renderer) {
     SDL_Rect dstrect, srcrect;
     struct Unit *unit = stats_menu->unit;
 
@@ -907,7 +907,7 @@ void StatsMenu_Draw_Statuses(struct StatsMenu *stats_menu, SDL_Renderer *rendere
     SDL_RenderCopy(renderer, stats_menu->texture_statuses, &srcrect, &dstrect);
 }
 
-void StatsMenu_Draw_WpnTypes(struct StatsMenu *stats_menu, SDL_Renderer *renderer) {
+void _StatsMenu_Draw_WpnTypes(struct StatsMenu *stats_menu, SDL_Renderer *renderer) {
     struct Unit *unit = stats_menu->unit;
     SDL_Rect dstrect, srcrect;
 
@@ -946,7 +946,7 @@ void StatsMenu_Draw_WpnTypes(struct StatsMenu *stats_menu, SDL_Renderer *rendere
     }
 }
 
-void StatsMenu_Draw_Item(struct StatsMenu *stats_menu, SDL_Renderer *renderer, int i) {
+void _StatsMenu_Draw_Item(struct StatsMenu *stats_menu, SDL_Renderer *renderer, int i) {
     /* -- Preliminaries -- */
     char item_name[DEFAULT_BUFFER_SIZE];
     SDL_Rect dstrect, srcrect;
@@ -1044,14 +1044,14 @@ void StatsMenu_Draw_Item(struct StatsMenu *stats_menu, SDL_Renderer *renderer, i
     nstr_replaceSingle(item_name, '\n', ' ');
 }
 
-void StatsMenu_Draw_Equipment(struct StatsMenu *stats_menu, SDL_Renderer *renderer) {
+void _StatsMenu_Draw_Equipment(struct StatsMenu *stats_menu, SDL_Renderer *renderer) {
     /* --- Equipment --- */
     for (uf8 i = 0; i < DEFAULT_EQUIPMENT_SIZE; i++) {
-        StatsMenu_Draw_Item(stats_menu, renderer, i);
+        _StatsMenu_Draw_Item(stats_menu, renderer, i);
     }
 
 }
-void StatsMenu_Draw_ComputedStats(struct StatsMenu *stats_menu, SDL_Renderer *renderer) {
+void _StatsMenu_Draw_ComputedStats(struct StatsMenu *stats_menu, SDL_Renderer *renderer) {
     /* -- COMPUTED STATS -- */
     struct Computed_Stats *computed_stats = &stats_menu->unit->computed_stats;
     struct Unit *unit = stats_menu->unit;
@@ -1215,16 +1215,16 @@ void StatsMenu_Update(struct StatsMenu *stats_menu, struct n9Patch *n9patch,
     n9patch->scale.x    = scale_x;
     n9patch->scale.y    = scale_y;
 
-    StatsMenu_Draw_Name(            stats_menu, renderer);
-    StatsMenu_Draw_Equipment(       stats_menu, renderer);
-    StatsMenu_Draw_ComputedStats(   stats_menu, renderer);
-    StatsMenu_Draw_Mount(           stats_menu, renderer);
-    StatsMenu_Draw_WpnTypes(        stats_menu, renderer);
-    StatsMenu_Draw_Rescue(          stats_menu, renderer);
-    StatsMenu_Draw_Statuses(        stats_menu, renderer);
-    StatsMenu_Draw_Skills(          stats_menu, renderer);
-    StatsMenu_Draw_Stats(           stats_menu, renderer);
-    StatsMenu_Draw_Hands(           stats_menu, renderer);
+    _StatsMenu_Draw_Name(            stats_menu, renderer);
+    _StatsMenu_Draw_Equipment(       stats_menu, renderer);
+    _StatsMenu_Draw_ComputedStats(   stats_menu, renderer);
+    _StatsMenu_Draw_Mount(           stats_menu, renderer);
+    _StatsMenu_Draw_WpnTypes(        stats_menu, renderer);
+    _StatsMenu_Draw_Rescue(          stats_menu, renderer);
+    _StatsMenu_Draw_Statuses(        stats_menu, renderer);
+    _StatsMenu_Draw_Skills(          stats_menu, renderer);
+    _StatsMenu_Draw_Stats(           stats_menu, renderer);
+    _StatsMenu_Draw_Hands(           stats_menu, renderer);
 
     SDL_SetRenderTarget(renderer, rt);
 

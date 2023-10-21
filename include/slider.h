@@ -36,10 +36,10 @@ typedef struct SliderOffscreen {
 extern struct SliderOffscreen SliderOffscreen_default;
 
 /* --- FUNCTIONS --- */
-extern void Slider_Start(           struct Slider *s, struct Point *p, struct Point *t);
-extern void Slider_Compute_Next(    struct Slider *s, struct Point *p, struct Point *t, bool g);
-extern void Slider_Target_Offscreen(struct Slider *s, struct SliderOffscreen *o, struct Point *p);
-extern void SliderOffscreen_Compute_Next(struct Slider *s, struct SliderOffscreen *o,
-                                         struct Point *p);
+void Slider_Start(           struct Slider *s, struct Point *p, struct Point *t);
+void Slider_Compute_Next(    struct Slider *s, struct Point *p, struct Point *t, bool g);
+void Slider_Target_Offscreen(struct Slider *s, struct SliderOffscreen *o, struct Point *p);
+void SliderOffscreen_Compute_Next(struct Slider *s, struct SliderOffscreen *o,
+                                  struct Point *p);
 
 #endif /* SLIDER_H */

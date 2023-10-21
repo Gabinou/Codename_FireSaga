@@ -60,9 +60,9 @@ struct Spritesheet {
 };
 extern struct Spritesheet Spritesheet_default;
 
-extern void Spritesheet_Free(    struct Spritesheet *ss);
-extern void Spritesheet_readJSON(void *ss, const cJSON *const jss);
-extern void Spritesheet_Loop_Set(struct Spritesheet *ss, int loop, SDL_RendererFlip flip);
+void Spritesheet_Free(    struct Spritesheet *ss);
+void Spritesheet_readJSON(void *ss, const cJSON *const jss);
+void Spritesheet_Loop_Set(struct Spritesheet *ss, int loop, SDL_RendererFlip flip);
 
 /* --- Sprite --- */
 /* -- Constants -- */
@@ -103,32 +103,32 @@ typedef void (*dstrect_func_t)(struct Sprite *, struct Point *, struct Camera *)
 extern dstrect_func_t dstrect_funcs[TWO_D][2];
 
 /* --- Constructor/Destructors --- */
-extern void Sprite_Free(struct Sprite *s);
+void Sprite_Free(struct Sprite *s);
 
 /* --- Initialization --- */
-extern void Sprite_Load(               struct Sprite *s, const char *n, SDL_Renderer *r);
-extern void Sprite_Tilesize_Set(       struct Sprite *s, uf16 *t);
-extern void Sprite_Map_Unit_Load(      struct Sprite *s, struct Unit *u, SDL_Renderer *r);
-extern void Sprite_defaultShaders_Load(struct Sprite *s);
+void Sprite_Load(               struct Sprite *s, const char *n, SDL_Renderer *r);
+void Sprite_Tilesize_Set(       struct Sprite *s, uf16 *t);
+void Sprite_Map_Unit_Load(      struct Sprite *s, struct Unit *u, SDL_Renderer *r);
+void Sprite_defaultShaders_Load(struct Sprite *s);
 
 /* -- rect computation -- */
-extern void Cursor_Rects_Init(      struct Sprite *s);
-extern void Sprite_Rects_Init(      struct Sprite *s);
-extern void Cursor_Dstrect_Relative(struct Sprite *s, struct Point *, struct Camera *);
-extern void Cursor_Dstrect_Absolute(struct Sprite *s, struct Point *, struct Camera *);
-extern void Sprite_Dstrect_Relative(struct Sprite *s, struct Point *, struct Camera *);
-extern void Sprite_Dstrect_Absolute(struct Sprite *s, struct Point *, struct Camera *);
+void Cursor_Rects_Init(      struct Sprite *s);
+void Sprite_Rects_Init(      struct Sprite *s);
+void Cursor_Dstrect_Relative(struct Sprite *s, struct Point *, struct Camera *);
+void Cursor_Dstrect_Absolute(struct Sprite *s, struct Point *, struct Camera *);
+void Sprite_Dstrect_Relative(struct Sprite *s, struct Point *, struct Camera *);
+void Sprite_Dstrect_Absolute(struct Sprite *s, struct Point *, struct Camera *);
 
 /* --- Shading --- */
-extern void Sprite_Shade(       struct Sprite *s, SDL_Renderer *r, struct Index_Shader *is);
-extern void Sprite_Unveil(      struct Sprite *s, SDL_Renderer *r);
-extern void Sprite_Darken(      struct Sprite *s, SDL_Renderer *r);
-extern void Sprite_Lighten(     struct Sprite *s, SDL_Renderer *r);
-extern void Sprite_Palette_Swap(struct Sprite *s, SDL_Palette *p, SDL_Renderer *r);
+void Sprite_Shade(       struct Sprite *s, SDL_Renderer *r, struct Index_Shader *is);
+void Sprite_Unveil(      struct Sprite *s, SDL_Renderer *r);
+void Sprite_Darken(      struct Sprite *s, SDL_Renderer *r);
+void Sprite_Lighten(     struct Sprite *s, SDL_Renderer *r);
+void Sprite_Palette_Swap(struct Sprite *s, SDL_Palette *p, SDL_Renderer *r);
 
 /* --- Animation --- */
-extern void Sprite_Draw(             struct Sprite *s, SDL_Renderer *r);
-extern void Sprite_Animation_Loop(   struct Sprite *s);
-extern void Sprite_Animation_Restart(struct Sprite *s, int loop);
+void Sprite_Draw(             struct Sprite *s, SDL_Renderer *r);
+void Sprite_Animation_Loop(   struct Sprite *s);
+void Sprite_Animation_Restart(struct Sprite *s, int loop);
 
 #endif /* SPRITE_H */

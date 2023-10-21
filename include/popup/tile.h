@@ -70,29 +70,29 @@ typedef struct PopUp_Tile {
 extern struct PopUp_Tile PopUp_Tile_default;
 
 /* --- Constructor/Destructor --- */
-extern void PopUp_Tile_Free(struct PopUp_Tile *pt);
-extern void PopUp_Tile_Load(struct PopUp_Tile *pt, SDL_Renderer *r, struct n9Patch *n9);
+void PopUp_Tile_Free(struct PopUp_Tile *pt);
+void PopUp_Tile_Load(struct PopUp_Tile *pt, SDL_Renderer *r, struct n9Patch *n9);
 
 /* --- Positioning --- */
-extern struct Point PopUp_Tile_Center_Name(struct PopUp_Tile *pt, struct n9Patch *n9patch,
-                                           char *n, size_t len);
-extern struct Point PopUp_Tile_Center_Heal( struct PopUp_Tile *pt, char *nb);
-extern struct Point PopUp_Tile_Center_Prot( struct PopUp_Tile *pt, char *mb);
-extern struct Point PopUp_Tile_Center_Avoid(struct PopUp_Tile *pt, char *nb);
+struct Point PopUp_Tile_Center_Name(struct PopUp_Tile *pt, struct n9Patch *n9patch,
+                                    char *n, size_t len);
+struct Point PopUp_Tile_Center_Heal( struct PopUp_Tile *pt, char *nb);
+struct Point PopUp_Tile_Center_Prot( struct PopUp_Tile *pt, char *mb);
+struct Point PopUp_Tile_Center_Avoid(struct PopUp_Tile *pt, char *nb);
 
-extern void PopUp_Tile_Limits(struct PopUp *p, struct PopUp_Tile *pt, struct Settings *s);
-extern struct Point PopUp_Tile_Offset(struct PopUp_Tile *pt, struct Settings *s);
-extern struct Point PopUp_Tile_Position(struct PopUp *p, struct PopUp_Tile *pt,
-                                        struct n9Patch *n9patch, struct Settings *settings,
-                                        struct Point *tilemap_pos, if8 direction);
+void PopUp_Tile_Limits(struct PopUp *p, struct PopUp_Tile *pt, struct Settings *s);
+struct Point PopUp_Tile_Offset(struct PopUp_Tile *pt, struct Settings *s);
+struct Point PopUp_Tile_Position(struct PopUp *p, struct PopUp_Tile *pt,
+                                 struct n9Patch *n9patch, struct Settings *settings,
+                                 struct Point *tilemap_pos, if8 direction);
 
 /* --- Setters --- */
-extern void PopUp_Tile_Set(struct PopUp_Tile *pt, struct Game *sota);
+void PopUp_Tile_Set(struct PopUp_Tile *pt, struct Game *sota);
 
 /* --- Drawing --- */
-extern void PopUp_Tile_Draw(struct PopUp *p, struct Point pos,
-                            SDL_Texture *rt, SDL_Renderer *r);
-extern void PopUp_Tile_Update(struct PopUp_Tile *pt, struct n9Patch *n9patch,
-                              SDL_Texture *rt, SDL_Renderer *r);
+void PopUp_Tile_Draw(struct PopUp *p, struct Point pos,
+                     SDL_Texture *rt, SDL_Renderer *r);
+void PopUp_Tile_Update(struct PopUp_Tile *pt, struct n9Patch *n9patch,
+                       SDL_Texture *rt, SDL_Renderer *r);
 
 #endif /* PT_H */

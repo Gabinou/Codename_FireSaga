@@ -33,11 +33,11 @@ struct LoadoutSelectMenu;
 
 /* --- Item placement --- */
 /* After selecting staff, if unit can one hand staves, menu mode staves->items */
-extern void StaffSelectMenu_Select(       struct LoadoutSelectMenu *ssm, if8 s);
-extern void StaffSelectMenu_Deselect(     struct LoadoutSelectMenu *ssm);
-extern bool StaffSelectMenu_canEqItem(    struct LoadoutSelectMenu *ssm);
-extern void StaffSelectMenu_Switch_Items( struct LoadoutSelectMenu *ssm);
-extern void StaffSelectMenu_Switch_Staves(struct LoadoutSelectMenu *ssm);
+void StaffSelectMenu_Select(       struct LoadoutSelectMenu *ssm, if8 s);
+void StaffSelectMenu_Deselect(     struct LoadoutSelectMenu *ssm);
+bool StaffSelectMenu_canEqItem(    struct LoadoutSelectMenu *ssm);
+void StaffSelectMenu_Switch_Items( struct LoadoutSelectMenu *ssm);
+void StaffSelectMenu_Switch_Staves(struct LoadoutSelectMenu *ssm);
 
 
 extern struct MenuElemDirections    ssm_links[SSM_ELEMS_NUM];

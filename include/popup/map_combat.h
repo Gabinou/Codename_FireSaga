@@ -114,28 +114,28 @@ typedef struct PopUp_Map_Combat {
 extern struct PopUp_Map_Combat PopUp_Map_Combat_default;
 
 /* --- Constructors/Destructors --- */
-extern void PopUp_Map_Combat_Load(struct PopUp_Map_Combat *pmc, SDL_Renderer *r, struct n9Patch *n);
-extern void PopUp_Map_Combat_Free(struct PopUp_Map_Combat *pmc);
+void PopUp_Map_Combat_Load(struct PopUp_Map_Combat *pmc, SDL_Renderer *r, struct n9Patch *n);
+void PopUp_Map_Combat_Free(struct PopUp_Map_Combat *pmc);
 
 /* --- Setters --- */
-extern void PopUp_Map_Combat_Units(struct PopUp_Map_Combat *pmc, struct Game *sota,
-                                   struct Unit *a, struct Unit *d, const struct Point *agg_pos,
-                                   const struct Point *dft_pos);
+void PopUp_Map_Combat_Units(struct PopUp_Map_Combat *pmc, struct Game *sota,
+                            struct Unit *a, struct Unit *d, const struct Point *agg_pos,
+                            const struct Point *dft_pos);
 
-extern struct n9Patch PopUp_Map_Combat_Compute_Patch( struct PopUp_Map_Combat *pmc,
-                                                      struct n9Patch *n9patch);
+struct n9Patch PopUp_Map_Combat_Compute_Patch( struct PopUp_Map_Combat *pmc,
+                                               struct n9Patch *n9patch);
 
 /* --- Drawing --- */
-extern void PopUp_Map_Combat_Draw(struct PopUp *popup, struct Point pos,
-                                  SDL_Texture *rt, SDL_Renderer *r);
-extern void PopUp_Map_Combat_Update(struct PopUp_Map_Combat *pmc, struct n9Patch *n9patch,
-                                    SDL_Texture *rt, SDL_Renderer *r);
+void PopUp_Map_Combat_Draw(struct PopUp *popup, struct Point pos,
+                           SDL_Texture *rt, SDL_Renderer *r);
+void PopUp_Map_Combat_Update(struct PopUp_Map_Combat *pmc, struct n9Patch *n9patch,
+                             SDL_Texture *rt, SDL_Renderer *r);
 
-extern void PopUp_Map_Combat_Draw_HP(        struct PopUp_Map_Combat *pmc, SDL_Renderer *r);
-extern void PopUp_Map_Combat_Draw_Names(     struct PopUp_Map_Combat *pmc, SDL_Renderer *r);
-extern void PopUp_Map_Combat_Draw_Stats(     struct PopUp_Map_Combat *pmc, SDL_Renderer *r);
-extern void PopUp_Map_Combat_Draw_Headers(   struct PopUp_Map_Combat *pmc, SDL_Renderer *r);
-extern void PopUp_Map_Combat_Draw_CircleBars(struct PopUp_Map_Combat *pmc, SDL_Renderer *r);
+static void _PopUp_Map_Combat_Draw_HP(        struct PopUp_Map_Combat *pmc, SDL_Renderer *r);
+static void _PopUp_Map_Combat_Draw_Names(     struct PopUp_Map_Combat *pmc, SDL_Renderer *r);
+static void _PopUp_Map_Combat_Draw_Stats(     struct PopUp_Map_Combat *pmc, SDL_Renderer *r);
+static void _PopUp_Map_Combat_Draw_Headers(   struct PopUp_Map_Combat *pmc, SDL_Renderer *r);
+static void _PopUp_Map_Combat_Draw_CircleBars(struct PopUp_Map_Combat *pmc, SDL_Renderer *r);
 
 
 #endif /* POPUP_MAP_COMBAT_H */

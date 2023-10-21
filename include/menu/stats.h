@@ -389,37 +389,39 @@ struct StatsMenu {
 extern struct StatsMenu StatsMenu_default;
 
 /* --- Constructors/Destructors --- */
-extern struct StatsMenu *StatsMenu_Alloc();
-extern void StatsMenu_Free(      struct StatsMenu *sm);
-extern void StatsMenu_Free_Face( struct StatsMenu *sm);
-extern void StatsMenu_Free_Icons(struct StatsMenu *sm);
+struct StatsMenu *StatsMenu_Alloc();
+void StatsMenu_Free(      struct StatsMenu *sm);
+
+static void _StatsMenu_Free_Face( struct StatsMenu *sm);
+static void _StatsMenu_Free_Icons(struct StatsMenu *sm);
 
 /* --- Loading --- */
-extern void StatsMenu_Load(      struct StatsMenu *sm, struct Unit    *u,
-                                 SDL_Renderer     *r,  struct n9Patch *n9);
-extern void StatsMenu_Load_Face( struct StatsMenu *sm);
-extern void StatsMenu_Load_Icons(struct StatsMenu *sm, SDL_Renderer   *r);
+void StatsMenu_Load(      struct StatsMenu *sm, struct Unit    *u,
+                          SDL_Renderer     *r,  struct n9Patch *n9);
+static void _StatsMenu_Load_Face( struct StatsMenu *sm);
+static void _StatsMenu_Load_Icons(struct StatsMenu *sm, SDL_Renderer   *r);
 
 /* --- Drawing --- */
-extern void StatsMenu_Update(struct StatsMenu     *s,  struct n9Patch *n9,
-                             SDL_Texture          *rt, SDL_Renderer   *r);
-extern void StatsMenu_Draw(  struct MenuComponent *mc, SDL_Texture *rt,
-                             SDL_Renderer         *r);
+void StatsMenu_Draw(  struct MenuComponent *mc, SDL_Texture *rt,
+                      SDL_Renderer         *r);
+
+void StatsMenu_Update(struct StatsMenu     *s,  struct n9Patch *n9,
+                      SDL_Texture          *rt, SDL_Renderer   *r);
 /* --- Positioning --- */
-extern void StatsMenu_Elem_Pos(       struct StatsMenu *sm, struct MenuComponent *mc);
-extern void StatsMenu_Elem_Pos_Revert(struct StatsMenu *sm, struct MenuComponent *mc);
+void StatsMenu_Elem_Pos(       struct StatsMenu *sm, struct MenuComponent *mc);
+void StatsMenu_Elem_Pos_Revert(struct StatsMenu *sm, struct MenuComponent *mc);
 
 /* -- Drawing elements -- */
-extern void StatsMenu_Draw_Item(         struct StatsMenu *sm, SDL_Renderer *r, int i);
-extern void StatsMenu_Draw_Name(         struct StatsMenu *sm, SDL_Renderer *r);
-extern void StatsMenu_Draw_Mount(        struct StatsMenu *sm, SDL_Renderer *r);
-extern void StatsMenu_Draw_Stats(        struct StatsMenu *sm, SDL_Renderer *r);
-extern void StatsMenu_Draw_Hands(        struct StatsMenu *sm, SDL_Renderer *r);
-extern void StatsMenu_Draw_Rescue(       struct StatsMenu *sm, SDL_Renderer *r);
-extern void StatsMenu_Draw_Skills(       struct StatsMenu *sm, SDL_Renderer *r);
-extern void StatsMenu_Draw_Statuses(     struct StatsMenu *sm, SDL_Renderer *r);
-extern void StatsMenu_Draw_WpnTypes(     struct StatsMenu *sm, SDL_Renderer *r);
-extern void StatsMenu_Draw_Equipment(    struct StatsMenu *sm, SDL_Renderer *r);
-extern void StatsMenu_Draw_ComputedStats(struct StatsMenu *sm, SDL_Renderer *r);
+static void _StatsMenu_Draw_Item(         struct StatsMenu *sm, SDL_Renderer *r, int i);
+static void _StatsMenu_Draw_Name(         struct StatsMenu *sm, SDL_Renderer *r);
+static void _StatsMenu_Draw_Mount(        struct StatsMenu *sm, SDL_Renderer *r);
+static void _StatsMenu_Draw_Stats(        struct StatsMenu *sm, SDL_Renderer *r);
+static void _StatsMenu_Draw_Hands(        struct StatsMenu *sm, SDL_Renderer *r);
+static void _StatsMenu_Draw_Rescue(       struct StatsMenu *sm, SDL_Renderer *r);
+static void _StatsMenu_Draw_Skills(       struct StatsMenu *sm, SDL_Renderer *r);
+static void _StatsMenu_Draw_Statuses(     struct StatsMenu *sm, SDL_Renderer *r);
+static void _StatsMenu_Draw_WpnTypes(     struct StatsMenu *sm, SDL_Renderer *r);
+static void _StatsMenu_Draw_Equipment(    struct StatsMenu *sm, SDL_Renderer *r);
+static void _StatsMenu_Draw_ComputedStats(struct StatsMenu *sm, SDL_Renderer *r);
 
 #endif /* STATS_MENU_H */

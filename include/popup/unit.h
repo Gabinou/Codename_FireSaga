@@ -124,24 +124,24 @@ typedef struct PopUp_Unit {
 extern struct PopUp_Unit PopUp_Unit_default;
 
 /* --- Constructors/Destructors --- */
-extern void PopUp_Unit_Free(struct PopUp_Unit *pu);
-extern void PopUp_Unit_Load(struct PopUp_Unit *pu, SDL_Renderer *r, struct n9Patch *n9);
+void PopUp_Unit_Free(struct PopUp_Unit *pu);
+void PopUp_Unit_Load(struct PopUp_Unit *pu, SDL_Renderer *r, struct n9Patch *n9);
 
 /* --- Positioning --- */
-extern void PopUp_Unit_Limits(struct PopUp *p, struct PopUp_Unit *pu, struct Settings *s);
+void PopUp_Unit_Limits(struct PopUp *p, struct PopUp_Unit *pu, struct Settings *s);
 
-extern struct Point PopUp_Unit_Offset(  struct PopUp_Unit *pu, struct Settings *s);
-extern struct Point PopUp_Unit_Position(struct PopUp *p,       struct PopUp_Unit *pu,
-                                        struct n9Patch *n9patch, struct Settings *s,
-                                        struct Point *tp);
+struct Point PopUp_Unit_Offset(  struct PopUp_Unit *pu, struct Settings *s);
+struct Point PopUp_Unit_Position(struct PopUp *p,       struct PopUp_Unit *pu,
+                                 struct n9Patch *n9patch, struct Settings *s,
+                                 struct Point *tp);
 
 /* --- Setters --- */
-extern void PopUp_Unit_Set(struct PopUp_Unit *pu, struct Game *sota);
+void PopUp_Unit_Set(struct PopUp_Unit *pu, struct Game *sota);
 
 /* --- Drawing --- */
-extern void PopUp_Unit_Draw(struct PopUp *p, struct Point pos,
-                            SDL_Texture *rt, SDL_Renderer *r);
-extern void PopUp_Unit_Update(struct PopUp_Unit *pu, struct n9Patch *n9patch,
-                              SDL_Texture *rt, SDL_Renderer *r);
+void PopUp_Unit_Draw(struct PopUp *p, struct Point pos,
+                     SDL_Texture *rt, SDL_Renderer *r);
+void PopUp_Unit_Update(struct PopUp_Unit *pu, struct n9Patch *n9patch,
+                       SDL_Texture *rt, SDL_Renderer *r);
 
 #endif /* PU_H */

@@ -10,7 +10,7 @@
 #include "SDL2/SDL.h"
 
 /* --- FORWARD DECLARATIONS --- */
-extern float sota_slowpow(float base, int exponent);
+float sota_slowpow(float base, int exponent);
 
 /* -- GLOSSARY: -- */
 /* RN: Random number             */
@@ -37,27 +37,27 @@ enum SOTA_RN {
 extern struct TINYMT32_T *tinyMT_global;
 
 /* -- API -- */
-extern bool RNG_checkRate(  struct TINYMT32_T *tinymt, if16 rate, if16 mode);
-extern void RNG_Init_tinymt(struct TINYMT32_T *tinymt);
+bool RNG_checkRate(  struct TINYMT32_T *tinymt, if16 rate, if16 mode);
+void RNG_Init_tinymt(struct TINYMT32_T *tinymt);
 
 // Pointer to RNG function used everywhere in SOTA
 extern RNG_URN_ptr global_RNG_URN;
 
 /* -- Internals -- */
 /* - Uniform - */
-extern uf8  RNG_URN(             struct TINYMT32_T *tinymt);
-extern uf16 RNG_openBSD_uint32_t(struct TINYMT32_T *tinymt, u32 max, u32 min);
+uf8  RNG_URN(             struct TINYMT32_T *tinymt);
+uf16 RNG_openBSD_uint32_t(struct TINYMT32_T *tinymt, u32 max, u32 min);
 
 /* - Checkers - */
-extern bool RNG_single_roll(uf8 RN,  uf8 hit);
-extern bool RNG_double_roll(uf8 RN1, uf8 RN2, uf8 hit);
+bool RNG_single_roll(uf8 RN,  uf8 hit);
+bool RNG_double_roll(uf8 RN1, uf8 RN2, uf8 hit);
 
 /* - Gaussian - */
-extern uf8 *RNG_boxmuller(const uf8 RN_U[INTERVAL_BOUNDS_NUM], float avg, float std_dev);
+uf8 *RNG_boxmuller(const uf8 RN_U[INTERVAL_BOUNDS_NUM], float avg, float std_dev);
 /* defaults: avg = 50, std_dev = 20 */
 
 /* -- Debug -- */
-extern uf8 RNG_URN_debug(struct TINYMT32_T *tinymt);
+uf8 RNG_URN_debug(struct TINYMT32_T *tinymt);
 extern uf8 URN_debug; /* Value returned by RNG_URN_debug */
 
 /* --- RNG SEQUENCE BREAKER (SB) --- */
@@ -93,9 +93,9 @@ extern float sb_drop_table[RNG_SB_BASE_NUM];
 #define SB_RATE_DROP(rate, n) (uf16) ( (float) rate / sota_slowpow((float)sb_drop_table[rate/RNG_SB_BASE_NUM], (uf16)((n > RNG_SB_SEQ_OFFSET ? n : RNG_SB_SEQ_OFFSET) - RNG_SB_SEQ_OFFSET)))
 
 /* -- Functions -- */
-extern uf16 SB_Rate_Drop(uf16 rate, uf16 n);
-extern void RNG_checkSequence_twoWay(struct RNG_Sequence *sequence, bool hit);
-extern void RNG_checkSequence_oneWay(struct RNG_Sequence *sequence, bool hit);
+uf16 SB_Rate_Drop(uf16 rate, uf16 n);
+void RNG_checkSequence_twoWay(struct RNG_Sequence *sequence, bool hit);
+void RNG_checkSequence_oneWay(struct RNG_Sequence *sequence, bool hit);
 
 /* REFERENCES */
 /* [1] Lemire, Daniel. "Fast random integer generation in an interval." ACM Transactions on Modeling and Computer Simulation (TOMACS) 29.1 (2019): 1-12. */

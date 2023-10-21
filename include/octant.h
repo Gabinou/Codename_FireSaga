@@ -7,8 +7,8 @@
 
 /* --- OCTANT GEOMETRY --- */
 
-// Around a point, you can define four quadrants
-// Around an object with size, you can define eight octants like so
+// Around a point, you can define four quadrants like so: +
+// Around an object with size, you can define eight octants like so:
 /*    X -> BELOW        X -> EQUAL         X -> ABOVE                   */
 /*                    |             |                                   */
 /*   ..._DIAGONAL_TL  |   ..._TOP   |  ..._DIAGONAL_TR      Y -> ABOVE  */
@@ -36,13 +36,13 @@ enum SOTA_TERNARY {
     SOTA_TERNARY_TRUE   =   2,
 };
 
-extern int Ternary_Direction(struct Point move);
-extern int Ternary_Direction_Index(int x, int y);
-extern int Ternary_Direction_Straight(int direction);
+int Ternary_Direction(struct Point move);
+int Ternary_Direction_Index(int x, int y);
+int Ternary_Direction_Straight(int direction);
 
-extern struct Point Ternary_Direction_Unbalanced(struct Point move);
-extern struct Point Ternary_Moved(int ternary);
-extern struct Point Ternary_Direction_Ternary(int ternary);
-extern struct Point Ternary_Direction_Octant(struct Point pos, struct Point target, int w, int h);
+struct Point Ternary_Direction_Unbalanced(struct Point move);
+struct Point Ternary_Moved(int ternary);
+struct Point Ternary_Direction_Ternary(int ternary);
+struct Point Ternary_Direction_Octant(struct Point p, struct Point t, int w, int h);
 
 #endif /* TERNARY_H */

@@ -80,25 +80,25 @@ extern struct Door Door_default;
 
 /* --- Constructors/Destructors --- */
 /* -- Tile -- */
-extern void Tile_Free(struct Tile *tile);
+void Tile_Free(struct Tile *tile);
 
 /* -- Mobj -- */
-extern void Mobj_Link_Init(struct Mobj_Link *mobj);
-extern void Mobj_Link_Free(struct Mobj_Link *mobj);
+void Mobj_Link_Init(struct Mobj_Link *mobj);
+void Mobj_Link_Free(struct Mobj_Link *mobj);
 
 /* --- I/O --- */
 /* -- Tile -- */
-extern void Tile_readJSON(       void *input, const  cJSON *const jtile);
-extern void Tile_writeJSON(const void *input,        cJSON *jtile);
+void Tile_readJSON(       void *input, const  cJSON *const jtile);
+void Tile_writeJSON(const void *input,        cJSON *jtile);
 
 /* -- Mobj -- */
-extern void Door_writeJSON(     const void *input,       cJSON *j);
-extern void Chest_writeJSON(    const void *input,       cJSON *j);
-extern void Mobj_Link_readJSON(       void *input, const cJSON *j);
-extern void Mobj_Link_writeJSON(const void *input,       cJSON *j);
-extern void Breakable_writeJSON(const void *input,       cJSON *j);
+void Door_writeJSON(     const void *input,       cJSON *j);
+void Chest_writeJSON(    const void *input,       cJSON *j);
+void Mobj_Link_readJSON(       void *input, const cJSON *j);
+void Mobj_Link_writeJSON(const void *input,       cJSON *j);
+void Breakable_writeJSON(const void *input,       cJSON *j);
 
 /* --- Internals --- */
-extern void Tile_makeMvtCostarray(struct Tile *tile);
+void Tile_makeMvtCostarray(struct Tile *tile);
 
 #endif /* TILE_H */

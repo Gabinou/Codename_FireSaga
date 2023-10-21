@@ -41,9 +41,9 @@ extern uf8 palette_table_NES_filter_lightenmore[];
 extern uf8 palette_table_NES_filter_purple[];
 
 /* --- API --- */
-extern void Palettes_Load();
-extern void Palettes_Free();
+void Palettes_Load();
+void Palettes_Free();
 
-extern void Palette_Tables_Load();
+void Palette_Tables_Load();
 
 #endif /* PALETTE_H */

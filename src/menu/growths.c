@@ -292,7 +292,7 @@ void GrowthsMenu_Draw(struct MenuComponent *mc, SDL_Texture *render_target,
     SOTA_Log_FPS("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
-void GrowthsMenu_Draw_Talk(struct GrowthsMenu *gm, SDL_Renderer *renderer) {
+void _GrowthsMenu_Draw_Talk(struct GrowthsMenu *gm, SDL_Renderer *renderer) {
     /* -- TALK -- */
     SDL_Rect facerect;
 
@@ -306,8 +306,8 @@ void GrowthsMenu_Draw_Talk(struct GrowthsMenu *gm, SDL_Renderer *renderer) {
     SDL_RenderFillRect(renderer, &facerect);
 }
 
-void GrowthsMenu_Draw_Graph(struct GrowthsMenu *gm, struct n9Patch *n9patch,
-                            SDL_Texture *render_target, SDL_Renderer *renderer) {
+void _GrowthsMenu_Draw_Graph(struct GrowthsMenu *gm, struct n9Patch *n9patch,
+                             SDL_Texture *render_target, SDL_Renderer *renderer) {
     /* -- Graph -- */
     SDL_Rect dstrect;
     Graph_Draw(&gm->graph, n9patch, gm->pixelnours_big, renderer, render_target);
@@ -322,7 +322,7 @@ void GrowthsMenu_Draw_Graph(struct GrowthsMenu *gm, struct n9Patch *n9patch,
     SDL_assert(gm->texture);
 }
 
-void GrowthsMenu_Draw_Growths( struct GrowthsMenu *gm, SDL_Renderer *renderer) {
+void _GrowthsMenu_Draw_Growths( struct GrowthsMenu *gm, SDL_Renderer *renderer) {
     /* -- STATS GROWTHS -- */
     int width;
     char numbuff[10];
@@ -422,7 +422,7 @@ void GrowthsMenu_Draw_Growths( struct GrowthsMenu *gm, SDL_Renderer *renderer) {
     PixelFont_Write_Len(gm->pixelnours_big, renderer, numbuff, x, y);
 }
 
-void GrowthsMenu_Draw_Supports(struct GrowthsMenu *gm, SDL_Renderer *renderer) {
+void _GrowthsMenu_Draw_Supports(struct GrowthsMenu *gm, SDL_Renderer *renderer) {
     /* -- SUPPORTS -- */
     SDL_Rect facerect;
     char numbuff[10];
@@ -530,10 +530,10 @@ void GrowthsMenu_Update(struct GrowthsMenu *gm, struct n9Patch *n9patch,
     n9patch->scale.x = scale_x;
     n9patch->scale.y = scale_y;
 
-    GrowthsMenu_Draw_Talk(      gm, renderer);
-    GrowthsMenu_Draw_Supports(  gm, renderer);
-    GrowthsMenu_Draw_Growths(   gm, renderer);
-    GrowthsMenu_Draw_Graph(     gm, n9patch, render_target, renderer);
+    _GrowthsMenu_Draw_Talk(      gm, renderer);
+    _GrowthsMenu_Draw_Supports(  gm, renderer);
+    _GrowthsMenu_Draw_Growths(   gm, renderer);
+    _GrowthsMenu_Draw_Graph(     gm, n9patch, render_target, renderer);
 
     /* -- Finish -- */
     SDL_SetRenderTarget(renderer, render_target);

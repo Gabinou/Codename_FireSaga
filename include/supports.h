@@ -39,11 +39,11 @@ struct Support {
 };
 
 /* --- Support Object --- */
-extern struct Computed_Stats Support_Bonus(  struct Support  s, uf16 st);
-extern struct Computed_Stats Support_Bonuses(struct Support *s, uf16 sn, uf16 st);
+struct Computed_Stats Support_Bonus(  struct Support  s, uf16 st);
+struct Computed_Stats Support_Bonuses(struct Support *s, uf16 sn, uf16 st);
 
 /* --- Support Computed_Stats --- */
-extern void Support_Type_Bonus(struct Computed_Stats *b, uf16 t, uf16 l);
-extern void Support_Flat_Bonus(struct Computed_Stats *b, uf16 l);
+void Support_Type_Bonus(struct Computed_Stats *b, uf16 t, uf16 l);
+void Support_Flat_Bonus(struct Computed_Stats *b, uf16 l);
 
 #endif /* SUPPORTS_H */

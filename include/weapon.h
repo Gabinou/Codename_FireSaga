@@ -28,34 +28,34 @@ struct WpnorItem {
 extern struct WpnorItem WpnorItem_default;
 
 /* --- Constructors/Destructors --- */
-extern void Weapon_Free(struct Weapon *wpn);
-extern void Weapon_Init(struct Weapon *wpn);
+void Weapon_Free(struct Weapon *wpn);
+void Weapon_Init(struct Weapon *wpn);
 
 /* --- isCan? --- */
-extern uf16 Weapon_TypeExp(          const struct Weapon *wpn);
-extern bool Weapon_canInfuse(        const struct Weapon *wpn, const struct Inventory_item *item);
-extern bool Weapon_canAttack(              struct Weapon *wpn);
-extern bool Weapon_canAttackfromID(  const struct Weapon *wpn);
-extern bool Weapon_canAttackfromType(const struct Weapon *wpn);
+uf16 Weapon_TypeExp(          const struct Weapon *wpn);
+bool Weapon_canInfuse(        const struct Weapon *wpn, const struct Inventory_item *item);
+bool Weapon_canAttack(              struct Weapon *wpn);
+bool Weapon_canAttackfromID(  const struct Weapon *wpn);
+bool Weapon_canAttackfromType(const struct Weapon *wpn);
 
-extern bool Weapon_isStaff(   uf16 id);
-extern bool Weapon_isShield(  uf16 id);
-extern bool Weapon_isOffhand( uf16 id);
-extern bool Weapon_ID_isValid(uf16 id);
+bool Weapon_isStaff(   uf16 id);
+bool Weapon_isShield(  uf16 id);
+bool Weapon_isOffhand( uf16 id);
+bool Weapon_ID_isValid(uf16 id);
 
 /* --- I/O --- */
-extern void Weapon_readJSON(       void *input, const cJSON *const json);
-extern void Weapon_writeJSON(const void *input,       cJSON       *json);
+void Weapon_readJSON(       void *input, const cJSON *const json);
+void Weapon_writeJSON(const void *input,       cJSON       *json);
 
-extern void Weapon_Load(     struct dtab *weapons_dtab, if16 id);
-extern void Weapon_Save(     struct dtab *weapons_dtab, if16 id);
-extern void Weapons_All_Read(struct dtab *weapons_dtab);
-extern void Weapons_All_Save(struct dtab *weapons_dtab);
-extern void Weapons_All_Free(struct dtab *weapons_dtab);
+void Weapon_Load(     struct dtab *weapons_dtab, if16 id);
+void Weapon_Save(     struct dtab *weapons_dtab, if16 id);
+void Weapons_All_Read(struct dtab *weapons_dtab);
+void Weapons_All_Save(struct dtab *weapons_dtab);
+void Weapons_All_Free(struct dtab *weapons_dtab);
 
 /* --- Stats --- */
-extern int Weapon_Stat(        const struct Weapon *wpn, if16 s);
-extern int Weapon_Stat_inRange(const struct Weapon *wpn, if16 s, int d);
+int Weapon_Stat(        const struct Weapon *wpn, if16 s);
+int Weapon_Stat_inRange(const struct Weapon *wpn, if16 s, int d);
 
 /* --- Repair --- */
 // Making weapons repairable through MAGIC only is baka.
@@ -68,6 +68,6 @@ extern int Weapon_Stat_inRange(const struct Weapon *wpn, if16 s, int d);
 // NOPE:   Shields? Items.
 //           OI BOSS COULD YOU SHARPEN MY SHIELD?
 
-extern void Weapon_Repair(struct Weapon *wpn, struct Inventory_item *item, uf8 AP);
+void Weapon_Repair(struct Weapon *wpn, struct Inventory_item *item, uf8 AP);
 
 #endif /* WEAPON_H */

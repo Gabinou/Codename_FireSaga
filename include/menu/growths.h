@@ -185,25 +185,25 @@ struct GrowthsMenu {
 extern struct GrowthsMenu GrowthsMenu_default;
 
 /* --- Constructors/Destructors --- */
-extern struct GrowthsMenu *GrowthsMenu_Alloc();
-extern void GrowthsMenu_Free(struct GrowthsMenu *gm);
+struct GrowthsMenu *GrowthsMenu_Alloc();
+void GrowthsMenu_Free(struct GrowthsMenu *gm);
 
 /* --- Loading --- */
-extern void GrowthsMenu_Load(struct GrowthsMenu *gm, SDL_Renderer *r, struct n9Patch *n9);
-extern void GrowthsMenu_Unit_Set(struct GrowthsMenu *gm, struct Unit *u);
+void GrowthsMenu_Load(struct GrowthsMenu *gm, SDL_Renderer *r, struct n9Patch *n9);
+void GrowthsMenu_Unit_Set(struct GrowthsMenu *gm, struct Unit *u);
 
 /* --- Positioning --- */
-extern void GrowthsMenu_Elem_Pos(struct GrowthsMenu *gm, struct MenuComponent *mc);
+void GrowthsMenu_Elem_Pos(struct GrowthsMenu *gm, struct MenuComponent *mc);
 
 /* --- Drawing --- */
-extern void GrowthsMenu_Draw(  struct MenuComponent *mc, SDL_Texture *rt, SDL_Renderer *r);
-extern void GrowthsMenu_Update(struct GrowthsMenu *g, struct n9Patch *n9, SDL_Texture *rt,
-                               SDL_Renderer *r);
+void GrowthsMenu_Draw(  struct MenuComponent *mc, SDL_Texture *rt, SDL_Renderer *r);
+void GrowthsMenu_Update(struct GrowthsMenu *g, struct n9Patch *n9, SDL_Texture *rt,
+                        SDL_Renderer *r);
 
-extern void GrowthsMenu_Draw_Talk(    struct GrowthsMenu *g, SDL_Renderer *r);
-extern void GrowthsMenu_Draw_Graph(   struct GrowthsMenu *g, struct n9Patch *n9patch,
-                                      SDL_Texture *render_target, SDL_Renderer *r);
-extern void GrowthsMenu_Draw_Growths( struct GrowthsMenu *g, SDL_Renderer *r);
-extern void GrowthsMenu_Draw_Supports(struct GrowthsMenu *g, SDL_Renderer *r);
+static void _GrowthsMenu_Draw_Talk(    struct GrowthsMenu *g, SDL_Renderer *r);
+static void _GrowthsMenu_Draw_Graph(   struct GrowthsMenu *g, struct n9Patch *n9patch,
+                                       SDL_Texture *render_target, SDL_Renderer *r);
+static void _GrowthsMenu_Draw_Growths( struct GrowthsMenu *g, SDL_Renderer *r);
+static void _GrowthsMenu_Draw_Supports(struct GrowthsMenu *g, SDL_Renderer *r);
 
 #endif /* GM_H */

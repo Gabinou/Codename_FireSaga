@@ -1,8 +1,8 @@
 
 #include "platform.h"
 
-uint_fast8_t platform_fromSDL() {
-    uint_fast8_t out = NO_PLATFORM;
+u8 platform_fromSDL() {
+    u8 out = NO_PLATFORM;
     const char *platform_name = SDL_GetPlatform();
     if (strcmp(platform_name, "Windows")        == 0)
         out = WINDOWS_32;

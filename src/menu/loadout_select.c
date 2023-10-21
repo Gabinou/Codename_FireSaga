@@ -271,31 +271,6 @@ bool WeaponSelectMenu_Usable_Remains(struct LoadoutSelectMenu *lsm) {
     return (remains);
 }
 
-/* --- Hands --- */
-/* Is index "select" the left hand? */
-int LoadoutSelectMenu_isLeftHand(struct LoadoutSelectMenu *lsm, int select) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
-    // int out;
-    // int stronghand = Unit_Hand_Strong(lsm->unit);
-    /* Tophand is stronghand */
-    // out  = (select == UNIT_HAND_STRONG) && (stronghand == UNIT_HAND_LEFT);
-    // out |= (select == UNIT_HAND_WEAK)   && (stronghand != UNIT_HAND_LEFT);
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
-    return (select == UNIT_HAND_LEFT);
-}
-
-/* Is index "select" the right hand? */
-int LoadoutSelectMenu_isRightHand(struct LoadoutSelectMenu *lsm, int select) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
-    // int out;
-    // int stronghand = Unit_Hand_Strong(lsm->unit);
-    /* Tophand is stronghand */
-    // out  = (select == UNIT_HAND_STRONG) && (stronghand == UNIT_HAND_RIGHT);
-    // out |= (select == UNIT_HAND_WEAK)   && (stronghand != UNIT_HAND_RIGHT);
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
-    return (select == UNIT_HAND_RIGHT);
-}
-
 /* --- Item placement --- */
 int LoadoutSelectMenu_num_items(struct LoadoutSelectMenu *lsm) {
     int stronghand = Unit_Hand_Strong(lsm->unit);
@@ -531,7 +506,7 @@ void LoadoutSelectMenu_Header_Set(struct LoadoutSelectMenu *lsm, const char *hea
 }
 
 
-void LoadoutSelectMenu_Draw_Header(struct LoadoutSelectMenu  *lsm, SDL_Renderer *renderer) {
+void _LoadoutSelectMenu_Draw_Header(struct LoadoutSelectMenu  *lsm, SDL_Renderer *renderer) {
     /* Skip if no header to draw */
     if (lsm->header == NULL)
         return;
@@ -543,7 +518,7 @@ void LoadoutSelectMenu_Draw_Header(struct LoadoutSelectMenu  *lsm, SDL_Renderer 
                     WSM_HEADER_LEFT,  WSM_TOP_OF_TEXT);
 }
 
-void LoadoutSelectMenu_Draw_Highlight(struct LoadoutSelectMenu  *lsm, SDL_Renderer *renderer) {
+void _LoadoutSelectMenu_Draw_Highlight(struct LoadoutSelectMenu  *lsm, SDL_Renderer *renderer) {
     /* - Skip if no highlight - */
     bool highlight = (lsm->selected[UNIT_HAND_LEFT] >= 0);
     if (!highlight)
@@ -590,7 +565,7 @@ void LoadoutSelectMenu_Draw_Highlight(struct LoadoutSelectMenu  *lsm, SDL_Render
     SDL_RenderFillRect(renderer, &srcrect);
 }
 
-void LoadoutSelectMenu_Draw_Hands(struct LoadoutSelectMenu  *lsm, SDL_Renderer *renderer) {
+void _LoadoutSelectMenu_Draw_Hands(struct LoadoutSelectMenu  *lsm, SDL_Renderer *renderer) {
     /* -- Preliminaries -- */
     int num_items       = LoadoutSelectMenu_num_items(lsm);
     int stronghand      = Unit_Hand_Strong(lsm->unit);
@@ -656,7 +631,7 @@ void LoadoutSelectMenu_Draw_Hands(struct LoadoutSelectMenu  *lsm, SDL_Renderer *
     }
 }
 
-void LoadoutSelectMenu_Draw_Items(struct LoadoutSelectMenu  *lsm, SDL_Renderer *renderer) {
+void _LoadoutSelectMenu_Draw_Items(struct LoadoutSelectMenu  *lsm, SDL_Renderer *renderer) {
     /* -- Preliminaries -- */
     bool header_drawn = (lsm->header != NULL);
     SDL_Rect srcrect, dstrect;
@@ -839,10 +814,10 @@ void LoadoutSelectMenu_Update(struct LoadoutSelectMenu *lsm, struct n9Patch *n9p
     n9patch->scale.x = scale_x;
     n9patch->scale.y = scale_y;
 
-    LoadoutSelectMenu_Draw_Header(lsm, renderer);
-    LoadoutSelectMenu_Draw_Highlight(lsm, renderer);
-    LoadoutSelectMenu_Draw_Hands(lsm, renderer);
-    LoadoutSelectMenu_Draw_Items(lsm, renderer);
+    _LoadoutSelectMenu_Draw_Header(lsm, renderer);
+    _LoadoutSelectMenu_Draw_Highlight(lsm, renderer);
+    _LoadoutSelectMenu_Draw_Hands(lsm, renderer);
+    _LoadoutSelectMenu_Draw_Items(lsm, renderer);
 
     SDL_SetRenderTarget(renderer, target);
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);

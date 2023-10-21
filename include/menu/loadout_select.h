@@ -166,55 +166,51 @@ struct LoadoutSelectMenu {
 extern struct LoadoutSelectMenu LoadoutSelectMenu_default;
 
 /* --- Constructors/Destructors --- */
-extern struct LoadoutSelectMenu *LoadoutSelectMenu_Alloc();
-extern void LoadoutSelectMenu_Free(struct LoadoutSelectMenu *lsm);
-extern void LoadoutSelectMenu_Load(struct LoadoutSelectMenu *sm, struct Map *map,
-                                   tnecs_world_t *w, tnecs_entity_t ent, SDL_Renderer *r, struct n9Patch *n9, int a);
+struct LoadoutSelectMenu *LoadoutSelectMenu_Alloc();
+void LoadoutSelectMenu_Free(struct LoadoutSelectMenu *lsm);
+void LoadoutSelectMenu_Load(struct LoadoutSelectMenu *sm, struct Map *map,
+                            tnecs_world_t *w, tnecs_entity_t ent, SDL_Renderer *r, struct n9Patch *n9, int a);
 
-extern void _LoadoutSelectMenu_Load(struct LoadoutSelectMenu *sm, struct Unit *u, SDL_Renderer *r,
-                                    struct n9Patch *n9);
+void _LoadoutSelectMenu_Load(struct LoadoutSelectMenu *sm, struct Unit *u, SDL_Renderer *r,
+                             struct n9Patch *n9);
 
-extern void WeaponSelectMenu_Load_n9Patch(struct LoadoutSelectMenu *sm, SDL_Renderer *r,
-                                          struct n9Patch *n9);
-extern void WeaponSelectMenu_Load(struct LoadoutSelectMenu *sm, struct Map *map, tnecs_world_t *w,
-                                  tnecs_entity_t ent, SDL_Renderer *r, struct n9Patch *n9);
+void WeaponSelectMenu_Load_n9Patch(struct LoadoutSelectMenu *sm, SDL_Renderer *r,
+                                   struct n9Patch *n9);
+void WeaponSelectMenu_Load(struct LoadoutSelectMenu *sm, struct Map *map, tnecs_world_t *w,
+                           tnecs_entity_t ent, SDL_Renderer *r, struct n9Patch *n9);
 
-extern void StaffSelectMenu_Load(struct LoadoutSelectMenu *sm, struct Map *map,
-                                 tnecs_world_t *w, tnecs_entity_t ent, SDL_Renderer *r, struct n9Patch *n9);
+void StaffSelectMenu_Load(struct LoadoutSelectMenu *sm, struct Map *map,
+                          tnecs_world_t *w, tnecs_entity_t ent, SDL_Renderer *r, struct n9Patch *n9);
 
-/* --- Hand --- */
-extern int LoadoutSelectMenu_isLeftHand( struct LoadoutSelectMenu *lsm, int s);
-extern int LoadoutSelectMenu_isRightHand(struct LoadoutSelectMenu *lsm, int s);
-
-extern void LoadoutSelectMenu_Header_Set(struct LoadoutSelectMenu *lsm, const char *header);
+void LoadoutSelectMenu_Header_Set(struct LoadoutSelectMenu *lsm, const char *header);
 
 /* --- Item placement --- */
-extern void LoadoutSelectMenu_Select(       struct LoadoutSelectMenu *lsm, int s);
-extern void LoadoutSelectMenu_Deselect(     struct LoadoutSelectMenu *lsm);
-extern int  LoadoutSelectMenu_num_items(    struct LoadoutSelectMenu *lsm);
-extern void LoadoutSelectMenu_Name_Alloc(   struct LoadoutSelectMenu *lsm, char *n);
-extern void LoadoutSelectMenu_Select_Reset( struct LoadoutSelectMenu *lsm);
-extern bool WeaponSelectMenu_Usable_Remains(struct LoadoutSelectMenu *lsm);
-extern void ItemSelectMenu_Select(          struct LoadoutSelectMenu *lsm, int s);
+void LoadoutSelectMenu_Select(       struct LoadoutSelectMenu *lsm, int s);
+void LoadoutSelectMenu_Deselect(     struct LoadoutSelectMenu *lsm);
+int  LoadoutSelectMenu_num_items(    struct LoadoutSelectMenu *lsm);
+void LoadoutSelectMenu_Name_Alloc(   struct LoadoutSelectMenu *lsm, char *n);
+void LoadoutSelectMenu_Select_Reset( struct LoadoutSelectMenu *lsm);
+bool WeaponSelectMenu_Usable_Remains(struct LoadoutSelectMenu *lsm);
+void ItemSelectMenu_Select(          struct LoadoutSelectMenu *lsm, int s);
 
 
 /* --- Elements --- */
-extern void LoadoutSelectMenu_Elem_Pos(  struct LoadoutSelectMenu *lsm, struct MenuComponent *mc);
-extern void LoadoutSelectMenu_Elem_Reset(struct LoadoutSelectMenu *lsm, struct MenuComponent *mc);
-extern void LoadoutSelectMenu_Elem_Pos_Revert(struct LoadoutSelectMenu *lsm,
-                                              struct MenuComponent *mc);
+void LoadoutSelectMenu_Elem_Pos(  struct LoadoutSelectMenu *lsm, struct MenuComponent *mc);
+void LoadoutSelectMenu_Elem_Reset(struct LoadoutSelectMenu *lsm, struct MenuComponent *mc);
+void LoadoutSelectMenu_Elem_Pos_Revert(struct LoadoutSelectMenu *lsm,
+                                       struct MenuComponent *mc);
 
 /* --- Drawing --- */
-extern void LoadoutSelectMenu_Size(struct LoadoutSelectMenu  *lsm, struct n9Patch *n9);
+void LoadoutSelectMenu_Size(struct LoadoutSelectMenu  *lsm, struct n9Patch *n9);
 
-extern void LoadoutSelectMenu_Draw_Hands(    struct LoadoutSelectMenu  *lsm, SDL_Renderer *r);
-extern void LoadoutSelectMenu_Draw_Items(    struct LoadoutSelectMenu  *lsm, SDL_Renderer *r);
-extern void LoadoutSelectMenu_Draw_Header(   struct LoadoutSelectMenu  *lsm, SDL_Renderer *r);
-extern void LoadoutSelectMenu_Draw_Patches(  struct LoadoutSelectMenu  *lsm, SDL_Renderer *r);
-extern void LoadoutSelectMenu_Draw_Highlight(struct LoadoutSelectMenu  *lsm, SDL_Renderer *r);
+static void _LoadoutSelectMenu_Draw_Hands(    struct LoadoutSelectMenu  *lsm, SDL_Renderer *r);
+static void _LoadoutSelectMenu_Draw_Items(    struct LoadoutSelectMenu  *lsm, SDL_Renderer *r);
+static void _LoadoutSelectMenu_Draw_Header(   struct LoadoutSelectMenu  *lsm, SDL_Renderer *r);
+static void _LoadoutSelectMenu_Draw_Patches(  struct LoadoutSelectMenu  *lsm, SDL_Renderer *r);
+static void _LoadoutSelectMenu_Draw_Highlight(struct LoadoutSelectMenu  *lsm, SDL_Renderer *r);
 
-extern void LoadoutSelectMenu_Draw(  struct  MenuComponent *mc, SDL_Texture *rt, SDL_Renderer *r);
-extern void LoadoutSelectMenu_Update(struct  LoadoutSelectMenu  *lsm, struct n9Patch *n9,
-                                     SDL_Texture *rt, SDL_Renderer *r);
+void LoadoutSelectMenu_Draw(  struct  MenuComponent *mc, SDL_Texture *rt, SDL_Renderer *r);
+void LoadoutSelectMenu_Update(struct  LoadoutSelectMenu  *lsm, struct n9Patch *n9,
+                              SDL_Texture *rt, SDL_Renderer *r);
 
 #endif /* WSM_H */

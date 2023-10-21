@@ -46,21 +46,21 @@ typedef struct PopUp_Objective {
 extern struct PopUp_Objective PopUp_Objective_default;
 
 /* --- Constructor/Destructor --- */
-extern void PopUp_Objective_Free(struct PopUp_Objective *po);
-extern void PopUp_Objective_Load(struct PopUp_Objective *po, SDL_Renderer *r, struct n9Patch *n9);
-extern struct PopUp_Objective *PopUp_Objective_Alloc();
+void PopUp_Objective_Free(struct PopUp_Objective *po);
+void PopUp_Objective_Load(struct PopUp_Objective *po, SDL_Renderer *r, struct n9Patch *n9);
+struct PopUp_Objective *PopUp_Objective_Alloc();
 
 /* --- Setters --- */
-extern void PopUp_Objective_Set_Obj(   struct PopUp_Objective *po, char *obj);
-extern void PopUp_Objective_Set_SubObj(struct PopUp_Objective *po, char *obj);
+void PopUp_Objective_Set_Obj(   struct PopUp_Objective *po, char *obj);
+void PopUp_Objective_Set_SubObj(struct PopUp_Objective *po, char *obj);
 
 /* --- Computers --- */
-extern void PopUp_Objective_Compute_Size(struct PopUp_Objective *po, struct n9Patch *n9patch);
+void PopUp_Objective_Compute_Size(struct PopUp_Objective *po, struct n9Patch *n9patch);
 
 /* --- Drawing --- */
-extern void PopUp_Objective_Draw(struct PopUp *p, struct Point pos,
-                                 SDL_Texture *rt, SDL_Renderer *r);
-extern void PopUp_Objective_Update(struct PopUp_Objective *po, struct n9Patch *n9,
-                                   SDL_Texture *rt, SDL_Renderer *r);
+void PopUp_Objective_Draw(struct PopUp *p, struct Point pos,
+                          SDL_Texture *rt, SDL_Renderer *r);
+void PopUp_Objective_Update(struct PopUp_Objective *po, struct n9Patch *n9,
+                            SDL_Texture *rt, SDL_Renderer *r);
 
 #endif /* POPUP_OBJECTIVE_H */

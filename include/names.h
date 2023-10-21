@@ -36,41 +36,41 @@ extern uf16          *class_equippables;
 extern char         **armyNames;
 
 /* -- Name makers -- */
-extern void Names_sceneTimes();
-extern void Names_campjobNames();
-extern void Names_mapFilenames();
-extern void Menu_MakeOptionnames();
-extern void Names_gameStatenames();
-extern void Names_jsonElementnames();
-extern void Names_gamesubStatenames();
+void Names_sceneTimes();
+void Names_campjobNames();
+void Names_mapFilenames();
+void Menu_MakeOptionnames();
+void Names_gameStatenames();
+void Names_jsonElementnames();
+void Names_gamesubStatenames();
 
 /* - units - */
-extern void   Names_sexNames();
-extern void   Names_armyNames();
-extern void   Names_unitNames();
-extern void   Names_statNames();
-extern void   Names_classNames();
-extern void   Names_unitStates();
-extern void   Names_class_equippables();
-extern char **Names_unitstateNames(u32 statecode);
+void   Names_sexNames();
+void   Names_armyNames();
+void   Names_unitNames();
+void   Names_statNames();
+void   Names_classNames();
+void   Names_unitStates();
+void   Names_class_equippables();
+char **Names_unitstateNames(u32 statecode);
 
 /* - supports - */
-extern void Names_supportTypes();
+void Names_supportTypes();
 
 /* - items - */
-extern void Names_itemNames();
-extern void Names_tileNames();
+void Names_itemNames();
+void Names_tileNames();
 
 /* --- X macros generators --- */
-extern void Names_wpnType_Free(char **types);
-extern char **Names_wpnType(   uf16 typecode);
-extern char **Names_unitTypes( uf16 typecode);
-extern char **Names_skillNames(u64  skillscode);
-extern char **Names_wpnEffects(u64  effect);
+void Names_wpnType_Free(char **types);
+char **Names_wpnType(   uf16 typecode);
+char **Names_unitTypes( uf16 typecode);
+char **Names_skillNames(u64  skillscode);
+char **Names_wpnEffects(u64  effect);
 
 /* -- API -- */
-extern void Names_Free();
-extern void Names_Load_All();
-extern void Names_Print_All(const char *filename);
+void Names_Free();
+void Names_Load_All();
+void Names_Print_All(const char *filename);
 
 #endif /* NAMES_H */

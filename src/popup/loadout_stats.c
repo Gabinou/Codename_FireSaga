@@ -199,7 +199,7 @@ void PopUp_Loadout_Stats_Hover(struct PopUp_Loadout_Stats *pls, struct LoadoutSe
 
 
 /* --- Rendering --- */
-void PopUp_Loadout_Stats_Draw_Arrows(struct PopUp_Loadout_Stats *pls, SDL_Renderer *renderer) {
+void _PopUp_Loadout_Stats_Draw_Arrows(struct PopUp_Loadout_Stats *pls, SDL_Renderer *renderer) {
     /* - ARROWS - */
     int arrow_index;
     SDL_Rect dstrect, srcrect;
@@ -393,7 +393,7 @@ void PopUp_Loadout_Stats_Draw_Arrows(struct PopUp_Loadout_Stats *pls, SDL_Render
 
 }
 
-void PopUp_Loadout_Stats_Draw_Stats(   struct PopUp_Loadout_Stats *pls, SDL_Renderer *renderer) {
+void _PopUp_Loadout_Stats_Draw_Stats(   struct PopUp_Loadout_Stats *pls, SDL_Renderer *renderer) {
     /* -- COMPUTED STATS -- */
     int width;
     char numbuff[10];
@@ -477,7 +477,7 @@ void PopUp_Loadout_Stats_Weakhand_Offset(struct PopUp_Loadout_Stats *pls) {
     }
 }
 
-void PopUp_Loadout_Stats_Draw_Hands(struct PopUp_Loadout_Stats *pls, SDL_Renderer *renderer) {
+void _PopUp_Loadout_Stats_Draw_Hands(struct PopUp_Loadout_Stats *pls, SDL_Renderer *renderer) {
     SDL_Rect dstrect, srcrect;
     int stronghand = Unit_Hand_Strong(pls->unit);
 
@@ -532,7 +532,7 @@ void PopUp_Loadout_Stats_Draw_Hands(struct PopUp_Loadout_Stats *pls, SDL_Rendere
     }
 }
 
-void PopUp_Loadout_Stats_Draw_WpnIcons(struct PopUp_Loadout_Stats *pls, SDL_Renderer *renderer) {
+void _PopUp_Loadout_Stats_Draw_WpnIcons(struct PopUp_Loadout_Stats *pls, SDL_Renderer *renderer) {
     /* - WEAPON ICONS - */
     int stronghand = Unit_Hand_Strong(pls->unit);
     SDL_Rect dstrect, srcrect;
@@ -572,7 +572,7 @@ void PopUp_Loadout_Stats_Draw_WpnIcons(struct PopUp_Loadout_Stats *pls, SDL_Rend
     }
 }
 
-void PopUp_Loadout_Stats_Draw_Equip(struct PopUp_Loadout_Stats *pls, SDL_Renderer *renderer) {
+void _PopUp_Loadout_Stats_Draw_Equip(struct PopUp_Loadout_Stats *pls, SDL_Renderer *renderer) {
     /* - EQUIP ICONS - */
     SDL_Rect dstrect, srcrect;
     srcrect.x = 0;
@@ -605,7 +605,7 @@ void PopUp_Loadout_Stats_Draw_Equip(struct PopUp_Loadout_Stats *pls, SDL_Rendere
     }
 }
 
-void PopUp_Loadout_Stats_Draw_Weapons( struct PopUp_Loadout_Stats *pls, SDL_Renderer *renderer) {
+void _PopUp_Loadout_Stats_Draw_Weapons( struct PopUp_Loadout_Stats *pls, SDL_Renderer *renderer) {
     /* - EQUIPPED WEAPONS NAMES - */
     /* Left hand */
     do {
@@ -757,12 +757,12 @@ void PopUp_Loadout_Stats_Update(struct PopUp_Loadout_Stats *pls, struct n9Patch 
     PopUp_Loadout_Stats_Weakhand_Offset(pls);
 
     /* --- RENDERING --- */
-    PopUp_Loadout_Stats_Draw_Hands(     pls, renderer);
-    PopUp_Loadout_Stats_Draw_Equip(     pls, renderer);
-    PopUp_Loadout_Stats_Draw_WpnIcons(  pls, renderer);
-    PopUp_Loadout_Stats_Draw_Weapons(   pls, renderer);
-    PopUp_Loadout_Stats_Draw_Stats(     pls, renderer);
-    PopUp_Loadout_Stats_Draw_Arrows(    pls, renderer);
+    _PopUp_Loadout_Stats_Draw_Hands(     pls, renderer);
+    _PopUp_Loadout_Stats_Draw_Equip(     pls, renderer);
+    _PopUp_Loadout_Stats_Draw_WpnIcons(  pls, renderer);
+    _PopUp_Loadout_Stats_Draw_Weapons(   pls, renderer);
+    _PopUp_Loadout_Stats_Draw_Stats(     pls, renderer);
+    _PopUp_Loadout_Stats_Draw_Arrows(    pls, renderer);
     SDL_SetRenderTarget(renderer, render_target);
     SOTA_Log_FPS("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }

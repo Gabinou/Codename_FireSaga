@@ -5,8 +5,8 @@
 #include "combat.h"
 
 /* --- Combat --- */
-extern void Game_Combat_Outcome( struct Game *sota);
-extern void Game_Combat_Animate( struct Game *sota);
-extern void Game_Combat_Resolves(struct Game *sota);
+void Game_Combat_Outcome( struct Game *sota);
+void Game_Combat_Animate( struct Game *sota);
+void Game_Combat_Resolves(struct Game *sota);
 
 #endif /* GAME_COMBAT_H */

@@ -89,8 +89,8 @@ struct Computed_Stats {
     struct Range range_loadout;
 };
 
-extern void Computed_Stats_Print(struct Computed_Stats *stats);
-extern void Computed_Stats_Compare(struct Computed_Stats *stats1, struct Computed_Stats *stats2);
+void Computed_Stats_Print(struct Computed_Stats *stats);
+void Computed_Stats_Compare(struct Computed_Stats *stats1, struct Computed_Stats *stats2);
 
 struct Condition {
     // Conversation condition?

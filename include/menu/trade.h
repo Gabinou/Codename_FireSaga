@@ -53,18 +53,18 @@ struct TradeMenu {
 };
 
 /* --- Constructors/Destructors --- */
-extern struct TradeMenu *TradeMenu_Alloc();
-extern void TradeMenu_Free(struct MenuComponent *mc, SDL_Texture *rt, SDL_Renderer *r);
+struct TradeMenu *TradeMenu_Alloc();
+void TradeMenu_Free(struct MenuComponent *mc, SDL_Texture *rt, SDL_Renderer *r);
 
 /* --- Item placement --- */
-extern void TradeMenu_Trade(   struct TradeMenu *tm);
-extern void TradeMenu_Select(  struct TradeMenu *tm, if8 s);
-extern void TradeMenu_Deselect(struct TradeMenu *tm);
+void TradeMenu_Trade(   struct TradeMenu *tm);
+void TradeMenu_Select(  struct TradeMenu *tm, if8 s);
+void TradeMenu_Deselect(struct TradeMenu *tm);
 
 /* --- Positioning --- */
-extern void TradeMenu_Elem_Pos(struct TradeMenu *tm, struct MenuComponent *mc);
+void TradeMenu_Elem_Pos(struct TradeMenu *tm, struct MenuComponent *mc);
 
 /* --- Drawing --- */
-extern void TradeMenu_Draw(struct MenuComponent *mc, SDL_Texture *rt, SDL_Renderer *r);
+void TradeMenu_Draw(struct MenuComponent *mc, SDL_Texture *rt, SDL_Renderer *r);
 
 #endif /* TRADE_MENU_H */
