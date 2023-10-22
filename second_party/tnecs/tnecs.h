@@ -85,6 +85,9 @@ extern "C" {
 extern uint64_t  tnecs_get_ns();
 extern double    tnecs_get_us();
 
+/**************************** GLOSSARY *******************************/
+// Archetype: Typeflag that includes another Typeflag
+// Archetype: Type that includes another type
 /**************************** TYPE DEFINITIONS *******************************/
 typedef uint64_t        tnecs_entity_t;     // simple 64 bit integer
 typedef uint64_t        tnecs_component_t;  // 64 bit flags -> MAX 63 components
