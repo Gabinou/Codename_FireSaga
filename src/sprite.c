@@ -20,32 +20,29 @@ int map_unit_offsets[MAP_UNIT_SPRITE_LOOP_NUM][TWO_D] = {
 
 /* --- Defaults --- */
 struct Spritesheet Spritesheet_default = {
-    .json_element =   JSON_SPRITESHEET,
-    .surface =        NULL,
-    .palette =        NULL,
-    .loops_pos =      NULL,
-    .frames =         NULL,
-    .speeds =         NULL,
-    .loop_modes =     NULL,
-    .loop_num =       0,
-    .current_loop =   0,
-    .current_frame =  0,
+    .json_element   = JSON_SPRITE,
+    .surface        = NULL,
+    .palette        = NULL,
+    .loops_pos      = NULL,
+    .frames         = NULL,
+    .speeds         = NULL,
+    .loop_modes     = NULL,
+    .loop_num       = 0,
+    .current_loop   = 0,
+    .current_frame  = 0,
 };
 
 struct Sprite Sprite_default = {
-    .srcrect =      {0, 0, 32, 32}, //x,y,w,h
-    .dstrect =      {0, 0, 32, 32}, //x,y,w,h
-    .scale =        {1, 1},
-    .tilesize =     {32, 32},
-
-    .spritesheet =  NULL,
-
-    .texture =      NULL,
-
-    .flip =         SDL_FLIP_NONE,
-
-    .visible =      true,
-    .map_unit =     false
+    .json_element   = JSON_SPRITE,
+    .srcrect        = { 0,  0, 32, 32}, /* x,y,w,h */
+    .dstrect        = { 0,  0, 32, 32}, /* x,y,w,h */
+    .scale          = { 1,  1},
+    .tilesize       = {32, 32},
+    .spritesheet    = NULL,
+    .texture        = NULL,
+    .flip           = SDL_FLIP_NONE,
+    .visible        = true,
+    .map_unit       = false
 };
 
 /* --- SPRITESHEET --- */
@@ -82,6 +79,14 @@ void Spritesheet_Free(struct Spritesheet *spritesheet) {
     spritesheet->loop_num = 0;
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
+
+void Sprite_readJSON(void *input, const cJSON *const jspritesheet) {
+    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
+    struct Sprite *sprite = input;
+    Spritesheet_readJSON(sprite->spritesheet, jspritesheet);
+    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
+}
+
 
 void Spritesheet_readJSON(void *input, const cJSON *const jspritesheet) {
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
@@ -244,7 +249,7 @@ void Sprite_Map_Unit_Load(struct Sprite *sprite, struct Unit *unit, SDL_Renderer
         sprite->spritesheet  = malloc(sizeof(*sprite->spritesheet));
         *sprite->spritesheet = Spritesheet_default;
     }
-    SDL_assert(sprite->spritesheet->json_element == JSON_SPRITESHEET);
+    SDL_assert(sprite->spritesheet->json_element == JSON_SPRITE);
 
     /* -- Loading spritesheet metadata -- */
     char filename[DEFAULT_BUFFER_SIZE] = {0};
@@ -302,7 +307,7 @@ void Sprite_Load(struct Sprite *sprite, const char *asset_name, SDL_Renderer *re
         sprite->spritesheet = malloc(sizeof(*sprite->spritesheet));
         *sprite->spritesheet = Spritesheet_default;
     }
-    SDL_assert(sprite->spritesheet->json_element == JSON_SPRITESHEET);
+    SDL_assert(sprite->spritesheet->json_element == JSON_SPRITE);
 
     /* -- Create texture from surface -- */
     if (sprite->spritesheet->surface != NULL)

@@ -11,7 +11,7 @@ json_read_t  json_read_funcs [JSON_END] = {
     /* JSON_CONVOY      */ Convoy_readJSON,
     /* JSON_NARRATIVE   */ NULL,
     /* JSON_CAMP        */ Camp_readJSON,
-    /* JSON_SPRITESHEET */ Spritesheet_readJSON,
+    /* JSON_SPRITESHEET */ Sprite_readJSON,
 };
 
 json_write_t json_write_funcs[JSON_END] = {
@@ -66,15 +66,21 @@ void jsonio_readJSON(const char *filename, void *struct_ptr) {
 
     /* Get the json element id */
     uf8 jelem_id = *(uf8 *)struct_ptr;
-    SOTA_Log_Debug("Reading JSON element %d %s", jelem_id, jsonElementnames[jelem_id]);
+    char *elem_name = jsonElementnames[jelem_id];
+    SOTA_Log_Debug("Reading JSON element %d %s", jelem_id, elem_name);
     SDL_assert(jfile != NULL);
     if (jelem_id >= JSON_END) {
-        SOTA_Log_Debug("JSON element not set");
+        SDL_Log("JSON element not set");
         exit(ERROR_JSONElementNotSet);
     }
 
     /* Get the json element */
-    struct cJSON *jelement = cJSON_GetObjectItem(jfile, jsonElementnames[jelem_id]);
+    struct cJSON *jelement = cJSON_GetObjectItem(jfile, elem_name);
+    if (jelement == NULL) {
+        SDL_Log("JSON element %s does not exist in %s", elem_name, filename);
+        exit(ERROR_JSONElementNotSet);
+    }
+
     SDL_assert(jelement != NULL);
 
     /* Actually read the json file */

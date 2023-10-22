@@ -77,6 +77,8 @@ enum SPRITE {
 };
 
 typedef struct Sprite {
+    uf8 json_element; /* JSON_ELEM_bOFFSET = 0 */
+
     SDL_Rect srcrect; /* x,y,w,h */
     SDL_Rect dstrect; /* x,y,w,h */
     SDL_Rect srcrect_shadow; /* x,y,w,h -> where sprite gets shaded */
@@ -135,5 +137,8 @@ void Sprite_Palette_Swap(struct Sprite *s, SDL_Palette *p, SDL_Renderer *r);
 void Sprite_Draw(             struct Sprite *s, SDL_Renderer *r);
 void Sprite_Animation_Loop(   struct Sprite *s);
 void Sprite_Animation_Restart(struct Sprite *s, int loop);
+
+/* --- I/O --- */
+void Sprite_readJSON(void *s, const cJSON *const js);
 
 #endif /* SPRITE_H */
