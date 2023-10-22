@@ -52,10 +52,10 @@ enum GRAPH_LINESTYLE { /* palette_NES, offset by 1 for NULL == 0 */
 };
 
 struct GraphStat {
-    if16 level;
-    if16 base_level;
-    if8 cumul_stat[SOTA_MAX_LEVEL];
-    if8 stat_id;
+    i16 level;
+    i16 base_level;
+    i8 cumul_stat[SOTA_MAX_LEVEL];
+    i8 stat_id;
 };
 extern struct GraphStat GraphStat_default;
 
@@ -92,7 +92,7 @@ void Graph_Stat_Remove(struct Graph *g, u8 stat);
 // TODO: call Graph_Stat_Add when growths menu elem is selected.
 void Graph_Stat_Add(struct Graph *g, struct Unit_stats *base_stats,
                     struct Unit_stats *grown_stats,
-                    if8 level, if8 base_level, u8 stat);
+                    i8 level, i8 base_level, u8 stat);
 
 /* --- Drawing --- */
 void Graph_Draw(struct Graph *g, struct n9Patch *n9, struct PixelFont *pb,

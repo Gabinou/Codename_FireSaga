@@ -14,11 +14,11 @@ bool Equation_canCarry(int savior_con, int victim_con) {
     return (savior_con > victim_con);
 }
 
-if8 Equation_Regrets(int kills, int faith) {
+i8 Equation_Regrets(int kills, int faith) {
     SOTA_Log_FPS("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
-    if8 out = 0;
+    i8 out = 0;
     int eff_faith = faith > UINT8_MAX ? UINT8_MAX : faith;
-    if8 divisor = ((eff_faith < 0 ? 0 : eff_faith) / REGRET_FAITH_FACTOR);
+    i8 divisor = ((eff_faith < 0 ? 0 : eff_faith) / REGRET_FAITH_FACTOR);
     if (divisor > 0)
         out = kills / divisor;
     SOTA_Log_FPS("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
@@ -88,7 +88,7 @@ u8 Equation_Unit_Crit(int wpn_crit, int dex, int luck, int support) {
     return (out_crit);
 }
 
-if8 Equation_Unit_Speed(int wpn_wgt, int agi, int con, int str) {
+i8 Equation_Unit_Speed(int wpn_wgt, int agi, int con, int str) {
     SOTA_Log_FPS("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     // speed = agi - slowed
     // slowed = max(0, wpn_wgt - con / 2 - str / 4))
@@ -96,13 +96,13 @@ if8 Equation_Unit_Speed(int wpn_wgt, int agi, int con, int str) {
     u8 slowed    = eff_wgt <     0     ?     0     : eff_wgt;
     slowed        = nmath_bminus(slowed, (con / SPEED_CON_FACTOR), 0);
     slowed        = nmath_bminus(slowed, (str / SPEED_STR_FACTOR), 0);
-    if8 out_speed = nmath_bminus(agi,    slowed,                   INT8_MIN);
+    i8 out_speed = nmath_bminus(agi,    slowed,                   INT8_MIN);
     SOTA_Log_FPS("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
     return (out_speed);
 }
 
-if8 Equation_Unit_Dodge(int wpn_wgt, int wpn_dodge, int luck, int faith,
-                        int agi, int str, int con, int tile_dodge, int support) {
+i8 Equation_Unit_Dodge(int wpn_wgt, int wpn_dodge, int luck, int faith,
+                       int agi, int str, int con, int tile_dodge, int support) {
     SOTA_Log_FPS("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     // dodge = agi + faith/2 + luck/2 + support + tile - con/2 - slowed
     // slowed = max(0, wpn_wgt - str / 4))
@@ -112,7 +112,7 @@ if8 Equation_Unit_Dodge(int wpn_wgt, int wpn_dodge, int luck, int faith,
     u8 slowed  = eff_wgt <     0     ?     0     : eff_wgt;
     slowed      = nmath_bminus(slowed, (str / DODGE_STR_FACTOR), 0);
 
-    if8 out_dodge = (tile_dodge > INT8_MAX) ? INT8_MAX : tile_dodge;
+    i8 out_dodge = (tile_dodge > INT8_MAX) ? INT8_MAX : tile_dodge;
     out_dodge = nmath_bminus(out_dodge, slowed,                      INT8_MIN);
     out_dodge = nmath_bminus(out_dodge, (con   / DODGE_CON_FACTOR),  INT8_MIN);
 
@@ -176,7 +176,7 @@ u8 Equation_Staff_Healing(int item_AP, int user_mag) {
 /* Unit healing percent % -> HP */
 u8 Equation_Unit_Healshp(int total_hp, int heal_percent) {
     SOTA_Log_FPS("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
-    uf16 intermediate = (total_hp * heal_percent) / SOTA_100PERCENT;
+    u16 intermediate = (total_hp * heal_percent) / SOTA_100PERCENT;
     u8 to_heal = (u8)intermediate;
     SOTA_Log_FPS("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
     return (to_heal);
@@ -215,7 +215,7 @@ u8 Equation_Weapon_Attackvar(size_t argnum, ...) {
 
 u8 Equation_Weapon_Hit(int Lwpn_hit, int Rwpn_hit) {
     SOTA_Log_FPS("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
-    uf16 wpn_hit = Lwpn_hit + Rwpn_hit;
+    u16 wpn_hit = Lwpn_hit + Rwpn_hit;
     if ((Rwpn_hit > 0) && (Lwpn_hit > 0))
         wpn_hit /= 2;
     SOTA_Log_FPS("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
@@ -357,8 +357,8 @@ u8 Equation_Combat_Damage(int att, int defender_block,
     // I'm thinking about doubling ATTACK DAMAGE, before removing defense?
     SDL_assert(att >= 0);
     u8 crit_factor = crit ? critp_multiplier : SOTA_100PERCENT;
-    uf16 attack = (att * effective_multiplier * crit_factor) /
-                  (SOTA_100PERCENT * SOTA_100PERCENT);
+    u16 attack = (att * effective_multiplier * crit_factor) /
+                 (SOTA_100PERCENT * SOTA_100PERCENT);
     attack = attack > UINT8_MAX ? UINT8_MAX : attack;
     u8 damage = nmath_bminus(attack, defender_block, 0);
     SOTA_Log_FPS("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
@@ -382,52 +382,52 @@ u8 Stat_Total(int current, int bonus, int malus, int cap) {
     return (total);
 }
 
-if8 Equation_AI_Rating_hitRate(int in_hit_rate) {
+i8 Equation_AI_Rating_hitRate(int in_hit_rate) {
     SOTA_Log_FPS("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
-    if8 out_rating = (in_hit_rate / 5);
+    i8 out_rating = (in_hit_rate / 5);
     SOTA_Log_FPS("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
     return (out_rating); // MAX 20
 }
 
-if8 Equation_AI_Rating_critRate(int in_crit_rate) {
+i8 Equation_AI_Rating_critRate(int in_crit_rate) {
     SOTA_Log_FPS("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
-    if8 out_rating = (in_crit_rate / 3);
+    i8 out_rating = (in_crit_rate / 3);
     SOTA_Log_FPS("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
     return (out_rating); // MAX 33
 }
 
-if8 Equation_AI_Rating_Damage(int in_dmg) {
+i8 Equation_AI_Rating_Damage(int in_dmg) {
     SOTA_Log_FPS("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
-    if8 out_rating = (in_dmg / 3);
+    i8 out_rating = (in_dmg / 3);
     SOTA_Log_FPS("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
     return (out_rating); /* MAX 85 but rarely approaches that... */
 }
 
-if8 Equation_AI_Rating_Stats(int in_stat) {
+i8 Equation_AI_Rating_Stats(int in_stat) {
     SOTA_Log_FPS("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
-    if8 out_rating = (in_stat / 3);
+    i8 out_rating = (in_stat / 3);
 
     SOTA_Log_FPS("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
     return (out_rating);  /* MAX 85 but rarely approaches that... */
 }
 
-if8 Equation_AI_Rating_HPprop(float in_hp_prop) {
+i8 Equation_AI_Rating_HPprop(float in_hp_prop) {
     SOTA_Log_FPS("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
-    if8 out_rating = (if8)((in_hp_prop * 100) / 4);
+    i8 out_rating = (i8)((in_hp_prop * 100) / 4);
     SOTA_Log_FPS("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
     return (out_rating); /* MAX 85 but rarely approaches that... */
 }
 
-if8 Equation_AI_Rating_pushGradient(i32 gradient) {
+i8 Equation_AI_Rating_pushGradient(i32 gradient) {
     SOTA_Log_FPS("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
-    if8 out_rating = (if8)gradient;
+    i8 out_rating = (i8)gradient;
     SOTA_Log_FPS("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
     return (out_rating); // MAX ?? but rarely approaches that...
 }
 
-if8 Equation_AI_Rating_pullGradient(i32 gradient) {
+i8 Equation_AI_Rating_pullGradient(i32 gradient) {
     SOTA_Log_FPS("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
-    if8 out_rating = (if8)gradient;
+    i8 out_rating = (i8)gradient;
     SOTA_Log_FPS("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
     return (out_rating); // MAX ?? but rarely approaches that...
 }

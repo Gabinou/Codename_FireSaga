@@ -49,7 +49,7 @@ extern struct Village Village_default;
 
 typedef struct Chest {
     i32 tile;
-    uf16 item;
+    u16 item;
     u32 gold;
 } Chest;
 extern struct Chest Chest_default;

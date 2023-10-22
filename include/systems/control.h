@@ -21,11 +21,11 @@ void Control_Touchpad(tnecs_system_input_t *in_input);
 
 /* -- Utilities -- */
 void Control_Cursor_Moves(struct Game *s, struct Point cm, struct Point t,
-                          struct Point px, if32 ct);
-void Control_Pressed(if8 b, if8 *l, if8 *p, bool o, if32 t,  if32 *c, u32 e, if32 m);
-void Keyboard_Pressed(if8 b, if8 *p, if8 *pnum, if32 *cvt, u32 e,
+                          struct Point px, i32 ct);
+void Control_Pressed(i8 b, i8 *l, i8 *p, bool o, i32 t,  i32 *c, u32 e, i32 m);
+void Keyboard_Pressed(i8 b, i8 *p, i8 *pnum, i32 *cvt, u32 e,
                       struct controllerKeyboard *kb);
-void Gamepad_Pressed(if8 b, if8 *p, if8 *pnum, if32 *cvt, u32 e,
+void Gamepad_Pressed(i8 b, i8 *p, i8 *pnum, i32 *cvt, u32 e,
                      struct controllerGamepad *gp);
 
 

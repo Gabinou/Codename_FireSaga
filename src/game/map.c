@@ -14,7 +14,7 @@ void Game_Map_Unload(struct Game *sota) {
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
-void Game_Map_Load(struct Game *sota, const if16 in_map_index) {
+void Game_Map_Load(struct Game *sota, const i16 in_map_index) {
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     SOTA_Log_Debug("%ld \n", in_map_index);
     SDL_assert((in_map_index > CHAPTER_START) && (in_map_index < CHAPTER_END));
@@ -76,8 +76,8 @@ void Game_debugMap_Load(struct Game *sota) {
     SOTA_Log_Debug("Loading in test party\n");
     /* -- Party -- */
     /* - Preliminaries - */
-    if16 *unit_inds;
-    unit_inds = DARR_INIT(unit_inds, if16, 16);
+    i16 *unit_inds;
+    unit_inds = DARR_INIT(unit_inds, i16, 16);
     struct Point temp_point = {.x = 4, .y = 4};
     struct Point *positions_list;
     positions_list = DARR_INIT(positions_list, struct Point, 16);
@@ -126,7 +126,7 @@ void Game_Map_Reinforcements_Free(struct Game *sota) {
 
     char filename[DEFAULT_BUFFER_SIZE];
     char unitname[DEFAULT_BUFFER_SIZE];
-    for (if16 i = 0; i < DARR_NUM(sota->map_enemies); i++) {
+    for (i16 i = 0; i < DARR_NUM(sota->map_enemies); i++) {
         tnecs_entity_t temp_unit_ent =  DARR_POP(sota->map_enemies);
 
         struct Unit *unit = TNECS_GET_COMPONENT(sota->world, temp_unit_ent, Unit);
@@ -146,7 +146,7 @@ void Game_Map_Reinforcements_Load(struct Game *sota) {
     SDL_assert(sota->map != NULL);
     char filename[DEFAULT_BUFFER_SIZE];
     char unitname[DEFAULT_BUFFER_SIZE];
-    for (if16 i = 0; i < DARR_NUM(sota->map->reinforcements); i++) {
+    for (i16 i = 0; i < DARR_NUM(sota->map->reinforcements); i++) {
         SOTA_Log_Debug("-- turn: %d --", sota->map->reinforcements[i].turn);
 
         if ((sota->map->reinforcements[i].turn |= sota->map->turn))
@@ -192,7 +192,7 @@ void Game_Map_Reinforcements_Load(struct Game *sota) {
         *unit = Unit_default;
         SDL_assert(entities_bytype[typeflag_id1][num_typeflag1 - 1] == temp_unit_ent);
         unit->weapons_dtab = sota->weapons_dtab;
-        size_t order = *(uf16 *)DTAB_GET(global_unitOrders, sota->map->reinforcements[i].id);
+        size_t order = *(u16 *)DTAB_GET(global_unitOrders, sota->map->reinforcements[i].id);
         strncpy(unitname, "", 1);
         strcat(unitname, global_unitNames[order]);
         strcat(unitname, ".json");

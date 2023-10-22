@@ -22,7 +22,7 @@ struct Item Item_default = {
 };
 
 #define REGISTER_ENUM(x, y) ITEM_EFFECT_ID_##x,
-if16 item_effect_ids[ITEM_EFFECT_NUM] = {
+i16 item_effect_ids[ITEM_EFFECT_NUM] = {
     ITEM_EFFECT_NULL,
 #include "names/items_effects.h"
 };
@@ -86,9 +86,9 @@ use_function_t item_effect_funcs[ITEM_EFFECT_NUM] = {
 };
 
 /* --- USE_EFFECTS --- */
-if8 useEffect_STAFF_HEAL(struct Item *restrict item,
-                         struct Unit *restrict user,
-                         struct Unit *restrict target) {
+i8 useEffect_STAFF_HEAL(struct Item *restrict item,
+                        struct Unit *restrict user,
+                        struct Unit *restrict target) {
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     // HEALING ITEMS CAN BE USED ON OTHER UNITS/PEGASUSES/ENEMIES.
     u8 healing = Equation_Staff_Healing(item->stats.AP, user->current_stats.mag);
@@ -97,53 +97,53 @@ if8 useEffect_STAFF_HEAL(struct Item *restrict item,
     return (-1);
 }
 
-if8 useEffect_USE_DIVINE_SHIELD(struct Item *restrict item,
-                                struct Unit *restrict user,
-                                struct Unit *restrict target) {
+i8 useEffect_USE_DIVINE_SHIELD(struct Item *restrict item,
+                               struct Unit *restrict user,
+                               struct Unit *restrict target) {
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     target->divine_shield = true;
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
     return (-1);
 }
 
-if8 useEffect_BLOW_HORN(struct Item *restrict item,
-                        struct Unit *restrict user,
-                        struct Unit *restrict target) {
+i8 useEffect_BLOW_HORN(struct Item *restrict item,
+                       struct Unit *restrict user,
+                       struct Unit *restrict target) {
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
     return (-1);
 }
 
-if8 useEffect_USE_PROMOTE(struct Item *restrict item,
-                          struct Unit *restrict user,
-                          struct Unit *restrict target) {
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
-    // Unit_Promote(unit, if8 new_class_index);
-    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
-    return (-1);
-}
-
-if8 useEffect_USE_LVL_UP(struct Item *restrict item,
+i8 useEffect_USE_PROMOTE(struct Item *restrict item,
                          struct Unit *restrict user,
                          struct Unit *restrict target) {
+    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
+    // Unit_Promote(unit, i8 new_class_index);
+    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
+    return (-1);
+}
+
+i8 useEffect_USE_LVL_UP(struct Item *restrict item,
+                        struct Unit *restrict user,
+                        struct Unit *restrict target) {
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     Unit_lvlUp(user);
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
     return (-1);
 }
 
-if8 useEffect_USE_GAIN_SKILL(struct Item *restrict item,
-                             struct Unit *restrict user,
-                             struct Unit *restrict target) {
+i8 useEffect_USE_GAIN_SKILL(struct Item *restrict item,
+                            struct Unit *restrict user,
+                            struct Unit *restrict target) {
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     target->skills += item->stats.AP;
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
     return (-1);
 }
 
-if8 useEffect_USE_GAIN_STATS(struct Item *restrict item,
-                             struct Unit *restrict user,
-                             struct Unit *restrict target) {
+i8 useEffect_USE_GAIN_STATS(struct Item *restrict item,
+                            struct Unit *restrict user,
+                            struct Unit *restrict target) {
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     switch (item->id) {
         case ITEM_ID_TALISMAN_HP:
@@ -187,17 +187,17 @@ if8 useEffect_USE_GAIN_STATS(struct Item *restrict item,
     return (-1);
 }
 
-if8 useEffect_CALL_PEGASUS(struct Item *restrict item,
-                           struct Unit *restrict user,
-                           struct Unit *restrict target) {
+i8 useEffect_CALL_PEGASUS(struct Item *restrict item,
+                          struct Unit *restrict user,
+                          struct Unit *restrict target) {
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
     return (-1);
 }
 
-if8 useEffect_CALL_HORSE(struct Item *restrict item,
-                         struct Unit *restrict user,
-                         struct Unit *restrict target) {
+i8 useEffect_CALL_HORSE(struct Item *restrict item,
+                        struct Unit *restrict user,
+                        struct Unit *restrict target) {
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
     return (-1);
@@ -228,7 +228,7 @@ void Inventory_item_Break(struct Inventory_item *restrict inventory_item) {
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
-bool Item_ID_isValid(uf16 id) {
+bool Item_ID_isValid(u16 id) {
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     bool valid = false;
     valid |= ((id > ITEM_ID_ITEM_START) && (id < ITEM_ID_ITEM_END));
@@ -284,19 +284,19 @@ void Item_Use(struct Item *restrict item, struct Unit *restrict user,
     /* Game takes charge of uses-- */
     SDL_assert(item != NULL);
     SDL_assert(item->active != NULL);
-    for (if16 i = 0; i < DARR_NUM(targets); i++)
+    for (i16 i = 0; i < DARR_NUM(targets); i++)
         item->active(item, user, &targets[i]);
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 /* --- I/O --- */
-void Item_Filename(char *filename, if16 id) {
+void Item_Filename(char *filename, i16 id) {
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     char buffer[DEFAULT_BUFFER_SIZE];
     char *token;
 
     /* - add item name to filename - */
-    size_t item_order = *(uf16 *)DTAB_GET(global_itemOrders, id);
+    size_t item_order = *(u16 *)DTAB_GET(global_itemOrders, id);
     SDL_assert(item_order != 0);
     strncpy(buffer, global_itemNames[item_order], DEFAULT_BUFFER_SIZE);
     token = strtok(buffer, " \t");
@@ -312,7 +312,7 @@ void Item_Filename(char *filename, if16 id) {
 }
 
 /* Loads only pure items */
-void Item_Load(struct dtab *items_dtab, if16 id) {
+void Item_Load(struct dtab *items_dtab, i16 id) {
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     SDL_assert(Item_ID_isValid(id));
     SDL_assert(items_dtab != NULL);
@@ -370,7 +370,7 @@ void Item_writeJSON(const void *restrict input, cJSON *restrict jitem) {
 
     /* - Users - */
     if (item->users != NULL) {
-        for (if16 i = 0; i < DARR_NUM(item->users); i++) {
+        for (i16 i = 0; i < DARR_NUM(item->users); i++) {
             jusers_id = cJSON_CreateNumber(item->users[i]);
             cJSON_AddItemToArray(jusers_ids, jusers_id);
         }
@@ -379,7 +379,7 @@ void Item_writeJSON(const void *restrict input, cJSON *restrict jitem) {
 
     /* - Classes - */
     if (item->classes != NULL) {
-        for (if16 i = 0; i < DARR_NUM(item->classes); i++) {
+        for (i16 i = 0; i < DARR_NUM(item->classes); i++) {
             jclass_id = cJSON_CreateNumber(item->classes[i]);
             cJSON_AddItemToArray(jclass_ids, jclass_id);
         }
@@ -392,7 +392,7 @@ void Item_writeJSON(const void *restrict input, cJSON *restrict jitem) {
     jpassive = cJSON_CreateNumber(item->passive);
     cJSON_AddItemToObject(jpassives, "id", jpassive);
     char **effects = Names_wpnEffects(item->passive);
-    for (if16 i = 0; i < DARR_NUM(effects); i++) {
+    for (i16 i = 0; i < DARR_NUM(effects); i++) {
         jpassive = cJSON_CreateString(effects[i]);
         cJSON_AddItemToObject(jpassives, "Effect", jpassive);
         free(effects[i]);
@@ -405,7 +405,7 @@ void Item_writeJSON(const void *restrict input, cJSON *restrict jitem) {
     jtype2 = cJSON_CreateNumber(item->type);
     cJSON_AddItemToObject(jtypes, "id", jtype2);
     char **types = Names_wpnType(item->type);
-    for (if16 i = 0; i < DARR_NUM(types); i++) {
+    for (i16 i = 0; i < DARR_NUM(types); i++) {
         jtype2 = cJSON_CreateString(types[i]);
         cJSON_AddItemToObject(jtypes, "Type", jtype2);
         free(types[i]);
@@ -466,7 +466,7 @@ void Item_readJSON(void *input, const cJSON *jitem) {
     struct cJSON *jusers_id;
     SDL_assert(item->id > 0);
     SDL_assert(global_itemOrders != NULL);
-    item->users = DARR_INIT(item->users, uf16, 16);
+    item->users = DARR_INIT(item->users, u16, 16);
     if (jusers_ids  != NULL) {
         cJSON_ArrayForEach(jusers_id, jusers_ids) {
             DARR_PUT(item->users, cJSON_GetNumberValue(jusers_id));
@@ -475,10 +475,16 @@ void Item_readJSON(void *input, const cJSON *jitem) {
 
     /* - Item order - */
     SDL_assert(global_itemOrders != NULL);
-    SOTA_Log_Debug("item->id %d", item->id);
-    size_t item_order = *(size_t *)DTAB_GET(global_itemOrders, item->id);
+    i32 item_order = *(i32 *)DTAB_GET(global_itemOrders, item->id);
+    i32 max_order  = DARR_NUM(global_itemNames);
+    SDL_assert((item_order > 0));
+    SDL_assert(((i32)item_order < (i32)max_order));
 
-    strcpy(item->name, global_itemNames[item_order]);
+    SDL_assert(global_itemNames             != NULL);
+    SDL_assert(global_itemNames[item_order] != NULL);
+
+    size_t len = strlen(global_itemNames[item_order]);
+    strncpy(item->name, global_itemNames[item_order], len);
 
     /* - Description - */
     char *string = cJSON_GetStringValue(jdescription);
@@ -535,7 +541,7 @@ void Item_Free(struct Item *restrict item) {
 }
 
 /* --- Is --- */
-int Item_Archetype(if16 id) {
+int Item_Archetype(i16 id) {
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth, __func__);
     int archetype = ITEM_ARCHETYPE_ITEM;
     if (Weapon_ID_isValid(id)) {
@@ -550,30 +556,30 @@ int Item_Archetype(if16 id) {
     return (archetype);
 }
 
-bool Item_isOffhand(if16  id) {
+bool Item_isOffhand(i16  id) {
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth, __func__);
     return (Weapon_isOffhand(id));
 }
 
-bool Item_isShield(if16  id) {
+bool Item_isShield(i16  id) {
     /* Must be equivalent to using shield item archetype */
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth, __func__);
     return (Weapon_isShield(id));
 }
 
-bool Item_isStaff(if16  id) {
+bool Item_isStaff(i16  id) {
     /* Must be equivalent to using staff item archetype */
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth, __func__);
     return (Weapon_isStaff(id));
 }
 
-bool Item_isWeapon(if16 id) {
+bool Item_isWeapon(i16 id) {
     /* Must be equivalent to using weapon item archetype */
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth, __func__);
     return (Item_Archetype(id) == ITEM_ARCHETYPE_WEAPON);
 }
 
-int Item_Stat(const struct Item *item, if16 stattype)  {
+int Item_Stat(const struct Item *item, i16 stattype)  {
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     SDL_assert((stattype > ITEM_STAT_START) && (stattype < ITEM_STAT_END));
     u8 *item_stats_arr = (u8 *)&item->stats;

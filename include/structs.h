@@ -10,10 +10,10 @@
 #include "SDL2/SDL_render.h"
 
 struct MenuElemDirections {
-    if8 right;
-    if8 top;
-    if8 left;
-    if8 bottom;
+    i8 right;
+    i8 top;
+    i8 left;
+    i8 bottom;
 };
 extern struct MenuElemDirections MenuElemDirections_default;
 
@@ -45,10 +45,10 @@ struct Rendered { /* for SDL_RenderCopyEx */
 extern struct Rendered Rendered_default;
 
 struct Tile_stats {
-    if8 dodge;
-    if8 Pprot;
-    if8 Mprot;
-    if8 heal; /* % Negative means damage. */
+    i8 dodge;
+    i8 Pprot;
+    i8 Mprot;
+    i8 heal; /* % Negative means damage. */
 };
 extern struct Tile_stats Tile_stats_default;
 
@@ -79,11 +79,11 @@ struct Computed_Stats {
     u8 attack[DAMAGE_TYPES];
     u8 protection[DAMAGE_TYPES];
     u8 hit;
-    if8 dodge; /* can be negative */
+    i8 dodge; /* can be negative */
     u8 crit;
     u8 favor;
     u8 move;
-    if8 speed; /* relative to agi so +/- */
+    i8 speed; /* relative to agi so +/- */
     u8 agony;
     struct Range range_combined;
     struct Range range_loadout;
@@ -94,7 +94,7 @@ void Computed_Stats_Compare(struct Computed_Stats *stats1, struct Computed_Stats
 
 struct Condition {
     // Conversation condition?
-    if16 unitid;
+    i16 unitid;
     bool dead;
     bool recruited;
 };
@@ -102,8 +102,8 @@ extern struct Condition Condition_default;
 
 struct Promotion {
     struct Unit_stats bonus;
-    uf16 skill;
-    uf16 level;
+    u16 skill;
+    u16 level;
 };
 extern struct Promotion Promotion_default;
 
@@ -169,7 +169,7 @@ struct Padding {
 extern struct Padding Padding_default;
 
 struct Item_stats {
-    uf16 price;
+    u16 price;
     u8 uses;
     u8 AP; // ability power: for heal (%), blowHorn, gainStats, gainSkill, Repair
 };
@@ -186,7 +186,7 @@ struct Weapon_stats {
     u8 protection[PROTECTION_TYPES_NO_TOTAL];
     struct Range range; /* [0]: min, [1]: max */
     u8 hit;
-    if8 dodge;  /* when the Sword is TOO HEAVY TO DODGE */
+    i8 dodge;  /* when the Sword is TOO HEAVY TO DODGE */
     u8 crit;
     u8 favor;
     u8 wgt;    /* weight */
@@ -195,27 +195,27 @@ struct Weapon_stats {
 extern struct Weapon_stats Weapon_stats_default;
 
 struct Shop {
-    if16 shopkeeper;
-    if16 *items;
-    if8  *qty;  /* < 0 means infinity */
+    i16 shopkeeper;
+    i16 *items;
+    i8  *qty;  /* < 0 means infinity */
 };
 extern struct Shop Shop_default;
 
 struct Inventory_item {
-    if16 id;
+    i16 id;
     u8 used;
     bool highlighted;
     /* item images are highlighted by default. */
     /* Only dark when in unit inventory and unequippable */
-    if8 infusion;
+    i8 infusion;
 };
 extern struct Inventory_item Inventory_item_default;
 extern struct Inventory_item Inventory_item_broken;
 
 struct Reinforcement {
     struct Point position;
-    if16 army;
-    if16 id;
+    i16 army;
+    i16 id;
     u8 turn;
     u8 levelups;
 };
@@ -262,8 +262,8 @@ struct Mouse {
 };
 
 struct Cursor {
-    if16 frames;
-    if16 speed;
+    i16 frames;
+    i16 speed;
 };
 
 struct Camera {
@@ -284,7 +284,7 @@ struct Settings {
     struct Fps   FPS;
 
     struct Cursor cursor; /* 32 bits */
-    uf16 tilesize[TWO_D];
+    u16 tilesize[TWO_D];
     u8 fontsize;
 
     struct Map_settings map_settings;

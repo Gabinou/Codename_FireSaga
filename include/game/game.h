@@ -116,8 +116,8 @@ struct Game {
     tnecs_entity_t selected_unit_entity;
     tnecs_entity_t hovered_unit_entity;
 
-    if8 moved_direction;
-    if8 selected_menu_option;
+    i8 moved_direction;
+    i8 selected_menu_option;
 
     struct Point selected_unit_initial_position;
     struct Point selected_unit_moved_position;
@@ -127,7 +127,7 @@ struct Game {
 
     tnecs_entity_t *ent_unit_loaded;
 
-    if32  cursor_moved_time_ms;
+    i32  cursor_moved_time_ms;
 
     struct Combat_Phase      combat_phases[SOTA_COMBAT_MAX_PHASES];
     struct Combat_Attack    *combat_attacks;
@@ -135,12 +135,12 @@ struct Game {
     struct Combat_Flow       combat_flow;
     struct Combat_Forecast  *AI_forecasts;
 
-    if8 animation_attack;
-    if8 chapter;
-    if8 state;
-    if8 substate;
-    if8 state_previous;
-    if8 substate_previous;
+    i8 animation_attack;
+    i8 chapter;
+    i8 state;
+    i8 substate;
+    i8 state_previous;
+    i8 substate_previous;
 
     SDL_Window  *window;
 
@@ -202,14 +202,14 @@ void Game_Startup(struct Game *sota, struct Input_Arguments in_args);
 
 
 /* --- I/O --- */
-void Game_saveJSON(struct Game *sota, if16 save_ind);
-void Game_loadJSON(struct Game *sota, if16 save_ind);
-void Game_Save_Delete(if16 save_ind);
-void Game_Save_Copy(if16 from, if16 to);
+void Game_saveJSON(struct Game *sota, i16 save_ind);
+void Game_loadJSON(struct Game *sota, i16 save_ind);
+void Game_Save_Delete(i16 save_ind);
+void Game_Save_Copy(i16 from, i16 to);
 
 /* --- State --- */
-void Game_State_Set(   struct Game *sota, if8 ns, const char *r);
-void Game_subState_Set(struct Game *sota, if8 ns, const char *r);
+void Game_State_Set(   struct Game *sota, i8 ns, const char *r);
+void Game_subState_Set(struct Game *sota, i8 ns, const char *r);
 
 /* --- Camera --- */
 void Game_Camera_Scroll(struct Game *sota);

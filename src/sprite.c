@@ -218,7 +218,7 @@ void Sprite_Free(struct Sprite *sprite) {
 }
 
 /* --- Initialization --- */
-void Sprite_Tilesize_Set(struct Sprite *sprite, uf16 *tilesize) {
+void Sprite_Tilesize_Set(struct Sprite *sprite, u16 *tilesize) {
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     SDL_assert(sprite != NULL);
     sprite->tilesize[0] = tilesize[0];
@@ -495,15 +495,15 @@ void Sprite_Animation_Loop(struct Sprite *sprite) {
     SOTA_Log_FPS("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     SDL_assert(sprite != NULL);
     struct Spritesheet *spritesheet = sprite->spritesheet;
-    if16 next_frame_i = ++spritesheet->frame_i;
-    if16 next_frame = 0;
-    if16 frames = spritesheet->frames[spritesheet->current_loop];
+    i16 next_frame_i = ++spritesheet->frame_i;
+    i16 next_frame = 0;
+    i16 frames = spritesheet->frames[spritesheet->current_loop];
 
     /*  - Compute next frame depending on loop mode - */
     switch (spritesheet->loop_modes[spritesheet->current_loop]) {
         case LOOPING_PINGPONG:
             /*next_f should go between [0, 2 * (frames-1)] to have full pingpong loop]*/
-            next_frame = q_sequence_pingpong_int_fast16_t(next_frame_i, frames, 0);
+            next_frame = q_sequence_pingpong_int16_t(next_frame_i, frames, 0);
             break;
         case LOOPING_FORWARD:
             next_frame = next_frame_i % frames;

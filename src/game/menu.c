@@ -133,7 +133,7 @@ void Game_GrowthsMenu_Create(struct Game *sota) {
 
     // FOR DEBUG
     // TODO: GET STAT FROM USER
-    if16 stat_toplot = 1;
+    i16 stat_toplot = 1;
 
     Graph_Stat_Add(&GM->graph, &test_base_stats, test_grown_stats, 40, 31, stat_toplot);
     SDL_assert(GM->graph.graph_stats[stat_toplot].stat_id >= 0);
@@ -383,7 +383,7 @@ void Game_preUnitAction_Targets(struct Game *sota, tnecs_entity_t actor) {
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
-void Game_PlayerSelectMenu_Create(struct Game *sota, if8 in_menu) {
+void Game_PlayerSelectMenu_Create(struct Game *sota, i8 in_menu) {
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
 
     SDL_assert((in_menu > MENU_PLAYER_SELECT_START) & (in_menu < MENU_PLAYER_SELECT_END));
@@ -420,7 +420,7 @@ void Game_PlayerSelectMenu_Create(struct Game *sota, if8 in_menu) {
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
-void Game_PlayerSelectMenu_Update(struct Game *sota, if8 in_playerselect_menu) {
+void Game_PlayerSelectMenu_Update(struct Game *sota, i8 in_playerselect_menu) {
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     SOTA_Log_Debug("%d", in_playerselect_menu);
     SDL_assert((in_playerselect_menu > MENU_PLAYER_SELECT_START) & (in_playerselect_menu <

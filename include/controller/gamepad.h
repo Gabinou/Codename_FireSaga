@@ -50,22 +50,22 @@ typedef struct controllerGamepad {
     SDL_GameController     **controllers;
     struct GamepadInputMap  *inputmap;
 
-    if32       *joystick_instances;
-    if32        controller_type;
+    i32       *joystick_instances;
+    i32        controller_type;
     int         controllers_num;
     int         controllers_len;
 
-    if16        deadzone_joystick;
-    if16        deadzone_trigger;
+    i16        deadzone_joystick;
+    i16        deadzone_trigger;
 
-    if8         held_move[SOTA_DIRECTIONS_MAIN_NUM];
-    if8         held_button[SOTA_INPUT_END];
+    i8         held_move[SOTA_DIRECTIONS_MAIN_NUM];
+    i8         held_button[SOTA_INPUT_END];
 
     size_t      held_move_num;
     size_t      held_button_num;
 
-    if32        timeheld_move_ns;
-    if32        timeheld_button_ns;
+    i32        timeheld_move_ns;
+    i32        timeheld_button_ns;
     char      **sdl_button_names;
 
     bool        block_buttons   : 1;
@@ -91,11 +91,11 @@ extern void Gamepad_Free(   struct controllerGamepad *g);
 extern void _Gamepad_Realloc(struct controllerGamepad *g);
 
 /* -- Controller management -- */
-extern void Gamepad_addController(   struct controllerGamepad *g, if32 j);
-extern void Gamepad_removeController(struct controllerGamepad *g, if32 i);
+extern void Gamepad_addController(   struct controllerGamepad *g, i32 j);
+extern void Gamepad_removeController(struct controllerGamepad *g, i32 i);
 
 /* -- Pressed button -- */
-extern void Gamepad_Held(if8 *h, size_t *hn, if32 *t, if8 *p, size_t pn, if32 dt);
+extern void Gamepad_Held(i8 *h, size_t *hn, i32 *t, i8 *p, size_t pn, i32 dt);
 extern bool Gamepad_isPressed(   struct controllerGamepad *g,  int sb);
 extern bool Gamepad_ButtonorAxis(struct controllerGamepad *g,  int b, int i, bool is);
 extern struct Point Gamepad_Joystick_Direction(struct controllerGamepad *g);

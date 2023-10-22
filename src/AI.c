@@ -280,7 +280,7 @@ struct AI AI_default = {
 //     // i32 * unit_range = Unit_Range_Combine_Equipment(friendly_mptr);
 //     // i32 * gradientmapp_enemy = pathfinding_Map_unitGradient_int32_t(costmapp_pushpull, in_map->row_len, in_map->col_len, enemy_points, in_map->num_enemies_onfield);
 //     // i32 * attacktomapp = pathfinding_Map_Attackto_int32_t(movemapp, in_map->row_len, in_map->col_len, position_ptr->tilemap_pos, unit_range, POINTS_MATRIX);
-//     // i32 * gradientmapp_enemy_masked = linalg_mask_int_fast16_t(gradientmapp_enemy, attacktomapp, in_map->row_len, in_map->col_len);
+//     // i32 * gradientmapp_enemy_masked = linalg_mask_i16(gradientmapp_enemy, attacktomapp, in_map->row_len, in_map->col_len);
 //     // struct AI_PushPull_Out ai_pushpull_out = AI_PushPull_bestPosition(gradientmapp_enemy_masked, in_map->row_len, in_map->col_len, unit_range[1], position_ptr->tilemap_pos, 1);
 //     // ai_pushpull_out.rating = ai_pushpull_out.rating > (INT8_MAX - rating) ? INT8_MAX : ai_pushpull_out.rating + rating;
 //     // return (ai_pushpull_out);
@@ -317,7 +317,7 @@ struct AI AI_default = {
 //     // i32 * unit_range = Unit_Range_Combine_Equipment(friendly_mptr);
 //     // i32 * gradientmapp_friendly = pathfinding_Map_unitGradient_int32_t(costmapp_pushpull, in_map->row_len, in_map->col_len, friendly_points, in_map->num_friendlies_onfield);
 //     // i32 * attacktomapp = pathfinding_Map_Attackto_int32_t(movemapp, in_map->row_len, in_map->col_len, position_ptr->tilemap_pos, unit_range, POINTS_MATRIX);
-//     // i32 * gradientmapp_friendly_masked = linalg_mask_int_fast16_t(gradientmapp_friendly, attacktomapp, in_map->row_len, in_map->col_len);
+//     // i32 * gradientmapp_friendly_masked = linalg_mask_i16(gradientmapp_friendly, attacktomapp, in_map->row_len, in_map->col_len);
 //     // struct AI_PushPull_Out ai_pushpull_out = AI_PushPull_bestPosition(gradientmapp_friendly_masked, in_map->row_len, in_map->col_len, unit_range[1], position_ptr->tilemap_pos, -1);
 //     // ai_pushpull_out.rating = ai_pushpull_out.rating > (INT8_MAX - rating) ? INT8_MAX : ai_pushpull_out.rating + rating;
 //     // return (ai_pushpull_out);
@@ -355,7 +355,7 @@ struct AI AI_default = {
 //     // i32 * unit_range = Unit_Range_Combine_Equipment(enemy_mptr);
 //     // i32 * gradientmapp_enemy = pathfinding_Map_unitGradient_int32_t(costmapp_pushpull, in_map->row_len, in_map->col_len, enemy_points, in_map->num_enemies_onfield);
 //     // i32 * attacktomapp = pathfinding_Map_Attackto_int32_t(movemapp, in_map->row_len, in_map->col_len, position_ptr->tilemap_pos, unit_range, POINTS_MATRIX);
-//     // i32 * gradientmapp_enemy_masked = linalg_mask_int_fast16_t(gradientmapp_enemy, attacktomapp, in_map->row_len, in_map->col_len);
+//     // i32 * gradientmapp_enemy_masked = linalg_mask_i16(gradientmapp_enemy, attacktomapp, in_map->row_len, in_map->col_len);
 //     // struct AI_PushPull_Out ai_pushpull_out = AI_PushPull_bestPosition(gradientmapp_enemy_masked, in_map->row_len, in_map->col_len, unit_range[1], position_ptr->tilemap_pos, 1);
 //     // ai_pushpull_out.rating = ai_pushpull_out.rating > (INT8_MAX - rating) ? INT8_MAX : ai_pushpull_out.rating + rating;
 //     // return (ai_pushpull_out);
@@ -392,7 +392,7 @@ struct AI AI_default = {
 //     // i32 * unit_range = Unit_Range_Combine_Equipment(enemy_mptr);
 //     // i32 * gradientmapp_friendly = pathfinding_Map_unitGradient_int32_t(costmapp_pushpull, in_map->row_len, in_map->col_len, friendly_points, in_map->num_friendlies_onfield);
 //     // i32 * attacktomapp = pathfinding_Map_Attackto_int32_t(movemapp, in_map->row_len, in_map->col_len, position_ptr->tilemap_pos, unit_range, POINTS_MATRIX);
-//     // i32 * gradientmapp_friendly_masked = linalg_mask_int_fast16_t(gradientmapp_friendly, attacktomapp, in_map->row_len, in_map->col_len);
+//     // i32 * gradientmapp_friendly_masked = linalg_mask_i16(gradientmapp_friendly, attacktomapp, in_map->row_len, in_map->col_len);
 //     // struct AI_PushPull_Out ai_pushpull_out = AI_PushPull_bestPosition(gradientmapp_friendly_masked, in_map->row_len, in_map->col_len, unit_range[1], position_ptr->tilemap_pos, -1);
 //     // ai_pushpull_out.rating = ai_pushpull_out.rating > (INT8_MAX - rating) ? INT8_MAX : ai_pushpull_out.rating + rating;
 //     // return (ai_pushpull_out);

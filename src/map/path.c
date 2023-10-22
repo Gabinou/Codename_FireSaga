@@ -263,7 +263,7 @@ i32 *Map_Costmap_PushPull_Compute(struct Map *map, tnecs_world_t *world,
     struct Unit *unit = TNECS_GET_COMPONENT(world, unit_ent, Unit);
     struct Tile *temp_tile;
     i32 tile_ind = 0;
-    if8 unit_movetype = unit->mvt_type;
+    i8 unit_movetype = unit->mvt_type;
     u8 army = unit->army;
     u8 ontile_army;
     tnecs_entity_t ontile_unit_ent;
@@ -297,7 +297,7 @@ float *Map_fCostmap_Movement_Compute(struct Map *map, tnecs_world_t *world,
     struct Unit *unit = TNECS_GET_COMPONENT(world, unit_ent, Unit);
     struct Tile *temp_tile;
     i32 tile_ind = 0;
-    if8 unit_movetype = unit->mvt_type;
+    i8 unit_movetype = unit->mvt_type;
     u8 army = unit->army;
 
     /* Compute cost of each tile*/
@@ -345,7 +345,7 @@ i32 *Map_Costmap_Movement_Compute(struct Map *map, tnecs_world_t *world,
     struct Unit *unit = TNECS_GET_COMPONENT(world, unit_ent, Unit);
     struct Tile *temp_tile;
     i32 tile_ind = 0;
-    if8 unit_movetype = unit->mvt_type;
+    i8 unit_movetype = unit->mvt_type;
     u8 army = unit->army;
 
     /* - Compute cost of each tile - */

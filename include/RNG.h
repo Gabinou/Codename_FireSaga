@@ -37,7 +37,7 @@ enum SOTA_RN {
 extern struct TINYMT32_T *tinyMT_global;
 
 /* -- API -- */
-bool RNG_checkRate(  struct TINYMT32_T *tinymt, if16 rate, if16 mode);
+bool RNG_checkRate(  struct TINYMT32_T *tinymt, i16 rate, i16 mode);
 void RNG_Init_tinymt(struct TINYMT32_T *tinymt);
 
 // Pointer to RNG function used everywhere in SOTA
@@ -46,7 +46,7 @@ extern RNG_URN_ptr global_RNG_URN;
 /* -- Internals -- */
 /* - Uniform - */
 u8  RNG_URN(             struct TINYMT32_T *tinymt);
-uf16 RNG_openBSD_uint32_t(struct TINYMT32_T *tinymt, u32 max, u32 min);
+u16 RNG_openBSD_uint32_t(struct TINYMT32_T *tinymt, u32 max, u32 min);
 
 /* - Checkers - */
 bool RNG_single_roll(u8 RN,  u8 hit);
@@ -72,8 +72,8 @@ extern u8 URN_debug; /* Value returned by RNG_URN_debug */
 *   sequence breaking should be GLOBAL? maybe. if so make global sequence of HIT/CRITS
 */
 struct RNG_Sequence { /* Sequence of hits/misses in a row */
-    if8 len;
-    if8 eff_rate;
+    i8 len;
+    i8 eff_rate;
     bool hit; /* 0 if sequence of misses, 1 of hits */
 };
 
@@ -88,12 +88,12 @@ extern float sb_rise_table[RNG_SB_BASE_NUM];
 extern float sb_drop_table[RNG_SB_BASE_NUM];
 
 /* -- Macros -- */
-#define SB_GROWTH_RISE(rate, n) (uf16) ( (float) rate * sota_slowpow((float)sb_rise_table[rate/RNG_SB_BASE_NUM], (uf16)((n > RNG_SB_GROWTH_OFFSET ? n : RNG_SB_GROWTH_OFFSET) - RNG_SB_GROWTH_OFFSET)))
-#define SB_RATE_RISE(rate, n) (uf16) ( (float) rate * sota_slowpow((float)sb_rise_table[rate/RNG_SB_BASE_NUM], (uf16)((n > RNG_SB_SEQ_OFFSET ? n : RNG_SB_SEQ_OFFSET) - RNG_SB_SEQ_OFFSET)))
-#define SB_RATE_DROP(rate, n) (uf16) ( (float) rate / sota_slowpow((float)sb_drop_table[rate/RNG_SB_BASE_NUM], (uf16)((n > RNG_SB_SEQ_OFFSET ? n : RNG_SB_SEQ_OFFSET) - RNG_SB_SEQ_OFFSET)))
+#define SB_GROWTH_RISE(rate, n) (u16) ( (float) rate * sota_slowpow((float)sb_rise_table[rate/RNG_SB_BASE_NUM], (u16)((n > RNG_SB_GROWTH_OFFSET ? n : RNG_SB_GROWTH_OFFSET) - RNG_SB_GROWTH_OFFSET)))
+#define SB_RATE_RISE(rate, n) (u16) ( (float) rate * sota_slowpow((float)sb_rise_table[rate/RNG_SB_BASE_NUM], (u16)((n > RNG_SB_SEQ_OFFSET ? n : RNG_SB_SEQ_OFFSET) - RNG_SB_SEQ_OFFSET)))
+#define SB_RATE_DROP(rate, n) (u16) ( (float) rate / sota_slowpow((float)sb_drop_table[rate/RNG_SB_BASE_NUM], (u16)((n > RNG_SB_SEQ_OFFSET ? n : RNG_SB_SEQ_OFFSET) - RNG_SB_SEQ_OFFSET)))
 
 /* -- Functions -- */
-uf16 SB_Rate_Drop(uf16 rate, uf16 n);
+u16 SB_Rate_Drop(u16 rate, u16 n);
 void RNG_checkSequence_twoWay(struct RNG_Sequence *sequence, bool hit);
 void RNG_checkSequence_oneWay(struct RNG_Sequence *sequence, bool hit);
 

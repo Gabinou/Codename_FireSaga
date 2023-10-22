@@ -90,7 +90,7 @@ void Game_Unit_Refresh(struct Game *sota, tnecs_entity_t ent) {
 }
 
 /* --- Party utilities --- */
-void Game_Party_Load(struct Game *sota, if16 *unit_ids, size_t load_num) {
+void Game_Party_Load(struct Game *sota, i16 *unit_ids, size_t load_num) {
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     char filename[DEFAULT_BUFFER_SIZE];
     struct Unit temp_unit;
@@ -99,7 +99,7 @@ void Game_Party_Load(struct Game *sota, if16 *unit_ids, size_t load_num) {
         SDL_assert((unit_ids[i] > 0) && (unit_ids[i] < UNIT_ID_PC_END));
         temp_unit = Unit_default;
         strcpy(filename, "units"PHYSFS_SEPARATOR);
-        size_t order = *(uf16 *)DTAB_GET(global_unitOrders, unit_ids[i]);
+        size_t order = *(u16 *)DTAB_GET(global_unitOrders, unit_ids[i]);
         strcat(filename, global_unitNames[order]);
         strcat(filename, ".json");
         temp_unit.items_dtab   = sota->items_dtab;
@@ -117,7 +117,7 @@ void Game_Party_Clear(struct Game *sota) {
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
-void Game_Party_Unload(struct Game *sota, if16 *to_unload_ids, size_t unload_num) {
+void Game_Party_Unload(struct Game *sota, i16 *to_unload_ids, size_t unload_num) {
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     for (size_t i = 0; i < unload_num; i++) {
         for (size_t j = 0; j < SOTA_MAX_PARTY_SIZE; j++) {
@@ -128,7 +128,7 @@ void Game_Party_Unload(struct Game *sota, if16 *to_unload_ids, size_t unload_num
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
-tnecs_entity_t Game_Unit_Entity_Create(struct Game *sota, if16 in_unit,
+tnecs_entity_t Game_Unit_Entity_Create(struct Game *sota, i16 in_unit,
                                        struct Point in_pos) {
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     if (sota->units_loaded[in_unit] < 1) {
@@ -253,15 +253,15 @@ void Game_UnitsonMap_Free(struct Game *sota) {
     }
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
-void Game_putPConMap(struct Game *sota, if16 *unit_ids,
+void Game_putPConMap(struct Game *sota, i16 *unit_ids,
                      struct Point *posarr, size_t load_num) {
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     SDL_assert(sota->map != NULL);
     SDL_assert(posarr != NULL);
     SDL_assert(load_num > 0);
-    for (if16 i = 0; i < load_num; i++) {
+    for (i16 i = 0; i < load_num; i++) {
         SDL_assert(Unit_ID_Valid(unit_ids[i]));
-        size_t order = *(uf16 *)DTAB_GET(global_unitOrders, unit_ids[i]);
+        size_t order = *(u16 *)DTAB_GET(global_unitOrders, unit_ids[i]);
         tnecs_entity_t temp_unit_ent = Game_Unit_Entity_Create(sota, unit_ids[i], posarr[i]);
         SDL_assert(temp_unit_ent);
         Map_Unit_Put(sota->map, sota->world, posarr[i].x, posarr[i].y, temp_unit_ent);

@@ -54,22 +54,22 @@ void Hashes_unitHashes() {
 #undef REGISTER_ENUM
 
 /* -- Hashing -- */
-uf16 Hashes_supportName2ID(char *name) {
+u16 Hashes_supportName2ID(char *name) {
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     SDL_assert(name != NULL);
     size_t len = strlen(name);
     char *temp = SDL_calloc(len + 1, 1);
     strncpy(temp, name, len);
     temp[len] = '\0';
-    uf16 id = Hashes_supportHash2ID(tnecs_hash_djb2(nstr_toLower(temp)));
+    u16 id = Hashes_supportHash2ID(tnecs_hash_djb2(nstr_toLower(temp)));
     SDL_free(temp);
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
     return (id);
 }
 
-uf16 Hashes_supportHash2ID(u64 hash) {
+u16 Hashes_supportHash2ID(u64 hash) {
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
-    uf16 id = 0;
+    u16 id = 0;
     for (size_t i = 0; i < SUPPORT_TYPE_NUM; i++) {
         if (hash == supportHashes[i]) {
             id = i;
@@ -80,9 +80,9 @@ uf16 Hashes_supportHash2ID(u64 hash) {
     return (id);
 }
 
-uf16 Hashes_itemHash2ID(u64 hash) {
+u16 Hashes_itemHash2ID(u64 hash) {
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
-    uf16 id = 0;
+    u16 id = 0;
     for (size_t i = 0; i < UNIT_ID_END; i++) {
         if (hash == itemHashes[i]) {
             id = i;
@@ -93,35 +93,35 @@ uf16 Hashes_itemHash2ID(u64 hash) {
     return (id);
 }
 
-uf16 Hashes_itemName2ID(char *name) {
+u16 Hashes_itemName2ID(char *name) {
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     SDL_assert(name != NULL);
     size_t len = strlen(name);
     char *temp = SDL_calloc(len + 1, 1);
     strncpy(temp, name, len);
     temp[len] = '\0';
-    uf16 id = Hashes_itemHash2ID(tnecs_hash_djb2(nstr_toLower(temp)));
+    u16 id = Hashes_itemHash2ID(tnecs_hash_djb2(nstr_toLower(temp)));
     SDL_free(temp);
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
     return (id);
 }
 
-uf16 Hashes_unitName2ID(char *name) {
+u16 Hashes_unitName2ID(char *name) {
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     SDL_assert(name != NULL);
     size_t len = strlen(name);
     char *temp = SDL_calloc(len + 1, 1);
     strncpy(temp, name, len);
     temp[len] = '\0';
-    uf16 id = Hashes_unitHash2ID(tnecs_hash_djb2(nstr_toLower(temp)));
+    u16 id = Hashes_unitHash2ID(tnecs_hash_djb2(nstr_toLower(temp)));
     SDL_free(temp);
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
     return (id);
 }
 
-uf16 Hashes_unitHash2ID(u64 hash) {
+u16 Hashes_unitHash2ID(u64 hash) {
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
-    uf16 id = 0;
+    u16 id = 0;
     for (size_t i = 0; i < UNIT_ID_END; i++) {
         if (hash == unitHashes[i]) {
             id = i;
@@ -132,33 +132,33 @@ uf16 Hashes_unitHash2ID(u64 hash) {
     return (id);
 }
 
-uf16 Hashes_shopkeeperName2ID(char *name) {
+u16 Hashes_shopkeeperName2ID(char *name) {
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
-    uf16 out;
+    u16 out;
 
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
     return (out);
 }
 
-uf16 Hashes_shopkeeperHash2ID(u64 hash) {
+u16 Hashes_shopkeeperHash2ID(u64 hash) {
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
-    uf16 out;
+    u16 out;
 
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
     return (out);
 }
 
-uf16 Hashes_skillName2ID(char *name) {
+u16 Hashes_skillName2ID(char *name) {
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
-    uf16 out;
+    u16 out;
 
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     return (out);
 }
 
-uf16 Hashes_skillHash2ID(u64 hash) {
+u16 Hashes_skillHash2ID(u64 hash) {
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
-    uf16 out;
+    u16 out;
 
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     return (out);

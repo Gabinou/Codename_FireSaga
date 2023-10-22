@@ -82,15 +82,15 @@ typedef struct Camp {
 extern struct Camp Camp_default;
 
 /* --- API --- */
-extern void Camp_Job_Hire(struct Camp *c, uint_fast16_t u, uint_fast16_t j);
-extern void Camp_Job_Fire(struct Camp *c, uint_fast16_t u, uint_fast16_t j);
-extern void Camp_Job_Forbid(struct Camp *c, uint_fast16_t u, uint_fast16_t j);
+extern void Camp_Job_Hire(struct Camp *c, i16 u, i16 j);
+extern void Camp_Job_Fire(struct Camp *c, i16 u, i16 j);
+extern void Camp_Job_Forbid(struct Camp *c, i16 u, i16 j);
 
 /* --- isCan --- */
-extern u8 Camp_hasJob(struct Camp *in_camp, uint_fast16_t unit_id);
+extern u8 Camp_hasJob(struct Camp *in_camp, i16 unit_id);
 
 /* --- Internals --- */
-extern u8 *Camp_Job_Get(struct Camp *in_camp, uint_fast16_t job_id);
+extern u8 *Camp_Job_Get(struct Camp *in_camp, i16 job_id);
 extern void Camp_Jobs_Clear(struct Camp *in_camp);
 
 /* --- I/O --- */

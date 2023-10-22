@@ -154,7 +154,7 @@ struct LoadoutSelectMenu {
 
     struct PixelFont *pixelnours;
     struct PixelFont *pixelnours_big;
-    if8 selected[UNIT_HANDS_NUM]; /* side space */
+    i8 selected[UNIT_HANDS_NUM]; /* side space */
     char *item_name;
     size_t item_name_len;
     char *header;

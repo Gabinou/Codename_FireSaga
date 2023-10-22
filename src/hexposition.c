@@ -14,8 +14,8 @@ u8 HexDistance_HexPoints(struct nmath_hexpoint_int32_t in_point1,
 u8 HexDistance_Points(struct Point in_point1,
                       struct Point in_point2) {
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
-    if32 z1 = -in_point1.x - in_point1.y;
-    if32 z2 = -in_point2.x - in_point2.y;
+    i32 z1 = -in_point1.x - in_point1.y;
+    i32 z2 = -in_point2.x - in_point2.y;
     u8 distance = (labs(in_point1.x - in_point2.x) + abs(in_point1.y - in_point2.y) +
                    labs(
                            z1 - z2)) / 2;
@@ -23,7 +23,7 @@ u8 HexDistance_Points(struct Point in_point1,
     return (distance);
 }
 
-extern void plotHex2DArray(int_fast16_t *in_array, size_t depth_len, size_t col_len,
+extern void plotHex2DArray(i16 *in_array, size_t depth_len, size_t col_len,
                            int in_orientation) {
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     if (in_array != NULL) {
@@ -77,7 +77,7 @@ void HexPosition_Move(struct HexPosition *in_hexpos, u8 in_direction,
 }
 
 struct Point Hex2Pixel(struct nmath_hexpoint_int32_t in_hexpoint,
-                       if32 in_radius, bool in_orientation) {
+                       i32 in_radius, bool in_orientation) {
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     struct Point out;
     float sqrt3 = carmack_sqrt_int32_t(3);
@@ -113,7 +113,7 @@ struct nmath_hexpoint_int32_t HexRound(struct nmath_hexpoint_float in_point) {
 }
 
 struct nmath_hexpoint_int32_t Pixel2Hex(struct Point in_point,
-                                        if32 in_radius,
+                                        i32 in_radius,
                                         bool in_orientation) {
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     struct nmath_hexpoint_float temp;

@@ -53,16 +53,16 @@ extern struct KeyboardInputMap {
 typedef struct controllerKeyboard {
     struct KeyboardInputMap *inputmap;
 
-    if8     held_button[SOTA_INPUT_END];
-    if8     held_move[SOTA_DIRECTIONS_MAIN_NUM];
+    i8     held_button[SOTA_INPUT_END];
+    i8     held_move[SOTA_DIRECTIONS_MAIN_NUM];
 
-    if32    controller_type;
+    i32    controller_type;
 
     size_t  held_button_num;
     size_t  held_move_num;
 
-    if32    timeheld_button_ns;
-    if32    timeheld_move_ns;
+    i32    timeheld_button_ns;
+    i32    timeheld_move_ns;
 
     bool    block_buttons : 1;
     bool    block_move    : 1;
@@ -70,7 +70,7 @@ typedef struct controllerKeyboard {
 extern struct controllerKeyboard controllerKeyboard_default;
 
 /* -- Pressed button -- */
-extern void Keyboard_Held(if8 *h, size_t *hn, if32 *t, if8 *p, size_t pn, if32 dt);
+extern void Keyboard_Held(i8 *h, size_t *hn, i32 *t, i8 *p, size_t pn, i32 dt);
 extern bool Keyboard_isPressed(struct controllerKeyboard *k, const u8 *sa, int button);
 
 #endif /* CONTROLLERKEYBOARD_H */

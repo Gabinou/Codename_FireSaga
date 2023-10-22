@@ -43,8 +43,8 @@ extern bool army_isPC[ARMY_END];
 struct Unit_status {
     // Number of turns to be in this state.
     // <0 means forever.
-    if8 status;
-    if8 turns;
+    i8 status;
+    i8 turns;
 };
 extern struct Unit_status Unit_status_default;
 
@@ -56,22 +56,22 @@ typedef struct Unit {
     char   *json_filename; /* JSON_ELEM_bOFFSET = 1 */
 
 
-    if16    class;
-    if8     mvt_type;
-    if8     army;
+    i16    class;
+    i8     mvt_type;
+    i8     army;
     u8     current_agony;
     u8     current_hp;
-    if8     handedness;
-    uf16    talkable;
-    if8     agony; /* turns left before death (-1 not agonizing) */
+    i8     handedness;
+    u16    talkable;
+    i8     agony; /* turns left before death (-1 not agonizing) */
     u8     regrets;
 
     // Status with least remaining turns on top.
     struct Unit_status *status_queue;
 
     struct Support supports[SOTA_MAX_SUPPORTS];
-    uf16 support_type;
-    uf16 support_num;
+    u16 support_type;
+    u16 support_num;
     struct Damage damage;
 
     struct Unit_stats base_stats;
@@ -103,14 +103,14 @@ typedef struct Unit {
     struct RNG_Sequence move_sequence;
     struct RNG_Sequence prof_sequence;
 
-    uf16 equippable;
-    uf16 base_exp;
-    uf16 exp;
-    uf16 _id;
-    uf16 rescuee;
+    u16 equippable;
+    u16 base_exp;
+    u16 exp;
+    u16 _id;
+    u16 rescuee;
 
-    if8 rangemap;
-    if8 user_rangemap; /* reset to NULL when equipment changes */
+    i8 rangemap;
+    i8 user_rangemap; /* reset to NULL when equipment changes */
 
     bitflag16_t job_talent;
 
@@ -132,9 +132,9 @@ typedef struct Unit {
     /* For twohanding when computing computedstats */
     struct Inventory_item temp;
 
-    if8 eq_usable[DEFAULT_EQUIPMENT_SIZE];
-    if8 num_equipment;
-    if8 num_usable;
+    i8 eq_usable[DEFAULT_EQUIPMENT_SIZE];
+    i8 num_equipment;
+    i8 num_usable;
 
     struct Mount *mount;
     bool mounted;
@@ -177,16 +177,16 @@ struct WpnorItem Unit_WpnorItem(struct Unit *u, int i);         /*   side space 
 void Unit_Set_Item_Side(struct Unit *u, int i);                 /*   side space */
 
 int Unit_Hand_Strong(const struct Unit *u);
-int SotA_Hand_Strong(if8 handedness);
+int SotA_Hand_Strong(i8 handedness);
 
 int Unit_Hand_Strong2Side(const struct Unit *unit, int i);
 int Unit_Hand_Side2Strong(const struct Unit *unit, int i);
 
-void Unit_setid(      struct Unit *u, if16 id);
+void Unit_setid(      struct Unit *u, i16 id);
 void Unit_setStats(   struct Unit *u, struct Unit_stats stats);
 void Unit_setStats(   struct Unit *u, struct Unit_stats stats);
 void Unit_setBases(   struct Unit *u, struct Unit_stats stats);
-void Unit_setClassind(struct Unit *u, if8 class_i);
+void Unit_setClassind(struct Unit *u, i8 class_i);
 
 struct Unit_stats Unit_getStats(struct Unit *u);
 
@@ -202,11 +202,11 @@ void Unit_Equipped_Shields_Deplete(struct Unit *u);
 
 /* -- Trading -- */
 void  Unit_Item_Take(  struct Unit *u, struct Inventory_item item);
-void  Unit_Item_Swap(  struct Unit *u, if16 ind1, if16 ind2);
-void  Unit_Item_Trade( struct Unit *g, struct Unit *t, if16 giver_i, if16 taker_i);
+void  Unit_Item_Swap(  struct Unit *u, i16 ind1, i16 ind2);
+void  Unit_Item_Trade( struct Unit *g, struct Unit *t, i16 giver_i, i16 taker_i);
 void  Unit_Item_Takeat(struct Unit *u, struct Inventory_item i, size_t j);
 void _Unit_Item_Takeat(struct Unit *u, struct Inventory_item i, size_t j);
-struct Inventory_item Unit_Item_Drop(struct Unit *u, if16 ind1);
+struct Inventory_item Unit_Item_Drop(struct Unit *u, i16 ind1);
 
 /* --- Equipping --- */
 bool                  Unit_Equip(           struct Unit *u, bool h, int i);
@@ -219,7 +219,7 @@ void _Unit_Check_Equipped(struct Unit *u, bool hand);
 void  Unit_Check_Equipped(struct Unit *u);
 
 /* --- Supports --- */
-void Unit_supportUp(struct Unit *u, if16 id);
+void Unit_supportUp(struct Unit *u, i16 id);
 
 /* --- Second-order info --- */
 bool SotA_isPC(          u8 a);
@@ -229,10 +229,10 @@ u8  Unit_mvtType(const struct Unit *u);
 
 /* --- Unit status --- */
 void Unit_Status_Add(       struct Unit *u, struct Unit_status);
-if16 Unit_Status_Find(      struct Unit *u, if16 status);
-void Unit_Status_Remove(    struct Unit *u, if16 i);
+i16 Unit_Status_Find(      struct Unit *u, i16 status);
+void Unit_Status_Remove(    struct Unit *u, i16 i);
 void Unit_Status_Decrement( struct Unit *u);
-if16 Unit_Status_Find_Turns(struct Unit *unit, if16 turns);
+i16 Unit_Status_Find_Turns(struct Unit *unit, i16 turns);
 
 /* --- Unit stats --- */
 struct Unit_stats Unit_stats_plus(     struct Unit_stats stats1, struct Unit_stats stats2);
@@ -242,11 +242,11 @@ struct Unit_stats Unit_stats_plus_cst( struct Unit_stats stats1, int cst);
 struct Unit_stats Unit_stats_minus_cst(struct Unit_stats stats,  int cst);
 
 /* --- Mount --- */
-void Unit_Mount_Mount(   struct Unit *u, if16 id);
-void Unit_Mount_Bonus(   struct Unit *u, if16 id);
-void Unit_Mount_Assign(  struct Unit *u, if16 id);
-void Unit_Mount_Unmount( struct Unit *u, if16 id);
-void Unit_Mount_Deassign(struct Unit *u, if16 id);
+void Unit_Mount_Mount(   struct Unit *u, i16 id);
+void Unit_Mount_Bonus(   struct Unit *u, i16 id);
+void Unit_Mount_Assign(  struct Unit *u, i16 id);
+void Unit_Mount_Unmount( struct Unit *u, i16 id);
+void Unit_Mount_Deassign(struct Unit *u, i16 id);
 
 /* --- Debug --- */
 bool Unit_Equipment_Full( const struct Unit *u);
@@ -267,15 +267,15 @@ bool Unit_hasSkill(const struct Unit *u, u64 s);
 */
 /* Distance-dependent stats */
 u8 Unit_computeHit(     struct Unit *u, int dist);
-if8 Unit_computeDodge(  struct Unit *u, int dist);
+i8 Unit_computeDodge(  struct Unit *u, int dist);
 u8 Unit_computeFavor(   struct Unit *u, int dist);
-if8 Unit_computeSpeed(  struct Unit *u, int dist);
+i8 Unit_computeSpeed(  struct Unit *u, int dist);
 u8 Unit_computeCritical(struct Unit *u, int dist);
 
 /* Distance-independent stats */
-if8 Unit_computeMove(    struct Unit *u);
+i8 Unit_computeMove(    struct Unit *u);
 u8 Unit_computeAgony(   struct Unit *u);
-if8 Unit_computeRegrets( struct Unit *u);
+i8 Unit_computeRegrets( struct Unit *u);
 u8 Unit_computeEffectivefactor(struct Unit *a, struct Unit *d);
 
 u8 *Unit_computeAttack( struct Unit *u, int dist);
@@ -289,8 +289,8 @@ struct Computed_Stats Unit_computedStats_wLoadout(struct Unit *u, int lh, int rh
 
 /* --- Bonus/Malus from items --- */
 /* Bonus and Malus should always be computable from skills, equipment, stats */
-if8 Unit_computeMalus(struct Unit *u);
-if8 Unit_computeBonus(struct Unit *u);
+i8 Unit_computeMalus(struct Unit *u);
+i8 Unit_computeBonus(struct Unit *u);
 
 /* --- Loadout Manipulation --- */
 bool Unit_Loadout_twoHanding(int lh, int rh);
@@ -336,9 +336,9 @@ bool Unit_canDance(struct Unit *u);
 bool Unit_canCarry(struct Unit *u1, struct Unit *u2);
 
 /* -- Can Equip -- */
-bool Unit_canEquip(       const struct Unit *u, if16 id);
-bool Unit_canEquip_Type(  const struct Unit *u, if16 id);
-bool Unit_canEquip_Hand(  const struct Unit *u, if16 id, bool h);
+bool Unit_canEquip(       const struct Unit *u, i16 id);
+bool Unit_canEquip_Type(  const struct Unit *u, i16 id);
+bool Unit_canEquip_Hand(  const struct Unit *u, i16 id, bool h);
 bool Unit_canEquip_inHand(const struct Unit *u, bool h);
 
 /* -- Can Attack -- */
@@ -355,8 +355,8 @@ u8 Unit_Brave(const struct Unit *u);
 
 /* --- Lvlup && Promotion --- */
 void Unit_lvlUp(  struct Unit *u);
-if16 Unit_getLvl( struct Unit *u);
-void Unit_Promote(struct Unit *u, if8 new_class_i);
+i16 Unit_getLvl( struct Unit *u);
+void Unit_Promote(struct Unit *u, i8 new_class_i);
 
 bool Range_Valid(struct Range r1);
 struct Range Ranges_Combine(struct Range *r1, struct Range r2);
@@ -391,6 +391,6 @@ struct Range *Unit_Range_Item(   struct Unit *u, int i);
 struct Range *Unit_Range_Loadout(struct Unit *u);
 
 /* -- Unit_id -- */
-bool Unit_ID_Valid(uf16 id);
+bool Unit_ID_Valid(u16 id);
 
 #endif /* UNIT_H */

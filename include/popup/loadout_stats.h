@@ -182,8 +182,8 @@ typedef struct PopUp_Loadout_Stats {
     struct Computed_Stats new_cs;
     int item_left;  /* item side space */
     int item_right; /* item side space */
-    if16 type_left;
-    if16 type_right;
+    i16 type_left;
+    i16 type_right;
     int ly_offset;
     int ry_offset;
 

@@ -32,7 +32,7 @@ extern char         **global_tilenames;
 extern i32           *tilesID_arr;
 extern i32           *global_tilesID;
 extern char         **support_types;
-extern uf16          *class_equippables;
+extern u16          *class_equippables;
 extern char         **armyNames;
 
 /* -- Name makers -- */
@@ -63,8 +63,8 @@ void Names_tileNames();
 
 /* --- X macros generators --- */
 void Names_wpnType_Free(char **types);
-char **Names_wpnType(   uf16 typecode);
-char **Names_unitTypes( uf16 typecode);
+char **Names_wpnType(   u16 typecode);
+char **Names_unitTypes( u16 typecode);
 char **Names_skillNames(u64  skillscode);
 char **Names_wpnEffects(u64  effect);
 

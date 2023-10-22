@@ -220,8 +220,8 @@ void Map_Unique_TilesindexfromTilemap(struct Map *map) {
         i32 tofind = map->tilemap[i] - tile_ind * TILE_DIVISOR;
         size_t *tile_orders = matrix_where(map->tilesindex, tile_ind, DARR_NUM(map->tilesindex));
         SDL_assert(DARR_LEN(tile_orders) == 1);
-        uf16 *tilesprite_ind = map->tilesprites_ind[tile_orders[0]];
-        uf16 tilesnum = map->tilesprites_num[tile_orders[0]];
+        u16 *tilesprite_ind = map->tilesprites_ind[tile_orders[0]];
+        u16 tilesnum = map->tilesprites_num[tile_orders[0]];
         bool found = false;
         for (size_t i = 0; i < tilesnum; i++) {
             if (tilesprite_ind[i] == tofind) {

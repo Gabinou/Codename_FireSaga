@@ -31,7 +31,7 @@ enum ITEM_TARGET {
 };
 
 /* --- DEFINITIONS --- */
-typedef if8(* use_function_t)(struct Item *, struct Unit *, struct Unit *);
+typedef i8(* use_function_t)(struct Item *, struct Unit *, struct Unit *);
 
 typedef struct Item {
     u8      json_element;  /* JSON_ELEM_bOFFSET = 0 */
@@ -44,10 +44,10 @@ typedef struct Item {
     struct Unit_stats malus_stats;
 
     struct Item_stats stats;
-    uf16  id;           /* 0 is NULL */
-    uf16  type;         /* and not type_exp */
-    uf16 *users;        /* item only usable by users.   NULL -> everyone */
-    uf16 *classes;      /* item only usable by classes. NULL -> everyone */
+    u16  id;           /* 0 is NULL */
+    u16  type;         /* and not type_exp */
+    u16 *users;        /* item only usable by users.   NULL -> everyone */
+    u16 *classes;      /* item only usable by classes. NULL -> everyone */
 
     /* -- Item Effects -- */
     u64 passive;
@@ -72,23 +72,23 @@ void Inventory_item_Swap(struct Inventory_item *items, u8 i1, u8 i2);
 void Item_Free(struct Item *item);
 
 /* --- I/O --- */
-void Item_Load(    struct dtab *items_dtab, if16 id);
+void Item_Load(    struct dtab *items_dtab, i16 id);
 void Item_All_Load(struct dtab *items_dtab);
 
-void Item_Filename(char *filename, if16 id);
+void Item_Filename(char *filename, i16 id);
 
 
 void Item_readJSON(       void *input, const cJSON *jitem);
 void Item_writeJSON(const void *input,       cJSON *jitem);
 
 /* --- Type --- */
-int Item_Archetype(if16 id);
+int Item_Archetype(i16 id);
 
 /* --- Is --- */
-bool Item_isStaff(  if16 id);
-bool Item_isShield( if16 id);
-bool Item_isWeapon( if16 id);
-bool Item_isOffhand(if16 id);
+bool Item_isStaff(  i16 id);
+bool Item_isShield( i16 id);
+bool Item_isWeapon( i16 id);
+bool Item_isOffhand(i16 id);
 
 bool Item_canUse(struct Item *item, const struct Unit *unit);
 
@@ -98,10 +98,10 @@ void Inventory_item_Break(  struct Inventory_item *invitem);
 void Inventory_item_Deplete(struct Inventory_item *invitem, int uses);
 
 /* --- Check --- */
-bool Item_ID_isValid(uf16 id); /* NOT for weapons */
+bool Item_ID_isValid(u16 id); /* NOT for weapons */
 
 /* --- Stat --- */
-int Item_Stat(const struct Item *item, if16 s);
+int Item_Stat(const struct Item *item, i16 s);
 
 /* -- Effects -- */
 #define REGISTER_ENUM(x, y) ITEM_EFFECT_ID_##x = y,
@@ -119,12 +119,12 @@ enum ITEM_EFFECTS_ORDER {
 };
 #undef REGISTER_ENUM
 
-#define REGISTER_ENUM(x, y) if8 useEffect_##x(struct Item *i, struct Unit *u, struct Unit *t);
+#define REGISTER_ENUM(x, y) i8 useEffect_##x(struct Item *i, struct Unit *u, struct Unit *t);
 #include "names/items_effects.h"
 #undef REGISTER_ENUM
 
 extern use_function_t item_effect_funcs[ITEM_EFFECT_NUM];
-extern if16           item_effect_ids  [ITEM_EFFECT_NUM];
+extern i16           item_effect_ids  [ITEM_EFFECT_NUM];
 
 
 #endif /* ITEM_H */

@@ -50,7 +50,7 @@ void Map_Renderer_Set(struct Map *map, SDL_Renderer *renderer) {
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
-void Map_Palettemap_Autoset(struct Map *map, uf16 flagsum) {
+void Map_Palettemap_Autoset(struct Map *map, u16 flagsum) {
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     Map_Palettemap_Reset(map);
     int size = map->row_len * map->col_len;

@@ -12,8 +12,8 @@
 /*  Nuance: MSYS2 has libargp, but NOT ported to mingw64.   */
 
 extern struct Input_Arguments {
-    uf16  cutScene;         /* plays the scene then exits */
-    uf16  talkScene;
+    u16  cutScene;         /* plays the scene then exits */
+    u16  talkScene;
     u8   map_index;
     u8   startup_mode;
     bool  print_help;       /* If help requested anywhere, print help and exit  */

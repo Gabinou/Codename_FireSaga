@@ -93,7 +93,7 @@ void ItemDropMenu_Elem_Pos(struct ItemDropMenu *idm, struct MenuComponent *mc);
 
 /* --- Selection --- */
 void ItemDropMenu_Drop(  struct ItemDropMenu *idm);
-void ItemDropMenu_Select(struct ItemDropMenu *idm, if8 elem);
+void ItemDropMenu_Select(struct ItemDropMenu *idm, i8 elem);
 
 /* --- Drawing --- */
 void ItemDropMenu_Draw(  struct MenuComponent *mc,  SDL_Texture *rt, SDL_Renderer *r);

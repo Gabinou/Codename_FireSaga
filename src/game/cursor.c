@@ -209,7 +209,7 @@ void Game_CursorfollowsMouse_onMenu(struct Game *sota) {
     /* - prioritize y - */
     if ((sota->cursor_move.x != 0) || (sota->cursor_move.x != 0)) {
         sota->moved_direction = Ternary_Direction(sota->cursor_move);
-        if8 new_elem = MenuComponent_Elem_Move(mc, sota->moved_direction);
+        i8 new_elem = MenuComponent_Elem_Move(mc, sota->moved_direction);
         if (new_elem != MENU_ELEM_NULL)
             sota->controller_code = CONTROLLER_MOUSE;
     }

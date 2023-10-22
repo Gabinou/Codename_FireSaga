@@ -412,8 +412,8 @@ void PopUp_Map_Combat_Update(struct PopUp_Map_Combat *pmc, struct n9Patch *n9pat
     SDL_assert(n9patch->size_pixels.x > 0);
     SDL_assert(n9patch->size_pixels.y > 0);
 
-    if16 menu_w = (red_patch.size_pixels.x + blue_patch.size_pixels.x);
-    if16 menu_h = (red_patch.size_pixels.y + POPUP_MAP_COMBAT_HEADER_PLUS_HEIGHT);
+    i16 menu_w = (red_patch.size_pixels.x + blue_patch.size_pixels.x);
+    i16 menu_h = (red_patch.size_pixels.y + POPUP_MAP_COMBAT_HEADER_PLUS_HEIGHT);
     SDL_assert(menu_w > 0);
     SDL_assert(menu_h > 0);
 

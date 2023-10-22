@@ -1073,7 +1073,7 @@ void receive_event_Combat_Start(struct Game *sota, SDL_Event *userevent) {
     move.x = move.x >  1 ?  1 : move.x;
     move.y = move.y < -1 ? -1 : move.y;
     move.y = move.y >  1 ?  1 : move.y;
-    if8 direction = Ternary_Direction(move);
+    i8 direction = Ternary_Direction(move);
     /* -- reset animation states -- */
 
     switch (direction) {

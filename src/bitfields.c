@@ -16,13 +16,13 @@ void Bitfield_Off(u32 *bf, size_t bit) {
 
 /* -- Boolean Operations -- */
 void Bitfield_And(u32 *bf1, u32 *bf2, u32 *out, size_t len) {
-    for (uf32 i = 0; i < len; i++)
+    for (u32 i = 0; i < len; i++)
         out[i] = bf1[i] & bf2[i];
 }
 
 bool Bitfield_All(u32 *bf1, u32 *bf2, size_t len) {
     bool out = true;
-    for (uf32 i = 0; i < len; i++)
+    for (u32 i = 0; i < len; i++)
         out &= (bf1[i] == bf2[i]);
     return (out);
 }

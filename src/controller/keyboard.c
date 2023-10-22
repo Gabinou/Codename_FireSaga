@@ -40,13 +40,13 @@ struct controllerKeyboard controllerKeyboard_default = {
     .inputmap           = NULL,
 };
 
-void Keyboard_Held(if8 *held, size_t *h_num, if32 *timeheld, if8 *pressed, size_t p_num, if32 dt) {
+void Keyboard_Held(i8 *held, size_t *h_num, i32 *timeheld, i8 *pressed, size_t p_num, i32 dt) {
     SOTA_Log_FPS("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     SDL_assert(p_num < SOTA_INPUT_END);
     SDL_assert(p_num >= 0);
     bool arrequal = false;
     if ((*h_num == p_num) && (p_num != 0))
-        arrequal = if8_all_equal(held, pressed, p_num);
+        arrequal = i8_all_equal(held, pressed, p_num);
 
     if (arrequal) {
         /* - Keep pressing same buttons - */

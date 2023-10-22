@@ -7,7 +7,7 @@
 
 typedef struct controllerTouchpad {
     SDL_TouchID touchID;
-    if32 controller_type;
+    i32 controller_type;
 
 } controllerTouchpad;
 extern struct controllerTouchpad controllerTouchpad_default;

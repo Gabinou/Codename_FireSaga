@@ -83,7 +83,7 @@ void ItemDropMenu_Elem_Pos(struct ItemDropMenu *idm, struct MenuComponent *mc) {
 }
 
 /* --- Selection --- */
-void ItemDropMenu_Select(struct ItemDropMenu *idm, if8 elem) {
+void ItemDropMenu_Select(struct ItemDropMenu *idm, i8 elem) {
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     if (elem == IDM_ELEM_YES)
         ItemDropMenu_Drop(idm);

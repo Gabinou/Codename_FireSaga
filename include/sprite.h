@@ -51,14 +51,14 @@ struct Spritesheet {
     SDL_Surface *surface_shaded;    /* shaded pixels to be shown on screen  */
     SDL_Palette *palette;
 
-    if16 *loops_pos;    /* [loop] flattened index for 8 cols, starting top left */
-    if8 *frames;        /* [loop], number of frames */
-    if16 **speeds;      /* [loop][frame], ms */
-    if8 *loop_modes;    /* [loop] */
-    if8 loop_num;       /* mostly for debugging, checking spritesheet size */
-    if8 current_loop;
-    if8 current_frame;
-    if8 frame_i;
+    i16 *loops_pos;    /* [loop] flattened index for 8 cols, starting top left */
+    i8 *frames;        /* [loop], number of frames */
+    i16 **speeds;      /* [loop][frame], ms */
+    i8 *loop_modes;    /* [loop] */
+    i8 loop_num;       /* mostly for debugging, checking spritesheet size */
+    i8 current_loop;
+    i8 current_frame;
+    i8 frame_i;
 };
 extern struct Spritesheet Spritesheet_default;
 
@@ -85,7 +85,7 @@ typedef struct Sprite {
     SDL_Rect srcrect; /* x,y,w,h */
     SDL_Rect dstrect; /* x,y,w,h */
     SDL_Rect srcrect_shadow; /* x,y,w,h -> where sprite gets shaded */
-    uf16 tilesize[TWO_D];
+    u16 tilesize[TWO_D];
     SDL_RendererFlip flip;
 
     SDL_Texture *texture;  /* pixels actually shown on screen */
@@ -117,7 +117,7 @@ void Sprite_Free(struct Sprite *s);
 
 /* --- Initialization --- */
 void Sprite_Load(               struct Sprite *s, const char *n, SDL_Renderer *r);
-void Sprite_Tilesize_Set(       struct Sprite *s, uf16 *t);
+void Sprite_Tilesize_Set(       struct Sprite *s, u16 *t);
 void Sprite_Map_Unit_Load(      struct Sprite *s, struct Unit *u, SDL_Renderer *r);
 void Sprite_defaultShaders_Load(struct Sprite *s);
 

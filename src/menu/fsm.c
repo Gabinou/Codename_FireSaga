@@ -681,7 +681,7 @@ void fsm_eCncl_sGmpMap_ssMenu_mSM(struct Game *sota, struct MenuComponent *mc) {
     tnecs_entity_t menu_popped_entity = Game_menuStack_Pop(sota, destroy);
     SDL_assert(menu_popped_entity > 0);
 
-    if8 new_substate = GAME_SUBSTATE_STANDBY;
+    i8 new_substate = GAME_SUBSTATE_STANDBY;
     strncpy(sota->reason, "stops showing stats menu", sizeof(sota->reason));
     Game_subState_Set(sota, new_substate, sota->reason);
 
@@ -1027,7 +1027,7 @@ void fsm_Pop_sGmpMap_ssMenu_mPSM(struct Game *sota, struct MenuComponent *mc) {
     /* Popped menu reverter */
     // TODO fsm_Pop_sGmpMap_ssMenu_m -> for menu popping
     struct PlayerSelectMenu *menu_ptr = (struct PlayerSelectMenu *)mc->data;
-    if8 new_substate = -1;
+    i8 new_substate = -1;
 
     switch (menu_ptr->id) {
         case MENU_PLAYER_SELECT_UNIT_ACTION:

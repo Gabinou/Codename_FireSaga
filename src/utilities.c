@@ -152,7 +152,7 @@ int int_inbounds(int pos, int boundmin, int boundmax) {
     return (out);
 }
 
-bool if8_all_equal(if8 *arr1, if8 *arr2, size_t len) {
+bool i8_all_equal(i8 *arr1, i8 *arr2, size_t len) {
     SOTA_Log_FPS("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     bool arrequal = true;
     for (int i = 0; i < len; i++) {
@@ -351,7 +351,7 @@ void SOTA_Free_Textures(SDL_Texture **textures, int num) {
 }
 
 /* --- Weapons and items --- */
-struct WpnorItem Utilities_WpnorItem(if16 id, struct dtab *weapons_dtab, struct dtab *items_dtab) {
+struct WpnorItem Utilities_WpnorItem(i16 id, struct dtab *weapons_dtab, struct dtab *items_dtab) {
     SOTA_Log_FPS("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     /* --- PRELIMINARIES --- */
     SDL_assert(weapons_dtab != NULL);

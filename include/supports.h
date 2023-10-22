@@ -33,17 +33,17 @@ enum SUPPORT_LEVELS {
 
 /* --- STRUCTS --- */
 struct Support {
-    uf16 other_id;
-    uf16 other_type;
-    if8 level;
+    u16 other_id;
+    u16 other_type;
+    i8 level;
 };
 
 /* --- Support Object --- */
-struct Computed_Stats Support_Bonus(  struct Support  s, uf16 st);
-struct Computed_Stats Support_Bonuses(struct Support *s, uf16 sn, uf16 st);
+struct Computed_Stats Support_Bonus(  struct Support  s, u16 st);
+struct Computed_Stats Support_Bonuses(struct Support *s, u16 sn, u16 st);
 
 /* --- Support Computed_Stats --- */
-void Support_Type_Bonus(struct Computed_Stats *b, uf16 t, uf16 l);
-void Support_Flat_Bonus(struct Computed_Stats *b, uf16 l);
+void Support_Type_Bonus(struct Computed_Stats *b, u16 t, u16 l);
+void Support_Flat_Bonus(struct Computed_Stats *b, u16 l);
 
 #endif /* SUPPORTS_H */

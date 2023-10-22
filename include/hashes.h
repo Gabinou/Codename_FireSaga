@@ -22,16 +22,16 @@ extern void Hashes_supportHashes();
 extern void Hashes_itemHashes();
 
 /* --- Hashing --- */
-extern uf16 Hashes_unitHash2ID(u64 hash);
-extern uf16 Hashes_unitName2ID(char *name);
-extern uf16 Hashes_itemHash2ID(u64 hash);
-extern uf16 Hashes_itemName2ID(char *name);
-extern uf16 Hashes_shopkeeperName2ID(char *name);
-extern uf16 Hashes_shopkeeperHash2ID(u64 hash);
-extern uf16 Hashes_skillName2ID(char *name);
-extern uf16 Hashes_skillHash2ID(u64 hash);
-extern uf16 Hashes_supportName2ID(char *name);
-extern uf16 Hashes_supportHash2ID(u64 hash);
+extern u16 Hashes_unitHash2ID(u64 hash);
+extern u16 Hashes_unitName2ID(char *name);
+extern u16 Hashes_itemHash2ID(u64 hash);
+extern u16 Hashes_itemName2ID(char *name);
+extern u16 Hashes_shopkeeperName2ID(char *name);
+extern u16 Hashes_shopkeeperHash2ID(u64 hash);
+extern u16 Hashes_skillName2ID(char *name);
+extern u16 Hashes_skillHash2ID(u64 hash);
+extern u16 Hashes_supportName2ID(char *name);
+extern u16 Hashes_supportHash2ID(u64 hash);
 
 /* -- API -- */
 extern void Hashes_Free();

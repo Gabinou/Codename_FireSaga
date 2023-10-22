@@ -194,7 +194,7 @@ bool Gamepad_isPressed(struct controllerGamepad *gp, int sota_button) {
 
 struct Point Gamepad_Joystick_Direction(struct controllerGamepad *gp) {
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
-    if32    jdead     =  gp->deadzone_joystick;
+    i32    jdead     =  gp->deadzone_joystick;
     struct Point cursor_move = {0};
     struct GamepadInputMap      *im = gp->inputmap;
     for (int i = 0; i < gp->controllers_num; i++) {
@@ -231,7 +231,7 @@ struct Point Gamepad_Joystick_Direction(struct controllerGamepad *gp) {
 }
 
 
-void Gamepad_removeController(struct controllerGamepad *gp, if32 joystick_instance) {
+void Gamepad_removeController(struct controllerGamepad *gp, i32 joystick_instance) {
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     SOTA_Log_Debug("remove joystick %ld", joystick_instance);
     for (int i = 0; i < gp->controllers_num; i++) {
@@ -245,7 +245,7 @@ void Gamepad_removeController(struct controllerGamepad *gp, if32 joystick_instan
                 int bytesize = num_to_move * sizeof(*conts);
                 memmove(conts + i - 1, conts + i, bytesize);
 
-                if32 *joyst = gp->joystick_instances;
+                i32 *joyst = gp->joystick_instances;
                 bytesize = num_to_move * sizeof(*gp->joystick_instances);
                 memmove(joyst + i - 1, joyst + i, bytesize);
             }
@@ -275,7 +275,7 @@ void _Gamepad_Realloc(struct controllerGamepad *gp) {
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
-void Gamepad_addController(struct controllerGamepad *gp, if32 joystick_device) {
+void Gamepad_addController(struct controllerGamepad *gp, i32 joystick_device) {
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     SOTA_Log_Debug("add joystick %ld", joystick_device);
     SDL_assert(SDL_IsGameController(joystick_device));
@@ -291,13 +291,13 @@ void Gamepad_addController(struct controllerGamepad *gp, if32 joystick_device) {
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
-void Gamepad_Held(if8 *held, size_t *h_num, if32 *held_ns, if8 *pressed, size_t p_num, if32 dt_ns) {
+void Gamepad_Held(i8 *held, size_t *h_num, i32 *held_ns, i8 *pressed, size_t p_num, i32 dt_ns) {
     SOTA_Log_FPS("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     SDL_assert(p_num < SOTA_INPUT_END);
     SDL_assert(p_num >= 0);
     bool arrequal = false;
     if ((*h_num == p_num) && (p_num != 0))
-        arrequal = if8_all_equal(held, pressed, p_num);
+        arrequal = i8_all_equal(held, pressed, p_num);
 
     if (arrequal) {
         /* - Keep pressing same buttons - */

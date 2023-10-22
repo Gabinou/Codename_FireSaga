@@ -63,7 +63,7 @@ void Graph_Stat_Remove(struct Graph *graph, u8 stat_id) {
 }
 
 void Graph_Stat_Add(struct Graph *graph, struct Unit_stats *base_stats,
-                    struct Unit_stats *grown_stats, if8 level, if8 base_level, u8 stat_id) {
+                    struct Unit_stats *grown_stats, i8 level, i8 base_level, u8 stat_id) {
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     u8 *stat_arr, *base_arr, total_grown = 0;
     struct GraphStat graph_stat = GraphStat_default;

@@ -33,7 +33,7 @@ extern struct MouseInputMap {
 
 typedef struct controllerMouse {
     struct MouseInputMap inputmap;
-    if32 controller_type;
+    i32 controller_type;
 } controllerMouse;
 extern struct controllerMouse controllerMouse_default;
 

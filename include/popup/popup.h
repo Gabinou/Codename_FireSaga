@@ -18,9 +18,9 @@ struct PopUp {
 
     void    *data;
     float   slidefactor;
-    if32    update_wait_ns;
-    if32    timer_ns;
-    if8     type;
+    i32    update_wait_ns;
+    i32    timer_ns;
+    i8     type;
     u8     slidetype;
     bool    visible;
 };

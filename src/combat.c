@@ -35,7 +35,7 @@ struct Combat_Death Combat_Death_default = {
 bool Combat_canDouble(const struct Unit *restrict attacker, const struct Unit *restrict defender) {
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     SDL_assert(attacker && defender);
-    if8 diff        = (attacker->computed_stats.speed - defender->computed_stats.speed);
+    i8 diff        = (attacker->computed_stats.speed - defender->computed_stats.speed);
     bool doubles    = (diff > SOTA_DOUBLING_SPEED);
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
     return (doubles);

@@ -648,7 +648,7 @@ void fsm_eCrsMvs_ssMenu(struct Game *sota, tnecs_entity_t mover_entity,
     /* Find menu elem in direction */
     tnecs_entity_t menu = sota->menu_stack[DARR_NUM(sota->menu_stack) - 1];
     struct MenuComponent *mc = TNECS_GET_COMPONENT(sota->world, menu, MenuComponent);
-    if8 new_elem;
+    i8 new_elem;
     switch (mc->type) {
         case MENU_TYPE_PLAYER_SELECT:
             new_elem = Periodic_Elem_Move(mc, sota->moved_direction, 0, mc->elem_num);
@@ -1170,8 +1170,8 @@ void fsm_eMenuRight_sGmpMap_ssMenu(struct Game *sota, i32 controller_type) {
 
     /* - Determine which menu is the next one - */
     SDL_assert((mc_popped->type == MENU_TYPE_STATS) || (mc_popped->type == MENU_TYPE_GROWTHS));
-    if32 current_id = stats_menu_cycle_inv[mc_popped->type];
-    if32 new_id = (current_id == (STATS_MENU_CYCLE_NUM - 1)) ? 0 : ++current_id;
+    i32 current_id = stats_menu_cycle_inv[mc_popped->type];
+    i32 new_id = (current_id == (STATS_MENU_CYCLE_NUM - 1)) ? 0 : ++current_id;
     struct MenuComponent *new_menu_comp;
     switch (stats_menu_cycle[new_id]) {
         case MENU_TYPE_STATS:
@@ -1226,8 +1226,8 @@ void fsm_eMenuLeft_sGmpMap_ssMenu(struct Game *sota, i32 controller_type) {
 
     /* - Determine which menu is the next one - */
     SDL_assert((mc_popped->type == MENU_TYPE_STATS) || (mc_popped->type == MENU_TYPE_GROWTHS));
-    if32 current_id = stats_menu_cycle_inv[mc_popped->type];
-    if32 new_id = (current_id <= 0) ? (STATS_MENU_CYCLE_NUM - 1) : --current_id;
+    i32 current_id = stats_menu_cycle_inv[mc_popped->type];
+    i32 new_id = (current_id <= 0) ? (STATS_MENU_CYCLE_NUM - 1) : --current_id;
     struct MenuComponent *new_menu_comp;
     switch (stats_menu_cycle[new_id]) {
         case MENU_TYPE_STATS:

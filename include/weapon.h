@@ -13,7 +13,7 @@ typedef struct Weapon {
 
     u8 handedness;
     u8 subtype;        /* ex: thrust swords     */
-    uf16 effective;
+    u16 effective;
     bool isMagic   : 1;
     bool canAttack : 1; /* for special weapons   */
     struct Item         *item;
@@ -34,32 +34,32 @@ void Weapon_Free(struct Weapon *wpn);
 void Weapon_Init(struct Weapon *wpn);
 
 /* --- isCan? --- */
-uf16 Weapon_TypeExp(          const struct Weapon *wpn);
+u16 Weapon_TypeExp(          const struct Weapon *wpn);
 bool Weapon_canInfuse(        const struct Weapon *wpn, const struct Inventory_item *item);
 bool Weapon_canAttack(              struct Weapon *wpn);
 bool Weapon_canAttackfromID(  const struct Weapon *wpn);
 bool Weapon_canAttackfromType(const struct Weapon *wpn);
 
-bool Weapon_isStaff(   uf16 id);
-bool Weapon_isShield(  uf16 id);
-bool Weapon_isOffhand( uf16 id);
-bool Weapon_ID_isValid(uf16 id);
+bool Weapon_isStaff(   u16 id);
+bool Weapon_isShield(  u16 id);
+bool Weapon_isOffhand( u16 id);
+bool Weapon_ID_isValid(u16 id);
 
 /* --- I/O --- */
 void Weapon_readJSON(       void *input, const cJSON *const json);
 void Weapon_writeJSON(const void *input,       cJSON       *json);
 
-void Weapon_Load(     struct dtab *weapons_dtab, if16 id);
-void Weapon_Save(     struct dtab *weapons_dtab, if16 id);
+void Weapon_Load(     struct dtab *weapons_dtab, i16 id);
+void Weapon_Save(     struct dtab *weapons_dtab, i16 id);
 void Weapons_All_Load(struct dtab *weapons_dtab);
 void Weapons_All_Save(struct dtab *weapons_dtab);
 void Weapons_All_Free(struct dtab *weapons_dtab);
 
-void Weapon_Filename(char *filename, if16 id);
+void Weapon_Filename(char *filename, i16 id);
 
 /* --- Stats --- */
-int Weapon_Stat(        const struct Weapon *wpn, if16 s);
-int Weapon_Stat_inRange(const struct Weapon *wpn, if16 s, int d);
+int Weapon_Stat(        const struct Weapon *wpn, i16 s);
+int Weapon_Stat_inRange(const struct Weapon *wpn, i16 s, int d);
 
 /* --- Repair --- */
 // Making weapons repairable through MAGIC only is baka.

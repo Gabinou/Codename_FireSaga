@@ -205,7 +205,7 @@ struct Game *Game_Init() {
     out_game->settings = Settings_default;
     SDL_assert(out_game->settings.FPS.cap > 0);
     SOTA_Log_Debug("Init game");
-    if16 flags = 0;
+    i16 flags = 0;
     strcpy(out_game->filename_menu, PATH_JOIN("..", "assets", "GUI", "n9Patch", "menu8px.png"));
     /* init weapons_dtab */
     if (out_game->weapons_dtab != NULL) {
@@ -456,7 +456,7 @@ void Game_Startup(struct Game *sota, struct Input_Arguments in_args) {
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
-void Game_Save_Copy(const if16 from_ind, const if16 to_ind) {
+void Game_Save_Copy(const i16 from_ind, const i16 to_ind) {
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     SDL_assert(PHYSFS_exists(SAVE_FOLDER));
     char filenameto[DEFAULT_BUFFER_SIZE] = SAVE_FOLDER;
@@ -471,7 +471,7 @@ void Game_Save_Copy(const if16 from_ind, const if16 to_ind) {
     PHYSFS_file *pfrom = PHYSFS_openRead(filenamefrom);
     SDL_assert(pfrom != NULL);
     PHYSFS_file *pto = PHYSFS_openWrite(filenameto);
-    if16 len = PHYSFS_fileLength(pfrom);
+    i16 len = PHYSFS_fileLength(pfrom);
     char longbuffer[len];
     PHYSFS_readBytes(pfrom, longbuffer, len);
     PHYSFS_writeBytes(pto, longbuffer, len);
@@ -480,7 +480,7 @@ void Game_Save_Copy(const if16 from_ind, const if16 to_ind) {
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
-void Game_Save_Delete(const if16 save_ind) {
+void Game_Save_Delete(const i16 save_ind) {
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     SDL_assert(PHYSFS_exists(SAVE_FOLDER));
     char filename[DEFAULT_BUFFER_SIZE] = SAVE_FOLDER;
@@ -492,7 +492,7 @@ void Game_Save_Delete(const if16 save_ind) {
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
-void Game_loadJSON(struct Game *sota, const if16 save_ind) {
+void Game_loadJSON(struct Game *sota, const i16 save_ind) {
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     SDL_assert(PHYSFS_exists(SAVE_FOLDER));
     char filename[DEFAULT_BUFFER_SIZE] = SAVE_FOLDER;
@@ -510,7 +510,7 @@ void Game_loadJSON(struct Game *sota, const if16 save_ind) {
     sota->tinymt32.mat2 = cJSON_GetNumberValue(jRN_mat2);
     sota->tinymt32.tmat = cJSON_GetNumberValue(jRN_tmat);
     cJSON *jelement;
-    if16 i = 0;
+    i16 i = 0;
     cJSON_ArrayForEach(jelement, jRN_status) {
         if ((i >= 0) && (i < 4)) {
             sota->tinymt32.status[i] = cJSON_GetNumberValue(jelement);
@@ -539,7 +539,7 @@ void Game_loadJSON(struct Game *sota, const if16 save_ind) {
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
-void Game_saveJSON(struct Game *sota, const if16 save_ind) {
+void Game_saveJSON(struct Game *sota, const i16 save_ind) {
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     if (!PHYSFS_exists(SAVE_FOLDER))
         PHYSFS_mkdir(SAVE_FOLDER);
@@ -594,7 +594,7 @@ void Game_saveJSON(struct Game *sota, const if16 save_ind) {
 }
 
 /* --- State --- */
-void Game_subState_Set(struct Game *sota, const if8 new_substate, const char *reason) {
+void Game_subState_Set(struct Game *sota, const i8 new_substate, const char *reason) {
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     SOTA_Log_Debug("Substate set to %d because: %s", new_substate, reason);
     SOTA_Log_Debug("%s", reason);
@@ -615,7 +615,7 @@ void Game_subState_Set(struct Game *sota, const if8 new_substate, const char *re
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
-void Game_State_Set(struct Game *sota, const if8 new_state, const char *reason) {
+void Game_State_Set(struct Game *sota, const i8 new_state, const char *reason) {
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     SOTA_Log_Debug("State set to %d, because: %s", new_state, reason);
     SOTA_Log_Debug("%s", reason);
@@ -749,8 +749,8 @@ void Game_FPS_Create(struct Game *sota, i64 in_update_time_ns) {
     SDL_assert(position != NULL);
     position->onTilemap = false;
     Position_Bounds_Set(position, 0, sota->settings.res.x, 0, sota->settings.res.y);
-    if16 in_x = sota->settings.res.x * 0.92f;
-    if16 in_y = sota->settings.res.y * 0.02f;
+    i16 in_x = sota->settings.res.x * 0.92f;
+    i16 in_y = sota->settings.res.y * 0.02f;
     Position_Pos_Set(position, in_x, in_y);
     position->scale[0] = FPS_SCALE;
     position->scale[1] = FPS_SCALE;

@@ -29,17 +29,17 @@ struct PlayerSelectMenu {
     struct Point pos; /* MENU_POS_bOFFSET = 0 */
 
     char **option_names;        /* [option_i] */
-    uf32  *options;             /* [option_i] */
+    u32  *options;             /* [option_i] */
     SDL_Texture *texture;
     struct PixelFont *pixelnours;
     struct Padding menu_padding;
 
-    uf32 option_num;
-    uf32 id;
-    if32 row_height; /* [pixels] total height is row_height * option_num */
-    if32 text_width; /* [pixels] */
-    if32 icon_width;
-    if32 text_alignment;
+    u32 option_num;
+    u32 id;
+    i32 row_height; /* [pixels] total height is row_height * option_num */
+    i32 text_width; /* [pixels] */
+    i32 icon_width;
+    i32 text_alignment;
 
     bool update : 1;
 };
@@ -53,8 +53,8 @@ void PlayerSelectMenu_Load(struct PlayerSelectMenu *m, SDL_Renderer *r, struct n
 
 /* --- Menu Elem properties --- */
 /* -- Options -- */
-void PlayerSelectMenu_Option_Add(   struct PlayerSelectMenu *m, uf32 op);
-int  PlayerSelectMenu_Option_Index( struct PlayerSelectMenu *m, uf32 op);
+void PlayerSelectMenu_Option_Add(   struct PlayerSelectMenu *m, u32 op);
+int  PlayerSelectMenu_Option_Index( struct PlayerSelectMenu *m, u32 op);
 void PlayerSelectMenu_Compute_Size( struct PlayerSelectMenu *m, struct n9Patch *n9);
 void PlayerSelectMenu_Options_Reset(struct PlayerSelectMenu *m);
 

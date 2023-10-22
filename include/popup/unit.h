@@ -116,7 +116,7 @@ typedef struct PopUp_Unit {
     struct PixelFont *pixelnours;
     struct PixelFont *pixelnours_big;
     bool update;
-    uf32 corner; /* SOTA_DIRECTION_DIAGONAL */
+    u32 corner; /* SOTA_DIRECTION_DIAGONAL */
     struct Point offset; /* amount popup moves in one frame?*/
     struct Point cursor_limit_min;
     struct Point cursor_limit_max;

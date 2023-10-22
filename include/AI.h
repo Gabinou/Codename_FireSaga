@@ -17,7 +17,7 @@ struct Game;
 
 struct AI_PushPull_Out {
     struct Point pos;
-    if8 rating;
+    i8 rating;
 };
 
 enum AI_RATINGS {
@@ -113,14 +113,14 @@ extern tnecs_entity_t AI_interimTarget_Compute(struct Map *in_map,
                                                tnecs_entity_t in_actor);
 extern tnecs_entity_t AI_MovetoTarget(struct Map *in_map, tnecs_entity_t in_actor);
 
-extern if8 AI_Forecast_Rating(struct Combat_Forecast in_forecast);
-extern if8 AI_Silence_Rating(tnecs_world_t *in_world, u8 in_hit_rate,
-                             tnecs_entity_t in_enemy_ent);
+extern i8 AI_Forecast_Rating(struct Combat_Forecast in_forecast);
+extern i8 AI_Silence_Rating(tnecs_world_t *in_world, u8 in_hit_rate,
+                            tnecs_entity_t in_enemy_ent);
 
 extern struct AI_PushPull_Out AI_PushPull_bestPosition(i32 *in_gradientmap,
                                                        size_t row_len,
                                                        size_t col_len, i32 pushpull_distance, struct Point victim_pos,
-                                                       if8 sign);
+                                                       i8 sign);
 
 extern struct AI_PushPull_Out AI_PushPull_Friendly_Offensively_Rating(
         tnecs_world_t *in_world,

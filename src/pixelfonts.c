@@ -153,7 +153,7 @@ struct PixelFont *TextureFont_Alloc(u8 row_len, u8 col_len) {
 
 
 /*--- Internals --- */
-void PixelFont_Swap_Palette(struct PixelFont *font, SDL_Renderer *renderer, if8 NEWw, if8 NEWb) {
+void PixelFont_Swap_Palette(struct PixelFont *font, SDL_Renderer *renderer, i8 NEWw, i8 NEWb) {
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     SDL_assert(NEWw < PALETTE_NES_COLOR_NUM);
     SDL_assert(NEWb < PALETTE_NES_COLOR_NUM);
@@ -161,7 +161,7 @@ void PixelFont_Swap_Palette(struct PixelFont *font, SDL_Renderer *renderer, if8 
 
     /* Save old colors fropm palette_NES, */
     /* before changing anything */
-    if8 NESb = 1, NESw = PALETTE_NES_COLOR_NUM - 1;
+    i8 NESb = 1, NESw = PALETTE_NES_COLOR_NUM - 1;
     SDL_Color old_white, old_black, new_white, new_black;
     if (NEWw > -1) {
         old_white = palette_NES->colors[NESw];
@@ -525,19 +525,19 @@ int PixelFont_Scroll(struct PixelFont *font, u64 time_ns) {
 }
 
 /*--- Writing --- */
-void PixelFont_Write_Len(struct PixelFont *font, SDL_Renderer *rdr, char *text, uf32 x, uf32 y) {
+void PixelFont_Write_Len(struct PixelFont *font, SDL_Renderer *rdr, char *text, u32 x, u32 y) {
     size_t len = strlen(text);
     PixelFont_Write(font, rdr, text, len, x, y);
 }
 
-void PixelFont_Write_Scroll(struct PixelFont *font, SDL_Renderer *rdr, char *text, uf32 x, uf32 y) {
+void PixelFont_Write_Scroll(struct PixelFont *font, SDL_Renderer *rdr, char *text, u32 x, u32 y) {
     size_t len = strlen(text);
     size_t to_render = font->scroll_len > len ? len : font->scroll_len;
     PixelFont_Write(font, rdr, text, to_render, x, y);
 }
 
 void PixelFont_Write(struct PixelFont *font, SDL_Renderer *renderer, char *text,
-                     size_t len, uf32 pos_x, uf32 pos_y) {
+                     size_t len, u32 pos_x, u32 pos_y) {
     SOTA_Log_FPS("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     SDL_assert(font          != NULL);
     SDL_assert(renderer      != NULL);

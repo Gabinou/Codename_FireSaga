@@ -55,7 +55,7 @@ int Periodic_Elem_Move(struct MenuComponent *in_menu, int direction, int min, in
     SDL_assert(sizeof(*in_menu->elem_links) == MENU_ELEM_DIRECTIONS_PACKED_BYTESIZE);
 
     /* Find next elem using direction and array of links */
-    if8 out = -1;
+    i8 out = -1;
     if        (direction == SOTA_DIRECTION_BOTTOM) {
         out = in_menu->elem == (max - 1) ? min : in_menu->elem + 1;
     } else if (direction == SOTA_DIRECTION_TOP) {
@@ -68,7 +68,7 @@ int Periodic_Elem_Move(struct MenuComponent *in_menu, int direction, int min, in
     return (out);
 }
 
-void MenuComponent_Elem_Set(struct MenuComponent *mc, struct Game *sota, if8 new_elem) {
+void MenuComponent_Elem_Set(struct MenuComponent *mc, struct Game *sota, i8 new_elem) {
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     SDL_assert(new_elem >= 0);
     SDL_assert(new_elem != MENU_ELEM_NULL);
@@ -89,12 +89,12 @@ int MenuComponent_Elem_Move(struct MenuComponent *in_menu, int direction) {
     direction = Ternary_Direction_Straight(direction);
     SDL_assert(sizeof(*in_menu->elem_links) == MENU_ELEM_DIRECTIONS_PACKED_BYTESIZE);
 
-    /* Cast packed struct of if8 to array */
+    /* Cast packed struct of i8 to array */
     SDL_assert(in_menu->elem_links != NULL);
-    if8 *links = (if8 *) &in_menu->elem_links[in_menu->elem];
+    i8 *links = (i8 *) &in_menu->elem_links[in_menu->elem];
 
     // Find next elem using direction and array of links
-    if8 out = in_menu->elem;
+    i8 out = in_menu->elem;
     int direction_i = direction_arr_i[direction];
     if (links[direction_i] < in_menu->elem_num)
         out = links[direction_i] > MENU_ELEM_NULL ? links[direction_i] : in_menu->elem;
@@ -105,7 +105,7 @@ int MenuComponent_Elem_Move(struct MenuComponent *in_menu, int direction) {
 void MenuComponent_Elem_Boxes_Check(struct MenuComponent *mc) {
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     /* Fit elem_box to linked elems snuggly */
-    for (uf32 i = 0; i < mc->elem_num; i++) {
+    for (u32 i = 0; i < mc->elem_num; i++) {
         /* Get elem pos and initial box */
         struct Point *elem_box = &(mc->elem_box[i]);
         SDL_assert(elem_box->x == mc->elem_box[i].x);
@@ -114,12 +114,12 @@ void MenuComponent_Elem_Boxes_Check(struct MenuComponent *mc) {
         SDL_assert(elem_pos->x == mc->elem_pos[i].x);
         SDL_assert(elem_pos->y == mc->elem_pos[i].y);
         /* - cast link struct to array - */
-        if8 *links = (if8 *) & (mc->elem_links[i]);
+        i8 *links = (i8 *) & (mc->elem_links[i]);
 
         /* -- Fitting box to 4 linked elems if they exist -- */
         /* - right link - */
         int direction_i = direction_arr_i[SOTA_DIRECTION_RIGHT];
-        if8 link = links[direction_i];
+        i8 link = links[direction_i];
         SDL_assert(link < mc->elem_num);
         if (link != MENU_ELEM_NULL) {
             struct Point *link_pos = &(mc->elem_pos[link]);

@@ -18,7 +18,7 @@ typedef struct Text {
     SDL_Texture        *texture;
     struct PixelFont   *pixelfont;
     char                line[DEFAULT_BUFFER_SIZE];
-    if16                len;
+    i16                len;
     SDL_Rect            rect;
     i64                 update_time_ns; /* 0 means update one time */
     onUpdate_t          onUpdate;

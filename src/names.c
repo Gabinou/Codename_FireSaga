@@ -27,7 +27,7 @@ void Names_unitNames() {
     global_unitNames = DARR_INIT(global_unitNames, char *, 128);
     SDL_assert(global_unitNames != NULL);
 
-    DTAB_INIT(global_unitOrders, uf16);
+    DTAB_INIT(global_unitOrders, u16);
     SDL_assert(global_unitOrders != NULL);
     dtab_add(global_unitOrders, &order, UNIT_NULL);
     order++;
@@ -41,7 +41,7 @@ void Names_unitNames() {
     SOTA_Log_Debug("%d", UNIT_ID_##x);\
     SOTA_Log_Debug("%s", #x);\
     dtab_add(global_unitOrders, &order, UNIT_ID_##x);\
-    SDL_assert(*(uf16 *)dtab_get(global_unitOrders, UNIT_ID_##x) == order);\
+    SDL_assert(*(u16 *)dtab_get(global_unitOrders, UNIT_ID_##x) == order);\
     order++;\
     DARR_PUT(global_unitNames, nstr_camelCase(nstr_toLower(nstr_replaceSingle(temp_str, '_', ' ')), ' ', 2));
 #include "names/units_PC.h"
@@ -105,8 +105,8 @@ void Names_unitStates() {
 }
 #undef REGISTER_ENUM
 
-char **global_itemNames = NULL;
-struct dtab *global_itemOrders = NULL;
+char **global_itemNames         = NULL;
+struct dtab *global_itemOrders  = NULL;
 void Names_itemNames() {
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     size_t order = 0;
@@ -114,7 +114,7 @@ void Names_itemNames() {
     global_itemNames = DARR_INIT(global_itemNames, char *, 128);
     DARR_PUT(global_itemNames, ITEM_NAME_INVALID);
 
-    DTAB_INIT(global_itemOrders, uf16);
+    DTAB_INIT(global_itemOrders, i32);
     SDL_assert(global_itemOrders != NULL);
     // SDL_assert(order == global_itemOrders->num);
     dtab_add(global_itemOrders, &order, ITEM_NULL);
@@ -277,10 +277,10 @@ char **Names_unitstateNames(uint32_t in_statecode) {
 #undef  REGISTER_ENUM
 
 #define REGISTER_ENUM(name, id, x, y, z) class_equippables[UNIT_CLASS_##name] = z;
-uf16 *class_equippables;
+u16 *class_equippables;
 void Names_class_equippables() {
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
-    class_equippables = DARR_INIT(class_equippables, uf16, UNIT_CLASS_END);
+    class_equippables = DARR_INIT(class_equippables, u16, UNIT_CLASS_END);
     // DARR_PUT(class_equippables, 0);
 #include "names/classes.h"
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
@@ -292,7 +292,7 @@ void Names_class_equippables() {
         strncpy(temp_str, #x, sizeof(#x));\
         DARR_PUT(out, nstr_camelCase(nstr_toLower(nstr_replaceSingle(temp_str, '_', ' ')), ' ', 2));\
     }
-char **Names_unitTypes(uf16 in_typecode) {
+char **Names_unitTypes(u16 in_typecode) {
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     char *temp_str = NULL;
     char **out = DARR_INIT(out, char *, UNIT_TYPE_END);
@@ -337,7 +337,7 @@ void Names_jsonElementnames() {
         strncpy(temp_str, #x, sizeof(#x));\
         DARR_PUT(type_names, nstr_camelCase(nstr_toLower(nstr_replaceSingle(temp_str, '_', ' ')),' ', 2));\
     }
-char **Names_wpnType(uf16 in_typecode) {
+char **Names_wpnType(u16 in_typecode) {
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     char **type_names = DARR_INIT(type_names, char *, ITEM_TYPE_END);
     char *temp_str;

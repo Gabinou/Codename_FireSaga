@@ -25,35 +25,35 @@ struct Game;
 
 /* --- STRUCTS --- */
 struct Map_condition {
-    if8 condition_type;
+    i8 condition_type;
     /* --- CRITERIA --- */
     /* -- WHO -- */
-    if8     lvl;        /* -1 for anyone    */
-    if8     sex;        /* -1 for anyone    */
-    if16    army;       /* -1 for anyone    */
-    if16    unit;       /* -1 for anyone    */
-    if8     unit_class; /* -1 for anyone    */
+    i8     lvl;        /* -1 for anyone    */
+    i8     sex;        /* -1 for anyone    */
+    i16    army;       /* -1 for anyone    */
+    i16    unit;       /* -1 for anyone    */
+    i8     unit_class; /* -1 for anyone    */
     /* -- WHERE -- */
-    if16    col_min;    /* -1 for anywhere  */
-    if16    col_max;    /* -1 for anywhere  */
-    if16    row_min;    /* -1 for anywhere  */
-    if16    row_max;    /* -1 for anywhere  */
+    i16    col_min;    /* -1 for anywhere  */
+    i16    col_max;    /* -1 for anywhere  */
+    i16    row_min;    /* -1 for anywhere  */
+    i16    row_max;    /* -1 for anywhere  */
     /* -- WHAT -- */
-    if16    equippedL;  /* -1 for anything  */
-    if16    equippedR;  /* -1 for anything  */
+    i16    equippedL;  /* -1 for anything  */
+    i16    equippedR;  /* -1 for anything  */
     /* -- WHEN --  */
-    if16    min;        /* -1 for anytime   */
-    if16    max;        /* -1 for anytime   */
+    i16    min;        /* -1 for anytime   */
+    i16    max;        /* -1 for anytime   */
 
     /* --- GENERAL PURPOSE COUNTER --- */
-    if16 counter;
+    i16 counter;
 
     /* --- REWARDS --- */
-    if16    gold;
-    if16    item;
-    if16    scene;
-    if16    event;
-    if8     substate;
+    i16    gold;
+    i16    item;
+    i16    scene;
+    i16    event;
+    i8     substate;
 };
 
 struct Map {
@@ -65,7 +65,7 @@ struct Map {
     i32 boss;
     u8 row_len;
     u8 col_len;
-    if8 chapter;
+    i8 chapter;
     i32 tilesize[TWO_D];
     struct Arrow    *arrow;
     tnecs_world_t   *world;
@@ -137,8 +137,8 @@ struct Map {
     tnecs_entity_t *units_onfield;
     tnecs_entity_t *friendlies_onfield;
     tnecs_entity_t *enemies_onfield;
-    if8 num_enemies;
-    if8 num_friendlies;
+    i8 num_enemies;
+    i8 num_friendlies;
     u8 *armies_onfield;
     u8 num_units_onfield;
     u8 num_armies_onfield;
@@ -160,8 +160,8 @@ struct Map {
 
     /* -- Unique tiles -- */
     /* tileset_order == tile_order*/
-    uf16 **tilesprites_ind;     /* [tileset_order][tilesprite_order]    */
-    uf16  *tilesprites_num;     /* [tileset_order]                      */
+    u16 **tilesprites_ind;     /* [tileset_order][tilesprite_order]    */
+    u16  *tilesprites_num;     /* [tileset_order]                      */
 
     /* --- REINFORCEMENT --- */
     u8 *items_num;
@@ -172,9 +172,9 @@ struct Map {
     tnecs_entity_t *doors_ent;  /* breakable doors are here */
     tnecs_entity_t *chests_ent;
     tnecs_entity_t *breakables_ent;
-    uf16 door_num;
-    uf16 chest_num;
-    uf16 breakable_num;
+    u16 door_num;
+    u16 chest_num;
+    u16 breakable_num;
 
     /* --- MAP SWITCHES --- */
     bool update             : 1;

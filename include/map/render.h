@@ -10,7 +10,7 @@ struct Map;
 void Map_Palettemap_Reset(        struct Map *map);
 void Map_Palettemap_addMap(       struct Map *map, i32 *pmap, u8 palette);
 void Map_Palettemap_addList(      struct Map *map, i32 *list, u8 palette);
-void Map_Palettemap_Autoset(      struct Map *map, uf16 flagsum);
+void Map_Palettemap_Autoset(      struct Map *map, u16 flagsum);
 void Map_Palettemap_SetwMap(      struct Map *map, u8 *pm);
 
 void Map_swappedTextures_All(struct Map *map);

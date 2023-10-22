@@ -479,10 +479,10 @@ void Map_Tilesprites_Init(struct Map *map, size_t tiles_num) {
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     SDL_assert(tiles_num > 0);
     Map_Tilesprites_Free(map);
-    map->tilesprites_ind = DARR_INIT(map->tilesprites_ind, uf16 *, tiles_num);
+    map->tilesprites_ind = DARR_INIT(map->tilesprites_ind, u16 *, tiles_num);
     DARR_NUM(map->tilesprites_ind) = tiles_num;
     for (size_t i = 0; i < tiles_num; i++) {
-        map->tilesprites_ind[i] = DARR_INIT(map->tilesprites_ind[i], uf16, DEFAULT_TILESPRITE_BUFFER);
+        map->tilesprites_ind[i] = DARR_INIT(map->tilesprites_ind[i], u16, DEFAULT_TILESPRITE_BUFFER);
     }
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }

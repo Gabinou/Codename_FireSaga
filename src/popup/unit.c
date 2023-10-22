@@ -190,8 +190,8 @@ void PopUp_Unit_Update(struct PopUp_Unit *pu, struct n9Patch *n9patch,
     SDL_assert(n9patch->scale.y > 0);
     SDL_Rect dstrect, srcrect;
     char numbuff[10];
-    int_fast16_t menu_w = n9patch->size_pixels.x;
-    int_fast16_t menu_h = (n9patch->size_pixels.y + PU_HEADER_Y);
+    i16 menu_w = n9patch->size_pixels.x;
+    i16 menu_h = (n9patch->size_pixels.y + PU_HEADER_Y);
     SDL_assert(menu_w > 0);
     SDL_assert(menu_h > 0);
     struct Computed_Stats comp_s    = Unit_computedStats(pu->unit, pu->distance);
@@ -281,7 +281,7 @@ void PopUp_Unit_Update(struct PopUp_Unit *pu, struct n9Patch *n9patch,
         struct Inventory_item *item = Unit_Item_Strong(pu->unit, UNIT_HAND_STRONG);
         if ((pu->unit->equipped[UNIT_HAND_STRONG]) && (item->id > ITEM_NULL)) {
             struct Weapon *weapon = DTAB_GET(pu->unit->weapons_dtab, item->id);
-            uf16 type_ind = Weapon_TypeExp(weapon);
+            u16 type_ind = Weapon_TypeExp(weapon);
             srcrect.x = (type_ind % PU_WPN_ICON_ROWLEN) * PU_WPN_ICON_H;
             srcrect.y = (type_ind / PU_WPN_ICON_ROWLEN) * PU_WPN_ICON_W;
             SDL_RenderCopy(renderer, pu->texture_weapons, &srcrect, &dstrect);
@@ -295,7 +295,7 @@ void PopUp_Unit_Update(struct PopUp_Unit *pu, struct n9Patch *n9patch,
         item = Unit_Item_Strong(pu->unit, UNIT_HAND_WEAK);
         if ((pu->unit->equipped[UNIT_HAND_WEAK]) && (item->id > ITEM_NULL)) {
             struct Weapon *weapon = DTAB_GET(pu->unit->weapons_dtab, item->id);
-            uf16 type_ind = Weapon_TypeExp(weapon);
+            u16 type_ind = Weapon_TypeExp(weapon);
             srcrect.x = (type_ind % PU_WPN_ICON_ROWLEN) * PU_WPN_ICON_H;
             srcrect.y = (type_ind / PU_WPN_ICON_ROWLEN) * PU_WPN_ICON_W;
             SDL_RenderCopy(renderer, pu->texture_weapons, &srcrect, &dstrect);
@@ -310,7 +310,7 @@ void PopUp_Unit_Update(struct PopUp_Unit *pu, struct n9Patch *n9patch,
         // item = pu->unit->equipment[UNIT_HAND_WEAK];
         // SDL_assert(item->id > ITEM_NULL);
         // struct Weapon *weapon = DTAB_GET(pu->unit->weapons_dtab, item->id);
-        // uf16 type = weapon->item->type;
+        // u16 type = weapon->item->type;
         // // TODO: weapon with multiple types
         // SDL_assert(weapon->item->type > 0);
         // int type_ind = (int)(log(type) / log(2.0f)) + 1;

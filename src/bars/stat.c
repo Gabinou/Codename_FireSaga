@@ -167,7 +167,7 @@ void HPBar_Draw(struct SimpleBar *statbar, SDL_Renderer *renderer) {
     /* -- FG_light: border highlights -- */
     SDL_SetRenderDrawColor(renderer, statbar->FG_light.r, statbar->FG_light.g,
                            statbar->FG_light.b, SDL_ALPHA_OPAQUE);
-    for (uint_fast16_t i = (HPBAR_PATTERN_START * statbar->scale.x); i < statbar->len;
+    for (i16 i = (HPBAR_PATTERN_START * statbar->scale.x); i < statbar->len;
          i += (HPBAR_PATTERN_MULTIPLIER * statbar->scale.x)) {
         temp_rect.x = out_rect.x + i;
         temp_rect.y = out_rect.y;
@@ -179,7 +179,7 @@ void HPBar_Draw(struct SimpleBar *statbar, SDL_Renderer *renderer) {
     /* -- BG_light: bar highlights -- */
     SDL_SetRenderDrawColor(renderer, statbar->BG_light.r, statbar->BG_light.g,
                            statbar->BG_light.b, SDL_ALPHA_OPAQUE);
-    for (uint_fast16_t i = (HPBAR_PATTERN_START * statbar->scale.x);
+    for (i16 i = (HPBAR_PATTERN_START * statbar->scale.x);
          i <= (statbar->len * statbar->fill); i += (HPBAR_PATTERN_MULTIPLIER * statbar->scale.x)) {
         temp_rect.x = out_rect.x + i - (statbar->scale.x);
         temp_rect.y = out_rect.y + 1 * statbar->scale.y;

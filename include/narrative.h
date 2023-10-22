@@ -19,7 +19,7 @@
 // 2- To choose between lines in a Scene dynamically
 // NOTE: Conditions are naturally AND
 struct Conditions {
-    uf16 bits;
+    u16 bits;
     u32 *alive;
     u32 *recruited;
     u32 *dead;
@@ -29,19 +29,19 @@ struct Scene {
     u8      json_element;
     char   *json_filename; /* JSON_ELEM_bOFFSET = 1 */
 
-    uf16 id;
-    uf16 line_num;
-    uf16 line_len;
-    uf16 replace_num;
-    uf16 actors_num;
+    u16 id;
+    u16 line_num;
+    u16 line_len;
+    u16 replace_num;
+    u16 actors_num;
     struct Conditions *line_conds;
     char **lines;
     // All to_replace are *between stars*
     // Better for replaces to be LONGER than withs
     char **replace;
     char **with;
-    uf16 *speakers;
-    uf16 *actors;
+    u16 *speakers;
+    u16 *actors;
 } extern Scene_default;
 
 // Note: Scenes don't get written, no writing
@@ -53,7 +53,7 @@ extern void Scene_Free_Read(struct Scene *scene);
 extern void Scene_Replace(struct Scene *scene);
 extern void Scene_Prune(struct Scene *scene);
 extern struct Scene *Scenes_Load(struct Scene *sdarr, struct Conditions *scene_concs,
-                                 if16 chapter, uf16 scene_time);
+                                 i16 chapter, u16 scene_time);
 
 /* --- I/O --- */
 extern void Scene_readJSON(void *input, const struct cJSON *const jnarr);

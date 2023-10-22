@@ -73,7 +73,7 @@ u8 *RNG_boxmuller(const u8 RN_U[INTERVAL_BOUNDS_NUM], float avg, float std_dev) 
     return (RN_G);
 }
 
-uf16 RNG_openBSD_uint32_t(struct TINYMT32_T *tinymt, u32 max, u32 min) {
+u16 RNG_openBSD_uint32_t(struct TINYMT32_T *tinymt, u32 max, u32 min) {
     SOTA_Log_FPS("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     // "Scales" uniform integer from [0 and 2**32 - 1] to [min, max[
     // Unbiased according to: Fast Random Integer Generation in an Interval
@@ -84,12 +84,12 @@ uf16 RNG_openBSD_uint32_t(struct TINYMT32_T *tinymt, u32 max, u32 min) {
         // Rejects the last pigeonhole
         // Ex: 32 with max=5 -> rejects 30,31,32
     } while (x < t);
-    uf16 out = min + (x % max);
+    u16 out = min + (x % max);
     SOTA_Log_FPS("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
     return (out);
 }
 
-bool RNG_checkRate(struct TINYMT32_T *in_tinymt, if16 rate, if16 mode) {
+bool RNG_checkRate(struct TINYMT32_T *in_tinymt, i16 rate, i16 mode) {
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     // Uses tinyMT_global if (in_tinymt==NULL)
     bool hit = false;
@@ -140,11 +140,11 @@ void RNG_checkSequence_oneWay(struct RNG_Sequence *sequence, bool draw) {
 }
 
 
-uf16 SB_Rate_Drop(uf16 rate, uf16 n) {
+u16 SB_Rate_Drop(u16 rate, u16 n) {
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     float fout = rate, base = sb_drop_table[rate / RNG_SB_BASE_NUM];
-    if8 exponent = (if8)(n - RNG_SB_SEQ_OFFSET);
+    i8 exponent = (i8)(n - RNG_SB_SEQ_OFFSET);
     fout /= sota_slowpow(base, exponent);
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
-    return ((uf16)fout);
+    return ((u16)fout);
 }

@@ -65,11 +65,11 @@ void Utilities_stacktrace();
 
 /* --- Array --- */
 int int_inbounds(int pos, int boundmin, int boundmax);
-bool if8_all_equal(if8 *arr1, if8 *arr2, size_t len);
+bool i8_all_equal(i8 *arr1, i8 *arr2, size_t len);
 bool Utilities_charArr_Equal(char *arr1, char *arr2, size_t len);
 
 /* --- Weapons and items --- */
-struct WpnorItem Utilities_WpnorItem(if16 id, struct dtab *wt, struct dtab *it);
+struct WpnorItem Utilities_WpnorItem(i16 id, struct dtab *wt, struct dtab *it);
 
 /* --- Cursor --- */
 void Cursor_Box_Offset(struct Point *pos);

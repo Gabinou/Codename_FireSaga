@@ -10,7 +10,7 @@
 
 /* --- Map utilities --- */
 void Game_Map_Free(  struct Game *sota);
-void Game_Map_Load(  struct Game *sota, if16 in_map_index);
+void Game_Map_Load(  struct Game *sota, i16 in_map_index);
 void Game_Map_Unload(struct Game *sota);
 
 void Game_debugMap_Load(struct Game *sota);

@@ -69,7 +69,7 @@ void Map_Unit_Put(struct Map *map, tnecs_world_t *world, u8 col, u8 row,
             SDL_assert(Unit_ID_Valid(temp_unit->_id));
             SDL_assert(global_unitOrders != NULL);
             SDL_assert(dtab_get(global_unitOrders, temp_unit->_id) != NULL);
-            uf16 index = *(uf16 *)dtab_get(global_unitOrders, temp_unit->_id);
+            u16 index = *(u16 *)dtab_get(global_unitOrders, temp_unit->_id);
             SDL_assert(index != 0);
             SDL_assert(index < DARR_NUM(global_unitNames));
             DARR_PUT(map->friendlies_onfield, entity);
@@ -80,7 +80,7 @@ void Map_Unit_Put(struct Map *map, tnecs_world_t *world, u8 col, u8 row,
             SDL_assert(Unit_ID_Valid(temp_unit->_id));
             SDL_assert(global_unitOrders != NULL);
             SDL_assert(dtab_get(global_unitOrders, temp_unit->_id) != NULL);
-            uf16 index = *(uf16 *)dtab_get(global_unitOrders, temp_unit->_id);
+            u16 index = *(u16 *)dtab_get(global_unitOrders, temp_unit->_id);
             SDL_assert(index != 0);
             SDL_assert(index < DARR_NUM(global_unitNames));
             DARR_PUT(map->enemies_onfield, entity);

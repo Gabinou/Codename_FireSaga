@@ -31,7 +31,7 @@ void hoverAny(tnecs_system_input_t *input) {
     SDL_assert(hover_arr    != NULL);
     SDL_assert(position_arr != NULL);
 
-    for (uf16 order = 0; order < input->num_entities; order++) {
+    for (u16 order = 0; order < input->num_entities; order++) {
         struct Hover    *hover    = hover_arr    + order;
         struct Position *position = position_arr + order;
 
@@ -66,7 +66,7 @@ void slideSprite(tnecs_system_input_t *input) {
     /* -- Check if entity is cursor -- */
     tnecs_component_t cursor_Component_Flag = TNECS_COMPONENT_NAME2TYPE(input->world, CursorFlag);
 
-    for (uf16 order = 0; order < input->num_entities; order++) {
+    for (u16 order = 0; order < input->num_entities; order++) {
         struct Position *position   = position_arr  + order;
         struct Slider   *slider     = slider_arr    + order;
         struct Sprite   *sprite     = sprite_arr    + order;
@@ -107,7 +107,7 @@ void slidePopUp(tnecs_system_input_t *input) {
     SDL_assert(slider_arr   != NULL);
     SDL_assert(position_arr != NULL);
 
-    for (uf16 order = 0; order < input->num_entities; order++) {
+    for (u16 order = 0; order < input->num_entities; order++) {
         struct Slider   *slider     = slider_arr   + order;
         struct Position *position   = position_arr + order;
         slider->timer_ns += input->deltat;
@@ -133,7 +133,7 @@ void slidePopUpOffscreen(tnecs_system_input_t *input) {
     SDL_assert(position_arr  != NULL);
     SDL_assert(offscreen_arr != NULL);
 
-    for (uf16 order = 0; order < input->num_entities; order++) {
+    for (u16 order = 0; order < input->num_entities; order++) {
         struct Slider          *slider        = slider_arr    + order;
         struct Position        *position      = position_arr  + order;
         struct SliderOffscreen *offscreen_ptr = offscreen_arr + order;

@@ -62,7 +62,7 @@ typedef struct PopUp_Tile {
     struct PixelFont *pixelnours;
     struct PixelFont *pixelnours_big;
     bool update;
-    uf32 corner; /* SOTA_DIRECTION_DIAGONAL */
+    u32 corner; /* SOTA_DIRECTION_DIAGONAL */
     struct Point offset;
     struct Point cursor_limit_min;
     struct Point cursor_limit_max;
@@ -84,7 +84,7 @@ void PopUp_Tile_Limits(struct PopUp *p, struct PopUp_Tile *pt, struct Settings *
 struct Point PopUp_Tile_Offset(struct PopUp_Tile *pt, struct Settings *s);
 struct Point PopUp_Tile_Position(struct PopUp *p, struct PopUp_Tile *pt,
                                  struct n9Patch *n9patch, struct Settings *settings,
-                                 struct Point *tilemap_pos, if8 direction);
+                                 struct Point *tilemap_pos, i8 direction);
 
 /* --- Setters --- */
 void PopUp_Tile_Set(struct PopUp_Tile *pt, struct Game *sota);

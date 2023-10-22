@@ -8,7 +8,7 @@ void scrollText(tnecs_system_input_t *in_input) {
     struct Timer     *ut_arr = TNECS_COMPONENTS_LIST(in_input, Timer);
     struct PixelFont *pf_arr = TNECS_COMPONENTS_LIST(in_input, PixelFont);
 
-    for (uf16 order = 0; order < in_input->num_entities; order++) {
+    for (u16 order = 0; order < in_input->num_entities; order++) {
         struct Timer     *ut = (ut_arr + order);
         struct PixelFont *pf = (pf_arr + order);
 
@@ -24,7 +24,7 @@ void animateSprite(tnecs_system_input_t *in_input) {
     struct Timer  *ut_arr     = TNECS_COMPONENTS_LIST(in_input, Timer);
     struct Sprite *sprite_arr = TNECS_COMPONENTS_LIST(in_input, Sprite);
 
-    for (uf16 order = 0; order < in_input->num_entities; order++) {
+    for (u16 order = 0; order < in_input->num_entities; order++) {
         struct Timer       *ut     = (ut_arr     + order);
         struct Sprite      *sprite = (sprite_arr + order);
 
@@ -62,7 +62,7 @@ void drawCursor(tnecs_system_input_t *in_input) {
 
     int isCursor = true; /* drawCursor is exclusive to cursor */
 
-    for (uf16 order = 0; order < in_input->num_entities; order++) {
+    for (u16 order = 0; order < in_input->num_entities; order++) {
         struct Sprite   *sprite   = (sprite_arr   + order);
         struct Position *position = (position_arr + order);
 
@@ -88,7 +88,7 @@ void drawMouse(tnecs_system_input_t *in_input) {
     struct Sprite *sprite_arr = TNECS_COMPONENTS_LIST(in_input, Sprite);
     SDL_assert(sprite_arr != NULL);
 
-    for (uf16 order = 0; order < in_input->num_entities; order++) {
+    for (u16 order = 0; order < in_input->num_entities; order++) {
         struct Sprite *sprite = (sprite_arr + order);
 
         if (!sprite->visible)
@@ -112,7 +112,7 @@ void drawMapUnit(tnecs_system_input_t *in_input) {
 
     int isCursor =  false; /* drawMapUnit is exclusive to units */
 
-    for (uf16 order = 0; order < in_input->num_entities; order++) {
+    for (u16 order = 0; order < in_input->num_entities; order++) {
         struct Sprite   *sprite   = (sprite_arr   + order);
         struct Position *position = (position_arr + order);
 
@@ -137,7 +137,7 @@ void drawMap_HPBar(tnecs_system_input_t *in_input) {
     struct Position *pos_arr        = TNECS_COMPONENTS_LIST(in_input, Position);
     struct MapHPBar *map_hp_bar_arr = TNECS_COMPONENTS_LIST(in_input, MapHPBar);
 
-    for (uf16 order = 0; order < in_input->num_entities; order++) {
+    for (u16 order = 0; order < in_input->num_entities; order++) {
         struct MapHPBar *map_hp_bar = (map_hp_bar_arr + order);
 
         if ((!map_hp_bar->visible) && (!map_hp_bar->update))
@@ -164,7 +164,7 @@ void drawPopUp(tnecs_system_input_t *in_input) {
     SDL_assert(popup_arr    != NULL);
     SDL_assert(position_arr != NULL);
 
-    for (uf16 order = 0; order < in_input->num_entities; order++) {
+    for (u16 order = 0; order < in_input->num_entities; order++) {
         struct PopUp *popup = (popup_arr + order);
 
         if (!popup->visible) /* Skip drawing if not visible */
@@ -188,7 +188,7 @@ void drawMenu(tnecs_system_input_t *in_input) {
     SDL_assert(mc_arr != NULL);
 
     /* --- DRAWING MENU ENTITIES --- */
-    for (uf16 order = 0; order < in_input->num_entities; order++) {
+    for (u16 order = 0; order < in_input->num_entities; order++) {
         struct MenuComponent *mc = (mc_arr + order);
 
         if (!mc->visible)
@@ -217,7 +217,7 @@ void drawText(tnecs_system_input_t *in_input) {
     SDL_assert(position_arr != NULL);
 
     /* --- DRAWING TEXT ENTITIES --- */
-    for (uf16 order = 0; order < in_input->num_entities; order++) {
+    for (u16 order = 0; order < in_input->num_entities; order++) {
         struct Position *pos  = (position_arr    + order);
         struct Text     *text = (text_arr        + order);
 
@@ -246,7 +246,7 @@ void drawTextTimer(tnecs_system_input_t *in_input) {
     SDL_assert(position_arr != NULL);
 
     /* --- DRAWING TEXT ENTITIES --- */
-    for (uf16 order = 0; order < in_input->num_entities; order++) {
+    for (u16 order = 0; order < in_input->num_entities; order++) {
         struct Position *pos  = (position_arr    + order);
         struct Text     *text = (text_arr        + order);
         struct Timer    *ut   = (updatetimer_arr + order);

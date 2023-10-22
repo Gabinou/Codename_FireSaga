@@ -1,7 +1,7 @@
 #include "menu/stats.h"
 
-const if8 stats_menu_cycle[STATS_MENU_CYCLE_NUM] = {MENU_TYPE_STATS, MENU_TYPE_GROWTHS};
-const if8 stats_menu_cycle_inv[MENU_TYPE_END] = {
+const i8 stats_menu_cycle[STATS_MENU_CYCLE_NUM] = {MENU_TYPE_STATS, MENU_TYPE_GROWTHS};
+const i8 stats_menu_cycle_inv[MENU_TYPE_END] = {
     /* NULL */          -1,
     /* PLAYER_SELECT */ -1,
     /* ISM */           -1,
@@ -619,7 +619,7 @@ void _StatsMenu_Draw_Mount(struct StatsMenu *stats_menu, SDL_Renderer *renderer)
     PixelFont_Write(stats_menu->pixelnours, renderer, "MOUNT", 5, x, y);
 
     /* - Get mount type - */
-    if8 mount_type = MOUNT_TYPE_NULL;
+    i8 mount_type = MOUNT_TYPE_NULL;
     if (stats_menu->unit->mount != NULL)
         mount_type = stats_menu->unit->mount->type;
 
@@ -952,7 +952,7 @@ void _StatsMenu_Draw_Item(struct StatsMenu *stats_menu, SDL_Renderer *renderer, 
     SDL_Rect dstrect, srcrect;
     char numbuff[10];
     struct Unit *unit = stats_menu->unit;
-    if16 item_y_offset, item_dura_y_offset;
+    i16 item_y_offset, item_dura_y_offset;
 
     /* Draw on line strong_i  */
     int strong_i = Unit_Id_Strong(unit, i);

@@ -48,9 +48,9 @@ struct MenuComponent {
     /* -- Generic Draw function -- */
     menu_draw_function_t draw;
 
-    if8 elem;     /* -1 is NULL */
-    if8 elem_num;
-    if8 type;
+    i8 elem;     /* -1 is NULL */
+    i8 elem_num;
+    i8 type;
 
     bool visible : 1;
 };
@@ -61,7 +61,7 @@ void MenuComponent_Elem_Free(struct MenuComponent *mc);
 
 /* --- Internals --- */
 int Periodic_Elem_Move(     struct MenuComponent *mc, int d, int min, int max);
-void MenuComponent_Elem_Set(struct MenuComponent *mc, struct Game *sota, if8 d);
+void MenuComponent_Elem_Set(struct MenuComponent *mc, struct Game *sota, i8 d);
 int MenuComponent_Elem_Move(struct MenuComponent *mc, int d);
 void MenuComponent_Elem_Boxes_Check(struct MenuComponent *mc);
 

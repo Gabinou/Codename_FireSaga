@@ -182,7 +182,7 @@ void Lanczos_Filter_2D_T(float *samples, float *filtered, uint_fast32_t size_sam
                               (y_floor + a + 1);
         for (uint_fast32_t jx = 0; jx < size_samples_x; jx++) {
             for (uint_fast32_t j = min_y; j < max_y; j++) {
-                if32 clamped = j < 0 ? 0 : j;
+                i32 clamped = j < 0 ? 0 : j;
                 clamped = clamped > size_samples_y ?  size_samples_y : clamped;
                 filtered_cols[jx + jy * size_samples_x] += samples[jx + clamped * size_samples_x] *
                                                            Lanczos_Kernel(
@@ -194,11 +194,11 @@ void Lanczos_Filter_2D_T(float *samples, float *filtered, uint_fast32_t size_sam
     for (uint_fast32_t jx = 0; jx < size_filtered_x; jx++) {
         float x = (float)jx * delta_x;
         uint_fast32_t x_floor = (uint_fast32_t)floorf(x);
-        if32 min_x = x_floor - a + 1;
-        if32 max_x = x_floor + a + 1;
+        i32 min_x = x_floor - a + 1;
+        i32 max_x = x_floor + a + 1;
         for (uint_fast32_t jy = 0; jy < size_filtered_y; jy++) {
-            for (if32 i = min_x; i < max_x; i++) {
-                if32 clamped = i < 0 ? 0 : i;
+            for (i32 i = min_x; i < max_x; i++) {
+                i32 clamped = i < 0 ? 0 : i;
                 clamped = clamped > size_samples_x ?  size_samples_x : clamped;
                 filtered[jx + jy * size_filtered_x] += filtered_cols[clamped + jy * size_samples_x] *
                                                        Lanczos_Kernel(x - i, a);
@@ -222,11 +222,11 @@ void Lanczos_Filter_2D(float *samples, float *filtered, uint_fast32_t size_sampl
     for (uint_fast32_t jx = 0; jx < size_filtered_x; jx++) {
         float x = (float)jx * delta_x;
         uint_fast32_t x_floor = (uint_fast32_t)floorf(x);
-        if32 min_x = x_floor - a + 1;
-        if32 max_x = x_floor + a + 1;
+        i32 min_x = x_floor - a + 1;
+        i32 max_x = x_floor + a + 1;
         for (uint_fast32_t jy = 0; jy < size_samples_y; jy++) {
-            for (if32 i = min_x; i < max_x; i++) {
-                if32 clamped = i < 0 ? 0 : i;
+            for (i32 i = min_x; i < max_x; i++) {
+                i32 clamped = i < 0 ? 0 : i;
                 clamped = clamped > size_samples_x ?  size_samples_x : clamped;
                 filtered_rows[jx + jy * size_filtered_x] += samples[clamped + jy * size_samples_x] *
                                                             Lanczos_Kernel(
@@ -243,7 +243,7 @@ void Lanczos_Filter_2D(float *samples, float *filtered, uint_fast32_t size_sampl
                               (y_floor + a + 1);
         for (uint_fast32_t jx = 0; jx < size_filtered_x; jx++) {
             for (uint_fast32_t j = min_y; j < max_y; j++) {
-                if32 clamped = j < 0 ? 0 : j;
+                i32 clamped = j < 0 ? 0 : j;
                 clamped = clamped > size_samples_x ?  size_samples_x : clamped;
                 filtered[jx + jy * size_filtered_x] += filtered_rows[jx + clamped * size_filtered_x] *
                                                        Lanczos_Kernel(y - j, a);
@@ -264,7 +264,7 @@ void Lanczos_Filter_1D(float *samples, float *filtered, uint_fast32_t size_sampl
         uint_fast32_t min = x_floor - a + 1;
         uint_fast32_t max = x_floor + a + 1;
         for (uint_fast32_t i = min; i <= max; i++) {
-            if32 clamped = i < 0 ? 0 : i;
+            i32 clamped = i < 0 ? 0 : i;
             clamped = clamped > size_samples ?  size_samples : clamped;
             filtered[j] += samples[clamped] * Lanczos_Kernel(x - i, a);
         }
@@ -406,42 +406,42 @@ void CRT_Clamping(float *R, float *G, float *B, uint_fast32_t width,
  *          Higher number = diminishingly better results, but linearly slower.
  * float: Type of elements. Should be integer type.
  */
-void blur(const float *input, float *output, float *temp, if32 w,
-          if32 h,
-          float sigma, if32 n_boxes) {
+void blur(const float *input, float *output, float *temp, i32 w,
+          i32 h,
+          float sigma, i32 n_boxes) {
     float wIdeal = sqrtf((12.0f * sigma * sigma / n_boxes) +
                          1.0f); // Ideal averaging filter width
-    uint_fast32_t wl = (if32)wIdeal;
+    uint_fast32_t wl = (i32)wIdeal;
     if ((wl % 2) == 0)
         wl--;
-    if32 wu = wl + 2;
+    i32 wu = wl + 2;
     float mIdeal = (12 * sigma * sigma - n_boxes * wl * wl - 4 * n_boxes * wl - 3 * n_boxes) /
                    (-4.0f * wl - 4);
-    if32 m = floorf(mIdeal);
+    i32 m = floorf(mIdeal);
     const float *data = input;
-    for (if32 n = 0; n < n_boxes; ++n) {
-        if32 r = ((n < m ? wl : wu) - 1) / 2; // IDK should this be float?
+    for (i32 n = 0; n < n_boxes; ++n) {
+        i32 r = ((n < m ? wl : wu) - 1) / 2; // IDK should this be float?
         // boxBlur_4:
         float iarr = 1.0f / (r + r + 1);
         // boxBlurH_4 (blur horizontally for each row):
         const float *scl = data;
         float *tcl = temp;
-        for (if32 i = 0; i < h; ++i) {
-            if32 ti = i * w, li = ti, ri = ti + r;
-            if32 fv = scl[ti], lv = scl[ti + w - 1];
+        for (i32 i = 0; i < h; ++i) {
+            i32 ti = i * w, li = ti, ri = ti + r;
+            i32 fv = scl[ti], lv = scl[ti + w - 1];
             int val = 0;
-            for (if32 j = 0; j < r; j++)
+            for (i32 j = 0; j < r; j++)
                 val += scl[ti + j];
             val += (r + 1) * fv;
-            for (if32 j = 0  ; j <= r ; j++) {
+            for (i32 j = 0  ; j <= r ; j++) {
                 val += scl[ri++] - fv;
                 tcl[ti++] = floorf(((float)val * iarr));
             }
-            for (if32 j = r + 1; j < w - r; j++) {
+            for (i32 j = r + 1; j < w - r; j++) {
                 val += scl[ri++] - scl[li++];
                 tcl[ti++] = floorf(((float)val * iarr));
             }
-            for (if32 j = w - r; j < w  ; j++) {
+            for (i32 j = w - r; j < w  ; j++) {
                 val += lv - scl[li++];
                 tcl[ti++] = floorf(((float)val * iarr));
             }
@@ -449,27 +449,27 @@ void blur(const float *input, float *output, float *temp, if32 w,
         // boxBlurT_4 (blur vertically for each column)
         scl = temp;
         tcl = output;
-        for (if32 i = 0; i < w; ++i) {
-            if32 ti = i, li = ti, ri = ti + r * w;
-            if32 fv = scl[ti], lv = scl[ti + w * (h - 1)];
+        for (i32 i = 0; i < w; ++i) {
+            i32 ti = i, li = ti, ri = ti + r * w;
+            i32 fv = scl[ti], lv = scl[ti + w * (h - 1)];
             int val = 0;
-            for (if32 j = 0; j < r;  ++j)
+            for (i32 j = 0; j < r;  ++j)
                 val += scl[ti + j * w];
             val += (r + 1) * fv;
-            for (if32 j = 0; j <= r; ++j)    {
+            for (i32 j = 0; j <= r; ++j)    {
                 val += scl[ri] - fv;
                 tcl[ti] = floorf(((float)val * iarr));
                 ri += w;
                 ti += w;
             }
-            for (if32 j = r + 1; j < h - r; ++j) {
+            for (i32 j = r + 1; j < h - r; ++j) {
                 val += scl[ri] - scl[li];
                 tcl[ti] = floorf(((float)val * iarr));
                 li += w;
                 ri += w;
                 ti += w;
             }
-            for (if32 j = h - r; j < h; ++j)   {
+            for (i32 j = h - r; j < h; ++j)   {
                 val += lv - scl[li];
                 tcl[ti] = floorf(((float)val * iarr));
                 li += w;

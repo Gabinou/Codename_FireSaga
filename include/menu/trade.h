@@ -46,10 +46,10 @@ extern struct Point trade_cursor_box[TRADE_MENU_ELEMS_NUM];
 struct TradeMenu {
     struct LoadoutSelectMenu *active;
     struct LoadoutSelectMenu *passive;
-    if8 selected_trader;
-    if8 selected_item;
-    if8 target_trader;
-    if8 target_item;
+    i8 selected_trader;
+    i8 selected_item;
+    i8 target_trader;
+    i8 target_item;
 };
 
 /* --- Constructors/Destructors --- */
@@ -58,7 +58,7 @@ void TradeMenu_Free(struct MenuComponent *mc, SDL_Texture *rt, SDL_Renderer *r);
 
 /* --- Item placement --- */
 void TradeMenu_Trade(   struct TradeMenu *tm);
-void TradeMenu_Select(  struct TradeMenu *tm, if8 s);
+void TradeMenu_Select(  struct TradeMenu *tm, i8 s);
 void TradeMenu_Deselect(struct TradeMenu *tm);
 
 /* --- Positioning --- */

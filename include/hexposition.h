@@ -11,7 +11,7 @@
 #include "structs.h"
 #include "globals.h"
 
-// hexmap are stored as int_fast16_t * map[col_len*depth_len]
+// hexmap are stored as i16 * map[col_len*depth_len]
 // map[z*col_len + x] with y = - x - z
 
 enum HEXPOSITION_CONSTANTS {
@@ -30,7 +30,7 @@ enum CUBE_DIRECTIONS {
 typedef struct HexPosition {
     struct nmath_hexpoint_int32_t pos;
     bool orientation;
-    if32 radius; // e.g. size of hexagon/side length.
+    i32 radius; // e.g. size of hexagon/side length.
 } HexPosition;
 extern struct HexPosition HexPosition_default;
 
@@ -46,8 +46,8 @@ extern u8 HexDistance_Points(struct Point p1, struct Point p2);
 
 extern struct nmath_hexpoint_int32_t HexRound(struct nmath_hexpoint_float p);
 
-extern struct Point Hex2Pixel(struct nmath_hexpoint_int32_t hp, if32 r, bool o);
-extern struct nmath_hexpoint_int32_t Pixel2Hex(struct Point p,  if32 r, bool o);
-extern void plotHex2DArray(int_fast16_t *in_array, size_t x_len, size_t z_len, int o);
+extern struct Point Hex2Pixel(struct nmath_hexpoint_int32_t hp, i32 r, bool o);
+extern struct nmath_hexpoint_int32_t Pixel2Hex(struct Point p,  i32 r, bool o);
+extern void plotHex2DArray(i16 *in_array, size_t x_len, size_t z_len, int o);
 
 #endif /* HexPOSITION_H */

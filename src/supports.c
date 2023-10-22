@@ -6,7 +6,7 @@ struct Support Support_default = {
     .level =       -1
 };
 
-struct Computed_Stats Support_Bonus(struct Support support, uf16 self_type) {
+struct Computed_Stats Support_Bonus(struct Support support, u16 self_type) {
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     struct Computed_Stats bonus = {0};
     Support_Flat_Bonus(&bonus, support.level);
@@ -17,7 +17,7 @@ struct Computed_Stats Support_Bonus(struct Support support, uf16 self_type) {
     return (bonus);
 }
 
-struct Computed_Stats Support_Bonuses(struct Support *supports, uf16 support_num, uf16 self_type) {
+struct Computed_Stats Support_Bonuses(struct Support *supports, u16 support_num, u16 self_type) {
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     SDL_assert(self_type > SUPPORT_TYPE_NULL);
     SDL_assert(self_type < SUPPORT_TYPE_NUM);
@@ -36,7 +36,7 @@ struct Computed_Stats Support_Bonuses(struct Support *supports, uf16 support_num
     return (bonus);
 }
 
-void Support_Flat_Bonus(struct Computed_Stats *bonus, uf16 level) {
+void Support_Flat_Bonus(struct Computed_Stats *bonus, u16 level) {
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     SDL_assert(level <= SUPPORT_LEVEL_A);
     SDL_assert(level > SUPPORT_LEVEL_ZERO);
@@ -45,7 +45,7 @@ void Support_Flat_Bonus(struct Computed_Stats *bonus, uf16 level) {
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
-void Support_Type_Bonus(struct Computed_Stats *bonus, uf16 type, uf16 level) {
+void Support_Type_Bonus(struct Computed_Stats *bonus, u16 type, u16 level) {
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     SDL_assert(level <= SUPPORT_LEVEL_A);
     SDL_assert(level > SUPPORT_LEVEL_ZERO);

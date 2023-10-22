@@ -276,7 +276,7 @@ int Unit_Hand_Strong(const struct Unit *unit) {
     return (SotA_Hand_Strong(unit->handedness));
 }
 
-int SotA_Hand_Strong(if8 handedness) {
+int SotA_Hand_Strong(i8 handedness) {
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     if ((handedness <= UNIT_HAND_NULL) || (handedness >= UNIT_HAND_END)) {
         SOTA_Log_Debug("Wrong handedness");
@@ -289,7 +289,7 @@ int SotA_Hand_Strong(if8 handedness) {
 }
 
 
-void Unit_setid(struct Unit *unit, if16 id) {
+void Unit_setid(struct Unit *unit, i16 id) {
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     SDL_assert(unit != NULL);
     unit->_id = id;
@@ -310,7 +310,7 @@ void Unit_setSkills(struct Unit *unit, u64 skills) {
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
-void Unit_setClassind(struct Unit *unit, if8 class_index) {
+void Unit_setClassind(struct Unit *unit, i8 class_index) {
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     SDL_assert(unit);
     SDL_assert((class_index > 0) && (class_index < UNIT_CLASS_END));
@@ -452,7 +452,7 @@ bool Unit_hasSkill(const struct Unit *unit, u64 skill) {
 /* --- Statuses --- */
 void Unit_Status_Add(struct Unit *unit, struct Unit_status status) {
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
-    if16 i = Unit_Status_Find(unit, status.status);
+    i16 i = Unit_Status_Find(unit, status.status);
     if (unit->status_queue == NULL)
         unit->status_queue = DARR_INIT(unit->status_queue, struct Unit_status, 2);
 
@@ -481,7 +481,7 @@ void Unit_Status_Decrement(struct Unit *unit) {
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
-if16 Unit_Status_Find(struct Unit *unit, if16 status) {
+i16 Unit_Status_Find(struct Unit *unit, i16 status) {
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     SDL_assert(unit->status_queue != NULL);
     for (size_t i = 0; i < DARR_NUM(unit->status_queue); i++) {
@@ -496,9 +496,9 @@ if16 Unit_Status_Find(struct Unit *unit, if16 status) {
 }
 
 // What is that for?
-if16 Unit_Status_Find_Turns(struct Unit *unit, if16 turns) {
+i16 Unit_Status_Find_Turns(struct Unit *unit, i16 turns) {
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
-    if16 out = -1;
+    i16 out = -1;
     SDL_assert(unit->status_queue != NULL);
     for (size_t i = 0; i < DARR_NUM(unit->status_queue); i++) {
         if (unit->status_queue[i].turns == turns) {
@@ -568,7 +568,7 @@ void Unit_Item_Take(struct Unit *unit, struct Inventory_item item) {
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
-struct Inventory_item Unit_Item_Drop(struct Unit *unit, if16 i) {
+struct Inventory_item Unit_Item_Drop(struct Unit *unit, i16 i) {
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     if ((i < 0) || (i >= DEFAULT_EQUIPMENT_SIZE)) {
         SOTA_Log_Debug("Item index out of bounds");
@@ -581,7 +581,7 @@ struct Inventory_item Unit_Item_Drop(struct Unit *unit, if16 i) {
     return (out);
 }
 
-void Unit_Item_Swap(struct Unit *unit, if16 i1, if16 i2) {
+void Unit_Item_Swap(struct Unit *unit, i16 i1, i16 i2) {
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     SDL_assert(unit);
     if ((i1 < 0) || (i1 >= DEFAULT_EQUIPMENT_SIZE)) {
@@ -598,7 +598,7 @@ void Unit_Item_Swap(struct Unit *unit, if16 i1, if16 i2) {
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
-void Unit_Item_Trade(struct Unit *giver, struct Unit *taker, if16 ig, if16 it) {
+void Unit_Item_Trade(struct Unit *giver, struct Unit *taker, i16 ig, i16 it) {
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     SDL_assert(giver);
     SDL_assert(taker);
@@ -780,14 +780,14 @@ void Unit_refresh(struct Unit *unit) {
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
-if16 Unit_getLvl(struct Unit *unit) {
+i16 Unit_getLvl(struct Unit *unit) {
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     SDL_assert(unit);
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
     return (ceil(unit->exp / SOTA_100PERCENT) + 1);
 }
 
-void Unit_gainExp(struct Unit *unit, uf16 exp) {
+void Unit_gainExp(struct Unit *unit, u16 exp) {
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     SDL_assert(unit);
     if (((unit->exp % SOTA_100PERCENT) + exp) > SOTA_100PERCENT) {
@@ -798,7 +798,7 @@ void Unit_gainExp(struct Unit *unit, uf16 exp) {
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
-void Unit_supportUp(struct Unit *unit, if16 id) {
+void Unit_supportUp(struct Unit *unit, i16 id) {
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     SDL_assert(unit);
     int i;
@@ -883,7 +883,7 @@ void Unit_dies(struct Unit *unit) {
 }
 
 /* Can unit equip weapon input item? */
-bool Unit_canEquip(const struct Unit *unit, if16 id) {
+bool Unit_canEquip(const struct Unit *unit, i16 id) {
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     if (id <= ITEM_NULL) {
         SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
@@ -902,13 +902,13 @@ bool Unit_canEquip(const struct Unit *unit, if16 id) {
 bool Unit_canEquip_inHand(const struct Unit *unit, bool hand) {
     SOTA_Log_FPS("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     SDL_assert(unit->weapons_dtab != NULL);
-    if16 hand_id = unit->_equipment[hand].id;
+    i16 hand_id = unit->_equipment[hand].id;
     SOTA_Log_FPS("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
     return (Unit_canEquip_Hand(unit, hand_id, hand));
 }
 
 /* Can unit equip arbitrary weapon in its hand? */
-bool Unit_canEquip_Hand(const struct Unit *unit, if16 id, bool hand) {
+bool Unit_canEquip_Hand(const struct Unit *unit, i16 id, bool hand) {
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     if (id <= ITEM_NULL) {
         SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
@@ -939,7 +939,7 @@ bool Unit_canEquip_Hand(const struct Unit *unit, if16 id, bool hand) {
 }
 
 /* Can unit equip arbitrary weapon with a certain type? */
-bool Unit_canEquip_Type(const struct Unit *unit, if16 id) {
+bool Unit_canEquip_Type(const struct Unit *unit, i16 id) {
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     /* Unequippable if ITEM_NULL */
     if (id <= ITEM_NULL) {
@@ -955,7 +955,7 @@ bool Unit_canEquip_Type(const struct Unit *unit, if16 id) {
     SDL_assert(unit->weapons_dtab != NULL);
     Weapon_Load(unit->weapons_dtab, id);
     struct Weapon *weapon = DTAB_GET(unit->weapons_dtab, id);
-    uf16 wpntypecode      = weapon->item->type;
+    u16 wpntypecode      = weapon->item->type;
     SDL_assert(wpntypecode);
 
     /* Is unit among weapon's users? */
@@ -1005,7 +1005,7 @@ bool Unit_isWielding(struct Unit *unit, bool hand) {
     if (!unit->equipped[hand])
         return (false);
 
-    uf16 id = unit->_equipment[hand].id;
+    u16 id = unit->_equipment[hand].id;
     if (id <= ITEM_NULL)
         return (false);
 
@@ -1152,9 +1152,9 @@ struct Weapon *Unit_Get_Equipped_Weapon(const struct Unit *unit, bool hand) {
 }
 
 /* Add-up all malus stat sources */
-if8 Unit_computeMalus(struct Unit *unit) {
+i8 Unit_computeMalus(struct Unit *unit) {
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
-    if8 out = 0;
+    i8 out = 0;
     unit->malus_stats = Unit_stats_default;
     struct Unit_stats temp;
     /* TODO: Skills Malus */
@@ -1180,9 +1180,9 @@ if8 Unit_computeMalus(struct Unit *unit) {
 }
 
 /* Add-up all bonus stat sources */
-if8 Unit_computeBonus(struct Unit *unit) {
+i8 Unit_computeBonus(struct Unit *unit) {
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
-    if8 out = 0;
+    i8 out = 0;
     unit->bonus_stats = Unit_stats_default;
 
     /* TODO: Skills Bonus */
@@ -1726,11 +1726,11 @@ struct Computed_Stats Unit_computedStats(struct Unit *unit, int distance) {
 }
 
 /* Add regrets to computed stats. */
-if8 Unit_computeRegrets(struct Unit *unit) {
+i8 Unit_computeRegrets(struct Unit *unit) {
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     SDL_assert(unit);
     /* Pre-computation */
-    if8 malus = Equation_Regrets(unit->regrets, unit->effective_stats.fth);
+    i8 malus = Equation_Regrets(unit->regrets, unit->effective_stats.fth);
     struct Computed_Stats stats = unit->computed_stats;
 
     /* Apply regrets malus to computed stats */
@@ -1768,7 +1768,7 @@ u8 Unit_computeHit(struct Unit *unit, int distance) {
     return (unit->computed_stats.hit);
 }
 
-if8 Unit_computeDodge(struct Unit *unit, int distance) {
+i8 Unit_computeDodge(struct Unit *unit, int distance) {
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     SDL_assert(unit);
     SDL_assert(unit->weapons_dtab);
@@ -1865,7 +1865,7 @@ u8 Unit_computeAgony(struct Unit *unit) {
     return (unit->computed_stats.agony);
 }
 
-if8 Unit_computeSpeed(struct Unit *unit, int distance) {
+i8 Unit_computeSpeed(struct Unit *unit, int distance) {
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     SDL_assert(unit);
     SDL_assert(unit->weapons_dtab);
@@ -1894,10 +1894,10 @@ if8 Unit_computeSpeed(struct Unit *unit, int distance) {
     return (unit->computed_stats.speed);
 }
 
-if8 Unit_computeMove(struct Unit *unit) {
+i8 Unit_computeMove(struct Unit *unit) {
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     SDL_assert(unit);
-    if8 move = unit->effective_stats.move;
+    i8 move = unit->effective_stats.move;
     if (unit->mount != NULL)
         move = MOVE_WITH_MOUNT;
     unit->computed_stats.move = move;
@@ -2251,7 +2251,7 @@ struct Unit_stats Unit_effectiveStats(struct Unit *unit) {
     return (unit->effective_stats);
 }
 
-void Unit_Promote(struct Unit *unit, if8 new_class_index) {
+void Unit_Promote(struct Unit *unit, i8 new_class_index) {
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     SDL_assert(unit);
     // struct Unit_stats promotion_bonus = DTAB_GET(promotion_bonus_stats, new_class_index);
@@ -2299,7 +2299,7 @@ void Unit_Rangemap_Equipment(struct Unit *unit) {
     if (unit->equipped[stronghand]) {
         Weapon_Load(unit->weapons_dtab, unit->_equipment[stronghand].id);
         struct Weapon *wpn = DTAB_GET(unit->weapons_dtab, unit->_equipment[stronghand].id);
-        uf16 type = wpn->item->type;
+        u16 type = wpn->item->type;
 
         if (flagsum_isIn(type, ITEM_TYPE_STAFF) || flagsum_isIn(type, ITEM_TYPE_ITEM)) {
             unit->rangemap = RANGEMAP_HEALMAP;
@@ -2315,7 +2315,7 @@ void Unit_Rangemap_Equipment(struct Unit *unit) {
     if (unit->equipped[weakhand] && unit->hands[weakhand]) {
         Weapon_Load(unit->weapons_dtab, unit->_equipment[weakhand].id);
         struct Weapon *wpn = DTAB_GET(unit->weapons_dtab, unit->_equipment[weakhand].id);
-        uf16 type = wpn->item->type;
+        u16 type = wpn->item->type;
 
         if (flagsum_isIn(type, ITEM_TYPE_STAFF) || flagsum_isIn(type, ITEM_TYPE_ITEM)) {
             unit->rangemap = RANGEMAP_HEALMAP;
@@ -2437,7 +2437,7 @@ struct Unit_stats Unit_stats_minus(struct Unit_stats in_stats1, struct Unit_stat
 }
 
 
-bool Unit_ID_Valid(uf16 id) {
+bool Unit_ID_Valid(u16 id) {
     SOTA_Log_FPS("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     SOTA_Log_Debug("Unit ID valid: %d", id);
     bool out = (id > UNIT_ID_PC_START)      && (id < UNIT_ID_PC_END);

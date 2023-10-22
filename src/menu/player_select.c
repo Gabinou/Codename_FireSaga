@@ -35,7 +35,7 @@ struct PlayerSelectMenu *PlayerSelectMenu_Alloc() {
     SDL_assert(psm);
 
     if (psm->options == NULL) {
-        psm->options = DARR_INIT(psm->options, uf32, 8);
+        psm->options = DARR_INIT(psm->options, u32, 8);
     }
     if (psm->option_names == NULL) {
         psm->option_names = DARR_INIT(psm->option_names, char *, 8);
@@ -123,11 +123,11 @@ void PlayerSelectMenu_Options_Reset(struct PlayerSelectMenu *psm) {
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
-int PlayerSelectMenu_Option_Index(struct PlayerSelectMenu *psm, uf32 option) {
+int PlayerSelectMenu_Option_Index(struct PlayerSelectMenu *psm, u32 option) {
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     SDL_assert(psm->option_num > 0);
     int out = -1;
-    for (if32 i = 0; i < psm->option_num; i++) {
+    for (i32 i = 0; i < psm->option_num; i++) {
         if (psm->options[i] == option) {
             out = i;
             break;
@@ -137,7 +137,7 @@ int PlayerSelectMenu_Option_Index(struct PlayerSelectMenu *psm, uf32 option) {
     return (out);
 }
 
-void PlayerSelectMenu_Option_Add(struct PlayerSelectMenu *psm, uf32 option) {
+void PlayerSelectMenu_Option_Add(struct PlayerSelectMenu *psm, u32 option) {
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     SDL_assert(psm);
     SDL_assert(psm->options);
@@ -179,7 +179,7 @@ void PlayerSelectMenu_Elem_Links(struct PlayerSelectMenu *psm, struct MenuCompon
         free(mc->elem_links);
     SDL_assert(mc->elem_num == psm->option_num);
     mc->elem_links = malloc(psm->option_num * sizeof(*mc->elem_links));
-    for (if32 i = 0; i < psm->option_num; i++) {
+    for (i32 i = 0; i < psm->option_num; i++) {
         mc->elem_links[i] = MenuElemDirections_default;
         if (i < (psm->option_num - 1))
             mc->elem_links[i].bottom = i + 1;
@@ -207,7 +207,7 @@ void PlayerSelectMenu_Elem_Boxes(struct PlayerSelectMenu *psm, struct MenuCompon
         free(mc->elem_box);
     SDL_assert(mc->elem_num > 0);
     mc->elem_box = malloc(mc->elem_num * sizeof(*mc->elem_box));
-    for (if32 i = 0; i < mc->elem_num; i++) {
+    for (i32 i = 0; i < mc->elem_num; i++) {
         mc->elem_box[i].x = SOTA_TILESIZE;
         mc->elem_box[i].y = SOTA_TILESIZE;
     }
@@ -222,7 +222,7 @@ void PlayerSelectMenu_Elem_Pos(struct PlayerSelectMenu *psm, struct MenuComponen
     if (mc->elem_pos != NULL)
         free(mc->elem_pos);
     mc->elem_pos = calloc(mc->elem_num, sizeof(*mc->elem_pos));
-    for (if32 i = 0; i < mc->elem_num; i++) {
+    for (i32 i = 0; i < mc->elem_num; i++) {
         mc->elem_pos[i].x = psm->pos.x + pos9.x + mp.left * scale.x;
         mc->elem_pos[i].y = psm->pos.y + (pos9.y + ((i * psm->row_height + mp.top))) * scale.y;
     }
@@ -272,8 +272,8 @@ void PlayerSelectMenu_Update(struct PlayerSelectMenu *psm, struct n9Patch *n9pat
     SDL_assert(n9patch->scale.x > 0);
     SDL_assert(n9patch->scale.y > 0);
 
-    int_fast16_t menu_w = n9patch->size_pixels.x;
-    int_fast16_t menu_h = n9patch->size_pixels.y;
+    i16 menu_w = n9patch->size_pixels.x;
+    i16 menu_h = n9patch->size_pixels.y;
     SDL_assert(menu_w > 0);
     SDL_assert(menu_h > 0);
 
@@ -304,12 +304,12 @@ void PlayerSelectMenu_Update(struct PlayerSelectMenu *psm, struct n9Patch *n9pat
     n9patch->scale.x = scale_x;
     n9patch->scale.y = scale_y;
 
-    if32 posx = n9patch->pos.x + psm->menu_padding.left, posy;
+    i32 posx = n9patch->pos.x + psm->menu_padding.left, posy;
     // int total_text_height = psm->option_num * psm->row_height +  n9patch->pos.y + psm->menu_padding.top;
     // int shift_y = (n9patch->size_patches.y * n9patch->patch_pixels.y) - total_text_height;
     // shift_y /= 2;
 
-    for (if32 i = 0; i < psm->option_num; i++) {
+    for (i32 i = 0; i < psm->option_num; i++) {
         posy = n9patch->pos.y + psm->menu_padding.top + (i * psm->row_height);
         PixelFont_Write(psm->pixelnours, renderer, psm->option_names[i],
                         strlen(psm->option_names[i]), posx, posy);

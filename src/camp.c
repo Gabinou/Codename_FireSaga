@@ -31,7 +31,7 @@ struct Camp Camp_default = {
     .forbidden_jobs = {CAMP_JOB_NULL},
 };
 
-void Camp_Job_Hire(struct Camp *in_camp, uint_fast16_t unit_id, uint_fast16_t job_id) {
+void Camp_Job_Hire(struct Camp *in_camp, i16 unit_id, i16 job_id) {
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     SDL_assert(in_camp->workers[job_id] < (max_jobs[job_id]));
     SDL_assert(in_camp->forbidden_jobs[unit_id] != job_id);
@@ -41,7 +41,7 @@ void Camp_Job_Hire(struct Camp *in_camp, uint_fast16_t unit_id, uint_fast16_t jo
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
-void Camp_Job_Fire(struct Camp *in_camp, uint_fast16_t unit_id, uint_fast16_t job_id) {
+void Camp_Job_Fire(struct Camp *in_camp, i16 unit_id, i16 job_id) {
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     SDL_assert(in_camp->workers[job_id - 1] < (max_jobs[job_id - 1] - 1));
     u8 *jobs_arr = (u8 *)&in_camp->guards;
@@ -61,20 +61,20 @@ void Camp_Job_Fire(struct Camp *in_camp, uint_fast16_t unit_id, uint_fast16_t jo
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
-void Camp_Job_Forbid(struct Camp *in_camp, uint_fast16_t unit_id, uint_fast16_t job_id) {
+void Camp_Job_Forbid(struct Camp *in_camp, i16 unit_id, i16 job_id) {
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     in_camp->forbidden_jobs[unit_id] = job_id;
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
-u8 Camp_hasJob(struct Camp *in_camp, uint_fast16_t unit_id) {
+u8 Camp_hasJob(struct Camp *in_camp, i16 unit_id) {
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     u8 *jobs_arr = (u8 *)&in_camp->guards;
     bool found = false;
     u8 has_job = CAMP_JOB_NULL;
-    for (int_fast16_t job_id = 1; job_id < (CAMPJOB_END); job_id++) {
+    for (i16 job_id = 1; job_id < (CAMPJOB_END); job_id++) {
         u8 *job_arr = jobs_arr + ((job_id - 1) * CAMP_JOB_MAX);
-        for (int_fast16_t i = 0; i < CAMP_JOB_MAX; i++) {
+        for (i16 i = 0; i < CAMP_JOB_MAX; i++) {
             if (job_arr[i] == unit_id)
                 found = true;
         }
@@ -87,7 +87,7 @@ u8 Camp_hasJob(struct Camp *in_camp, uint_fast16_t unit_id) {
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
-u8 *Camp_Job_Get(struct Camp *in_camp, uint_fast16_t job_id) {
+u8 *Camp_Job_Get(struct Camp *in_camp, i16 job_id) {
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     SDL_assert(in_camp->workers[job_id] < (max_jobs[job_id] - 1));
     u8 *jobs_arr = (u8 *)&in_camp->guards;
@@ -115,12 +115,12 @@ void Camp_writeJSON(const void *input, cJSON *in_jcamp) {
     SDL_assert(in_jcamp != NULL);
     u8 *jobs_arr = (u8 *)&in_camp->guards;
     cJSON *jjobs = cJSON_CreateArray();
-    for (int_fast16_t i = 0; i < (CAMPJOB_END * CAMP_JOB_MAX); i++) {
+    for (i16 i = 0; i < (CAMPJOB_END * CAMP_JOB_MAX); i++) {
         cJSON *temp = cJSON_CreateNumber(*(jobs_arr + i));
         cJSON_AddItemToArray(jjobs, temp);
     }
     cJSON *jforbidden = cJSON_CreateArray();
-    for (int_fast16_t i = 0; i < UNIT_ID_PC_END; i++) {
+    for (i16 i = 0; i < UNIT_ID_PC_END; i++) {
         cJSON *temp = cJSON_CreateNumber(in_camp->forbidden_jobs[i]);
         cJSON_AddItemToArray(jforbidden, temp);
     }
@@ -134,14 +134,14 @@ void Camp_readJSON(void *input, const cJSON *const in_jcamp) {
     struct Camp *in_camp = (struct Camp *) input;
     cJSON *jjobs = cJSON_GetObjectItemCaseSensitive(in_jcamp, "Jobs");
     u8 *jobs_arr = (u8 *)&in_camp->guards;
-    for (int_fast16_t i = 0; i < (CAMPJOB_END * CAMP_JOB_MAX); i++) {
+    for (i16 i = 0; i < (CAMPJOB_END * CAMP_JOB_MAX); i++) {
         cJSON *jtemp = cJSON_GetArrayItem(jjobs, i);
         *(jobs_arr + i) = cJSON_GetNumberValue(jtemp);
     }
     cJSON *jforbidden = cJSON_GetObjectItemCaseSensitive(in_jcamp, "Forbidden");
     int32_t forbidden_size = cJSON_GetArraySize(jforbidden);
     SDL_assert(forbidden_size == UNIT_ID_PC_END);
-    for (int_fast16_t i = 0; i < UNIT_ID_PC_END; i++) {
+    for (i16 i = 0; i < UNIT_ID_PC_END; i++) {
         cJSON *jtemp = cJSON_GetArrayItem(jforbidden, i);
         in_camp->forbidden_jobs[i] = cJSON_GetNumberValue(jtemp);
     }

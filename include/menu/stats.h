@@ -18,8 +18,8 @@
 struct MenuComponent;
 
 /* --- CONSTANTS --- */
-extern const if8 stats_menu_cycle[STATS_MENU_CYCLE_NUM];
-extern const if8 stats_menu_cycle_inv[MENU_TYPE_END];
+extern const i8 stats_menu_cycle[STATS_MENU_CYCLE_NUM];
+extern const i8 stats_menu_cycle_inv[MENU_TYPE_END];
 
 #define REGISTER_ENUM(x) SM_ELEM_##x,
 enum STATS_MENU_ELEMENTS {

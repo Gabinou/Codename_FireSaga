@@ -22,12 +22,12 @@ enum SOTA_HOVER {
 
 /* --- FORWARD DECLARATIONS --- */
 typedef struct Hover {
-    if32  width;
-    if32  step;            /* every step, move step [pixels] < width */
-    uf32  current;         /* every step, move step [pixels] < width */
-    if8   wait_factor;
-    if32  update_wait_ns;
-    if32  timer_ns;
+    i32  width;
+    i32  step;            /* every step, move step [pixels] < width */
+    u32  current;         /* every step, move step [pixels] < width */
+    i8   wait_factor;
+    i32  update_wait_ns;
+    i32  timer_ns;
 } Hover;
 extern struct Hover Hover_default;
 

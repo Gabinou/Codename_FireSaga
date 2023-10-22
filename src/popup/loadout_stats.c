@@ -715,8 +715,8 @@ void PopUp_Loadout_Stats_Update(struct PopUp_Loadout_Stats *pls, struct n9Patch 
     SDL_assert(n9patch->size_pixels.y > 0);
     SDL_assert(n9patch->scale.x > 0);
     SDL_assert(n9patch->scale.y > 0);
-    if16 menu_w = n9patch->size_pixels.x;
-    if16 menu_h = n9patch->size_pixels.y + PLS_DEST_Y;
+    i16 menu_w = n9patch->size_pixels.x;
+    i16 menu_h = n9patch->size_pixels.y + PLS_DEST_Y;
     SDL_assert(menu_w > 0);
     SDL_assert(menu_h > 0);
 

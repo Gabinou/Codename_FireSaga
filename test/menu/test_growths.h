@@ -25,7 +25,7 @@ void test_menu_growths() {
     struct GrowthsMenu *gm = GrowthsMenu_Alloc();
     GrowthsMenu_Load(gm, renderer, &n9patch);
     gm->update_stats = false;
-    if16 stat_toplot = 1;
+    i16 stat_toplot = 1;
 
     /* - loading fonts - */
     char *path = PATH_JOIN("..", "assets", "Fonts", "pixelnours.png");

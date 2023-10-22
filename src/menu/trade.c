@@ -78,10 +78,10 @@ void TradeMenu_Deselect(struct TradeMenu *tm) {
     SOTA_Log_Debug("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
-void TradeMenu_Select(struct   TradeMenu *tm, if8 selected) {
+void TradeMenu_Select(struct   TradeMenu *tm, i8 selected) {
     SOTA_Log_Debug("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
-    if8 trader  = 1 - selected / DEFAULT_EQUIPMENT_SIZE;
-    if8 item    =     selected % DEFAULT_EQUIPMENT_SIZE;
+    i8 trader  = 1 - selected / DEFAULT_EQUIPMENT_SIZE;
+    i8 item    =     selected % DEFAULT_EQUIPMENT_SIZE;
     SDL_assert((trader == TRADER_PASSIVE) || (trader == TRADER_ACTIVE));
     SDL_assert((item    > ITEM_NULL) && (item    < DEFAULT_EQUIPMENT_SIZE));
 

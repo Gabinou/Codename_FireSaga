@@ -187,8 +187,8 @@ void _PreCombatMenu_Draw_Doubling(struct PreCombatMenu *pcm, SDL_Renderer *rende
     /* - Misc. variables - */
     SDL_Rect rect;
     char numbuff[2];
-    if16 menu_w = PCM_DOUBLING_SIMPLE_TEXT_W;
-    if16 menu_h = PCM_DOUBLING_SIMPLE_TEXT_H;
+    i16 menu_w = PCM_DOUBLING_SIMPLE_TEXT_W;
+    i16 menu_h = PCM_DOUBLING_SIMPLE_TEXT_H;
 
     /* - create render target texture - */
     if (pcm->texture_doubling == NULL) {
@@ -312,7 +312,7 @@ void _PreCombatMenu_Draw_WpnIcons(struct PreCombatMenu *pcm, SDL_Renderer *rende
         item = Unit_Item_Side(pcm->dft_unit, UNIT_HAND_LEFT);
         if ((pcm->dft_unit->equipped[UNIT_HAND_LEFT]) && (item->id > ITEM_NULL)) {
             struct Weapon *weapon = DTAB_GET(pcm->dft_unit->weapons_dtab, item->id);
-            uf16 type_ind = Weapon_TypeExp(weapon);
+            u16 type_ind = Weapon_TypeExp(weapon);
             srcrect.x = (type_ind % PCM_SIMPLE_ICON_ROWLEN) * PCM_SIMPLE_ICON_W;
             srcrect.y = (type_ind / PCM_SIMPLE_ICON_ROWLEN) * PCM_SIMPLE_ICON_H;
             SDL_RenderCopy(renderer, pcm->texture_weapons, &srcrect, &dstrect);
@@ -326,7 +326,7 @@ void _PreCombatMenu_Draw_WpnIcons(struct PreCombatMenu *pcm, SDL_Renderer *rende
         item = Unit_Item_Side(pcm->dft_unit, UNIT_HAND_RIGHT);
         if ((pcm->dft_unit->equipped[UNIT_HAND_RIGHT]) && (item->id > ITEM_NULL)) {
             struct Weapon *weapon = DTAB_GET(pcm->dft_unit->weapons_dtab, item->id);
-            uf16 type_ind = Weapon_TypeExp(weapon);
+            u16 type_ind = Weapon_TypeExp(weapon);
             srcrect.x = (type_ind % PCM_SIMPLE_ICON_ROWLEN) * PCM_SIMPLE_ICON_W;
             srcrect.y = (type_ind / PCM_SIMPLE_ICON_ROWLEN) * PCM_SIMPLE_ICON_H;
             SDL_RenderCopy(renderer, pcm->texture_weapons, &srcrect, &dstrect);
@@ -341,7 +341,7 @@ void _PreCombatMenu_Draw_WpnIcons(struct PreCombatMenu *pcm, SDL_Renderer *rende
         item = Unit_Item_Side(pcm->dft_unit, UNIT_HAND_RIGHT);
         SDL_assert(item->id > ITEM_NULL);
         struct Weapon *weapon = DTAB_GET(pcm->dft_unit->weapons_dtab, item->id);
-        uf16 type = weapon->item->type;
+        u16 type = weapon->item->type;
         // TODO: weapon with multiple types
         SDL_assert(weapon->item->type > 0);
         int type_ind = (int)(log(type) / log(2.0f)) + 1;
@@ -360,7 +360,7 @@ void _PreCombatMenu_Draw_WpnIcons(struct PreCombatMenu *pcm, SDL_Renderer *rende
         item = Unit_Item_Side(pcm->agg_unit, UNIT_HAND_LEFT);
         if ((pcm->agg_unit->equipped[UNIT_HAND_LEFT]) && (item->id > ITEM_NULL)) {
             struct Weapon *weapon = DTAB_GET(pcm->agg_unit->weapons_dtab, item->id);
-            uf16 type = weapon->item->type;
+            u16 type = weapon->item->type;
             // TODO: weapon with multiple types
             SDL_assert(weapon->item->type > 0);
             int type_ind = (int)(log(type) / log(2.0f)) + 1;
@@ -379,7 +379,7 @@ void _PreCombatMenu_Draw_WpnIcons(struct PreCombatMenu *pcm, SDL_Renderer *rende
         item = Unit_Item_Side(pcm->agg_unit, UNIT_HAND_RIGHT);
         if ((pcm->dft_unit->equipped[UNIT_HAND_RIGHT]) && (item->id > ITEM_NULL)) {
             struct Weapon *weapon = DTAB_GET(pcm->dft_unit->weapons_dtab, item->id);
-            uf16 type = weapon->item->type;
+            u16 type = weapon->item->type;
             // TODO: weapon with multiple types
             SDL_assert(weapon->item->type > 1);
             int type_ind = (int)(log(type) / log(2.0f)) + 1;
@@ -398,7 +398,7 @@ void _PreCombatMenu_Draw_WpnIcons(struct PreCombatMenu *pcm, SDL_Renderer *rende
         item = Unit_Item_Side(pcm->agg_unit, UNIT_HAND_RIGHT);
         SDL_assert(item->id > ITEM_NULL);
         struct Weapon *weapon = DTAB_GET(pcm->agg_unit->weapons_dtab, item->id);
-        uf16 type = weapon->item->type;
+        u16 type = weapon->item->type;
         // TODO: weapon with multiple types
         SDL_assert(weapon->item->type > 0);
         int type_ind = (int)(log(type) / log(2.0f)) + 1;
@@ -792,8 +792,8 @@ void PreCombatMenu_Update(struct PreCombatMenu *pcm, struct n9Patch *n9patch,
     SDL_assert(n9patch->size_pixels.y   > 0);
     SDL_assert(n9patch->scale.x         > 0);
     SDL_assert(n9patch->scale.y         > 0);
-    if16 menu_w = n9patch->size_pixels.x;
-    if16 menu_h = n9patch->size_pixels.y;
+    i16 menu_w = n9patch->size_pixels.x;
+    i16 menu_h = n9patch->size_pixels.y;
     SDL_assert(menu_w > 0);
     SDL_assert(menu_h > 0);
 

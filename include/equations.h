@@ -24,10 +24,10 @@ struct Damage;
 /* -- Unit Computed Stats -- */
 extern u8 Equation_Unit_Hit(  int wpn_hit,   int dex,       int luck, int support);
 extern u8 Equation_Unit_Crit( int wpn_crit,  int dex,       int luck, int support);
-extern if8 Equation_Unit_Speed(int wpn_wgt,   int agi,       int con,  int str);
+extern i8 Equation_Unit_Speed(int wpn_wgt,   int agi,       int con,  int str);
 extern u8 Equation_Unit_Favor(int wpn_favor, int faith,     int support);
-extern if8 Equation_Unit_Dodge(int wpn_wgt,   int wpn_dodge, int luck, int faith,
-                               int agi,       int str,       int con,  int tile_dodge, int support);
+extern i8 Equation_Unit_Dodge(int wpn_wgt,   int wpn_dodge, int luck, int faith,
+                              int agi,       int str,       int con,  int tile_dodge, int support);
 
 /* -- Stat total with bonus and malus -- */
 extern u8 Stat_Total(int current, int bonus, int malus, int cap);
@@ -43,7 +43,7 @@ extern u8 Equation_Unit_Healshpvar(size_t argnum, ...);
 extern bool Equation_canCarry(int savior_con, int victim_con);
 
 /* -- Unit Regrets -- */
-extern if8 Equation_Regrets(int kills, int faith);
+extern i8 Equation_Regrets(int kills, int faith);
 
 /* -- Combat -- */
 extern u8   Equation_Combat_Hit(     int hit_a,  int avoid_d);
@@ -78,14 +78,14 @@ extern u8 Equation_Agony_Turns(        int str, int def, int con);
 extern u8 Equation_Agony_PercentonCrit(int luck, int con);
 
 /* -- AI equations -- */
-extern if8 Equation_AI_Rating_Stats(   int   stat);
-extern if8 Equation_AI_Rating_Damage(  int   dmg);
-extern if8 Equation_AI_Rating_HPprop(  float hp_prop);
-extern if8 Equation_AI_Rating_hitRate( int   hit_rate);
-extern if8 Equation_AI_Rating_critRate(int   crit_rate);
+extern i8 Equation_AI_Rating_Stats(   int   stat);
+extern i8 Equation_AI_Rating_Damage(  int   dmg);
+extern i8 Equation_AI_Rating_HPprop(  float hp_prop);
+extern i8 Equation_AI_Rating_hitRate( int   hit_rate);
+extern i8 Equation_AI_Rating_critRate(int   crit_rate);
 
-extern if8 Equation_AI_Rating_Equipment(int    crit);
-extern if8 Equation_AI_Rating_pushGradient(i32 gradient);
-extern if8 Equation_AI_Rating_pullGradient(i32 gradient);
+extern i8 Equation_AI_Rating_Equipment(int    crit);
+extern i8 Equation_AI_Rating_pushGradient(i32 gradient);
+extern i8 Equation_AI_Rating_pullGradient(i32 gradient);
 
 #endif /* EQUATIONS_H */

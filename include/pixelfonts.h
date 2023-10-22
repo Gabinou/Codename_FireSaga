@@ -58,8 +58,8 @@ typedef struct PixelFont {
     u8  glyph_height;
     u8  col_len;
     u8  row_len;
-    if8  linespace;      /* [pixels] space to add to glyph height for new line */
-    uf16 charset_num;
+    i8  linespace;      /* [pixels] space to add to glyph height for new line */
+    u16 charset_num;
     u8 *glyph_bbox_width;
     u8 *glyph_bbox_height;
     u8 *y_offset;
@@ -78,7 +78,7 @@ void PixelFont_Free(struct PixelFont *f, bool free);
 void PixelFont_Load(struct PixelFont *f, SDL_Renderer *r, char *fontname);
 
 /* --- Internals --- */
-void PixelFont_Swap_Palette(struct PixelFont *f, SDL_Renderer *r, if8 w, if8 b);
+void PixelFont_Swap_Palette(struct PixelFont *f, SDL_Renderer *r, i8 w, i8 b);
 
 /* --- Lines --- */
 /* -- Counting lines -- */
@@ -112,9 +112,9 @@ int PixelFont_Scroll(struct PixelFont *f, u64 time_ns);
 // For PixelFont_Write be usable for Texturefont,
 // skip glyph 32, cause it is reserved for SPACE
 // col_len 16: 1st cell in 3rd row / col_len 8: 1st cell in 5rd row
-void PixelFont_Write(       struct PixelFont *f, SDL_Renderer *r, char *t, size_t len, uf32 px,
-                            uf32 py);
-void PixelFont_Write_Len(   struct PixelFont *f, SDL_Renderer *r, char *t, uf32 px, uf32 py);
-void PixelFont_Write_Scroll(struct PixelFont *f, SDL_Renderer *r, char *t, uf32 px, uf32 py);
+void PixelFont_Write(       struct PixelFont *f, SDL_Renderer *r, char *t, size_t len, u32 px,
+                            u32 py);
+void PixelFont_Write_Len(   struct PixelFont *f, SDL_Renderer *r, char *t, u32 px, u32 py);
+void PixelFont_Write_Scroll(struct PixelFont *f, SDL_Renderer *r, char *t, u32 px, u32 py);
 
 #endif /* PIXELFONTS_H */

@@ -89,13 +89,13 @@ bool Condition_Read(u32 *bitfield, size_t bits, cJSON *jcondition) {
         if (cJSON_IsArray(jcondition)) {
             cJSON_ArrayForEach(jelem, jcondition) {
                 char *name = cJSON_GetStringValue(jelem);
-                uint_fast16_t id = Hashes_unitName2ID(name);
+                i16 id = Hashes_unitName2ID(name);
                 if (id > 0)
                     Bitfield_On(cond, id - 1);
             }
         } else if (cJSON_IsString(jcondition)) {
             char *name = cJSON_GetStringValue(jcondition);
-            uint_fast16_t id = Hashes_unitName2ID(name);
+            i16 id = Hashes_unitName2ID(name);
             if (id > 0)
                 Bitfield_On(cond, id - 1);
         }
@@ -110,7 +110,7 @@ void Scene_Prune(struct Scene *scene) {
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     /* Realloc strings to size */
     SDL_assert(scene->replace_num > 0);
-    for (uint_fast16_t j = 0; j < scene->line_num; j++) {
+    for (i16 j = 0; j < scene->line_num; j++) {
         scene->lines[j] = SDL_realloc(scene->lines[j], strlen(scene->lines[j]) + 1);
     }
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
@@ -120,8 +120,8 @@ void Scene_Replace(struct Scene *scene) {
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     /* Replaces strings in replace by with */
     SDL_assert(scene->replace_num > 0);
-    for (uint_fast16_t i = 0; i < scene->replace_num; i++) {
-        for (uint_fast16_t j = 0; j < scene->line_num; j++) {
+    for (i16 i = 0; i < scene->replace_num; i++) {
+        for (i16 j = 0; j < scene->line_num; j++) {
             nstr_Replace(scene->lines[j], scene->replace[i], scene->with[i]);
         }
     }
@@ -151,7 +151,7 @@ bool Conditions_Read(struct Conditions *conds, cJSON *jconds) {
 }
 
 struct Scene *Scenes_Load(struct Scene *sdarr, struct Conditions *scene_conds,
-                          int_fast16_t chapter, uint_fast16_t scene_time) {
+                          i16 chapter, u16 scene_time) {
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     /* scenes darr */
     if (sdarr != NULL)
@@ -166,7 +166,7 @@ struct Scene *Scenes_Load(struct Scene *sdarr, struct Conditions *scene_conds,
 
     /* Reading scene files */
     struct cJSON *jscene, *jfile;
-    for (uint_fast16_t i = 1; i < DEFAULT_BUFFER_SIZE; i++) {
+    for (i16 i = 1; i < DEFAULT_BUFFER_SIZE; i++) {
         stbsp_sprintf(extension, "%d.json", i);
         strcpy(filename, base);
         strcat(filename, extension);
@@ -199,7 +199,7 @@ void Scene_readJSON(void *input, const struct cJSON *const jscene) {
     struct Scene *scene = (struct Scene *) input;
     Scene_Free_Read(scene);
     cJSON *jlines = cJSON_GetObjectItem(jscene, "Lines");
-    uint_fast16_t raw_line_num = cJSON_GetArraySize(jlines);
+    i16 raw_line_num = cJSON_GetArraySize(jlines);
     scene->line_num = scene->actors_num = 0;
     scene->lines = SDL_malloc(raw_line_num * sizeof(*scene->lines));
     scene->actors = SDL_malloc(raw_line_num * sizeof(*scene->actors));
@@ -210,7 +210,7 @@ void Scene_readJSON(void *input, const struct cJSON *const jscene) {
         size_t len = strlen(jline->child->string);
         char *temp = calloc(len + 1, 1);
         strncpy(temp, jline->child->string, len);
-        uint_fast16_t id = Hashes_unitHash2ID(tnecs_hash_djb2(nstr_toLower(temp)));
+        i16 id = Hashes_unitHash2ID(tnecs_hash_djb2(nstr_toLower(temp)));
         SDL_free(temp);
         /* - line - */
         temp = cJSON_GetStringValue(jline->child);
