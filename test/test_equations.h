@@ -4,10 +4,10 @@
 
 void test_Equation_Unit_Hit() {
     SDL_Log("test_Equation_Unit_Hit");
-    uf8 wpn_hit = 0;
-    uf8 dex     = 0;
-    uf8 luck    = 0;
-    uf8 support = 0;
+    u8 wpn_hit = 0;
+    u8 dex     = 0;
+    u8 luck    = 0;
+    u8 support = 0;
     nourstest_true(Equation_Unit_Hit(wpn_hit, dex, luck, support) == 0);
     wpn_hit = 10;
     nourstest_true(Equation_Unit_Hit(wpn_hit, dex, luck, support) == wpn_hit);
@@ -35,15 +35,15 @@ void test_Equation_Unit_Hit() {
 
 void test_Equation_Unit_Dodge() {
     SDL_Log("test_Equation_Unit_Dodge");
-    uf8 wpn_dodge   = 0;
-    uf8 wpn_wgt     = 0;
-    uf8 tile_dodge  = 0;
-    uf8 str         = 0;
-    uf8 agi         = 0;
-    uf8 fth         = 0;
-    uf8 con         = 0;
-    uf8 luck        = 0;
-    uf8 support     = 0;
+    u8 wpn_dodge   = 0;
+    u8 wpn_wgt     = 0;
+    u8 tile_dodge  = 0;
+    u8 str         = 0;
+    u8 agi         = 0;
+    u8 fth         = 0;
+    u8 con         = 0;
+    u8 luck        = 0;
+    u8 support     = 0;
 
     nourstest_true(Equation_Unit_Dodge(wpn_wgt, wpn_dodge, luck, fth, agi, str, con, tile_dodge,
                                        support) == (wpn_dodge + support + tile_dodge + luck / DODGE_LUCK_FACTOR + fth / DODGE_FTH_FACTOR +
@@ -104,9 +104,9 @@ void test_Equation_Unit_Dodge() {
 
 void test_Equation_Unit_Favor() {
     SDL_Log("test_Equation_Unit_Favor");
-    uf8 wpn_favor = 0;
-    uf8 luck = 0;
-    uf8 support = 0;
+    u8 wpn_favor = 0;
+    u8 luck = 0;
+    u8 support = 0;
     nourstest_true(Equation_Unit_Favor(wpn_favor, luck, support) == (wpn_favor + luck / 2 + support));
     support = 10;
     nourstest_true(Equation_Unit_Favor(wpn_favor, luck, support) == (wpn_favor + luck / 2 + support));
@@ -131,10 +131,10 @@ void test_Equation_Unit_Favor() {
 
 void test_Equation_Unit_Crit() {
     SDL_Log("test_Equation_Unit_Crit");
-    uf8 wpn_crit  = 0;
-    uf8 dex       = 0;
-    uf8 luck      = 0;
-    uf8 support   = 0;
+    u8 wpn_crit  = 0;
+    u8 dex       = 0;
+    u8 luck      = 0;
+    u8 support   = 0;
     nourstest_true(Equation_Unit_Crit(wpn_crit, dex, luck, support) == 0);
     wpn_crit = 10;
     nourstest_true(Equation_Unit_Crit(wpn_crit, dex, luck,
@@ -167,10 +167,10 @@ void test_Equation_Unit_Crit() {
 
 void test_Equation_Unit_Speed() {
     SDL_Log("test_Equation_Unit_Speed");
-    uf8 wpn_wgt = 0;
-    uf8 agi = 0;
-    uf8 con = 0;
-    uf8 str = 0;
+    u8 wpn_wgt = 0;
+    u8 agi = 0;
+    u8 con = 0;
+    u8 str = 0;
     nourstest_true(Equation_Unit_Speed(wpn_wgt, agi, con, str) == 0);
     wpn_wgt = UINT8_MAX;
     nourstest_true(Equation_Unit_Speed(wpn_wgt, agi, con, str) == INT8_MIN);

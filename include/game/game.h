@@ -184,7 +184,7 @@ struct Game {
     /* Button interpreted as which input?  */
     u32 inputs[SOTA_BUTTON_END];
 
-    uf8    party_size;
+    u8    party_size;
     u64    runtime_ns; // -> millions of years
     bool  *shadow_area;  /* pixels */
     bool   ismouse          : 1;

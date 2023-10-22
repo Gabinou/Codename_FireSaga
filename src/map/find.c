@@ -66,8 +66,8 @@ tnecs_entity_t *Map_Find_Defendants(struct Map *map, i32 *attacktolist,
         // SOTA_Log_Debug("Found unit on %lu %lu ", x_at, y_at);
         struct Unit *agg    = TNECS_GET_COMPONENT(map->world, aggressor, Unit);
         struct Unit *unit   = TNECS_GET_COMPONENT(map->world, unitontile, Unit);
-        uf8 align_t         = SotA_army2alignment(unit->army);
-        uf8 align_a         = SotA_army2alignment(agg->army);
+        u8 align_t         = SotA_army2alignment(unit->army);
+        u8 align_a         = SotA_army2alignment(agg->army);
         if (align_a != align_t)
             DARR_PUT(defendants, unitontile);
     }
@@ -117,7 +117,7 @@ tnecs_entity_t *Map_Find_Patients(struct Map *map, struct dtab *weapons_dtab, i3
     struct Weapon *staff = (struct Weapon *)DTAB_GET(weapons_dtab, item->id);
 
     /* -- Check healtolist for valid patients -- */
-    uf8 align_healer = army_alignment[healer->army];
+    u8 align_healer = army_alignment[healer->army];
     for (size_t i = 0; i < DARR_NUM(healtolist) / 2; i++) {
         size_t x_at = healtolist[TWO_D * i];
         size_t y_at = healtolist[TWO_D * i + 1];
@@ -125,7 +125,7 @@ tnecs_entity_t *Map_Find_Patients(struct Map *map, struct dtab *weapons_dtab, i3
         if (unitontile <= TNECS_NULL)
             continue;
         struct Unit *patient = TNECS_GET_COMPONENT(map->world, unitontile, Unit);
-        uf8 align_patient = army_alignment[patient->army];
+        u8 align_patient = army_alignment[patient->army];
         bool add;
         switch (staff->item->target) {
             case ALIGNMENT_NULL:

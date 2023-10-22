@@ -22,7 +22,7 @@ float sota_slowpow(float base, int exponent);
 /* avg: average                  */
 
 /* --- TYPEDEFS --- */
-typedef uf8(*RNG_URN_ptr)(struct TINYMT32_T *);
+typedef u8(*RNG_URN_ptr)(struct TINYMT32_T *);
 
 /* --- CONSTANTS --- */
 #define TWOPOWER32 0x100000000
@@ -45,20 +45,20 @@ extern RNG_URN_ptr global_RNG_URN;
 
 /* -- Internals -- */
 /* - Uniform - */
-uf8  RNG_URN(             struct TINYMT32_T *tinymt);
+u8  RNG_URN(             struct TINYMT32_T *tinymt);
 uf16 RNG_openBSD_uint32_t(struct TINYMT32_T *tinymt, u32 max, u32 min);
 
 /* - Checkers - */
-bool RNG_single_roll(uf8 RN,  uf8 hit);
-bool RNG_double_roll(uf8 RN1, uf8 RN2, uf8 hit);
+bool RNG_single_roll(u8 RN,  u8 hit);
+bool RNG_double_roll(u8 RN1, u8 RN2, u8 hit);
 
 /* - Gaussian - */
-uf8 *RNG_boxmuller(const uf8 RN_U[INTERVAL_BOUNDS_NUM], float avg, float std_dev);
+u8 *RNG_boxmuller(const u8 RN_U[INTERVAL_BOUNDS_NUM], float avg, float std_dev);
 /* defaults: avg = 50, std_dev = 20 */
 
 /* -- Debug -- */
-uf8 RNG_URN_debug(struct TINYMT32_T *tinymt);
-extern uf8 URN_debug; /* Value returned by RNG_URN_debug */
+u8 RNG_URN_debug(struct TINYMT32_T *tinymt);
+extern u8 URN_debug; /* Value returned by RNG_URN_debug */
 
 /* --- RNG SEQUENCE BREAKER (SB) --- */
 /* Sequence breaker increases or decreases probability of next draw

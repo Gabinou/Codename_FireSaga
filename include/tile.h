@@ -13,7 +13,7 @@
 struct cJSON;
 
 typedef struct Tile {
-    uf8 json_element; /* JSON_ELEM_bOFFSET = 0 */
+    u8 json_element; /* JSON_ELEM_bOFFSET = 0 */
     char *name;
     i32 id;
     struct Tile_stats stats;
@@ -31,7 +31,7 @@ extern struct Tile Tile_default;
 typedef struct Mobj_Link {
     i32 *relpos_linked;
     i32 *abspos_linked;
-    uf8 num_linked;
+    u8 num_linked;
 } Mobj_Link;
 extern struct Mobj_Link Mobj_Link_default;
 
@@ -61,9 +61,9 @@ typedef struct Breakable {
     /*  Door/chests can be breakable -> add breakable entity        */
     i32 tile;
     i32 tile_after;
-    uf8 hp;
-    uf8 def;
-    uf8 res;
+    u8 hp;
+    u8 def;
+    u8 res;
 } Breakable;
 extern struct Breakable Breakable_default;
 
@@ -71,8 +71,8 @@ typedef struct Door {
     /*--- LINKING ---*/
     /* linked doors open at the same time */
     i32 tile;
-    uf8 chapter_open;
-    uf8 chapter_close;
+    u8 chapter_open;
+    u8 chapter_close;
     u32 event;
     u32 scene;
 } Door;

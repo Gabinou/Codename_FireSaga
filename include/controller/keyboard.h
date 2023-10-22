@@ -34,19 +34,19 @@ extern struct KeyboardInputMap {
     SDL_Scancode    trigger_right[SOTA_MAPPABLE_BUTTONS_NUM];
     SDL_Scancode    trigger_left[SOTA_MAPPABLE_BUTTONS_NUM];
 
-    uf8  dpad_right_len;
-    uf8  dpad_up_len;
-    uf8  dpad_left_len;
-    uf8  dpad_down_len;
-    uf8  a_len;
-    uf8  b_len;
-    uf8  x_len;
-    uf8  y_len;
-    uf8  start_len;
-    uf8  shoulder_left_len;
-    uf8  shoulder_right_len;
-    uf8  trigger_right_len;
-    uf8  trigger_left_len;
+    u8  dpad_right_len;
+    u8  dpad_up_len;
+    u8  dpad_left_len;
+    u8  dpad_down_len;
+    u8  a_len;
+    u8  b_len;
+    u8  x_len;
+    u8  y_len;
+    u8  start_len;
+    u8  shoulder_left_len;
+    u8  shoulder_right_len;
+    u8  trigger_right_len;
+    u8  trigger_left_len;
 
 } KeyboardInputMap_default;
 
@@ -71,6 +71,6 @@ extern struct controllerKeyboard controllerKeyboard_default;
 
 /* -- Pressed button -- */
 extern void Keyboard_Held(if8 *h, size_t *hn, if32 *t, if8 *p, size_t pn, if32 dt);
-extern bool Keyboard_isPressed(struct controllerKeyboard *k, const uf8 *sa, int button);
+extern bool Keyboard_isPressed(struct controllerKeyboard *k, const u8 *sa, int button);
 
 #endif /* CONTROLLERKEYBOARD_H */

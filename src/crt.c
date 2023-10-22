@@ -105,7 +105,7 @@ SDL_Surface *CRT_Floats2Pixels(struct FloatRGB *floatrgb, uint_fast32_t width,
     return (surface);
 }
 
-void CRT_Shadow_Filter(uf8 *mask, float *color, uint_fast32_t size_x,
+void CRT_Shadow_Filter(u8 *mask, float *color, uint_fast32_t size_x,
                        uint_fast32_t size_y) {
     SOTA_Log_Debug("CRT_Shadow_Filter");
     for (uint_fast32_t j = 0; j < size_y; j++) {
@@ -114,10 +114,10 @@ void CRT_Shadow_Filter(uf8 *mask, float *color, uint_fast32_t size_x,
     }
 }
 
-void CRT_Shadow_Mask(uf8 *mask, uint_fast32_t size_x, uint_fast32_t size_y,
-                     uf8 cell_height, uf8 cell_width, uf8 Hblank,
-                     uf8 Vblank,
-                     uf8 stagger, uint_fast32_t x_offset, uint_fast32_t y_offset) {
+void CRT_Shadow_Mask(u8 *mask, uint_fast32_t size_x, uint_fast32_t size_y,
+                     u8 cell_height, u8 cell_width, u8 Hblank,
+                     u8 Vblank,
+                     u8 stagger, uint_fast32_t x_offset, uint_fast32_t y_offset) {
     /* mask should be set to 0 everywhere. */
     SOTA_Log_Debug("CRT_Shadow_Mask");
     for (uint_fast32_t j = 0; j < size_y; j++) {
@@ -668,18 +668,18 @@ void CRT_Filter(struct CRT *in_crt, SDL_Texture *render_target,
                                          in_crt->intermediate_height);
     SDL_SaveBMP(in_crt->filtered, "CRT_INTERMEDIATE.png");
     // Filtering with Shadow masks
-    uf8 *temp_mask = calloc(in_crt->intermediate_width *
-                            in_crt->intermediate_height,
-                            sizeof(*temp_mask));
-    uf8 x_offset_B = 0;
-    uf8 x_offset_G = in_crt->cell_width + in_crt->cell_blank_R ;
-    uf8 x_offset_R = in_crt->cell_width * 2 + in_crt->cell_blank_G +
-                     in_crt->cell_blank_R;
-    uf8 y_offset = 0;
+    u8 *temp_mask = calloc(in_crt->intermediate_width *
+                           in_crt->intermediate_height,
+                           sizeof(*temp_mask));
+    u8 x_offset_B = 0;
+    u8 x_offset_G = in_crt->cell_width + in_crt->cell_blank_R ;
+    u8 x_offset_R = in_crt->cell_width * 2 + in_crt->cell_blank_G +
+                    in_crt->cell_blank_R;
+    u8 y_offset = 0;
     // From any cell color perspective, 2 other cells are blank
-    uf8 Hblank = in_crt->cell_blank_R + in_crt->cell_blank_G + in_crt->cell_blank_B +
-                 in_crt->cell_width * 2;
-    uf8 Vblank = in_crt->cell_Vblank;
+    u8 Hblank = in_crt->cell_blank_R + in_crt->cell_blank_G + in_crt->cell_blank_B +
+                in_crt->cell_width * 2;
+    u8 Vblank = in_crt->cell_Vblank;
     // red mask
     CRT_Shadow_Mask(temp_mask, in_crt->intermediate_width, in_crt->intermediate_height,
                     in_crt->cell_height, in_crt->cell_width, Hblank, Vblank, in_crt->stagger, x_offset_R,

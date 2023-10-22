@@ -276,7 +276,7 @@ char *Utilities_Print_itemStats(struct Item_stats stats) {
     return (out);
 }
 
-uf8 army_alignment[ARMY_END] = {
+u8 army_alignment[ARMY_END] = {
     /* ARMY_START                     */ ALIGNMENT_ENEMY,
     /* ARMY_FRIENDLY                  */ ALIGNMENT_FRIENDLY,
     /* ARMY_ERWIN                     */ ALIGNMENT_FRIENDLY,

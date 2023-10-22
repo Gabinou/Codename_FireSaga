@@ -89,7 +89,7 @@ if8 useEffect_STAFF_HEAL(struct Item *restrict item,
                          struct Unit *restrict target) {
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     // HEALING ITEMS CAN BE USED ON OTHER UNITS/PEGASUSES/ENEMIES.
-    uf8 healing = Equation_Staff_Healing(item->stats.AP, user->current_stats.mag);
+    u8 healing = Equation_Staff_Healing(item->stats.AP, user->current_stats.mag);
     Unit_getsHealed(target, healing);
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
     return (-1);
@@ -202,7 +202,7 @@ if8 useEffect_CALL_HORSE(struct Item *restrict item,
 }
 
 /* --- ITEM --- */
-void Inventory_item_Swap(struct Inventory_item *restrict items, uf8 i1, uf8 i2) {
+void Inventory_item_Swap(struct Inventory_item *restrict items, u8 i1, u8 i2) {
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     struct Inventory_item buffer = items[i1];
     items[i1] = items[i2];
@@ -547,7 +547,7 @@ bool Item_isWeapon(if16 id) {
 int Item_Stat(const struct Item *item, if16 stattype)  {
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     SDL_assert((stattype > ITEM_STAT_START) && (stattype < ITEM_STAT_END));
-    uf8 *item_stats_arr = (uf8 *)&item->stats;
+    u8 *item_stats_arr = (u8 *)&item->stats;
     int stat = item_stats_arr[stattype - 1];
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
     return (stat);

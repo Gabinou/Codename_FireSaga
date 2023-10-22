@@ -203,7 +203,7 @@ void Filesystem_Log2file(void *userdata, int cat, SDL_LogPriority pri, const cha
 }
 
 /* --- UTILITIES --- */
-void Filesystem_Load_Bytes(const char *name, uf8 **mem, size_t *len) {
+void Filesystem_Load_Bytes(const char *name, u8 **mem, size_t *len) {
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     /* Open file */
     PHYSFS_File *physfs_file = PHYSFS_openRead(name);
@@ -213,10 +213,10 @@ void Filesystem_Load_Bytes(const char *name, uf8 **mem, size_t *len) {
     PHYSFS_uint32 length = PHYSFS_fileLength(physfs_file);
     if (len != NULL) {
         *len = length;
-        *mem = (uf8 *) SDL_malloc(length + 1);
+        *mem = (u8 *) SDL_malloc(length + 1);
         (*mem)[length] = 0;
     } else
-        *mem = (uf8 *) SDL_malloc(length);
+        *mem = (u8 *) SDL_malloc(length);
 
     /* Read file, then close it */
     PHYSFS_readBytes(physfs_file, *mem, length);
@@ -432,7 +432,7 @@ void Filesystem_Surface_Pixels2Indices(SDL_Surface *abgr_surf, SDL_Surface *inde
     SDL_assert(index_surf->h == abgr_surf->h);
 
     u32 pixel, color;
-    uf8 bitsmin = 24, bitsmax = 32; /* Bits for A channel? */
+    u8 bitsmin = 24, bitsmax = 32; /* Bits for A channel? */
     SDL_LockSurface(abgr_surf);
     SDL_LockSurface(index_surf);
     u8 *arbg_pixels  = (u8 *)abgr_surf->pixels;
@@ -603,7 +603,7 @@ void Filesystem_readJSON_Palette(const char *filename, struct SDL_Palette *palet
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
-void Filesystem_readJSON_PaletteTable(const char *filename, uf8   *table) {
+void Filesystem_readJSON_PaletteTable(const char *filename, u8   *table) {
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     SOTA_Log_Debug("%s", filename);
     struct cJSON *jfile = jsonio_parseJSON(filename);
@@ -757,16 +757,16 @@ void Filesystem_readJSON_Array(const struct cJSON *const jarray, i32 *restrict a
 }
 
 void Filesystem_readJSON_2DArray(const struct cJSON *const jarr, i32 *restrict arr2D,
-                                 uf8 row_len, uf8 col_len) {
+                                 u8 row_len, u8 col_len) {
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     /* caller deals with memory */
     SDL_assert(jarr != NULL);
     SDL_assert(cJSON_IsArray(jarr));
     SDL_assert(cJSON_GetArraySize(jarr) == row_len);
-    for (uf8 row = 0; row < cJSON_GetArraySize(jarr); row++) {
+    for (u8 row = 0; row < cJSON_GetArraySize(jarr); row++) {
         struct cJSON *jrow  = cJSON_GetArrayItem(jarr, row);
         SDL_assert(cJSON_GetArraySize(jrow) == col_len);
-        for (uf8 col = 0; col < cJSON_GetArraySize(jrow); col++) {
+        for (u8 col = 0; col < cJSON_GetArraySize(jrow); col++) {
             struct cJSON *jnum  = cJSON_GetArrayItem(jrow, col);
             arr2D[(row * col_len + col)] = (i32)cJSON_GetNumberValue(jnum);
         }
@@ -778,23 +778,23 @@ void Filesystem_writeJSON_Array(struct cJSON *jarr, const i32 *restrict arr, siz
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     SOTA_Log_Debug("%zu", num);
     SDL_assert(arr != NULL);
-    for (uf8 i = 0; i < num; i++) {
+    for (u8 i = 0; i < num; i++) {
         struct cJSON *jnum = cJSON_CreateNumber(arr[i]);
         cJSON_AddItemToArray(jarr, jnum);
     }
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
-void Filesystem_writeJSON_2DArray(struct cJSON *arr, const i32 *restrict arr2D, uf8 row_len,
-                                  uf8 col_len) {
+void Filesystem_writeJSON_2DArray(struct cJSON *arr, const i32 *restrict arr2D, u8 row_len,
+                                  u8 col_len) {
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     SOTA_Log_Debug("%d %d", row_len, col_len);
     SDL_assert(arr != NULL);
     struct cJSON *jrow, *jnum;
     char rowname[DEFAULT_BUFFER_SIZE / 8];
-    for (uf8 row = 0; row < row_len; row++) {
+    for (u8 row = 0; row < row_len; row++) {
         jrow = cJSON_CreateArray();
-        for (uf8 col = 0; col < col_len; col++) {
+        for (u8 col = 0; col < col_len; col++) {
             jnum = cJSON_CreateNumber(arr2D[(row * col_len + col)]);
             cJSON_AddItemToArray(jrow, jnum);
         }
@@ -1028,18 +1028,18 @@ void Filesystem_readJSON_Wpnstats(const struct cJSON        *const    jstats,
     struct cJSON *jattack = cJSON_GetObjectItem(jstats, "Attack");
     i = 0;
     cJSON_ArrayForEach(jnum, jattack) {
-        stats->attack[i++] = (uf8)cJSON_GetNumberValue(jnum);
+        stats->attack[i++] = (u8)cJSON_GetNumberValue(jnum);
     }
 
     struct cJSON *jprot = cJSON_GetObjectItem(jstats, "Protection");
     i = 0;
     cJSON_ArrayForEach(jnum, jprot) {
-        stats->protection[i++] = (uf8)cJSON_GetNumberValue(jnum);
+        stats->protection[i++] = (u8)cJSON_GetNumberValue(jnum);
     }
 
     struct cJSON *jrange = cJSON_GetObjectItem(jstats, "Range");
-    stats->range.min = (uf8)cJSON_GetNumberValue(cJSON_GetArrayItem(jrange, RANGE_MIN));
-    stats->range.max = (uf8)cJSON_GetNumberValue(cJSON_GetArrayItem(jrange, RANGE_MAX));
+    stats->range.min = (u8)cJSON_GetNumberValue(cJSON_GetArrayItem(jrange, RANGE_MIN));
+    stats->range.max = (u8)cJSON_GetNumberValue(cJSON_GetArrayItem(jrange, RANGE_MAX));
     SDL_assert(stats->range.max >= stats->range.min);
     struct cJSON *jhit   = cJSON_GetObjectItem(jstats, "hit");
     struct cJSON *jwgt   = cJSON_GetObjectItem(jstats, "wgt");

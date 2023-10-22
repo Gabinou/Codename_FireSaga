@@ -29,12 +29,12 @@ typedef struct Convoy {
 
     struct Inventory_item books[SOTA_BOOKS_NUM];
     struct Inventory_item items[SOTA_CONVOY_SIZE_MAX];
-    uf8 cumnum[ITEM_TYPE_NUM + 1]; // items are [cumnum1, cumnum2)
+    u8 cumnum[ITEM_TYPE_NUM + 1]; // items are [cumnum1, cumnum2)
 
     uint_fast16_t bank; // [gold]
-    uf8 books_num;
-    uf8 items_num;
-    uf8 size;
+    u8 books_num;
+    u8 items_num;
+    u8 size;
     bool sort_direction;
 } Convoy;
 
@@ -63,9 +63,9 @@ extern int_fast16_t Convoy_Spend(struct Convoy *in_convoy, int_fast16_t out_mone
 /* --- Sorting --- */
 extern void Convoy_Sort(struct Convoy *in_convoy, int_fast16_t stattype);
 /* quicksort */
-extern void Convoy_Quicksort(struct Convoy *c, uf8 a[], uf8 l, uf8 h);
-extern uf8 Convoy_Partition_wDuplicates(struct Convoy *c, uf8 a[],
-                                        uf8 l, uf8 h);
+extern void Convoy_Quicksort(struct Convoy *c, u8 a[], u8 l, u8 h);
+extern u8 Convoy_Partition_wDuplicates(struct Convoy *c, u8 a[],
+                                       u8 l, u8 h);
 /* cunum shift */
 extern void Convoy_Shift_Plus(struct Convoy *in_convoy, int_fast16_t i, int_fast16_t exp);
 extern void Convoy_Shift_Minus(struct Convoy *in_convoy, int_fast16_t i);

@@ -56,31 +56,31 @@ struct Graph Graph_default = {
     .y_ticks = true,
 };
 
-void Graph_Stat_Remove(struct Graph *graph, uf8 stat_id) {
+void Graph_Stat_Remove(struct Graph *graph, u8 stat_id) {
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     graph->graph_stats[stat_id].stat_id = -1;
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
 void Graph_Stat_Add(struct Graph *graph, struct Unit_stats *base_stats,
-                    struct Unit_stats *grown_stats, if8 level, if8 base_level, uf8 stat_id) {
+                    struct Unit_stats *grown_stats, if8 level, if8 base_level, u8 stat_id) {
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
-    uf8 *stat_arr, *base_arr, total_grown = 0;
+    u8 *stat_arr, *base_arr, total_grown = 0;
     struct GraphStat graph_stat = GraphStat_default;
     graph_stat.level = level;
     graph_stat.base_level = base_level;
     graph_stat.stat_id = stat_id;
 
     /* Compute cumul_stat using unit grown_stat */
-    for (uf8 i = 0; i <= (level - base_level); i++) {
+    for (u8 i = 0; i <= (level - base_level); i++) {
         /* No growth yet at base level */
         if (i > 0) {
-            /* Cast stat structs to array cause it contains only uf8 */
-            stat_arr = (uf8 *)(&grown_stats[i - 1]);
+            /* Cast stat structs to array cause it contains only u8 */
+            stat_arr = (u8 *)(&grown_stats[i - 1]);
             /* Use stat_id as offset in stat_arr */
             total_grown += *(stat_arr + stat_id);
         }
-        base_arr = (uf8 *)(base_stats);
+        base_arr = (u8 *)(base_stats);
         graph_stat.cumul_stat[i] = *(base_arr + stat_id) + total_grown;
     }
     graph->graph_stats[stat_id] = graph_stat;
@@ -105,7 +105,7 @@ void Graph_Draw(struct Graph *graph, struct n9Patch *n9patch, struct PixelFont *
     }
     SDL_SetRenderTarget(renderer, graph->texture);
     _Graph_Draw_Axes(graph, n9patch, pixelnours_big, renderer, render_target);
-    for (uf8 i = 0; i < UNIT_STAT_NUM; i++) {
+    for (u8 i = 0; i < UNIT_STAT_NUM; i++) {
         if (graph->graph_stats[i].stat_id >= 0)
             _Graph_Draw_Stat(graph, i, n9patch, pixelnours_big, renderer, render_target);
     }
@@ -145,7 +145,7 @@ void _Graph_Draw_Axes(struct Graph *graph, struct n9Patch *n9patch,
         i32 x_dist = data_width / GRAPH_TICK_LABELS_DIVISOR / 2;
         SDL_Rect tick = {0, 0, 1, 1};
         SDL_SetRenderDrawColor(renderer, 0x00, 0x00, 0x00, SDL_ALPHA_OPAQUE);
-        for (uf8 i = 1; i < tick_num - 1; i++) {
+        for (u8 i = 1; i < tick_num - 1; i++) {
             tick.h = (i % 2) == 0 ? GRAPH_TICK_MAJOR_LEN : GRAPH_TICK_MINOR_LEN;
             tick.x = xrect.x + i * x_dist + GRAPH_XAXIS_OFFSET + 1;
             tick.y = xrect.y - tick.h / 2;
@@ -162,7 +162,7 @@ void _Graph_Draw_Axes(struct Graph *graph, struct n9Patch *n9patch,
         i32 y_dist = data_height / tick_num;
         SDL_Rect tick = {0, 0, 1, 1};
         SDL_SetRenderDrawColor(renderer, 0x00, 0x00, 0x00, SDL_ALPHA_OPAQUE);
-        for (uf8 i = 1; i < tick_num + 2; i++) {
+        for (u8 i = 1; i < tick_num + 2; i++) {
             tick.w = GRAPH_TICK_MAJOR_LEN;
             tick.x = xrect.x - tick.w / 2;
             tick.y = xrect.y - i * y_dist - GRAPH_YAXIS_OFFSET + 1;
@@ -191,7 +191,7 @@ void _Graph_Draw_Axes(struct Graph *graph, struct n9Patch *n9patch,
         i32 x_dist = data_width / GRAPH_TICK_LABELS_DIVISOR / 2;
         SDL_Rect tick = {0, 0, 1, 1};
         SDL_SetRenderDrawColor(renderer, 0xFF, 0xFF, 0xFF, SDL_ALPHA_OPAQUE);
-        for (uf8 i = 1; i < tick_num - 1; i++) {
+        for (u8 i = 1; i < tick_num - 1; i++) {
             tick.h = (i % 2) == 0 ? GRAPH_TICK_MAJOR_LEN : GRAPH_TICK_MINOR_LEN;
             tick.x = xrect.x + i * x_dist + GRAPH_XAXIS_OFFSET;
             tick.y = xrect.y - tick.h / 2;
@@ -203,7 +203,7 @@ void _Graph_Draw_Axes(struct Graph *graph, struct n9Patch *n9patch,
         i32 y_dist = data_height / tick_num;
         SDL_Rect tick = {0, 0, 1, 1};
         SDL_SetRenderDrawColor(renderer, 0xFF, 0xFF, 0xFF, SDL_ALPHA_OPAQUE);
-        for (uf8 i = 1; i < tick_num + 2; i++) {
+        for (u8 i = 1; i < tick_num + 2; i++) {
             tick.w = GRAPH_TICK_MAJOR_LEN;
             tick.x = xrect.x - tick.w / 2;
             tick.y = xrect.y - i * y_dist - GRAPH_YAXIS_OFFSET;
@@ -213,7 +213,7 @@ void _Graph_Draw_Axes(struct Graph *graph, struct n9Patch *n9patch,
     SDL_Rect label = {0, 0, 1, 1};
     i32 x_tick_num = (graph->plot_max.x - graph->plot_min.x) / GRAPH_TICK_LABELS_DIVISOR;
     i32 x_dist = data_width / GRAPH_TICK_LABELS_DIVISOR;
-    for (uf8 i = 1; i < x_tick_num; i++) {
+    for (u8 i = 1; i < x_tick_num; i++) {
         label.h = (i % 2) == 0 ? GRAPH_TICK_MAJOR_LEN : GRAPH_TICK_MINOR_LEN;
         label.x = xrect.x + i * x_dist + GRAPH_XAXIS_OFFSET - GRAPH_YLABEL_X_OFFSET;
         label.y = xrect.y + GRAPH_YLABEL_Y_OFFSET;
@@ -222,7 +222,7 @@ void _Graph_Draw_Axes(struct Graph *graph, struct n9Patch *n9patch,
     }
     i32 y_tick_num = (graph->plot_max.y - graph->plot_min.y) / y_lvl_dist;
     i32 y_dist = data_height / y_tick_num;
-    for (uf8 i = 1; i < y_tick_num + 2; i++) {
+    for (u8 i = 1; i < y_tick_num + 2; i++) {
         label.w = (i % 2) == 0 ? GRAPH_TICK_MAJOR_LEN : GRAPH_TICK_MINOR_LEN;
         label.x = xrect.x - GRAPH_XLABEL_X_OFFSET;
         label.y = xrect.y - i * y_dist - GRAPH_YAXIS_OFFSET - GRAPH_XLABEL_Y_OFFSET;
@@ -232,7 +232,7 @@ void _Graph_Draw_Axes(struct Graph *graph, struct n9Patch *n9patch,
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
-void _Graph_Draw_Stat(struct Graph *graph, uf8 stat_id, struct n9Patch *n9patch,
+void _Graph_Draw_Stat(struct Graph *graph, u8 stat_id, struct n9Patch *n9patch,
                       struct PixelFont *pixelnours_big,
                       SDL_Renderer *renderer, SDL_Texture *render_target) {
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
@@ -263,7 +263,7 @@ void _Graph_Draw_Stat(struct Graph *graph, uf8 stat_id, struct n9Patch *n9patch,
 
     /* -- Drawing stats -- */
     SDL_SetRenderDrawColor(renderer, 0xFF, 0xFF, 0xFF, SDL_ALPHA_OPAQUE);
-    for (uf8 i = 0; i <= (graph_stat.level - graph_stat.base_level); i++) {
+    for (u8 i = 0; i <= (graph_stat.level - graph_stat.base_level); i++) {
         point.x = axes.x + (i + graph_stat.base_level) * axes.w / (graph->plot_max.x - graph->plot_min.x);
         point.y = axes.y - graph->y_lenperpixel * graph_stat.cumul_stat[i];
         SDL_RenderFillRect(renderer, &point);

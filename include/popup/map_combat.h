@@ -105,8 +105,8 @@ typedef struct PopUp_Map_Combat {
     struct Combat_Forecast *forecast;
     struct Combat_Phase    *phases;
 
-    uf8 agg_current_hp;
-    uf8 dft_current_hp;
+    u8 agg_current_hp;
+    u8 dft_current_hp;
 
     int current_attack;
     bool update;

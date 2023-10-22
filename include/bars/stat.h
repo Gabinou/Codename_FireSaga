@@ -25,14 +25,14 @@ enum STATBAR {
 #define STATBAR_MAX_OVERFILL 1.25f
 #define STATBAR_STATSPERTILEF 5.0f
 
-extern uf8 statbar_highlights[STATBAR_HIGHLIGHT_NUM]; /* < STATBAR_MAX_LEN */
+extern u8 statbar_highlights[STATBAR_HIGHLIGHT_NUM]; /* < STATBAR_MAX_LEN */
 
 /* --- STAT BAR --- */
 /* -- Constructors/Destructors -- */
-extern void StatBar_Init(struct SimpleBar *b, uf8 s, uf8 c, int x, int y);
+extern void StatBar_Init(struct SimpleBar *b, u8 s, u8 c, int x, int y);
 
 /* -- Internals -- */
-extern uf8 StatBar_Len(int cap);
+extern u8 StatBar_Len(int cap);
 extern void StatBar_Colors_NES(struct SimpleBar *b, int bd, int bl, int fd, int fl);
 
 /* -- Drawing -- */
@@ -40,7 +40,7 @@ extern void StatBar_Draw(struct SimpleBar *b, SDL_Renderer *r);
 
 /* --- HP BAR --- */
 /* -- Constructors/Destructors -- */
-extern void HPBar_Init(struct SimpleBar *b, uf8 s, uf8 c, int x, int y);
+extern void HPBar_Init(struct SimpleBar *b, u8 s, u8 c, int x, int y);
 
 /* -- Drawing -- */
 extern void HPBar_Draw(struct SimpleBar *b, SDL_Renderer *r);

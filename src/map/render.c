@@ -8,8 +8,8 @@ void Map_Frame_Pauses(struct Map *map, const struct Settings *settings) {
     SDL_assert(map->tilemap_frame_factor < 1.0f);
     SDL_assert(map->shadow_frame_factor  > 0.0f);
     SDL_assert(map->shadow_frame_factor  < 1.0f);
-    map->tilemap_frame_pause = (uf8)(map->tilemap_frame_factor * settings->FPS.cap);
-    map->shadow_frame_pause  = (uf8)(map->shadow_frame_factor  * settings->FPS.cap);
+    map->tilemap_frame_pause = (u8)(map->tilemap_frame_factor * settings->FPS.cap);
+    map->shadow_frame_pause  = (u8)(map->shadow_frame_factor  * settings->FPS.cap);
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
@@ -23,7 +23,7 @@ void Map_Palettemap_Reset(struct Map *map) {
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
-void Map_Palettemap_addMap(struct Map *map, i32 *palettemap, uf8 palette) {
+void Map_Palettemap_addMap(struct Map *map, i32 *palettemap, u8 palette) {
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     SDL_assert(palette >= PALETTE_NES);
     SDL_assert(palette  < PALETTE_NUM);
@@ -32,7 +32,7 @@ void Map_Palettemap_addMap(struct Map *map, i32 *palettemap, uf8 palette) {
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
-void Map_Palettemap_addList(struct Map *map, i32 *list, uf8 palette) {
+void Map_Palettemap_addList(struct Map *map, i32 *list, u8 palette) {
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     size_t bytesize = map->row_len * map->col_len * sizeof(*map->palettemap);
     memset(map->palettemap, PALETTE_NES, bytesize);
@@ -96,7 +96,7 @@ void Map_Palettemap_Autoset(struct Map *map, uf16 flagsum) {
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
-void Map_Palettemap_SetwMap(struct Map *map, uf8 *palettemap) {
+void Map_Palettemap_SetwMap(struct Map *map, u8 *palettemap) {
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     size_t bytesize = map->row_len * map->col_len * sizeof(*map->palettemap);
     SDL_assert(map->palettemap != NULL);
@@ -110,7 +110,7 @@ SDL_Texture *Map_Tilemap_Texture_Stitch(struct Map *map, struct SDL_Texture *ren
     SDL_Rect dstrect = {0, 0, map->tilesize[0], map->tilesize[1]};
     SDL_Rect srcrect = {0, 0, map->tilesize[0], map->tilesize[1]};
     i32 tile_ind = 0, tile_order = 0, texture_ind = 0;
-    uf8 palette_ind = 0;
+    u8 palette_ind = 0;
     int success;
     SDL_assert(map->renderer);
     if (map->tilemap_texture == NULL)
@@ -219,7 +219,7 @@ SDL_Surface *Map_Tilemap_Surface_Stitch(struct Map *map) {
     i32 tile_ind     = 0;
     i32 tile_order   = 0;
     i32 texture_ind  = 0;
-    uf8 palette_ind  = 0;
+    u8 palette_ind  = 0;
     int success;
 
     /* Stitching map from tiles */
@@ -297,7 +297,7 @@ void Map_swappedTextures_All(struct Map *map) {
 
 /* Indices of tiles visible to player depending on zoom level */
 /* min is inclusive, max is exclusive */
-void Map_Visible_Bounds(uf8 *min, uf8 *max, size_t row_len, size_t col_len,
+void Map_Visible_Bounds(u8 *min, u8 *max, size_t row_len, size_t col_len,
                         i32 tilesize[TWO_D], const struct Point *res, struct Camera *camera) {
     SOTA_Log_FPS("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     i32 edge_min[TWO_D], edge_max[TWO_D];

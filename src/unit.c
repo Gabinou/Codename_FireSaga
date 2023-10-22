@@ -303,7 +303,7 @@ void Unit_setSkills(struct Unit *unit, u64 skills) {
         DARR_FREE(unit->skill_names);
     unit->skill_names = Names_skillNames(unit->skills);
     SOTA_Log_Debug("Unit new skills: %lx \n", unit->skills);
-    for (uf8 i = 0; DARR_LEN(unit->skill_names); i++)
+    for (u8 i = 0; DARR_LEN(unit->skill_names); i++)
         SOTA_Log_Debug("Skill name: %s", unit->skill_names[i]);
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
@@ -355,12 +355,12 @@ struct Unit_stats Unit_getStats(struct Unit *unit) {
 }
 
 /* --- Second-order info --- */
-uf8 Unit_mvtType(const struct Unit *unit) {
+u8 Unit_mvtType(const struct Unit *unit) {
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth, __func__);
     return (class_mvt_types[unit->class]);
 }
 
-uf8 SotA_army2alignment(uf8 army) {
+u8 SotA_army2alignment(u8 army) {
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     if ((army <= ARMY_START) || (army >= ARMY_END)) {
         SOTA_Log_Debug("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
@@ -371,7 +371,7 @@ uf8 SotA_army2alignment(uf8 army) {
     return (army_alignment[army]);
 }
 
-bool SotA_isPC(uf8 army) {
+bool SotA_isPC(u8 army) {
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     if ((army <= ARMY_START) || (army >= ARMY_END)) {
         SOTA_Log_Debug("Army out of bounds");
@@ -727,7 +727,7 @@ void Unit_Unequip(struct Unit *unit, bool hand) {
 * NO DAMAGE COMPUTATION HERE! Crit multiplication responsible by caller.
 * Input crit bool just to determine if unit dies instantly or not.
 */
-void Unit_takesDamage(struct Unit *unit, uf8 damage, bool crit) {
+void Unit_takesDamage(struct Unit *unit, u8 damage, bool crit) {
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     SOTA_Log_Debug("%s takes %d damage \n", unit->name, damage);
     /* -- Checks -- */
@@ -751,7 +751,7 @@ void Unit_takesDamage(struct Unit *unit, uf8 damage, bool crit) {
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
-void Unit_getsHealed(struct Unit *unit, uf8 healing) {
+void Unit_getsHealed(struct Unit *unit, u8 healing) {
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     SOTA_Log_Debug("%s gets healed for %d\n", unit->name, healing);
     /* -- Checks -- */
@@ -820,13 +820,13 @@ void Unit_lvlUp(struct Unit *unit) {
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     SDL_assert(unit != NULL);
     struct Unit_stats grows = Unit_stats_default;
-    uf8 temp_growth;
+    u8 temp_growth;
     struct Unit_stats temp_stats = {0};
-    uf8 *growths       = (uf8 *)&unit->growths;
-    uf8 *grows_arr     = (uf8 *)&grows;
-    uf8 *stats_arr     = (uf8 *)&temp_stats;
-    uf8 *caps_stats    = (uf8 *)&unit->caps_stats;
-    uf8 *current_stats = (uf8 *)&unit->current_stats;
+    u8 *growths       = (u8 *)&unit->growths;
+    u8 *grows_arr     = (u8 *)&grows;
+    u8 *stats_arr     = (u8 *)&temp_stats;
+    u8 *caps_stats    = (u8 *)&unit->caps_stats;
+    u8 *current_stats = (u8 *)&unit->current_stats;
     struct RNG_Sequence *sequences = (struct RNG_Sequence *)&unit->hp_sequence;
 
     for (int i = 0; i < UNIT_STAT_NUM; i++) {
@@ -964,7 +964,7 @@ bool Unit_canEquip_Type(const struct Unit *unit, if16 id) {
 
     /* Is weapon's type equippable by unit? */
     bool found = false;
-    for (uf8 i = 0; i < DARR_NUM(weapon->item->users); i++) {
+    for (u8 i = 0; i < DARR_NUM(weapon->item->users); i++) {
         found = (weapon->item->users[i] == unit->_id);
         if (found) {
             SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
@@ -1198,7 +1198,7 @@ if8 Unit_computeBonus(struct Unit *unit) {
     return (out);
 }
 
-uf8 *Unit_Shield_Protection(struct Unit *unit, bool hand) {
+u8 *Unit_Shield_Protection(struct Unit *unit, bool hand) {
     if (!unit->equipped[hand])
         return (NULL);
 
@@ -1212,7 +1212,7 @@ uf8 *Unit_Shield_Protection(struct Unit *unit, bool hand) {
     return (weapon->stats.protection);
 }
 
-uf8 *Unit_computeDefense(struct Unit *unit) {
+u8 *Unit_computeDefense(struct Unit *unit) {
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     /* Reset unit protections */
     unit->computed_stats.protection[DMG_TYPE_PHYSICAL] = 0;
@@ -1220,7 +1220,7 @@ uf8 *Unit_computeDefense(struct Unit *unit) {
 
     /* Shield protection */
     int prot_P = 0, prot_M = 0;
-    uf8 *prot;
+    u8 *prot;
     if (prot = Unit_Shield_Protection(unit, UNIT_HAND_LEFT)) {
         prot_P += prot[DMG_TYPE_PHYSICAL];
         prot_M += prot[DMG_TYPE_MAGICAL];
@@ -1239,7 +1239,7 @@ uf8 *Unit_computeDefense(struct Unit *unit) {
     return (unit->computed_stats.protection);
 }
 
-uf8 *Unit_computeAttack(struct Unit *unit, int distance) {
+u8 *Unit_computeAttack(struct Unit *unit, int distance) {
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     SDL_assert(unit);
     SDL_assert(unit->weapons_dtab);
@@ -1249,7 +1249,7 @@ uf8 *Unit_computeAttack(struct Unit *unit, int distance) {
     unit->computed_stats.attack[DMG_TYPE_TRUE]     = 0;
 
     /* Weapon attack */
-    uf8 *attack;
+    u8 *attack;
     int attack_P = 0, attack_M = 0, attack_T = 0;
 
     struct Weapon *weapon;
@@ -1307,7 +1307,7 @@ uf8 *Unit_computeAttack(struct Unit *unit, int distance) {
         unit->computed_stats.attack[DMG_TYPE_MAGICAL]  /= DUAL_WIELD_NOSKILL_MALUS_FACTOR;
     }
 
-    uf8 *att = unit->computed_stats.attack;
+    u8 *att = unit->computed_stats.attack;
     att[DMG_TYPE_TOTAL] = att[DMG_TYPE_PHYSICAL] + att[DMG_TYPE_MAGICAL] + att[DMG_TYPE_TRUE];
 
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
@@ -1515,7 +1515,7 @@ bool Unit_Equipment_Full(const struct Unit *unit) {
 void Unit_Equipment_Print(const struct Unit *unit) {
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     SDL_assert(unit != NULL);
-    for (uf8 i = 0; i < DEFAULT_EQUIPMENT_SIZE; i++) {
+    for (u8 i = 0; i < DEFAULT_EQUIPMENT_SIZE; i++) {
         if (unit->_equipment[i].id == ITEM_NULL) {
             SOTA_Log_Debug("%d ITEM_NULL", i);
             continue;
@@ -1740,11 +1740,11 @@ if8 Unit_computeRegrets(struct Unit *unit) {
     return (malus);
 }
 
-uf8 Unit_computeHit(struct Unit *unit, int distance) {
+u8 Unit_computeHit(struct Unit *unit, int distance) {
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     SDL_assert(unit);
     SDL_assert(unit->weapons_dtab);
-    uf8 supports = 0, wpn_hit = 0;
+    u8 supports = 0, wpn_hit = 0;
     int hit_L    = 0, hit_R   = 0;
     struct Weapon *weapon;
     /* Get stats of both weapons */
@@ -1770,10 +1770,10 @@ if8 Unit_computeDodge(struct Unit *unit, int distance) {
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     SDL_assert(unit);
     SDL_assert(unit->weapons_dtab);
-    uf8 support   = 0, tile_dodge = 0;
+    u8 support   = 0, tile_dodge = 0;
     int wgt_L     = 0, wgt_R      = 0;
     int dodge_L   = 0, dodge_R    = 0;
-    uf8 wpn_dodge = 0, wpn_wgt    = 0;
+    u8 wpn_dodge = 0, wpn_wgt    = 0;
     struct Weapon *weapon;
     if (unit->equipped[UNIT_HAND_LEFT]) {
         SDL_assert(unit->_equipment[UNIT_HAND_LEFT].id > ITEM_NULL);
@@ -1800,12 +1800,12 @@ if8 Unit_computeDodge(struct Unit *unit, int distance) {
     return (unit->computed_stats.dodge);
 }
 
-uf8 Unit_computeCritical(struct Unit *unit, int distance) {
+u8 Unit_computeCritical(struct Unit *unit, int distance) {
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     SDL_assert(unit);
     SDL_assert(unit->weapons_dtab);
     // TODO: get support bonus
-    uf8 supports = 0;
+    u8 supports = 0;
     int crit_L = 0, crit_R = 0;
     struct Weapon *weapon;
     if (unit->equipped[UNIT_HAND_LEFT]) {
@@ -1819,7 +1819,7 @@ uf8 Unit_computeCritical(struct Unit *unit, int distance) {
         crit_R  = Weapon_Stat_inRange(weapon, WEAPON_STAT_CRIT, distance);
     }
 
-    uf8 wpn_crit = Equation_Weapon_Crit(crit_L, crit_R);
+    u8 wpn_crit = Equation_Weapon_Crit(crit_L, crit_R);
 
     struct Unit_stats effstats = unit->effective_stats;
     unit->computed_stats.crit = Equation_Unit_Crit(wpn_crit, effstats.dex, effstats.luck, supports);
@@ -1827,11 +1827,11 @@ uf8 Unit_computeCritical(struct Unit *unit, int distance) {
     return (unit->computed_stats.crit);
 }
 
-uf8 Unit_computeFavor(struct Unit *unit, int distance) {
+u8 Unit_computeFavor(struct Unit *unit, int distance) {
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     SDL_assert(unit);
     SDL_assert(unit->weapons_dtab);
-    uf8 supports = 0 ;
+    u8 supports = 0 ;
     int favor_L = 0, favor_R = 0;
     struct Weapon *weapon;
     if (unit->equipped[UNIT_HAND_LEFT]) {
@@ -1845,7 +1845,7 @@ uf8 Unit_computeFavor(struct Unit *unit, int distance) {
         favor_R  = Weapon_Stat_inRange(weapon, WEAPON_STAT_FAVOR, distance);
     }
 
-    uf8 wpn_favor = Equation_Weapon_Crit(favor_L, favor_R);
+    u8 wpn_favor = Equation_Weapon_Crit(favor_L, favor_R);
 
     struct Unit_stats effstats = unit->effective_stats;
     unit->computed_stats.favor = Equation_Unit_Favor(wpn_favor, effstats.fth, supports);
@@ -1853,7 +1853,7 @@ uf8 Unit_computeFavor(struct Unit *unit, int distance) {
     return (unit->computed_stats.favor);
 }
 
-uf8 Unit_computeAgony(struct Unit *unit) {
+u8 Unit_computeAgony(struct Unit *unit) {
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     SDL_assert(unit);
     SDL_assert(unit->weapons_dtab);
@@ -1880,7 +1880,7 @@ if8 Unit_computeSpeed(struct Unit *unit, int distance) {
         weight_R  = Weapon_Stat(weapon, WEAPON_STAT_WGT);
     }
     /* item weight in both hands is always added */
-    uf8 wpn_wgt = Equation_Weapon_Wgt(weight_L, weight_R);
+    u8 wpn_wgt = Equation_Weapon_Wgt(weight_L, weight_R);
     if (unit->isTwoHanding)
         wpn_wgt /= TWO_HANDING_WEIGHT_FACTOR;
 
@@ -2092,7 +2092,7 @@ void Unit_writeJSON(const void *input, cJSON *junit) {
     cJSON_AddItemToObject(junit, "Bases",       jbase_stats);
     cJSON_AddItemToObject(junit, "Growths",     jgrowths);
     cJSON_AddItemToObject(junit, "Level-ups",   jgrown);
-    for (uf8 i = 0; i < DARR_NUM(unit->grown_stats); i++) {
+    for (u8 i = 0; i < DARR_NUM(unit->grown_stats); i++) {
         jlevelup = cJSON_CreateObject();
         jlevel = cJSON_CreateNumber(i - unit->base_exp / SOTA_100PERCENT + 2);
         cJSON_AddItemToObject(jlevelup, "level", jlevel);
@@ -2101,7 +2101,7 @@ void Unit_writeJSON(const void *input, cJSON *junit) {
         // +2 -> +1 start at lvl1, +1 cause you level to level 2
     }
     cJSON *jitems = cJSON_CreateArray();
-    for (uf8 item_num = 0; item_num < DEFAULT_EQUIPMENT_SIZE; item_num ++) {
+    for (u8 item_num = 0; item_num < DEFAULT_EQUIPMENT_SIZE; item_num ++) {
         cJSON *jitem = cJSON_CreateObject();
         Filesystem_writeJSON_item(jitem, &unit->_equipment[item_num]);
         cJSON_AddItemToArray(jitems, jitem);
@@ -2110,11 +2110,11 @@ void Unit_writeJSON(const void *input, cJSON *junit) {
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
-uf8 Unit_computeEffectivefactor(struct Unit *attacker, struct Unit *defender) {
+u8 Unit_computeEffectivefactor(struct Unit *attacker, struct Unit *defender) {
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     SDL_assert(attacker);
     SDL_assert(defender);
-    uf8 effective = NOTEFFECTIVE_FACTOR;
+    u8 effective = NOTEFFECTIVE_FACTOR;
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
     return (effective);
 }
@@ -2123,11 +2123,11 @@ uf8 Unit_computeEffectivefactor(struct Unit *attacker, struct Unit *defender) {
     Function computes the highest brave factor among equipped weapons.
     This means that -> Brave factor DOES NOT STACK <-
 */
-uf8 Unit_Brave(const struct Unit *unit) {
+u8 Unit_Brave(const struct Unit *unit) {
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
 
     SDL_assert(unit);
-    uf8 out_brave   = 1;
+    u8 out_brave   = 1;
     u64 temp_effect = 0;
     struct Weapon *weapon;
     // TODO: use AP to compute brave factor

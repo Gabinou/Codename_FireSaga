@@ -71,12 +71,12 @@ extern void CRT_Filter(struct CRT *in_crt, SDL_Texture *target,
 
 extern void CRT_Target2Surface(struct CRT *in_crt);
 
-extern void CRT_Shadow_Mask(uf8 *mask, uint_fast32_t size_x,
+extern void CRT_Shadow_Mask(u8 *mask, uint_fast32_t size_x,
                             uint_fast32_t size_y,
-                            uf8 cell_height, uf8 cell_width, uf8 Hblank,
-                            uf8 Vblank,
-                            uf8 stagger, uint_fast32_t x_offset, uint_fast32_t y_offset);
-extern void CRT_Shadow_Filter(uf8 *mask, float *color, uint_fast32_t size_x,
+                            u8 cell_height, u8 cell_width, u8 Hblank,
+                            u8 Vblank,
+                            u8 stagger, uint_fast32_t x_offset, uint_fast32_t y_offset);
+extern void CRT_Shadow_Filter(u8 *mask, float *color, uint_fast32_t size_x,
                               uint_fast32_t size_y);
 
 /* pixels/floats conversion */

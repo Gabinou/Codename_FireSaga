@@ -18,26 +18,26 @@ struct Damage;
 
 /* --- MACROS --- */
 /* -- Unit Combat -- */
-#define Equation_multiplyDamage(dmg, multiplier) ((dmg) > (uf8)(UINT8_MAX / (multiplier)) ? UINT8_MAX : (uf8)((dmg) * (multiplier)))
+#define Equation_multiplyDamage(dmg, multiplier) ((dmg) > (u8)(UINT8_MAX / (multiplier)) ? UINT8_MAX : (u8)((dmg) * (multiplier)))
 
 /* --- FUNCTION DEFINITIONS --- */
 /* -- Unit Computed Stats -- */
-extern uf8 Equation_Unit_Hit(  int wpn_hit,   int dex,       int luck, int support);
-extern uf8 Equation_Unit_Crit( int wpn_crit,  int dex,       int luck, int support);
+extern u8 Equation_Unit_Hit(  int wpn_hit,   int dex,       int luck, int support);
+extern u8 Equation_Unit_Crit( int wpn_crit,  int dex,       int luck, int support);
 extern if8 Equation_Unit_Speed(int wpn_wgt,   int agi,       int con,  int str);
-extern uf8 Equation_Unit_Favor(int wpn_favor, int faith,     int support);
+extern u8 Equation_Unit_Favor(int wpn_favor, int faith,     int support);
 extern if8 Equation_Unit_Dodge(int wpn_wgt,   int wpn_dodge, int luck, int faith,
                                int agi,       int str,       int con,  int tile_dodge, int support);
 
 /* -- Stat total with bonus and malus -- */
-extern uf8 Stat_Total(int current, int bonus, int malus, int cap);
+extern u8 Stat_Total(int current, int bonus, int malus, int cap);
 
 /* -- Staff Healing -- */
-extern uf8 Equation_Staff_Healing(int item_AP,  int user_mag);
+extern u8 Equation_Staff_Healing(int item_AP,  int user_mag);
 
 /* -- Unit Healing -- */
-extern uf8 Equation_Unit_Healshp(int total_hp, int heal_percent);
-extern uf8 Equation_Unit_Healshpvar(size_t argnum, ...);
+extern u8 Equation_Unit_Healshp(int total_hp, int heal_percent);
+extern u8 Equation_Unit_Healshpvar(size_t argnum, ...);
 
 /* -- Unit Rescue -- */
 extern bool Equation_canCarry(int savior_con, int victim_con);
@@ -46,36 +46,36 @@ extern bool Equation_canCarry(int savior_con, int victim_con);
 extern if8 Equation_Regrets(int kills, int faith);
 
 /* -- Combat -- */
-extern uf8   Equation_Combat_Hit(     int hit_a,  int avoid_d);
-extern uf8   Equation_Combat_Crit(    int crit_a, int favor_d);
-extern uf8   Equation_Attack_Damage(  int dmg_a,  int def_d);
-extern uf8   Equation_Combat_Damage(  int att_a,  int def_d, int eff, int critp, bool crit);
+extern u8   Equation_Combat_Hit(     int hit_a,  int avoid_d);
+extern u8   Equation_Combat_Crit(    int crit_a, int favor_d);
+extern u8   Equation_Attack_Damage(  int dmg_a,  int def_d);
+extern u8   Equation_Combat_Damage(  int att_a,  int def_d, int eff, int critp, bool crit);
 extern float Equation_Expected_Damage(int hit,    int crit,  int critfactor);
 
 /* -- Compute damage total from other damae types in struct -- */
 extern void  Equation_Damage_Total(struct Damage *dmg);
 
 /* -- Weapon -- */
-extern uf8 Equation_Weapon_Hit(    int Lwpn_hit,    int Rwpn_hit);
-extern uf8 Equation_Weapon_Wgt(    int Lwpn_wgt,    int Rwpn_wgt);
-extern uf8 Equation_Weapon_Crit(   int Lwpn_crit,   int Rwpn_crit);
-extern uf8 Equation_Weapon_Favor(  int Lwpn_favor,  int Rwpn_favor);
-extern uf8 Equation_Weapon_Dodge(  int Lwpn_dodge,  int Rwpn_dodge);
-extern uf8 Equation_Weapon_Attack( int Lwpn_attack, int Rwpn_attack);
-extern uf8 Equation_Weapon_defense(int Lwpn_def,    int Rwpn_def);
+extern u8 Equation_Weapon_Hit(    int Lwpn_hit,    int Rwpn_hit);
+extern u8 Equation_Weapon_Wgt(    int Lwpn_wgt,    int Rwpn_wgt);
+extern u8 Equation_Weapon_Crit(   int Lwpn_crit,   int Rwpn_crit);
+extern u8 Equation_Weapon_Favor(  int Lwpn_favor,  int Rwpn_favor);
+extern u8 Equation_Weapon_Dodge(  int Lwpn_dodge,  int Rwpn_dodge);
+extern u8 Equation_Weapon_Attack( int Lwpn_attack, int Rwpn_attack);
+extern u8 Equation_Weapon_defense(int Lwpn_def,    int Rwpn_def);
 
 /* - argvar - */
-extern uf8 Equation_Weapon_Hitvar(    size_t argnum, ...);
-extern uf8 Equation_Weapon_Wgtvar(    size_t argnum, ...);
-extern uf8 Equation_Weapon_Critvar(   size_t argnum, ...);
-extern uf8 Equation_Weapon_Favorvar(  size_t argnum, ...);
-extern uf8 Equation_Weapon_Dodgevar(  size_t argnum, ...);
-extern uf8 Equation_Weapon_Attackvar( size_t argnum, ...);
-extern uf8 Equation_Weapon_Defensevar(size_t argnum, ...);
+extern u8 Equation_Weapon_Hitvar(    size_t argnum, ...);
+extern u8 Equation_Weapon_Wgtvar(    size_t argnum, ...);
+extern u8 Equation_Weapon_Critvar(   size_t argnum, ...);
+extern u8 Equation_Weapon_Favorvar(  size_t argnum, ...);
+extern u8 Equation_Weapon_Dodgevar(  size_t argnum, ...);
+extern u8 Equation_Weapon_Attackvar( size_t argnum, ...);
+extern u8 Equation_Weapon_Defensevar(size_t argnum, ...);
 
 /* -- Agony -- */
-extern uf8 Equation_Agony_Turns(        int str, int def, int con);
-extern uf8 Equation_Agony_PercentonCrit(int luck, int con);
+extern u8 Equation_Agony_Turns(        int str, int def, int con);
+extern u8 Equation_Agony_PercentonCrit(int luck, int con);
 
 /* -- AI equations -- */
 extern if8 Equation_AI_Rating_Stats(   int   stat);

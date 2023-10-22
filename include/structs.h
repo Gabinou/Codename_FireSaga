@@ -18,8 +18,8 @@ struct MenuElemDirections {
 extern struct MenuElemDirections MenuElemDirections_default;
 
 struct Damage {
-    uf8 dmg[DAMAGE_TYPES];
-    uf8 dmg_crit[DAMAGE_TYPES];
+    u8 dmg[DAMAGE_TYPES];
+    u8 dmg_crit[DAMAGE_TYPES];
 };
 extern struct Damage Damage_default;
 
@@ -54,37 +54,37 @@ extern struct Tile_stats Tile_stats_default;
 
 /* Struct is better: Can be cast to array */
 struct Unit_stats {
-    uf8 hp;   /* hit points     */
-    uf8 str;  /* strength       */
-    uf8 mag;  /* magic          */
-    uf8 agi;  /* agility        */
-    uf8 dex;  /* dexterity      */
-    uf8 fth;  /* faith          */
-    uf8 luck;
-    uf8 def;  /* defense        */
-    uf8 res;  /* resistance     */
-    uf8 con;  /* constitution   */
-    uf8 move; /* movement       */
-    uf8 prof; /* proficiency    */
+    u8 hp;   /* hit points     */
+    u8 str;  /* strength       */
+    u8 mag;  /* magic          */
+    u8 agi;  /* agility        */
+    u8 dex;  /* dexterity      */
+    u8 fth;  /* faith          */
+    u8 luck;
+    u8 def;  /* defense        */
+    u8 res;  /* resistance     */
+    u8 con;  /* constitution   */
+    u8 move; /* movement       */
+    u8 prof; /* proficiency    */
 };
 extern struct Unit_stats Unit_stats_default;
 
 /* Struct is better: Can be cast to array*/
 struct Range {
-    uf8 min;
-    uf8 max;
+    u8 min;
+    u8 max;
 };
 
 struct Computed_Stats {
-    uf8 attack[DAMAGE_TYPES];
-    uf8 protection[DAMAGE_TYPES];
-    uf8 hit;
+    u8 attack[DAMAGE_TYPES];
+    u8 protection[DAMAGE_TYPES];
+    u8 hit;
     if8 dodge; /* can be negative */
-    uf8 crit;
-    uf8 favor;
-    uf8 move;
+    u8 crit;
+    u8 favor;
+    u8 move;
     if8 speed; /* relative to agi so +/- */
-    uf8 agony;
+    u8 agony;
     struct Range range_combined;
     struct Range range_loadout;
 };
@@ -108,9 +108,9 @@ struct Promotion {
 extern struct Promotion Promotion_default;
 
 struct HP {
-    uf8 max;
-    uf8 current;
-    uf8 overheal;
+    u8 max;
+    u8 current;
+    u8 overheal;
     bool divine; // what?
 };
 extern struct HP HP_default;
@@ -170,27 +170,27 @@ extern struct Padding Padding_default;
 
 struct Item_stats {
     uf16 price;
-    uf8 uses;
-    uf8 AP; // ability power: for heal (%), blowHorn, gainStats, gainSkill, Repair
+    u8 uses;
+    u8 AP; // ability power: for heal (%), blowHorn, gainStats, gainSkill, Repair
 };
 extern struct Item_stats Item_stats_default;
 
 struct Crit_Multiplier {
-    uf8 num;
-    uf8 denom;
+    u8 num;
+    u8 denom;
 };
 extern struct Crit_Multiplier Crit_Multiplier_default;
 
 struct Weapon_stats {
-    uf8 attack[ATTACK_TYPES_NO_TOTAL];
-    uf8 protection[PROTECTION_TYPES_NO_TOTAL];
+    u8 attack[ATTACK_TYPES_NO_TOTAL];
+    u8 protection[PROTECTION_TYPES_NO_TOTAL];
     struct Range range; /* [0]: min, [1]: max */
-    uf8 hit;
+    u8 hit;
     if8 dodge;  /* when the Sword is TOO HEAVY TO DODGE */
-    uf8 crit;
-    uf8 favor;
-    uf8 wgt;    /* weight */
-    uf8 prof;   /* proficiency */
+    u8 crit;
+    u8 favor;
+    u8 wgt;    /* weight */
+    u8 prof;   /* proficiency */
 };
 extern struct Weapon_stats Weapon_stats_default;
 
@@ -203,7 +203,7 @@ extern struct Shop Shop_default;
 
 struct Inventory_item {
     if16 id;
-    uf8 used;
+    u8 used;
     bool highlighted;
     /* item images are highlighted by default. */
     /* Only dark when in unit inventory and unequippable */
@@ -216,21 +216,21 @@ struct Reinforcement {
     struct Point position;
     if16 army;
     if16 id;
-    uf8 turn;
-    uf8 levelups;
+    u8 turn;
+    u8 levelups;
 };
 extern struct Reinforcement Reinforcement_default;
 
 struct Movement_cost {
-    uf8 foot_slow;
-    uf8 foot_fast;
-    uf8 mages;
-    uf8 riders_slow;
-    uf8 riders_fast;
-    uf8 fliers;
-    uf8 armors;
-    uf8 pirates;
-    uf8 bandits;
+    u8 foot_slow;
+    u8 foot_fast;
+    u8 mages;
+    u8 riders_slow;
+    u8 riders_fast;
+    u8 fliers;
+    u8 armors;
+    u8 pirates;
+    u8 bandits;
 };
 extern struct Movement_cost Movement_cost_default;
 
@@ -257,8 +257,8 @@ struct Fps {
 };
 
 struct Mouse {
-    uf8 onhold;
-    uf8 move;
+    u8 onhold;
+    u8 move;
 };
 
 struct Cursor {
@@ -272,8 +272,8 @@ struct Camera {
 };
 
 struct Map_settings {
-    uf8         overlay_mode; /* tile paletteswap or opaque overlay */
-    uf8         stack_mode;
+    u8         overlay_mode; /* tile paletteswap or opaque overlay */
+    u8         stack_mode;
     SDL_Color   color_grid;
     bool        grid_show;
 };
@@ -285,7 +285,7 @@ struct Settings {
 
     struct Cursor cursor; /* 32 bits */
     uf16 tilesize[TWO_D];
-    uf8 fontsize;
+    u8 fontsize;
 
     struct Map_settings map_settings;
 

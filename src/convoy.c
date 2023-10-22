@@ -128,7 +128,7 @@ void Convoy_Deposit_byType(struct Convoy *in_convoy, struct Inventory_item in_it
 
 void Convoy_Sort(struct Convoy *in_convoy, if16 stattype) {
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
-    uf8 sort_arr[SOTA_CONVOY_SIZE_MAX];
+    u8 sort_arr[SOTA_CONVOY_SIZE_MAX];
     for (if16 i = 0; i < in_convoy->items_num; i++) {
         struct Inventory_item item = in_convoy->items[i];
         struct Weapon *weapon = ((struct Weapon *)DTAB_GET(in_convoy->weapons_dtab, item.id));
@@ -139,20 +139,20 @@ void Convoy_Sort(struct Convoy *in_convoy, if16 stattype) {
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
-void Convoy_Quicksort(struct Convoy *in_convoy, uf8 arr[], uf8 low, uf8 high) {
+void Convoy_Quicksort(struct Convoy *in_convoy, u8 arr[], u8 low, u8 high) {
     SOTA_Log_FPS("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     if (low < high) {
-        uf8 pivot = Convoy_Partition_wDuplicates(in_convoy, arr, low, high);
+        u8 pivot = Convoy_Partition_wDuplicates(in_convoy, arr, low, high);
         Convoy_Quicksort(in_convoy, arr, low, pivot); // quicksort left of pivot
         Convoy_Quicksort(in_convoy, arr, pivot + 1, high); // quicksort right of pivot
     }
     SOTA_Log_FPS("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
-uf8 Convoy_Partition_wDuplicates(struct Convoy *in_convoy, uf8 arr[], uf8 low, uf8 high) {
+u8 Convoy_Partition_wDuplicates(struct Convoy *in_convoy, u8 arr[], u8 low, u8 high) {
     SOTA_Log_FPS("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
-    uf8 pivot = arr[low]; // hoare pivot
-    uf8 left = low - 1, right = high + 1;
+    u8 pivot = arr[low]; // hoare pivot
+    u8 left = low - 1, right = high + 1;
     while (true) {
         // Find all values >/< than pivot and swap them
         // sign: if a > b is true, -a > -b is false
@@ -178,7 +178,7 @@ uf8 Convoy_Partition_wDuplicates(struct Convoy *in_convoy, uf8 arr[], uf8 low, u
 
 void Convoy_AllStats_Print(struct Convoy *in_convoy, if16 type_exp) {
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
-    uf8 stat, start = 0, end = in_convoy->items_num;
+    u8 stat, start = 0, end = in_convoy->items_num;
     if (type_exp > ITEM_TYPE_EXP_NULL) {
         start = in_convoy->cumnum[type_exp - 1];
         end = in_convoy->cumnum[type_exp];
@@ -199,8 +199,8 @@ void Convoy_Stats_Print(struct Convoy *in_convoy, if16 type_exp, if16 stattype) 
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     SDL_assert(in_convoy != NULL);
     SDL_assert(type_exp > ITEM_TYPE_EXP_NULL);
-    uf8 start = in_convoy->cumnum[type_exp - 1];
-    uf8 end = in_convoy->cumnum[type_exp];
+    u8 start = in_convoy->cumnum[type_exp - 1];
+    u8 end = in_convoy->cumnum[type_exp];
     for (if16 i = start; i < end; i++) {
         struct Inventory_item item = in_convoy->items[i];
         struct Weapon *weapon = ((struct Weapon *)DTAB_GET(in_convoy->weapons_dtab, item.id));
@@ -240,7 +240,7 @@ void Convoy_writeJSON(const void *input, cJSON *in_jconvoy) {
     cJSON_AddItemToObject(in_jconvoy, "size", jsize);
     cJSON_AddItemToObject(in_jconvoy, "items_num", jitems_num);
     cJSON_AddItemToObject(in_jconvoy, "bank", jbank);
-    for (uf8 i = 0; i < in_convoy->items_num; i++) {
+    for (u8 i = 0; i < in_convoy->items_num; i++) {
         cJSON *jitem = cJSON_CreateObject();
         Filesystem_writeJSON_item(jitem, &in_convoy->items[i]);
         uf16 stored_type_exp    = Convoy_Id2TypeExp(in_convoy, i);

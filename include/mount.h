@@ -7,7 +7,7 @@
 
 /* -- Mount -- */
 struct Mount {
-    uf8     json_element;   /* JSON_ELEM_bOFFSET = 0 */
+    u8     json_element;   /* JSON_ELEM_bOFFSET = 0 */
     if8     gets_attached;  /* How many lvlups till rider becomes owner. */
     if8     carry_capacity;
     if8     type;

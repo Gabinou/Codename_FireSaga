@@ -98,8 +98,8 @@ void test_combat_game() {
     Unit_computeHit(&attacker, distance);
     SDL_Log("computing defender effectiveStats");
     Unit_computeHit(&defender, distance);
-    uf8 attacker_hit;
-    uf8 defender_hit;
+    u8 attacker_hit;
+    u8 defender_hit;
     struct Weapon *attacker_weaponp;
     struct Weapon *defender_weaponp;
     uint_fast16_t temp_id;

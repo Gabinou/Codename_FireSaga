@@ -65,7 +65,7 @@ void jsonio_readJSON(const char *filename, void *struct_ptr) {
     struct cJSON *jfile = jsonio_parseJSON(filename);
 
     /* Get the json element id */
-    uf8 jelem_id = *(uf8 *)struct_ptr;
+    u8 jelem_id = *(u8 *)struct_ptr;
     char *elem_name = jsonElementnames[jelem_id];
     SOTA_Log_Debug("Reading JSON element %d %s", jelem_id, elem_name);
     SDL_assert(jfile != NULL);
@@ -102,7 +102,7 @@ void jsonio_writeJSON(const char *filename, const void *struct_ptr, bool append)
     struct cJSON *json = cJSON_CreateObject();
 
     /* Get the json element id */
-    uf8 jelem_id = *(uf8 *)struct_ptr;
+    u8 jelem_id = *(u8 *)struct_ptr;
     SOTA_Log_Debug("Writing JSON element %s", jsonElementnames[jelem_id]);
     if (jelem_id >= JSON_END) {
         SOTA_Log_Debug("JSON element not set");

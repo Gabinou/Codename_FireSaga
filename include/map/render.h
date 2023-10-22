@@ -8,10 +8,10 @@ struct Map;
 
 /* --- Palettes --- */
 void Map_Palettemap_Reset(        struct Map *map);
-void Map_Palettemap_addMap(       struct Map *map, i32 *pmap, uf8 palette);
-void Map_Palettemap_addList(      struct Map *map, i32 *list, uf8 palette);
+void Map_Palettemap_addMap(       struct Map *map, i32 *pmap, u8 palette);
+void Map_Palettemap_addList(      struct Map *map, i32 *list, u8 palette);
 void Map_Palettemap_Autoset(      struct Map *map, uf16 flagsum);
-void Map_Palettemap_SetwMap(      struct Map *map, uf8 *pm);
+void Map_Palettemap_SetwMap(      struct Map *map, u8 *pm);
 
 void Map_swappedTextures_All(struct Map *map);
 
@@ -21,7 +21,7 @@ void Map_Frame_Pauses(struct Map *map, const struct Settings *settings);
 
 /* -- Compute visible map bounds -- */
 void Map_Visible_Tiles(struct Map *map, const struct Settings *s, struct Camera *c);
-void Map_Visible_Bounds(uf8 *min, uf8 *max, size_t row_len, size_t col_len,
+void Map_Visible_Bounds(u8 *min, u8 *max, size_t row_len, size_t col_len,
                         i32 tilesize[TWO_D], const struct Point *res,
                         struct Camera *camera);
 

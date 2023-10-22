@@ -57,13 +57,13 @@ struct Map_condition {
 };
 
 struct Map {
-    uf8 json_element;// JSON_ELEM_bOFFSET = 0
+    u8 json_element;// JSON_ELEM_bOFFSET = 0
 
     /* --- BASICS --- */
-    uf8 turn; /* Automatic loss if turn 255. */
+    u8 turn; /* Automatic loss if turn 255. */
     i32 boss;
-    uf8 row_len;
-    uf8 col_len;
+    u8 row_len;
+    u8 col_len;
     if8 chapter;
     i32 tilesize[TWO_D];
     struct Arrow    *arrow;
@@ -74,7 +74,7 @@ struct Map {
     struct Tilemap_Shader *tilemap_shader;
 
     /* --- STACK_MAP --- */
-    uf8 stack_mode;
+    u8 stack_mode;
 
     /* - Actual stackmaps - */
     i32 *stacked_dangermap;         /* 2D dynamic array */
@@ -93,12 +93,12 @@ struct Map {
 
     /* --- FRAMES --- */
     i32  speed;
-    uf8  frames;                /* number of map frames.    < 1 if not animated */
-    uf8  frames_shadow;         /* number of shadow frames. < 1 if not animated */
-    uf8  shadow_frame_pause;    /* number of frames to wait until change shadow animated frame */
-    uf8  tilemap_frame_pause;   /* number of frames to wait until change tilemap animated frame */
-    uf8  shadow_frame_counter;
-    uf8  tilemap_frame_counter;
+    u8  frames;                /* number of map frames.    < 1 if not animated */
+    u8  frames_shadow;         /* number of shadow frames. < 1 if not animated */
+    u8  shadow_frame_pause;    /* number of frames to wait until change shadow animated frame */
+    u8  tilemap_frame_pause;   /* number of frames to wait until change tilemap animated frame */
+    u8  shadow_frame_counter;
+    u8  tilemap_frame_counter;
     float shadow_frame_factor;  /* framerate * factor = pause */
     float tilemap_frame_factor; /* framerate * factor = pause */
 
@@ -124,12 +124,12 @@ struct Map {
 
     /* --- PALETTES --- */
     SDL_Palette *palette_default;
-    uf8 *palettemap;    // [row * col_len + col]
+    u8 *palettemap;    // [row * col_len + col]
     i32 *temp_palette;  // [row * col_len + col]
 
     /* --- AGONY --- */
     struct Agony_timer *agony_stack;
-    uf8 num_agonizing;
+    u8 num_agonizing;
     tnecs_entity_t costmap_ent;
 
     /* --- ARMIES --- */
@@ -138,11 +138,11 @@ struct Map {
     tnecs_entity_t *enemies_onfield;
     if8 num_enemies;
     if8 num_friendlies;
-    uf8 *armies_onfield;
-    uf8 num_units_onfield;
-    uf8 num_armies_onfield;
-    uf8 num_enemies_onfield;
-    uf8 num_friendlies_onfield;
+    u8 *armies_onfield;
+    u8 num_units_onfield;
+    u8 num_armies_onfield;
+    u8 num_enemies_onfield;
+    u8 num_friendlies_onfield;
     struct Point *units_positions_list;  /* same order as unit_onfield */
     struct Point *start_pos;
 
@@ -163,7 +163,7 @@ struct Map {
     uf16  *tilesprites_num;     /* [tileset_order]                      */
 
     /* --- REINFORCEMENT --- */
-    uf8 *items_num;
+    u8 *items_num;
     struct Reinforcement   *reinforcements;  /* pointer to 1D dynamic array */
     struct Inventory_item **reinf_equipments;
 

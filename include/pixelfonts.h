@@ -36,8 +36,8 @@ enum SCROLLING {
     SCROLL_TIME_SLOW            = 200,
 };
 
-extern uf8 pixelfont_y_offset[ASCII_GLYPH_NUM];
-extern uf8 pixelfont_big_y_offset[ASCII_GLYPH_NUM];
+extern u8 pixelfont_y_offset[ASCII_GLYPH_NUM];
+extern u8 pixelfont_big_y_offset[ASCII_GLYPH_NUM];
 
 /* --- DEFINITION --- */
 struct TextLines {
@@ -52,17 +52,17 @@ typedef struct PixelFont {
     SDL_Texture *texture;  /* ASCII order */
     SDL_Surface *surface;  /* ASCII order */
     SDL_Texture *write_texture;
-    uf8  glyph_space;    /* [pixels] */
-    uf8  word_space;     /* [pixels] */
-    uf8  glyph_width;
-    uf8  glyph_height;
-    uf8  col_len;
-    uf8  row_len;
+    u8  glyph_space;    /* [pixels] */
+    u8  word_space;     /* [pixels] */
+    u8  glyph_width;
+    u8  glyph_height;
+    u8  col_len;
+    u8  row_len;
     if8  linespace;      /* [pixels] space to add to glyph height for new line */
     uf16 charset_num;
-    uf8 *glyph_bbox_width;
-    uf8 *glyph_bbox_height;
-    uf8 *y_offset;
+    u8 *glyph_bbox_width;
+    u8 *glyph_bbox_height;
+    u8 *y_offset;
     /* Text Scrolling */
     int  scroll_speed;   /* [ms] time until new character is rendered */
     int  scroll_len;   /* [pixels/char] to render */
@@ -72,7 +72,7 @@ extern struct PixelFont TextureFont_default;
 
 /* --- Constructors/Destructors --- */
 struct PixelFont *PixelFont_Alloc();
-struct PixelFont *TextureFont_Alloc(uf8 row_len, uf8 col_len);
+struct PixelFont *TextureFont_Alloc(u8 row_len, u8 col_len);
 
 void PixelFont_Free(struct PixelFont *f, bool free);
 void PixelFont_Load(struct PixelFont *f, SDL_Renderer *r, char *fontname);

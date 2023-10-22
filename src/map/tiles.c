@@ -236,14 +236,14 @@ void Map_Unique_TilesindexfromTilemap(struct Map *map) {
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
-uf8 Map_Tile_Order(struct Map *map, i32 tile) {
+u8 Map_Tile_Order(struct Map *map, i32 tile) {
     SOTA_Log_FPS("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     SDL_assert(tile > TILE_START);
     SDL_assert(map->tiles_id);
     SDL_assert(map->tiles);
     SDL_assert(DARR_NUM(map->tiles) == DARR_NUM(map->tiles_id));
-    uf8 out = UINT8_MAX;
-    for (uf8 i = 0; i < DARR_NUM(map->tiles); i++) {
+    u8 out = UINT8_MAX;
+    for (u8 i = 0; i < DARR_NUM(map->tiles); i++) {
         if (map->tiles_id[i] == tile) {
             out = i;
             break;
@@ -254,12 +254,12 @@ uf8 Map_Tile_Order(struct Map *map, i32 tile) {
     return (out);
 }
 
-void Map_Tileset_newPalette(struct Map *map, i32 tile, uf8 palette) {
+void Map_Tileset_newPalette(struct Map *map, i32 tile, u8 palette) {
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     /* -- Preliminaries -- */
     SDL_assert(map);
     SDL_assert(tile > 0);
-    uf8 tileset_order = Map_Tile_Order(map, tile);
+    u8 tileset_order = Map_Tile_Order(map, tile);
     SDL_assert(map->tileset_surfaces);
     SDL_assert(map->tileset_surfaces[PALETTE_NES]);
     SDL_assert(map->tileset_surfaces[PALETTE_NES][tileset_order]);

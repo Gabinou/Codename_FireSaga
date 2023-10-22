@@ -73,9 +73,9 @@ typedef struct AI {
     struct Point target_open;
     struct Point target_defend;
     struct Point target_interim;
-    uf8 priority;
-    uf8 move_chapter;
-    uf8 move_type;
+    u8 priority;
+    u8 move_chapter;
+    u8 move_type;
 } AI;
 extern struct AI AI_default;
 
@@ -83,38 +83,38 @@ extern struct Point *Target_Assailable_Positions(
         tnecs_entity_t in_attacker,
         tnecs_entity_t in_defender, i32 *in_movemap);
 
-extern uf8 AI_menuOption_Choose(tnecs_world_t *in_world,
-                                tnecs_entity_t in_attacker);
+extern u8 AI_menuOption_Choose(tnecs_world_t *in_world,
+                               tnecs_entity_t in_attacker);
 
 extern tnecs_entity_t AI_Target_Attack(tnecs_world_t *in_world,
                                        tnecs_entity_t in_attacker,
                                        tnecs_entity_t *in_possibleDefenders, struct Combat_Forecast *in_forecasts,
-                                       uf8 num_defender);
+                                       u8 num_defender);
 extern tnecs_entity_t AI_Target_Heal(tnecs_world_t *in_world,
                                      tnecs_entity_t in_staffWielder,
-                                     tnecs_entity_t *in_possiblePatients, uf8 num_patients);
+                                     tnecs_entity_t *in_possiblePatients, u8 num_patients);
 extern tnecs_entity_t AI_Target_magicShield(tnecs_world_t *in_world,
                                             tnecs_entity_t in_staffWielder, tnecs_entity_t *in_possiblePatients,
-                                            uf8 num_patients);
+                                            u8 num_patients);
 extern tnecs_entity_t AI_Target_Silence(tnecs_world_t *in_world,
                                         tnecs_entity_t in_staffWielder,
-                                        uf8 *in_hit_rates, tnecs_entity_t *in_possibleDefenders,
-                                        uf8 num_defender);
+                                        u8 *in_hit_rates, tnecs_entity_t *in_possibleDefenders,
+                                        u8 num_defender);
 extern tnecs_entity_t AI_Target_Pull(tnecs_world_t *in_world,
                                      tnecs_entity_t in_staffWielder,
-                                     tnecs_entity_t *in_friendlies, uf8 num_friendly, tnecs_entity_t *in_enemies,
-                                     uf8 num_enemy);
+                                     tnecs_entity_t *in_friendlies, u8 num_friendly, tnecs_entity_t *in_enemies,
+                                     u8 num_enemy);
 extern tnecs_entity_t AI_Target_Push(tnecs_world_t *in_world,
                                      tnecs_entity_t in_staffWielder,
-                                     tnecs_entity_t *in_friendlies, uf8 num_friendly, tnecs_entity_t *in_enemies,
-                                     uf8 num_enemy);
+                                     tnecs_entity_t *in_friendlies, u8 num_friendly, tnecs_entity_t *in_enemies,
+                                     u8 num_enemy);
 
 extern tnecs_entity_t AI_interimTarget_Compute(struct Map *in_map,
                                                tnecs_entity_t in_actor);
 extern tnecs_entity_t AI_MovetoTarget(struct Map *in_map, tnecs_entity_t in_actor);
 
 extern if8 AI_Forecast_Rating(struct Combat_Forecast in_forecast);
-extern if8 AI_Silence_Rating(tnecs_world_t *in_world, uf8 in_hit_rate,
+extern if8 AI_Silence_Rating(tnecs_world_t *in_world, u8 in_hit_rate,
                              tnecs_entity_t in_enemy_ent);
 
 extern struct AI_PushPull_Out AI_PushPull_bestPosition(i32 *in_gradientmap,

@@ -21,7 +21,7 @@ struct PopUp {
     if32    update_wait_ns;
     if32    timer_ns;
     if8     type;
-    uf8     slidetype;
+    u8     slidetype;
     bool    visible;
 };
 

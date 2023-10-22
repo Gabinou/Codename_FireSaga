@@ -1,24 +1,24 @@
 
 #include "hexposition.h"
 
-uf8 HexDistance_HexPoints(struct nmath_hexpoint_int32_t in_point1,
-                          struct nmath_hexpoint_int32_t in_point2) {
+u8 HexDistance_HexPoints(struct nmath_hexpoint_int32_t in_point1,
+                         struct nmath_hexpoint_int32_t in_point2) {
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
-    uf8 distance = (labs(in_point1.x - in_point2.x) + abs(in_point1.y - in_point2.y) +
-                    labs(
-                            in_point1.z - in_point2.z)) / 2;
+    u8 distance = (labs(in_point1.x - in_point2.x) + abs(in_point1.y - in_point2.y) +
+                   labs(
+                           in_point1.z - in_point2.z)) / 2;
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
     return (distance);
 }
 
-uf8 HexDistance_Points(struct Point in_point1,
-                       struct Point in_point2) {
+u8 HexDistance_Points(struct Point in_point1,
+                      struct Point in_point2) {
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     if32 z1 = -in_point1.x - in_point1.y;
     if32 z2 = -in_point2.x - in_point2.y;
-    uf8 distance = (labs(in_point1.x - in_point2.x) + abs(in_point1.y - in_point2.y) +
-                    labs(
-                            z1 - z2)) / 2;
+    u8 distance = (labs(in_point1.x - in_point2.x) + abs(in_point1.y - in_point2.y) +
+                   labs(
+                           z1 - z2)) / 2;
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
     return (distance);
 }
@@ -66,8 +66,8 @@ void HexPosition_makeDirections() {
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
-void HexPosition_Move(struct HexPosition *in_hexpos, uf8 in_direction,
-                      uf8 in_magnitude) {
+void HexPosition_Move(struct HexPosition *in_hexpos, u8 in_direction,
+                      u8 in_magnitude) {
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     struct nmath_hexpoint_int32_t direction = cube_directions[in_direction];
     in_hexpos->pos.x += in_magnitude * direction.x;

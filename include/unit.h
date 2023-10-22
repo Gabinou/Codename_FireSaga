@@ -36,7 +36,7 @@ enum UNIT_SEX {
 };
 
 /* -- Unit second-order info -- */
-extern uf8  army_alignment[ARMY_END];
+extern u8  army_alignment[ARMY_END];
 extern bool army_isPC[ARMY_END];
 
 /* --- UNIT STATUS --- */
@@ -52,16 +52,16 @@ extern struct Unit_status Unit_status_default;
 
 /* --- UNIT --- */
 typedef struct Unit {
-    uf8     json_element; /* JSON_ELEM_bOFFSET = 0 */
+    u8     json_element; /* JSON_ELEM_bOFFSET = 0 */
     if16    class;
     if8     mvt_type;
     if8     army;
-    uf8     current_agony;
-    uf8     current_hp;
+    u8     current_agony;
+    u8     current_hp;
     if8     handedness;
     uf16    talkable;
     if8     agony; /* turns left before death (-1 not agonizing) */
-    uf8     regrets;
+    u8     regrets;
 
     // Status with least remaining turns on top.
     struct Unit_status *status_queue;
@@ -219,10 +219,10 @@ void  Unit_Check_Equipped(struct Unit *u);
 void Unit_supportUp(struct Unit *u, if16 id);
 
 /* --- Second-order info --- */
-bool SotA_isPC(          uf8 a);
-uf8  SotA_army2alignment(uf8 a);
+bool SotA_isPC(          u8 a);
+u8  SotA_army2alignment(u8 a);
 
-uf8  Unit_mvtType(const struct Unit *u);
+u8  Unit_mvtType(const struct Unit *u);
 
 /* --- Unit status --- */
 void Unit_Status_Add(       struct Unit *u, struct Unit_status);
@@ -263,20 +263,20 @@ bool Unit_hasSkill(const struct Unit *u, u64 s);
 *    DEBUG: input -1 to always be in_range
 */
 /* Distance-dependent stats */
-uf8 Unit_computeHit(     struct Unit *u, int dist);
+u8 Unit_computeHit(     struct Unit *u, int dist);
 if8 Unit_computeDodge(   struct Unit *u, int dist);
-uf8 Unit_computeFavor(   struct Unit *u, int dist);
+u8 Unit_computeFavor(   struct Unit *u, int dist);
 if8 Unit_computeSpeed(   struct Unit *u, int dist);
-uf8 Unit_computeCritical(struct Unit *u, int dist);
+u8 Unit_computeCritical(struct Unit *u, int dist);
 
 /* Distance-independent stats */
 if8 Unit_computeMove(    struct Unit *u);
-uf8 Unit_computeAgony(   struct Unit *u);
+u8 Unit_computeAgony(   struct Unit *u);
 if8 Unit_computeRegrets( struct Unit *u);
-uf8 Unit_computeEffectivefactor(struct Unit *a, struct Unit *d);
+u8 Unit_computeEffectivefactor(struct Unit *a, struct Unit *d);
 
-uf8 *Unit_computeAttack( struct Unit *u, int dist);
-uf8 *Unit_computeDefense(struct Unit *u);
+u8 *Unit_computeAttack( struct Unit *u, int dist);
+u8 *Unit_computeDefense(struct Unit *u);
 
 struct Unit_stats Unit_effectiveStats(struct     Unit *u);
 struct Unit_stats Unit_effectiveGrowths(struct   Unit *u);
@@ -314,8 +314,8 @@ void Unit_dies(struct        Unit *u);
 void Unit_refresh(struct     Unit *u);
 void Unit_agonizes(struct    Unit *u);
 
-void Unit_getsHealed(struct  Unit *u, uf8 healing);
-void Unit_takesDamage(struct Unit *u, uf8 dmg, bool ct);
+void Unit_getsHealed(struct  Unit *u, u8 healing);
+void Unit_takesDamage(struct Unit *u, u8 dmg, bool ct);
 
 /* --- I/O --- */
 void Unit_readJSON(void        *u, const cJSON *const junit);
@@ -348,7 +348,7 @@ int Unit_canStaff(        const struct Unit *u);
 int Unit_canStaff_Eq(     const struct Unit *u);
 int Unit_canStaff_oneHand(const struct Unit *u);
 
-uf8 Unit_Brave(const struct Unit *u);
+u8 Unit_Brave(const struct Unit *u);
 
 /* --- Lvlup && Promotion --- */
 void Unit_lvlUp(  struct Unit *u);

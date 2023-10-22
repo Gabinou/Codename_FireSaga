@@ -1,7 +1,7 @@
 #include "RNG.h"
 
 RNG_URN_ptr global_RNG_URN = RNG_URN;
-uf8 URN_debug = 1;
+u8 URN_debug = 1;
 
 struct TINYMT32_T *tinyMT_global = NULL;
 
@@ -28,32 +28,32 @@ void RNG_Init_tinymt(struct TINYMT32_T *tinymt) {
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
-uf8 RNG_URN_debug(struct TINYMT32_T *tinymt) {
+u8 RNG_URN_debug(struct TINYMT32_T *tinymt) {
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth, __func__);
     return (URN_debug);
 }
 
-uf8 RNG_URN(struct TINYMT32_T *tinymt) {
+u8 RNG_URN(struct TINYMT32_T *tinymt) {
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth, __func__);
-    return ((uf8)RNG_openBSD_uint32_t(tinymt, RN_MAX, RN_MIN));
+    return ((u8)RNG_openBSD_uint32_t(tinymt, RN_MAX, RN_MIN));
 }
 
-bool RNG_single_roll(uf8 RN, uf8 rate) {
+bool RNG_single_roll(u8 RN, u8 rate) {
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth, __func__);
     return (RN < rate);
 }
 
-bool RNG_double_roll(uf8 RN1, uf8 RN2, uf8 rate) {
+bool RNG_double_roll(u8 RN1, u8 RN2, u8 rate) {
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth, __func__);
     return (((RN1 + RN2) / 2) < rate);
 }
 
-uf8 *RNG_boxmuller(const uf8 RN_U[INTERVAL_BOUNDS_NUM], float avg, float std_dev) {
+u8 *RNG_boxmuller(const u8 RN_U[INTERVAL_BOUNDS_NUM], float avg, float std_dev) {
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     // Box-Muller Transform.
     // 2 U distributed RNs -> 2 G distributed RNs
     // RN_G can be < 0 and > 100.
-    static uf8 RN_G[INTERVAL_BOUNDS_NUM];
+    static u8 RN_G[INTERVAL_BOUNDS_NUM];
     float RNreal_U[INTERVAL_BOUNDS_NUM];
     if (RN_U[0] == 0)
         RNreal_U[0] = 0.00001;
@@ -67,8 +67,8 @@ uf8 *RNG_boxmuller(const uf8 RN_U[INTERVAL_BOUNDS_NUM], float avg, float std_dev
 
     float term1 = sqrt(-2 *  log(RNreal_U[0]));
     float term2 = 2 * M_PI * RNreal_U[1];
-    RN_G[0] = (uf8)((term1 * sin(term2)) * std_dev + avg);
-    RN_G[1] = (uf8)((term1 * cos(term2)) * std_dev + avg);
+    RN_G[0] = (u8)((term1 * sin(term2)) * std_dev + avg);
+    RN_G[1] = (u8)((term1 * cos(term2)) * std_dev + avg);
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
     return (RN_G);
 }
@@ -93,7 +93,7 @@ bool RNG_checkRate(struct TINYMT32_T *in_tinymt, if16 rate, if16 mode) {
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     // Uses tinyMT_global if (in_tinymt==NULL)
     bool hit = false;
-    uf8 RN1, RN2;
+    u8 RN1, RN2;
     switch (mode) {
         case GAME_RN_SINGLE:
             RN1 = global_RNG_URN(in_tinymt);

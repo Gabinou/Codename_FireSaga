@@ -1,6 +1,6 @@
 #include "pixelfonts.h"
 
-uf8 pixelfont_big_y_offset[ASCII_GLYPH_NUM] = {
+u8 pixelfont_big_y_offset[ASCII_GLYPH_NUM] = {
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
@@ -19,7 +19,7 @@ uf8 pixelfont_big_y_offset[ASCII_GLYPH_NUM] = {
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
 };
 
-uf8 pixelfont_y_offset[ASCII_GLYPH_NUM] = {
+u8 pixelfont_y_offset[ASCII_GLYPH_NUM] = {
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
@@ -134,7 +134,7 @@ void PixelFont_Load(struct PixelFont *font, SDL_Renderer *renderer, char *fontna
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
-struct PixelFont *TextureFont_Alloc(uf8 row_len, uf8 col_len) {
+struct PixelFont *TextureFont_Alloc(u8 row_len, u8 col_len) {
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     struct PixelFont *font = malloc(sizeof(struct PixelFont));
     SDL_assert(font);
@@ -476,14 +476,14 @@ void PixelFont_Compute_Glyph_BBox(struct PixelFont *font) {
     SDL_assert(font->surface);
     SDL_assert(SDL_ISPIXELFORMAT_INDEXED(font->surface->format->format));
     SDL_LockSurface(font->surface);
-    uf8 *pixels = font->surface->pixels;
+    u8 *pixels = font->surface->pixels;
 
     /* Glyph cache friendly loop */
     for (size_t row = 0; row < font->row_len; row++) {
         for (size_t col = 0; col < font->col_len; col++) {
-            uf8 origin_x = col * font->glyph_width;
-            uf8 origin_y = row * font->glyph_height;
-            uf8 max_width = 0, max_height = 0;
+            u8 origin_x = col * font->glyph_width;
+            u8 origin_y = row * font->glyph_height;
+            u8 max_width = 0, max_height = 0;
             /* pixel cache friendly loop */
             for (size_t x = origin_x; x < (origin_x + font->glyph_width); x++) {
                 for (size_t y = origin_y; y < (origin_y + font->glyph_height); y++) {

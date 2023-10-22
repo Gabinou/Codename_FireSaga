@@ -1,9 +1,9 @@
 
 #include "bars/stat.h"
 
-uf8 statbar_highlights[STATBAR_HIGHLIGHT_NUM] = {4, 12, 18, 22, 25, 26, 32, 35};
+u8 statbar_highlights[STATBAR_HIGHLIGHT_NUM] = {4, 12, 18, 22, 25, 26, 32, 35};
 
-void StatBar_Init(struct SimpleBar *statbar, uf8 stat, uf8 cap, int posx,
+void StatBar_Init(struct SimpleBar *statbar, u8 stat, u8 cap, int posx,
                   int posy) {
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     //*
@@ -17,7 +17,7 @@ void StatBar_Init(struct SimpleBar *statbar, uf8 stat, uf8 cap, int posx,
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
-void HPBar_Init(struct SimpleBar *statbar, uf8 stat, uf8 cap, int posx,
+void HPBar_Init(struct SimpleBar *statbar, u8 stat, u8 cap, int posx,
                 int posy) {
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     StatBar_Init(statbar, stat, cap, posx, posy);
@@ -36,10 +36,10 @@ void StatBar_Colors_NES(struct SimpleBar *statbar, int BG_dark, int BG_light, in
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
-uf8 StatBar_Len(int cap) {
+u8 StatBar_Len(int cap) {
     SOTA_Log_FPS("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
-    uf8 max_len = STATBAR_MAX_LEN;
-    uf8 cap_len = ((float)cap / STATBAR_MAX_CAP) * STATBAR_MAX_LEN;
+    u8 max_len = STATBAR_MAX_LEN;
+    u8 cap_len = ((float)cap / STATBAR_MAX_CAP) * STATBAR_MAX_LEN;
     SOTA_Log_FPS("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
     return (cap_len < max_len ? cap_len : max_len);
 }
@@ -308,7 +308,7 @@ void StatBar_Draw(struct SimpleBar *statbar, SDL_Renderer *renderer) {
     temp_rect.h = statbar->scale.y;
     temp_rect.w = statbar->scale.x;
     /* -- FG_light: border highlights -- */
-    uf8 i = 0;
+    u8 i = 0;
     SDL_SetRenderDrawColor(renderer, statbar->FG_light.r, statbar->FG_light.g,
                            statbar->FG_light.b, SDL_ALPHA_OPAQUE);
     while ((statbar_highlights[i] < (statbar->len / statbar->scale.x))

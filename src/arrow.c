@@ -137,7 +137,7 @@ void _Arrow_Decider(struct Arrow *arrow, i32 point) {
     /* -- Preliminaries -- */
     SDL_assert(arrow->textures != NULL);
     SDL_assert(point >= 0);
-    uf8 pointnum = DARR_NUM(arrow->pathlist) / TWO_D;
+    u8 pointnum = DARR_NUM(arrow->pathlist) / TWO_D;
     i32 endpoint = (pointnum - 2);
     SDL_assert(point <= endpoint);
 

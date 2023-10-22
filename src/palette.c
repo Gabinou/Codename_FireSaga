@@ -94,15 +94,15 @@ void Palettes_Free() {
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
-uf8 palette_table_NES_shadow[PALETTE_NES_COLOR_NUM];
-uf8 palette_table_NES_night [PALETTE_NES_COLOR_NUM];
-uf8 palette_table_NES_filter_darkred[PALETTE_NES_COLOR_NUM];
-uf8 palette_table_NES_filter_red[PALETTE_NES_COLOR_NUM];;
-uf8 palette_table_NES_filter_green[PALETTE_NES_COLOR_NUM];
-uf8 palette_table_NES_filter_blue[PALETTE_NES_COLOR_NUM];
-uf8 palette_table_NES_darken[PALETTE_NES_COLOR_NUM];
-uf8 palette_table_NES_lighten[PALETTE_NES_COLOR_NUM];
-uf8 palette_table_NES_lightenmore[PALETTE_NES_COLOR_NUM];
+u8 palette_table_NES_shadow[PALETTE_NES_COLOR_NUM];
+u8 palette_table_NES_night [PALETTE_NES_COLOR_NUM];
+u8 palette_table_NES_filter_darkred[PALETTE_NES_COLOR_NUM];
+u8 palette_table_NES_filter_red[PALETTE_NES_COLOR_NUM];;
+u8 palette_table_NES_filter_green[PALETTE_NES_COLOR_NUM];
+u8 palette_table_NES_filter_blue[PALETTE_NES_COLOR_NUM];
+u8 palette_table_NES_darken[PALETTE_NES_COLOR_NUM];
+u8 palette_table_NES_lighten[PALETTE_NES_COLOR_NUM];
+u8 palette_table_NES_lightenmore[PALETTE_NES_COLOR_NUM];
 
 void Palette_Tables_Load() {
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);

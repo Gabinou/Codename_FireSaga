@@ -232,7 +232,7 @@ void receive_event_Cursor_Disable(struct Game *sota, SDL_Event *Cursor_Disable) 
 
 void receive_event_Turn_Begin(struct Game *sota, SDL_Event *userevent) {
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
-    // uf8 army = * (uf8 *) userevent->user.data1;
+    // u8 army = * (u8 *) userevent->user.data1;
     struct Map *map = sota->map;
     SDL_assert(sota->state == GAME_STATE_Gameplay_Map);
 
@@ -254,7 +254,7 @@ void receive_event_Turn_Begin(struct Game *sota, SDL_Event *userevent) {
 
 void receive_event_Game_Control_Switch(struct Game *sota, SDL_Event *userevent) {
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
-    uf8 army = * (uf8 *) userevent->user.data1;
+    u8 army = * (u8 *) userevent->user.data1;
     if (SotA_isPC(army)) {
         // Game_State_Set(sota, GAME_STATE_Gameplay_Map);
         if (sota->entity_cursor > TNECS_NULL)
@@ -416,14 +416,14 @@ void receive_event_Quit(struct Game *sota, SDL_Event *event) {
 
 void Entities_Reload(struct Game *sota, size_t flag_id, const char *component) {
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
-    // size_t num_entities = sota->world->num_entities_bytype[flag_id];
-    // for (size_t i = 0; i < num_entities; i++) {
-    //     tnecs_entity_t entity = sota->world->entities_bytype[flag_id][i];
-    //     size_t component_id = tnecs_component_name2id(sota->world, component);
-    //     void *struct_ptr = tnecs_entity_get_component(sota->world, entity_id, component_id);
-    //     const char *filename = PATH_JOIN("");
-    //     jsonio_readJSON(filename, struct_ptr);
-    // }
+    size_t num_entities = sota->world->num_entities_bytype[flag_id];
+    for (size_t i = 0; i < num_entities; i++) {
+        tnecs_entity_t entity = sota->world->entities_bytype[flag_id][i];
+        size_t component_id = tnecs_component_name2id(sota->world, component);
+        void *struct_ptr    = tnecs_entity_get_component(sota->world, entity, component_id);
+        const char *filename = PATH_JOIN("");
+        jsonio_readJSON(filename, struct_ptr);
+    }
 
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
@@ -431,37 +431,33 @@ void Entities_Reload(struct Game *sota, size_t flag_id, const char *component) {
 void receive_event_Reload(struct Game *sota, SDL_Event *event) {
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     /* --- Reload all entities --- */
+    tnecs_component_t component_flag;
+    size_t num_archetypes, component_flag_id;
     /* -- Reload Units -- */
-    // tnecs_component_t component_flag;
-    // size_t num_archetypes, component_flag_id;
+    /* -- Reload entities for the pure component typeflag -- */
+    component_flag     = tnecs_component_names2typeflag(sota->world, 1, "Unit");
+    component_flag_id  = tnecs_typeflagid(sota->world, component_flag);
+    Entities_Reload(sota, component_flag_id, "Unit");
 
-    // /* -- Reload entities for the pure component typeflag -- */
-    // component_flag = tnecs_component_names2typeflag(sota->world, 1, "Unit");
-    // component_flag_id  = tnecs_typeflagid(world, component_flag);
-    // Entities_Reload(sota, component_flag_id);
+    /* -- Reload entities for the all component archetypes -- */
+    num_archetypes = sota->world->num_archetype_ids[component_flag_id];
+    for (size_t tsub = 0; tsub < num_archetypes; tsub++) {
+        size_t archetype_id = sota->world->archetype_id_bytype[component_flag_id][tsub];
+        Entities_Reload(sota, archetype_id, "Unit");
+    }
 
-    // /* -- Reload entities for the all component archetypes -- */
-    // num_archetypes = sota->world->num_archetype_ids[component_flag_id];
-    // for (size_t tsub = 0; tsub < num_archetypes; tsub++) {
-    //     size_t archetype_id = world->archetype_id_bytype[component_flag_id][tsub];
-    //     Entities_Reload(sota, archetype_id);
-    // }
+    /* -- Reload Sprites -- */
+    /* -- Reload entities for the pure component typeflag -- */
+    component_flag = tnecs_component_names2typeflag(sota->world, 1, "Sprite");
+    component_flag_id  = tnecs_typeflagid(sota->world, component_flag);
+    Entities_Reload(sota, component_flag_id, "Sprite");
 
-    // /* -- Reload Sprites -- */
-    // tnecs_component_t component_flag;
-    // size_t num_archetypes, component_flag_id;
-
-    // /* -- Reload entities for the pure component typeflag -- */
-    // component_flag = tnecs_component_names2typeflag(sota->world, 1, "Sprite");
-    // component_flag_id  = tnecs_typeflagid(world, component_flag);
-    // Entities_Reload(sota, component_flag_id);
-
-    // /* -- Reload entities for the all component archetypes -- */
-    // num_archetypes = sota->world->num_archetype_ids[component_flag_id];
-    // for (size_t tsub = 0; tsub < num_archetypes; tsub++) {
-    //     size_t archetype_id = world->archetype_id_bytype[component_flag_id][tsub];
-    //     Entities_Reload(sota, archetype_id);
-    // }
+    /* -- Reload entities for the all component archetypes -- */
+    num_archetypes = sota->world->num_archetype_ids[component_flag_id];
+    for (size_t tsub = 0; tsub < num_archetypes; tsub++) {
+        size_t archetype_id = sota->world->archetype_id_bytype[component_flag_id][tsub];
+        Entities_Reload(sota, archetype_id, "Sprite");
+    }
 
 
     // /* --- Reload non-entities --- */
@@ -1317,7 +1313,7 @@ void receive_event_Increment_Attack(struct Game *sota, SDL_Event *userevent) {
 
     // 1. Get next HP of attacked unit
     struct Combat_Attack attack = sota->combat_attacks[pmc->current_attack++];
-    uf8 next_hp = attack.attacker ? pmc->dft_current_hp : pmc->agg_current_hp;
+    u8 next_hp = attack.attacker ? pmc->dft_current_hp : pmc->agg_current_hp;
     next_hp = Combat_Next_HP(attack, next_hp);
 
     // 2. Update popup_map_combat

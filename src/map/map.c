@@ -117,7 +117,7 @@ struct Map *Map_Init(struct Map *map, i32 width, i32 height) {
     *map = Map_default;
     map->tiles              = DARR_INIT(map->tiles, struct Tile, 64);
     map->tiles_id           = DARR_INIT(map->tiles_id, i32, 64);
-    map->items_num          = DARR_INIT(map->items_num, uf8, 8);
+    map->items_num          = DARR_INIT(map->items_num, u8, 8);
     map->start_pos          = DARR_INIT(map->start_pos, struct Point, 20);
     map->enemies_onfield    = DARR_INIT(map->enemies_onfield, tnecs_entity_t, 20);
     map->friendlies_onfield = DARR_INIT(map->friendlies_onfield, tnecs_entity_t, 20);
@@ -587,12 +587,12 @@ void Map_writeJSON(const void *input, cJSON *jmap) {
     cJSON *jreinforcementeq;
     cJSON *jreinforcements = cJSON_CreateObject();
     cJSON_AddItemToObject(jmap, "Reinforcements", jreinforcements);
-    for (uf8 r = 0; r < DARR_NUM(map->reinforcements); r++) {
+    for (u8 r = 0; r < DARR_NUM(map->reinforcements); r++) {
         jreinforcement = cJSON_CreateObject();
         jreinforcementeq = cJSON_CreateObject();
         Filesystem_writeJSON_arrival(jreinforcement, &(map->reinforcements)[r]);
         temp_equip = map->reinf_equipments[r];
-        for (uf8 i = 0; i < DARR_NUM(temp_equip); i ++) {
+        for (u8 i = 0; i < DARR_NUM(temp_equip); i ++) {
             temp_item = temp_equip[i];
             if (temp_item.id > ITEM_NULL)
                 Filesystem_writeJSON_item(jreinforcementeq, &temp_item);
@@ -675,7 +675,7 @@ void Map_readJSON(void *input, const cJSON *const jmap) {
     map->reinf_equipments = DARR_INIT(map->reinf_equipments, struct Inventory_item *, 30);
     if (map->items_num != NULL)
         DARR_FREE(map->items_num);
-    map->items_num = DARR_INIT(map->items_num, uf8, DEFAULT_EQUIPMENT_SIZE);
+    map->items_num = DARR_INIT(map->items_num, u8, DEFAULT_EQUIPMENT_SIZE);
     cJSON *jreinforcements = cJSON_GetObjectItem(jmap, "Reinforcements");
     SDL_assert(jreinforcements != NULL);
     cJSON *jequipment, *jitem;

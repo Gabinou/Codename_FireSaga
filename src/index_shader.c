@@ -33,7 +33,7 @@ i32 *matrix_rect_noise(i32 *matrix, i32 origx, i32 origy,
 }
 
 /* --- pixels --- */
-uf8 *pixels2list_noM(uf8 *matrix, uf8 *list, size_t row_len, size_t col_len) {
+u8 *pixels2list_noM(u8 *matrix, u8 *list, size_t row_len, size_t col_len) {
     DARR_NUM(list) = 0;
     for (size_t col = 0; col < col_len; col++) {
         for (size_t row = 0; row < row_len; row++) {
@@ -46,32 +46,32 @@ uf8 *pixels2list_noM(uf8 *matrix, uf8 *list, size_t row_len, size_t col_len) {
     return (list);
 }
 
-uf8 *pixels2list(uf8 *matrix, size_t row_len, size_t col_len) {
-    uf8 *list = DARR_INIT(list, uf8, row_len * col_len * 2);
+u8 *pixels2list(u8 *matrix, size_t row_len, size_t col_len) {
+    u8 *list = DARR_INIT(list, u8, row_len * col_len * 2);
     list = pixels2list_noM(matrix, list, row_len, col_len);
     size_t newsize = (DARR_NUM(list) < SOTA_MINLEN) ? SOTA_MINLEN : DARR_NUM(list);
     list = DARR_REALLOC(list, newsize);
     return (list);
 }
 
-uf8 *pixels_and_noM(uf8 *out, uf8 *matrix1, uf8 *matrix2, size_t arr_len) {
+u8 *pixels_and_noM(u8 *out, u8 *matrix1, u8 *matrix2, size_t arr_len) {
     for (size_t i = 0; i < arr_len; i++)
         out[i] = (matrix1[i] && matrix2[i]);
     return (out);
 }
 
-uf8 *pixels_and(uf8 *matrix1, uf8 *matrix2, size_t arr_len) {
-    uf8 *out = calloc(arr_len, sizeof(*out));
+u8 *pixels_and(u8 *matrix1, u8 *matrix2, size_t arr_len) {
+    u8 *out = calloc(arr_len, sizeof(*out));
     return (pixels_and_noM(out, matrix1, matrix2, arr_len));
 }
 
 
-void _Index_Shade_Pixels(uf8 *to, SDL_Surface *unlocked_surface, uf8 *pixels_list,
+void _Index_Shade_Pixels(u8 *to, SDL_Surface *unlocked_surface, u8 *pixels_list,
                          size_t pixels_num, size_t offset_x, size_t offset_y) {
     SOTA_Log_FPS("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     SDL_assert(SDL_ISPIXELFORMAT_INDEXED(unlocked_surface->format->format));
     SDL_assert(pixels_num > 0);
-    uf8 *pixels = unlocked_surface->pixels;
+    u8 *pixels = unlocked_surface->pixels;
 
     for (size_t i = 0; i < pixels_num; i++) {
         size_t y = pixels_list[TWO_D * i + 1];
@@ -86,9 +86,9 @@ void _Index_Shade_Pixels(uf8 *to, SDL_Surface *unlocked_surface, uf8 *pixels_lis
     SOTA_Log_FPS("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
-void _Index_Shade_Rect( uf8 *to, SDL_Surface *unlocked_surface, SDL_Rect *rect) {
+void _Index_Shade_Rect( u8 *to, SDL_Surface *unlocked_surface, SDL_Rect *rect) {
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
-    uf8 *pixels = unlocked_surface->pixels;
+    u8 *pixels = unlocked_surface->pixels;
     SDL_assert(SDL_ISPIXELFORMAT_INDEXED(unlocked_surface->format->format));
     for (size_t x = rect->x; x < rect->x + rect->w; x++) {
         for (size_t y = rect->y; y < rect->y + rect->h; y++) {
@@ -202,7 +202,7 @@ void Tilemap_Shader_Load_Tileset_pixels(struct Tilemap_Shader *shd, const char *
     SDL_Surface *surf = Filesystem_Surface_Load(filename, SDL_PIXELFORMAT_INDEX8);
     SDL_LockSurface(surf);
     size_t x, y, offset, bytesize;
-    uf8 *temp_arr = NULL;
+    u8 *temp_arr = NULL;
 
     /* -- Read shadow tilemaps from file surface -- */
     for (size_t i = 0; i < shd->shadowtile_num; i++) {
@@ -266,7 +266,7 @@ void Tilemap_Shader_Load_Tileset_JSON(struct Tilemap_Shader *shd,
         /* - Read pixels in shadow tile - */
         j = 0;
         cJSON_ArrayForEach(jnum, jtile) {
-            shd->shadowtile_pixels_lists[i][j++] = (uf8)cJSON_GetNumberValue(jnum);
+            shd->shadowtile_pixels_lists[i][j++] = (u8)cJSON_GetNumberValue(jnum);
         }
     }
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
@@ -283,7 +283,7 @@ void Tilemap_Shader_Load_JSON(struct Tilemap_Shader *shd, const cJSON *const jma
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
-SDL_Surface *Tilemap_Shade_Surface(struct Tilemap_Shader *shd, SDL_Surface *surf, uf8 frame,
+SDL_Surface *Tilemap_Shade_Surface(struct Tilemap_Shader *shd, SDL_Surface *surf, u8 frame,
                                    const struct Settings *settings, struct Camera *camera) {
     SOTA_Log_FPS("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     /* -- Preliminaries -- */
@@ -291,7 +291,7 @@ SDL_Surface *Tilemap_Shade_Surface(struct Tilemap_Shader *shd, SDL_Surface *surf
     SDL_assert(surf != NULL);
     SDL_assert(shd->shadow_tilemaps != NULL);
     SDL_assert(SDL_ISPIXELFORMAT_INDEXED(surf->format->format));
-    uf8 minpos[TWO_D], maxpos[TWO_D], st_index;
+    u8 minpos[TWO_D], maxpos[TWO_D], st_index;
     int row_len = shd->map->row_len, col_len = shd->map->col_len;
     i32 *tsize = shd->map->tilesize;
     Map_Visible_Bounds(minpos, maxpos, row_len, col_len, tsize, &settings->res, camera);
@@ -304,7 +304,7 @@ SDL_Surface *Tilemap_Shade_Surface(struct Tilemap_Shader *shd, SDL_Surface *surf
         for (size_t row = minpos[1]; row < maxpos[1]; row++) {
             int index = row * col_len + col;
             st_index = shd->shadow_tilemaps[frame][index] - TILE_DIVISOR * TILE_SHADOW;
-            uf8 *list = shd->shadowtile_pixels_lists[st_index];
+            u8 *list = shd->shadowtile_pixels_lists[st_index];
             size_t num = shd->shadowtile_pixels_num[st_index];
             if ((st_index > 0) && (st_index < shd->shadowtile_num))
                 _Index_Shade_Pixels(shd->to, surf, list, num, col * tsize[1], row * tsize[0]);
@@ -329,7 +329,7 @@ void Index_Shader_Load(struct Index_Shader *shd, SDL_Surface *surf, SDL_Rect *re
     size_t bytesize = rect->w * rect->h;
     size_t offset = Util_SDL_Surface_Index(surf, rect->x, rect->y);
 
-    uf8 *temp_arr = malloc(bytesize);
+    u8 *temp_arr = malloc(bytesize);
     memcpy(temp_arr, surf->pixels + offset, bytesize);
     SDL_UnlockSurface(surf);
 

@@ -363,8 +363,8 @@ void test_combat_flow() {
 
     Unit_computeHit(&attacker, distance);
     Unit_computeHit(&defender, distance);
-    uf8 attacker_hit;
-    uf8 defender_hit;
+    u8 attacker_hit;
+    u8 defender_hit;
     struct Weapon attacker_weapon = Weapon_default;
     struct Weapon defender_weapon = Weapon_default;
 
@@ -558,8 +558,8 @@ void test_combat_sequence() {
 
     struct Combat_Attack attack = {0};
     attack.hit = true;
-    uf8 hit_rate = 50;
-    uf8 crit_rate = 10;
+    u8 hit_rate = 50;
+    u8 crit_rate = 10;
 
     struct Damage damage = {0};
     damage.dmg[DMG_TYPE_PHYSICAL] = 8;

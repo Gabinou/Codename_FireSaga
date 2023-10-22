@@ -34,8 +34,8 @@ enum ITEM_TARGET {
 typedef if8(* use_function_t)(struct Item *, struct Unit *, struct Unit *);
 
 typedef struct Item {
-    uf8 json_element;   /* JSON_ELEM_bOFFSET = 0 */
-    uf8 target;         /* units on which item is usable. */
+    u8 json_element;   /* JSON_ELEM_bOFFSET = 0 */
+    u8 target;         /* units on which item is usable. */
     struct Range range;
 
     struct Unit_stats bonus_stats;
@@ -64,7 +64,7 @@ typedef struct Item {
 extern struct Item Item_default;
 
 /* --- Inventory Item --- */
-void Inventory_item_Swap(struct Inventory_item *items, uf8 i1, uf8 i2);
+void Inventory_item_Swap(struct Inventory_item *items, u8 i1, u8 i2);
 
 /* --- Constructors/Destructors --- */
 void Item_Free(struct Item *item);

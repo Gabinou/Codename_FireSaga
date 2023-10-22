@@ -425,7 +425,7 @@ void _PreCombatMenu_Draw_Stats_Math(  struct PreCombatMenu *pcm, SDL_Renderer *r
     const struct Point *dft_pos = &pcm->dft_pos->tilemap_pos;
 
     /* Distance between units */
-    uf8 distance = abs(dft_pos->x - agg_pos->x) + abs(dft_pos->y - agg_pos->y);
+    u8 distance = abs(dft_pos->x - agg_pos->x) + abs(dft_pos->y - agg_pos->y);
 
     struct Computed_Stats computed_stats_a = Unit_computedStats(pcm->agg_unit, distance);
     struct Computed_Stats computed_stats_d = Unit_computedStats(pcm->dft_unit, distance);
@@ -568,7 +568,7 @@ void _PreCombatMenu_Draw_Stats_Total( struct PreCombatMenu *pcm, SDL_Renderer *r
     const struct Point *dft_pos = &pcm->dft_pos->tilemap_pos;
 
     /* Distance between units */
-    uf8 distance = abs(dft_pos->x - agg_pos->x) + abs(dft_pos->y - agg_pos->y);
+    u8 distance = abs(dft_pos->x - agg_pos->x) + abs(dft_pos->y - agg_pos->y);
 
     struct Computed_Stats computed_stats_a = Unit_computedStats(pcm->agg_unit, distance);
     struct Computed_Stats computed_stats_d = Unit_computedStats(pcm->dft_unit, distance);
@@ -663,7 +663,7 @@ void _PreCombatMenu_Draw_Stats_Simple(struct PreCombatMenu *pcm, SDL_Renderer *r
     const struct Point *dft_pos = &pcm->dft_pos->tilemap_pos;
 
     /* Distance between units */
-    uf8 distance = abs(dft_pos->x - agg_pos->x) + abs(dft_pos->y - agg_pos->y);
+    u8 distance = abs(dft_pos->x - agg_pos->x) + abs(dft_pos->y - agg_pos->y);
 
     struct Computed_Stats computed_stats_a = Unit_computedStats(pcm->agg_unit, distance);
     struct Computed_Stats computed_stats_d = Unit_computedStats(pcm->dft_unit, distance);

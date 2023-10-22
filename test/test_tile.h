@@ -25,7 +25,7 @@ void test_tile() {
     };
     Tile_makeMvtCostarray(&tile1);
     struct fMovement_cost out_cost = fMovement_cost_default;
-    uf8 cost_array[UNIT_MVT_END];
+    u8 cost_array[UNIT_MVT_END];
     nourstest_true(strcmp(tile1.name, "Throne") == 0);
     nourstest_true(tile1.id == TILE_THRONE);
     out_cost        = tile1.cost_struct;

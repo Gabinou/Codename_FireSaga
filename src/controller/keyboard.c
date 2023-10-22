@@ -61,7 +61,7 @@ void Keyboard_Held(if8 *held, size_t *h_num, if32 *timeheld, if8 *pressed, size_
     SOTA_Log_FPS("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
-bool Keyboard_isPressed(struct controllerKeyboard *kb, const uf8 *state_array, int button) {
+bool Keyboard_isPressed(struct controllerKeyboard *kb, const u8 *state_array, int button) {
     SOTA_Log_FPS("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
 
     /* -- Preliminaries -- */
@@ -72,7 +72,7 @@ bool Keyboard_isPressed(struct controllerKeyboard *kb, const uf8 *state_array, i
 
     /* -- Check if button/axis is pressed, -- */
     bool out = false;
-    uf8 len  = *(&map->dpad_right_len + button);
+    u8 len  = *(&map->dpad_right_len + button);
 
     for (int i = 0; i < len; i++) {
         if (state_array[buttons[i]]) {

@@ -51,16 +51,16 @@ struct Unit;
 // skill_multiplier and skillp_multipliers stack, BUT -> no skills should use both.
 extern struct Combat_Phase {
     // skillp_multipliers: Different multiplier for every brave applies to every attack in phase
-    uf8     skillp_multipliers[SOTA_BRAVE_MAX];
+    u8     skillp_multipliers[SOTA_BRAVE_MAX];
     // skill_multiplier: Applies to every higher priority attack in phase
-    uf8     skill_multiplier;
-    uf8     attack_num;
+    u8     skill_multiplier;
+    u8     attack_num;
     bool    attacker    : 1;
 } Combat_Phase_default;
 
 /* -- Combat_Attack -- */
 extern struct Combat_Attack {
-    uf8     total_damage; // total damage taken, depending on hit/crit
+    u8     total_damage; // total damage taken, depending on hit/crit
     bool    hit         : 1;
     bool    crit        : 1;
     bool    attacker    : 1;
@@ -72,10 +72,10 @@ extern struct Combat_Attack {
 // Brave: attack multiplier combat for all phases
 extern struct Combat_Flow {
     bool    defendant_retaliates;
-    uf8     defendant_phases;
-    uf8     aggressor_phases;
-    uf8     aggressor_brave;
-    uf8     defendant_brave;
+    u8     defendant_phases;
+    u8     aggressor_phases;
+    u8     aggressor_brave;
+    u8     defendant_brave;
 } Combat_Flow_default;
 
 /* -- Combat_Death -- */
@@ -90,8 +90,8 @@ extern struct Combat_Death {
 
 /* -- Combat_Rates -- */
 extern struct Combat_Rates {
-    uf8 hit;
-    uf8 crit;
+    u8 hit;
+    u8 crit;
 } Combat_Rates_default;
 
 extern struct Combat_Stats {
@@ -109,8 +109,8 @@ struct Combat_Forecast {
     struct Combat_Flow      flow;
     struct Combat_Death     death;
     struct Combat_Stats     stats;
-    uf8                     phase_num;
-    uf8                     attack_num;
+    u8                     phase_num;
+    u8                     attack_num;
 };
 
 struct canAttack {
@@ -131,15 +131,15 @@ extern void Compute_Combat_Outcome(struct Combat_Phase *,    struct Combat_Attac
 
 /* -- Combat Resolution -- */
 /* - Execute all combat attacks - */
-extern uf8 Combat_Next_HP( struct Combat_Attack, uf8 hp);
-extern void Combat_Resolve(struct Combat_Attack *, uf8 a, struct Unit *, struct Unit *);
+extern u8 Combat_Next_HP( struct Combat_Attack, u8 hp);
+extern void Combat_Resolve(struct Combat_Attack *, u8 a, struct Unit *, struct Unit *);
 
 /* --- INTERNALS --- */
 /* -- isCan -- */
 extern bool Combat_canDouble(const struct Unit *a, const struct Unit *d);
 extern bool Combat_canAttack_Equipped(      struct Unit  *agg,           struct Unit  *dft,
                                             const struct Point *agg_pos, const struct Point *dft_pos);
-extern void Combat_Death_isPossible(struct Combat_Flow, uf8 *out);
+extern void Combat_Death_isPossible(struct Combat_Flow, u8 *out);
 
 /* -- Combat Forecast -- */
 extern struct Damage Compute_Combat_Damage(struct      Unit *att, struct Unit *dfd);
@@ -155,9 +155,9 @@ extern struct Combat_Flow Compute_Combat_Flow(struct Unit *agg, struct Unit *dft
 /* -- Combat Attacks -- */
 extern void
 Compute_Combat_Phase(struct TINYMT32_T *, struct Combat_Phase *, struct Combat_Attack *,
-                     struct Damage, struct Unit *, uf8, uf8, uf8);
+                     struct Damage, struct Unit *, u8, u8, u8);
 extern void Compute_Combat_Attack(struct TINYMT32_T *, struct Combat_Phase *,
-                                  struct Combat_Attack *, struct Damage, struct Unit *, uf8, uf8);
+                                  struct Combat_Attack *, struct Damage, struct Unit *, u8, u8);
 
 extern int Combat_TotalAttack_Num( struct Combat_Phase *phases, int b, int num);
 extern int Combat_Phase_Attack_Num(struct Combat_Phase *phase,  int brave_factor);

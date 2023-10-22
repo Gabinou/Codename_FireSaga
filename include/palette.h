@@ -29,16 +29,16 @@ extern SDL_Palette  *palette_NES_purple;
 extern SDL_Palette **sota_palettes;
 
 /* -- Palette tables (for index shaders) -- */
-extern uf8 palette_table_NES_shadow[];
-extern uf8 palette_table_NES_night[];
-extern uf8 palette_table_NES_filter_darkred[];
-extern uf8 palette_table_NES_filter_red[];
-extern uf8 palette_table_NES_filter_green[];
-extern uf8 palette_table_NES_filter_blue[];
-extern uf8 palette_table_NES_darken[];
-extern uf8 palette_table_NES_lighten[];
-extern uf8 palette_table_NES_filter_lightenmore[];
-extern uf8 palette_table_NES_filter_purple[];
+extern u8 palette_table_NES_shadow[];
+extern u8 palette_table_NES_night[];
+extern u8 palette_table_NES_filter_darkred[];
+extern u8 palette_table_NES_filter_red[];
+extern u8 palette_table_NES_filter_green[];
+extern u8 palette_table_NES_filter_blue[];
+extern u8 palette_table_NES_darken[];
+extern u8 palette_table_NES_lighten[];
+extern u8 palette_table_NES_filter_lightenmore[];
+extern u8 palette_table_NES_filter_purple[];
 
 /* --- API --- */
 void Palettes_Load();

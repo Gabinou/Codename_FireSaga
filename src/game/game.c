@@ -572,7 +572,7 @@ void Game_saveJSON(struct Game *sota, const if16 save_ind) {
     cJSON_AddItemToArray(jRN_status, jtemp);
     jtemp = cJSON_CreateNumber(sota->tinymt32.status[3]);
     cJSON_AddItemToArray(jRN_status, jtemp);
-    for (uf8 i = 0; i < sota->party_size; i++) {
+    for (u8 i = 0; i < sota->party_size; i++) {
         junit = cJSON_CreateObject();
         Unit_writeJSON(&sota->party[i], junit);
         cJSON_AddItemToObject(jparty, "Unit", junit);

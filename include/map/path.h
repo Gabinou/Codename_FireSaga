@@ -53,9 +53,9 @@ i32 *Map_Healtomap_Compute_wLoadout(  struct Map *map, tnecs_world_t *w,
 i32 *Map_Attacktomap_Compute_wLoadout(struct Map *map, tnecs_world_t *w,
                                       tnecs_entity_t u, bool m, int lh, int rh);
 
-i32 *_Map_tomap_Compute(i32 *tomap, i32 *mvtmat, uf8 row_len, uf8 col_len,
-                        i32 mv, struct Range *r, uf8 mode);
+i32 *_Map_tomap_Compute(i32 *tomap, i32 *mvtmat, u8 row_len, u8 col_len,
+                        i32 mv, struct Range *r, u8 mode);
 
-void Map_globalRange(struct Map *map, tnecs_world_t *w, uf8 alignment);
+void Map_globalRange(struct Map *map, tnecs_world_t *w, u8 alignment);
 
 #endif /* MAP_PATH_H */

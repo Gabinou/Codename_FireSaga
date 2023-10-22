@@ -56,26 +56,26 @@ enum SOTA_CAMP_JOB_MAX {
     CAMP_JOB_TOTAL = CAMP_GUARD_MAX + CAMP_LIBRARIAN_MAX + CAMP_ASSISTANT_MAX + CAMP_COOK_MAX + CAMP_SCRIBE_MAX + CAMP_STABLEHAND_MAX + CAMP_CLERGYMAN_MAX + CAMP_STORAGEMASTER_MAX + CAMP_MAGICRESEARCHER_MAX,
 };
 
-extern uf8 max_jobs[CAMPJOB_END];
+extern u8 max_jobs[CAMPJOB_END];
 
 // No camp automation.
 // BUT jobs are kept between chapters.
 typedef struct Camp {
-    uf8 json_element; // JSON_ELEM_bOFFSET = 0
+    u8 json_element; // JSON_ELEM_bOFFSET = 0
     // All jobs
-    uf8 guards[CAMP_JOB_MAX];
-    uf8 librarians[CAMP_JOB_MAX];
-    uf8 assistants[CAMP_JOB_MAX];
-    uf8 cooks[CAMP_JOB_MAX];
-    uf8 scribes[CAMP_JOB_MAX];
-    uf8 stablehands[CAMP_JOB_MAX];
-    uf8 clergymen[CAMP_JOB_MAX];
-    uf8 storagemasters[CAMP_JOB_MAX];
-    uf8 magicresearchers[CAMP_JOB_MAX];
-    uf8 workers[CAMPJOB_END];
+    u8 guards[CAMP_JOB_MAX];
+    u8 librarians[CAMP_JOB_MAX];
+    u8 assistants[CAMP_JOB_MAX];
+    u8 cooks[CAMP_JOB_MAX];
+    u8 scribes[CAMP_JOB_MAX];
+    u8 stablehands[CAMP_JOB_MAX];
+    u8 clergymen[CAMP_JOB_MAX];
+    u8 storagemasters[CAMP_JOB_MAX];
+    u8 magicresearchers[CAMP_JOB_MAX];
+    u8 workers[CAMPJOB_END];
     // forbidden_jobs: characters don't want to do anymore
     // Character must have worked the job before.
-    uf8 forbidden_jobs[UNIT_ID_PC_END];
+    u8 forbidden_jobs[UNIT_ID_PC_END];
 } Camp;
 extern struct Camp Camp_default;
 
@@ -85,10 +85,10 @@ extern void Camp_Job_Fire(struct Camp *c, uint_fast16_t u, uint_fast16_t j);
 extern void Camp_Job_Forbid(struct Camp *c, uint_fast16_t u, uint_fast16_t j);
 
 /* --- isCan --- */
-extern uf8 Camp_hasJob(struct Camp *in_camp, uint_fast16_t unit_id);
+extern u8 Camp_hasJob(struct Camp *in_camp, uint_fast16_t unit_id);
 
 /* --- Internals --- */
-extern uf8 *Camp_Job_Get(struct Camp *in_camp, uint_fast16_t job_id);
+extern u8 *Camp_Job_Get(struct Camp *in_camp, uint_fast16_t job_id);
 extern void Camp_Jobs_Clear(struct Camp *in_camp);
 
 /* --- I/O --- */

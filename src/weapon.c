@@ -317,18 +317,18 @@ bool Weapon_ID_isValid(uf16 id) {
 }
 
 /* --- Repair --- */
-void Weapon_Repair(struct Weapon *wpn, struct Inventory_item *item, uf8 AP) {
+void Weapon_Repair(struct Weapon *wpn, struct Inventory_item *item, u8 AP) {
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     /* Repair scaled by item STRENGTH.*/
     /* TODO: hardness equation */
-    uf8 hardness = Equation_Weapon_Attackvar(5,
-                                             wpn->stats.attack[DAMAGE_TYPE_PHYSICAL],
-                                             wpn->stats.attack[DAMAGE_TYPE_MAGICAL],
-                                             wpn->stats.attack[DAMAGE_TYPE_TRUE],
-                                             wpn->stats.protection[DAMAGE_TYPE_PHYSICAL],
-                                             wpn->stats.protection[DAMAGE_TYPE_MAGICAL]);
+    u8 hardness = Equation_Weapon_Attackvar(5,
+                                            wpn->stats.attack[DAMAGE_TYPE_PHYSICAL],
+                                            wpn->stats.attack[DAMAGE_TYPE_MAGICAL],
+                                            wpn->stats.attack[DAMAGE_TYPE_TRUE],
+                                            wpn->stats.protection[DAMAGE_TYPE_PHYSICAL],
+                                            wpn->stats.protection[DAMAGE_TYPE_MAGICAL]);
 
-    uf8 repaired_uses = AP / hardness;
+    u8 repaired_uses = AP / hardness;
     item->used = repaired_uses > item->used ? 0 : item->used - repaired_uses;
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
@@ -343,7 +343,7 @@ int Weapon_Stat(const struct Weapon *weapon, if16 stattype) {
         return (Item_Stat(weapon->item, stattype));
     }
 
-    uf8 *wpn_stats_arr  = (uf8 *)&weapon->stats;
+    u8 *wpn_stats_arr  = (u8 *)&weapon->stats;
     int stat = wpn_stats_arr[stattype - WEAPON_STAT_START - 1];
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
     return (stat);

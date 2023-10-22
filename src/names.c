@@ -581,7 +581,7 @@ void Names_Print_All(const char *foldername) {
     SOTA_Log_Debug("filename %s", filename);
     fp = fopen(filename, "w+");
     SDL_assert(fp != NULL);
-    for (uf8 i = ARMY_START; i < (ARMY_END - 1); i++)
+    for (u8 i = ARMY_START; i < (ARMY_END - 1); i++)
         fprintf(fp, "%d %s \n", i, armyNames[i]);
     fclose(fp);
     memset(filename, 0, sizeof(filename));
@@ -590,7 +590,7 @@ void Names_Print_All(const char *foldername) {
     SOTA_Log_Debug("filename %s", filename);
     fp = fopen(filename, "w+");
     SDL_assert(fp != NULL);
-    for (uf8 i = UNIT_STATUS_EXP_START; i < (UNIT_STATUS_EXP_END - 1); i++)
+    for (u8 i = UNIT_STATUS_EXP_START; i < (UNIT_STATUS_EXP_END - 1); i++)
         fprintf(fp, "%d %s \n", i, unitStates[i]);
     fclose(fp);
     memset(filename, 0, sizeof(filename));
@@ -599,7 +599,7 @@ void Names_Print_All(const char *foldername) {
     SOTA_Log_Debug("filename %s", filename);
     fp = fopen(filename, "w+");
     SDL_assert(fp != NULL);
-    for (uf8 i = JSON_START; i < (JSON_END - 1); i++)
+    for (u8 i = JSON_START; i < (JSON_END - 1); i++)
         fprintf(fp, "%d %s \n", i, jsonElementnames[i]);
     fclose(fp);
     memset(filename, 0, sizeof(filename));
@@ -608,7 +608,7 @@ void Names_Print_All(const char *foldername) {
     SOTA_Log_Debug("filename %s", filename);
     fp = fopen(filename, "w+");
     SDL_assert(fp != NULL);
-    for (uf8 i = CAMPJOB_START; i < (CAMPJOB_END - 1); i++)
+    for (u8 i = CAMPJOB_START; i < (CAMPJOB_END - 1); i++)
         fprintf(fp, "%d %s \n", i, campjobNames[i]);
     fclose(fp);
     memset(filename, 0, sizeof(filename));
@@ -617,7 +617,7 @@ void Names_Print_All(const char *foldername) {
     SOTA_Log_Debug("filename %s", filename);
     fp = fopen(filename, "w+");
     SDL_assert(fp != NULL);
-    for (uf8 i = GAME_STATE_START; i < (GAME_STATE_END - 1); i++)
+    for (u8 i = GAME_STATE_START; i < (GAME_STATE_END - 1); i++)
         fprintf(fp, "%d %s \n", i, gameStatenames[i]);
     fclose(fp);
     memset(filename, 0, sizeof(filename));
@@ -626,7 +626,7 @@ void Names_Print_All(const char *foldername) {
     SOTA_Log_Debug("filename %s", filename);
     fp = fopen(filename, "w+");
     SDL_assert(fp != NULL);
-    for (uf8 i = MENU_OPTION_START; i < MENU_OPTION_END; i++)
+    for (u8 i = MENU_OPTION_START; i < MENU_OPTION_END; i++)
         fprintf(fp, "%d %s \n", i, menuOptionnames[i]);
     fclose(fp);
     memset(filename, 0, sizeof(filename));
@@ -635,7 +635,7 @@ void Names_Print_All(const char *foldername) {
     SOTA_Log_Debug("filename %s", filename);
     fp = fopen(filename, "w+");
     SDL_assert(fp != NULL);
-    for (uf8 i = GAME_SUBSTATE_START; i < (GAME_SUBSTATE_END - 1); i++)
+    for (u8 i = GAME_SUBSTATE_START; i < (GAME_SUBSTATE_END - 1); i++)
         fprintf(fp, "%d %s \n", i, gamesubStatenames[i]);
     fclose(fp);
     memset(filename, 0, sizeof(filename));
@@ -662,7 +662,7 @@ void Names_Print_All(const char *foldername) {
     SOTA_Log_Debug("filename %s", filename);
     fp = fopen(filename, "w+");
     SDL_assert(fp != NULL);
-    for (uf8 i = ITEM_STAT_START; i < (ITEM_STAT_END - 1); i++)
+    for (u8 i = ITEM_STAT_START; i < (ITEM_STAT_END - 1); i++)
         fprintf(fp, "%d %s \n", i, statNames[i]);
     fclose(fp);
     memset(filename, 0, sizeof(filename));
@@ -671,7 +671,7 @@ void Names_Print_All(const char *foldername) {
     SOTA_Log_Debug("filename %s", filename);
     fp = fopen(filename, "w+");
     SDL_assert(fp != NULL);
-    for (uf8 i = UNIT_SEX_F; i < (UNIT_SEX_M + 1); i++)
+    for (u8 i = UNIT_SEX_F; i < (UNIT_SEX_M + 1); i++)
         fprintf(fp, "%d %s \n", i, sexNames[i]);
     fclose(fp);
     memset(filename, 0, sizeof(filename));
@@ -680,7 +680,7 @@ void Names_Print_All(const char *foldername) {
     SOTA_Log_Debug("filename %s", filename);
     fp = fopen(filename, "w+");
     SDL_assert(fp != NULL);
-    for (uf8 i = UNIT_CLASS_START; i < UNIT_CLASS_END; i++)
+    for (u8 i = UNIT_CLASS_START; i < UNIT_CLASS_END; i++)
         fprintf(fp, "%d %s \n", i, classNames[i]);
     fclose(fp);
     memset(filename, 0, sizeof(filename));
@@ -690,7 +690,7 @@ void Names_Print_All(const char *foldername) {
     fp = fopen(filename, "w+");
     SDL_assert(fp != NULL);
     SDL_assert(global_tilenames != NULL);
-    for (uf8 i = TILE_START; i < TILE_END; i++) {
+    for (u8 i = TILE_START; i < TILE_END; i++) {
         if (strcmp(global_tilenames[i], "") != 0)
             fprintf(fp, "%d %s \n", i, global_tilenames[i]);
     }

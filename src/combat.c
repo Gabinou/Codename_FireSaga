@@ -50,7 +50,7 @@ bool Combat_canAttack_Equipped(struct Unit *restrict attacker, struct Unit *rest
     /* Get range of current loadout */
     struct Range *att_range = Unit_Range_Loadout(attacker);
     /* Is enemy in range? */
-    uf8 distance = abs(dfd_pos->x - att_pos->x) + abs(dfd_pos->y - att_pos->y);
+    u8 distance = abs(dfd_pos->x - att_pos->x) + abs(dfd_pos->y - att_pos->y);
     bool can     = (distance >= att_range->min) && (distance <= att_range->max);
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
     return (can);
@@ -90,12 +90,12 @@ struct Damage Compute_Combat_Damage(struct Unit *restrict attacker,
                                     struct Unit *restrict defender) {
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     SDL_assert(attacker && defender);
-    uf8 eff = Unit_computeEffectivefactor(attacker, defender);
-    uf8 aap = attacker->computed_stats.attack[DMG_TYPE_PHYSICAL];
-    uf8 aam = attacker->computed_stats.attack[DMG_TYPE_MAGICAL];
-    uf8 aat = attacker->computed_stats.attack[DMG_TYPE_TRUE];
-    uf8 dpp = defender->computed_stats.protection[DMG_TYPE_PHYSICAL];
-    uf8 dpm = defender->computed_stats.protection[DMG_TYPE_MAGICAL];
+    u8 eff = Unit_computeEffectivefactor(attacker, defender);
+    u8 aap = attacker->computed_stats.attack[DMG_TYPE_PHYSICAL];
+    u8 aam = attacker->computed_stats.attack[DMG_TYPE_MAGICAL];
+    u8 aat = attacker->computed_stats.attack[DMG_TYPE_TRUE];
+    u8 dpp = defender->computed_stats.protection[DMG_TYPE_PHYSICAL];
+    u8 dpm = defender->computed_stats.protection[DMG_TYPE_MAGICAL];
 
     // TODO: Sum appropriate damage types according to equipment.
     // Add type damage ONLY if one piece of equipment has that damage type
@@ -116,7 +116,7 @@ struct Damage Compute_Combat_Damage(struct Unit *restrict attacker,
     return (attacker->damage);
 }
 
-void Combat_Death_isPossible(struct Combat_Flow flow, uf8 *restrict out) {
+void Combat_Death_isPossible(struct Combat_Flow flow, u8 *restrict out) {
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     out[SOTA_DEFENDANT] = 0;
     // TODO: compute total damage
@@ -130,17 +130,17 @@ struct Combat_Death Compute_Combat_Death(struct Unit *aggressor, struct Unit *de
 
     /* DOES NOT WORK */
     struct Combat_Death out_death = Combat_Death_default;
-    uf8 defendant_possible[2];
+    u8 defendant_possible[2];
     Combat_Death_isPossible(flow, defendant_possible);
-    uf8 attacker_maxDamage_nocrit = 0, attacker_maxDamage_crit = 0;
-    uf8 defender_maxDamage_nocrit = 0, defender_maxDamage_crit = 0;
+    u8 attacker_maxDamage_nocrit = 0, attacker_maxDamage_crit = 0;
+    u8 defender_maxDamage_nocrit = 0, defender_maxDamage_crit = 0;
 
     /* -- Aggressor -- */
     do { /*Loop never executes, just used for break*/
         if (forecast.agg_rates.hit == 0)
             break;
         // TODO: REMAKE
-        // uf8 agg_dmg = forecast.agg_damage.dmg[DMG_TYPE_PHYSICAL] +
+        // u8 agg_dmg = forecast.agg_damage.dmg[DMG_TYPE_PHYSICAL] +
         //               forecast.agg_damage.dmg[DMG_TYPE_MAGICAL];
         // attacker_maxDamage_nocrit = Equation_multiplyDamage(agg_dmg, defendant_possible[SOTA_AGGRESSOR]);
         // attacker_maxDamage_crit   = Equation_multiplyDamage(agg_dmg, defendant_possible[SOTA_AGGRESSOR]);
@@ -169,7 +169,7 @@ struct Combat_Death Compute_Combat_Death(struct Unit *aggressor, struct Unit *de
         if (forecast.dft_rates.hit == 0)
             continue;
         // TODO: REMAKE
-        // uf8 def_dmg = forecast.dft_damage.dmg[DMG_TYPE_PHYSICAL] +
+        // u8 def_dmg = forecast.dft_damage.dmg[DMG_TYPE_PHYSICAL] +
         //               forecast.dft_damage.dmg[DMG_TYPE_MAGICAL];
         // defender_maxDamage_nocrit = Equation_multiplyDamage(def_dmg, defendant_possible[SOTA_DEFENDANT]);
         // defender_maxDamage_crit = Equation_multiplyDamage(def_dmg, defendant_possible[SOTA_DEFENDANT]);
@@ -194,7 +194,7 @@ struct Combat_Rates Compute_Combat_Rates(struct Unit *restrict attacker,
                                          const struct Point *restrict dfd_pos) {
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     SDL_assert(attacker && defender);
-    uf8 distance = abs(dfd_pos->x - att_pos->x) + abs(dfd_pos->y - att_pos->y);
+    u8 distance = abs(dfd_pos->x - att_pos->x) + abs(dfd_pos->y - att_pos->y);
     struct Combat_Rates out_rates = Combat_Rates_default;
     struct Computed_Stats CS_A    = Unit_computedStats(attacker, distance);
     struct Computed_Stats CS_D    = Unit_computedStats(defender, distance);
@@ -214,7 +214,7 @@ struct Combat_Forecast Compute_Combat_Forecast(struct Unit *restrict agg,
     SDL_assert(agg        &&dft);
     SDL_assert(agg_pos    &&dft_pos);
     struct Combat_Forecast out = {0};
-    uf8 distance = abs(dft_pos->x - agg_pos->x) + abs(dft_pos->y - agg_pos->y);
+    u8 distance = abs(dft_pos->x - agg_pos->x) + abs(dft_pos->y - agg_pos->y);
     Unit_effectiveStats(agg);
     Unit_effectiveStats(dft);
     out.stats.agg_stats         = Unit_computedStats(agg, distance);
@@ -258,9 +258,9 @@ void Compute_Combat_Outcome(struct Combat_Phase    *restrict phases,
     struct Unit *attacker           = aggressor;
     struct Combat_Phase temp_phase  = Combat_Phase_default;
     struct Damage damage            = forecast->stats.agg_damage;
-    uf8 hit     = forecast->stats.agg_rates.hit;
-    uf8 crit    = forecast->stats.agg_rates.crit;
-    uf8 brave   = forecast->flow.aggressor_brave;
+    u8 hit     = forecast->stats.agg_rates.hit;
+    u8 crit    = forecast->stats.agg_rates.crit;
+    u8 brave   = forecast->flow.aggressor_brave;
     temp_phase.attacker = SOTA_AGGRESSOR;
 
     Compute_Combat_Phase(tinymt32, &temp_phase, darr_attacks, damage, attacker, hit, crit, brave);
@@ -335,7 +335,7 @@ int Combat_TotalAttack_Num(struct Combat_Phase *restrict phases, int brave_facto
 void Compute_Combat_Phase(struct TINYMT32_T     *restrict tinymt32,
                           struct Combat_Phase *restrict phase,
                           struct Combat_Attack  *restrict darr_attacks, struct Damage        damage,
-                          struct Unit *restrict attacker, uf8 hit_rate, uf8 crit_rate, uf8 brave_factor) {
+                          struct Unit *restrict attacker, u8 hit_rate, u8 crit_rate, u8 brave_factor) {
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     phase->attack_num = Combat_Phase_Attack_Num(phase, brave_factor);
     for (int i = 0; i < phase->attack_num; i++)
@@ -347,7 +347,7 @@ void Compute_Combat_Phase(struct TINYMT32_T     *restrict tinymt32,
 void Compute_Combat_Attack(struct TINYMT32_T    *restrict tinymt32,
                            struct Combat_Phase  *restrict phase,
                            struct Combat_Attack *restrict darr_attacks, struct Damage damage,
-                           struct Unit *restrict attacker, uf8 hit_rate, uf8 crit_rate) {
+                           struct Unit *restrict attacker, u8 hit_rate, u8 crit_rate) {
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     struct Combat_Attack temp_attack;
 
@@ -406,21 +406,21 @@ void Compute_Combat_Attack(struct TINYMT32_T    *restrict tinymt32,
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
-uf8 Combat_Next_HP(struct Combat_Attack attack, uf8 hp) {
+u8 Combat_Next_HP(struct Combat_Attack attack, u8 hp) {
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
-    uf8 next_hp = hp < attack.total_damage ? hp : hp - attack.total_damage;
+    u8 next_hp = hp < attack.total_damage ? hp : hp - attack.total_damage;
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
     return (next_hp);
 }
 
-void Combat_Resolve(struct Combat_Attack *combat_attacks, uf8 attack_num,
+void Combat_Resolve(struct Combat_Attack *combat_attacks, u8 attack_num,
                     struct Unit *aggressor, struct Unit *defendant) {
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     SDL_assert(attack_num > 0);
     SDL_assert(attack_num <= SOTA_COMBAT_MAX_PHASES);
     struct Unit *attacker, *defender;
 
-    for (uf8 i = 0; i < attack_num; i++) {
+    for (u8 i = 0; i < attack_num; i++) {
         attacker = combat_attacks[i].attacker ? aggressor : defendant;
         defender = combat_attacks[i].attacker ? defendant : aggressor;
 

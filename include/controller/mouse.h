@@ -12,23 +12,23 @@
 #include "SDL2/SDL.h"
 
 extern struct MouseInputMap {
-    uf8 accept;
-    uf8 cancel;
-    uf8 stats;
-    uf8 trigger_right;
-    uf8 trigger_left;
-    uf8 minimap;
-    uf8 faster;
-    uf8 pause;
+    u8 accept;
+    u8 cancel;
+    u8 stats;
+    u8 trigger_right;
+    u8 trigger_left;
+    u8 minimap;
+    u8 faster;
+    u8 pause;
 
-    uf8 accept_len;
-    uf8 cancel_len;
-    uf8 stats_len;
-    uf8 menuright_len;
-    uf8 menuleft_len;
-    uf8 minimap_len;
-    uf8 faster_len;
-    uf8 pause_len;
+    u8 accept_len;
+    u8 cancel_len;
+    u8 stats_len;
+    u8 menuright_len;
+    u8 menuleft_len;
+    u8 minimap_len;
+    u8 faster_len;
+    u8 pause_len;
 } MouseInputMap_default;
 
 typedef struct controllerMouse {

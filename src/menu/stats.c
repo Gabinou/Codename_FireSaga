@@ -914,7 +914,7 @@ void _StatsMenu_Draw_WpnTypes(struct StatsMenu *stats_menu, SDL_Renderer *render
     /* -- WEAPON TYPES -- */
     int x = WEAPONS_X_OFFSET, y = WEAPONS_Y_OFFSET;
     PixelFont_Write(stats_menu->pixelnours, renderer, "WPN TYPE", 8, x, y);
-    uf8 type = 1, equippable_num = 0, equippables[SM_WEAPON_TYPES_MAX];
+    u8 type = 1, equippable_num = 0, equippables[SM_WEAPON_TYPES_MAX];
     uint64_t wpntypecode = 1;
     srcrect.h = SM_WEAPONS_TILESIZE;
     srcrect.w = SM_WEAPONS_TILESIZE;
@@ -1046,7 +1046,7 @@ void _StatsMenu_Draw_Item(struct StatsMenu *stats_menu, SDL_Renderer *renderer, 
 
 void _StatsMenu_Draw_Equipment(struct StatsMenu *stats_menu, SDL_Renderer *renderer) {
     /* --- Equipment --- */
-    for (uf8 i = 0; i < DEFAULT_EQUIPMENT_SIZE; i++) {
+    for (u8 i = 0; i < DEFAULT_EQUIPMENT_SIZE; i++) {
         _StatsMenu_Draw_Item(stats_menu, renderer, i);
     }
 
@@ -1061,7 +1061,7 @@ void _StatsMenu_Draw_ComputedStats(struct StatsMenu *stats_menu, SDL_Renderer *r
     int width, x, y;
     x = ATK_X_OFFSET, y = ATK_Y_OFFSET;
     PixelFont_Write(stats_menu->pixelnours, renderer, "ATK", 3, x, y);
-    uf8 *att = computed_stats->attack;
+    u8 *att = computed_stats->attack;
     if (computed_stats->attack[DMG_TYPE_TRUE] > 0) {
         /* Compute width of LEFTWARD STAT to center the "/" */
         stbsp_sprintf(numbuff, "%d", computed_stats->attack[DMG_TYPE_PHYSICAL]);
@@ -1082,7 +1082,7 @@ void _StatsMenu_Draw_ComputedStats(struct StatsMenu *stats_menu, SDL_Renderer *r
     PixelFont_Write(stats_menu->pixelnours, renderer, "DEF", 3, x, y);
     stbsp_sprintf(numbuff, "%d", computed_stats->protection[DMG_TYPE_PHYSICAL]);
     width = PixelFont_Width_Len(stats_menu->pixelnours_big, numbuff);
-    uf8 *prot = computed_stats->protection;
+    u8 *prot = computed_stats->protection;
     stbsp_sprintf(numbuff, "%d/%d", prot[DMG_TYPE_PHYSICAL], prot[DMG_TYPE_MAGICAL]);
     x = PROT_X_OFFSET_STAT1 - width, y = PROT_Y_OFFSET_STAT1;
     PixelFont_Write_Len(stats_menu->pixelnours_big, renderer, numbuff, x, y);

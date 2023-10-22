@@ -176,9 +176,9 @@ void MenuComponent_Elem_Boxes_Draw(struct MenuComponent *mc, struct SDL_Renderer
     /* -- Set colors of elem_box to NES palette -- */
     for (int i = 0; i < mc->elem_num; i++) {
         int color = i + 2 % palette_NES->ncolors;
-        uf8 r = palette_NES->colors[color].r;
-        uf8 g = palette_NES->colors[color].g;
-        uf8 b = palette_NES->colors[color].b;
+        u8 r = palette_NES->colors[color].r;
+        u8 g = palette_NES->colors[color].g;
+        u8 b = palette_NES->colors[color].b;
         SDL_SetRenderDrawColor(renderer, r, g, b, SDL_ALPHA_OPAQUE);
         struct Point pos = mc->elem_pos[i];
         struct Point box = mc->elem_box[i];

@@ -101,7 +101,7 @@ void Control_Keyboard(tnecs_system_input_t *input) {
         struct controllerKeyboard *kb       = keyboard_arr + order;
         struct KeyboardInputMap   *im       = kb->inputmap;
         if32                      *ct       = &kb->controller_type;
-        const uf8                 *kb_state = SDL_GetKeyboardState(NULL);
+        const u8                 *kb_state = SDL_GetKeyboardState(NULL);
 
         /* -- Keyboard button checking -- */
         if8 press[SOTA_BUTTON_END];

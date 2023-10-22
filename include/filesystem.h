@@ -58,7 +58,7 @@ extern void Filesystem_Log2file(void *d, i32 c, SDL_LogPriority p, const char *m
 
 /* --- MISC. --- */
 extern bool Filesystem_fequal(const char *filename1, const char *filename2);
-extern void Filesystem_Load_Bytes(const char *name, uf8 **mem, size_t *len);
+extern void Filesystem_Load_Bytes(const char *name, u8 **mem, size_t *len);
 
 /* --- SURFACES&TEXTURES --- */
 extern SDL_Surface *Filesystem_TexturetoSurface(SDL_Renderer *, SDL_Texture *, u32, SDL_Texture *);
@@ -79,12 +79,12 @@ extern void Filesystem_Surface_Pixels2Indices(SDL_Surface *r, SDL_Surface *i);
 extern void Filesystem_readJSON_Shop(        const char *f, struct Shop         *s);
 extern void Filesystem_readJSON_Palette(     const char *f, struct SDL_Palette  *p);
 extern void Filesystem_readJSON_Promotion(   const char *f, struct Promotion    *p);
-extern void Filesystem_readJSON_PaletteTable(const char *f, uf8                 *p);
+extern void Filesystem_readJSON_PaletteTable(const char *f, u8                 *p);
 
 extern void Filesystem_readJSON_RNseed(   const struct cJSON *const j);
 
 extern void Filesystem_readJSON_Array(    const struct cJSON *const j, i32 *arr);
-extern void Filesystem_readJSON_2DArray(  const struct cJSON *const j, i32 *, uf8 rl, uf8 cl);
+extern void Filesystem_readJSON_2DArray(  const struct cJSON *const j, i32 *, u8 rl, u8 cl);
 
 extern void Filesystem_readJSON_Door(     const struct cJSON *const j, struct Door  *d);
 extern void Filesystem_readJSON_Chest(    const struct cJSON *const j, struct Chest *c);
@@ -102,7 +102,7 @@ extern void Filesystem_readJSON_Reinforce(const struct cJSON *const j, struct Re
 extern void Filesystem_writeJSON_RNseed(   struct cJSON *j);
 
 extern void Filesystem_writeJSON_Array(    struct cJSON *j, const i32 *arr, size_t l);
-extern void Filesystem_writeJSON_2DArray(  struct cJSON *j, const i32 *arr, uf8 rl, uf8 cl);
+extern void Filesystem_writeJSON_2DArray(  struct cJSON *j, const i32 *arr, u8 rl, u8 cl);
 
 extern void Filesystem_writeJSON_item(     struct cJSON *j, const struct Inventory_item *i);
 extern void Filesystem_writeJSON_arrival(  struct cJSON *j, const struct Reinforcement  *a);

@@ -8,9 +8,9 @@
 
 /* --- WEAPON/ITEM --- */
 typedef struct Weapon {
-    uf8 json_element;   /* JSON_ELEM_bOFFSET = 0 */
-    uf8 handedness;
-    uf8 subtype;        /* ex: thrust swords     */
+    u8 json_element;   /* JSON_ELEM_bOFFSET = 0 */
+    u8 handedness;
+    u8 subtype;        /* ex: thrust swords     */
     uf16 effective;
     bool isMagic   : 1;
     bool canAttack : 1; /* for special weapons   */
@@ -68,6 +68,6 @@ int Weapon_Stat_inRange(const struct Weapon *wpn, if16 s, int d);
 // NOPE:   Shields? Items.
 //           OI BOSS COULD YOU SHARPEN MY SHIELD?
 
-void Weapon_Repair(struct Weapon *wpn, struct Inventory_item *item, uf8 AP);
+void Weapon_Repair(struct Weapon *wpn, struct Inventory_item *item, u8 AP);
 
 #endif /* WEAPON_H */

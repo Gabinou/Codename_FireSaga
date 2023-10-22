@@ -142,10 +142,10 @@ i32 *Map_Movemap_Compute(struct Map *map, tnecs_world_t *world, tnecs_entity_t u
     return (_Map_Movemap_Compute(map, start, move));
 }
 
-i32 *_Map_tomap_Compute(i32 *tomap, i32 *movemap, uf8 row_len, uf8 col_len,
-                        i32 move, struct Range *range, uf8 mode_movetile) {
+i32 *_Map_tomap_Compute(i32 *tomap, i32 *movemap, u8 row_len, u8 col_len,
+                        i32 move, struct Range *range, u8 mode_movetile) {
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
-    Pathfinding_Attackto_noM(tomap, movemap, row_len, col_len, (uf8 *)range,
+    Pathfinding_Attackto_noM(tomap, movemap, row_len, col_len, (u8 *)range,
                              mode_movetile);
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
     return (tomap);
@@ -264,11 +264,11 @@ i32 *Map_Costmap_PushPull_Compute(struct Map *map, tnecs_world_t *world,
     struct Tile *temp_tile;
     i32 tile_ind = 0;
     if8 unit_movetype = unit->mvt_type;
-    uf8 army = unit->army;
-    uf8 ontile_army;
+    u8 army = unit->army;
+    u8 ontile_army;
     tnecs_entity_t ontile_unit_ent;
     SDL_assert(unit_movetype > UNIT_MVT_START);
-    for (uf8 i = 0; i < map->row_len * map->col_len; i++) {
+    for (u8 i = 0; i < map->row_len * map->col_len; i++) {
         tile_ind = map->tilemap[i] / TILE_DIVISOR;
         ontile_unit_ent = map->unitmap[i];
         SDL_assert(tile_ind > 0);
@@ -298,7 +298,7 @@ float *Map_fCostmap_Movement_Compute(struct Map *map, tnecs_world_t *world,
     struct Tile *temp_tile;
     i32 tile_ind = 0;
     if8 unit_movetype = unit->mvt_type;
-    uf8 army = unit->army;
+    u8 army = unit->army;
 
     /* Compute cost of each tile*/
     SDL_assert(unit_movetype > UNIT_MVT_START);
@@ -317,7 +317,7 @@ float *Map_fCostmap_Movement_Compute(struct Map *map, tnecs_world_t *world,
 
         struct Unit *ontile_unit = TNECS_GET_COMPONENT(world, ontile_unit_ent, Unit);
         SDL_assert(ontile_unit != NULL);
-        uf8 ontile_army = ontile_unit->army;
+        u8 ontile_army = ontile_unit->army;
         SDL_assert((ontile_army < ARMY_END) && (ontile_army > ARMY_START));
 
         if (SotA_army2alignment(ontile_army) != SotA_army2alignment(army))
@@ -346,7 +346,7 @@ i32 *Map_Costmap_Movement_Compute(struct Map *map, tnecs_world_t *world,
     struct Tile *temp_tile;
     i32 tile_ind = 0;
     if8 unit_movetype = unit->mvt_type;
-    uf8 army = unit->army;
+    u8 army = unit->army;
 
     /* - Compute cost of each tile - */
     SDL_assert(unit_movetype > UNIT_MVT_START);
@@ -366,7 +366,7 @@ i32 *Map_Costmap_Movement_Compute(struct Map *map, tnecs_world_t *world,
 
         struct Unit *ontile_unit = TNECS_GET_COMPONENT(world, ontile_unit_ent, Unit);
         SDL_assert(ontile_unit != NULL);
-        uf8 ontile_army = ontile_unit->army;
+        u8 ontile_army = ontile_unit->army;
         SDL_assert((ontile_army < ARMY_END) && (ontile_army > ARMY_START));
 
         if (SotA_army2alignment(ontile_army) != SotA_army2alignment(army))
@@ -381,10 +381,10 @@ i32 *Map_Costmap_Movement_Compute(struct Map *map, tnecs_world_t *world,
 }
 
 
-void Map_globalRange(struct Map *map, tnecs_world_t *world, uf8 alignment) {
+void Map_globalRange(struct Map *map, tnecs_world_t *world, u8 alignment) {
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     tnecs_entity_t *unit_entities = NULL;
-    uf8 num_unit_entities = 0;
+    u8 num_unit_entities = 0;
     SDL_assert(map->global_rangemap != NULL);
     memset(map->global_rangemap, 0, sizeof(*map->global_rangemap) * map->row_len * map->col_len);
 
@@ -407,13 +407,13 @@ void Map_globalRange(struct Map *map, tnecs_world_t *world, uf8 alignment) {
         struct Position *temp_pos   = TNECS_GET_COMPONENT(world, unit_entities[i], Position);
         struct Range    *range      = Unit_Range_Combine_Equipment(temp_unit);
         struct Unit_stats temp_effective_stats = Unit_effectiveStats(temp_unit);
-        uf8 move = temp_effective_stats.move;
+        u8 move = temp_effective_stats.move;
         struct Point start = {temp_pos->tilemap_pos.x, temp_pos->tilemap_pos.y};
         Map_Costmap_Movement_Compute(map, world, unit_entities[i]);
         Pathfinding_Moveto_noM(map->movemap, map->costmap, map->row_len,
                                map->col_len, start, move);
         Pathfinding_Attackto_noM(map->attacktomap, map->movemap, map->row_len,
-                                 map->col_len, (uf8 *)range, MOVETILE_INCLUDE);
+                                 map->col_len, (u8 *)range, MOVETILE_INCLUDE);
         map->global_rangemap = matrix_plus_noM(map->global_rangemap, map->attacktomap,
                                                map->row_len * map->col_len);
     }

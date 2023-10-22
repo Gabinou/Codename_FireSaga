@@ -39,10 +39,10 @@ enum ORIENTATIONS {
     POINTY_TOP = 1,
 };
 
-extern void HexPosition_Move(struct HexPosition *in_hexpos, uf8 direction, uf8 magnitude);
-extern uf8 HexDistance_HexPoints(struct nmath_hexpoint_int32_t p1,
-                                 struct nmath_hexpoint_int32_t p2);
-extern uf8 HexDistance_Points(struct Point p1, struct Point p2);
+extern void HexPosition_Move(struct HexPosition *in_hexpos, u8 direction, u8 magnitude);
+extern u8 HexDistance_HexPoints(struct nmath_hexpoint_int32_t p1,
+                                struct nmath_hexpoint_int32_t p2);
+extern u8 HexDistance_Points(struct Point p1, struct Point p2);
 
 extern struct nmath_hexpoint_int32_t HexRound(struct nmath_hexpoint_float p);
 

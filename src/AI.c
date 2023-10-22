@@ -69,7 +69,7 @@ struct AI AI_default = {
 
 // extern tnecs_entity_t AI_Target_Heal(tnecs_world_t * in_world,
 //                                      tnecs_entity_t in_staffWielder,
-//                                      tnecs_entity_t * in_possiblePatients, uf8 num_patients) {
+//                                      tnecs_entity_t * in_possiblePatients, u8 num_patients) {
 //     SOTA_Log_Debug("AI_Target_Heal");
 //     struct AI * temp_ai_ptr;
 //     tnecs_entity_t out_target = 0;
@@ -81,7 +81,7 @@ struct AI AI_default = {
 //             float missing_hp_prop = 0.0f;
 //             float missing_hp_prop_max = 0.0f;
 //             struct Unit * temp_unit_ptr;
-//             for (uf8 i = 0; i < num_patients; i++) {
+//             for (u8 i = 0; i < num_patients; i++) {
 //                 temp_unit_ptr = TNECS_GET_COMPONENT(in_world, in_possiblePatients[i], Unit);
 //                 missing_hp_prop = 1.0f - ((float)temp_unit_ptr->current_hp / (float)
 //                                           temp_unit_ptr->effective_stats.hp);
@@ -95,7 +95,7 @@ struct AI AI_default = {
 //     return (out_target);
 // }
 
-// int_fast8_t AI_Silence_Rating(tnecs_world_t * in_world, uf8 in_hit_rate,
+// int_fast8_t AI_Silence_Rating(tnecs_world_t * in_world, u8 in_hit_rate,
 //                               tnecs_entity_t in_enemy_ent) {
 //     int_fast8_t rating = 0;
 //     int_fast8_t rating_buffer;
@@ -108,7 +108,7 @@ struct AI AI_default = {
 //     rating = rating > (INT8_MAX - rating_buffer) ? INT8_MAX : rating + rating_buffer;
 //     rating_buffer = Equation_AI_Rating_Stats(enemy_ptr->effective_stats.res);
 //     rating = rating > (INT8_MAX - rating_buffer) ? INT8_MAX : rating + rating_buffer;
-//     for (uf8 i = 0; i < DEFAULT_EQUIPMENT_SIZE; i++) {
+//     for (u8 i = 0; i < DEFAULT_EQUIPMENT_SIZE; i++) {
 //         switch (enemy_ptr->equipment[i].id) {
 //             case ITEM_ID_PULL:
 //                 rating_buffer = AI_RATING_STAFF_PULL;
@@ -120,8 +120,8 @@ struct AI AI_default = {
 // }
 
 // tnecs_entity_t AI_Target_Silence(tnecs_world_t * in_world, tnecs_entity_t in_staffWielder,
-//                                  uf8 * in_hit_rates, tnecs_entity_t * in_possibleDefenders,
-//                                  uf8 num_defender) {
+//                                  u8 * in_hit_rates, tnecs_entity_t * in_possibleDefenders,
+//                                  u8 num_defender) {
 //     SOTA_Log_Debug("AI_Target_Silence");
 //     struct AI * temp_ai_ptr;
 //     // const struct Unit * temp_unit_ptr;
@@ -134,7 +134,7 @@ struct AI AI_default = {
 //             int_fast8_t temp_rating;
 //             int_fast8_t max_rating = INT8_MIN;
 //             out_target = in_possibleDefenders[(rand() % num_defender)];
-//             for (uf8 i = 0; i < num_defender; i++) {
+//             for (u8 i = 0; i < num_defender; i++) {
 //                 // temp_unit_ptr = TNECS_GET_COMPONENT(in_world, in_possibleDefenders[i], Unit);
 //                 temp_rating = AI_Silence_Rating(in_world, in_hit_rates[i], in_possibleDefenders[i]);
 //                 if (temp_rating > max_rating) {
@@ -149,8 +149,8 @@ struct AI AI_default = {
 // }
 
 // tnecs_entity_t AI_Target_Pull(tnecs_world_t * in_world, tnecs_entity_t in_staffWielder,
-//                               tnecs_entity_t * in_friendlies, uf8 num_friendly, tnecs_entity_t * in_enemies,
-//                               uf8 num_enemy) {
+//                               tnecs_entity_t * in_friendlies, u8 num_friendly, tnecs_entity_t * in_enemies,
+//                               u8 num_enemy) {
 //     SOTA_Log_Debug("AI_Target_Pull");
 //     struct AI * temp_ai_ptr;
 //     struct Unit * temp_unit_ptr;
@@ -182,7 +182,7 @@ struct AI AI_default = {
 //             case AI_PRIORITY_PROTECT:
 //                 // Pull most wounded ally.
 //                 // Pull ally that just attacked. -> AI makes staff pullers go last
-//                 for (uf8 i = 0; i < num_friendly; i++) {
+//                 for (u8 i = 0; i < num_friendly; i++) {
 //                     temp_unit_ptr = TNECS_GET_COMPONENT(in_world, in_friendlies[i], Unit);
 //                     missing_hp_prop = 1.0f - ((float)temp_unit_ptr->current_hp / (float)
 //                                               temp_unit_ptr->effective_stats.hp);
@@ -202,8 +202,8 @@ struct AI AI_default = {
 // }
 
 // tnecs_entity_t AI_Target_Push(tnecs_world_t * in_world, tnecs_entity_t in_staffWielder,
-//                               tnecs_entity_t * in_friendlies, uf8 num_friendly, tnecs_entity_t * in_enemies,
-//                               uf8 num_enemy) {
+//                               tnecs_entity_t * in_friendlies, u8 num_friendly, tnecs_entity_t * in_enemies,
+//                               u8 num_enemy) {
 //     SOTA_Log_Debug("AI_Target_Push");
 //     struct AI * temp_ai_ptr;
 //     struct Unit * temp_unit_ptr;
@@ -214,7 +214,7 @@ struct AI AI_default = {
 
 // tnecs_entity_t AI_Target_Attack(tnecs_world_t * in_world, tnecs_entity_t in_attacker,
 //                                 tnecs_entity_t * in_possibleDefenders, struct Combat_Forecast * in_forecasts,
-//                                 uf8 num_defender) {
+//                                 u8 num_defender) {
 //     struct AI * temp_ai_ptr;
 //     temp_ai_ptr = TNECS_GET_COMPONENT(in_world, in_attacker, AI);
 //     tnecs_entity_t out_target = 0;
@@ -225,7 +225,7 @@ struct AI AI_default = {
 //             int_fast8_t temp_rating;
 //             int_fast8_t max_rating = INT8_MIN;
 //             out_target = in_possibleDefenders[(rand() % num_defender)];
-//             for (uf8 i = 0; i < num_defender; i++) {
+//             for (u8 i = 0; i < num_defender; i++) {
 //                 temp_rating = AI_Forecast_Rating(in_forecasts[i]);
 //                 if (temp_rating > max_rating) {
 //                     out_target = in_possibleDefenders[i];
@@ -269,7 +269,7 @@ struct AI AI_default = {
 //     // i32 * movemapp = Map_Pathfinding_Moveto(costmapp_move, in_map->row_len, in_map->col_len, position_ptr->tilemap_pos, Unit_computeMove(friendly_mptr), POINTS_MATRIX);
 //     // struct Position * temp_pos;
 //     // struct Point * enemy_points = NULL;
-//     // for (uf8 i = 0; i < in_map->num_enemies_onfield; i++) {
+//     // for (u8 i = 0; i < in_map->num_enemies_onfield; i++) {
 //     //     if (in_map->friendlies_onfield[i] > 0) {
 //     //         temp_pos = TNECS_GET_COMPONENT(in_world, in_map->enemies_onfield[i], Position);
 //     //         if (temp_pos != NULL) {
@@ -306,7 +306,7 @@ struct AI AI_default = {
 //     // i32 * movemapp = Map_Pathfinding_Moveto(costmapp_move, in_map->row_len, in_map->col_len, position_ptr->tilemap_pos, Unit_computeMove(friendly_mptr), POINTS_MATRIX);
 //     // struct Position * temp_pos;
 //     // struct Point * friendly_points = NULL;
-//     // for (uf8 i = 0; i < in_map->num_friendlies_onfield; i++) {
+//     // for (u8 i = 0; i < in_map->num_friendlies_onfield; i++) {
 //     //     if (in_map->friendlies_onfield[i] > 0) {
 //     //         temp_pos = TNECS_GET_COMPONENT(in_world, in_map->friendlies_onfield[i], Position);
 //     //         if (temp_pos != NULL) {
@@ -344,7 +344,7 @@ struct AI AI_default = {
 //     // i32 * movemapp = Map_Pathfinding_Moveto(costmapp_move, in_map->row_len, in_map->col_len, position_ptr->tilemap_pos, Unit_computeMove(enemy_mptr), POINTS_MATRIX);
 //     // struct Position * temp_pos;
 //     // struct Point * enemy_points = NULL;
-//     // for (uf8 i = 0; i < in_map->num_enemies_onfield; i++) {
+//     // for (u8 i = 0; i < in_map->num_enemies_onfield; i++) {
 //     //     if (in_map->friendlies_onfield[i] > 0) {
 //     //         temp_pos = TNECS_GET_COMPONENT(in_world, in_map->enemies_onfield[i], Position);
 //     //         if (temp_pos != NULL) {
@@ -381,7 +381,7 @@ struct AI AI_default = {
 //     // i32 * movemapp = Map_Pathfinding_Moveto(costmapp_move, in_map->row_len, in_map->col_len, position_ptr->tilemap_pos, Unit_computeMove(enemy_mptr), POINTS_MATRIX);
 //     // struct Position * temp_pos;
 //     // struct Point * friendly_points = NULL;
-//     // for (uf8 i = 0; i < in_map->num_friendlies_onfield; i++) {
+//     // for (u8 i = 0; i < in_map->num_friendlies_onfield; i++) {
 //     //     if (in_map->friendlies_onfield[i] > 0) {
 //     //         temp_pos = TNECS_GET_COMPONENT(in_world, in_map->friendlies_onfield[i], Position);
 //     //         if (temp_pos != NULL) {
