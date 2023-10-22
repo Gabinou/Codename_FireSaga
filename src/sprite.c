@@ -83,6 +83,7 @@ void Spritesheet_Free(struct Spritesheet *spritesheet) {
 void Sprite_readJSON(void *input, const cJSON *const jspritesheet) {
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     struct Sprite *sprite = input;
+    SDL_assert(sprite->spritesheet != NULL);
     Spritesheet_readJSON(sprite->spritesheet, jspritesheet);
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
@@ -254,8 +255,8 @@ void Sprite_Map_Unit_Load(struct Sprite *sprite, struct Unit *unit, SDL_Renderer
     /* -- Loading spritesheet metadata -- */
     char filename[DEFAULT_BUFFER_SIZE] = {0};
     strcat(filename, PATH_JOIN("assets", "Map_Units")PHYSFS_SEPARATOR);
-    SOTA_Log_Debug("unit->id %lu", unit->_id);
-    SOTA_Log_Debug("unit->name %s", unit->name);
+    SOTA_Log_Debug("unit->id %lu",    unit->_id);
+    SOTA_Log_Debug("unit->name %s",   unit->name);
     SOTA_Log_Debug("unit->class %ld", unit->class);
     SDL_assert(classNames[unit->class] != NULL);
 
@@ -263,7 +264,7 @@ void Sprite_Map_Unit_Load(struct Sprite *sprite, struct Unit *unit, SDL_Renderer
     strcat(filename, ".json");
     SOTA_Log_Debug("FILE %s", filename);
     SDL_assert(PHYSFS_exists(filename));
-    jsonio_readJSON(filename, sprite->spritesheet);
+    jsonio_readJSON(filename, sprite);
 
     /* -- Loading spritesheet surface -- */
     memset(filename, 0, DEFAULT_BUFFER_SIZE);
