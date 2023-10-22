@@ -60,9 +60,14 @@ struct Spritesheet {
 };
 extern struct Spritesheet Spritesheet_default;
 
-void Spritesheet_Free(    struct Spritesheet *ss);
+/* --- Constructor/Destructors --- */
+void Spritesheet_Free(struct Spritesheet *ss);
+
+/* --- Animation --- */
+void Spritesheet_Loop_Set(struct Spritesheet *ss, int l, SDL_RendererFlip f);
+
+/* --- I/O --- */
 void Spritesheet_readJSON(void *ss, const cJSON *const jss);
-void Spritesheet_Loop_Set(struct Spritesheet *ss, int loop, SDL_RendererFlip flip);
 
 /* --- Sprite --- */
 /* -- Constants -- */
