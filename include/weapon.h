@@ -8,7 +8,9 @@
 
 /* --- WEAPON/ITEM --- */
 typedef struct Weapon {
-    u8 json_element;   /* JSON_ELEM_bOFFSET = 0 */
+    u8      json_element;  /* JSON_ELEM_bOFFSET = 0 */
+    char   *json_filename; /* JSON_ELEM_bOFFSET = 1 */
+ 
     u8 handedness;
     u8 subtype;        /* ex: thrust swords     */
     uf16 effective;

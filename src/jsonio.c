@@ -108,6 +108,7 @@ void jsonio_writeJSON(const char *filename, const void *struct_ptr, bool append)
         SOTA_Log_Debug("JSON element not set");
         exit(ERROR_JSONElementNotSet);
     }
+    /* Set filename to */
 
     /* Create the json element */
     struct cJSON *jelement = cJSON_CreateObject();

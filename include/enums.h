@@ -19,8 +19,9 @@ enum bOFFSET {
     // WHAT * what = (WHAT *)(byte_ptr + bOFFSET)
     // In words:
     // Cast struct pointer to bytes, bOFFSET it, cast to WHAT is at bOFFSET
-    MENU_POS_bOFFSET  = 0, /* for struct Point in menu structs      */
-    JSON_ELEM_bOFFSET = 0, /* for u8 in json read/writable structs  */
+    MENU_POS_bOFFSET        = 0, /* for struct Point in menu structs      */
+    JSON_ELEM_bOFFSET       = 0, /* for u8 in json read/writable structs  */
+    JSON_FILENAME_bOFFSET   = 1, 
 };
 
 enum SOTA_RANGEMAP {

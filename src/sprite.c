@@ -21,6 +21,7 @@ int map_unit_offsets[MAP_UNIT_SPRITE_LOOP_NUM][TWO_D] = {
 /* --- Defaults --- */
 struct Spritesheet Spritesheet_default = {
     .json_element   = JSON_SPRITE,
+    .json_filename  = NULL,
     .surface        = NULL,
     .palette        = NULL,
     .loops_pos      = NULL,
@@ -203,6 +204,11 @@ void Sprite_Free(struct Sprite *sprite) {
         free(sprite->asset_name);
         sprite->asset_name = NULL;
     }
+    if (sprite->json_filename != NULL) {
+        free(sprite->json_filename);
+        sprite->json_filename = NULL;
+    }
+
     SOTA_Log_Debug("Freeing Textures");
     if (sprite->texture != NULL) {
         SDL_DestroyTexture(sprite->texture);

@@ -61,7 +61,9 @@ extern u8 max_jobs[CAMPJOB_END];
 // No camp automation.
 // BUT jobs are kept between chapters.
 typedef struct Camp {
-    u8 json_element; // JSON_ELEM_bOFFSET = 0
+    u8      json_element;  /* JSON_ELEM_bOFFSET = 0 */
+    char   *json_filename; /* JSON_ELEM_bOFFSET = 1 */
+
     // All jobs
     u8 guards[CAMP_JOB_MAX];
     u8 librarians[CAMP_JOB_MAX];

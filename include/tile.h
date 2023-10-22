@@ -13,7 +13,9 @@
 struct cJSON;
 
 typedef struct Tile {
-    u8 json_element; /* JSON_ELEM_bOFFSET = 0 */
+    u8      json_element;  /* JSON_ELEM_bOFFSET = 0 */
+    char   *json_filename; /* JSON_ELEM_bOFFSET = 1 */
+
     char *name;
     i32 id;
     struct Tile_stats stats;

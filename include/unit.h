@@ -52,7 +52,10 @@ extern struct Unit_status Unit_status_default;
 
 /* --- UNIT --- */
 typedef struct Unit {
-    u8     json_element; /* JSON_ELEM_bOFFSET = 0 */
+    u8      json_element;  /* JSON_ELEM_bOFFSET = 0 */
+    char   *json_filename; /* JSON_ELEM_bOFFSET = 1 */
+
+
     if16    class;
     if8     mvt_type;
     if8     army;

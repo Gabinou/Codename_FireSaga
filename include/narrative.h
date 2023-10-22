@@ -26,7 +26,9 @@ struct Conditions {
 };
 
 struct Scene {
-    u8 json_element;
+    u8      json_element;
+    char   *json_filename; /* JSON_ELEM_bOFFSET = 1 */
+
     uf16 id;
     uf16 line_num;
     uf16 line_len;
