@@ -205,15 +205,15 @@ void Map_Texture_Alloc(struct Map *map);
 void Map_dArrays_Free(struct Map *map);
 void Map_dArrays_Init(struct Map *map, const struct Settings *settings);
 
-void Map_Tilemap_Shader_Init( struct Map *map);
-void Map_Tilemap_Shader_Free( struct Map *map);
+static void _Map_Tilemap_Shader_Init( struct Map *map);
+static void _Map_Tilemap_Shader_Free( struct Map *map);
 void Map_Tilemap_Surface_Init(struct Map *map);
 void Map_Tilemap_Surface_Free(struct Map *map);
 void Map_Tilemap_Texture_Init(struct Map *map);
 void Map_Tilemap_Texture_Free(struct Map *map);
 
-void Map_Tilesindex_Init(struct Map  *map);
-void Map_Tilesindex_Free(struct Map  *map);
+static void _Map_Tilesindex_Init(struct Map  *map);
+static void _Map_Tilesindex_Free(struct Map  *map);
 
 void Map_Tilesprites_Init(struct Map *map, size_t tiles_num);
 void Map_Tilesprites_Free(struct Map *map);

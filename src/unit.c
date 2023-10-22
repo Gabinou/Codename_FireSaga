@@ -67,7 +67,9 @@ struct Unit_stats Unit_stats_default = {
 };
 
 struct Unit Unit_default = {
-    .json_element = JSON_UNIT,
+    .json_element   = JSON_UNIT,
+    .json_filename  = NULL,
+
     /*                  hp str mag agi dex fth luck def res con move prof */
     .base_stats      = {00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00},
     .bonus_stats     = {00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00},

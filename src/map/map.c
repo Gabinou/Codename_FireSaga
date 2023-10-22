@@ -15,6 +15,7 @@ struct Map_condition Map_condition_default = {
 
 struct Map Map_default = {
     .json_element   = JSON_MAP,
+    .json_filename  = NULL,
 
     .world          = NULL,
     .renderer       = NULL,
@@ -263,7 +264,7 @@ void Map_Free(struct Map *map) {
     }
     Map_Tilemap_Surface_Free(map);
     SOTA_Log_Debug("armies_onfield");
-    Map_Tilesindex_Free(map);
+    _Map_Tilesindex_Free(map);
     if (map->armies_onfield != NULL) {
         free(map->armies_onfield);
         map->armies_onfield = NULL;
@@ -422,7 +423,7 @@ void Map_Texture_Alloc(struct Map *map) {
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
-void Map_Tilemap_Shader_Free(struct Map *map) {
+void _Map_Tilemap_Shader_Free(struct Map *map) {
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     Tilemap_Shader_Free(map->tilemap_shader);
     if (map->tilemap_shader != NULL) {
@@ -432,7 +433,7 @@ void Map_Tilemap_Shader_Free(struct Map *map) {
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
-void Map_Tilemap_Shader_Init(struct Map *map) {
+void _Map_Tilemap_Shader_Init(struct Map *map) {
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     map->tilemap_shader         = SDL_malloc(sizeof(struct Tilemap_Shader));
     *map->tilemap_shader        = Tilemap_Shader_default;
@@ -441,16 +442,16 @@ void Map_Tilemap_Shader_Init(struct Map *map) {
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
-void Map_Tilesindex_Free(struct Map *map) {
+void _Map_Tilesindex_Free(struct Map *map) {
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     if (map->tilesindex != NULL)
         DARR_FREE(map->tilesindex);
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
-void Map_Tilesindex_Init(struct Map *map) {
+void _Map_Tilesindex_Init(struct Map *map) {
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
-    Map_Tilesindex_Free(map);
+    _Map_Tilesindex_Free(map);
     map->tilesindex = DARR_INIT(map->tilesindex, i32, DEFAULT_TILESPRITE_BUFFER);
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
@@ -654,7 +655,7 @@ void Map_readJSON(void *input, const cJSON *const jmap) {
     SOTA_Log_Debug("Read tiles");
     cJSON *jtiles = cJSON_GetObjectItem(jmap, "tiles");
     cJSON *jid, *jtile;
-    Map_Tilesindex_Init(map);
+    _Map_Tilesindex_Init(map);
     Map_Tileset_Stack_Add(map);
     cJSON_ArrayForEach(jtile, jtiles) {
         jid = cJSON_GetObjectItem(jtile, "id");
@@ -842,7 +843,7 @@ void Map_readJSON(void *input, const cJSON *const jmap) {
     Map_Bounds_Compute(map);
     Map_Tilemap_Surface_Init(map);
     Map_swappedTextures_All(map);
-    Map_Tilemap_Shader_Init(map);
+    _Map_Tilemap_Shader_Init(map);
     map->tilemap_shader->frames = map->frames;
     Tilemap_Shader_Load_Tilemap_JSON(map->tilemap_shader, jmap);
     SDL_assert(map->tilemap_shader->shadow_tilemaps);

@@ -2,7 +2,9 @@
 #include "item.h"
 
 struct Item Item_default = {
-    .json_element = JSON_ITEM,
+    .json_element   = JSON_ITEM,
+    .json_filename  = NULL,
+
     .bonus_stats  = {0},
     .malus_stats  = {0},
     .id           = 0, // 0 means empty.
@@ -288,41 +290,63 @@ void Item_Use(struct Item *restrict item, struct Unit *restrict user,
 }
 
 /* --- I/O --- */
+void Item_Filename(char *filename, if16 id) {
+    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
+    char buffer[DEFAULT_BUFFER_SIZE];
+    char *token;
+
+    /* - add item name to filename - */
+    size_t item_order = *(uf16 *)DTAB_GET(global_itemOrders, id);
+    SDL_assert(item_order != 0);
+    strncpy(buffer, global_itemNames[item_order], DEFAULT_BUFFER_SIZE);
+    token = strtok(buffer, " \t");
+    while (token != NULL) {
+        strcat(filename, token);
+        token = strtok(NULL, " \t");
+    }
+
+    /* - add .json to filename - */
+    strcat(filename, ".json");
+
+    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
+}
+
 /* Loads only pure items */
 void Item_Load(struct dtab *items_dtab, if16 id) {
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     SDL_assert(Item_ID_isValid(id));
     SDL_assert(items_dtab != NULL);
-    char *token;
-    char buffer[DEFAULT_BUFFER_SIZE];
-    if (DTAB_GET(items_dtab, id) == NULL) {
-        char filename[DEFAULT_BUFFER_SIZE] = "items"PHYSFS_SEPARATOR"Item"PHYSFS_SEPARATOR;
 
-        /* - add item name to filename - */
-        size_t item_order = *(uf16 *)DTAB_GET(global_itemOrders, id);
-        SDL_assert(item_order != 0);
-        strncpy(buffer, global_itemNames[item_order], DEFAULT_BUFFER_SIZE);
-        token = strtok(buffer, " \t");
-        while (token != NULL) {
-            strcat(filename, token);
-            token = strtok(NULL, " \t");
-        }
-
-        /* - add .json to filename - */
-        struct Item temp_item = Item_default;
-        strcat(filename, ".json");
-        SOTA_Log_Debug("Loading item %ld %s", id, filename);
-        SDL_assert(temp_item.json_element == JSON_ITEM);
-
-        /* - read weapon - */
-        jsonio_readJSON(filename, &temp_item);
-
-        /* - Add weapon to dtab - */
-        DTAB_ADD(items_dtab, &temp_item, id);
+    if (DTAB_GET(items_dtab, id) != NULL) {
+        Weapon_Free(DTAB_GET(items_dtab, id));
+        DTAB_DEL(items_dtab, id);
     }
+
+    char filename[DEFAULT_BUFFER_SIZE] = "items"PHYSFS_SEPARATOR"Item"PHYSFS_SEPARATOR;
+    Item_Filename(filename, id);
+
+    struct Item temp_item = Item_default;
+    SOTA_Log_Debug("Loading item %ld %s", id, filename);
+    SDL_assert(temp_item.json_element == JSON_ITEM);
+
+    /* - read weapon - */
+    jsonio_readJSON(filename, &temp_item);
+
+    /* - Add weapon to dtab - */
+    DTAB_ADD(items_dtab, &temp_item, id);
+
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
+void Item_All_Load(struct dtab *items_dtab) {
+    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
+    for (size_t i = ITEM_ID_ITEM_START; i < ITEM_ID_ITEM_END; i++) {
+        SOTA_Log_Debug("%zu", i);
+        if (Item_ID_isValid(i))
+            Item_Load(items_dtab, i);
+    }
+    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
+}
 
 void Item_writeJSON(const void *restrict input, cJSON *restrict jitem) {
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
@@ -502,6 +526,11 @@ void Item_Free(struct Item *restrict item) {
         DARR_FREE(item->users);
         item->users = NULL;
     }
+    if (item->json_filename != NULL) {
+        free(item->json_filename);
+        item->json_filename = NULL;
+    }
+
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 

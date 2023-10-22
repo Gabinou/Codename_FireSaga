@@ -2,7 +2,7 @@
 #include "bitfields.h"
 
 void test_bitfields() {
-    SOTA_Log_Func("%s " STRINGIZE(__LINE__), __func__);
+    SDL_Log("%s " STRINGIZE(__LINE__), __func__);
     nourstest_true(BITFIELD_LEN(1) == 1);
     nourstest_true(BITFIELD_LEN(2) == 1);
     nourstest_true(BITFIELD_LEN(3) == 1);
@@ -87,5 +87,4 @@ void test_bitfields() {
     BITFIELD_FREE(bitfield);
     BITFIELD_FREE(allones);
     BITFIELD_FREE(allzeros);
-
 }

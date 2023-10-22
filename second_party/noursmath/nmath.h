@@ -149,17 +149,17 @@ free(dtab_ptr); } while(0)
 Might be faster to put hash in variable and call functions directly?
 S for stringify, H for hash */
 
-#define DTAB_ADD(dtab_ptr, value, key) dtab_add(dtab_ptr, value, key)
-#define DTAB_ADDH(dtab_ptr, value, name) dtab_add(dtab_ptr, value, DTAB_HASH(name))
+#define DTAB_ADD(dtab_ptr,   value, key)  dtab_add(dtab_ptr, value, key)
+#define DTAB_ADDH(dtab_ptr,  value, name) dtab_add(dtab_ptr, value, DTAB_HASH(name))
 #define DTAB_ADDSH(dtab_ptr, value, name) dtab_add(dtab_ptr, value, DTAB_HASH(DTAB_STRINGIFY(name)))
-#define DTAB_GET(dtab_ptr, name) dtab_get(dtab_ptr, name)
-#define DTAB_GETH(dtab_ptr, name) dtab_get(dtab_ptr, DTAB_HASH(name))
+#define DTAB_GET(dtab_ptr,   name) dtab_get(dtab_ptr, name)
+#define DTAB_GETH(dtab_ptr,  name) dtab_get(dtab_ptr, DTAB_HASH(name))
 #define DTAB_GETSH(dtab_ptr, name) dtab_get(dtab_ptr, DTAB_HASH(DTAB_STRINGIFY(name)))
-#define DTAB_DEL(dtab_ptr, name) dtab_del(dtab_ptr, name)
-#define DTAB_DELH(dtab_ptr, name) dtab_del(dtab_ptr, DTAB_HASH(name))
+#define DTAB_DEL(dtab_ptr,   name) dtab_del(dtab_ptr, name)
+#define DTAB_DELH(dtab_ptr,  name) dtab_del(dtab_ptr, DTAB_HASH(name))
 #define DTAB_DELSH(dtab_ptr, name) dtab_del(dtab_ptr, DTAB_HASH(DTAB_STRINGIFY(name)))
-#define DTAB_DEL_SCRAMBLE(dtab_ptr, name) dtab_del_scramble(dtab_ptr, name)
-#define DTAB_DEL_SCRAMBLEH(dtab_ptr, name) dtab_del_scramble(dtab_ptr, DTAB_HASH(name))
+#define DTAB_DEL_SCRAMBLE(dtab_ptr,   name) dtab_del_scramble(dtab_ptr, name)
+#define DTAB_DEL_SCRAMBLEH(dtab_ptr,  name) dtab_del_scramble(dtab_ptr, DTAB_HASH(name))
 #define DTAB_DEL_SCRAMBLESH(dtab_ptr, name) dtab_del_scramble(dtab_ptr, DTAB_HASH(DTAB_STRINGIFY(name)))
 
 #endif /* DTAB */

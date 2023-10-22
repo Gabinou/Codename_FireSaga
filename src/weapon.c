@@ -2,7 +2,9 @@
 #include "weapon.h"
 
 struct Weapon Weapon_default = {
-    .json_element = JSON_WEAPON,
+    .json_element   = JSON_WEAPON,
+    .json_filename  = NULL,
+
     .item         = NULL,
     .handedness   = WEAPON_HAND_ANY,
     .subtype      = WEAPON_SUBTYPE_NONE,
@@ -36,6 +38,11 @@ void Weapon_Free(struct Weapon *weapon) {
     if (weapon == NULL) {
         SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
         return;
+    }
+
+    if (weapon->json_filename != NULL) {
+        free(weapon->json_filename);
+        weapon->json_filename = NULL;
     }
 
     if (weapon->item == NULL) {
@@ -132,50 +139,64 @@ void Weapon_writeJSON(const void *input, cJSON *jwpn) {
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
+/* Overwrites weapon if it already exists */
 void Weapon_Load(struct dtab *weapons_dtab, if16 id) {
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     SDL_assert(Weapon_ID_isValid(id));
     SDL_assert(weapons_dtab != NULL);
-    char *token;
-    char buffer[DEFAULT_BUFFER_SIZE];
-    if (DTAB_GET(weapons_dtab, id) == NULL) {
-        char filename[DEFAULT_BUFFER_SIZE] = "items"PHYSFS_SEPARATOR;
-
-        /* - add weapon type subfolder to filename - */
-        int type_exp = id / SOTA_WPN_ID_FACTOR;
-        if16 typecode = (1 << type_exp);
-        char **types = Names_wpnType(typecode);
-        strncat(filename, types[0], strlen(types[0]));
-        strncat(filename, PHYSFS_SEPARATOR, 2);
-        Names_wpnType_Free(types);
-
-        /* - add weapon name to filename - */
-        size_t item_order = *(uf16 *)DTAB_GET(global_itemOrders, id);
-        SDL_assert(item_order != 0);
-        strncpy(buffer, global_itemNames[item_order], DEFAULT_BUFFER_SIZE);
-        token = strtok(buffer, " \t");
-        while (token != NULL) {
-            strcat(filename, token);
-            token = strtok(NULL, " \t");
-        }
-
-        /* - add .json to filename - */
-        struct Weapon temp_weapon = Weapon_default;
-        strcat(filename, ".json");
-        SOTA_Log_Debug("Loading weapon %ld %s", id, filename);
-        SDL_assert(temp_weapon.json_element == JSON_WEAPON);
-
-        /* - read weapon - */
-        jsonio_readJSON(filename, &temp_weapon);
-        SDL_assert(temp_weapon.item != NULL);
-        temp_weapon.item->type = 1 << (id / ITEM_DIVISOR);
-        SDL_assert(temp_weapon.item->id == id);
-
-        /* - Add weapon to dtab - */
-        DTAB_ADD(weapons_dtab, &temp_weapon, id);
+    if (DTAB_GET(weapons_dtab, id) != NULL) {
+        Weapon_Free(DTAB_GET(weapons_dtab, id));
+        DTAB_DEL(weapons_dtab, id);
     }
+
+    char filename[DEFAULT_BUFFER_SIZE] = "items"PHYSFS_SEPARATOR;
+    Weapon_Filename(filename, id);
+
+    struct Weapon temp_weapon = Weapon_default;
+    SOTA_Log_Debug("Loading weapon %ld %s", id, filename);
+    SDL_assert(temp_weapon.json_element == JSON_WEAPON);
+
+    /* - read weapon - */
+    jsonio_readJSON(filename, &temp_weapon);
+    SDL_assert(temp_weapon.item != NULL);
+    temp_weapon.item->type = 1 << (id / ITEM_DIVISOR);
+    SDL_assert(temp_weapon.item->id == id);
+
+    /* - Add weapon to dtab - */
+    DTAB_ADD(weapons_dtab, &temp_weapon, id);
+
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
+
+void Weapon_Filename(char *filename, if16 id) {
+    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
+    char buffer[DEFAULT_BUFFER_SIZE];
+    char *token;
+
+    /* - add weapon type subfolder to filename - */
+    int type_exp = id / SOTA_WPN_ID_FACTOR;
+    if16 typecode = (1 << type_exp);
+    char **types = Names_wpnType(typecode);
+    strncat(filename, types[0], strlen(types[0]));
+    strncat(filename, PHYSFS_SEPARATOR, 2);
+    Names_wpnType_Free(types);
+
+    /* - add weapon name to filename - */
+    size_t item_order = *(uf16 *)DTAB_GET(global_itemOrders, id);
+    SDL_assert(item_order != 0);
+    strncpy(buffer, global_itemNames[item_order], DEFAULT_BUFFER_SIZE);
+    token = strtok(buffer, " \t");
+    while (token != NULL) {
+        strcat(filename, token);
+        token = strtok(NULL, " \t");
+    }
+
+    /* - add .json to filename - */
+    strcat(filename, ".json");
+
+    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
+}
+
 
 void Weapon_Save(struct dtab *weapons_dtab, if16 id) {
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
@@ -205,7 +226,7 @@ void Weapon_Save(struct dtab *weapons_dtab, if16 id) {
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
-void Weapons_All_Read(struct dtab *weapons_dtab) {
+void Weapons_All_Load(struct dtab *weapons_dtab) {
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     for (size_t i = ITEM_NULL; i < ITEM_ID_CLAW_END; i++) {
         SOTA_Log_Debug("%zu", i);

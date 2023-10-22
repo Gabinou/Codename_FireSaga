@@ -459,17 +459,21 @@ void receive_event_Reload(struct Game *sota, SDL_Event *event) {
         Entities_Reload(sota, archetype_id, "Sprite");
     }
 
+    /* --- Reload non-entities --- */
+    /* -- Reload Weapons -- */
+    Weapons_All_Load(sota->weapons_dtab);
 
-    // /* --- Reload non-entities --- */
-    // /* -- Reload Weapons -- */
-    // /* -- Reload Items -- */
+    /* -- Reload Items -- */
+    Item_All_Load(sota->items_dtab);
 
-    // /* -- Reload Map -- */
-    // /* - Reload Map tiles - */
+    /* -- Reload Map -- */
+    /* - Reload Map tiles - */
 
-    // /* -- Reload Scenes -- */
+    /* -- TODO: Reload Scenes -- */
 
-    // /* -- Reload Convoy -- */
+    /* -- TODO: Reload Convoy -- */
+
+    /* -- HOW TO: Make all menus/popups update? -- */
 
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }

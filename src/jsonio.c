@@ -81,7 +81,16 @@ void jsonio_readJSON(const char *filename, void *struct_ptr) {
         exit(ERROR_JSONElementNotSet);
     }
 
-    SDL_assert(jelement != NULL);
+    /* Set json_filename to input filename */
+    char **json_filename = ((char **)struct_ptr + JSON_FILENAME_bOFFSET);
+    if (*json_filename != NULL)
+        free(*json_filename);
+
+    size_t len      = strlen(filename);
+    *json_filename  = calloc(len + 1, sizeof(**json_filename));
+    strncpy(*json_filename, filename, len);
+    SDL_Log("json_filename %s", *json_filename);
+
 
     /* Actually read the json file */
     if (json_read_funcs[jelem_id] != NULL)
@@ -108,7 +117,6 @@ void jsonio_writeJSON(const char *filename, const void *struct_ptr, bool append)
         SOTA_Log_Debug("JSON element not set");
         exit(ERROR_JSONElementNotSet);
     }
-    /* Set filename to */
 
     /* Create the json element */
     struct cJSON *jelement = cJSON_CreateObject();

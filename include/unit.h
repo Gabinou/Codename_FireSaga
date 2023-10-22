@@ -267,9 +267,9 @@ bool Unit_hasSkill(const struct Unit *u, u64 s);
 */
 /* Distance-dependent stats */
 u8 Unit_computeHit(     struct Unit *u, int dist);
-if8 Unit_computeDodge(   struct Unit *u, int dist);
+if8 Unit_computeDodge(  struct Unit *u, int dist);
 u8 Unit_computeFavor(   struct Unit *u, int dist);
-if8 Unit_computeSpeed(   struct Unit *u, int dist);
+if8 Unit_computeSpeed(  struct Unit *u, int dist);
 u8 Unit_computeCritical(struct Unit *u, int dist);
 
 /* Distance-independent stats */

@@ -73,6 +73,11 @@ void Item_Free(struct Item *item);
 
 /* --- I/O --- */
 void Item_Load(    struct dtab *items_dtab, if16 id);
+void Item_All_Load(struct dtab *items_dtab);
+
+void Item_Filename(char *filename, if16 id);
+
+
 void Item_readJSON(       void *input, const cJSON *jitem);
 void Item_writeJSON(const void *input,       cJSON *jitem);
 

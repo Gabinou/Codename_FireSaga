@@ -273,7 +273,7 @@ void Game_putPConMap(struct Game *sota, if16 *unit_ids,
 void Game_Weapons_Rewrite(struct Game *sota) {
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     SOTA_Log_Debug("Rewriting weapons with new data\n");
-    Weapons_All_Read(sota->weapons_dtab);
+    Weapons_All_Load(sota->weapons_dtab);
     Weapons_All_Save(sota->weapons_dtab);
     getchar();
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);

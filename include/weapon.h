@@ -10,7 +10,7 @@
 typedef struct Weapon {
     u8      json_element;  /* JSON_ELEM_bOFFSET = 0 */
     char   *json_filename; /* JSON_ELEM_bOFFSET = 1 */
- 
+
     u8 handedness;
     u8 subtype;        /* ex: thrust swords     */
     uf16 effective;
@@ -51,9 +51,11 @@ void Weapon_writeJSON(const void *input,       cJSON       *json);
 
 void Weapon_Load(     struct dtab *weapons_dtab, if16 id);
 void Weapon_Save(     struct dtab *weapons_dtab, if16 id);
-void Weapons_All_Read(struct dtab *weapons_dtab);
+void Weapons_All_Load(struct dtab *weapons_dtab);
 void Weapons_All_Save(struct dtab *weapons_dtab);
 void Weapons_All_Free(struct dtab *weapons_dtab);
+
+void Weapon_Filename(char *filename, if16 id);
 
 /* --- Stats --- */
 int Weapon_Stat(        const struct Weapon *wpn, if16 s);
