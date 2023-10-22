@@ -80,9 +80,15 @@ void Spritesheet_Free(struct Spritesheet *spritesheet) {
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
-void Sprite_readJSON(void *input, const cJSON *const jspritesheet) {
+void Sprite_readJSON(void *input, const cJSON *const jsprite) {
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     struct Sprite *sprite = input;
+    cJSON *jspritesheet = cJSON_GetObjectItem(jsprite, "Spritesheet");
+    if (jspritesheet == NULL) {
+        SDL_Log("JSON element Spritesheet does not exist in Sprite elem");
+        exit(ERROR_JSONElementNotSet);
+    }
+
     SDL_assert(sprite->spritesheet != NULL);
     Spritesheet_readJSON(sprite->spritesheet, jspritesheet);
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
