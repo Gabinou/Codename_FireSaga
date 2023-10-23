@@ -40,8 +40,8 @@ void test_popup_map_combat() {
     aggressor.weapons_dtab = weapons_dtab;
     defendant.weapons_dtab = weapons_dtab;
 
-    jsonio_readJSON(PATH_JOIN("units", "Silou.json"),  &aggressor);
-    jsonio_readJSON(PATH_JOIN("units", "Fencer.json"), &defendant);
+    jsonio_readJSON(PATH_JOIN("units", "Silou_test.json"),  &aggressor);
+    jsonio_readJSON(PATH_JOIN("units", "Fencer_test.json"), &defendant);
 
     struct Point agg_tilemap_pos = {0, 0};
     struct Point dft_tilemap_pos = {0, 1};

@@ -82,17 +82,17 @@ void Game_debugMap_Load(struct Game *sota) {
     struct Point *positions_list;
     positions_list = DARR_INIT(positions_list, struct Point, 16);
 
-    /* - Silou (Mage) - */
+    /* - Silou.json (Mage) - */
     DARR_PUT(unit_inds, UNIT_ID_SILOU);
     DARR_PUT(positions_list, temp_point);
 
-    /* - Kiara (Cleric) - */
+    /* - Kiara.json (Cleric) - */
     DARR_PUT(unit_inds, UNIT_ID_KIARA);
     temp_point.x = 3;
     temp_point.y = 4;
     DARR_PUT(positions_list, temp_point);
 
-    /* - Rayan (Dancer) - */
+    /* - Rayan.json (Dancer) - */
     DARR_PUT(unit_inds, UNIT_ID_RAYAN);
     temp_point.x = 3;
     temp_point.y = 3;
