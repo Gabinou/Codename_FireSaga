@@ -139,9 +139,9 @@ void Weapon_writeJSON(const void *input, cJSON *jwpn) {
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
-/* Overwrites weapon if it already exists */
 void Weapon_Reload(struct dtab *weapons_dtab, i16 id) {
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
+    /* Overwrite weapon ONLY if it already exists */
     if (DTAB_GET(weapons_dtab, id) != NULL) {
         Weapon_Free(DTAB_GET(weapons_dtab, id));
         DTAB_DEL(weapons_dtab, id);

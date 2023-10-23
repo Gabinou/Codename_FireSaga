@@ -82,6 +82,7 @@ struct Target win_sota = {
 struct Target sota = {
     .includes           = ".,include,include/bars,include/menu,include/popup,"
                           "include/systems,names,names/popup,names/menu,"
+                          "include/systems,names,names/popup,names/menu,"
                           "second_party/nstr,second_party/noursmath,second_party/tnecs,"
                           "second_party/parg,second_party/nourstest,"
                           "third_party/physfs,third_party/tinymt,third_party/stb,"

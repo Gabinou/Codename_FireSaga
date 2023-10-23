@@ -72,11 +72,12 @@ void Inventory_item_Swap(struct Inventory_item *items, u8 i1, u8 i2);
 void Item_Free(struct Item *item);
 
 /* --- I/O --- */
-void Item_Load(    struct dtab *items_dtab, i16 id);
-void Item_All_Load(struct dtab *items_dtab);
+void Item_Load(      struct dtab *items_dtab, i16 id);
+void Item_Reload(    struct dtab *items_dtab, i16 id);
+void Item_All_Load(  struct dtab *items_dtab);
+void Item_All_Reload(struct dtab *items_dtab);
 
 void Item_Filename(char *filename, i16 id);
-
 
 void Item_readJSON(       void *input, const cJSON *jitem);
 void Item_writeJSON(const void *input,       cJSON *jitem);

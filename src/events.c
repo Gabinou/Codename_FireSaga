@@ -467,7 +467,7 @@ void receive_event_Reload(struct Game *sota, SDL_Event *event) {
     Weapons_All_Reload(sota->weapons_dtab);
 
     /* -- Reload Items -- */
-    // Item_All_Load(sota->items_dtab);
+    Item_All_Reload(sota->items_dtab);
 
     /* -- Reload Map -- */
     /* - Reload Map tiles - */

@@ -311,6 +311,18 @@ void Item_Filename(char *filename, i16 id) {
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
+void Item_Reload(struct dtab *items_dtab, i16 id) {
+    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
+    /* Overwrite item ONLY if it already exists */
+    if (DTAB_GET(items_dtab, id) != NULL) {
+        Item_Free(DTAB_GET(items_dtab, id));
+        DTAB_DEL(items_dtab, id);
+        Item_Load(items_dtab, id);
+    }
+    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
+}
+
+
 /* Loads only pure items */
 void Item_Load(struct dtab *items_dtab, i16 id) {
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
@@ -344,6 +356,16 @@ void Item_All_Load(struct dtab *items_dtab) {
         SOTA_Log_Debug("%zu", i);
         if (Item_ID_isValid(i))
             Item_Load(items_dtab, i);
+    }
+    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
+}
+
+void Item_All_Reload(struct dtab *items_dtab) {
+    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
+    for (size_t i = ITEM_ID_ITEM_START; i < ITEM_ID_ITEM_END; i++) {
+        SOTA_Log_Debug("%zu", i);
+        if (Item_ID_isValid(i))
+            Item_Reload(items_dtab, i);
     }
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
