@@ -59,16 +59,19 @@ struct cJSON *jsonio_parseJSON(const char *filename) {
 
 void jsonio_readJSON(const char *filename, void *struct_ptr) {
     SOTA_Log_Func("%s " STRINGIZE(__LINE__), __func__);
-    SOTA_Log_Debug("%s:", filename);
+    SOTA_Log_Debug("Reading JSON: %s", filename);
 
     /* Parse the json file */
     struct cJSON *jfile = jsonio_parseJSON(filename);
+    if (jfile == NULL) {
+        SDL_Log("Could not parse JSON file '%s'", filename);
+        exit(ERROR_JSONElementNotSet);
+    }
 
     /* Get the json element id */
     u8 jelem_id = *(u8 *)struct_ptr;
     char *elem_name = jsonElementnames[jelem_id];
     SOTA_Log_Debug("Reading JSON element %d %s", jelem_id, elem_name);
-    SDL_assert(jfile != NULL);
     if (jelem_id >= JSON_END) {
         SDL_Log("JSON element not set");
         exit(ERROR_JSONElementNotSet);
@@ -83,14 +86,12 @@ void jsonio_readJSON(const char *filename, void *struct_ptr) {
 
     /* Set json_filename to input filename */
     char **json_filename = ((char **)struct_ptr + JSON_FILENAME_bOFFSET);
-    if (*json_filename != NULL)
-        free(*json_filename);
-
-    size_t len      = strlen(filename);
-    *json_filename  = calloc(len + 1, sizeof(**json_filename));
-    strncpy(*json_filename, filename, len);
-    SDL_Log("json_filename %s", *json_filename);
-
+    if (*json_filename == NULL) {
+        size_t len      = strlen(filename);
+        *json_filename  = calloc(len + 1, sizeof(**json_filename));
+        strncpy(*json_filename, filename, len);
+    }
+    SDL_Log("json_filename '%s'", *json_filename);
 
     /* Actually read the json file */
     if (json_read_funcs[jelem_id] != NULL)

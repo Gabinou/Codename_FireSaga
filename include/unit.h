@@ -206,7 +206,10 @@ void  Unit_Item_Swap(  struct Unit *u, i16 ind1, i16 ind2);
 void  Unit_Item_Trade( struct Unit *g, struct Unit *t, i16 giver_i, i16 taker_i);
 void  Unit_Item_Takeat(struct Unit *u, struct Inventory_item i, size_t j);
 void _Unit_Item_Takeat(struct Unit *u, struct Inventory_item i, size_t j);
+
+/* -- Dropping -- */
 struct Inventory_item Unit_Item_Drop(struct Unit *u, i16 ind1);
+void Unit_Equipment_Drop(struct Unit *u);
 
 /* --- Equipping --- */
 bool                  Unit_Equip(           struct Unit *u, bool h, int i);

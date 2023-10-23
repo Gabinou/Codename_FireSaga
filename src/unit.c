@@ -118,7 +118,7 @@ struct Unit Unit_default = {
 
     .weapons_dtab    = NULL,
 
-    .current_hp      = 0,
+    .current_hp      = SOTA_MIN_HP,
     .is_alive        = true,
     .talkable        = 0,
 
@@ -568,13 +568,21 @@ void Unit_Item_Take(struct Unit *unit, struct Inventory_item item) {
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
+void Unit_Equipment_Drop(struct Unit *unit) {
+    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
+    for (int i = 0; i < DEFAULT_EQUIPMENT_SIZE; i++) {
+        Unit_Item_Drop(unit, i);
+    }
+    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
+}
+
 struct Inventory_item Unit_Item_Drop(struct Unit *unit, i16 i) {
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     if ((i < 0) || (i >= DEFAULT_EQUIPMENT_SIZE)) {
         SOTA_Log_Debug("Item index out of bounds");
         exit(ERROR_OutofBounds);
     }
-    struct Inventory_item out = unit->_equipment[i];
+    struct Inventory_item out  = unit->_equipment[i];
     unit->_equipment[i]        = Inventory_item_default;
     unit->num_equipment--;
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
@@ -1999,7 +2007,6 @@ void Unit_readJSON(void *input, const cJSON *const junit) {
     unit->sex               = cJSON_IsTrue(jsex);
     unit->exp               = cJSON_GetNumberValue(jexp);
     unit->base_exp          = cJSON_GetNumberValue(jbase_exp);
-    unit->current_hp        = cJSON_GetNumberValue(jcurrent_hp);
     Unit_setClassind(unit, cJSON_GetNumberValue(jclass_index));
     SDL_assert(jcurrent_stats);
 
@@ -2026,6 +2033,14 @@ void Unit_readJSON(void *input, const cJSON *const junit) {
     Filesystem_readJSON_Unitstats(jbase_stats, &unit->base_stats);
     SDL_assert(jgrowths);
     Filesystem_readJSON_Unitstats(jgrowths, &unit->growths);
+    // DESIGN QUESTION: Check that current stats fit with bases + levelups?
+    //  - No levelups mean NO GRAPHS
+    //  => Check if it fits
+
+    if (jcurrent_hp != NULL) {
+        unit->current_hp        = cJSON_GetNumberValue(jcurrent_hp);
+    }
+
     cJSON *jlevelup = cJSON_GetObjectItem(jlevelups, "Level-up");
     struct Unit_stats temp_ustats;
     if (unit->grown_stats != NULL) {
@@ -2039,8 +2054,12 @@ void Unit_readJSON(void *input, const cJSON *const junit) {
         DARR_PUT(unit->grown_stats, temp_ustats);
         jlevelup = jlevelup->next;
     };
-    SOTA_Log_Debug("-- items --");
+
     /* -- Unit should also read/write equipped -- */
+    SOTA_Log_Debug("-- items --");
+
+    Unit_Equipment_Drop(unit);
+
     cJSON *jitem;
     cJSON_ArrayForEach(jitem, jitems) {
         struct Inventory_item temp_item;

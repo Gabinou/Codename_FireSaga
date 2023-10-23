@@ -134,6 +134,7 @@ enum SOTA_SETTINGS {
 
 enum SOTA_LIMITS {
     SOTA_MAX_DAMAGE                         = 0xFF,
+    SOTA_MIN_HP                             =    9,
     SOTA_MAX_HP                             =   80,
     SOTA_MAX_SUPPORTS                       =    7,
     SOTA_MAX_MOVEMENT                       =   16,

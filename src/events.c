@@ -419,10 +419,11 @@ void Entities_Reload(struct Game *sota, size_t flag_id, const char *component) {
     size_t num_entities = sota->world->num_entities_bytype[flag_id];
     for (size_t i = 0; i < num_entities; i++) {
         tnecs_entity_t entity = sota->world->entities_bytype[flag_id][i];
-        size_t component_id = tnecs_component_name2id(sota->world, component);
-        void *struct_ptr    = tnecs_entity_get_component(sota->world, entity, component_id);
-        const char *filename = PATH_JOIN("");
-        jsonio_readJSON(filename, struct_ptr);
+        size_t component_id   = tnecs_component_name2id(sota->world, component);
+        void *struct_ptr      = tnecs_entity_get_component(sota->world, entity, component_id);
+        char **json_filename  = ((char **)struct_ptr + JSON_FILENAME_bOFFSET);
+
+        jsonio_readJSON(*json_filename, struct_ptr);
     }
 
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
@@ -470,6 +471,7 @@ void receive_event_Reload(struct Game *sota, SDL_Event *event) {
 
     /* -- Reload Map -- */
     /* - Reload Map tiles - */
+    // TODO: Reload unit hpbars
 
     /* -- TODO: Reload Scenes -- */
 
