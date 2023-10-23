@@ -36,8 +36,8 @@ void Control_Cursor_Moves(struct Game *sota,    struct Point cursor_move,
 void Gamepad_Pressed(i8 sota_b, i8 *press, i8 *pressed_num, i32 *controller_type,
                      u32 event, struct controllerGamepad *gp) {
     SOTA_Log_FPS("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
-    i32 theld      = gp->timeheld_button_ns;
-    i32 min_held   = GAMEPAD_MINHELD_ns;
+    i32 theld       = gp->timeheld_button_ns;
+    i32 min_held    = GAMEPAD_MINHELD_ns;
     bool butblk     = gp->block_buttons;
 
     Control_Pressed(sota_b, press, pressed_num, butblk, theld,
@@ -100,8 +100,8 @@ void Control_Keyboard(tnecs_system_input_t *input) {
         /* -- Preliminaries -- */
         struct controllerKeyboard *kb       = keyboard_arr + order;
         struct KeyboardInputMap   *im       = kb->inputmap;
-        i32                      *ct       = &kb->controller_type;
-        const u8                 *kb_state = SDL_GetKeyboardState(NULL);
+        i32                       *ct       = &kb->controller_type;
+        const u8                  *kb_state = SDL_GetKeyboardState(NULL);
 
         /* -- Keyboard button checking -- */
         i8 press[SOTA_BUTTON_END];
@@ -130,6 +130,9 @@ void Control_Keyboard(tnecs_system_input_t *input) {
         bool up    = Keyboard_isPressed(kb, kb_state, SOTA_INPUT_UP);
         bool left  = Keyboard_isPressed(kb, kb_state, SOTA_INPUT_LEFT);
         bool down  = Keyboard_isPressed(kb, kb_state, SOTA_INPUT_DOWN);
+
+        if (kb_state[SDL_SCANCODE_SPACE])
+            Event_Emit(__func__, SDL_USEREVENT, event_Reload, NULL, NULL);
 
         /* - Collapse diagonals to one of 4 main directions - */
         if (up && !down) {
@@ -178,8 +181,8 @@ void Control_Gamepad(tnecs_system_input_t *input) {
         i8 press[SOTA_BUTTON_END];
         i8 pnum = 0;
         size_t  *mheld    = &gp->held_move_num;
-        i32    *theld_ns = &gp->timeheld_move_ns;
-        i32    *theld    = &gp->timeheld_button_ns;
+        i32     *theld_ns = &gp->timeheld_move_ns;
+        i32     *theld    = &gp->timeheld_button_ns;
         size_t  *bheld    = &gp->held_button_num;
 
         /* -- Gamepad button checking -- */

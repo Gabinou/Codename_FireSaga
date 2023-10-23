@@ -33,7 +33,7 @@ struct cJSON *jsonio_parseJSON(const char *filename) {
     /* Error if file doesn't exist */
     if (!PHYSFS_exists(filename)) {
         SOTA_Log_Debug("%s " STRINGIZE(__LINE__), __func__);
-        SOTA_Log_Debug("File %s does not exist", filename);
+        SDL_Log("File %s does not exist", filename);
         exit(ERROR_CannotOpenFile);
     }
 
@@ -41,7 +41,7 @@ struct cJSON *jsonio_parseJSON(const char *filename) {
     PHYSFS_file *fp = PHYSFS_openRead(filename);
     if (fp == NULL) {
         SOTA_Log_Debug("%s " STRINGIZE(__LINE__), __func__);
-        SOTA_Log_Debug("Could not read JSON file");
+        SDL_Log("Could not read JSON file");
         exit(ERROR_CannotOpenFile);
     }
 
@@ -114,7 +114,7 @@ void jsonio_writeJSON(const char *filename, const void *struct_ptr, bool append)
     u8 jelem_id = *(u8 *)struct_ptr;
     SOTA_Log_Debug("Writing JSON element %s", jsonElementnames[jelem_id]);
     if (jelem_id >= JSON_END) {
-        SOTA_Log_Debug("JSON element not set");
+        SDL_Log("JSON element not set");
         exit(ERROR_JSONElementNotSet);
     }
 
@@ -128,7 +128,7 @@ void jsonio_writeJSON(const char *filename, const void *struct_ptr, bool append)
         fp = PHYSFS_openWrite(filename);
 
     if (!fp) {
-        SOTA_Log_Debug("Could not open %s for writing\n", filename);
+        SDL_Log("Could not open %s for writing\n", filename);
         exit(ERROR_CannotOpenFile);
     }
 

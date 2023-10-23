@@ -430,41 +430,43 @@ void Entities_Reload(struct Game *sota, size_t flag_id, const char *component) {
 
 void receive_event_Reload(struct Game *sota, SDL_Event *event) {
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
-    /* --- Reload all entities --- */
-    tnecs_component_t component_flag;
-    size_t num_archetypes, component_flag_id;
-    /* -- Reload Units -- */
-    /* -- Reload entities for the pure component typeflag -- */
-    component_flag     = tnecs_component_names2typeflag(sota->world, 1, "Unit");
-    component_flag_id  = tnecs_typeflagid(sota->world, component_flag);
-    Entities_Reload(sota, component_flag_id, "Unit");
+    SDL_Log("receive_event_Reload");
+    // getchar();
+    // /* --- Reload all entities --- */
+    // tnecs_component_t component_flag;
+    // size_t num_archetypes, component_flag_id;
+    // /* -- Reload Units -- */
+    // /* -- Reload entities for the pure component typeflag -- */
+    // component_flag     = tnecs_component_names2typeflag(sota->world, 1, "Unit");
+    // component_flag_id  = tnecs_typeflagid(sota->world, component_flag);
+    // Entities_Reload(sota, component_flag_id, "Unit");
 
-    /* -- Reload entities for the all component archetypes -- */
-    num_archetypes = sota->world->num_archetype_ids[component_flag_id];
-    for (size_t tsub = 0; tsub < num_archetypes; tsub++) {
-        size_t archetype_id = sota->world->archetype_id_bytype[component_flag_id][tsub];
-        Entities_Reload(sota, archetype_id, "Unit");
-    }
+    // /* -- Reload entities for the all component archetypes -- */
+    // num_archetypes = sota->world->num_archetype_ids[component_flag_id];
+    // for (size_t tsub = 0; tsub < num_archetypes; tsub++) {
+    //     size_t archetype_id = sota->world->archetype_id_bytype[component_flag_id][tsub];
+    //     Entities_Reload(sota, archetype_id, "Unit");
+    // }
 
-    /* -- Reload Sprites -- */
-    /* -- Reload entities for the pure component typeflag -- */
-    component_flag = tnecs_component_names2typeflag(sota->world, 1, "Sprite");
-    component_flag_id  = tnecs_typeflagid(sota->world, component_flag);
-    Entities_Reload(sota, component_flag_id, "Sprite");
+    // /* -- Reload Sprites -- */
+    // /* -- Reload entities for the pure component typeflag -- */
+    // component_flag = tnecs_component_names2typeflag(sota->world, 1, "Sprite");
+    // component_flag_id  = tnecs_typeflagid(sota->world, component_flag);
+    // Entities_Reload(sota, component_flag_id, "Sprite");
 
-    /* -- Reload entities for the all component archetypes -- */
-    num_archetypes = sota->world->num_archetype_ids[component_flag_id];
-    for (size_t tsub = 0; tsub < num_archetypes; tsub++) {
-        size_t archetype_id = sota->world->archetype_id_bytype[component_flag_id][tsub];
-        Entities_Reload(sota, archetype_id, "Sprite");
-    }
+    // /* -- Reload entities for the all component archetypes -- */
+    // num_archetypes = sota->world->num_archetype_ids[component_flag_id];
+    // for (size_t tsub = 0; tsub < num_archetypes; tsub++) {
+    //     size_t archetype_id = sota->world->archetype_id_bytype[component_flag_id][tsub];
+    //     Entities_Reload(sota, archetype_id, "Sprite");
+    // }
 
     /* --- Reload non-entities --- */
     /* -- Reload Weapons -- */
-    Weapons_All_Load(sota->weapons_dtab);
+    Weapons_All_Reload(sota->weapons_dtab);
 
     /* -- Reload Items -- */
-    Item_All_Load(sota->items_dtab);
+    // Item_All_Load(sota->items_dtab);
 
     /* -- Reload Map -- */
     /* - Reload Map tiles - */

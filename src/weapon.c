@@ -140,14 +140,27 @@ void Weapon_writeJSON(const void *input, cJSON *jwpn) {
 }
 
 /* Overwrites weapon if it already exists */
+void Weapon_Reload(struct dtab *weapons_dtab, i16 id) {
+    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
+    if (DTAB_GET(weapons_dtab, id) != NULL) {
+        Weapon_Free(DTAB_GET(weapons_dtab, id));
+        DTAB_DEL(weapons_dtab, id);
+        Weapon_Load(weapons_dtab, id);
+    }
+    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
+}
+
 void Weapon_Load(struct dtab *weapons_dtab, i16 id) {
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     SDL_assert(Weapon_ID_isValid(id));
     SDL_assert(weapons_dtab != NULL);
+
+    /* -- Skip is already loaded -- */
     if (DTAB_GET(weapons_dtab, id) != NULL) {
-        Weapon_Free(DTAB_GET(weapons_dtab, id));
-        DTAB_DEL(weapons_dtab, id);
+        SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
+        return;
     }
+
 
     char filename[DEFAULT_BUFFER_SIZE] = "items"PHYSFS_SEPARATOR;
     Weapon_Filename(filename, id);
@@ -160,7 +173,10 @@ void Weapon_Load(struct dtab *weapons_dtab, i16 id) {
     jsonio_readJSON(filename, &temp_weapon);
     SDL_assert(temp_weapon.item != NULL);
     temp_weapon.item->type = 1 << (id / ITEM_DIVISOR);
-    SDL_assert(temp_weapon.item->id == id);
+    if (temp_weapon.item->id != id) {
+        SDL_Log("Read id %d from file %s, expected %d", temp_weapon.item->id, filename, id);
+        exit(ERROR_Generic);
+    }
 
     /* - Add weapon to dtab - */
     DTAB_ADD(weapons_dtab, &temp_weapon, id);
@@ -200,7 +216,6 @@ void Weapon_Filename(char *filename, i16 id) {
 
 void Weapon_Save(struct dtab *weapons_dtab, i16 id) {
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
-    SOTA_Log_Debug("%ld", id);
     SDL_assert(Weapon_ID_isValid(id));
     SDL_assert(weapons_dtab != NULL);
     char *token;
@@ -229,9 +244,19 @@ void Weapon_Save(struct dtab *weapons_dtab, i16 id) {
 void Weapons_All_Load(struct dtab *weapons_dtab) {
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     for (size_t i = ITEM_NULL; i < ITEM_ID_CLAW_END; i++) {
-        SOTA_Log_Debug("%zu", i);
+        SOTA_Log_Debug("Loading Weapon %zu", i);
         if (Weapon_ID_isValid(i))
             Weapon_Load(weapons_dtab, i);
+    }
+    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
+}
+
+void Weapons_All_Reload(struct dtab *weapons_dtab) {
+    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
+    for (size_t i = ITEM_NULL; i < ITEM_ID_CLAW_END; i++) {
+        SOTA_Log_Debug("Reloading Weapon %zu", i);
+        if (Weapon_ID_isValid(i))
+            Weapon_Reload(weapons_dtab, i);
     }
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
