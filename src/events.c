@@ -463,6 +463,7 @@ void receive_event_Reload(struct Game *sota, SDL_Event *event) {
 
     /* --- Reload non-entities --- */
     /* -- Reload Weapons -- */
+    // Note: Reloading weapons is super fast
     Weapons_All_Reload(sota->weapons_dtab);
 
     /* -- Reload Items -- */
