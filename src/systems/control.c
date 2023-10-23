@@ -131,8 +131,10 @@ void Control_Keyboard(tnecs_system_input_t *input) {
         bool left  = Keyboard_isPressed(kb, kb_state, SOTA_INPUT_LEFT);
         bool down  = Keyboard_isPressed(kb, kb_state, SOTA_INPUT_DOWN);
 
+        #ifdef SOTA_ENABLE_INTERACTIVE_RELOAD
         if (kb_state[SDL_SCANCODE_SPACE])
             Event_Emit(__func__, SDL_USEREVENT, event_Reload, NULL, NULL);
+        #endif /* SOTA_ENABLE_INTERACTIVE_RELOAD */
 
         /* - Collapse diagonals to one of 4 main directions - */
         if (up && !down) {

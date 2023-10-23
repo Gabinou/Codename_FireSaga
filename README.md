@@ -20,6 +20,8 @@ Note: The repo does not include game assets!
 	- TBD: Save state button. Not so sure.
 - Handcrafted pixel-art
 	- NES color palette only
+- Developper features
+	- Interactive reloading! Press a button to reload edited .json files. Reload units, weapons, tiles, maps at the push of a button. 
 
 ## Installation
 The game will be free to play, if compiled from source.
