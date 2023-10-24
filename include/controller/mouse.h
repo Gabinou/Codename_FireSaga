@@ -1,17 +1,17 @@
 #ifndef CONTROLLERMOUSE_H
 #define CONTROLLERMOUSE_H
 
-#include <math.h>
-#include <stdbool.h>
+// #include <math.h>
+// #include <stdbool.h>
 #include "macros.h"
 #include "debug.h"
 #include "tnecs.h"
 #include "enums.h"
-#include "nmath.h"
+// #include "nmath.h"
 #include "events.h"
 #include "SDL2/SDL.h"
 
-extern struct MouseInputMap {
+struct MouseInputMap {
     u8 accept;
     u8 cancel;
     u8 stats;
@@ -29,7 +29,8 @@ extern struct MouseInputMap {
     u8 minimap_len;
     u8 faster_len;
     u8 pause_len;
-} MouseInputMap_default;
+};
+extern struct MouseInputMap MouseInputMap_default;
 
 typedef struct controllerMouse {
     struct MouseInputMap inputmap;

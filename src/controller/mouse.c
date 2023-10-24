@@ -17,7 +17,7 @@ struct MouseInputMap MouseInputMap_default = {
     .menuleft_len    = 1,
     .minimap_len     = 1,
     .faster_len      = 1,
-    .pause_len       = 1,
+    .pause_len       = 1
 };
 
 void Mouse_checkButton(struct controllerMouse *mouse, u8 button) {
