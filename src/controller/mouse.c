@@ -2,22 +2,22 @@
 #include "controller/mouse.h"
 
 struct MouseInputMap MouseInputMap_default = {
-    .accept =         SDL_BUTTON_LEFT,
-    .cancel =         SDL_BUTTON_RIGHT,
-    .stats =          SDL_BUTTON_MIDDLE,
-    .trigger_right =      0,
-    .trigger_left =       0,
-    .minimap =        0,
-    .faster =         0,
-    .pause =          0,
-    .accept_len =     1,
-    .cancel_len =     1,
-    .stats_len =      1,
-    .menuright_len =  1,
-    .menuleft_len =   1,
-    .minimap_len =    1,
-    .faster_len =     1,
-    .pause_len =      1,
+    .accept          = SDL_BUTTON_LEFT,
+    .cancel          = SDL_BUTTON_RIGHT,
+    .stats           = SDL_BUTTON_MIDDLE,
+    .trigger_right   = 0,
+    .trigger_left    = 0,
+    .minimap         = 0,
+    .faster          = 0,
+    .pause           = 0,
+    .accept_len      = 1,
+    .cancel_len      = 1,
+    .stats_len       = 1,
+    .menuright_len   = 1,
+    .menuleft_len    = 1,
+    .minimap_len     = 1,
+    .faster_len      = 1,
+    .pause_len       = 1,
 };
 
 void Mouse_checkButton(struct controllerMouse *mouse, u8 button) {

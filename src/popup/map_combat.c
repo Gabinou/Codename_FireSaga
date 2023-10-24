@@ -5,10 +5,8 @@ struct PopUp_Map_Combat PopUp_Map_Combat_default = {
     .defendant              = NULL,
     .pixelnours_big         = NULL,
     .pixelnours_tight       = NULL,
-
-    .topoff_aggressor       = TNECS_NULL,
-    .topoff_defendant       = TNECS_NULL,
-
+    .topoff_aggressor       = {0},
+    .topoff_defendant       = {0},
     .texture                = NULL,
     .texture_n9patch_red    = NULL,
     .texture_n9patch_blue   = NULL,
