@@ -2,7 +2,7 @@
 #include "mace.h"
 
 #ifndef CC
-    #define CC "gcc"
+    #define CC "tcc"
 #endif
 #ifndef AR
     #define AR "ar"
@@ -50,6 +50,8 @@ struct Target cjson = {
 
 struct Target physfs = {
     .sources            = ".",
+    /* tcc can't compile 7z -> __cpuid missing */
+    .flags              = "-DPHYSFS_SUPPORTS_7Z=0",
     .base_dir           = "third_party/physfs",
     .allatonce          = false,
     .kind               = MACE_STATIC_LIBRARY,
@@ -69,11 +71,12 @@ struct Target win_sota = {
                           "second_party/parg,second_party/nourstest,"
                           "third_party/physfs,third_party/tinymt,third_party/stb,"
                           "third_party/cJson",
-    .sources            = "src/*.c,src/bars/,src/menu/,src/popup/,src/systems/,src/game/,src/map,"
-                          "src/controller",
+    .sources            = "src/*.c,src/bars/,src/menu/,src/popup/,src/systems/,"
+                          "src/game/,src/map,src/controller",
     .links              = "SDL2,SDL2_image,SDL2_ttf,m,cjson,noursmath,physfs,"
                           "tinymt,tnecs,nstr,parg",
-    .flags              = "-lmingw32,-lSDL2main,-fwrapv,-fno-strict-overflow,-fno-strict-aliasing",
+    .flags              = "-lmingw32,-lSDL2main,-fwrapv,-fno-strict-overflow,"
+                          "-fno-strict-aliasing",
     .command_pre_build  = "astyle --options=utils/style.txt --verbose "
                           "--recursive src/* include/* test/* names/*",
     .kind               = MACE_EXECUTABLE,
@@ -87,11 +90,12 @@ struct Target sota = {
                           "second_party/parg,second_party/nourstest,"
                           "third_party/physfs,third_party/tinymt,third_party/stb,"
                           "third_party/cJson",
-    .sources            = "src/*.c,src/bars/,src/menu/,src/popup/,src/systems/,src/game/,src/map,"
-                          "src/controller",
+    .sources            = "src/*.c,src/bars/,src/menu/,src/popup/,src/systems/,"
+                          "src/game/,src/map,src/controller",
     .links              = "SDL2,SDL2_image,SDL2_ttf,m,GLEW,cjson,noursmath,physfs,"
                           "tinymt,tnecs,nstr,parg",
-    .flags              = "-fwrapv,-fno-strict-overflow,-fno-strict-aliasing",
+    .flags              = "-fwrapv,-fno-strict-overflow,-fno-strict-aliasing,"
+                          "-DSDL_DISABLE_IMMINTRIN_H",
     .command_pre_build  = "astyle --options=utils/style.txt --verbose "
                           "--recursive src/* include/* test/* names/*",
     .kind               = MACE_EXECUTABLE,
@@ -109,7 +113,8 @@ struct Target test = {
     .sources            = "test/*.c,src/*.c,src/bars/,src/menu/,src/popup/,"
                           "src/systems/,src/game/,src/map,src/controller",
     .excludes           = "src/main.c",
-    .flags              = "-fwrapv,-fno-strict-overflow,-fno-strict-aliasing",
+    .flags              = "-fwrapv,-fno-strict-overflow,-fno-strict-aliasing,"
+                          "-DSDL_DISABLE_IMMINTRIN_H",
     .links              = "SDL2,SDL2_image,SDL2_ttf,m,GLEW,cjson,noursmath,physfs,"
                           "tinymt,tnecs,nstr,parg",
     .command_pre_build  = "astyle --options=utils/style.txt --verbose "
