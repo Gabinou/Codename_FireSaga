@@ -76,7 +76,7 @@ struct Target win_sota = {
     .links              = "SDL2,SDL2_image,SDL2_ttf,m,cjson,noursmath,physfs,"
                           "tinymt,tnecs,nstr,parg",
     .flags              = "-lmingw32,-lSDL2main,-fwrapv,-fno-strict-overflow,"
-                          "-fno-strict-aliasing,-static",
+                          "-fno-strict-aliasing,-fno-strict-aliasing,-fno-delete-null-pointer-checks",
     .command_pre_build  = "astyle --options=utils/style.txt --verbose "
                           "--recursive src/* include/* test/* names/*",
     .kind               = MACE_EXECUTABLE,
@@ -94,7 +94,7 @@ struct Target sota = {
                           "src/game/,src/map,src/controller",
     .links              = "SDL2,SDL2_image,SDL2_ttf,m,GLEW,cjson,noursmath,physfs,"
                           "tinymt,tnecs,nstr,parg",
-    .flags              = "-fwrapv,-fno-strict-overflow,-fno-strict-aliasing,"
+    .flags              = "-fwrapv,-fno-strict-overflow,-fno-strict-aliasing,-fno-delete-null-pointer-checks,"
                           "-DSDL_DISABLE_IMMINTRIN_H",
     .command_pre_build  = "astyle --options=utils/style.txt --verbose "
                           "--recursive src/* include/* test/* names/*",
