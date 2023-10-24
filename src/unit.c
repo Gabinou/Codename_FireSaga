@@ -587,7 +587,11 @@ struct Inventory_item Unit_Item_Drop(struct Unit *unit, i16 i) {
     }
     struct Inventory_item out  = unit->_equipment[i];
     unit->_equipment[i]        = Inventory_item_default;
-    unit->num_equipment--;
+    if (unit->num_equipment > 0)
+        unit->num_equipment--;
+    else
+        unit->num_equipment = 0;
+
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
     return (out);
 }

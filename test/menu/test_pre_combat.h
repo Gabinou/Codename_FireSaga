@@ -53,7 +53,7 @@ void test_menu_pre_combat() {
     struct Unit Hamilcar = Unit_default;
     Silou.weapons_dtab = weapons_dtab;
     Hamilcar.weapons_dtab = weapons_dtab;
-    nourstest_true(Silou.num_equipment == 0);
+    nourstest_true(Silou.num_equipment    == 0);
     nourstest_true(Hamilcar.num_equipment == 0);
     jsonio_readJSON(PATH_JOIN("units", "Silou_test.json"), &Silou);
     nourstest_true(Silou.num_equipment == 4);
