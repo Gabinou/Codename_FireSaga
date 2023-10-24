@@ -362,7 +362,7 @@ i16 Unit_getLvl( struct Unit *u);
 void Unit_Promote(struct Unit *u, i8 new_class_i);
 
 bool Range_Valid(struct Range r1);
-struct Range Ranges_Combine(struct Range *r1, struct Range r2);
+void Ranges_Combine(struct Range *r1, struct Range r2);
 bool Range_toCombine(struct Unit *u, struct Weapon *w);
 
 

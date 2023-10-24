@@ -21,7 +21,10 @@ int Filesystem_Init(char *argv0) {
     strcat(assetsDir, DIR_SEPARATOR"assets");
 
     /* -- PhysFS init -- */
-    SDL_assert(PHYSFS_init(argv0) > 0);
+    if (PHYSFS_init(argv0) <= 0) {
+        SDL_Log("Could not initialize PhysFS");
+        exit(ERROR_Generic);
+    }
     PHYSFS_permitSymbolicLinks(1);
     /* bsa: bear strategic archive */
     PHYSFS_setSaneConfig("AvgBear", "CodenameFiresaga", "bsa", 0, 0);

@@ -400,11 +400,15 @@ bool Unit_All_Usable(struct Unit *unit) {
     /* -- Set all weapons to be usable --  */
     /* Use case: Dropping item  */
     unit->num_usable = 0;
+    bool all_usable = true;
     for (int i = 0; i < unit->num_equipment; i++) {
-        unit->eq_usable[unit->num_usable++] = i;
+        unit->eq_usable[unit->num_usable] = i;
+        if (!unit->eq_usable[unit->num_usable])
+            all_usable = false;
+        unit->num_usable++
     }
-
     SOTA_Log_FPS("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
+    return (all_usable);
 }
 
 
@@ -1386,6 +1390,7 @@ struct Range *Unit_Range_Item(struct Unit   *unit, int i) {
     } while (false);
 
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
+    return (range);
 }
 
 
@@ -1495,7 +1500,7 @@ bool Range_Valid(struct Range range) {
             && (range.max <= SOTA_MAX_RANGE));
 }
 
-struct Range Ranges_Combine(struct Range *r1, struct Range r2) {
+void Ranges_Combine(struct Range *r1, struct Range r2) {
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     // Gap example:    1  2  3  4  5
     // r1: [1,1]      |-|             (gap with    r2)
