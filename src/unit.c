@@ -405,12 +405,11 @@ bool Unit_All_Usable(struct Unit *unit) {
         unit->eq_usable[unit->num_usable] = i;
         if (!unit->eq_usable[unit->num_usable])
             all_usable = false;
-        unit->num_usable++
+        unit->num_usable++;
     }
     SOTA_Log_FPS("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
     return (all_usable);
 }
-
 
 bool Unit_Eq_Usable(const struct Unit *unit, int archetype, int i) {
     SDL_assert(i >= 0);
