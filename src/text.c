@@ -39,17 +39,17 @@ void Text_onUpdate_FPS(struct Game *sota, tnecs_entity_t entity_fps,
     if (sota->fast_forward) {
         int fps_cap     = sota->settings.FPS.cap;
         int fps_ratio   = fps / fps_cap * SOTA_100PERCENT;
-        snprintf(text->line, sizeof(char) * 5, "%d%%", fps_ratio);
+        snprintf(text->line, sizeof(char) * 8, "%d%%", fps_ratio);
     } else {
         snprintf(text->line, sizeof(char) * 5, "%.1f", fps);
     }
 
     text->len       = strlen(text->line);
     SDL_assert(text->len        >  0);
-
+    SDL_Log("%s %d", text->line, text->len);
     int width = PixelFont_Width(text->pixelfont, text->line, text->len);
     if (width != text->rect.w) {
-        text->rect.h = width;
+        text->rect.w = width;
         SDL_DestroyTexture(text->texture);
         text->texture = NULL;
     }

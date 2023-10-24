@@ -16,12 +16,12 @@ Note: The repo does not include game assets!
 - Free! \*If you can compile from source
 	- If I ever sell this game, users would pay for convenience.
 - Emulator-inspired quality-of-life improvements
-	- Fast-forward button! Up to 150x faster on my machine (15000%).
+	- Fast-forward button! Up to 300x faster on my machine (30000%).
 	- TBD: Save state button. Not so sure.
 - Handcrafted pixel-art
 	- NES color palette only
 - Developper features
-	- Interactive reloading! Press a button to reload edited .json files. Reload units, weapons, tiles, maps at the push of a button. 
+	- Interactive reloading for units, weapons, tiles, maps! Press a button to reload edited .json files. 
 
 ## Installation
 The game will be free to play, if compiled from source.
@@ -37,6 +37,7 @@ Game assets (graphics, music) to be distributed separately.
 	- [SDL_image](https://github.com/libsdl-org/SDL_image)
 	- [SDL_ttf](https://github.com/libsdl-org/SDL_ttf)
 - [GCC](https://gcc.gnu.org/install/binaries.html) compiler suite
+	- or [tcc](https://repo.or.cz/w/tinycc.git) compiler
 - [Windows only: MSYS2](https://www.msys2.org/) Linux terminal for windows + many packages
 - [mace](https://github.com/Gabinou/mace) my homemade C-only build system
 

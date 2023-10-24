@@ -63,13 +63,12 @@ struct Game Game_default = {
 
     .inputs = {0},
 
-
     .chapter            = -1,
     .state              = GAME_STATE_Title_Screen,
     .substate           = GAME_SUBSTATE_MENU,
     .state_previous     = GAME_STATE_START,
     .substate_previous  = GAME_SUBSTATE_START,
-    .fast_forward       = false,
+    .fast_forward       = true,
 };
 
 /* --- Constructors/Destructors --- */
@@ -749,7 +748,7 @@ void Game_FPS_Create(struct Game *sota, i64 in_update_time_ns) {
     SDL_assert(position != NULL);
     position->onTilemap = false;
     Position_Bounds_Set(position, 0, sota->settings.res.x, 0, sota->settings.res.y);
-    i16 in_x = sota->settings.res.x * 0.92f;
+    i16 in_x = sota->settings.res.x * 0.88f;
     i16 in_y = sota->settings.res.y * 0.02f;
     Position_Pos_Set(position, in_x, in_y);
     position->scale[0] = FPS_SCALE;
