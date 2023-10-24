@@ -113,7 +113,7 @@ struct Target test = {
     .sources            = "test/*.c,src/*.c,src/bars/,src/menu/,src/popup/,"
                           "src/systems/,src/game/,src/map,src/controller",
     .excludes           = "src/main.c",
-    .flags              = "-fwrapv,-fno-strict-overflow,-fno-strict-aliasing,"
+    .flags              = "-fwrapv,-fno-strict-overflow,-fno-strict-aliasing,-fno-delete-null-pointer-checks"
                           "-DSDL_DISABLE_IMMINTRIN_H",
     .links              = "SDL2,SDL2_image,SDL2_ttf,m,GLEW,cjson,noursmath,physfs,"
                           "tinymt,tnecs,nstr,parg",
