@@ -17,12 +17,12 @@ struct PopUp {
     popup_draw_function_t draw;
 
     void    *data;
-    float   slidefactor;
-    i32    update_wait_ns;
-    i32    timer_ns;
-    i8     type;
-    u8     slidetype;
-    bool    visible;
+    float    slidefactor;
+    i32      update_wait_ns;
+    i32      timer_ns;
+    i8       type;
+    u8       slidetype;
+    bool     visible;
 };
 
 extern struct PopUp PopUp_default;

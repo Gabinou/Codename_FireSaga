@@ -3,12 +3,12 @@
 
 /* --- MAPHPBAR --- */
 struct MapHPBar MapHPBar_default = {
-    .len = 0,
-    .unit_ent = TNECS_NULL,
-    .tilemap_pos = {0},
-    .texture = NULL,
-    .visible = false,
-    .update = true,
+    .len            = 0,
+    .unit_ent       = TNECS_NULL,
+    .tilemap_pos    = {0},
+    .texture        = NULL,
+    .visible        = false,
+    .update         = true,
 } ;
 
 void MapHPBar_Draw(struct MapHPBar *mbar, struct Camera *camera, i32 tilesize[TWO_D],

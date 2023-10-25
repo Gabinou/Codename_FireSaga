@@ -414,6 +414,21 @@ void receive_event_Quit(struct Game *sota, SDL_Event *event) {
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
+void Entities_Reload_Archetype(struct Game *sota, size_t flag_id, const char *component) {
+    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
+
+    Entities_Reload(sota, flag_id, component);
+
+    /* -- Reload entities for the all component archetypes -- */
+    size_t num_archetypes = sota->world->num_archetype_ids[flag_id];
+    for (size_t tsub = 0; tsub < num_archetypes; tsub++) {
+        size_t archetype_id = sota->world->archetype_id_bytype[flag_id][tsub];
+        Entities_Reload(sota, archetype_id, component);
+    }
+
+    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
+}
+
 void Entities_Reload(struct Game *sota, size_t flag_id, const char *component) {
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     size_t num_entities = sota->world->num_entities_bytype[flag_id];
@@ -439,14 +454,16 @@ void receive_event_Reload(struct Game *sota, SDL_Event *event) {
     /* -- Reload entities for the pure component typeflag -- */
     component_flag     = tnecs_component_names2typeflag(sota->world, 1, "Unit");
     component_flag_id  = tnecs_typeflagid(sota->world, component_flag);
-    Entities_Reload(sota, component_flag_id, "Unit");
 
-    /* -- Reload entities for the all component archetypes -- */
-    num_archetypes = sota->world->num_archetype_ids[component_flag_id];
-    for (size_t tsub = 0; tsub < num_archetypes; tsub++) {
-        size_t archetype_id = sota->world->archetype_id_bytype[component_flag_id][tsub];
-        Entities_Reload(sota, archetype_id, "Unit");
-    }
+    Entities_Reload_Archetype(sota, component_flag_id, "Unit");
+
+    // /* -- Reload entities for the all component archetypes -- */
+    // num_archetypes = sota->world->num_archetype_ids[component_flag_id];
+    // for (size_t tsub = 0; tsub < num_archetypes; tsub++) {
+    //     size_t archetype_id = sota->world->archetype_id_bytype[component_flag_id][tsub];
+    //     Entities_Reload(sota, archetype_id, "Unit");
+    // }
+    /* -- TODO:update HPbar menu -- */
 
     // /* -- Reload Sprites -- */
     // /* -- Reload entities for the pure component typeflag -- */
@@ -476,8 +493,6 @@ void receive_event_Reload(struct Game *sota, SDL_Event *event) {
     /* -- TODO: Reload Scenes -- */
 
     /* -- TODO: Reload Convoy -- */
-
-    /* -- HOW TO: Make all menus/popups update? -- */
 
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }

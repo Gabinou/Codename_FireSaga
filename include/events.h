@@ -30,15 +30,19 @@ extern tnecs_entity_t *data1_entity;
 extern tnecs_entity_t *data2_entity;
 
 /* --- CORE --- */
-extern void Event_Emit(const char *em, u32 et, i32 ec, void *d1, void *d2);
-extern void Events_Manage(struct Game *sota);
+void Event_Emit(const char *em, u32 et, i32 ec, void *d1, void *d2);
+void Events_Manage(struct Game *sota);
+
+/* --- Reload --- */
+void Entities_Reload(          struct Game *sota, size_t flag, const char *c);
+void Entities_Reload_Archetype(struct Game *sota, size_t flag, const char *c);
 
 /* -- Constructor/Destructor -- */
-extern void Events_Data_Malloc();
-extern void Events_Data_Free();
+void Events_Data_Malloc();
+void Events_Data_Free();
 
 /* -- Controller -- */
-extern tnecs_entity_t Events_Controllers_Check(struct Game *sota, i32 code);
+tnecs_entity_t Events_Controllers_Check(struct Game *sota, i32 code);
 
 /* --- EVENT NAMES --- */
 /* -- Declaration -- */
@@ -54,16 +58,16 @@ extern u32 event_End;
 
 /* -- Constructor/Destructors -- */
 extern char **event_names;
-extern void Events_Names_Declare();
-extern void Events_Names_Alloc();
-extern void Events_Names_Free();
+void Events_Names_Declare();
+void Events_Names_Alloc();
+void Events_Names_Free();
 
 /* --- HOMEMADE EVENT RECEIVERS --- */
 /* -- Function Declaration -- */
 // SDL_events are all > 0xFF (255)
 // Firesaga Events are all < 100
 // TODO: Define max number of events?
-#define REGISTER_ENUM(x, y) extern void receive_event_##x(struct Game * sota, SDL_Event *);
+#define REGISTER_ENUM(x, y) void receive_event_##x(struct Game * sota, SDL_Event *);
 #include "names/events.h"
 #undef REGISTER_ENUM
 
@@ -72,23 +76,23 @@ typedef void (* receiver_t)(struct Game *, SDL_Event *);
 extern struct dtab *receivers_dtab;
 
 /* -- Constructor/Destructors -- */
-extern void Events_Receivers_Free();
-extern void Events_Receivers_Declare();
+void Events_Receivers_Free();
+void Events_Receivers_Declare();
 
 /* --- SDL_EVENT RECEIVERS --- */
-extern void receive_event_SDL_AUDIODEVICEADDED(       struct Game *sota, SDL_Event *event);
-extern void receive_event_SDL_AUDIODEVICEREMOVED(     struct Game *sota, SDL_Event *event);
+void receive_event_SDL_AUDIODEVICEADDED(       struct Game *sota, SDL_Event *event);
+void receive_event_SDL_AUDIODEVICEREMOVED(     struct Game *sota, SDL_Event *event);
 /* NOTE: receive_event_SDL_CONTROLLERBUTTONDOWN DOES NOT repeat ever frame pressed */
-extern void receive_event_SDL_CONTROLLERBUTTONDOWN(   struct Game *sota, SDL_Event *event);
-extern void receive_event_SDL_CONTROLLERDEVICEADDED(  struct Game *sota, SDL_Event *event);
-extern void receive_event_SDL_JOYDEVICEADDED(         struct Game *sota, SDL_Event *event);
-extern void receive_event_SDL_JOYDEVICEREMOVED(       struct Game *sota, SDL_Event *event);
-extern void receive_event_SDL_CONTROLLERDEVICEREMOVED(struct Game *sota, SDL_Event *event);
+void receive_event_SDL_CONTROLLERBUTTONDOWN(   struct Game *sota, SDL_Event *event);
+void receive_event_SDL_CONTROLLERDEVICEADDED(  struct Game *sota, SDL_Event *event);
+void receive_event_SDL_JOYDEVICEADDED(         struct Game *sota, SDL_Event *event);
+void receive_event_SDL_JOYDEVICEREMOVED(       struct Game *sota, SDL_Event *event);
+void receive_event_SDL_CONTROLLERDEVICEREMOVED(struct Game *sota, SDL_Event *event);
 /* NOTE: receive_event_SDL_KEYDOWN REPEATS every frame pressed. */
-extern void receive_event_SDL_KEYDOWN(                struct Game *sota, SDL_Event *event);
-extern void receive_event_SDL_MOUSEBUTTON(            struct Game *sota, SDL_Event *event);
-extern void receive_event_SDL_QUIT(                   struct Game *sota, SDL_Event *event);
-extern void receive_event_SDL_WINDOWEVENT(            struct Game *sota, SDL_Event *event);
-extern void receive_event_SDL_WINDOWEVENT_CLOSE(      struct Game *sota, SDL_Event *event);
+void receive_event_SDL_KEYDOWN(                struct Game *sota, SDL_Event *event);
+void receive_event_SDL_MOUSEBUTTON(            struct Game *sota, SDL_Event *event);
+void receive_event_SDL_QUIT(                   struct Game *sota, SDL_Event *event);
+void receive_event_SDL_WINDOWEVENT(            struct Game *sota, SDL_Event *event);
+void receive_event_SDL_WINDOWEVENT_CLOSE(      struct Game *sota, SDL_Event *event);
 
 #endif /* EVENTS_H */
