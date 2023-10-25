@@ -34,8 +34,8 @@ void Event_Emit(const char *em, u32 et, i32 ec, void *d1, void *d2);
 void Events_Manage(struct Game *sota);
 
 /* --- Reload --- */
-void Entities_Reload(          struct Game *sota, size_t flag, const char *c);
-void Entities_Reload_Archetype(struct Game *sota, size_t flag, const char *c);
+void Reload_Entities(          struct Game *sota, size_t flag, const char *c);
+void Reload_Entities_Archetype(struct Game *sota, size_t flag, const char *c);
 
 /* -- Constructor/Destructor -- */
 void Events_Data_Malloc();

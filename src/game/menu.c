@@ -124,8 +124,9 @@ void Game_GrowthsMenu_Create(struct Game *sota) {
     }
     struct MenuComponent *mc = TNECS_GET_COMPONENT(sota->world, sota->GM_menu, MenuComponent);
     SDL_assert(mc != NULL);
-    mc->type = MENU_TYPE_GROWTHS;
-    mc->draw = &GrowthsMenu_Draw;
+    mc->type        = MENU_TYPE_GROWTHS;
+    mc->draw        = &GrowthsMenu_Draw;
+    mc->set_update  = &GrowthsMenu_setUpdate;
 
     struct GrowthsMenu *GM = GrowthsMenu_Alloc();
     SDL_assert(GM != NULL);
@@ -187,8 +188,9 @@ void Game_StatsMenu_Create(struct Game *sota) {
     }
     struct MenuComponent *mc;
     mc = TNECS_GET_COMPONENT(sota->world, sota->stats_menu, MenuComponent);
-    mc->type = MENU_TYPE_STATS;
-    mc->draw = &StatsMenu_Draw;
+    mc->type        = MENU_TYPE_STATS;
+    mc->draw        = &StatsMenu_Draw;
+    mc->set_update  = &StatsMenu_setUpdate;
 
     /* stats_menu struct init */
     struct StatsMenu *stats_menu = StatsMenu_Alloc();
@@ -399,6 +401,7 @@ void Game_PlayerSelectMenu_Create(struct Game *sota, i8 in_menu) {
     mc = TNECS_GET_COMPONENT(sota->world, ent, MenuComponent);
     mc->type                    = MENU_TYPE_PLAYER_SELECT;
     mc->draw                    = &PlayerSelectMenu_Draw;
+    mc->set_update              = &PlayerSelectMenu_setUpdate;
     mc->visible                 = true;
 
     struct PlayerSelectMenu *psm = PlayerSelectMenu_Alloc();
@@ -474,8 +477,9 @@ void Game_WeaponSelectMenu_Create(struct Game *sota) {
     }
     struct MenuComponent *mc;
     mc = TNECS_GET_COMPONENT(sota->world, sota->weapon_select_menu, MenuComponent);
-    mc->type = MENU_TYPE_WEAPON_SELECT;
-    mc->draw = &LoadoutSelectMenu_Draw;
+    mc->type        = MENU_TYPE_WEAPON_SELECT;
+    mc->draw        = &LoadoutSelectMenu_Draw;
+    mc->set_update  = &LoadoutSelectMenu_setUpdate;
 
     // /* n9patch init */
     // mc->n9patch.patch_pixels.x  = MENU_PATCH_PIXELS;
@@ -557,8 +561,9 @@ void Game_TradeMenu_Create(struct Game *sota) {
         // TODO: destroy menu?
     }
     struct MenuComponent *mc = TNECS_GET_COMPONENT(sota->world, sota->trade_menu, MenuComponent);
-    mc->type =                 MENU_TYPE_TRADE;
-    // mc->draw =                 &TradeMenu_Draw;
+    mc->type            = MENU_TYPE_TRADE;
+    // mc->draw         = &TradeMenu_Draw;
+    // mc->set_update   = &TradeMenu_setUpdate;
 
     /* n9patch init */
     mc->n9patch.patch_pixels.x =    MENU_PATCH_PIXELS;
@@ -656,6 +661,7 @@ void Game_ItemSelectMenu_Create(struct Game *sota) {
     struct MenuComponent *mc = TNECS_GET_COMPONENT(sota->world, sota->item_select_menu, MenuComponent);
     mc->type                        = MENU_TYPE_ITEM_SELECT;
     mc->draw                        = &LoadoutSelectMenu_Draw;
+    mc->set_update                  = &LoadoutSelectMenu_setUpdate;
 
     /* n9patch init */
     mc->n9patch.patch_pixels.x      = MENU_PATCH_PIXELS;
@@ -736,8 +742,9 @@ void Game_StaffSelectMenu_Create(struct Game *sota) {
     }
     struct MenuComponent *mc;
     mc          = TNECS_GET_COMPONENT(sota->world, sota->staff_select_menu, MenuComponent);
-    mc->type    = MENU_TYPE_STAFF_SELECT;
-    mc->draw    = &LoadoutSelectMenu_Draw;
+    mc->type        = MENU_TYPE_STAFF_SELECT;
+    mc->draw        = &LoadoutSelectMenu_Draw;
+    mc->set_update  = &LoadoutSelectMenu_setUpdate;
 
     /* stats_menu struct init */
     struct LoadoutSelectMenu *ssm    = LoadoutSelectMenu_Alloc();
@@ -986,9 +993,10 @@ void Game_FirstMenu_Create(struct Game *sota) {
     struct MenuComponent *mc;
     struct PlayerSelectMenu *psm = PlayerSelectMenu_Alloc();
     mc = TNECS_GET_COMPONENT(sota->world, sota->first_menu, MenuComponent);
-    mc->data    = psm;
-    mc->type    = MENU_TYPE_PLAYER_SELECT;
-    mc->draw    = &PlayerSelectMenu_Draw;
+    mc->data        = psm;
+    mc->type        = MENU_TYPE_PLAYER_SELECT;
+    mc->draw        = &PlayerSelectMenu_Draw;
+    mc->set_update  = &PlayerSelectMenu_setUpdate;
     mc->visible = true;
 
     FirstMenu_Load(psm, sota->renderer, &mc->n9patch);

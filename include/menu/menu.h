@@ -28,7 +28,8 @@ enum MENU_ELEM_POS_FRAME {
 
 /* --- TYPEDEFS --- */
 typedef struct MenuComponent MenuComponent;
-typedef void (* menu_draw_function_t)(MenuComponent *mc, SDL_Texture *rt, SDL_Renderer *r);
+typedef void (* menu_draw_f)(  MenuComponent *mc, SDL_Texture *rt, SDL_Renderer *r);
+typedef void (* menu_set_update_f)(MenuComponent *mc);
 
 struct MenuComponent {
     struct n9Patch n9patch;
@@ -46,7 +47,8 @@ struct MenuComponent {
     void *data;
 
     /* -- Generic Draw function -- */
-    menu_draw_function_t draw;
+    menu_draw_f         draw;
+    menu_set_update_f   set_update;
 
     i8 elem;     /* -1 is NULL */
     i8 elem_num;
