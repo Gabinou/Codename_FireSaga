@@ -46,7 +46,6 @@ void Text_onUpdate_FPS(struct Game *sota, tnecs_entity_t entity_fps,
 
     text->len       = strlen(text->line);
     SDL_assert(text->len        >  0);
-    SDL_Log("%s %d", text->line, text->len);
     int width = PixelFont_Width(text->pixelfont, text->line, text->len);
     if (width != text->rect.w) {
         text->rect.w = width;
