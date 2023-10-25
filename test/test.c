@@ -39,7 +39,7 @@
 #include "popup/test_objective.h"
 #include "popup/test_text_bubble.h"
 
-int render_tests() {
+void render_tests() {
     SDL_Log("Running rendering tests\n");
     printf("Running rendering tests\n");
     test_menu_growths();
@@ -55,7 +55,7 @@ int render_tests() {
     test_text_bubble();
 }
 
-int unit_tests() {
+void unit_tests() {
     SDL_Log("Running nourstests\n");
     printf("Running nourstests\n");
     nourstest_run("AI ",            test_AI);

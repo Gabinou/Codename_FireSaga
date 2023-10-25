@@ -256,8 +256,8 @@ char **Names_skillNames(uint64_t in_skillscode) {
     char *temp_str = NULL;
 #include "names/skills_passive.h"
 #include "names/skills_active.h"
-    return (skill_names);
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
+    return (skill_names);
 }
 #undef  REGISTER_ENUM
 
@@ -271,8 +271,8 @@ char **Names_unitstateNames(uint32_t in_statecode) {
     char *temp_str = NULL;
     char **state_names = DARR_INIT(state_names, char *, UNIT_STATUS_END);
 #include "names/units_statuses.h"
-    return (state_names);
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
+    return (state_names);
 }
 #undef  REGISTER_ENUM
 
@@ -312,8 +312,8 @@ char **Names_wpnEffects(u64 in_effect) {
     char *temp_str = NULL;
     char **wpn_effects = DARR_INIT(wpn_effects, char *, UNIT_TYPE_END);
 #include "names/items_effects.h"
-    return (wpn_effects);
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
+    return (wpn_effects);
 }
 #undef REGISTER_ENUM
 

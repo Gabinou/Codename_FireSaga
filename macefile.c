@@ -2,7 +2,7 @@
 #include "mace.h"
 
 #ifndef CC
-    #define CC "tcc"
+    #define CC "gcc"
 #endif
 #ifndef AR
     #define AR "ar"
@@ -52,15 +52,15 @@ struct Target physfs = {
     .sources            = ".",
     /* Disable all archives except .zip */
     /* Note: tcc can't compile 7z -> __cpuid missing */
-    .flags              = "-DPHYSFS_SUPPORTS_7Z=0"
-                          "-DPHYSFS_SUPPORTS_GRP=0"
-                          "-DPHYSFS_SUPPORTS_WAD=0"
-                          "-DPHYSFS_SUPPORTS_CSM=0"
-                          "-DPHYSFS_SUPPORTS_HOG=0"
-                          "-DPHYSFS_SUPPORTS_MVL=0"
-                          "-DPHYSFS_SUPPORTS_QPAK=0"
-                          "-DPHYSFS_SUPPORTS_ISO9660=0"
-                          "-DPHYSFS_SUPPORTS_SLB=0"
+    .flags              = "-DPHYSFS_SUPPORTS_7Z=0,"
+                          "-DPHYSFS_SUPPORTS_GRP=0,"
+                          "-DPHYSFS_SUPPORTS_WAD=0,"
+                          "-DPHYSFS_SUPPORTS_CSM=0,"
+                          "-DPHYSFS_SUPPORTS_HOG=0,"
+                          "-DPHYSFS_SUPPORTS_MVL=0,"
+                          "-DPHYSFS_SUPPORTS_QPAK=0,"
+                          "-DPHYSFS_SUPPORTS_ISO9660=0,"
+                          "-DPHYSFS_SUPPORTS_SLB=0,"
                           "-DPHYSFS_SUPPORTS_VDF=0",
     .base_dir           = "third_party/physfs",
     .allatonce          = false,

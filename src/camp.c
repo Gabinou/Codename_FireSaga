@@ -58,6 +58,7 @@ void Camp_Job_Fire(struct Camp *in_camp, i16 unit_id, i16 job_id) {
     if (index < --in_camp->workers[job_id])
         memmove(job_arr + index, job_arr + index + 1,
                 (CAMP_JOB_MAX - index - 1) * sizeof(*job_arr));
+
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
@@ -83,8 +84,8 @@ u8 Camp_hasJob(struct Camp *in_camp, i16 unit_id) {
             break;
         }
     }
-    return (has_job);
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
+    return (has_job);
 }
 
 u8 *Camp_Job_Get(struct Camp *in_camp, i16 job_id) {
@@ -92,8 +93,8 @@ u8 *Camp_Job_Get(struct Camp *in_camp, i16 job_id) {
     SDL_assert(in_camp->workers[job_id] < (max_jobs[job_id] - 1));
     u8 *jobs_arr = (u8 *)&in_camp->guards;
     u8 *job_arr = jobs_arr + (job_id * CAMP_JOB_MAX);
-    return (job_arr);
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
+    return (job_arr);
 }
 
 void Camp_Jobs_Clear(struct Camp *in_camp) {
