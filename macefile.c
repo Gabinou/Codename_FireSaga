@@ -53,15 +53,15 @@ struct Target physfs = {
     /* Disable all archives except .zip */
     /* Note: tcc can't compile 7z -> __cpuid missing */
     .flags              = "-DPHYSFS_SUPPORTS_7Z=0"
-                 "-DPHYSFS_SUPPORTS_GRP=0"
-                 "-DPHYSFS_SUPPORTS_WAD=0"
-                 "-DPHYSFS_SUPPORTS_CSM=0"
-                 "-DPHYSFS_SUPPORTS_HOG=0"
-                 "-DPHYSFS_SUPPORTS_MVL=0"
-                 "-DPHYSFS_SUPPORTS_QPAK=0"
-                 "-DPHYSFS_SUPPORTS_ISO9660=0"
-                 "-DPHYSFS_SUPPORTS_SLB=0"
-                 "-DPHYSFS_SUPPORTS_VDF=0",
+                          "-DPHYSFS_SUPPORTS_GRP=0"
+                          "-DPHYSFS_SUPPORTS_WAD=0"
+                          "-DPHYSFS_SUPPORTS_CSM=0"
+                          "-DPHYSFS_SUPPORTS_HOG=0"
+                          "-DPHYSFS_SUPPORTS_MVL=0"
+                          "-DPHYSFS_SUPPORTS_QPAK=0"
+                          "-DPHYSFS_SUPPORTS_ISO9660=0"
+                          "-DPHYSFS_SUPPORTS_SLB=0"
+                          "-DPHYSFS_SUPPORTS_VDF=0",
     .base_dir           = "third_party/physfs",
     .allatonce          = false,
     .kind               = MACE_STATIC_LIBRARY,
@@ -86,7 +86,7 @@ struct Target win_sota = {
     .links              = "SDL2,SDL2_image,SDL2_ttf,m,cjson,noursmath,physfs,"
                           "tinymt,tnecs,nstr,parg",
     .flags              = "-lmingw32,-lSDL2main,-fwrapv,-fno-strict-overflow,"
-                          "-fno-strict-aliasing,-fno-strict-aliasing,-fno-delete-null-pointer-checks",
+                          "-fno-strict-aliasing,-fno-delete-null-pointer-checks",
     .command_pre_build  = "astyle --options=utils/style.txt --verbose "
                           "--recursive src/* include/* test/* names/*",
     .kind               = MACE_EXECUTABLE,
@@ -104,8 +104,8 @@ struct Target sota = {
                           "src/game/,src/map,src/controller",
     .links              = "SDL2,SDL2_image,SDL2_ttf,m,GLEW,cjson,noursmath,physfs,"
                           "tinymt,tnecs,nstr,parg",
-    .flags              = "-fwrapv,-fno-strict-overflow,-fno-strict-aliasing,-fno-delete-null-pointer-checks,"
-                          "-DSDL_DISABLE_IMMINTRIN_H",
+    .flags              = "-fwrapv,-fno-strict-overflow,-fno-strict-aliasing,"
+                          "-fno-delete-null-pointer-checks,-DSDL_DISABLE_IMMINTRIN_H",
     .command_pre_build  = "astyle --options=utils/style.txt --verbose "
                           "--recursive src/* include/* test/* names/*",
     .kind               = MACE_EXECUTABLE,
@@ -123,8 +123,8 @@ struct Target test = {
     .sources            = "test/*.c,src/*.c,src/bars/,src/menu/,src/popup/,"
                           "src/systems/,src/game/,src/map,src/controller",
     .excludes           = "src/main.c",
-    .flags              = "-fwrapv,-fno-strict-overflow,-fno-strict-aliasing,-fno-delete-null-pointer-checks"
-                          "-DSDL_DISABLE_IMMINTRIN_H",
+    .flags              = "-fwrapv,-fno-strict-overflow,-fno-strict-aliasing,"
+                          "-fno-delete-null-pointer-checks,-DSDL_DISABLE_IMMINTRIN_H",
     .links              = "SDL2,SDL2_image,SDL2_ttf,m,GLEW,cjson,noursmath,physfs,"
                           "tinymt,tnecs,nstr,parg",
     .command_pre_build  = "astyle --options=utils/style.txt --verbose "
@@ -133,7 +133,7 @@ struct Target test = {
 };
 
 int mace(int argc, char *argv[]) {
-    /* MACE_SET_COMPILER(CC); */
+    /* -- Setting compiler, directories -- */
     mace_set_compiler(CC);
     mace_set_archiver(AR);
     mace_set_build_dir("build");
