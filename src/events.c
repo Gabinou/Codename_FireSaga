@@ -459,7 +459,10 @@ void Reload_JSON(void *struct_ptr) {
 
 void Reload_Menu(void *struct_ptr) {
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
-    b32 *update  = ((b32 *)struct_ptr + MENU_UPDATE_bOFFSET);
+    struct MenuComponent *mc = struct_ptr;
+    void *menu = mc->data;
+
+    b32 *update  = ((b32 *)menu + MENU_UPDATE_bOFFSET);
     *update      = true;
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
