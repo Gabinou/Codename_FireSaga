@@ -224,10 +224,10 @@ void Game_PopUp_Unit_Place(struct Game *sota, struct Point cursor_pos) {
     }
 
     /* - Is popup is visible - */
-    struct PopUp *popup;
-    struct Position *position;
-    struct Slider *slider;
-    struct SliderOffscreen *offscreen;
+    struct PopUp            *popup;
+    struct Position         *position;
+    struct Slider           *slider;
+    struct SliderOffscreen  *offscreen;
     popup     = TNECS_GET_COMPONENT(sota->world, sota->popups[POPUP_TYPE_HUD_UNIT], PopUp);
     position  = TNECS_GET_COMPONENT(sota->world, sota->popups[POPUP_TYPE_HUD_UNIT], Position);
     slider    = TNECS_GET_COMPONENT(sota->world, sota->popups[POPUP_TYPE_HUD_UNIT], Slider);

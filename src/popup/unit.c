@@ -9,8 +9,8 @@ struct PopUp_Unit PopUp_Unit_default = {
     .update           = true,
     .corner           = SOTA_DIRECTION_DIAGONAL_TL,
     .offset           = {0, 0},
-    .cursor_limit_min =  {-1, -1},
-    .cursor_limit_max =  {-1, -1},
+    .cursor_limit_min = {-1, -1},
+    .cursor_limit_max = {-1, -1},
     .distance         = -1,
 };
 

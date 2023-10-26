@@ -340,7 +340,7 @@ void fsm_eGlbRng_ssStby(struct Game *sota) {
 void fsm_eCrsHvUnit_ssStby(struct Game *sota, tnecs_entity_t hov_ent) {
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     SDL_assert(hov_ent > TNECS_NULL);
-
+    getchar();
     /* -- Show popup_unit -- */
     // TODO: put unit popup Loading into Map/Gameplay loading functions
     tnecs_entity_t popup_ent = sota->popups[POPUP_TYPE_HUD_UNIT];
@@ -414,7 +414,6 @@ void fsm_eCrsHvUnit_ssMapCndt(struct Game *sota, tnecs_entity_t hov_ent) {
 // -- FSM: Cursor_Dehovers_Unit --
 void fsm_eCrsDeHvUnit_ssStby(struct Game *sota, tnecs_entity_t dehov_ent) {
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
-
     /* -- Re-computing overlay -- */
     Map_Palettemap_Autoset(sota->map, MAP_OVERLAY_DANGER + MAP_OVERLAY_GLOBAL_DANGER);
     Map_Stacked_Dangermap_Reset(sota->map);
@@ -445,6 +444,8 @@ void fsm_eCrsDeHvUnit_ssStby(struct Game *sota, tnecs_entity_t dehov_ent) {
 
     // In case an enemy unit was selected.
     sota->selected_unit_entity = TNECS_NULL;
+
+    SDL_assert(popup_unit->unit == NULL);
 
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }

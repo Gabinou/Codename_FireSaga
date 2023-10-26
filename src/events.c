@@ -460,6 +460,12 @@ void Reload_JSON(void *struct_ptr) {
 void Reload_Menu(void *struct_ptr) {
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     struct Menu *mc     = struct_ptr;
+
+    if (!mc->visible) {
+        SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
+        return;
+    }
+
     void *menu          = mc->data;
 
     char *update_byte   = ((char *)menu + MENU_UPDATE_bOFFSET);
@@ -472,6 +478,12 @@ void Reload_Menu(void *struct_ptr) {
 void Reload_Popup(void *struct_ptr) {
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     struct PopUp *pc    = struct_ptr;
+
+    if (!pc->visible) {
+        SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
+        return;
+    }
+
     void *popup         = pc->data;
 
     char *update_byte   = ((char *)popup + MENU_UPDATE_bOFFSET);
