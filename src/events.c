@@ -485,6 +485,7 @@ void receive_event_Reload(struct Game *sota, SDL_Event *event) {
     Reload_Entities_Archetype(sota, Reload_JSON,  "Unit");
     // Reload_Entities_Archetype(sota, Reload_JSON, "Sprite");
 
+    // Reload_Entities_Archetype(sota, Reload_Popup, "PopUp");
     Reload_Entities_Archetype(sota, Reload_Popup, "Popup");
     Reload_Entities_Archetype(sota, Reload_Menu,  "MenuComponent");
 

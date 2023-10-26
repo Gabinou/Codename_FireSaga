@@ -355,9 +355,9 @@ bool tnecs_system_order_switch(struct tnecs_World *w, tnecs_phase_t phase_id,
                                size_t order1, size_t order2);
 
 /************************ UTILITY FUNCTIONS/MACROS ***************************/
-size_t tnecs_component_name2id(struct tnecs_World * w,
+int tnecs_component_name2id(struct tnecs_World * w,
                                const tnecs_str_t * name);
-size_t tnecs_component_hash2id(struct tnecs_World *w, tnecs_hash_t hash);
+int tnecs_component_hash2id(struct tnecs_World *w, tnecs_hash_t hash);
 size_t tnecs_component_order_bytype(struct tnecs_World *w, size_t component_id,
                                     tnecs_component_t typeflag);
 size_t tnecs_component_order_bytypeid(struct tnecs_World *w, size_t component_id,

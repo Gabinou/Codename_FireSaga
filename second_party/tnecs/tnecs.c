@@ -952,15 +952,15 @@ bool tnecs_system_order_switch(struct tnecs_World *world, tnecs_phase_t phase_id
 }
 
 /************************ UTILITY FUNCTIONS/MACROS ***************************/
-size_t tnecs_component_name2id(struct tnecs_World * world,
+int tnecs_component_name2id(struct tnecs_World * world,
                                const tnecs_str_t * name) {
     TNECS_DEBUG_PRINTF("%s\n", __func__);
     return (tnecs_component_hash2id(world, tnecs_hash_djb2(name)));
 }
 
-size_t tnecs_component_hash2id(struct tnecs_World *world, tnecs_hash_t hash) {
+int tnecs_component_hash2id(struct tnecs_World *world, tnecs_hash_t hash) {
     TNECS_DEBUG_PRINTF("%s\n", __func__);
-    size_t out;
+    int out = -1;
     for (size_t i = 0; i < world->num_components; i++) {
         if (world->component_hashes[i] == hash) {
             out = i;
@@ -994,7 +994,13 @@ tnecs_component_t tnecs_component_names2typeflag(struct tnecs_World *world, size
     tnecs_component_t typeflag = 0;
     va_start(ap, argnum);
     for (size_t i = 0; i < argnum; i++) {
-        typeflag += world->typeflags[tnecs_component_name2id(world, va_arg(ap, const tnecs_str_t *))];
+        const tnecs_str_t *comp = va_arg(ap, const tnecs_str_t *);
+        int id = tnecs_component_name2id(world, comp);
+        if((id < 0) || (id >= world->num_components)) {
+            printf("tnecs Error: component %s not found\n", comp);
+            exit(1);
+        }
+        typeflag += world->typeflags[id];
     }
     va_end(ap);
     return (typeflag);
