@@ -23,5 +23,13 @@ typedef int8_t        i8;
 typedef int16_t       i16;
 typedef int32_t       i32;
 typedef int64_t       i64;
+/* - Why no fast types? - */
+//   - Variable size type make byte-alignment more difficult
+//   - int should be the fastest
+
+/* -- Boolean types -- */
+/* - Why define my own boolean? - */
+//   - bool type size depends on architecture
+typedef int32_t       b32;
 
 #endif /* TYPES_H */

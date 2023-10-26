@@ -62,7 +62,6 @@ enum POPUP_LOADOUT_STATS {
     PLS_HANDR_X         =  PLS_PATCH_X_SIZE * PLS_PATCH_PIXELS - PLS_HANDS_TILESIZE - 1,
     PLS_HANDR_Y         =  9,
 
-
     PLS_DEST_X          =  0,
     PLS_DEST_Y          =  2,
 
@@ -168,6 +167,7 @@ enum PLS_ELEMS {
 };
 
 typedef struct PopUp_Loadout_Stats {
+    b32 update;
     tnecs_entity_t unit_ent;
     struct Unit *unit;
     SDL_Texture *texture;
@@ -188,12 +188,12 @@ typedef struct PopUp_Loadout_Stats {
     int ry_offset;
 
     int distance;
-    bool l_equip_override : 1;
-    bool r_equip_override : 1;
+    bool l_equip_override   : 1;
+    bool r_equip_override   : 1;
     bool tophand_stronghand : 1; // If false, tophand is lefthand
-    bool update : 1;
-    bool twoHanding : 1; // If false, tophand is lefthand
+    bool twoHanding         : 1; // If false, tophand is lefthand
 } PopUp_Loadout_Stats;
+
 extern struct PopUp_Loadout_Stats PopUp_Loadout_Stats_default;
 
 /* --- Constructor/Destructor --- */
@@ -217,7 +217,8 @@ void PopUp_Loadout_Stats_Weakhand_Offset(struct PopUp_Loadout_Stats *pls);
 /* --- Rendering --- */
 void PopUp_Loadout_Stats_Draw(struct PopUp *p, struct Point pos,
                               SDL_Texture *rt, SDL_Renderer *r);
-void PopUp_Loadout_Stats_Update(struct PopUp_Loadout_Stats *pls, struct n9Patch *n9patch,
+void PopUp_Loadout_Stats_Update(struct PopUp_Loadout_Stats *pls,
+                                struct n9Patch *n9patch,
                                 SDL_Texture *rt, SDL_Renderer *r);
 
 /* -- Drawing elements -- */

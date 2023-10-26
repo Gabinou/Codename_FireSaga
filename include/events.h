@@ -16,6 +16,7 @@
 #include "narrative.h"
 #include "enums.h"
 #include "arrow.h"
+#include "menu/menu.h"
 #include "macros.h"
 #include "nmath.h"
 #include "globals.h"
@@ -34,8 +35,16 @@ void Event_Emit(const char *em, u32 et, i32 ec, void *d1, void *d2);
 void Events_Manage(struct Game *sota);
 
 /* --- Reload --- */
-void Reload_Entities(          struct Game *sota, size_t flag, const char *c);
-void Reload_Entities_Archetype(struct Game *sota, size_t flag, const char *c);
+typedef void (* entity_reload_f)(void *struct_ptr);
+
+/* -- Reload all entities using specific reload function -- */
+void Reload_Entities(          struct Game *sota, entity_reload_f func, size_t flag, const char *c);
+void Reload_Entities_Archetype(struct Game *sota, entity_reload_f func, const char *c);
+
+/* -- Reload funcs -- */
+void Reload_JSON( void *struct_ptr);
+void Reload_Menu( void *struct_ptr);
+void Reload_Popup(void *struct_ptr);
 
 /* -- Constructor/Destructor -- */
 void Events_Data_Malloc();

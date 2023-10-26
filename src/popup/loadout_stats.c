@@ -477,6 +477,7 @@ void PopUp_Loadout_Stats_Weakhand_Offset(struct PopUp_Loadout_Stats *pls) {
     }
 }
 
+/* --- Draw --- */
 void _PopUp_Loadout_Stats_Draw_Hands(struct PopUp_Loadout_Stats *pls, SDL_Renderer *renderer) {
     SDL_Rect dstrect, srcrect;
     int stronghand = Unit_Hand_Strong(pls->unit);

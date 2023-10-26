@@ -45,7 +45,6 @@ void Game_PopUp_Loadout_Stats_Create(struct Game *sota) {
     *popup              = PopUp_default;
     popup->type         = POPUP_TYPE_HUD_LOADOUT_STATS;
     popup->draw         = &PopUp_Loadout_Stats_Draw;
-    popup->set_update   = &PopUp_Loadout_Stats_setUpdate;
 
     popup->visible      = true;
 
@@ -87,7 +86,6 @@ void Game_PopUp_Pre_Combat_Create(struct Game *sota) {
     mc = TNECS_GET_COMPONENT(sota->world, sota->pre_combat_menu, MenuComponent);
     mc->type        = MENU_TYPE_PRE_COMBAT;
     mc->draw        = &PreCombatMenu_Draw;
-    mc->set_update  = &PreCombatMenu_setUpdate;
 
     /* - stats_menu struct init - */
     struct PreCombatMenu *pcm = PreCombatMenu_Alloc();
@@ -162,7 +160,6 @@ void Game_PopUp_Unit_Create(struct Game *sota) {
     *popup = PopUp_default;
     popup->type         = POPUP_TYPE_HUD_UNIT;
     popup->draw         = &PopUp_Unit_Draw;
-    popup->set_update   = &PopUp_Unit_setUpdate;
     popup->visible = true;
 
     /* - n9Patch - */
@@ -344,7 +341,6 @@ void Game_PopUp_Map_Combat_Create(struct Game *sota) {
 
     popup->visible      = true;
     popup->draw         = &PopUp_Map_Combat_Draw;
-    popup->set_update   = &PopUp_Map_Combat_setUpdate;
 
     /* - Making PopUp_Map_Combat - */
     if (popup->data != NULL)
@@ -473,7 +469,6 @@ void Game_PopUp_Tile_Create(struct Game *sota) {
     popup->type = POPUP_TYPE_HUD_TILE;
     popup->visible      = true;
     popup->draw         = &PopUp_Tile_Draw;
-    popup->set_update   = &PopUp_Tile_setUpdate;
 
     /* - Popup - */
     popup->data = malloc(sizeof(struct PopUp_Tile));
