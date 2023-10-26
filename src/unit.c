@@ -2259,6 +2259,7 @@ struct Unit_stats Unit_effectiveStats(struct Unit *unit) {
     if (unit->equipped[UNIT_HAND_RIGHT]) {
         SDL_assert(unit->_equipment[UNIT_HAND_RIGHT].id != ITEM_NULL);
         weapon = DTAB_GET(unit->weapons_dtab, unit->_equipment[UNIT_HAND_RIGHT].id);
+        SDL_assert(weapon != ITEM_NULL);
         Unit_stats_plus(unit->bonus_stats, weapon->item->bonus_stats);
         Unit_stats_plus(unit->malus_stats, weapon->item->malus_stats);
     }

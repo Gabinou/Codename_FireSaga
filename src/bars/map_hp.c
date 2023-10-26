@@ -35,10 +35,13 @@ void MapHPBar_Update(struct MapHPBar *mbar, struct Camera *camera,
                      SDL_Renderer *renderer, tnecs_world_t *world) {
     SOTA_Log_FPS("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     SDL_assert(mbar->unit_ent > TNECS_NULL);
+    SDL_Log("mbar->unit_ent %d", mbar->unit_ent);
     mbar->update = false;
 
     /* -- Getting current HP -- */
     struct Unit *unit = TNECS_GET_COMPONENT(world, mbar->unit_ent, Unit);
+    SDL_Log("unit %p", unit);
+    SDL_assert(unit != NULL);
     int current_hp = unit->current_hp;
 
     /* -- Computing visibility -- */

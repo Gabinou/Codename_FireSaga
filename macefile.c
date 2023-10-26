@@ -8,8 +8,8 @@
     #define AR "ar"
 #endif
 
-struct Config debug         = {.flags = "-g -rdynamic -O0"};
-struct Config release       = {.flags = "-O2"};
+struct Config debug         = {.flags = "-g -rdynamic -O0 -DSDL_ASSERT_LEVEL=2"};
+struct Config release       = {.flags = "-O2 -DSDL_ASSERT_LEVEL=1"};
 
 struct Config win_debug     = {.flags = "-g -O0",              .target = "win_sota",
                                .cc    = "x86_64-w64-mingw32-gcc",  .ar = "x86_64-w64-mingw32-ar"};

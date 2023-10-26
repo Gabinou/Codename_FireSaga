@@ -493,6 +493,13 @@ void Reload_Popup(void *struct_ptr) {
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
+void Reload_MapHpBar(void *struct_ptr) {
+    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
+    struct MapHPBar *map_hp_bar = struct_ptr;
+    map_hp_bar->update = true;
+    SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
+}
+
 void receive_event_Reload(struct Game *sota, SDL_Event *event) {
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
 
@@ -519,7 +526,9 @@ void receive_event_Reload(struct Game *sota, SDL_Event *event) {
 
     /* -- Reload Map -- */
     /* - Reload Map tiles - */
-    // TODO: Reload unit hpbars
+
+    /* - Reload unit hpbars - */
+    Reload_Entities_Archetype(sota, Reload_MapHpBar,  "MapHPBar");
 
     /* -- TODO: Reload Scenes -- */
 
