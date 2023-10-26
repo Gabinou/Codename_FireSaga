@@ -76,6 +76,7 @@ struct Text_Bubble_Tail {
 };
 
 struct Text_Bubble {
+    b32 update;
     char                       *text;
     int                         width;
     int                         height;
@@ -93,7 +94,6 @@ struct Text_Bubble {
     SDL_Texture                *texture_vscroll;
     struct PixelFont           *pixelfont;
 
-    bool update         : 1;
     bool scroll         : 1;
     bool animating      : 1;
     bool vscroll_dir    : 1;

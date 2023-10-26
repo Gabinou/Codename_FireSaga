@@ -39,7 +39,6 @@ bool StaffSelectMenu_canEqItem(    struct LoadoutSelectMenu *ssm);
 void StaffSelectMenu_Switch_Items( struct LoadoutSelectMenu *ssm);
 void StaffSelectMenu_Switch_Staves(struct LoadoutSelectMenu *ssm);
 
-
 extern struct MenuElemDirections    ssm_links[SSM_ELEMS_NUM];
 extern struct Point   ssm_elem_pos[SSM_ELEMS_NUM];
 extern struct Point   ssm_elem_box[SSM_ELEMS_NUM];

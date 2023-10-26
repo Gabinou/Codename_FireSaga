@@ -383,7 +383,7 @@ struct StatsMenu {
     struct PixelFont *pixelnours_big;
 
     bool update             : 1;
-    bool update_stats       : 1;
+    bool update_stats       : 1; /* only false in tests */
     bool tophand_stronghand : 1; /* If false, tophand is lefthand */
 };
 extern struct StatsMenu StatsMenu_default;

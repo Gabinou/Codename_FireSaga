@@ -173,14 +173,14 @@ extern struct Point GM_cursor_box[GM_ELEM_NUM];
 #define GROWTHSMENU_POS(xory, offset) (offset * n9patch->scale.xory)
 
 struct GrowthsMenu {
+    b32 update;
     struct Point pos; /* [pixels], MENU_POS_bOFFSET = 0 */
     SDL_Texture      *texture;
     struct Unit      *unit;
     struct PixelFont *pixelnours;
     struct PixelFont *pixelnours_big;
     struct Graph graph;
-    bool update       : 1;
-    bool update_stats : 1;
+    bool update_stats : 1; /* only false in tests */
 };
 extern struct GrowthsMenu GrowthsMenu_default;
 

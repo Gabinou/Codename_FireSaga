@@ -141,6 +141,8 @@ extern struct Point   wsm_cursor_pos[WSM_ELEMS_NUM];
 extern struct Point   wsm_cursor_box[WSM_ELEMS_NUM];
 
 struct LoadoutSelectMenu {
+    b32 update;
+
     struct Point pos; /* [pixels], MENU_POS_bOFFSET = 0 */
 
     SDL_Texture *texture;
@@ -161,7 +163,6 @@ struct LoadoutSelectMenu {
 
     int archetype_stronghand;
     int archetype_weakhand;
-    bool update:             1;
 };
 extern struct LoadoutSelectMenu LoadoutSelectMenu_default;
 

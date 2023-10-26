@@ -84,6 +84,8 @@ enum POPUP_MAP_COMBAT {
 };
 
 typedef struct PopUp_Map_Combat {
+    b32 update;
+
     struct Unit *aggressor;
     struct Unit *defendant;
     const struct Point *agg_pos;
@@ -109,7 +111,6 @@ typedef struct PopUp_Map_Combat {
     u8 dft_current_hp;
 
     int current_attack;
-    bool update;
 } PopUp_Map_Combat;
 extern struct PopUp_Map_Combat PopUp_Map_Combat_default;
 

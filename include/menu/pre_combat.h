@@ -195,6 +195,7 @@ extern struct Point pcm_elem_pos[PRE_COMBAT_MENU_ELEM_NUM];
 extern struct Point pcm_elem_box[PRE_COMBAT_MENU_ELEM_NUM];
 
 struct PreCombatMenu {
+    b32 update;
     struct Point pos; // [pixels], MENU_POS_bOFFSET = 0
     int mode;
     SDL_Texture *texture;
@@ -217,8 +218,6 @@ struct PreCombatMenu {
 
     struct PixelFont *pixelnours;
     struct PixelFont *pixelnours_big;
-
-    bool update : 1;
 };
 extern struct PreCombatMenu PreCombatMenu_default;
 

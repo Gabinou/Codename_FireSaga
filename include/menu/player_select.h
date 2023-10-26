@@ -26,6 +26,8 @@ typedef void (*psm_maker_t)(struct Game *in_game, void *dat1, void *dat2);
 extern psm_maker_t menuContentMakers[MENU_PLAYER_SELECT_END];
 
 struct PlayerSelectMenu {
+    b32 update;
+
     struct Point pos; /* MENU_POS_bOFFSET = 0 */
 
     char **option_names;        /* [option_i] */
@@ -40,8 +42,6 @@ struct PlayerSelectMenu {
     i32 text_width; /* [pixels] */
     i32 icon_width;
     i32 text_alignment;
-
-    bool update : 1;
 };
 extern struct PlayerSelectMenu PlayerSelectMenu_default;
 
