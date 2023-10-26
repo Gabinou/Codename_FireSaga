@@ -15,7 +15,7 @@
 #include "stb_sprintf.h"
 
 /* --- FORWARD DECLARATIONS --- */
-struct MenuComponent;
+struct Menu;
 
 /* --- CONSTANTS --- */
 extern const i8 stats_menu_cycle[STATS_MENU_CYCLE_NUM];
@@ -402,14 +402,14 @@ static void _StatsMenu_Load_Face( struct StatsMenu *sm);
 static void _StatsMenu_Load_Icons(struct StatsMenu *sm, SDL_Renderer   *r);
 
 /* --- Drawing --- */
-void StatsMenu_Draw(  struct MenuComponent *mc, SDL_Texture *rt,
+void StatsMenu_Draw(  struct Menu *mc, SDL_Texture *rt,
                       SDL_Renderer         *r);
 
 void StatsMenu_Update(struct StatsMenu     *s,  struct n9Patch *n9,
                       SDL_Texture          *rt, SDL_Renderer   *r);
 /* --- Positioning --- */
-void StatsMenu_Elem_Pos(       struct StatsMenu *sm, struct MenuComponent *mc);
-void StatsMenu_Elem_Pos_Revert(struct StatsMenu *sm, struct MenuComponent *mc);
+void StatsMenu_Elem_Pos(       struct StatsMenu *sm, struct Menu *mc);
+void StatsMenu_Elem_Pos_Revert(struct StatsMenu *sm, struct Menu *mc);
 
 /* -- Drawing elements -- */
 static void _StatsMenu_Draw_Item(         struct StatsMenu *sm, SDL_Renderer *r, int i);

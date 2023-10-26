@@ -78,7 +78,7 @@ void ItemDropMenu_Free(struct ItemDropMenu *idm) {
 }
 
 /* --- Elements --- */
-void ItemDropMenu_Elem_Pos(struct ItemDropMenu *idm, struct MenuComponent *mc) {
+void ItemDropMenu_Elem_Pos(struct ItemDropMenu *idm, struct Menu *mc) {
 
 }
 
@@ -97,7 +97,7 @@ void ItemDropMenu_Drop(struct ItemDropMenu *idm) {
 }
 
 /* --- Drawing --- */
-void ItemDropMenu_Draw(struct MenuComponent *mc, SDL_Texture *target, SDL_Renderer *renderer) {
+void ItemDropMenu_Draw(struct Menu *mc, SDL_Texture *target, SDL_Renderer *renderer) {
     SOTA_Log_FPS("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     struct ItemDropMenu *idm = (struct ItemDropMenu *)mc->data;
     SDL_assert(idm       != NULL);

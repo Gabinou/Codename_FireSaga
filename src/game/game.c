@@ -126,8 +126,8 @@ void Game_Free(struct Game *sota) {
     PixelFont_Free(sota->pixelnours_tight, true);
 
     if (sota->stats_menu > TNECS_NULL) {
-        struct MenuComponent *mc;
-        mc = TNECS_GET_COMPONENT(sota->world, sota->stats_menu, MenuComponent);
+        struct Menu *mc;
+        mc = TNECS_GET_COMPONENT(sota->world, sota->stats_menu, Menu);
         if (mc->data != NULL) {
             struct StatsMenu *stats_menu = mc->data;
             if (mc->n9patch.texture != NULL)
@@ -138,8 +138,8 @@ void Game_Free(struct Game *sota) {
     }
 
     if (sota->item_select_menu > TNECS_NULL) {
-        struct MenuComponent *mc;
-        mc = TNECS_GET_COMPONENT(sota->world, sota->item_select_menu, MenuComponent);
+        struct Menu *mc;
+        mc = TNECS_GET_COMPONENT(sota->world, sota->item_select_menu, Menu);
         if (mc->data != NULL) {
             struct LoadoutSelectMenu *ism = mc->data;
             LoadoutSelectMenu_Free(ism);
@@ -357,7 +357,7 @@ struct Game *Game_Init() {
     TNECS_REGISTER_COMPONENT(out_game->world, Sprite);
     TNECS_REGISTER_COMPONENT(out_game->world, Unit);
     // TNECS_REGISTER_COMPONENT(out_game->world, Text_TTF);
-    TNECS_REGISTER_COMPONENT(out_game->world, MenuComponent);
+    TNECS_REGISTER_COMPONENT(out_game->world, Menu);
     TNECS_REGISTER_COMPONENT(out_game->world, controllerGamepad);
     TNECS_REGISTER_COMPONENT(out_game->world, controllerMouse);
     TNECS_REGISTER_COMPONENT(out_game->world, controllerKeyboard);
@@ -410,7 +410,7 @@ struct Game *Game_Init() {
     TNECS_REGISTER_SYSTEM_wEXCL(world, drawMapUnit,   0, Unit, Position, Sprite, RenderTop);
     TNECS_REGISTER_SYSTEM_wEXCL(world, drawMap_HPBar, 0, Unit, Position, MapHPBar);
 
-    TNECS_REGISTER_SYSTEM_wEXCL(world, drawMenu,      0, MenuComponent);
+    TNECS_REGISTER_SYSTEM_wEXCL(world, drawMenu,      0, Menu);
     TNECS_REGISTER_SYSTEM_wEXCL(world, drawText,      1, Text, Position);
     TNECS_REGISTER_SYSTEM_wEXCL(world, drawTextTimer, 1, Text, Position, Timer);
     TNECS_REGISTER_SYSTEM_wEXCL(world, drawPopUp,     0, PopUp, Position);

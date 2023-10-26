@@ -475,7 +475,7 @@ void _StatsMenu_Load_Icons(struct StatsMenu *stats_menu, SDL_Renderer *renderer)
 }
 
 /* --- Positioning --- */
-void StatsMenu_Elem_Pos(struct StatsMenu *sm, struct MenuComponent *mc) {
+void StatsMenu_Elem_Pos(struct StatsMenu *sm, struct Menu *mc) {
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     /* Scales elem_pos to menu size. */
     /* 1. Makes the cursor focus on right place on the Screen       */
@@ -502,7 +502,7 @@ void StatsMenu_Elem_Pos(struct StatsMenu *sm, struct MenuComponent *mc) {
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
-void StatsMenu_Elem_Pos_Revert(struct StatsMenu *sm, struct MenuComponent *mc) {
+void StatsMenu_Elem_Pos_Revert(struct StatsMenu *sm, struct Menu *mc) {
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     /* Reset elem_pos to menu size. */
 
@@ -1136,7 +1136,7 @@ void _StatsMenu_Draw_ComputedStats(struct StatsMenu *stats_menu, SDL_Renderer *r
     }
 }
 
-void StatsMenu_Draw(struct MenuComponent *mc, SDL_Texture *rt, SDL_Renderer *renderer) {
+void StatsMenu_Draw(struct Menu *mc, SDL_Texture *rt, SDL_Renderer *renderer) {
     SOTA_Log_FPS("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     struct StatsMenu *stats_menu = (struct StatsMenu *)mc->data;
     struct n9Patch   *n9patch    = &mc->n9patch;

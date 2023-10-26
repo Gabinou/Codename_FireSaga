@@ -16,7 +16,7 @@
 /* --- FORWARD DECLARATIONS --- */
 struct cJSON;
 struct Settings;
-struct MenuComponent;
+struct Menu;
 struct LoadoutSelectMenu;
 
 /* --- ENUMS --- */

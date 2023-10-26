@@ -78,12 +78,12 @@ void Game_PopUp_Loadout_Stats_Hide(struct Game *sota) {
 void Game_PopUp_Pre_Combat_Create(struct Game *sota) {
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     if (sota->pre_combat_menu == TNECS_NULL)
-        sota->pre_combat_menu = TNECS_ENTITY_CREATE_wCOMPONENTS(sota->world, MenuComponent);
+        sota->pre_combat_menu = TNECS_ENTITY_CREATE_wCOMPONENTS(sota->world, Menu);
     else {
         // TODO: destroy menu?
     }
-    struct MenuComponent *mc;
-    mc = TNECS_GET_COMPONENT(sota->world, sota->pre_combat_menu, MenuComponent);
+    struct Menu *mc;
+    mc = TNECS_GET_COMPONENT(sota->world, sota->pre_combat_menu, Menu);
     mc->type        = MENU_TYPE_PRE_COMBAT;
     mc->draw        = &PreCombatMenu_Draw;
 
@@ -105,7 +105,7 @@ void Game_PopUp_Pre_Combat_Create(struct Game *sota) {
     pcm->update = true;
 
     /* - scaling elem_pos: put it last cause dependencies - */
-    MenuComponent_Elem_Boxes_Check(mc);
+    Menu_Elem_Boxes_Check(mc);
 
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
@@ -116,8 +116,8 @@ void Game_PopUp_Pre_Combat_Enable(struct Game *sota) {
         Game_PopUp_Pre_Combat_Create(sota);
     Game_menuStack_Push(sota, sota->pre_combat_menu);
     SDL_assert(sota->pre_combat_menu > 0);
-    struct MenuComponent *mc;
-    mc = TNECS_GET_COMPONENT(sota->world, sota->pre_combat_menu, MenuComponent);
+    struct Menu *mc;
+    mc = TNECS_GET_COMPONENT(sota->world, sota->pre_combat_menu, Menu);
     struct PreCombatMenu *pcm = (struct PreCombatMenu *)mc->data;
 
     PreCombatMenu_Set(pcm, sota);

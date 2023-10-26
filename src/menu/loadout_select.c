@@ -171,7 +171,7 @@ void _LoadoutSelectMenu_Load(struct LoadoutSelectMenu *lsm, struct Unit *unit,
 
 
 /* --- Elements --- */
-void LoadoutSelectMenu_Elem_Reset(struct LoadoutSelectMenu *lsm, struct MenuComponent *mc) {
+void LoadoutSelectMenu_Elem_Reset(struct LoadoutSelectMenu *lsm, struct Menu *mc) {
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     /* Get number of elements for the menu */
     int stronghand       = Unit_Hand_Strong(lsm->unit);
@@ -190,7 +190,7 @@ void LoadoutSelectMenu_Elem_Reset(struct LoadoutSelectMenu *lsm, struct MenuComp
     SOTA_Log_FPS("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
-void LoadoutSelectMenu_Elem_Pos(struct LoadoutSelectMenu *lsm, struct MenuComponent *mc) {
+void LoadoutSelectMenu_Elem_Pos(struct LoadoutSelectMenu *lsm, struct Menu *mc) {
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     /* Scales elem_pos to menu size. */
     /* 1. Makes the cursor focus on right place on the Screen       */
@@ -218,7 +218,7 @@ void LoadoutSelectMenu_Elem_Pos(struct LoadoutSelectMenu *lsm, struct MenuCompon
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
-void LoadoutSelectMenu_Elem_Pos_revert(struct LoadoutSelectMenu *lsm, struct MenuComponent *mc) {
+void LoadoutSelectMenu_Elem_Pos_revert(struct LoadoutSelectMenu *lsm, struct Menu *mc) {
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     /* Scales elem_pos to menu size. */
     /* 1. Makes the cursor focus on right place on the Screen       */
@@ -469,7 +469,7 @@ void LoadoutSelectMenu_Size(struct  LoadoutSelectMenu  *lsm, struct n9Patch *n9p
     }
 }
 
-void LoadoutSelectMenu_Draw(struct MenuComponent *mc, SDL_Texture *target, SDL_Renderer *renderer) {
+void LoadoutSelectMenu_Draw(struct Menu *mc, SDL_Texture *target, SDL_Renderer *renderer) {
     SOTA_Log_FPS("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     struct LoadoutSelectMenu *lsm = (struct LoadoutSelectMenu *)mc->data;
     SDL_assert(lsm != NULL);

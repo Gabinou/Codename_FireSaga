@@ -92,7 +92,7 @@ void Game_cursorFocus_onMenu(struct Game *sota) {
     /* menu_stack top */
     int stack_top = DARR_NUM(sota->menu_stack) - 1;
     tnecs_entity_t menu_top = sota->menu_stack[stack_top];
-    struct MenuComponent *mc = TNECS_GET_COMPONENT(sota->world, menu_top, MenuComponent);
+    struct Menu *mc = TNECS_GET_COMPONENT(sota->world, menu_top, Menu);
     SDL_assert(mc != NULL);
     SDL_assert(mc->elem_pos != NULL);
     mc->visible = true;
@@ -131,7 +131,7 @@ void Game_cursorFocus_onMenu(struct Game *sota) {
     /* disabling menues on stack bottom */
     for (int i = 0; i < stack_top; i++) {
         tnecs_entity_t menu = sota->menu_stack[i];
-        struct MenuComponent *mc_inv = TNECS_GET_COMPONENT(sota->world, menu, MenuComponent);
+        struct Menu *mc_inv = TNECS_GET_COMPONENT(sota->world, menu, Menu);
         mc_inv->visible = false;
     }
 
@@ -187,7 +187,7 @@ void Game_CursorfollowsMouse_onMenu(struct Game *sota) {
     }
     /* -- Menu type -- */
     /* - menu pos - */
-    struct MenuComponent *mc = TNECS_GET_COMPONENT(sota->world, menu, MenuComponent);
+    struct Menu *mc = TNECS_GET_COMPONENT(sota->world, menu, Menu);
 
     /* - elem pos & elem box - */
     SDL_assert(mc->elem < mc->elem_num);
@@ -209,7 +209,7 @@ void Game_CursorfollowsMouse_onMenu(struct Game *sota) {
     /* - prioritize y - */
     if ((sota->cursor_move.x != 0) || (sota->cursor_move.x != 0)) {
         sota->moved_direction = Ternary_Direction(sota->cursor_move);
-        i8 new_elem = MenuComponent_Elem_Move(mc, sota->moved_direction);
+        i8 new_elem = Menu_Elem_Move(mc, sota->moved_direction);
         if (new_elem != MENU_ELEM_NULL)
             sota->controller_code = CONTROLLER_MOUSE;
     }

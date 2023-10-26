@@ -184,12 +184,12 @@ void drawMenu(tnecs_system_input_t *in_input) {
     SDL_assert(sota != NULL);
 
     /* -- Get components arrays -- */
-    struct MenuComponent *mc_arr = TNECS_COMPONENTS_LIST(in_input, MenuComponent);
+    struct Menu *mc_arr = TNECS_COMPONENTS_LIST(in_input, Menu);
     SDL_assert(mc_arr != NULL);
 
     /* --- DRAWING MENU ENTITIES --- */
     for (u16 order = 0; order < in_input->num_entities; order++) {
-        struct MenuComponent *mc = (mc_arr + order);
+        struct Menu *mc = (mc_arr + order);
 
         if (!mc->visible)
             continue;
@@ -197,7 +197,7 @@ void drawMenu(tnecs_system_input_t *in_input) {
         mc->draw(mc, sota->render_target, sota->renderer);
 
         #ifdef SOTA_DEBUG_MENU_BOXES
-        MenuComponent_Elem_Boxes_Draw(mc, sota->renderer);
+        Menu_Elem_Boxes_Draw(mc, sota->renderer);
         #endif
     }
     SOTA_Log_FPS("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);

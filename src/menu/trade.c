@@ -143,7 +143,7 @@ void TradeMenu_Trade(struct TradeMenu *tm) {
     SOTA_Log_Debug("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
-void TradeMenu_Draw(struct MenuComponent *mc, SDL_Texture *target, SDL_Renderer *renderer) {
+void TradeMenu_Draw(struct Menu *mc, SDL_Texture *target, SDL_Renderer *renderer) {
     SOTA_Log_FPS("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     struct TradeMenu *tm = (struct TradeMenu *)mc->data;
     struct LoadoutSelectMenu *active =     tm->active;
@@ -184,7 +184,7 @@ void TradeMenu_Draw(struct MenuComponent *mc, SDL_Texture *target, SDL_Renderer 
     SOTA_Log_FPS("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
-void TradeMenu_Elem_Pos(struct TradeMenu *tm, struct MenuComponent *mc) {
+void TradeMenu_Elem_Pos(struct TradeMenu *tm, struct Menu *mc) {
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     // Scales elem_pos to menu size
     SDL_assert(tm != NULL);

@@ -14,7 +14,7 @@
 #include "SDL2/SDL.h"
 
 /* --- FORWARD DECLARATIONS --- */
-struct MenuComponent;
+struct Menu;
 struct MenuElemDirections;
 
 /* LoadoutSelectMenu */
@@ -196,10 +196,10 @@ void ItemSelectMenu_Select(          struct LoadoutSelectMenu *lsm, int s);
 
 
 /* --- Elements --- */
-void LoadoutSelectMenu_Elem_Pos(  struct LoadoutSelectMenu *lsm, struct MenuComponent *mc);
-void LoadoutSelectMenu_Elem_Reset(struct LoadoutSelectMenu *lsm, struct MenuComponent *mc);
+void LoadoutSelectMenu_Elem_Pos(  struct LoadoutSelectMenu *lsm, struct Menu *mc);
+void LoadoutSelectMenu_Elem_Reset(struct LoadoutSelectMenu *lsm, struct Menu *mc);
 void LoadoutSelectMenu_Elem_Pos_Revert(struct LoadoutSelectMenu *lsm,
-                                       struct MenuComponent *mc);
+                                       struct Menu *mc);
 
 /* --- Drawing --- */
 void LoadoutSelectMenu_Size(struct LoadoutSelectMenu  *lsm, struct n9Patch *n9);
@@ -210,7 +210,7 @@ static void _LoadoutSelectMenu_Draw_Header(   struct LoadoutSelectMenu  *lsm, SD
 static void _LoadoutSelectMenu_Draw_Patches(  struct LoadoutSelectMenu  *lsm, SDL_Renderer *r);
 static void _LoadoutSelectMenu_Draw_Highlight(struct LoadoutSelectMenu  *lsm, SDL_Renderer *r);
 
-void LoadoutSelectMenu_Draw(  struct  MenuComponent *mc, SDL_Texture *rt, SDL_Renderer *r);
+void LoadoutSelectMenu_Draw(  struct  Menu *mc, SDL_Texture *rt, SDL_Renderer *r);
 void LoadoutSelectMenu_Update(struct  LoadoutSelectMenu  *lsm, struct n9Patch *n9,
                               SDL_Texture *rt, SDL_Renderer *r);
 

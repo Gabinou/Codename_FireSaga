@@ -240,10 +240,10 @@ static void _PreCombatMenu_Load_Faces(struct PreCombatMenu *pcm, SDL_Renderer *r
 void PreCombatMenu_Set(struct PreCombatMenu *pcm, struct Game *sota);
 
 /* --- Positioning --- */
-void PreCombatMenu_Elem_Pos(struct PreCombatMenu *pcm, struct MenuComponent *mc);
+void PreCombatMenu_Elem_Pos(struct PreCombatMenu *pcm, struct Menu *mc);
 
 /* --- Drawing --- */
-void PreCombatMenu_Draw(  struct MenuComponent *mc, SDL_Texture *rt, SDL_Renderer *r);
+void PreCombatMenu_Draw(  struct Menu *mc, SDL_Texture *rt, SDL_Renderer *r);
 void PreCombatMenu_Update(struct PreCombatMenu *pcm, struct n9Patch *n9patch,
                           SDL_Texture *rt, SDL_Renderer *r);
 

@@ -44,11 +44,11 @@ struct PlayerSelectMenu *PlayerSelectMenu_Alloc() {
     return (psm);
 }
 
-void PlayerSelectMenu_Free(struct PlayerSelectMenu *psm, struct MenuComponent *mc) {
+void PlayerSelectMenu_Free(struct PlayerSelectMenu *psm, struct Menu *mc) {
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     SDL_assert(psm);
     SDL_assert(mc);
-    MenuComponent_Elem_Free(mc);
+    Menu_Elem_Free(mc);
     if (psm->options != NULL) {
         DARR_FREE(psm->options);
         psm->options = NULL;
@@ -173,7 +173,7 @@ void PlayerSelectMenu_Compute_Size(struct PlayerSelectMenu *psm, struct n9Patch 
     SOTA_Log_FPS("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
-void PlayerSelectMenu_Elem_Links(struct PlayerSelectMenu *psm, struct MenuComponent *mc) {
+void PlayerSelectMenu_Elem_Links(struct PlayerSelectMenu *psm, struct Menu *mc) {
     SOTA_Log_FPS("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     if (mc->elem_links != NULL)
         free(mc->elem_links);
@@ -189,19 +189,19 @@ void PlayerSelectMenu_Elem_Links(struct PlayerSelectMenu *psm, struct MenuCompon
     SOTA_Log_FPS("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
-void PlayerSelectMenu_Cursor_Boxes(struct PlayerSelectMenu *m, struct MenuComponent *mc) {
+void PlayerSelectMenu_Cursor_Boxes(struct PlayerSelectMenu *m, struct Menu *mc) {
     SOTA_Log_FPS("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
 
     SOTA_Log_FPS("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
-void PlayerSelectMenu_Cursor_Pos(struct PlayerSelectMenu *m, struct MenuComponent *mc) {
+void PlayerSelectMenu_Cursor_Pos(struct PlayerSelectMenu *m, struct Menu *mc) {
     SOTA_Log_FPS("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
 
     SOTA_Log_FPS("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
-void PlayerSelectMenu_Elem_Boxes(struct PlayerSelectMenu *psm, struct MenuComponent *mc) {
+void PlayerSelectMenu_Elem_Boxes(struct PlayerSelectMenu *psm, struct Menu *mc) {
     SOTA_Log_FPS("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     if (mc->elem_box != NULL)
         free(mc->elem_box);
@@ -214,7 +214,7 @@ void PlayerSelectMenu_Elem_Boxes(struct PlayerSelectMenu *psm, struct MenuCompon
     SOTA_Log_FPS("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
-void PlayerSelectMenu_Elem_Pos(struct PlayerSelectMenu *psm, struct MenuComponent *mc) {
+void PlayerSelectMenu_Elem_Pos(struct PlayerSelectMenu *psm, struct Menu *mc) {
     SOTA_Log_FPS("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     struct Padding mp = psm->menu_padding;
     struct Point pos9 = mc->n9patch.pos, scale = mc->n9patch.scale;
@@ -229,7 +229,7 @@ void PlayerSelectMenu_Elem_Pos(struct PlayerSelectMenu *psm, struct MenuComponen
     SOTA_Log_FPS("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
-void PlayerSelectMenu_Draw(struct MenuComponent *mc, SDL_Texture *render_target,
+void PlayerSelectMenu_Draw(struct Menu *mc, SDL_Texture *render_target,
                            SDL_Renderer *renderer) {
     SOTA_Log_FPS("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     struct PlayerSelectMenu *psm = (struct PlayerSelectMenu *)mc->data;
@@ -326,7 +326,7 @@ void makeContent_PSM_UNIT_ACTION(struct Game *sota, void *data1, void *data2) {
     tnecs_entity_t menu_entity = sota->player_select_menus[MENU_PLAYER_SELECT_UNIT_ACTION];
     SDL_assert(menu_entity > 0);
     SDL_assert(sota->selected_unit_entity > 0);
-    struct MenuComponent *mc_ptr = TNECS_GET_COMPONENT(sota->world, menu_entity, MenuComponent);
+    struct Menu *mc_ptr = TNECS_GET_COMPONENT(sota->world, menu_entity, Menu);
     struct PlayerSelectMenu *psm = mc_ptr->data;
     SDL_assert(psm != NULL);
     PlayerSelectMenu_Options_Reset(psm);
@@ -359,7 +359,7 @@ void makeContent_PSM_UNIT_ACTION(struct Game *sota, void *data1, void *data2) {
 void makeContent_PSM_STAFF(struct Game *sota, void *data1, void *data2) {
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     // tnecs_entity_t menu_entity = sota->player_select_menus[MENU_PLAYER_SELECT_STAFF];
-    // struct MenuComponent * mc_ptr = TNECS_GET_COMPONENT(sota->world, menu_entity, MenuComponent);
+    // struct Menu * mc_ptr = TNECS_GET_COMPONENT(sota->world, menu_entity, Menu);
     // struct PlayerSelectMenu * psm = mc_ptr->data;
     // for (uint32_t i = 0; i < sota->num_patients; i++) {
     // }
@@ -369,7 +369,7 @@ void makeContent_PSM_STAFF(struct Game *sota, void *data1, void *data2) {
 void makeContent_PSM_CONVOY(struct Game *sota, void *data1, void *data2) {
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     // tnecs_entity_t menu_entity = sota->player_select_menus[MENU_PLAYER_SELECT_CONVOY];
-    // struct MenuComponent * mc_ptr = TNECS_GET_COMPONENT(sota->world, menu_entity, MenuComponent);
+    // struct Menu * mc_ptr = TNECS_GET_COMPONENT(sota->world, menu_entity, Menu);
     // struct PlayerSelectMenu * psm = mc_ptr->data;
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
@@ -378,8 +378,8 @@ void makeContent_PSM_MAP_ACTION(struct Game *sota, void *data1, void *data2) {
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     tnecs_entity_t menu_entity = sota->player_select_menus[MENU_PLAYER_SELECT_MAP_ACTION];
     SDL_assert(menu_entity > TNECS_NULL);
-    struct MenuComponent *mc_ptr;
-    mc_ptr = TNECS_GET_COMPONENT(sota->world, menu_entity, MenuComponent);
+    struct Menu *mc_ptr;
+    mc_ptr = TNECS_GET_COMPONENT(sota->world, menu_entity, Menu);
     struct PlayerSelectMenu *psm = mc_ptr->data;
     SDL_assert(psm != NULL);
     psm->option_num = 0;
@@ -395,8 +395,8 @@ void makeContent_FirstMenu(struct Game *sota) {
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     tnecs_entity_t menu_entity = sota->first_menu;
     SDL_assert(menu_entity > 0);
-    struct MenuComponent *mc_ptr;
-    mc_ptr = TNECS_GET_COMPONENT(sota->world, menu_entity, MenuComponent);
+    struct Menu *mc_ptr;
+    mc_ptr = TNECS_GET_COMPONENT(sota->world, menu_entity, Menu);
     SDL_assert(mc_ptr != NULL);
     struct PlayerSelectMenu *psm = mc_ptr->data;
     SDL_assert(psm != NULL);
@@ -411,7 +411,7 @@ void makeContent_FirstMenu(struct Game *sota) {
 void makeContent_PSM_TRADE(struct Game *sota, void *data1, void *data2) {
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     tnecs_entity_t menu_entity = sota->player_select_menus[MENU_PLAYER_SELECT_TRADE];
-    struct MenuComponent *mc_ptr = TNECS_GET_COMPONENT(sota->world, menu_entity, MenuComponent);
+    struct Menu *mc_ptr = TNECS_GET_COMPONENT(sota->world, menu_entity, Menu);
     struct PlayerSelectMenu *psm = mc_ptr->data;
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }

@@ -14,7 +14,7 @@
 #include "SDL2/SDL.h"
 
 /* --- FORWARD DECLARATIONS --- */
-struct MenuComponent;
+struct Menu;
 
 enum TRADE_MENU {
     TM_PATCH_X_PIXELS = 8,
@@ -54,7 +54,7 @@ struct TradeMenu {
 
 /* --- Constructors/Destructors --- */
 struct TradeMenu *TradeMenu_Alloc();
-void TradeMenu_Free(struct MenuComponent *mc, SDL_Texture *rt, SDL_Renderer *r);
+void TradeMenu_Free(struct Menu *mc, SDL_Texture *rt, SDL_Renderer *r);
 
 /* --- Item placement --- */
 void TradeMenu_Trade(   struct TradeMenu *tm);
@@ -62,9 +62,9 @@ void TradeMenu_Select(  struct TradeMenu *tm, i8 s);
 void TradeMenu_Deselect(struct TradeMenu *tm);
 
 /* --- Positioning --- */
-void TradeMenu_Elem_Pos(struct TradeMenu *tm, struct MenuComponent *mc);
+void TradeMenu_Elem_Pos(struct TradeMenu *tm, struct Menu *mc);
 
 /* --- Drawing --- */
-void TradeMenu_Draw(struct MenuComponent *mc, SDL_Texture *rt, SDL_Renderer *r);
+void TradeMenu_Draw(struct Menu *mc, SDL_Texture *rt, SDL_Renderer *r);
 
 #endif /* TRADE_MENU_H */

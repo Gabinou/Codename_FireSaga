@@ -562,7 +562,7 @@ void fsm_eCncl_sGmpMap_ssMenu(struct Game *sota, tnecs_entity_t canceller) {
     bool destroy = false;
     tnecs_entity_t ent_topop = sota->menu_stack[DARR_NUM(sota->menu_stack) - 1];
     SDL_assert(ent_topop > TNECS_NULL);
-    struct MenuComponent *mc_topop = TNECS_GET_COMPONENT(sota->world, ent_topop, MenuComponent);
+    struct Menu *mc_topop = TNECS_GET_COMPONENT(sota->world, ent_topop, Menu);
 
     if (fsm_eCncl_sGmpMap_ssMenu_m[mc_topop->type] != NULL)
         fsm_eCncl_sGmpMap_ssMenu_m[mc_topop->type](sota, mc_topop);
@@ -647,7 +647,7 @@ void fsm_eCrsMvs_ssMenu(struct Game *sota, tnecs_entity_t mover_entity,
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     /* Find menu elem in direction */
     tnecs_entity_t menu = sota->menu_stack[DARR_NUM(sota->menu_stack) - 1];
-    struct MenuComponent *mc = TNECS_GET_COMPONENT(sota->world, menu, MenuComponent);
+    struct Menu *mc = TNECS_GET_COMPONENT(sota->world, menu, Menu);
     i8 new_elem;
     switch (mc->type) {
         case MENU_TYPE_PLAYER_SELECT:
@@ -663,14 +663,14 @@ void fsm_eCrsMvs_ssMenu(struct Game *sota, tnecs_entity_t mover_entity,
             new_elem = Periodic_Elem_Move(mc, sota->moved_direction, 0, DEFAULT_EQUIPMENT_SIZE);
             break;
         default:
-            new_elem = MenuComponent_Elem_Move(mc, sota->moved_direction);
+            new_elem = Menu_Elem_Move(mc, sota->moved_direction);
             break;
     }
 
     /* - TODO: MAKE FUNCTION - */
     /* - Move to cursor to new_elem - */
     SDL_assert(new_elem > MENU_ELEM_NULL);
-    MenuComponent_Elem_Set(mc, sota, new_elem);
+    Menu_Elem_Set(mc, sota, new_elem);
     sota->cursor_move.x = 0;
     sota->cursor_move.y = 0;
 
@@ -953,7 +953,7 @@ void fsm_eAcpt_sGmpMap_ssMenu(struct Game *sota, tnecs_entity_t accepter_entity)
     SDL_assert(DARR_NUM(sota->menu_stack) > 0);
     tnecs_entity_t top_menu = sota->menu_stack[DARR_NUM(sota->menu_stack) - 1];
     SDL_assert(top_menu > TNECS_NULL);
-    struct MenuComponent *mc_topop = TNECS_GET_COMPONENT(sota->world, top_menu, MenuComponent);
+    struct Menu *mc_topop = TNECS_GET_COMPONENT(sota->world, top_menu, Menu);
 
     if (fsm_eAcpt_sGmpMap_ssMenu_m[mc_topop->type] != NULL)
         fsm_eAcpt_sGmpMap_ssMenu_m[mc_topop->type](sota, mc_topop);
@@ -1158,7 +1158,7 @@ void fsm_eMenuRight_sGmpMap_ssMenu(struct Game *sota, i32 controller_type) {
     SDL_assert(popped > 0);
 
     /* - Hide previous menu - */
-    struct MenuComponent *mc_popped = TNECS_GET_COMPONENT(sota->world, popped, MenuComponent);
+    struct Menu *mc_popped = TNECS_GET_COMPONENT(sota->world, popped, Menu);
     mc_popped->visible = false;
 
     /* -- Create New menu -- */
@@ -1172,18 +1172,18 @@ void fsm_eMenuRight_sGmpMap_ssMenu(struct Game *sota, i32 controller_type) {
     SDL_assert((mc_popped->type == MENU_TYPE_STATS) || (mc_popped->type == MENU_TYPE_GROWTHS));
     i32 current_id = stats_menu_cycle_inv[mc_popped->type];
     i32 new_id = (current_id == (STATS_MENU_CYCLE_NUM - 1)) ? 0 : ++current_id;
-    struct MenuComponent *new_menu_comp;
+    struct Menu *new_menu_comp;
     switch (stats_menu_cycle[new_id]) {
         case MENU_TYPE_STATS:
             SOTA_Log_Debug("NEW MENU_TYPE_STATS");
             Game_StatsMenu_Enable(sota, ontile);
-            new_menu_comp = TNECS_GET_COMPONENT(sota->world, sota->stats_menu, MenuComponent);
+            new_menu_comp = TNECS_GET_COMPONENT(sota->world, sota->stats_menu, Menu);
             new_menu_comp->visible = true;
             break;
         case MENU_TYPE_GROWTHS:
             SOTA_Log_Debug("NEW MENU_TYPE_GROWTHS");
             Game_GrowthsMenu_Enable(sota, ontile);
-            new_menu_comp = TNECS_GET_COMPONENT(sota->world, sota->GM_menu, MenuComponent);
+            new_menu_comp = TNECS_GET_COMPONENT(sota->world, sota->GM_menu, Menu);
             new_menu_comp->visible = true;
             break;
         default:
@@ -1214,7 +1214,7 @@ void fsm_eMenuLeft_sGmpMap_ssMenu(struct Game *sota, i32 controller_type) {
     SDL_assert(popped > 0);
 
     /* - Hide previous menu - */
-    struct MenuComponent *mc_popped = TNECS_GET_COMPONENT(sota->world, popped, MenuComponent);
+    struct Menu *mc_popped = TNECS_GET_COMPONENT(sota->world, popped, Menu);
     mc_popped->visible = false;
 
     /* -- Create New menu -- */
@@ -1228,18 +1228,18 @@ void fsm_eMenuLeft_sGmpMap_ssMenu(struct Game *sota, i32 controller_type) {
     SDL_assert((mc_popped->type == MENU_TYPE_STATS) || (mc_popped->type == MENU_TYPE_GROWTHS));
     i32 current_id = stats_menu_cycle_inv[mc_popped->type];
     i32 new_id = (current_id <= 0) ? (STATS_MENU_CYCLE_NUM - 1) : --current_id;
-    struct MenuComponent *new_menu_comp;
+    struct Menu *new_menu_comp;
     switch (stats_menu_cycle[new_id]) {
         case MENU_TYPE_STATS:
             SOTA_Log_Debug("NEW MENU_TYPE_STATS");
             Game_StatsMenu_Enable(sota, ontile);
-            new_menu_comp = TNECS_GET_COMPONENT(sota->world, sota->stats_menu, MenuComponent);
+            new_menu_comp = TNECS_GET_COMPONENT(sota->world, sota->stats_menu, Menu);
             new_menu_comp->visible = true;
             break;
         case MENU_TYPE_GROWTHS:
             SOTA_Log_Debug("NEW MENU_TYPE_GROWTHS");
             Game_GrowthsMenu_Enable(sota, ontile);
-            new_menu_comp = TNECS_GET_COMPONENT(sota->world, sota->GM_menu, MenuComponent);
+            new_menu_comp = TNECS_GET_COMPONENT(sota->world, sota->GM_menu, Menu);
             new_menu_comp->visible = true;
             break;
         default:

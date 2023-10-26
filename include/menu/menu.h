@@ -31,11 +31,11 @@ enum MENU_ELEM_POS_FRAME {
 #define MENU_ELEM_DIRECTIONS_PACKED_BYTESIZE 4
 
 /* --- TYPEDEFS --- */
-typedef struct MenuComponent MenuComponent;
-typedef void (* menu_draw_f)(  MenuComponent *mc, SDL_Texture *rt, SDL_Renderer *r);
-typedef void (* menu_set_update_f)(MenuComponent *mc);
+typedef struct Menu Menu;
+typedef void (* menu_draw_f)(  Menu *mc, SDL_Texture *rt, SDL_Renderer *r);
+typedef void (* menu_set_update_f)(Menu *mc);
 
-struct MenuComponent {
+struct Menu {
     struct n9Patch n9patch;
     /* -- Cursor position when on elem -- */
     struct Point *cursor_pos;               /* [elem] absolute pos on texture */
@@ -60,18 +60,18 @@ struct MenuComponent {
 
     bool visible : 1;
 };
-extern struct MenuComponent MenuComponent_default;
+extern struct Menu Menu_default;
 
 /* --- Constructors/Destructors --- */
-void MenuComponent_Elem_Free(struct MenuComponent *mc);
+void Menu_Elem_Free(struct Menu *mc);
 
 /* --- Internals --- */
-int Periodic_Elem_Move(     struct MenuComponent *mc, int d, int min, int max);
-void MenuComponent_Elem_Set(struct MenuComponent *mc, struct Game *sota, i8 d);
-int MenuComponent_Elem_Move(struct MenuComponent *mc, int d);
-void MenuComponent_Elem_Boxes_Check(struct MenuComponent *mc);
+int Periodic_Elem_Move(     struct Menu *mc, int d, int min, int max);
+void Menu_Elem_Set(struct Menu *mc, struct Game *sota, i8 d);
+int Menu_Elem_Move(struct Menu *mc, int d);
+void Menu_Elem_Boxes_Check(struct Menu *mc);
 
 /* --- Debug --- */
-void MenuComponent_Elem_Boxes_Draw(struct MenuComponent *mc, struct SDL_Renderer *r);
+void Menu_Elem_Boxes_Draw(struct Menu *mc, struct SDL_Renderer *r);
 
 #endif /* MENU_H */

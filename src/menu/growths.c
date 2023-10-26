@@ -228,7 +228,7 @@ void GrowthsMenu_Load(struct GrowthsMenu *gm, SDL_Renderer *renderer, struct n9P
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
-void GrowthsMenu_Elem_Pos(struct GrowthsMenu *gm, struct MenuComponent *mc) {
+void GrowthsMenu_Elem_Pos(struct GrowthsMenu *gm, struct Menu *mc) {
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     /* Scales elem_pos to menu size. */
     /* 1. Makes the cursor focus on right place on the Screen       */
@@ -249,7 +249,7 @@ void GrowthsMenu_Elem_Pos(struct GrowthsMenu *gm, struct MenuComponent *mc) {
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
-void GrowthsMenu_Elem_Pos_Revert(struct GrowthsMenu *gm, struct MenuComponent *mc) {
+void GrowthsMenu_Elem_Pos_Revert(struct GrowthsMenu *gm, struct Menu *mc) {
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     /* Scales elem_pos to menu size. */
     /* 1. Makes the cursor focus on right place on the Screen       */
@@ -270,7 +270,7 @@ void GrowthsMenu_Elem_Pos_Revert(struct GrowthsMenu *gm, struct MenuComponent *m
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
-void GrowthsMenu_Draw(struct MenuComponent *mc, SDL_Texture *render_target,
+void GrowthsMenu_Draw(struct Menu *mc, SDL_Texture *render_target,
                       SDL_Renderer *renderer) {
     SOTA_Log_FPS("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     struct GrowthsMenu *gm  =  mc->data;

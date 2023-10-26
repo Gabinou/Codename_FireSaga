@@ -12,7 +12,7 @@
 /* --- FORWARD DECLARATIONS --- */
 struct Unit;
 struct MenuElemDirections;
-struct MenuComponent;
+struct Menu;
 struct Game;
 
 enum GM_ELEMS {
@@ -193,10 +193,10 @@ void GrowthsMenu_Load(struct GrowthsMenu *gm, SDL_Renderer *r, struct n9Patch *n
 void GrowthsMenu_Unit_Set(struct GrowthsMenu *gm, struct Unit *u);
 
 /* --- Positioning --- */
-void GrowthsMenu_Elem_Pos(struct GrowthsMenu *gm, struct MenuComponent *mc);
+void GrowthsMenu_Elem_Pos(struct GrowthsMenu *gm, struct Menu *mc);
 
 /* --- Drawing --- */
-void GrowthsMenu_Draw(  struct MenuComponent *mc, SDL_Texture *rt, SDL_Renderer *r);
+void GrowthsMenu_Draw(  struct Menu *mc, SDL_Texture *rt, SDL_Renderer *r);
 void GrowthsMenu_Update(struct GrowthsMenu *g, struct n9Patch *n9, SDL_Texture *rt,
                         SDL_Renderer *r);
 

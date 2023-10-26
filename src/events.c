@@ -459,7 +459,7 @@ void Reload_JSON(void *struct_ptr) {
 
 void Reload_Menu(void *struct_ptr) {
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
-    struct MenuComponent *mc = struct_ptr;
+    struct Menu *mc = struct_ptr;
     void *menu = mc->data;
 
     b32 *update  = ((b32 *)menu + MENU_UPDATE_bOFFSET);
@@ -469,7 +469,10 @@ void Reload_Menu(void *struct_ptr) {
 
 void Reload_Popup(void *struct_ptr) {
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
-    b32 *update  = ((b32 *)struct_ptr + POPUP_UPDATE_bOFFSET);
+    struct PopUp *pc = struct_ptr;
+    void *popup = pc->data;
+
+    b32 *update  = ((b32 *)popup + POPUP_UPDATE_bOFFSET);
     *update      = true;
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
@@ -485,9 +488,8 @@ void receive_event_Reload(struct Game *sota, SDL_Event *event) {
     Reload_Entities_Archetype(sota, Reload_JSON,  "Unit");
     // Reload_Entities_Archetype(sota, Reload_JSON, "Sprite");
 
-    // Reload_Entities_Archetype(sota, Reload_Popup, "PopUp");
-    Reload_Entities_Archetype(sota, Reload_Popup, "Popup");
-    Reload_Entities_Archetype(sota, Reload_Menu,  "MenuComponent");
+    Reload_Entities_Archetype(sota, Reload_Popup, "PopUp");
+    Reload_Entities_Archetype(sota, Reload_Menu,  "Menu");
 
 
     /* -- Reload Map -- */
@@ -613,7 +615,7 @@ void receive_event_Turn_End(struct Game *sota, SDL_Event *userevent) {
     /* - Pop all menus - */
     while (DARR_NUM(sota->menu_stack) > 0) {
         tnecs_entity_t menu_pop     = DARR_POP(sota->menu_stack);
-        struct MenuComponent *mc    = TNECS_GET_COMPONENT(sota->world, menu_pop, MenuComponent);
+        struct Menu *mc    = TNECS_GET_COMPONENT(sota->world, menu_pop, Menu);
         SDL_assert(mc           != NULL);
         SDL_assert(mc->elem_pos != NULL);
         mc->visible = false;
@@ -849,7 +851,7 @@ void receive_event_Loadout_Selected(struct Game *sota, SDL_Event *userevent) {
     /* - Turn menu_attack invisible - */
     int stack_top               = DARR_NUM(sota->menu_stack) - 1;
     tnecs_entity_t menu_top     = sota->menu_stack[stack_top];
-    struct MenuComponent *mc    = TNECS_GET_COMPONENT(sota->world, menu_top, MenuComponent);
+    struct Menu *mc    = TNECS_GET_COMPONENT(sota->world, menu_top, Menu);
     SDL_assert(mc              != NULL);
     SDL_assert(mc->type        == MENU_TYPE_WEAPON_SELECT);
     SDL_assert(mc->elem_pos    != NULL);
@@ -1135,8 +1137,8 @@ void receive_event_Combat_Start(struct Game *sota, SDL_Event *userevent) {
     *map_anim = CombatAnimation_default;
 
     /* - Hide pre combat popup - */
-    struct MenuComponent *mc;
-    mc = TNECS_GET_COMPONENT(sota->world, sota->pre_combat_menu, MenuComponent);
+    struct Menu *mc;
+    mc = TNECS_GET_COMPONENT(sota->world, sota->pre_combat_menu, Menu);
     mc->visible = false;
 
     /* - Show map combat popup - */
@@ -1153,7 +1155,7 @@ void receive_event_Combat_Start(struct Game *sota, SDL_Event *userevent) {
     PopUp_Map_Combat_Units(pmc, sota, aggressor, defendant, agg_pos, dft_pos);
 
     /* - Deselect weapons in LoadoutSelectMenu - */
-    mc = TNECS_GET_COMPONENT(sota->world, sota->weapon_select_menu, MenuComponent);
+    mc = TNECS_GET_COMPONENT(sota->world, sota->weapon_select_menu, Menu);
     struct LoadoutSelectMenu *wsm = mc->data;
     LoadoutSelectMenu_Select_Reset(wsm);
 
@@ -1224,8 +1226,8 @@ void receive_event_Defendant_Select(struct Game *sota, SDL_Event *userevent) {
     // 2. Enable Pre-combat menu
     Game_PopUp_Pre_Combat_Enable(sota);
 
-    struct MenuComponent *mc;
-    mc = TNECS_GET_COMPONENT(sota->world, sota->pre_combat_menu, MenuComponent);
+    struct Menu *mc;
+    mc = TNECS_GET_COMPONENT(sota->world, sota->pre_combat_menu, Menu);
     mc->visible = true;
 
     // 3. Hide other popups

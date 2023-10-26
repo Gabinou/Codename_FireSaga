@@ -234,7 +234,7 @@ void _PreCombatMenu_Draw_Doubling(struct PreCombatMenu *pcm, SDL_Renderer *rende
     SOTA_Log_FPS("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
-void PreCombatMenu_Draw(struct MenuComponent *mc, SDL_Texture *render_target,
+void PreCombatMenu_Draw(struct Menu *mc, SDL_Texture *render_target,
                         SDL_Renderer *renderer) {
     SOTA_Log_FPS("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     struct PreCombatMenu *pcm = (struct PreCombatMenu *)mc->data;

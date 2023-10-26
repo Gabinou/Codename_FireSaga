@@ -20,9 +20,9 @@ void test_menu_player_select() {
     struct PlayerSelectMenu *psm = PlayerSelectMenu_Alloc();
     psm->row_height = ASCII_GLYPH_HEIGHT + 1; /* pixel fonts have python8 pixels*/
 
-    /* -- MenuComponent -- */
-    struct MenuComponent *mc = malloc(sizeof(struct MenuComponent));
-    *mc = MenuComponent_default;
+    /* -- Menu -- */
+    struct Menu *mc = malloc(sizeof(struct Menu));
+    *mc = Menu_default;
     mc->elem_box = NULL;
     mc->elem_pos = NULL;
     mc->elem_links = NULL;
@@ -51,7 +51,7 @@ void test_menu_player_select() {
     PlayerSelectMenu_Elem_Links(psm, mc);
     PlayerSelectMenu_Elem_Boxes(psm, mc);
     PlayerSelectMenu_Elem_Pos(psm, mc);
-    MenuComponent_Elem_Boxes_Check(mc);
+    Menu_Elem_Boxes_Check(mc);
 
     PlayerSelectMenu_Update(psm, &mc->n9patch, render_target, renderer);
     Filesystem_Texture_Dump(PATH_JOIN("menu_player_select", "PlayerSelectMenu_Option_1.png"), renderer,
@@ -65,7 +65,7 @@ void test_menu_player_select() {
     PlayerSelectMenu_Elem_Links(psm, mc);
     PlayerSelectMenu_Elem_Boxes(psm, mc);
     PlayerSelectMenu_Elem_Pos(psm, mc);
-    MenuComponent_Elem_Boxes_Check(mc);
+    Menu_Elem_Boxes_Check(mc);
 
     PlayerSelectMenu_Update(psm, &mc->n9patch, render_target, renderer);
     Filesystem_Texture_Dump(PATH_JOIN("menu_player_select", "PlayerSelectMenu_Option_2.png"), renderer,
@@ -79,7 +79,7 @@ void test_menu_player_select() {
     PlayerSelectMenu_Elem_Links(psm, mc);
     PlayerSelectMenu_Elem_Boxes(psm, mc);
     PlayerSelectMenu_Elem_Pos(psm, mc);
-    MenuComponent_Elem_Boxes_Check(mc);
+    Menu_Elem_Boxes_Check(mc);
 
     PlayerSelectMenu_Update(psm, &mc->n9patch, render_target, renderer);
     Filesystem_Texture_Dump(PATH_JOIN("menu_player_select", "PlayerSelectMenu_Option_3.png"), renderer,
@@ -93,7 +93,7 @@ void test_menu_player_select() {
     PlayerSelectMenu_Elem_Links(psm, mc);
     PlayerSelectMenu_Elem_Boxes(psm, mc);
     PlayerSelectMenu_Elem_Pos(psm, mc);
-    MenuComponent_Elem_Boxes_Check(mc);
+    Menu_Elem_Boxes_Check(mc);
 
     PlayerSelectMenu_Update(psm, &mc->n9patch, render_target, renderer);
     Filesystem_Texture_Dump(PATH_JOIN("menu_player_select", "PlayerSelectMenu_Option_4.png"), renderer,
@@ -107,7 +107,7 @@ void test_menu_player_select() {
     PlayerSelectMenu_Elem_Links(psm, mc);
     PlayerSelectMenu_Elem_Boxes(psm, mc);
     PlayerSelectMenu_Elem_Pos(psm, mc);
-    MenuComponent_Elem_Boxes_Check(mc);
+    Menu_Elem_Boxes_Check(mc);
 
     PlayerSelectMenu_Update(psm, &mc->n9patch, render_target, renderer);
     Filesystem_Texture_Dump(PATH_JOIN("menu_player_select", "PlayerSelectMenu_Option_5.png"), renderer,
@@ -121,7 +121,7 @@ void test_menu_player_select() {
     PlayerSelectMenu_Elem_Links(psm, mc);
     PlayerSelectMenu_Elem_Boxes(psm, mc);
     PlayerSelectMenu_Elem_Pos(psm, mc);
-    MenuComponent_Elem_Boxes_Check(mc);
+    Menu_Elem_Boxes_Check(mc);
 
     PlayerSelectMenu_Update(psm, &mc->n9patch, render_target, renderer);
     Filesystem_Texture_Dump(PATH_JOIN("menu_player_select", "PlayerSelectMenu_Option_6.png"), renderer,
@@ -135,7 +135,7 @@ void test_menu_player_select() {
     PlayerSelectMenu_Elem_Links(psm, mc);
     PlayerSelectMenu_Elem_Boxes(psm, mc);
     PlayerSelectMenu_Elem_Pos(psm, mc);
-    MenuComponent_Elem_Boxes_Check(mc);
+    Menu_Elem_Boxes_Check(mc);
 
     PlayerSelectMenu_Update(psm, &mc->n9patch, render_target, renderer);
     Filesystem_Texture_Dump(PATH_JOIN("menu_player_select", "PlayerSelectMenu_Option_7.png"), renderer,
@@ -149,7 +149,7 @@ void test_menu_player_select() {
     PlayerSelectMenu_Elem_Links(psm, mc);
     PlayerSelectMenu_Elem_Boxes(psm, mc);
     PlayerSelectMenu_Elem_Pos(psm, mc);
-    MenuComponent_Elem_Boxes_Check(mc);
+    Menu_Elem_Boxes_Check(mc);
 
     PlayerSelectMenu_Update(psm, &mc->n9patch, render_target, renderer);
     Filesystem_Texture_Dump(PATH_JOIN("menu_player_select", "PlayerSelectMenu_Option_8.png"), renderer,
@@ -163,7 +163,7 @@ void test_menu_player_select() {
     PlayerSelectMenu_Elem_Links(psm, mc);
     PlayerSelectMenu_Elem_Boxes(psm, mc);
     PlayerSelectMenu_Elem_Pos(psm, mc);
-    MenuComponent_Elem_Boxes_Check(mc);
+    Menu_Elem_Boxes_Check(mc);
 
     PlayerSelectMenu_Update(psm, &mc->n9patch, render_target, renderer);
     Filesystem_Texture_Dump(PATH_JOIN("menu_player_select", "PlayerSelectMenu_Test.png"), renderer,

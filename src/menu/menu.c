@@ -7,7 +7,7 @@ struct MenuElemDirections MenuElemDirections_default = {
     .bottom = MENU_ELEM_NULL,
 };
 
-struct MenuComponent MenuComponent_default =  {
+struct Menu Menu_default =  {
     .elem_pos         = NULL, /* [elem] */
     .elem_pos_frame   = ELEM_POS_MENU_FRAME,
     .elem_box         = NULL, /* [elem] */
@@ -21,8 +21,8 @@ struct MenuComponent MenuComponent_default =  {
     .type             = SOTA_NULL,
 };
 
-/* --- MenuComponent --- */
-void MenuComponent_Elem_Free(struct MenuComponent *mc) {
+/* --- Menu --- */
+void Menu_Elem_Free(struct Menu *mc) {
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     if (mc->elem_pos != NULL) {
         free(mc->elem_pos);
@@ -47,7 +47,7 @@ void MenuComponent_Elem_Free(struct MenuComponent *mc) {
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
-int Periodic_Elem_Move(struct MenuComponent *in_menu, int direction, int min, int max) {
+int Periodic_Elem_Move(struct Menu *in_menu, int direction, int min, int max) {
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     // Cursor can only move in 2 directions between elems
     // Cursor movement is periodid
@@ -68,7 +68,7 @@ int Periodic_Elem_Move(struct MenuComponent *in_menu, int direction, int min, in
     return (out);
 }
 
-void MenuComponent_Elem_Set(struct MenuComponent *mc, struct Game *sota, i8 new_elem) {
+void Menu_Elem_Set(struct Menu *mc, struct Game *sota, i8 new_elem) {
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     SDL_assert(new_elem >= 0);
     SDL_assert(new_elem != MENU_ELEM_NULL);
@@ -83,7 +83,7 @@ void MenuComponent_Elem_Set(struct MenuComponent *mc, struct Game *sota, i8 new_
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
 
-int MenuComponent_Elem_Move(struct MenuComponent *in_menu, int direction) {
+int Menu_Elem_Move(struct Menu *in_menu, int direction) {
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     // Cursor can only move in 4 directions between elems
     direction = Ternary_Direction_Straight(direction);
@@ -102,7 +102,7 @@ int MenuComponent_Elem_Move(struct MenuComponent *in_menu, int direction) {
     return (out);
 }
 
-void MenuComponent_Elem_Boxes_Check(struct MenuComponent *mc) {
+void Menu_Elem_Boxes_Check(struct Menu *mc) {
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     /* Fit elem_box to linked elems snuggly */
     for (u32 i = 0; i < mc->elem_num; i++) {
@@ -171,7 +171,7 @@ void MenuComponent_Elem_Boxes_Check(struct MenuComponent *mc) {
 }
 
 /* --- Debug --- */
-void MenuComponent_Elem_Boxes_Draw(struct MenuComponent *mc, struct SDL_Renderer *renderer) {
+void Menu_Elem_Boxes_Draw(struct Menu *mc, struct SDL_Renderer *renderer) {
     SOTA_Log_FPS("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     /* -- Set colors of elem_box to NES palette -- */
     for (int i = 0; i < mc->elem_num; i++) {
