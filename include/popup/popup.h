@@ -17,6 +17,7 @@ typedef struct PopUp PopUp;
 typedef void (* popup_draw_f)(      struct PopUp *p, struct Point pos,
                                     SDL_Texture *rt, SDL_Renderer *r);
 
+// Abbreviation struct Popup *pc -> popup component
 struct PopUp {
     struct n9Patch      n9patch;
     struct Point        target_pos;

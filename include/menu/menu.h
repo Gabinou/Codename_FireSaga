@@ -35,6 +35,7 @@ typedef struct Menu Menu;
 typedef void (* menu_draw_f)(  Menu *mc, SDL_Texture *rt, SDL_Renderer *r);
 typedef void (* menu_set_update_f)(Menu *mc);
 
+// Abbreviation struct Menu *mc -> menu component
 struct Menu {
     struct n9Patch n9patch;
     /* -- Cursor position when on elem -- */
