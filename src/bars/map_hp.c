@@ -78,6 +78,7 @@ void MapHPBar_Update(struct MapHPBar *mbar, struct Camera *camera,
 
     /* -- Drawing fill -- */
     rect.w = current_hp * (mbar->len - 2) / max_hp;
+    rect.w = rect.w < 1 ? 1 : rect.w;
     SDL_SetRenderDrawColor(renderer, color.r, color.g, color.b, SDL_ALPHA_OPAQUE);
     SDL_RenderFillRect(renderer, &rect); /* faster/slower than SDL_FillRects? */
 

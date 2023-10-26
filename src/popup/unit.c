@@ -158,6 +158,12 @@ void PopUp_Unit_Draw(struct PopUp *popup, struct Point pos,
                      SDL_Texture *render_target, SDL_Renderer *renderer) {
     SOTA_Log_FPS("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     struct PopUp_Unit *pu   = (struct PopUp_Unit *)popup->data;
+
+    if (pu->unit == NULL) {
+        SOTA_Log_FPS("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
+        return;
+    }
+
     struct n9Patch *n9patch = &popup->n9patch;
 
     if (pu->update) {
@@ -168,7 +174,7 @@ void PopUp_Unit_Draw(struct PopUp *popup, struct Point pos,
         .w = n9patch->size_pixels.x * n9patch->scale.x,
         .h = n9patch->size_pixels.y * n9patch->scale.y,
         .x = pos.x,
-        .y = pos.y,
+        .y = pos.y
     };
     SDL_assert(pu->texture != NULL);
     SDL_RenderCopy(renderer, pu->texture, NULL, &dstrect);
@@ -179,8 +185,8 @@ void PopUp_Unit_Update(struct PopUp_Unit *pu, struct n9Patch *n9patch,
                        SDL_Texture *render_target, SDL_Renderer *renderer) {
     SOTA_Log_FPS("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     /* --- PRELIMINARIES --- */
-    SDL_assert(n9patch != NULL);
-    SDL_assert(pu != NULL);
+    SDL_assert(n9patch  != NULL);
+    SDL_assert(pu       != NULL);
     SDL_assert(renderer != NULL);
     SDL_assert(pu->unit != NULL);
     /* -- Variable declaration/ constants definition -- */
@@ -210,7 +216,6 @@ void PopUp_Unit_Update(struct PopUp_Unit *pu, struct n9Patch *n9patch,
     // }
     SDL_assert(pu->texture_weapons != NULL);
 
-
     SDL_SetRenderTarget(renderer, pu->texture);
     SDL_SetRenderDrawColor(renderer, 0x00, 0x00, 0x00, SDL_ALPHA_TRANSPARENT);
     SDL_RenderFillRect(renderer, NULL);
@@ -223,8 +228,8 @@ void PopUp_Unit_Update(struct PopUp_Unit *pu, struct n9Patch *n9patch,
     int scale_y = n9patch->scale.y;
     n9patch->scale.x = 1;
     n9patch->scale.y = 1;
-    n9patch->pos.x = 0;
-    n9patch->pos.y = (PU_HEADER_H - 3);
+    n9patch->pos.x   = 0;
+    n9patch->pos.y   = (PU_HEADER_H - 3);
     n9Patch_Draw(n9patch, renderer);
     n9patch->scale.x = scale_x;
     n9patch->scale.y = scale_y;

@@ -340,7 +340,6 @@ void fsm_eGlbRng_ssStby(struct Game *sota) {
 void fsm_eCrsHvUnit_ssStby(struct Game *sota, tnecs_entity_t hov_ent) {
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
     SDL_assert(hov_ent > TNECS_NULL);
-    getchar();
     /* -- Show popup_unit -- */
     // TODO: put unit popup Loading into Map/Gameplay loading functions
     tnecs_entity_t popup_ent = sota->popups[POPUP_TYPE_HUD_UNIT];
@@ -373,7 +372,7 @@ void fsm_eCrsHvUnit_ssStby(struct Game *sota, tnecs_entity_t hov_ent) {
 
     /* - Compute new stackmap with recomputed attacktomap - */
     int all_overlays = MAP_OVERLAY_MOVE + MAP_OVERLAY_HEAL + MAP_OVERLAY_ATTACK;
-    all_overlays += MAP_OVERLAY_DANGER + MAP_OVERLAY_GLOBAL_DANGER;
+    all_overlays    += MAP_OVERLAY_DANGER + MAP_OVERLAY_GLOBAL_DANGER;
     if (rangemap        == RANGEMAP_HEALMAP) {
         Map_Palettemap_Autoset(sota->map, all_overlays);
     } else if (rangemap == RANGEMAP_ATTACKMAP) {
@@ -418,11 +417,15 @@ void fsm_eCrsDeHvUnit_ssStby(struct Game *sota, tnecs_entity_t dehov_ent) {
     Map_Palettemap_Autoset(sota->map, MAP_OVERLAY_DANGER + MAP_OVERLAY_GLOBAL_DANGER);
     Map_Stacked_Dangermap_Reset(sota->map);
 
-    /* -- Placing popup_unit out of view -- */
     tnecs_entity_t popup_ent = sota->popups[POPUP_TYPE_HUD_UNIT];
+    SDL_assert(popup_ent > TNECS_NULL);
+
+    /* -- Making unit NULL -- */
     struct PopUp *popup = TNECS_GET_COMPONENT(sota->world, popup_ent, PopUp);
     struct PopUp_Unit *popup_unit = popup->data;
     popup_unit->unit = NULL;
+
+    /* -- Placing popup_unit out of view -- */
     struct SliderOffscreen *offscreen;
     offscreen = TNECS_GET_COMPONENT(sota->world, popup_ent, SliderOffscreen);
     offscreen->go_offscreen = false;
