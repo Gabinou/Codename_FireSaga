@@ -368,6 +368,7 @@ extern int status_offset_x[UNIT_STATUS_END];
 extern int status_offset_y[UNIT_STATUS_END];
 
 struct StatsMenu {
+    b32 update;
     struct Point pos; /* [pixels], MENU_POS_bOFFSET = 0 */
 
     SDL_Texture *texture;
@@ -382,7 +383,6 @@ struct StatsMenu {
     struct PixelFont *pixelnours;
     struct PixelFont *pixelnours_big;
 
-    bool update             : 1;
     bool update_stats       : 1; /* only false in tests */
     bool tophand_stronghand : 1; /* If false, tophand is lefthand */
 };
