@@ -420,7 +420,7 @@ void Reload_Entities_Archetype(struct Game *sota, entity_reload_f reload_func,
     tnecs_component_t component_flag;
     size_t flag_id;
 
-    component_flag  = tnecs_component_names2typeflag(sota->world, 1, "Unit");
+    component_flag  = tnecs_component_names2typeflag(sota->world, 1, component);
     flag_id         = tnecs_typeflagid(sota->world, component_flag);
 
     Reload_Entities(sota, reload_func, flag_id, component);
@@ -474,21 +474,17 @@ void Reload_Popup(void *struct_ptr) {
 void receive_event_Reload(struct Game *sota, SDL_Event *event) {
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
 
-    /* --- Reload all entities --- */
-    /* -- Reload Units -- */
-    Reload_Entities_Archetype(sota, Reload_JSON, "Unit");
+    /* --- Reload non-entities --- */
+    Weapons_All_Reload(sota->weapons_dtab);
+    Item_All_Reload(sota->items_dtab);
 
-    // /* -- Reload Sprites -- */
-    // /* -- Reload entities for the pure component typeflag -- */
+    /* --- Reload all entities --- */
+    Reload_Entities_Archetype(sota, Reload_JSON,  "Unit");
     // Reload_Entities_Archetype(sota, Reload_JSON, "Sprite");
 
-    /* --- Reload non-entities --- */
-    /* -- Reload Weapons -- */
-    // Note: Reloading weapons is super fast
-    Weapons_All_Reload(sota->weapons_dtab);
+    Reload_Entities_Archetype(sota, Reload_Popup, "Popup");
+    Reload_Entities_Archetype(sota, Reload_Menu,  "MenuComponent");
 
-    /* -- Reload Items -- */
-    Item_All_Reload(sota->items_dtab);
 
     /* -- Reload Map -- */
     /* - Reload Map tiles - */

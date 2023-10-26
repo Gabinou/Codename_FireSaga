@@ -77,14 +77,14 @@ struct Text_Bubble_Tail {
 
 struct Text_Bubble {
     b32 update;
-    char                       *text;
-    int                         width;
-    int                         height;
-    int                         row_height;
-    int                         line_len_px;
-    int                         line_num_max;
-    int                         vscroll;
-    int                         vscroll_speed;
+    char    *text;
+    int      width;
+    int      height;
+    int      row_height;
+    int      line_len_px;
+    int      line_num_max;
+    int      vscroll;
+    int      vscroll_speed;
 
     struct TextLines            lines;
     struct Padding              padding;
