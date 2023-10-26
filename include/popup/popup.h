@@ -19,9 +19,9 @@ typedef void (* popup_draw_f)(      struct PopUp *p, struct Point pos,
 
 // Abbreviation struct Popup *pc -> popup component
 struct PopUp {
-    struct n9Patch      n9patch;
-    struct Point        target_pos;
-    popup_draw_f        draw;
+    struct n9Patch  n9patch;
+    struct Point    target_pos;
+    popup_draw_f    draw;
 
     void           *data;
     float           slidefactor;

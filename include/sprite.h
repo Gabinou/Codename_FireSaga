@@ -51,14 +51,14 @@ struct Spritesheet {
     SDL_Surface *surface_shaded;    /* shaded pixels to be shown on screen  */
     SDL_Palette *palette;
 
-    i16 *loops_pos;    /* [loop] flattened index for 8 cols, starting top left */
-    i8 *frames;        /* [loop], number of frames */
+    i16  *loops_pos;   /* [loop] flattened index for 8 cols, starting top left */
+    i8   *frames;      /* [loop], number of frames */
     i16 **speeds;      /* [loop][frame], ms */
-    i8 *loop_modes;    /* [loop] */
-    i8 loop_num;       /* mostly for debugging, checking spritesheet size */
-    i8 current_loop;
-    i8 current_frame;
-    i8 frame_i;
+    i8   *loop_modes;  /* [loop] */
+    i8    loop_num;    /* mostly for debugging, checking spritesheet size */
+    i8    current_loop;
+    i8    current_frame;
+    i8    frame_i;
 };
 extern struct Spritesheet Spritesheet_default;
 

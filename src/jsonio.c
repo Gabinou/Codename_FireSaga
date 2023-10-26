@@ -32,7 +32,6 @@ struct cJSON *jsonio_parseJSON(const char *filename) {
     SOTA_Log_Func("%s " STRINGIZE(__LINE__), __func__);
     /* Error if file doesn't exist */
     if (!PHYSFS_exists(filename)) {
-        SOTA_Log_Debug("%s " STRINGIZE(__LINE__), __func__);
         SDL_Log("File %s does not exist", filename);
         exit(ERROR_CannotOpenFile);
     }

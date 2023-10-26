@@ -488,10 +488,19 @@ void receive_event_Reload(struct Game *sota, SDL_Event *event) {
     Weapons_All_Reload(sota->weapons_dtab);
     Item_All_Reload(sota->items_dtab);
 
-    /* --- Reload all entities --- */
+    /* --- Reload Unit --- */
     Reload_Entities_Archetype(sota, Reload_JSON,  "Unit");
-    // Reload_Entities_Archetype(sota, Reload_JSON, "Sprite");
 
+    /* --- Reload Unit entity's Sprite component --- */
+    tnecs_component_t component_flag;
+    size_t flag_id;
+
+    component_flag  = tnecs_component_names2typeflag(sota->world, 2, "Sprite", "Unit");
+    flag_id         = tnecs_typeflagid(sota->world, component_flag);
+
+    Reload_Entities(sota, Reload_JSON, flag_id, "Sprite");
+
+    /* --- Reload Popup and Menu --- */
     Reload_Entities_Archetype(sota, Reload_Popup, "PopUp");
     Reload_Entities_Archetype(sota, Reload_Menu,  "Menu");
 
