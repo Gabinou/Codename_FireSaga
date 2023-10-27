@@ -94,10 +94,10 @@ struct Map {
 
     /* --- FRAMES --- */
     i32  speed;
-    u8  frames;                /* number of map frames.    < 1 if not animated */
-    u8  frames_shadow;         /* number of shadow frames. < 1 if not animated */
-    u8  shadow_frame_pause;    /* number of frames to wait until change shadow animated frame */
-    u8  tilemap_frame_pause;   /* number of frames to wait until change tilemap animated frame */
+    u8  frames;                /* map frames num.    < 1 no anim */
+    u8  frames_shadow;         /* shadow frames num. < 1 no anim */
+    u8  shadow_frame_pause;    /* framenum wait to change shadow frame */
+    u8  tilemap_frame_pause;   /* framenum wait to change anim frame */
     u8  shadow_frame_counter;
     u8  tilemap_frame_counter;
     float shadow_frame_factor;  /* framerate * factor = pause */
@@ -118,7 +118,7 @@ struct Map {
     /* attacktolist: List of tiles where unit can attack */
     i32 *attacktolist;          /* 2D dynamic array */
     i32 *attackfrommap;         /* 2D dynamic array */
-    i32 *global_rangemap;        /* 2D dynamic array */
+    i32 *global_rangemap;       /* 2D dynamic array */
     float *fcostmap;            /* 2D dynamic array */
     float *fmovemap;            /* 2D dynamic array */
     tnecs_entity_t *unitmap;    /* [row * col_len + col] */
@@ -202,9 +202,11 @@ void        Map_Units_Hide(struct Map *map);
 
 void Map_Texture_Alloc(struct Map *map);
 
+/* -- Dynamic arrays -- */
 void Map_dArrays_Free(struct Map *map);
 void Map_dArrays_Init(struct Map *map, const struct Settings *settings);
 
+/* --- Tilemap --- */
 static void _Map_Tilemap_Shader_Init( struct Map *map);
 static void _Map_Tilemap_Shader_Free( struct Map *map);
 void Map_Tilemap_Surface_Init(struct Map *map);
@@ -215,6 +217,7 @@ void Map_Tilemap_Texture_Free(struct Map *map);
 static void _Map_Tilesindex_Init(struct Map  *map);
 static void _Map_Tilesindex_Free(struct Map  *map);
 
+/* --- Tilesprites --- */
 void Map_Tilesprites_Init(struct Map *map, size_t tiles_num);
 void Map_Tilesprites_Free(struct Map *map);
 

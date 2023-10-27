@@ -523,7 +523,6 @@ void receive_event_Reload(struct Game *sota, SDL_Event *event) {
     Reload_Entities_Archetype(sota, Reload_Popup, "PopUp");
     Reload_Entities_Archetype(sota, Reload_Menu,  "Menu");
 
-
     /* -- Reload Map -- */
     /* - Reload Map tiles - */
 

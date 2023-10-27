@@ -2066,8 +2066,12 @@ void Unit_readJSON(void *input, const cJSON *const junit) {
     /* -- Unit should also read/write equipped -- */
     SOTA_Log_Debug("-- items --");
 
+    /* -- Drop everything, unequip all -- */
     Unit_Equipment_Drop(unit);
+    Unit_Unequip(unit, UNIT_HAND_LEFT);
+    Unit_Unequip(unit, UNIT_HAND_RIGHT);
 
+    /* -- Load equipment -- */
     cJSON *jitem;
     cJSON_ArrayForEach(jitem, jitems) {
         struct Inventory_item temp_item;
@@ -2075,9 +2079,11 @@ void Unit_readJSON(void *input, const cJSON *const junit) {
         if (temp_item.id > ITEM_NULL)
             Unit_Item_Take(unit, temp_item);
     }
-    if (unit->_equipment[UNIT_HAND_RIGHT].id > 0)
+
+    /* -- Equip -- */
+    if (unit->_equipment[UNIT_HAND_RIGHT].id != ITEM_NULL )
         Unit_Equip_inHand(unit, UNIT_HAND_RIGHT);
-    if (unit->_equipment[UNIT_HAND_LEFT].id > 0)
+    if (unit->_equipment[UNIT_HAND_LEFT].id != ITEM_NULL )
         Unit_Equip_inHand(unit, UNIT_HAND_LEFT);
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }
@@ -2260,6 +2266,7 @@ struct Unit_stats Unit_effectiveStats(struct Unit *unit) {
         SDL_assert(unit->_equipment[UNIT_HAND_RIGHT].id != ITEM_NULL);
         weapon = DTAB_GET(unit->weapons_dtab, unit->_equipment[UNIT_HAND_RIGHT].id);
         SDL_assert(weapon != ITEM_NULL);
+        SDL_assert(weapon->item != ITEM_NULL);
         Unit_stats_plus(unit->bonus_stats, weapon->item->bonus_stats);
         Unit_stats_plus(unit->malus_stats, weapon->item->malus_stats);
     }
