@@ -113,7 +113,7 @@ struct Map Map_default = {
 struct Map *Map_Init(struct Map *map, i32 width, i32 height) {
     if (map != NULL)
         Map_Free(map);
-    map = (struct Map *)SDL_malloc(sizeof(struct Map));
+    map  = (struct Map *)SDL_malloc(sizeof(struct Map));
     *map = Map_default;
     map->tiles              = DARR_INIT(map->tiles, struct Tile, 64);
     map->tiles_id           = DARR_INIT(map->tiles_id, i32, 64);
@@ -123,7 +123,7 @@ struct Map *Map_Init(struct Map *map, i32 width, i32 height) {
     map->friendlies_onfield = DARR_INIT(map->friendlies_onfield, tnecs_entity_t, 20);
     map->units_onfield      = DARR_INIT(map->units_onfield, tnecs_entity_t, 20);
     map->reinf_equipments   = DARR_INIT(map->reinf_equipments, struct Inventory_item *, 30);
-    map->armies_onfield = calloc(10, sizeof(*map->armies_onfield));
+    map->armies_onfield     = calloc(10, sizeof(*map->armies_onfield));
     Map_Tilesize_Set(map, width, height);
     map->arrow = malloc(sizeof(*map->arrow));
     *map->arrow = Arrow_default;

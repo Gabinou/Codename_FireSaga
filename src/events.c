@@ -350,8 +350,8 @@ void receive_event_Quit(struct Game *sota, SDL_Event *event) {
     /* -- Hiding popups -- */
     Game_PopUp_Tile_Hide(sota);
 
-    /* -- UnloadMap -- */
-    Game_Map_Unload(sota);
+    /* -- Map_Free -- */
+    Game_Map_Free(sota);
     /* -- Load TitleScreen -- */
     struct Input_Arguments args = Input_Arguments_default;
     Game_titleScreen_Load(sota, args);
@@ -459,6 +459,7 @@ void receive_event_Reload(struct Game *sota, SDL_Event *event) {
 
     /* -- Reload Map -- */
     /* - Reload Map tiles - */
+    jsonio_readJSON(sota->map->json_filename, sota->map);
 
 
     /* -- TODO: Reload Scenes -- */

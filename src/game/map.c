@@ -6,39 +6,35 @@
 // #endif /* STB_SPRINTF_IMPLEMENTATION */
 
 /* --- Map utilities --- */
-void Game_Map_Unload(struct Game *sota) {
-
-    Game_Map_Free(sota);
-    Game_Tiles_Unload(sota);
-}
-
 void Game_Map_Load(struct Game *sota, const i16 in_map_index) {
-    SDL_Log("%ld \n", in_map_index);
     SDL_assert((in_map_index > CHAPTER_START) && (in_map_index < CHAPTER_END));
-    SDL_Log("Associated map filename     %s \n", mapFilenames[in_map_index]);
+    SDL_LogDebug(SOTA_LOG_SYSTEM, "%ld \n", in_map_index);
+    SDL_LogDebug(SOTA_LOG_SYSTEM, "Associated map filename     %s \n", mapFilenames[in_map_index]);
+    /* --- PRELIMINARIES --- */
     Game_Map_Free(sota);
-    Game_Tiles_Unload(sota);
-    // Game_Units_Unload(sota);
+
+    /* --- Allocating map --- */
     sota->map = Map_Init(sota->map, sota->settings.tilesize[0], sota->settings.tilesize[1]);
     SDL_assert(sota->world != NULL);
-    sota->map->world = sota->world;
-    sota->map->stack_mode = sota->settings.map_settings.stack_mode;
-    // sota->map->tiles = sota->tiles_loaded;
+    sota->map->world        = sota->world;
+    sota->map->stack_mode   = sota->settings.map_settings.stack_mode;
     Map_Renderer_Set(sota->map, sota->renderer);
+
+    /* --- Reading map from json files --- */
     jsonio_readJSON(mapFilenames[in_map_index], sota->map);
     // read_json sets the row_len and col_len necessary for dArrays_Init
     Map_dArrays_Init(sota->map, &sota->settings);
     // Game_Tilesets_Dump(sota);
-    char *path = "assets"PHYSFS_SEPARATOR"Tiles"PHYSFS_SEPARATOR"Tileset_Shadow.json";
-    struct cJSON *jshadow_tileset_file = jsonio_parseJSON(path);
-    struct cJSON *jshadow_tileset = cJSON_GetObjectItem(jshadow_tileset_file, "shadow_tileset");
+
+    /* --- Parsing shadow tileset --- */
+    char *path = PATH_JOIN("assets", "Tiles", "Tileset_Shadow.json");
+    struct cJSON *jshadow_tileset_file  = jsonio_parseJSON(path);
+    struct cJSON *jshadow_tileset       = cJSON_GetObjectItem(jshadow_tileset_file, "shadow_tileset");
     Tilemap_Shader_Load_Tileset_JSON(sota->map->tilemap_shader, jshadow_tileset);
     cJSON_Delete(jshadow_tileset_file);
 }
 
 void Game_Map_Free(struct Game *sota) {
-
-
     if (sota->map != NULL) {
         Map_Units_Hide(sota->map);
         Map_Free(sota->map);
@@ -48,13 +44,13 @@ void Game_Map_Free(struct Game *sota) {
 }
 
 void Game_debugMap_Free(struct Game *sota) {
-    Game_Map_Load(sota, CHAPTER_TEST_V6);
+    // Game_Map_Load(sota, CHAPTER_TEST_V6);
 
 }
 
 void Game_debugMap_Load(struct Game *sota) {
     /* -- Preliminaries -- */
-    SDL_Log("Loading in test Map\n");
+    SDL_LogDebug(SOTA_LOG_SYSTEM, "Loading in test Map\n");
     strncpy(sota->reason, "for testing", sizeof(sota->reason));
     Game_State_Set(sota, GAME_STATE_Gameplay_Map, sota->reason);
     strncpy(sota->reason, "on Init state to GAME_STATE_Gameplay_Map substate is idle",
@@ -64,7 +60,7 @@ void Game_debugMap_Load(struct Game *sota) {
     Game_PopUp_Tile_Create(sota);
     Game_cursorFocus_onMap(sota);
 
-    SDL_Log("Loading in test party\n");
+    SDL_LogDebug(SOTA_LOG_SYSTEM, "Loading in test party\n");
     /* -- Party -- */
     /* - Preliminaries - */
     i16 *unit_inds;
@@ -255,11 +251,6 @@ void Game_Map_Reinforcements_Load(struct Game *sota) {
 }
 
 /* --- Tiles & tilesets  --- */
-void Game_Tiles_Unload(struct Game *sota) {
-
-
-}
-
 void Game_Tilesets_Dump(struct Game *sota) {
     char dumpname[DEFAULT_BUFFER_SIZE] = "";
     char temp[DEFAULT_BUFFER_SIZE];
