@@ -129,7 +129,7 @@ struct Map *Map_Init(struct Map *map, i32 width, i32 height) {
     map->reinf_equipments   = DARR_INIT(map->reinf_equipments, struct Inventory_item *, 30);
     map->armies_onfield     = calloc(10, sizeof(*map->armies_onfield));
     Map_Tilesize_Set(map, width, height);
-    map->arrow = malloc(sizeof(*map->arrow));
+    map->arrow  = malloc(sizeof(*map->arrow));
     *map->arrow = Arrow_default;
     Arrow_Init(map->arrow, map->tilesize);
     return (map); // return cause pointer address can change.
@@ -153,29 +153,9 @@ void Map_Units_Free(struct Map *map) {
 
     }
 
-    /* -- Free reinforcements -- */
-    for (int i = 0; i < DARR_NUM(map->reinforcements); i++) {
-        // reinforcements.id is not an entity???
-        tnecs_entity_t uent = map->reinforcements[i].id;
-        if ((uent == TNECS_NULL)
-            || (!TNECS_ENTITY_EXISTS(map->world, uent)))
-            continue;
-
-        struct Unit *unit = TNECS_GET_COMPONENT(map->world, uent, Unit);
-        if (unit != NULL)
-            Unit_Free(unit);
-        struct Sprite *sprite = TNECS_GET_COMPONENT(map->world, uent, Sprite);
-        if (sprite != NULL)
-            Sprite_Free(sprite);
-        tnecs_entity_destroy(map->world, uent);
-
-    }
-
     /* -- Free unitmap -- */
     free(map->unitmap);
     map->unitmap = NULL;
-
-    /* -- Free loaded reinforcements -- */
 }
 
 void Map_Units_Hide(struct Map *map) {

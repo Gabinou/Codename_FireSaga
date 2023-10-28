@@ -9,19 +9,31 @@
 #include <string.h>
 
 /* --- NOTE --- */
-// caller deals with memory
 
-extern char * nstr_replaceSingle(char * in_str, const char replace, const char with);
-extern char * nstr_camelCase(char * in_str, const char separator, uint8_t minwordlen);
-extern char * nstr_slicefromStart(char * in_str, uint8_t toslice);
-extern char * nstr_slicefromEnd(char * in_str, uint8_t toslice);
-extern char * nstr_toLower(char * in_str);
-extern char * nstr_toUpper(char * in_str);
-extern char * nstr_Replace(char * line, char * replace, char * with);
+/* --- caller deals with memory --- */
+typedef uint8_t u8;
 
-extern char * nstr_Path_Extension(char * filename);
-extern char * nstr_Path_Join(char * path, char * top);
-extern char * nstr_Path_Remove_Top(char * path, const char separator);
-extern char * nstr_Path_Split_Top(char * path, const char separator);
+#define countof(a)  (sizeof(a) / sizeof(*(a)))  /* Includes \0 */
+#define lengthof(s) (countof(s) - 1)            /* Excludes \0 */
+
+#define s8(s) (s8){(u8 *)s, lengthof(s)}
+typedef struct {
+    u8      *data;
+    size_t   len;
+} s8;
+
+/* caller deals with memory */
+char *nstr_toLower(        char *str);
+char *nstr_toUpper(        char *str);
+char *nstr_Replace(        char *line, char * replace, char * with);
+char *nstr_camelCase(      char *str, const char separator, u8 minwordlen);
+char *nstr_slicefromEnd(   char *str, u8 toslice);
+char *nstr_replaceSingle(  char *str, const char replace, const char with);
+char *nstr_slicefromStart( char *str, u8 toslice);
+
+char *nstr_Path_Join(      char *path, char * top);
+char *nstr_Path_Extension( char *filename);
+char *nstr_Path_Split_Top( char *path, const char separator);
+char *nstr_Path_Remove_Top(char *path, const char separator);
 
 #endif /* NSTR_H */
