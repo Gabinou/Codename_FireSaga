@@ -261,7 +261,7 @@ int Unit_Hand_Side2Strong(const struct Unit *unit, int side_i) {
 
 /* Note: weakhand = 1 - stronghand */
 int Unit_Hand_Strong(const struct Unit *unit) {
-        SDL_assert(unit != NULL);
+    SDL_assert(unit != NULL);
     return (SotA_Hand_Strong(unit->handedness));
 }
 
@@ -333,12 +333,12 @@ struct Unit_stats Unit_getStats(struct Unit *unit) {
 
 /* --- Second-order info --- */
 u8 Unit_mvtType(const struct Unit *unit) {
-        return (class_mvt_types[unit->class]);
+    return (class_mvt_types[unit->class]);
 }
 
 u8 SotA_army2alignment(u8 army) {
     if ((army <= ARMY_START) || (army >= ARMY_END)) {
-            SOTA_Log_Debug("Army out of bounds");
+        SOTA_Log_Debug("Army out of bounds");
         exit(ERROR_OutofBounds);
     }
     return (army_alignment[army]);
@@ -411,7 +411,7 @@ bool Unit_Item_Usable(const struct Unit *unit, int archetype, int id) {
 
 /* --- Skills --- */
 bool Unit_hasSkill(const struct Unit *unit, u64 skill) {
-        return ((unit->skills & skill) > 0);
+    return ((unit->skills & skill) > 0);
 }
 
 /* --- Statuses --- */
@@ -431,7 +431,7 @@ void Unit_Status_Add(struct Unit *unit, struct Unit_status status) {
 
 void Unit_Status_Decrement(struct Unit *unit) {
     if (unit->status_queue == NULL) {
-            return;
+        return;
     }
     for (size_t i = 0; i < DARR_NUM(unit->status_queue); i++) {
         unit->status_queue[i].turns--;
@@ -445,7 +445,7 @@ i16 Unit_Status_Find(struct Unit *unit, i16 status) {
     SDL_assert(unit->status_queue != NULL);
     for (size_t i = 0; i < DARR_NUM(unit->status_queue); i++) {
         if (unit->status_queue[i].status == status) {
-                    return (i);
+            return (i);
         }
     }
 
@@ -480,7 +480,7 @@ void Unit_Item_Takeat(struct Unit *unit, struct Inventory_item item, size_t i) {
     SDL_assert(unit);
     SDL_assert(unit->weapons_dtab != NULL);
     if (item.id == ITEM_NULL) {
-            return;
+        return;
     }
     Weapon_Load(unit->weapons_dtab, item.id);
 
@@ -628,19 +628,19 @@ bool Unit_Equip_inHand(struct Unit *unit, bool hand) {
     /* -- Error if try to equip NULL item -- */
     if (unit->_equipment[hand].id <= ITEM_NULL) {
         SOTA_Log_Debug("No item in hand. Cannot equip.");
-            return (unit->equipped[hand] = false);
+        return (unit->equipped[hand] = false);
     }
     Weapon_Load(unit->weapons_dtab, unit->_equipment[hand].id);
 
     /* -- Error checking -- */
     if (!Unit_canEquip(unit, unit->_equipment[hand].id)) {
         SOTA_Log_Debug("Cannot equip item.");
-            return (unit->equipped[hand] = false);
+        return (unit->equipped[hand] = false);
     }
 
     if (!unit->hands[hand]) {
         SOTA_Log_Debug("No hand to equip with.");
-            return (unit->equipped[hand] = false);
+        return (unit->equipped[hand] = false);
     }
 
     unit->equipped[hand] = true;
@@ -805,7 +805,7 @@ void Unit_dies(struct Unit *unit) {
 /* Can unit equip weapon input item? */
 bool Unit_canEquip(const struct Unit *unit, i16 id) {
     if (id <= ITEM_NULL) {
-            return (false);
+        return (false);
     }
 
     bool type    = Unit_canEquip_Type(unit, id);
@@ -825,10 +825,10 @@ bool Unit_canEquip_inHand(const struct Unit *unit, bool hand) {
 /* Can unit equip arbitrary weapon in its hand? */
 bool Unit_canEquip_Hand(const struct Unit *unit, i16 id, bool hand) {
     if (id <= ITEM_NULL) {
-            return (false);
+        return (false);
     }
     if (!Weapon_ID_isValid(id)) {
-            return (false);
+        return (false);
     }
 
     SDL_assert(unit->weapons_dtab != NULL);
@@ -842,7 +842,7 @@ bool Unit_canEquip_Hand(const struct Unit *unit, i16 id, bool hand) {
     // TODO: Right hand or left hand
 
     if (eq_2O || eq_any  || eq_1A) {
-            return (true);
+        return (true);
     }
 
     return (false);
@@ -852,11 +852,11 @@ bool Unit_canEquip_Hand(const struct Unit *unit, i16 id, bool hand) {
 bool Unit_canEquip_Type(const struct Unit *unit, i16 id) {
     /* Unequippable if ITEM_NULL */
     if (id <= ITEM_NULL) {
-            return (false);
+        return (false);
     }
 
     if (!Weapon_ID_isValid(id)) {
-            return (false);
+        return (false);
     }
 
     SDL_assert(unit->weapons_dtab != NULL);
@@ -867,7 +867,7 @@ bool Unit_canEquip_Type(const struct Unit *unit, i16 id) {
 
     /* Is unit among weapon's users? */
     if ((weapon->item->users == NULL) || (DARR_NUM(weapon->item->users) == 0)) {
-            return ((unit->equippable & wpntypecode) > 0);
+        return ((unit->equippable & wpntypecode) > 0);
     }
 
     /* Is weapon's type equippable by unit? */
@@ -875,7 +875,7 @@ bool Unit_canEquip_Type(const struct Unit *unit, i16 id) {
     for (u8 i = 0; i < DARR_NUM(weapon->item->users); i++) {
         found = (weapon->item->users[i] == unit->_id);
         if (found) {
-                    return ((unit->equippable & wpntypecode) > 0);
+            return ((unit->equippable & wpntypecode) > 0);
         }
     }
 
@@ -948,7 +948,7 @@ int Unit_canStaff_Eq(const struct  Unit *unit) {
     for (int i = 0; i < DEFAULT_EQUIPMENT_SIZE; i++) {
         struct Inventory_item item = unit->_equipment[i];
         if (Weapon_isStaff(item.id)) {
-                    return (true);
+            return (true);
         }
     }
     return (false);
@@ -969,7 +969,7 @@ int Unit_canStaff(const struct Unit *unit) {
 
 /* - Can unit equip a staff with only one hand? - */
 int Unit_canStaff_oneHand(const struct Unit *unit) {
-        return (Unit_hasSkill(unit, PASSIVE_SKILL_STAFF_ONE_HAND));
+    return (Unit_hasSkill(unit, PASSIVE_SKILL_STAFF_ONE_HAND));
 }
 
 
@@ -992,7 +992,7 @@ bool Unit_canAttack_Eq(struct Unit *unit) {
         if (!wpn->canAttack)
             continue;
 
-            return (true);
+        return (true);
     }
 
     return (false);
@@ -1301,7 +1301,7 @@ struct Range *_Unit_Range_Combine(const struct Unit   *unit, struct Range *range
 }
 
 struct Range *Unit_Range_Combine_Equipment(struct Unit *unit) {
-        /* Compute range of equipment, using unit rangemap */
+    /* Compute range of equipment, using unit rangemap */
     /* Used to find if any */
     return (Unit_Range_Combine(unit, false));
 }
@@ -1347,7 +1347,7 @@ struct Range *Unit_Range_Combine_Weapons(struct Unit *unit, bool equipped) {
 }
 
 bool Range_Valid(struct Range range) {
-        return ((range.max > 0) && (range.min > 0) && (range.min <= SOTA_MAX_RANGE)
+    return ((range.max > 0) && (range.min > 0) && (range.min <= SOTA_MAX_RANGE)
             && (range.max <= SOTA_MAX_RANGE));
 }
 
@@ -1371,7 +1371,7 @@ void Ranges_Combine(struct Range *r1, struct Range r2) {
 }
 
 bool Unit_Equipment_Full(const struct Unit *unit) {
-        return (unit->num_equipment == DEFAULT_EQUIPMENT_SIZE);
+    return (unit->num_equipment == DEFAULT_EQUIPMENT_SIZE);
 }
 
 
@@ -1396,7 +1396,7 @@ void Unit_Equipment_Print(const struct Unit *unit) {
 
 
 struct Computed_Stats Unit_supportBonus(struct Unit *unit) {
-        return (unit->support_bonus);
+    return (unit->support_bonus);
 }
 
 /* --- Loadout Manipulation --- */
@@ -1531,7 +1531,7 @@ struct Computed_Stats Unit_computedStats_wLoadout(struct Unit *unit, int lh, int
 struct Computed_Stats Unit_computedStats(struct Unit *unit, int distance) {
     SDL_assert(unit);
     if (!unit->update_stats) {
-            return (unit->computed_stats);
+        return (unit->computed_stats);
     }
 
     /* check if no weapons in hand*/
@@ -1736,12 +1736,12 @@ void _Unit_Item_Deplete(struct Unit *unit, int i, int archetype) {
 
     /* Skip if NULL. Not an error, unit can have empty hand. */
     if (unit->_equipment[i].id == ITEM_NULL) {
-            return;
+        return;
     }
 
     /* Skip if item's archetype to deplete does not match input. */
     if (!(Item_Archetype(unit->_equipment[i].id) != archetype)) {
-            return;
+        return;
     }
 
     struct Weapon *weapon = DTAB_GET(unit->weapons_dtab, unit->_equipment[i].id);
@@ -1751,14 +1751,14 @@ void _Unit_Item_Deplete(struct Unit *unit, int i, int archetype) {
 
 void _Unit_Equipped_Deplete(struct Unit *unit, bool hand, int archetype) {
     if (!unit->equipped[hand]) {
-            return;
+        return;
     }
 
     _Unit_Item_Deplete(unit, hand, archetype);
 }
 
 void Unit_Item_Deplete(struct Unit *unit, int i) {
-        /* Upon use, decrease item durability */
+    /* Upon use, decrease item durability */
     _Unit_Item_Deplete(unit, i, ITEM_ARCHETYPE_NULL);
 }
 
@@ -2022,7 +2022,7 @@ struct Unit_stats Unit_effectiveStats(struct Unit *unit) {
     SDL_assert(unit);
     /* Skip if not update_stats? */
     if (!unit->update_stats) {
-            return (unit->effective_stats);
+        return (unit->effective_stats);
     }
 
     /* Preparation */
@@ -2113,7 +2113,7 @@ void Unit_Rangemap_Equipment(struct Unit *unit) {
         } else {
             unit->rangemap = RANGEMAP_ATTACKMAP;
         }
-            return;
+        return;
     }
 
     /* 2- Weapon equipped in weak hand */
@@ -2129,7 +2129,7 @@ void Unit_Rangemap_Equipment(struct Unit *unit) {
             unit->rangemap = RANGEMAP_ATTACKMAP;
         }
 
-            return;
+        return;
     }
 }
 

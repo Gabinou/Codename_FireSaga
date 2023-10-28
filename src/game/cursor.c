@@ -163,7 +163,7 @@ void Game_CursorfollowsMouse_onMenu(struct Game *sota) {
     skip |= (sota->entity_cursor <= TNECS_NULL);
 
     if (skip) {
-            return;
+        return;
     }
 
     /* --- SLIDING --- */
@@ -176,7 +176,7 @@ void Game_CursorfollowsMouse_onMenu(struct Game *sota) {
     bool slidex = (cursor_slider->target.x != cursor_position->pixel_pos.x);
     bool slidey = (cursor_slider->target.y != cursor_position->pixel_pos.y);
     if (!(slidex || slidey)) {
-            return;
+        return;
     }
     /* -- Menu type -- */
     /* - menu pos - */
@@ -252,7 +252,7 @@ void Game_CursorfollowsMouse_onMap(struct Game *sota) {
     skip |= (sota->entity_mouse <= TNECS_NULL);
     skip |= (sota->entity_cursor <= TNECS_NULL);
     if (skip) {
-            return;
+        return;
     }
 
     /* - Skip if cursor is sliding - */
@@ -265,7 +265,7 @@ void Game_CursorfollowsMouse_onMap(struct Game *sota) {
     bool slidex = (cursor_slider->target.x != cursor_position->pixel_pos.x);
     bool slidey = (cursor_slider->target.y != cursor_position->pixel_pos.y);
     if (slidex || slidey) {
-            return;
+        return;
     }
 
     /* - Get cursor tile position - */
@@ -345,7 +345,7 @@ void Game_Cursor_Moves_onMap(struct Game *sota) {
     skip |= (sota->entity_cursor <= TNECS_NULL);
 
     if (skip) {
-            return;
+        return;
     }
 
     /* --- SENDING --- */

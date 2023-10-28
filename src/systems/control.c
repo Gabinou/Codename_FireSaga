@@ -6,21 +6,21 @@ void Control_Cursor_Moves(struct Game *sota,    struct Point cursor_move,
                           i32 controller_type) {
     /* - Immobile cursor - */
     if ((cursor_move.x == 0) && (cursor_move.y == 0)) {
-            return;
+        return;
     }
 
     sota->cursor_frame_moved = true;
 
     /* - Block sliding cursor - */
     if ((target.x != px_pos.x) || (target.y != px_pos.y)) {
-            return;
+        return;
     }
 
     /* - Pause cursor after moving - */
     int min = 0;
     int max = CURSOR_FIRSTMOVE_PAUSE_ms;
     if ((sota->cursor_moved_time_ms > min) && (sota->cursor_moved_time_ms < max)) {
-            return;
+        return;
     }
 
     sota->cursor_move     = cursor_move;
@@ -52,10 +52,10 @@ void Control_Pressed(i8 sota_b, i8 *press, i8 *pressed_num, bool block, i32 t_he
                      i32 *controller_type, u32 event, i32 t_min_ns) {
     press[(*pressed_num)++] = sota_b;
     if (block) {
-            return;
+        return;
     }
     if (event <= 0) {
-            return;
+        return;
     }
     // TODO: fsm for button events
     if ((t_min_ns <= 0) || (t_held_ns > t_min_ns)) {

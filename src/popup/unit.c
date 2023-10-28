@@ -145,7 +145,7 @@ void PopUp_Unit_Draw(struct PopUp *popup, struct Point pos,
     struct PopUp_Unit *pu   = (struct PopUp_Unit *)popup->data;
 
     if (pu->unit == NULL) {
-            return;
+        return;
     }
 
     struct n9Patch *n9patch = &popup->n9patch;

@@ -5,7 +5,7 @@
 /* Outputs expected/average damage value when multiplied with (att-def) */
 /* Offensive skills should also give expected damage factor values.     */
 float Equation_Expected_Damage(int hit, int crit, int critfactor) {
-        return (hit / SOTA_100PERCENT * pow((double)critfactor, ((double)crit) / SOTA_100PERCENT));
+    return (hit / SOTA_100PERCENT * pow((double)critfactor, ((double)crit) / SOTA_100PERCENT));
 }
 
 bool Equation_canCarry(int savior_con, int victim_con) {
@@ -309,7 +309,7 @@ u8 Equation_Combat_Damage(int att, int defender_block,
 /* --  Equation_Attack_Damage -- */
 /* Basic attack damage equation with no effective, no crit */
 u8 Equation_Attack_Damage(int attacker_dmg, int defender_def) {
-        return (Equation_Combat_Damage(attacker_dmg, defender_def, 100, 100, false));
+    return (Equation_Combat_Damage(attacker_dmg, defender_def, 100, 100, false));
 }
 
 u8 Stat_Total(int current, int bonus, int malus, int cap) {

@@ -100,7 +100,7 @@ void fsm_cFrame_sGmpMap_ssMapAnim(struct Game *sota) {
 
     /* - Skip if not map_animation, cause it might have been deleted - */
     if (sota->map_animation == TNECS_NULL) {
-                return;
+        return;
     }
 
     /* - getting attacker - */
@@ -120,7 +120,7 @@ void fsm_cFrame_sGmpMap_ssMapAnim(struct Game *sota) {
             Event_Emit(__func__, SDL_USEREVENT, event_Combat_End, NULL, NULL);
         }
         /* - Skip if no more attacks to animate - */
-                return;
+        return;
     }
 
     /* - pausing attacker - */
@@ -131,7 +131,7 @@ void fsm_cFrame_sGmpMap_ssMapAnim(struct Game *sota) {
     SDL_assert(att_timer != NULL);
     att_timer->paused = ((combat_timer->time_ns / SOTA_us) < map_anim->pause_before_ms);
     if (att_timer->paused) {
-                return;
+        return;
     }
 
     /* - Add RenderTop component to attacker - */
@@ -148,7 +148,7 @@ void fsm_cFrame_sGmpMap_ssMapAnim(struct Game *sota) {
 
     /* - Checking if map_anim->attack_ind should be incremented - */
     if (att_timer->paused || (map_anim->frame_count == 0) || (current_frame > 0)) {
-                return;
+        return;
     }
 
     map_anim->attack_ind++;
@@ -172,7 +172,7 @@ void fsm_cFrame_sGmpMap_ssMapAnim(struct Game *sota) {
     if (TNECS_ENTITY_HASCOMPONENT(sota->world, defender, RenderTop))
         TNECS_REMOVE_COMPONENTS(sota->world, defender, RenderTop);
 
-    }
+}
 
 /* -- states --*/
 void fsm_cFrame_sCmbt(struct Game *sota) {

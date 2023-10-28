@@ -21,19 +21,19 @@ void Convoy_Clear(struct Convoy *in_convoy) {
 }
 
 bool Convoy_isFull(struct Convoy *in_convoy) {
-        return (in_convoy->items_num >= in_convoy->size);
+    return (in_convoy->items_num >= in_convoy->size);
 }
 
 i16 Convoy_Earn(struct Convoy *in_convoy, i16 in_money) {
-        return (in_convoy->bank += in_money);
+    return (in_convoy->bank += in_money);
 }
 
 i16 Convoy_Spend(struct Convoy *in_convoy, i16 out_money) {
-        return (in_convoy->bank -= out_money);
+    return (in_convoy->bank -= out_money);
 }
 
 u16 Convoy_TypeCode2Exp(struct Convoy *in_convoy, u16 typecode) {
-        return (nmath_firstsetBit_uint16_t(typecode));
+    return (nmath_firstsetBit_uint16_t(typecode));
 }
 
 void Convoy_Shift_Plus(struct Convoy *in_convoy, i16 i, i16 type_exp) {

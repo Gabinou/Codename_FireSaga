@@ -60,7 +60,7 @@ void Text_Update(struct Text *text, SDL_Renderer *renderer) {
     SDL_assert(renderer         != NULL);
     SDL_assert(text->pixelfont  != NULL);
     if (text->len <= 0) {
-            return;
+        return;
     }
     SDL_assert(text->len        >  0);
 

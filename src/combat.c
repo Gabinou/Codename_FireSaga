@@ -405,7 +405,7 @@ void Resolve_Attack(struct Combat_Attack attack,
                     struct Unit *restrict attacker,
                     struct Unit *restrict defender) {
     if (!attack.hit) {
-            return;
+        return;
     }
 
     if (defender->divine_shield) {

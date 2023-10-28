@@ -227,7 +227,7 @@ void GrowthsMenu_Elem_Pos(struct GrowthsMenu *gm, struct Menu *mc) {
 
     /* - Skip if already in screen frame - */
     if (mc->elem_pos_frame == ELEM_POS_SCREEN_FRAME) {
-            return;
+        return;
     }
 
     for (size_t i = 0; i < mc->elem_num; i++) {
@@ -245,7 +245,7 @@ void GrowthsMenu_Elem_Pos_Revert(struct GrowthsMenu *gm, struct Menu *mc) {
 
     /* - Skip if already in screen frame - */
     if (mc->elem_pos_frame == ELEM_POS_MENU_FRAME) {
-            return;
+        return;
     }
 
     for (size_t i = 0; i < mc->elem_num; i++) {

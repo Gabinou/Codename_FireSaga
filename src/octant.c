@@ -65,6 +65,6 @@ int Ternary_Direction_Straight(int direction) {
 }
 
 int Ternary_Direction(struct Point move) {
-        struct Point point = Ternary_Direction_Unbalanced(move);
+    struct Point point = Ternary_Direction_Unbalanced(move);
     return (Ternary_Direction_Index(point.x, point.y));
 }

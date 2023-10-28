@@ -66,13 +66,13 @@ struct TradeMenu *TradeMenu_Alloc() {
     struct TradeMenu *tm = malloc(sizeof(struct TradeMenu));
     tm->selected_item   = ITEM_NULL;
     tm->selected_trader = TRADER_NULL;
-        return (tm);
+    return (tm);
 }
 
 void TradeMenu_Deselect(struct TradeMenu *tm) {
     tm->selected_item   = ITEM_NULL;
     tm->selected_trader = TRADER_NULL;
-    }
+}
 
 void TradeMenu_Select(struct   TradeMenu *tm, i8 selected) {
     i8 trader  = 1 - selected / DEFAULT_EQUIPMENT_SIZE;
@@ -84,13 +84,13 @@ void TradeMenu_Select(struct   TradeMenu *tm, i8 selected) {
     if ((tm->selected_item == ITEM_NULL) || (tm->selected_trader == TRADER_NULL)) {
         tm->selected_item   = item;
         tm->selected_trader = trader;
-                return;
+        return;
     }
 
     /* If item swapped item is the same, deselect it */
     if ((item == tm->selected_item) && (trader == tm->selected_trader)) {
         TradeMenu_Deselect(tm);
-                return;
+        return;
     }
 
     tm->target_trader = trader;
@@ -100,7 +100,7 @@ void TradeMenu_Select(struct   TradeMenu *tm, i8 selected) {
     TradeMenu_Trade(tm);
     TradeMenu_Deselect(tm);
 
-    }
+}
 
 void TradeMenu_Trade(struct TradeMenu *tm) {
 
@@ -131,7 +131,7 @@ void TradeMenu_Trade(struct TradeMenu *tm) {
     tm->active->update  = true;
     tm->passive->update = true;
 
-    }
+}
 
 void TradeMenu_Draw(struct Menu *mc, SDL_Texture *target, SDL_Renderer *renderer) {
     struct TradeMenu *tm = (struct TradeMenu *)mc->data;

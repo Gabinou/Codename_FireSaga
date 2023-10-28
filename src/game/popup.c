@@ -28,7 +28,7 @@ void Game_PopUp_Loadout_Stats_Create(struct Game *sota) {
     /* -- Preliminaries -- */
     if (sota->popups[POPUP_TYPE_HUD_LOADOUT_STATS] != TNECS_NULL) {
         SOTA_Log_Debug("Popup POPUP_TYPE_HUD_LOADOUT_STATS is already loaded");
-            return;
+        return;
     }
 
     tnecs_entity_t popup_ent = TNECS_ENTITY_CREATE_wCOMPONENTS(sota->world, Position, PopUp);
@@ -126,7 +126,7 @@ void Game_PopUp_Pre_Combat_Free(struct Game *sota) {
 void Game_PopUp_Unit_Create(struct Game *sota) {
     if (sota->popups[POPUP_TYPE_HUD_UNIT] != TNECS_NULL) {
         SOTA_Log_Debug("Popup POPUP_TYPE_HUD_UNIT is already loaded");
-            return;
+        return;
     }
 
     tnecs_entity_t ent;
@@ -200,7 +200,7 @@ void Game_PopUp_Unit_Hide(struct Game *sota) {
 void Game_PopUp_Unit_Place(struct Game *sota, struct Point cursor_pos) {
     /* - Does Popup entity exist - */
     if (sota->popups[POPUP_TYPE_HUD_UNIT] == TNECS_NULL) {
-            return;
+        return;
     }
 
     /* - Is popup is visible - */
@@ -215,7 +215,7 @@ void Game_PopUp_Unit_Place(struct Game *sota, struct Point cursor_pos) {
     SDL_assert(popup);
 
     if (!popup->visible) {
-            return;
+        return;
     }
 
     /* - Has popup target position changed - */
@@ -231,7 +231,7 @@ void Game_PopUp_Unit_Place(struct Game *sota, struct Point cursor_pos) {
     bool moved = (new_target.x != slider->target.x) || (new_target.y != slider->target.y);
 
     if (!moved) {
-            return;
+        return;
     }
 
     /* - Update the slider target - */
@@ -254,14 +254,14 @@ void Game_PopUp_Tile_Place(struct Game *sota, struct Point cursor_pos) {
     /* - Does Popup entity exist - */
     tnecs_entity_t ent = sota->popups[POPUP_TYPE_HUD_TILE];
     if (ent == TNECS_NULL) {
-            return;
+        return;
     }
 
     /* - Is popup is visible - */
     struct PopUp *popup = TNECS_GET_COMPONENT(sota->world, ent, PopUp);
     SDL_assert(popup);
     if (!popup->visible) {
-            return;
+        return;
     }
 
     /* - Has popup target position changed - */
@@ -281,7 +281,7 @@ void Game_PopUp_Tile_Place(struct Game *sota, struct Point cursor_pos) {
 
     bool moved = (new_target.x != slider->target.x) || (new_target.y != slider->target.y);
     if (!moved) {
-            return;
+        return;
     }
 
     /* - Update the slider target - */
@@ -299,7 +299,7 @@ void Game_PopUp_Tile_Place(struct Game *sota, struct Point cursor_pos) {
 void Game_PopUp_Map_Combat_Create(struct Game *sota) {
     if (sota->popups[POPUP_TYPE_MAP_COMBAT] > TNECS_NULL) {
         SOTA_Log_Debug("Popup POPUP_TYPE_MAP_COMBAT is already loaded");
-            return;
+        return;
     }
 
     tnecs_entity_t ent = TNECS_ENTITY_CREATE_wCOMPONENTS(sota->world, Position, PopUp);
@@ -401,7 +401,7 @@ void Game_PopUp_Tile_Free(struct Game *sota) {
 void Game_PopUp_Tile_Create(struct Game *sota) {
     if (sota->popups[POPUP_TYPE_HUD_TILE] != TNECS_NULL) {
         SOTA_Log_Debug("Popup POPUP_TYPE_HUD_TILE is already loaded");
-            return;
+        return;
     }
     tnecs_entity_t ent;
     ent = TNECS_ENTITY_CREATE_wCOMPONENTS(sota->world, Position, PopUp, Slider, SliderOffscreen);

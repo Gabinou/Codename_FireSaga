@@ -436,7 +436,7 @@ void _Map_Tilesindex_Init(struct Map *map) {
 
 void Map_Tilesprites_Free(struct Map *map) {
     if (map->tilesprites_ind == NULL)  {
-            return;
+        return;
     }
     for (size_t i = 0; i < DARR_NUM(map->tilesprites_ind); i++) {
         if (map->tilesprites_ind[i] == NULL)

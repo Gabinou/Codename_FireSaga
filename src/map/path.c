@@ -286,7 +286,7 @@ i32 *Map_Costmap_Movement_Compute(struct Map *map, tnecs_world_t *world,
 
     /* - Skip if previously computed - */
     if (map->costmap_ent == unit_ent) {
-            return (map->costmap);
+        return (map->costmap);
     }
 
     /* - Preliminaries - */

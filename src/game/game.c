@@ -689,7 +689,7 @@ void Game_Delay(struct Game *sota, i64 delay_ms, u64 currentTime_ns,
 
     /* - Skip if negative delay - */
     if (delay_ms < 0) {
-            return;
+        return;
     }
 
     /* - Delay game in case synchronization took > 1ms - */
@@ -715,14 +715,14 @@ i64 Game_FPS_Delay(struct Game *sota, u64 elapsedTime_ns) {
 
     /* 0 frame delay if fast-forwarding (ff) without limit */
     if ((sota->fast_forward) && (ff_cap <= SOTA_100PERCENT)) {
-            return (delay);
+        return (delay);
     }
 
     /* Compute delay for ff_cap */
     if ((sota->fast_forward) && (ff_cap > SOTA_100PERCENT)) {
         int ff_fps_cap = fps_cap * ff_cap / SOTA_100PERCENT;
         delay = ceil((1000.0f / ff_fps_cap) - (elapsedTime_ns / 1e6));
-            return (delay);
+        return (delay);
     }
 
     /* Compute delay for no ff */

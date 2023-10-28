@@ -399,7 +399,7 @@ void Reload_Menu(void *struct_ptr) {
     struct Menu *mc     = struct_ptr;
 
     if (!mc->visible) {
-            return;
+        return;
     }
 
     void *menu          = mc->data;
@@ -414,7 +414,7 @@ void Reload_Popup(void *struct_ptr) {
     struct PopUp *pc    = struct_ptr;
 
     if (!pc->visible) {
-            return;
+        return;
     }
 
     void *popup         = pc->data;
@@ -506,7 +506,7 @@ void receive_event_SDL_CONTROLLERDEVICEADDED(struct Game *sota, SDL_Event *event
 
     if (sota->entity_cursor == TNECS_NULL) {
         SOTA_Log_Debug("Entity_cursor is not valid");
-            return;
+        return;
     }
 
     struct controllerGamepad *gamepad_ptr;
@@ -522,16 +522,16 @@ void receive_event_SDL_MOUSEMOTION(struct Game *sota, SDL_Event *event) {
     SDL_assert(event);
     if (sota->runtime_ns <= CURSOR_FIRSTMENU_PAUSE_ns) {
         SOTA_Log_FPS("Sota first init pause.");
-            return;
+        return;
     }
     if (event->motion.windowID != SDL_GetWindowID(sota->window)) {
         SOTA_Log_FPS("Wrong window");
-            return;
+        return;
     }
     tnecs_entity_t mouse = sota->entity_mouse;
     if (sota->entity_mouse == TNECS_NULL) {
         SOTA_Log_FPS("Mouse disabled");
-            return;
+        return;
     }
 
     struct Sprite   *msprite  = TNECS_GET_COMPONENT(sota->world, mouse, Sprite);
@@ -557,7 +557,7 @@ void receive_event_SDL_MOUSEBUTTON(struct Game *sota, SDL_Event *event) {
 
     if (event->motion.windowID != SDL_GetWindowID(sota->window)) {
         SOTA_Log_FPS("Wrong window");
-            return;
+        return;
     }
 
     struct controllerMouse *mouse;
@@ -614,7 +614,7 @@ void receive_event_Unit_Deselect(struct Game *sota, SDL_Event *userevent) {
     sota->defendant = TNECS_NULL;
 
     if (sota->selected_unit_entity == TNECS_NULL) {
-            return;
+        return;
     }
 
     tnecs_entity_t unit_ent     = sota->selected_unit_entity;

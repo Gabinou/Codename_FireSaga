@@ -105,10 +105,10 @@ void Game_debugMap_Load(struct Game *sota) {
 void Game_Map_Reinforcements_Free(struct Game *sota) {
     SDL_assert(sota                 != NULL);
     if (sota->map_enemies == NULL) {
-            return;
+        return;
     }
     if (DARR_NUM(sota->map_enemies) == 0) {
-            return;
+        return;
     }
 
     char filename[DEFAULT_BUFFER_SIZE];

@@ -297,7 +297,7 @@ void fsm_eGlbRng_ssStby(struct Game *sota) {
     }
 
     if (entity != TNECS_NULL) {
-            /* - Toggle rangemap - */
+        /* - Toggle rangemap - */
         struct Unit *unit = TNECS_GET_COMPONENT(sota->world, entity, Unit);
         Unit_Rangemap_Toggle(unit);
         int rangemap = Unit_Rangemap_Get(unit);
@@ -356,7 +356,7 @@ void fsm_eCrsHvUnit_ssStby(struct Game *sota, tnecs_entity_t hov_ent) {
 
     struct Unit *unit_ontile = TNECS_GET_COMPONENT(sota->world, hov_ent, Unit);
     if (unit_ontile->waits) {
-            return;
+        return;
     }
 
     /* -- Compute attackmap and movemap -- */
@@ -470,7 +470,7 @@ void fsm_eUnitDng_ssStby(struct Game *sota, tnecs_entity_t selector_entity) {
 
     /* -- Skip if enemy can't attack -- */
     if (!Unit_canAttack(unit)) {
-            return;
+        return;
     }
 
     /* -- Computing new dangermap -- */
@@ -502,7 +502,7 @@ void fsm_eCncl_sGmpMap_ssStby(struct Game *sota, tnecs_entity_t canceller) {
     tnecs_entity_t ontile = sota->map->unitmap[cpos.y * sota->map->col_len + cpos.x];
 
     if (ontile == TNECS_NULL) {
-            return;
+        return;
     }
 
     /* -- Show danger map if enemy -- */
@@ -1019,7 +1019,7 @@ void fsm_eUnitSel_ssStby(struct Game *sota, tnecs_entity_t selector_entity) {
     if (!SotA_isPC(selected_unit->army)) {
         /* - Enemy unit was selected - */
         Event_Emit(__func__, SDL_USEREVENT, event_Unit_Danger, data1_entity, data2_entity);
-            return;
+        return;
     }
 
     if (!selected_unit->waits) {

@@ -33,7 +33,7 @@ void Weapon_Init(struct Weapon *weapon) {
 
 void Weapon_Free(struct Weapon *weapon) {
     if (weapon == NULL) {
-            return;
+        return;
     }
 
     if (weapon->json_filename != NULL) {
@@ -42,7 +42,7 @@ void Weapon_Free(struct Weapon *weapon) {
     }
 
     if (weapon->item == NULL) {
-            return;
+        return;
     }
 
     Item_Free(weapon->item);
@@ -136,7 +136,7 @@ void Weapon_Load(struct dtab *weapons_dtab, i16 id) {
 
     /* -- Skip is already loaded -- */
     if (DTAB_GET(weapons_dtab, id) != NULL) {
-            return;
+        return;
     }
 
 
@@ -258,17 +258,17 @@ u16 Weapon_TypeExp(const struct Weapon *weapon) {
 
     if ((wpntypecode & ITEM_TYPE_SWORD) && (wpntypecode & ITEM_TYPE_OFFHAND)) {
         return (ITEM_TYPE_EXP_DOUBLE_SWORDOFFHAND);
-        }
+    }
 
     /* Double type: SwordAxe*/
     if ((wpntypecode & ITEM_TYPE_SWORD) && (wpntypecode & ITEM_TYPE_AXE)) {
         return (ITEM_TYPE_EXP_DOUBLE_SWORDAXE);
-        }
+    }
 
     /* Double type: LanceAxe*/
     if ((wpntypecode & ITEM_TYPE_LANCE) && (wpntypecode & ITEM_TYPE_AXE)) {
         return (ITEM_TYPE_EXP_DOUBLE_LANCEAXE);
-        }
+    }
 
     /* Single type loop*/
     u16 type_exp = 1;
@@ -334,7 +334,7 @@ int Weapon_Stat(const struct Weapon *weapon, i16 stattype) {
     SDL_assert((stattype > ITEM_STAT_START) && (stattype < WEAPON_STAT_END));
 
     if ((stattype > ITEM_STAT_START) && (stattype < ITEM_STAT_END)) {
-            return (Item_Stat(weapon->item, stattype));
+        return (Item_Stat(weapon->item, stattype));
     }
 
     u8 *wpn_stats_arr  = (u8 *)&weapon->stats;

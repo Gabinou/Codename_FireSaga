@@ -342,7 +342,7 @@ void TextBubble_VScroll_Draw(struct Text_Bubble *bubble, SDL_Renderer *renderer)
     if (bubble->vscroll > dstrect.h) {
         bubble->vscroll      = 0;
         bubble->vscroll_anim = false;
-            return;
+        return;
     }
     dstrect.w = bubble->width  - TEXT_BUBBLE_COPY_PAD * 2;
 

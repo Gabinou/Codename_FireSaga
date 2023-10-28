@@ -518,7 +518,7 @@ void Item_Free(struct Item *restrict item) {
 
 /* --- Is --- */
 int Item_Archetype(i16 id) {
-        int archetype = ITEM_ARCHETYPE_ITEM;
+    int archetype = ITEM_ARCHETYPE_ITEM;
     if (Weapon_ID_isValid(id)) {
         if (Weapon_isStaff(id)) {
             archetype = ITEM_ARCHETYPE_STAFF;
@@ -532,22 +532,22 @@ int Item_Archetype(i16 id) {
 }
 
 bool Item_isOffhand(i16  id) {
-        return (Weapon_isOffhand(id));
+    return (Weapon_isOffhand(id));
 }
 
 bool Item_isShield(i16  id) {
     /* Must be equivalent to using shield item archetype */
-        return (Weapon_isShield(id));
+    return (Weapon_isShield(id));
 }
 
 bool Item_isStaff(i16  id) {
     /* Must be equivalent to using staff item archetype */
-        return (Weapon_isStaff(id));
+    return (Weapon_isStaff(id));
 }
 
 bool Item_isWeapon(i16 id) {
     /* Must be equivalent to using weapon item archetype */
-        return (Item_Archetype(id) == ITEM_ARCHETYPE_WEAPON);
+    return (Item_Archetype(id) == ITEM_ARCHETYPE_WEAPON);
 }
 
 int Item_Stat(const struct Item *item, i16 stattype)  {

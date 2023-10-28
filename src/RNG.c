@@ -27,19 +27,19 @@ void RNG_Init_tinymt(struct TINYMT32_T *tinymt) {
 }
 
 u8 RNG_URN_debug(struct TINYMT32_T *tinymt) {
-        return (URN_debug);
+    return (URN_debug);
 }
 
 u8 RNG_URN(struct TINYMT32_T *tinymt) {
-        return ((u8)RNG_openBSD_uint32_t(tinymt, RN_MAX, RN_MIN));
+    return ((u8)RNG_openBSD_uint32_t(tinymt, RN_MAX, RN_MIN));
 }
 
 bool RNG_single_roll(u8 RN, u8 rate) {
-        return (RN < rate);
+    return (RN < rate);
 }
 
 bool RNG_double_roll(u8 RN1, u8 RN2, u8 rate) {
-        return (((RN1 + RN2) / 2) < rate);
+    return (((RN1 + RN2) / 2) < rate);
 }
 
 u8 *RNG_boxmuller(const u8 RN_U[INTERVAL_BOUNDS_NUM], float avg, float std_dev) {

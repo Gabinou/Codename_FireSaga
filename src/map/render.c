@@ -291,7 +291,7 @@ void Map_Visible_Bounds(u8 *min, u8 *max, size_t row_len, size_t col_len,
 void Map_Grid_Draw(struct Map *map, const struct Settings *settings, struct Camera *camera) {
     /* -- Preliminaries -- */
     if (!settings->map_settings.grid_show) {
-            return;
+        return;
     }
     struct Point line;
     int success, edge1, edge2;

@@ -91,7 +91,7 @@ void LoadoutSelectMenu_Free(struct LoadoutSelectMenu *lsm) {
 
 void WeaponSelectMenu_Load_n9Patch(struct LoadoutSelectMenu *lsm, SDL_Renderer *r,
                                    struct n9Patch *n9patch)  {
-        SDL_assert(n9patch != NULL);
+    SDL_assert(n9patch != NULL);
     n9patch->patch_pixels.x  = MENU_PATCH_PIXELS;
     n9patch->patch_pixels.y  = MENU_PATCH_PIXELS;
     n9patch->size_patches.x  = WSM_PATCH_X_SIZE;
@@ -104,7 +104,7 @@ void WeaponSelectMenu_Load_n9Patch(struct LoadoutSelectMenu *lsm, SDL_Renderer *
 
 void WeaponSelectMenu_Load(struct LoadoutSelectMenu *lsm, struct Map *map, tnecs_world_t *world,
                            tnecs_entity_t unit_ent, SDL_Renderer *renderer, struct n9Patch *n9patch) {
-        WeaponSelectMenu_Load_n9Patch(lsm, renderer, n9patch);
+    WeaponSelectMenu_Load_n9Patch(lsm, renderer, n9patch);
 
     lsm->archetype_stronghand = ITEM_ARCHETYPE_WEAPON;
     LoadoutSelectMenu_Load(lsm, map, world, unit_ent, renderer, n9patch, lsm->archetype_stronghand);
@@ -112,7 +112,7 @@ void WeaponSelectMenu_Load(struct LoadoutSelectMenu *lsm, struct Map *map, tnecs
 
 void StaffSelectMenu_Load(struct LoadoutSelectMenu *lsm, struct Map *map, tnecs_world_t *world,
                           tnecs_entity_t unit_ent, SDL_Renderer *renderer, struct n9Patch *n9patch) {
-        SDL_assert(n9patch != NULL);
+    SDL_assert(n9patch != NULL);
     n9patch->patch_pixels.x  = MENU_PATCH_PIXELS;
     n9patch->patch_pixels.y  = MENU_PATCH_PIXELS;
     n9patch->size_patches.x  = WSM_PATCH_X_SIZE;
@@ -185,7 +185,7 @@ void LoadoutSelectMenu_Elem_Pos(struct LoadoutSelectMenu *lsm, struct Menu *mc) 
     bool header_drawn = (lsm->header != NULL);
     /* - Skip if already in screen frame - */
     if (mc->elem_pos_frame == ELEM_POS_SCREEN_FRAME) {
-            return;
+        return;
     }
 
     for (size_t i = 0; i < mc->elem_num; i++) {
@@ -210,7 +210,7 @@ void LoadoutSelectMenu_Elem_Pos_revert(struct LoadoutSelectMenu *lsm, struct Men
     bool header_drawn = (lsm->header != NULL);
     /* - Skip if already in screen frame - */
     if (mc->elem_pos_frame == ELEM_POS_MENU_FRAME) {
-            return;
+        return;
     }
 
     for (size_t i = 0; i < mc->elem_num; i++) {

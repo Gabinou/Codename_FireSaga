@@ -4,7 +4,7 @@
 void Game_Items_Free(struct dtab *items_dtab) {
     if (items_dtab == NULL) {
         return;
-        }
+    }
 
     struct Item *cast_dtab = items_dtab->values;
     SDL_assert(cast_dtab != NULL);
@@ -20,7 +20,7 @@ void Game_Items_Free(struct dtab *items_dtab) {
 void Game_Weapons_Free(struct dtab *weapons_dtab) {
     if (weapons_dtab == NULL) {
         return;
-        }
+    }
 
     struct Weapon *cast_dtab = weapons_dtab->values;
     SDL_assert(cast_dtab != NULL);
@@ -60,7 +60,7 @@ void Game_Unit_Refresh(struct Game *sota, tnecs_entity_t ent) {
     SDL_assert(sprite != NULL);
     /* refresh unit */
     if (!unit->waits) {
-            return;
+        return;
     }
 
     Unit_refresh(unit);
@@ -215,7 +215,7 @@ tnecs_entity_t Game_Unit_Entity_Create(struct Game *sota, i16 in_unit,
 void Game_UnitsonMap_Free(struct Game *sota) {
     tnecs_entity_t temp_unit_ent;
     if (sota->map == NULL) {
-            return;
+        return;
     }
     for (size_t i = 0; i < sota->map->col_len * sota->map->row_len; i++) {
         temp_unit_ent = sota->map->unitmap[i];

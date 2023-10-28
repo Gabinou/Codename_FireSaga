@@ -353,7 +353,7 @@ void Game_PlayerSelectMenu_Create(struct Game *sota, i8 in_menu) {
 
     SDL_assert((in_menu > MENU_PLAYER_SELECT_START) & (in_menu < MENU_PLAYER_SELECT_END));
     if (sota->player_select_menus[in_menu] != TNECS_NULL) {
-            return;
+        return;
     }
 
     tnecs_entity_t ent = TNECS_ENTITY_CREATE_wCOMPONENTS(sota->world, Menu);
@@ -857,7 +857,7 @@ void Game_Title_Create(struct Game *sota) {
     SDL_SetRenderDrawColor(sota->renderer, 0x00, 0x00, 0x00, SDL_ALPHA_OPAQUE);
     if (sota->title != TNECS_NULL) {
         SOTA_Log_Debug("Title is already loaded");
-            return;
+        return;
     }
 
     sota->title = TNECS_ENTITY_CREATE_wCOMPONENTS(sota->world, Position, Text);
@@ -902,7 +902,7 @@ void Game_Title_Destroy(struct Game *sota) {
 void Game_FirstMenu_Create(struct Game *sota) {
     if (sota->first_menu != TNECS_NULL) {
         SOTA_Log_Debug("FirstMenu is already loaded");
-            return;
+        return;
     }
     sota->first_menu = TNECS_ENTITY_CREATE_wCOMPONENTS(sota->world, Menu);
     struct Menu *mc;
