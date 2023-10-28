@@ -9,13 +9,18 @@ void Map_Tiles_Free(struct Map *map) {
         DARR_FREE(map->tiles);
         map->tiles = NULL;
     }
+    if (map->tiles_id != NULL) {
+        DARR_FREE(map->tiles_id);
+        map->tiles_id = NULL;
+    }
 }
 
 void Map_Tiles_Load(struct Map *map) {
     Map_Tiles_Free(map);
     struct Tile *temp_tile = NULL;
     char filename[DEFAULT_BUFFER_SIZE];
-    map->tiles = DARR_INIT(map->tiles, struct Tile, 64);
+    map->tiles      = DARR_INIT(map->tiles, struct Tile, 64);
+    map->tiles_id   = DARR_INIT(map->tiles_id, i32, 64);
 
     for (size_t i = 0; i < DARR_NUM(map->tilesindex); i++) {
         /* -- Get tile_id -- */
