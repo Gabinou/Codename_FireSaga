@@ -459,6 +459,8 @@ void receive_event_Reload(struct Game *sota, SDL_Event *event) {
 
     /* -- Reload Map -- */
     /* - Reload Map tiles - */
+    SDL_Log("sota->map->json_filename %s", sota->map->json_filename);
+    // getchar();
     jsonio_readJSON(sota->map->json_filename, sota->map);
 
 

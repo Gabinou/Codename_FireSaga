@@ -279,34 +279,52 @@ void Map_Free(struct Map *map) {
 }
 
 void Map_dArrays_Init(struct Map *map, const struct Settings *settings) {
-    Map_dArrays_Free(map);
     SDL_assert(map->row_len > 0);
     SDL_assert(map->col_len > 0);
     SDL_assert(map->row_len < UCHAR_MAX);
     SDL_assert(map->col_len < UCHAR_MAX);
-    map->healtolist   = DARR_INIT(map->healtolist,   i32, 32);
-    map->attacktolist = DARR_INIT(map->attacktolist, i32, 32);
+    if (map->healtolist == NULL)
+        map->healtolist   = DARR_INIT(map->healtolist,   i32, 32);
+    if (map->attacktolist == NULL)
+        map->attacktolist = DARR_INIT(map->attacktolist, i32, 32);
     int len = map->row_len * map->col_len;
-    map->temp               = calloc(len,  sizeof(*map->temp));
-    map->unitmap            = calloc(len,  sizeof(*map->unitmap));
-    map->costmap            = calloc(len,  sizeof(*map->costmap));
-    map->movemap            = calloc(len,  sizeof(*map->movemap));
-    map->fcostmap           = calloc(len,  sizeof(*map->fcostmap));
-    map->fmovemap           = calloc(len,  sizeof(*map->fmovemap));
+    if (map->temp == NULL)
+        map->temp               = calloc(len,  sizeof(*map->temp));
+    if (map->unitmap == NULL)
+        map->unitmap            = calloc(len,  sizeof(*map->unitmap));
+    if (map->costmap == NULL)
+        map->costmap            = calloc(len,  sizeof(*map->costmap));
+    if (map->movemap == NULL)
+        map->movemap            = calloc(len,  sizeof(*map->movemap));
+    if (map->fcostmap == NULL)
+        map->fcostmap           = calloc(len,  sizeof(*map->fcostmap));
+    if (map->fmovemap == NULL)
+        map->fmovemap           = calloc(len,  sizeof(*map->fmovemap));
 
-    map->dangermap          = calloc(len,  sizeof(*map->dangermap));
-    map->palettemap         = malloc(len * sizeof(*map->palettemap));
-    map->attacktomap        = calloc(len,  sizeof(*map->attacktomap));
-    map->healtomap          = calloc(len,  sizeof(*map->healtomap));
-    map->healfrommap        = calloc(len,  sizeof(*map->healfrommap));
-    map->temp_palette       = malloc(len * sizeof(*map->temp_palette));
-    map->attackfrommap      = calloc(len,  sizeof(*map->attackfrommap));
-    map->global_rangemap    = calloc(len,  sizeof(*map->global_rangemap));
-    map->global_dangermap   = calloc(len,  sizeof(*map->global_dangermap));
+    if (map->dangermap == NULL)
+        map->dangermap          = calloc(len,  sizeof(*map->dangermap));
+    if (map->palettemap == NULL)
+        map->palettemap         = malloc(len * sizeof(*map->palettemap));
+    if (map->palettemap == NULL)
+        map->attacktomap        = calloc(len,  sizeof(*map->attacktomap));
+    if (map->healtomap == NULL)
+        map->healtomap          = calloc(len,  sizeof(*map->healtomap));
+    if (map->healfrommap == NULL)
+        map->healfrommap        = calloc(len,  sizeof(*map->healfrommap));
+    if (map->temp_palette == NULL)
+        map->temp_palette       = malloc(len * sizeof(*map->temp_palette));
+    if (map->attackfrommap == NULL)
+        map->attackfrommap      = calloc(len,  sizeof(*map->attackfrommap));
+    if (map->global_rangemap == NULL)
+        map->global_rangemap    = calloc(len,  sizeof(*map->global_rangemap));
+    if (map->global_dangermap == NULL)
+        map->global_dangermap   = calloc(len,  sizeof(*map->global_dangermap));
 
     if (map->stack_mode == MAP_SETTING_STACK_DANGERMAP) {
-        map->stacked_dangermap          = calloc(len, sizeof(*map->stacked_dangermap));
-        map->stacked_global_dangermap   = calloc(len, sizeof(*map->stacked_global_dangermap));
+        if (map->stacked_dangermap == NULL)
+            map->stacked_dangermap          = calloc(len, sizeof(*map->stacked_dangermap));
+        if (map->stacked_global_dangermap == NULL)
+            map->stacked_global_dangermap   = calloc(len, sizeof(*map->stacked_global_dangermap));
     }
     Map_Palettemap_Reset(map);
 }
@@ -593,7 +611,6 @@ void Map_readJSON(void *input, const cJSON *const jmap) {
         map->arrow->col_len = map->col_len;
         map->arrow->row_len = map->row_len;
     }
-    SDL_Log("%d %d ", map->row_len, map->col_len);
     Map_dArrays_Init(map, &Settings_default);
 
     /* -- Read Starting Positions -- */
