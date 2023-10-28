@@ -103,7 +103,7 @@ int main(int argc, char *argv[]) {
     u64 elapsedTime_ns      = 0;
     i64 delay_ms            = 0;
     tnecs_ns_t time_ns = 0;
-    SDL_LogDebug(SOTA_LOG_SYSTEM, "sota->settings.FPS.cap %d \n", sota->settings.FPS.cap);
+    SDL_LogDebug(SOTA_LOG_SYSTEM, "FPS cap %d \n", sota->settings.FPS.cap);
 
     SDL_LogInfo(SOTA_LOG_SYSTEM, "Starting main game loop\n");
     u64 updateTime_ns = SOTA_ns / sota->settings.FPS.cap;
