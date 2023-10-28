@@ -149,7 +149,7 @@ void Game_Free(struct Game *sota) {
 
     if (sota->renderer) {
         SDL_LogVerbose(SOTA_LOG_SYSTEM, "Free Control");
-    // controlFree(); 
+        // controlFree();
     }
 
     SDL_LogVerbose(SOTA_LOG_SYSTEM, "Free Map");
@@ -339,18 +339,18 @@ struct Game *Game_Init() {
     if (SDL_GameControllerAddMappingsFromFile(path_mapping) < 0)
         SDL_LogWarn(SOTA_LOG_SYSTEM, "gamecontrollerdb.txt not found!\n");
     free(path_mapping);
-    SDL_LogVerbose(SOTA_LOG_SYSTEM,"Allocating space for globals\n");
-    SDL_LogVerbose(SOTA_LOG_SYSTEM,"Allocating space for events\n");
+    SDL_LogVerbose(SOTA_LOG_SYSTEM, "Allocating space for globals\n");
+    SDL_LogVerbose(SOTA_LOG_SYSTEM, "Allocating space for events\n");
     Events_Data_Malloc();
-    SDL_LogVerbose(SOTA_LOG_SYSTEM,"Initializing user events\n");
+    SDL_LogVerbose(SOTA_LOG_SYSTEM, "Initializing user events\n");
     Events_Names_Declare();
     Events_Names_Alloc();
     Events_Receivers_Declare();
-    SDL_LogVerbose(SOTA_LOG_SYSTEM,"Initializing Menus\n");
+    SDL_LogVerbose(SOTA_LOG_SYSTEM, "Initializing Menus\n");
     Game_Menus_Init(out_game);
-    SDL_LogVerbose(SOTA_LOG_SYSTEM,"Genesis of tnecs\n");
+    SDL_LogVerbose(SOTA_LOG_SYSTEM, "Genesis of tnecs\n");
     out_game->world = tnecs_world_genesis();
-    SDL_LogVerbose(SOTA_LOG_SYSTEM,"Components Registration\n");
+    SDL_LogVerbose(SOTA_LOG_SYSTEM, "Components Registration\n");
     TNECS_REGISTER_COMPONENT(out_game->world, Position);
     TNECS_REGISTER_COMPONENT(out_game->world, Sprite);
     TNECS_REGISTER_COMPONENT(out_game->world, Unit);
@@ -378,7 +378,7 @@ struct Game *Game_Init() {
     TNECS_REGISTER_COMPONENT(out_game->world, PixelFont);
     out_game->timer_typeflag = TNECS_COMPONENT_NAME2TYPE(out_game->world, Timer);
 
-    SDL_LogVerbose(SOTA_LOG_SYSTEM,"System Registration\n");
+    SDL_LogVerbose(SOTA_LOG_SYSTEM, "System Registration\n");
     tnecs_world_t *world = out_game->world;
     /* --- SYSTEM REGISTERING: FIRST COME FIRST SERVED ---*/
     /* -- Control systems ran first --  */
@@ -415,12 +415,12 @@ struct Game *Game_Init() {
     /* - draw Cursor and Mouse last -> on top - */
     TNECS_REGISTER_SYSTEM_wEXCL(world, drawCursor,    0, Sprite,          Position, CursorFlag);
     TNECS_REGISTER_SYSTEM_wEXCL(world, drawMouse,     1, controllerMouse, Position, Sprite, MouseFlag);
-    SDL_LogVerbose(SOTA_LOG_SYSTEM,"System Registration DONE\n");
+    SDL_LogVerbose(SOTA_LOG_SYSTEM, "System Registration DONE\n");
 
     out_game->isrunning = true;
     out_game->keyboardInputMap  = KeyboardInputMap_default;
     out_game->gamepadInputMap   = GamepadInputMap_gamecube;
-    SDL_LogVerbose(SOTA_LOG_SYSTEM,"Loading pixelfonts\n");
+    SDL_LogVerbose(SOTA_LOG_SYSTEM, "Loading pixelfonts\n");
     out_game->pixelnours = PixelFont_Alloc();
     char *path = PATH_JOIN("..", "assets", "Fonts", "pixelnours.png");
     PixelFont_Load(out_game->pixelnours, out_game->renderer, path);
@@ -492,7 +492,7 @@ void Game_Save_Copy(const i16 from_ind, const i16 to_ind) {
     stbsp_snprintf(tempfrom, DEFAULT_BUFFER_SIZE, DIR_SEPARATOR"save%04d.bsav", from_ind);
     strcat(filenameto, tempto);
     strcat(filenamefrom, tempfrom);
-    SDL_LogInfo(SOTA_LOG_APP, "copy saveJSON Game from %s to %s\n", filenamefrom, filenameto);
+    SDL_LogDebug(SOTA_LOG_APP, "copy saveJSON Game from %s to %s\n", filenamefrom, filenameto);
     PHYSFS_file *pfrom = PHYSFS_openRead(filenamefrom);
     SDL_assert(pfrom != NULL);
     PHYSFS_file *pto = PHYSFS_openWrite(filenameto);
@@ -510,7 +510,7 @@ void Game_Save_Delete(const i16 save_ind) {
     char temp[DEFAULT_BUFFER_SIZE];
     stbsp_snprintf(temp, DEFAULT_BUFFER_SIZE, DIR_SEPARATOR"save%04d.bsav", save_ind);
     strcat(filename, temp);
-    SDL_LogInfo(SOTA_LOG_APP, "Deleting Game: %s\n", filename);
+    SDL_LogDebug(SOTA_LOG_APP, "Deleting Game: %s\n", filename);
     PHYSFS_delete(filename);
 }
 
@@ -566,7 +566,7 @@ void Game_saveJSON(struct Game *sota, const i16 save_ind) {
     char temp[DEFAULT_BUFFER_SIZE];
     stbsp_snprintf(temp, DEFAULT_BUFFER_SIZE, DIR_SEPARATOR"save%04d.bsav", save_ind);
     strcat(filename, temp);
-    SDL_LogInfo(SOTA_LOG_APP, "saveJSON Game to: %s\n", filename);
+    SDL_LogDebug(SOTA_LOG_APP, "saveJSON Game to: %s\n", filename);
     PHYSFS_delete(filename);
     PHYSFS_file *fp = PHYSFS_openWrite(filename);
     SDL_assert(fp);
@@ -582,7 +582,7 @@ void Game_saveJSON(struct Game *sota, const i16 save_ind) {
     cJSON *jRN_mat2     = cJSON_CreateNumber(sota->tinymt32.mat2);
     cJSON *jRN_tmat     = cJSON_CreateNumber(sota->tinymt32.tmat);
     cJSON *jtemp;
-    // SDL_LogInfo(SOTA_LOG_SYSTEM, "RnStatus[0] %d", tinymt32.status[0]);
+    // SDL_LogDebug(SOTA_LOG_SYSTEM, "RnStatus[0] %d", tinymt32.status[0]);
     jtemp = cJSON_CreateNumber(sota->tinymt32.status[0]);
     cJSON_AddItemToArray(jRN_status, jtemp);
     jtemp = cJSON_CreateNumber(sota->tinymt32.status[1]);
@@ -613,15 +613,15 @@ void Game_saveJSON(struct Game *sota, const i16 save_ind) {
 
 /* --- State --- */
 void Game_subState_Set(struct Game *sota, const i8 new_substate, const char *reason) {
-    SDL_LogInfo(SOTA_LOG_SYSTEM, "Substate set to %d because: %s", new_substate, reason);
+    SDL_LogDebug(SOTA_LOG_SYSTEM, "Substate set to %d because: %s", new_substate, reason);
     SDL_assert(new_substate > 0);
     SDL_assert(sota->substate != new_substate);
     sota->substate_previous = sota->substate;
     sota->substate = new_substate;
-    SDL_LogInfo(SOTA_LOG_SYSTEM, "Game substate changed %d->%d: %s->%s",
-                sota->substate_previous, sota->substate, 
-                gamesubStatenames[sota->substate_previous],
-                gamesubStatenames[sota->substate]);
+    SDL_LogDebug(SOTA_LOG_SYSTEM, "Game substate changed %d->%d: %s->%s",
+                 sota->substate_previous, sota->substate,
+                 gamesubStatenames[sota->substate_previous],
+                 gamesubStatenames[sota->substate]);
     if (new_substate == GAME_SUBSTATE_STANDBY)
         sota->cursor_diagonal = true;
     else
@@ -632,7 +632,7 @@ void Game_subState_Set(struct Game *sota, const i8 new_substate, const char *rea
 }
 
 void Game_State_Set(struct Game *sota, const i8 new_state, const char *reason) {
-    SDL_LogInfo(SOTA_LOG_SYSTEM, "State set to %d, because: %s", new_state, reason);
+    SDL_LogDebug(SOTA_LOG_SYSTEM, "State set to %d, because: %s", new_state, reason);
     SDL_assert(new_state > 0);
     SDL_assert(sota->state != new_state);
     sota->state_previous = sota->state;
@@ -642,9 +642,9 @@ void Game_State_Set(struct Game *sota, const i8 new_state, const char *reason) {
     if (fsm_Input_s[sota->state] != NULL)
         fsm_Input_s[sota->state](sota);
 
-    SDL_LogInfo(SOTA_LOG_SYSTEM, "Game state changed %d->%d: %s->%s",
-            sota->state_previous, sota->state,
-            gameStatenames[sota->state_previous], gameStatenames[sota->state]);
+    SDL_LogDebug(SOTA_LOG_SYSTEM, "Game state changed %d->%d: %s->%s",
+                 sota->state_previous, sota->state,
+                 gameStatenames[sota->state_previous], gameStatenames[sota->state]);
 
 }
 
@@ -653,33 +653,34 @@ void Game_Camera_Scroll(struct Game *sota) {
     struct Position *cursor_position;
     cursor_position = TNECS_GET_COMPONENT(sota->world, sota->entity_cursor, Position);
     SDL_assert(cursor_position != NULL);
-    if (!cursor_position->absolute) {
-        const struct Sprite *cursor_sprite;
-        cursor_sprite = TNECS_GET_COMPONENT(sota->world, sota->entity_cursor, Sprite);
-        SDL_assert(cursor_sprite != NULL);
+    if (cursor_position->absolute)
+        return;
 
-        float factor_max = (CAMERA_BOUNDS - CAMERA_BOUNDS_SCALE * sota->camera.zoom /
-                            MAX_CAMERA_ZOOM);
-        float factor_min = 1.0f - factor_max;
+    const struct Sprite *cursor_sprite;
+    cursor_sprite = TNECS_GET_COMPONENT(sota->world, sota->entity_cursor, Sprite);
+    SDL_assert(cursor_sprite != NULL);
 
-        int x = cursor_sprite->dstrect.x, y = cursor_sprite->dstrect.y;
-        int w = cursor_sprite->dstrect.w, h = cursor_sprite->dstrect.h;
-        int offset = CAMERA_SCROLL_SPEED * sota->camera.zoom / CAMERA_SCROLL_ZOOMFACTOR;
+    float factor_max = (CAMERA_BOUNDS - CAMERA_BOUNDS_SCALE * sota->camera.zoom /
+                        MAX_CAMERA_ZOOM);
+    float factor_min = 1.0f - factor_max;
 
-        if ((x + w / 2) >= (factor_max * sota->settings.res.x)) {
-            sota->camera.offset.x   -= offset;
-            sota->map->camera_moved = true;
-        } else if ((x + w / 2) <= (factor_min * sota->settings.res.x)) {
-            sota->camera.offset.x   += offset;
-            sota->map->camera_moved = true;
-        }
-        if ((y + h / 2) >= (factor_max * sota->settings.res.y)) {
-            sota->camera.offset.y   -= offset;
-            sota->map->camera_moved = true;
-        } else if ((y + h / 2) <= (factor_min * sota->settings.res.y)) {
-            sota->camera.offset.y   += offset;
-            sota->map->camera_moved = true;
-        }
+    int x = cursor_sprite->dstrect.x, y = cursor_sprite->dstrect.y;
+    int w = cursor_sprite->dstrect.w, h = cursor_sprite->dstrect.h;
+    int offset = CAMERA_SCROLL_SPEED * sota->camera.zoom / CAMERA_SCROLL_ZOOMFACTOR;
+
+    if ((x + w / 2) >= (factor_max * sota->settings.res.x)) {
+        sota->camera.offset.x   -= offset;
+        sota->map->camera_moved = true;
+    } else if ((x + w / 2) <= (factor_min * sota->settings.res.x)) {
+        sota->camera.offset.x   += offset;
+        sota->map->camera_moved = true;
+    }
+    if ((y + h / 2) >= (factor_max * sota->settings.res.y)) {
+        sota->camera.offset.y   -= offset;
+        sota->map->camera_moved = true;
+    } else if ((y + h / 2) <= (factor_min * sota->settings.res.y)) {
+        sota->camera.offset.y   += offset;
+        sota->map->camera_moved = true;
     }
 }
 

@@ -103,7 +103,7 @@ int main(int argc, char *argv[]) {
     u64 elapsedTime_ns      = 0;
     i64 delay_ms            = 0;
     tnecs_ns_t time_ns = 0;
-    SDL_LogInfo(SOTA_LOG_SYSTEM, "sota->settings.FPS.cap %d \n", sota->settings.FPS.cap);
+    SDL_LogDebug(SOTA_LOG_SYSTEM, "sota->settings.FPS.cap %d \n", sota->settings.FPS.cap);
 
     SDL_LogInfo(SOTA_LOG_SYSTEM, "Starting main game loop\n");
     u64 updateTime_ns = SOTA_ns / sota->settings.FPS.cap;
@@ -146,9 +146,11 @@ int main(int argc, char *argv[]) {
     }
 
     /* -- Cleaning & Quitting -- */
+    SDL_LogInfo(SOTA_LOG_SYSTEM, "Freeing Utilities\n");
     Utilities_Free();
+    SDL_LogInfo(SOTA_LOG_SYSTEM, "Freeing Game\n");
     Game_Free(sota);
-    SDL_LogInfo(SOTA_LOG_SYSTEM, "Freeing filesystem\n");
+    SDL_LogInfo(SOTA_LOG_SYSTEM, "Freeing Filesystem\n");
     Filesystem_Free();
     SDL_Log("SotA quit.\n");
     return (NO_ERROR);
