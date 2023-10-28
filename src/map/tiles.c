@@ -2,6 +2,7 @@
 #include "map/tiles.h"
 
 void Map_Tiles_Free(struct Map *map) {
+    Map_Tilesets_Free(map);
     if (map->tiles != NULL) {
         for (size_t i = 0; i < DARR_NUM(map->tiles); i++)
             Tile_Free(&map->tiles[i]);
@@ -11,8 +12,11 @@ void Map_Tiles_Free(struct Map *map) {
 }
 
 void Map_Tiles_Load(struct Map *map) {
+    Map_Tiles_Free(map);
     struct Tile *temp_tile = NULL;
     char filename[DEFAULT_BUFFER_SIZE];
+    map->tiles = DARR_INIT(map->tiles, struct Tile, 64);
+
     for (size_t i = 0; i < DARR_NUM(map->tilesindex); i++) {
         /* -- Get tile_id -- */
         i32 tile_id = map->tilesindex[i];
@@ -38,7 +42,12 @@ void Map_Tiles_Load(struct Map *map) {
 }
 
 void Map_Tilesets_Free(struct Map *map) {
-    SDL_assert(DARR_NUM(map->tiles) > 0);
+    if (map->tiles == NULL)
+        return;
+
+    if (DARR_NUM(map->tiles) <= 0)
+        return;
+
     SDL_assert(DARR_NUM(map->tiles) < 1000);
 
     /* -- Free Tileset Surfaces -- */
@@ -47,7 +56,7 @@ void Map_Tilesets_Free(struct Map *map) {
         if (map->tileset_surfaces == NULL)
             break;
 
-        // Note: All surfaces use data from nes palette surface
+        /* Note: All surfaces use data from nes palette surface */
         for (int i = PALETTE_NUM - 1; i >= 0; i--) {
             if (map->tileset_surfaces[i] == NULL)
                 continue;

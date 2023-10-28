@@ -115,7 +115,6 @@ struct Map *Map_Init(struct Map *map, i32 width, i32 height) {
         Map_Free(map);
     map  = (struct Map *)SDL_malloc(sizeof(struct Map));
     *map = Map_default;
-    map->tiles              = DARR_INIT(map->tiles, struct Tile, 64);
     map->tiles_id           = DARR_INIT(map->tiles_id, i32, 64);
     map->items_num          = DARR_INIT(map->items_num, u8, 8);
     map->start_pos          = DARR_INIT(map->start_pos, struct Point, 20);
@@ -623,6 +622,9 @@ void Map_readJSON(void *input, const cJSON *const jmap) {
         DARR_PUT(map->tilesindex, cJSON_GetNumberValue(jid));
     }
     // SDL_assert(map->tileset_surfaces == NULL);
+    Map_Tilesets_Free(map);
+    Map_Tiles_Free(map);
+
     Map_Tiles_Load(map);
     Map_Tilesets_Load(map);
     SDL_assert(map->tileset_surfaces[0]);
