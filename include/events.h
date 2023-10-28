@@ -4,6 +4,7 @@
 #include <errno.h>
 #include "bars/map_hp.h"
 #include "game/game.h"
+#include "log.h"
 #include "game/cursor.h"
 #include "game/popup.h"
 #include "game/combat.h"

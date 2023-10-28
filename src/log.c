@@ -10,7 +10,7 @@ static const char *SDL_priority_prefixes[SDL_NUM_LOG_PRIORITIES] = {
     "INFO",
     "WARN",
     "ERROR",
-    "CRITICAL"
+    "CRITICAL",
 };
 
 void Log2file(void *userdata, int category, SDL_LogPriority priority,
@@ -19,8 +19,13 @@ void Log2file(void *userdata, int category, SDL_LogPriority priority,
     FILE *logf = fopen(LOGFILE, "a");
     fprintf(logf, "%s:\t%s\n", SDL_priority_prefixes[priority], message);
     fclose(logf);
-
     /* -- Log  -- */
     /* Copied from SDL_log.c */
-    fprintf(stderr, "%s:\t%s\n", SDL_priority_prefixes[priority], message);
+    fprintf(stderr, "%s:    %s\n", SDL_priority_prefixes[priority], message);
+}
+
+void Log_Init() {
+    /* -- SOTA_LOG_FPS -- */
+    /* Change to SDL_LOG_PRIORITY_VERBOSE to see FPS */
+    SDL_LogSetPriority(SOTA_LOG_FPS, SDL_LOG_PRIORITY_CRITICAL);
 }

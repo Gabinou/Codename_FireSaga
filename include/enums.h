@@ -24,10 +24,6 @@ enum bOFFSET {
     JSON_FILENAME_bOFFSET   = 1,
 };
 
-enum SOTA_LOG {
-    SOTA_LOG_FPS = SDL_LOG_CATEGORY_CUSTOM,
-};
-
 enum SOTA_RANGEMAP {
     RANGEMAP_NULL      = 0,
     RANGEMAP_HEALMAP   = 1, /*includes staves and items (horns, salve, etc.) */

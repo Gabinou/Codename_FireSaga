@@ -48,21 +48,30 @@
 int main(int argc, char *argv[]) {
     /* --- LOGGING --- */
     fclose(fopen(LOGFILE, "w"));
+    
+    Log_Init();
+
+    #ifndef SOTA_VERBOSE
+    SDL_LogSetAllPriority(SDL_LOG_PRIORITY_VERBOSE);
+    #endif /* SOTA_VERBOSE */
+
+    // SDL_LogSetPriority(SDL_LOG_CATEGORY_ERROR, SOTA_LOG_PRIORITY_ERROR);
 
     #ifndef __SOTA_RELEASE__
     SDL_LogSetOutputFunction(Log2file, NULL);
     SDL_Log("Logfile set\n");
     #endif /* __SOTA_RELEASE__ */
     SDL_Log("default");
+
+    printf("SOTA_LOG_FPS\n");
+    SDL_LogVerbose(SOTA_LOG_FPS,  "verbose");
+    SDL_LogDebug(SOTA_LOG_FPS,    "debug");
+    SDL_LogInfo(SOTA_LOG_FPS,     "Info");
+    SDL_LogWarn(SOTA_LOG_FPS,     "Warn");
+    SDL_LogError(SOTA_LOG_FPS,    "Error");
     SDL_LogCritical(SOTA_LOG_FPS, "CRITICAL");
-    SDL_LogError(SOTA_LOG_FPS, "Error");
-    SDL_LogInfo(SOTA_LOG_FPS, "Info");
-    SDL_LogVerbose(SOTA_LOG_FPS, "verbose");
-    SDL_LogWarn(SOTA_LOG_FPS, "Warn");
 
     getchar();
-    // SOTA_Log_Debug("%d\n", SDL_ISPIXELFORMAT_INDEXED(SDL_PIXELFORMAT_RGBA32));
-    // SOTA_Log_Debug("%d\n", SDL_BITSPERPIXEL(SDL_PIXELFORMAT_RGBA32));
 
     #ifdef SDL_ASSERT_LEVEL
     SOTA_Log_Debug("SDL_ASSERT_LEVEL %d\n", SDL_ASSERT_LEVEL);
