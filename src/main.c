@@ -47,20 +47,7 @@
 
 int main(int argc, char *argv[]) {
     /* --- LOGGING --- */
-    fclose(fopen(LOGFILE, "w"));
-
     Log_Init();
-
-    #ifndef SOTA_VERBOSE
-    SDL_LogSetAllPriority(SDL_LOG_PRIORITY_VERBOSE);
-    #endif /* SOTA_VERBOSE */
-
-    // SDL_LogSetPriority(SDL_LOG_CATEGORY_ERROR, SOTA_LOG_PRIORITY_ERROR);
-
-    #ifndef __SOTA_RELEASE__
-    SDL_LogSetOutputFunction(Log2file, NULL);
-    SDL_Log("Logfile set\n");
-    #endif /* __SOTA_RELEASE__ */
 
     #ifdef SDL_ASSERT_LEVEL
     SDL_Log("SDL_ASSERT_LEVEL %d\n", SDL_ASSERT_LEVEL);

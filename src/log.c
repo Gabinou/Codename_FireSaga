@@ -14,9 +14,22 @@ static const char *SDL_priority_prefixes[SDL_NUM_LOG_PRIORITIES] = {
 };
 
 void Log_Init() {
+    /* -- Clear logfile -- */
+    fclose(fopen(LOGFILE, "w"));
+
+    /* -- SOTA_LOG_FPS -- */
+    #ifndef SOTA_VERBOSE
+    SDL_LogSetAllPriority(SDL_LOG_PRIORITY_VERBOSE);
+    // #else /* SOTA_VERBOSE */
+    // SDL_LogSetAllPriority(SDL_LOG_PRIORITY_INFO);
+    #endif /* SOTA_VERBOSE */
+
     /* -- SOTA_LOG_FPS -- */
     /* Change to SDL_LOG_PRIORITY_VERBOSE to see FPS */
     SDL_LogSetPriority(SOTA_LOG_FPS, SDL_LOG_PRIORITY_CRITICAL);
+
+    SDL_LogSetOutputFunction(Log2file, NULL);
+    SDL_LogDebug(SDL_LOG_CATEGORY_SYSTEM, "Logfile set\n");
 }
 
 void Log2file(void *userdata, int category, SDL_LogPriority priority,
