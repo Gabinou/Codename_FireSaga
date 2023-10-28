@@ -53,9 +53,6 @@ struct Mobj_Link;
 extern int Filesystem_Init(char *argv0);
 extern int Filesystem_Free();
 
-/* --- LOG --- */
-extern void Filesystem_Log2file(void *d, i32 c, SDL_LogPriority p, const char *m);
-
 /* --- MISC. --- */
 extern bool Filesystem_fequal(const char *filename1, const char *filename2);
 extern void Filesystem_Load_Bytes(const char *name, u8 **mem, size_t *len);

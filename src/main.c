@@ -20,6 +20,7 @@
 #include <stddef.h>
 #include <math.h>
 #include "physfs.h"
+#include "log.h"
 #include "convoy.h"
 #include "filesystem.h"
 #include "SDL2/SDL.h"
@@ -50,7 +51,7 @@ int main(int argc, char *argv[]) {
 
     SDL_Log("A %d", 1);
     #ifndef __SOTA_RELEASE__
-    SDL_LogSetOutputFunction(Filesystem_Log2file, NULL);
+    SDL_LogSetOutputFunction(Log2file, NULL);
     SDL_Log("Logfile set\n");
     #endif /* __SOTA_RELEASE__ */
     SDL_Log("B %d", 2);
