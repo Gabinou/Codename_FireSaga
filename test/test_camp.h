@@ -4,7 +4,7 @@
 #include "RNG.h"
 
 void test_camp() {
-    SOTA_Log_Func("%s " STRINGIZE(__LINE__), __func__);
+    
     struct Camp camp  = Camp_default;
     struct Camp camp2 = Camp_default;
 

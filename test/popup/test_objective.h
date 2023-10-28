@@ -4,7 +4,7 @@
 #include "unit.h"
 
 void test_popup_objective() {
-    SOTA_Log_Func("%s " STRINGIZE(__LINE__), __func__);
+    
     /* -- Preliminaries -- */
     sota_mkdir("popup_objective");
 

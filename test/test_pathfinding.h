@@ -7,7 +7,7 @@ enum ENUM_TEST_PATHFINDING {
     COL_LEN = 25,
 };
 void test_pathfinding_Astar() {
-    SOTA_Log_Func("%s " STRINGIZE(__LINE__), __func__);
+    
     /* --- PRELIMINARIES --- */
     struct Point start        = {10, 6};
     struct Point end          = {15, 1};
@@ -119,7 +119,7 @@ void test_pathfinding_Astar() {
 void test_pathfinding_sight() {
     // Note: Blockmap doubles as a costmap for movemap
     // Walls are 0, everything else is visible
-    SOTA_Log_Func("%s " STRINGIZE(__LINE__), __func__);
+    
     /* --- PRELIMINARIES --- */
     struct Point start        = {10, 6};
     struct Point end          = {15, 1};
@@ -242,7 +242,7 @@ void test_pathfinding_sight() {
 }
 
 void test_pathfinding() {
-    SOTA_Log_Func("%s " STRINGIZE(__LINE__), __func__);
+    
     test_pathfinding_sight();
     test_pathfinding_Astar();
 }

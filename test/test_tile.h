@@ -6,7 +6,7 @@
 #include "narrative.h"
 
 void test_tile() {
-    SOTA_Log_Func("%s " STRINGIZE(__LINE__), __func__);
+    
     if (PHYSFS_stat("saves", NULL) == 0) {
         PHYSFS_mkdir("saves");
     }

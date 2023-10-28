@@ -5,7 +5,7 @@
 #include "jsonio.h"
 
 void test_scene() {
-    SOTA_Log_Func("%s " STRINGIZE(__LINE__), __func__);
+    
     /* -- Setup conditions -- */
     struct Conditions conditions;
     u32 *alive = BITFIELD_INIT_BITS(UNIT_ID_END);

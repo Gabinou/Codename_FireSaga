@@ -7,7 +7,7 @@
 #include "equations.h"
 
 void test_combat_game() {
-    SOTA_Log_Func("%s " STRINGIZE(__LINE__), __func__);
+    
     struct Game firesaga = Game_default;
     // Game_Init(&firesaga);
     RNG_Init_tinymt(&firesaga.tinymt32);
@@ -457,6 +457,6 @@ void test_combat_game() {
 }
 
 void test_game() {
-    SOTA_Log_Func("%s " STRINGIZE(__LINE__), __func__);
+    
     test_combat_game();
 }

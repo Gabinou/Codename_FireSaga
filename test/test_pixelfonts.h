@@ -3,7 +3,7 @@
 #include "text_bubble.h"
 
 void test_pixelfonts_internals() {
-    SOTA_Log_Func("%s " STRINGIZE(__LINE__), __func__);
+    
     SDL_assert(palette_NES != NULL);
 
     /* -- Create renderer -- */

@@ -2,7 +2,7 @@
 #include "octant.h"
 
 void test_octant() {
-    SOTA_Log_Func("%s " STRINGIZE(__LINE__), __func__);
+    
     /* -- Ternary_Direction_Index -- */
     nourstest_true(Ternary_Direction_Index(SOTA_TERNARY_EQUAL, SOTA_TERNARY_EQUAL) == 0);
     nourstest_true(Ternary_Direction_Index(SOTA_TERNARY_BELOW, SOTA_TERNARY_EQUAL) == 1);

@@ -45,6 +45,6 @@ void test_map_simple() {
 #undef TEST_MAP_COL_LEN
 
 void test_map() {
-    SOTA_Log_Func("%s " STRINGIZE(__LINE__), __func__);
+    
     test_map_simple();
 }

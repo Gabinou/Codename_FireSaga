@@ -3,7 +3,7 @@
 #include "enums.h"
 
 void test_utilities() {
-    SOTA_Log_Func("%s " STRINGIZE(__LINE__), __func__);
+    
 
     SDL_Log("test_Unit_army2alignment");
     nourstest_true(SotA_army2alignment(ARMY_FRIENDLY) == ALIGNMENT_FRIENDLY);
