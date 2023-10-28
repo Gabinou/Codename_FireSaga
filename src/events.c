@@ -502,6 +502,8 @@ void Reload_MapHpBar(void *struct_ptr) {
 
 void receive_event_Reload(struct Game *sota, SDL_Event *event) {
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), call_stack_depth++, __func__);
+    /* --- Benchmarking reload time --- */
+    u64 before_ns = tnecs_get_ns();
 
     /* --- Reload non-entities --- */
     Weapons_All_Reload(sota->weapons_dtab);
@@ -529,9 +531,18 @@ void receive_event_Reload(struct Game *sota, SDL_Event *event) {
     /* - Reload unit hpbars - */
     Reload_Entities_Archetype(sota, Reload_MapHpBar,  "MapHPBar");
 
+
+
+
     /* -- TODO: Reload Scenes -- */
 
     /* -- TODO: Reload Convoy -- */
+
+    /* -- Benchmark reload time -- */
+    u64 after_ns    = tnecs_get_ns();
+    u64 elapsed_ms  = (after_ns - before_ns) / SOTA_us;
+    float frame     = (float)(sota->instant_fps * elapsed_ms) / SOTA_ms;
+    SDL_Log("Reload %d ms %f frames", elapsed_ms, frame);
 
     SOTA_Log_Func("%d\t%s\t" STRINGIZE(__LINE__), --call_stack_depth, __func__);
 }

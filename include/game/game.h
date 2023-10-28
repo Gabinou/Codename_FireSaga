@@ -125,6 +125,7 @@ struct Game {
     tnecs_entity_t *map_enemies;
     struct Unit party[SOTA_MAX_PARTY_SIZE];
 
+
     tnecs_entity_t *ent_unit_loaded;
 
     i32  cursor_moved_time_ms;
@@ -155,6 +156,10 @@ struct Game {
     struct Point cursor_move;
     bool cursor_frame_moved;
     bool cursor_diagonal;
+
+    /* --- FPS --- */
+    float instant_fps; /* frames/time after fps_text->update_time_ns */
+    float rolling_fps; /* rolling average of fps */
 
     /* --- COMBAT --- */
     int candidate;          // potential candidate
